@@ -5,6 +5,9 @@
 
 #include "eDM.h"
 
+#define C_ROWPIX_AREA    8192
+#define C_ROWPIX_COLUMNS 2
+
 namespace BASE
 {
   class RowPix : public Object
@@ -23,8 +26,11 @@ namespace BASE
     i8 m_nNameOffset;  // 6)
     i8 m_nTotalChars;  // 7)
 
-    ColPix m_xaColPix[1];        // column pix array
-    byte   m_baPixArea[C_8KB];   // pix and names
+    ColPix m_xaColPix[C_ROWPIX_COLUMNS]; // column pix array
+    byte m_baPixArea[C_ROWPIX_AREA];     // see if this reproduces problem on Linux
+  
+//    // must be last
+//    Footer m_xFooter;
 
   public:
   
@@ -38,17 +44,18 @@ namespace BASE
     ColPix* axColPix(i8 i_Col);
     ColPix* axaColPixArray(void);
   
+    void vAssertRowPix(void);
+  
     i8   nColumns(void);
     void vColumns(i8 nColumns);
     void vCopyRowPix(RowPix* pRowPixSrc);
+    i8   nDynamicSize(void);
     Stz* szPixNm(void);
     void vPixNm(Stz* szPixNm);
     void vPrint(void);
-    void vPrint2(void);
-    i8   nRowPixBytes(i8 nCols);
     void vRemovePtnHash(void);
-    i8   nSize(void);
 
+    //Footer* aFooter(void);
   };
 
   RowPix* _pRowPix(void* aAddr);

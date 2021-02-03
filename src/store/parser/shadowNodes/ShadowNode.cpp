@@ -31,7 +31,7 @@ Atomic* ShadowNode::ms_pObjId = new Atomic();
 
 /*----------------------------------------------------------------------------*/
 /* Validates that a node is correctly built                                   */
-/* The fTypeValidator param is exected to be something like the               */
+/* The fTypeValidator param is expected to be something like the              */
 /* bIsOfType() function.                                                      */
 /*----------------------------------------------------------------------------*/
 b1 ShadowNode::bValidate(QueryNode* pQueryNode, PlanNode* pPlanRoot,

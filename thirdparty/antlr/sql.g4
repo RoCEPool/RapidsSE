@@ -295,7 +295,11 @@ expr
 // |         TRUNCATE     '(' time_unit ',' expr ')'                  #truncateFunc
 
  |          COUNT       '(' ALL? '*' ')'                            #countAll
- |          COUNT       '(' (ALL | distinct=DISTINCT)? expr ')'     #countFunc
+ |     func=COUNT       '(' (ALL | distinct=DISTINCT)? expr ')'     #aggFunc
+ |     func=SUM         '(' (ALL | distinct=DISTINCT)? expr ')'     #aggFunc
+ |     func=AVG         '(' (ALL | distinct=DISTINCT)? expr ')'     #aggFunc
+ |     func=MIN         '(' (ALL | distinct=DISTINCT)? expr ')'     #aggFunc
+ |     func=MAX         '(' (ALL | distinct=DISTINCT)? expr ')'     #aggFunc
 // |          RAND        '(' seed=expr? ')'                          #randFunc
 
 // |     func=analyticFunction '(' (ALL | distinct=DISTINCT)? expr ')'
@@ -304,7 +308,6 @@ expr
 //                            (orderBy=ORDER BY orderByList)?
 //                        ')'                                         #windowFunc
 
- |     func=functionName '(' (ALL | distinct=DISTINCT) expr ')'     #aggFunc
  |     func=functionName '(' (expr (',' expr)*)? ')'                #scalarFunc
 
  |                      '(' expr ')'                                #parenthetic
@@ -322,7 +325,7 @@ expr
  | expr    NOT? IN     ( '(' query ')' )                        #subqueryInOp
  | expr    NOT? IN     ( '(' (expr (',' expr)*)? ')' )          #inOp
 // | expr    NOT? BETWEEN expr AND expr                           #betweenOp
- |          op=NOT expr                                             #notOp
+ |          op=NOT expr                                         #logicOp
 //
 // The semantic predicate below is a hack to fix a precedence problem (ANTLR4 bug?)
 // where the AND of a BETWEEN operator is incorrectly interpreted as an AND operator.
@@ -331,9 +334,9 @@ expr
 //
 // | expr {!(_ctx.parent instanceof BetweenOpContext)}? op=AND expr   #andOp
 
- | expr     op=AND expr                                           #andOp
-
- | expr     op=OR  expr                                             #orOp
+ | expr     op=AND expr                                         #logicOp
+ | expr     op=OR  expr                                         #logicOp
+ | expr     op=XOR  expr                                        #logicOp
  ;
 
 
@@ -448,6 +451,7 @@ ANTLR                 : A N T L R;
 ANY                   : A N Y;
 AS                    : A S;
 ASC                   : A S C;
+AVG                   : A V G;
 BETWEEN               : B E T W E E N;
 BOTH                  : B O T H;
 BY                    : B Y;
@@ -490,6 +494,8 @@ LEADING               : L E A D I N G;
 LEFT                  : L E F T;
 LIKE                  : L I K E;
 LIMIT                 : L I M I T;
+MAX                   : M A X;
+MIN                   : M I N;
 MONOTONIC             : M O N O T O N I C;
 NO                    : N O;
 NODE                  : N O D E;
@@ -513,6 +519,7 @@ SELECT                : S E L E C T;
 SET                   : S E T;
 STATS                 : S T A T S;
 STATISTICS            : S T A T I S T I C S;
+SUM                   : S U M;
 TABLE                 : T A B L E;
 TO                    : T O;
 TOP                   : T O P;
@@ -527,6 +534,7 @@ USING                 : U S I N G;
 VALUES                : V A L U E S ;
 WHERE                 : W H E R E;
 WITH                  : W I T H;
+XOR                   : X O R;
 
 BOOLEAN               : B O O L E A N;
 INTEGER               : I N T E G E R;

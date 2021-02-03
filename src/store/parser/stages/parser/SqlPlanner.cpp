@@ -23,8 +23,8 @@
 #include "store/parser/shadowNodes/planObjects/Statement.hpp"
 #include "TableRef.hpp"
 
+// Expressions
 #include "ColumnRef.hpp"
-#include "store/parser/shadowNodes/expressions/literals/LiteralExpr.hpp"
 #include "store/parser/shadowNodes/expressions/literals/NullLiteral.hpp"
 #include "store/parser/shadowNodes/expressions/literals/StringLiteral.hpp"
 #include "store/parser/shadowNodes/expressions/literals/IntegerLiteral.hpp"
@@ -33,6 +33,28 @@
 #include "store/parser/shadowNodes/expressions/literals/DateLiteral.hpp"
 #include "store/parser/shadowNodes/expressions/literals/TimeLiteral.hpp"
 #include "store/parser/shadowNodes/expressions/literals/TimestampLiteral.hpp"
+#include "store/parser/shadowNodes/expressions/operators/mathematical/AdditionExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/mathematical/SubtractionExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/mathematical/MultiplicationExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/mathematical/DivisionExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/mathematical/ModulusExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/mathematical/NegationExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/comparison/EqExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/comparison/NeExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/comparison/GtExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/comparison/GeExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/comparison/LtExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/comparison/LeExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/logic/AndExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/logic/OrExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/logic/XorExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/logic/NotExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/logic/IsNullExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/aggregates/CountExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/aggregates/SumExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/aggregates/AvgExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/aggregates/MinExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/aggregates/MaxExpr.hpp"
 
 #include "ProjectedExpr.hpp"
 
@@ -146,23 +168,13 @@ PlanNode* SqlPlanner::plan(Stz* pStr, const PlanNode* pTemplate)
   
   // Check for any syntax errors
   if (errorListener.bGotError()) {
-    vTrace("%s\n"_Stz, errorListener.szErrorMsg()->azChar());
-    m_sLastError.vCopy(errorListener.szErrorMsg());
-    return nullptr;
+    //vTrace("%s\n"_Stz, errorListener.szErrorMsg()->azChar());
+    SyntaxException::vThrow(errorListener.iLine(), errorListener.iColumn(), errorListener.szErrorMsg());
   }
   
   // Visit the parse tree that resulted from the above parsing.
-  try {
-    this->visitStatement(pStatementCtx);
-
-  } catch (SyntaxException& e) {
-    m_sLastError.vCopy(e.szError());
-    return nullptr;
-
-  } catch (SemanticException& e) {
-    m_sLastError.vCopy(e.szError());
-    return nullptr;
-  }
+  // May throw a SyntaxException or SemanticException.
+  this->visitStatement(pStatementCtx);
 
   // Create a new plan graph using the template
   PlanNode* pRoot = GraphEditor::pNewFromTemplate(pTemplate);
@@ -178,27 +190,10 @@ PlanNode* SqlPlanner::plan(Stz* pStr, const PlanNode* pTemplate)
   QueryNode* pStatementNode = m_pStatementStack->pPop();
   pQueryNode->vAppendChild(pStatementNode);
 
-  // Explain the statement
-//  s48K sExplainBuf;
-//  Statement::vExplain(pStatementNode, sExplainBuf, 0);
-//  vTrace("%s\n\n"_Stz, sExplainBuf.szStz());
-
   // Validate the plan subsection of the graph
   GraphValidator::vValidatePlan(pRoot);
 
   return pRoot;
-}
-
-/*----------------------------------------------------------------------------*/
-/* Returns the last error message encountered, or nullptr if there is none.   */
-/*----------------------------------------------------------------------------*/
-Stz* SqlPlanner::szLastError()
-{
-  if (m_sLastError.nLength() == 0) {
-    return nullptr;
-  }
-
-  return m_sLastError.szStz();
 }
 
 
@@ -301,45 +296,18 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
   pStatement->vAppendChild(pProjectOp);
 
 
-
   // Check for a tableRef. If one exists, add it to a TableScanOp
   // and attach the TableScanOp as a child of the ProjectOp
-  if (m_pTableRefStack->nItems() > 0) {
-    ASSERT(m_pTableRefStack->nItems() == 1);
-    QueryNode* pTableRef = m_pTableRefStack->pPop();
-
-    QueryNode* pTableScanOp = TableScanOp::pCreate(pTableRef);
-    pProjectOp->vAppendChild(pTableScanOp);
+  if (m_pTableRefStack->nItems() == 0) {
+    SemanticException::vThrow("No table source specified"_Stz);
   }
 
+  ASSERT(m_pTableRefStack->nItems() == 1);
+  QueryNode* pTableRef = m_pTableRefStack->pPop();
 
+  QueryNode* pTableScanOp = TableScanOp::pCreate(pTableRef);
+  pProjectOp->vAppendChild(pTableScanOp);
 
-  ////////////////////////////////////////////////////////
-//  if (m_pTableRefStack->nItems() > 0) {
-//    vTrace("  /from\n"_Stz);
-//
-//    s2K sBuf;
-//    QueryNode* pTableRef = m_pTableRefStack->pPop();
-//    ShadowNode::vDescribe(pTableRef, sBuf);
-//
-//    vTrace("    /%s\n"_Stz, sBuf.szStz());
-//    delete pTableRef;
-//  }
-//
-//  ASSERT(m_pSelectItems->nItems() > 0);
-//  vTrace("  /project\n"_Stz);
-//
-//  while (m_pSelectItems->nItems() > 0) {
-//    QueryNode* pSelectItem = m_pSelectItems->pPop();
-//    s2K buf;
-//
-//    buf.vCopy("    /"_Stz);
-//    ShadowNode::vDescribe(pSelectItem, buf);
-//
-//    buf.vConcat("\n"_Stz);
-//    vTrace(buf.szStz());
-//  }
-  ////////////////////////////////////////////////////////
 
   ASSERT(m_pSelectItems->nItems() == 0);
   delete m_pSelectItems;
@@ -472,6 +440,235 @@ antlrcpp::Any SqlPlanner::visitLiteral(sqlParser::LiteralContext* pCtx)
   return nullptr;
 }
 
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Unary Expression Operators                                                */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitUnaryOp(sqlParser::UnaryOpContext *pCtx)
+{
+  visitChildren(pCtx);
+
+  QueryNode* pOpExpr = nullptr;
+  QueryNode* pExpr1 = m_pExprStack->pPop();
+
+  // Get the string of the operator
+  s256 sOp;
+  vCleanString(pCtx->op, sOp);
+
+  if (sOp.bEqual("+"_Stz)) {
+    // We don't create the identity operator, just push the expression
+    // back onto the stack again.
+    pOpExpr = pExpr1;
+
+  } else if (sOp.bEqual("-"_Stz)) {
+    // Negate the expression on the stack
+    pOpExpr = NegationExpr::pCreate(pExpr1);
+
+  } else {
+    NEVER_REACH
+  }
+
+  // Put the operator back onto the expression stack
+  m_pExprStack->vPush(pOpExpr);
+
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Binary Expression Operators                                                */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitBinaryOp(sqlParser::BinaryOpContext *pCtx)
+{
+  visitChildren(pCtx);
+
+  QueryNode* pOpExpr = nullptr;
+  QueryNode* pExpr2 = m_pExprStack->pPop();
+  QueryNode* pExpr1 = m_pExprStack->pPop();
+
+  // Get the string of the operator
+  s256 sOp;
+  vCleanString(pCtx->op, sOp);
+
+  if (sOp.bEqual("+"_Stz)) {
+    pOpExpr = AdditionExpr::pCreate(pExpr1, pExpr2);
+
+  } else if (sOp.bEqual("-"_Stz)) {
+    pOpExpr = SubtractionExpr::pCreate(pExpr1, pExpr2);
+
+  } else if (sOp.bEqual("*"_Stz)) {
+    pOpExpr = MultiplicationExpr::pCreate(pExpr1, pExpr2);
+
+  } else if (sOp.bEqual("/"_Stz)) {
+    pOpExpr = DivisionExpr::pCreate(pExpr1, pExpr2);
+
+  } else if (sOp.bEqual("%"_Stz)) {
+    pOpExpr = ModulusExpr::pCreate(pExpr1, pExpr2);
+
+  } else if (sOp.bEqual("<"_Stz)) {
+    pOpExpr = LtExpr::pCreate(pExpr1, pExpr2);
+
+  } else if (sOp.bEqual("<="_Stz)) {
+    pOpExpr = LeExpr::pCreate(pExpr1, pExpr2);
+
+  } else if (sOp.bEqual("="_Stz)) {
+    pOpExpr = EqExpr::pCreate(pExpr1, pExpr2);
+
+  } else if (sOp.bEqual("!="_Stz)) {
+    pOpExpr = NeExpr::pCreate(pExpr1, pExpr2);
+
+  } else if (sOp.bEqual("<>"_Stz)) {
+    pOpExpr = NeExpr::pCreate(pExpr1, pExpr2);
+
+  } else if (sOp.bEqual(">="_Stz)) {
+    pOpExpr = GeExpr::pCreate(pExpr1, pExpr2);
+
+  } else if (sOp.bEqual(">"_Stz)) {
+    pOpExpr = GtExpr::pCreate(pExpr1, pExpr2);
+
+//  } else if (sOp.bEqual("||"_Stz)) {                  // concatenation
+//    pOpExpr = ConcatExpr::pCreate(pExpr1, pExpr2);
+
+  } else {
+    NEVER_REACH
+  }
+
+  // Put the operator back onto the expression stack
+  m_pExprStack->vPush(pOpExpr);
+
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Logic Expression Operators                                                 */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitLogicOp(sqlParser::LogicOpContext *pCtx)
+{
+  visitChildren(pCtx);
+
+  QueryNode* pOpExpr = nullptr;
+  QueryNode* pExpr2;
+  QueryNode* pExpr1;
+
+  // Get the string of the operator
+  s256 sOp;
+  vCleanString(pCtx->op, sOp);
+  sOp.vToUpper();
+
+  if (sOp.bEqual("AND"_Stz)) {
+    pExpr2 = m_pExprStack->pPop();
+    pExpr1 = m_pExprStack->pPop();
+    pOpExpr = AndExpr::pCreate(pExpr1, pExpr2);
+
+  } else if (sOp.bEqual("OR"_Stz)) {
+    pExpr2 = m_pExprStack->pPop();
+    pExpr1 = m_pExprStack->pPop();
+    pOpExpr = OrExpr::pCreate(pExpr1, pExpr2);
+
+  } else if (sOp.bEqual("XOR"_Stz)) {
+    pExpr2 = m_pExprStack->pPop();
+    pExpr1 = m_pExprStack->pPop();
+    pOpExpr = XorExpr::pCreate(pExpr1, pExpr2);
+
+  } else if (sOp.bEqual("NOT"_Stz)) {
+    pExpr1 = m_pExprStack->pPop();
+    pOpExpr = NotExpr::pCreate(pExpr1);
+
+  } else {
+    NEVER_REACH
+  }
+
+  // Put the operator back onto the expression stack
+  m_pExprStack->vPush(pOpExpr);
+
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* IsNull Expression Operator                                                 */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitIsNullOp(sqlParser::IsNullOpContext *pCtx)
+{
+  visitChildren(pCtx);
+
+  QueryNode* pOpExpr = nullptr;
+  QueryNode* pExpr1 = m_pExprStack->pPop();
+
+  pOpExpr = IsNullExpr::pCreate(pExpr1);
+
+  // Turn "IS NOT NULL <expr>" into NOT(<expr> IS NULL)
+  if (pCtx->NOT()) {
+    pOpExpr = NotExpr::pCreate(pOpExpr);
+  }
+
+  // Put the operator back onto the expression stack
+  m_pExprStack->vPush(pOpExpr);
+
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* COUNT(*) Expression Operator                                               */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitCountAll(sqlParser::CountAllContext *pCtx)
+{
+  visitChildren(pCtx);
+
+  QueryNode* pOpExpr = CountExpr::pCreate(true, false, nullptr);
+
+  // Put the operator back onto the expression stack
+  m_pExprStack->vPush(pOpExpr);
+
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Generic Aggregate Expression Operator                                      */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitAggFunc(sqlParser::AggFuncContext *pCtx)
+{
+  visitChildren(pCtx);
+
+  b1 bIsDistinct = (pCtx->distinct != nullptr);
+
+  ASSERT(m_pExprStack->nItems() > 0);
+  QueryNode* pChildExpr = m_pExprStack->pPop();
+
+  s256 sFunc;
+  vCleanString(pCtx->func, sFunc);
+  sFunc.vToUpper();
+
+  QueryNode* pAggExpr = nullptr;
+
+  if (sFunc.bEqual("COUNT"_Stz)) {
+    pAggExpr = CountExpr::pCreate(false, bIsDistinct, pChildExpr);
+
+  } else if (sFunc.bEqual("SUM"_Stz)) {
+    pAggExpr = SumExpr::pCreate(bIsDistinct, pChildExpr);
+
+  } else if (sFunc.bEqual("AVG"_Stz)) {
+    pAggExpr = AvgExpr::pCreate(bIsDistinct, pChildExpr);
+
+  } else if (sFunc.bEqual("MIN"_Stz)) {
+    pAggExpr = MinExpr::pCreate(bIsDistinct, pChildExpr);
+
+  } else if (sFunc.bEqual("MAX"_Stz)) {
+    pAggExpr = MaxExpr::pCreate(bIsDistinct, pChildExpr);
+
+  } else {
+    SyntaxException::vThrow(pCtx->func->getLine(),
+                            pCtx->func->getCharPositionInLine(),
+                            "Unrecognised aggregate function: %s"_Stz, sFunc.szStz());
+  }
+
+  ASSERT(pAggExpr);
+
+  // Put the operator back onto the expression stack
+  m_pExprStack->vPush(pAggExpr);
+
+  return nullptr;
+}
+
+
+
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -562,20 +759,53 @@ void SqlPlanner::vCleanString(sqlParser::StringLiteralContext *pCtx, s256& sBuf)
   }
 
   std::string idStr = pCtx->getText();
+  vCleanString(idStr, sBuf);
+}
 
-  i8 idLen = idStr.length();
+/*----------------------------------------------------------------------------*/
+/* Clean up a a string literal. Returned string is written to the given buffer*/
+/*----------------------------------------------------------------------------*/
+void SqlPlanner::vCleanString(sqlParser::IdentifierContext *pCtx, s256& sBuf)
+{
+  if (!pCtx) {
+    return;
+  }
 
-  if (idLen == 0) {
+  std::string idStr = pCtx->getText();
+  vCleanString(idStr, sBuf);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Clean up a a string literal. Returned string is written to the given buffer*/
+/*----------------------------------------------------------------------------*/
+void SqlPlanner::vCleanString(antlr4::Token* pToken, s256& sBuf)
+{
+  if (!pToken) {
+    return;
+  }
+
+  std::string sStr = pToken->getText();
+  vCleanString(sStr, sBuf);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Clean up a a string literal. Returned string is written to the given buffer*/
+/*----------------------------------------------------------------------------*/
+void SqlPlanner::vCleanString(std::string& sStr, s256& sBuf)
+{
+  i8 len = sStr.length();
+
+  if (len == 0) {
     return;
   }
 
   // Ensure that the string is short enough to fit in the buffer
-  RASSERT(idLen < sBuf.nSpace());
+  RASSERT(len < sBuf.nSpace());
 
   // Remove single quotes
-  if (idStr.at(0) == '\'' && idStr.at(idLen - 1) == '\'') {
+  if (sStr.at(0) == '\'' && sStr.at(len - 1) == '\'') {
     // Not great, substr() makes a another copy of the string.
-    sBuf.vCopy((Stz*) idStr.substr(1, idLen - 2).c_str());
+    sBuf.vCopy((Stz*) sStr.substr(1, len - 2).c_str());
 
     // Unescape any two consecutive single quotes
     while (StrLib::bReplace(sBuf.azChar(), "''", "'")) { /*noop*/ }
@@ -583,13 +813,18 @@ void SqlPlanner::vCleanString(sqlParser::StringLiteralContext *pCtx, s256& sBuf)
   }
 
   // Remove double quotes
-  if (idStr.at(0) == '"' && idStr.at(idLen - 1) == '"') {
+  else if (sStr.at(0) == '"' && sStr.at(len - 1) == '"') {
     // Not great, substr() makes a another copy of the string.
-    sBuf.vCopy((Stz*) idStr.substr(1, idLen - 2).c_str());
+    sBuf.vCopy((Stz*) sStr.substr(1, len - 2).c_str());
 
     // Unescape any two consecutive double quotes
     while (StrLib::bReplace(sBuf.azChar(), "\"\"", "\"")) { /*noop*/ }
     return;
+
+
+  } else {
+    // No quotes. Just copy the string
+    sBuf.vCopy((Stz*) sStr.c_str());
   }
 }
 
@@ -666,7 +901,7 @@ Dte SqlPlanner::xCleanDate(sqlParser::StringLiteralContext *pCtx)
 
   // First check that it can fit into the 256 buffer
   if (pCtx->getText().length() > 255) {
-    throw SyntaxException(_szInvalidFormat);
+    throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
   }
 
   // Read it into the local buffer. This will also strip off the outer quotes.
@@ -674,14 +909,14 @@ Dte SqlPlanner::xCleanDate(sqlParser::StringLiteralContext *pCtx)
   vCleanString(pCtx, sBuf);
 
   if (sBuf.nLength() != 10) {
-    throw SyntaxException(_szInvalidFormat);
+    throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
   }
 
   char* pcBuf = sBuf.azChar();
 
   // Validate the format
   if (pcBuf[4] != '-' || pcBuf[7] != '-') {
-    throw SyntaxException(_szInvalidFormat);
+    throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
   }
 
   if (!StrLib::bIsDigit(pcBuf[0]) ||
@@ -692,7 +927,7 @@ Dte SqlPlanner::xCleanDate(sqlParser::StringLiteralContext *pCtx)
       !StrLib::bIsDigit(pcBuf[6]) ||
       !StrLib::bIsDigit(pcBuf[8]) ||
       !StrLib::bIsDigit(pcBuf[9]) ) {
-    throw SyntaxException(_szInvalidFormat);
+    throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
   }
 
   // Parse out the fields
@@ -734,7 +969,7 @@ Tme SqlPlanner::xCleanTime(sqlParser::StringLiteralContext *pCtx)
 
   // First check that it can fit into the 256 buffer
   if (pCtx->getText().length() > 255) {
-    throw SyntaxException(_szInvalidFormat);
+    throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
   }
 
   // Read it into the local buffer. This will also strip off the outer quotes.
@@ -742,14 +977,14 @@ Tme SqlPlanner::xCleanTime(sqlParser::StringLiteralContext *pCtx)
   vCleanString(pCtx, sBuf);
 
   if (sBuf.nLength() != 8) {
-    throw SyntaxException(_szInvalidFormat);
+    throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
   }
 
   char* pcBuf = sBuf.azChar();
 
   // Validate the format
   if (pcBuf[2] != ':' || pcBuf[5] != ':') {
-    throw SyntaxException(_szInvalidFormat);
+    throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
   }
 
   if (!StrLib::bIsDigit(pcBuf[0]) ||
@@ -758,7 +993,7 @@ Tme SqlPlanner::xCleanTime(sqlParser::StringLiteralContext *pCtx)
       !StrLib::bIsDigit(pcBuf[4]) ||
       !StrLib::bIsDigit(pcBuf[6]) ||
       !StrLib::bIsDigit(pcBuf[7]) ) {
-    throw SyntaxException(_szInvalidFormat);
+    throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
   }
 
   // Parse out the fields
@@ -798,7 +1033,7 @@ Tsp SqlPlanner::xCleanTimestamp(sqlParser::StringLiteralContext *pCtx)
 
   // First check that it can fit into the 256 buffer
   if (pCtx->getText().length() > 255) {
-    throw SyntaxException(_szInvalidFormat);
+    throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
   }
 
   // Read it into the local buffer. This will also strip off the outer quotes.
@@ -807,14 +1042,14 @@ Tsp SqlPlanner::xCleanTimestamp(sqlParser::StringLiteralContext *pCtx)
 
   i8 iLen = sBuf.nLength();
   if (iLen < 19) {
-    throw SyntaxException(_szInvalidFormat);
+    throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
   }
 
   char* pcBuf = sBuf.azChar();
 
   // Validate the format
   if (pcBuf[4] != '-' || pcBuf[7] != '-' || pcBuf[10] != ' ' || pcBuf[13] != ':' || pcBuf[16] != ':') {
-    throw SyntaxException(_szInvalidFormat);
+    throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
   }
 
   if (!StrLib::bIsDigit(pcBuf[0])  ||
@@ -831,7 +1066,7 @@ Tsp SqlPlanner::xCleanTimestamp(sqlParser::StringLiteralContext *pCtx)
       !StrLib::bIsDigit(pcBuf[15]) ||
       !StrLib::bIsDigit(pcBuf[17]) ||
       !StrLib::bIsDigit(pcBuf[18]) ) {
-    throw SyntaxException(_szInvalidFormat);
+    throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
   }
 
   // check for optional micros
@@ -839,17 +1074,17 @@ Tsp SqlPlanner::xCleanTimestamp(sqlParser::StringLiteralContext *pCtx)
 
   if (iLen > 19) {
     if (pcBuf[19] != '.') {
-      throw SyntaxException(_szInvalidFormat);
+      throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
     }
 
     for (i8 iIdx = 20; iIdx < iLen; iIdx++) {
       if (iIdx > 25) {
         // can only have 6 digits of microseconds
-        throw SyntaxException(_szInvalidFormat);
+        throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
       }
 
       if (!StrLib::bIsDigit(pcBuf[iIdx])) {
-        throw SyntaxException(_szInvalidFormat);
+        throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
       }
     }
 

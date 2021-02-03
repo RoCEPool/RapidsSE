@@ -190,7 +190,7 @@ void Queue::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
   
-  ASSERT(0 == m_iCount);
+  RASSERT(0 == m_iCount);
 
   while (m_pTopBuffer)
     vDiscard();

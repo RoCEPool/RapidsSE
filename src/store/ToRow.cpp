@@ -885,9 +885,9 @@ L_AdvanceNextRecord:
   m_pRowBuffer->nFreeBytes();
 
   // allot a new row (new another rowBuffer if necessary)
-  if (! m_pRowBuffer->aAllotNewRow()) {    // ? inline ?
+  if (! m_pRowBuffer->pAllotNewRow()) {    // ? inline ?
     vNewRowBuffer();
-    Row* aNewRow = m_pRowBuffer->aAllotNewRow();
+    Row* aNewRow = m_pRowBuffer->pAllotNewRow();
     ASSERT(aNewRow);
   }
  

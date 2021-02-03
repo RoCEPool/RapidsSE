@@ -41,7 +41,7 @@ namespace BASE
     void  vGiveTail(i8 nBytes);
     bool  bHasSpaceFor(i8 nBytes);
     void  vIncItems(void);
-    void  vInit(void);
+    void  vWspInit(void);
     TAIL* aItemAtOffset(i8 i_Offset);
     i8    nItems(void);
     HEAD* aLastItem(void); // ayLasHead()
@@ -78,6 +78,7 @@ WspConvergent_t<AREA,HEAD,TAIL>::WspConvergent_t(void)
   MemLib::vZero(m_yaByteArea,AREA,CN_NONE);
 #endif
   
+  ASSERT(2397407401047116065 == m_nUsedAux);
   m_nUsedAux   = 0;
   m_nUsedHead  = 0;
   m_nUsedTail  = 0;
@@ -217,6 +218,9 @@ byte* WspConvergent_t<AREA,HEAD,TAIL>::ayAux0(void)
 {
   ASSERT(bStructurallyValid());
 
+  if (C_UNKNOWN == m_i_AuxItem0)
+    return nullptr;
+  
   byte* ayAux0 = & m_yaByteArea[m_i_AuxItem0];
 
   return ayAux0;
@@ -229,6 +233,9 @@ template<i8 AREA, class HEAD, class TAIL>
 byte* WspConvergent_t<AREA,HEAD,TAIL>::ayAux1(void)
 {
   ASSERT(bStructurallyValid());
+
+  if (C_UNKNOWN == m_i_AuxItem1)
+    return nullptr;
 
   byte* ayAux1 = & m_yaByteArea[m_i_AuxItem1];
 
@@ -403,18 +410,18 @@ void WspConvergent_t<AREA,HEAD,TAIL>::vIncItems(void)
 /* init                                                                       */
 /*----------------------------------------------------------------------------*/
 template<i8 AREA, class HEAD, class TAIL>
-void WspConvergent_t<AREA,HEAD,TAIL>::vInit(void)
+void WspConvergent_t<AREA,HEAD,TAIL>::vWspInit(void)
 {
-#ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_yaByteArea,AREA,CN_NONE);
-#endif
+//#ifdef WITH_CHECK_INITIALISED
+//  MemLib::vZero(m_yaByteArea,AREA,CN_NONE);
+//#endif
   
-  m_nUsedAux   = 0;
+  //m_nUsedAux   = 0;
   m_nUsedHead  = 0;
   m_nUsedTail  = 0;
 
-  m_i_AuxItem0 = C_UNKNOWN;
-  m_i_AuxItem1 = C_UNKNOWN;
+  //m_i_AuxItem0 = C_UNKNOWN;
+  //m_i_AuxItem1 = C_UNKNOWN;
   
   m_nTailItems = 0;
   m_nTailSize  = C_UNKNOWN;
@@ -523,7 +530,7 @@ Stz* WspConvergent_t<AREA,HEAD,TAIL>::szStzAllot_begin(void)
 {
   ASSERT(bStructurallyValid());
 
-  Stz* szStz = (Stz*)ayLatterHead();
+  Stz* szStz = (Stz*)ayLatterHead() + 1;
   
   return szStz;
 }

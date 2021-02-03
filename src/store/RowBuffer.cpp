@@ -76,7 +76,7 @@ Row* RowBuffer::aAllotCopyRow(RowSingle* pRowSingle)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  RASSERT(m_oRowPix.m_bInitialised);
+  RASSERT(m_pRowPix);
 
   StreamDef* pStreamDef = pRowSingle->m_pStreamDef;
   
@@ -86,7 +86,7 @@ Row* RowBuffer::aAllotCopyRow(RowSingle* pRowSingle)
   if (! bHasSpaceFor(nVchSize + m_nRowSizeProper))
     return nullptr;
   
-  Row* pRow = aAllotNewRow();
+  Row* pRow = pAllotNewRow();
   
   new(pRow) Row;
 
@@ -141,7 +141,11 @@ void RowBuffer::vPrintRows(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  HV_Record hvRecord(pRowPix());
+  RowPix* pPix = pRowPix();
+  
+  //pPix->vPrint();
+
+  HV_Record hvRecord(pPix);
 
   i8 nRows = this->nRows();
 
@@ -158,7 +162,11 @@ void RowBuffer::vPrintRows(StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  HV_Record hvRecord(pStreamDef->pRowPix());
+  RowPix* pPix = pStreamDef->pRowPix();
+  
+  //pPix->vPrint();
+  
+  HV_Record hvRecord(pPix);
   
   // NOTE: We need to print only nItem no of rows
   // as the limitOp may have truncated the rows via setting the nItems()
@@ -210,6 +218,18 @@ void RowBuffer::vShow(StreamDef* pStreamDef)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get string area                                                            */
+/*----------------------------------------------------------------------------*/
+char* RowBuffer::azStrArea(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  char* azArea = ((char*)ayLatterHead()) + 1;
+
+  return azArea;
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert this row buffer into one or more csv buffers                       */
 /*----------------------------------------------------------------------------*/
 CsvBuffer* RowBuffer::pToCsvBuffer(void)
@@ -251,6 +271,16 @@ CsvBuffer* RowBuffer::pToCsvBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* restore pointers are recv()                                                */
+/*----------------------------------------------------------------------------*/
+void RowBuffer::vRestorePointers(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+    
+  RowBox_t<C_WSP_ROWBUFFER>::vResetRowPix();
+}
+
+/*----------------------------------------------------------------------------*/
 /* calculate the absolute offset within buffer for given item                 */
 /*----------------------------------------------------------------------------*/
 
@@ -262,6 +292,11 @@ i8 RowBuffer::iToOffset(Stz* szStr)
   
   return iOffset;
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+__aFooterFunction(RowBuffer);
 
 /*============================================================================*/
 /* end                                                                        */

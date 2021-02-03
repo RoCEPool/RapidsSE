@@ -320,6 +320,10 @@ void Step::vSocketRecvObject(void)
               "Socket received: Header %s"_Stz, //!format-LogRes
               spHeader.sz(aHeader));
   
+//  vTrace("%lld: vSocketRecvObject: Header %s\n"_Stz,
+//         AM::iThisNodeNo(),
+//         spHeader.sz(aHeader));
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the details about the received object
   
@@ -515,6 +519,8 @@ void Step::vSocketRecvObject(void)
         return;
       }
       
+      pInfoSet->vRestorePointers();
+      
       m_pDataStack->vPushPtr(pInfoSet);
       m_pDataStack->vPushInt(true);
       EXIT();
@@ -536,6 +542,8 @@ void Step::vSocketRecvObject(void)
         EXIT();
         return;
       }
+      
+      pRowBuffer->vRestorePointers();
       
       m_pDataStack->vPushPtr(pRowBuffer);
       m_pDataStack->vPushInt(true);

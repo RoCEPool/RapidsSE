@@ -34,9 +34,16 @@ namespace STORE
     void vShow(StreamDef* pStreamDef);
   
     CsvBuffer* pToCsvBuffer(void);
+  
+    void vRestorePointers(void);
+  
+    char* azStrArea(void);
 
   private:
     i8   iToOffset(Stz* szStr);
+  
+    Footer* aFooter(void);
+
   };
   
   RowBuffer* _pRowBuffer(void* aAddr);

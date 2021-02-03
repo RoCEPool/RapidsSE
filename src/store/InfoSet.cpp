@@ -6,7 +6,6 @@
 
 #include "RowBuffer.hpp"
 
-#include "SetPix.hpp"
 #include "InfoSet.hpp"
 
 #include "OpSpec.hpp"
@@ -54,7 +53,7 @@ void InfoSet::operator delete(void* aAddress)
 InfoSet::InfoSet(void)
 : InfoSetBase(CN_INFOSET)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET,_FOOTER_);
   
   m_eOpInfoSet = OI_NONE;
   _checkInitialised_(CN_INFOSET);
@@ -66,7 +65,7 @@ InfoSet::InfoSet(void)
 InfoSet::InfoSet(StreamDef* pStreamDef)
 : InfoSetBase(CN_INFOSET, pStreamDef)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET,_FOOTER_);
   
   m_eOpInfoSet = OI_NONE;
   
@@ -78,7 +77,7 @@ InfoSet::InfoSet(StreamDef* pStreamDef)
 /*----------------------------------------------------------------------------*/
 InfoSet::~InfoSet(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -90,7 +89,7 @@ InfoSet::~InfoSet(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void InfoSet::vOpInfoSet(eOI eOpInfoSet)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET,_FOOTER_);
   
   m_eOpInfoSet = eOpInfoSet;
 }
@@ -100,10 +99,17 @@ void InfoSet::vOpInfoSet(eOI eOpInfoSet)
 /*----------------------------------------------------------------------------*/
 eOI InfoSet::eOpInfoSet(void) {
   
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INFOSET,_FOOTER_);
   
   return m_eOpInfoSet;
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+__aFooterFunction(InfoSet);
+
+
 
 /*============================================================================*/
 /* end                                                                        */

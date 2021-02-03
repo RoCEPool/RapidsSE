@@ -1,5 +1,5 @@
 
-// Generated from /Users/ray/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
+// Generated from /Users/craig/repos/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
 
 #pragma once
 
@@ -162,15 +162,9 @@ public:
 
     virtual antlrcpp::Any visitOverlayFunc(sqlParser::OverlayFuncContext *context) = 0;
 
-    virtual antlrcpp::Any visitOrOp(sqlParser::OrOpContext *context) = 0;
-
     virtual antlrcpp::Any visitIfNullOp(sqlParser::IfNullOpContext *context) = 0;
 
     virtual antlrcpp::Any visitSubqueryExistsOp(sqlParser::SubqueryExistsOpContext *context) = 0;
-
-    virtual antlrcpp::Any visitAndOp(sqlParser::AndOpContext *context) = 0;
-
-    virtual antlrcpp::Any visitNotOp(sqlParser::NotOpContext *context) = 0;
 
     virtual antlrcpp::Any visitIsNullOp(sqlParser::IsNullOpContext *context) = 0;
 
@@ -204,7 +198,7 @@ public:
 
     virtual antlrcpp::Any visitSubqueryInOp(sqlParser::SubqueryInOpContext *context) = 0;
 
-    virtual antlrcpp::Any visitCountFunc(sqlParser::CountFuncContext *context) = 0;
+    virtual antlrcpp::Any visitLogicOp(sqlParser::LogicOpContext *context) = 0;
 
     virtual antlrcpp::Any visitCastOp(sqlParser::CastOpContext *context) = 0;
 

@@ -20,7 +20,6 @@ namespace STORE
     RowPix  m_oRowPix;                    // row pix
   
   private:
-    SetPix* m_pSetPix;
 
     // must be last
     Footer m_xFooter;
@@ -45,8 +44,6 @@ namespace STORE
     eEC     eParse(Stz* szCmd);
     void    vPrint(void);
     RowPix* pRowPix(void);
-    SetPix* pSetPix(void);
-    void    vSetPix(StreamDef* pStreamDef);
     void    vToColPix(RowPix* pRowPix, bool bPtnHash);
     void    vToRowPix(RowPix* pRowPix, bool bPtnHash);
     void    vToMetadata(Stz* sMetaData);

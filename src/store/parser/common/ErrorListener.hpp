@@ -12,8 +12,8 @@ namespace Parser
   {
    private:
     bool m_bGotError;
-    i8   m_nLine;
-    i8   m_nPos;
+    i8   m_iLine;
+    i8   m_iColumn;
     s256 m_sToken;
     s256 m_sErrorMsg;
     
@@ -30,6 +30,8 @@ namespace Parser
     
     bool bGotError(void);
     Stz* szErrorMsg(void);
+    i8   iLine(void);
+    i8   iColumn(void);
   };
   
 }

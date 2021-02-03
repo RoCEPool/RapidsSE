@@ -48,6 +48,7 @@ Output::Output(void)
   m_pOutputQueue      = nullptr;
   m_pStreamDef_result = nullptr;
   m_bExitMarker       = false;
+  m_bCancelMarker     = false;
 
 
   _checkInitialised_(CN_OUTPUT);
@@ -62,9 +63,11 @@ Output::~Output(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
   
-  if (m_pOutputQueue)
+  if (m_pOutputQueue) {
+    RASSERT(! m_pOutputQueue->iCount());
     delete m_pOutputQueue;
-  m_pOutputQueue = nullptr;
+    m_pOutputQueue = nullptr;
+  }
   
   if (m_pStreamDef_result)
     delete m_pStreamDef_result;
@@ -77,33 +80,85 @@ Output::~Output(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* assert empty output queue                                                  */
+/*----------------------------------------------------------------------------*/
+void Output::vAssertEmptyQueue(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
+  
+  RASSERT(! m_pOutputQueue->iCount());
+  
+  RASSERT(! m_bExitMarker);
+  RASSERT(! m_bCancelMarker);
+}
+
+/*----------------------------------------------------------------------------*/
 /* drain the result/output queue                                              */
 /*----------------------------------------------------------------------------*/
 void Output::vDrainBufferQueue(Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
 
-  Operand* pOperand;
-
-  while ( (pOperand = pPopBufferQueue_blocking(pSession)) ) {
+  while (! m_bExitMarker   &&
+         ! m_bCancelMarker &&
+         ! pSession->m_pSsnJob->m_xResult.m_xJobResponse.m_bJobHasError) {
+    
+    Operand* pOperand = pPopBufferQueue_blocking(pSession);
+    
+    if (! pOperand) {
+      AM::vNapUsec(1000,CN_OUTPUT);
+      continue;
+    }
+    
     eCN eOperandClass = pOperand->eGetClassNo();
 
     if (eOperandClass == CN_MARKER) {
       Marker *pMarker = _pMarker(pOperand);
       eOM eOpMarker = pMarker->eOpMarker();
 
-      AM::vDeleteOperand(pOperand);
+      if (eOpMarker == OM_CANCELMARKER)
+        m_bExitMarker = true;
+      else
+      if (eOpMarker == OM_EXITMARKER)
+        m_bCancelMarker = true;
+    }
 
-      if (eOpMarker == OM_CANCELMARKER ||
-          eOpMarker == OM_EXITMARKER)
-        break;
-    }
-    else {
-      AM::vDeleteOperand(pOperand);
-    }
+    AM::vDeleteOperand(pOperand);
   }
 
 }
+/*----------------------------------------------------------------------------*/
+//void Output::vDrainBufferQueue(Session* pSession)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
+//
+//  Operand* pOperand;
+//
+//  while ( (pOperand = pPopBufferQueue_blocking(pSession)) ) {
+//    eCN eOperandClass = pOperand->eGetClassNo();
+//
+//    if (eOperandClass == CN_MARKER) {
+//      Marker *pMarker = _pMarker(pOperand);
+//      eOM eOpMarker = pMarker->eOpMarker();
+//
+//      if (eOpMarker == OM_CANCELMARKER)
+//        m_bExitMarker = true;
+//
+//      if (eOpMarker == OM_EXITMARKER)
+//        m_bCancelMarker = true;
+//
+//      AM::vDeleteOperand(pOperand);
+//
+//      if (eOpMarker == OM_CANCELMARKER ||
+//          eOpMarker == OM_EXITMARKER)
+//        break;
+//    }
+//    else {
+//      AM::vDeleteOperand(pOperand);
+//    }
+//  }
+//
+//}
 
 
 /*----------------------------------------------------------------------------*/
@@ -122,6 +177,7 @@ void Output::vProcessBufferQueue(Session* pSession)
 
   }
   
+  vDrainBufferQueue(pSession);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -144,7 +200,6 @@ Operand* Output::pPopBufferQueue_blocking(Session* pSession)
       return pOperand;
     
     AM::vNapUsec(1000,CN_OUTPUT);
-    
     
     if (pSession->m_pSsnJob->m_xResult.m_xJobResponse.m_bJobHasError)
       return nullptr;
@@ -214,14 +269,29 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
     case CN_INFOSET: {
       InfoSet* pInfoSet = _pInfoSet(pOperand);
       ASSERT( ! pInfoSet->szInfoSetNm()->bSame(C_NO_NAME) );
-      if (pInfoSet->szInfoSetNm()->bSame(C_TDEF_LOADRESULT)) {
+      if (pInfoSet->szInfoSetNm()->bSame(C_TDEF_COMMANDERRORS)) {
+
+        Row *pInfoRow = pInfoSet->aFirstRow();
+
+        eEC eErrorCode  = (eEC)pInfoRow->iColVal_int(0);
+        i8 iSeverity    = pInfoRow->iColVal_int(1);
+        i8 iLineNo      = pInfoRow->iColVal_int(2);
+        i8 iColumnNo    = pInfoRow->iColVal_int(3);
+        Stz* sErrorText = pInfoRow->szColVal_ofs(4);
+
+        vTrace("%s : Line: %lld; Column: %lld; ErrorMsg: %s; \n"_Stz,
+               aEC[eErrorCode] , iLineNo, iColumnNo, sErrorText);
+
+        AM::vDeleteOperand(pOperand);
+      }
+      else if (pInfoSet->szInfoSetNm()->bSame(C_TDEF_LOADRESULT)) {
         
         Row* pInfoRow = pInfoSet->aFirstRow();
-        
+
         i8 iRowsProcessed = pInfoRow->iColVal_int(0);
         i8 iRowsInvalid   = pInfoRow->iColVal_int(1);
         i8 iRowsSkipped   = pInfoRow->iColVal_int(2);
-        
+
         m_ixRowsProcessed += iRowsProcessed;
         m_ixRowsInvalid   += iRowsInvalid;
         m_ixRowsSkipped   += iRowsSkipped;
@@ -231,6 +301,7 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
 
         AM::vDeleteOperand(pOperand);
       }
+
       else {
         m_ixRowsProcessed += pInfoSet->nInfoRows();
         vTrace("\n"_Stz);

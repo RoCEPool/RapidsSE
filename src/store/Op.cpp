@@ -128,7 +128,27 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
 Op::~Op(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
+
+  if (m_pQueueLeft->nItems() != 0) {
+    vTrace("Operand Queue not empty\n"_Stz);
+    Operand *pOperand = m_pQueueLeft->pPop();
+    while (pOperand) {
+      vTrace("Operand Queue for OP %s has %s\n"_Stz, m_sOpNm.azChar(), AM::pOperandName(pOperand));
+      pOperand = m_pQueueLeft->pPop();
+    }
+    RASSERT(0);
+  }
+  if (m_pQueueRight->nItems() != 0) {
+    vTrace("Operand Queue not empty\n"_Stz);
+    Operand *pOperand = m_pQueueRight->pPop();
+    while (pOperand) {
+      vTrace("Operand Queue for OP %s has %s\n"_Stz, m_sOpNm.azChar(), AM::pOperandName(pOperand));
+      pOperand = m_pQueueRight->pPop();
+    }
+    RASSERT(0);
+  }
+
   delete m_pQueueLeft;
   delete m_pQueueRight;
   

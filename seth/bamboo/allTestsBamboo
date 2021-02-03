@@ -7,7 +7,7 @@
 ../tests/Datums/testList
 ../tests/Ddl/testList
 ../tests/Examples/testList
-//../tests/Insert/testList
+../tests/Insert/testList
 ../tests/Load/testList
 ../tests/LocalFunctions/testList
 ../tests/Misc/testList

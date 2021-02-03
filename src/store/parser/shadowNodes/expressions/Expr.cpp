@@ -9,6 +9,7 @@
 
 #include "store/parser/shadowNodes/expressions/literals/LiteralExpr.hpp"
 #include "ColumnRef.hpp"
+#include "OperatorExpr.hpp"
 
 #include "GraphNav.hpp"
 
@@ -46,22 +47,6 @@ static Stz* aExprTypeDefns[] = {
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-
-/*----------------------------------------------------------------------------*/
-/* get catalog name from expr                                                 */
-/*----------------------------------------------------------------------------*/
-Stz* Expr::szCatalog(QueryNode* pNode)
-{
-  ASSERT(bIsOfType(pNode));
-
-  QueryNode* pCatalogNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_CATALOG_PROP, pNode));
-  ASSERT(pCatalogNode);
-
-  Stz* szCatalogName = pCatalogNode->szValue();
-
-  return szCatalogName;
-}
-
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
@@ -75,45 +60,18 @@ void Expr::vDescribe(PlanNode* pNode, s2K& sBuf)
   // TODO: manual expression polymorphism here
 
   // Literals
-  if      (LiteralExpr::bIsOfType(pNode)) { LiteralExpr::vDescribe(pNode, sBuf); }
+  if      (LiteralExpr::bIsOfType(pNode))   { LiteralExpr::vDescribe(pNode, sBuf); }
 
   // ColumnRefs
-  else if (ColumnRef::bIsOfType(pNode))   { ColumnRef::vDescribe(pNode, sBuf);   }
+  else if (ColumnRef::bIsOfType(pNode))     { ColumnRef::vDescribe(pNode, sBuf);   }
+
+  // Operators of all kinds
+  else if (OperatorExpr::bIsOfType(pNode))  { OperatorExpr::vDescribe(pNode, sBuf);   }
 
   else {
     // Need to add in manual polymorphism here
     NEVER_REACH
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* get schema name from expr                                                  */
-/*----------------------------------------------------------------------------*/
-Stz* Expr::szSchema(QueryNode* pNode)
-{
-  ASSERT(bIsOfType(pNode));
-
-  QueryNode* pSchemaNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_SCHEMA_PROP, pNode));
-  ASSERT(pSchemaNode);
-
-  Stz* szSchemaName = pSchemaNode->szValue();
-
-  return szSchemaName;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get schema name from expr                                                  */
-/*----------------------------------------------------------------------------*/
-Stz* Expr::szTable(QueryNode* pNode)
-{
-  ASSERT(bIsOfType(pNode));
-
-  QueryNode* pTableNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_TABLE_PROP, pNode));
-  ASSERT(pTableNode);
-
-  Stz* szTableName = pTableNode->szValue();
-
-  return szTableName;
 }
 
 /*----------------------------------------------------------------------------*/

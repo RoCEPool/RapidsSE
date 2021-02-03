@@ -59,12 +59,13 @@ RowPix::RowPix(void)
   m_nNameOffset  = C_UNKNOWN;
   m_nTotalChars  = 0;
 
-  for (i8 i_Col = 0; i_Col < C_MAX_DEFCOLUMNS; i_Col++) {
+  
+  for (i8 i_Col = 0; i_Col < C_ROWPIX_COLUMNS; i_Col++)
     m_xaColPix[i_Col].m_uAsU8 = 0;
-  }
   
   MemLib::vZero(m_baPixArea,sizeof(m_baPixArea),CN_ROWPIX);
-
+  
+  
   _checkInitialised_(CN_ROWPIX);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
@@ -82,6 +83,15 @@ RowPix::~RowPix(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* set number of columns                                                      */
+/*----------------------------------------------------------------------------*/
+void RowPix::vAssertRowPix(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
+  
+}
 
 /*----------------------------------------------------------------------------*/
 /* get number of columns                                                      */
@@ -126,13 +136,37 @@ ColPix* RowPix::axaColPixArray(void)
 /*----------------------------------------------------------------------------*/
 /* copy row pix                                                               */
 /*----------------------------------------------------------------------------*/
-void RowPix::vCopyRowPix(RowPix* pRowPixSrc)
+//void RowPix::vCopyRowPix(RowPix* pRowPixSrc)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
+//  MemLib::vCopy(this,pRowPixSrc,sizeof(RowPix),CN_ROWPIX);
+//
+//  
+//  //m_nRowSizeProper = Row::nRowProper(pRowPixSrc);
+//}
+
+/*----------------------------------------------------------------------------*/
+/* get dynamic size of this RowPix                                            */
+/*----------------------------------------------------------------------------*/
+i8 RowPix::nDynamicSize(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
-  MemLib::vCopy(this,pRowPixSrc,sizeof(RowPix),CN_ROWBUFFER);
+  
+  ASSERT(m_bInitialised);
+  ASSERT(m_nColumns);
 
-  //m_nRowSizeProper = Row::nRowProper(pRowPixSrc);
+  
+  i8 nNilSize = sizeof(RowPix)
+                  - sizeof(m_xaColPix) - sizeof(m_baPixArea);
+  
+  i8 nSizeColPix = m_nColumns * sizeof(ColPix);
+  
+  i8 nSize = nNilSize + nSizeColPix + m_nTotalChars + 16;
+  
+  //return sizeof(RowPix);
+  return nSize;
 }
+
 
 /*----------------------------------------------------------------------------*/
 /* get pix name                                                               */
@@ -153,39 +187,18 @@ void RowPix::vPixNm(Stz* szPixNm)
   
   m_sPixNm = szPixNm;
 }
-
-/*----------------------------------------------------------------------------*/
-/* print                                                                      */
-/*----------------------------------------------------------------------------*/
-void RowPix::vPrint(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
-  
-  vTrace("RowPix: %lld cols\n"_Stz,m_nColumns);
-  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
-    vTrace("[%02lld] %s(%lld,%lld)%s%s\n"_Stz,
-           i_Col,
-           aDM[m_xaColPix[i_Col].m_uDatum],
-           (i8)m_xaColPix[i_Col].m_uLength,
-           (i8)m_xaColPix[i_Col].m_uScale,
-           m_xaColPix[i_Col].m_bPtnKey ? " !PtnKey" : "",
-           i_Col + 1 == m_nColumns && m_nExtraCols ? " #PtnHsh" : ""
-           );
-
-  }
-}
   
 /*----------------------------------------------------------------------------*/
 /* print this set pix                                                         */
 /*----------------------------------------------------------------------------*/
-void RowPix::vPrint2(void)
+void RowPix::vPrint(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
   
   SP_ColPix spColPix;
   
   vTrace("RowPix: %s\n"_Stz,szPixNm());
-  vTrace("  %lld columns\n"_Stz,nColumns());
+  vTrace("  %lld columns (%lld extra)\n"_Stz,nColumns(),m_nExtraCols);
   
   for (i8 i_Col = 0; i_Col < nColumns(); i_Col++) {
     ColPix* axColPix = this->axColPix(i_Col);
@@ -194,45 +207,28 @@ void RowPix::vPrint2(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* calc number of bytes (this is weird)                                       */
-/*----------------------------------------------------------------------------*/
-i8 RowPix::nRowPixBytes(i8 nCols)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
-  
-  i8 nBytes =    (    1 * sizeof(m_sPixNm))
-               + (    8 * sizeof(i8))
-               + (nCols * sizeof(ColPix))
-               ;
-
-  return nBytes;
-}
-
-/*----------------------------------------------------------------------------*/
 /* remove partition metadata column                                           */
 /*----------------------------------------------------------------------------*/
 void RowPix::vRemovePtnHash(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
+  
+  //vPrint();
+  
   ASSERT(m_bPtnHash);
   ASSERT(m_nExtraCols);
 
   m_nColumns--;
   m_nExtraCols--;
   m_bPtnHash = false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* calc size of this RowPix                                                   */
-/*----------------------------------------------------------------------------*/
-i8 RowPix::nSize(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
   
-  i8 nSize = nRowPixBytes(m_nColumns);
-
-  return nSize;
+  //vPrint();
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+//__aFooterFunction(RowPix);
 
 /*============================================================================*/
 /* end                                                                        */

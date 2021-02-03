@@ -4015,9 +4015,51 @@ bool PROMPT::bPrompt_scan(SePrompt* pPrompt)
   return true;
 }
 
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* Prompt_select.cpp -- select statement                                      */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+PromptFun __Prompt_select (
+  PF_SCAN,           // prompt function
+  "Prompt_select"_Stz,  // name of the prompt function
+  "comment"_Stz,        // comment about the function
+  "select"_Stz,         // the prompt command
+  nullptr,              // the second word
+  bPrompt_select,       // prompt function
+  true,                 // enabled
+
+  false,                // visible
+  "select"_Stz,         // help
+  ""_Stz                // description
+);
+
+//------------------------------------------------------------------------------
+/* prompt function                                                            */
+//------------------------------------------------------------------------------
+bool PROMPT::bPrompt_select(SePrompt* pPrompt)
+{
+  //vTrace("bPrompt_select\n"_Stz);
+  
+  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
+  
+  i8 iNumTokens = pInpTknVec->nItems();
+  
+  s16KB sSelectStmt;
+  s16KB sSqlCompiler;
+
+  pInpTknVec->vVecToString(sSelectStmt,0,true);
+  
+  sSqlCompiler.vSprint("sqlCompiler \"%s\""_Stz,sSelectStmt.szStz());
+  vTrace(":: %s\n"_Stz,sSqlCompiler.szStz());
+  
+
+  pPrompt->pSession()->m_sToDo = sSqlCompiler;
+  
+  return true;
+}
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/* Prompt_selfies.cpp -- Ascii Helper                                           */
+/* Prompt_selfies.cpp -- Ascii Helper                                         */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 extern SubSysCatalog gxSubSysCatalog;

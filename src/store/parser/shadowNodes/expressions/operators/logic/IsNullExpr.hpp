@@ -1,0 +1,33 @@
+/*============================================================================*/
+/* IsNullExpr.hpp - a logical IsNull expression operator                      */
+/*============================================================================*/
+#pragma once
+
+#include "LogicExpr.hpp"
+
+namespace Parser
+{
+  class QueryNode;
+  class PlanNode;
+
+  class IsNullExpr : public LogicExpr
+  {
+  private:
+    // Shalt never be instantiated. Static functions only.
+    IsNullExpr();
+
+  public:
+    static QueryNode* pCreate(QueryNode* pExpr1);
+    static void       vDescribe(PlanNode* pNode, s2K& sBuf);
+
+    static QueryNode* pChild1(QueryNode* pNode);
+
+    // Returns true if a given node is a given type ** or is derived from that type **
+    static b1 bIsOfType(PlanNode* pNode);
+  };
+
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

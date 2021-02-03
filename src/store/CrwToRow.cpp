@@ -136,7 +136,7 @@ void CrwToRow::vAllotNewRow(void)
   if (m_pRowBuffer->nFreeBytes() < C_MAX_RECORD)
     vNewRowBuffer();
   
-  Row* pRow = m_pRowBuffer->aAllotNewRow();
+  Row* pRow = m_pRowBuffer->pAllotNewRow();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -97,7 +97,7 @@ void Step::vStreamSetAddAnalyzeIndex(void)
   
   pIndex->vAnalyze(i_TablePtn, nBuffers, nEntries);
   
-  Row* pRow = pStreamSet->aAllotRow(pStreamDef,
+  Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                     C_VARGS_BEGIN,
                                     AM::pGrid()->pThisNode()->szNodeNm(),
                                     pStreamSetTable->tTablePtnToPtnNo(i_TablePtn),
@@ -139,7 +139,7 @@ void Step::vStreamSetAddAnalyzeTable(void)
   
   pTable->vAnalyze(i_TablePtn, nBuffers, nRows);
   
-  Row* pRow = pStreamSet->aAllotRow(pStreamDef,
+  Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                     C_VARGS_BEGIN,
                                     AM::pGrid()->pThisNode()->szNodeNm(),
                                     pStreamSetTable->tTablePtnToPtnNo(i_TablePtn),
@@ -170,7 +170,7 @@ void Step::vStreamSetAddColumnDef(void)
   
   StreamSet* pStreamSet = _pStreamSet(*( m_pJob->pLogicUnit_job() )->m_xpStreamSet);
   
-  Row* pRow = pStreamSet->aAllotRow(pStreamDef,
+  Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
                                   pColumn->szColNm(),
                                   aCT[pColumn->eColumnType()],
@@ -225,7 +225,7 @@ void Step::vStreamSetAddGridSanity(void)
   if ( bRegionSize && bPartitions )
     bHomogenous = true;
   
-  Row* pRow = pStreamSet->aAllotRow(pStreamDef,
+  Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
                                   pNodeInfo->szColVal_ofs(0),
                                   bHomogenous,
@@ -255,7 +255,7 @@ void Step::vStreamSetAddListContents(void)
   
   StreamSet* pStreamSet = _pStreamSet(*( m_pJob->pLogicUnit_job() )->m_xpStreamSet);
   
-  Row* pRow = pStreamSet->aAllotRow(pStreamDef,
+  Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
                                   sContents.azChar(),
                                   C_VARGS_END);
@@ -290,7 +290,7 @@ void Step::vStreamSetAddListFolder(void)
   
   StreamSet* pStreamSet = _pStreamSet(*( m_pJob->pLogicUnit_job() )->m_xpStreamSet);
   
-  Row* pRow = pStreamSet->aAllotRow(pStreamDef,
+  Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
                                   sName.azChar(),
                                   sKind.azChar(),
@@ -321,7 +321,7 @@ void Step::vStreamSetAddListIndex(void)
   
   StreamSet* pStreamSet = _pStreamSet(*( m_pJob->pLogicUnit_job() )->m_xpStreamSet);
   
-  Row* pRow = pStreamSet->aAllotRow(pStreamDef,
+  Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                     C_VARGS_BEGIN,
                                       pIndex->szIndexNm(),
                                       (i8)pIndex->bIsUnique(),
@@ -356,7 +356,7 @@ void Step::vStreamSetAddListPartitions(void)
   i8 i_Node = AM::pPtnMap()->i_WhichNode(tPtnNo);
   Node* pNode = pGrid->pGetNode(i_Node);
   
-  Row* pRow = pStreamSet->aAllotRow(pStreamDef,
+  Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                     C_VARGS_BEGIN,
                                     tPtnNo,
                                     pNode->szNodeNm(),
@@ -388,7 +388,7 @@ void Step::vStreamSetAddNodeStatus(void)
   
   s32 sRegionNm(AM::szRegionName());
   
-  Row* pRow = pStreamSet->aAllotRow(pStreamDef,
+  Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                         C_VARGS_BEGIN,
                         pGrid->pThisNode()->szNodeNm(),
                         sRegionNm.azChar(),
@@ -416,7 +416,7 @@ void Step::vStreamSetAddPingInfo(void)
   StreamDef* pStreamDef = pTable->pStreamDef();
   StreamSet* pStreamSet = _pStreamSet(*( m_pJob->pLogicUnit_job() )->m_xpStreamSet);
   
-  Row* pRow = pStreamSet->aAllotRow(pStreamDef,
+  Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
                                   "pong"_Stz,
                                   C_VARGS_END);
@@ -440,7 +440,7 @@ void Step::vStreamSetAddProgressUnits(void)
   StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
   StreamSet* pStreamSet = _pStreamSet(*( m_pJob->pLogicUnit_job() )->m_xpStreamSet);
   
-  Row* pRow = pStreamSet->aAllotRow(pStreamDef,
+  Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
                                   iProgressUnits,
                                   C_VARGS_END);
@@ -470,7 +470,7 @@ void Step::vStreamSetAddPwfInfo(void)
   
   StreamSet* pStreamSet = _pStreamSet(*( m_pJob->pLogicUnit_job() )->m_xpStreamSet);
   
-  Row* pRow = pStreamSet->aAllotRow(pStreamDef,
+  Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                     C_VARGS_BEGIN,
                                     sString.azChar(),
                                     C_VARGS_END);
@@ -499,7 +499,7 @@ void Step::vStreamSetAddRowCount(void)
   
   StreamSet* pStreamSet = _pStreamSet(*( m_pJob->pLogicUnit_job() )->m_xpStreamSet);
   
-  Row* pRow = pStreamSet->aAllotRow(pStreamDef,
+  Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                     C_VARGS_BEGIN,
                                     i_Count,
                                     C_VARGS_END);
@@ -529,7 +529,7 @@ void Step::vStreamSetAddShowCluster(void)
   StreamSet* pStreamSet = _pStreamSet(*( m_pJob->pLogicUnit_job() )->m_xpStreamSet);
   
   Node* pNode = AM::pGrid()->pGetNode(i_Node);
-  Row* pRow = pStreamSet->aAllotRow(pStreamDef,
+  Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
                                   pNode->szNodeNm(),
                                   pNode->szIPAddr(),
@@ -562,7 +562,7 @@ void Step::vStreamSetAddSizeIndex(void)
   
   StreamSet* pStreamSet = _pStreamSet(*( m_pJob->pLogicUnit_job() )->m_xpStreamSet);
 
-  Row* pRow = pStreamSet->aAllotRow(pStreamDef,
+  Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                     C_VARGS_BEGIN,
                                     AM::pGrid()->pThisNode()->szNodeNm(),
                                     sSize.azChar(),
@@ -593,7 +593,7 @@ void Step::vStreamSetAddSizeTable(void)
   
   StreamSet* pStreamSet = _pStreamSet(*( m_pJob->pLogicUnit_job() )->m_xpStreamSet);
   
-  Row* pRow = pStreamSet->aAllotRow(pStreamDef,
+  Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                     C_VARGS_BEGIN,
                                     AM::pGrid()->pThisNode()->szNodeNm(),
                                     sSize.azChar(),
@@ -642,7 +642,7 @@ void Step::vStreamSetAddSpaceInfo(void)
   s256 sTotalFreeSpace;
   MagLib::vByteMag(iTotalFreeSpace, 0, sTotalFreeSpace);
   
-  Row* pRow = pStreamSet->aAllotRow(pStreamDef,
+  Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
                                   pGrid->pThisNode()->szNodeNm(),
                                   sTotalSpace.azChar(),
@@ -678,7 +678,7 @@ void Step::vStreamSetAddTableSizes(void)
   
   StreamSet* pStreamSet = _pStreamSet(*( m_pJob->pLogicUnit_job() )->m_xpStreamSet);
   
-  Row* pRow = pStreamSet->aAllotRow(pStreamDef,
+  Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                     C_VARGS_BEGIN,
                                     AM::pGrid()->pThisNode()->szNodeNm(),
                                     sTableName.azChar(),
@@ -713,7 +713,7 @@ void Step::vStreamSetAddVerifyIndex(void)
   
   StreamSet* pStreamSet = _pStreamSet(*( m_pJob->pLogicUnit_job() )->m_xpStreamSet);
   
-  Row* pRow = pStreamSet->aAllotRow(pStreamDef,
+  Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                     C_VARGS_BEGIN,
                                     AM::pGrid()->pThisNode()->szNodeNm(),
                                     pTable->szTableNm(),
@@ -746,7 +746,7 @@ void Step::vStreamSetAddVerifyTable(void)
   
   StreamSet* pStreamSet = _pStreamSet(*( m_pJob->pLogicUnit_job() )->m_xpStreamSet);
   
-  Row* pRow = pStreamSet->aAllotRow(pStreamDef,
+  Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                     C_VARGS_BEGIN,
                                     AM::pGrid()->pThisNode()->szNodeNm(),
                                     pTable->szTableNm(),

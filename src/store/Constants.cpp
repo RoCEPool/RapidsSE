@@ -217,6 +217,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_TDEF_ANALYZEINDEX"_Stz,  C_TDEF_ANALYZEINDEX);
   vAddConstant("C_TDEF_ANALYZETABLE"_Stz,  C_TDEF_ANALYZETABLE);
   vAddConstant("C_TDEF_CALLPIPELINE"_Stz,  C_TDEF_CALLPIPELINE);
+  vAddConstant("C_TDEF_COMMANDERRORS"_Stz, C_TDEF_COMMANDERRORS);
   vAddConstant("C_TDEF_COUNT"_Stz,         C_TDEF_COUNT);
   vAddConstant("C_TDEF_COUNTINFO"_Stz,     C_TDEF_COUNTINFO);
   vAddConstant("C_TDEF_GRIDSANITY"_Stz,    C_TDEF_GRIDSANITY);
@@ -585,6 +586,7 @@ void Constants::vAddConstantsCpp(void)
   // OI_ : operator infoset
   /*  0 */ vAddConstant("OI_NONE"_Stz,          OI_NONE);
   /*  0 */ vAddConstant("OI_CALLPIPELINE"_Stz,  OI_CALLPIPELINE);
+  /*  0 */ vAddConstant("OI_COMMANDERRORS"_Stz, OI_COMMANDERRORS);
   /*  0 */ vAddConstant("OI_COUNTINFO"_Stz,     OI_COUNTINFO);
   /*  0 */ vAddConstant("OI_LOADRESULT"_Stz,    OI_LOADRESULT);
   /*  0 */ vAddConstant("OI_LOCKSTATS"_Stz,     OI_LOCKSTATS);
@@ -682,6 +684,7 @@ void Constants::vAddConstantsCpp(void)
   // ZK_ : operand kind
   /*  0 */ vAddConstant("ZK_NONE"_Stz,            ZK_NONE);
   /*  0 */ vAddConstant("ZK_CALLPIPELINE"_Stz,    ZK_CALLPIPELINE);
+  /*  0 */ vAddConstant("ZK_COMMANDERRORS"_Stz,    ZK_COMMANDERRORS);
   /*  0 */ vAddConstant("ZK_CANCELMARKER"_Stz,    ZK_CANCELMARKER);
   /*  0 */ vAddConstant("ZK_CANCELLEDMARKER"_Stz, ZK_CANCELLEDMARKER);
   /*  0 */ vAddConstant("ZK_COUNTINFO"_Stz,       ZK_COUNTINFO);

@@ -63,6 +63,7 @@ namespace BASE
     Stz* szStz(void);
     i8   iToI8(void);
     void vToLower(void);
+    void vToUpper(void);
 
     Footer* aFooter(void);
   };
@@ -573,6 +574,15 @@ template <i8 AREA>
 void String_t<AREA>::vToLower(void)
 {
   StrLib::vToLower(m_caCharArea);
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert to upper case                                                      */
+/*----------------------------------------------------------------------------*/
+template <i8 AREA>
+void String_t<AREA>::vToUpper(void)
+{
+  StrLib::vToUpper(m_caCharArea);
 }
 
 /*----------------------------------------------------------------------------*/

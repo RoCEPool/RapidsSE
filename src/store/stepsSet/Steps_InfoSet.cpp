@@ -41,6 +41,7 @@ static const i8 C_CHUNKBLOCK        = 2048;
 void Step::vAddSteps_InfoSet(void)
 {
   vAddStep("InfoSet[]"_Stz,                  &Step::vInfoSetGet);
+  vAddStep("InfoSet[].addCommandError"_Stz,  &Step::vInfoSetAddCommandError);
   vAddStep("InfoSet[].addLockStats"_Stz,     &Step::vInfoSetAddLockStats);
   vAddStep("InfoSet[].addNodeInfo"_Stz,      &Step::vInfoSetAddNodeInfo);
   vAddStep("InfoSet[].addProgressUnits"_Stz, &Step::vInfoSetAddProgressUnits);
@@ -64,6 +65,49 @@ void Step::vAddSteps_InfoSet(void)
   vAddStep("InfoSet[].rdCsvChunk"_Stz,       &Step::vInfoSetRdCsvChunk);
   vAddStep("InfoSet[].set"_Stz,              &Step::vInfoSetSet);
   vAddStep("InfoSet[].writeCsv"_Stz,         &Step::vInfoSetWriteCsv);
+}
+
+/*----------------------------------------------------------------------------*/
+/* InfoSet[].addCommandError -- add a row to infoset with the command error   */
+/*----------------------------------------------------------------------------*/
+void Step::vInfoSetAddCommandError(void)
+{
+  ENTRY();
+
+  s4K sErrorText;
+
+  // get the table
+  Table* pStreamTable = _pTable(m_pDataStack->pPopPtr(__func__));
+
+  // get the streamDef from the table
+  StreamDef* pStreamDef = pStreamTable->pStreamDef();
+
+  InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
+  pInfoSet->vOpInfoSet(OI_COMMANDERRORS);
+
+  // get the error information
+  eEC eErrorCode = (eEC) m_pDataStack->iPopInt(__func__);
+  i8 iSeverity = m_pDataStack->iPopInt(__func__);
+  i8 iLineNo = m_pDataStack->iPopInt(__func__);
+  i8 iColumnNo = m_pDataStack->iPopInt(__func__);
+  m_pDataStack->vPopStr(sErrorText, __func__);
+
+  Grid* pGrid = AM::pGrid();
+
+  Row* pRow = pInfoSet->pAllotRow(pStreamDef,
+                                  C_VARGS_BEGIN,
+                                  eErrorCode,
+                                  iSeverity,
+                                  iLineNo,
+                                  iColumnNo,
+                                  sErrorText.azChar(),
+                                  C_VARGS_END);
+
+  //pRow->vDump(pStreamDef);
+
+  m_pDataStack->vPushInt(pRow ? true : false);
+
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -109,7 +153,7 @@ void Step::vInfoSetAddNodeInfo(void)
   
   Grid* pGrid = AM::pGrid();
   
-  Row* pRow = pInfoSet->aAllotRow(pStreamDef,
+  Row* pRow = pInfoSet->pAllotRow(pStreamDef,
                                     C_VARGS_BEGIN,
                                     pGrid->pThisNode()->szNodeNm(),
                                     AM::iRegionSize(),
@@ -143,7 +187,7 @@ void Step::vInfoSetAddProgressUnits(void)
   InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
   pInfoSet->vOpInfoSet(OI_PROGRESSUNITS);
   
-  Row* pRow = pInfoSet->aAllotRow(pStreamDef,
+  Row* pRow = pInfoSet->pAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
                                   iProgressUnits,
                                   C_VARGS_END);
@@ -184,7 +228,7 @@ void Step::vInfoSetAddRowCount(void)
   
   pTable->vAnalyze(i_TablePtn, nBuffers, nRows);
   
-  Row* pRow = pInfoSet->aAllotRow(pStreamDef,
+  Row* pRow = pInfoSet->pAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
                                   nRows,
                                   C_VARGS_END);
@@ -210,7 +254,7 @@ void Step::vInfoSetAddRowVargs(void)
   
   InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
   
-  Row* aRow = pInfoSet->aAllotRow();
+  Row* aRow = pInfoSet->pAllotRow();
   Stz* szTail;
   i8   nSize;
 
@@ -273,7 +317,7 @@ void Step::vInfoSetAddTotalUnits(void)
   InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
   pInfoSet->vOpInfoSet(OI_TOTALUNITS);
   
-  Row* pRow = pInfoSet->aAllotRow(pStreamDef,
+  Row* pRow = pInfoSet->pAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
                                   sFileName.azChar(),
                                   iTotalUnits,
@@ -331,7 +375,7 @@ void Step::vInfoSetChunkFile(void)
       nChunkBytes = i_EofLoc - i_ChunkLoc;
       pRow = nullptr;
       if (nRows < C_MAX_SEEKOFFSETS)
-        pRow = pInfoSet->aAllotRow();
+        pRow = pInfoSet->pAllotRow();
       
       if (pRow) {
         nRows++;
@@ -389,7 +433,7 @@ void Step::vInfoSetChunkFile(void)
     
     pRow = nullptr;
     if (nRows < C_MAX_SEEKOFFSETS)
-      pRow = pInfoSet->aAllotRow();
+      pRow = pInfoSet->pAllotRow();
     
     if (pRow) {
       nRows++;

@@ -786,18 +786,17 @@ void RowInflator::vInflate_AllColumns_into_RowBuffer(RowBuffer* pRowBuffer,
     u1 uHigh = uMetaCode >> 4;
     u1 uLow  = uMetaCode & 0x0F;
     
-    char* azStrArea = (char*)pRowBuffer->ayLatterHead();
+    char* azStrArea = (char*)pRowBuffer->azStrArea();
 
     vInflate_CodedValue_into_Cell(ayCellArray,azStrArea,SI_STRAREA_OFS,
                                   aHeadLine,ayDataByte,uHigh,uLow);
 
-    if (azStrArea != (char*)pRowBuffer->ayLatterHead()) {
-      i8 nBytesTaken = nDifference(azStrArea,pRowBuffer->ayLatterHead());
+    if (azStrArea != (char*)pRowBuffer->azStrArea()) {
+      i8 nBytesTaken = nDifference(azStrArea,pRowBuffer->azStrArea());
       pRowBuffer->vTakeHead(nBytesTaken);
     }
 
   }
-
 }
 
 /*============================================================================*/

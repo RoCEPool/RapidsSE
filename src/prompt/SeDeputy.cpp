@@ -129,6 +129,8 @@ void SeDeputy::vDeputyLoop(void)
     RASSERT(m_pSession->m_pSsnJob);
     if (m_pSession != m_pSession->m_pSsnJob->pSession())
       vTrace("vDeputyLoop %p v %p\n"_Stz,m_pSession,m_pSession->m_pSsnJob->pSession());
+    
+    
     vExecuteJob();
 
     if (! m_pSession->m_pSsnJob->bHasTag_bg()) {

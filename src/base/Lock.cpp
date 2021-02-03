@@ -201,7 +201,9 @@ u8 Lock::iLockGrabWrite(u8* pWord)
   uCurrent = C_WRITELOCK;
   
   while (! Atomic::bTestAndSet(pWord,uCurrent,uCurrent))
-    {;}
+  {
+    ;
+  }
   
   u8 uResult = 1;
   

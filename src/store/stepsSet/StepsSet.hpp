@@ -476,6 +476,7 @@ public:
   void vIndexTreeSet(void);
 
   // reg info set
+  void vInfoSetAddCommandError(void);
   void vInfoSetAddLockStats(void);
   void vInfoSetAddNodeInfo(void);
   void vInfoSetAddProgressUnits(void);

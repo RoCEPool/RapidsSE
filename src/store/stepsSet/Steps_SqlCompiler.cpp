@@ -8,11 +8,26 @@
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
+#include "InfoSet.hpp"
+
+#include "SkipRoots.hpp"
+#include "EntBuffer.hpp"
+#include "IndexTree.hpp"
+#include "CrvBuffer.hpp"
+#include "ReadApi.hpp"
+#include "TablePtn.hpp"
+#include "Table.hpp"
+
 #include "OpSpec.hpp"
 #include "StageSpec.hpp"
 #include "PipelineSpec.hpp"
 #include "Pipeline.hpp"
 #include "Dynamo.hpp"
+#include "Response.hpp"
+#include "Result.hpp"
+#include "Job.hpp"
+#include "Node_I.hpp"
+#include "LogicUnit.hpp"
 
 #include "PlanNode.hpp"
 #include "RootNode.hpp"
@@ -23,6 +38,8 @@
 #include "PlanConstants.hpp"
 #include "GraphNav.hpp"
 #include "PlanOperand.hpp"
+
+#include "ParserException.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -67,8 +84,9 @@ void Step::vSqlCompilerNameValidate(void)
 void Step::vSqlCompilerParser(void)
 {
   ENTRY();
-  
-  //vTrace("\nStep::vSqlCompilerParser\n"_Stz);
+
+  s48K sExplainBuf;
+  PlanOperand* pPlanOperand;
 
   // Get the original SQL statement entered
   s4K sSqlStatement;
@@ -76,31 +94,56 @@ void Step::vSqlCompilerParser(void)
 
   // Read in and parse the plan graph definitions
   const Parser::PlanNode* pGraphTemplate = Parser::PlanDefinitionParser::pGraphTemplate();
-
-  if (pGraphTemplate == nullptr) {
-    // TODO: handle error
-//    return false;
-  }
+  RASSERT(pGraphTemplate);
 
   // Parse the SQL command.
   Parser::SqlPlanner* pPlanner = new Parser::SqlPlanner();
-  Parser::PlanNode* pPlanRoot = pPlanner->plan(sSqlStatement.szStz(), pGraphTemplate);
-  delete pPlanner;
+  Parser::PlanNode* pPlanRoot;
 
-  if (!pPlanRoot) {
-    // TODO: handle error
+  try {
+    pPlanRoot = pPlanner->plan(sSqlStatement.szStz(), pGraphTemplate);
+
+  } catch (Parser::SyntaxException& e) {
+    //vTrace("SyntaxException at %lld:%lld : %s\n"_Stz, e.iLine(), e.iColumn(), e.szError());
+    InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
+    Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+                                    EC_SYNTAX_ERROR,
+                                    0,
+                                    e.iLine(),
+                                    e.iColumn(),
+                                    e.szError(),
+                                    C_VARGS_END);
+
+    m_pDataStack->vPushPtr(nullptr);
+    goto L_Exit;
+
+  } catch (Parser::SemanticException& e) {
+    //vTrace("SemanticException: %s\n"_Stz, e.szError());
+    InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
+    Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+                                    EC_SEMANTIC_ERROR,
+                                    0,
+                                    0,
+                                    0,
+                                    e.szError(),
+                                    C_VARGS_END);
+    m_pDataStack->vPushPtr(nullptr);
+    goto L_Exit;
   }
 
-  s48K sExplainBuf;
+  ASSERT(pPlanRoot);
+
   Parser::ShadowRoot::vExplain(pPlanRoot, sExplainBuf, 0);
   vTrace("%s\n"_Stz, sExplainBuf.szStz());
 
-  PlanOperand* pPlanOperand = new PlanOperand(pPlanRoot);
+  pPlanOperand = new PlanOperand(pPlanRoot);
   m_pDataStack->vPushPtr(pPlanOperand);
 
   //vTrace("  antlr(%s) -> RootNode %p\n"_Stz,
   //       sSqlStatement.szStz(),pPlanNode_root);
 
+L_Exit:
+  delete pPlanner;
   EXIT();
 }
 

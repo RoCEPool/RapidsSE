@@ -202,6 +202,7 @@ namespace BASE
     static char  cToHex(i8 i);
     static i8    iToI8(const char* s);
     static void  vToLower(char* s);
+    static void  vToUpper(char* s);
     static void  vTopTail(char* azArg, char cIntro);
     static char* wToPointer(void* pArg, char* w);
     static void  vToString(char* azArg, i8 iArg);

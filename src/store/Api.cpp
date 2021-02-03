@@ -91,8 +91,9 @@ void Api::vDeleteJob(Session* pSession)
   
   
   
-  pSession->m_pOutput->m_bExitMarker = false;
-  
+  pSession->m_pOutput->m_bExitMarker   = false;
+  pSession->m_pOutput->m_bCancelMarker = false;
+
 }
 
 
@@ -103,6 +104,8 @@ void Api::vExecuteJob(Session* pSession)
 {
   _static_
   
+  pSession->m_pOutput->vAssertEmptyQueue();
+
   Job* pJob = pSession->m_pSsnJob;
   
   for (;;) {

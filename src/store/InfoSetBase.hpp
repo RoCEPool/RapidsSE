@@ -16,15 +16,19 @@ namespace STORE
     i8  m_nRowSize;
     i8  m_nInfoRows;
     
+    // must be last
+    Footer m_xFooter;
+
   public:
   
     InfoSetBase(eCN eClassNo);
     InfoSetBase(eCN eClassNo, StreamDef* pStreamDef);
     ~InfoSetBase(void) noexcept(false);
     
-    Row* aAllotRow(void);
-    //Row* aAllotRow(RowSingle* pRowSingle);
-    Row* aAllotRow(StreamDef* pStreamDef, i8 iVargsBegin, ...);
+    Row* pAllotRow(void);
+    //Row* pAllotRow(RowSingle* pRowSingle);
+    Row* pAllotRow(StreamDef* pStreamDef, i8 iVargsBegin, ...);
+    Row* pAllotRow(i8 iVargsBegin, ...);
     Row* aFirstRow();
     i8   nInfoRows(void);
     Stz* szInfoSetNm(void);
@@ -33,6 +37,8 @@ namespace STORE
     
   //private:
     i8   iToOffset(Stz* aItem);
+  
+    Footer* aFooter(void);
   };
 
   InfoSetBase* _pInfoSetBase(void* aAddr);

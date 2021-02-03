@@ -66,7 +66,7 @@ RowSingle::RowSingle(StreamDef* pStreamDef)
   
   vResolveRowPix(pStreamDef);
   
-  Row* aRow = aAllotNewRow();
+  Row* aRow = pAllotNewRow();
     
   _checkInitialised_(CN_ROWSINGLE);
   
@@ -177,11 +177,11 @@ void RowSingle::vCopyRow(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
-  RASSERT(m_oRowPix.m_bInitialised);
+  RASSERT(m_pRowPix);
   
   RowBox_t<C_ROWSINGLE_WSP>::vReset();
   vResetValues();
-  Row* aRow = aAllotNewRow();
+  Row* aRow = pAllotNewRow();
   
   for (i8 i_Col = 0; i_Col < nColumns(); i_Col++) {
   
@@ -271,7 +271,7 @@ i8 RowSingle::nSumVchSizes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSINGLE,_FOOTER_);
   
-  RASSERT(m_oRowPix.m_bInitialised);
+  RASSERT(m_pRowPix);
 
   i8 nSizeVch = 0;
   

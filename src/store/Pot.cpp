@@ -126,22 +126,33 @@ Row* Pot::aNewDstRow(i8 i_Ptn, RowBuffer** ppRowBuffer,bool* pbNewBuffer)
   
   *pbNewBuffer = false;
   
+  bool bWasNewed = false;
+  
   // get row buffer for given partition (new a first buffer if ncessary)
   RowBuffer* pDstRowBuffer = _pRowBuffer(m_paBufferChain[i_Ptn]);
   if (! pDstRowBuffer) {
     pDstRowBuffer = new RowBuffer;
     pDstRowBuffer->vCopyRowPix(m_pRowPix);
+    pDstRowBuffer->vAssertAux0();
     vAddBuffer(i_Ptn,pDstRowBuffer);
+    bWasNewed = true;
+    //vTrace("Newed: %p %lld rows\n"_Stz,pDstRowBuffer,pDstRowBuffer->nRows());
+  }
+  else {
+    //vTrace("Exist: %p %lld rows\n"_Stz,pDstRowBuffer,pDstRowBuffer->nRows());
+    pDstRowBuffer->vAssertAux0();
   }
   
   // new a row in row buffer (new another row buffer if necessary)
-  aDstRow = pDstRowBuffer->aAllotNewRow();
+  aDstRow = pDstRowBuffer->pAllotNewRow();
   if (! aDstRow) {
     *pbNewBuffer = true;
     pDstRowBuffer = new RowBuffer;
     pDstRowBuffer->vCopyRowPix(m_pRowPix);
+    pDstRowBuffer->vAssertAux0();
     vAddBuffer(i_Ptn,pDstRowBuffer);
-    aDstRow = pDstRowBuffer->aAllotNewRow();
+    //vTrace("Repld: %p %lld rows\n"_Stz,pDstRowBuffer,pDstRowBuffer->nRows());
+    aDstRow = pDstRowBuffer->pAllotNewRow();
     ASSERT(aDstRow);
   }
   
@@ -149,6 +160,12 @@ Row* Pot::aNewDstRow(i8 i_Ptn, RowBuffer** ppRowBuffer,bool* pbNewBuffer)
     
   * ppRowBuffer = pDstRowBuffer;
   
+  pDstRowBuffer->vAssertAux0();
+  
+  //vTrace("Allot: %p %lld rows\n"_Stz,pDstRowBuffer,pDstRowBuffer->nRows());
+  //if (pDstRowBuffer->nRows() < 2)
+  //  vDebugPoint();
+
   return aDstRow;
 }
 

@@ -13,7 +13,10 @@ namespace STORE
   {
   protected:
     eOI  m_eOpInfoSet;
-    
+
+    // must be last
+    Footer m_xFooter;
+  
   public:
     void* operator new(size_t);
     void operator delete(void*);
@@ -26,6 +29,7 @@ namespace STORE
     void vOpInfoSet(eOI eOpInfoSet);
     eOI  eOpInfoSet(void);
   
+    Footer* aFooter(void);
   };
 
   InfoSet* _pInfoSet(void* aAddr);

@@ -464,7 +464,9 @@ namespace Parser
     PlanNodeIter* pNewPropertyIter();
     PlanNodeIter* pNewChildrenIter();
 
+    // Convenience functions for accessing children
     PlanNode* pFirstChild();
+    PlanNode* pSecondChild();
     PlanNode* pLastChild();
   };
   

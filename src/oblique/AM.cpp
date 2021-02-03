@@ -1697,6 +1697,7 @@ i8 AM::iOperandZkKind(Operand* pOperand)
       eOI eInfoSet = pInfoSet->eOpInfoSet();
       switch(eInfoSet) {
         case OI_CALLPIPELINE:   eOperand = ZK_CALLPIPELINE;   break;
+        case OI_COMMANDERRORS:  eOperand = ZK_COMMANDERRORS;  break;
         case OI_COUNTINFO:      eOperand = ZK_COUNTINFO;      break;
         case OI_LOADRESULT:     eOperand = ZK_LOADRESULT;     break;
         case OI_LOCKSTATS:      eOperand = ZK_LOCKSTATS;      break;
