@@ -109,6 +109,27 @@ Stz* SP_Job::sz_recv(Job* pJob)
   return (Stz*) &m_caResult[0];
 }
 
+/*----------------------------------------------------------------------------*/
+/* sprint Header and return Stz* to result                                    */
+/*----------------------------------------------------------------------------*/
+Stz* SP_Job::sz_detail(Job* pJob)
+{
+  _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+  
+ 
+  StrLib::vSprint(m_caResult,
+                  "%s %s %s %s"_Stz,
+
+                  pJob->m_sJobNm.azChar(),
+                  aJK[pJob->m_eJobKind],
+                  aJP[pJob->m_eJobKind],
+                  aJS[pJob->m_eJobKind]
+
+                  );
+  
+  return (Stz*) &m_caResult[0];
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
