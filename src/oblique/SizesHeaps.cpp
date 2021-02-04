@@ -67,6 +67,7 @@
 
 #include "PtnMap.hpp"
 #include "BucketMap.hpp"
+#include "BufferMap.hpp"
 
 #include "CrwPacker.hpp"
 #include "CrwBuffer.hpp"
@@ -188,6 +189,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Birth),              HT_INVALID   ,0 }, // CN_BIRTH
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_BOLVAL
   { sizeof(BucketMap),          HT_T_LARGE   ,0 }, // CN_BUCKETMAP
+  { sizeof(BufferMap),          HT_INVALID   ,0 }, // CN_BUFFERMAP
   { sizeof(BufferPool),         HT_INVALID   ,0 }, // CN_BUFFERPOOL
   { sizeof(ByteRate),           HT_T_TINY    ,0 }, // CN_BYTERATE
   { sizeof(s32),                HT_INVALID   ,0 }, // CN_BYTES_T
