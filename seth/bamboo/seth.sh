@@ -14,6 +14,11 @@ TESTLIST_FILE="${DIR}/allTestsBamboo"
 # Defaulting to 30 minutes.
 SETH_TIMEOUT="3600"
 
+# Maximum disk space utilisation % that we will accept on the current partition
+# before we forcably stop the tests. This is trying to catch situations where
+# we write to the test log in a tight loop and eat up all disk space.
+MAX_DISK_USED_PCT="90"
+
 NODE="NODE0"
 SE_DIR="${ROOT_DIR}/bin"
 SE_PATH="${SE_DIR}/rapidsse"
@@ -125,6 +130,26 @@ do
     kill -9 "${SETH_PID}" &>/dev/null
     kill -9 "${SE_PROMPT_PID}"
     exit 1
+  fi
+
+  # Check how much disk space is used on the current partition.
+  # If it is above a certain percentage then error out.
+  DISK_USED_PCT="$(df -h . | awk '{ print $5; }' | tail -n 1 | cut -d% -f1)"
+  if [ "${DISK_USED_PCT}" -ge "${MAX_DISK_USED_PCT}" ]
+  then
+    DISK_PARTITION="$(df -h . | awk '{ print $1; }' | tail -n 1)"
+    >&2 echo "" 1>&2
+    >&2 echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" 1>&2
+    >&2 echo "ERROR: Disk space is running very low (${DISK_USED_PCT}% used) on partition ${DISK_PARTITION}." 1>&2
+    >&2 echo "ERROR: Stopping all tasks before they fail due to lack of disk space." 1>&2
+    >&2 echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" 1>&2
+    >&2 echo "" 1>&2
+
+    # Ensure we kill any SE prompt with SETH. Don't worry about SE - it'll get cleaned up later.
+    SE_PROMPT_PID=$(ps -o pid= --ppid ${SETH_PID})
+    kill -9 "${SETH_PID}" &>/dev/null
+    kill -9 "${SE_PROMPT_PID}"
+    exit 1;
   fi
 
   # All good. Wait a second and poll again. 
