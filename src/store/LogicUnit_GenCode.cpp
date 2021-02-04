@@ -572,7 +572,12 @@ void LogicUnit::vGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut) 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oTagSet.vAppend(C_TAG_PAYLOAD_BYTES, pExprEval->m_nPayLoadBytes);
   pFile->vPrint(LogicCompiler::szGetMacro(AM_PAYLOAD_STORE, &oTagSet, sMacro));
-  pFile->vPrint("%s\n"_Stz, pExprEval->m_sAsmGbyKey.azChar());
+  pFile->vPrint("%s\n"_Stz, pExprEval->m_sGbyText.azChar());
+  oTagSet.vReset();
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // PAYLOAD_END
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_PAYLOAD_END, &oTagSet, sMacro));
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -625,7 +630,7 @@ void LogicUnit::vGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut) 
     pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_NONE, &oTagSet, sMacro));
   }
 
-  pFile->vPrint("%s\n"_Stz, pExprEval->m_sAsmText.azChar());
+  //pFile->vPrint("%s\n"_Stz, pExprEval->m_sAsmText.azChar());
   pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_END, &oTagSet, sMacro));
 
 

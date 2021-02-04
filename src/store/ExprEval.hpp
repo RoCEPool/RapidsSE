@@ -15,6 +15,7 @@ namespace STORE
 
     u8      m_uExprEvalColumns;
     s4K     m_sAsmText;
+    s4K     m_sGbyText;
     s4K     m_sAsmGbyIdx;
     s4K     m_sAsmGbyKey;
     i8      m_iStreamInColumns;
@@ -43,16 +44,19 @@ namespace STORE
     void vAddArithmetic(Token*  pTkn, Column* pColumn);
     eEC  eAddDate(Token*  pTkn, Column* pColumnExpr);
     eEC  eAddDecimal(Token*  pTkn, Column* pColumnExpr);
-    eEC  eAddGby(Column* pColumn);
+    eEC  eAddGby(Column* pColumn, i8 iGby);
     void vAddLogical(Token*  pTkn);
     void vAddNumeric(Token*  pTkn, Column* pColumnExpr);
+    void vAddPopCol(eCT eColumnType, i8 iColumn);
     void vAddRelational(Token*  pTkn);
+    void vAddStoreCol(eCT eColumnType, i8 iColumn);
     void vAddString(Token*  pTkn, Column* pColumnExpr);
     eEC  eAddSum(eCT eColumnType, i8 iColumn);
-    void vAddPopCol(eCT eColumnType, i8 iColumn);
+    eEC  eAddSumGby(eCT eColumnType, i8 iColumn);
 
     eEC eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec);
     eEC eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);
+    eEC eHandleGbyColumn(Column* pColumn, i8 iGby);
     eEC eHandleOutColumn(StreamDef* pStreamDefOut, Column* pColumn,
                          Stz* sAliasName, i8 i_DstColumn, bool bSum);
     void vUpdateStreamDefOut(StreamDef* pStreamDefOut, Column* pColumn, Stz* sAliasName);
