@@ -30,7 +30,7 @@ void Heap::operator delete(void* pHeapAddress)
 {
   PoolBuffer* pBuffer = static_cast<PoolBuffer*>(pHeapAddress);
   
-  gpBufferPool->vFree(pBuffer);
+  gpBufferPool->vFreeOtherBuffer(pBuffer);
 }
 
 /*----------------------------------------------------------------------------*/

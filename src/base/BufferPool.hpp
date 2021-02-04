@@ -50,6 +50,7 @@ namespace BASE
     
     i8          nAllocCount(void);
     PoolBuffer* pAllocHeapBuffer(void);
+    PoolBuffer* pAllocLongerBuffer(i8 nBuffers);
     PoolBuffer* pAllocOtherBuffer(void);
     PoolBuffer* pBase(void);
     i8   nBufferCount(void);
@@ -61,8 +62,8 @@ namespace BASE
     void vCheckAddress(const void* aAddress);
     bool bDetachPool(void);
     bool bDontFree(void);
-    void vFree(PoolBuffer* pBuffer);
     void vFreeHeapBuffer(PoolBuffer* pPoolBuffer);
+    void vFreeOtherBuffer(PoolBuffer* pPoolBuffer);
     i8   nFreeCount(void);
     i8   iFreePercent(void);
     bool bFreeCB(void);
@@ -85,8 +86,8 @@ namespace BASE
     void vVerifyPool(void);
   
   private:
+    void vFree(PoolBuffer* pBuffer);
     FreeBuffer* pPopFreeBuffer(void);
-    FreeBuffer* pPopFreeBuffer_NL(void);
     void vPrintProgress(void);
 
     Footer* aFooter(void);

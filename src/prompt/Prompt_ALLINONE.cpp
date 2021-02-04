@@ -1936,7 +1936,7 @@ bool PROMPT::bPrompt_giveMem(SePrompt* pPrompt)
 
     AM::vTakenBuffers(pNextBuffer);
     
-    gpBufferPool->vFree(pBuffer);
+    gpBufferPool->vFreeOtherBuffer(pBuffer);
   }
   
   AM::vTakenBytes(0);

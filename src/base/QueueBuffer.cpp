@@ -37,7 +37,7 @@ void QueueBuffer::operator delete(void* pQueueBufferAddress)
 {
   QueueBuffer* pQueueBuffer = static_cast<QueueBuffer*>(pQueueBufferAddress);
   
-  gpBufferPool->vFree((PoolBuffer*)pQueueBuffer);
+  gpBufferPool->vFreeOtherBuffer((PoolBuffer*)pQueueBuffer);
 }
 
 /*----------------------------------------------------------------------------*/

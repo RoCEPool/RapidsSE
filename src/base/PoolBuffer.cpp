@@ -41,7 +41,7 @@ void PoolBuffer::operator delete(void* pBufferAddress)
   RASSERT(0);
   PoolBuffer* pBuffer = static_cast<PoolBuffer*>(pBufferAddress);
   
-  gpBufferPool->vFree(pBuffer);
+  gpBufferPool->vFreeOtherBuffer(pBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
