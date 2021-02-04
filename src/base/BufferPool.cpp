@@ -127,20 +127,6 @@ void BufferPool::vReport(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* allocate the one attachMap buffer from free chain in pool                  */
-/*----------------------------------------------------------------------------*/
-PoolBuffer* BufferPool::pAllocAttachMapBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
-  
-  FreeBuffer* pAllocatedBuffer = pPopFreeBuffer_NL();
-  
-  ++m_ixOtherBuffers;
-  
-  return _pPoolBuffer(pAllocatedBuffer);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get current number of allocated buffers                                    */
 /*----------------------------------------------------------------------------*/
 i8 BufferPool::nAllocCount(void)

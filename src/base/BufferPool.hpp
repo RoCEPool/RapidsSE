@@ -48,7 +48,6 @@ namespace BASE
   
     static void vReport(void);
     
-    PoolBuffer* pAllocAttachMapBuffer(void);
     i8          nAllocCount(void);
     PoolBuffer* pAllocHeapBuffer(void);
     PoolBuffer* pAllocOtherBuffer(void);
