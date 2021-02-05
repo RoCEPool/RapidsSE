@@ -593,8 +593,8 @@
       | stageC
 
     stage stageC on origin :
-      //aggreg 0 $etc
-      output | sink | stageA
+      aggreg 0 $etc
+      | output | sink | stageA
 
   end ;
   "
@@ -619,7 +619,7 @@
 
     stage stageC on origin :
       aggreg 1 $etc
-      | output | sink | stageA
+     | output | sink | stageA
 
   end ;
   "
