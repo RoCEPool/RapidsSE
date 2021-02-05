@@ -1619,8 +1619,8 @@
                       type: "/__root__/definitions/object/valueObject/booleanObject"
                     },
                     // TODO: collation?
-                    // TODO: primary key?
-                    // TODO: unique key?
+                    // TODO: is primary key?
+                    // TODO: is unique key?
                   ]
                 }, // EndPath: /__root__/definitions/object/compound/columnDef
 
@@ -1829,6 +1829,11 @@
                 {
                   name: "intervalDT",
                   value: "a range between two timestamps in days and time"
+                }
+// Path: /__root__/definitions/types/sqlType/unknown
+                {
+                  name: "unknown",
+                  value: "represents the data type for a NULL literal"
                 }
               ]
             } // EndPath: /__root__/definitions/types/sqlType
