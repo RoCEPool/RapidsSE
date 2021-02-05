@@ -14,11 +14,11 @@ namespace BASE
     LinkedBuffer* m_pHigherBuffer; // higher buffer
     LinkedBuffer* m_pLowerBuffer;  // lower buffer
   
-    BufferNo m_iNextBuffer;   // next buffer
-    BufferNo m_iPrevBuffer;   // previous buffer
+    BufferNo m_tNextBuffer;   // next buffer
+    BufferNo m_tPrevBuffer;   // previous buffer
 
-    BufferNo m_iHigherBuffer; // higher buffer
-    BufferNo m_iLowerBuffer;  // lower buffer
+    BufferNo m_tHigherBuffer; // higher buffer
+    BufferNo m_tLowerBuffer;  // lower buffer
 
     //i8 m__padToCacheLine[4];
 

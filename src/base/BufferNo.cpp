@@ -32,9 +32,9 @@ BufferNo::~BufferNo(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert address of linked buffer to buffer no                              */
 /*----------------------------------------------------------------------------*/
-i8 BufferNo::iToBufferNo(LinkedBuffer* pLinkedBuffer)
+i8 BufferNo::iToBufferNo(PoolBuffer* pPoolBuffer)
 {
-  i8 iBufferNo = PoolBuffer::iWithinPoolBuffer(pLinkedBuffer);
+  i8 iBufferNo = PoolBuffer::iWithinPoolBuffer(pPoolBuffer);
   
   return iBufferNo;
 }
@@ -42,18 +42,35 @@ i8 BufferNo::iToBufferNo(LinkedBuffer* pLinkedBuffer)
 /*----------------------------------------------------------------------------*/
 /* convert buffer no to address of linked buffer                              */
 /*----------------------------------------------------------------------------*/
-LinkedBuffer* BufferNo::pToLinkedBuffer(i8 iBufferNo)
+PoolBuffer* BufferNo::pToPoolBuffer(i8 iBufferNo)
 {
   PoolBuffer* pPoolBuffer = gpBufferPool->pToPoolBuffer(iBufferNo);
-  
-  LinkedBuffer* pLinkedBuffer = (LinkedBuffer*)pPoolBuffer;
-  
-  return pLinkedBuffer;
+    
+  return pPoolBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* assign buffer number                                                       */
+/*----------------------------------------------------------------------------*/
+void BufferNo::operator =(i8 iBufferNo)
+{
+  m_iBufferNo = iBufferNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* assign buffer number                                                       */
+/*----------------------------------------------------------------------------*/
+void BufferNo::operator =(PoolBuffer* pPoolBuffer)
+{
+  if (pPoolBuffer)
+    m_iBufferNo = iToBufferNo(pPoolBuffer);
+  else
+    m_iBufferNo = C_UNKNOWN;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get buffer number                                                          */
@@ -66,9 +83,14 @@ i8 BufferNo::iGetBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* get buffer address                                                         */
 /*----------------------------------------------------------------------------*/
-LinkedBuffer* BufferNo::pGetBuffer(void)
+PoolBuffer* BufferNo::pGetBuffer(void)
 {
-  return nullptr;
+  if (C_UNKNOWN == m_iBufferNo)
+    return nullptr;
+  
+  PoolBuffer* pPoolBuffer = BufferNo::pToPoolBuffer(m_iBufferNo);
+  
+  return pPoolBuffer;
 }
 
 /*============================================================================*/

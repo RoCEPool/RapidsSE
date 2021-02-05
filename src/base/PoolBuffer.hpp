@@ -41,7 +41,7 @@ namespace BASE
   
     i8    iBufferNo(void);
     void  vBufferNo(i8 iBufferNo);
-    void* aDataArea(void);
+    void* aEmbeddedBuffer(void);
     Stz*  aLastUsableByte(void);
 
     Footer* aFooter(void);

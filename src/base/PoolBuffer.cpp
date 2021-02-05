@@ -100,7 +100,7 @@ void PoolBuffer::vBufferNo(i8 iBufferNo)
 /*----------------------------------------------------------------------------*/
 /* get address of data area in buffer                                         */
 /*----------------------------------------------------------------------------*/
-void* PoolBuffer::aDataArea(void)
+void* PoolBuffer::aEmbeddedBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
