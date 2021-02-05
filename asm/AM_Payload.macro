@@ -84,6 +84,30 @@ macro AM_PAYLOAD_END
  EO_RETURN
 endMacro
 
+macro AM_PAYLOAD_TO_BUFFER
+//----------------------------------------------------------------------------//
+// macro AM_PAYLOAD_TO_BUFFER                                                 //
+//----------------------------------------------------------------------------//
+  // AM_PAYLOAD_TO_BUFFER
+  Label PAYLOAD_TO_BUFFER
+
+  // new a dst row
+  EO_ROW_DST_NEW
+
+  EO_PAY_ADDRESS
+
+endMacro
+
+macro AM_PAYLOAD_TO_BUFFER_END
+//----------------------------------------------------------------------------//
+// macro AM_PAYLOAD_TO_BUFFER_END                                             //
+//----------------------------------------------------------------------------//
+ // AM_PAYLOAD_TO_BUFFER_END
+ Label PAYLOAD_TO_BUFFER_END
+ EO_ROW_DST_PRINT
+ EO_RETURN
+endMacro
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

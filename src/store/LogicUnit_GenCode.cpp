@@ -533,7 +533,6 @@ void LogicUnit::vGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut) 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_STARTMARKER, &oTagSet, sMacro));
   pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_DATAPULSE, &oTagSet, sMacro));
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_EOSMARKER, &oTagSet, sMacro));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // STREAMDEF_HANDLER for groupBy
@@ -541,6 +540,29 @@ void LogicUnit::vGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut) 
   pFile->vPrint(LogicCompiler::szGetMacro(AM_HANDLER_STREAMDEF_GBY, &oTagSet, sMacro));
   pFile->vPrint("%s\n"_Stz, pExprEval->m_sAsmGbyIdx.azChar());
   pFile->vPrint(LogicCompiler::szGetMacro(AM_HANDLER_STREAMDEF_GBY_END, &oTagSet, sMacro));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // EOSMARKER_HANDLER for groupBy
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  oTagSet.vAppend(C_TAG_EOS_PROCESS_ROUTINE, "INDEX_TRAVERSAL"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_HANDLER_EOSMARKER_GBY, &oTagSet, sMacro));
+  oTagSet.vReset();
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Index Traversal routine
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  oTagSet.vAppend(C_TAG_INDEX_PROCESS_ROUTINE, "PAYLOAD_TO_BUFFER"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_INDEX_TRAVERSAL, &oTagSet, sMacro));
+  oTagSet.vReset();
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // PAYLOAD_TO_BUFFER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_PAYLOAD_TO_BUFFER, &oTagSet, sMacro));
+  pFile->vPrint("%s\n"_Stz, pExprEval->m_sPayLoadToBuffer.azChar());
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_PAYLOAD_TO_BUFFER_END, &oTagSet, sMacro));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // CRWBUFFER_HANDLER
@@ -564,7 +586,7 @@ void LogicUnit::vGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut) 
   // PAYLOAD_GBYKEY
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   pFile->vPrint(LogicCompiler::szGetMacro(AM_PAYLOAD_KEY, &oTagSet, sMacro));
-  pFile->vPrint("%s\n"_Stz, pExprEval->m_sAsmGbyKey.azChar());
+  pFile->vPrint("%s\n"_Stz, pExprEval->m_sPayLoadKey.azChar());
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -572,7 +594,7 @@ void LogicUnit::vGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut) 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oTagSet.vAppend(C_TAG_PAYLOAD_BYTES, pExprEval->m_nPayLoadBytes);
   pFile->vPrint(LogicCompiler::szGetMacro(AM_PAYLOAD_STORE, &oTagSet, sMacro));
-  pFile->vPrint("%s\n"_Stz, pExprEval->m_sGbyText.azChar());
+  pFile->vPrint("%s\n"_Stz, pExprEval->m_sPayLoadStore.azChar());
   oTagSet.vReset();
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // PAYLOAD_END

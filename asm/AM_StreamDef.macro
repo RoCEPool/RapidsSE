@@ -21,7 +21,7 @@ macro AM_HANDLER_STREAMDEF_GBY_END
   EO_REG_INDEXTREE_NEW
   EO_REG_INDEXDEF_DELETE
   EO_INDEXTREE_TMP_SET
-  EO_JMP QUERY_DONE
+  EO_RETURN
 endMacro
 
 /*============================================================================*/

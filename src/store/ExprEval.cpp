@@ -247,9 +247,9 @@ eEC ExprEval::eAddGby(Column* pColumn, i8 iGby) {
                          aCT_long[pColumn->eColumnType()]);
       StrLib::vSprintCat(m_sAsmGbyIdx, "  EO_REG_INDEXDEF_ADDCOLUMN \"intA\"\n"_Stz);
 
-      StrLib::vSprintCat(m_sAsmGbyKey, "  EO_PUSH_LOCALI %lld\n"_Stz, iLocal);
-      StrLib::vSprintCat(m_sAsmGbyKey, "  EO_ENTWRK_SETINTELM\n"_Stz);
-      StrLib::vSprintCat(m_sAsmGbyKey, "  EO_RETURN\n"_Stz);
+      StrLib::vSprintCat(m_sPayLoadKey, "  EO_PUSH_LOCALI %lld\n"_Stz, iLocal);
+      StrLib::vSprintCat(m_sPayLoadKey, "  EO_ENTWRK_SETINTELM\n"_Stz);
+      StrLib::vSprintCat(m_sPayLoadKey, "  EO_RETURN\n"_Stz);
 
       return EC_NONE;
 
@@ -361,12 +361,14 @@ void ExprEval::vAddStoreCol(eCT eColumnType, i8 iColumn) {
     case CT_INTEGER:
     case CT_DECIMAL:
     case CT_DATE:
-      StrLib::vSprintCat(m_sGbyText, "  EO_PAY_STORE_COLI %lld\n"_Stz, iColumn);
+      StrLib::vSprintCat(m_sPayLoadStore, "  EO_PAY_STORE_COLI %lld\n"_Stz, iColumn);
+      StrLib::vSprintCat(m_sPayLoadToBuffer, "  EO_ROW_DST_POPCOLI %lld\n"_Stz, iColumn);
       break;
 
     case CT_CHAR:
     case CT_VARCHAR:
-      StrLib::vSprintCat(m_sGbyText, "  EO_PAY_STORE_COLS %lld\n"_Stz, iColumn);
+      StrLib::vSprintCat(m_sPayLoadStore, "  EO_PAY_STORE_COLS %lld\n"_Stz, iColumn);
+      StrLib::vSprintCat(m_sPayLoadToBuffer, "  EO_ROW_DST_POPCOLS %lld\n"_Stz, iColumn);
       break;
 
     default:
@@ -805,10 +807,14 @@ eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
 
       if (m_bHasGby) {
         if (pColumn->eColumnType() == CT_VARCHAR ||
-            pColumn->eColumnType() == CT_CHAR)
-          StrLib::vSprintCat(m_sGbyText, "  EO_PUSH_LOCALS %lld\n"_Stz, iLocal);
-        else
-          StrLib::vSprintCat(m_sGbyText, "  EO_PUSH_LOCALI %lld\n"_Stz, iLocal);
+            pColumn->eColumnType() == CT_CHAR) {
+          StrLib::vSprintCat(m_sPayLoadStore, "  EO_PUSH_LOCALS %lld\n"_Stz, iLocal);
+          StrLib::vSprintCat(m_sPayLoadToBuffer, "  EO_PAY_FETCH_COLS %lld\n"_Stz, iLocal);
+        }
+        else {
+          StrLib::vSprintCat(m_sPayLoadStore, "  EO_PUSH_LOCALI %lld\n"_Stz, iLocal);
+          StrLib::vSprintCat(m_sPayLoadToBuffer, "  EO_PAY_FETCH_COLI %lld\n"_Stz, iLocal);
+        }
       } else {
         if (pColumn->eColumnType() == CT_VARCHAR ||
             pColumn->eColumnType() == CT_CHAR)

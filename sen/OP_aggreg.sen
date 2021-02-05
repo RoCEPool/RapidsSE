@@ -77,6 +77,9 @@
 
   0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryNote
 
+  // execute the eosMarker asm handler
+  ZK_EOSMARKER Counter0[] executeAsmArgs
+
   // pipe out all pot[]
   Pot[].pipeoutAllDanglingPtns
   Pot[].delete
