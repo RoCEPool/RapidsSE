@@ -4,6 +4,8 @@
 
 #include "BASE.h"
 
+extern BufferPool*   gpBufferPool;
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -32,7 +34,7 @@ BufferNo::~BufferNo(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 i8 BufferNo::iToBufferNo(LinkedBuffer* pLinkedBuffer)
 {
-  i8 iBufferNo = C_UNKNOWN;
+  i8 iBufferNo = PoolBuffer::iWithinPoolBuffer(pLinkedBuffer);
   
   return iBufferNo;
 }
@@ -42,7 +44,9 @@ i8 BufferNo::iToBufferNo(LinkedBuffer* pLinkedBuffer)
 /*----------------------------------------------------------------------------*/
 LinkedBuffer* BufferNo::pToLinkedBuffer(i8 iBufferNo)
 {
-  LinkedBuffer* pLinkedBuffer = nullptr;
+  PoolBuffer* pPoolBuffer = gpBufferPool->pToPoolBuffer(iBufferNo);
+  
+  LinkedBuffer* pLinkedBuffer = (LinkedBuffer*)pPoolBuffer;
   
   return pLinkedBuffer;
 }
