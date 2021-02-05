@@ -1829,7 +1829,7 @@
                 {
                   name: "intervalDT",
                   value: "a range between two timestamps in days and time"
-                }
+                },
 // Path: /__root__/definitions/types/sqlType/unknown
                 {
                   name: "unknown",
