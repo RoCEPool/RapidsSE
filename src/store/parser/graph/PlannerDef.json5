@@ -1766,7 +1766,10 @@
                   value: "a SQL date value with optional timezone information",
                   properties: [
                     {
-                      name: "tz",
+                      // TODO: We may wish to support other timezone formats, such as TZ names
+                      // TODO: which can vary in their offset (e.g. "Australia/Sydney"), as well
+                      // TODO: as timezone abbreviations such as "AEST".
+                      name: "tzOffset",
                       value: "Optional number of minutes offset from GMT. East of Greenwich is positive, west is negative.",
                       type: "/__root__/definitions/object/valueObject/integerObject",
                       properties: [
@@ -1783,7 +1786,10 @@
                   value: "a SQL time value with optional timezone information",
                   properties: [
                     {
-                      name: "tz",
+                      // TODO: We may wish to support other timezone formats, such as TZ names
+                      // TODO: which can vary in their offset (e.g. "Australia/Sydney"), as well
+                      // TODO: as timezone abbreviations such as "AEST".
+                      name: "tzOffset",
                       value: "Optional number of minutes offset from GMT. East of Greenwich is positive, west is negative.",
                       type: "/__root__/definitions/object/valueObject/integerObject",
                       properties: [
@@ -1800,7 +1806,10 @@
                   value: "a SQL date value with optional timezone information",
                   properties: [
                     {
-                      name: "tz",
+                      // TODO: We may wish to support other timezone formats, such as TZ names
+                      // TODO: which can vary in their offset (e.g. "Australia/Sydney"), as well
+                      // TODO: as timezone abbreviations such as "AEST".
+                      name: "tzOffset",
                       value: "Optional number of minutes offset from GMT. East of Greenwich is positive, west is negative.",
                       type: "/__root__/definitions/object/valueObject/integerObject",
                       properties: [
@@ -1811,11 +1820,15 @@
                     }
                   ]
                 },
-// Path: /__root__/definitions/types/sqlType/interval
+// Path: /__root__/definitions/types/sqlType/intervalYM
                 {
-                  // TODO: Do we need to separate into year-month and day-time intervals, or keep as one???
-                  name: "interval",
-                  value: "a range between two timestamps"
+                  name: "intervalYM",
+                  value: "a range between two timestamps in years and months"
+                },
+// Path: /__root__/definitions/types/sqlType/intervalDT
+                {
+                  name: "intervalDT",
+                  value: "a range between two timestamps in days and time"
                 }
               ]
             } // EndPath: /__root__/definitions/types/sqlType
