@@ -350,6 +350,7 @@ extern d8 C_D8_MID;
 
 #include "OperandQueue.hpp"
 
+#include "BufferNo.hpp"
 #include "LinkedBuffer.hpp"
 
 //------------------------------------------------------------------------------

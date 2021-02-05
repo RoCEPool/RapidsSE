@@ -16,6 +16,14 @@
 LinkedBuffer* BASE::_pLinkedBuffer(void* aAddress)
 {
   LinkedBuffer* pLinkedBuffer = reinterpret_cast<LinkedBuffer*>(aAddress);
+ 
+  if (pLinkedBuffer) {
+    eCN eClassNo = pLinkedBuffer->eGetClassNo();
+  
+    ASSERT(CN_CRWBUFFER  == eClassNo ||
+           CN_FREEBUFFER == eClassNo ||
+           CN_ROWBUFFER  == eClassNo);
+  }
   
   return pLinkedBuffer;
 }
@@ -36,11 +44,11 @@ LinkedBuffer::LinkedBuffer(eCN eClassNo)
   m_pHigherBuffer = nullptr;
   m_pLowerBuffer  = nullptr;
   
-  m_iNextBuffer   = C_UNKNOWN;
-  m_iPrevBuffer   = C_UNKNOWN;
-  
-  m_iHigherBuffer = C_UNKNOWN;
-  m_iLowerBuffer  = C_UNKNOWN;
+//  m_iNextBuffer   = C_UNKNOWN;
+//  m_iPrevBuffer   = C_UNKNOWN;
+//
+//  m_iHigherBuffer = C_UNKNOWN;
+//  m_iLowerBuffer  = C_UNKNOWN;
 
   //MemLib::vZero(m__PadToCacheLine,sizeof(m__PadToCacheLine),eClassNo);
 
