@@ -34,6 +34,7 @@ enum eAM // ASM Macros
   /*    */ AM_HANDLER_DATAPULSE,
   /*    */ AM_HANDLER_ROWBUFFER,
   /*    */ AM_HANDLER_ROWBUFFER_AGG,
+  /*    */ AM_HANDLER_ROWBUFFER_AGG_GBY,
 
   /*    */ AM_HANDLER_STREAMDEF_GBY,
   /*    */ AM_HANDLER_STREAMDEF_GBY_END,
@@ -103,6 +104,7 @@ static Stz* aAM[]
     /*    */ "HANDLER_DATAPULSE"_Stz,
     /*    */ "HANDLER_ROWBUFFER"_Stz,
     /*    */ "HANDLER_ROWBUFFER_AGG"_Stz,
+    /*    */ "HANDLER_ROWBUFFER_AGG_GBY"_Stz,
 
     /*    */ "HANDLER_STREAMDEF_GBY"_Stz,
     /*    */ "HANDLER_STREAMDEF_GBY_END"_Stz,

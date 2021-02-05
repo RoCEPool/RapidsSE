@@ -625,32 +625,6 @@
   "
   api::addProcedure
 
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //
-
-  sPath
-  "
-  procedure aggregGbyRows_I
-    parameters $table $etc
-    begin
-
-    stage stageA on origin :
-      start | periodic once | stageB
-
-    stage stageB on all partitions :
-      scan $table
-      | aggreg 0 $etc
-      | stageC
-
-    stage stageC on origin :
-      //aggreg 0 $etc
-      output | sink | stageA
-
-  end ;
-  "
-  api::addProcedure
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
   

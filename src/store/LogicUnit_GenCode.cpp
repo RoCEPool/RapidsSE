@@ -596,7 +596,8 @@ void LogicUnit::vGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut) 
   pFile->vPrint(LogicCompiler::szGetMacro(AM_PAYLOAD_STORE, &oTagSet, sMacro));
   pFile->vPrint("%s\n"_Stz, pExprEval->m_sPayLoadStore.azChar());
   oTagSet.vReset();
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // PAYLOAD_END
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   pFile->vPrint(LogicCompiler::szGetMacro(AM_PAYLOAD_END, &oTagSet, sMacro));
@@ -613,21 +614,6 @@ void LogicUnit::vGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut) 
   // PAYLOAD_END
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   pFile->vPrint(LogicCompiler::szGetMacro(AM_PAYLOAD_END, &oTagSet, sMacro));
-  oTagSet.vReset();
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // ROWBUFFER_HANDLER
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //   to execute PROJECT_COLUMNS for each row
-  if (pExprEval->m_iStreamInColumns) {
-    oTagSet.vAppend(C_TAG_ROW_PROCESS_ROUTINE, "ROW_PROJECT_COLUMNS_AGG"_Stz);
-  }
-  else
-    oTagSet.vAppend(C_TAG_ROW_PROCESS_ROUTINE, "ROW_PROJECT_NONE"_Stz);
-
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_HANDLER_ROWBUFFER_AGG, &oTagSet, sMacro));
-
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -656,6 +642,15 @@ void LogicUnit::vGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut) 
   pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_END, &oTagSet, sMacro));
 
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ROWBUFFER_HANDLER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //   to execute PROJECT_COLUMNS for each row
+  ASSERT(pExprEval->m_iStreamInColumns);
+  oTagSet.vAppend(C_TAG_ROW_PROCESS_ROUTINE, "ROW_PROJECT_COLUMNS_AGG"_Stz);
+  oTagSet.vAppend(C_TAG_PAYLOAD_ROUTINE, "PAYLOAD_GBY"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_HANDLER_ROWBUFFER_AGG_GBY, &oTagSet, sMacro));
+  oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ROW_PROJECT_COLUMNS
@@ -671,9 +666,6 @@ void LogicUnit::vGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut) 
     pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_NONE, &oTagSet, sMacro));
   }
 
-  //for (i8 i_Col = 0; i_Col < pStreamDefOut->nTotalColumns(); i_Col++) {
-  pFile->vPrint("%s\n"_Stz, pExprEval->m_sAsmText.azChar());
-  //}
   pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_END, &oTagSet, sMacro));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
