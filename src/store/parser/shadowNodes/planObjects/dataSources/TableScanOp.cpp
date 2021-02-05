@@ -11,7 +11,7 @@
 
 #include "GraphNav.hpp"
 
-#include "TableRef.hpp"
+#include "store/parser/shadowNodes/compound/TableRef.hpp"
 
 using namespace Parser;
 

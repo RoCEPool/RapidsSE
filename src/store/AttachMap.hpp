@@ -32,6 +32,7 @@ namespace STORE
         
     bool          m_bBootError;
     BucketMap*    m_pBucketMap;
+    BufferMap*    m_pBufferMap;
     BufferPool*   m_pBufferPool;
     EnumFlags     m_oClassFlags;
     Lock          m_okDdlLock;

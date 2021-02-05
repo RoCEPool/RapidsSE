@@ -316,9 +316,9 @@ void Step::vSocketRecvObject(void)
   //vTrace("Socket received: Header %s"_Stz,
   //       spHeader.sz(aHeader));
   
-  AM::vLogRes(SL_INF,pSocket,RA_SKT_RECEIVED,
-              "Socket received: Header %s"_Stz, //!format-LogRes
-              spHeader.sz(aHeader));
+//  AM::vLogRes(SL_INF,pSocket,RA_SKT_RECEIVED,
+//              "Socket received: Header %s"_Stz, //!format-LogRes
+//              spHeader.sz(aHeader));
   
 //  vTrace("%lld: vSocketRecvObject: Header %s\n"_Stz,
 //         AM::iThisNodeNo(),
@@ -363,6 +363,11 @@ void Step::vSocketRecvObject(void)
     AM::vLogRes(SL_INF,pSocket,RA_SKT_RECEIVED,
                 "Socket received Job: %s"_Stz, //!format-LogRes
                  spJob.sz_recv(pJob));
+
+//    vTrace("%lld %p: vSocketRecvObject: Job %s\n"_Stz,
+//           AM::iThisNodeNo(),
+//           pSocket,
+//           spJob.sz_detail(pJob));
 
     if (pJob->m_xReqTuple.m_iDetail) {
       JobLog::vNote(pJob,
@@ -993,6 +998,14 @@ void Step::vSocketSendObject(void)
                          aCN[eClass],
                          pJob,
                          pSocket);
+    
+    SP_Job spJob;
+
+//    vTrace("%lld %p: vSocketSendObject: Job %s\n"_Stz,
+//           AM::iThisNodeNo(),
+//           pSocket,
+//           spJob.sz_detail(pJob));
+
     
     //ActLog::vAdd(pJob,AN_SEND_JOB,pJob(),nObjectSize);
   }

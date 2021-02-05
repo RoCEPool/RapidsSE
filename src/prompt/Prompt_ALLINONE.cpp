@@ -1936,7 +1936,7 @@ bool PROMPT::bPrompt_giveMem(SePrompt* pPrompt)
 
     AM::vTakenBuffers(pNextBuffer);
     
-    gpBufferPool->vFree(pBuffer);
+    gpBufferPool->vFreeOtherBuffer(pBuffer);
   }
   
   AM::vTakenBytes(0);
@@ -4050,7 +4050,7 @@ bool PROMPT::bPrompt_select(SePrompt* pPrompt)
   pInpTknVec->vVecToString(sSelectStmt,0,true);
   
   sSqlCompiler.vSprint("sqlCompiler \"%s\""_Stz,sSelectStmt.szStz());
-  vTrace(":: %s\n"_Stz,sSqlCompiler.szStz());
+  //vTrace(":: %s\n"_Stz,sSqlCompiler.szStz());
   
 
   pPrompt->pSession()->m_sToDo = sSqlCompiler;

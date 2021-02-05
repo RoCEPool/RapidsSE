@@ -183,8 +183,10 @@ extern d8 C_D8_MID;
 #include "FreeChunk.hpp"
 #include "BufferPool.hpp"
 #include "PoolHelper.hpp"
-#include "PersistenceHelper.hpp"
 #include "ResourceHelper.hpp"
+#include "PersistenceHelper.hpp"
+#include "BufferAddress.h"
+#include "BufferMap.hpp"
 
 #include "HeapBuffer.hpp"
 #include "HeapMem.hpp"

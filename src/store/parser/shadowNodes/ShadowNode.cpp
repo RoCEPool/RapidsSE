@@ -9,9 +9,9 @@
 #include "QueryNode.hpp"
 
 #include "store/parser/shadowNodes/planObjects/Statement.hpp"
-#include "TableRef.hpp"
+#include "store/parser/shadowNodes/compound/TableRef.hpp"
 #include "Expr.hpp"
-#include "ProjectedExpr.hpp"
+#include "store/parser/shadowNodes/compound/ProjectedExpr.hpp"
 #include "ShadowRoot.hpp"
 
 #include "GraphValidator.hpp"

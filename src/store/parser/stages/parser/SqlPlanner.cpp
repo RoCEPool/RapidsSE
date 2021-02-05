@@ -21,7 +21,7 @@
 
 #include "ShadowNode.hpp"
 #include "store/parser/shadowNodes/planObjects/Statement.hpp"
-#include "TableRef.hpp"
+#include "store/parser/shadowNodes/compound/TableRef.hpp"
 
 // Expressions
 #include "ColumnRef.hpp"
@@ -56,7 +56,7 @@
 #include "store/parser/shadowNodes/expressions/operators/aggregates/MinExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/aggregates/MaxExpr.hpp"
 
-#include "ProjectedExpr.hpp"
+#include "store/parser/shadowNodes/compound/ProjectedExpr.hpp"
 
 #include "ProjectOp.hpp"
 #include "store/parser/shadowNodes/planObjects/dataSources/TableScanOp.hpp"

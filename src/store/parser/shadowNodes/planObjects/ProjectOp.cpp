@@ -8,7 +8,7 @@
 #include "PlanConstants.hpp"
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
-#include "ProjectedExpr.hpp"
+#include "store/parser/shadowNodes/compound/ProjectedExpr.hpp"
 
 #include "GraphNav.hpp"
 
