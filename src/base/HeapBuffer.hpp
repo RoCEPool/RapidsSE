@@ -11,7 +11,7 @@ namespace BASE
     HeapBuffer* m_pNextBuffer;  // next buffer in list
     HeapBuffer* m_pPrevBuffer;  // prev buffer in list
   
-    SingleWord m__PadToCacheLine[4]; // round up to cacheline
+    SingleWord m__PadToCacheLine[3]; // round up to cacheline
 
     // ..allocated object..
     

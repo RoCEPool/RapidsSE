@@ -36,7 +36,13 @@ LinkedBuffer::LinkedBuffer(eCN eClassNo)
   m_pHigherBuffer = nullptr;
   m_pLowerBuffer  = nullptr;
   
-  MemLib::vZero(m__PadToCacheLine,sizeof(m__PadToCacheLine),eClassNo);
+  m_iNextBuffer   = C_UNKNOWN;
+  m_iPrevBuffer   = C_UNKNOWN;
+  
+  m_iHigherBuffer = C_UNKNOWN;
+  m_iLowerBuffer  = C_UNKNOWN;
+
+  //MemLib::vZero(m__PadToCacheLine,sizeof(m__PadToCacheLine),eClassNo);
 
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);  
 }

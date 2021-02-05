@@ -86,9 +86,9 @@ namespace BASE
     void vVerifyPool(void);
   
   private:
-    void vFree(PoolBuffer* pBuffer);
     FreeBuffer* pPopFreeBuffer(void);
     void vPrintProgress(void);
+    void vPushFreeBuffer(PoolBuffer* pBuffer);
 
     Footer* aFooter(void);
    };

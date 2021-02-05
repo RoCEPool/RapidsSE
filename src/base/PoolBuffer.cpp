@@ -93,6 +93,8 @@ void PoolBuffer::vBufferNo(i8 iBufferNo)
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   m_iBufferNo = iBufferNo;
+  
+  m_nUnits = 1;
 }
 
 /*----------------------------------------------------------------------------*/

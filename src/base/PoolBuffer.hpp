@@ -28,6 +28,8 @@ namespace BASE
   {
   protected:
     i8 m_iBufferNo;  // this buffer number
+    i8 m_nUnits;     // number of buffers
+  
     // ..heap buffer..
     
   public:

@@ -14,8 +14,16 @@ namespace BASE
     LinkedBuffer* m_pHigherBuffer; // higher buffer
     LinkedBuffer* m_pLowerBuffer;  // lower buffer
   
+    i8 m_iNextBuffer;   // next buffer
+    i8 m_iPrevBuffer;   // previous buffer
+
+    i8 m_iHigherBuffer; // higher buffer
+    i8 m_iLowerBuffer;  // lower buffer
+
+    //i8 m__padToCacheLine[4];
+
   private:
-    SingleWord    m__PadToCacheLine[4]; // padding to cache line
+    //SingleWord    m__PadToCacheLine[4]; // padding to cache line
 
   public:
     LinkedBuffer(eCN eClass);
