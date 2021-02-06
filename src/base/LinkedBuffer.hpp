@@ -14,6 +14,7 @@ namespace BASE
     LinkedBuffer* m_pHigherBuffer; // higher buffer
     LinkedBuffer* m_pLowerBuffer;  // lower buffer
   
+  private:
     BufferNo m_tNextBuffer;   // next buffer
     BufferNo m_tPrevBuffer;   // previous buffer
 
