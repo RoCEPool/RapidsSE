@@ -1491,8 +1491,8 @@ void EntBuffer::vShow(bool bEntries, Ent* aMarkEntry)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   s256 sHigherBuffer;
-  if (m_pHigherBuffer)
-    StrLib::wToString((i8)((EntBuffer*)m_pHigherBuffer)->m_iBufferHeight,
+  if (pHigherBuffer())
+    StrLib::wToString((i8)((EntBuffer*)pHigherBuffer())->m_iBufferHeight,
                       sHigherBuffer.azChar());
   else
     sHigherBuffer = "..."_Stz;
@@ -1514,7 +1514,7 @@ void EntBuffer::vShow(bool bEntries, Ent* aMarkEntry)
          this,iBufferNo(),nItems(),nUsedBytes(),nFreeBytes());
   
   vTrace("  higherBuffer %p (L%s) prevBuffer %p nextBuffer %p\n"_Stz,
-         m_pHigherBuffer,sHigherBuffer.szStz(),m_pPrevBuffer,m_pNextBuffer);
+         pHigherBuffer(),sHigherBuffer.szStz(),m_pPrevBuffer,m_pNextBuffer);
   
   vTrace("  index: %s partition: %lld height: %lld\n"_Stz,
          m_pIndexTree && m_pIndexTree->pIndex() ? m_pIndexTree->pIndex()->szIndexNm() : C_NULL,m_tPtnNo,m_iBufferHeight);
@@ -1632,7 +1632,7 @@ void EntBuffer::vShowTree(bool bDumpBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  if (! m_pHigherBuffer )
+  if (! pHigherBuffer() )
     vTrace("\nIndex Tree %p:\n"_Stz,this);
   
   vTrace("Height %lld "_Stz,m_iBufferHeight);
