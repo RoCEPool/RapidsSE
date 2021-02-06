@@ -31,9 +31,9 @@ namespace BASE
     void          vHigherLinkedBuffer(BufferNo tHigherBufferNo);
     void          vHigherLinkedBuffer(LinkedBuffer* pHigherBuffer);
 
-    LinkedBuffer* pLowerBuffer(void);
-    void          vLowerBuffer(BufferNo tLowerBufferNo);
-    void          vLowerBuffer(LinkedBuffer* pLowerBuffer);
+    LinkedBuffer* pLowerLinkedBuffer(void);
+    void          vLowerLinkedBuffer(BufferNo tLowerBufferNo);
+    void          vLowerLinkedBuffer(LinkedBuffer* pLowerBuffer);
   
     LinkedBuffer* pNextBuffer(void);
     void          vNextBuffer(BufferNo tNextBufferNo);

@@ -212,7 +212,7 @@ void LinkedBuffer::vHigherLinkedBuffer(LinkedBuffer* pHigherBuffer)
 /*----------------------------------------------------------------------------*/
 /* get lower buffer                                                           */
 /*----------------------------------------------------------------------------*/
-LinkedBuffer* LinkedBuffer::pLowerBuffer(void)
+LinkedBuffer* LinkedBuffer::pLowerLinkedBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -224,7 +224,7 @@ LinkedBuffer* LinkedBuffer::pLowerBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* set higher buffer                                                          */
 /*----------------------------------------------------------------------------*/
-void LinkedBuffer::vLowerBuffer(LinkedBuffer* pLowerBuffer)
+void LinkedBuffer::vLowerLinkedBuffer(LinkedBuffer* pLowerBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
     
@@ -235,7 +235,7 @@ void LinkedBuffer::vLowerBuffer(LinkedBuffer* pLowerBuffer)
 /*----------------------------------------------------------------------------*/
 /* set lower buffer                                                           */
 /*----------------------------------------------------------------------------*/
-void LinkedBuffer::vLowerBuffer(BufferNo tLowerBufferNo)
+void LinkedBuffer::vLowerLinkedBuffer(BufferNo tLowerBufferNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
