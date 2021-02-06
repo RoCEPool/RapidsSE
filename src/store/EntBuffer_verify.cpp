@@ -602,7 +602,7 @@ bool EntBuffer::bVerifyKeyBufferOrder(void)
     }
     
     // child B should point to child A
-    if (pChildBufferB->pPrevBuffer() != pChildBufferA) {
+    if (pChildBufferB->pPrevEntBuffer() != pChildBufferA) {
       vShow(true,aEnt);
       vVerifyFault(__func__,__FILE__,__LINE__);
       return false;
@@ -677,8 +677,8 @@ bool EntBuffer::bVerifyNextPrev(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (pPrevBuffer()) {
-    EntBuffer* pPrevBuffer = _pEntBuffer(this->pPrevBuffer());
+  if (pPrevEntBuffer()) {
+    EntBuffer* pPrevBuffer = _pEntBuffer(this->pPrevEntBuffer());
     if (pPrevBuffer->pNextEntBuffer() != this) {
       vVerifyFault(__func__,__FILE__,__LINE__);
       return false;
@@ -693,7 +693,7 @@ bool EntBuffer::bVerifyNextPrev(void)
   
   if (pNextEntBuffer()) {
     EntBuffer* pNextBuffer = _pEntBuffer(this->pNextEntBuffer());
-    if (pNextBuffer->pPrevBuffer() != this) {
+    if (pNextBuffer->pPrevEntBuffer() != this) {
       vVerifyFault(__func__,__FILE__,__LINE__);
       return false;
     }

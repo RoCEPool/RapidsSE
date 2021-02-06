@@ -657,8 +657,8 @@ void EntBuffer::vDipStick(void)
   if (pHigherEntBuffer())
     _pEntBuffer(pHigherEntBuffer())->vDipStick();
     
-  EntBuffer* pL  = _pEntBuffer(this->pPrevBuffer());
-  EntBuffer* pLL = pL ? _pEntBuffer(pL->pPrevBuffer()) : nullptr;
+  EntBuffer* pL  = _pEntBuffer(this->pPrevEntBuffer());
+  EntBuffer* pLL = pL ? _pEntBuffer(pL->pPrevEntBuffer()) : nullptr;
   
   EntBuffer* pR  = _pEntBuffer(this->pNextEntBuffer());
   EntBuffer* pRR = pR ? _pEntBuffer(pR->pNextEntBuffer()) : nullptr;
@@ -1291,7 +1291,7 @@ Ent* EntBuffer::aPopLazyChain(void)
 /*----------------------------------------------------------------------------*/
 /* get prev buffer                                                            */
 /*----------------------------------------------------------------------------*/
-EntBuffer* EntBuffer::pPrevBuffer(void)
+EntBuffer* EntBuffer::pPrevEntBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -1301,7 +1301,7 @@ EntBuffer* EntBuffer::pPrevBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* set prev buffer                                                            */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vPrevBuffer(EntBuffer* pPrevBuffer)
+void EntBuffer::vPrevEntBuffer(EntBuffer* pPrevBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -1514,7 +1514,7 @@ void EntBuffer::vShow(bool bEntries, Ent* aMarkEntry)
          this,iBufferNo(),nItems(),nUsedBytes(),nFreeBytes());
   
   vTrace("  higherBuffer %p (L%s) prevBuffer %p nextBuffer %p\n"_Stz,
-         pHigherEntBuffer(),sHigherBuffer.szStz(),pPrevBuffer(),pNextEntBuffer());
+         pHigherEntBuffer(),sHigherBuffer.szStz(),pPrevEntBuffer(),pNextEntBuffer());
   
   vTrace("  index: %s partition: %lld height: %lld\n"_Stz,
          m_pIndexTree && m_pIndexTree->pIndex() ? m_pIndexTree->pIndex()->szIndexNm() : C_NULL,m_tPtnNo,m_iBufferHeight);
@@ -1605,7 +1605,7 @@ void EntBuffer::vShowSubList(void)
   
   vTrace("{"_Stz);
   
-  if (pThisH0->pPrevBuffer())
+  if (pThisH0->pPrevEntBuffer())
     vTrace("<-"_Stz);
   
   EntBuffer* pH0;
@@ -1723,7 +1723,7 @@ void EntBuffer::vSpliceAfter(EntBuffer* pSplicedBuffer)
   // the spliced buffer is always inserted after this buffer
   pThisBuffer->vNextEntBuffer(pSplicedBuffer);
   pSplicedBuffer->vNextEntBuffer(pNextBuffer);
-  pSplicedBuffer->vPrevBuffer(pThisBuffer);
+  pSplicedBuffer->vPrevEntBuffer(pThisBuffer);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // circumstance (a), no next buffer
@@ -1734,7 +1734,7 @@ void EntBuffer::vSpliceAfter(EntBuffer* pSplicedBuffer)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // circumstance (b), next buffer
   
-  pNextBuffer->vPrevBuffer(pSplicedBuffer);
+  pNextBuffer->vPrevEntBuffer(pSplicedBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1880,7 +1880,7 @@ EntBuffer* EntBuffer::pUnlinkSubList(void)
   EntBuffer* pThisH0SubList = pNextH0;
   
   // the sublist no longer points back to this L0
-  pThisH0SubList->vPrevBuffer(nullptr);
+  pThisH0SubList->vPrevEntBuffer(nullptr);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // circumstance (c) last H1, there is a sublist
@@ -1897,13 +1897,13 @@ EntBuffer* EntBuffer::pUnlinkSubList(void)
   // circumstance (d) middle H1, there is a sublist
   
   EntBuffer* pFirstH0ofNextH1 = pNextH1->pFirstChildBuffer();
-  EntBuffer* pLastH0ofThisH1 = pFirstH0ofNextH1->pPrevBuffer();
+  EntBuffer* pLastH0ofThisH1 = pFirstH0ofNextH1->pPrevEntBuffer();
   
   // the next chain points to first L0 buffer of next H1
   pThisH0->vNextEntBuffer(pFirstH0ofNextH1);
   
   // the prev chain of first L0 of next H1 is this L0
-  pFirstH0ofNextH1->vPrevBuffer(pThisH0);
+  pFirstH0ofNextH1->vPrevEntBuffer(pThisH0);
   
   // the prev chain of last L0 of sublist terminates
   pLastH0ofThisH1->vNextEntBuffer(nullptr);

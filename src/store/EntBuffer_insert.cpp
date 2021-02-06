@@ -1291,16 +1291,16 @@ EntBuffer* EntBuffer::pNewInsertIntoRight(Ent* aEntry, EntBuffer** ppRootBuffer)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // split the left buffer to yield a right buffer
   
-  ASSERT(! pNextEntBuffer() || this == pNextEntBuffer()->pPrevBuffer());
-  ASSERT(! pPrevBuffer() || this == pPrevBuffer()->pNextEntBuffer());
+  ASSERT(! pNextEntBuffer() || this == pNextEntBuffer()->pPrevEntBuffer());
+  ASSERT(! pPrevEntBuffer() || this == pPrevEntBuffer()->pNextEntBuffer());
 
   EntBuffer* pRightBuffer = pNewNextBuffer();
   
   ASSERT(pRightBuffer || pNextEntBuffer());
-  ASSERT(this == pRightBuffer->pPrevBuffer());
+  ASSERT(this == pRightBuffer->pPrevEntBuffer());
 
-  ASSERT(this == pNextEntBuffer()->pPrevBuffer());
-  ASSERT(! pPrevBuffer() || this == pPrevBuffer()->pNextEntBuffer());
+  ASSERT(this == pNextEntBuffer()->pPrevEntBuffer());
+  ASSERT(! pPrevEntBuffer() || this == pPrevEntBuffer()->pNextEntBuffer());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert the first key of left buffer into higher buffer if higher buffer
@@ -1494,16 +1494,16 @@ EntBuffer* EntBuffer::pNewNextBuffer(void)
   pNewBuffer->vPtnNo(m_tPtnNo);
   
   pNewBuffer->vHigherEntBuffer(_pEntBuffer(pHigherEntBuffer()));
-  pNewBuffer->vPrevBuffer(this);
+  pNewBuffer->vPrevEntBuffer(this);
   pNewBuffer->vNextEntBuffer(_pEntBuffer(this->pNextEntBuffer()));
   if (pNextEntBuffer()) {
     EntBuffer* pNextBuffer = _pEntBuffer(this->pNextEntBuffer());
-    pNextBuffer->vPrevBuffer(pNewBuffer);
+    pNextBuffer->vPrevEntBuffer(pNewBuffer);
   }
   
   vNextEntBuffer(pNewBuffer);
   
-  ASSERT(this == pNewBuffer->pPrevBuffer());
+  ASSERT(this == pNewBuffer->pPrevEntBuffer());
   
   return pNewBuffer;
 }
@@ -1793,7 +1793,7 @@ void EntBuffer::vTraceWhere(void)
          
          ,m_iBufferNo,m_nItems,nFreeBytes(),m_nInsert,m_nSplit,m_nMove,m_nDelete
          
-         ,pPrevBuffer()   ? _pEntBuffer(pPrevBuffer())->iBufferNo()   : -1
+         ,pPrevEntBuffer()   ? _pEntBuffer(pPrevEntBuffer())->iBufferNo()   : -1
          ,pHigherEntBuffer() ? _pEntBuffer(pHigherEntBuffer())->iBufferNo() : -1
          ,pNextEntBuffer()   ? _pEntBuffer(pNextEntBuffer())->iBufferNo()   : -1
          

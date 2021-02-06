@@ -647,10 +647,10 @@ EntBuffer* IndexTree::pPopSubList(EntBuffer** ppSubList)
   *ppSubList = (*ppSubList)->pNextEntBuffer();
   
   pTopBuffer->vNextEntBuffer(nullptr);
-  pTopBuffer->vPrevBuffer(nullptr);
+  pTopBuffer->vPrevEntBuffer(nullptr);
   
   if (*ppSubList)
-    (*ppSubList)->vPrevBuffer(nullptr);
+    (*ppSubList)->vPrevEntBuffer(nullptr);
   
   return pTopBuffer;
 }
