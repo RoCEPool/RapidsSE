@@ -1495,13 +1495,13 @@ EntBuffer* EntBuffer::pNewNextBuffer(void)
   
   pNewBuffer->vHigherBuffer(_pEntBuffer(pHigherBuffer()));
   pNewBuffer->vPrevBuffer(this);
-  pNewBuffer->vNextBuffer(_pEntBuffer(m_pNextBuffer));
-  if (m_pNextBuffer) {
-    EntBuffer* pNextBuffer = _pEntBuffer(m_pNextBuffer);
+  pNewBuffer->vNextBuffer(_pEntBuffer(this->pNextBuffer()));
+  if (pNextBuffer()) {
+    EntBuffer* pNextBuffer = _pEntBuffer(this->pNextBuffer());
     pNextBuffer->vPrevBuffer(pNewBuffer);
   }
   
-  m_pNextBuffer = pNewBuffer;
+  vNextBuffer(pNewBuffer);
   
   ASSERT(this == pNewBuffer->pPrevBuffer());
   
@@ -1795,7 +1795,7 @@ void EntBuffer::vTraceWhere(void)
          
          ,pPrevBuffer()   ? _pEntBuffer(pPrevBuffer())->iBufferNo()   : -1
          ,pHigherBuffer() ? _pEntBuffer(pHigherBuffer())->iBufferNo() : -1
-         ,m_pNextBuffer   ? _pEntBuffer(m_pNextBuffer)->iBufferNo()   : -1
+         ,pNextBuffer()   ? _pEntBuffer(m_pNextBuffer)->iBufferNo()   : -1
          
          ,aLeadEnt ? spLeadRef.sz(aLeadEnt->wRef()) : ""_Stz
          ,aLeadEnt ? spLeadKey.sz(aLeadEnt->aKey(),pIndexDef()) : ""_Stz

@@ -691,8 +691,8 @@ bool EntBuffer::bVerifyNextPrev(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (m_pNextBuffer) {
-    EntBuffer* pNextBuffer = _pEntBuffer(m_pNextBuffer);
+  if (pNextBuffer()) {
+    EntBuffer* pNextBuffer = _pEntBuffer(this->pNextBuffer());
     if (pNextBuffer->pPrevBuffer() != this) {
       vVerifyFault(__func__,__FILE__,__LINE__);
       return false;
