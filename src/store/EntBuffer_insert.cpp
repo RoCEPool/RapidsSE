@@ -1795,7 +1795,7 @@ void EntBuffer::vTraceWhere(void)
          
          ,pPrevBuffer()   ? _pEntBuffer(pPrevBuffer())->iBufferNo()   : -1
          ,pHigherBuffer() ? _pEntBuffer(pHigherBuffer())->iBufferNo() : -1
-         ,pNextBuffer()   ? _pEntBuffer(m_pNextBuffer)->iBufferNo()   : -1
+         ,pNextBuffer()   ? _pEntBuffer(pNextBuffer())->iBufferNo()   : -1
          
          ,aLeadEnt ? spLeadRef.sz(aLeadEnt->wRef()) : ""_Stz
          ,aLeadEnt ? spLeadKey.sz(aLeadEnt->aKey(),pIndexDef()) : ""_Stz
