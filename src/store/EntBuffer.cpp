@@ -657,8 +657,8 @@ void EntBuffer::vDipStick(void)
   if (pHigherBuffer())
     _pEntBuffer(pHigherBuffer())->vDipStick();
     
-  EntBuffer* pL  = _pEntBuffer(m_pPrevBuffer);
-  EntBuffer* pLL = pL ? _pEntBuffer(pL->m_pPrevBuffer) : nullptr;
+  EntBuffer* pL  = _pEntBuffer(this->pPrevBuffer());
+  EntBuffer* pLL = pL ? _pEntBuffer(pL->pPrevBuffer()) : nullptr;
   
   EntBuffer* pR  = _pEntBuffer(m_pNextBuffer);
   EntBuffer* pRR = pR ? _pEntBuffer(pR->m_pNextBuffer) : nullptr;
@@ -1295,7 +1295,7 @@ EntBuffer* EntBuffer::pPrevBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  return _pEntBuffer(m_pPrevBuffer);
+  return _pEntBuffer(LinkedBuffer::pPrevBuffer());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1305,7 +1305,7 @@ void EntBuffer::vPrevBuffer(EntBuffer* pPrevBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  m_pPrevBuffer = pPrevBuffer;
+  LinkedBuffer::vPrevBuffer(pPrevBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1514,7 +1514,7 @@ void EntBuffer::vShow(bool bEntries, Ent* aMarkEntry)
          this,iBufferNo(),nItems(),nUsedBytes(),nFreeBytes());
   
   vTrace("  higherBuffer %p (L%s) prevBuffer %p nextBuffer %p\n"_Stz,
-         pHigherBuffer(),sHigherBuffer.szStz(),m_pPrevBuffer,m_pNextBuffer);
+         pHigherBuffer(),sHigherBuffer.szStz(),pPrevBuffer(),m_pNextBuffer);
   
   vTrace("  index: %s partition: %lld height: %lld\n"_Stz,
          m_pIndexTree && m_pIndexTree->pIndex() ? m_pIndexTree->pIndex()->szIndexNm() : C_NULL,m_tPtnNo,m_iBufferHeight);

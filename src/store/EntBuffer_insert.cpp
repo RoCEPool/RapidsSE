@@ -1793,7 +1793,7 @@ void EntBuffer::vTraceWhere(void)
          
          ,m_iBufferNo,m_nItems,nFreeBytes(),m_nInsert,m_nSplit,m_nMove,m_nDelete
          
-         ,m_pPrevBuffer   ? _pEntBuffer(m_pPrevBuffer)->iBufferNo()   : -1
+         ,pPrevBuffer()   ? _pEntBuffer(pPrevBuffer())->iBufferNo()   : -1
          ,pHigherBuffer() ? _pEntBuffer(pHigherBuffer())->iBufferNo() : -1
          ,m_pNextBuffer   ? _pEntBuffer(m_pNextBuffer)->iBufferNo()   : -1
          
