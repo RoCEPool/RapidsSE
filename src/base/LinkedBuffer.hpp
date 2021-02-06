@@ -9,9 +9,9 @@ namespace BASE
   {
   protected:
     LinkedBuffer* m_pNextBuffer;   // next buffer
+  private:
     LinkedBuffer* m_pPrevBuffer;   // previous buffer
   
-  private:
     LinkedBuffer* m_pHigherBuffer; // higher buffer
     LinkedBuffer* m_pLowerBuffer;  // lower buffer
   

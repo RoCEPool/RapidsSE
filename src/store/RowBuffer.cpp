@@ -198,7 +198,7 @@ void RowBuffer::vShow(StreamDef* pStreamDef)
          this,m_iBufferNo,nRows);
   
   vTrace("  prevBuffer %p nextBuffer %p\n"_Stz,
-         m_pPrevBuffer,m_pNextBuffer);
+         pPrevBuffer(),m_pNextBuffer);
   
   vTrace("  partition: %lld \n"_Stz, m_tPtnNo);
   

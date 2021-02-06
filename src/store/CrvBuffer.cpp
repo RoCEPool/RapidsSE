@@ -218,7 +218,7 @@ CrvBuffer* CrvBuffer::pPrevBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRVBUFFER,_FOOTER_);
   
-  return _pCrvBuffer(m_pPrevBuffer);
+  return _pCrvBuffer(LinkedBuffer::pPrevBuffer());
 }
 
 /*----------------------------------------------------------------------------*/
