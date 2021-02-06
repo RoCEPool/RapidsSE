@@ -855,7 +855,7 @@ EntBuffer* EntBuffer::pHigherBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  return _pEntBuffer(LinkedBuffer::pHigherBuffer());
+  return _pEntBuffer(LinkedBuffer::pHigherLinkedBuffer());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -865,7 +865,7 @@ void EntBuffer::vHigherBuffer(EntBuffer* pHigherBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  LinkedBuffer::vHigherBuffer(pHigherBuffer);
+  LinkedBuffer::vHigherLinkedBuffer(pHigherBuffer);
 }
 
 /*----------------------------------------------------------------------------*/

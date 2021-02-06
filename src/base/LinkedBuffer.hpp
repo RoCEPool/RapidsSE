@@ -27,9 +27,9 @@ namespace BASE
     void vLinkAsPrev(LinkedBuffer* pArgBuffer);
     void vUnLink(void);
 
-    LinkedBuffer* pHigherBuffer(void);
-    void          vHigherBuffer(BufferNo tHigherBufferNo);
-    void          vHigherBuffer(LinkedBuffer* pHigherBuffer);
+    LinkedBuffer* pHigherLinkedBuffer(void);
+    void          vHigherLinkedBuffer(BufferNo tHigherBufferNo);
+    void          vHigherLinkedBuffer(LinkedBuffer* pHigherBuffer);
 
     LinkedBuffer* pLowerBuffer(void);
     void          vLowerBuffer(BufferNo tLowerBufferNo);
