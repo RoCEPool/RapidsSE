@@ -705,8 +705,8 @@ bool EntBuffer::bVerifyNextPrev(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (m_pHigherBuffer) {
-    EntBuffer* pHigherBuffer = _pEntBuffer(m_pHigherBuffer);
+  if (pHigherBuffer()) {
+    EntBuffer* pHigherBuffer = _pEntBuffer(this->pHigherBuffer());
     if (pHigherBuffer->iBufferHeight() != m_iBufferHeight + 1) {
       vVerifyFault(__func__,__FILE__,__LINE__);
       return false;
