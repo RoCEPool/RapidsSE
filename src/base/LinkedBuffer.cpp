@@ -197,8 +197,8 @@ void LinkedBuffer::vHigherBuffer(LinkedBuffer* pHigherBuffer)
   
   m_pHigherBuffer = pHigherBuffer;
   
-  //m_tHigherBuffer = pHigherBuffer;
-  //RASSERT(m_tHigherBuffer.pGetBuffer() == pHigherBuffer);
+  m_tHigherBuffer = pHigherBuffer;
+  RASSERT(m_tHigherBuffer.pGetLinkedBuffer() == pHigherBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -210,7 +210,7 @@ LinkedBuffer* LinkedBuffer::pLowerBuffer(void)
   
   LinkedBuffer* pLowerBuffer = _pLinkedBuffer(m_pLowerBuffer);
 
-  //RASSERT(m_tLowerBuffer.pGetBuffer() == pLowerBuffer);
+  RASSERT(m_tLowerBuffer.pGetLinkedBuffer() == pLowerBuffer);
 
   return pLowerBuffer;
 }
@@ -225,7 +225,7 @@ void LinkedBuffer::vLowerBuffer(LinkedBuffer* pLowerBuffer)
   m_pLowerBuffer = pLowerBuffer;
   
   m_tLowerBuffer = pLowerBuffer;
-  //RASSERT(m_tLowerBuffer.pGetBuffer() == pLowerBuffer);
+  RASSERT(m_tLowerBuffer.pGetLinkedBuffer() == pLowerBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -237,7 +237,7 @@ LinkedBuffer* LinkedBuffer::pNextBuffer(void)
   
   LinkedBuffer* pNextBuffer = _pLinkedBuffer(m_pNextBuffer);
 
-  //RASSERT(m_tNextBuffer.pGetBuffer() == pNextBuffer);
+  RASSERT(m_tNextBuffer.pGetLinkedBuffer() == pNextBuffer);
 
   return pNextBuffer;
 }
@@ -251,11 +251,9 @@ void LinkedBuffer::vNextBuffer(LinkedBuffer* pNextBuffer)
   
   m_pNextBuffer = pNextBuffer;
   
-  //m_tNextBuffer = pNextBuffer;
-  
-  //LinkedBuffer* pCheckBuffer = m_tNextBuffer.pGetBuffer();
-  
-  //RASSERT(m_tNextBuffer.pGetBuffer() == pNextBuffer);
+  m_tNextBuffer = pNextBuffer;
+    
+  RASSERT(m_tNextBuffer.pGetLinkedBuffer() == pNextBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -267,7 +265,7 @@ LinkedBuffer* LinkedBuffer::pPrevBuffer(void)
   
   LinkedBuffer* pPrevBuffer = _pLinkedBuffer(m_pPrevBuffer);
 
-  //RASSERT(m_tPrevBuffer.pGetBuffer() == pPrevBuffer);
+  RASSERT(m_tPrevBuffer.pGetLinkedBuffer() == pPrevBuffer);
 
   return pPrevBuffer;
 }
@@ -281,8 +279,8 @@ void LinkedBuffer::vPrevBuffer(LinkedBuffer* pPrevBuffer)
   
   m_pPrevBuffer = pPrevBuffer;
   
-  //m_tPrevBuffer = pPrevBuffer;
-  //RASSERT(m_tPrevBuffer.pGetBuffer() == pPrevBuffer);
+  m_tPrevBuffer = pPrevBuffer;
+  RASSERT(m_tPrevBuffer.pGetLinkedBuffer() == pPrevBuffer);
 }
 
 /*============================================================================*/

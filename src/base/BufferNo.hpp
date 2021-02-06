@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-//namespace BASE { class LinkedBuffer; }
+namespace BASE { class LinkedBuffer; }
 
 namespace BASE
 {
@@ -16,14 +16,22 @@ namespace BASE
     BufferNo(void);
    ~BufferNo(void) noexcept(false);
   
-    static i8            iToBufferNo(Object* pObject);
-    static PoolBuffer* pToPoolBuffer(i8 iBufferNo);
+    static Object*     pToAllocatedObject(i8 iBufferNo);
   
+    static i8          iToBufferNo(Object* pObject);
+
+    static HeapBuffer* pToHeapBuffer(i8 iBufferNo);
+  
+    static LinkedBuffer* pToLinkedBuffer(i8 iBufferNo);
+  
+    static PoolBuffer* pToPoolBuffer(i8 iBufferNo);
+
     void operator =(i8 iBufferNo); // assignment
     void operator =(Object* pObject); // assignment
   
     i8 iGetBuffer(void);
-    PoolBuffer* pGetBuffer(void);
+    LinkedBuffer* pGetLinkedBuffer(void);
+    PoolBuffer* pGetPoolBuffer(void);
 
 
   /*--------------------------------------------------------------------------*/
