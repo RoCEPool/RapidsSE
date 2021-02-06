@@ -417,10 +417,10 @@ bool EntBuffer::bVerifyBufferRefs(void)
       return false;
     }
     
-    if (pChildEntBuf->pHigherBuffer() != this) {
+    if (pChildEntBuf->pHigherEntBuffer() != this) {
       vTrace("Buffer %lld -> ChildBuffer %lld with HighBuffer %lld\n"_Stz,
              this->iBufferNo(),
-             pChildEntBuf->iBufferNo(),pChildEntBuf->pHigherBuffer()->iBufferNo());
+             pChildEntBuf->iBufferNo(),pChildEntBuf->pHigherEntBuffer()->iBufferNo());
       vVerifyFault(__func__,__FILE__,__LINE__);
       return false;
     }
@@ -705,8 +705,8 @@ bool EntBuffer::bVerifyNextPrev(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (pHigherBuffer()) {
-    EntBuffer* pHigherBuffer = _pEntBuffer(this->pHigherBuffer());
+  if (pHigherEntBuffer()) {
+    EntBuffer* pHigherBuffer = _pEntBuffer(this->pHigherEntBuffer());
     if (pHigherBuffer->iBufferHeight() != m_iBufferHeight + 1) {
       vVerifyFault(__func__,__FILE__,__LINE__);
       return false;

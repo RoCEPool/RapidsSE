@@ -436,8 +436,8 @@ void EntBuffer::vDeleteUpwards(eDU eReason, Ent* aDeleteEntry, i8 iRefdBufferNo,
   }
   
   aFirstEntry = this->aLeadEntry();
-  if (aEntryToBeDeleted == aFirstEntry && pHigherBuffer()) {
-    EntBuffer* pHigherBuffer = _pEntBuffer(this->pHigherBuffer());
+  if (aEntryToBeDeleted == aFirstEntry && pHigherEntBuffer()) {
+    EntBuffer* pHigherBuffer = _pEntBuffer(this->pHigherEntBuffer());
     pHigherBuffer->vDeleteUpwards(DU_HIGH_LEFT_LEAD,aDeleteEntry,m_iBufferNo,
                                   ppRootBuffer);
   }
@@ -499,13 +499,13 @@ void EntBuffer::vHandleLeftInsert(Ent* aInsertedKeyEntry,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  if (! pHigherBuffer())
+  if (! pHigherEntBuffer())
     return;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (aOriginalFirstEntry) {
-    EntBuffer* pHigherBuffer = _pEntBuffer(this->pHigherBuffer());
+    EntBuffer* pHigherBuffer = _pEntBuffer(this->pHigherEntBuffer());
     pHigherBuffer->vDeleteUpwards(DU_HIGH_LEFT_LEAD,aOriginalFirstEntry,m_iBufferNo,
                                   ppRootBuffer);
     //(*ppRootBuffer)->vShowTree();
@@ -518,7 +518,7 @@ void EntBuffer::vHandleLeftInsert(Ent* aInsertedKeyEntry,
   EntWrk xEntWrkIns;
   xEntWrkIns.vSetEnt(iBufferNo(), 0, aInsertedKeyEntry);
   
-  EntBuffer* pHigherBuffer = _pEntBuffer(this->pHigherBuffer());
+  EntBuffer* pHigherBuffer = _pEntBuffer(this->pHigherEntBuffer());
   pHigherBuffer->aInsertEntBuffer(xEntWrkIns.aEnt(),ppRootBuffer);
 }
 
@@ -939,10 +939,10 @@ Ent* EntBuffer::aInsertEntBuffer(Ent* aEntry, EntBuffer** ppRootBuffer)
     EntBuffer* pChildBuffer =
     reinterpret_cast<EntBuffer*>(pHeapBuffer->aFirstChunk());
     
-    if (pChildBuffer->pHigherBuffer() != pInsertIntoBuffer) {
+    if (pChildBuffer->pHigherEntBuffer() != pInsertIntoBuffer) {
       
       //(*ppRootBuffer)->vShowTree();
-      pChildBuffer->vHigherBuffer(pInsertIntoBuffer);
+      pChildBuffer->vHigherEntBuffer(pInsertIntoBuffer);
       //(*ppRootBuffer)->vShowTree();
     }
   }
@@ -1112,7 +1112,7 @@ Ent* EntBuffer::aInsertEntUpwards(eIU eReason, Ent* aEnt, EntBuffer** ppRootBuff
     EntBuffer* pChildBuffer =
       reinterpret_cast<EntBuffer*>(pHeapBuffer->aFirstChunk());
     
-    if (pChildBuffer->pHigherBuffer() != pInsertIntoBuffer) {
+    if (pChildBuffer->pHigherEntBuffer() != pInsertIntoBuffer) {
       NEVER_REACH;
       //(*ppRootBuffer)->vShowTree();
 //    pChildBuffer->m_pHigherBuffer = pInsertIntoBuffer;
@@ -1188,7 +1188,7 @@ EntBuffer* EntBuffer::pNewHigherBuffer(void)
   pNewBuffer->vBufferHeight(m_iBufferHeight+1);
   pNewBuffer->vPtnNo(m_tPtnNo);
   
-  vHigherBuffer(pNewBuffer);
+  vHigherEntBuffer(pNewBuffer);
   
   return pNewBuffer;
 }
@@ -1276,7 +1276,7 @@ EntBuffer* EntBuffer::pNewInsertIntoRight(Ent* aEntry, EntBuffer** ppRootBuffer)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the higher buffer, creating one if it doesnt exist
   
-  EntBuffer* pHigherBuffer = this->pHigherBuffer();
+  EntBuffer* pHigherBuffer = this->pHigherEntBuffer();
   if (! pHigherBuffer) {
     pHigherBuffer = this->pNewHigherBuffer();
     *ppRootBuffer = pHigherBuffer;
@@ -1382,7 +1382,7 @@ EntBuffer* EntBuffer::pNewInsertIntoSplit(Ent* aEntry, EntBuffer** ppRootBuffer)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the higher buffer, creating one if it doesnt exist
   
-  EntBuffer* pLeftHigherBuffer = this->pHigherBuffer();
+  EntBuffer* pLeftHigherBuffer = this->pHigherEntBuffer();
   if (! pLeftHigherBuffer) {
     pLeftHigherBuffer = this->pNewHigherBuffer();
     *ppRootBuffer = pLeftHigherBuffer;
@@ -1425,7 +1425,7 @@ EntBuffer* EntBuffer::pNewInsertIntoSplit(Ent* aEntry, EntBuffer** ppRootBuffer)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert the lead key of new right buffer into it's higher buffer
   
-  EntBuffer* pRightHigherBuffer = pRightBuffer->pHigherBuffer();
+  EntBuffer* pRightHigherBuffer = pRightBuffer->pHigherEntBuffer();
   
   EntWrk xEntHighRight;
   Ent* aFirstEntryRight = pRightBuffer->aLeadEntry();
@@ -1493,7 +1493,7 @@ EntBuffer* EntBuffer::pNewNextBuffer(void)
   pNewBuffer->vBufferHeight(m_iBufferHeight);
   pNewBuffer->vPtnNo(m_tPtnNo);
   
-  pNewBuffer->vHigherBuffer(_pEntBuffer(pHigherBuffer()));
+  pNewBuffer->vHigherEntBuffer(_pEntBuffer(pHigherEntBuffer()));
   pNewBuffer->vPrevBuffer(this);
   pNewBuffer->vNextBuffer(_pEntBuffer(this->pNextBuffer()));
   if (pNextBuffer()) {
@@ -1554,7 +1554,7 @@ void EntBuffer::vPurgeUpwards(Ent* aDeleteEntry, EntBuffer** ppRootBuffer)
   // get the firstEntry and the next entry
   Ent* aFirstEntry = this->aLeadEntry();
   Ent* aEntNext = aNextEntry(aEntryToBeDeleted, 0);
-  EntBuffer* pHigherBuffer = _pEntBuffer(this->pHigherBuffer());
+  EntBuffer* pHigherBuffer = _pEntBuffer(this->pHigherEntBuffer());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // is the entry to be deleted the first entry and we have a higher buffer ?
@@ -1664,7 +1664,7 @@ EntBuffer* EntBuffer::pSplitBuffer(i8 iSplitRatio)
        aCopyEntry = aNextEntry) {
     
     ASSERT(! m_iBufferHeight ||
-           EntBuffer::pRefdEntBuffer(aCopyEntry)->pHigherBuffer() == pThisLeftBuffer);
+           EntBuffer::pRefdEntBuffer(aCopyEntry)->pHigherEntBuffer() == pThisLeftBuffer);
     
     nEntriesCopied++;
     
@@ -1685,7 +1685,7 @@ EntBuffer* EntBuffer::pSplitBuffer(i8 iSplitRatio)
     
     // these can be commented
     ASSERT(! m_iBufferHeight ||
-           EntBuffer::pRefdEntBuffer(aNewEntry)->pHigherBuffer() == pThisLeftBuffer);
+           EntBuffer::pRefdEntBuffer(aNewEntry)->pHigherEntBuffer() == pThisLeftBuffer);
     
     i8 i_Buffer = xRef.iBuffer();
     HeapBuffer* pHeapBuffer =
@@ -1695,8 +1695,8 @@ EntBuffer* EntBuffer::pSplitBuffer(i8 iSplitRatio)
       EntBuffer* pChildBuffer =
       reinterpret_cast<EntBuffer*>(pHeapBuffer->aFirstChunk());
       
-      ASSERT(pChildBuffer->pHigherBuffer() ==
-             EntBuffer::pRefdEntBuffer(aNewEntry)->pHigherBuffer());
+      ASSERT(pChildBuffer->pHigherEntBuffer() ==
+             EntBuffer::pRefdEntBuffer(aNewEntry)->pHigherEntBuffer());
     }
     else {
       CrwBuffer* pChildBuffer =
@@ -1750,18 +1750,18 @@ EntBuffer* EntBuffer::pSplitBuffer(i8 iSplitRatio)
       EntBuffer* pChildBuffer =
       reinterpret_cast<EntBuffer*>(pHeapBuffer->aFirstChunk());
       
-      ASSERT(pChildBuffer->pHigherBuffer() ==
-             EntBuffer::pRefdEntBuffer(aMovedEntry)->pHigherBuffer());
+      ASSERT(pChildBuffer->pHigherEntBuffer() ==
+             EntBuffer::pRefdEntBuffer(aMovedEntry)->pHigherEntBuffer());
       
       
-      if (pChildBuffer->pHigherBuffer() != pThisLeftBuffer) {
+      if (pChildBuffer->pHigherEntBuffer() != pThisLeftBuffer) {
         //pThisLeftBuffer->vShow();
         //pNewRightBuffer->vShow();
         //pChildBuffer->vShow();
       }
       
-      ASSERT(pChildBuffer->pHigherBuffer() == pThisLeftBuffer);
-      pChildBuffer->vHigherBuffer(pNewRightBuffer);
+      ASSERT(pChildBuffer->pHigherEntBuffer() == pThisLeftBuffer);
+      pChildBuffer->vHigherEntBuffer(pNewRightBuffer);
     }
   }
   
@@ -1794,7 +1794,7 @@ void EntBuffer::vTraceWhere(void)
          ,m_iBufferNo,m_nItems,nFreeBytes(),m_nInsert,m_nSplit,m_nMove,m_nDelete
          
          ,pPrevBuffer()   ? _pEntBuffer(pPrevBuffer())->iBufferNo()   : -1
-         ,pHigherBuffer() ? _pEntBuffer(pHigherBuffer())->iBufferNo() : -1
+         ,pHigherEntBuffer() ? _pEntBuffer(pHigherEntBuffer())->iBufferNo() : -1
          ,pNextBuffer()   ? _pEntBuffer(pNextBuffer())->iBufferNo()   : -1
          
          ,aLeadEnt ? spLeadRef.sz(aLeadEnt->wRef()) : ""_Stz

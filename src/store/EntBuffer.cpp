@@ -149,9 +149,9 @@ void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftH0, EntBuffer* pRightH0)
   
   ASSERT(0 == pLeftH0->iBufferHeight());
   ASSERT(0 == pRightH0->iBufferHeight());
-  EntBuffer* pH1 = pLeftH0->pHigherBuffer();
+  EntBuffer* pH1 = pLeftH0->pHigherEntBuffer();
   ASSERT(1 == pH1->iBufferHeight());
-  ASSERT(pRightH0->pHigherBuffer() == pLeftH0->pHigherBuffer());
+  ASSERT(pRightH0->pHigherEntBuffer() == pLeftH0->pHigherEntBuffer());
   
   //vTrace("IndexTree::vCopyLeft (left %lld right %lld)\n"_Stz,
   //       pLeftL0->iBufferNo(),pRightL0->iBufferNo());
@@ -219,7 +219,7 @@ void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftH0, EntBuffer* pRightH0)
       
       // new left buffer
       EntBuffer* pNewLeftH0 = new EntBuffer(pLeftH0->m_pIndexTree);
-      pNewLeftH0->vHigherBuffer(pH1);
+      pNewLeftH0->vHigherEntBuffer(pH1);
       
       // splice the new left buffer into the L0 list
       pLeftH0->vSpliceAfter(pNewLeftH0);
@@ -654,8 +654,8 @@ void EntBuffer::vDipStick(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
 
-  if (pHigherBuffer())
-    _pEntBuffer(pHigherBuffer())->vDipStick();
+  if (pHigherEntBuffer())
+    _pEntBuffer(pHigherEntBuffer())->vDipStick();
     
   EntBuffer* pL  = _pEntBuffer(this->pPrevBuffer());
   EntBuffer* pLL = pL ? _pEntBuffer(pL->pPrevBuffer()) : nullptr;
@@ -851,7 +851,7 @@ void EntBuffer::vGrabWrite(void)
 /*----------------------------------------------------------------------------*/
 /* get the higher level index buffer                                          */
 /*----------------------------------------------------------------------------*/
-EntBuffer* EntBuffer::pHigherBuffer(void)
+EntBuffer* EntBuffer::pHigherEntBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -861,7 +861,7 @@ EntBuffer* EntBuffer::pHigherBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* set the higher level index                                                 */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vHigherBuffer(EntBuffer* pHigherBuffer)
+void EntBuffer::vHigherEntBuffer(EntBuffer* pHigherBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -971,11 +971,11 @@ i8 EntBuffer::iLengthSubList(void)
   i8 iLength = 0;
   
   EntBuffer* pThisH0 = this;
-  EntBuffer* pThisH1 = pThisH0->pHigherBuffer();
+  EntBuffer* pThisH1 = pThisH0->pHigherEntBuffer();
   
   EntBuffer* pH0;
   for (pH0 = pThisH0;
-       pH0 && pH0->pHigherBuffer() == pThisH1;
+       pH0 && pH0->pHigherEntBuffer() == pThisH1;
        pH0 = pH0->pNextBuffer()) {
     
     iLength++;
@@ -1491,8 +1491,8 @@ void EntBuffer::vShow(bool bEntries, Ent* aMarkEntry)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   s256 sHigherBuffer;
-  if (pHigherBuffer())
-    StrLib::wToString((i8)((EntBuffer*)pHigherBuffer())->m_iBufferHeight,
+  if (pHigherEntBuffer())
+    StrLib::wToString((i8)((EntBuffer*)pHigherEntBuffer())->m_iBufferHeight,
                       sHigherBuffer.azChar());
   else
     sHigherBuffer = "..."_Stz;
@@ -1514,7 +1514,7 @@ void EntBuffer::vShow(bool bEntries, Ent* aMarkEntry)
          this,iBufferNo(),nItems(),nUsedBytes(),nFreeBytes());
   
   vTrace("  higherBuffer %p (L%s) prevBuffer %p nextBuffer %p\n"_Stz,
-         pHigherBuffer(),sHigherBuffer.szStz(),pPrevBuffer(),pNextBuffer());
+         pHigherEntBuffer(),sHigherBuffer.szStz(),pPrevBuffer(),pNextBuffer());
   
   vTrace("  index: %s partition: %lld height: %lld\n"_Stz,
          m_pIndexTree && m_pIndexTree->pIndex() ? m_pIndexTree->pIndex()->szIndexNm() : C_NULL,m_tPtnNo,m_iBufferHeight);
@@ -1567,7 +1567,7 @@ void EntBuffer::vShowShort(void)
   
   vTrace("[t%lld h%lld: "_Stz,
          iBufferNo(),
-         pHigherBuffer() ? pHigherBuffer()->iBufferNo() : 0);
+         pHigherEntBuffer() ? pHigherEntBuffer()->iBufferNo() : 0);
   
   tET tEntry = aSkipRoots()->tNextEntry(0);
   while (C_ENT_END_TICKET != tEntry) {
@@ -1601,7 +1601,7 @@ void EntBuffer::vShowSubList(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   EntBuffer* pThisH0 = this;
-  EntBuffer* pThisH1 = pThisH0->pHigherBuffer();
+  EntBuffer* pThisH1 = pThisH0->pHigherEntBuffer();
   
   vTrace("{"_Stz);
   
@@ -1610,7 +1610,7 @@ void EntBuffer::vShowSubList(void)
   
   EntBuffer* pH0;
   for (pH0 = pThisH0;
-       pH0 && pH0->pHigherBuffer() == pThisH1;
+       pH0 && pH0->pHigherEntBuffer() == pThisH1;
        pH0 = pH0->pNextBuffer()) {
     
     if (pH0 != pThisH0)
@@ -1632,7 +1632,7 @@ void EntBuffer::vShowTree(bool bDumpBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  if (! pHigherBuffer() )
+  if (! pHigherEntBuffer() )
     vTrace("\nIndex Tree %p:\n"_Stz,this);
   
   vTrace("Height %lld "_Stz,m_iBufferHeight);
@@ -1855,7 +1855,7 @@ EntBuffer* EntBuffer::pUnlinkSubList(void)
   ASSERT(0 == m_iBufferHeight);
   
   EntBuffer* pThisH0 = this;
-  EntBuffer* pThisH1 = pThisH0->pHigherBuffer();
+  EntBuffer* pThisH1 = pThisH0->pHigherEntBuffer();
   EntBuffer* pNextH0 = pThisH0->pNextBuffer();
   EntBuffer* pNextH1 = pThisH1->pNextBuffer();
   
@@ -1868,7 +1868,7 @@ EntBuffer* EntBuffer::pUnlinkSubList(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // circumstance (b) only one L0 under H1
   
-  if (pNextH0->pHigherBuffer() != pHigherBuffer())
+  if (pNextH0->pHigherEntBuffer() != pHigherEntBuffer())
     return nullptr;
   
   //----------------------------------------------------------------------------
