@@ -654,8 +654,8 @@ void EntBuffer::vDipStick(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
 
-  if (m_pHigherBuffer)
-    _pEntBuffer(m_pHigherBuffer)->vDipStick();
+  if (pHigherBuffer())
+    _pEntBuffer(pHigherBuffer())->vDipStick();
     
   EntBuffer* pL  = _pEntBuffer(m_pPrevBuffer);
   EntBuffer* pLL = pL ? _pEntBuffer(pL->m_pPrevBuffer) : nullptr;
@@ -855,7 +855,7 @@ EntBuffer* EntBuffer::pHigherBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  return _pEntBuffer(m_pHigherBuffer);
+  return _pEntBuffer(LinkedBuffer::pHigherBuffer());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -865,7 +865,7 @@ void EntBuffer::vHigherBuffer(EntBuffer* pHigherBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  m_pHigherBuffer = pHigherBuffer;
+  LinkedBuffer::vHigherBuffer(pHigherBuffer);
 }
 
 /*----------------------------------------------------------------------------*/

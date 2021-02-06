@@ -95,8 +95,6 @@ PoolBuffer* BufferNo::pToPoolBuffer(i8 iBufferNo)
 /*----------------------------------------------------------------------------*/
 BufferNo BufferNo::tUNKNOWN(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
   BufferNo tBufferNo;
   
   tBufferNo = C_UNKNOWN;
