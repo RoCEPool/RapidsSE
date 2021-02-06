@@ -5680,6 +5680,8 @@ PromptFun __Prompt_without (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
+
+
 bool PROMPT::bPrompt_without(SePrompt* pPrompt)
 {
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();

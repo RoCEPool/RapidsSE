@@ -16,11 +16,11 @@ namespace BASE
     BufferNo(void);
    ~BufferNo(void) noexcept(false);
   
-    static i8            iToBufferNo(PoolBuffer* pPoolBuffer);
+    static i8            iToBufferNo(Object* pObject);
     static PoolBuffer* pToPoolBuffer(i8 iBufferNo);
   
     void operator =(i8 iBufferNo); // assignment
-    void operator =(PoolBuffer* pPoolBuffer); // assignment
+    void operator =(Object* pObject); // assignment
   
     i8 iGetBuffer(void);
     PoolBuffer* pGetBuffer(void);

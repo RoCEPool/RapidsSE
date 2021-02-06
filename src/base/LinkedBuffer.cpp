@@ -224,7 +224,7 @@ void LinkedBuffer::vLowerBuffer(LinkedBuffer* pLowerBuffer)
   
   m_pLowerBuffer = pLowerBuffer;
   
-  //m_tLowerBuffer = pLowerBuffer;
+  m_tLowerBuffer = pLowerBuffer;
   //RASSERT(m_tLowerBuffer.pGetBuffer() == pLowerBuffer);
 }
 

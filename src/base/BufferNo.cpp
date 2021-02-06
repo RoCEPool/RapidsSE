@@ -32,9 +32,12 @@ BufferNo::~BufferNo(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert address of linked buffer to buffer no                              */
 /*----------------------------------------------------------------------------*/
-i8 BufferNo::iToBufferNo(PoolBuffer* pPoolBuffer)
+i8 BufferNo::iToBufferNo(Object* pObject)
 {
-  i8 iBufferNo = PoolBuffer::iWithinPoolBuffer(pPoolBuffer);
+  i8 iBufferNo = PoolBuffer::iWithinPoolBuffer(pObject);
+  
+  if (C_UNKNOWN != iBufferNo)
+    vDebugPoint();
   
   return iBufferNo;
 }
@@ -64,10 +67,10 @@ void BufferNo::operator =(i8 iBufferNo)
 /*----------------------------------------------------------------------------*/
 /* assign buffer number                                                       */
 /*----------------------------------------------------------------------------*/
-void BufferNo::operator =(PoolBuffer* pPoolBuffer)
+void BufferNo::operator =(Object* pObject)
 {
-  if (pPoolBuffer)
-    m_iBufferNo = iToBufferNo(pPoolBuffer);
+  if (pObject)
+    m_iBufferNo = iToBufferNo(pObject);
   else
     m_iBufferNo = C_UNKNOWN;
 }
