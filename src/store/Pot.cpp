@@ -84,7 +84,7 @@ DataBuffer* Pot::pCompleted(i8 i_Ptn)
   }
   
   if (pCompletedBuffer) {
-    DataBuffer* pPrevBuffer = (DataBuffer*)pCompletedBuffer->pPrevBuffer();
+    DataBuffer* pPrevBuffer = (DataBuffer*)pCompletedBuffer->pPrevLinkedBuffer();
     pPrevBuffer->vNextLinkedBuffer(BufferNo::tUNKNOWN());
   }
   
@@ -201,7 +201,7 @@ void Pot::vAddBuffer(i8 i_Ptn, DataBuffer* pAddBuffer)
   
   
   if (m_paBufferChain[i_Ptn])
-    m_paBufferChain[i_Ptn]->vPrevBuffer(pAddBuffer);
+    m_paBufferChain[i_Ptn]->vPrevLinkedBuffer(pAddBuffer);
   
   m_paBufferChain[i_Ptn] = pAddBuffer;
 }

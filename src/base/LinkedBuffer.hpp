@@ -39,9 +39,9 @@ namespace BASE
     void          vNextLinkedBuffer(BufferNo tNextBufferNo);
     void          vNextLinkedBuffer(LinkedBuffer* pNextBuffer);
   
-    LinkedBuffer* pPrevBuffer(void);
-    void          vPrevBuffer(BufferNo tPrevBufferNo);
-    void          vPrevBuffer(LinkedBuffer* pPrevBuffer);
+    LinkedBuffer* pPrevLinkedBuffer(void);
+    void          vPrevLinkedBuffer(BufferNo tPrevBufferNo);
+    void          vPrevLinkedBuffer(LinkedBuffer* pPrevBuffer);
   };
   
   LinkedBuffer* _pLinkedBuffer(void* aAddr);

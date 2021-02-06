@@ -208,7 +208,7 @@ void TablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
   }
   else {
     pCrwBuffer->vNextLinkedBuffer(m_pCurrentCrwBuffer->pNextLinkedBuffer());
-    pCrwBuffer->vPrevBuffer(m_pCurrentCrwBuffer);
+    pCrwBuffer->vPrevLinkedBuffer(m_pCurrentCrwBuffer);
     m_pCurrentCrwBuffer->vNextLinkedBuffer(pCrwBuffer);
   }
   
@@ -480,7 +480,7 @@ CrwBuffer* TablePtn::pNewCurrentCrwBuffer(void)
   pCrwBuffer->vIsPermanent(true);
 
   pCrwBuffer->vNextLinkedBuffer(m_pCurrentCrwBuffer->pNextLinkedBuffer());
-  pCrwBuffer->vPrevBuffer(m_pCurrentCrwBuffer);
+  pCrwBuffer->vPrevLinkedBuffer(m_pCurrentCrwBuffer);
   m_pCurrentCrwBuffer->vNextLinkedBuffer(pCrwBuffer);
   
   m_pCurrentCrwBuffer = pCrwBuffer;
@@ -566,8 +566,8 @@ bool TablePtn::bPurge(i8 iOlderThanSeconds)
   
   // set prev pointer to null
   if (m_pRootCrwBuffer) {
-    ASSERT(pCrwBuffer ==  m_pRootCrwBuffer->pPrevBuffer());
-    m_pRootCrwBuffer->vPrevBuffer(nullptr);
+    ASSERT(pCrwBuffer ==  m_pRootCrwBuffer->pPrevLinkedBuffer());
+    m_pRootCrwBuffer->vPrevLinkedBuffer(nullptr);
   }
   
   m_okLock.vDropWrite();

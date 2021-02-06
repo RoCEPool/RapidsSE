@@ -1295,7 +1295,7 @@ EntBuffer* EntBuffer::pPrevBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  return _pEntBuffer(LinkedBuffer::pPrevBuffer());
+  return _pEntBuffer(LinkedBuffer::pPrevLinkedBuffer());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1305,7 +1305,7 @@ void EntBuffer::vPrevBuffer(EntBuffer* pPrevBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  LinkedBuffer::vPrevBuffer(pPrevBuffer);
+  LinkedBuffer::vPrevLinkedBuffer(pPrevBuffer);
 }
 
 /*----------------------------------------------------------------------------*/

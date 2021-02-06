@@ -50,7 +50,7 @@ void Step::vRegOperandCCollect(void)
     DataBuffer* pOperand_dataBuffer = _pDataBuffer(pOperand);
     
     pCollect_dataBuffer->vNextLinkedBuffer(pOperand_dataBuffer);
-    pOperand_dataBuffer->vPrevBuffer(pCollect_dataBuffer);
+    pOperand_dataBuffer->vPrevLinkedBuffer(pCollect_dataBuffer);
     
     pCollectingTail = pOperand;
   }
@@ -140,8 +140,8 @@ void Step::vRegOperandCSetFirst(void)
   
   // move to first buffer
   DataBuffer* pCollect_dataBuffer = _pDataBuffer(pCollect);
-  while (pCollect_dataBuffer->pPrevBuffer())
-    pCollect_dataBuffer = _pDataBuffer(pCollect_dataBuffer->pPrevBuffer());
+  while (pCollect_dataBuffer->pPrevLinkedBuffer())
+    pCollect_dataBuffer = _pDataBuffer(pCollect_dataBuffer->pPrevLinkedBuffer());
   
   Operand* pCollect_first = _pOperand(pCollect_dataBuffer);
 

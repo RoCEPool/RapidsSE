@@ -60,7 +60,7 @@ void HashSet::vAddBuffer(i8 i_Ptn, DataBuffer* pDataBuffer)
    pDataBuffer->vNextLinkedBuffer(m_paBufferChain[i_Ptn]);
    
    if (m_paBufferChain[i_Ptn])
-     m_paBufferChain[i_Ptn]->vPrevBuffer(pDataBuffer);
+     m_paBufferChain[i_Ptn]->vPrevLinkedBuffer(pDataBuffer);
    
    m_paBufferChain[i_Ptn] = pDataBuffer;
 }
@@ -96,7 +96,7 @@ DataBuffer* HashSet::pCompletedBuffer(i8 i_Ptn)
   }
   
   if (pCompletedBuffer) {
-    DataBuffer* pPrevBuffer = (DataBuffer*)pCompletedBuffer->pPrevBuffer();
+    DataBuffer* pPrevBuffer = (DataBuffer*)pCompletedBuffer->pPrevLinkedBuffer();
     pPrevBuffer->vNextLinkedBuffer(nullptr);
   }
   

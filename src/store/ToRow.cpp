@@ -124,7 +124,7 @@ RowBuffer* ToRow::pFullRowBuffer(void)
   }
   
   if (pFullRiwBuffer) {
-    RowBuffer* pPrevBuffer = _pRowBuffer(pFullRiwBuffer->pPrevBuffer());
+    RowBuffer* pPrevBuffer = _pRowBuffer(pFullRiwBuffer->pPrevLinkedBuffer());
     pPrevBuffer->vNextLinkedBuffer(nullptr);
   }
   
@@ -178,7 +178,7 @@ void ToRow::vNewRowBuffer(void)
   // link the new to old
   pRowBuffer->vNextLinkedBuffer(m_pRowBuffer);
   if (m_pRowBuffer)
-    m_pRowBuffer->vPrevBuffer(pRowBuffer);
+    m_pRowBuffer->vPrevLinkedBuffer(pRowBuffer);
   m_pRowBuffer = pRowBuffer;
   
   // initialise the row slab inside the new row buffer
