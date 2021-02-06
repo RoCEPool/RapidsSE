@@ -479,7 +479,7 @@ CrwBuffer* CrwBuffer::pPrevCrwBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  return _pCrwBuffer(m_pPrevBuffer);
+  return _pCrwBuffer(this->pPrevBuffer());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -489,7 +489,7 @@ void CrwBuffer::vPrevCrwBuffer(CrwBuffer* pPrevBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  m_pPrevBuffer = pPrevBuffer;
+  vPrevBuffer(pPrevBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -540,7 +540,7 @@ void CrwBuffer::vRestore(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
   RASSERT( ! m_pNextBuffer );
-  RASSERT( ! m_pPrevBuffer );
+  RASSERT( ! pPrevBuffer() );
   
   // set the table to nullptr (this pointer is not valid any more)
   vTable(nullptr);
@@ -625,7 +625,7 @@ void CrwBuffer::vShow(void)
          m_oRowTray.pNub()->nFreeAllotableBytes());
   
   vTrace("  prevBuffer %p nextBuffer %p\n"_Stz,
-         m_pPrevBuffer,m_pNextBuffer);
+         pPrevBuffer(),m_pNextBuffer);
   
   vTrace("  partition: %lld \n"_Stz, m_tPtnNo);
   
@@ -912,8 +912,8 @@ bool CrwBuffer::bVerifyNextPrev(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (m_pPrevBuffer) {
-    CrwBuffer* pPrevBuffer = _pCrwBuffer(m_pPrevBuffer);
+  if (pPrevBuffer()) {
+    CrwBuffer* pPrevBuffer = _pCrwBuffer(this->pPrevBuffer());
     if (pPrevBuffer->pNextBuffer() != this) {
       vVerifyFault(__func__,__FILE__,__LINE__);
       return false;
