@@ -49,7 +49,7 @@ void Step::vRegOperandCCollect(void)
     DataBuffer* pCollect_dataBuffer = _pDataBuffer(pCollectingTail);
     DataBuffer* pOperand_dataBuffer = _pDataBuffer(pOperand);
     
-    pCollect_dataBuffer->vNextBuffer(pOperand_dataBuffer);
+    pCollect_dataBuffer->vNextLinkedBuffer(pOperand_dataBuffer);
     pOperand_dataBuffer->vPrevBuffer(pCollect_dataBuffer);
     
     pCollectingTail = pOperand;

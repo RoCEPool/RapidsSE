@@ -95,9 +95,9 @@ void LinkedBuffer::vLinkAsNext(LinkedBuffer* pArgBuffer)
    
   */
   
-  pArgBuffer->vNextBuffer(m_tNextBuffer);      // (a)
-  if (pNextBuffer())
-    pNextBuffer()->vPrevBuffer(pArgBuffer->tBufferNo()); // (b)
+  pArgBuffer->vNextLinkedBuffer(m_tNextBuffer);      // (a)
+  if (pNextLinkedBuffer())
+    pNextLinkedBuffer()->vPrevBuffer(pArgBuffer->tBufferNo()); // (b)
   
   m_tNextBuffer = pArgBuffer;                  // (c)
   pArgBuffer->vPrevBuffer(this->tBufferNo());  // (d)
@@ -129,11 +129,11 @@ void LinkedBuffer::vLinkAsPrev(LinkedBuffer* pArgBuffer)
   */
   
   if (pPrevBuffer())
-    pPrevBuffer()->vNextBuffer(pArgBuffer->tBufferNo());  // (a)
+    pPrevBuffer()->vNextLinkedBuffer(pArgBuffer->tBufferNo());  // (a)
   pArgBuffer->vPrevBuffer(this->tBufferNo());             // (b)
   
-  if (pNextBuffer())
-    pNextBuffer()->vPrevBuffer(pArgBuffer->tBufferNo());  // (d)
+  if (pNextLinkedBuffer())
+    pNextLinkedBuffer()->vPrevBuffer(pArgBuffer->tBufferNo());  // (d)
   m_tNextBuffer = pArgBuffer;                             // (c)
 }
 
@@ -164,10 +164,10 @@ void LinkedBuffer::vUnLink(void)
   
   //ASSERT( ! m_pNextBuffer )
   if (pPrevBuffer())
-    pPrevBuffer()->vNextBuffer(m_tNextBuffer);    // (a)
+    pPrevBuffer()->vNextLinkedBuffer(m_tNextBuffer);    // (a)
 
-  if (pNextBuffer())
-    pNextBuffer()->m_tPrevBuffer = m_tPrevBuffer; // (d)
+  if (pNextLinkedBuffer())
+    pNextLinkedBuffer()->m_tPrevBuffer = m_tPrevBuffer; // (d)
   
 }
 
@@ -245,7 +245,7 @@ void LinkedBuffer::vLowerLinkedBuffer(BufferNo tLowerBufferNo)
 /*----------------------------------------------------------------------------*/
 /* get next buffer                                                            */
 /*----------------------------------------------------------------------------*/
-LinkedBuffer* LinkedBuffer::pNextBuffer(void)
+LinkedBuffer* LinkedBuffer::pNextLinkedBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -257,7 +257,7 @@ LinkedBuffer* LinkedBuffer::pNextBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* set next buffer                                                            */
 /*----------------------------------------------------------------------------*/
-void LinkedBuffer::vNextBuffer(LinkedBuffer* pNextBuffer)
+void LinkedBuffer::vNextLinkedBuffer(LinkedBuffer* pNextBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -269,7 +269,7 @@ void LinkedBuffer::vNextBuffer(LinkedBuffer* pNextBuffer)
 /*----------------------------------------------------------------------------*/
 /* set next buffer                                                            */
 /*----------------------------------------------------------------------------*/
-void LinkedBuffer::vNextBuffer(BufferNo tNextBufferNo)
+void LinkedBuffer::vNextLinkedBuffer(BufferNo tNextBufferNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   

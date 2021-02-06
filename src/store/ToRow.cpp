@@ -117,15 +117,15 @@ RowBuffer* ToRow::pFullRowBuffer(void)
   RowBuffer* pFullRiwBuffer = nullptr;
   
   RowBuffer* pRowBuffer = m_pRowBuffer ?
-                            _pRowBuffer(m_pRowBuffer->pNextBuffer()) : nullptr;
+                            _pRowBuffer(m_pRowBuffer->pNextLinkedBuffer()) : nullptr;
   while (pRowBuffer) {
     pFullRiwBuffer = pRowBuffer;
-    pRowBuffer = _pRowBuffer(pRowBuffer->pNextBuffer());
+    pRowBuffer = _pRowBuffer(pRowBuffer->pNextLinkedBuffer());
   }
   
   if (pFullRiwBuffer) {
     RowBuffer* pPrevBuffer = _pRowBuffer(pFullRiwBuffer->pPrevBuffer());
-    pPrevBuffer->vNextBuffer(nullptr);
+    pPrevBuffer->vNextLinkedBuffer(nullptr);
   }
   
   return pFullRiwBuffer;
@@ -176,7 +176,7 @@ void ToRow::vNewRowBuffer(void)
   RowBuffer* pRowBuffer = new RowBuffer;
   
   // link the new to old
-  pRowBuffer->vNextBuffer(m_pRowBuffer);
+  pRowBuffer->vNextLinkedBuffer(m_pRowBuffer);
   if (m_pRowBuffer)
     m_pRowBuffer->vPrevBuffer(pRowBuffer);
   m_pRowBuffer = pRowBuffer;

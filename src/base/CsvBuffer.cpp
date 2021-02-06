@@ -141,7 +141,7 @@ CsvBuffer* CsvBuffer::pNextBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
   
-  return _pCsvBuffer(LinkedBuffer::pNextBuffer());
+  return _pCsvBuffer(LinkedBuffer::pNextLinkedBuffer());
 }
 
 /*----------------------------------------------------------------------------*/

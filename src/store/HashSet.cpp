@@ -57,7 +57,7 @@ void HashSet::vAddBuffer(i8 i_Ptn, DataBuffer* pDataBuffer)
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHSET,_FOOTER_);
 
    // link the old with this
-   pDataBuffer->vNextBuffer(m_paBufferChain[i_Ptn]);
+   pDataBuffer->vNextLinkedBuffer(m_paBufferChain[i_Ptn]);
    
    if (m_paBufferChain[i_Ptn])
      m_paBufferChain[i_Ptn]->vPrevBuffer(pDataBuffer);
@@ -88,16 +88,16 @@ DataBuffer* HashSet::pCompletedBuffer(i8 i_Ptn)
   
   DataBuffer* pDataBuffer = (DataBuffer*)
                               (m_paBufferChain[i_Ptn]
-                                 ? m_paBufferChain[i_Ptn]->pNextBuffer()
+                                 ? m_paBufferChain[i_Ptn]->pNextLinkedBuffer()
                                  : nullptr);
   while (pDataBuffer) {
     pCompletedBuffer = pDataBuffer;
-    pDataBuffer = (DataBuffer*)pDataBuffer->pNextBuffer();
+    pDataBuffer = (DataBuffer*)pDataBuffer->pNextLinkedBuffer();
   }
   
   if (pCompletedBuffer) {
     DataBuffer* pPrevBuffer = (DataBuffer*)pCompletedBuffer->pPrevBuffer();
-    pPrevBuffer->vNextBuffer(nullptr);
+    pPrevBuffer->vNextLinkedBuffer(nullptr);
   }
   
   return pCompletedBuffer;

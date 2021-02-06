@@ -207,9 +207,9 @@ void TablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
     m_pRootCrwBuffer = pCrwBuffer;
   }
   else {
-    pCrwBuffer->vNextBuffer(m_pCurrentCrwBuffer->pNextBuffer());
+    pCrwBuffer->vNextLinkedBuffer(m_pCurrentCrwBuffer->pNextLinkedBuffer());
     pCrwBuffer->vPrevBuffer(m_pCurrentCrwBuffer);
-    m_pCurrentCrwBuffer->vNextBuffer(pCrwBuffer);
+    m_pCurrentCrwBuffer->vNextLinkedBuffer(pCrwBuffer);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -479,9 +479,9 @@ CrwBuffer* TablePtn::pNewCurrentCrwBuffer(void)
   pCrwBuffer->vPtnNo(m_tPtnNo);
   pCrwBuffer->vIsPermanent(true);
 
-  pCrwBuffer->vNextBuffer(m_pCurrentCrwBuffer->pNextBuffer());
+  pCrwBuffer->vNextLinkedBuffer(m_pCurrentCrwBuffer->pNextLinkedBuffer());
   pCrwBuffer->vPrevBuffer(m_pCurrentCrwBuffer);
-  m_pCurrentCrwBuffer->vNextBuffer(pCrwBuffer);
+  m_pCurrentCrwBuffer->vNextLinkedBuffer(pCrwBuffer);
   
   m_pCurrentCrwBuffer = pCrwBuffer;
     

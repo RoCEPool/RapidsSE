@@ -257,7 +257,7 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask, bool bSet)
     while (pOperand) {
       pQueueLeft()->vAppendOperand(pOperand);
       DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
-      pOperand = pDataBuffer->pNextBuffer();
+      pOperand = pDataBuffer->pNextLinkedBuffer();
     }
   }
   else
@@ -296,7 +296,7 @@ void Op::vAppendRight(Operand* pOperand, Task* pTriggeringTask, bool bSet)
     while (pOperand) {
       pQueueRight()->vAppendOperand(pOperand);
       DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
-      pOperand = pDataBuffer->pNextBuffer();
+      pOperand = pDataBuffer->pNextLinkedBuffer();
     }
   }
   pQueueRight()->vAppendOperand(pOperand);
@@ -1606,7 +1606,7 @@ void Op::vSend(Operand* pOperand, bool bSet, i8 i_Node, tPN tPtnNo)
       // send the operand job across the sendNode
       AM::vSend(AM::pExecutingTask(m_pOpJob), pSendNode, pXmitOperand);
       DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
-      pOperand = pDataBuffer->pNextBuffer();
+      pOperand = pDataBuffer->pNextLinkedBuffer();
     }
   }
   else {
