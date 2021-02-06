@@ -107,13 +107,43 @@ void LinkedBuffer::vLinkAsNext(LinkedBuffer* pArgBuffer)
    
   */
   
-  pArgBuffer->vNextBuffer(m_pNextBuffer);    // (a)
+  pArgBuffer->vNextBuffer(m_tNextBuffer);      // (a)
   if (m_pNextBuffer)
-    m_pNextBuffer->vPrevBuffer(pArgBuffer);  // (b)
+    m_pNextBuffer->vPrevBuffer(pArgBuffer->tBufferNo()); // (b)
   
-  m_pNextBuffer = pArgBuffer;                // (c)
-  pArgBuffer->vPrevBuffer(this);             // (d)
+  m_tNextBuffer = pArgBuffer;                  // (c)
+  pArgBuffer->vPrevBuffer(this->tBufferNo());  // (d)
 }
+/*----------------------------------------------------------------------------*/
+//void LinkedBuffer::vLinkAsNext(LinkedBuffer* pArgBuffer)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_);
+//
+//  /*
+//
+//     +-------------+         +-------------+
+//     | this buffer |         | next buffer |
+//     +-------------+         +-------------+
+//     |        next | (a) --> |        next |
+//     | prev        | <-- (b) | prev        |
+//     +-------------+         +-------------+
+//
+//     +-------------+         +-------------+         +--------------+
+//     | this buffer |         | arg buffer  |         | next' buffer |
+//     +-------------+         +-------------+         +--------------+
+//     |        next | (c) --> |        next | (a) --> |         next |
+//     | prev        | <-- (d) | prev        | <-- (b) | prev         |
+//     +-------------+         +-------------+         +--------------+
+//
+//  */
+//
+//  pArgBuffer->vNextBuffer(m_pNextBuffer);    // (a)
+//  if (m_pNextBuffer)
+//    m_pNextBuffer->vPrevBuffer(pArgBuffer);  // (b)
+//
+//  m_pNextBuffer = pArgBuffer;                // (c)
+//  pArgBuffer->vPrevBuffer(this);             // (d)
+//}
 
 /*----------------------------------------------------------------------------*/
 /* link given buffer before this buffer                                       */
@@ -141,13 +171,44 @@ void LinkedBuffer::vLinkAsPrev(LinkedBuffer* pArgBuffer)
   */
   
   if (m_pPrevBuffer)
-    m_pPrevBuffer->vNextBuffer(pArgBuffer);  // (a)
-  pArgBuffer->vPrevBuffer(this);             // (b)
+    m_pPrevBuffer->vNextBuffer(pArgBuffer->tBufferNo());  // (a)
+  pArgBuffer->vPrevBuffer(this->tBufferNo());             // (b)
   
   if (m_pNextBuffer)
-    m_pNextBuffer->vPrevBuffer(pArgBuffer);  // (d)
-  m_pNextBuffer = pArgBuffer;                // (c)
+    m_pNextBuffer->vPrevBuffer(pArgBuffer->tBufferNo());  // (d)
+  m_pNextBuffer = pArgBuffer;                             // (c)
 }
+/*----------------------------------------------------------------------------*/
+//void LinkedBuffer::vLinkAsPrev(LinkedBuffer* pArgBuffer)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_);
+//
+//  /*
+//
+//     +-------------+         +-------------+
+//     | prev buffer |         | this buffer |
+//     +-------------+         +-------------+
+//     |        next | (c) --> |        next |
+//     | prev        | <-- (d) | prev        |
+//     +-------------+         +-------------+
+//
+//     +-------------+         +-------------+         +--------------+
+//     | prev buffer |         | arg buffer  |         | this buffer  |
+//     +-------------+         +-------------+         +--------------+
+//     |        next | (a) --> |        next | (c) --> |         next |
+//     | prev        | <-- (b) | prev        | <-- (d) | prev         |
+//     +-------------+         +-------------+         +--------------+
+//
+//  */
+//
+//  if (m_pPrevBuffer)
+//    m_pPrevBuffer->vNextBuffer(pArgBuffer);  // (a)
+//  pArgBuffer->vPrevBuffer(this);             // (b)
+//
+//  if (m_pNextBuffer)
+//    m_pNextBuffer->vPrevBuffer(pArgBuffer);  // (d)
+//  m_pNextBuffer = pArgBuffer;                // (c)
+//}
 
 /*----------------------------------------------------------------------------*/
 /* unlink given buffer from the next and previous buffers                     */
