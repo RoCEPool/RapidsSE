@@ -7,9 +7,8 @@ namespace BASE
 {
   class LinkedBuffer : public Operand
   {
-  protected:
-    LinkedBuffer* m_pNextBuffer;   // next buffer
   private:
+    LinkedBuffer* m_pNextBuffer;   // next buffer
     LinkedBuffer* m_pPrevBuffer;   // previous buffer
   
     LinkedBuffer* m_pHigherBuffer; // higher buffer
