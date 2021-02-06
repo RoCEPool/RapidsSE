@@ -69,6 +69,20 @@ LinkedBuffer::~LinkedBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get buffer no of this buffer                                               */
+/*----------------------------------------------------------------------------*/
+BufferNo LinkedBuffer::tBufferNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  BufferNo tBufferNo;
+  
+  tBufferNo = this;
+
+  return tBufferNo;
+}
+
+/*----------------------------------------------------------------------------*/
 /* link given buffer after this buffer                                        */
 /*----------------------------------------------------------------------------*/
 void LinkedBuffer::vLinkAsNext(LinkedBuffer* pArgBuffer)
@@ -191,6 +205,16 @@ LinkedBuffer* LinkedBuffer::pHigherBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* set higher buffer                                                          */
 /*----------------------------------------------------------------------------*/
+void LinkedBuffer::vHigherBuffer(BufferNo tHigherBufferNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_tHigherBuffer = tHigherBufferNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set higher buffer                                                          */
+/*----------------------------------------------------------------------------*/
 void LinkedBuffer::vHigherBuffer(LinkedBuffer* pHigherBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
@@ -229,6 +253,16 @@ void LinkedBuffer::vLowerBuffer(LinkedBuffer* pLowerBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set lower buffer                                                           */
+/*----------------------------------------------------------------------------*/
+void LinkedBuffer::vLowerBuffer(BufferNo tLowerBufferNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_tLowerBuffer = tLowerBufferNo;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get next buffer                                                            */
 /*----------------------------------------------------------------------------*/
 LinkedBuffer* LinkedBuffer::pNextBuffer(void)
@@ -257,6 +291,16 @@ void LinkedBuffer::vNextBuffer(LinkedBuffer* pNextBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set next buffer                                                            */
+/*----------------------------------------------------------------------------*/
+void LinkedBuffer::vNextBuffer(BufferNo tNextBufferNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_tNextBuffer = tNextBufferNo;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get prev buffer                                                            */
 /*----------------------------------------------------------------------------*/
 LinkedBuffer* LinkedBuffer::pPrevBuffer(void)
@@ -281,6 +325,16 @@ void LinkedBuffer::vPrevBuffer(LinkedBuffer* pPrevBuffer)
   
   m_tPrevBuffer = pPrevBuffer;
   RASSERT(m_tPrevBuffer.pGetLinkedBuffer() == pPrevBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set prev buffer                                                            */
+/*----------------------------------------------------------------------------*/
+void LinkedBuffer::vPrevBuffer(BufferNo tPrevBufferNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_tPrevBuffer = tPrevBufferNo;
 }
 
 /*============================================================================*/

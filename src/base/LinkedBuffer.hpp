@@ -29,20 +29,26 @@ namespace BASE
     LinkedBuffer(eCN eClass);
     ~LinkedBuffer(void) noexcept(false);
   
+    BufferNo tBufferNo(void);   // buffer no
+  
     void vLinkAsNext(LinkedBuffer* pArgBuffer);
     void vLinkAsPrev(LinkedBuffer* pArgBuffer);
     void vUnLink(void);
 
     LinkedBuffer* pHigherBuffer(void);
+    void          vHigherBuffer(BufferNo tHigherBufferNo);
     void          vHigherBuffer(LinkedBuffer* pHigherBuffer);
-  
+
     LinkedBuffer* pLowerBuffer(void);
+    void          vLowerBuffer(BufferNo tLowerBufferNo);
     void          vLowerBuffer(LinkedBuffer* pLowerBuffer);
   
     LinkedBuffer* pNextBuffer(void);
+    void          vNextBuffer(BufferNo tNextBufferNo);
     void          vNextBuffer(LinkedBuffer* pNextBuffer);
   
     LinkedBuffer* pPrevBuffer(void);
+    void          vPrevBuffer(BufferNo tPrevBufferNo);
     void          vPrevBuffer(LinkedBuffer* pPrevBuffer);
   };
   
