@@ -85,7 +85,7 @@ DataBuffer* Pot::pCompleted(i8 i_Ptn)
   
   if (pCompletedBuffer) {
     DataBuffer* pPrevBuffer = (DataBuffer*)pCompletedBuffer->pPrevBuffer();
-    pPrevBuffer->vNextBuffer(nullptr);
+    pPrevBuffer->vNextBuffer(BufferNo::tUNKNOWN());
   }
   
   return pCompletedBuffer;
@@ -108,7 +108,7 @@ DataBuffer* Pot::pDangling(i8 i_Ptn)
       : nullptr;
   
   if (pDanglingBuffer)
-    pDanglingBuffer->vNextBuffer(nullptr);
+    pDanglingBuffer->vNextBuffer(BufferNo::tUNKNOWN());
   
   return pDanglingBuffer;
 }
