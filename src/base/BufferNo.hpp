@@ -26,6 +26,8 @@ namespace BASE
   
     static PoolBuffer* pToPoolBuffer(i8 iBufferNo);
 
+    static BufferNo tUNKNOWN(void);
+
     void operator =(i8 iBufferNo); // assignment
     void operator =(Object* pObject); // assignment
   
