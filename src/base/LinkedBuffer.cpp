@@ -237,7 +237,7 @@ void LinkedBuffer::vUnLink(void)
   
   //ASSERT( ! m_pNextBuffer )
   if (m_pPrevBuffer)
-    m_pPrevBuffer->vNextBuffer(m_pNextBuffer);    // (a)
+    m_pPrevBuffer->vNextBuffer(m_tNextBuffer);    // (a)
 
   if (m_pNextBuffer)
     m_pNextBuffer->m_pPrevBuffer = m_pPrevBuffer; // (d)
@@ -339,9 +339,9 @@ void LinkedBuffer::vNextBuffer(LinkedBuffer* pNextBuffer)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_pNextBuffer = pNextBuffer;
-  
+
   m_tNextBuffer = pNextBuffer;
-    
+
   RASSERT(m_tNextBuffer.pGetLinkedBuffer() == pNextBuffer);
 }
 
