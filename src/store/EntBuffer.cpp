@@ -1362,9 +1362,9 @@ void EntBuffer::vRestore(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  ASSERT( ! m_pHigherBuffer );
-  ASSERT( ! m_pNextBuffer );
-  ASSERT( ! m_pPrevBuffer );
+//  ASSERT( ! m_pHigherBuffer );
+//  ASSERT( ! m_pNextBuffer );
+//  ASSERT( ! m_pPrevBuffer );
   
   // set the index to nullptr (this pointer is not valid any more)
   m_pIndexTree = nullptr;

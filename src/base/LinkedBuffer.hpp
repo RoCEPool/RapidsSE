@@ -8,19 +8,11 @@ namespace BASE
   class LinkedBuffer : public Operand
   {
   private:
-//    LinkedBuffer* m_pNextBuffer;   // next buffer
-//    LinkedBuffer* m_pPrevBuffer;   // previous buffer
-//
-//    LinkedBuffer* m_pHigherBuffer; // higher buffer
-//    LinkedBuffer* m_pLowerBuffer;  // lower buffer
-  
     BufferNo m_tNextBuffer;   // next buffer
     BufferNo m_tPrevBuffer;   // previous buffer
 
     BufferNo m_tHigherBuffer; // higher buffer
     BufferNo m_tLowerBuffer;  // lower buffer
-
-    //i8 m__padToCacheLine[4];
 
   private:
     SingleWord    m__PadToCacheLine[4]; // padding to cache line

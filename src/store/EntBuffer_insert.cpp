@@ -1291,16 +1291,16 @@ EntBuffer* EntBuffer::pNewInsertIntoRight(Ent* aEntry, EntBuffer** ppRootBuffer)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // split the left buffer to yield a right buffer
   
-  ASSERT(! m_pNextBuffer || this == m_pNextBuffer->pPrevBuffer());
-  ASSERT(! m_pPrevBuffer || this == m_pPrevBuffer->pNextBuffer());
+  ASSERT(! pNextBuffer() || this == pNextBuffer()->pPrevBuffer());
+  ASSERT(! pPrevBuffer() || this == pPrevBuffer()->pNextBuffer());
 
   EntBuffer* pRightBuffer = pNewNextBuffer();
   
-  ASSERT(pRightBuffer || m_pNextBuffer);
+  ASSERT(pRightBuffer || pNextBuffer());
   ASSERT(this == pRightBuffer->pPrevBuffer());
 
-  ASSERT(this == m_pNextBuffer->pPrevBuffer());
-  ASSERT(! m_pPrevBuffer || this == m_pPrevBuffer->pNextBuffer());
+  ASSERT(this == pNextBuffer()->pPrevBuffer());
+  ASSERT(! pPrevBuffer() || this == pPrevBuffer()->pNextBuffer());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert the first key of left buffer into higher buffer if higher buffer
@@ -1664,7 +1664,7 @@ EntBuffer* EntBuffer::pSplitBuffer(i8 iSplitRatio)
        aCopyEntry = aNextEntry) {
     
     ASSERT(! m_iBufferHeight ||
-           EntBuffer::pRefdEntBuffer(aCopyEntry)->m_pHigherBuffer == pThisLeftBuffer);
+           EntBuffer::pRefdEntBuffer(aCopyEntry)->pHigherBuffer() == pThisLeftBuffer);
     
     nEntriesCopied++;
     
@@ -1685,7 +1685,7 @@ EntBuffer* EntBuffer::pSplitBuffer(i8 iSplitRatio)
     
     // these can be commented
     ASSERT(! m_iBufferHeight ||
-           EntBuffer::pRefdEntBuffer(aNewEntry)->m_pHigherBuffer == pThisLeftBuffer);
+           EntBuffer::pRefdEntBuffer(aNewEntry)->pHigherBuffer() == pThisLeftBuffer);
     
     i8 i_Buffer = xRef.iBuffer();
     HeapBuffer* pHeapBuffer =
@@ -1695,8 +1695,8 @@ EntBuffer* EntBuffer::pSplitBuffer(i8 iSplitRatio)
       EntBuffer* pChildBuffer =
       reinterpret_cast<EntBuffer*>(pHeapBuffer->aFirstChunk());
       
-      ASSERT(pChildBuffer->m_pHigherBuffer ==
-             EntBuffer::pRefdEntBuffer(aNewEntry)->m_pHigherBuffer);
+      ASSERT(pChildBuffer->pHigherBuffer() ==
+             EntBuffer::pRefdEntBuffer(aNewEntry)->pHigherBuffer());
     }
     else {
       CrwBuffer* pChildBuffer =
@@ -1750,8 +1750,8 @@ EntBuffer* EntBuffer::pSplitBuffer(i8 iSplitRatio)
       EntBuffer* pChildBuffer =
       reinterpret_cast<EntBuffer*>(pHeapBuffer->aFirstChunk());
       
-      ASSERT(pChildBuffer->m_pHigherBuffer ==
-             EntBuffer::pRefdEntBuffer(aMovedEntry)->m_pHigherBuffer);
+      ASSERT(pChildBuffer->pHigherBuffer() ==
+             EntBuffer::pRefdEntBuffer(aMovedEntry)->pHigherBuffer());
       
       
       if (pChildBuffer->pHigherBuffer() != pThisLeftBuffer) {
@@ -1760,7 +1760,7 @@ EntBuffer* EntBuffer::pSplitBuffer(i8 iSplitRatio)
         //pChildBuffer->vShow();
       }
       
-      ASSERT(pChildBuffer->m_pHigherBuffer == pThisLeftBuffer);
+      ASSERT(pChildBuffer->pHigherBuffer() == pThisLeftBuffer);
       pChildBuffer->vHigherBuffer(pNewRightBuffer);
     }
   }
