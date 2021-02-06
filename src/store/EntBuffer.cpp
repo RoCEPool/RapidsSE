@@ -355,7 +355,7 @@ Ent* EntBuffer::aGetNextEntry(EntBuffer** ppEntBuffer, Ent* aPrevEntry)
   
   Ent *aNextEntry = pEntBuffer->aNextEntry(aPrevEntry, 0);
   if (! aNextEntry ) {
-    pEntBuffer = pEntBuffer->pNextBuffer();
+    pEntBuffer = pEntBuffer->pNextEntBuffer();
     *ppEntBuffer = pEntBuffer;
     if (pEntBuffer)
       aNextEntry = pEntBuffer->aLeadEntry();
@@ -660,8 +660,8 @@ void EntBuffer::vDipStick(void)
   EntBuffer* pL  = _pEntBuffer(this->pPrevBuffer());
   EntBuffer* pLL = pL ? _pEntBuffer(pL->pPrevBuffer()) : nullptr;
   
-  EntBuffer* pR  = _pEntBuffer(this->pNextBuffer());
-  EntBuffer* pRR = pR ? _pEntBuffer(pR->pNextBuffer()) : nullptr;
+  EntBuffer* pR  = _pEntBuffer(this->pNextEntBuffer());
+  EntBuffer* pRR = pR ? _pEntBuffer(pR->pNextEntBuffer()) : nullptr;
 
   vTrace("%lld "_Stz,m_iBufferHeight);
   
@@ -955,7 +955,7 @@ i8 EntBuffer::iLengthList(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   i8 iLength = 0;
-  for (EntBuffer* pLn = this; pLn; pLn = pLn->pNextBuffer())
+  for (EntBuffer* pLn = this; pLn; pLn = pLn->pNextEntBuffer())
     iLength++;
   
   return iLength;
@@ -976,7 +976,7 @@ i8 EntBuffer::iLengthSubList(void)
   EntBuffer* pH0;
   for (pH0 = pThisH0;
        pH0 && pH0->pHigherEntBuffer() == pThisH1;
-       pH0 = pH0->pNextBuffer()) {
+       pH0 = pH0->pNextEntBuffer()) {
     
     iLength++;
   }
@@ -1035,7 +1035,7 @@ Ent* EntBuffer::pMoveToGreaterThanEntry_gen(Ent* aEnt, Key* aGivenKey, EntBuffer
     if ( ! aEnt) {
       
       // move to the next buffer
-      *ppEntBuffer = pEntBuffer->pNextBuffer();
+      *ppEntBuffer = pEntBuffer->pNextEntBuffer();
       
       if (*ppEntBuffer) {
         return (*ppEntBuffer)->pMoveToGreaterThanEntry_gen((*ppEntBuffer)->aSkipRoots(), aGivenKey, ppEntBuffer);
@@ -1071,7 +1071,7 @@ Ent* EntBuffer::pMoveToGreaterThanEntry_int(Ent* aEnt, Key* aGivenKey, EntBuffer
     if ( ! aEnt) {
       
       // move to the next buffer
-      *ppEntBuffer = pEntBuffer->pNextBuffer();
+      *ppEntBuffer = pEntBuffer->pNextEntBuffer();
       
       if (*ppEntBuffer) {
         return (*ppEntBuffer)->pMoveToGreaterThanEntry_int((*ppEntBuffer)->aSkipRoots(), aGivenKey, ppEntBuffer);
@@ -1125,7 +1125,7 @@ Ent* EntBuffer::pMoveToGreaterEqualEntry_gen(Ent* aEnt, Key* aGivenKey, EntBuffe
     if (!aEnt) {
       
       // move to the next buffer
-      *ppEntBuffer = pEntBuffer->pNextBuffer();
+      *ppEntBuffer = pEntBuffer->pNextEntBuffer();
       
       if (*ppEntBuffer) {
         return pMoveToGreaterEqualEntry((*ppEntBuffer)->aSkipRoots(), aGivenKey, ppEntBuffer);
@@ -1165,7 +1165,7 @@ Ent* EntBuffer::pMoveToGreaterEqualEntry_int(Ent* aEnt, Key* aGivenKey, EntBuffe
     if (!aEnt) {
       
       // move to the next buffer
-      *ppEntBuffer = pEntBuffer->pNextBuffer();
+      *ppEntBuffer = pEntBuffer->pNextEntBuffer();
       
       if (*ppEntBuffer) {
         return pMoveToGreaterEqualEntry((*ppEntBuffer)->aSkipRoots(), aGivenKey, ppEntBuffer);
@@ -1193,7 +1193,7 @@ Ent* EntBuffer::pMoveToNextEntry(Ent* aEnt, EntBuffer** ppEntBuffer)
   while( ! aEnt) {
     
     // move to the next buffer
-    *ppEntBuffer = pEntBuffer->pNextBuffer();
+    *ppEntBuffer = pEntBuffer->pNextEntBuffer();
     
     if (*ppEntBuffer) {
       return pMoveToNextEntry((*ppEntBuffer)->aSkipRoots(), ppEntBuffer);
@@ -1222,7 +1222,7 @@ Ent* EntBuffer::aNextEntry(Ent* aPrevEntry)
 /*----------------------------------------------------------------------------*/
 /* get next buffer                                                            */
 /*----------------------------------------------------------------------------*/
-EntBuffer* EntBuffer::pNextBuffer(void)
+EntBuffer* EntBuffer::pNextEntBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
@@ -1232,7 +1232,7 @@ EntBuffer* EntBuffer::pNextBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* set next buffer                                                            */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vNextBuffer(EntBuffer* pNextBuffer)
+void EntBuffer::vNextEntBuffer(EntBuffer* pNextBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -1514,7 +1514,7 @@ void EntBuffer::vShow(bool bEntries, Ent* aMarkEntry)
          this,iBufferNo(),nItems(),nUsedBytes(),nFreeBytes());
   
   vTrace("  higherBuffer %p (L%s) prevBuffer %p nextBuffer %p\n"_Stz,
-         pHigherEntBuffer(),sHigherBuffer.szStz(),pPrevBuffer(),pNextBuffer());
+         pHigherEntBuffer(),sHigherBuffer.szStz(),pPrevBuffer(),pNextEntBuffer());
   
   vTrace("  index: %s partition: %lld height: %lld\n"_Stz,
          m_pIndexTree && m_pIndexTree->pIndex() ? m_pIndexTree->pIndex()->szIndexNm() : C_NULL,m_tPtnNo,m_iBufferHeight);
@@ -1611,7 +1611,7 @@ void EntBuffer::vShowSubList(void)
   EntBuffer* pH0;
   for (pH0 = pThisH0;
        pH0 && pH0->pHigherEntBuffer() == pThisH1;
-       pH0 = pH0->pNextBuffer()) {
+       pH0 = pH0->pNextEntBuffer()) {
     
     if (pH0 != pThisH0)
       vTrace(","_Stz);
@@ -1652,7 +1652,7 @@ void EntBuffer::vShowTree(bool bDumpBuffer)
   if (bDumpBuffer) {
     for (EntBuffer* pBuffer = this;
          pBuffer;
-         pBuffer = pBuffer->pNextBuffer())
+         pBuffer = pBuffer->pNextEntBuffer())
       pBuffer->vShow(true);
   }
   
@@ -1718,11 +1718,11 @@ void EntBuffer::vSpliceAfter(EntBuffer* pSplicedBuffer)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   EntBuffer* pThisBuffer = this;
-  EntBuffer* pNextBuffer = pThisBuffer->pNextBuffer();
+  EntBuffer* pNextBuffer = pThisBuffer->pNextEntBuffer();
   
   // the spliced buffer is always inserted after this buffer
-  pThisBuffer->vNextBuffer(pSplicedBuffer);
-  pSplicedBuffer->vNextBuffer(pNextBuffer);
+  pThisBuffer->vNextEntBuffer(pSplicedBuffer);
+  pSplicedBuffer->vNextEntBuffer(pNextBuffer);
   pSplicedBuffer->vPrevBuffer(pThisBuffer);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1856,8 +1856,8 @@ EntBuffer* EntBuffer::pUnlinkSubList(void)
   
   EntBuffer* pThisH0 = this;
   EntBuffer* pThisH1 = pThisH0->pHigherEntBuffer();
-  EntBuffer* pNextH0 = pThisH0->pNextBuffer();
-  EntBuffer* pNextH1 = pThisH1->pNextBuffer();
+  EntBuffer* pNextH0 = pThisH0->pNextEntBuffer();
+  EntBuffer* pNextH1 = pThisH1->pNextEntBuffer();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // circumstance (a) no more L0
@@ -1888,7 +1888,7 @@ EntBuffer* EntBuffer::pUnlinkSubList(void)
   if (! pNextH1) {
     
     // last H1, therefore the next chain terminates here
-    pThisH0->vNextBuffer(nullptr);
+    pThisH0->vNextEntBuffer(nullptr);
     
     return pThisH0SubList;
   }
@@ -1900,13 +1900,13 @@ EntBuffer* EntBuffer::pUnlinkSubList(void)
   EntBuffer* pLastH0ofThisH1 = pFirstH0ofNextH1->pPrevBuffer();
   
   // the next chain points to first L0 buffer of next H1
-  pThisH0->vNextBuffer(pFirstH0ofNextH1);
+  pThisH0->vNextEntBuffer(pFirstH0ofNextH1);
   
   // the prev chain of first L0 of next H1 is this L0
   pFirstH0ofNextH1->vPrevBuffer(pThisH0);
   
   // the prev chain of last L0 of sublist terminates
-  pLastH0ofThisH1->vNextBuffer(nullptr);
+  pLastH0ofThisH1->vNextEntBuffer(nullptr);
   
   return pThisH0SubList;
 }

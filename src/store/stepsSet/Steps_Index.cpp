@@ -247,7 +247,7 @@ void Step::vIndexDeleteNext(void)
         
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // move to next buffer
-        pEntBuffer = pEntBuffer->pNextBuffer();
+        pEntBuffer = pEntBuffer->pNextEntBuffer();
         
         // next buffer ?
         if ( pEntBuffer )

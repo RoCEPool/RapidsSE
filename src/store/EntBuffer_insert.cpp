@@ -50,7 +50,7 @@ void EntBuffer::vBuildSkipList(void)
       EntBuffer* pChildBufferA = EntBuffer::pRefdEntBuffer(aPrevEnt);
       EntBuffer* pChildBufferB = EntBuffer::pRefdEntBuffer(aEntry);
 
-      if (pChildBufferA->pNextBuffer() != pChildBufferB) {
+      if (pChildBufferA->pNextEntBuffer() != pChildBufferB) {
         vVerifyFault(__func__,__FILE__,__LINE__);
       }
       
@@ -1171,7 +1171,7 @@ void EntBuffer::vLazyBuild(void)
     
     pEntBuffer->vBuildSkipList();
     
-    pEntBuffer = pEntBuffer->pNextBuffer();
+    pEntBuffer = pEntBuffer->pNextEntBuffer();
   }
 }
 
@@ -1291,16 +1291,16 @@ EntBuffer* EntBuffer::pNewInsertIntoRight(Ent* aEntry, EntBuffer** ppRootBuffer)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // split the left buffer to yield a right buffer
   
-  ASSERT(! pNextBuffer() || this == pNextBuffer()->pPrevBuffer());
-  ASSERT(! pPrevBuffer() || this == pPrevBuffer()->pNextBuffer());
+  ASSERT(! pNextEntBuffer() || this == pNextEntBuffer()->pPrevBuffer());
+  ASSERT(! pPrevBuffer() || this == pPrevBuffer()->pNextEntBuffer());
 
   EntBuffer* pRightBuffer = pNewNextBuffer();
   
-  ASSERT(pRightBuffer || pNextBuffer());
+  ASSERT(pRightBuffer || pNextEntBuffer());
   ASSERT(this == pRightBuffer->pPrevBuffer());
 
-  ASSERT(this == pNextBuffer()->pPrevBuffer());
-  ASSERT(! pPrevBuffer() || this == pPrevBuffer()->pNextBuffer());
+  ASSERT(this == pNextEntBuffer()->pPrevBuffer());
+  ASSERT(! pPrevBuffer() || this == pPrevBuffer()->pNextEntBuffer());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert the first key of left buffer into higher buffer if higher buffer
@@ -1495,13 +1495,13 @@ EntBuffer* EntBuffer::pNewNextBuffer(void)
   
   pNewBuffer->vHigherEntBuffer(_pEntBuffer(pHigherEntBuffer()));
   pNewBuffer->vPrevBuffer(this);
-  pNewBuffer->vNextBuffer(_pEntBuffer(this->pNextBuffer()));
-  if (pNextBuffer()) {
-    EntBuffer* pNextBuffer = _pEntBuffer(this->pNextBuffer());
+  pNewBuffer->vNextEntBuffer(_pEntBuffer(this->pNextEntBuffer()));
+  if (pNextEntBuffer()) {
+    EntBuffer* pNextBuffer = _pEntBuffer(this->pNextEntBuffer());
     pNextBuffer->vPrevBuffer(pNewBuffer);
   }
   
-  vNextBuffer(pNewBuffer);
+  vNextEntBuffer(pNewBuffer);
   
   ASSERT(this == pNewBuffer->pPrevBuffer());
   
@@ -1795,7 +1795,7 @@ void EntBuffer::vTraceWhere(void)
          
          ,pPrevBuffer()   ? _pEntBuffer(pPrevBuffer())->iBufferNo()   : -1
          ,pHigherEntBuffer() ? _pEntBuffer(pHigherEntBuffer())->iBufferNo() : -1
-         ,pNextBuffer()   ? _pEntBuffer(pNextBuffer())->iBufferNo()   : -1
+         ,pNextEntBuffer()   ? _pEntBuffer(pNextEntBuffer())->iBufferNo()   : -1
          
          ,aLeadEnt ? spLeadRef.sz(aLeadEnt->wRef()) : ""_Stz
          ,aLeadEnt ? spLeadKey.sz(aLeadEnt->aKey(),pIndexDef()) : ""_Stz

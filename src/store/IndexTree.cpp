@@ -178,7 +178,7 @@ void IndexTree::vCompact(void)
   
   i8 iH1BufferNo = -1;
   
-  for (EntBuffer* pH1 = pFirstH1Buffer(); pH1; pH1 = pH1->pNextBuffer()) {
+  for (EntBuffer* pH1 = pFirstH1Buffer(); pH1; pH1 = pH1->pNextEntBuffer()) {
     
     iH1BufferNo++;
     
@@ -253,7 +253,7 @@ void IndexTree::vCompact(void)
 
   for (;
        pEntBuffer;
-       pEntBuffer = pEntBuffer->pNextBuffer()) {
+       pEntBuffer = pEntBuffer->pNextEntBuffer()) {
     
     pEntBufSorter->vSort_int(pEntBuffer);
 
@@ -275,7 +275,7 @@ i8 IndexTree::iCountH0Entries(void)
 
   while (pEntBuffer) {
     iCount += pEntBuffer->nItems();
-    pEntBuffer = pEntBuffer->pNextBuffer();
+    pEntBuffer = pEntBuffer->pNextEntBuffer();
   }
   
   return iCount;
@@ -317,7 +317,7 @@ void IndexTree::vDump(bool bSameHeight)
     
     while (pEntBuffer) {
       //pEntBuffer->vShow();
-      pEntBuffer = pEntBuffer->pNextBuffer();
+      pEntBuffer = pEntBuffer->pNextEntBuffer();
     }
   }
   else {
@@ -644,9 +644,9 @@ EntBuffer* IndexTree::pPopSubList(EntBuffer** ppSubList)
   if (! pTopBuffer)
     return nullptr;
   
-  *ppSubList = (*ppSubList)->pNextBuffer();
+  *ppSubList = (*ppSubList)->pNextEntBuffer();
   
-  pTopBuffer->vNextBuffer(nullptr);
+  pTopBuffer->vNextEntBuffer(nullptr);
   pTopBuffer->vPrevBuffer(nullptr);
   
   if (*ppSubList)
@@ -954,7 +954,7 @@ void IndexTree::vVisualize(void)
 
     // if we are at level 1, iterate thru next buffers
     if (pEntBuffer->iBufferHeight() == 1) {
-      pEntBuffer = (EntBuffer*)pEntBuffer->pNextBuffer();
+      pEntBuffer = (EntBuffer*)pEntBuffer->pNextEntBuffer();
     }
     else {
       vTrace("\n"_Stz);

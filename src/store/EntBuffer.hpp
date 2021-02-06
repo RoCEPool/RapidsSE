@@ -88,8 +88,8 @@ namespace STORE
     void       vBufferCount(i8& nBufferCount);
     EntBuffer* pHigherEntBuffer(void);
     void       vHigherEntBuffer(EntBuffer* pHigherBuffer);
-    EntBuffer* pNextBuffer(void);
-    void       vNextBuffer(EntBuffer* pNextBuffer);
+    EntBuffer* pNextEntBuffer(void);
+    void       vNextEntBuffer(EntBuffer* pNextBuffer);
     EntBuffer* pPrevBuffer(void);
     void       vPrevBuffer(EntBuffer* pPrevBuffer);
 

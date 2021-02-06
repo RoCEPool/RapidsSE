@@ -66,11 +66,11 @@ void Step::vEntBufferNextBuffer(void)
   Object* pPtrEntry = nullptr;
   EntBuffer* pIndexBuffer = _pEntBuffer(m_pDataStack->pPopPtr(__func__));
   
-  if (pIndexBuffer->pNextBuffer()) {
-    i8 nBuffer = pIndexBuffer->pNextBuffer()->iBufferNo();
+  if (pIndexBuffer->pNextEntBuffer()) {
+    i8 nBuffer = pIndexBuffer->pNextEntBuffer()->iBufferNo();
   }
   
-  m_pDataStack->vPushPtr(pIndexBuffer->pNextBuffer());
+  m_pDataStack->vPushPtr(pIndexBuffer->pNextEntBuffer());
   
   EXIT();
 }

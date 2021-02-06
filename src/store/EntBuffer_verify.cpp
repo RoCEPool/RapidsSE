@@ -584,14 +584,14 @@ bool EntBuffer::bVerifyKeyBufferOrder(void)
     EntBuffer* pChildBufferB = EntBuffer::pRefdEntBuffer(aNextEntry);
     
     // child A should point to child B
-    if (pChildBufferA->pNextBuffer() != pChildBufferB) {
+    if (pChildBufferA->pNextEntBuffer() != pChildBufferB) {
       //vDump();
       
       vTrace("Buffer %lld -> ChildBufferA %lld -/-> ChildBufferB %lld; ChildBufferA -> %lld\n"_Stz,
              this->iBufferNo(),
              pChildBufferA->iBufferNo(),
              pChildBufferB->iBufferNo(),
-             pChildBufferA->pNextBuffer()->iBufferNo()
+             pChildBufferA->pNextEntBuffer()->iBufferNo()
              );
 
       
@@ -679,7 +679,7 @@ bool EntBuffer::bVerifyNextPrev(void)
   
   if (pPrevBuffer()) {
     EntBuffer* pPrevBuffer = _pEntBuffer(this->pPrevBuffer());
-    if (pPrevBuffer->pNextBuffer() != this) {
+    if (pPrevBuffer->pNextEntBuffer() != this) {
       vVerifyFault(__func__,__FILE__,__LINE__);
       return false;
     }
@@ -691,8 +691,8 @@ bool EntBuffer::bVerifyNextPrev(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (pNextBuffer()) {
-    EntBuffer* pNextBuffer = _pEntBuffer(this->pNextBuffer());
+  if (pNextEntBuffer()) {
+    EntBuffer* pNextBuffer = _pEntBuffer(this->pNextEntBuffer());
     if (pNextBuffer->pPrevBuffer() != this) {
       vVerifyFault(__func__,__FILE__,__LINE__);
       return false;
