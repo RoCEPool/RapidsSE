@@ -87,6 +87,16 @@
     "Error Code %v" .printf
   then
 
+  // What if we start the cluster here, then we can execute any DDL
+  "
+   bootCluster
+  "
+  locals| sStmt |
+
+  "" sStmt api::executeRequest
+
+
+
   "end start_run" .verbose
 
   // delete task instead of returning to nowhere

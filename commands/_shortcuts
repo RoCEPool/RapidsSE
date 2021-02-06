@@ -38,6 +38,7 @@ shortcut kb   _kBase;
 shortcut ln   show nodes;
 shortcut mni  "../MetaNibble/_int";
 shortcut mnv  "../MetaNibble/_vch";
+shortcut mq   "_myvan";
 shortcut nd   _nationDelete;
 shortcut nl   "../FASTLOAD/commands/_normalLoad";
 shortcut o    olist;
