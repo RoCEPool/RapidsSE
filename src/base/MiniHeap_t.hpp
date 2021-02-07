@@ -20,7 +20,7 @@ namespace BASE
     void* m_aFreeSpare; // free item
     i8    m_nFreeSize; // its size
   
-    SingleWord m__PadToCacheLine[3]; // padding to cache line
+    PadWord m__PadToCacheLine[3]; // padding to cache line
 
     Wsp_t<C_WSP_MINIHEAP> m_xWsp; // workspace
   
@@ -97,7 +97,7 @@ MiniHeap_t<ITEM>::MiniHeap_t(void)
   m_aFreeSpare = nullptr;
   m_nFreeSize = 0;
   
-  MemLib::vZero(m__PadToCacheLine,sizeof(m__PadToCacheLine),CN_NMLSTR);
+  //MemLib::vZero(m__PadToCacheLine,sizeof(m__PadToCacheLine),CN_NMLSTR);
   
 #ifdef WITH_CHECK_INITIALISED
   m_xWsp.vZero(CN_ROWTRAY);
