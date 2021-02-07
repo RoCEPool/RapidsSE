@@ -77,8 +77,10 @@
 
   0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryNote
 
-  // execute the eosMarker asm handler
-  ZK_EOSMARKER Counter0[] executeAsmArgs
+  // execute the eosMarker asm handler if job has no error
+  op.pipelineJob@ job.hasError not if
+    ZK_EOSMARKER Counter0[] executeAsmArgs
+  then
 
   // pipe out all pot[]
   Pot[].pipeoutAllDanglingPtns
