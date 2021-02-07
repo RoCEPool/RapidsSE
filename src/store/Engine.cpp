@@ -132,9 +132,6 @@ void Engine::vPreliminary(void)
   // Segmentation Violation
   signal(SIGSEGV, Engine::vSignalHandler);
   
-  if (AM::bVerboseProgress())
-     vInfo("Init TLS keys...\n"_Stz);
-  TlsKeys::vInit();
   
   if (AM::bVerboseProgress())
      vInfo("Init H/W counters...\n"_Stz);
