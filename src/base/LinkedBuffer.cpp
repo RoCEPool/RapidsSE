@@ -36,10 +36,6 @@ LinkedBuffer::LinkedBuffer(eCN eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
-  ASSERT(CacheLine::bMultipleCacheLines(sizeof(LinkedBuffer)));
-
-  MemLib::vZero(m__PadToCacheLine,sizeof(m__PadToCacheLine),eClassNo);
-
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);  
 }
 

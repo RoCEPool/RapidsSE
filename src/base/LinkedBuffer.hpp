@@ -15,7 +15,7 @@ namespace BASE
     BufferNo m_tLowerBuffer;  // lower buffer
 
   private:
-    SingleWord    m__PadToCacheLine[4]; // padding to cache line
+    PadWord  m__PadToCacheLine[4]; // padding to cache line
 
   public:
     LinkedBuffer(eCN eClass);
