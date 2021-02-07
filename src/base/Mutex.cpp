@@ -36,6 +36,9 @@ Mutex::Mutex(eMK eKind, Focal* pIsFor)
 //  if (! MY::pTask()) {
 //    printf("MUTEX %s (with no task)\n",aMK[eKind]->azChar());
 //  }
+//  if (! MY::pThread()) {
+//    printf("MUTEX %s (with no thread)\n",aMK[eKind]->azChar());
+//  }
 
   m_eMutex    = eKind;
   
