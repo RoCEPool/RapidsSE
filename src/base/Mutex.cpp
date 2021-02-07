@@ -4,6 +4,7 @@
 
 #include "BASE.h"
 
+#include "MY.hpp"
 
 Atomic gixMutex;
 Atomic gixMutex_err;
@@ -32,6 +33,10 @@ Mutex::Mutex(eMK eKind, Focal* pIsFor)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
+//  if (! MY::pTask()) {
+//    printf("MUTEX %s (with no task)\n",aMK[eKind]->azChar());
+//  }
+
   m_eMutex    = eKind;
   
   m_bObserve  = false;

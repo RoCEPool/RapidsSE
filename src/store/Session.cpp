@@ -45,7 +45,7 @@ Session* STORE::_pSession(i8 iAddr)
 /*----------------------------------------------------------------------------*/
 Session::Session(void)
 : Focal(CN_SESSION, AM::iNextSessionId(), C_UNKNOWN),
-  m_oSsnMutex(MK_JOB,this)
+  m_oSsnMutex(MK_SESSION,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   

@@ -6,6 +6,8 @@
 
 #include <sys/stat.h>
 
+#include "MY.hpp"
+
 Atomic gixFile;
 
 OpenFiles* gpOpenFiles;
@@ -679,6 +681,10 @@ bool File::bOpenMode(Stz* szFilePath, Stz* szOpenMode)
     vUseStdout();
     return true;
   }
+  
+//  if (! MY::pTask()) {
+//    printf("OPENING %s (with no task)\n",szFilePath);
+//  }
   
   if (m_aFile) {
     vWarn("File::bOpen: previous file not closed: %s\n"_Stz,m_sFilePath.azChar());
