@@ -16,8 +16,8 @@ using namespace Parser;
 /*----------------------------------------------------------------------------*/
 /*-- Constants ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-static Stz* C_METADATA_DEFN = "/__root__/metadata"_Stz;
-static Stz* C_METADATA_NAME = "metadata"_Stz;
+static Stz* C_METADATA_DEFN = "/__root__/definitions/object/metadataNode"_Stz;
+static Stz* C_METADATA_NAME = "metadataNode"_Stz;
 
 
 
