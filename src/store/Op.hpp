@@ -131,6 +131,7 @@ namespace STORE
     void vSpawnOperatorJob(i8 iSessionId);
     Stage* pStage(void);
     Stz* szStageName(void);
+    Stream* pStream(void);
     Task* pTask(void);
     void vToCmdStr(Stz* szCmdStr);
     TagSet* pTopologyTagSet(void);
