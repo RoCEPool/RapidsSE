@@ -54,7 +54,7 @@ print "loading Lineitem...";
 //aggregRows_I lineitem "sum ( l_discount )";
 
 
-limitRows_I lineitem 2;
+limitRows lineitem 2;
 
 /*
 pipeline query
