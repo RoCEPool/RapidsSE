@@ -7,6 +7,9 @@
 #include <sys/stat.h>
 
 #include "MY.hpp"
+#include "EVLOG.hpp"
+
+#include "eEV.h"
 
 Atomic gixFile;
 
@@ -716,6 +719,9 @@ bool File::bOpenMode(Stz* szFilePath, Stz* szOpenMode)
   
   AM::vLogRes(SL_INF,this,RA_FIL_OPENED,
               "File opened: path=%s; mode=%s"_Stz, //!format-LogRes
+              szFilePath,szOpenMode);
+  
+  EVLOG::vEvent(this,EV_OPENED,"File opened: path=%s; mode=%s"_Stz,
               szFilePath,szOpenMode);
 
   return true;

@@ -32,24 +32,25 @@ namespace OBLIQUE
     static Task*    pTask(void);
     static Thread*  pThread(void);
 
+    // tbd...
+    static Grid*     pGrid(void);
+    static Node*     pNode(void);
+    static Op*       pOp(void);
+    static eZK       eOperand(void);
+    static Pipeline* pPipeline(void);
+    static Stage*    pStage(void);
+    static Stream*   pStream(void);
+
     /*
      
      Possible Other Functions:
-    
-     pGrid()
-     pNode()
-     
+         
      pTenant()
      pCatalog()
      pSchema()
      
      pDic()
      pDicStack()
-     
-     pPipeline()
-     pStage()
-     pStrand()
-     pOp()
      
      szPath();
 
