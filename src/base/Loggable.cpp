@@ -5,41 +5,25 @@
 #include "BASE.h"
 
 /*----------------------------------------------------------------------------*/
-/* constructor (for non-tracked focal objects -- mainly locks in HeapBuffer)  */
+/*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-Loggable::Loggable(eCN eClassNo)
-: Object(eClassNo)
-{
-  m_i_Loggable   = C_UNKNOWN;
-  m_i_Log     = C_UNKNOWN;
-  
-  m_iLoggableId  = C_UNKNOWN;
-  m_iForId    = C_UNKNOWN;
-  
-  m_bForceLog = false;
-  m__spare    = 0;
 
-  m_iStepNo   = C_UNKNOWN;
-  m_iStepTk   = AM::iRdTimePoint();
-}
+__aFooterFunction(Loggable)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Loggable::Loggable(eCN eClassNo, i8 iUniqueId, i8 iForId)
+Loggable::Loggable(eCN eClassNo)
 : Object(eClassNo)
 {
-  m_i_Loggable   = C_UNKNOWN;
-  m_i_Log     = C_UNKNOWN;
-  
-  m_iLoggableId  = iUniqueId;
-  m_iForId    = iForId;
-  
-  m_bForceLog = false;
-  m__spare    = 0;
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
-  m_iStepNo   = C_UNKNOWN;
-  m_iStepTk   = AM::iRdTimePoint();
+  // m_sObjectNm
+  m_iObjectId = C_UNKNOWN;
+ 
+  m_iEventNo   = C_UNKNOWN;
+  m_eEvent     = EV_NONE;
+  m_iEventTick = C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -47,29 +31,123 @@ Loggable::Loggable(eCN eClassNo, i8 iUniqueId, i8 iForId)
 /*----------------------------------------------------------------------------*/
 Loggable::~Loggable(void) noexcept(false)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get last step sequence number                                              */
+/* get last event                                                             */
 /*----------------------------------------------------------------------------*/
-i8 Loggable::iStepNo(void)
+eEV Loggable::eEvent(void)
 {
-  return m_iStepNo;
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  return m_eEvent;
 }
 
 /*----------------------------------------------------------------------------*/
-/* inc last step sequence number                                              */
+/* set last event                                                             */
 /*----------------------------------------------------------------------------*/
-void Loggable::vIncStepNo(void)
+void Loggable::vEvent(eEV eEvent)
 {
-  m_iStepNo++;
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  m_iStepTk = AM::iRdTimePoint();
+  m_eEvent = eEvent;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get event no                                                               */
+/*----------------------------------------------------------------------------*/
+i8 Loggable::iEventNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  return m_iEventNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inc event no                                                               */
+/*----------------------------------------------------------------------------*/
+void Loggable::vEventNoInc(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  m_iEventNo++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get event no                                                               */
+/*----------------------------------------------------------------------------*/
+i8 Loggable::iEventTick(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  return m_iEventTick;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set event tick                                                             */
+/*----------------------------------------------------------------------------*/
+void Loggable::vEventTickSet(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  m_iEventTick = AM::iRdTimePoint();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get object id                                                              */
+/*----------------------------------------------------------------------------*/
+i8 Loggable::iObjectId(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  return m_iObjectId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set object id                                                              */
+/*----------------------------------------------------------------------------*/
+void Loggable::vObjectId(i8 iObjectId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  m_iObjectId = iObjectId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get object name                                                            */
+/*----------------------------------------------------------------------------*/
+Stz* Loggable::sObjectNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  return m_sObjectNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set object name                                                            */
+/*----------------------------------------------------------------------------*/
+void Loggable::vObjectNm(Stz* szObjectNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  m_sObjectNm = szObjectNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set next event                                                             */
+/*----------------------------------------------------------------------------*/
+void Loggable::vNextEvent(eEV eEvent)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  vEventTickSet();
+  vEvent(eEvent);
+  vEventNoInc();
 }
 
 /*============================================================================*/

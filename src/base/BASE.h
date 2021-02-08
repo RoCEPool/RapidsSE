@@ -100,7 +100,6 @@ extern d8 C_D8_MID;
 
 #include "Statistics.hpp"
 #include "Focal.hpp"
-#include "Loggable.hpp"
 
 #include "String.hpp"
 
@@ -133,6 +132,7 @@ extern d8 C_D8_MID;
 #include "SPmedium.hpp"
 #include "SPsmall.hpp"
 
+#include "Loggable.hpp"
 #include "FocalDesc.hpp"
 
 #include "NamedObject.hpp"
