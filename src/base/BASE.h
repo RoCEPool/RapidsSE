@@ -100,6 +100,7 @@ extern d8 C_D8_MID;
 
 #include "Statistics.hpp"
 #include "Focal.hpp"
+#include "Loggable.hpp"
 
 #include "String.hpp"
 
