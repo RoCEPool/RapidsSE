@@ -20,7 +20,7 @@ Focal::Focal(eCN eClassNo)
   m__spare    = 0;
 
   m_iStepNo   = C_UNKNOWN;
-  m_iStepTk   = AM::iRdTimePoint();
+  m_iStepTk   = AM::iRdTickingDevice();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -39,7 +39,7 @@ Focal::Focal(eCN eClassNo, i8 iUniqueId, i8 iForId)
   m__spare    = 0;
 
   m_iStepNo   = C_UNKNOWN;
-  m_iStepTk   = AM::iRdTimePoint();
+  m_iStepTk   = AM::iRdTickingDevice();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -69,7 +69,7 @@ void Focal::vIncStepNo(void)
 {
   m_iStepNo++;
   
-  m_iStepTk = AM::iRdTimePoint();
+  m_iStepTk = AM::iRdTickingDevice();
 }
 
 /*============================================================================*/

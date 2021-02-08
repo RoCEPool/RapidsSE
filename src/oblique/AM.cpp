@@ -1934,7 +1934,7 @@ void AM::vLog(TokenVec *pTknVec) { gpLog->vLog(pTknVec);                        
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-i8 AM::iRdTimePoint(void) { return TickingDevice::iGetTick();                  }
+i8 AM::iRdTickingDevice(void) { return TickingDevice::iGetTick();                  }
 i8 AM::iAMTimePoint(void) { return gpAttachMap->m_iTimePoint;                  }
 
 bool AM::bIsOperandOoO(Operand* pOperand)   {

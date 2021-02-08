@@ -95,7 +95,7 @@ void Loggable::vEventTickSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  m_iEventTick = AM::iRdTimePoint();
+  m_iEventTick = AM::iRdTickingDevice();
 }
 
 /*----------------------------------------------------------------------------*/

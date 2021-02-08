@@ -67,7 +67,7 @@ AttachMap::AttachMap(void)
   // the attach map must always be the first buffer in the buffer pool
   //ASSERT(nPoolBufferNo() == 1_bn);
   
-  m_iTimePoint = AM::iRdTimePoint();
+  m_iTimePoint = AM::iRdTickingDevice();
     
   // create the transient heaps
   m_xHeapMem.vInit();

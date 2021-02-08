@@ -393,7 +393,7 @@ namespace OBLIQUE
     static PtnMap* pPtnMap(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    static i8   iRdTimePoint(void);
+    static i8   iRdTickingDevice(void);
     static void vReadApiIndex(Index* pIndex);
     static Index* pReadApiIndex(void);
 
