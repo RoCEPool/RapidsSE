@@ -1,0 +1,33 @@
+/*============================================================================*/
+/* CountExpr.hpp - an COUNT() aggregate expression                            */
+/*============================================================================*/
+#pragma once
+
+#include "AggregateExpr.hpp"
+#include "PlanNode.hpp"
+
+namespace Parser
+{
+  class QueryNode;
+  class PlanNode;
+
+  class CountExpr : public AggregateExpr
+  {
+  private:
+    // Shalt never be instantiated. Static functions only.
+    CountExpr();
+
+  public:
+    static QueryNode* pCreate(b1 bIsCountAll, b1 bIsDistinct, QueryNode* pChildExpr);
+    static void       vDescribe(PlanNode* pNode, s2K& sBuf);
+    static b1         bIsCountAll(PlanNode* pNode);
+
+    // Returns true if a given node is a given type ** or is derived from that type **
+    static b1 bIsOfType(PlanNode* pNode);
+  };
+
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

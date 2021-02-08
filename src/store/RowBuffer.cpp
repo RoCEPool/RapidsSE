@@ -86,7 +86,7 @@ Row* RowBuffer::aAllotCopyRow(RowSingle* pRowSingle)
   if (! bHasSpaceFor(nVchSize + m_nRowSizeProper))
     return nullptr;
   
-  Row* pRow = aAllotNewRow();
+  Row* pRow = pAllotNewRow();
   
   new(pRow) Row;
 
@@ -198,7 +198,7 @@ void RowBuffer::vShow(StreamDef* pStreamDef)
          this,m_iBufferNo,nRows);
   
   vTrace("  prevBuffer %p nextBuffer %p\n"_Stz,
-         m_pPrevBuffer,m_pNextBuffer);
+         pPrevLinkedBuffer(),pNextLinkedBuffer());
   
   vTrace("  partition: %lld \n"_Stz, m_tPtnNo);
   
@@ -255,7 +255,7 @@ CsvBuffer* RowBuffer::pToCsvBuffer(void)
     
     if (pCsvBuffer->nFreeBytes() < nSize + 1) {
       CsvBuffer* pNewCsvBuffer = new CsvBuffer;
-      pCsvBuffer->vNextBuffer(pNewCsvBuffer);
+      pCsvBuffer->vNextLinkedBuffer(pNewCsvBuffer);
       pCsvBuffer = pNewCsvBuffer;
     }
 

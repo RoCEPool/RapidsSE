@@ -28,6 +28,8 @@ namespace BASE
   {
   protected:
     i8 m_iBufferNo;  // this buffer number
+    i8 m_nUnits;     // number of buffers
+  
     // ..heap buffer..
     
   public:
@@ -39,7 +41,7 @@ namespace BASE
   
     i8    iBufferNo(void);
     void  vBufferNo(i8 iBufferNo);
-    void* aDataArea(void);
+    void* aEmbeddedBuffer(void);
     Stz*  aLastUsableByte(void);
 
     Footer* aFooter(void);

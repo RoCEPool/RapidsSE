@@ -40,7 +40,7 @@ namespace STORE
 
     _ColEnc xaColEnc[C_MAX_COLUMNS];
 
-    SingleWord m__PadToCacheLine[1]; // padding to cache line
+    PadWord m__PadToCacheLine[1]; // padding to cache line
 
     Wsp_t<C_MAX_RECORD> m_xWsp;  // sz workspace (multiple vch)
   

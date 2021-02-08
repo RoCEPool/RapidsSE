@@ -138,7 +138,7 @@ void Result::vPrintDist2pcResponse(Session* pSession)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Responses
   
-  if (*pSession->m_pOutput->m_ixRowsProcessed ||
+  if (//*pSession->m_pOutput->m_ixRowsProcessed ||
       *pSession->m_pOutput->m_ixRowsInvalid   ||
       *pSession->m_pOutput->m_ixRowsSkipped ) {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

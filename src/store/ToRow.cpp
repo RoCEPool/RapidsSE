@@ -117,15 +117,15 @@ RowBuffer* ToRow::pFullRowBuffer(void)
   RowBuffer* pFullRiwBuffer = nullptr;
   
   RowBuffer* pRowBuffer = m_pRowBuffer ?
-                            _pRowBuffer(m_pRowBuffer->pNextBuffer()) : nullptr;
+                            _pRowBuffer(m_pRowBuffer->pNextLinkedBuffer()) : nullptr;
   while (pRowBuffer) {
     pFullRiwBuffer = pRowBuffer;
-    pRowBuffer = _pRowBuffer(pRowBuffer->pNextBuffer());
+    pRowBuffer = _pRowBuffer(pRowBuffer->pNextLinkedBuffer());
   }
   
   if (pFullRiwBuffer) {
-    RowBuffer* pPrevBuffer = _pRowBuffer(pFullRiwBuffer->pPrevBuffer());
-    pPrevBuffer->vNextBuffer(nullptr);
+    RowBuffer* pPrevBuffer = _pRowBuffer(pFullRiwBuffer->pPrevLinkedBuffer());
+    pPrevBuffer->vNextLinkedBuffer(nullptr);
   }
   
   return pFullRiwBuffer;
@@ -176,9 +176,9 @@ void ToRow::vNewRowBuffer(void)
   RowBuffer* pRowBuffer = new RowBuffer;
   
   // link the new to old
-  pRowBuffer->vNextBuffer(m_pRowBuffer);
+  pRowBuffer->vNextLinkedBuffer(m_pRowBuffer);
   if (m_pRowBuffer)
-    m_pRowBuffer->vPrevBuffer(pRowBuffer);
+    m_pRowBuffer->vPrevLinkedBuffer(pRowBuffer);
   m_pRowBuffer = pRowBuffer;
   
   // initialise the row slab inside the new row buffer
@@ -885,9 +885,9 @@ L_AdvanceNextRecord:
   m_pRowBuffer->nFreeBytes();
 
   // allot a new row (new another rowBuffer if necessary)
-  if (! m_pRowBuffer->aAllotNewRow()) {    // ? inline ?
+  if (! m_pRowBuffer->pAllotNewRow()) {    // ? inline ?
     vNewRowBuffer();
-    Row* aNewRow = m_pRowBuffer->aAllotNewRow();
+    Row* aNewRow = m_pRowBuffer->pAllotNewRow();
     ASSERT(aNewRow);
   }
  

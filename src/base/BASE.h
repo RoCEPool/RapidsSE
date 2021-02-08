@@ -52,6 +52,8 @@ extern d8 C_D8_MID;
 #include "Gid.h"
 #include "Null.hpp"
 
+#include "PadWord.hpp"
+
 #include "Asm.h"
 
 #include "Stz.hpp"
@@ -183,8 +185,10 @@ extern d8 C_D8_MID;
 #include "FreeChunk.hpp"
 #include "BufferPool.hpp"
 #include "PoolHelper.hpp"
-#include "PersistenceHelper.hpp"
 #include "ResourceHelper.hpp"
+#include "PersistenceHelper.hpp"
+#include "BufferAddress.h"
+#include "BufferMap.hpp"
 
 #include "HeapBuffer.hpp"
 #include "HeapMem.hpp"
@@ -348,6 +352,7 @@ extern d8 C_D8_MID;
 
 #include "OperandQueue.hpp"
 
+#include "BufferNo.hpp"
 #include "LinkedBuffer.hpp"
 
 //------------------------------------------------------------------------------

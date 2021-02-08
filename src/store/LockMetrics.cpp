@@ -62,7 +62,7 @@ Row* LockMetrics::pSample(StreamDef* pStreamDef, InfoSet* pInfoSet)
       C_VARGS_END);
 
     // add single row into InfoSet
-    Row* aRow = pInfoSet->aAllotRow(hvRowSingle);
+    Row* aRow = pInfoSet->pAllotRow(hvRowSingle);
     
     hvRowSingle->vResetValues();
   }
@@ -74,7 +74,7 @@ Row* LockMetrics::pSample(StreamDef* pStreamDef, InfoSet* pInfoSet)
   
   for (i8 i_Lock = 1; i_Lock < LK_ENUMS; i_Lock++) {
     
-   pRow = pInfoSet->aAllotRow(pStreamDef,
+   pRow = pInfoSet->pAllotRow(pStreamDef,
         C_VARGS_BEGIN,
         
         pGrid->iThisNode(),                      // node no

@@ -1291,6 +1291,7 @@
     stage stageA on origin :
       start
       | periodic once
+      //| sqlInit
       | parser $sqlStatement
       | nameValidate
       | transliterate

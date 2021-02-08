@@ -63,14 +63,14 @@ InfoSetBase::~InfoSetBase(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* allot a row                                                                */
 /*----------------------------------------------------------------------------*/
-Row* InfoSetBase::aAllotRow(void)
+Row* InfoSetBase::pAllotRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
   Row* pRow = nullptr;
 
   if (nFreeBytes() >= m_nRowSize) {
-    pRow = aAllotNewRow();
+    pRow = pAllotNewRow();
     m_nInfoRows++;
   }
 
@@ -80,7 +80,7 @@ Row* InfoSetBase::aAllotRow(void)
 /*----------------------------------------------------------------------------*/
 /* allot a row copying the rowSingle into it                                  */
 /*----------------------------------------------------------------------------*/
-//Row* InfoSetBase::aAllotRow(RowSingle* pRowSingle)
+//Row* InfoSetBase::pAllotRow(RowSingle* pRowSingle)
 //{
 //  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 //
@@ -94,12 +94,12 @@ Row* InfoSetBase::aAllotRow(void)
 /*----------------------------------------------------------------------------*/
 /* allot a row copying the rowSingle into it                                  */
 /*----------------------------------------------------------------------------*/
- Row* InfoSetBase::aAllotRow(StreamDef* pStreamDef, i8 iVArgsBegin, ...)
+ Row* InfoSetBase::pAllotRow(StreamDef* pStreamDef, i8 iVArgsBegin, ...)
  {
    _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
    
    // allot a row
-   Row* ayRow = aAllotNewRow();
+   Row* ayRow = pAllotNewRow();
    m_nInfoRows++;
    
    Stz* ayDst;
@@ -150,6 +150,68 @@ Row* InfoSetBase::aAllotRow(void)
    
    return ayRow;
  }
+
+/*----------------------------------------------------------------------------*/
+/* allot a row copying the rowSingle into it                                  */
+/*----------------------------------------------------------------------------*/
+Row* InfoSetBase::pAllotRow(i8 iVArgsBegin, ...)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  // allot a row
+  Row* ayRow = pAllotNewRow();
+  m_nInfoRows++;
+
+  Stz* ayDst;
+
+  if ( ! ayRow )
+    return nullptr;
+
+  ASSERT(C_VARGS_BEGIN == iVArgsBegin);
+
+  ColPix* axaColPix = RowBox_t::axaColPix();
+
+  va_list xVarArgs;
+
+  va_start(xVarArgs,iVArgsBegin);
+
+  for (i8 i_Col = 0; i_Col < nColumns(); i_Col++) {
+
+    ColPix* pColPix = &axaColPix[i_Col];
+
+    // STRING_DEPOSIT
+    if (DM_VCH == pColPix->m_uDatum) {
+      Stz* szVal = va_arg(xVarArgs,Stz*);
+      if (szVal) {
+        ayDst = (Stz*)aAllotHead(StrLib::nSize(szVal->azChar()));
+
+        // return early if no more space for the string
+        if ( ! ayDst )
+          return nullptr;
+
+        StrLib::vCopy((char*)ayDst, szVal->azChar());
+
+        ayRow->vColVal_ofs(i_Col,ayDst);
+      }
+      else {
+        ayRow->vSetColNull(i_Col);
+      }
+    }
+    else {
+      i8 iVal = va_arg(xVarArgs,i8);
+      ayRow->vColVal_int(i_Col,iVal);
+    }
+    // END STRING_DEPOSIT
+
+  }
+
+  i8 iVArgsEnd = va_arg(xVarArgs,i8);
+  ASSERT(C_VARGS_END == iVArgsEnd);
+
+  va_end(xVarArgs);
+
+  return ayRow;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get first row                                                              */

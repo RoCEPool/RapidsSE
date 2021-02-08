@@ -295,7 +295,11 @@ expr
 // |         TRUNCATE     '(' time_unit ',' expr ')'                  #truncateFunc
 
  |          COUNT       '(' ALL? '*' ')'                            #countAll
- |          COUNT       '(' (ALL | distinct=DISTINCT)? expr ')'     #countFunc
+ |     func=COUNT       '(' (ALL | distinct=DISTINCT)? expr ')'     #aggFunc
+ |     func=SUM         '(' (ALL | distinct=DISTINCT)? expr ')'     #aggFunc
+ |     func=AVG         '(' (ALL | distinct=DISTINCT)? expr ')'     #aggFunc
+ |     func=MIN         '(' (ALL | distinct=DISTINCT)? expr ')'     #aggFunc
+ |     func=MAX         '(' (ALL | distinct=DISTINCT)? expr ')'     #aggFunc
 // |          RAND        '(' seed=expr? ')'                          #randFunc
 
 // |     func=analyticFunction '(' (ALL | distinct=DISTINCT)? expr ')'
@@ -304,7 +308,6 @@ expr
 //                            (orderBy=ORDER BY orderByList)?
 //                        ')'                                         #windowFunc
 
- |     func=functionName '(' (ALL | distinct=DISTINCT) expr ')'     #aggFunc
  |     func=functionName '(' (expr (',' expr)*)? ')'                #scalarFunc
 
  |                      '(' expr ')'                                #parenthetic
@@ -448,6 +451,7 @@ ANTLR                 : A N T L R;
 ANY                   : A N Y;
 AS                    : A S;
 ASC                   : A S C;
+AVG                   : A V G;
 BETWEEN               : B E T W E E N;
 BOTH                  : B O T H;
 BY                    : B Y;
@@ -490,6 +494,8 @@ LEADING               : L E A D I N G;
 LEFT                  : L E F T;
 LIKE                  : L I K E;
 LIMIT                 : L I M I T;
+MAX                   : M A X;
+MIN                   : M I N;
 MONOTONIC             : M O N O T O N I C;
 NO                    : N O;
 NODE                  : N O D E;
@@ -513,6 +519,7 @@ SELECT                : S E L E C T;
 SET                   : S E T;
 STATS                 : S T A T S;
 STATISTICS            : S T A T I S T I C S;
+SUM                   : S U M;
 TABLE                 : T A B L E;
 TO                    : T O;
 TOP                   : T O P;

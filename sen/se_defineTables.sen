@@ -41,6 +41,20 @@
   api::executeRequest
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_COMMANDERRORS
+  sPath
+  "
+  define table __commandErrors (
+    errorCode      INTEGER NOT NULL ,
+    severity       INTEGER NOT NULL ,
+    line           INTEGER NOT NULL ,
+    column         INTEGER NOT NULL ,
+    text           VARCHAR NOT NULL
+  ) ;
+  "
+  api::executeRequest
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_COUNT
   sPath
   "

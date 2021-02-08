@@ -39,7 +39,7 @@ __aFooterFunction(AttachMap)
 /*----------------------------------------------------------------------------*/
 void* AttachMap::operator new(size_t)
 {
-  AttachMap* pAttachMap = (AttachMap*)gpBufferPool->pAllocAttachMapBuffer();
+  AttachMap* pAttachMap = (AttachMap*)gpBufferPool->pAllocOtherBuffer();
   
   return pPoolCheck<void*>(pAttachMap);
 }

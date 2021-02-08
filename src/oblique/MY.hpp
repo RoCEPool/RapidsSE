@@ -30,7 +30,8 @@ namespace OBLIQUE
     static Job*     pJob(void);
     static Session* pSession(void);
     static Task*    pTask(void);
-  
+    static Thread*  pThread(void);
+
     /*
      
      Possible Other Functions:

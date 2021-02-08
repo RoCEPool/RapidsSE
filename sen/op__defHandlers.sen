@@ -17,6 +17,18 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* default handler for ZK_COMMANDERRORS operand                               */
+/*----------------------------------------------------------------------------*/
+: ZK_COMMANDERRORS_handler \handler
+
+  //"ZK_COMMANDERRORS_handler" .verbose
+
+  PipeIn[].pipeOut
+
+  true // calling op_loop continues
+;
+
+/*----------------------------------------------------------------------------*/
 /* default handler for ZK_CANCELMARKER operand                                */
 /*----------------------------------------------------------------------------*/
 : ZK_CANCELMARKER_handler \handler

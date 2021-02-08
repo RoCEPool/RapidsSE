@@ -268,7 +268,7 @@ bool Dynamo::bPlanToPipeline(String* pAsPipelineStmt,
   _static_
 
 //#ifdef WITH_TRACE_DYNAMO
-  vPrintPlanGraph(pPlanRoot);
+//  vPrintPlanGraph(pPlanRoot);
 //#endif
 
   char cStageStart   = 'A';
@@ -326,7 +326,7 @@ bool Dynamo::bPlanToPipeline(String* pAsPipelineStmt,
       "end ;\n"
       ""_Stz);
 
-  vTrace("Pipeline: \n %s\n"_Stz, pAsPipelineStmt->azStr());
+  //vTrace("Pipeline: \n %s\n"_Stz, pAsPipelineStmt->azStr());
 
   return true;
 }

@@ -71,11 +71,11 @@
         to pOperand
         pOperand pReceivedObject xmitOperand.operand!
         pReceivedObject xmitOperand.pipeOut
-     else
+      else
        nullptr pReceivedObject xmitOperand.operand!
        pReceivedObject xmitOperand.pipeOut
-     then
-  else
+      then
+    else
 
       // -- -- -- -- -- -- -- --
       // examine job

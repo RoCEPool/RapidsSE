@@ -198,8 +198,6 @@ public:
 
     virtual antlrcpp::Any visitSubqueryInOp(sqlParser::SubqueryInOpContext *context) = 0;
 
-    virtual antlrcpp::Any visitCountFunc(sqlParser::CountFuncContext *context) = 0;
-
     virtual antlrcpp::Any visitLogicOp(sqlParser::LogicOpContext *context) = 0;
 
     virtual antlrcpp::Any visitCastOp(sqlParser::CastOpContext *context) = 0;

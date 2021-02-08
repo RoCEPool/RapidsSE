@@ -75,17 +75,17 @@ DataBuffer* Pot::pCompleted(i8 i_Ptn)
   DataBuffer* pNextBuffer =
     (DataBuffer*)
       (m_paBufferChain[i_Ptn]
-        ? m_paBufferChain[i_Ptn]->pNextBuffer()
+        ? m_paBufferChain[i_Ptn]->pNextLinkedBuffer()
         : nullptr);
   
   while (pNextBuffer) {
     pCompletedBuffer = pNextBuffer;
-    pNextBuffer = (DataBuffer*)pNextBuffer->pNextBuffer();
+    pNextBuffer = (DataBuffer*)pNextBuffer->pNextLinkedBuffer();
   }
   
   if (pCompletedBuffer) {
-    DataBuffer* pPrevBuffer = (DataBuffer*)pCompletedBuffer->pPrevBuffer();
-    pPrevBuffer->vNextBuffer(nullptr);
+    DataBuffer* pPrevBuffer = (DataBuffer*)pCompletedBuffer->pPrevLinkedBuffer();
+    pPrevBuffer->vNextLinkedBuffer(BufferNo::tUNKNOWN());
   }
   
   return pCompletedBuffer;
@@ -104,11 +104,11 @@ DataBuffer* Pot::pDangling(i8 i_Ptn)
   
   m_paBufferChain[i_Ptn] =
     pDanglingBuffer
-      ? (DataBuffer*)pDanglingBuffer->pNextBuffer()
+      ? (DataBuffer*)pDanglingBuffer->pNextLinkedBuffer()
       : nullptr;
   
   if (pDanglingBuffer)
-    pDanglingBuffer->vNextBuffer(nullptr);
+    pDanglingBuffer->vNextLinkedBuffer(BufferNo::tUNKNOWN());
   
   return pDanglingBuffer;
 }
@@ -144,7 +144,7 @@ Row* Pot::aNewDstRow(i8 i_Ptn, RowBuffer** ppRowBuffer,bool* pbNewBuffer)
   }
   
   // new a row in row buffer (new another row buffer if necessary)
-  aDstRow = pDstRowBuffer->aAllotNewRow();
+  aDstRow = pDstRowBuffer->pAllotNewRow();
   if (! aDstRow) {
     *pbNewBuffer = true;
     pDstRowBuffer = new RowBuffer;
@@ -152,7 +152,7 @@ Row* Pot::aNewDstRow(i8 i_Ptn, RowBuffer** ppRowBuffer,bool* pbNewBuffer)
     pDstRowBuffer->vAssertAux0();
     vAddBuffer(i_Ptn,pDstRowBuffer);
     //vTrace("Repld: %p %lld rows\n"_Stz,pDstRowBuffer,pDstRowBuffer->nRows());
-    aDstRow = pDstRowBuffer->aAllotNewRow();
+    aDstRow = pDstRowBuffer->pAllotNewRow();
     ASSERT(aDstRow);
   }
   
@@ -197,11 +197,11 @@ void Pot::vAddBuffer(i8 i_Ptn, DataBuffer* pAddBuffer)
   pAddBuffer->vPtnNo(i_Ptn);
   
   // link the old with this
-  pAddBuffer->vNextBuffer(m_paBufferChain[i_Ptn]);
+  pAddBuffer->vNextLinkedBuffer(m_paBufferChain[i_Ptn]);
   
   
   if (m_paBufferChain[i_Ptn])
-    m_paBufferChain[i_Ptn]->vPrevBuffer(pAddBuffer);
+    m_paBufferChain[i_Ptn]->vPrevLinkedBuffer(pAddBuffer);
   
   m_paBufferChain[i_Ptn] = pAddBuffer;
 }

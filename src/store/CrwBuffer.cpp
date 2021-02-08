@@ -432,7 +432,7 @@ CrwBuffer* CrwBuffer::pNextCrwBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  return _pCrwBuffer(m_pNextBuffer);
+  return _pCrwBuffer(this->pNextLinkedBuffer());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -442,7 +442,7 @@ void CrwBuffer::vNextCrwBuffer(CrwBuffer* pNextBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  m_pNextBuffer = pNextBuffer;
+  LinkedBuffer::vNextLinkedBuffer(pNextBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -479,7 +479,7 @@ CrwBuffer* CrwBuffer::pPrevCrwBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  return _pCrwBuffer(m_pPrevBuffer);
+  return _pCrwBuffer(this->pPrevLinkedBuffer());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -489,7 +489,7 @@ void CrwBuffer::vPrevCrwBuffer(CrwBuffer* pPrevBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  m_pPrevBuffer = pPrevBuffer;
+  vPrevLinkedBuffer(pPrevBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -539,8 +539,8 @@ void CrwBuffer::vRestore(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  RASSERT( ! m_pNextBuffer );
-  RASSERT( ! m_pPrevBuffer );
+  RASSERT( ! pNextLinkedBuffer() );
+  RASSERT( ! pPrevLinkedBuffer() );
   
   // set the table to nullptr (this pointer is not valid any more)
   vTable(nullptr);
@@ -625,7 +625,7 @@ void CrwBuffer::vShow(void)
          m_oRowTray.pNub()->nFreeAllotableBytes());
   
   vTrace("  prevBuffer %p nextBuffer %p\n"_Stz,
-         m_pPrevBuffer,m_pNextBuffer);
+         pPrevLinkedBuffer(),pNextLinkedBuffer());
   
   vTrace("  partition: %lld \n"_Stz, m_tPtnNo);
   
@@ -720,7 +720,7 @@ CsvBuffer* CrwBuffer::pToCsvBuffer(void)
     
     if (pCsvBuffer->nFreeBytes() < nBytes + 1) {
       CsvBuffer* pNewCsvBuffer = new CsvBuffer;
-      pCsvBuffer->vNextBuffer(pNewCsvBuffer);
+      pCsvBuffer->vNextLinkedBuffer(pNewCsvBuffer);
       pCsvBuffer = pNewCsvBuffer;
     }
     
@@ -912,9 +912,9 @@ bool CrwBuffer::bVerifyNextPrev(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (m_pPrevBuffer) {
-    CrwBuffer* pPrevBuffer = _pCrwBuffer(m_pPrevBuffer);
-    if (pPrevBuffer->pNextBuffer() != this) {
+  if (pPrevLinkedBuffer()) {
+    CrwBuffer* pPrevBuffer = _pCrwBuffer(this->pPrevLinkedBuffer());
+    if (pPrevBuffer->pNextLinkedBuffer() != this) {
       vVerifyFault(__func__,__FILE__,__LINE__);
       return false;
     }
@@ -922,9 +922,9 @@ bool CrwBuffer::bVerifyNextPrev(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (m_pNextBuffer) {
-    CrwBuffer* pNextBuffer = _pCrwBuffer(m_pNextBuffer);
-    if (pNextBuffer->pPrevBuffer() != this) {
+  if (pNextLinkedBuffer()) {
+    CrwBuffer* pNextBuffer = _pCrwBuffer(this->pNextLinkedBuffer());
+    if (pNextBuffer->pPrevLinkedBuffer() != this) {
       vVerifyFault(__func__,__FILE__,__LINE__);
       return false;
     }

@@ -53,7 +53,7 @@ namespace STORE
   
     void vResolveRowPix(StreamDef* pStreamDef);
     
-    Row* aAllotNewRow(void);
+    Row* pAllotNewRow(void);
     RowPix* pAllotRowPix(i8 nSizeRowPix);
   
     void vAssertAux0(void);
@@ -243,7 +243,7 @@ void RowBox_t<AREA>::vResolveRowPix(StreamDef* pStreamDef)
 //HACK(RowBuffer,"quick fix to check for enough space ");
 
 template <i8 AREA>
-Row* RowBox_t<AREA>::aAllotNewRow(void)
+Row* RowBox_t<AREA>::pAllotNewRow(void)
 {
   //RowBox_t<AREA>::m_xFooter.vAssertFooter();
   vAssertAux0();

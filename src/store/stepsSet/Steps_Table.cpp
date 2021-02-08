@@ -452,7 +452,7 @@ void Step::vTableListPartition(void)
     sOutput.vSprint("Ptn %lld : Node %lld TablePtn %lld"_Stz,
                     tPtnNo,i_Node,i_TablePtn);
   
-    Row* pRow = pStreamSet->aAllotRow(pStreamDef,
+    Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                       C_VARGS_BEGIN,
                                       sOutput.azChar(),
                                       C_VARGS_END);

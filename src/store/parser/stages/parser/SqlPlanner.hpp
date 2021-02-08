@@ -20,7 +20,6 @@ namespace Parser
     QueryNodeStack* m_pTableRefStack;
     QueryNodeStack* m_pExprStack;
     QueryNodeList* m_pSelectItems;
-    s2K m_sLastError;
     Footer m_xFooter;
     
    public:
@@ -31,7 +30,6 @@ namespace Parser
     SqlPlanner(void);
     
     PlanNode* plan(Stz* pStr, const PlanNode* pTemplate);
-    Stz* szLastError();
 
     ~SqlPlanner(void) noexcept;
   
@@ -51,12 +49,15 @@ namespace Parser
     virtual antlrcpp::Any visitBinaryOp(sqlParser::BinaryOpContext *pCtx)             override;
     virtual antlrcpp::Any visitLogicOp(sqlParser::LogicOpContext *pCtx)               override;
     virtual antlrcpp::Any visitIsNullOp(sqlParser::IsNullOpContext *pCtx)             override;
+    virtual antlrcpp::Any visitCountAll(sqlParser::CountAllContext *pCtx)             override;
+    virtual antlrcpp::Any visitAggFunc(sqlParser::AggFuncContext *pCtx)               override;
 
     
   private:
     Text* pCleanId(sqlParser::IdentifierContext* pCtx);
     Text* pCleanString(sqlParser::StringLiteralContext* pCtx);
     void  vCleanString(sqlParser::StringLiteralContext* pCtx, s256& sBuf);
+    void  vCleanString(sqlParser::IdentifierContext* pCtx, s256& sBuf);
     void  vCleanString(antlr4::Token* pToken, s256& sBuf);
     void  vCleanString(std::string& sStr, s256& sBuf);
     i8    iCleanInt(sqlParser::IntegerLiteralContext* pCtx);

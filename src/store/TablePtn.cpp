@@ -207,9 +207,9 @@ void TablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
     m_pRootCrwBuffer = pCrwBuffer;
   }
   else {
-    pCrwBuffer->vNextBuffer(m_pCurrentCrwBuffer->pNextBuffer());
-    pCrwBuffer->vPrevBuffer(m_pCurrentCrwBuffer);
-    m_pCurrentCrwBuffer->vNextBuffer(pCrwBuffer);
+    pCrwBuffer->vNextLinkedBuffer(m_pCurrentCrwBuffer->pNextLinkedBuffer());
+    pCrwBuffer->vPrevLinkedBuffer(m_pCurrentCrwBuffer);
+    m_pCurrentCrwBuffer->vNextLinkedBuffer(pCrwBuffer);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -479,9 +479,9 @@ CrwBuffer* TablePtn::pNewCurrentCrwBuffer(void)
   pCrwBuffer->vPtnNo(m_tPtnNo);
   pCrwBuffer->vIsPermanent(true);
 
-  pCrwBuffer->vNextBuffer(m_pCurrentCrwBuffer->pNextBuffer());
-  pCrwBuffer->vPrevBuffer(m_pCurrentCrwBuffer);
-  m_pCurrentCrwBuffer->vNextBuffer(pCrwBuffer);
+  pCrwBuffer->vNextLinkedBuffer(m_pCurrentCrwBuffer->pNextLinkedBuffer());
+  pCrwBuffer->vPrevLinkedBuffer(m_pCurrentCrwBuffer);
+  m_pCurrentCrwBuffer->vNextLinkedBuffer(pCrwBuffer);
   
   m_pCurrentCrwBuffer = pCrwBuffer;
     
@@ -566,8 +566,8 @@ bool TablePtn::bPurge(i8 iOlderThanSeconds)
   
   // set prev pointer to null
   if (m_pRootCrwBuffer) {
-    ASSERT(pCrwBuffer ==  m_pRootCrwBuffer->pPrevBuffer());
-    m_pRootCrwBuffer->vPrevBuffer(nullptr);
+    ASSERT(pCrwBuffer ==  m_pRootCrwBuffer->pPrevLinkedBuffer());
+    m_pRootCrwBuffer->vPrevLinkedBuffer(nullptr);
   }
   
   m_okLock.vDropWrite();

@@ -19,6 +19,7 @@ namespace STORE
     Stz* sz_api(Job* pJob);
     Stz* sz_log(Job* pJob);
     Stz* sz_recv(Job* pJob);
+    Stz* sz_detail(Job* pJob);
 
     Footer* aFooter(void);
   };

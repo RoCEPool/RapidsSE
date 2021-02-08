@@ -44,7 +44,7 @@
   node_I[].delete
 
   allConnected if
-    "All nodes connected" .verbose
+    "All nodes connected" . // verbose
   then
 
   allConnected

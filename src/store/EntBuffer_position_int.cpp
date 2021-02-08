@@ -353,7 +353,7 @@ void EntBuffer::vPosVecPriorToBuffer_int(EntBuffer* pToRefdBuffer,
 
         // - keys are equal
 
-        if (pToRefdBuffer != pRefdEntBuffer(aNextEntry_sl)->pPrevBuffer()) {
+        if (pToRefdBuffer != pRefdEntBuffer(aNextEntry_sl)->pPrevEntBuffer()) {
           // found key but haven't reached buffer, go right at this level
           aPriorVec[i_ScanLevel] = aNextEntry_sl;//aPriorEntry_sl;
           if (! aNextEntry(aNextEntry_sl,i_ScanLevel) )

@@ -16,6 +16,14 @@
 LinkedBuffer* BASE::_pLinkedBuffer(void* aAddress)
 {
   LinkedBuffer* pLinkedBuffer = reinterpret_cast<LinkedBuffer*>(aAddress);
+ 
+  if (pLinkedBuffer) {
+    eCN eClassNo = pLinkedBuffer->eGetClassNo();
+  
+    ASSERT(CN_CRWBUFFER  == eClassNo ||
+           CN_FREEBUFFER == eClassNo ||
+           CN_ROWBUFFER  == eClassNo);
+  }
   
   return pLinkedBuffer;
 }
@@ -28,16 +36,6 @@ LinkedBuffer::LinkedBuffer(eCN eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
-  ASSERT(CacheLine::bMultipleCacheLines(sizeof(LinkedBuffer)));
-
-  m_pNextBuffer   = nullptr;
-  m_pPrevBuffer   = nullptr;
-  
-  m_pHigherBuffer = nullptr;
-  m_pLowerBuffer  = nullptr;
-  
-  MemLib::vZero(m__PadToCacheLine,sizeof(m__PadToCacheLine),eClassNo);
-
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);  
 }
 
@@ -53,6 +51,20 @@ LinkedBuffer::~LinkedBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get buffer no of this buffer                                               */
+/*----------------------------------------------------------------------------*/
+BufferNo LinkedBuffer::tBufferNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  BufferNo tBufferNo;
+  
+  tBufferNo = this;
+
+  return tBufferNo;
+}
 
 /*----------------------------------------------------------------------------*/
 /* link given buffer after this buffer                                        */
@@ -79,12 +91,12 @@ void LinkedBuffer::vLinkAsNext(LinkedBuffer* pArgBuffer)
    
   */
   
-  pArgBuffer->vNextBuffer(m_pNextBuffer);    // (a)
-  if (m_pNextBuffer)
-    m_pNextBuffer->vPrevBuffer(pArgBuffer);  // (b)
+  pArgBuffer->vNextLinkedBuffer(m_tNextBuffer);      // (a)
+  if (pNextLinkedBuffer())
+    pNextLinkedBuffer()->vPrevLinkedBuffer(pArgBuffer->tBufferNo()); // (b)
   
-  m_pNextBuffer = pArgBuffer;                // (c)
-  pArgBuffer->vPrevBuffer(this);             // (d)
+  m_tNextBuffer = pArgBuffer;                  // (c)
+  pArgBuffer->vPrevLinkedBuffer(this->tBufferNo());  // (d)
 }
 
 /*----------------------------------------------------------------------------*/
@@ -112,13 +124,13 @@ void LinkedBuffer::vLinkAsPrev(LinkedBuffer* pArgBuffer)
    
   */
   
-  if (m_pPrevBuffer)
-    m_pPrevBuffer->vNextBuffer(pArgBuffer);  // (a)
-  pArgBuffer->vPrevBuffer(this);             // (b)
+  if (pPrevLinkedBuffer())
+    pPrevLinkedBuffer()->vNextLinkedBuffer(pArgBuffer->tBufferNo());  // (a)
+  pArgBuffer->vPrevLinkedBuffer(this->tBufferNo());             // (b)
   
-  if (m_pNextBuffer)
-    m_pNextBuffer->vPrevBuffer(pArgBuffer);  // (d)
-  m_pNextBuffer = pArgBuffer;                // (c)
+  if (pNextLinkedBuffer())
+    pNextLinkedBuffer()->vPrevLinkedBuffer(pArgBuffer->tBufferNo());  // (d)
+  m_tNextBuffer = pArgBuffer;                             // (c)
 }
 
 /*----------------------------------------------------------------------------*/
@@ -147,93 +159,152 @@ void LinkedBuffer::vUnLink(void)
    */
   
   //ASSERT( ! m_pNextBuffer )
-  if (m_pPrevBuffer)
-    m_pPrevBuffer->vNextBuffer(m_pNextBuffer);    // (a)
+  if (pPrevLinkedBuffer())
+    pPrevLinkedBuffer()->vNextLinkedBuffer(m_tNextBuffer);    // (a)
 
-  if (m_pNextBuffer)
-    m_pNextBuffer->m_pPrevBuffer = m_pPrevBuffer; // (d)
+  if (pNextLinkedBuffer())
+    pNextLinkedBuffer()->m_tPrevBuffer = m_tPrevBuffer; // (d)
   
 }
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 
 /*----------------------------------------------------------------------------*/
 /* get higher buffer                                                          */
 /*----------------------------------------------------------------------------*/
-LinkedBuffer* LinkedBuffer::pHigherBuffer(void)
+LinkedBuffer* LinkedBuffer::pHigherLinkedBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return _pLinkedBuffer(m_pHigherBuffer);
+
+  LinkedBuffer* pHigherBuffer = m_tHigherBuffer.pGetLinkedBuffer();
+
+  return pHigherBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set higher buffer                                                          */
 /*----------------------------------------------------------------------------*/
-void LinkedBuffer::vHigherBuffer(LinkedBuffer* pHigherBuffer)
+void LinkedBuffer::vHigherLinkedBuffer(BufferNo tHigherBufferNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_pHigherBuffer = pHigherBuffer;
+  m_tHigherBuffer = tHigherBufferNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set higher buffer                                                          */
+/*----------------------------------------------------------------------------*/
+void LinkedBuffer::vHigherLinkedBuffer(LinkedBuffer* pHigherBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+    
+  m_tHigherBuffer = pHigherBuffer;
+  RASSERT(m_tHigherBuffer.pGetLinkedBuffer() == pHigherBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
 /* get lower buffer                                                           */
 /*----------------------------------------------------------------------------*/
-LinkedBuffer* LinkedBuffer::pLowerBuffer(void)
+LinkedBuffer* LinkedBuffer::pLowerLinkedBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return _pLinkedBuffer(m_pLowerBuffer);
+  LinkedBuffer* pLowerBuffer = m_tLowerBuffer.pGetLinkedBuffer();
+
+  return pLowerBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set higher buffer                                                          */
 /*----------------------------------------------------------------------------*/
-void LinkedBuffer::vLowerBuffer(LinkedBuffer* pLowerBuffer)
+void LinkedBuffer::vLowerLinkedBuffer(LinkedBuffer* pLowerBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+    
+  m_tLowerBuffer = pLowerBuffer;
+  RASSERT(m_tLowerBuffer.pGetLinkedBuffer() == pLowerBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set lower buffer                                                           */
+/*----------------------------------------------------------------------------*/
+void LinkedBuffer::vLowerLinkedBuffer(BufferNo tLowerBufferNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_pLowerBuffer = pLowerBuffer;
+  m_tLowerBuffer = tLowerBufferNo;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get next buffer                                                            */
 /*----------------------------------------------------------------------------*/
-LinkedBuffer* LinkedBuffer::pNextBuffer(void)
+LinkedBuffer* LinkedBuffer::pNextLinkedBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return _pLinkedBuffer(m_pNextBuffer);
+  LinkedBuffer* pNextBuffer = m_tNextBuffer.pGetLinkedBuffer();
+
+  return pNextBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set next buffer                                                            */
 /*----------------------------------------------------------------------------*/
-void LinkedBuffer::vNextBuffer(LinkedBuffer* pNextBuffer)
+void LinkedBuffer::vNextLinkedBuffer(LinkedBuffer* pNextBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_pNextBuffer = pNextBuffer;
+  m_tNextBuffer = pNextBuffer;
+
+  RASSERT(m_tNextBuffer.pGetLinkedBuffer() == pNextBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set next buffer                                                            */
+/*----------------------------------------------------------------------------*/
+void LinkedBuffer::vNextLinkedBuffer(BufferNo tNextBufferNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_tNextBuffer = tNextBufferNo;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get prev buffer                                                            */
 /*----------------------------------------------------------------------------*/
-LinkedBuffer* LinkedBuffer::pPrevBuffer(void)
+LinkedBuffer* LinkedBuffer::pPrevLinkedBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return _pLinkedBuffer(m_pPrevBuffer);
+  LinkedBuffer* pPrevBuffer = m_tPrevBuffer.pGetLinkedBuffer();
+
+  return pPrevBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set prev buffer                                                            */
 /*----------------------------------------------------------------------------*/
-void LinkedBuffer::vPrevBuffer(LinkedBuffer* pPrevBuffer)
+void LinkedBuffer::vPrevLinkedBuffer(LinkedBuffer* pPrevBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_pPrevBuffer = pPrevBuffer;
+  //m_pPrevBuffer = pPrevBuffer;
+  
+  m_tPrevBuffer = pPrevBuffer;
+  RASSERT(m_tPrevBuffer.pGetLinkedBuffer() == pPrevBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set prev buffer                                                            */
+/*----------------------------------------------------------------------------*/
+void LinkedBuffer::vPrevLinkedBuffer(BufferNo tPrevBufferNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_tPrevBuffer = tPrevBufferNo;
 }
 
 /*============================================================================*/
