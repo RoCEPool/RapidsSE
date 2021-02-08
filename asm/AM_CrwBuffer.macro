@@ -21,6 +21,44 @@ macro AM_HANDLER_CRWBUFFER
   EO_JMP QUERY_DONE
 endMacro
 
+macro AM_HANDLER_CRWBUFFER_LIMIT
+//----------------------------------------------------------------------------//
+// macro AM_HANDLER_CRWBUFFER_LIMIT                                           //
+//----------------------------------------------------------------------------//
+  // HANDLER_CRWBUFFER
+  Label HANDLER_CRWBUFFER
+  EO_PRINTF "**CRWBUFFER HANDLER**\n"
+  EO_POP
+  EO_CRW_SRC_BEGIN
+
+  // push limit on stack
+  EO_INTEGER <limitRows>
+  EO_DUMP
+
+  // initialize ctr_0 to 0
+  EO_PUSH_0
+  EO_CTR_0_POP
+
+  // NEXT_CRW_SRC
+  Label NEXT_CRW_SRC
+
+  // check if limit reached
+  EO_DUP
+  EO_CTR_0_PUSH
+  EO_DUMP
+  EO_LESSEQUAL
+  EO_JMP_TRUE QUERY_DONE
+
+  // increment rows processed
+  EO_CTR_0_INC
+
+  EO_CRW_SRC_NEXT
+  EO_JMP_FALSE QUERY_DONE
+  EO_CALL <crwProcessRoutine>
+  EO_JMP NEXT_CRW_SRC
+  EO_JMP QUERY_DONE
+endMacro
+
 macro AM_HANDLER_CRWBUFFER_AGG
 //----------------------------------------------------------------------------//
 // macro AM_HANDLER_CRWBUFFER_AGG                                             //

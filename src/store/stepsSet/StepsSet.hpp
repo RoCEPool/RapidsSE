@@ -319,6 +319,7 @@ public:
   void vExprEvalDelete(void);
   void vExprEvalNew(void);
   void vExprEvalAggregate(void);
+void vExprEvalEvaluate(void);
   void vExprEvalFilter(void);
   void vExprEvalProject(void);
   void vExprEvalSet(void);
@@ -876,6 +877,7 @@ public:
   void vLogicUnitGenAsm(void);
   void vLogicUnitGenAsmTxt(void);
   void vLogicUnitGenFilter(void);
+  void vLogicUnitGenLimit(void);
   void vLogicUnitGenProjection(void);
   void vLogicUnitGenRange(void);
   void vLogicUnitDevFetch(void);

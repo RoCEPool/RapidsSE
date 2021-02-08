@@ -95,6 +95,8 @@ static Stz* C_TAG_ROW_PROCESS_ROUTINE   = "<rowProcessRoutine>"_Stz;
 
 static Stz* C_TAG_EOS_PROCESS_ROUTINE   = "<eosProcessRoutine>"_Stz;
 
+static Stz* C_TAG_LIMIT_ROWS            = "<limitRows>"_Stz;
+
 static Stz* C_TAG_PAYLOAD_BYTES         = "<payLoadBytes>"_Stz;
 static Stz* C_TAG_PAYLOAD_ROUTINE       = "<payLoadRoutine>"_Stz;
 static Stz* C_TAG_PAYLOAD_KEY           = "<payLoadKey>"_Stz;

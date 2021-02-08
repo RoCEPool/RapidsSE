@@ -41,6 +41,7 @@ void Step::vAddSteps_LogicUnit(void)
   vAddStep("LogicUnit[].genAsm"_Stz,        &Step::vLogicUnitGenAsm);
   vAddStep("LogicUnit[].genAsmTxt"_Stz,     &Step::vLogicUnitGenAsmTxt);
   vAddStep("LogicUnit[].genFilter"_Stz,     &Step::vLogicUnitGenFilter);
+  vAddStep("LogicUnit[].genLimit"_Stz,      &Step::vLogicUnitGenLimit);
   vAddStep("LogicUnit[].genProjection"_Stz, &Step::vLogicUnitGenProjection);
   vAddStep("LogicUnit[].genRange"_Stz,      &Step::vLogicUnitGenRange);
     
@@ -361,6 +362,22 @@ void Step::vLogicUnitGenFilter(void)
   StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
 
   ( m_pJob->pLogicUnit_job() )->vGenerateFilter(pExprEval, pStreamDefOut);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].genLimit -- generate limit asm text into file                  */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitGenLimit(void)
+{
+  ENTRY();
+
+  i8 iLimit = m_pDataStack->iPopInt(__func__);
+
+  StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+
+  ( m_pJob->pLogicUnit_job() )->vGenerateLimit(iLimit, pStreamDefOut);
 
   EXIT();
 }

@@ -675,7 +675,29 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
-  
+  sPath
+  "
+  procedure limitRows_I
+    parameters $table $rows
+    begin
+
+    stage stageA on origin :
+      start | periodic once | stageB
+
+    stage stageB on all partitions :
+      scan $table
+      | limit 0 $rows
+      | stageC
+
+    stage stageC on origin :
+      output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //
   sPath
   "
   procedure projectColumns_I
