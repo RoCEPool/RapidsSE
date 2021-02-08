@@ -245,7 +245,7 @@ eEC ExprEval::eAddGby(Column* pColumn, i8 iGby) {
     case CT_FLOAT:
       StrLib::vSprintCat(m_sAsmGbyIdx, "  EO_PUSH_COLUMN_TYPE %s\n"_Stz,
                          aCT_long[pColumn->eColumnType()]);
-      StrLib::vSprintCat(m_sAsmGbyIdx, "  EO_REG_INDEXDEF_ADDCOLUMN \"intA\"\n"_Stz);
+      StrLib::vSprintCat(m_sAsmGbyIdx, "  EO_REG_INDEXDEF_ADDCOLUMN \"int%lld\"\n"_Stz, iLocal);
 
       StrLib::vSprintCat(m_sPayLoadKey, "  EO_PUSH_LOCALI %lld\n"_Stz, iLocal);
       StrLib::vSprintCat(m_sPayLoadKey, "  EO_ENTWRK_SETINTELM\n"_Stz);
@@ -772,6 +772,8 @@ eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
       if (pStreamDefOut)
         eError = eHandleOutColumn(pStreamDefOut, pColumn ? pColumn : pColumnExpr,
                                   sAliasName, i_DstColumn, bSum);
+        if ( eError == EC_INVALID_COMMAND)
+          goto L_RETURN;
 
       pTkn = pTknVec->pNextToken();
       continue;
@@ -812,12 +814,12 @@ eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
           StrLib::vSprintCat(m_sAsmText, "  EO_PUSH_LOCALS %lld\n"_Stz, iLocal);
           StrLib::vSprintCat(m_sPayLoadStore, "  EO_PUSH_LOCALS %lld\n"_Stz, iLocal);
           //StrLib::vSprintCat(m_sPayLoadToBuffer, "  EO_PAY_FETCH_COLS %lld\n"_Stz, iLocal);
-        }
-        else {
+        } else {
           StrLib::vSprintCat(m_sAsmText, "  EO_PUSH_LOCALI %lld\n"_Stz, iLocal);
           StrLib::vSprintCat(m_sPayLoadStore, "  EO_PUSH_LOCALI %lld\n"_Stz, iLocal);
           //StrLib::vSprintCat(m_sPayLoadToBuffer, "  EO_PAY_FETCH_COLI %lld\n"_Stz, iLocal);
         }
+
       } else {
         if (pColumn->eColumnType() == CT_VARCHAR ||
             pColumn->eColumnType() == CT_CHAR)
@@ -826,17 +828,21 @@ eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
           StrLib::vSprintCat(m_sAsmText, "  EO_PUSH_LOCALI %lld\n"_Stz, iLocal);
       }
     }
-
+    else {
+      eError = eHandleGbyColumn(pColumn, i_GbyColumn);
+      if (eError == EC_INVALID_COMMAND)
+        goto L_RETURN;
+    }
     pTkn = pTknVec->pNextToken();
   }
 
   if (m_bHasGby) {
-    eError = eHandleGbyColumn(pColumn, i_GbyColumn);
+    //eError = eHandleGbyColumn(pColumn, i_GbyColumn);
   }
   else {
     i_DstColumn++;
 
-    // discovered a comma, add the column to the streamDefOut
+    // add the last column to the streamDefOut
     if (pStreamDefOut)
       eError = eHandleOutColumn(pStreamDefOut, pColumn ? pColumn : pColumnExpr,
                                 sAliasName, i_DstColumn, bSum);
