@@ -21,18 +21,34 @@ enum eCT // Column Type
 
 static Stz* aCT[]
 {
-  /*  0 */ "NONE"_Stz,
-  /*  1 */ "BOOLEAN"_Stz,
-  /*  2 */ "CHAR"_Stz,
-  /*  3 */ "DATE"_Stz,
-  /*  4 */ "DECIMAL"_Stz,
-  /*  5 */ "FLOAT"_Stz,
-  /*  6 */ "INTEGER"_Stz,
-  /*  7 */ "INTERVAL"_Stz,
-  /*  8 */ "TIME"_Stz,
-  /*  9 */ "TIMESTAMP"_Stz,
-  /* 10 */ "VARCHAR"_Stz,
-  /* 11 */ "ENUMS"_Stz
+    /*  0 */ "NONE"_Stz,
+    /*  1 */ "BOOLEAN"_Stz,
+    /*  2 */ "CHAR"_Stz,
+    /*  3 */ "DATE"_Stz,
+    /*  4 */ "DECIMAL"_Stz,
+    /*  5 */ "FLOAT"_Stz,
+    /*  6 */ "INTEGER"_Stz,
+    /*  7 */ "INTERVAL"_Stz,
+    /*  8 */ "TIME"_Stz,
+    /*  9 */ "TIMESTAMP"_Stz,
+    /* 10 */ "VARCHAR"_Stz,
+    /* 11 */ "ENUMS"_Stz
+};
+
+static Stz* aCT_long[]
+{
+  /*  0 */ "CT_NONE"_Stz,
+  /*  1 */ "CT_BOOLEAN"_Stz,
+  /*  2 */ "CT_CHAR"_Stz,
+  /*  3 */ "CT_DATE"_Stz,
+  /*  4 */ "CT_DECIMAL"_Stz,
+  /*  5 */ "CT_FLOAT"_Stz,
+  /*  6 */ "CT_INTEGER"_Stz,
+  /*  7 */ "CT_INTERVAL"_Stz,
+  /*  8 */ "CT_TIME"_Stz,
+  /*  9 */ "CT_TIMESTAMP"_Stz,
+  /* 10 */ "CT_VARCHAR"_Stz,
+  /* 11 */ "CT_ENUMS"_Stz
 };
 
 static Stz* aCT_short[]

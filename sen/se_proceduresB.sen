@@ -619,12 +619,11 @@
 
     stage stageC on origin :
       aggreg 1 $etc
-      | output | sink | stageA
+     | output | sink | stageA
 
   end ;
   "
   api::addProcedure
-
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //

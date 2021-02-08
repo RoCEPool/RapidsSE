@@ -1,0 +1,52 @@
+/*============================================================================*/
+/* _nationLoad - create and Load TPC-H Nation table for SF1                   */
+/*============================================================================*/
+
+bc;
+
+create table nation (
+	 N_NATIONKEY       INTEGER NOT NULL,
+	 N_NAME            CHAR(25) NOT NULL,
+	 N_REGIONKEY       INTEGER NOT NULL,
+	 N_COMMENT         VARCHAR(152)
+);
+
+print "loading nation.csv..." ;
+load nation "../TPCH/SF1/nation.tbl" ;
+
+tableScan nation;
+
+//projectColumns_I nation N_COMMENT;
+//antlr: select n_nationkey as col1, n_regionkey as col2 from nation;
+
+//sqlCompiler "select n_nationkey as col1 from nation;" ;
+
+
+sqlCompiler "select n_nationkey as col1, n_regionkey as col2 from nation;" ;
+
+//sqlCompiler "select n_nationkey from nation;" ;
+
+/*
+pipeline query
+begin
+
+  stage stageA on origin :
+    start
+    | periodic once
+    | stageB
+
+  stage StageB on all partitions:
+    scan Nation
+    | project 0 "as col1 N_NATIONKEY , as col2 N_REGIONKEY"
+    | stageC
+
+  stage stageC on origin :
+    output
+    | sink
+    | stageA
+
+ end ;
+*/
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
