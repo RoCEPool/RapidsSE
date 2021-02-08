@@ -12,6 +12,21 @@
 void EVLOG::vEvent(Object* pObject, eEV eEvent, Stz* szFormat, ...)
 {
 
+   /*
+    
+    need:
+      thread
+      task
+      job
+      sen
+      operator
+      operand
+      zk
+    
+      pipeline
+      stage
+      stream
+    */
 }
 
 /*============================================================================*/
