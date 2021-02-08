@@ -27,10 +27,11 @@ namespace OBLIQUE
     static Stz* szGridNm(void);
     static Stz* szWordNm(void);
   
-    static Job*     pJob(void);
-    static Session* pSession(void);
-    static Task*    pTask(void);
-    static Thread*  pThread(void);
+    static Job*       pJob(void);
+    static LogicUnit* pLogicUnit(void);
+    static Session*   pSession(void);
+    static Task*      pTask(void);
+    static Thread*    pThread(void);
 
     // tbd...
     static Grid*     pGrid(void);
