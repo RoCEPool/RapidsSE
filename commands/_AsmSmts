@@ -39,7 +39,7 @@ create index lineitem_idx2 on lineitem (l_orderkey);
 
 
 print "loading Lineitem...";
-/time load lineitem "../DATA/TPCH/lineitem10.csv";
+/time load lineitem "../DATA/TPCH/lineitem_100k.csv";
 ///time load lineitem "../TPCH/SF1/lineitem.tbl";
 
 //aggregRows_I lineitem "l_orderkey , sum ( l_discount ) ";

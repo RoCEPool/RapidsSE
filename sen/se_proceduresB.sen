@@ -690,7 +690,8 @@
       | stageC
 
     stage stageC on origin :
-      output | sink | stageA
+      limit 0 $rows
+      | output | sink | stageA
 
   end ;
   "

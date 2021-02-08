@@ -746,9 +746,27 @@ void LogicUnit::vGenerateLimit(i8 iLimitRows, StreamDef* pStreamDefOut) {
   // ROWBUFFER_HANDLER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //   to execute project for each row
-  //oTagSet.vAppend(C_TAG_ROW_PROCESS_ROUTINE, "ROW_PROJECT_STAR"_Stz);
-  //pFile->vPrint(LogicCompiler::szGetMacro(AM_HANDLER_ROWBUFFER_LIMIT, &oTagSet, sMacro));
-  //oTagSet.vReset();
+  oTagSet.vAppend(C_TAG_LIMIT_ROWS, iLimitRows);
+  oTagSet.vAppend(C_TAG_ROW_PROCESS_ROUTINE, "ROW_PROJECT_STAR"_Stz);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_HANDLER_ROWBUFFER_LIMIT, &oTagSet, sMacro));
+  oTagSet.vReset();
+
+  u8 uProjectColumns = 0;
+  for (i8 i = 0; i < pStreamDefOut->nColumns(); i++)
+    BitLib::vSetOn(uProjectColumns, i);
+  oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pStreamDefOut->nColumns());
+  oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, uProjectColumns);
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_STAR, &oTagSet, sMacro));
+
+  ExprEval* pExprEvalStar = new ExprEval;
+  eEC eError = pExprEvalStar->eExprEvalAll(pStreamDefOut);
+  RASSERT(eError == EC_NONE);
+
+  // add the columns to be projected to PROJECT_COLUMNS
+  pFile->vPrint("%s\n"_Stz, pExprEvalStar->m_sAsmText.azChar());
+
+  pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_END, &oTagSet, sMacro));
+  delete pExprEvalStar;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query Done
