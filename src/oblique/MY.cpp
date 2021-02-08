@@ -9,6 +9,7 @@
 #include "Response.hpp"
 #include "Result.hpp"
 #include "Job.hpp"
+#include "Op.hpp"
 
 #include "CmdLineArgs.hpp"
 
@@ -65,6 +66,19 @@ Op* MY::pOp(void)
   Job* pJob = MY::pJob();
 
   return pJob->m_pOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current op                                                             */
+/*----------------------------------------------------------------------------*/
+Pipeline* MY::pPipeline(void)
+{
+  Op* pOp = MY::pOp();
+
+  if (pOp)
+    return pOp->pPipeline();
+  else
+    return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
