@@ -84,11 +84,11 @@ QueryNode* TableDef::pCreate(Stz* szCatalogName, Stz* szSchemaName, Stz* szTable
   pTableDef->vAppendProperty(pTableName);
 
   // Create the columns property
-  pColumnDefs->vRename(C_COLUMNS_PROP);
+  pColumnDefs->vSetName(C_COLUMNS_PROP);
   pTableDef->vAppendProperty(pColumnDefs);
 
   // Create the indexes property
-  pIndexDefs->vRename(C_INDEXES_PROP);
+  pIndexDefs->vSetName(C_INDEXES_PROP);
   pTableDef->vAppendProperty(pIndexDefs);
 
   return pTableDef;

@@ -50,7 +50,7 @@ QueryNode* CatalogDef::pCreate(Stz* szCatalogName, QueryNode* pSchemaDefs)
   pCatalogDef->vAppendProperty(pCatalogName);
 
   // Create the schemas property
-  pSchemaDefs->vRename(C_SCHEMAS_PROP);
+  pSchemaDefs->vSetName(C_SCHEMAS_PROP);
   pCatalogDef->vAppendProperty(pSchemaDefs);
 
   return pCatalogDef;

@@ -58,7 +58,7 @@ QueryNode* ProjectedExpr::pCreate(QueryNode* pExprNode, Text* pAlias)
 
   // Add the expression as a property
   // Make sure it has the right property name first
-  pExprNode->vRename(C_EXPR_PROP);
+  pExprNode->vSetName(C_EXPR_PROP);
   pProjectedExpr->vAppendProperty(pExprNode);
 
   // Create the alias and append it as a property

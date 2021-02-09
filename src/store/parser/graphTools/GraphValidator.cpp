@@ -718,8 +718,7 @@ GraphNav::eWalkCtrl GraphValidator::eValidatePlanNode(PlanNode* pNode, s256& sPa
   //   applied in the declaration of the property "bar" too.
 
   RASSERT(pNode);
-  RASSERT(pNode->eGetClassNo() == CN_MUTABLEPLANNODE ||
-                   pNode->eGetClassNo() == CN_QUERYNODE);
+  RASSERT(pNode->eGetClassNo() == CN_QUERYNODE);
   RASSERT(pvArg);
 
   PlanNode* pRootNode = (PlanNode*) pvArg;

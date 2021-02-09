@@ -143,7 +143,6 @@ enum eCN : u2 // Class Number
   /* */ CN_MEDIUMTRANSIENT,
   /* */ CN_MEDIUMVIRTUAL,
   /* */ CN_MEMTEST,
-  /* */ CN_MUTABLEPLANNODE,
   /* */ CN_MUTEX,
 
   /* */ CN__N__,
@@ -468,7 +467,6 @@ static Stz* aCN[]
   /* */ "MEDIUMTRANSIENT"_Stz,      // CN_MEDIUMTRANSIENT
   /* */ "MEDIUMVIRTUAL"_Stz,        // CN_MEDIUMVIRTUAL
   /* */ "MEMTEST"_Stz,              // CN_MEMTEST
-  /* */ "MUTABLEPLANNODE"_Stz,      // CN_MUTABLEPLANNODE
   /* */ "MUTEX"_Stz,                // CN_MUTEX
  
   /* */ "_N__"_Stz,                 // CN__N__

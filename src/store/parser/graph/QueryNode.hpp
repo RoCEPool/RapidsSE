@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "MutablePlanNode.hpp"
+#include "PlanNode.hpp"
 
 namespace Parser
 {
-  class QueryNode : public MutablePlanNode
+  class QueryNode : public PlanNode
   {
   protected:
 
@@ -27,7 +27,9 @@ namespace Parser
 
     Footer* aFooter(void);
 
-    void vRename(Stz* szName);
+    void vSetName(Stz* szName);
+    void vSetType(Stz* szType);
+    void vSetValue(Value&& xValue);  // move semantics
 
     // Returns the number of children of this node
     i8 iNumChildren(void);
@@ -56,6 +58,8 @@ namespace Parser
 
     // Removes and returns the first child. The removed node retains all of its children.
     QueryNode* pPopChild();
+
+    void vAppendProperty(QueryNode* pNode);
   };
   
   QueryNode* _pQueryNode(void* aAddr);

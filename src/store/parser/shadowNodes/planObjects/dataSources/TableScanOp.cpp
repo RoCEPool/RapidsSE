@@ -44,7 +44,7 @@ QueryNode* TableScanOp::pCreate(QueryNode* pTableRef)
   // Create the object and add the tableRef property. We will need to rename it first.
   QueryNode* pTableScanOp = new QueryNode(sName, C_TABLESCAN_DEFN);
 
-  pTableRef->vRename(C_TABLEREF_PROP);
+  pTableRef->vSetName(C_TABLEREF_PROP);
   pTableScanOp->vAppendProperty(pTableRef);
 
   return pTableScanOp;

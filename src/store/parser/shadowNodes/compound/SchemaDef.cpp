@@ -64,7 +64,7 @@ QueryNode* SchemaDef::pCreate(Stz* szCatalogName, Stz* szSchemaName, QueryNode* 
   pSchemaDef->vAppendProperty(pSchemaName);
 
   // Create the tables property
-  pTableDefs->vRename(C_TABLES_PROP);
+  pTableDefs->vSetName(C_TABLES_PROP);
   pSchemaDef->vAppendProperty(pTableDefs);
 
   return pSchemaDef;
