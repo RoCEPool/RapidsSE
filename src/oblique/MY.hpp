@@ -32,6 +32,7 @@ namespace OBLIQUE
     static LogicUnit* pLogicUnit(void);
     static Node*      pNode(void);
     static Op*        pOp(void);
+    static eZK        eOperand(void);
     static Pipeline*  pPipeline(void);
     static Session*   pSession(void);
     static Stage*     pStage(void);
@@ -40,7 +41,6 @@ namespace OBLIQUE
     static Thread*    pThread(void);
 
     // tbd...
-    static eZK       eOperand(void);
 
     /*
      

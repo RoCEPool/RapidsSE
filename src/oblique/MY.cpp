@@ -9,6 +9,7 @@
 #include "Response.hpp"
 #include "Result.hpp"
 #include "Job.hpp"
+#include "LogicUnit.hpp"
 #include "Op.hpp"
 #include "Grid.hpp"
 
@@ -95,6 +96,19 @@ Op* MY::pOp(void)
   Job* pJob = MY::pJob();
 
   return pJob->m_pOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current operand kind                                                   */
+/*----------------------------------------------------------------------------*/
+eZK MY::eOperand(void)
+{
+  LogicUnit* pLogicUnit = MY::pLogicUnit();
+
+  if (pLogicUnit)
+    return pLogicUnit->m_eOperand;
+  else
+    return ZK_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
