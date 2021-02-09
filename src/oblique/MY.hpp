@@ -27,20 +27,20 @@ namespace OBLIQUE
     static Stz* szGridNm(void);
     static Stz* szWordNm(void);
   
+    static Grid*      pGrid(void);
     static Job*       pJob(void);
     static LogicUnit* pLogicUnit(void);
+    static Node*      pNode(void);
+    static Op*        pOp(void);
+    static Pipeline*  pPipeline(void);
     static Session*   pSession(void);
+    static Stage*     pStage(void);
+    static Stream*    pStream(void);
     static Task*      pTask(void);
     static Thread*    pThread(void);
 
     // tbd...
-    static Grid*     pGrid(void);
-    static Node*     pNode(void);
-    static Op*       pOp(void);
     static eZK       eOperand(void);
-    static Pipeline* pPipeline(void);
-    static Stage*    pStage(void);
-    static Stream*   pStream(void);
 
     /*
      

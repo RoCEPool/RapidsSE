@@ -10,19 +10,7 @@
 #include "Result.hpp"
 #include "Job.hpp"
 #include "Op.hpp"
-
-#include "CmdLineArgs.hpp"
-
-extern CmdLineArgs   gxCmdLineArgs;
-
-extern AttachMap*    gpAttachMap;
-extern BufferPool*   gpBufferPool;
-extern Log*          gpLog;
-extern Header*       gaSeShmRegion;
-extern File*         gpTraceFile;
-
-extern SizeHeap      gxaSizeHeap[];
-
+#include "Grid.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* get current job name                                                       */
@@ -44,6 +32,19 @@ Stz* MY::szWordNm(void)
   Word* pWord = pTask->pSenCompiler()->pCurrentWord();
   
   return pWord->szWordNm();
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get current grid                                                           */
+/*----------------------------------------------------------------------------*/
+Grid* MY::pGrid(void)
+{
+  Grid* pGrid = AM::pGrid();
+
+  return pGrid;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -69,6 +70,21 @@ LogicUnit* MY::pLogicUnit(void)
     return pJob->m_pLogicUnit_job;
   else
     return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current node                                                           */
+/*----------------------------------------------------------------------------*/
+Node* MY::pNode(void)
+{
+  Grid* pGrid = MY::pGrid();
+  
+  if (! pGrid)
+    return nullptr;
+
+  Node* pNode = pGrid->pThisNode();
+
+  return pNode;
 }
 
 /*----------------------------------------------------------------------------*/
