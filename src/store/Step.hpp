@@ -6,6 +6,9 @@
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"
 
+// declare a function pointer to any member function of Step
+typedef void (Step::*fpSTEPFN)(void);
+
 namespace STORE
 {
   class Step : public Task
