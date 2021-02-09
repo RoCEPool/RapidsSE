@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Stage.hpp -- Stage of Pipeline                                             */
+/* Stage.hpp -- Stage of Pipeline (being a vector of Stbream)                  */
 /*============================================================================*/
 #pragma once
 
 namespace STORE
 {
-  class Stage : public VectorNL_t<CN_STAGE,Stream,C_MAX_STRANDS>
+  class Stage : public VectorNL_t<CN_STAGE,Stream,C_MAX_STREAMS>
   {
   private:
     s32  m_sPipelineNm; // pipeline name
