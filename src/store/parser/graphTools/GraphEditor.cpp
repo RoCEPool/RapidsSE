@@ -9,8 +9,6 @@
 #include "PlanConstants.hpp"
 #include "QueryNode.hpp"
 #include "RootNode.hpp"
-#include "MetadataNode.hpp"
-#include "StatisticsNode.hpp"
 #include "GraphNav.hpp"
 
 using namespace Parser;
@@ -43,8 +41,8 @@ PlanNode* GraphEditor::pNewFromTemplate(const PlanNode* pTemplateRoot)
   PlanNode*       pPrimitives  = GraphNav::pFind(const_cast<Stz*>(C_PRIMITIVES_PATH), pRoot);
   PlanNode*       pDefinitions = GraphNav::pFind(const_cast<Stz*>(C_DEFINITIONS_PATH), pRoot);
   QueryNode*      pPlanNode    = static_cast<QueryNode*>(GraphNav::pFind(const_cast<Stz*>(C_PLAN_PATH), pRoot));
-  MetadataNode*   pMetadata    = static_cast<MetadataNode*>(GraphNav::pFind(const_cast<Stz*>(C_METADATA_PATH), pRoot));
-  StatisticsNode* pStatistics  = static_cast<StatisticsNode*>(GraphNav::pFind(const_cast<Stz*>(C_STATISTICS_PATH), pRoot));
+  QueryNode*      pMetadata    = static_cast<QueryNode*>(GraphNav::pFind(const_cast<Stz*>(C_METADATA_PATH), pRoot));
+  QueryNode*      pStatistics  = static_cast<QueryNode*>(GraphNav::pFind(const_cast<Stz*>(C_STATISTICS_PATH), pRoot));
   ASSERT(pPrimitives);
   ASSERT(pDefinitions);
   ASSERT(pPlanNode);
@@ -58,8 +56,8 @@ PlanNode* GraphEditor::pNewFromTemplate(const PlanNode* pTemplateRoot)
   pNewChildList->vAppend(pPrimitives);
   pNewChildList->vAppend(pDefinitions);
   pNewChildList->vAppend(new QueryNode(*pPlanNode));
-  pNewChildList->vAppend(new MetadataNode(*pMetadata));
-  pNewChildList->vAppend(new StatisticsNode(*pStatistics));
+  pNewChildList->vAppend(new QueryNode(*pMetadata));
+  pNewChildList->vAppend(new QueryNode(*pStatistics));
 
   // Create a new list of properties for the new root node.
   PlanNodeList* pNewPropertyList = nullptr;

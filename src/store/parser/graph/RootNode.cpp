@@ -55,9 +55,7 @@ RootNode::~RootNode(void)
     }
 
     // Delete the other children. Could also have done this in the base destructor.
-    ASSERT(pChild->bIsClassNo(CN_QUERYNODE) ||
-                    pChild->bIsClassNo(CN_METADATANODE) ||
-                    pChild->bIsClassNo(CN_STATISTICSNODE) );
+    ASSERT(pChild->bIsClassNo(CN_QUERYNODE));
     delete pChild;
   }
 }

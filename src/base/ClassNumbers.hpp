@@ -143,7 +143,6 @@ enum eCN : u2 // Class Number
   /* */ CN_MEDIUMTRANSIENT,
   /* */ CN_MEDIUMVIRTUAL,
   /* */ CN_MEMTEST,
-  /* */ CN_METADATANODE,
   /* */ CN_MUTABLEPLANNODE,
   /* */ CN_MUTEX,
 
@@ -267,7 +266,6 @@ enum eCN : u2 // Class Number
   /* */ CN_STAGE,
   /* */ CN_STAGESPEC,
   /* */ CN_STATISTICS,
-  /* */ CN_STATISTICSNODE,
   /* */ CN_STEPACCUM,
   /* */ CN_STEPTIMING,
   /* */ CN_STREAM,
@@ -470,7 +468,6 @@ static Stz* aCN[]
   /* */ "MEDIUMTRANSIENT"_Stz,      // CN_MEDIUMTRANSIENT
   /* */ "MEDIUMVIRTUAL"_Stz,        // CN_MEDIUMVIRTUAL
   /* */ "MEMTEST"_Stz,              // CN_MEMTEST
-  /* */ "METADATANODE"_Stz,         // CN_METADATANODE
   /* */ "MUTABLEPLANNODE"_Stz,      // CN_MUTABLEPLANNODE
   /* */ "MUTEX"_Stz,                // CN_MUTEX
  
@@ -594,7 +591,6 @@ static Stz* aCN[]
   /* */ "STAGE"_Stz,                // CN_STAGE
   /* */ "STAGESPEC"_Stz,            // CN_STAGESPEC
   /* */ "STATISTICS"_Stz,           // CN_STATISTICS
-  /* */ "STATISTICSNODE"_Stz,       // CN_STATISTICSNODE
   /* */ "STEPACCUM"_Stz,            // CN_STEPACCUM
   /* */ "STEPTIMING"_Stz,           // CN_STEPTIMING
   /* */ "STRAND"_Stz,               // CN_STREAM
