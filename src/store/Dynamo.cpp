@@ -29,11 +29,15 @@
 #include "PlanOperand.hpp"
 #include "TableScanOp.hpp"
 #include "QueryNode.hpp"
+#include "AdditionExpr.hpp"
 #include "ProjectOp.hpp"
 #include "ProjectedExpr.hpp"
 #include "Expr.hpp"
 #include "ColumnRef.hpp"
-#include "LiteralExpr.hpp"
+#include "IntegerLiteral.hpp"
+#include "Literal.hpp"
+#include "MathematicalExpr.hpp"
+#include "MultiplicationExpr.hpp"
 #include "TableRef.hpp"
 
 
@@ -268,7 +272,7 @@ bool Dynamo::bPlanToPipeline(String* pAsPipelineStmt,
   _static_
 
 //#ifdef WITH_TRACE_DYNAMO
-//  vPrintPlanGraph(pPlanRoot);
+  vPrintPlanGraph(pPlanRoot);
 //#endif
 
   char cStageStart   = 'A';
@@ -1253,23 +1257,9 @@ void Dynamo::vAppendExpr(String* sPipeline, Parser::QueryNode* pNode) {
                                                                                                   pNode));
   ASSERT(pExprNode);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // literal
+  // Walk the expr node plan graph
+  Parser::GraphNav::bWalkBottomUp(pExprNode, false, true, vVisitorExpr, (void*)sPipeline);
 
-  if (Parser::LiteralExpr::bIsOfType(pExprNode)) {
-    RASSERT(0);
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // columnRef
-
-  if (Parser::ColumnRef::bIsOfType(pExprNode)) {
-    Parser::QueryNode *pColumnRef = static_cast<Parser::QueryNode *>(pExprNode);
-    sPipeline->vCatSprint(
-        " %s"
-        ""_Stz,
-        Parser::ColumnRef::szColumnName(pColumnRef));
-  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1337,11 +1327,60 @@ void Dynamo::vAppendScanOp(String* sPipeline, Parser::QueryNode* pNode)
 /*----------------------------------------------------------------------------*/
 /* visitor function for the plan graph walk                                   */
 /*----------------------------------------------------------------------------*/
-Parser::GraphNav::eWalkCtrl Dynamo::vVisitorPlan(Parser::PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+Parser::GraphNav::eWalkCtrl Dynamo::vVisitorExpr(Parser::PlanNode* pExprNode, s256& sPath, i8 iDepth, void* pvArg)
 {
   _static_
 
-  Parser::QueryNode* pQueryNode = static_cast<Parser::QueryNode *>(pNode);
+  String* sPipeline = (String*)pvArg;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // columnRef
+
+  if (Parser::ColumnRef::bIsOfType(pExprNode)) {
+    Parser::QueryNode *pColumnRef = static_cast<Parser::QueryNode *>(pExprNode);
+    sPipeline->vCatSprint(
+        " %s"
+        ""_Stz,
+        Parser::ColumnRef::szColumnName(pColumnRef));
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // matematical operator
+
+  if (Parser::MathematicalExpr::bIsOfType(pExprNode)) {
+
+    if (Parser::AdditionExpr::bIsOfType(pExprNode)) {
+      sPipeline->vCatSprint(" + "_Stz);
+    }
+
+    if (Parser::MultiplicationExpr::bIsOfType(pExprNode)) {
+      sPipeline->vCatSprint(" * "_Stz);
+    }
+
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // literal
+
+  if (Parser::LiteralExpr::bIsOfType(pExprNode)) {
+
+    if (Parser::IntegerLiteral::bIsOfType(pExprNode)) {
+      sPipeline->vCatSprint(" %lld "_Stz, Parser::IntegerLiteral::iValue(pExprNode));
+    }
+  }
+
+  // Keep walking
+  return Parser::GraphNav::WALK_CONTINUE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* visitor function for the plan graph walk                                   */
+/*----------------------------------------------------------------------------*/
+Parser::GraphNav::eWalkCtrl Dynamo::vVisitorPlan(Parser::PlanNode* pRootNode, s256& sPath, i8 iDepth, void* pvArg)
+{
+  _static_
+
+  Parser::QueryNode* pQueryNode = static_cast<Parser::QueryNode *>(pRootNode);
 
   // We are only interested in the /__root__/plan subtree. Skip the others.
   if (iDepth > 0 && !sPath.bBeginsWith(const_cast<Stz*>(Parser::C_PLAN_PATH))) {

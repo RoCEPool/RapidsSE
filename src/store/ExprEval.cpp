@@ -159,7 +159,7 @@ void ExprEval::vAddArithmetic(Token* pTkn, Column* pColumn) {
   }
   else if (pTkn->bSame("*"_Stz)) {
     StrLib::vSprintCat(m_sAsmText, "  EO_MULTIPLY\n"_Stz);
-    if (pColumn->eColumnType() == CT_DECIMAL) {
+    if (pColumn && pColumn->eColumnType() == CT_DECIMAL) {
       StrLib::vSprintCat(m_sAsmText, "  EO_INTEGER 100\n"_Stz);
       StrLib::vSprintCat(m_sAsmText, "  EO_DIVIDE\n"_Stz);
     }
