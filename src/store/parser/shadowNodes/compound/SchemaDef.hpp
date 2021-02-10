@@ -26,7 +26,12 @@ namespace Parser
 
     static Stz* szCatalogName(QueryNode* pNode);
     static Stz* szSchemaName(QueryNode* pNode);
+
+    static QueryNode* pTableDef(QueryNode* pNode, Stz* szTableName);
     static PlanNodeIter* pTableDefIter(QueryNode* pNode);
+
+    static void vAddTable(QueryNode* pNode, QueryNode* pTableDefNode);
+
   };
 
 }

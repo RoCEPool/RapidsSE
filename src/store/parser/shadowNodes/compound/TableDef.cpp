@@ -9,7 +9,9 @@
 #include "QueryNode.hpp"
 #include "PlanConstants.hpp"
 #include "ColumnDefs.hpp"
+#include "ColumnDef.hpp"
 #include "IndexDefs.hpp"
+#include "IndexDefn.hpp"
 
 #include "GraphNav.hpp"
 
@@ -190,6 +192,90 @@ Stz* TableDef::szTableName(QueryNode* pNode)
   Stz* szTableName = pTableNameNode->szValue();
 
   return szTableName;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns a QueryNode that represents a given ColumnDef in this table        */
+/*----------------------------------------------------------------------------*/
+QueryNode* TableDef::pColumnDef(QueryNode* pNode, Stz* szColumnName)
+{
+  ASSERT(bIsOfType(pNode));
+  ASSERT(szColumnName);
+
+  // Get the columns property
+  QueryNode* pColumnsNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_COLUMNS_PROP, pNode));
+  ASSERT(pColumnsNode);
+
+  QueryNode* pColumnDef = nullptr;
+  PlanNodeIter* pIter = pColumnsNode->pNewChildrenIter();
+
+  while (pIter->bHasNext()) {
+    QueryNode* pChild = static_cast<QueryNode*>(pIter->pNext());
+    ASSERT(ColumnDef::bIsOfType(pChild));
+
+    if (ColumnDef::szColumnName(pChild)->bEqual(szColumnName)) {
+      pColumnDef = pChild;
+      break;
+    }
+  }
+
+  delete pIter;
+  return pColumnDef;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get an iterator of PlanNodes that represent ColumnDefs                     */
+/*----------------------------------------------------------------------------*/
+PlanNodeIter* TableDef::pColumnDefIter(QueryNode *pNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pColumnsNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_COLUMNS_PROP, pNode));
+  ASSERT(pColumnsNode);
+
+  return pColumnsNode->pNewChildrenIter();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns a QueryNode that represents a given IndexDef in this table         */
+/*----------------------------------------------------------------------------*/
+QueryNode* TableDef::pIndexDef(QueryNode* pNode, Stz* szIndexName)
+{
+  ASSERT(bIsOfType(pNode));
+  ASSERT(szIndexName);
+
+  // Get the indexs property
+  QueryNode* pIndexsNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_INDEXES_PROP, pNode));
+  ASSERT(pIndexsNode);
+
+  QueryNode* pIndexDef = nullptr;
+  PlanNodeIter* pIter = pIndexsNode->pNewChildrenIter();
+
+  while (pIter->bHasNext()) {
+    QueryNode* pChild = static_cast<QueryNode*>(pIter->pNext());
+    ASSERT(IndexDefn::bIsOfType(pChild));
+
+    if (IndexDefn::szIndexName(pChild)->bEqual(szIndexName)) {
+      pIndexDef = pChild;
+      break;
+    }
+  }
+
+  delete pIter;
+  return pIndexDef;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get an iterator of PlanNodes that represent IndexDefs                      */
+/*----------------------------------------------------------------------------*/
+PlanNodeIter* TableDef::pIndexDefIter(QueryNode *pNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pIndexsNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_INDEXES_PROP, pNode));
+  ASSERT(pIndexsNode);
+
+  return pIndexsNode->pNewChildrenIter();
 }
 
 /*============================================================================*/
