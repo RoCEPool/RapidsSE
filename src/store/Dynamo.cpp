@@ -1109,24 +1109,30 @@ bool Dynamo::bPhase2_staging(void)
                i_FoundStage,
                aPX[eCrossTopo]);
 #endif
-        // is there a xmit already ?
+        // Is there a xmit already ?
+        // This would be the case if one stage is piped into multiple stages
+        // e.g a unionAll
         OpSpec* pOpSpecFound = pStageSpec->pFindOpSpec("xmit"_Stz);
         if (pOpSpecFound) {
           TagSet* pTopologyTagSet = pOpSpecFound->pTopologyTagSet();
 
           ePX eOpSpecCrossTopo = (ePX)pTopologyTagSet->iValue(C_TAG_TOPOLOGY);
+
+          // this needs to checked at compile time
           RASSERT(eCrossTopo == eOpSpecCrossTopo);
+
+          // we already have a xmit, so just remove the stage
           pStageSpec->vRemove(pOpSpec);
 
+          // add otherStage and otherOp tags into teh xmit
           pOpSpecFound->vAddTopologyEnamePair(C_TAG_OTHERSTAGE,(i8)i_FoundStage,TN_INTEGER);
           pOpSpecFound->vAddTopologyEnamePair(C_TAG_OTHEROP,(i8)0,TN_INTEGER);
 
-          pTopologyTagSet->vContentDump();
+          //pTopologyTagSet->vContentDump();
 
-          // is there a consume already ?
+          // orepend a consume op in the stage
           OpSpec* pConsumeOpSpec = pStageSpecFound->pPrependConsumeOp(eCrossTopo, i_FoundStage, i_Op + 1);
           vAddConsumeParams(pConsumeOpSpec, eCrossTopo);
-
         }
         else {
           if (eCrossTopo == PX_ORIGIN_TO_ORIGIN && i_FoundStage == 0) {
@@ -1142,9 +1148,16 @@ bool Dynamo::bPhase2_staging(void)
             pOpSpec->vAddEnamePair(C_TAG_XMITKIND, (i8) pOpSpec->eXmitKind(), TN_INTEGER);
             vReplaceWithXmit(pOpSpec, eCrossTopo, i_FoundStage);
 
+            // is there a consumeOp already in the stage ?
             OpSpec* pConsumeOpSpec = pStageSpecFound->pFindOpSpec("consumeOp"_Stz);
             if (pConsumeOpSpec) {
-              vAppendConsumeParams(pConsumeOpSpec, eCrossTopo);
+
+              // found a consume op
+              // implies that there are 2 stages piping into this same stage
+              // eg in unionAll
+              // 2 scan stages piping into the output stage
+              // add to the consume params
+              vAddToConsumeParams(pConsumeOpSpec, eCrossTopo);
             }
             else {
               pConsumeOpSpec = pStageSpecFound->pPrependConsumeOp(eCrossTopo, i_FoundStage, i_Op + 1);
@@ -1232,9 +1245,9 @@ void Dynamo::vAddConsumeParams(OpSpec* pOpSpec, ePX eCrossTopo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append the Xmits parameter                                                 */
+/* add to the consume parameters                                              */
 /*----------------------------------------------------------------------------*/
-void Dynamo::vAppendConsumeParams(OpSpec* pOpSpec, ePX eCrossTopo)
+void Dynamo::vAddToConsumeParams(OpSpec* pOpSpec, ePX eCrossTopo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
 

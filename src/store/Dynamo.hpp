@@ -74,7 +74,7 @@ namespace STORE
   
     void vAddTopologyParams(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage, i8 i_Op);
     void vAddConsumeParams(OpSpec* pOpSpec, ePX eCrossTopo);
-    void vAppendConsumeParams(OpSpec* pOpSpec, ePX eCrossTopo);
+    void vAddToConsumeParams(OpSpec* pOpSpec, ePX eCrossTopo);
     void vReplaceTopologyParams(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage, i8 i_Op);
     void vReplaceWithXmit(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage);
 
