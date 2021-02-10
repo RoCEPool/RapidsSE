@@ -105,6 +105,23 @@ void StageSpec::vCopyOps(StageSpec* pStageSpec_from)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find op matching given name                                                */
+/*----------------------------------------------------------------------------*/
+OpSpec* StageSpec::pFindOpSpec(Stz* szFindNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+
+  for (i8 i_OpSpec = 0; i_OpSpec < nItems(); i_OpSpec++) {
+    OpSpec* pOpSpec = pGet(i_OpSpec);
+
+    if (pOpSpec->szOpNm()->bSame(szFindNm))
+      return pOpSpec;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get name                                                                   */
 /*----------------------------------------------------------------------------*/
 Stz* StageSpec::szStageNm(void)

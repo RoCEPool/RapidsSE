@@ -964,6 +964,8 @@ void vExprEvalEvaluate(void);
   void vOpNextOpStore(void);
   void vOpNextStageStore(void);
   void vOpOpNameFetch(void);
+  void vOpOtherOpStore(void);
+  void vOpOtherStageStore(void);
   void vOpPartitionFetch(void);
   void vOpPiplineJobFetch(void);
   void vOpPipeOut(void);

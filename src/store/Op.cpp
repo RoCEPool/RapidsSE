@@ -17,6 +17,7 @@
 #include "Pipeline.hpp"
 #include "StageSpec.hpp"
 #include "MY.hpp"
+#include "XmitOperand.hpp"
 
 #include "eTS.h"
 #include "TagConstants.h"
@@ -89,11 +90,13 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   m_pQueueLeft    = new OperandQueue;
   m_pQueueRight   = new OperandQueue;
 
-  m_eCrossTopo = PX_NONE;
-  m_iNextStage = C_UNKNOWN;
-  m_iNextOp    = C_UNKNOWN;
-  m_iXmitNode  = C_UNKNOWN;
-  m_iRobin     = 0;
+  m_eCrossTopo  = PX_NONE;
+  m_iNextStage  = C_UNKNOWN;
+  m_iNextOp     = C_UNKNOWN;
+  m_iOtherStage = C_UNKNOWN;
+  m_iOtherOp    = C_UNKNOWN;
+  m_iXmitNode   = C_UNKNOWN;
+  m_iRobin      = 0;
   m_iLocalRobin = 0;
   
   m_pDownstreamOp = nullptr;
@@ -859,6 +862,63 @@ TagSet* Op::pOpTagSet(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get next op                                                                */
+/*----------------------------------------------------------------------------*/
+i8 Op::iOtherOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+  return m_iOtherOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get other op (in stage)                                                    */
+/*----------------------------------------------------------------------------*/
+Op* Op::pOtherOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+  if (m_iOtherStage != m_pStage->pStageSpec()->i_StageSpec())
+    return nullptr;
+
+  Stage* pStage = m_pPipeline->pGet(m_iOtherStage);
+
+  Op* pNextOp = pStage->pGet(m_iOtherStage)->pGet(m_iOtherOp);
+
+  return pNextOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set other op                                                               */
+/*----------------------------------------------------------------------------*/
+void Op::vOtherOp(i8 iOtherOp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+  m_iOtherOp = iOtherOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get other stage                                                            */
+/*----------------------------------------------------------------------------*/
+i8 Op::iOtherStage(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+  return m_iOtherStage;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set other stage                                                            */
+/*----------------------------------------------------------------------------*/
+void Op::vOtherStage(i8 iOtherStage)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+  m_iOtherStage = iOtherStage;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get outbound operand                                                       */
 /*----------------------------------------------------------------------------*/
 Operand* Op::pOutboundOperand(void)
@@ -1395,6 +1455,7 @@ void Op::vSendXmitOperand(Operand* pOperand, Task* pTriggeringTask, bool bSet)
     
   // delete the operand
   //AM::vDeleteOperand(pOperand);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1601,18 +1662,37 @@ void Op::vSend(Operand* pOperand, bool bSet, i8 i_Node, tPN tPtnNo)
   XmitOperand* pXmitOperand;
   
   // new an xmit operand
-  pXmitOperand = AM::pNewXmitOperand(m_pPipelineJob, pOperand, this, i_Node, tPtnNo);
-  
+  pXmitOperand = AM::pNewXmitOperand(m_pPipelineJob, pOperand, m_eCrossTopo, m_iNextStage, m_iNextOp, i_Node, tPtnNo);
+
+  vSend(pOperand, pXmitOperand, bSet);
+
+  if (m_iOtherStage != C_UNKNOWN) {
+
+    // new an xmit operand
+    pXmitOperand = AM::pNewXmitOperand(m_pPipelineJob, pOperand, m_eCrossTopo, m_iOtherStage, m_iOtherOp, i_Node, tPtnNo);
+
+    vSend(pOperand, pXmitOperand, bSet);
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* send the operand                                                           */
+/*----------------------------------------------------------------------------*/
+void Op::vSend(Operand* pOperand, XmitOperand* pXmitOperand, bool bSet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
   // get the send node in the task
-  Node* pSendNode = AM::pGrid()->pGetNode(i_Node);
-  
+  Node* pSendNode = AM::pGrid()->pGetNode(pXmitOperand->m_i_Node);
+
   if (bSet) {
-    
+
     while (pOperand) {
-      
+
       // set the operand in the job
       AM::vSetOperand(pXmitOperand, pOperand);
-      
+
       // send the operand job across the sendNode
       AM::vSend(AM::pExecutingTask(m_pOpJob), pSendNode, pXmitOperand);
       DataBuffer* pDataBuffer = _pDataBuffer(pOperand);

@@ -39,8 +39,54 @@ create index lineitem_idx2 on lineitem (l_orderkey);
 
 
 print "loading Lineitem...";
-/time load lineitem "../DATA/TPCH/lineitem_100k.csv";
+/time load lineitem "../DATA/TPCH/lineitem10k.csv";
 ///time load lineitem "../TPCH/SF1/lineitem.tbl";
+
+
+create table orders (
+   O_ORDERKEY        INTEGER       NOT NULL,  // 0)
+   O_CUSTKEY         INTEGER       NOT NULL,  // 1)
+   O_ORDERSTATUS     CHAR(1)       NOT NULL,  // 2)
+   O_TOTALPRICE      DECIMAL(15,2) NOT NULL,  // 3)
+   O_ORDERDATE       DATE          NOT NULL,  // 4)
+   O_ORDERPRIORITY   CHAR(15)      NOT NULL,  // 5)
+   O_CLERK           CHAR(15)      NOT NULL,  // 6)
+   O_SHIPPRIORITY    INTEGER       NOT NULL,  // 7)
+   O_COMMENT         VARCHAR(79)   NOT NULL   // 8)
+) partition by (O_CUSTKEY) ;
+
+create index Orders_Idx1 ON Orders(O_CUSTKEY);
+create index Orders_Idx2 ON Orders(O_ORDERKEY);
+
+print "loading Orders...";
+ /time load Orders "../DATA/TPCH/orders10k.csv";
+
+//UnionAll_I lineitem orders l_orderkey;
+
+tableScan lineitem;
+tableScan orders;
+
+pipeline unionAll_I
+   begin
+
+  stage stageA on origin :
+    start | periodic once | stageB | stageC
+
+  stage stageB on all partitions :
+    scan lineitem
+    | project 0 "as orderkey l_orderkey"
+    | stageD
+
+  stage stageC on all partitions :
+    scan orders
+    | project 0 "as orderkey o_orderkey"
+    | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+
+end ;
+
 
 //aggregRows_I lineitem "l_orderkey , sum ( l_discount ) ";
 
@@ -54,7 +100,11 @@ print "loading Lineitem...";
 //aggregRows_I lineitem "sum ( l_discount )";
 
 
-limitRows lineitem 2;
+//limitRows lineitem 2;
+
+//select (l_orderkey+2) * 3 from lineitem;
+
+//select 1+2*3 from lineitem;
 
 /*
 pipeline query

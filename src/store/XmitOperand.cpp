@@ -64,12 +64,12 @@ XmitOperand::XmitOperand(void)
   
   m_pOperand       = nullptr;
   m_iPipelineJobId = C_UNKNOWN;
-  m_i_Node          = C_UNKNOWN;
+  m_i_Node         = C_UNKNOWN;
   m_tPtnNo         = C_UNKNOWN;
   
   m_eCrossTopo     = PX_NONE;
-  m_iNextStage     = C_UNKNOWN;
-  m_iNextOp        = C_UNKNOWN;
+  m_iNextStage    = C_UNKNOWN;
+  m_iNextOp       = C_UNKNOWN;
   
   _checkInitialised_(CN_XMITOPERAND);
   
@@ -94,7 +94,8 @@ XmitOperand::~XmitOperand(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 XmitOperand* XmitOperand::pNewXmitOperand(Operand* pOperand,
                                          i8 iPipelineJobId,
-                                         Op* pOp, i8 i_Node, tPN tPtnNo)
+                                         ePX eCrossTopo, i8 iNextStage, i8 iNextOp,
+                                         i8 i_Node, tPN tPtnNo)
 {
   XmitOperand* pXmitOperand = new XmitOperand;
   
@@ -103,9 +104,9 @@ XmitOperand* XmitOperand::pNewXmitOperand(Operand* pOperand,
   pXmitOperand->m_tPtnNo         = tPtnNo;
   pXmitOperand->m_pOperand       = pOperand;
   
-  pXmitOperand->m_eCrossTopo     = pOp->eCrossTopo();
-  pXmitOperand->m_iNextStage     = pOp->iNextStage();
-  pXmitOperand->m_iNextOp        = pOp->iNextOp();
+  pXmitOperand->m_eCrossTopo     = eCrossTopo;
+  pXmitOperand->m_iNextStage     = iNextStage;
+  pXmitOperand->m_iNextOp        = iNextOp;
   
   return pXmitOperand;
 }

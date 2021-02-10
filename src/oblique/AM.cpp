@@ -1575,11 +1575,13 @@ Operand* AM::pDuplicateOperand(Operand* pOperand)
 /*----------------------------------------------------------------------------*/
 /* new an operand job                                                         */
 /*----------------------------------------------------------------------------*/
-XmitOperand* AM::pNewXmitOperand(Job* pParentJob, Operand* pOperand, Op* pOp,
+XmitOperand* AM::pNewXmitOperand(Job* pParentJob, Operand* pOperand,
+                                 ePX eCrossTopo, i8 iNextStage, i8 iNextOp,
                                  i8 i_Node, i8 tPtnNo)
 {
   XmitOperand* pXmitOperand =
-    XmitOperand::pNewXmitOperand(pOperand,pParentJob->m_iFocalId,pOp,i_Node,tPtnNo);
+    XmitOperand::pNewXmitOperand(pOperand,pParentJob->m_iFocalId,
+                                 eCrossTopo,iNextStage,iNextOp,i_Node,tPtnNo);
   
   return pXmitOperand;
 }

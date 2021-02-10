@@ -48,7 +48,9 @@ namespace STORE
     
     ePX            m_eCrossTopo;     // cross topology
     i8             m_iNextStage;     // next stage in the cross topology
-    i8             m_iNextOp;        // next Op in the stage
+    i8             m_iNextOp;        // next Op in the next stage
+    i8             m_iOtherStage;    // other stage in the cross topology
+    i8             m_iOtherOp;       // next Op in the other stage
     i8             m_iXmitNode;      // xmit node (for xmit)
     eXK            m_eXmitKind;      // xmit kind
     i8             m_iRobin;         // xmit Round Robin partition/node/thread
@@ -97,6 +99,7 @@ namespace STORE
     Op*  pNextOp(void);
     void vNextOp(i8 iNextOp);
     i8   iNextStage(void);
+    i8   iOtherStage(void);
     void vNextStage(i8 iNextStage);
     i8   iNode(void);
     void vNode(i8 iNode);
@@ -106,6 +109,10 @@ namespace STORE
     Job* pOpJob(void);
     Stz* szOpNm(void);
     TagSet* pOpTagSet(void);
+    i8   iOtherOp(void);
+    Op*  pOtherOp(void);
+    void vOtherOp(i8 iNextOp);
+    void vOtherStage(i8 iNextStage);
     Operand* pOutboundOperand(void);
     void vOutboundOperand(Operand* pOutboundOperand);
     void vPtnNo(tPN tPtnNo);
@@ -145,6 +152,7 @@ namespace STORE
     
   private:
     void vSend(Operand* pOperand, bool bSet, i8 i_Node, tPN tPtnNo);
+    void vSend(Operand* pOperand, XmitOperand* pXmitOperand, bool bSet);
     void vSendToAllNodes(Operand* pOperand, Task* pTriggeringTask,bool bSet, eXK eXmitKind);
     void vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask,bool bSet, eXK eXmitKind);
     void vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask,bool bSet, eXK eXmitKind);

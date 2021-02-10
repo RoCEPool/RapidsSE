@@ -1109,23 +1109,49 @@ bool Dynamo::bPhase2_staging(void)
                i_FoundStage,
                aPX[eCrossTopo]);
 #endif
-        
-        if (eCrossTopo == PX_ORIGIN_TO_ORIGIN && i_FoundStage == 0) {
-          // add parameter to the prev sink op
-          OpSpec* pPrevOpSpec = pStageSpec->pGet(i_Op-1);
-          vReplaceTopologyParams(pPrevOpSpec, eCrossTopo, i_FoundStage, 0);
+        // is there a xmit already ?
+        OpSpec* pOpSpecFound = pStageSpec->pFindOpSpec("xmit"_Stz);
+        if (pOpSpecFound) {
+          TagSet* pTopologyTagSet = pOpSpecFound->pTopologyTagSet();
 
-          // remove the last (stage) OpSpec from the OpSpecVec
-          RASSERT(i_Op == pStageSpec->nItems()-1);
+          ePX eOpSpecCrossTopo = (ePX)pTopologyTagSet->iValue(C_TAG_TOPOLOGY);
+          RASSERT(eCrossTopo == eOpSpecCrossTopo);
           pStageSpec->vRemove(pOpSpec);
-          delete pOpSpec;
-        }
-        else {
-          pOpSpec->vAddEnamePair(C_TAG_XMITKIND,(i8)pOpSpec->eXmitKind(),TN_INTEGER);
-          vReplaceWithXmit(pOpSpec, eCrossTopo, i_FoundStage);
-          OpSpec* pConsumeOpSpec = pStageSpecFound->pPrependConsumeOp(eCrossTopo, i_FoundStage, i_Op+1);
+
+          pOpSpecFound->vAddTopologyEnamePair(C_TAG_OTHERSTAGE,(i8)i_FoundStage,TN_INTEGER);
+          pOpSpecFound->vAddTopologyEnamePair(C_TAG_OTHEROP,(i8)0,TN_INTEGER);
+
+          pTopologyTagSet->vContentDump();
+
+          // is there a consume already ?
+          OpSpec* pConsumeOpSpec = pStageSpecFound->pPrependConsumeOp(eCrossTopo, i_FoundStage, i_Op + 1);
           vAddConsumeParams(pConsumeOpSpec, eCrossTopo);
 
+        }
+        else {
+          if (eCrossTopo == PX_ORIGIN_TO_ORIGIN && i_FoundStage == 0) {
+            // add parameter to the prev sink op
+            OpSpec *pPrevOpSpec = pStageSpec->pGet(i_Op - 1);
+            vReplaceTopologyParams(pPrevOpSpec, eCrossTopo, i_FoundStage, 0);
+
+            // remove the last (stage) OpSpec from the OpSpecVec
+            RASSERT(i_Op == pStageSpec->nItems() - 1);
+            pStageSpec->vRemove(pOpSpec);
+            delete pOpSpec;
+          } else {
+            pOpSpec->vAddEnamePair(C_TAG_XMITKIND, (i8) pOpSpec->eXmitKind(), TN_INTEGER);
+            vReplaceWithXmit(pOpSpec, eCrossTopo, i_FoundStage);
+
+            OpSpec* pConsumeOpSpec = pStageSpecFound->pFindOpSpec("consumeOp"_Stz);
+            if (pConsumeOpSpec) {
+              vAppendConsumeParams(pConsumeOpSpec, eCrossTopo);
+            }
+            else {
+              pConsumeOpSpec = pStageSpecFound->pPrependConsumeOp(eCrossTopo, i_FoundStage, i_Op + 1);
+              vAddConsumeParams(pConsumeOpSpec, eCrossTopo);
+            }
+
+          }
         }
       }
       else {
@@ -1203,6 +1229,58 @@ void Dynamo::vAddConsumeParams(OpSpec* pOpSpec, ePX eCrossTopo)
   
   // arg-0 is the cross topology of the xmit op
   pOpSpec->vAddEnamePair(C_TAG_XMITS,iXmits,TN_INTEGER);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append the Xmits parameter                                                 */
+/*----------------------------------------------------------------------------*/
+void Dynamo::vAppendConsumeParams(OpSpec* pOpSpec, ePX eCrossTopo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+
+  i8 iXmits = C_UNKNOWN;
+
+  // add argument to the consumeOp depending on the topology
+  switch (eCrossTopo) {
+    case PX_ALL_NODES_TO_ORIGIN:
+      iXmits = AM::pGrid()->nConnectedNodes();
+      break;
+
+    case PX_ALL_NODES_TO_ALL_PARTITIONS:
+      iXmits = AM::pGrid()->nConnectedNodes();
+      break;
+
+    case PX_ALL_PARTITIONS_TO_ALL_NODES:
+      iXmits = AM::nPtnsPerTable();
+      break;
+
+    case PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
+      iXmits = AM::nPtnsPerTable();
+      break;
+
+    case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
+    case PX_ALL_PARTITIONS_TO_ORIGIN:
+      iXmits = AM::nPtnsInGrid();
+      break;
+
+    case PX_ORIGIN_TO_ORIGIN:
+    case PX_ORIGIN_TO_ALL_PARTITIONS:
+    case PX_ORIGIN_TO_ALL_NODES:
+    case PX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
+    case PX_ORIGIN_TO_SPECIFIC_PARTITION:
+    case PX_SPECIFIC_PARTITION_TO_ORIGIN:
+      iXmits = 1;
+      break;
+
+    default:
+      RASSERT(0);
+  }
+
+  TagSet* pTagSet = pOpSpec->pOpSpecTagSet();
+  i8 iOldXmits = pTagSet->iValue(C_TAG_XMITS);
+
+  // arg-0 is the cross topology of the xmit op
+  pTagSet->vReplace(C_TAG_XMITS,iOldXmits+iXmits);
 }
 
 /*----------------------------------------------------------------------------*/

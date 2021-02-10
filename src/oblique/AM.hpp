@@ -16,6 +16,7 @@
 #include "eMA.h"
 #include "eOA.h"
 #include "ePA.h"
+#include "ePX.h"
 #include "eQA.h"
 #include "eRA.h"
 #include "eSL.h"
@@ -368,7 +369,8 @@ namespace OBLIQUE
     static void vDeleteXmitOperand(XmitOperand* pXmitOperand);
     static Operand* pDuplicateOperand(Operand* pOperand);
     static XmitOperand* pNewXmitOperand(Job* pParentJob, Operand* pOperand,
-                                        Op* pOp, i8 iNde, tPN tPtnNo);
+                                        ePX eCrossTopo, i8 iNextStage, i8 iNextOp,
+                                        i8 iNde, tPN tPtnNo);
     
     static Job* pNewJobOp(Op* pOp, ReqTuple* pReqTuple);
     

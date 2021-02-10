@@ -30,7 +30,8 @@ namespace STORE
     ~XmitOperand(void) noexcept(false);
     
     static XmitOperand* pNewXmitOperand(Operand* pOperand, i8 iParentJobId,
-                                        Op* pOp, i8 i_Node, tPN tPtnNo);
+                                        ePX eCrossTopo, i8 iNextStage, i8 iNextOp,
+                                        i8 i_Node, tPN tPtnNo);
     
   public:
     void vShow(void);

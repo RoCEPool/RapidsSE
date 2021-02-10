@@ -281,6 +281,12 @@
   // set nextOp in op
   <nextOp> op.nextOp!
 
+  // set otherStage and otherOp in op
+  "<otherStage>" job[] job.tagSet@ tagSet.hasName if
+    <otherStage> op.otherStage!
+    <otherOp> op.otherOp!
+  then
+
   "<diary>" job[] job.tagSet@ tagSet.hasName if
     rluDiary_init
   then
