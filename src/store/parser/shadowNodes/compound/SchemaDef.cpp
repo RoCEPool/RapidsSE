@@ -9,6 +9,7 @@
 #include "QueryNode.hpp"
 #include "PlanConstants.hpp"
 #include "TableDefs.hpp"
+#include "TableDef.hpp"
 
 #include "GraphNav.hpp"
 
@@ -64,7 +65,7 @@ QueryNode* SchemaDef::pCreate(Stz* szCatalogName, Stz* szSchemaName, QueryNode* 
   pSchemaDef->vAppendProperty(pSchemaName);
 
   // Create the tables property
-  pTableDefs->vRename(C_TABLES_PROP);
+  pTableDefs->vSetName(C_TABLES_PROP);
   pSchemaDef->vAppendProperty(pTableDefs);
 
   return pSchemaDef;
@@ -134,6 +135,61 @@ Stz* SchemaDef::szSchemaName(QueryNode* pNode)
   Stz* szSchemaName = pSchemaNameNode->szValue();
 
   return szSchemaName;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns a QueryNode that represents a given TableDef in this schema        */
+/*----------------------------------------------------------------------------*/
+QueryNode* SchemaDef::pTableDef(QueryNode* pNode, Stz* szTableName)
+{
+  ASSERT(bIsOfType(pNode));
+  ASSERT(szTableName);
+
+  // Get the tables property
+  QueryNode* pTablesNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_TABLES_PROP, pNode));
+  ASSERT(pTablesNode);
+
+  QueryNode* pTableDef = nullptr;
+  PlanNodeIter* pIter = pTablesNode->pNewChildrenIter();
+
+  while (pIter->bHasNext()) {
+    QueryNode* pChild = static_cast<QueryNode*>(pIter->pNext());
+    ASSERT(TableDef::bIsOfType(pChild));
+
+    if (TableDef::szTableName(pChild)->bEqual(szTableName)) {
+      pTableDef = pChild;
+      break;
+    }
+  }
+
+  delete pIter;
+  return pTableDef;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get an iterator of PlanNodes that represent TableDefs                      */
+/*----------------------------------------------------------------------------*/
+PlanNodeIter* SchemaDef::pTableDefIter(QueryNode *pNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pTablesNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_TABLES_PROP, pNode));
+  ASSERT(pTablesNode);
+
+  return pTablesNode->pNewChildrenIter();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Add a tableDef to this schemaDef                                           */
+/*----------------------------------------------------------------------------*/
+void SchemaDef::vAddTable(QueryNode *pNode, QueryNode *pTableDefNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pTablesNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_TABLES_PROP, pNode));
+  ASSERT(pTablesNode);
+
+  pTablesNode->vAppendChild(pTableDefNode);
 }
 
 /*============================================================================*/

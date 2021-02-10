@@ -156,10 +156,7 @@
 #include "graph/RootNode.hpp"
 #include "graph/DefinitionNode.hpp"
 #include "graph/PrimitiveNode.hpp"
-#include "graph/MutablePlanNode.hpp"
 #include "graph/QueryNode.hpp"
-#include "graph/MetadataNode.hpp"
-#include "graph/StatisticsNode.hpp"
 #include "graph/PlanDefinitionParser.hpp"
 
 #include "graphTools/GraphNav.hpp"
@@ -302,8 +299,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Heap), /*correct*/   HT_INVALID   ,0 }, // CN_MEDIUMTRANSIENT
   { sizeof(Heap), /*correct*/   HT_INVALID   ,0 }, // CN_MEDIUMTVIRTUAL
   { sizeof(MemTest),            HT_T_TINY    ,0 }, // CN_MEMTEST
-  { sizeof(MetadataNode),       HT_T_TINY    ,-8 }, // CN_METADATANODE
-  { sizeof(MutablePlanNode),    HT_T_TINY    ,-8 }, // CN_MUTABLEPLANNODE
   { sizeof(Mutex),              HT_T_TINY    ,0 }, // CN_MUTEX
 
   { 'N' - ('A' - 1),            HT_INVALID   ,0 }, // CN__N__
@@ -426,7 +421,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Stage),              HT_T_SMALL   ,0 }, // CN_STAGE
   { sizeof(StageSpec),          HT_T_SMALL   ,0 }, // CN_STAGESPEC
   { sizeof(Statistics),         HT_INVALID   ,0 }, // CN_STATISTICS
-  { sizeof(StatisticsNode),     HT_T_TINY    ,-8 }, // CN_STATISTICSNODE
   { sizeof(StepAccum),          HT_INVALID   ,0 }, // CN_STEPACCUM
   { sizeof(StepTiming),         HT_T_LARGE   ,0 }, // CN_STEPTIMING
   { sizeof(Stream),             HT_T_SMALL   ,0 }, // CN_STREAM

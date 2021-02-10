@@ -9,6 +9,7 @@
 #include "QueryNode.hpp"
 #include "PlanConstants.hpp"
 #include "SchemaDefs.hpp"
+#include "SchemaDef.hpp"
 
 #include "GraphNav.hpp"
 
@@ -50,7 +51,7 @@ QueryNode* CatalogDef::pCreate(Stz* szCatalogName, QueryNode* pSchemaDefs)
   pCatalogDef->vAppendProperty(pCatalogName);
 
   // Create the schemas property
-  pSchemaDefs->vRename(C_SCHEMAS_PROP);
+  pSchemaDefs->vSetName(C_SCHEMAS_PROP);
   pCatalogDef->vAppendProperty(pSchemaDefs);
 
   return pCatalogDef;
@@ -85,7 +86,7 @@ b1 CatalogDef::bIsOfType(PlanNode *pNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the catalog name from catalogDef                                        */
+/* get the catalog name from catalogDef                                       */
 /*----------------------------------------------------------------------------*/
 Stz* CatalogDef::szCatalogName(QueryNode* pNode)
 {
@@ -97,6 +98,62 @@ Stz* CatalogDef::szCatalogName(QueryNode* pNode)
   Stz* szCatalogName = pCatalogNameNode->szValue();
 
   return szCatalogName;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns a QueryNode that represents a given SchemaDef in this catalog      */
+/*----------------------------------------------------------------------------*/
+QueryNode* CatalogDef::pSchemaDef(QueryNode* pNode, Stz* szSchemaName)
+{
+  ASSERT(bIsOfType(pNode));
+  ASSERT(szSchemaName);
+
+  // Get the schemas property
+  QueryNode* pSchemasNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_SCHEMAS_PROP, pNode));
+  ASSERT(pSchemasNode);
+
+  QueryNode* pSchemaDef = nullptr;
+  PlanNodeIter* pIter = pSchemasNode->pNewChildrenIter();
+
+  while (pIter->bHasNext()) {
+    QueryNode* pChild = static_cast<QueryNode*>(pIter->pNext());
+    ASSERT(SchemaDef::bIsOfType(pChild));
+
+    if (SchemaDef::szSchemaName(pChild)->bEqual(szSchemaName)) {
+      pSchemaDef = pChild;
+      break;
+    }
+  }
+
+  delete pIter;
+  return pSchemaDef;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* get an iterator of PlanNodes that represent SchemaDefs                     */
+/*----------------------------------------------------------------------------*/
+PlanNodeIter* CatalogDef::pSchemaDefIter(QueryNode *pNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pSchemasNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_SCHEMAS_PROP, pNode));
+  ASSERT(pSchemasNode);
+
+  return pSchemasNode->pNewChildrenIter();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Add a schemaDef to this catalogDef                                         */
+/*----------------------------------------------------------------------------*/
+void CatalogDef::vAddSchema(QueryNode *pNode, QueryNode *pSchemaDefNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pSchemasNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_SCHEMAS_PROP, pNode));
+  ASSERT(pSchemasNode);
+
+  pSchemasNode->vAppendChild(pSchemaDefNode);
 }
 
 /*============================================================================*/

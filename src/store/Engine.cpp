@@ -1214,7 +1214,7 @@ void Engine::vPrintConstants(void)
   vTrace("  C_MAX_TABLEPTNS          = %lld\n"_Stz,C_MAX_TABLEPTNS);
   vTrace("  C_MAX_STAGES         = %lld\n"_Stz,C_MAX_STAGES);
   vTrace("  C_MAX_STATEMENT      = %lld\n"_Stz,C_MAX_STATEMENT);
-  vTrace("  C_MAX_STRANDS        = %lld\n"_Stz,C_MAX_STRANDS);
+  vTrace("  C_MAX_STREAMS        = %lld\n"_Stz,C_MAX_STREAMS);
   vTrace("  C_MAX_STREAMDEFS     = %lld\n"_Stz,C_MAX_STREAMDEFS);
   vTrace("  C_MAX_THREADS        = %lld\n"_Stz,C_MAX_THREADS);
   vTrace("  C_MAX_TOKENS         = %lld\n"_Stz,C_MAX_TOKENS);

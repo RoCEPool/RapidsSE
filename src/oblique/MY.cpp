@@ -9,20 +9,9 @@
 #include "Response.hpp"
 #include "Result.hpp"
 #include "Job.hpp"
+#include "LogicUnit.hpp"
 #include "Op.hpp"
-
-#include "CmdLineArgs.hpp"
-
-extern CmdLineArgs   gxCmdLineArgs;
-
-extern AttachMap*    gpAttachMap;
-extern BufferPool*   gpBufferPool;
-extern Log*          gpLog;
-extern Header*       gaSeShmRegion;
-extern File*         gpTraceFile;
-
-extern SizeHeap      gxaSizeHeap[];
-
+#include "Grid.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* get current job name                                                       */
@@ -44,6 +33,19 @@ Stz* MY::szWordNm(void)
   Word* pWord = pTask->pSenCompiler()->pCurrentWord();
   
   return pWord->szWordNm();
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get current grid                                                           */
+/*----------------------------------------------------------------------------*/
+Grid* MY::pGrid(void)
+{
+  Grid* pGrid = AM::pGrid();
+
+  return pGrid;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -72,6 +74,21 @@ LogicUnit* MY::pLogicUnit(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get current node                                                           */
+/*----------------------------------------------------------------------------*/
+Node* MY::pNode(void)
+{
+  Grid* pGrid = MY::pGrid();
+  
+  if (! pGrid)
+    return nullptr;
+
+  Node* pNode = pGrid->pThisNode();
+
+  return pNode;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get current op                                                             */
 /*----------------------------------------------------------------------------*/
 Op* MY::pOp(void)
@@ -79,6 +96,19 @@ Op* MY::pOp(void)
   Job* pJob = MY::pJob();
 
   return pJob->m_pOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current operand kind                                                   */
+/*----------------------------------------------------------------------------*/
+eZK MY::eOperand(void)
+{
+  LogicUnit* pLogicUnit = MY::pLogicUnit();
+
+  if (pLogicUnit)
+    return pLogicUnit->m_eOperand;
+  else
+    return ZK_NONE;
 }
 
 /*----------------------------------------------------------------------------*/

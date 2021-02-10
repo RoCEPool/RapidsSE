@@ -20,8 +20,8 @@ __aFooterFunction(QueryNode)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 QueryNode::QueryNode(Stz* szName, Stz* szType)
-    : MutablePlanNode(CN_QUERYNODE, szName, szType, {},
-                      new PlanNodeList(), new PlanNodeList())
+    : PlanNode(CN_QUERYNODE, szName, szType, {},
+               new PlanNodeList(), new PlanNodeList())
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUERYNODE,_FOOTER_);
 
@@ -35,8 +35,8 @@ QueryNode::QueryNode(Stz* szName, Stz* szType)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 QueryNode::QueryNode(Stz* szName, Stz* szType, Value&& xValue)
-    : MutablePlanNode(CN_QUERYNODE, szName, szType, static_cast<Value&&>(xValue),
-                      new PlanNodeList(), new PlanNodeList())
+    : PlanNode(CN_QUERYNODE, szName, szType, static_cast<Value&&>(xValue),
+               new PlanNodeList(), new PlanNodeList())
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUERYNODE,_FOOTER_);
 
@@ -51,8 +51,8 @@ QueryNode::QueryNode(Stz* szName, Stz* szType, Value&& xValue)
 /*----------------------------------------------------------------------------*/
 QueryNode::QueryNode(Stz* szName, Stz* szType, Value&& xValue,
                                PlanNodeList* pProperties, PlanNodeList* pChildren)
-    : MutablePlanNode(CN_QUERYNODE, szName, szType, static_cast<Value&&>(xValue),
-                      pProperties, pChildren)
+    : PlanNode(CN_QUERYNODE, szName, szType, static_cast<Value&&>(xValue),
+               pProperties, pChildren)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUERYNODE,_FOOTER_);
 
@@ -66,7 +66,7 @@ QueryNode::QueryNode(Stz* szName, Stz* szType, Value&& xValue,
 /* Copy constructor                                                           */
 /*----------------------------------------------------------------------------*/
 QueryNode::QueryNode(const QueryNode& oNode)
-    : MutablePlanNode(CN_QUERYNODE, oNode)
+    : PlanNode(CN_QUERYNODE, oNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUERYNODE,_FOOTER_);
 
@@ -92,7 +92,7 @@ QueryNode::~QueryNode(void)
 /*----------------------------------------------------------------------------*/
 /* Give this node a new name                                                  */
 /*----------------------------------------------------------------------------*/
-void QueryNode::vRename(Stz *szName)
+void QueryNode::vSetName(Stz *szName)
 {
   // This is useful when building compound objects and this object will be
   // a property of some parent. The name of this object is how the property
@@ -103,6 +103,23 @@ void QueryNode::vRename(Stz *szName)
   ASSERT(szName->nLength() > 0);
 
   m_sName.vCopy(szName);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Sets the type of this node                                                 */
+/*----------------------------------------------------------------------------*/
+void QueryNode::vSetType(Stz* szType)
+{
+  // TODO: Validate that it is a valid type
+  m_sType.vCopy(szType);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Sets the value component of this node                                      */
+/*----------------------------------------------------------------------------*/
+void QueryNode::vSetValue(Value&& xValue)
+{
+  m_xValue = static_cast<Value&&>(xValue);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -232,6 +249,17 @@ QueryNode* QueryNode::pPopChild()
   return pNode;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Appends a node as a property of this node                                  */
+/*----------------------------------------------------------------------------*/
+void QueryNode::vAppendProperty(QueryNode* pNode)
+{
+  if (!m_pProperties) {
+    m_pProperties = new PlanNodeList();
+  }
+
+  m_pProperties->vAppend(pNode);
+}
 
 /*============================================================================*/
 /* end                                                                        */

@@ -25,7 +25,11 @@ namespace Parser
     static b1 bIsOfType(PlanNode* pNode);
 
     static Stz* szCatalogName(QueryNode* pNode);
+
+    static QueryNode* pSchemaDef(QueryNode* pNode, Stz* szSchemaName);
     static PlanNodeIter* pSchemaDefIter(QueryNode* pNode);
+
+    static void vAddSchema(QueryNode* pNode, QueryNode* pSchemaDefNode);
   };
 
 }

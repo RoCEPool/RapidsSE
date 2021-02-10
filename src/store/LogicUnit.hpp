@@ -32,7 +32,8 @@
 
 #include "eLH.h"
 
-namespace STORE { class PathIdentifier; }
+namespace STORE { class IndexStream; class Node_I;
+                  class PathIdentifier;  class RowOnce;}
 
 namespace STORE
 {
@@ -131,6 +132,8 @@ namespace STORE
     Atomic              m_ixRowsInvalid;   // invalid rows detected
     Atomic              m_ixRowsSkipped;   // rows skipped
     eEC                 m_eErrorCode;      // error code
+    
+    eZK                 m_eOperand;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // inner loop

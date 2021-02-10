@@ -4,11 +4,11 @@
 #pragma once
 
 #include "ShadowNode.hpp"
+#include "PlanNode.hpp"
 
 namespace Parser
 {
   class QueryNode;
-  class PlanNode;
 
   class TableDef : public ShadowNode
   {
@@ -29,6 +29,11 @@ namespace Parser
     static Stz* szSchemaName(QueryNode* pNode);
     static Stz* szTableName(QueryNode* pNode);
 
+    static QueryNode* pColumnDef(QueryNode* pNode, Stz* szColumnName);
+    static PlanNodeIter* pColumnDefIter(QueryNode* pNode);
+
+    static QueryNode* pIndexDef(QueryNode* pNode, Stz* szIndexName);
+    static PlanNodeIter* pIndexDefIter(QueryNode* pNode);
   };
 
 }
