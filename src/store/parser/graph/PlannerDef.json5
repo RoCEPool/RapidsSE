@@ -1687,6 +1687,14 @@
               ]
             }, // EndPath: /__root__/definitions/object/metadataNode
 
+// Path: /__root__/definitions/object/statisticsNode
+            {
+              // TODO: Fill this in
+              name: "statisticsNode",
+              value: "A definition for the node that occurs at /__root__/statistics.",
+              properties: [ ]
+            }, // EndPath: /__root__/definitions/object/statisticsNode
+
           ]
         }, // EndPath: /__root__/definitions/object
 
@@ -1866,7 +1874,7 @@
 // Path: /__root__/statistics
     {
       name: "statistics",
-      type: "/__root__/primitives/trunk",
+      type: "/__root__/definitions/object/statisticsNode",
       children: [
         // Note: Children will get populated when a query is being plannned.
       ]

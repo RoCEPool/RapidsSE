@@ -11,6 +11,8 @@
 #include "DefinitionNode.hpp"
 #include "QueryNode.hpp"
 
+#include "MetadataNode.hpp"
+
 using namespace Parser;
 
 /*----------------------------------------------------------------------------*/
@@ -102,11 +104,18 @@ PlanNode* PlanNodeBuilder::pBuild(void)
                               pChildrenList);
 
   } else if (m_sPath.bBeginsWith(const_cast<Stz*>(C_METADATA_PATH))) {
-    pPlanNode = new QueryNode(m_sName.szStz(),
-                              m_sType.szStz(),
-                              static_cast<Value&&>(m_xValue),
-                              pPropertiesList,
-                              pChildrenList);
+    if (pPropertiesList) {
+      ASSERT(pPropertiesList->nItems() == 0);
+      delete pPropertiesList;
+    }
+
+    if (pChildrenList) {
+      ASSERT(pChildrenList->nItems() == 0);
+      delete pChildrenList;
+    }
+
+    pPlanNode = MetadataNode::pCreate();
+
 
   } else if (m_sPath.bBeginsWith(const_cast<Stz*>(C_STATISTICS_PATH))) {
     pPlanNode = new QueryNode(m_sName.szStz(),

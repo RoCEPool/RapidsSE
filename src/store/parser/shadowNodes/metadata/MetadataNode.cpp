@@ -22,7 +22,7 @@ using namespace Parser;
 /*----------------------------------------------------------------------------*/
 /*-- Constants ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-static Stz* C_METADATANODE_NAME = "metadataNode"_Stz;
+static Stz* C_METADATANODE_NAME = "metadata"_Stz;
 static Stz* C_METADATANODE_DEFN = "/__root__/definitions/object/metadataNode"_Stz;
 
 static Stz* C_CATALOGS_PROP = "catalogs"_Stz;
