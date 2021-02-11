@@ -7,7 +7,7 @@
 
 namespace BASE
 {
-  class Loggable : public Object
+  class Loggable : public Focal
   {
   private:
     s32 m_sObjectNm;  //
