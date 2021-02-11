@@ -1580,7 +1580,7 @@ XmitOperand* AM::pNewXmitOperand(Job* pParentJob, Operand* pOperand,
                                  i8 i_Node, i8 tPtnNo)
 {
   XmitOperand* pXmitOperand =
-    XmitOperand::pNewXmitOperand(pOperand,pParentJob->m_iObjectId,
+    XmitOperand::pNewXmitOperand(pOperand,pParentJob->m_iFocalId,
                                  eCrossTopo,iNextStage,iNextOp,i_Node,tPtnNo);
   
   return pXmitOperand;
@@ -1957,7 +1957,7 @@ bool AM::bInBufferPool(Object* pObject) {
 }
 
 Stz* AM::szJobName(Job* pJob)    { return pJob->szJobNm();                      }
-i8   AM::iJobUniqueId(Job* pJob) { return pJob->m_iObjectId;                     }
+i8   AM::iJobUniqueId(Job* pJob) { return pJob->m_iFocalId;                     }
 
 void AM::vPrintGlobals(void)
 {
@@ -1999,7 +1999,7 @@ void AM::vJobInitExeContext(Job* pJob) {
 
 
 Task* AM::pTaskNew(Job* pJob) {
-  Task* pTask = new Task(pJob,pJob->m_iObjectId);
+  Task* pTask = new Task(pJob,pJob->m_iFocalId);
   pJob->vTask(pTask);
   return pTask;
 }

@@ -88,11 +88,11 @@ Lock::~Lock(void) noexcept(false)
     SP_Gid spId;
     
     vIncStepNo(); -- gixLock;
-//    AM::vLogLck(SL_INF,this,LA_LCK_DESTRUCT,
-//                "Lock -%s destruct ^For=%s |gixLock=%lld|"_Stz, //!format-LogLck
-//                aLK[m_eLockKind],
-//                spId.sz(m_pFor?((Focal*)m_pFor)->m__iObjectId:C_UNKNOWN),
-//                * gixLock);
+    AM::vLogLck(SL_INF,this,LA_LCK_DESTRUCT,
+                "Lock -%s destruct ^For=%s |gixLock=%lld|"_Stz, //!format-LogLck
+                aLK[m_eLockKind],
+                spId.sz(m_pFor?((Focal*)m_pFor)->m_iFocalId:C_UNKNOWN),
+                * gixLock);
   }
 }
 
@@ -259,7 +259,7 @@ i8 Lock::iLockId(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
-  return m_iObjectId;
+  return m_iFocalId;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -92,7 +92,7 @@ void Step::vTaskAcksStore(void)
                        aCN[pJob->eGetClassNo()],
                        pJob,
                        nAcksRequired);
-    AM::pOriginatingJobs()->vLogJobs(pJob->m_iObjectId);
+    AM::pOriginatingJobs()->vLogJobs(pJob->m_iFocalId);
   }
   
   vAcksRmg(nAcksRequired);

@@ -98,7 +98,7 @@ void LogEntry::vAsTxt(s4K& sString)
                m_xReqTuple.m_sPurpose.szStz(),
                
                spForId.sz(m_iForId),
-               spId.sz(m_eKind,m_iObjectId),
+               spId.sz(m_eKind,m_iFocalId),
                m_iAct,
                C_VARGS_END
                );
@@ -170,7 +170,7 @@ void LogEntry::vInit(eSL eSeverity, eCN eClassNo, Stz* szText)
   
   m_bLine = false;
   m_cPrefix = '?';
-  m_iObjectId = C_UNKNOWN;
+  m_iFocalId = C_UNKNOWN;
   m_iForId = C_UNKNOWN;
   
   m_iIndicator = C_UNKNOWN;
@@ -202,7 +202,7 @@ void LogEntry::vInit(eSL eSeverity, Focal *pFocal, Stz* szText)
   
   m_bLine = false;
   m_cPrefix = '?';
-  //m_iObjectId = pFocal->m__iObjectId;
+  m_iFocalId = pFocal->m_iFocalId;
   m_iForId = pFocal->m_iForId;
   
   m_iIndicator = C_UNKNOWN;
@@ -411,7 +411,7 @@ void LogEntry::vWriteTxtEntry(File* pFile)
                m_xReqTuple.m_sPurpose.szStz(),
                
                spForId.sz(m_iForId),
-               spId.sz(m_eKind,m_iObjectId),
+               spId.sz(m_eKind,m_iFocalId),
                m_iAct,
                C_VARGS_END
                );

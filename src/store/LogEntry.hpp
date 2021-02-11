@@ -36,7 +36,7 @@ namespace BASE
     bool m_bLine;      // draw line before?
   
     char m_cPrefix;
-    i8   m_iObjectId;
+    i8   m_iFocalId;
     i8   m_iForId;
   
     i8   m_iIndicator;
