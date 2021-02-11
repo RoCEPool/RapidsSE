@@ -103,7 +103,9 @@ PlanNode* PlanNodeBuilder::pBuild(void)
                               pPropertiesList,
                               pChildrenList);
 
-  } else if (m_sPath.bBeginsWith(const_cast<Stz*>(C_METADATA_PATH))) {
+  } else if (m_sPath.bEqual(const_cast<Stz*>(C_METADATA_PATH))) {
+    // Shouldn't have any children at this point
+
     if (pPropertiesList) {
       ASSERT(pPropertiesList->nItems() == 0);
       delete pPropertiesList;
@@ -117,12 +119,22 @@ PlanNode* PlanNodeBuilder::pBuild(void)
     pPlanNode = MetadataNode::pCreate();
 
 
-  } else if (m_sPath.bBeginsWith(const_cast<Stz*>(C_STATISTICS_PATH))) {
+  } else if (m_sPath.bEqual(const_cast<Stz*>(C_STATISTICS_PATH))) {
+    // Shouldn't have any children at this point
+
+    if (pPropertiesList) {
+      ASSERT(pPropertiesList->nItems() == 0);
+      delete pPropertiesList;
+    }
+
+    if (pChildrenList) {
+      ASSERT(pChildrenList->nItems() == 0);
+      delete pChildrenList;
+    }
+
     pPlanNode = new QueryNode(m_sName.szStz(),
-                              m_sType.szStz(),
-                              static_cast<Value&&>(m_xValue),
-                              pPropertiesList,
-                              pChildrenList);
+                              m_sType.szStz());
+
   } else {
     NEVER_REACH
   }

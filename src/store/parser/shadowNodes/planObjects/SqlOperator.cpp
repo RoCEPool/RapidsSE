@@ -11,6 +11,7 @@
 
 #include "ProjectOp.hpp"
 #include "store/parser/shadowNodes/planObjects/dataSources/DataSource.hpp"
+#include "store/parser/shadowNodes/planObjects/FilterOp.hpp"
 
 using namespace Parser;
 
@@ -41,7 +42,7 @@ void SqlOperator::vDescribe(PlanNode* pNode, s2K& sBuf)
   if      (ProjectOp::bIsOfType(pNode))     { ProjectOp::vDescribe(pNode, sBuf);  }
 
   // Filter
-  //else if (FilterOp::bIsOfType(pNode))      { FilterOp::vDescribe(pNode, sBuf);   }
+  else if (FilterOp::bIsOfType(pNode))      { FilterOp::vDescribe(pNode, sBuf);   }
 
   // DataSource
   else if (DataSource::bIsOfType(pNode))    { DataSource::vDescribe(pNode, sBuf);   }
@@ -71,7 +72,7 @@ void SqlOperator::vExplain(PlanNode* pNode, s48K& sBuf, i8 iIndent)
   else if (DataSource::bIsOfType(pNode)) { DataSource::vExplain(pNode, sBuf, iIndent); }
 
   // Filter
-  //else if (FilterOp::bIsOfType(pNode))   { FilterOp::vExplain(pNode, sBuf, iIndent);     }
+  else if (FilterOp::bIsOfType(pNode))   { FilterOp::vExplain(pNode, sBuf, iIndent);     }
 
   else {
     // Need to add in manual polymorphism here
