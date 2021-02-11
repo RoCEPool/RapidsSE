@@ -45,6 +45,7 @@
 #include "LeExpr.hpp"
 #include "EqExpr.hpp"
 
+using namespace Parser;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -272,7 +273,7 @@ bool Dynamo::bCmdToPipeline(String* pAsPipelineStmt,
 /* transliterate plan into a pipeline statement                               */
 /*----------------------------------------------------------------------------*/
 bool Dynamo::bPlanToPipeline(String* pAsPipelineStmt,
-                             Parser::RootNode* pPlanRoot) {
+                             RootNode* pPlanRoot) {
   _static_
 
 //#ifdef WITH_TRACE_DYNAMO
@@ -311,7 +312,7 @@ bool Dynamo::bPlanToPipeline(String* pAsPipelineStmt,
   // path and not an absolute one.
   // Let's also pass in the root node as an argument as it can be useful within
   // the visitor function.
-  Parser::GraphNav::bWalkBottomUp(pPlanRoot, false, true, vVisitorPlan, (void*)pAsPipelineStmt);
+  GraphNav::bWalkBottomUp(pPlanRoot, false, true, vVisitorPlan, (void*)pAsPipelineStmt);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -342,19 +343,19 @@ bool Dynamo::bPlanToPipeline(String* pAsPipelineStmt,
 /*----------------------------------------------------------------------------*/
 /* print the plan graph                                                       */
 /*----------------------------------------------------------------------------*/
-void Dynamo::vPrintPlanGraph(Parser::PlanNode* pPlanRoot) {
+void Dynamo::vPrintPlanGraph(PlanNode* pPlanRoot) {
 
   // Lambda visitor function to print the graph
 
-  auto fVisitor = [](Parser::PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> Parser::GraphNav::eWalkCtrl {
+  auto fVisitor = [](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     vTrace("(%02lld) %s\t\t(%s)\n"_Stz, iDepth, sPath.szStz(), aCN[pNode->eGetClassNo()]);
 
     // Keep walking
-    return Parser::GraphNav::WALK_CONTINUE;
+    return GraphNav::WALK_CONTINUE;
   };
 
-  Parser::GraphNav::bWalk(pPlanRoot, true, true, fVisitor, pPlanRoot);
+  GraphNav::bWalk(pPlanRoot, true, true, fVisitor, pPlanRoot);
 }
 
 
@@ -1333,12 +1334,12 @@ void Dynamo::vReplaceWithXmit(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage)
 /*----------------------------------------------------------------------------*/
 /* append project Op to the pipeline                                          */
 /*----------------------------------------------------------------------------*/
-void Dynamo::vAppendExpr(String* sPipeline, Parser::QueryNode* pNode) {
+void Dynamo::vAppendExpr(String* sPipeline, QueryNode* pNode) {
   _static_
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // alias
-  Stz *szAliasName = Parser::ProjectedExpr::szAliasName(pNode);
+  Stz *szAliasName = ProjectedExpr::szAliasName(pNode);
 
   if (szAliasName) {
     sPipeline->vCatSprint(
@@ -1348,24 +1349,23 @@ void Dynamo::vAppendExpr(String* sPipeline, Parser::QueryNode* pNode) {
   }
 
   // get the expr node
-  Parser::QueryNode *pExprNode = static_cast<Parser::QueryNode *>(Parser::GraphNav::pFindProperty("expr"_Stz,
-                                                                                                  pNode));
+  QueryNode *pExprNode = static_cast<QueryNode *>(GraphNav::pFindProperty("expr"_Stz, pNode));
   ASSERT(pExprNode);
 
   // Walk the expr node plan graph
-  Parser::GraphNav::bWalkBottomUp(pExprNode, false, true, vVisitorExpr, (void*)sPipeline);
+  GraphNav::bWalkBottomUp(pExprNode, false, true, vVisitorExpr, (void*)sPipeline);
 
 }
 
 /*----------------------------------------------------------------------------*/
 /* append filter Op to the pipeline                                           */
 /*----------------------------------------------------------------------------*/
-void Dynamo::vAppendFilterOp(String* sPipeline, Parser::QueryNode* pNode)
+void Dynamo::vAppendFilterOp(String* sPipeline, QueryNode* pNode)
 {
   _static_
 
   // Get the list of projected expressions from ProjectOp
-  Parser::QueryNode *pFilterExpr = Parser::FilterOp::pFilterExpr(pNode);
+  QueryNode *pFilterExpr = FilterOp::pFilterExpr(pNode);
   ASSERT(pFilterExpr);
 
 
@@ -1374,7 +1374,7 @@ void Dynamo::vAppendFilterOp(String* sPipeline, Parser::QueryNode* pNode)
       ""_Stz);
 
   // Walk the expr node plan graph
-  Parser::GraphNav::bWalkBottomUp(pFilterExpr, false, true, vVisitorExpr, (void*)sPipeline);
+  GraphNav::bWalkBottomUp(pFilterExpr, false, true, vVisitorExpr, (void*)sPipeline);
 
   sPipeline->vCatSprint(" \" \n"_Stz);
 }
@@ -1382,14 +1382,14 @@ void Dynamo::vAppendFilterOp(String* sPipeline, Parser::QueryNode* pNode)
 /*----------------------------------------------------------------------------*/
 /* append project Op to the pipeline                                          */
 /*----------------------------------------------------------------------------*/
-void Dynamo::vAppendProjectOp(String* sPipeline, Parser::QueryNode* pNode)
+void Dynamo::vAppendProjectOp(String* sPipeline, QueryNode* pNode)
 {
   _static_
 
   bool bFirstExpr = false;
 
   // Get the list of projected expressions from ProjectOp
-  Parser::QueryNode *pProjectedExprs = Parser::ProjectOp::pProjectedExprs(pNode);
+  QueryNode *pProjectedExprs = ProjectOp::pProjectedExprs(pNode);
   ASSERT(pProjectedExprs);
 
   // Iterate each projected expression
@@ -1400,7 +1400,7 @@ void Dynamo::vAppendProjectOp(String* sPipeline, Parser::QueryNode* pNode)
         ""_Stz);
 
     // get a plan node iterator
-    Parser::PlanNodeIter *pIter = pProjectedExprs->pNewChildrenIter();
+    PlanNodeIter *pIter = pProjectedExprs->pNewChildrenIter();
 
     while (pIter->bHasNext()) {
 
@@ -1411,9 +1411,9 @@ void Dynamo::vAppendProjectOp(String* sPipeline, Parser::QueryNode* pNode)
         bFirstExpr = true;
 
       // get the next projExpr from the iterator
-      Parser::QueryNode *pProjectedExpr = static_cast<Parser::QueryNode *>(pIter->pNext());
+      QueryNode *pProjectedExpr = static_cast<QueryNode *>(pIter->pNext());
       ASSERT(pProjectedExpr);
-      ASSERT(Parser::ProjectedExpr::bIsOfType(pProjectedExpr));
+      ASSERT(ProjectedExpr::bIsOfType(pProjectedExpr));
 
       vAppendExpr(sPipeline, pProjectedExpr);
     }
@@ -1428,12 +1428,12 @@ void Dynamo::vAppendProjectOp(String* sPipeline, Parser::QueryNode* pNode)
 /*----------------------------------------------------------------------------*/
 /* append scan Op to the pipeline                                             */
 /*----------------------------------------------------------------------------*/
-void Dynamo::vAppendScanOp(String* sPipeline, Parser::QueryNode* pNode)
+void Dynamo::vAppendScanOp(String* sPipeline, QueryNode* pNode)
 {
   _static_
 
-  Parser::QueryNode *pTableRef = Parser::TableScanOp::pTableRef(pNode);
-  Stz *szTableName = Parser::TableRef::szTable(pTableRef);
+  QueryNode *pTableRef = TableScanOp::pTableRef(pNode);
+  Stz *szTableName = TableRef::szTable(pTableRef);
 
   sPipeline->vCatSprint(
       "    scan %s\n"
@@ -1444,7 +1444,7 @@ void Dynamo::vAppendScanOp(String* sPipeline, Parser::QueryNode* pNode)
 /*----------------------------------------------------------------------------*/
 /* visitor function for the plan graph walk                                   */
 /*----------------------------------------------------------------------------*/
-Parser::GraphNav::eWalkCtrl Dynamo::vVisitorExpr(Parser::PlanNode* pExprNode, s256& sPath, i8 iDepth, void* pvArg)
+GraphNav::eWalkCtrl Dynamo::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 iDepth, void* pvArg)
 {
   _static_
 
@@ -1453,24 +1453,24 @@ Parser::GraphNav::eWalkCtrl Dynamo::vVisitorExpr(Parser::PlanNode* pExprNode, s2
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // columnRef
 
-  if (Parser::ColumnRef::bIsOfType(pExprNode)) {
-    Parser::QueryNode *pColumnRef = static_cast<Parser::QueryNode *>(pExprNode);
+  if (ColumnRef::bIsOfType(pExprNode)) {
+    QueryNode *pColumnRef = static_cast<QueryNode *>(pExprNode);
     sPipeline->vCatSprint(
         " %s"
         ""_Stz,
-        Parser::ColumnRef::szColumnName(pColumnRef));
+        ColumnRef::szColumnName(pColumnRef));
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // matematical operator
 
-  if (Parser::MathematicalExpr::bIsOfType(pExprNode)) {
+  if (MathematicalExpr::bIsOfType(pExprNode)) {
 
-    if (Parser::AdditionExpr::bIsOfType(pExprNode)) {
+    if (AdditionExpr::bIsOfType(pExprNode)) {
       sPipeline->vCatSprint(" + "_Stz);
     }
 
-    if (Parser::MultiplicationExpr::bIsOfType(pExprNode)) {
+    if (MultiplicationExpr::bIsOfType(pExprNode)) {
       sPipeline->vCatSprint(" * "_Stz);
     }
 
@@ -1479,17 +1479,17 @@ Parser::GraphNav::eWalkCtrl Dynamo::vVisitorExpr(Parser::PlanNode* pExprNode, s2
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // comparison operator
 
-  if (Parser::ComparisonExpr::bIsOfType(pExprNode)) {
+  if (ComparisonExpr::bIsOfType(pExprNode)) {
 
-    if (Parser::EqExpr::bIsOfType(pExprNode)) {
+    if (EqExpr::bIsOfType(pExprNode)) {
       sPipeline->vCatSprint(" == "_Stz);
     }
 
-    if (Parser::GeExpr::bIsOfType(pExprNode)) {
+    if (GeExpr::bIsOfType(pExprNode)) {
       sPipeline->vCatSprint(" > "_Stz);
     }
 
-    if (Parser::LeExpr::bIsOfType(pExprNode)) {
+    if (LeExpr::bIsOfType(pExprNode)) {
       sPipeline->vCatSprint(" <= "_Stz);
     }
 
@@ -1500,61 +1500,61 @@ Parser::GraphNav::eWalkCtrl Dynamo::vVisitorExpr(Parser::PlanNode* pExprNode, s2
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // literal
 
-  if (Parser::LiteralExpr::bIsOfType(pExprNode)) {
+  if (LiteralExpr::bIsOfType(pExprNode)) {
 
-    if (Parser::IntegerLiteral::bIsOfType(pExprNode)) {
-      sPipeline->vCatSprint(" %lld "_Stz, Parser::IntegerLiteral::iValue(pExprNode));
+    if (IntegerLiteral::bIsOfType(pExprNode)) {
+      sPipeline->vCatSprint(" %lld "_Stz, IntegerLiteral::iValue(pExprNode));
     }
   }
 
   // Keep walking
-  return Parser::GraphNav::WALK_CONTINUE;
+  return GraphNav::WALK_CONTINUE;
 }
 
 /*----------------------------------------------------------------------------*/
 /* visitor function for the plan graph walk                                   */
 /*----------------------------------------------------------------------------*/
-Parser::GraphNav::eWalkCtrl Dynamo::vVisitorPlan(Parser::PlanNode* pRootNode, s256& sPath, i8 iDepth, void* pvArg)
+GraphNav::eWalkCtrl Dynamo::vVisitorPlan(PlanNode* pRootNode, s256& sPath, i8 iDepth, void* pvArg)
 {
   _static_
 
-  Parser::QueryNode* pQueryNode = static_cast<Parser::QueryNode *>(pRootNode);
+  QueryNode* pQueryNode = static_cast<QueryNode *>(pRootNode);
 
   // We are only interested in the /__root__/plan subtree. Skip the others.
-  if (iDepth > 0 && !sPath.bBeginsWith(const_cast<Stz*>(Parser::C_PLAN_PATH))) {
-    //return Parser::GraphNav::WALK_SKIP_CHILDREN;
-    return Parser::GraphNav::WALK_CONTINUE;
+  if (iDepth > 0 && !sPath.bBeginsWith(const_cast<Stz*>(C_PLAN_PATH))) {
+    //return GraphNav::WALK_SKIP_CHILDREN;
+    return GraphNav::WALK_CONTINUE;
   }
 
   // The root node can be useful for various graph navigation and manipulation.
   // e.g. finding other nodes.
-  //Parser::RootNode* pPlanRoot = Parser::_pRootNode(pvArg);
+  //RootNode* pPlanRoot = _pRootNode(pvArg);
 
   String* sPipeline = (String*)pvArg;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // SqlOperator
 
-  if (Parser::SqlOperator::bIsOfType(pQueryNode)) {
+  if (SqlOperator::bIsOfType(pQueryNode)) {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // TableScanOp
 
-    if (Parser::TableScanOp::bIsOfType(pQueryNode)) {
+    if (TableScanOp::bIsOfType(pQueryNode)) {
       vAppendScanOp(sPipeline, pQueryNode);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // ProjectOp
 
-    else if (Parser::ProjectOp::bIsOfType(pQueryNode)) {
+    else if (ProjectOp::bIsOfType(pQueryNode)) {
       vAppendProjectOp(sPipeline, pQueryNode);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // FilterOp
 
-    else if (Parser::FilterOp::bIsOfType(pQueryNode)) {
+    else if (FilterOp::bIsOfType(pQueryNode)) {
       vAppendFilterOp(sPipeline, pQueryNode);
     }
 
@@ -1567,7 +1567,7 @@ Parser::GraphNav::eWalkCtrl Dynamo::vVisitorPlan(Parser::PlanNode* pRootNode, s2
   }
 
   // Keep walking
-  return Parser::GraphNav::WALK_CONTINUE;
+  return GraphNav::WALK_CONTINUE;
 }
 
 /*============================================================================*/
