@@ -16,9 +16,6 @@ Focal::Focal(eCN eClassNo)
   m_iFocalId  = C_UNKNOWN;
   m_iForId    = C_UNKNOWN;
   
-  m_bForceLog = false;
-  m__spare    = 0;
-
   m_iStepNo   = C_UNKNOWN;
   m_iStepTk   = AM::iRdTickingDevice();
 }
@@ -35,9 +32,6 @@ Focal::Focal(eCN eClassNo, i8 iUniqueId, i8 iForId)
   m_iFocalId  = iUniqueId;
   m_iForId    = iForId;
   
-  m_bForceLog = false;
-  m__spare    = 0;
-
   m_iStepNo   = C_UNKNOWN;
   m_iStepTk   = AM::iRdTickingDevice();
 }

@@ -38,6 +38,7 @@ int main(int argc, char* argv[])
 
   //char* s = readline ("Enter a line: ");
 
+  printf("sizeof(s32) %lld\n",(i8)sizeof(s32));
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   TlsKeys::vInit();
