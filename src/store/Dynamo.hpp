@@ -82,6 +82,7 @@ namespace STORE
     // plan transliteration
     //
     static void vAppendExpr(String* sPipeline, Parser::QueryNode* pNode);
+    static void vAppendFilterOp( String* sPipeline, Parser::QueryNode* pNode);
     static void vAppendProjectOp( String* sPipeline, Parser::QueryNode* pNode);
     static void vAppendScanOp(String* sPipeline, Parser::QueryNode* pNode);
 

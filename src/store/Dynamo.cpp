@@ -30,6 +30,7 @@
 #include "TableScanOp.hpp"
 #include "QueryNode.hpp"
 #include "AdditionExpr.hpp"
+#include "FilterOp.hpp"
 #include "ProjectOp.hpp"
 #include "ProjectedExpr.hpp"
 #include "Expr.hpp"
@@ -39,7 +40,10 @@
 #include "MathematicalExpr.hpp"
 #include "MultiplicationExpr.hpp"
 #include "TableRef.hpp"
-
+#include "ComparisonExpr.hpp"
+#include "GeExpr.hpp"
+#include "LeExpr.hpp"
+#include "EqExpr.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -1354,6 +1358,28 @@ void Dynamo::vAppendExpr(String* sPipeline, Parser::QueryNode* pNode) {
 }
 
 /*----------------------------------------------------------------------------*/
+/* append filter Op to the pipeline                                           */
+/*----------------------------------------------------------------------------*/
+void Dynamo::vAppendFilterOp(String* sPipeline, Parser::QueryNode* pNode)
+{
+  _static_
+
+  // Get the list of projected expressions from ProjectOp
+  Parser::QueryNode *pFilterExpr = Parser::FilterOp::pFilterExpr(pNode);
+  ASSERT(pFilterExpr);
+
+
+  sPipeline->vCatSprint(
+      "    | filter 0 \""
+      ""_Stz);
+
+  // Walk the expr node plan graph
+  Parser::GraphNav::bWalkBottomUp(pFilterExpr, false, true, vVisitorExpr, (void*)sPipeline);
+
+  sPipeline->vCatSprint(" \" \n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* append project Op to the pipeline                                          */
 /*----------------------------------------------------------------------------*/
 void Dynamo::vAppendProjectOp(String* sPipeline, Parser::QueryNode* pNode)
@@ -1451,6 +1477,27 @@ Parser::GraphNav::eWalkCtrl Dynamo::vVisitorExpr(Parser::PlanNode* pExprNode, s2
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // comparison operator
+
+  if (Parser::ComparisonExpr::bIsOfType(pExprNode)) {
+
+    if (Parser::EqExpr::bIsOfType(pExprNode)) {
+      sPipeline->vCatSprint(" == "_Stz);
+    }
+
+    if (Parser::GeExpr::bIsOfType(pExprNode)) {
+      sPipeline->vCatSprint(" > "_Stz);
+    }
+
+    if (Parser::LeExpr::bIsOfType(pExprNode)) {
+      sPipeline->vCatSprint(" <= "_Stz);
+    }
+
+    sPipeline->vCatSprint(" <> "_Stz);
+
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // literal
 
   if (Parser::LiteralExpr::bIsOfType(pExprNode)) {
@@ -1502,6 +1549,13 @@ Parser::GraphNav::eWalkCtrl Dynamo::vVisitorPlan(Parser::PlanNode* pRootNode, s2
 
     else if (Parser::ProjectOp::bIsOfType(pQueryNode)) {
       vAppendProjectOp(sPipeline, pQueryNode);
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // FilterOp
+
+    else if (Parser::FilterOp::bIsOfType(pQueryNode)) {
+      vAppendFilterOp(sPipeline, pQueryNode);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
