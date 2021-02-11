@@ -48,7 +48,7 @@ void* AttachMap::operator new(size_t)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 AttachMap::AttachMap(void)
-: Focal(CN_ATTACHMAP,0)
+: Focal(CN_ATTACHMAP,0,C_UNKNOWN)
 , m_okDdlLock(LK_DDL,this)
 , m_okDicLock(LK_DIC,this)
 , m_okTccLock(LK_TCC,this)

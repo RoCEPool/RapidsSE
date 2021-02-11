@@ -37,7 +37,8 @@ __aFooterFunction(Op);
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Op::Op(OpSpec* pOpSpec, Stream* pStream)
-: Focal(CN_OP,AM::iNextOpId())
+: Focal(CN_OP,AM::iNextOpId()
+, AM::iJobUniqueId(pStream->pPipeline()->pPipelineJob()))
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   

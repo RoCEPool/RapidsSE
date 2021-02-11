@@ -26,14 +26,14 @@ Focal::Focal(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Focal::Focal(eCN eClassNo, i8 iUniqueId)
+Focal::Focal(eCN eClassNo, i8 iUniqueId, i8 iForId)
 : Object(eClassNo)
 {
   m_i_Focal   = C_UNKNOWN;
   m_i_Log     = C_UNKNOWN;
   
   m_iFocalId  = iUniqueId;
-  m_iForId    = C_UNKNOWN;
+  m_iForId    = iForId;
   
   m_bForceLog = false;
   m__spare    = 0;

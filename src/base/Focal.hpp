@@ -23,7 +23,7 @@ namespace BASE
 
   public:
     Focal(eCN eClassNo);
-    Focal(eCN eClassNo, i8 iUniqueId);
+    Focal(eCN eClassNo, i8 iUniqueId, i8 iForId);
    ~Focal(void) noexcept(false);
   
     i8   iStepNo(void);
