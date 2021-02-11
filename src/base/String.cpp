@@ -18,6 +18,7 @@ Footer* String::aFooter(void)
   i8 nSizeHeaderBody = sizeof(m_xHeader)
                          + sizeof(m_nArea)
                          + sizeof(m__reserved__)
+                         + sizeof(m__reserved2__)
                          + m_nArea;
   
   Footer* aFooter = aAdd<Footer*>(this,nSizeHeaderBody);
