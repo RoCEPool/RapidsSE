@@ -99,7 +99,6 @@ extern d8 C_D8_MID;
 #include "FltLib.hpp"
 
 #include "Statistics.hpp"
-#include "Focal.hpp"
 
 #include "String.hpp"
 
@@ -127,6 +126,7 @@ extern d8 C_D8_MID;
 
 #include "Bytes_t.hpp"
 #include "String_t.hpp"
+#include "Focal.hpp"
 
 #include "SP.hpp"
 #include "SPmedium.hpp"

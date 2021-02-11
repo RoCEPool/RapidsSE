@@ -15,7 +15,7 @@ namespace BASE
     Birth  m_oWhenNewed;    // when was this buffer created?
     b8     m_bIsPermanent;  // is buffer permanent ?
   
-  PadWord m__PadToCacheLine[2];
+    //PadWord m__PadToCacheLine[1];
 
   public:
     DataBuffer(eCN eClass, bool bIsPermanent);

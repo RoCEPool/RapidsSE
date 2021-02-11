@@ -17,6 +17,8 @@ namespace BASE
   private:
     i8 m_iStepNo;   // last step sequence number
     i8 m_iStepTk;   // time point that occurred
+  
+    s32 m_sObjectNm;
 
   public:
     Focal(eCN eClassNo);
