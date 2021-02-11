@@ -12100,7 +12100,7 @@ void Task::vAddMunged(Task* pTask)
     "    Table[].tablePtn@ to tablePtn[]\n"
     "    PipeIn[].pipeOut\n"
     "  else\n"
-    "    find: Scan_Xyz   ZK_DATAPULSE  op[].handler!\n"
+    "    find: Scan_Xyz   ZK_DATAPULSE     op[].handler!\n"
     "    find: Scan_Xyz   ZK_PULSEDMARKER  op[].handler!\n"
     "  then\n"
     "\n"
