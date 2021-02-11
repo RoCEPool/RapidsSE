@@ -9,7 +9,7 @@ namespace BASE
 {
   const u8 C_WRITELOCK = 0x8000000000000000;
     
-  class Lock : public Loggable
+  class Lock : public Focal
   {
   private:
     eLK      m_eLockKind;         // lock kind

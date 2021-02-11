@@ -26,7 +26,7 @@ namespace PROMPT
   
   static Stz* C_Query6_PL = "/time Query6_ASM \"../eo_text/QRY_600_2.txt\" \"../eo_text/QRY_601.txt\""_Stz ;
   
-  class SePrompt : public Loggable
+  class SePrompt : public Focal
   {
   private:
   

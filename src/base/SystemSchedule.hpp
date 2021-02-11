@@ -5,7 +5,7 @@
 
 namespace BASE
 {
-  class SystemSchedule : public Loggable
+  class SystemSchedule : public Focal
   {
   friend Scheduler;
   

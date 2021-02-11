@@ -12,7 +12,7 @@
 
 namespace STORE
 {
-  class Job : public Loggable,
+  class Job : public Focal,
               public CRM<Job>
   {
   

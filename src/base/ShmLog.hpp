@@ -5,7 +5,7 @@
 
 namespace BASE
 {
-  class ShmLog : public Loggable
+  class ShmLog : public Focal
   {
   protected:
     Lock m_okLock;

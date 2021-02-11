@@ -5,7 +5,7 @@
 
 namespace BASE
 {
-  class Resource : public Loggable
+  class Resource : public Focal
   {
   protected:
     Focal* m_pIsFor;
