@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "eEV.h"
+
 namespace BASE
 {
   class Focal : public Object
@@ -15,9 +17,12 @@ namespace BASE
     i8 m_i_Log;     // last log entry subscript
   
   private:
-    i8 m_iStepNo;   // last step sequence number
-    i8 m_iStepTk;   // time point that occurred
+    i8 m_iStepNo;    // last step sequence number
+    i8 m_iStepTk;    // time point that occurred
   
+    eEV m_eEvent;    // last event
+    i8  m_iDuration; // last event no
+
     s32 m_sObjectNm;
 
   public:

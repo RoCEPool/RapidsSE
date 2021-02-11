@@ -18,6 +18,9 @@ Focal::Focal(eCN eClassNo)
   
   m_iStepNo   = C_UNKNOWN;
   m_iStepTk   = AM::iRdTickingDevice();
+  
+  m_eEvent     = EV_NONE;
+  m_iDuration  = C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,6 +37,9 @@ Focal::Focal(eCN eClassNo, i8 iUniqueId, i8 iForId)
   
   m_iStepNo   = C_UNKNOWN;
   m_iStepTk   = AM::iRdTickingDevice();
+  
+  m_eEvent     = EV_NONE;
+  m_iDuration  = C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
