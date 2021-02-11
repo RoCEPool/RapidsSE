@@ -11619,6 +11619,7 @@ void Task::vAddMunged(Task* pTask)
     "  then\n"
     "\n"
     "  find: sink_Xyz  ZK_STARTMARKER op[].handler!\n"
+    "  find: sink_Xyz  ZK_DATAPULSE op[].handler!\n"
     "\n"
     "  true\n"
     " ;\n"

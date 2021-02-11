@@ -58,6 +58,7 @@
   then
 
   find: sink_Xyz  ZK_STARTMARKER op[].handler!
+  find: sink_Xyz  ZK_DATAPULSE op[].handler!
 
   true
 ;
