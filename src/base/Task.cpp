@@ -848,7 +848,7 @@ i8 Task::iTaskId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  return m_iFocalId;
+  return m_iObjectId;
 }
 
 /*----------------------------------------------------------------------------*/

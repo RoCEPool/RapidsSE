@@ -13,7 +13,7 @@ Focal::Focal(eCN eClassNo)
   m_i_Focal   = C_UNKNOWN;
   m_i_Log     = C_UNKNOWN;
   
-  m_iFocalId  = C_UNKNOWN;
+  m__iObjectId  = C_UNKNOWN;
   m_iForId    = C_UNKNOWN;
   
   m_bForceLog = false;
@@ -32,7 +32,7 @@ Focal::Focal(eCN eClassNo, i8 iUniqueId)
   m_i_Focal   = C_UNKNOWN;
   m_i_Log     = C_UNKNOWN;
   
-  m_iFocalId  = iUniqueId;
+  m__iObjectId  = iUniqueId;
   m_iForId    = C_UNKNOWN;
   
   m_bForceLog = false;

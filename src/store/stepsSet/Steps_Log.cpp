@@ -53,7 +53,7 @@ void Step::vLogMark(void)
 
   m_pDataStack->vPopStr(sMark,__func__);
 
-  //i8 iJobId = m_pJob->m_iFocalId;
+  //i8 iJobId = m_pJob->m_iObjectId;
   JobLog::vNote(m_pJob,sMark);
   
   EXIT();

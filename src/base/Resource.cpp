@@ -66,7 +66,7 @@ i8 Resource::iResId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_iFocalId;
+  return m_iObjectId;
 }
 
 /*============================================================================*/
