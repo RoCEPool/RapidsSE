@@ -39,7 +39,7 @@ create index lineitem_idx2 on lineitem (l_orderkey);
 
 
 print "loading Lineitem...";
-/time load lineitem "../DATA/TPCH/lineitem10k.csv";
+/time load lineitem "../DATA/TPCH/lineitem10.csv";
 ///time load lineitem "../TPCH/SF1/lineitem.tbl";
 
 
@@ -59,7 +59,7 @@ create index Orders_Idx1 ON Orders(O_CUSTKEY);
 create index Orders_Idx2 ON Orders(O_ORDERKEY);
 
 print "loading Orders...";
- /time load Orders "../DATA/TPCH/orders10k.csv";
+ /time load Orders "../DATA/TPCH/orders10.csv";
 
 //UnionAll_I lineitem orders l_orderkey;
 
@@ -73,7 +73,7 @@ pipeline unionAll_I
     start | periodic once | stageB | stageC
 
   stage stageB on all partitions :
-    scan lineitem
+    scan lineitemX
     | project 0 "as orderkey l_orderkey"
     | stageD
 
@@ -311,3 +311,76 @@ end;
 // aggregate - sum
 //select l_orderkey, sum(l_extendedprice) from lineitem;
 //Smt8;
+
+/*
+   consumeOp (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :  STARTMARKER 0x204810361040
+   consumeOp (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :  STARTMARKER 0x20481038e040
+   consumeOp (    stageD) (N0) (P-1) (job:0x20481a550040)::  vPipeOut :  STARTMARKER 0x204810361040
+
+      output (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :  STARTMARKER 0x204810361040
+      output (    stageD) (N0) (P-1) (job:0x20481a550040)::vPipeToOutput :  STARTMARKER 0x204810361040
+      output (    stageD) (N0) (P-1) (job:0x20481a550040)::  vPipeOut :  STARTMARKER 0x20481037a040
+
+        sink (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :  STARTMARKER 0x20481037a040
+        sink (    stageD) (N0) (P-1) (job:0x20481a550040)::  vPipeOut : STARTEDMARKER 0x20481037a040
+
+   consumeOp (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :    DATAPULSE 0x204810393040
+   consumeOp (    stageD) (N0) (P-1) (job:0x20481a550040)::  vPipeOut :    DATAPULSE 0x204810393040
+   consumeOp (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :    DATAPULSE 0x20481038d840
+
+      output (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :    DATAPULSE 0x204810393040
+      output (    stageD) (N0) (P-1) (job:0x20481a550040)::  vPipeOut :    DATAPULSE 0x204810393040
+      output (    stageD) (N0) (P-1) (job:0x20481a550040)::vPipeToOutput :    DATAPULSE 0x204810357840
+
+        sink (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :    DATAPULSE 0x204810393040
+
+   consumeOp (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :    STREAMDEF 0x204818800040
+   consumeOp (    stageD) (N0) (P-1) (job:0x20481a550040)::  vPipeOut :    STREAMDEF 0x204818800040
+   consumeOp (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :    STREAMDEF 0x20481ed00040
+
+      output (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :    STREAMDEF 0x204818800040
+      output (    stageD) (N0) (P-1) (job:0x20481a550040)::vPipeToOutput :    STREAMDEF 0x204818800040
+
+   consumeOp (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :    ROWBUFFER 0x20481d700040
+   consumeOp (    stageD) (N0) (P-1) (job:0x20481a550040)::  vPipeOut :    ROWBUFFER 0x20481d700040
+
+      output (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :    ROWBUFFER 0x20481d700040
+      output (    stageD) (N0) (P-1) (job:0x20481a550040)::vPipeToOutput :    ROWBUFFER 0x20481d700040
+
+   consumeOp (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :    ROWBUFFER 0x20481dc00040
+      consumeOp (    stageD) (N0) (P-1) (job:0x20481a550040)::  vPipeOut :    ROWBUFFER 0x20481dc00040
+
+      output (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :    ROWBUFFER 0x20481dc00040
+      output (    stageD) (N0) (P-1) (job:0x20481a550040)::vPipeToOutput :    ROWBUFFER 0x20481dc00040
+
+   consumeOp (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :    EOSMARKER 0x204810387040
+   consumeOp (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :    EOSMARKER 0x204810387040
+   consumeOp (    stageD) (N0) (P-1) (job:0x20481a550040)::  vPipeOut :    EOSMARKER 0x204810387040
+
+      output (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :    EOSMARKER 0x204810387040
+      output (    stageD) (N0) (P-1) (job:0x20481a550040)::vPipeToOutput :    EOSMARKER 0x204810387040
+      output (    stageD) (N0) (P-1) (job:0x20481a550040)::  vPipeOut :    EOSMARKER 0x204810362440
+
+        sink (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :    EOSMARKER 0x204810362440
+
+   consumeOp (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue : PULSEDMARKER 0x204810387040
+   consumeOp (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue : PULSEDMARKER 0x20481038a840
+   consumeOp (    stageD) (N0) (P-1) (job:0x20481a550040)::  vPipeOut : PULSEDMARKER 0x20481038a840
+
+      output (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue : PULSEDMARKER 0x20481038a840
+      output (    stageD) (N0) (P-1) (job:0x20481a550040)::  vPipeOut : PULSEDMARKER 0x20481038a840
+
+        sink (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue : PULSEDMARKER 0x20481038a840
+        sink (    stageD) (N0) (P-1) (job:0x20481a550040)::  vPipeOut : PULSEDMARKER 0x20481038a840
+
+   consumeOp (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :   EXITMARKER 0x204810375440
+   consumeOp (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :   EXITMARKER 0x20481037a440
+   consumeOp (    stageD) (N0) (P-1) (job:0x20481a550040)::  vPipeOut :   EXITMARKER 0x20481037a440
+
+      output (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :   EXITMARKER 0x20481037a440
+      output (    stageD) (N0) (P-1) (job:0x20481a550040)::  vPipeOut :   EXITMARKER 0x20481037a440
+
+        sink (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :   EXITMARKER 0x20481037a440
+        sink (    stageD) (N0) (P-1) (job:0x20481a550040)::vPipeToOutput :   EXITMARKER 0x20481037a440
+        sink (    stageD) (N0) (P-1) (job:0x20481a550040)::  vPipeOut : EXITEDMARKER 0x20481036f040
+*/
