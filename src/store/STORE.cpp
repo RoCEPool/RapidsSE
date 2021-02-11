@@ -63,6 +63,7 @@ void STORE::vCheckAssumptions(void)
   
   ALWAYS(C_LOAD_READCHUNK < C_WSP_CSVBUFFER);
   
+  vTrace("sizeof(DataBuffer) %lld\n"_Stz,(i8)sizeof(DataBuffer));
   ALWAYS(CacheLine::bMultipleCacheLines(sizeof(DataBuffer)));
   
   ALWAYS(sizeof(FreeItem) <= sizeof(Ent));

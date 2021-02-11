@@ -13,16 +13,16 @@ __aFooterFunction(Loggable)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Loggable::Loggable(eCN eClassNo)
-: Focal(eClassNo)
+Loggable::Loggable(eCN eClassNo, i8 iUniqueId)
+: Focal(eClassNo,iUniqueId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
   // m_sObjectNm
-  m_iObjectId = C_UNKNOWN;
+  m_iObjectId  = iUniqueId;
  
-  m_iEventNo   = C_UNKNOWN;
   m_eEvent     = EV_NONE;
+  m_iEventNo   = C_UNKNOWN;
   m_iEventTick = C_UNKNOWN;
 }
 

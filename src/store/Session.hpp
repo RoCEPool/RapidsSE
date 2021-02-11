@@ -12,7 +12,7 @@ namespace STORE { class Output; class StreamDef; }
 
 namespace STORE
 {
-  class Session : public Focal
+  class Session : public Loggable
   {
   public:
     i8       m_i_Session;     // session index

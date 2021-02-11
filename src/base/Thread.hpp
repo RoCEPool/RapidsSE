@@ -7,7 +7,7 @@
 
 namespace BASE
 {
-  class Thread : public Focal,
+  class Thread : public Loggable,
                  public ListItem_t<Thread>
   {
   public:  
