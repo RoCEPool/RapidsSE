@@ -21,6 +21,7 @@
 
 #include "ShadowNode.hpp"
 #include "store/parser/shadowNodes/planObjects/Statement.hpp"
+#include "store/parser/shadowNodes/planObjects/FilterOp.hpp"
 #include "store/parser/shadowNodes/compound/TableRef.hpp"
 
 // Expressions
@@ -281,37 +282,130 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
 {
   ASSERT(m_pStatementStack->nItems() > 0);
   ASSERT(!m_pSelectItems);
+
+  // N.B. We don't call visitChildren() in this function. Instead we manually
+  // visit the required nodes, so if the grammar changes then we also need to
+  // change this. The reason for this is so that we can appropriately separate
+  // out how expressions are stored. e.g. we don't want select list exprs in
+  // the same stack at the same time as WHERE expressions.
+  // We also parse them in a slightly different order than is written. This
+  // helps us to form the graph more easily.
+
+  // -----------------------
+  // Parenthetic SELECT Expr
+  // -----------------------
+  if (pCtx->selectExpr()) {
+    return pCtx->selectExpr()->accept(this);
+  }
+
+  // -----------------------
+  // DISTINCT keyword
+  // -----------------------
+  if (pCtx->distinct) {
+    // TODO: implement
+  }
+
+  // -----------------------
+  // Select List (Project)
+  // -----------------------
   m_pSelectItems = new QueryNodeList();
 
-  // Visit the child parse tree nodes. The select list above will be populated.
-  antlrcpp::Any any = visitChildren(pCtx);
+  // Visit the child parse tree nodes for the selectList rule. The select list above will be populated.
+  pCtx->selectList()->accept(this);
 
   ASSERT(m_pSelectItems->nItems() > 0);
 
-  // Create a project operator and attach it to the statement object
+  // Create a project operator. We will attach it to the statement object
+  // at the end of this function.
   QueryNode* pProjectOp = ProjectOp::pCreate(m_pSelectItems);
-
-  QueryNode* pStatement = m_pStatementStack->pPeek(0);
-  ASSERT(Statement::bIsOfType(pStatement));
-  pStatement->vAppendChild(pProjectOp);
-
-
-  // Check for a tableRef. If one exists, add it to a TableScanOp
-  // and attach the TableScanOp as a child of the ProjectOp
-  if (m_pTableRefStack->nItems() == 0) {
-    SemanticException::vThrow("No table source specified"_Stz);
-  }
-
-  ASSERT(m_pTableRefStack->nItems() == 1);
-  QueryNode* pTableRef = m_pTableRefStack->pPop();
-
-  QueryNode* pTableScanOp = TableScanOp::pCreate(pTableRef);
-  pProjectOp->vAppendChild(pTableScanOp);
-
 
   ASSERT(m_pSelectItems->nItems() == 0);
   delete m_pSelectItems;
   m_pSelectItems = nullptr;
+
+
+  // -----------------------
+  // HAVING clause
+  // -----------------------
+  if (pCtx->having) {
+    // TODO
+  }
+
+
+  // -----------------------
+  // GROUP BY clause
+  // -----------------------
+  if (pCtx->groupBy) {
+    // TODO
+  }
+
+
+  // -----------------------
+  // WHERE clause
+  // -----------------------
+  QueryNode* pFilterOp = nullptr;
+  if (pCtx->where) {
+    m_pExprStack = new QueryNodeStack();
+
+    // Visit the children of the WHERE clause
+    pCtx->where->accept(this);
+    ASSERT(m_pExprStack->nItems() == 1);
+
+    QueryNode* pExpr = m_pExprStack->pPop();
+    pFilterOp = FilterOp::pCreate(pExpr);
+
+    ASSERT(m_pExprStack->nItems() == 0);
+    delete m_pExprStack;
+    m_pExprStack = nullptr;
+  }
+
+
+  // -----------------------
+  // Table References
+  // -----------------------
+  // Check for a tableRef. If one exists, add it to a TableScanOp
+  // and attach the TableScanOp as a child of the ProjectOp
+  QueryNode* pTableScanOp = nullptr;
+  if (pCtx->tableExpr()) {
+    // Visit the grammar rule for table expressions
+    pCtx->tableExpr()->accept(this);
+
+    ASSERT(m_pTableRefStack->nItems() == 1);
+    pTableScanOp = TableScanOp::pCreate(m_pTableRefStack->pPop());
+
+  } else {
+    SemanticException::vThrow("No table source specified"_Stz);
+  }
+
+
+  // -----------------------
+  // Final Plan Assembly
+  // -----------------------
+
+  /// PROJECT
+  ASSERT(pProjectOp);
+  QueryNode* pFirstOp = pProjectOp;
+  QueryNode* pLastOp = pProjectOp;
+
+  /// HAVING
+  /// GROUP BY
+
+  /// WHERE
+  if (pFilterOp) {
+    pLastOp->vAppendChild(pFilterOp);
+    pLastOp = pFilterOp;
+  }
+
+  /// TABLE REF
+  if (pTableScanOp) {
+    pLastOp->vAppendChild(pTableScanOp);
+    pLastOp = pTableScanOp;
+  }
+
+  // Now attach the sql operator chain to the statement object.
+  QueryNode* pStatement = m_pStatementStack->pPeek(0);
+  ASSERT(Statement::bIsOfType(pStatement));
+  pStatement->vAppendChild(pFirstOp);
   
   return nullptr;
 }
