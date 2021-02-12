@@ -53,8 +53,8 @@ __aFooterFunction(SePrompt)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
-: Loggable(CN_SEPROMPT,AM::iNextPromptId()),
-  m_oMutex(MK_THREAD,this)
+: Loggable(CN_SEPROMPT,-9) //AM::iNextPromptId()),
+, m_oMutex(MK_THREAD,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   

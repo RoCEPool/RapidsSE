@@ -171,7 +171,7 @@ Job::Job(ReqTuple* aReqTuple)
 /* constructor (for job__find)                                  TO BE REMOVED */
 /*----------------------------------------------------------------------------*/
 Job::Job(eCN eClassNo)
-: Loggable(eClassNo,C_UNKNOWN)
+: Loggable(eClassNo,-9)
 , m_xReqTuple(nullptr)
 , CRM<Job>(this)
 {
