@@ -91,6 +91,7 @@
 #include "Session.hpp"
 #include "SessionArray.hpp"
 #include "XmitOperand.hpp"
+#include "ObjectNumbering.hpp"
 #include "Output.hpp"
 
 #include "TagConstants.h"
@@ -1543,6 +1544,19 @@ void AM::vNapUsec(i8 nMicroSeconds, eCN eCallingClass)
   
   AM::vLogFyi("%s woken from nap"_Stz, //!format-LogFyi
               aCN[eCallingClass]);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next object number                                                     */
+/*----------------------------------------------------------------------------*/
+i8 AM::iNextObjectNo(eCN eClassNo)
+{
+  i8 iObjectNo = C_UNKNOWN;
+  
+  if (gpAttachMap && gpAttachMap->m_pObjectNumbering)
+    gpAttachMap->m_pObjectNumbering->iNextNo(eClassNo);
+  
+  return iObjectNo;
 }
 
 /*----------------------------------------------------------------------------*/

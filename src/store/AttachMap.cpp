@@ -65,6 +65,7 @@ AttachMap::AttachMap(void)
   
   m_uAttachMapState = C_CREATED;
   
+
   // the attach map must always be the first buffer in the buffer pool
   //ASSERT(nPoolBufferNo() == 1_bn);
   
@@ -73,6 +74,8 @@ AttachMap::AttachMap(void)
   // create the transient heaps
   m_xHeapMem.vInit();
   
+  m_pObjectNumbering = new ObjectNumbering;
+
   Lexicon* pLexicon = new Lexicon("__lexicon"_Stz);
   m_pLexiconArticle = pLexicon->pArticle();
   
@@ -98,7 +101,6 @@ AttachMap::AttachMap(void)
 //  m_xHeapMem.Persistent.m_pLarge  =
 //    new Heap(CN_LARGEPERSISTENT,  C_SIZE_LARGE_OBJECT,  HT_P_LARGE);
 
-  m_pObjectNumbering = new ObjectNumbering;
 
   m_pTxSet = new TxSet;
 

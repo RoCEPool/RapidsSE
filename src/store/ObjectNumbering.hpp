@@ -20,7 +20,10 @@ namespace STORE
     
     ObjectNumbering(void);
    ~ObjectNumbering(void) noexcept(false);
+  
+    i8 iNextNo(eCN eClassNo);
     
+  private:
     Footer* aFooter(void);
   };
   

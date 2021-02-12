@@ -10,7 +10,10 @@
 Loggable::Loggable(eCN eClassNo, i8 iObjectId)
 : Object(eClassNo)
 {
-  m_iObjectId = iObjectId;
+  if (-9 == iObjectId)
+    m_iObjectId = AM::iNextObjectNo(eClassNo);
+  else
+    m_iObjectId = iObjectId; //AM::iNextObjectNo(eClassNo);
 
   m_iEventNo  = C_UNKNOWN;
   m_iEventTick   = AM::iRdTickingDevice();
