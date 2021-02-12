@@ -28,7 +28,7 @@ Mutex* BASE::_pMutex(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Mutex::Mutex(eMK eKind, Focal* pIsFor)
+Mutex::Mutex(eMK eKind, Loggable* pIsFor)
 : Object(CN_MUTEX)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
@@ -223,7 +223,7 @@ bool Mutex::bIsLocked(void)
 /*----------------------------------------------------------------------------*/
 /* test if a mutex is locked                                                  */
 /*----------------------------------------------------------------------------*/
-bool Mutex::bIsLockedByCaller(Focal* pLockedby)
+bool Mutex::bIsLockedByCaller(Loggable* pLockedby)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
@@ -239,7 +239,7 @@ bool Mutex::bIsLockedByCaller(Focal* pLockedby)
 /*----------------------------------------------------------------------------*/
 /* attempt to lock this mutex by calling thread                               */
 /*----------------------------------------------------------------------------*/
-bool Mutex::bLock(Focal* pLockFor)
+bool Mutex::bLock(Loggable* pLockFor)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
@@ -284,7 +284,7 @@ bool Mutex::bLock(Focal* pLockFor)
 /*----------------------------------------------------------------------------*/
 /* lock this mutex for given focal object                          (blocking) */
 /*----------------------------------------------------------------------------*/
-void Mutex::vLock(Focal* pLockFor)
+void Mutex::vLock(Loggable* pLockFor)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
@@ -344,7 +344,7 @@ void Mutex::vObserve(bool bObserve)
 /*----------------------------------------------------------------------------*/
 /* calling thread pauses for limited time to be signalled     (blocking call) */
 /*----------------------------------------------------------------------------*/
-void Mutex::vPause(Focal* pLockedBy, i8 iMicroSeconds)
+void Mutex::vPause(Loggable* pLockedBy, i8 iMicroSeconds)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
@@ -428,7 +428,7 @@ void Mutex::vPause(Focal* pLockedBy, i8 iMicroSeconds)
 /*----------------------------------------------------------------------------*/
 /* signal the condition variable of this mutex                                */
 /*----------------------------------------------------------------------------*/
-void Mutex::vSignal(Focal* pLockedBy)
+void Mutex::vSignal(Loggable* pLockedBy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
@@ -473,7 +473,7 @@ void Mutex::vSignal(Focal* pLockedBy)
 /*----------------------------------------------------------------------------*/
 /* unlock this mutex currently locked by given focal object                   */
 /*----------------------------------------------------------------------------*/
-void Mutex::vUnlock(Focal* pLockedBy)
+void Mutex::vUnlock(Loggable* pLockedBy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
@@ -510,7 +510,7 @@ void Mutex::vUnlock(Focal* pLockedBy)
 /*----------------------------------------------------------------------------*/
 /* calling thread waits indefinitely to be signaled           (blocking call) */
 /*----------------------------------------------------------------------------*/
-void Mutex::vWait(Focal* pLockedBy)
+void Mutex::vWait(Loggable* pLockedBy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   

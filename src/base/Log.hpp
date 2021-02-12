@@ -113,7 +113,7 @@ namespace BASE
     LogEntry* pGetEntry(i8 i_Entry);
   
     LogEntry* pNewEntry(eSL, eCN eClass, Stz* szFormat, va_list xVarArgs);
-    LogEntry* pNewEntry(eSL, Focal* pFocal, Stz* szFormat, va_list xVarArgs);
+    LogEntry* pNewEntry(eSL, Loggable* pFocal, Stz* szFormat, va_list xVarArgs);
     LogEntry* pNewEntry_NL(void);
     void vFindRange_NL(i8& i_MinEntry, i8& i_MaxEntry);
     i8   iPercentFull_NL(void);

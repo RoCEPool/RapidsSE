@@ -49,7 +49,7 @@ void Tx::operator delete(void* pTxAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Tx::Tx(void)
-: Focal(CN_TX,AM::iNextTxId())
+: Loggable(CN_TX,AM::iNextTxId())
 , m_okLock(LK_TX_SET,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);

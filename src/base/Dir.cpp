@@ -52,7 +52,7 @@ void Dir::operator delete(void* pDirAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Dir::Dir(Focal* pIsFor)
+Dir::Dir(Loggable* pIsFor)
 : Resource(CN_DIR,pIsFor)
 {
   _precondition_(_MAGIC_,CN_DIR,_FOOTER_);

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Focal.cpp - Focal Object                                                   */
+/* Loggable.cpp - Loggable Object                                             */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Focal::Focal(eCN eClassNo, i8 iObjectId)
+Loggable::Loggable(eCN eClassNo, i8 iObjectId)
 : Object(eClassNo)
 {
   m_iObjectId = iObjectId;
@@ -26,7 +26,7 @@ Focal::Focal(eCN eClassNo, i8 iObjectId)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Focal::~Focal(void) noexcept(false)
+Loggable::~Loggable(void) noexcept(false)
 {
 }
 
@@ -38,7 +38,7 @@ Focal::~Focal(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get last event                                                             */
 /*----------------------------------------------------------------------------*/
-eEV Focal::eEvent(void)
+eEV Loggable::eEvent(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -48,7 +48,7 @@ eEV Focal::eEvent(void)
 /*----------------------------------------------------------------------------*/
 /* set last event                                                             */
 /*----------------------------------------------------------------------------*/
-void Focal::vEvent(eEV eEvent)
+void Loggable::vEvent(eEV eEvent)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -58,7 +58,7 @@ void Focal::vEvent(eEV eEvent)
 /*----------------------------------------------------------------------------*/
 /* get event no                                                               */
 /*----------------------------------------------------------------------------*/
-i8 Focal::iEventNo(void)
+i8 Loggable::iEventNo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -68,7 +68,7 @@ i8 Focal::iEventNo(void)
 /*----------------------------------------------------------------------------*/
 /* inc event no                                                               */
 /*----------------------------------------------------------------------------*/
-void Focal::vEventNoInc(void)
+void Loggable::vEventNoInc(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -78,7 +78,7 @@ void Focal::vEventNoInc(void)
 /*----------------------------------------------------------------------------*/
 /* get event no                                                               */
 /*----------------------------------------------------------------------------*/
-i8 Focal::iEventTick(void)
+i8 Loggable::iEventTick(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -88,7 +88,7 @@ i8 Focal::iEventTick(void)
 /*----------------------------------------------------------------------------*/
 /* set event tick                                                             */
 /*----------------------------------------------------------------------------*/
-void Focal::vEventTickSet(void)
+void Loggable::vEventTickSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -98,7 +98,7 @@ void Focal::vEventTickSet(void)
 /*----------------------------------------------------------------------------*/
 /* get object id                                                              */
 /*----------------------------------------------------------------------------*/
-i8 Focal::iObjectId(void)
+i8 Loggable::iObjectId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -108,7 +108,7 @@ i8 Focal::iObjectId(void)
 /*----------------------------------------------------------------------------*/
 /* set object id                                                              */
 /*----------------------------------------------------------------------------*/
-void Focal::vObjectId(i8 iObjectId)
+void Loggable::vObjectId(i8 iObjectId)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -118,7 +118,7 @@ void Focal::vObjectId(i8 iObjectId)
 /*----------------------------------------------------------------------------*/
 /* get object name                                                            */
 /*----------------------------------------------------------------------------*/
-Stz* Focal::sObjectNm(void)
+Stz* Loggable::sObjectNm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -128,7 +128,7 @@ Stz* Focal::sObjectNm(void)
 /*----------------------------------------------------------------------------*/
 /* set object name                                                            */
 /*----------------------------------------------------------------------------*/
-void Focal::vObjectNm(Stz* szObjectNm)
+void Loggable::vObjectNm(Stz* szObjectNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -138,7 +138,7 @@ void Focal::vObjectNm(Stz* szObjectNm)
 /*----------------------------------------------------------------------------*/
 /* set next event                                                             */
 /*----------------------------------------------------------------------------*/
-void Focal::vNextEvent(eEV eEvent)
+void Loggable::vNextEvent(eEV eEvent)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   

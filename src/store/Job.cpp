@@ -112,7 +112,7 @@ void Job::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job::Job(ReqTuple* aReqTuple)
-: Focal(CN_JOB,AM::iNextJobId())
+: Loggable(CN_JOB,AM::iNextJobId())
 , m_xReqTuple(aReqTuple)
 , CRM<Job>(this)
 {
@@ -171,7 +171,7 @@ Job::Job(ReqTuple* aReqTuple)
 /* constructor (for job__find)                                  TO BE REMOVED */
 /*----------------------------------------------------------------------------*/
 Job::Job(eCN eClassNo)
-: Focal(eClassNo,C_UNKNOWN)
+: Loggable(eClassNo,C_UNKNOWN)
 , m_xReqTuple(nullptr)
 , CRM<Job>(this)
 {

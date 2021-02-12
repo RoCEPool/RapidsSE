@@ -179,7 +179,7 @@ void LogEntry::vInit(eSL eSeverity, eCN eClassNo, Stz* szText)
 /*----------------------------------------------------------------------------*/
 /* init                                                                       */
 /*----------------------------------------------------------------------------*/
-void LogEntry::vInit(eSL eSeverity, Focal *pFocal, Stz* szText)
+void LogEntry::vInit(eSL eSeverity, Loggable *pFocal, Stz* szText)
 {
   _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
   

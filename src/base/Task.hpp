@@ -19,7 +19,7 @@ namespace BASE
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  class Task : public Focal,
+  class Task : public Loggable,
                public ListItem_t<Task>
   {
   friend class STORE::Step;

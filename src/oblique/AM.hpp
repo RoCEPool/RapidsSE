@@ -75,7 +75,7 @@ namespace BASE           { class Log;             class LogEntry;          }
 namespace BASE           { class Scheduler;       class Thread;
                               class SystemSchedule;                                   }
 
-namespace BASE       { class CodeCell;            class Focal;
+namespace BASE       { class CodeCell;            class Loggable;
                               class Header;          class Object;
                               class Statistics;     class Mutex;              }
 namespace BASE            { class ReqTuple;                              }

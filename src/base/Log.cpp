@@ -966,7 +966,7 @@ LogEntry* Log::pNewEntry(eSL eSeverity, eCN eClassNo,
 /*----------------------------------------------------------------------------*/
 /* get a new mark in Log                                                      */
 /*----------------------------------------------------------------------------*/
-LogEntry* Log::pNewEntry(eSL eSeverity, Focal* pFocal,
+LogEntry* Log::pNewEntry(eSL eSeverity, Loggable* pFocal,
                          Stz* szFormat, va_list xVarArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
