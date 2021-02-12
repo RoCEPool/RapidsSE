@@ -411,8 +411,22 @@
                           children: []
                         }
                       ],
-                      children: []
-                    },
+                      children: [
+// Path: /__root__/definitions/object/planObject/sqlOperator/projectOp/aggregateOp
+                        {
+                          name: "aggregateOp",
+                          value: "A subclass of projectOp that adds a group-by list for aggregate expressions",
+                          properties: [
+                            {
+                              name: "groupBy",
+                              value: "A list of expressions that the projectedExprs are to be grouped by",
+                              type: "/__root__/definitions/object/list/exprList"
+                            }
+                          ],
+                          children: []
+                        } // EndPath: /__root__/definitions/object/planObject/sqlOperator/projectOp/aggregateOp
+                      ]
+                    }, // EndPath: /__root__/definitions/object/planObject/sqlOperator/projectOp
 
 // Path: /__root__/definitions/object/planObject/sqlOperator/filterOp
                     {
@@ -431,7 +445,6 @@
 // TODO Path: /__root__/definitions/object/planObject/sqlOperator/join/sortMergeJoinOp
 // TODO Path: /__root__/definitions/object/planObject/sqlOperator/join/hashJoinOp
 // TODO Path: /__root__/definitions/object/planObject/sqlOperator/join/loopJoinOp
-// TODO Path: /__root__/definitions/object/planObject/sqlOperator/aggregation
 // TODO Path: /__root__/definitions/object/planObject/sqlOperator/orderOp
 // Path: /__root__/definitions/object/planObject/sqlOperator/limitOp
                     {
@@ -1354,7 +1367,7 @@
                   name: "projectedExprs",
                   value: "A list of projectedExpr objects",
                   properties: [
-                    // We add a constraint that all children must be of type /definitions/object/compound/projectedExpr
+                    // We add a constraint that all children must be of type /__root__/definitions/object/compound/projectedExpr
                     { name: "__constraints", type: "/__root__/primitives/constraints", children: [
                       {
                         name: "childType",
@@ -1369,6 +1382,27 @@
                   ], // end projectedExprs properties
                   children: []
                 }, // EndPath: /__root__/definitions/object/list/projectedExprs
+
+// Path: /__root__/definitions/object/list/exprList
+                {
+                  name: "exprList",
+                  value: "A list of expressions",
+                  properties: [
+                    // We add a constraint that all children must be of type /__root__/definitions/object/expr
+                    { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                      {
+                        name: "childType",
+                        type:  "/__root__/primitives/constraints/childType",
+                        children: [ {
+                          name: "childTypeParam",
+                          type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject",
+                          value: "/__root__/definitions/object/expr"
+                        } ]
+                      }
+                    ]} // end __constraints container
+                  ],
+                  children: []
+                }, // EndPath: /__root__/definitions/object/list/exprList
 
 // Path: /__root__/definitions/object/list/catalogDefs
                 {
