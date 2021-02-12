@@ -126,7 +126,7 @@ extern d8 C_D8_MID;
 
 #include "Bytes_t.hpp"
 #include "String_t.hpp"
-#include "Focal.hpp"
+#include "Loggable.hpp"
 
 #include "SP.hpp"
 #include "SPmedium.hpp"
