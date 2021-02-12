@@ -22,7 +22,9 @@ namespace STORE
    ~ObjectNumbering(void) noexcept(false);
   
     i8 iNextNo(eCN eClassNo);
-    
+  
+    void vNodeNo(i8 iThisNodeNo);
+
   private:
     Footer* aFooter(void);
   };

@@ -43,7 +43,6 @@ namespace BASE
     void vObjectNm(Stz* szObjectNm);
 
     void vNextEvent(eEV m_eEvent);
-
   };
 }
 

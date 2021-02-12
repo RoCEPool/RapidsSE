@@ -52,6 +52,15 @@ i8 ObjectNumbering::iNextNo(eCN eClassNo)
   return iObjectNo;
 }
 
+/*----------------------------------------------------------------------------*/
+/* set node no's where appropriate                                            */
+/*----------------------------------------------------------------------------*/
+void ObjectNumbering::vNodeNo(i8 iThisNodeNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OBJECTNUMBERING);
+
+  m_ixaNextObjectId[CN_OBJECTNUMBERING] = iThisNodeNo << 48;
+}
 
 /*============================================================================*/
 /* end                                                                        */

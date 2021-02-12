@@ -126,6 +126,8 @@ extern d8 C_D8_MID;
 
 #include "Bytes_t.hpp"
 #include "String_t.hpp"
+#include "Atomic.hpp"
+#include "ObjectNumbering.hpp"
 #include "Loggable.hpp"
 
 #include "SP.hpp"
@@ -158,7 +160,6 @@ extern d8 C_D8_MID;
 #include "Process.hpp"
 #include "Shell.hpp"
 
-#include "Atomic.hpp"
 #include "Lock.hpp"
 #include "LockTracker.hpp"
 #include "Mutex.hpp"
