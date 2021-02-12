@@ -112,7 +112,7 @@ void Job::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job::Job(ReqTuple* aReqTuple)
-: Focal(CN_JOB,AM::iNextJobId(),aReqTuple->m_iForId)
+: Focal(CN_JOB,AM::iNextJobId())
 , m_xReqTuple(aReqTuple)
 , CRM<Job>(this)
 {
@@ -171,7 +171,7 @@ Job::Job(ReqTuple* aReqTuple)
 /* constructor (for job__find)                                  TO BE REMOVED */
 /*----------------------------------------------------------------------------*/
 Job::Job(eCN eClassNo)
-: Focal(eClassNo,C_UNKNOWN,C_UNKNOWN)
+: Focal(eClassNo,C_UNKNOWN)
 , m_xReqTuple(nullptr)
 , CRM<Job>(this)
 {
@@ -619,7 +619,7 @@ i8 Job::iJobId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_iFocalId;
+  return m_iObjectId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -764,7 +764,7 @@ void Job::vMarkJob(void)
   s48K sJobMark;
   
   sJobMark.vSprintCat("Job %03lld %s session %lld tablePtn %lld\n"_Stz,
-                      m_iFocalId,
+                      m_iObjectId,
                       aCN[eGetClassNo()],
                       m_xReqTuple.m_i_Session,
                       m_i_TablePtn);
@@ -778,7 +778,7 @@ void Job::vMarkJob(void)
 
   sJobMark.vConcat("\n"_Stz);
 
-  AM::vLogText(m_iFocalId,sJobMark);
+  AM::vLogText(m_iObjectId,sJobMark);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -908,7 +908,7 @@ i8 Job::iOriginatorNode(void)
   
   i8 iMaskOffLower48Bits = 0xFFFF000000000000;
   
-  i8 iOriginatorNode = m_iFocalId & iMaskOffLower48Bits;
+  i8 iOriginatorNode = m_iObjectId & iMaskOffLower48Bits;
   iOriginatorNode >>= 48;
   
   return iOriginatorNode;
@@ -1023,7 +1023,7 @@ eEC Job::ePopulateJob(TagSet* pTagSet)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add the distid
-  pJobTags()->vInsert(C_TAG_DISTID,m_iFocalId);
+  pJobTags()->vInsert(C_TAG_DISTID,m_iObjectId);
   
   // copy the tagset into the job tag set
   pJobTags()->vCopy(pTagSet);
@@ -1149,7 +1149,7 @@ void Job::vReport(void)
   
   vTrace("Job %llx id %lls ackRemaining %lld\n"_Stz,
          this,
-         m_iFocalId,
+         m_iObjectId,
          m_oAcksRmg_2pc.iPrintOnlyValue());
 }
 
@@ -1405,9 +1405,7 @@ void STORE::vJob_recv(Job* pJob)
   pJob->vJobList(JL_NONE);
   
   pJob->vTask(nullptr);
-  
-  pJob->m_i_Focal        = C_UNKNOWN;
-  
+    
   LogicUnit* pLogicUnit = nullptr;
   pJob->vLogicUnit_job( & pLogicUnit);
 }

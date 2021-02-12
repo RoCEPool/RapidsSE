@@ -158,7 +158,7 @@ void Step::vJobAddDemon(void)
     JobLog::vNote(pJob,"Added to Demon List: %s %p"_Stz,
                   aCN[pJob->eGetClassNo()],
                   pJob);
-    AM::pDemonJobs()->vLogJobs(pJob->m_iFocalId);
+    AM::pDemonJobs()->vLogJobs(pJob->m_iObjectId);
   }
   
   EXIT();
@@ -181,7 +181,7 @@ void Step::vJobAddLocal(void)
     JobLog::vNote(pJob,"Added to Local List: %s %p"_Stz,
                   aCN[pJob->eGetClassNo()],
                   pJob);
-    AM::pLocalJobs()->vLogJobs(pJob->m_iFocalId);
+    AM::pLocalJobs()->vLogJobs(pJob->m_iObjectId);
   }
   
   EXIT();
@@ -210,7 +210,7 @@ void Step::vJobAddOriginator(void)
     JobLog::vNote(pJob,"Added to Originator List: %s %p"_Stz,
                        aCN[pJob->eGetClassNo()],
                        pJob);
-    AM::pOriginatingJobs()->vLogJobs(pJob->m_iFocalId);
+    AM::pOriginatingJobs()->vLogJobs(pJob->m_iObjectId);
   }
     
   EXIT();
@@ -237,7 +237,7 @@ void Step::vJobAddParticipant(void)
     JobLog::vNote(pJob,"Added to ParticipantList: %s %p "_Stz,
                           aCN[pJob->eGetClassNo()],
                           pJob);
-    AM::pParticipatingJobs()->vLogJobs(pJob->m_iFocalId);
+    AM::pParticipatingJobs()->vLogJobs(pJob->m_iObjectId);
   }
   
   EXIT();
@@ -252,7 +252,7 @@ void Step::vJobAssertBegin(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  if (Job::iNodeNo(pJob->m_iFocalId) == AM::pGrid()->iThisNode()) {
+  if (Job::iNodeNo(pJob->m_iObjectId) == AM::pGrid()->iThisNode()) {
     
     if (! pJob->bWasReceived())
       vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
@@ -266,14 +266,14 @@ void Step::vJobAssertBegin(void)
              "Job::m_eJobList is not JL_none [Job %s on node %lld]\n"_Stz,
              aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNode());
     
-    Job* pJobFound = AM::pOriginatingJobs()->pFindJob(pJob->m_iFocalId);
+    Job* pJobFound = AM::pOriginatingJobs()->pFindJob(pJob->m_iObjectId);
     if (! pJobFound)
       vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
              "job.assertBegin: "
              "Job not found in OriginatingJobs [Job %s on node %lld]\n"_Stz,
              aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNode());
     
-    pJobFound = AM::pParticipatingJobs()->pFindJob(pJob->m_iFocalId);
+    pJobFound = AM::pParticipatingJobs()->pFindJob(pJob->m_iObjectId);
     if (pJobFound)
       vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
              "job.assertBegin: "
@@ -298,14 +298,14 @@ void Step::vJobAssertBegin(void)
            "Job::m_eJobList is not JL_none [Job %s on node %lld]\n"_Stz,
            aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNode());
   
-  Job* pJobFound = AM::pOriginatingJobs()->pFindJob(pJob->m_iFocalId);
+  Job* pJobFound = AM::pOriginatingJobs()->pFindJob(pJob->m_iObjectId);
   if (pJobFound)
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "job.assertBegin: "
            "Job found in OriginatingJobs [Job %s on node %lld]\n"_Stz,
            aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNode());
   
-  pJobFound = AM::pParticipatingJobs()->pFindJob(pJob->m_iFocalId);
+  pJobFound = AM::pParticipatingJobs()->pFindJob(pJob->m_iObjectId);
   if (pJobFound)
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "job.assertBegin: "
@@ -346,14 +346,14 @@ void Step::vJobAssertNeutral(void)
            "Job::m_eJobList is not JL_none [Job %s on node %lld]\n"_Stz,
            aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNode());
   
-  Job* pJobFound = AM::pOriginatingJobs()->pFindJob(pJob->m_iFocalId);
+  Job* pJobFound = AM::pOriginatingJobs()->pFindJob(pJob->m_iObjectId);
   if (pJobFound)
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "job.assertNeutral: "
            "Job found in OriginatingJobs [Job %s on node %lld]\n"_Stz,
            aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNode());
 
-  pJobFound = AM::pParticipatingJobs()->pFindJob(pJob->m_iFocalId);
+  pJobFound = AM::pParticipatingJobs()->pFindJob(pJob->m_iObjectId);
   if (pJobFound)
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "job.assertNeutral: "
@@ -384,7 +384,7 @@ void Step::vJobAssertOriginator(void)
            "Job::m_bWasReceived is true [Job %s on node %lld]\n"_Stz,
            aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNode());
   
-  Job* pJobFound = AM::pOriginatingJobs()->pFindJob(pJob->m_iFocalId);
+  Job* pJobFound = AM::pOriginatingJobs()->pFindJob(pJob->m_iObjectId);
   if (! pJobFound)
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "job.assertOriginator: "
@@ -415,7 +415,7 @@ void Step::vJobAssertParticipant(void)
            "Job::m_bWasReceived is false [Job %s on node %lld]\n"_Stz,
            aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNode());
   
-  Job* pJobFound = AM::pParticipatingJobs()->pFindJob(pJob->m_iFocalId);
+  Job* pJobFound = AM::pParticipatingJobs()->pFindJob(pJob->m_iObjectId);
   if (! pJobFound)
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "job.assertParticipant: "
@@ -669,7 +669,7 @@ void Step::vJobIdFetch(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  m_pDataStack->vPushInt(pJob->m_iFocalId);
+  m_pDataStack->vPushInt(pJob->m_iObjectId);
   
   EXIT();
 }
@@ -1106,7 +1106,7 @@ void Step::vJobRemoveLocal(void)
   if (! bRemove) {
     vTrace("------------------------------------\n"_Stz);
     vTrace("%s Failed to Remove JobId %lld from local\n"_Stz,
-           aCN[pJob->eGetClassNo()],pJob->m_iFocalId);
+           aCN[pJob->eGetClassNo()],pJob->m_iObjectId);
     vTrace("------------------------------------\n"_Stz);
     
     bRemove = AM::bJob_RemoveLocal(pJob,true);
@@ -1117,7 +1117,7 @@ void Step::vJobRemoveLocal(void)
                   "Removed from Local List: %s %p"_Stz,
                   aCN[pJob->eGetClassNo()],
                   pJob);
-    AM::pLocalJobs()->vLogJobs(pJob->m_iFocalId);
+    AM::pLocalJobs()->vLogJobs(pJob->m_iObjectId);
   }
   
   EXIT();
@@ -1137,7 +1137,7 @@ void Step::vJobRemoveOriginator(void)
   if (! bRemove) {
     vTrace("------------------------------------\n"_Stz);
     vTrace("%s Failed to Remove JobId %lld from originator\n"_Stz,
-           aCN[pJob->eGetClassNo()],pJob->m_iFocalId);
+           aCN[pJob->eGetClassNo()],pJob->m_iObjectId);
     vTrace("------------------------------------\n"_Stz);
     
     bRemove = AM::bJob_RemoveOriginating(pJob,true);
@@ -1148,7 +1148,7 @@ void Step::vJobRemoveOriginator(void)
                        "Removed from Originator List: %s %p"_Stz,
                        aCN[pJob->eGetClassNo()],
                        pJob);
-    AM::pOriginatingJobs()->vLogJobs(pJob->m_iFocalId);
+    AM::pOriginatingJobs()->vLogJobs(pJob->m_iObjectId);
   }
   
   EXIT();
@@ -1168,7 +1168,7 @@ void Step::vJobRemoveParticipant(void)
   if (! bRemove) {
     vTrace("------------------------------------\n"_Stz);
     vTrace("%s Failed to Remove JobId %lld from participant\n"_Stz,
-           aCN[pJob->eGetClassNo()],pJob->m_iFocalId);
+           aCN[pJob->eGetClassNo()],pJob->m_iObjectId);
     vTrace("------------------------------------\n"_Stz);
     
     bRemove = AM::bJob_RemoveParticipating(pJob,true);
@@ -1178,7 +1178,7 @@ void Step::vJobRemoveParticipant(void)
     JobLog::vNote(pJob,"Removed from Participant List: "_Stz,
                        aCN[pJob->eGetClassNo()],
                        pJob);
-    AM::pParticipatingJobs()->vLogJobs(pJob->m_iFocalId);
+    AM::pParticipatingJobs()->vLogJobs(pJob->m_iObjectId);
   }
     
   EXIT();

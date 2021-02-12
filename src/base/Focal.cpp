@@ -5,41 +5,22 @@
 #include "BASE.h"
 
 /*----------------------------------------------------------------------------*/
-/* constructor (for non-tracked focal objects -- mainly locks in HeapBuffer)  */
-/*----------------------------------------------------------------------------*/
-Focal::Focal(eCN eClassNo)
-: Object(eClassNo)
-{
-  m_i_Focal   = C_UNKNOWN;
-  m_i_Log     = C_UNKNOWN;
-  
-  m_iFocalId  = C_UNKNOWN;
-  m_iForId    = C_UNKNOWN;
-  
-  m_iStepNo   = C_UNKNOWN;
-  m_iStepTk   = AM::iRdTickingDevice();
-  
-  m_eEvent     = EV_NONE;
-  m_iDuration  = C_UNKNOWN;
-}
-
-/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Focal::Focal(eCN eClassNo, i8 iUniqueId, i8 iForId)
+Focal::Focal(eCN eClassNo, i8 iObjectId)
 : Object(eClassNo)
 {
-  m_i_Focal   = C_UNKNOWN;
-  m_i_Log     = C_UNKNOWN;
-  
-  m_iFocalId  = iUniqueId;
-  m_iForId    = iForId;
-  
+  m_iObjectId = iObjectId;
+
   m_iStepNo   = C_UNKNOWN;
   m_iStepTk   = AM::iRdTickingDevice();
   
-  m_eEvent     = EV_NONE;
-  m_iDuration  = C_UNKNOWN;
+  m_eEvent    = EV_NONE;
+  m_iDuration = C_UNKNOWN;
+  
+  m__spare0   = C_UNKNOWN;
+  m__spare1   = C_UNKNOWN;
+  m__spare2   = C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/

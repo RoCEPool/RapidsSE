@@ -14,7 +14,7 @@ __aFooterFunction(Loggable)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Loggable::Loggable(eCN eClassNo)
-: Focal(eClassNo)
+: Focal(eClassNo,C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 

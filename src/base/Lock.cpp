@@ -47,7 +47,7 @@ void Lock::operator delete(void*)
 /* constructor (for non-focal case)                                           */
 /*----------------------------------------------------------------------------*/
 Lock::Lock(eLK eLockKind, Object* pFor)
-: Focal(CN_LOCK)
+: Focal(CN_LOCK,C_UNKNOWN)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
@@ -91,7 +91,7 @@ Lock::~Lock(void) noexcept(false)
     AM::vLogLck(SL_INF,this,LA_LCK_DESTRUCT,
                 "Lock -%s destruct ^For=%s |gixLock=%lld|"_Stz, //!format-LogLck
                 aLK[m_eLockKind],
-                spId.sz(m_pFor?((Focal*)m_pFor)->m_iFocalId:C_UNKNOWN),
+                spId.sz(m_pFor?((Focal*)m_pFor)->m_iObjectId:C_UNKNOWN),
                 * gixLock);
   }
 }
@@ -259,7 +259,7 @@ i8 Lock::iLockId(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
-  return m_iFocalId;
+  return m_iObjectId;
 }
 
 /*----------------------------------------------------------------------------*/
