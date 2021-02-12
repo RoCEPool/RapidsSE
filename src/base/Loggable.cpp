@@ -7,14 +7,10 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Loggable::Loggable(eCN eClassNo, i8 iObjectId)
+Loggable::Loggable(eCN eClassNo)
 : Object(eClassNo)
 {
-  if (-9 == iObjectId)
-    m_iObjectId = AM::iNextObjectNo(eClassNo);
-  else {
-    m_iObjectId = iObjectId; //AM::iNextObjectNo(eClassNo);
-  }
+   m_iObjectId = AM::iNextObjectNo(eClassNo);
   
 //  if (CN_JOB == eClassNo)
 //    printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ m_iObjectId %lld\n",m_iObjectId);

@@ -47,7 +47,7 @@ void Lock::operator delete(void*)
 /* constructor (for non-focal case)                                           */
 /*----------------------------------------------------------------------------*/
 Lock::Lock(eLK eLockKind, Object* pFor)
-: Loggable(CN_LOCK,-9)
+: Loggable(CN_LOCK)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   

@@ -48,7 +48,7 @@ void SystemSchedule::operator delete(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SystemSchedule::SystemSchedule(void)
-: Loggable(CN_SYSTEMSCHEDULE,-9)
+: Loggable(CN_SYSTEMSCHEDULE)
 , m_okScheduling(LK_QUEUES,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SYSTEMSCHEDULE,_FOOTER_);

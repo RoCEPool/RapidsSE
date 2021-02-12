@@ -58,7 +58,7 @@ void Thread::operator delete(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Thread::Thread(void)
-: Loggable(CN_THREAD,-9) //AM::iNextThreadId())
+: Loggable(CN_THREAD)
 , m_oMutex(MK_THREAD,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
