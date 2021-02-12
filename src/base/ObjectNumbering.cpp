@@ -47,7 +47,12 @@ i8 ObjectNumbering::iNextNo(eCN eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OBJECTNUMBERING);
   
-  i8 iObjectNo = ++ m_ixaNextObjectId[eClassNo];
+  i8 iObjectNo;
+  
+  if (CN_JOB == eClassNo)
+    iObjectNo = AM::iNextJobId();
+  else
+    iObjectNo = ++ m_ixaNextObjectId[eClassNo];
   
   return iObjectNo;
 }
