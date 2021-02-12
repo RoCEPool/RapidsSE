@@ -132,7 +132,6 @@ extern d8 C_D8_MID;
 #include "SPmedium.hpp"
 #include "SPsmall.hpp"
 
-#include "Loggable.hpp"
 #include "FocalDesc.hpp"
 
 #include "NamedObject.hpp"
