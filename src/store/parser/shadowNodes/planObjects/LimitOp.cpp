@@ -1,0 +1,174 @@
+/*============================================================================*/
+/* LimitOp.hpp - operator that limits the maximum number of rows being returned*/
+/*============================================================================*/
+
+#include "BASE.h"
+#include "LimitOp.hpp"
+
+#include "PlanConstants.hpp"
+#include "PlanNode.hpp"
+#include "QueryNode.hpp"
+
+#include "GraphNav.hpp"
+
+using namespace Parser;
+
+/*----------------------------------------------------------------------------*/
+/*-- Constants ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+static Stz* C_LIMITOP_DEFN = "/__root__/definitions/object/planObject/sqlOperator/limitOp"_Stz;
+
+static Stz* C_LIMIT_PROP = "limit"_Stz;
+static Stz* C_LIMIT_DEFN = "/__root__/definitions/object/valueObject/integerObject"_Stz;
+static Stz* C_OFFSET_PROP = "offset"_Stz;
+static Stz* C_OFFSET_DEFN = "/__root__/definitions/object/valueObject/integerObject"_Stz;
+
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* Helper function to create LimitOp nodes.                                   */
+/* Set offset to -1 if it is not applicable.                                  */
+/*----------------------------------------------------------------------------*/
+QueryNode* LimitOp::pCreate(i8 iLimit, i8 iOffset)
+{
+  ASSERT(iLimit >= 0);
+  ASSERT(iOffset == -1 || iOffset >= 0);
+
+  // Create a unique name for this LimitOp object
+  s256 sName;
+  ShadowNode::vObjName(GraphNav::szLeafType(C_LIMITOP_DEFN), sName);
+
+  // Create the object and add its limit and offset properties
+  QueryNode* pLimitOp = new QueryNode(sName, C_LIMITOP_DEFN);
+
+  Value xLimitVal(iLimit);
+  QueryNode* pLimitProp = new QueryNode(C_LIMIT_PROP, C_LIMIT_DEFN, static_cast<Value&&>(xLimitVal));
+
+  Value xOffsetVal;
+  if (iOffset == -1)  xOffsetVal.vSetNull(Value::VT_INT);
+  else                xOffsetVal.vSet(iOffset);
+
+  QueryNode* pOffsetProp = new QueryNode(C_OFFSET_PROP, C_OFFSET_DEFN, static_cast<Value&&>(xOffsetVal));
+
+  pLimitOp->vAppendProperty(pLimitProp);
+  pLimitOp->vAppendProperty(pOffsetProp);
+
+  return pLimitOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Appends a basic, single line description of the object into a buffer       */
+/*----------------------------------------------------------------------------*/
+void LimitOp::vDescribe(PlanNode* pNode, s2K& sBuf)
+{
+  _static_
+      ASSERT(bIsOfType(pNode));
+
+  QueryNode* pLimitOp = static_cast<QueryNode*>(pNode);
+
+  QueryNode* pLimitProp = static_cast<QueryNode*>(GraphNav::pFindProperty(C_LIMIT_PROP, pLimitOp));
+  QueryNode* pOffsetProp = static_cast<QueryNode*>(GraphNav::pFindProperty(C_OFFSET_PROP, pLimitOp));
+  ASSERT(pLimitOp);
+  ASSERT(pOffsetProp);
+
+  sBuf.vCatSprint("LimitOp : Limit = %lld"_Stz, pLimitProp->iValue());
+
+  if (!pOffsetProp->bIsNullValue()) {
+    sBuf.vCatSprint(", Offset = %lld"_Stz, pOffsetProp->iValue());
+  }
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Recurses down the query plan and writes the explain of the stmt to the buf */
+/*----------------------------------------------------------------------------*/
+void LimitOp::vExplain(PlanNode* pNode, s48K& sBuf, i8 iIndent)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  sBuf.vConcat("\n\n"_Stz);
+  vAppendIndent(sBuf, iIndent, eIndentFormat::IF_ARROW);
+  sBuf.vConcat(GraphNav::szLeafType(pNode->szType()));
+
+  // Get the limit and offset properties
+  PlanNode* pLimitProp = GraphNav::pFindProperty(const_cast<Stz*>(C_LIMIT_PROP), pNode);
+  ASSERT(pLimitProp);
+
+  PlanNode* pOffsetProp = GraphNav::pFindProperty(const_cast<Stz*>(C_OFFSET_PROP), pNode);
+  ASSERT(pOffsetProp);
+
+  sBuf.vConcat("\n"_Stz);
+  vAppendIndent(sBuf, iIndent, IF_PLAIN);
+  sBuf.vCatSprint("limit: (%lld)"_Stz, pLimitProp->iValue());
+
+  if (!pOffsetProp->bIsNullValue()) {
+    sBuf.vConcat("\n"_Stz);
+    vAppendIndent(sBuf, iIndent, IF_PLAIN);
+    sBuf.vCatSprint("offset: (%lld)"_Stz, pOffsetProp->iValue());
+  }
+
+  // Recurse any children of pNode
+  if (pNode->bHasChildren()) {
+    PlanNodeIter* pIter = pNode->pNewChildrenIter();
+
+    while (pIter->bHasNext()) {
+      PlanNode* pChild = pIter->pNext();
+      ASSERT(PlanObject::bIsOfType(pChild));
+
+      PlanObject::vExplain(pChild, sBuf, iIndent+1);
+    }
+    delete pIter;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if the given node is derived from the statement definition    */
+/*----------------------------------------------------------------------------*/
+b1 LimitOp::bIsOfType(PlanNode *pNode)
+{
+  return ShadowNode::bIsOfType(pNode, C_LIMITOP_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the limit value of the limitOp                                     */
+/*----------------------------------------------------------------------------*/
+i8 LimitOp::iLimit(QueryNode* pNode)
+{
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode *pLimitNode =
+      static_cast<QueryNode*>(GraphNav::pFindProperty(const_cast<Stz *>(C_LIMIT_PROP), pNode));
+
+  ASSERT(pLimitNode);
+  return pLimitNode->iValue();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the offset value of the limitOp, or -1 if not set                  */
+/*----------------------------------------------------------------------------*/
+i8 LimitOp::iOffset(QueryNode* pNode)
+{
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode *pOffsetNode =
+      static_cast<QueryNode*>(GraphNav::pFindProperty(const_cast<Stz *>(C_OFFSET_PROP), pNode));
+
+  ASSERT(pOffsetNode);
+
+  if (pOffsetNode->bIsNullValue()) {
+    return -1;
+  }
+
+  return pOffsetNode->iValue();
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
