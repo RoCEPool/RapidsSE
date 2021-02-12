@@ -1551,10 +1551,12 @@ void AM::vNapUsec(i8 nMicroSeconds, eCN eCallingClass)
 /*----------------------------------------------------------------------------*/
 i8 AM::iNextObjectNo(eCN eClassNo)
 {
-  i8 iObjectNo = C_UNKNOWN;
-  
+  i8 iObjectNo ;
+    
   if (gpAttachMap && gpAttachMap->m_pObjectNumbering)
-    gpAttachMap->m_pObjectNumbering->iNextNo(eClassNo);
+    iObjectNo = gpAttachMap->m_pObjectNumbering->iNextNo(eClassNo);
+  else
+    iObjectNo = 1;
   
   return iObjectNo;
 }

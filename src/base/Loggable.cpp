@@ -12,8 +12,12 @@ Loggable::Loggable(eCN eClassNo, i8 iObjectId)
 {
   if (-9 == iObjectId)
     m_iObjectId = AM::iNextObjectNo(eClassNo);
-  else
+  else {
     m_iObjectId = iObjectId; //AM::iNextObjectNo(eClassNo);
+  }
+  
+//  if (CN_JOB == eClassNo)
+//    printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ m_iObjectId %lld\n",m_iObjectId);
 
   m_iEventNo  = C_UNKNOWN;
   m_iEventTick   = AM::iRdTickingDevice();
