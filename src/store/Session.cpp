@@ -44,8 +44,9 @@ Session* STORE::_pSession(i8 iAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Session::Session(void)
-: Loggable(CN_SESSION, AM::iNextSessionId()),
-  m_oSsnMutex(MK_SESSION,this)
+: Loggable(CN_SESSION,-9) //AM::iNextSessionId()),
+,
+m_oSsnMutex(MK_SESSION,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
