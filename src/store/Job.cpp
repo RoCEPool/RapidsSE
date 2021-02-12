@@ -159,7 +159,7 @@ Job::Job(ReqTuple* aReqTuple)
 
   // -- -- -- -- -- --
     
-  vIncStepNo(); ++ gixJob;
+  vEventNoInc(); ++ gixJob;
   AM::vLogJob(SL_INF,this,JA_JOB_CONSTRUCT,
               "|gixJob=%lld|"_Stz, //!format-LogJob
               * gixJob);
@@ -218,7 +218,7 @@ Job::Job(eCN eClassNo)
   
   SP_Gid spId;
   
-  vIncStepNo(); ++ gixJob;
+  vEventNoInc(); ++ gixJob;
   AM::vLogJob(SL_INF,this,JA_JOB_CONSTRUCT,
               "|gixJob=%lld|"_Stz, //!format-LogJob
               * gixJob);
@@ -241,7 +241,7 @@ Job::~Job(void) noexcept(false)
 //    //m_oJobTags.vPrint();
 //  }
   
-  vIncStepNo();
+  vEventNoInc();
   if (m_bWasReceived) {
     // do not decrement gixJob
     AM::vLogJob(SL_INF,this,JA_JOB_DESTRUCT,

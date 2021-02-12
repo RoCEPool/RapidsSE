@@ -87,7 +87,7 @@ Lock::~Lock(void) noexcept(false)
   if (m_bFocal) {
     SP_Gid spId;
     
-    vIncStepNo(); -- gixLock;
+    vEventNoInc(); -- gixLock;
     AM::vLogLck(SL_INF,this,LA_LCK_DESTRUCT,
                 "Lock -%s destruct ^For=%s |gixLock=%lld|"_Stz, //!format-LogLck
                 aLK[m_eLockKind],
@@ -385,7 +385,7 @@ void Lock::vGrabRead(void)
       continue;
     
     bReported = true;
-    vIncStepNo();
+    vEventNoInc();
     AM::vLogLck(SL_INF,this,LA_LCK_READ_UNABLE,
                 "Unable to grab read lock %p %s %p"_Stz, //!format-LogLck
                 this,
@@ -397,7 +397,7 @@ void Lock::vGrabRead(void)
   // read lock has been acquired
 
   if (bReported) {
-    vIncStepNo();
+    vEventNoInc();
     AM::vLogLck(SL_INF,this,LA_LCK_READ_ABLE,
                "Able to grab read lock %p %s %p"_Stz, //!format-LogLck
                 this,
@@ -533,7 +533,7 @@ void Lock::vGrabWrite(void)
       continue;
     
     bReported = true;
-    vIncStepNo();
+    vEventNoInc();
     AM::vLogLck(SL_INF,this,LA_LCK_WRITE_UNABLE,
                 "Unable to grab write lock %p %s %p"_Stz, //!format-LogLck
                 this,
@@ -545,7 +545,7 @@ void Lock::vGrabWrite(void)
   // write lock has been acquired
 
   if (bReported) {
-    vIncStepNo();
+    vEventNoInc();
     AM::vLogLck(SL_INF,this,LA_LCK_WRITE_ABLE,
                "Able to grab write lock %p %s %p"_Stz, //!format-LogLck
                        this,

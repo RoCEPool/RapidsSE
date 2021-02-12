@@ -2667,7 +2667,7 @@ void AM::vJob_AddDemon(Job* pJob)
   AM::pDemonJobs()->vAddJob(pJob);
   AM::pDemonJobs()->vDropLock();
   
-  pJob->vIncStepNo();
+  pJob->vEventNoInc();
   AM::vLogJob(SL_INF,pJob,JA_JOB_ADD_DEMON,
               "Job added to DemonJobs"_Stz); //!format-LogJob
 }
@@ -2684,7 +2684,7 @@ void AM::vJob_AddLocal(Job* pJob)
   AM::pLocalJobs()->vAddJob(pJob);
   AM::pLocalJobs()->vDropLock();
   
-  pJob->vIncStepNo();
+  pJob->vEventNoInc();
   AM::vLogJob(SL_INF,pJob,JA_JOB_ADD_LOCAL,
               "Job added to LocalJobs"_Stz); //!format-LogJob
 }
@@ -2701,7 +2701,7 @@ void AM::vJob_AddOriginating(Job* pJob)
   AM::pOriginatingJobs()->vAddJob(pJob);
   AM::pOriginatingJobs()->vDropLock();
   
-  pJob->vIncStepNo();
+  pJob->vEventNoInc();
   AM::vLogJob(SL_INF,pJob,JA_JOB_ADD_ORIGIN,
               "Job added to OriginatingJobs"_Stz); //!format-LogJob
 }
@@ -2717,7 +2717,7 @@ void AM::vJob_AddParticipating(Job* pJob)
   AM::pParticipatingJobs()->vAddJob(pJob);
   AM::pParticipatingJobs()->vDropLock();
   
-  pJob->vIncStepNo();
+  pJob->vEventNoInc();
   AM::vLogJob(SL_INF,pJob,JA_JOB_ADD_PARTG,
               "Job added to ParticipatingJobs"_Stz); //!format-LogJob
   
@@ -2849,7 +2849,7 @@ bool AM::bJob_RemoveLocal(Job* pJob, bool bDump)
   
   AM::pLocalJobs()->vDropLock();
   
-  pJob->vIncStepNo();
+  pJob->vEventNoInc();
   AM::vLogJob(SL_INF,pJob,JA_JOB_REMOVE_LOCAL,
               "Job removed from LocalJobs"_Stz); //!format-LogJob
   
@@ -2872,7 +2872,7 @@ bool AM::bJob_RemoveOriginating(Job* pJob, bool bDump)
   
   AM::pOriginatingJobs()->vDropLock();
   
-  pJob->vIncStepNo();
+  pJob->vEventNoInc();
   AM::vLogJob(SL_INF,pJob,JA_JOB_REMOVE_ORIGIN,
               "Job removed from OriginatingJobs"_Stz); //!format-LogJob
   
@@ -2895,7 +2895,7 @@ bool AM::bJob_RemoveParticipating(Job* pJob, bool bDump)
   
   AM::pParticipatingJobs()->vDropLock();
   
-  pJob->vIncStepNo();
+  pJob->vEventNoInc();
   AM::vLogJob(SL_INF,pJob,JA_JOB_REMOVE_PARTG,
               "Job fremoved from ParticipatingJobs"_Stz); //!format-LogJob
   

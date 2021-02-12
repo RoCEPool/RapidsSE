@@ -14,22 +14,36 @@ namespace BASE
     s32 m_sObjectNm;
 
   private:
-    i8 m_iStepNo;    // last step sequence number
-    i8 m_iStepTk;    // time point that occurred
-  
+    i8  m_iEventNo;   // last step sequence number
     eEV m_eEvent;    // last event
+    i8  m_iEventTick; // time point that occurred
     i8  m_iDuration; // last event no
 
-    i8 m__spare0;    //
-    i8 m__spare1;    //
-    i8 m__spare2;    //
+    i8  m__spare0;    //
+    i8  m__spare1;    //
+    i8  m__spare2;    //
 
   public:
     Focal(eCN eClassNo, i8 iObjectId);
    ~Focal(void) noexcept(false);
   
-    i8   iStepNo(void);
-    void vIncStepNo(void);
+    eEV  eEvent(void);
+    void vEvent(eEV eEvent);
+
+    i8   iEventNo(void);
+    void vEventNoInc(void);
+
+    i8   iEventTick(void);
+    void vEventTickSet(void);
+
+    i8   iObjectId(void);
+    void vObjectId(i8 iObjectId);
+
+    Stz* sObjectNm(void);
+    void vObjectNm(Stz* szObjectNm);
+
+    void vNextEvent(eEV m_eEvent);
+
   };
 }
 

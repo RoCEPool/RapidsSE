@@ -12,8 +12,8 @@ Focal::Focal(eCN eClassNo, i8 iObjectId)
 {
   m_iObjectId = iObjectId;
 
-  m_iStepNo   = C_UNKNOWN;
-  m_iStepTk   = AM::iRdTickingDevice();
+  m_iEventNo  = C_UNKNOWN;
+  m_iEventTick   = AM::iRdTickingDevice();
   
   m_eEvent    = EV_NONE;
   m_iDuration = C_UNKNOWN;
@@ -36,21 +36,115 @@ Focal::~Focal(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get last step sequence number                                              */
+/* get last event                                                             */
 /*----------------------------------------------------------------------------*/
-i8 Focal::iStepNo(void)
+eEV Focal::eEvent(void)
 {
-  return m_iStepNo;
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_eEvent;
 }
 
 /*----------------------------------------------------------------------------*/
-/* inc last step sequence number                                              */
+/* set last event                                                             */
 /*----------------------------------------------------------------------------*/
-void Focal::vIncStepNo(void)
+void Focal::vEvent(eEV eEvent)
 {
-  m_iStepNo++;
+  _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_iStepTk = AM::iRdTickingDevice();
+  m_eEvent = eEvent;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get event no                                                               */
+/*----------------------------------------------------------------------------*/
+i8 Focal::iEventNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_iEventNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inc event no                                                               */
+/*----------------------------------------------------------------------------*/
+void Focal::vEventNoInc(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_iEventNo++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get event no                                                               */
+/*----------------------------------------------------------------------------*/
+i8 Focal::iEventTick(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_iEventTick;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set event tick                                                             */
+/*----------------------------------------------------------------------------*/
+void Focal::vEventTickSet(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_iEventTick = AM::iRdTickingDevice();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get object id                                                              */
+/*----------------------------------------------------------------------------*/
+i8 Focal::iObjectId(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_iObjectId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set object id                                                              */
+/*----------------------------------------------------------------------------*/
+void Focal::vObjectId(i8 iObjectId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_iObjectId = iObjectId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get object name                                                            */
+/*----------------------------------------------------------------------------*/
+Stz* Focal::sObjectNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_sObjectNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set object name                                                            */
+/*----------------------------------------------------------------------------*/
+void Focal::vObjectNm(Stz* szObjectNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_sObjectNm = szObjectNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set next event                                                             */
+/*----------------------------------------------------------------------------*/
+void Focal::vNextEvent(eEV eEvent)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  vEventTickSet();
+  vEvent(eEvent);
+  vEventNoInc();
 }
 
 /*============================================================================*/

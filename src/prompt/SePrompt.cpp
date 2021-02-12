@@ -907,7 +907,7 @@ void SePrompt::vLogCommand(void)
   m_pInpTknVec->vVecToString(sCommand,0,true);
   sCommand.vSizeMax(C_MAX_LOG_NOTE / 2);
   
-  vIncStepNo();
+  vEventNoInc();
 //  AM::vLogPrm(SL_INF,this,PA_PRM_COMMAND,
 //              "%lld %s"_Stz, //!format-LogPrm
 //              m_xReqTuple.m_iReqNo,sCommand.szStz());
@@ -926,7 +926,7 @@ void SePrompt::vLogFreeSpace(void)
   s32 sFreeSpaceMag;
   MagLib::vByteMag(iFreeSpace + iFreeSpaceInPool,1,sFreeSpaceMag);
   
-  vIncStepNo();
+  vEventNoInc();
   AM::vLogPrm(SL_INF,this,PA_PRM_FREE_SPACE,
               "%s on node %s"_Stz, //!format-LogPrm
               sFreeSpaceMag.szStz(),

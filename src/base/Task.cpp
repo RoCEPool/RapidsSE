@@ -113,7 +113,7 @@ Task::Task(Job* pJob, i8 iFocalId)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   
-  vIncStepNo(); ++ gixTask;
+  vEventNoInc(); ++ gixTask;
   AM::vLogTsk(SL_INF,this,TA_TSK_CONSTRUCT,
               "Task -%s%s |gixTask=%lld|"_Stz, //!format-LogTsk
               aCN[ AM::eJobClass(m_pJob) ],
@@ -167,7 +167,7 @@ Task::~Task(void) noexcept(false)
   m_pProfile = nullptr;
   
   -- gixTask;
-  vIncStepNo();
+  vEventNoInc();
   AM::vLogTsk(SL_INF,this,TA_TSK_DESTRUCT,
               "Task destruct |gixTask=%lld|"_Stz, //!format-LogTsk
               * gixTask);
