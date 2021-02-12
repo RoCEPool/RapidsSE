@@ -5,13 +5,14 @@
 
 #include "ResourceTracker.hpp" //?
 
+namespace STORE { class ObjectNumbering; }
 
 namespace STORE
 {
   static const u8 C_CREATED = 0x2444455441455243;   // $CREATED
   static const u8 C_READY   = 0x2424594441455224;   // $READY$$
   
-  class AttachMap : public Loggable
+  class AttachMap : public Object
   {
   friend class OBLIQUE::AM;
   friend class Engine;
@@ -57,6 +58,7 @@ namespace STORE
     NextGid       m_inNextTaskId;
     NextGid       m_inNextThreadId;
     NextGid       m_inNextTxId;
+    ObjectNumbering* m_pObjectNumbering;
     Atomic        m_nxOperands;
     PtnMap*       m_pPtnMap;
     SystemSchedule*  m_pSystemSchedule;

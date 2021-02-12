@@ -12,6 +12,7 @@
 #include "Node.hpp"
 #include "Grid.hpp"
 #include "AttachMap.hpp"
+#include "ObjectNumbering.hpp"
 
 #include "Session.hpp"
 #include "Step.hpp"
@@ -48,7 +49,7 @@ void* AttachMap::operator new(size_t)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 AttachMap::AttachMap(void)
-: Loggable(CN_ATTACHMAP,0)
+: Object(CN_ATTACHMAP)
 , m_okDdlLock(LK_DDL,this)
 , m_okDicLock(LK_DIC,this)
 , m_okTccLock(LK_TCC,this)
@@ -96,7 +97,9 @@ AttachMap::AttachMap(void)
 //    new Heap(CN_MEDIUMPERSISTENT, C_SIZE_MEDIUM_OBJECT, HT_P_MEDIUM);
 //  m_xHeapMem.Persistent.m_pLarge  =
 //    new Heap(CN_LARGEPERSISTENT,  C_SIZE_LARGE_OBJECT,  HT_P_LARGE);
-  
+
+  m_pObjectNumbering = new ObjectNumbering;
+
   m_pTxSet = new TxSet;
 
   _checkInitialised_(CN_ATTACHMAP);

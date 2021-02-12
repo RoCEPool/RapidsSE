@@ -110,15 +110,16 @@
 #include "Log.hpp"
 #include "LogicUnit.hpp"
 
+#include "ObjectNumbering.hpp"
 #include "Output.hpp"
 #include "Op.hpp"
 #include "OpSpec.hpp"
 
+#include "PathIdentifier.hpp"
 #include "PipelineSpec.hpp"
 #include "Pipeline.hpp"
 #include "Dynamo.hpp"
 
-#include "PathIdentifier.hpp"
 
 #include "SeApi.hpp"
 #include "SessionArray.hpp"
@@ -310,7 +311,8 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Numbat),             HT_T_LARGE   ,0 }, // CN_NUMBAT
 
   { 'O' - ('A' - 1),            HT_INVALID   ,0 }, // CN__O__
-  { sizeof(Output),             HT_T_TINY    ,0 }, // CN_OUTUT
+  { sizeof(ObjectNumbering),    HT_T_MEDIUM  ,0 }, // CN_OBJECTNUMBERING
+  { sizeof(Output),             HT_T_TINY    ,0 }, // CN_OUTPUT
   { sizeof(Op),                 HT_T_LARGE   ,0 }, // CN_OP
   { sizeof(OpenFiles),          HT_T_TINY    ,0 }, // CN_OPENFILES
   { sizeof(OperandQueue),       HT_T_TINY    ,0 }, // CN_OPERANDQUEUE
