@@ -22,6 +22,7 @@
 #include "ShadowNode.hpp"
 #include "store/parser/shadowNodes/planObjects/Statement.hpp"
 #include "store/parser/shadowNodes/planObjects/FilterOp.hpp"
+#include "store/parser/shadowNodes/planObjects/LimitOp.hpp"
 #include "store/parser/shadowNodes/compound/TableRef.hpp"
 
 // Expressions
@@ -234,6 +235,37 @@ antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *pCtx)
   m_pStatementStack->vPush(pStmt);
 
   visitChildren(pCtx);
+
+  if (pCtx->ORDER()) {
+    // TODO
+
+  }
+
+  if (pCtx->LIMIT()) {
+    i8 iLimit = iCleanInt(pCtx->limit);
+    i8 iOffset = -1;
+
+    if (iLimit < 0) {
+      SemanticException::vThrow("LIMIT value must be >= 0"_Stz);
+    }
+
+    if (pCtx->OFFSET()) {
+      iOffset = iCleanInt(pCtx->offset);
+
+      if (iOffset < -1) {
+        SemanticException::vThrow("OFFSET value must be >= 0"_Stz);
+      }
+    }
+
+    // Create the limit op
+    QueryNode* pLimitOp = LimitOp::pCreate(iLimit, iOffset);
+
+    // Insert the limit op as the top-most child underneath the statement.
+    // Need to make any current children of statement now children of limitOp.
+    QueryNode* pStatement = m_pStatementStack->pPeek(0);
+    pStatement->vInsertAsParentOfChildren(pLimitOp);
+  }
+
   return nullptr;
 }
 
@@ -930,18 +962,35 @@ i8 SqlPlanner::iCleanInt(sqlParser::IntegerLiteralContext *pCtx)
   ASSERT(pCtx);
 
   std::string sStr = pCtx->getText();
+  return iCleanInt(sStr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return an integer value from an integer literal token                      */
+/*----------------------------------------------------------------------------*/
+i8 SqlPlanner::iCleanInt(antlr4::Token* pToken)
+{
+  ASSERT(pToken);
+
+  std::string sStr = pToken->getText();
+  return iCleanInt(sStr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return an integer value from an integer literal token                      */
+/*----------------------------------------------------------------------------*/
+i8 SqlPlanner::iCleanInt(std::string& sStr)
+{
   i8 iVal;
 
   try {
     iVal = std::stoll(sStr);
 
   } catch (std::invalid_argument &e) {
-    // TODO: handle exceptions
-    NOT_IMPLEMENTED_YET
+    SemanticException::vThrow("Cannot convert value\"%s\" to an integer"_Stz, sStr.c_str());
 
   } catch (std::out_of_range &e) {
-    // TODO: handle exceptions
-    NOT_IMPLEMENTED_YET
+    SemanticException::vThrow("Cannot convert value\"%s\" to an integer as it is out of range"_Stz, sStr.c_str());
   }
 
   return iVal;
@@ -961,12 +1010,10 @@ d8 SqlPlanner::dCleanFloat(sqlParser::FloatLiteralContext *pCtx)
     dVal = std::stod(sStr);
 
   } catch (std::invalid_argument &e) {
-    // TODO: handle exceptions
-    NOT_IMPLEMENTED_YET
+    SemanticException::vThrow("Cannot convert value\"%s\" to a float"_Stz, sStr.c_str());
 
   } catch (std::out_of_range &e) {
-    // TODO: handle exceptions
-    NOT_IMPLEMENTED_YET
+    SemanticException::vThrow("Cannot convert value\"%s\" to a float as it is out of range"_Stz, sStr.c_str());
   }
 
   return dVal;

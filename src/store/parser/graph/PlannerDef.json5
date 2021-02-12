@@ -433,7 +433,24 @@
 // TODO Path: /__root__/definitions/object/planObject/sqlOperator/join/loopJoinOp
 // TODO Path: /__root__/definitions/object/planObject/sqlOperator/aggregation
 // TODO Path: /__root__/definitions/object/planObject/sqlOperator/orderOp
-// TODO Path: /__root__/definitions/object/planObject/sqlOperator/limitOp
+// Path: /__root__/definitions/object/planObject/sqlOperator/limitOp
+                    {
+                      name: "limitOp",
+                      value: "An operator that limits the number of rows being returned",
+                      properties: [
+                        {
+                          name: "limit",
+                          value: "The maximum number of rows to be returned",
+                          type: "/__root__/definitions/object/valueObject/integerObject"
+                        },
+                        {
+                          name: "offset",
+                          value: "The number of rows to initially be ignored before counting against the limit",
+                          type: "/__root__/definitions/object/valueObject/integerObject"
+                        }
+                      ],
+                      children: []
+                    },
 
 // Path: /__root__/definitions/object/planObject/sqlOperator/dataSource
                     {

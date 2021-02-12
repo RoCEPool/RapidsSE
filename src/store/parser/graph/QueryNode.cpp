@@ -211,6 +211,28 @@ void QueryNode::vInsertChildBefore(QueryNode* pInsNode, QueryNode* pRefNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Insert a child in the current node and make it the parent of any existing  */
+/* children. e.g. if node A has children B, C, and we are inserting node D    */
+/* then after this operation node A will have one child, node D, and node D   */
+/* will have children B and C.                                                */
+/*----------------------------------------------------------------------------*/
+void QueryNode::vInsertAsParentOfChildren(QueryNode* pInsNode)
+{
+  ASSERT(m_pChildren);
+  ASSERT(pInsNode);
+
+  // Move the children from the current node to the node being inserted
+  QueryNode* pChild;
+  while( (pChild = static_cast<QueryNode*>(m_pChildren->pPop())) != nullptr ) {
+    pInsNode->vAppendChild(pChild);
+  }
+
+  ASSERT(m_pChildren->nItems() == 0);
+
+  m_pChildren->vPush(pInsNode);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Removes a given child from the list. The removed node retains all of       */
 /* its children.                                                              */
 /*----------------------------------------------------------------------------*/

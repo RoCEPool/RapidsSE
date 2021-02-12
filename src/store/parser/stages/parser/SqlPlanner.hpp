@@ -61,6 +61,8 @@ namespace Parser
     void  vCleanString(antlr4::Token* pToken, s256& sBuf);
     void  vCleanString(std::string& sStr, s256& sBuf);
     i8    iCleanInt(sqlParser::IntegerLiteralContext* pCtx);
+    i8    iCleanInt(antlr4::Token* pToken);
+    i8    iCleanInt(std::string& sStr);
     d8    dCleanFloat(sqlParser::FloatLiteralContext* pCtx);
 //  ??    cleanDecimal(sqlParser::DecimalLiteralContext* pCtx);
     Dte   xCleanDate(sqlParser::StringLiteralContext* pCtx);

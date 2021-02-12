@@ -43,11 +43,15 @@ namespace Parser
     // Adds a child at the start of the list
     void vPushChild(QueryNode* pNode);
 
-    // Insert a child after a given reference child
+    // Insert a child in the current node after a given reference child
     void vInsertChildAfter(QueryNode* pInsNode, QueryNode* pRefNode);
 
-    // Insert a child before a given reference child
+    // Insert a child in the current node before a given reference child
     void vInsertChildBefore(QueryNode* pInsNode, QueryNode* pRefNode);
+
+    // Insert a child in the current node and make it the parent of any existing children.
+    // See implementation for more details.
+    void vInsertAsParentOfChildren(QueryNode* pInsNode);
 
     // Removes a given child from the list. The removed node retains all of its children.
     void vRemoveChild(QueryNode* pNode);
