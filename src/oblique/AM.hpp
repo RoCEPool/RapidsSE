@@ -206,7 +206,6 @@ namespace OBLIQUE
   
     static i8   iNextDiagram(void);
     static i8   iNextEpoch(void);
-    static i8   iNextJobId(void);
     static i8   iNextLockId(void);
     static i8   iNextOpId(void);
     static i8   iNextPlanId(void);

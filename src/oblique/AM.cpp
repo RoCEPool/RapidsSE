@@ -205,7 +205,6 @@ bool AM::bProgress(void)      { return gpAttachMap->m_xSysArgs.m_bProgress;     
 bool AM::bMetadata(void)      { return gpAttachMap->m_xSysArgs.m_bMetadata;          }
 
 i8   AM::iNextDiagram(void)   { return ++ gpAttachMap->m_inNextDiagram;       }
-i8   AM::iNextJobId(void)     { return ++ gpAttachMap->m_inNextJobId;         }
 i8   AM::iNextLockId(void)    {
   if (gpAttachMap)
     return ++ gpAttachMap->m_inNextLockId;

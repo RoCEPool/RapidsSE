@@ -127,6 +127,7 @@ extern d8 C_D8_MID;
 #include "Bytes_t.hpp"
 #include "String_t.hpp"
 #include "Atomic.hpp"
+#include "NextGid.hpp"
 #include "ObjectNumbering.hpp"
 #include "Loggable.hpp"
 
@@ -209,7 +210,6 @@ extern d8 C_D8_MID;
 #include "FreqDist.hpp"
 #include "HV.hpp"
 #include "MemTest.hpp"
-#include "NextGid.hpp"
 #include "Now.hpp"
 #include "Rand.hpp"
 #include "SeeMe.hpp"

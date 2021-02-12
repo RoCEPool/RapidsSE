@@ -45,7 +45,7 @@ namespace STORE
     Article*      m_pLexiconArticle;
     LockTracker   m_oLockTracker;
     NextGid       m_inNextDiagram;
-    NextGid       m_inNextJobId;
+    //NextGid       m_inNextJobId;
     NextGid       m_inNextLockId;
     NextGid       m_inNextMonitor;
     NextGid       m_inNextOpId;

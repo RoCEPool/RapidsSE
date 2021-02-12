@@ -1580,7 +1580,7 @@ void Engine::vStartSystem(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // initialize the next id generators
-  gpAttachMap->m_inNextJobId.vNodeNo(iThisNodeNo);
+  //gpAttachMap->m_inNextJobId.vNodeNo(iThisNodeNo);
   gpAttachMap->m_inNextOpId.vNodeNo(iThisNodeNo);
   gpAttachMap->m_inNextPlanId.vNodeNo(iThisNodeNo);
   gpAttachMap->m_inNextResourceId.vNodeNo(iThisNodeNo);

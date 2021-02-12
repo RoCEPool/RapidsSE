@@ -50,7 +50,7 @@ i8 ObjectNumbering::iNextNo(eCN eClassNo)
   i8 iObjectNo;
   
   if (CN_JOB == eClassNo)
-    iObjectNo = AM::iNextJobId();
+    iObjectNo = ++ m_inNextJobId;
   else
     iObjectNo = ++ m_ixaNextObjectId[eClassNo];
   
@@ -64,7 +64,8 @@ void ObjectNumbering::vNodeNo(i8 iThisNodeNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OBJECTNUMBERING);
 
-  m_ixaNextObjectId[CN_OBJECTNUMBERING] = iThisNodeNo << 48;
+  m_inNextJobId.vNodeNo(iThisNodeNo);
+  m_ixaNextObjectId[CN_JOB] = iThisNodeNo << 48;
 }
 
 /*============================================================================*/
