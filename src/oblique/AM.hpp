@@ -206,16 +206,16 @@ namespace OBLIQUE
   
     static i8   iNextDiagram(void);
     static i8   iNextEpoch(void);
-    static i8   iNextLockId(void);
-    static i8   iNextOpId(void);
-    static i8   iNextPlanId(void);
-    static i8   iNextPromptId(void);
-    static i8   iNextRequest(void);
-    static i8   iNextResourceId(void);
-    static i8   iNextSessionId(void);
+//    static i8   iNextLockId(void);
+//    static i8   iNextOpId(void);
+//    static i8   iNextPlanId(void);
+//    static i8   iNextPromptId(void);
+//    static i8   iNextRequest(void);
+//    static i8   iNextResourceId(void);
+//    static i8   iNextSessionId(void);
     static i8   iNextStreamId(void);
-    static i8   iNextTaskId(void);
-    static i8   iNextThreadId(void);
+//    static i8   iNextTaskId(void);
+//    static i8   iNextThreadId(void);
     static i8   iNextTxId(void);
     static Stz* szNodeNm(void);
     static JobList* pOriginatingJobs(void);

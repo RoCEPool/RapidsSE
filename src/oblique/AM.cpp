@@ -205,26 +205,26 @@ bool AM::bProgress(void)      { return gpAttachMap->m_xSysArgs.m_bProgress;     
 bool AM::bMetadata(void)      { return gpAttachMap->m_xSysArgs.m_bMetadata;          }
 
 i8   AM::iNextDiagram(void)   { return ++ gpAttachMap->m_inNextDiagram;       }
-i8   AM::iNextLockId(void)    {
-  if (gpAttachMap)
-    return ++ gpAttachMap->m_inNextLockId;
-  else
-    return C_UNKNOWN;
-}
-i8   AM::iNextOpId(void)      { return ++ gpAttachMap->m_inNextOpId;          }
-i8   AM::iNextPlanId(void)    { return ++ gpAttachMap->m_inNextPlanId;        }
-i8   AM::iNextPromptId(void)  { return ++ gpAttachMap->m_inNextPromptId;      }
-i8   AM::iNextRequest(void)   { return ++ gpAttachMap->m_inNextRequest;       }
-i8   AM::iNextResourceId(void){
-  if (gpAttachMap)
-    return ++ gpAttachMap->m_inNextResourceId;
-  else
-    return C_UNKNOWN;
-}
-i8   AM::iNextSessionId(void) { return ++ gpAttachMap->m_inNextSessionId;     }
+//i8   AM::iNextLockId(void)    {
+//  if (gpAttachMap)
+//    return ++ gpAttachMap->m_inNextLockId;
+//  else
+//    return C_UNKNOWN;
+//}
+//i8   AM::iNextOpId(void)      { return ++ gpAttachMap->m_inNextOpId;          }
+//i8   AM::iNextPlanId(void)    { return ++ gpAttachMap->m_inNextPlanId;        }
+//i8   AM::iNextPromptId(void)  { return ++ gpAttachMap->m_inNextPromptId;      }
+//i8   AM::iNextRequest(void)   { return ++ gpAttachMap->m_inNextRequest;       }
+//i8   AM::iNextResourceId(void){
+//  if (gpAttachMap)
+//    return ++ gpAttachMap->m_inNextResourceId;
+//  else
+//    return C_UNKNOWN;
+//}
+//i8   AM::iNextSessionId(void) { return ++ gpAttachMap->m_inNextSessionId;     }
 i8   AM::iNextStreamId(void)  { return ++ gpAttachMap->m_inNextStreamId;      }
-i8   AM::iNextTaskId(void)    { return ++ gpAttachMap->m_inNextTaskId;        }
-i8   AM::iNextThreadId(void)  { return ++ gpAttachMap->m_inNextThreadId;      }
+//i8   AM::iNextTaskId(void)    { return ++ gpAttachMap->m_inNextTaskId;        }
+//i8   AM::iNextThreadId(void)  { return ++ gpAttachMap->m_inNextThreadId;      }
 i8   AM::iNextTxId(void)      { return ++ gpAttachMap->m_inNextTxId;          }
 
 i8   AM::nPtnsInGrid(void) {
