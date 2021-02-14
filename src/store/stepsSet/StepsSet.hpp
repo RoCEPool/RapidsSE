@@ -828,8 +828,8 @@ void vExprEvalEvaluate(void);
   void vLockGrabWrite(void);
 
   // locks
-  void vLockTrackerList(void);
-  void vLockTrackerReset(void);
+  void vLocksList(void);
+  void vLocksReset(void);
 
   // log
   void vLogDump(void);

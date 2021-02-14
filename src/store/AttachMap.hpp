@@ -47,7 +47,7 @@ namespace STORE
     Grid*         m_pGrid;
     HeapMem       m_xHeapMem;
     Article*      m_pLexiconArticle;
-    LockTracker   m_oLockTracker;
+    Locks         m_oLocks;
     ObjectNumbering* m_pObjectNumbering;
     Atomic        m_nxOperands;
     PtnMap*       m_pPtnMap;

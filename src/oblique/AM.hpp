@@ -79,7 +79,7 @@ namespace BASE       { class CodeCell;            class Loggable;
                               class Header;          class Object;
                               class Statistics;     class Mutex;              }
 namespace BASE            { class ReqTuple;                              }
-namespace BASE           { class Lock;            class LockTracker;       }
+namespace BASE           { class Lock;            class Locks;       }
 namespace BASE              { class BufferPool;      class HeapBuffer;
                               class HeapMem;         class PoolBuffer;
 
@@ -198,7 +198,7 @@ namespace OBLIQUE
     static i8   nIndexEntries(void);
     static Article* pLexiconArticle(void);
     static JobList* pLocalJobs(void);
-    static LockTracker* pLockTracker(void);
+    static Locks* pLocks(void);
     static bool bLogging(void);
     static i8   nLvlLevels(void);
     static i8   iLvlRatio(void);

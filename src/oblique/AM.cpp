@@ -173,10 +173,10 @@ bool AM::bBootError(void)     { return gpAttachMap->m_bBootError;             }
 i8   AM::nBuckets(void)       { return C_MAX_BUCKETS;                         }
 BufferPool* AM::pBufferPool(void) { return gpAttachMap->m_pBufferPool;        }
 EnumFlags* AM::pClassFlags(void)  { return & gpAttachMap->m_oClassFlags;      }
-Lock* AM::pDdlLock(void)      { return & gpAttachMap->m_oLockTracker.m_okDdlLock;            }
+Lock* AM::pDdlLock(void)      { return & gpAttachMap->m_oLocks.m_okDdlLock;            }
 JobList* AM::pDemonJobs(void) {
   return gpAttachMap->m_xStore.m_pDemonJobs;                                }
-Lock* AM::pDicLock(void)      { return & gpAttachMap->m_oLockTracker.m_okDicLock;            }
+Lock* AM::pDicLock(void)      { return & gpAttachMap->m_oLocks.m_okDicLock;            }
 i8   AM::iElapsedSsec(void)   { return gpAttachMap->m_oBirth.iElapsedSsec();  }
 i8   AM::iEpoch(void)         { return gpAttachMap->m_iEpoch;                 }
 Format* AM::pFmt(void)        { return & gpAttachMap->m_oFormat;          }
@@ -186,7 +186,7 @@ HeapMem* AM::pHeapMem(void)   { return & gpAttachMap->m_xHeapMem;             }
 i8   AM::nIndexEntries(void)  { return gpAttachMap->m_xSysArgs.m_nIndexEntries;      }
 JobList* AM::pLocalJobs(void) {
   return gpAttachMap->m_xStore.m_pLocalJobs;                                }
-LockTracker* AM::pLockTracker(void) { return & gpAttachMap->m_oLockTracker;   }
+Locks* AM::pLocks(void) { return & gpAttachMap->m_oLocks;   }
 bool AM::bLogging(void)       { return gpLog ? true : false;                  }
 i8   AM::iNextEpoch(void)     { return ++ gpAttachMap->m_iEpoch;              }
 Stz* AM::szNodeNm(void)       {
@@ -219,7 +219,7 @@ Word* AM::pRootWord(void)     { return gpAttachMap->m_pRootWord;              }
 Statistics* AM::pStatistics(void)   { return & gpAttachMap->m_oStatistics;    }
 StepTiming* AM::pStepTiming(void)   { return gpAttachMap->m_pStepTiming;      }
 
-Lock* AM::pTccLock(void)      { return & gpAttachMap->m_oLockTracker.m_okTccLock;            }
+Lock* AM::pTccLock(void)      { return & gpAttachMap->m_oLocks.m_okTccLock;            }
 Word* AM::pTenants(void)      { return gpAttachMap->m_pTenants;               }
 i8   AM::iThisNodeNo(void)    { return gpAttachMap->m_pGrid->iThisNode();     }
 void AM::vThreadBegins(void)  { ++ gpAttachMap->m_pSchedule->m_ixThreads; }

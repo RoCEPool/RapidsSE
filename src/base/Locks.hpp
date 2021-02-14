@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* LockTracker.hpp -- lock statistics tracker                                 */
+/* Locks.hpp -- lock statistics tracker                                 */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace BASE
 {
-  class LockTracker
+  class Locks
   {
   public:
   
@@ -24,7 +24,7 @@ namespace BASE
     Atomic m_ixWriteCollisions[LK_ENUMS]; // number of write collisions
   
   public:
-  LockTracker(void);
+  Locks(void);
 
     void vMonitorPortrait(s48K& sPortrait);
     void vReport(void);

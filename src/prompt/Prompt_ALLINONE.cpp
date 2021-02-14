@@ -2387,7 +2387,7 @@ PromptFun __Prompt_locks (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_locks(SePrompt* pPrompt)
 {
-  AM::pLockTracker()->vReport();
+  AM::pLocks()->vReport();
   
   return true;
 }
