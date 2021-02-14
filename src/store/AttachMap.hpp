@@ -44,7 +44,6 @@ namespace STORE
     HeapMem       m_xHeapMem;
     Article*      m_pLexiconArticle;
     LockTracker   m_oLockTracker;
-    NextGid       m_inNextTxId;
     ObjectNumbering* m_pObjectNumbering;
     Atomic        m_nxOperands;
     PtnMap*       m_pPtnMap;
