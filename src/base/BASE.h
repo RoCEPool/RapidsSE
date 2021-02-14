@@ -162,7 +162,7 @@ extern d8 C_D8_MID;
 #include "Shell.hpp"
 
 #include "Lock.hpp"
-#include "LockTracker.hpp"
+#include "Locks.hpp"
 #include "Mutex.hpp"
 
 #include "SingleWord.hpp"
