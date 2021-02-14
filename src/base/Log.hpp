@@ -98,7 +98,7 @@ namespace BASE
 //    i8 iEntryOpr(eSL, Op*        pOpr, eOA eOprAct, Stz* szFormat, va_list xArgs);
 //    i8 iEntryMgt(eSL, Job*       pJob, eMA eMgtAct, Stz* szFormat, va_list xArgs);
 //    //i8 iEntryPrm(eSL, SePrompt*  pPrm, ePA ePrmAct, Stz* szFormat, va_list xArgs);
-//    i8 iEntryQue(eSL, SystemSchedule*    pQue, eQA eQueAct, Stz* szFormat, va_list xArgs);
+//    i8 iEntryQue(eSL, Schedule*    pQue, eQA eQueAct, Stz* szFormat, va_list xArgs);
 //    i8 iEntryRes(eSL, Resource*  pRes, eRA eResAct, Stz* szFormat, va_list xArgs);
 //    i8 iEntrySsn(eSL, Session*   pSsn, eAA eApiAct, Stz* szFormat, va_list xArgs);
 //    i8 iEntrySvc(eSL, Job*       pJob, eVA eSvcAct, Stz* szFormat, va_list xArgs);

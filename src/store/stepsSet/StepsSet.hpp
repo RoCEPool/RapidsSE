@@ -1543,11 +1543,11 @@ void vExprEvalEvaluate(void);
   void vSupervisorHaltStore(void);
 
   // system schedule
-  void vSystemScheduleCheckSleeping(void);
-  void vSystemScheduleExecutingLength(void);
-  void vSystemScheduleReadyLength(void);
-  void vSystemScheduleSleepingLength(void);
-  void vSystemScheduleWaitingLength(void);
+  void vScheduleCheckSleeping(void);
+  void vScheduleExecutingLength(void);
+  void vScheduleReadyLength(void);
+  void vScheduleSleepingLength(void);
+  void vScheduleWaitingLength(void);
 
   // table
   void vTableAddIndex(void);

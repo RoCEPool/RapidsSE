@@ -707,7 +707,7 @@ i8 Log::iEntryOpr(eSL eSeverity, Op* pOpr, eOA eOprAct,
 /*----------------------------------------------------------------------------*/
 /* add a queues log entry                                                     */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntryQue(eSL eSeverity, SystemSchedule* pQue, eQA eQueAct,
+i8 Log::iEntryQue(eSL eSeverity, Schedule* pQue, eQA eQueAct,
                   Stz* szFormat, va_list xVarArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);

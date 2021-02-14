@@ -4017,7 +4017,7 @@ void Task::vAddMunged(Task* pTask)
     "\n"
     "    // \"checking...\" .\n"
     "\n"
-    "    SystemSchedule::checkSleeping\n"
+    "    Schedule::checkSleeping\n"
     "\n"
     "  again\n"
     "\n"

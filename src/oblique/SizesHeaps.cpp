@@ -432,7 +432,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(StzList),            HT_T_TINY    ,0 }, // CN_STZLIST
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_STZVAL
   { sizeof(SysCall),            HT_INVALID   ,0 }, // CN_SYSCALL
-  { sizeof(SystemSchedule),     HT_T_TINY    ,0 }, // CN_SYSTEMSCHEDULE
+  { sizeof(Schedule),     HT_T_TINY    ,0 }, // CN_SCHEDULE
 
   { 'T' - ('A' - 1),            HT_INVALID   ,0 }, // CN__T__
   { sizeof(Table),              HT_T_TINY    ,0 }, // CN_TABLE

@@ -73,7 +73,7 @@ namespace STORE          { class Session;         class SessionState;      }
 namespace BASE           { class Log;             class LogEntry;          }
 
 namespace BASE           { class Scheduler;       class Thread;
-                              class SystemSchedule;                                   }
+                              class Schedule;                                   }
 
 namespace BASE       { class CodeCell;            class Loggable;
                               class Header;          class Object;
@@ -213,7 +213,7 @@ namespace OBLIQUE
     static void vProcessExit(void);
     static bool bProgress(void);
     static i8   nPtnsInGrid(void);
-    static SystemSchedule* pSystemSchedule(void);
+    static Schedule* pSchedule(void);
     static Resources* pResources(void);
     static Article* pRootArticle(void);
     static Word* pRootConstant(void);
@@ -333,7 +333,7 @@ namespace OBLIQUE
     static void vLogOpr(eSL, Op*        pOpr, eOA eOpAct,  Stz* szFormat, ...);
     static void vLogMgt(eSL, Job*       pJob, eMA eMgtAct, Stz* szFormat, ...);
     static void vLogPrm(eSL, SePrompt*  pPrm, ePA ePrmAct, Stz* szFormat, ...);
-    static void vLogQue(eSL, SystemSchedule*    pQue, eQA eQueAct, Stz* szFormat, ...);
+    static void vLogQue(eSL, Schedule*    pQue, eQA eQueAct, Stz* szFormat, ...);
     static void vLogRes(eSL, Resource*  pRes, eRA eResAct, Stz* szFormat, ...);
     static void vLogSvc(eSL, Job*       pJob, eVA eSvcAct, Stz* szFormat, ...);
     static void vLogSsn(eSL, Session*   pSsn, eAA eApiAct, Stz* szFormat, ...);

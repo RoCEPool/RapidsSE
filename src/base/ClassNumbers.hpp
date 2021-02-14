@@ -275,7 +275,7 @@ enum eCN : u2 // Class Number
   /* */ CN_STZLIST,
   /* */ CN_STZVAL,
   /* */ CN_SYSCALL,
-  /* */ CN_SYSTEMSCHEDULE,
+  /* */ CN_SCHEDULE,
 
   /* */ CN__T__,
   /* */ CN_TABLE,
@@ -600,7 +600,7 @@ static Stz* aCN[]
   /* */ "STZLIST"_Stz,              // CN_STZLIST
   /* */ "STZVAL"_Stz,               // CN_STZVAL
   /* */ "SYSCALL"_Stz,              // CN_SYSCALL
-  /* */ "SYSTEMSCHEDULE"_Stz,       // CN_SYSTEMSCHEDULE
+  /* */ "SYSTEMSCHEDULE"_Stz,       // CN_SCHEDULE
 
   /* */ "_T__"_Stz,                 // CN__T__
   /* */ "TABLE"_Stz,                // CN_TABLE

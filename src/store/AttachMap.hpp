@@ -51,13 +51,13 @@ namespace STORE
     ObjectNumbering* m_pObjectNumbering;
     Atomic        m_nxOperands;
     PtnMap*       m_pPtnMap;
-    SystemSchedule*  m_pSystemSchedule;
     i8            m_iQuit;
     Resources     m_oResources;
     Article*      m_pRootArcticle;
     Word*         m_pRootConstant;
     Dic*          m_pRootDic;
     Word*         m_pRootWord;
+    Schedule*     m_pSchedule;
     SessionArray* m_pSessionArray;
     Statistics    m_oStatistics;
     StepTiming*   m_pStepTiming;

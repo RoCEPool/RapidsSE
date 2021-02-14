@@ -1348,7 +1348,7 @@ PromptFun __Prompt_executing (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_executing(SePrompt* pPrompt)
 {
-  AM::pSystemSchedule()->vDumpExecutingSet();
+  AM::pSchedule()->vDumpExecutingSet();
 
   return true;
 }
@@ -3847,8 +3847,8 @@ PromptFun __Prompt_ready (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_ready(SePrompt* pPrompt)
 {
-  AM::pSystemSchedule()->vDumpReadyQueue();
-  AM::pSystemSchedule()->vDumpReadyQueueLP();
+  AM::pSchedule()->vDumpReadyQueue();
+  AM::pSchedule()->vDumpReadyQueueLP();
   
   return true;
 }
@@ -4478,7 +4478,7 @@ PromptFun __Prompt_sleeping (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_sleeping(SePrompt* pPrompt)
 {
-  AM::pSystemSchedule()->vDumpSleepingQueue();
+  AM::pSchedule()->vDumpSleepingQueue();
 
   return true;
 }
@@ -5177,13 +5177,13 @@ PromptFun __Prompt_taskQueues (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_taskQueues(SePrompt* pPrompt)
 {
-  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
+  Schedule* pSchedule = AM::pSchedule();
   
-  pSystemSchedule->vDumpExecutingSet();
-  pSystemSchedule->vDumpReadyQueue();
-  pSystemSchedule->vDumpReadyQueueLP();
-  pSystemSchedule->vDumpSleepingQueue();
-  pSystemSchedule->vDumpWaitingSet();
+  pSchedule->vDumpExecutingSet();
+  pSchedule->vDumpReadyQueue();
+  pSchedule->vDumpReadyQueueLP();
+  pSchedule->vDumpSleepingQueue();
+  pSchedule->vDumpWaitingSet();
   
   return true;
 }
@@ -5244,7 +5244,7 @@ PromptFun __Prompt_threads (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_threads(SePrompt* pPrompt)
 {  
-  SystemSchedule::vThreadsReport();
+  Schedule::vThreadsReport();
   
   return true;
 }
@@ -5594,7 +5594,7 @@ PromptFun __Prompt_waiting (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_waiting(SePrompt* pPrompt)
 {
-  AM::pSystemSchedule()->vDumpWaitingSet();
+  AM::pSchedule()->vDumpWaitingSet();
 
   return true;
 }

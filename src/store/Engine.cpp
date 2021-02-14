@@ -1527,7 +1527,7 @@ void Engine::vStartSystem(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move
   
-   gpAttachMap->m_pSystemSchedule = new SystemSchedule;
+   gpAttachMap->m_pSchedule = new Schedule;
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // job lists
