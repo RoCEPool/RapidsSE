@@ -1928,7 +1928,7 @@ PromptFun __Prompt_giveMem (
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_giveMem(SePrompt* pPrompt)
-{  
+{
   gpBufferPool->vGiveBuffers();
   
   return true;
@@ -3876,7 +3876,7 @@ PromptFun __Prompt_resources (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_resources(SePrompt* pPrompt)
 {
-  if (AM::bAttached()) AM::pResourceTracker()->vReport();
+  if (AM::bAttached()) AM::pResources()->vReport();
   
   return true;
 }

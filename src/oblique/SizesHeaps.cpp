@@ -356,7 +356,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Reader),             HT_T_TINY    ,0 }, // CN_READER
   { sizeof(Record),             HT_T_MEDIUM  ,0 }, // CN_RECORD
   { sizeof(RelOp),              HT_T_TINY    ,0 }, // CN_RELOP
-  { sizeof(ResourceTracker),    HT_T_TINY    ,0 }, // CN_RESOURCETRACKER
+  { sizeof(Resources),          HT_T_TINY    ,0 }, // CN_RESOURCES
   { sizeof(Response),           HT_T_MEDIUM  ,0 }, // CN_RESPONSE
   { sizeof(ResponseVec),        HT_T_SMALL   ,0 }, // CN_RESPONSEVEC
   { sizeof(Result),             HT_T_MEDIUM  ,0 }, // CN_RESULT

@@ -5,7 +5,7 @@
 #include "BASE.h"
 
 #include "Dir.hpp" //?
-#include "ResourceTracker.hpp" //?
+#include "Resources.hpp" //?
 
 #include <sys/stat.h>
 
@@ -222,7 +222,7 @@ void Dir::vClose(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (AM::bAttached()) AM::pResourceTracker()->vDecDirOpen();
+  if (AM::bAttached()) AM::pResources()->vDecDirOpen();
   
   AM::vLogRes(SL_INF,this,RA_DIR_CLOSED,
               "Dir closed : %s"_Stz, //!format-LogRes
@@ -315,7 +315,7 @@ bool Dir::bOpen(Stz* szDirPath)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (AM::bAttached()) AM::pResourceTracker()->vIncDirOpen();
+  if (AM::bAttached()) AM::pResources()->vIncDirOpen();
   
   AM::vLogRes(SL_INF,this,RA_DIR_OPENED,
               "Dir opened : %s"_Stz, //!format-LogRes

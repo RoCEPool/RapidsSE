@@ -372,7 +372,7 @@ void File::vClose(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (! m_iViaMalloc && AM::bAttached()) AM::pResourceTracker()->vDecFileOpen();
+  if (! m_iViaMalloc && AM::bAttached()) AM::pResources()->vDecFileOpen();
   
   AM::vLogRes(SL_INF,this,RA_FIL_CLOSED,
               "File closed: path=%s"_Stz, //!format-LogRes
@@ -715,7 +715,7 @@ bool File::bOpenMode(Stz* szFilePath, Stz* szOpenMode)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (! m_iViaMalloc && AM::bAttached()) AM::pResourceTracker()->vIncFileOpen();
+  if (! m_iViaMalloc && AM::bAttached()) AM::pResources()->vIncFileOpen();
   
   AM::vLogRes(SL_INF,this,RA_FIL_OPENED,
               "File opened: path=%s; mode=%s"_Stz, //!format-LogRes

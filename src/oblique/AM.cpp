@@ -210,8 +210,8 @@ i8   AM::nPtnsInGrid(void) {
   return gpAttachMap->m_pPtnMap->nPtnsInGrid();
 }
 SystemSchedule* AM::pSystemSchedule(void)     { return gpAttachMap->m_pSystemSchedule;                }
-ResourceTracker* AM::pResourceTracker(void) {
-  return & gpAttachMap->m_oResourceTracker; }
+Resources* AM::pResources(void) {
+  return & gpAttachMap->m_oResources; }
 Article* AM::pRootArticle(void)     { return gpAttachMap->m_pRootArcticle;    }
 Word* AM::pRootConstant(void) { return gpAttachMap->m_pRootConstant;          }
 Dic* AM::pRootDic(void)       { return gpAttachMap->m_pRootDic;               }

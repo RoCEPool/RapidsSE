@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "ResourceTracker.hpp" //?
+#include "Resources.hpp" //?
 
 namespace STORE { class ObjectNumbering; }
 
@@ -53,7 +53,7 @@ namespace STORE
     PtnMap*       m_pPtnMap;
     SystemSchedule*  m_pSystemSchedule;
     i8            m_iQuit;
-    ResourceTracker m_oResourceTracker;
+    Resources     m_oResources;
     Article*      m_pRootArcticle;
     Word*         m_pRootConstant;
     Dic*          m_pRootDic;

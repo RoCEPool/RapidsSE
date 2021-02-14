@@ -60,7 +60,7 @@ namespace BASE        { class Article;         class Queue;
 
 using namespace BASE;
 
-namespace BASE { class File;  class PsxThd; class Resource; class ResourceTracker;}
+namespace BASE { class File;  class PsxThd; class Resource; class Resources;}
 namespace BASE { class Operand;                                  }
 namespace BASE { class Dic;             class DicStack;
                  class Word;              }
@@ -214,7 +214,7 @@ namespace OBLIQUE
     static bool bProgress(void);
     static i8   nPtnsInGrid(void);
     static SystemSchedule* pSystemSchedule(void);
-    static ResourceTracker* pResourceTracker(void);
+    static Resources* pResources(void);
     static Article* pRootArticle(void);
     static Word* pRootConstant(void);
     static void vRootConstant(Word* pRootConstant);
