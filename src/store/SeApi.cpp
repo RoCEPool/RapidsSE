@@ -189,7 +189,7 @@ Stz* SeApi::szOriginalCommand(void)
   if (iSessionId == C_UNKNOWN)
     return nullptr;
   
-  Session* pSession = AM::pSessionArray()->pGetSession(iSessionId);
+  Session* pSession = AM::pSessions()->pGetSession(iSessionId);
   if (! pSession)
     return nullptr;
   

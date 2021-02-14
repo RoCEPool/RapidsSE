@@ -1307,7 +1307,7 @@ void Step::vJobSessionFetch(void)
   Session* pSession = nullptr;
   
   if (iSessionId != C_UNKNOWN)
-    pSession = AM::pSessionArray()->pGetSession(iSessionId);
+    pSession = AM::pSessions()->pGetSession(iSessionId);
   
   m_pDataStack->vPushPtr(pSession);
   
@@ -1376,8 +1376,8 @@ void Step::vJobSignalSession(void)
 
   i8 i_Session = pJob->m_xReqTuple.m_i_Session;
   
-  Session* pSession = AM::pSessionArray()->pGetSession(i_Session);
-  SessionArray::vMarkSignalled(pSession);
+  Session* pSession = AM::pSessions()->pGetSession(i_Session);
+  Sessions::vMarkSignalled(pSession);
   RASSERT( _bIsValidJob(pJob->eGetClassNo()) );
   
 

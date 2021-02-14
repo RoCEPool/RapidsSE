@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* SessionArray.hpp - Session Array                                           */
+/* Sessions.hpp - Session Array                                           */
 /*============================================================================*/
 #pragma once
 
@@ -8,7 +8,7 @@
 
 namespace STORE
 {
-  class SessionArray : public Object
+  class Sessions : public Object
   {
   public:
   
@@ -25,8 +25,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    SessionArray(void);
-   ~SessionArray(void) noexcept(false);
+    Sessions(void);
+   ~Sessions(void) noexcept(false);
   
     static void vMarkApiLoc(Session* pSession, i8 iApiLoc);
     static void vMarkCall(Session* pSession, eAC eApiCall);
@@ -65,7 +65,7 @@ namespace STORE
     Footer* aFooter(void);
   };
   
-  SessionArray* _pSessionArray(void* aAddr);
+  Sessions* _pSessions(void* aAddr);
 }
 
 /*============================================================================*/

@@ -166,7 +166,7 @@ Stz* AM::szLogCsvFile(void)   { return gpAttachMap->m_sLogCsvFile;            }
 Stz* AM::szLogTxtFile(void)   { return gpAttachMap->m_sLogTxtFile;            }
 
 //
-SessionArray* AM::pSessionArray(void) { return gpAttachMap->m_pSessionArray;  }
+Sessions* AM::pSessions(void) { return gpAttachMap->m_pSessions;  }
 
 
 bool AM::bBootError(void)     { return gpAttachMap->m_bBootError;             }
@@ -416,7 +416,7 @@ Session* AM::pJobSession(Job* pJob)
   Session* pSession = nullptr;
   
   if (iSessionId != C_UNKNOWN)
-    pSession = AM::pSessionArray()->pGetSession(iSessionId);
+    pSession = AM::pSessions()->pGetSession(iSessionId);
 
   return pSession;
 }
@@ -434,7 +434,7 @@ bool AM::bJobWasReceived(Job* pJob)
 
 
 void AM::vDumpApi(void) {
-  pSessionArray()->vDump();
+  pSessions()->vDump();
 }
 Task* AM::pExecutingTask(Job* pJob) {
   Task* pTask = pJob->pTask();
@@ -766,7 +766,7 @@ Session* AM::pSessionGet(ReqTuple* aReqTuple)
   if (C_UNKNOWN == aReqTuple->m_i_Session)
     return nullptr;
   
-  Session* pSession = AM::pSessionArray()->pGetSession(aReqTuple->m_i_Session);
+  Session* pSession = AM::pSessions()->pGetSession(aReqTuple->m_i_Session);
 
   return pSession;
 }

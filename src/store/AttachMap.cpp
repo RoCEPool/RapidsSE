@@ -332,9 +332,9 @@ void AttachMap::vRecordArguments(CmdLineArgs* pCmdLineArgs)
 /*----------------------------------------------------------------------------*/
 /* get session array                                                          */
 /*----------------------------------------------------------------------------*/
-SessionArray* AttachMap::pSessionArray(void)
+Sessions* AttachMap::pSessions(void)
 {
-  return m_pSessionArray;
+  return m_pSessions;
 }
 
 /*----------------------------------------------------------------------------*/

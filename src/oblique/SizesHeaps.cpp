@@ -391,7 +391,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(SenCompiler),        HT_T_TINY    ,0 }, // CN_SENCOMPILER
   { sizeof(SePrompt),           HT_T_LARGE   ,0 }, // CN_SEPROMPT
   { sizeof(Session),            HT_T_MEDIUM  ,0 }, // CN_SESSION
-  { sizeof(SessionArray),       HT_T_TINY    ,0 }, // CN_SESSIONARRAY
+  { sizeof(Sessions),           HT_T_TINY    ,0 }, // CN_SESSIONS
   { sizeof(ShortCut),           HT_T_MEDIUM  ,0 }, // CN_SHORTCUT
   { sizeof(ShortCutVec),        HT_T_MEDIUM  ,0 }, // CN_SHORTCUTVEC
   { sizeof(Birth),              HT_INVALID   ,0 }, // CN_SINCE

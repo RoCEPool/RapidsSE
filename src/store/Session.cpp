@@ -123,7 +123,7 @@ Session::~Session(void) noexcept(false)
   
   ASSERT(! m_pInput);
   
-  AM::pSessionArray()->vFreeSession(this);
+  AM::pSessions()->vFreeSession(this);
           
   -- gixSession;
   AM::vLogSsn(SL_INF,this,AA_SSN_DESTRUCT,

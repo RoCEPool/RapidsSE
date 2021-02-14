@@ -110,7 +110,7 @@ namespace STORE             { class Grid;            class Node;              }
 
 namespace STORE          { class EntBuffer;       class IndexTree;         }
 namespace STORE          { class InfoSetBase;                              }
-namespace STORE         { class SessionArray;                             }
+namespace STORE         { class Sessions;                             }
 namespace STORE              { class Job;
                               class JobList;         class Job_CreateTable;
                               class Job_CreateIndex; class XmitOperand;
@@ -176,7 +176,7 @@ namespace OBLIQUE
     static Stz* szLogTxtFile(void);
     
     //
-    static SessionArray* pSessionArray(void);
+    static Sessions* pSessions(void);
     static bool bBootError(void);
     static i8   nBuckets(void);
     static BufferPool* pBufferPool(void);

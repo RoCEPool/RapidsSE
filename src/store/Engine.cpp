@@ -722,7 +722,7 @@ void Engine::vDeleteImmmediate(Task** ppTask)
 void Engine::vDeleteSession(Session* pSession)
 {
   //delete pSession;
-  AM::pSessionArray()->vFreeSession(pSession);
+  AM::pSessions()->vFreeSession(pSession);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1593,10 +1593,10 @@ void Engine::vStartSystem(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (AM::bVerboseProgress())
-    vInfo("  Creating SessionArray\n"_Stz);
+    vInfo("  Creating Sessions\n"_Stz);
 
 
-  gpAttachMap->m_pSessionArray = new SessionArray;
+  gpAttachMap->m_pSessions = new Sessions;
   
   // create the tx set
   gpAttachMap->m_pTxSet = new TxSet();

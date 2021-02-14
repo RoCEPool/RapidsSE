@@ -58,7 +58,7 @@ namespace STORE
     Dic*          m_pRootDic;
     Word*         m_pRootWord;
     Schedule*     m_pSchedule;
-    SessionArray* m_pSessionArray;
+    Sessions*     m_pSessions;
     Statistics    m_oStatistics;
     StepTiming*   m_pStepTiming;
     i8            m_iStop;
@@ -103,7 +103,7 @@ namespace STORE
     void vPrintStartupInfo(void);
   
     void vRecordArguments(CmdLineArgs* CmdLineArgs);
-    SessionArray* pSessionArray(void);
+    Sessions* pSessions(void);
 
     Footer* aFooter(void);
   };

@@ -4375,7 +4375,7 @@ bool PROMPT::bPrompt_sizes(SePrompt* pPrompt)
   vTrace("\n"_Stz);
 
   vTrace("  sizeof(FreeChunk)    = %lu; \n"_Stz, sizeof(FreeChunk));
-  vTrace("  sizeof(SessionArray) = %lu; \n"_Stz, sizeof(SessionArray));
+  vTrace("  sizeof(Sessions) = %lu; \n"_Stz, sizeof(Sessions));
   vTrace("\n"_Stz);
   
   return true;
@@ -4808,7 +4808,7 @@ bool PROMPT::bPrompt_ssnState(SePrompt* pPrompt)
   if (nTokens == 2)
     pArg = pInpTknVec->pGet(1);
   
-  AM::pSessionArray()->vDump();
+  AM::pSessions()->vDump();
   
   return true;
 }

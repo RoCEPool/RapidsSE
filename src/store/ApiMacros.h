@@ -30,7 +30,7 @@ EndDefine
 EndDefine
 
 #define API_LOC(iLocation) \
-  SessionArray::vMarkApiLoc(pSession,iLocation); \
+  Sessions::vMarkApiLoc(pSession,iLocation); \
 EndDefine
 
 
@@ -43,7 +43,7 @@ EndDefine
 /*----------------------------------------------------------------------------*/
 #define API_BEGIN() \
   if (pSession) \
-    SessionArray::vMarkApiLoc(pSession,200); \
+    Sessions::vMarkApiLoc(pSession,200); \
 EndDefine
 
 /*----------------------------------------------------------------------------*/
@@ -55,8 +55,8 @@ EndDefine
   \
   Engine::vErrorHandler(pError); \
   \
-  SessionArray::vMarkError(pSession,eErrorCode); \
-  SessionArray::vMarkApiLoc(pSession,888); \
+  Sessions::vMarkError(pSession,eErrorCode); \
+  Sessions::vMarkApiLoc(pSession,888); \
   AM::vLogSsn(SL_INF,pSession,AA_API_ERROR,"Api %s Error %lld"_Stz,eApiCall,eErrorCode); \
   \
   TRACE_API_ERROR("catch"_Stz,eErrorCode); \
@@ -97,8 +97,8 @@ EndDefine
     if (eError != EC_NONE) \
       API_RETURN_ERROR(EC_INVALID_INTERFACE); \
     \
-    SessionArray::vMarkCall(pSession,eApiCall); \
-    SessionArray::vMarkApiLoc(pSession,100); \
+    Sessions::vMarkCall(pSession,eApiCall); \
+    Sessions::vMarkApiLoc(pSession,100); \
   } \
   \
   TRACE_API("enter"_Stz); \
@@ -110,8 +110,8 @@ EndDefine
 #define API_EXITING() \
 { \
   if (pSession) { \
-    SessionArray::vMarkReturn(pSession); \
-    SessionArray::vMarkApiLoc(pSession,990); \
+    Sessions::vMarkReturn(pSession); \
+    Sessions::vMarkApiLoc(pSession,990); \
   } \
   \
   AM::vLogSsn(SL_INF,pSession,AA_API_EXIT,"Api %s exit"_Stz,eApiCall); \
@@ -164,8 +164,8 @@ EndDefine
 #define API_RETURN() \
 { \
   if (pSession) { \
-    SessionArray::vMarkReturn(pSession); \
-    SessionArray::vMarkApiLoc(pSession,999); \
+    Sessions::vMarkReturn(pSession); \
+    Sessions::vMarkApiLoc(pSession,999); \
   } \
   \
   AM::vLogSsn(SL_INF,pSession,AA_API_EXIT,"Api %s exit"_Stz,eApiCall); \
@@ -181,8 +181,8 @@ EndDefine
 /*----------------------------------------------------------------------------*/
 #define API_RETURN_ERROR(eErrorCode) \
 { \
-  SessionArray::vMarkError(pSession,eErrorCode); \
-  SessionArray::vMarkApiLoc(pSession,880); \
+  Sessions::vMarkError(pSession,eErrorCode); \
+  Sessions::vMarkApiLoc(pSession,880); \
   AM::vLogSsn(SL_INF,pSession,AA_API_ERROR,"Api %s Error %lld"_Stz,eApiCall,eErrorCode); \
   \
   TRACE_API_ERROR("return error"_Stz,eErrorCode); \

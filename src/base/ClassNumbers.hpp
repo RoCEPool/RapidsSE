@@ -234,7 +234,7 @@ enum eCN : u2 // Class Number
   /* */ CN_SENCOMPILER,
   /* */ CN_SEPROMPT,
   /* */ CN_SESSION,
-  /* */ CN_SESSIONARRAY,
+  /* */ CN_SESSIONS,
   /* */ CN_SHORTCUT,
   /* */ CN_SHORTCUTVEC,
   /* */ CN_SINCE,
@@ -559,7 +559,7 @@ static Stz* aCN[]
   /* */ "SENCOMPILER"_Stz,          // CN_SENCOMPILER
   /* */ "SEPROMPT"_Stz,             // CN_SEPROMPT
   /* */ "SESSION"_Stz,              // CN_SESSION
-  /* */ "SESSIONARRAY"_Stz,         // CN_SESSIONARRAY
+  /* */ "SESSIONARRAY"_Stz,         // CN_SESSIONS
   /* */ "SHORTCUT"_Stz,             // CN_SHORTCUT
   /* */ "SHORTCUTVEC"_Stz,          // CN_SHORTCUTVEC
   /* */ "SINCE"_Stz,                // CN_SINCE
