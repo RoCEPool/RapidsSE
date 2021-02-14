@@ -1588,7 +1588,7 @@ void Engine::vStartSystem(void)
 //  gpAttachMap->m_inNextTaskId.vNodeNo(iThisNodeNo);
 //  gpAttachMap->m_inNextThreadId.vNodeNo(iThisNodeNo);
   
-  gpAttachMap->m_pObjectNumbering->vNodeNo(iThisNodeNo);
+  gpAttachMap->m_pObjects->vNodeNo(iThisNodeNo);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

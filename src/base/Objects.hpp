@@ -5,7 +5,7 @@
 
 namespace STORE
 {
-  class ObjectNumbering : public Object
+  class Objects : public Object
   {
 
   private:
@@ -20,8 +20,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    ObjectNumbering(void);
-   ~ObjectNumbering(void) noexcept(false);
+    Objects(void);
+   ~Objects(void) noexcept(false);
   
     i8 iNextNo(eCN eClassNo);
   
@@ -31,7 +31,7 @@ namespace STORE
     Footer* aFooter(void);
   };
   
-  ObjectNumbering* _pObjectNumbering(void* aAddr);
+  Objects* _pObjects(void* aAddr);
 }
 
 /*============================================================================*/

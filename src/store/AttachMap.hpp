@@ -5,7 +5,7 @@
 
 #include "Resources.hpp" //?
 
-namespace STORE { class ObjectNumbering; }
+namespace STORE { class Objects; }
 
 namespace STORE
 {
@@ -48,7 +48,7 @@ namespace STORE
     HeapMem       m_xHeapMem;
     Article*      m_pLexiconArticle;
     Locks         m_oLocks;
-    ObjectNumbering* m_pObjectNumbering;
+    Objects*      m_pObjects;
     Atomic        m_nxOperands;
     PtnMap*       m_pPtnMap;
     i8            m_iQuit;

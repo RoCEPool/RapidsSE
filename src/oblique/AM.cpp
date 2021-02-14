@@ -1466,8 +1466,8 @@ i8 AM::iNextObjectNo(eCN eClassNo)
 {
   i8 iObjectNo ;
     
-  if (gpAttachMap && gpAttachMap->m_pObjectNumbering)
-    iObjectNo = gpAttachMap->m_pObjectNumbering->iNextNo(eClassNo);
+  if (gpAttachMap && gpAttachMap->m_pObjects)
+    iObjectNo = gpAttachMap->m_pObjects->iNextNo(eClassNo);
   else
     iObjectNo = 1;
   

@@ -154,7 +154,7 @@ enum eCN : u2 // Class Number
   /* */ CN_NUMBAT,
   
   /* */ CN__O__,
-  /* */ CN_OBJECTNUMBERING,
+  /* */ CN_OBJECTS,
   /* */ CN_OUTPUT,
   /* */ CN_OP,
   /* */ CN_OPENFILES,
@@ -479,7 +479,7 @@ static Stz* aCN[]
   /* */ "NUMBAT"_Stz,               // CN_NUMBAT
    
   /* */ "_O__"_Stz,                 // CN__O__
-  /* */ "OBJECTNUMBERING"_Stz,      // CN_OBJECTNUMBERING
+  /* */ "OBJECTNUMBERING"_Stz,      // CN_OBJECTS
   /* */ "OUTPUT"_Stz,               // CN_OUTPUT
   /* */ "OP"_Stz,                   // CN_OP
   /* */ "OPENFILES"_Stz,            // CN_OPENFILES
