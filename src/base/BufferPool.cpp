@@ -58,6 +58,9 @@ BufferPool::BufferPool(Stz* aRegionName, i8 iRegionSize,
 
   vInitialise(bTouch,bProgress);
   
+  m_pTakenBuffers = nullptr;
+  m_nTakenBytes   = 0;
+
   _checkInitialised_(CN_BUFFERPOOL);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
@@ -381,6 +384,26 @@ i8 BufferPool::iFreeSpace(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* give buffers                                                               */
+/*----------------------------------------------------------------------------*/
+void BufferPool::vGiveBuffers(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+  
+  while (m_pTakenBuffers) {
+    
+    PoolBuffer* pBuffer     = m_pTakenBuffers;
+    PoolBuffer* pNextBuffer = *(PoolBuffer**)pBuffer->aEmbeddedBuffer();
+
+    m_pTakenBuffers = pNextBuffer;
+    
+    gpBufferPool->vFreeOtherBuffer(pBuffer);
+  }
+  
+  m_nTakenBytes = 0;
+}
+
+/*----------------------------------------------------------------------------*/
 /* does the pool have room for more data (row or entries) ?                   */
 /*----------------------------------------------------------------------------*/
 bool BufferPool::bHasDataSpace(void)
@@ -561,6 +584,27 @@ Stz* BufferPool::szShmNm(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
   return m_sShmNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* take buffers                                                               */
+/*----------------------------------------------------------------------------*/
+void BufferPool::vTakeBuffers(i8 nSpareBuffers)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+  
+  while (nFreeCount() >= C_LOW_BUFFERS + nSpareBuffers) {
+
+    PoolBuffer* pBufferChain  = m_pTakenBuffers;
+    
+    PoolBuffer* pTakenBuffer  = gpBufferPool->pAllocOtherBuffer();
+    PoolBuffer** ppNextBuffer = (PoolBuffer**)pTakenBuffer->aEmbeddedBuffer();
+    *ppNextBuffer = pBufferChain;
+    
+    m_pTakenBuffers = pTakenBuffer;
+    m_nTakenBytes += C_SIZE_POOL_BUFFER;
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
