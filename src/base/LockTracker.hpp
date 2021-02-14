@@ -10,6 +10,11 @@ namespace BASE
   class LockTracker
   {
   public:
+  
+    Lock   m_okDdlLock;
+    Lock   m_okDicLock;
+    Lock   m_okTccLock;
+
     Atomic m_ixWorkUnits[LK_ENUMS];       // number of work units (optional)
   
     Atomic m_ixReadGrabs[LK_ENUMS];       // number of read grabs
@@ -18,6 +23,9 @@ namespace BASE
     Atomic m_ixWriteGrabs[LK_ENUMS];      // number of write grabs
     Atomic m_ixWriteCollisions[LK_ENUMS]; // number of write collisions
   
+  public:
+  LockTracker(void);
+
     void vMonitorPortrait(s48K& sPortrait);
     void vReport(void);
     void vReset(void);
