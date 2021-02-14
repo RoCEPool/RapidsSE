@@ -12,7 +12,7 @@
 #include "Node.hpp"
 #include "Grid.hpp"
 #include "AttachMap.hpp"
-#include "ObjectNumbering.hpp"
+#include "Objects.hpp"
 
 #include "Session.hpp"
 #include "Step.hpp"

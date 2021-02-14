@@ -128,7 +128,7 @@ extern d8 C_D8_MID;
 #include "String_t.hpp"
 #include "Atomic.hpp"
 #include "NextGid.hpp"
-#include "ObjectNumbering.hpp"
+#include "Objects.hpp"
 #include "Loggable.hpp"
 
 #include "SP.hpp"
