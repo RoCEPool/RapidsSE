@@ -383,7 +383,7 @@ extern d8 C_D8_MID;
 #include "ThreadQueue.hpp"
 #include "ThreadVec.hpp"
 
-#include "SystemSchedule.hpp"
+#include "Schedule.hpp"
 
 //------------------------------------------------------------------------------
 
