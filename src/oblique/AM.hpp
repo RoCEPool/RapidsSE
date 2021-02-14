@@ -252,9 +252,6 @@ namespace OBLIQUE
     static void vNextTempName(s32& sName);
     static void vSetAcksRmg(Task* pTask, i8 nAcks);
     static void vStepTiming(StepTiming* pStepTiming);
-    static void vTakenBuffers(PoolBuffer* pTakenBuffers);
-    static void vTakeBytes(i8 nTakeBytes);
-    static void vTakenBytes(i8 nTakenBytes);
     static bool bTaskIsLocked(Task* pTask);
     static Task* pTaskNew(Job* pJob);
     static void vTenants(Word* pTenants);

@@ -218,8 +218,7 @@ Dic* AM::pRootDic(void)       { return gpAttachMap->m_pRootDic;               }
 Word* AM::pRootWord(void)     { return gpAttachMap->m_pRootWord;              }
 Statistics* AM::pStatistics(void)   { return & gpAttachMap->m_oStatistics;    }
 StepTiming* AM::pStepTiming(void)   { return gpAttachMap->m_pStepTiming;      }
-PoolBuffer* AM::pTakenBuffers(void) { return gpAttachMap->m_pTakenBuffers;    }
-i8   AM::nTakenBytes(void)    { return gpAttachMap->m_nTakenBytes;            }
+
 Lock* AM::pTccLock(void)      { return & gpAttachMap->m_okTccLock;            }
 Word* AM::pTenants(void)      { return gpAttachMap->m_pTenants;               }
 i8   AM::iThisNodeNo(void)    { return gpAttachMap->m_pGrid->iThisNode();     }
@@ -365,15 +364,6 @@ void AM::vSetAcksRmg(Task* pTask, i8 nAcks) {
 }
 void AM::vStepTiming(StepTiming* pStepTiming) {
   gpAttachMap->m_pStepTiming = pStepTiming;
-}
-void AM::vTakenBuffers(PoolBuffer* pTakenBuffers) {
-  gpAttachMap->m_pTakenBuffers = pTakenBuffers;
-}
-void AM::vTakeBytes(i8 nTakeBytes) {
-  gpAttachMap->m_nTakenBytes = nTakeBytes;
-}
-void AM::vTakenBytes(i8 nTakenBytes) {
-  gpAttachMap->m_nTakenBytes += nTakenBytes;
 }
 void AM::vTenants(Word *pTenants) {
   gpAttachMap->m_pTenants = pTenants;

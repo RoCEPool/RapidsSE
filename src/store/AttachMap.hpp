@@ -59,8 +59,6 @@ namespace STORE
     Statistics    m_oStatistics;
     StepTiming*   m_pStepTiming;
     i8            m_iStop;
-    PoolBuffer*   m_pTakenBuffers;
-    i8            m_nTakenBytes;
     Lock          m_okTccLock;
     Word*         m_pTenants;
     TempName      m_oTempName;

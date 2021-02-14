@@ -1928,18 +1928,8 @@ PromptFun __Prompt_giveMem (
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_giveMem(SePrompt* pPrompt)
-{
-  while (AM::pTakenBuffers()) {
-    
-    PoolBuffer* pBuffer     = AM::pTakenBuffers();
-    PoolBuffer* pNextBuffer = *(PoolBuffer**)pBuffer->aEmbeddedBuffer();
-
-    AM::vTakenBuffers(pNextBuffer);
-    
-    gpBufferPool->vFreeOtherBuffer(pBuffer);
-  }
-  
-  AM::vTakenBytes(0);
+{  
+  gpBufferPool->vGiveBuffers();
   
   return true;
 }
@@ -5158,17 +5148,8 @@ bool PROMPT::bPrompt_takeMem(SePrompt* pPrompt)
     // get the no of indexEntries to set
     nSpare = pInpTknVec->pGet(1)->iToI8();
   }
-  
-  while (gpBufferPool->nFreeCount() >= C_LOW_BUFFERS + nSpare) {
-
-    PoolBuffer* p2ndBuffer  = AM::pTakenBuffers();
-    AM::vTakenBuffers(gpBufferPool->pAllocOtherBuffer());
     
-    PoolBuffer** ppNextBuffer = (PoolBuffer**)AM::pTakenBuffers()->aEmbeddedBuffer();
-    *ppNextBuffer = p2ndBuffer;
-    
-    AM::vTakenBytes(C_SIZE_POOL_BUFFER);
-  }
+  gpBufferPool->vTakeBuffers(nSpare);
   
   return true;
 }
