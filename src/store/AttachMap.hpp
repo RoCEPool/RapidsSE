@@ -64,7 +64,6 @@ namespace STORE
     i8            m_iStop;
     Word*         m_pTenants;
     TempName      m_oTempName;
-    Atomic        m_ixThreads;
     TxSet*        m_pTxSet;
   
     struct {

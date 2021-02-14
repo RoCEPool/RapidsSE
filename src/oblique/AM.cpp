@@ -222,8 +222,8 @@ StepTiming* AM::pStepTiming(void)   { return gpAttachMap->m_pStepTiming;      }
 Lock* AM::pTccLock(void)      { return & gpAttachMap->m_oLockTracker.m_okTccLock;            }
 Word* AM::pTenants(void)      { return gpAttachMap->m_pTenants;               }
 i8   AM::iThisNodeNo(void)    { return gpAttachMap->m_pGrid->iThisNode();     }
-void AM::vThreadBegins(void)  { ++ gpAttachMap->m_ixThreads;                  }
-i8   AM::nThreadsBegun(void)  { return * gpAttachMap->m_ixThreads;            }
+void AM::vThreadBegins(void)  { ++ gpAttachMap->m_pSystemSchedule->m_ixThreads; }
+i8   AM::nThreadsBegun(void)  { return * gpAttachMap->m_pSystemSchedule->m_ixThreads; }
 bool AM::bTracepoint(void)    { return gpAttachMap->m_xSysArgs.m_bTracepoint;        }
 TxSet* AM::pTxSet(void)       { return gpAttachMap->m_pTxSet;                 }
 
