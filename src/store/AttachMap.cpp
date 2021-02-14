@@ -50,9 +50,6 @@ void* AttachMap::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 AttachMap::AttachMap(void)
 : Object(CN_ATTACHMAP)
-, m_okDdlLock(LK_DDL,this)
-, m_okDicLock(LK_DIC,this)
-, m_okTccLock(LK_TCC,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP);
   

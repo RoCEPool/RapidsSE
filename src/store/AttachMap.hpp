@@ -36,8 +36,6 @@ namespace STORE
     BufferMap*    m_pBufferMap;
     BufferPool*   m_pBufferPool;
     EnumFlags     m_oClassFlags;
-    Lock          m_okDdlLock;
-    Lock          m_okDicLock;
     i8            m_iEpoch;
     Format        m_oFormat;
     Grid*         m_pGrid;
@@ -58,7 +56,6 @@ namespace STORE
     Statistics    m_oStatistics;
     StepTiming*   m_pStepTiming;
     i8            m_iStop;
-    Lock          m_okTccLock;
     Word*         m_pTenants;
     TempName      m_oTempName;
     Atomic        m_ixThreads;
