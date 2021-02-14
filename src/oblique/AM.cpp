@@ -204,27 +204,6 @@ void AM::vProcessExit(void)   { Process::vExitFailure();                      }
 bool AM::bProgress(void)      { return gpAttachMap->m_xSysArgs.m_bProgress;              }
 bool AM::bMetadata(void)      { return gpAttachMap->m_xSysArgs.m_bMetadata;          }
 
-i8   AM::iNextDiagram(void)   { return ++ gpAttachMap->m_inNextDiagram;       }
-//i8   AM::iNextLockId(void)    {
-//  if (gpAttachMap)
-//    return ++ gpAttachMap->m_inNextLockId;
-//  else
-//    return C_UNKNOWN;
-//}
-//i8   AM::iNextOpId(void)      { return ++ gpAttachMap->m_inNextOpId;          }
-//i8   AM::iNextPlanId(void)    { return ++ gpAttachMap->m_inNextPlanId;        }
-//i8   AM::iNextPromptId(void)  { return ++ gpAttachMap->m_inNextPromptId;      }
-//i8   AM::iNextRequest(void)   { return ++ gpAttachMap->m_inNextRequest;       }
-//i8   AM::iNextResourceId(void){
-//  if (gpAttachMap)
-//    return ++ gpAttachMap->m_inNextResourceId;
-//  else
-//    return C_UNKNOWN;
-//}
-//i8   AM::iNextSessionId(void) { return ++ gpAttachMap->m_inNextSessionId;     }
-i8   AM::iNextStreamId(void)  { return ++ gpAttachMap->m_inNextStreamId;      }
-//i8   AM::iNextTaskId(void)    { return ++ gpAttachMap->m_inNextTaskId;        }
-//i8   AM::iNextThreadId(void)  { return ++ gpAttachMap->m_inNextThreadId;      }
 i8   AM::iNextTxId(void)      { return ++ gpAttachMap->m_inNextTxId;          }
 
 i8   AM::nPtnsInGrid(void) {
@@ -859,61 +838,6 @@ void AM::vSpawnJob_service(Job* pJob)
 void AM::vScheduleNextPhase(Job* pParticipantJob, Task* pActiviating2PcTask)
 {
   Api::vScheduleNextPhase(pParticipantJob,pActiviating2PcTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* state diagram                                                              */
-/*----------------------------------------------------------------------------*/
-void AM::vStateDiagram(s256& sDiagram, eCN eJobClass)
-{
-  TaskList* pExecuting     = AM::pSystemSchedule()->m_pExecutingSet;
-  JobList*  pOriginating   = AM::pOriginatingJobs();
-  JobList*  pParticipating = AM::pParticipatingJobs();
-  
-  sDiagram = ""_Stz;
-  
-  switch (eJobClass) {
-/*
-      // generate state diagram for export job
-    case CN_JOB_EXPORT: {
-      
-      i8 iDiagram = AM::iNextDiagram();
-      
-      // whats in the system relevant to export?
-      bool bKE_received   = pExecuting->bHasJobClass(CN_JOB_KIDEXPORT,false);
-      bool bE_neutral     = pExecuting->bHasJobClass(CN_JOB_EXPORT,false);
-      bool bE_originator  = pOriginating->bHasJobClass(CN_JOB_EXPORT);
-      bool bE_participant = pParticipating->bHasJobClass(CN_JOB_EXPORT);
-      bool bE_received    = pExecuting->bHasJobClass(CN_JOB_EXPORT,true);
-      bool bSE_neutral    = pExecuting->bHasJobClass(CN_JOB_SUBEXPORTER,false);
-      
-      // form the state diagram
-      sDiagram.vSprint("%03lld# "_Stz,iDiagram);
-      
-      if (bKE_received)         { sDiagram.vConcat("KE`"_Stz);  }
-      if (bE_originator)        { sDiagram.vConcat("[E]"_Stz);  }
-      if (! bE_originator &&
-          bE_neutral)           { sDiagram.vConcat("E"_Stz);    }
-      if (bE_participant)       { sDiagram.vConcat("(E`)"_Stz); }
-      if (! bE_participant &&
-          bE_received)          { sDiagram.vConcat("E`"_Stz);   }
-      
-      if (bSE_neutral)          { sDiagram.vConcat("SE"_Stz);   }
-      
-      sDiagram.vConcat(":"_Stz);
-      
-      if (bE_participant)       { sDiagram.vConcat("(E`)"_Stz); }
-      if (! bE_participant &&
-          bE_received)          { sDiagram.vConcat("E`"_Stz);   }
-      if (bSE_neutral)          { sDiagram.vConcat("SE"_Stz);   }
-      
-      return;
-    }
-*/
-    default:
-      sDiagram.vSprint("Warning: No diagram for class %lld %s"_Stz,
-                       eJobClass,aCN[eJobClass]);
-  }
 }
 
 /*----------------------------------------------------------------------------*/

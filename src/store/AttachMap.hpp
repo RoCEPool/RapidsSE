@@ -44,19 +44,6 @@ namespace STORE
     HeapMem       m_xHeapMem;
     Article*      m_pLexiconArticle;
     LockTracker   m_oLockTracker;
-    NextGid       m_inNextDiagram;
-    //NextGid       m_inNextJobId;
-//    NextGid       m_inNextLockId;
-//    NextGid       m_inNextMonitor;
-//    NextGid       m_inNextOpId;
-//    NextGid       m_inNextPlanId;
-//    NextGid       m_inNextPromptId;
-//    NextGid       m_inNextRequest;
-//    NextGid       m_inNextResourceId;
-//    NextGid       m_inNextSessionId;
-    NextGid       m_inNextStreamId;
-//    NextGid       m_inNextTaskId;
-//    NextGid       m_inNextThreadId;
     NextGid       m_inNextTxId;
     ObjectNumbering* m_pObjectNumbering;
     Atomic        m_nxOperands;
@@ -79,12 +66,6 @@ namespace STORE
     TempName      m_oTempName;
     Atomic        m_ixThreads;
     TxSet*        m_pTxSet;
-  
-  
-  
-    struct {
-    
-    } m_xBase;
   
     struct {
       

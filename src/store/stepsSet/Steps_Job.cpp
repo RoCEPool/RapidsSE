@@ -111,7 +111,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.signalSession"_Stz,    &Step::vJobSignalSession);
   vAddStep("job.scheduleNextPhase"_Stz, &Step::vJobScheduleNextPhase);
   vAddStep("job.spawn_received"_Stz,   &Step::vJobSpawnReceived);
-  vAddStep("job::stateDiagram"_Stz,    &Step::vJobStateDiagram);
   vAddStep("job.tablePtn@"_Stz,        &Step::vJobTablePtnFetch);
 
   vAddStep("job.task@"_Stz,            &Step::vJobTaskFetch);
@@ -1450,24 +1449,6 @@ void Step::vJobSpawnReceived(void)
 //  }
   
   Api::vSpawnJob_received(pJob);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.stateDiagram -- generate state diagram for given job class             */
-/*----------------------------------------------------------------------------*/
-void Step::vJobStateDiagram(void)
-{
-  ENTRY();
-  
-  i8 iClassNo = m_pDataStack->iPopInt(__func__);
-
-  s256 sDiagram;
-  
-  AM::vStateDiagram(sDiagram,(eCN)iClassNo);
-  
-  m_pDataStack->vPushStr(sDiagram);
   
   EXIT();
 }

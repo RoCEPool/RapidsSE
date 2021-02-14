@@ -12,7 +12,6 @@ namespace STORE
   {
   public:
     s256   m_sName;                       // streamDef name
-    i8     m_iStreamId;                   // unique stream identifier
     i8     m_nColumns;                    // total columns
     Column m_xaColumn[C_MAX_DEFCOLUMNS];  // array of columns
     i8     m_nFixedSized;                 // size of fixed size row

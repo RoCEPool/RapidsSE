@@ -628,7 +628,6 @@ void vExprEvalEvaluate(void);
   void vJobSignalSession(void);
   void vJobScheduleNextPhase(void);
   void vJobSpawnReceived(void);
-  void vJobStateDiagram(void);
   void vJobTablePtnFetch(void);
 
   void vJobTaskFetch(void);
