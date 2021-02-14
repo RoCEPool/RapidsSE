@@ -11,7 +11,7 @@
 #include "Response.hpp"
 #include "Result.hpp"
 #include "Job.hpp"
-#include "SessionArray.hpp"
+#include "Sessions.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */

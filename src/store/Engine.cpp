@@ -27,7 +27,7 @@
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
 
-#include "SessionArray.hpp"
+#include "Sessions.hpp"
 
 #include "ShortCut.hpp"
 #include "SeDeputy.hpp"

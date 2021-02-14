@@ -23,7 +23,7 @@
 
 #include "Job.hpp"
 #include "Session.hpp"
-#include "SessionArray.hpp"
+#include "Sessions.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

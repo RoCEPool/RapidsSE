@@ -22,7 +22,7 @@
 
 #include "JobList.hpp"
 #include "JobLog.hpp"
-#include "SessionArray.hpp"
+#include "Sessions.hpp"
 
 #include "TagConstants.h"
 

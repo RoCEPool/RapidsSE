@@ -89,7 +89,7 @@
 #include "Job.hpp"
 #include "JobList.hpp"
 #include "Session.hpp"
-#include "SessionArray.hpp"
+#include "Sessions.hpp"
 #include "XmitOperand.hpp"
 #include "ObjectNumbering.hpp"
 #include "Output.hpp"

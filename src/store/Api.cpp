@@ -15,7 +15,7 @@
 #include "JobList.hpp"
 #include "Op.hpp"
 #include "Procedure.hpp"
-#include "SessionArray.hpp"
+#include "Sessions.hpp"
 #include "Output.hpp"
 
 #include "TagConstants.h"

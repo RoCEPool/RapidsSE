@@ -122,7 +122,7 @@
 
 
 #include "SeApi.hpp"
-#include "SessionArray.hpp"
+#include "Sessions.hpp"
 
 #include "ShortCut.hpp"
 #include "SeDeputy.hpp"

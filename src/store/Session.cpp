@@ -7,7 +7,7 @@
 #include "StreamDef.hpp"
 
 #include "Session.hpp"
-#include "SessionArray.hpp"
+#include "Sessions.hpp"
 #include "Output.hpp"
 
 #include "TagConstants.h"

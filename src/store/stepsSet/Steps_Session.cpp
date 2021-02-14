@@ -9,7 +9,7 @@
 #include "StepTiming.hpp"
 
 #include "Session.hpp"
-#include "SessionArray.hpp"
+#include "Sessions.hpp"
 #include "Response.hpp"
 #include "Result.hpp"
 #include "Job.hpp"

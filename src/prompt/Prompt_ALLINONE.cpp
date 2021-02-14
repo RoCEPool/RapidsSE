@@ -29,7 +29,7 @@
 #include "Pipeline.hpp"
 #include "Procedure.hpp"
 #include "RapidsSE.hpp"
-#include "SessionArray.hpp"
+#include "Sessions.hpp"
 
 #include "Dynamo.hpp"
 
