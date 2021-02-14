@@ -172,7 +172,7 @@ Sessions* AM::pSessions(void) { return gpAttachMap->m_pSessions;  }
 bool AM::bBootError(void)     { return gpAttachMap->m_bBootError;             }
 i8   AM::nBuckets(void)       { return C_MAX_BUCKETS;                         }
 BufferPool* AM::pBufferPool(void) { return gpAttachMap->m_pBufferPool;        }
-EnumFlags* AM::pClassFlags(void)  { return & gpAttachMap->m_oClassFlags;      }
+ClassFlags* AM::pClassFlags(void)  { return & gpAttachMap->m_oClassFlags;      }
 Lock* AM::pDdlLock(void)      { return & gpAttachMap->m_oLocks.m_okDdlLock;            }
 JobList* AM::pDemonJobs(void) {
   return gpAttachMap->m_xStore.m_pDemonJobs;                                }

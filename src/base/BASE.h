@@ -206,7 +206,7 @@ extern d8 C_D8_MID;
 #include "CRM.hpp"
 #include "DecaCnt.hpp"
 #include "Decider.hpp"
-#include "EnumFlags.hpp"
+#include "ClassFlags.hpp"
 #include "FreqDist.hpp"
 #include "HV.hpp"
 #include "MemTest.hpp"

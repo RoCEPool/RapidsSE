@@ -225,7 +225,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(EntBuffer),          HT_T_LARGE   ,0 }, // CN_ENTBUFFER
   { sizeof(EntBufSorter),       HT_T_LARGE   ,0 }, // CN_ENTBUFSORTER
   { sizeof(EntWrk),             HT_INVALID   ,0 }, // CN_ENTWRK
-  { sizeof(EnumFlags),          HT_T_TINY    ,0 }, // CN_ENUMFLAGS
+  { sizeof(ClassFlags),          HT_T_TINY    ,0 }, // CN_ENUMFLAGS
   { sizeof(Exemplar),           HT_T_TINY    ,0 }, // CN_EXEMPLAR
   { sizeof(ExprEval),           HT_T_LARGE   ,0 }, // CN_EXPREVAL
 
@@ -325,7 +325,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Peruse),               HT_T_MEDIUM  ,0 }, // CN_PERUSE
   { sizeof(Pipeline),             HT_T_SMALL   ,0 }, // CN_PIPELINE
   { sizeof(PipelineSpec),         HT_T_SMALL   ,0 }, // CN_PIPELINESPEC
-  { sizeof(PlanDefinitionParser), HT_T_MEDIUM  ,  -8 }, // CN_PLANDEFINITIONPARSER
+  { sizeof(PlanDefinitionParser), HT_T_MEDIUM  , -8 }, // CN_PLANDEFINITIONPARSER
   { sizeof(PlanNode),             HT_T_TINY    , -8 }, // CN_PLANNODE
   { sizeof(PlanNodeBuilder),      HT_T_TINY    ,0 }, // CN_PLANNODEBUILDER
   { sizeof(PlanNodeBuilderList),  HT_T_TINY    ,0 }, // CN_PLANNODEBUILDERLIST

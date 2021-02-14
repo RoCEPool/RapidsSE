@@ -1216,7 +1216,7 @@ void Log::vLogMark(TokenVec* pTknVec)
   i8 nTokens = pTknVec->nItems();
   
   if (3 == nTokens && pTknVec->pGet(2)->bSame("all"_Stz)) {
-    EnumFlags* pClassFlags = AM::pClassFlags();
+    ClassFlags* pClassFlags = AM::pClassFlags();
     pClassFlags->vAll(true);
     return;
   }
@@ -1231,7 +1231,7 @@ void Log::vMarkAll(bool bAll)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  EnumFlags* pClassFlags = AM::pClassFlags();
+  ClassFlags* pClassFlags = AM::pClassFlags();
   
   pClassFlags->vAll(bAll);
 }
@@ -1246,7 +1246,7 @@ bool Log::bIsLoggable(Object* pObject)
   if (! pObject)
     return false;
   
-  EnumFlags* pClassFlags = AM::pClassFlags();
+  ClassFlags* pClassFlags = AM::pClassFlags();
   
   eCN eClassNo = pObject->eGetClassNo();
   

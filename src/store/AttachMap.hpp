@@ -41,7 +41,7 @@ namespace STORE
     BucketMap*    m_pBucketMap;
     BufferMap*    m_pBufferMap;
     BufferPool*   m_pBufferPool;
-    EnumFlags     m_oClassFlags;
+    ClassFlags    m_oClassFlags;
     i8            m_iEpoch;
     Format        m_oFormat;
     Grid*         m_pGrid;

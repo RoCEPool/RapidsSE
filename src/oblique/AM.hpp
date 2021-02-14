@@ -50,7 +50,7 @@ namespace BASE {
                             class SP_Tme;
                             class SP_Tsp;
                             template <i8 SPACE> class Datum_t;                 }
-namespace BASE           { class EnumFlags;       class TagSet;
+namespace BASE           { class ClassFlags;       class TagSet;
                             class Birth; class Now;                            }
 namespace BASE   { class Token;           class Charser;
                               class Input;           class TokenVec;          }
@@ -180,7 +180,7 @@ namespace OBLIQUE
     static bool bBootError(void);
     static i8   nBuckets(void);
     static BufferPool* pBufferPool(void);
-    static EnumFlags* pClassFlags(void);
+    static ClassFlags* pClassFlags(void);
     static Lock* pDdlLock(void);
     static void vDeleteOperand(Operand* pOperand);
     static Lock* pDicLock(void);
