@@ -16,6 +16,8 @@ namespace BASE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // threads
 
+    Atomic       m_ixThreads;
+
     ThreadVec*   m_pDedicatedThreadVec; // vector of dedicated threads
     ThreadVec*   m_pGeneralThreadVec;   // vector of general threads
   

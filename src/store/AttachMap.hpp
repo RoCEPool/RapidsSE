@@ -19,6 +19,12 @@ namespace STORE
   friend class PROMPT::SePrompt;
 
   private:
+  
+    union {
+      u8    m_uAttachMapState;         // attachmap is ready
+      char  m_caAttachMapState[8];
+    };
+  
     i8    m_iPid;
     Birth m_oBirth;
     Now   m_oNow;
@@ -72,11 +78,6 @@ namespace STORE
 
     } m_xStore;
 
-    union {
-      u8    m_uAttachMapState;         // attachmap is ready
-      char  m_caAttachMapState[8];
-    };
-    
     // must be last
     Footer m_xFooter;
     
