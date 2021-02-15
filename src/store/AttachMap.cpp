@@ -79,17 +79,17 @@ AttachMap::AttachMap(void)
   Lexicon* pLexicon = new Lexicon("__lexicon"_Stz);
   m_pLexiconArticle = pLexicon->pArticle();
   
-  m_pRootDic = new Dic("__dicRoot"_Stz);
+  m_pDicRoot = new Dic("__dicRoot"_Stz);
   
-  m_pRootArcticle = m_pRootDic->pArticle();
+  m_pRootArcticle = m_pDicRoot->pArticle();
   
   m_pLexiconArticle->vAppend(m_pRootArcticle);
   
   Step::vAddStep("word"_Stz,&Step::vWord);
-  AM::vRootWord(m_pRootDic->pFindWord("word"_Stz));
+  AM::vRootWord(m_pDicRoot->pFindWord("word"_Stz));
 
   Step::vAddStep("rootConstant"_Stz,nullptr);
-  AM::vRootConstant(m_pRootDic->pFindWord("rootConstant"_Stz));
+  AM::vRootConstant(m_pDicRoot->pFindWord("rootConstant"_Stz));
   
   // create the persistent heaps
 //  m_xHeaps.Persistent.m_pTiny  =

@@ -762,12 +762,12 @@ void Task::vSeedTask(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  Dic* pRootDic = AM::pRootDic();
+  Dic* pDicRoot = AM::pDicRoot();
   
   Stz* szSeed = AM::szJobSeed(m_pJob);
   
   //vTrace("SEED %s\n"_Stz,szSeed);
-  Word* pSeedWord = pRootDic->pFindWord(szSeed);
+  Word* pSeedWord = pDicRoot->pFindWord(szSeed);
   
   if (! pSeedWord)
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
@@ -780,7 +780,7 @@ void Task::vSeedTask(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Word* pExceptionWord = pRootDic->pFindWord(pSeedWord->szExceptionHook());
+  Word* pExceptionWord = pDicRoot->pFindWord(pSeedWord->szExceptionHook());
   if (pExceptionWord) {
     m_pExceptionWord = pExceptionWord;
     return;
@@ -788,7 +788,7 @@ void Task::vSeedTask(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Word* pExceptionDef = pRootDic->pFindWord("std_exceptionHook"_Stz);
+  Word* pExceptionDef = pDicRoot->pFindWord("std_exceptionHook"_Stz);
   if (pExceptionDef) {
     m_pExceptionWord = pExceptionDef;
     return;

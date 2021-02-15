@@ -224,7 +224,7 @@ namespace OBLIQUE
     static Article* pRootArticle(void);
     static Word* pRootConstant(void);
     static void vRootConstant(Word* pRootConstant);
-    static Dic* pRootDic(void);
+    static Dic* pDicRoot(void);
     static Word* pRootWord(void);
     static void vRootWord(Word* pRootWord);
     static Statistics* pStatistics(void);

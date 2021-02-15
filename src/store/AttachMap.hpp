@@ -41,6 +41,7 @@ namespace STORE
     BufferMap*    m_pBufferMap;
     BufferPool*   m_pBufferPool;
     ClassFlags    m_oClassFlags;
+    Dic*          m_pDicRoot;
     i8            m_iEpoch;
     Format        m_oFormat;
     Grid*         m_pGrid;
@@ -55,7 +56,6 @@ namespace STORE
     Resources     m_oResources;
     Article*      m_pRootArcticle;
     Word*         m_pRootConstant;
-    Dic*          m_pRootDic;
     Word*         m_pRootWord;
     Schedule*     m_pSchedule;
     Sessions*     m_pSessions;

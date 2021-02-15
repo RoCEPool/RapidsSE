@@ -1516,7 +1516,7 @@ void Engine::vStartSystem(void)
   if (AM::bVerboseProgress())
     vInfo("\n+\n+ %lld) System Start\n+\n"_Stz,giProgressPoint++);
   
-  //ASSERT( ! AM::pRootDic()->bHasWords() );
+  //ASSERT( ! AM::pDicRoot()->bHasWords() );
     
   gpAttachMap->vRecordArguments(&gxCmdLineArgs);
   

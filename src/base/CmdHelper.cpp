@@ -23,7 +23,7 @@ TagSet* CmdHelper::pCmdTagSet(Stz* szCmdNm)
   StrLib::vConcat(sCmdTagNm.azChar(),(const char*)"_cmdTags"_Stz);
   
   // find the CmdTagNm word
-  Word* pCmdWord = AM::pRootDic()->pFindWord(sCmdTagNm);
+  Word* pCmdWord = AM::pDicRoot()->pFindWord(sCmdTagNm);
   
   // get the CmdTag words tagSet
   TagSet* pCmdTagSet = pCmdWord->pWrdTagSet();
@@ -36,7 +36,7 @@ TagSet* CmdHelper::pCmdTagSet(Stz* szCmdNm)
 /*----------------------------------------------------------------------------*/
 bool CmdHelper::bParseCmd(TokenVec* pTknVec, TagSet* pTagSet)
 {
-  Dic* pRootDic = AM::pRootDic();
+  Dic* pDicRoot = AM::pDicRoot();
 
   Word* pCategory = nullptr;
   Word* pSyntax   = nullptr;
@@ -44,10 +44,10 @@ bool CmdHelper::bParseCmd(TokenVec* pTknVec, TagSet* pTagSet)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // can we find a job which matches the syntax?
   
-  pCategory = pRootDic->pFindWord("cmdSyntax:"_Stz);
+  pCategory = pDicRoot->pFindWord("cmdSyntax:"_Stz);
   pSyntax   = nullptr;
   
-  while ( (pSyntax = pRootDic->pEachWord(pSyntax,pCategory)) ) {
+  while ( (pSyntax = pDicRoot->pEachWord(pSyntax,pCategory)) ) {
     
     //vTrace("  jobSyntax: %s\n"_Stz,pSyntax->szWordNm());
     //pSyntax->pTagSet()->vDumpSet();

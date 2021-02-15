@@ -70,18 +70,18 @@ void Procedure::vAddProcedure(TokenVec* pTokenVec)
   }
 
   
-  Dic* pRootDic = AM::pRootDic();
+  Dic* pDicRoot = AM::pDicRoot();
 
-  Word* pProcCatg = pRootDic->pFindWord(C_PROCEDURE_CATG);
+  Word* pProcCatg = pDicRoot->pFindWord(C_PROCEDURE_CATG);
   
-  Word* pProcWord = pRootDic->pFindWord(sProcNm);
+  Word* pProcWord = pDicRoot->pFindWord(sProcNm);
   if (pProcWord)
     return;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   
-  pProcWord = new (pRootDic) Word(sProcNm);
+  pProcWord = new (pDicRoot) Word(sProcNm);
   
   pProcWord->vCategory(pProcCatg);
   
@@ -106,9 +106,9 @@ Word* Procedure::pFindProcedure(TokenVec* pInpTknVec)
   
   // check we have procedure category defined
   
-  Dic* pRootDic = AM::pRootDic();
+  Dic* pDicRoot = AM::pDicRoot();
 
-  Word* pProcCatg = pRootDic->pFindWord(C_PROCEDURE_CATG);
+  Word* pProcCatg = pDicRoot->pFindWord(C_PROCEDURE_CATG);
   
   if (! pProcCatg)
     return nullptr;
@@ -124,7 +124,7 @@ Word* Procedure::pFindProcedure(TokenVec* pInpTknVec)
 
   s256 sProcNm_single = pTkn0_CalledProcNm_a->szChars();
   
-  Word* pwMatchedProc = pRootDic->pFindWord(sProcNm_single);
+  Word* pwMatchedProc = pDicRoot->pFindWord(sProcNm_single);
   
   if (pwMatchedProc) {
     if (pwMatchedProc->pCategory() != pProcCatg)
@@ -151,7 +151,7 @@ Word* Procedure::pFindProcedure(TokenVec* pInpTknVec)
   vTrace("bTranslateProcedure: two part name: %s\n"_Stz,sProcNm_compound.szStz());
 #endif
 
-  pwMatchedProc = pRootDic->pFindWord(sProcNm_compound);
+  pwMatchedProc = pDicRoot->pFindWord(sProcNm_compound);
 
   if (pwMatchedProc) {
 
@@ -190,7 +190,7 @@ Word* Procedure::pFindProcedure(TokenVec* pInpTknVec)
   vTrace("bTranslateProcedure: three part name: %s\n"_Stz,sProcNm_compound.szStz());
 #endif
   
-  pwMatchedProc = pRootDic->pFindWord(sProcNm_compound_3);
+  pwMatchedProc = pDicRoot->pFindWord(sProcNm_compound_3);
   
   if (! pwMatchedProc)
     return nullptr;

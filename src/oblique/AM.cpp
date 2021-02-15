@@ -227,7 +227,7 @@ Resources* AM::pResources(void) {
   return & gpAttachMap->m_oResources; }
 Article* AM::pRootArticle(void)     { return gpAttachMap->m_pRootArcticle;    }
 Word* AM::pRootConstant(void) { return gpAttachMap->m_pRootConstant;          }
-Dic* AM::pRootDic(void)       { return gpAttachMap->m_pRootDic;               }
+Dic* AM::pDicRoot(void)       { return gpAttachMap->m_pDicRoot;               }
 Word* AM::pRootWord(void)     { return gpAttachMap->m_pRootWord;              }
 Statistics* AM::pStatistics(void)   { return & gpAttachMap->m_oStatistics;    }
 Steps* AM::pSteps(void)   { return gpAttachMap->m_pSteps;      }

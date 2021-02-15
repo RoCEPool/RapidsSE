@@ -335,14 +335,14 @@ bool Api::bShortForm(TokenVec* pCmdTknVec)
   
 //  Token* pTkn0 = pCmdTknVec->pGet(0);
 //
-//  Dic* pRootDic = AM::pRootDic();
+//  Dic* pDicRoot = AM::pDicRoot();
 //
-//  Word* pOperatorCatg = pRootDic->pFindWord("\\operator"_Stz);
+//  Word* pOperatorCatg = pDicRoot->pFindWord("\\operator"_Stz);
 //
 //  s32 sOpReq = pTkn0->szChars();
 //  sOpReq.vConcat("_req"_Stz);
 //
-//  Word* pOp_maybe = pRootDic->pFindWord(sOpReq);
+//  Word* pOp_maybe = pDicRoot->pFindWord(sOpReq);
 //
 //  if (pOp_maybe && pOp_maybe->pCategory() == pOperatorCatg)
 //    return true;

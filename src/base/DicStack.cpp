@@ -166,9 +166,9 @@ Word* DicStack::pFindWord(Stz* szWordNm)
       return pWord;
   }
   
-  Dic* pRootDic = AM::pRootDic();
+  Dic* pDicRoot = AM::pDicRoot();
 
-  if ( (pWord = pRootDic->pFindWord((Stz*)szWordNm)) )
+  if ( (pWord = pDicRoot->pFindWord((Stz*)szWordNm)) )
     return pWord;
   
   return nullptr;
@@ -209,8 +209,8 @@ Word* DicStack::pLocateRoutine(CodeCell* aCell)
         return pWord;
   }
   
-  Dic* pRootDic = AM::pRootDic();
-  for (pWord = pRootDic->pFirstWord(); pWord; pWord = pWord->pNextWord())
+  Dic* pDicRoot = AM::pDicRoot();
+  for (pWord = pDicRoot->pFirstWord(); pWord; pWord = pWord->pNextWord())
     if (pWord->bHasCell(aCell))
       return pWord;
   
@@ -236,8 +236,8 @@ Word* DicStack::pLocateStepWord(fpSTEPFN fpStepFn)
         return pWord;
   }
   
-  Dic* pRootDic = AM::pRootDic();
-  for (pWord = pRootDic->pFirstWord();
+  Dic* pDicRoot = AM::pDicRoot();
+  for (pWord = pDicRoot->pFirstWord();
        pWord;
        pWord = pWord->pNextWord())
     if (WK_INTRINSIC == pWord->eWord() &&
@@ -330,8 +330,8 @@ Word* DicStack::pRemoveWord(Stz* szName)
       return pRemovedWord;
   }
   
-  Dic* pRootDic = AM::pRootDic();
-  if ( (pRemovedWord = pRootDic->pRemoveWord(szName)) )
+  Dic* pDicRoot = AM::pDicRoot();
+  if ( (pRemovedWord = pDicRoot->pRemoveWord(szName)) )
     return pRemovedWord;
   
   return nullptr;
