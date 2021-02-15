@@ -1547,6 +1547,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         *(++aiDstk) = iRes;
         break;//+endCase
 
+      case EO_LGL_XOR: ArgNil(); // logical xor top two int's, push result
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  =  (!iTopA && iTopB) || (iTopA && !iTopB) ? 1 : 0;
+        dLU3(EO_LGL_XOR,iTopA,iTopB,iRes);
+        *(++aiDstk) = iRes;
+        break;//+endCase
+
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // null test operators
       case EO_ISNULL: ArgNil(); // test if top is null, push result

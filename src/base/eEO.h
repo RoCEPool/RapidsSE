@@ -62,6 +62,7 @@ enum eEO : u1 // expression operators
   /*    */ EO_LGL_AND,          // logical and top two int's, push result
   /*    */ EO_LGL_OR,           // logical or top two int's, push result
   /*    */ EO_LGL_NOT,          // logical not top int, push result
+  /*    */ EO_LGL_XOR,          // logical xor top two int's, push result
 
   // null test operators
   /*    */ EO_ISNULL,           // test if top is null, push result
@@ -381,6 +382,7 @@ static Stz* aEO[]
   /*    */ "EO_LGL_AND"_Stz,
   /*    */ "EO_LGL_OR"_Stz,
   /*    */ "EO_LGL_NOT"_Stz,
+  /*    */ "EO_LGL_XOR"_Stz,
 
   // null test operators
   /*    */ "EO_ISNULL"_Stz,
@@ -706,6 +708,7 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_LGL_AND
   { EA_NONE,    0 },  // EO_LGL_OR
   { EA_NONE,    0 },  // EO_LGL_NOT
+  { EA_NONE,    0 },  // EO_LGL_XOR
 
   // null test operators
   { EA_NONE,    0 },  // EO_ISNULL

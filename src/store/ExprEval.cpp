@@ -343,6 +343,9 @@ void ExprEval::vAddRelational(Token* pTkn) {
   else if (pTkn->bSame("<="_Stz)) {
     StrLib::vSprintCat(m_sAsmText, "  EO_LESSEQUAL\n"_Stz);
   }
+  else if (pTkn->bSame("!="_Stz)) {
+    StrLib::vSprintCat(m_sAsmText, "  EO_NOTEQUAL\n"_Stz);
+  }
   else {
     ASSERT(pTkn->bSame("=="_Stz));
       StrLib::vSprintCat(m_sAsmText, "  EO_EQUAL\n"_Stz);
