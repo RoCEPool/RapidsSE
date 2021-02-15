@@ -279,12 +279,20 @@ void ExprEval::vAddLogical(Token* pTkn) {
   if (pTkn->bSame("and"_Stz)) {
     StrLib::vSprintCat(m_sAsmText, "  EO_LGL_AND\n"_Stz);
   }
+  else if (pTkn->bSame("isNull"_Stz)) {
+    StrLib::vSprintCat(m_sAsmText, "  EO_ISNULL\n"_Stz);
+  }
+  else if (pTkn->bSame("not"_Stz)) {
+    ASSERT(pTkn->bSame("not"_Stz));
+    StrLib::vSprintCat(m_sAsmText, "  EO_LGL_NOT\n"_Stz);
+  }
   else if (pTkn->bSame("or"_Stz)) {
+    ASSERT(pTkn->bSame("not"_Stz));
     StrLib::vSprintCat(m_sAsmText, "  EO_LGL_OR\n"_Stz);
   }
   else {
-    ASSERT(pTkn->bSame("not"_Stz));
-    StrLib::vSprintCat(m_sAsmText, "  EO_LGL_NOT\n"_Stz);
+    ASSERT(pTkn->bSame("xor"_Stz));
+    StrLib::vSprintCat(m_sAsmText, "  EO_LGL_XOR\n"_Stz);
   }
 }
 
@@ -485,7 +493,7 @@ eEC ExprEval::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec) 
       continue;
 
     // skip any logical operators
-    if (pTkn->bIsLogical()) {
+    if (pTkn->bIsLogical() || pTkn->bSame("isNull"_Stz)) {
       continue;
     }
 
@@ -646,7 +654,7 @@ eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
     }
 
     // logical operator ?
-    if (pTkn->bIsLogical()) {
+    if (pTkn->bIsLogical() || pTkn->bSame("isNull"_Stz)) {
       vAddLogical(pTkn);
       pTkn = pTknVec->pNextToken();
       continue;
