@@ -15,13 +15,13 @@ namespace BASE
 
   private:
     i8  m_iEventNo;   // last step sequence number
-    eEV m_eEvent;    // last event
+    eEV m_eEvent;     // last event
     i8  m_iEventTick; // time point that occurred
-    i8  m_iDuration; // last event no
-
+    i8  m_iDuration;  // last event no
+    b8  m_bDontLog;   // don't log this object
+  
     i8  m__spare0;    //
     i8  m__spare1;    //
-    i8  m__spare2;    //
 
   public:
     Loggable(eCN eClassNo);
@@ -43,6 +43,8 @@ namespace BASE
     void vObjectNm(Stz* szObjectNm);
 
     void vNextEvent(eEV m_eEvent);
+  
+    void vLog(eEV m_eEvent, Stz* szFormat, ...);
   };
 }
 

@@ -15,15 +15,15 @@ Loggable::Loggable(eCN eClassNo)
 //  if (CN_JOB == eClassNo)
 //    printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ m_iObjectId %lld\n",m_iObjectId);
 
-  m_iEventNo  = C_UNKNOWN;
-  m_iEventTick   = AM::iRdTickingDevice();
+  m_iEventNo   = C_UNKNOWN;
+  m_iEventTick = AM::iRdTickingDevice();
   
-  m_eEvent    = EV_NONE;
-  m_iDuration = C_UNKNOWN;
-  
-  m__spare0   = C_UNKNOWN;
-  m__spare1   = C_UNKNOWN;
-  m__spare2   = C_UNKNOWN;
+  m_eEvent     = EV_NONE;
+  m_iDuration  = C_UNKNOWN;
+  m_bDontLog   = false;
+
+  m__spare0    = C_UNKNOWN;
+  m__spare1    = C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -148,6 +148,22 @@ void Loggable::vNextEvent(eEV eEvent)
   vEventTickSet();
   vEvent(eEvent);
   vEventNoInc();
+}
+
+/*----------------------------------------------------------------------------*/
+/* log next event                                                             */
+/*----------------------------------------------------------------------------*/
+void Loggable::vLog(eEV m_eEvent, Stz* szFormat, ...)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  // to be completed
+  
+  va_list xVarArgs;
+  
+  va_start(xVarArgs,szFormat);
+    
+  va_end(xVarArgs);
 }
 
 /*============================================================================*/
