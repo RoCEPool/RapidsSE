@@ -29,7 +29,6 @@ namespace BASE
     void vSet(ReqTuple* aReqTuple);
   };
   
-  static ReqTuple* C_NO_REQTUPLE = nullptr;
 }
 
 /*============================================================================*/
