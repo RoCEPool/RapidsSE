@@ -1958,7 +1958,10 @@ Job* AM::pTaskJob(void) {
   return pThisTLSTask()->pJob();
 }
 Job* AM::pTaskJob(Task* pTask) {
-  return pTask->pJob();
+  if (pTask)
+    return pTask->pJob();
+  else
+    return nullptr;
 }
 
 void AM::vJobObjectName(Job* pJob, Stz* szObjectName) {

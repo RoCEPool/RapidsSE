@@ -4,6 +4,7 @@
 #pragma once
 
 #include "eLK.h"
+#include "eLS.h"
 
 namespace BASE
 {
@@ -65,6 +66,7 @@ namespace BASE
     i8   iWriteCollisions(void);
     
   private:
+    void vLockTrace(eLS eLockStyle);
     Footer* aFooter(void);
   };
   

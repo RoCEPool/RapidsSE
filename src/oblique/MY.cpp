@@ -95,7 +95,10 @@ Op* MY::pOp(void)
 {
   Job* pJob = MY::pJob();
 
-  return pJob->m_pOp;
+  if (pJob)
+    return pJob->m_pOp;
+  else
+    return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

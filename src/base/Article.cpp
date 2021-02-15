@@ -290,7 +290,7 @@ void Article::vRefDec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ARTICLE,_FOOTER_);
   
-  u8 iRef = --m_ixRefCount;
+  -- m_ixRefCount;
   
   //vTrace("ARTICLE: %s --ref : %lld\n"_Stz,m_sArticle.s(),iRef);
 }
@@ -302,7 +302,7 @@ void Article::vRefInc(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ARTICLE,_FOOTER_);
   
-  u8 iRef = ++m_ixRefCount;
+  ++ m_ixRefCount;
   
   //vTrace("ARTICLE: %s ++ref : %lld\n"_Stz,m_sArticle.s(),iRef);
 }
