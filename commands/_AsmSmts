@@ -61,9 +61,13 @@ create index Orders_Idx2 ON Orders(O_ORDERKEY);
 print "loading Orders...";
  /time load Orders "../DATA/TPCH/orders10.csv";
 
- select L_ORDERKEY, L_QUANTITY from lineitem where  L_ORDERKEY = 1;
+ //select L_ORDERKEY, L_QUANTITY from lineitem where  L_ORDERKEY = 1;
 
- select L_ORDERKEY, L_QUANTITY from lineitem where  L_ORDERKEY + 1 <= 2;
+ //select L_ORDERKEY, L_QUANTITY from lineitem where  L_ORDERKEY + 1 <= 2;
+ select l_orderkey + 1 , sum (l_discount) as x from lineitem group by l_orderkey;
+
+//aggregRows_I lineitem "l_orderkey , l_discount sum";
+
 /*
 //UnionAll_I lineitem orders l_orderkey;
 

@@ -2,7 +2,7 @@
 -- aggregGby_I tests
 --------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-aggregRows lineitem "sum ( l_discount ) group by l_orderkey";
+aggregRows lineitem "l_discount sum groupby l_orderkey";
 failure contains: "no such table"
 
 //------------------------------------------------------------------------------
@@ -29,15 +29,15 @@ create table LineItem
 success
 
 //------------------------------------------------------------------------------
-aggregRows lineitem " l_discount * 2 group by l_orderkey";
+aggregRows lineitem " l_discount * 2 groupby l_orderkey";
 failure contains: "invalid command"
 
 //------------------------------------------------------------------------------
-aggregRows lineitem "sum( l_discount ) group by l_orderkey";
+aggregRows lineitem "l_discount sum groupby l_orderkey";
 failure contains: "invalid command"
 
 //------------------------------------------------------------------------------
-aggregRows lineitem "l_orderkey , sum ( l_discount ) group by l_orderkey";
+aggregRows lineitem "l_orderkey , l_discount sum groupby l_orderkey";
 rows: 0
 
 // load data
@@ -45,29 +45,29 @@ load lineitem "../DATA/TPCH/lineitem10.csv";
 success
 
 //------------------------------------------------------------------------------
-aggregRows lineitem "sum ( l_discount ) group by l_orderkey" ;
+aggregRows lineitem "l_discount sum group by l_orderkey" ;
 failure contains: "invalid command"
 
 //------------------------------------------------------------------------------
-aggregRows lineitem "l_orderkey , sum ( l_discount ) group by l_orderkey" ;
+aggregRows lineitem "l_orderkey , l_discount sum groupby l_orderkey" ;
 rows:
   (1,0.49)
   (2,0.00)
   (3,0.22)
 
 //------------------------------------------------------------------------------
-aggregRows lineitem "l_orderkey , sum ( L_COMMENT ) group by l_orderkey";
+aggregRows lineitem "l_orderkey , L_COMMENT sum groupby l_orderkey";
 failure contains: "invalid command"
 
 //------------------------------------------------------------------------------
-aggregRows lineitem "l_orderkey , sum ( L_LINENUMBER ) group by l_orderkey";
+aggregRows lineitem "l_orderkey , L_LINENUMBER sum groupby l_orderkey";
 rows:
  (1,21)
  (2,1)
  (3,6)
 
 //------------------------------------------------------------------------------
-aggregRows lineitem "L_LINENUMBER , sum ( L_DISCOUNT ) , sum ( L_QUANTITY ) group by L_LINENUMBER";
+aggregRows lineitem "L_LINENUMBER , L_DISCOUNT sum , L_QUANTITY sum groupby L_LINENUMBER";
 rows:
  (1,0.10,100.00)
  (2,0.19,85.00)
@@ -77,15 +77,15 @@ rows:
  (6,0.07,32.00)
 
 //------------------------------------------------------------------------------
-aggregRows lineitem "l_orderkey , sum ( L_RETURNFLAG ) group by l_orderkey";
+aggregRows lineitem "l_orderkey , L_RETURNFLAG sum group by l_orderkey";
 failure contains: "invalid command"
 
 //------------------------------------------------------------------------------
-aggregRows lineitem "l_orderkey , sum ( L_COMMITDATE ) group by l_orderkey";
+aggregRows lineitem "l_orderkey , L_COMMITDATE sum group by l_orderkey";
 failure contains: "invalid command"
 
 //------------------------------------------------------------------------------
-aggregRows lineitem "l_orderkey , sum ( L_SHIPINSTRUCT ) group by l_orderkey";
+aggregRows lineitem "l_orderkey , L_SHIPINSTRUCT sum group by l_orderkey";
 failure contains: "invalid command"
 
 //------------------------------------------------------------------------------

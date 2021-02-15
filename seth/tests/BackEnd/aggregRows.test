@@ -3,7 +3,7 @@
 --------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-aggregRows lineitem "sum ( l_discount )";
+aggregRows lineitem "l_discount sum";
 failure contains: "no such table"
 
 //------------------------------------------------------------------------------
@@ -34,11 +34,7 @@ aggregRows lineitem " l_discount * 2";
 failure contains: "invalid command"
 
 //------------------------------------------------------------------------------
-aggregRows lineitem "sum( l_discount )";
-failure contains: "invalid command"
-
-//------------------------------------------------------------------------------
-aggregRows lineitem "sum ( l_discount )";
+aggregRows lineitem "l_discount sum";
 rows: 0
 
 // load data
@@ -46,39 +42,39 @@ load lineitem "../DATA/TPCH/lineitem10.csv";
 success
 
 //------------------------------------------------------------------------------
-aggregRows lineitem "sum ( l_discount )";
+aggregRows lineitem "l_discount sum";
 rows:
   (0.71)
 
 //------------------------------------------------------------------------------
-aggregRows lineitem "sum ( L_COMMENT )";
+aggregRows lineitem "L_COMMENT sum";
 failure contains: "invalid command"
 
 //------------------------------------------------------------------------------
-aggregRows lineitem "sum ( L_ORDERKEY )";
+aggregRows lineitem "L_ORDERKEY sum";
 rows:
   (17)
 
 //------------------------------------------------------------------------------
-aggregRows lineitem "sum ( L_LINENUMBER )";
+aggregRows lineitem "L_LINENUMBER sum";
 rows:
  (28)
 
 //------------------------------------------------------------------------------
-aggregRows lineitem "sum ( L_LINENUMBER ) , sum ( L_ORDERKEY )";
+aggregRows lineitem "L_LINENUMBER sum , L_ORDERKEY sum";
 rows:
  (28, 17)
 
 //------------------------------------------------------------------------------
-aggregRows lineitem "sum ( L_RETURNFLAG )";
+aggregRows lineitem "L_RETURNFLAG sum";
 failure contains: "invalid command"
 
 //------------------------------------------------------------------------------
-aggregRows lineitem "sum ( L_COMMITDATE )";
+aggregRows lineitem "L_COMMITDATE sum";
 failure contains: "invalid command"
 
 //------------------------------------------------------------------------------
-aggregRows lineitem "sum ( L_SHIPINSTRUCT )";
+aggregRows lineitem "L_SHIPINSTRUCT sum";
 failure contains: "invalid command"
 
 //------------------------------------------------------------------------------

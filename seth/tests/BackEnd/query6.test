@@ -12,11 +12,11 @@ begin
     scan lineitem
     | filter 0 "l_shipdate DATE '1994-01-01' >=  <> l_shipdate DATE '1995-01-01' < <> "
     | filter 0 "l_discount 0.06 0.01 - >= <> l_discount 0.06 0.01 +  <= <> l_quantity 26.0 < <> "
-    | aggreg 0 " as revenue sum ( l_extendedPrice l_discount * ) "
+    | aggreg 0 " as revenue l_extendedPrice l_discount * sum "
     | stageC
 
   stage stageC on origin :
-    aggreg 0 " as revenue sum ( l_extendedPrice l_discount * ) "
+    aggreg 0 " as revenue l_extendedPrice l_discount * sum "
     | output | sink | stageA
 end;
 failure contains: "no such table"

@@ -1395,7 +1395,7 @@ void Dynamo::vAppendAggregateOp(String* sPipeline, QueryNode* pNode)
   if (pProjectedExprs->bHasChildren()) {
 
     sPipeline->vCatSprint(
-        "    | project 0 \""
+        "    | aggreg 0 \""
         ""_Stz);
 
     // get a plan node iterator

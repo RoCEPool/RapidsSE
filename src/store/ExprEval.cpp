@@ -530,42 +530,42 @@ eEC ExprEval::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec) 
     if (pTkn->bIsName()  && pTkn->bSame("SUM"_Stz) ) {
 
       // next token should be (
-      pTkn = pTknVec->pGet(++i_Tkn);
-
-      if ( ! pTkn->bSame("("_Stz) ) {
-        eError = EC_INVALID_COMMAND;
-        break;
-      }
+//      pTkn = pTknVec->pGet(++i_Tkn);
+//
+//      if ( ! pTkn->bSame("("_Stz) ) {
+//        eError = EC_INVALID_COMMAND;
+//        break;
+//      }
       m_bHasAgg = true;
-      bOpenBraces = true;
+      //bOpenBraces = true;
       continue;
     }
 
-    if (pTkn->bIsName()  && pTkn->bSame("GROUP"_Stz) ) {
+    if (pTkn->bIsName()  && pTkn->bSame("GROUPBY"_Stz) ) {
 
       // next token should be BY
-      pTkn = pTknVec->pGet(++i_Tkn);
+      //pTkn = pTknVec->pGet(++i_Tkn);
 
-      if ( ! pTkn->bSame("BY"_Stz) ) {
-        eError = EC_INVALID_COMMAND;
-        break;
-      }
+      //if ( ! pTkn->bSame("BY"_Stz) ) {
+      //  eError = EC_INVALID_COMMAND;
+      //  break;
+      //}
       m_bHasGby = true;
 
       continue;
     }
 
-    if (pTkn->bIsName()  && pTkn->bSame(")"_Stz) ) {
-
-      // // should have seen a (
-
-      if ( ! bOpenBraces ) {
-        eError = EC_INVALID_COMMAND;
-        break;
-      }
-      bOpenBraces = false;
-      continue;
-    }
+//    if (pTkn->bIsName()  && pTkn->bSame(")"_Stz) ) {
+//
+//      // // should have seen a (
+//
+//      if ( ! bOpenBraces ) {
+//        eError = EC_INVALID_COMMAND;
+//        break;
+//      }
+//      bOpenBraces = false;
+//      continue;
+//    }
 
     // skip any strings
     if (pTkn->bIsString()) {
@@ -742,20 +742,20 @@ eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
       ASSERT(m_bHasAgg);
 
       // skip next token (
-      pTkn = pTknVec->pNextToken();
-      ASSERT(pTkn->bSame("("_Stz));
+//      pTkn = pTknVec->pNextToken();
+//      ASSERT(pTkn->bSame("("_Stz));
 
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
-    if (pTkn->bIsName()  && pTkn->bSame(")"_Stz)) {
-      ASSERT(bSum);
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
+//    if (pTkn->bIsName()  && pTkn->bSame(")"_Stz)) {
+//      ASSERT(bSum);
+//      pTkn = pTknVec->pNextToken();
+//      continue;
+//    }
 
-    if (pTkn->bIsName()  && pTkn->bSame("GROUP"_Stz) ) {
+    if (pTkn->bIsName()  && pTkn->bSame("GROUPBY"_Stz) ) {
 
       i_GbyColumn++;
       bGroupBy = true;
@@ -763,8 +763,8 @@ eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
       ASSERT(m_bHasGby);
 
       // skip next token BY
-      pTkn = pTknVec->pNextToken();
-      ASSERT(pTkn->bSame("BY"_Stz));
+      //pTkn = pTknVec->pNextToken();
+      //ASSERT(pTkn->bSame("BY"_Stz));
 
       i_DstColumn++;
 
