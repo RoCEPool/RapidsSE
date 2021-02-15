@@ -36,6 +36,7 @@ namespace STORE
     s256  m_sLogTxtFile;
   
         
+    Article*      m_pArcticleRoot;
     bool          m_bBootError;
     BucketMap*    m_pBucketMap;
     BufferMap*    m_pBufferMap;
@@ -55,7 +56,6 @@ namespace STORE
     PtnMap*       m_pPtnMap;
     i8            m_iQuit;
     Resources     m_oResources;
-    Article*      m_pRootArcticle;
     Schedule*     m_pSchedule;
     Sessions*     m_pSessions;
     Statistics    m_oStatistics;

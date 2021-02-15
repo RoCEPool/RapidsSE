@@ -30,7 +30,7 @@ void Step::vArticleDump(void)
   
   //vTrace("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"_Stz);
   
-  //pArticle = AM::pRootArticle();
+  //pArticle = AM::pArcticleRoot();
   
   //pArticle->vDumpRecursively(0);
   

@@ -225,7 +225,7 @@ i8   AM::nPtnsInGrid(void) {
 Schedule* AM::pSchedule(void)     { return gpAttachMap->m_pSchedule;                }
 Resources* AM::pResources(void) {
   return & gpAttachMap->m_oResources; }
-Article* AM::pRootArticle(void)     { return gpAttachMap->m_pRootArcticle;    }
+Article* AM::pArcticleRoot(void)     { return gpAttachMap->m_pArcticleRoot;    }
 Word* AM::pConstantRoot(void) { return gpAttachMap->m_pConstantRoot;          }
 Dic* AM::pDicRoot(void)       { return gpAttachMap->m_pDicRoot;               }
 Word* AM::pWordRoot(void)     { return gpAttachMap->m_pWordRoot;              }

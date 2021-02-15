@@ -81,9 +81,9 @@ AttachMap::AttachMap(void)
   
   m_pDicRoot = new Dic("__dicRoot"_Stz);
   
-  m_pRootArcticle = m_pDicRoot->pArticle();
+  m_pArcticleRoot = m_pDicRoot->pArticle();
   
-  m_pLexiconArticle->vAppend(m_pRootArcticle);
+  m_pLexiconArticle->vAppend(m_pArcticleRoot);
   
   Step::vAddStep("word"_Stz,&Step::vWord);
   AM::vRootWord(m_pDicRoot->pFindWord("word"_Stz));
