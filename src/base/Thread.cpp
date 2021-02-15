@@ -31,7 +31,7 @@ Thread* BASE::_pThread(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Thread::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_THREAD);
+  void* pObject = Heaps::pAllocate(CN_THREAD);
   
   return pObject;
 }
@@ -51,7 +51,7 @@ void Thread::operator delete(void* aAddr)
 {
   Object* pObject = reinterpret_cast<Object*>(aAddr);
   
-  HeapMem::vFree(pObject);
+  Heaps::vFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/

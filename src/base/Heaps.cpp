@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* HeapMem.cpp -- Set of Heaps in Pool                                        */
+/* Heaps.cpp -- Set of Heaps in Pool                                        */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -8,7 +8,7 @@ extern SizeHeap  gxaSizeHeap[];
 
 bool gbAddrAllocated = false;
 
-SubSysFn __HeapMem("HeapMem"_Stz,(fpSELFFN*)HeapMem::vSubSystem,
+SubSysFn __Heaps("Heaps"_Stz,(fpSELFFN*)Heaps::vSubSystem,
                    ""_Stz,nullptr);
 
 /*----------------------------------------------------------------------------*/
@@ -18,7 +18,7 @@ SubSysFn __HeapMem("HeapMem"_Stz,(fpSELFFN*)HeapMem::vSubSystem,
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-HeapMem::HeapMem(void)
+Heaps::Heaps(void)
 : Object(CN_HEAPMEM)
 {
   _precondition_(_MAGIC_,CN_HEAPMEM);
@@ -49,29 +49,29 @@ HeapMem::HeapMem(void)
 /*----------------------------------------------------------------------------*/
 /* the subsystem function                                                     */
 /*----------------------------------------------------------------------------*/
-void HeapMem::vSubSystem(SelfFn* aSelfFn, TokenVec* pTokenVec)
+void Heaps::vSubSystem(SelfFn* aSelfFn, TokenVec* pTokenVec)
 {
   _static_
   
-  vTrace("HeapMem::vSubSystem\n"_Stz);
+  vTrace("Heaps::vSubSystem\n"_Stz);
   
-  HeapMem::vSummaryReport();
+  Heaps::vSummaryReport();
 }
 
 /*----------------------------------------------------------------------------*/
 /* allocate a class of object from a heap                                     */
 /*----------------------------------------------------------------------------*/
-Object* HeapMem::pAllocate(eCN eAllocClass, bool bPersistent)
+Object* Heaps::pAllocate(eCN eAllocClass, bool bPersistent)
 {
   _static_
   
-  HeapMem* pHeapMem = AM::pHeapMem();
+  Heaps* pHeaps = AM::pHeaps();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   eHT eHeap = gxaSizeHeap[eAllocClass].m_eWhichHeap;
   
-  Heap* pHeap = pHeapMem->pGetHeap(eHeap);
+  Heap* pHeap = pHeaps->pGetHeap(eHeap);
   
 //  if (bPersistent) {
 //    switch(eHeap) {
@@ -104,9 +104,9 @@ Object* HeapMem::pAllocate(eCN eAllocClass, bool bPersistent)
 /*----------------------------------------------------------------------------*/
 /* free an object back to heap                                                */
 /*----------------------------------------------------------------------------*/
-void HeapMem::vFree(Object* pObject, bool bPersistent)
+void Heaps::vFree(Object* pObject, bool bPersistent)
 {  
-  HeapMem* pHeapMem = AM::pHeapMem();
+  Heaps* pHeaps = AM::pHeaps();
   
   eCN eWasClass = pObject->eGetClassNo();
   
@@ -136,7 +136,7 @@ void HeapMem::vFree(Object* pObject, bool bPersistent)
   
   eHT eHeap = gxaSizeHeap[eWasClass].m_eWhichHeap;
   
-  Heap* pHeap = pHeapMem->pGetHeap(eHeap);
+  Heap* pHeap = pHeaps->pGetHeap(eHeap);
 
   
 //  if (bPersistent) {
@@ -159,11 +159,11 @@ void HeapMem::vFree(Object* pObject, bool bPersistent)
 /*----------------------------------------------------------------------------*/
 /* free a non-object buffer                                                   */
 /*----------------------------------------------------------------------------*/
-void HeapMem::vFree_NonObject(PoolBuffer* pBuffer)
+void Heaps::vFree_NonObject(PoolBuffer* pBuffer)
 {
   pBuffer->vSetMagic();
   
-  AM::pHeapMem()->Transient.m_pLarge->vFreeObject(pBuffer);
+  AM::pHeaps()->Transient.m_pLarge->vFreeObject(pBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -173,50 +173,50 @@ void HeapMem::vFree_NonObject(PoolBuffer* pBuffer)
 /*----------------------------------------------------------------------------*/
 /* heap memory report                                                         */
 /*----------------------------------------------------------------------------*/
-void HeapMem::vSummaryReport(void)
+void Heaps::vSummaryReport(void)
 {
   s256 sReport;
 
   eHT eHeap = HT_INVALID;
   
-  for (Heap* pHeap = AM::pHeapMem()->pEachHeap(eHeap);
+  for (Heap* pHeap = AM::pHeaps()->pEachHeap(eHeap);
        pHeap;
-       pHeap = AM::pHeapMem()->pEachHeap(eHeap)) {
+       pHeap = AM::pHeaps()->pEachHeap(eHeap)) {
     pHeap->vSummaryReport(sReport.pString());
     vTrace(" %s\n"_Stz,sReport.szStz());
   }
   
 //  // tiny transient heap
-//  AM::pHeapMem()->Transient.m_pTiny->vSummaryReport(sReport.pString());
+//  AM::pHeaps()->Transient.m_pTiny->vSummaryReport(sReport.pString());
 //  vTrace(" %s\n"_Stz,sReport.szStz());
 //
 //  // small transient heap
-//  AM::pHeapMem()->Transient.m_pSmall->vSummaryReport(sReport.pString());
+//  AM::pHeaps()->Transient.m_pSmall->vSummaryReport(sReport.pString());
 //  vTrace(" %s\n"_Stz,sReport.szStz());
 //
 //  // medium transient heap
-//  AM::pHeapMem()->Transient.m_pMedium->vSummaryReport(sReport.pString());
+//  AM::pHeaps()->Transient.m_pMedium->vSummaryReport(sReport.pString());
 //  vTrace(" %s\n"_Stz,sReport.szStz());
 //
 //  // large transient heap
-//  AM::pHeapMem()->Transient.m_pLarge->vSummaryReport(sReport.pString());
+//  AM::pHeaps()->Transient.m_pLarge->vSummaryReport(sReport.pString());
 //  vTrace(" %s\n"_Stz,sReport.szStz());
 
   
 //  // tiny persistent heap
-//  AM::pHeapMem()->Persistent.m_pTiny->vSummaryReport(sReport.pString());
+//  AM::pHeaps()->Persistent.m_pTiny->vSummaryReport(sReport.pString());
 //  vTrace(" %s\n"_Stz,sReport.szStz());
 //
 //  // small persistent heap
-//  AM::pHeapMem()->Persistent.m_pSmall->vSummaryReport(sReport.pString());
+//  AM::pHeaps()->Persistent.m_pSmall->vSummaryReport(sReport.pString());
 //  vTrace(" %s\n"_Stz,sReport.szStz());
 //
 //  // medium persistent heap
-//  AM::pHeapMem()->Persistent.m_pMedium->vSummaryReport(sReport.pString());
+//  AM::pHeaps()->Persistent.m_pMedium->vSummaryReport(sReport.pString());
 //  vTrace(" %s\n"_Stz,sReport.szStz());
 //
 //  // large persistent heap
-//  AM::pHeapMem()->Persistent.m_pLarge->vSummaryReport(sReport.pString());
+//  AM::pHeaps()->Persistent.m_pLarge->vSummaryReport(sReport.pString());
 //  vTrace(" %s\n"_Stz,sReport.szStz());
 //
 }
@@ -224,10 +224,10 @@ void HeapMem::vSummaryReport(void)
 /*----------------------------------------------------------------------------*/
 /* search free list                                                           */
 /*----------------------------------------------------------------------------*/
-void HeapMem::vSearchFree(void)
+void Heaps::vSearchFree(void)
 {
   if (gbAddrAllocated) {
-    for (FreeChunk* pTestChunk = AM::pHeapMem()->Transient.m_pMedium->m_pFreeHead;
+    for (FreeChunk* pTestChunk = AM::pHeaps()->Transient.m_pMedium->m_pFreeHead;
          pTestChunk;
          pTestChunk = pTestChunk->pNextFree())
       if ((void*)pTestChunk >= (void*)0x204828fc0038 &&
@@ -245,7 +245,7 @@ void HeapMem::vSearchFree(void)
 /*----------------------------------------------------------------------------*/
 /* iterate each heap                                                          */
 /*----------------------------------------------------------------------------*/
-Heap* HeapMem::pEachHeap(eHT& reLastHeap)
+Heap* Heaps::pEachHeap(eHT& reLastHeap)
 {
   Heap* pNextHeap = nullptr;
   i8 iLastHeap = reLastHeap;
@@ -273,7 +273,7 @@ Heap* HeapMem::pEachHeap(eHT& reLastHeap)
 /*----------------------------------------------------------------------------*/
 /* iterate each heap                                                          */
 /*----------------------------------------------------------------------------*/
-Heap* HeapMem::pGetHeap(eHT eHeap)
+Heap* Heaps::pGetHeap(eHT eHeap)
 {
   _precondition_(_MAGIC_,CN_HEAPMEM);
   
@@ -303,7 +303,7 @@ Heap* HeapMem::pGetHeap(eHT eHeap)
 /*----------------------------------------------------------------------------*/
 /* initialise the various heaps                                               */
 /*----------------------------------------------------------------------------*/
-void HeapMem::vInit(void)
+void Heaps::vInit(void)
 {
   // create the persistent heaps
 //  Persistent.m_pTiny   =
@@ -371,7 +371,7 @@ void HeapMem::vInit(void)
 /*----------------------------------------------------------------------------*/
 /* heap memory portrait                                                       */
 /*----------------------------------------------------------------------------*/
-void HeapMem::vMonitorPortrait(s48K& sPortrait)
+void Heaps::vMonitorPortrait(s48K& sPortrait)
 {
   s48K s;
   

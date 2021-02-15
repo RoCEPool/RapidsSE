@@ -15,7 +15,7 @@
 /*----------------------------------------------------------------------------*/
 void* OpSpec::operator new(size_t)
 {
-  OpSpec* pOpSpec = reinterpret_cast<OpSpec*>(HeapMem::pAllocate(CN_OPSPEC));
+  OpSpec* pOpSpec = reinterpret_cast<OpSpec*>(Heaps::pAllocate(CN_OPSPEC));
   
   return pOpSpec;
 }
@@ -27,7 +27,7 @@ void OpSpec::operator delete(void* aAddr)
 {
   OpSpec* pOpSpec = reinterpret_cast<OpSpec*>(aAddr);
 
-  HeapMem::vFree(pOpSpec);
+  Heaps::vFree(pOpSpec);
 }
 
 /*----------------------------------------------------------------------------*/

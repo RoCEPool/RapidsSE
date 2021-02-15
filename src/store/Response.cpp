@@ -27,7 +27,7 @@ Response* STORE::_pResponse(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Response::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_RESPONSE);
+  void* pObject = Heaps::pAllocate(CN_RESPONSE);
   
   return pObject;
 }
@@ -39,7 +39,7 @@ void Response::operator delete(void* pAddress)
 {
   Response* pResponse = reinterpret_cast<Response*>(pAddress);
   
-  HeapMem::vFree(pResponse);
+  Heaps::vFree(pResponse);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -45,7 +45,7 @@ namespace STORE
     i8            m_iEpoch;
     Format        m_oFormat;
     Grid*         m_pGrid;
-    HeapMem       m_xHeapMem;
+    Heaps         m_xHeaps;
     Article*      m_pLexiconArticle;
     Locks         m_oLocks;
     Objects*      m_pObjects;

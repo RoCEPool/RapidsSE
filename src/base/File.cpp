@@ -37,7 +37,7 @@ File* BASE::_pFile(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* File::operator new(size_t)
 {
-  File* pFile = (File*)HeapMem::pAllocate(CN_FILE);
+  File* pFile = (File*)Heaps::pAllocate(CN_FILE);
   
   pFile->m_iViaMalloc = 0;
   
@@ -74,7 +74,7 @@ void File::operator delete(void* pFileAddress)
   if (pFile->m_iViaMalloc)
     MemLib::vFreeBlock(pFile,sizeof(File));
   else
-    HeapMem::vFree(pFile);
+    Heaps::vFree(pFile);
 
 }
 

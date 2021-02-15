@@ -34,7 +34,7 @@ RelOp* STORE::_pRelOp(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* RelOp::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_RELOP);
+  void* pObject = Heaps::pAllocate(CN_RELOP);
   
   return pObject;
 }
@@ -46,7 +46,7 @@ void RelOp::operator delete(void* pDataAddress)
 {
   AccessPath* pAccessPath = reinterpret_cast<AccessPath*>(pDataAddress);
   
-  HeapMem::vFree(pAccessPath);
+  Heaps::vFree(pAccessPath);
 }
 
 /*----------------------------------------------------------------------------*/

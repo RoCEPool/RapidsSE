@@ -14,10 +14,10 @@ void PoolHelper::vObjectDump(i8 iAfter)
 {
   _static_
   
-  vObjectDump(iAfter,AM::pHeapMem()->Transient.m_pTiny);
-  vObjectDump(iAfter,AM::pHeapMem()->Transient.m_pSmall);
-  vObjectDump(iAfter,AM::pHeapMem()->Transient.m_pMedium);
-  vObjectDump(iAfter,AM::pHeapMem()->Transient.m_pLarge);
+  vObjectDump(iAfter,AM::pHeaps()->Transient.m_pTiny);
+  vObjectDump(iAfter,AM::pHeaps()->Transient.m_pSmall);
+  vObjectDump(iAfter,AM::pHeaps()->Transient.m_pMedium);
+  vObjectDump(iAfter,AM::pHeaps()->Transient.m_pLarge);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -184,13 +184,13 @@ void PoolHelper::vInspectObjects(i8 iAfter)
 {
   _static_
   
-  HeapMem* pHeapMem = AM::pHeapMem();
+  Heaps* pHeaps = AM::pHeaps();
 
   eHT eHeap = HT_INVALID;
   
-  for (Heap* pHeap = pHeapMem->pEachHeap(eHeap);
+  for (Heap* pHeap = pHeaps->pEachHeap(eHeap);
        pHeap;
-       pHeap = pHeapMem->pEachHeap(eHeap)) {
+       pHeap = pHeaps->pEachHeap(eHeap)) {
   
     pHeap->vGrabLock();
     
@@ -270,7 +270,7 @@ void PoolHelper::vObjectSummary(void)
   
   nBlockSize = C_SIZE_TINY_OBJECT;
   MagLib::vByteMag(nBlockSize,sMagHeap);
-  AM::pHeapMem()->Transient.m_pTiny->vAnalyse(iCountObjects);
+  AM::pHeaps()->Transient.m_pTiny->vAnalyse(iCountObjects);
   nObjInHeap = 0;
   
   printf("\n");
@@ -304,7 +304,7 @@ void PoolHelper::vObjectSummary(void)
   
   nBlockSize = C_SIZE_SMALL_OBJECT;
   MagLib::vByteMag(nBlockSize,sMagHeap);
-  AM::pHeapMem()->Transient.m_pSmall->vAnalyse(iCountObjects);
+  AM::pHeaps()->Transient.m_pSmall->vAnalyse(iCountObjects);
   nObjInHeap = 0;
   
   printf("\n");
@@ -338,7 +338,7 @@ void PoolHelper::vObjectSummary(void)
   
   nBlockSize = C_SIZE_MEDIUM_OBJECT;
   MagLib::vByteMag(nBlockSize,sMagHeap);
-  AM::pHeapMem()->Transient.m_pMedium->vAnalyse(iCountObjects);
+  AM::pHeaps()->Transient.m_pMedium->vAnalyse(iCountObjects);
   nObjInHeap = 0;
 
   vTrace("\n"_Stz);
@@ -372,7 +372,7 @@ void PoolHelper::vObjectSummary(void)
   
   nBlockSize = C_SIZE_LARGE_OBJECT;
   MagLib::vByteMag(nBlockSize,sMagHeap);
-  AM::pHeapMem()->Transient.m_pLarge->vAnalyse(iCountObjects);
+  AM::pHeaps()->Transient.m_pLarge->vAnalyse(iCountObjects);
   nObjInHeap = 0;
 
   printf("\n");
@@ -431,7 +431,7 @@ void PoolHelper::vObjectSnapshot(ObjectSnapshot* pPoolSnapshot)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  AM::pHeapMem()->Transient.m_pTiny->vAnalyse(iCountObjects);
+  AM::pHeaps()->Transient.m_pTiny->vAnalyse(iCountObjects);
 
   for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
     eCN eClass = (eCN)i_Index;
@@ -444,7 +444,7 @@ void PoolHelper::vObjectSnapshot(ObjectSnapshot* pPoolSnapshot)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  AM::pHeapMem()->Transient.m_pSmall->vAnalyse(iCountObjects);
+  AM::pHeaps()->Transient.m_pSmall->vAnalyse(iCountObjects);
   
   for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
     eCN eClass = (eCN)i_Index;
@@ -457,7 +457,7 @@ void PoolHelper::vObjectSnapshot(ObjectSnapshot* pPoolSnapshot)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  AM::pHeapMem()->Transient.m_pMedium->vAnalyse(iCountObjects);
+  AM::pHeaps()->Transient.m_pMedium->vAnalyse(iCountObjects);
   
   for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
     eCN eClass = (eCN)i_Index;
@@ -470,7 +470,7 @@ void PoolHelper::vObjectSnapshot(ObjectSnapshot* pPoolSnapshot)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  AM::pHeapMem()->Transient.m_pLarge->vAnalyse(iCountObjects);
+  AM::pHeaps()->Transient.m_pLarge->vAnalyse(iCountObjects);
   
   for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
     eCN eClass = (eCN)i_Index;
@@ -489,10 +489,10 @@ void PoolHelper::vObjectValidate(void)
 {
   _static_
   
-  AM::pHeapMem()->Transient.m_pTiny->vObjectValidate();
-  AM::pHeapMem()->Transient.m_pSmall->vObjectValidate();
-  AM::pHeapMem()->Transient.m_pMedium->vObjectValidate();
-  AM::pHeapMem()->Transient.m_pLarge->vObjectValidate();
+  AM::pHeaps()->Transient.m_pTiny->vObjectValidate();
+  AM::pHeaps()->Transient.m_pSmall->vObjectValidate();
+  AM::pHeaps()->Transient.m_pMedium->vObjectValidate();
+  AM::pHeaps()->Transient.m_pLarge->vObjectValidate();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -547,29 +547,29 @@ i8 PoolHelper::iPoolFree(void)
   _static_
 
   i8 iTransientTiny =
-     AM::pHeapMem()->Transient.m_pTiny->nFreeChunks() * C_SIZE_TINY_OBJECT;
+     AM::pHeaps()->Transient.m_pTiny->nFreeChunks() * C_SIZE_TINY_OBJECT;
   
   i8 iTransientSmall =
-     AM::pHeapMem()->Transient.m_pSmall->nFreeChunks() * C_SIZE_SMALL_OBJECT;
+     AM::pHeaps()->Transient.m_pSmall->nFreeChunks() * C_SIZE_SMALL_OBJECT;
   
   i8 iTransientMedium =
-     AM::pHeapMem()->Transient.m_pMedium->nFreeChunks() * C_SIZE_MEDIUM_OBJECT;
+     AM::pHeaps()->Transient.m_pMedium->nFreeChunks() * C_SIZE_MEDIUM_OBJECT;
   
   i8 iTransientLarge =
-     AM::pHeapMem()->Transient.m_pLarge->nFreeChunks() * C_SIZE_LARGE_OBJECT;
+     AM::pHeaps()->Transient.m_pLarge->nFreeChunks() * C_SIZE_LARGE_OBJECT;
   
   
 //  i8 iPersistentTiny =
-//     AM::pHeapMem()->Persistent.m_pTiny->nFreeChunks() * C_SIZE_TINY_OBJECT;
+//     AM::pHeaps()->Persistent.m_pTiny->nFreeChunks() * C_SIZE_TINY_OBJECT;
 //
 //  i8 iPersistentSmall =
-//     AM::pHeapMem()->Persistent.m_pSmall->nFreeChunks() * C_SIZE_SMALL_OBJECT;
+//     AM::pHeaps()->Persistent.m_pSmall->nFreeChunks() * C_SIZE_SMALL_OBJECT;
 //
 //  i8 iPersistentMedium =
-//     AM::pHeapMem()->Persistent.m_pMedium->nFreeChunks() * C_SIZE_MEDIUM_OBJECT;
+//     AM::pHeaps()->Persistent.m_pMedium->nFreeChunks() * C_SIZE_MEDIUM_OBJECT;
 //
 //  i8 iPersistentLarge =
-//     AM::pHeapMem()->Persistent.m_pLarge->nFreeChunks() * C_SIZE_LARGE_OBJECT;
+//     AM::pHeaps()->Persistent.m_pLarge->nFreeChunks() * C_SIZE_LARGE_OBJECT;
 
   
   i8 iTotalFree =
@@ -613,51 +613,51 @@ void PoolHelper::vRegionSummary()
   printf("\n");
   printf((char*)"   Transient TinyHeap   (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagTiny.azChar(),
-         AM::pHeapMem()->Transient.m_pTiny->nBufferCount(),
-         AM::pHeapMem()->Transient.m_pTiny->nCurrAllocated(),
-         AM::pHeapMem()->Transient.m_pTiny->nFreeChunks());
+         AM::pHeaps()->Transient.m_pTiny->nBufferCount(),
+         AM::pHeaps()->Transient.m_pTiny->nCurrAllocated(),
+         AM::pHeaps()->Transient.m_pTiny->nFreeChunks());
   
   printf((char*)"   Transient SmallHeap  (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagSmall.azChar(),
-         AM::pHeapMem()->Transient.m_pSmall->nBufferCount(),
-         AM::pHeapMem()->Transient.m_pSmall->nCurrAllocated(),
-         AM::pHeapMem()->Transient.m_pSmall->nFreeChunks());
+         AM::pHeaps()->Transient.m_pSmall->nBufferCount(),
+         AM::pHeaps()->Transient.m_pSmall->nCurrAllocated(),
+         AM::pHeaps()->Transient.m_pSmall->nFreeChunks());
   
   printf((char*)"   Transient MediumHeap (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagMedium.azChar(),
-         AM::pHeapMem()->Transient.m_pMedium->nBufferCount(),
-         AM::pHeapMem()->Transient.m_pMedium->nCurrAllocated(),
-         AM::pHeapMem()->Transient.m_pMedium->nFreeChunks());
+         AM::pHeaps()->Transient.m_pMedium->nBufferCount(),
+         AM::pHeaps()->Transient.m_pMedium->nCurrAllocated(),
+         AM::pHeaps()->Transient.m_pMedium->nFreeChunks());
   
   printf((char*)"   Transient LargeHeap  (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagLarge.azChar(),
-         AM::pHeapMem()->Transient.m_pLarge->nBufferCount(),
-         AM::pHeapMem()->Transient.m_pLarge->nCurrAllocated(),
-         AM::pHeapMem()->Transient.m_pLarge->nFreeChunks());
+         AM::pHeaps()->Transient.m_pLarge->nBufferCount(),
+         AM::pHeaps()->Transient.m_pLarge->nCurrAllocated(),
+         AM::pHeaps()->Transient.m_pLarge->nFreeChunks());
   
   printf((char*)"  Persistent TinyHeap   (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagTiny.azChar(),
-         AM::pHeapMem()->Persistent.m_pTiny->nBufferCount(),
-         AM::pHeapMem()->Persistent.m_pTiny->nCurrAllocated(),
-         AM::pHeapMem()->Persistent.m_pTiny->nFreeChunks());
+         AM::pHeaps()->Persistent.m_pTiny->nBufferCount(),
+         AM::pHeaps()->Persistent.m_pTiny->nCurrAllocated(),
+         AM::pHeaps()->Persistent.m_pTiny->nFreeChunks());
   
   printf((char*)"  Persistent SmallHeap  (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagSmall.azChar(),
-         AM::pHeapMem()->Persistent.m_pSmall->nBufferCount(),
-         AM::pHeapMem()->Persistent.m_pSmall->nCurrAllocated(),
-         AM::pHeapMem()->Persistent.m_pSmall->nFreeChunks());
+         AM::pHeaps()->Persistent.m_pSmall->nBufferCount(),
+         AM::pHeaps()->Persistent.m_pSmall->nCurrAllocated(),
+         AM::pHeaps()->Persistent.m_pSmall->nFreeChunks());
   
   printf((char*)"  Persistent MediumHeap (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagMedium.azChar(),
-         AM::pHeapMem()->Persistent.m_pMedium->nBufferCount(),
-         AM::pHeapMem()->Persistent.m_pMedium->nCurrAllocated(),
-         AM::pHeapMem()->Persistent.m_pMedium->nFreeChunks());
+         AM::pHeaps()->Persistent.m_pMedium->nBufferCount(),
+         AM::pHeaps()->Persistent.m_pMedium->nCurrAllocated(),
+         AM::pHeaps()->Persistent.m_pMedium->nFreeChunks());
   
   printf((char*)"  Persistent LargeHeap  (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagLarge.azChar(),
-         AM::pHeapMem()->Persistent.m_pLarge->nBufferCount(),
-         AM::pHeapMem()->Persistent.m_pLarge->nCurrAllocated(),
-         AM::pHeapMem()->Persistent.m_pLarge->nFreeChunks());
+         AM::pHeaps()->Persistent.m_pLarge->nBufferCount(),
+         AM::pHeaps()->Persistent.m_pLarge->nCurrAllocated(),
+         AM::pHeaps()->Persistent.m_pLarge->nFreeChunks());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -684,28 +684,28 @@ void PoolHelper::vValidateEnums(void)
       case HT_T_TINY:
         if (iSize >= C_SIZE_TINY_OBJECT)
           vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-                 "HeapMem::vValidateEnums: transient tiny class %lld %s is too big\n"_Stz,
+                 "Heaps::vValidateEnums: transient tiny class %lld %s is too big\n"_Stz,
                  eClass,aCN[eClass]);
         break;
         
       case HT_T_SMALL:
         if (iSize >= C_SIZE_SMALL_OBJECT)
           vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-                 "HeapMem::vValidateEnums: transient small class %lld %s is too big\n"_Stz,
+                 "Heaps::vValidateEnums: transient small class %lld %s is too big\n"_Stz,
                  eClass,aCN[eClass]);
         break;
         
       case HT_T_MEDIUM:
         if (iSize >= C_SIZE_MEDIUM_OBJECT)
           vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-                 "HeapMem::vValidateEnums: transient medium class %lld %s is too big\n"_Stz,
+                 "Heaps::vValidateEnums: transient medium class %lld %s is too big\n"_Stz,
                  eClass,aCN[eClass]);
         break;
         
       case HT_T_LARGE:
         if (iSize >= C_SIZE_LARGE_OBJECT)
           vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-                 "HeapMem::vValidateEnums: transient large class %lld %s is too big\n"_Stz,
+                 "Heaps::vValidateEnums: transient large class %lld %s is too big\n"_Stz,
                  eClass,aCN[eClass]);
         break;
          
@@ -714,34 +714,34 @@ void PoolHelper::vValidateEnums(void)
       case HT_P_TINY:
         if (iSize >= C_SIZE_SMALL_OBJECT)
           vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-                 "HeapMem::vValidateEnums: persistent tiny class %lld %s is too big\n"_Stz,
+                 "Heaps::vValidateEnums: persistent tiny class %lld %s is too big\n"_Stz,
                  eClass,aCN[eClass]);
         break;
         
       case HT_P_SMALL:
         if (iSize >= C_SIZE_SMALL_OBJECT)
           vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-                 "HeapMem::vValidateEnums: persistent small class %lld %s is too big\n"_Stz,
+                 "Heaps::vValidateEnums: persistent small class %lld %s is too big\n"_Stz,
                  eClass,aCN[eClass]);
         break;
         
       case HT_P_MEDIUM:
         if (iSize >= C_SIZE_MEDIUM_OBJECT)
           vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-                 "HeapMem::vValidateEnums: persistent medium class %lld %s is too big\n"_Stz,
+                 "Heaps::vValidateEnums: persistent medium class %lld %s is too big\n"_Stz,
                  eClass,aCN[eClass]);
         break;
         
       case HT_P_LARGE:
         if (iSize >= C_SIZE_LARGE_OBJECT)
           vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-                 "HeapMem::vValidateEnums: persistent large class %lld %s is too big\n"_Stz,
+                 "Heaps::vValidateEnums: persistent large class %lld %s is too big\n"_Stz,
                  eClass,aCN[eClass]);
         break;
                 
       default:
         vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-               "HeapMem::vValidateEnums: Invalid which heap: eHeap %lld\n"_Stz,
+               "Heaps::vValidateEnums: Invalid which heap: eHeap %lld\n"_Stz,
                eHeap);
     }
   }

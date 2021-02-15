@@ -71,7 +71,7 @@ Vector_t<VEC_CN,ITEM,MAX_ITEMS>* BASE::_pVector_t(void* aAddr)
 template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
 void* Vector_t<VEC_CN,ITEM,MAX_ITEMS>::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(VEC_CN);
+  void* pObject = Heaps::pAllocate(VEC_CN);
   
   return pObject;
 }
@@ -85,7 +85,7 @@ void Vector_t<VEC_CN,ITEM,MAX_ITEMS>::operator delete(void* pVectorAddress)
   Vector_t<VEC_CN,ITEM,MAX_ITEMS>* pVector =
     _pVector_t<VEC_CN,ITEM,MAX_ITEMS>(pVectorAddress);
   
-  HeapMem::vFree(pVector);
+  Heaps::vFree(pVector);
 }
 
 /*----------------------------------------------------------------------------*/

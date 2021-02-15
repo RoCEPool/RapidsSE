@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 void* Slab::operator new(size_t)
 {
-  Slab* pSlab = (Slab*)HeapMem::pAllocate(CN_SLAB);
+  Slab* pSlab = (Slab*)Heaps::pAllocate(CN_SLAB);
   
   return pPoolCheck<void*>(pSlab);
 }
@@ -25,7 +25,7 @@ void Slab::operator delete(void* pSlabAddress)
 {
   Slab* pSlab = static_cast<Slab*>(pSlabAddress);
   
-  HeapMem::vFree(pSlab);
+  Heaps::vFree(pSlab);
 }
 
 /*----------------------------------------------------------------------------*/

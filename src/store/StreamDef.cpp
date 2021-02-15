@@ -25,7 +25,7 @@ StreamDef* STORE::_pStreamDef(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* StreamDef::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_STREAMDEF);
+  void* pObject = Heaps::pAllocate(CN_STREAMDEF);
   
   return pObject;
 }
@@ -37,7 +37,7 @@ void StreamDef::operator delete(void* aAddr)
 {
   StreamDef* pStreamDef = reinterpret_cast<StreamDef*>(aAddr);
   
-  HeapMem::vFree(pStreamDef);
+  Heaps::vFree(pStreamDef);
 }
 
 /*----------------------------------------------------------------------------*/

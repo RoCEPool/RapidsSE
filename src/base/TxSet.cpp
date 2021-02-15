@@ -44,7 +44,7 @@ TxSet* BASE::_pTxSet(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* TxSet::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_TXSET);
+  void* pObject = Heaps::pAllocate(CN_TXSET);
   
   return pObject;
 }

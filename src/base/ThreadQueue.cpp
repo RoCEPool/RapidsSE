@@ -21,7 +21,7 @@ ThreadQueue* BASE::_pThreadQueue(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* ThreadQueue::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_THREADQUEUE);
+  void* pObject = Heaps::pAllocate(CN_THREADQUEUE);
   
   return pObject;
 }
@@ -33,7 +33,7 @@ void ThreadQueue::operator delete(void* aAddr)
 {
   ThreadQueue* pThreadQueue = reinterpret_cast<ThreadQueue*>(aAddr);
   
-  HeapMem::vFree(pThreadQueue);
+  Heaps::vFree(pThreadQueue);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -47,7 +47,7 @@ void* ListExoNode_t<ITEM>::operator new(size_t)
 {
   ListExoNode_t<ITEM>* pListExoNode_t;
   
-  pListExoNode_t = (ListExoNode_t<ITEM>*)HeapMem::pAllocate(CN_LISTEXONODE_t);
+  pListExoNode_t = (ListExoNode_t<ITEM>*)Heaps::pAllocate(CN_LISTEXONODE_t);
   
   return pListExoNode_t;
 }
@@ -60,7 +60,7 @@ void ListExoNode_t<ITEM>::operator delete(void* aListExoNode_t)
 {
   ListExoNode_t<ITEM>* pListExoNode_t = (ListExoNode_t<ITEM>*)aListExoNode_t;
 
-  HeapMem::vFree(pListExoNode_t);
+  Heaps::vFree(pListExoNode_t);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -244,7 +244,7 @@ void* ListExo_t<CLASSNO,ITEM>::operator new(size_t)
 {
   ListExo_t<CLASSNO,ITEM>* pListExo_t;
   
-  pListExo_t = (ListExo_t<CLASSNO,ITEM>*)HeapMem::pAllocate(CLASSNO);
+  pListExo_t = (ListExo_t<CLASSNO,ITEM>*)Heaps::pAllocate(CLASSNO);
   
   return pListExo_t;
 }
@@ -257,7 +257,7 @@ void ListExo_t<CLASSNO,ITEM>::operator delete(void* aListExo_t)
 {
   ListExo_t<CLASSNO,ITEM>* pListExo_t = (ListExo_t<CLASSNO,ITEM>*)aListExo_t;
 
-  HeapMem::vFree(pListExo_t);
+  Heaps::vFree(pListExo_t);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -949,7 +949,7 @@ void* ListExoIter_t<ITEM>::operator new(size_t)
   ListExoIter_t<ITEM>* pListExoIter_t;
   
   pListExoIter_t =
-    (ListExoIter_t<ITEM>*)HeapMem::pAllocate(CN_LISTEXOITER_t);
+    (ListExoIter_t<ITEM>*)Heaps::pAllocate(CN_LISTEXOITER_t);
   
   return pListExoIter_t;
 }
@@ -964,7 +964,7 @@ void ListExoIter_t<ITEM>::operator delete(void* aListExoIter_t)
 
   pListExoIter_t = (ListExoIter_t<ITEM>*)aListExoIter_t;
 
-  HeapMem::vFree(pListExoIter_t);
+  Heaps::vFree(pListExoIter_t);
 }
 
 /*----------------------------------------------------------------------------*/

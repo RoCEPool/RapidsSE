@@ -85,7 +85,7 @@ bool STORE::_bIsValidJob(eCN eClass)
 void* Job::operator new(size_t)
 {
   Job* pJob =
-  static_cast<Job*>(HeapMem::pAllocate(CN_JOB));
+  static_cast<Job*>(Heaps::pAllocate(CN_JOB));
   
   return pJob;
 }
@@ -105,7 +105,7 @@ void Job::operator delete(void* aAddress)
 {
   Job* pJob = static_cast<Job*>(aAddress);
   
-  HeapMem::vFree(pJob);
+  Heaps::vFree(pJob);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -52,7 +52,7 @@ PsxThd* BASE::_pPsxThd(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* PsxThd::operator new(size_t)
 {
-  void* pPsxThd = HeapMem::pAllocate(CN_PSXTHD);
+  void* pPsxThd = Heaps::pAllocate(CN_PSXTHD);
   
   return pPsxThd;
 }
@@ -64,7 +64,7 @@ void PsxThd::operator delete(void* pPsxThdAddress)
 {
   Object* pObject = reinterpret_cast<Object*>(pPsxThdAddress);
   
-  HeapMem::vFree(pObject);
+  Heaps::vFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/

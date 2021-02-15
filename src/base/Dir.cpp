@@ -34,7 +34,7 @@ Dir* BASE::_pDir(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Dir::operator new(size_t)
 {
-  void* pDir = HeapMem::pAllocate(CN_DIR);
+  void* pDir = Heaps::pAllocate(CN_DIR);
   
   return pDir;
 }
@@ -46,7 +46,7 @@ void Dir::operator delete(void* pDirAddress)
 {
   Object* pObject = reinterpret_cast<Object*>(pDirAddress);
   
-  HeapMem::vFree(pObject);
+  Heaps::vFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/

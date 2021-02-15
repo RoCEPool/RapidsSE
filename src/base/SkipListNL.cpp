@@ -28,7 +28,7 @@ SkipListNL* BASE::_pSkipList(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* SkipListNL::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_SKIPLIST);
+  void* pObject = Heaps::pAllocate(CN_SKIPLIST);
  
   return pObject;
 }
@@ -48,7 +48,7 @@ void SkipListNL::operator delete(void* pSkipListAddress)
 {
   SkipListNL* pSkipList = reinterpret_cast<SkipListNL*>(pSkipListAddress);
   
-  HeapMem::vFree(pSkipList);
+  Heaps::vFree(pSkipList);
 }
 
 /*----------------------------------------------------------------------------*/

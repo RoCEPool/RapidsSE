@@ -31,7 +31,7 @@ JobList* STORE::_pJobs(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* JobList::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_JOBLIST);
+  void* pObject = Heaps::pAllocate(CN_JOBLIST);
   
   return pObject;
 }

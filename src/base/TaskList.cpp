@@ -22,7 +22,7 @@ TaskList* BASE::_pTaskList(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* TaskList::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_TASKLIST);
+  void* pObject = Heaps::pAllocate(CN_TASKLIST);
   
   return pObject;
 }
@@ -42,7 +42,7 @@ void TaskList::operator delete(void* pTaskQueueAddress)
 {
   TaskList* pTaskQueue = reinterpret_cast<TaskList*>(pTaskQueueAddress);
   
-  HeapMem::vFree(pTaskQueue);
+  Heaps::vFree(pTaskQueue);
 }
 
 /*----------------------------------------------------------------------------*/

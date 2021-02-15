@@ -21,7 +21,7 @@ Queue* BASE::_pQueue(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Queue::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_QUEUE);
+  void* pObject = Heaps::pAllocate(CN_QUEUE);
   
   return pObject;
 }
@@ -41,7 +41,7 @@ void Queue::operator delete(void* pQueueAddress)
 {
   Queue* pQueue = reinterpret_cast<Queue*>(pQueueAddress);
   
-  HeapMem::vFree(pQueue);
+  Heaps::vFree(pQueue);
 }
 
 /*----------------------------------------------------------------------------*/

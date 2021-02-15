@@ -30,7 +30,7 @@ void Step::vPersistenceCheckpoint(void)
   
   vTrace("\nTaking checkpoint into file : '%s'\n"_Stz, sFilePath.azChar());
   
-  PersistenceHelper::vWritePersistentHeapMem(sFilePath);
+  PersistenceHelper::vWritePersistentHeaps(sFilePath);
     
   EXIT();
 }

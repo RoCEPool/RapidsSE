@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 void* Article::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_ARTICLE);
+  void* pObject = Heaps::pAllocate(CN_ARTICLE);
   
   return pObject;
 }
@@ -25,7 +25,7 @@ void Article::operator delete(void* pAddress)
 {
   Object* pObject = reinterpret_cast<Article*>(pAddress);
   
-  HeapMem::vFree(pObject);
+  Heaps::vFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/

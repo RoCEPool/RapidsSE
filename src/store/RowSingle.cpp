@@ -26,7 +26,7 @@ RowSingle* STORE::_pRowSingle(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* RowSingle::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_ROWSINGLE);
+  void* pObject = Heaps::pAllocate(CN_ROWSINGLE);
   
   return pObject;
 }
@@ -46,7 +46,7 @@ void RowSingle::operator delete(void* aAddr)
 {
   RowSingle* pRowSingle = reinterpret_cast<RowSingle*>(aAddr);
   
-  HeapMem::vFree(pRowSingle);
+  Heaps::vFree(pRowSingle);
 }
 
 /*----------------------------------------------------------------------------*/

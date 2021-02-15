@@ -30,7 +30,7 @@ Schedule* BASE::_pQueues(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Schedule::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_SCHEDULE);
+  void* pObject = Heaps::pAllocate(CN_SCHEDULE);
   
   return pObject;
 }

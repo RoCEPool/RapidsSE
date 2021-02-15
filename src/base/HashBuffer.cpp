@@ -25,7 +25,7 @@ HashBuffer* BASE::_pHashBuffer(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* HashBuffer::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_HASHBUFFER);
+  void* pObject = Heaps::pAllocate(CN_HASHBUFFER);
   
   return pObject;
 }
@@ -37,7 +37,7 @@ void HashBuffer::operator delete(void* aAddr)
 {
   HashBuffer* pHashBuffer = reinterpret_cast<HashBuffer*>(aAddr);
   
-  HeapMem::vFree(pHashBuffer);
+  Heaps::vFree(pHashBuffer);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -190,7 +190,7 @@ EndDefine
 #define __aNewFunction(CLASSNM,CN) \
   void* CLASSNM::operator new(size_t) \
   { \
-    void* pObject = HeapMem::pAllocate(CN); \
+    void* pObject = Heaps::pAllocate(CN); \
   \
     return pObject; \
   } \
@@ -204,7 +204,7 @@ EndDefine
   { \
     CLASSNM* pObject = reinterpret_cast<CLASSNM*>(aAddr); \
    \
-    HeapMem::vFree(pObject); \
+    Heaps::vFree(pObject); \
   } \
 EndDefine
 

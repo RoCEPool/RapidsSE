@@ -25,7 +25,7 @@ HashMap* BASE::_pHashMap(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* HashMap::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_HASHMAP);
+  void* pObject = Heaps::pAllocate(CN_HASHMAP);
   
   return pObject;
 }
@@ -45,7 +45,7 @@ void HashMap::operator delete(void* pHashMapAddress)
 {
   HashMap* pHashMap = reinterpret_cast<HashMap*>(pHashMapAddress);
   
-  HeapMem::vFree(pHashMap);
+  Heaps::vFree(pHashMap);
 }
 
 /*----------------------------------------------------------------------------*/

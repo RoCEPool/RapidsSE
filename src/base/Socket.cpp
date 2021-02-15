@@ -34,7 +34,7 @@ Socket* BASE::_pSocket(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Socket::operator new(size_t)
 {
-  void* pSocket = HeapMem::pAllocate(CN_SOCKET);
+  void* pSocket = Heaps::pAllocate(CN_SOCKET);
   
   return pSocket;
 }

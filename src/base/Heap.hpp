@@ -7,7 +7,7 @@ namespace BASE
 {
   class Heap : public PoolBuffer
   {
-  friend class HeapMem;
+  friend class Heaps;
   
   private:
     eHT         m_eHeap;          // heap kind

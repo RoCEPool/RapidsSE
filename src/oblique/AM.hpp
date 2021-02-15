@@ -81,7 +81,7 @@ namespace BASE       { class CodeCell;            class Loggable;
 namespace BASE            { class ReqTuple;                              }
 namespace BASE           { class Lock;            class Locks;       }
 namespace BASE              { class BufferPool;      class HeapBuffer;
-                              class HeapMem;         class PoolBuffer;
+                              class Heaps;         class PoolBuffer;
 
 class IvlLib;
 
@@ -194,7 +194,7 @@ namespace OBLIQUE
     static i8   nNodes(void);
     static JobList* pDemonJobs(void);
     static bool bHasStarted(void);
-    static HeapMem* pHeapMem(void);
+    static Heaps* pHeaps(void);
     static i8   nIndexEntries(void);
     static Article* pLexiconArticle(void);
     static JobList* pLocalJobs(void);

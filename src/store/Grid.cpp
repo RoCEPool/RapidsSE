@@ -33,7 +33,7 @@ Grid* STORE::_pGrid(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Grid::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_GRID);
+  void* pObject = Heaps::pAllocate(CN_GRID);
   
   return pObject;
 }

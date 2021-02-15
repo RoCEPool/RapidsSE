@@ -21,7 +21,7 @@ TextMedium* BASE::_pTextMedium(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* TextMedium::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_TEXTMEDIUM);
+  void* pObject = Heaps::pAllocate(CN_TEXTMEDIUM);
   
   return pObject;
 }
@@ -33,7 +33,7 @@ void TextMedium::operator delete(void* pTextAddress)
 {
   TextMedium* pTextMedium = reinterpret_cast<TextMedium*>(pTextAddress);
   
-  HeapMem::vFree(pTextMedium);
+  Heaps::vFree(pTextMedium);
 }
 
 /*----------------------------------------------------------------------------*/

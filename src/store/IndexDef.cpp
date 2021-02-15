@@ -48,7 +48,7 @@ IndexDef* STORE::_pIndexDef(void* pAddr)
 /*----------------------------------------------------------------------------*/
 void* IndexDef::operator new(size_t)
 {
-  Object* pIndexDef = HeapMem::pAllocate(CN_INDEXDEF);
+  Object* pIndexDef = Heaps::pAllocate(CN_INDEXDEF);
   
   return pIndexDef;
 }
@@ -60,7 +60,7 @@ void IndexDef::operator delete(void* pAddress)
 {
   IndexDef* pIndexDef = reinterpret_cast<IndexDef*>(pAddress);
   
-  HeapMem::vFree(pIndexDef);
+  Heaps::vFree(pIndexDef);
 }
 
 /*----------------------------------------------------------------------------*/

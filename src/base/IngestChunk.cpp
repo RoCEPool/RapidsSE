@@ -24,7 +24,7 @@ IngestChunk* BASE::_pIngestChunk(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* IngestChunk::operator new(size_t)
 {
-  IngestChunk* pIngestChunk = (IngestChunk*)HeapMem::pAllocate(CN_IOCHUNK);
+  IngestChunk* pIngestChunk = (IngestChunk*)Heaps::pAllocate(CN_IOCHUNK);
   
   return pPoolCheck<void*>(pIngestChunk);
 }
@@ -36,7 +36,7 @@ void IngestChunk::operator delete(void* pIngestChunkAddress)
 {
   IngestChunk* pIngestChunk = static_cast<IngestChunk*>(pIngestChunkAddress);
   
-  HeapMem::vFree(pIngestChunk);
+  Heaps::vFree(pIngestChunk);
 }
 
 /*----------------------------------------------------------------------------*/

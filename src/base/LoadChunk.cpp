@@ -26,7 +26,7 @@ LoadChunk* BASE::_pLoadChunk(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* LoadChunk::operator new(size_t)
 {
-  LoadChunk* pLoadChunk = (LoadChunk*)HeapMem::pAllocate(CN_LOADCHUNK);
+  LoadChunk* pLoadChunk = (LoadChunk*)Heaps::pAllocate(CN_LOADCHUNK);
   
   return pPoolCheck<void*>(pLoadChunk);
 }
@@ -38,7 +38,7 @@ void LoadChunk::operator delete(void* pLoadChunkAddress)
 {
   LoadChunk* pLoadChunk = static_cast<LoadChunk*>(pLoadChunkAddress);
   
-  HeapMem::vFree(pLoadChunk);
+  Heaps::vFree(pLoadChunk);
 }
 
 /*----------------------------------------------------------------------------*/

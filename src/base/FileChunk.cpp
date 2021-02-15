@@ -24,7 +24,7 @@ FileChunk* BASE::_pFileChunk(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* FileChunk::operator new(size_t)
 {
-  FileChunk* pFileChunk = (FileChunk*)HeapMem::pAllocate(CN_IOCHUNK);
+  FileChunk* pFileChunk = (FileChunk*)Heaps::pAllocate(CN_IOCHUNK);
   
   return pPoolCheck<void*>(pFileChunk);
 }
@@ -36,7 +36,7 @@ void FileChunk::operator delete(void* pFileChunkAddress)
 {
   FileChunk* pFileChunk = static_cast<FileChunk*>(pFileChunkAddress);
   
-  HeapMem::vFree(pFileChunk);
+  Heaps::vFree(pFileChunk);
 }
 
 /*----------------------------------------------------------------------------*/

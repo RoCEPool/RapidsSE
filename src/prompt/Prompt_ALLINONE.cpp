@@ -2017,7 +2017,7 @@ PromptFun __Prompt_heapSummary (
 bool PROMPT::bPrompt_heapSummary(SePrompt* pPrompt)
 {
   
-  HeapMem::vSummaryReport();
+  Heaps::vSummaryReport();
   
   return true;
 }

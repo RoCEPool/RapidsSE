@@ -75,7 +75,7 @@ LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>* BASE::_pLatticeNL(void* aAddr)
 template <eCN LAT_CN, class ITEM, i8 MAX_ITEMS>
 void* LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(LAT_CN);
+  void* pObject = Heaps::pAllocate(LAT_CN);
   
   return pObject;
 }
@@ -89,7 +89,7 @@ void LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::operator delete(void* aAddress)
   LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>* pLattice =
     _pLatticeNL<LAT_CN,ITEM,MAX_ITEMS>(aAddress);
   
-  HeapMem::vFree(pLattice);
+  Heaps::vFree(pLattice);
 }
 
 /*----------------------------------------------------------------------------*/

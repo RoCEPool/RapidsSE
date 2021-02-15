@@ -41,7 +41,7 @@ PathIdentifier* STORE::_pPathIdentifier(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* PathIdentifier::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_PATHIDENTIFIER);
+  void* pObject = Heaps::pAllocate(CN_PATHIDENTIFIER);
   
   return pObject;
 }
@@ -53,7 +53,7 @@ void PathIdentifier::operator delete(void* aAddr)
 {
   PathIdentifier* pPathIdentifier = reinterpret_cast<PathIdentifier*>(aAddr);
   
-  HeapMem::vFree(pPathIdentifier);
+  Heaps::vFree(pPathIdentifier);
 }
 
 /*----------------------------------------------------------------------------*/

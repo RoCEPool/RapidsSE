@@ -775,39 +775,39 @@ void BufferPool::vPrintProgress(void)
 
   vTrace("   Transient SmallHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagSmall.azChar(),
-         AM::pHeapMem()->Transient.m_pSmall->nBufferCount(),
-         AM::pHeapMem()->Transient.m_pSmall->nCurrAllocated(),
-         AM::pHeapMem()->Transient.m_pSmall->nFreeChunks());
+         AM::pHeaps()->Transient.m_pSmall->nBufferCount(),
+         AM::pHeaps()->Transient.m_pSmall->nCurrAllocated(),
+         AM::pHeaps()->Transient.m_pSmall->nFreeChunks());
 
   vTrace("  Transient MediumHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagMedium.azChar(),
-         AM::pHeapMem()->Transient.m_pMedium->nBufferCount(),
-         AM::pHeapMem()->Transient.m_pMedium->nCurrAllocated(),
-         AM::pHeapMem()->Transient.m_pMedium->nFreeChunks());
+         AM::pHeaps()->Transient.m_pMedium->nBufferCount(),
+         AM::pHeaps()->Transient.m_pMedium->nCurrAllocated(),
+         AM::pHeaps()->Transient.m_pMedium->nFreeChunks());
 
   vTrace("   Transient LargeHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagLarge.azChar(),
-         AM::pHeapMem()->Transient.m_pLarge->nBufferCount(),
-         AM::pHeapMem()->Transient.m_pLarge->nCurrAllocated(),
-         AM::pHeapMem()->Transient.m_pLarge->nFreeChunks());
+         AM::pHeaps()->Transient.m_pLarge->nBufferCount(),
+         AM::pHeaps()->Transient.m_pLarge->nCurrAllocated(),
+         AM::pHeaps()->Transient.m_pLarge->nFreeChunks());
 
   vTrace("   Persistent SmallHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagSmall.azChar(),
-         AM::pHeapMem()->Persistent.m_pSmall->nBufferCount(),
-         AM::pHeapMem()->Persistent.m_pSmall->nCurrAllocated(),
-         AM::pHeapMem()->Persistent.m_pSmall->nFreeChunks());
+         AM::pHeaps()->Persistent.m_pSmall->nBufferCount(),
+         AM::pHeaps()->Persistent.m_pSmall->nCurrAllocated(),
+         AM::pHeaps()->Persistent.m_pSmall->nFreeChunks());
 
   vTrace("  Persistent MediumHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagMedium.azChar(),
-         AM::pHeapMem()->Persistent.m_pMedium->nBufferCount(),
-         AM::pHeapMem()->Persistent.m_pMedium->nCurrAllocated(),
-         AM::pHeapMem()->Persistent.m_pMedium->nFreeChunks());
+         AM::pHeaps()->Persistent.m_pMedium->nBufferCount(),
+         AM::pHeaps()->Persistent.m_pMedium->nCurrAllocated(),
+         AM::pHeaps()->Persistent.m_pMedium->nFreeChunks());
 
   vTrace("   Persistent LargeHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagLarge.azChar(),
-         AM::pHeapMem()->Persistent.m_pLarge->nBufferCount(),
-         AM::pHeapMem()->Persistent.m_pLarge->nCurrAllocated(),
-         AM::pHeapMem()->Persistent.m_pLarge->nFreeChunks());
+         AM::pHeaps()->Persistent.m_pLarge->nBufferCount(),
+         AM::pHeaps()->Persistent.m_pLarge->nCurrAllocated(),
+         AM::pHeaps()->Persistent.m_pLarge->nFreeChunks());
 
   //vVerifyPool();
   

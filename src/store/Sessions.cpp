@@ -33,7 +33,7 @@ Sessions* STORE::_pSessions(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Sessions::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_SESSIONS);
+  void* pObject = Heaps::pAllocate(CN_SESSIONS);
   
   return pObject;
 }
@@ -45,7 +45,7 @@ void Sessions::operator delete(void* aAddress)
 {
   Sessions* pSessions = reinterpret_cast<Sessions*>(aAddress);
   
-  HeapMem::vFree(pSessions);
+  Heaps::vFree(pSessions);
 }
 
 /*----------------------------------------------------------------------------*/

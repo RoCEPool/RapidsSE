@@ -54,7 +54,7 @@ IndexTree* STORE::_pIndexTree(void* pAddr)
 /*----------------------------------------------------------------------------*/
 void* IndexTree::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_INDEXTREE);
+  void* pObject = Heaps::pAllocate(CN_INDEXTREE);
   
   return pObject;
 }
@@ -66,7 +66,7 @@ void IndexTree::operator delete(void* pDataAddress)
 {
   IndexTree* pIndexTree = reinterpret_cast<IndexTree*>(pDataAddress);
   
-  HeapMem::vFree(pIndexTree);
+  Heaps::vFree(pIndexTree);
 }
 
 /*----------------------------------------------------------------------------*/

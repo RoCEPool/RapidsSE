@@ -22,7 +22,7 @@ Tx* BASE::_pTx(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Tx::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_TXSET);
+  void* pObject = Heaps::pAllocate(CN_TXSET);
 
   return pObject;
 }
@@ -42,7 +42,7 @@ void Tx::operator delete(void* pTxAddress)
 {
   Tx* pTx = reinterpret_cast<Tx*>(pTxAddress);
   
-  HeapMem::vFree(pTx);
+  Heaps::vFree(pTx);
 }
 
 /*----------------------------------------------------------------------------*/
