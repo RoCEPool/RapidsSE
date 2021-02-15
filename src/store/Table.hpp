@@ -5,11 +5,8 @@
 
 #include "Index.hpp"
 
-
 namespace STORE
 {
-  static const i8    C_SORT_REGION_DELTA = C_1GB * 128;
-
   class Table : public Object
   {
   private:
