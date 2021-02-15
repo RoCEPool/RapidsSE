@@ -225,8 +225,8 @@ namespace OBLIQUE
     static Word* pRootConstant(void);
     static void vRootConstant(Word* pRootConstant);
     static Dic* pDicRoot(void);
-    static Word* pRootWord(void);
-    static void vRootWord(Word* pRootWord);
+    static Word* pWordRoot(void);
+    static void vRootWord(Word* pWordRoot);
     static Statistics* pStatistics(void);
     static Steps* pSteps(void);
     static PoolBuffer* pTakenBuffers(void);

@@ -90,7 +90,7 @@ Word::Word(Stz* szWordNm)
   m_eWord      = WK_ROUTINE;
 
   m_bBreakPt   = false;
-  m_pCategory  = AM::pRootWord() ? AM::pRootWord() : this;
+  m_pCategory  = AM::pWordRoot() ? AM::pWordRoot() : this;
   //m_pDic     = pDic;
   m_iEpoch     = AM::iEpoch();
   m_bImmediate = false;

@@ -56,7 +56,6 @@ namespace STORE
     Resources     m_oResources;
     Article*      m_pRootArcticle;
     Word*         m_pRootConstant;
-    Word*         m_pRootWord;
     Schedule*     m_pSchedule;
     Sessions*     m_pSessions;
     Statistics    m_oStatistics;
@@ -67,7 +66,8 @@ namespace STORE
     Word*         m_pTenants;
     TempName      m_oTempName;
     TxSet*        m_pTxSet;
-  
+    Word*         m_pWordRoot;
+
     // must be last
     Footer m_xFooter;
     

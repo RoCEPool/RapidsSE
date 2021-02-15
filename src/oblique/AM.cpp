@@ -228,7 +228,7 @@ Resources* AM::pResources(void) {
 Article* AM::pRootArticle(void)     { return gpAttachMap->m_pRootArcticle;    }
 Word* AM::pRootConstant(void) { return gpAttachMap->m_pRootConstant;          }
 Dic* AM::pDicRoot(void)       { return gpAttachMap->m_pDicRoot;               }
-Word* AM::pRootWord(void)     { return gpAttachMap->m_pRootWord;              }
+Word* AM::pWordRoot(void)     { return gpAttachMap->m_pWordRoot;              }
 Statistics* AM::pStatistics(void)   { return & gpAttachMap->m_oStatistics;    }
 Steps* AM::pSteps(void)   { return gpAttachMap->m_pSteps;      }
 
@@ -360,8 +360,8 @@ void AM::vDropTaskLock(Task* pTask) {
 void AM::vRootConstant(Word* pRootConstant) {
   gpAttachMap->m_pRootConstant = pRootConstant;
 }
-void AM::vRootWord(Word* pRootWord) {
-  gpAttachMap->m_pRootWord = pRootWord;
+void AM::vRootWord(Word* pWordRoot) {
+  gpAttachMap->m_pWordRoot = pWordRoot;
 }
 void AM::vGrabTaskLock(Task* pTask) {
   pTask->vGrabTaskLock();
