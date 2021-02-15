@@ -5,7 +5,7 @@
 
 #include "Resources.hpp" //?
 
-namespace STORE { class Objects; }
+namespace STORE { class Jobs; class Objects; }
 
 namespace STORE
 {
@@ -41,10 +41,12 @@ namespace STORE
     BufferMap*    m_pBufferMap;
     BufferPool*   m_pBufferPool;
     ClassFlags    m_oClassFlags;
+    Dic*          m_pDicRoot;
     i8            m_iEpoch;
     Format        m_oFormat;
     Grid*         m_pGrid;
     Heaps         m_xHeaps;
+    Jobs*         m_pJobs;
     Article*      m_pLexiconArticle;
     Locks         m_oLocks;
     Objects*      m_pObjects;
@@ -54,29 +56,18 @@ namespace STORE
     Resources     m_oResources;
     Article*      m_pRootArcticle;
     Word*         m_pRootConstant;
-    Dic*          m_pRootDic;
     Word*         m_pRootWord;
     Schedule*     m_pSchedule;
     Sessions*     m_pSessions;
     Statistics    m_oStatistics;
     Steps*        m_pSteps;
     i8            m_iStop;
+    bool          m_bSupervisorHalt;
     SysArgs       m_xSysArgs;
     Word*         m_pTenants;
     TempName      m_oTempName;
     TxSet*        m_pTxSet;
   
-    struct {
-      
-      JobList*  m_pDemonJobs;
-      JobList*  m_pLocalJobs;
-      JobList*  m_pOriginatingJobs;
-      JobList*  m_pParticipatingJobs;
-      
-      bool m_bSupervisorHalt;
-
-    } m_xStore;
-
     // must be last
     Footer m_xFooter;
     

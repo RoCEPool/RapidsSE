@@ -247,11 +247,11 @@ void vTest7(void)
   
   Arrange* pArrange = new Arrange;
   
-  Dic* pRootDic = AM::pRootDic();
+  Dic* pDicRoot = AM::pDicRoot();
   
   Word* pWord = nullptr;
   
-  while ( (pWord = pRootDic->pEachWord(pWord)) )
+  while ( (pWord = pDicRoot->pEachWord(pWord)) )
     pArrange->vInsert(pWord->szWordNm(),pWord);
   
   pArrange->vSequence();

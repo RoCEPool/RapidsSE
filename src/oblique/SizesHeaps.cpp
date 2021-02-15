@@ -250,7 +250,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(HashSet),            HT_T_LARGE   ,0 }, // CN_HASHSET
   { sizeof(HashMap),            HT_T_TINY    ,0 }, // CN_HASHMAP
   { sizeof(HeapBuffer),         HT_INVALID   ,0 }, // CN_HEAPBUFFER
-  { sizeof(Heaps),            HT_INVALID   ,0 }, // CN_HEAPMEM
+  { sizeof(Heaps),              HT_INVALID   ,0 }, // CN_HEAPMEM
 
   { 'I' - ('A' - 1),            HT_INVALID   ,0 }, // CN__I__
   { sizeof(Index),              HT_T_TINY    ,0 }, // CN_INDEX

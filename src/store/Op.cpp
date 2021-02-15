@@ -430,7 +430,7 @@ void Op::vInitOperandHandlers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
-  Dic* pRootDic = AM::pRootDic();
+  Dic* pDicRoot = AM::pDicRoot();
   
   s32 sHandlerNm;
   
@@ -441,7 +441,7 @@ void Op::vInitOperandHandlers(void)
     
     //vTrace("Handler: %s\n"_Stz,sHandlerNm.szStz());
     
-    Word* pHandler = pRootDic->pFindWord(sHandlerNm);
+    Word* pHandler = pDicRoot->pFindWord(sHandlerNm);
     if (! pHandler)
       vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
              "Unable to find operand handler for: %s"_Stz,

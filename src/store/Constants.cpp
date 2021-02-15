@@ -62,7 +62,7 @@ extern Stz* gsBuildBranch;
 /*----------------------------------------------------------------------------*/
 void Constants::vAddConstant(Stz* szName, i8 iVal)
 {
-  Word* pNewWord = new(AM::pRootDic()) Word(szName);
+  Word* pNewWord = new(AM::pDicRoot()) Word(szName);
   
   pNewWord->vCategory(AM::pRootConstant());
   
@@ -78,7 +78,7 @@ void Constants::vAddConstant(Stz* szName, i8 iVal)
 /*----------------------------------------------------------------------------*/
 void Constants::vAddConstant(Stz* szName, Stz* szVal)
 {
-  Word* pNewWord = new(AM::pRootDic()) Word(szName);
+  Word* pNewWord = new(AM::pDicRoot()) Word(szName);
   
   CellSingle xVar;
   xVar = szVal;
@@ -149,7 +149,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("true"_Stz,    (i8)1);
   vAddConstant("false"_Stz,   (i8)0);
   
-  vAddConstant("RAPIDSSE_VERSION_STRING"_Stz, (Stz*)RAPIDSSE_VERSION_STRING);
+  vAddConstant("RAPIDSSE_VERSION_STRING"_Stz, AM::szVersionString());
   
   vAddConstant("C_BUILD_GIT_HASH"_Stz, gsBuildGitHash);
   vAddConstant("C_BUILD_DATE"_Stz,     gsBuildDate);

@@ -24,6 +24,7 @@
 #include "Result.hpp"
 #include "Job.hpp"
 #include "JobList.hpp"
+#include "Jobs.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
 
@@ -72,7 +73,6 @@ extern s256   gi_szaArgv[];
 
 pthread_key_t giTLS_TaskKey   = C_UNKNOWN;
 pthread_key_t giTLS_ThreadKey = C_UNKNOWN;
-
 
 /*----------------------------------------------------------------------------*/
 /* main entry                                                                 */
@@ -796,7 +796,7 @@ void Engine::vGetWelcome(s256& sWelcome)
   
   sWelcome.vSprint("RapidsSE %s (%s version, pid %lld, git %s)"_Stz,
                    
-                   RAPIDSSE_VERSION_STRING,
+                   AM::szVersionString(),
                    szRelDbg,
                    Process::iGetPid(),
                    gsBuildGitHash
@@ -1516,7 +1516,7 @@ void Engine::vStartSystem(void)
   if (AM::bVerboseProgress())
     vInfo("\n+\n+ %lld) System Start\n+\n"_Stz,giProgressPoint++);
   
-  //ASSERT( ! AM::pRootDic()->bHasWords() );
+  //ASSERT( ! AM::pDicRoot()->bHasWords() );
     
   gpAttachMap->vRecordArguments(&gxCmdLineArgs);
   
@@ -1532,13 +1532,13 @@ void Engine::vStartSystem(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // job lists
   
-  gpAttachMap->m_xStore.m_pDemonJobs         =
+  gpAttachMap->m_pJobs->m_pDemonJobs         =
     new JobList(bJobCompare,JL_DEMON);
-  gpAttachMap->m_xStore.m_pLocalJobs         =
+  gpAttachMap->m_pJobs->m_pLocalJobs         =
     new JobList(bJobCompare,JL_LOCAL);
-  gpAttachMap->m_xStore.m_pOriginatingJobs   =
+  gpAttachMap->m_pJobs->m_pOriginatingJobs   =
     new JobList(bJobCompare,JL_ORIGINATING);
-  gpAttachMap->m_xStore.m_pParticipatingJobs =
+  gpAttachMap->m_pJobs->m_pParticipatingJobs =
     new JobList(bJobCompare,JL_PARTICIPATING);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

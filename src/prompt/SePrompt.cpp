@@ -877,14 +877,14 @@ bool SePrompt::bIsPromptWord(void)
   s32 sWordNm;
   sWordNm = pTkn0->szChars();
   
-  Dic* pRootDic = AM::pRootDic();
+  Dic* pDicRoot = AM::pDicRoot();
 
-  Word* pWord = pRootDic->pFindWord(sWordNm);
+  Word* pWord = pDicRoot->pFindWord(sWordNm);
   
   if (! pWord)
     return false;
     
-  Word* pPromptCatg = pRootDic->pFindWord("\\prompt"_Stz);
+  Word* pPromptCatg = pDicRoot->pFindWord("\\prompt"_Stz);
   if (pPromptCatg == pWord->pCategory())
     return true;
   
@@ -1091,7 +1091,7 @@ void SePrompt::vPromptUser(void)
         bLowMem               ? "*LOWMEMORY* "  : "",
         AM::pSteps()     ? "*STEPTIMING* " : "",
         
-        RAPIDSSE_VERSION_STRING,
+        AM::szVersionString(),
 #ifdef WITH_DEBUG_VERSION
         "debug",
 #else

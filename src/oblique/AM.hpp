@@ -146,6 +146,12 @@ namespace OBLIQUE
   class AM
   {
   public:
+    static Stz*  szVersionString(void);
+    static i8    iVersionNumber(void);
+
+    static Stz*  szFormatString(void);
+    static i8    iFormatNumber(void);
+
     // args
     static bool bDebugIndex(void);
     static bool bDebugMode(void);
@@ -218,7 +224,7 @@ namespace OBLIQUE
     static Article* pRootArticle(void);
     static Word* pRootConstant(void);
     static void vRootConstant(Word* pRootConstant);
-    static Dic* pRootDic(void);
+    static Dic* pDicRoot(void);
     static Word* pRootWord(void);
     static void vRootWord(Word* pRootWord);
     static Statistics* pStatistics(void);
