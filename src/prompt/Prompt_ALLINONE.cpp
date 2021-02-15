@@ -75,6 +75,8 @@ PromptFun __Prompt_antlr (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_antlr(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+  
   vTrace("_antrl: %s\n"_Stz,pPrompt->szOriginalCommand());
 
   // Read in and parse the plan graph definitions
@@ -120,6 +122,8 @@ PromptFun __Prompt_apiDemo (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_apiDemo(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   if (pPrompt->pInpTknVec()->nItems() > 1 &&
       pPrompt->pInpTknVec()->pGet(1)->bSame("tableScan"_Stz))
     
@@ -444,6 +448,8 @@ PromptFun __Prompt_args (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_args(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   AM::vPrintArguments();
 
   return true;
@@ -474,6 +480,8 @@ PromptFun __Prompt_ascii (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_ascii(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   
   i8 iNumTokens = pInpTknVec->nItems();
@@ -545,6 +553,8 @@ PromptFun __Prompt_attachMap (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_attachMap(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   if (AM::bAttached())
     AM::vPrintAttachMap();
   
@@ -574,6 +584,8 @@ PromptFun __Prompt_bp (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_bp(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   
   BufferPool::vReport();
   
@@ -603,6 +615,8 @@ PromptFun __Prompt_bpa (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_bpa(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   
   PoolHelper::vPoolAnalyze();
   
@@ -632,6 +646,8 @@ PromptFun __Prompt_bye (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_bye(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   pPrompt->vContinue(false);
   
   return true;
@@ -660,6 +676,8 @@ PromptFun __Prompt_calc (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_calc(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   TokenVec* pTknVec = pPrompt->pInpTknVec();
 
 //  Calculator* pCalculator = new Calculator;
@@ -714,6 +732,8 @@ PromptFun __Prompt_cancel (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_cancel(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
 
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   
@@ -769,6 +789,8 @@ PromptFun __Prompt_cd (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_cd(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   s256 sDir;
   
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
@@ -815,7 +837,9 @@ extern SizeHeap  gxaSizeHeap[];
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_classes(SePrompt* pPrompt)
-{  
+{
+  RASSERT(pPrompt);
+  
   char cGroup;
   s256 sName;
   
@@ -935,6 +959,8 @@ extern PromptCatalog gxPromptCatalog;
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_cmds(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   
   RASSERT(0);
   
@@ -966,6 +992,8 @@ PromptFun __Prompt_config (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_config(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   s32 sShmSize;
   MagLib::vByteMag(AM::iRegionSize(), sShmSize);
   
@@ -1011,6 +1039,8 @@ PromptFun __Prompt_constants (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_constants(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   vTrace("  C_LOW_BUFFERS       = %lld\n"_Stz,C_LOW_BUFFERS);
   vTrace("  C_MAX_BCD_PRECISION = %lld\n"_Stz,C_MAX_BCD_PRECISION);
   vTrace("  C_MAX_COLUMNS       = %lld\n"_Stz,C_MAX_COLUMNS);
@@ -1063,6 +1093,8 @@ PromptFun __Prompt_ddlLock (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_ddlLock(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   vTrace("  DdlLock : %016x\n"_Stz,AM::pDdlLock()->uLockWord());
 
   return true;
@@ -1095,6 +1127,8 @@ PromptFun __Prompt_describe (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_describe(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   
   i8 iNumTokens = pInpTknVec->nItems();
@@ -1127,6 +1161,8 @@ PromptFun __Prompt_dlist (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_dlist(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   vTrace("------------------------------------\n"_Stz);
   vTrace("Demon List\n"_Stz);
   vTrace("------------------------------------\n"_Stz);
@@ -1161,6 +1197,8 @@ PromptFun __Prompt_dsv (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_dsv(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   AM::pGrid()->vDsv();
   
   return true;
@@ -1189,6 +1227,8 @@ PromptFun __Prompt_dumpTokens (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_dumpTokens(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   i8 iNumTokens = pInpTknVec->nItems();
   
@@ -1232,6 +1272,8 @@ PromptFun __Prompt_enums (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_enums(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   vTrace("Enums:\n"_Stz);
 
   vTrace("  eAC: api call kind\n"_Stz);
@@ -1294,6 +1336,8 @@ PromptFun __Prompt_errno (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_errno(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   i8 iErrNo = 0;
 
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
@@ -1346,6 +1390,8 @@ PromptFun __Prompt_executing (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_executing(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   AM::pSchedule()->vDumpExecutingSet();
 
   return true;
@@ -1374,6 +1420,8 @@ PromptFun __Prompt_fact (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_fact(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
 //  TokenVec* pTknVec = pPrompt->pInpTknVec();
 //  
 //  vTrace("... Fact ...\n"_Stz);
@@ -1421,7 +1469,9 @@ PromptFun __Prompt_file (
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_file(SePrompt* pPrompt)
-{  
+{
+  RASSERT(pPrompt);
+  
   File::vStatistics();
   
   return true;
@@ -1450,6 +1500,8 @@ PromptFun __Prompt_fileCat (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_fileCat(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   s256 sFile;
 
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
@@ -1504,6 +1556,8 @@ PromptFun __Prompt_fileProc (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_fileProc(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   s256 sFileInp;
   s256 sFileOut;
 
@@ -1591,6 +1645,8 @@ int PROMPT::iFileRandCompare(const void* aLeft, const void* aRight)
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_fileRand(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   s256 sPathIn;
   s256 sPathOut;
 
@@ -1720,6 +1776,8 @@ void vHuh(d8 d)
 
 bool PROMPT::bPrompt_floats(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   struct xConv x;
   
   vTrace("+dbl_min "_Stz); vHuh(DBL_MIN);   vTrace("\n"_Stz);
@@ -1818,6 +1876,8 @@ PromptFun __Prompt_funs (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_funs(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   if (AM::bMetadata()) {
     vTrace("metadata: (function VARCHAR)\n"_Stz);
   }
@@ -1927,6 +1987,8 @@ PromptFun __Prompt_giveMem (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_giveMem(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   gpBufferPool->vGiveBuffers();
   
   return true;
@@ -1955,6 +2017,8 @@ PromptFun __Prompt_globals (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_globals(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   AM::vPrintGlobals();
   
   return true;
@@ -1984,6 +2048,8 @@ PromptFun __Prompt_hashDefs (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_hashDefs(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   
   
   vTrace("\n"_Stz);
@@ -2014,6 +2080,8 @@ PromptFun __Prompt_heapSummary (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_heapSummary(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   
   Heaps::vSummaryReport();
   
@@ -2045,6 +2113,8 @@ PromptFun __Prompt_help (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_help(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   vTrace("Help\n"_Stz);
   
 //  SysCall oSysCall;
@@ -2085,6 +2155,8 @@ PromptFun __Prompt_hexdump (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_hexdump(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
 
   i8 iNumTokens = pInpTknVec->nItems();
@@ -2124,6 +2196,8 @@ PromptFun __Prompt_how (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_how(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   
   i8 nTokens = pInpTknVec->nItems();
@@ -2168,6 +2242,8 @@ PromptFun __Prompt_hw (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_hw(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   s32 sMem;
   MagLib::vByteMag(Hardware::iPhysicalMemory(),sMem);
 
@@ -2210,6 +2286,8 @@ PromptFun __Prompt_indexEntries (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_indexEntries(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
 
   ASSERT(pInpTknVec->pGet(0)->bSame("indexEntries"_Stz));
@@ -2264,6 +2342,8 @@ PromptFun __Prompt_job (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_job(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   Token* pArg0 = nullptr;
   Token* pArg1 = nullptr;
   
@@ -2317,6 +2397,8 @@ PromptFun __Prompt_limits (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_limits(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   vTrace("\n"_Stz);
   
   vTrace("  C_MAX_COLUMNS  = %lld\n"_Stz,C_MAX_COLUMNS);
@@ -2351,6 +2433,8 @@ PromptFun __Prompt_llist (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_llist(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   vTrace("------------------------------------\n"_Stz);
   vTrace("Local List\n"_Stz);
   vTrace("------------------------------------\n"_Stz);
@@ -2385,6 +2469,8 @@ PromptFun __Prompt_locks (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_locks(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   AM::pLocks()->vReport();
   
   return true;
@@ -2413,6 +2499,8 @@ PromptFun __Prompt_log (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_log(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   
   AM::vLog(pInpTknVec);
@@ -2443,6 +2531,8 @@ PromptFun __Prompt_logNote (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_logNote(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
 
   ASSERT(pInpTknVec->pGet(0)->bSame("logNote"_Stz));
@@ -2480,6 +2570,8 @@ extern Log* gpLog;
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_logSection(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
 
   if (pInpTknVec->nTokens() < 1)
@@ -2528,6 +2620,8 @@ PromptFun __Prompt_logWrite (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_logWrite(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   i8 iNumTokens = pInpTknVec->nItems();
   
@@ -2568,6 +2662,8 @@ PromptFun __Prompt_ls (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_ls(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   Dir* pDir;
   s256 sDirPath;
   s256 sEntryNm;
@@ -2625,6 +2721,8 @@ PromptFun __Prompt_lvl (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_lvl(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   i8 i_Next = 0;
   
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
@@ -2672,6 +2770,8 @@ PromptFun __Prompt_masks (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_masks(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   vTrace("\n"_Stz);
 
   vTrace("C_SIZE_POOL_BUFFER      0x%llx\n"_Stz,C_SIZE_POOL_BUFFER);
@@ -2704,6 +2804,8 @@ PromptFun __Prompt_memTest (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_memTest(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   MemTest* pMemTest = new MemTest;
   
   MemLib::vDumpWords(pMemTest,sizeof(MemTest));
@@ -2741,6 +2843,8 @@ PromptFun __Prompt_memory (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_memory(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   bool bReset = false;
   
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
@@ -2779,6 +2883,8 @@ PromptFun __Prompt_memoryLeaks (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_memoryLeaks(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   i8 nLeaksDetected = 0;
   
   // force memory leaks test
@@ -2908,6 +3014,8 @@ L_END:
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_memoryLeaks_dump(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   PoolHelper::vObjectDump(0);
   
   return true;
@@ -2938,6 +3046,8 @@ PromptFun __Prompt_mkfifo (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_mkfifo(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   s256 sFifoPath;
   
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
@@ -2977,6 +3087,8 @@ PromptFun __Prompt_now (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_now(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   Now spNow;
 
   vTrace("%s (local)\n"_Stz,spNow.sz());
@@ -3011,6 +3123,8 @@ PromptFun __Prompt_numbers (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_numbers(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   vTrace("\n"_Stz);
 
   vTrace("  C_MAGIC  = 0x%llx\n"_Stz,C_MAGIC);
@@ -3071,6 +3185,8 @@ PromptFun __Prompt_objectList (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_objectList(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   
   ObjectSnapshot* pObjectSnapshot = new ObjectSnapshot;
   
@@ -3106,6 +3222,8 @@ PromptFun __Prompt_objectValidate (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_objectValidate(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   PoolHelper::vObjectValidate();
   
   return true;
@@ -3148,6 +3266,8 @@ PromptFun __Prompt_olist (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_olist(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   vTrace("------------------------------------\n"_Stz);
   vTrace("Originator List\n"_Stz);
   vTrace("------------------------------------\n"_Stz);
@@ -3185,6 +3305,8 @@ PromptFun __Prompt_opdq (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_opdq(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   vTrace("Operand Queue Report\n"_Stz);
 
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
@@ -3224,6 +3346,8 @@ PromptFun __Prompt_operands (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_operands(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
 
   i8 iNumTokens = pInpTknVec->nItems();
@@ -3265,6 +3389,8 @@ PromptFun __Prompt_opsys (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_opsys(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   
   OpSys::vGetInfo();
   OpSys::vTraceInfo();
@@ -3295,6 +3421,8 @@ PromptFun __Prompt_plist (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_plist(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   vTrace("------------------------------------\n"_Stz);
   vTrace("Participant List\n"_Stz);
   vTrace("------------------------------------\n"_Stz);
@@ -3329,6 +3457,8 @@ PromptFun __Prompt_pmc (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_pmc(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   i8 iPmc = 0; //iPmc_Info();
   
   vTrace("pmc: %lld\n"_Stz,iPmc);
@@ -3358,7 +3488,9 @@ PromptFun __Prompt_pow2 (
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_pow2(SePrompt* pPrompt)
-{  
+{
+  RASSERT(pPrompt);
+  
   u8 uVal = 1;
   
   for (i8 i = 0; i < 64; i++) {
@@ -3392,6 +3524,8 @@ PromptFun __Prompt_prefixes (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_prefixes(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   vTrace("time\n"_Stz);
   vTrace("mark\n"_Stz);
   vTrace("nowait\n"_Stz);
@@ -3422,6 +3556,8 @@ PromptFun __Prompt_print (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_print(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   Input* pInput = pPrompt->pInputGet();
   
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
@@ -3572,6 +3708,8 @@ PromptFun __Prompt_procedure (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_procedure(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   
   //pInpTknVec->vListTokens();
@@ -3619,6 +3757,8 @@ PromptFun __Prompt_prompt (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_prompt(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   TokenVec* pTknVec   = pPrompt->pInpTknVec();
   i8 nTokens = pTknVec->nTokens();
 
@@ -3705,6 +3845,8 @@ PromptFun __Prompt_promptDebug (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_promptDebug(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   TokenVec* pTknVec = pPrompt->pInpTknVec();
 
   ASSERT(pTknVec->pGet(0)->bSame("promptDebug"_Stz));
@@ -3755,6 +3897,8 @@ PromptFun __Prompt_pwd (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_pwd(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   
   ASSERT(pInpTknVec->pGet(0)->bSame("pwd"_Stz));
@@ -3789,6 +3933,8 @@ PromptFun __Prompt_question (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_question(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   PROMPT::bPrompt_help(pPrompt);
 
   return true;
@@ -3817,6 +3963,8 @@ PromptFun __Prompt_rassert (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_rassert(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   RASSERT(0);
   
   return true;
@@ -3845,6 +3993,8 @@ PromptFun __Prompt_ready (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_ready(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   AM::pSchedule()->vDumpReadyQueue();
   AM::pSchedule()->vDumpReadyQueueLP();
   
@@ -3874,6 +4024,8 @@ PromptFun __Prompt_resources (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_resources(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   if (AM::bAttached()) AM::pResources()->vReport();
   
   return true;
@@ -3904,6 +4056,8 @@ PromptFun __Prompt_rmfifo (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_rmfifo(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   s256 sFifoPath;
   
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
@@ -3944,7 +4098,9 @@ PromptFun __Prompt_rnd (
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_rnd(SePrompt* pPrompt)
-{  
+{
+  RASSERT(pPrompt);
+  
   Mersenne::init_genrand64(0);
   
 //  for (i8 i = 0; i < 1024; i++) {
@@ -3986,6 +4142,8 @@ PromptFun __Prompt_scan (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_scan(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   //vTrace("bPrompt_scan\n"_Stz);
   
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
@@ -4026,6 +4184,8 @@ PromptFun __Prompt_select (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_select(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   //vTrace("bPrompt_select\n"_Stz);
   
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
@@ -4073,6 +4233,8 @@ PromptFun __Prompt_selfies (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_selfies(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   
   i8 iNumTokens = pInpTknVec->nItems();
@@ -4127,6 +4289,8 @@ PromptFun __Prompt_setDbg (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_setDbg(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
 
   ASSERT(pInpTknVec->pGet(0)->bSame("setDbg"_Stz));
@@ -4159,6 +4323,8 @@ PromptFun __Prompt_shell (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_shell(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   TokenVec* pTknVec = pPrompt->pInpTknVec();
   
   s4K sCommand;
@@ -4234,6 +4400,8 @@ PromptFun __Prompt_shortcut (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_shortcut(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   TokenVec* pTknVec = pPrompt->pInpTknVec();
 
   ASSERT(pTknVec->pGet(0)->bSame("shortcut"_Stz));
@@ -4294,6 +4462,8 @@ PromptFun __Prompt_show (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_show(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   TokenVec* pTkVec = pPrompt->pInpTknVec();
 
   ASSERT(pTkVec->pGet(0)->bSame("show"_Stz));
@@ -4347,6 +4517,8 @@ PromptFun __Prompt_sizes (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_sizes(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   vTrace("  sizeof(Header) = %lu; \n"_Stz, sizeof(Header));
   vTrace("  sizeof(Object) = %lu; \n"_Stz, sizeof(Object));
   vTrace("  sizeof(Footer) = %lu; \n"_Stz, sizeof(Footer));
@@ -4402,6 +4574,8 @@ PromptFun __Prompt_sleep (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_sleep(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
 
   ASSERT(pInpTknVec->pGet(0)->bSame("sleep"_Stz));
@@ -4438,6 +4612,8 @@ PromptFun __Prompt_sleepers (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_sleepers(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   bool bReset = false;
   
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
@@ -4476,6 +4652,8 @@ PromptFun __Prompt_sleeping (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_sleeping(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   AM::pSchedule()->vDumpSleepingQueue();
 
   return true;
@@ -4504,6 +4682,8 @@ PromptFun __Prompt_snapshotDelta (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_snapshotDelta(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   ObjectSnapshot* pSnapshotObjects_then = pPrompt->pSnapshotObjects();
   if (! pSnapshotObjects_then)
     return true;
@@ -4541,6 +4721,8 @@ PromptFun __Prompt_snapshotInspect (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_snapshotInspect(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   ObjectSnapshot* pSnapshotObjects_then = pPrompt->pSnapshotObjects();
   if (! pSnapshotObjects_then)
     return true;
@@ -4579,6 +4761,8 @@ PromptFun __Prompt_snapshotList (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_snapshotList(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   ObjectSnapshot* pSnapshotObjects = pPrompt->pSnapshotObjects();
   if (! pSnapshotObjects)
     return true;
@@ -4611,6 +4795,8 @@ PromptFun __Prompt_snapshotNewer (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_snapshotNewer(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   ObjectSnapshot* pSnapshotObjects_then = pPrompt->pSnapshotObjects();
   if (! pSnapshotObjects_then)
     return true;
@@ -4649,6 +4835,8 @@ PromptFun __Prompt_snapshotObjects (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_snapshotObjects(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   ObjectSnapshot* pSnapshotObjects = pPrompt->pSnapshotObjects();
   if (! pSnapshotObjects) {
     pSnapshotObjects = new ObjectSnapshot;
@@ -4685,6 +4873,8 @@ PromptFun __Prompt_so (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_so(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   SP_Gid spId;
   
   //vTrace(" Request Id : %s\n"_Stz,spId.sz(IK_PROMPT,pPrompt->iRequestId()));
@@ -4716,7 +4906,9 @@ PromptFun __Prompt_socket (
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_socket(SePrompt* pPrompt)
-{  
+{
+  RASSERT(pPrompt);
+  
   Socket::vStatistics();
   
   return true;
@@ -4745,6 +4937,8 @@ PromptFun __Prompt_ssn (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_ssn(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   Token* pArg0 = nullptr;
   Token* pArg1 = nullptr;
 
@@ -4798,6 +4992,8 @@ PromptFun __Prompt_ssnState (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_ssnState(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   Token* pArg = nullptr;
   
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
@@ -4837,6 +5033,8 @@ PromptFun __Prompt_st (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_stepTiming(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
 
   i8 nTokens = pInpTknVec->nTokens();
@@ -4929,6 +5127,8 @@ PromptFun __Prompt_store (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_store(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   TokenVec* pTknVec = pPrompt->pInpTknVec();
   
   s4K sCommand;
@@ -5009,6 +5209,8 @@ PromptFun __Prompt_tag (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_tag(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   TokenVec* pTknVec   = pPrompt->pInpTknVec();
   i8 nTokens = pTknVec->nTokens();
   
@@ -5107,6 +5309,8 @@ PromptFun __Prompt_tags (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_tags(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
 
   return true;
 }
@@ -5134,6 +5338,8 @@ PromptFun __Prompt_takeMem (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_takeMem(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   i8 nSpare = 0;
 
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
@@ -5175,6 +5381,8 @@ PromptFun __Prompt_taskQueues (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_taskQueues(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   Schedule* pSchedule = AM::pSchedule();
   
   pSchedule->vDumpExecutingSet();
@@ -5209,6 +5417,8 @@ PromptFun __Prompt_tempName (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_tempName(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   s32 sName;
   
   for (i8 n = 0; n < 1000; n++) {
@@ -5241,7 +5451,9 @@ PromptFun __Prompt_threads (
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_threads(SePrompt* pPrompt)
-{  
+{
+  RASSERT(pPrompt);
+  
   Schedule::vThreadsReport();
   
   return true;
@@ -5272,6 +5484,8 @@ extern Timer gxPromptTimer;  // the timer
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_timerEnd(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   gxPromptTimer.vUpdate();
   
   vTrace("duration %lldms\n"_Stz,gxPromptTimer.iMilliseconds());
@@ -5304,6 +5518,8 @@ Timer gxPromptTimer;  // the timer
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_timerStart(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   gxPromptTimer.vStart();
 
   return true;
@@ -5334,6 +5550,8 @@ PromptFun __Prompt_tools (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_tools(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   
   i8 iNumTokens = pInpTknVec->nItems();
@@ -5367,6 +5585,8 @@ PromptFun __Prompt_tpch (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_tpch(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   printf("C_1_BYTE  %llu\n",C_1_BYTE);
   printf("C_2_BYTES %llu\n",C_2_BYTES);
   printf("C_3_BYTES %llu\n",C_3_BYTES);
@@ -5457,6 +5677,8 @@ PromptFun __Prompt_trackMemory (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_trackMemory(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   pPrompt->vTrackMemory(true);
 
   vTrace("\nsuccess: 0 rows affected\n"_Stz);
@@ -5488,6 +5710,8 @@ PromptFun __Prompt_uptime (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_uptime(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   i8 iUpTimeSsec = AM::iElapsedSsec();
 
   vTrace("  %llds\n"_Stz,iUpTimeSsec);
@@ -5518,6 +5742,8 @@ PromptFun __Prompt_version (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_version(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   /*
   args.metadata if
@@ -5564,6 +5790,8 @@ PromptFun __Prompt_wait_bg (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_wait_bg(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   pPrompt->vNapTillBgJobsCompleted();
   
   return true;
@@ -5592,6 +5820,8 @@ PromptFun __Prompt_waiting (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_waiting(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   AM::pSchedule()->vDumpWaitingSet();
 
   return true;
@@ -5620,6 +5850,8 @@ PromptFun __Prompt_with (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_with(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   
   i8 nTokens = pInpTknVec->nTokens();
@@ -5663,6 +5895,8 @@ PromptFun __Prompt_without (
 
 bool PROMPT::bPrompt_without(SePrompt* pPrompt)
 {
+  RASSERT(pPrompt);
+
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
 
   i8 nTokens = pInpTknVec->nTokens();
