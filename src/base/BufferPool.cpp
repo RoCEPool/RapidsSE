@@ -9,6 +9,8 @@ extern BufferPool* gpBufferPool;
 SubSysFn __BufferPool("BufferPool"_Stz,(fpSELFFN*)BufferPool::vSubSystem,
                       ""_Stz,nullptr);
 
+void* C_ADR_REGION   = (void*)0x204800000000;
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
