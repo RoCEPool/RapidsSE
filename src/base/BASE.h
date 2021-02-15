@@ -193,7 +193,7 @@ extern d8 C_D8_MID;
 #include "BufferMap.hpp"
 
 #include "HeapBuffer.hpp"
-#include "HeapMem.hpp"
+#include "Heaps.hpp"
 #include "Heap.hpp"
 #include "ObjectSnapshot.hpp"
 #include "Region.hpp"
