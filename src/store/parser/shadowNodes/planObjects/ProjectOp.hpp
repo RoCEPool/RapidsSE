@@ -13,6 +13,10 @@ namespace Parser
 
   class ProjectOp : public SqlOperator
   {
+  protected:
+    static Stz* C_PROJECTEDEXPRS_PROP;
+    static Stz* C_PROJECTEDEXPRS_DEFN;
+
   private:
     // Shalt never be instantiated. Static functions only.
     ProjectOp();
@@ -25,6 +29,11 @@ namespace Parser
     // Returns true if a given node is a given type ** or is derived from that type **
     static b1 bIsOfType(PlanNode* pNode);
 
+    // Returns true if any of the projected expressions are aggregate expressions
+    static b1 bHasAnAggregate(QueryNode* pNode);
+
+    // Return the node that represents the list of projected expressions.
+    // Individual projected expressions are children of this node.
     static QueryNode* pProjectedExprs(QueryNode* pNode);
 
   protected:

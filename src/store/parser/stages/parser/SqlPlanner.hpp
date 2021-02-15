@@ -18,7 +18,7 @@ namespace Parser
     s48K m_sQueryStr;
     QueryNodeStack* m_pStatementStack;
     QueryNodeStack* m_pTableRefStack;
-    QueryNodeStack* m_pExprStack;
+    QueryNodeList* m_pExprList;
     QueryNodeList* m_pSelectItems;
     Footer m_xFooter;
     

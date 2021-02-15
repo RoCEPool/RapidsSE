@@ -17,9 +17,10 @@ using namespace Parser;
 /*----------------------------------------------------------------------------*/
 /*-- Constants ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-static Stz* C_PROJECTEDEXPRS_PROP = "projectedExprs"_Stz;
-static Stz* C_PROJECTEDEXPRS_DEFN = "/__root__/definitions/object/list/projectedExprs"_Stz;
 static Stz* C_PROJECTOP_DEFN = "/__root__/definitions/object/planObject/sqlOperator/projectOp"_Stz;
+
+Stz* ProjectOp::C_PROJECTEDEXPRS_PROP = "projectedExprs"_Stz;
+Stz* ProjectOp::C_PROJECTEDEXPRS_DEFN = "/__root__/definitions/object/list/projectedExprs"_Stz;
 
 
 
@@ -145,13 +146,43 @@ b1 ProjectOp::bIsOfType(PlanNode *pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns true if any of the projected expressions are aggregate expressions */
+/*----------------------------------------------------------------------------*/
+b1 ProjectOp::bHasAnAggregate(QueryNode* pNode)
+{
+  QueryNode* pProjExprs =
+      static_cast<QueryNode*>(GraphNav::pFindProperty(const_cast<Stz *>(C_PROJECTEDEXPRS_PROP), pNode));
+
+  b1 bResult = false;
+
+  if (pProjExprs->nChildren() == 0) {
+    return bResult;
+  }
+
+  // Iterate all of the projected columns
+  PlanNodeIter* pIter = pProjExprs->pNewChildrenIter();
+
+  while (pIter->bHasNext()) {
+    QueryNode* pProjExpr = static_cast<QueryNode*>(pIter->pNext());
+
+    ASSERT(ProjectedExpr::bIsOfType(pProjExpr));
+    if (ProjectedExpr::bIsAnAggregate(pProjExpr)) {
+      bResult = true;
+      break;
+    }
+  }
+
+  delete pIter;
+  return bResult;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns the projectedExprs node of the projectOp                           */
 /*----------------------------------------------------------------------------*/
 QueryNode* ProjectOp::pProjectedExprs(QueryNode* pNode)
 {
-  Parser::PlanNode *pProjExprsNode =
+  QueryNode* pProjExprs =
       static_cast<QueryNode*>(GraphNav::pFindProperty(const_cast<Stz *>(C_PROJECTEDEXPRS_PROP), pNode));
-  QueryNode *pProjExprs = static_cast<QueryNode *>(pProjExprsNode);
 
   return pProjExprs;
 }

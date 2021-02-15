@@ -99,6 +99,24 @@ void ProjectedExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns true if the given node is derived from the ProjectedExpr definition*/
+/*----------------------------------------------------------------------------*/
+b1 ProjectedExpr::bIsOfType(PlanNode *pNode)
+{
+  return ShadowNode::bIsOfType(pNode, C_PROJECTEDEXPR_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if the expression in this node is an aggregate expression     */
+/*----------------------------------------------------------------------------*/
+b1 ProjectedExpr::bIsAnAggregate(QueryNode* pNode)
+{
+  QueryNode *pExprNode = ProjectedExpr::pExprNode(pNode);
+
+  return Expr::bIsAnAggregate(pExprNode);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns the exprNode of the ProjectedExpr                                  */
 /*----------------------------------------------------------------------------*/
 QueryNode* ProjectedExpr::pExprNode(QueryNode* pNode)
@@ -107,14 +125,6 @@ QueryNode* ProjectedExpr::pExprNode(QueryNode* pNode)
       static_cast<QueryNode*>(GraphNav::pFindProperty(const_cast<Stz *>(C_EXPR_PROP), pNode));
 
   return pExprNode;
-}
-
-/*----------------------------------------------------------------------------*/
-/* Returns true if the given node is derived from the ProjectedExpr definition*/
-/*----------------------------------------------------------------------------*/
-b1 ProjectedExpr::bIsOfType(PlanNode *pNode)
-{
-  return ShadowNode::bIsOfType(pNode, C_PROJECTEDEXPR_DEFN);
 }
 
 /*============================================================================*/
