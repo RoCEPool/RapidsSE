@@ -89,6 +89,8 @@ void BufferPool::vSubSystem(SelfFn* aSelfFn, TokenVec* pTokenVec)
 {
   _static_
   
+  RASSERT(aSelfFn);
+  
   vTrace("BufferPool::vSubSystem\n"_Stz);
   
   BufferPool::vReport();
