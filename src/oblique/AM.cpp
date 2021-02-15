@@ -896,7 +896,7 @@ void AM::vWriteTrace(eYA eSysAct, Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 void AM::vWriteTrace_vargs(eYA eSysAct, Stz* aFormat, va_list xArgs)
 {
-  static Lock oLock(LK_TRACE,nullptr);
+  static Lock oLock(LK_TRACE,nullptr,true);
   static char caFormatted[C_1MB] = {'\0'};
   
   bool bUseLock = (gpAttachMap ? true : false);
@@ -933,7 +933,7 @@ void AM::vWriteTrace_vargs(eYA eSysAct, Stz* aFormat, va_list xArgs)
 /*----------------------------------------------------------------------------*/
 void AM::vWriteTrace_vargs(File* pFile, eYA eSysAct, Stz* aFormat, va_list xArgs)
 {
-  static Lock oLock(LK_TRACE,nullptr);
+  static Lock oLock(LK_TRACE,nullptr,true);
   static char caFormatted[C_1MB] = {'\0'};
   
   bool bUseLock = (gpAttachMap ? true : false);

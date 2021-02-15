@@ -48,8 +48,8 @@ void Lock::operator delete(void*)
 /*----------------------------------------------------------------------------*/
 /* constructor (for non-focal case)                                           */
 /*----------------------------------------------------------------------------*/
-Lock::Lock(eLK eLockKind, Object* pFor)
-: Loggable(CN_LOCK)
+Lock::Lock(eLK eLockKind, Object* pFor, bool bDontLog)
+: Loggable(CN_LOCK,bDontLog)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
@@ -608,6 +608,9 @@ i8 Lock::iWriteCollisions(void)
 void Lock::vLockTrace(eLS eLockStyle)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
+  
+  if (m_bDontLog)
+    return;
   
 //  if (MY::pOp())
 //    printf("%s %s OP\n",

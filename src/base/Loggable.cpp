@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Loggable::Loggable(eCN eClassNo)
+Loggable::Loggable(eCN eClassNo, bool bDontLog)
 : Object(eClassNo)
 {
    m_iObjectId = AM::iNextObjectNo(eClassNo);
@@ -20,7 +20,7 @@ Loggable::Loggable(eCN eClassNo)
   
   m_eEvent     = EV_NONE;
   m_iDuration  = C_UNKNOWN;
-  m_bDontLog   = false;
+  m_bDontLog   = bDontLog;
 
   m__spare0    = C_UNKNOWN;
   m__spare1    = C_UNKNOWN;
