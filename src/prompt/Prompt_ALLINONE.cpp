@@ -4848,7 +4848,7 @@ bool PROMPT::bPrompt_stepTiming(SePrompt* pPrompt)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (1 == nTokens) {
-    if (AM::pStepTiming())
+    if (AM::pSteps())
       vTrace("Step timing started\n"_Stz);
     else
       vTrace("Step timing not started\n"_Stz);
@@ -4858,22 +4858,22 @@ bool PROMPT::bPrompt_stepTiming(SePrompt* pPrompt)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // start step timing
   if ( pInpTknVec->pGet(1)->bSame("start"_Stz) ) {
-    if (AM::pStepTiming()) {
+    if (AM::pSteps()) {
       vTrace("Step timing already started\n"_Stz);
       return true;
     }
-    AM::vStepTiming(new StepTiming);
+    AM::vSteps(new Steps);
     return true;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // reset step timing
   if ( pInpTknVec->pGet(1)->bSame("reset"_Stz) ) {
-    if (! AM::pStepTiming()) {
+    if (! AM::pSteps()) {
       vTrace("Step timing not started\n"_Stz);
       return true;
     }
-    AM::pStepTiming()->vReset();
+    AM::pSteps()->vReset();
     return true;
   }
   
@@ -4883,11 +4883,11 @@ bool PROMPT::bPrompt_stepTiming(SePrompt* pPrompt)
     
     s32 sStepNm = pInpTknVec->pGet(2)->szChars();
 
-    if (! AM::pStepTiming()) {
+    if (! AM::pSteps()) {
       vTrace("Step timing not started\n"_Stz);
       return true;
     }
-    AM::pStepTiming()->vShow(sStepNm);
+    AM::pSteps()->vShow(sStepNm);
     return true;
   }
   
@@ -4897,11 +4897,11 @@ bool PROMPT::bPrompt_stepTiming(SePrompt* pPrompt)
     
     s256 sPath = pInpTknVec->pGet(2)->szChars();
 
-    if (! AM::pStepTiming()) {
+    if (! AM::pSteps()) {
       vTrace("Step timing not started\n"_Stz);
       return true;
     }
-    AM::pStepTiming()->vWrite(sPath);
+    AM::pSteps()->vWrite(sPath);
     return true;
   }
   

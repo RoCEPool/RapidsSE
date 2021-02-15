@@ -170,7 +170,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Socket();
   Step::vAddSteps_SqlCompiler();
   Step::vAddSteps_SsnState();
-  Step::vAddSteps_StepTiming();
+  Step::vAddSteps_Steps();
   Step::vAddSteps_Str();
   Step::vAddSteps_StringA();
   Step::vAddSteps_StreamDef();

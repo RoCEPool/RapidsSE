@@ -424,7 +424,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(StageSpec),          HT_T_SMALL   ,0 }, // CN_STAGESPEC
   { sizeof(Statistics),         HT_INVALID   ,0 }, // CN_STATISTICS
   { sizeof(StepAccum),          HT_INVALID   ,0 }, // CN_STEPACCUM
-  { sizeof(StepTiming),         HT_T_LARGE   ,0 }, // CN_STEPTIMING
+  { sizeof(Steps),         HT_T_LARGE   ,0 }, // CN_STEPTIMING
   { sizeof(Stream),             HT_T_SMALL   ,0 }, // CN_STREAM
   { sizeof(StreamDef),          HT_T_LARGE   ,0 }, // CN_STREAMDEF
   { sizeof(StreamSet),          HT_T_LARGE   ,0 }, // CN_STREAMSET

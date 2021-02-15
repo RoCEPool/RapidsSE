@@ -7,7 +7,7 @@ namespace STORE
 {
   static const i8 C_STEPS = 2048;
   
-  class StepTiming : public Object
+  class Steps : public Object
   {
   public:
     Lock      m_okLock;
@@ -20,8 +20,8 @@ namespace STORE
   public:
     void* operator new(size_t);
     
-    StepTiming(void);
-    ~StepTiming(void) noexcept(false);
+    Steps(void);
+    ~Steps(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
@@ -38,7 +38,7 @@ namespace STORE
     Footer* aFooter(void);
   };
   
-  StepTiming* _pStepTiming(void* aAddr);
+  Steps* _pSteps(void* aAddr);
 }
 
 /*============================================================================*/

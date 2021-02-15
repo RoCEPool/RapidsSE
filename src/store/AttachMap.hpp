@@ -59,7 +59,7 @@ namespace STORE
     Schedule*     m_pSchedule;
     Sessions*     m_pSessions;
     Statistics    m_oStatistics;
-    StepTiming*   m_pStepTiming;
+    Steps*        m_pSteps;
     i8            m_iStop;
     SysArgs       m_xSysArgs;
     Word*         m_pTenants;

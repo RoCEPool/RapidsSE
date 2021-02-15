@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_StepTiming.cpp - StepTiming step group                               */
+/* Steps_Steps.cpp - Steps step group                               */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -12,39 +12,17 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_StepTiming(void)
+void Step::vAddSteps_Steps(void)
 {
-  vAddStep("StepTiming::reset"_Stz, &Step::vStepTimingReset);
-  vAddStep("StepTiming::start"_Stz, &Step::vStepTimingStart);
-  vAddStep("StepTiming::write"_Stz, &Step::vStepTimingWrite);
+  vAddStep("Steps::reset"_Stz, &Step::vStepsReset);
+  vAddStep("Steps::start"_Stz, &Step::vStepsStart);
+  vAddStep("Steps::write"_Stz, &Step::vStepsWrite);
 }
 
 /*----------------------------------------------------------------------------*/
-/* StepTiming::reset -- reset steps                                           */
+/* Steps::reset -- reset steps                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vStepTimingReset(void)
-{
-  ENTRY();
-  
-#ifndef WITH_STEP_TIMING
-  
-  vTrace("WARNING: WITH_STEP_TIMING not defined\n"_Stz);
-  return;
-  
-#else
-  
-  if (AM::pStepTiming())
-    AM::pStepTiming()->vReset();
-  
-#endif
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* StepTiming::start -- start step tracking                                   */
-/*----------------------------------------------------------------------------*/
-void Step::vStepTimingStart(void)
+void Step::vStepsReset(void)
 {
   ENTRY();
   
@@ -55,8 +33,8 @@ void Step::vStepTimingStart(void)
   
 #else
   
-  if (! AM::pStepTiming())
-    AM::vStepTiming(new StepTiming);
+  if (AM::pSteps())
+    AM::pSteps()->vReset();
   
 #endif
 
@@ -64,9 +42,31 @@ void Step::vStepTimingStart(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* StepTiming::write -- write steps                                          */
+/* Steps::start -- start step tracking                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vStepTimingWrite(void)
+void Step::vStepsStart(void)
+{
+  ENTRY();
+  
+#ifndef WITH_STEP_TIMING
+  
+  vTrace("WARNING: WITH_STEP_TIMING not defined\n"_Stz);
+  return;
+  
+#else
+  
+  if (! AM::pSteps())
+    AM::vSteps(new Steps);
+  
+#endif
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Steps::write -- write steps                                          */
+/*----------------------------------------------------------------------------*/
+void Step::vStepsWrite(void)
 {
   ENTRY();
 
@@ -80,8 +80,8 @@ void Step::vStepTimingWrite(void)
   s256 sPath;
   m_pDataStack->vPopStr(sPath,__func__);
   
-  if (AM::pStepTiming())
-    AM::pStepTiming()->vWrite(sPath);
+  if (AM::pSteps())
+    AM::pSteps()->vWrite(sPath);
   
 #endif
   

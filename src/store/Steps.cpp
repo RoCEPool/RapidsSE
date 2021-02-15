@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* StepTiming.cpp -- Step Tracker                                            */
+/* Steps.cpp -- Step Tracker                                                 */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -10,31 +10,31 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-StepTiming* STORE::_pStepTiming(void* aAddr)
+Steps* STORE::_pSteps(void* aAddr)
 {
-  StepTiming* pStepTiming = reinterpret_cast<StepTiming*>(aAddr);
+  Steps* pSteps = reinterpret_cast<Steps*>(aAddr);
   
-  RASSERT_TYPE(pStepTiming,CN_STEPTIMING);
+  RASSERT_TYPE(pSteps,CN_STEPTIMING);
   
-  return pStepTiming;
+  return pSteps;
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* StepTiming::operator new(size_t)
+void* Steps::operator new(size_t)
 {
-  RASSERT(! AM::pStepTiming());
+  RASSERT(! AM::pSteps());
   
-  StepTiming* pStepTiming = (StepTiming*)Heaps::pAllocate(CN_STEPTIMING);
+  Steps* pSteps = (Steps*)Heaps::pAllocate(CN_STEPTIMING);
   
-  return pStepTiming;
+  return pSteps;
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-StepTiming::StepTiming(void)
+Steps::Steps(void)
 : Object(CN_STEPTIMING)
 , m_okLock(LK_STEP_ARRAY,this)
 {
@@ -51,7 +51,7 @@ StepTiming::StepTiming(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-StepTiming::~StepTiming(void) noexcept(false)
+Steps::~Steps(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STEPTIMING,_FOOTER_);
 }
@@ -59,11 +59,11 @@ StepTiming::~StepTiming(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* dump grid                                                                  */
 /*----------------------------------------------------------------------------*/
-void StepTiming::vDump(eCN eClass, Object* pObject, Stz* aTab)
+void Steps::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  StepTiming* pStepTiming = _pStepTiming(pObject);
+  Steps* pSteps = _pSteps(pObject);
   
-  vTrace("\n"_Stz, aTab, pStepTiming);
+  vTrace("\n"_Stz, aTab, pSteps);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -72,7 +72,7 @@ void StepTiming::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* allocate a step accumulator                                                */
 /*----------------------------------------------------------------------------*/
-StepAccum* StepTiming::pAllocAccum(Stz* aStepNm)
+StepAccum* Steps::pAllocAccum(Stz* aStepNm)
 {
   ASSERT(m_okLock.bIsLocked());
 
@@ -88,7 +88,7 @@ StepAccum* StepTiming::pAllocAccum(Stz* aStepNm)
 /*----------------------------------------------------------------------------*/
 /* drop write lock                                                            */
 /*----------------------------------------------------------------------------*/
-void StepTiming::vDropWrite(void)
+void Steps::vDropWrite(void)
 {
   m_okLock.vDropWrite();
 }
@@ -96,7 +96,7 @@ void StepTiming::vDropWrite(void)
 /*----------------------------------------------------------------------------*/
 /* grab write lock                                                            */
 /*----------------------------------------------------------------------------*/
-void StepTiming::vGrabWrite(void)
+void Steps::vGrabWrite(void)
 {
   m_okLock.vGrabWrite();
 }
@@ -104,7 +104,7 @@ void StepTiming::vGrabWrite(void)
 /*----------------------------------------------------------------------------*/
 /* reset steps                                                                */
 /*----------------------------------------------------------------------------*/
-void StepTiming::vReset(void)
+void Steps::vReset(void)
 {
   m_okLock.vGrabWrite();
   
@@ -117,7 +117,7 @@ void StepTiming::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* write steps to given file                                                  */
 /*----------------------------------------------------------------------------*/
-void StepTiming::vShow(Stz* szStepNm)
+void Steps::vShow(Stz* szStepNm)
 {
   m_okLock.vGrabWrite();
   
@@ -131,7 +131,7 @@ void StepTiming::vShow(Stz* szStepNm)
 /*----------------------------------------------------------------------------*/
 /* write steps to given file                                                  */
 /*----------------------------------------------------------------------------*/
-void StepTiming::vWrite(Stz* szPath)
+void Steps::vWrite(Stz* szPath)
 {
   File* pFile = new File(nullptr);
   
@@ -139,11 +139,11 @@ void StepTiming::vWrite(Stz* szPath)
   
   s256 sFilePath = szPath;
   
-  //sFilePath.vCatSprint("/StepTiming_%s.csv"_Stz,oNow.sz());
+  //sFilePath.vCatSprint("/Steps_%s.csv"_Stz,oNow.sz());
 
   bool bOpened = pFile->bOpenWrite(sFilePath.szStz());
   if (! bOpened) {
-    vTrace("Unable to open StepTiming file: %s\n"_Stz,pFile->sFilePath().szStz());
+    vTrace("Unable to open Steps file: %s\n"_Stz,pFile->sFilePath().szStz());
     return;
   }
   
@@ -165,7 +165,7 @@ void StepTiming::vWrite(Stz* szPath)
 /*----------------------------------------------------------------------------*/
 /* write steps to given file                                                  */
 /*----------------------------------------------------------------------------*/
-void StepTiming::vWriteSingleStep(Stz* szPath, Stz* szStepNm)
+void Steps::vWriteSingleStep(Stz* szPath, Stz* szStepNm)
 {
   File* pFile = new File(nullptr);
   
@@ -173,11 +173,11 @@ void StepTiming::vWriteSingleStep(Stz* szPath, Stz* szStepNm)
   
   s256 sFilePath = szPath;
   
-  //sFilePath.vCatSprint("/StepTiming_%s.csv"_Stz,oNow.sz());
+  //sFilePath.vCatSprint("/Steps_%s.csv"_Stz,oNow.sz());
 
   bool bOpened = pFile->bOpenWrite(sFilePath.szStz());
   if (! bOpened) {
-    vTrace("Unable to open StepTiming file: %s\n"_Stz,pFile->sFilePath().szStz());
+    vTrace("Unable to open Steps file: %s\n"_Stz,pFile->sFilePath().szStz());
     return;
   }
   
@@ -204,7 +204,7 @@ void StepTiming::vWriteSingleStep(Stz* szPath, Stz* szStepNm)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* StepTiming::aFooter(void)
+Footer* Steps::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STEPTIMING);
   
