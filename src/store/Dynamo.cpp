@@ -32,6 +32,9 @@
 
 #include "TableRef.hpp"
 
+#include "AggregateOp.hpp"
+#include "SumExpr.hpp"
+
 #include "ColumnRef.hpp"
 #include "Expr.hpp"
 #include "FilterOp.hpp"
@@ -1376,6 +1379,82 @@ void Dynamo::vAppendExpr(String* sPipeline, QueryNode* pNode) {
 }
 
 /*----------------------------------------------------------------------------*/
+/* append aggregate Op to the pipeline                                        */
+/*----------------------------------------------------------------------------*/
+void Dynamo::vAppendAggregateOp(String* sPipeline, QueryNode* pNode)
+{
+  _static_
+
+  bool bFirstExpr = false;
+
+  // Get the list of projected expressions from ProjectOp
+  QueryNode *pProjectedExprs = AggregateOp::pProjectedExprs(pNode);
+  ASSERT(pProjectedExprs);
+
+  // Iterate each projected expression
+  if (pProjectedExprs->bHasChildren()) {
+
+    sPipeline->vCatSprint(
+        "    | project 0 \""
+        ""_Stz);
+
+    // get a plan node iterator
+    PlanNodeIter *pIter = pProjectedExprs->pNewChildrenIter();
+
+    while (pIter->bHasNext()) {
+
+      // append comma
+      if (bFirstExpr)
+        sPipeline->vCatSprint(" ,"_Stz);
+      else
+        bFirstExpr = true;
+
+      // get the next projExpr from the iterator
+      QueryNode *pProjectedExpr = static_cast<QueryNode *>(pIter->pNext());
+      ASSERT(pProjectedExpr);
+      ASSERT(ProjectedExpr::bIsOfType(pProjectedExpr));
+
+      vAppendExpr(sPipeline, pProjectedExpr);
+    }
+    delete pIter;
+
+    // Get the groupBy from ProjectOp
+
+    sPipeline->vCatSprint(" groupBy "_Stz);
+    bFirstExpr = false;
+
+    // get a groupBy iterator
+    PlanNodeIter* pGroupByIter = AggregateOp::pGroupByIter(pNode);
+    while (pGroupByIter->bHasNext()) {
+
+      // append comma
+      if (bFirstExpr)
+        sPipeline->vCatSprint(" ,"_Stz);
+      else
+        bFirstExpr = true;
+
+      // get the next groupByExpr from the iterator
+      QueryNode *pGroupByExpr = static_cast<QueryNode *>(pIter->pNext());
+      ASSERT(pGroupByExpr);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // columnRef
+
+      ASSERT(ColumnRef::bIsOfType(pGroupByExpr));
+      QueryNode *pColumnRef = static_cast<QueryNode *>(pGroupByExpr);
+      sPipeline->vCatSprint(
+          " %s"
+          ""_Stz,
+          ColumnRef::szColumnName(pColumnRef));
+    }
+    delete pGroupByIter;
+  }
+
+  sPipeline->vCatSprint(" \" \n"_Stz);
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* append filter Op to the pipeline                                           */
 /*----------------------------------------------------------------------------*/
 void Dynamo::vAppendFilterOp(String* sPipeline, QueryNode* pNode)
@@ -1466,7 +1545,34 @@ GraphNav::eWalkCtrl Dynamo::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 iD
 {
   _static_
 
+  static bool bHasAgg = false;
+
   String* sPipeline = (String*)pvArg;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // aggregate
+
+  if (AggregateExpr::bIsOfType(pExprNode)) {
+
+    if (SumExpr::bIsOfType(pExprNode)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // isDistinct
+      bool bIsDistinct = AggregateExpr::bIsDistinct(pExprNode);
+
+      sPipeline->vCatSprint(
+          " sum "_Stz);
+
+      // ALKA: to do in exprEval
+      if (bIsDistinct) {
+        sPipeline->vCatSprint(
+            " distinct "_Stz);
+      }
+
+      bHasAgg = true;
+
+    }
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // columnRef
@@ -1607,10 +1713,17 @@ GraphNav::eWalkCtrl Dynamo::vVisitorPlan(PlanNode* pRootNode, s256& sPath, i8 iD
   if (SqlOperator::bIsOfType(pQueryNode)) {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // TableScanOp
+    // AggregateOp
 
-    if (TableScanOp::bIsOfType(pQueryNode)) {
-      vAppendScanOp(sPipeline, pQueryNode);
+    if (AggregateOp::bIsOfType(pQueryNode)) {
+      vAppendAggregateOp(sPipeline, pQueryNode);
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // FilterOp
+
+    else if (FilterOp::bIsOfType(pQueryNode)) {
+      vAppendFilterOp(sPipeline, pQueryNode);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1621,10 +1734,10 @@ GraphNav::eWalkCtrl Dynamo::vVisitorPlan(PlanNode* pRootNode, s256& sPath, i8 iD
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // FilterOp
+    // TableScanOp
 
-    else if (FilterOp::bIsOfType(pQueryNode)) {
-      vAppendFilterOp(sPipeline, pQueryNode);
+    else if (TableScanOp::bIsOfType(pQueryNode)) {
+      vAppendScanOp(sPipeline, pQueryNode);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
