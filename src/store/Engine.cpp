@@ -24,6 +24,7 @@
 #include "Result.hpp"
 #include "Job.hpp"
 #include "JobList.hpp"
+#include "Jobs.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
 
@@ -1532,13 +1533,13 @@ void Engine::vStartSystem(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // job lists
   
-  gpAttachMap->m_xStore.m_pDemonJobs         =
+  gpAttachMap->m_pJobs->m_pDemonJobs         =
     new JobList(bJobCompare,JL_DEMON);
-  gpAttachMap->m_xStore.m_pLocalJobs         =
+  gpAttachMap->m_pJobs->m_pLocalJobs         =
     new JobList(bJobCompare,JL_LOCAL);
-  gpAttachMap->m_xStore.m_pOriginatingJobs   =
+  gpAttachMap->m_pJobs->m_pOriginatingJobs   =
     new JobList(bJobCompare,JL_ORIGINATING);
-  gpAttachMap->m_xStore.m_pParticipatingJobs =
+  gpAttachMap->m_pJobs->m_pParticipatingJobs =
     new JobList(bJobCompare,JL_PARTICIPATING);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

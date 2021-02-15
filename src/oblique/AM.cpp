@@ -88,6 +88,7 @@
 #include "Result.hpp"
 #include "Job.hpp"
 #include "JobList.hpp"
+#include "Jobs.hpp"
 #include "Session.hpp"
 #include "Sessions.hpp"
 #include "XmitOperand.hpp"
@@ -175,7 +176,7 @@ BufferPool* AM::pBufferPool(void) { return gpAttachMap->m_pBufferPool;        }
 ClassFlags* AM::pClassFlags(void)  { return & gpAttachMap->m_oClassFlags;      }
 Lock* AM::pDdlLock(void)      { return & gpAttachMap->m_oLocks.m_okDdlLock;            }
 JobList* AM::pDemonJobs(void) {
-  return gpAttachMap->m_xStore.m_pDemonJobs;                                }
+  return gpAttachMap->m_pJobs->m_pDemonJobs;                                }
 Lock* AM::pDicLock(void)      { return & gpAttachMap->m_oLocks.m_okDicLock;            }
 i8   AM::iElapsedSsec(void)   { return gpAttachMap->m_oBirth.iElapsedSsec();  }
 i8   AM::iEpoch(void)         { return gpAttachMap->m_iEpoch;                 }
@@ -185,16 +186,16 @@ bool AM::bHasStarted(void)    { return gpAttachMap->m_pGrid->bHasStarted();   }
 Heaps* AM::pHeaps(void)   { return & gpAttachMap->m_xHeaps;             }
 i8   AM::nIndexEntries(void)  { return gpAttachMap->m_xSysArgs.m_nIndexEntries;      }
 JobList* AM::pLocalJobs(void) {
-  return gpAttachMap->m_xStore.m_pLocalJobs;                                }
+  return gpAttachMap->m_pJobs->m_pLocalJobs;                                }
 Locks* AM::pLocks(void) { return & gpAttachMap->m_oLocks;   }
 bool AM::bLogging(void)       { return gpLog ? true : false;                  }
 i8   AM::iNextEpoch(void)     { return ++ gpAttachMap->m_iEpoch;              }
 Stz* AM::szNodeNm(void)       {
   return gpAttachMap->m_pGrid->pThisNode()->szNodeNm();  }
 JobList* AM::pOriginatingJobs(void) {
-  return gpAttachMap->m_xStore.m_pOriginatingJobs; }
+  return gpAttachMap->m_pJobs->m_pOriginatingJobs; }
 JobList* AM::pParticipatingJobs(void) {
-  return gpAttachMap->m_xStore.m_pParticipatingJobs; }
+  return gpAttachMap->m_pJobs->m_pParticipatingJobs; }
 i8   AM::iPid(void)           { return gpAttachMap->m_iPid;                   }
 i8   AM::nConnectedNodes(void){ return gpAttachMap->m_pGrid->nConnectedNodes(); }
 i8   AM::nBootNodes(void)  { return gpAttachMap->m_pGrid->nBootNodes(); }
@@ -2900,7 +2901,7 @@ Heartbeat AM::xGetHeartbeat(Stz* pszName)
 /*----------------------------------------------------------------------------*/
 bool AM::bSupervisorHalt(void)
 {
-  return gpAttachMap->m_xStore.m_bSupervisorHalt;
+  return gpAttachMap->m_bSupervisorHalt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2908,7 +2909,7 @@ bool AM::bSupervisorHalt(void)
 /*----------------------------------------------------------------------------*/
 void AM::vSupervisorHalt(bool bHalt)
 {
-  gpAttachMap->m_xStore.m_bSupervisorHalt = bHalt;
+  gpAttachMap->m_bSupervisorHalt = bHalt;
 }
 
 /*============================================================================*/

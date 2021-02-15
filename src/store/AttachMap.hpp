@@ -62,22 +62,12 @@ namespace STORE
     Statistics    m_oStatistics;
     Steps*        m_pSteps;
     i8            m_iStop;
+    bool          m_bSupervisorHalt;
     SysArgs       m_xSysArgs;
     Word*         m_pTenants;
     TempName      m_oTempName;
     TxSet*        m_pTxSet;
   
-    struct {
-      
-      JobList*  m_pDemonJobs;
-      JobList*  m_pLocalJobs;
-      JobList*  m_pOriginatingJobs;
-      JobList*  m_pParticipatingJobs;
-      
-      bool m_bSupervisorHalt;
-
-    } m_xStore;
-
     // must be last
     Footer m_xFooter;
     
