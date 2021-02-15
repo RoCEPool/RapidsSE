@@ -390,7 +390,7 @@ extern d8 C_D8_MID;
 namespace BASE
 {
   void vCheckAssumptions(void);
-  static void vSubSystem(SelfFn* aSelfFn, TokenVec* pTokenVec);
+  void vSubSystem(SelfFn* aSelfFn, TokenVec* pTokenVec);
 
   bool bTraceWith(Stz* szWith);
   void vTraceWith(void);
