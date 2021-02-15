@@ -96,6 +96,8 @@ Lock::~Lock(void) noexcept(false)
                 spId.sz(m_pFor?((Loggable*)m_pFor)->m_iObjectId:C_UNKNOWN),
                 * gixLock);
   }
+  
+  RASSERT(! m_uLockWord);
 }
 
 /*----------------------------------------------------------------------------*/
