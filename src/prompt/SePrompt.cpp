@@ -39,6 +39,8 @@ extern PromptCatalog gxPromptCatalog;
 extern Stz* gsBuildGitHash;
 extern BufferPool* gpBufferPool;
 
+extern char* BASE::RAPIDSSE_VERSION_STRING;
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

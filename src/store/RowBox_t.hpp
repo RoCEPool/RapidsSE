@@ -11,6 +11,8 @@
 
 #include "Record.hpp"
 
+extern char* BASE::RAPIDSSE_VERSION_STRING;
+
 namespace STORE
 {
   template <i8 AREA>

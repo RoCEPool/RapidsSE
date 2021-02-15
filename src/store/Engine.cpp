@@ -74,6 +74,7 @@ extern s256   gi_szaArgv[];
 pthread_key_t giTLS_TaskKey   = C_UNKNOWN;
 pthread_key_t giTLS_ThreadKey = C_UNKNOWN;
 
+extern char* BASE::RAPIDSSE_VERSION_STRING;
 
 /*----------------------------------------------------------------------------*/
 /* main entry                                                                 */

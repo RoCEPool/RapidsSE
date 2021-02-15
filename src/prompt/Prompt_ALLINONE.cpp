@@ -49,6 +49,7 @@
 
 extern CmdLineArgs gxCmdLineArgs;
 
+extern char* BASE::RAPIDSSE_VERSION_STRING;
 
 
 using namespace Parser;

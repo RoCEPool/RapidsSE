@@ -57,6 +57,8 @@ extern Stz* gsBuildHostName;
 extern Stz* gsBuildUserName;
 extern Stz* gsBuildBranch;
 
+extern char* BASE::RAPIDSSE_VERSION_STRING;
+
 /*----------------------------------------------------------------------------*/
 /* add constant to main dictionary                                            */
 /*----------------------------------------------------------------------------*/
