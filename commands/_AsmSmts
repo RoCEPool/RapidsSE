@@ -53,7 +53,7 @@ create table orders (
    O_CLERK           CHAR(15)      NOT NULL,  // 6)
    O_SHIPPRIORITY    INTEGER       NOT NULL,  // 7)
    O_COMMENT         VARCHAR(79)   NOT NULL   // 8)
-) partition by (O_CUSTKEY) ;
+) ;
 
 create index Orders_Idx1 ON Orders(O_CUSTKEY);
 create index Orders_Idx2 ON Orders(O_ORDERKEY);
@@ -61,6 +61,10 @@ create index Orders_Idx2 ON Orders(O_ORDERKEY);
 print "loading Orders...";
  /time load Orders "../DATA/TPCH/orders10.csv";
 
+ select L_ORDERKEY, L_QUANTITY from lineitem where  L_ORDERKEY = 1;
+
+ select L_ORDERKEY, L_QUANTITY from lineitem where  L_ORDERKEY + 1 <= 2;
+/*
 //UnionAll_I lineitem orders l_orderkey;
 
 tableScan lineitem;
@@ -73,12 +77,12 @@ pipeline unionAll_I
     start | periodic once | stageB | stageC
 
   stage stageB on all partitions :
-    scan lineitemX
+    scan lineitem
     | project 0 "as orderkey l_orderkey"
     | stageD
 
   stage stageC on all partitions :
-    scan orders
+    scan ordersx
     | project 0 "as orderkey o_orderkey"
     | stageD
 
@@ -106,7 +110,7 @@ end ;
 
 //select 1+2*3 from lineitem;
 
-/*
+
 pipeline query
 begin
 
@@ -150,7 +154,7 @@ projectColumns lineitem "l_partkey , l_partKey 2 * , l_partKey 2.0 * ";
 //filterRows lineitem "l_discount 0.04 >= <>";
 aggregRows_I lineitem "sum ( l_discount ) ";
 aggregRows lineitem "sum ( l_discount ) ";
-
+filterRows lineitem "l_orderkey 1 == <>";
 
 pipeline Query6
 begin
