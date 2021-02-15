@@ -152,7 +152,7 @@ PlanNodeList* PlanNodeBuilder::pBuildList(PlanNodeBuilderList* builderList)
     return nullptr;
   }
 
-  PlanNodeList *pPlanNodeList = new PlanNodeList();
+  PlanNodeList *pPlanNodeList = new PlanNodeList(LK_LIST);
 
   PlanNodeBuilderIter* pBuilderIter = builderList->pNewIter();
 

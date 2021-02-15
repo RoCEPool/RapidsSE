@@ -8,7 +8,6 @@
 
 namespace STORE
 {
-  static const char* C_SORT_REGION_BASE  = (char*)0x409600000000;
   static const i8    C_SORT_REGION_DELTA = C_1GB * 128;
 
   class Table : public Object

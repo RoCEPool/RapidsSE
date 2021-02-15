@@ -21,7 +21,7 @@ __aFooterFunction(QueryNode)
 /*----------------------------------------------------------------------------*/
 QueryNode::QueryNode(Stz* szName, Stz* szType)
     : PlanNode(CN_QUERYNODE, szName, szType, {},
-               new PlanNodeList(), new PlanNodeList())
+               new PlanNodeList(LK_LIST), new PlanNodeList(LK_LIST))
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUERYNODE,_FOOTER_);
 
@@ -36,7 +36,7 @@ QueryNode::QueryNode(Stz* szName, Stz* szType)
 /*----------------------------------------------------------------------------*/
 QueryNode::QueryNode(Stz* szName, Stz* szType, Value&& xValue)
     : PlanNode(CN_QUERYNODE, szName, szType, static_cast<Value&&>(xValue),
-               new PlanNodeList(), new PlanNodeList())
+               new PlanNodeList(LK_LIST), new PlanNodeList(LK_LIST))
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUERYNODE,_FOOTER_);
 
@@ -166,7 +166,7 @@ void QueryNode::vAppendChild(QueryNode* pNode)
   ASSERT(pNode);
 
   if (!m_pChildren) {
-    m_pChildren = new PlanNodeList();
+    m_pChildren = new PlanNodeList(LK_LIST);
   }
 
   m_pChildren->vAppend(pNode);
@@ -180,7 +180,7 @@ void QueryNode::vPushChild(QueryNode* pNode)
   ASSERT(pNode);
 
   if (!m_pChildren) {
-    m_pChildren = new PlanNodeList();
+    m_pChildren = new PlanNodeList(LK_LIST);
   }
 
   m_pChildren->vPush(pNode);
@@ -277,7 +277,7 @@ QueryNode* QueryNode::pPopChild()
 void QueryNode::vAppendProperty(QueryNode* pNode)
 {
   if (!m_pProperties) {
-    m_pProperties = new PlanNodeList();
+    m_pProperties = new PlanNodeList(LK_LIST);
   }
 
   m_pProperties->vAppend(pNode);

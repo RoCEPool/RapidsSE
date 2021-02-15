@@ -289,7 +289,7 @@ antlrcpp::Any PlanDefinitionParser::visitPair(json5Parser::PairContext *ctx)
 
 antlrcpp::Any PlanDefinitionParser::visitArr(json5Parser::ArrContext *ctx)
 {
-  PlanNodeBuilderList* pBuilderList = new PlanNodeBuilderList();
+  PlanNodeBuilderList* pBuilderList = new PlanNodeBuilderList(LK_LIST);
 
   std::vector<json5Parser::ValueContext*> values = ctx->value();
   std::vector<json5Parser::ValueContext*>::iterator iterator;

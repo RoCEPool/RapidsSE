@@ -289,7 +289,7 @@ void vTest8(void)
   
   ListExo_t<CN_CLASSPLACEHOLDER,Text>* pListExo;
   
-  pListExo = new ListExo_t<CN_CLASSPLACEHOLDER,Text>();
+  pListExo = new ListExo_t<CN_CLASSPLACEHOLDER,Text>(LK_LIST);
   
   pListExo->vAppend(pText0);
   pListExo->vAppend(pText1);

@@ -344,7 +344,7 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
   QueryNode *pProjectOp = nullptr;
   if (!pCtx->groupBy) {
     // If we have a group by clause then we will get this selectList there
-    m_pSelectItems = new QueryNodeList();
+    m_pSelectItems = new QueryNodeList(LK_LIST);
 
     // Visit the child parse tree nodes for the selectList rule. The select list above will be populated.
     pCtx->selectList()->accept(this);
@@ -366,7 +366,7 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
   QueryNode* pHavingFilterOp = nullptr;
   if (pCtx->having) {
     ASSERT(!m_pExprList);
-    m_pExprList = new QueryNodeList();
+    m_pExprList = new QueryNodeList(LK_LIST);
 
     // Visit the children of the HAVING clause
     pCtx->where->accept(this);
@@ -387,7 +387,7 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
   QueryNode* pAggregateOp = nullptr;
   if (pCtx->groupBy) {
     // First gather the select list items
-      m_pSelectItems = new QueryNodeList();
+      m_pSelectItems = new QueryNodeList(LK_LIST);
 
       // Visit the child parse tree nodes for the selectList rule. The select list above will be populated.
       pCtx->selectList()->accept(this);
@@ -397,7 +397,7 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
 
     // Now gather the group by clause list
       ASSERT(!m_pExprList);
-      m_pExprList = new QueryNodeList();
+      m_pExprList = new QueryNodeList(LK_LIST);
 
       // Visit the children of the GROUP BY clause
       pCtx->groupBy->accept(this);
@@ -423,7 +423,7 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
   QueryNode* pWhereFilterOp = nullptr;
   if (pCtx->where) {
     ASSERT(!m_pExprList);
-    m_pExprList = new QueryNodeList();
+    m_pExprList = new QueryNodeList(LK_LIST);
 
     // Visit the children of the WHERE clause
     pCtx->where->accept(this);
@@ -519,7 +519,7 @@ antlrcpp::Any SqlPlanner::visitSelectList(sqlParser::SelectListContext *pCtx)
   ASSERT(m_pSelectItems);
   
   ASSERT(!m_pExprList);
-  m_pExprList = new QueryNodeList();
+  m_pExprList = new QueryNodeList(LK_LIST);
   
   visitChildren(pCtx);
   

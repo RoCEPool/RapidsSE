@@ -34,11 +34,11 @@ QueryNode* MaxExpr::pCreate(b1 bIsDistinct, QueryNode* pChildExpr)
                                        const_cast<Stz*>(C_DISTINCT_PROP_TYPE),
                                        static_cast<Value&&>(xDistinctVal));
 
-  PlanNodeList* pProperties = new PlanNodeList();
+  PlanNodeList* pProperties = new PlanNodeList(LK_LIST);
   pProperties->vAppend(pDistinct);
 
   // and the children
-  PlanNodeList* pChildren = new PlanNodeList();
+  PlanNodeList* pChildren = new PlanNodeList(LK_LIST);
   if (pChildExpr) {
     pChildren->vAppend(pChildExpr);
   }
