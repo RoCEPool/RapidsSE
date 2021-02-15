@@ -8,6 +8,7 @@
 #include "QueryNode.hpp"
 
 #include "store/parser/shadowNodes/expressions/literals/LiteralExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/aggregates/AggregateExpr.hpp"
 #include "ColumnRef.hpp"
 #include "OperatorExpr.hpp"
 
@@ -91,6 +92,32 @@ Stz* Expr::szTypeDefinition(eET eExprType)
 b1 Expr::bIsOfType(PlanNode *pNode)
 {
   return ShadowNode::bIsOfType(pNode, C_EXPR_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if this expression (and therefore any subexpression elements  */
+/* it contains) is an aggregate expression                                    */
+/*----------------------------------------------------------------------------*/
+b1 Expr::bIsAnAggregate(PlanNode *pNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  b1 bIsAgg = false;
+
+  // Walk the graph, looking at the children only and return if any of them
+  // are aggregate expressions.
+  auto fVisitor = [&bIsAgg](PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
+    if (AggregateExpr::bIsOfType(pNode)) {
+      bIsAgg = true;
+      return GraphNav::WALK_ABORT;
+    }
+
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  GraphNav::bWalk(pNode, false, true, fVisitor, nullptr);
+
+  return bIsAgg;
 }
 
 

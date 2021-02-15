@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* EnumFlags.cpp -- Enum Flags                                                */
+/* ClassFlags.cpp -- Enum Flags                                                */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -11,19 +11,19 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-EnumFlags* BASE::_pEnumFlags(void* aAddr)
+ClassFlags* BASE::_pClassFlags(void* aAddr)
 {
-  EnumFlags* pEnumFlags = reinterpret_cast<EnumFlags*>(aAddr);
+  ClassFlags* pClassFlags = reinterpret_cast<ClassFlags*>(aAddr);
   
-  RASSERT_TYPE(pEnumFlags,CN_ENUMFLAGS);
+  RASSERT_TYPE(pClassFlags,CN_ENUMFLAGS);
   
-  return pEnumFlags;
+  return pClassFlags;
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-EnumFlags::EnumFlags(void)
+ClassFlags::ClassFlags(void)
 : Object(CN_ENUMFLAGS)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENUMFLAGS,_FOOTER_);
@@ -36,7 +36,7 @@ EnumFlags::EnumFlags(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-EnumFlags::~EnumFlags(void) noexcept(false)
+ClassFlags::~ClassFlags(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENUMFLAGS,_FOOTER_);
 }
@@ -48,7 +48,7 @@ EnumFlags::~EnumFlags(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* are all set?                                                               */
 /*----------------------------------------------------------------------------*/
-bool EnumFlags::bAll(void)
+bool ClassFlags::bAll(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENUMFLAGS,_FOOTER_);
   
@@ -58,7 +58,7 @@ bool EnumFlags::bAll(void)
 /*----------------------------------------------------------------------------*/
 /* set all                                                                    */
 /*----------------------------------------------------------------------------*/
-void EnumFlags::vAll(bool bAll)
+void ClassFlags::vAll(bool bAll)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENUMFLAGS,_FOOTER_);
   
@@ -68,7 +68,7 @@ void EnumFlags::vAll(bool bAll)
 /*----------------------------------------------------------------------------*/
 /* is a particular enum set?                                                  */
 /*----------------------------------------------------------------------------*/
-bool EnumFlags::bEnum(i8 i_Enum)
+bool ClassFlags::bEnum(i8 i_Enum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENUMFLAGS,_FOOTER_);
   
@@ -78,7 +78,7 @@ bool EnumFlags::bEnum(i8 i_Enum)
 /*----------------------------------------------------------------------------*/
 /* set a particular enum                                                      */
 /*----------------------------------------------------------------------------*/
-void EnumFlags::vEnum(i8 i_Enum, bool bFlag)
+void ClassFlags::vEnum(i8 i_Enum, bool bFlag)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENUMFLAGS,_FOOTER_);
   
@@ -88,7 +88,7 @@ void EnumFlags::vEnum(i8 i_Enum, bool bFlag)
 /*----------------------------------------------------------------------------*/
 /* is either bAll or a particular enum set?                                   */
 /*----------------------------------------------------------------------------*/
-bool EnumFlags::bFlagged(i8 i_Enum)
+bool ClassFlags::bFlagged(i8 i_Enum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENUMFLAGS,_FOOTER_);
   
@@ -101,7 +101,7 @@ bool EnumFlags::bFlagged(i8 i_Enum)
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-__aFooterFunction(EnumFlags)
+__aFooterFunction(ClassFlags)
 
 /*============================================================================*/
 /* end                                                                        */

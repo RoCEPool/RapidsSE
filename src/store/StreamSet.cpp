@@ -28,7 +28,7 @@ StreamSet* STORE::_pStreamSet(void* aAddr)
 void* StreamSet::operator new(size_t)
 {
   StreamSet* pStreamSet =
-    static_cast<StreamSet*>(HeapMem::pAllocate(CN_STREAMSET));
+    static_cast<StreamSet*>(Heaps::pAllocate(CN_STREAMSET));
   
   return pStreamSet;
 }
@@ -40,7 +40,7 @@ void StreamSet::operator delete(void* aAddress)
 {
   Object* pObject = static_cast<Object*>(aAddress);
   
-  HeapMem::vFree(pObject);
+  Heaps::vFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/

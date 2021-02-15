@@ -55,7 +55,7 @@ EntBuffer* STORE::_pEntBuffer(void* aAddress)
 void* EntBuffer::operator new(size_t)
 {
   EntBuffer* pEntBuffer =
-    static_cast<EntBuffer*>(HeapMem::pAllocate(CN_ENTBUFFER));
+    static_cast<EntBuffer*>(Heaps::pAllocate(CN_ENTBUFFER));
   
   return pEntBuffer;
 }
@@ -75,7 +75,7 @@ void EntBuffer::operator delete(void* aAddress)
 {
   EntBuffer* pEntBuffer = static_cast<EntBuffer*>(aAddress);
   
-  HeapMem::vFree(pEntBuffer);
+  Heaps::vFree(pEntBuffer);
 }
 
 /*----------------------------------------------------------------------------*/

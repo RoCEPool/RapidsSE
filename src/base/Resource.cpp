@@ -24,7 +24,7 @@ Resource* BASE::_pResource(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Resource::Resource(eCN eClassNo)
-: Loggable(eClassNo,-9) //AM::iNextResourceId())
+: Loggable(eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
@@ -37,7 +37,7 @@ Resource::Resource(eCN eClassNo)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Resource::Resource(eCN eClassNo, Loggable* pIsFor)
-: Loggable(eClassNo,-9) //AM::iNextResourceId())
+: Loggable(eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   

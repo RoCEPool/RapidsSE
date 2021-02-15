@@ -47,7 +47,7 @@ void Lock::operator delete(void*)
 /* constructor (for non-focal case)                                           */
 /*----------------------------------------------------------------------------*/
 Lock::Lock(eLK eLockKind, Object* pFor)
-: Loggable(CN_LOCK,C_UNKNOWN)
+: Loggable(CN_LOCK)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
@@ -323,7 +323,7 @@ bool Lock::bGrabRead(void)
   
   ++m_ixReadGrabs;
 #ifdef WITH_LOCK_TRACKING
-  ++AM::pLockTracker()->m_ixReadGrabs[m_eLockKind];
+  ++AM::pLocks()->m_ixReadGrabs[m_eLockKind];
 #endif
   
   i8 iResult = Lock::iLockGrabRead(&m_uLockWord);
@@ -334,7 +334,7 @@ bool Lock::bGrabRead(void)
   
   ++m_ixReadCollisions;
 #ifdef WITH_LOCK_TRACKING
-  ++AM::pLockTracker()->m_ixReadCollisions[m_eLockKind];
+  ++AM::pLocks()->m_ixReadCollisions[m_eLockKind];
 #endif
   
   return false;
@@ -354,7 +354,7 @@ void Lock::vGrabRead(void)
   
   ++m_ixReadGrabs;
 #ifdef WITH_LOCK_TRACKING
-  ++AM::pLockTracker()->m_ixReadGrabs[m_eLockKind];
+  ++AM::pLocks()->m_ixReadGrabs[m_eLockKind];
 #endif
   
   i8 iResult = Lock::iLockGrabRead(&m_uLockWord);
@@ -368,7 +368,7 @@ void Lock::vGrabRead(void)
 
   ++m_ixReadCollisions;
 #ifdef WITH_LOCK_TRACKING
-  ++AM::pLockTracker()->m_ixReadCollisions[m_eLockKind];
+  ++AM::pLocks()->m_ixReadCollisions[m_eLockKind];
 #endif
   
   Timer oTimer;
@@ -471,7 +471,7 @@ bool Lock::bGrabWrite(void)
 
   ++m_ixWriteGrabs;
 #ifdef WITH_LOCK_TRACKING
-  ++AM::pLockTracker()->m_ixWriteGrabs[m_eLockKind];
+  ++AM::pLocks()->m_ixWriteGrabs[m_eLockKind];
 #endif
   
   i8 iResult = Lock::iLockGrabWrite(&m_uLockWord);
@@ -482,7 +482,7 @@ bool Lock::bGrabWrite(void)
   
   ++m_ixWriteCollisions;
 #ifdef WITH_LOCK_TRACKING
-  ++AM::pLockTracker()->m_ixWriteCollisions[m_eLockKind];
+  ++AM::pLocks()->m_ixWriteCollisions[m_eLockKind];
 #endif
   
   return false;
@@ -502,7 +502,7 @@ void Lock::vGrabWrite(void)
   
   ++m_ixWriteGrabs;
 #ifdef WITH_LOCK_TRACKING
-  ++AM::pLockTracker()->m_ixWriteGrabs[m_eLockKind];
+  ++AM::pLocks()->m_ixWriteGrabs[m_eLockKind];
 #endif
   
   i8 iResult = Lock::iLockGrabWrite(&m_uLockWord);
@@ -516,7 +516,7 @@ void Lock::vGrabWrite(void)
   
   ++m_ixWriteCollisions;
 #ifdef WITH_LOCK_TRACKING
-  ++AM::pLockTracker()->m_ixWriteCollisions[m_eLockKind];
+  ++AM::pLocks()->m_ixWriteCollisions[m_eLockKind];
 #endif
   
   Timer oTimer;

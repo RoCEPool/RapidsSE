@@ -338,7 +338,7 @@ void Step::vSocketRecvObject(void)
   if ( _bIsValidJob(eClass) ) {
         
     //! temp. to be fixed
-    Job* pJob = static_cast<Job*>(HeapMem::pAllocate(eClass));
+    Job* pJob = static_cast<Job*>(Heaps::pAllocate(eClass));
 
     MemLib::vCopy(pJob,pObject,sizeof(Object),eClass);
     
@@ -385,7 +385,7 @@ void Step::vSocketRecvObject(void)
   }
   
   if (eClass == CN_XMITOPERAND) {
-    XmitOperand* pXmitOperand = static_cast<XmitOperand*>(HeapMem::pAllocate(eClass));
+    XmitOperand* pXmitOperand = static_cast<XmitOperand*>(Heaps::pAllocate(eClass));
     
     MemLib::vCopy(pXmitOperand,pObject,sizeof(Object),eClass);
     
@@ -685,7 +685,7 @@ void Step::vSocketRecvObject_LowMem(void)
   if ( _bIsValidJob(eClass) ) {
     
     //! temp. to be fixed
-    Job* pJob = static_cast<Job*>(HeapMem::pAllocate(eClass));
+    Job* pJob = static_cast<Job*>(Heaps::pAllocate(eClass));
     
     MemLib::vCopy(pJob,pObject,sizeof(Object),eClass);
     
@@ -717,7 +717,7 @@ void Step::vSocketRecvObject_LowMem(void)
     
     //vTrace("Received XmitOperand under low mem\n"_Stz);
     
-    XmitOperand* pXmitOperand = static_cast<XmitOperand*>(HeapMem::pAllocate(eClass));
+    XmitOperand* pXmitOperand = static_cast<XmitOperand*>(Heaps::pAllocate(eClass));
     
     MemLib::vCopy(pXmitOperand,pObject,sizeof(Object),eClass);
     

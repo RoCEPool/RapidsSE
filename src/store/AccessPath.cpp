@@ -35,7 +35,7 @@ AccessPath* STORE::_pAccessPath(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* AccessPath::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_ACCESSPATH);
+  void* pObject = Heaps::pAllocate(CN_ACCESSPATH);
   
   return pObject;
 }
@@ -47,7 +47,7 @@ void AccessPath::operator delete(void* pDataAddress)
 {
   AccessPath* pAccessPath = reinterpret_cast<AccessPath*>(pDataAddress);
   
-  HeapMem::vFree(pAccessPath);
+  Heaps::vFree(pAccessPath);
 }
 
 /*----------------------------------------------------------------------------*/

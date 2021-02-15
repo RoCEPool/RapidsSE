@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* ResourceTracker.hpp - Resource Tracker                                     */
+/* Resources.hpp - Resource Tracker                                     */
 /*============================================================================*/
 #pragma once
 
 namespace BASE
 {
-  class ResourceTracker : public Object
+  class Resources : public Object
   {
   public:
   
@@ -21,8 +21,8 @@ namespace BASE
     Footer m_xFooter;
     
   public:
-    ResourceTracker(void);
-    ~ResourceTracker(void) noexcept(false);
+    Resources(void);
+    ~Resources(void) noexcept(false);
   
     void vAddMallocAmt(i8 nBytes);
     void vSubMallocAmt(i8 nBytes);

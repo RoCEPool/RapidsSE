@@ -36,8 +36,8 @@ void Scheduler::vTaskSelf_LoopTransition(Task* pSelfTask, Thread* pThread)
 
   // remove task from the executing set
   
-  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
-  pSystemSchedule->vRemoveExecutingSet(pSelfTask);
+  Schedule* pSchedule = AM::pSchedule();
+  pSchedule->vRemoveExecutingSet(pSelfTask);
   RASSERT(QK_NONE == pSelfTask->eQueue());
   
   // set task to be desisted to indicate its under control of the scheduler
@@ -115,7 +115,7 @@ void Scheduler::vTaskSelf_BideForOperand(Task* pSelfTask, Thread* pThread)
   AM::vLogTsk(SL_INF,pSelfTask,TA_TSK_BIDE,
               "Transition task to TS_BIDING; add to BidingSet"_Stz); //!format-LogTsk
 
-  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
+  Schedule* pSchedule = AM::pSchedule();
   
   pSelfTask->vTranstionRequestClear();
 
@@ -123,7 +123,7 @@ void Scheduler::vTaskSelf_BideForOperand(Task* pSelfTask, Thread* pThread)
   // queued case: operator task bides for operand
 
   pSelfTask->vState(TS_BIDING);
-  pSystemSchedule->vAddBidingSet(pSelfTask);
+  pSchedule->vAddBidingSet(pSelfTask);
   
   pSelfTask->vDropTaskLock();
   
@@ -180,7 +180,7 @@ void Scheduler::vTaskSelf_SleepSomeTime(Task* pSelfTask, Thread* pThread)
   AM::vLogTsk(SL_INF,pSelfTask,TA_TSK_SLEEP,
               "Add desisted task to SleepingQueue"_Stz); //!format-LogTsk
   
-  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
+  Schedule* pSchedule = AM::pSchedule();
 
   pSelfTask->vTranstionRequestClear();
   
@@ -190,7 +190,7 @@ void Scheduler::vTaskSelf_SleepSomeTime(Task* pSelfTask, Thread* pThread)
   if (! pSelfTask->bWakeupNow()) {
 
     pSelfTask->vState(TS_SLEEPING);
-    pSystemSchedule->vAddSleepingQueue(pSelfTask);
+    pSchedule->vAddSleepingQueue(pSelfTask);
 
     pSelfTask->vDropTaskLock();
     /** do not touch task **/
@@ -208,7 +208,7 @@ void Scheduler::vTaskSelf_SleepSomeTime(Task* pSelfTask, Thread* pThread)
   pSelfTask->vState(TS_EXECUTING);
   pSelfTask->vThread(pThread);
 
-  pSystemSchedule->vAddExecutingSet(pSelfTask);
+  pSchedule->vAddExecutingSet(pSelfTask);
 
   pSelfTask->vDropTaskLock();
   
@@ -229,7 +229,7 @@ void Scheduler::vTaskSelf_WaitForResume(Task* pSelfTask, Thread* pThread)
   AM::vLogTsk(SL_INF,pSelfTask,TA_TSK_WAIT,
               "Task moved to WaitingSet"_Stz); //!format-LogTsk
   
-  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
+  Schedule* pSchedule = AM::pSchedule();
   
   pSelfTask->vTranstionRequestClear();
   
@@ -237,7 +237,7 @@ void Scheduler::vTaskSelf_WaitForResume(Task* pSelfTask, Thread* pThread)
   // queued case:
   
   pSelfTask->vState(TS_WAITING);
-  pSystemSchedule->vAddWaitingSet(pSelfTask);
+  pSchedule->vAddWaitingSet(pSelfTask);
   
   pSelfTask->vDropTaskLock();
   /** do not touch task **/
@@ -257,14 +257,14 @@ void Scheduler::vTaskSelf_YieldForOthers(Task* pSelfTask, Thread* pThread)
   AM::vLogTsk(SL_INF,pSelfTask,TA_TSK_YIELD,
               "Yield desisted task; continue executing or schedule it"_Stz); //!format-LogTsk
 
-  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
+  Schedule* pSchedule = AM::pSchedule();
 
   pSelfTask->vTranstionRequestClear();
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // queued case: there are queued ready to run tasks
   
-  i8 nReadyTasks = pSystemSchedule->nTasksReady() + pSystemSchedule->nTasksReadyLP();
+  i8 nReadyTasks = pSchedule->nTasksReady() + pSchedule->nTasksReadyLP();
   if (nReadyTasks) {
 
     vScheduleTask(pSelfTask);
@@ -282,7 +282,7 @@ void Scheduler::vTaskSelf_YieldForOthers(Task* pSelfTask, Thread* pThread)
   pThread->m_pTask = pSelfTask;
   pThread->m_eThreadState = HS_ASSIGNED;
 
-  pSystemSchedule->vAddExecutingSet(pSelfTask);
+  pSchedule->vAddExecutingSet(pSelfTask);
   pSelfTask->vDropTaskLock();
   
   // calling thread continues with self task
@@ -335,9 +335,9 @@ bool Scheduler::bTaskCross_AckWaiting(Task* pTaskWaiting, Task* pTaskAcking)
   RASSERT(QK_WAITING_SET == pTaskWaiting->eQueue());
   RASSERT(TR_NONE == pTaskWaiting->eTranstionRequest());
 
-  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
+  Schedule* pSchedule = AM::pSchedule();
   
-  pSystemSchedule->vRemoveWaitingSet(pTaskWaiting);
+  pSchedule->vRemoveWaitingSet(pTaskWaiting);
     
   RASSERT(TS_DESISTED == pTaskWaiting->eState());
   RASSERT(QK_NONE == pTaskWaiting->eQueue());
@@ -382,9 +382,9 @@ void Scheduler::vTaskCross_TriggerBiding(Task* pTaskBiding, Task* pTriggeringTas
   RASSERT(QK_BIDING_SET == pTaskBiding->eQueue());
   RASSERT(TR_NONE == pTaskBiding->eTranstionRequest());
 
-  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
+  Schedule* pSchedule = AM::pSchedule();
   
-  pSystemSchedule->vRemoveBidingSet(pTaskBiding);
+  pSchedule->vRemoveBidingSet(pTaskBiding);
   
   pTaskBiding->vDropTaskLock();
   
@@ -405,9 +405,9 @@ void Scheduler::vTaskCross_WakeSleepers(Task* pWakerTask)
   // called from Step::vQueuesCheckSleeping()
   //
   
-  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
+  Schedule* pSchedule = AM::pSchedule();
   
-  while (Task* pWakingTask = pSystemSchedule->pPopSleepingQueue()) {
+  while (Task* pWakingTask = pSchedule->pPopSleepingQueue()) {
         
     RASSERT(TS_DESISTED == pWakingTask->eState());
     RASSERT(QK_NONE == pWakingTask->eQueue());
@@ -574,12 +574,12 @@ void Scheduler::vTaskApi_BeginExecutingDedicated(Thread* pThread)
   RASSERT(pThread->m_pTask);
   RASSERT(TS_DESISTED == pThread->m_pTask->eState());
   
-  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
+  Schedule* pSchedule = AM::pSchedule();
   
   pThread->m_pTask->vThread(pThread);
   
   pThread->m_pTask->vState(TS_EXECUTING);
-  pSystemSchedule->vAddExecutingSet(pThread->m_pTask);
+  pSchedule->vAddExecutingSet(pThread->m_pTask);
 }
 
 
@@ -605,10 +605,10 @@ void Scheduler::vThread_AddDedicatedThread(Thread* pThread)
   AM::vLogThd(SL_INF,pThread,HA_THD_ADD_DEDICATED,
               "Thread added to DedicatedThreadVec"_Stz); //!format-LogThd
   
-  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
+  Schedule* pSchedule = AM::pSchedule();
   
   pThread->m_eThreadState = HS_IDLE;
-  pSystemSchedule->vAddDedicatedThread(pThread);
+  pSchedule->vAddDedicatedThread(pThread);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -622,10 +622,10 @@ void Scheduler::vThread_AddGeneralThread(Thread* pThread)
   AM::vLogThd(SL_INF,pThread,HA_THD_ADD_GENERAL,
               "Thread added to GeneralThreadVec"_Stz); //!format-LogThd
   
-  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
+  Schedule* pSchedule = AM::pSchedule();
   
   pThread->m_eThreadState = HS_IDLE;
-  pSystemSchedule->vAddGeneralThread(pThread);
+  pSchedule->vAddGeneralThread(pThread);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -670,22 +670,22 @@ void Scheduler::vThread_NapTillGeneralThreads(void)
   AM::vLogSys(SL_INF,nullptr,YA_SYS_PAUSE_GENERAL,
               "Pause till all general threads are all idle"_Stz); //!format-LogSys
   
-  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
+  Schedule* pSchedule = AM::pSchedule();
   
   // pause till all general threads have all begun
   while (AM::nThreadsBegun() != AM::nThreads())
     AM::vNapMsec(10,CN_NONE);
   
-  RASSERT(pSystemSchedule->m_pGeneralThreadVec->nItems() == AM::nThreads());
+  RASSERT(pSchedule->m_pGeneralThreadVec->nItems() == AM::nThreads());
   
   // pause till all general threads are in idle state
-  i8 nGeneralThreads = pSystemSchedule->m_pGeneralThreadVec->nItems();
+  i8 nGeneralThreads = pSchedule->m_pGeneralThreadVec->nItems();
   for (i8 i_Thread = 0; i_Thread < nGeneralThreads; i_Thread++) {
     
-    Thread* pThread = pSystemSchedule->m_pGeneralThreadVec->pGet(i_Thread);
+    Thread* pThread = pSchedule->m_pGeneralThreadVec->pGet(i_Thread);
     
     while (HS_IDLE != pThread->m_eThreadState)
-      AM::vNapMsec(10,CN_SYSTEMSCHEDULE);
+      AM::vNapMsec(10,CN_SCHEDULE);
   }
 }
 
@@ -698,9 +698,9 @@ void Scheduler::vThread_RemoveDedicatedThread(Thread* pThread)
   AM::vLogThd(SL_INF,pThread,HA_THD_REMOVE_DEDICATED,
               "Thread removed from DedicatedThreadVec"_Stz); //!format-LogThd
     
-  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
+  Schedule* pSchedule = AM::pSchedule();
   
-  pSystemSchedule->vRemoveDedicatedThread(pThread);
+  pSchedule->vRemoveDedicatedThread(pThread);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -712,9 +712,9 @@ void Scheduler::vThread_RemoveGeneralThread(Thread* pThread)
   AM::vLogThd(SL_INF,pThread,HA_THD_REMOVE_GENERAL,
               "Thread from from GeneralThreadVec"_Stz); //!format-LogThd
   
-  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
+  Schedule* pSchedule = AM::pSchedule();
   
-  pSystemSchedule->vRemoveGeneralThread(pThread);
+  pSchedule->vRemoveGeneralThread(pThread);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -723,7 +723,7 @@ void Scheduler::vThread_RemoveGeneralThread(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_WaitForTaskAssignment(Thread* pThread)
 {
-  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
+  Schedule* pSchedule = AM::pSchedule();
   
   vThread_WaitAssignment(pThread);
 
@@ -740,7 +740,7 @@ void Scheduler::vThread_WaitForTaskAssignment(Thread* pThread)
   // ok to touch task
   
   pThread->m_pTask->vState(TS_EXECUTING);
-  pSystemSchedule->vAddExecutingSet(pThread->m_pTask);
+  pSchedule->vAddExecutingSet(pThread->m_pTask);
   
   RASSERT(pThread == pKnownTask->pvThread_DONT_DEREF());
 }
@@ -762,9 +762,9 @@ bool Scheduler::bThread_AssignIdle(Task* pKnownTask)
   
   RASSERT(TS_DESISTED == pKnownTask->eState());
   
-  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
+  Schedule* pSchedule = AM::pSchedule();
   
-  Thread* pThread = pSystemSchedule->pThreadPopIdleNL();
+  Thread* pThread = pSchedule->pThreadPopIdleNL();
   
   if (! pThread)
     return false;
@@ -808,7 +808,7 @@ void Scheduler::vThread_WaitAssignment(Thread* pThread)
   RASSERT(HS_UNASSIGNED == pThread->m_eThreadState);
   RASSERT(! pThread->m_pTask);
 
-  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
+  Schedule* pSchedule = AM::pSchedule();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // mutex-based loop waiting for
@@ -816,9 +816,9 @@ void Scheduler::vThread_WaitAssignment(Thread* pThread)
   while (! pThread->m_pTask) {
     
     // attempt to po a task from one of the ready queues
-    Task* pPoppedTask = pSystemSchedule->pPopReadyQueue();
+    Task* pPoppedTask = pSchedule->pPopReadyQueue();
     if (! pPoppedTask)
-      pPoppedTask = pSystemSchedule->pPopReadyQueueLP();
+      pPoppedTask = pSchedule->pPopReadyQueueLP();
     
     // was a task popped?
     if (pPoppedTask) {
@@ -835,7 +835,7 @@ void Scheduler::vThread_WaitAssignment(Thread* pThread)
     
     pThread->m_eThreadState = HS_IDLE;
     RASSERT(! pThread->m_pTask);
-    pSystemSchedule->vThreadAppendIdle(pThread);
+    pSchedule->vThreadAppendIdle(pThread);
 
     ASSERT(pThread->m_oMutex.bIsLockedByCaller(pThread));
     pThread->m_oMutex.vWait(pThread);
@@ -895,12 +895,12 @@ void Scheduler::vScheduleTask(Task* pKnownTask)
   RASSERT(QK_NONE == pKnownTask->eQueue());
   RASSERT(TR_NONE == pKnownTask->eTranstionRequest());
 
-  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
+  Schedule* pSchedule = AM::pSchedule();
   
-  pSystemSchedule->vGrabThreadIdleQueue();
+  pSchedule->vGrabThreadIdleQueue();
   
   if (bThread_AssignIdle(pKnownTask)) {
-    pSystemSchedule->vDropThreadIdleQueue();
+    pSchedule->vDropThreadIdleQueue();
     return;
   }
   
@@ -916,13 +916,13 @@ void Scheduler::vScheduleTask(Task* pKnownTask)
   //! as PY_NORMAL hence Appending to readyQueue always
   
   //if (pKnownTask->pJob()->aJobClass()->m_ePriority == PY_NORMAL)
-  //  pSystemSchedule->vAppendReadyQueue(pKnownTask);
+  //  pSchedule->vAppendReadyQueue(pKnownTask);
   //else
-  //  pSystemSchedule->vAppendReadyQueueLP(pKnownTask);
+  //  pSchedule->vAppendReadyQueueLP(pKnownTask);
  
-  pSystemSchedule->vAppendReadyQueue(pKnownTask);
+  pSchedule->vAppendReadyQueue(pKnownTask);
   
-  pSystemSchedule->vDropThreadIdleQueue();
+  pSchedule->vDropThreadIdleQueue();
   
   // **do not touch task*
 }

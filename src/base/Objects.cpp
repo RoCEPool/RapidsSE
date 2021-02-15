@@ -1,37 +1,37 @@
 /*============================================================================*/
-/* ObjectNumbering.cpp -- Object Numbering                                    */
+/* Objects.cpp -- Object Numbering                                    */
 /*============================================================================*/
 
 #include "BASE.h"
 
-#include "ObjectNumbering.hpp"
+#include "Objects.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* -- LifeCycle --------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,ObjectNumbering,CN_OBJECTNUMBERING)
-__aNewFunction(ObjectNumbering,CN_OBJECTNUMBERING)
-__vDeleteFunction(ObjectNumbering,CN_OBJECTNUMBERING)
-__aFooterFunction(ObjectNumbering)
+__pCastFunction(STORE,Objects,CN_OBJECTS)
+__aNewFunction(Objects,CN_OBJECTS)
+__vDeleteFunction(Objects,CN_OBJECTS)
+__aFooterFunction(Objects)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ObjectNumbering::ObjectNumbering(void)
-: Object(CN_OBJECTNUMBERING)
+Objects::Objects(void)
+: Object(CN_OBJECTS)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OBJECTNUMBERING);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OBJECTS);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_OBJECTNUMBERING,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_OBJECTS,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-ObjectNumbering::~ObjectNumbering(void) noexcept(false)
+Objects::~Objects(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OBJECTNUMBERING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OBJECTS,_FOOTER_);
   
   NEVER_REACH;
 }
@@ -43,15 +43,30 @@ ObjectNumbering::~ObjectNumbering(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get next object no for given class                                         */
 /*----------------------------------------------------------------------------*/
-i8 ObjectNumbering::iNextNo(eCN eClassNo)
+i8 Objects::iNextNo(eCN eClassNo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OBJECTNUMBERING);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OBJECTS);
   
-  i8 iObjectNo = ++ m_ixaNextObjectId[eClassNo];
+  i8 iObjectNo;
+  
+  if (CN_JOB == eClassNo)
+    iObjectNo = ++ m_inNextJobId;
+  else
+    iObjectNo = ++ m_ixaNextObjectId[eClassNo];
   
   return iObjectNo;
 }
 
+/*----------------------------------------------------------------------------*/
+/* set node no's where appropriate                                            */
+/*----------------------------------------------------------------------------*/
+void Objects::vNodeNo(i8 iThisNodeNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OBJECTS);
+
+  m_inNextJobId.vNodeNo(iThisNodeNo);
+  m_ixaNextObjectId[CN_JOB] = iThisNodeNo << 48;
+}
 
 /*============================================================================*/
 /* end                                                                        */

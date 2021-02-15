@@ -154,7 +154,7 @@ enum eCN : u2 // Class Number
   /* */ CN_NUMBAT,
   
   /* */ CN__O__,
-  /* */ CN_OBJECTNUMBERING,
+  /* */ CN_OBJECTS,
   /* */ CN_OUTPUT,
   /* */ CN_OP,
   /* */ CN_OPENFILES,
@@ -199,7 +199,7 @@ enum eCN : u2 // Class Number
   /* */ CN_READER,
   /* */ CN_RECORD,
   /* */ CN_RELOP,
-  /* */ CN_RESOURCETRACKER,
+  /* */ CN_RESOURCES,
   /* */ CN_RESPONSE,
   /* */ CN_RESPONSEVEC,
   /* */ CN_RESULT,
@@ -234,7 +234,7 @@ enum eCN : u2 // Class Number
   /* */ CN_SENCOMPILER,
   /* */ CN_SEPROMPT,
   /* */ CN_SESSION,
-  /* */ CN_SESSIONARRAY,
+  /* */ CN_SESSIONS,
   /* */ CN_SHORTCUT,
   /* */ CN_SHORTCUTVEC,
   /* */ CN_SINCE,
@@ -275,7 +275,7 @@ enum eCN : u2 // Class Number
   /* */ CN_STZLIST,
   /* */ CN_STZVAL,
   /* */ CN_SYSCALL,
-  /* */ CN_SYSTEMSCHEDULE,
+  /* */ CN_SCHEDULE,
 
   /* */ CN__T__,
   /* */ CN_TABLE,
@@ -479,7 +479,7 @@ static Stz* aCN[]
   /* */ "NUMBAT"_Stz,               // CN_NUMBAT
    
   /* */ "_O__"_Stz,                 // CN__O__
-  /* */ "OBJECTNUMBERING"_Stz,      // CN_OBJECTNUMBERING
+  /* */ "OBJECTNUMBERING"_Stz,      // CN_OBJECTS
   /* */ "OUTPUT"_Stz,               // CN_OUTPUT
   /* */ "OP"_Stz,                   // CN_OP
   /* */ "OPENFILES"_Stz,            // CN_OPENFILES
@@ -524,7 +524,7 @@ static Stz* aCN[]
   /* */ "READER"_Stz,               // CN_READER
   /* */ "RECORD"_Stz,               // CN_RECORD
   /* */ "RELOP"_Stz,                // CN_RELOP
-  /* */ "RESOURCETRACKER"_Stz,      // CN_RESOURCETRACKER
+  /* */ "RESOURCETRACKER"_Stz,      // CN_RESOURCES
   /* */ "RESPONSE"_Stz,             // CN_RESPONSE
   /* */ "RESPONSEVEC"_Stz,          // CN_RESPONSEVEC
   /* */ "RESULT"_Stz,               // CN_RESULT
@@ -559,7 +559,7 @@ static Stz* aCN[]
   /* */ "SENCOMPILER"_Stz,          // CN_SENCOMPILER
   /* */ "SEPROMPT"_Stz,             // CN_SEPROMPT
   /* */ "SESSION"_Stz,              // CN_SESSION
-  /* */ "SESSIONARRAY"_Stz,         // CN_SESSIONARRAY
+  /* */ "SESSIONARRAY"_Stz,         // CN_SESSIONS
   /* */ "SHORTCUT"_Stz,             // CN_SHORTCUT
   /* */ "SHORTCUTVEC"_Stz,          // CN_SHORTCUTVEC
   /* */ "SINCE"_Stz,                // CN_SINCE
@@ -600,7 +600,7 @@ static Stz* aCN[]
   /* */ "STZLIST"_Stz,              // CN_STZLIST
   /* */ "STZVAL"_Stz,               // CN_STZVAL
   /* */ "SYSCALL"_Stz,              // CN_SYSCALL
-  /* */ "SYSTEMSCHEDULE"_Stz,       // CN_SYSTEMSCHEDULE
+  /* */ "SYSTEMSCHEDULE"_Stz,       // CN_SCHEDULE
 
   /* */ "_T__"_Stz,                 // CN__T__
   /* */ "TABLE"_Stz,                // CN_TABLE

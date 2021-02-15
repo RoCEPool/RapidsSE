@@ -26,7 +26,7 @@ void* StepTiming::operator new(size_t)
 {
   RASSERT(! AM::pStepTiming());
   
-  StepTiming* pStepTiming = (StepTiming*)HeapMem::pAllocate(CN_STEPTIMING);
+  StepTiming* pStepTiming = (StepTiming*)Heaps::pAllocate(CN_STEPTIMING);
   
   return pStepTiming;
 }

@@ -29,7 +29,7 @@ Node* STORE::_pNode(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Node::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_NODE);
+  void* pObject = Heaps::pAllocate(CN_NODE);
   
   return pObject;
 }
@@ -49,7 +49,7 @@ void Node::operator delete(void* pNodeAddress)
 {
   Object* pObject = reinterpret_cast<Node*>(pNodeAddress);
   
-  HeapMem::vFree(pObject);
+  Heaps::vFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/

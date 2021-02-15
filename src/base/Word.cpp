@@ -30,7 +30,7 @@ Word* BASE::_pWord(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Word::operator new(size_t, Dic* pDic)
 {
-  Word* pWord = (Word*)(HeapMem::pAllocate(CN_WORD));
+  Word* pWord = (Word*)(Heaps::pAllocate(CN_WORD));
   
   pWord->m_bPersistent = false;
   pWord->m_pDic = pDic;
@@ -45,7 +45,7 @@ void* Word::operator new(size_t, Dic* pDic, bool bPersistent)
 {
   RASSERT(bPersistent || ! bPersistent);
   
-  Word* pWord = (Word*)(HeapMem::pAllocate(CN_WORD,bPersistent));
+  Word* pWord = (Word*)(Heaps::pAllocate(CN_WORD,bPersistent));
   
   pWord->m_bPersistent = bPersistent;
   pWord->m_pDic = pDic;
@@ -60,7 +60,7 @@ void Word::operator delete(void* pWordAddress)
 {
   Word* pWord = reinterpret_cast<Word*>(pWordAddress);
  
-  HeapMem::vFree(pWord,pWord->m_bPersistent);
+  Heaps::vFree(pWord,pWord->m_bPersistent);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* EnumFlags.hpp -- Enum Flags                                                */
+/* ClassFlags.hpp -- Enum Flags                                                */
 /*============================================================================*/
 #pragma once
 
 namespace BASE
 {
-  class EnumFlags : public Object
+  class ClassFlags : public Object
   {
   private:
     bool m_bAll;
@@ -15,8 +15,8 @@ namespace BASE
     Footer m_xFooter;
     
   public:  
-    EnumFlags(void);
-   ~EnumFlags() noexcept(false);
+    ClassFlags(void);
+   ~ClassFlags() noexcept(false);
   
     bool bAll(void);
     void vAll(bool bAll);
@@ -29,7 +29,7 @@ namespace BASE
     Footer* aFooter(void);
   };
   
-  EnumFlags* _pEnumFlags(void* aAddr);
+  ClassFlags* _pClassFlags(void* aAddr);
 }
 
 /*============================================================================*/

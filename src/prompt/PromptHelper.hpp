@@ -9,7 +9,7 @@ namespace PROMPT
   {
   public:
   
-    static void vEnumFlags(EnumFlags* pFlags,
+    static void vClassFlags(ClassFlags* pFlags,
                            Stz* szGroupNm,
                            Stz* szaEnumNm[],
                            i8   iEnumLimit,

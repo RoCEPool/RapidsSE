@@ -25,7 +25,7 @@
 
 #include <sys/syscall.h>
 
-#include "ResourceTracker.hpp"
+#include "Resources.hpp"
 
 Atomic gixPsxThd;
 
@@ -52,7 +52,7 @@ PsxThd* BASE::_pPsxThd(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* PsxThd::operator new(size_t)
 {
-  void* pPsxThd = HeapMem::pAllocate(CN_PSXTHD);
+  void* pPsxThd = Heaps::pAllocate(CN_PSXTHD);
   
   return pPsxThd;
 }
@@ -64,7 +64,7 @@ void PsxThd::operator delete(void* pPsxThdAddress)
 {
   Object* pObject = reinterpret_cast<Object*>(pPsxThdAddress);
   
-  HeapMem::vFree(pObject);
+  Heaps::vFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -839,7 +839,7 @@ bool PsxThd::bSpawnThread(void* pFun(void*), void* pArg)
     return false;
   }
   
-  if (AM::bAttached()) AM::pResourceTracker()->vIncThreadOpen();
+  if (AM::bAttached()) AM::pResources()->vIncThreadOpen();
   
   AM::vLogRes(SL_INF,this,RA_THD_SPAWNED,
               "Thread spawned : %lld"_Stz, //!format-LogRes
@@ -910,7 +910,7 @@ void PsxThd::vThreadExit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PSXTHD,_FOOTER_);
   
-  if (AM::bAttached()) AM::pResourceTracker()->vDecThreadOpen();
+  if (AM::bAttached()) AM::pResources()->vDecThreadOpen();
 }
         
 /*----------------------------------------------------------------------------*/

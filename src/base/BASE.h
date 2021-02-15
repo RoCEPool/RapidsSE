@@ -126,6 +126,9 @@ extern d8 C_D8_MID;
 
 #include "Bytes_t.hpp"
 #include "String_t.hpp"
+#include "Atomic.hpp"
+#include "NextGid.hpp"
+#include "Objects.hpp"
 #include "Loggable.hpp"
 
 #include "SP.hpp"
@@ -158,9 +161,8 @@ extern d8 C_D8_MID;
 #include "Process.hpp"
 #include "Shell.hpp"
 
-#include "Atomic.hpp"
 #include "Lock.hpp"
-#include "LockTracker.hpp"
+#include "Locks.hpp"
 #include "Mutex.hpp"
 
 #include "SingleWord.hpp"
@@ -191,7 +193,7 @@ extern d8 C_D8_MID;
 #include "BufferMap.hpp"
 
 #include "HeapBuffer.hpp"
-#include "HeapMem.hpp"
+#include "Heaps.hpp"
 #include "Heap.hpp"
 #include "ObjectSnapshot.hpp"
 #include "Region.hpp"
@@ -204,11 +206,10 @@ extern d8 C_D8_MID;
 #include "CRM.hpp"
 #include "DecaCnt.hpp"
 #include "Decider.hpp"
-#include "EnumFlags.hpp"
+#include "ClassFlags.hpp"
 #include "FreqDist.hpp"
 #include "HV.hpp"
 #include "MemTest.hpp"
-#include "NextGid.hpp"
 #include "Now.hpp"
 #include "Rand.hpp"
 #include "SeeMe.hpp"
@@ -286,7 +287,7 @@ extern d8 C_D8_MID;
 
 #include "TlsKeys.hpp"
 
-#include "ResourceTracker.hpp"
+#include "Resources.hpp"
 
 #include "AnnChar.hpp"
 #include "Token.hpp"
@@ -382,7 +383,7 @@ extern d8 C_D8_MID;
 #include "ThreadQueue.hpp"
 #include "ThreadVec.hpp"
 
-#include "SystemSchedule.hpp"
+#include "Schedule.hpp"
 
 //------------------------------------------------------------------------------
 

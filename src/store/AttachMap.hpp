@@ -3,9 +3,9 @@
 /*============================================================================*/
 #pragma once
 
-#include "ResourceTracker.hpp" //?
+#include "Resources.hpp" //?
 
-namespace STORE { class ObjectNumbering; }
+namespace STORE { class Objects; }
 
 namespace STORE
 {
@@ -19,6 +19,12 @@ namespace STORE
   friend class PROMPT::SePrompt;
 
   private:
+  
+    union {
+      u8    m_uAttachMapState;         // attachmap is ready
+      char  m_caAttachMapState[8];
+    };
+  
     i8    m_iPid;
     Birth m_oBirth;
     Now   m_oNow;
@@ -35,56 +41,30 @@ namespace STORE
     BucketMap*    m_pBucketMap;
     BufferMap*    m_pBufferMap;
     BufferPool*   m_pBufferPool;
-    EnumFlags     m_oClassFlags;
-    Lock          m_okDdlLock;
-    Lock          m_okDicLock;
+    ClassFlags    m_oClassFlags;
     i8            m_iEpoch;
     Format        m_oFormat;
     Grid*         m_pGrid;
-    HeapMem       m_xHeapMem;
+    Heaps         m_xHeaps;
     Article*      m_pLexiconArticle;
-    LockTracker   m_oLockTracker;
-    NextGid       m_inNextDiagram;
-    NextGid       m_inNextJobId;
-    NextGid       m_inNextLockId;
-    NextGid       m_inNextMonitor;
-    NextGid       m_inNextOpId;
-    NextGid       m_inNextPlanId;
-    NextGid       m_inNextPromptId;
-    NextGid       m_inNextRequest;
-    NextGid       m_inNextResourceId;
-    NextGid       m_inNextSessionId;
-    NextGid       m_inNextStreamId;
-    NextGid       m_inNextTaskId;
-    NextGid       m_inNextThreadId;
-    NextGid       m_inNextTxId;
-    ObjectNumbering* m_pObjectNumbering;
+    Locks         m_oLocks;
+    Objects*      m_pObjects;
     Atomic        m_nxOperands;
     PtnMap*       m_pPtnMap;
-    SystemSchedule*  m_pSystemSchedule;
     i8            m_iQuit;
-    ResourceTracker m_oResourceTracker;
+    Resources     m_oResources;
     Article*      m_pRootArcticle;
     Word*         m_pRootConstant;
     Dic*          m_pRootDic;
     Word*         m_pRootWord;
-    SessionArray* m_pSessionArray;
+    Schedule*     m_pSchedule;
+    Sessions*     m_pSessions;
     Statistics    m_oStatistics;
     StepTiming*   m_pStepTiming;
     i8            m_iStop;
-    PoolBuffer*   m_pTakenBuffers;
-    i8            m_nTakenBytes;
-    Lock          m_okTccLock;
     Word*         m_pTenants;
     TempName      m_oTempName;
-    Atomic        m_ixThreads;
     TxSet*        m_pTxSet;
-  
-  
-  
-    struct {
-    
-    } m_xBase;
   
     struct {
       
@@ -97,11 +77,6 @@ namespace STORE
 
     } m_xStore;
 
-    union {
-      u8    m_uAttachMapState;         // attachmap is ready
-      char  m_caAttachMapState[8];
-    };
-    
     // must be last
     Footer m_xFooter;
     
@@ -128,7 +103,7 @@ namespace STORE
     void vPrintStartupInfo(void);
   
     void vRecordArguments(CmdLineArgs* CmdLineArgs);
-    SessionArray* pSessionArray(void);
+    Sessions* pSessions(void);
 
     Footer* aFooter(void);
   };

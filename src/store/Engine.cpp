@@ -27,7 +27,7 @@
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
 
-#include "SessionArray.hpp"
+#include "Sessions.hpp"
 
 #include "ShortCut.hpp"
 #include "SeDeputy.hpp"
@@ -722,7 +722,7 @@ void Engine::vDeleteImmmediate(Task** ppTask)
 void Engine::vDeleteSession(Session* pSession)
 {
   //delete pSession;
-  AM::pSessionArray()->vFreeSession(pSession);
+  AM::pSessions()->vFreeSession(pSession);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1527,7 +1527,7 @@ void Engine::vStartSystem(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move
   
-   gpAttachMap->m_pSystemSchedule = new SystemSchedule;
+   gpAttachMap->m_pSchedule = new Schedule;
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // job lists
@@ -1580,21 +1580,23 @@ void Engine::vStartSystem(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // initialize the next id generators
-  gpAttachMap->m_inNextJobId.vNodeNo(iThisNodeNo);
-  gpAttachMap->m_inNextOpId.vNodeNo(iThisNodeNo);
-  gpAttachMap->m_inNextPlanId.vNodeNo(iThisNodeNo);
-  gpAttachMap->m_inNextResourceId.vNodeNo(iThisNodeNo);
-  gpAttachMap->m_inNextStreamId.vNodeNo(iThisNodeNo);
-  gpAttachMap->m_inNextTaskId.vNodeNo(iThisNodeNo);
-  gpAttachMap->m_inNextThreadId.vNodeNo(iThisNodeNo);
+  //gpAttachMap->m_inNextJobId.vNodeNo(iThisNodeNo);
+//  gpAttachMap->m_inNextOpId.vNodeNo(iThisNodeNo);
+//  gpAttachMap->m_inNextPlanId.vNodeNo(iThisNodeNo);
+//  gpAttachMap->m_inNextResourceId.vNodeNo(iThisNodeNo);
+//  gpAttachMap->m_inNextStreamId.vNodeNo(iThisNodeNo);
+//  gpAttachMap->m_inNextTaskId.vNodeNo(iThisNodeNo);
+//  gpAttachMap->m_inNextThreadId.vNodeNo(iThisNodeNo);
+  
+  gpAttachMap->m_pObjects->vNodeNo(iThisNodeNo);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (AM::bVerboseProgress())
-    vInfo("  Creating SessionArray\n"_Stz);
+    vInfo("  Creating Sessions\n"_Stz);
 
 
-  gpAttachMap->m_pSessionArray = new SessionArray;
+  gpAttachMap->m_pSessions = new Sessions;
   
   // create the tx set
   gpAttachMap->m_pTxSet = new TxSet();

@@ -15,7 +15,7 @@
 #include "JobList.hpp"
 #include "Op.hpp"
 #include "Procedure.hpp"
-#include "SessionArray.hpp"
+#include "Sessions.hpp"
 #include "Output.hpp"
 
 #include "TagConstants.h"
@@ -39,9 +39,9 @@ Session* Api::pAllocSession(eSK eSession)
   _static_
   
   
-  SessionArray* pSessionArray = AM::pSessionArray();
+  Sessions* pSessions = AM::pSessions();
   
-  Session* pSession = pSessionArray->pAllocSession(eSession);
+  Session* pSession = pSessions->pAllocSession(eSession);
     
   return pSession;
 }
@@ -53,9 +53,9 @@ void Api::vFreeSession(Session* pSession)
 {
   _static_
   
-  SessionArray* pSessionArray = AM::pSessionArray();
+  Sessions* pSessions = AM::pSessions();
 
-  pSessionArray->vFreeSession(pSession);
+  pSessions->vFreeSession(pSession);
 }
 
 

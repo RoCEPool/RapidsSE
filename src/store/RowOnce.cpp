@@ -24,7 +24,7 @@ RowOnce* STORE::_pRowOnce(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* RowOnce::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_ROWONCE);
+  void* pObject = Heaps::pAllocate(CN_ROWONCE);
   
   return pObject;
 }
@@ -36,7 +36,7 @@ void RowOnce::operator delete(void* pRowOnceAddress)
 {
   Object* pObject = reinterpret_cast<Object*>(pRowOnceAddress);
   
-  HeapMem::vFree(pObject);
+  Heaps::vFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/

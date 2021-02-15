@@ -12,12 +12,12 @@
 #include "Node.hpp"
 #include "Grid.hpp"
 #include "AttachMap.hpp"
-#include "ObjectNumbering.hpp"
+#include "Objects.hpp"
 
 #include "Session.hpp"
 #include "Step.hpp"
 
-#include "ResourceTracker.hpp" //?
+#include "Resources.hpp" //?
 #include "TagConstants.h"
 
 extern AttachMap*  gpAttachMap;
@@ -25,7 +25,7 @@ extern BufferPool* gpBufferPool;
 
 SubSysFn __AttachMap("AttachMap"_Stz,(fpSELFFN*)AttachMap::vSubSystem,
                      ""_Stz,
-                     "BufferPool"_Stz,"HeapMem"_Stz,"Base"_Stz,nullptr);
+                     "BufferPool"_Stz,"Heaps"_Stz,"Base"_Stz,nullptr);
 
 /*----------------------------------------------------------------------------*/
 /* -- LifeCycle --------------------------------------------------------------*/
@@ -50,9 +50,6 @@ void* AttachMap::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 AttachMap::AttachMap(void)
 : Object(CN_ATTACHMAP)
-, m_okDdlLock(LK_DDL,this)
-, m_okDicLock(LK_DIC,this)
-, m_okTccLock(LK_TCC,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP);
   
@@ -72,9 +69,9 @@ AttachMap::AttachMap(void)
   m_iTimePoint = AM::iRdTickingDevice();
     
   // create the transient heaps
-  m_xHeapMem.vInit();
+  m_xHeaps.vInit();
   
-  m_pObjectNumbering = new ObjectNumbering;
+  m_pObjects = new Objects;
 
   Lexicon* pLexicon = new Lexicon("__lexicon"_Stz);
   m_pLexiconArticle = pLexicon->pArticle();
@@ -92,13 +89,13 @@ AttachMap::AttachMap(void)
   AM::vRootConstant(m_pRootDic->pFindWord("rootConstant"_Stz));
   
   // create the persistent heaps
-//  m_xHeapMem.Persistent.m_pTiny  =
+//  m_xHeaps.Persistent.m_pTiny  =
 //    new Heap(CN_TINYPERSISTENT,   C_SIZE_TINY_OBJECT,   HT_P_TINY);
-//  m_xHeapMem.Persistent.m_pSmall  =
+//  m_xHeaps.Persistent.m_pSmall  =
 //    new Heap(CN_SMALLPERSISTENT,  C_SIZE_SMALL_OBJECT,  HT_P_SMALL);
-//  m_xHeapMem.Persistent.m_pMedium =
+//  m_xHeaps.Persistent.m_pMedium =
 //    new Heap(CN_MEDIUMPERSISTENT, C_SIZE_MEDIUM_OBJECT, HT_P_MEDIUM);
-//  m_xHeapMem.Persistent.m_pLarge  =
+//  m_xHeaps.Persistent.m_pLarge  =
 //    new Heap(CN_LARGEPERSISTENT,  C_SIZE_LARGE_OBJECT,  HT_P_LARGE);
 
 
@@ -222,10 +219,10 @@ void AttachMap::vPrintAttachMap(void)
   
   vInfo("\n"_Stz);
   vInfo("BufferPool         : %p \n"_Stz, gpAttachMap->m_pBufferPool);
-  vInfo("TransientLargeHeap : %p \n"_Stz, gpAttachMap->m_xHeapMem.Transient.m_pLarge);
-  vInfo("TransientMediumHeap: %p \n"_Stz, gpAttachMap->m_xHeapMem.Transient.m_pMedium);
-  vInfo("TransientSmallHeap : %p \n"_Stz, gpAttachMap->m_xHeapMem.Transient.m_pSmall);
-  vInfo("TransientTinyHeap  : %p \n"_Stz, gpAttachMap->m_xHeapMem.Transient.m_pTiny);
+  vInfo("TransientLargeHeap : %p \n"_Stz, gpAttachMap->m_xHeaps.Transient.m_pLarge);
+  vInfo("TransientMediumHeap: %p \n"_Stz, gpAttachMap->m_xHeaps.Transient.m_pMedium);
+  vInfo("TransientSmallHeap : %p \n"_Stz, gpAttachMap->m_xHeaps.Transient.m_pSmall);
+  vInfo("TransientTinyHeap  : %p \n"_Stz, gpAttachMap->m_xHeaps.Transient.m_pTiny);
 
   vInfo("\n"_Stz);
   vInfo("Enclosed_by_leading  : %c\n"_Stz,
@@ -311,21 +308,21 @@ void AttachMap::vRecordArguments(CmdLineArgs* pCmdLineArgs)
   
   m_oFormat.m_nMaxErrors = m_xSysArgs.m_nMaxLoadErrors;
   
-  ASSERT(m_xHeapMem.Transient.m_pTiny);
-  ASSERT(m_xHeapMem.Transient.m_pSmall);
-  ASSERT(m_xHeapMem.Transient.m_pMedium);
-  ASSERT(m_xHeapMem.Transient.m_pLarge);
+  ASSERT(m_xHeaps.Transient.m_pTiny);
+  ASSERT(m_xHeaps.Transient.m_pSmall);
+  ASSERT(m_xHeaps.Transient.m_pMedium);
+  ASSERT(m_xHeaps.Transient.m_pLarge);
 
   
-  ASSERT(m_xHeapMem.Virtual.m_pTiny);
-  ASSERT(m_xHeapMem.Virtual.m_pSmall);
-  ASSERT(m_xHeapMem.Virtual.m_pMedium);
-  ASSERT(m_xHeapMem.Virtual.m_pLarge);
+  ASSERT(m_xHeaps.Virtual.m_pTiny);
+  ASSERT(m_xHeaps.Virtual.m_pSmall);
+  ASSERT(m_xHeaps.Virtual.m_pMedium);
+  ASSERT(m_xHeaps.Virtual.m_pLarge);
 
-//  ASSERT(m_xHeapMem.Persistent.m_pTiny);
-//  ASSERT(m_xHeapMem.Persistent.m_pSmall);
-//  ASSERT(m_xHeapMem.Persistent.m_pMedium);
-//  ASSERT(m_xHeapMem.Persistent.m_pLarge);
+//  ASSERT(m_xHeaps.Persistent.m_pTiny);
+//  ASSERT(m_xHeaps.Persistent.m_pSmall);
+//  ASSERT(m_xHeaps.Persistent.m_pMedium);
+//  ASSERT(m_xHeaps.Persistent.m_pLarge);
   
     
   m_iStop       = 0;
@@ -335,9 +332,9 @@ void AttachMap::vRecordArguments(CmdLineArgs* pCmdLineArgs)
 /*----------------------------------------------------------------------------*/
 /* get session array                                                          */
 /*----------------------------------------------------------------------------*/
-SessionArray* AttachMap::pSessionArray(void)
+Sessions* AttachMap::pSessions(void)
 {
-  return m_pSessionArray;
+  return m_pSessions;
 }
 
 /*----------------------------------------------------------------------------*/

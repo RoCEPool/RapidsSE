@@ -29,7 +29,7 @@
 #include "Pipeline.hpp"
 #include "Procedure.hpp"
 #include "RapidsSE.hpp"
-#include "SessionArray.hpp"
+#include "Sessions.hpp"
 
 #include "Dynamo.hpp"
 
@@ -1348,7 +1348,7 @@ PromptFun __Prompt_executing (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_executing(SePrompt* pPrompt)
 {
-  AM::pSystemSchedule()->vDumpExecutingSet();
+  AM::pSchedule()->vDumpExecutingSet();
 
   return true;
 }
@@ -1929,17 +1929,7 @@ PromptFun __Prompt_giveMem (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_giveMem(SePrompt* pPrompt)
 {
-  while (AM::pTakenBuffers()) {
-    
-    PoolBuffer* pBuffer     = AM::pTakenBuffers();
-    PoolBuffer* pNextBuffer = *(PoolBuffer**)pBuffer->aEmbeddedBuffer();
-
-    AM::vTakenBuffers(pNextBuffer);
-    
-    gpBufferPool->vFreeOtherBuffer(pBuffer);
-  }
-  
-  AM::vTakenBytes(0);
+  gpBufferPool->vGiveBuffers();
   
   return true;
 }
@@ -2027,7 +2017,7 @@ PromptFun __Prompt_heapSummary (
 bool PROMPT::bPrompt_heapSummary(SePrompt* pPrompt)
 {
   
-  HeapMem::vSummaryReport();
+  Heaps::vSummaryReport();
   
   return true;
 }
@@ -2397,7 +2387,7 @@ PromptFun __Prompt_locks (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_locks(SePrompt* pPrompt)
 {
-  AM::pLockTracker()->vReport();
+  AM::pLocks()->vReport();
   
   return true;
 }
@@ -3857,8 +3847,8 @@ PromptFun __Prompt_ready (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_ready(SePrompt* pPrompt)
 {
-  AM::pSystemSchedule()->vDumpReadyQueue();
-  AM::pSystemSchedule()->vDumpReadyQueueLP();
+  AM::pSchedule()->vDumpReadyQueue();
+  AM::pSchedule()->vDumpReadyQueueLP();
   
   return true;
 }
@@ -3886,7 +3876,7 @@ PromptFun __Prompt_resources (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_resources(SePrompt* pPrompt)
 {
-  if (AM::bAttached()) AM::pResourceTracker()->vReport();
+  if (AM::bAttached()) AM::pResources()->vReport();
   
   return true;
 }
@@ -4385,7 +4375,7 @@ bool PROMPT::bPrompt_sizes(SePrompt* pPrompt)
   vTrace("\n"_Stz);
 
   vTrace("  sizeof(FreeChunk)    = %lu; \n"_Stz, sizeof(FreeChunk));
-  vTrace("  sizeof(SessionArray) = %lu; \n"_Stz, sizeof(SessionArray));
+  vTrace("  sizeof(Sessions) = %lu; \n"_Stz, sizeof(Sessions));
   vTrace("\n"_Stz);
   
   return true;
@@ -4488,7 +4478,7 @@ PromptFun __Prompt_sleeping (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_sleeping(SePrompt* pPrompt)
 {
-  AM::pSystemSchedule()->vDumpSleepingQueue();
+  AM::pSchedule()->vDumpSleepingQueue();
 
   return true;
 }
@@ -4818,7 +4808,7 @@ bool PROMPT::bPrompt_ssnState(SePrompt* pPrompt)
   if (nTokens == 2)
     pArg = pInpTknVec->pGet(1);
   
-  AM::pSessionArray()->vDump();
+  AM::pSessions()->vDump();
   
   return true;
 }
@@ -5158,17 +5148,8 @@ bool PROMPT::bPrompt_takeMem(SePrompt* pPrompt)
     // get the no of indexEntries to set
     nSpare = pInpTknVec->pGet(1)->iToI8();
   }
-  
-  while (gpBufferPool->nFreeCount() >= C_LOW_BUFFERS + nSpare) {
-
-    PoolBuffer* p2ndBuffer  = AM::pTakenBuffers();
-    AM::vTakenBuffers(gpBufferPool->pAllocOtherBuffer());
     
-    PoolBuffer** ppNextBuffer = (PoolBuffer**)AM::pTakenBuffers()->aEmbeddedBuffer();
-    *ppNextBuffer = p2ndBuffer;
-    
-    AM::vTakenBytes(C_SIZE_POOL_BUFFER);
-  }
+  gpBufferPool->vTakeBuffers(nSpare);
   
   return true;
 }
@@ -5196,13 +5177,13 @@ PromptFun __Prompt_taskQueues (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_taskQueues(SePrompt* pPrompt)
 {
-  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
+  Schedule* pSchedule = AM::pSchedule();
   
-  pSystemSchedule->vDumpExecutingSet();
-  pSystemSchedule->vDumpReadyQueue();
-  pSystemSchedule->vDumpReadyQueueLP();
-  pSystemSchedule->vDumpSleepingQueue();
-  pSystemSchedule->vDumpWaitingSet();
+  pSchedule->vDumpExecutingSet();
+  pSchedule->vDumpReadyQueue();
+  pSchedule->vDumpReadyQueueLP();
+  pSchedule->vDumpSleepingQueue();
+  pSchedule->vDumpWaitingSet();
   
   return true;
 }
@@ -5263,7 +5244,7 @@ PromptFun __Prompt_threads (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_threads(SePrompt* pPrompt)
 {  
-  SystemSchedule::vThreadsReport();
+  Schedule::vThreadsReport();
   
   return true;
 }
@@ -5613,7 +5594,7 @@ PromptFun __Prompt_waiting (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_waiting(SePrompt* pPrompt)
 {
-  AM::pSystemSchedule()->vDumpWaitingSet();
+  AM::pSchedule()->vDumpWaitingSet();
 
   return true;
 }

@@ -11,7 +11,7 @@
 #include "Response.hpp"
 #include "Result.hpp"
 #include "Job.hpp"
-#include "SessionArray.hpp"
+#include "Sessions.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -37,9 +37,9 @@ void Step::vSsnIncBegun(void)
   
   i8 i_Session = pJob->m_xReqTuple.m_i_Session;
   
-  Session* pSession = AM::pSessionArray()->pGetSession(i_Session);
+  Session* pSession = AM::pSessions()->pGetSession(i_Session);
   
-  SessionArray::vMarkIncBegun(pSession);
+  Sessions::vMarkIncBegun(pSession);
   
   EXIT();
 }
@@ -55,9 +55,9 @@ void Step::vSsnIncCancelled(void)
   
   i8 i_Session = pJob->m_xReqTuple.m_i_Session;
   
-  Session* pSession = AM::pSessionArray()->pGetSession(i_Session);
+  Session* pSession = AM::pSessions()->pGetSession(i_Session);
 
-  SessionArray::vMarkIncCancelled(pSession);
+  Sessions::vMarkIncCancelled(pSession);
   
   EXIT();
 }
@@ -73,9 +73,9 @@ void Step::vSsnIncEnded(void)
   
   i8 i_Session = pJob->m_xReqTuple.m_i_Session;
   
-  Session* pSession = AM::pSessionArray()->pGetSession(i_Session);
+  Session* pSession = AM::pSessions()->pGetSession(i_Session);
 
-  SessionArray::vMarkIncEnded(pSession);
+  Sessions::vMarkIncEnded(pSession);
   
   EXIT();
 }
@@ -91,9 +91,9 @@ void Step::vSsnIncExecuted(void)
   
   i8 i_Session = pJob->m_xReqTuple.m_i_Session;
   
-  Session* pSession = AM::pSessionArray()->pGetSession(i_Session);
+  Session* pSession = AM::pSessions()->pGetSession(i_Session);
 
-  SessionArray::vMarkIncExecuted(pSession);
+  Sessions::vMarkIncExecuted(pSession);
   
   EXIT();
 }
@@ -127,7 +127,7 @@ void Step::vSsnTraceSession(void)
   
   i8 i_Session = pJob->m_xReqTuple.m_i_Session;
   
-  Session* pSession = AM::pSessionArray()->pGetSession(i_Session);
+  Session* pSession = AM::pSessions()->pGetSession(i_Session);
   
   //pSession->vTraceState();
   

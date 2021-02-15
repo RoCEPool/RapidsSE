@@ -22,7 +22,7 @@ TaskQueue* BASE::_pTaskQueue(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* TaskQueue::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_TASKQUEUE);
+  void* pObject = Heaps::pAllocate(CN_TASKQUEUE);
   
   return pObject;
 }
@@ -42,7 +42,7 @@ void TaskQueue::operator delete(void* pTaskQueueAddress)
 {
   TaskQueue* pTaskQueue = reinterpret_cast<TaskQueue*>(pTaskQueueAddress);
   
-  HeapMem::vFree(pTaskQueue);
+  Heaps::vFree(pTaskQueue);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -39,7 +39,7 @@ using namespace BASE;
 template <class ITEM>
 void* ListNL_t<ITEM>::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_TASKLIST);
+  void* pObject = Heaps::pAllocate(CN_TASKLIST);
   
   return pObject;
 }
@@ -52,7 +52,7 @@ void ListNL_t<ITEM>::operator delete(void* aAddress)
 {
   ListNL_t<ITEM>* pList = reinterpret_cast<ListNL_t<ITEM>*>(aAddress);
   
-  HeapMem::vFree(pList);
+  Heaps::vFree(pList);
 }
 
 /*----------------------------------------------------------------------------*/

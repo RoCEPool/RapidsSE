@@ -44,7 +44,7 @@ TxSet* BASE::_pTxSet(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* TxSet::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_TXSET);
+  void* pObject = Heaps::pAllocate(CN_TXSET);
   
   return pObject;
 }
@@ -154,6 +154,16 @@ Tx* TxSet::pFindTx_NL(i8 iTxId)
   delete pTxFind;
   
   return pTxFound;
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate next tx id                                                        */
+/*----------------------------------------------------------------------------*/
+i8 TxSet::iNextTxId(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
+  
+  return ++ m_inNextTxId;
 }
 
 /*----------------------------------------------------------------------------*/

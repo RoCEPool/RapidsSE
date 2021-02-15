@@ -46,7 +46,7 @@ void Step::vTimerDelete(void)
   
   delete pTimer;
   
-  HeapMem::vFree(pTimerObject);
+  Heaps::vFree(pTimerObject);
   
   EXIT();
 }

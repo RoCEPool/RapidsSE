@@ -21,7 +21,7 @@ ByteRate* BASE::_pByteRate(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* ByteRate::operator new(size_t)
 {
-  ByteRate* pByteRate = (ByteRate*)HeapMem::pAllocate(CN_BYTERATE);
+  ByteRate* pByteRate = (ByteRate*)Heaps::pAllocate(CN_BYTERATE);
   
   return pByteRate;
 }

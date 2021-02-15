@@ -58,6 +58,9 @@ BufferPool::BufferPool(Stz* aRegionName, i8 iRegionSize,
 
   vInitialise(bTouch,bProgress);
   
+  m_pTakenBuffers = nullptr;
+  m_nTakenBytes   = 0;
+
   _checkInitialised_(CN_BUFFERPOOL);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
@@ -381,6 +384,26 @@ i8 BufferPool::iFreeSpace(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* give buffers                                                               */
+/*----------------------------------------------------------------------------*/
+void BufferPool::vGiveBuffers(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+  
+  while (m_pTakenBuffers) {
+    
+    PoolBuffer* pBuffer     = m_pTakenBuffers;
+    PoolBuffer* pNextBuffer = *(PoolBuffer**)pBuffer->aEmbeddedBuffer();
+
+    m_pTakenBuffers = pNextBuffer;
+    
+    gpBufferPool->vFreeOtherBuffer(pBuffer);
+  }
+  
+  m_nTakenBytes = 0;
+}
+
+/*----------------------------------------------------------------------------*/
 /* does the pool have room for more data (row or entries) ?                   */
 /*----------------------------------------------------------------------------*/
 bool BufferPool::bHasDataSpace(void)
@@ -505,13 +528,12 @@ bool BufferPool::bLowMemory(void)
 void BufferPool::vMonitorPortrait(s48K& sPortrait)
 {
   sPortrait.vSprint("Pool: buffers %lld allocated %lld (heap %lld other %lld) "
-                    "free %lld taken %lld\n"_Stz,
+                    "free %lld \n"_Stz,
                     m_nBuffers,
                     m_nAllocCount,
                       *m_ixHeapBuffers,
                       *m_ixOtherBuffers,
-                    m_nFreeCount,
-                    AM::nTakenBytes()
+                    m_nFreeCount
                     );
 }
 
@@ -561,6 +583,27 @@ Stz* BufferPool::szShmNm(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
   return m_sShmNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* take buffers                                                               */
+/*----------------------------------------------------------------------------*/
+void BufferPool::vTakeBuffers(i8 nSpareBuffers)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+  
+  while (nFreeCount() >= C_LOW_BUFFERS + nSpareBuffers) {
+
+    PoolBuffer* pBufferChain  = m_pTakenBuffers;
+    
+    PoolBuffer* pTakenBuffer  = gpBufferPool->pAllocOtherBuffer();
+    PoolBuffer** ppNextBuffer = (PoolBuffer**)pTakenBuffer->aEmbeddedBuffer();
+    *ppNextBuffer = pBufferChain;
+    
+    m_pTakenBuffers = pTakenBuffer;
+    m_nTakenBytes += C_SIZE_POOL_BUFFER;
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -732,39 +775,39 @@ void BufferPool::vPrintProgress(void)
 
   vTrace("   Transient SmallHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagSmall.azChar(),
-         AM::pHeapMem()->Transient.m_pSmall->nBufferCount(),
-         AM::pHeapMem()->Transient.m_pSmall->nCurrAllocated(),
-         AM::pHeapMem()->Transient.m_pSmall->nFreeChunks());
+         AM::pHeaps()->Transient.m_pSmall->nBufferCount(),
+         AM::pHeaps()->Transient.m_pSmall->nCurrAllocated(),
+         AM::pHeaps()->Transient.m_pSmall->nFreeChunks());
 
   vTrace("  Transient MediumHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagMedium.azChar(),
-         AM::pHeapMem()->Transient.m_pMedium->nBufferCount(),
-         AM::pHeapMem()->Transient.m_pMedium->nCurrAllocated(),
-         AM::pHeapMem()->Transient.m_pMedium->nFreeChunks());
+         AM::pHeaps()->Transient.m_pMedium->nBufferCount(),
+         AM::pHeaps()->Transient.m_pMedium->nCurrAllocated(),
+         AM::pHeaps()->Transient.m_pMedium->nFreeChunks());
 
   vTrace("   Transient LargeHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagLarge.azChar(),
-         AM::pHeapMem()->Transient.m_pLarge->nBufferCount(),
-         AM::pHeapMem()->Transient.m_pLarge->nCurrAllocated(),
-         AM::pHeapMem()->Transient.m_pLarge->nFreeChunks());
+         AM::pHeaps()->Transient.m_pLarge->nBufferCount(),
+         AM::pHeaps()->Transient.m_pLarge->nCurrAllocated(),
+         AM::pHeaps()->Transient.m_pLarge->nFreeChunks());
 
   vTrace("   Persistent SmallHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagSmall.azChar(),
-         AM::pHeapMem()->Persistent.m_pSmall->nBufferCount(),
-         AM::pHeapMem()->Persistent.m_pSmall->nCurrAllocated(),
-         AM::pHeapMem()->Persistent.m_pSmall->nFreeChunks());
+         AM::pHeaps()->Persistent.m_pSmall->nBufferCount(),
+         AM::pHeaps()->Persistent.m_pSmall->nCurrAllocated(),
+         AM::pHeaps()->Persistent.m_pSmall->nFreeChunks());
 
   vTrace("  Persistent MediumHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagMedium.azChar(),
-         AM::pHeapMem()->Persistent.m_pMedium->nBufferCount(),
-         AM::pHeapMem()->Persistent.m_pMedium->nCurrAllocated(),
-         AM::pHeapMem()->Persistent.m_pMedium->nFreeChunks());
+         AM::pHeaps()->Persistent.m_pMedium->nBufferCount(),
+         AM::pHeaps()->Persistent.m_pMedium->nCurrAllocated(),
+         AM::pHeaps()->Persistent.m_pMedium->nFreeChunks());
 
   vTrace("   Persistent LargeHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagLarge.azChar(),
-         AM::pHeapMem()->Persistent.m_pLarge->nBufferCount(),
-         AM::pHeapMem()->Persistent.m_pLarge->nCurrAllocated(),
-         AM::pHeapMem()->Persistent.m_pLarge->nFreeChunks());
+         AM::pHeaps()->Persistent.m_pLarge->nBufferCount(),
+         AM::pHeaps()->Persistent.m_pLarge->nCurrAllocated(),
+         AM::pHeaps()->Persistent.m_pLarge->nFreeChunks());
 
   //vVerifyPool();
   

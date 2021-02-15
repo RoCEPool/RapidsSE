@@ -22,7 +22,7 @@
 
 #include "JobList.hpp"
 #include "JobLog.hpp"
-#include "SessionArray.hpp"
+#include "Sessions.hpp"
 
 #include "TagConstants.h"
 
@@ -111,7 +111,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.signalSession"_Stz,    &Step::vJobSignalSession);
   vAddStep("job.scheduleNextPhase"_Stz, &Step::vJobScheduleNextPhase);
   vAddStep("job.spawn_received"_Stz,   &Step::vJobSpawnReceived);
-  vAddStep("job::stateDiagram"_Stz,    &Step::vJobStateDiagram);
   vAddStep("job.tablePtn@"_Stz,        &Step::vJobTablePtnFetch);
 
   vAddStep("job.task@"_Stz,            &Step::vJobTaskFetch);
@@ -1308,7 +1307,7 @@ void Step::vJobSessionFetch(void)
   Session* pSession = nullptr;
   
   if (iSessionId != C_UNKNOWN)
-    pSession = AM::pSessionArray()->pGetSession(iSessionId);
+    pSession = AM::pSessions()->pGetSession(iSessionId);
   
   m_pDataStack->vPushPtr(pSession);
   
@@ -1377,8 +1376,8 @@ void Step::vJobSignalSession(void)
 
   i8 i_Session = pJob->m_xReqTuple.m_i_Session;
   
-  Session* pSession = AM::pSessionArray()->pGetSession(i_Session);
-  SessionArray::vMarkSignalled(pSession);
+  Session* pSession = AM::pSessions()->pGetSession(i_Session);
+  Sessions::vMarkSignalled(pSession);
   RASSERT( _bIsValidJob(pJob->eGetClassNo()) );
   
 
@@ -1450,24 +1449,6 @@ void Step::vJobSpawnReceived(void)
 //  }
   
   Api::vSpawnJob_received(pJob);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.stateDiagram -- generate state diagram for given job class             */
-/*----------------------------------------------------------------------------*/
-void Step::vJobStateDiagram(void)
-{
-  ENTRY();
-  
-  i8 iClassNo = m_pDataStack->iPopInt(__func__);
-
-  s256 sDiagram;
-  
-  AM::vStateDiagram(sDiagram,(eCN)iClassNo);
-  
-  m_pDataStack->vPushStr(sDiagram);
   
   EXIT();
 }

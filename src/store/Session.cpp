@@ -7,7 +7,7 @@
 #include "StreamDef.hpp"
 
 #include "Session.hpp"
-#include "SessionArray.hpp"
+#include "Sessions.hpp"
 #include "Output.hpp"
 
 #include "TagConstants.h"
@@ -44,8 +44,8 @@ Session* STORE::_pSession(i8 iAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Session::Session(void)
-: Loggable(CN_SESSION, AM::iNextSessionId()),
-  m_oSsnMutex(MK_SESSION,this)
+: Loggable(CN_SESSION)
+, m_oSsnMutex(MK_SESSION,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
@@ -123,7 +123,7 @@ Session::~Session(void) noexcept(false)
   
   ASSERT(! m_pInput);
   
-  AM::pSessionArray()->vFreeSession(this);
+  AM::pSessions()->vFreeSession(this);
           
   -- gixSession;
   AM::vLogSsn(SL_INF,this,AA_SSN_DESTRUCT,

@@ -25,7 +25,7 @@ AggTimer* BASE::_pAggTimer(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* AggTimer::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_AGGTIMER);
+  void* pObject = Heaps::pAllocate(CN_AGGTIMER);
   
   return pObject;
 }
@@ -37,7 +37,7 @@ void AggTimer::operator delete(void* aAddr)
 {
   Object* pObject = reinterpret_cast<Object*>(aAddr);
   
-  HeapMem::vFree(pObject);
+  Heaps::vFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/

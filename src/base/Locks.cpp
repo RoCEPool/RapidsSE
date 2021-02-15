@@ -1,14 +1,23 @@
 /*============================================================================*/
-/* LockTracker.cpp -- lock statistics tracker                                 */
+/* Locks.cpp -- lock statistics tracker                                 */
 /*============================================================================*/
 
 #include "BASE.h"
 
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Locks::Locks(void)
+: m_okDdlLock(LK_DDL,nullptr)
+, m_okDicLock(LK_DIC,nullptr)
+, m_okTccLock(LK_TCC,nullptr)
+{
+}
 
 /*----------------------------------------------------------------------------*/
 /* monitor portrait                                                           */
 /*----------------------------------------------------------------------------*/
-void LockTracker::vMonitorPortrait(s48K& sPortrait)
+void Locks::vMonitorPortrait(s48K& sPortrait)
 {
   s48K s;
   i8 nSoFar = 0;
@@ -48,7 +57,7 @@ void LockTracker::vMonitorPortrait(s48K& sPortrait)
 /*----------------------------------------------------------------------------*/
 /* locks report                                                               */
 /*----------------------------------------------------------------------------*/
-void LockTracker::vReport(void)
+void Locks::vReport(void)
 {
   vTrace("  Lock        Lock Name"
          "   ReadGrab  Collision   %%"
@@ -78,7 +87,7 @@ void LockTracker::vReport(void)
 /*----------------------------------------------------------------------------*/
 /* reset steps                                                                */
 /*----------------------------------------------------------------------------*/
-void LockTracker::vReset(void)
+void Locks::vReset(void)
 {
   for (i8 i_Lock = 0; i_Lock < LK_ENUMS; i_Lock++) {
     m_ixWorkUnits[i_Lock] = 0;

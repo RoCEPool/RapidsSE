@@ -628,7 +628,6 @@ void vExprEvalEvaluate(void);
   void vJobSignalSession(void);
   void vJobScheduleNextPhase(void);
   void vJobSpawnReceived(void);
-  void vJobStateDiagram(void);
   void vJobTablePtnFetch(void);
 
   void vJobTaskFetch(void);
@@ -829,8 +828,8 @@ void vExprEvalEvaluate(void);
   void vLockGrabWrite(void);
 
   // locks
-  void vLockTrackerList(void);
-  void vLockTrackerReset(void);
+  void vLocksList(void);
+  void vLocksReset(void);
 
   // log
   void vLogDump(void);
@@ -1544,11 +1543,11 @@ void vExprEvalEvaluate(void);
   void vSupervisorHaltStore(void);
 
   // system schedule
-  void vSystemScheduleCheckSleeping(void);
-  void vSystemScheduleExecutingLength(void);
-  void vSystemScheduleReadyLength(void);
-  void vSystemScheduleSleepingLength(void);
-  void vSystemScheduleWaitingLength(void);
+  void vScheduleCheckSleeping(void);
+  void vScheduleExecutingLength(void);
+  void vScheduleReadyLength(void);
+  void vScheduleSleepingLength(void);
+  void vScheduleWaitingLength(void);
 
   // table
   void vTableAddIndex(void);

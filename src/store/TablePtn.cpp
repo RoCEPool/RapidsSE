@@ -40,7 +40,7 @@ TablePtn* STORE::_pTablePtn(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* TablePtn::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_TABLEPTN);
+  void* pObject = Heaps::pAllocate(CN_TABLEPTN);
   
   return pObject;
 }
@@ -52,7 +52,7 @@ void TablePtn::operator delete(void* pBufferAddress)
 {
   Object* pObject = reinterpret_cast<Object*>(pBufferAddress);
   
-  HeapMem::vFree(pObject);
+  Heaps::vFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/

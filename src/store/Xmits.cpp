@@ -26,7 +26,7 @@ Xmits* STORE::_pXmits(void* aAddr)
 void* Xmits::operator new(size_t)
 {
   Xmits* pXmits =
-  static_cast<Xmits*>(HeapMem::pAllocate(CN_XMITS));
+  static_cast<Xmits*>(Heaps::pAllocate(CN_XMITS));
   
   return pXmits;
 }
@@ -38,14 +38,14 @@ void Xmits::operator delete(void* aAddress)
 {
   Object* pObject = static_cast<Object*>(aAddress);
   
-  HeapMem::vFree(pObject);
+  Heaps::vFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Xmits::Xmits(i8 iXmits)
-: Loggable(CN_XMITS,-9)
+: Loggable(CN_XMITS)
 
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_XMITS,_FOOTER_);

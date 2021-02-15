@@ -25,7 +25,7 @@ StreamDef* STORE::_pStreamDef(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* StreamDef::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_STREAMDEF);
+  void* pObject = Heaps::pAllocate(CN_STREAMDEF);
   
   return pObject;
 }
@@ -37,7 +37,7 @@ void StreamDef::operator delete(void* aAddr)
 {
   StreamDef* pStreamDef = reinterpret_cast<StreamDef*>(aAddr);
   
-  HeapMem::vFree(pStreamDef);
+  Heaps::vFree(pStreamDef);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -49,8 +49,7 @@ StreamDef::StreamDef(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
   
   //m_sName;
-  m_iStreamId = AM::iNextStreamId();
-
+ 
   m_nColumns = 0;
   //m_xaColumn[C_MAX_DEFCOLUMNS];
 
@@ -72,7 +71,6 @@ StreamDef::StreamDef(StreamDef* pStreamDef)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
   
   m_sName = pStreamDef->m_sName;
-  m_iStreamId = AM::iNextStreamId();
   m_nColumns = pStreamDef->m_nColumns;
     
   for (i8 i_DefCol = 0; i_DefCol < m_nColumns; i_DefCol++) {

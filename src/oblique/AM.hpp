@@ -50,7 +50,7 @@ namespace BASE {
                             class SP_Tme;
                             class SP_Tsp;
                             template <i8 SPACE> class Datum_t;                 }
-namespace BASE           { class EnumFlags;       class TagSet;
+namespace BASE           { class ClassFlags;       class TagSet;
                             class Birth; class Now;                            }
 namespace BASE   { class Token;           class Charser;
                               class Input;           class TokenVec;          }
@@ -60,7 +60,7 @@ namespace BASE        { class Article;         class Queue;
 
 using namespace BASE;
 
-namespace BASE { class File;  class PsxThd; class Resource; class ResourceTracker;}
+namespace BASE { class File;  class PsxThd; class Resource; class Resources;}
 namespace BASE { class Operand;                                  }
 namespace BASE { class Dic;             class DicStack;
                  class Word;              }
@@ -73,15 +73,15 @@ namespace STORE          { class Session;         class SessionState;      }
 namespace BASE           { class Log;             class LogEntry;          }
 
 namespace BASE           { class Scheduler;       class Thread;
-                              class SystemSchedule;                                   }
+                              class Schedule;                                   }
 
 namespace BASE       { class CodeCell;            class Loggable;
                               class Header;          class Object;
                               class Statistics;     class Mutex;              }
 namespace BASE            { class ReqTuple;                              }
-namespace BASE           { class Lock;            class LockTracker;       }
+namespace BASE           { class Lock;            class Locks;       }
 namespace BASE              { class BufferPool;      class HeapBuffer;
-                              class HeapMem;         class PoolBuffer;
+                              class Heaps;         class PoolBuffer;
 
 class IvlLib;
 
@@ -110,7 +110,7 @@ namespace STORE             { class Grid;            class Node;              }
 
 namespace STORE          { class EntBuffer;       class IndexTree;         }
 namespace STORE          { class InfoSetBase;                              }
-namespace STORE         { class SessionArray;                             }
+namespace STORE         { class Sessions;                             }
 namespace STORE              { class Job;
                               class JobList;         class Job_CreateTable;
                               class Job_CreateIndex; class XmitOperand;
@@ -176,11 +176,11 @@ namespace OBLIQUE
     static Stz* szLogTxtFile(void);
     
     //
-    static SessionArray* pSessionArray(void);
+    static Sessions* pSessions(void);
     static bool bBootError(void);
     static i8   nBuckets(void);
     static BufferPool* pBufferPool(void);
-    static EnumFlags* pClassFlags(void);
+    static ClassFlags* pClassFlags(void);
     static Lock* pDdlLock(void);
     static void vDeleteOperand(Operand* pOperand);
     static Lock* pDicLock(void);
@@ -194,29 +194,17 @@ namespace OBLIQUE
     static i8   nNodes(void);
     static JobList* pDemonJobs(void);
     static bool bHasStarted(void);
-    static HeapMem* pHeapMem(void);
+    static Heaps* pHeaps(void);
     static i8   nIndexEntries(void);
     static Article* pLexiconArticle(void);
     static JobList* pLocalJobs(void);
-    static LockTracker* pLockTracker(void);
+    static Locks* pLocks(void);
     static bool bLogging(void);
     static i8   nLvlLevels(void);
     static i8   iLvlRatio(void);
     static bool bMetadata(void);
   
-    static i8   iNextDiagram(void);
     static i8   iNextEpoch(void);
-    static i8   iNextJobId(void);
-    static i8   iNextLockId(void);
-    static i8   iNextOpId(void);
-    static i8   iNextPlanId(void);
-    static i8   iNextPromptId(void);
-    static i8   iNextRequest(void);
-    static i8   iNextResourceId(void);
-    static i8   iNextSessionId(void);
-    static i8   iNextStreamId(void);
-    static i8   iNextTaskId(void);
-    static i8   iNextThreadId(void);
     static i8   iNextTxId(void);
     static Stz* szNodeNm(void);
     static JobList* pOriginatingJobs(void);
@@ -225,8 +213,8 @@ namespace OBLIQUE
     static void vProcessExit(void);
     static bool bProgress(void);
     static i8   nPtnsInGrid(void);
-    static SystemSchedule* pSystemSchedule(void);
-    static ResourceTracker* pResourceTracker(void);
+    static Schedule* pSchedule(void);
+    static Resources* pResources(void);
     static Article* pRootArticle(void);
     static Word* pRootConstant(void);
     static void vRootConstant(Word* pRootConstant);
@@ -264,9 +252,6 @@ namespace OBLIQUE
     static void vNextTempName(s32& sName);
     static void vSetAcksRmg(Task* pTask, i8 nAcks);
     static void vStepTiming(StepTiming* pStepTiming);
-    static void vTakenBuffers(PoolBuffer* pTakenBuffers);
-    static void vTakeBytes(i8 nTakeBytes);
-    static void vTakenBytes(i8 nTakenBytes);
     static bool bTaskIsLocked(Task* pTask);
     static Task* pTaskNew(Job* pJob);
     static void vTenants(Word* pTenants);
@@ -348,7 +333,7 @@ namespace OBLIQUE
     static void vLogOpr(eSL, Op*        pOpr, eOA eOpAct,  Stz* szFormat, ...);
     static void vLogMgt(eSL, Job*       pJob, eMA eMgtAct, Stz* szFormat, ...);
     static void vLogPrm(eSL, SePrompt*  pPrm, ePA ePrmAct, Stz* szFormat, ...);
-    static void vLogQue(eSL, SystemSchedule*    pQue, eQA eQueAct, Stz* szFormat, ...);
+    static void vLogQue(eSL, Schedule*    pQue, eQA eQueAct, Stz* szFormat, ...);
     static void vLogRes(eSL, Resource*  pRes, eRA eResAct, Stz* szFormat, ...);
     static void vLogSvc(eSL, Job*       pJob, eVA eSvcAct, Stz* szFormat, ...);
     static void vLogSsn(eSL, Session*   pSsn, eAA eApiAct, Stz* szFormat, ...);
@@ -422,7 +407,6 @@ namespace OBLIQUE
     static void vSpawnJob_op(Job* pJob);    
     static void vSpawnJob_received(Job* pJob);
     static void vSpawnJob_service(Job* pJob);
-    static void vStateDiagram(s256& sDiagram, eCN eJobClass);
     static Stz* szSummary(s256& sSummary);
     static Stz* szSummaryDir(s256& sSummary, Stz* szNote);
     static bool bSupervisorHalt(void);

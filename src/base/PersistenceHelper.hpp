@@ -11,7 +11,7 @@ namespace BASE
     static void vReadBuffers(Stz* sFilePath);
     static void vWriteBuffers(Stz* sFilePath);
     static void vWriteHeap(Heap* pHeap, File* pFile);
-    static void vWritePersistentHeapMem(Stz* sFilePath);
+    static void vWritePersistentHeaps(Stz* sFilePath);
   };
 }
 

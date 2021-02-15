@@ -26,7 +26,7 @@ ExprEval* STORE::_pExprEval(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* ExprEval::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_EXPREVAL);
+  void* pObject = Heaps::pAllocate(CN_EXPREVAL);
   
   return pObject;
 }
@@ -38,7 +38,7 @@ void ExprEval::operator delete(void* aAddr)
 {
   ExprEval* pExprEval = reinterpret_cast<ExprEval*>(aAddr);
   
-  HeapMem::vFree(pExprEval);
+  Heaps::vFree(pExprEval);
 }
 
 /*----------------------------------------------------------------------------*/

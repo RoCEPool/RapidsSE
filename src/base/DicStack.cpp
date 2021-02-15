@@ -21,7 +21,7 @@ DicStack* BASE::_pDicStack(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* DicStack::operator new(size_t)
 {
-  DicStack* pDicStack = (DicStack*)(HeapMem::pAllocate(CN_DICSTACK));
+  DicStack* pDicStack = (DicStack*)(Heaps::pAllocate(CN_DICSTACK));
   
   return pDicStack;
 }
@@ -33,7 +33,7 @@ void DicStack::operator delete(void* pDicAddress)
 {
   DicStack* pDicStack = reinterpret_cast<DicStack*>(pDicAddress);
   
-  HeapMem::vFree(pDicStack);
+  Heaps::vFree(pDicStack);
 }
 
 /*----------------------------------------------------------------------------*/

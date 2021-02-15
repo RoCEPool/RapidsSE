@@ -25,7 +25,7 @@ Timer* BASE::_pTimer(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Timer::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_TIMER);
+  void* pObject = Heaps::pAllocate(CN_TIMER);
   
   return pObject;
 }
@@ -37,7 +37,7 @@ void Timer::operator delete(void* aAddr)
 {
   Object* pObject = reinterpret_cast<Object*>(aAddr);
   
-  HeapMem::vFree(pObject);
+  Heaps::vFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/

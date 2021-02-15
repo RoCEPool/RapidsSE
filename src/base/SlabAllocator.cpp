@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void* SlabAllocator::operator new(size_t)
 {
-  PoolBuffer* pBuffer = (PoolBuffer*)HeapMem::pAllocate(CN_SLABALLOCATOR);
+  PoolBuffer* pBuffer = (PoolBuffer*)Heaps::pAllocate(CN_SLABALLOCATOR);
   
   return pBuffer;
 }
@@ -21,7 +21,7 @@ void SlabAllocator::operator delete(void* pCrwBufferAddress)
 {
   PoolBuffer* pBuffer = static_cast<PoolBuffer*>(pCrwBufferAddress);
   
-  HeapMem::vFree(pBuffer);
+  Heaps::vFree(pBuffer);
 }
 
 /*----------------------------------------------------------------------------*/

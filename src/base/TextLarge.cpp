@@ -21,7 +21,7 @@ TextLarge* BASE::_pTextLarge(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* TextLarge::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_TEXTLARGE);
+  void* pObject = Heaps::pAllocate(CN_TEXTLARGE);
   
   return pObject;
 }
@@ -33,7 +33,7 @@ void TextLarge::operator delete(void* pTextAddress)
 {
   TextLarge* pTextLarge = reinterpret_cast<TextLarge*>(pTextAddress);
   
-  HeapMem::vFree(pTextLarge);
+  Heaps::vFree(pTextLarge);
 }
 
 /*----------------------------------------------------------------------------*/

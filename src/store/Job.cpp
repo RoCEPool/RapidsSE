@@ -85,7 +85,7 @@ bool STORE::_bIsValidJob(eCN eClass)
 void* Job::operator new(size_t)
 {
   Job* pJob =
-  static_cast<Job*>(HeapMem::pAllocate(CN_JOB));
+  static_cast<Job*>(Heaps::pAllocate(CN_JOB));
   
   return pJob;
 }
@@ -105,14 +105,14 @@ void Job::operator delete(void* aAddress)
 {
   Job* pJob = static_cast<Job*>(aAddress);
   
-  HeapMem::vFree(pJob);
+  Heaps::vFree(pJob);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job::Job(ReqTuple* aReqTuple)
-: Loggable(CN_JOB,AM::iNextJobId())
+: Loggable(CN_JOB)
 , m_xReqTuple(aReqTuple)
 , CRM<Job>(this)
 {
@@ -171,7 +171,7 @@ Job::Job(ReqTuple* aReqTuple)
 /* constructor (for job__find)                                  TO BE REMOVED */
 /*----------------------------------------------------------------------------*/
 Job::Job(eCN eClassNo)
-: Loggable(eClassNo,C_UNKNOWN)
+: Loggable(eClassNo)
 , m_xReqTuple(nullptr)
 , CRM<Job>(this)
 {

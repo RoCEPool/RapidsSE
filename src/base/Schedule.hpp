@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* SystemSchedule.hpp -- Collection of the Systems' SystemSchedule                            */
+/* Schedule.hpp -- Collection of the Systems' Schedule                            */
 /*============================================================================*/
 #pragma once
 
 namespace BASE
 {
-  class SystemSchedule : public Loggable
+  class Schedule : public Loggable
   {
   friend Scheduler;
   
@@ -15,6 +15,8 @@ namespace BASE
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // threads
+
+    Atomic       m_ixThreads;
 
     ThreadVec*   m_pDedicatedThreadVec; // vector of dedicated threads
     ThreadVec*   m_pGeneralThreadVec;   // vector of general threads
@@ -44,8 +46,8 @@ namespace BASE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    SystemSchedule(void);
-   ~SystemSchedule(void) noexcept(false);
+    Schedule(void);
+   ~Schedule(void) noexcept(false);
   
     static void vThreadsReport(void);
   
@@ -105,7 +107,7 @@ namespace BASE
     Footer* aFooter(void);
   };
   
-  SystemSchedule* _pQueues(void* aAddr);
+  Schedule* _pQueues(void* aAddr);
 }
 
 /*============================================================================*/

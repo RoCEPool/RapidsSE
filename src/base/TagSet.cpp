@@ -21,7 +21,7 @@ TagSet* BASE::_pTagSet(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* TagSet::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_TAGSET);
+  void* pObject = Heaps::pAllocate(CN_TAGSET);
   
   return pObject;
 }
@@ -33,7 +33,7 @@ void TagSet::operator delete(void* aAddr)
 {
   Object* pObject = reinterpret_cast<Object*>(aAddr);
   
-  HeapMem::vFree(pObject);
+  Heaps::vFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/

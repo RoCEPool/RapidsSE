@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* HeapMem.hpp -- Set of Heaps in Pool                                        */
+/* Heaps.hpp -- Set of Heaps in Pool                                          */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@ namespace BASE
 {
   class Heap;
   
-  class HeapMem : public Object
+  class Heaps : public Object
   {
   public:
   
@@ -33,7 +33,7 @@ namespace BASE
     } Persistent;
 
   public:
-    HeapMem(void);
+    Heaps(void);
   
     static void vSubSystem(SelfFn* aSelfFn, TokenVec* pTokenVec);
 

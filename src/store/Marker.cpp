@@ -30,7 +30,7 @@ Marker* STORE::_pMarker(void* aAddr)
 void* Marker::operator new(size_t)
 {
   Marker* pMarker =
-  static_cast<Marker*>(HeapMem::pAllocate(CN_MARKER));
+  static_cast<Marker*>(Heaps::pAllocate(CN_MARKER));
   
   return pMarker;
 }
@@ -42,7 +42,7 @@ void Marker::operator delete(void* aAddress)
 {
   Object* pObject = static_cast<Object*>(aAddress);
   
-  HeapMem::vFree(pObject);
+  Heaps::vFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/

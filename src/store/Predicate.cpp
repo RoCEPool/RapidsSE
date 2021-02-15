@@ -35,7 +35,7 @@ Predicate* STORE::_pPredicate(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Predicate::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_PREDICATE);
+  void* pObject = Heaps::pAllocate(CN_PREDICATE);
   
   return pObject;
 }
@@ -47,7 +47,7 @@ void Predicate::operator delete(void* pDataAddress)
 {
   AccessPath* pAccessPath = reinterpret_cast<AccessPath*>(pDataAddress);
   
-  HeapMem::vFree(pAccessPath);
+  Heaps::vFree(pAccessPath);
 }
 
 /*----------------------------------------------------------------------------*/

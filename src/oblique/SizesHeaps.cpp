@@ -110,7 +110,7 @@
 #include "Log.hpp"
 #include "LogicUnit.hpp"
 
-#include "ObjectNumbering.hpp"
+#include "Objects.hpp"
 #include "Output.hpp"
 #include "Op.hpp"
 #include "OpSpec.hpp"
@@ -122,7 +122,7 @@
 
 
 #include "SeApi.hpp"
-#include "SessionArray.hpp"
+#include "Sessions.hpp"
 
 #include "ShortCut.hpp"
 #include "SeDeputy.hpp"
@@ -225,7 +225,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(EntBuffer),          HT_T_LARGE   ,0 }, // CN_ENTBUFFER
   { sizeof(EntBufSorter),       HT_T_LARGE   ,0 }, // CN_ENTBUFSORTER
   { sizeof(EntWrk),             HT_INVALID   ,0 }, // CN_ENTWRK
-  { sizeof(EnumFlags),          HT_T_TINY    ,0 }, // CN_ENUMFLAGS
+  { sizeof(ClassFlags),          HT_T_TINY    ,0 }, // CN_ENUMFLAGS
   { sizeof(Exemplar),           HT_T_TINY    ,0 }, // CN_EXEMPLAR
   { sizeof(ExprEval),           HT_T_LARGE   ,0 }, // CN_EXPREVAL
 
@@ -249,7 +249,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(HashSet),            HT_T_LARGE   ,0 }, // CN_HASHSET
   { sizeof(HashMap),            HT_T_TINY    ,0 }, // CN_HASHMAP
   { sizeof(HeapBuffer),         HT_INVALID   ,0 }, // CN_HEAPBUFFER
-  { sizeof(HeapMem),            HT_INVALID   ,0 }, // CN_HEAPMEM
+  { sizeof(Heaps),            HT_INVALID   ,0 }, // CN_HEAPMEM
 
   { 'I' - ('A' - 1),            HT_INVALID   ,0 }, // CN__I__
   { sizeof(Index),              HT_T_TINY    ,0 }, // CN_INDEX
@@ -311,7 +311,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Numbat),             HT_T_LARGE   ,0 }, // CN_NUMBAT
 
   { 'O' - ('A' - 1),            HT_INVALID   ,0 }, // CN__O__
-  { sizeof(ObjectNumbering),    HT_T_MEDIUM  ,0 }, // CN_OBJECTNUMBERING
+  { sizeof(Objects),            HT_T_MEDIUM  ,0 }, // CN_OBJECTS
   { sizeof(Output),             HT_T_TINY    ,0 }, // CN_OUTPUT
   { sizeof(Op),                 HT_T_LARGE   ,0 }, // CN_OP
   { sizeof(OpenFiles),          HT_T_TINY    ,0 }, // CN_OPENFILES
@@ -325,7 +325,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Peruse),               HT_T_MEDIUM  ,0 }, // CN_PERUSE
   { sizeof(Pipeline),             HT_T_SMALL   ,0 }, // CN_PIPELINE
   { sizeof(PipelineSpec),         HT_T_SMALL   ,0 }, // CN_PIPELINESPEC
-  { sizeof(PlanDefinitionParser), HT_T_MEDIUM  ,  -8 }, // CN_PLANDEFINITIONPARSER
+  { sizeof(PlanDefinitionParser), HT_T_MEDIUM  , -8 }, // CN_PLANDEFINITIONPARSER
   { sizeof(PlanNode),             HT_T_TINY    , -8 }, // CN_PLANNODE
   { sizeof(PlanNodeBuilder),      HT_T_TINY    ,0 }, // CN_PLANNODEBUILDER
   { sizeof(PlanNodeBuilderList),  HT_T_TINY    ,0 }, // CN_PLANNODEBUILDERLIST
@@ -356,7 +356,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Reader),             HT_T_TINY    ,0 }, // CN_READER
   { sizeof(Record),             HT_T_MEDIUM  ,0 }, // CN_RECORD
   { sizeof(RelOp),              HT_T_TINY    ,0 }, // CN_RELOP
-  { sizeof(ResourceTracker),    HT_T_TINY    ,0 }, // CN_RESOURCETRACKER
+  { sizeof(Resources),          HT_T_TINY    ,0 }, // CN_RESOURCES
   { sizeof(Response),           HT_T_MEDIUM  ,0 }, // CN_RESPONSE
   { sizeof(ResponseVec),        HT_T_SMALL   ,0 }, // CN_RESPONSEVEC
   { sizeof(Result),             HT_T_MEDIUM  ,0 }, // CN_RESULT
@@ -391,7 +391,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(SenCompiler),        HT_T_TINY    ,0 }, // CN_SENCOMPILER
   { sizeof(SePrompt),           HT_T_LARGE   ,0 }, // CN_SEPROMPT
   { sizeof(Session),            HT_T_MEDIUM  ,0 }, // CN_SESSION
-  { sizeof(SessionArray),       HT_T_TINY    ,0 }, // CN_SESSIONARRAY
+  { sizeof(Sessions),           HT_T_TINY    ,0 }, // CN_SESSIONS
   { sizeof(ShortCut),           HT_T_MEDIUM  ,0 }, // CN_SHORTCUT
   { sizeof(ShortCutVec),        HT_T_MEDIUM  ,0 }, // CN_SHORTCUTVEC
   { sizeof(Birth),              HT_INVALID   ,0 }, // CN_SINCE
@@ -432,7 +432,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(StzList),            HT_T_TINY    ,0 }, // CN_STZLIST
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_STZVAL
   { sizeof(SysCall),            HT_INVALID   ,0 }, // CN_SYSCALL
-  { sizeof(SystemSchedule),     HT_T_TINY    ,0 }, // CN_SYSTEMSCHEDULE
+  { sizeof(Schedule),     HT_T_TINY    ,0 }, // CN_SCHEDULE
 
   { 'T' - ('A' - 1),            HT_INVALID   ,0 }, // CN__T__
   { sizeof(Table),              HT_T_TINY    ,0 }, // CN_TABLE

@@ -15,7 +15,7 @@
 
     // "checking..." .
 
-    SystemSchedule::checkSleeping
+    Schedule::checkSleeping
 
   again
 

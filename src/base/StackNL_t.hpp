@@ -57,7 +57,7 @@ namespace BASE
 template <eCN CLASSNO, class ITEM, i8 MAX_ITEMS>
 void* StackNL_t<CLASSNO, ITEM, MAX_ITEMS>::operator new(size_t)
 {
-  Object* pObject = (Object*)HeapMem::pAllocate(CLASSNO);
+  Object* pObject = (Object*)Heaps::pAllocate(CLASSNO);
   
   return pObject;
 }
@@ -68,7 +68,7 @@ void* StackNL_t<CLASSNO, ITEM, MAX_ITEMS>::operator new(size_t)
 template <eCN CLASSNO, class ITEM, i8 MAX_ITEMS>
 void StackNL_t<CLASSNO, ITEM, MAX_ITEMS>::operator delete(void* aAddress)
 {
-  HeapMem::vFree((Object*)aAddress);
+  Heaps::vFree((Object*)aAddress);
 }
 
 /*----------------------------------------------------------------------------*/

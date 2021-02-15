@@ -1054,7 +1054,7 @@ TrayNL_t<CN,HEAD,OVER,TAIL,DESC,BYTES>* BASE::_pNubNL(void* aAddr)
 template <eCN CN, class HEAD, class OVER, class TAIL, class DESC, i8 BYTES>
 void* TrayNL_t<CN,HEAD,OVER,TAIL,DESC,BYTES>::operator new(size_t)
 {
-  void* pNub = HeapMem::pAllocate(CN);
+  void* pNub = Heaps::pAllocate(CN);
   
   return pNub;
 }
@@ -1068,7 +1068,7 @@ void TrayNL_t<CN,HEAD,OVER,TAIL,DESC,BYTES>::operator delete(void* pAddr)
   TrayNL_t<CN,HEAD,OVER,TAIL,DESC,BYTES>* pNub =
     _pNubNL<CN,HEAD,OVER,TAIL,DESC,BYTES>(pAddr);
   
-  HeapMem::vFree(pNub);
+  Heaps::vFree(pNub);
 }
 
 /*----------------------------------------------------------------------------*/

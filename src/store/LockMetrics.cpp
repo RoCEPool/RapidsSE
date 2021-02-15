@@ -22,7 +22,7 @@ Row* LockMetrics::pSample(StreamDef* pStreamDef, InfoSet* pInfoSet)
 {
   _static_
   
-  LockTracker* pLckTrk = AM::pLockTracker();
+  Locks* pLckTrk = AM::pLocks();
   
   //pLckTrk->vReport();
   

@@ -40,7 +40,7 @@ TypedStack* TypedStack::_pStack(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* TypedStack::operator new(size_t)
 {
-  void* pStack = HeapMem::pAllocate(CN_STACK);
+  void* pStack = Heaps::pAllocate(CN_STACK);
   
   return pStack;
 }
@@ -52,7 +52,7 @@ void TypedStack::operator delete(void* pBufferAddress)
 {
   TypedStack* pStack = _pStack(pBufferAddress);
   
-  HeapMem::vFree(pStack);
+  Heaps::vFree(pStack);
 }
 
 /*----------------------------------------------------------------------------*/

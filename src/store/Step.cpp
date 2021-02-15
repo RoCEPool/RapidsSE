@@ -102,7 +102,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_List();
   Step::vAddSteps_Locals();
   Step::vAddSteps_Lock();
-  Step::vAddSteps_LockTracker();
+  Step::vAddSteps_Locks();
   Step::vAddSteps_Log();
   Step::vAddSteps_Logic();
   
@@ -135,7 +135,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_PtnStream();
   Step::vAddSteps_Push();
   
-  Step::vAddSteps_SystemSchedule();
+  Step::vAddSteps_Schedule();
 
   Step::vAddSteps_Range();
   Step::vAddSteps_Register();

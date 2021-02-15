@@ -24,7 +24,7 @@ namespace BASE
     i8  m__spare2;    //
 
   public:
-    Loggable(eCN eClassNo, i8 iObjectId);
+    Loggable(eCN eClassNo);
    ~Loggable(void) noexcept(false);
   
     eEV  eEvent(void);
@@ -43,7 +43,6 @@ namespace BASE
     void vObjectNm(Stz* szObjectNm);
 
     void vNextEvent(eEV m_eEvent);
-
   };
 }
 

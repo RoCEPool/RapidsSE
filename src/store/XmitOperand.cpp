@@ -32,7 +32,7 @@ XmitOperand* STORE::_pXmitOperand(void* aAddress)
 void* XmitOperand::operator new(size_t)
 {
   XmitOperand* pXmitOperand =
-    static_cast<XmitOperand*>(HeapMem::pAllocate(CN_XMITOPERAND));
+    static_cast<XmitOperand*>(Heaps::pAllocate(CN_XMITOPERAND));
   
   return pXmitOperand;
 }
@@ -51,7 +51,7 @@ void* XmitOperand::operator new(size_t, void* aAddress)
 void XmitOperand::operator delete(void* aAddress)
 {
   XmitOperand* pXmitOperand = static_cast<XmitOperand*>(aAddress);
-  HeapMem::vFree(pXmitOperand);
+  Heaps::vFree(pXmitOperand);
 }
 
 /*----------------------------------------------------------------------------*/

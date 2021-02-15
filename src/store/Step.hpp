@@ -84,7 +84,7 @@ namespace STORE
     static void vAddSteps_List(void);
     static void vAddSteps_Locals(void);
     static void vAddSteps_Lock(void);
-    static void vAddSteps_LockTracker(void);
+    static void vAddSteps_Locks(void);
     static void vAddSteps_Log(void);
     static void vAddSteps_Logic(void);
     static void vAddSteps_LogicCompiler(void);
@@ -119,7 +119,7 @@ namespace STORE
     static void vAddSteps_PtnStream(void);
     static void vAddSteps_Push(void);
   
-    static void vAddSteps_SystemSchedule(void);
+    static void vAddSteps_Schedule(void);
 
     static void vAddSteps_Range(void);
     static void vAddSteps_Register(void);
