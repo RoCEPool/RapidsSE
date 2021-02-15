@@ -46,7 +46,7 @@ namespace STORE
     Footer* aFooter(void);
   };
   
-  JobList* _pJobs(void* aAddr);
+  JobList* _pJobList(void* aAddr);
 }
 /*============================================================================*/
 /* end                                                                        */

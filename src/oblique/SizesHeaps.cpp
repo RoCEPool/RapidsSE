@@ -105,6 +105,7 @@
 #include "Job.hpp"
 #include "Job__Find.hpp"
 #include "JobList.hpp"
+#include "Jobs.hpp"
 
 #include "LogEntry.hpp"
 #include "Log.hpp"
@@ -271,6 +272,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Job),                HT_T_MEDIUM  ,0 }, // CN_JOB
   { sizeof(Job__Find),          HT_T_MEDIUM  ,0 }, // CN_JOB__FIND
   { sizeof(JobList),            HT_T_TINY    ,0 }, // CN_JOBLIST
+  { sizeof(Jobs),               HT_T_TINY    ,0 }, // CN_JOBS
 
   { 'K' - ('A' - 1),            HT_INVALID   ,0 }, // CN__K__
   { sizeof(Key),                HT_INVALID   ,0 }, // CN_KEY

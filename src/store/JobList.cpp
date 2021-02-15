@@ -17,7 +17,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-JobList* STORE::_pJobs(void* aAddr)
+JobList* STORE::_pJobList(void* aAddr)
 {
   JobList* pJobs = reinterpret_cast<JobList*>(aAddr);
   
@@ -325,7 +325,7 @@ void JobList::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 void JobList::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  JobList* pJobs = _pJobs(pObject);
+  JobList* pJobs = _pJobList(pObject);
   //vSkipListDump(pJobs->m_pJobsSkipList);
   SkipListNL* pSkipList = pJobs->m_pJobsSkipList;
   vTrace("HEIGHT %lld HEAD 0x%llx\n"_Stz,pSkipList->m_iHeight,pSkipList->m_pHead);
