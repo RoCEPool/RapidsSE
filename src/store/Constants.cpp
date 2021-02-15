@@ -57,8 +57,6 @@ extern Stz* gsBuildHostName;
 extern Stz* gsBuildUserName;
 extern Stz* gsBuildBranch;
 
-extern char* BASE::RAPIDSSE_VERSION_STRING;
-
 /*----------------------------------------------------------------------------*/
 /* add constant to main dictionary                                            */
 /*----------------------------------------------------------------------------*/
@@ -151,7 +149,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("true"_Stz,    (i8)1);
   vAddConstant("false"_Stz,   (i8)0);
   
-  vAddConstant("RAPIDSSE_VERSION_STRING"_Stz, (Stz*)RAPIDSSE_VERSION_STRING);
+  vAddConstant("RAPIDSSE_VERSION_STRING"_Stz, AM::szVersionString());
   
   vAddConstant("C_BUILD_GIT_HASH"_Stz, gsBuildGitHash);
   vAddConstant("C_BUILD_DATE"_Stz,     gsBuildDate);

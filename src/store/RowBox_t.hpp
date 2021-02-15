@@ -11,8 +11,6 @@
 
 #include "Record.hpp"
 
-extern char* BASE::RAPIDSSE_VERSION_STRING;
-
 namespace STORE
 {
   template <i8 AREA>
@@ -198,11 +196,11 @@ void RowBox_t<AREA>::vInitRowBox_t(void)
   m_caModel[sizeof(m_caModel) - 1] = '\0';
   
   StrLib::vSprint(m_caModel,"RapidsSE %s SeFormat %s"_Stz,
-                  RAPIDSSE_VERSION_STRING,
-                  RAPIDSSE_FORMAT_STRING);
+                  AM::szVersionString(),
+                  AM::szFormatString());
   
-  m_iSeVersion = RAPIDSSE_VERSION_NUMBER;
-  m_iSeFormat  = RAPIDSSE_FORMAT_NUMBER;
+  m_iSeVersion = AM::iVersionNumber();
+  m_iSeFormat  = AM::iFormatNumber();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

@@ -8,8 +8,6 @@ SubSysFn __Base_SubSystem("Base"_Stz,(fpSELFFN*)BASE::vSubSystem,
                           ""_Stz,
                           "Files"_Stz,nullptr);
 
-const char* RAPIDSSE_VERSION_STRING = (char*)"0.6.0 alpha";
-
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
 /*----------------------------------------------------------------------------*/

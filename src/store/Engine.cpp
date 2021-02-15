@@ -74,8 +74,6 @@ extern s256   gi_szaArgv[];
 pthread_key_t giTLS_TaskKey   = C_UNKNOWN;
 pthread_key_t giTLS_ThreadKey = C_UNKNOWN;
 
-extern char* BASE::RAPIDSSE_VERSION_STRING;
-
 /*----------------------------------------------------------------------------*/
 /* main entry                                                                 */
 /*----------------------------------------------------------------------------*/
@@ -798,7 +796,7 @@ void Engine::vGetWelcome(s256& sWelcome)
   
   sWelcome.vSprint("RapidsSE %s (%s version, pid %lld, git %s)"_Stz,
                    
-                   RAPIDSSE_VERSION_STRING,
+                   AM::szVersionString(),
                    szRelDbg,
                    Process::iGetPid(),
                    gsBuildGitHash

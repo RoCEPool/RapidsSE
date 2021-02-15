@@ -124,6 +124,18 @@ extern Log*          gpLog;
 
 extern SizeHeap      gxaSizeHeap[];
 
+static Stz*  RAPIDSSE_VERSION_STRING = "0.6.0 alpha"_Stz;
+static i8    RAPIDSSE_VERSION_NUMBER = 0x000600;
+
+static Stz*  RAPIDSSE_FORMAT_STRING  = "0.6.0"_Stz;
+static i8    RAPIDSSE_FORMAT_NUMBER  = 0x000600;
+
+Stz*  AM::szVersionString(void) { return RAPIDSSE_VERSION_STRING; }
+i8    AM::iVersionNumber(void)  { return RAPIDSSE_VERSION_NUMBER; }
+
+Stz*  AM::szFormatString(void)  { return RAPIDSSE_FORMAT_STRING;  }
+i8    AM::iFormatNumber(void)   { return RAPIDSSE_FORMAT_NUMBER;  }
+
 // Arg
 bool AM::bDebugIndex(void)    { return gpAttachMap->m_xSysArgs.m_bDebugIndex;        }
 bool AM::bDebugMode(void)     { return gpAttachMap->m_xSysArgs.m_bDebugMode;         }

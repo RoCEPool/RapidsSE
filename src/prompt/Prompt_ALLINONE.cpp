@@ -49,9 +49,6 @@
 
 extern CmdLineArgs gxCmdLineArgs;
 
-extern char* BASE::RAPIDSSE_VERSION_STRING;
-
-
 using namespace Parser;
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -5535,11 +5532,11 @@ bool PROMPT::bPrompt_version(SePrompt* pPrompt)
   
   if (AM::bMetadata()) {
     vTrace("\nmetadata: (version VARCHAR)\n\n"_Stz);
-    vInfo("row: ('%s')\n"_Stz, (Stz*)RAPIDSSE_VERSION_STRING);
+    vInfo("row: ('%s')\n"_Stz, AM::szVersionString());
     vTrace("\nsuccess: 1 rows affected\n"_Stz);
   }
   else
-    vInfo("%s\n"_Stz, (Stz*)RAPIDSSE_VERSION_STRING);
+    vInfo("%s\n"_Stz, AM::szVersionString());
   
   return true;
 }

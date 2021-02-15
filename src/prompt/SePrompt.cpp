@@ -39,8 +39,6 @@ extern PromptCatalog gxPromptCatalog;
 extern Stz* gsBuildGitHash;
 extern BufferPool* gpBufferPool;
 
-extern char* BASE::RAPIDSSE_VERSION_STRING;
-
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -1093,7 +1091,7 @@ void SePrompt::vPromptUser(void)
         bLowMem               ? "*LOWMEMORY* "  : "",
         AM::pSteps()     ? "*STEPTIMING* " : "",
         
-        RAPIDSSE_VERSION_STRING,
+        AM::szVersionString(),
 #ifdef WITH_DEBUG_VERSION
         "debug",
 #else
