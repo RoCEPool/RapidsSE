@@ -105,6 +105,7 @@
 #include "Job.hpp"
 #include "Job__Find.hpp"
 #include "JobList.hpp"
+#include "Jobs.hpp"
 
 #include "LogEntry.hpp"
 #include "Log.hpp"
@@ -130,7 +131,7 @@
 #include "Stage.hpp"
 #include "StepAccum.hpp"
 #include "StageSpec.hpp"
-#include "StepTiming.hpp"
+#include "Steps.hpp"
 #include "Stream.hpp"
 #include "StzList.hpp"
 
@@ -271,6 +272,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Job),                HT_T_MEDIUM  ,0 }, // CN_JOB
   { sizeof(Job__Find),          HT_T_MEDIUM  ,0 }, // CN_JOB__FIND
   { sizeof(JobList),            HT_T_TINY    ,0 }, // CN_JOBLIST
+  { sizeof(Jobs),               HT_T_TINY    ,0 }, // CN_JOBS
 
   { 'K' - ('A' - 1),            HT_INVALID   ,0 }, // CN__K__
   { sizeof(Key),                HT_INVALID   ,0 }, // CN_KEY
@@ -424,7 +426,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(StageSpec),          HT_T_SMALL   ,0 }, // CN_STAGESPEC
   { sizeof(Statistics),         HT_INVALID   ,0 }, // CN_STATISTICS
   { sizeof(StepAccum),          HT_INVALID   ,0 }, // CN_STEPACCUM
-  { sizeof(StepTiming),         HT_T_LARGE   ,0 }, // CN_STEPTIMING
+  { sizeof(Steps),         HT_T_LARGE   ,0 }, // CN_STEPTIMING
   { sizeof(Stream),             HT_T_SMALL   ,0 }, // CN_STREAM
   { sizeof(StreamDef),          HT_T_LARGE   ,0 }, // CN_STREAMDEF
   { sizeof(StreamSet),          HT_T_LARGE   ,0 }, // CN_STREAMSET

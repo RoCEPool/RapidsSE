@@ -18,14 +18,14 @@
   i8 __iEnterMisses = 0; \
   static StepAccum* __pStepAccum = nullptr; \
   \
-  if (StepTiming* pStepTiming = AM::pStepTiming()) { \
+  if (Steps* pSteps = AM::pSteps()) { \
   \
     if (! __pStepAccum) { \
     \
-      pStepTiming->vGrabWrite(); \
+      pSteps->vGrabWrite(); \
       if (! __pStepAccum) \
-        __pStepAccum = pStepTiming->pAllocAccum((Stz*)__func__); \
-        pStepTiming->vDropWrite(); \
+        __pStepAccum = pSteps->pAllocAccum((Stz*)__func__); \
+        pSteps->vDropWrite(); \
       } \
     \
     __pStepAccum->vEnter(__iEnterCycles,__iEnterMisses); \

@@ -39,7 +39,7 @@ begin
     report "/tmp/bm_inflateRow_rep.csv" | output | sink | stageA
 end;
 
-stepTiming write "/tmp/StepTiming.csv";
+stepTiming write "/tmp/Steps.csv";
 
 filecat "/tmp/bm_inflateRow_rep.csv" 100;
 

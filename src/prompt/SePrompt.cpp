@@ -1089,7 +1089,7 @@ void SePrompt::vPromptUser(void)
         
         AM::bBootError()      ? "*BOOTERROR* "  : "",
         bLowMem               ? "*LOWMEMORY* "  : "",
-        AM::pStepTiming()     ? "*STEPTIMING* " : "",
+        AM::pSteps()     ? "*STEPTIMING* " : "",
         
         RAPIDSSE_VERSION_STRING,
 #ifdef WITH_DEBUG_VERSION

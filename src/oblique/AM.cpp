@@ -217,7 +217,7 @@ Word* AM::pRootConstant(void) { return gpAttachMap->m_pRootConstant;          }
 Dic* AM::pRootDic(void)       { return gpAttachMap->m_pRootDic;               }
 Word* AM::pRootWord(void)     { return gpAttachMap->m_pRootWord;              }
 Statistics* AM::pStatistics(void)   { return & gpAttachMap->m_oStatistics;    }
-StepTiming* AM::pStepTiming(void)   { return gpAttachMap->m_pStepTiming;      }
+Steps* AM::pSteps(void)   { return gpAttachMap->m_pSteps;      }
 
 Lock* AM::pTccLock(void)      { return & gpAttachMap->m_oLocks.m_okTccLock;            }
 Word* AM::pTenants(void)      { return gpAttachMap->m_pTenants;               }
@@ -362,8 +362,8 @@ void AM::vNextTempName(s32& sName) {
 void AM::vSetAcksRmg(Task* pTask, i8 nAcks) {
   pTask->vAcksRmg(nAcks);
 }
-void AM::vStepTiming(StepTiming* pStepTiming) {
-  gpAttachMap->m_pStepTiming = pStepTiming;
+void AM::vSteps(Steps* pSteps) {
+  gpAttachMap->m_pSteps = pSteps;
 }
 void AM::vTenants(Word *pTenants) {
   gpAttachMap->m_pTenants = pTenants;

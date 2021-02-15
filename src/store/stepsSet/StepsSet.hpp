@@ -1426,9 +1426,9 @@ void vExprEvalEvaluate(void);
   void vExpressionsLockSample(void);
 
   // steps
-  void vStepTimingReset(void);
-  void vStepTimingStart(void);
-  void vStepTimingWrite(void);
+  void vStepsReset(void);
+  void vStepsStart(void);
+  void vStepsWrite(void);
 
   // string
   void vStrAlgebra(void);

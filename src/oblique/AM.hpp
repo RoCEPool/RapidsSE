@@ -126,7 +126,7 @@ namespace STORE         { class Xmits;           class Op;
 
 namespace STORE   { class Crv;                                      }
 namespace STORE              { class Row;                                      }
-namespace STORE             { class Step;            class StepTiming;        }
+namespace STORE             { class Step;            class Steps;        }
 namespace STORE     { class AttachMap;       class Engine;            }
 
 
@@ -222,7 +222,7 @@ namespace OBLIQUE
     static Word* pRootWord(void);
     static void vRootWord(Word* pRootWord);
     static Statistics* pStatistics(void);
-    static StepTiming* pStepTiming(void);
+    static Steps* pSteps(void);
     static PoolBuffer* pTakenBuffers(void);
     static i8   nTakenBytes(void);
     static Lock* pTccLock(void);
@@ -251,7 +251,7 @@ namespace OBLIQUE
     static void vIndexEntries(i8 nIndexEntries);
     static void vNextTempName(s32& sName);
     static void vSetAcksRmg(Task* pTask, i8 nAcks);
-    static void vStepTiming(StepTiming* pStepTiming);
+    static void vSteps(Steps* pSteps);
     static bool bTaskIsLocked(Task* pTask);
     static Task* pTaskNew(Job* pJob);
     static void vTenants(Word* pTenants);
