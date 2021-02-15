@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* SysArgs.h -- system arguments                                              */
+/* SysArgs.hpp -- system arguments                                              */
 /*============================================================================*/
 #pragma once
 
@@ -8,7 +8,10 @@ namespace STORE
   class SysArgs
   {
   public:
+    SysArgs(void);
+   ~SysArgs(void) noexcept(false);
   
+  public:
     // configuration of this node
     s256  m_sCommandsDir;  // commands dir
     i8    m_iConnectCode;  // connect code (not yet used)
