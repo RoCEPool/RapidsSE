@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Jobs.cpp -- Jobs                                                     */
+/* Jobs.cpp -- Jobs                                                           */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -24,6 +24,10 @@ Jobs::Jobs(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBS,_FOOTER_);
   
+  m_pDemonJobs = nullptr;
+  m_pLocalJobs = nullptr;
+  m_pOriginatingJobs   = nullptr;
+  m_pParticipatingJobs = nullptr;
   
   _checkInitialised_(CN_JOBS);
   

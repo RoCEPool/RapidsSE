@@ -9,8 +9,13 @@ namespace STORE
 {
   class Jobs : public Object
   {
-  private:
+  public:
   
+    JobList*  m_pDemonJobs;
+    JobList*  m_pLocalJobs;
+    JobList*  m_pOriginatingJobs;
+    JobList*  m_pParticipatingJobs;
+
     // must be last
     Footer m_xFooter;
     

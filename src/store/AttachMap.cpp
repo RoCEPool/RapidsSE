@@ -13,6 +13,7 @@
 #include "Grid.hpp"
 #include "AttachMap.hpp"
 #include "Objects.hpp"
+#include "Jobs.hpp"
 
 #include "Session.hpp"
 #include "Step.hpp"
@@ -70,7 +71,9 @@ AttachMap::AttachMap(void)
     
   // create the transient heaps
   m_xHeaps.vInit();
-  
+
+  m_pJobs = new Jobs;
+
   m_pObjects = new Objects;
 
   Lexicon* pLexicon = new Lexicon("__lexicon"_Stz);
