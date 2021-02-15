@@ -50,7 +50,7 @@
 
 #include "LogicExpr.hpp"
 #include "AndExpr.hpp"
-#include "isNullExpr.hpp"
+#include "IsNullExpr.hpp"
 #include "NotExpr.hpp"
 #include "OrExpr.hpp"
 #include "XorExpr.hpp"
