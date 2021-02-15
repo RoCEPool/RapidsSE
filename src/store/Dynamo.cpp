@@ -29,21 +29,39 @@
 #include "PlanOperand.hpp"
 #include "TableScanOp.hpp"
 #include "QueryNode.hpp"
-#include "AdditionExpr.hpp"
-#include "FilterOp.hpp"
-#include "ProjectOp.hpp"
-#include "ProjectedExpr.hpp"
-#include "Expr.hpp"
+
+#include "TableRef.hpp"
+
 #include "ColumnRef.hpp"
+#include "Expr.hpp"
+#include "FilterOp.hpp"
 #include "IntegerLiteral.hpp"
 #include "Literal.hpp"
-#include "MathematicalExpr.hpp"
-#include "MultiplicationExpr.hpp"
-#include "TableRef.hpp"
+#include "ProjectedExpr.hpp"
+#include "ProjectOp.hpp"
+
 #include "ComparisonExpr.hpp"
-#include "GeExpr.hpp"
-#include "LeExpr.hpp"
 #include "EqExpr.hpp"
+#include "GeExpr.hpp"
+#include "GtExpr.hpp"
+#include "LeExpr.hpp"
+#include "LtExpr.hpp"
+#include "NeExpr.hpp"
+
+#include "LogicExpr.hpp"
+#include "AndExpr.hpp"
+#include "isNullExpr.hpp"
+#include "NotExpr.hpp"
+#include "OrExpr.hpp"
+#include "XorExpr.hpp"
+
+#include "MathematicalExpr.hpp"
+#include "AdditionExpr.hpp"
+#include "DivisionExpr.hpp"
+#include "ModulusExpr.hpp"
+#include "MultiplicationExpr.hpp"
+#include "NegationExpr.hpp"
+#include "SubtractionExpr.hpp"
 
 using namespace Parser;
 
@@ -1462,21 +1480,6 @@ GraphNav::eWalkCtrl Dynamo::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 iD
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // matematical operator
-
-  if (MathematicalExpr::bIsOfType(pExprNode)) {
-
-    if (AdditionExpr::bIsOfType(pExprNode)) {
-      sPipeline->vCatSprint(" + "_Stz);
-    }
-
-    if (MultiplicationExpr::bIsOfType(pExprNode)) {
-      sPipeline->vCatSprint(" * "_Stz);
-    }
-
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // comparison operator
 
   if (ComparisonExpr::bIsOfType(pExprNode)) {
@@ -1486,11 +1489,23 @@ GraphNav::eWalkCtrl Dynamo::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 iD
     }
 
     if (GeExpr::bIsOfType(pExprNode)) {
+      sPipeline->vCatSprint(" >= "_Stz);
+    }
+
+    if (GtExpr::bIsOfType(pExprNode)) {
       sPipeline->vCatSprint(" > "_Stz);
     }
 
     if (LeExpr::bIsOfType(pExprNode)) {
       sPipeline->vCatSprint(" <= "_Stz);
+    }
+
+    if (LtExpr::bIsOfType(pExprNode)) {
+      sPipeline->vCatSprint(" < "_Stz);
+    }
+
+    if (NeExpr::bIsOfType(pExprNode)) {
+      sPipeline->vCatSprint(" != "_Stz);
     }
 
     sPipeline->vCatSprint(" <> "_Stz);
@@ -1505,6 +1520,60 @@ GraphNav::eWalkCtrl Dynamo::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 iD
     if (IntegerLiteral::bIsOfType(pExprNode)) {
       sPipeline->vCatSprint(" %lld "_Stz, IntegerLiteral::iValue(pExprNode));
     }
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // logical operator
+
+  if (LogicExpr::bIsOfType(pExprNode)) {
+
+    if (AndExpr::bIsOfType(pExprNode)) {
+      sPipeline->vCatSprint(" and "_Stz);
+    }
+
+    if (IsNullExpr::bIsOfType(pExprNode)) {
+      sPipeline->vCatSprint(" isNull "_Stz);
+    }
+
+    if (OrExpr::bIsOfType(pExprNode)) {
+      sPipeline->vCatSprint(" or "_Stz);
+    }
+
+    if (XorExpr::bIsOfType(pExprNode)) {
+      sPipeline->vCatSprint(" xor "_Stz);
+    }
+
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // matematical operator
+
+  if (MathematicalExpr::bIsOfType(pExprNode)) {
+
+    if (AdditionExpr::bIsOfType(pExprNode)) {
+      sPipeline->vCatSprint(" + "_Stz);
+    }
+
+    if (DivisionExpr::bIsOfType(pExprNode)) {
+      sPipeline->vCatSprint(" / "_Stz);
+    }
+
+    if (ModulusExpr::bIsOfType(pExprNode)) {
+      sPipeline->vCatSprint(" % "_Stz);
+    }
+
+    if (MultiplicationExpr::bIsOfType(pExprNode)) {
+      sPipeline->vCatSprint(" * "_Stz);
+    }
+
+    if (NegationExpr::bIsOfType(pExprNode)) {
+      sPipeline->vCatSprint(" - "_Stz);
+    }
+
+    if (SubtractionExpr::bIsOfType(pExprNode)) {
+      sPipeline->vCatSprint(" - "_Stz);
+    }
+
   }
 
   // Keep walking
