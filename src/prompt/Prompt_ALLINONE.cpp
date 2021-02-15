@@ -4818,7 +4818,7 @@ bool PROMPT::bPrompt_ssnState(SePrompt* pPrompt)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 #include "StepAccum.hpp"
-#include "StepTiming.hpp"
+#include "Steps.hpp"
 
 PromptFun __Prompt_st (
   PF_ST,                // prompt function

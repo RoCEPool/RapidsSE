@@ -35,7 +35,6 @@ namespace STORE
     s256  m_sLogCsvFile;
     s256  m_sLogTxtFile;
   
-    SysArgs m_xSysArgs;
         
     bool          m_bBootError;
     BucketMap*    m_pBucketMap;
@@ -62,6 +61,7 @@ namespace STORE
     Statistics    m_oStatistics;
     StepTiming*   m_pStepTiming;
     i8            m_iStop;
+    SysArgs       m_xSysArgs;
     Word*         m_pTenants;
     TempName      m_oTempName;
     TxSet*        m_pTxSet;
