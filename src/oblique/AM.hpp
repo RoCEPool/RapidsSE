@@ -222,8 +222,8 @@ namespace OBLIQUE
     static Schedule* pSchedule(void);
     static Resources* pResources(void);
     static Article* pRootArticle(void);
-    static Word* pRootConstant(void);
-    static void vRootConstant(Word* pRootConstant);
+    static Word* pConstantRoot(void);
+    static void vRootConstant(Word* pConstantRoot);
     static Dic* pDicRoot(void);
     static Word* pWordRoot(void);
     static void vRootWord(Word* pWordRoot);

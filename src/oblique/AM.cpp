@@ -226,7 +226,7 @@ Schedule* AM::pSchedule(void)     { return gpAttachMap->m_pSchedule;            
 Resources* AM::pResources(void) {
   return & gpAttachMap->m_oResources; }
 Article* AM::pRootArticle(void)     { return gpAttachMap->m_pRootArcticle;    }
-Word* AM::pRootConstant(void) { return gpAttachMap->m_pRootConstant;          }
+Word* AM::pConstantRoot(void) { return gpAttachMap->m_pConstantRoot;          }
 Dic* AM::pDicRoot(void)       { return gpAttachMap->m_pDicRoot;               }
 Word* AM::pWordRoot(void)     { return gpAttachMap->m_pWordRoot;              }
 Statistics* AM::pStatistics(void)   { return & gpAttachMap->m_oStatistics;    }
@@ -357,8 +357,8 @@ void AM::vDeleteOperand(Operand* pOperand)
 void AM::vDropTaskLock(Task* pTask) {
   pTask->vDropTaskLock();
 }
-void AM::vRootConstant(Word* pRootConstant) {
-  gpAttachMap->m_pRootConstant = pRootConstant;
+void AM::vRootConstant(Word* pConstantRoot) {
+  gpAttachMap->m_pConstantRoot = pConstantRoot;
 }
 void AM::vRootWord(Word* pWordRoot) {
   gpAttachMap->m_pWordRoot = pWordRoot;

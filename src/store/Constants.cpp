@@ -64,7 +64,7 @@ void Constants::vAddConstant(Stz* szName, i8 iVal)
 {
   Word* pNewWord = new(AM::pDicRoot()) Word(szName);
   
-  pNewWord->vCategory(AM::pRootConstant());
+  pNewWord->vCategory(AM::pConstantRoot());
   
   CellSingle xVar;
   xVar = iVal;
