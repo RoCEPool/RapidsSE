@@ -3,12 +3,13 @@
 /*============================================================================*/
 #pragma once
 
+#include "MasterLock.hpp"
+
 namespace STORE
 {
-  class DdlLock : public Object
+  class DdlLock : public MasterLock
   {
   private:
-    Lock m_okLock;
     
     // must be last
     Footer m_xFooter;

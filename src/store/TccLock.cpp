@@ -19,8 +19,7 @@ __aFooterFunction(TccLock);
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 TccLock::TccLock(void)
-: Object(CN_TCCLOCK)
-, m_okLock(LK_TCC,this)
+: MasterLock(CN_TCCLOCK,LK_TCC)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TCCLOCK,_FOOTER_);
    

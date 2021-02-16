@@ -3,12 +3,13 @@
 /*============================================================================*/
 #pragma once
 
+#include "MasterLock.hpp"
+
 namespace STORE
 {
-  class TccLock : public Object
+  class TccLock : public MasterLock
   {
   private:
-    Lock m_okLock;
     
     // must be last
     Footer m_xFooter;
