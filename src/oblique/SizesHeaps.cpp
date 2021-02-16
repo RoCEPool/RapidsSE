@@ -152,6 +152,8 @@
 #include "SN_Tsp.hpp"
 #include "SN_Vch.hpp"
 
+#include "TccLock.hpp"
+
 #include "XmitOperand.hpp"
 #include "Xmits.hpp"
 
@@ -450,6 +452,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Task),               HT_T_SMALL   ,0 }, // CN_TASK
   { sizeof(TaskList),           HT_T_TINY    ,0 }, // CN_TASKLIST
   { sizeof(TaskQueue),          HT_T_TINY    ,0 }, // CN_TEMPNAME
+  { sizeof(TccLock),            HT_T_TINY    ,0 }, // CN_TCCLOCK
   { sizeof(TempName),           HT_T_TINY    ,0 }, // CN_TENANT
   { sizeof(Tenant),             HT_T_TINY    ,0 }, // CN_TENANTS
   { sizeof(Tenants),            HT_T_TINY    ,0 }, // CN_TASKQUEUE

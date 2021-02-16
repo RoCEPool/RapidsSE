@@ -10,23 +10,23 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,DicLock,CN_DDLLOCK)
-__aNewFunction(DicLock,CN_DDLLOCK)
-__vDeleteFunction(DicLock,CN_DDLLOCK)
+__pCastFunction(STORE,DicLock,CN_DICLOCK)
+__aNewFunction(DicLock,CN_DICLOCK)
+__vDeleteFunction(DicLock,CN_DICLOCK)
 __aFooterFunction(DicLock);
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 DicLock::DicLock(i8 nPartitions)
-: Object(CN_DDLLOCK)
-, m_okLock(LK_DDL,this)
+: Object(CN_DICLOCK)
+, m_okLock(LK_DIC,this)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DDLLOCK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICLOCK,_FOOTER_);
    
-  _checkInitialised_(CN_DDLLOCK);
+  _checkInitialised_(CN_DICLOCK);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_DDLLOCK,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_DICLOCK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,7 +34,7 @@ DicLock::DicLock(i8 nPartitions)
 /*----------------------------------------------------------------------------*/
 DicLock::~DicLock(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DDLLOCK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICLOCK,_FOOTER_);
   
 }
 
