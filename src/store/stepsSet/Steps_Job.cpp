@@ -98,9 +98,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.removeLocal"_Stz,      &Step::vJobRemoveLocal);
   vAddStep("job.removeOriginator"_Stz, &Step::vJobRemoveOriginator);
   vAddStep("job.removeParticipant"_Stz,&Step::vJobRemoveParticipant);
-  vAddStep("job.response@"_Stz,        &Step::vJobResponseFetch);
-  vAddStep("job.response!"_Stz,        &Step::vJobResponseStore);
-//  vAddStep("job.returnPipeline"_Stz,   &Step::vJobReturnPipeline);
 
   vAddStep("job.seedDecode"_Stz,       &Step::vJobSeedDecode);
   vAddStep("job.seed@"_Stz,            &Step::vJobSeedFetch);
@@ -980,7 +977,6 @@ void Step::vJobParticipantResponseStore(void)
   
   // set node and error in the response
   pResponse->m_i_Node           = pParticipantJob->iParticipantNode();
-  pResponse->m_sResponse       = pParticipantJob->szResponse();
   pResponse->m_eErrorCode      = pParticipantJob->eJobError();
   
   if (pResponse->m_eErrorCode != EC_NONE)
@@ -1182,53 +1178,6 @@ void Step::vJobRemoveParticipant(void)
     
   EXIT();
 }
-
-/*----------------------------------------------------------------------------*/
-/* job.response@ -- fetch the job response from a node                        */
-/*----------------------------------------------------------------------------*/
-void Step::vJobResponseFetch(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  s4K sResponse = pJob->szResponse();
-  m_pDataStack->vPushStr(sResponse);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.response! -- store the job response from a node                        */
-/*----------------------------------------------------------------------------*/
-void Step::vJobResponseStore(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  s4K sResponse;
-  m_pDataStack->vPopStr(sResponse,__func__);
-  
-  //pJob->m_xNode[iNode].m_sResponse = sResponse;
-  pJob->vResponse(sResponse);
-  
-  EXIT();
-}
-
-///*----------------------------------------------------------------------------*/
-///* job.returnPipeline -- queue a return piepline on outer waiting op          */
-///*----------------------------------------------------------------------------*/
-//void Step::vJobReturnPipeline(void)
-//{
-//  ENTRY();
-//
-//  Operand* pOperand = nullptr;
-//
-//  m_pDataStack->vPushPtr(pOperand);
-//
-//  EXIT();
-//}
 
 /*----------------------------------------------------------------------------*/
 /* job.seedDecode -- decode seed for received job                             */

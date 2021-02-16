@@ -615,9 +615,6 @@ void vExprEvalEvaluate(void);
   void vJobRemoveLocal(void);
   void vJobRemoveOriginator(void);
   void vJobRemoveParticipant(void);
-  void vJobResponseStore(void);
-  void vJobResponseFetch(void);
-  void vJobReturnPipeline(void);
 
   void vJobSeedDecode(void);
   void vJobSeedFetch(void);

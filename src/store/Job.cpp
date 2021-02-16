@@ -1054,24 +1054,6 @@ Response* Job::pResponse(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get response string                                                        */
-/*----------------------------------------------------------------------------*/
-Stz* Job::szResponse(void)
-{
-  Stz* szResponse = m_xResult.m_xJobResponse.m_sResponse;
-  
-  return szResponse;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set response string                                                        */
-/*----------------------------------------------------------------------------*/
-void Job::vResponse(Stz* sResponse)
-{
-  m_xResult.m_xJobResponse.m_sResponse = sResponse;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set origin response vector                                                 */
 /*----------------------------------------------------------------------------*/
 void Job::vOriginResponseVec(ResponseVec* pResonseVec)

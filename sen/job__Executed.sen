@@ -25,13 +25,9 @@
   // get error if any
   pJobParticipant job.error@ to error
 
-  error EC_NONE == if
-    // get the response from participant job and set it in executed job
-    pJobParticipant job.response@ pJob__Executed job.response!
-
-  else
-     // set error in executed job
-     error pJob__Executed job.error!
+  error EC_NONE != if
+    // set error in executed job
+    error pJob__Executed job.error!
   then
 
 
