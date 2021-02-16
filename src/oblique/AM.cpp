@@ -186,7 +186,7 @@ bool AM::bBootError(void)     { return gpAttachMap->m_bBootError;             }
 i8   AM::nBuckets(void)       { return C_MAX_BUCKETS;                         }
 BufferPool* AM::pBufferPool(void) { return gpAttachMap->m_pBufferPool;        }
 ClassFlags* AM::pClassFlags(void)  { return & gpAttachMap->m_oClassFlags;      }
-Lock* AM::pDdlLock(void)      { return & gpAttachMap->m_oLocks.m_okDdlLock;            }
+MasterLock* AM::pDdlLock(void)      { return & gpAttachMap->m_oLocks.m_oDdlMasterLock;  }
 JobList* AM::pDemonJobs(void) {
   return gpAttachMap->m_pJobs->m_pDemonJobs;                                }
 Lock* AM::pDicLock(void)      { return & gpAttachMap->m_oLocks.m_okDicLock;            }

@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace STORE
+namespace BASE
 {
   class MasterLock : public Object
   {
@@ -17,7 +17,8 @@ namespace STORE
     MasterLock(eCN eClassNo, eLK eLock);
    ~MasterLock(void) noexcept(false);
     
-  
+    u8   uLockWord(void);
+
     void vDropRead(void);
     bool bGrabRead(void);
     void vGrabRead(void);
@@ -25,9 +26,8 @@ namespace STORE
     void vDropWrite(void);
     bool bGrabWrite(void);
     void vGrabWrite(void);
+    bool bIsWriteLocked(void);
 
-  private:
-    Footer* aFooter(void);
   };
   
   MasterLock* _pMasterLock(void* aAddr);

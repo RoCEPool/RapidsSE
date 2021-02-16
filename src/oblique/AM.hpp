@@ -79,7 +79,7 @@ namespace BASE       { class CodeCell;            class Loggable;
                               class Header;          class Object;
                               class Statistics;     class Mutex;              }
 namespace BASE            { class ReqTuple;                              }
-namespace BASE           { class Lock;            class Locks;       }
+namespace BASE           { class Lock;            class Locks;   class MasterLock;    }
 namespace BASE              { class BufferPool;      class HeapBuffer;
                               class Heaps;         class PoolBuffer;
 
@@ -187,7 +187,7 @@ namespace OBLIQUE
     static i8   nBuckets(void);
     static BufferPool* pBufferPool(void);
     static ClassFlags* pClassFlags(void);
-    static Lock* pDdlLock(void);
+    static MasterLock* pDdlLock(void);
     static void vDeleteOperand(Operand* pOperand);
     static Lock* pDicLock(void);
     static i8   iElapsedSsec(void);

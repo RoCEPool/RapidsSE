@@ -41,6 +41,16 @@ MasterLock::~MasterLock(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* drop read lock                                                             */
 /*----------------------------------------------------------------------------*/
+u8 MasterLock::uLockWord(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_okLock.uLockWord();
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop read lock                                                             */
+/*----------------------------------------------------------------------------*/
 void MasterLock::vDropRead(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
@@ -112,6 +122,18 @@ void MasterLock::vGrabWrite(void)
   m_okLock.vGrabWrite();
   
   m_pHoldingTask = MY::pTask();
+}
+
+/*----------------------------------------------------------------------------*/
+/* is write locked?                                                           */
+/*----------------------------------------------------------------------------*/
+bool MasterLock::bIsWriteLocked(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  bool bWriteLocked = m_okLock.bIsWriteLocked();
+  
+  return bWriteLocked;
 }
 
 /*============================================================================*/
