@@ -41,6 +41,8 @@
 
 #include "CmdLineArgs.hpp"
 
+#include "DdlLock.hpp"
+
 #include "IndexDef.hpp"
 
 #include "Index.hpp"
@@ -208,6 +210,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(CsvMeta),            HT_T_TINY    ,0 }, // CN_CSVMETA
 
   { 'D' - ('A' - 1),            HT_INVALID   ,0 }, // CN__D__
+  { sizeof(DdlLock),            HT_T_TINY    ,0 }, // CN_DDLLOCK
   { sizeof(DecaCnt),            HT_T_TINY    ,0 }, // CN_DECACNT
   { sizeof(Decider),            HT_T_TINY    ,0 }, // CN_DECIDER
   { sizeof(DefinitionNode),     HT_T_TINY    ,-8 }, // CN_DEFINITIONNODE
