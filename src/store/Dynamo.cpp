@@ -66,8 +66,6 @@
 #include "NegationExpr.hpp"
 #include "SubtractionExpr.hpp"
 
-using namespace Parser;
-
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -1418,36 +1416,38 @@ void Dynamo::vAppendAggregateOp(String* sPipeline, QueryNode* pNode)
     }
     delete pIter;
 
-    // Get the groupBy from ProjectOp
+    // if aggregOp , get a groupBy iterator
+    if (AggregateOp::bIsOfType(pNode)) {
 
-    sPipeline->vCatSprint(" groupBy "_Stz);
-    bFirstExpr = false;
+      // Get the groupBy from ProjectOp
+      sPipeline->vCatSprint(" groupBy "_Stz);
+      bFirstExpr = false;
 
-    // get a groupBy iterator
-    PlanNodeIter* pGroupByIter = AggregateOp::pGroupByIter(pNode);
-    while (pGroupByIter->bHasNext()) {
+      PlanNodeIter *pGroupByIter = AggregateOp::pGroupByIter(pNode);
+      while (pGroupByIter->bHasNext()) {
 
-      // append comma
-      if (bFirstExpr)
-        sPipeline->vCatSprint(" ,"_Stz);
-      else
-        bFirstExpr = true;
+        // append comma
+        if (bFirstExpr)
+          sPipeline->vCatSprint(" ,"_Stz);
+        else
+          bFirstExpr = true;
 
-      // get the next groupByExpr from the iterator
-      QueryNode *pGroupByExpr = static_cast<QueryNode *>(pIter->pNext());
-      ASSERT(pGroupByExpr);
+        // get the next groupByExpr from the iterator
+        QueryNode *pGroupByExpr = static_cast<QueryNode *>(pIter->pNext());
+        ASSERT(pGroupByExpr);
 
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // columnRef
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // columnRef
 
-      ASSERT(ColumnRef::bIsOfType(pGroupByExpr));
-      QueryNode *pColumnRef = static_cast<QueryNode *>(pGroupByExpr);
-      sPipeline->vCatSprint(
-          " %s"
-          ""_Stz,
-          ColumnRef::szColumnName(pColumnRef));
+        ASSERT(ColumnRef::bIsOfType(pGroupByExpr));
+        QueryNode *pColumnRef = static_cast<QueryNode *>(pGroupByExpr);
+        sPipeline->vCatSprint(
+            " %s"
+            ""_Stz,
+            ColumnRef::szColumnName(pColumnRef));
+      }
+      delete pGroupByIter;
     }
-    delete pGroupByIter;
   }
 
   sPipeline->vCatSprint(" \" \n"_Stz);
@@ -1551,7 +1551,6 @@ GraphNav::eWalkCtrl Dynamo::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 iD
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // aggregate
-
   if (AggregateExpr::bIsOfType(pExprNode)) {
 
     if (SumExpr::bIsOfType(pExprNode)) {
@@ -1730,7 +1729,10 @@ GraphNav::eWalkCtrl Dynamo::vVisitorPlan(PlanNode* pRootNode, s256& sPath, i8 iD
     // ProjectOp
 
     else if (ProjectOp::bIsOfType(pQueryNode)) {
-      vAppendProjectOp(sPipeline, pQueryNode);
+      if (ProjectOp::bHasAnAggregate(pQueryNode))
+        vAppendAggregateOp(sPipeline, pQueryNode);
+      else
+        vAppendProjectOp(sPipeline, pQueryNode);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
