@@ -56,6 +56,7 @@ enum eCN : u2 // Class Number
   /* */ CN_DEVIXT,
   /* */ CN_DEVROW,
   /* */ CN_DIC,
+  /* */ CN_DICLOCK,
   /* */ CN_DICSTACK,
   /* */ CN_DIR,
   /* */ CN_DTEVAL,
@@ -384,6 +385,7 @@ static Stz* aCN[]
   /* */ "DEVIXT"_Stz,               // CN_DEVIXT
   /* */ "DEVROW"_Stz,               // CN_DEVROW
   /* */ "DIC"_Stz,                  // CN_DIC
+  /* */ "DICLOCK"_Stz,              // CN_DICLOCK
   /* */ "DICSTACK"_Stz,             // CN_DICSTACK
   /* */ "DIR"_Stz,                  // CN_DIR
   /* */ "DTEVAL"_Stz,               // CN_DTEVAL

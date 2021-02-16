@@ -42,6 +42,7 @@
 #include "CmdLineArgs.hpp"
 
 #include "DdlLock.hpp"
+#include "DicLock.hpp"
 
 #include "IndexDef.hpp"
 
@@ -217,6 +218,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(DevIXT),             HT_T_TINY    ,0 }, // CN_DEVIXT
   { sizeof(DevROW),             HT_T_TINY    ,0 }, // CN_DEVROW
   { sizeof(Dic),                HT_T_TINY    ,0 }, // CN_DIC
+  { sizeof(DicLock),            HT_T_TINY    ,0 }, // CN_DICLOCK
   { sizeof(DicStack),           HT_T_TINY    ,0 }, // CN_DICSTACK
   { sizeof(Dir),                HT_T_TINY    ,0 }, // CN_DIR
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_DTEVAL
