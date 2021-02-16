@@ -8,6 +8,8 @@
 
 #include "SP_Gid.hpp"
 
+#include "MY.hpp"
+
 Atomic gixLock;
 
 /*----------------------------------------------------------------------------*/
@@ -46,8 +48,8 @@ void Lock::operator delete(void*)
 /*----------------------------------------------------------------------------*/
 /* constructor (for non-focal case)                                           */
 /*----------------------------------------------------------------------------*/
-Lock::Lock(eLK eLockKind, Object* pFor)
-: Loggable(CN_LOCK)
+Lock::Lock(eLK eLockKind, Object* pFor, bool bDontLog)
+: Loggable(CN_LOCK,bDontLog)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
@@ -94,6 +96,8 @@ Lock::~Lock(void) noexcept(false)
                 spId.sz(m_pFor?((Loggable*)m_pFor)->m_iObjectId:C_UNKNOWN),
                 * gixLock);
   }
+  
+  //RASSERT(! m_uLockWord);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -321,6 +325,8 @@ bool Lock::bGrabRead(void)
   
   ASSERT(m_eLockKind);
   
+  vLockTrace(LS_READ_NONBLOCK);
+  
   ++m_ixReadGrabs;
 #ifdef WITH_LOCK_TRACKING
   ++AM::pLocks()->m_ixReadGrabs[m_eLockKind];
@@ -348,7 +354,9 @@ void Lock::vGrabRead(void)
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
   ASSERT(m_eLockKind);
-  
+ 
+  vLockTrace(LS_READ_BLOCKING);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // attempt to grab the lock for read
   
@@ -469,6 +477,8 @@ bool Lock::bGrabWrite(void)
   
   ASSERT(m_eLockKind);
 
+  vLockTrace(LS_WRITE_NONBLOCK);
+
   ++m_ixWriteGrabs;
 #ifdef WITH_LOCK_TRACKING
   ++AM::pLocks()->m_ixWriteGrabs[m_eLockKind];
@@ -496,7 +506,9 @@ void Lock::vGrabWrite(void)
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
   ASSERT(m_eLockKind);
-  
+
+  vLockTrace(LS_WRITE_BLOCKING);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // attempt to grab the lock for write
   
@@ -586,6 +598,30 @@ i8 Lock::iWriteCollisions(void)
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
   return *m_ixWriteCollisions;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* lock trace                                                                 */
+/*----------------------------------------------------------------------------*/
+void Lock::vLockTrace(eLS eLockStyle)
+{
+  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
+  
+  if (m_bDontLog)
+    return;
+  
+//  if (MY::pOp())
+//    printf("%s %s OP\n",
+//           aLK[m_eLockKind]->azChar(),
+//           aLS[eLockStyle]->azChar());
+//  else
+//    printf("%s %s NO OP\n",
+//           aLK[m_eLockKind]->azChar(),
+//           aLS[eLockStyle]->azChar());
 }
 
 /*----------------------------------------------------------------------------*/

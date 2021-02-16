@@ -4,6 +4,7 @@
 #pragma once
 
 #include "eLK.h"
+#include "eLS.h"
 
 namespace BASE
 {
@@ -31,7 +32,7 @@ namespace BASE
     void* operator new(size_t, Lock* pLock);
     void  operator delete(void* pLockAddress);
     
-    Lock(eLK eLockKind, Object* pFor);
+    Lock(eLK eLockKind, Object* pFor, bool bDontLog=false);
    ~Lock(void) noexcept(false);
   
   private:
@@ -65,6 +66,7 @@ namespace BASE
     i8   iWriteCollisions(void);
     
   private:
+    void vLockTrace(eLS eLockStyle);
     Footer* aFooter(void);
   };
   

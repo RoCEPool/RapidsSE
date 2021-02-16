@@ -152,7 +152,7 @@ void File::vInitGlobals(void)
   vTrace("File::vInitGlobals\n"_Stz);
   
    if (! gpOpenFiles)
-    gpOpenFiles = new OpenFiles;
+    gpOpenFiles = new OpenFiles(LK_LIST);
 }
 
 /*----------------------------------------------------------------------------*/

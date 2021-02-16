@@ -20,7 +20,7 @@ namespace BASE
   public:
     void* operator new(size_t);
     
-    List_t(void);
+    List_t(eLK eLock);
    ~List_t(void) noexcept(false);
 
     void  vAppend(ITEM* pItem);
@@ -63,8 +63,8 @@ void* List_t<ITEM>::operator new(size_t)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
-List_t<ITEM>::List_t(void)
-: m_okLock(LK_LIST,nullptr)
+List_t<ITEM>::List_t(eLK eLock)
+: m_okLock(eLock,nullptr)
 {
   m_nItems = 0;
   m_pHead  = nullptr;

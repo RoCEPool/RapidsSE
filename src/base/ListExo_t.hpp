@@ -190,8 +190,8 @@ namespace BASE
     void* operator new(size_t);
     void operator delete(void* aListExo);
 
-    ListExo_t(void);
-    ListExo_t(ListExoIter_t<ITEM>* pIter);
+    ListExo_t(eLK eLock);
+    ListExo_t(eLK eLock, ListExoIter_t<ITEM>* pIter);
    ~ListExo_t(void) noexcept(false);
 
     void  vAppend(ITEM* pItem);
@@ -264,9 +264,9 @@ void ListExo_t<CLASSNO,ITEM>::operator delete(void* aListExo_t)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 template <eCN CLASSNO, class ITEM>
-ListExo_t<CLASSNO,ITEM>::ListExo_t(void)
+ListExo_t<CLASSNO,ITEM>::ListExo_t(eLK eLock)
     : Object(CLASSNO)
-    , m_okLock(LK_LIST,nullptr)
+    , m_okLock(eLock,nullptr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
     
@@ -284,9 +284,9 @@ ListExo_t<CLASSNO,ITEM>::ListExo_t(void)
 /* constructor. Soft copy of items from another list.                         */
 /*----------------------------------------------------------------------------*/
 template <eCN CLASSNO, class ITEM>
-ListExo_t<CLASSNO,ITEM>::ListExo_t(ListExoIter_t<ITEM>* pIter)
+ListExo_t<CLASSNO,ITEM>::ListExo_t(eLK eLock, ListExoIter_t<ITEM>* pIter)
     : Object(CLASSNO)
-    , m_okLock(LK_LIST,nullptr)
+    , m_okLock(eLock,nullptr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
 
