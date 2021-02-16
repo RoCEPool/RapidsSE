@@ -189,7 +189,7 @@ namespace OBLIQUE
     static ClassFlags* pClassFlags(void);
     static MasterLock* pDdlLock(void);
     static void vDeleteOperand(Operand* pOperand);
-    static Lock* pDicLock(void);
+    static MasterLock* pDicLock(void);
     static i8   iElapsedSsec(void);
     static i8   iEpoch(void);
     static Format* pFmt(void);
@@ -231,7 +231,7 @@ namespace OBLIQUE
     static Steps* pSteps(void);
     static PoolBuffer* pTakenBuffers(void);
     static i8   nTakenBytes(void);
-    static Lock* pTccLock(void);
+    static MasterLock* pTccLock(void);
     static Word* pTenants(void);
     static i8   iThisNodeNo(void);
     static void vPutHeartbeat(i8 iNode, const Heartbeat& xHeartbeat);

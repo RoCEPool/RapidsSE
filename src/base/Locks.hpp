@@ -11,10 +11,6 @@ namespace BASE
   {
   public:
   
-    //Lock   m_okDdlLock;
-    Lock   m_okDicLock;
-    Lock   m_okTccLock;
-
     DdlLock   m_oDdlMasterLock;
     DicLock   m_oDicMasterLock;
     TccLock   m_oTccMasterLock;

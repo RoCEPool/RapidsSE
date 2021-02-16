@@ -8,9 +8,6 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Locks::Locks(void)
-//: m_okDdlLock(LK_DDL,nullptr)
-: m_okDicLock(LK_DIC,nullptr)
-, m_okTccLock(LK_TCC,nullptr)
 {
 }
 
