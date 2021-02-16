@@ -18,7 +18,7 @@ __aFooterFunction(DdlLock);
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-DdlLock::DdlLock(i8 nPartitions)
+DdlLock::DdlLock(void)
 : Object(CN_DDLLOCK)
 , m_okLock(LK_DDL,this)
 {

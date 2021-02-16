@@ -17,7 +17,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    DicLock(i8 nPartitions);
+    DicLock(void);
    ~DicLock(void) noexcept(false);
     
   private:

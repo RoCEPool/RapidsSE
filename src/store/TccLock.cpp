@@ -18,7 +18,7 @@ __aFooterFunction(TccLock);
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-TccLock::TccLock(i8 nPartitions)
+TccLock::TccLock(void)
 : Object(CN_TCCLOCK)
 , m_okLock(LK_TCC,this)
 {

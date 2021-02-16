@@ -18,7 +18,7 @@ __aFooterFunction(DicLock);
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-DicLock::DicLock(i8 nPartitions)
+DicLock::DicLock(void)
 : Object(CN_DICLOCK)
 , m_okLock(LK_DIC,this)
 {
