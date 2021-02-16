@@ -5,6 +5,7 @@
 #include "BASE.h"
 
 #include "MasterLock.hpp"
+#include "MY.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -19,6 +20,8 @@ MasterLock::MasterLock(eCN eClassNo, eLK eLock)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
      
+  m_pHoldingTask = nullptr;
+  
   _postcondition_(_ADDRESS_,_MAGIC_);
 }
 
@@ -34,6 +37,82 @@ MasterLock::~MasterLock(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* drop read lock                                                             */
+/*----------------------------------------------------------------------------*/
+void MasterLock::vDropRead(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_okLock.vDropRead();
+}
+
+/*----------------------------------------------------------------------------*/
+/* try and grab a read lock                                                   */
+/*----------------------------------------------------------------------------*/
+bool MasterLock::bGrabRead(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  bool b = m_okLock.bGrabRead();
+  
+  return b;
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab a read lock (may block)                                               */
+/*----------------------------------------------------------------------------*/
+void MasterLock::vGrabRead(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_okLock.vGrabRead();
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* drop write lock                                                            */
+/*----------------------------------------------------------------------------*/
+void MasterLock::vDropWrite(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  RASSERT(MY::pTask() == m_pHoldingTask);
+  m_pHoldingTask = nullptr;
+  
+  m_okLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* try and grab a write lock                                                  */
+/*----------------------------------------------------------------------------*/
+bool MasterLock::bGrabWrite(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  bool b = m_okLock.bGrabWrite();
+  
+  if (b)
+    m_pHoldingTask = MY::pTask();
+
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab a write lock (may block)                                              */
+/*----------------------------------------------------------------------------*/
+void MasterLock::vGrabWrite(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_okLock.vGrabWrite();
+  
+  m_pHoldingTask = MY::pTask();
+}
 
 /*============================================================================*/
 /* end                                                                        */
