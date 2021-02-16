@@ -15,6 +15,10 @@ namespace BASE
     Lock   m_okDicLock;
     Lock   m_okTccLock;
 
+    DdlLock   m_oDdlMasterLock;
+    DicLock   m_oDicMasterLock;
+    TccLock   m_oTccMasterLock;
+  
     Atomic m_ixWorkUnits[LK_ENUMS];       // number of work units (optional)
   
     Atomic m_ixReadGrabs[LK_ENUMS];       // number of read grabs
