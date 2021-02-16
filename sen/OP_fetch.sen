@@ -182,6 +182,9 @@
       Operand[].newEosMarker
       Operand[].pipeOut
     else
+
+      tablePtn[] tablePtnDropRead
+
       // position and fetch first buffer for next phrase
       Counter1[] fetchFirstBuffer
     then

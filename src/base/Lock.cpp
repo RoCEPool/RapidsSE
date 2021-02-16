@@ -97,7 +97,7 @@ Lock::~Lock(void) noexcept(false)
                 * gixLock);
   }
   
-  //RASSERT(! m_uLockWord);
+  RASSERT(! m_uLockWord);
 }
 
 /*----------------------------------------------------------------------------*/
