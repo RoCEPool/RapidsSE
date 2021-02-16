@@ -342,13 +342,34 @@ bool Dynamo::bPlanToPipeline(String* pAsPipelineStmt,
 
   ++ cStageCurrent;
 
+  // check if any aggregation in previous stage
+  char* sAggreg = pAsPipelineStmt->azStr();
+
+  if (StrLib::bFind(&sAggreg, "aggreg")) {
+
+   // now append the aggreg as the super aggregate in the last stage (on origin)
+   s4K sAgg;
+   StrLib::vCopyTill(sAgg.azChar(), sAggreg, '|');
+
+   pAsPipelineStmt->vCatSprint(
+        "  stage stage%c on origin :\n"
+        "    %s"
+        "    | output\n"
+        ""_Stz,
+        cStageCurrent, sAgg.azChar());
+  }
+  else {
+    pAsPipelineStmt->vCatSprint(
+        "  stage stage%c on origin :\n"
+        "    output\n"
+        ""_Stz,
+        cStageCurrent);
+  }
   pAsPipelineStmt->vCatSprint(
-      "  stage stage%c on origin :\n"
-      "    output\n"
       "    | sink\n"
       "    | stage%c\n"
       ""_Stz,
-      cStageCurrent, cStageStart);
+      cStageStart);
 
   pAsPipelineStmt->vConcat(
       "end ;\n"
