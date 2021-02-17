@@ -48,7 +48,7 @@ void Lock::operator delete(void*)
 /*----------------------------------------------------------------------------*/
 /* constructor (for non-focal case)                                           */
 /*----------------------------------------------------------------------------*/
-Lock::Lock(eLK eLockKind, Object* pFor, bool bDontLog)
+Lock::Lock(eCN eClassLocked, eLK eLockKind, Object* pFor, bool bDontLog)
 : Loggable(CN_LOCK,bDontLog)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);

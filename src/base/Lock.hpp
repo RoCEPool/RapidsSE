@@ -32,7 +32,7 @@ namespace BASE
     void* operator new(size_t, Lock* pLock);
     void  operator delete(void* pLockAddress);
     
-    Lock(eLK eLockKind, Object* pFor, bool bDontLog=false);
+    Lock(eCN eClassLocked, eLK eLockKind, Object* pFor, bool bDontLog=false);
    ~Lock(void) noexcept(false);
   
   private:

@@ -94,7 +94,7 @@ void Vector_t<VEC_CN,ITEM,MAX_ITEMS>::operator delete(void* pVectorAddress)
 template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
 Vector_t<VEC_CN,ITEM,MAX_ITEMS>::Vector_t(void)
 : Object(VEC_CN)
-, m_okLock(LK_VECTOR,nullptr)
+, m_okLock(VEC_CN,LK_VECTOR,nullptr)
 {
   _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
   

@@ -64,7 +64,7 @@ void* List_t<ITEM>::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
 List_t<ITEM>::List_t(eLK eLock)
-: m_okLock(eLock,nullptr)
+: m_okLock(CN_NONE,eLock,nullptr)
 {
   m_nItems = 0;
   m_pHead  = nullptr;

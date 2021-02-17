@@ -44,7 +44,7 @@ void RowOnce::operator delete(void* pRowOnceAddress)
 /*----------------------------------------------------------------------------*/
 RowOnce::RowOnce(void)
 : Object(CN_ROWONCE)
-, m_okLock(LK_LIST,this)
+, m_okLock(CN_ROWONCE,LK_LIST,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWONCE,_FOOTER_);
   
