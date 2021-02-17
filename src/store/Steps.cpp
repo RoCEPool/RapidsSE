@@ -14,7 +14,7 @@ Steps* STORE::_pSteps(void* aAddr)
 {
   Steps* pSteps = reinterpret_cast<Steps*>(aAddr);
   
-  RASSERT_TYPE(pSteps,CN_STEPTIMING);
+  RASSERT_TYPE(pSteps,CN_STEPS);
   
   return pSteps;
 }
@@ -26,7 +26,7 @@ void* Steps::operator new(size_t)
 {
   RASSERT(! AM::pSteps());
   
-  Steps* pSteps = (Steps*)Heaps::pAllocate(CN_STEPTIMING);
+  Steps* pSteps = (Steps*)Heaps::pAllocate(CN_STEPS);
   
   return pSteps;
 }
@@ -35,17 +35,17 @@ void* Steps::operator new(size_t)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Steps::Steps(void)
-: Object(CN_STEPTIMING)
-, m_okLock(CN_STEPTIMING,this)
+: Object(CN_STEPS)
+, m_okLock(CN_STEPS,this)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STEPTIMING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STEPS,_FOOTER_);
   
   m_iNext = 0;
   //m_xStepAccum[]
   
-  _checkInitialised_(CN_STEPTIMING);
+  _checkInitialised_(CN_STEPS);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_STEPTIMING,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_STEPS,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -53,7 +53,7 @@ Steps::Steps(void)
 /*----------------------------------------------------------------------------*/
 Steps::~Steps(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STEPTIMING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STEPS,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -206,7 +206,7 @@ void Steps::vWriteSingleStep(Stz* szPath, Stz* szStepNm)
 /*----------------------------------------------------------------------------*/
 Footer* Steps::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STEPTIMING);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STEPS);
   
   return &m_xFooter;
 }

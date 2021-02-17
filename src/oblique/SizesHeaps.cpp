@@ -434,7 +434,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(StageSpec),          HT_T_SMALL   ,0 }, // CN_STAGESPEC
   { sizeof(Statistics),         HT_INVALID   ,0 }, // CN_STATISTICS
   { sizeof(StepAccum),          HT_INVALID   ,0 }, // CN_STEPACCUM
-  { sizeof(Steps),         HT_T_LARGE   ,0 }, // CN_STEPTIMING
+  { sizeof(Steps),              HT_T_LARGE   ,0 }, // CN_STEPS
   { sizeof(Stream),             HT_T_SMALL   ,0 }, // CN_STREAM
   { sizeof(StreamDef),          HT_T_LARGE   ,0 }, // CN_STREAMDEF
   { sizeof(StreamSet),          HT_T_LARGE   ,0 }, // CN_STREAMSET
@@ -442,7 +442,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(StzList),            HT_T_TINY    ,0 }, // CN_STZLIST
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_STZVAL
   { sizeof(SysCall),            HT_INVALID   ,0 }, // CN_SYSCALL
-  { sizeof(Schedule),     HT_T_TINY    ,0 }, // CN_SCHEDULE
+  { sizeof(Schedule),           HT_T_TINY    ,0 }, // CN_SCHEDULE
 
   { 'T' - ('A' - 1),            HT_INVALID   ,0 }, // CN__T__
   { sizeof(Table),              HT_T_TINY    ,0 }, // CN_TABLE
