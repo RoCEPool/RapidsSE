@@ -3,13 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "eMK.h"
-
 namespace BASE
 {
   class Mutex : public Object
   {
-  public:  
+  public:
     Object* m_pObjectMutexed;
     bool    m_bObserve;  // observe this mutex?
     Loggable*  m_pLockedBy; // by whom is the mutex locked?
