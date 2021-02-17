@@ -50,7 +50,7 @@ void TaskQueue::operator delete(void* pTaskQueueAddress)
 /*----------------------------------------------------------------------------*/
 TaskQueue::TaskQueue(eQK eKind, bool bUniqueKey, CompareFp fpCompare)
 : Object(CN_TASKQUEUE)
-, m_okLock(CN_TASKQUEUE,this,true)
+, m_okLock(CN_TASKQUEUE,this,C_DONT_LOG)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
