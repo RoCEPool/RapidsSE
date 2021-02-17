@@ -66,7 +66,7 @@ Lock::Lock(eCN eClassLocked, Object* pObjectLocked, bool bDontLog)
   m_pObjectLocked = pObjectLocked;
   
   m_uLockWord = 0;
-  m_eClassLocked = eClassLocked;
+  //m_eClassLocked = eClassLocked;
   
   m_ixReadGrabs.vCheckInit();
   m_ixReadCollisions.vCheckInit();
@@ -262,7 +262,7 @@ eCN Lock::eClassLocked(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
 
-  return m_eClassLocked;
+  return m_pObjectLocked->eGetClassNo();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -386,7 +386,7 @@ void Lock::vGrabRead(void)
     AM::vLogLck(SL_INF,this,LA_LCK_READ_UNABLE,
                 "Unable to grab read lock %p %s %p"_Stz, //!format-LogLck
                 this,
-                aCN[m_eClassLocked],
+                aCN[eClassLocked()],
                  m_uLockWord);
   }
   
@@ -398,7 +398,7 @@ void Lock::vGrabRead(void)
     AM::vLogLck(SL_INF,this,LA_LCK_READ_ABLE,
                "Able to grab read lock %p %s %p"_Stz, //!format-LogLck
                 this,
-                aCN[m_eClassLocked],
+                aCN[eClassLocked()],
                 m_uLockWord);
   }
   
@@ -538,7 +538,7 @@ void Lock::vGrabWrite(void)
     AM::vLogLck(SL_INF,this,LA_LCK_WRITE_UNABLE,
                 "Unable to grab write lock %p %s %p"_Stz, //!format-LogLck
                 this,
-                aCN[m_eClassLocked],
+                aCN[eClassLocked()],
                 m_uLockWord);
   }
   
@@ -550,7 +550,7 @@ void Lock::vGrabWrite(void)
     AM::vLogLck(SL_INF,this,LA_LCK_WRITE_ABLE,
                "Able to grab write lock %p %s %p"_Stz, //!format-LogLck
                        this,
-                       aCN[m_eClassLocked],
+                       aCN[eClassLocked()],
                        m_uLockWord);
   }
 
