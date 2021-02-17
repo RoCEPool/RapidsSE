@@ -134,7 +134,7 @@ void LogEntry::vAsTxt(s4K& sString)
 //    case LG_TSK: m_xTsk.vToTxt(sInf,this); break;
 //    case LG_THD: m_xThd.vToTxt(sInf,this); break;
 //    case LG_TXN: m_xTxn.vToTxt(sInf,this); break;
-//    default:
+    default:
       NEVER_REACH;
   }
 

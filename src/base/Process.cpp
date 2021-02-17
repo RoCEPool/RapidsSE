@@ -36,7 +36,7 @@ void Process::vEntry(void)
 {
   fprintf(stderr,"Calling exit(%lld)\n",(u8)EXIT_FAILURE);
   
-//  exit((int)EXIT_FAILURE);
+  exit((int)EXIT_FAILURE);
 }
 
 /*----------------------------------------------------------------------------*/

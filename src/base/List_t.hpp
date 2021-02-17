@@ -5,7 +5,7 @@
 
 namespace BASE
 {
-  template <class ITEM>
+  template <eCN CLASSNO, class ITEM>
   class List_t
   {
   protected:
@@ -50,8 +50,8 @@ using namespace BASE;
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-template <class ITEM>
-void* List_t<ITEM>::operator new(size_t)
+template <eCN CLASSNO, class ITEM>
+void* List_t<CLASSNO,ITEM>::operator new(size_t)
 {
   vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
          "fatal: List_t class cannot be new'd"_Stz);
@@ -62,22 +62,22 @@ void* List_t<ITEM>::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-template <class ITEM>
-List_t<ITEM>::List_t(void)
-: m_okLock(CN_NONE,nullptr)
+template <eCN CLASSNO, class ITEM>
+List_t<CLASSNO,ITEM>::List_t(void)
+: m_okLock(CLASSNO,this)
 {
   m_nItems = 0;
   m_pHead  = nullptr;
   m_pTail  = nullptr;
   
-  _checkInitialisedSize_(sizeof(List_t<ITEM>));
+  _checkInitialisedSize_(sizeof(List_t<CLASSNO,ITEM>));
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-template <class ITEM>
-List_t<ITEM>::~List_t(void) noexcept(false)
+template <eCN CLASSNO, class ITEM>
+List_t<CLASSNO,ITEM>::~List_t(void) noexcept(false)
 {
   vDeleteAll();
   
@@ -87,8 +87,8 @@ List_t<ITEM>::~List_t(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* append item to end of list                                                 */
 /*----------------------------------------------------------------------------*/
-template <class ITEM>
-void List_t<ITEM>::vAppend(ITEM* pItem)
+template <eCN CLASSNO, class ITEM>
+void List_t<CLASSNO,ITEM>::vAppend(ITEM* pItem)
 {
   ASSERT(NULL == pItem->pPrevItem());
   ASSERT(NULL == pItem->pNextItem());
@@ -114,8 +114,8 @@ void List_t<ITEM>::vAppend(ITEM* pItem)
 /*----------------------------------------------------------------------------*/
 /* delete all items in list                                                   */
 /*----------------------------------------------------------------------------*/
-template <class ITEM>
-void List_t<ITEM>::vDeleteAll(void)
+template <eCN CLASSNO, class ITEM>
+void List_t<CLASSNO,ITEM>::vDeleteAll(void)
 {
   for (ITEM* pItem = pPop(); pItem; pItem = pPop())
     delete pItem;
@@ -124,8 +124,8 @@ void List_t<ITEM>::vDeleteAll(void)
 /*----------------------------------------------------------------------------*/
 /* get number of items in list                                                */
 /*----------------------------------------------------------------------------*/
-template <class ITEM>
-i8 List_t<ITEM>::nItems(void)
+template <eCN CLASSNO, class ITEM>
+i8 List_t<CLASSNO,ITEM>::nItems(void)
 {
   return m_nItems;
 }
@@ -133,8 +133,8 @@ i8 List_t<ITEM>::nItems(void)
 /*----------------------------------------------------------------------------*/
 /* pop/remove item from head of list                                          */
 /*----------------------------------------------------------------------------*/
-template <class ITEM>
-ITEM* List_t<ITEM>::pPop(void)
+template <eCN CLASSNO, class ITEM>
+ITEM* List_t<CLASSNO,ITEM>::pPop(void)
 {
   m_okLock.vGrabWrite();
   
@@ -172,8 +172,8 @@ ITEM* List_t<ITEM>::pPop(void)
 /*----------------------------------------------------------------------------*/
 /* push item onto top of list                                                 */
 /*----------------------------------------------------------------------------*/
-template <class ITEM>
-void List_t<ITEM>::vPush(ITEM* pItem)
+template <eCN CLASSNO, class ITEM>
+void List_t<CLASSNO,ITEM>::vPush(ITEM* pItem)
 {
   ASSERT(NULL == pItem->pPrevItem());
   ASSERT(NULL == pItem->pNextItem());
@@ -200,8 +200,8 @@ void List_t<ITEM>::vPush(ITEM* pItem)
 /*----------------------------------------------------------------------------*/
 /* remove item from list                                                      */
 /*----------------------------------------------------------------------------*/
-template <class ITEM>
-void List_t<ITEM>::vRemove(ITEM* pItem)
+template <eCN CLASSNO, class ITEM>
+void List_t<CLASSNO,ITEM>::vRemove(ITEM* pItem)
 {
   m_okLock.vGrabWrite();
   
@@ -231,8 +231,8 @@ void List_t<ITEM>::vRemove(ITEM* pItem)
 /*----------------------------------------------------------------------------*/
 /* remove all items in list                                                   */
 /*----------------------------------------------------------------------------*/
-template <class ITEM>
-void List_t<ITEM>::vRemoveAll(void)
+template <eCN CLASSNO, class ITEM>
+void List_t<CLASSNO,ITEM>::vRemoveAll(void)
 {
   for (ITEM* pItem = pPop(); pItem; pItem = pPop())
     {;}
@@ -241,8 +241,8 @@ void List_t<ITEM>::vRemoveAll(void)
 /*----------------------------------------------------------------------------*/
 /* get read lock on list                                                      */
 /*----------------------------------------------------------------------------*/
-template <class ITEM>
-void List_t<ITEM>::vReadLock(void)
+template <eCN CLASSNO, class ITEM>
+void List_t<CLASSNO,ITEM>::vReadLock(void)
 {
   m_okLock.vGrabRead();
 }
@@ -250,8 +250,8 @@ void List_t<ITEM>::vReadLock(void)
 /*----------------------------------------------------------------------------*/
 /* release read lock on list                                                  */
 /*----------------------------------------------------------------------------*/
-template <class ITEM>
-void List_t<ITEM>::vReadUnlock(void)
+template <eCN CLASSNO, class ITEM>
+void List_t<CLASSNO,ITEM>::vReadUnlock(void)
 {
   m_okLock.vDropRead();
 }
@@ -259,8 +259,8 @@ void List_t<ITEM>::vReadUnlock(void)
 /*----------------------------------------------------------------------------*/
 /* get head item of list                                                      */
 /*----------------------------------------------------------------------------*/
-template <class ITEM>
-ITEM* List_t<ITEM>::pHead(void)
+template <eCN CLASSNO, class ITEM>
+ITEM* List_t<CLASSNO,ITEM>::pHead(void)
 {
   return m_pHead;
 }
@@ -268,8 +268,8 @@ ITEM* List_t<ITEM>::pHead(void)
 /*----------------------------------------------------------------------------*/
 /* get tail item of list                                                      */
 /*----------------------------------------------------------------------------*/
-template <class ITEM>
-ITEM* List_t<ITEM>::pTail(void)
+template <eCN CLASSNO, class ITEM>
+ITEM* List_t<CLASSNO,ITEM>::pTail(void)
 {
   return m_pTail;
 }
@@ -281,8 +281,8 @@ ITEM* List_t<ITEM>::pTail(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-template <class ITEM>
-Footer* List_t<ITEM>::aFooter(void)
+template <eCN CLASSNO, class ITEM>
+Footer* List_t<CLASSNO,ITEM>::aFooter(void)
 {
   return &m_xFooter;
 }
