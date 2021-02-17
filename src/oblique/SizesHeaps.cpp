@@ -153,6 +153,7 @@
 #include "SN_Vch.hpp"
 
 #include "TccLock.hpp"
+#include "TraceLock.hpp"
 
 #include "XmitOperand.hpp"
 #include "Xmits.hpp"
@@ -477,6 +478,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(ToNstRow),           HT_T_MEDIUM  ,0 }, // CN_TONSTROW
   { sizeof(ToPtnRow),           HT_T_LARGE   ,0 }, // CN_TOPTNROW
   { sizeof(ToRow),              HT_T_MEDIUM  ,0 }, // CN_TOROW
+  { sizeof(TraceLock),          HT_T_TINY    ,0 }, // CN_TRACELOCK
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_TSPVAL
   { sizeof(Tx),                 HT_T_TINY    ,0 }, // CN_TX
   { sizeof(TxSet),              HT_T_TINY    ,0 }, // CN_TXSET

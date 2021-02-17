@@ -18,11 +18,11 @@ MasterLock::MasterLock(eCN eClassNo, eLK eLock)
 : Object(eClassNo)
 , m_okLock(eLock,this)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_MAGIC_);
      
   m_pHoldingTask = nullptr;
   
-  _postcondition_(_ADDRESS_,_MAGIC_);
+  _postcondition_(_MAGIC_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -30,7 +30,7 @@ MasterLock::MasterLock(eCN eClassNo, eLK eLock)
 /*----------------------------------------------------------------------------*/
 MasterLock::~MasterLock(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_MAGIC_);
   
 }
 
@@ -43,7 +43,7 @@ MasterLock::~MasterLock(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 u8 MasterLock::uLockWord(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_MAGIC_);
   
   return m_okLock.uLockWord();
 }
@@ -53,7 +53,7 @@ u8 MasterLock::uLockWord(void)
 /*----------------------------------------------------------------------------*/
 void MasterLock::vDropRead(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_MAGIC_);
   
   m_okLock.vDropRead();
 }
@@ -63,7 +63,7 @@ void MasterLock::vDropRead(void)
 /*----------------------------------------------------------------------------*/
 bool MasterLock::bGrabRead(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_MAGIC_);
   
   bool b = m_okLock.bGrabRead();
   
@@ -76,7 +76,7 @@ bool MasterLock::bGrabRead(void)
 /*----------------------------------------------------------------------------*/
 void MasterLock::vGrabRead(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_MAGIC_);
   
   m_okLock.vGrabRead();
 }
@@ -89,7 +89,7 @@ void MasterLock::vGrabRead(void)
 /*----------------------------------------------------------------------------*/
 void MasterLock::vDropWrite(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_MAGIC_);
   
   RASSERT(MY::pTask() == m_pHoldingTask);
   m_pHoldingTask = nullptr;
@@ -102,7 +102,7 @@ void MasterLock::vDropWrite(void)
 /*----------------------------------------------------------------------------*/
 bool MasterLock::bGrabWrite(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_MAGIC_);
   
   bool b = m_okLock.bGrabWrite();
   
@@ -117,7 +117,7 @@ bool MasterLock::bGrabWrite(void)
 /*----------------------------------------------------------------------------*/
 void MasterLock::vGrabWrite(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_MAGIC_);
   
   m_okLock.vGrabWrite();
   
@@ -129,7 +129,7 @@ void MasterLock::vGrabWrite(void)
 /*----------------------------------------------------------------------------*/
 bool MasterLock::bIsWriteLocked(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_MAGIC_);
 
   bool bWriteLocked = m_okLock.bIsWriteLocked();
   

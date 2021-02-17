@@ -113,6 +113,8 @@
 
 #include "SP_Word.hpp"
 
+#include "TraceLock.hpp"
+
 extern CmdLineArgs          gxCmdLineArgs;
 
 extern AttachMap*    gpAttachMap;
@@ -891,19 +893,20 @@ void AM::vWriteTrace(eYA eSysAct, Stz* aFormat, ...)
 
 }
 
+static TraceLock oTraceLock;
+
 /*----------------------------------------------------------------------------*/
 /* write to trace file etc                                                    */
 /*----------------------------------------------------------------------------*/
 void AM::vWriteTrace_vargs(eYA eSysAct, Stz* aFormat, va_list xArgs)
 {
-  static Lock oLock(LK_TRACE,nullptr,true);
   static char caFormatted[C_1MB] = {'\0'};
   
   bool bUseLock = (gpAttachMap ? true : false);
   bool bLowMem  = false; //gpBufferPool ? gpBufferPool->bLowMemory() : false;
   
   if (bUseLock)
-    oLock.vGrabWrite();
+    oTraceLock.vGrabWrite();
   
   // produce formatted line
   vsnprintf(caFormatted,sizeof(caFormatted) - 3,aFormat->azChar(),xArgs);
@@ -925,7 +928,7 @@ void AM::vWriteTrace_vargs(eYA eSysAct, Stz* aFormat, va_list xArgs)
                 caFormatted);
   
   if (bUseLock)
-    oLock.vDropWrite();
+    oTraceLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -933,14 +936,13 @@ void AM::vWriteTrace_vargs(eYA eSysAct, Stz* aFormat, va_list xArgs)
 /*----------------------------------------------------------------------------*/
 void AM::vWriteTrace_vargs(File* pFile, eYA eSysAct, Stz* aFormat, va_list xArgs)
 {
-  static Lock oLock(LK_TRACE,nullptr,true);
   static char caFormatted[C_1MB] = {'\0'};
   
   bool bUseLock = (gpAttachMap ? true : false);
   bool bLowMem  = gpBufferPool ? gpBufferPool->bLowMemory() : false;
   
   if (bUseLock)
-    oLock.vGrabWrite();
+    oTraceLock.vGrabWrite();
   
   // produce formatted line
   vsnprintf(caFormatted,sizeof(caFormatted) - 3,aFormat->azChar(),xArgs);
@@ -967,7 +969,7 @@ void AM::vWriteTrace_vargs(File* pFile, eYA eSysAct, Stz* aFormat, va_list xArgs
                 caFormatted);
   
   if (bUseLock)
-    oLock.vDropWrite();
+    oTraceLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
