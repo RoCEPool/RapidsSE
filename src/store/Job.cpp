@@ -113,8 +113,8 @@ void Job::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 Job::Job(ReqTuple* aReqTuple)
 : Loggable(CN_JOB)
-, m_xReqTuple(aReqTuple)
 , CRM<Job>(this)
+, m_xReqTuple(aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB);
     
@@ -172,8 +172,8 @@ Job::Job(ReqTuple* aReqTuple)
 /*----------------------------------------------------------------------------*/
 Job::Job(eCN eClassNo)
 : Loggable(eClassNo)
-, m_xReqTuple(nullptr)
 , CRM<Job>(this)
+, m_xReqTuple(nullptr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
 
