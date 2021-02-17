@@ -59,7 +59,7 @@ void Thread::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 Thread::Thread(void)
 : Loggable(CN_THREAD)
-, m_oMutex(MK_THREAD,this)
+, m_oMutex(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   

@@ -9,9 +9,7 @@ namespace BASE
 {
   class Mutex : public Object
   {
-  public:
-    //eMK     m_eMutex;    // kind of mutex
-  
+  public:  
     Object* m_pObjectMutexed;
     bool    m_bObserve;  // observe this mutex?
     Loggable*  m_pLockedBy; // by whom is the mutex locked?
@@ -37,7 +35,7 @@ namespace BASE
     // must be last
     Footer m_xFooter;
   
-    Mutex(eMK eKind, Object* pObjectMutexed);
+    Mutex(Object* pObjectMutexed);
    ~Mutex(void) noexcept(false);
   
     static void vMonitorPortrait(s48K& sPortrait);

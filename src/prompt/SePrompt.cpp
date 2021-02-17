@@ -54,7 +54,7 @@ __aFooterFunction(SePrompt)
 /*----------------------------------------------------------------------------*/
 SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
 : Loggable(CN_SEPROMPT)
-, m_oMutex(MK_THREAD,this)
+, m_oMutex(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
