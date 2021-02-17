@@ -53,15 +53,16 @@ Lock::Lock(eCN eClassLocked, Object* pObjectLocked, bool bDontLog)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
     
-  if (! pObjectLocked)
-    vDebugPoint();
-  else
-  if (pObjectLocked->eGetClassNo() != eClassLocked)
-    vDebugPoint();
+//  if (! pObjectLocked)
+//    vDebugPoint();
+//  else
+//  if (pObjectLocked->eGetClassNo() != eClassLocked)
+//    vDebugPoint();
 
-    
-  RASSERT(!pObjectLocked || pObjectLocked->eGetClassNo() == eClassLocked);
-  
+//  RASSERT(!pObjectLocked || pObjectLocked->eGetClassNo() == eClassLocked);
+
+  RASSERT(pObjectLocked->eGetClassNo() == eClassLocked);
+
   m_pObjectLocked = pObjectLocked;
   
   m_uLockWord = 0;

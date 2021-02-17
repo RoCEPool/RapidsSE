@@ -12,6 +12,8 @@
 #include "GraphNav.hpp"
 #include "GraphValidator.hpp"
 
+#include "PlannerLock.hpp"
+
 using namespace Parser;
 
 /*----------------------------------------------------------------------------*/
@@ -34,7 +36,7 @@ Stz* PlanDefinitionParser::s_definitionPaths[] = {
 
 PlanNode* PlanDefinitionParser::s_pGraphTemplate = nullptr;
 
-Lock PlanDefinitionParser::s_okLock(CN_PLANDEFINITIONPARSER,nullptr);
+PlannerLock PlanDefinitionParser::s_okLock;
 
 
 /*----------------------------------------------------------------------------*/
