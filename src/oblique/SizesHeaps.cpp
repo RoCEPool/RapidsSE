@@ -122,6 +122,8 @@
 #include "PathIdentifier.hpp"
 #include "PipelineSpec.hpp"
 #include "Pipeline.hpp"
+#include "PlannerLock.hpp"
+
 #include "Dynamo.hpp"
 
 
@@ -322,6 +324,7 @@ SizeHeap gxaSizeHeap[]
 
   { 'O' - ('A' - 1),            HT_INVALID   ,0 }, // CN__O__
   { sizeof(Objects),            HT_T_MEDIUM  ,0 }, // CN_OBJECTS
+  { sizeof(ObjectSnapshot),     HT_T_SMALL   ,0 }, // CN_OBJECTSNAPSHOT
   { sizeof(Output),             HT_T_TINY    ,0 }, // CN_OUTPUT
   { sizeof(Op),                 HT_T_LARGE   ,0 }, // CN_OP
   { sizeof(OpenFiles),          HT_T_TINY    ,0 }, // CN_OPENFILES
@@ -336,13 +339,13 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Pipeline),             HT_T_SMALL   ,0 }, // CN_PIPELINE
   { sizeof(PipelineSpec),         HT_T_SMALL   ,0 }, // CN_PIPELINESPEC
   { sizeof(PlanDefinitionParser), HT_T_MEDIUM  , -8 }, // CN_PLANDEFINITIONPARSER
+  { sizeof(PlannerLock),          HT_T_TINY    ,0 }, // CN_PLANNERLOCK
   { sizeof(PlanNode),             HT_T_TINY    , -8 }, // CN_PLANNODE
   { sizeof(PlanNodeBuilder),      HT_T_TINY    ,0 }, // CN_PLANNODEBUILDER
   { sizeof(PlanNodeBuilderList),  HT_T_TINY    ,0 }, // CN_PLANNODEBUILDERLIST
   { sizeof(PlanNodeBuilderStack), HT_T_MEDIUM  ,0 }, // CN_PLANNODEBUILDERSTACK
   { sizeof(PlanNodeList),         HT_T_TINY    ,0 }, // CN_PLANNODELIST
   { sizeof(PlanOperand),          HT_T_TINY    ,0 }, // CN_PLANOPERAND
-  { sizeof(ObjectSnapshot),       HT_T_SMALL   ,0 }, // CN_OBJECTSNAPSHOT
   { sizeof(Pot),                  HT_T_LARGE   ,0 }, // CN_POT
   { sizeof(Predicate),            HT_T_TINY    ,0 }, // CN_PREDICATE
   { sizeof(PredicateVec),         HT_T_MEDIUM  ,0 }, // CN_PREDICATEVEC

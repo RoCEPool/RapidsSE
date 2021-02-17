@@ -158,6 +158,7 @@ enum eCN : u2 // Class Number
   
   /* */ CN__O__,
   /* */ CN_OBJECTS,
+  /* */ CN_OBJECTSNAPSHOT,
   /* */ CN_OUTPUT,
   /* */ CN_OP,
   /* */ CN_OPENFILES,
@@ -172,13 +173,13 @@ enum eCN : u2 // Class Number
   /* */ CN_PIPELINE,
   /* */ CN_PIPELINESPEC,
   /* */ CN_PLANDEFINITIONPARSER,
+  /* */ CN_PLANNERLOCK,
   /* */ CN_PLANNODE,
   /* */ CN_PLANNODEBUILDER,
   /* */ CN_PLANNODEBUILDERLIST,
   /* */ CN_PLANNODEBUILDERSTACK,
   /* */ CN_PLANNODELIST,
   /* */ CN_PLANOPERAND,
-  /* */ CN_OBJECTSNAPSHOT,
   /* */ CN_POT,
   /* */ CN_PREDICATE,
   /* */ CN_PREDICATEVEC,
@@ -487,7 +488,8 @@ static Stz* aCN[]
   /* */ "NUMBAT"_Stz,               // CN_NUMBAT
    
   /* */ "_O__"_Stz,                 // CN__O__
-  /* */ "OBJECTNUMBERING"_Stz,      // CN_OBJECTS
+  /* */ "OBJECTS"_Stz,              // CN_OBJECTS
+  /* */ "OBJECTSNAPSHOT"_Stz,       // CN_OBJECTSNAPSHOT
   /* */ "OUTPUT"_Stz,               // CN_OUTPUT
   /* */ "OP"_Stz,                   // CN_OP
   /* */ "OPENFILES"_Stz,            // CN_OPENFILES
@@ -502,13 +504,13 @@ static Stz* aCN[]
   /* */ "PIPELINE"_Stz,             // CN_PIPELINE
   /* */ "PIPELINESPEC"_Stz,         // CN_PIPELINESPEC
   /* */ "PLANDEFINITIONPARSER"_Stz, // CN_PLANDEFINITIONPARSER
+  /* */ "PLANNERLOCK"_Stz,          // CN_PLANNERLOCK
   /* */ "PLANNODE"_Stz,             // CN_PLANNODE
   /* */ "PLANNODEBUILDER"_Stz,      // CN_PLANNODEBUILDER
   /* */ "PLANNODEBUILDERLIST"_Stz,  // CN_PLANNODEBUILDERLIST
   /* */ "PLANNODEBUILDERSTAACK"_Stz,// CN_PLANNODEBUILDERSTACK
   /* */ "PLANNODELIST"_Stz,         // CN_PLANNODELIST
   /* */ "PLANOPERAND"_Stz,          // CN_PLANOPERAND
-  /* */ "POOLSNAPSHOT"_Stz,         // CN_OBJECTSNAPSHOT
   /* */ "POT"_Stz,                  // CN_POT
   /* */ "PREDICATE"_Stz,            // CN_PREDICATE
   /* */ "PREDICATEVEC"_Stz,         // CN_PREDICATEVEC

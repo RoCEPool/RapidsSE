@@ -10,7 +10,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,TraceLock,CN_TRACELOCK)
+__pCastFunction(BASE,TraceLock,CN_TRACELOCK)
 __aNewFunction(TraceLock,CN_TRACELOCK)
 __vDeleteFunction(TraceLock,CN_TRACELOCK)
 __aFooterFunction(TraceLock);

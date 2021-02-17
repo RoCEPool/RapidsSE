@@ -5,7 +5,7 @@
 
 #include "MasterLock.hpp"
 
-namespace STORE
+namespace BASE
 {
   class TraceLock : public MasterLock
   {

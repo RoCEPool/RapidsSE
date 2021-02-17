@@ -52,15 +52,15 @@ Lock::Lock(eCN eClassLocked, Object* pObjectLocked, bool bDontLog)
 : Loggable(CN_LOCK,bDontLog)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
-  
-//  if (pFor) {
-//    printf("  Lock(%s)\n",(char*)aCN[pFor->eGetClassNo()]);
-//    AM::vPrintGlobals();
-//  }
-//  else {
-//    AM::vPrintGlobals();
-//    vDebugPoint();
-//  }
+    
+  if (! pObjectLocked)
+    vDebugPoint();
+  else
+  if (pObjectLocked->eGetClassNo() != eClassLocked)
+    vDebugPoint();
+
+    
+  RASSERT(!pObjectLocked || pObjectLocked->eGetClassNo() == eClassLocked);
   
   m_pObjectLocked = pObjectLocked;
   
