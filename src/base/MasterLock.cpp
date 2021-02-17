@@ -16,7 +16,7 @@
 /*----------------------------------------------------------------------------*/
 MasterLock::MasterLock(eCN eClassNo)
 : Object(eClassNo)
-, m_okLock(eClassNo,this)
+, m_okLock(this)
 {
   _precondition_(_MAGIC_);
      

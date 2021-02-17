@@ -36,7 +36,7 @@ void* Steps::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 Steps::Steps(void)
 : Object(CN_STEPS)
-, m_okLock(CN_STEPS,this)
+, m_okLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STEPS,_FOOTER_);
   

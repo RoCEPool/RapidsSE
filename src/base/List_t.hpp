@@ -64,7 +64,7 @@ void* List_t<CLASSNO,ITEM>::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 template <eCN CLASSNO, class ITEM>
 List_t<CLASSNO,ITEM>::List_t(void)
-: m_okLock(CLASSNO,this)
+: m_okLock(this)
 {
   m_nItems = 0;
   m_pHead  = nullptr;

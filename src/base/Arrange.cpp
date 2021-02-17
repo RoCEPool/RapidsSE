@@ -19,7 +19,7 @@ __aFooterFunction(Arrange)
 /*----------------------------------------------------------------------------*/
 Arrange::Arrange(void)
 : Object(CN_ARRANGE)
-, m_okLock(CN_ARRANGE,this)
+, m_okLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ARRANGE,_FOOTER_);
   

@@ -63,7 +63,7 @@ void TxSet::operator delete(void*)
 /*----------------------------------------------------------------------------*/
 TxSet::TxSet(void)
 : Object(CN_TXSET)
-, m_okLock(CN_TXSET,this)
+, m_okLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
   

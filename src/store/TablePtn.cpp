@@ -60,7 +60,7 @@ void TablePtn::operator delete(void* pBufferAddress)
 /*----------------------------------------------------------------------------*/
 TablePtn::TablePtn(Table* pTable, tPN tPtnNo)
 : Object(CN_TABLEPTN)
-, m_okLock(CN_TABLEPTN,this)
+, m_okLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   

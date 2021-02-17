@@ -33,7 +33,7 @@ void Article::operator delete(void* pAddress)
 /*----------------------------------------------------------------------------*/
 Article::Article(Stz* szName, Object* pObject, fpARTICLEFN* fpArtFun)
 : Object(CN_ARTICLE)
-, m_okLock(CN_ARTICLE,this,C_DONT_LOG)
+, m_okLock(this,C_DONT_LOG)
 {
   _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
   

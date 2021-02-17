@@ -65,7 +65,7 @@ void Task::operator delete(void* pTaskAddress)
 /*----------------------------------------------------------------------------*/
 Task::Task(Job* pJob, i8 iFocalId)
 : Loggable(CN_TASK)
-, m_okLock(CN_TASK,this)
+, m_okLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   

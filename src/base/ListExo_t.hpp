@@ -266,7 +266,7 @@ void ListExo_t<CLASSNO,ITEM>::operator delete(void* aListExo_t)
 template <eCN CLASSNO, class ITEM>
 ListExo_t<CLASSNO,ITEM>::ListExo_t(void)
     : Object(CLASSNO)
-    , m_okLock(CLASSNO,this)
+    , m_okLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
     
@@ -286,7 +286,7 @@ ListExo_t<CLASSNO,ITEM>::ListExo_t(void)
 template <eCN CLASSNO, class ITEM>
 ListExo_t<CLASSNO,ITEM>::ListExo_t(ListExoIter_t<ITEM>* pIter)
     : Object(CLASSNO)
-    , m_okLock(CLASSNO,this)
+    , m_okLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
 

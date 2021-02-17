@@ -48,25 +48,14 @@ void Lock::operator delete(void*)
 /*----------------------------------------------------------------------------*/
 /* constructor (for non-focal case)                                           */
 /*----------------------------------------------------------------------------*/
-Lock::Lock(eCN eClassLocked, Object* pObjectLocked, bool bDontLog)
+Lock::Lock(Object* pObjectLocked, bool bDontLog)
 : Loggable(CN_LOCK,bDontLog)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
     
-//  if (! pObjectLocked)
-//    vDebugPoint();
-//  else
-//  if (pObjectLocked->eGetClassNo() != eClassLocked)
-//    vDebugPoint();
-
-//  RASSERT(!pObjectLocked || pObjectLocked->eGetClassNo() == eClassLocked);
-
-  RASSERT(pObjectLocked->eGetClassNo() == eClassLocked);
-
   m_pObjectLocked = pObjectLocked;
   
   m_uLockWord = 0;
-  //m_eClassLocked = eClassLocked;
   
   m_ixReadGrabs.vCheckInit();
   m_ixReadCollisions.vCheckInit();

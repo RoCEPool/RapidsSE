@@ -53,7 +53,7 @@ void Sessions::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 Sessions::Sessions(void)
 : Object(CN_SESSIONS)
-, m_okLock(CN_SESSIONS,this)
+, m_okLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONS,_FOOTER_);
   

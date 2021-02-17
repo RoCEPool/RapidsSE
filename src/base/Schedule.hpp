@@ -11,7 +11,7 @@ namespace BASE
   
   public:
   
-    Lock m_okScheduling;
+    Lock m_okLock;
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // threads

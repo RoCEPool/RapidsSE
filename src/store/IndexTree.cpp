@@ -74,7 +74,7 @@ void IndexTree::operator delete(void* pDataAddress)
 /*----------------------------------------------------------------------------*/
 IndexTree::IndexTree(Index* pIndex, IndexDef* pIndexDef, i8 i_TablePtn)
 : Object(CN_INDEXTREE)
-, m_okLock(CN_INDEXTREE,this)
+, m_okLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
