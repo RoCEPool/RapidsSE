@@ -285,7 +285,7 @@ void Api::vWaitJob(Session* pSession)
 {
   Job* pJob = pSession->m_pSsnJob;
   
-  pSession->m_oSsnMutex.vObserve(true);
+  pSession->m_oMutex.vObserve(true);
   Api::vMutexWaitCond(pSession,pJob);
   pJob->vTimerUpdate();
   
@@ -472,7 +472,7 @@ void Api::vMutexLock(Session* pSession, Job* pJob)
 {
   _static_
   
-  pSession->m_oSsnMutex.vLock(pSession);
+  pSession->m_oMutex.vLock(pSession);
         
   pJob->vJobState(JS_LOCKED);
 }
@@ -488,7 +488,7 @@ void Api::vMutexUnlock(Session* pSession, Job* pJob)
     
   pJob->vJobState(JS_RUNNING);
   
-  pSession->m_oSsnMutex.vUnlock(pSession);
+  pSession->m_oMutex.vUnlock(pSession);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -500,7 +500,7 @@ void Api::vMutexWaitCond(Session* pSession, Job* pJob)
   
   do {
     
-    pSession->m_oSsnMutex.vWait(pSession);
+    pSession->m_oMutex.vWait(pSession);
     
   } while (pJob->eJobState() != JS_SIGNALLED);
 
@@ -771,7 +771,7 @@ bool Api::bSpawnJob_session(Job* pJob)
   Scheduler::vTaskApi_AddPrompt(pJob->pTask());
 
   if (! pJob->bHasTag_noWait()) {
-    pSession->m_oSsnMutex.vObserve(true);
+    pSession->m_oMutex.vObserve(true);
     Api::vMutexWaitCond(pSession,pJob);
     pJob->vTimerUpdate();
   }

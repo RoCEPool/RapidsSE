@@ -301,8 +301,6 @@ bool Lock::bGrabRead(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
-  ASSERT(m_eClassLocked);
-  
   vLockTrace(LS_READ_NONBLOCK);
   
   ++m_ixReadGrabs;
@@ -330,9 +328,7 @@ bool Lock::bGrabRead(void)
 void Lock::vGrabRead(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
-  
-  ASSERT(m_eClassLocked);
- 
+   
   vLockTrace(LS_READ_BLOCKING);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -453,8 +449,6 @@ bool Lock::bGrabWrite(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
-  ASSERT(m_eClassLocked);
-
   vLockTrace(LS_WRITE_NONBLOCK);
 
   ++m_ixWriteGrabs;
@@ -483,8 +477,6 @@ void Lock::vGrabWrite(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
-  ASSERT(m_eClassLocked);
-
   vLockTrace(LS_WRITE_BLOCKING);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

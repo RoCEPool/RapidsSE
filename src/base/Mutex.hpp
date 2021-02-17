@@ -36,7 +36,7 @@ namespace BASE
     // must be last
     Footer m_xFooter;
   
-    Mutex(eMK eKind, Loggable* pIsFor);
+    Mutex(eMK eKind, Object* pObjectMutexed);
    ~Mutex(void) noexcept(false);
   
     static void vMonitorPortrait(s48K& sPortrait);

@@ -1333,9 +1333,9 @@ void Step::vJobSignalSession(void)
   
   vJob(nullptr);
 
-  pSession->m_oSsnMutex.vLock(this);
-  pSession->m_oSsnMutex.vSignal(this);
-  pSession->m_oSsnMutex.vUnlock(this);
+  pSession->m_oMutex.vLock(this);
+  pSession->m_oMutex.vSignal(this);
+  pSession->m_oMutex.vUnlock(this);
 
   vDropTaskLock();
 

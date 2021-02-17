@@ -28,10 +28,12 @@ Mutex* BASE::_pMutex(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Mutex::Mutex(eMK eKind, Loggable* pIsFor)
+Mutex::Mutex(eMK eKind, Object* pObjectMutexed)
 : Object(CN_MUTEX)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
+  
+  RASSERT(pObjectMutexed);
   
 //  if (! MY::pTask()) {
 //    printf("MUTEX %s (with no task)\n",aMK[eKind]->azChar());
