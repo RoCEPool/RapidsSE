@@ -66,7 +66,7 @@ Lock::Lock(eCN eClassLocked, eLK eLockKind, Object* pFor, bool bDontLog)
   m_bFocal = false;
   
   m_uLockWord = 0;
-  m_eLockKind = eLockKind;
+  m_eClassLocked = eClassLocked;
   
   m_ixReadGrabs.vCheckInit();
   m_ixReadCollisions.vCheckInit();
@@ -92,7 +92,7 @@ Lock::~Lock(void) noexcept(false)
     vEventNoInc(); -- gixLock;
     AM::vLogLck(SL_INF,this,LA_LCK_DESTRUCT,
                 "Lock -%s destruct ^For=%s |gixLock=%lld|"_Stz, //!format-LogLck
-                aLK[m_eLockKind],
+                aCN[m_eClassLocked],
                 spId.sz(m_pFor?((Loggable*)m_pFor)->m_iObjectId:C_UNKNOWN),
                 * gixLock);
   }
@@ -269,11 +269,11 @@ i8 Lock::iLockId(void)
 /*----------------------------------------------------------------------------*/
 /* get the kind of lock                                                       */
 /*----------------------------------------------------------------------------*/
-eLK Lock::eLockKind(void)
+eCN Lock::eClassLocked(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
-  
-  return m_eLockKind;
+
+  return m_eClassLocked;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -323,7 +323,7 @@ bool Lock::bGrabRead(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
-  ASSERT(m_eLockKind);
+  ASSERT(m_eClassLocked);
   
   vLockTrace(LS_READ_NONBLOCK);
   
@@ -353,7 +353,7 @@ void Lock::vGrabRead(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
-  ASSERT(m_eLockKind);
+  ASSERT(m_eClassLocked);
  
   vLockTrace(LS_READ_BLOCKING);
 
@@ -397,7 +397,7 @@ void Lock::vGrabRead(void)
     AM::vLogLck(SL_INF,this,LA_LCK_READ_UNABLE,
                 "Unable to grab read lock %p %s %p"_Stz, //!format-LogLck
                 this,
-                aLK[m_eLockKind],
+                aCN[m_eClassLocked],
                  m_uLockWord);
   }
   
@@ -409,7 +409,7 @@ void Lock::vGrabRead(void)
     AM::vLogLck(SL_INF,this,LA_LCK_READ_ABLE,
                "Able to grab read lock %p %s %p"_Stz, //!format-LogLck
                 this,
-                aLK[m_eLockKind],
+                aCN[m_eClassLocked],
                 m_uLockWord);
   }
   
@@ -475,7 +475,7 @@ bool Lock::bGrabWrite(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
-  ASSERT(m_eLockKind);
+  ASSERT(m_eClassLocked);
 
   vLockTrace(LS_WRITE_NONBLOCK);
 
@@ -505,7 +505,7 @@ void Lock::vGrabWrite(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
-  ASSERT(m_eLockKind);
+  ASSERT(m_eClassLocked);
 
   vLockTrace(LS_WRITE_BLOCKING);
 
@@ -549,7 +549,7 @@ void Lock::vGrabWrite(void)
     AM::vLogLck(SL_INF,this,LA_LCK_WRITE_UNABLE,
                 "Unable to grab write lock %p %s %p"_Stz, //!format-LogLck
                 this,
-                aLK[m_eLockKind],
+                aCN[m_eClassLocked],
                 m_uLockWord);
   }
   
@@ -561,7 +561,7 @@ void Lock::vGrabWrite(void)
     AM::vLogLck(SL_INF,this,LA_LCK_WRITE_ABLE,
                "Able to grab write lock %p %s %p"_Stz, //!format-LogLck
                        this,
-                       aLK[m_eLockKind],
+                       aCN[m_eClassLocked],
                        m_uLockWord);
   }
 

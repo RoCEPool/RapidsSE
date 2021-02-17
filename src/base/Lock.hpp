@@ -13,7 +13,7 @@ namespace BASE
   class Lock : public Loggable
   {
   private:
-    eLK      m_eLockKind;         // lock kind
+    eCN      m_eClassLocked;      // lock kind
     Object*  m_pFor;
     bool     m_bFocal;            // is a lock for a focal object
   
@@ -47,7 +47,7 @@ namespace BASE
   
     bool bIsLocked(void);
     i8   iLockId(void);
-    eLK  eLockKind(void);
+    eCN  eClassLocked(void);
     u8   uLockWord(void);
   
     void vAssertRead(void);
