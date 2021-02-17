@@ -14,7 +14,7 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MasterLock::MasterLock(eCN eClassNo, eLK eLock)
+MasterLock::MasterLock(eCN eClassNo)
 : Object(eClassNo)
 , m_okLock(eClassNo,this)
 {

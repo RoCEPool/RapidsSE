@@ -19,7 +19,7 @@ __aFooterFunction(DicLock);
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 DicLock::DicLock(void)
-: MasterLock(CN_DICLOCK,LK_DIC)
+: MasterLock(CN_DICLOCK)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICLOCK,_FOOTER_);
    

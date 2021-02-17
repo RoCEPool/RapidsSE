@@ -52,7 +52,7 @@ PlanNode* GraphEditor::pNewFromTemplate(const PlanNode* pTemplateRoot)
   // Create a new list of children for the new root node.
   // Add the shared primitives and definitions, but add in a new
   // plan, metadata and statistics nodes.
-  PlanNodeList* pNewChildList = new PlanNodeList(LK_LIST);
+  PlanNodeList* pNewChildList = new PlanNodeList;
   pNewChildList->vAppend(pPrimitives);
   pNewChildList->vAppend(pDefinitions);
   pNewChildList->vAppend(new QueryNode(*pPlanNode));
@@ -65,7 +65,7 @@ PlanNode* GraphEditor::pNewFromTemplate(const PlanNode* pTemplateRoot)
   if (pRoot->bHasProperties()) {
 
     PlanNodeIter* pIter = pRoot->pNewPropertyIter();
-    pNewPropertyList = new PlanNodeList(LK_LIST,pIter);
+    pNewPropertyList = new PlanNodeList(pIter);
     delete pIter;
   }
 

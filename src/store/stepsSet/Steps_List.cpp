@@ -97,7 +97,7 @@ void Step::vListNew(void)
   
   //vTrace("vListNew\n"_Stz);
   
-  m_pJob->pLogicUnit_job()->m_xpList = new RowSingleList(LK_LIST);
+  m_pJob->pLogicUnit_job()->m_xpList = new RowSingleList;
 
   EXIT();
 }

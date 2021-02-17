@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* MasterLock.hpp -- Data Definition Lock                                        */
+/* MasterLock.hpp -- Master Lock                                              */
 /*============================================================================*/
 #pragma once
 
@@ -14,7 +14,7 @@ namespace BASE
         
   public:
     
-    MasterLock(eCN eClassNo, eLK eLock);
+    MasterLock(eCN eClassNo);
    ~MasterLock(void) noexcept(false);
     
     u8   uLockWord(void);

@@ -2241,7 +2241,6 @@ static Stz* aEG[]
   "EG_KK"_Stz,
 
   "EG_LA"_Stz,
-  "EG_LK"_Stz,
   "EG_LN"_Stz,
   
   "EG_MA"_Stz,
@@ -2377,7 +2376,6 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_LA: return aLA[i_Enum];
     case EG_LG: return aLG[i_Enum];
     case EG_LH: return aLH[i_Enum];
-    case EG_LK: return aLK[i_Enum];
       
     case EG_MA: return aMA[i_Enum];
     case EG_MC: return aMC[i_Enum];

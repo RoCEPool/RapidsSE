@@ -12,46 +12,6 @@ Locks::Locks(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* monitor portrait                                                           */
-/*----------------------------------------------------------------------------*/
-void Locks::vMonitorPortrait(s48K& sPortrait)
-{
-  s48K s;
-  i8 nSoFar = 0;
-  
-  for (i8 i_Lock = 0; i_Lock < LK_ENUMS; i_Lock++) {
-
-    if (*m_ixReadCollisions[i_Lock]) {
-      if (nSoFar)
-        s.vAppend(' ');
-      s.vCatSprint("%s rc%lld"_Stz,
-                   aLK[i_Lock],
-                   *m_ixReadCollisions[i_Lock]);
-      if (*m_ixWriteCollisions[i_Lock])
-        s.vCatSprint(" wc%lld"_Stz,
-                     *m_ixReadCollisions[i_Lock]);
-      nSoFar++;
-    }
-    else
-    if (*m_ixWriteCollisions[i_Lock])  {
-      if (nSoFar)
-        s.vAppend(' ');
-      s.vCatSprint("%s wc%lld"_Stz,
-                   aLK[i_Lock],
-                   *m_ixWriteCollisions[i_Lock]);
-      nSoFar++;
-    }
-  }
-  
-  if (nSoFar) {
-    sPortrait.vConcat("Locks: "_Stz);
-    sPortrait.vConcat(s);
-    sPortrait.vAppend('\n');
-  }
-  
-}
-
-/*----------------------------------------------------------------------------*/
 /* locks report                                                               */
 /*----------------------------------------------------------------------------*/
 void Locks::vReport(void)
@@ -60,14 +20,14 @@ void Locks::vReport(void)
          "   ReadGrab  Collision   %%"
          "  WriteGrab  Collision   %%\n"_Stz);
   
-  for (i8 i_Lock = 1; i_Lock < LK_ENUMS; i_Lock++) {
+  for (i8 i_Lock = 1; i_Lock < CN_ENUMS; i_Lock++) {
     
     vTrace("  %4lld %16s "
            "%10lld %10lld %3lld "
            "%10lld %10lld %3lld\n"_Stz,
            
            i_Lock,
-           aLK[i_Lock],
+           aCN[i_Lock],
            
            *m_ixReadGrabs[i_Lock],
            *m_ixReadCollisions[i_Lock],
@@ -86,7 +46,7 @@ void Locks::vReport(void)
 /*----------------------------------------------------------------------------*/
 void Locks::vReset(void)
 {
-  for (i8 i_Lock = 0; i_Lock < LK_ENUMS; i_Lock++) {
+  for (i8 i_Lock = 0; i_Lock < CN_ENUMS; i_Lock++) {
     m_ixWorkUnits[i_Lock] = 0;
     m_ixReadGrabs[i_Lock] = 0;
     m_ixReadCollisions[i_Lock] = 0;

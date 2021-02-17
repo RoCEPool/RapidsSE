@@ -19,7 +19,7 @@ __aFooterFunction(TraceLock);
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 TraceLock::TraceLock(void)
-: MasterLock(CN_TRACELOCK,LK_TCC)
+: MasterLock(CN_TRACELOCK)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TRACELOCK,_FOOTER_);
    

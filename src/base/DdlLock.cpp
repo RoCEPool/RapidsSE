@@ -19,7 +19,7 @@ __aFooterFunction(DdlLock);
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 DdlLock::DdlLock(void)
-: MasterLock(CN_DDLLOCK, LK_DDL)
+: MasterLock(CN_DDLLOCK)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DDLLOCK,_FOOTER_);
    

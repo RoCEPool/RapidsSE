@@ -1136,7 +1136,7 @@ void GraphValidator::vRoot_6_2(PlanNode* pRootNode)
   //           "primitives", "definitions", "plan", "metadata" and "statistics".
   RASSERT(pRootNode->nChildren() == 5);
 
-  StzList* pRootChildrenList = new StzList(LK_LIST);
+  StzList* pRootChildrenList = new StzList;
   i8 i = 0;
   Stz* szName;
   while ((szName = const_cast<Stz*>(C_ROOT_CHILDREN_NAMES[i++])) != nullptr) {

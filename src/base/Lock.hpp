@@ -3,7 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-#include "eLK.h"
 #include "eLS.h"
 
 namespace BASE

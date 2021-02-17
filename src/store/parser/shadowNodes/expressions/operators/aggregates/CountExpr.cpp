@@ -41,12 +41,12 @@ QueryNode* CountExpr::pCreate(b1 bIsCountAll, b1 bIsDistinct, QueryNode* pChildE
                                        const_cast<Stz*>(C_DISTINCT_PROP_TYPE),
                                        static_cast<Value&&>(xDistinctVal));
 
-  PlanNodeList* pProperties = new PlanNodeList(LK_LIST);
+  PlanNodeList* pProperties = new PlanNodeList;
   pProperties->vAppend(pCountAll);
   pProperties->vAppend(pDistinct);
 
   // and the children
-  PlanNodeList* pChildren = new PlanNodeList(LK_LIST);
+  PlanNodeList* pChildren = new PlanNodeList;
   if (pChildExpr) {
     pChildren->vAppend(pChildExpr);
   }
