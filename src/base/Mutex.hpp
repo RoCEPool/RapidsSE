@@ -9,7 +9,6 @@ namespace BASE
   {
   public:
     Object* m_pObjectMutexed;
-    bool    m_bObserve;  // observe this mutex?
     Loggable*  m_pLockedBy; // by whom is the mutex locked?
     Loggable*  m_pWaitedBy; // for whom is the mutex being waited on?
 
@@ -43,8 +42,6 @@ namespace BASE
     bool bIsLockedByCaller(Loggable* pLockedBy);
     bool bLock(Loggable* pLockFor);
     void vLock(Loggable* pLockedBy);
-    bool bObserve(void);
-    void vObserve(bool bObserve);
     void vPause(Loggable* pLockFor, i8 iMicroSeconds);
     void vSignal(Loggable* pLockedBy);
     void vUnlock(Loggable* pLockedBy);

@@ -35,18 +35,8 @@ Mutex::Mutex(Object* pObjectMutexed)
   
   RASSERT(pObjectMutexed);
   
-//  if (! MY::pTask()) {
-//    printf("MUTEX %s (with no task)\n",aMK[eKind]->azChar());
-//  }
-//  if (! MY::pThread()) {
-//    printf("MUTEX %s (with no thread)\n",aMK[eKind]->azChar());
-//  }
-
-  //m_eMutex    = eKind;
   m_pObjectMutexed = pObjectMutexed;
-  
-  m_bObserve  = false;
-  
+    
   m_pLockedBy = nullptr;
   m_pWaitedBy = nullptr;
 
@@ -322,26 +312,6 @@ void Mutex::vLock(Loggable* pLockFor)
   // failure -- some error has occurred
   
   ++ gixMutex_err;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get observe                                                                */
-/*----------------------------------------------------------------------------*/
-bool Mutex::bObserve(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
-  
-  return m_bObserve;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set observe                                                                */
-/*----------------------------------------------------------------------------*/
-void Mutex::vObserve(bool bObserve)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
-  
-  m_bObserve = bObserve;
 }
 
 /*----------------------------------------------------------------------------*/

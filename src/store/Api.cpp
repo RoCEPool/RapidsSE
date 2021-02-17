@@ -285,7 +285,7 @@ void Api::vWaitJob(Session* pSession)
 {
   Job* pJob = pSession->m_pSsnJob;
   
-  pSession->m_oMutex.vObserve(true);
+  //pSession->m_oMutex.vObserve(true);
   Api::vMutexWaitCond(pSession,pJob);
   pJob->vTimerUpdate();
   
@@ -771,7 +771,7 @@ bool Api::bSpawnJob_session(Job* pJob)
   Scheduler::vTaskApi_AddPrompt(pJob->pTask());
 
   if (! pJob->bHasTag_noWait()) {
-    pSession->m_oMutex.vObserve(true);
+    //pSession->m_oMutex.vObserve(true);
     Api::vMutexWaitCond(pSession,pJob);
     pJob->vTimerUpdate();
   }
