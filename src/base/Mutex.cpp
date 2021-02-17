@@ -42,7 +42,8 @@ Mutex::Mutex(eMK eKind, Object* pObjectMutexed)
 //    printf("MUTEX %s (with no thread)\n",aMK[eKind]->azChar());
 //  }
 
-  m_eMutex    = eKind;
+  //m_eMutex    = eKind;
+  m_pObjectMutexed = pObjectMutexed;
   
   m_bObserve  = false;
   

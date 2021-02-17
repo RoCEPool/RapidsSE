@@ -10,8 +10,9 @@ namespace BASE
   class Mutex : public Object
   {
   public:
-    eMK     m_eMutex;    // kind of mutex
+    //eMK     m_eMutex;    // kind of mutex
   
+    Object* m_pObjectMutexed;
     bool    m_bObserve;  // observe this mutex?
     Loggable*  m_pLockedBy; // by whom is the mutex locked?
     Loggable*  m_pWaitedBy; // for whom is the mutex being waited on?
