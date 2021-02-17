@@ -49,7 +49,7 @@ void Schedule::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 Schedule::Schedule(void)
 : Loggable(CN_SCHEDULE)
-, m_okScheduling(CN_SCHEDULE,LK_QUEUES,this)
+, m_okScheduling(CN_SCHEDULE,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULE,_FOOTER_);
   

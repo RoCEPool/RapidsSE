@@ -50,7 +50,7 @@ void TaskList::operator delete(void* pTaskQueueAddress)
 /*----------------------------------------------------------------------------*/
 TaskList::TaskList(eQK eKind)
 : ListNL_t<Task>(CN_TASKLIST)
-, m_okLock(CN_TASKLIST,LK_TASK_LIST,this,true)
+, m_okLock(CN_TASKLIST,this,true)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
   

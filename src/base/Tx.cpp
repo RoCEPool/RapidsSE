@@ -50,7 +50,7 @@ void Tx::operator delete(void* pTxAddress)
 /*----------------------------------------------------------------------------*/
 Tx::Tx(void)
 : Loggable(CN_TX)
-, m_okLock(CN_TX,LK_TX_SET,this)
+, m_okLock(CN_TX,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
 

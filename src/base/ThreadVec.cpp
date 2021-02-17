@@ -40,7 +40,7 @@ void ThreadVec::operator delete(void* pAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ThreadVec::ThreadVec(void)
-: m_okLock(CN_THREADVEC,LK_THREAD_VECTOR,this)
+: m_okLock(CN_THREADVEC,this)
 {
   _precondition_(_MAGIC_,CN_THREADVEC,_FOOTER_);
   

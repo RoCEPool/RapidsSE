@@ -20,7 +20,7 @@ __aFooterFunction(PtnMap)
 /*----------------------------------------------------------------------------*/
 PtnMap::PtnMap(i8 nBootNodes, i8 nDegOfPar)
 : Object(CN_PTNMAP)
-, m_okLock(CN_PTNMAP,LK_PARTITION,this)
+, m_okLock(CN_PTNMAP,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   

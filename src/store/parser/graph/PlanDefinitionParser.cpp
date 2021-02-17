@@ -34,7 +34,7 @@ Stz* PlanDefinitionParser::s_definitionPaths[] = {
 
 PlanNode* PlanDefinitionParser::s_pGraphTemplate = nullptr;
 
-Lock PlanDefinitionParser::s_okLock(CN_PLANDEFINITIONPARSER,eLK::LK_PLAN_DEF_PARSER, nullptr);
+Lock PlanDefinitionParser::s_okLock(CN_PLANDEFINITIONPARSER,nullptr);
 
 
 /*----------------------------------------------------------------------------*/

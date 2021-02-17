@@ -36,7 +36,7 @@ void* Steps::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 Steps::Steps(void)
 : Object(CN_STEPTIMING)
-, m_okLock(CN_STEPTIMING,LK_STEP_ARRAY,this)
+, m_okLock(CN_STEPTIMING,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STEPTIMING,_FOOTER_);
   
