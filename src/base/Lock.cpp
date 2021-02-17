@@ -48,7 +48,7 @@ void Lock::operator delete(void*)
 /*----------------------------------------------------------------------------*/
 /* constructor (for non-focal case)                                           */
 /*----------------------------------------------------------------------------*/
-Lock::Lock(eCN eClassLocked, Object* pFor, bool bDontLog)
+Lock::Lock(eCN eClassLocked, Object* pObjectLocked, bool bDontLog)
 : Loggable(CN_LOCK,bDontLog)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
@@ -62,8 +62,7 @@ Lock::Lock(eCN eClassLocked, Object* pFor, bool bDontLog)
 //    vDebugPoint();
 //  }
   
-  m_pFor   = pFor;
-  m_bFocal = false;
+  m_pObjectLocked = pObjectLocked;
   
   m_uLockWord = 0;
   m_eClassLocked = eClassLocked;
@@ -85,18 +84,7 @@ Lock::Lock(eCN eClassLocked, Object* pFor, bool bDontLog)
 Lock::~Lock(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
- 
-  if (m_bFocal) {
-    SP_Gid spId;
-    
-    vEventNoInc(); -- gixLock;
-    AM::vLogLck(SL_INF,this,LA_LCK_DESTRUCT,
-                "Lock -%s destruct ^For=%s |gixLock=%lld|"_Stz, //!format-LogLck
-                aCN[m_eClassLocked],
-                spId.sz(m_pFor?((Loggable*)m_pFor)->m_iObjectId:C_UNKNOWN),
-                * gixLock);
-  }
-  
+   
   RASSERT(! m_uLockWord);
 }
 
@@ -385,7 +373,7 @@ void Lock::vGrabRead(void)
   bool bReported = false;
   while (! Lock::iLockGrabRead(&m_uLockWord) ) {
 
-    if (! m_pFor || CN_LOG == m_pFor->eGetClassNo())
+    if (! m_pObjectLocked || CN_LOG == m_pObjectLocked->eGetClassNo())
       continue;
     
     oTimer.vUpdate();
@@ -537,7 +525,7 @@ void Lock::vGrabWrite(void)
   bool bReported = false;
   while (! Lock::iLockGrabWrite(&m_uLockWord)) {
 
-    if (! m_pFor || CN_LOG == m_pFor->eGetClassNo())
+    if (! m_pObjectLocked || CN_LOG == m_pObjectLocked->eGetClassNo())
       continue;
     
     oTimer.vUpdate();
