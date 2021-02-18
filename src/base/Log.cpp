@@ -1096,7 +1096,7 @@ void Log::vWriteToFile(bool bCsv, bool bShortForm)
   s256 sLogPath;
   sLogPath = bCsv ? (Stz*)AM::szLogCsvFile() : (Stz*)AM::szLogTxtFile();
 
-  File* pLogFile = new File(nullptr);
+  File* pLogFile = new File(this);
   
   bool bOpened = pLogFile->bOpenWrite(sLogPath);
   if (! bOpened) {

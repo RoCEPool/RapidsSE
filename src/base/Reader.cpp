@@ -24,7 +24,7 @@ Reader::Reader(void)
     
   m_i_Seek = 0;
   
-  m_pFile = new File(nullptr);
+  m_pFile = new File(this);
   
   _checkInitialised_(CN_READER);
   

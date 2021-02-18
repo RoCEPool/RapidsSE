@@ -85,7 +85,7 @@ bool FileChunk::bOpenRead(s256& sPath)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_pFile = new File(nullptr);
+  m_pFile = new File(this);
   
   // open the file
   bool bOpened = m_pFile->bOpenRead(sPath);
@@ -100,7 +100,7 @@ bool FileChunk::bOpenWrite(s256& sPath)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_pFile = new File(nullptr);
+  m_pFile = new File(this);
 
   // open the file
   bool bOpened = m_pFile->bOpenWrite(sPath);

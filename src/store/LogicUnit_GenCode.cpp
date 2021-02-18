@@ -244,7 +244,7 @@ void LogicUnit::vGenerateAggregate(ExprEval* pExprEval, StreamDef* pStreamDefOut
   _precondition_(_ADDRESS_, _MAGIC_, CN_LOGICUNIT, _FOOTER_);
 
   TagSet oTagSet;
-  File *pFile = new File(nullptr);
+  File *pFile = new File(this);
 
   s256 sFileName;
   s4K sMacro;
@@ -378,7 +378,7 @@ void LogicUnit::vGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_LOGICUNIT, _FOOTER_);
 
   TagSet oTagSet;
-  File *pFile = new File(nullptr);
+  File *pFile = new File(this);
 
   s256 sFileName;
   s4K  sMacro;
@@ -507,7 +507,7 @@ void LogicUnit::vGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut) 
   _precondition_(_ADDRESS_, _MAGIC_, CN_LOGICUNIT, _FOOTER_);
 
   TagSet oTagSet;
-  File *pFile = new File(nullptr);
+  File *pFile = new File(this);
 
   s256 sFileName;
   s4K sMacro;
@@ -704,7 +704,7 @@ void LogicUnit::vGenerateLimit(i8 iLimitRows, StreamDef* pStreamDefOut) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_LOGICUNIT, _FOOTER_);
 
   TagSet oTagSet;
-  File *pFile = new File(nullptr);
+  File *pFile = new File(this);
 
   s256 sFileName;
   s4K  sMacro;
@@ -805,7 +805,7 @@ void LogicUnit::vGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOu
   _precondition_(_ADDRESS_, _MAGIC_, CN_LOGICUNIT, _FOOTER_);
 
   TagSet oTagSet;
-  File *pFile = new File(nullptr);
+  File *pFile = new File(this);
 
   s256 sFileName;
   s4K sMacro;
@@ -937,7 +937,7 @@ void LogicUnit::vGenerateRange(Range* pRange, StreamDef* pStreamDefOut) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_LOGICUNIT, _FOOTER_);
 
   TagSet oTagSet;
-  File *pFile = new File(nullptr);
+  File *pFile = new File(this);
 
   s256 sFileName;
   s4K sMacro;
