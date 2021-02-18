@@ -1569,8 +1569,8 @@ bool PROMPT::bPrompt_fileProc(SePrompt* pPrompt)
   sFileOut = pTknVec->pGet(2)->szChars();
   i8 nLines = pTknVec->nItems() > 3 ? pTknVec->pGet(3)->iToI8() : 0;
 
-  File oFileInp(pPrompt);
-  File oFileOut(pPrompt);
+  LocalFile oFileInp;
+  LocalFile oFileOut;
 
   if (! oFileInp.bOpenRead(sFileInp)) {
     vTrace("No such input file\n"_Stz);

@@ -1804,7 +1804,7 @@ void Engine::vWriteRegionName(void)
   // write the regionName into a se.region file
   // used by shell script to start se prompt
   if (gxCmdLineArgs.m_xSysArgs.m_bStart) {
-    File oFile(nullptr);
+    LocalFile oFile;
     bool b = oFile.bOpenMode(sFileName.szStz(),C_OPEN_READ_WRITE_CREATE);
     ASSERT(b);
     oFile.vPrint("%s\n"_Stz,gxCmdLineArgs.m_xSysArgs.m_sRegionName.azChar());
