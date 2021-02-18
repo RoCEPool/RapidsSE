@@ -181,6 +181,41 @@ void Output::vProcessBufferQueue(Session* pSession)
 }
 
 /*----------------------------------------------------------------------------*/
+/* print result                                                               */
+/*----------------------------------------------------------------------------*/
+void Output::vPrintResult(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
+
+  if (*m_ixRowsInvalid   ||
+      *m_ixRowsSkipped ) {
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // success / error
+    if (*m_ixRowsInvalid   ||
+        *m_ixRowsSkipped )
+      vTrace("error: %lld rows loaded (%lld invalid rows %lld skipped rows)\n"_Stz,
+             *m_ixRowsProcessed -
+             *m_ixRowsSkipped,
+             *m_ixRowsInvalid,
+             *m_ixRowsSkipped);
+    else
+      vTrace("\nsuccess: %lld rows loaded (%lld invalid rows %lld skipped rows)\n"_Stz,
+             *m_ixRowsProcessed -
+             *m_ixRowsSkipped,
+             *m_ixRowsInvalid,
+             *m_ixRowsSkipped);
+  }
+  else {
+    vTrace("\nsuccess: %lld rows fetched\n"_Stz,
+           *m_ixRowsProcessed);
+  }
+
+  m_ixRowsProcessed = 0;
+  m_ixRowsInvalid   = 0;
+  m_ixRowsSkipped   = 0;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop next operand from result queue                                         */
 /*----------------------------------------------------------------------------*/
 Operand* Output::pPopBufferQueue_blocking(Session* pSession)
@@ -281,6 +316,19 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
 
         vTrace("%s : Line: %lld; Column: %lld; ErrorMsg: %s; \n"_Stz,
                aEC[eErrorCode] , iLineNo, iColumnNo, sErrorText);
+
+        AM::vDeleteOperand(pOperand);
+      }
+      else if (pInfoSet->szInfoSetNm()->bSame(C_TDEF_EXECERRORS)) {
+
+        Row *pInfoRow = pInfoSet->aFirstRow();
+
+        eEC eErrorCode  = (eEC)pInfoRow->iColVal_int(0);
+        i8 iSeverity    = pInfoRow->iColVal_int(1);
+        Stz* sErrorText = pInfoRow->szColVal_ofs(2);
+
+        vTrace("error: %s : ErrorMsg: %s; \n"_Stz,
+               aEC[eErrorCode] , sErrorText);
 
         AM::vDeleteOperand(pOperand);
       }

@@ -114,6 +114,7 @@ public:
   void vAstack9(void);
 
   // attachmap
+  void vAttachMapErrorTextFetch(void);
   void vAttachMapOperandsFetch(void);
   void vAttachMapIsLowMemory(void);
   void vAttachMapRegionSizeFetch(void);
@@ -478,6 +479,7 @@ void vExprEvalEvaluate(void);
 
   // reg info set
   void vInfoSetAddCommandError(void);
+  void vInfoSetAddExecError(void);
   void vInfoSetAddLockStats(void);
   void vInfoSetAddNodeInfo(void);
   void vInfoSetAddProgressUnits(void);

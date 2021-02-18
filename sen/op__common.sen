@@ -37,6 +37,73 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* create the command error info set                                          */
+/*----------------------------------------------------------------------------*/
+: op__cmdErrInfoSet
+
+  // create the infoSetTable for C_TDEF_COMMANDERRORS
+  C_TDEF_COMMANDERRORS op__tableDef_infoSet assert
+
+  // create an infoSet operand for commandErrors
+  infoSetTable[] InfoSet[].new
+  OI_COMMANDERRORS infoSet[].opInfoset!
+;
+
+/*----------------------------------------------------------------------------*/
+/* create the command error info set                                          */
+/*----------------------------------------------------------------------------*/
+: op__cmdErr ( errorMsg severity errorCode )
+
+  params| errorCode severity errorMsg |
+
+  // create the infoSetTable for C_TDEF_COMMANDERRORS
+  C_TDEF_COMMANDERRORS op__tableDef_infoSet assert
+
+  // create an infoSet operand for commandErrors
+  infoSetTable[] InfoSet[].new
+  OI_COMMANDERRORS infoSet[].opInfoset!
+
+  errorMsg severity errorCode infoSetTable[] InfoSet[].addCommandError assert
+;
+
+/*----------------------------------------------------------------------------*/
+/* create the exec error info set                                             */
+/*----------------------------------------------------------------------------*/
+: op__execErr ( errorCode )
+
+  params| errorCode |
+
+  // create the infoSetTable for C_TDEF_EXECERRORS
+  C_TDEF_EXECERRORS op__tableDef_infoSet assert
+
+  // create an infoSet operand for commandErrors
+  infoSetTable[] InfoSet[].new
+  OI_EXECERRORS infoSet[].opInfoset!
+
+  errorCode attachmap::errorText@
+  -1
+  errorCode infoSetTable[]
+  InfoSet[].addExecError assert
+;
+
+/*----------------------------------------------------------------------------*/
+/* create the exec error info set                                             */
+/*----------------------------------------------------------------------------*/
+: op__execErrMsg ( errorMsg severity errorCode )
+
+  params| errorCode severity errorMsg |
+
+  // create the infoSetTable for C_TDEF_EXECERRORS
+  C_TDEF_EXECERRORS op__tableDef_infoSet assert
+
+  // create an infoSet operand for commandErrors
+  infoSetTable[] InfoSet[].new
+  OI_EXECERRORS infoSet[].opInfoset!
+
+  errorMsg severity errorCode infoSetTable[] InfoSet[].addExecError assert
+;
+
+/*----------------------------------------------------------------------------*/
 /* verify and set folder to <tableNm> of tabledef                             */
 /*----------------------------------------------------------------------------*/
 : op__file ( fileNm mode -- )
@@ -52,16 +119,13 @@
     File0[].get file.delete assert::stack_0 nullptr File0[].set EC_INVALID_FILE
     op.pipelineJob@ ERROR_JOB !!logError
 
-    // create the infoSetTable for C_TDEF_COMMANDERRORS
-    C_TDEF_COMMANDERRORS op__tableDef_infoSet assert
+    // create an exec error infoset
+    sFileNm "File '%v' does not exist" str.format
+    -1
+    EC_INVALID_FILE
+    op__execErrMsg
 
-    // create an infoSet operand for commandErrors
-    infoSetTable[] InfoSet[].new
-    OI_COMMANDERRORS infoSet[].opInfoset!
-
-    sFileNm "File '%v' does not exist" str.format -1 -1 -1 EC_INVALID_FILE
-      infoSetTable[] InfoSet[].addCommandError assert
-
+    // pipeout the EXECERROR infoset
     InfoSet[].pipeOut
 
     PipeIn[].delete
@@ -108,10 +172,20 @@
 : op__table ( tableNm -- )
 
   params| sTableNm |
+  0 locals| eErrorCode |
 
   // check in tables folder
   check::folderIsTables not if
-    op.pipelineJob@ ERROR_JOB
+    to eErrorCode
+    eErrorCode op.pipelineJob@ ERROR_JOB
+
+    // create an exec error infoset
+    eErrorCode
+    op__execErr
+
+    // pipeout the EXECERROR infoset
+    InfoSet[].pipeOut
+
     PipeIn[].delete
     Operand[].newErrorMarker
     Operand[].pipeOut
@@ -121,7 +195,16 @@
 
   // table
   sTableNm check::validTableAssembly not if
-    op.pipelineJob@ ERROR_JOB
+    to eErrorCode
+    eErrorCode op.pipelineJob@ ERROR_JOB
+
+    // create an exec error infoset
+    eErrorCode
+    op__execErr
+
+    // pipeout the EXECERROR infoset
+    InfoSet[].pipeOut
+
     PipeIn[].delete
     Operand[].newErrorMarker
     Operand[].pipeOut
@@ -451,19 +534,6 @@
     then
 
   while assert::stack_0 repeat
-;
-
-/*----------------------------------------------------------------------------*/
-/* create the command error info set                                          */
-/*----------------------------------------------------------------------------*/
-: op__cmdErr
-
-  // create the infoSetTable for C_TDEF_COMMANDERRORS
-  C_TDEF_COMMANDERRORS op__tableDef_infoSet assert
-
-  // create an infoSet operand for commandErrors
-  infoSetTable[] InfoSet[].new
-  OI_COMMANDERRORS infoSet[].opInfoset!
 ;
 
 /*----------------------------------------------------------------------------*/
