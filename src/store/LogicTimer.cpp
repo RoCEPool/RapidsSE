@@ -89,7 +89,7 @@ void LogicTimer::vReport(void)
   sFileNm.vSprint("../tmp/Sql%lld.csv"_Stz,m_iQueryFrag);
   
   
-  File* pFile = new File(nullptr);
+  File* pFile = new File(this);
   
   pFile->bOpenMode(sFileNm,C_OPEN_WRITE);
   

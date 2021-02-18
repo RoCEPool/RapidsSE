@@ -193,7 +193,7 @@ void RluDiary::vReportDiary(Stz *szFilePath)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RLUDIARY,_FOOTER_);
 
-  File* pFile = new File(nullptr);
+  File* pFile = new File(this);
   
   pFile->bOpenMode(szFilePath,C_OPEN_WRITE);
   

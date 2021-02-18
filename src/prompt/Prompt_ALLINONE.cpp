@@ -1667,8 +1667,8 @@ bool PROMPT::bPrompt_fileRand(SePrompt* pPrompt)
 
   vTrace("fileRand %s into %s\n"_Stz,sPathIn.szStz(),sPathOut.szStz());
   
-  File* pFileIn  = new File(nullptr);
-  File* pFileOut = new File(nullptr);
+  File* pFileIn  = new File(pPrompt);
+  File* pFileOut = new File(pPrompt);
   
   bool bOpened = pFileIn->bOpenRead(sPathIn);
   if (!bOpened) {
