@@ -255,8 +255,8 @@ void Engine::vRunCommandLine(void)
       case BO_START_PROMPT:
         vStartSystem();
 #ifdef WITH_APPLE
-        if (! gxCmdLineArgs.m_xSysArgs.m_bNoMunge )
-          vMungeCheck();
+        //if (! gxCmdLineArgs.m_xSysArgs.m_bNoMunge )
+        //  vMungeCheck();
 #endif
         vCallPrompt();
         break;

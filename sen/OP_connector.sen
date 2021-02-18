@@ -62,9 +62,9 @@
 
  
   // print connection message
-  args.verbose if
+  //args.verbose if
     pNode node.no grid::thisNode@ "Node %v connected to node %v" .printf
-  then
+  //then
 
   // send this node's info to the node we just connected to
   pSocket .sendNodeInfo

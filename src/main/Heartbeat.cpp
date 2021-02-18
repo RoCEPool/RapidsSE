@@ -15,15 +15,21 @@
 #include <netinet/in.h>
 #include <netdb.h>
 
-/*
-*  sAddr  The address to convert to a numeric IP.
-*  iPort  The port number.
-*/
-HeartbeatSnd::HeartbeatSnd(char *szAddr, int iPort)
-    : m_iPort(iPort) {
+/**
+ * @brief HeartbeatSnd Constructor
+ * @details to create object and initialize variables
+ * <p>
+ * @param[in] pszAddr  the address to convert to a numeric IP.
+ * @param[in] iPort   the port number.
+ *
+ * @return none
+ *
+ * @throws Heartbeat_RTE
+ */
+HeartbeatSnd::HeartbeatSnd(const std::string &sAddr, int iPort)
+    : m_iPort(iPort), m_sAddr(sAddr) {
 
   std::string szPort = std::to_string(iPort);
-  m_sAddr = szAddr;
 
   struct addrinfo hints;
   memset(&hints, 0, sizeof(hints));
@@ -87,10 +93,19 @@ int HeartbeatSnd::iSend(const char *pPacket, size_t iSize) {
 
 
 //===============================================================================================
-/*
+
+/**
+ * @brief HeartbeatRcv Constructor
+ * @details to create object and initialize variables
+ * <p>
+ * @param[in] szAddr  The address we receive on.
+ * @param[in] iPort   The port we receive from.
  *
- * sAddr  The address we receive on.
- * iPort  The port we receive from.
+ *
+ * @return none
+ *
+ *
+ * @throws Heartbeat_RTE
  */
 HeartbeatRcv::HeartbeatRcv(const std::string &sAddr, int iPort)
     : m_iPort(iPort), m_sAddr(sAddr) {
@@ -236,6 +251,41 @@ bool TestConnection::bTryConnect(void)
   return true;
 }
 
+
+/**
+ * @brief Checksum Constructor
+ * @details uses 8-bit blocks, it is not affected by byte endianness.
+ * <p>
+ * @param[in] pData  pointer to char buffer
+ * @param[in] iLen   length of data
+ *
+ *
+ * @return none
+ *
+ */
+CheckSum::CheckSum (const byte *pData, size_t iLen)
+{
+  u4 c0 = 0, c1 = 0;
+  m_uValue = 0;
+  /*  Found by solving for c1 overflow: */
+  /* n > 0 and n * (n+1) / 2 * (2^8-1) < (2^32-1). */
+  while (iLen > 0) {
+    size_t blocklen = iLen;
+    if (blocklen > 5002) {
+      blocklen = 5002;
+    }
+    iLen -= blocklen;
+
+    do {
+      c0 = c0 + *pData++;
+      c1 = c1 + c0;
+    } while (--blocklen);
+
+    c0 = c0 % 255;
+    c1 = c1 % 255;
+  }
+  m_uValue = (c1 << 8 | c0);
+}
 
 /*============================================================================*/
 /* end                                                                        */

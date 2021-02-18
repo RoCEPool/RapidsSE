@@ -2924,7 +2924,7 @@ void AM::vPutHeartbeat(i8 iNode, const Heartbeat& xHeartbeat)
 /*----------------------------------------------------------------------------*/
 /* update heartbeat for a given node by name                                  */
 /*----------------------------------------------------------------------------*/
-void AM::vPutHeartbeat(Stz* pszName, const Heartbeat& xHeartbeat )
+bool AM::bPutHeartbeat(Stz* pszName, const Heartbeat& xHeartbeat )
 {
   Node *pThisNode = AM::pGrid()->pFindNode(pszName);
 
@@ -2932,8 +2932,10 @@ void AM::vPutHeartbeat(Stz* pszName, const Heartbeat& xHeartbeat )
     pThisNode->vPutHeartbeat(xHeartbeat);
   } else {
     AM::vLogFyi("Cannot find Node %s in the cluster"_Stz, //!format-LogFyi
-                pszName);
+                pszName->azChar());
+    return false;
   }
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2961,11 +2963,60 @@ Heartbeat AM::xGetHeartbeat(Stz* pszName)
   if (!pThisNode) {
     vThrow(FK_FATAL, VL_FATAL, __func__, __FILE__, __LINE__,
            "Cannot find Node %s in the cluster"_Stz,
-           pszName);
+           pszName->azChar());
   }
 
   return pThisNode->xGetHeartbeat();
 
+}
+
+/**
+ * @brief Add new node into the cluster
+ * @details When a new node comes up, add it to the cluster.
+ * <p>
+ * @param[in] pszName  name of this node
+ * @param[in] pszAddr  Address this node runs at
+ * @param[in] iPort   port number this node listens to
+ *
+ *
+ * @return none
+ *
+ */
+void AM::vAddNewNode(Stz* pszName, Stz* pszAddr, i8 iPort)
+{
+  Node* pThisNode = AM::pGrid()->pFindNode(pszName);
+  // Check to make sure we don't have this node yet
+  if (!pThisNode) {
+    AM::pGrid()->vAddNode(pszName, pszAddr, iPort);
+  }
+}
+
+/**
+ * @brief Remove dead node from the cluster
+ * @details When a node went down, remove it from the cluster.
+ * <p>
+ * @param[in] pszName  name of this node
+ *
+ *
+ * @return none
+ * @Todo  Must verify that we remove and delete the node here.
+ */
+void AM::vRemoveNode(Stz* pszName)
+{
+  Node* pThisNode = AM::pGrid()->pFindNode(pszName);
+  // Check to make sure we have this node in the cluster/grid.
+  if (pThisNode) {
+    AM::pGrid()->vRemoveNode(pThisNode);
+    // we should remove article and delete the node here?
+    AM::pGrid()->pArticle()->vRemove(pThisNode->pArticle());
+    //delete pThisNode;
+
+    AM::pGrid()->vDecConnectedNodes();
+    AM::pGrid()->vDecDefinedNodes();
+    AM::pGrid()->vDecBootNodes();
+
+
+  }
 }
 
 

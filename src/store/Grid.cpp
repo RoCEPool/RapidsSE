@@ -11,6 +11,7 @@
 #include "CmdLineArgs.hpp"
 
 extern CmdLineArgs gxCmdLineArgs;
+extern AttachMap*   gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -265,6 +266,16 @@ void Grid::vIncBootNodes(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* decrement number of put nodes                                              */
+/*----------------------------------------------------------------------------*/
+void Grid::vDecBootNodes(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+
+  m_nBootNodes--;
+}
+
+/*----------------------------------------------------------------------------*/
 /* increment number of connected nodes                                        */
 /*----------------------------------------------------------------------------*/
 void Grid::vIncConnectedNodes(void)
@@ -292,6 +303,16 @@ void Grid::vIncDefinedNodes(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
   m_nDefinedNodes++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* deccrement number of defined nodes                                         */
+/*----------------------------------------------------------------------------*/
+void Grid::vDecDefinedNodes(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+
+  m_nDefinedNodes--;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -335,6 +356,49 @@ void Grid::vRemoveNode(Node* pNode)
   m_pNodes[i_Node] = nullptr;
   
   m_nBootNodes--;
+}
+
+/**
+ * @brief Add new node into the cluster/grid
+ * @details When a new node comes up, add it to the cluster.
+ * <p>
+ * @param[in] pszName  name of this node
+ * @param[in] pszAddr  Address this node runs at
+ * @param[in] iPort   port number this node listens to
+ *
+ *
+ * @return none
+ *
+ */
+void Grid::vAddNode(Stz* pszName, Stz* pszAddr, i8 iPort)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+
+  for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++) {
+  //ASSERT(AM::pGrid()->nNodes() == i_Node);
+    if (m_pNodes[i_Node] == nullptr) { // Add to this slot
+      Node* pNode = new Node(i_Node,
+                            pszName,
+                            AM::nDegOfPar(),
+                            pszAddr,
+                            iPort);
+
+      vPutNode(pNode); // this also incr m_nNodes;
+      vIncBootNodes();
+      vIncDefinedNodes();
+      i8     m_nBootNodes;       // number of nodes supplied via SE -node
+      i8     m_nDefinedNodes;    // number of nodes in the nodes array
+      i8     m_nConnectedNodes;  // number of connected nodes in the grid
+      i8     m_nNodes;           // number of nodes in array
+
+      Article* pNodeArticle = pNode->pArticle();
+
+      pArticle()->vAppend(pNodeArticle);
+
+      break; // done with adding
+    }
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/

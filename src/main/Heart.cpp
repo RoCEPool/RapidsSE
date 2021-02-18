@@ -35,7 +35,7 @@ RingBuffer<Heartbeat> gxHeartbeatData(100); // collect heartbeat data from the s
 void vHeartInit(void) {
 
   if (gxCmdLineArgs.m_xSysArgs.m_nHeartbeatNodes > 0) {
-    printf("SE Heart (sizeof(Heartbeat)=%lld\n", (i8) sizeof(Heartbeat));
+    vTrace("SE Heart (sizeof(Heartbeat)=%lld\n"_Stz, (i8) sizeof(Heartbeat));
 
 //  char azPath[256];
 //  sprintf(azPath,"../tmp/rapidsse_pid%lld",(i8)0); //getpid());
@@ -67,7 +67,7 @@ void vHeartInit(void) {
 
 
   } else {
-    printf("SE Heartbeat is not set for this node\n");
+    vTrace("SE Heartbeat is not set for this node\n"_Stz);
   }
 
   // Process::vExitFailure();
@@ -105,13 +105,13 @@ void vHeartInit(void) {
       pSender->iSend((char *) &xHeartbeat, sizeof(Heartbeat));
 
       if (iCnt++ <= 1) // debug only: print twice
-        printf("%s", azHeartbeat);
+        vTrace("%s"_Stz, azHeartbeat);
     }
 
 
     if (iCnt >8) {
       if (strcmp(xHeartbeat.m_acNodeName, "NODE1") == 0) {
-        printf("Process NODE1 got killed!!!!!!!\n");
+        vTrace("Process NODE1 got killed!!!!!!!\n"_Stz);
         Process::vExitSuccess();
         //printf("Supervisor got killed, no more sending, but monitor continues, works fine.\n");
         //AM::vSupervisorHalt(true);
@@ -127,14 +127,14 @@ void vHeartInit(void) {
 /* heart receive loop: gets a packet from network then writes to ringbuffer   */
 /*----------------------------------------------------------------------------*/
 [[noreturn]] void *vHeartRcvLoop(void *pFuncObj) {
-  printf("SE Heart Receiver thread entry\n");
+  vTrace("SE Heart Receiver thread entry\n"_Stz);
   HeartbeatRcv *pReceiver = (HeartbeatRcv *) pFuncObj;
 
   Heartbeat xHeartbeat;
   struct tm *tmTimeInfo;
 
   char azTimeBuffer[80];
-  char azHeartbeat[C_16KB];
+  char azHeartbeat[C_4KB];
   int iCnt = 0;
 
   for (;;) {
@@ -149,25 +149,26 @@ void vHeartInit(void) {
       xHeartbeat.m_iChecksum = 0;
       //printf("fletcher16 mychecksum1=%d\n",fletcher16((unsigned char *) &xHeartbeat, sizeof(Heartbeat)));
 
-      if (fletcher16((unsigned char *) &xHeartbeat, sizeof(Heartbeat)) == iSaveChk) {
+      // recalculate checksum and compare
+      CheckSum ChecksumValue((unsigned char *) &xHeartbeat, sizeof(Heartbeat));
+      if (ChecksumValue.uGetFletcher16() == iSaveChk) {
         xHeartbeat.m_iChecksum = iSaveChk;
         if (gxHeartbeatBuffer.bTryWrite(xHeartbeat)) {
 
           tmTimeInfo = localtime((const time_t *) &xHeartbeat.m_iSincePosixEpoch);
           strftime(azTimeBuffer, sizeof(azTimeBuffer), "%a %Y-%m-%d %H:%M:%S %Z", tmTimeInfo);
 
-
           sprintf(azHeartbeat,
-                  "\n%lld: SE received heartbeat from Node Name:%s seqNo %lld sinceEpoch %lld gitHash %s at %s\n",
-                  gxHeartbeatBuffer.iWriteIdx(),
+                  "\nSE received heartbeat from Node Name:%s seqNo %lld sinceEpoch %lld gitHash %s at %s\n",
+
                   xHeartbeat.m_acNodeName, // name
                   xHeartbeat.m_iSeqNo,
                   xHeartbeat.m_iSincePosixEpoch, xHeartbeat.m_acBuildGitHash, azTimeBuffer
           );
 
           if (iCnt++ <= 1) { // debug print twice
-            printf("%s", azHeartbeat);
-            printf("iLen=%d m_u2DataLen=%d checksum=%lld \n", iLen, xHeartbeat.m_u2DataLen,
+            vTrace("%s"_Stz, azHeartbeat);
+            vTrace("iLen=%d m_u2DataLen=%d checksum=%lld \n"_Stz, iLen, xHeartbeat.m_u2DataLen,
                    xHeartbeat.m_iChecksum);
           }
         }
@@ -186,58 +187,72 @@ void vHeartInit(void) {
 /*---------------------------------------------------------------------------------*/
 /* heart read loop: to simulate the reading, but doesn't do anything with the data */
 /*---------------------------------------------------------------------------------*/
+/**
+ * @brief heart read loop
+ * @details reads heartbeat data from the inbound ringbuffer and updates the node heartbeat
+ * <p>
+ * @param[in] void * (unused)
+ *
+ * @return none
+ *
+ * @todo If the heartbeat comes from a new node, that is not exists in the grid
+ *       we should add this node
+ */
 [[noreturn]] void *vHeartReadLoop(void *pFuncObj) {
 
-  printf("SE Heart Read from received ring-buffer thread entry\n");
+  vTrace("SE Heart Read from received ring-buffer thread entry\n"_Stz);
 
   Heartbeat xHeartbeat;
   struct tm *tmTimeInfo;
 
   char azTimeBuffer[80];
-  char azHeartbeat[C_16KB];
+  char azHeartbeat[C_4KB];
   int iCnt = 0;
 
   for (;;) {
-
-    memset(&xHeartbeat, 0x00, sizeof(Heartbeat));
+    azHeartbeat[0] = 0;
+    azTimeBuffer[0] = 0;
+    memset((char*)&xHeartbeat, 0x00, sizeof(Heartbeat));
 
     if (gxHeartbeatBuffer.bTryRead(xHeartbeat))  {
 
+      vTrace("Heartbeat from Node %s\n"_Stz, xHeartbeat.m_acNodeName);
       // update heartbeat info for the node
-      // m_acString0 is the node name
-      AM::vPutHeartbeat((Stz*)xHeartbeat.m_acNodeName,xHeartbeat);
+      //
+      if (AM::bPutHeartbeat((Stz*)xHeartbeat.m_acNodeName,xHeartbeat)) {
+        vTrace("Updated heartbeat from Node %s\n"_Stz, xHeartbeat.m_acNodeName);
+      } else {
+        // We failed to update the node with heartbeat,
+        // meaning we don't have this node in the cluster/grid yet.
+        // Then we need to add this node into the cluster/grid.
 
+        AM::vAddNewNode((Stz *) xHeartbeat.m_acNodeName, (Stz*)xHeartbeat.m_acAddr, xHeartbeat.m_iPort);
+
+        vTrace("FAILED Update heartbeat from Node %s\n"_Stz, xHeartbeat.m_acNodeName);
+        vTrace("Node %s has been added\n"_Stz, xHeartbeat.m_acNodeName);
+      }
+
+#ifdef MQ_DEBUG
       tmTimeInfo = localtime((const time_t *) &xHeartbeat.m_iSincePosixEpoch);
       strftime(azTimeBuffer, sizeof(azTimeBuffer), "%a %Y-%m-%d %H:%M:%S %Z", tmTimeInfo);
+#endif
+      //sprintf(azHeartbeat,
 
-      sprintf(azHeartbeat,
+      //        "\nSE read from received heartbeat from Node Name:%s seqNo %lld sinceEpoch %lld gitHash %s at %s\n",
+      //        xHeartbeat.m_acNodeName, // name
+      //        xHeartbeat.m_iSeqNo,
+      //        xHeartbeat.m_iSincePosixEpoch, xHeartbeat.m_acBuildGitHash, azTimeBuffer
+      //);
 
-              "\n%lld SE read from received heartbeat from Node Name:%s seqNo %lld sinceEpoch %lld gitHash %s at %s\n",
-              gxHeartbeatBuffer.iReadIdx(),
-              xHeartbeat.m_acNodeName, // name
-              xHeartbeat.m_iSeqNo,
-              xHeartbeat.m_iSincePosixEpoch, xHeartbeat.m_acBuildGitHash, azTimeBuffer
-      );
-
-      if (iCnt++ <= 1) // debug print twice
-        printf("%s",azHeartbeat);
-
+      //if (iCnt++ <= 1) // debug print twice
+        //vTrace("%s"_Stz,azHeartbeat);
 
 
-      // DEBUG get back the heartbeat
-      Heartbeat xxHeartbeat = AM::xGetHeartbeat((Stz*)xHeartbeat.m_acNodeName);
 
-      sprintf(azHeartbeat,
 
-              "SE after update node info for Node Name:%s seqNo %lld sinceEpoch %lld gitHash %s at %s\n",
 
-              xxHeartbeat.m_acNodeName, // name
-              xxHeartbeat.m_iSeqNo,
-              xxHeartbeat.m_iSincePosixEpoch, xHeartbeat.m_acBuildGitHash, azTimeBuffer
-      );
-
-      if (iCnt++ < 5) // debug print twice
-        printf("%s",azHeartbeat);
+      //if (iCnt++ < 5) // debug print twice
+      vTrace("%s"_Stz,azHeartbeat);
 
       usleep(100*1000); // short sleep
     } else {

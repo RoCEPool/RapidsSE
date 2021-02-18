@@ -408,10 +408,13 @@ void   Node::vSetStartCmd(Stz* pCmd)
 /*----------------------------------------------------------------------------*/
 /* get saved start node cmd                                                   */
 /*----------------------------------------------------------------------------*/
-Stz*   Node::szGetStartCmd(void)
+Stz*   Node::pszGetStartCmd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
-  return (Stz*)m_sStartCmd;
+  if (m_sStartCmd.nLength() > 1)
+    return (Stz*)m_sStartCmd;
+
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

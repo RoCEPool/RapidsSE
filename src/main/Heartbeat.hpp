@@ -26,15 +26,17 @@ class Heartbeat {
   
 public:
   
-  i8   m_iHeader;            //   8    8
+  i8   m_iHeader;            //
 
-  u2   m_u2Version;           // version of the packet   2 10
-  u2   m_u2DataLen;           // length of data  includes size of itself  2 12
-  char m_acNodeName[32];     //  32   44
-  i8   m_iSeqNo;             //   8   52
-  i8   m_iSincePosixEpoch;   //   8   60
-  char m_acBuildGitHash[32]; //  32   92
-  i8   m_iPid;               //   8
+  u2   m_u2Version;          // version of the packet
+  u2   m_u2DataLen;          // length of data  includes size of itself
+  char m_acNodeName[32];     //
+  i8   m_iSeqNo;             //
+  i8   m_iSincePosixEpoch;   //
+  char m_acBuildGitHash[32]; //
+  i8   m_iPid;               //
+  char m_acAddr[32];         // IP address of where it is running
+  i8   m_iPort;              // Port number for SE
 
   // data (STORE, BASE, ...)
 
@@ -227,7 +229,7 @@ public:
 
 class HeartbeatSnd {
 public:
-  HeartbeatSnd(char *sAddr, int iPort);
+  HeartbeatSnd(const std::string &sAddr, int iPort);
 
   ~HeartbeatSnd();
 
@@ -290,31 +292,15 @@ public:
 };
 
 
+class CheckSum {
+public:
+  CheckSum(const byte *data, size_t len);
+  u2 uGetFletcher16(void) { return m_uValue;}
+private:
+  u2 m_uValue;
 
-// uses 8-bit blocks, it is not affected by byte endianness.
-// 16-bit checksum
-static u2 fletcher16(const byte *data, size_t len) {
-  u4 c0 = 0, c1 = 0;
 
-  /*  Found by solving for c1 overflow: */
-  /* n > 0 and n * (n+1) / 2 * (2^8-1) < (2^32-1). */
-  while (len > 0) {
-    size_t blocklen = len;
-    if (blocklen > 5002) {
-      blocklen = 5002;
-    }
-    len -= blocklen;
-
-    do {
-      c0 = c0 + *data++;
-      c1 = c1 + c0;
-    } while (--blocklen);
-
-    c0 = c0 % 255;
-    c1 = c1 % 255;
-  }
-  return (c1 << 8 | c0);
-}
+};
 
 
 

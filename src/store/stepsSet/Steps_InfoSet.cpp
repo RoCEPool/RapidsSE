@@ -750,6 +750,7 @@ void Step::vInfoSetRdCsvChunk(void)
 /*----------------------------------------------------------------------------*/
 /* InfoSet[].set -- set InfoSet                                               */
 /*----------------------------------------------------------------------------*/
+#include <execinfo.h>
 void Step::vInfoSetSet(void)
 {
   ENTRY();

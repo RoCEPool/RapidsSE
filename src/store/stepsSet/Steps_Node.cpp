@@ -217,8 +217,21 @@ void Step::vNodeRecvSocketStore(void)
   Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
 
   Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
-  
-  pNode->vRecvSocket(pSocket);
+
+  vTrace("vNodeRecvSocketStore\n"_Stz);
+
+  if (!pNode ) {
+    vTrace("BAD node at receive socket\n"_Stz);
+  }
+
+  if (!pSocket) {
+    vTrace("BAD socket at receive socket\n"_Stz);
+  }
+
+
+  if (pNode && pSocket) {
+    pNode->vRecvSocket(pSocket);
+  }
   
   EXIT();
 }

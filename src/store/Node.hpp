@@ -85,7 +85,7 @@ namespace STORE
     i8   iGetPrevUserUsec(void);
     void vSetPrevUserUsec(i8 Usec);
     void vSetStartCmd(Stz* sCmd);
-    Stz* szGetStartCmd(void);
+    Stz* pszGetStartCmd(void);
     i8   iGetPid(void);
 
     i1   iGetPrev(void);

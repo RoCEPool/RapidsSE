@@ -39,6 +39,7 @@ namespace STORE
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
     Article* pArticle(void);
+    void vAddNode(Stz* pszName, Stz* pszAddr, i8 iPort);
     i8   nBootNodes(void);
     i8   nDefinedNodes(void);
     i8   nConnectedNodes(void);
@@ -52,6 +53,8 @@ namespace STORE
     void vIncDefinedNodes(void);
     void vIncConnectedNodes(void);
     void vDecConnectedNodes(void);
+    void vDecDefinedNodes(void);
+    void vDecBootNodes(void);
     i8   nNodes(void);
     void vPutNode(Node* pNode);
     void vRemoveNode(Node* pNode);

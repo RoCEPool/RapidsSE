@@ -1072,7 +1072,11 @@ void SePrompt::vPromptUser(void)
   i8 iPid = Process::iGetPid();
 
   if (! AM::bDeveloper()) {
-    vInfo("%s %lld se> "_Stz,gsBuildGitHash,iPid);
+    if (bHasStarted) { /// cluster has started ?
+      vInfo("%s %lld Grid-Started> "_Stz, gsBuildGitHash, iPid);
+    } else {
+      vInfo("%s %lld se> "_Stz, gsBuildGitHash, iPid);
+    }
     fflush(stdin);
     return;
   }

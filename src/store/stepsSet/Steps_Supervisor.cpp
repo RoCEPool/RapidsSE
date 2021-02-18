@@ -52,6 +52,7 @@ void Step::vSupervisorCollectInfo(void)
   Heartbeat xHeartbeat;
 
   memset((char *) &xHeartbeat, 0x00, sizeof(Heartbeat));
+
   xHeartbeat.m_u2Version = 1; // hardcode here but it should be defined somewhere
   xHeartbeat.m_iSeqNo = ++iSeq;
   xHeartbeat.m_iSincePosixEpoch = time(0);
@@ -62,7 +63,6 @@ void Step::vSupervisorCollectInfo(void)
   strncpy(xHeartbeat.m_acNodeName, gxCmdLineArgs.m_xSysArgs.m_sNodeName.azChar(), sizeof(xHeartbeat.m_acNodeName) - 1);
   xHeartbeat.m_acNodeName[sizeof(xHeartbeat.m_acNodeName) - 1] = 0;
 
-
   xHeartbeat.xBaseHeartbeat.m_iSystemUsec = AM::iSystemUsec();
   xHeartbeat.xBaseHeartbeat.m_iUserUsec = AM::iUserUsec();
   xHeartbeat.xBaseHeartbeat.m_iResidentSize = AM::iResidentSize();
@@ -71,12 +71,13 @@ void Step::vSupervisorCollectInfo(void)
   s32 sResident_magn;
   MagLib::vByteMag(xHeartbeat.xBaseHeartbeat.m_iResidentSize,3,sResident_magn);
 
+  /*
   vTrace("Node:%s  ** Step::vSupervisorCollectInfo ** SystemUsec:%lld   UserUsec::%lld Resident:%s\n"_Stz,
          gxCmdLineArgs.m_xSysArgs.m_sNodeName.azChar(),
          xHeartbeat.xBaseHeartbeat.m_iSystemUsec,
          xHeartbeat.xBaseHeartbeat.m_iUserUsec,
          sResident_magn.azChar());
-
+  */
 
   xHeartbeat.m_u2DataLen = sizeof(xHeartbeat.m_iHeader)
       + sizeof(xHeartbeat.m_u2Version)
@@ -85,6 +86,9 @@ void Step::vSupervisorCollectInfo(void)
       + sizeof(xHeartbeat.m_iSeqNo)
       + sizeof(xHeartbeat.m_iSincePosixEpoch)
       + sizeof(xHeartbeat.m_acBuildGitHash)
+      + sizeof(xHeartbeat.m_iPid)
+      + sizeof(xHeartbeat.m_acAddr)
+      + sizeof(xHeartbeat.m_iPort)
       + sizeof(xHeartbeat.xStoreHeartbeat)
       + sizeof(xHeartbeat.xBaseHeartbeat)
       + sizeof(xHeartbeat.m_iChecksum)
@@ -92,20 +96,25 @@ void Step::vSupervisorCollectInfo(void)
       + sizeof(xHeartbeat.m_acSpare);
 
 
-
-  xHeartbeat.m_iChecksum = fletcher16((unsigned char *) &xHeartbeat, sizeof(Heartbeat));
-
-
-  //vTrace("  ** Step::vSupervisorCollectInfo ** fletcher16 %ld\n"_Stz, xHeartbeat.m_iChecksum);
-
-  // Add node number to the packet
-  //i8 iValue = AM::iThisNodeNo();
-
   //printf("NODE:%s, This node is %lld   ", gxCmdLineArgs.m_xSysArgs.m_sNodeName.azChar(), iValue );
   Node *pNode = AM::pGrid()->pThisNode();
-  if (pNode && pNode->iGetPrevUserUsec() == 0) {
-    pNode->vSetPrevUserUsec(xHeartbeat.xBaseHeartbeat.m_iUserUsec);
+  if (pNode ) {
+    if (pNode->iGetPrevUserUsec() == 0) {
+      pNode->vSetPrevUserUsec(xHeartbeat.xBaseHeartbeat.m_iUserUsec);
+    }
+
+    // Adding Address and Port
+    strncpy(xHeartbeat.m_acAddr, pNode->szIPAddr()->azChar(), sizeof(xHeartbeat.m_acAddr) - 1);
+    xHeartbeat.m_acAddr[sizeof(xHeartbeat.m_acAddr) - 1] = 0;
+    xHeartbeat.m_iPort = pNode->iPortNo();
+    //printf("Hello, My addr:%s and port:%lld\n", pNode->szIPAddr()->azChar(), pNode->iPortNo());
   }
+
+  CheckSum ChecksumValue((unsigned char *) &xHeartbeat, sizeof(Heartbeat));
+
+  xHeartbeat.m_iChecksum = ChecksumValue.uGetFletcher16();
+
+  //vTrace("  ** Step::vSupervisorCollectInfo ** fletcher16 %ld\n"_Stz, xHeartbeat.m_iChecksum);
 
   // Write to Send-Ringbuffer
   gxHeartbeatData.bTryWrite(xHeartbeat);

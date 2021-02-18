@@ -88,14 +88,19 @@
   then
 
   // What if we start the cluster here, then we can execute any DDL
+  // We can use the same pipe command to start the cluster, because
+  // in the new model, it's only one node to start
+  //args.nodeName .
+  args.nodeName "NODE0" str.same if
+  "START CLUSTER OF 1" .
+
   "
    bootCluster
   "
   locals| sStmt |
 
   "" sStmt api::executeRequest
-
-
+ then
 
   "end start_run" .verbose
 
