@@ -12,7 +12,7 @@ LocalChain* BASE::_pLocalSet(void* aAddr)
 {
   LocalChain* pLocalSet = reinterpret_cast<LocalChain*>(aAddr);
   
-  RASSERT_TYPE(pLocalSet,CN_LOCALSCHAIN);
+  RASSERT_TYPE(pLocalSet,CN_LOCALCHAIN);
 
   return pLocalSet;
 }
@@ -22,7 +22,7 @@ LocalChain* BASE::_pLocalSet(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* LocalChain::operator new(size_t)
 {
-  void* pLocalSet = Heaps::pAllocate(CN_LOCALSCHAIN);
+  void* pLocalSet = Heaps::pAllocate(CN_LOCALCHAIN);
   
   return pLocalSet;
 }
@@ -41,17 +41,17 @@ void LocalChain::operator delete(void* pLocalSetAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 LocalChain::LocalChain(void)
-: Object(CN_LOCALSCHAIN)
+: Object(CN_LOCALCHAIN)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALSCHAIN,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALCHAIN,_FOOTER_);
 
   m_pNext         = nullptr;
   m_aDiscardPoint = nullptr;
   //m_xLocal
   
-  _checkInitialised_(CN_LOCALSCHAIN);
+  _checkInitialised_(CN_LOCALCHAIN);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_LOCALSCHAIN,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_LOCALCHAIN,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -59,7 +59,7 @@ LocalChain::LocalChain(void)
 /*----------------------------------------------------------------------------*/
 LocalChain::~LocalChain(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALSCHAIN,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALCHAIN,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -81,7 +81,7 @@ void LocalChain::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 LocalChain* LocalChain::pNext(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALSCHAIN,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALCHAIN,_FOOTER_);
   
   return m_pNext;
 }
@@ -91,7 +91,7 @@ LocalChain* LocalChain::pNext(void)
 /*----------------------------------------------------------------------------*/
 void LocalChain::vNext(LocalChain* pNext)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALSCHAIN,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALCHAIN,_FOOTER_);
   
   m_pNext = pNext;
 }
@@ -101,7 +101,7 @@ void LocalChain::vNext(LocalChain* pNext)
 /*----------------------------------------------------------------------------*/
 TypedCell* LocalChain::aDiscardPoint(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALSCHAIN,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALCHAIN,_FOOTER_);
   
   return m_aDiscardPoint;
 }
@@ -111,7 +111,7 @@ TypedCell* LocalChain::aDiscardPoint(void)
 /*----------------------------------------------------------------------------*/
 void LocalChain::vDiscardPoint(TypedCell* aDiscardPoint)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALSCHAIN,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALCHAIN,_FOOTER_);
   
   m_aDiscardPoint = aDiscardPoint;
 }
@@ -121,7 +121,7 @@ void LocalChain::vDiscardPoint(TypedCell* aDiscardPoint)
 /*----------------------------------------------------------------------------*/
 Local* LocalChain::pLocal(i8 i_Local)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALSCHAIN,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALCHAIN,_FOOTER_);
   
   ASSERT(i_Local >= 0 && i_Local < C_LOCALS_arguments);
   

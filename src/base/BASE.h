@@ -286,6 +286,7 @@ extern d8 C_D8_MID;
 #include "Dir.hpp"
 #include "Fifo.hpp"
 #include "File.hpp"
+#include "LocalFile.hpp"
 #include "PsxThd.hpp"
 #include "Socket.hpp"
 

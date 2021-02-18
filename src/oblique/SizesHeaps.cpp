@@ -298,7 +298,8 @@ SizeHeap gxaSizeHeap[]
   { sizeof(ListExoIter_t<Object>), HT_T_TINY ,0 }, // CN_LISTEXOITER_t
   { sizeof(LoadChunk),          HT_T_LARGE   ,0 }, // CN_LOADCHUNK
   { sizeof(Local),              HT_INVALID   ,0 }, // CN_LOCAL
-  { sizeof(LocalChain),         HT_T_LARGE   ,0 }, // CN_LOCALSCHAIN
+  { sizeof(LocalChain),         HT_T_LARGE   ,0 }, // CN_LOCALCHAIN
+  { sizeof(LocalFile),          HT_INVALID   ,0 }, // CN_LOCALFILE
   { sizeof(Lock),               HT_INVALID   ,0 }, // CN_LOCK
   { sizeof(Log),                HT_INVALID   ,0 }, // CN_LOG
   { sizeof(LogEntry),           HT_INVALID   ,0 }, // CN_LOGENTRY
