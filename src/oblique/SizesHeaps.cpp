@@ -299,6 +299,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(LoadChunk),          HT_T_LARGE   ,0 }, // CN_LOADCHUNK
   { sizeof(Local),              HT_INVALID   ,0 }, // CN_LOCAL
   { sizeof(LocalChain),         HT_T_LARGE   ,0 }, // CN_LOCALCHAIN
+  { sizeof(LocalDir),           HT_INVALID   ,0 }, // CN_LOCALDIR
   { sizeof(LocalFile),          HT_INVALID   ,0 }, // CN_LOCALFILE
   { sizeof(Lock),               HT_INVALID   ,0 }, // CN_LOCK
   { sizeof(Log),                HT_INVALID   ,0 }, // CN_LOG
