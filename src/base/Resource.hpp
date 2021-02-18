@@ -8,11 +8,11 @@ namespace BASE
   class Resource : public Loggable
   {
   protected:
-    Loggable* m_pIsFor;
+    Object* m_pIsFor;
   
   public:
     Resource(eCN eClass);
-    Resource(eCN eClass, Loggable* pIsFor);
+    Resource(eCN eClass, Object* pIsFor);
    ~Resource(void) noexcept(false);
   
     void vFocalOutline(s4K& sOutline);

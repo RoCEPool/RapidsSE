@@ -36,7 +36,7 @@ Resource::Resource(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Resource::Resource(eCN eClassNo, Loggable* pIsFor)
+Resource::Resource(eCN eClassNo, Object* pIsFor)
 : Loggable(eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
