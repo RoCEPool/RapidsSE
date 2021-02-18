@@ -192,6 +192,40 @@ int HeartbeatRcv::iRecv(char *pPacket, size_t iSize) {
 }
 
 
+/**
+ * @brief Checksum Constructor
+ * @details uses 8-bit blocks, it is not affected by byte endianness.
+ * <p>
+ * @param[in] pData  pointer to char buffer
+ * @param[in] iLen   length of data
+ *
+ *
+ * @return none
+ *
+ */
+CheckSum::CheckSum (const byte *pData, size_t iLen)
+{
+  u4 c0 = 0, c1 = 0;
+  m_uValue = 0;
+  /*  Found by solving for c1 overflow: */
+  /* n > 0 and n * (n+1) / 2 * (2^8-1) < (2^32-1). */
+  while (iLen > 0) {
+    size_t blocklen = iLen;
+    if (blocklen > 5002) {
+      blocklen = 5002;
+    }
+    iLen -= blocklen;
+
+    do {
+      c0 = c0 + *pData++;
+      c1 = c1 + c0;
+    } while (--blocklen);
+
+    c0 = c0 % 255;
+    c1 = c1 % 255;
+  }
+  m_uValue = (c1 << 8 | c0);
+}
 
 /*============================================================================*/
 /* end                                                                        */

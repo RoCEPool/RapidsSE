@@ -74,7 +74,8 @@ void Step::vSupervisorCollectInfo(void)
 
 
 
-  xHeartbeat.m_iChecksum = fletcher16((unsigned char *) &xHeartbeat, sizeof(Heartbeat));
+  CheckSum ChecksumValue((unsigned char *) &xHeartbeat, sizeof(Heartbeat));
+  xHeartbeat.m_iChecksum = ChecksumValue.uGetFletcher16();
 
 
   //vTrace("  ** Step::vSupervisorCollectInfo ** fletcher16 %ld\n"_Stz, xHeartbeat.m_iChecksum);

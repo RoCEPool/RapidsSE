@@ -144,8 +144,9 @@ void vHeartInit(void) {
 
       xHeartbeat.m_iChecksum = 0;
       //printf("fletcher16 mychecksum1=%d\n",fletcher16((unsigned char *) &xHeartbeat, sizeof(Heartbeat)));
+      CheckSum ChecksumValue((unsigned char *) &xHeartbeat, sizeof(Heartbeat));
 
-      if (fletcher16((unsigned char *) &xHeartbeat, sizeof(Heartbeat)) == iSaveChk) {
+      if (ChecksumValue.uGetFletcher16() == iSaveChk) {
         xHeartbeat.m_iChecksum = iSaveChk;
         if (gxHeartbeatBuffer.bTryWrite(xHeartbeat)) {
 
