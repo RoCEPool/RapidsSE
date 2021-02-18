@@ -344,6 +344,43 @@ Stz* SeApi::szGet(void)
   return m_sSequence;
 }
 
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* determine whether a catalog exists and return its full name                */
+/*----------------------------------------------------------------------------*/
+RowBuffer* SeApi::pLookupCatalog(Stz* szCatalogName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
+    
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* determine whether a schema exists and return its full name                 */
+/*----------------------------------------------------------------------------*/
+RowBuffer* SeApi::pLookupSchema(Stz* szCatalogName,
+                                Stz* szSchemaName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
+    
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* determine whether a table exists and return its full name                  */
+/*----------------------------------------------------------------------------*/
+RowBuffer* SeApi::pLookupTable(Stz* szCatalogName,
+                               Stz* szSchemaName,
+                               Stz* szTableName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
+    
+  return nullptr;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

@@ -362,6 +362,39 @@
   api::executeRequest
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_LOOKUPCATALOG
+  sPath
+  "
+  define table __lookupCatalog (
+    catalogName   VARCHAR NOT NULL
+  ) ;
+  "
+  api::executeRequest
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_LOOKUPSCHEMA
+  sPath
+  "
+  define table __lookupSchema (
+    catalogName   VARCHAR NOT NULL,
+    schemaName    VARCHAR NOT NULL
+  ) ;
+  "
+  api::executeRequest
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_LOOKUPTABLE
+  sPath
+  "
+  define table __lookupTable (
+    catalogName   VARCHAR NOT NULL,
+    schemaName    VARCHAR NOT NULL,
+    tableName     VARCHAR NOT NULL
+  ) ;
+  "
+  api::executeRequest
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_NODEINFO
   sPath
   "

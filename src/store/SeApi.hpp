@@ -37,6 +37,16 @@ namespace STORE
 
     Stz*   szGet(void);
 
+  
+    RowBuffer* pLookupCatalog(Stz* szCatalogName);
+  
+    RowBuffer* pLookupSchema(Stz* szCatalogName,
+                             Stz* szSchemaName);
+
+    RowBuffer* pLookupTable(Stz* szCatalogName,
+                            Stz* szSchemaName,
+                            Stz* szTableName);
+  
   private:
     
     Footer* aFooter(void);
