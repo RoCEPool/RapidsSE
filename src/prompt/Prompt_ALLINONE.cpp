@@ -2664,13 +2664,11 @@ bool PROMPT::bPrompt_ls(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
 
-  Dir* pDir;
+  LocalDir oDir;
   s256 sDirPath;
   s256 sEntryNm;
   i8 iEntryType;
-  
-  pDir = new Dir(pPrompt);
-                 
+                   
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
 
   ASSERT(pInpTknVec->pGet(0)->bSame("ls"_Stz));
@@ -2680,21 +2678,19 @@ bool PROMPT::bPrompt_ls(SePrompt* pPrompt)
     return false;
   
   // open the current directory
-  if (!pDir->bOpen(sDirPath))
+  if (!oDir.bOpen(sDirPath))
     return false;
   
   // read the current directory and list contents
-  while (pDir->bRead()) {
-    sEntryNm = pDir->szEntryNm();
-    iEntryType = pDir->iEntryType();
+  while (oDir.bRead()) {
+    sEntryNm = oDir.szEntryNm();
+    iEntryType = oDir.iEntryType();
     vTrace("%c %s\n"_Stz, iEntryType == DT_DIR ? 'd' : 'f', sEntryNm.azChar());
   }
   
   // close the current directory
-  pDir->vClose();
-  
-  delete pDir;
-                 
+  oDir.vClose();
+                   
   return true;
 }
 
