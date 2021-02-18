@@ -114,6 +114,7 @@ public:
   void vAstack9(void);
 
   // attachmap
+  void vAttachMapErrorTextFetch(void);
   void vAttachMapOperandsFetch(void);
   void vAttachMapIsLowMemory(void);
   void vAttachMapRegionSizeFetch(void);

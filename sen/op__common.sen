@@ -69,7 +69,27 @@
 /*----------------------------------------------------------------------------*/
 /* create the exec error info set                                             */
 /*----------------------------------------------------------------------------*/
-: op__execErr ( errorMsg severity errorCode )
+: op__execErr ( errorCode )
+
+  params| errorCode |
+
+  // create the infoSetTable for C_TDEF_EXECERRORS
+  C_TDEF_EXECERRORS op__tableDef_infoSet assert
+
+  // create an infoSet operand for commandErrors
+  infoSetTable[] InfoSet[].new
+  OI_EXECERRORS infoSet[].opInfoset!
+
+  errorCode attachmap::errorText@
+  -1
+  errorCode infoSetTable[]
+  InfoSet[].addExecError assert
+;
+
+/*----------------------------------------------------------------------------*/
+/* create the exec error info set                                             */
+/*----------------------------------------------------------------------------*/
+: op__execErrMsg ( errorMsg severity errorCode )
 
   params| errorCode severity errorMsg |
 
@@ -103,8 +123,9 @@
     sFileNm "File '%v' does not exist" str.format
     -1
     EC_INVALID_FILE
-    op__execErr
+    op__execErrMsg
 
+    // pipeout the EXECERROR infoset
     InfoSet[].pipeOut
 
     PipeIn[].delete
@@ -151,10 +172,20 @@
 : op__table ( tableNm -- )
 
   params| sTableNm |
+  0 locals| eErrorCode |
 
   // check in tables folder
   check::folderIsTables not if
-    op.pipelineJob@ ERROR_JOB
+    to eErrorCode
+    eErrorCode op.pipelineJob@ ERROR_JOB
+
+    // create an exec error infoset
+    eErrorCode
+    op__execErr
+
+    // pipeout the EXECERROR infoset
+    InfoSet[].pipeOut
+
     PipeIn[].delete
     Operand[].newErrorMarker
     Operand[].pipeOut
@@ -164,7 +195,16 @@
 
   // table
   sTableNm check::validTableAssembly not if
-    op.pipelineJob@ ERROR_JOB
+    to eErrorCode
+    eErrorCode op.pipelineJob@ ERROR_JOB
+
+    // create an exec error infoset
+    eErrorCode
+    op__execErr
+
+    // pipeout the EXECERROR infoset
+    InfoSet[].pipeOut
+
     PipeIn[].delete
     Operand[].newErrorMarker
     Operand[].pipeOut

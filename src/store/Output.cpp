@@ -292,7 +292,7 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
         i8 iSeverity    = pInfoRow->iColVal_int(1);
         Stz* sErrorText = pInfoRow->szColVal_ofs(2);
 
-        vTrace("%s : ErrorMsg: %s; \n"_Stz,
+        vTrace("error: %s : ErrorMsg: %s; \n"_Stz,
                aEC[eErrorCode] , sErrorText);
 
         AM::vDeleteOperand(pOperand);
