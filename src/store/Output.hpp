@@ -40,6 +40,7 @@ namespace STORE
     void vAssertEmptyQueue(void);
     void vDrainBufferQueue(Session* pSession);
     void vProcessBufferQueue(Session* pSession);
+    void vPrintResult(void);
   
 //  private:
     Operand* pPopBufferQueue_blocking(Session* pSession);
