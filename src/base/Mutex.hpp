@@ -8,7 +8,7 @@ namespace BASE
   class Mutex : public Object
   {
   public:
-    Object* m_pObjectMutexed;
+    Object*    m_pObjectMutexed;
     Loggable*  m_pLockedBy; // by whom is the mutex locked?
     Loggable*  m_pWaitedBy; // for whom is the mutex being waited on?
 
