@@ -37,6 +37,32 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* create the command error info set                                          */
+/*----------------------------------------------------------------------------*/
+: op__cmdErr
+
+  // create the infoSetTable for C_TDEF_COMMANDERRORS
+  C_TDEF_COMMANDERRORS op__tableDef_infoSet assert
+
+  // create an infoSet operand for commandErrors
+  infoSetTable[] InfoSet[].new
+  OI_COMMANDERRORS infoSet[].opInfoset!
+;
+
+/*----------------------------------------------------------------------------*/
+/* create the exec error info set                                             */
+/*----------------------------------------------------------------------------*/
+: op__execErr
+
+  // create the infoSetTable for C_TDEF_EXECERRORS
+  C_TDEF_EXECERRORS op__tableDef_infoSet assert
+
+  // create an infoSet operand for commandErrors
+  infoSetTable[] InfoSet[].new
+  OI_EXECERRORS infoSet[].opInfoset!
+;
+
+/*----------------------------------------------------------------------------*/
 /* verify and set folder to <tableNm> of tabledef                             */
 /*----------------------------------------------------------------------------*/
 : op__file ( fileNm mode -- )
@@ -52,15 +78,11 @@
     File0[].get file.delete assert::stack_0 nullptr File0[].set EC_INVALID_FILE
     op.pipelineJob@ ERROR_JOB !!logError
 
-    // create the infoSetTable for C_TDEF_COMMANDERRORS
-    C_TDEF_COMMANDERRORS op__tableDef_infoSet assert
+    // create an exec error infoset
+    op__execErr
 
-    // create an infoSet operand for commandErrors
-    infoSetTable[] InfoSet[].new
-    OI_COMMANDERRORS infoSet[].opInfoset!
-
-    sFileNm "File '%v' does not exist" str.format -1 -1 -1 EC_INVALID_FILE
-      infoSetTable[] InfoSet[].addCommandError assert
+    sFileNm "File '%v' does not exist" str.format -1 EC_INVALID_FILE
+      infoSetTable[] InfoSet[].addExecError assert
 
     InfoSet[].pipeOut
 
@@ -451,19 +473,6 @@
     then
 
   while assert::stack_0 repeat
-;
-
-/*----------------------------------------------------------------------------*/
-/* create the command error info set                                          */
-/*----------------------------------------------------------------------------*/
-: op__cmdErr
-
-  // create the infoSetTable for C_TDEF_COMMANDERRORS
-  C_TDEF_COMMANDERRORS op__tableDef_infoSet assert
-
-  // create an infoSet operand for commandErrors
-  infoSetTable[] InfoSet[].new
-  OI_COMMANDERRORS infoSet[].opInfoset!
 ;
 
 /*----------------------------------------------------------------------------*/

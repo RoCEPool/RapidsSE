@@ -42,6 +42,7 @@ void Step::vAddSteps_InfoSet(void)
 {
   vAddStep("InfoSet[]"_Stz,                  &Step::vInfoSetGet);
   vAddStep("InfoSet[].addCommandError"_Stz,  &Step::vInfoSetAddCommandError);
+  vAddStep("InfoSet[].addExecError"_Stz,     &Step::vInfoSetAddExecError);
   vAddStep("InfoSet[].addLockStats"_Stz,     &Step::vInfoSetAddLockStats);
   vAddStep("InfoSet[].addNodeInfo"_Stz,      &Step::vInfoSetAddNodeInfo);
   vAddStep("InfoSet[].addProgressUnits"_Stz, &Step::vInfoSetAddProgressUnits);
@@ -100,6 +101,45 @@ void Step::vInfoSetAddCommandError(void)
                                   iSeverity,
                                   iLineNo,
                                   iColumnNo,
+                                  sErrorText.azChar(),
+                                  C_VARGS_END);
+
+  //pRow->vDump(pStreamDef);
+
+  m_pDataStack->vPushInt(pRow ? true : false);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* InfoSet[].addExecError -- add a row to infoset with the exec error         */
+/*----------------------------------------------------------------------------*/
+void Step::vInfoSetAddExecError(void)
+{
+  ENTRY();
+
+  s4K sErrorText;
+
+  // get the table
+  Table* pStreamTable = _pTable(m_pDataStack->pPopPtr(__func__));
+
+  // get the streamDef from the table
+  StreamDef* pStreamDef = pStreamTable->pStreamDef();
+
+  InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
+  pInfoSet->vOpInfoSet(OI_EXECERRORS);
+
+  // get the error information
+  eEC eErrorCode = (eEC) m_pDataStack->iPopInt(__func__);
+  i8 iSeverity = m_pDataStack->iPopInt(__func__);
+  m_pDataStack->vPopStr(sErrorText, __func__);
+
+  Grid* pGrid = AM::pGrid();
+
+  Row* pRow = pInfoSet->pAllotRow(pStreamDef,
+                                  C_VARGS_BEGIN,
+                                  eErrorCode,
+                                  iSeverity,
                                   sErrorText.azChar(),
                                   C_VARGS_END);
 

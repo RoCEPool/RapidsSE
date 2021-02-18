@@ -284,6 +284,19 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
 
         AM::vDeleteOperand(pOperand);
       }
+      else if (pInfoSet->szInfoSetNm()->bSame(C_TDEF_EXECERRORS)) {
+
+        Row *pInfoRow = pInfoSet->aFirstRow();
+
+        eEC eErrorCode  = (eEC)pInfoRow->iColVal_int(0);
+        i8 iSeverity    = pInfoRow->iColVal_int(1);
+        Stz* sErrorText = pInfoRow->szColVal_ofs(2);
+
+        vTrace("%s : ErrorMsg: %s; \n"_Stz,
+               aEC[eErrorCode] , sErrorText);
+
+        AM::vDeleteOperand(pOperand);
+      }
       else if (pInfoSet->szInfoSetNm()->bSame(C_TDEF_LOADRESULT)) {
         
         Row* pInfoRow = pInfoSet->aFirstRow();
