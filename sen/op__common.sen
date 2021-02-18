@@ -39,7 +39,7 @@
 /*----------------------------------------------------------------------------*/
 /* create the command error info set                                          */
 /*----------------------------------------------------------------------------*/
-: op__cmdErr
+: op__cmdErrInfoSet
 
   // create the infoSetTable for C_TDEF_COMMANDERRORS
   C_TDEF_COMMANDERRORS op__tableDef_infoSet assert
@@ -50,9 +50,28 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* create the command error info set                                          */
+/*----------------------------------------------------------------------------*/
+: op__cmdErr ( errorMsg severity errorCode )
+
+  params| errorCode severity errorMsg |
+
+  // create the infoSetTable for C_TDEF_COMMANDERRORS
+  C_TDEF_COMMANDERRORS op__tableDef_infoSet assert
+
+  // create an infoSet operand for commandErrors
+  infoSetTable[] InfoSet[].new
+  OI_COMMANDERRORS infoSet[].opInfoset!
+
+  errorMsg severity errorCode infoSetTable[] InfoSet[].addCommandError assert
+;
+
+/*----------------------------------------------------------------------------*/
 /* create the exec error info set                                             */
 /*----------------------------------------------------------------------------*/
-: op__execErr
+: op__execErr ( errorMsg severity errorCode )
+
+  params| errorCode severity errorMsg |
 
   // create the infoSetTable for C_TDEF_EXECERRORS
   C_TDEF_EXECERRORS op__tableDef_infoSet assert
@@ -60,6 +79,8 @@
   // create an infoSet operand for commandErrors
   infoSetTable[] InfoSet[].new
   OI_EXECERRORS infoSet[].opInfoset!
+
+  errorMsg severity errorCode infoSetTable[] InfoSet[].addExecError assert
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -79,10 +100,10 @@
     op.pipelineJob@ ERROR_JOB !!logError
 
     // create an exec error infoset
+    sFileNm "File '%v' does not exist" str.format
+    -1
+    EC_INVALID_FILE
     op__execErr
-
-    sFileNm "File '%v' does not exist" str.format -1 EC_INVALID_FILE
-      infoSetTable[] InfoSet[].addExecError assert
 
     InfoSet[].pipeOut
 
