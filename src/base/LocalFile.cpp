@@ -8,10 +8,10 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(BASE,LocalFile,CN_LOCALFILE)
+//__pCastFunction(BASE,LocalFile,CN_LOCALFILE)
 __aNewFunction(LocalFile,CN_LOCALFILE)
 __vDeleteFunction(LocalFile,CN_LOCALFILE)
-__aFooterFunction(LocalFile)
+//__aFooterFunction(LocalFile)
 
 
 /*----------------------------------------------------------------------------*/
@@ -20,9 +20,6 @@ __aFooterFunction(LocalFile)
 LocalFile::LocalFile(void)
 : File(this)
 {
-  _precondition_(_MAGIC_,CN_LOCALFILE,_FOOTER_);
-    
-  _postcondition_(_MAGIC_,CN_LOCALFILE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -30,7 +27,6 @@ LocalFile::LocalFile(void)
 /*----------------------------------------------------------------------------*/
 LocalFile::~LocalFile(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_LOCALFILE,_FOOTER_);
 }
 
 /*============================================================================*/

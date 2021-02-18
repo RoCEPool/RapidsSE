@@ -306,16 +306,16 @@ void Step::vLogicUnitGenAsm(void)
   s256 sFileName;
   m_pDataStack->vPopStr(sFileName, __func__);
   
-  File* pFile = new File(nullptr);
+  LocalFile oFile;
   
-  bool b = pFile->bOpenRead(sFileName.szStz());
+  bool b = oFile.bOpenRead(sFileName.szStz());
   RASSERT(b);
   
   s16KB sText;
   //MemLib::vZero(sText.azChar(),C_16KB,CN_STRING_T);
 
-  i8 nSize = pFile->iSize();
-  i8 nBytes = pFile->nReadBytes((void*)sText.azChar(), nSize);
+  i8 nSize = oFile.iSize();
+  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
 
   //vTrace("FILE %s\n"_Stz, sFileName.azChar());
 
@@ -326,6 +326,8 @@ void Step::vLogicUnitGenAsm(void)
   bool bResult = ( m_pJob->pLogicUnit_job() )->bGenerateAsm(sText);
   
   m_pDataStack->vPushInt(bResult);
+  
+  oFile.vClose();
   
   EXIT();
 }

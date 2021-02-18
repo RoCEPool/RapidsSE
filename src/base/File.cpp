@@ -86,6 +86,9 @@ File::File(Object* bIsFor)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
   
+  // the trace file is malloc'd
+  RASSERT(bIsFor || m_iViaMalloc);
+  
   if ( ! (0 == m_iViaMalloc || 1 == m_iViaMalloc) )
     m_iViaMalloc = 0;
   

@@ -40,8 +40,8 @@ namespace STORE
   
     static void vExtract(void);
     static void vExtractAsm(void);
-    static bool bExtractAll(File* pFile, char** aazCrs, Stz* startMarker, Stz* endMarker);
-    static void vExtractFragment(File* pFile, char** aazCrs, Stz* startMarker, Stz* endMarker);
+    static bool bExtractAll(LocalFile* pFile, char** aazCrs, Stz* startMarker, Stz* endMarker);
+    static void vExtractFragment(LocalFile* pFile, char** aazCrs, Stz* startMarker, Stz* endMarker);
 
     static eAM  eFindAM(Stz* szEOname);
     static eEO  eFindEO(Stz* szEOname);

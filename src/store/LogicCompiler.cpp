@@ -254,19 +254,19 @@ void LogicCompiler::vExtract(void)
     
   vTrace("LogicCompiler::vExtract -- Extract EO_ Fragments\n"_Stz);
   
-  File* pFile = new File(nullptr);
+  LocalFile oFile;
   
-  bool b = pFile->bOpenRead("../src/store/LogicUnit.cpp"_Stz);
+  bool b = oFile.bOpenRead("../src/store/LogicUnit.cpp"_Stz);
   RASSERT(b);
   
   char* azCrs = gcaEoFragments;
   
   s4K sTok;
-  while (pFile->bNextLiteTok(sTok)) {
+  while (oFile.bNextLiteTok(sTok)) {
     
     if (sTok.bSame("//+ExtractBegin"_Stz)) {
       vTrace("Found +ExtractBegin\n"_Stz);
-      while (bExtractAll(pFile,&azCrs, "case"_Stz, "break;//+endCase"_Stz))
+      while (bExtractAll(&oFile,&azCrs, "case"_Stz, "break;//+endCase"_Stz))
         {;}
     }
   }
@@ -279,15 +279,13 @@ void LogicCompiler::vExtract(void)
     }
   }
   
-  pFile->vClose();
-  
-  delete pFile;
+  oFile.vClose();
 }
 
 /*----------------------------------------------------------------------------*/
 /* extract all EO_ fragments                                                  */
 /*----------------------------------------------------------------------------*/
-bool LogicCompiler::bExtractAll(File* pFile, char** aazCrs, Stz* startMarker, Stz* endMarker)
+bool LogicCompiler::bExtractAll(LocalFile* pFile, char** aazCrs, Stz* startMarker, Stz* endMarker)
 {
   _static_
   
@@ -312,23 +310,23 @@ void LogicCompiler::vExtractAsm(void)
 
   vTrace("LogicCompiler::vExtractAsm -- Extract AM_ Macro Fragments\n"_Stz);
 
-  File* pFile = new File(nullptr);
+  LocalFile oFile;
   char *azCrs = gcaAmMacros;
 
   //bool b = pFile->bOpenRead("../asm/AsmMacros.txt"_Stz);
   for (i8 iMacroFile = 0; iMacroFile < C_MACRO_FILES; iMacroFile++) {
 
     vTrace("File: %s\n"_Stz,gszaAmMacroFiles[iMacroFile]);
-    bool b = pFile->bOpenRead((Stz*)gszaAmMacroFiles[iMacroFile]);
+    bool b = oFile.bOpenRead((Stz*)gszaAmMacroFiles[iMacroFile]);
     RASSERT(b);
 
     s4K sTok;
-    while (pFile->bNextLiteTok(sTok)) {
+    while (oFile.bNextLiteTok(sTok)) {
 
       //vTrace("Found macro\n"_Stz);
-      while (bExtractAll(pFile, &azCrs, "macro"_Stz, "endMacro"_Stz)) { ; }
+      while (bExtractAll(&oFile, &azCrs, "macro"_Stz, "endMacro"_Stz)) { ; }
     }
-    pFile->vClose();
+    oFile.vClose();
   }
 
    if (AM::bVerbose()) {
@@ -337,13 +335,12 @@ void LogicCompiler::vExtractAsm(void)
     }
   }
 
-  delete pFile;
 }
 
 /*----------------------------------------------------------------------------*/
 /* extract an EO_ fragment                                                    */
 /*----------------------------------------------------------------------------*/
-void LogicCompiler::vExtractFragment(File* pFile, char** aazCrs, Stz* startMarker, Stz* endMarker) {
+void LogicCompiler::vExtractFragment(LocalFile* pFile, char** aazCrs, Stz* startMarker, Stz* endMarker) {
   _static_
 
   i8 i_AM = C_UNKNOWN;

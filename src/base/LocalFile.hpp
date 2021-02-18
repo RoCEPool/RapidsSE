@@ -10,7 +10,7 @@ namespace BASE
   private:
   
     // must be last
-    Footer m_xFooter;
+    //Footer m_xFooter;
     
   public:
     void* operator new(size_t);
@@ -19,10 +19,10 @@ namespace BASE
     LocalFile(void);
    ~LocalFile(void) noexcept(false);
       
-    Footer* aFooter(void);
+    //Footer* aFooter(void);
   };
   
-  LocalFile* _pLocalFile(void* aAddr);
+  //LocalFile* _pLocalFile(void* aAddr);
 }
 
 /*============================================================================*/
