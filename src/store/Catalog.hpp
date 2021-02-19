@@ -21,6 +21,8 @@ namespace STORE
     Catalog(void);
    ~Catalog(void) noexcept(false);
    
+    static Stz* szCurrCatalog(DicStack* pDicStack);
+
     Footer* aFooter(void);
   };
   

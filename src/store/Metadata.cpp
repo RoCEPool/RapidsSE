@@ -5,6 +5,28 @@
 #include "BASE.h"
 
 #include "Metadata.hpp"
+#include "Catalog.hpp"
+#include "Schema.hpp"
+
+#include "BucketMap.hpp"
+#include "RowCoder.hpp"
+#include "HeadLine.hpp"
+
+
+#include "Crw.hpp"
+#include "CrwPacker.hpp"
+#include "CrwBuffer.hpp"
+#include "SkipRoots.hpp"
+#include "EntBuffer.hpp"
+#include "IndexTree.hpp"
+
+#include "Crv.hpp"
+#include "CrvBuffer.hpp"
+#include "ReadApi.hpp"
+#include "TablePtn.hpp"
+#include "Table.hpp"
+
+#include "Grid.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -46,7 +68,11 @@ Stz* Metadata::szCurrCatalog(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
     
-  return nullptr;
+  DicStack* pDicStack = AM::pTaskDicStack();
+
+  Stz* szCatalog = Catalog::szCurrCatalog(pDicStack);
+
+  return szCatalog;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -56,7 +82,11 @@ Stz* Metadata::szCurrSchema(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
     
-  return nullptr;
+  DicStack* pDicStack = AM::pTaskDicStack();
+
+  Stz* szSchema = Schema::szCurrSchema(pDicStack);
+  
+  return szSchema;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -66,7 +96,11 @@ Stz* Metadata::szCurrTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
     
-  return nullptr;
+  DicStack* pDicStack = AM::pTaskDicStack();
+
+  Stz* szTable = Table::szCurrTable(pDicStack);
+  
+  return szTable;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -76,6 +110,8 @@ RowBuffer* Metadata::pLookupCatalog(Stz* szCatalogName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
     
+  DicStack* pDicStack = AM::pTaskDicStack();
+
   return nullptr;
 }
 

@@ -70,6 +70,32 @@ Catalog::~Catalog(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get name of current catalog                                                */
+/*----------------------------------------------------------------------------*/
+Stz* Catalog::szCurrCatalog(DicStack* pDicStack)
+{
+  _static_;
+    
+  for (i8 i_Dic = pDicStack->iCount() - 1; i_Dic >= 0; i_Dic--) {
+    
+    Dic* pDic = pDicStack->pPick(i_Dic);
+    Stz* szDicNm = pDic->szDicNm();
+
+    Word* pDicKind = pDic->pDicKind();
+    Stz* szDicKindNm = pDicKind ? pDicKind->szWordNm() : "n/a"_Stz;
+
+    vTrace("[%lld] %s %s\n"_Stz,
+           i_Dic,
+           szDicNm,
+           szDicKindNm);
+    
+  }
+
+  return nullptr;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

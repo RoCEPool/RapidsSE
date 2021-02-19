@@ -234,16 +234,16 @@ void vTest6(void)
   
   pDicStack->vToPathStr(sPath);
   
-  vTrace("path: %s\n"_Stz,sPath.szStz());
-  
-  for (i8 i_Dic = pDicStack->iCount() - 1; i_Dic >= 0; i_Dic--) {
-    Dic* pDic = pDicStack->pPick(i_Dic);
-    Word* pDicKind = pDic->pDicKind();
-    vTrace("[%lld] %s %s\n"_Stz,
-           i_Dic,
-           pDic->szDicNm(),
-           pDicKind ? pDicKind->szWordNm() : "n/a"_Stz);
-  }
+//  vTrace("path: %s\n"_Stz,sPath.szStz());
+//  
+//  for (i8 i_Dic = pDicStack->iCount() - 1; i_Dic >= 0; i_Dic--) {
+//    Dic* pDic = pDicStack->pPick(i_Dic);
+//    Word* pDicKind = pDic->pDicKind();
+//    vTrace("[%lld] %s %s\n"_Stz,
+//           i_Dic,
+//           pDic->szDicNm(),
+//           pDicKind ? pDicKind->szWordNm() : "n/a"_Stz);
+//  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

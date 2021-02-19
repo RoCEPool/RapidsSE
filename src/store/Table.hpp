@@ -5,6 +5,8 @@
 
 #include "Index.hpp"
 
+namespace STORE { class StreamDef; }
+
 namespace STORE
 {
   class Table : public Object
@@ -32,6 +34,7 @@ namespace STORE
     Table(Stz* szTableNm);
    ~Table(void) noexcept(false);
     
+    static Stz*       szCurrTable(DicStack* pDicStack);
     static void       vDump(eCN eClass, Object* pObject, Stz* aTab);
     static Table*     pFindTable(DicStack* pDicStack, Stz* aTableNm);
     static IndexDef*  pIndexDef(DicStack* pDicStack, Stz* aTableNm, i8 iIndexNo);
