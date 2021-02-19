@@ -19,6 +19,15 @@ namespace STORE
     Metadata(eCN eClassNo);
    ~Metadata(void) noexcept(false);
   
+    RowBuffer* pLookupCatalog(Stz* szCatalogName);
+
+    RowBuffer* pLookupSchema(Stz* szCatalogName,
+                             Stz* szSchemaName);
+
+    RowBuffer* pLookupTable(Stz* szCatalogName,
+                            Stz* szSchemaName,
+                            Stz* szTableName);
+
   private:
     Footer* aFooter(void);
   };

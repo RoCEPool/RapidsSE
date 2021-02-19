@@ -37,7 +37,6 @@ namespace STORE
 
     Stz*   szGet(void);
 
-  
     RowBuffer* pLookupCatalog(Stz* szCatalogName);
   
     RowBuffer* pLookupSchema(Stz* szCatalogName,

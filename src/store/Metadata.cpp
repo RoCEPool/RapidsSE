@@ -21,9 +21,9 @@ __aFooterFunction(Metadata)
 Metadata::Metadata(eCN eClassNo)
 : Object(eClassNo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -31,7 +31,7 @@ Metadata::Metadata(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 Metadata::~Metadata(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
 }
 
 
@@ -39,7 +39,38 @@ Metadata::~Metadata(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* determine whether a catalog exists and return its full name                */
+/*----------------------------------------------------------------------------*/
+RowBuffer* Metadata::pLookupCatalog(Stz* szCatalogName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
+    
+  return nullptr;
+}
 
+/*----------------------------------------------------------------------------*/
+/* determine whether a schema exists and return its full name                 */
+/*----------------------------------------------------------------------------*/
+RowBuffer* Metadata::pLookupSchema(Stz* szCatalogName,
+                                   Stz* szSchemaName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
+    
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* determine whether a table exists and return its full name                  */
+/*----------------------------------------------------------------------------*/
+RowBuffer* Metadata::pLookupTable(Stz* szCatalogName,
+                                  Stz* szSchemaName,
+                                  Stz* szTableName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
+    
+  return nullptr;
+}
 
 /*============================================================================*/
 /* end                                                                        */
