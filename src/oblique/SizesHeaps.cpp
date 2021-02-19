@@ -114,6 +114,8 @@
 #include "Log.hpp"
 #include "LogicUnit.hpp"
 
+#include "Metadata.hpp"
+
 #include "Objects.hpp"
 #include "Output.hpp"
 #include "Op.hpp"
@@ -314,6 +316,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Heap), /*correct*/   HT_INVALID   ,0 }, // CN_MEDIUMTRANSIENT
   { sizeof(Heap), /*correct*/   HT_INVALID   ,0 }, // CN_MEDIUMTVIRTUAL
   { sizeof(MemTest),            HT_T_TINY    ,0 }, // CN_MEMTEST
+  { sizeof(Metadata),           HT_T_TINY    ,0 }, // CN_METADATA
   { sizeof(Mutex),              HT_T_TINY    ,0 }, // CN_MUTEX
 
   { 'N' - ('A' - 1),            HT_INVALID   ,0 }, // CN__N__
