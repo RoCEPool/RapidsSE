@@ -228,14 +228,40 @@ void vTest5(void)
 /*----------------------------------------------------------------------------*/
 void vTest6(void)
 {
-//  RefBuffer* pRefBuffer = new RefBuffer(0);
-//  
-//  while (pRefBuffer->aAllotRefSet(2))
-//    {;}
-//  
-//  vDebugPoint();
-//  
-//  delete pRefBuffer;
+  DicStack* pDicStack = AM::pTaskDicStack();
+  
+  s256 sPath;
+  
+  pDicStack->vToPathStr(sPath);
+  
+  vTrace("path: %s\n"_Stz,sPath.szStz());
+  
+  for (i8 i_Dic = pDicStack->iCount() - 1; i_Dic >= 0; i_Dic--) {
+    Dic* pDic = pDicStack->pPick(i_Dic);
+    Word* pDicKind = pDic->pDicKind();
+    vTrace("[%lld] %s %s\n"_Stz,
+           i_Dic,
+           pDic->szDicNm(),
+           pDicKind ? pDicKind->szWordNm() : "n/a"_Stz);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  SeApi* pSeApi = new SeApi;
+
+  Stz* szCurrCatalog = pSeApi->szCurrCatalog();
+  Stz* szCurrSchema  = pSeApi->szCurrSchema();
+  Stz* szCurrTable   = pSeApi->szCurrTable();
+
+  RowBuffer* pRowBuffer;
+  pRowBuffer = pSeApi->pLookupCatalog(szCurrCatalog);
+  delete pRowBuffer;
+  pRowBuffer = pSeApi->pLookupSchema(szCurrCatalog,szCurrSchema);
+  delete pRowBuffer;
+  pRowBuffer = pSeApi->pLookupTable(szCurrCatalog,szCurrSchema,szCurrTable);
+  delete pRowBuffer;
+
+  delete pSeApi;
 }
 
 /*----------------------------------------------------------------------------*/

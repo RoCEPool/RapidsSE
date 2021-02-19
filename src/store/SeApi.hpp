@@ -37,6 +37,9 @@ namespace STORE
 
     Stz*   szGet(void);
 
+    Stz* szCurrCatalog(void);
+    Stz* szCurrSchema(void);
+    Stz* szCurrTable(void);
   
     RowBuffer* pLookupCatalog(Stz* szCatalogName);
   

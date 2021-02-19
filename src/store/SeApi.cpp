@@ -14,6 +14,7 @@
 #include "IndexTree.hpp"
 #include "TablePtn.hpp"
 #include "Table.hpp"
+#include "Metadata.hpp"
 
 #include "AM.hpp"
 
@@ -349,13 +350,67 @@ Stz* SeApi::szGet(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get name of current catalog                                                */
+/*----------------------------------------------------------------------------*/
+Stz* SeApi::szCurrCatalog(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
+    
+  Metadata* pMetadata = new Metadata;
+  
+  Stz* szCatalogNm = pMetadata->szCurrCatalog();
+
+  delete pMetadata;
+
+  return szCatalogNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get name of current schema                                                 */
+/*----------------------------------------------------------------------------*/
+Stz* SeApi::szCurrSchema(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
+    
+  Metadata* pMetadata = new Metadata;
+  
+  Stz* szSchemaNm = pMetadata->szCurrSchema();
+
+  delete pMetadata;
+
+  return szSchemaNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get name of current table                                                  */
+/*----------------------------------------------------------------------------*/
+Stz* SeApi::szCurrTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
+    
+  Metadata* pMetadata = new Metadata;
+  
+  Stz* szTableNm = pMetadata->szCurrTable();
+  
+  delete pMetadata;
+
+  return szTableNm;
+}
+
+/*----------------------------------------------------------------------------*/
 /* determine whether a catalog exists and return its full name                */
 /*----------------------------------------------------------------------------*/
 RowBuffer* SeApi::pLookupCatalog(Stz* szCatalogName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
     
-  return nullptr;
+  Metadata* pMetadata = new Metadata;
+  
+  RowBuffer* pRowBuffer = pMetadata->pLookupCatalog(szCatalogName);
+
+  delete pMetadata;
+
+  return pRowBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -366,7 +421,14 @@ RowBuffer* SeApi::pLookupSchema(Stz* szCatalogName,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
     
-  return nullptr;
+  Metadata* pMetadata = new Metadata;
+ 
+  RowBuffer* pRowBuffer = pMetadata->pLookupSchema(szCatalogName,
+                                                   szSchemaName);
+
+  delete pMetadata;
+
+  return pRowBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -378,7 +440,15 @@ RowBuffer* SeApi::pLookupTable(Stz* szCatalogName,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
     
-  return nullptr;
+  Metadata* pMetadata = new Metadata;
+  
+  RowBuffer* pRowBuffer = pMetadata->pLookupTable(szCatalogName,
+                                                  szSchemaName,
+                                                  szTableName);
+
+  delete pMetadata;
+
+  return pRowBuffer;
 }
 
 /*============================================================================*/

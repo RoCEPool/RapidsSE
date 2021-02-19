@@ -36,7 +36,7 @@ namespace BASE
     Word* pLocateRoutine(CodeCell* aCell);
     Word* pLocateStepWord(fpSTEPFN fpStepFn);
     Word* pRemoveWord(Stz* szWordNm);
-    Dic*  pPick(i8 iDic);
+    Dic*  pPick(i8 i_Dic);
     void  vPop(void);
     void  vPush(Dic* pDic);
     void  vReset(void);
