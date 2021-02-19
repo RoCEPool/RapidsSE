@@ -376,7 +376,7 @@
   sPath
   "
   define table __lookupSchema (
-    catalogName   VARCHAR NOT NULL,
+    catalogName   VARCHAR NOT NULL ,
     schemaName    VARCHAR NOT NULL
   ) ;
   "
@@ -387,8 +387,8 @@
   sPath
   "
   define table __lookupTable (
-    catalogName   VARCHAR NOT NULL,
-    schemaName    VARCHAR NOT NULL,
+    catalogName   VARCHAR NOT NULL ,
+    schemaName    VARCHAR NOT NULL ,
     tableName     VARCHAR NOT NULL
   ) ;
   "

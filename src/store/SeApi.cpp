@@ -14,6 +14,7 @@
 #include "IndexTree.hpp"
 #include "TablePtn.hpp"
 #include "Table.hpp"
+#include "Metadata.hpp"
 
 #include "AM.hpp"
 
@@ -355,7 +356,13 @@ Stz* SeApi::szCurrCatalog(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
     
-  return nullptr;
+  Metadata* pMetadata = new Metadata;
+  
+  Stz* szCatalogNm = pMetadata->szCurrCatalog();
+
+  delete pMetadata;
+
+  return szCatalogNm;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -365,7 +372,13 @@ Stz* SeApi::szCurrSchema(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
     
-  return nullptr;
+  Metadata* pMetadata = new Metadata;
+  
+  Stz* szSchemaNm = pMetadata->szCurrSchema();
+
+  delete pMetadata;
+
+  return szSchemaNm;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -375,7 +388,13 @@ Stz* SeApi::szCurrTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
     
-  return nullptr;
+  Metadata* pMetadata = new Metadata;
+  
+  Stz* szTableNm = pMetadata->szCurrTable();
+  
+  delete pMetadata;
+
+  return szTableNm;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -385,7 +404,13 @@ RowBuffer* SeApi::pLookupCatalog(Stz* szCatalogName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
     
-  return nullptr;
+  Metadata* pMetadata = new Metadata;
+  
+  RowBuffer* pRowBuffer = pMetadata->pLookupCatalog(szCatalogName);
+
+  delete pMetadata;
+
+  return pRowBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -396,7 +421,14 @@ RowBuffer* SeApi::pLookupSchema(Stz* szCatalogName,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
     
-  return nullptr;
+  Metadata* pMetadata = new Metadata;
+ 
+  RowBuffer* pRowBuffer = pMetadata->pLookupSchema(szCatalogName,
+                                                   szSchemaName);
+
+  delete pMetadata;
+
+  return pRowBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -408,7 +440,15 @@ RowBuffer* SeApi::pLookupTable(Stz* szCatalogName,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
     
-  return nullptr;
+  Metadata* pMetadata = new Metadata;
+  
+  RowBuffer* pRowBuffer = pMetadata->pLookupTable(szCatalogName,
+                                                  szSchemaName,
+                                                  szTableName);
+
+  delete pMetadata;
+
+  return pRowBuffer;
 }
 
 /*============================================================================*/

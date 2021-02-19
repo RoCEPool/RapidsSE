@@ -244,6 +244,24 @@ void vTest6(void)
            pDic->szDicNm(),
            pDicKind ? pDicKind->szWordNm() : "n/a"_Stz);
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  SeApi* pSeApi = new SeApi;
+
+  Stz* szCurrCatalog = pSeApi->szCurrCatalog();
+  Stz* szCurrSchema  = pSeApi->szCurrSchema();
+  Stz* szCurrTable   = pSeApi->szCurrTable();
+
+  RowBuffer* pRowBuffer;
+  pRowBuffer = pSeApi->pLookupCatalog(szCurrCatalog);
+  delete pRowBuffer;
+  pRowBuffer = pSeApi->pLookupSchema(szCurrCatalog,szCurrSchema);
+  delete pRowBuffer;
+  pRowBuffer = pSeApi->pLookupTable(szCurrCatalog,szCurrSchema,szCurrTable);
+  delete pRowBuffer;
+
+  delete pSeApi;
 }
 
 /*----------------------------------------------------------------------------*/

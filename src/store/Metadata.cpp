@@ -18,8 +18,8 @@ __aFooterFunction(Metadata)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Metadata::Metadata(eCN eClassNo)
-: Object(eClassNo)
+Metadata::Metadata(void)
+: Object(CN_METADATA)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
   

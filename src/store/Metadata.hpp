@@ -16,7 +16,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Metadata(eCN eClassNo);
+    Metadata(void);
    ~Metadata(void) noexcept(false);
   
     Stz* szCurrCatalog(void);
