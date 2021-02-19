@@ -96,6 +96,7 @@ void Step::vInfoSetAddCommandError(void)
 
   Row* pRow = pInfoSet->pAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
+                                  pGrid->pThisNode()->szNodeNm(),
                                   eErrorCode,
                                   iLineNo,
                                   iColumnNo,
@@ -135,6 +136,7 @@ void Step::vInfoSetAddExecError(void)
 
   Row* pRow = pInfoSet->pAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
+                                  pGrid->pThisNode()->szNodeNm(),
                                   eErrorCode,
                                   sErrorText.azChar(),
                                   C_VARGS_END);

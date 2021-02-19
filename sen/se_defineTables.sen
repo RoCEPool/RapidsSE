@@ -45,6 +45,7 @@
   sPath
   "
   define table __commandErrors (
+    nodeName       VARCHAR NOT NULL ,
     errorCode      INTEGER NOT NULL ,
     line           INTEGER NOT NULL ,
     column         INTEGER NOT NULL ,
@@ -74,6 +75,7 @@
   sPath
   "
   define table __execErrors (
+    nodeName       VARCHAR NOT NULL ,
     errorCode      INTEGER NOT NULL ,
     text           VARCHAR NOT NULL
   ) ;

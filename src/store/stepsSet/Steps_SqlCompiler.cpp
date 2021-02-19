@@ -7,6 +7,8 @@
 #include "EnterExit.h"
 #include "StepAccum.hpp"
 #include "Steps.hpp"
+#include "Grid.hpp"
+#include "Node.hpp"
 
 #include "InfoSet.hpp"
 
@@ -106,7 +108,9 @@ void Step::vSqlCompilerParser(void)
   } catch (Parser::SyntaxException& e) {
     //vTrace("SyntaxException at %lld:%lld : %s\n"_Stz, e.iLine(), e.iColumn(), e.szError());
     InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
+    Grid* pGrid = AM::pGrid();
     Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+                                    pGrid->pThisNode()->szNodeNm(),
                                     EC_SYNTAX_ERROR,
                                     e.iLine(),
                                     e.iColumn(),
@@ -118,8 +122,10 @@ void Step::vSqlCompilerParser(void)
 
   } catch (Parser::SemanticException& e) {
     //vTrace("SemanticException: %s\n"_Stz, e.szError());
+    Grid* pGrid = AM::pGrid();
     InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
     Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+                                    pGrid->pThisNode()->szNodeNm(),
                                     EC_SEMANTIC_ERROR,
                                     0,
                                     0,

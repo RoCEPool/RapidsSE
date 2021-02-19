@@ -308,13 +308,14 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
 
         Row *pInfoRow = pInfoSet->aFirstRow();
 
-        eEC eErrorCode  = (eEC)pInfoRow->iColVal_int(0);
-        i8 iLineNo      = pInfoRow->iColVal_int(1);
-        i8 iColumnNo    = pInfoRow->iColVal_int(2);
-        Stz* sErrorText = pInfoRow->szColVal_ofs(3);
+        Stz* sNodeName  = pInfoRow->szColVal_ofs(0);
+        eEC eErrorCode  = (eEC)pInfoRow->iColVal_int(1);
+        i8 iLineNo      = pInfoRow->iColVal_int(2);
+        i8 iColumnNo    = pInfoRow->iColVal_int(3);
+        Stz* sErrorText = pInfoRow->szColVal_ofs(4);
 
-        vTrace("%s : Line: %lld; Column: %lld; ErrorMsg: %s; \n"_Stz,
-               aEC[eErrorCode] , iLineNo, iColumnNo, sErrorText);
+        vTrace("%s: Error : %s ; Line: %lld; Column: %lld; %s; \n"_Stz,
+               sNodeName, aEC[eErrorCode] , iLineNo, iColumnNo, sErrorText);
 
         AM::vDeleteOperand(pOperand);
       }
@@ -322,11 +323,12 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
 
         Row *pInfoRow = pInfoSet->aFirstRow();
 
-        eEC eErrorCode  = (eEC)pInfoRow->iColVal_int(0);
-        Stz* sErrorText = pInfoRow->szColVal_ofs(1);
+        Stz* sNodeName  = pInfoRow->szColVal_ofs(0);
+        eEC eErrorCode  = (eEC)pInfoRow->iColVal_int(1);
+        Stz* sErrorText = pInfoRow->szColVal_ofs(2);
 
-        vTrace("error: %s : ErrorMsg: %s; \n"_Stz,
-               aEC[eErrorCode] , sErrorText);
+        vTrace("%s: Error : %s ; %s; \n"_Stz,
+               sNodeName, aEC2[eErrorCode] , sErrorText);
 
         AM::vDeleteOperand(pOperand);
       }
