@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Metadata.hpp -- Metadata                                                       */
+/* Metadata.hpp -- Metadata                                                   */
 /*============================================================================*/
 #pragma once
 
@@ -19,6 +19,10 @@ namespace STORE
     Metadata(eCN eClassNo);
    ~Metadata(void) noexcept(false);
   
+    Stz* szCurrCatalog(void);
+    Stz* szCurrSchema(void);
+    Stz* szCurrTable(void);
+
     RowBuffer* pLookupCatalog(Stz* szCatalogName);
 
     RowBuffer* pLookupSchema(Stz* szCatalogName,

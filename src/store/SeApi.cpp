@@ -349,6 +349,36 @@ Stz* SeApi::szGet(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get name of current catalog                                                */
+/*----------------------------------------------------------------------------*/
+Stz* SeApi::szCurrCatalog(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
+    
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get name of current schema                                                 */
+/*----------------------------------------------------------------------------*/
+Stz* SeApi::szCurrSchema(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
+    
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get name of current table                                                  */
+/*----------------------------------------------------------------------------*/
+Stz* SeApi::szCurrTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
+    
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* determine whether a catalog exists and return its full name                */
 /*----------------------------------------------------------------------------*/
 RowBuffer* SeApi::pLookupCatalog(Stz* szCatalogName)
