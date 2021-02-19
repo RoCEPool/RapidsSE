@@ -309,10 +309,9 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
         Row *pInfoRow = pInfoSet->aFirstRow();
 
         eEC eErrorCode  = (eEC)pInfoRow->iColVal_int(0);
-        i8 iSeverity    = pInfoRow->iColVal_int(1);
-        i8 iLineNo      = pInfoRow->iColVal_int(2);
-        i8 iColumnNo    = pInfoRow->iColVal_int(3);
-        Stz* sErrorText = pInfoRow->szColVal_ofs(4);
+        i8 iLineNo      = pInfoRow->iColVal_int(1);
+        i8 iColumnNo    = pInfoRow->iColVal_int(2);
+        Stz* sErrorText = pInfoRow->szColVal_ofs(3);
 
         vTrace("%s : Line: %lld; Column: %lld; ErrorMsg: %s; \n"_Stz,
                aEC[eErrorCode] , iLineNo, iColumnNo, sErrorText);
@@ -324,8 +323,7 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
         Row *pInfoRow = pInfoSet->aFirstRow();
 
         eEC eErrorCode  = (eEC)pInfoRow->iColVal_int(0);
-        i8 iSeverity    = pInfoRow->iColVal_int(1);
-        Stz* sErrorText = pInfoRow->szColVal_ofs(2);
+        Stz* sErrorText = pInfoRow->szColVal_ofs(1);
 
         vTrace("error: %s : ErrorMsg: %s; \n"_Stz,
                aEC[eErrorCode] , sErrorText);

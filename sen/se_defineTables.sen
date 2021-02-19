@@ -46,7 +46,6 @@
   "
   define table __commandErrors (
     errorCode      INTEGER NOT NULL ,
-    severity       INTEGER NOT NULL ,
     line           INTEGER NOT NULL ,
     column         INTEGER NOT NULL ,
     text           VARCHAR NOT NULL
@@ -76,7 +75,6 @@
   "
   define table __execErrors (
     errorCode      INTEGER NOT NULL ,
-    severity       INTEGER NOT NULL ,
     text           VARCHAR NOT NULL
   ) ;
   "

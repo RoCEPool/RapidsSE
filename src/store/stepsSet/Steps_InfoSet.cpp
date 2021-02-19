@@ -88,7 +88,6 @@ void Step::vInfoSetAddCommandError(void)
 
   // get the error information
   eEC eErrorCode = (eEC) m_pDataStack->iPopInt(__func__);
-  i8 iSeverity = m_pDataStack->iPopInt(__func__);
   i8 iLineNo = m_pDataStack->iPopInt(__func__);
   i8 iColumnNo = m_pDataStack->iPopInt(__func__);
   m_pDataStack->vPopStr(sErrorText, __func__);
@@ -98,7 +97,6 @@ void Step::vInfoSetAddCommandError(void)
   Row* pRow = pInfoSet->pAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
                                   eErrorCode,
-                                  iSeverity,
                                   iLineNo,
                                   iColumnNo,
                                   sErrorText.azChar(),
@@ -131,7 +129,6 @@ void Step::vInfoSetAddExecError(void)
 
   // get the error information
   eEC eErrorCode = (eEC) m_pDataStack->iPopInt(__func__);
-  i8 iSeverity = m_pDataStack->iPopInt(__func__);
   m_pDataStack->vPopStr(sErrorText, __func__);
 
   Grid* pGrid = AM::pGrid();
@@ -139,7 +136,6 @@ void Step::vInfoSetAddExecError(void)
   Row* pRow = pInfoSet->pAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
                                   eErrorCode,
-                                  iSeverity,
                                   sErrorText.azChar(),
                                   C_VARGS_END);
 

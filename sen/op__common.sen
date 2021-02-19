@@ -52,9 +52,9 @@
 /*----------------------------------------------------------------------------*/
 /* create the command error info set                                          */
 /*----------------------------------------------------------------------------*/
-: op__cmdErr ( errorMsg severity errorCode )
+: op__cmdErr ( errorMsg errorCode )
 
-  params| errorCode severity errorMsg |
+  params| errorCode errorMsg |
 
   // create the infoSetTable for C_TDEF_COMMANDERRORS
   C_TDEF_COMMANDERRORS op__tableDef_infoSet assert
@@ -63,7 +63,7 @@
   infoSetTable[] InfoSet[].new
   OI_COMMANDERRORS infoSet[].opInfoset!
 
-  errorMsg severity errorCode infoSetTable[] InfoSet[].addCommandError assert
+  errorMsg errorCode infoSetTable[] InfoSet[].addCommandError assert
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -81,7 +81,6 @@
   OI_EXECERRORS infoSet[].opInfoset!
 
   errorCode attachmap::errorText@
-  -1
   errorCode infoSetTable[]
   InfoSet[].addExecError assert
 ;
@@ -89,9 +88,9 @@
 /*----------------------------------------------------------------------------*/
 /* create the exec error info set                                             */
 /*----------------------------------------------------------------------------*/
-: op__execErrMsg ( errorMsg severity errorCode )
+: op__execErrMsg ( errorMsg errorCode )
 
-  params| errorCode severity errorMsg |
+  params| errorCode errorMsg |
 
   // create the infoSetTable for C_TDEF_EXECERRORS
   C_TDEF_EXECERRORS op__tableDef_infoSet assert
@@ -100,7 +99,7 @@
   infoSetTable[] InfoSet[].new
   OI_EXECERRORS infoSet[].opInfoset!
 
-  errorMsg severity errorCode infoSetTable[] InfoSet[].addExecError assert
+  errorMsg errorCode infoSetTable[] InfoSet[].addExecError assert
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -121,7 +120,6 @@
 
     // create an exec error infoset
     sFileNm "File '%v' does not exist" str.format
-    -1
     EC_INVALID_FILE
     op__execErrMsg
 
