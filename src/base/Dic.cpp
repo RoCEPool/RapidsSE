@@ -260,6 +260,21 @@ bool Dic::bIsCatalog(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this dic a folder?                                                      */
+/*----------------------------------------------------------------------------*/
+bool Dic::bIsFolder(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+  
+  Word* pKind = pDicKind();
+  
+  if (pKind && pKind->szWordNm()->bSame("\\folder"_Stz))
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is given name?                                                             */
 /*----------------------------------------------------------------------------*/
 bool Dic::bIsName(Stz* szDicNm)
@@ -306,6 +321,21 @@ bool Dic::bIsTable(void)
   Word* pKind = pDicKind();
   
   if (pKind && pKind->szWordNm()->bSame("\\table"_Stz))
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this dic a tenant?                                                      */
+/*----------------------------------------------------------------------------*/
+bool Dic::bIsTenant(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+  
+  Word* pKind = pDicKind();
+  
+  if (pKind && pKind->szWordNm()->bSame("\\tenant"_Stz))
     return true;
   
   return false;

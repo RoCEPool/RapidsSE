@@ -40,8 +40,10 @@ namespace BASE
     bool  bHasWords(void);
     bool  bIsCatalog(void);
     bool  bIsName(Stz* szDicNm);
+    bool  bIsFolder(void);
     bool  bIsSchema(void);
     bool  bIsTable(void);
+    bool  bIsTenant(void);
     Word* pLastWord(void);
     void  vListWords(void);
     Stz*  szDicNm(void);

@@ -398,6 +398,22 @@ Stz* SeApi::szCurrTable(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get name of current tenant                                                 */
+/*----------------------------------------------------------------------------*/
+Stz* SeApi::szCurrTenant(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
+    
+  Metadata* pMetadata = new Metadata;
+  
+  Stz* szTenantNm = pMetadata->szCurrTenant();
+  
+  delete pMetadata;
+
+  return szTenantNm;
+}
+
+/*----------------------------------------------------------------------------*/
 /* determine whether a catalog exists and return its full name                */
 /*----------------------------------------------------------------------------*/
 RowBuffer* SeApi::pLookupCatalog(Stz* szCatalogName)

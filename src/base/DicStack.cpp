@@ -313,6 +313,9 @@ void DicStack::vPrint(void)
            szDicNm,
            szDicKindNm);
     
+    if (pDic->bIsTenant())
+      vTrace(" TENANT\n"_Stz);
+    else
     if (pDic->bIsCatalog())
       vTrace(" CATALOG\n"_Stz);
     else
@@ -321,6 +324,9 @@ void DicStack::vPrint(void)
     else
     if (pDic->bIsTable())
       vTrace(" TABLE\n"_Stz);
+    else
+    if (pDic->bIsFolder())
+      vTrace(" FOLDER\n"_Stz);
     else
       vTrace(" n/a\n"_Stz);
 

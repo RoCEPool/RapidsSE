@@ -229,13 +229,14 @@ void vTest5(void)
 void vTest6(void)
 {
   DicStack* pDicStack = AM::pTaskDicStack();
+  pDicStack->vPrint();
   
-  s256 sPath;
-  
-  pDicStack->vToPathStr(sPath);
+//  s256 sPath;
+//
+//  pDicStack->vToPathStr(sPath);
   
 //  vTrace("path: %s\n"_Stz,sPath.szStz());
-//  
+//
 //  for (i8 i_Dic = pDicStack->iCount() - 1; i_Dic >= 0; i_Dic--) {
 //    Dic* pDic = pDicStack->pPick(i_Dic);
 //    Word* pDicKind = pDic->pDicKind();
@@ -249,9 +250,17 @@ void vTest6(void)
   
   SeApi* pSeApi = new SeApi;
 
+  Stz* szCurrTenant = pSeApi->szCurrTenant();
+  vTrace("TENANT %s\n"_Stz,szCurrTenant);
+
   Stz* szCurrCatalog = pSeApi->szCurrCatalog();
+  vTrace("CATALOG %s\n"_Stz,szCurrCatalog);
+
   Stz* szCurrSchema  = pSeApi->szCurrSchema();
+  vTrace("SCHEMA %s\n"_Stz,szCurrSchema);
+  
   Stz* szCurrTable   = pSeApi->szCurrTable();
+  vTrace("TABLE %s\n"_Stz,szCurrTable);
 
   RowBuffer* pRowBuffer;
   pRowBuffer = pSeApi->pLookupCatalog(szCurrCatalog);

@@ -62,17 +62,60 @@ Metadata::~Metadata(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get current catalog                                                        */
+/*----------------------------------------------------------------------------*/
+Dic* Metadata::pCurrCatalog(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
+    
+  DicStack* pDicStack = AM::pTaskDicStack();
+
+  for (i8 i_Dic = pDicStack->iCount() - 1; i_Dic >= 0; i_Dic--) {
+    
+    Dic* pDic = pDicStack->pPick(i_Dic);
+    
+    if (pDic->bIsCatalog())
+      return pDic;
+
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get name of current catalog                                                */
 /*----------------------------------------------------------------------------*/
 Stz* Metadata::szCurrCatalog(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
     
+  Dic* pDic = pCurrCatalog();
+
+  if (pDic)
+    return pDic->szDicNm();
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current schema                                                         */
+/*----------------------------------------------------------------------------*/
+Dic* Metadata::pCurrSchema(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
+    
   DicStack* pDicStack = AM::pTaskDicStack();
 
-  Stz* szCatalog = Catalog::szCurrCatalog(pDicStack);
+  for (i8 i_Dic = pDicStack->iCount() - 1; i_Dic >= 0; i_Dic--) {
+    
+    Dic* pDic = pDicStack->pPick(i_Dic);
+    
+    if (pDic->bIsSchema())
+      return pDic;
 
-  return szCatalog;
+  }
+
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -82,11 +125,33 @@ Stz* Metadata::szCurrSchema(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
     
+  Dic* pDic = pCurrSchema();
+
+  if (pDic)
+    return pDic->szDicNm();
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current table                                                          */
+/*----------------------------------------------------------------------------*/
+Dic* Metadata::pCurrTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
+    
   DicStack* pDicStack = AM::pTaskDicStack();
 
-  Stz* szSchema = Schema::szCurrSchema(pDicStack);
-  
-  return szSchema;
+  for (i8 i_Dic = pDicStack->iCount() - 1; i_Dic >= 0; i_Dic--) {
+    
+    Dic* pDic = pDicStack->pPick(i_Dic);
+    
+    if (pDic->bIsTable())
+      return pDic;
+
+  }
+
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -96,11 +161,48 @@ Stz* Metadata::szCurrTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
     
+  Dic* pDic = pCurrTable();
+
+  if (pDic)
+    return pDic->szDicNm();
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current tenant                                                         */
+/*----------------------------------------------------------------------------*/
+Dic* Metadata::pCurrTenant(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
+    
   DicStack* pDicStack = AM::pTaskDicStack();
 
-  Stz* szTable = Table::szCurrTable(pDicStack);
-  
-  return szTable;
+  for (i8 i_Dic = pDicStack->iCount() - 1; i_Dic >= 0; i_Dic--) {
+    
+    Dic* pDic = pDicStack->pPick(i_Dic);
+    
+    if (pDic->bIsTenant())
+      return pDic;
+
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get name of current table                                                  */
+/*----------------------------------------------------------------------------*/
+Stz* Metadata::szCurrTenant(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
+    
+  Dic* pDic = pCurrTenant();
+
+  if (pDic)
+    return pDic->szDicNm();
+
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
