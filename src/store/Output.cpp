@@ -251,6 +251,8 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
   
 
   bool bContinue = true;
+  bool bCmdErrReported = false;
+  bool bExecErrReported = false;
   
   //SP_DataBuffer spDataBuffer;
     
@@ -306,30 +308,40 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
       ASSERT( ! pInfoSet->szInfoSetNm()->bSame(C_NO_NAME) );
       if (pInfoSet->szInfoSetNm()->bSame(C_TDEF_COMMANDERRORS)) {
 
-        Row *pInfoRow = pInfoSet->aFirstRow();
+        if ( ! bCmdErrReported) {
+          Row *pInfoRow = pInfoSet->aFirstRow();
 
-        Stz* sNodeName  = pInfoRow->szColVal_ofs(0);
-        eEC eErrorCode  = (eEC)pInfoRow->iColVal_int(1);
-        i8 iLineNo      = pInfoRow->iColVal_int(2);
-        i8 iColumnNo    = pInfoRow->iColVal_int(3);
-        Stz* sErrorText = pInfoRow->szColVal_ofs(4);
+          Stz *sNodeName = pInfoRow->szColVal_ofs(0);
+          eEC eErrorCode = (eEC) pInfoRow->iColVal_int(1);
+          i8 iLineNo = pInfoRow->iColVal_int(2);
+          i8 iColumnNo = pInfoRow->iColVal_int(3);
+          Stz *sErrorText = pInfoRow->szColVal_ofs(4);
 
-        vTrace("%s: Error : %s; Line: %lld; Column: %lld; %s; \n"_Stz,
-               sNodeName, aEC2[eErrorCode] , iLineNo, iColumnNo, sErrorText);
-
+          vTrace("%s: Error : %s; Line: %lld; Column: %lld; %s; \n"_Stz,
+                 sNodeName, aEC2[eErrorCode], iLineNo, iColumnNo, sErrorText);
+          bCmdErrReported = true;
+        }
+        else {
+          // LOG error
+        }
         AM::vDeleteOperand(pOperand);
       }
       else if (pInfoSet->szInfoSetNm()->bSame(C_TDEF_EXECERRORS)) {
 
-        Row *pInfoRow = pInfoSet->aFirstRow();
+        if ( ! bExecErrReported) {
+          Row *pInfoRow = pInfoSet->aFirstRow();
 
-        Stz* sNodeName  = pInfoRow->szColVal_ofs(0);
-        eEC eErrorCode  = (eEC)pInfoRow->iColVal_int(1);
-        Stz* sErrorText = pInfoRow->szColVal_ofs(2);
+          Stz *sNodeName = pInfoRow->szColVal_ofs(0);
+          eEC eErrorCode = (eEC) pInfoRow->iColVal_int(1);
+          Stz *sErrorText = pInfoRow->szColVal_ofs(2);
 
-        vTrace("%s: Error : %s; %s; \n"_Stz,
-               sNodeName, aEC2[eErrorCode] , sErrorText);
-
+          vTrace("%s: Error : %s; %s; \n"_Stz,
+                 sNodeName, aEC2[eErrorCode], sErrorText);
+          bExecErrReported = true;
+        }
+        else {
+          // LOG error
+        }
         AM::vDeleteOperand(pOperand);
       }
       else if (pInfoSet->szInfoSetNm()->bSame(C_TDEF_LOADRESULT)) {
