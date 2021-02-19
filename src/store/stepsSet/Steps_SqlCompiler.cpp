@@ -108,7 +108,6 @@ void Step::vSqlCompilerParser(void)
     InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
     Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
                                     EC_SYNTAX_ERROR,
-                                    0,
                                     e.iLine(),
                                     e.iColumn(),
                                     e.szError(),
@@ -122,7 +121,6 @@ void Step::vSqlCompilerParser(void)
     InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
     Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
                                     EC_SEMANTIC_ERROR,
-                                    0,
                                     0,
                                     0,
                                     e.szError(),
