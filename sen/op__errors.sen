@@ -1,0 +1,92 @@
+/*============================================================================*/
+/* op__errors.sen -- operator error words                                     */
+/*============================================================================*/
+
+" op__errors.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* create the command error info set                                          */
+/*----------------------------------------------------------------------------*/
+: op__cmdErrInfoSet
+
+  // create the infoSetTable for C_TDEF_COMMANDERRORS
+  C_TDEF_COMMANDERRORS "op__tableDef_infoSet" find execute assert
+
+  // create an infoSet operand for commandErrors
+  infoSetTable[] InfoSet[].new
+  OI_COMMANDERRORS infoSet[].opInfoset!
+;
+
+/*----------------------------------------------------------------------------*/
+/* create the command error info set                                          */
+/*----------------------------------------------------------------------------*/
+: op__cmdErr ( errorMsg errorCode )
+
+  params| errorCode errorMsg |
+
+  // create the infoSetTable for C_TDEF_COMMANDERRORS
+  C_TDEF_COMMANDERRORS "op__tableDef_infoSet" find execute assert
+
+  // create an infoSet operand for commandErrors
+  infoSetTable[] InfoSet[].new
+  OI_COMMANDERRORS infoSet[].opInfoset!
+
+  errorMsg errorCode infoSetTable[] InfoSet[].addCommandError assert
+
+  // pipeout the CMDERROR infoset
+  InfoSet[].pipeOut
+
+  Operand[].newErrorMarker
+  Operand[].pipeOut
+;
+
+/*----------------------------------------------------------------------------*/
+/* create the exec error info set                                             */
+/*----------------------------------------------------------------------------*/
+: op__execErr ( errorCode )
+
+  params| errorCode |
+
+  // create the infoSetTable for C_TDEF_EXECERRORS
+  C_TDEF_EXECERRORS "op__tableDef_infoSet" find execute assert
+
+  // create an infoSet operand for commandErrors
+  infoSetTable[] InfoSet[].new
+  OI_EXECERRORS infoSet[].opInfoset!
+
+  errorCode attachmap::errorText@
+  errorCode infoSetTable[] InfoSet[].addExecError assert
+
+  // pipeout the EXECERROR infoset
+  InfoSet[].pipeOut
+
+  Operand[].newErrorMarker
+  Operand[].pipeOut
+;
+
+/*----------------------------------------------------------------------------*/
+/* create the exec error info set                                             */
+/*----------------------------------------------------------------------------*/
+: op__execErrMsg ( errorMsg errorCode )
+
+  params| errorCode errorMsg |
+
+  // create the infoSetTable for C_TDEF_EXECERRORS
+  C_TDEF_EXECERRORS "op__tableDef_infoSet" find execute assert
+
+  // create an infoSet operand for commandErrors
+  infoSetTable[] InfoSet[].new
+  OI_EXECERRORS infoSet[].opInfoset!
+
+  errorMsg errorCode infoSetTable[] InfoSet[].addExecError assert
+
+  // pipeout the EXECERROR infoset
+  InfoSet[].pipeOut
+
+  Operand[].newErrorMarker
+  Operand[].pipeOut
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

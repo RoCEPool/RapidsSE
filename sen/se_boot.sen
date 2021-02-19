@@ -74,6 +74,7 @@ assert::stack_0
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 "se_boot 4" .
+        "op__errors.sen"              include
         "op__defHandlers.sen"         include
         "op__common.sen"              include
         "op__EOCommon.sen"            include

@@ -37,65 +37,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* create the command error info set                                          */
-/*----------------------------------------------------------------------------*/
-: op__cmdErrInfoSet
-
-  // create the infoSetTable for C_TDEF_COMMANDERRORS
-  C_TDEF_COMMANDERRORS op__tableDef_infoSet assert
-
-  // create an infoSet operand for commandErrors
-  infoSetTable[] InfoSet[].new
-  OI_COMMANDERRORS infoSet[].opInfoset!
-;
-
-/*----------------------------------------------------------------------------*/
-/* create the command error info set                                          */
-/*----------------------------------------------------------------------------*/
-: op__cmdErr ( errorMsg errorCode )
-
-  params| errorCode errorMsg |
-
-  // create the infoSetTable for C_TDEF_COMMANDERRORS
-  C_TDEF_COMMANDERRORS op__tableDef_infoSet assert
-
-  // create an infoSet operand for commandErrors
-  infoSetTable[] InfoSet[].new
-  OI_COMMANDERRORS infoSet[].opInfoset!
-
-  errorMsg errorCode infoSetTable[] InfoSet[].addCommandError assert
-
-  // pipeout the CMDERROR infoset
-  InfoSet[].pipeOut
-
-  Operand[].newErrorMarker
-  Operand[].pipeOut
-;
-
-/*----------------------------------------------------------------------------*/
-/* create the exec error info set                                             */
-/*----------------------------------------------------------------------------*/
-: op__execErrMsg ( errorMsg errorCode )
-
-  params| errorCode errorMsg |
-
-  // create the infoSetTable for C_TDEF_EXECERRORS
-  C_TDEF_EXECERRORS op__tableDef_infoSet assert
-
-  // create an infoSet operand for commandErrors
-  infoSetTable[] InfoSet[].new
-  OI_EXECERRORS infoSet[].opInfoset!
-
-  errorMsg errorCode infoSetTable[] InfoSet[].addExecError assert
-
-  // pipeout the EXECERROR infoset
-  InfoSet[].pipeOut
-
-  Operand[].newErrorMarker
-  Operand[].pipeOut
-;
-
-/*----------------------------------------------------------------------------*/
 /* verify and set folder to <tableNm> of tabledef                             */
 /*----------------------------------------------------------------------------*/
 : op__file ( fileNm mode -- )
@@ -168,9 +109,7 @@
     errorCode op.pipelineJob@ ERROR_JOB
 
     // create an exec error infoset
-    errorCode attachmap::errorText@
-    errorCode
-    op__execErrMsg
+    errorCode op__execErr
 
     PipeIn[].delete
 
@@ -219,9 +158,7 @@
     errorCode op.pipelineJob@ ERROR_JOB
 
     // create an exec error infoset
-    errorCode attachmap::errorText@
-    errorCode
-    op__execErrMsg
+    errorCode op__execErr
 
     PipeIn[].delete
 
@@ -242,9 +179,7 @@
     errorCode op.pipelineJob@ ERROR_JOB
 
     // create an exec error infoset
-    errorCode attachmap::errorText@
-    errorCode
-    op__execErrMsg
+    errorCode op__execErr
 
     PipeIn[].delete
 
@@ -282,9 +217,7 @@
     errorCode op.pipelineJob@ ERROR_JOB
 
     // create an exec error infoset
-    errorCode attachmap::errorText@
-    errorCode
-    op__execErrMsg
+    errorCode op__execErr
 
     PipeIn[].delete
 
@@ -325,9 +258,7 @@
     errorCode op.pipelineJob@ ERROR_JOB
 
     // create an exec error infoset
-    errorCode attachmap::errorText@
-    errorCode
-    op__execErrMsg
+    errorCode op__execErr
 
     PipeIn[].delete
 
