@@ -170,16 +170,17 @@
 : op__table ( tableNm -- )
 
   params| sTableNm |
-  0 locals| eErrorCode |
+  0 locals| errorCode |
 
   // check in tables folder
   check::folderIsTables not if
-    to eErrorCode
-    eErrorCode op.pipelineJob@ ERROR_JOB
+    to errorCode
+    errorCode op.pipelineJob@ ERROR_JOB
 
     // create an exec error infoset
-    eErrorCode
-    op__execErr
+    errorCode attachmap::errorText@
+    errorCode
+    op__execErrMsg
 
     // pipeout the EXECERROR infoset
     InfoSet[].pipeOut
@@ -193,12 +194,13 @@
 
   // table
   sTableNm check::validTableAssembly not if
-    to eErrorCode
-    eErrorCode op.pipelineJob@ ERROR_JOB
+    to errorCode
+    errorCode op.pipelineJob@ ERROR_JOB
 
     // create an exec error infoset
-    eErrorCode
-    op__execErr
+    sTableNm errorCode attachmap::errorText@ str.format
+    errorCode
+    op__execErrMsg
 
     // pipeout the EXECERROR infoset
     InfoSet[].pipeOut

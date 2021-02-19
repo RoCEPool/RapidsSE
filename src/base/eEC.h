@@ -558,7 +558,7 @@ static Stz* aErrorMsg[]
         /* */ "no such index"_Stz,
         /* */ "no such node"_Stz,
         /* */ "no such schema"_Stz,
-        /* */ "no such table"_Stz,
+        /* */ "Table '%v' does not exist"_Stz,
         /* */ "no such tenant"_Stz,
         /* */ "no such word"_Stz,
         /* */ "node exists"_Stz,
