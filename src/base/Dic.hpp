@@ -38,7 +38,10 @@ namespace BASE
     Word* pFindStep(fpSTEPFN fpStepFn);
     Word* pFirstWord(void);
     bool  bHasWords(void);
+    bool  bIsCatalog(void);
     bool  bIsName(Stz* szDicNm);
+    bool  bIsSchema(void);
+    bool  bIsTable(void);
     Word* pLastWord(void);
     void  vListWords(void);
     Stz*  szDicNm(void);

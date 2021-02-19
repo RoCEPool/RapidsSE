@@ -245,6 +245,21 @@ bool Dic::bHasWords(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this dic a catalog?                                                     */
+/*----------------------------------------------------------------------------*/
+bool Dic::bIsCatalog(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+  
+  Word* pKind = pDicKind();
+  
+  if (pKind && pKind->szWordNm()->bSame("\\catalog"_Stz))
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is given name?                                                             */
 /*----------------------------------------------------------------------------*/
 bool Dic::bIsName(Stz* szDicNm)
@@ -257,6 +272,21 @@ bool Dic::bIsName(Stz* szDicNm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this dic a schema?                                                      */
+/*----------------------------------------------------------------------------*/
+bool Dic::bIsSchema(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+  
+  Word* pKind = pDicKind();
+  
+  if (pKind && pKind->szWordNm()->bSame("\\schema"_Stz))
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get last word                                                              */
 /*----------------------------------------------------------------------------*/
 Word* Dic::pLastWord(void)
@@ -264,6 +294,21 @@ Word* Dic::pLastWord(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   return pFirstWord();
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this dic a table?                                                       */
+/*----------------------------------------------------------------------------*/
+bool Dic::bIsTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+  
+  Word* pKind = pDicKind();
+  
+  if (pKind && pKind->szWordNm()->bSame("\\table"_Stz))
+    return true;
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
