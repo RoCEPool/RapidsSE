@@ -19463,6 +19463,7 @@ void Task::vAddMunged(Task* pTask)
     "    PipeIn[].delete\n"
     "    Operand[].newErrorMarker\n"
     "    Operand[].pipeOut\n"
+    "\n"
     "    false\n"
     "  then\n"
     " ;\n"
