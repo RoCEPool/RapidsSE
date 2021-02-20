@@ -294,6 +294,48 @@ void DicStack::vPop(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* print the details of the dic stack                                         */
+/*----------------------------------------------------------------------------*/
+void DicStack::vPrint(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
+
+  for (i8 i_Dic = iCount() - 1; i_Dic >= 0; i_Dic--) {
+    
+    Dic* pDic = pPick(i_Dic);
+    Stz* szDicNm = pDic->szDicNm();
+
+    Word* pDicKind = pDic->pDicKind();
+    Stz* szDicKindNm = pDicKind ? pDicKind->szWordNm() : "n/a"_Stz;
+
+    vTrace("[%lld] %s %s"_Stz,
+           i_Dic,
+           szDicNm,
+           szDicKindNm);
+    
+    if (pDic->bIsTenant())
+      vTrace(" TENANT\n"_Stz);
+    else
+    if (pDic->bIsCatalog())
+      vTrace(" CATALOG\n"_Stz);
+    else
+    if (pDic->bIsSchema())
+      vTrace(" SCHEMA\n"_Stz);
+    else
+    if (pDic->bIsTable())
+      vTrace(" TABLE\n"_Stz);
+    else
+    if (pDic->bIsFolder())
+      vTrace(" FOLDER\n"_Stz);
+    else
+      vTrace(" n/a\n"_Stz);
+
+  }
+
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* push dictionary onto stack                                                 */
 /*----------------------------------------------------------------------------*/
 void DicStack::vPush(Dic* pDic)

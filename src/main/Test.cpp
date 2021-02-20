@@ -229,29 +229,44 @@ void vTest5(void)
 void vTest6(void)
 {
   DicStack* pDicStack = AM::pTaskDicStack();
+  pDicStack->vPrint();
   
-  s256 sPath;
+//  s256 sPath;
+//
+//  pDicStack->vToPathStr(sPath);
   
-  pDicStack->vToPathStr(sPath);
-  
-  vTrace("path: %s\n"_Stz,sPath.szStz());
-  
-  for (i8 i_Dic = pDicStack->iCount() - 1; i_Dic >= 0; i_Dic--) {
-    Dic* pDic = pDicStack->pPick(i_Dic);
-    Word* pDicKind = pDic->pDicKind();
-    vTrace("[%lld] %s %s\n"_Stz,
-           i_Dic,
-           pDic->szDicNm(),
-           pDicKind ? pDicKind->szWordNm() : "n/a"_Stz);
-  }
+//  vTrace("path: %s\n"_Stz,sPath.szStz());
+//
+//  for (i8 i_Dic = pDicStack->iCount() - 1; i_Dic >= 0; i_Dic--) {
+//    Dic* pDic = pDicStack->pPick(i_Dic);
+//    Word* pDicKind = pDic->pDicKind();
+//    vTrace("[%lld] %s %s\n"_Stz,
+//           i_Dic,
+//           pDic->szDicNm(),
+//           pDicKind ? pDicKind->szWordNm() : "n/a"_Stz);
+//  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   SeApi* pSeApi = new SeApi;
 
+  Stz* szCurrTenant = pSeApi->szCurrTenant();
+  vTrace("\n\nTENANT %s\n"_Stz,szCurrTenant);
+  Dic* pDic = pSeApi->pCurrTenant();
+  pDic->vListWords(0,true);
+  
   Stz* szCurrCatalog = pSeApi->szCurrCatalog();
+  vTrace("\n\nCATALOG %s\n"_Stz,szCurrCatalog);
+  pDic = pSeApi->pCurrCatalog();
+  pDic->vListWords(0,true);
+
   Stz* szCurrSchema  = pSeApi->szCurrSchema();
+  vTrace("\n\nSCHEMA %s\n"_Stz,szCurrSchema);
+  pDic = pSeApi->pCurrSchema();
+  pDic->vListWords(0,true);
+
   Stz* szCurrTable   = pSeApi->szCurrTable();
+  vTrace("\n\nTABLE %s\n"_Stz,szCurrTable);
 
   RowBuffer* pRowBuffer;
   pRowBuffer = pSeApi->pLookupCatalog(szCurrCatalog);

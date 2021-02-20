@@ -38,6 +38,7 @@ namespace BASE
     Word* pRemoveWord(Stz* szWordNm);
     Dic*  pPick(i8 i_Dic);
     void  vPop(void);
+    void  vPrint(void);
     void  vPush(Dic* pDic);
     void  vReset(void);
     Dic*  pTop(void);
