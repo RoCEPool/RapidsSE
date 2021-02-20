@@ -251,16 +251,22 @@ void vTest6(void)
   SeApi* pSeApi = new SeApi;
 
   Stz* szCurrTenant = pSeApi->szCurrTenant();
-  vTrace("TENANT %s\n"_Stz,szCurrTenant);
-
+  vTrace("\n\nTENANT %s\n"_Stz,szCurrTenant);
+  Dic* pDic = pSeApi->pCurrTenant();
+  pDic->vListWords(0,true);
+  
   Stz* szCurrCatalog = pSeApi->szCurrCatalog();
-  vTrace("CATALOG %s\n"_Stz,szCurrCatalog);
+  vTrace("\n\nCATALOG %s\n"_Stz,szCurrCatalog);
+  pDic = pSeApi->pCurrCatalog();
+  pDic->vListWords(0,true);
 
   Stz* szCurrSchema  = pSeApi->szCurrSchema();
-  vTrace("SCHEMA %s\n"_Stz,szCurrSchema);
-  
+  vTrace("\n\nSCHEMA %s\n"_Stz,szCurrSchema);
+  pDic = pSeApi->pCurrSchema();
+  pDic->vListWords(0,true);
+
   Stz* szCurrTable   = pSeApi->szCurrTable();
-  vTrace("TABLE %s\n"_Stz,szCurrTable);
+  vTrace("\n\nTABLE %s\n"_Stz,szCurrTable);
 
   RowBuffer* pRowBuffer;
   pRowBuffer = pSeApi->pLookupCatalog(szCurrCatalog);

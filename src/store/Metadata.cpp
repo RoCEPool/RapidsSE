@@ -93,7 +93,7 @@ Stz* Metadata::szCurrCatalog(void)
 
   if (pDic)
     return pDic->szDicNm();
-
+  
   return nullptr;
 }
 
@@ -129,7 +129,7 @@ Stz* Metadata::szCurrSchema(void)
 
   if (pDic)
     return pDic->szDicNm();
-
+  
   return nullptr;
 }
 
@@ -165,7 +165,7 @@ Stz* Metadata::szCurrTable(void)
 
   if (pDic)
     return pDic->szDicNm();
-
+  
   return nullptr;
 }
 

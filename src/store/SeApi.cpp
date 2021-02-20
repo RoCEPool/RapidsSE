@@ -350,6 +350,22 @@ Stz* SeApi::szGet(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get current catalog                                                        */
+/*----------------------------------------------------------------------------*/
+Dic* SeApi::pCurrCatalog(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
+    
+  Metadata* pMetadata = new Metadata;
+  
+  Dic* pDic = pMetadata->pCurrCatalog();
+
+  delete pMetadata;
+
+  return pDic;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get name of current catalog                                                */
 /*----------------------------------------------------------------------------*/
 Stz* SeApi::szCurrCatalog(void)
@@ -363,6 +379,22 @@ Stz* SeApi::szCurrCatalog(void)
   delete pMetadata;
 
   return szCatalogNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current schema                                                         */
+/*----------------------------------------------------------------------------*/
+Dic* SeApi::pCurrSchema(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
+    
+  Metadata* pMetadata = new Metadata;
+  
+  Dic* pDic = pMetadata->pCurrSchema();
+
+  delete pMetadata;
+
+  return pDic;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -382,6 +414,22 @@ Stz* SeApi::szCurrSchema(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get current tenant                                                         */
+/*----------------------------------------------------------------------------*/
+Dic* SeApi::pCurrTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
+    
+  Metadata* pMetadata = new Metadata;
+  
+  Dic* pDic = pMetadata->pCurrTable();
+
+  delete pMetadata;
+
+  return pDic;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get name of current table                                                  */
 /*----------------------------------------------------------------------------*/
 Stz* SeApi::szCurrTable(void)
@@ -395,6 +443,22 @@ Stz* SeApi::szCurrTable(void)
   delete pMetadata;
 
   return szTableNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current tenant                                                         */
+/*----------------------------------------------------------------------------*/
+Dic* SeApi::pCurrTenant(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
+    
+  Metadata* pMetadata = new Metadata;
+  
+  Dic* pDic = pMetadata->pCurrTenant();
+
+  delete pMetadata;
+
+  return pDic;
 }
 
 /*----------------------------------------------------------------------------*/

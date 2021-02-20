@@ -344,7 +344,7 @@ bool Dic::bIsTenant(void)
 /*----------------------------------------------------------------------------*/
 /* list all words in this dic                                                 */
 /*----------------------------------------------------------------------------*/
-void Dic::vListWords(void)
+void Dic::vListWords(i8 i_Depth, bool bListContents)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
@@ -352,7 +352,19 @@ void Dic::vListWords(void)
   
   for (Word* pWord = pFirstWord(); pWord; pWord = pWord->pNextWord()) {
     
-    vTrace(": %s\n"_Stz,pWord->szWordNm());
+    Word* pCategory = pWord->pCategory();
+
+    vTrace("%s: %s %s\n"_Stz,
+           Stz::szTab(i_Depth),
+           pWord->szWordNm(),
+           pCategory ? pCategory->szWordNm() : "n/a"_Stz);
+    
+    if (bListContents) {
+      Object* pObject = pWord->pObject();
+      if (pObject && CN_DIC == pObject->eGetClassNo()) {
+        ((Dic*)pObject)->vListWords(i_Depth+1,bListContents);
+      }
+    }
   }
   
   m_pArticle->vDropRead();

@@ -45,7 +45,7 @@ namespace BASE
     bool  bIsTable(void);
     bool  bIsTenant(void);
     Word* pLastWord(void);
-    void  vListWords(void);
+    void  vListWords(i8 i_Depth = 0, bool bListContents=false);
     Stz*  szDicNm(void);
     void  vDicNm(Stz* szDicNm);
     void  vRefDec(void);

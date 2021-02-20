@@ -37,9 +37,13 @@ namespace STORE
 
     Stz*   szGet(void);
 
+    Dic* pCurrCatalog(void);
     Stz* szCurrCatalog(void);
+    Dic* pCurrSchema(void);
     Stz* szCurrSchema(void);
+    Dic* pCurrTable(void);
     Stz* szCurrTable(void);
+    Dic* pCurrTenant(void);
     Stz* szCurrTenant(void);
 
     RowBuffer* pLookupCatalog(Stz* szCatalogName);
