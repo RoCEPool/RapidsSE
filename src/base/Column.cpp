@@ -335,6 +335,29 @@ void Column::vIsPtnKey(bool bIsPtnKey)
 
   m_bIsPtnKey = bIsPtnKey;
 }
+
+/*----------------------------------------------------------------------------*/
+/* show column contents                                                       */
+/*----------------------------------------------------------------------------*/
+void Column::vListContents(i8 i_Depth)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+
+  vTrace("%sColumn %02lld %s type %s"
+         " length %lld scale %lld datum %s %s %s\n"_Stz,
+         Stz::szTab(i_Depth),
+
+         m_iColumnNo,
+         m_sColumnNm.szStz(),
+         aCT[m_eColumnType],
+         m_iColumnLength,
+         m_iColumnScale,
+         aDM[m_eDatum],
+         m_bIsNullable ? "nullable"_Stz : "not null"_Stz,
+         m_bIsPtnKey ? "partitionKey"_Stz : ""_Stz);
+}
+
+
 /*----------------------------------------------------------------------------*/
 /* sset the column                                                            */
 /*----------------------------------------------------------------------------*/

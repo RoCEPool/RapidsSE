@@ -224,7 +224,7 @@ void Metadata::vListContents(i8 i_Depth, Dic* pDic)
     
     Word* pCategory = pWord->pCategory();
 
-    vTrace("%s: %s %s\n"_Stz,
+    vTrace("%s%s %s\n"_Stz,
            Stz::szTab(i_Depth),
            pWord->szWordNm(),
            pCategory ? pCategory->szWordNm() : "n/a"_Stz);
@@ -232,6 +232,9 @@ void Metadata::vListContents(i8 i_Depth, Dic* pDic)
     Object* pObject = pWord->pObject();
     if (pObject && CN_DIC == pObject->eGetClassNo())
       vListContents(i_Depth+1,(Dic*)pObject);
+    else
+    if (pObject && CN_TABLE == pObject->eGetClassNo())
+      ((Table*)pObject)->vListContents(i_Depth);
   }
   
   pDic->pArticle()->vDropRead();

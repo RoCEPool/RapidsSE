@@ -59,6 +59,7 @@ namespace STORE
     void    vIsLoading(bool bIsLoading);
     bool    bIsLoading(void);
     void    vLazyBuildIndexes(i8 i_TablePtn);
+    void    vListContents(i8 i_Depth);
     void    vMarkTable(void);
     bool    bPopulateIndex(i8 iIndexNo);
     void    vRemoveIndex(Index* pIndex);

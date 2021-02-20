@@ -544,6 +544,21 @@ void Table::vLazyBuildIndexes(i8 i_TablePtn)
 }
 
 /*----------------------------------------------------------------------------*/
+/* list table contents                                                        */
+/*----------------------------------------------------------------------------*/
+void Table::vListContents(i8 i_Depth)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  vTrace("%sTable %s %s\n"_Stz,
+         Stz::szTab(i_Depth),
+         m_sTableNm.szStz(),
+         m_bDefinitionOnly ? "(definition-only)"_Stz : ""_Stz);
+
+  m_pStreamDef->vListContents(i_Depth+1);
+}
+
+/*----------------------------------------------------------------------------*/
 /* mark table to activity map                                                 */
 /*----------------------------------------------------------------------------*/
 void Table::vMarkTable(void)

@@ -202,6 +202,22 @@ Column* StreamDef::pGetColumn(i8 iColumn)
 }
 
 /*----------------------------------------------------------------------------*/
+/* list contents                                                              */
+/*----------------------------------------------------------------------------*/
+void StreamDef::vListContents(i8 i_Depth)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
+  
+  vTrace("%sStreamDef %s\n"_Stz,Stz::szTab(i_Depth),m_sName.szStz());
+
+  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
+    Column* pColumn = pGetColumn(i_Col);
+
+    pColumn->vListContents(i_Depth+1);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get stream name                                                            */
 /*----------------------------------------------------------------------------*/
 Stz* StreamDef::szName(void)
