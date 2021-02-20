@@ -251,22 +251,22 @@ void vTest6(void)
   SeApi* pSeApi = new SeApi;
 
   Stz* szCurrTenant = pSeApi->szCurrTenant();
-  vTrace("\n\nTENANT %s\n"_Stz,szCurrTenant);
+  vTrace("\nTENANT %s\n"_Stz,szCurrTenant);
   Dic* pDic = pSeApi->pCurrTenant();
-  pDic->vListWords(0,true);
+  //pDic->vListWords(0,true);
   
   Stz* szCurrCatalog = pSeApi->szCurrCatalog();
-  vTrace("\n\nCATALOG %s\n"_Stz,szCurrCatalog);
+  vTrace("\nCATALOG %s\n"_Stz,szCurrCatalog);
   pDic = pSeApi->pCurrCatalog();
-  pDic->vListWords(0,true);
+  //pDic->vListWords(0,true);
 
   Stz* szCurrSchema  = pSeApi->szCurrSchema();
-  vTrace("\n\nSCHEMA %s\n"_Stz,szCurrSchema);
+  vTrace("\nSCHEMA %s\n"_Stz,szCurrSchema);
   pDic = pSeApi->pCurrSchema();
-  pDic->vListWords(0,true);
+  //pDic->vListWords(0,true);
 
   Stz* szCurrTable   = pSeApi->szCurrTable();
-  vTrace("\n\nTABLE %s\n"_Stz,szCurrTable);
+  vTrace("\nTABLE %s\n"_Stz,szCurrTable);
 
   RowBuffer* pRowBuffer;
   pRowBuffer = pSeApi->pLookupCatalog(szCurrCatalog);
@@ -275,6 +275,8 @@ void vTest6(void)
   delete pRowBuffer;
   pRowBuffer = pSeApi->pLookupTable(szCurrCatalog,szCurrSchema,szCurrTable);
   delete pRowBuffer;
+  
+  pSeApi->vPrintMetadata();
 
   delete pSeApi;
 }

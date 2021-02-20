@@ -31,6 +31,8 @@ namespace STORE
     Dic* pCurrTenant(void);
     Stz* szCurrTenant(void);
 
+    void vListContents(i8 i_Depth, Dic* pDic);
+
     RowBuffer* pLookupCatalog(Stz* szCatalogName);
 
     RowBuffer* pLookupSchema(Stz* szCatalogName,

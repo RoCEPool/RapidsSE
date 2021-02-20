@@ -206,6 +206,38 @@ Stz* Metadata::szCurrTenant(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* list all metadata                                                          */
+/*----------------------------------------------------------------------------*/
+void Metadata::vListContents(i8 i_Depth, Dic* pDic)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
+  
+  if (! pDic) {
+    Dic* pDic = pCurrTenant();
+    vListContents(0,pDic);
+    return;
+  }
+  
+  pDic->pArticle()->vGrabRead();
+  
+  for (Word* pWord = pDic->pFirstWord(); pWord; pWord = pWord->pNextWord()) {
+    
+    Word* pCategory = pWord->pCategory();
+
+    vTrace("%s: %s %s\n"_Stz,
+           Stz::szTab(i_Depth),
+           pWord->szWordNm(),
+           pCategory ? pCategory->szWordNm() : "n/a"_Stz);
+    
+    Object* pObject = pWord->pObject();
+    if (pObject && CN_DIC == pObject->eGetClassNo())
+      vListContents(i_Depth+1,(Dic*)pObject);
+  }
+  
+  pDic->pArticle()->vDropRead();
+}
+
+/*----------------------------------------------------------------------------*/
 /* determine whether a catalog exists and return its full name                */
 /*----------------------------------------------------------------------------*/
 RowBuffer* Metadata::pLookupCatalog(Stz* szCatalogName)

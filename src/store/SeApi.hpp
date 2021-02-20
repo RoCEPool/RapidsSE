@@ -45,6 +45,8 @@ namespace STORE
     Stz* szCurrTable(void);
     Dic* pCurrTenant(void);
     Stz* szCurrTenant(void);
+  
+    void vPrintMetadata(void);
 
     RowBuffer* pLookupCatalog(Stz* szCatalogName);
   
