@@ -19,8 +19,7 @@
     attachMap::isLowMemory if
       EC_LOW_MEMORY
       op.pipelineJob@ ERROR_JOB
-      Operand[].newErrorMarker
-      Operand[].pipeout
+      EC_LOW_MEMORY op__execErr
       true
       exit
     then

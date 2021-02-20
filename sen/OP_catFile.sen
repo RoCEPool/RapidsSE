@@ -39,8 +39,7 @@
       attachMap::isLowMemory if
         EC_LOW_MEMORY
         op.pipelineJob@ ERROR_JOB
-        Operand[].newErrorMarker
-        Operand[].pipeout
+        EC_LOW_MEMORY op__execErr
         file0[].get file.close
         <fileNm> "File %v closed" .printf
         true

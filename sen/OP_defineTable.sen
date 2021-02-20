@@ -39,6 +39,8 @@
 /*----------------------------------------------------------------------------*/
 : defineTable_StreamDef
 
+  0 locals| errorCode |
+
   // get the stream def
   Pipein[] to StreamDef[]
   nullptr to Pipein[]
@@ -49,10 +51,10 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check ok to create table
   defineTable::checkDefine not if ( errorCode )
+    to errorCode
     StreamDef[].delete
-    op.pipelineJob@ ERROR_JOB
-    Operand[].newErrorMarker
-    Operand[].pipeout
+    errorCode op.pipelineJob@ ERROR_JOB
+    errorCode op__execErr
     true
     exit
   then

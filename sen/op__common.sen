@@ -140,7 +140,6 @@
 
   // cross-check
   Table[] assert
-  stk
   true
 ;
 
@@ -196,8 +195,6 @@
 
   path[].popNamedTableFolder
   path[].popIndexesFolder
-
-  stk
 
   //pathStr .
   true
@@ -275,8 +272,6 @@
 
   path[].popNamedTableFolder
   path[].popIndexesFolder
-
-  stk
 
   //pathStr .
   true

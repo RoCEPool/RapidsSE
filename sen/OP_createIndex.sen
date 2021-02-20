@@ -89,10 +89,10 @@
   // check ok to create index
 /*
   sTableNm createIndex::checkCreate not if ( errorCode )
-    op.pipelineJob@ ERROR_JOB
+    to errorCode
+    errorCode op.pipelineJob@ ERROR_JOB
     Pipein[].delete
-    Operand[].newErrorMarker
-    Operand[].pipeout
+    errorCode op__execErr
     true
     exit
   then

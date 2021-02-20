@@ -9,13 +9,15 @@
 /*----------------------------------------------------------------------------*/
 : createCatalog_DataMarker
 
+  0 locals| errorCode |
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we have enough buffers
   node::checkEnoughBuffers not if
-    op.pipelineJob@ ERROR_JOB
+    to errorCode
+    errorCode op.pipelineJob@ ERROR_JOB
     PipeIn[].delete
-    Operand[].newErrorMarker
-    Operand[].pipeOut
+    errorCode op__execErr
     true
     exit
   then
@@ -23,10 +25,10 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if are in catalogs
   folder[].checkIsCatalogs not if
-    op.pipelineJob@ ERROR_JOB
+    to errorCode
+    errorCode op.pipelineJob@ ERROR_JOB
     PipeIn[].delete
-    Operand[].newErrorMarker
-    Operand[].pipeOut
+    errorCode op__execErr
     true
     exit
   then
@@ -34,10 +36,10 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if catalog already exits
   <catalogNm> name::isNotKnownCatalog not if
-    op.pipelineJob@ ERROR_JOB
+    to errorCode
+    errorCode op.pipelineJob@ ERROR_JOB
     PipeIn[].delete
-    Operand[].newErrorMarker
-    Operand[].pipeOut
+    errorCode op__execErr
     true
     exit
   then
