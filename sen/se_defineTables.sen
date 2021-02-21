@@ -328,6 +328,24 @@
   api::executeRequest
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_COLUMNDEFS
+  sPath
+  "
+  define table __columnDefs (
+    catalogName    VARCHAR NOT NULL ,
+    schemaName     VARCHAR NOT NULL ,
+    tableName      VARCHAR NOT NULL ,
+    columnName     VARCHAR NOT NULL ,
+    columnType     VARCHAR NOT NULL ,
+    columnLength   INTEGER NOT NULL ,
+    columnScale    INTEGER NOT NULL ,
+    isNullable     BOOLEAN NOT NULL ,
+    isPartitionKey BOOLEAN NOT NULL
+  ) ;
+  "
+  api::executeRequest
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_LOADRESULT
   sPath
   "
