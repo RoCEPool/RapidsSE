@@ -278,6 +278,22 @@ void vTest6(void)
   
   vTrace("\n\n"_Stz,szCurrTable);
   pSeApi->vPrintMetadata();
+  vTrace("\n\n"_Stz,szCurrTable);
+
+  vTrace("Test %s : %s \n"_Stz,
+         "rapidsse"_Stz,
+         pSeApi->bTest("rapidsse"_Stz)
+           ? "found"_Stz : "not-found"_Stz);
+
+  vTrace("Test %s.%s : %s \n"_Stz,
+         "rapidsse"_Stz,"public"_Stz,
+         pSeApi->bTest("rapidsse"_Stz,"public"_Stz)
+           ? "found"_Stz : "not-found"_Stz);
+
+  vTrace("Test %s.%s.%s : %s \n"_Stz,
+         "rapidsse"_Stz,"public"_Stz,"lineitem"_Stz,
+         pSeApi->bTest("rapidsse"_Stz,"public"_Stz,"lineitem"_Stz)
+           ? "found"_Stz : "not-found"_Stz);
 
   delete pSeApi;
 }

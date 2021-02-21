@@ -546,6 +546,54 @@ RowBuffer* SeApi::pLookupTable(Stz* szCatalogName,
   return pRowBuffer;
 }
 
+/*----------------------------------------------------------------------------*/
+/* test for given catalog                                                     */
+/*----------------------------------------------------------------------------*/
+bool SeApi::bTest(Stz* szCatalogNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
+    
+  Metadata* pMetadata = new Metadata;
+
+  bool bFound = pMetadata->bTest(szCatalogNm);
+  
+  delete pMetadata;
+  
+  return bFound;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for given catalog                                                     */
+/*----------------------------------------------------------------------------*/
+bool SeApi::bTest(Stz* szCatalogNm, Stz* szSchemaNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
+    
+  Metadata* pMetadata = new Metadata;
+
+  bool bFound = pMetadata->bTest(szCatalogNm,szSchemaNm);
+  
+  delete pMetadata;
+  
+  return bFound;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for given catalog                                                     */
+/*----------------------------------------------------------------------------*/
+bool SeApi::bTest(Stz* szCatalogNm, Stz* szSchemaNm, Stz* szTableNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
+    
+  Metadata* pMetadata = new Metadata;
+
+  bool bFound = pMetadata->bTest(szCatalogNm,szSchemaNm,szTableNm);
+  
+  delete pMetadata;
+  
+  return bFound;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
