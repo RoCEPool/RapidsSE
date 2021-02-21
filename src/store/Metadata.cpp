@@ -387,9 +387,9 @@ Resolution/Lookup of Tables
  
   Ideally: “SELECT catalogName, schemaName, tableName FROM rapids.system.tables [ WHERE … ] ;”
  
-  RowBuffer* pLookupTable (Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName);
+  InfoSet* pLookupTable (Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName);
  
-  Where each row in the RowBuffer contains rows with the following columns:
+  Where each row in the InfoSet contains rows with the following columns:
     CatalogName,
     SchemaName
     TableName
@@ -409,9 +409,9 @@ Resolution/Lookup of Tables
  
   Ideally: “SELECT catalogName, schemaName FROM rapids.system.schemas [ WHERE … ] ;”
  
-  RowBuffer* pLookupSchema(Stz* szCatalogName, Stz* szSchemaName);
+  InfoSet* pLookupSchema(Stz* szCatalogName, Stz* szSchemaName);
  
-  Where each row in the RowBuffer contains rows with the following columns:
+  Where each row in the InfoSet contains rows with the following columns:
     CatalogName
     SchemaName
  
@@ -425,7 +425,7 @@ Resolution/Lookup of Catalogs
  
   RowBuffer* pLookupCatalog(Stz* szCatalogName);
  
-  Where each row in the RowBuffer contains rows with the following columns:
+  Where each row in the InfoSet contains rows with the following columns:
     CatalogName
  
  
@@ -436,9 +436,9 @@ Retrieve Column Definition Metadata
  
   Ideally: “SELECT catalogName, schemaName, tableName, columnName, columnType, notNull FROM rapids.system.columns WHERE …;”
  
-  RowBuffer* pColumnDefs(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName, Stz* szColumnName);
+  InfoSet* pColumnDefs(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName, Stz* szColumnName);
  
-  Where each row in the RowBuffer contains:
+  Where each row in the InfoSet contains:
     catalogName
     schemaName
     tableName
@@ -457,9 +457,9 @@ Retrieve Index Definition Metadata
  
   Ideally: “SELECT catalogName, schemaName, tableName, indexName, isUnique, isPrimary, indexType FROM rapids.system.indexes WHERE …;”
  
-  RowBuffer* pIndexDefs(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName, Stz* szIndexName);
+  InfoSet* pIndexDefs(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName, Stz* szIndexName);
  
-  Where each row in the RowBuffer contains:
+  Where each row in the InfoSet contains:
     catalogName
     schemaName
     tableName
@@ -477,9 +477,9 @@ Retrieve Index Column Metadata
  
   Ideally: “SELECT catalogName, schemaName, tableName, indexName, ordinal, columnName FROM rapids.system.indexColumns WHERE …;”
  
-  RowBuffer * pIndexDefs(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName, Stz* szIndexName);
+  InfoSet* pIndexDefs(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName, Stz* szIndexName);
  
-  Where each row in the RowBuffer contains:
+  Where each row in the InfoSet contains:
     catalogName
     schemaName
     tableName
