@@ -31,6 +31,7 @@ namespace BASE
     void  vContentDump(void);
     void  vCopy(DicStack* pDicStackSrc);
     void  vDiscard(void);
+    Dic*  pFindDic(Stz* szDicNm);
     Word* pFindWord(Stz* szWordNm);
     Word* pFindInCurrent(Stz* szWordNm);
     Word* pLocateRoutine(CodeCell* aCell);
@@ -40,6 +41,12 @@ namespace BASE
     void  vPop(void);
     void  vPrint(void);
     void  vPush(Dic* pDic);
+    void  vPush_boray(void);
+    void  vPush_catalogs(void);
+    void  vPush_public(void);
+    void  vPush_rapidsse(void);
+    void  vPush_schemas(void);
+    void  vPush_tenants(void);
     void  vReset(void);
     Dic*  pTop(void);
     void  vToPathStr(Stz* szPath);

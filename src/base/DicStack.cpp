@@ -5,36 +5,13 @@
 #include "BASE.h"
 
 /*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
+/*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-DicStack* BASE::_pDicStack(void* aAddr)
-{
-  DicStack* pDicStack = reinterpret_cast<DicStack*>(aAddr);
-  
-  RASSERT_TYPE(pDicStack,CN_DICSTACK);
-  
-  return pDicStack;
-}
 
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* DicStack::operator new(size_t)
-{
-  DicStack* pDicStack = (DicStack*)(Heaps::pAllocate(CN_DICSTACK));
-  
-  return pDicStack;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-void DicStack::operator delete(void* pDicAddress)
-{
-  DicStack* pDicStack = reinterpret_cast<DicStack*>(pDicAddress);
-  
-  Heaps::vFree(pDicStack);
-}
+__pCastFunction(BASE,DicStack,CN_DICSTACK)
+__aNewFunction(DicStack,CN_DICSTACK)
+__vDeleteFunction(DicStack,CN_DICSTACK)
+__aFooterFunction(DicStack)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -263,19 +240,6 @@ Dic* DicStack::pPick(i8 iPick)
 /*----------------------------------------------------------------------------*/
 /* pop top dictionary                                                         */
 /*----------------------------------------------------------------------------*/
-//void DicStack::vPop(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
-//
-//  ASSERT(m_iTop >= 0);
-//  ASSERT(m_iTop <  C_DIC_STACKDEPTH);
-//
-//  // just pop the top
-//  m_pDic[m_iTop] = nullptr;
-//
-//  m_iTop--;
-//}
-/*----------------------------------------------------------------------------*/
 void DicStack::vPop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
@@ -333,7 +297,6 @@ void DicStack::vPrint(void)
   }
 
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* push dictionary onto stack                                                 */
@@ -426,11 +389,6 @@ void DicStack::vToPathStr(Stz* szPath)
   }
   
 }
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-__aFooterFunction(DicStack)
 
 /*============================================================================*/
 /* end                                                                        */

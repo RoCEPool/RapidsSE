@@ -251,8 +251,10 @@ RowBuffer* Metadata::pLookupCatalog(Stz* szCatalogName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
     
-  DicStack* pDicStack = AM::pTaskDicStack();
+  DicStack* pDicStack = new DicStack;
 
+  delete pDicStack;
+  
   return nullptr;
 }
 
