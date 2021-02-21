@@ -335,74 +335,121 @@ void DicStack::vPush(Dic* pDic)
 }
 
 /*----------------------------------------------------------------------------*/
+/* push named dic onto this dic stack                                         */
+/*----------------------------------------------------------------------------*/
+bool DicStack::bPushNamed(Stz* szDicNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
+  
+  Dic* pDic = pFindDic(szDicNm);
+  if (! pDic)
+    return false;
+
+  vPush(pDic);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* push tenant boray onto this dic stack                                      */
 /*----------------------------------------------------------------------------*/
-void DicStack::vPush_boray(void)
+bool DicStack::bPush_boray(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   
   Dic* pDic = pFindDic("boray"_Stz);
-  RASSERT(pDic);
-  
+  if (! pDic)
+    return false;
+
   vPush(pDic);
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
 /* push catalogs dic onto this dic stack                                      */
 /*----------------------------------------------------------------------------*/
-void DicStack::vPush_catalogs(void)
+bool DicStack::bPush_catalogs(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   
   Dic* pDic = pFindDic("catalogs"_Stz);
-  RASSERT(pDic);
-  
+  if (! pDic)
+    return false;
+
   vPush(pDic);
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
 /* push public dic onto this dic stack                                        */
 /*----------------------------------------------------------------------------*/
-void DicStack::vPush_public(void)
+bool DicStack::bPush_public(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   
   Dic* pDic = pFindDic("public"_Stz);
-  RASSERT(pDic);
-  
+  if (! pDic)
+    return false;
+
   vPush(pDic);
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
 /* push rapidsse dic onto this dic stack                                      */
 /*----------------------------------------------------------------------------*/
-void DicStack::vPush_rapidsse(void)
+bool DicStack::bPush_rapidsse(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   
   Dic* pDic = pFindDic("rapidsse"_Stz);
-  RASSERT(pDic);
-  
+  if (! pDic)
+    return false;
+
   vPush(pDic);
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
 /* push schemas dic onto this dic stack                                       */
 /*----------------------------------------------------------------------------*/
-void DicStack::vPush_schemas(void)
+bool DicStack::bPush_schemas(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   
   Dic* pDic = pFindDic("schemas"_Stz);
-  RASSERT(pDic);
+  if (! pDic)
+    return false;
   
   vPush(pDic);
-}
+  
+  return true;
+};
+
+/*----------------------------------------------------------------------------*/
+/* push tables dic onto this dic stack                                        */
+/*----------------------------------------------------------------------------*/
+bool DicStack::bPush_tables(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
+  
+  Dic* pDic = pFindDic("tables"_Stz);
+  if (! pDic)
+    return false;
+  
+  vPush(pDic);
+  
+  return true;
+};
 
 /*----------------------------------------------------------------------------*/
 /* push tenants dic onto this dic stack                                       */
 /*----------------------------------------------------------------------------*/
-void DicStack::vPush_tenants(void)
+bool DicStack::bPush_tenants(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   
@@ -413,6 +460,8 @@ void DicStack::vPush_tenants(void)
 
   Dic* pDic = _pDic(pTenants->pObject());
   vPush(pDic);
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -447,6 +496,70 @@ void DicStack::vReset(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   
   m_iTop = -1;
+}
+
+/*----------------------------------------------------------------------------*/
+/* use this dic stack to test for given catalog                               */
+/*----------------------------------------------------------------------------*/
+bool DicStack::bTest(Stz* szCatalogNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
+  
+  RASSERT(-1 == m_iTop);
+  
+  if (! bPush_tenants())
+    return false;
+  if (! bPush_boray())
+    return false;
+  if (! bPush_catalogs())
+    return false;
+
+  if (! bPushNamed(szCatalogNm))
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* use this dic stack to test for given catalog, schema                       */
+/*----------------------------------------------------------------------------*/
+bool DicStack::bTest(Stz* szCatalogNm, Stz* szSchemaNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
+  
+  RASSERT(-1 == m_iTop);
+    
+  if (! bTest(szCatalogNm))
+    return false;
+
+  if (! bPush_schemas())
+    return false;
+
+  if (! bPushNamed(szSchemaNm))
+    return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* use this dic stack to test for given catalog, schema, table                */
+/*----------------------------------------------------------------------------*/
+bool DicStack::bTest(Stz* szCatalogNm, Stz* szSchemaNm, Stz* szTableNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
+  
+  RASSERT(-1 == m_iTop);
+    
+  if (! bTest(szCatalogNm,szSchemaNm))
+    return false;
+
+  if (! bPush_tables())
+    return false;
+
+  if (! bPushNamed(szTableNm))
+    return false;
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

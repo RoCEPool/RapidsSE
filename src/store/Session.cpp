@@ -315,7 +315,7 @@ void Session::vHasCascade(bool bHasCascade)
 /*----------------------------------------------------------------------------*/
 /* initialise this session                                                    */
 /*----------------------------------------------------------------------------*/
-eEC Session::eInitSession(Stz* pCatalogName, Stz* pSchemaName)
+eEC Session::eInitSession(Stz* szCatalogName, Stz* szSchemaName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
@@ -363,11 +363,11 @@ eEC Session::eInitSession(Stz* pCatalogName, Stz* pSchemaName)
 
   //fprintf(stderr,"eInit F\n");
   
-  if ( ! pCatalogName)
+  if ( ! szCatalogName)
     return EC_NONE;
   
   // /tenants/boray/catalogs/rapidsse
-  Word* pCatalog = m_oDicStack.pFindInCurrent(pCatalogName);
+  Word* pCatalog = m_oDicStack.pFindInCurrent(szCatalogName);
   if ( ! pCatalog)
     return EC_NO_SUCH_CATALOG;
   
@@ -386,13 +386,13 @@ eEC Session::eInitSession(Stz* pCatalogName, Stz* pSchemaName)
   
   m_oDicStack.vPush(pDic);
 
-  if ( ! pSchemaName )
+  if ( ! szSchemaName )
     return EC_NONE;
   
   //fprintf(stderr,"eInit J\n");
   
   // /tenants/boray/catalogs/rapidsse/schemas/public
-  Word* pSchema = m_oDicStack.pFindInCurrent(pSchemaName);
+  Word* pSchema = m_oDicStack.pFindInCurrent(szSchemaName);
   if ( ! pSchema)
     return EC_NO_SUCH_SCHEMA;
   

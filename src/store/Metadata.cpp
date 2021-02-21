@@ -281,6 +281,54 @@ RowBuffer* Metadata::pLookupTable(Stz* szCatalogName,
   return nullptr;
 }
 
+/*----------------------------------------------------------------------------*/
+/* test for given catalog                                                     */
+/*----------------------------------------------------------------------------*/
+bool Metadata::bTest(Stz* szCatalogNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
+    
+  DicStack* pDicStack = new DicStack;
+
+  bool bFound = pDicStack->bTest(szCatalogNm);
+  
+  delete pDicStack;
+  
+  return bFound;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for given catalog, schema                                             */
+/*----------------------------------------------------------------------------*/
+bool Metadata::bTest(Stz* szCatalogNm, Stz* szSchemaNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
+    
+  DicStack* pDicStack = new DicStack;
+
+  bool bFound = pDicStack->bTest(szCatalogNm,szSchemaNm);
+  
+  delete pDicStack;
+  
+  return bFound;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for given catalog, schema, table                                      */
+/*----------------------------------------------------------------------------*/
+bool Metadata::bTest(Stz* szCatalogNm, Stz* szSchemaNm, Stz* szTableNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
+    
+  DicStack* pDicStack = new DicStack;
+
+  bool bFound = pDicStack->bTest(szCatalogNm,szSchemaNm,szTableNm);
+  
+  delete pDicStack;
+  
+  return bFound;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
