@@ -246,6 +246,27 @@ void Metadata::vListContents(i8 i_Depth, Dic* pDic)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get column set matching given arguments                                    */
+/*----------------------------------------------------------------------------*/
+InfoSet* Metadata::pColumnDefs(Stz* szCatalogName,
+                               Stz* szSchemaName,
+                               Stz* szTableName,
+                               Stz* szColumnName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
+
+  Table* pLookupTable = AM::pTableFind(C_TDEF_COLUMNDEFS);
+  StreamDef* pLookupStreamDef = pLookupTable->pStreamDef();
+
+  InfoSet* pInfoSet = new InfoSet(pLookupStreamDef);
+  
+  DicStack* pDicStack = new DicStack;
+
+  delete pDicStack;
+  
+  return pInfoSet;
+}
+/*----------------------------------------------------------------------------*/
 /* lookup a catalog and return an infoset about it                            */
 /*----------------------------------------------------------------------------*/
 InfoSet* Metadata::pLookupCatalog(Stz* szCatalogName)

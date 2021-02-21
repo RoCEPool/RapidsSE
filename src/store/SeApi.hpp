@@ -50,6 +50,11 @@ namespace STORE
   
     void vPrintMetadata(void);
 
+    InfoSet* pColumnDefs(Stz* szCatalogName,
+                         Stz* szSchemaName,
+                         Stz* szTableName,
+                         Stz* szColumnName);
+
     InfoSet* pLookupCatalog(Stz* szCatalogName);
   
     InfoSet* pLookupSchema(Stz* szCatalogName,

@@ -494,6 +494,28 @@ void SeApi::vPrintMetadata(void)
 
 
 /*----------------------------------------------------------------------------*/
+/* get column set matching given arguments                                    */
+/*----------------------------------------------------------------------------*/
+InfoSet* SeApi::pColumnDefs(Stz* szCatalogName,
+                            Stz* szSchemaName,
+                            Stz* szTableName,
+                            Stz* szColumnName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
+    
+  Metadata* pMetadata = new Metadata;
+  
+  InfoSet* pInfoSet = pMetadata->pColumnDefs(szCatalogName,
+                                             szSchemaName,
+                                             szTableName,
+                                             szColumnName);
+
+  delete pMetadata;
+
+  return pInfoSet;
+}
+
+/*----------------------------------------------------------------------------*/
 /* determine whether a catalog exists and return its full name                */
 /*----------------------------------------------------------------------------*/
 InfoSet* SeApi::pLookupCatalog(Stz* szCatalogName)

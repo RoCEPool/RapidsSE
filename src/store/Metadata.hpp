@@ -35,6 +35,11 @@ namespace STORE
 
     void vListContents(i8 i_Depth, Dic* pDic);
 
+    InfoSet* pColumnDefs(Stz* szCatalogName,
+                         Stz* szSchemaName,
+                         Stz* szTableName,
+                         Stz* szColumnName);
+  
     InfoSet* pLookupCatalog(Stz* szCatalogName);
 
     InfoSet* pLookupSchema(Stz* szCatalogName,
