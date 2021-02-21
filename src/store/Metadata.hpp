@@ -41,6 +41,10 @@ namespace STORE
     RowBuffer* pLookupTable(Stz* szCatalogName,
                             Stz* szSchemaName,
                             Stz* szTableName);
+  
+    bool bTest(Stz* szCatalogNm);
+    bool bTest(Stz* szCatalogNm, Stz* szSchemaNm);
+    bool bTest(Stz* szCatalogNm, Stz* szSchemaNm, Stz* szTableNm);
 
   private:
     Footer* aFooter(void);

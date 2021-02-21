@@ -127,6 +127,22 @@ void DicStack::vDump(eCN eClass, Object* pObject, Stz* szTab)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find sub-dic                                                               */
+/*----------------------------------------------------------------------------*/
+Dic* DicStack::pFindDic(Stz* szDicNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
+ 
+  Word* pWord = pFindInCurrent(szDicNm);
+  if (! pWord)
+    return nullptr;
+  
+  Dic* pDic = _pDic(pWord->pObject());
+  
+  return pDic;
+}
+
+/*----------------------------------------------------------------------------*/
 /* find word in stack of dictionaries                                         */
 /*----------------------------------------------------------------------------*/
 Word* DicStack::pFindWord(Stz* szWordNm)
@@ -316,6 +332,87 @@ void DicStack::vPush(Dic* pDic)
   m_iTop++;
   
   m_pDic[m_iTop] = pDic;
+}
+
+/*----------------------------------------------------------------------------*/
+/* push tenant boray onto this dic stack                                      */
+/*----------------------------------------------------------------------------*/
+void DicStack::vPush_boray(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
+  
+  Dic* pDic = pFindDic("boray"_Stz);
+  RASSERT(pDic);
+  
+  vPush(pDic);
+}
+
+/*----------------------------------------------------------------------------*/
+/* push catalogs dic onto this dic stack                                      */
+/*----------------------------------------------------------------------------*/
+void DicStack::vPush_catalogs(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
+  
+  Dic* pDic = pFindDic("catalogs"_Stz);
+  RASSERT(pDic);
+  
+  vPush(pDic);
+}
+
+/*----------------------------------------------------------------------------*/
+/* push public dic onto this dic stack                                        */
+/*----------------------------------------------------------------------------*/
+void DicStack::vPush_public(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
+  
+  Dic* pDic = pFindDic("public"_Stz);
+  RASSERT(pDic);
+  
+  vPush(pDic);
+}
+
+/*----------------------------------------------------------------------------*/
+/* push rapidsse dic onto this dic stack                                      */
+/*----------------------------------------------------------------------------*/
+void DicStack::vPush_rapidsse(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
+  
+  Dic* pDic = pFindDic("rapidsse"_Stz);
+  RASSERT(pDic);
+  
+  vPush(pDic);
+}
+
+/*----------------------------------------------------------------------------*/
+/* push schemas dic onto this dic stack                                       */
+/*----------------------------------------------------------------------------*/
+void DicStack::vPush_schemas(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
+  
+  Dic* pDic = pFindDic("schemas"_Stz);
+  RASSERT(pDic);
+  
+  vPush(pDic);
+}
+
+/*----------------------------------------------------------------------------*/
+/* push tenants dic onto this dic stack                                       */
+/*----------------------------------------------------------------------------*/
+void DicStack::vPush_tenants(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
+  
+  RASSERT(-1 == m_iTop);
+  
+  Word* pTenants = AM::pTenants();
+  RASSERT(pTenants);
+
+  Dic* pDic = _pDic(pTenants->pObject());
+  vPush(pDic);
 }
 
 /*----------------------------------------------------------------------------*/

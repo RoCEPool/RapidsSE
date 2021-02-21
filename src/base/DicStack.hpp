@@ -36,18 +36,22 @@ namespace BASE
     Word* pFindInCurrent(Stz* szWordNm);
     Word* pLocateRoutine(CodeCell* aCell);
     Word* pLocateStepWord(fpSTEPFN fpStepFn);
-    Word* pRemoveWord(Stz* szWordNm);
     Dic*  pPick(i8 i_Dic);
     void  vPop(void);
     void  vPrint(void);
     void  vPush(Dic* pDic);
+    void  vPushNamed(Stz* szDicNm);
     void  vPush_boray(void);
     void  vPush_catalogs(void);
     void  vPush_public(void);
     void  vPush_rapidsse(void);
     void  vPush_schemas(void);
     void  vPush_tenants(void);
+    Word* pRemoveWord(Stz* szWordNm);
     void  vReset(void);
+    bool  bTest(Stz* szCatalogNm);
+    bool  bTest(Stz* szCatalogNm, Stz* szSchemaNm);
+    bool  bTest(Stz* szCatalogNm, Stz* szSchemaNm, Stz* szTableNm);
     Dic*  pTop(void);
     void  vToPathStr(Stz* szPath);
 
