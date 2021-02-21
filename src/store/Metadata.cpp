@@ -246,7 +246,7 @@ void Metadata::vListContents(i8 i_Depth, Dic* pDic)
 }
 
 /*----------------------------------------------------------------------------*/
-/* determine whether a catalog exists and return its full name                */
+/* lookup a catalog and return an infoset about it                            */
 /*----------------------------------------------------------------------------*/
 InfoSet* Metadata::pLookupCatalog(Stz* szCatalogName)
 {
@@ -260,18 +260,20 @@ InfoSet* Metadata::pLookupCatalog(Stz* szCatalogName)
   DicStack* pDicStack = new DicStack;
 
   if (pDicStack->bTest(szCatalogName))
-    {;}
-  
+    Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+                                    szCatalogName,
+                                    C_VARGS_END);
+
   delete pDicStack;
   
   return pInfoSet;
 }
 
 /*----------------------------------------------------------------------------*/
-/* determine whether a schema exists and return its full name                 */
+/* lookup a schema and return an infoset about it                             */
 /*----------------------------------------------------------------------------*/
 InfoSet* Metadata::pLookupSchema(Stz* szCatalogName,
-                                   Stz* szSchemaName)
+                                 Stz* szSchemaName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
     
@@ -283,19 +285,22 @@ InfoSet* Metadata::pLookupSchema(Stz* szCatalogName,
   DicStack* pDicStack = new DicStack;
   
   if (pDicStack->bTest(szCatalogName,szSchemaName))
-    {;}
-  
+    Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+                                    szCatalogName,
+                                    szSchemaName,
+                                    C_VARGS_END);
+
   delete pDicStack;
 
   return pInfoSet;
 }
 
 /*----------------------------------------------------------------------------*/
-/* determine whether a table exists and return its full name                  */
+/* lookup a table and return an infoset about it                              */
 /*----------------------------------------------------------------------------*/
 InfoSet* Metadata::pLookupTable(Stz* szCatalogName,
-                                  Stz* szSchemaName,
-                                  Stz* szTableName)
+                                Stz* szSchemaName,
+                                Stz* szTableName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
     
@@ -307,8 +312,12 @@ InfoSet* Metadata::pLookupTable(Stz* szCatalogName,
   DicStack* pDicStack = new DicStack;
   
   if (pDicStack->bTest(szCatalogName,szSchemaName,szTableName))
-    {;}
-  
+    Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+                                    szCatalogName,
+                                    szSchemaName,
+                                    szTableName,
+                                    C_VARGS_END);
+
   delete pDicStack;
 
   return pInfoSet;

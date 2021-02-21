@@ -202,7 +202,7 @@ Row* InfoSetBase::pAllotRow(i8 iVArgsBegin, ...)
 /*----------------------------------------------------------------------------*/
 /* get first row                                                              */
 /*----------------------------------------------------------------------------*/
-Row* InfoSetBase::aFirstRow(void)
+Row* InfoSetBase::pFirstRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
@@ -240,9 +240,9 @@ void InfoSetBase::vInfoSetNm(Stz* szInfoSetNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* allot a row                                                                */
+/* get next row                                                               */
 /*----------------------------------------------------------------------------*/
-Row* InfoSetBase::aNextRow(Row* aPrevRow)
+Row* InfoSetBase::pNextRow(Row* aPrevRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   

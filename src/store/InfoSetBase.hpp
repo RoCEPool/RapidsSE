@@ -28,11 +28,11 @@ namespace STORE
     Row* pAllotRow(void);
     Row* pAllotRow(i8 iVargsBegin, ...);
     Row* pAllotRow(StreamDef* pStreamDef, i8 iVargsBegin, ...);
-    Row* aFirstRow();
+    Row* pFirstRow();
     i8   nInfoRows(void);
     Stz* szInfoSetNm(void);
     void vInfoSetNm(Stz* szInfoSetNm);
-    Row* aNextRow(Row* pPrevRow);
+    Row* pNextRow(Row* pPrevRow);
     
   //private:
     i8   iToOffset(Stz* aItem);

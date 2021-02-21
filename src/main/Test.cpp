@@ -293,6 +293,35 @@ void vTest6(void)
          "rapidsse"_Stz,"public"_Stz,"lineitem"_Stz,
          pSeApi->bTest("rapidsse"_Stz,"public"_Stz,"lineitem"_Stz)
            ? "found"_Stz : "not-found"_Stz);
+  
+  vTrace("\n\n"_Stz,szCurrTable);
+  InfoSet* pInfoSet;
+  pInfoSet = pSeApi->pLookupCatalog("n/a"_Stz);
+  vTrace("LookupCatalog: %lld rows\n"_Stz,pInfoSet->nInfoRows());
+  delete pInfoSet;
+  pInfoSet = pSeApi->pLookupCatalog("rapidsse"_Stz);
+  vTrace("LookupCatalog: %lld rows\n"_Stz,pInfoSet->nInfoRows());
+  delete pInfoSet;
+  
+  pInfoSet = pSeApi->pLookupSchema("n/a"_Stz,
+                                   "public"_Stz);
+  vTrace("LookupSchema: %lld rows\n"_Stz,pInfoSet->nInfoRows());
+  delete pInfoSet;
+  pInfoSet = pSeApi->pLookupSchema("rapidsse"_Stz,
+                                   "public"_Stz);
+  vTrace("LookupSchema: %lld rows\n"_Stz,pInfoSet->nInfoRows());
+  delete pInfoSet;
+  
+  pInfoSet = pSeApi->pLookupTable("n/a"_Stz,
+                                  "public"_Stz,
+                                  "lineitem"_Stz);
+  vTrace("LookupTable: %lld rows\n"_Stz,pInfoSet->nInfoRows());
+  delete pInfoSet;
+  pInfoSet = pSeApi->pLookupTable("rapidsse"_Stz,
+                                  "public"_Stz,
+                                  "lineitem"_Stz);
+  vTrace("LookupTable: %lld rows\n"_Stz,pInfoSet->nInfoRows());
+  delete pInfoSet;
 
   delete pSeApi;
 }
