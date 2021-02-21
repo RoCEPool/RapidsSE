@@ -214,6 +214,7 @@ void Metadata::vListContents(i8 i_Depth, Dic* pDic)
   
   if (! pDic) {
     Dic* pDic = pCurrTenant();
+    vTrace("\nTENANT %s \\folder\n"_Stz,pDic->szDicNm());
     vListContents(0,pDic);
     return;
   }
@@ -234,7 +235,10 @@ void Metadata::vListContents(i8 i_Depth, Dic* pDic)
       vListContents(i_Depth+1,(Dic*)pObject);
     else
     if (pObject && CN_TABLE == pObject->eGetClassNo())
-      ((Table*)pObject)->vListContents(i_Depth);
+      ((Table*)pObject)->vListContents(i_Depth+1);
+    else
+    if (pObject && CN_INDEX == pObject->eGetClassNo())
+      ((Index*)pObject)->vListContents(i_Depth+1);
   }
   
   pDic->pArticle()->vDropRead();

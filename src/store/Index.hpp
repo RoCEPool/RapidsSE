@@ -42,6 +42,7 @@ namespace STORE
     Stz*   szIndexNm(void);
     void   vIndexNo(i8 iIndexNo);
     i8     iIndexNo(void);
+    void   vListContents(i8 i_Depth);
     bool   bIsPrimaryKey(void);
     void   vIsPrimaryKey(bool bPrimaryKey);
     bool   bIsUnique(void);

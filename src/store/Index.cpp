@@ -270,6 +270,21 @@ void Index::vIsUnique(bool bUnique)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set index as a primary key index                                           */
+/*----------------------------------------------------------------------------*/
+void Index::vListContents(i8 i_Depth)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  
+  vTrace("%sIndex %lld %s\n"_Stz,
+         Stz::szTab(i_Depth),
+         m_iIndexNo,
+         m_sIndexNm.szStz());
+  
+  m_pIndexDef->vListContents(i_Depth+1);
+}
+
+/*----------------------------------------------------------------------------*/
 /* compute the size of sort key datum                                         */
 /*----------------------------------------------------------------------------*/
 i8 Index::iSortKeyDatum(void)

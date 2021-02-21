@@ -32,6 +32,7 @@ namespace BASE
     Article* pArticle(void);
     Word* pDicKind(void);
     void  vDicKind(Word* pDicKind);
+    Stz*  szDicNm(void);
     Word* pEachWord(Word* pPrior);
     Word* pEachWord(Word* pPrior, Word* pCategory);
     Word* pFindWord(Stz* szWordNm);
@@ -46,7 +47,6 @@ namespace BASE
     bool  bIsTenant(void);
     Word* pLastWord(void);
     void  vListWords(i8 i_Depth = 0, bool bListContents=false);
-    Stz*  szDicNm(void);
     void  vDicNm(Stz* szDicNm);
     void  vRefDec(void);
     void  vRefInc(void);
