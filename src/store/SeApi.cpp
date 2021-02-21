@@ -15,6 +15,7 @@
 #include "TablePtn.hpp"
 #include "Table.hpp"
 #include "Metadata.hpp"
+#include "InfoSet.hpp"
 
 #include "AM.hpp"
 
@@ -495,41 +496,41 @@ void SeApi::vPrintMetadata(void)
 /*----------------------------------------------------------------------------*/
 /* determine whether a catalog exists and return its full name                */
 /*----------------------------------------------------------------------------*/
-RowBuffer* SeApi::pLookupCatalog(Stz* szCatalogName)
+InfoSet* SeApi::pLookupCatalog(Stz* szCatalogName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
     
   Metadata* pMetadata = new Metadata;
   
-  RowBuffer* pRowBuffer = pMetadata->pLookupCatalog(szCatalogName);
+  InfoSet* pInfoSet = pMetadata->pLookupCatalog(szCatalogName);
 
   delete pMetadata;
 
-  return pRowBuffer;
+  return pInfoSet;
 }
 
 /*----------------------------------------------------------------------------*/
 /* determine whether a schema exists and return its full name                 */
 /*----------------------------------------------------------------------------*/
-RowBuffer* SeApi::pLookupSchema(Stz* szCatalogName,
+InfoSet* SeApi::pLookupSchema(Stz* szCatalogName,
                                 Stz* szSchemaName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
     
   Metadata* pMetadata = new Metadata;
  
-  RowBuffer* pRowBuffer = pMetadata->pLookupSchema(szCatalogName,
-                                                   szSchemaName);
+  InfoSet* pInfoSet = pMetadata->pLookupSchema(szCatalogName,
+                                               szSchemaName);
 
   delete pMetadata;
 
-  return pRowBuffer;
+  return pInfoSet;
 }
 
 /*----------------------------------------------------------------------------*/
 /* determine whether a table exists and return its full name                  */
 /*----------------------------------------------------------------------------*/
-RowBuffer* SeApi::pLookupTable(Stz* szCatalogName,
+InfoSet* SeApi::pLookupTable(Stz* szCatalogName,
                                Stz* szSchemaName,
                                Stz* szTableName)
 {
@@ -537,13 +538,13 @@ RowBuffer* SeApi::pLookupTable(Stz* szCatalogName,
     
   Metadata* pMetadata = new Metadata;
   
-  RowBuffer* pRowBuffer = pMetadata->pLookupTable(szCatalogName,
-                                                  szSchemaName,
-                                                  szTableName);
+  InfoSet* pInfoSet = pMetadata->pLookupTable(szCatalogName,
+                                              szSchemaName,
+                                              szTableName);
 
   delete pMetadata;
 
-  return pRowBuffer;
+  return pInfoSet;
 }
 
 /*----------------------------------------------------------------------------*/

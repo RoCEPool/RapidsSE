@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+namespace STORE { class InfoSet; }
+
 namespace STORE
 {
   class SeApi : public Object
@@ -48,12 +50,12 @@ namespace STORE
   
     void vPrintMetadata(void);
 
-    RowBuffer* pLookupCatalog(Stz* szCatalogName);
+    InfoSet* pLookupCatalog(Stz* szCatalogName);
   
-    RowBuffer* pLookupSchema(Stz* szCatalogName,
+    InfoSet* pLookupSchema(Stz* szCatalogName,
                              Stz* szSchemaName);
 
-    RowBuffer* pLookupTable(Stz* szCatalogName,
+    InfoSet* pLookupTable(Stz* szCatalogName,
                             Stz* szSchemaName,
                             Stz* szTableName);
   

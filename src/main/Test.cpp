@@ -273,8 +273,7 @@ void vTest6(void)
   delete pRowBuffer;
   pRowBuffer = pSeApi->pLookupSchema(szCurrCatalog,szCurrSchema);
   delete pRowBuffer;
-  pRowBuffer = pSeApi->pLookupTable(szCurrCatalog,szCurrSchema,szCurrTable);
-  delete pRowBuffer;
+
   
   vTrace("\n\n"_Stz,szCurrTable);
   pSeApi->vPrintMetadata();

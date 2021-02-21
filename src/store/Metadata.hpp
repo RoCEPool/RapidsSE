@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+namespace STORE { class InfoSet; }
+
 namespace STORE
 {
   class Metadata : public Object
@@ -33,12 +35,12 @@ namespace STORE
 
     void vListContents(i8 i_Depth, Dic* pDic);
 
-    RowBuffer* pLookupCatalog(Stz* szCatalogName);
+    InfoSet* pLookupCatalog(Stz* szCatalogName);
 
-    RowBuffer* pLookupSchema(Stz* szCatalogName,
+    InfoSet* pLookupSchema(Stz* szCatalogName,
                              Stz* szSchemaName);
 
-    RowBuffer* pLookupTable(Stz* szCatalogName,
+    InfoSet* pLookupTable(Stz* szCatalogName,
                             Stz* szSchemaName,
                             Stz* szTableName);
   

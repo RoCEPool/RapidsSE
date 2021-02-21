@@ -31,6 +31,7 @@ namespace BASE
     void  vContentDump(void);
     void  vCopy(DicStack* pDicStackSrc);
     void  vDiscard(void);
+    void  vDiscardAll(void);
     Dic*  pFindDic(Stz* szDicNm);
     Word* pFindWord(Stz* szWordNm);
     Word* pFindInCurrent(Stz* szWordNm);
@@ -49,7 +50,7 @@ namespace BASE
     bool  bPush_tables(void);
     bool  bPush_tenants(void);
     Word* pRemoveWord(Stz* szWordNm);
-    void  vReset(void);
+    //void  vReset(void);
     bool  bTest(Stz* szCatalogNm);
     bool  bTest(Stz* szCatalogNm, Stz* szSchemaNm);
     bool  bTest(Stz* szCatalogNm, Stz* szSchemaNm, Stz* szTableNm);

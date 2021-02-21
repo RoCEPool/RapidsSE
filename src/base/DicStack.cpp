@@ -38,8 +38,7 @@ DicStack::~DicStack(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   
-  while (m_iTop >= 0)
-    vDiscard();
+  vDiscardAll();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -76,7 +75,7 @@ void DicStack::vCopy(DicStack* pDicStackSrc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   
-  vReset();
+  vDiscardAll();
   
   for (i8 i_Dic = pDicStackSrc->m_iTop; i_Dic >= 0; i_Dic--) {
     m_pDic[i_Dic] = pDicStackSrc->m_pDic[i_Dic];
@@ -103,6 +102,17 @@ void DicStack::vDiscard(void)
   m_pDic[m_iTop] = nullptr;
   
   m_iTop--;
+}
+
+/*----------------------------------------------------------------------------*/
+/* discard top dictionary                                                     */
+/*----------------------------------------------------------------------------*/
+void DicStack::vDiscardAll(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
+  
+  while (m_iTop >= 0)
+    vDiscard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -491,12 +501,12 @@ Word* DicStack::pRemoveWord(Stz* szName)
 /*----------------------------------------------------------------------------*/
 /* reset this dic stack                                                       */
 /*----------------------------------------------------------------------------*/
-void DicStack::vReset(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
-  
-  m_iTop = -1;
-}
+//void DicStack::vReset(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
+//
+//  m_iTop = -1;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* use this dic stack to test for given catalog                               */
