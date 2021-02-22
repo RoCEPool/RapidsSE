@@ -1,0 +1,30 @@
+pipeline {
+  agent {
+    label 'jenkinsMaster'
+  }
+
+  stages {
+    stage('Build') {
+      steps {
+        echo 'Building..'
+        # test of a command that returns an error exit code
+        false
+        cd src
+        
+      }
+    }
+
+    stage('Install') {
+      steps {
+        echo 'Installing..'
+      }
+    }
+
+    stage('Test') {
+      steps {
+        echo 'Testing..'
+      }
+    }
+  }
+
+}
