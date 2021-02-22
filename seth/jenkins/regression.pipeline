@@ -3,35 +3,56 @@
 // in the form of C++ line comments (//) and C block comments (/*..*/).
 // '#' line comments can only be used when inside a shell script
 // block (i.e., one that starts with sh 'some_script').
+//
+// Some syntax support can be found here:
+// https://www.jenkins.io/doc/book/pipeline/syntax/#declarative-steps
+
+
 
 pipeline {
   agent {
     label 'jenkinsMaster'
   }
 
-  stages {
-    stage('Build') {
-      steps {
-        echo 'Building..'
-        sh 'echo "PWD = ${PWD}"'
-        // test of a command that returns an error exit code
-        sh 'false'
-        cd src
+  options {
+    // Build has failed if it has taken this long
+    timeout(time: 1, unit: 'HOURS')
 
+    // Only run one of these builds at a time
+    disableConcurrentBuilds()
+
+    // Prepend timestamps to all console output
+    timestamps()
+  }
+
+  stages {
+    stage('Build Release') {
+      steps {
+        sh 'seth/jenkins/build.sh release'
       }
     }
 
-    stage('Install') {
+    stage('Install Release') {
       steps {
         echo 'Installing..'
+        //sh 'seth/jenkins/install.sh'
       }
     }
 
-    stage('Test') {
+    stage('Test Release') {
       steps {
         echo 'Testing..'
+        //sh 'seth/jenkins/test.sh'
+        // capture logs if they are not huge
       }
     }
+  }
+
+
+  post {
+    // any steps to run after the stages have completed
+    // (successfully or not).
+    // e.g. send an email on a change
   }
 
 }
