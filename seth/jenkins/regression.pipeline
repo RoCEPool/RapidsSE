@@ -1,3 +1,7 @@
+// Jenkins pipeline configuration file for running regression tests.
+// N.B.: Thie file is written in groovy syntax. It accepts comments
+// in the form of C++ line comments (//) and C block comments (/*..*/).
+
 pipeline {
   agent {
     label 'jenkinsMaster'
@@ -8,7 +12,7 @@ pipeline {
       steps {
         echo 'Building..'
         sh 'echo "PWD = ${PWD}"'
-        # test of a command that returns an error exit code
+        // test of a command that returns an error exit code
         false
         cd src
 
