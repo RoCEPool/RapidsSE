@@ -47,9 +47,8 @@
   // check for error
   eError EC_NONE == not if
     eError op.pipelineJob@ ERROR_JOB
+    eError op__execErr
     Pipein[].delete
-    Operand[].newErrorMarker
-    Operand[].pipeOut
     StreamDef[].delete
     StreamDefOut[].delete
     ExprEval[].delete
