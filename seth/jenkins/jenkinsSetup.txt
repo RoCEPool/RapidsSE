@@ -1,0 +1,102 @@
+Jenkins Installation and setup
+
+Installation
+============
+
+Adapted from: https://www.jenkins.io/doc/book/installing/linux/#red-hat-centos
+
+Installation of the Long Term Support (LTS) release:
+
+sudo wget -O /etc/yum.repos.d/jenkins.repo \
+    https://pkg.jenkins.io/redhat-stable/jenkins.repo
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+sudo yum upgrade
+sudo yum install jenkins java-1.8.0-openjdk-devel
+sudo systemctl daemon-reload
+
+Create an SSH key by which jenkins will access the bitbucket repository.
+Invoke ssh-keygen
+save as ~/.ssh/jenkins and ~/.ssh/jenkins.pub
+Set a passphrase
+Copy public key and add as an access key to the repository in bitbucket:
+  https://bitbucket.org/rapidsdataproject/rapidsse/admin/access-keys/
+
+Test by executing: ssh -T -i ~/.ssh/jenkins git@bitbucket.org
+More detailed instructions here: https://support.atlassian.com/bitbucket-cloud/docs/set-up-an-ssh-key/
+
+Install GCC v10:
+  Refer to the upgradingGcc.txt file
+  https://jdhao.github.io/2017/09/04/install-gcc-newer-version-on-centos/
+  
+
+
+Starting Jenkins
+================
+
+sudo systemctl start jenkins
+
+check it with:
+
+sudo systemctl status jenkins
+
+
+Jenkins will listen on port 8080 by default
+
+If you need to open up port 8080 on the firewall then execute the following commands:
+
+YOURPORT=8080
+PERM="--permanent"
+SERV="$PERM --service=jenkins"
+
+firewall-cmd $PERM --new-service=jenkins
+firewall-cmd $SERV --set-short="Jenkins ports"
+firewall-cmd $SERV --set-description="Jenkins port exceptions"
+firewall-cmd $SERV --add-port=$YOURPORT/tcp
+firewall-cmd $PERM --add-service=jenkins
+firewall-cmd --zone=public --add-service=http --permanent
+firewall-cmd --reload
+
+
+
+Configuring Jenkins:
+====================
+
+Create a pipeline build and name it RapidsSE.
+Select these options:
+- Do not allow concurrent builds
+- Pipeline speed/durability override:
+    Performance-optimized
+- Poll SCM:
+    Use config:  * * * * *   # every minute
+- Pipeline:
+    Choose: Pipeline script from SCM
+    SCM: Git
+    Repository URL: git@bitbucket.org:rapidsdataproject/rapidsse
+    Add credentials. Select Kind: SSH Username with private key
+      ID: SCM_JENKINS_SSH
+      Private key:
+        <copy from tycho.home:/home/craig/.ssh/jenkins
+      Passphrase: jenkins
+    Additional Behaviours: 
+     Clean before checkout
+     Git LFS pull after checkout
+    Script path: seth/jenkins/Jenkinsfile
+    
+- Email config
+  SMTP server: smtp.office365.com
+  SMTP port: 587
+  Use TLS: yes
+  Username: agent@rapidsdata.com
+  Password: RapidsAg3n7
+      
+Go into Manage Jenkins --> Configure System --> Timestamper --> Enabled for all Pipeline builds
+
+Other
+=====
+
+Set up a port forwarding on the NAT from the public IP to the Jenkins box on port 8080.
+Set up a dynamic DNS for the public IP.
+Set up HTTPS for the Jenkins box.
+
+Plugins:
+  Amazon EC2 plugin - This plugin integrates Jenkins with Amazon EC2 or anything implementing the EC2 API's such as an Ubuntu.
