@@ -279,7 +279,7 @@ distclean : clean
 	@echo ""
 	@echo "Removing 3rd-party generated libraries..."
 	@echo ""
-	+@cd ../thirdparty/antlr && (MAKE) clean
+	+@cd ../thirdparty/antlr && $(MAKE) clean
 	+@cd ../thirdparty/tcc && $(MAKE) clean
 
 #To remove RapidsSE-generated files only
