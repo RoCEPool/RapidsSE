@@ -9,6 +9,8 @@
 /*----------------------------------------------------------------------------*/
 : op__cmdErrInfoSet
 
+  DdlLock[].testDrop
+
   // create the infoSetTable for C_TDEF_COMMANDERRORS
   C_TDEF_COMMANDERRORS "op__tableDef_infoSet" find execute assert
 
@@ -23,6 +25,8 @@
 : op__cmdErr ( errorMsg errorCode )
 
   params| errorCode errorMsg |
+
+  DdlLock[].testDrop
 
   // create the infoSetTable for C_TDEF_COMMANDERRORS
   C_TDEF_COMMANDERRORS "op__tableDef_infoSet" find execute assert
@@ -47,6 +51,8 @@
 
   params| errorCode |
 
+  DdlLock[].testDrop
+
   // create the infoSetTable for C_TDEF_EXECERRORS
   C_TDEF_EXECERRORS "op__tableDef_infoSet" find execute assert
 
@@ -70,6 +76,8 @@
 : op__execErrMsg ( errorMsg errorCode )
 
   params| errorCode errorMsg |
+
+  DdlLock[].testDrop
 
   // create the infoSetTable for C_TDEF_EXECERRORS
   C_TDEF_EXECERRORS "op__tableDef_infoSet" find execute assert
