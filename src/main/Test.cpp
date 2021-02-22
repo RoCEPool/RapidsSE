@@ -324,9 +324,9 @@ void vTest6(void)
   delete pInfoSet;
 
   pInfoSet = pSeApi->pColumnDefs("rapidsse"_Stz,
-                                  "public"_Stz,
-                                  "lineitem"_Stz,
-                                  nullptr);
+                                 "public"_Stz,
+                                 "lineitem"_Stz,
+                                 nullptr);
   vTrace("ColumnDefs: %lld rows\n"_Stz,pInfoSet->nInfoRows());
   delete pInfoSet;
 

@@ -345,6 +345,51 @@ void DicStack::vPush(Dic* pDic)
 }
 
 /*----------------------------------------------------------------------------*/
+/* push onto this dic stack given catalog                                     */
+/*----------------------------------------------------------------------------*/
+bool DicStack::bPush(Stz* szCatalogNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
+  
+  RASSERT(-1 == m_iTop);
+    
+  if (! bTest(szCatalogNm))
+    return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* push onto this dic stack given catalog, schema                             */
+/*----------------------------------------------------------------------------*/
+bool DicStack::bPush(Stz* szCatalogNm, Stz* szSchemaNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
+  
+  RASSERT(-1 == m_iTop);
+    
+  if (! bTest(szCatalogNm,szSchemaNm))
+    return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* push onto this dic stack given catalog, schema, table                       */
+/*----------------------------------------------------------------------------*/
+bool DicStack::bPush(Stz* szCatalogNm, Stz* szSchemaNm, Stz* szTableNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
+  
+  RASSERT(-1 == m_iTop);
+    
+  if (! bTest(szCatalogNm,szSchemaNm,szTableNm))
+    return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* push named dic onto this dic stack                                         */
 /*----------------------------------------------------------------------------*/
 bool DicStack::bPushNamed(Stz* szDicNm)

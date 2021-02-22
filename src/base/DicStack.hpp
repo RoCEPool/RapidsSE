@@ -41,6 +41,9 @@ namespace BASE
     void  vPop(void);
     void  vPrint(void);
     void  vPush(Dic* pDic);
+    bool  bPush(Stz* szCatalogNm);
+    bool  bPush(Stz* szCatalogNm, Stz* szSchemaNm);
+    bool  bPush(Stz* szCatalogNm, Stz* szSchemaNm, Stz* szTableNm);
     bool  bPushNamed(Stz* szDicNm);
     bool  bPush_boray(void);
     bool  bPush_catalogs(void);

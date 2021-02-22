@@ -260,6 +260,14 @@ InfoSet* Metadata::pColumnDefs(Stz* szCatalogName,
 
   InfoSet* pInfoSet = new InfoSet(pLookupStreamDef);
   
+  // v1: assume szCatalogName, szSchemaName, szTableName are set
+  //            szColumnName is not set
+  
+  RASSERT(szCatalogName);
+  RASSERT(szSchemaName);
+  RASSERT(szTableName);
+  RASSERT(! szColumnName);
+
   DicStack* pDicStack = new DicStack;
 
   delete pDicStack;
