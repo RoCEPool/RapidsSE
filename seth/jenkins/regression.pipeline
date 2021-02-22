@@ -1,0 +1,20 @@
+pipeline {
+    agent {
+      label 'jenkinsMaster'
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                sh 'echo "PWD = ${PWD}"'
+                echo 'Building..'
+                echo 'Installing..'
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Testing..'
+            }
+        }
+    }
+}

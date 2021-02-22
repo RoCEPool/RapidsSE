@@ -42,6 +42,8 @@ Then from the Source directory run the following command to build rapidsse:
     endef
     $(error $(ERR))
   endif
+
+  CMAKE_ARGS := -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++
 endif
 
 all : $(LIBDIR)/$(LIBANTLR)
@@ -53,7 +55,7 @@ $(LIBDIR)/$(LIBANTLR) :
 	@mkdir -p $(LIBDIR)
 	@mkdir -p $(SRCDIR)
 	@unzip -o $(SRCZIP) -d $(SRCDIR)
-	cd $(SRCDIR) && cmake -DCMAKE_BUILD_TYPE=Release CMakeLists.txt
+	cd $(SRCDIR) && cmake -DCMAKE_BUILD_TYPE=Release $(CMAKE_ARGS) CMakeLists.txt
 	+cd $(SRCDIR) && $(MAKE) 
 	cp $(SRCDIR)/dist/$(LIBANTLR) $(LIBDIR)
 	cd $(SRCDIR)/runtime/src && find . -name '*.h' | cpio -pdm $(INCDIR)
