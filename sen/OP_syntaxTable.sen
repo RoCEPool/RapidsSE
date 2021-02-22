@@ -9,17 +9,18 @@
 /*----------------------------------------------------------------------------*/
 : syntaxTable_DataMarker
 
+  0 locals| errorCode |
+
   //job[] job.tagSet@ tagSet.asStr .
 
   <etc> <tableNm> "create table %v %v ;" str.format dup .
   job[] streamDef::parse to streamDef[]
 
   streamDef[].isNull if
-    job[] job.error@
-    op.pipelineJob@ ERROR_JOB
+    job[] job.error@ to errorCode
+    errorCode op.pipelineJob@ ERROR_JOB
+    errorCode op__execErr
     Pipein[].delete
-    Operand[].newErrorMarker
-    Operand[].pipeout
     true
     exit
   then
