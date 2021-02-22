@@ -1,20 +1,31 @@
 pipeline {
-    agent {
-      label 'jenkinsMaster'
+  agent {
+    label 'jenkinsMaster'
+  }
+
+  stages {
+    stage('Build') {
+      steps {
+        echo 'Building..'
+        sh 'echo "PWD = ${PWD}"'
+        # test of a command that returns an error exit code
+        false
+        cd src
+
+      }
     }
 
-    stages {
-        stage('Build') {
-            steps {
-                sh 'echo "PWD = ${PWD}"'
-                echo 'Building..'
-                echo 'Installing..'
-            }
-        }
-        stage('Test') {
-            steps {
-                echo 'Testing..'
-            }
-        }
+    stage('Install') {
+      steps {
+        echo 'Installing..'
+      }
     }
+
+    stage('Test') {
+      steps {
+        echo 'Testing..'
+      }
+    }
+  }
+
 }
