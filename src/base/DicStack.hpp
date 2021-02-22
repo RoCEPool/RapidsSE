@@ -1,7 +1,9 @@
 /*============================================================================*/
-/* DicStack.hpp -- Dictionary TypedStack                                           */
+/* DicStack.hpp -- Dictionary Stack                                           */
 /*============================================================================*/
 #pragma once
+
+namespace STORE { class StreamDef; }
 
 namespace BASE
 {
@@ -53,7 +55,8 @@ namespace BASE
     bool  bPush_tables(void);
     bool  bPush_tenants(void);
     Word* pRemoveWord(Stz* szWordNm);
-    //void  vReset(void);
+    StreamDef* pStreamDef(void);
+    Table* pTable(void);
     bool  bTest(Stz* szCatalogNm);
     bool  bTest(Stz* szCatalogNm, Stz* szSchemaNm);
     bool  bTest(Stz* szCatalogNm, Stz* szSchemaNm, Stz* szTableNm);

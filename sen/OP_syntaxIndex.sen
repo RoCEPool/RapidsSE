@@ -63,7 +63,7 @@
 /*----------------------------------------------------------------------------*/
 : syntaxIndex_DataMarker
 
-  0 0 locals| sTableNm sSmt |
+  0 0 0 locals| sTableNm sSmt errorCode |
 
   //job[] job.tagSet@ tagSet.asStr .
 
@@ -79,21 +79,20 @@
   // parse the smt and get the table name
   sSmt job[] indexDef::parseTableName to sTableNm
   sTableNm "" str.equal if
-    job[] job.error@
-    op.pipelineJob@ ERROR_JOB
+    job[] job.error@ to errorCode
+    errorCode op.pipelineJob@ ERROR_JOB
+    errorCode op__execErr
     Pipein[].delete
-    Operand[].newErrorMarker
-    Operand[].pipeout
     true
     exit
   then
 
   // check ok to create index
   sTableNm syntaxIndex::checkCreate not if ( errorCode )
-    op.pipelineJob@ ERROR_JOB
+    to errorCode
+    errorCode op.pipelineJob@ ERROR_JOB
+    errorCode op__execErr
     Pipein[].delete
-    Operand[].newErrorMarker
-    Operand[].pipeout
     true
     exit
   then
@@ -101,11 +100,10 @@
   sSmt table[] job[] indexDef::parse to indexDef[]
 
   indexDef[].isNull if
-    job[] job.error@
-    op.pipelineJob@ ERROR_JOB
+    job[] job.error@ to errorCode
+    errorCode op.pipelineJob@ ERROR_JOB
+    errorCode op__execErr
     Pipein[].delete
-    Operand[].newErrorMarker
-    Operand[].pipeout
     true
     exit
   then

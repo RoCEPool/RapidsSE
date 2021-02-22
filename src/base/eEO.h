@@ -17,312 +17,312 @@ enum eEO : u1 // expression operators
   // simple eo
 
   // arithmetic operators
-  /*    */ EO_ADD,              // add top two int's push result
-  /*    */ EO_DIVIDE,           // divide top int by second push result
-  /*    */ EO_MODULO,           // modulo top int be second push result
-  /*    */ EO_MULTIPLY,         // multiply top two int's push result
-  /*    */ EO_NEGATE,           // negate the top value
-  /*    */ EO_SUBTRACT,         // subtract second int from top push result
+  /*  S  */ EO_ADD,              // add top two int's push result
+  /*  S  */ EO_DIVIDE,           // divide top int by second push result
+  /*  S  */ EO_MODULO,           // modulo top int be second push result
+  /*  S  */ EO_MULTIPLY,         // multiply top two int's push result
+  /*  S  */ EO_NEGATE,           // negate the top value
+  /*  S  */ EO_SUBTRACT,         // subtract second int from top push result
   
   // column pushes
-  /*    */ EO_PUSH_COLUMN_LENGTH, // push column length
-  /*    */ EO_PUSH_COLUMN_SCALE,  // push column scale
-  /*    */ EO_PUSH_COLUMN_TYPE,   // push column type
+  /*  S  */ EO_PUSH_COLUMN_LENGTH, // push column length
+  /*  S  */ EO_PUSH_COLUMN_SCALE,  // push column scale
+  /*  S  */ EO_PUSH_COLUMN_TYPE,   // push column type
   
   // counter
-  /*    */ EO_CTR_0_DEC,        // dec counter 0
-  /*    */ EO_CTR_0_INC,        // inc counter 0
-  /*    */ EO_CTR_0_POP,        // pop counter 0
-  /*    */ EO_CTR_0_PUSH,       // push counter 0
+  /*  R  */ EO_CTR_0_DEC,        // dec counter 0
+  /*  R  */ EO_CTR_0_INC,        // inc counter 0
+  /*  R  */ EO_CTR_0_POP,        // pop counter 0
+  /*  R  */ EO_CTR_0_PUSH,       // push counter 0
 
   // jump operators
-  /*    */ EO_JMP,              // jump to location
-  /*    */ EO_JMP_FALSE,        // pop top and jump to location if false
-  /*    */ EO_JMP_TRUE,         // pop top and jump to location if true
+  /*  S  */ EO_JMP,              // jump to location
+  /*  S  */ EO_JMP_FALSE,        // pop top and jump to location if false
+  /*  S  */ EO_JMP_TRUE,         // pop top and jump to location if true
   
-  /*    */ EO_JMP_LESS,         // pop top and jump to location if <
-  /*    */ EO_JMP_LESSEQUAL,    // pop top and jump to location if <=
-  /*    */ EO_JMP_EQUAL,        // pop top and jump to location if ==
-  /*    */ EO_JMP_NOTEQUAL,     // pop top and jump to location if !=
-  /*    */ EO_JMP_GREATEREQUAL, // pop top and jump to location if >=
-  /*    */ EO_JMP_GREATER,      // pop top and jump to location if >
+  /*  S  */ EO_JMP_LESS,         // pop top and jump to location if <
+  /*  S  */ EO_JMP_LESSEQUAL,    // pop top and jump to location if <=
+  /*  S  */ EO_JMP_EQUAL,        // pop top and jump to location if ==
+  /*  S  */ EO_JMP_NOTEQUAL,     // pop top and jump to location if !=
+  /*  S  */ EO_JMP_GREATEREQUAL, // pop top and jump to location if >=
+  /*  S  */ EO_JMP_GREATER,      // pop top and jump to location if >
   
   // index
-  /*    */ EO_INDEXNM_ALT_SET,    // set the alt index name
-  /*    */ EO_INDEXNM_SRC_SET,    // set the src index name
+  /*  D  */ EO_INDEXNM_ALT_SET,    // set the alt index name
+  /*  D  */ EO_INDEXNM_SRC_SET,    // set the src index name
   
   // indexTree
-  /*    */ EO_INDEXTREE_ALT_SET,    // set the alt indexTree
-  /*    */ EO_INDEXTREE_DEV_SET,    // set the dev to indexTree
-  /*    */ EO_INDEXTREE_SRC_SET,    // set the src indexTree
-  /*    */ EO_INDEXTREE_TMP_DELETE, // delete the tmp indexTree
-  /*    */ EO_INDEXTREE_TMP_SET,    // set the tmp indexTree
+  /*  D  */ EO_INDEXTREE_ALT_SET,    // set the alt indexTree
+  /*  D  */ EO_INDEXTREE_DEV_SET,    // set the dev to indexTree
+  /*  D  */ EO_INDEXTREE_SRC_SET,    // set the src indexTree
+  /*  D  */ EO_INDEXTREE_TMP_DELETE, // delete the tmp indexTree
+  /*  D  */ EO_INDEXTREE_TMP_SET,    // set the tmp indexTree
   
   // logical operators
-  /*    */ EO_LGL_AND,          // logical and top two int's, push result
-  /*    */ EO_LGL_OR,           // logical or top two int's, push result
-  /*    */ EO_LGL_NOT,          // logical not top int, push result
-  /*    */ EO_LGL_XOR,          // logical xor top two int's, push result
+  /*  S  */ EO_LGL_AND,          // logical and top two int's, push result
+  /*  S  */ EO_LGL_OR,           // logical or top two int's, push result
+  /*  S  */ EO_LGL_NOT,          // logical not top int, push result
+  /*  S  */ EO_LGL_XOR,          // logical xor top two int's, push result
 
   // null test operators
-  /*    */ EO_ISNULL,           // test if top is null, push result
-  /*    */ EO_ISNOTNULL,        // test if top is not null, push result
+  /*  S  */ EO_ISNULL,           // test if top is null, push result
+  /*  S  */ EO_ISNOTNULL,        // test if top is not null, push result
   
   // pot
-  /*    */ EO_POT_USE_STREAMDEFOUT, // use streamDefOut in the pot
+  /*  M  */ EO_POT_USE_STREAMDEFOUT, // use streamDefOut in the pot
   
   // prints
-  /*    */ EO_PRINT,            // print top
-  /*    */ EO_PRINTF,           // formatted print
+  /*  S  */ EO_PRINT,            // print top
+  /*  S  */ EO_PRINTF,           // formatted print
 
   // pushes
-  /*    */ EO_DATE,             // push date
-  /*    */ EO_INTEGER,          // push integer
-  /*    */ EO_PUSHNULL,         // push null
-  /*    */ EO_PUSH_MINUS1,      // push integer -1
-  /*    */ EO_PUSH_0,           // push integer 0
-  /*    */ EO_PUSH_1,           // push integer 1
-  /*    */ EO_RANDOM,           // push random number 0..arg-1
+  /*  S  */ EO_DATE,             // push date
+  /*  S  */ EO_INTEGER,          // push integer
+  /*  S  */ EO_PUSHNULL,         // push null
+  /*  S  */ EO_PUSH_MINUS1,      // push integer -1
+  /*  S  */ EO_PUSH_0,           // push integer 0
+  /*  S  */ EO_PUSH_1,           // push integer 1
+  /*  S  */ EO_RANDOM,           // push random number 0..arg-1
 
   // relational operators
-  /*    */ EO_LESSTHAN,         // test top < 2nd, push result
-  /*    */ EO_LESSEQUAL,        // test top <= 2nd, push result
-  /*    */ EO_EQUAL,            // test top == 2nd, push result
-  /*    */ EO_NOTEQUAL,         // test top != 2nd, push result
-  /*    */ EO_GREATEREQUAL,     // test top >= 2nd, push result
-  /*    */ EO_GREATERTHAN,      // test top > 2nd, push result
+  /*  S  */ EO_LESSTHAN,         // test top < 2nd, push result
+  /*  S  */ EO_LESSEQUAL,        // test top <= 2nd, push result
+  /*  S  */ EO_EQUAL,            // test top == 2nd, push result
+  /*  S  */ EO_NOTEQUAL,         // test top != 2nd, push result
+  /*  S  */ EO_GREATEREQUAL,     // test top >= 2nd, push result
+  /*  S  */ EO_GREATERTHAN,      // test top > 2nd, push result
 
   // register operators
-  /*    */ EO_REG_EOSMARKER_NEW,          // new an eosMarker in Operand[]
-  /*    */ EO_REG_INDEXDEF_ADDCOLUMN,     // add a column to indexDef[]
-  /*    */ EO_REG_INDEXDEF_DELETE,        // delete the indexDef[]
-  /*    */ EO_REG_INDEXDEF_NEW,           // new an indexDef in indexDef[]
-  /*    */ EO_REG_INDEXTREE_NEW,          // new an indexTree in indexTree[]
-  /*    */ EO_REG_PTNSTREAM_CLOSE,        // close a ptn stream
-  /*    */ EO_REG_PTNSTREAM_DELETE,       // delete a ptn stream
-  /*    */ EO_REG_PTNSTREAM_NEW,          // new a ptn stream
-  /*    */ EO_REG_PTNSTREAM_OPEN,         // open a ptn stream
-  /*    */ EO_REG_PTNSTREAM_READ,         // read a ptn stream
-  /*    */ EO_REG_SRC_STREAMDEFOUT_NEW,   // new streamDefOut[] from DevSrcRow
-  /*    */ EO_REG_STREAMDEFOUT_NEW,       // new an streamDef in streamDefOut[]
-  /*    */ EO_REG_STREAMDEFOUT_ADDCOLUMN, // add a column to streamDefOut[]
-  /*    */ EO_REG_STREAMDEF_STREAMDEFOUT, // copy streamDef[] to streamDefOut[]
+  /*  M  */ EO_REG_EOSMARKER_NEW,          // new an eosMarker in Operand[]
+  /*  M  */ EO_REG_INDEXDEF_ADDCOLUMN,     // add a column to indexDef[]
+  /*  M  */ EO_REG_INDEXDEF_DELETE,        // delete the indexDef[]
+  /*  M  */ EO_REG_INDEXDEF_NEW,           // new an indexDef in indexDef[]
+  /*  M  */ EO_REG_INDEXTREE_NEW,          // new an indexTree in indexTree[]
+  /*  M  */ EO_REG_PTNSTREAM_CLOSE,        // close a ptn stream
+  /*  M  */ EO_REG_PTNSTREAM_DELETE,       // delete a ptn stream
+  /*  M  */ EO_REG_PTNSTREAM_NEW,          // new a ptn stream
+  /*  M  */ EO_REG_PTNSTREAM_OPEN,         // open a ptn stream
+  /*  M  */ EO_REG_PTNSTREAM_READ,         // read a ptn stream
+  /*  M  */ EO_REG_SRC_STREAMDEFOUT_NEW,   // new streamDefOut[] from DevSrcRow
+  /*  M  */ EO_REG_STREAMDEFOUT_NEW,       // new an streamDef in streamDefOut[]
+  /*  M  */ EO_REG_STREAMDEFOUT_ADDCOLUMN, // add a column to streamDefOut[]
+  /*  M  */ EO_REG_STREAMDEF_STREAMDEFOUT, // copy streamDef[] to streamDefOut[]
   
   // column set
-  /*    */ EO_SET_COLUMN,       // add column to set
-  /*    */ EO_SET_COLUMNS,      // add columns to set
-  /*    */ EO_SET_ITEMS,        // set number of column items
-  /*    */ EO_SET_LOCALS_ALT,   // inflate alt columns direct into locals
-  /*    */ EO_SET_LOCALS_ROW,   // row columns into locals
-  /*    */ EO_SET_LOCALS_SRC,   // inflate src columns direct into locals
-  /*    */ EO_SET_LOCALS_SRC2,  // inflate src columns direct into locals
+  /*  M  */ EO_SET_COLUMN,       // add column to set
+  /*  M  */ EO_SET_COLUMNS,      // add columns to set
+  /*  M  */ EO_SET_ITEMS,        // set number of column items
+  /*  D  */ EO_SET_LOCALS_ALT,   // inflate alt columns direct into locals
+  /*  D  */ EO_SET_LOCALS_ROW,   // row columns into locals
+  /*  D  */ EO_SET_LOCALS_SRC,   // inflate src columns direct into locals
+  /*  D  */ EO_SET_LOCALS_SRC2,  // inflate src columns direct into locals
 
   // table
-  /*    */ EO_TABLENM_ALT_SET,    // set the alt table name
-  /*    */ EO_TABLENM_SRC_SET,    // set the src table name
+  /*  D  */ EO_TABLENM_ALT_SET,    // set the alt table name
+  /*  D  */ EO_TABLENM_SRC_SET,    // set the src table name
 
   // table ptn
-  /*    */ EO_TABLEPTN_DROPREAD,  // drop a tablePtn read lock
-  /*    */ EO_TABLEPTN_GRABREAD,  // grab a tablePtn read lock
+  /*  M  */ EO_TABLEPTN_DROPREAD,  // drop a tablePtn read lock
+  /*  M  */ EO_TABLEPTN_GRABREAD,  // grab a tablePtn read lock
 
   // stack operators
-  /*    */ EO_INC,              // increment top, push result
-  /*    */ EO_DEC,              // decrement top, push result
-  /*    */ EO_DUP,              // duplicate top
-  /*    */ EO_POP,              // pop / discard top
-  /*    */ EO_POP_LOCALI,       // pop integer into a local register
-  /*    */ EO_POP_LOCALS,       // pop string into a local register
-  /*    */ EO_PUSH_LOCALI,      // push an integer from a local register
-  /*    */ EO_PUSH_LOCALS,      // push an string from a local register
+  /*  S  */ EO_INC,              // increment top, push result
+  /*  S  */ EO_DEC,              // decrement top, push result
+  /*  S  */ EO_DUP,              // duplicate top
+  /*  S  */ EO_POP,              // pop / discard top
+  /*  S  */ EO_POP_LOCALI,       // pop integer into a local register
+  /*  S  */ EO_POP_LOCALS,       // pop string into a local register
+  /*  S  */ EO_PUSH_LOCALI,      // push an integer from a local register
+  /*  S  */ EO_PUSH_LOCALS,      // push an string from a local register
   
   // string operators
-  /*    */ EO_STR_COMPARE,      // pop top stradr and compare str on stack
-  /*    */ EO_STR_COMPARE_a,    // pop top two azStr and compare
-  /*    */ EO_STR_PRINTADR,     // pop top and print iArg as addr of string
-  /*    */ EO_STR_PRINTSTK,     // pop string from top and print
-  /*    */ EO_STR_LITERAL,      // push address of string literal
+  /*  S  */ EO_STR_COMPARE,      // pop top stradr and compare str on stack
+  /*  S  */ EO_STR_COMPARE_a,    // pop top two azStr and compare
+  /*  S  */ EO_STR_PRINTADR,     // pop top and print iArg as addr of string
+  /*  S  */ EO_STR_PRINTSTK,     // pop string from top and print
+  /*  S  */ EO_STR_LITERAL,      // push address of string literal
 
   // subroutine operators
-  /*    */ EO_CALL,             // call subroutine at location
-  /*    */ EO_RETURN,           // return from subroutine and
-  /*    */ EO_RETURN_FALSE,     // return from subroutine on false
+  /*  S  */ EO_CALL,             // call subroutine at location
+  /*  S  */ EO_RETURN,           // return from subroutine and
+  /*  S  */ EO_RETURN_FALSE,     // return from subroutine on false
 
   // misc
-  /*    */ EO_ASSERT,           // pop top and assert
-  /*    */ EO_BREAKPOINT,       // break point
-  /*    */ EO_CALLAGAIN,        // set call again
-  /*    */ EO_CALLEDAGAIN,      // push called again
-  /*    */ EO_DUMP,             // stack dump
-  /*    */ EO_ENTER,            // diarise routine enter
-  /*    */ EO_EXIT,             // diarise routine exit
-  /*    */ EO_HANDLER,          // set handler
-  /*    */ EO_INIT,             // initialise the rlu common
-  /*    */ EO_INTEGRITY,        // integrity check
-  /*    */ EO_NEVERREACH,       // assert (never reach code)
-  /*    */ EO_SANITY,           // sanity check
-  /*    */ EO_SLEEP,            // sleep for top seconds
-  /*    */ EO_SQL,              // set sql no
-  /*    */ EO_TABLEPTN,         // push i_TablePtn
-  /*    */ EO_TRACEOFF,         // set trace off
-  /*    */ EO_TRACEON,          // set trace on
-  /*    */ EO_NOOP,             // no op
-  /*    */ EO_ERROR,            // error marker
+  /*  S  */ EO_ASSERT,           // pop top and assert
+  /*  P  */ EO_BREAKPOINT,       // break point
+  /*  R  */ EO_CALLAGAIN,        // set call again
+  /*  R  */ EO_CALLEDAGAIN,      // push called again
+  /*  R  */ EO_DUMP,             // stack dump
+  /*  R  */ EO_ENTER,            // diarise routine enter
+  /*  R  */ EO_EXIT,             // diarise routine exit
+  /*  M  */ EO_HANDLER,          // set handler
+  /*  R  */ EO_INIT,             // initialise the rlu common
+  /*  R  */ EO_INTEGRITY,        // integrity check
+  /*  M  */ EO_NEVERREACH,       // assert (never reach code)
+  /*  S  */ EO_SANITY,           // sanity check
+  /*  M  */ EO_SLEEP,            // sleep for top seconds
+  /*  R  */ EO_SQL,              // set sql no
+  /*  R  */ EO_TABLEPTN,         // push i_TablePtn
+  /*  R  */ EO_TRACEOFF,         // set trace off
+  /*  R  */ EO_TRACEON,          // set trace on
+  /*  S  */ EO_NOOP,             // no op
+  /*  M  */ EO_ERROR,            // error marker
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // date operators
-  /*    */ EO_DTE_NOW,          // push current date
-  /*    */ EO_DTE_PRINT,        // pop top and print as date
-  /*    */ EO_DTE_YEAR,         // pop top, push year of date
+  /*  M  */ EO_DTE_NOW,          // push current date
+  /*  R  */ EO_DTE_PRINT,        // pop top and print as date
+  /*  M  */ EO_DTE_YEAR,         // pop top, push year of date
   
   // hashing
-  /*    */ EO_HSH_ADD_HASHI,    // add hash of top int to running hash
-  /*    */ EO_HSH_RESET,        // reset hash
+  /*  R  */ EO_HSH_ADD_HASHI,    // add hash of top int to running hash
+  /*  R  */ EO_HSH_RESET,        // reset hash
 
   // key
-  /*    */ EO_KEY_LCL2C_TO_I,   // convert two local varchar(1) to int
-  /*    */ EO_KEY_ROW2C_TO_I,   // convert two row varchar(1) to int
+  /*  M  */ EO_KEY_LCL2C_TO_I,   // convert two local varchar(1) to int
+  /*  D  */ EO_KEY_ROW2C_TO_I,   // convert two row varchar(1) to int
 
   // partitioning
-  /*    */ EO_PTN_CALC,         // calculate i_Ptn using running iHash
-  /*    */ EO_PTN_PUSH,         // push i_Ptn
-  /*    */ EO_PTN_RESET,        // reset running iHash
-  /*    */ EO_PTN_RUNNING,      // mix top into running iHash
+  /*  R  */ EO_PTN_CALC,         // calculate i_Ptn using running iHash
+  /*  R  */ EO_PTN_PUSH,         // push i_Ptn
+  /*  R  */ EO_PTN_RESET,        // reset running iHash
+  /*  R  */ EO_PTN_RUNNING,      // mix top into running iHash
 
   // timer
-  /*    */ EO_TMR_SINCE,        // get nsecs since ::constructor
-  /*    */ EO_TMR_START,        // timer start
-  /*    */ EO_TMR_NSECS,        // push timer nanoseconds
-  /*    */ EO_TMR_UPDATE,       // timer update
-  /*    */ EO_TMR_AGG_ADD,      // add timer to agg timer
-  /*    */ EO_TMR_AGG_NSECS,    // push agg nanoseconds
-  /*    */ EO_TMR_AGG_RESET,    // reset agg timer
+  /*  M  */ EO_TMR_SINCE,        // get nsecs since ::constructor
+  /*  M  */ EO_TMR_START,        // timer start
+  /*  M  */ EO_TMR_NSECS,        // push timer nanoseconds
+  /*  M  */ EO_TMR_UPDATE,       // timer update
+  /*  M  */ EO_TMR_AGG_ADD,      // add timer to agg timer
+  /*  M  */ EO_TMR_AGG_NSECS,    // push agg nanoseconds
+  /*  M  */ EO_TMR_AGG_RESET,    // reset agg timer
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // col operators
-  /*    */ EO_COL_SRC_PUSHDST,  // push column subset from m_aSrcCrw into dst row
-  /*    */ EO_COL_ALT_PUSHONE,  // push column value from m_aAltCrw
-  /*    */ EO_COL_ALT_PUSHSET,  // push column subset from m_aAltCrw
-  /*    */ EO_COL_SRC_PUSHONE,  // push column value from m_aSrcCrw
-  /*    */ EO_COL_SRC_PUSHONE_a,// push value from m_aSrcCrw (str as ptr)
-  /*    */ EO_COL_SRC_PUSHSET,  // push column subset from m_aSrcCrw
+  /*  D  */ EO_COL_SRC_PUSHDST,  // push column subset from m_aSrcCrw into dst row
+  /*  D  */ EO_COL_ALT_PUSHONE,  // push column value from m_aAltCrw
+  /*  D  */ EO_COL_ALT_PUSHSET,  // push column subset from m_aAltCrw
+  /*  D  */ EO_COL_SRC_PUSHONE,  // push column value from m_aSrcCrw
+  /*  D  */ EO_COL_SRC_PUSHONE_a,// push value from m_aSrcCrw (str as ptr)
+  /*  D  */ EO_COL_SRC_PUSHSET,  // push column subset from m_aSrcCrw
 
   // crw operators
-  /*    */ EO_CRW_ALT_DEREF,    // deref m_aAltCrw using m_aAltEnt.ref
-  /*    */ EO_CRW_SRC_BEGIN,    // begin src crw traverse
-  /*    */ EO_CRW_SRC_DEREF,    // deref m_aSrcCrw using m_aSrcEnt.ref
-  /*    */ EO_CRW_SRC_NEXT,     // move to next src row
-  /*    */ EO_CRW_SRC_NULL,     // null crw src
-  /*    */ EO_CRW_SRC_TEST,     // test if there is a crw buffer
+  /*  D  */ EO_CRW_ALT_DEREF,    // deref m_aAltCrw using m_aAltEnt.ref
+  /*  D  */ EO_CRW_SRC_BEGIN,    // begin src crw traverse
+  /*  D  */ EO_CRW_SRC_DEREF,    // deref m_aSrcCrw using m_aSrcEnt.ref
+  /*  D  */ EO_CRW_SRC_NEXT,     // move to next src row
+  /*  D  */ EO_CRW_SRC_NULL,     // null crw src
+  /*  D  */ EO_CRW_SRC_TEST,     // test if there is a crw buffer
   
   // entry
-  /*    */ EO_ENT_FINDI,        // find entry with int key
-  /*    */ EO_ENT_NEXT,         // move to next m_pEnt
-  /*    */ EO_ENT_POSPRIOR,     // position m_pEnt prior using m_oEntWrk.key
-  /*    */ EO_ENT_PUSH,         // push entry
-  /*    */ EO_ENT_PUSHELMI0,    // push entry elm 0 int
-  /*    */ EO_ENT_PUSHELMS0,    // push entry elm 0 str
-  /*    */ EO_ENT_PUSHOFS,      // push entry offset
-  /*    */ EO_ENT_PUSHREF,      // push ref of current entry
+  /*  D  */ EO_ENT_FINDI,        // find entry with int key
+  /*  D  */ EO_ENT_NEXT,         // move to next m_pEnt
+  /*  D  */ EO_ENT_POSPRIOR,     // position m_pEnt prior using m_oEntWrk.key
+  /*  D  */ EO_ENT_PUSH,         // push entry
+  /*  D  */ EO_ENT_PUSHELMI0,    // push entry elm 0 int
+  /*  D  */ EO_ENT_PUSHELMS0,    // push entry elm 0 str
+  /*  D  */ EO_ENT_PUSHOFS,      // push entry offset
+  /*  -  */ EO_ENT_PUSHREF,      // push ref of current entry
 
-  /*    */ EO_ENT_SRC_PUSH,     // push src entry
-  /*    */ EO_ENT_SRC_PUSHUPPER,// push src upper entry
+  /*  D  */ EO_ENT_SRC_PUSH,     // push src entry
+  /*  D  */ EO_ENT_SRC_PUSHUPPER,// push src upper entry
   
   // entry relational operators
-  /*    */ EO_ENT_LESS,         // test if m_pEnt.key <  m_oEntWrk.key
-  /*    */ EO_ENT_LESSEQUAL,    // test if m_pEnt.key <= m_oEntWrk.key
-  /*    */ EO_ENT_EQUAL,        // test if m_pEnt.key == m_oEntWrk.key
-  /*    */ EO_ENT_NOTEQUAL,     // test if m_pEnt.key != m_oEntWrk.key
-  /*    */ EO_ENT_GREATEREQUAL, // test if m_pEnt.key >= m_oEntWrk.key
-  /*    */ EO_ENT_GREATER,      // test if m_pEnt.key >  m_oEntWrk.key
-  /*    */ EO_ENT_PRINTKEYS,    // print both m_pEnt.key and m_oEntWrk.key
+  /*  D  */ EO_ENT_LESS,         // test if m_pEnt.key <  m_oEntWrk.key
+  /*  D  */ EO_ENT_LESSEQUAL,    // test if m_pEnt.key <= m_oEntWrk.key
+  /*  D  */ EO_ENT_EQUAL,        // test if m_pEnt.key == m_oEntWrk.key
+  /*  D  */ EO_ENT_NOTEQUAL,     // test if m_pEnt.key != m_oEntWrk.key
+  /*  D  */ EO_ENT_GREATEREQUAL, // test if m_pEnt.key >= m_oEntWrk.key
+  /*  D  */ EO_ENT_GREATER,      // test if m_pEnt.key >  m_oEntWrk.key
+  /*  D  */ EO_ENT_PRINTKEYS,    // print both m_pEnt.key and m_oEntWrk.key
 
   // entWrk
-  /*    */ EO_ENTWRK_APPENDELM, // append next element value
-  /*    */ EO_ENTWRK_APPENDELMI,// append next element value (int)
-  /*    */ EO_ENTWRK_APPENDELMS,// append next element value (str)
-  /*    */ EO_ENTWRK_CREATEPAY, // create a payload in entwrk
-  /*    */ EO_ENTWRK_POPOFS,    // pop m_oEntWrk.ref.buffer/offset
-  /*    */ EO_ENTWRK_POPREF,    // pop m_oEntWrk.ref
-  /*    */ EO_ENTWRK_PRINT,     // print m_oEntWrk
-  /*    */ EO_ENTWRK_RESET,     // reset m_oEntWrk
-  /*    */ EO_ENTWRK_SETINTELM, // set int only element value
+  /*  D  */ EO_ENTWRK_APPENDELM, // append next element value
+  /*  D  */ EO_ENTWRK_APPENDELMI,// append next element value (int)
+  /*  D  */ EO_ENTWRK_APPENDELMS,// append next element value (str)
+  /*  D  */ EO_ENTWRK_CREATEPAY, // create a payload in entwrk
+  /*  D  */ EO_ENTWRK_POPOFS,    // pop m_oEntWrk.ref.buffer/offset
+  /*  D  */ EO_ENTWRK_POPREF,    // pop m_oEntWrk.ref
+  /*  D  */ EO_ENTWRK_PRINT,     // print m_oEntWrk
+  /*  R  */ EO_ENTWRK_RESET,     // reset m_oEntWrk
+  /*  R  */ EO_ENTWRK_SETINTELM, // set int only element value
 
   // index tree
-  /*    */ EO_IXT_DEL_ENT,      // delete current m_aEnt from indexTree
-  /*    */ EO_IXT_DUMP,         // dump index tree
-  /*    */ EO_IXT_INS_ENT,      // insert an entry into the indexTree
-  /*    */ EO_IXT_TRV_BEGIN,    // begin linear traverse
-  /*    */ EO_IXT_TRV_NEXT,     // traverse to next entry
-  /*    */ EO_IXT_TMP_ENTRIES,  // push number of entries in tmp index
+  /*  D  */ EO_IXT_DEL_ENT,      // delete current m_aEnt from indexTree
+  /*  D  */ EO_IXT_DUMP,         // dump index tree
+  /*  D  */ EO_IXT_INS_ENT,      // insert an entry into the indexTree
+  /*  D  */ EO_IXT_TRV_BEGIN,    // begin linear traverse
+  /*  D  */ EO_IXT_TRV_NEXT,     // traverse to next entry
+  /*  D  */ EO_IXT_TMP_ENTRIES,  // push number of entries in tmp index
 
-  /*    */ EO_IXT_SRC_BEGIN,    // begin linear traverse
-  /*    */ EO_IXT_SRC_LBOUND,   // position at lower bound
-  /*    */ EO_IXT_SRC_NEXT,     // move to next entry
-  /*    */ EO_IXT_SRC_PRINT,    // print src ent
-  /*    */ EO_IXT_SRC_UBOUND,   // get upper bound
-  /*    */ EO_IXT_SRC_UBOUND_LT, // get upper bound (less than)
-  /*    */ EO_IXT_ALT_BEGIN,    // begin linear traverse
-  /*    */ EO_IXT_ALT_NEXT,     // move to next entry
-  /*    */ EO_IXT_ALT_PRINT,    // print src ent
-  /*    */ EO_IXT_CMP_SRCALT,   // compare src.key to alt.key
-  /*    */ EO_IXT_CMP_WRKALT,   // compare wrk.key to alt.key
-  /*    */ EO_IXT_POS_ALTBYSRC, // position alt ixt using src.key
-  /*    */ EO_IXT_POS_ALTBYWRK, // position alt ixt using entwrk.key
+  /*  D  */ EO_IXT_SRC_BEGIN,    // begin linear traverse
+  /*  D  */ EO_IXT_SRC_LBOUND,   // position at lower bound
+  /*  D  */ EO_IXT_SRC_NEXT,     // move to next entry
+  /*  D  */ EO_IXT_SRC_PRINT,    // print src ent
+  /*  D  */ EO_IXT_SRC_UBOUND,   // get upper bound
+  /*  D  */ EO_IXT_SRC_UBOUND_LT, // get upper bound (less than)
+  /*  D  */ EO_IXT_ALT_BEGIN,    // begin linear traverse
+  /*  D  */ EO_IXT_ALT_NEXT,     // move to next entry
+  /*  D  */ EO_IXT_ALT_PRINT,    // print src ent
+  /*  D  */ EO_IXT_CMP_SRCALT,   // compare src.key to alt.key
+  /*  D  */ EO_IXT_CMP_WRKALT,   // compare wrk.key to alt.key
+  /*  D  */ EO_IXT_POS_ALTBYSRC, // position alt ixt using src.key
+  /*  D  */ EO_IXT_POS_ALTBYWRK, // position alt ixt using entwrk.key
 
   // pay load
-  /*    */ EO_PAY_ADDRESS,      // get payload address
-  /*    */ EO_PAY_FETCH_COLI,   // fetch a column from entry payload
-  /*    */ EO_PAY_FETCH_COLS,   // fetch a column from entry payload
-  /*    */ EO_PAY_STORE_COLI,   // store a column into entry payload
-  /*    */ EO_PAY_STORE_COLS,   // store a column into entry payload
+  /*  R  */ EO_PAY_ADDRESS,      // get payload address
+  /*  M  */ EO_PAY_FETCH_COLI,   // fetch a column from entry payload
+  /*  M  */ EO_PAY_FETCH_COLS,   // fetch a column from entry payload
+  /*  M  */ EO_PAY_STORE_COLI,   // store a column into entry payload
+  /*  M  */ EO_PAY_STORE_COLS,   // store a column into entry payload
   
   // pix operators
-  /*    */ EO_PIX_STM_PRINT,    // print stream pix
+  /*  M  */ EO_PIX_STM_PRINT,    // print stream pix
 
   // pot operators
-  /*    */ EO_POT_COMPLETED,    // do we have a full pot buffer ?
+  /*  R  */ EO_POT_COMPLETED,    // do we have a full pot buffer ?
   
   // row / rowslab
-  /*    */ EO_ROW_DST_PRINT,    // print dst row
-  /*    */ EO_ROW_DST_RESET,    // reset dst rowslab
-  /*    */ EO_ROW_DST_NEW,      // create new destination row
-  /*    */ EO_ROW_DST_SET,      // set dst rowslab
-  /*    */ EO_ROW_DST_TESTROW,  // test if destination row
-  /*    */ EO_ROW_DST_ZERO,     // zero destination row
-  /*    */ EO_ROW_SRC_BEGIN,    // begin src row traverse
-  /*    */ EO_ROW_SRC_NEXT,     // move to next src row
-  /*    */ EO_ROW_SRC_NULL,     // null rb src src
-  /*    */ EO_ROW_SRC_PRINT,    // print src row
-  /*    */ EO_ROW_SRC_PUSHOFS,  // push offset of source row
-  /*    */ EO_ROW_SRC_SETBYOFS, // set src row by using offset on stack
-  /*    */ EO_ROW_SRC_TEST,     // test if there is a row src buffer
-  /*    */ EO_ROW_ALT_BEGIN,    // begin linear traverse
-  /*    */ EO_ROW_ALT_NEXT,     // move to next row
-  /*    */ EO_ROW_ALT_PRINT,    // print alt row
-  /*    */ EO_ROW_ALT_PUSHOFS,  // push offset of alt row
-  /*    */ EO_ROW_ALT_SETBYOFS, // set alt row by using offset on stack
+  /*  D  */ EO_ROW_DST_PRINT,    // print dst row
+  /*  D  */ EO_ROW_DST_RESET,    // reset dst rowslab
+  /*  D  */ EO_ROW_DST_NEW,      // create new destination row
+  /*  D  */ EO_ROW_DST_SET,      // set dst rowslab
+  /*  D  */ EO_ROW_DST_TESTROW,  // test if destination row
+  /*  D  */ EO_ROW_DST_ZERO,     // zero destination row
+  /*  D  */ EO_ROW_SRC_BEGIN,    // begin src row traverse
+  /*  D  */ EO_ROW_SRC_NEXT,     // move to next src row
+  /*  D  */ EO_ROW_SRC_NULL,     // null rb src src
+  /*  D  */ EO_ROW_SRC_PRINT,    // print src row
+  /*  D  */ EO_ROW_SRC_PUSHOFS,  // push offset of source row
+  /*  D  */ EO_ROW_SRC_SETBYOFS, // set src row by using offset on stack
+  /*  D  */ EO_ROW_SRC_TEST,     // test if there is a row src buffer
+  /*  -  */ EO_ROW_ALT_BEGIN,    // begin linear traverse
+  /*  -  */ EO_ROW_ALT_NEXT,     // move to next row
+  /*  -  */ EO_ROW_ALT_PRINT,    // print alt row
+  /*  -  */ EO_ROW_ALT_PUSHOFS,  // push offset of alt row
+  /*  -  */ EO_ROW_ALT_SETBYOFS, // set alt row by using offset on stack
 
   // row operators
-  /*    */ EO_ROW_DST_POPCOLI,  // pop and deposit top into dst column
-  /*    */ EO_ROW_DST_POPCOLS,  // pop and deposit top into dst column
-  /*    */ EO_ROW_DST_PUSHCOLI, // push dst column
-  /*    */ EO_ROW_SRC_PUSHCOLI, // push src column (integer)
-  /*    */ EO_ROW_SRC_PUSHCOLS, // push src column (string)
-  /*    */ EO_ROW_ALT_PUSHCOLI, // push alt column
+  /*  D  */ EO_ROW_DST_POPCOLI,  // pop and deposit top into dst column
+  /*  D  */ EO_ROW_DST_POPCOLS,  // pop and deposit top into dst column
+  /*  D  */ EO_ROW_DST_PUSHCOLI, // push dst column
+  /*  D  */ EO_ROW_SRC_PUSHCOLI, // push src column (integer)
+  /*  D  */ EO_ROW_SRC_PUSHCOLS, // push src column (string)
+  /*  D  */ EO_ROW_ALT_PUSHCOLI, // push alt column
 
     // super fragments
-  /*    */ EO_SUPER_Q100,       // super fragment Q100
-  /*    */ EO_SUPER_Z001,       // super fragment
-  /*    */ EO_SUPER_Z002,       // super fragment
-  /*    */ EO_SUPER_Z003,       // super fragment
-  /*    */ EO_SUPER_Z004,       // super fragment
-  /*    */ EO_SUPER_Z005,       // super fragment
-  /*    */ EO_SUPER_Z006,       // super fragment
-  /*    */ EO_SUPER_Z007,       // super fragment
-  /*    */ EO_SUPER_Z008,       // super fragment
-  /*    */ EO_SUPER_Z009,       // super fragment
+  /*  M  */ EO_SUPER_Q100,       // super fragment Q100
+  /*  -  */ EO_SUPER_Z001,       // super fragment
+  /*  -  */ EO_SUPER_Z002,       // super fragment
+  /*  -  */ EO_SUPER_Z003,       // super fragment
+  /*  -  */ EO_SUPER_Z004,       // super fragment
+  /*  -  */ EO_SUPER_Z005,       // super fragment
+  /*  -  */ EO_SUPER_Z006,       // super fragment
+  /*  -  */ EO_SUPER_Z007,       // super fragment
+  /*  -  */ EO_SUPER_Z008,       // super fragment
+  /*  -  */ EO_SUPER_Z009,       // super fragment
 
   /*    */ EO_ENUMS
 };

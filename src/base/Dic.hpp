@@ -31,6 +31,7 @@ namespace BASE
     void  vAddWord(Word* pWord);
     Article* pArticle(void);
     Word* pDicKind(void);
+    Stz*  szDicKind(void);
     void  vDicKind(Word* pDicKind);
     Stz*  szDicNm(void);
     Word* pEachWord(Word* pPrior);

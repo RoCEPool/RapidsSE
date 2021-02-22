@@ -100,6 +100,19 @@ Word* Dic::pDicKind(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get name of this dictionary                                                */
+/*----------------------------------------------------------------------------*/
+Stz* Dic::szDicKind(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+  
+  if (m_pDicKind)
+    return m_pDicKind->szWordNm();
+  else
+    return "none"_Stz;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set dictionary kind                                                        */
 /*----------------------------------------------------------------------------*/
 void Dic::vDicKind(Word* pDicKind)
@@ -107,6 +120,28 @@ void Dic::vDicKind(Word* pDicKind)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   m_pDicKind = pDicKind;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get name of this dictionary                                                */
+/*----------------------------------------------------------------------------*/
+Stz* Dic::szDicNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+  
+  return m_sDicNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set name of this dictionary                                                */
+/*----------------------------------------------------------------------------*/
+void Dic::vDicNm(Stz* szDicNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+  
+  m_sDicNm = szDicNm;
+  
+  m_pArticle->vName(m_sDicNm);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -368,28 +403,6 @@ void Dic::vListWords(i8 i_Depth, bool bListContents)
   }
   
   m_pArticle->vDropRead();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get name of this dictionary                                                */
-/*----------------------------------------------------------------------------*/
-Stz* Dic::szDicNm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
-  
-  return m_sDicNm;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set name of this dictionary                                                */
-/*----------------------------------------------------------------------------*/
-void Dic::vDicNm(Stz* szDicNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
-  
-  m_sDicNm = szDicNm;
-  
-  m_pArticle->vName(m_sDicNm);
 }
 
 /*----------------------------------------------------------------------------*/

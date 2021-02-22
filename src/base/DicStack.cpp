@@ -544,14 +544,30 @@ Word* DicStack::pRemoveWord(Stz* szName)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reset this dic stack                                                       */
+/* get current streamDef                                                      */
 /*----------------------------------------------------------------------------*/
-//void DicStack::vReset(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
-//
-//  m_iTop = -1;
-//}
+StreamDef* DicStack::pStreamDef(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current table                                                          */
+/*----------------------------------------------------------------------------*/
+Table* DicStack::pTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
+  
+  Dic* pDic = pTop();
+  
+  vTrace("\n"_Stz);
+  
+  
+
+  return nullptr;
+}
 
 /*----------------------------------------------------------------------------*/
 /* use this dic stack to test for given catalog                               */

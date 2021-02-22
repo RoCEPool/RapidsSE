@@ -29,6 +29,8 @@
 
 #include "Grid.hpp"
 
+#include "SP_Dic.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -269,6 +271,26 @@ InfoSet* Metadata::pColumnDefs(Stz* szCatalogName,
   RASSERT(! szColumnName);
 
   DicStack* pDicStack = new DicStack;
+  
+  Row* pRow;
+  
+  if (pDicStack->bTest(szCatalogName,szSchemaName,szTableName)) {
+    
+    Dic* pDicTop = pDicStack->pTop();
+    
+    SP_Dic spDic;
+    
+    vTrace("DIC %s\n"_Stz,spDic.sz(pDicTop));
+    
+    
+//    pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+//                               szCatalogName,
+//                               szSchemaName,
+//                               szTableName,
+//
+//                               C_VARGS_END);
+  }
+  
 
   delete pDicStack;
   

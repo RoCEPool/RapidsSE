@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : lsidx_action
 
-  0 0 locals| sTableNm pIndex |
+  0 0 0 locals| errorCode sTableNm pIndex |
 
   <tableNm> to sTableNm
 
@@ -25,11 +25,11 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is a table
   sTableNm check::nameIsaTable not if
+    to errorCode
     path[].popNamedTableFolder
-    op.pipelineJob@ ERROR_JOB
+    errorCode op.pipelineJob@ ERROR_JOB
+    errorCode op__execErr
     PipeIn[].delete
-    Operand[].newErrorMarker
-    Operand[].pipeOut
     false
     exit
   then
