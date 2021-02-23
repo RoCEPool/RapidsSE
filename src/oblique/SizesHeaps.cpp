@@ -103,7 +103,6 @@
 #include "AttachMap.hpp"
 
 #include "Exemplar.hpp"
-#include "Response.hpp"
 #include "Job.hpp"
 #include "Job__Find.hpp"
 #include "JobList.hpp"
@@ -374,8 +373,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Record),             HT_T_MEDIUM  ,0 }, // CN_RECORD
   { sizeof(RelOp),              HT_T_TINY    ,0 }, // CN_RELOP
   { sizeof(Resources),          HT_T_TINY    ,0 }, // CN_RESOURCES
-  { sizeof(Response),           HT_T_MEDIUM  ,0 }, // CN_RESPONSE
-  { sizeof(ResponseVec),        HT_T_SMALL   ,0 }, // CN_RESPONSEVEC
   { sizeof(RluDiary),           HT_T_LARGE   ,0 }, // CN_RLUDIARY
   { sizeof(Rand),               HT_INVALID   ,0 }, // CN_RN_RAND
   { sizeof(RootNode),           HT_T_TINY    ,-8 }, // CN_ROOTNODE

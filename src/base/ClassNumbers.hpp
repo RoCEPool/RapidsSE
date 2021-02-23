@@ -207,8 +207,6 @@ enum eCN : u2 // Class Number
   /* */ CN_RECORD,
   /* */ CN_RELOP,
   /* */ CN_RESOURCES,
-  /* */ CN_RESPONSE,
-  /* */ CN_RESPONSEVEC,
   /* */ CN_RLUDIARY,
   /* */ CN_RN_RAND,
   /* */ CN_ROOTNODE,
@@ -540,8 +538,6 @@ static Stz* aCN[]
   /* */ "RECORD"_Stz,               // CN_RECORD
   /* */ "RELOP"_Stz,                // CN_RELOP
   /* */ "RESOURCETRACKER"_Stz,      // CN_RESOURCES
-  /* */ "RESPONSE"_Stz,             // CN_RESPONSE
-  /* */ "RESPONSEVEC"_Stz,          // CN_RESPONSEVEC
   /* */ "RLUDIARY"_Stz,             // CN_RLUDIARY
   /* */ "RN_RAND"_Stz,              // CN_RN_RAND
   /* */ "ROOTNODE"_Stz,             // CN_ROOTNODE
