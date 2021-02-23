@@ -246,7 +246,7 @@
 
   stage stageA on origin :
     start | periodic once | syntaxTable $tableNm $etc |
-      defineTable $tableNm | sink | stageA
+      defineTable $tableNm | output | sink | stageA
 
   end ;
   "

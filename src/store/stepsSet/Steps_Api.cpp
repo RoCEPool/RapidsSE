@@ -230,9 +230,9 @@ void Step::vApiExecuteRequest(void)
   bool bSpawned = Api::bSpawnJob_session(pJob);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  eRS eResponse = (eRS)pJob->pJobTags()->iValue("<rspKind>"_Stz);
-  pJob->vPrintResult(pSession,eResponse);
+  RASSERT(! pJob->bJobHasError() );
+  //eRS eResponse = (eRS)pJob->pJobTags()->iValue("<rspKind>"_Stz);
+  //pJob->vPrintResult(pSession,eResponse);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

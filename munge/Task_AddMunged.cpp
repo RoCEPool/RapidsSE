@@ -263,7 +263,7 @@ void Task::vAddMunged(Task* pTask)
     "\n"
     "  stage stageA on origin :\n"
     "    start | periodic once | syntaxTable $tableNm $etc |\n"
-    "      defineTable $tableNm | sink | stageA\n"
+    "      defineTable $tableNm | output | sink | stageA\n"
     "\n"
     "  end ;\n"
     "  \"\n"
