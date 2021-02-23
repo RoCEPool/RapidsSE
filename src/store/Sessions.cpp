@@ -6,8 +6,6 @@
 
 #include "Session.hpp"
 #include "Sessions.hpp"
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 
 #include "PsxThd.hpp"

@@ -6,11 +6,10 @@
 
 #include "Output.hpp"
 #include "Session.hpp"
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 #include "RapidsSE.hpp"
 #include "Api.hpp"
+#include "Marker.hpp"
 
 #include "ePP.h"
 #include "TagConstants.h"
@@ -167,7 +166,7 @@ eEC RapidsSE::ePopOperand(void* aSession, void** aaOperand,
   eCN eClassNo;
   eOM eOpMarker;
   
-  Result::vDecode(pOperand,eClassNo,eOpMarker);
+  vDecode(pOperand,eClassNo,eOpMarker);
   
   * aaOperand  = pOperand;
   * aeClassNo  = eClassNo;
@@ -206,6 +205,29 @@ eEC RapidsSE::ePushOperand(void* aSession, void** aaOperand)
 
   Api::vPushOperand(pSession,pOperand);
   return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* -- Private --------------------------------------------------------------- */
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* decode operand into class and marker                                       */
+/*----------------------------------------------------------------------------*/
+void RapidsSE::vDecode(Operand* pOperand, eCN& eClassNo, eOM& eOpMarker)
+{
+  _static_
+
+  eClassNo = pOperand->eGetClassNo();
+
+  if (CN_MARKER == eClassNo) {
+    Marker* pMarker = _pMarker(pOperand);
+
+    eOpMarker = pMarker->eOpMarker();
+  }
+  else {
+    eOpMarker = OM_NONE;
+  }
 }
 
 /*============================================================================*/

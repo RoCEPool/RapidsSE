@@ -36,8 +36,6 @@ char gszaAmMacroFiles[C_MACRO_FILES][128] = {
     "../asm/AM_StreamDef.macro"
 };
 
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
 

@@ -15,8 +15,6 @@
 #include "Op.hpp"
 #include "Stage.hpp"
 #include "Pipeline.hpp"
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 
 

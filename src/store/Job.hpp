@@ -46,7 +46,6 @@ namespace STORE
     // -- d -------------------
     LogicUnit* m_pLogicUnit_job;  // set of registers for the task steps
     TagSet     m_oJobTags;   // tags for the job
-    Result     m_xResult;    // result of this job
     
     // -- e -------------------
     Pipeline*  m_pPipeline;  // pipeline
@@ -125,14 +124,8 @@ namespace STORE
     void vMarkJob(void);
     void vMarkJob(Stz* szFormat, ...);
     void vOperandQueueReport(File* pFile, bool bStdOut);
-    bool bParticipantHasError(void);
-    void vParticipantHasError(bool bHasError);
     eEC ePopulateJob(TagSet* pTagSet);
-    void vPrintResult(Session* pSession, eRS eResponse);
     void vResetForReuse(Session* pSession);
-    Response* pResponse(void);
-    void vOriginResponseVec(ResponseVec* pResponseVec);
-    ResponseVec* pOriginResponseVec(void);
     void vSetFromCascade(Stz* szCascade);
     Stz* szSide(void);
     void vSignalJobMutex(void);

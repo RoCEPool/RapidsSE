@@ -4,9 +4,6 @@
 
 #include "BASE.h"
 
-#include "Response.hpp"
-#include "Result.hpp"
-
 #include "Job.hpp"
 #include "Job__Find.hpp"
 

@@ -14,8 +14,6 @@
 #include "Api.hpp"
 #include "Session.hpp"
 #include "Op.hpp"
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 #include "LogicUnit.hpp"
 

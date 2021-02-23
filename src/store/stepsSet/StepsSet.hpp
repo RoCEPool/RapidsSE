@@ -567,7 +567,6 @@ void vExprEvalEvaluate(void);
 
   void vJobClass(void);
   void vJobCompleted(void);
-  void vJobCreateResponseVec(void);
 
   void vJobDec2pcAcksRmg(void);
   void vJobDelete(void);
@@ -604,8 +603,6 @@ void vExprEvalEvaluate(void);
   void vJobParentIdFetch(void);
   void vJobParticipantFetch(void);
   void vJobParticipantStore(void);
-  void vJobParticipantResponseStore(void);
-  void vJobParticipantHasError(void);
   void vJobPhaseFetch(void);
   void vJobPhaseStore(void);
   void vJobPostRecv(void);

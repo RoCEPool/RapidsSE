@@ -13,8 +13,6 @@
 #include "EntBufSorter.hpp"
 
 #include "AM.hpp"
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 
 #include "RowOnce.hpp"

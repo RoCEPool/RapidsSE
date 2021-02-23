@@ -9,8 +9,6 @@
 #include "SP_Job.hpp"
 #include "SP_ReqTuple.hpp"
 
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 
 /*----------------------------------------------------------------------------*/

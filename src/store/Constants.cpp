@@ -28,8 +28,6 @@
 #include "Node.hpp"
 #include "Grid.hpp"
 #include "Session.hpp"
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 
 #include "EnumGroups.h"

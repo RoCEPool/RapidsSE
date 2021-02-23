@@ -12,8 +12,6 @@
 #include "Node_I.hpp"
 #include "Grid.hpp"
 #include "Op.hpp"
-#include "Response.hpp"
-#include "Result.hpp"
 
 #include "Job.hpp"
 #include "File.hpp"
@@ -990,26 +988,6 @@ void Job::vPrint(Stz* szFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test if this job has an error                                              */
-/*----------------------------------------------------------------------------*/
-bool Job::bParticipantHasError(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_xResult.m_bPartHasError;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set job has an error                                                       */
-/*----------------------------------------------------------------------------*/
-void Job::vParticipantHasError(bool bHasError)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_xResult.m_bPartHasError = bHasError;
-}
-
-/*----------------------------------------------------------------------------*/
 /* populate node                                                              */
 /*----------------------------------------------------------------------------*/
 eEC Job::ePopulateJob(TagSet* pTagSet)
@@ -1038,38 +1016,6 @@ eEC Job::ePopulateJob(TagSet* pTagSet)
   vJobNm(szJobNm);
   
   return EC_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
-/* print result                                                               */
-/*----------------------------------------------------------------------------*/
-void Job::vPrintResult(Session* pSession, eRS eResponse)
-{
-  m_xResult.vPrint(pSession,eResponse);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get response                                                               */
-/*----------------------------------------------------------------------------*/
-Response* Job::pResponse(void)
-{
-  return &m_xResult.m_xJobResponse;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set origin response vector                                                 */
-/*----------------------------------------------------------------------------*/
-void Job::vOriginResponseVec(ResponseVec* pResonseVec)
-{
-  m_xResult.m_pOriginResponseVec = pResonseVec;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set origin response vector                                                 */
-/*----------------------------------------------------------------------------*/
-ResponseVec* Job::pOriginResponseVec(void)
-{
-  return m_xResult.m_pOriginResponseVec;
 }
 
 /*----------------------------------------------------------------------------*/
