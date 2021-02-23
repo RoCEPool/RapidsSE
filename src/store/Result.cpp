@@ -65,28 +65,7 @@ Result::~Result(void) noexcept(false)
     delete m_pOriginResponseVec;
 }
 
-/*----------------------------------------------------------------------------*/
-/* -- Static ---------------------------------------------------------------- */
-/*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* decode operand into class and marker                                       */
-/*----------------------------------------------------------------------------*/
-void Result::vDecode(Operand* pOperand, eCN& eClassNo, eOM& eOpMarker)
-{
-  _static_
-  
-  eClassNo = pOperand->eGetClassNo();
-  
-  if (CN_MARKER == eClassNo) {
-    Marker* pMarker = _pMarker(pOperand);
-    
-    eOpMarker = pMarker->eOpMarker();
-  }
-  else {
-    eOpMarker = OM_NONE;
-  }
-}
 
 
 /*============================================================================*/

@@ -28,6 +28,8 @@ namespace STORE
     static eEC  eProcessOperand(void* aSession, void** aaOperand);
     static eEC  ePushOperand(void* aSession, void** aaOperand);
 
+  private:
+    static void vDecode(Operand* pOperand, eCN& eClassNo, eOM& eOpMarker);
   };
 }
 

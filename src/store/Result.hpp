@@ -36,8 +36,6 @@ namespace STORE
 
     
   public:
-  
-    static void vDecode(Operand* pOperand, eCN& eClassNo, eOM& eOpMarker);
         
     Footer* aFooter(void);
   };
