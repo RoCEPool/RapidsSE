@@ -174,11 +174,14 @@ function assembleSE() {
   ) 
 
   local installer
-  installer="$(ls -l "${OUT_DIR}/*.run")" || true
+  installer="$(ls -1 "${OUT_DIR}"/*.run)" || true
 
   if [ -z "${installer}" ]; then
     errorExit "RapidsSE installation file was not built."
   fi
+
+  # Simplify the path
+  installer="$(realpath "${installer}")"
 
   echo "RapidsSE installation file built at: ${installer}"
 }
