@@ -29,8 +29,6 @@
 #include "TablePtn.hpp"
 #include "Table.hpp"
 #include "Op.hpp"
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"

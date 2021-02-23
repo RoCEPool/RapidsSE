@@ -24,8 +24,6 @@
 #include "CrwPacker.hpp"
 #include "CrwBuffer.hpp"
 #include "Node.hpp"
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 #include "JobLog.hpp"
 #include "Socket.hpp"

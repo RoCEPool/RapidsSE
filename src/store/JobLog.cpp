@@ -4,8 +4,6 @@
 
 #include "BASE.h"
 
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 #include "JobLog.hpp"
 

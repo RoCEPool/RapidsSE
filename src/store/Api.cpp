@@ -9,8 +9,6 @@
 #include "ApiMacros.h"
 #include "Api.hpp"
 #include "Session.hpp"
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 #include "JobList.hpp"
 #include "Op.hpp"

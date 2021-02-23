@@ -46,7 +46,6 @@ namespace STORE
     // -- d -------------------
     LogicUnit* m_pLogicUnit_job;  // set of registers for the task steps
     TagSet     m_oJobTags;   // tags for the job
-    Result     m_xResult;    // result of this job
     
     // -- e -------------------
     Pipeline*  m_pPipeline;  // pipeline

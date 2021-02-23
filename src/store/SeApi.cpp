@@ -19,8 +19,6 @@
 
 #include "AM.hpp"
 
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 
 #include "Job.hpp"

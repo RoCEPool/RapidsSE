@@ -84,8 +84,6 @@
 #include "Constants.hpp"
 #include "Engine.hpp"
 #include "PipelineSpec.hpp"
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 #include "JobList.hpp"
 #include "Jobs.hpp"

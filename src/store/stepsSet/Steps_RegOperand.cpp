@@ -28,8 +28,6 @@
 #include "Table.hpp"
 #include "Node_I.hpp"
 #include "Op.hpp"
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 #include "LogicUnit.hpp"
 

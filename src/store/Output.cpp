@@ -22,10 +22,8 @@
 #include "EntBuffer.hpp"
 
 #include "Grid.hpp"
-#include "Response.hpp"
 #include "Output.hpp"
 
-#include "Result.hpp"
 #include "Job.hpp"
 
 /*----------------------------------------------------------------------------*/

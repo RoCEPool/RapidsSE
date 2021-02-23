@@ -11,8 +11,6 @@
 #include "Api.hpp"
 #include "Output.hpp"
 #include "Session.hpp"
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 
 #include "TagConstants.h"

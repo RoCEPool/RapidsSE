@@ -9,8 +9,6 @@
 #include "StepAccum.hpp"
 #include "Steps.hpp"
 
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 #include "Node.hpp"
 #include "Grid.hpp"
