@@ -291,6 +291,7 @@ InfoSet* Metadata::pColumnDefs(Stz* szCatalogName,
                                  szSchemaName,
                                  szTableName,
 
+                                 pColumn->iColumnNo(),
                                  pColumn->szColNm(),
                                  aCT[pColumn->eColumnType()],
                                  pColumn->iColumnLength(),

@@ -8188,6 +8188,7 @@ void Task::vAddMunged(Task* pTask)
     "    catalogName    VARCHAR NOT NULL ,\n"
     "    schemaName     VARCHAR NOT NULL ,\n"
     "    tableName      VARCHAR NOT NULL ,\n"
+    "    columnNumber   INTEGER NOT NULL ,\n"
     "    columnName     VARCHAR NOT NULL ,\n"
     "    columnType     VARCHAR NOT NULL ,\n"
     "    columnLength   INTEGER NOT NULL ,\n"

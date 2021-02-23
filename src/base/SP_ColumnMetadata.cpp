@@ -45,18 +45,21 @@ Stz* SP_ColumnMetadata::sz(ColumnMetadata* pColMeta)
   StrLib::vSprint(m_caResult
                   
 //  ,"%02lld %16s : kind %s type %s datum %s "
-    ,"%16s : type %s length %5lld scale %2lld %s %s"_Stz
+    ,"%s/%s/%s : [%02lld] %16s : type %7s length %5lld scale %2lld %s %s"_Stz
                   
-    //,(i8)pColMeta->m_uNumber
+    ,pColMeta->szCatalogName()
+    ,pColMeta->szSchemaName()
+    ,pColMeta->szTableName()
+
+    ,pColMeta->iColumnNumber()
     ,pColMeta->szColumnName()
     ,pColMeta->szColumnType()
                   
     ,pColMeta->iColumnLength()
     ,pColMeta->iColumnScale()
-    ,pColMeta->szColumnType()
 
-    ,pColMeta->bIsNullable()     ? "nullable"_Stz : "not null"_Stz
-    ,pColMeta->bIsPartitionKey() ? "ptnKey"_Stz   : ""_Stz
+    ,pColMeta->bIsNullable()     ? "nullable"_Stz : "cantnull"_Stz
+    ,pColMeta->bIsPartitionKey() ? "partnKey"_Stz : ""_Stz
                   
     );
 
