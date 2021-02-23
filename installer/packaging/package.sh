@@ -58,7 +58,7 @@ function errorExit() {
 }
 
 function extractVersions() {
-  # SE_VERSION_STR will contain a value that looks something like this:
+  # SE_VERSION_STR will eventually contain a value that looks something like this:
   #  v0.5.0-SNAPSHOT-0-ga7c5a26
   # First validate that we've got a value that can be parsed.
 
@@ -78,7 +78,7 @@ function extractVersions() {
     SE_COMMIT_HASH="${BASH_REMATCH[6]}"
 
   else
-    errorExit "Could not parse the SE version string: ${SE_VERSION_STR}"
+    errorExit "Could not parse the SE version string: ${git_version_str}"
   fi
 
   # Form a string of the form x.y.z-label

@@ -139,10 +139,10 @@ function compileSE() {
     hasOldGcc="$(echo "${gccVersion} < 5" | bc)"
 
     if [ "${hasOldGcc}" -eq 1 ]; then
-      scl enable devtoolset-8 "make clean && time make ${target} -j${NUM_CPUS}"
+      scl enable devtoolset-8 "make clean && time make ${target} -j$(nproc)"
 
     else
-      make clean && time make "${target}" "-j${NUM_CPUS}"
+      make clean && time make "${target}" "-j$(nproc)"
     fi
   )
 }
@@ -170,9 +170,16 @@ function assembleSE() {
   (
     cd "${PKG_DIR}" || errorExit "Directory does not exist: ${PKG_DIR}"
 
-    NO_BUILD=1 ./package.sh
+    NO_BUILD=1 NO_SHELLCHECK=1 ./package.sh
 
-    ls -l ../output
+    local installer
+    installer="$(ls -l "${OUT_DIR}/*.run")"
+
+    if [ -z "${installer}" ]; then
+      errorExit "RapidsSE installation file was not built."
+    fi
+
+    echo "RapidsSE installation file built at: ${installer}"
   )
 }
 
