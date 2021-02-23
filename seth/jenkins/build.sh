@@ -124,7 +124,7 @@ if [ ! -d "${TPCH_LINK_DEST}" ]; then
 fi
 
 # Now create the symbolic link to it if it doesn't already exist
-if [ ! -e "${TPCH_LINK_NAME}" ]; then
+if [ ! -h "${TPCH_LINK_NAME}" ]; then
   ln -s "${TPCH_LINK_DEST}" "${TPCH_LINK_NAME}"
 fi
 
