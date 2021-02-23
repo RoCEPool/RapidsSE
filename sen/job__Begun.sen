@@ -17,18 +17,18 @@
 
   pJobParticipant job.id@ locals| iJobId |
 
-  0 0 locals| pJob__Begun error |
+  0 locals| pJob__Begun |
 
   // new a temporary Job__Executed
   pJobParticipant job__Begun::new to pJob__Begun
 
   // get error if any
-  pJobParticipant job.error@ to error
+  //pJobParticipant job.error@ to error
 
-  error EC_NONE != if
+  //error EC_NONE != if
     // set error in the job
-    error pJob__Begun job.error!
-  then
+    //error pJob__Begun job.error!
+  //then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -81,14 +81,14 @@
   pJob__Begun job.participant@ to iParticipantNode
 
   // get the error code from job__begun
-  pJob__Begun job.error@ to error
+  //pJob__Begun job.error@ to error
 
-  error EC_NONE != if
+  //error EC_NONE != if
     // set the error code in pJobOriginator for this partcipant
     //error iParticipantNode pJobOriginator job.error!
     //pJob__Begun iParticipantNode pJobOriginator job.participantResponse!
-    pJob__Begun JobRef[] job.participantResponse!
-  then
+    //pJob__Begun JobRef[] job.participantResponse!
+  //then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // process __begun job on this originating node
