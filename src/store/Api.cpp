@@ -224,12 +224,12 @@ eEC Api::ePrepareJob(Session*  pSession,
     pSession->m_pSsnJob->pJobTags()->vDumpSet();
   
   // this should go
-  if (pSession->m_pSsnJob->bJobHasError()) {
-    eRS eResponse = (eRS)pSession->m_pSsnJob->pJobTags()->iValue("<rspKind>"_Stz);
-    pSession->m_pSsnJob->vPrintResult(pSession,eResponse);
-    Api::vDeleteJob(pSession);
-    return EC_ZZZ_OTHER;
-  }
+//  if (pSession->m_pSsnJob->bJobHasError()) {
+//    eRS eResponse = (eRS)pSession->m_pSsnJob->pJobTags()->iValue("<rspKind>"_Stz);
+//    pSession->m_pSsnJob->vPrintResult(pSession,eResponse);
+//    Api::vDeleteJob(pSession);
+//    return EC_ZZZ_OTHER;
+//  }
   
 
   if (pSession->m_pSsnJob->bHasTag(C_TAG_LIFE)) {
