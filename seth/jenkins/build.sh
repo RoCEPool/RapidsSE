@@ -134,13 +134,6 @@ compileSE "${TARGET}"
 # Put together the installer
 assembleSE "${TARGET}"
 
-INSTALLER="$(ls -1 "${OUT_DIR}/*.run")"
-if [ -z "${INSTALLER}" ]; then
-  errorExit "Could not find the RapidsSE installation run file"
-fi
-
-echo "RapidsSE installation run file produced at: ${INSTALLER}"
-
 ENDTIME="$(date +%s)"
 ELAPSEDTIME="$(secondsToTime $((ENDTIME - STARTTIME)))"
 
