@@ -66,12 +66,12 @@ rows: 21
 
 // scan error
 tableScan OpTableXXX;
-failure contains: 'no such table'
+failure contains: 'EC_NO_SUCH_TABLE'
 
 
 // scan failure
 tableScan OpTableXXX;
-failure contains: 'no such table'
+failure contains: 'EC_NO_SUCH_TABLE'
 
 // scan
 tableScan OpTable1;

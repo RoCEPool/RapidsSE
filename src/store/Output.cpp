@@ -49,7 +49,8 @@ Output::Output(void)
   m_pStreamDef_result = nullptr;
   m_bExitMarker       = false;
   m_bCancelMarker     = false;
-
+  m_bCmdErr           = false;
+  m_bExecErr          = false;
 
   _checkInitialised_(CN_OUTPUT);
   
@@ -101,7 +102,7 @@ void Output::vDrainBufferQueue(Session* pSession)
 
   while (! m_bExitMarker   &&
          ! m_bCancelMarker &&
-         ! pSession->m_pSsnJob->m_xResult.m_xJobResponse.m_bJobHasError) {
+         ! pSession->m_pSsnJob->bJobHasError()) {
     
     Operand* pOperand = pPopBufferQueue_blocking(pSession);
     
@@ -236,7 +237,7 @@ Operand* Output::pPopBufferQueue_blocking(Session* pSession)
     
     AM::vNapUsec(1000,CN_OUTPUT);
     
-    if (pSession->m_pSsnJob->m_xResult.m_xJobResponse.m_bJobHasError)
+    if (pSession->m_pSsnJob->bJobHasError())
       return nullptr;
   }
   
@@ -251,8 +252,6 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
   
 
   bool bContinue = true;
-  bool bCmdErrReported = false;
-  bool bExecErrReported = false;
   
   //SP_DataBuffer spDataBuffer;
     
@@ -308,7 +307,7 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
       ASSERT( ! pInfoSet->szInfoSetNm()->bSame(C_NO_NAME) );
       if (pInfoSet->szInfoSetNm()->bSame(C_TDEF_COMMANDERRORS)) {
 
-        if ( ! bCmdErrReported) {
+        if ( ! m_bCmdErr) {
           Row *pInfoRow = pInfoSet->aFirstRow();
 
           Stz *sNodeName = pInfoRow->szColVal_ofs(0);
@@ -319,7 +318,7 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
 
           vTrace("%s: Error : %s; Line: %lld; Column: %lld; %s; \n"_Stz,
                  sNodeName, aEC2[eErrorCode], iLineNo, iColumnNo, sErrorText);
-          bCmdErrReported = true;
+          m_bCmdErr = true;
         }
         else {
           // LOG error
@@ -328,16 +327,16 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
       }
       else if (pInfoSet->szInfoSetNm()->bSame(C_TDEF_EXECERRORS)) {
 
-        if ( ! bExecErrReported) {
+        if ( ! m_bExecErr) {
           Row *pInfoRow = pInfoSet->aFirstRow();
 
           Stz *sNodeName = pInfoRow->szColVal_ofs(0);
           eEC eErrorCode = (eEC) pInfoRow->iColVal_int(1);
           Stz *sErrorText = pInfoRow->szColVal_ofs(2);
 
-          vTrace("%s: Error : %s; %s; \n"_Stz,
+          vTrace("error: %s; %s; %s; \n"_Stz,
                  sNodeName, aEC2[eErrorCode], sErrorText);
-          bExecErrReported = true;
+          m_bExecErr = true;
         }
         else {
           // LOG error
@@ -385,6 +384,11 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
                  *m_ixRowsProcessed);
           AM::vDeleteOperand(pOperand);
           m_bExitMarker = true;
+          if ( !m_bCmdErr && !m_bExecErr ) {
+            vPrintResult();
+          }
+          m_bCmdErr = false;
+          m_bExecErr = false;
           bContinue = false;
           goto L_EXIT;
           break;
@@ -424,6 +428,9 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
           //  vTrace("success: %lld rows fetched\n"_Stz, *m_ixRowsProcessed);
           AM::vDeleteOperand(pOperand);
           m_bExitMarker = true;
+          ASSERT( !m_bCmdErr );
+          ASSERT ( !m_bExecErr );
+          vPrintResult();
           bContinue = false;
           goto L_EXIT;
           break;

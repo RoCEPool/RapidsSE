@@ -4,7 +4,7 @@
 
 //------------------------------------------------------------------------------
 aggregRows_I lineitem "sum ( l_discount )";
-failure contains: "no such table"
+failure contains: "EC_NO_SUCH_TABLE"
 
 Loop 100 {
 //------------------------------------------------------------------------------

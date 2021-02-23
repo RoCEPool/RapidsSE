@@ -53,7 +53,7 @@ lstbl;
 rows: 0
 
 lsidx foo;
-failure contains: 'no such table'
+failure contains: 'EC_NO_SUCH_TABLE'
 
 
 -- Close connections c1 and c2

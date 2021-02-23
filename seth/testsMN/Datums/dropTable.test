@@ -34,7 +34,7 @@
 
   // drop the table
   drop table noSuchTbl;
-  failure contains: 'no such table'
+  failure contains: 'EC_NO_SUCH_TABLE'
 
   // get memory leaks
   memoryLeaks;

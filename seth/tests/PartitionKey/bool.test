@@ -29,7 +29,7 @@ success
 
 // analyze table
 antbl boolTable1;
-failure contains: 'no such table'
+failure contains: 'EC_NO_SUCH_TABLE'
 
 // analyze table
 antbl boolTable;

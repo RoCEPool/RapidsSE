@@ -78,6 +78,7 @@
 
   // parse the smt and get the table name
   sSmt job[] indexDef::parseTableName to sTableNm
+  job[] job.error@ to errorCode
   sTableNm "" str.equal if
     job[] job.error@ to errorCode
     errorCode op.pipelineJob@ ERROR_JOB

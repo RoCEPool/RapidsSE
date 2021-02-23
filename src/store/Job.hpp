@@ -41,6 +41,7 @@ namespace STORE
     eJL m_eJobList;          // which job list the job is currently in
     eJP m_eJobPhase;         // which job phase the job is currently in
     eJS m_eJobState;         // current state of the job
+    eEC m_eError;            // error when starting job
   
     // -- d -------------------
     LogicUnit* m_pLogicUnit_job;  // set of registers for the task steps

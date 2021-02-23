@@ -29,8 +29,8 @@ static Stz* aOI[]
   
   /*    */ "CALLPIPELINE"_Stz,
   /*    */ "COMMANDERRORS"_Stz,
-  /*    */ "EXECERRORS"_Stz,
   /*    */ "COUNTINFO"_Stz,
+  /*    */ "EXECERRORS"_Stz,
   /*    */ "LOADRESULT"_Stz,
   /*    */ "LOCKSTATS"_Stz,
   /*    */ "NODEINFO"_Stz,

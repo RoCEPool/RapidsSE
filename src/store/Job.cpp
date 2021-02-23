@@ -134,6 +134,7 @@ Job::Job(ReqTuple* aReqTuple)
   m_eJobList  = JL_NONE;
   m_eJobPhase = JP_NONE;
   m_eJobState = JS_RUNNING;
+  m_eError    = EC_NONE;
   
   // -- d -------------------
   m_pLogicUnit_job = nullptr;
@@ -583,15 +584,17 @@ bool Job::bIsPipeline(void)
 void Job::vJobError(eEC eErrorCode)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-  
-  if (m_xResult.m_xJobResponse.m_bJobHasError) {
-    //vTrace("Job got another error: '%s' (already had error: '%s') \n"_Stz,
-    //  aEC[eErrorCode], aEC[m_xResult.m_xJobResponse.m_eErrorCode]);
-  }
-  else {
-    m_xResult.m_xJobResponse.m_eErrorCode = eErrorCode;
-    m_xResult.m_xJobResponse.m_bJobHasError = true;
-  }
+
+  m_eError = eErrorCode;
+
+//  if (m_xResult.m_xJobResponse.m_bJobHasError) {
+//    //vTrace("Job got another error: '%s' (already had error: '%s') \n"_Stz,
+//    //  aEC[eErrorCode], aEC[m_xResult.m_xJobResponse.m_eErrorCode]);
+//  }
+//  else {
+//    m_xResult.m_xJobResponse.m_eErrorCode = eErrorCode;
+//    m_xResult.m_xJobResponse.m_bJobHasError = true;
+//  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -601,7 +604,7 @@ eEC Job::eJobError(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_xResult.m_xJobResponse.m_eErrorCode;
+  return m_eError;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -609,7 +612,7 @@ eEC Job::eJobError(void)
 /*----------------------------------------------------------------------------*/
 bool Job::bJobHasError(void)
 {
-  return m_xResult.m_xJobResponse.m_bJobHasError;
+  return m_eError == EC_NONE ? false : true;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -23,7 +23,7 @@ success
 
 // (3) drop a non-existent table
 drop table T1 ;
-failure contains: 'no such table'
+failure contains: 'EC_NO_SUCH_TABLE'
 
 // (4) create table t1 again
 create table T1 (
@@ -442,7 +442,7 @@ failure contains: 'invalid command'
 
 // lscol on invalid table
 lscol noTable;
-failure contains: 'no such table'
+failure contains: 'EC_NO_SUCH_TABLE'
 
 // (17) create table t1
 create table T1 (
@@ -479,7 +479,7 @@ success
 
 // lspartcol on invalid table
 lspartcol noTable;
-failure contains: 'no such table'
+failure contains: 'EC_NO_SUCH_TABLE'
 
 // (17) create table t1
 create table T1 (
@@ -548,7 +548,7 @@ success
 
 // drop invalid table
 drop table T1;
-failure contains: 'no such table'
+failure contains: 'EC_NO_SUCH_TABLE'
 
 // create table t1
 create table T1 (

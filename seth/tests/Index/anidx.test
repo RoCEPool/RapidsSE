@@ -14,9 +14,9 @@ failure contains: "invalid command"
 anidx IntTbl;
 failure contains: "invalid command"
 
-// no such table
+// EC_NO_SUCH_TABLE
 anidx IntTbl int_idx1;
-failure contains: "no such table"
+failure contains: "EC_NO_SUCH_TABLE"
 
 // (1) create a table
 create table IntTbl (
@@ -49,7 +49,7 @@ failure contains: "invalid command"
 
 // invalid
 anidx x int_idx1;
-failure contains: "no such table"
+failure contains: "EC_NO_SUCH_TABLE"
 
 // success
 anidx IntTbl int_idx1;

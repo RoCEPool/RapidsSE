@@ -16,8 +16,8 @@
   <tableNm> check::validTableAssembly not if
     to errorCode
     errorCode op.pipelineJob@ ERROR_JOB
-    PipeIn[].delete
     errorCode op__execErr
+    PipeIn[].delete
   else
     PipeIn[].pipeOut
   then
