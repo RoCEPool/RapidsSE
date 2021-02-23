@@ -69,7 +69,7 @@
 
   // set the participant response in the originator job
   //pJob__Executed iParticipantNode JobRef[] job.participantResponse!
-  pJob__Executed JobRef[] job.participantResponse!
+  //pJob__Executed JobRef[] job.participantResponse!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // process __executed job on this originating node

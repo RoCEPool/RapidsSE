@@ -13926,7 +13926,7 @@ void Task::vAddMunged(Task* pTask)
     "\n"
     "  // set the participant response in the originator job\n"
     "  //pJob__Executed iParticipantNode JobRef[] job.participantResponse!\n"
-    "  pJob__Executed JobRef[] job.participantResponse!\n"
+    "  //pJob__Executed JobRef[] job.participantResponse!\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "  // process __executed job on this originating node\n"
