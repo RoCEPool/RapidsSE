@@ -4,6 +4,8 @@
 
 #include "BASE.h"
 
+#include "SP_Dic.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -562,10 +564,11 @@ Table* DicStack::pTable(void)
   
   Dic* pDic = pTop();
   
-  vTrace("\n"_Stz);
+  SP_Dic spDic;
+  vTrace("DIC %s \n"_Stz,spDic.sz(pDic));
   
+  pDic->vListWords();
   
-
   return nullptr;
 }
 

@@ -276,12 +276,13 @@ InfoSet* Metadata::pColumnDefs(Stz* szCatalogName,
   
   if (pDicStack->bTest(szCatalogName,szSchemaName,szTableName)) {
     
-    Dic* pDicTop = pDicStack->pTop();
+//    Dic* pDicTop = pDicStack->pTop();
+//
+//    SP_Dic spDic;
+//
+//    vTrace("DIC %s\n"_Stz,spDic.sz(pDicTop));
     
-    SP_Dic spDic;
-    
-    vTrace("DIC %s\n"_Stz,spDic.sz(pDicTop));
-    
+    Table* pTable = pDicStack->pTable();
     
 //    pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
 //                               szCatalogName,
