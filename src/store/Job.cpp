@@ -1021,22 +1021,6 @@ eEC Job::ePopulateJob(TagSet* pTagSet)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set origin response vector                                                 */
-/*----------------------------------------------------------------------------*/
-void Job::vOriginResponseVec(ResponseVec* pResonseVec)
-{
-  m_xResult.m_pOriginResponseVec = pResonseVec;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set origin response vector                                                 */
-/*----------------------------------------------------------------------------*/
-ResponseVec* Job::pOriginResponseVec(void)
-{
-  return m_xResult.m_pOriginResponseVec;
-}
-
-/*----------------------------------------------------------------------------*/
 /* reset job for cascade reuse                                                */
 /*----------------------------------------------------------------------------*/
 void Job::vResetForReuse(Session* pSession)

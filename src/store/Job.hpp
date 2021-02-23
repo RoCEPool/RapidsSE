@@ -127,8 +127,6 @@ namespace STORE
     void vOperandQueueReport(File* pFile, bool bStdOut);
     eEC ePopulateJob(TagSet* pTagSet);
     void vResetForReuse(Session* pSession);
-    void vOriginResponseVec(ResponseVec* pResponseVec);
-    ResponseVec* pOriginResponseVec(void);
     void vSetFromCascade(Stz* szCascade);
     Stz* szSide(void);
     void vSignalJobMutex(void);

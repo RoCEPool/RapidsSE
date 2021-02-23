@@ -48,7 +48,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.bideOperand"_Stz,      &Step::vJobBideOperand);
 
   vAddStep("job.class"_Stz,            &Step::vJobClass);
-  vAddStep("job.createResponseVec"_Stz,&Step::vJobCreateResponseVec);
   
   vAddStep("job.dec2pcAcksRmg"_Stz,    &Step::vJobDec2pcAcksRmg);
   vAddStep("job.delete"_Stz,           &Step::vJobDelete);
@@ -497,19 +496,6 @@ void Step::vJobPrintMember(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));  
   vTrace("Job: %p Class: %p\n"_Stz, pJob, aCN[pJob->eGetClassNo()]);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.createResponseVec -- create the response vector in the job             */
-/*----------------------------------------------------------------------------*/
-void Step::vJobCreateResponseVec(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  pJob->vOriginResponseVec(new ResponseVec);
   
   EXIT();
 }

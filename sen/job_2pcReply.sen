@@ -12,7 +12,7 @@
   job[] locals| pJob |
 
   // create the response vector in the orginating job to receive responses
-  pJob job.createResponseVec
+  //pJob job.createResponseVec
 
   // set the no of acks expected by originator job
   //   to be the number of defined nodes in the grid

@@ -567,7 +567,6 @@ void vExprEvalEvaluate(void);
 
   void vJobClass(void);
   void vJobCompleted(void);
-  void vJobCreateResponseVec(void);
 
   void vJobDec2pcAcksRmg(void);
   void vJobDelete(void);

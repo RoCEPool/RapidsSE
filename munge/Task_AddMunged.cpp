@@ -17258,7 +17258,7 @@ void Task::vAddMunged(Task* pTask)
     "  job[] locals| pJob |\n"
     "\n"
     "  // create the response vector in the orginating job to receive responses\n"
-    "  pJob job.createResponseVec\n"
+    "  //pJob job.createResponseVec\n"
     "\n"
     "  // set the no of acks expected by originator job\n"
     "  //   to be the number of defined nodes in the grid\n"
