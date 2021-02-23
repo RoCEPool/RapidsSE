@@ -34,14 +34,10 @@ namespace STORE
     Result(void);
    ~Result(void) noexcept(false);
 
-    void vPrint(Session* pSession, eRS eResponse);
     
   public:
   
     static void vDecode(Operand* pOperand, eCN& eClassNo, eOM& eOpMarker);
-
-    void vPrintDist2pcResponse(Session* pSession);
-    void vPrintLocalResponse(Session* pSession);
         
     Footer* aFooter(void);
   };
