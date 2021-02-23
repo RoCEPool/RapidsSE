@@ -604,8 +604,6 @@ void vExprEvalEvaluate(void);
   void vJobParentIdFetch(void);
   void vJobParticipantFetch(void);
   void vJobParticipantStore(void);
-  void vJobParticipantResponseStore(void);
-  void vJobParticipantHasError(void);
   void vJobPhaseFetch(void);
   void vJobPhaseStore(void);
   void vJobPostRecv(void);

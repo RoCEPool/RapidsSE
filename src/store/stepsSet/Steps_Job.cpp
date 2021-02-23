@@ -85,8 +85,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.parentId@"_Stz,        &Step::vJobParentIdFetch);
   vAddStep("job.participant@"_Stz,     &Step::vJobParticipantFetch);
   vAddStep("job.participant!"_Stz,     &Step::vJobParticipantStore);
-  vAddStep("job.participantResponse!"_Stz, &Step::vJobParticipantResponseStore);
-  vAddStep("job.participantHasError"_Stz,  &Step::vJobParticipantHasError);
   vAddStep("job.phase@"_Stz,           &Step::vJobPhaseFetch);
   vAddStep("job.phase!"_Stz,           &Step::vJobPhaseStore);
   vAddStep("job.postRecv"_Stz,         &Step::vJobPostRecv);
@@ -929,64 +927,6 @@ void Step::vJobParticipantStore(void)
   i8 iParticipantNode = m_pDataStack->iPopAsInt(__func__);
   
   pJob->vParticipantNode(iParticipantNode);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.participantHasError -- has any participant returned an error ?         */
-/*----------------------------------------------------------------------------*/
-void Step::vJobParticipantHasError(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  i8 bHasError = false;
-  i8 iResponses = pJob->pOriginResponseVec()->nItems();
-  
-  for (i8 i_Response = 0; i_Response < iResponses; i_Response++) {
-    if (pJob->pOriginResponseVec()->pGet(i_Response)->m_eErrorCode != EC_NONE) {
-      bHasError = true;
-      break;
-    }
-  }
-  m_pDataStack->vPushInt(bHasError);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.participantResponse! -- store a job response for the participant       */
-/*----------------------------------------------------------------------------*/
-void Step::vJobParticipantResponseStore(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-//  i8 iNode = m_pDataStack->iPopAsInt(__func__);
-  
-  Job* pParticipantJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  // there should be a response vector
-  RASSERT( pJob->pOriginResponseVec() );
-  
-  // create a new response
-  Response* pResponse = new Response;
-  
-  // set node and error in the response
-  pResponse->m_i_Node           = pParticipantJob->iParticipantNode();
-  pResponse->m_eErrorCode      = pParticipantJob->eJobError();
-  
-  if (pResponse->m_eErrorCode != EC_NONE)
-    pJob->vParticipantHasError(true);
-  
-  // add the response to the vector of responses
-  pJob->pOriginResponseVec()->vAdd(pResponse);
-  
-  //if (pResponse->m_eErrorCode != EC_NONE)
-    //ActLog::vAdd(pJob,AN_ERROR_CODE,pResponse->m_eErrorCode);
   
   EXIT();
 }
