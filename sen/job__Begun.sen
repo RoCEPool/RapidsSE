@@ -112,12 +112,12 @@
   JP_BEGUN log::markPhase
 
   // check if any node returned an error
-  JobRef[] job.participantHasError true == if
+  //JobRef[] job.participantHasError true == if
     // distribute Job__Cancel to all participants
-    JobRef[] Job__Cancel::distribute
-    JobRef[].return
-    exit                                                         // *EARLY EXIT*
-  then
+  //  JobRef[] Job__Cancel::distribute
+  //  JobRef[].return
+  //  exit                                                         // *EARLY EXIT*
+  //then
 
   JP_EXECUTING log::markPhase
 

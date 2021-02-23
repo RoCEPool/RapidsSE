@@ -23,12 +23,12 @@
   pJobParticipant job__Executed::new to pJob__Executed
 
   // get error if any
-  pJobParticipant job.error@ to error
+  //pJobParticipant job.error@ to error
 
-  error EC_NONE != if
+  //error EC_NONE != if
     // set error in executed job
-    error pJob__Executed job.error!
-  then
+  //  error pJob__Executed job.error!
+  //then
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
