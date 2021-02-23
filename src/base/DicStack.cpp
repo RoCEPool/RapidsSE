@@ -5,6 +5,15 @@
 #include "BASE.h"
 
 #include "SP_Dic.hpp"
+#include "SP_Word.hpp"
+
+#include "SkipRoots.hpp"
+#include "EntBuffer.hpp"
+#include "IndexTree.hpp"
+#include "CrvBuffer.hpp"
+#include "ReadApi.hpp"
+#include "TablePtn.hpp"
+#include "Table.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -569,7 +578,14 @@ Table* DicStack::pTable(void)
   
   pDic->vListWords();
   
-  return nullptr;
+  Word* pTableWd = pDic->pFindWord(pDic->szDicNm());
+
+  SP_Word spWord;
+  vTrace("WORD %s \n"_Stz,spWord.sz(pTableWd));
+  
+  Table* pTable = _pTable(pTableWd->pObject());
+
+  return pTable;
 }
 
 /*----------------------------------------------------------------------------*/
