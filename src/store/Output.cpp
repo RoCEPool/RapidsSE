@@ -118,10 +118,10 @@ void Output::vDrainBufferQueue(Session* pSession)
       eOM eOpMarker = pMarker->eOpMarker();
 
       if (eOpMarker == OM_CANCELMARKER)
-        m_bExitMarker = true;
+        m_bCancelMarker = true;
       else
       if (eOpMarker == OM_EXITMARKER)
-        m_bCancelMarker = true;
+        m_bExitMarker = true;
     }
 
     AM::vDeleteOperand(pOperand);
