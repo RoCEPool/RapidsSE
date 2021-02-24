@@ -191,6 +191,8 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vRlu_TMR_START"_Stz,         (const void *) vRlu_TMR_START         },
   { "vRlu_TMR_UPDATE"_Stz,        (const void *) vRlu_TMR_UPDATE        },
 
+  { "vRev_00"_Stz,                (const void *) vRev_00                },
+
   { nullptr, nullptr },
 };
 

@@ -3011,6 +3011,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
         // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case EO_REVISED_00: ArgNil(); // not yet implemented
+        dLU0(EO_REVISED_00);
+        vRev_00(pLU);
         NEVER_REACH;
         break;//+endCase
 
