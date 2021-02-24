@@ -19,7 +19,8 @@ LinkedBuffer* BASE::_pLinkedBuffer(void* aAddress)
  
   if (pLinkedBuffer) {
     eCN eClassNo = pLinkedBuffer->eGetClassNo();
-  
+    UNUSED(eClassNo);
+    
     ASSERT(CN_CRWBUFFER  == eClassNo ||
            CN_FREEBUFFER == eClassNo ||
            CN_ROWBUFFER  == eClassNo);

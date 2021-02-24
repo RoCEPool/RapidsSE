@@ -40,6 +40,15 @@ Stz* SP_Task::sz(Task* pTask)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
+  StrLib::vSprint(m_caResult,
+                  "{%s %s %s}"_Stz,
+
+                  aTS[pTask->eState()],
+                  aQK[pTask->eQueue()],
+                  aTR[pTask->eTranstionRequest()],
+  
+                  C_VARGS_END);
+
   return (Stz*) &m_caResult[0];
 }
 
