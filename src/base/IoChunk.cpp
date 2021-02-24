@@ -67,6 +67,10 @@ IoChunk::~IoChunk(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void IoChunk::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
+  UNUSED(eClass);
+  UNUSED(pObject);
+  UNUSED(aTab);
+
   //IoChunk* pIoChunk = _pIoChunk(pObject);
   
   vTrace("\n"_Stz);

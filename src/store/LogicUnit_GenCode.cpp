@@ -237,10 +237,11 @@ bool LogicUnit::bGenerateAsm(Stz* aText)
 /*----------------------------------------------------------------------------*/
 /* generate asm text for aggregates                                           */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateAggregate(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
-
+void LogicUnit::vGenerateAggregate(ExprEval* pExprEval, StreamDef* pStreamDefOut)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_LOGICUNIT, _FOOTER_);
-
+  UNUSED(pStreamDefOut);
+  
   TagSet oTagSet;
   LocalFile oFile;
 
@@ -357,12 +358,14 @@ void LogicUnit::vGenerateAggregate(ExprEval* pExprEval, StreamDef* pStreamDefOut
   RASSERT(b);
   i8 nSize = oFile.iSize();
   i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
-
+  UNUSED(nBytes);
+  
   // null terminate the read bytes
   char* sReadStr = sText.azChar();
   sReadStr[nSize] = '\0';
 
   bool bResult = bGenerateAsm(sText);
+  UNUSED(bResult);
 
   oFile.vClose();
 }
@@ -485,12 +488,14 @@ void LogicUnit::vGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
   RASSERT(b);
   i8 nSize = oFile.iSize();
   i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
+  UNUSED(nBytes);
 
   // null terminate the read bytes
   char* sReadStr = sText.azChar();
   sReadStr[nSize] = '\0';
 
   bool bResult = bGenerateAsm(sText);
+  UNUSED(bResult);
 
   oFile.vClose();
 }
@@ -498,9 +503,10 @@ void LogicUnit::vGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
 /*----------------------------------------------------------------------------*/
 /* generate asm text for groupby                                              */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
-
+void LogicUnit::vGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_LOGICUNIT, _FOOTER_);
+  UNUSED(pStreamDefOut);
 
   TagSet oTagSet;
   LocalFile oFile;

@@ -112,6 +112,7 @@ void TableDef::vDescribe(PlanNode* pNode, s2K& sBuf)
   QueryNode* pTableName   = static_cast<QueryNode*>(GraphNav::pFindProperty(C_TABLENAME_PROP, pTableDef));
   QueryNode* pColumns     = static_cast<QueryNode*>(GraphNav::pFindProperty(C_COLUMNS_PROP, pTableDef));
   QueryNode* pIndexes     = static_cast<QueryNode*>(GraphNav::pFindProperty(C_INDEXES_PROP, pTableDef));
+  UNUSED(pIndexes);
   
   ASSERT(pCatalogName);
   ASSERT(pSchemaName);

@@ -33,6 +33,8 @@ PlannerLock::PlannerLock(void)
 /*----------------------------------------------------------------------------*/
 PlannerLock::~PlannerLock(void) noexcept(false)
 {
+  printf("~PlannerLock~PlannerLock~PlannerLock~PlannerLock~PlannerLock\n");
+  
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNERLOCK,_FOOTER_);
   
 }

@@ -140,6 +140,9 @@ Socket::~Socket(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Socket::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
+  UNUSED(eClass);
+  UNUSED(aTab);
+
   Socket* pSocket = _pSocket(pObject);
 
   vTrace("id %lld %s\n"_Stz,
