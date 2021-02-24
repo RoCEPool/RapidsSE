@@ -340,6 +340,7 @@ void MiniHeap_t<ITEM>::vFreeItem(ITEM* aItem, i8 nBytes)
   // add item to head of free chain
   
   FreeItem* aFreeItem = FreeItem::aMorphFreeItem(aItem,nBytes);
+  UNUSED(aFreeItem);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // decement the number of items in buffer

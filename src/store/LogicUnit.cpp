@@ -1075,6 +1075,8 @@ struct RluCommon* LogicUnit::aRlu_INIT(void* aLU)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
 
+  UNUSED(aLU);
+  
   return & m_xRluCommon;
 }
 
@@ -1239,12 +1241,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   i8 iRes;
   Stz* szRes;
   i8 iCmp;
-  i8 i_Cell_ntv;
-  eKC eCmp;
   i8 nSize;
   char* azDst;
   char* azSrc;
-  char* azArg;
   i8 iBuffer;
   i8 iItem;
   tET tNext;
@@ -1252,19 +1251,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   i8 iaColSet[64];
   i8 i_ColSet = 0;
   
-  Key* aSrcKey;
-  Key* aAltKey;
-  Key* aWrkKey;
 
   SP_Ent spEnt;  // this will  tidy up
-  Ent* aEnt;
 
 
-  bool bSrcHasPtnHash = true;
-  bool bCopyPtnHash   = false;
-
-  IndexDef* pIndexDef = nullptr;
-  i8* aPayload = nullptr;
 
   Ent_int* aEnt_int;
   
@@ -1309,9 +1299,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   eEO** aeaRstk = &eaReturnStack[0];
   eEO*  aeCode  = & m_eaCode[0];
 
-  char* aStrAdr;
 
-  i8 iWrkA, iWrkB, iWrkC, iWrkD, iWrkE, iWrkF;
+  i8 iWrkA, iWrkB, iWrkC;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//
   //                    interpretative inner loop proper                      //
@@ -1776,7 +1765,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU1(EO_SET_COLUMN, iArg);
         i8 iCol = 0;
 
-        for (i8 iBit = 0; iBit < C_BITS_PER_WORD; iBit++) {
+        for (i8 iBit = 0; iBit < (i8)C_BITS_PER_WORD; iBit++) {
           u8 uBitMap = iArg;
           i8 iToLeft  = 63 - iBit;
           i8 iToRight = iBit;
