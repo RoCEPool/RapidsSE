@@ -138,8 +138,8 @@ EndDefine
 
 #else
 
-  #define _checkInitialised_(eClass) EndDefine
-  #define _checkInitialisedSize_(iSize) EndDefine
+  #define _checkInitialised_(eClass)    (void)eClass EndDefine
+  #define _checkInitialisedSize_(iSize) (void)iSize  EndDefine
 
 #endif
 
