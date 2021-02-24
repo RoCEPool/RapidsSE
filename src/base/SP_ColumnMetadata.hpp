@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* SP_ColumnMetadata.hpp - Column Pix Sprint Helper                                   */
+/* SP_ColumnMetadata.hpp - Column Metadata Sprint Helper                      */
 /*============================================================================*/
 #pragma once
 

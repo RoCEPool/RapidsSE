@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* SP_ColumnMetadata.cpp - Column Pix Sprint Helper                                   */
+/* SP_ColumnMetadata.cpp - Column Metadata Sprint Helper                      */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -44,7 +44,6 @@ Stz* SP_ColumnMetadata::sz(ColumnMetadata* pColMeta)
           
   StrLib::vSprint(m_caResult
                   
-//  ,"%02lld %16s : kind %s type %s datum %s "
     ,"%s/%s/%s : [%02lld] %16s : type %7s length %5lld scale %2lld %s %s"_Stz
                   
     ,pColMeta->szCatalogName()
