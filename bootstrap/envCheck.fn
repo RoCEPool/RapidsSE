@@ -558,6 +558,10 @@ function validateInstallDirIsWritable() {
     if ! response="$("${sshCmd[@]}")"; then
       debugPrint "Install dir validation failed: ${response}"
 
+      if [ -z "${response}" ]; then
+        response="<no error returned>"
+      fi
+
       # Save the response and the node name
       errors["${nodeName}"]="${response}"
     fi
