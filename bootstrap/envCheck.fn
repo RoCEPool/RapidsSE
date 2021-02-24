@@ -541,8 +541,20 @@ function validateInstallDirIsWritable() {
 					exit;
 				fi
 			else
-				if [ ! -w "$(dirname "${dir}")" ]; then
-					echo "Installation directory (${dir}) cannot be created because the parent directory is not writable.";
+        isWritable=0
+        dname="${dir}"
+
+        while [ "\${dname}" != "/"  ]; do
+          if [[ -d "\${dname}" && -w "\${dname}" ]]; then
+            isWritable=1
+            break
+          fi
+
+          dname="\$(dirname "\${dname}")"
+        done
+
+				if [ "\${isWritable}" -ne 1 ]; then
+					echo "Installation directory (${dir}) cannot be created because the parent directory (\${dname}) is not writable.";
 					false;
 					exit;
 				fi

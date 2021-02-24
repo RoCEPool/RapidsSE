@@ -1298,12 +1298,27 @@ function doNodeInstall() {
   else
 
     # If the installation directory does not exist then ensure that the parent
-    # directory is writable.
+    # directory is writable. May need to recurse back for this.
     # Then create the installation directory.
 
-    if [ ! -w "$(dirname "${installDir}")" ]; then
-      errorExit "Parent path of the installation directory (${installDir}) on node ${CURRENT_NODE_NAME} [host: ${hostname}] is not writable by the current user (${USER})."
+    local isWritable
+    isWritable=0
+
+    dname="${installDir}"
+
+    while [ "${dname}" != "/"  ]; do
+      if [[ -d "${dname}" && -w "${dname}" ]]; then
+        isWritable=1
+        break
+      fi
+
+      dname="$(dirname "${dname}")"
+    done
+
+    if [ "${isWritable}" -ne 1 ]; then
+      errorExit "Parent path of the installation directory (${dname}) on node ${CURRENT_NODE_NAME} [host: ${hostname}] is not writable by the current user (${USER})."
     fi
+
 
     debugPrint "About to create the installation directory: ${hostname}:${installDir}"
 
