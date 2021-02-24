@@ -152,7 +152,7 @@ if [ -z "${INSTALL_DIR}" ]; then
 fi
 
 # Start RapidsSE
-if "${INSTALL_DIR}/startSE.sh" ; then
+if ! "${INSTALL_DIR}/startSE.sh" ; then
   echo ""
   echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
   echo ""
