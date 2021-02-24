@@ -32,10 +32,10 @@ pipeline {
       }
     }
 
-    stage('Install Release') {
+    stage('Install & Start Release') {
       steps {
         echo 'Installing..'
-        //sh 'seth/jenkins/install.sh'
+        sh 'seth/jenkins/install.sh seth/jenkins/1node.config'
       }
     }
 
