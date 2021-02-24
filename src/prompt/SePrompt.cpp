@@ -50,7 +50,7 @@ __aFooterFunction(SePrompt)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
+SePrompt::SePrompt(bool bOneCommand)
 : Loggable(CN_SEPROMPT)
 , m_oMutex(this)
 {
@@ -137,6 +137,9 @@ SePrompt::~SePrompt(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void SePrompt::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
+  UNUSED(eClass);
+  UNUSED(aTab);
+  
   SePrompt* pSePrompt = _pSePrompt(pObject);
   
   vTrace("SePrompt %p \n"_Stz,
@@ -346,6 +349,7 @@ bool SePrompt::bPrepareJob(void)
     
     if (EC_INVALID_COMMAND == eError) {
       bool b = bPrompt_selfies(this);
+      UNUSED(b);
     }
     else {
       vTrace("error: %s\n"_Stz,aEC[eError]);
@@ -676,7 +680,8 @@ bool SePrompt::bExtractSupTags(void)
     return true;
 
   Token* pTkn_begin = m_pInpTknVec->pGet(i_TagBegin);
-
+  UNUSED(pTkn_begin);
+  
   i8 nTkns = m_pInpTknVec->nTokens();
 
   i8 i_Scan = i_TagBegin;
@@ -956,6 +961,7 @@ void SePrompt::vMakeDiaryDir(void)
   if (! Dir::bExists(sDiaryPath)) {
     bool b = Dir::bMake(sDiaryPath);
     ASSERT(b);
+    UNUSED(b);
   }
   
   //pJobTagSet->vInsert(C_TAG_DIARYDIR,sDiaryPath);
@@ -1179,7 +1185,8 @@ bool SePrompt::bRedirectFromFile(void)
       
   pInputGet()->vPushCharser();
   bool b = pInputGet()->bUseFile(szPath);
-
+  UNUSED(b);
+  
   pInputGet()->vUseBegin();
 
   return true;

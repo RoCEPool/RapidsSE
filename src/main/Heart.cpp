@@ -185,6 +185,8 @@ void vHeartInit(void) {
 /*---------------------------------------------------------------------------------*/
 [[noreturn]] void *vHeartReadLoop(void *pFuncObj) {
 
+  UNUSED(pFuncObj);
+  
   printf("SE Heart Read from received ring-buffer thread entry\n");
 
   Heartbeat xHeartbeat;

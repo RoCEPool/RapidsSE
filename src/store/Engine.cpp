@@ -413,7 +413,7 @@ void Engine::vCallPrompt(void)
 
   //AM::vPromptCall();
   
-  SePrompt* pSePrompt = new SePrompt(gxCmdLineArgs.m_xSysArgs.m_bCommand, gxCmdLineArgs.m_xSysArgs.m_bSethScript);
+  SePrompt* pSePrompt = new SePrompt(gxCmdLineArgs.m_xSysArgs.m_bCommand);
   
   pSePrompt->vPromptLoop();
   
