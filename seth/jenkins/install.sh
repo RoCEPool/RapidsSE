@@ -160,7 +160,7 @@ if ! "${INSTALL_DIR}/startSE.sh" ; then
   echo ""
   echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
   echo ""
-  cat "${INSTALL_DIR}/se.log"  || true
+  tail -n 1000 "${INSTALL_DIR}/se.log" || true
   exit 1
 fi
 
