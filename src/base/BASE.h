@@ -21,6 +21,8 @@
 
 namespace BASE { } using namespace BASE;
 
+#define UNUSED(arg) (void)arg
+
 #include "CompiledWith.h"
 
 #include "BaseTypes.h"
