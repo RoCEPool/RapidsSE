@@ -886,7 +886,7 @@ void AM::vWriteTrace(eYA eSysAct, Stz* aFormat, ...)
   va_list xVarArgs;
   
   va_start(xVarArgs,aFormat);
-  AM::vWriteTrace_vargs(YA_SYS_TRACE,aFormat,xVarArgs);
+  AM::vWriteTrace_vargs(eSysAct,aFormat,xVarArgs);
   va_end(xVarArgs);
 
 }
