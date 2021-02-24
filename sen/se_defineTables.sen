@@ -335,6 +335,7 @@
     catalogName    VARCHAR NOT NULL ,
     schemaName     VARCHAR NOT NULL ,
     tableName      VARCHAR NOT NULL ,
+    columnNumber   INTEGER NOT NULL ,
     columnName     VARCHAR NOT NULL ,
     columnType     VARCHAR NOT NULL ,
     columnLength   INTEGER NOT NULL ,

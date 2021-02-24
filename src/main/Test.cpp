@@ -23,6 +23,8 @@
 #include "TagConstants.h"
 #include "Engine.hpp"
 #include "SeApi.hpp"
+#include "ColumnMetadata.hpp"
+#include "SP_ColumnMetadata.hpp"
 
 #include "TpchRatios.h"
 
@@ -326,6 +328,18 @@ void vTest6(void)
                                  "lineitem"_Stz,
                                  nullptr);
   vTrace("ColumnDefs: %lld rows\n"_Stz,pInfoSet->nInfoRows());
+  
+  for (Row* pRow = pInfoSet->pFirstRow();
+       pRow;
+       pRow = pInfoSet->pNextRow(pRow)) {
+    
+    ColumnMetadata* pColMeta = static_cast<ColumnMetadata*>(pRow);
+    
+    SP_ColumnMetadata spColMeta;
+    vTrace("META %s\n"_Stz,spColMeta.sz(pColMeta));
+
+  }
+  
   delete pInfoSet;
 
 

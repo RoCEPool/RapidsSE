@@ -275,21 +275,32 @@ InfoSet* Metadata::pColumnDefs(Stz* szCatalogName,
   Row* pRow;
   
   if (pDicStack->bTest(szCatalogName,szSchemaName,szTableName)) {
-    
-//    Dic* pDicTop = pDicStack->pTop();
-//
-//    SP_Dic spDic;
-//
-//    vTrace("DIC %s\n"_Stz,spDic.sz(pDicTop));
-    
+        
     Table* pTable = pDicStack->pTable();
     
-//    pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
-//                               szCatalogName,
-//                               szSchemaName,
-//                               szTableName,
-//
-//                               C_VARGS_END);
+    vTrace("TABLE %s\n"_Stz,pTable->szTableNm());
+    
+    StreamDef* pStreamDef = pTable->pStreamDef();
+    
+    i8 nCols = pStreamDef->nColumns();
+    for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+      Column* pColumn = pStreamDef->pGetColumn(i_Col);
+      
+      pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+                                 szCatalogName,
+                                 szSchemaName,
+                                 szTableName,
+
+                                 pColumn->iColumnNo(),
+                                 pColumn->szColNm(),
+                                 aCT[pColumn->eColumnType()],
+                                 pColumn->iColumnLength(),
+                                 pColumn->iColumnScale(),
+                                 pColumn->bIsNullable(),
+                                 pColumn->bIsPtnKey(),
+
+                                 C_VARGS_END);
+    }
   }
   
 

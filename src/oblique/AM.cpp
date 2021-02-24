@@ -886,7 +886,7 @@ void AM::vWriteTrace(eYA eSysAct, Stz* aFormat, ...)
   va_list xVarArgs;
   
   va_start(xVarArgs,aFormat);
-  AM::vWriteTrace_vargs(YA_SYS_TRACE,aFormat,xVarArgs);
+  AM::vWriteTrace_vargs(eSysAct,aFormat,xVarArgs);
   va_end(xVarArgs);
 
 }
@@ -989,7 +989,7 @@ void AM::vLogAll(void)
 /*----------------------------------------------------------------------------*/
 /* show how a request was run                                                 */
 /*----------------------------------------------------------------------------*/
-void AM::vLogHow(i8 iRequestId, i8 iDetail)
+void AM::vLogHow(i8 , i8 )
 {
 #ifdef WITH_SHARED_LOG
 //  if (! AM::bLogging())
@@ -1002,7 +1002,7 @@ void AM::vLogHow(i8 iRequestId, i8 iDetail)
 /*----------------------------------------------------------------------------*/
 /* add a info log entry                                                       */
 /*----------------------------------------------------------------------------*/
-void AM::vLogFyi(Stz* szFormat, ...)
+void AM::vLogFyi(Stz* , ...)
 {
 #ifdef WITH_SHARED_LOG
 //  if (! AM::bLogging())
@@ -1021,7 +1021,7 @@ void AM::vLogFyi(Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a ddl log entry                                                        */
 /*----------------------------------------------------------------------------*/
-void AM::vLogDdl(eSL eSeverity, Job* pJob, eDA eDdlAct, Stz* szFormat, ...)
+void AM::vLogDdl(eSL , Job* , eDA , Stz* , ...)
 {
 #ifdef WITH_SHARED_LOG
 //  if (! AM::bLogging())
@@ -1046,7 +1046,7 @@ void AM::vLogDdl(eSL eSeverity, Job* pJob, eDA eDdlAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a job log entry                                                        */
 /*----------------------------------------------------------------------------*/
-void AM::vLogJob(eSL eSeverity, Job* pJob, eJA eJobAct, Stz* szFormat, ...)
+void AM::vLogJob(eSL , Job* , eJA , Stz* , ...)
 {
 #ifdef WITH_SHARED_LOG
 //  if (! AM::bLogging())
@@ -1071,7 +1071,7 @@ void AM::vLogJob(eSL eSeverity, Job* pJob, eJA eJobAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a lock log entry                                                       */
 /*----------------------------------------------------------------------------*/
-void AM::vLogLck(eSL eSeverity, Lock* pLock, eLA eLckAct, Stz* szFormat, ...)
+void AM::vLogLck(eSL , Lock* , eLA , Stz* , ...)
 {
 #ifdef WITH_SHARED_LOG
 //  if (! AM::bLogging())
@@ -1096,7 +1096,7 @@ void AM::vLogLck(eSL eSeverity, Lock* pLock, eLA eLckAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a log log entry                                                        */
 /*----------------------------------------------------------------------------*/
-void AM::vLogLog(eSL eSeverity, Log* pLog, eGA eLogAct, Stz* szFormat, ...)
+void AM::vLogLog(eSL , Log* , eGA , Stz* , ...)
 {
 #ifdef WITH_SHARED_LOG
 //  if (! AM::bLogging())
@@ -1121,7 +1121,7 @@ void AM::vLogLog(eSL eSeverity, Log* pLog, eGA eLogAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a management log entry                                                 */
 /*----------------------------------------------------------------------------*/
-void AM::vLogMgt(eSL eSeverity, Job* pJob, eMA eMgtAct, Stz* szFormat, ...)
+void AM::vLogMgt(eSL , Job* , eMA , Stz* , ...)
 {
 #ifdef WITH_SHARED_LOG
 //  if (! AM::bLogging())
@@ -1146,7 +1146,7 @@ void AM::vLogMgt(eSL eSeverity, Job* pJob, eMA eMgtAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a operator log entry                                                   */
 /*----------------------------------------------------------------------------*/
-void AM::vLogOpr(eSL eSeverity, Op* pOpr, eOA eOprAct, Stz* szFormat, ...)
+void AM::vLogOpr(eSL , Op* , eOA , Stz* , ...)
 {
 #ifdef WITH_SHARED_LOG
 //  if (! AM::bLogging())
@@ -1171,7 +1171,7 @@ void AM::vLogOpr(eSL eSeverity, Op* pOpr, eOA eOprAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a prompt log entry                                                     */
 /*----------------------------------------------------------------------------*/
-void AM::vLogPrm(eSL eSeverity, SePrompt* pPrm, ePA ePrmAct, Stz* szFormat, ...)
+void AM::vLogPrm(eSL , SePrompt* , ePA , Stz* , ...)
 {
 //#ifdef WITH_SHARED_LOG
 //  if (! AM::bLogging())
@@ -1196,7 +1196,7 @@ void AM::vLogPrm(eSL eSeverity, SePrompt* pPrm, ePA ePrmAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a operator log entry                                                   */
 /*----------------------------------------------------------------------------*/
-void AM::vLogQue(eSL eSeverity, Schedule* pQue, eQA eQueAct, Stz* szFormat, ...)
+void AM::vLogQue(eSL , Schedule* , eQA , Stz* , ...)
 {
 #ifdef WITH_SHARED_LOG
 //  if (! AM::bLogging())
@@ -1221,7 +1221,7 @@ void AM::vLogQue(eSL eSeverity, Schedule* pQue, eQA eQueAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a resource log entry                                                   */
 /*----------------------------------------------------------------------------*/
-void AM::vLogRes(eSL eSeverity, Resource* pRes, eRA eResAct, Stz* szFormat, ...)
+void AM::vLogRes(eSL , Resource* , eRA , Stz* , ...)
 {
 #ifdef WITH_SHARED_LOG
 //  if (! AM::bLogging())
@@ -1246,7 +1246,7 @@ void AM::vLogRes(eSL eSeverity, Resource* pRes, eRA eResAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a session log entry                                                    */
 /*----------------------------------------------------------------------------*/
-void AM::vLogSsn(eSL eSeverity, Session* pSsn, eAA eApiAct, Stz* szFormat, ...)
+void AM::vLogSsn(eSL , Session* , eAA , Stz* , ...)
 {
 #ifdef WITH_SHARED_LOG
 //  if (! AM::bLogging())
@@ -1271,7 +1271,7 @@ void AM::vLogSsn(eSL eSeverity, Session* pSsn, eAA eApiAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a service log entry                                                    */
 /*----------------------------------------------------------------------------*/
-void AM::vLogSvc(eSL eSeverity, Job* pJob, eVA eSvcAct, Stz* szFormat, ...)
+void AM::vLogSvc(eSL , Job* , eVA , Stz* , ...)
 {
 #ifdef WITH_SHARED_LOG
 //  if (! AM::bLogging())
@@ -1296,7 +1296,7 @@ void AM::vLogSvc(eSL eSeverity, Job* pJob, eVA eSvcAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a system log entry                                                     */
 /*----------------------------------------------------------------------------*/
-void AM::vLogSys(eSL eSeverity, AttachMap* , eYA eSysAct, Stz* szFormat, ...)
+void AM::vLogSys(eSL , AttachMap* , eYA , Stz* , ...)
 {
 #ifdef WITH_SHARED_LOG
 //  if (! AM::bLogging())
@@ -1322,7 +1322,7 @@ void AM::vLogSys(eSL eSeverity, AttachMap* , eYA eSysAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a thread log entry                                                     */
 /*----------------------------------------------------------------------------*/
-void AM::vLogThd(eSL eSeverity, Thread* pThread, eHA eThdAct, Stz* szFormat, ...)
+void AM::vLogThd(eSL , Thread* , eHA , Stz* , ...)
 {
 #ifdef WITH_SHARED_LOG
 //  if (! AM::bLogging())
@@ -1347,7 +1347,7 @@ void AM::vLogThd(eSL eSeverity, Thread* pThread, eHA eThdAct, Stz* szFormat, ...
 /*----------------------------------------------------------------------------*/
 /* add a rask log entry                                                       */
 /*----------------------------------------------------------------------------*/
-void AM::vLogTsk(eSL eSeverity, Task* pTask, eTA eTskAct, Stz* szFormat, ...)
+void AM::vLogTsk(eSL , Task* , eTA , Stz* , ...)
 {
 #ifdef WITH_SHARED_LOG
 //  if (! AM::bLogging())
@@ -1372,7 +1372,7 @@ void AM::vLogTsk(eSL eSeverity, Task* pTask, eTA eTskAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a transaction log entry                                                */
 /*----------------------------------------------------------------------------*/
-void AM::vLogTxn(eSL eSeverity, Tx* pTxn, eXA eTxnAct, Stz* szFormat, ...)
+void AM::vLogTxn(eSL , Tx* , eXA , Stz* , ...)
 {
 #ifdef WITH_SHARED_LOG
 //  if (! AM::bLogging())
@@ -1548,7 +1548,8 @@ Job* AM::pNewJobOp(Op* pOp, ReqTuple* pReqTuple)
   
   // get the jobKind from the cmdTagSet
   eJK eJobKind = (eJK)pCmdTagSet->iValue(C_TAG_JOBKIND);
-  
+  UNUSED(eJobKind);
+
   pNewJob = new Job(pReqTuple);
 
   pNewJob->m_pOp = pOp;
@@ -1804,7 +1805,8 @@ void AM::vBootCheck(void)
     
     eCN eClass = (eCN)iClass;
     i8  iClassSize = gxaSizeHeap[eClass].m_nClassSize;
-    
+    UNUSED(iClassSize);
+
     switch (gxaSizeHeap[eClass].m_eWhichHeap) {
         
       case HT_INVALID:
@@ -1857,7 +1859,7 @@ Stz* AM::szBuild(void)
 void AM::vLogOpenByApi(void)           { Log::vOpenByApi();          }
 void AM::vLogOpenBySE(bool bStarting)  { Log::vOpenBySE(bStarting);  }
 void AM::vLogWriteCsv(bool bShortForm) { Log::vWriteCsv(bShortForm); }
-void AM::vLogText(i8 iId, Stz* szText) {;}
+void AM::vLogText(i8 , Stz* ) {;}
 bool AM::bLogEntryExists(i8 i_Entry) {  return Log::bEntryExists(i_Entry); }
 i8   AM::iLogEntryPrev(i8 i_Entry)   {  return Log::iEntryPrev(i_Entry); }
 void AM::vLogEntrySprint(s4K& sString, i8 i_Entry) {
@@ -2058,7 +2060,7 @@ void AM::vWordSee(Word* pWord, DicStack* pDicStack)
   
   vTrace("%s\n"_Stz,spWord.szSeeDoes(pDoesWord));
 
-  AM::vWordSeeDoes(pWord,pDoesWord,aDoes, pDicStack);
+  AM::vWordSeeDoes(pDoesWord,aDoes, pDicStack);
   
   vTrace("=============================================================\n"_Stz);
 }
@@ -2066,8 +2068,7 @@ void AM::vWordSee(Word* pWord, DicStack* pDicStack)
 /*----------------------------------------------------------------------------*/
 /* dump routine of word                                                       */
 /*----------------------------------------------------------------------------*/
-void AM::vWordSeeDoes(Word* pWord, Word* pDoesWord, CodeCell* aDoes,
-                      DicStack* pDicStack)
+void AM::vWordSeeDoes(Word* pDoesWord, CodeCell* aDoes, DicStack* pDicStack)
 {
   vTrace("- - - - - - - - - - - - - - - - - - - - -\n"_Stz);
 
@@ -2602,9 +2603,6 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_AddDemon(Job* pJob)
 {
-  
-  Schedule* pSchedule = AM::pSchedule();
-  
   AM::pDemonJobs()->vGrabLock();
   AM::pDemonJobs()->vAddJob(pJob);
   AM::pDemonJobs()->vDropLock();
@@ -2619,9 +2617,6 @@ void AM::vJob_AddDemon(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_AddLocal(Job* pJob)
 {
-  
-  Schedule* pSchedule = AM::pSchedule();
-  
   AM::pLocalJobs()->vGrabLock();
   AM::pLocalJobs()->vAddJob(pJob);
   AM::pLocalJobs()->vDropLock();
@@ -2636,9 +2631,6 @@ void AM::vJob_AddLocal(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_AddOriginating(Job* pJob)
 {
-  
-  Schedule* pSchedule = AM::pSchedule();
-  
   AM::pOriginatingJobs()->vGrabLock();
   AM::pOriginatingJobs()->vAddJob(pJob);
   AM::pOriginatingJobs()->vDropLock();
@@ -2653,8 +2645,6 @@ void AM::vJob_AddOriginating(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_AddParticipating(Job* pJob)
 {
-  Schedule* pSchedule = AM::pSchedule();
-  
   AM::pParticipatingJobs()->vGrabLock();
   AM::pParticipatingJobs()->vAddJob(pJob);
   AM::pParticipatingJobs()->vDropLock();
@@ -2780,8 +2770,6 @@ Job* AM::pJob_FindParticipating(i8 iJobId)
 /*----------------------------------------------------------------------------*/
 bool AM::bJob_RemoveLocal(Job* pJob, bool bDump)
 {
-  Schedule* pSchedule = AM::pSchedule();
-  
   AM::pLocalJobs()->vGrabLock();
   
   if (bDump)
@@ -2803,8 +2791,6 @@ bool AM::bJob_RemoveLocal(Job* pJob, bool bDump)
 /*----------------------------------------------------------------------------*/
 bool AM::bJob_RemoveOriginating(Job* pJob, bool bDump)
 {
-  Schedule* pSchedule = AM::pSchedule();
-  
   AM::pOriginatingJobs()->vGrabLock();
   
   if (bDump)
@@ -2826,8 +2812,6 @@ bool AM::bJob_RemoveOriginating(Job* pJob, bool bDump)
 /*----------------------------------------------------------------------------*/
 bool AM::bJob_RemoveParticipating(Job* pJob, bool bDump)
 {
-  Schedule* pSchedule = AM::pSchedule();
-  
   AM::pParticipatingJobs()->vGrabLock();
   
   if (bDump)

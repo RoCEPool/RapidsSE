@@ -333,10 +333,10 @@
 /*----------------------------------------------------------------------------*/
 : ERROR_JOB params| pJob errorCode |
 
-  DdlLock[].testDrop
+  //DdlLock[].testDrop
 
   //errorCode error.msg "Setting error '%v' in job" str.format .
-  errorCode pJob job.error!
+  //errorCode pJob job.error!
 ;
 
 /*============================================================================*/
