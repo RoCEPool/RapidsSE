@@ -263,9 +263,8 @@ void vRapidsSE_ApiDemo_getRows(void)
       RowBuffer* pRowBuffer = _pRowBuffer(aOperand);
 
       i8 nRows = pRowBuffer->nRows();
-      i8 nCols = pRowBuffer->nColumns();
-
-     HV_Record hvRecord(pRowBuffer->pRowPix());
+ 
+      HV_Record hvRecord(pRowBuffer->pRowPix());
 
       for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
         Row* pRow = pRowBuffer->pRowAddress(i_Row);
@@ -676,7 +675,7 @@ bool PROMPT::bPrompt_calc(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
 
-  TokenVec* pTknVec = pPrompt->pInpTknVec();
+//  TokenVec* pTknVec = pPrompt->pInpTknVec();
 
 //  Calculator* pCalculator = new Calculator;
 // 
@@ -1099,7 +1098,7 @@ bool PROMPT::bPrompt_ddlLock(SePrompt* pPrompt)
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/* Prompt_describe.cpp -- Ascii Helper                                           */
+/* Prompt_describe.cpp -- Ascii Helper                                        */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 #include "eOC.h"
@@ -1126,10 +1125,6 @@ PromptFun __Prompt_describe (
 bool PROMPT::bPrompt_describe(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
-
-  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
-  
-  i8 iNumTokens = pInpTknVec->nItems();
   
   gxSubSysCatalog.vList();
   
@@ -1173,7 +1168,7 @@ bool PROMPT::bPrompt_dlist(SePrompt* pPrompt)
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/* Prompt_dsv.cpp -- buffer pool report                                        */
+/* Prompt_dsv.cpp -- buffer pool report                                       */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 PromptFun __Prompt_dsv (
@@ -2670,6 +2665,7 @@ bool PROMPT::bPrompt_ls(SePrompt* pPrompt)
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
 
   ASSERT(pInpTknVec->pGet(0)->bSame("ls"_Stz));
+  UNUSED(pInpTknVec);
   
   // get the current directory
   if (!Dir::bGetCurrent(sDirPath))
@@ -3461,7 +3457,7 @@ bool PROMPT::bPrompt_pmc(SePrompt* pPrompt)
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/* Prompt_pow2.cpp -- power of 2                                             */
+/* Prompt_pow2.cpp -- power of 2                                              */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 PromptFun __Prompt_pow2 (
@@ -3711,9 +3707,7 @@ bool PROMPT::bPrompt_procedure(SePrompt* pPrompt)
   pInpTknVec->vIntegrityCheck();
   
   ASSERT(pInpTknVec->pGet(0)->bSame("procedure"_Stz));
-  
-  Stz* ssProcNm = pInpTknVec->pGet(1)->szChars();
-  
+    
   Procedure::vAddProcedure(pInpTknVec);
   
   return true;
@@ -3896,7 +3890,8 @@ bool PROMPT::bPrompt_pwd(SePrompt* pPrompt)
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   
   ASSERT(pInpTknVec->pGet(0)->bSame("pwd"_Stz));
-  
+  UNUSED(pInpTknVec);
+
   s256 sDir;
   if (Dir::bGetCurrent(sDir))
     vTrace("%s\n"_Stz, sDir.azChar());
@@ -4733,7 +4728,7 @@ bool PROMPT::bPrompt_snapshotInspect(SePrompt* pPrompt)
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/* Prompt_snapshotList.cpp -- objects list report                               */
+/* Prompt_snapshotList.cpp -- objects list report                             */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 PromptFun __Prompt_snapshotList (
@@ -5520,7 +5515,7 @@ bool PROMPT::bPrompt_timerStart(SePrompt* pPrompt)
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/* Prompt_tools.cpp -- System Tools                                          */
+/* Prompt_tools.cpp -- System Tools                                           */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 #include "eOC.h"
