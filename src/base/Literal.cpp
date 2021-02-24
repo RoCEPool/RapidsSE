@@ -40,14 +40,14 @@ bool Literal::bToCell(Dtm* aCell, Column* pCol,
 
   switch (eDatum) {
     case DM_BCD: b = bToCellBcd(aCell,pCol,aazCrs,pFmt); break;
-    case DM_BOL: b = bToCellBol(aCell,pCol,aazCrs,pFmt); break;
-    case DM_DTE: b = bToCellDte(aCell,pCol,aazCrs,pFmt); break;
-    case DM_FLT: b = bToCellFlt(aCell,pCol,aazCrs,pFmt); break;
-    case DM_INT: b = bToCellInt(aCell,pCol,aazCrs,pFmt); break;
-    case DM_IVL: b = bToCellIvl(aCell,pCol,aazCrs,pFmt); break;
-    case DM_TME: b = bToCellTme(aCell,pCol,aazCrs,pFmt); break;
-    case DM_TSP: b = bToCellTsp(aCell,pCol,aazCrs,pFmt); break;
-    case DM_VCH: b = bToCellVch(aCell,pCol,aazCrs,pFmt); break;
+    case DM_BOL: b = bToCellBol(aCell,aazCrs,pFmt); break;
+    case DM_DTE: b = bToCellDte(aCell,aazCrs,pFmt); break;
+    case DM_FLT: b = bToCellFlt(aCell,aazCrs,pFmt); break;
+    case DM_INT: b = bToCellInt(aCell,aazCrs,pFmt); break;
+    case DM_IVL: b = bToCellIvl(aCell,aazCrs,pFmt); break;
+    case DM_TME: b = bToCellTme(aCell,aazCrs,pFmt); break;
+    case DM_TSP: b = bToCellTsp(aCell,aazCrs,pFmt); break;
+    case DM_VCH: b = bToCellVch(aCell,aazCrs,pFmt); break;
       
     default:
       vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
@@ -167,8 +167,7 @@ bool Literal::bToCellBcd(Dtm* aCell, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* extract a boolean datum from csv field value                               */
 /*----------------------------------------------------------------------------*/
-bool Literal::bToCellBol(Dtm* aCell, Column* pCol,
-                          char** aazCrs, Format* pFmt)
+bool Literal::bToCellBol(Dtm* aCell, char** aazCrs, Format* pFmt)
 {
   SN_Bol snBol;
   
@@ -185,8 +184,7 @@ bool Literal::bToCellBol(Dtm* aCell, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* extract a date datum from csv field value                      yyyy-mo-ddZ */
 /*----------------------------------------------------------------------------*/
-bool Literal::bToCellDte(Dtm* aCell, Column* pCol,
-                          char** aazCrs, Format* pFmt)
+bool Literal::bToCellDte(Dtm* aCell, char** aazCrs, Format* pFmt)
 {
   SN_Dte snDte;
   
@@ -203,8 +201,7 @@ bool Literal::bToCellDte(Dtm* aCell, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* extract a float datum from csv field value                                 */
 /*----------------------------------------------------------------------------*/
-bool Literal::bToCellFlt(Dtm* aCell, Column* pCol,
-                          char** aazCrs, Format* pFmt)
+bool Literal::bToCellFlt(Dtm* aCell, char** aazCrs, Format* pFmt)
 {
   SN_Flt snFlt;
   
@@ -221,8 +218,7 @@ bool Literal::bToCellFlt(Dtm* aCell, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* extract an integer datum from csv field value                              */
 /*----------------------------------------------------------------------------*/
-bool Literal::bToCellInt(Dtm* aCell, Column* pCol,
-                          char** aazCrs, Format* pFmt)
+bool Literal::bToCellInt(Dtm* aCell, char** aazCrs, Format* pFmt)
 {
   SN_Int snInt;
   
@@ -247,8 +243,7 @@ bool Literal::bToCellInt(Dtm* aCell, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* extract an interval datum from csv field value                             */
 /*----------------------------------------------------------------------------*/
-bool Literal::bToCellIvl(Dtm* aCell, Column* pCol,
-                          char** aazCrs, Format* pFmt)
+bool Literal::bToCellIvl(Dtm* aCell, char** aazCrs, Format* pFmt)
 {
   SN_Ivl snIvl;
   
@@ -265,8 +260,7 @@ bool Literal::bToCellIvl(Dtm* aCell, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* extract a time datum from csv field value                    hh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
-bool Literal::bToCellTme(Dtm* aCell, Column* pCol,
-                          char** aazCrs, Format* pFmt)
+bool Literal::bToCellTme(Dtm* aCell, char** aazCrs, Format* pFmt)
 {
   SN_Tme snTme;
   
@@ -283,8 +277,7 @@ bool Literal::bToCellTme(Dtm* aCell, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* extract a timestamp datum from csv field value    yyyy-mo-ddThh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
-bool Literal::bToCellTsp(Dtm* aCell, Column* pCol,
-                          char** aazCrs, Format* pFmt)
+bool Literal::bToCellTsp(Dtm* aCell, char** aazCrs, Format* pFmt)
 {
   SN_Tsp snTsp;
   
@@ -301,9 +294,12 @@ bool Literal::bToCellTsp(Dtm* aCell, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* extract a varchar datum from csv field value                               */
 /*----------------------------------------------------------------------------*/
-bool Literal::bToCellVch(Dtm* aCell, Column* pCol,
-                          char** aazCrs, Format* pFmt)
+bool Literal::bToCellVch(Dtm* aCell, char** aazCrs, Format* pFmt)
 {
+  UNUSED(aCell);
+  UNUSED(aazCrs);
+  UNUSED(pFmt);
+
   NEVER_REACH; // not supported yet
   
   return true;
