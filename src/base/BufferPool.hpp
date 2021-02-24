@@ -62,7 +62,7 @@ namespace BASE
     i8   iBufferNext(i8 iBuffer);
     i8   iBufferPrev(i8 iBuffer);
     i8   iBufferSize(void);
-    void vCheckAddress(const void* aAddress);
+    void vCheckAddress(const void* aAddress, const char* azFunc);
     bool bDetachPool(void);
     bool bDontFree(void);
     void vFreeHeapBuffer(PoolBuffer* pPoolBuffer);
@@ -104,13 +104,14 @@ namespace BASE
 /*----------------------------------------------------------------------------*/
 
 template <class OBJECT>
-static OBJECT pPoolCheck(void* aAddress)
+static OBJECT pPoolCheck(void* aAddress, const char* azFunc)
 {
+  UNUSED(azFunc);
 #ifdef WITH_CORRECTNESS_ALGEBRA
   extern BufferPool* gpBufferPool;
 
   if (aAddress)
-    gpBufferPool->vCheckAddress(aAddress);
+    gpBufferPool->vCheckAddress(aAddress,azFunc);
 #endif
   
   return static_cast<OBJECT>(aAddress);

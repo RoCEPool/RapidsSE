@@ -380,6 +380,8 @@ void Stz::vToLower(void)
 /*----------------------------------------------------------------------------*/
 Stz* BASE::operator "" _Stz(const char* szArg, size_t nSize)
 {
+  UNUSED(nSize);
+  
   return (Stz*)(szArg);
 }
 

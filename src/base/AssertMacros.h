@@ -14,9 +14,9 @@
 /* check the object is within the pool                                        */
 /*----------------------------------------------------------------------------*/
 #ifdef WITH_CORRECTNESS_ALGEBRA
-  #define _poolAddress_(pArg) BASE::vCheckAddress(pArg) EndDefine
+  #define _poolAddress_(pArg) BASE::vCheckAddress(pArg,__func__) EndDefine
 #else
-  #define _poolAddress_(pArg) EndDefine
+  #define _poolAddress_(pArg) (void)pArg EndDefine
 #endif
 
 /*----------------------------------------------------------------------------*/

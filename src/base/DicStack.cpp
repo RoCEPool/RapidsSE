@@ -131,6 +131,8 @@ void DicStack::vDiscardAll(void)
 /*----------------------------------------------------------------------------*/
 void DicStack::vDump(eCN eClass, Object* pObject, Stz* szTab)
 {
+  UNUSED(eClass);
+  
   DicStack* pDicStack = _pDicStack(pObject);
   
   vTrace("top %p:"_Stz,pDicStack->m_iTop);

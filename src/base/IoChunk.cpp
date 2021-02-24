@@ -28,7 +28,7 @@ void* IoChunk::operator new(size_t)
 {
   IoChunk* pIoChunk = (IoChunk*)Heaps::pAllocate(CN_IOCHUNK);
   
-  return pPoolCheck<void*>(pIoChunk);
+  return pPoolCheck<void*>(pIoChunk,__func__);
 }
 
 /*----------------------------------------------------------------------------*/

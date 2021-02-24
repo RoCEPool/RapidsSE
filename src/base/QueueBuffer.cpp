@@ -27,7 +27,7 @@ void* QueueBuffer::operator new(size_t)
 {
   QueueBuffer* pQueueBuffer = (QueueBuffer*)gpBufferPool->pAllocOtherBuffer();
   
-  return pPoolCheck<void*>(pQueueBuffer);
+  return pPoolCheck<void*>(pQueueBuffer,__func__);
 }
 
 /*----------------------------------------------------------------------------*/

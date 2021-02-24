@@ -29,7 +29,7 @@ void* IoCopy::operator new(size_t)
 {
   IoCopy* pIoCopy = (IoCopy*)Heaps::pAllocate(CN_IOCOPY);
   
-  return pPoolCheck<void*>(pIoCopy);
+  return pPoolCheck<void*>(pIoCopy,__func__);
 }
 
 /*----------------------------------------------------------------------------*/

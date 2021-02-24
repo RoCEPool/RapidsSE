@@ -153,9 +153,10 @@ void Loggable::vNextEvent(eEV eEvent)
 /*----------------------------------------------------------------------------*/
 /* log next event                                                             */
 /*----------------------------------------------------------------------------*/
-void Loggable::vLog(eEV m_eEvent, Stz* szFormat, ...)
+void Loggable::vLog(eEV eEvent, Stz* szFormat, ...)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
+  UNUSED(eEvent);
   
   // to be completed
   

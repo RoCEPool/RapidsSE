@@ -20,7 +20,7 @@ void* Heap::operator new(size_t)
 {
   PoolBuffer* pBuffer = gpBufferPool->pAllocOtherBuffer();
   
-  return pPoolCheck<void*>(pBuffer);
+  return pPoolCheck<void*>(pBuffer,__func__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -562,13 +562,16 @@ void Heap::vValidFree(FreeChunk* aFreeChunk)
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
   HeapBuffer* pHeapBuffer = (HeapBuffer*)((u8)aFreeChunk & ~C_MASK_LARGE_OBJECT);
-  
+  UNUSED(pHeapBuffer);
+
   ASSERT(pHeapBuffer->eGetClassNo() == CN_HEAPBUFFER);
   
   u8 uSize = (u8)aFreeChunk & (u8)0xFF;
+  UNUSED(uSize);
 
   u8 uSizeHeapBuffer = sizeof(HeapBuffer);
-  
+  UNUSED(uSizeHeapBuffer);
+
   ASSERT(uSize == uSizeHeapBuffer);
 }
 

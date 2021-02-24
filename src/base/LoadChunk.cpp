@@ -28,7 +28,7 @@ void* LoadChunk::operator new(size_t)
 {
   LoadChunk* pLoadChunk = (LoadChunk*)Heaps::pAllocate(CN_LOADCHUNK);
   
-  return pPoolCheck<void*>(pLoadChunk);
+  return pPoolCheck<void*>(pLoadChunk,__func__);
 }
 
 /*----------------------------------------------------------------------------*/

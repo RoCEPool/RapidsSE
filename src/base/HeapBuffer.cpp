@@ -23,7 +23,7 @@ void* HeapBuffer::operator new(size_t)
 {
   HeapBuffer* pHeapBuffer = (HeapBuffer*)gpBufferPool->pAllocHeapBuffer();
   
-  return pPoolCheck<void*>(pHeapBuffer);
+  return pPoolCheck<void*>(pHeapBuffer,__func__);
 }
 
 /*----------------------------------------------------------------------------*/

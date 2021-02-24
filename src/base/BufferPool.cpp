@@ -90,7 +90,8 @@ void BufferPool::vSubSystem(SelfFn* aSelfFn, TokenVec* pTokenVec)
   _static_
   
   RASSERT(aSelfFn);
-  
+  RASSERT(pTokenVec);
+
   vTrace("BufferPool::vSubSystem\n"_Stz);
   
   BufferPool::vReport();
@@ -171,6 +172,7 @@ PoolBuffer* BufferPool::pAllocLongerBuffer(i8 nBuffers)
   
   while (nBuffers--) {
     FreeBuffer* pAdditionalBuffer = pPopFreeBuffer();
+    UNUSED(pAdditionalBuffer);
     ++m_ixOtherBuffers;
   }
 
@@ -274,18 +276,20 @@ i8 BufferPool::iBufferSize(void)
 /*----------------------------------------------------------------------------*/
 /* check address is in pool                                                   */
 /*----------------------------------------------------------------------------*/
-void BufferPool::vCheckAddress(const void* aAddress)
+void BufferPool::vCheckAddress(const void* aAddress, const char* azFunc)
 {
   ASSERT(m_pBase);
   ASSERT(m_pLimit);
   
   if (aAddress < m_pBase) {
-    vTrace("aAddress(%p) < m_pBase(%p) \n"_Stz, aAddress, m_pBase);
+    vTrace("aAddress(%p) < m_pBase(%p) : func %s\n"_Stz,
+           aAddress,m_pBase,azFunc);
   }
   ASSERT(aAddress >= m_pBase);
   
   if (aAddress >= m_pLimit) {
-    vTrace("aAddress(%p) >= m_pLimit(%p) \n"_Stz, aAddress, m_pLimit);
+    vTrace("aAddress(%p) >= m_pLimit(%p) : func %s\n"_Stz,
+           aAddress,m_pLimit,azFunc);
   }
   ASSERT(aAddress <  m_pLimit);
 }
@@ -633,7 +637,7 @@ PoolBuffer* BufferPool::pToPoolBuffer(i8 i_Buffer)
   
   PoolBuffer* pBuffer = static_cast<PoolBuffer*>(MemLib::aAddBytes(m_pBase,iOffset));
   
-  return pPoolCheck<PoolBuffer*>(pBuffer);
+  return pPoolCheck<PoolBuffer*>(pBuffer,__func__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -646,7 +650,7 @@ FreeBuffer* BufferPool::pToFreeBuffer(i8 i_Buffer)
   FreeBuffer* pBufferFree =
     static_cast<FreeBuffer*>(pToPoolBuffer(i_Buffer));
   
-  return pPoolCheck<FreeBuffer*>(pBufferFree);
+  return pPoolCheck<FreeBuffer*>(pBufferFree,__func__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -658,7 +662,7 @@ FreeBuffer* BufferPool::pToFreeBuffer(PoolBuffer* pBuffer)
   
   FreeBuffer* pBufferFree = static_cast<FreeBuffer*>(pBuffer);
   
-  return pPoolCheck<FreeBuffer*>(pBufferFree);
+  return pPoolCheck<FreeBuffer*>(pBufferFree,__func__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -758,7 +762,7 @@ FreeBuffer* BufferPool::pPopFreeBuffer(void)
   
   m_okLock.vDropWrite();                                                  // 🔵
   
-  return pPoolCheck<FreeBuffer*>(pAllocatedBuffer);
+  return pPoolCheck<FreeBuffer*>(pAllocatedBuffer,__func__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -881,10 +885,10 @@ Footer* BufferPool::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /*-- CheckAddress ------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void BASE::vCheckAddress(void *aAddress)
+void BASE::vCheckAddress(void *aAddress, const char* azFunc)
 {
   if (gpBufferPool)
-    gpBufferPool->vCheckAddress(aAddress);
+    gpBufferPool->vCheckAddress(aAddress,azFunc);
 }
 
 /*============================================================================*/

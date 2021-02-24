@@ -872,7 +872,7 @@ byte* TypedStack::ayStackBase(void)
   
   byte* ayBase = & m_xWsp.ayArea()[C_WSP_STACK - 1];
   
-  return pPoolCheck<byte*>(ayBase);
+  return pPoolCheck<byte*>(ayBase,__func__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -884,7 +884,7 @@ byte* TypedStack::ayStackLimit(void)
   
   byte* aLimit = & m_xWsp.ayArea()[0];
   
-  return pPoolCheck<byte*>(aLimit);
+  return pPoolCheck<byte*>(aLimit,__func__);
 }
 
 /*----------------------------------------------------------------------------*/

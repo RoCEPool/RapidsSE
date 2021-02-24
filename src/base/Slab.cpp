@@ -15,7 +15,7 @@ void* Slab::operator new(size_t)
 {
   Slab* pSlab = (Slab*)Heaps::pAllocate(CN_SLAB);
   
-  return pPoolCheck<void*>(pSlab);
+  return pPoolCheck<void*>(pSlab,__func__);
 }
 
 /*----------------------------------------------------------------------------*/
