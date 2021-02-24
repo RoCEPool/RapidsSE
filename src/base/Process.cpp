@@ -26,6 +26,8 @@ void Process::vEntry(void)
 {
   fprintf(stderr,"Calling exit(%lld)\n",iExitStatus);
   
+  vThreadCallStackDump();
+
   exit((int)iExitStatus);
 }
 
@@ -35,7 +37,9 @@ void Process::vEntry(void)
 [[ noreturn ]] void Process::vExitFailure(void)
 {
   fprintf(stderr,"Calling exit(%lld)\n",(u8)EXIT_FAILURE);
-  
+
+  vThreadCallStackDump();
+
   exit((int)EXIT_FAILURE);
 }
 
@@ -45,6 +49,8 @@ void Process::vEntry(void)
 [[ noreturn ]] void Process::vExitSuccess(void)
 {
   fprintf(stderr,"Calling exit(%lld)\n",(i8)EXIT_SUCCESS);
+  
+  vThreadCallStackDump();
   
   exit((int)EXIT_SUCCESS);
 }
@@ -60,6 +66,8 @@ void Process::vEntry(void)
   printf("  %s\n",szErrorMessage->azChar());
   printf("  %s\n",szInfoText->azChar());
   printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+
+  vThreadCallStackDump();
 
   Process::vExitFailure();
 }

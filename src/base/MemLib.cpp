@@ -382,6 +382,7 @@ w8* MemLib::awFindNonZeroEnd(void* aWords, i8 nWords)
 void MemLib::vFreeBlock(void* aBlock, i8 nBytes)
 {
   free(aBlock);
+  UNUSED(nBytes);
   
   //if (AM::bAttached())
   //  AM::pResources()->vSubMallocAmt(nBytes);
@@ -513,6 +514,7 @@ void* MemLib::aMallocBlock(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 void MemLib::vMove(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo)
 {
+  UNUSED(eClassNo);
   memmove(pDst,pSrc,nBytes);
  
 #ifdef WITH_STATISTICS_COUNTERS
