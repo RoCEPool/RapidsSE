@@ -217,9 +217,11 @@ function startCluster() {
     remoteClusterInit
 
     echo "Cluster startup complete."
+    true
 
   else
     echo "Cluster startup failed. Please stop the cluster before restarting it."
+    false
   fi
 }
 
