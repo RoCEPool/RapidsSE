@@ -3009,6 +3009,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         NEVER_REACH;
         break;//+endCase
 
+        // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case EO_REVISED_00: ArgNil(); // not yet implemented
+        NEVER_REACH;
+        break;//+endCase
+
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       default:
         vTrace("Unknown eo opcode %lld\n"_Stz,(i8)eCode);

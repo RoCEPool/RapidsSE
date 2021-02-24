@@ -1815,6 +1815,7 @@ void vTest63(void)
   oTimer.vStart();
   for (i8 i_Char = 0; i_Char < C_1K-1; i_Char++) {
     i8 nL = StrLib::nCopy(&b[0],&a[0]);
+    UNUSED(nL);
     n++;
     //RASSERT(nL == C_1K-1);
   }

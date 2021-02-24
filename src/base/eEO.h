@@ -312,7 +312,7 @@ enum eEO : u1 // expression operators
   /*  D  */ EO_ROW_SRC_PUSHCOLS, // push src column (string)
   /*  D  */ EO_ROW_ALT_PUSHCOLI, // push alt column
 
-    // super fragments
+  // super fragments
   /*  M  */ EO_SUPER_Q100,       // super fragment Q100
   /*  -  */ EO_SUPER_Z001,       // super fragment
   /*  -  */ EO_SUPER_Z002,       // super fragment
@@ -323,6 +323,10 @@ enum eEO : u1 // expression operators
   /*  -  */ EO_SUPER_Z007,       // super fragment
   /*  -  */ EO_SUPER_Z008,       // super fragment
   /*  -  */ EO_SUPER_Z009,       // super fragment
+
+  
+  // revised
+  /*  -  */ EO_REVISED_00,       // revised
 
   /*    */ EO_ENUMS
 };
@@ -644,6 +648,9 @@ static Stz* aEO[]
   /*    */ "EO_SUPER_Z008"_Stz,
   /*    */ "EO_SUPER_Z009"_Stz,
   
+  // srevised
+  /*    */ "EO_REVISED_00"_Stz,
+
   /*    */ "ENUMS"_Stz
 };
 

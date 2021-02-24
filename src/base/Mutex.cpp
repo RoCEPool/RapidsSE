@@ -414,7 +414,8 @@ void Mutex::vSignal(Loggable* pLockedBy)
   //! Calling thread must have locked the mutex
   //!
   ASSERT(pLockedBy == m_pLockedBy);
-
+  UNUSED(pLockedBy);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
 #ifdef WITH_STATISTICS_COUNTERS
@@ -496,6 +497,7 @@ void Mutex::vWait(Loggable* pLockedBy)
   //!
   ASSERT(pLockedBy == m_pLockedBy);
   ASSERT(! m_pWaitedBy);
+  UNUSED(pLockedBy);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
