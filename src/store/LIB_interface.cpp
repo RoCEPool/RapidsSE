@@ -31,6 +31,8 @@ void vLib_ASSERT(void* pLU, void* aArg)
 {
   _static_
   
+  UNUSED(pLU);
+  
   RASSERT(aArg);
 }
 
@@ -41,6 +43,8 @@ void vLib_BREAKPOINT(void* pLU)
 {
   _static_
   
+  UNUSED(pLU);
+
   vDebugPoint();
 }
 
@@ -51,6 +55,8 @@ i8 iLib_DTE_NOW(void* pLU)
 {
   _static_
   
+  UNUSED(pLU);
+
   Now oNow;
   Dte wDte;
 
@@ -89,6 +95,8 @@ i8 iLib_DTE_YEAR(void* pLU, i8 iArg)
 {
   _static_
   
+  UNUSED(pLU);
+
   Dte wDte;
 
   wDte = iArg;
@@ -109,6 +117,8 @@ void vLib_ERROR(void* pLU, Stz* szErr)
 {
   _static_
   
+  UNUSED(pLU);
+
   vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,szErr);
 }
 
@@ -214,6 +224,8 @@ i8 iLib_RANDOM(void* pLU, i8 iArg)
 {
   _static_
   
+  UNUSED(pLU);
+
   i8 iRes = RndLib::iInteger(iArg);
 
   return iRes;
@@ -230,6 +242,8 @@ void vLib_SLEEP(void* pLU, i8 iTopA)
 {
   _static_
   
+  UNUSED(pLU);
+
   sleep((u4)iTopA);
 }
 
@@ -243,6 +257,8 @@ i8 iLib_STR_COMPARE(void* pLU, Stz* szTopA, Stz* szTopB)
 {
   _static_
   
+  UNUSED(pLU);
+
   i8 iRes = StrLib::iCompare((char*)szTopA,(char*)szTopB);
   
   return iRes;

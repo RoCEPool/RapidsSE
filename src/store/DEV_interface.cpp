@@ -124,6 +124,8 @@ void vDev_CRW_NULL(void* aLU, void* aIXT)
 {
   _static_
   
+  UNUSED(aLU);
+
   DevIXT* pDevIxt = _pDevIXT(aIXT);
   pDevIxt->m_pCrwBuffer = nullptr;
 }
@@ -135,6 +137,8 @@ i8 iDev_CRW_TEST(void* aLU, void* aIXT)
 {
   _static_
   
+  UNUSED(aLU);
+
   DevIXT* pDevIxt = _pDevIXT(aIXT);
   
   i8 iRes;
@@ -196,10 +200,10 @@ Ent_int* aDev_ENT_NEXT(void* aLU, void* aIXT)
 {
   _static_
   
+  UNUSED(aLU);
+
   DevIXT* pDevIxt = _pDevIXT(aIXT);
- 
-  i8 iRes;
-  
+   
   pDevIxt->m_aEnt = EntBuffer::pMoveToNextEntry(pDevIxt->m_aEnt,
                                                 &pDevIxt->m_pEntBuffer);
   return (Ent_int*)pDevIxt->m_aEnt;
@@ -212,6 +216,8 @@ Ent_int* aDev_ENT_POSPRIOR(void* aLU, void* aIXT, Ent_int** aaSkipRoots)
 {
   _static_
   
+  UNUSED(aLU);
+
   DevIXT* pDevIxt = _pDevIXT(aIXT);
   
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
@@ -258,6 +264,8 @@ void* aDev_ENT_PUSH(void* aLU, void* aIXT)
 {
   _static_
   
+  UNUSED(aLU);
+
   DevIXT* pDevIxt = _pDevIXT(aIXT);
   
   return pDevIxt->m_aEnt;
@@ -270,6 +278,8 @@ void* aDev_ENT_PUSHUPPER(void* aLU, void* aIXT)
 {
   _static_
   
+  UNUSED(aLU);
+
   DevIXT* pDevIxt = _pDevIXT(aIXT);
   
   return pDevIxt->m_aUpperEnt;
@@ -282,6 +292,8 @@ i8 iDev_ENT_PUSHELMI0(void* aLU, void* aIXT)
 {
   _static_
   
+  UNUSED(aLU);
+
   DevIXT* pDevIxt = _pDevIXT(aIXT);
   
   i8 iRes = pDevIxt->m_aEnt->iIntElm0();
@@ -314,6 +326,8 @@ i8 iDev_ENT_PUSHOFS(void* aLU, void* aIXT)
 {
   _static_
   
+  UNUSED(aLU);
+
   DevIXT* pDevIxt = _pDevIXT(aIXT);
   
   i8 iRes = pDevIxt->m_aEnt->iBuffer();
@@ -332,6 +346,8 @@ void vDev_IXT_INDEXNM_SET(void* aLU, void* aIXT, Stz* szIndexNm)
 {
   _static_
   
+  UNUSED(aLU);
+
   DevIXT* pDevIxt = _pDevIXT(aIXT);
   pDevIxt->m_sIndexNm = szIndexNm;
 }
@@ -430,6 +446,8 @@ void vDev_IXT_DEL_ENT(void* aLU, void* aIXT)
 {
   _static_
   
+  UNUSED(aLU);
+
   DevIXT* pDevIXT = _pDevIXT(aIXT);
 
   pDevIXT->m_pIdxTree->vDelete(pDevIXT->m_pEntBuffer,pDevIXT->m_aEnt);
@@ -442,6 +460,8 @@ void vDev_IXT_DUMP(void* aLU, void* aIXT)
 {
   _static_
   
+  UNUSED(aLU);
+
   DevIXT* pDevIXT = _pDevIXT(aIXT);
   
   pDevIXT->m_pIdxTree->vDump(false);
@@ -454,6 +474,8 @@ void vDev_IXT_ENT_PRINT(void* aLU, void* aIXT)
 {
   _static_
   
+  UNUSED(aLU);
+
   DevIXT* pDevIXT = _pDevIXT(aIXT);
   
   SP_Ent spEnt;
@@ -486,7 +508,8 @@ void vDev_IXT_INDEXTREE_DELETE(void* aLU, void* aIXT)
 {
   _static_
   
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+  UNUSED(aLU);
+
   DevIXT* pDevIxt = _pDevIXT(aIXT);
   IndexTree* pIndexTree = pDevIxt->m_pIdxTree;
   pDevIxt->m_pIdxTree = nullptr;
@@ -686,8 +709,9 @@ Ent_int* aDev_IXT_POS_UBOUND_LT(void* aLU, void* aIXT)
 void vDev_IXT_SET_ENT(void* aLU, void* aIXT, void* aEnt)
 {
   _static_
-  
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+
+  UNUSED(aLU);
+
   DevIXT* pDevIXT = _pDevIXT(aIXT);
   
   pDevIXT->m_aEnt = (Ent*)aEnt;
@@ -700,6 +724,8 @@ i8 iDev_IXT_TMP_ENTRIES(void* aLU, void* aIXT)
 {
   _static_
   
+  UNUSED(aLU);
+
   DevIXT* pDevIXT = _pDevIXT(aIXT);
 
   i8 iRes = pDevIXT->m_pIdxTree->iCountH0Entries();
@@ -763,6 +789,8 @@ i8* aDev_PAY_ADDRESS(void* aLU, void* aIXT)
 {
   _static_
   
+  UNUSED(aLU);
+
   DevIXT* pDevIXT = _pDevIXT(aIXT);
 
   i8* aPayload = pDevIXT->m_aEnt->aiPayCell(0);
@@ -777,6 +805,8 @@ i8 iDev_PAY_FETCH_COLI(void* aLU, void* aIXT, i8 iArg)
 {
   _static_
   
+  UNUSED(aLU);
+
   DevIXT* pDevIXT = _pDevIXT(aIXT);
 
   i8* aPayload = pDevIXT->m_aEnt->aiPayCell(iArg);
@@ -793,6 +823,8 @@ Stz* szDev_PAY_FETCH_COLS(void* aLU, void* aIXT, i8 iArg)
 {
   _static_
   
+  UNUSED(aLU);
+
   DevIXT* pDevIXT = _pDevIXT(aIXT);
 
   i8* aPayload = pDevIXT->m_aEnt->aiPayCell(iArg);
@@ -800,6 +832,7 @@ Stz* szDev_PAY_FETCH_COLS(void* aLU, void* aIXT, i8 iArg)
   Stz* szSrc = (Stz*)aPayload;
   i8 nSize = StrLib::nSize((char*)szSrc);
   ASSERT(nSize < 8);
+  UNUSED(nSize);
 
   return szSrc;
 }
@@ -811,6 +844,8 @@ void vDev_PAY_STORE_COLI(void* aLU, void* aIXT, i8 iArg, i8 iTop)
 {
   _static_
   
+  UNUSED(aLU);
+
   DevIXT* pDevIXT = _pDevIXT(aIXT);
 
   i8* aPayload = pDevIXT->m_aEnt->aiPayCell(iArg);
@@ -824,6 +859,8 @@ Stz* szDev_PAY_STORE_COLS(void* aLU, void* aIXT, i8 iArg)
 {
   _static_
   
+  UNUSED(aLU);
+
   DevIXT* pDevIXT = _pDevIXT(aIXT);
 
   i8* aPayload = pDevIXT->m_aEnt->aiPayCell(iArg);
@@ -886,8 +923,8 @@ void vDev_ENTWRK_APPENDELMS(void* aLU, void* aROWDEVICE, Stz* szTop)
 void vDev_ENTWRK_CREATEPAY(void* aLU, void* aROWDEVICE, i8 iArg)
 {
   _static_
-  
-  DevROW* pDevRow = _pDevROW(aROWDEVICE);
+
+  UNUSED(aROWDEVICE);
 
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
 
@@ -901,8 +938,8 @@ void vDev_ENTWRK_CREATEPAY(void* aLU, void* aROWDEVICE, i8 iArg)
 void vDev_ENTWRK_POPOFS(void* aLU, void* aROWDEVICE, i8 iTop)
 {
   _static_
-  
-  DevROW* pDevRow = _pDevROW(aROWDEVICE);
+
+  UNUSED(aROWDEVICE);
 
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
 
@@ -915,8 +952,8 @@ void vDev_ENTWRK_POPOFS(void* aLU, void* aROWDEVICE, i8 iTop)
 void vDev_ENTWRK_PRINT(void* aLU, void* aROWDEVICE)
 {
   _static_
-  
-  DevROW* pDevRow = _pDevROW(aROWDEVICE);
+
+  UNUSED(aROWDEVICE);
 
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
 
@@ -934,8 +971,8 @@ void vDev_ENTWRK_PRINT(void* aLU, void* aROWDEVICE)
 void vDev_ENTWRK_RESET(void* aLU, void* aROWDEVICE)
 {
   _static_
-  
-  DevROW* pDevRow = _pDevROW(aROWDEVICE);
+
+  UNUSED(aROWDEVICE);
 
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
 
@@ -949,7 +986,7 @@ void vDev_ENTWRK_SETINTELM(void* aLU, void* aROWDEVICE, i8 iTop)
 {
   _static_
   
-  //DevROW* pDevRow = _pDevROW(aROWDEVICE);
+  UNUSED(aROWDEVICE);
 
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
 
@@ -968,7 +1005,9 @@ void vDev_ENTWRK_SETINTELM(void* aLU, void* aROWDEVICE, i8 iTop)
 void vDev_ROW_BEGIN(void* aLU, void* aROWDEVICE)
 {
   _static_
-  
+
+  UNUSED(aLU);
+
   DevROW* pDevRow = _pDevROW(aROWDEVICE);
   
   pDevRow->m_i_Row = -1;
@@ -1001,7 +1040,9 @@ i8 iDev_ROW_NEW(void* aLU, void* aROWDEVICE)
 i8 iDev_ROW_NEXT(void* aLU, void* aROWDEVICE)
 {
   _static_
-  
+
+  UNUSED(aLU);
+
   DevROW* pDevRow = _pDevROW(aROWDEVICE);
   
   i8 iRes;
@@ -1023,7 +1064,9 @@ i8 iDev_ROW_NEXT(void* aLU, void* aROWDEVICE)
 void vDev_ROW_NULL(void* aLU, void* aROWDEVICE)
 {
   _static_
-  
+
+  UNUSED(aLU);
+
   DevROW* pDevRow = _pDevROW(aROWDEVICE);
   pDevRow->m_pRowBuffer = nullptr;
 }
@@ -1034,7 +1077,9 @@ void vDev_ROW_NULL(void* aLU, void* aROWDEVICE)
 void vDev_ROW_POPCOLI(void* aLU, void* aROWDEVICE, i8 iArg, i8 iTop)
 {
   _static_
-  
+
+  UNUSED(aLU);
+
   DevROW* pDevRow = _pDevROW(aROWDEVICE);
   
   pDevRow->m_pRowBuffer->vPositionOnCell(iArg);
@@ -1047,7 +1092,9 @@ void vDev_ROW_POPCOLI(void* aLU, void* aROWDEVICE, i8 iArg, i8 iTop)
 void vDev_ROW_POPCOLS(void* aLU, void* aROWDEVICE, i8 iArg, Stz* szTop)
 {
   _static_
-  
+
+  UNUSED(aLU);
+
   DevROW* pDevRow = _pDevROW(aROWDEVICE);
   
   pDevRow->m_pRowBuffer->vPositionOnCell(iArg);
@@ -1066,7 +1113,9 @@ void vDev_ROW_POPCOLS(void* aLU, void* aROWDEVICE, i8 iArg, Stz* szTop)
 void vDev_ROW_PRINT(void* aLU, void* aROWDEVICE)
 {
   _static_
-  
+
+  UNUSED(aLU);
+
   DevROW* pDevRow = _pDevROW(aROWDEVICE);
   
   pDevRow->m_pRowBuffer->vDumpRow(-1,pDevRow->m_aRow);
@@ -1078,7 +1127,9 @@ void vDev_ROW_PRINT(void* aLU, void* aROWDEVICE)
 i8 iDev_ROW_PUSHCOLI(void* aLU, void* aROWDEVICE, i8 iArg)
 {
   _static_
-  
+
+  UNUSED(aLU);
+
   DevROW* pDevRow = _pDevROW(aROWDEVICE);
     
   i8 iRes = pDevRow->m_aRow->iColVal_int(iArg);
@@ -1092,7 +1143,9 @@ i8 iDev_ROW_PUSHCOLI(void* aLU, void* aROWDEVICE, i8 iArg)
 Stz* szDev_ROW_PUSHCOLS(void* aLU, void* aROWDEVICE, i8 iArg)
 {
   _static_
-  
+
+  UNUSED(aLU);
+
   DevROW* pDevRow = _pDevROW(aROWDEVICE);
   
   Stz* szSrc = pDevRow->m_aRow->szColVal_ofs(iArg);
@@ -1106,7 +1159,9 @@ Stz* szDev_ROW_PUSHCOLS(void* aLU, void* aROWDEVICE, i8 iArg)
 i8 iDev_ROW_PUSHOFS(void* aLU, void* aROWDEVICE)
 {
   _static_
-  
+
+  UNUSED(aLU);
+
   DevROW* pDevRow = _pDevROW(aROWDEVICE);
   
   i8 iRes = pDevRow->m_pRowBuffer->iOffsetInWsp(pDevRow->m_aRow);
@@ -1120,7 +1175,9 @@ i8 iDev_ROW_PUSHOFS(void* aLU, void* aROWDEVICE)
 void vDev_ROW_RESET(void* aLU, void* aROWDEVICE)
 {
   _static_
-  
+
+  UNUSED(aLU);
+
   DevROW* pDevRow = _pDevROW(aROWDEVICE);
   
   pDevRow->m_pRowBuffer->vReset();
@@ -1133,6 +1190,8 @@ void vDev_ROW_SET(void* aLU, void* aROWDEVICE, i8 iRow)
 {
   _static_
   
+  UNUSED(aLU);
+  
   DevROW* pDevRow = _pDevROW(aROWDEVICE);
 
   pDevRow->m_aRow = pDevRow->m_pRowBuffer->aSetCurRow(iRow);
@@ -1144,7 +1203,9 @@ void vDev_ROW_SET(void* aLU, void* aROWDEVICE, i8 iRow)
 void vDev_ROW_SETBYOFS(void* aLU, void* aROWDEVICE, i8 iTop)
 {
   _static_
-  
+
+  UNUSED(aLU);
+
   DevROW* pDevRow = _pDevROW(aROWDEVICE);
   
   pDevRow->m_aRow = pDevRow->m_pRowBuffer->aRowByOfs(iTop);
@@ -1156,7 +1217,9 @@ void vDev_ROW_SETBYOFS(void* aLU, void* aROWDEVICE, i8 iTop)
 void vDev_ROW_TABLENM_SET(void* aLU, void* aROWDEVICE, Stz* szTableNm)
 {
   _static_
-  
+
+  UNUSED(aLU);
+
   DevROW* pDevRow = _pDevROW(aROWDEVICE);
   pDevRow->m_sTableNm = szTableNm;
 }
@@ -1167,7 +1230,9 @@ void vDev_ROW_TABLENM_SET(void* aLU, void* aROWDEVICE, Stz* szTableNm)
 i8 iDev_ROW_TESTROW(void* aLU, void* aROWDEVICE)
 {
   _static_
-    
+
+  UNUSED(aLU);
+
   DevROW* pDevRow = _pDevROW(aROWDEVICE);
 
   i8 iRes;
@@ -1186,7 +1251,9 @@ i8 iDev_ROW_TESTROW(void* aLU, void* aROWDEVICE)
 i8 iDev_ROW_TEST(void* aLU, void* aROWDEVICE)
 {
   _static_
-  
+
+  UNUSED(aLU);
+
   DevROW* pDevRow = _pDevROW(aROWDEVICE);
   
   i8 iRes;
@@ -1205,7 +1272,9 @@ i8 iDev_ROW_TEST(void* aLU, void* aROWDEVICE)
 void vDev_ROW_ZERO(void* aLU, void* aROWDEVICE)
 {
   _static_
-  
+
+  UNUSED(aLU);
+
   DevROW* pDevRow = _pDevROW(aROWDEVICE);
   
   pDevRow->m_pRowBuffer->vZeroRow(pDevRow->m_aRow);
@@ -1274,7 +1343,6 @@ void vDev_SRC_COL_PUSHDST(void* aLU, void* aROWDEVICE) {
 
   LogicUnit *pLogicUnit = _pLogicUnit(aLU);
   HeadLine *aHeadLine = (HeadLine *) pLogicUnit->m_xRluCommon.m_aSrcCrw;
-  StreamDef *pStreamDef = pLogicUnit->m_pDevSrcRow->m_pStreamDef;
 
   DevROW* pDevRow = _pDevROW(aROWDEVICE);
 
@@ -1298,17 +1366,12 @@ void vDev_ROW_COL_PUSHSET(void* aLU, i8** aaiDstk, void* aROWDEVICE, i8* iaColSe
 {
   _static_
   
-  LogicUnit* pLogicUnit = (LogicUnit*)aLU; //_pLogicUnit(aLU);
+  UNUSED(aLU);
 
   DevROW* pDevRow = _pDevROW(aROWDEVICE);
 
   i8* aiDstk_lcl = *aaiDstk;
   i8* ayDst = ++aiDstk_lcl;
-
-  i8 i_ColSet = 0;
-  i8 i_ColToRetrieve = iaColSet[i_ColSet];
-  Stz* szSrc;
-  i8 nSize;
 
   for (i8 i_ColSet = 0; iaColSet[i_ColSet] != -1; i_ColSet++) {
     Column* pColumn = pDevRow->m_pStreamDef->pGetColumn(iaColSet[i_ColSet]);
@@ -1997,7 +2060,10 @@ void vDev_INDEXTREE_DEV_SET(void* aLU, i8 i_Dev)
 {
   _static_
   
+  UNUSED(i_Dev);
+
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+  UNUSED(pLogicUnit);
   //pLogicUnit->m_aaDev[i_Dev] = (void*)(* pLogicUnit->m_xpIndexTree);
 }
 
@@ -2171,6 +2237,7 @@ void vDev_REG_PTNSTREAM_OPEN(void* aLU)
 
   PtnStream* pPtnStream = *pLogicUnit->m_xpPtnStream;
   bool bOpened = pPtnStream->bOpen();
+  UNUSED(bOpened);
 }
 
 /*----------------------------------------------------------------------------*/
