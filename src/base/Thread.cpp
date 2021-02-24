@@ -379,6 +379,7 @@ void Thread::vBind(i8 iCore)
   
   bool bResult = m_pPsxThd->bBindThread(iCore);
   ASSERT(bResult);
+  UNUSED(bResult);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -443,7 +444,8 @@ void Thread::vSpawnPsxThd(void* pFun(void*), void* pArg)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   bool bResult = m_pPsxThd->bSpawnThread(pFun,pArg);
-  
+  UNUSED(bResult);
+
   ASSERT(bResult);
 }
 
@@ -455,7 +457,8 @@ void Thread::vSpawnPsxThd_dedicated(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   bool bResult = m_pPsxThd->bSpawnThread(Thread::aEntryPoint_dedicated,this);
-  
+  UNUSED(bResult);
+
   ASSERT(bResult);
 }
 
@@ -467,7 +470,8 @@ void Thread::vSpawnPsxThd_dummy(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   bool bResult = m_pPsxThd->bSpawnThread(Thread::aEntryPoint_dummy,this);
-  
+  UNUSED(bResult);
+
   ASSERT(bResult);
 }
 
@@ -479,7 +483,8 @@ void Thread::vSpawnPsxThd_general(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   bool bResult = m_pPsxThd->bSpawnThread(Thread::aEntryPoint_general,this);
-  
+  UNUSED(bResult);
+
   ASSERT(bResult);
 }
 

@@ -40,6 +40,7 @@ void* Log::operator new(size_t, Log* pLog)
 /*----------------------------------------------------------------------------*/
 void Log::operator delete(void* aAddress)
 {
+  UNUSED(aAddress);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -199,6 +200,9 @@ Log* Log::pAttachExisting(void)
 /*----------------------------------------------------------------------------*/
 void Log::vNoteString(i8 iJobId, s48K& sString)
 {
+  UNUSED(iJobId);
+  UNUSED(sString);
+
 #ifdef WITH_SHARED_LOG
   if ( ! gpLog )
     return;
@@ -231,6 +235,8 @@ void Log::vNoteString(i8 iJobId, s48K& sString)
 /*----------------------------------------------------------------------------*/
 bool Log::bEntryExists(i8 i_Entry)
 {
+  UNUSED(i_Entry);
+
 #ifdef WITH_SHARED_LOG
   if (! AM::bLog())
     return false;
@@ -250,6 +256,8 @@ bool Log::bEntryExists(i8 i_Entry)
 /*----------------------------------------------------------------------------*/
 i8 Log::iEntryPrev(i8 i_Entry)
 {
+  UNUSED(i_Entry);
+
 #ifdef WITH_SHARED_LOG
   if (! AM::bLog())
     return C_UNKNOWN;
@@ -270,6 +278,9 @@ i8 Log::iEntryPrev(i8 i_Entry)
 /*----------------------------------------------------------------------------*/
 void Log::vEntrySprint(s4K& sString, i8 i_Entry)
 {
+  UNUSED(sString);
+  UNUSED(i_Entry);
+
 #ifdef WITH_SHARED_LOG
   if (! AM::bLog())
     return;
@@ -291,6 +302,9 @@ void Log::vEntrySprint(s4K& sString, i8 i_Entry)
 /*----------------------------------------------------------------------------*/
 void Log::vHow(i8 iReqId, i8 iDetail)
 {
+  UNUSED(iReqId);
+  UNUSED(iDetail);
+
 #ifdef WITH_SHARED_LOG
   if (! AM::bLog())
     return;
@@ -421,6 +435,8 @@ void Log::vOpenByApi(void)
 /*----------------------------------------------------------------------------*/
 void Log::vOpenBySE(bool bStarting)
 {
+  UNUSED(bStarting);
+
 #ifdef WITH_SHARED_LOG
   if (! AM::bLog())
     return;
@@ -505,6 +521,8 @@ void Log::vOpenBySE(bool bStarting)
 /*----------------------------------------------------------------------------*/
 void Log::vWriteCsv(bool bShortForm)
 {
+  UNUSED(bShortForm);
+
 #ifdef WITH_SHARED_LOG
   if (! gpLog)
     return;
@@ -1093,6 +1111,8 @@ void Log::vWriteToFile(bool bCsv, bool bShortForm)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
+  UNUSED(bShortForm);
+
   s256 sLogPath;
   sLogPath = bCsv ? (Stz*)AM::szLogCsvFile() : (Stz*)AM::szLogTxtFile();
 
@@ -1202,6 +1222,8 @@ void Log::vLog(TokenVec* pTknVec)
 void Log::vLogList(TokenVec* pTknVec)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
+
+  UNUSED(pTknVec);
 
   vTrace(" Log list ???\n"_Stz);
 }

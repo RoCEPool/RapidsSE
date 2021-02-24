@@ -924,8 +924,6 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n  #include \"../src/store/RluCommon.h\""
   "\n  #include \"../src/base/eEO.h\""
   "\n"
-  "\n  #include \"../src/store/TinyExperiment.h\""
-  "\n"
   "\n  #define ArgNil() "
   "\n  #define ArgGet(x) "
   "\n  #define dLU0(x) "
