@@ -538,6 +538,7 @@ void vTest10(void)
     //i8 i2 = Random::iInteger(-999999,999999);
   
     i8 iCmp = MemLib::iCompareWords(&i1, &i2, 8);
+    UNUSED(iCmp);
     //i8 iCmp2 = MemLib::iCompare2(&i1, &i2, 8);
   }
   
@@ -888,7 +889,7 @@ void vTest20(void)
 /*----------------------------------------------------------------------------*/
 /* test21 : determine the number of int entries which fit into an ent buffer  */
 /*----------------------------------------------------------------------------*/
-i8 nTest21_intEnts(eKE eEntKind)
+i8 nTest21_intEnts(void)
 {
   Rrf xRef;
   EntWrk xEntWrk;
@@ -912,6 +913,7 @@ i8 nTest21_intEnts(eKE eEntKind)
     //pEntBufferCalc->vShow();
     Ent* aEntToIns = xEntWrk.aEnt();
     Ent* aEnt = pEntBufferCalc->aInsertEntAbs(aEntToIns);
+    UNUSED(aEnt);
     nEnts++;
     
     xEntWrk.vReset();
@@ -926,12 +928,12 @@ i8 nTest21_intEnts(eKE eEntKind)
 /*----------------------------------------------------------------------------*/
 /* test21 : create an int set for key samples                                 */
 /*----------------------------------------------------------------------------*/
-IntSet* pTest21_keySamples(eKE eEntKind, i8 nSamples)
+IntSet* pTest21_keySamples(i8 nSamples)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // first calculate how many int entries fit into an EntBuffer
   
-  i8 nEntsWhichFit = C_UNKNOWN == nSamples ? nTest21_intEnts(eEntKind) : nSamples;
+  i8 nEntsWhichFit = C_UNKNOWN == nSamples ? nTest21_intEnts() : nSamples;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create that many keys
@@ -1051,6 +1053,7 @@ void vTest21_insert(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalIns_)
       break;
     
     Ent* aEnt = pEntBuffer->aInsertEntAbs(xEntWrk.aEnt());
+    UNUSED(aEnt);
     
     //pEntBuffer->vShow();
     
@@ -1074,6 +1077,7 @@ void vTest21_search(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalSel_)
     for (i8 i_Int = 0; i_Int < nInts; i_Int++) {
           
       i8 iInt = pKeySamples->iGet(i_Int);
+      UNUSED(iInt);
       //Ent* aSearchedEnt = pEntBuffer->aFindEnt_IntOpt(iInt);
 
       nTotalSel_++;
@@ -1098,6 +1102,7 @@ void vTest21_search(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalSel_)
     
     if (aSearchedEnt) {
       bool b = Key::bEqualTo(aSearchedEnt->aKey(),xEntWrk.aKey());
+      UNUSED(b);
     }
     //RASSERT(aSearchedEnt);
 
@@ -1123,7 +1128,7 @@ void vTest21_sort(EntBuffer* pEntBuffer)
 /*----------------------------------------------------------------------------*/
 /* test21 : run delete test                                                   */
 /*----------------------------------------------------------------------------*/
-void vTest21_testDelete(eKE eEntKind, IntSet* pKeySamples,
+void vTest21_testDelete(IntSet* pKeySamples,
                         i8 nBuffers, bool bDump)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1164,7 +1169,7 @@ void vTest21_testDelete(eKE eEntKind, IntSet* pKeySamples,
 /*----------------------------------------------------------------------------*/
 /* test21 : run insert test                                                   */
 /*----------------------------------------------------------------------------*/
-void vTest21_testInsert(eKE eEntKind, IntSet* pKeySamples,
+void vTest21_testInsert(IntSet* pKeySamples,
                         i8 nBuffers, bool bDump)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1201,7 +1206,7 @@ void vTest21_testInsert(eKE eEntKind, IntSet* pKeySamples,
 /*----------------------------------------------------------------------------*/
 /* test21 : run search test                                                   */
 /*----------------------------------------------------------------------------*/
-void vTest21_testSearch(eKE eEntKind, IntSet* pKeySamples,
+void vTest21_testSearch(IntSet* pKeySamples,
                         i8 nBuffers, i8 nTimes, bool bDump)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1264,9 +1269,9 @@ void vTest21(void)
   i8   nTimes   = 10;
   bool bDump    = true;
 
-  bool bInsertTest = true;
+  //bool bInsertTest = true;
   bool bSearchTest = true;
-  bool bDeleteTest = true;
+  //bool bDeleteTest = true;
   
   vTrace("Test21 -- This is EntBuffer Test MODE: %s %s\n"_Stz,
          AM::szBuild(),
@@ -1276,7 +1281,7 @@ void vTest21(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create key sample int set
 
-  IntSet* pKeySamples = pTest21_keySamples(eEntKind,nSamples);
+  IntSet* pKeySamples = pTest21_keySamples(nSamples);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // run our tests
@@ -1293,7 +1298,7 @@ void vTest21(void)
 
   pKeySamples->vRandomise();
 //  if (bInsertTest) vTest21_testInsert(eEntKind,pKeySamples,nBuffers,bDump);
-  if (bSearchTest) vTest21_testSearch(eEntKind,pKeySamples,nBuffers,nTimes,bDump);
+  if (bSearchTest) vTest21_testSearch(pKeySamples,nBuffers,nTimes,bDump);
 //  if (bDeleteTest) vTest21_testDelete(eEntKind,pKeySamples,nTimes,bDump);
 }
 
