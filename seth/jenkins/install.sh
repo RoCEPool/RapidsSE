@@ -153,14 +153,14 @@ fi
 
 # Start RapidsSE
 if ! "${INSTALL_DIR}/startSE.sh" ; then
-  echo ""
-  echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-  echo ""
-  echo "RapidsSE could not be started. Here is the last 1000 lines of its log file (se.log):"
-  echo ""
-  echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-  echo ""
-  tail -n 1000 "${INSTALL_DIR}/se.log" || true
+#  echo ""
+#  echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+#  echo ""
+#  echo "RapidsSE could not be started. Here is the last 1000 lines of its log file (se.log):"
+#  echo ""
+#  echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+#  echo ""
+#  tail -n 1000 "${INSTALL_DIR}/se.log" || true
   exit 1
 fi
 
