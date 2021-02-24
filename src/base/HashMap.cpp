@@ -144,6 +144,10 @@ void HashMap::vAppendDuplicate(HashInsert* pHi, HashEntry* aOriginalEntry)
 /*----------------------------------------------------------------------------*/
 i8 HashMap::iEach(byte* aKey, i8 nBytes, i8& iCursor)
 {
+  UNUSED(aKey);
+  UNUSED(nBytes);
+  UNUSED(iCursor);
+
   return C_UNKNOWN;
 }
 
@@ -152,7 +156,9 @@ i8 HashMap::iEach(byte* aKey, i8 nBytes, i8& iCursor)
 /*----------------------------------------------------------------------------*/
 bool HashMap::bExists(byte* aKey, i8 nBytes)
 {
-  
+  UNUSED(aKey);
+  UNUSED(nBytes);
+
   return false;
 }
 
@@ -161,7 +167,10 @@ bool HashMap::bExists(byte* aKey, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 bool HashMap::bExists(byte* aKey, i8 nBytes, i8 iValue)
 {
- 
+  UNUSED(aKey);
+  UNUSED(nBytes);
+  UNUSED(iValue);
+
   return false;
 }
 

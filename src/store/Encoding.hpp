@@ -251,6 +251,7 @@ namespace STORE
       uHigh <<= 4;
       u1 uLow = (u1)wColVal.m_iWrd;
       u1 eTest = (uHigh | uLow);
+      UNUSED(eTest);
       
       xColEnc.m_uMetaCode = METACODE_FORM(MC_POSITIVE,wColVal.m_iWrd);
       return;
@@ -361,6 +362,7 @@ namespace STORE
     
     // copy chars + null into wsp, nS will be size  (i.e. noOf(chars)+1 )
     char* azDst = (char*)m_xWsp.ayLatter();
+    UNUSED(azDst);
     //i8 nS = StrLib::nCopy(azDst,(char*)wColVal.m_szVch) + 1;
     i8 nS = StrLib::nLength((char*)wColVal.m_szVch) + 1;
 
@@ -435,8 +437,8 @@ namespace STORE
     xrColEnc.m_i_Offset = m_i_Offset_next;
     
     // get the base size of the encoding
-    i8 iHigh = METACODE_HIGH(xrColEnc.m_uMetaCode);
-    i8 iLow  = METACODE_LOW(xrColEnc.m_uMetaCode);
+    //i8 iHigh = METACODE_HIGH(xrColEnc.m_uMetaCode);
+    //i8 iLow  = METACODE_LOW(xrColEnc.m_uMetaCode);
     //i8 nDataBytes = nDataSizeOfCode(iHigh,iLow);
     
     // if 0B case then till is same as offset

@@ -1263,7 +1263,6 @@ void vTest21_testSearch(IntSet* pKeySamples,
 /*----------------------------------------------------------------------------*/
 void vTest21(void)
 {
-  eKE  eEntKind = KE_INT;
   i8   nSamples = C_UNKNOWN;
   i8   nBuffers = 10;
   i8   nTimes   = 10;

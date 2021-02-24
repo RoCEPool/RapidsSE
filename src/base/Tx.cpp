@@ -90,6 +90,9 @@ void Tx::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 void Tx::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
+  UNUSED(eClass);
+  UNUSED(aTab);
+
   Tx* pTx = _pTx(pObject);
   
   // get string of the distributed members of this transaction

@@ -38,6 +38,8 @@ i8 SN_Int::i(char** aacCrs, Format* pFmt)
 {
   _precondition_(_MAGIC_,CN_SNINT);
   
+  UNUSED(pFmt);
+  
 //  if (! StrLib::bIsDigit(*(*aacCrs+0))) {
 //    vTrace("SN_Int: %c%c%c%c%c%c%c%c\n"_Stz,
 //           *(*aacCrs+0),
