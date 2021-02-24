@@ -284,12 +284,14 @@ void BufferPool::vCheckAddress(const void* aAddress, const char* azFunc)
   if (aAddress < m_pBase) {
     vTrace("aAddress(%p) < m_pBase(%p) : func %s\n"_Stz,
            aAddress,m_pBase,azFunc);
+    vThreadCallStackDump();
   }
   ASSERT(aAddress >= m_pBase);
   
   if (aAddress >= m_pLimit) {
     vTrace("aAddress(%p) >= m_pLimit(%p) : func %s\n"_Stz,
            aAddress,m_pLimit,azFunc);
+    vThreadCallStackDump();
   }
   ASSERT(aAddress <  m_pLimit);
 }
