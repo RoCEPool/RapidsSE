@@ -21,11 +21,11 @@ __aFooterFunction(PlannerLock);
 PlannerLock::PlannerLock(void)
 : MasterLock(CN_PLANNERLOCK)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNERLOCK,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_PLANNERLOCK,_FOOTER_);
    
   _checkInitialised_(CN_PLANNERLOCK);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_PLANNERLOCK,_FOOTER_);
+  //_postcondition_(_ADDRESS_,_MAGIC_,CN_PLANNERLOCK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -35,7 +35,7 @@ PlannerLock::~PlannerLock(void) noexcept(false)
 {
   printf("~PlannerLock~PlannerLock~PlannerLock~PlannerLock~PlannerLock\n");
   
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNERLOCK,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_PLANNERLOCK,_FOOTER_);
   
 }
 
