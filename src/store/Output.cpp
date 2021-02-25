@@ -223,11 +223,6 @@ Operand* Output::pPopBufferQueue_blocking(Session* pSession)
   
   for (;;) {
     
-    //if (pSession->m_pSsnJob->m_xResult.m_bJobHasError) {
-      //vDrainBufferQueue(pSession);
-      //return nullptr;
-    //}
-    
     Operand* pOperand = _pOperand(pSession->m_pOutput->m_pOutputQueue->pPop());
     
     if (pOperand)
@@ -382,9 +377,6 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
                  *m_ixRowsProcessed);
           AM::vDeleteOperand(pOperand);
           m_bExitMarker = true;
-          if ( !m_bCmdErr && !m_bExecErr ) {
-            vPrintResult();
-          }
           m_bCmdErr = false;
           m_bExecErr = false;
           bContinue = false;
@@ -427,7 +419,7 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
           AM::vDeleteOperand(pOperand);
           m_bExitMarker = true;
           ASSERT( !m_bCmdErr );
-          ASSERT ( !m_bExecErr );
+          ASSERT( !m_bExecErr );
           vPrintResult();
           bContinue = false;
           goto L_EXIT;
