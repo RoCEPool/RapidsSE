@@ -687,12 +687,14 @@ void LogicUnit::vGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut)
   RASSERT(b);
   i8 nSize = oFile.iSize();
   i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
-
+  UNUSED(nBytes);
+  
   // null terminate the read bytes
   char* sReadStr = sText.azChar();
   sReadStr[nSize] = '\0';
 
   bool bResult = bGenerateAsm(sText);
+  UNUSED(bResult);
 
   oFile.vClose();
 }
@@ -787,12 +789,14 @@ void LogicUnit::vGenerateLimit(i8 iLimitRows, StreamDef* pStreamDefOut) {
   RASSERT(b);
   i8 nSize = oFile.iSize();
   i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
+  UNUSED(nBytes);
 
   // null terminate the read bytes
   char* sReadStr = sText.azChar();
   sReadStr[nSize] = '\0';
 
   bool bResult = bGenerateAsm(sText);
+  UNUSED(bResult);
 
   oFile.vClose();
 }
@@ -800,10 +804,12 @@ void LogicUnit::vGenerateLimit(i8 iLimitRows, StreamDef* pStreamDefOut) {
 /*----------------------------------------------------------------------------*/
 /* generate asm text for projection                                           */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
-
+void LogicUnit::vGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOut)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_LOGICUNIT, _FOOTER_);
 
+  UNUSED(pStreamDefOut);
+  
   TagSet oTagSet;
   LocalFile oFile;
 
@@ -918,12 +924,14 @@ void LogicUnit::vGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOu
   RASSERT(b);
   i8 nSize = oFile.iSize();
   i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
+  UNUSED(nBytes);
 
   // null terminate the read bytes
   char* sReadStr = sText.azChar();
   sReadStr[nSize] = '\0';
 
   bool bResult = bGenerateAsm(sText);
+  UNUSED(bResult);
 
   oFile.vClose();
 }
@@ -934,6 +942,7 @@ void LogicUnit::vGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOu
 void LogicUnit::vGenerateRange(Range* pRange, StreamDef* pStreamDefOut) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_LOGICUNIT, _FOOTER_);
+  UNUSED(pStreamDefOut);
 
   TagSet oTagSet;
   LocalFile oFile;
@@ -1000,12 +1009,14 @@ void LogicUnit::vGenerateRange(Range* pRange, StreamDef* pStreamDefOut) {
   RASSERT(b);
   i8 nSize = oFile.iSize();
   i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
-
+  UNUSED(nBytes);
+  
   // null terminate the read bytes
   char* sReadStr = sText.azChar();
   sReadStr[nSize] = '\0';
 
   bool bResult = bGenerateAsm(sText);
+  UNUSED(bResult);
 
   oFile.vClose();
 }

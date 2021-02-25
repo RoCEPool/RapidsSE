@@ -35,7 +35,7 @@ void* Schedule::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* Schedule are never deleted (for the moment)                                  */
 /*----------------------------------------------------------------------------*/
-void Schedule::operator delete(void* aAddr)
+void Schedule::operator delete(void* )
 {
   vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
          "fatal: Schedule class cannot be deleted"_Stz);
@@ -744,7 +744,7 @@ void Schedule::vGrabThreadIdleQueue(void)
 /*----------------------------------------------------------------------------*/
 /* get a portrait of the queues                                               */
 /*----------------------------------------------------------------------------*/
-void Schedule::vMonitorPortrait(s48K& sPortrait)
+void Schedule::vMonitorPortrait(s48K& )
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULE,_FOOTER_);
   
