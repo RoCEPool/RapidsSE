@@ -24,11 +24,19 @@ Copy public key and add as an access key to the repository in bitbucket:
 Test by executing: ssh -T -i ~/.ssh/jenkins git@bitbucket.org
 More detailed instructions here: https://support.atlassian.com/bitbucket-cloud/docs/set-up-an-ssh-key/
 
-Install GCC v10:
-  Refer to the upgradingGcc.txt file
-  https://jdhao.github.io/2017/09/04/install-gcc-newer-version-on-centos/
-  
+# Make the jenkins user able to login
+sudo vim /etc/password
+  - change /bin/false to /bin/bash
 
+# Setup the home directory
+- sudo mkhomedir_helper jenkins
+or
+- copy from /etc/skel into /var/lib/jenkins 
+
+# Set up SSH for jenkins user
+ssh-keygen
+cp id_rsa.pub authorized_keys
+chmod 600 authorized_keys 
 
 Starting Jenkins
 ================
