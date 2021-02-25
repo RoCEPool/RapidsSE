@@ -87,6 +87,7 @@ bool Object::bInspectObject(void)
 void Object::vMemoryDump(void)
 {
   eCN eClass = this->eGetClassNo();
+  UNUSED(eClass);
   i8 nSize = nSizeOfObject();
   
   MemLib::vDumpWords(this,nSize);

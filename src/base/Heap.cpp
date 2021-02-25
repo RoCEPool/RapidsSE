@@ -74,6 +74,8 @@ Heap::~Heap(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Heap::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
+  UNUSED(aTab);
+  
   RASSERT(
           eClass == CN_TINYTRANSIENT    ||
           eClass == CN_SMALLTRANSIENT   ||
@@ -136,6 +138,7 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   ASSERT(gxaSizeHeap[eAllocClass].m_nClassSize < m_nObjectSize);
+  UNUSED(eAllocClass);
   
   //static eCN eLastClass = CN_ENUMS;
   
@@ -506,7 +509,8 @@ FreeChunk* Heap::pPopFree(void)
 void Heap::vPushFree(FreeChunk* aFreeChunk, eCN eWasClass)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-  
+  UNUSED(eWasClass);
+
   if (m_nObjectSize <= C_1MB)
     vValidFree(aFreeChunk);
   
