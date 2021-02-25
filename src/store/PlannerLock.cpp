@@ -11,8 +11,8 @@
 /*----------------------------------------------------------------------------*/
 
 __pCastFunction(STORE,PlannerLock,CN_PLANNERLOCK)
-__aNewFunction(PlannerLock,CN_PLANNERLOCK)
-__vDeleteFunction(PlannerLock,CN_PLANNERLOCK)
+//__aNewFunction(PlannerLock,CN_PLANNERLOCK)
+//__vDeleteFunction(PlannerLock,CN_PLANNERLOCK)
 __aFooterFunction(PlannerLock);
 
 /*----------------------------------------------------------------------------*/
