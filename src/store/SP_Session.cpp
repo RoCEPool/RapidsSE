@@ -39,6 +39,7 @@ SP_Session::~SP_Session(void) noexcept(false)
 Stz* SP_Session::sz(Session* pSession)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+  UNUSED(pSession);
   
   return (Stz*) &m_caResult[0];
 }

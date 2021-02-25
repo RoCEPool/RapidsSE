@@ -149,7 +149,7 @@ void Step::vJobAddDemon(void)
     JobLog::vNote(pJob,"Added to Demon List: %s %p"_Stz,
                   aCN[pJob->eGetClassNo()],
                   pJob);
-    AM::pDemonJobs()->vLogJobs(pJob->m_iObjectId);
+    AM::pDemonJobs()->vLogJobs();
   }
   
   EXIT();
@@ -172,7 +172,7 @@ void Step::vJobAddLocal(void)
     JobLog::vNote(pJob,"Added to Local List: %s %p"_Stz,
                   aCN[pJob->eGetClassNo()],
                   pJob);
-    AM::pLocalJobs()->vLogJobs(pJob->m_iObjectId);
+    AM::pLocalJobs()->vLogJobs();
   }
   
   EXIT();
@@ -201,7 +201,7 @@ void Step::vJobAddOriginator(void)
     JobLog::vNote(pJob,"Added to Originator List: %s %p"_Stz,
                        aCN[pJob->eGetClassNo()],
                        pJob);
-    AM::pOriginatingJobs()->vLogJobs(pJob->m_iObjectId);
+    AM::pOriginatingJobs()->vLogJobs();
   }
     
   EXIT();
@@ -228,7 +228,7 @@ void Step::vJobAddParticipant(void)
     JobLog::vNote(pJob,"Added to ParticipantList: %s %p "_Stz,
                           aCN[pJob->eGetClassNo()],
                           pJob);
-    AM::pParticipatingJobs()->vLogJobs(pJob->m_iObjectId);
+    AM::pParticipatingJobs()->vLogJobs();
   }
   
   EXIT();
@@ -1036,7 +1036,7 @@ void Step::vJobRemoveLocal(void)
                   "Removed from Local List: %s %p"_Stz,
                   aCN[pJob->eGetClassNo()],
                   pJob);
-    AM::pLocalJobs()->vLogJobs(pJob->m_iObjectId);
+    AM::pLocalJobs()->vLogJobs();
   }
   
   EXIT();
@@ -1067,7 +1067,7 @@ void Step::vJobRemoveOriginator(void)
                        "Removed from Originator List: %s %p"_Stz,
                        aCN[pJob->eGetClassNo()],
                        pJob);
-    AM::pOriginatingJobs()->vLogJobs(pJob->m_iObjectId);
+    AM::pOriginatingJobs()->vLogJobs();
   }
   
   EXIT();
@@ -1097,7 +1097,7 @@ void Step::vJobRemoveParticipant(void)
     JobLog::vNote(pJob,"Removed from Participant List: "_Stz,
                        aCN[pJob->eGetClassNo()],
                        pJob);
-    AM::pParticipatingJobs()->vLogJobs(pJob->m_iObjectId);
+    AM::pParticipatingJobs()->vLogJobs();
   }
     
   EXIT();
