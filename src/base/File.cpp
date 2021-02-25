@@ -724,7 +724,7 @@ bool File::bOpenMode(Stz* szFilePath, Stz* szOpenMode)
               "File opened: path=%s; mode=%s"_Stz, //!format-LogRes
               szFilePath,szOpenMode);
   
-  EVLOG::vEvent(this,EV_OPENED,"File opened: path=%s; mode=%s"_Stz,
+  EVLOG::vEvent(this,EV_OPEN,"File opened: path=%s; mode=%s"_Stz,
               szFilePath,szOpenMode);
 
   return true;
