@@ -32,20 +32,33 @@ pipeline {
       }
     }
 
-    stage('Install & Start Release') {
+    stage('Install Release') {
       steps {
-        echo 'Installing..'
         sh 'seth/jenkins/install.sh seth/jenkins/1node.config'
+      }
+    }
+
+    stage('Start Release') {
+      steps {
+        sh 'seth/jenkins/start.sh seth/jenkins/1node.config'
       }
     }
 
     stage('Test Release') {
       steps {
         echo 'Testing..'
-        //sh 'seth/jenkins/test.sh'
+        sh 'seth/jenkins/test.sh seth/jenkins/1node.config'
         // capture logs if they are not huge
+        // capture test results
       }
     }
+
+    stage('Stop Release') {
+      steps {
+        sh 'seth/jenkins/stop.sh seth/jenkins/1node.config'
+      }
+    }
+
   }
 
 

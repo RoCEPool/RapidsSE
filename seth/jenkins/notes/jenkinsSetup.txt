@@ -48,13 +48,13 @@ YOURPORT=8080
 PERM="--permanent"
 SERV="$PERM --service=jenkins"
 
-firewall-cmd $PERM --new-service=jenkins
-firewall-cmd $SERV --set-short="Jenkins ports"
-firewall-cmd $SERV --set-description="Jenkins port exceptions"
-firewall-cmd $SERV --add-port=$YOURPORT/tcp
-firewall-cmd $PERM --add-service=jenkins
-firewall-cmd --zone=public --add-service=http --permanent
-firewall-cmd --reload
+sudo firewall-cmd $PERM --new-service=jenkins
+sudo firewall-cmd $SERV --set-short="Jenkins ports"
+sudo firewall-cmd $SERV --set-description="Jenkins port exceptions"
+sudo firewall-cmd $SERV --add-port=$YOURPORT/tcp
+sudo firewall-cmd $PERM --add-service=jenkins
+sudo firewall-cmd --zone=public --add-service=http --permanent
+sudo firewall-cmd --reload
 
 
 
@@ -80,15 +80,33 @@ Select these options:
     Additional Behaviours: 
      Clean before checkout
      Git LFS pull after checkout
-    Script path: seth/jenkins/Jenkinsfile
-    
-- Email config
+    Script path: seth/jenkins/regression.pipeline
+    Lightweight checkout: unset
+
+Go into Manage Jenkins --> Configure System:
+- Jenkins Location --> System Admin e-mail address: Jenkins <agent@rapidsdata.com>
+- Help make Jenkins better by sending anonymous usage statistics: unset
+- 
+
+- Extended E-mail Notification
   SMTP server: smtp.office365.com
   SMTP port: 587
-  Use TLS: yes
+  Click Advanced
+  SMTP username: agent@rapidsdata.com
   Username: agent@rapidsdata.com
   Password: RapidsAg3n7
-      
+  Default Content Type: HTML
+ 
+- E-mail Notification
+  SMTP server: smtp.office365.com
+  Click Advanced
+  Use SMTP Authentication - selected
+  User Name: agent@rapidsdata.com
+  Password: RapidsAg3n7
+  Use TLS: selected
+  SMTP port: 587
+  
+     
 Go into Manage Jenkins --> Configure System --> Timestamper --> Enabled for all Pipeline builds
 
 Other
