@@ -107,7 +107,8 @@ void Scheduler::vTaskSelf_BideForOperand(Task* pSelfTask, Thread* pThread)
   RASSERT(TR_BIDE_FOR_OPERAND == pSelfTask->eTranstionRequest());
   RASSERT(TS_DESISTED == pSelfTask->eState());
   RASSERT(QK_NONE == pSelfTask->eQueue());
-
+  UNUSED(pThread);
+  
   pSelfTask->vEventNoInc();
   AM::vLogTsk(SL_INF,pSelfTask,TA_TSK_BIDE,
               "Transition task to TS_BIDING; add to BidingSet"_Stz); //!format-LogTsk
@@ -142,7 +143,8 @@ void Scheduler::vTaskSelf_DeleteThisTask(Task* pSelfTask, Thread* pThread)
   RASSERT(TR_DELETE_THIS_TASK == pSelfTask->eTranstionRequest());
   RASSERT(TS_DESISTED == pSelfTask->eState());
   RASSERT(QK_NONE == pSelfTask->eQueue());
-  
+  UNUSED(pThread);
+
   // add assert on entry point
 
   pSelfTask->vEventNoInc();
@@ -221,6 +223,7 @@ void Scheduler::vTaskSelf_WaitForResume(Task* pSelfTask, Thread* pThread)
   RASSERT(TR_WAIT_FOR_RESUME == pSelfTask->eTranstionRequest());
   RASSERT(TS_DESISTED == pSelfTask->eState());
   RASSERT(QK_NONE == pSelfTask->eQueue());
+  UNUSED(pThread);
 
   pSelfTask->vEventNoInc();
   AM::vLogTsk(SL_INF,pSelfTask,TA_TSK_WAIT,
@@ -352,6 +355,8 @@ bool Scheduler::bTaskCross_AckWaiting(Task* pTaskWaiting, Task* pTaskAcking)
 void Scheduler::vTaskCross_ScheduleNextPhase(Task* pTaskParticipant,
                                              Task* pActiviating2PcTask)
 {
+  UNUSED(pActiviating2PcTask);
+
   //
   // called from Api::bSpawnJob()
   //
@@ -370,6 +375,8 @@ void Scheduler::vTaskCross_ScheduleNextPhase(Task* pTaskParticipant,
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTaskCross_TriggerBiding(Task* pTaskBiding, Task* pTriggeringTask)
 {
+  UNUSED(pTriggeringTask);
+  
   //
   // called from Op::vAppendOperand()
   //
@@ -398,6 +405,8 @@ void Scheduler::vTaskCross_TriggerBiding(Task* pTaskBiding, Task* pTriggeringTas
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTaskCross_WakeSleepers(Task* pWakerTask)
 {
+  UNUSED(pWakerTask);
+  
   //
   // called from Step::vQueuesCheckSleeping()
   //
