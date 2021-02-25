@@ -149,7 +149,7 @@ if [ -z "${INSTALL_DIR}" ]; then
 fi
 
 readonly DATA_SYMLINK_SRC="${INSTALL_DIR}/DATA"
-readonly DATA_SYMLINK_DEST="${PROJ_ROOT}/DATA"
+readonly DATA_SYMLINK_DEST="$(realpath "${PROJ_ROOT}/DATA")"
 
 # Check if the symbolic link already exists
 
