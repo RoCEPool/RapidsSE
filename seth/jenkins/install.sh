@@ -127,6 +127,45 @@ INSTALLER="$(realpath "${INSTALLER}")"
 # Install it
 "${INSTALLER}" -- --script --config "${CONFIG_FILE}"
 
+# We need to set up a symbolic link so that the tests can load data.
+# The test files ask SE to load files from ../DATA/TPCH/*. This path
+# is relative to the cwd of SE, which will be something like
+# /opt/rapidsse/NODE1/commands
+# So we need to create /opt/rapidsse/NODE1/DATA and point it to
+# the DATA folder in the current repository path.
+
+# First get the installation dir from the config.
+# To do this, load the config (it is just a bash script file)
+loadClusterConfig
+
+# Get the name of the first node
+FIRST_NODE="${NODE_LIST[0]}"
+
+# Get the installation dir of the first node
+INSTALL_DIR="$(nodeCfgGetValue "${FIRST_NODE}" "dir")"
+
+if [ -z "${INSTALL_DIR}" ]; then
+  errorExit "Couldn't get the installation directory for node ${FIRST_NODE}"
+fi
+
+readonly DATA_SYMLINK_SRC="${INSTALL_DIR}/DATA"
+readonly DATA_SYMLINK_DEST="${PROJ_ROOT}/DATA"
+
+# Check if the symbolic link already exists
+
+# If the link exists then lets delete and recreate it.
+if [ -e "${DATA_SYMLINK_SRC}" ]; then
+  # Is it a symbolic link?
+  if [ -h "${DATA_SYMLINK_SRC}" ]; then
+    rm -f "${DATA_SYMLINK_SRC}"
+  else 
+    errorExit "Expected to find a symbolic link at path: ${DATA_SYMLINK_SRC}"
+  fi
+fi
+
+echo "Making the symbolic link from ${DATA_SYMLINK_SRC} to ${DATA_SYMLINK_DEST}"
+ln -s "${DATA_SYMLINK_DEST}" "${DATA_SYMLINK_SRC}"
+
 
 ENDTIME="$(date +%s)"
 ELAPSEDTIME="$(secondsToTime $((ENDTIME - STARTTIME)))"
