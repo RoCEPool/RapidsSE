@@ -31,7 +31,7 @@ readonly OUT_DIR="${PROJ_ROOT}/installer/output"
 readonly COMMON_FN="${DIR}/common.fn"
 
 readonly TPCH_LINK_NAME="${PROJ_ROOT}/TPCH"
-readonly TPCH_LINK_DEST="/mnt/spinningDisk/bamboo/TPCH"
+readonly TPCH_LINK_DEST="/opt/TPCH"
 
 readonly RELATIVE_JENKINS_DIR="seth/jenkins"  # Relative to the project root
 
