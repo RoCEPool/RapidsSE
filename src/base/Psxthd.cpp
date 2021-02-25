@@ -685,6 +685,8 @@ void PsxThd::vSleepInfinite(void)
 /*----------------------------------------------------------------------------*/
 void PsxThd::vSleepMsec(i8 nMilliSeconds, eCN eCallingClass)
 {
+  UNUSED(eCallingClass);
+  
   struct timespec xReq;
   struct timespec xRem;
   
@@ -723,6 +725,8 @@ void PsxThd::vSleepMsec(i8 nMilliSeconds, eCN eCallingClass)
 /*----------------------------------------------------------------------------*/
 void PsxThd::vSleepNsec(i8 nNanoSeconds, eCN eCallingClass)
 {
+  UNUSED(eCallingClass);
+  
   struct timespec xReq;
   struct timespec xRem;
   
@@ -760,6 +764,7 @@ void PsxThd::vSleepNsec(i8 nNanoSeconds, eCN eCallingClass)
 /*----------------------------------------------------------------------------*/
 void PsxThd::vSleepSsec(i8 nSeconds, eCN eCallingClass)
 {
+  UNUSED(eCallingClass);
   
 #ifdef WITH_STATISTICS_COUNTERS
   Statistics* pStats = &gpAttachMap->m_oStatistics;
@@ -783,6 +788,8 @@ void PsxThd::vSleepSsec(i8 nSeconds, eCN eCallingClass)
 /*----------------------------------------------------------------------------*/
 void PsxThd::vSleepUsec(i8 nMicroSeconds, eCN eCallingClass)
 {
+  UNUSED(eCallingClass);
+  
   struct timespec xReq;
   struct timespec xRem;
   
@@ -927,6 +934,7 @@ i8 PsxThd::iThreadPriority(void)
   
   i8 iError = pthread_getschedparam(m_iPsxThdId,&iPolicy,&xSched);
   ASSERT(! iError);
+  UNUSED(iError);
   
   return xSched.sched_priority;
   
