@@ -9,6 +9,10 @@
 /*----------------------------------------------------------------------------*/
 Hack::Hack(const char* azText,const char* azFilePath, i8 iLineNo)
 {
+  UNUSED(azText);
+  UNUSED(azFilePath);
+  UNUSED(iLineNo);
+
 //  fprintf(stderr,"Hack: %s (%s : %lld)\n",
 //          azText,azFilePath,iLineNo);
 }

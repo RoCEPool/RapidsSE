@@ -580,6 +580,8 @@ i8 MemLib::nRoundUp(i8 nBytes, i8 nSizeQuanta)
 /*----------------------------------------------------------------------------*/
 void MemLib::vScribble(void* aAddress, i8 nBytes, eCN eClassNo)
 {
+  UNUSED(eClassNo);
+  
   u8* pMchWord = reinterpret_cast<u8*>(aAddress);
   i8  nWords = nBytes / 8;
   
@@ -600,6 +602,8 @@ void MemLib::vScribble(void* aAddress, i8 nBytes, eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 void MemLib::vSet(void* pDst, char iByte, i8 nBytes, eCN eClassNo)
 {
+  UNUSED(eClassNo);
+  
   memset(pDst,iByte,nBytes);
 
 #ifdef WITH_STATISTICS_COUNTERS
