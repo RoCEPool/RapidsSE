@@ -42,6 +42,13 @@ pipeline {
       steps {
         sh 'seth/jenkins/start.sh seth/jenkins/1node.config'
       }
+
+      // Stop RapidsSE if this stage was not successful
+      post {
+        unsuccessful {
+          sh 'seth/jenkins/stop.sh seth/jenkins/1node.config'
+        }
+      }
     }
 
     stage('Test Release') {
@@ -51,13 +58,14 @@ pipeline {
         // capture logs if they are not huge
         // capture test results
       }
-    }
 
-    stage('Stop Release') {
-      steps {
-        sh 'seth/jenkins/stop.sh seth/jenkins/1node.config'
+      post {
+        always {
+          sh 'seth/jenkins/stop.sh seth/jenkins/1node.config'
+        }
       }
     }
+
 
   }
 
@@ -66,6 +74,10 @@ pipeline {
     // any steps to run after the stages have completed
     // (successfully or not).
     // e.g. send an email on a change
+
+//    always {
+//      sh 'seth/jenkins/stop.sh seth/jenkins/1node.config'
+//    }
 //  }
 
 }

@@ -109,6 +109,10 @@ Go into Manage Jenkins --> Configure System:
      
 Go into Manage Jenkins --> Configure System --> Timestamper --> Enabled for all Pipeline builds
 
+Go into Manage Jenkins --> Manage Nodes and Cloud --> 
+  - click the gears (config) button next to Master
+  - Under Labels, add "jenkinsMaster"
+
 Other
 =====
 
