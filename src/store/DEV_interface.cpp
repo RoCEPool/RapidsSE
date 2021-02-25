@@ -353,6 +353,18 @@ void vDev_IXT_INDEXNM_SET(void* aLU, void* aIXT, Stz* szIndexNm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set the index name                                                         */
+/*----------------------------------------------------------------------------*/
+void vIXT_INDEXNM_SET(void* aLU, Stz* szIndexNm)
+{
+  _static_
+
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+  struct RluCommon* aRluCommon = &pLogicUnit->m_xRluCommon;
+  StrLib::vCopy(&aRluCommon->m_xSrcIxt.m_cIndexNm[0], (char*)szIndexNm);
+}
+
+/*----------------------------------------------------------------------------*/
 /* compare src.key to alt.key                                                 */
 /*----------------------------------------------------------------------------*/
 i8 iDev_IXT_CMP_SRCALT(void* aLU)
@@ -512,6 +524,22 @@ void vDev_IXT_INDEXTREE_DELETE(void* aLU, void* aIXT)
 
   DevIXT* pDevIxt = _pDevIXT(aIXT);
   IndexTree* pIndexTree = pDevIxt->m_pIdxTree;
+  pDevIxt->m_pIdxTree = nullptr;
+  delete pIndexTree;
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete the indexTree                                                       */
+/*----------------------------------------------------------------------------*/
+void vIXT_INDEXTREE_DELETE(i8** aaiDstk)
+{
+  _static_
+
+  void* pPtr;
+  P_PopPtr(*aaiDstk, pPtr);
+  DevIXT* pDevIxt = _pDevIXT(pPtr);
+
+  IndexTree* pIndexTree = _pIndexTree(pDevIxt->m_pIdxTree);
   pDevIxt->m_pIdxTree = nullptr;
   delete pIndexTree;
 }
@@ -1350,14 +1378,6 @@ void vDev_SRC_COL_PUSHDST(void* aLU, void* aROWDEVICE) {
 
   return;
 }
-
-#define S_PushStr(__azStr) \
-  /*MemLib::vDumpWords(iaDataStack,nDifference(iaDataStack,aiDstk)+8);*/ \
-  nSize = StrLib::nSize((char*)__azStr); \
-  azDst = (char*)(++aiDstk); \
-  StrLib::vCopy(azDst,(char*)__azStr); \
-  aiDstk += nWordRoundedStrBytes(nSize)/8 - 1; \
-  *(++aiDstk) = nSize;
 
 /*----------------------------------------------------------------------------*/
 /* push column value from m_aSrcCrw                                           */

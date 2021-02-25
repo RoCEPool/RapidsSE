@@ -35,6 +35,8 @@ struct Ent_int* aDev_IXT_INS_ENT(void* aLU, void* aIXT);
 void vDev_IXT_SET_ENT(void* aLU, void* aIXT, void* aEnt);
 i8   iDev_IXT_TMP_ENTRIES(void* aLU, void* aIXT);
 
+void vIXT_INDEXTREE_DELETE(i8** aaiDstk);
+
 struct Ent_int* aDev_IXT_POS_ALTBYSRC(void* aLU);
 struct Ent_int* aDev_IXT_POS_ALTBYWRK(void* aLU);
 struct Ent_int* aDev_IXT_POS_LBOUND(void* aLU, void* aIXT);

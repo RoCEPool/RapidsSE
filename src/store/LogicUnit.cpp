@@ -151,7 +151,21 @@ LogicUnit::LogicUnit(Task* pTask)
   m_xRluCommon.m_i_TablePtn = C_UNKNOWN;
   m_xRluCommon.m_nPtns  = AM::nPtnsInGrid();
   m_xRluCommon.m_iHash  = 0;
-  
+
+  MemLib::vZero(m_xRluCommon.m_xSrcIxt.m_cIndexNm,256,CN_LOGICUNIT);
+  m_xRluCommon.m_xSrcIxt.m_pIdxTree   = nullptr;
+
+  m_xRluCommon.m_xSrcIxt.m_aEnt       = nullptr;
+  m_xRluCommon.m_xSrcIxt.m_aUpperEnt  = nullptr;
+
+  m_xRluCommon.m_xSrcIxt.m_pEntBuffer = nullptr;
+
+  m_xRluCommon.m_xSrcIxt.m_aCrw       = nullptr;
+  m_xRluCommon.m_xSrcIxt.m_pCrwBuffer = nullptr;
+
+  m_xRluCommon.m_xSrcIxt.m_i_Row      = C_UNKNOWN;
+  m_xRluCommon.m_xSrcIxt.m_nRows      = C_UNKNOWN;
+
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_eaCode,sizeof(m_eaCode),CN_LOGICUNIT);
 #endif
@@ -1170,34 +1184,6 @@ void LogicUnit::vRlu_DUMP(void* aLU, i8* aiDstk)
 
 #endif
 
-
-#define S_PushStr(__azStr) \
-  /*MemLib::vDumpWords(iaDataStack,nDifference(iaDataStack,aiDstk)+8);*/ \
-  nSize = StrLib::nSize((char*)__azStr); \
-  azDst = (char*)(++aiDstk); \
-  StrLib::vCopy(azDst,(char*)__azStr); \
-  aiDstk += nWordRoundedStrBytes(nSize)/8 - 1; \
-  *(++aiDstk) = nSize;     \
-  /*MemLib::vDumpWords(iaDataStack,nDifference(iaDataStack,aiDstk)+8); */
-
-#define S_PopStr(__azDst) \
-  /*MemLib::vDumpWords(iaDataStack,nDifference(iaDataStack,aiDstk)+8);*/ \
-  nSize = *(aiDstk--); \
-  azSrc = (char*)(aiDstk - (nWordRoundedStrBytes(nSize)/8 - 1)); \
-  StrLib::vCopy(__azDst,azSrc); \
-  aiDstk -= nWordRoundedStrBytes(nSize)/8;                               \
-  /*MemLib::vDumpWords(iaDataStack,nDifference(iaDataStack,aiDstk)+8);*/
-
-#define S_StrAdr() \
-  ( (char*)(aiDstk) - nWordRoundedStrBytes(*aiDstk))
-
-#define S_StrDrp() \
-  nSize = *(aiDstk--); \
-  aiDstk -= nWordRoundedStrBytes(nSize)/8;
-
-#define JumpTo(__iArg,__EO) \
-  aeCode = & m_eaCode[__iArg];
-
 i8 giaVectorSet[] =
 {
 /* 00 */ L_QUANTITY,
@@ -1496,7 +1482,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_INDEXTREE_TMP_DELETE: ArgNil(); // delete indexTree from tmp
         dLU0(EO_INDEXTREE_TMP_DELETE);
-        vDev_IXT_INDEXTREE_DELETE(pLU,aRluCommon->m_pDevTmpIxt);
+        //vDev_IXT_INDEXTREE_DELETE(pLU,aRluCommon->m_pDevTmpIxt);
+        *(++aiDstk) = (i8)(aRluCommon->m_pDevTmpIxt);
+        vIXT_INDEXTREE_DELETE(&aiDstk);
         break;//+endCase
         
       case EO_INDEXTREE_TMP_SET: ArgNil(); // set indexTree tmp from indexTree[]

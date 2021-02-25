@@ -101,7 +101,11 @@ DynamicSymbol gxaDynamicSymbol[]
   { "aDev_IXT_POS_UBOUND_LT"_Stz, (const void *) aDev_IXT_POS_UBOUND_LT },
   { "aDev_IXT_TRV_BEGIN"_Stz,     (const void *) aDev_IXT_TRV_BEGIN     },
   { "aDev_IXT_TRV_NEXT"_Stz,      (const void *) aDev_IXT_TRV_NEXT      },
-      
+
+
+  { "vIXT_INDEXTREE_DELETE"_Stz,(const void *) vIXT_INDEXTREE_DELETE },
+
+
   { "aDev_PAY_ADDRESS"_Stz,       (const void *) aDev_PAY_ADDRESS       },
   { "iDev_PAY_FETCH_COLI"_Stz,    (const void *) iDev_PAY_FETCH_COLI    },
   { "szDev_PAY_FETCH_COLS"_Stz,   (const void *) szDev_PAY_FETCH_COLS   },
@@ -946,6 +950,18 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n  #define nWordRoundedStrBytes(_Size) "
   "      ( ( (_Size / C_BYTES_PER_WORD) * C_BYTES_PER_WORD) + "
   "      (_Size %% C_BYTES_PER_WORD ? C_BYTES_PER_WORD : 0) ) "
+  "\n"
+  "\n  #define I_PushInt(aaiDstk, __iValue) "
+  "     *(aiDstk++) = __iValue; "
+  "\n"
+  "\n  #define I_PopInt(aaiDstk, __iValue) "
+  "     __iValue = *(aiDstk--); "
+  "\n"
+  "\n  #define P_PushPtr(aaiDstk, __pPtr) "
+  "     *(aiDstk++) = (i8*)__pValue; "
+  "\n"
+  "\n  #define P_PopPtr(aiDstk, __pPtr) "
+  "     __pPtr = (void*)(*(aiDstk--)); "
   "\n"
   "\n  #define S_PopStr(__azDst)"
   "      nSize = *(aiDstk--);"
