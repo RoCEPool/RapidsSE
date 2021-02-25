@@ -245,7 +245,9 @@ void TaskList::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 void TaskList::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  
+  UNUSED(eClass);
+  UNUSED(pObject);
+  UNUSED(aTab);
 }
 
 /*----------------------------------------------------------------------------*/

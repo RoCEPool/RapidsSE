@@ -12,18 +12,18 @@ namespace BASE
   class Lock : public Loggable
   {
   private:
-    //eCN      m_eClassLocked;      // lock kind
-    Object*  m_pObjectLocked;
-  
     u8       m_uLockWord;         // lock word
   
+    Object*  m_pObjectLocked;
+    Task*    m_pWriteLockingTask;
+
     Atomic   m_ixReadGrabs;       // number of read grabs
     Atomic   m_ixReadCollisions;  // number of read collisions
     
     Atomic   m_ixWriteGrabs;      // number of write grabs
     Atomic   m_ixWriteCollisions; // number of write collisions
   
-    PadWord  m__PadToCacheLine[2];
+    PadWord  m__PadToCacheLine[1];
     
     // must be last
     Footer m_xFooter;
