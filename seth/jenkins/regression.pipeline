@@ -32,20 +32,41 @@ pipeline {
       }
     }
 
-    stage('Install & Start Release') {
+    stage('Install Release') {
       steps {
-        echo 'Installing..'
         sh 'seth/jenkins/install.sh seth/jenkins/1node.config'
+      }
+    }
+
+    stage('Start Release') {
+      steps {
+        sh 'seth/jenkins/start.sh seth/jenkins/1node.config'
+      }
+
+      // Stop RapidsSE if this stage was not successful
+      post {
+        unsuccessful {
+          sh 'seth/jenkins/stop.sh seth/jenkins/1node.config'
+        }
       }
     }
 
     stage('Test Release') {
       steps {
         echo 'Testing..'
-        //sh 'seth/jenkins/test.sh'
+        sh 'seth/jenkins/test.sh seth/jenkins/1node.config'
         // capture logs if they are not huge
+        // capture test results
+      }
+
+      post {
+        always {
+          sh 'seth/jenkins/stop.sh seth/jenkins/1node.config'
+        }
       }
     }
+
+
   }
 
 
@@ -53,6 +74,10 @@ pipeline {
     // any steps to run after the stages have completed
     // (successfully or not).
     // e.g. send an email on a change
+
+//    always {
+//      sh 'seth/jenkins/stop.sh seth/jenkins/1node.config'
+//    }
 //  }
 
 }

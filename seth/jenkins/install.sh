@@ -1,8 +1,9 @@
 #!/bin/bash
 
-# The intent of this script file is to install and start RapidsSE from the installer.
+# The intent of this script file is to install RapidsSE from the installer.
 
-# This script file is called by Jenkins after it has built RapidsSE from source.
+# This script file is called by Jenkins after it has built RapidsSE from source
+# and created the installation package.
 
 ###############################################################################
 ### Environment Variables                                                   ###
@@ -39,9 +40,6 @@ readonly DEBUG=0
 ### Significant Global Variables                                            ###
 ###############################################################################
 
-# Do we need to stop or force stop RapidsSE?
-STOP_REQ=0
-
 # The path of the config file to be used for installation
 CONFIG_FILE=""
 
@@ -62,12 +60,8 @@ source "${BOOTSTRAP_COMMON_FN}" || { >&2 echo "Could not load ${BOOTSTRAP_COMMON
 ## Params: None
 
 function onExit() {
-
-  if [ "${STOP_REQ}" -eq 1 ]; then
-    # TODO: Stop RapidsSE if it has been installed
-    # First, kill any rogue SE and SETH instances owned by the current user.
-    killRogueInstances
-  fi
+  # Nothing to do here
+  true
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -107,7 +101,7 @@ STARTTIME="$(date +%s)"
 
 echo ""
 echo "********************************************************************************"
-echo "*** Beginning the Install/Start stage CI script                              ***"
+echo "*** Beginning the Install stage CI script                                    ***"
 echo "********************************************************************************"
 echo ""
 echo "Started at: $(date)"
@@ -130,40 +124,8 @@ fi
 # Simplify the path
 INSTALLER="$(realpath "${INSTALLER}")"
 
-
 # Install it
 "${INSTALLER}" -- --script --config "${CONFIG_FILE}"
-
-
-# Next we will start RapidsSE and make sure it boots.
-
-# First get the installation dir from the config
-# Source the config
-loadClusterConfig
-
-# Get the name of the first node
-FIRST_NODE="${NODE_LIST[0]}"
-
-# Get the installation dir of the first node
-INSTALL_DIR="$(nodeCfgGetValue "${FIRST_NODE}" "dir")"
-
-if [ -z "${INSTALL_DIR}" ]; then
-  errorExit "Couldn't get the installation directory for node ${FIRST_NODE}"
-fi
-
-# Start RapidsSE
-if ! "${INSTALL_DIR}/startSE.sh" ; then
-#  echo ""
-#  echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-#  echo ""
-#  echo "RapidsSE could not be started. Here is the last 1000 lines of its log file (se.log):"
-#  echo ""
-#  echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-#  echo ""
-#  tail -n 1000 "${INSTALL_DIR}/se.log" || true
-  exit 1
-fi
-
 
 
 ENDTIME="$(date +%s)"
@@ -171,7 +133,7 @@ ELAPSEDTIME="$(secondsToTime $((ENDTIME - STARTTIME)))"
 
 echo ""
 echo "********************************************************************************"
-echo "*** Install/Start stage CI script complete                                   ***"
+echo "*** Install stage CI script complete                                         ***"
 echo "********************************************************************************"
 echo ""
 echo "Elapsed time: ${ELAPSEDTIME}"

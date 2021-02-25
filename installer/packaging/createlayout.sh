@@ -40,6 +40,7 @@ mkdir -p "${LAYOUT_DIR}/src/base"
 cp "${ROOT_DIR}/src/store/LogicUnit.cpp"    "${LAYOUT_DIR}/src/store"
 cp "${ROOT_DIR}/src/base/EnumGroups.h"      "${LAYOUT_DIR}/src/base"
 cp "${ROOT_DIR}/src/base/eEO.h"             "${LAYOUT_DIR}/src/base"
+cp "${ROOT_DIR}/src/base/eEA.h"             "${LAYOUT_DIR}/src/base"
 cp "${ROOT_DIR}/src/store/Ent_int.h"        "${LAYOUT_DIR}/src/store"
 cp "${ROOT_DIR}/src/store/InflateSet.h"     "${LAYOUT_DIR}/src/store"
 cp "${ROOT_DIR}/src/store/LIB_interface.h"  "${LAYOUT_DIR}/src/store"
@@ -65,4 +66,8 @@ cp "${ROOT_DIR}/bootstrap/boot.fn"               "${LAYOUT_DIR}"
 cp "${ROOT_DIR}/bootstrap/status.sh"             "${LAYOUT_DIR}"
 cp "${ROOT_DIR}/bootstrap/prompt.sh"             "${LAYOUT_DIR}"
 cp "${ROOT_DIR}/bootstrap/collectLogs.sh"        "${LAYOUT_DIR}"
+
+# Resources
+mkdir -p "${LAYOUT_DIR}/res"
+cp "${ROOT_DIR}/src/store/parser/graph/PlannerDef.json5" "${LAYOUT_DIR}/res"
 

@@ -24,11 +24,19 @@ Copy public key and add as an access key to the repository in bitbucket:
 Test by executing: ssh -T -i ~/.ssh/jenkins git@bitbucket.org
 More detailed instructions here: https://support.atlassian.com/bitbucket-cloud/docs/set-up-an-ssh-key/
 
-Install GCC v10:
-  Refer to the upgradingGcc.txt file
-  https://jdhao.github.io/2017/09/04/install-gcc-newer-version-on-centos/
-  
+# Make the jenkins user able to login
+sudo vim /etc/password
+  - change /bin/false to /bin/bash
 
+# Setup the home directory
+- sudo mkhomedir_helper jenkins
+or
+- copy from /etc/skel into /var/lib/jenkins 
+
+# Set up SSH for jenkins user
+ssh-keygen
+cp id_rsa.pub authorized_keys
+chmod 600 authorized_keys 
 
 Starting Jenkins
 ================
@@ -48,13 +56,13 @@ YOURPORT=8080
 PERM="--permanent"
 SERV="$PERM --service=jenkins"
 
-firewall-cmd $PERM --new-service=jenkins
-firewall-cmd $SERV --set-short="Jenkins ports"
-firewall-cmd $SERV --set-description="Jenkins port exceptions"
-firewall-cmd $SERV --add-port=$YOURPORT/tcp
-firewall-cmd $PERM --add-service=jenkins
-firewall-cmd --zone=public --add-service=http --permanent
-firewall-cmd --reload
+sudo firewall-cmd $PERM --new-service=jenkins
+sudo firewall-cmd $SERV --set-short="Jenkins ports"
+sudo firewall-cmd $SERV --set-description="Jenkins port exceptions"
+sudo firewall-cmd $SERV --add-port=$YOURPORT/tcp
+sudo firewall-cmd $PERM --add-service=jenkins
+sudo firewall-cmd --zone=public --add-service=http --permanent
+sudo firewall-cmd --reload
 
 
 
@@ -80,16 +88,38 @@ Select these options:
     Additional Behaviours: 
      Clean before checkout
      Git LFS pull after checkout
-    Script path: seth/jenkins/Jenkinsfile
-    
-- Email config
+    Script path: seth/jenkins/regression.pipeline
+    Lightweight checkout: unset
+
+Go into Manage Jenkins --> Configure System:
+- Jenkins Location --> System Admin e-mail address: Jenkins <agent@rapidsdata.com>
+- Help make Jenkins better by sending anonymous usage statistics: unset
+- 
+
+- Extended E-mail Notification
   SMTP server: smtp.office365.com
   SMTP port: 587
-  Use TLS: yes
+  Click Advanced
+  SMTP username: agent@rapidsdata.com
   Username: agent@rapidsdata.com
   Password: RapidsAg3n7
-      
+  Default Content Type: HTML
+ 
+- E-mail Notification
+  SMTP server: smtp.office365.com
+  Click Advanced
+  Use SMTP Authentication - selected
+  User Name: agent@rapidsdata.com
+  Password: RapidsAg3n7
+  Use TLS: selected
+  SMTP port: 587
+  
+     
 Go into Manage Jenkins --> Configure System --> Timestamper --> Enabled for all Pipeline builds
+
+Go into Manage Jenkins --> Manage Nodes and Cloud --> 
+  - click the gears (config) button next to Master
+  - Under Labels, add "jenkinsMaster"
 
 Other
 =====
