@@ -224,6 +224,7 @@ SETH_START_TIME="$(date +%s)"
 # Run the SE Test Harness in the background so we can monitor both it and SE.
 # We run it in a subshell with "|| true" to avoid problems with set -e if
 # it returns a non-zero exit code.
+# shellcheck disable=SC2086
 ( java -cp ${CLASSPATH} com.rapidsdata.seth.Seth -u "${URL}" ${SETH_ARGS[*]} || true ) &
 SETH_PID=$!  # This will actually be the pid of the subshell
 
@@ -247,17 +248,13 @@ do
 
     # Clean up the SETH process and its subordinate SE prompt
     SE_PROMPT_PID=$(ps -o pid= --ppid ${SETH_PID})
-    kill -9 "${SETH_PID}" &>/dev/null
+    kill -9 "${SETH_PID}" &>/dev/null || true
     echo "${SE_PROMPT_PID}" | xargs -r kill -9
     exit 1
   fi
 
   # Check if SETH is finished
-  ps -p "${SETH_PID}" &>/dev/null
-  IS_SETH_RUNNING=$?
-
-  if [ "${IS_SETH_RUNNING}" -ne 0 ]
-  then
+  if ! ps -p "${SETH_PID}" &>/dev/null ; then
     echo "SETH has exited."
     break
   fi
@@ -283,8 +280,8 @@ do
 
     # Ensure we kill any SE prompt with SETH. Don't worry about SE - it'll get cleaned up later.
     SE_PROMPT_PID=$(ps -o pid= --ppid ${SETH_PID})
-    kill -9 "${SETH_PID}" &>/dev/null
-    kill -9 "${SE_PROMPT_PID}"
+    kill -9 "${SETH_PID}" &>/dev/null || true
+    kill -9 "${SE_PROMPT_PID}" || true
     exit 1
   fi
 
@@ -303,8 +300,8 @@ do
 
     # Ensure we kill any SE prompt with SETH. Don't worry about SE - it'll get cleaned up later.
     SE_PROMPT_PID=$(ps -o pid= --ppid ${SETH_PID})
-    kill -9 "${SETH_PID}" &>/dev/null
-    kill -9 "${SE_PROMPT_PID}"
+    kill -9 "${SETH_PID}" &>/dev/null || true
+    kill -9 "${SE_PROMPT_PID}" || true
     exit 1;
   fi
 
