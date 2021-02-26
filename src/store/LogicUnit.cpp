@@ -1491,13 +1491,15 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // index
       case EO_INDEXTREE_ALT_SET: ArgNil(); // set indexTree alt from indexTree[]
-        dLU0(EO_INDEXTREE_ALT_SET);
-        vDev_IXT_INDEXTREE_SET(pLU,aRluCommon->m_pDevAltIxt);
+        //dLU0(EO_INDEXTREE_ALT_SET);
+        //vDev_IXT_INDEXTREE_SET(pLU,aRluCommon->m_pDevAltIxt);
+        RASSERT(0);
         break;//+endCase
         
       case EO_INDEXTREE_SRC_SET: ArgNil(); // set indexTree src from indexTree[]
-        dLU0(EO_INDEXTREE_SRC_SET);
-        vDev_IXT_INDEXTREE_SET(pLU,aRluCommon->m_pDevSrcIxt);
+        //dLU0(EO_INDEXTREE_SRC_SET);
+        //vDev_IXT_INDEXTREE_SET(pLU,aRluCommon->m_pDevSrcIxt);
+        RASSERT(0);
         break;//+endCase
         
       case EO_INDEXTREE_TMP_DELETE: ArgNil(); // delete indexTree from tmp
