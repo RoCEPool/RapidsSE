@@ -28,14 +28,12 @@ i8   iDev_IXT_CMP_WRKALT(void* aLU);
 void vDev_IXT_DEL_ENT(void* aLU, void* aIXT);
 void vDev_IXT_DUMP(void* aLU, void* aIXT);
 void vDev_IXT_ENT_PRINT(void* aLU, void* aIXT);
-void vDev_IXT_INDEXNM_SET(void* aLU, void* aIXT, Stz* szIndexNm);
+void vDev_IXT_INDEXNM_SET(i8** aaiDstk);
 void vDev_IXT_INDEXTREE_DELETE(void* aLU, void* aIXT);
 void vDev_IXT_INDEXTREE_SET(void* aLU, void* aIXT);
 struct Ent_int* aDev_IXT_INS_ENT(void* aLU, void* aIXT);
 void vDev_IXT_SET_ENT(void* aLU, void* aIXT, void* aEnt);
 i8   iDev_IXT_TMP_ENTRIES(void* aLU, void* aIXT);
-
-void vIXT_INDEXNM_SET(i8** aaiDstk);
 
 void vIXT_INDEXTREE_DELETE(i8** aaiDstk);
 void vIXT_INDEXTREE_SET(i8** aaiDstk);
@@ -78,7 +76,7 @@ Stz* szDev_ROW_PUSHCOLS(void* aLU, void* aROWDEVICE, i8 iArg);
 i8   iDev_ROW_PUSHOFS(void* aLU, void* aROWDEVICE);
 void vDev_ROW_RESET(void* aLU, void* aROWDEVICE);
 void vDev_ROW_SET(void* aLU, void* aROWDEVICE, i8 iRow);
-void vDev_ROW_TABLENM_SET(void* aLU, void* aROWDEVICE, Stz* szTableNm);
+void vDev_ROW_TABLENM_SET(i8** aaiDstk);
 i8   iDev_ROW_TEST(void* aLU, void* aROWDEVICE);
 i8   iDev_ROW_TESTROW(void* aLU, void* aROWDEVICE);
 void vDev_ROW_SETBYOFS(void* aLU, void* aROWDEVICE, i8 iTop);

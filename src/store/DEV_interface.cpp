@@ -342,20 +342,7 @@ i8 iDev_ENT_PUSHOFS(void* aLU, void* aIXT)
 /*----------------------------------------------------------------------------*/
 /* set the index name                                                         */
 /*----------------------------------------------------------------------------*/
-void vDev_IXT_INDEXNM_SET(void* aLU, void* aIXT, Stz* szIndexNm)
-{
-  _static_
-  
-  UNUSED(aLU);
-
-  DevIXT* pDevIxt = _pDevIXT(aIXT);
-  pDevIxt->m_sIndexNm = szIndexNm;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the index name                                                         */
-/*----------------------------------------------------------------------------*/
-void vIXT_INDEXNM_SET(i8** aaiDstk)
+void vDev_IXT_INDEXNM_SET(i8** aaiDstk)
 {
   _static_
 
@@ -1273,14 +1260,26 @@ void vDev_ROW_SETBYOFS(void* aLU, void* aROWDEVICE, i8 iTop)
 /*----------------------------------------------------------------------------*/
 /* set the index name                                                         */
 /*----------------------------------------------------------------------------*/
-void vDev_ROW_TABLENM_SET(void* aLU, void* aROWDEVICE, Stz* szTableNm)
+void vDev_ROW_TABLENM_SET(i8** aaiDstk)
 {
   _static_
 
-  UNUSED(aLU);
+  _static_
 
-  DevROW* pDevRow = _pDevROW(aROWDEVICE);
-  pDevRow->m_sTableNm = szTableNm;
+  // ALKA: Double string copy
+  // come back to this !!!
+
+  i8 *aiDstk = *aaiDstk;
+  i8 nSize;
+  char* azSrc;
+  char azDst[256];
+
+  // pop index name into the device
+  S_PopStr(azDst);
+
+  // pop row device
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
+  StrLib::vCopy(pDevRow->m_sTableNm.azChar(), azDst);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1492,10 +1492,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // index name
-      case EO_INDEXNM_SET: GetStr(iArg); // inflate src columns direct into locals
-        dLU0(EO_INDEXNM_SET);
+      case EO_DEVIXT_INDEXNM_SET: GetStr(iArg); // inflate src columns direct into locals
+        dLU0(EO_DEVIXT_INDEXNM_SET);
         S_PushStr(iArg);
-        vIXT_INDEXNM_SET(&aiDstk);
+        vDev_IXT_INDEXNM_SET(&aiDstk);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -1861,13 +1861,23 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // table
       case EO_TABLENM_ALT_SET: GetStr(iArg); // inflate src columns direct into locals
-        dLU0(EO_TABLENM_ALT_SET);
-        vDev_ROW_TABLENM_SET(pLU,aRluCommon->m_pDevAltRow,(Stz*)iArg);
+        //dLU0(EO_TABLENM_ALT_SET);
+        //vDev_ROW_TABLENM_SET(pLU,aRluCommon->m_pDevAltRow,(Stz*)iArg);
+        RASSERT(0);
         break;//+endCase
         
       case EO_TABLENM_SRC_SET: GetStr(iArg); // inflate src columns direct into locals
-        dLU0(EO_TABLENM_SRC_SET);
-        vDev_ROW_TABLENM_SET(pLU,aRluCommon->m_pDevSrcRow,(Stz*)iArg);
+        //dLU0(EO_TABLENM_SRC_SET);
+        //vDev_ROW_TABLENM_SET(pLU,aRluCommon->m_pDevSrcRow,(Stz*)iArg);
+        RASSERT(0);
+        break;//+endCase
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // table name
+      case EO_DEVROW_TABLENM_SET: GetStr(iArg); // inflate src columns direct into locals
+        dLU0(EO_DEVROW_TABLENM_SET);
+        S_PushStr(iArg);
+        vDev_ROW_TABLENM_SET(&aiDstk);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
