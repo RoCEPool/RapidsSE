@@ -129,10 +129,8 @@ STARTTIME="$(date +%s)"
 
 echo ""
 echo "********************************************************************************"
-echo "*** Beginning the Test stage CI script                                       ***"
+echo "*** Beginning the Test stage                                                 ***"
 echo "********************************************************************************"
-echo ""
-echo "Started at: $(date)"
 echo ""
 
 
@@ -210,6 +208,8 @@ if ! CLUSTER_OUTPUT="$("${STATUS_SCRIPT}" 2>&1)" ; then
   exit 1
 fi
 
+
+echo "Starting SETH to run tests in testlist file: $(realpath ${TESTLIST_FILE})"
 
 SETH_START_TIME="$(date +%s)"
 
@@ -321,9 +321,8 @@ ELAPSEDTIME="$(secondsToTime $((ENDTIME - STARTTIME)))"
 
 echo ""
 echo "********************************************************************************"
-echo "*** Test stage CI script complete                                            ***"
+echo "*** Completed the Test stage                                                 ***"
 echo "********************************************************************************"
-echo ""
 echo "Elapsed time: $(secondsToTime "${ELAPSEDTIME}")"
 echo ""
 
