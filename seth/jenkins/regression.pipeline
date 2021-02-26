@@ -50,6 +50,11 @@ pipeline {
       // Stop RapidsSE if this stage was not successful
       post {
         unsuccessful {
+          // Copy the log artifacts into the workspace so they can be archived.
+          // For some reason it doesn't work if they are outside of the workspace.
+          sh 'mkdir -p logs/release/1n'
+          sh 'cp /opt/rapidsse/NODE0/se.log logs/release/1n/se.log'
+
           sh 'seth/jenkins/stop.sh seth/jenkins/1node.config'
         }
       }
@@ -95,6 +100,12 @@ pipeline {
       // Stop RapidsSE if this stage was not successful
       post {
         unsuccessful {
+          // Copy the log artifacts into the workspace so they can be archived.
+          // For some reason it doesn't work if they are outside of the workspace.
+          sh 'mkdir -p logs/release/2n'
+          sh 'cp /opt/rapidsse/NODE0/se.log logs/release/2n/se.NODE0.log || true'
+          sh 'cp /opt/rapidsse/NODE1/se.log logs/release/2n/se.NODE1.log || true'
+
           sh 'seth/jenkins/stop.sh seth/jenkins/2node.config'
         }
       }
@@ -145,6 +156,11 @@ pipeline {
       // Stop RapidsSE if this stage was not successful
       post {
         unsuccessful {
+          // Copy the log artifacts into the workspace so they can be archived.
+          // For some reason it doesn't work if they are outside of the workspace.
+          sh 'mkdir -p logs/debug/1n'
+          sh 'cp /opt/rapidsse/NODE0/se.log logs/debug/1n/se.log'
+
           sh 'seth/jenkins/stop.sh seth/jenkins/1node.config'
         }
       }
@@ -190,6 +206,12 @@ pipeline {
       // Stop RapidsSE if this stage was not successful
       post {
         unsuccessful {
+          // Copy the log artifacts into the workspace so they can be archived.
+          // For some reason it doesn't work if they are outside of the workspace.
+          sh 'mkdir -p logs/debug/2n'
+          sh 'cp /opt/rapidsse/NODE0/se.log logs/debug/2n/se.NODE0.log || true'
+          sh 'cp /opt/rapidsse/NODE1/se.log logs/debug/2n/se.NODE1.log || true'
+
           sh 'seth/jenkins/stop.sh seth/jenkins/2node.config'
         }
       }
