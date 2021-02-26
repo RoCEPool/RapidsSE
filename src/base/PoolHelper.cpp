@@ -133,6 +133,8 @@ void PoolHelper::vHeapDump(Heap* pHeap, i8 iEpoch)
 {
   _static_
 
+  UNUSED(iEpoch);
+  
   HeapBuffer* pHeapBuffer;
   
   vTrace("\n"_Stz);
@@ -208,12 +210,14 @@ void PoolHelper::vInspectObjects(i8 iAfter)
         
         Object* pObject = (Object*)aChunk;
         Footer* aFooter = pObject->aCalcFooterAddress();
-
+        UNUSED(aFooter);
+        
         i8 iWhenAllocated = pObject->iWhenAllocated();
         if (iWhenAllocated <= iAfter)
           continue; // next object
                
         bool b = gxClassCatalog.bCallClassFn(CF_INSPECT,pObject);
+        UNUSED(b);
         
        } // each chunk/object in heapBuffer
       

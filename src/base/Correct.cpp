@@ -217,6 +217,7 @@ void BASE::vThreadCallStackDump(void)
                                             eCN   eGotClass)
 {
   Object* pObject = static_cast<Object*>(aObject);
+  UNUSED(pObject);
   //eCN eGotClass = pObject->eGetClassNo();
   
   char zCondition[256];

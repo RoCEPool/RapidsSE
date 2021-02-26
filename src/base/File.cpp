@@ -141,7 +141,7 @@ File::~File(void) noexcept(false)
   if (! m_iViaMalloc)
     gpOpenFiles->vRemove(this);
   
-  vLog(EV_DESTRUCT,"File constructor"_Stz);
+  vLog(EV_DESTRUCT,"File destructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -49,7 +49,7 @@ void Loggable::vLog(eEV eEvent, Stz* szFormat, ...)
   if (C_DONT_LOG == m_iLogCtl)
     return;
  
-  if (CN_SOCKET != eGetClassNo())
+  if (CN_DIR != eGetClassNo())
     return;
 
   va_list xVarArgs;

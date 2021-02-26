@@ -53,6 +53,7 @@ void* LogEntry::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void LogEntry::operator delete(void* pDataAddress)
 {
+  UNUSED(pDataAddress);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -244,21 +245,24 @@ void LogEntry::vSprint(s4K& sString, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
 /*----------------------------------------------------------------------------*/
 void LogEntry::vSprintCsv(s4K& sString, i8 iTickDeltaUsec, i8& iTotalDelta)
 {
-   SP_Elapsed spElapsed;
+  UNUSED(iTickDeltaUsec);
+  UNUSED(iTotalDelta);
 
-   sString.vSprint("[%06lld,%06lld] "
-                   "%s %s+%s-"
-                   "%s"_Stz,
-                
-                    m_i_Entry,
-                    m_i_Prev,
+  SP_Elapsed spElapsed;
 
-                    aSL[m_eSeverity],
-                    m_caNode,
-                    spElapsed.szNsec(m_iTick - AM::iAMTimePoint()),
+  sString.vSprint("[%06lld,%06lld] "
+                 "%s %s+%s-"
+                 "%s"_Stz,
+              
+                  m_i_Entry,
+                  m_i_Prev,
 
-                    aLG[m_eKind]
-                  );
+                  aSL[m_eSeverity],
+                  m_caNode,
+                  spElapsed.szNsec(m_iTick - AM::iAMTimePoint()),
+
+                  aLG[m_eKind]
+                );
 }
 
 
@@ -308,7 +312,9 @@ void LogEntry::vWriteCsv(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
 void LogEntry::vWriteCsvEntry(File* pFile, i8 iTickDeltaUsec, i8& iTotalDelta)
 {
   _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
-  
+  UNUSED(iTickDeltaUsec);
+  UNUSED(iTotalDelta);
+
   SP_Elapsed spElapsed;
 
   if (m_bLine)
