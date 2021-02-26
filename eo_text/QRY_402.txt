@@ -56,8 +56,6 @@ Label STARTMARKER_HANDLER
   EO_REG_INDEXDEF_DELETE
   EO_INDEXTREE_TMP_SET
 
-  EO_INDEXTREE_DEV_SET 0
-
   EO_JMP QRY_402_DONE
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
