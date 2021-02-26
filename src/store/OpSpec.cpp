@@ -79,6 +79,7 @@ OpSpec::~OpSpec(void) noexcept(false)
 void OpSpec::vAddEnamePair(Stz* sName, Stz* sValue, eTN eToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  UNUSED(eToken);
   
   m_oOpSpecTagSet.vInsert(sName, sValue);
 }
@@ -89,7 +90,8 @@ void OpSpec::vAddEnamePair(Stz* sName, Stz* sValue, eTN eToken)
 void OpSpec::vAddEnamePair(Stz* sName, i8 iValue, eTN eToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-  
+  UNUSED(eToken);
+
   m_oOpSpecTagSet.vInsert(sName, iValue);
 }
 
@@ -99,7 +101,8 @@ void OpSpec::vAddEnamePair(Stz* sName, i8 iValue, eTN eToken)
 void OpSpec::vAddTopologyEnamePair(Stz* sName, i8 iValue, eTN eToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-  
+  UNUSED(eToken);
+
   m_oTopologyTagSet.vInsert(sName, iValue);
 }
 
@@ -169,7 +172,8 @@ TagSet* OpSpec::pOpSpecTagSet(void)
 void OpSpec::vReplaceTopologyEnamePair(Stz* szName, Stz* szValue, eTN eToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-  
+  UNUSED(eToken);
+
   m_oOpSpecTagSet.vReplace(szName, szValue);
 }
 
@@ -179,7 +183,8 @@ void OpSpec::vReplaceTopologyEnamePair(Stz* szName, Stz* szValue, eTN eToken)
 void OpSpec::vReplaceTopologyEnamePair(Stz* szName, i8 iValue, eTN eToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-  
+  UNUSED(eToken);
+
   m_oTopologyTagSet.vReplace(szName, iValue);
 }
 

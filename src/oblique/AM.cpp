@@ -1944,7 +1944,7 @@ void AM::vJobInitExeContext(Job* pJob) {
 
 
 Task* AM::pTaskNew(Job* pJob) {
-  Task* pTask = new Task(pJob,pJob->m_iObjectId);
+  Task* pTask = new Task(pJob);
   pJob->vTask(pTask);
   return pTask;
 }
