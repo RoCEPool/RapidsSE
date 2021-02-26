@@ -30,8 +30,6 @@ readonly OUT_DIR="${PROJ_ROOT}/installer/output"
 
 readonly COMMON_FN="${DIR}/common.fn"
 
-readonly RELATIVE_JENKINS_DIR="seth/jenkins"  # Relative to the project root
-
 # Set to 1 to print debug messages in Jenkins.
 readonly DEBUG=0
 

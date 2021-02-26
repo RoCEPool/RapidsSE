@@ -30,8 +30,6 @@ readonly BOOTSTRAP_DIR="${PROJ_ROOT}/bootstrap"
 readonly COMMON_FN="${DIR}/common.fn"
 readonly BOOTSTRAP_COMMON_FN="${BOOTSTRAP_DIR}/common.fn"
 
-readonly RELATIVE_JENKINS_DIR="seth/jenkins"  # Relative to the project root
-
 # Set to 1 to print debug messages in Jenkins.
 readonly DEBUG=0
 

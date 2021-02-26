@@ -139,7 +139,12 @@ function compileSE() {
     hasOldGcc="$(echo "${gccVersion} < 5" | bc)"
 
     if [ "${hasOldGcc}" -eq 1 ]; then
-      scl enable devtoolset-8 "make clean && time make ${target} -j$(nproc)"
+      # Is the Software Collections (SCL) repository installed?
+      if which scl &>/dev/null && [[ "$(scl --list | grep devtoolset-8)" == "devtoolset-8" ]] ; then
+        scl enable devtoolset-8 "make clean && time make ${target} -j$(nproc)"
+      else
+        errorExit "A more modern c++ compiler is required. Either install a newer version of gcc or install the software collections (SCL) repository to get gcc v8"
+      fi
 
     else
       make clean && time make "${target}" "-j$(nproc)"
@@ -186,169 +191,6 @@ function assembleSE() {
   echo "RapidsSE installation file built at: ${installer}"
 }
 
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Starts SE in a 1 node cluster and runs the SETH tests against it.
-## Params:
-##  $1 : the target being tested ("debug" or "release")
-function testSE1Node() {
-
-  local target="$1"
-
-  if [[ "${target}" != "debug" && "${target}" != "release" ]]; then
-    errorExit "Invalid target for building RapidsSE. Must be \"debug\" or \"release\" : ${target}"
-  fi
-
-  if [ "${NO_SINGLE_NODE_TESTS:+x}" == x ]; then
-    echo "Skipping single node tests."
-    return
-  fi
-
-  echo ""
-  echo "********************************************************************************"
-  echo "*** Testing RapidsSE - Single Node (${target})"
-  echo "********************************************************************************"
-  echo ""
-
-  startSE1Node "${target}"
-  runSeth "${target}"
-  stopSE1Node "${target}"
-}
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Starts up a single node instance of RapidsSE.
-## Params: 
-##  $1 : the target being tested ("debug" or "release")
-
-function startSE1Node() {
-
-  local target="$1"
-
-  echo ""
-  echo "Running single node RapidsSE for ${target}."
-  echo ""
-
-  "${DIR}"/startSE.sh
-}
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Runs SETH against a currently running cluster of SE.
-## Params:
-##  $1 : the target being tested ("debug" or "release")
-
-function runSeth() {
-  local target="$1"
-
-  echo ""
-  echo "Running SETH tests again RapidsSE for ${target}."
-  echo ""
-
-  # Start from the project root directory so that SE can change to ./commands successfully.
-  (
-    cd "${PROJ_ROOT}" || errorExit "Directory does not exist: ${PROJ_ROOT}"
-    ./"${RELATIVE_JENKINS_DIR}"/seth.sh --resultname "results-${target}.xml" --testsuffix " (${target})"
-  )
-}
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Stops a currently running single node cluster of RapidsSE.
-## Params:
-##  $1 : the target being tested ("debug" or "release")
-
-function stopSE1Node() {
-  local target="$1"
-
-  echo ""
-  echo "Stopping single node RapidsSE for ${target}."
-  echo ""
-  
-  "${DIR}"/stopSE.sh
-}
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Starts SE in a 2 node cluster and runs the SETH tests against it.
-## Params:
-##  $1 : the target being tested ("debug" or "release")
-function testSE2Nodes() {
-
-  local target="$1"
-
-  if [[ "${target}" != "debug" && "${target}" != "release" ]]; then
-    errorExit "Invalid target for building RapidsSE. Must be \"debug\" or \"release\" : ${target}"
-  fi
-
-  if [ "${NO_MULTI_NODE_TESTS:+x}" == x ]; then
-    echo "Skipping multi-node tests."
-    return
-  fi
-
-  echo ""
-  echo "********************************************************************************"
-  echo "*** Testing RapidsSE - Two Nodes (${target})"
-  echo "********************************************************************************"
-  echo ""
-
-  startSE2Nodes "${target}"
-  runSeth2Nodes "multinode-${target}"
-  stopSE2Nodes "${target}"
-}
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Starts up a two node instance of RapidsSE.
-## Params: 
-##  $1 : the target being tested ("debug" or "release")
-
-function startSE2Nodes() {
-
-  local target="$1"
-  
-  echo ""
-  echo "Running two node RapidsSE for ${target}."
-  echo ""
-  
-  "${DIR}"/startSE_2nodes.sh
-}
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Runs SETH against a currently running cluster of SE.
-## Params:
-##  $1 : the target being tested ("debug" or "release")
-
-function runSeth2Nodes() {
-  local target="$1"
-  
-  echo ""
-  echo "Running SETH tests again RapidsSE for ${target}."
-  echo ""
-
-  # Start from the project root directory so that SE can change to ./commands successfully.
-  (
-    cd "${PROJ_ROOT}" || errorExit "Directory does not exist: ${PROJ_ROOT}"
-    ./"${RELATIVE_JENKINS_DIR}"/seth_2nodes.sh --resultname "results-${target}.xml" --testsuffix " (${target})"
-  )
-}
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Stops a currently running two node cluster of RapidsSE.
-## Params:
-##  $1 : the target being tested ("debug" or "release")
-
-function stopSE2Nodes() {
-  local target="$1"
-
-  echo ""
-  echo "Stopping two node RapidsSE for ${target}."
-  echo ""
-
-  "${DIR}"/stopSE_2nodes.sh
-}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Pretty prints a given number of seconds as days/hours/minutes/seconds instead.
