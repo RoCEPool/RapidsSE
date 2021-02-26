@@ -357,7 +357,7 @@ void Engine::vCallBoot(void)
   pJob->vSeed(SS_SEED_RUN);
   
   TagSet* pJobTags = pJob->pJobTags();
-  pJobTags->vDumpSet();
+  //pJobTags->vDumpSet();
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
   pJobTags->vReplace("<seedRun>"_Stz,"boot_run"_Stz);
   
@@ -543,9 +543,10 @@ void Engine::vCheckNodes(void)
     Process::vUnrecoverableError("This node is not in node list"_Stz,
                                  gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz());
 
-  vInfo("This is node %lld of %lld nodes\n"_Stz,
-        gxCmdLineArgs.m_xSysArgs.m_iThisNode,
-        gxCmdLineArgs.m_xSysArgs.m_nBootNodes);
+  if (AM::bVerbose())
+    vInfo("This is node %lld of %lld nodes\n"_Stz,
+          gxCmdLineArgs.m_xSysArgs.m_iThisNode,
+          gxCmdLineArgs.m_xSysArgs.m_nBootNodes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1126,7 +1127,7 @@ void Engine::vOpenTrace(void)
   //if (AM::bVerboseProgress())
   //  vInfo("\n*\n* Opening Trace File\n*\n"_Stz);
   
-  gpTraceFile = new(C_VIA_MALLOC) File(nullptr);
+  gpTraceFile = new(C_VIA_MALLOC) File(nullptr,C_DONT_LOG);
   
   bool bOpened;
 

@@ -78,7 +78,7 @@ Table::Table(Stz* szTableNm)
     }
   }
   else {
-    vTrace("Did not create table partitions for %s\n"_Stz,szTableNm);
+    //vTrace("Did not create table partitions for %s\n"_Stz,szTableNm);
   }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

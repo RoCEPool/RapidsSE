@@ -69,7 +69,7 @@ Thread::Thread(void)
   m_pTask        = nullptr;
   m_nAssignedTasks = 0;
 
-  m_pPsxThd     = new PsxThd;
+  m_pPsxThd     = new PsxThd(this);
   
   _checkInitialised_(CN_THREAD);
   

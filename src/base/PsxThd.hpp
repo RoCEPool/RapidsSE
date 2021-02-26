@@ -25,7 +25,7 @@ namespace BASE
     void* operator new(size_t);
     void operator delete(void* pPsxThdAddress);
 
-    PsxThd(void);
+    PsxThd(Object* pIsFor);
    ~PsxThd(void) noexcept(false);
   
     static void* aGetStackBase(void);

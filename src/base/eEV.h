@@ -60,6 +60,7 @@ enum eEV // resource actions
   /*    */ EV_TIMEDOUT,
   /*    */ EV_UNLOCK,
   /*    */ EV_WAIT,
+  /*    */ EV_WARNING,
   /*    */ EV_WRITE,
 
   /*    */ EV_ENUMS,
@@ -122,6 +123,7 @@ static Stz* aEV[]
   /*    */ "EV_TIMEDOUT"_Stz,
   /*    */ "EV_UNLOCK"_Stz,
   /*    */ "EV_WAIT"_Stz,
+  /*    */ "EV_WARNING"_Stz,
   /*    */ "EV_WRITE"_Stz,
 
   /*    */ "ENUMS"_Stz,

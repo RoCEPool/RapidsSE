@@ -70,8 +70,8 @@ void PsxThd::operator delete(void* pPsxThdAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-PsxThd::PsxThd()
-: Resource(CN_PSXTHD)
+PsxThd::PsxThd(Object* pIsFor)
+: Resource(CN_PSXTHD,pIsFor)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PSXTHD,_FOOTER_);
   

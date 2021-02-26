@@ -66,7 +66,9 @@ Token::~Token(void) noexcept(false)
 void Token::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   Token* pToken = _pToken(pObject);
-  
+  UNUSED(eClass);
+  UNUSED(aTab);
+
   vTrace("token %s %s\n"_Stz,
          aTN[pToken->m_eToken],
          pToken->azChars());
@@ -83,7 +85,8 @@ void Token::vDump(eCN eClass, Object* pObject, Stz* aTab)
 void Token::vUpdateChars(Stz* szArgChars, TokenVec* pExoTknVec)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
-  
+  UNUSED(pExoTknVec);
+
   ASSERT(pExoTknVec == m_p_ExoTknVec);
 
   m_p_ExoTknVec->vUpdateToken(this,szArgChars);
@@ -95,7 +98,8 @@ void Token::vUpdateChars(Stz* szArgChars, TokenVec* pExoTknVec)
 void Token::vCopyToken_restricted(Token* pSrcToken, TokenVec* pExoTknVec)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
-  
+  UNUSED(pExoTknVec);
+
   ASSERT(pExoTknVec == m_p_ExoTknVec);
   
   m_p_ExoTknVec->vReplaceToken(this,pSrcToken);
@@ -121,7 +125,8 @@ void Token::vRippleCopy_restricted(Token* pSrcToken, i8 nAdjCharsBytes,
                                    TokenVec* pExoTknVec)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
-  
+  UNUSED(pExoTknVec);
+
   ASSERT(pExoTknVec == m_p_ExoTknVec);
   
   m_eToken  = pSrcToken->m_eToken;
@@ -136,7 +141,8 @@ void Token::vRippleCopy_restricted(Token* pSrcToken, i8 nAdjCharsBytes,
 void Token::vSetChars_restricted(Stz* szArg, TokenVec* pExoTknVec)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
-  
+  UNUSED(pExoTknVec);
+
   ASSERT(pExoTknVec == m_p_ExoTknVec);
   
   m_szChars = szArg;

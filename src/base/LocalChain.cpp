@@ -67,8 +67,12 @@ LocalChain::~LocalChain(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void LocalChain::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  LocalChain* pLocalSet = _pLocalSet(pObject);
+  UNUSED(eClass);
+  UNUSED(aTab);
   
+  LocalChain* pLocalSet = _pLocalSet(pObject);
+  UNUSED(pLocalSet);
+
   vTrace("\n"_Stz);
 }
 

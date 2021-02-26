@@ -238,9 +238,7 @@ void TagSet::vDelete(Stz* szName)
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
   TagSet xTagSet;
-  
-  bool bWasCopied = false;
-  
+    
   xTagSet.vCopy(this);
   vReset();
   
@@ -526,6 +524,7 @@ void TagSet::vNamesString(String* pString)
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 
   char* azStr = pString->azStr();
+  UNUSED(azStr);
   char* azCrs = pString->azStr();
   
   for (i8 i_Ename = 0; i_Ename < m_nEnames; i_Ename++) {

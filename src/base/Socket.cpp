@@ -58,7 +58,7 @@ void Socket::operator delete(void*)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Socket::Socket(Object* pIsFor)
-: Resource(CN_SOCKET)
+: Resource(CN_SOCKET,pIsFor)
 , m_okLock(this)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
@@ -87,7 +87,7 @@ Socket::Socket(Object* pIsFor)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Socket::Socket(Object* pIsFor, int iSocketId)
-: Resource(CN_SOCKET)
+: Resource(CN_SOCKET,pIsFor)
 , m_okLock(this)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);

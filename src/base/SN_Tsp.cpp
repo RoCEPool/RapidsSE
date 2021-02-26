@@ -42,6 +42,7 @@ i8 SN_Tsp::i(char** aacCrs, Format* pFmt)
   i8 iHour, iMinute, iSecond, iMicro;
   
   char* aBegin = *aacCrs;
+  UNUSED(aBegin);
   
   if ( ! StrLib::bExtractTimestamp2(aacCrs,
                                     iYear, iMonth, iDay,
