@@ -102,10 +102,6 @@ DynamicSymbol gxaDynamicSymbol[]
   { "aDev_IXT_TRV_BEGIN"_Stz,     (const void *) aDev_IXT_TRV_BEGIN     },
   { "aDev_IXT_TRV_NEXT"_Stz,      (const void *) aDev_IXT_TRV_NEXT      },
 
-  { "vIXT_INDEXTREE_DELETE"_Stz,  (const void *) vIXT_INDEXTREE_DELETE  },
-  { "vIXT_INDEXTREE_SET"_Stz,     (const void *) vIXT_INDEXTREE_SET     },
-
-
   { "aDev_PAY_ADDRESS"_Stz,       (const void *) aDev_PAY_ADDRESS       },
   { "iDev_PAY_FETCH_COLI"_Stz,    (const void *) iDev_PAY_FETCH_COLI    },
   { "szDev_PAY_FETCH_COLS"_Stz,   (const void *) szDev_PAY_FETCH_COLS   },

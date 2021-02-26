@@ -28,15 +28,14 @@ i8   iDev_IXT_CMP_WRKALT(void* aLU);
 void vDev_IXT_DEL_ENT(void* aLU, void* aIXT);
 void vDev_IXT_DUMP(void* aLU, void* aIXT);
 void vDev_IXT_ENT_PRINT(void* aLU, void* aIXT);
+
 void vDev_IXT_INDEXNM_SET(i8** aaiDstk);
-void vDev_IXT_INDEXTREE_DELETE(void* aLU, void* aIXT);
-void vDev_IXT_INDEXTREE_SET(void* aLU, void* aIXT);
+void vDev_IXT_INDEXTREE_DELETE(i8** aaiDstk);
+void vDev_IXT_INDEXTREE_SET(i8** aaiDstk);
+
 struct Ent_int* aDev_IXT_INS_ENT(void* aLU, void* aIXT);
 void vDev_IXT_SET_ENT(void* aLU, void* aIXT, void* aEnt);
 i8   iDev_IXT_TMP_ENTRIES(void* aLU, void* aIXT);
-
-void vIXT_INDEXTREE_DELETE(i8** aaiDstk);
-void vIXT_INDEXTREE_SET(i8** aaiDstk);
 
 struct Ent_int* aDev_IXT_POS_ALTBYSRC(void* aLU);
 struct Ent_int* aDev_IXT_POS_ALTBYWRK(void* aLU);

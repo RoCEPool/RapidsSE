@@ -71,8 +71,8 @@ enum eEO : u1 // expression operators
   /*  D  */ EO_INDEXTREE_TMP_SET,    // set the tmp indexTree
 
   // indexTree
-  /*  S  */ EO_INDEXTREE_SET,    // set the src indexTree
-  /*  S  */ EO_INDEXTREE_DELETE, // delete the tmp indexTree
+  /*  S  */ EO_DEVIXT_INDEXTREE_SET,    // set the indexTree in the ixt dev
+  /*  S  */ EO_DEVIXT_INDEXTREE_DELETE, // delete the indexTree in the ixt dev
 
   // logical operators
   /*  S  */ EO_LGL_AND,          // logical and top two int's, push result
@@ -418,8 +418,8 @@ static Stz* aEO[]
   /*    */ "EO_INDEXTREE_TMP_SET"_Stz,
 
   // indexTree
-  /*    */ "EO_INDEXTREE_SET"_Stz,
-  /*    */ "EO_INDEXTREE_DELETE"_Stz,
+  /*    */ "EO_DEVIXT_INDEXTREE_SET"_Stz,
+  /*    */ "EO_DEVIXT_INDEXTREE_DELETE"_Stz,
 
   // logical operators
   /*    */ "EO_LGL_AND"_Stz,
@@ -770,8 +770,8 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_INDEXTREE_TMP_SET
 
     // indexTree
-  { EA_NONE,    0 },  // EO_INDEXTREE_SET
-  { EA_NONE,    0 },  // EO_INDEXTREE_DELETE
+  { EA_NONE,    0 },  // EO_DEVIXT_INDEXTREE_SET
+  { EA_NONE,    0 },  // EO_DEVIXT_INDEXTREE_DELETE
 
   // logical operators
   { EA_NONE,    0 },  // EO_LGL_AND
