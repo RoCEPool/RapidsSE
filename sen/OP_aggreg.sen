@@ -112,7 +112,6 @@
 /*----------------------------------------------------------------------------*/
 : aggreg_EosMarker_Err \handler
 
-"aggreg_EosMarker_Err" .
   0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryNote
 
   // pipe out all pot[]
@@ -147,11 +146,9 @@
 
   // check for error
   eError EC_NONE == not if
-    "GOT ERROR" .
     find: aggreg_Xyz             ZK_CRWBUFFER   op[].handler!
     find: aggreg_Xyz             ZK_ROWBUFFER   op[].handler!
     find: aggreg_EosMarker_Err   ZK_EOSMARKER   op[].handler!
-    "set handlers" .
     eError op.pipelineJob@ ERROR_JOB
     eError op__execErr
     StreamDef[].delete

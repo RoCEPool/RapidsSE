@@ -58,14 +58,12 @@ namespace STORE
 #define I_PushInt(__iValue) \
   *(++aiDstk) = __iValue;
 
-#define I_PopInt(__iValue) \
-  __iValue = *(aiDstk--);
+#define I_PopInt(__iValue)   *(aiDstk--)
 
 #define P_PushPtr(__pPtr) \
   *(++aiDstk) = (i8)__pPtr;
 
-#define P_PopPtr(__pPtr) \
-  __pPtr = (void*)(*(aiDstk--));
+#define P_PopPtr()   (void*)(*(aiDstk--))
 
 #define S_PushStr(__azStr) \
   /*MemLib::vDumpWords(iaDataStack,nDifference(iaDataStack,aiDstk)+8);*/ \

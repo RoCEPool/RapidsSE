@@ -36,6 +36,7 @@ void vDev_IXT_SET_ENT(void* aLU, void* aIXT, void* aEnt);
 i8   iDev_IXT_TMP_ENTRIES(void* aLU, void* aIXT);
 
 void vIXT_INDEXTREE_DELETE(i8** aaiDstk);
+void vIXT_INDEXTREE_SET(i8** aaiDstk);
 
 struct Ent_int* aDev_IXT_POS_ALTBYSRC(void* aLU);
 struct Ent_int* aDev_IXT_POS_ALTBYWRK(void* aLU);
@@ -104,6 +105,9 @@ void vDev_REG_INDEXDEF_ADDCOLUMN(void* aLU, Stz* sColumnNm, i8 iColumnType);
 void vDev_REG_INDEXDEF_DELETE(void* aLU);
 void vDev_REG_INDEXDEF_NEW(void* aLU, Stz* sName);
 void vDev_REG_INDEXTREE_NEW(void* aLU);
+
+void vREG_INDEXTREE_NULL(i8** aaiDstk);
+void vREG_INDEXTREE_PUSH(i8** aaiDstk);
 
 void vDev_REG_PTNSTREAM_CLOSE(void* aLU);
 void vDev_REG_PTNSTREAM_DELETE(void* aLU);

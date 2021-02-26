@@ -1502,9 +1502,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_INDEXTREE_TMP_DELETE: ArgNil(); // delete indexTree from tmp
         dLU0(EO_INDEXTREE_TMP_DELETE);
-        //vDev_IXT_INDEXTREE_DELETE(pLU,aRluCommon->m_pDevTmpIxt);
-        *(++aiDstk) = (i8)(aRluCommon->m_pDevTmpIxt);
-        vIXT_INDEXTREE_DELETE(&aiDstk);
+        vDev_IXT_INDEXTREE_DELETE(pLU,aRluCommon->m_pDevTmpIxt);
         break;//+endCase
         
       case EO_INDEXTREE_TMP_SET: ArgNil(); // set indexTree tmp from indexTree[]
@@ -1522,6 +1520,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_INDEXTREE_DELETE: ArgNil(); // delete indexTree
         dLU0(EO_INDEXTREE_DELETE);
         vIXT_INDEXTREE_DELETE(&aiDstk);
+        break;//+endCase
+
+      case EO_INDEXTREE_SET: ArgNil(); // set indexTree from indexTree[]
+        dLU0(EO_INDEXTREE_ALT_SET);
+        vIXT_INDEXTREE_SET(&aiDstk);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -1707,15 +1710,21 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(EO_REG_INDEXDEF_DELETE);
         vDev_REG_INDEXDEF_DELETE(pLU);
         break;//+endCase
-        
+
       case EO_REG_INDEXDEF_NEW: GetStr(iArg); // new an indexDef in indexDef[]
         dLU0(EO_REG_INDEXDEF_NEW);
         vDev_REG_INDEXDEF_NEW(pLU, (Stz*)iArg);
         break;//+endCase
-        
+
       case EO_REG_INDEXTREE_NEW: ArgNil(); // new an indexTree in indexTree[]
         dLU0(EO_REG_INDEXTREE_NEW);
         vDev_REG_INDEXTREE_NEW(pLU);
+        break;//+endCase
+
+      case EO_REG_INDEXTREE_NULL: ArgNil(); // null the indexTree[]
+        dLU0(EO_REG_INDEXTREE_NULL);
+        P_PushPtr(this);
+        vREG_INDEXTREE_NULL(&aiDstk);
         break;//+endCase
 
       case EO_REG_PTNSTREAM_CLOSE: ArgNil(); // close ptnStream[]
@@ -1765,7 +1774,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         iTopC = *(aiDstk--); // column scale
         vDev_REG_STREAMDEFOUT_ADDCOLUMN(pLU, (Stz*)iArg, iTopA, iTopB, iTopC);
         break;//+endCase
-      
+
+      // register pushes
+      case EO_PUSH_REG_INDEXTREE: ArgNil(); // push indexTree[]
+        dLU0(EO_PUSH_REG_INDEXTREE);
+        P_PushPtr(pLU);
+        vREG_INDEXTREE_PUSH(&aiDstk);
+        break;//+endCase
+
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // column set
       case EO_SET_COLUMN: ArgGet(iArg); // add column to set

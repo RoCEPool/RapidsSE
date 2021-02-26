@@ -535,11 +535,9 @@ void vIXT_INDEXTREE_DELETE(i8** aaiDstk)
 {
   _static_
 
-  void* pPtr;
   i8 *aiDstk = *aaiDstk;
 
-  P_PopPtr(pPtr);
-  DevIXT* pDevIxt = _pDevIXT(pPtr);
+  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
 
   IndexTree* pIndexTree = pDevIxt->m_pIdxTree;
   pDevIxt->m_pIdxTree = nullptr;
@@ -557,6 +555,26 @@ void vDev_IXT_INDEXTREE_SET(void* aLU, void* aIXT)
   DevIXT* pDevIxt = _pDevIXT(aIXT);
   pDevIxt->m_pIdxTree = * pLogicUnit->m_xpIndexTree;
   pLogicUnit->m_xpIndexTree = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the indexTree in the dev                                               */
+/*----------------------------------------------------------------------------*/
+void vIXT_INDEXTREE_SET(i8** aaiDstk)
+{
+  _static_
+
+  void* pPtr;
+  i8 *aiDstk = *aaiDstk;
+
+  // pop the device
+  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
+
+  // pop the indexTree
+  IndexTree* pIndexTree = _pIndexTree(P_PopPtr());
+
+  // set the indexTree in the device
+  pDevIxt->m_pIdxTree = pIndexTree;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2208,6 +2226,32 @@ void vDev_REG_INDEXTREE_NEW(void* aLU)
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
   
   pLogicUnit->m_xpIndexTree = new IndexTree(nullptr, *pLogicUnit->m_xpIndexDef, C_UNKNOWN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* null indexTree[]                                                           */
+/*----------------------------------------------------------------------------*/
+void vREG_INDEXTREE_NULL(i8** aaiDstk)
+{
+  _static_
+
+  i8 *aiDstk = *aaiDstk;
+
+  LogicUnit* pLogicUnit = _pLogicUnit(P_PopPtr());
+  pLogicUnit->m_xpIndexTree = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* push indexTree[]                                                           */
+/*----------------------------------------------------------------------------*/
+void vREG_INDEXTREE_PUSH(i8** aaiDstk)
+{
+  _static_
+
+  i8 *aiDstk = *aaiDstk;
+
+  LogicUnit* pLogicUnit = _pLogicUnit(P_PopPtr());
+  P_PushPtr(*pLogicUnit->m_xpIndexTree);
 }
 
 /*----------------------------------------------------------------------------*/

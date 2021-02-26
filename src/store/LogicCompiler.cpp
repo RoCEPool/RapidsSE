@@ -103,7 +103,8 @@ DynamicSymbol gxaDynamicSymbol[]
   { "aDev_IXT_TRV_NEXT"_Stz,      (const void *) aDev_IXT_TRV_NEXT      },
 
 
-  { "vIXT_INDEXTREE_DELETE"_Stz,(const void *) vIXT_INDEXTREE_DELETE },
+  { "vIXT_INDEXTREE_DELETE"_Stz,  (const void *) vIXT_INDEXTREE_DELETE  },
+  { "vIXT_INDEXTREE_SET"_Stz,     (const void *) vIXT_INDEXTREE_SET     },
 
 
   { "aDev_PAY_ADDRESS"_Stz,       (const void *) aDev_PAY_ADDRESS       },
@@ -150,6 +151,9 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_REG_INDEXDEF_DELETE"_Stz,        (const void *) vDev_REG_INDEXDEF_DELETE    },
   { "vDev_REG_INDEXDEF_NEW"_Stz,           (const void *) vDev_REG_INDEXDEF_NEW       },
   { "vDev_REG_INDEXTREE_NEW"_Stz,          (const void *) vDev_REG_INDEXTREE_NEW      },
+
+  { "vREG_INDEXTREE_NULL"_Stz,             (const void *) vREG_INDEXTREE_NULL         },
+  { "vREG_INDEXTREE_PUSH"_Stz,             (const void *) vREG_INDEXTREE_PUSH         },
 
   { "vDev_REG_PTNSTREAM_CLOSE"_Stz,        (const void *) vDev_REG_PTNSTREAM_CLOSE    },
   { "vDev_REG_PTNSTREAM_DELETE"_Stz,       (const void *) vDev_REG_PTNSTREAM_DELETE   },
@@ -958,14 +962,12 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n  #define I_PushInt(__iValue) "
   "     *(++aiDstk) = __iValue; "
   "\n"
-  "\n  #define I_PopInt(__iValue) "
-  "     __iValue = *(aiDstk--); "
+  "\n  #define I_PopInt()   *(aiDstk--) "
   "\n"
   "\n  #define P_PushPtr(__pPtr) "
   "     *(++aiDstk) = (i8)__pPtr; "
   "\n"
-  "\n  #define P_PopPtr(aiDstk, __pPtr) "
-  "     __pPtr = (void*)(*(aiDstk--)); "
+  "\n  #define P_PopPtr()  (void*)(*(aiDstk--)) "
   "\n"
   "\n  #define S_PopStr(__azDst)"
   "      nSize = *(aiDstk--);"
