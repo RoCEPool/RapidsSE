@@ -25,21 +25,24 @@ pipeline {
     timestamps()
   }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   stages {
-    stage('Build Release') {
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // SINGLE NODE - RELEASE 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    stage('Build: 1N Release') {
       steps {
         sh 'seth/jenkins/build.sh release'
       }
     }
 
-    stage('Install Release') {
+    stage('Install: 1N Release') {
       steps {
         sh 'seth/jenkins/install.sh seth/jenkins/1node.config'
       }
     }
 
-    stage('Start Release') {
+    stage('Start: 1N Release') {
       steps {
         sh 'seth/jenkins/start.sh seth/jenkins/1node.config'
       }
@@ -52,21 +55,66 @@ pipeline {
       }
     }
 
-    stage('Test Release') {
+    stage('Test: 1N Release') {
       steps {
-        sh 'seth/jenkins/test.sh release seth/jenkins/1node.config'
+        sh 'seth/jenkins/test.sh release seth/jenkins/1node.config seth/bamboo/allTestsBamboo'
 
         // TODO: capture log artifacts if they are not huge
       }
 
+      // Always ensure we have stopped SE and SETH
       post {
         always {
-          // Ensure we have stopped SE and SETH
           sh 'seth/jenkins/stop.sh seth/jenkins/1node.config'
         }
       }
     }
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // TWO NODE - RELEASE
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    // We can skip the build stage so long as we run the 2 node release
+    // test after the 1 node release test
+
+    stage('Install: 2N Release') {
+      steps {
+        sh 'seth/jenkins/install.sh seth/jenkins/2node.config'
+      }
+    }
+
+    stage('Start: 2N Release') {
+      steps {
+        sh 'seth/jenkins/start.sh seth/jenkins/2node.config'
+      }
+
+      // Stop RapidsSE if this stage was not successful
+      post {
+        unsuccessful {
+          sh 'seth/jenkins/stop.sh seth/jenkins/2node.config'
+        }
+      }
+    }
+
+    stage('Test: 2N Release') {
+      steps {
+        sh 'seth/jenkins/test.sh 2N_release seth/jenkins/2node.config seth/bamboo/allTestsBambooMN'
+
+        // TODO: capture log artifacts if they are not huge
+      }
+
+      // Always ensure we have stopped SE and SETH
+      post {
+        always {
+          sh 'seth/jenkins/stop.sh seth/jenkins/2node.config'
+        }
+      }
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    // TODO: Debug 1N
+    // TODO: Debug 2N
 
   } // stages
 

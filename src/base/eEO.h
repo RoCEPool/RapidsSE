@@ -63,7 +63,6 @@ enum eEO : u1 // expression operators
   
   // indexTree
   /*  D  */ EO_INDEXTREE_ALT_SET,    // set the alt indexTree
-  /*  D  */ EO_INDEXTREE_DEV_SET,    // set the dev to indexTree
   /*  D  */ EO_INDEXTREE_SRC_SET,    // set the src indexTree
   /*  D  */ EO_INDEXTREE_TMP_DELETE, // delete the tmp indexTree
   /*  D  */ EO_INDEXTREE_TMP_SET,    // set the tmp indexTree
@@ -112,6 +111,7 @@ enum eEO : u1 // expression operators
   /*  M  */ EO_REG_INDEXDEF_DELETE,        // delete the indexDef[]
   /*  M  */ EO_REG_INDEXDEF_NEW,           // new an indexDef in indexDef[]
   /*  M  */ EO_REG_INDEXTREE_NEW,          // new an indexTree in indexTree[]
+  /*  M  */ EO_REG_INDEXTREE_NULL,         // null indexTree[]
   /*  M  */ EO_REG_PTNSTREAM_CLOSE,        // close a ptn stream
   /*  M  */ EO_REG_PTNSTREAM_DELETE,       // delete a ptn stream
   /*  M  */ EO_REG_PTNSTREAM_NEW,          // new a ptn stream
@@ -121,7 +121,10 @@ enum eEO : u1 // expression operators
   /*  M  */ EO_REG_STREAMDEFOUT_NEW,       // new an streamDef in streamDefOut[]
   /*  M  */ EO_REG_STREAMDEFOUT_ADDCOLUMN, // add a column to streamDefOut[]
   /*  M  */ EO_REG_STREAMDEF_STREAMDEFOUT, // copy streamDef[] to streamDefOut[]
-  
+
+  // register pushes
+  /*  M  */ EO_PUSH_REG_INDEXTREE,         // push indexTree[]
+
   // column set
   /*  M  */ EO_SET_COLUMN,       // add column to set
   /*  M  */ EO_SET_COLUMNS,      // add columns to set
@@ -401,7 +404,6 @@ static Stz* aEO[]
   
   // indexTree
   /*    */ "EO_INDEXTREE_ALT_SET"_Stz,
-  /*    */ "EO_INDEXTREE_DEV_SET"_Stz,
   /*    */ "EO_INDEXTREE_SRC_SET"_Stz,
   /*    */ "EO_INDEXTREE_TMP_DELETE"_Stz,
   /*    */ "EO_INDEXTREE_TMP_SET"_Stz,
@@ -450,6 +452,7 @@ static Stz* aEO[]
   /*    */ "EO_REG_INDEXDEF_DELETE"_Stz,
   /*    */ "EO_REG_INDEXDEF_NEW"_Stz,
   /*    */ "EO_REG_INDEXTREE_NEW"_Stz,
+  /*    */ "EO_REG_INDEXTREE_NULL"_Stz,
   /*    */ "EO_REG_PTNSTREAM_CLOSE"_Stz,
   /*    */ "EO_REG_PTNSTREAM_DELETE"_Stz,
   /*    */ "EO_REG_PTNSTREAM_NEW"_Stz,
@@ -459,7 +462,10 @@ static Stz* aEO[]
   /*    */ "EO_REG_STREAMDEFOUT_NEW"_Stz,
   /*    */ "EO_REG_STREAMDEFOUT_ADDCOLUMN"_Stz,
   /*    */ "EO_REG_STREAMDEF_STREAMDEFOUT"_Stz,
-  
+
+  // register pushes
+    /*    */ "EO_PUSH_REG_INDEXTREE"_Stz,
+
   // column set
   /*    */ "EO_SET_COLUMN"_Stz,
   /*    */ "EO_SET_COLUMNS"_Stz,
@@ -744,7 +750,6 @@ static EoArg EoArgs[]
   
   // indexTree
   { EA_NONE,    0 },  // EO_INDEXTREE_ALT_SET
-  { EA_INT,     8 },  // EO_INDEXTREE_DEV_SET
   { EA_NONE,    0 },  // EO_INDEXTREE_SRC_SET
   { EA_NONE,    0 },  // EO_INDEXTREE_TMP_DELETE
   { EA_NONE,    0 },  // EO_INDEXTREE_TMP_SET
@@ -793,6 +798,7 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_REG_INDEXDEF_DELETE
   { EA_STRING, -1 },  // EO_REG_INDEXDEF_NEW
   { EA_NONE,    0 },  // EO_REG_INDEXTREE_NEW
+  { EA_NONE,    0 },  // EO_REG_INDEXTREE_NULL
   { EA_NONE,    0},   // EO_REG_PTNSTREAM_CLOSE
   { EA_NONE,    0},   // EO_REG_PTNSTREAM_DELETE
   { EA_NONE,    0},   // EO_REG_PTNSTREAM_NEW
@@ -802,7 +808,10 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_REG_STREAMDEFOUT_NEW
   { EA_STRING, -1 },  // EO_REG_STREAMDEFOUT_ADDCOLUMN
   { EA_NONE,    0 },  // EO_REG_STREAMDEF_STREAMDEFOUT_ADDCOLUMN
-  
+
+  // register pushes
+  { EA_NONE,    0 },  // EO_PUSH_REG_INDEXTREE
+
   // column set
   { EA_INT,     8 },  // EO_SET_COLUMN
   { EA_INT,     8 },  // EO_SET_COLUMNS

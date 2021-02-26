@@ -59,7 +59,6 @@ EO_PRINTF "**STARTMARKER_HANDLER : 301**\n"
   EO_REG_INDEXTREE_NEW
   EO_REG_INDEXDEF_DELETE
   EO_INDEXTREE_TMP_SET
-  EO_INDEXTREE_DEV_SET 0
   EO_JMP QRY_301_DONE
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
