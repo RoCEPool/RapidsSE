@@ -112,11 +112,11 @@ assert::stack_0
 //cmd::fillOut_allCmds_usingInfo
 //cmd::fillOut_allCmds_usingCmdSyntax
 
-"BEFORE fillOut_allCmds" .
+//"BEFORE fillOut_allCmds" .
 
 cmd::fillOut_allCmds
 
-"AFTER fillOut_allCmds" .
+//"AFTER fillOut_allCmds" .
 
 
         "se_procedures.sen"           include // third last

@@ -30,9 +30,6 @@ readonly OUT_DIR="${PROJ_ROOT}/installer/output"
 
 readonly COMMON_FN="${DIR}/common.fn"
 
-readonly TPCH_LINK_NAME="${PROJ_ROOT}/TPCH"
-readonly TPCH_LINK_DEST="/opt/TPCH"
-
 readonly RELATIVE_JENKINS_DIR="seth/jenkins"  # Relative to the project root
 
 # Set to 1 to print debug messages in Jenkins.
@@ -116,17 +113,6 @@ processArgs "$@"
 
 # First, kill any rogue SE and SETH instances owned by the current user.
 killRogueInstances
-
-# Setup a symbolic link to the TPC-H SF1 data if needed.
-# First check if the data actually exists.
-if [ ! -d "${TPCH_LINK_DEST}" ]; then
-  printWarning "TPC-H SF1 data does not exist at: ${TPCH_LINK_DEST}"
-fi
-
-# Now create the symbolic link to it if it doesn't already exist
-if [ ! -h "${TPCH_LINK_NAME}" ]; then
-  ln -s "${TPCH_LINK_DEST}" "${TPCH_LINK_NAME}"
-fi
 
 # Build RapidsSE for a given target type
 compileSE "${TARGET}"

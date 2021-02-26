@@ -43,7 +43,7 @@ Loggable::~Loggable(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Loggable::vLog(eEV eEvent, Stz* szFormat, ...)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_MAGIC_);
   UNUSED(eEvent);
     
   if (C_DONT_LOG == m_iLogCtl)
@@ -66,7 +66,7 @@ void Loggable::vLog(eEV eEvent, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 eEV Loggable::eEvent(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_MAGIC_);
   
   return m_eEvent;
 }
@@ -76,7 +76,7 @@ eEV Loggable::eEvent(void)
 /*----------------------------------------------------------------------------*/
 void Loggable::vEvent(eEV eEvent)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_MAGIC_);
   
   m_eEvent = eEvent;
 }
@@ -86,7 +86,7 @@ void Loggable::vEvent(eEV eEvent)
 /*----------------------------------------------------------------------------*/
 i8 Loggable::iEventNo(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_MAGIC_);
   
   return m_iEventNo;
 }
@@ -106,7 +106,7 @@ void Loggable::vEventNoInc(void)
 /*----------------------------------------------------------------------------*/
 i8 Loggable::iEventTick(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_MAGIC_);
   
   return m_iEventTick;
 }
@@ -116,7 +116,7 @@ i8 Loggable::iEventTick(void)
 /*----------------------------------------------------------------------------*/
 void Loggable::vEventTickSet(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_MAGIC_);
   
   m_iEventTick = AM::iRdTickingDevice();
 }
@@ -126,7 +126,7 @@ void Loggable::vEventTickSet(void)
 /*----------------------------------------------------------------------------*/
 i8 Loggable::iObjectId(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_MAGIC_);
   
   return m_iObjectId;
 }
@@ -136,7 +136,7 @@ i8 Loggable::iObjectId(void)
 /*----------------------------------------------------------------------------*/
 void Loggable::vObjectId(i8 iObjectId)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_MAGIC_);
   
   m_iObjectId = iObjectId;
 }
@@ -146,7 +146,7 @@ void Loggable::vObjectId(i8 iObjectId)
 /*----------------------------------------------------------------------------*/
 Stz* Loggable::sObjectNm(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_MAGIC_);
   
   return m_sObjectNm;
 }
@@ -156,7 +156,7 @@ Stz* Loggable::sObjectNm(void)
 /*----------------------------------------------------------------------------*/
 void Loggable::vObjectNm(Stz* szObjectNm)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_MAGIC_);
   
   m_sObjectNm = szObjectNm;
 }
@@ -166,7 +166,7 @@ void Loggable::vObjectNm(Stz* szObjectNm)
 /*----------------------------------------------------------------------------*/
 void Loggable::vNextEvent(eEV eEvent)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_MAGIC_);
   
   vEventTickSet();
   vEvent(eEvent);

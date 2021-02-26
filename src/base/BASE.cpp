@@ -600,7 +600,8 @@ void BASE::vTraceWithout(void)
 /*----------------------------------------------------------------------------*/
 void BASE::vInitAllGlobals(void)
 {
-  vTrace("BASE::vInitAllGlobals\n"_Stz);
+  if (AM::bVerbose())
+    vTrace("BASE::vInitAllGlobals\n"_Stz);
   
   File::vInitGlobals();
   
