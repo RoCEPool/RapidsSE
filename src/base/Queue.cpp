@@ -135,6 +135,9 @@ void Queue::vContentDump(Stz* aTab)
 /*----------------------------------------------------------------------------*/
 void Queue::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
+  UNUSED(eClass);
+  UNUSED(aTab);
+  
   Queue* pQueue = _pQueue(pObject);
   
   vTrace("count %lld top %p end %p\n"_Stz,

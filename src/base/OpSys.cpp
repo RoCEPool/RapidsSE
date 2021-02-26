@@ -234,6 +234,7 @@ void OpSys::vRLimitFileSize(i8& nSoft, i8& nHard)
   struct rlimit xRLimit;
 
   int iRetVal = getrlimit(RLIMIT_FSIZE,&xRLimit);
+  UNUSED(iRetVal);
 
   nSoft = xRLimit.rlim_cur;
   nHard = xRLimit.rlim_max;

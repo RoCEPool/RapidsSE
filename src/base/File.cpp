@@ -81,8 +81,8 @@ void File::operator delete(void* pFileAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-File::File(Object* bIsFor)
-: Resource(CN_FILE,bIsFor)
+File::File(Object* bIsFor, i8 iLogCtl)
+: Resource(CN_FILE,bIsFor,iLogCtl)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
   

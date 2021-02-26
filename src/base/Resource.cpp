@@ -23,21 +23,8 @@ Resource* BASE::_pResource(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-//Resource::Resource(eCN eClassNo)
-//: Loggable(eClassNo)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
-//  
-//  m_pIsFor = nullptr;
-//
-//  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);  
-//}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Resource::Resource(eCN eClassNo, Object* pIsFor)
-: Loggable(eClassNo)
+Resource::Resource(eCN eClassNo, Object* pIsFor, i8 iLogCtl)
+: Loggable(eClassNo,iLogCtl)
 {
   _precondition_(_MAGIC_,eClassNo);
   

@@ -53,7 +53,7 @@ void Loggable::vLog(eEV eEvent, Stz* szFormat, ...)
   
   va_start(xVarArgs,szFormat);
   
-  vprintf(szFormat->azChar(),xVarArgs);
+  //vprintf(szFormat->azChar(),xVarArgs);
     
   va_end(xVarArgs);
 }

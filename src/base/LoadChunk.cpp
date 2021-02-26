@@ -67,6 +67,10 @@ LoadChunk::~LoadChunk(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void LoadChunk::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
+  UNUSED(eClass);
+  UNUSED(pObject);
+  UNUSED(aTab);
+
   //LoadChunk* pLoadChunk = _pLoadChunk(pObject);
   
   //vTrace("\n"_Stz);
