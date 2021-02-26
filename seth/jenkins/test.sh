@@ -35,9 +35,6 @@ readonly RELATIVE_JENKINS_DIR="seth/jenkins"  # Relative to the project root
 # Set to 1 to print debug messages in Jenkins.
 readonly DEBUG=0
 
-# This is the colleciton of tests that are actually run by bamboo.
-readonly TESTLIST_FILE="${DIR}/../bamboo/allTestsBamboo"
-
 # How long to run the seth tests for (in seconds) before declaring that they are hung.
 # Defaulting to 30 minutes.
 readonly SETH_TIMEOUT="3600"
@@ -60,6 +57,9 @@ TARGET=""
 
 # The path of the config file to be used for installation
 CONFIG_FILE=""
+
+# This is the colleciton of tests that are actually run by bamboo.
+TESTLIST_FILE=""
 
 ###############################################################################
 ### Functions                                                               ###
@@ -92,8 +92,8 @@ function onExit() {
 
 function processArgs() {
 
-  if [ "$#" -ne 2  ]; then
-    errorExit "Insufficient arguments provided\n" "Usage: ./${SCRIPT_NAME} {*debug* | *release*} path/of/cluster.config"
+  if [ "$#" -ne 3  ]; then
+    errorExit "Insufficient arguments provided\n" "Usage: ./${SCRIPT_NAME} {*debug* | *release*} path/of/cluster.config path/of/testlistFile"
   fi
 
   TARGET="$1"
@@ -106,6 +106,14 @@ function processArgs() {
   if [ ! -f "${CONFIG_FILE}" ]; then
     errorExit "Cannot locate the cluster configuration file at: ${CONFIG_FILE}"
   fi
+
+  TESTLIST_FILE="$3"
+  if [ ! -f "${TESTLIST_FILE}" ]; then
+    errorExit "Cannot locate the test list file that SETH will execute: ${TESTLIST_FILE}"
+  fi
+
+  # Convert to an absolute path
+  TESTLIST_FILE="$(realpath "${TESTLIST_FILE}")"
 }
 
 
@@ -209,13 +217,14 @@ if ! CLUSTER_OUTPUT="$("${STATUS_SCRIPT}" 2>&1)" ; then
 fi
 
 
-echo "Starting SETH to run tests in testlist file: $(realpath ${TESTLIST_FILE})"
+echo "Starting SETH to run tests in testlist file: ${TESTLIST_FILE}"
 
 SETH_START_TIME="$(date +%s)"
 
 # Run the SE Test Harness in the background so we can monitor both it and SE.
 # We run it in a subshell with "|| true" to avoid problems with set -e if
 # it returns a non-zero exit code.
+# shellcheck disable=SC2086
 ( java -cp ${CLASSPATH} com.rapidsdata.seth.Seth -u "${URL}" ${SETH_ARGS[*]} || true ) &
 SETH_PID=$!  # This will actually be the pid of the subshell
 
@@ -239,17 +248,13 @@ do
 
     # Clean up the SETH process and its subordinate SE prompt
     SE_PROMPT_PID=$(ps -o pid= --ppid ${SETH_PID})
-    kill -9 "${SETH_PID}" &>/dev/null
+    kill -9 "${SETH_PID}" &>/dev/null || true
     echo "${SE_PROMPT_PID}" | xargs -r kill -9
     exit 1
   fi
 
   # Check if SETH is finished
-  ps -p "${SETH_PID}" &>/dev/null
-  IS_SETH_RUNNING=$?
-
-  if [ "${IS_SETH_RUNNING}" -ne 0 ]
-  then
+  if ! ps -p "${SETH_PID}" &>/dev/null ; then
     echo "SETH has exited."
     break
   fi
@@ -275,8 +280,8 @@ do
 
     # Ensure we kill any SE prompt with SETH. Don't worry about SE - it'll get cleaned up later.
     SE_PROMPT_PID=$(ps -o pid= --ppid ${SETH_PID})
-    kill -9 "${SETH_PID}" &>/dev/null
-    kill -9 "${SE_PROMPT_PID}"
+    kill -9 "${SETH_PID}" &>/dev/null || true
+    kill -9 "${SE_PROMPT_PID}" || true
     exit 1
   fi
 
@@ -295,8 +300,8 @@ do
 
     # Ensure we kill any SE prompt with SETH. Don't worry about SE - it'll get cleaned up later.
     SE_PROMPT_PID=$(ps -o pid= --ppid ${SETH_PID})
-    kill -9 "${SETH_PID}" &>/dev/null
-    kill -9 "${SE_PROMPT_PID}"
+    kill -9 "${SETH_PID}" &>/dev/null || true
+    kill -9 "${SE_PROMPT_PID}" || true
     exit 1;
   fi
 
