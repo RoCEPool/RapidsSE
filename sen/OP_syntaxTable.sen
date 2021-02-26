@@ -13,7 +13,7 @@
 
   //job[] job.tagSet@ tagSet.asStr .
 
-  <etc> <tableNm> "create table %v %v ;" str.format dup .
+  <etc> <tableNm> "create table %v %v ;" str.format // dup .
   job[] streamDef::parse to streamDef[]
 
   streamDef[].isNull if

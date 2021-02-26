@@ -76,7 +76,7 @@ pipeline {
 
     always {
       // Capture all test results
-      junit 'seth/jenkins/results/*.xml'
+      junit skipPublishingChecks: true, testResults: 'seth/jenkins/results/*.xml'
     }
   }
 

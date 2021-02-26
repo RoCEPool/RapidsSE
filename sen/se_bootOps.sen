@@ -6,7 +6,7 @@
 
 assert::stack_0
 
-"a" .put
+"a" .verbose
 
   "OP_addNode.sen"              include
   "OP_adjustPartitions.sen"     include
@@ -15,12 +15,12 @@ assert::stack_0
   "OP_analyzeTable.sen"         include
   "OP_answer.sen"               include
 
-"b" .put
+"b" .verbose
 
   "OP_bufferGen.sen"            include
   "OP_burst.sen"                include
 
-"c" .put
+"c" .verbose
 
   "OP_callPipeline.sen"         include
   "OP_catFile.sen"              include
@@ -38,7 +38,7 @@ assert::stack_0
   "OP_createTenant.sen"         include
   "OP_crwToRow.sen"             include
 
-"d" .put
+"d" .verbose
 
   "OP_defineTable.sen"          include
   "OP_delete.sen"               include
@@ -53,7 +53,7 @@ assert::stack_0
   "OP_dumpTable.sen"            include
   "OP_dupCrw.sen"               include
 
-"e" .put
+"e" .verbose
 
   "OP_eatAll.sen"               include
   "OP_eatSome.sen"              include
@@ -62,29 +62,29 @@ assert::stack_0
   "OP_etcTest.sen"              include
   "OP_exemplar.sen"             include
 
-"f" .put
+"f" .verbose
 
   "OP_fetch.sen"                include
   "OP_filter.sen"               include
 
-"g" .put
+"g" .verbose
 
   "OP_genAsmTxt.sen"            include
   "OP_gridSanity.sen"           include
  
-"h" .put
+"h" .verbose
 
-"i" .put
+"i" .verbose
 
   "OP_input.sen"                include
   "OP_insDel.sen"               include
   "OP_insert.sen"               include
 
-"j" .put
+"j" .verbose
 
-"k" .put
+"k" .verbose
 
-"l" .put
+"l" .verbose
 
   "OP_limit.sen"                include
   "OP_listFolders.sen"          include
@@ -101,22 +101,22 @@ assert::stack_0
   "OP_listTableDefs.sen"        include
   "OP_listTenants.sen"          include
 
-"m" .put
+"m" .verbose
 
   "OP_metaScan.sen"             include
   "OP_monitor.sen"             include
         
-"n" .put
+"n" .verbose
 
   "OP_nameValidate.sen"         include
   "OP_nodeInfo.sen"             include
   "OP_noop.sen"                 include
 
-"o" .put
+"o" .verbose
 
   "OP_output.sen"               include
 
-"p" .put
+"p" .verbose
 
   "OP_parser.sen"               include
   "OP_passThru.sen"             include
@@ -131,9 +131,9 @@ assert::stack_0
   "OP_python.sen"               include
   "OP_pythonShell.sen"          include
 
-"q" .put
+"q" .verbose
 
-"r" .put
+"r" .verbose
 
   "OP_range.sen"                include
   "OP_rdCrwFile.sen"            include
@@ -148,7 +148,7 @@ assert::stack_0
   "OP_rowCount.sen"             include
   "OP_rowToList.sen"            include
 
-"s" .put
+"s" .verbose
 
   "OP_scan.sen"                 include
   "OP_send.sen"                 include
@@ -169,7 +169,7 @@ assert::stack_0
   "OP_syntaxTable.sen"          include
   "OP_syntaxUniqueIndex.sen"    include
 
-"t" .put
+"t" .verbose
 
   "OP_tableSizes.sen"           include
   "OP_toCsv.sen"                include
@@ -185,12 +185,12 @@ assert::stack_0
   "OP_truncateIndex.sen"        include
   "OP_truncateTable.sen"        include
 
-"u" .put
+"u" .verbose
 
   "OP_unload.sen"               include
   "OP_upsert.sen"               include
 
-"v" .put
+"v" .verbose
 
   "OP_verifyIndex.sen"          include
   "OP_verifyIndexPtn.sen"       include
@@ -198,19 +198,19 @@ assert::stack_0
   "OP_visualizeIndex.sen"       include
   "OP_visualizeTable.sen"       include
 
-"w" .put
+"w" .verbose
 
   "OP_waitPipeline.sen"         include
   "OP_waker.sen"                include
   "OP_wrFile.sen"               include
 
-"x" .put
+"x" .verbose
 
   "OP_xmit.sen"                 include
 
-"y" .put
+"y" .verbose
 
-"z\n" .put
+"z\n" .verbose
 
 /*============================================================================*/
 /* end                                                                        */
