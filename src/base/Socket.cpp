@@ -80,6 +80,8 @@ Socket::Socket(Object* pIsFor)
               "Socket construct |gixSocket=%lld|"_Stz, //!format-LogRes
               * gixSocket);
 
+  vLog(EV_CONSTRUCT,"Socket constructor"_Stz);
+
   _postcondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
 }
 
@@ -105,13 +107,10 @@ Socket::Socket(Object* pIsFor, int iSocketId)
   _checkInitialised_(CN_SOCKET);
   
   ++ gixSocket;
-  AM::vLogRes(SL_INF,this,RA_SKT_CONSTRUCT,
-              "Socket construct |gixSocket=%lld|"_Stz, //!format-LogRes
-              * gixSocket);
-  
-  _postcondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
   vLog(EV_CONSTRUCT,"Socket constructor"_Stz);
+  
+  _postcondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -128,11 +127,8 @@ Socket::~Socket(void) noexcept(false)
   MemLib::vFreeBlock(m_aLowBuff,C_SIZE_POOL_BUFFER);
   
   -- gixSocket;
-  AM::vLogRes(SL_INF,this,RA_SKT_DESTRUCT,
-              "Socket destruct : %p |gixSocket=%lld|"_Stz, //!format-LogRes
-              this,* gixSocket);
   
-  vLog(EV_DESTRUCT,"Socket constructor"_Stz);
+  vLog(EV_DESTRUCT,"Socket destructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -162,7 +158,7 @@ void Socket::vMonitorPortrait(s48K& sPortrait)
   Statistics* pStat = AM::pStatistics();
   
   s32 sRecvMag; MagLib::vByteMag(pStat->Socket_.m_nRecvBytes, sRecvMag);
-  s32 sSendMag; MagLib::vByteMag(pStat->Socket_.m_nSendBytes, sSendMag);
+  s32 sSendMag; MagLib::vByteMag(pStat->Socket_.m_nSentBytes, sSendMag);
 
   sPortrait.vSprint("Socket: "
                     "accepts %lld "
@@ -213,7 +209,7 @@ void Socket::vStatistics(void)
 
   MagLib::vByteMag(pStat->Socket_.m_nRecvBytes,  sByteMag);
   vTrace("  nSocketRecvBytes  %s\n"_Stz,sByteMag.szStz());
-  MagLib::vByteMag(pStat->Socket_.m_nSendBytes,  sByteMag);
+  MagLib::vByteMag(pStat->Socket_.m_nSentBytes,  sByteMag);
   vTrace("  nSocketSendBytes  %s\n"_Stz,sByteMag.szStz());
 }
 
@@ -647,6 +643,8 @@ bool Socket::bSendBytes(void* pBuffer, i8 nBytes, SysCall& SysCall)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
+  NEVER_REACH;
+  
   SysCall.vClear();
   
 #ifdef WITH_STATISTICS_COUNTERS
@@ -660,13 +658,9 @@ bool Socket::bSendBytes(void* pBuffer, i8 nBytes, SysCall& SysCall)
   }
   
 #ifdef WITH_STATISTICS_COUNTERS
-  gpAttachMap->m_oStatistics.Socket.m_nSendBytes += nSentBytes;
+  gpAttachMap->m_oStatistics.Socket.m_nSentBytes += nSentBytes;
 #endif
   
-  AM::vLogRes(SL_INF,this,RA_SKT_SENT,
-              "Socket sent %lldB"_Stz, //!format-LogRes
-              nSentBytes);
-
   vLog(EV_SEND,"Socket send: %lld bytes"_Stz,nSentBytes);
 
   if (nSentBytes == nBytes) {
@@ -935,34 +929,34 @@ bool Socket::bSendTo(void* aBytes, i8 nBytes, SysCall& SysCall)
   {
     pSoFar = (char*)aBytes + nSoFar;
     
-    i8 nBytesSent = sendto(m_iSocketFd
+    i8 nSentBytes = sendto(m_iSocketFd
                            ,nMore
                            ,0
                            ,(struct sockaddr*)&m_xServAddr
                            ,sizeof(m_xServAddr)
                            );
     
-    if (C_UNKNOWN == nBytesSent)
+    if (C_UNKNOWN == nSentBytes)
     {
       SysCall.vError(errno);
       return false;
     }
     
-    if (0 == nBytesSent)
+    if (0 == nSentBytes)
     {
       SysCall.vError(errno);
       return false;
     }
     
-    if (nBytesSent < nBytes)
+    if (nSentBytes < nBytes)
     {
       vWarn("sendto() less bytes sent; %lld v %lld\n"_Stz
-            ,nBytesSent
+            ,nSentBytes
             ,nBytes
             );
     }
-    nSoFar += nBytesSent;
-    nMore -= nBytesSent;
+    nSoFar += nSentBytes;
+    nMore -= nSentBytes;
   }
   
   SysCall.vSuccess();
@@ -986,12 +980,8 @@ bool Socket::bSendTo(void* aBytes, i8 nBytes, SysCall& SysCall)
 #ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.Socket.m_nSendTos++;
 #endif
-  
-//  AM::vLogRes(SL_INF,this,RA_SKT_SEND,
-//              "Socket send %lldB"_Stz, //!format-LogRes
-//              nBytes);
-  
-  i8 nBytesSent = sendto(m_iSocketFd
+    
+  i8 nSentBytes = sendto(m_iSocketFd
                          ,aBytes
                          ,nBytes
                          ,0
@@ -999,29 +989,29 @@ bool Socket::bSendTo(void* aBytes, i8 nBytes, SysCall& SysCall)
                          ,sizeof(m_xServAddr)
                          );
   
-  if (C_UNKNOWN == nBytesSent)
+  if (C_UNKNOWN == nSentBytes)
   {
     SysCall.vError(errno);
     return false;
   }
   
-  if (0 == nBytesSent)
+  if (0 == nSentBytes)
   {
     SysCall.vError(errno);
     return false;
   }
 
 #ifdef WITH_STATISTICS_COUNTERS
-  gpAttachMap->m_oStatistics.Socket.m_nSendBytes += nBytesSent;
+  gpAttachMap->m_oStatistics.Socket.m_nSentBytes += nSentBytes;
 #endif
   
-  vLog(EV_SEND,"Socket send: %lld bytes"_Stz,nBytesSent);
+  vLog(EV_SEND,"Socket send: %lld bytes"_Stz,nSentBytes);
 
   
-  if (nBytesSent < nBytes)
+  if (nSentBytes < nBytes)
   {
     vWarn("sendto() less bytes sent; %lld v %lld\n"_Stz
-      ,nBytesSent
+      ,nSentBytes
       ,nBytes
       );
     SysCall.vError(errno);

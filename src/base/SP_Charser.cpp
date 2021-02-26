@@ -45,6 +45,7 @@ Stz* SP_Charser::sz(Charser* pCharser)
   SP_String spBuff;
   
   i8 nLoaded = pCharser->nLoaded();
+  UNUSED(nLoaded);
   AnnChar* aRegOne = pCharser->aRegOne();
   AnnChar* aRegTwo = pCharser->aRegTwo();
   char* azRawBuff = pCharser->azRawBuff();
