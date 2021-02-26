@@ -79,7 +79,7 @@ namespace BASE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Task(Job* pJob, i8 iFocalId);
+    Task(Job* pJob);
     ~Task(void) noexcept(false);
     
     static Task* pThisTLSTask(void);

@@ -63,7 +63,7 @@ void Task::operator delete(void* pTaskAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Task::Task(Job* pJob, i8 iFocalId)
+Task::Task(Job* pJob)
 : Loggable(CN_TASK)
 , m_okLock(this)
 {
@@ -261,6 +261,9 @@ void Task::vAssertStructure(void)
 /*----------------------------------------------------------------------------*/
 void Task::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
+  UNUSED(eClass);
+  UNUSED(aTab);
+
   Task* pTask = _pTask(pObject);
   
   vTrace("%s %p state %s txId %lld\n"_Stz,

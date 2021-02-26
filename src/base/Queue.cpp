@@ -97,6 +97,7 @@ void Queue::vAppend(Object* pObject)
     vExpand();
     bool b = m_pEndBuffer->bAppend(pObject);
     ASSERT(b);
+    UNUSED(b);
   }
   
   m_iCount++;
