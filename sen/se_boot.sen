@@ -6,9 +6,9 @@
 
 assert::stack_0
 
-"Sen Compilation Progress: " .put
+"Sen Compilation Progress: " .verbose
 
-"se_boot 9" .
+"se_boot 9" .verbose
         "se_core.sen"             include
         "se_word.sen"             include
         "se_str.sen"              include
@@ -23,17 +23,17 @@ assert::stack_0
         "se_socket.sen"           include
         "se_dbg.sen"              include
 
-"se_boot 8" .
+"se_boot 8" .verbose
         "tpl_liteOp.sen"          include
         "tpl_localLiteOp.sen"     include
         "cmd_cmdTags.sen"         include
         "cmd_compiler.sen"        include
 
-"se_boot 7" .
+"se_boot 7" .verbose
         "grid_grid.sen"           include
         "grid_node.sen"           include
 
-"se_boot 6" .
+"se_boot 6" .verbose
         "db_table.sen"            include
         "db_partition.sen"        include
         "db_index.sen"            include
@@ -41,7 +41,7 @@ assert::stack_0
         "db_catalog.sen"          include
         "db_tenant.sen"           include
 
-"se_boot 5" .
+"se_boot 5" .verbose
         "job_words.sen"           include
         "job_2pcReply.sen"        include
         "job_seedMarkers.sen"     include
@@ -73,7 +73,7 @@ assert::stack_0
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-"se_boot 4" .
+"se_boot 4" .verbose
         "op__errors.sen"              include
         "op__defHandlers.sen"         include
         "op__common.sen"              include
@@ -83,11 +83,11 @@ assert::stack_0
         "se_bootOps.sen"              include
 
 
-"se_boot 3" .
+"se_boot 3" .verbose
         "OP_EOAsm.sen"                include
         "OP_EOAsm2.sen"               include
 
-"se_boot 2" .
+"se_boot 2" .verbose
         "test_dData.sen"              include
         "test_encodingData.sen"       include
         "test_gGen.sen"               include
@@ -100,7 +100,7 @@ assert::stack_0
         "test_unit.sen"               include
         "test_1m.sen"                 include
 
-"se_boot 1" .
+"se_boot 1" .verbose
         "se_demons.sen"               include
         "se_experiments.sen"          include
         "se_llc.sen"                  include
@@ -205,7 +205,7 @@ LogicCompiler[].extractAsm
 
 assert::stack_0
 
-"end of se_boot.sen" .
+"end of se_boot.sen" .verbose
 
 /*============================================================================*/
 /* end                                                                        */
