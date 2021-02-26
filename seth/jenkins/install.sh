@@ -164,8 +164,9 @@ fi
 echo "Making the symbolic link from ${DATA_SYMLINK_SRC} to ${DATA_SYMLINK_DEST}"
 ln -s "${DATA_SYMLINK_DEST}" "${DATA_SYMLINK_SRC}"
 
-
+#
 # Now let's do the same but for the ../TPCH symbolic link
+#
 
 readonly TPCH_SYMLINK_SRC="${INSTALL_DIR}/TPCH"
 readonly TPCH_SYMLINK_DEST="/opt/TPCH"
@@ -189,7 +190,6 @@ fi
 
 echo "Making the symbolic link from ${TPCH_SYMLINK_SRC} to ${TPCH_SYMLINK_DEST}"
 ln -s "${TPCH_SYMLINK_DEST}" "${TPCH_SYMLINK_SRC}"
-
 
 ENDTIME="$(date +%s)"
 ELAPSEDTIME="$(secondsToTime $((ENDTIME - STARTTIME)))"
