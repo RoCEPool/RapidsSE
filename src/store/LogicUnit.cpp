@@ -1487,7 +1487,15 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(EO_INDEXNM_SRC_SET);
         vDev_IXT_INDEXNM_SET(pLU,aRluCommon->m_pDevSrcIxt, (Stz*)iArg);
         break;//+endCase
-      
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // index name
+      case EO_INDEXNM_SET: GetStr(iArg); // inflate src columns direct into locals
+        dLU0(EO_INDEXNM_ALT_SET);
+        S_PushStr(iArg);
+        vIXT_INDEXNM_SET(&aiDstk);
+        break;//+endCase
+
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // index
       case EO_INDEXTREE_ALT_SET: ArgNil(); // set indexTree alt from indexTree[]

@@ -102,6 +102,7 @@ DynamicSymbol gxaDynamicSymbol[]
   { "aDev_IXT_TRV_BEGIN"_Stz,     (const void *) aDev_IXT_TRV_BEGIN     },
   { "aDev_IXT_TRV_NEXT"_Stz,      (const void *) aDev_IXT_TRV_NEXT      },
 
+  { "vIXT_INDEXNM_SET"_Stz,       (const void *) vIXT_INDEXNM_SET       },
 
   { "vIXT_INDEXTREE_DELETE"_Stz,  (const void *) vIXT_INDEXTREE_DELETE  },
   { "vIXT_INDEXTREE_SET"_Stz,     (const void *) vIXT_INDEXTREE_SET     },

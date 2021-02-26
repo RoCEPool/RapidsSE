@@ -60,7 +60,10 @@ enum eEO : u1 // expression operators
   // index
   /*  D  */ EO_INDEXNM_ALT_SET,    // set the alt index name
   /*  D  */ EO_INDEXNM_SRC_SET,    // set the src index name
-  
+
+  // index name
+  /*     */ EO_INDEXNM_SET,    // set the index name in the dev
+
   // indexTree
   /*  D  */ EO_INDEXTREE_ALT_SET,    // set the alt indexTree
   /*  D  */ EO_INDEXTREE_SRC_SET,    // set the src indexTree
@@ -137,6 +140,9 @@ enum eEO : u1 // expression operators
   // table
   /*  D  */ EO_TABLENM_ALT_SET,    // set the alt table name
   /*  D  */ EO_TABLENM_SRC_SET,    // set the src table name
+
+  // table name
+  /*     */ EO_TABLENM_SET,    // set the table name in the dev
 
   // table ptn
   /*  M  */ EO_TABLEPTN_DROPREAD,  // drop a tablePtn read lock
@@ -401,7 +407,10 @@ static Stz* aEO[]
   // index
   /*    */ "EO_INDEXNM_ALT_SET"_Stz,
   /*    */ "EO_INDEXNM_SRC_SET"_Stz,
-  
+
+  // index name
+  /*    */ "EO_INDEXNM_SET"_Stz,
+
   // indexTree
   /*    */ "EO_INDEXTREE_ALT_SET"_Stz,
   /*    */ "EO_INDEXTREE_SRC_SET"_Stz,
@@ -478,6 +487,9 @@ static Stz* aEO[]
   // table
   /*    */ "EO_TABLENM_ALT_SET"_Stz,
   /*    */ "EO_TABLENM_SRC_SET"_Stz,
+
+  // table name
+  /*    */ "EO_TABLENM_SET"_Stz,
 
   // table ptn
   /*    */ "EO_TABLEPTN_DROPREAD"_Stz,
@@ -747,7 +759,10 @@ static EoArg EoArgs[]
   // index
   { EA_STRING, -1 },  // EO_INDEXNM_ALT_SET
   { EA_STRING, -1 },  // EO_INDEXNM_SRC_SET
-  
+
+  // index name
+  { EA_STRING, -1 },  // EO_INDEXNM_SET
+
   // indexTree
   { EA_NONE,    0 },  // EO_INDEXTREE_ALT_SET
   { EA_NONE,    0 },  // EO_INDEXTREE_SRC_SET
@@ -825,7 +840,10 @@ static EoArg EoArgs[]
   { EA_STRING, -1 },  // EO_TABLENM_ALT_SET
   { EA_STRING, -1 },  // EO_TABLENM_SRC_SET
 
-    // table
+  // table name
+  { EA_STRING, -1 },  // EO_TABLENM_SET
+
+  // table
   { EA_NONE, 0 },  // EO_TABLEPTN_DROPREAD
   { EA_NONE, 0 },  // EO_TABLEPTN_GRABREAD
 

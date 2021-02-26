@@ -355,13 +355,24 @@ void vDev_IXT_INDEXNM_SET(void* aLU, void* aIXT, Stz* szIndexNm)
 /*----------------------------------------------------------------------------*/
 /* set the index name                                                         */
 /*----------------------------------------------------------------------------*/
-void vIXT_INDEXNM_SET(void* aLU, Stz* szIndexNm)
+void vIXT_INDEXNM_SET(i8** aaiDstk)
 {
   _static_
 
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-  struct RluCommon* aRluCommon = &pLogicUnit->m_xRluCommon;
-  //StrLib::vCopy(&aRluCommon->m_xSrcIxt.m_cIndexNm[0], (char*)szIndexNm);
+  // ALKA: Double string copy
+  // come back to this !!!
+
+  i8 *aiDstk = *aaiDstk;
+  i8 nSize;
+  char* azSrc;
+  char azDst[256];
+
+  // pop index name into the device
+  S_PopStr(azDst);
+
+  // pop device
+  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
+  StrLib::vCopy(pDevIxt->m_sIndexNm.azChar(), azDst);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -35,6 +35,8 @@ struct Ent_int* aDev_IXT_INS_ENT(void* aLU, void* aIXT);
 void vDev_IXT_SET_ENT(void* aLU, void* aIXT, void* aEnt);
 i8   iDev_IXT_TMP_ENTRIES(void* aLU, void* aIXT);
 
+void vIXT_INDEXNM_SET(i8** aaiDstk);
+
 void vIXT_INDEXTREE_DELETE(i8** aaiDstk);
 void vIXT_INDEXTREE_SET(i8** aaiDstk);
 
