@@ -1479,19 +1479,21 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // index
       case EO_INDEXNM_ALT_SET: GetStr(iArg); // inflate src columns direct into locals
-        dLU0(EO_INDEXNM_ALT_SET);
-        vDev_IXT_INDEXNM_SET(pLU,aRluCommon->m_pDevAltIxt, (Stz*)iArg);
+        //dLU0(EO_INDEXNM_ALT_SET);
+        //vDev_IXT_INDEXNM_SET(pLU,aRluCommon->m_pDevAltIxt, (Stz*)iArg);
+        RASSERT(0);
         break;//+endCase
         
       case EO_INDEXNM_SRC_SET: GetStr(iArg); // inflate src columns direct into locals
-        dLU0(EO_INDEXNM_SRC_SET);
-        vDev_IXT_INDEXNM_SET(pLU,aRluCommon->m_pDevSrcIxt, (Stz*)iArg);
+        //dLU0(EO_INDEXNM_SRC_SET);
+        //vDev_IXT_INDEXNM_SET(pLU,aRluCommon->m_pDevSrcIxt, (Stz*)iArg);
+        RASSERT(0);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // index name
       case EO_INDEXNM_SET: GetStr(iArg); // inflate src columns direct into locals
-        dLU0(EO_INDEXNM_ALT_SET);
+        dLU0(EO_INDEXNM_SET);
         S_PushStr(iArg);
         vIXT_INDEXNM_SET(&aiDstk);
         break;//+endCase
