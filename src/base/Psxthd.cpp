@@ -540,9 +540,9 @@ void PsxThd::vEnableRealtime_2(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* focal outline                                                              */
+/* outline                                                                    */
 /*----------------------------------------------------------------------------*/
-void PsxThd::vFocalOutline(s4K& sOutline)
+void PsxThd::vOutline(s4K& sOutline)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PSXTHD,_FOOTER_);
 

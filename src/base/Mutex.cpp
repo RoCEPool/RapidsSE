@@ -536,9 +536,9 @@ void Mutex::vWait(Loggable* pLockedBy)
 }
 
 /*----------------------------------------------------------------------------*/
-/* focal outline                                                              */
+/* outline                                                                    */
 /*----------------------------------------------------------------------------*/
-void Mutex::vFocalOutline(s4K& sOutline)
+void Mutex::vOutline(s4K& sOutline)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   

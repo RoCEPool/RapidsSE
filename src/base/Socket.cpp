@@ -261,9 +261,9 @@ void Socket::vCopy(Socket* pSource)
 }
 
 /*----------------------------------------------------------------------------*/
-/* focal outline                                                              */
+/* outline                                                                    */
 /*----------------------------------------------------------------------------*/
-void Socket::vFocalOutline(s4K& sOutline)
+void Socket::vOutline(s4K& sOutline)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   

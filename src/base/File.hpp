@@ -75,7 +75,7 @@ namespace BASE
     void vFileDump(void);
     s256& sFilePath(void);
     void vFlush(void);
-    void vFocalOutline(s4K& sOutline);
+    void vOutline(s4K& sOutline);
     bool bIsClosed(void);
     bool bIsOpen(void);
     bool bIsStdin(void);

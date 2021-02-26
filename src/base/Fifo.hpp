@@ -26,7 +26,7 @@ namespace BASE
 
     SysCall& oSysCall(void);
   
-    void vFocalOutline(s4K& sOutline);
+    void vOutline(s4K& sOutline);
   
     Footer* aFooter(void);
   };

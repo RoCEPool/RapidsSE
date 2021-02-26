@@ -55,7 +55,7 @@ namespace BASE
     bool bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall);
     bool bCreateServer(int iPort, SysCall& SysCall);
     void vDropWrite(void);
-    void vFocalOutline(s4K& sOutline);
+    void vOutline(s4K& sOutline);
     void vGrabWrite(void);
     bool bRecvBuffer(int nBytes, SysCall& SysCall);
     bool bRecvBytes(void* pBuffer, i8 nBytes, SysCall& SysCall);

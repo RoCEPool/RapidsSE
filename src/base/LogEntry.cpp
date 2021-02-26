@@ -235,26 +235,7 @@ void LogEntry::vSprint(s4K& sString, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
   //  iTotalDeltaUsec = 0;
   
   vSprintCsv(sString,iEntryDeltaUsec,iTotalDeltaUsec);
-  
-  switch (m_eKind) {
-//    case LG_FYI: m_xFyi.vOutline(sString); break;
-//    case LG_JOB: m_xJob.vOutline(sString); break;
-//    case LG_LCK: m_xLck.vOutline(sString); break;
-//    case LG_LOG: m_xLog.vOutline(sString); break;
-//    case LG_OPR: m_xOpr.vOutline(sString); break;
-//    //case LG_PRM: m_xPrm.vOutline(sString); break;
-//    case LG_QUE: m_xQue.vOutline(sString); break;
-//    case LG_RES: m_xRes.vOutline(sString); break;
-//    case LG_SSN: m_xSsn.vOutline(sString); break;
-//    case LG_SVC: m_xSvc.vOutline(sString); break;
-//    case LG_SYS: m_xSys.vOutline(sString); break;
-//    case LG_TSK: m_xTsk.vOutline(sString); break;
-//    case LG_THD: m_xThd.vOutline(sString); break;
-//    case LG_TXN: m_xTxn.vOutline(sString); break;
-    default:
-      NEVER_REACH;
-  }
-  
+    
   sString.vCatSprint(" %s"_Stz,m_caNote);
 }
 

@@ -283,9 +283,9 @@ void Session::vFreeSession(i8 i_NextFree)
 }
 
 /*----------------------------------------------------------------------------*/
-/* focal outline                                                              */
+/* outline                                                                    */
 /*----------------------------------------------------------------------------*/
-void Session::vFocalOutline(s4K& sOutline)
+void Session::vOutline(s4K& sOutline)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   

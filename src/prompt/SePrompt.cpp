@@ -749,9 +749,9 @@ SeDeputy* SePrompt::pFindDeputy(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* focal outline                                                              */
+/* outline                                                                    */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vFocalOutline(s4K& sOutline)
+void SePrompt::vOutline(s4K& sOutline)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   

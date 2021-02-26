@@ -51,7 +51,7 @@ namespace BASE
     void vClose(void);
     Stz* szEntryNm(void);
     i8   iEntryType(void);
-    void vFocalOutline(s4K& sOutline);
+    void vOutline(s4K& sOutline);
     bool bIsClosed(void);
     bool bIsOpen(void);
     bool bOpen(Stz* aDirPath);

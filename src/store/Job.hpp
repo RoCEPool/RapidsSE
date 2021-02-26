@@ -95,7 +95,7 @@ namespace STORE
     bool bByPromptTag(void);
     void vContentDump(void);
     bool bDiaryTag(void);
-    void vFocalOutline(s4K& sOutline);
+    void vOutline(s4K& sOutline);
     bool bHasTag(Stz* szEnameTag);
     bool bHasTag_bg(void);
     bool bHasTag_time(void);

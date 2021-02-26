@@ -70,7 +70,8 @@ void Dic::vAddWord(Word* pWord)
 
   bool b = m_pWordSkipList->bInsert(pWord,bTrace);
   ASSERT(b);
-
+  UNUSED(b);
+  
   SkipNode* pSkipNode = m_pWordSkipList->pNewly();
   pWord->m_pSkipNode = pSkipNode;
   
@@ -149,6 +150,9 @@ void Dic::vDicNm(Stz* szDicNm)
 /*----------------------------------------------------------------------------*/
 void Dic::vDump(eCN eClass, Object* pObject, Stz* szTab)
 {
+  UNUSED(eClass);
+  UNUSED(szTab);
+  
   Dic* pDic = _pDic(pObject);
   
   vTrace("name %s count %lld\n"_Stz,
@@ -452,6 +456,7 @@ Word* Dic::pRemoveWord(Stz* szWordNm)
   m_pArticle->vGrabWrite();
   
   bool b = m_pWordSkipList->bRemove(pWordRemove);
+  UNUSED(b);
   
   m_pArticle->vDropWrite();
   

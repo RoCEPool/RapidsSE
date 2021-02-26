@@ -930,9 +930,9 @@ i8 Log::iEntryTxn(eSL eSeverity, Tx* pTxn, eXA eTxnAct,
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* focal outline                                                              */
+/* outline                                                                    */
 /*----------------------------------------------------------------------------*/
-void Log::vFocalOutline(s4K& sOutline)
+void Log::vOutline(s4K& sOutline)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
 

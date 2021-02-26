@@ -254,9 +254,9 @@ i8 Dir::iEntryType(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* focal outline                                                              */
+/* outline                                                                    */
 /*----------------------------------------------------------------------------*/
-void Dir::vFocalOutline(s4K& sOutline)
+void Dir::vOutline(s4K& sOutline)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIR,_FOOTER_);
   

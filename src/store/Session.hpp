@@ -89,7 +89,7 @@ namespace STORE
     void vEndTx(void);
     i8   i_FixedPtn(void);
     void vFixedPtn(i8 i_FixedPtn);
-    void vFocalOutline(s4K& sOutline);
+    void vOutline(s4K& sOutline);
     void vFreeSession(i8 i_NextFree);
     bool bHasCascade(void);
     void vHasCascade(bool bHasCascade);

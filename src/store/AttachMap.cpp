@@ -409,9 +409,9 @@ eAC AttachMap::eFindApi(Stz* aApiNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* focal outline                                                              */
+/* outline                                                                    */
 /*----------------------------------------------------------------------------*/
-void AttachMap::vFocalOutline(s4K& sOutline)
+void AttachMap::vOutline(s4K& sOutline)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
   

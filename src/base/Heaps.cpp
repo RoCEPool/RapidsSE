@@ -52,7 +52,9 @@ Heaps::Heaps(void)
 void Heaps::vSubSystem(SelfFn* aSelfFn, TokenVec* pTokenVec)
 {
   _static_
-  
+  UNUSED(aSelfFn);
+  UNUSED(pTokenVec);
+
   vTrace("Heaps::vSubSystem\n"_Stz);
   
   Heaps::vSummaryReport();
@@ -64,7 +66,8 @@ void Heaps::vSubSystem(SelfFn* aSelfFn, TokenVec* pTokenVec)
 Object* Heaps::pAllocate(eCN eAllocClass, bool bPersistent)
 {
   _static_
-  
+  UNUSED(bPersistent);
+
   Heaps* pHeaps = AM::pHeaps();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -105,7 +108,9 @@ Object* Heaps::pAllocate(eCN eAllocClass, bool bPersistent)
 /* free an object back to heap                                                */
 /*----------------------------------------------------------------------------*/
 void Heaps::vFree(Object* pObject, bool bPersistent)
-{  
+{
+  UNUSED(bPersistent);
+
   Heaps* pHeaps = AM::pHeaps();
   
   eCN eWasClass = pObject->eGetClassNo();
@@ -229,10 +234,13 @@ void Heaps::vSearchFree(void)
   if (gbAddrAllocated) {
     for (FreeChunk* pTestChunk = AM::pHeaps()->Transient.m_pMedium->m_pFreeHead;
          pTestChunk;
-         pTestChunk = pTestChunk->pNextFree())
+         pTestChunk = pTestChunk->pNextFree()) {
       if ((void*)pTestChunk >= (void*)0x204828fc0038 &&
-          (void*)pTestChunk < (void*)0x204828fcfd30)
+          (void*)pTestChunk < (void*)0x204828fcfd30) {
         int iDebug = true;
+        UNUSED(iDebug);
+      }
+    }
   }
   
 }

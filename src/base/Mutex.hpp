@@ -47,7 +47,7 @@ namespace BASE
     void vUnlock(Loggable* pLockedBy);
     void vWait(Loggable* pLockedBy);
   
-    void vFocalOutline(s4K& sOutline);
+    void vOutline(s4K& sOutline);
   
     Footer* aFooter(void);
   };

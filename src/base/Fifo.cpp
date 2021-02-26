@@ -117,9 +117,9 @@ bool Fifo::bRemove(Stz* sFifoPath)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* focal outline                                                              */
+/* outline                                                                    */
 /*----------------------------------------------------------------------------*/
-void Fifo::vFocalOutline(s4K& sOutline)
+void Fifo::vOutline(s4K& sOutline)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FIFO,_FOOTER_);
   

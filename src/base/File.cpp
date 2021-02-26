@@ -436,9 +436,9 @@ void File::vFlush(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* focal outline                                                              */
+/* outline                                                                    */
 /*----------------------------------------------------------------------------*/
-void File::vFocalOutline(s4K& sOutline)
+void File::vOutline(s4K& sOutline)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
   
