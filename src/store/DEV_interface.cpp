@@ -361,7 +361,7 @@ void vIXT_INDEXNM_SET(void* aLU, Stz* szIndexNm)
 
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
   struct RluCommon* aRluCommon = &pLogicUnit->m_xRluCommon;
-  StrLib::vCopy(&aRluCommon->m_xSrcIxt.m_cIndexNm[0], (char*)szIndexNm);
+  //StrLib::vCopy(&aRluCommon->m_xSrcIxt.m_cIndexNm[0], (char*)szIndexNm);
 }
 
 /*----------------------------------------------------------------------------*/

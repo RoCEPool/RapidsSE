@@ -152,20 +152,6 @@ LogicUnit::LogicUnit(Task* pTask)
   m_xRluCommon.m_nPtns  = AM::nPtnsInGrid();
   m_xRluCommon.m_iHash  = 0;
 
-  MemLib::vZero(m_xRluCommon.m_xSrcIxt.m_cIndexNm,256,CN_LOGICUNIT);
-  m_xRluCommon.m_xSrcIxt.m_pIdxTree   = nullptr;
-
-  m_xRluCommon.m_xSrcIxt.m_aEnt       = nullptr;
-  m_xRluCommon.m_xSrcIxt.m_aUpperEnt  = nullptr;
-
-  m_xRluCommon.m_xSrcIxt.m_pEntBuffer = nullptr;
-
-  m_xRluCommon.m_xSrcIxt.m_aCrw       = nullptr;
-  m_xRluCommon.m_xSrcIxt.m_pCrwBuffer = nullptr;
-
-  m_xRluCommon.m_xSrcIxt.m_i_Row      = C_UNKNOWN;
-  m_xRluCommon.m_xSrcIxt.m_nRows      = C_UNKNOWN;
-
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_eaCode,sizeof(m_eaCode),CN_LOGICUNIT);
 #endif
