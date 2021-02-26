@@ -167,6 +167,32 @@ echo "Making the symbolic link from ${DATA_SYMLINK_SRC} to ${DATA_SYMLINK_DEST}"
 ln -s "${DATA_SYMLINK_DEST}" "${DATA_SYMLINK_SRC}"
 
 
+# Now let's do the same but for the ../TPCH symbolic link
+
+readonly TPCH_SYMLINK_SRC="${INSTALL_DIR}/TPCH"
+readonly TPCH_SYMLINK_DEST="/opt/TPCH"
+
+# Check if the data actually exists
+if [ ! -d "${TPCH_LINK_DEST}" ]; then
+  errorExit "TPC-H SF1 data does not exist at: ${TPCH_SYMLINK_DEST}"
+fi
+
+# Check if the symbolic link already exists
+
+# If the link exists then lets delete and recreate it.
+if [ -e "${TPCH_SYMLINK_SRC}" ]; then
+  # Is it a symbolic link?
+  if [ -h "${TPCH_SYMLINK_SRC}" ]; then
+    rm -f "${TPCH_SYMLINK_SRC}"
+  else
+    errorExit "Expected to find a symbolic link at path: ${TPCH_SYMLINK_SRC}"
+  fi
+fi
+
+echo "Making the symbolic link from ${TPCH_SYMLINK_SRC} to ${TPCH_SYMLINK_DEST}"
+ln -s "${TPCH_SYMLINK_DEST}" "${TPCH_SYMLINK_SRC}"
+
+
 ENDTIME="$(date +%s)"
 ELAPSEDTIME="$(secondsToTime $((ENDTIME - STARTTIME)))"
 

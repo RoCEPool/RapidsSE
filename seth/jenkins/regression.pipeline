@@ -25,6 +25,7 @@ pipeline {
     timestamps()
   }
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   stages {
     stage('Build Release') {
       steps {
@@ -53,31 +54,30 @@ pipeline {
 
     stage('Test Release') {
       steps {
-        echo 'Testing..'
-        sh 'seth/jenkins/test.sh seth/jenkins/1node.config'
-        // capture logs if they are not huge
-        // capture test results
+        sh 'seth/jenkins/test.sh release seth/jenkins/1node.config'
+
+        // TODO: capture log artifacts if they are not huge
       }
 
       post {
         always {
+          // Ensure we have stopped SE and SETH
           sh 'seth/jenkins/stop.sh seth/jenkins/1node.config'
         }
       }
     }
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  } // stages
 
 
+  post {
+    // TODO: send an email on a change
+
+    always {
+      // Capture all test results
+      junit 'seth/jenkins/results/*.xml'
+    }
   }
-
-
-//  post {
-    // any steps to run after the stages have completed
-    // (successfully or not).
-    // e.g. send an email on a change
-
-//    always {
-//      sh 'seth/jenkins/stop.sh seth/jenkins/1node.config'
-//    }
-//  }
 
 }
