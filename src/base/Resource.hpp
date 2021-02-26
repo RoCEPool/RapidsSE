@@ -11,7 +11,7 @@ namespace BASE
     Object* m_pIsFor;
   
   public:
-    Resource(eCN eClass);
+    //Resource(eCN eClass);
     Resource(eCN eClass, Object* pIsFor);
    ~Resource(void) noexcept(false);
   

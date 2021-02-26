@@ -71,7 +71,7 @@ void PsxThd::operator delete(void* pPsxThdAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 PsxThd::PsxThd()
-: Resource(CN_PSXTHD)
+: Resource(CN_PSXTHD,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PSXTHD,_FOOTER_);
   

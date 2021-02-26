@@ -18,13 +18,13 @@ namespace BASE
     eEV m_eEvent;     // last event
     i8  m_iEventTick; // time point that occurred
     i8  m_iDuration;  // last event no
-    b8  m_bDontLog;   // don't log this object
+    i8  m_iLogCtl;    // log/don't log this object
   
     i8  m__spare0;    //
     i8  m__spare1;    //
 
   public:
-    Loggable(eCN eClassNo, bool bDontLog=false);
+    Loggable(eCN eClassNo, i8 iLogCtl=C_LOG);
    ~Loggable(void) noexcept(false);
   
     eEV  eEvent(void);

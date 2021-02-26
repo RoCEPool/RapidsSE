@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Loggable::Loggable(eCN eClassNo, bool bDontLog)
+Loggable::Loggable(eCN eClassNo, i8 iLogCtl)
 : Object(eClassNo)
 {
    m_iObjectId = AM::iNextObjectNo(eClassNo);
@@ -20,7 +20,7 @@ Loggable::Loggable(eCN eClassNo, bool bDontLog)
   
   m_eEvent     = EV_NONE;
   m_iDuration  = C_UNKNOWN;
-  m_bDontLog   = bDontLog;
+  m_iLogCtl    = iLogCtl;
 
   m__spare0    = C_UNKNOWN;
   m__spare1    = C_UNKNOWN;
@@ -36,6 +36,29 @@ Loggable::~Loggable(void) noexcept(false)
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* log next event                                                             */
+/*----------------------------------------------------------------------------*/
+void Loggable::vLog(eEV eEvent, Stz* szFormat, ...)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  UNUSED(eEvent);
+    
+  if (C_DONT_LOG == m_iLogCtl)
+    return;
+  
+  va_list xVarArgs;
+  
+  va_start(xVarArgs,szFormat);
+  
+  vprintf(szFormat->azChar(),xVarArgs);
+    
+  va_end(xVarArgs);
+}
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -148,23 +171,6 @@ void Loggable::vNextEvent(eEV eEvent)
   vEventTickSet();
   vEvent(eEvent);
   vEventNoInc();
-}
-
-/*----------------------------------------------------------------------------*/
-/* log next event                                                             */
-/*----------------------------------------------------------------------------*/
-void Loggable::vLog(eEV eEvent, Stz* szFormat, ...)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  UNUSED(eEvent);
-  
-  // to be completed
-  
-  va_list xVarArgs;
-  
-  va_start(xVarArgs,szFormat);
-    
-  va_end(xVarArgs);
 }
 
 /*============================================================================*/

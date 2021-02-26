@@ -48,8 +48,8 @@ void Lock::operator delete(void*)
 /*----------------------------------------------------------------------------*/
 /* constructor (for non-focal case)                                           */
 /*----------------------------------------------------------------------------*/
-Lock::Lock(Object* pObjectLocked, bool bDontLog)
-: Loggable(CN_LOCK,bDontLog)
+Lock::Lock(Object* pObjectLocked, i8 iLogCtl)
+: Loggable(CN_LOCK,iLogCtl)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
     
@@ -590,7 +590,7 @@ void Lock::vLockTrace(eLS eLockStyle)
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   UNUSED(eLockStyle);
   
-  if (m_bDontLog)
+  if (C_DONT_LOG == m_iLogCtl)
     return;
   
 //  if (MY::pOp())

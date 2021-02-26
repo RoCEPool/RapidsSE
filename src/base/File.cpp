@@ -164,7 +164,9 @@ void File::vInitGlobals(void)
 void File::vListOfOpenFiles(SelfFn* aSelfFn, TokenVec* pTokenVec)
 {
   _static_
-  
+  UNUSED(aSelfFn);
+  UNUSED(pTokenVec);
+
   vTrace("File::vListOfOpenFiles\n"_Stz);
 }
 
@@ -377,9 +379,7 @@ void File::vClose(void)
   
   if (! m_iViaMalloc && AM::bAttached()) AM::pResources()->vDecFileOpen();
   
-  AM::vLogRes(SL_INF,this,RA_FIL_CLOSED,
-              "File closed: path=%s"_Stz, //!format-LogRes
-              m_sFilePath.szStz());
+  vLog(EV_CLOSE,"File closed: path=%s"_Stz,m_sFilePath.szStz());
 
   vReset();
   
@@ -428,6 +428,8 @@ void File::vFlush(void)
     vWarn("File::vFlush: fflush() error; errno=%d"_Stz,errno);
     return;
   }
+  
+  vLog(EV_FLUSH,"File flushed: path=%s"_Stz,m_sFilePath.szStz());
 
   m_oSysCall.vSuccess();
 }
@@ -719,13 +721,9 @@ bool File::bOpenMode(Stz* szFilePath, Stz* szOpenMode)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (! m_iViaMalloc && AM::bAttached()) AM::pResources()->vIncFileOpen();
-  
-  AM::vLogRes(SL_INF,this,RA_FIL_OPENED,
-              "File opened: path=%s; mode=%s"_Stz, //!format-LogRes
-              szFilePath,szOpenMode);
-  
-  EVLOG::vEvent(this,EV_OPEN,"File opened: path=%s; mode=%s"_Stz,
-              szFilePath,szOpenMode);
+    
+  vLog(EV_OPEN,"File opened: path=%s; mode=%s"_Stz,
+       m_sFilePath.szStz(),m_sOpenMode.szStz());
 
   return true;
 }
@@ -834,6 +832,9 @@ i8 File::nReadBytes(void* aDst, i8 nBytes)
 #ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.File.m_nReadBytes += nBytesRead;
 #endif
+  
+  vLog(EV_OPEN,"File read: path=%s; bytes=%lld"_Stz,m_sFilePath.szStz(),nBytesRead);
+
 
   return nBytesRead;
 }
