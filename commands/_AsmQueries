@@ -82,7 +82,7 @@ create index lineitem_idx1 on lineitem (l_shipdate);
 create index lineitem_idx2 on lineitem (l_orderkey);
 
 print "loading Lineitem...";
- /time load lineitem "/DATA/TPCH/lineitem_100k.csv";
+ /time load lineitem "../DATA/TPCH/lineitem_100k.csv";
 ///time load lineitem "/Users/Shared/tpch/SF0/lineitem_100k.csv";
 
 compactIdx LineItem lineItem_Idx1;
@@ -108,7 +108,7 @@ demo select
     l_linestatus order by
     l_returnflag, l_linestatus;
 
-
+/*
 print "*****************************************************************";
 print "executing Query3...";
 demo select
@@ -172,7 +172,7 @@ print "executing Query6...";
 // drop table orders;
 // drop table lineitem;
 // memoryLeaks;
-
+*/
 /*
  SQLITE SF1 Q1:
  

@@ -1526,14 +1526,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // indexTree operators
-      case EO_INDEXTREE_DELETE: ArgNil(); // delete indexTree
-        dLU0(EO_INDEXTREE_DELETE);
-        vIXT_INDEXTREE_DELETE(&aiDstk);
+      case EO_DEVIXT_INDEXTREE_DELETE: ArgNil(); // delete indexTree
+        dLU0(EO_DEVIXT_INDEXTREE_DELETE);
+        vDev_IXT_INDEXTREE_DELETE(&aiDstk);
         break;//+endCase
 
-      case EO_INDEXTREE_SET: ArgNil(); // set indexTree from indexTree[]
-        dLU0(EO_INDEXTREE_ALT_SET);
-        vIXT_INDEXTREE_SET(&aiDstk);
+      case EO_DEVIXT_INDEXTREE_SET: ArgNil(); // set indexTree from indexTree[]
+        dLU0(EO_DEVIXT_INDEXTREE_SET);
+        vDev_IXT_INDEXTREE_SET(&aiDstk);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
