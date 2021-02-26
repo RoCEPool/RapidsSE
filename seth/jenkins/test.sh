@@ -35,9 +35,6 @@ readonly RELATIVE_JENKINS_DIR="seth/jenkins"  # Relative to the project root
 # Set to 1 to print debug messages in Jenkins.
 readonly DEBUG=0
 
-# This is the colleciton of tests that are actually run by bamboo.
-readonly TESTLIST_FILE="${DIR}/../bamboo/allTestsBamboo"
-
 # How long to run the seth tests for (in seconds) before declaring that they are hung.
 # Defaulting to 30 minutes.
 readonly SETH_TIMEOUT="3600"
@@ -60,6 +57,9 @@ TARGET=""
 
 # The path of the config file to be used for installation
 CONFIG_FILE=""
+
+# This is the colleciton of tests that are actually run by bamboo.
+TESTLIST_FILE=""
 
 ###############################################################################
 ### Functions                                                               ###
@@ -92,8 +92,8 @@ function onExit() {
 
 function processArgs() {
 
-  if [ "$#" -ne 2  ]; then
-    errorExit "Insufficient arguments provided\n" "Usage: ./${SCRIPT_NAME} {*debug* | *release*} path/of/cluster.config"
+  if [ "$#" -ne 3  ]; then
+    errorExit "Insufficient arguments provided\n" "Usage: ./${SCRIPT_NAME} {*debug* | *release*} path/of/cluster.config path/of/testlistFile"
   fi
 
   TARGET="$1"
@@ -106,6 +106,14 @@ function processArgs() {
   if [ ! -f "${CONFIG_FILE}" ]; then
     errorExit "Cannot locate the cluster configuration file at: ${CONFIG_FILE}"
   fi
+
+  TESTLIST_FILE="$3"
+  if [ ! -f "${TESTLIST_FILE}" ]; then
+    errorExit "Cannot locate the test list file that SETH will execute: ${TESTLIST_FILE}"
+  fi
+
+  # Convert to an absolute path
+  TESTLIST_FILE="$(realpath "${TESTLIST_FILE}")"
 }
 
 
@@ -209,7 +217,7 @@ if ! CLUSTER_OUTPUT="$("${STATUS_SCRIPT}" 2>&1)" ; then
 fi
 
 
-echo "Starting SETH to run tests in testlist file: $(realpath ${TESTLIST_FILE})"
+echo "Starting SETH to run tests in testlist file: ${TESTLIST_FILE}"
 
 SETH_START_TIME="$(date +%s)"
 
