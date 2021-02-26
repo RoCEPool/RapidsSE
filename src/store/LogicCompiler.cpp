@@ -256,7 +256,8 @@ void LogicCompiler::vExtract(void)
 {
   _static_
     
-  vTrace("LogicCompiler::vExtract -- Extract EO_ Fragments\n"_Stz);
+  if (AM::bVerbose())
+    vTrace("LogicCompiler::vExtract -- Extract EO_ Fragments\n"_Stz);
   
   LocalFile oFile;
   
@@ -269,7 +270,8 @@ void LogicCompiler::vExtract(void)
   while (oFile.bNextLiteTok(sTok)) {
     
     if (sTok.bSame("//+ExtractBegin"_Stz)) {
-      vTrace("Found +ExtractBegin\n"_Stz);
+      if (AM::bVerbose())
+        vTrace("Found +ExtractBegin\n"_Stz);
       while (bExtractAll(&oFile,&azCrs, "case"_Stz, "break;//+endCase"_Stz))
         {;}
     }
@@ -312,7 +314,8 @@ void LogicCompiler::vExtractAsm(void)
 {
   _static_
 
-  vTrace("LogicCompiler::vExtractAsm -- Extract AM_ Macro Fragments\n"_Stz);
+  if (AM::bVerbose())
+    vTrace("LogicCompiler::vExtractAsm -- Extract AM_ Macro Fragments\n"_Stz);
 
   LocalFile oFile;
   char *azCrs = gcaAmMacros;
@@ -320,7 +323,8 @@ void LogicCompiler::vExtractAsm(void)
   //bool b = pFile->bOpenRead("../asm/AsmMacros.txt"_Stz);
   for (i8 iMacroFile = 0; iMacroFile < C_MACRO_FILES; iMacroFile++) {
 
-    vTrace("File: %s\n"_Stz,gszaAmMacroFiles[iMacroFile]);
+    if (AM::bVerbose())
+      vTrace("File: %s\n"_Stz,gszaAmMacroFiles[iMacroFile]);
     bool b = oFile.bOpenRead((Stz*)gszaAmMacroFiles[iMacroFile]);
     RASSERT(b);
 
@@ -366,7 +370,7 @@ void LogicCompiler::vExtractFragment(LocalFile* pFile, char** aazCrs, Stz* start
     RASSERT(startMarker->bSame("macro"_Stz));
     i_AM = eFindAM(sTok);
 
-    //if (AM::bVerbose())
+    if (AM::bVerbose())
       vTrace("Macro %s [%lld]\n"_Stz, sTok.szStz(), i_AM);
 
     gszaAmMacros[i_AM] = (Stz *) *aazCrs;
