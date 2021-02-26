@@ -63,9 +63,12 @@ pipeline {
       // Always ensure we have stopped SE and SETH
       post {
         always {
-          // Capture log artifacts if they are not huge
-          archiveArtifacts artifacts: '/opt/rapidsse/NODE0/se.log'
+          // Copy the log artifacts into the workspace so they can be archived.
+          // For some reason it doesn't work if they are outside of the workspace.
+          sh 'mkdir -p logs/release/1n'
+          sh 'cp /opt/rapidsse/NODE0/se.log logs/release/1n/se.log'
 
+          // Stop SE and SETH
           sh 'seth/jenkins/stop.sh seth/jenkins/1node.config'
         }
       }
@@ -105,9 +108,13 @@ pipeline {
       // Always ensure we have stopped SE and SETH
       post {
         always {
-          // Capture log artifacts if they are not huge
-          archiveArtifacts artifacts: '/opt/rapidsse/**/se.log'
+          // Copy the log artifacts into the workspace so they can be archived.
+          // For some reason it doesn't work if they are outside of the workspace.
+          sh 'mkdir -p logs/release/2n'
+          sh 'cp /opt/rapidsse/NODE0/se.log logs/release/2n/se.NODE0.log'
+          sh 'cp /opt/rapidsse/NODE1/se.log logs/release/2n/se.NODE1.log'
 
+          // Stop SE and SETH
           sh 'seth/jenkins/stop.sh seth/jenkins/2node.config'
         }
       }
@@ -151,9 +158,12 @@ pipeline {
       // Always ensure we have stopped SE and SETH
       post {
         always {
-          // Capture log artifacts if they are not huge
-          archiveArtifacts artifacts: '/opt/rapidsse/NODE0/se.log'
+          // Copy the log artifacts into the workspace so they can be archived.
+          // For some reason it doesn't work if they are outside of the workspace.
+          sh 'mkdir -p logs/debug/1n'
+          sh 'cp /opt/rapidsse/NODE0/se.log logs/debug/1n/se.log'
 
+          // Stop SE and SETH
           sh 'seth/jenkins/stop.sh seth/jenkins/1node.config'
         }
       }
@@ -193,9 +203,14 @@ pipeline {
       // Always ensure we have stopped SE and SETH
       post {
         always {
-          // Capture log artifacts if they are not huge
-          archiveArtifacts artifacts: '/opt/rapidsse/**/se.log'
 
+          // Copy the log artifacts into the workspace so they can be archived.
+          // For some reason it doesn't work if they are outside of the workspace.
+          sh 'mkdir -p logs/debug/2n'
+          sh 'cp /opt/rapidsse/NODE0/se.log logs/debug/2n/se.NODE0.log'
+          sh 'cp /opt/rapidsse/NODE1/se.log logs/debug/2n/se.NODE1.log'
+
+          // Stop SE and SETH
           sh 'seth/jenkins/stop.sh seth/jenkins/2node.config'
         }
       }
@@ -208,6 +223,11 @@ pipeline {
 
   post {
     // TODO: send an email on a change
+
+    unsuccessful {
+      // Capture log artifacts that have been copied back into the workspace
+      archiveArtifacts artifacts: 'logs/**/*', allowEmptyArchive: true
+    }
 
     always {
       // Capture all test results
