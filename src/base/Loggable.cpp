@@ -73,7 +73,7 @@ i8 Loggable::iEventNo(void)
 /*----------------------------------------------------------------------------*/
 void Loggable::vEventNoInc(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_MAGIC_);
   
   m_iEventNo++;
 }

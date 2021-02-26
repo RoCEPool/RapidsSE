@@ -37,6 +37,7 @@ SP_Lock::~SP_Lock(void) noexcept(false)
 Stz* SP_Lock::sz(Lock* pLock)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+  UNUSED(pLock);
   
   return (Stz*) &m_caResult[0];
 }

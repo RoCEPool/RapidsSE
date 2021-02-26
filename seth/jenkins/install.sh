@@ -101,10 +101,8 @@ STARTTIME="$(date +%s)"
 
 echo ""
 echo "********************************************************************************"
-echo "*** Beginning the Install stage CI script                                    ***"
+echo "*** Beginning the Install stage                                              ***"
 echo "********************************************************************************"
-echo ""
-echo "Started at: $(date)"
 echo ""
 
 
@@ -127,15 +125,79 @@ INSTALLER="$(realpath "${INSTALLER}")"
 # Install it
 "${INSTALLER}" -- --script --config "${CONFIG_FILE}"
 
+# We need to set up a symbolic link so that the tests can load data.
+# The test files ask SE to load files from ../DATA/TPCH/*. This path
+# is relative to the cwd of SE, which will be something like
+# /opt/rapidsse/NODE1/commands
+# So we need to create /opt/rapidsse/NODE1/DATA and point it to
+# the DATA folder in the current repository path.
+
+# First get the installation dir from the config.
+# To do this, load the config (it is just a bash script file)
+loadClusterConfig
+
+# Get the name of the first node
+FIRST_NODE="${NODE_LIST[0]}"
+
+# Get the installation dir of the first node
+INSTALL_DIR="$(nodeCfgGetValue "${FIRST_NODE}" "dir")"
+
+if [ -z "${INSTALL_DIR}" ]; then
+  errorExit "Couldn't get the installation directory for node ${FIRST_NODE}"
+fi
+
+readonly DATA_SYMLINK_SRC="${INSTALL_DIR}/DATA"
+readonly DATA_SYMLINK_DEST="$(realpath "${PROJ_ROOT}/DATA")"
+
+# Check if the symbolic link already exists
+
+# If the link exists then lets delete and recreate it.
+if [ -e "${DATA_SYMLINK_SRC}" ]; then
+  # Is it a symbolic link?
+  if [ -h "${DATA_SYMLINK_SRC}" ]; then
+    rm -f "${DATA_SYMLINK_SRC}"
+  else 
+    errorExit "Expected to find a symbolic link at path: ${DATA_SYMLINK_SRC}"
+  fi
+fi
+
+echo "Making the symbolic link from ${DATA_SYMLINK_SRC} to ${DATA_SYMLINK_DEST}"
+ln -s "${DATA_SYMLINK_DEST}" "${DATA_SYMLINK_SRC}"
+
+
+# Now let's do the same but for the ../TPCH symbolic link
+
+readonly TPCH_SYMLINK_SRC="${INSTALL_DIR}/TPCH"
+readonly TPCH_SYMLINK_DEST="/opt/TPCH"
+
+# Check if the data actually exists
+if [ ! -d "${TPCH_SYMLINK_DEST}" ]; then
+  errorExit "TPC-H SF1 data does not exist at: ${TPCH_SYMLINK_DEST}"
+fi
+
+# Check if the symbolic link already exists
+
+# If the link exists then lets delete and recreate it.
+if [ -e "${TPCH_SYMLINK_SRC}" ]; then
+  # Is it a symbolic link?
+  if [ -h "${TPCH_SYMLINK_SRC}" ]; then
+    rm -f "${TPCH_SYMLINK_SRC}"
+  else
+    errorExit "Expected to find a symbolic link at path: ${TPCH_SYMLINK_SRC}"
+  fi
+fi
+
+echo "Making the symbolic link from ${TPCH_SYMLINK_SRC} to ${TPCH_SYMLINK_DEST}"
+ln -s "${TPCH_SYMLINK_DEST}" "${TPCH_SYMLINK_SRC}"
+
 
 ENDTIME="$(date +%s)"
 ELAPSEDTIME="$(secondsToTime $((ENDTIME - STARTTIME)))"
 
 echo ""
 echo "********************************************************************************"
-echo "*** Install stage CI script complete                                         ***"
+echo "*** Completed the Install stage                                              ***"
 echo "********************************************************************************"
-echo ""
 echo "Elapsed time: ${ELAPSEDTIME}"
 echo ""
 

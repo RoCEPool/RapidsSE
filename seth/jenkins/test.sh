@@ -55,6 +55,9 @@ readonly MAX_DISK_USED_PCT="90"
 # Do we need to stop or force stop RapidsSE?
 STOP_REQ=0
 
+# Are we testing debug or release?
+TARGET=""
+
 # The path of the config file to be used for installation
 CONFIG_FILE=""
 
@@ -89,11 +92,17 @@ function onExit() {
 
 function processArgs() {
 
-  if [ "$#" -ne 1  ]; then
-    errorExit "Insufficient arguments provided\n" "Usage: ./${SCRIPT_NAME} path/of/cluster.config"
+  if [ "$#" -ne 2  ]; then
+    errorExit "Insufficient arguments provided\n" "Usage: ./${SCRIPT_NAME} {*debug* | *release*} path/of/cluster.config"
   fi
 
-  CONFIG_FILE="$1"
+  TARGET="$1"
+
+  if ! [[ "${TARGET}" = *debug* || "${TARGET}" = *release* ]]; then
+    errorExit "Parameter 1 must contain the substring \"debug\" or \"release\""
+  fi
+
+  CONFIG_FILE="$2"
   if [ ! -f "${CONFIG_FILE}" ]; then
     errorExit "Cannot locate the cluster configuration file at: ${CONFIG_FILE}"
   fi
@@ -120,10 +129,8 @@ STARTTIME="$(date +%s)"
 
 echo ""
 echo "********************************************************************************"
-echo "*** Beginning the Test stage CI script                                       ***"
+echo "*** Beginning the Test stage                                                 ***"
 echo "********************************************************************************"
-echo ""
-echo "Started at: $(date)"
 echo ""
 
 
@@ -174,7 +181,14 @@ readonly SE_LOG_FILE="${INSTALL_DIR}/se.log"
 export LD_LIBRARY_PATH="${SE_BIN_DIR}:${LD_LIBRARY_PATH:-}"
 
 # Additional arguments for SETH. Enable as required.
-readonly SETH_ARGS=("--logsteps" "--resultdir" "${DIR}/results" "--resultformat" "junit" "-f" "${TESTLIST_FILE}")
+readonly SETH_ARGS=(
+  "--logsteps" 
+  "--resultdir" "$(realpath "${DIR}/results")"
+  "--resultname" "results-${TARGET}.xml"
+  "--testsuffix" " (${TARGET})"
+  "--resultformat" "junit" 
+  "-f" "${TESTLIST_FILE}"
+)
 
 # The SE JDBC URL that tells the JDBC driver how to connect to SE.
 readonly URL="jdbc:rapidsse:${SE_PATH}?extraargs=${SE_ARGS[*]}"
@@ -195,11 +209,15 @@ if ! CLUSTER_OUTPUT="$("${STATUS_SCRIPT}" 2>&1)" ; then
 fi
 
 
+echo "Starting SETH to run tests in testlist file: $(realpath ${TESTLIST_FILE})"
+
 SETH_START_TIME="$(date +%s)"
 
 # Run the SE Test Harness in the background so we can monitor both it and SE.
-java -cp ${CLASSPATH} com.rapidsdata.seth.Seth -u "${URL}" ${SETH_ARGS[*]} &
-SETH_PID=$!
+# We run it in a subshell with "|| true" to avoid problems with set -e if
+# it returns a non-zero exit code.
+( java -cp ${CLASSPATH} com.rapidsdata.seth.Seth -u "${URL}" ${SETH_ARGS[*]} || true ) &
+SETH_PID=$!  # This will actually be the pid of the subshell
 
 # Now wait until SETH finishes running. If SE exits then it has crashed and we have an error.
 while true
@@ -303,9 +321,8 @@ ELAPSEDTIME="$(secondsToTime $((ENDTIME - STARTTIME)))"
 
 echo ""
 echo "********************************************************************************"
-echo "*** Test stage CI script complete                                            ***"
+echo "*** Completed the Test stage                                                 ***"
 echo "********************************************************************************"
-echo ""
 echo "Elapsed time: $(secondsToTime "${ELAPSEDTIME}")"
 echo ""
 

@@ -203,10 +203,10 @@ void SeDeputy::vDeputiseJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  m_pThread->m_oMutex.vLock(nullptr);
+  m_pThread->m_oMutex.vLock(m_pThread);
   m_bAvailable = false;
-  m_pThread->m_oMutex.vSignal(nullptr);
-  m_pThread->m_oMutex.vUnlock(nullptr);
+  m_pThread->m_oMutex.vSignal(m_pThread);
+  m_pThread->m_oMutex.vUnlock(m_pThread);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -276,10 +276,10 @@ void SeDeputy::vTerminate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  m_pThread->m_oMutex.vLock(nullptr);
+  m_pThread->m_oMutex.vLock(m_pThread);
   m_bContinue = false;
-  m_pThread->m_oMutex.vSignal(nullptr);
-  m_pThread->m_oMutex.vUnlock(nullptr);
+  m_pThread->m_oMutex.vSignal(m_pThread);
+  m_pThread->m_oMutex.vUnlock(m_pThread);
 }
 
 /*----------------------------------------------------------------------------*/

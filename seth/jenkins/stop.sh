@@ -103,10 +103,8 @@ STARTTIME="$(date +%s)"
 
 echo ""
 echo "********************************************************************************"
-echo "*** Beginning the Stop stage CI script                                       ***"
+echo "*** Beginning the Stop stage                                                 ***"
 echo "********************************************************************************"
-echo ""
-echo "Started at: $(date)"
 echo ""
 
 
@@ -140,9 +138,8 @@ ELAPSEDTIME="$(secondsToTime $((ENDTIME - STARTTIME)))"
 
 echo ""
 echo "********************************************************************************"
-echo "*** Stop stage CI script complete                                            ***"
+echo "*** Compelted the Stop stage                                                 ***"
 echo "********************************************************************************"
-echo ""
 echo "Elapsed time: ${ELAPSEDTIME}"
 echo ""
 

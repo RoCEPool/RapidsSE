@@ -209,8 +209,9 @@ bool JobList::bIsLocked(void)
 /*----------------------------------------------------------------------------*/
 /* log the job list                                                           */
 /*----------------------------------------------------------------------------*/
-void JobList::vLogJobs(i8 iJobId)
+void JobList::vLogJobs(void)
 {
+  
   i8 iLevel = 0;
   
   vGrabLock();

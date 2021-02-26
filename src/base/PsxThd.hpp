@@ -71,8 +71,6 @@ namespace BASE
     void vThreadBoost(i8 nPoints);
     void vThreadPriority(i8 iPriority);
   
-  
- 
     Footer* aFooter(void);
   };
   
