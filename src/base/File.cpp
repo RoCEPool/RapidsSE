@@ -110,6 +110,8 @@ File::File(Object* bIsFor, i8 iLogCtl)
   
   if (! m_iViaMalloc)
     gpOpenFiles->vAppend(this);
+  
+  vLog(EV_CONSTRUCT,"File constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -138,6 +140,8 @@ File::~File(void) noexcept(false)
   
   if (! m_iViaMalloc)
     gpOpenFiles->vRemove(this);
+  
+  vLog(EV_DESTRUCT,"File constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -834,7 +838,7 @@ i8 File::nReadBytes(void* aDst, i8 nBytes)
   gpAttachMap->m_oStatistics.File.m_nReadBytes += nBytesRead;
 #endif
   
-  vLog(EV_OPEN,"File read: path=%s; bytes=%lld"_Stz,m_sFilePath.szStz(),nBytesRead);
+  vLog(EV_READ,"File read: path=%s; bytes=%lld"_Stz,m_sFilePath.szStz(),nBytesRead);
 
 
   return nBytesRead;

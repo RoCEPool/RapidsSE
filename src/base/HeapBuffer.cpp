@@ -96,6 +96,9 @@ void HeapBuffer::vAnalyse(i8 nBytes, i8 xCounts[])
 /*----------------------------------------------------------------------------*/
 void HeapBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
+  UNUSED(eClass);
+  UNUSED(aTab);
+
   HeapBuffer* pHeapBuffer = _pHeapBuffer(pObject);
   
   vTrace("nextBuffer %p prevBuffer %p\n"_Stz,
@@ -190,6 +193,7 @@ void HeapBuffer::vVerify(i8 iChunkSize)
     
     eCN eClass = aChunk->eGetClassNo();
     ASSERT(eClass < CN_ENUMS);
+    UNUSED(eClass);
   }
 }
 

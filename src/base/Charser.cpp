@@ -69,6 +69,9 @@ Charser::~Charser(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Charser::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
+  UNUSED(eClass);
+  UNUSED(aTab);
+  
   Charser* pCharser = _pCharser(pObject);
   
   vTrace("depth %lld next %p\n"_Stz,

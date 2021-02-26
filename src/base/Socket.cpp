@@ -110,6 +110,8 @@ Socket::Socket(Object* pIsFor, int iSocketId)
               * gixSocket);
   
   _postcondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
+  vLog(EV_CONSTRUCT,"Socket constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -129,6 +131,8 @@ Socket::~Socket(void) noexcept(false)
   AM::vLogRes(SL_INF,this,RA_SKT_DESTRUCT,
               "Socket destruct : %p |gixSocket=%lld|"_Stz, //!format-LogRes
               this,* gixSocket);
+  
+  vLog(EV_DESTRUCT,"Socket constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -623,9 +627,11 @@ bool Socket::bRecvBytes(void* aBytes, i8 nBytes, SysCall& SysCall)
     gpAttachMap->m_oStatistics.Socket.m_nRecvBytes += nRecvBytes;
 #endif
     
-  AM::vLogRes(SL_INF,this,RA_SKT_RECEIVED,
-              "Socket received %lldB"_Stz, //!format-LogRes
-              nRecvBytes);
+    AM::vLogRes(SL_INF,this,RA_SKT_RECEIVED,
+                "Socket received %lldB"_Stz, //!format-LogRes
+                nRecvBytes);
+
+    vLog(EV_RECV,"Socket recv: %lld bytes"_Stz,nRecvBytes);
 
     //vTrace("Bytes received: (%lld) %lld\n"_Stz, nBytes, nSoFar);
   }
@@ -660,6 +666,8 @@ bool Socket::bSendBytes(void* pBuffer, i8 nBytes, SysCall& SysCall)
   AM::vLogRes(SL_INF,this,RA_SKT_SENT,
               "Socket sent %lldB"_Stz, //!format-LogRes
               nSentBytes);
+
+  vLog(EV_SEND,"Socket send: %lld bytes"_Stz,nSentBytes);
 
   if (nSentBytes == nBytes) {
     SysCall.vSuccess();
@@ -731,34 +739,6 @@ bool Socket::bTestForData(SysCall& SysCall)
   }
   
   //! what should nRecv be at this point?
-  
-  SysCall.vSuccess();
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* write n bytes to this socket from given buffer                             */
-/*----------------------------------------------------------------------------*/
-bool Socket::bWriteVch(Stz* aChar, SysCall& SysCall)
-{
-  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
-  
-  SysCall.vClear();
-  
-  i8 nBytes = aChar->nLength();
- 
-#ifdef WITH_STATISTICS_COUNTERS
-  gpAttachMap->m_oStatistics.Socket.m_nSends++;
-#endif
-  
-  i8 nSent = send(m_iSocketFd, aChar->azChar(), nBytes,0);
-  
-  if (nSent != nBytes)
-    return false;
-
-#ifdef WITH_STATISTICS_COUNTERS
-  gpAttachMap->m_oStatistics.Socket.m_nSendBytes += nSent;
-#endif
   
   SysCall.vSuccess();
   return true;
@@ -869,7 +849,7 @@ bool Socket::bBind(Stz* sAddr, int iPort, SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 /* set receive buffer size                                                    */
 /*----------------------------------------------------------------------------*/
-bool Socket::bRecvBuffer(int nBytes, SysCall& SysCall)
+bool Socket::bSetRecvBufferSize(int nBytes, SysCall& SysCall)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
@@ -1035,6 +1015,9 @@ bool Socket::bSendTo(void* aBytes, i8 nBytes, SysCall& SysCall)
   gpAttachMap->m_oStatistics.Socket.m_nSendBytes += nBytesSent;
 #endif
   
+  vLog(EV_SEND,"Socket send: %lld bytes"_Stz,nBytesSent);
+
+  
   if (nBytesSent < nBytes)
   {
     vWarn("sendto() less bytes sent; %lld v %lld\n"_Stz
@@ -1055,6 +1038,8 @@ bool Socket::bSendTo(void* aBytes, i8 nBytes, SysCall& SysCall)
 bool Socket::bRecvFrom(void* pBuffer, i8 nBytes, i8* pRecv, SysCall& SysCall)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
+  NEVER_REACH;
   
   struct sockaddr_in xRemoteAddr;
   socklen_t iRemoteLen = sizeof(xRemoteAddr);

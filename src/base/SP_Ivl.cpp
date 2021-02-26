@@ -49,6 +49,7 @@ Stz* SP_Ivl::sz(i8 iIvl)
 Stz* SP_Ivl::sz(i8 iIvl, i8 iScale)
 {
   _precondition_(_MAGIC_,_FOOTER_);
+  UNUSED(iScale);
   
   Ivl wIvl;
   wIvl = iIvl;

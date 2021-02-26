@@ -57,12 +57,11 @@ namespace BASE
     void vDropWrite(void);
     void vOutline(s4K& sOutline);
     void vGrabWrite(void);
-    bool bRecvBuffer(int nBytes, SysCall& SysCall);
     bool bRecvBytes(void* pBuffer, i8 nBytes, SysCall& SysCall);
     bool bSendBytes(void* pBuffer, i8 nBytes, SysCall& SysCall);
+    bool bSetRecvBufferSize(int nBytes, SysCall& SysCall);
     bool bSetNonBlocking(SysCall& SysCall);
     bool bTestForData(SysCall& SysCall);
-    bool bWriteVch(Stz* pVch, SysCall& SysCall);
     
     bool bSocket(SysCall& SysCall);
     bool bBind(SysCall& SysCall);

@@ -48,13 +48,17 @@ void Loggable::vLog(eEV eEvent, Stz* szFormat, ...)
     
   if (C_DONT_LOG == m_iLogCtl)
     return;
-  
+ 
+  if (CN_SOCKET != eGetClassNo())
+    return;
+
   va_list xVarArgs;
   
   va_start(xVarArgs,szFormat);
   
-  //vprintf(szFormat->azChar(),xVarArgs);
-    
+//  vprintf(szFormat->azChar(),xVarArgs);
+//  printf("\n");
+
   va_end(xVarArgs);
 }
 
