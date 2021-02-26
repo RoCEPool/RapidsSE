@@ -55,16 +55,16 @@ namespace STORE
   };
 
 
-#define I_PushInt(aaiDstk, __iValue) \
-  *(aiDstk++) = __iValue;
+#define I_PushInt(__iValue) \
+  *(++aiDstk) = __iValue;
 
-#define I_PopInt(aaiDstk, __iValue) \
+#define I_PopInt(__iValue) \
   __iValue = *(aiDstk--);
 
-#define P_PushPtr(aaiDstk, __pPtr) \
-  *(aiDstk++) = (i8*)__pValue;
+#define P_PushPtr(__pPtr) \
+  *(++aiDstk) = (i8)__pPtr;
 
-#define P_PopPtr(aiDstk, __pPtr) \
+#define P_PopPtr(__pPtr) \
   __pPtr = (void*)(*(aiDstk--));
 
 #define S_PushStr(__azStr) \

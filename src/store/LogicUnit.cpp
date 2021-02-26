@@ -1364,7 +1364,41 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU1(EO_PUSH_COLUMN_TYPE,iArg);
         *(++aiDstk) = iArg;
         break;//+endCase
-        
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // ixt device pushes
+      case EO_PUSH_DEVIXT_ALT: ArgNil(); // push columnn length
+        dLU0(EO_PUSH_DEVIXT_ALT);
+        P_PushPtr(aRluCommon->m_pDevAltIxt);
+        break;//+endCase
+
+      case EO_PUSH_DEVIXT_SRC: ArgNil(); // push columnn length
+        dLU0(EO_PUSH_DEVIXT_SRC);
+        P_PushPtr(aRluCommon->m_pDevSrcIxt);
+        break;//+endCase
+
+      case EO_PUSH_DEVIXT_TMP: ArgNil(); // push columnn length
+        dLU0(EO_PUSH_DEVIXT_TMP);
+        P_PushPtr(aRluCommon->m_pDevTmpIxt);
+        break;//+endCase
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // row device pushes
+      case EO_PUSH_DEVROW_ALT: ArgNil(); // push columnn length
+        dLU0(EO_PUSH_DEVROW_ALT);
+        P_PushPtr(aRluCommon->m_pDevAltRow);
+        break;//+endCase
+
+      case EO_PUSH_DEVROW_DST: ArgNil(); // push columnn length
+        dLU0(EO_PUSH_DEVROW_DST);
+        P_PushPtr(aRluCommon->m_pDevDstRow);
+        break;//+endCase
+
+      case EO_PUSH_DEVROW_SRC: ArgNil(); // push columnn length
+        dLU0(EO_PUSH_DEVROW_SRC);
+        P_PushPtr(aRluCommon->m_pDevSrcRow);
+        break;//+endCase
+
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // counter
       case EO_CTR_0_DEC: ArgNil(); // dec counter 0
@@ -1482,7 +1516,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(EO_INDEXTREE_DEV_SET);
         vDev_INDEXTREE_DEV_SET(pLU,iArg);
         break;//+endCase
-        
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // indexTree operators
+      case EO_INDEXTREE_DELETE: ArgNil(); // delete indexTree
+        dLU0(EO_INDEXTREE_DELETE);
+        vIXT_INDEXTREE_DELETE(&aiDstk);
+        break;//+endCase
+
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // logical operators
       case EO_LGL_AND: ArgNil(); // logical and top two int's, push result

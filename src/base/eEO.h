@@ -28,7 +28,17 @@ enum eEO : u1 // expression operators
   /*  S  */ EO_PUSH_COLUMN_LENGTH, // push column length
   /*  S  */ EO_PUSH_COLUMN_SCALE,  // push column scale
   /*  S  */ EO_PUSH_COLUMN_TYPE,   // push column type
-  
+
+  // ixt device pushes
+  /*  S  */ EO_PUSH_DEVIXT_ALT,     // push alt Ixt device
+  /*  S  */ EO_PUSH_DEVIXT_SRC,     // push src Ixt device
+  /*  S  */ EO_PUSH_DEVIXT_TMP,     // push tmp Ixt device
+
+  // row device pushes
+  /*  S  */ EO_PUSH_DEVROW_ALT,     // push alt row device
+  /*  S  */ EO_PUSH_DEVROW_DST,     // push dst row device
+  /*  S  */ EO_PUSH_DEVROW_SRC,     // push src row device
+
   // counter
   /*  R  */ EO_CTR_0_DEC,        // dec counter 0
   /*  R  */ EO_CTR_0_INC,        // inc counter 0
@@ -57,7 +67,11 @@ enum eEO : u1 // expression operators
   /*  D  */ EO_INDEXTREE_SRC_SET,    // set the src indexTree
   /*  D  */ EO_INDEXTREE_TMP_DELETE, // delete the tmp indexTree
   /*  D  */ EO_INDEXTREE_TMP_SET,    // set the tmp indexTree
-  
+
+  // indexTree
+  /*  S  */ EO_INDEXTREE_SET,    // set the src indexTree
+  /*  S  */ EO_INDEXTREE_DELETE, // delete the tmp indexTree
+
   // logical operators
   /*  S  */ EO_LGL_AND,          // logical and top two int's, push result
   /*  S  */ EO_LGL_OR,           // logical or top two int's, push result
@@ -352,7 +366,17 @@ static Stz* aEO[]
   /*    */ "EO_PUSH_COLUMN_LENGTH"_Stz,
   /*    */ "EO_PUSH_COLUMN_SCALE"_Stz,
   /*    */ "EO_PUSH_COLUMN_TYPE"_Stz,
-  
+
+  // ixt device pushes
+  /*    */ "EO_PUSH_DEVIXT_ALT"_Stz,
+  /*    */ "EO_PUSH_DEVIXT_SRC"_Stz,
+  /*    */ "EO_PUSH_DEVIXT_TMP"_Stz,
+
+  // row device pushes
+  /*    */ "EO_PUSH_DEVROW_ALT"_Stz,
+  /*    */ "EO_PUSH_DEVROW_DST"_Stz,
+  /*    */ "EO_PUSH_DEVROW_SRC"_Stz,
+
   // counter
   /*    */ "EO_CTR_0_DEC"_Stz,
   /*    */ "EO_CTR_0_INC"_Stz,
@@ -381,7 +405,11 @@ static Stz* aEO[]
   /*    */ "EO_INDEXTREE_SRC_SET"_Stz,
   /*    */ "EO_INDEXTREE_TMP_DELETE"_Stz,
   /*    */ "EO_INDEXTREE_TMP_SET"_Stz,
-  
+
+  // indexTree
+  /*    */ "EO_INDEXTREE_SET"_Stz,
+  /*    */ "EO_INDEXTREE_DELETE"_Stz,
+
   // logical operators
   /*    */ "EO_LGL_AND"_Stz,
   /*    */ "EO_LGL_OR"_Stz,
@@ -681,7 +709,17 @@ static EoArg EoArgs[]
   { EA_INT,     8 },  // EO_PUSH_COLUMN_LENGTH
   { EA_INT,     8 },  // EO_PUSH_COLUMN_SCALE
   { EA_INT,     8 },  // EO_PUSH_COLUMN_TYPE
-  
+
+  // ixt device pushes
+  { EA_NONE,    0 },  // EO_PUSH_DEVIXT_ALT
+  { EA_NONE,    0 },  // EO_PUSH_DEVIXT_SRC
+  { EA_NONE,    0 },  // EO_PUSH_DEVIXT_TMP
+
+  // Ixt device pushes
+  { EA_NONE,    0 },  // EO_PUSH_DEVROW_ALT
+  { EA_NONE,    0 },  // EO_PUSH_DEVROW_DST
+  { EA_NONE,    0 },  // EO_PUSH_DEVROW_SRC
+
   // counter
   { EA_NONE,    0 },  // EO_CTR_0_DEC
   { EA_NONE,    0 },  // EO_CTR_0_INC
@@ -710,7 +748,11 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_INDEXTREE_SRC_SET
   { EA_NONE,    0 },  // EO_INDEXTREE_TMP_DELETE
   { EA_NONE,    0 },  // EO_INDEXTREE_TMP_SET
-  
+
+    // indexTree
+  { EA_NONE,    0 },  // EO_INDEXTREE_SET
+  { EA_NONE,    0 },  // EO_INDEXTREE_DELETE
+
   // logical operators
   { EA_NONE,    0 },  // EO_LGL_AND
   { EA_NONE,    0 },  // EO_LGL_OR

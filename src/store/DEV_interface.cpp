@@ -536,10 +536,12 @@ void vIXT_INDEXTREE_DELETE(i8** aaiDstk)
   _static_
 
   void* pPtr;
-  P_PopPtr(*aaiDstk, pPtr);
+  i8 *aiDstk = *aaiDstk;
+
+  P_PopPtr(pPtr);
   DevIXT* pDevIxt = _pDevIXT(pPtr);
 
-  IndexTree* pIndexTree = _pIndexTree(pDevIxt->m_pIdxTree);
+  IndexTree* pIndexTree = pDevIxt->m_pIdxTree;
   pDevIxt->m_pIdxTree = nullptr;
   delete pIndexTree;
 }
