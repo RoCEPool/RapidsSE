@@ -173,7 +173,7 @@ readonly TPCH_SYMLINK_SRC="${INSTALL_DIR}/TPCH"
 readonly TPCH_SYMLINK_DEST="/opt/TPCH"
 
 # Check if the data actually exists
-if [ ! -d "${TPCH_LINK_DEST}" ]; then
+if [ ! -d "${TPCH_SYMLINK_DEST}" ]; then
   errorExit "TPC-H SF1 data does not exist at: ${TPCH_SYMLINK_DEST}"
 fi
 
