@@ -58,13 +58,14 @@ pipeline {
     stage('Test: 1N Release') {
       steps {
         sh 'seth/jenkins/test.sh release seth/jenkins/1node.config seth/bamboo/allTestsBamboo'
-
-        // TODO: capture log artifacts if they are not huge
       }
 
       // Always ensure we have stopped SE and SETH
       post {
         always {
+          // Capture log artifacts if they are not huge
+          archiveArtifacts artifacts: '/opt/rapidsse/NODE0/se.log'
+
           sh 'seth/jenkins/stop.sh seth/jenkins/1node.config'
         }
       }
@@ -74,7 +75,7 @@ pipeline {
     // TWO NODE - RELEASE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    // We can skip the build stage so long as we run the 2 node release
+    // We can skip the build stage so long as we ran the 2 node release
     // test after the 1 node release test
 
     stage('Install: 2N Release') {
@@ -99,22 +100,108 @@ pipeline {
     stage('Test: 2N Release') {
       steps {
         sh 'seth/jenkins/test.sh 2N_release seth/jenkins/2node.config seth/bamboo/allTestsBambooMN'
-
-        // TODO: capture log artifacts if they are not huge
       }
 
       // Always ensure we have stopped SE and SETH
       post {
         always {
+          // Capture log artifacts if they are not huge
+          archiveArtifacts artifacts: '/opt/rapidsse/**/se.log'
+
           sh 'seth/jenkins/stop.sh seth/jenkins/2node.config'
         }
       }
     }
 
+
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // SINGLE NODE - DEBUG
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    stage('Build: 1N Debug') {
+      steps {
+        sh 'seth/jenkins/build.sh debug'
+      }
+    }
+
+    stage('Install: 1N Debug') {
+      steps {
+        sh 'seth/jenkins/install.sh seth/jenkins/1node.config'
+      }
+    }
+
+    stage('Start: 1N Debug') {
+      steps {
+        sh 'seth/jenkins/start.sh seth/jenkins/1node.config'
+      }
+
+      // Stop RapidsSE if this stage was not successful
+      post {
+        unsuccessful {
+          sh 'seth/jenkins/stop.sh seth/jenkins/1node.config'
+        }
+      }
+    }
+
+    stage('Test: 1N Debug') {
+      steps {
+        sh 'seth/jenkins/test.sh debug seth/jenkins/1node.config seth/bamboo/allTestsBamboo'
+      }
+
+      // Always ensure we have stopped SE and SETH
+      post {
+        always {
+          // Capture log artifacts if they are not huge
+          archiveArtifacts artifacts: '/opt/rapidsse/NODE0/se.log'
+
+          sh 'seth/jenkins/stop.sh seth/jenkins/1node.config'
+        }
+      }
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // TWO NODE - DEBUG
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    // TODO: Debug 1N
-    // TODO: Debug 2N
+    // We can skip the build stage so long as we ran the 2 node debug
+    // test after the 1 node debug test
+
+    stage('Install: 2N Debug') {
+      steps {
+        sh 'seth/jenkins/install.sh seth/jenkins/2node.config'
+      }
+    }
+
+    stage('Start: 2N Debug') {
+      steps {
+        sh 'seth/jenkins/start.sh seth/jenkins/2node.config'
+      }
+
+      // Stop RapidsSE if this stage was not successful
+      post {
+        unsuccessful {
+          sh 'seth/jenkins/stop.sh seth/jenkins/2node.config'
+        }
+      }
+    }
+
+    stage('Test: 2N Debug') {
+      steps {
+        sh 'seth/jenkins/test.sh 2N_debug seth/jenkins/2node.config seth/bamboo/allTestsBambooMN'
+      }
+
+      // Always ensure we have stopped SE and SETH
+      post {
+        always {
+          // Capture log artifacts if they are not huge
+          archiveArtifacts artifacts: '/opt/rapidsse/**/se.log'
+
+          sh 'seth/jenkins/stop.sh seth/jenkins/2node.config'
+        }
+      }
+    }
+
+
 
   } // stages
 
