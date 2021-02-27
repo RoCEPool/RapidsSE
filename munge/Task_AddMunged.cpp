@@ -6,7 +6,7 @@
 
 Stz* gszaMungedText[1024];
 
-void Task::vAddMunged(Task* pTask)
+void Task::vAddMunged(Task* )
 {
   Stz* szSubScriptDef;
 
@@ -7034,7 +7034,7 @@ void Task::vAddMunged(Task* pTask)
     "\n"
     "  \"\\n\"\n"
     "  pCppFile file.writeLine\n"
-    "  \"void Task::vAddMunged(Task* pTask)\\n\"\n"
+    "  \"void Task::vAddMunged(Task* )\\n\"\n"
     "  pCppFile file.writeLine\n"
     "  \"{\\n\"\n"
     "  pCppFile file.writeLine\n"

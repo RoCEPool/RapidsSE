@@ -111,6 +111,9 @@ Index::~Index(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Index::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
+  UNUSED(eClass);
+  UNUSED(pObject);
+  UNUSED(aTab);
 }
 
 /*----------------------------------------------------------------------------*/

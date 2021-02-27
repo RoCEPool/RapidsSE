@@ -298,6 +298,7 @@ bool LogicCompiler::bExtractAll(LocalFile* pFile, char** aazCrs, Stz* startMarke
   while (pFile->bNextLiteTok(sTok)) {
     if (sTok.bSame(startMarker)) {
       bool b = pFile->bNextLiteTok(sTok);
+      UNUSED(b);
       vExtractFragment(pFile,aazCrs,startMarker,endMarker);
       return true;
     }
@@ -441,6 +442,7 @@ i8 LogicCompiler::iCall(void)
 i8 LogicCompiler::iCompile(LogicUnit* pLogicUnit, void* aDynArg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
+  UNUSED(aDynArg);
 
   m_pLogicUnit = pLogicUnit;
   
@@ -461,6 +463,7 @@ i8 LogicCompiler::iCompile(LogicUnit* pLogicUnit, void* aDynArg)
   
   vAcquire();
   bool b = bCompile();
+  UNUSED(b);
   vSymbols();
   vRelocate();
 
@@ -801,8 +804,7 @@ void LogicCompiler::vRtnSource(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
   s4K sReplaced;
-  char caInt[32];
-  
+
   i8 nCodes = m_pLogicUnit->nCodes();
   
   i8 i_CodeTill = 0;
