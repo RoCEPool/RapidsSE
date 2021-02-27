@@ -239,6 +239,8 @@ u1 HeadLine::uGetEncMetaCode(Column* pForCol, i8& i_ColCrs_, i8& i_OfsCrs_,
   u1 uEncoding = uMetaCode(i_ForCol);
   u1 uHigh = METACODE_HIGH(uEncoding);
   u1 uLow  = METACODE_LOW(uEncoding);
+  UNUSED(uLow);
+  
   if (MC_OVERFLOW == uHigh) {
     i_OfsCrs_ = nBytes() + C_U_1B + C_M_1B;
     OverLine* aOverLine = aGetOver();

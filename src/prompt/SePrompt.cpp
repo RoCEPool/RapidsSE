@@ -82,6 +82,9 @@ SePrompt::SePrompt(bool bOneCommand)
   
   _checkInitialised_(CN_SEPROMPT);
   
+  vLog(EV_CONSTRUCT,"SePrompt constructor"_Stz);
+
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // initial settings
   
@@ -130,6 +133,8 @@ SePrompt::~SePrompt(void) noexcept(false)
   
   m_pLitTknVec->vSoftReset();
   delete m_pLitTknVec;
+  
+  vLog(EV_DESTRUCT,"SePrompt destructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

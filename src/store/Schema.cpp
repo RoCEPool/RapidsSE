@@ -74,7 +74,8 @@ Schema::~Schema(void) noexcept(false)
 Stz* Schema::szCurrSchema(DicStack* pDicStack)
 {
   _static_;
-    
+  UNUSED(pDicStack);
+  
   return nullptr;
 }
 
