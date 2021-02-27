@@ -47,6 +47,8 @@ ReqTuple::ReqTuple(ReqTuple* aReqTuple)
 /*----------------------------------------------------------------------------*/
 ReqTuple::ReqTuple(Stz* szService, bool bFlag)
 {
+  UNUSED(bFlag);
+  
   vSet(nullptr);
   
   m_sPurpose = szService;
@@ -57,6 +59,8 @@ ReqTuple::ReqTuple(Stz* szService, bool bFlag)
 /*----------------------------------------------------------------------------*/
 ReqTuple::ReqTuple(Stz* szService, i8 iSessionId, bool bFlag)
 {
+  UNUSED(bFlag);
+  
   vSet(nullptr);
   
   m_i_Session = iSessionId;

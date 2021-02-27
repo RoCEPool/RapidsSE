@@ -113,14 +113,13 @@ Task::Task(Job* pJob)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   
-  vEventNoInc(); ++ gixTask;
-  AM::vLogTsk(SL_INF,this,TA_TSK_CONSTRUCT,
-              "Task -%s%s |gixTask=%lld|"_Stz, //!format-LogTsk
-              aCN[ AM::eJobClass(m_pJob) ],
-              AM::bJobWasReceived(m_pJob) ? " was-received"_Stz : ""_Stz,
-              * gixTask);
+  vEventNoInc();
+  
+  ++ gixTask;
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  vLog(EV_CONSTRUCT,"Task constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -168,9 +167,8 @@ Task::~Task(void) noexcept(false)
   
   -- gixTask;
   vEventNoInc();
-  AM::vLogTsk(SL_INF,this,TA_TSK_DESTRUCT,
-              "Task destruct |gixTask=%lld|"_Stz, //!format-LogTsk
-              * gixTask);
+
+  vLog(EV_DESTRUCT,"Task destructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

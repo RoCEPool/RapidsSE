@@ -158,12 +158,13 @@ Job::Job(ReqTuple* aReqTuple)
 
   // -- -- -- -- -- --
     
-  vEventNoInc(); ++ gixJob;
-  AM::vLogJob(SL_INF,this,JA_JOB_CONSTRUCT,
-              "|gixJob=%lld|"_Stz, //!format-LogJob
-              * gixJob);
+  vEventNoInc();
+  
+  ++ gixJob;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB);
+  
+  vLog(EV_CONSTRUCT,"Job constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -217,12 +218,14 @@ Job::Job(eCN eClassNo)
   
   SP_Gid spId;
   
-  vEventNoInc(); ++ gixJob;
-  AM::vLogJob(SL_INF,this,JA_JOB_CONSTRUCT,
-              "|gixJob=%lld|"_Stz, //!format-LogJob
-              * gixJob);
+  vEventNoInc();
+  
+  ++ gixJob;
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
+  
+  
+  vLog(EV_CONSTRUCT,"Job constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -272,6 +275,8 @@ Job::~Job(void) noexcept(false)
   //  vDebugPoint();
   
   //AM::vTaskDelete(m_pTaskJ);
+  
+  vLog(EV_DESTRUCT,"Job destructor"_Stz);
 
 }
 
@@ -788,6 +793,7 @@ void Job::vMarkJob(void)
 void Job::vMarkJob(Stz* szFormat, ...)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
+  UNUSED(szFormat);
 
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
@@ -1321,15 +1327,16 @@ eEC STORE::eJob_checkCluster(void)
 /*----------------------------------------------------------------------------*/
 /* pre-send job function                                                      */
 /*----------------------------------------------------------------------------*/
-void STORE::vJob_send(Job* pJob)
+void STORE::vJob_preSend(Job* pJob)
 {
+  UNUSED(pJob);
 
 }
 
 /*----------------------------------------------------------------------------*/
 /* post-recv job function  (when is this run ????)                            */
 /*----------------------------------------------------------------------------*/
-void STORE::vJob_recv(Job* pJob)
+void STORE::vJob_postRecv(Job* pJob)
 {
   pJob->vWasReceived(true);
   

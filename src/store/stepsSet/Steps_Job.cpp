@@ -958,7 +958,7 @@ void Step::vJobPostRecv(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // run the post recv function
-  STORE::vJob_recv(pJob);
+  STORE::vJob_postRecv(pJob);
   
   if (pJob->m_xReqTuple.m_iDetail) {
     JobLog::vNote(pJob,
@@ -983,7 +983,7 @@ void Step::vJobPreSend(void)
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   //ActLog::vAdd(pJob,AN_PRE_SEND,pJob());
-  STORE::vJob_send(pJob);
+  STORE::vJob_preSend(pJob);
   
   if (pJob->m_xReqTuple.m_iDetail)
     JobLog::vNote(pJob,

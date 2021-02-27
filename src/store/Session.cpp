@@ -107,11 +107,10 @@ Session::Session(void)
   m_oSsnTagSet.vInsert(C_TAG_PATH,C_SE_PATH);
   
   ++ gixSession;
-  AM::vLogSsn(SL_INF,this,AA_SSN_CONSTRUCT,
-              "Session construct : %p (%lld tasks exist)"_Stz, //!format-LogSsn
-              this,* gixSession);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
+  
+  vLog(EV_CONSTRUCT,"Session constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -126,9 +125,8 @@ Session::~Session(void) noexcept(false)
   AM::pSessions()->vFreeSession(this);
           
   -- gixSession;
-  AM::vLogSsn(SL_INF,this,AA_SSN_DESTRUCT,
-              "Session destruct : %p (%lld tasks exist)"_Stz, //!format-LogSsn
-              this,* gixSession);
+  
+  vLog(EV_DESTRUCT,"Session destructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

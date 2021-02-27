@@ -451,6 +451,8 @@ void Api::vPopulateTagSet(TagSet* pTagSet, TokenVec* pTknVec)
       break;
 
     Token* pTkn_equals = pTknVec->pGet(i_Scan++);  // =
+    UNUSED(pTkn_equals);
+    
     if (i_Scan >= nTkns)
       break;
     //if (! pTkn_equals->bIsAssign())
@@ -858,7 +860,9 @@ void Api::vCreateTaskForJob(Job* pJob)
 eEC Api::eValidateSession(i8 iTrace, Session* pSession, eAC eApiCall)
 {
   _static_
-  
+  UNUSED(iTrace);
+  UNUSED(eApiCall);
+
   // pSession cannot be null
   if (pSession == nullptr) {
     TRACE_API_ERROR("eValidateSession(a)", EC_INVALID_INTERFACE);

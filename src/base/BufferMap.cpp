@@ -20,6 +20,8 @@ BufferMap::BufferMap(void)
 : Object(CN_BUFFERMAP)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERMAP,_FOOTER_);
+  
+  MemLib::vZero(m_xaBufferAddress,sizeof(m_xaBufferAddress),CN_BUFFERMAP);
     
   _checkInitialised_(CN_BUFFERMAP);
   

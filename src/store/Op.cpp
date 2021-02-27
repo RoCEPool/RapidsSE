@@ -66,13 +66,7 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
     m_i_Node = AM::pPtnMap()->i_WhichNode(m_tPtnNo);
     RASSERT(pStream->i_Node() == m_i_Node);
   }
-  
-  bool m_bDataBuffer  = false;
-  bool m_bDataPulse   = false;
-  bool m_bEosMarker   = false;
-  bool m_bStartMarker = false;
-  bool m_bStreamDef   = false;
-  
+    
   // -- -- -- -- -- --
 
   m_pPipelineJob  = m_pPipeline->pPipelineJob();
@@ -113,15 +107,12 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  Task* pTask = AM::pThisTLSTask();
   
   ++ gixOp;
-  AM::vLogOpr(SL_INF,this,OA_OP_CONSTRUCT,
-              "Op construct : %p (%lld ops exist)"_Stz, //!format-LogOpr
-              this,* gixOp);
   
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  vLog(EV_CONSTRUCT,"Op constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -155,12 +146,9 @@ Op::~Op(void) noexcept(false)
   delete m_pQueueRight;
   
   -- gixOp;
-  AM::vLogOpr(SL_INF,this,OA_OP_DESTRUCT,
-              "Op destruct : %p (%lld ops exist)"_Stz, //!format-LogOpr
-              this,* gixOp);
+  
+  vLog(EV_DESTRUCT,"Op destructor"_Stz);
 }
-
-/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -1512,7 +1500,7 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
   // populate the job
   
   eEC eError = AM::ePopulateJob(m_pOpJob, pOpJobTagSet);
-    
+  UNUSED(eError);
   //RASSERT(EC_NONE != eError);
   
   // delete the tokenVec
@@ -1713,7 +1701,9 @@ void Op::vSend(Operand* pOperand, XmitOperand* pXmitOperand, bool bSet)
 void Op::vSendToAllNodes(Operand* pOperand, Task* pTriggeringTask, bool bSet, eXK eXmitKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+  UNUSED(pTriggeringTask);
+  UNUSED(eXmitKind);
+
   ASSERT(eXmitKind == XK_NORMAL || eXmitKind == XK_ROBIN);
   
   // get the next stage
@@ -1736,7 +1726,8 @@ void Op::vSendToAllNodes(Operand* pOperand, Task* pTriggeringTask, bool bSet, eX
 void Op::vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSet, eXK eXmitKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+  UNUSED(pTriggeringTask);
+
   tPN tPtnNo;
   i8 i_TablePtn;
   
@@ -1871,7 +1862,8 @@ void Op::vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask, bo
 void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSet, eXK eXmitKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+  UNUSED(pTriggeringTask);
+
   tPN tPtnNo;
   i8 i_TablePtn;
   
@@ -2019,7 +2011,9 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
 void Op::vSendToNode(Operand* pOperand, Task* pTriggeringTask, bool bSet, eXK eXmitKind,i8 i_Node)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+  UNUSED(pTriggeringTask);
+  UNUSED(eXmitKind);
+
   ASSERT(eXmitKind == XK_NORMAL || eXmitKind == XK_ROBIN);
   
   // get the next stage
@@ -2040,7 +2034,9 @@ void Op::vSendToNode(Operand* pOperand, Task* pTriggeringTask, bool bSet, eXK eX
 void Op::vSendToOrigin(Operand* pOperand, Task* pTriggeringTask, bool bSet, eXK eXmitKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+  UNUSED(pTriggeringTask);
+  UNUSED(eXmitKind);
+
   ASSERT(eXmitKind == XK_NORMAL || eXmitKind == XK_ROBIN);
   m_iXmitNode = m_pPipeline->i_Origin();
   vSend(pOperand, bSet, m_iXmitNode, C_UNKNOWN);
@@ -2056,7 +2052,8 @@ void Op::vSendToPartition(Operand* pOperand, Task* pTriggeringTask, bool bSet,
                           eXK eXmitKind, tPN tPtnNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+  UNUSED(pTriggeringTask);
+
   tPN tSendPtn = C_UNKNOWN;
   
   ASSERT(eXmitKind == XK_NORMAL ||

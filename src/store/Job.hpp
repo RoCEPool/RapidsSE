@@ -19,7 +19,7 @@ namespace STORE
   /*                      IMPORTANT NOTE
    
       If you add a pointer member into this class then modify
-        JOBS_fn(vJob_recv) to set it to null when the job is received
+        JOBS_fn(vJob_postRecv) to set it to null when the job is received
    
    */
   
@@ -171,8 +171,8 @@ namespace STORE
 
   ////////////////////////////////////////////////////////////////////////////////
   eEC  eJob_checkCluster(void);
-  void vJob_recv(Job* pJob);
-  void vJob_send(Job* pJob);
+  void vJob_postRecv(Job* pJob);
+  void vJob_preSend(Job* pJob);
 }
 
 bool bJobCompare(void* pObjectInsert, void* pObjectScan, bool& bMatch);

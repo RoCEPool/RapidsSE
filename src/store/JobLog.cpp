@@ -17,6 +17,9 @@ extern Log* gpLog;
 /*----------------------------------------------------------------------------*/
 void JobLog::vNote(STORE::Job* pJob, Stz* szFormat, ...)
 {
+  UNUSED(pJob);
+  UNUSED(szFormat);
+
 #ifdef WITH_SHARED_LOG
   if ( ! gpLog )
     return;
@@ -61,6 +64,9 @@ void JobLog::vNote(STORE::Job* pJob, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 void JobLog::vNoteState(STORE::Job* pJob, Stz* szPoint)
 {
+  UNUSED(pJob);
+  UNUSED(szPoint);
+
 #ifdef WITH_SHARED_LOG
   if (! gpLog)
     return;
