@@ -206,6 +206,9 @@ void Session::vEndTx()
 /*----------------------------------------------------------------------------*/
 void Session::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
+  UNUSED(eClass);
+  UNUSED(aTab);
+  
   Session* pSession = _pSession(pObject);
   
   vTrace("pid %lld %s stream %lld"_Stz,
@@ -318,7 +321,6 @@ eEC Session::eInitSession(Stz* szCatalogName, Stz* szSchemaName)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
   Dic* pDic = nullptr;
-  CodeCell* aCell =  nullptr;
   //m_oDicStack.vContentDump();
  
   //fprintf(stderr,"eInit A\n");

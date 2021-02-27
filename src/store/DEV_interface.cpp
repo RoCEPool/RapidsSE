@@ -534,7 +534,6 @@ void vDev_IXT_INDEXTREE_SET(i8** aaiDstk)
 {
   _static_
 
-  void* pPtr;
   i8 *aiDstk = *aaiDstk;
 
   // pop the device
