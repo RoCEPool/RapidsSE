@@ -322,11 +322,13 @@ InfoSet* Metadata::pLookupCatalog(Stz* szCatalogName)
   
   DicStack* pDicStack = new DicStack;
 
-  if (pDicStack->bTest(szCatalogName))
+  if (pDicStack->bTest(szCatalogName)) {
     Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
                                     szCatalogName,
                                     C_VARGS_END);
-
+    UNUSED(pRow);
+  }
+  
   delete pDicStack;
   
   return pInfoSet;
@@ -347,12 +349,14 @@ InfoSet* Metadata::pLookupSchema(Stz* szCatalogName,
   
   DicStack* pDicStack = new DicStack;
   
-  if (pDicStack->bTest(szCatalogName,szSchemaName))
+  if (pDicStack->bTest(szCatalogName,szSchemaName)) {
     Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
                                     szCatalogName,
                                     szSchemaName,
                                     C_VARGS_END);
-
+    UNUSED(pRow);
+  }
+  
   delete pDicStack;
 
   return pInfoSet;
@@ -374,13 +378,15 @@ InfoSet* Metadata::pLookupTable(Stz* szCatalogName,
 
   DicStack* pDicStack = new DicStack;
   
-  if (pDicStack->bTest(szCatalogName,szSchemaName,szTableName))
+  if (pDicStack->bTest(szCatalogName,szSchemaName,szTableName)) {
     Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
                                     szCatalogName,
                                     szSchemaName,
                                     szTableName,
                                     C_VARGS_END);
-
+    UNUSED(pRow);
+  }
+  
   delete pDicStack;
 
   return pInfoSet;

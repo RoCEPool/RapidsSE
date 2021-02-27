@@ -157,7 +157,10 @@ PipelineSpec* StageSpec::pPipelineSpec(void)
 OpSpec* StageSpec::pPrependConsumeOp(ePX eCrossTopo, i8 iStage, i8 i_Op)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
-  
+  UNUSED(eCrossTopo);
+  UNUSED(iStage);
+  UNUSED(i_Op);
+
   OpSpec* pOpSpec;
   
   pOpSpec = new OpSpec("consumeOp"_Stz,0,this);
