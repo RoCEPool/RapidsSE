@@ -49,15 +49,22 @@ void Loggable::vLog(eEV eEvent, Stz* szFormat, ...)
   if (C_DONT_LOG == m_iLogCtl)
     return;
  
-  if (CN_DIR != eGetClassNo())
+  if (   CN_DIR == eGetClassNo()
+      || CN_FIFO == eGetClassNo()
+      || CN_FILE == eGetClassNo()
+      || CN_LOCK == eGetClassNo()
+      || CN_MUTEX == eGetClassNo()
+      || CN_PSXTHD == eGetClassNo()
+      || CN_SOCKET == eGetClassNo()
+      )
     return;
 
   va_list xVarArgs;
   
   va_start(xVarArgs,szFormat);
   
-//  vprintf(szFormat->azChar(),xVarArgs);
-//  printf("\n");
+  vprintf(szFormat->azChar(),xVarArgs);
+  printf("\n");
 
   va_end(xVarArgs);
 }

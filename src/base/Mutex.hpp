@@ -5,10 +5,10 @@
 
 namespace BASE
 {
-  class Mutex : public Object
+  class Mutex : public Loggable
   {
   public:
-    Object*    m_pObjectMutexed;
+    Object*    m_pIsFor;
     Loggable*  m_pLockedBy; // by whom is the mutex locked?
     Loggable*  m_pWaitedBy; // for whom is the mutex being waited on?
 
@@ -32,7 +32,7 @@ namespace BASE
     // must be last
     Footer m_xFooter;
   
-    Mutex(Object* pObjectMutexed);
+    Mutex(Object* bIsFor);
    ~Mutex(void) noexcept(false);
   
     static void vMonitorPortrait(s48K& sPortrait);

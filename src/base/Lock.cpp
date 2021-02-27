@@ -66,6 +66,8 @@ Lock::Lock(Object* pObjectLocked, i8 iLogCtl)
   _checkInitialised_(CN_LOCK);
   
   _postcondition_(_MAGIC_,CN_LOCK,_FOOTER_);
+  
+  vLog(EV_CONSTRUCT,"Lock constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -76,6 +78,8 @@ Lock::~Lock(void) noexcept(false)
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
    
   RASSERT(! m_uLockWord);
+  
+  vLog(EV_DESTRUCT,"Lock destructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

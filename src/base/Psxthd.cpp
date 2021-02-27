@@ -84,11 +84,10 @@ PsxThd::PsxThd(Object* pIsFor)
   _checkInitialised_(CN_PSXTHD);
 
   ++ gixPsxThd;
-  AM::vLogRes(SL_INF,this,RA_THD_CONSTRUCT,
-              "PsxThd construct : %p (%lld pthreads exist)"_Stz, //!format-LogRes
-              this,* gixPsxThd);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PSXTHD,_FOOTER_);
+  
+  vLog(EV_CONSTRUCT,"PsxThd constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -99,15 +98,9 @@ PsxThd::~PsxThd(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PSXTHD,_FOOTER_);
   
   -- gixPsxThd;
-  AM::vLogRes(SL_INF,this,RA_THD_DESTRUCT,
-              "PsxThd destruct : %p (%lld pthreads exist)"_Stz, //!format-LogRes
-              this,* gixPsxThd);
+  
+  vLog(EV_DESTRUCT,"PsxThd destructor"_Stz);
 }
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/

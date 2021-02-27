@@ -85,6 +85,7 @@ void TaskQueue::vAddTask(Task* pTask)
 
   bool bInserted = m_pTaskSkipList->bInsert(pTask);
   ASSERT(bInserted);
+  UNUSED(bInserted);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -99,6 +100,7 @@ void TaskQueue::vAssertItems(i8 nItems)
   ASSERT(nItems == m_pTaskSkipList->nObjects());
   
   ASSERT(nItems == m_pTaskSkipList->nRecount());
+  UNUSED(nItems);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -116,7 +118,8 @@ void TaskQueue::vContentDump(void)
        pNode = m_pTaskSkipList->pNext(pNode,0)) {
     
     Task* pTask = _pTask(pNode->m_pObject);
- 
+    UNUSED(pTask);
+
     //pTask->vRenderPortrait(sPortrait);
     
     vTrace("%s\n"_Stz,sPortrait.azChar());

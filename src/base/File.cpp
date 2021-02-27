@@ -81,13 +81,13 @@ void File::operator delete(void* pFileAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-File::File(Object* bIsFor, i8 iLogCtl)
-: Resource(CN_FILE,bIsFor,iLogCtl)
+File::File(Object* pIsFor, i8 iLogCtl)
+: Resource(CN_FILE,pIsFor,iLogCtl)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
   
   // the trace file is malloc'd
-  RASSERT(bIsFor || m_iViaMalloc);
+  RASSERT(pIsFor || m_iViaMalloc);
   
   if ( ! (0 == m_iViaMalloc || 1 == m_iViaMalloc) )
     m_iViaMalloc = 0;
@@ -101,9 +101,6 @@ File::File(Object* bIsFor, i8 iLogCtl)
   _checkInitialised_(CN_FILE);
   
   ++ gixFile;
-  AM::vLogRes(SL_INF,this,RA_FIL_CONSTRUCT,
-              "File construct |gixFile=%lld|"_Stz, //!format-LogRes
-              * gixFile);
   
   _postcondition_(_MAGIC_,CN_FILE,_FOOTER_);
   
@@ -131,9 +128,6 @@ File::~File(void) noexcept(false)
   }
   
   -- gixFile;
-  AM::vLogRes(SL_INF,this,RA_FIL_DESTRUCT,
-              "File destruct |gixFile=%lld|"_Stz, //!format-LogRes
-              * gixFile);
   
   if (m_iViaMalloc)
     vTrace("~File was via mallocs\n"_Stz);
