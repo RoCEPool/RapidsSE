@@ -20,40 +20,14 @@
 #include "Table.hpp"
 
 /*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-TablePtn* STORE::_pTablePtn(void* aAddr)
-{
-  TablePtn* pTablePtn = reinterpret_cast<TablePtn*>(aAddr);
-  
-  RASSERT_TYPE(pTablePtn,CN_TABLEPTN);
-  
-  return pTablePtn;
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* TablePtn::operator new(size_t)
-{
-  void* pObject = Heaps::pAllocate(CN_TABLEPTN);
-  
-  return pObject;
-}
+__pCastFunction(STORE,TablePtn,CN_TABLEPTN)
+__aNewFunction(TablePtn,CN_TABLEPTN)
+__vDeleteFunction(TablePtn,CN_TABLEPTN)
+__aFooterFunction(TablePtn)
 
-/*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-void TablePtn::operator delete(void* pBufferAddress)
-{
-  Object* pObject = reinterpret_cast<Object*>(pBufferAddress);
-  
-  Heaps::vFree(pObject);
-}
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -104,6 +78,9 @@ TablePtn::~TablePtn(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void TablePtn::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
+  UNUSED(eClass);
+  UNUSED(aTab);
+
   TablePtn* pTablePtn = _pTablePtn(pObject);
   
   vTrace("m_tPtnNo %lld, DataVec %p\n"_Stz,
@@ -731,7 +708,6 @@ void TablePtn::vVisualizeTable(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
   CrwBuffer* pCrwBuffer = m_pRootCrwBuffer;
-  bool bVerify = true;
   
   while (pCrwBuffer) {
     // print the decile of the this buffer
@@ -740,11 +716,6 @@ void TablePtn::vVisualizeTable(void)
   }
   vTrace("\n"_Stz);
 }
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-__aFooterFunction(TablePtn);
 
 /*============================================================================*/
 /* end                                                                        */

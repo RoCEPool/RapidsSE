@@ -142,6 +142,8 @@ eEC RapidsSE::eWaitJob(void* aSession)
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE::eDeleteOperand(void* aSession, void** aaOperand)
 {
+  UNUSED(aSession);
+  
   Operand* pOperand = _pOperand(*aaOperand);
   *aaOperand = nullptr;
 
@@ -181,8 +183,6 @@ eEC RapidsSE::eProcessOperand(void* aSession, void** aaOperand)
   Session* pSession = _pSession(aSession);
   Operand* pOperand = _pOperand(*aaOperand);
   *aaOperand = nullptr;
-
-  Job* pJob = pSession->pJob();
 
   bool b = pSession->m_pOutput->bProcessOperand(pSession,pOperand);
   
