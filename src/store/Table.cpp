@@ -132,6 +132,7 @@ Table::~Table(void) noexcept(false)
 Stz* Table::szCurrTable(DicStack* pDicStack)
 {
   _static_;
+  UNUSED(pDicStack);
     
   return nullptr;
 }
@@ -141,6 +142,9 @@ Stz* Table::szCurrTable(DicStack* pDicStack)
 /*----------------------------------------------------------------------------*/
 void Table::vDump(eCN eClass, Object* pObject, Stz* szTab)
 {
+  UNUSED(eClass);
+  UNUSED(szTab);
+
   Table* pTable = _pTable(pObject);
   
   vTrace("name %s\n"_Stz,

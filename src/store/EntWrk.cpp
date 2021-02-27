@@ -44,6 +44,7 @@ EntWrk::EntWrk(void)
   MemLib::vZero(m_yaPaySpace,sizeof(m_yaPaySpace),CN_ENTWRK);
 #else
   m_yaSpace[0] = '\0';
+  m_yaPaySpace[0] = '\0';
 #endif
   
   _checkInitialisedSize_(sizeof(EntWrk));
@@ -69,6 +70,8 @@ EntWrk::~EntWrk(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 byte* EntWrk::ayEachElm(Column* pColumn, i8& nBytes, byte** aayCursor)
 {
+  UNUSED(pColumn);
+
   //byte* ayElm = pColumn->ayValue(nBytes,aayCursor);
   
   nBytes = sizeof(i8);
@@ -167,7 +170,8 @@ void EntWrk::vAppendElement(Row* aRow, RowPix* pRowPix, i8 i_Col)
 void EntWrk::vAppendElementInt(Row* aRow, i8 iInt)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
-  
+  UNUSED(aRow);
+
   vAppendInt(iInt);
 }
 
@@ -177,7 +181,8 @@ void EntWrk::vAppendElementInt(Row* aRow, i8 iInt)
 void EntWrk::vAppendElementStz(Row* aRow, Stz* szStr)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
-  
+  UNUSED(aRow);
+
   vAppendStz(szStr);
 }
 

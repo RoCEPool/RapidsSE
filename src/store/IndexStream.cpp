@@ -142,6 +142,7 @@ bool IndexStream::bDelete(void)
       // delete the refernced crw
       bool bDeleted = CrwBuffer::bDeleteRefdCrw(xRef);
       ASSERT(bDeleted);
+      UNUSED(bDeleted);
       
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // save the entry
@@ -336,7 +337,6 @@ void IndexStream::vSeek(eRO eLowerRelnOp, Stz* szLowerKey,
   // get column0 of the index
   Column* pColumn0 = pIndexDef->pGetColumn(0);
   
-  bool bExactQuery = false;
   bool bHaveLowerKey = false;
   bool bHaveUpperKey = false;
   i8 iLowerInt;

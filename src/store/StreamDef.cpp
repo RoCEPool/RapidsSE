@@ -613,6 +613,7 @@ eEC StreamDef::eParseColumn(TokenVec* pTknVec, i8 i_Col)
 eEC StreamDef::eParseColumnBoolean(TokenVec* pTknVec, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
+  UNUSED(pTknVec);
   
   pCol->vColumnType(CT_BOOLEAN);
   pCol->vDatum(DM_BOL);
@@ -626,7 +627,8 @@ eEC StreamDef::eParseColumnBoolean(TokenVec* pTknVec, Column* pCol)
 eEC StreamDef::eParseColumnDate(TokenVec* pTknVec, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
-  
+  UNUSED(pTknVec);
+
   pCol->vColumnType(CT_DATE);
   pCol->vDatum(DM_DTE);
   
@@ -753,7 +755,8 @@ eEC StreamDef::eParseColumnFloat(TokenVec* pTknVec, Column* pCol)
 eEC StreamDef::eParseColumnInteger(TokenVec* pTknVec, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
-  
+  UNUSED(pTknVec);
+
   pCol->vColumnType(CT_INTEGER);
   pCol->vDatum(DM_INT);
   pCol->vColumnLength(C_MAX_INT_PRECISION);
@@ -767,7 +770,8 @@ eEC StreamDef::eParseColumnInteger(TokenVec* pTknVec, Column* pCol)
 eEC StreamDef::eParseColumnInterval(TokenVec* pTknVec, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
-  
+  UNUSED(pTknVec);
+
   pCol->vColumnType(CT_INTERVAL);
   pCol->vDatum(DM_IVL);
   
@@ -780,7 +784,8 @@ eEC StreamDef::eParseColumnInterval(TokenVec* pTknVec, Column* pCol)
 eEC StreamDef::eParseColumnTime(TokenVec* pTknVec, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
-  
+  UNUSED(pTknVec);
+
   pCol->vColumnType(CT_TIME);
   pCol->vDatum(DM_TME);
   
@@ -793,7 +798,8 @@ eEC StreamDef::eParseColumnTime(TokenVec* pTknVec, Column* pCol)
 eEC StreamDef::eParseColumnTimestamp(TokenVec* pTknVec, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
-  
+  UNUSED(pTknVec);
+
   pCol->vColumnType(CT_TIMESTAMP);
   pCol->vDatum(DM_TSP);
   
