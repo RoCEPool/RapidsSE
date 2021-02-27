@@ -59,6 +59,7 @@ void Step::vApiAddProcedure(void)
   
   Token* pTkn0 = pDmnTknVec->pGet(0);
   ASSERT(pTkn0->bSame("procedure"_Stz) || pTkn0->bSame("procedureLocal"_Stz));
+  UNUSED(pTkn0);
 
   //Stz* ssProcNm = pDmnTknVec->pGet(1)->szChars();
   
@@ -141,6 +142,7 @@ void Step::vApiExecuteNested(void)
    
   pJobTagSet->vReplace(C_TAG_NOWAIT,1);
   bool bSpawned = Api::bSpawnJob_session(pJob);
+  UNUSED(bSpawned);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -226,6 +228,7 @@ void Step::vApiExecuteRequest(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    
   bool bSpawned = Api::bSpawnJob_session(pJob);
+  UNUSED(bSpawned);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   RASSERT(! pJob->bJobHasError() );

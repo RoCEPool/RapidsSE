@@ -511,7 +511,8 @@ void Step::vJobDelete(void)
   
   // find the job in the catalog
   eCN eClass = pJob->eGetClassNo();
-  
+  UNUSED(eClass);
+
   delete pJob;
   EXIT();
 }
@@ -1211,7 +1212,8 @@ void Step::vJobShow(void)
   RASSERT(0);
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
+  UNUSED(pJob);
+
   EXIT();
 }
 

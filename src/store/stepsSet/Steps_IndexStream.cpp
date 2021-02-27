@@ -145,7 +145,8 @@ void Step::vIndexStreamOpen(void)
   
   bool bOpened = pIndexStream->bOpen();
   ASSERT(bOpened);
-  
+  UNUSED(bOpened);
+
   EXIT();
 }
 

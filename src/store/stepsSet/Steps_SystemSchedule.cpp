@@ -42,6 +42,7 @@ void Step::vScheduleExecutingLength(void)
   ENTRY();
   
   i8 i_TablePtn = m_pDataStack->iPopInt(__func__);
+  UNUSED(i_TablePtn);
   
   Schedule* pSchedule = AM::pSchedule();
   m_pDataStack->vPushInt(pSchedule->nTasksExecuting());
@@ -57,7 +58,8 @@ void Step::vScheduleReadyLength(void)
   ENTRY();
   
   i8 i_TablePtn = m_pDataStack->iPopInt(__func__);
-  
+  UNUSED(i_TablePtn);
+
   Schedule* pSchedule = AM::pSchedule();
   m_pDataStack->vPushInt(pSchedule->nTasksReady());
   

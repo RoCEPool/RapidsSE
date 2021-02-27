@@ -509,6 +509,7 @@ void Step::vInfoSetColValFetch(void)
   Table* pTable = _pTable(*( m_pJob->pLogicUnit_job() )->m_xpInfoSetTable);
   StreamDef* pStreamDef = pTable->pStreamDef();
   i8 nCols = pStreamDef->nColumns();
+  UNUSED(nCols);
 
   i8 i_Col = m_pDataStack->iPopInt(__func__);
 
@@ -771,6 +772,8 @@ void Step::vInfoSetRdCsvChunk(void)
   pCsvBuffer->vTake(nBytes);
   i8 nBytesRead = pCsvFile->nReadBytes(azInto,nBytes);
   ASSERT(nBytesRead == nBytes);
+  UNUSED(nBytesRead);
+  
   azInto[nBytes] = '\0';
   
   //vTrace("trailing: %s\n"_Stz,azInto + nBytes - 64);

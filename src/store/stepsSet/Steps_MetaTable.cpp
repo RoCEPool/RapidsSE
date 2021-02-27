@@ -43,6 +43,7 @@ void Step::vMetaTableListTables(void)
   Word* pWord = nullptr;
   while ( (pWord = pDic->pEachWord(pWord)) ) {
     Row* aRow = pPot->aNewDstRow(0,&pRowBuffer,&bNewBuffer);
+    UNUSED((aRow));
     pRowBuffer->vDepositColVal(0,pWord->szWordNm());
   }
 

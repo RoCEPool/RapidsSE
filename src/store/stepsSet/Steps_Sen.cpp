@@ -174,7 +174,6 @@ void Step::vSenExecute(void)
   ENTRY();
   
   fpSTEPFN fpStepFn;
-  Object* pObject;
 
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   

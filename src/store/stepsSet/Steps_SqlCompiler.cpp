@@ -62,6 +62,7 @@ void Step::vSqlCompilerNameValidate(void)
   
   PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
   Parser::RootNode* pPlanRoot = Parser::_pRootNode(pPlanOperand->pPlanNode());
+  UNUSED(pPlanRoot);
 
   // TODO: Walk the graph and validate that each name can be resolved uniquely.
   //       i.e. each table is known and unambiguous, each column refers to tables
@@ -114,7 +115,8 @@ void Step::vSqlCompilerParser(void)
                                     e.iColumn(),
                                     e.szError(),
                                     C_VARGS_END);
-
+    UNUSED(pRow);
+    
     m_pDataStack->vPushPtr(nullptr);
     goto L_Exit;
 
@@ -129,6 +131,7 @@ void Step::vSqlCompilerParser(void)
                                     0,
                                     e.szError(),
                                     C_VARGS_END);
+    UNUSED(pRow);
     m_pDataStack->vPushPtr(nullptr);
     goto L_Exit;
   }
@@ -166,6 +169,7 @@ void Step::vSqlCompilerTransliterate(void)
   // Walk the graph and produce a pipeline statement.
   bool bTransliterate = Dynamo::bPlanToPipeline(sPipelineStmt,pPlanRoot);
   ASSERT(bTransliterate);
+  UNUSED(bTransliterate);
 
   // return the pipeline
   m_pDataStack->vPushStr(sPipelineStmt);

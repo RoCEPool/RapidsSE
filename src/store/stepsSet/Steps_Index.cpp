@@ -226,7 +226,8 @@ void Step::vIndexDeleteNext(void)
       // delete the refernced crw
       bool bDeleted = CrwBuffer::bDeleteRefdCrw(xRef);
       ASSERT(bDeleted);
-      
+      UNUSED(bDeleted);
+
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // save the entry
       aEntryToDelete = aLowerEntry;

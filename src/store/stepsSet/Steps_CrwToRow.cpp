@@ -59,7 +59,8 @@ void Step::vCrwToRowConvert(void)
   CrwBuffer* pCrwBuffer = _pCrwBuffer(*( m_pJob->pLogicUnit_job() )->m_xpOperandA);
   
   bool bResult = pCrwToRow->bConvertCrwToRow(pCrwBuffer);
-  
+  UNUSED(bResult);
+
   EXIT();
 }
 

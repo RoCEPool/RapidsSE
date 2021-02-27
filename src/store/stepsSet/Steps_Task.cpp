@@ -61,6 +61,7 @@ void Step::vTaskAck(void)
   Task* pTaskWaiting = _pTask(m_pDataStack->pPopPtr(__func__));
   
   bool bWasQueued = Scheduler::bTaskCross_AckWaiting(pTaskWaiting,this);
+  UNUSED(bWasQueued);
   
 #ifdef WITH_STATISTICS_COUNTERS
   if (bWasQueued)

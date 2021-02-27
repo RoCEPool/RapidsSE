@@ -157,7 +157,8 @@ void Step::vInputPop(void)
   
   bool bPopped = m_pInput->bPopCharser();
   ASSERT(bPopped);
-  
+  UNUSED((bPopped));
+
   if (-1 == m_pInput->iDepth())
     vDeleteInput();
 

@@ -103,7 +103,7 @@ void Step::vSubsetSet(void)
   
   if (pOperand && CN_CRWBUFFER == pOperand->eGetClassNo()) {
     CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
-    vDebugPoint();
+    UNUSED(pCrwBuffer);
   }
   
   ( m_pJob->pLogicUnit_job() )->m_xpSubset = pOperand;

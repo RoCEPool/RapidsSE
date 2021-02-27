@@ -258,7 +258,8 @@ void Step::vStrLeft(void)
 
   // validate length
   i8 iHasLength = sString.nLength();
-  
+  UNUSED(iHasLength);
+
   if ( iLength < 0)
     vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
            "Invalid length for: str.left"_Stz);

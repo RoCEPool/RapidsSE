@@ -235,9 +235,7 @@ void Step::vGridTablePtnToPtnNo(void)
 void Step::vGridThisNodeFetch(void)
 {
   ENTRY();
-  
-  Object* pPtrGrid;
-  
+    
   i8 iNodeNo = AM::pGrid()->iThisNode();
   
   m_pDataStack->vPushInt(iNodeNo);
