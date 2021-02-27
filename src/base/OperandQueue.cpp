@@ -4,38 +4,15 @@
 
 #include "BASE.h"
 
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-OperandQueue* BASE::_pOperandQueue(void* aAddr)
-{
-  OperandQueue* pOperandQueue = reinterpret_cast<OperandQueue*>(aAddr);
-  
-  RASSERT_TYPE(pOperandQueue,CN_OPERANDQUEUE);
-  
-  return pOperandQueue;
-}
+__pCastFunction(BASE,OperandQueue,CN_OPERANDQUEUE)
+__aNewFunction(OperandQueue,CN_OPERANDQUEUE)
+__vDeleteFunction(OperandQueue,CN_OPERANDQUEUE)
+__aFooterFunction(OperandQueue)
 
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* OperandQueue::operator new(size_t)
-{
-  void* pObject = Heaps::pAllocate(CN_OPERANDQUEUE);
-  
-  return pObject;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-void OperandQueue::operator delete(void* aAddr)
-{
-  OperandQueue* pOperandQueue = reinterpret_cast<OperandQueue*>(aAddr);
-  
-  Heaps::vFree(pOperandQueue);
-}
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -48,6 +25,8 @@ OperandQueue::OperandQueue(void)
   _checkInitialised_(CN_OPERANDQUEUE);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
+  
+  vLog(EV_CONSTRUCT,"OperandQueue constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -56,6 +35,8 @@ OperandQueue::OperandQueue(void)
 OperandQueue::~OperandQueue(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
+  
+  vLog(EV_DESTRUCT,"OperandQueue destructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -148,12 +129,6 @@ i8 OperandQueue::nQueuedOperands(void)
 
   return nOperands;
 }
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-__aFooterFunction(OperandQueue);
 
 /*============================================================================*/
 /* end                                                                        */

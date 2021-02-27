@@ -143,7 +143,8 @@ void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftH0, EntBuffer* pRightH0)
   
   Index* pIndex = pRightH0->pIndex();
   ASSERT(pLeftH0->pIndex() == pIndex);
-  
+  UNUSED(pIndex);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // assert the parameters are sensible
   
@@ -238,6 +239,8 @@ void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftH0, EntBuffer* pRightH0)
     
     TRACE_COMPACT( pLeftL0->vShow(); )
     Ent* aInsertedEntry = pLeftH0->aInsertEntAbsL0(xLeftEntWrk.aEnt(),&aPriorEntry);
+    UNUSED(aInsertedEntry);
+    
     TRACE_COMPACT( pLeftKeyEntryL0->vShow(0, pIndex, true); )
     TRACE_COMPACT( pLeftL0->vShow(); )
     
@@ -255,6 +258,7 @@ void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftH0, EntBuffer* pRightH0)
       TRACE_COMPACT( pH1->vShow(); )
       //ASSERT(pH1->bVerifySkipListEntry());
       Ent* aLeftEntryH1 = pH1->aInsertEntAbs(xLeftEntWrk.aEnt());
+      UNUSED(aLeftEntryH1);
       //ASSERT(pH1->bVerifySkipListEntry());
       TRACE_COMPACT( pLeftEntryH1->vShow(0, pIndex, true); )
       TRACE_COMPACT( pH1->vShow(); )
@@ -326,6 +330,7 @@ void EntBuffer::vCopyReInitH1(EntBuffer* pH1, EntBuffer* pFirstH0)
   xFirstH1_ent.vOffsets(nLevels);
   
   Ent* aInsertedEntry_H1 = pH1->aInsertEntAbs(xFirstH1_ent.aEnt());
+  UNUSED(aInsertedEntry_H1);
   
   //pH1->vShow();
   
@@ -338,7 +343,9 @@ void EntBuffer::vCopyReInitH1(EntBuffer* pH1, EntBuffer* pFirstH0)
 void EntBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   _static_
-  
+  UNUSED(eClass);
+  UNUSED(aTab);
+
   EntBuffer* pEntBuffer = _pEntBuffer(pObject);
   
   pEntBuffer->vShow();
@@ -1211,7 +1218,8 @@ Ent* EntBuffer::pMoveToNextEntry(Ent* aEnt, EntBuffer** ppEntBuffer)
 Ent* EntBuffer::aNextEntry(Ent* aPrevEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
-    
+  UNUSED(aPrevEntry);
+
   Ent* aNext = this->aNextEntry(aSkipRoots(),0);
   
   ASSERT(! aNext || aNext->bValidEnt());
@@ -1401,7 +1409,8 @@ void EntBuffer::vRestore(void)
 void EntBuffer::vRestoreIndex(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
-  
+  UNUSED(pIndex);
+
   //ASSERT( ! m_pIndex );
   //m_pIndex = pIndex;
 }
