@@ -622,7 +622,8 @@ bool ToRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
   UNUSED(azCsvChunk);
-  
+  UNUSED(pCsvMeta);
+
   m_pRowBuffer->nFreeBytes();
 
   // change this to some no longer strib function

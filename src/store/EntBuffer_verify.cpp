@@ -120,8 +120,10 @@ void EntBuffer::vQuickVerify(Ent* aSeeEntry)
     if (aSeeEntry)
       vShowEntry(aTestEntry);
     
-    if (aTestEntry == aSeeEntry)
+    if (aTestEntry == aSeeEntry) {
       int iDebug = 1;
+      UNUSED(iDebug);
+    }
     
     for (i8 i_ScanLevel = aTestEntry->nSkipLevels()-1; i_ScanLevel >= 0; i_ScanLevel--) {
       Ent* aCheckEntry = aNextEntry(aTestEntry,i_ScanLevel);
@@ -363,7 +365,8 @@ bool EntBuffer::bVerifyAdjacent(void)
   ASSERT(m_iBufferHeight >= 1);
   
   IndexDef* pIndexDef = this->pIndexDef();
-  
+  UNUSED(pIndexDef);
+
   for (Ent* aEnt = aLeadEntry(); aEnt; aEnt = aNextEntry(aEnt,0)) {
     
     // get the buffer that this entry references
@@ -519,6 +522,8 @@ bool EntBuffer::bVerifyItems(void)
         
       case CN_FREEITEM: {
         FreeItem* aFreeItem = _aFreeItem(aEnt);
+        UNUSED(aFreeItem);
+
 //        if (! aFreeItem->bValidFreeItem()) {
 //          vTrace("Not a valid free item: %p\n"_Stz,aFreeItem);
 //          vShow(true);
@@ -571,7 +576,8 @@ bool EntBuffer::bVerifyKeyBufferOrder(void)
   ASSERT(m_iBufferHeight >= 1);
   
   IndexDef* pIndexDef = this->pIndexDef();
-  
+  UNUSED(pIndexDef);
+
   for (Ent* aEnt = aLeadEntry(); aEnt; aEnt = aNextEntry(aEnt,0)) {
     
     // get next entry
@@ -840,7 +846,8 @@ bool EntBuffer::bVerifySkipListEntry(bool bShowKeys)
 bool EntBuffer::bVerifySkipListLevels(bool bShowKeys)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
-  
+  UNUSED(bShowKeys);
+
   /*
    Verify entries with skip offsets greater than one that they
    can be found by following the  skip chain at that level, and

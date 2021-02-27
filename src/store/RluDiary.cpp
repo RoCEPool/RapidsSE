@@ -63,7 +63,9 @@ void RluDiary::vAddNote(i8 i_Sql, i8 i_TablePtn, i8 nQueueLength,
                         i8 iAction, i8 i_ActEnumGroup, i8 i_ActEnum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RLUDIARY,_FOOTER_);
-  
+  UNUSED(i_Sql);
+  UNUSED(i_TablePtn);
+
   m_xaDiaryEnt[m_nDiaryEnt].m_iThreadNo      = AM::iThisTLSThreadNo();
   m_xaDiaryEnt[m_nDiaryEnt].m_nQueueLength   = nQueueLength;
 
