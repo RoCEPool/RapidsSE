@@ -243,7 +243,8 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
   
-
+  UNUSED(pSession);
+  
   bool bContinue = true;
   
   //SP_DataBuffer spDataBuffer;

@@ -142,7 +142,6 @@ eEC RapidsSE::eWaitJob(void* aSession)
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE::eDeleteOperand(void* aSession, void** aaOperand)
 {
-  Session* pSession = _pSession(aSession);
   Operand* pOperand = _pOperand(*aaOperand);
   *aaOperand = nullptr;
 
@@ -159,8 +158,7 @@ eEC RapidsSE::ePopOperand(void* aSession, void** aaOperand,
 {
   Session* pSession = _pSession(aSession);
   
-  Job* pJob = pSession->pJob();
-
+ 
   Operand* pOperand = pSession->m_pOutput->pPopBufferQueue_blocking(pSession);
 
   eCN eClassNo;

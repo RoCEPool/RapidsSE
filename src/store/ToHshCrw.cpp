@@ -138,6 +138,7 @@ void ToHshCrw::vAddNst(RowBuffer* pRowBuffer)
 
     bool bAdded = m_pCrwBuffer->m_pRowCompactor->bCompactTail(szNmlStr);
     ASSERT(bAdded);
+    UNUSED(bAdded);
   }
 
 

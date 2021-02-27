@@ -555,7 +555,7 @@ void Engine::vCheckNodes(void)
 void Engine::vCheckPort(void)
 {
   SysCall oSysCall;
-  Socket* pSocket;
+
   i8      iPort;
   
   // nothing to check if not starting SE
@@ -569,7 +569,7 @@ void Engine::vCheckPort(void)
   
   vTestPort(iPort);
   
-//  pSocket = new Socket(gpAttachMap);
+//  Socket* pSocket = new Socket(gpAttachMap);
 //  bool bResult = pSocket->bCreateServer((int)iPort, oSysCall);
 //
 //  if ( ! bResult ) {
@@ -1283,7 +1283,8 @@ void Engine::vPrintStatus(void)
                                    gxCmdLineArgs.m_xSysArgs.m_bVerbose,
                                    gxCmdLineArgs.m_xSysArgs.m_aRegionAddr);
     ASSERT(bResult);
-    
+    UNUSED(bResult);
+
     // get globals
     vAttachRegion();
     
@@ -1806,6 +1807,7 @@ void Engine::vWriteRegionName(void)
     LocalFile oFile;
     bool b = oFile.bOpenMode(sFileName.szStz(),C_OPEN_READ_WRITE_CREATE);
     ASSERT(b);
+    UNUSED(b);
     oFile.vPrint("%s\n"_Stz,gxCmdLineArgs.m_xSysArgs.m_sRegionName.azChar());
     oFile.vClose();
   }

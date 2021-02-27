@@ -133,6 +133,7 @@ Row* InfoSetBase::pAllotRow(i8 iVArgsBegin, ...)
 
   i8 iVArgsEnd = va_arg(xVarArgs,i8);
   ASSERT(C_VARGS_END == iVArgsEnd);
+  UNUSED(iVArgsEnd);
 
   va_end(xVarArgs);
 
@@ -193,7 +194,8 @@ Row* InfoSetBase::pAllotRow(i8 iVArgsBegin, ...)
    
    i8 iVArgsEnd = va_arg(xVarArgs,i8);
    ASSERT(C_VARGS_END == iVArgsEnd);
-   
+   UNUSED(iVArgsEnd);
+ 
    va_end(xVarArgs);
    
    return ayRow;

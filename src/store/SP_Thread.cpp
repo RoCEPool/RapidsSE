@@ -39,6 +39,7 @@ SP_Thread::~SP_Thread(void) noexcept(false)
 Stz* SP_Thread::sz(Thread* pThread)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+  UNUSED(pThread);
   
   return (Stz*) &m_caResult[0];
 }

@@ -281,6 +281,7 @@ void SeApi::vPrintAllTablesInCurrentFolder(void)
 SeApi& SeApi::operator |(SeApi* pArg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
+  UNUSED(pArg);
   
   return *(SeApi*)this;
 }

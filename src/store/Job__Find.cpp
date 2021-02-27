@@ -83,6 +83,9 @@ Job__Find::~Job__Find(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Job__Find::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
+  UNUSED(eClass);
+  UNUSED(aTab);
+
   Job__Find* pJob__Executed = _pJob__Find(pObject);
 
   pJob__Executed->vShow();
