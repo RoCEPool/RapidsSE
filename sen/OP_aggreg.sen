@@ -149,7 +149,7 @@
     find: aggreg_Xyz             ZK_CRWBUFFER   op[].handler!
     find: aggreg_Xyz             ZK_ROWBUFFER   op[].handler!
     find: aggreg_EosMarker_Err   ZK_EOSMARKER   op[].handler!
-    eError op.pipelineJob@ ERROR_JOB
+
     eError op__execErr
     StreamDef[].delete
     StreamDefOut[].delete

@@ -17,8 +17,6 @@
 
     // check for low memory
     attachMap::isLowMemory if
-      EC_LOW_MEMORY
-      op.pipelineJob@ ERROR_JOB
       EC_LOW_MEMORY op__execErr
       true
       exit
