@@ -15,9 +15,8 @@
   // check if we have enough buffers
   node::checkEnoughBuffers not if
     to errorCode
-    errorCode op.pipelineJob@ ERROR_JOB
-    PipeIn[].delete
     errorCode op__execErr
+    PipeIn[].delete
     true
     exit
   then
@@ -26,9 +25,8 @@
   // check if are in catalogs
   folder[].checkIsCatalogs not if
     to errorCode
-    errorCode op.pipelineJob@ ERROR_JOB
-    PipeIn[].delete
     errorCode op__execErr
+    PipeIn[].delete
     true
     exit
   then
@@ -37,9 +35,8 @@
   // check if catalog already exits
   <catalogNm> name::isNotKnownCatalog not if
     to errorCode
-    errorCode op.pipelineJob@ ERROR_JOB
-    PipeIn[].delete
     errorCode op__execErr
+    PipeIn[].delete
     true
     exit
   then

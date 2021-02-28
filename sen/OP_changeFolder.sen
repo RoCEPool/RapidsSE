@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : cf_action
 
-  0 0 0 locals| pCurrentFolder sFolderNm errorCode |
+  0 0 locals| pCurrentFolder sFolderNm |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -78,9 +78,7 @@
   sFolderNm folder[].findSymbol to pCurrentFolder
 
   pCurrentFolder word.checkIsAFolder not if
-    to errorCode
-    errorCode op.pipelineJob@ ERROR_JOB
-    errorCode op__execErr
+    op__execErr
     true
     exit
   then

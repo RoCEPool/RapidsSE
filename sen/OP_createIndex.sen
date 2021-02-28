@@ -91,9 +91,8 @@
 /*
   sTableNm createIndex::checkCreate not if ( errorCode )
     to errorCode
-    errorCode op.pipelineJob@ ERROR_JOB
-    Pipein[].delete
     errorCode op__execErr
+    Pipein[].delete
     true
     exit
   then

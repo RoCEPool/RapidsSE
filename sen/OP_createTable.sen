@@ -64,7 +64,6 @@
   sTableNm createTable::checkCreate not if ( errorCode )
     to errorCode
     StreamDef[].delete
-    errorCode op.pipelineJob@ ERROR_JOB
     errorCode op__execErr
     true
     exit

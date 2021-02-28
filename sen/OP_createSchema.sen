@@ -23,9 +23,8 @@
   // check if we have enough buffers
   node::checkEnoughBuffers not if
     to errorCode
-    errorCode op.pipelineJob@ ERROR_JOB
-    PipeIn[].delete
     errorCode op__execErr
+    PipeIn[].delete
     true
     exit
   then
@@ -34,9 +33,8 @@
   // check if are in schemas
   folder[].checkIsSchemas not if
     to errorCode
-    errorCode op.pipelineJob@ ERROR_JOB
-    PipeIn[].delete
     errorCode op__execErr
+    PipeIn[].delete
     true
     exit
   then
@@ -45,9 +43,8 @@
   // check if schema already exits
   <schemaNm> name::isNotKnownSchema not if
     to errorCode
-    errorCode op.pipelineJob@ ERROR_JOB
-    PipeIn[].delete
     errorCode op__execErr
+    PipeIn[].delete
     true
     exit
   then
