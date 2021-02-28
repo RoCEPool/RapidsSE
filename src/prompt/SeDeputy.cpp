@@ -161,7 +161,10 @@ void SeDeputy::vExecuteJob(void)
   // start the buffer queue processing while the pipeline ops are running
   if (m_pSession->m_pSsnJob->bIsPipeline())
     m_pSession->m_pOutput->vProcessBufferQueue(m_pSession);
-  
+
+  RASSERT(! m_pSession->m_pOutput->m_bExecErr );
+  RASSERT(! m_pSession->m_pOutput->m_bCmdErr );
+
   //eRS eResponse = (eRS)m_pSession->m_pSsnJob->pJobTags()->iValue("<rspKind>"_Stz);
   //m_pSession->m_pSsnJob->vPrintResult(m_pSession,eResponse);
 
