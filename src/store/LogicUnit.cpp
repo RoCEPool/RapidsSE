@@ -2330,16 +2330,16 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // crw operators
       case EO_CRW_ALT_DEREF: ArgNil(); // deref m_aAltCrw using m_aAltEnt.ref
         dLU0(EO_CRW_ALT_DEREF);
-        //vDev_CRW_DEREF(pLU,aRluCommon->m_pDevAltIxt);
+        vDev_CRW_DEREF(pLU,aRluCommon->m_pDevAltIxt);
 
-        iBuffer = aRluCommon->m_aAltEnt->Rrf.m_uBuffer;
-        iItem   = aRluCommon->m_aAltEnt->Rrf.m_uItem;
+//        iBuffer = aRluCommon->m_aAltEnt->Rrf.m_uBuffer;
+//        iItem = aRluCommon->m_aAltEnt->Rrf.m_uItem;
 
-        aRluCommon->m_aAltCrw = (void*)
-          ( (char*)C_ADR_REGION
-                   + iBuffer * C_1MB
-                   + C_CRW_FIRSTHEAD
-                   + iItem * aRluCommon->m_nAltHeadSize );
+//        aRluCommon->m_aAltCrw = (void*)
+//          ( (char*)C_ADR_REGION
+//                   + iBuffer * C_1MB
+//                   + C_CRW_FIRSTHEAD
+//                   + iItem * aRluCommon->m_nAltHeadSize );
 
         break;//+endCase
        

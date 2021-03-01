@@ -73,23 +73,18 @@ void vDev_CRW_DEREF(void* aLU, void* aIXT)
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
   DevIXT* pDevIxt = _pDevIXT(aIXT);
   
-  pDevIxt->m_aCrw  =
-    CrwBuffer::pRefdCrw(pDevIxt->m_aEnt->rxRef());
-  
-  // can we calc it?
+  //pDevIxt->m_aCrw  =
+  //  CrwBuffer::pRefdCrw(pDevIxt->m_aEnt->rxRef());
   
   i8 iBuffer = ((Ent_int*)pDevIxt->m_aEnt)->Rrf.m_uBuffer;
   i8 iItem   = ((Ent_int*)pDevIxt->m_aEnt)->Rrf.m_uItem;
-  
-  Crw* aCrw  = (Crw*)
+
+  pDevIxt->m_aCrw  = (Crw*)
     ( (char*)C_ADR_REGION
              + iBuffer * C_1MB
              + C_CRW_FIRSTHEAD
              + iItem * pLogicUnit->m_xRluCommon.m_nSrcHeadSize );
-  
-  RASSERT(aCrw == pDevIxt->m_aCrw);
-  
-  // ... yes we can
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1352,13 +1347,14 @@ void vDev_ALT_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflateRule, i8* iaCo
   char* acStrArea_null = nullptr;
   
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-      
+  DevIXT* pDevIxt = _pDevIXT(pLogicUnit->m_pDevAltIxt);
+
   RowInflator::vInflate_ColumnSet_into_CellArray
   (
     aaiDstk,
     acStrArea_null,
     (eSI)ieStrInflateRule,
-    (Crw*)pLogicUnit->m_xRluCommon.m_aAltCrw,
+    (Crw*)pDevIxt->m_aCrw,
     iaColSet,
     pLogicUnit->m_pDevAltRow->m_pStreamDef
   );
