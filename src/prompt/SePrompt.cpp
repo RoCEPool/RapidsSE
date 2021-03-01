@@ -349,8 +349,8 @@ bool SePrompt::bPrepareJob(void)
   
   eEC eError = Api::ePrepareJob(m_pCurrentDeputy->pSession(),
                                 m_pInpTknVec,
-                                m_pLitTknVec,
-                                nullptr);
+                                m_pLitTknVec);
+//                                nullptr);
 //                                m_pJobTagSet);
 
   

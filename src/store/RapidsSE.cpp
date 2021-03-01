@@ -104,7 +104,7 @@ eEC RapidsSE::ePrepareJob(void* aSession, char* azCommand)
 
   TagSet* pTagSet =  & pSession->m_oJobTagSet;
   pTagSet->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
-  eEC eError = Api::ePrepareJob(pSession,pCmdTknVec,pLitTknVec,nullptr);
+  eEC eError = Api::ePrepareJob(pSession,pCmdTknVec,pLitTknVec);//,nullptr);
 
   delete pCmdTknVec;
   delete pLitTknVec;

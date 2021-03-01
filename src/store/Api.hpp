@@ -29,7 +29,7 @@ namespace STORE
   static eEC  ePrepareJob(Session*  pSession
                           ,TokenVec* pCmdTknVec
                           ,TokenVec* pLitTknVec
-                          ,TagSet*   pTagSet
+                          //,TagSet*   pTagSet
                           );
 
   static void vSubmitJob(Session* pSession);
