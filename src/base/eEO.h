@@ -58,17 +58,17 @@ enum eEO : u1 // expression operators
   /*  S  */ EO_JMP_GREATER,      // pop top and jump to location if >
   
   // index
-  /*  D  */ EO_INDEXNM_ALT_SET,    // set the alt index name
-  /*  D  */ EO_INDEXNM_SRC_SET,    // set the src index name
+  /*  D  */ EO_INDEXNM_ALT_SET,    // set the alt index name                 --- to go
+  /*  D  */ EO_INDEXNM_SRC_SET,    // set the src index name                 --- to go
 
   // index name
   /*     */ EO_DEVIXT_INDEXNM_SET,    // set the index name in the dev
 
   // indexTree
-  /*  D  */ EO_INDEXTREE_ALT_SET,    // set the alt indexTree
-  /*  D  */ EO_INDEXTREE_SRC_SET,    // set the src indexTree
-  /*  D  */ EO_INDEXTREE_TMP_DELETE, // delete the tmp indexTree
-  /*  D  */ EO_INDEXTREE_TMP_SET,    // set the tmp indexTree
+  /*  D  */ EO_INDEXTREE_ALT_SET,    // set the alt indexTree                 --- to go
+  /*  D  */ EO_INDEXTREE_SRC_SET,    // set the src indexTree                 --- to go
+  /*  D  */ EO_INDEXTREE_TMP_DELETE, // delete the tmp indexTree              --- to go
+  /*  D  */ EO_INDEXTREE_TMP_SET,    // set the tmp indexTree                 --- to go
 
   // indexTree
   /*  S  */ EO_DEVIXT_INDEXTREE_SET,    // set the indexTree in the ixt dev
@@ -138,8 +138,8 @@ enum eEO : u1 // expression operators
   /*  D  */ EO_SET_LOCALS_SRC2,  // inflate src columns direct into locals
 
   // table
-  /*  D  */ EO_TABLENM_ALT_SET,    // set the alt table name
-  /*  D  */ EO_TABLENM_SRC_SET,    // set the src table name
+  /*  D  */ EO_TABLENM_ALT_SET,    // set the alt table name                 --- to go
+  /*  D  */ EO_TABLENM_SRC_SET,    // set the src table name                 --- to go
 
   // table name
   /*     */ EO_DEVROW_TABLENM_SET, // set the table name in the row dev
