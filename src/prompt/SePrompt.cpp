@@ -312,24 +312,16 @@ bool SePrompt::bGetCommand(void)
 //  xNow.vSetNow();
   
   //vTrace("%s\n"_Stz,xNow.sz());
-
-//  m_oExtTagSet.vInsert(C_TAG_FREEPCT,gpBufferPool->iFreePercent());
-//  m_oExtTagSet.vInsert(C_TAG_GRID,AM::pGrid()->szGridNm());
-//  m_oExtTagSet.vInsert(C_TAG_HOST,sHostName);
-//  m_oExtTagSet.vInsert(C_TAG_NODE,AM::pGrid()->pThisNode()->szNodeNm());
-//  m_oExtTagSet.vInsert(C_TAG_REQUEST,m_pCurrentDeputy->pSession()->m_xReqTuple.m_iReqNo);
-//  m_oExtTagSet.vInsert(C_TAG_SHM,gpBufferPool->szShmNm());
-//  m_oExtTagSet.vInsert(C_TAG_WHEN,xNow.sz());
   
   if (*szCmdFile->azChar()) {
-    m_oExtTagSet.vInsert(C_TAG_CMDFILE,szCmdFile);
-    m_oExtTagSet.vInsert(C_TAG_CMDLINE,iCmdLine);
+    m_oJobCtlTagSet.vInsert(C_TAG_CMDFILE,szCmdFile);
+    m_oJobCtlTagSet.vInsert(C_TAG_CMDLINE,iCmdLine);
   }
 
   if (*pInputGet()->szDivision()->azChar())
-    m_oExtTagSet.vInsert(C_TAG_DIVISION,pInputGet()->szDivision());
+    m_oJobCtlTagSet.vInsert(C_TAG_DIVISION,pInputGet()->szDivision());
   if (*pInputGet()->szSection()->azChar())
-    m_oExtTagSet.vInsert(C_TAG_SECTION,pInputGet()->szSection());
+    m_oJobCtlTagSet.vInsert(C_TAG_SECTION,pInputGet()->szSection());
 
   return true;
 }
@@ -341,12 +333,12 @@ bool SePrompt::bPrepareJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
-  m_oExtTagSet.vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
+  m_oJobCtlTagSet.vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
   
   eEC eError = Api::ePrepareJob(m_pCurrentDeputy->pSession(),
                                 m_pInpTknVec,
                                 m_pLitTknVec,
-                                &m_oExtTagSet);
+                                &m_oJobCtlTagSet);
   
   
   if (eError) {
@@ -611,7 +603,7 @@ bool SePrompt::bExecuteFunction(void)
   (pPromptDesc->m_fPrompt)(this);
   oTimer.vUpdate();
 
-  if (m_oExtTagSet.bHasName(C_TAG_TIME))
+  if (m_oJobCtlTagSet.bHasName(C_TAG_TIME))
     vTrace("time %lldms\n\n"_Stz,oTimer.iMilliseconds());
 
   return true;
@@ -633,7 +625,7 @@ void SePrompt::vExtractCtlTags(void)
    Token* pTkn1 = pTkn(1);
    sTag.vSprint("<%s>"_Stz,pTkn1->szChars());
     
-    m_oExtTagSet.vInsert(sTag,1);
+    m_oJobCtlTagSet.vInsert(sTag,1);
     
     vCutToken(0);
     vCutToken(0);
@@ -660,11 +652,11 @@ void SePrompt::vExtractPaths(void)
   for (nPaths = 0; i_Paths < m_pInpTknVec->nTokens(); nPaths++) {
     sName.vSprint("<path%lld>"_Stz,nPaths);
     Token* pTkn = m_pInpTknVec->pGet(i_Paths);
-    m_oExtTagSet.vAppend(sName,pTkn->szChars());
+    m_oJobCtlTagSet.vAppend(sName,pTkn->szChars());
     m_pInpTknVec->vRemoveToken(i_Paths);
   }
   
-  m_oExtTagSet.vAppend("<paths>"_Stz,nPaths);
+  m_oJobCtlTagSet.vAppend("<paths>"_Stz,nPaths);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -720,7 +712,7 @@ bool SePrompt::bExtractSupTags(void)
 
     s32 sName;
     sName.vSprint("<%s>"_Stz,pTkn_name->szChars());
-    m_oExtTagSet.vAppend(sName,pTkn_value->szChars());
+    m_oJobCtlTagSet.vAppend(sName,pTkn_value->szChars());
   }
     
   m_pInpTknVec->vTrimTokens(i_TagBegin);
@@ -1214,10 +1206,10 @@ void SePrompt::vResetExtractedTagSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  m_oExtTagSet.vReset();
-  m_oExtTagSet.vInsert(C_TAG_BYPROMPT,1);
-  m_oExtTagSet.vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNode());
-  m_oExtTagSet.vInsert(C_TAG_SESSION,m_pCurrentDeputy->pSession()->m_i_Session);
+  m_oJobCtlTagSet.vReset();
+  m_oJobCtlTagSet.vInsert(C_TAG_BYPROMPT,1);
+  m_oJobCtlTagSet.vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNode());
+  m_oJobCtlTagSet.vInsert(C_TAG_SESSION,m_pCurrentDeputy->pSession()->m_i_Session);
 }
 
 /*----------------------------------------------------------------------------*/

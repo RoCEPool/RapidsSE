@@ -253,9 +253,10 @@ void Step::vApiExecuteRequest(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn job and wait for completion
   
-  bool bSpawned = Api::bSpawnJob_session(pJob);
-  UNUSED(bSpawned);
-
+//  bool bSpawned = Api::bSpawnJob_session(pJob);
+//  UNUSED(bSpawned);
+  Api::vExecuteJob(pSession);
+  
   RASSERT(! pJob->bJobHasError() );
   //eRS eResponse = (eRS)pJob->pJobTags()->iValue("<rspKind>"_Stz);
   //pJob->vPrintResult(pSession,eResponse);
