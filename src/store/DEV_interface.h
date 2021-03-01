@@ -12,6 +12,8 @@ i8   iDev_CRW_TEST(void* aLU, void* aIXT);
 void vDev_IXT_BEGIN(i8** aaiDstk);
 void vDev_IXT_DEREF(i8** aaiDstk);
 void vDev_IXT_NEXT(i8** aaiDstk);
+void vDev_IXT_NULL(i8** aaiDstk);
+void vDev_IXT_TEST(i8** aaiDstk);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // prototypes for dev IXT

@@ -2394,14 +2394,16 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
       case EO_CRW_SRC_NULL: ArgNil(); // null the crw src
-        dLU0(EO_CRW_SRC_NULL);
-        vDev_CRW_NULL(pLU,aRluCommon->m_pDevSrcIxt);
+//        dLU0(EO_CRW_SRC_NULL);
+//        vDev_CRW_NULL(pLU,aRluCommon->m_pDevSrcIxt);
+        RASSERT(0);
         break;//+endCase
         
       case EO_CRW_SRC_TEST: ArgNil(); // test for src crw
-        dLU0(EO_CRW_SRC_TEST);
-        iRes = iDev_CRW_TEST(pLU,aRluCommon->m_pDevSrcIxt);
-        *(++aiDstk) = iRes;
+//        dLU0(EO_CRW_SRC_TEST);
+//        iRes = iDev_CRW_TEST(pLU,aRluCommon->m_pDevSrcIxt);
+//        *(++aiDstk) = iRes;
+        RASSERT(0);
         break;//+endCase
 
       case EO_DEVIXT_BEGIN: ArgNil(); // begin row traverse
@@ -2417,6 +2419,16 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_DEVIXT_DEREF: ArgNil(); // deref Crw using m_aEnt.ref
         dLU0(EO_DEVIXT_DEREF);
         vDev_IXT_DEREF(&aiDstk);
+        break;//+endCase
+
+      case EO_DEVIXT_NULL: ArgNil(); // null the crw
+        dLU0(EO_DEVIXT_NULL);
+        vDev_IXT_NULL(&aiDstk);
+        break;//+endCase
+
+      case EO_DEVIXT_TEST: ArgNil(); // test for crw
+        dLU0(EO_DEVIXT_TEST);
+        vDev_IXT_TEST(&aiDstk);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

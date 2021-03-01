@@ -241,13 +241,15 @@ enum eEO : u1 // expression operators
   /*  D  */ EO_CRW_SRC_BEGIN,    // begin src crw traverse                           ---to go
   /*  D  */ EO_CRW_SRC_DEREF,    // deref m_aSrcCrw using m_aSrcEnt.ref              ---to go
   /*  D  */ EO_CRW_SRC_NEXT,     // move to next src row                             ---to go
-  /*  D  */ EO_CRW_SRC_NULL,     // null crw src
-  /*  D  */ EO_CRW_SRC_TEST,     // test if there is a crw buffer
+  /*  D  */ EO_CRW_SRC_NULL,     // null crw src                                     ---to go
+  /*  D  */ EO_CRW_SRC_TEST,     // test if there is a crw buffer                    ---to go
 
   // crw operators
   /*  S  */ EO_DEVIXT_BEGIN,     // begin crw traverse
   /*  S  */ EO_DEVIXT_DEREF,     // deref Crw using Ent.ref
-  /*  S  */ EO_DEVIXT_NEXT,      // move to next src row
+  /*  S  */ EO_DEVIXT_NEXT,      // move to next row
+  /*  S  */ EO_DEVIXT_NULL,      // null crw src
+  /*  S  */ EO_DEVIXT_TEST,      // test if there is a crw buffer
 
   // entry
   /*  D  */ EO_ENT_FINDI,        // find entry with int key
@@ -604,6 +606,8 @@ static Stz* aEO[]
   /*    */ "EO_DEVIXT_BEGIN"_Stz,
   /*    */ "EO_DEVIXT_DEREF"_Stz,
   /*    */ "EO_DEVIXT_NEXT"_Stz,
+  /*    */ "EO_DEVIXT_NULL"_Stz,
+  /*    */ "EO_DEVIXT_TEST"_Stz,
 
   // entry
   /*    */ "EO_ENT_FINDI"_Stz,
@@ -965,6 +969,8 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_DEVIXT_BEGIN
   { EA_NONE,    0 },  // EO_DEVIXT_DEREF
   { EA_NONE,    0 },  // EO_DEVIXT_NEXT
+  { EA_NONE,    0 },  // EO_DEVIXT_NULL
+  { EA_NONE,    0 },  // EO_DEVIXT_TEST
 
   // entry
   { EA_NONE,    0 },  // EO_ENT_FINDI
