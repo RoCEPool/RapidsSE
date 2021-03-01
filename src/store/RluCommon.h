@@ -53,16 +53,16 @@ struct RluCommon                      // **IF YOU CHANGE THIS DO A CLEAN BUILD**
 
   struct Ent_int* m_aTmpSkipRoots;
   
-  i8 m_nCrwRows;
-  i8 m_i_CrwRow;
+  //i8 m_nCrwRows;
+  //i8 m_i_CrwRow;
 
   i8 m_nAltHeadSize;
   i8 m_nSrcHeadSize;
 
   //void* m_aAltCrw;
-  void* m_aSrcCrw;
+  //void* m_aSrcCrw;
 
-  void* m_aSrcHeadCrw;
+  //void* m_aSrcHeadCrw;
 
   char m_caStrWrk[128];
 

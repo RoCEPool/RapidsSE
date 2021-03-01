@@ -54,13 +54,13 @@ void vDev_CRW_BEGIN(void* aLU, void* aIXT)
   pDevIxt->m_nRows = pDevIxt->m_pCrwBuffer ?
                    pDevIxt->m_pCrwBuffer->nRowCount() : 0;
   
-  pLogicUnit->m_xRluCommon.m_nCrwRows = pDevIxt->m_nRows;
-  pLogicUnit->m_xRluCommon.m_i_CrwRow = pDevIxt->m_i_Row;
+  //pLogicUnit->m_xRluCommon.m_nCrwRows = pDevIxt->m_nRows;
+  //pLogicUnit->m_xRluCommon.m_i_CrwRow = pDevIxt->m_i_Row;
       
-  if (pDevIxt->m_pCrwBuffer)
-    pLogicUnit->m_xRluCommon.m_aSrcHeadCrw = pDevIxt->m_pCrwBuffer->aGetHead(0);
-  else
-    pLogicUnit->m_xRluCommon.m_aSrcHeadCrw = nullptr;
+  //if (pDevIxt->m_pCrwBuffer)
+  //  pLogicUnit->m_xRluCommon.m_aSrcHeadCrw = pDevIxt->m_pCrwBuffer->aGetHead(0);
+  //else
+  //  pLogicUnit->m_xRluCommon.m_aSrcHeadCrw = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -99,10 +99,19 @@ i8 iDev_CRW_NEXT(void* aLU, void* aIXT)
 
   i8 iRes;
   
+//  if (++pDevIxt->m_i_Row < pDevIxt->m_nRows) {
+//    pDevIxt->m_aCrw =
+//      pDevIxt->m_pCrwBuffer->aCrw(pDevIxt->m_i_Row);
+//    iRes = 1;
+//  }
+//  else {
+//    iRes = 0;
+//  }
+
   if (++pDevIxt->m_i_Row < pDevIxt->m_nRows) {
     pDevIxt->m_aCrw =
-      pDevIxt->m_pCrwBuffer->aCrw(pDevIxt->m_i_Row);
-    pLogicUnit->m_xRluCommon.m_aSrcCrw = pDevIxt->m_aCrw;
+        (Crw*) ( (char*)pDevIxt->m_pCrwBuffer->aGetHead(0)
+            + (pLogicUnit->m_xRluCommon.m_nSrcHeadSize * pDevIxt->m_i_Row) );
     iRes = 1;
   }
   else {
@@ -1367,7 +1376,10 @@ void vDev_SRC_COL_PUSHDST(void* aLU, void* aROWDEVICE) {
   _static_
 
   LogicUnit *pLogicUnit = _pLogicUnit(aLU);
-  HeadLine *aHeadLine = (HeadLine *) pLogicUnit->m_xRluCommon.m_aSrcCrw;
+  DevIXT* pDevIxt = _pDevIXT(pLogicUnit->m_pDevSrcIxt);
+
+  //HeadLine *aHeadLine = (HeadLine *) pLogicUnit->m_xRluCommon.m_aSrcCrw;
+  HeadLine *aHeadLine = (HeadLine *) pDevIxt->m_aCrw;
 
   DevROW* pDevRow = _pDevROW(aROWDEVICE);
 
@@ -1421,7 +1433,12 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflateRule, i8* iaCo
   _static_
   
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-  HeadLine*  aHeadLine  = (HeadLine*)pLogicUnit->m_xRluCommon.m_aSrcCrw;
+
+  DevIXT* pDevIxt = _pDevIXT(pLogicUnit->m_pDevSrcIxt);
+
+  //HeadLine *aHeadLine = (HeadLine *) pLogicUnit->m_xRluCommon.m_aSrcCrw;
+  HeadLine *aHeadLine = (HeadLine *) pDevIxt->m_aCrw;
+
   StreamDef* pStreamDef = pLogicUnit->m_pDevSrcRow->m_pStreamDef;
   
   RowInflator::vInflate_Key_into_ElementArray
