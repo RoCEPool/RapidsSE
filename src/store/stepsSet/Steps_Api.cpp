@@ -106,11 +106,14 @@ void Step::vApiExecuteNested(void)
 
   TokenVec* pReqTknVec = TokenVec::pTokenise(sRequest);
   
-  TagSet oTagSet;
-  oTagSet.vReplace(C_TAG_PLPROTOCOL,PP_RETURN_PIPELINE);
+//  TagSet oTagSet;
+//  oTagSet.vReplace(C_TAG_PLPROTOCOL,PP_RETURN_PIPELINE);
+  TagSet* pTagSet =  & pSession->m_oJobTagSet;
+  pTagSet->vReplace(C_TAG_PLPROTOCOL,PP_RETURN_PIPELINE);
 
-  eError = Api::ePrepareJob(pSession,pReqTknVec,nullptr,&oTagSet);
-  
+  //eError = Api::ePrepareJob(pSession,pReqTknVec,nullptr,pTagSet);
+  eError = Api::ePrepareJob(pSession,pReqTknVec,nullptr,nullptr);
+
   if (eError) {
     m_pDataStack->vPushInt(eError);
     m_pDataStack->vPushInt(false);

@@ -26,9 +26,9 @@ namespace STORE
   static void vExtractTags(Session*  pSession,
                            TokenVec* pCmdTknVec,
                            TagSet*   pTagSet);
-  static eEC  ePrepareJob(Session*  pSession,
-                          TokenVec* pCmdTknVec,
-                          TokenVec* pLitTknVec
+  static eEC  ePrepareJob(Session*  pSession
+                          ,TokenVec* pCmdTknVec
+                          ,TokenVec* pLitTknVec
                           ,TagSet*   pTagSet
                           );
 
