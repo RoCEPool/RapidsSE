@@ -153,7 +153,6 @@ void Api::vExtractTags(Session*  pSession,
 /* new a job in the session and prepare it for execution                      */
 /*----------------------------------------------------------------------------*/
 eEC Api::ePrepareJob(Session*   pSession
-                     ,TokenVec* pCmdTknVec
                      ,TokenVec* pLitTknVec
                      )
 {
@@ -162,9 +161,8 @@ eEC Api::ePrepareJob(Session*   pSession
   RASSERT(pSession);
   RASSERT(! pSession->m_pSsnJob);
     
-  if (! pCmdTknVec) {
-    pCmdTknVec = pSession->m_pInput->pTokenVec();
-  }
+ 
+  TokenVec* pCmdTknVec = pSession->m_pInput->pTokenVec();
       
   TagSet*  pJobCtlTagSet = & pSession->m_oJobTagSet;
   
