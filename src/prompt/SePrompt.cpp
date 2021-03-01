@@ -350,8 +350,9 @@ bool SePrompt::bPrepareJob(void)
   eEC eError = Api::ePrepareJob(m_pCurrentDeputy->pSession(),
                                 m_pInpTknVec,
                                 m_pLitTknVec,
-                                m_pJobTagSet);
-  
+                                nullptr);
+//                                m_pJobTagSet);
+
   
   if (eError) {
     RASSERT(! m_pCurrentDeputy->pJob());
