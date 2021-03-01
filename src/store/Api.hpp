@@ -28,8 +28,9 @@ namespace STORE
                            TagSet*   pTagSet);
   static eEC  ePrepareJob(Session*  pSession,
                           TokenVec* pCmdTknVec,
-                          TokenVec* pLitTknVec,
-                          TagSet*   pTagSet);
+                          TokenVec* pLitTknVec
+                          ,TagSet*   pTagSet
+                          );
 
   static void vSubmitJob(Session* pSession);
   static void vWaitJob(Session* pSession);

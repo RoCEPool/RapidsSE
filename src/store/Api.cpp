@@ -154,8 +154,9 @@ void Api::vExtractTags(Session*  pSession,
 /*----------------------------------------------------------------------------*/
 eEC Api::ePrepareJob(Session*  pSession,
                      TokenVec* pCmdTknVec,
-                     TokenVec* pLitTknVec,
-                     TagSet*   pJobCtlTagSet)
+                     TokenVec* pLitTknVec
+                     ,TagSet*   pJobCtlTagSet
+                     )
 {
   _static_
 
