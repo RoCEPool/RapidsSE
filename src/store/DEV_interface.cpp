@@ -228,6 +228,43 @@ void vDev_IXT_NEXT(i8** aaiDstk)
 }
 
 /*----------------------------------------------------------------------------*/
+/*  null the crw buffer                                                       */
+/*----------------------------------------------------------------------------*/
+void vDev_IXT_NULL(i8** aaiDstk)
+{
+  _static_
+
+  i8 *aiDstk = *aaiDstk;
+
+  //pop the device
+  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
+
+  pDevIxt->m_pCrwBuffer = nullptr;
+
+  *aaiDstk = aiDstk;
+}
+
+/*----------------------------------------------------------------------------*/
+/*  test if there is a crw src                                                */
+/*----------------------------------------------------------------------------*/
+void vDev_IXT_TEST(i8** aaiDstk)
+{
+  _static_
+
+  i8 *aiDstk = *aaiDstk;
+
+  //pop the device
+  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
+
+  if (pDevIxt->m_pCrwBuffer)
+    I_PushInt(1)
+  else
+    I_PushInt(0)
+
+  *aaiDstk = aiDstk;
+}
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/

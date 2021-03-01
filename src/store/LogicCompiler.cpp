@@ -68,6 +68,8 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_IXT_BEGIN"_Stz,         (const void *) vDev_IXT_BEGIN         },
   { "vDev_IXT_DEREF"_Stz,         (const void *) vDev_IXT_DEREF         },
   { "vDev_IXT_NEXT"_Stz,          (const void *) vDev_IXT_NEXT          },
+  { "vDev_IXT_NULL"_Stz,          (const void *) vDev_IXT_NULL          },
+  { "vDev_IXT_TEST"_Stz,          (const void *) vDev_IXT_TEST          },
 
   { "iDev_ENT_COMPARE"_Stz,       (const void *) iDev_ENT_COMPARE       },
   { "aDev_ENT_NEXT"_Stz,          (const void *) aDev_ENT_NEXT          },
