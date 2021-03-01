@@ -106,6 +106,12 @@ void Api::vExecuteJob(Session* pSession)
 
   Job* pJob = pSession->m_pSsnJob;
   
+  
+  
+  
+  
+  
+  
   for (;;) {
   
     bool bSpawned = Api::bSpawnJob_session(pJob);
@@ -124,12 +130,32 @@ void Api::vExecuteJob(Session* pSession)
 }
 
 /*----------------------------------------------------------------------------*/
-/* prepare job                                                                */
+/* extract paths                                                              */
+/*----------------------------------------------------------------------------*/
+void Api::vExtractPaths(Session*  pSession,
+                       TokenVec* pCmdTknVec,
+                       TagSet*   pTagSet)
+{
+  _static_
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract tags                                                               */
+/*----------------------------------------------------------------------------*/
+void Api::vExtractTags(Session*  pSession,
+                       TokenVec* pCmdTknVec,
+                       TagSet*   pTagSet)
+{
+  _static_
+}
+
+/*----------------------------------------------------------------------------*/
+/* new a job in the session and prepare it for execution                      */
 /*----------------------------------------------------------------------------*/
 eEC Api::ePrepareJob(Session*  pSession,
                      TokenVec* pCmdTknVec,
                      TokenVec* pLitTknVec,
-                     TagSet*   pExtraTagSet)
+                     TagSet*   pJobCtlTagSet)
 {
   _static_
 
@@ -137,6 +163,7 @@ eEC Api::ePrepareJob(Session*  pSession,
   RASSERT(! pSession->m_pSsnJob);
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   if (bShortForm(pCmdTknVec)) {
     if (! bExpandToLongForm(pCmdTknVec)) {
       return EC_INVALID_COMMAND;
@@ -157,7 +184,7 @@ eEC Api::ePrepareJob(Session*  pSession,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if ( ! AM::bParseCmd(pCmdTknVec,pExtraTagSet) )
+  if ( ! AM::bParseCmd(pCmdTknVec,pJobCtlTagSet) )
     return EC_INVALID_COMMAND;
   
   //if (! AM::bPassesLowMem())
@@ -205,7 +232,7 @@ eEC Api::ePrepareJob(Session*  pSession,
     //pJobTags->vContentDump();
   }
   
-  pSession->m_pSsnJob->ePopulateJob(pExtraTagSet);
+  pSession->m_pSsnJob->ePopulateJob(pJobCtlTagSet);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add <cmd> into job ename-set
