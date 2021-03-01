@@ -75,7 +75,6 @@
   sSmt job[] indexDef::parseTableName to sTableNm
   sTableNm "" str.equal if
     job[] job.error@ to errorCode
-    errorCode op.pipelineJob@ ERROR_JOB
     errorCode op__execErr
     Pipein[].delete
     true
@@ -85,7 +84,6 @@
   // check ok to create index
   sTableNm syntaxUniqueIndex::checkCreate not if ( errorCode )
     to errorCode
-    errorCode op.pipelineJob@ ERROR_JOB
     errorCode op__execErr
     Pipein[].delete
     true
@@ -96,7 +94,6 @@
 
   indexDef[].isNull if
     job[] job.error@ to errorCode
-    errorCode op.pipelineJob@ ERROR_JOB
     errorCode op__execErr
     Pipein[].delete
     true

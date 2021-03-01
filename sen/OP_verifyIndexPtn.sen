@@ -14,7 +14,6 @@
   // check if we can verify the index
   <indexNm> <tableNm> check::validIndexAssembly not if
     to errorCode
-    op.pipelineJob@ ERROR_JOB
     errorCode op__execErr
     PipeIn[].delete
     true
