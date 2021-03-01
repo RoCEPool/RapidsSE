@@ -2354,8 +2354,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
        
       case EO_CRW_SRC_BEGIN: ArgNil(); // begin src row traverse
-        dLU0(EO_CRW_SRC_BEGIN);
-        vDev_CRW_BEGIN(pLU,aRluCommon->m_pDevSrcIxt);
+//        dLU0(EO_CRW_SRC_BEGIN);
+//        vDev_CRW_BEGIN(pLU,aRluCommon->m_pDevSrcIxt);
+        RASSERT(0);
         break;//+endCase
         
       case EO_CRW_SRC_DEREF: ArgNil(); // deref m_aSrcCrw using m_pDevSrcIxt->m_aEnt.ref
@@ -2373,26 +2374,23 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         RASSERT(0);
         break;//+endCase
 
-      case EO_DEVIXT_DEREF: ArgNil(); // deref Crw using m_aEnt.ref
-        dLU0(EO_DEVIXT_DEREF);
-        vDev_IXT_DEREF(&aiDstk);
-        break;//+endCase
-
       case EO_CRW_SRC_NEXT: ArgNil(); // move to next src row
-        dLU0(EO_CRW_SRC_NEXT);
-        //((DevIXT*)aRluCommon->m_pDevSrcIxt)->m_pCrwBuffer->vDump();
-        iRes = iDev_CRW_NEXT(pLU,aRluCommon->m_pDevSrcIxt);
+//        dLU0(EO_CRW_SRC_NEXT);
+//        //((DevIXT*)aRluCommon->m_pDevSrcIxt)->m_pCrwBuffer->vDump();
+//        iRes = iDev_CRW_NEXT(pLU,aRluCommon->m_pDevSrcIxt);
         
-        
-//        if (++aRluCommon->m_i_CrwRow < aRluCommon->m_nCrwRows) {
-//          aRluCommon->m_aSrcCrw = (char*)aRluCommon->m_aSrcHeadCrw
-//            + (aRluCommon->m_nSrcHeadSize * aRluCommon->m_i_CrwRow);
-//          *(++aiDstk) = 1;
-//        }
-//        else {
-//          *(++aiDstk) = 0;
-//        }
+        /*
+        if (++aRluCommon->m_i_CrwRow < aRluCommon->m_nCrwRows) {
+          aRluCommon->m_aSrcCrw = (char*)aRluCommon->m_aSrcHeadCrw
+            + (aRluCommon->m_nSrcHeadSize * aRluCommon->m_i_CrwRow);
+          *(++aiDstk) = 1;
+        }
+        else {
+          *(++aiDstk) = 0;
+        }
         *(++aiDstk) = iRes;
+        */
+        RASSERT(0);
         break;//+endCase
         
       case EO_CRW_SRC_NULL: ArgNil(); // null the crw src
@@ -2405,7 +2403,22 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         iRes = iDev_CRW_TEST(pLU,aRluCommon->m_pDevSrcIxt);
         *(++aiDstk) = iRes;
         break;//+endCase
-        
+
+      case EO_DEVIXT_BEGIN: ArgNil(); // begin row traverse
+        dLU0(EO_DEVIXT_BEGIN);
+        vDev_IXT_BEGIN(&aiDstk);
+        break;//+endCase
+
+      case EO_DEVIXT_NEXT: ArgNil(); // move to next row
+        dLU0(EO_DEVIXT_NEXT);
+        vDev_IXT_NEXT(&aiDstk);
+        break;//+endCase
+
+      case EO_DEVIXT_DEREF: ArgNil(); // deref Crw using m_aEnt.ref
+        dLU0(EO_DEVIXT_DEREF);
+        vDev_IXT_DEREF(&aiDstk);
+        break;//+endCase
+
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entry
       case EO_ENT_FINDI: ArgNil(); // find entry with int key

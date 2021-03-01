@@ -156,6 +156,26 @@ i8 iDev_CRW_TEST(void* aLU, void* aIXT)
 }
 
 /*----------------------------------------------------------------------------*/
+/* begin row traverse                                                         */
+/*----------------------------------------------------------------------------*/
+void vDev_IXT_BEGIN(i8** aaiDstk)
+{
+  _static_
+
+  i8 *aiDstk = *aaiDstk;
+
+  //pop the device
+  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
+
+  pDevIxt->m_i_Row = -1;
+  pDevIxt->m_aCrw = nullptr;
+  pDevIxt->m_nRows = pDevIxt->m_pCrwBuffer ?
+                     pDevIxt->m_pCrwBuffer->nRowCount() : 0;
+
+  *aaiDstk = aiDstk;
+}
+
+/*----------------------------------------------------------------------------*/
 /* fetch Crw using m_aEnt.ref                                                 */
 /*----------------------------------------------------------------------------*/
 void vDev_IXT_DEREF(i8** aaiDstk)
@@ -178,6 +198,31 @@ void vDev_IXT_DEREF(i8** aaiDstk)
         + iBuffer * C_1MB
         + C_CRW_FIRSTHEAD
         + iItem * C_CRW_HEADBYTES );  //alka ? C_CRW_HEADBYTES
+
+  *aaiDstk = aiDstk;
+}
+
+/*----------------------------------------------------------------------------*/
+/* move to next src row                                                       */
+/*----------------------------------------------------------------------------*/
+void vDev_IXT_NEXT(i8** aaiDstk)
+{
+  _static_
+
+  i8 *aiDstk = *aaiDstk;
+
+  //pop the device
+  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
+
+  if (++pDevIxt->m_i_Row < pDevIxt->m_nRows) {
+    pDevIxt->m_aCrw =
+        (Crw*) ( (char*)pDevIxt->m_pCrwBuffer->aGetHead(0)
+                 + (C_CRW_HEADBYTES * pDevIxt->m_i_Row) );
+    I_PushInt(1);
+  }
+  else {
+    I_PushInt(0);
+  }
 
   *aaiDstk = aiDstk;
 }
