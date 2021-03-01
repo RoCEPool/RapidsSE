@@ -237,9 +237,9 @@ enum eEO : u1 // expression operators
   /*  S  */ EO_DEVIXT_COL_PUSHSET_PST,  // push column subset from dev ixt
 
   // crw operators
-  /*  D  */ EO_CRW_ALT_DEREF,    // deref m_aAltCrw using m_aAltEnt.ref
+  /*  D  */ EO_CRW_ALT_DEREF,    // deref m_aAltCrw using m_aAltEnt.ref              ---to go
   /*  D  */ EO_CRW_SRC_BEGIN,    // begin src crw traverse
-  /*  D  */ EO_CRW_SRC_DEREF,    // deref m_aSrcCrw using m_aSrcEnt.ref
+  /*  D  */ EO_CRW_SRC_DEREF,    // deref m_aSrcCrw using m_aSrcEnt.ref              ---to go
   /*  D  */ EO_CRW_SRC_NEXT,     // move to next src row
   /*  D  */ EO_CRW_SRC_NULL,     // null crw src
   /*  D  */ EO_CRW_SRC_TEST,     // test if there is a crw buffer

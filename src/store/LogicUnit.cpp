@@ -2339,8 +2339,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // crw operators
       case EO_CRW_ALT_DEREF: ArgNil(); // deref m_aAltCrw using m_aAltEnt.ref
-        dLU0(EO_CRW_ALT_DEREF);
-        vDev_CRW_DEREF(pLU,aRluCommon->m_pDevAltIxt);
+//        dLU0(EO_CRW_ALT_DEREF);
+//        vDev_CRW_DEREF(pLU,aRluCommon->m_pDevAltIxt);
 
 //        iBuffer = aRluCommon->m_aAltEnt->Rrf.m_uBuffer;
 //        iItem = aRluCommon->m_aAltEnt->Rrf.m_uItem;
@@ -2350,7 +2350,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 //                   + iBuffer * C_1MB
 //                   + C_CRW_FIRSTHEAD
 //                   + iItem * aRluCommon->m_nAltHeadSize );
-
+        RASSERT(0);
         break;//+endCase
        
       case EO_CRW_SRC_BEGIN: ArgNil(); // begin src row traverse
@@ -2359,8 +2359,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
       case EO_CRW_SRC_DEREF: ArgNil(); // deref m_aSrcCrw using m_pDevSrcIxt->m_aEnt.ref
-        dLU0(EO_CRW_SRC_DEREF);
-        vDev_CRW_DEREF(pLU,aRluCommon->m_pDevSrcIxt);
+        //dLU0(EO_CRW_SRC_DEREF);
+        //vDev_CRW_DEREF(pLU,aRluCommon->m_pDevSrcIxt);
         
 //        iBuffer = aRluCommon->m_aSrcEnt->Rrf.m_uBuffer;
 //        iItem   = aRluCommon->m_aSrcEnt->Rrf.m_uItem;
@@ -2370,7 +2370,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 //                   + iBuffer * C_1MB
 //                   + C_CRW_FIRSTHEAD
 //                   + iItem * aRluCommon->m_nSrcHeadSize );
-        
+        RASSERT(0);
         break;//+endCase
 
       case EO_DEVIXT_DEREF: ArgNil(); // deref Crw using m_aEnt.ref
