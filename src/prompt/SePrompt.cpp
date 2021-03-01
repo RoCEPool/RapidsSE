@@ -256,6 +256,11 @@ bool SePrompt::bGetCommand(void)
   if (bDumpTokens())
     vDumpInpTknVec(false);
 
+  if (bIsTagCommand()) {
+    bExecuteFunction();
+    return false;
+  }
+  
   if (bShortCut())
     return false;
 
@@ -276,9 +281,11 @@ bool SePrompt::bGetCommand(void)
 
   if (bRedirectFromFile())
     return false;
-
+  
   vExtractPaths();
   vExtractCtlTags();
+  if (! bExtractSupTags())
+    return false;
 
   if (bExecuteFunction())
     return false;
@@ -289,8 +296,6 @@ bool SePrompt::bGetCommand(void)
   if (bIsPromptWord())
     m_pInpTknVec->vInsertToken(0,"docol"_Stz,TN_NAME);
 
-  if (! bExtractSupTags())
-    return false;
 
   if (AM::bDeveloper() && m_pInpTknVec->nTokens() > C_1KB) {
     i8 nTokens = m_pInpTknVec->nTokens();
@@ -318,10 +323,12 @@ bool SePrompt::bGetCommand(void)
     m_oJobCtlTagSet.vInsert(C_TAG_CMDLINE,iCmdLine);
   }
 
-  if (*pInputGet()->szDivision()->azChar())
-    m_oJobCtlTagSet.vInsert(C_TAG_DIVISION,pInputGet()->szDivision());
-  if (*pInputGet()->szSection()->azChar())
-    m_oJobCtlTagSet.vInsert(C_TAG_SECTION,pInputGet()->szSection());
+// TBD: remove division and section concepts
+  
+//  if (*pInputGet()->szDivision()->azChar())
+//    m_oJobCtlTagSet.vInsert(C_TAG_DIVISION,pInputGet()->szDivision());
+//  if (*pInputGet()->szSection()->azChar())
+//    m_oJobCtlTagSet.vInsert(C_TAG_SECTION,pInputGet()->szSection());
 
   return true;
 }
@@ -610,29 +617,6 @@ bool SePrompt::bExecuteFunction(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract leading job control tags (such as /time or /nowait)                */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vExtractCtlTags(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-    
-  Token* pTkn0 = pTkn(0);
-  
-  s32 sTag;
-  
-  while ('/' == * pTkn0->azChars() ) {
-    
-   Token* pTkn1 = pTkn(1);
-   sTag.vSprint("<%s>"_Stz,pTkn1->szChars());
-    
-    m_oJobCtlTagSet.vInsert(sTag,1);
-    
-    vCutToken(0);
-    vCutToken(0);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* extract additional paths                                                   */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vExtractPaths(void)
@@ -660,6 +644,29 @@ void SePrompt::vExtractPaths(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* extract leading job control tags (such as /time or /nowait)                */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vExtractCtlTags(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+    
+  Token* pTkn0 = pTkn(0);
+  
+  s32 sTag;
+  
+  while ('/' == * pTkn0->azChars() ) {
+    
+   Token* pTkn1 = pTkn(1);
+   sTag.vSprint("<%s>"_Stz,pTkn1->szChars());
+    
+    m_oJobCtlTagSet.vInsert(sTag,1);
+    
+    vCutToken(0);
+    vCutToken(0);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* extract trailing job supplemtntal tags ( such as <field_delimiter> = | )   */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bExtractSupTags(void)
@@ -668,8 +675,8 @@ bool SePrompt::bExtractSupTags(void)
 
   Token* pTkn0 = pTkn(0);
   
-  if (pTkn0->bSame("tag"_Stz))
-    return true;
+//  if (pTkn0->bSame("tag"_Stz))
+//    return true;
 
   i8 i_TagBegin = m_pInpTknVec->iFindToken("<"_Stz,TN_OTHER);
 
@@ -889,6 +896,21 @@ bool SePrompt::bIsPromptWord(void)
     return true;
   
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is the tag command ?                                                       */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bIsTagCommand(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  Token* pTkn0 = pTkn(0);
+  
+  if (pTkn0->bSame("tag"_Stz))
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1375,8 +1397,8 @@ bool SePrompt::bSubSsnTags(void)
     
     Token* pToken = m_pInpTknVec->pGet(i_Token);
     
-    if (0 == i_Token && pToken->bSame("tag"_Stz))
-      return false;
+//    if (0 == i_Token && pToken->bSame("tag"_Stz))
+//      return false;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // do we have a known ssn tag?

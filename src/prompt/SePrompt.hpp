@@ -103,11 +103,11 @@ namespace PROMPT
     void vExtractPaths(void);
     bool bExtractSupTags(void);
     SeDeputy* pFindDeputy(void);
-    void vOutline(s4K& sOutline);
     bool bHandleDemo(void);
     TokenVec* pInpTknVec(void);
     Input* pInputGet(void);
     bool bIsPromptWord(void);
+    bool bIsTagCommand(void);
     void vLogCommand(void);
     void vLogFreeSpace(void);
     void vMakeDiaryDir(void);
@@ -116,6 +116,7 @@ namespace PROMPT
     i8   iNextDivisionNo(void);
     i8   iNextSectionNo(void);
     Stz* szOriginalCommand(void);
+    void vOutline(s4K& sOutline);
     void vPromptUser(void);
     bool bReadNextCommand(void);
     bool bRedirectFromFile(void);
