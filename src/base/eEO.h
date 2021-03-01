@@ -224,12 +224,17 @@ enum eEO : u1 // expression operators
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // col operators
-  /*  D  */ EO_COL_SRC_PUSHDST,  // push column subset from m_aSrcCrw into dst row
-  /*  D  */ EO_COL_ALT_PUSHONE,  // push column value from m_aAltCrw
-  /*  D  */ EO_COL_ALT_PUSHSET,  // push column subset from m_aAltCrw
-  /*  D  */ EO_COL_SRC_PUSHONE,  // push column value from m_aSrcCrw
-  /*  D  */ EO_COL_SRC_PUSHONE_a,// push value from m_aSrcCrw (str as ptr)
-  /*  D  */ EO_COL_SRC_PUSHSET,  // push column subset from m_aSrcCrw
+  /*  D  */ EO_COL_SRC_PUSHDST,  // push column subset from m_aSrcCrw into dst row   ---to go
+  /*  D  */ EO_COL_ALT_PUSHONE,  // push column value from m_aAltCrw                 ---to go
+  /*  D  */ EO_COL_ALT_PUSHSET,  // push column subset from m_aAltCrw                ---to go
+  /*  D  */ EO_COL_SRC_PUSHONE,  // push column value from m_aSrcCrw                 ---to go
+  /*  D  */ EO_COL_SRC_PUSHONE_a,// push value from m_aSrcCrw (str as ptr)           ---to go
+  /*  D  */ EO_COL_SRC_PUSHSET,  // push column subset from m_aSrcCrw                ---to go
+
+  /*  S  */ EO_DEVIXT_COL_COPYSET,      // copy all columns from one dev to another
+  /*  S  */ EO_DEVIXT_COL_PUSHONE_ADR,  // push column value from dev ixt (str as ptr)
+  /*  S  */ EO_DEVIXT_COL_PUSHONE_PST,  // push column value from dev ixt
+  /*  S  */ EO_DEVIXT_COL_PUSHSET_PST,  // push column subset from dev ixt
 
   // crw operators
   /*  D  */ EO_CRW_ALT_DEREF,    // deref m_aAltCrw using m_aAltEnt.ref
@@ -577,6 +582,11 @@ static Stz* aEO[]
   /*    */ "EO_COL_SRC_PUSHONE"_Stz,
   /*    */ "EO_COL_SRC_PUSHONE_a"_Stz,
   /*    */ "EO_COL_SRC_PUSHSET"_Stz,
+
+  /*    */ "EO_DEVIXT_COL_COPYSET"_Stz,
+  /*    */ "EO_DEVIXT_COL_PUSHONE_ADR"_Stz,
+  /*    */ "EO_DEVIXT_COL_PUSHONE_PST"_Stz,
+  /*    */ "EO_DEVIXT_COL_PUSHSET_PST"_Stz,
 
   // crw operators
   /*    */ "EO_CRW_ALT_DEREF"_Stz,
@@ -929,6 +939,11 @@ static EoArg EoArgs[]
   { EA_SUBSCR,  8 },  // EO_COL_SRC_PUSHONE
   { EA_SUBSCR,  8 },  // EO_COL_SRC_PUSHONE_a
   { EA_NONE,    0 },  // EO_COL_SRC_PUSHSET
+
+  { EA_NONE,    0 },  // EO_DEVIXT_COL_COPYSET
+  { EA_SUBSCR,  8 },  // EO_DEVIXT_COL_PUSHONE_ADR
+  { EA_SUBSCR,  8 },  // EO_DEVIXT_COL_PUSHONE_PST
+  { EA_NONE,    0 },  // EO_DEVIXT_COL_PUSHSET_PST
 
   // crw operators
   { EA_NONE,    0 },  // EO_CRW_ALT_DEREF

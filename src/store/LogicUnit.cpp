@@ -1280,22 +1280,22 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
   for (;;) {
     
-//#ifdef WITH_TRACE_LOGICUNIT
-//    // check for stack growth
-//    if (aiDstk >= &aRluCommon->m_iaDataStack[C_LOGIC_STACK-4])
-//      vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-//             "LogicUnit data stack exhausted\n"_Stz);
-//
-//    i8 nStkUse = nDifference(aiDstk,aRluCommon->m_iaDataStack);
-//    i8 iStkPct = (nStkUse * 100) / C_LOGIC_STACK;
-//    if (iStkPct > 80)
-//      vTrace("WARNING: LogicUnit stack use %lld%%\n"_Stz,iStkPct);
-//#endif
+#ifdef WITH_TRACE_LOGICUNIT
+    // check for stack growth
+    if (aiDstk >= &aRluCommon->m_iaDataStack[C_LOGIC_STACK-4])
+      vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+             "LogicUnit data stack exhausted\n"_Stz);
+
+    i8 nStkUse = nDifference(aiDstk,aRluCommon->m_iaDataStack);
+    i8 iStkPct = (nStkUse * 100) / C_LOGIC_STACK;
+    if (iStkPct > 80)
+      vTrace("WARNING: LogicUnit stack use %lld%%\n"_Stz,iStkPct);
+#endif
     
     eEO eCode = *aeCode++;
-//#ifdef WITH_TRACE_LOGICUNIT
-//    vTrace("%s %lld\n"_Stz, aEO[eCode], nStkUse);
-//#endif
+#ifdef WITH_TRACE_LOGICUNIT
+    vTrace("%s %lld\n"_Stz, aEO[eCode], nStkUse);
+#endif
     
     switch (eCode) { //+ExtractBegin
         
@@ -2290,6 +2290,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         iaColSet[0] = iArg;
         vDev_ALT_COL_PUSHSET(pLU,&aiDstk,(i8)SI_CELLARRAY_PST,iaColSet);
         dLU1(EO_COL_ALT_PUSHONE,iArg);
+        //RASSERT(0);
         break;//+endCase
       
       case EO_COL_ALT_PUSHSET: ArgNil(); // push column subset from m_aAltCrw
@@ -2305,6 +2306,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         iaColSet[0] = iArg;
         vDev_SRC_COL_PUSHSET(pLU,&aiDstk,(i8)SI_CELLARRAY_PST,iaColSet);
         dLU1(EO_COL_SRC_PUSHONE,iArg);
+        //RASSERT(0);
         break;//+endCase
         
       case EO_COL_SRC_PUSHONE_a: ArgGet(iArg); // push value from m_aSrcCrw (str as ptr)
@@ -2324,6 +2326,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_COL_SRC_PUSHDST: ArgNil(); // push all columns from m_aSrcCrw into dst
         vDev_SRC_COL_PUSHDST(pLU,aRluCommon->m_pDevDstRow);
         dLU0(EO_COL_SRC_PUSHDST);
+        break;//+endCase
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // col operators
+      case EO_DEVIXT_COL_PUSHONE_PST: ArgGet(iArg); // push column value from m_aAltCrw
+        *(++aiDstk) = iArg;
+        vDev_IXT_COL_PUSHONE_PST(pLU, &aiDstk);
+        dLU1(EO_DEVIXT_COL_PUSHONE_PST,iArg);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

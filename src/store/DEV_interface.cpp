@@ -364,6 +364,8 @@ void vDev_IXT_INDEXNM_SET(i8** aaiDstk)
   // pop device
   DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
   StrLib::vCopy(pDevIxt->m_sIndexNm.azChar(), azDst);
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -529,6 +531,8 @@ void vDev_IXT_INDEXTREE_DELETE(i8** aaiDstk)
   IndexTree* pIndexTree = pDevIxt->m_pIdxTree;
   pDevIxt->m_pIdxTree = nullptr;
   delete pIndexTree;
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -548,6 +552,8 @@ void vDev_IXT_INDEXTREE_SET(i8** aaiDstk)
 
   // set the indexTree in the device
   pDevIxt->m_pIdxTree = pIndexTree;
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1255,6 +1261,8 @@ void vDev_ROW_TABLENM_SET(i8** aaiDstk)
   // pop row device
   DevROW* pDevRow = _pDevROW(P_PopPtr());
   StrLib::vCopy(pDevRow->m_sTableNm.azChar(), azDst);
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1367,6 +1375,7 @@ void vDev_ALT_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflateRule, i8* iaCo
     iaColSet,
     pLogicUnit->m_pDevAltRow->m_pStreamDef
   );
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2088,6 +2097,56 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflateRule, i8* iaCo
 }
 
 /*----------------------------------------------------------------------------*/
+/* push column value from m_aSrcCrw                                           */
+/*----------------------------------------------------------------------------*/
+HACK(LogicUnit,"Alka : vInflate_Key_into_ElementArray is not right");
+
+void vDev_IXT_COL_PUSHONE_PST(void* aLU, i8** aaiDstk) {
+  _static_
+
+  i8 iColumn;
+  i8 iaColSet[64];
+
+  i8 *aiDstk = *aaiDstk;
+
+  // pop column no
+  iColumn = I_PopInt();
+
+  // pop row device
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
+
+  // pop IXT device
+  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
+
+  // set the column in the column set
+  iaColSet[1] = -1;
+  iaColSet[0] = iColumn;
+
+  //HeadLine *aHeadLine = (HeadLine *) pLogicUnit->m_xRluCommon.m_aSrcCrw;
+  HeadLine *aHeadLine = (HeadLine *) pDevIxt->m_aCrw;
+
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+
+  StreamDef *pStreamDef = pDevRow->m_pStreamDef;
+  char* acStrArea_null = nullptr;
+
+//  RowInflator::vInflate_ColumnSet_into_CellArray
+//  (
+//      aaiDstk,
+//      acStrArea_null,
+//      (eSI)SI_CELLARRAY_PST,
+//      (Crw*)pDevIxt->m_aCrw,
+//      iaColSet,
+//      pStreamDef
+//  );
+  RowInflator::vInflate_Key_into_ElementArray
+      (aaiDstk,aHeadLine,iaColSet,
+       pStreamDef,nullptr,SI_CELLARRAY_PST);
+
+  *aaiDstk = aiDstk;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set the indexTree[] in the dev                                             */
 /*----------------------------------------------------------------------------*/
 void vDev_INDEXTREE_DEV_SET(void* aLU, i8 i_Dev)
@@ -2233,6 +2292,8 @@ void vREG_INDEXTREE_NULL(i8** aaiDstk)
 
   LogicUnit* pLogicUnit = _pLogicUnit(P_PopPtr());
   pLogicUnit->m_xpIndexTree = nullptr;
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2246,6 +2307,8 @@ void vREG_INDEXTREE_PUSH(i8** aaiDstk)
 
   LogicUnit* pLogicUnit = _pLogicUnit(P_PopPtr());
   P_PushPtr(*pLogicUnit->m_xpIndexTree);
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
