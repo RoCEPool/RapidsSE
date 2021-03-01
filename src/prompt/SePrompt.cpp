@@ -81,7 +81,7 @@ SePrompt::SePrompt(bool bOneCommand)
   m_pCurrentDeputy = nullptr;
   
   
-  m_pJobTagSet = &m_oJobCtlTagSet;
+  m_pJobTagSet = nullptr;
   
   _checkInitialised_(CN_SEPROMPT);
   
@@ -204,6 +204,7 @@ void SePrompt::vPromptLoop(void)
     }
     
     m_pInpTknVec = pInputGet()->pTokenVec();
+    m_pJobTagSet = m_pCurrentDeputy->pJobTagSet();
     
     pInputGet()->vRawInputClear();
     
@@ -216,8 +217,8 @@ void SePrompt::vPromptLoop(void)
     i8   iCmdLine  = pTkn(0)->iLineNo();
 
     if (*szCmdFile->azChar()) {
-      m_oJobCtlTagSet.vInsert(C_TAG_CMDFILE,szCmdFile);
-      m_oJobCtlTagSet.vInsert(C_TAG_CMDLINE,iCmdLine);
+      m_pJobTagSet->vInsert(C_TAG_CMDFILE,szCmdFile);
+      m_pJobTagSet->vInsert(C_TAG_CMDLINE,iCmdLine);
     }
 
     if (! bPrepareJob())
@@ -330,9 +331,9 @@ bool SePrompt::bGetCommand(void)
 // TBD: remove division and section concepts
   
 //  if (*pInputGet()->szDivision()->azChar())
-//    m_oJobCtlTagSet.vInsert(C_TAG_DIVISION,pInputGet()->szDivision());
+//    m_pJobTagSet->vInsert(C_TAG_DIVISION,pInputGet()->szDivision());
 //  if (*pInputGet()->szSection()->azChar())
-//    m_oJobCtlTagSet.vInsert(C_TAG_SECTION,pInputGet()->szSection());
+//    m_pJobTagSet->vInsert(C_TAG_SECTION,pInputGet()->szSection());
 
   return true;
 }
@@ -344,12 +345,12 @@ bool SePrompt::bPrepareJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
-  m_oJobCtlTagSet.vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
+  m_pJobTagSet->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
   
   eEC eError = Api::ePrepareJob(m_pCurrentDeputy->pSession(),
                                 m_pInpTknVec,
                                 m_pLitTknVec,
-                                &m_oJobCtlTagSet);
+                                m_pJobTagSet);
   
   
   if (eError) {
@@ -614,7 +615,7 @@ bool SePrompt::bExecuteFunction(void)
   (pPromptDesc->m_fPrompt)(this);
   oTimer.vUpdate();
 
-  if (m_oJobCtlTagSet.bHasName(C_TAG_TIME))
+  if (m_pJobTagSet->bHasName(C_TAG_TIME))
     vTrace("time %lldms\n\n"_Stz,oTimer.iMilliseconds());
 
   return true;
@@ -640,11 +641,11 @@ void SePrompt::vExtractPaths(void)
   for (nPaths = 0; i_Paths < m_pInpTknVec->nTokens(); nPaths++) {
     sName.vSprint("<path%lld>"_Stz,nPaths);
     Token* pTkn = m_pInpTknVec->pGet(i_Paths);
-    m_oJobCtlTagSet.vAppend(sName,pTkn->szChars());
+    m_pJobTagSet->vAppend(sName,pTkn->szChars());
     m_pInpTknVec->vRemoveToken(i_Paths);
   }
   
-  m_oJobCtlTagSet.vAppend("<paths>"_Stz,nPaths);
+  m_pJobTagSet->vAppend("<paths>"_Stz,nPaths);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -663,7 +664,7 @@ void SePrompt::vExtractCtlTags(void)
    Token* pTkn1 = pTkn(1);
    sTag.vSprint("<%s>"_Stz,pTkn1->szChars());
     
-    m_oJobCtlTagSet.vInsert(sTag,1);
+    m_pJobTagSet->vInsert(sTag,1);
     
     vCutToken(0);
     vCutToken(0);
@@ -723,7 +724,7 @@ bool SePrompt::bExtractSupTags(void)
 
     s32 sName;
     sName.vSprint("<%s>"_Stz,pTkn_name->szChars());
-    m_oJobCtlTagSet.vAppend(sName,pTkn_value->szChars());
+    m_pJobTagSet->vAppend(sName,pTkn_value->szChars());
   }
     
   m_pInpTknVec->vTrimTokens(i_TagBegin);
@@ -1232,10 +1233,10 @@ void SePrompt::vResetExtractedTagSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  m_oJobCtlTagSet.vReset();
-  m_oJobCtlTagSet.vInsert(C_TAG_BYPROMPT,1);
-  m_oJobCtlTagSet.vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNode());
-  m_oJobCtlTagSet.vInsert(C_TAG_SESSION,m_pCurrentDeputy->pSession()->m_i_Session);
+  m_pJobTagSet->vReset();
+  m_pJobTagSet->vInsert(C_TAG_BYPROMPT,1);
+  m_pJobTagSet->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNode());
+  m_pJobTagSet->vInsert(C_TAG_SESSION,m_pCurrentDeputy->pSession()->m_i_Session);
 }
 
 /*----------------------------------------------------------------------------*/

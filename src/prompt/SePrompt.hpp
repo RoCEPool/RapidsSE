@@ -35,7 +35,6 @@ namespace PROMPT
     ShortCutVec m_oShortCutVec; // vector of short cuts
     i8          m_iDebugMode;   // debug mode?
 
-    TagSet      m_oJobCtlTagSet; // extra tags gleaned from the prompt command
     bool        m_bOneCommand;  // run one command only
     bool        m_bOneRun;      // one command has been run?
    
