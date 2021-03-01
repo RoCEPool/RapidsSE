@@ -39,7 +39,7 @@
 #include "GraphNav.hpp"
 #include "PlanOperand.hpp"
 
-#include "ParserException.hpp"
+#include "SqlException.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
