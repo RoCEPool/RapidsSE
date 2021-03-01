@@ -40,7 +40,7 @@ EntWrk::EntWrk(void)
   // -- end entry --
 
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_yaSpace,sizeof(m_yaSpace),CN_ENTWRK);
+  MemLib::vZero(m_yaKeySpace,sizeof(m_yaKeySpace),CN_ENTWRK);
   MemLib::vZero(m_yaPaySpace,sizeof(m_yaPaySpace),CN_ENTWRK);
 #else
   m_yaKeySpace[0] = '\0';
