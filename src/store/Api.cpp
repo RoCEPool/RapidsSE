@@ -106,6 +106,12 @@ void Api::vExecuteJob(Session* pSession)
 
   Job* pJob = pSession->m_pSsnJob;
   
+  
+  
+  
+  
+  
+  
   for (;;) {
   
     bool bSpawned = Api::bSpawnJob_session(pJob);

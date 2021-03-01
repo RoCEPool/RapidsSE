@@ -80,6 +80,9 @@ SePrompt::SePrompt(bool bOneCommand)
   
   m_pCurrentDeputy = nullptr;
   
+  
+  m_pJobTagSet = &m_oJobCtlTagSet;
+  
   _checkInitialised_(CN_SEPROMPT);
   
   vLog(EV_CONSTRUCT,"SePrompt constructor"_Stz);
@@ -209,6 +212,14 @@ void SePrompt::vPromptLoop(void)
     
     //vTrace("Prompt-RawInput: %s\n"_Stz,pInputGet()->szRawInput());
     
+    Stz* szCmdFile = pInputGet()->szPath();
+    i8   iCmdLine  = pTkn(0)->iLineNo();
+
+    if (*szCmdFile->azChar()) {
+      m_oJobCtlTagSet.vInsert(C_TAG_CMDFILE,szCmdFile);
+      m_oJobCtlTagSet.vInsert(C_TAG_CMDLINE,iCmdLine);
+    }
+
     if (! bPrepareJob())
       continue;
     
@@ -290,9 +301,6 @@ bool SePrompt::bGetCommand(void)
   if (bExecuteFunction())
     return false;
 
-  Stz* szCmdFile = pInputGet()->szPath();
-  i8   iCmdLine  = pTkn(0)->iLineNo();
-
   if (bIsPromptWord())
     m_pInpTknVec->vInsertToken(0,"docol"_Stz,TN_NAME);
 
@@ -318,10 +326,6 @@ bool SePrompt::bGetCommand(void)
   
   //vTrace("%s\n"_Stz,xNow.sz());
   
-  if (*szCmdFile->azChar()) {
-    m_oJobCtlTagSet.vInsert(C_TAG_CMDFILE,szCmdFile);
-    m_oJobCtlTagSet.vInsert(C_TAG_CMDLINE,iCmdLine);
-  }
 
 // TBD: remove division and section concepts
   
@@ -673,7 +677,7 @@ bool SePrompt::bExtractSupTags(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
-  Token* pTkn0 = pTkn(0);
+//  Token* pTkn0 = pTkn(0);
   
 //  if (pTkn0->bSame("tag"_Stz))
 //    return true;

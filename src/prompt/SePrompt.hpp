@@ -30,11 +30,12 @@ namespace PROMPT
   {
   private:
   
+    bool        m_bContinue;    // continue processing commands?
     TagSet      m_oPmtTagSet;   // tag set which controls this prompt
     ShortCutVec m_oShortCutVec; // vector of short cuts
     i8          m_iDebugMode;   // debug mode?
 
-    TagSet      m_oJobCtlTagSet;   // extra tags gleaned from the prompt command
+    TagSet      m_oJobCtlTagSet; // extra tags gleaned from the prompt command
     bool        m_bOneCommand;  // run one command only
     bool        m_bOneRun;      // one command has been run?
    
@@ -43,11 +44,12 @@ namespace PROMPT
 
     Mutex       m_oMutex;       // mutex for seprompt-sedeputy
     SeDeputy*   m_pCurrentDeputy;
+  
     TokenVec*   m_pInpTknVec;   // token vector from deputy->ssn->input
+    TagSet*     m_pJobTagSet;   // extra tags gleaned from the prompt command
 
     // -- -- -- -- -- --
-    // move
-
+  
     // object delta reporting
     ObjectSnapshot* m_pSnapshotAtTrackingMemory;
     ObjectSnapshot* m_pSnapshotAtMemoryLeaks;
@@ -56,7 +58,6 @@ namespace PROMPT
     // some debugging aids
     i8        m_iDivisionNo; // division numbering
     i8        m_iSectionNo;  // section numbering
-    bool      m_bContinue;   // continue processing commands?
 
     // -- -- -- -- -- --
     // delete
