@@ -98,7 +98,7 @@ void Step::vApiExecuteNested(void)
   
   Session* pSession = Api::pAllocSession(SK_INTERNAL);
   
-  eError = pSession->eInitSession("rapidsse"_Stz,"public"_Stz);
+  eError = pSession->eInitaliseSession("rapidsse"_Stz,"public"_Stz);
 
   xReqTuple.m_i_Session = pSession->m_i_Session;
 
@@ -197,7 +197,7 @@ void Step::vApiExecuteRequest(void)
   
   Session* pSession = Api::pAllocSession(SK_INTERNAL);
   
-  eError = pSession->eInitSession("rapidsse"_Stz,"public"_Stz);
+  eError = pSession->eInitaliseSession("rapidsse"_Stz,"public"_Stz);
 
   xReqTuple.m_i_Session = pSession->m_i_Session;
 

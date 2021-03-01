@@ -105,7 +105,7 @@ Task::Task(Job* pJob)
   m_pLocalsFrame = nullptr;
 
   m_pSenCompiler = new SenCompiler;
-  m_pInput       = nullptr; // new Input;
+  m_pInput       = nullptr;
 
   
   _checkInitialised_(CN_TASK);

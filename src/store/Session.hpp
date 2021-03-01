@@ -91,10 +91,10 @@ namespace STORE
     i8   i_FixedPtn(void);
     void vFixedPtn(i8 i_FixedPtn);
     void vOutline(s4K& sOutline);
-    void vFreeSession(i8 i_NextFree);
+    void vFinaliseSession(i8 i_NextFree);
     bool bHasCascade(void);
     void vHasCascade(bool bHasCascade);
-    eEC  eInitSession(Stz* pCatalogName, Stz* pSchemaName);
+    eEC  eInitaliseSession(Stz* pCatalogName, Stz* pSchemaName);
     Job* pJob(void);
     DicStack* pPathStack(void);
     void vReport(void);
