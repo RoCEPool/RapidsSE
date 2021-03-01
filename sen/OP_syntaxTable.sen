@@ -18,7 +18,6 @@
 
   streamDef[].isNull if
     job[] job.error@ to errorCode
-    errorCode op.pipelineJob@ ERROR_JOB
     errorCode op__execErr
     Pipein[].delete
     true

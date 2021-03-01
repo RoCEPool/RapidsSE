@@ -15,7 +15,6 @@
   // should be in the tenants folder
   folder[].checkIsTenants not if
     to errorCode
-    errorCode op.pipelineJob@ ERROR_JOB
     errorCode op__execErr
     PipeIn[].delete
     false
