@@ -229,8 +229,8 @@ bool SePrompt::bGetCommand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  s32 sHostName;
-  Hardware::vHostName(sHostName);
+//  s32 sHostName;
+//  Hardware::vHostName(sHostName);
 
   if (bStdIn() && ! *m_pCurrentDeputy->pSession()->m_sToDo.azChar()) {
     //vReportOther();
@@ -308,18 +308,18 @@ bool SePrompt::bGetCommand(void)
   vLogCommand();
   
   
-  Now xNow;
-  xNow.vSetNow();
+//  Now xNow;
+//  xNow.vSetNow();
   
   //vTrace("%s\n"_Stz,xNow.sz());
 
-  m_oExtTagSet.vInsert(C_TAG_FREEPCT,gpBufferPool->iFreePercent());
-  m_oExtTagSet.vInsert(C_TAG_GRID,AM::pGrid()->szGridNm());
-  m_oExtTagSet.vInsert(C_TAG_HOST,sHostName);
-  m_oExtTagSet.vInsert(C_TAG_NODE,AM::pGrid()->pThisNode()->szNodeNm());
-  m_oExtTagSet.vInsert(C_TAG_REQUEST,m_pCurrentDeputy->pSession()->m_xReqTuple.m_iReqNo);
-  m_oExtTagSet.vInsert(C_TAG_SHM,gpBufferPool->szShmNm());
-  m_oExtTagSet.vInsert(C_TAG_WHEN,xNow.sz());
+//  m_oExtTagSet.vInsert(C_TAG_FREEPCT,gpBufferPool->iFreePercent());
+//  m_oExtTagSet.vInsert(C_TAG_GRID,AM::pGrid()->szGridNm());
+//  m_oExtTagSet.vInsert(C_TAG_HOST,sHostName);
+//  m_oExtTagSet.vInsert(C_TAG_NODE,AM::pGrid()->pThisNode()->szNodeNm());
+//  m_oExtTagSet.vInsert(C_TAG_REQUEST,m_pCurrentDeputy->pSession()->m_xReqTuple.m_iReqNo);
+//  m_oExtTagSet.vInsert(C_TAG_SHM,gpBufferPool->szShmNm());
+//  m_oExtTagSet.vInsert(C_TAG_WHEN,xNow.sz());
   
   if (*szCmdFile->azChar()) {
     m_oExtTagSet.vInsert(C_TAG_CMDFILE,szCmdFile);

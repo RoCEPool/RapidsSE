@@ -108,8 +108,9 @@ void Api::vExecuteJob(Session* pSession)
   
   for (;;) {
   
-    Api::bSpawnJob_session(pJob);
-  
+    bool bSpawned = Api::bSpawnJob_session(pJob);
+    UNUSED(bSpawned);
+
     if (! pSession->bHasCascade())
       return;
   

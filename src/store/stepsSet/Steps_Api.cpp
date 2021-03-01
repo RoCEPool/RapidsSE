@@ -10,7 +10,9 @@
 
 #include "ePX.h"
 
+#include "Node.hpp"
 #include "Node_I.hpp"
+#include "Grid.hpp"
 #include "Api.hpp"
 #include "Session.hpp"
 #include "Op.hpp"
@@ -176,6 +178,9 @@ void Step::vApiExecuteRequest(void)
   eEC eError;
   ReqTuple xReqTuple;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop request and tag string
+  
   s48K sRequest;
   m_pDataStack->vPopStr(sRequest,__func__);
 
@@ -188,6 +193,7 @@ void Step::vApiExecuteRequest(void)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // allot a session
   
   Session* pSession = Api::pAllocSession(SK_INTERNAL);
   
@@ -196,7 +202,8 @@ void Step::vApiExecuteRequest(void)
   xReqTuple.m_i_Session = pSession->m_i_Session;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+  // tokenise the request
+  
   TokenVec* pReqTknVec = TokenVec::pTokenise(sRequest);
   
   TagSet oTagSet;
@@ -211,7 +218,8 @@ void Step::vApiExecuteRequest(void)
   }
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+  // update the job tag set
+  
   Job* pJob = pSession->m_pSsnJob;
 
   TagSet* pJobTagSet = pJob->pJobTags();
@@ -222,28 +230,46 @@ void Step::vApiExecuteRequest(void)
   TokenVec* pWithTagStrTknVec = TokenVec::pTokenise(sWithTagStr);
   Api::vPopulateTagSet(pJobTagSet,pWithTagStrTknVec);
   
+  
+  Now xNow;
+  xNow.vSetNow();
+
+  s32 sHostName;
+  Hardware::vHostName(sHostName);
+
+  pJobTagSet->vInsert(C_TAG_FREEPCT,gpBufferPool->iFreePercent());
+  pJobTagSet->vInsert(C_TAG_GRID,AM::pGrid()->szGridNm());
+  pJobTagSet->vInsert(C_TAG_HOST,sHostName);
+  pJobTagSet->vInsert(C_TAG_NODE,AM::pGrid()->pThisNode()->szNodeNm());
+  pJobTagSet->vInsert(C_TAG_REQUEST,pSession->m_xReqTuple.m_iReqNo);
+  pJobTagSet->vInsert(C_TAG_SHM,gpBufferPool->szShmNm());
+  pJobTagSet->vInsert(C_TAG_WHEN,xNow.sz());
+
+  
+  
   if (AM::bVerbose())
     pJobTagSet->vDumpSet();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   
+  // spawn job and wait for completion
+  
   bool bSpawned = Api::bSpawnJob_session(pJob);
   UNUSED(bSpawned);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   RASSERT(! pJob->bJobHasError() );
   //eRS eResponse = (eRS)pJob->pJobTags()->iValue("<rspKind>"_Stz);
   //pJob->vPrintResult(pSession,eResponse);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+  // delete job and free session
   Api::vDeleteJob(pSession);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  m_pDataStack->vPushInt(true);
-  
   Api::vFreeSession(pSession);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //push result
+  
+  m_pDataStack->vPushInt(true);
   
   delete pReqTknVec;
   delete pWithTagStrTknVec;
