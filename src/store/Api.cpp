@@ -155,13 +155,15 @@ void Api::vExtractTags(Session*  pSession,
 eEC Api::ePrepareJob(Session*  pSession,
                      TokenVec* pCmdTknVec,
                      TokenVec* pLitTknVec
-                     ,TagSet*   pJobCtlTagSet
+                     //,TagSet*   pJobCtlTagSet
                      )
 {
   _static_
 
   RASSERT(pSession);
   RASSERT(! pSession->m_pSsnJob);
+  
+  TagSet* pJobCtlTagSet = & pSession->m_oJobTagSet;
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
