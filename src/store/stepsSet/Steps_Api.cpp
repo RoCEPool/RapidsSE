@@ -209,15 +209,16 @@ void Step::vApiExecuteRequest(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenise the request
   
-  TokenVec* pReqTknVec = TokenVec::pTokenise(sRequest);
-  
+  //TokenVec* pReqTknVec = TokenVec::pTokenise(sRequest);
+  TokenVec* pCmdTknVec = pSession->m_pInput->pTokenVec();
+  pCmdTknVec->vTokenise(sRequest);
 //  TagSet oTagSet;
 //  oTagSet.vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
 
   TagSet* pTagSet =  & pSession->m_oJobTagSet;
   pTagSet->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
 
-  eError = Api::ePrepareJob(pSession,pReqTknVec,nullptr);//,nullptr);
+  eError = Api::ePrepareJob(pSession,nullptr,nullptr);//,nullptr);
   
   if (eError) {
     m_pDataStack->vPushInt(eError);
@@ -280,7 +281,7 @@ void Step::vApiExecuteRequest(void)
   
   m_pDataStack->vPushInt(true);
   
-  delete pReqTknVec;
+  //delete pReqTknVec;
   delete pWithTagStrTknVec;
   
   
