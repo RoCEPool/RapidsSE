@@ -285,6 +285,8 @@ void Session::vFinaliseSession(i8 i_NextFree)
   if (m_pOutput)
     delete m_pOutput;
   m_pOutput = nullptr;
+  
+  m_oJobTagSet.vReset();
 }
 
 /*----------------------------------------------------------------------------*/

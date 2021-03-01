@@ -311,14 +311,21 @@ void Step::vApiSpawnDemon(void)
   TokenVec* pDmnTknVec = TokenVec::pTokenise(sPipeline);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  TagSet oTagSet;
-  oTagSet.vReplace(C_TAG_PLPROTOCOL,PP_NONE);
 
   Session* pSession = Api::pAllocSession(SK_INTERNAL);
+  eEC eError = pSession->eInitaliseSession("rapidsse"_Stz,"public"_Stz);
 
-  eEC eError = Api::ePrepareJob(pSession,pDmnTknVec,nullptr,&oTagSet);
+//  TagSet oTagSet;
+//  oTagSet.vReplace(C_TAG_PLPROTOCOL,PP_NONE);
+//  oTagSet.vDumpSet();
+//  eError = Api::ePrepareJob(pSession,pDmnTknVec,nullptr,&oTagSet);
   
+  TagSet* pTagSet =  & pSession->m_oJobTagSet;
+  pTagSet->vReplace(C_TAG_PLPROTOCOL,PP_NONE);
+  //pTagSet->vDumpSet();
+  eError = Api::ePrepareJob(pSession,pDmnTknVec,nullptr,nullptr);
 
+  
   if (eError) {
     Api::vFreeSession(pSession);
     m_pDataStack->vPushInt(eError);
