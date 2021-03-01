@@ -156,7 +156,10 @@ Label QRY_600_DONE
 // BEGIN: SUBROUTINE_PROCESSROW
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Label SUBROUTINE_PROCESSROW
-  EO_CRW_SRC_DEREF
+  //EO_CRW_SRC_DEREF
+  EO_PUSH_DEVIXT_SRC
+  EO_DEVIXT_DEREF
+
   EO_SET_ITEMS 3
   EO_SET_COLUMN 6
   EO_SET_COLUMN 5

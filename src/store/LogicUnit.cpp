@@ -2372,7 +2372,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 //                   + iItem * aRluCommon->m_nSrcHeadSize );
         
         break;//+endCase
-        
+
+      case EO_DEVIXT_DEREF: ArgNil(); // deref Crw using m_aEnt.ref
+        dLU0(EO_DEVIXT_DEREF);
+        vDev_IXT_DEREF(&aiDstk);
+        break;//+endCase
+
       case EO_CRW_SRC_NEXT: ArgNil(); // move to next src row
         dLU0(EO_CRW_SRC_NEXT);
         //((DevIXT*)aRluCommon->m_pDevSrcIxt)->m_pCrwBuffer->vDump();

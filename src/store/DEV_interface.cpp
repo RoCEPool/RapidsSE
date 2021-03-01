@@ -156,6 +156,33 @@ i8 iDev_CRW_TEST(void* aLU, void* aIXT)
 }
 
 /*----------------------------------------------------------------------------*/
+/* fetch Crw using m_aEnt.ref                                                 */
+/*----------------------------------------------------------------------------*/
+void vDev_IXT_DEREF(i8** aaiDstk)
+{
+  _static_
+
+  i8 *aiDstk = *aaiDstk;
+
+  //pop the device
+  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
+
+  //pDevIxt->m_aCrw  =
+  //  CrwBuffer::pRefdCrw(pDevIxt->m_aEnt->rxRef());
+
+  i8 iBuffer = ((Ent_int*)pDevIxt->m_aEnt)->Rrf.m_uBuffer;
+  i8 iItem   = ((Ent_int*)pDevIxt->m_aEnt)->Rrf.m_uItem;
+
+  pDevIxt->m_aCrw  = (Crw*)
+      ( (char*)C_ADR_REGION
+        + iBuffer * C_1MB
+        + C_CRW_FIRSTHEAD
+        + iItem * C_CRW_HEADBYTES );  //alka ? C_CRW_HEADBYTES
+
+  *aaiDstk = aiDstk;
+}
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
