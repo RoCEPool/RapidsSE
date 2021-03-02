@@ -295,8 +295,7 @@ bool SePrompt::bGetCommand(void)
     return false;
   
   vExtractPaths();
-  vExtractCtlTags();
-  if (! bExtractSupTags())
+  if (! bExtractTags())
     return false;
 
   if (bExecuteFunction())
@@ -646,12 +645,15 @@ void SePrompt::vExtractPaths(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract leading job control tags (such as /time or /nowait)                */
+/* extract trailing job supplemtntal tags ( such as <field_delimiter> = | )   */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vExtractCtlTags(void)
+bool SePrompt::bExtractTags(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-    
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // extract leading job control tags (such as /time or /nowait)
+  
   Token* pTkn0 = pTkn(0);
   
   s32 sTag;
@@ -666,19 +668,9 @@ void SePrompt::vExtractCtlTags(void)
     vCutToken(0);
     vCutToken(0);
   }
-}
 
-/*----------------------------------------------------------------------------*/
-/* extract trailing job supplemtntal tags ( such as <field_delimiter> = | )   */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bExtractSupTags(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-
-//  Token* pTkn0 = pTkn(0);
-  
-//  if (pTkn0->bSame("tag"_Stz))
-//    return true;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // extract trailing job supplemtntal tags ( such as <field_delimiter> = | )
 
   i8 i_TagBegin = m_pInpTknVec->iFindToken("<"_Stz,TN_OTHER);
 

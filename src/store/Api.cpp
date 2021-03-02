@@ -132,9 +132,7 @@ void Api::vExecuteJob(Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* extract paths                                                              */
 /*----------------------------------------------------------------------------*/
-void Api::vExtractPaths(Session*  pSession,
-                       TokenVec* pCmdTknVec,
-                       TagSet*   pTagSet)
+void Api::vExtractPaths(Session* pSession)
 {
   _static_
 }
@@ -142,9 +140,7 @@ void Api::vExtractPaths(Session*  pSession,
 /*----------------------------------------------------------------------------*/
 /* extract tags                                                               */
 /*----------------------------------------------------------------------------*/
-void Api::vExtractTags(Session*  pSession,
-                       TokenVec* pCmdTknVec,
-                       TagSet*   pTagSet)
+void Api::vExtractTags(Session* pSession)
 {
   _static_
 }

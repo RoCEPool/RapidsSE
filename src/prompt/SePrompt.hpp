@@ -99,9 +99,8 @@ namespace PROMPT
     void vDumpTokens(bool bDumpTokens);
     void vDumpInpTknVec(bool bForce);
     bool bExecuteFunction(void);
-    void vExtractCtlTags(void);
     void vExtractPaths(void);
-    bool bExtractSupTags(void);
+    bool bExtractTags(void);
     SeDeputy* pFindDeputy(void);
     bool bHandleDemo(void);
     TokenVec* pInpTknVec(void);
