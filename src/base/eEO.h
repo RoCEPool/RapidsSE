@@ -285,12 +285,19 @@ enum eEO : u1 // expression operators
   /*  R  */ EO_ENTWRK_SETINTELM, // set int only element value
 
   // index tree
-  /*  D  */ EO_IXT_DEL_ENT,      // delete current m_aEnt from indexTree
-  /*  D  */ EO_IXT_DUMP,         // dump index tree
-  /*  D  */ EO_IXT_INS_ENT,      // insert an entry into the indexTree
-  /*  D  */ EO_IXT_TRV_BEGIN,    // begin linear traverse
-  /*  D  */ EO_IXT_TRV_NEXT,     // traverse to next entry
-  /*  D  */ EO_IXT_TMP_ENTRIES,  // push number of entries in tmp index
+  /*  D  */ EO_IXT_DEL_ENT,      // delete current m_aEnt from indexTree          ---to go
+  /*  D  */ EO_IXT_DUMP,         // dump index tree                               ---to go
+  /*  D  */ EO_IXT_INS_ENT,      // insert an entry into the indexTree            ---to go
+  /*  D  */ EO_IXT_TRV_BEGIN,    // begin linear traverse                         ---to go
+  /*  D  */ EO_IXT_TRV_NEXT,     // traverse to next entry                        ---to go
+  /*  D  */ EO_IXT_TMP_ENTRIES,  // push number of entries in tmp index           ---to go
+
+  /*  S  */ EO_DEVIXT_DEL_ENT,      // delete current m_aEnt from indexTree
+  /*  S  */ EO_DEVIXT_DUMP,         // dump index tree
+  /*  S  */ EO_DEVIXT_INS_ENT,      // insert an entry into the indexTree
+  /*  S  */ EO_DEVIXT_TRV_BEGIN,    // begin linear traverse
+  /*  S  */ EO_DEVIXT_TRV_NEXT,     // traverse to next entry
+  /*  S  */ EO_DEVIXT_ENTRIES,      // push number of entries in index
 
   /*  D  */ EO_IXT_SRC_BEGIN,    // begin linear traverse
   /*  D  */ EO_IXT_SRC_LBOUND,   // position at lower bound
@@ -649,7 +656,14 @@ static Stz* aEO[]
   /*    */ "EO_IXT_TRV_BEGIN"_Stz,
   /*    */ "EO_IXT_TRV_NEXT"_Stz,
   /*    */ "EO_IXT_TMP_ENTRIES"_Stz,
-  
+
+  /*    */ "EO_DEVIXT_DEL_ENT"_Stz,
+  /*    */ "EO_DEVIXT_DUMP"_Stz,
+  /*    */ "EO_DEVIXT_INS_ENT"_Stz,
+  /*    */ "EO_DEVIXT_TRV_BEGIN"_Stz,
+  /*    */ "EO_DEVIXT_TRV_NEXT"_Stz,
+  /*    */ "EO_DEVIXT_ENTRIES"_Stz,
+
   /*    */ "EO_IXT_SRC_BEGIN"_Stz,
   /*    */ "EO_IXT_SRC_LBOUND"_Stz,
   /*    */ "EO_IXT_SRC_NEXT"_Stz,
@@ -1014,6 +1028,13 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_IXT_TRV_BEGIN
   { EA_NONE,    0 },  // EO_IXT_TRV_NEXT
   { EA_NONE,    0 },  // EO_IXT_TMP_ENTRIES
+
+  { EA_NONE,    0 },  // EO_DEVIXT_DEL_ENT
+  { EA_NONE,    0 },  // EO_DEVIXT_DUMP
+  { EA_NONE,    0 },  // EO_DEVIXT_INS_ENT
+  { EA_NONE,    0 },  // EO_DEVIXT_TRV_BEGIN
+  { EA_NONE,    0 },  // EO_DEVIXT_TRV_NEXT
+  { EA_NONE,    0 },  // EO_DEVIXT_ENTRIES
 
   { EA_NONE,    0 },  // EO_IXT_SRC_BEGIN
   { EA_NONE,    0 },  // EO_IXT_SRC_LBOUND

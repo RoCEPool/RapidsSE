@@ -31,8 +31,8 @@ i8   iDev_ENT_PUSHOFS(void* aLU, void* aIXT);
 
 i8   iDev_IXT_CMP_SRCALT(void* aLU);
 i8   iDev_IXT_CMP_WRKALT(void* aLU);
-void vDev_IXT_DEL_ENT(void* aLU, void* aIXT);
-void vDev_IXT_DUMP(void* aLU, void* aIXT);
+void vDev_IXT_DEL_ENT(i8** aaiDstk);
+void vDev_IXT_DUMP(i8** aaiDstk);
 void vDev_IXT_ENT_PRINT(void* aLU, void* aIXT);
 
 void vDev_IXT_INDEXNM_SET(i8** aaiDstk);
@@ -41,15 +41,17 @@ void vDev_IXT_INDEXTREE_SET(i8** aaiDstk);
 
 struct Ent_int* aDev_IXT_INS_ENT(void* aLU, void* aIXT);
 void vDev_IXT_SET_ENT(void* aLU, void* aIXT, void* aEnt);
-i8   iDev_IXT_TMP_ENTRIES(void* aLU, void* aIXT);
+void vDev_IXT_TMP_ENTRIES(i8** aaiDstk);
 
 struct Ent_int* aDev_IXT_POS_ALTBYSRC(void* aLU);
 struct Ent_int* aDev_IXT_POS_ALTBYWRK(void* aLU);
 struct Ent_int* aDev_IXT_POS_LBOUND(void* aLU, void* aIXT);
 struct Ent_int* aDev_IXT_POS_UBOUND(void* aLU, void* aIXT);
 struct Ent_int* aDev_IXT_POS_UBOUND_LT(void* aLU, void* aIXT);
-struct Ent_int* aDev_IXT_TRV_BEGIN(void* aLU, void* aIXT);
-struct Ent_int* aDev_IXT_TRV_NEXT(void* aLU, void* aIXT);
+struct Ent_int* aDev_IXT_TRV_BEGIN_OLD(void* aLU, void* aIXT);
+void vDev_IXT_TRV_BEGIN(i8** aaiDstk);
+void vDev_IXT_TRV_NEXT(i8** aaiDstk);
+struct Ent_int* aDev_IXT_TRV_NEXT_OLD(void* aLU, void* aIXT);
 
 i8*  aDev_PAY_ADDRESS(void* aLU, void* aIXT);
 i8   iDev_PAY_FETCH_COLI(void* aLU, void* aIXT, i8 iArg);
