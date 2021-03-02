@@ -64,7 +64,7 @@
 
 #include "store/parser/shadowNodes/compound/ProjectedExpr.hpp"
 
-#include "ParserException.hpp"
+#include "SqlException.hpp"
 
 using namespace Parser;
 
@@ -360,26 +360,6 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
     m_pSelectItems = nullptr;
   }
 
-  // -----------------------
-  // HAVING clause
-  // -----------------------
-  QueryNode* pHavingFilterOp = nullptr;
-  if (pCtx->having) {
-    ASSERT(!m_pExprList);
-    m_pExprList = new QueryNodeList;
-
-    // Visit the children of the HAVING clause
-    pCtx->where->accept(this);
-    ASSERT(m_pExprList->nItems() == 1);
-
-    QueryNode* pExpr = m_pExprList->pPop();
-    pHavingFilterOp = FilterOp::pCreate(pExpr);
-
-    ASSERT(m_pExprList->nItems() == 0);
-    delete m_pExprList;
-    m_pExprList = nullptr;
-  }
-
 
   // -----------------------
   // GROUP BY clause
@@ -414,6 +394,37 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
       ASSERT(m_pExprList->nItems() == 0);
       delete m_pExprList;
       m_pExprList = nullptr;
+  }
+
+  // -----------------------
+  // HAVING clause
+  // -----------------------
+  QueryNode* pHavingFilterOp = nullptr;
+  if (pCtx->having) {
+
+    // Check that the having clause is valid.
+    // The expressions in a having clause must either be the grouping column
+    // in the group by list or columns that are functionally dependant on
+    // the grouping column.
+    // TODO
+//    b1 bHasAggregate = (pAggregateOp || (pProjectOp && ProjectOp::bHasAnAggregate(pProjectOp)));
+//    if (!bHasAggregate) {
+//      SemanticException::vThrow("Cannot specify a HAVING clause with no aggregate expressions"_Stz);
+//    }
+
+    ASSERT(!m_pExprList);
+    m_pExprList = new QueryNodeList();
+
+    // Visit the children of the HAVING clause
+    pCtx->where->accept(this);
+    ASSERT(m_pExprList->nItems() == 1);
+
+    QueryNode* pExpr = m_pExprList->pPop();
+    pHavingFilterOp = FilterOp::pCreate(pExpr);
+
+    ASSERT(m_pExprList->nItems() == 0);
+    delete m_pExprList;
+    m_pExprList = nullptr;
   }
 
 
