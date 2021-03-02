@@ -1202,20 +1202,31 @@ void vDev_ROW_BEGIN(void* aLU, void* aROWDEVICE)
 /*----------------------------------------------------------------------------*/
 /* create new row                                                             */
 /*----------------------------------------------------------------------------*/
-i8 iDev_ROW_NEW(void* aLU, void* aROWDEVICE)
+void vDev_ROW_NEW(void* aLU, i8** aaiDstk)
 {
   _static_
-  
-  DevROW* pDevRow = _pDevROW(aROWDEVICE);
-  
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+
   bool bNewBuffer;
-  
+  i8 *aiDstk = *aaiDstk;
+
+  // pop the partition no
+  //i8 i_Ptn = I_PopInt();
+
+  // pop the pot
+  //Pot* pPot = _pPot(P_PopPtr());
+
+  // pop the row dev
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
+
+  LogicUnit *pLogicUnit = _pLogicUnit(aLU);
+
   pDevRow->m_aRow =
-    pLogicUnit->m_xpPot->aNewDstRow(pLogicUnit->m_xRluCommon.m_i_Ptn,
-                                   &pDevRow->m_pRowBuffer, &bNewBuffer);
-  
-  return bNewBuffer ? 1 : 0;
+      pLogicUnit->m_xpPot->aNewDstRow(pLogicUnit->m_xRluCommon.m_i_Ptn,
+                                      &pDevRow->m_pRowBuffer, &bNewBuffer);
+
+  I_PushInt(bNewBuffer);
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/

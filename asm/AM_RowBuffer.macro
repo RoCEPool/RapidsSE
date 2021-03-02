@@ -34,7 +34,9 @@ macro AM_HANDLER_ROWBUFFER_AGG
   EO_JMP_TRUE HANDLER_ROWBUFFER_AGG_BEGIN
 
   // new a dst row
-  EO_ROW_DST_NEW
+  //EO_ROW_DST_NEW
+  EO_PUSH_DEVROW_DST
+  EO_DEVROW_NEW
 
   Label HANDLER_ROWBUFFER_AGG_BEGIN
   EO_ROW_SRC_BEGIN
@@ -119,7 +121,11 @@ macro AM_ROW_PROJECT_COLUMNS
   EO_SET_ITEMS <projectItems>
   EO_SET_COLUMNS <projectSrcColumns>
   EO_SET_LOCALS_ROW
-  EO_ROW_DST_NEW
+
+  //EO_ROW_DST_NEW
+  EO_PUSH_DEVROW_DST
+  EO_DEVROW_NEW
+
   //EO_DUMP
 endMacro
 
@@ -141,7 +147,11 @@ macro AM_ROW_PROJECT_NONE
 //----------------------------------------------------------------------------//
   // ROW_PROJECT_NONE
   Label ROW_PROJECT_NONE
-  EO_ROW_DST_NEW
+
+  //EO_ROW_DST_NEW
+  EO_PUSH_DEVROW_DST
+  EO_DEVROW_NEW
+
   //EO_DUMP
 endMacro
 
@@ -154,7 +164,10 @@ macro AM_ROW_PROJECT_STAR
   EO_SET_ITEMS <projectItems>
   EO_SET_COLUMNS <projectSrcColumns>
   EO_SET_LOCALS_ROW
-  EO_ROW_DST_NEW
+
+  //EO_ROW_DST_NEW
+  EO_PUSH_DEVROW_DST
+  EO_DEVROW_NEW
 
 endMacro
 

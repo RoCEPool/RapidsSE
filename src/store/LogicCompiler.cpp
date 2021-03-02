@@ -125,7 +125,7 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_POT_USE_STREAMDEFOUT"_Stz, (const void *) vDev_POT_USE_STREAMDEFOUT },
   
   { "vDev_ROW_BEGIN"_Stz,         (const void *) vDev_ROW_BEGIN         },
-  { "iDev_ROW_NEW"_Stz,           (const void *) iDev_ROW_NEW           },
+  { "vDev_ROW_NEW"_Stz,           (const void *) vDev_ROW_NEW           },
   { "iDev_ROW_NEXT"_Stz,          (const void *) iDev_ROW_NEXT          },
   { "vDev_ROW_NULL"_Stz,          (const void *) vDev_ROW_NULL          },
   { "vDev_ROW_POPCOLI"_Stz,       (const void *) vDev_ROW_POPCOLI       },

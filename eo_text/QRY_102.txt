@@ -334,7 +334,9 @@ Label QRY_102_DONE
   Label NEXT_IXT_SRC
 
   // new a dst rsb row
-  EO_ROW_DST_NEW
+  //EO_ROW_DST_NEW
+  EO_PUSH_DEVROW_DST
+  EO_DEVROW_NEW
 
   EO_PAY_ADDRESS
 
