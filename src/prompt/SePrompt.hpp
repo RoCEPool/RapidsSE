@@ -99,7 +99,6 @@ namespace PROMPT
     void vDumpTokens(bool bDumpTokens);
     void vDumpInpTknVec(bool bForce);
     bool bExecuteFunction(void);
-    void vExtractPaths(void);
     bool bExtractTags(void);
     SeDeputy* pFindDeputy(void);
     bool bHandleDemo(void);

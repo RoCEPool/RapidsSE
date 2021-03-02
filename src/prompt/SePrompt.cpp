@@ -294,7 +294,7 @@ bool SePrompt::bGetCommand(void)
   if (bRedirectFromFile())
     return false;
   
-  vExtractPaths();
+  Api::vExtractPaths(m_pCurrentDeputy->pSession());
   if (! bExtractTags())
     return false;
 
@@ -615,33 +615,6 @@ bool SePrompt::bExecuteFunction(void)
     vTrace("time %lldms\n\n"_Stz,oTimer.iMilliseconds());
 
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* extract additional paths                                                   */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vExtractPaths(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  i8 i_Paths = m_pInpTknVec->iFindToken("paths"_Stz,TN_NAME);
-
-  if (C_UNKNOWN == i_Paths)
-    return;
-  
-  m_pInpTknVec->vRemoveToken(i_Paths);
-
-  s32 sName;
-  
-  i8 nPaths;
-  for (nPaths = 0; i_Paths < m_pInpTknVec->nTokens(); nPaths++) {
-    sName.vSprint("<path%lld>"_Stz,nPaths);
-    Token* pTkn = m_pInpTknVec->pGet(i_Paths);
-    m_pJobTagSet->vAppend(sName,pTkn->szChars());
-    m_pInpTknVec->vRemoveToken(i_Paths);
-  }
-  
-  m_pJobTagSet->vAppend("<paths>"_Stz,nPaths);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -135,6 +135,29 @@ void Api::vExecuteJob(Session* pSession)
 void Api::vExtractPaths(Session* pSession)
 {
   _static_
+  
+  TokenVec* pInpTknVec = pSession->m_pInput->pTokenVec();;
+  TagSet* pJobTagSet = & pSession->m_oJobTagSet;;
+  
+  i8 i_Paths = pInpTknVec->iFindToken("paths"_Stz,TN_NAME);
+
+  if (C_UNKNOWN == i_Paths)
+    return;
+  
+  pInpTknVec->vRemoveToken(i_Paths);
+
+  s32 sName;
+  
+  i8 nPaths;
+  for (nPaths = 0; i_Paths < pInpTknVec->nTokens(); nPaths++) {
+    sName.vSprint("<path%lld>"_Stz,nPaths);
+    Token* pTkn = pInpTknVec->pGet(i_Paths);
+    pJobTagSet->vAppend(sName,pTkn->szChars());
+    pInpTknVec->vRemoveToken(i_Paths);
+  }
+  
+  pJobTagSet->vAppend("<paths>"_Stz,nPaths);
+
 }
 
 /*----------------------------------------------------------------------------*/
