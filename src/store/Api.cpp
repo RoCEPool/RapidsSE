@@ -163,9 +163,82 @@ void Api::vExtractPaths(Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* extract tags                                                               */
 /*----------------------------------------------------------------------------*/
-void Api::vExtractTags(Session* pSession)
+bool Api::bExtractTags(Session* pSession)
 {
   _static_
+  
+  TokenVec* pInpTknVec = pSession->m_pInput->pTokenVec();;
+  TagSet* pJobTagSet = & pSession->m_oJobTagSet;;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // extract leading job control tags (such as /time or /nowait)
+  
+  Token* pTkn0 = pInpTknVec->pGet(0,true);
+  
+  s32 sTag;
+  
+  while ('/' == * pTkn0->azChars() ) {
+    
+    Token* pTkn1 = pInpTknVec->pGet(1,true);
+    sTag.vSprint("<%s>"_Stz,pTkn1->szChars());
+    
+    pJobTagSet->vInsert(sTag,1);
+    
+    pInpTknVec->vRemoveToken(0);
+    pInpTknVec->vRemoveToken(0);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // extract trailing job supplemtntal tags ( such as <field_delimiter> = | )
+
+  i8 i_TagBegin = pInpTknVec->iFindToken("<"_Stz,TN_OTHER);
+
+  if (C_UNKNOWN == i_TagBegin)
+    return true;
+
+  Token* pTkn_begin = pInpTknVec->pGet(i_TagBegin);
+  UNUSED(pTkn_begin);
+  
+  i8 nTkns = pInpTknVec->nTokens();
+
+  i8 i_Scan = i_TagBegin;
+  while (i_Scan < nTkns) {
+  
+    Token* pScan = pInpTknVec->pGet(i_Scan++);        // <
+    if (i_Scan >= nTkns)
+      return false;
+    if (! pScan->bIsLessThan())
+      return false;
+    
+    Token* pTkn_name = pInpTknVec->pGet(i_Scan++);    // name
+    if (i_Scan >= nTkns)
+      return false;
+    if (! pTkn_name->bIsName())
+      return false;
+
+    pScan = pInpTknVec->pGet(i_Scan++);               // >
+    if (! pScan->bIsGreaterThan())
+      return false;
+    
+    pScan = pInpTknVec->pGet(i_Scan++);               // =
+    if (i_Scan >= nTkns)
+      return false;
+    if (! pScan->bIsAssign())
+      return false;
+
+    Token* pTkn_value = pInpTknVec->pGet(i_Scan++);   // value
+    //if (! pTkn_value->bIsString())
+    //  return false;
+
+    s32 sName;
+    sName.vSprint("<%s>"_Stz,pTkn_name->szChars());
+    pJobTagSet->vAppend(sName,pTkn_value->szChars());
+  }
+    
+  pInpTknVec->vTrimTokens(i_TagBegin);
+  
+  return true;
+
 }
 
 /*----------------------------------------------------------------------------*/
