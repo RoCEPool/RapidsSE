@@ -203,11 +203,15 @@ QueryNode* TableDef::pColumnDef(QueryNode* pNode, Stz* szColumnName)
   ASSERT(bIsOfType(pNode));
   ASSERT(szColumnName);
 
+  QueryNode* pColumnDef = nullptr;
+
   // Get the columns property
   QueryNode* pColumnsNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_COLUMNS_PROP, pNode));
-  ASSERT(pColumnsNode);
 
-  QueryNode* pColumnDef = nullptr;
+  if (!pColumnsNode) {
+    return pColumnDef;
+  }
+
   PlanNodeIter* pIter = pColumnsNode->pNewChildrenIter();
 
   while (pIter->bHasNext()) {
@@ -245,11 +249,15 @@ QueryNode* TableDef::pIndexDef(QueryNode* pNode, Stz* szIndexName)
   ASSERT(bIsOfType(pNode));
   ASSERT(szIndexName);
 
+  QueryNode* pIndexDef = nullptr;
+
   // Get the indexs property
   QueryNode* pIndexsNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_INDEXES_PROP, pNode));
-  ASSERT(pIndexsNode);
 
-  QueryNode* pIndexDef = nullptr;
+  if (!pIndexsNode) {
+    return pIndexDef;
+  }
+
   PlanNodeIter* pIter = pIndexsNode->pNewChildrenIter();
 
   while (pIter->bHasNext()) {

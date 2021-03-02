@@ -62,7 +62,7 @@ void NameValidator::vValidateNames(PlanNode *pRootNode)
 
   } catch (SqlException& e) {
     delete pSeApi;
-    throw e;
+    throw;
   }
 
   delete pSeApi;

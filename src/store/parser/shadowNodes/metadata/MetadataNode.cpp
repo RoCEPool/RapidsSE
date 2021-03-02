@@ -131,11 +131,15 @@ QueryNode* MetadataNode::pCatalogDef(QueryNode* pMetadataNode, Stz* szCatalogNam
   ASSERT(bIsOfType(pMetadataNode));
   ASSERT(szCatalogName);
 
+  QueryNode* pCatalogDef = nullptr;
+
   // Get the catalogs property
   QueryNode* pCatalogsNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_CATALOGS_PROP, pMetadataNode));
-  ASSERT(pCatalogsNode);
 
-  QueryNode* pCatalogDef = nullptr;
+  if (!pCatalogsNode) {
+    return pCatalogDef;
+  }
+
   PlanNodeIter* pIter = pCatalogsNode->pNewChildrenIter();
 
   while (pIter->bHasNext()) {

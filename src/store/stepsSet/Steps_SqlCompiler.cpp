@@ -85,6 +85,8 @@ void Step::vSqlCompilerNameValidate(void)
                                     e.szError(),
                                     C_VARGS_END);
     UNUSED(pRow);
+    delete pPlanRoot;
+    delete pPlanOperand;
     m_pDataStack->vPushPtr(nullptr);
     goto L_Exit;
   }
