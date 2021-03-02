@@ -256,7 +256,7 @@ namespace Parser
           if (m_pText) {
             // copy the string
             newVal.m_pText = new Text(m_pText->szGet());
-            newVal.m_bMustFree = false;
+            newVal.m_bMustFree = true;
 
           } else {
             m_pText = nullptr;
