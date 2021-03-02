@@ -213,6 +213,20 @@ void SePrompt::vPromptLoop(void)
     
     //vTrace("Prompt-RawInput: %s\n"_Stz,pInputGet()->szRawInput());
     
+    if (bDemo()) {
+      
+      // handle demo statement
+      if ( ! bHandleDemo() ) {
+        vTrace("error: %s\n"_Stz,aEC[EC_INVALID_COMMAND]);
+        if (AM::bDeveloper())
+          vDumpInpTknVec(true);
+        continue;
+      }
+    }
+
+    if (bExecuteFunction())
+      continue;
+
     Stz* szCmdFile = pInputGet()->szPath();
     i8   iCmdLine  = pTkn(0)->iLineNo();
 
@@ -277,16 +291,16 @@ bool SePrompt::bGetCommand(void)
     return false;
 
   // is it a demo statement ?
-  if (bDemo()) {
-    
-    // handle demo statement
-    if ( ! bHandleDemo() ) {
-      vTrace("error: %s\n"_Stz,aEC[EC_INVALID_COMMAND]);
-      if (AM::bDeveloper())
-        vDumpInpTknVec(true);
-      return false;
-    }
-  }
+//  if (bDemo()) {
+//
+//    // handle demo statement
+//    if ( ! bHandleDemo() ) {
+//      vTrace("error: %s\n"_Stz,aEC[EC_INVALID_COMMAND]);
+//      if (AM::bDeveloper())
+//        vDumpInpTknVec(true);
+//      return false;
+//    }
+//  }
   
   while (bSubSsnTags())
     {;}
@@ -295,36 +309,18 @@ bool SePrompt::bGetCommand(void)
     return false;
   
   Api::vExtractPaths(m_pCurrentDeputy->pSession());
-  if (! bExtractTags())
-    return false;
-
-  if (bExecuteFunction())
+  if (! Api::bExtractTags(m_pCurrentDeputy->pSession()))
     return false;
 
   if (bIsPromptWord())
     m_pInpTknVec->vInsertToken(0,"docol"_Stz,TN_NAME);
-
-
-  if (AM::bDeveloper() && m_pInpTknVec->nTokens() > C_1KB) {
-    i8 nTokens = m_pInpTknVec->nTokens();
-    i8 nUsed   = m_pInpTknVec->nUsedByteSpace();
-    if (nTokens > C_1KB)
-       vTrace("TokenVec usage: nTokens=%lld nUsed=%lld(B)\n"_Stz,nTokens,nUsed);
-    vDebugPoint();
-  }
-  
+    
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // prompt has finessed the final input token vector at this stage
   
   //m_xReqTuple.m_iReqNo++;
   
   vLogCommand();
-  
-  
-//  Now xNow;
-//  xNow.vSetNow();
-  
-  //vTrace("%s\n"_Stz,xNow.sz());
   
 
 // TBD: remove division and section concepts
@@ -614,83 +610,6 @@ bool SePrompt::bExecuteFunction(void)
   if (m_pJobTagSet->bHasName(C_TAG_TIME))
     vTrace("time %lldms\n\n"_Stz,oTimer.iMilliseconds());
 
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* extract trailing job supplemtntal tags ( such as <field_delimiter> = | )   */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bExtractTags(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // extract leading job control tags (such as /time or /nowait)
-  
-  Token* pTkn0 = pTkn(0);
-  
-  s32 sTag;
-  
-  while ('/' == * pTkn0->azChars() ) {
-    
-   Token* pTkn1 = pTkn(1);
-   sTag.vSprint("<%s>"_Stz,pTkn1->szChars());
-    
-    m_pJobTagSet->vInsert(sTag,1);
-    
-    vCutToken(0);
-    vCutToken(0);
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // extract trailing job supplemtntal tags ( such as <field_delimiter> = | )
-
-  i8 i_TagBegin = m_pInpTknVec->iFindToken("<"_Stz,TN_OTHER);
-
-  if (C_UNKNOWN == i_TagBegin)
-    return true;
-
-  Token* pTkn_begin = m_pInpTknVec->pGet(i_TagBegin);
-  UNUSED(pTkn_begin);
-  
-  i8 nTkns = m_pInpTknVec->nTokens();
-
-  i8 i_Scan = i_TagBegin;
-  while (i_Scan < nTkns) {
-  
-    Token* pScan = m_pInpTknVec->pGet(i_Scan++);        // <
-    if (i_Scan >= nTkns)
-      return false;
-    if (! pScan->bIsLessThan())
-      return false;
-    
-    Token* pTkn_name = m_pInpTknVec->pGet(i_Scan++);    // name
-    if (i_Scan >= nTkns)
-      return false;
-    if (! pTkn_name->bIsName())
-      return false;
-
-    pScan = m_pInpTknVec->pGet(i_Scan++);               // >
-    if (! pScan->bIsGreaterThan())
-      return false;
-    
-    pScan = m_pInpTknVec->pGet(i_Scan++);               // =
-    if (i_Scan >= nTkns)
-      return false;
-    if (! pScan->bIsAssign())
-      return false;
-
-    Token* pTkn_value = m_pInpTknVec->pGet(i_Scan++);   // value
-    //if (! pTkn_value->bIsString())
-    //  return false;
-
-    s32 sName;
-    sName.vSprint("<%s>"_Stz,pTkn_name->szChars());
-    m_pJobTagSet->vAppend(sName,pTkn_value->szChars());
-  }
-    
-  m_pInpTknVec->vTrimTokens(i_TagBegin);
-  
   return true;
 }
 

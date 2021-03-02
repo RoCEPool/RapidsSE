@@ -567,29 +567,30 @@ i8 iDev_IXT_CMP_WRKALT(void* aLU)
 /*----------------------------------------------------------------------------*/
 /* delete current entry m_aEnt from indexTree                                 */
 /*----------------------------------------------------------------------------*/
-void vDev_IXT_DEL_ENT(void* aLU, void* aIXT)
+void vDev_IXT_DEL_ENT(i8** aaiDstk)
 {
   _static_
-  
-  UNUSED(aLU);
 
-  DevIXT* pDevIXT = _pDevIXT(aIXT);
+  i8 *aiDstk = *aaiDstk;
+
+  DevIXT* pDevIXT = _pDevIXT(P_PopPtr());
 
   pDevIXT->m_pIdxTree->vDelete(pDevIXT->m_pEntBuffer,pDevIXT->m_aEnt);
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
 /* dump index tree                                                            */
 /*----------------------------------------------------------------------------*/
-void vDev_IXT_DUMP(void* aLU, void* aIXT)
+void vDev_IXT_DUMP(i8** aaiDstk)
 {
   _static_
-  
-  UNUSED(aLU);
 
-  DevIXT* pDevIXT = _pDevIXT(aIXT);
-  
+  i8 *aiDstk = *aaiDstk;
+  DevIXT* pDevIXT = _pDevIXT(P_PopPtr());
+
   pDevIXT->m_pIdxTree->vDump(false);
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -598,10 +599,8 @@ void vDev_IXT_DUMP(void* aLU, void* aIXT)
 void vDev_IXT_ENT_PRINT(void* aLU, void* aIXT)
 {
   _static_
-  
-  UNUSED(aLU);
 
-  DevIXT* pDevIXT = _pDevIXT(aIXT);
+  DevIXT *pDevIXT = _pDevIXT(aIXT);
   
   SP_Ent spEnt;
   vTrace("Ent : %s\n"_Stz,
@@ -612,18 +611,16 @@ void vDev_IXT_ENT_PRINT(void* aLU, void* aIXT)
 /*----------------------------------------------------------------------------*/
 /* insert an entry into the indexTree                                         */
 /*----------------------------------------------------------------------------*/
-Ent_int* aDev_IXT_INS_ENT(void* aLU, void* aIXT)
-{
+Ent_int* aDev_IXT_INS_ENT(void* aLU, void* aIXT) {
   _static_
 
-  DevIXT* pDevIXT = _pDevIXT(aIXT);
-
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+  DevIXT *pDevIXT = _pDevIXT(aIXT);
+  LogicUnit *pLogicUnit = _pLogicUnit(aLU);
 
   pDevIXT->m_aEnt =
-    pDevIXT->m_pIdxTree->aInsertEntry(pLogicUnit->m_oEntWrk.aEnt());
-  
-  return (Ent_int*)pDevIXT->m_aEnt;
+      pDevIXT->m_pIdxTree->aInsertEntry(pLogicUnit->m_oEntWrk.aEnt());
+
+  return (Ent_int *) pDevIXT->m_aEnt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -634,7 +631,6 @@ void vDev_IXT_INDEXTREE_DELETE(i8** aaiDstk)
   _static_
 
   i8 *aiDstk = *aaiDstk;
-
   DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
 
   IndexTree* pIndexTree = pDevIxt->m_pIdxTree;
@@ -856,36 +852,65 @@ void vDev_IXT_SET_ENT(void* aLU, void* aIXT, void* aEnt)
 /*----------------------------------------------------------------------------*/
 /*  push number of entries in tmp index                                       */
 /*----------------------------------------------------------------------------*/
-i8 iDev_IXT_TMP_ENTRIES(void* aLU, void* aIXT)
+void vDev_IXT_TMP_ENTRIES(i8** aaiDstk)
 {
   _static_
-  
-  UNUSED(aLU);
 
-  DevIXT* pDevIXT = _pDevIXT(aIXT);
+  i8 *aiDstk = *aaiDstk;
+
+  DevIXT* pDevIXT = _pDevIXT(P_PopPtr());
 
   i8 iRes = pDevIXT->m_pIdxTree->iCountH0Entries();
+  I_PushInt(iRes);
 
-  return iRes;
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
 /* begin linear traverse                                                      */
 /*----------------------------------------------------------------------------*/
-Ent_int* aDev_IXT_TRV_BEGIN(void* aLU, void* aIXT)
+void vDev_IXT_TRV_BEGIN(i8** aaiDstk)
+{
+//  _static_
+//
+//  i8 *aiDstk = *aaiDstk;
+//  DevIXT* pDevIXT = _pDevIXT(P_PopPtr());
+//
+//  pDevIXT->m_pEntBuffer = pDevIXT->m_pIdxTree->pFirstH0Buffer();
+//
+//  if (pDevIXT->m_pEntBuffer) {
+//    pDevIXT->m_aEnt = pDevIXT->m_pEntBuffer->aLeadEntry();
+//    if (pDevIXT->m_aEnt) {
+//      pLogicUnit->m_xRluCommon.m_aEntArray =
+//        (Ent_int*)pDevIXT->m_pEntBuffer->aEntArray();
+//      P_PushPtr(pDevIXT->m_aEnt);
+//    }
+//    else
+//      P_PushPtr(nullptr);
+//  }
+//  else
+//    P_PushPtr(nullptr);
+//
+//  *aaiDstk = aiDstk;
+}
+
+/*----------------------------------------------------------------------------*/
+/* begin linear traverse                                                      */
+/*----------------------------------------------------------------------------*/
+Ent_int* aDev_IXT_TRV_BEGIN_OLD(void* aLU, void* aIXT)
 {
   _static_
 
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
   DevIXT* pDevIXT = _pDevIXT(aIXT);
-  
+
   pDevIXT->m_pEntBuffer = pDevIXT->m_pIdxTree->pFirstH0Buffer();
-  
+
   if (pDevIXT->m_pEntBuffer) {
     pDevIXT->m_aEnt = pDevIXT->m_pEntBuffer->aLeadEntry();
     if (pDevIXT->m_aEnt) {
       pLogicUnit->m_xRluCommon.m_aEntArray =
-        (Ent_int*)pDevIXT->m_pEntBuffer->aEntArray();
+          (Ent_int*)pDevIXT->m_pEntBuffer->aEntArray();
       return (Ent_int*)pDevIXT->m_aEnt;
     }
     else
@@ -893,25 +918,48 @@ Ent_int* aDev_IXT_TRV_BEGIN(void* aLU, void* aIXT)
   }
   else
     return nullptr;
+
 }
 
 /*----------------------------------------------------------------------------*/
 /* traverse to next entry                                                     */
 /*----------------------------------------------------------------------------*/
-Ent_int* aDev_IXT_TRV_NEXT(void* aLU, void* aIXT)
+void vDev_IXT_TRV_NEXT(i8** aaiDstk)
+{
+//  _static_
+//
+//  i8 *aiDstk = *aaiDstk;
+//  DevIXT* pDevIXT = _pDevIXT(P_PopPtr());
+//
+//  pDevIXT->m_aEnt =
+//     EntBuffer::pMoveToNextEntry(pDevIXT->m_aEnt,&pDevIXT->m_pEntBuffer);
+//
+//  if (pDevIXT->m_pEntBuffer)
+//    pLogicUnit->m_xRluCommon.m_aEntArray =
+//      (Ent_int*)pDevIXT->m_pEntBuffer->aEntArray();
+//  else
+//    pLogicUnit->m_xRluCommon.m_aEntArray = nullptr;
+//
+//  P_PushPtr(pDevIXT->m_aEnt);
+//  *aaiDstk = aiDstk;
+}
+
+/*----------------------------------------------------------------------------*/
+/* traverse to next entry                                                     */
+/*----------------------------------------------------------------------------*/
+Ent_int* aDev_IXT_TRV_NEXT_OLD(void* aLU, void* aIXT)
 {
   _static_
-  
+
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
   DevIXT* pDevIXT = _pDevIXT(aIXT);
 
-  
   pDevIXT->m_aEnt =
-     EntBuffer::pMoveToNextEntry(pDevIXT->m_aEnt,&pDevIXT->m_pEntBuffer);
-  
+      EntBuffer::pMoveToNextEntry(pDevIXT->m_aEnt,&pDevIXT->m_pEntBuffer);
+
   if (pDevIXT->m_pEntBuffer)
     pLogicUnit->m_xRluCommon.m_aEntArray =
-      (Ent_int*)pDevIXT->m_pEntBuffer->aEntArray();
+        (Ent_int*)pDevIXT->m_pEntBuffer->aEntArray();
   else
     pLogicUnit->m_xRluCommon.m_aEntArray = nullptr;
 
@@ -1154,20 +1202,31 @@ void vDev_ROW_BEGIN(void* aLU, void* aROWDEVICE)
 /*----------------------------------------------------------------------------*/
 /* create new row                                                             */
 /*----------------------------------------------------------------------------*/
-i8 iDev_ROW_NEW(void* aLU, void* aROWDEVICE)
+void vDev_ROW_NEW(void* aLU, i8** aaiDstk)
 {
   _static_
-  
-  DevROW* pDevRow = _pDevROW(aROWDEVICE);
-  
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+
   bool bNewBuffer;
-  
+  i8 *aiDstk = *aaiDstk;
+
+  // pop the partition no
+  //i8 i_Ptn = I_PopInt();
+
+  // pop the pot
+  //Pot* pPot = _pPot(P_PopPtr());
+
+  // pop the row dev
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
+
+  LogicUnit *pLogicUnit = _pLogicUnit(aLU);
+
   pDevRow->m_aRow =
-    pLogicUnit->m_xpPot->aNewDstRow(pLogicUnit->m_xRluCommon.m_i_Ptn,
-                                   &pDevRow->m_pRowBuffer, &bNewBuffer);
-  
-  return bNewBuffer ? 1 : 0;
+      pLogicUnit->m_xpPot->aNewDstRow(pLogicUnit->m_xRluCommon.m_i_Ptn,
+                                      &pDevRow->m_pRowBuffer, &bNewBuffer);
+
+  I_PushInt(bNewBuffer);
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1246,15 +1305,16 @@ void vDev_ROW_POPCOLS(void* aLU, void* aROWDEVICE, i8 iArg, Stz* szTop)
 /*----------------------------------------------------------------------------*/
 /* print src row                                                              */
 /*----------------------------------------------------------------------------*/
-void vDev_ROW_PRINT(void* aLU, void* aROWDEVICE)
+void vDev_ROW_PRINT(i8** aaiDstk)
 {
   _static_
 
-  UNUSED(aLU);
-
-  DevROW* pDevRow = _pDevROW(aROWDEVICE);
+  i8 *aiDstk = *aaiDstk;
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
   
   pDevRow->m_pRowBuffer->vDumpRow(-1,pDevRow->m_aRow);
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1308,15 +1368,16 @@ i8 iDev_ROW_PUSHOFS(void* aLU, void* aROWDEVICE)
 /*----------------------------------------------------------------------------*/
 /* reset row                                                                  */
 /*----------------------------------------------------------------------------*/
-void vDev_ROW_RESET(void* aLU, void* aROWDEVICE)
+void vDev_ROW_RESET(i8** aaiDstk)
 {
   _static_
 
-  UNUSED(aLU);
-
-  DevROW* pDevRow = _pDevROW(aROWDEVICE);
+  i8 *aiDstk = *aaiDstk;
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
   
   pDevRow->m_pRowBuffer->vReset();
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1352,8 +1413,6 @@ void vDev_ROW_SETBYOFS(void* aLU, void* aROWDEVICE, i8 iTop)
 /*----------------------------------------------------------------------------*/
 void vDev_ROW_TABLENM_SET(i8** aaiDstk)
 {
-  _static_
-
   _static_
 
   // ALKA: Double string copy

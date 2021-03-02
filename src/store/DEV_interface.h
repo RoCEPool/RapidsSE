@@ -31,8 +31,8 @@ i8   iDev_ENT_PUSHOFS(void* aLU, void* aIXT);
 
 i8   iDev_IXT_CMP_SRCALT(void* aLU);
 i8   iDev_IXT_CMP_WRKALT(void* aLU);
-void vDev_IXT_DEL_ENT(void* aLU, void* aIXT);
-void vDev_IXT_DUMP(void* aLU, void* aIXT);
+void vDev_IXT_DEL_ENT(i8** aaiDstk);
+void vDev_IXT_DUMP(i8** aaiDstk);
 void vDev_IXT_ENT_PRINT(void* aLU, void* aIXT);
 
 void vDev_IXT_INDEXNM_SET(i8** aaiDstk);
@@ -41,15 +41,17 @@ void vDev_IXT_INDEXTREE_SET(i8** aaiDstk);
 
 struct Ent_int* aDev_IXT_INS_ENT(void* aLU, void* aIXT);
 void vDev_IXT_SET_ENT(void* aLU, void* aIXT, void* aEnt);
-i8   iDev_IXT_TMP_ENTRIES(void* aLU, void* aIXT);
+void vDev_IXT_TMP_ENTRIES(i8** aaiDstk);
 
 struct Ent_int* aDev_IXT_POS_ALTBYSRC(void* aLU);
 struct Ent_int* aDev_IXT_POS_ALTBYWRK(void* aLU);
 struct Ent_int* aDev_IXT_POS_LBOUND(void* aLU, void* aIXT);
 struct Ent_int* aDev_IXT_POS_UBOUND(void* aLU, void* aIXT);
 struct Ent_int* aDev_IXT_POS_UBOUND_LT(void* aLU, void* aIXT);
-struct Ent_int* aDev_IXT_TRV_BEGIN(void* aLU, void* aIXT);
-struct Ent_int* aDev_IXT_TRV_NEXT(void* aLU, void* aIXT);
+struct Ent_int* aDev_IXT_TRV_BEGIN_OLD(void* aLU, void* aIXT);
+void vDev_IXT_TRV_BEGIN(i8** aaiDstk);
+void vDev_IXT_TRV_NEXT(i8** aaiDstk);
+struct Ent_int* aDev_IXT_TRV_NEXT_OLD(void* aLU, void* aIXT);
 
 i8*  aDev_PAY_ADDRESS(void* aLU, void* aIXT);
 i8   iDev_PAY_FETCH_COLI(void* aLU, void* aIXT, i8 iArg);
@@ -70,16 +72,16 @@ void vDev_ENTWRK_RESET(void* aLU, void* aROWDEVICE);
 void vDev_ENTWRK_SETINTELM(void* aLU, void* aROWDEVICE, i8 iTop);
 
 void vDev_ROW_BEGIN(void* aLU, void* aROWDEVICE);
-i8   iDev_ROW_NEW(void* aLU, void* aROWDEVICE);
+void vDev_ROW_NEW(void* aLU, i8** aaiDstk);
 i8   iDev_ROW_NEXT(void* aLU, void* aROWDEVICE);
 void vDev_ROW_NULL(void* aLU, void* aROWDEVICE);
 void vDev_ROW_POPCOLI(void* aLU, void* aROWDEVICE, i8 iArg, i8 iTop);
 void vDev_ROW_POPCOLS(void* aLU, void* aROWDEVICE, i8 iArg, Stz* szTop);
-void vDev_ROW_PRINT(void* aLU, void* aROWDEVICE);
+void vDev_ROW_PRINT(i8** aaiDstk);
 i8   iDev_ROW_PUSHCOLI(void* aLU, void* aROWDEVICE, i8 iArg);
 Stz* szDev_ROW_PUSHCOLS(void* aLU, void* aROWDEVICE, i8 iArg);
 i8   iDev_ROW_PUSHOFS(void* aLU, void* aROWDEVICE);
-void vDev_ROW_RESET(void* aLU, void* aROWDEVICE);
+void vDev_ROW_RESET(i8** aaiDstk);
 void vDev_ROW_SET(void* aLU, void* aROWDEVICE, i8 iRow);
 void vDev_ROW_TABLENM_SET(i8** aaiDstk);
 i8   iDev_ROW_TEST(void* aLU, void* aROWDEVICE);

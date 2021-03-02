@@ -100,15 +100,17 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_IXT_INDEXTREE_SET"_Stz, (const void *) vDev_IXT_INDEXTREE_SET },
   { "aDev_IXT_INS_ENT"_Stz,       (const void *) aDev_IXT_INS_ENT       },
   { "vDev_IXT_SET_ENT"_Stz,       (const void *) vDev_IXT_SET_ENT       },
-  { "iDev_IXT_TMP_ENTRIES"_Stz,   (const void *) iDev_IXT_TMP_ENTRIES   },
+  { "vDev_IXT_TMP_ENTRIES"_Stz,   (const void *) vDev_IXT_TMP_ENTRIES   },
 
   { "aDev_IXT_POS_ALTBYSRC"_Stz,  (const void *) aDev_IXT_POS_ALTBYSRC  },
   { "aDev_IXT_POS_ALTBYWRK"_Stz,  (const void *) aDev_IXT_POS_ALTBYWRK  },
   { "aDev_IXT_POS_LBOUND"_Stz,    (const void *) aDev_IXT_POS_LBOUND    },
   { "aDev_IXT_POS_UBOUND"_Stz,    (const void *) aDev_IXT_POS_UBOUND    },
   { "aDev_IXT_POS_UBOUND_LT"_Stz, (const void *) aDev_IXT_POS_UBOUND_LT },
-  { "aDev_IXT_TRV_BEGIN"_Stz,     (const void *) aDev_IXT_TRV_BEGIN     },
-  { "aDev_IXT_TRV_NEXT"_Stz,      (const void *) aDev_IXT_TRV_NEXT      },
+  { "vDev_IXT_TRV_BEGIN"_Stz,     (const void *) vDev_IXT_TRV_BEGIN     },
+  { "aDev_IXT_TRV_BEGIN_OLD"_Stz, (const void *) aDev_IXT_TRV_BEGIN_OLD },
+  { "vDev_IXT_TRV_NEXT"_Stz,      (const void *) vDev_IXT_TRV_NEXT      },
+  { "aDev_IXT_TRV_NEXT_OLD"_Stz,  (const void *) aDev_IXT_TRV_NEXT_OLD  },
 
   { "aDev_PAY_ADDRESS"_Stz,       (const void *) aDev_PAY_ADDRESS       },
   { "iDev_PAY_FETCH_COLI"_Stz,    (const void *) iDev_PAY_FETCH_COLI    },
@@ -123,7 +125,7 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_POT_USE_STREAMDEFOUT"_Stz, (const void *) vDev_POT_USE_STREAMDEFOUT },
   
   { "vDev_ROW_BEGIN"_Stz,         (const void *) vDev_ROW_BEGIN         },
-  { "iDev_ROW_NEW"_Stz,           (const void *) iDev_ROW_NEW           },
+  { "vDev_ROW_NEW"_Stz,           (const void *) vDev_ROW_NEW           },
   { "iDev_ROW_NEXT"_Stz,          (const void *) iDev_ROW_NEXT          },
   { "vDev_ROW_NULL"_Stz,          (const void *) vDev_ROW_NULL          },
   { "vDev_ROW_POPCOLI"_Stz,       (const void *) vDev_ROW_POPCOLI       },
@@ -629,7 +631,9 @@ void LogicCompiler::vAddFragment(i8 i_CodeFrom, i8 i_CodeTill)
   s4K sPrint;
 
   for (i8 i_Code = i_CodeFrom; i_Code <= i_CodeTill; i_Code++) {
-    
+
+    if (i_Code == 148)
+      i8 i = 1;
     eEO eCode = m_pLogicUnit->eCode(i_Code);
 
     i_Label = m_pLogicUnit->iFindLabel(i_Code);
