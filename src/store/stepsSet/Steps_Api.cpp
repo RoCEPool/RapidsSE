@@ -108,13 +108,10 @@ void Step::vApiExecuteNested(void)
 
   pCmdTknVec->vTokenise(sRequest);
   
-//  TagSet oTagSet;
-//  oTagSet.vReplace(C_TAG_PLPROTOCOL,PP_RETURN_PIPELINE);
   TagSet* pTagSet =  & pSession->m_oJobTagSet;
   pTagSet->vReplace(C_TAG_PLPROTOCOL,PP_RETURN_PIPELINE);
 
-  //eError = Api::ePrepareJob(pSession,pReqTknVec,nullptr,pTagSet);
-  eError = Api::ePrepareJob(pSession);//,nullptr);
+  eError = Api::ePrepareJob(pSession);
 
   if (eError) {
     m_pDataStack->vPushInt(eError);
@@ -165,10 +162,6 @@ void Step::vApiExecuteNested(void)
   m_pDataStack->vPushInt(true);
   
 //  Api::vFreeSession(pSession);
-  
-  //delete pReqTknVec;
-  //delete pWithTagStrTknVec;
-  
   
   EXIT();
 }
@@ -317,14 +310,8 @@ void Step::vApiSpawnDemon(void)
   Session* pSession = Api::pAllocSession(SK_INTERNAL);
   eEC eError = pSession->eInitaliseSession("rapidsse"_Stz,"public"_Stz);
 
-  //TokenVec* pDmnTknVec = TokenVec::pTokenise(sPipeline);
   TokenVec* pCmdTknVec = pSession->m_pInput->pTokenVec();
   pCmdTknVec->vTokenise(sPipeline);
-
-//  TagSet oTagSet;
-//  oTagSet.vReplace(C_TAG_PLPROTOCOL,PP_NONE);
-//  oTagSet.vDumpSet();
-//  eError = Api::ePrepareJob(pSession,pDmnTknVec,nullptr,&oTagSet);
   
   TagSet* pTagSet =  & pSession->m_oJobTagSet;
   pTagSet->vReplace(C_TAG_PLPROTOCOL,PP_NONE);
@@ -366,7 +353,6 @@ void Step::vApiSpawnDemon(void)
 
   m_pDataStack->vPushInt(true);
   
-  //delete pDmnTknVec;
   delete pTagStrTknVec;
   
   EXIT();

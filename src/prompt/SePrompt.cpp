@@ -347,10 +347,7 @@ bool SePrompt::bPrepareJob(void)
 
   m_pJobTagSet->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
   
-  eEC eError = Api::ePrepareJob(m_pCurrentDeputy->pSession(),
-                                m_pLitTknVec);
-//                                nullptr);
-//                                m_pJobTagSet);
+  eEC eError = Api::ePrepareJob(m_pCurrentDeputy->pSession(),m_pLitTknVec);
 
   
   if (eError) {
