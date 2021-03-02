@@ -77,7 +77,7 @@ i8   iDev_ROW_NEXT(void* aLU, void* aROWDEVICE);
 void vDev_ROW_NULL(void* aLU, void* aROWDEVICE);
 void vDev_ROW_POPCOLI(void* aLU, void* aROWDEVICE, i8 iArg, i8 iTop);
 void vDev_ROW_POPCOLS(void* aLU, void* aROWDEVICE, i8 iArg, Stz* szTop);
-void vDev_ROW_PRINT(void* aLU, void* aROWDEVICE);
+void vDev_ROW_PRINT(i8** aaiDstk);
 i8   iDev_ROW_PUSHCOLI(void* aLU, void* aROWDEVICE, i8 iArg);
 Stz* szDev_ROW_PUSHCOLS(void* aLU, void* aROWDEVICE, i8 iArg);
 i8   iDev_ROW_PUSHOFS(void* aLU, void* aROWDEVICE);

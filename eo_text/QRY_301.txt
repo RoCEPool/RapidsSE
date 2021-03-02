@@ -163,7 +163,11 @@ Label QRY_301_DONE
   EO_ROW_DST_POPCOLI 2 // Q301_ORDERDATE
   EO_ROW_SRC_PUSHCOLI 2 //Q300_SHIPPRIORITY
   EO_ROW_DST_POPCOLI 3 // Q301_SHIPPRIORITY
-  EO_ROW_DST_PRINT
+
+  //EO_ROW_DST_PRINT
+  EO_PUSH_DEVROW_DST
+  EO_DEVROW_PRINT
+
   EO_RETURN
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
   // END ROUTINE: MOV_DST                                           Q301 MOV_DST

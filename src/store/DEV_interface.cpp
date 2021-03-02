@@ -1294,15 +1294,16 @@ void vDev_ROW_POPCOLS(void* aLU, void* aROWDEVICE, i8 iArg, Stz* szTop)
 /*----------------------------------------------------------------------------*/
 /* print src row                                                              */
 /*----------------------------------------------------------------------------*/
-void vDev_ROW_PRINT(void* aLU, void* aROWDEVICE)
+void vDev_ROW_PRINT(i8** aaiDstk)
 {
   _static_
 
-  UNUSED(aLU);
-
-  DevROW* pDevRow = _pDevROW(aROWDEVICE);
+  i8 *aiDstk = *aaiDstk;
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
   
   pDevRow->m_pRowBuffer->vDumpRow(-1,pDevRow->m_aRow);
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1400,8 +1401,6 @@ void vDev_ROW_SETBYOFS(void* aLU, void* aROWDEVICE, i8 iTop)
 /*----------------------------------------------------------------------------*/
 void vDev_ROW_TABLENM_SET(i8** aaiDstk)
 {
-  _static_
-
   _static_
 
   // ALKA: Double string copy
