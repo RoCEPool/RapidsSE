@@ -210,7 +210,10 @@ void SePrompt::vPromptLoop(void)
     
     if (! bGetCommand())
       continue;
-    
+ 
+    if (! bExamineCommand())
+      continue;
+
     //vTrace("Prompt-RawInput: %s\n"_Stz,pInputGet()->szRawInput());
     
     Stz* szCmdFile = pInputGet()->szPath();
@@ -259,9 +262,16 @@ bool SePrompt::bGetCommand(void)
     return false;
   }
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // examine the command
-  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* examine command                                                            */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bExamineCommand(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+    
   if (bBlankLine())
     return false;
 
@@ -276,6 +286,9 @@ bool SePrompt::bGetCommand(void)
   if (bShortCut())
     return false;
 
+  if (bRedirectFromFile())
+    return false;
+  
   // is it a demo statement ?
   if (bDemo()) {
     
@@ -291,48 +304,15 @@ bool SePrompt::bGetCommand(void)
   while (bSubSsnTags())
     {;}
 
-  if (bRedirectFromFile())
-    return false;
-  
   Api::vExtractPaths(m_pCurrentDeputy->pSession());
   if (! Api::bExtractTags(m_pCurrentDeputy->pSession()))
-    return false;
-
-  if (bExecuteFunction())
     return false;
 
   if (bIsPromptWord())
     m_pInpTknVec->vInsertToken(0,"docol"_Stz,TN_NAME);
 
-
-//  if (AM::bDeveloper() && m_pInpTknVec->nTokens() > C_1KB) {
-//    i8 nTokens = m_pInpTknVec->nTokens();
-//    i8 nUsed   = m_pInpTknVec->nUsedByteSpace();
-//    if (nTokens > C_1KB)
-//       vTrace("TokenVec usage: nTokens=%lld nUsed=%lld(B)\n"_Stz,nTokens,nUsed);
-//    vDebugPoint();
-//  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // prompt has finessed the final input token vector at this stage
-  
-  //m_xReqTuple.m_iReqNo++;
-  
-  vLogCommand();
-  
-  
-//  Now xNow;
-//  xNow.vSetNow();
-  
-  //vTrace("%s\n"_Stz,xNow.sz());
-  
-
-// TBD: remove division and section concepts
-  
-//  if (*pInputGet()->szDivision()->azChar())
-//    m_pJobTagSet->vInsert(C_TAG_DIVISION,pInputGet()->szDivision());
-//  if (*pInputGet()->szSection()->azChar())
-//    m_pJobTagSet->vInsert(C_TAG_SECTION,pInputGet()->szSection());
+  if (bExecuteFunction())
+    return false;
 
   return true;
 }
