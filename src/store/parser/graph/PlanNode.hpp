@@ -407,7 +407,7 @@ namespace Parser
 
   /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-  class PlanNode : public Object
+  class PlanNode : public /*VIRTUAL*/ Object
   {
     friend class GraphValidator;  // to aide validation of the plan graph
 
@@ -422,7 +422,7 @@ namespace Parser
     Footer m_xFooter;
     
   public:
-    virtual ~PlanNode(void) = 0;
+    virtual ~PlanNode(void);
 
     Footer* aFooter(void);
 
