@@ -305,13 +305,13 @@ bool SePrompt::bGetCommand(void)
     m_pInpTknVec->vInsertToken(0,"docol"_Stz,TN_NAME);
 
 
-  if (AM::bDeveloper() && m_pInpTknVec->nTokens() > C_1KB) {
-    i8 nTokens = m_pInpTknVec->nTokens();
-    i8 nUsed   = m_pInpTknVec->nUsedByteSpace();
-    if (nTokens > C_1KB)
-       vTrace("TokenVec usage: nTokens=%lld nUsed=%lld(B)\n"_Stz,nTokens,nUsed);
-    vDebugPoint();
-  }
+//  if (AM::bDeveloper() && m_pInpTknVec->nTokens() > C_1KB) {
+//    i8 nTokens = m_pInpTknVec->nTokens();
+//    i8 nUsed   = m_pInpTknVec->nUsedByteSpace();
+//    if (nTokens > C_1KB)
+//       vTrace("TokenVec usage: nTokens=%lld nUsed=%lld(B)\n"_Stz,nTokens,nUsed);
+//    vDebugPoint();
+//  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // prompt has finessed the final input token vector at this stage

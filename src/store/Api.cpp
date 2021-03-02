@@ -106,11 +106,18 @@ void Api::vExecuteJob(Session* pSession)
 
   Job* pJob = pSession->m_pSsnJob;
   
+  TokenVec* pInpTknVec = pSession->m_pInput->pTokenVec();;
+
+  if (AM::bDeveloper() && pInpTknVec->nTokens() > C_1KB) {
+    i8 nTokens = pInpTknVec->nTokens();
+    i8 nUsed   = pInpTknVec->nUsedByteSpace();
+    if (nTokens > C_1KB)
+       vTrace("TokenVec usage: nTokens=%lld nUsed=%lld(B)\n"_Stz,nTokens,nUsed);
+  }
+
   
   
-  
-  
-  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   for (;;) {
   
