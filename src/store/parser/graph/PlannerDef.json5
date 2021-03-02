@@ -1671,7 +1671,7 @@
                     },
                     {
                       name: "ordinal",
-                      value: "The column number (1 based)",
+                      value: "The column number (0 based)",
                       type: "/__root__/definitions/object/valueObject/integerObject"
                     },
                     {

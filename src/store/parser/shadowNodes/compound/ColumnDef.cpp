@@ -46,7 +46,7 @@ static Stz* C_SCALE_DEFN       = "/__root__/definitions/object/valueObject/integ
 
 /*----------------------------------------------------------------------------*/
 /* Helper function to create columnDef nodes.                                 */
-/* Ordinal is 1 based. Use -1 for precision and scale if not set or n/a.      */
+/* Ordinal is 0 based. Use -1 for precision and scale if not set or n/a.      */
 /*----------------------------------------------------------------------------*/
 QueryNode* ColumnDef::pCreate(Stz* szColumnName, QueryNode* pTypeNode, b1 bNotNull,
                               i8 iOrdinal, i8 iPrecision, i8 iScale)
@@ -55,12 +55,12 @@ QueryNode* ColumnDef::pCreate(Stz* szColumnName, QueryNode* pTypeNode, b1 bNotNu
 
   ASSERT(szColumnName);
   ASSERT(szColumnName->nLength() > 0);
-  ASSERT(iOrdinal > 0);
+  ASSERT(iOrdinal >= 0);
   ASSERT(iPrecision >= -1);
   ASSERT(iScale >= -1);
 
   // Create the columnDef object
-  QueryNode* pColumnDef = new QueryNode(C_COLUMNDEF_NAME, C_COLUMNDEF_DEFN);
+  QueryNode* pColumnDef = new QueryNode(szColumnName, C_COLUMNDEF_DEFN);
 
   // Create the columnName property
   Value xNameVal(szColumnName);
@@ -179,7 +179,7 @@ b1 ColumnDef::bNotNull(QueryNode* pNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Returns the 1-based index of the column number                             */
+/* Returns the 0-based index of the column number                             */
 /*----------------------------------------------------------------------------*/
 i8 ColumnDef::iOrdinal(QueryNode* pNode)
 {

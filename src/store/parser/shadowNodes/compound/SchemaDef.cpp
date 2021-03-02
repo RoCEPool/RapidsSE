@@ -48,7 +48,6 @@ QueryNode* SchemaDef::pCreate(Stz* szCatalogName, Stz* szSchemaName, QueryNode* 
   ASSERT(szSchemaName);
   ASSERT(szSchemaName->nLength() > 0);
   ASSERT(pTableDefs);
-  ASSERT(pTableDefs->nChildren() > 0);
 
 
   // Create the schemaDef object
