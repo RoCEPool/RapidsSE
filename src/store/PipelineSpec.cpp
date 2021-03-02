@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 void* PipelineSpec::operator new(size_t)
 {
-  PipelineSpec* pPipelineSpec = reinterpret_cast<PipelineSpec*>(HeapMem::pAllocate(CN_PIPELINESPEC));
+  PipelineSpec* pPipelineSpec = reinterpret_cast<PipelineSpec*>(Heaps::pAllocate(CN_PIPELINESPEC));
   
   return pPipelineSpec;
 }
@@ -25,7 +25,7 @@ void PipelineSpec::operator delete(void* aAddr)
 {
   PipelineSpec* pPipelineSpec = reinterpret_cast<PipelineSpec*>(aAddr);
   
-  HeapMem::vFree(pPipelineSpec);
+  Heaps::vFree(pPipelineSpec);
 }
 
 /*----------------------------------------------------------------------------*/

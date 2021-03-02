@@ -23,13 +23,17 @@ Stz* gszaEoFragments[EO_ENUMS];
 char gcaAmMacros[C_128K];
 Stz* gszaAmMacros[AM_ENUMS];
 
-const i8 C_MACRO_FILES = 5;
+const i8 C_MACRO_FILES = 9;
 char gszaAmMacroFiles[C_MACRO_FILES][128] = {
     "../asm/AM_CrwBuffer.macro",
     "../asm/AM_DataPulse.macro",
     "../asm/AM_DefaultHandlers.macro",
+    "../asm/AM_EosMarker.macro",
+    "../asm/AM_Index.macro",
+    "../asm/AM_PayLoad.macro",
     "../asm/AM_QueryMisc.macro",
-    "../asm/AM_RowBuffer.macro"
+    "../asm/AM_RowBuffer.macro",
+    "../asm/AM_StreamDef.macro"
 };
 
 #include "Response.hpp"
@@ -901,7 +905,7 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n  static const void* C_ADR_REGION = (void*)0x204800000000;"
   "\n  static const i8 C_DATUM_NULL = -9223372036854775807;"
   "\n  static const i8 C_CRW_HEADBYTES = 32;"
-  "\n  static const i8 C_CRW_FIRSTHEAD = 0x210;"
+  "\n  static const i8 C_CRW_FIRSTHEAD = 0x290;"
   "\n  static const tET C_ENT_END_TICKET = 0xFFFF;"
   "\n"
   "\n  #define C_BITS_PER_WORD 64"

@@ -3,18 +3,14 @@
 /*============================================================================*/
 #pragma once
 
-#include "eMK.h"
-
 namespace BASE
 {
   class Mutex : public Object
   {
   public:
-    eMK     m_eMutex;    // kind of mutex
-  
-    bool    m_bObserve;  // observe this mutex?
-    Focal*  m_pLockedBy; // by whom is the mutex locked?
-    Focal*  m_pWaitedBy; // for whom is the mutex being waited on?
+    Object*    m_pObjectMutexed;
+    Loggable*  m_pLockedBy; // by whom is the mutex locked?
+    Loggable*  m_pWaitedBy; // for whom is the mutex being waited on?
 
     pthread_mutex_t     m_xMutex;     // posix mutex variable
     pthread_mutexattr_t m_xMutexAttr; // posix mutex attribute
@@ -36,22 +32,20 @@ namespace BASE
     // must be last
     Footer m_xFooter;
   
-    Mutex(eMK eKind, Focal* pIsFor);
+    Mutex(Object* pObjectMutexed);
    ~Mutex(void) noexcept(false);
   
     static void vMonitorPortrait(s48K& sPortrait);
   
     void vBroadcast(void);
     bool bIsLocked(void);
-    bool bIsLockedByCaller(Focal* pLockedBy);
-    bool bLock(Focal* pLockFor);
-    void vLock(Focal* pLockedBy);
-    bool bObserve(void);
-    void vObserve(bool bObserve);
-    void vPause(Focal* pLockFor, i8 iMicroSeconds);
-    void vSignal(Focal* pLockedBy);
-    void vUnlock(Focal* pLockedBy);
-    void vWait(Focal* pLockedBy);
+    bool bIsLockedByCaller(Loggable* pLockedBy);
+    bool bLock(Loggable* pLockFor);
+    void vLock(Loggable* pLockedBy);
+    void vPause(Loggable* pLockFor, i8 iMicroSeconds);
+    void vSignal(Loggable* pLockedBy);
+    void vUnlock(Loggable* pLockedBy);
+    void vWait(Loggable* pLockedBy);
   
     void vFocalOutline(s4K& sOutline);
   

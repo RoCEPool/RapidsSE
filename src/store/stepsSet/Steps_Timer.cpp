@@ -6,7 +6,7 @@
 #include "Step.hpp"
 #include "EnterExit.h"
 #include "StepAccum.hpp"
-#include "StepTiming.hpp"
+#include "Steps.hpp"
 
 #include "SP_Timer.hpp"
 
@@ -46,7 +46,7 @@ void Step::vTimerDelete(void)
   
   delete pTimer;
   
-  HeapMem::vFree(pTimerObject);
+  Heaps::vFree(pTimerObject);
   
   EXIT();
 }

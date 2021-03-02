@@ -24,7 +24,9 @@ static Stz* C_TAG_JOBNM      = "<jobNm>"_Stz;
 static Stz* C_TAG_LIFE       = "<life>"_Stz;
 static Stz* C_TAG_LOWMEMORY  = "<lowMemory>"_Stz;
 static Stz* C_TAG_NEXTOP     = "<nextOp>"_Stz;
+static Stz* C_TAG_OTHEROP    = "<otherOp>"_Stz;
 static Stz* C_TAG_NEXTSTAGE  = "<nextStage>"_Stz;
+static Stz* C_TAG_OTHERSTAGE = "<otherStage>"_Stz;
 static Stz* C_TAG_NODE       = "<node>"_Stz;
 static Stz* C_TAG_NOTE       = "<note>"_Stz;
 static Stz* C_TAG_ORIGIN     = "<origin>"_Stz;
@@ -93,9 +95,18 @@ static Stz* C_TAG_CRW_FILTER_ROUTINE    = "<crwFilterRoutine>"_Stz;
 static Stz* C_TAG_DATAPULSE_PROCESS_ROUTINE = "<dataPulseProcessRoutine>"_Stz;
 static Stz* C_TAG_ROW_PROCESS_ROUTINE   = "<rowProcessRoutine>"_Stz;
 
+static Stz* C_TAG_EOS_PROCESS_ROUTINE   = "<eosProcessRoutine>"_Stz;
+
+static Stz* C_TAG_LIMIT_ROWS            = "<limitRows>"_Stz;
+
+static Stz* C_TAG_PAYLOAD_BYTES         = "<payLoadBytes>"_Stz;
 static Stz* C_TAG_PAYLOAD_ROUTINE       = "<payLoadRoutine>"_Stz;
+static Stz* C_TAG_PAYLOAD_KEY           = "<payLoadKey>"_Stz;
+static Stz* C_TAG_PAYLOAD_STORE         = "<payLoadStore>"_Stz;
+static Stz* C_TAG_PAYLOAD_TO_BUFFER     = "<payLoadToBuffer>"_Stz;
 
 static Stz* C_TAG_INDEX_RANGE_ROUTINE   = "<indexRangeRoutine>"_Stz;
+static Stz* C_TAG_INDEX_PROCESS_ROUTINE = "<indexProcessRoutine>"_Stz;
 
 static Stz* C_TAG_SRC_EXISTS_ALTIDX     = "<srcExistsAltIdx>"_Stz;
 

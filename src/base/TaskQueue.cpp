@@ -22,7 +22,7 @@ TaskQueue* BASE::_pTaskQueue(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* TaskQueue::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_TASKQUEUE);
+  void* pObject = Heaps::pAllocate(CN_TASKQUEUE);
   
   return pObject;
 }
@@ -42,7 +42,7 @@ void TaskQueue::operator delete(void* pTaskQueueAddress)
 {
   TaskQueue* pTaskQueue = reinterpret_cast<TaskQueue*>(pTaskQueueAddress);
   
-  HeapMem::vFree(pTaskQueue);
+  Heaps::vFree(pTaskQueue);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -50,7 +50,7 @@ void TaskQueue::operator delete(void* pTaskQueueAddress)
 /*----------------------------------------------------------------------------*/
 TaskQueue::TaskQueue(eQK eKind, bool bUniqueKey, CompareFp fpCompare)
 : Object(CN_TASKQUEUE)
-, m_okLock(LK_TASK_QUEUE,this)
+, m_okLock(this,C_DONT_LOG)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   

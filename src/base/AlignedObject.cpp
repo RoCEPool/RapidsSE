@@ -12,8 +12,10 @@ AlignedObject::AlignedObject(eCN eClassNo, i8 nChildSize)
 {
   _precondition_(_MAGIC_,eClassNo);
   
+#ifdef WITH_DEBUG_VERSION
   ASSERT(CacheLine::bOnCacheLineBoundary(this));
   ASSERT(CacheLine::bMultipleCacheLines(nChildSize));
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -26,7 +28,6 @@ bool AlignedObject::bOnBoundary(void* aAddress, i8 nByteBoundary)
   else
     return false;
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

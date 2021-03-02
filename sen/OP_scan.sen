@@ -5,6 +5,17 @@
 " OP_scan.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_Xyz ...                                                     */
+/*----------------------------------------------------------------------------*/
+: Scan_Xyz \handler
+
+  // delete all operands
+  PipeIn[].delete
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_CANCELMARKER ...                                            */
 /*----------------------------------------------------------------------------*/
 : Scan_CancelMarker \handler
@@ -162,6 +173,9 @@
   <tableNm> op__table if
     Table[].tablePtn@ to tablePtn[]
     PipeIn[].pipeOut
+  else
+    find: Scan_Xyz   ZK_DATAPULSE     op[].handler!
+    find: Scan_Xyz   ZK_PULSEDMARKER  op[].handler!
   then
 
   //args.developer if

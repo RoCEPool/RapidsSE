@@ -181,6 +181,18 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* default handler for ZK_EXECERRORS operand                                  */
+/*----------------------------------------------------------------------------*/
+: ZK_EXECERRORS_handler \handler
+
+  //"ZK_EXECERRORS_handler" .verbose
+
+  PipeIn[].pipeOut
+
+  true // calling op_loop continues
+;
+
+/*----------------------------------------------------------------------------*/
 /* default handler for ZK_EXITMARKER operand                                  */
 /*----------------------------------------------------------------------------*/
 : ZK_EXITMARKER_handler \handler

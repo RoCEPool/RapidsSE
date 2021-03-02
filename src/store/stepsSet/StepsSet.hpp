@@ -114,6 +114,7 @@ public:
   void vAstack9(void);
 
   // attachmap
+  void vAttachMapErrorTextFetch(void);
   void vAttachMapOperandsFetch(void);
   void vAttachMapIsLowMemory(void);
   void vAttachMapRegionSizeFetch(void);
@@ -319,6 +320,7 @@ public:
   void vExprEvalDelete(void);
   void vExprEvalNew(void);
   void vExprEvalAggregate(void);
+void vExprEvalEvaluate(void);
   void vExprEvalFilter(void);
   void vExprEvalProject(void);
   void vExprEvalSet(void);
@@ -477,6 +479,7 @@ public:
 
   // reg info set
   void vInfoSetAddCommandError(void);
+  void vInfoSetAddExecError(void);
   void vInfoSetAddLockStats(void);
   void vInfoSetAddNodeInfo(void);
   void vInfoSetAddProgressUnits(void);
@@ -614,9 +617,6 @@ public:
   void vJobRemoveLocal(void);
   void vJobRemoveOriginator(void);
   void vJobRemoveParticipant(void);
-  void vJobResponseStore(void);
-  void vJobResponseFetch(void);
-  void vJobReturnPipeline(void);
 
   void vJobSeedDecode(void);
   void vJobSeedFetch(void);
@@ -627,7 +627,6 @@ public:
   void vJobSignalSession(void);
   void vJobScheduleNextPhase(void);
   void vJobSpawnReceived(void);
-  void vJobStateDiagram(void);
   void vJobTablePtnFetch(void);
 
   void vJobTaskFetch(void);
@@ -828,8 +827,8 @@ public:
   void vLockGrabWrite(void);
 
   // locks
-  void vLockTrackerList(void);
-  void vLockTrackerReset(void);
+  void vLocksList(void);
+  void vLocksReset(void);
 
   // log
   void vLogDump(void);
@@ -876,6 +875,7 @@ public:
   void vLogicUnitGenAsm(void);
   void vLogicUnitGenAsmTxt(void);
   void vLogicUnitGenFilter(void);
+  void vLogicUnitGenLimit(void);
   void vLogicUnitGenProjection(void);
   void vLogicUnitGenRange(void);
   void vLogicUnitDevFetch(void);
@@ -962,6 +962,8 @@ public:
   void vOpNextOpStore(void);
   void vOpNextStageStore(void);
   void vOpOpNameFetch(void);
+  void vOpOtherOpStore(void);
+  void vOpOtherStageStore(void);
   void vOpPartitionFetch(void);
   void vOpPiplineJobFetch(void);
   void vOpPipeOut(void);
@@ -1424,9 +1426,9 @@ public:
   void vExpressionsLockSample(void);
 
   // steps
-  void vStepTimingReset(void);
-  void vStepTimingStart(void);
-  void vStepTimingWrite(void);
+  void vStepsReset(void);
+  void vStepsStart(void);
+  void vStepsWrite(void);
 
   // string
   void vStrAlgebra(void);
@@ -1541,11 +1543,11 @@ public:
   void vSupervisorHaltStore(void);
 
   // system schedule
-  void vSystemScheduleCheckSleeping(void);
-  void vSystemScheduleExecutingLength(void);
-  void vSystemScheduleReadyLength(void);
-  void vSystemScheduleSleepingLength(void);
-  void vSystemScheduleWaitingLength(void);
+  void vScheduleCheckSleeping(void);
+  void vScheduleExecutingLength(void);
+  void vScheduleReadyLength(void);
+  void vScheduleSleepingLength(void);
+  void vScheduleWaitingLength(void);
 
   // table
   void vTableAddIndex(void);

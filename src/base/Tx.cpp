@@ -22,7 +22,7 @@ Tx* BASE::_pTx(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Tx::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_TXSET);
+  void* pObject = Heaps::pAllocate(CN_TXSET);
 
   return pObject;
 }
@@ -42,15 +42,15 @@ void Tx::operator delete(void* pTxAddress)
 {
   Tx* pTx = reinterpret_cast<Tx*>(pTxAddress);
   
-  HeapMem::vFree(pTx);
+  Heaps::vFree(pTx);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Tx::Tx(void)
-: Focal(CN_TX,AM::iNextTxId(),C_UNKNOWN)
-, m_okLock(LK_TX_SET,this)
+: Loggable(CN_TX)
+, m_okLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
 

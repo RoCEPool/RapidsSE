@@ -26,7 +26,7 @@ IoChunk* BASE::_pIoChunk(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* IoChunk::operator new(size_t)
 {
-  IoChunk* pIoChunk = (IoChunk*)HeapMem::pAllocate(CN_IOCHUNK);
+  IoChunk* pIoChunk = (IoChunk*)Heaps::pAllocate(CN_IOCHUNK);
   
   return pPoolCheck<void*>(pIoChunk);
 }
@@ -38,7 +38,7 @@ void IoChunk::operator delete(void* pIoChunkAddress)
 {
   IoChunk* pIoChunk = static_cast<IoChunk*>(pIoChunkAddress);
   
-  HeapMem::vFree(pIoChunk);
+  Heaps::vFree(pIoChunk);
 }
 
 /*----------------------------------------------------------------------------*/

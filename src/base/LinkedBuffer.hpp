@@ -7,35 +7,41 @@ namespace BASE
 {
   class LinkedBuffer : public Operand
   {
-  protected:
-    LinkedBuffer* m_pNextBuffer;   // next buffer
-    LinkedBuffer* m_pPrevBuffer;   // previous buffer
-  
-    LinkedBuffer* m_pHigherBuffer; // higher buffer
-    LinkedBuffer* m_pLowerBuffer;  // lower buffer
-  
   private:
-    SingleWord    m__PadToCacheLine[4]; // padding to cache line
+    BufferNo m_tNextBuffer;   // next buffer
+    BufferNo m_tPrevBuffer;   // previous buffer
+
+    BufferNo m_tHigherBuffer; // higher buffer
+    BufferNo m_tLowerBuffer;  // lower buffer
+
+  private:
+    PadWord  m__PadToCacheLine[4]; // padding to cache line
 
   public:
     LinkedBuffer(eCN eClass);
     ~LinkedBuffer(void) noexcept(false);
   
+    BufferNo tBufferNo(void);   // buffer no
+  
     void vLinkAsNext(LinkedBuffer* pArgBuffer);
     void vLinkAsPrev(LinkedBuffer* pArgBuffer);
     void vUnLink(void);
 
-    LinkedBuffer* pHigherBuffer(void);
-    void          vHigherBuffer(LinkedBuffer* pHigherBuffer);
+    LinkedBuffer* pHigherLinkedBuffer(void);
+    void          vHigherLinkedBuffer(BufferNo tHigherBufferNo);
+    void          vHigherLinkedBuffer(LinkedBuffer* pHigherBuffer);
+
+    LinkedBuffer* pLowerLinkedBuffer(void);
+    void          vLowerLinkedBuffer(BufferNo tLowerBufferNo);
+    void          vLowerLinkedBuffer(LinkedBuffer* pLowerBuffer);
   
-    LinkedBuffer* pLowerBuffer(void);
-    void          vLowerBuffer(LinkedBuffer* pLowerBuffer);
+    LinkedBuffer* pNextLinkedBuffer(void);
+    void          vNextLinkedBuffer(BufferNo tNextBufferNo);
+    void          vNextLinkedBuffer(LinkedBuffer* pNextBuffer);
   
-    LinkedBuffer* pNextBuffer(void);
-    void          vNextBuffer(LinkedBuffer* pNextBuffer);
-  
-    LinkedBuffer* pPrevBuffer(void);
-    void          vPrevBuffer(LinkedBuffer* pPrevBuffer);
+    LinkedBuffer* pPrevLinkedBuffer(void);
+    void          vPrevLinkedBuffer(BufferNo tPrevBufferNo);
+    void          vPrevLinkedBuffer(LinkedBuffer* pPrevBuffer);
   };
   
   LinkedBuffer* _pLinkedBuffer(void* aAddr);

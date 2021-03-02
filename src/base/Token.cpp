@@ -333,7 +333,8 @@ bool Token::bIsLogical(void)
 
   if (bSame("and"_Stz)  ||
       bSame("or"_Stz) ||
-      bSame("not"_Stz))
+      bSame("not"_Stz) ||
+      bSame("xor"_Stz))
     return true;
   else
     return false;
@@ -401,7 +402,8 @@ bool Token::bIsRelational(void)
       bSame(">="_Stz) ||
       bSame("<"_Stz)  ||
       bSame("<="_Stz) ||
-      bSame("=="_Stz))
+      bSame("=="_Stz) ||
+      bSame("!="_Stz))
     return true;
   else
     return false;

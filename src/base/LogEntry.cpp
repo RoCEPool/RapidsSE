@@ -14,6 +14,14 @@
 
 extern AttachMap* gpAttachMap;
 
+static const char* C_LOG_LINE =
+  "-------------------------"
+  "-------------------------"
+  "-------------------------"
+  "-------------------------"
+  "-------------------------"
+  "-------------------------";
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -98,7 +106,7 @@ void LogEntry::vAsTxt(s4K& sString)
                m_xReqTuple.m_sPurpose.szStz(),
                
                spForId.sz(m_iForId),
-               spId.sz(m_eKind,m_iFocalId),
+               spId.sz(m_eKind,m_iObjectId),
                m_iAct,
                C_VARGS_END
                );
@@ -126,7 +134,7 @@ void LogEntry::vAsTxt(s4K& sString)
 //    case LG_TSK: m_xTsk.vToTxt(sInf,this); break;
 //    case LG_THD: m_xThd.vToTxt(sInf,this); break;
 //    case LG_TXN: m_xTxn.vToTxt(sInf,this); break;
-//    default:
+    default:
       NEVER_REACH;
   }
 
@@ -170,7 +178,7 @@ void LogEntry::vInit(eSL eSeverity, eCN eClassNo, Stz* szText)
   
   m_bLine = false;
   m_cPrefix = '?';
-  m_iFocalId = C_UNKNOWN;
+  m_iObjectId = C_UNKNOWN;
   m_iForId = C_UNKNOWN;
   
   m_iIndicator = C_UNKNOWN;
@@ -179,12 +187,11 @@ void LogEntry::vInit(eSL eSeverity, eCN eClassNo, Stz* szText)
 /*----------------------------------------------------------------------------*/
 /* init                                                                       */
 /*----------------------------------------------------------------------------*/
-void LogEntry::vInit(eSL eSeverity, Focal *pFocal, Stz* szText)
+void LogEntry::vInit(eSL eSeverity, Loggable *pFocal, Stz* szText)
 {
   _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
   
-  m_i_Prev = pFocal->m_i_Log;
-  pFocal->m_i_Log = m_i_Entry;
+  m_i_Prev = C_UNKNOWN;
   
   m_iTick = TickingDevice::iGetTick();
   m_iNodeNo = AM::iThisNodeNo();
@@ -193,17 +200,17 @@ void LogEntry::vInit(eSL eSeverity, Focal *pFocal, Stz* szText)
   m_caNote[0] = '\0';
   StrLib::vCopyLen(m_caNote,szText->azChar(),C_MAX_LOG_NOTE - 1);
   
-  m_iAct    = pFocal->iStepNo();
+  m_iAct    = pFocal->iEventNo();
   m_eClass  = pFocal->eGetClassNo();
   m_pFocal  = pFocal;
-  m_i_Focal = pFocal->m_i_Focal;
+  m_i_Focal = C_UNKNOWN;
   
   m_eSeverity = eSeverity;
   
   m_bLine = false;
   m_cPrefix = '?';
-  m_iFocalId = pFocal->m_iFocalId;
-  m_iForId = pFocal->m_iForId;
+  m_iObjectId = pFocal->m_iObjectId;
+  m_iForId = C_UNKNOWN;
   
   m_iIndicator = C_UNKNOWN;
   
@@ -411,7 +418,7 @@ void LogEntry::vWriteTxtEntry(File* pFile)
                m_xReqTuple.m_sPurpose.szStz(),
                
                spForId.sz(m_iForId),
-               spId.sz(m_eKind,m_iFocalId),
+               spId.sz(m_eKind,m_iObjectId),
                m_iAct,
                C_VARGS_END
                );

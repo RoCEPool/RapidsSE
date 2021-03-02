@@ -9,6 +9,8 @@ extern BufferPool* gpBufferPool;
 SubSysFn __BufferPool("BufferPool"_Stz,(fpSELFFN*)BufferPool::vSubSystem,
                       ""_Stz,nullptr);
 
+void* C_ADR_REGION   = (void*)0x204800000000;
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -35,7 +37,7 @@ BufferPool::BufferPool(Stz* aRegionName, i8 iRegionSize,
                        bool bTouch, bool bProgress,
                        bool bDontFree, bool bFreeCB)
 : Object(CN_BUFFERPOOL)
-, m_okLock(LK_BUFFER_POOL,this)
+, m_okLock(this,C_DONT_LOG)
 {
   gpBufferPool = this;
   
@@ -58,6 +60,9 @@ BufferPool::BufferPool(Stz* aRegionName, i8 iRegionSize,
 
   vInitialise(bTouch,bProgress);
   
+  m_pTakenBuffers = nullptr;
+  m_nTakenBytes   = 0;
+
   _checkInitialised_(CN_BUFFERPOOL);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
@@ -83,6 +88,8 @@ BufferPool::~BufferPool(void) noexcept(false)
 void BufferPool::vSubSystem(SelfFn* aSelfFn, TokenVec* pTokenVec)
 {
   _static_
+  
+  RASSERT(aSelfFn);
   
   vTrace("BufferPool::vSubSystem\n"_Stz);
   
@@ -326,7 +333,7 @@ void BufferPool::vFreeHeapBuffer(PoolBuffer* pBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
-  vFree(pBuffer);
+  vPushFreeBuffer(pBuffer);
   
   --m_ixHeapBuffers;
 }
@@ -338,7 +345,7 @@ void BufferPool::vFreeOtherBuffer(PoolBuffer* pBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
-  vFree(pBuffer);
+  vPushFreeBuffer(pBuffer);
   
   --m_ixOtherBuffers;
 }
@@ -378,6 +385,26 @@ i8 BufferPool::iFreeSpace(void)
   i8 iFreeSpace = m_nFreeCount * C_SIZE_POOL_BUFFER;
   
   return iFreeSpace;
+}
+
+/*----------------------------------------------------------------------------*/
+/* give buffers                                                               */
+/*----------------------------------------------------------------------------*/
+void BufferPool::vGiveBuffers(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+  
+  while (m_pTakenBuffers) {
+    
+    PoolBuffer* pBuffer     = m_pTakenBuffers;
+    PoolBuffer* pNextBuffer = *(PoolBuffer**)pBuffer->aEmbeddedBuffer();
+
+    m_pTakenBuffers = pNextBuffer;
+    
+    gpBufferPool->vFreeOtherBuffer(pBuffer);
+  }
+  
+  m_nTakenBytes = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -505,13 +532,12 @@ bool BufferPool::bLowMemory(void)
 void BufferPool::vMonitorPortrait(s48K& sPortrait)
 {
   sPortrait.vSprint("Pool: buffers %lld allocated %lld (heap %lld other %lld) "
-                    "free %lld taken %lld\n"_Stz,
+                    "free %lld \n"_Stz,
                     m_nBuffers,
                     m_nAllocCount,
                       *m_ixHeapBuffers,
                       *m_ixOtherBuffers,
-                    m_nFreeCount,
-                    AM::nTakenBytes()
+                    m_nFreeCount
                     );
 }
 
@@ -561,6 +587,27 @@ Stz* BufferPool::szShmNm(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
   return m_sShmNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* take buffers                                                               */
+/*----------------------------------------------------------------------------*/
+void BufferPool::vTakeBuffers(i8 nSpareBuffers)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+  
+  while (nFreeCount() >= C_LOW_BUFFERS + nSpareBuffers) {
+
+    PoolBuffer* pBufferChain  = m_pTakenBuffers;
+    
+    PoolBuffer* pTakenBuffer  = gpBufferPool->pAllocOtherBuffer();
+    PoolBuffer** ppNextBuffer = (PoolBuffer**)pTakenBuffer->aEmbeddedBuffer();
+    *ppNextBuffer = pBufferChain;
+    
+    m_pTakenBuffers = pTakenBuffer;
+    m_nTakenBytes += C_SIZE_POOL_BUFFER;
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -680,42 +727,6 @@ void BufferPool::vVerifyPool(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* free buffer back into free chain                                           */
-/*----------------------------------------------------------------------------*/
-void BufferPool::vFree(PoolBuffer* pBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
-  
-  FreeBuffer* pFreeBuffer = pToFreeBuffer(pBuffer);
-  
-  m_okLock.vGrabWrite();
-  
-  //vVerifyPool();
-  
-  // test for existing free list
-  if (C_NIL != m_iFreeHead) {
-    ASSERT( m_nFreeCount > 0 );
-  }
-  else {
-    ASSERT( ! m_nFreeCount );
-  }
-  
-  // free buffer by pushing onto free chain
-  pFreeBuffer->vSetClassNo(CN_FREEBUFFER);
-  pFreeBuffer->vNextFree(m_iFreeHead);
-  m_iFreeHead = pBuffer->iBufferNo();
-  
-  // adjust counts
-  m_nFreeCount++;
-  m_nAllocCount--;
-  
-  //vVerifyPool();
-  
-  m_okLock.vDropWrite();
-}
-
-
-/*----------------------------------------------------------------------------*/
 /* pop a free buffer from the free chain                                      */
 /*----------------------------------------------------------------------------*/
 FreeBuffer* BufferPool::pPopFreeBuffer(void)
@@ -768,39 +779,39 @@ void BufferPool::vPrintProgress(void)
 
   vTrace("   Transient SmallHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagSmall.azChar(),
-         AM::pHeapMem()->Transient.m_pSmall->nBufferCount(),
-         AM::pHeapMem()->Transient.m_pSmall->nCurrAllocated(),
-         AM::pHeapMem()->Transient.m_pSmall->nFreeChunks());
+         AM::pHeaps()->Transient.m_pSmall->nBufferCount(),
+         AM::pHeaps()->Transient.m_pSmall->nCurrAllocated(),
+         AM::pHeaps()->Transient.m_pSmall->nFreeChunks());
 
   vTrace("  Transient MediumHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagMedium.azChar(),
-         AM::pHeapMem()->Transient.m_pMedium->nBufferCount(),
-         AM::pHeapMem()->Transient.m_pMedium->nCurrAllocated(),
-         AM::pHeapMem()->Transient.m_pMedium->nFreeChunks());
+         AM::pHeaps()->Transient.m_pMedium->nBufferCount(),
+         AM::pHeaps()->Transient.m_pMedium->nCurrAllocated(),
+         AM::pHeaps()->Transient.m_pMedium->nFreeChunks());
 
   vTrace("   Transient LargeHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagLarge.azChar(),
-         AM::pHeapMem()->Transient.m_pLarge->nBufferCount(),
-         AM::pHeapMem()->Transient.m_pLarge->nCurrAllocated(),
-         AM::pHeapMem()->Transient.m_pLarge->nFreeChunks());
+         AM::pHeaps()->Transient.m_pLarge->nBufferCount(),
+         AM::pHeaps()->Transient.m_pLarge->nCurrAllocated(),
+         AM::pHeaps()->Transient.m_pLarge->nFreeChunks());
 
   vTrace("   Persistent SmallHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagSmall.azChar(),
-         AM::pHeapMem()->Persistent.m_pSmall->nBufferCount(),
-         AM::pHeapMem()->Persistent.m_pSmall->nCurrAllocated(),
-         AM::pHeapMem()->Persistent.m_pSmall->nFreeChunks());
+         AM::pHeaps()->Persistent.m_pSmall->nBufferCount(),
+         AM::pHeaps()->Persistent.m_pSmall->nCurrAllocated(),
+         AM::pHeaps()->Persistent.m_pSmall->nFreeChunks());
 
   vTrace("  Persistent MediumHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagMedium.azChar(),
-         AM::pHeapMem()->Persistent.m_pMedium->nBufferCount(),
-         AM::pHeapMem()->Persistent.m_pMedium->nCurrAllocated(),
-         AM::pHeapMem()->Persistent.m_pMedium->nFreeChunks());
+         AM::pHeaps()->Persistent.m_pMedium->nBufferCount(),
+         AM::pHeaps()->Persistent.m_pMedium->nCurrAllocated(),
+         AM::pHeaps()->Persistent.m_pMedium->nFreeChunks());
 
   vTrace("   Persistent LargeHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagLarge.azChar(),
-         AM::pHeapMem()->Persistent.m_pLarge->nBufferCount(),
-         AM::pHeapMem()->Persistent.m_pLarge->nCurrAllocated(),
-         AM::pHeapMem()->Persistent.m_pLarge->nFreeChunks());
+         AM::pHeaps()->Persistent.m_pLarge->nBufferCount(),
+         AM::pHeaps()->Persistent.m_pLarge->nCurrAllocated(),
+         AM::pHeaps()->Persistent.m_pLarge->nFreeChunks());
 
   //vVerifyPool();
   
@@ -818,6 +829,40 @@ void BufferPool::vPrintProgress(void)
   m_okLock.vDropWrite();
 }
 
+/*----------------------------------------------------------------------------*/
+/* free buffer back into free chain                                           */
+/*----------------------------------------------------------------------------*/
+void BufferPool::vPushFreeBuffer(PoolBuffer* pBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+  
+  FreeBuffer* pFreeBuffer = pToFreeBuffer(pBuffer);
+  
+  m_okLock.vGrabWrite();
+  
+  //vVerifyPool();
+  
+  // test for existing free list
+  if (C_NIL != m_iFreeHead) {
+    ASSERT( m_nFreeCount > 0 );
+  }
+  else {
+    ASSERT( ! m_nFreeCount );
+  }
+  
+  // free buffer by pushing onto free chain
+  pFreeBuffer->vSetClassNo(CN_FREEBUFFER);
+  pFreeBuffer->vNextFree(m_iFreeHead);
+  m_iFreeHead = pBuffer->iBufferNo();
+  
+  // adjust counts
+  m_nFreeCount++;
+  m_nAllocCount--;
+  
+  //vVerifyPool();
+  
+  m_okLock.vDropWrite();
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

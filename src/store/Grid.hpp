@@ -24,6 +24,8 @@ namespace STORE
     i8     m_nDefinedNodes;    // number of nodes in the nodes array
     i8     m_nConnectedNodes;  // number of connected nodes in the grid
     i8     m_nNodes;           // number of nodes in array
+
+    // NOTE: This array might have to be atomic
     Node*  m_pNodes[C_MAX_NODES]; // array of nodes
   
     // must be last
@@ -39,7 +41,7 @@ namespace STORE
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
     Article* pArticle(void);
-    void vAddNode(Stz* pszName, Stz* pszAddr, i8 iPort);
+    void vAddNode(i8 iNodeNo, Stz* pszName, Stz* pszAddr, i8 iPort);
     i8   nBootNodes(void);
     i8   nDefinedNodes(void);
     i8   nConnectedNodes(void);
@@ -48,6 +50,7 @@ namespace STORE
     void vHasStarted(bool bHasStarted);
     bool bHasStarted(void);
     Node* pFindNode(Stz* pName);
+    Node* pFindNodeByNodeNo(i8 iNodeNo);
     Node* pGetNode(i8 i_Node);
     void vIncBootNodes(void);
     void vIncDefinedNodes(void);
@@ -55,6 +58,8 @@ namespace STORE
     void vDecConnectedNodes(void);
     void vDecDefinedNodes(void);
     void vDecBootNodes(void);
+    void vIncNodes(void);
+    void vDecNodes(void);
     i8   nNodes(void);
     void vPutNode(Node* pNode);
     void vRemoveNode(Node* pNode);

@@ -6,7 +6,7 @@
 #include "Step.hpp"
 #include "EnterExit.h"
 #include "StepAccum.hpp"
-#include "StepTiming.hpp"
+#include "Steps.hpp"
 
 #include "ePX.h"
 
@@ -31,6 +31,8 @@ void Step::vAddSteps_Op(void)
   vAddStep("Op.nextOp!"_Stz,          &Step::vOpNextOpStore);
   vAddStep("Op.nextStage!"_Stz,       &Step::vOpNextStageStore);
   vAddStep("Op.opName@"_Stz,          &Step::vOpOpNameFetch);
+  vAddStep("Op.otherStage!"_Stz,      &Step::vOpOtherStageStore);
+  vAddStep("Op.otherOp!"_Stz,         &Step::vOpOtherOpStore);
   vAddStep("Op.outboundOperand@"_Stz, &Step::vOpOutboundOperandFetch);
   vAddStep("Op.outboundOperand!"_Stz, &Step::vOpOutboundOperandStore);
   vAddStep("Op.partition@"_Stz,       &Step::vOpPartitionFetch);
@@ -74,22 +76,23 @@ void Step::vOpDownstreamOpStore(void)
 void Step::vOpFindOp(void)
 {
   ENTRY();
-    
-  s32 sOpName;
-  m_pDataStack->vPopStr(sOpName,__func__);
-  
-  Op* pDownstreamOp = nullptr;
-  
-  Op* pOp = m_pJob->m_pOp;
-  
-  for (Op* pScanOp = pOp->pNextOp(); pScanOp; pScanOp = pScanOp->pNextOp()) {
-    if (pScanOp->szOpNm()->bSame(sOpName)) {
-      pDownstreamOp = pScanOp;
-      break;
-    }
-  }
 
-  m_pDataStack->vPushPtr(pDownstreamOp);
+  RASSERT(0);
+//  s32 sOpName;
+//  m_pDataStack->vPopStr(sOpName,__func__);
+//
+//  Op* pDownstreamOp = nullptr;
+//
+//  Op* pOp = m_pJob->m_pOp;
+//
+//  for (Op* pScanOp = pOp->pNextOp(); pScanOp; pScanOp = pScanOp->pNextOp()) {
+//    if (pScanOp->szOpNm()->bSame(sOpName)) {
+//      pDownstreamOp = pScanOp;
+//      break;
+//    }
+//  }
+//
+//  m_pDataStack->vPushPtr(pDownstreamOp);
 
   EXIT();
 }
@@ -130,6 +133,30 @@ void Step::vOpOpNameFetch(void)
   
   m_pDataStack->vPushStr(sOpName);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Op.otherOp! -- store other op in the operator                              */
+/*----------------------------------------------------------------------------*/
+void Step::vOpOtherOpStore(void)
+{
+  ENTRY();
+
+  m_pJob->m_pOp->vOtherOp(m_pDataStack->iPopInt(__func__));
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Op.otherStage! -- store next stage in the operator                         */
+/*----------------------------------------------------------------------------*/
+void Step::vOpOtherStageStore(void)
+{
+  ENTRY();
+
+  m_pJob->m_pOp->vOtherStage(m_pDataStack->iPopInt(__func__));
+
   EXIT();
 }
 

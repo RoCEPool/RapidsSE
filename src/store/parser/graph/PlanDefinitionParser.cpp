@@ -12,6 +12,8 @@
 #include "GraphNav.hpp"
 #include "GraphValidator.hpp"
 
+#include "PlannerLock.hpp"
+
 using namespace Parser;
 
 /*----------------------------------------------------------------------------*/
@@ -34,7 +36,7 @@ Stz* PlanDefinitionParser::s_definitionPaths[] = {
 
 PlanNode* PlanDefinitionParser::s_pGraphTemplate = nullptr;
 
-Lock PlanDefinitionParser::s_okLock(eLK::LK_PLAN_DEF_PARSER, nullptr);
+PlannerLock PlanDefinitionParser::s_okLock;
 
 
 /*----------------------------------------------------------------------------*/
@@ -289,7 +291,7 @@ antlrcpp::Any PlanDefinitionParser::visitPair(json5Parser::PairContext *ctx)
 
 antlrcpp::Any PlanDefinitionParser::visitArr(json5Parser::ArrContext *ctx)
 {
-  PlanNodeBuilderList* pBuilderList = new PlanNodeBuilderList();
+  PlanNodeBuilderList* pBuilderList = new PlanNodeBuilderList;
 
   std::vector<json5Parser::ValueContext*> values = ctx->value();
   std::vector<json5Parser::ValueContext*>::iterator iterator;

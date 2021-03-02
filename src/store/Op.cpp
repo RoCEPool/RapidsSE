@@ -17,6 +17,7 @@
 #include "Pipeline.hpp"
 #include "StageSpec.hpp"
 #include "MY.hpp"
+#include "XmitOperand.hpp"
 
 #include "eTS.h"
 #include "TagConstants.h"
@@ -36,8 +37,7 @@ __aFooterFunction(Op);
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Op::Op(OpSpec* pOpSpec, Stream* pStream)
-: Focal(CN_OP,AM::iNextOpId()
-, AM::iJobUniqueId(pStream->pPipeline()->pPipelineJob()))
+: Loggable(CN_OP)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -89,11 +89,13 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   m_pQueueLeft    = new OperandQueue;
   m_pQueueRight   = new OperandQueue;
 
-  m_eCrossTopo = PX_NONE;
-  m_iNextStage = C_UNKNOWN;
-  m_iNextOp    = C_UNKNOWN;
-  m_iXmitNode  = C_UNKNOWN;
-  m_iRobin     = 0;
+  m_eCrossTopo  = PX_NONE;
+  m_iNextStage  = C_UNKNOWN;
+  m_iNextOp     = C_UNKNOWN;
+  m_iOtherStage = C_UNKNOWN;
+  m_iOtherOp    = C_UNKNOWN;
+  m_iXmitNode   = C_UNKNOWN;
+  m_iRobin      = 0;
   m_iLocalRobin = 0;
   
   m_pDownstreamOp = nullptr;
@@ -257,7 +259,7 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask, bool bSet)
     while (pOperand) {
       pQueueLeft()->vAppendOperand(pOperand);
       DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
-      pOperand = pDataBuffer->pNextBuffer();
+      pOperand = pDataBuffer->pNextLinkedBuffer();
     }
   }
   else
@@ -296,7 +298,7 @@ void Op::vAppendRight(Operand* pOperand, Task* pTriggeringTask, bool bSet)
     while (pOperand) {
       pQueueRight()->vAppendOperand(pOperand);
       DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
-      pOperand = pDataBuffer->pNextBuffer();
+      pOperand = pDataBuffer->pNextLinkedBuffer();
     }
   }
   pQueueRight()->vAppendOperand(pOperand);
@@ -428,7 +430,7 @@ void Op::vInitOperandHandlers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
-  Dic* pRootDic = AM::pRootDic();
+  Dic* pDicRoot = AM::pDicRoot();
   
   s32 sHandlerNm;
   
@@ -439,7 +441,7 @@ void Op::vInitOperandHandlers(void)
     
     //vTrace("Handler: %s\n"_Stz,sHandlerNm.szStz());
     
-    Word* pHandler = pRootDic->pFindWord(sHandlerNm);
+    Word* pHandler = pDicRoot->pFindWord(sHandlerNm);
     if (! pHandler)
       vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
              "Unable to find operand handler for: %s"_Stz,
@@ -856,6 +858,63 @@ TagSet* Op::pOpTagSet(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   return &m_oOpTagSet;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next op                                                                */
+/*----------------------------------------------------------------------------*/
+i8 Op::iOtherOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+  return m_iOtherOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get other op (in stage)                                                    */
+/*----------------------------------------------------------------------------*/
+Op* Op::pOtherOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+  if (m_iOtherStage != m_pStage->pStageSpec()->i_StageSpec())
+    return nullptr;
+
+  Stage* pStage = m_pPipeline->pGet(m_iOtherStage);
+
+  Op* pNextOp = pStage->pGet(m_iOtherStage)->pGet(m_iOtherOp);
+
+  return pNextOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set other op                                                               */
+/*----------------------------------------------------------------------------*/
+void Op::vOtherOp(i8 iOtherOp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+  m_iOtherOp = iOtherOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get other stage                                                            */
+/*----------------------------------------------------------------------------*/
+i8 Op::iOtherStage(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+  return m_iOtherStage;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set other stage                                                            */
+/*----------------------------------------------------------------------------*/
+void Op::vOtherStage(i8 iOtherStage)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+  m_iOtherStage = iOtherStage;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1395,6 +1454,7 @@ void Op::vSendXmitOperand(Operand* pOperand, Task* pTriggeringTask, bool bSet)
     
   // delete the operand
   //AM::vDeleteOperand(pOperand);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1483,6 +1543,16 @@ Stage* Op::pStage(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   return m_pStage;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stream                                                                 */
+/*----------------------------------------------------------------------------*/
+Stream* Op::pStream(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  return m_pStream;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1591,22 +1661,41 @@ void Op::vSend(Operand* pOperand, bool bSet, i8 i_Node, tPN tPtnNo)
   XmitOperand* pXmitOperand;
   
   // new an xmit operand
-  pXmitOperand = AM::pNewXmitOperand(m_pPipelineJob, pOperand, this, i_Node, tPtnNo);
-  
+  pXmitOperand = AM::pNewXmitOperand(m_pPipelineJob, pOperand, m_eCrossTopo, m_iNextStage, m_iNextOp, i_Node, tPtnNo);
+
+  vSend(pOperand, pXmitOperand, bSet);
+
+  if (m_iOtherStage != C_UNKNOWN) {
+
+    // new an xmit operand
+    pXmitOperand = AM::pNewXmitOperand(m_pPipelineJob, pOperand, m_eCrossTopo, m_iOtherStage, m_iOtherOp, i_Node, tPtnNo);
+
+    vSend(pOperand, pXmitOperand, bSet);
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* send the operand                                                           */
+/*----------------------------------------------------------------------------*/
+void Op::vSend(Operand* pOperand, XmitOperand* pXmitOperand, bool bSet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
   // get the send node in the task
-  Node* pSendNode = AM::pGrid()->pGetNode(i_Node);
-  
+  Node* pSendNode = AM::pGrid()->pGetNode(pXmitOperand->m_i_Node);
+
   if (bSet) {
-    
+
     while (pOperand) {
-      
+
       // set the operand in the job
       AM::vSetOperand(pXmitOperand, pOperand);
-      
+
       // send the operand job across the sendNode
       AM::vSend(AM::pExecutingTask(m_pOpJob), pSendNode, pXmitOperand);
       DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
-      pOperand = pDataBuffer->pNextBuffer();
+      pOperand = pDataBuffer->pNextLinkedBuffer();
     }
   }
   else {

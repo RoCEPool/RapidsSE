@@ -92,7 +92,7 @@ void PersistenceHelper::vWriteHeap(Heap* pHeap, File* pFile)
 /*----------------------------------------------------------------------------*/
 /* write all the heaps to given file                                          */
 /*----------------------------------------------------------------------------*/
-void PersistenceHelper::vWritePersistentHeapMem(Stz* sFilePath)
+void PersistenceHelper::vWritePersistentHeaps(Stz* sFilePath)
 {
   _static_
 
@@ -100,16 +100,16 @@ void PersistenceHelper::vWritePersistentHeapMem(Stz* sFilePath)
   pFile->bOpenWrite(sFilePath);
   
   vTrace("Writing persistent tiny heap\n"_Stz);
-  vWriteHeap(AM::pHeapMem()->Persistent.m_pTiny,pFile);
+  vWriteHeap(AM::pHeaps()->Persistent.m_pTiny,pFile);
   
   vTrace("Writing persistent small heap\n"_Stz);
-  vWriteHeap(AM::pHeapMem()->Persistent.m_pSmall,pFile);
+  vWriteHeap(AM::pHeaps()->Persistent.m_pSmall,pFile);
   
   vTrace("Writing persistent medium heap\n"_Stz);
-  vWriteHeap(AM::pHeapMem()->Persistent.m_pMedium,pFile);
+  vWriteHeap(AM::pHeaps()->Persistent.m_pMedium,pFile);
   
   vTrace("Writing persistent large heap\n"_Stz);
-  vWriteHeap(AM::pHeapMem()->Persistent.m_pLarge,pFile);
+  vWriteHeap(AM::pHeaps()->Persistent.m_pLarge,pFile);
 
   pFile->vClose();
   delete pFile;

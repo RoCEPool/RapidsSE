@@ -3,18 +3,17 @@
 /*============================================================================*/
 #pragma once
 
-#include "eLK.h"
+#include "eLS.h"
 
 namespace BASE
 {
   const u8 C_WRITELOCK = 0x8000000000000000;
     
-  class Lock : public Focal
+  class Lock : public Loggable
   {
   private:
-    eLK      m_eLockKind;         // lock kind
-    Object*  m_pFor;
-    bool     m_bFocal;            // is a lock for a focal object
+    //eCN      m_eClassLocked;      // lock kind
+    Object*  m_pObjectLocked;
   
     u8       m_uLockWord;         // lock word
   
@@ -23,6 +22,8 @@ namespace BASE
     
     Atomic   m_ixWriteGrabs;      // number of write grabs
     Atomic   m_ixWriteCollisions; // number of write collisions
+  
+    PadWord  m__PadToCacheLine[2];
     
     // must be last
     Footer m_xFooter;
@@ -31,7 +32,7 @@ namespace BASE
     void* operator new(size_t, Lock* pLock);
     void  operator delete(void* pLockAddress);
     
-    Lock(eLK eLockKind, Object* pFor);
+    Lock(Object* pObjectLocked, bool bDontLog=false);
    ~Lock(void) noexcept(false);
   
   private:
@@ -46,7 +47,7 @@ namespace BASE
   
     bool bIsLocked(void);
     i8   iLockId(void);
-    eLK  eLockKind(void);
+    eCN  eClassLocked(void);
     u8   uLockWord(void);
   
     void vAssertRead(void);
@@ -65,6 +66,7 @@ namespace BASE
     i8   iWriteCollisions(void);
     
   private:
+    void vLockTrace(eLS eLockStyle);
     Footer* aFooter(void);
   };
   

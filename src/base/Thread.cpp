@@ -31,7 +31,7 @@ Thread* BASE::_pThread(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Thread::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_THREAD);
+  void* pObject = Heaps::pAllocate(CN_THREAD);
   
   return pObject;
 }
@@ -51,15 +51,15 @@ void Thread::operator delete(void* aAddr)
 {
   Object* pObject = reinterpret_cast<Object*>(aAddr);
   
-  HeapMem::vFree(pObject);
+  Heaps::vFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Thread::Thread(void)
-: Focal(CN_THREAD,AM::iNextThreadId(),C_UNKNOWN),
-  m_oMutex(MK_THREAD,this)
+: Loggable(CN_THREAD)
+, m_oMutex(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
@@ -73,7 +73,7 @@ Thread::Thread(void)
   
   _checkInitialised_(CN_THREAD);
   
-  vIncStepNo(); ++ gixThread;
+  vEventNoInc(); ++ gixThread;
   AM::vLogThd(SL_INF,this,HA_THD_CONSTRUCT,
               "Thread construct : %p (%lld threads exist)"_Stz, //!format-LogThd
               this,* gixThread);
@@ -90,7 +90,7 @@ Thread::~Thread(void) noexcept(false)
   
   delete m_pPsxThd;
   
-  vIncStepNo(); -- gixThread;
+  vEventNoInc(); -- gixThread;
   AM::vLogThd(SL_INF,this,HA_THD_DESTRUCT,
               "Thread destruct : %p (%lld threads exist)"_Stz, //!format-LogThd
               this,* gixThread);
@@ -119,7 +119,7 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
       vTrace("Thread::aEntryPoint_dedicated %p %lld\n"_Stz,
              pThread,pThread->iThreadNo());
     
-    pThread->m_pPsxThd->vIncStepNo();
+    pThread->m_pPsxThd->vEventNoInc();
     AM::vLogRes(SL_INF,pThread->m_pPsxThd,RA_THD_ENTRY,
                 "dedicated thead entry: %p"_Stz, //!format-LogRes
                 pThread);
@@ -136,7 +136,7 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
       vTrace("Thread::aEntryPoint %p %lld exiting\n"_Stz,
              pThread,pThread->iThreadNo());
     
-    pThread->m_pPsxThd->vIncStepNo();
+    pThread->m_pPsxThd->vEventNoInc();
     AM::vLogRes(SL_INF,pThread->m_pPsxThd,RA_THD_EXIT,
                 "Thead exit (dedicated) : %p"_Stz, //!format-LogRes
                 pThread);
@@ -184,7 +184,7 @@ void* Thread::aEntryPoint_general(void* pArg)
       vTrace("    Thread::aEntryPoint_general %p %lld\n"_Stz,
              pThread,pThread->iThreadNo());
     
-    pThread->m_pPsxThd->vIncStepNo();
+    pThread->m_pPsxThd->vEventNoInc();
     AM::vLogRes(SL_INF,pThread->m_pPsxThd,RA_THD_ENTRY,
                 "general thead entry: %p"_Stz, //!format-LogRes
                 pThread);
@@ -201,7 +201,7 @@ void* Thread::aEntryPoint_general(void* pArg)
       vTrace("Thread::aEntryPoint %p %lld exiting\n"_Stz,
              pThread,pThread->iThreadNo());
     
-    pThread->m_pPsxThd->vIncStepNo();
+    pThread->m_pPsxThd->vEventNoInc();
     AM::vLogRes(SL_INF,pThread->m_pPsxThd,RA_THD_EXIT,
                 "Thead exit (general) : %p"_Stz, //!format-LogRes
                 pThread);
@@ -519,7 +519,7 @@ i8 Thread::iThreadNo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
  
-  return BitLib::uMaskOffUpper16(m_iFocalId);
+  return BitLib::uMaskOffUpper16(m_iObjectId);
 }
 
 /*----------------------------------------------------------------------------*/

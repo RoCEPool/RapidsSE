@@ -417,10 +417,10 @@ bool EntBuffer::bVerifyBufferRefs(void)
       return false;
     }
     
-    if (pChildEntBuf->pHigherBuffer() != this) {
+    if (pChildEntBuf->pHigherEntBuffer() != this) {
       vTrace("Buffer %lld -> ChildBuffer %lld with HighBuffer %lld\n"_Stz,
              this->iBufferNo(),
-             pChildEntBuf->iBufferNo(),pChildEntBuf->pHigherBuffer()->iBufferNo());
+             pChildEntBuf->iBufferNo(),pChildEntBuf->pHigherEntBuffer()->iBufferNo());
       vVerifyFault(__func__,__FILE__,__LINE__);
       return false;
     }
@@ -584,14 +584,14 @@ bool EntBuffer::bVerifyKeyBufferOrder(void)
     EntBuffer* pChildBufferB = EntBuffer::pRefdEntBuffer(aNextEntry);
     
     // child A should point to child B
-    if (pChildBufferA->pNextBuffer() != pChildBufferB) {
+    if (pChildBufferA->pNextEntBuffer() != pChildBufferB) {
       //vDump();
       
       vTrace("Buffer %lld -> ChildBufferA %lld -/-> ChildBufferB %lld; ChildBufferA -> %lld\n"_Stz,
              this->iBufferNo(),
              pChildBufferA->iBufferNo(),
              pChildBufferB->iBufferNo(),
-             pChildBufferA->pNextBuffer()->iBufferNo()
+             pChildBufferA->pNextEntBuffer()->iBufferNo()
              );
 
       
@@ -602,7 +602,7 @@ bool EntBuffer::bVerifyKeyBufferOrder(void)
     }
     
     // child B should point to child A
-    if (pChildBufferB->pPrevBuffer() != pChildBufferA) {
+    if (pChildBufferB->pPrevEntBuffer() != pChildBufferA) {
       vShow(true,aEnt);
       vVerifyFault(__func__,__FILE__,__LINE__);
       return false;
@@ -677,9 +677,9 @@ bool EntBuffer::bVerifyNextPrev(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (m_pPrevBuffer) {
-    EntBuffer* pPrevBuffer = _pEntBuffer(m_pPrevBuffer);
-    if (pPrevBuffer->pNextBuffer() != this) {
+  if (pPrevEntBuffer()) {
+    EntBuffer* pPrevBuffer = _pEntBuffer(this->pPrevEntBuffer());
+    if (pPrevBuffer->pNextEntBuffer() != this) {
       vVerifyFault(__func__,__FILE__,__LINE__);
       return false;
     }
@@ -691,9 +691,9 @@ bool EntBuffer::bVerifyNextPrev(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (m_pNextBuffer) {
-    EntBuffer* pNextBuffer = _pEntBuffer(m_pNextBuffer);
-    if (pNextBuffer->pPrevBuffer() != this) {
+  if (pNextEntBuffer()) {
+    EntBuffer* pNextBuffer = _pEntBuffer(this->pNextEntBuffer());
+    if (pNextBuffer->pPrevEntBuffer() != this) {
       vVerifyFault(__func__,__FILE__,__LINE__);
       return false;
     }
@@ -705,8 +705,8 @@ bool EntBuffer::bVerifyNextPrev(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (m_pHigherBuffer) {
-    EntBuffer* pHigherBuffer = _pEntBuffer(m_pHigherBuffer);
+  if (pHigherEntBuffer()) {
+    EntBuffer* pHigherBuffer = _pEntBuffer(this->pHigherEntBuffer());
     if (pHigherBuffer->iBufferHeight() != m_iBufferHeight + 1) {
       vVerifyFault(__func__,__FILE__,__LINE__);
       return false;

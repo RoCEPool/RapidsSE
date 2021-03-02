@@ -66,7 +66,7 @@ namespace STORE
     static void vUnlinkSystem(void);
     static void vWaitStop(void);
     static void vWriteRegionName(void);
-  
+    static i8 iHashIndex(const byte* str, unsigned int length);
   };
 }
 

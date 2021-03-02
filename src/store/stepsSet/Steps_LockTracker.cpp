@@ -1,27 +1,27 @@
 /*============================================================================*/
-/* Steps_LockTracker.cpp - lock tracker step group                            */
+/* Steps_Locks.cpp - lock tracker step group                            */
 /*============================================================================*/
 
 #include "BASE.h"
 #include "Step.hpp"
 #include "EnterExit.h"
 #include "StepAccum.hpp"
-#include "StepTiming.hpp"
+#include "Steps.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_LockTracker(void)
+void Step::vAddSteps_Locks(void)
 {
-  vAddStep("lockTracker::list"_Stz,  &Step::vLockTrackerList);
-  vAddStep("lockTracker::reset"_Stz, &Step::vLockTrackerReset);
+  vAddStep("lockTracker::list"_Stz,  &Step::vLocksList);
+  vAddStep("lockTracker::reset"_Stz, &Step::vLocksReset);
 }
 
 /*----------------------------------------------------------------------------*/
 /* lockTracker::list -- list lock stats                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vLockTrackerList(void)
+void Step::vLocksList(void)
 {
   ENTRY();
 
@@ -32,11 +32,11 @@ void Step::vLockTrackerList(void)
 /*----------------------------------------------------------------------------*/
 /* lockTracker::reset -- reset locks                                          */
 /*----------------------------------------------------------------------------*/
-void Step::vLockTrackerReset(void)
+void Step::vLocksReset(void)
 {
   ENTRY();
   
-  AM::pLockTracker()->vReset();
+  AM::pLocks()->vReset();
   
   EXIT();
 }

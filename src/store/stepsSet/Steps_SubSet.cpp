@@ -6,7 +6,7 @@
 #include "Step.hpp"
 #include "EnterExit.h"
 #include "StepAccum.hpp"
-#include "StepTiming.hpp"
+#include "Steps.hpp"
 
 #include "RowCoder.hpp"
 #include "HeadLine.hpp"
@@ -74,7 +74,7 @@ void Step::vSubsetNextBuffer(void)
   if (*( m_pJob->pLogicUnit_job() )->m_xpSubset) {
     if (( m_pJob->pLogicUnit_job() )->m_xpSubset->eGetClassNo() == CN_CRWBUFFER) {
       CrwBuffer* pCrwBuffer = _pCrwBuffer(*( m_pJob->pLogicUnit_job() )->m_xpSubset);
-      pNextOperand = pCrwBuffer->pNextBuffer();
+      pNextOperand = pCrwBuffer->pNextLinkedBuffer();
       //( m_pJob->pLogicUnit_job() )->m_xpSubset = pNextOperand;
     }
     else

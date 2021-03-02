@@ -5,6 +5,17 @@
 " OP_sink.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_Xyz ...                                                     */
+/*----------------------------------------------------------------------------*/
+: sink_Xyz \handler
+
+  // delete all operands
+  PipeIn[].delete
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_CANCELMARKER ...                                            */
 /*----------------------------------------------------------------------------*/
 : sink_CancelMarker \handler
@@ -46,6 +57,9 @@
   //  grid::thisNodeName@ "(%v) sinkOP ignoring error marker" .printf
   then
 
+  find: sink_Xyz  ZK_STARTMARKER op[].handler!
+  find: sink_Xyz  ZK_DATAPULSE op[].handler!
+
   true
 ;
 
@@ -82,17 +96,6 @@
   PipeIn[].delete
   Operand[].newStartedMarker
   Operand[].pipeOut
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for ZK_Xyz ...                                                     */
-/*----------------------------------------------------------------------------*/
-: sink_Xyz \handler
-
-  // delete all operands
-  PipeIn[].delete
 
   true
 ;

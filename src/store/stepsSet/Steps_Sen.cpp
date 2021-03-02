@@ -6,7 +6,7 @@
 #include "Step.hpp"
 #include "EnterExit.h"
 #include "StepAccum.hpp"
-#include "StepTiming.hpp"
+#include "Steps.hpp"
 
 
 extern Stz* gszaMungedText[];
@@ -60,7 +60,7 @@ void Step::vSenColon(void)
   if (m_oDicStack.iCount())
     pDic = m_oDicStack.pTop();
   else
-    pDic = AM::pRootDic();
+    pDic = AM::pDicRoot();
   
   Word* pFoundWord = pDic->pFindWord(sWordNm);
   if (pFoundWord) {
@@ -104,7 +104,7 @@ void Step::vSenCreateFromInRoot(void)
   s32 sName;
   m_pDataStack->vPopStr(sName,__func__);
   
-  Dic* pDic = AM::pRootDic();
+  Dic* pDic = AM::pDicRoot();
   
   //vTrace(": %s\n"_Stz,sName.azChar());
   Word* pNewWord = new(pDic) Word(sName);
@@ -731,10 +731,10 @@ void Step::vSenSeriesName(void)
   
   i8 iNext = 0;
   
-  Dic* pRootDic = AM::pRootDic();
+  Dic* pDicRoot = AM::pDicRoot();
   
   Word* pWord = nullptr;
-  while ( (pWord = pRootDic->pEachWord(pWord)) ) {
+  while ( (pWord = pDicRoot->pEachWord(pWord)) ) {
 
     s32 sStr;
     s32 sInt;

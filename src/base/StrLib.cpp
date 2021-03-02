@@ -272,7 +272,7 @@ Stz* StrLib::szCharToStr(char cArg)
   
 
   if (cArg <= 0x7f)
-    return szaAscii[cArg];
+    return szaAscii[(i8)cArg];
   else
     return ">7f"_Stz;
 }

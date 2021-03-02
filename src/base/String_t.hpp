@@ -13,8 +13,9 @@ namespace BASE
   private:
     i8   m_nArea;            // byte length of char area/array
     i8   m__reserved__;      // reserved for size
+    i8   m__reserved2__;     // reserved
     char m_caCharArea[AREA]; // area to hold chars
-    
+
     // must be last
     Footer m_xFooter;
     
@@ -84,6 +85,7 @@ String_t<AREA>::String_t(void)
   
   m_nArea = AREA;
   m__reserved__ = C_UNKNOWN;
+  m__reserved2__ = C_UNKNOWN;
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_caCharArea,AREA,CN_STRING_T);
 #else
@@ -104,6 +106,7 @@ String_t<AREA>::String_t(Stz* szArg)
   
   m_nArea = AREA;
   m__reserved__ = C_UNKNOWN;
+  m__reserved2__ = C_UNKNOWN;
 
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_caCharArea,AREA,CN_STRING_T);

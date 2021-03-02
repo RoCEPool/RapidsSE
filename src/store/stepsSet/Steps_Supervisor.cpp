@@ -6,7 +6,7 @@
 #include "Step.hpp"
 #include "EnterExit.h"
 #include "StepAccum.hpp"
-#include "StepTiming.hpp"
+#include "Steps.hpp"
 
 #include "Response.hpp"
 #include "Result.hpp"
@@ -51,17 +51,17 @@ void Step::vSupervisorCollectInfo(void)
    
   Heartbeat xHeartbeat;
 
-  memset((char *) &xHeartbeat, 0x00, sizeof(Heartbeat));
+  MemLib::vZero(&xHeartbeat,sizeof(xHeartbeat),CN_NODE);
 
   xHeartbeat.m_u2Version = 1; // hardcode here but it should be defined somewhere
   xHeartbeat.m_iSeqNo = ++iSeq;
   xHeartbeat.m_iSincePosixEpoch = time(0);
-  strncpy(xHeartbeat.m_acBuildGitHash, (char *) gsBuildGitHash, 32);
+  strncpy(xHeartbeat.m_acBuildGitHash, (char *) gsBuildGitHash, sizeof(xHeartbeat.m_acBuildGitHash));
   xHeartbeat.m_iPid = Process::iGetPid();
 
   // Add node name to the packet
+  MemLib::vZero(xHeartbeat.m_acNodeName,sizeof(xHeartbeat.m_acNodeName),CN_NONE);
   strncpy(xHeartbeat.m_acNodeName, gxCmdLineArgs.m_xSysArgs.m_sNodeName.azChar(), sizeof(xHeartbeat.m_acNodeName) - 1);
-  xHeartbeat.m_acNodeName[sizeof(xHeartbeat.m_acNodeName) - 1] = 0;
 
   xHeartbeat.xBaseHeartbeat.m_iSystemUsec = AM::iSystemUsec();
   xHeartbeat.xBaseHeartbeat.m_iUserUsec = AM::iUserUsec();
@@ -87,6 +87,7 @@ void Step::vSupervisorCollectInfo(void)
       + sizeof(xHeartbeat.m_iSincePosixEpoch)
       + sizeof(xHeartbeat.m_acBuildGitHash)
       + sizeof(xHeartbeat.m_iPid)
+      + sizeof(xHeartbeat.m_iNodeNo)
       + sizeof(xHeartbeat.m_acAddr)
       + sizeof(xHeartbeat.m_iPort)
       + sizeof(xHeartbeat.xStoreHeartbeat)
@@ -104,6 +105,8 @@ void Step::vSupervisorCollectInfo(void)
     }
 
     // Adding Address and Port
+    //
+    xHeartbeat.m_iNodeNo = AM::pGrid()->iThisNode();
     strncpy(xHeartbeat.m_acAddr, pNode->szIPAddr()->azChar(), sizeof(xHeartbeat.m_acAddr) - 1);
     xHeartbeat.m_acAddr[sizeof(xHeartbeat.m_acAddr) - 1] = 0;
     xHeartbeat.m_iPort = pNode->iPortNo();

@@ -6,7 +6,7 @@
 #include "Step.hpp"
 #include "EnterExit.h"
 #include "StepAccum.hpp"
-#include "StepTiming.hpp"
+#include "Steps.hpp"
 
 #include "ePX.h"
 
@@ -247,7 +247,7 @@ void Step::vIndexDeleteNext(void)
         
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // move to next buffer
-        pEntBuffer = pEntBuffer->pNextBuffer();
+        pEntBuffer = pEntBuffer->pNextEntBuffer();
         
         // next buffer ?
         if ( pEntBuffer )

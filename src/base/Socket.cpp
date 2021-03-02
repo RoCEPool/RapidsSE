@@ -5,7 +5,7 @@
 #include "BASE.h"
 
 #include "Socket.hpp"
-#include "ResourceTracker.hpp"
+#include "Resources.hpp"
 
 //#include <pcap/pcap.h>
 #include <arpa/inet.h>
@@ -34,7 +34,7 @@ Socket* BASE::_pSocket(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Socket::operator new(size_t)
 {
-  void* pSocket = HeapMem::pAllocate(CN_SOCKET);
+  void* pSocket = Heaps::pAllocate(CN_SOCKET);
   
   return pSocket;
 }
@@ -59,7 +59,7 @@ void Socket::operator delete(void*)
 /*----------------------------------------------------------------------------*/
 Socket::Socket(Object* pIsFor)
 : Resource(CN_SOCKET)
-, m_okLock(LK_SOCKET,this)
+, m_okLock(this)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
@@ -88,7 +88,7 @@ Socket::Socket(Object* pIsFor)
 /*----------------------------------------------------------------------------*/
 Socket::Socket(Object* pIsFor, int iSocketId)
 : Resource(CN_SOCKET)
-, m_okLock(LK_SOCKET,this)
+, m_okLock(this)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
@@ -306,7 +306,7 @@ bool Socket::bAcceptClient(int& iSocketId, SysCall& SysCall)
     return false;
   }
   
-  if (AM::bAttached()) AM::pResourceTracker()->vIncSocketOpen();
+  if (AM::bAttached()) AM::pResources()->vIncSocketOpen();
   
   AM::vLogRes(SL_INF,this,RA_SKT_ACCEPTED,
               "this server has accepted new client"_Stz); //!format-LogRes
@@ -343,7 +343,7 @@ bool Socket::bClose(SysCall& SysCall)
   
   m_iSocketFd = C_UNKNOWN;
   
-  if (AM::bAttached()) AM::pResourceTracker()->vDecSocketOpen();
+  if (AM::bAttached()) AM::pResources()->vDecSocketOpen();
   
   AM::vLogRes(SL_INF,this,RA_SKT_CLOSED,
               "Socket closed : "_Stz); //!format-LogRes
@@ -420,7 +420,7 @@ bool Socket::bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall)
     return false;
   }
   
-  if (AM::bAttached()) AM::pResourceTracker()->vIncSocketOpen();
+  if (AM::bAttached()) AM::pResources()->vIncSocketOpen();
   
   AM::vLogRes(SL_INF,this,RA_SKT_CONNECTED,
               "this client now connected to server %s %d"_Stz, //!format-LogRes
@@ -533,7 +533,7 @@ bool Socket::bCreateServer(int iPortNo, SysCall& SysCall)
   gpAttachMap->m_oStatistics.Socket.m_nListens++;
 #endif
   
-  if (AM::bAttached()) AM::pResourceTracker()->vIncSocketOpen();
+  if (AM::bAttached()) AM::pResources()->vIncSocketOpen();
   
   AM::vLogRes(SL_INF,this,RA_SKT_LISTENER,
               "listening socket created port=%d"_Stz, //!format-LogRes
@@ -612,7 +612,7 @@ bool Socket::bRecvBytes(void* aBytes, i8 nBytes, SysCall& SysCall)
       //vTrace("ERROR2: %lld\n"_Stz, errno);
       return false;
     }
-    
+
     nSoFar += nRecvBytes;
     nMore -= nRecvBytes;
     

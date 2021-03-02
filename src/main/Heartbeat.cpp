@@ -228,7 +228,7 @@ bool TestConnection::bTryConnect(void)
 
   if ((m_iSockClient = socket(AF_INET, SOCK_STREAM, 0)) < 0)
   {
-    printf("\n Socket creation error \n");
+    vTrace("\n Socket creation error \n"_Stz);
     return false;
   }
 
@@ -238,16 +238,16 @@ bool TestConnection::bTryConnect(void)
   // Convert IPv4 and IPv6 addresses from text to binary form
   if (inet_pton(AF_INET, m_pszAddr, &xNodeAddr.sin_addr)<=0)
   {
-    printf("\nInvalid address/ Address not supported \n");
+    vTrace("\nInvalid address/ Address not supported \n"_Stz);
     return false;
   }
 
   if (connect(m_iSockClient, (struct sockaddr *)&xNodeAddr, sizeof(xNodeAddr)) < 0)
   {
-    printf("\nConnection Failed \n");
+    vTrace("\nConnection Failed \n"_Stz);
     return false;
   }
-
+  close(m_iSockClient);
   return true;
 }
 

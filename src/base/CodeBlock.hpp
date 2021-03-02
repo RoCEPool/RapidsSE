@@ -15,7 +15,7 @@ namespace BASE
   private:
     Word* m_p_ExoWord;
   
-    SingleWord m__PadToCacheLine[6]; // padding to cache line
+    PadWord m__PadToCacheLine[6]; // padding to cache line
 
     Wsp_t<C_WSP_CODEBLOCK> m_xWsp;
   

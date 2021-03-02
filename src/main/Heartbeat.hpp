@@ -29,14 +29,16 @@ public:
   i8   m_iHeader;            //
 
   u2   m_u2Version;          // version of the packet
+  i8   m_iSeqNo;             //
   u2   m_u2DataLen;          // length of data  includes size of itself
   char m_acNodeName[32];     //
-  i8   m_iSeqNo;             //
+  i8   m_iNodeNo;            // this node number
+  char m_acAddr[32];         // IP address of where it is running
+  i4   m_iPort;              // Port number for SE
+
   i8   m_iSincePosixEpoch;   //
   char m_acBuildGitHash[32]; //
   i8   m_iPid;               //
-  char m_acAddr[32];         // IP address of where it is running
-  i8   m_iPort;              // Port number for SE
 
   // data (STORE, BASE, ...)
 

@@ -27,7 +27,7 @@ Range* STORE::_pRange(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Range::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_RANGE);
+  void* pObject = Heaps::pAllocate(CN_RANGE);
   
   return pObject;
 }
@@ -39,7 +39,7 @@ void Range::operator delete(void* aAddr)
 {
   Range* pRange = reinterpret_cast<Range*>(aAddr);
   
-  HeapMem::vFree(pRange);
+  Heaps::vFree(pRange);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -14,6 +14,8 @@ namespace BASE
     i8     m_iBufferHeight; // buffer height in the tree
     Birth  m_oWhenNewed;    // when was this buffer created?
     b8     m_bIsPermanent;  // is buffer permanent ?
+  
+    PadWord m__PadToCacheLine[6];
 
   public:
     DataBuffer(eCN eClass, bool bIsPermanent);

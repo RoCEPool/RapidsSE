@@ -29,7 +29,7 @@ Node* STORE::_pNode(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Node::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_NODE);
+  void* pObject = Heaps::pAllocate(CN_NODE);
   
   return pObject;
 }
@@ -49,7 +49,7 @@ void Node::operator delete(void* pNodeAddress)
 {
   Object* pObject = reinterpret_cast<Node*>(pNodeAddress);
   
-  HeapMem::vFree(pObject);
+  Heaps::vFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -77,10 +77,14 @@ Node::Node(i8 iNodeNo, Stz* szNodeNm, i8 nDegOfPar, Stz* szIpAddr, i8 iPortNo)
   m_qFreeSpace   = C_UNKNOWN;
   m_qFreePercent = C_UNKNOWN;
 
-  MemLib::vZero(&m_xHeartbeat,sizeof(m_xHeartbeat),CN_NODE);
+  Heartbeat xHeartbeat;
+  MemLib::vZero(&xHeartbeat,sizeof(xHeartbeat),CN_NODE);
+  m_atmHeartbeat.store(xHeartbeat,std::memory_order_release);
+  //MemLib::vZero(&m_xHeartbeat,sizeof(m_xHeartbeat),CN_NODE);
+
   m_iNodeStatus = 0;
   m_iPrevUserUsec = 0;
-  m_sStartCmd = " "_Stz;
+  //m_sStartCmd = " "_Stz;
   
   _checkInitialised_(CN_NODE);
   
@@ -345,7 +349,12 @@ void Node::vRegionSize(i8 qRegionSize)
 void Node::vPutHeartbeat(const Heartbeat& xHeartbeat)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
-  m_xHeartbeat = xHeartbeat;
+
+  Heartbeat tempHeartbeat = m_atmHeartbeat.load(std::memory_order_relaxed);
+  MemLib::vCopy((byte*)&tempHeartbeat,(byte*)&xHeartbeat,sizeof(tempHeartbeat),CN_NODE);
+  m_atmHeartbeat.store(tempHeartbeat, std::memory_order_release);
+  //MemLib::vCopy((byte*)&m_xHeartbeat,(byte*)&xHeartbeat,sizeof(m_xHeartbeat),CN_NODE);
+  //m_xHeartbeat.m_iSincePosixEpoch = xHeartbeat.m_iSincePosixEpoch;
 }
 
 
@@ -355,7 +364,8 @@ void Node::vPutHeartbeat(const Heartbeat& xHeartbeat)
 Heartbeat Node::xGetHeartbeat(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
-  return m_xHeartbeat;
+  Heartbeat tempHeartbeat = m_atmHeartbeat.load(std::memory_order_relaxed);
+  return tempHeartbeat;
 }
 
 
@@ -402,7 +412,7 @@ void   Node::vSetPrevUserUsec(i8 iUsec)
 void   Node::vSetStartCmd(Stz* pCmd)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
-  m_sStartCmd.vCopy(pCmd);
+  //m_sStartCmd.vCopy(pCmd);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -411,8 +421,8 @@ void   Node::vSetStartCmd(Stz* pCmd)
 Stz*   Node::pszGetStartCmd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
-  if (m_sStartCmd.nLength() > 1)
-    return (Stz*)m_sStartCmd;
+  //if (m_sStartCmd.nLength() > 1)
+  //  return (Stz*)m_sStartCmd;
 
   return nullptr;
 }
@@ -423,7 +433,8 @@ Stz*   Node::pszGetStartCmd(void)
 i8   Node::iGetPid(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
-  return (m_xHeartbeat.m_iPid);
+  Heartbeat tempHeartbeat = m_atmHeartbeat.load(std::memory_order_relaxed);
+  return (tempHeartbeat.m_iPid);
 }
 
 /*----------------------------------------------------------------------------*/

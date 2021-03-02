@@ -39,6 +39,9 @@ namespace Parser
     // Returns true if a given node is a given type ** or is derived from that type **
     static b1 bIsOfType(PlanNode* pNode);
 
+    // Returns true if this expression (and therefore any subexpression elements
+    // it contains) is an aggregate expression
+    static b1 bIsAnAggregate(PlanNode* pNode);
 
   protected:
     static Stz* szTypeDefinition(eET eExprType);

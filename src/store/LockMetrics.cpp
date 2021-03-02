@@ -22,7 +22,7 @@ Row* LockMetrics::pSample(StreamDef* pStreamDef, InfoSet* pInfoSet)
 {
   _static_
   
-  LockTracker* pLckTrk = AM::pLockTracker();
+  Locks* pLckTrk = AM::pLocks();
   
   //pLckTrk->vReport();
   
@@ -72,7 +72,7 @@ Row* LockMetrics::pSample(StreamDef* pStreamDef, InfoSet* pInfoSet)
   
   Row* pRow = nullptr;
   
-  for (i8 i_Lock = 1; i_Lock < LK_ENUMS; i_Lock++) {
+  for (i8 i_Lock = 1; i_Lock < CN_ENUMS; i_Lock++) {
     
    pRow = pInfoSet->pAllotRow(pStreamDef,
         C_VARGS_BEGIN,
@@ -81,7 +81,7 @@ Row* LockMetrics::pSample(StreamDef* pStreamDef, InfoSet* pInfoSet)
         0,                                       // take no
         
         i_Lock,                                  // lock no
-        aLK[i_Lock],                             // lock name
+        aCN[i_Lock],                             // lock name
         
         *pLckTrk->m_ixReadGrabs[i_Lock],         // read grab
         *pLckTrk->m_ixReadCollisions[i_Lock],    // read collision

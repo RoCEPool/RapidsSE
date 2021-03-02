@@ -18,7 +18,7 @@ namespace Parser
     s48K m_sQueryStr;
     QueryNodeStack* m_pStatementStack;
     QueryNodeStack* m_pTableRefStack;
-    QueryNodeStack* m_pExprStack;
+    QueryNodeList* m_pExprList;
     QueryNodeList* m_pSelectItems;
     Footer m_xFooter;
     
@@ -61,6 +61,8 @@ namespace Parser
     void  vCleanString(antlr4::Token* pToken, s256& sBuf);
     void  vCleanString(std::string& sStr, s256& sBuf);
     i8    iCleanInt(sqlParser::IntegerLiteralContext* pCtx);
+    i8    iCleanInt(antlr4::Token* pToken);
+    i8    iCleanInt(std::string& sStr);
     d8    dCleanFloat(sqlParser::FloatLiteralContext* pCtx);
 //  ??    cleanDecimal(sqlParser::DecimalLiteralContext* pCtx);
     Dte   xCleanDate(sqlParser::StringLiteralContext* pCtx);

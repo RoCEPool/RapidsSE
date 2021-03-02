@@ -16,6 +16,7 @@
 #include "eMA.h"
 #include "eOA.h"
 #include "ePA.h"
+#include "ePX.h"
 #include "eQA.h"
 #include "eRA.h"
 #include "eSL.h"
@@ -49,7 +50,7 @@ namespace BASE {
                             class SP_Tme;
                             class SP_Tsp;
                             template <i8 SPACE> class Datum_t;                 }
-namespace BASE           { class EnumFlags;       class TagSet;
+namespace BASE           { class ClassFlags;       class TagSet;
                             class Birth; class Now;                            }
 namespace BASE   { class Token;           class Charser;
                               class Input;           class TokenVec;          }
@@ -59,7 +60,7 @@ namespace BASE        { class Article;         class Queue;
 
 using namespace BASE;
 
-namespace BASE { class File;  class PsxThd; class Resource; class ResourceTracker;}
+namespace BASE { class File;  class PsxThd; class Resource; class Resources;}
 namespace BASE { class Operand;                                  }
 namespace BASE { class Dic;             class DicStack;
                  class Word;              }
@@ -72,15 +73,15 @@ namespace STORE          { class Session;         class SessionState;      }
 namespace BASE           { class Log;             class LogEntry;          }
 
 namespace BASE           { class Scheduler;       class Thread;
-                              class SystemSchedule;                                   }
+                              class Schedule;                                   }
 
-namespace BASE       { class CodeCell;            class Focal;
+namespace BASE       { class CodeCell;            class Loggable;
                               class Header;          class Object;
                               class Statistics;     class Mutex;              }
 namespace BASE            { class ReqTuple;                              }
-namespace BASE           { class Lock;            class LockTracker;       }
+namespace BASE           { class Lock;            class Locks;   class MasterLock;    }
 namespace BASE              { class BufferPool;      class HeapBuffer;
-                              class HeapMem;         class PoolBuffer;
+                              class Heaps;         class PoolBuffer;
 
 class IvlLib;
 
@@ -109,7 +110,7 @@ namespace STORE             { class Grid;            class Node;              }
 
 namespace STORE          { class EntBuffer;       class IndexTree;         }
 namespace STORE          { class InfoSetBase;                              }
-namespace STORE         { class SessionArray;                             }
+namespace STORE         { class Sessions;                             }
 namespace STORE              { class Job;
                               class JobList;         class Job_CreateTable;
                               class Job_CreateIndex; class XmitOperand;
@@ -125,7 +126,7 @@ namespace STORE         { class Xmits;           class Op;
 
 namespace STORE   { class Crv;                                      }
 namespace STORE              { class Row;                                      }
-namespace STORE             { class Step;            class StepTiming;        }
+namespace STORE             { class Step;            class Steps;        }
 namespace STORE     { class AttachMap;       class Engine;            }
 
 
@@ -145,6 +146,12 @@ namespace OBLIQUE
   class AM
   {
   public:
+    static Stz*  szVersionString(void);
+    static i8    iVersionNumber(void);
+
+    static Stz*  szFormatString(void);
+    static i8    iFormatNumber(void);
+
     // args
     static bool bDebugIndex(void);
     static bool bDebugMode(void);
@@ -175,14 +182,14 @@ namespace OBLIQUE
     static Stz* szLogTxtFile(void);
     
     //
-    static SessionArray* pSessionArray(void);
+    static Sessions* pSessions(void);
     static bool bBootError(void);
     static i8   nBuckets(void);
     static BufferPool* pBufferPool(void);
-    static EnumFlags* pClassFlags(void);
-    static Lock* pDdlLock(void);
+    static ClassFlags* pClassFlags(void);
+    static MasterLock* pDdlLock(void);
     static void vDeleteOperand(Operand* pOperand);
-    static Lock* pDicLock(void);
+    static MasterLock* pDicLock(void);
     static i8   iElapsedSsec(void);
     static i8   iEpoch(void);
     static Format* pFmt(void);
@@ -193,28 +200,17 @@ namespace OBLIQUE
     static i8   nNodes(void);
     static JobList* pDemonJobs(void);
     static bool bHasStarted(void);
-    static HeapMem* pHeapMem(void);
+    static Heaps* pHeaps(void);
     static i8   nIndexEntries(void);
     static Article* pLexiconArticle(void);
     static JobList* pLocalJobs(void);
-    static LockTracker* pLockTracker(void);
+    static Locks* pLocks(void);
     static bool bLogging(void);
     static i8   nLvlLevels(void);
     static i8   iLvlRatio(void);
     static bool bMetadata(void);
-    static i8   iNextDiagram(void);
+  
     static i8   iNextEpoch(void);
-    static i8   iNextJobId(void);
-    static i8   iNextLockId(void);
-    static i8   iNextOpId(void);
-    static i8   iNextPlanId(void);
-    static i8   iNextPromptId(void);
-    static i8   iNextRequest(void);
-    static i8   iNextResourceId(void);
-    static i8   iNextSessionId(void);
-    static i8   iNextStreamId(void);
-    static i8   iNextTaskId(void);
-    static i8   iNextThreadId(void);
     static i8   iNextTxId(void);
     static Stz* szNodeNm(void);
     static JobList* pOriginatingJobs(void);
@@ -226,26 +222,26 @@ namespace OBLIQUE
     static i8   iResidentSize(void);
     static bool bProgress(void);
     static i8   nPtnsInGrid(void);
-    static SystemSchedule* pSystemSchedule(void);
-    static ResourceTracker* pResourceTracker(void);
-    static Article* pRootArticle(void);
-    static Word* pRootConstant(void);
-    static void vRootConstant(Word* pRootConstant);
-    static Dic* pRootDic(void);
-    static Word* pRootWord(void);
-    static void vRootWord(Word* pRootWord);
+    static Schedule* pSchedule(void);
+    static Resources* pResources(void);
+    static Article* pArcticleRoot(void);
+    static Word* pConstantRoot(void);
+    static void vRootConstant(Word* pConstantRoot);
+    static Dic* pDicRoot(void);
+    static Word* pWordRoot(void);
+    static void vRootWord(Word* pWordRoot);
     static Statistics* pStatistics(void);
-    static StepTiming* pStepTiming(void);
+    static Steps* pSteps(void);
     static PoolBuffer* pTakenBuffers(void);
     static i8   nTakenBytes(void);
-    static Lock* pTccLock(void);
+    static MasterLock* pTccLock(void);
     static Word* pTenants(void);
     static i8   iThisNodeNo(void);
     static void vPutHeartbeat(i8 iNode, const Heartbeat& xHeartbeat);
     static bool bPutHeartbeat(Stz* pszNodeName, const Heartbeat& xHeartbeat);
     static Heartbeat xGetHeartbeat(i8 iNode);
     static Heartbeat xGetHeartbeat(Stz* pszNodeName);
-    static void vAddNewNode(Stz* pszName, Stz* pszAddr, i8 iPort);
+    static void vAddNewNode(i8 iNodeNo, Stz* pszName, Stz* pszAddr, i8 iPort);
     static void vRemoveNode(Stz* pszName);
     static void vThreadBegins(void);
     static i8   nThreadsBegun(void);
@@ -266,10 +262,7 @@ namespace OBLIQUE
     static void vIndexEntries(i8 nIndexEntries);
     static void vNextTempName(s32& sName);
     static void vSetAcksRmg(Task* pTask, i8 nAcks);
-    static void vStepTiming(StepTiming* pStepTiming);
-    static void vTakenBuffers(PoolBuffer* pTakenBuffers);
-    static void vTakeBytes(i8 nTakeBytes);
-    static void vTakenBytes(i8 nTakenBytes);
+    static void vSteps(Steps* pSteps);
     static bool bTaskIsLocked(Task* pTask);
     static Task* pTaskNew(Job* pJob);
     static void vTenants(Word* pTenants);
@@ -351,7 +344,7 @@ namespace OBLIQUE
     static void vLogOpr(eSL, Op*        pOpr, eOA eOpAct,  Stz* szFormat, ...);
     static void vLogMgt(eSL, Job*       pJob, eMA eMgtAct, Stz* szFormat, ...);
     static void vLogPrm(eSL, SePrompt*  pPrm, ePA ePrmAct, Stz* szFormat, ...);
-    static void vLogQue(eSL, SystemSchedule*    pQue, eQA eQueAct, Stz* szFormat, ...);
+    static void vLogQue(eSL, Schedule*    pQue, eQA eQueAct, Stz* szFormat, ...);
     static void vLogRes(eSL, Resource*  pRes, eRA eResAct, Stz* szFormat, ...);
     static void vLogSvc(eSL, Job*       pJob, eVA eSvcAct, Stz* szFormat, ...);
     static void vLogSsn(eSL, Session*   pSsn, eAA eApiAct, Stz* szFormat, ...);
@@ -370,10 +363,12 @@ namespace OBLIQUE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vNapMsec(i8 nMilliSeconds, eCN eCallingClass);
     static void vNapUsec(i8 nMicroSeconds, eCN eCallingClass);
+    static i8   iNextObjectNo(eCN eClassNo);
     static void vDeleteXmitOperand(XmitOperand* pXmitOperand);
     static Operand* pDuplicateOperand(Operand* pOperand);
     static XmitOperand* pNewXmitOperand(Job* pParentJob, Operand* pOperand,
-                                        Op* pOp, i8 iNde, tPN tPtnNo);
+                                        ePX eCrossTopo, i8 iNextStage, i8 iNextOp,
+                                        i8 iNde, tPN tPtnNo);
     
     static Job* pNewJobOp(Op* pOp, ReqTuple* pReqTuple);
     
@@ -398,7 +393,7 @@ namespace OBLIQUE
     static PtnMap* pPtnMap(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    static i8   iRdTimePoint(void);
+    static i8   iRdTickingDevice(void);
     static void vReadApiIndex(Index* pIndex);
     static Index* pReadApiIndex(void);
 
@@ -423,7 +418,6 @@ namespace OBLIQUE
     static void vSpawnJob_op(Job* pJob);    
     static void vSpawnJob_received(Job* pJob);
     static void vSpawnJob_service(Job* pJob);
-    static void vStateDiagram(s256& sDiagram, eCN eJobClass);
     static Stz* szSummary(s256& sSummary);
     static Stz* szSummaryDir(s256& sSummary, Stz* szNote);
     static bool bSupervisorHalt(void);

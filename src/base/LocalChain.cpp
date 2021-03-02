@@ -22,7 +22,7 @@ LocalChain* BASE::_pLocalSet(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* LocalChain::operator new(size_t)
 {
-  void* pLocalSet = HeapMem::pAllocate(CN_LOCALSCHAIN);
+  void* pLocalSet = Heaps::pAllocate(CN_LOCALSCHAIN);
   
   return pLocalSet;
 }
@@ -34,7 +34,7 @@ void LocalChain::operator delete(void* pLocalSetAddress)
 {
   LocalChain* pLocalSet = _pLocalSet(pLocalSetAddress);
   
-  HeapMem::vFree(pLocalSet);
+  Heaps::vFree(pLocalSet);
 }
 
 /*----------------------------------------------------------------------------*/

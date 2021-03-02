@@ -18,7 +18,7 @@
 : parser_DataMarker \handler
 
   // create the command error info set
-  op__cmdErr
+  op__cmdErrInfoSet
 
   <sqlStatement> sqlCompiler::parser to Operand[]
   Operand[].isNull if

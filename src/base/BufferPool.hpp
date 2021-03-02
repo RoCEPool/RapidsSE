@@ -5,7 +5,7 @@
 
 namespace BASE
 {
-  static const void* C_ADR_REGION   = (void*)0x204800000000;
+  //static const void* C_ADR_REGION   = (void*)0x204800000000;
 
   static const i8 C_MIN_SHM_REGION  = 1024 * C_1MB;
   static const i8 C_MAX_SHM_PERCENT = 95;
@@ -31,6 +31,9 @@ namespace BASE
 
     Atomic  m_ixHeapBuffers;  //
     Atomic  m_ixOtherBuffers; //
+
+    PoolBuffer*   m_pTakenBuffers;
+    i8            m_nTakenBytes;
 
     // must be last
     Footer m_xFooter;
@@ -68,6 +71,7 @@ namespace BASE
     i8   iFreePercent(void);
     bool bFreeCB(void);
     i8   iFreeSpace(void);
+    void vGiveBuffers(void);
     bool bHasDataSpace(void);
     bool bInBufferPool(Object* pObject);
     void vInitialise(bool bTouch, bool bProgress);
@@ -76,6 +80,7 @@ namespace BASE
     void vMonitorPortrait(s48K& sPortrait);
     void vPoolDump(void);
     Stz* szShmNm(void);
+    void vTakeBuffers(i8 nSpareBuffers);
     i8   iTotalSpace(void);
     PoolBuffer* pToPoolBuffer(i8 i_Buffer);
     FreeBuffer* pToFreeBuffer(i8 i_Buffer);
@@ -86,9 +91,9 @@ namespace BASE
     void vVerifyPool(void);
   
   private:
-    void vFree(PoolBuffer* pBuffer);
     FreeBuffer* pPopFreeBuffer(void);
     void vPrintProgress(void);
+    void vPushFreeBuffer(PoolBuffer* pBuffer);
 
     Footer* aFooter(void);
    };

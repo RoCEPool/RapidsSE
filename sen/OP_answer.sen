@@ -79,13 +79,13 @@
 
       pAnsweredNode not
     while
-      100 thread::sleepMsec
+      50 thread::sleepMsec
         sNodeName grid::findNode to pAnsweredNode
 
     repeat
 
   pAnsweredNode not if
-  "pAnsweredNode is null" .
+  ">>>>>pAnsweredNode is null<<<<<" .
   then
 
   pSocket pAnsweredNode node.recvSocket!

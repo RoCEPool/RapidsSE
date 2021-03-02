@@ -48,6 +48,68 @@ macro AM_HANDLER_ROWBUFFER_AGG
   EO_JMP QUERY_DONE
  endMacro
 
+macro AM_HANDLER_ROWBUFFER_AGG_GBY
+//----------------------------------------------------------------------------//
+// macro AM_HANDLER_ROWBUFFER_AGG_GBY                                         //
+//----------------------------------------------------------------------------//
+  // HANDLER_ROWBUFFER_AGG_GBY
+  Label HANDLER_ROWBUFFER
+  EO_PRINTF "**HANDLER_ROWBUFFER**\n"
+  EO_POP
+
+  //EO_ROW_DST_TESTROW
+  //EO_JMP_TRUE HANDLER_ROWBUFFER_AGG_GBY_BEGIN
+
+  // new a dst row
+  //EO_ROW_DST_NEW
+
+  Label HANDLER_ROWBUFFER_AGG_GBY_BEGIN
+  EO_ROW_SRC_BEGIN
+
+  // NEXT_ROW_SRC
+  Label NEXT_ROW_SRC
+  EO_ROW_SRC_NEXT
+  EO_JMP_FALSE QUERY_DONE
+  EO_CALL <rowProcessRoutine>
+  EO_CALL <payLoadRoutine>
+  EO_JMP NEXT_ROW_SRC
+  EO_JMP QUERY_DONE
+ endMacro
+
+macro AM_HANDLER_ROWBUFFER_LIMIT
+//----------------------------------------------------------------------------//
+// macro AM_HANDLER_ROWBUFFER_LIMIT                                           //
+//----------------------------------------------------------------------------//
+  // ROWBUFFER HANDLER
+  Label HANDLER_ROWBUFFER
+  EO_PRINTF "**HANDLER_ROWBUFFER**\n"
+  EO_POP
+  EO_ROW_SRC_BEGIN
+
+  // push limit on stack
+  EO_INTEGER <limitRows>
+  EO_DUMP
+
+  // NEXT_ROW_SRC
+  Label NEXT_ROW_SRC
+
+  // check if limit reached
+  EO_DUP
+  EO_CTR_0_PUSH
+  EO_DUMP
+  EO_LESSEQUAL
+  EO_JMP_TRUE QUERY_DONE
+
+  // increment rows processed
+  EO_CTR_0_INC
+
+  EO_ROW_SRC_NEXT
+  EO_JMP_FALSE QUERY_DONE
+  EO_CALL <rowProcessRoutine>
+  EO_JMP NEXT_ROW_SRC
+  EO_JMP QUERY_DONE
+ endMacro
+
 macro AM_ROW_PROJECT_COLUMNS
 //----------------------------------------------------------------------------//
 // macro AM_ROW_PROJECT_COLUMNS                                               //
@@ -101,7 +163,7 @@ macro AM_ROW_PROJECT_END
 // macro AM_ROW_PROJECT_END                                                   //
 //----------------------------------------------------------------------------//
   // PROJECT_END
-  EO_ROW_DST_PRINT
+  //EO_ROW_DST_PRINT
   EO_RETURN
 endMacro
 

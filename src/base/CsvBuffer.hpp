@@ -15,7 +15,7 @@ namespace BASE
     i8      m_nRecords;
     CsvMeta m_oCsvMeta;
   
-    SingleWord m__PadToCacheLine[7]; // padding to cache line
+    PadWord m__PadToCacheLine[7]; // padding to cache line
 
     Wsp_t<C_WSP_CSVBUFFER> m_xWsp;
     

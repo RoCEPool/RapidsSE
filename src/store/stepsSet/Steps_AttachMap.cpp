@@ -6,20 +6,36 @@
 #include "Step.hpp"
 #include "EnterExit.h"
 #include "StepAccum.hpp"
-#include "StepTiming.hpp"
-
+#include "Steps.hpp"
+#include "EnumGroups.h"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_AttachMap(void)
 {
+  vAddStep("attachmap::errorText@"_Stz,    &Step::vAttachMapErrorTextFetch);
   vAddStep("attachmap::operands@"_Stz,    &Step::vAttachMapOperandsFetch);
   vAddStep("attachmap::isLowMemory"_Stz,  &Step::vAttachMapIsLowMemory);
   vAddStep("attachmap::regionSize@"_Stz,  &Step::vAttachMapRegionSizeFetch);
   vAddStep("attachmap::tenants@"_Stz,     &Step::vAttachMapTenantsFetch);
   vAddStep("attachmap::tenants!"_Stz,     &Step::vAttachMapTenantsStore);
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* attachmap::errorText@ -- fetch enum text for error code                    */
+/*----------------------------------------------------------------------------*/
+void Step::vAttachMapErrorTextFetch(void)
+{
+  ENTRY();
+
+  i8 iEnum = m_pDataStack->iPopInt(__func__);
+
+  s256 sTextMsg;
+  sTextMsg = AM::szEnumText(EG_EC, iEnum);
+
+  m_pDataStack->vPushStr(sTextMsg);
 }
 
 /*----------------------------------------------------------------------------*/

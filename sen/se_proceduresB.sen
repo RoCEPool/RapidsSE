@@ -575,7 +575,7 @@
 
   "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
 
   sPath
@@ -619,12 +619,11 @@
 
     stage stageC on origin :
       aggreg 1 $etc
-      | output | sink | stageA
+     | output | sink | stageA
 
   end ;
   "
   api::addProcedure
-
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
@@ -676,7 +675,54 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
-  
+  sPath
+  "
+  procedure limitRows_I
+    parameters $table $rows
+    begin
+
+    stage stageA on origin :
+      start | periodic once | stageB
+
+    stage stageB on all partitions :
+      scan $table
+      | limit 0 $rows
+      | stageC
+
+    stage stageC on origin :
+      limit 0 $rows
+      | output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //
+  sPath
+  "
+  procedure limitRows
+    parameters $table $rows
+    begin
+
+    stage stageA on origin :
+      start | periodic once | stageB
+
+    stage stageB on all partitions :
+      scan $table
+      | limit 1 $rows
+      | stageC
+
+    stage stageC on origin :
+      limit 1 $rows
+      | output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //
   sPath
   "
   procedure projectColumns_I

@@ -12,9 +12,9 @@ namespace BASE
                   public ListItem_t<Operand>
   {
   private:
-    ePT        m_eTailProcessing;     // pipeline tail processing
+    ePT     m_eTailProcessing;     // pipeline tail processing
   
-    SingleWord m__PadToCacheLine[4];  // padding to cache line
+    PadWord m__PadToCacheLine[4];  // padding to cache line
 
   public:
     Operand(eCN eClass);

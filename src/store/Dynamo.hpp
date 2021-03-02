@@ -7,6 +7,8 @@
 #include "GraphNav.hpp"
 #include "QueryNode.hpp"
 
+using namespace Parser;
+
 namespace STORE
 {
   class Dynamo : public Object
@@ -74,19 +76,24 @@ namespace STORE
   
     void vAddTopologyParams(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage, i8 i_Op);
     void vAddConsumeParams(OpSpec* pOpSpec, ePX eCrossTopo);
+    void vAddToConsumeParams(OpSpec* pOpSpec, ePX eCrossTopo);
     void vReplaceTopologyParams(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage, i8 i_Op);
     void vReplaceWithXmit(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage);
 
     //
     // plan transliteration
     //
-    static void vAppendExpr(String* sPipeline, Parser::QueryNode* pNode);
-    static void vAppendProjectOp(String* sPipeline, Parser::QueryNode* pNode);
-    static void vAppendScanOp(String* sPipeline, Parser::QueryNode* pNode);
+    static void vAppendAggregateOp(String* sPipeline, QueryNode* pNode);
+    static void vAppendExpr(String* sPipeline, QueryNode* pNode);
+    static void vAppendFilterOp( String* sPipeline, QueryNode* pNode);
+    static void vAppendProjectOp( String* sPipeline, QueryNode* pNode);
+    static void vAppendScanOp(String* sPipeline, QueryNode* pNode);
 
     static void vPrintPlanGraph(Parser::PlanNode* pPlanRoot);
 
-    static Parser::GraphNav::eWalkCtrl vVisitorPlan(Parser::PlanNode* pNode,
+    static Parser::GraphNav::eWalkCtrl vVisitorExpr(PlanNode* pNode,
+                                                    s256& sPath, i8 iDepth, void* pvArg);
+    static Parser::GraphNav::eWalkCtrl vVisitorPlan(PlanNode* pNode,
                                                     s256& sPath, i8 iDepth, void* pvArg);
 
     Footer* aFooter(void);

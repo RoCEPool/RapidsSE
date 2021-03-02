@@ -7,7 +7,7 @@
 #include "Step.hpp"
 #include "EnterExit.h"
 #include "StepAccum.hpp"
-#include "StepTiming.hpp"
+#include "Steps.hpp"
 
 #include "Response.hpp"
 #include "Result.hpp"
@@ -44,19 +44,30 @@ void Step::vMonitorUpdateNodeStatus(void) {
   //vTrace("  ** Step::vMonitorUpdateNodeStatus ** \n"_Stz);
 
   // Get number of nodes in the grid/cluster
-  i8 nNodes = AM::nNodes();
+  //i8 nNodes = AM::nNodes();
 
-  for (i8 iNode = 0; iNode < nNodes; iNode++) {
+  Heartbeat xHeartbeat;
+
+  for (i8 iNode = 0; iNode < C_MAX_NODES; iNode++) {
 
     Node *pNode = AM::pGrid()->pGetNode(iNode);
+
     // when we monitoring, we need to skip the null node, it might be removed as the
-    // node failed.
+    // node had failed.
     if (!pNode) continue;
 
-    Heartbeat xHeartbeat;
-
+    //if (pNode->iGetNodeStatus() == 99 ) // skip node has been down
+    //  continue;
+/* debug
     xHeartbeat = pNode->xGetHeartbeat();
 
+    pNode->vSetNodeStatus(1); // need to remove this line
+    i8 iLastUpdate = time(0) - xHeartbeat.m_iSincePosixEpoch;
+    vTrace("Node:%s  ** Step::vMonitorUpdateNodeStatus ** Node %s last update:%lld\n"_Stz,
+           gxCmdLineArgs.m_xSysArgs.m_sNodeName.azChar(),
+           xHeartbeat.m_acNodeName,
+           iLastUpdate); */
+    continue;
     if (xHeartbeat.m_iSincePosixEpoch > 0) {
       i8 iLastUpdate = time(0) - xHeartbeat.m_iSincePosixEpoch;
 
@@ -85,26 +96,19 @@ void Step::vMonitorUpdateNodeStatus(void) {
           if (pSock) {
             pNode->vRecvSocket((Socket *) nullptr);
             pSock->bClose(sysCall);
-            delete pSock;
+            //delete pSock;
           }
 
           pSock = pNode->pSendSocket();
           if (pSock) {
             pNode->vSendSocket((Socket *) nullptr);
             pSock->bClose(sysCall);
-            delete pSock;
+            //delete pSock;
           }
+
           //AM::pGrid()->vDecConnectedNodes();
 
 
-
-          /*
-          pSock = AM::pGrid()->pThisNode()->pSendSocket();
-          if (pSock) {
-            pSock->bClose(sysCall);
-            delete pSock;
-            AM::pGrid()->pThisNode()->vSendSocket((Socket*) nullptr);
-          }*/
 
           // a longer period, this node has not reported and has been marked as "down"
           // try to restart or remove it from the cluster
@@ -133,7 +137,7 @@ void Step::vMonitorUpdateNodeStatus(void) {
             }*/
 
             AM::vRemoveNode((Stz*)xHeartbeat.m_acNodeName);
-            vTrace("NODE: %s is REMOVING NODE: %s\n from the cluster\n"_Stz,
+            vTrace("NODE: %s is REMOVING NODE: %s from the cluster\n"_Stz,
                    gxCmdLineArgs.m_xSysArgs.m_sNodeName.azChar(), xHeartbeat.m_acNodeName
                    );
           }
@@ -143,18 +147,19 @@ void Step::vMonitorUpdateNodeStatus(void) {
         pNode->vSetNodeStatus(0); // OK
       }
 
-      i8 iDelta = pNode->iGetPrevUserUsec() + pNode->xGetHeartbeat().xBaseHeartbeat.m_iUserUsec;
+      //i8 iDelta = pNode->iGetPrevUserUsec() + pNode->xGetHeartbeat().xBaseHeartbeat.m_iUserUsec;
       /*
       vTrace("Node:%s  ** Step::vMonitorUpdateNodeStatus ** Node %s saved:%lld Now:%lld Delta:%lld\n"_Stz,
              gxCmdLineArgs.m_xSysArgs.m_sNodeName.azChar(),
              pNode->xGetHeartbeat().m_acNodeName,
              pNode->iGetPrevUserUsec(),
              pNode->xGetHeartbeat().xBaseHeartbeat.m_iUserUsec,
-             pNode->iGetPrevUserUsec() + pNode->xGetHeartbeat().xBaseHeartbeat.m_iUserUsec);*/
+             pNode->iGetPrevUserUsec() + pNode->xGetHeartbeat().xBaseHeartbeat.m_iUserUsec);
+             */
 
     }
 
-  }
+  } // for
 
   EXIT();
 }

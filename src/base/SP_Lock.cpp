@@ -51,7 +51,7 @@ Stz* SP_Lock::sz_log(Lock* pLock)
   StrLib::vSprint(m_caResult,
                   "{%s }"_Stz,
 
-                  aLK[pLock->eLockKind()],
+                  aCN[pLock->eClassLocked()],
                   
                   C_VARGS_END);
 

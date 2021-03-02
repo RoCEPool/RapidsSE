@@ -32,7 +32,7 @@ InfoSet* STORE::_pInfoSet(void* aAddr)
 void* InfoSet::operator new(size_t)
 {
   InfoSet* pInfoSet =
-    static_cast<InfoSet*>(HeapMem::pAllocate(CN_INFOSET));
+    static_cast<InfoSet*>(Heaps::pAllocate(CN_INFOSET));
   
   return pInfoSet;
 }
@@ -44,7 +44,7 @@ void InfoSet::operator delete(void* aAddress)
 {
   Object* pObject = static_cast<Object*>(aAddress);
   
-  HeapMem::vFree(pObject);
+  Heaps::vFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/

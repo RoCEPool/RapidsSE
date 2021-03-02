@@ -26,7 +26,7 @@ MemTest* BASE::_pMemTest(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* MemTest::operator new(size_t)
 {
-  void* pMutex = HeapMem::pAllocate(CN_MEMTEST);
+  void* pMutex = Heaps::pAllocate(CN_MEMTEST);
   
   return pMutex;
 }
@@ -38,7 +38,7 @@ void MemTest::operator delete(void* aAddr)
 {
   Object* pObject = reinterpret_cast<Object*>(aAddr);
   
-  HeapMem::vFree(pObject);
+  Heaps::vFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/

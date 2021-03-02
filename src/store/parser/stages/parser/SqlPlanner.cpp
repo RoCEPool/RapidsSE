@@ -21,6 +21,12 @@
 
 #include "ShadowNode.hpp"
 #include "store/parser/shadowNodes/planObjects/Statement.hpp"
+#include "store/parser/shadowNodes/planObjects/FilterOp.hpp"
+#include "store/parser/shadowNodes/planObjects/LimitOp.hpp"
+#include "store/parser/shadowNodes/planObjects/ProjectOp.hpp"
+#include "store/parser/shadowNodes/planObjects/AggregateOp.hpp"
+#include "store/parser/shadowNodes/planObjects/dataSources/TableScanOp.hpp"
+
 #include "store/parser/shadowNodes/compound/TableRef.hpp"
 
 // Expressions
@@ -58,9 +64,6 @@
 
 #include "store/parser/shadowNodes/compound/ProjectedExpr.hpp"
 
-#include "ProjectOp.hpp"
-#include "store/parser/shadowNodes/planObjects/dataSources/TableScanOp.hpp"
-
 #include "ParserException.hpp"
 
 using namespace Parser;
@@ -81,7 +84,7 @@ SqlPlanner::SqlPlanner(void)
 : Object(CN_SQLPLANNER),
   m_pStatementStack(new QueryNodeStack()),
   m_pTableRefStack(new QueryNodeStack()),
-  m_pExprStack(nullptr),
+  m_pExprList(nullptr),
   m_pSelectItems(nullptr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SQLPLANNER,_FOOTER_);
@@ -117,13 +120,13 @@ SqlPlanner::~SqlPlanner(void) noexcept
     m_pTableRefStack = nullptr;
   }
 
-  if (m_pExprStack) {
-    while (m_pExprStack->nItems() > 0) {
-      QueryNode* pItem = m_pExprStack->pPop();
+  if (m_pExprList) {
+    while (m_pExprList->nItems() > 0) {
+      QueryNode* pItem = m_pExprList->pPop();
       delete pItem;
     }
-    delete m_pExprStack;
-    m_pExprStack = nullptr;
+    delete m_pExprList;
+    m_pExprList = nullptr;
   }
 
   if (m_pSelectItems) {
@@ -233,6 +236,37 @@ antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *pCtx)
   m_pStatementStack->vPush(pStmt);
 
   visitChildren(pCtx);
+
+  if (pCtx->ORDER()) {
+    // TODO
+
+  }
+
+  if (pCtx->LIMIT()) {
+    i8 iLimit = iCleanInt(pCtx->limit);
+    i8 iOffset = -1;
+
+    if (iLimit < 0) {
+      SemanticException::vThrow("LIMIT value must be >= 0"_Stz);
+    }
+
+    if (pCtx->OFFSET()) {
+      iOffset = iCleanInt(pCtx->offset);
+
+      if (iOffset < -1) {
+        SemanticException::vThrow("OFFSET value must be >= 0"_Stz);
+      }
+    }
+
+    // Create the limit op
+    QueryNode* pLimitOp = LimitOp::pCreate(iLimit, iOffset);
+
+    // Insert the limit op as the top-most child underneath the statement.
+    // Need to make any current children of statement now children of limitOp.
+    QueryNode* pStatement = m_pStatementStack->pPeek(0);
+    pStatement->vInsertAsParentOfChildren(pLimitOp);
+  }
+
   return nullptr;
 }
 
@@ -281,37 +315,198 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
 {
   ASSERT(m_pStatementStack->nItems() > 0);
   ASSERT(!m_pSelectItems);
-  m_pSelectItems = new QueryNodeList();
 
-  // Visit the child parse tree nodes. The select list above will be populated.
-  antlrcpp::Any any = visitChildren(pCtx);
+  // N.B. We don't call visitChildren() in this function. Instead we manually
+  // visit the required nodes, so if the grammar changes then we also need to
+  // change this. The reason for this is so that we can appropriately separate
+  // out how expressions are stored. e.g. we don't want select list exprs in
+  // the same stack at the same time as WHERE expressions.
+  // We also parse them in a slightly different order than is written. This
+  // helps us to form the graph more easily.
 
-  ASSERT(m_pSelectItems->nItems() > 0);
+  // -----------------------
+  // Parenthetic SELECT Expr
+  // -----------------------
+  if (pCtx->selectExpr()) {
+    return pCtx->selectExpr()->accept(this);
+  }
 
-  // Create a project operator and attach it to the statement object
-  QueryNode* pProjectOp = ProjectOp::pCreate(m_pSelectItems);
+  // -----------------------
+  // DISTINCT keyword
+  // -----------------------
+  if (pCtx->distinct) {
+    // TODO: implement
+  }
 
-  QueryNode* pStatement = m_pStatementStack->pPeek(0);
-  ASSERT(Statement::bIsOfType(pStatement));
-  pStatement->vAppendChild(pProjectOp);
+  // -----------------------
+  // Select List (Project)
+  // -----------------------
+  QueryNode *pProjectOp = nullptr;
+  if (!pCtx->groupBy) {
+    // If we have a group by clause then we will get this selectList there
+    m_pSelectItems = new QueryNodeList;
+
+    // Visit the child parse tree nodes for the selectList rule. The select list above will be populated.
+    pCtx->selectList()->accept(this);
+
+    ASSERT(m_pSelectItems->nItems() > 0);
+
+    // Create a project operator. We will attach it to the statement object
+    // at the end of this function.
+    pProjectOp = ProjectOp::pCreate(m_pSelectItems);
+
+    ASSERT(m_pSelectItems->nItems() == 0);
+    delete m_pSelectItems;
+    m_pSelectItems = nullptr;
+  }
+
+  // -----------------------
+  // HAVING clause
+  // -----------------------
+  QueryNode* pHavingFilterOp = nullptr;
+  if (pCtx->having) {
+    ASSERT(!m_pExprList);
+    m_pExprList = new QueryNodeList;
+
+    // Visit the children of the HAVING clause
+    pCtx->where->accept(this);
+    ASSERT(m_pExprList->nItems() == 1);
+
+    QueryNode* pExpr = m_pExprList->pPop();
+    pHavingFilterOp = FilterOp::pCreate(pExpr);
+
+    ASSERT(m_pExprList->nItems() == 0);
+    delete m_pExprList;
+    m_pExprList = nullptr;
+  }
 
 
+  // -----------------------
+  // GROUP BY clause
+  // -----------------------
+  QueryNode* pAggregateOp = nullptr;
+  if (pCtx->groupBy) {
+    // First gather the select list items
+      m_pSelectItems = new QueryNodeList;
+
+      // Visit the child parse tree nodes for the selectList rule. The select list above will be populated.
+      pCtx->selectList()->accept(this);
+
+      ASSERT(m_pSelectItems->nItems() > 0);
+
+
+    // Now gather the group by clause list
+      ASSERT(!m_pExprList);
+      m_pExprList = new QueryNodeList;
+
+      // Visit the children of the GROUP BY clause
+      pCtx->groupBy->accept(this);
+      ASSERT(m_pExprList->nItems() > 0);
+
+    // Create the aggregate operator
+      pAggregateOp = AggregateOp::pCreate(m_pSelectItems, m_pExprList);
+
+    // Clean up
+      ASSERT(m_pSelectItems->nItems() == 0);
+      delete m_pSelectItems;
+      m_pSelectItems = nullptr;
+
+      ASSERT(m_pExprList->nItems() == 0);
+      delete m_pExprList;
+      m_pExprList = nullptr;
+  }
+
+
+  // -----------------------
+  // WHERE clause
+  // -----------------------
+  QueryNode* pWhereFilterOp = nullptr;
+  if (pCtx->where) {
+    ASSERT(!m_pExprList);
+    m_pExprList = new QueryNodeList;
+
+    // Visit the children of the WHERE clause
+    pCtx->where->accept(this);
+    ASSERT(m_pExprList->nItems() == 1);
+
+    QueryNode* pExpr = m_pExprList->pPop();
+    pWhereFilterOp = FilterOp::pCreate(pExpr);
+
+    ASSERT(m_pExprList->nItems() == 0);
+    delete m_pExprList;
+    m_pExprList = nullptr;
+  }
+
+
+  // -----------------------
+  // Table References
+  // -----------------------
   // Check for a tableRef. If one exists, add it to a TableScanOp
   // and attach the TableScanOp as a child of the ProjectOp
-  if (m_pTableRefStack->nItems() == 0) {
+  QueryNode* pTableScanOp = nullptr;
+  if (pCtx->tableExpr()) {
+    // Visit the grammar rule for table expressions
+    pCtx->tableExpr()->accept(this);
+
+    ASSERT(m_pTableRefStack->nItems() == 1);
+    pTableScanOp = TableScanOp::pCreate(m_pTableRefStack->pPop());
+
+  } else {
     SemanticException::vThrow("No table source specified"_Stz);
   }
 
-  ASSERT(m_pTableRefStack->nItems() == 1);
-  QueryNode* pTableRef = m_pTableRefStack->pPop();
 
-  QueryNode* pTableScanOp = TableScanOp::pCreate(pTableRef);
-  pProjectOp->vAppendChild(pTableScanOp);
+  // -----------------------
+  // Final Plan Assembly
+  // -----------------------
 
+  QueryNode *pFirstOp = nullptr;
+  QueryNode *pLastOp = nullptr;
 
-  ASSERT(m_pSelectItems->nItems() == 0);
-  delete m_pSelectItems;
-  m_pSelectItems = nullptr;
+  /// PROJECT
+  if(pProjectOp) {
+    if (!pFirstOp)  pFirstOp = pProjectOp;
+    if (pLastOp)    pLastOp->vAppendChild(pProjectOp);
+
+    pLastOp = pProjectOp;
+  }
+
+  /// HAVING
+  if (pHavingFilterOp) {
+    if (!pFirstOp)  pFirstOp = pHavingFilterOp;
+    if (pLastOp)    pLastOp->vAppendChild(pHavingFilterOp);
+
+    pLastOp = pHavingFilterOp;
+  }
+
+  /// GROUP BY
+  if (pAggregateOp) {
+    if (!pFirstOp)  pFirstOp = pAggregateOp;
+    if (pLastOp)    pLastOp->vAppendChild(pAggregateOp);
+
+    pLastOp = pAggregateOp;
+  }
+
+  /// WHERE
+  if (pWhereFilterOp) {
+    if (!pFirstOp)  pFirstOp = pWhereFilterOp;
+    if (pLastOp)    pLastOp->vAppendChild(pWhereFilterOp);
+
+    pLastOp = pWhereFilterOp;
+  }
+
+  /// TABLE REF
+  if (pTableScanOp) {
+    if (!pFirstOp)  pFirstOp = pTableScanOp;
+    if (pLastOp)    pLastOp->vAppendChild(pTableScanOp);
+
+    pLastOp = pTableScanOp;
+  }
+
+  // Now attach the sql operator chain to the statement object.
+  QueryNode* pStatement = m_pStatementStack->pPeek(0);
+  ASSERT(Statement::bIsOfType(pStatement));
+  pStatement->vAppendChild(pFirstOp);
   
   return nullptr;
 }
@@ -323,14 +518,14 @@ antlrcpp::Any SqlPlanner::visitSelectList(sqlParser::SelectListContext *pCtx)
 {
   ASSERT(m_pSelectItems);
   
-  ASSERT(!m_pExprStack);
-  m_pExprStack = new QueryNodeStack();
+  ASSERT(!m_pExprList);
+  m_pExprList = new QueryNodeList;
   
   visitChildren(pCtx);
   
-  ASSERT(m_pExprStack->nItems() == 0);
-  delete m_pExprStack;
-  m_pExprStack = nullptr;
+  ASSERT(m_pExprList->nItems() == 0);
+  delete m_pExprList;
+  m_pExprList = nullptr;
   
   ASSERT(m_pSelectItems->nItems() > 0);
   
@@ -345,9 +540,9 @@ antlrcpp::Any SqlPlanner::visitSelectListItem(sqlParser::SelectListItemContext* 
   visitChildren(pCtx);
   
   // pop the expr stack and add it to the select list.
-  ASSERT(m_pExprStack->nItems() == 1);
+  ASSERT(m_pExprList->nItems() == 1);
   
-  QueryNode* pExprNode = m_pExprStack->pPop();
+  QueryNode* pExprNode = m_pExprList->pPop();
 
   // Is there an alias?
   Text* pAliasText = pCleanId(pCtx->as);
@@ -364,7 +559,7 @@ antlrcpp::Any SqlPlanner::visitSelectListItem(sqlParser::SelectListItemContext* 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any SqlPlanner::visitColumnRef(sqlParser::ColumnRefContext* pCtx)
 {
-  ASSERT(m_pExprStack);
+  ASSERT(m_pExprList);
 
   visitChildren(pCtx);
   
@@ -379,7 +574,7 @@ antlrcpp::Any SqlPlanner::visitColumnRef(sqlParser::ColumnRefContext* pCtx)
   QueryNode* pColumnRef = ColumnRef::pCreate(pCatalogName, pSchemaName,
                                              pTableName, pColumnName);
 
-  m_pExprStack->vPush(pColumnRef);
+  m_pExprList->vPush(pColumnRef);
   
   return nullptr;
 }
@@ -389,7 +584,7 @@ antlrcpp::Any SqlPlanner::visitColumnRef(sqlParser::ColumnRefContext* pCtx)
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any SqlPlanner::visitLiteral(sqlParser::LiteralContext* pCtx)
 {
-  ASSERT(m_pExprStack);
+  ASSERT(m_pExprList);
 
   visitChildren(pCtx);
 
@@ -436,7 +631,7 @@ antlrcpp::Any SqlPlanner::visitLiteral(sqlParser::LiteralContext* pCtx)
     NEVER_REACH
   }
 
-  m_pExprStack->vPush(pLiteral);
+  m_pExprList->vPush(pLiteral);
   return nullptr;
 }
 
@@ -448,7 +643,7 @@ antlrcpp::Any SqlPlanner::visitUnaryOp(sqlParser::UnaryOpContext *pCtx)
   visitChildren(pCtx);
 
   QueryNode* pOpExpr = nullptr;
-  QueryNode* pExpr1 = m_pExprStack->pPop();
+  QueryNode* pExpr1 = m_pExprList->pPop();
 
   // Get the string of the operator
   s256 sOp;
@@ -468,7 +663,7 @@ antlrcpp::Any SqlPlanner::visitUnaryOp(sqlParser::UnaryOpContext *pCtx)
   }
 
   // Put the operator back onto the expression stack
-  m_pExprStack->vPush(pOpExpr);
+  m_pExprList->vPush(pOpExpr);
 
   return nullptr;
 }
@@ -481,8 +676,8 @@ antlrcpp::Any SqlPlanner::visitBinaryOp(sqlParser::BinaryOpContext *pCtx)
   visitChildren(pCtx);
 
   QueryNode* pOpExpr = nullptr;
-  QueryNode* pExpr2 = m_pExprStack->pPop();
-  QueryNode* pExpr1 = m_pExprStack->pPop();
+  QueryNode* pExpr2 = m_pExprList->pPop();
+  QueryNode* pExpr1 = m_pExprList->pPop();
 
   // Get the string of the operator
   s256 sOp;
@@ -532,7 +727,7 @@ antlrcpp::Any SqlPlanner::visitBinaryOp(sqlParser::BinaryOpContext *pCtx)
   }
 
   // Put the operator back onto the expression stack
-  m_pExprStack->vPush(pOpExpr);
+  m_pExprList->vPush(pOpExpr);
 
   return nullptr;
 }
@@ -554,22 +749,22 @@ antlrcpp::Any SqlPlanner::visitLogicOp(sqlParser::LogicOpContext *pCtx)
   sOp.vToUpper();
 
   if (sOp.bEqual("AND"_Stz)) {
-    pExpr2 = m_pExprStack->pPop();
-    pExpr1 = m_pExprStack->pPop();
+    pExpr2 = m_pExprList->pPop();
+    pExpr1 = m_pExprList->pPop();
     pOpExpr = AndExpr::pCreate(pExpr1, pExpr2);
 
   } else if (sOp.bEqual("OR"_Stz)) {
-    pExpr2 = m_pExprStack->pPop();
-    pExpr1 = m_pExprStack->pPop();
+    pExpr2 = m_pExprList->pPop();
+    pExpr1 = m_pExprList->pPop();
     pOpExpr = OrExpr::pCreate(pExpr1, pExpr2);
 
   } else if (sOp.bEqual("XOR"_Stz)) {
-    pExpr2 = m_pExprStack->pPop();
-    pExpr1 = m_pExprStack->pPop();
+    pExpr2 = m_pExprList->pPop();
+    pExpr1 = m_pExprList->pPop();
     pOpExpr = XorExpr::pCreate(pExpr1, pExpr2);
 
   } else if (sOp.bEqual("NOT"_Stz)) {
-    pExpr1 = m_pExprStack->pPop();
+    pExpr1 = m_pExprList->pPop();
     pOpExpr = NotExpr::pCreate(pExpr1);
 
   } else {
@@ -577,7 +772,7 @@ antlrcpp::Any SqlPlanner::visitLogicOp(sqlParser::LogicOpContext *pCtx)
   }
 
   // Put the operator back onto the expression stack
-  m_pExprStack->vPush(pOpExpr);
+  m_pExprList->vPush(pOpExpr);
 
   return nullptr;
 }
@@ -590,7 +785,7 @@ antlrcpp::Any SqlPlanner::visitIsNullOp(sqlParser::IsNullOpContext *pCtx)
   visitChildren(pCtx);
 
   QueryNode* pOpExpr = nullptr;
-  QueryNode* pExpr1 = m_pExprStack->pPop();
+  QueryNode* pExpr1 = m_pExprList->pPop();
 
   pOpExpr = IsNullExpr::pCreate(pExpr1);
 
@@ -600,7 +795,7 @@ antlrcpp::Any SqlPlanner::visitIsNullOp(sqlParser::IsNullOpContext *pCtx)
   }
 
   // Put the operator back onto the expression stack
-  m_pExprStack->vPush(pOpExpr);
+  m_pExprList->vPush(pOpExpr);
 
   return nullptr;
 }
@@ -615,7 +810,7 @@ antlrcpp::Any SqlPlanner::visitCountAll(sqlParser::CountAllContext *pCtx)
   QueryNode* pOpExpr = CountExpr::pCreate(true, false, nullptr);
 
   // Put the operator back onto the expression stack
-  m_pExprStack->vPush(pOpExpr);
+  m_pExprList->vPush(pOpExpr);
 
   return nullptr;
 }
@@ -629,8 +824,8 @@ antlrcpp::Any SqlPlanner::visitAggFunc(sqlParser::AggFuncContext *pCtx)
 
   b1 bIsDistinct = (pCtx->distinct != nullptr);
 
-  ASSERT(m_pExprStack->nItems() > 0);
-  QueryNode* pChildExpr = m_pExprStack->pPop();
+  ASSERT(m_pExprList->nItems() > 0);
+  QueryNode* pChildExpr = m_pExprList->pPop();
 
   s256 sFunc;
   vCleanString(pCtx->func, sFunc);
@@ -662,7 +857,7 @@ antlrcpp::Any SqlPlanner::visitAggFunc(sqlParser::AggFuncContext *pCtx)
   ASSERT(pAggExpr);
 
   // Put the operator back onto the expression stack
-  m_pExprStack->vPush(pAggExpr);
+  m_pExprList->vPush(pAggExpr);
 
   return nullptr;
 }
@@ -836,18 +1031,35 @@ i8 SqlPlanner::iCleanInt(sqlParser::IntegerLiteralContext *pCtx)
   ASSERT(pCtx);
 
   std::string sStr = pCtx->getText();
+  return iCleanInt(sStr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return an integer value from an integer literal token                      */
+/*----------------------------------------------------------------------------*/
+i8 SqlPlanner::iCleanInt(antlr4::Token* pToken)
+{
+  ASSERT(pToken);
+
+  std::string sStr = pToken->getText();
+  return iCleanInt(sStr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return an integer value from an integer literal token                      */
+/*----------------------------------------------------------------------------*/
+i8 SqlPlanner::iCleanInt(std::string& sStr)
+{
   i8 iVal;
 
   try {
     iVal = std::stoll(sStr);
 
   } catch (std::invalid_argument &e) {
-    // TODO: handle exceptions
-    NOT_IMPLEMENTED_YET
+    SemanticException::vThrow("Cannot convert value\"%s\" to an integer"_Stz, sStr.c_str());
 
   } catch (std::out_of_range &e) {
-    // TODO: handle exceptions
-    NOT_IMPLEMENTED_YET
+    SemanticException::vThrow("Cannot convert value\"%s\" to an integer as it is out of range"_Stz, sStr.c_str());
   }
 
   return iVal;
@@ -867,12 +1079,10 @@ d8 SqlPlanner::dCleanFloat(sqlParser::FloatLiteralContext *pCtx)
     dVal = std::stod(sStr);
 
   } catch (std::invalid_argument &e) {
-    // TODO: handle exceptions
-    NOT_IMPLEMENTED_YET
+    SemanticException::vThrow("Cannot convert value\"%s\" to a float"_Stz, sStr.c_str());
 
   } catch (std::out_of_range &e) {
-    // TODO: handle exceptions
-    NOT_IMPLEMENTED_YET
+    SemanticException::vThrow("Cannot convert value\"%s\" to a float as it is out of range"_Stz, sStr.c_str());
   }
 
   return dVal;

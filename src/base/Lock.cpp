@@ -8,6 +8,8 @@
 
 #include "SP_Gid.hpp"
 
+#include "MY.hpp"
+
 Atomic gixLock;
 
 /*----------------------------------------------------------------------------*/
@@ -46,25 +48,14 @@ void Lock::operator delete(void*)
 /*----------------------------------------------------------------------------*/
 /* constructor (for non-focal case)                                           */
 /*----------------------------------------------------------------------------*/
-Lock::Lock(eLK eLockKind, Object* pFor)
-: Focal(CN_LOCK)
+Lock::Lock(Object* pObjectLocked, bool bDontLog)
+: Loggable(CN_LOCK,bDontLog)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
-  
-//  if (pFor) {
-//    printf("  Lock(%s)\n",(char*)aCN[pFor->eGetClassNo()]);
-//    AM::vPrintGlobals();
-//  }
-//  else {
-//    AM::vPrintGlobals();
-//    vDebugPoint();
-//  }
-  
-  m_pFor   = pFor;
-  m_bFocal = false;
+    
+  m_pObjectLocked = pObjectLocked;
   
   m_uLockWord = 0;
-  m_eLockKind = eLockKind;
   
   m_ixReadGrabs.vCheckInit();
   m_ixReadCollisions.vCheckInit();
@@ -83,17 +74,8 @@ Lock::Lock(eLK eLockKind, Object* pFor)
 Lock::~Lock(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
- 
-  if (m_bFocal) {
-    SP_Gid spId;
-    
-    vIncStepNo(); -- gixLock;
-    AM::vLogLck(SL_INF,this,LA_LCK_DESTRUCT,
-                "Lock -%s destruct ^For=%s |gixLock=%lld|"_Stz, //!format-LogLck
-                aLK[m_eLockKind],
-                spId.sz(m_pFor?((Focal*)m_pFor)->m_iFocalId:C_UNKNOWN),
-                * gixLock);
-  }
+   
+  RASSERT(! m_uLockWord);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -259,17 +241,17 @@ i8 Lock::iLockId(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
-  return m_iFocalId;
+  return m_iObjectId;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get the kind of lock                                                       */
 /*----------------------------------------------------------------------------*/
-eLK Lock::eLockKind(void)
+eCN Lock::eClassLocked(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
-  
-  return m_eLockKind;
+
+  return m_pObjectLocked->eGetClassNo();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -319,11 +301,11 @@ bool Lock::bGrabRead(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
-  ASSERT(m_eLockKind);
+  vLockTrace(LS_READ_NONBLOCK);
   
   ++m_ixReadGrabs;
 #ifdef WITH_LOCK_TRACKING
-  ++AM::pLockTracker()->m_ixReadGrabs[m_eLockKind];
+  ++AM::pLocks()->m_ixReadGrabs[m_eLockKind];
 #endif
   
   i8 iResult = Lock::iLockGrabRead(&m_uLockWord);
@@ -334,7 +316,7 @@ bool Lock::bGrabRead(void)
   
   ++m_ixReadCollisions;
 #ifdef WITH_LOCK_TRACKING
-  ++AM::pLockTracker()->m_ixReadCollisions[m_eLockKind];
+  ++AM::pLocks()->m_ixReadCollisions[m_eLockKind];
 #endif
   
   return false;
@@ -346,15 +328,15 @@ bool Lock::bGrabRead(void)
 void Lock::vGrabRead(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
-  
-  ASSERT(m_eLockKind);
-  
+   
+  vLockTrace(LS_READ_BLOCKING);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // attempt to grab the lock for read
   
   ++m_ixReadGrabs;
 #ifdef WITH_LOCK_TRACKING
-  ++AM::pLockTracker()->m_ixReadGrabs[m_eLockKind];
+  ++AM::pLocks()->m_ixReadGrabs[m_eLockKind];
 #endif
   
   i8 iResult = Lock::iLockGrabRead(&m_uLockWord);
@@ -368,7 +350,7 @@ void Lock::vGrabRead(void)
 
   ++m_ixReadCollisions;
 #ifdef WITH_LOCK_TRACKING
-  ++AM::pLockTracker()->m_ixReadCollisions[m_eLockKind];
+  ++AM::pLocks()->m_ixReadCollisions[m_eLockKind];
 #endif
   
   Timer oTimer;
@@ -377,7 +359,7 @@ void Lock::vGrabRead(void)
   bool bReported = false;
   while (! Lock::iLockGrabRead(&m_uLockWord) ) {
 
-    if (! m_pFor || CN_LOG == m_pFor->eGetClassNo())
+    if (! m_pObjectLocked || CN_LOG == m_pObjectLocked->eGetClassNo())
       continue;
     
     oTimer.vUpdate();
@@ -385,11 +367,11 @@ void Lock::vGrabRead(void)
       continue;
     
     bReported = true;
-    vIncStepNo();
+    vEventNoInc();
     AM::vLogLck(SL_INF,this,LA_LCK_READ_UNABLE,
                 "Unable to grab read lock %p %s %p"_Stz, //!format-LogLck
                 this,
-                aLK[m_eLockKind],
+                aCN[eClassLocked()],
                  m_uLockWord);
   }
   
@@ -397,11 +379,11 @@ void Lock::vGrabRead(void)
   // read lock has been acquired
 
   if (bReported) {
-    vIncStepNo();
+    vEventNoInc();
     AM::vLogLck(SL_INF,this,LA_LCK_READ_ABLE,
                "Able to grab read lock %p %s %p"_Stz, //!format-LogLck
                 this,
-                aLK[m_eLockKind],
+                aCN[eClassLocked()],
                 m_uLockWord);
   }
   
@@ -467,11 +449,11 @@ bool Lock::bGrabWrite(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
-  ASSERT(m_eLockKind);
+  vLockTrace(LS_WRITE_NONBLOCK);
 
   ++m_ixWriteGrabs;
 #ifdef WITH_LOCK_TRACKING
-  ++AM::pLockTracker()->m_ixWriteGrabs[m_eLockKind];
+  ++AM::pLocks()->m_ixWriteGrabs[m_eLockKind];
 #endif
   
   i8 iResult = Lock::iLockGrabWrite(&m_uLockWord);
@@ -482,7 +464,7 @@ bool Lock::bGrabWrite(void)
   
   ++m_ixWriteCollisions;
 #ifdef WITH_LOCK_TRACKING
-  ++AM::pLockTracker()->m_ixWriteCollisions[m_eLockKind];
+  ++AM::pLocks()->m_ixWriteCollisions[m_eLockKind];
 #endif
   
   return false;
@@ -495,14 +477,14 @@ void Lock::vGrabWrite(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
-  ASSERT(m_eLockKind);
-  
+  vLockTrace(LS_WRITE_BLOCKING);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // attempt to grab the lock for write
   
   ++m_ixWriteGrabs;
 #ifdef WITH_LOCK_TRACKING
-  ++AM::pLockTracker()->m_ixWriteGrabs[m_eLockKind];
+  ++AM::pLocks()->m_ixWriteGrabs[m_eLockKind];
 #endif
   
   i8 iResult = Lock::iLockGrabWrite(&m_uLockWord);
@@ -516,7 +498,7 @@ void Lock::vGrabWrite(void)
   
   ++m_ixWriteCollisions;
 #ifdef WITH_LOCK_TRACKING
-  ++AM::pLockTracker()->m_ixWriteCollisions[m_eLockKind];
+  ++AM::pLocks()->m_ixWriteCollisions[m_eLockKind];
 #endif
   
   Timer oTimer;
@@ -525,7 +507,7 @@ void Lock::vGrabWrite(void)
   bool bReported = false;
   while (! Lock::iLockGrabWrite(&m_uLockWord)) {
 
-    if (! m_pFor || CN_LOG == m_pFor->eGetClassNo())
+    if (! m_pObjectLocked || CN_LOG == m_pObjectLocked->eGetClassNo())
       continue;
     
     oTimer.vUpdate();
@@ -533,11 +515,11 @@ void Lock::vGrabWrite(void)
       continue;
     
     bReported = true;
-    vIncStepNo();
+    vEventNoInc();
     AM::vLogLck(SL_INF,this,LA_LCK_WRITE_UNABLE,
                 "Unable to grab write lock %p %s %p"_Stz, //!format-LogLck
                 this,
-                aLK[m_eLockKind],
+                aCN[eClassLocked()],
                 m_uLockWord);
   }
   
@@ -545,11 +527,11 @@ void Lock::vGrabWrite(void)
   // write lock has been acquired
 
   if (bReported) {
-    vIncStepNo();
+    vEventNoInc();
     AM::vLogLck(SL_INF,this,LA_LCK_WRITE_ABLE,
                "Able to grab write lock %p %s %p"_Stz, //!format-LogLck
                        this,
-                       aLK[m_eLockKind],
+                       aCN[eClassLocked()],
                        m_uLockWord);
   }
 
@@ -586,6 +568,30 @@ i8 Lock::iWriteCollisions(void)
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
   return *m_ixWriteCollisions;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* lock trace                                                                 */
+/*----------------------------------------------------------------------------*/
+void Lock::vLockTrace(eLS eLockStyle)
+{
+  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
+  
+  if (m_bDontLog)
+    return;
+  
+//  if (MY::pOp())
+//    printf("%s %s OP\n",
+//           aLK[m_eLockKind]->azChar(),
+//           aLS[eLockStyle]->azChar());
+//  else
+//    printf("%s %s NO OP\n",
+//           aLK[m_eLockKind]->azChar(),
+//           aLS[eLockStyle]->azChar());
 }
 
 /*----------------------------------------------------------------------------*/

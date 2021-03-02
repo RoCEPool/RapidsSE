@@ -21,7 +21,7 @@ ThreadVec* ThreadVec::_pThreadVec(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* ThreadVec::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_THREADVEC);
+  void* pObject = Heaps::pAllocate(CN_THREADVEC);
   
   return pObject;
 }
@@ -33,14 +33,14 @@ void ThreadVec::operator delete(void* pAddr)
 {
   ThreadVec* pThreadVec = reinterpret_cast<ThreadVec*>(pAddr);
   
-  HeapMem::vFree(pThreadVec);
+  Heaps::vFree(pThreadVec);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ThreadVec::ThreadVec(void)
-: m_okLock(LK_THREAD_VECTOR,this)
+: m_okLock(this)
 {
   _precondition_(_MAGIC_,CN_THREADVEC,_FOOTER_);
   

@@ -24,7 +24,7 @@ bool ShmLib::bClose(int iShmFd, SysCall& oSysCall)
     return false;
   }
   
-  //if (AM::bAttached()) AM::pResourceTracker()->vDecShmOpen();
+  //if (AM::bAttached()) AM::pResources()->vDecShmOpen();
 
   oSysCall.vSuccess();
   
@@ -79,7 +79,7 @@ bool ShmLib::bOpenCreate(int& iShmFd, s32& sShmNm, SysCall& oSysCall)
     return false;
   }
   
-  //if (AM::bAttached()) AM::pResourceTracker()->vIncShmOpen();
+  //if (AM::bAttached()) AM::pResources()->vIncShmOpen();
   
   return true;
 }
@@ -101,7 +101,7 @@ bool ShmLib::bOpenExisting(int& iShmFd, s32& sShmNm, SysCall& oSysCall)
     return false;
   }
   
-  //if (AM::bAttached()) AM::pResourceTracker()->vIncShmOpen();
+  //if (AM::bAttached()) AM::pResources()->vIncShmOpen();
   
   return true;
 }

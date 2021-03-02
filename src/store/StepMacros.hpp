@@ -18,13 +18,13 @@
   i8 _iEnterCycles = 0; \
   i8 _iEnterMisses = 0; \
   \
-  if (AM::pStepTiming()) { \
+  if (AM::pSteps()) { \
     if (! _pStepAccum) { \
-      StepTiming* pStepTiming = AM::pStepTiming(); \
-      pStepTiming->vGrabWrite(); \
+      Steps* pSteps = AM::pSteps(); \
+      pSteps->vGrabWrite(); \
       if (! _pStepAccum) \
-        _pStepAccum = pStepTiming->pAllocAccum(aStepNm); \
-      pStepTiming->vDropWrite(); \
+        _pStepAccum = pSteps->pAllocAccum(aStepNm); \
+      pSteps->vDropWrite(); \
     } \
     _pStepAccum->vEnter(_iEnterCycles,_iEnterMisses); \
   } \

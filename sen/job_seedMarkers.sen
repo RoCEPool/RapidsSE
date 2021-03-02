@@ -318,7 +318,6 @@
 
 ;
 
-
 /*----------------------------------------------------------------------------*/
 /* job has encountered an error                                               */
 /*----------------------------------------------------------------------------*/
@@ -329,7 +328,6 @@
   errorCode job[] job.error!
 ;
 
-
 /*----------------------------------------------------------------------------*/
 /* return an error response                                                   */
 /*----------------------------------------------------------------------------*/
@@ -339,27 +337,6 @@
 
   //errorCode error.msg "Setting error '%v' in job" str.format .
   errorCode pJob job.error!
-;
-
-/*----------------------------------------------------------------------------*/
-/* return an error response                                                   */
-/*----------------------------------------------------------------------------*/
-: ERROR_REQUEST params| pJob errorCode |
-
-  DdlLock[].testDrop
- 
-  //errorCode error.msg "Setting error '%v' in job" str.format .
-  errorCode pJob job.error!
-
-  Done_Finally
-
-  //"Signalling the thread waiting on job completion" .
-  job::informInvokerOfCompletion
-
-  // task has no job
-  task::scheduledelete
-
-  HAZARD
 ;
 
 /*============================================================================*/

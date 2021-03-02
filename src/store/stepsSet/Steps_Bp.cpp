@@ -6,7 +6,7 @@
 #include "Step.hpp"
 #include "EnterExit.h"
 #include "StepAccum.hpp"
-#include "StepTiming.hpp"
+#include "Steps.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -45,7 +45,7 @@ void Step::vBpWriteBufferPool(void)
 {
   ENTRY();
   
-  PersistenceHelper::vWritePersistentHeapMem("../tmp/persistentHeapMem.dmp"_Stz);
+  PersistenceHelper::vWritePersistentHeaps("../tmp/persistentHeaps.dmp"_Stz);
   
   EXIT();
 }

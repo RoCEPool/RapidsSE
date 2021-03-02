@@ -55,7 +55,7 @@ namespace BASE
     void* operator new(size_t, i8 iViaMalloc);
     void operator delete(void* pFileAddress);
   
-    File(Focal* pIsFor);
+    File(Object* pIsFor);
    ~File(void) noexcept(false);
     
     static bool bAccess(Stz* szFilePath, i8 iPermission);

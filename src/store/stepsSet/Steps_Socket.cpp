@@ -6,7 +6,7 @@
 #include "Step.hpp"
 #include "EnterExit.h"
 #include "StepAccum.hpp"
-#include "StepTiming.hpp"
+#include "Steps.hpp"
 
 #include "ePX.h"
 
@@ -88,7 +88,7 @@ void Step::vSocketAccept(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* open a socket                                                              */
+/* close a socket                                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vSocketClose(void)
 {
@@ -340,7 +340,7 @@ void Step::vSocketRecvObject(void)
   if ( _bIsValidJob(eClass) ) {
         
     //! temp. to be fixed
-    Job* pJob = static_cast<Job*>(HeapMem::pAllocate(eClass));
+    Job* pJob = static_cast<Job*>(Heaps::pAllocate(eClass));
 
     MemLib::vCopy(pJob,pObject,sizeof(Object),eClass);
     
@@ -378,7 +378,6 @@ void Step::vSocketRecvObject(void)
     
     //ActLog::vAdd(pJob,AN_RECV_JOB,pJob(),nObjectSize);
 
-    pJob->m_i_Focal = C_UNKNOWN;
     pJob->vOriginResponseVec(nullptr);
     
     m_pDataStack->vPushPtr(pJob);
@@ -388,7 +387,7 @@ void Step::vSocketRecvObject(void)
   }
   
   if (eClass == CN_XMITOPERAND) {
-    XmitOperand* pXmitOperand = static_cast<XmitOperand*>(HeapMem::pAllocate(eClass));
+    XmitOperand* pXmitOperand = static_cast<XmitOperand*>(Heaps::pAllocate(eClass));
     
     MemLib::vCopy(pXmitOperand,pObject,sizeof(Object),eClass);
     
@@ -688,7 +687,7 @@ void Step::vSocketRecvObject_LowMem(void)
   if ( _bIsValidJob(eClass) ) {
     
     //! temp. to be fixed
-    Job* pJob = static_cast<Job*>(HeapMem::pAllocate(eClass));
+    Job* pJob = static_cast<Job*>(Heaps::pAllocate(eClass));
     
     MemLib::vCopy(pJob,pObject,sizeof(Object),eClass);
     
@@ -708,7 +707,6 @@ void Step::vSocketRecvObject_LowMem(void)
     //ActLog::vAdd(pJob,AN_RECV_JOB,pJob(),nObjectSize);
     //ActLog::vAdd(pJob,AN_RECV_JOB_LOW_MEMORY);
     
-    pJob->m_i_Focal = C_UNKNOWN;
     pJob->vOriginResponseVec(nullptr);
     
     m_pDataStack->vPushPtr(pJob);
@@ -721,7 +719,7 @@ void Step::vSocketRecvObject_LowMem(void)
     
     //vTrace("Received XmitOperand under low mem\n"_Stz);
     
-    XmitOperand* pXmitOperand = static_cast<XmitOperand*>(HeapMem::pAllocate(eClass));
+    XmitOperand* pXmitOperand = static_cast<XmitOperand*>(Heaps::pAllocate(eClass));
     
     MemLib::vCopy(pXmitOperand,pObject,sizeof(Object),eClass);
     

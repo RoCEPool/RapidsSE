@@ -4,9 +4,9 @@
 
 " se_stepTiming.sen" .verbose
 
-: stepTimingReset StepTiming::reset ;
-: stepTimingStart StepTiming::start ;
-: stepTimingWrite StepTiming::write ;
+: stepTimingReset Steps::reset ;
+: stepTimingStart Steps::start ;
+: stepTimingWrite Steps::write ;
 
 /*============================================================================*/
 /* end                                                                        */

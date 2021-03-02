@@ -30,7 +30,7 @@ Word* BASE::_pWord(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Word::operator new(size_t, Dic* pDic)
 {
-  Word* pWord = (Word*)(HeapMem::pAllocate(CN_WORD));
+  Word* pWord = (Word*)(Heaps::pAllocate(CN_WORD));
   
   pWord->m_bPersistent = false;
   pWord->m_pDic = pDic;
@@ -45,7 +45,7 @@ void* Word::operator new(size_t, Dic* pDic, bool bPersistent)
 {
   RASSERT(bPersistent || ! bPersistent);
   
-  Word* pWord = (Word*)(HeapMem::pAllocate(CN_WORD,bPersistent));
+  Word* pWord = (Word*)(Heaps::pAllocate(CN_WORD,bPersistent));
   
   pWord->m_bPersistent = bPersistent;
   pWord->m_pDic = pDic;
@@ -60,7 +60,7 @@ void Word::operator delete(void* pWordAddress)
 {
   Word* pWord = reinterpret_cast<Word*>(pWordAddress);
  
-  HeapMem::vFree(pWord,pWord->m_bPersistent);
+  Heaps::vFree(pWord,pWord->m_bPersistent);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -90,7 +90,7 @@ Word::Word(Stz* szWordNm)
   m_eWord      = WK_ROUTINE;
 
   m_bBreakPt   = false;
-  m_pCategory  = AM::pRootWord() ? AM::pRootWord() : this;
+  m_pCategory  = AM::pWordRoot() ? AM::pWordRoot() : this;
   //m_pDic     = pDic;
   m_iEpoch     = AM::iEpoch();
   m_bImmediate = false;
@@ -256,8 +256,8 @@ void Word::vContentDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  Dic* pRootDic = AM::pRootDic();
-  Word* pStepWord = pRootDic->pFindStep(m_fpIntrinsic);
+  Dic* pDicRoot = AM::pDicRoot();
+  Word* pStepWord = pDicRoot->pFindStep(m_fpIntrinsic);
   
   vTrace("Word %s %p Kind %s; Category %s; %s; DataBytes %lld; "_Stz
          "Step %p %s ..Rows.. %p\n"_Stz,
@@ -312,8 +312,8 @@ void Word::vEncodeCall(Stz* aWordNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  Dic* pRootDic = AM::pRootDic();
-  Word* pCalledWord = pRootDic->pFindWord(aWordNm);
+  Dic* pDicRoot = AM::pDicRoot();
+  Word* pCalledWord = pDicRoot->pFindWord(aWordNm);
   ASSERT(pCalledWord);
   
   m_pCodeBlock->vAppend(pCalledWord->afpEntryStep());

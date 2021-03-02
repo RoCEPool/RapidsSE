@@ -6,7 +6,7 @@
 #include "Step.hpp"
 #include "EnterExit.h"
 #include "StepAccum.hpp"
-#include "StepTiming.hpp"
+#include "Steps.hpp"
 
 #include "Node.hpp"
 #include "Node_I.hpp"
@@ -92,7 +92,7 @@ void Step::vTaskAcksStore(void)
                        aCN[pJob->eGetClassNo()],
                        pJob,
                        nAcksRequired);
-    AM::pOriginatingJobs()->vLogJobs(pJob->m_iFocalId);
+    AM::pOriginatingJobs()->vLogJobs(pJob->m_iObjectId);
   }
   
   vAcksRmg(nAcksRequired);

@@ -21,7 +21,7 @@ ClassFn::ClassFn(eCN eClass, eCF eFunction, fpCLASSFN* fpClassFn, i8)
 /*----------------------------------------------------------------------------*/
 /* default object inspector                                                   */
 /*----------------------------------------------------------------------------*/
-bool ClassFn::bCallClassFn(eCF eFunction, Object* pObject)
+bool ClassFn::bCallClassFn(eCF , Object* pObject)
 {
   _static_
   

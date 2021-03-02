@@ -15,6 +15,9 @@
 #include "LogicUnit.hpp"
 #include "Record.hpp"
 
+static i8 iDaysPerMonth[13]     = { -1,31,28,31,30,31,30,31,31,30,31,30,31};
+static i8 iDaysPerMonthLeap[13] = { -1,31,29,31,30,31,30,31,31,30,31,30,31};
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -117,15 +120,15 @@ RowBuffer* ToRow::pFullRowBuffer(void)
   RowBuffer* pFullRiwBuffer = nullptr;
   
   RowBuffer* pRowBuffer = m_pRowBuffer ?
-                            _pRowBuffer(m_pRowBuffer->pNextBuffer()) : nullptr;
+                            _pRowBuffer(m_pRowBuffer->pNextLinkedBuffer()) : nullptr;
   while (pRowBuffer) {
     pFullRiwBuffer = pRowBuffer;
-    pRowBuffer = _pRowBuffer(pRowBuffer->pNextBuffer());
+    pRowBuffer = _pRowBuffer(pRowBuffer->pNextLinkedBuffer());
   }
   
   if (pFullRiwBuffer) {
-    RowBuffer* pPrevBuffer = _pRowBuffer(pFullRiwBuffer->pPrevBuffer());
-    pPrevBuffer->vNextBuffer(nullptr);
+    RowBuffer* pPrevBuffer = _pRowBuffer(pFullRiwBuffer->pPrevLinkedBuffer());
+    pPrevBuffer->vNextLinkedBuffer(nullptr);
   }
   
   return pFullRiwBuffer;
@@ -176,9 +179,9 @@ void ToRow::vNewRowBuffer(void)
   RowBuffer* pRowBuffer = new RowBuffer;
   
   // link the new to old
-  pRowBuffer->vNextBuffer(m_pRowBuffer);
+  pRowBuffer->vNextLinkedBuffer(m_pRowBuffer);
   if (m_pRowBuffer)
-    m_pRowBuffer->vPrevBuffer(pRowBuffer);
+    m_pRowBuffer->vPrevLinkedBuffer(pRowBuffer);
   m_pRowBuffer = pRowBuffer;
   
   // initialise the row slab inside the new row buffer

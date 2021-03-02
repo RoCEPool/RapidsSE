@@ -34,11 +34,15 @@ extern i8   giProgressPoint;
 int main(int argc, char* argv[])
 {
   //printf("sizeof(ColPix) %lld\n",(i8)sizeof(ColPix));
-  printf("sizeof(Word) %lld\n",(i8)sizeof(Word));
+  //printf("sizeof(Word) %lld\n",(i8)sizeof(Word));
 
   //char* s = readline ("Enter a line: ");
 
+  printf("sizeof(s32) %lld\n",(i8)sizeof(s32));
+  printf("sizeof(DataBuffer) %lld\n",(i8)sizeof(DataBuffer));
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  TlsKeys::vInit();
 
   IntLib::vInitGlobals();
 

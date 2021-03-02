@@ -40,7 +40,7 @@ Charser::Charser(Charser* pNext)
   m_bUseClosed = true;
   m_bUseEnded  = true;
   
-  m_pSrcFile = new File(nullptr);
+  m_pSrcFile = new File(this);
   
   m_acRawInput = nullptr;
   

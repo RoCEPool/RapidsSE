@@ -25,7 +25,7 @@ namespace BASE
   
     eCN  m_eClass;     // class of caller
   
-    Focal* m_pFocal;   // object
+    Loggable* m_pFocal;   // object
     i8   m_i_Focal;    // focal lattice subscript
   
     ReqTuple m_xReqTuple;
@@ -36,7 +36,7 @@ namespace BASE
     bool m_bLine;      // draw line before?
   
     char m_cPrefix;
-    i8   m_iFocalId;
+    i8   m_iObjectId;
     i8   m_iForId;
   
     i8   m_iIndicator;
@@ -60,7 +60,7 @@ namespace BASE
     void vAsTxt(s4K& sString);
     Stz* szIndicator(void);
     void vInit(eSL eSeverity, eCN eClass, Stz* szText);
-    void vInit(eSL eSeverity, Focal* pFocal, Stz* szText);
+    void vInit(eSL eSeverity, Loggable* pFocal, Stz* szText);
     void vSprint(s4K& sString,i8 iEntryDeltaUsec, i8& iTotalDeltaUsec);
     void vSprintCsv(s4K& sString, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec);
     void vWriteCsv(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec);

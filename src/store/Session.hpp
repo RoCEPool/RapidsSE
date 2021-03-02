@@ -12,7 +12,7 @@ namespace STORE { class Output; class StreamDef; }
 
 namespace STORE
 {
-  class Session : public Focal
+  class Session : public Loggable
   {
   public:
     i8       m_i_Session;     // session index
@@ -30,7 +30,7 @@ namespace STORE
     Tx*      m_pTx;           // current transaction
     ReqTuple m_xReqTuple;     // request information
     Job*     m_pSsnJob;       // job currently being executing
-    Mutex    m_oSsnMutex;     //
+    Mutex    m_oMutex;     //
     bool     m_bRunning;      // api call still running?
     bool     m_bSignalled;    // calling thread has been signalled?
 

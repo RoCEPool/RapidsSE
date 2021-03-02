@@ -24,10 +24,11 @@
 #include "Result.hpp"
 #include "Job.hpp"
 #include "JobList.hpp"
+#include "Jobs.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
 
-#include "SessionArray.hpp"
+#include "Sessions.hpp"
 
 #include "ShortCut.hpp"
 #include "SeDeputy.hpp"
@@ -72,7 +73,6 @@ extern s256   gi_szaArgv[];
 
 pthread_key_t giTLS_TaskKey   = C_UNKNOWN;
 pthread_key_t giTLS_ThreadKey = C_UNKNOWN;
-
 
 /*----------------------------------------------------------------------------*/
 /* main entry                                                                 */
@@ -132,9 +132,6 @@ void Engine::vPreliminary(void)
   // Segmentation Violation
   signal(SIGSEGV, Engine::vSignalHandler);
   
-  if (AM::bVerboseProgress())
-     vInfo("Init TLS keys...\n"_Stz);
-  TlsKeys::vInit();
   
   if (AM::bVerboseProgress())
      vInfo("Init H/W counters...\n"_Stz);
@@ -255,8 +252,8 @@ void Engine::vRunCommandLine(void)
       case BO_START_PROMPT:
         vStartSystem();
 #ifdef WITH_APPLE
-        //if (! gxCmdLineArgs.m_xSysArgs.m_bNoMunge )
-        //  vMungeCheck();
+        if (! gxCmdLineArgs.m_xSysArgs.m_bNoMunge )
+          vMungeCheck();
 #endif
         vCallPrompt();
         break;
@@ -725,7 +722,7 @@ void Engine::vDeleteImmmediate(Task** ppTask)
 void Engine::vDeleteSession(Session* pSession)
 {
   //delete pSession;
-  AM::pSessionArray()->vFreeSession(pSession);
+  AM::pSessions()->vFreeSession(pSession);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -799,7 +796,7 @@ void Engine::vGetWelcome(s256& sWelcome)
   
   sWelcome.vSprint("RapidsSE %s (%s version, pid %lld, git %s)"_Stz,
                    
-                   RAPIDSSE_VERSION_STRING,
+                   AM::szVersionString(),
                    szRelDbg,
                    Process::iGetPid(),
                    gsBuildGitHash
@@ -1217,7 +1214,7 @@ void Engine::vPrintConstants(void)
   vTrace("  C_MAX_TABLEPTNS          = %lld\n"_Stz,C_MAX_TABLEPTNS);
   vTrace("  C_MAX_STAGES         = %lld\n"_Stz,C_MAX_STAGES);
   vTrace("  C_MAX_STATEMENT      = %lld\n"_Stz,C_MAX_STATEMENT);
-  vTrace("  C_MAX_STRANDS        = %lld\n"_Stz,C_MAX_STRANDS);
+  vTrace("  C_MAX_STREAMS        = %lld\n"_Stz,C_MAX_STREAMS);
   vTrace("  C_MAX_STREAMDEFS     = %lld\n"_Stz,C_MAX_STREAMDEFS);
   vTrace("  C_MAX_THREADS        = %lld\n"_Stz,C_MAX_THREADS);
   vTrace("  C_MAX_TOKENS         = %lld\n"_Stz,C_MAX_TOKENS);
@@ -1514,51 +1511,54 @@ void Engine::vSignalHandler(int iSignal)
 /*----------------------------------------------------------------------------*/
 /* start a new system                                                         */
 /*----------------------------------------------------------------------------*/
-void Engine::vStartSystem(void)
-{
+void Engine::vStartSystem(void) {
   if (AM::bVerboseProgress())
-    vInfo("\n+\n+ %lld) System Start\n+\n"_Stz,giProgressPoint++);
-  
-  //ASSERT( ! AM::pRootDic()->bHasWords() );
-    
+    vInfo("\n+\n+ %lld) System Start\n+\n"_Stz, giProgressPoint++);
+
+  //ASSERT( ! AM::pDicRoot()->bHasWords() );
+
   gpAttachMap->vRecordArguments(&gxCmdLineArgs);
-  
+
   if (AM::bVerboseProgress()) {
     gpAttachMap->vPrintAttachMap();
   }
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move
-  
-   gpAttachMap->m_pSystemSchedule = new SystemSchedule;
-    
+
+  gpAttachMap->m_pSchedule = new Schedule;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // job lists
-  
-  gpAttachMap->m_xStore.m_pDemonJobs         =
-    new JobList(bJobCompare,JL_DEMON);
-  gpAttachMap->m_xStore.m_pLocalJobs         =
-    new JobList(bJobCompare,JL_LOCAL);
-  gpAttachMap->m_xStore.m_pOriginatingJobs   =
-    new JobList(bJobCompare,JL_ORIGINATING);
-  gpAttachMap->m_xStore.m_pParticipatingJobs =
-    new JobList(bJobCompare,JL_PARTICIPATING);
-  
+
+  gpAttachMap->m_pJobs->m_pDemonJobs =
+      new JobList(bJobCompare, JL_DEMON);
+  gpAttachMap->m_pJobs->m_pLocalJobs =
+      new JobList(bJobCompare, JL_LOCAL);
+  gpAttachMap->m_pJobs->m_pOriginatingJobs =
+      new JobList(bJobCompare, JL_ORIGINATING);
+  gpAttachMap->m_pJobs->m_pParticipatingJobs =
+      new JobList(bJobCompare, JL_PARTICIPATING);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grid and nodes
-  
-  gpAttachMap->m_pGrid = new Grid("SEgrid"_Stz,0);
-  
-  Article* pGridArticle = gpAttachMap->m_pGrid->pArticle();
-  
+
+  gpAttachMap->m_pGrid = new Grid("SEgrid"_Stz, 0);
+
+  Article *pGridArticle = gpAttachMap->m_pGrid->pArticle();
+
   AM::pLexiconArticle()->vAppend(pGridArticle);
 
   if (AM::bVerboseProgress())
     vInfo("  Creating Grid and Node's\n"_Stz);
 
+  // How about assume the Node Name is unique, we can hash it as index.
+  // But we have to fix all the look up in the system to watch for nullptr pNode
+
   for (i8 i_Node = 0; i_Node < gxCmdLineArgs.m_xSysArgs.m_nBootNodes; i_Node++) {
-    ASSERT(AM::pGrid()->nNodes() == i_Node);
-    Node* pNode = new Node(i_Node,
+    //ASSERT(AM::pGrid()->nNodes() == i_Node);
+    //i8 iNodeNo = iHashIndex((byte*)gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sNodeName.azChar(), gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sNodeName.nSize());
+    Node *pNode = new Node(i_Node,  //iNodeNo,
                            gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sNodeName,
                            AM::nDegOfPar(),
                            gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress,
@@ -1567,148 +1567,151 @@ void Engine::vStartSystem(void)
     AM::pGrid()->vIncBootNodes();
     AM::pGrid()->vIncDefinedNodes();
 
-    Article* pNodeArticle = pNode->pArticle();
-    
+    Article *pNodeArticle = pNode->pArticle();
+
     pGridArticle->vAppend(pNodeArticle);
   }
-  
-  Node* pThisNode = AM::pGrid()->pFindNode(gxCmdLineArgs.m_xSysArgs.m_sNodeName);
-  if (! pThisNode)
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+
+
+  Node *pThisNode = AM::pGrid()->pFindNode(gxCmdLineArgs.m_xSysArgs.m_sNodeName);
+  if (!pThisNode)
+    vThrow(FK_FATAL, VL_FATAL, __func__, __FILE__, __LINE__,
            "Cannot find Node %s in the cluster"_Stz,
            gxCmdLineArgs.m_xSysArgs.m_sNodeName.azChar());
-  
+
   i8 iThisNodeNo = pThisNode->iNodeNo();
   AM::pGrid()->vThisNode(iThisNodeNo);
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // initialize the next id generators
-  gpAttachMap->m_inNextJobId.vNodeNo(iThisNodeNo);
-  gpAttachMap->m_inNextOpId.vNodeNo(iThisNodeNo);
-  gpAttachMap->m_inNextPlanId.vNodeNo(iThisNodeNo);
-  gpAttachMap->m_inNextResourceId.vNodeNo(iThisNodeNo);
-  gpAttachMap->m_inNextStreamId.vNodeNo(iThisNodeNo);
-  gpAttachMap->m_inNextTaskId.vNodeNo(iThisNodeNo);
-  gpAttachMap->m_inNextThreadId.vNodeNo(iThisNodeNo);
+  //gpAttachMap->m_inNextJobId.vNodeNo(iThisNodeNo);
+//  gpAttachMap->m_inNextOpId.vNodeNo(iThisNodeNo);
+//  gpAttachMap->m_inNextPlanId.vNodeNo(iThisNodeNo);
+//  gpAttachMap->m_inNextResourceId.vNodeNo(iThisNodeNo);
+//  gpAttachMap->m_inNextStreamId.vNodeNo(iThisNodeNo);
+//  gpAttachMap->m_inNextTaskId.vNodeNo(iThisNodeNo);
+//  gpAttachMap->m_inNextThreadId.vNodeNo(iThisNodeNo);
+
+  gpAttachMap->m_pObjects->vNodeNo(iThisNodeNo);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+
   if (AM::bVerboseProgress())
-    vInfo("  Creating SessionArray\n"_Stz);
+    vInfo("  Creating Sessions\n"_Stz);
 
 
-  gpAttachMap->m_pSessionArray = new SessionArray;
-  
+  gpAttachMap->m_pSessions = new Sessions;
+
   // create the tx set
   gpAttachMap->m_pTxSet = new TxSet();
-  
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+
   if (AM::bVerboseProgress())
     vInfo("  Creating Partition Map\n"_Stz);
 
   gpAttachMap->m_pPtnMap =
-    new PtnMap(gpAttachMap->m_pGrid->nBootNodes(),
-               gpAttachMap->m_xSysArgs.m_nDegOfPar);
+      new PtnMap(gpAttachMap->m_pGrid->nBootNodes(),
+                 gpAttachMap->m_xSysArgs.m_nDegOfPar);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (AM::bVerboseProgress())
     vInfo("  Opening Shared Log\n"_Stz);
   vOpenLog();
-  
-  
+
+
   if (AM::bVerboseProgress())
     vInfo("  Adding Expressions\n"_Stz);
-  AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_BOOT,
+  AM::vLogSys(SL_INF, gpAttachMap, YA_SYS_BOOT,
               "adding steps"_Stz); //!format-LogSys
   Step::vAddSteps();
-  
-  
+
+
   if (AM::bVerboseProgress())
     vInfo("  Adding Constants\n"_Stz);
-  AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_BOOT,
+  AM::vLogSys(SL_INF, gpAttachMap, YA_SYS_BOOT,
               "adding constants"_Stz); //!format-LogSys
   Constants::vAddConstantsArgs();
   Constants::vAddConstantsCpp();
 
-  
+
   if (AM::bVerboseProgress())
     vInfo("  Running Boot Job\n"_Stz);
-  AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_BOOT,
+  AM::vLogSys(SL_INF, gpAttachMap, YA_SYS_BOOT,
               "running boot job"_Stz); //!format-LogSys
   vCallBoot();
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // threading
-  
+
   if (AM::bVerboseProgress())
     vInfo("  Spawning Expressions\n"_Stz);
-  AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_BOOT,
+  AM::vLogSys(SL_INF, gpAttachMap, YA_SYS_BOOT,
               "spawning threads"_Stz); //!format-LogSys
   // spawn general threads
   for (i8 iThreads = 0; iThreads < gxCmdLineArgs.m_xSysArgs.m_nThreads; iThreads++) {
-    Thread* pThread = new Thread;
+    Thread *pThread = new Thread;
     pThread->vSpawnPsxThd_general();
   }
-  
+
   // spawn dummy threads
   for (i8 iThreads = 0; iThreads < gxCmdLineArgs.m_xSysArgs.m_nDummyThreads; iThreads++) {
-    Thread* pThread = new Thread;
+    Thread *pThread = new Thread;
     pThread->vSpawnPsxThd_dummy();
   }
-  
+
   // pause till all general threads are operational 
   Scheduler::vThread_NapTillGeneralThreads();
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (AM::bVerboseProgress())
     vInfo("  Running Start\n"_Stz);
-  AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_BOOT,
+  AM::vLogSys(SL_INF, gpAttachMap, YA_SYS_BOOT,
               "running Start job"_Stz); //!format-LogSys
   vCallStart();
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_BOOT,
+
+  AM::vLogSys(SL_INF, gpAttachMap, YA_SYS_BOOT,
               "instance %s started"_Stz,
               gxCmdLineArgs.m_xSysArgs.m_sRegionName.azChar()); //!format-LogSys
-  
+
   if (AM::bVerboseProgress()) {
-    vInfo("Engine Instance %s started\n"_Stz,gxCmdLineArgs.m_xSysArgs.m_sRegionName.azChar());
+    vInfo("Engine Instance %s started\n"_Stz, gxCmdLineArgs.m_xSysArgs.m_sRegionName.azChar());
     gpAttachMap->m_pPtnMap->vDumpDataBuffers();
   }
-  
+
   s32 sResident_magn;
-  MagLib::vByteMag(Process::iResidentSize(),3,sResident_magn);
+  MagLib::vByteMag(Process::iResidentSize(), 3, sResident_magn);
   s32 sVirtual_magn;
-  MagLib::vByteMag(Process::iVirtualSize(),3,sVirtual_magn);
+  MagLib::vByteMag(Process::iVirtualSize(), 3, sVirtual_magn);
 
   if (AM::bVerboseProgress()) {
 
-    vInfo("\n+\n+ %lld) Net Starting Position\n+\n"_Stz,giProgressPoint++);
+    vInfo("\n+\n+ %lld) Net Starting Position\n+\n"_Stz, giProgressPoint++);
 
     vTrace("Process resident size %s Virtual Size %s\n"_Stz,
-            sResident_magn.szStz(),
-            sVirtual_magn.szStz()
-          );
-  
+           sResident_magn.szStz(),
+           sVirtual_magn.szStz()
+    );
+
     vTrace("System time %lldus User Time %lldus\n"_Stz,
            Process::iSystemUsec(),
            Process::iUserUsec()
-           );
-    
+    );
+
     BufferPool::vReport();
-    
+
     vTrace("Open: dirs %lld files %lld mutexes %lld threads %lld sockets %lld\n"_Stz,
            *gixDir,
            *gixFile,
            *gixMutex,
            *gixPsxThd,
            *gixSocket
-           );
+    );
   }
   
   // mark attachmap to be ready for connections
@@ -1815,6 +1818,29 @@ void Engine::vWriteRegionName(void)
   if (AM::bVerboseProgress())
     vInfo("REGION NAME: %s\n"_Stz,gxCmdLineArgs.m_xSysArgs.m_sRegionName.azChar());
 }
+
+
+
+// An algorithm produced by Professor Daniel J. Bernstein
+i8 Engine::iHashIndex(const byte* str, unsigned int length)
+{
+  i8 hash = 5381;
+  unsigned int i    = 0;
+
+  for (i = 0; i < length; ++str, ++i)
+  {
+    hash = ((hash << 5) + hash) + (*str);
+  }
+
+  return hash & (C_MAX_NODES-1);
+
+}
+
+
+
+
+
+
 
 /*============================================================================*/
 /* end                                                                        */

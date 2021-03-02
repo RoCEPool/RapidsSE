@@ -6,10 +6,10 @@
 #include "Step.hpp"
 #include "EnterExit.h"
 #include "StepAccum.hpp"
-#include "StepTiming.hpp"
+#include "Steps.hpp"
 
 #include "Session.hpp"
-#include "SessionArray.hpp"
+#include "Sessions.hpp"
 #include "Response.hpp"
 #include "Result.hpp"
 #include "Job.hpp"

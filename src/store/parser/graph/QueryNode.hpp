@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "MutablePlanNode.hpp"
+#include "PlanNode.hpp"
 
 namespace Parser
 {
-  class QueryNode : public MutablePlanNode
+  class QueryNode : public PlanNode
   {
   protected:
 
@@ -15,8 +15,6 @@ namespace Parser
     Footer m_xFooter;
     
   public:
-    // Overriding these because we inherited from ListItem_t and ListItem_t overrides
-    // operator new with a fatal error that it cannot directly be newed.
     void* operator new(size_t);
     void  operator delete(void*);
 
@@ -29,7 +27,9 @@ namespace Parser
 
     Footer* aFooter(void);
 
-    void vRename(Stz* szName);
+    void vSetName(Stz* szName);
+    void vSetType(Stz* szType);
+    void vSetValue(Value&& xValue);  // move semantics
 
     // Returns the number of children of this node
     i8 iNumChildren(void);
@@ -43,11 +43,15 @@ namespace Parser
     // Adds a child at the start of the list
     void vPushChild(QueryNode* pNode);
 
-    // Insert a child after a given reference child
+    // Insert a child in the current node after a given reference child
     void vInsertChildAfter(QueryNode* pInsNode, QueryNode* pRefNode);
 
-    // Insert a child before a given reference child
+    // Insert a child in the current node before a given reference child
     void vInsertChildBefore(QueryNode* pInsNode, QueryNode* pRefNode);
+
+    // Insert a child in the current node and make it the parent of any existing children.
+    // See implementation for more details.
+    void vInsertAsParentOfChildren(QueryNode* pInsNode);
 
     // Removes a given child from the list. The removed node retains all of its children.
     void vRemoveChild(QueryNode* pNode);
@@ -58,11 +62,11 @@ namespace Parser
 
     // Removes and returns the first child. The removed node retains all of its children.
     QueryNode* pPopChild();
+
+    void vAppendProperty(QueryNode* pNode);
   };
   
   QueryNode* _pQueryNode(void* aAddr);
-  //typedef StackNL_t<CN_QUERYNODESTACK,QueryNode,1024> QueryNodeStack;
-  //typedef ListExo_t<CN_QUERYNODELIST, QueryNode> QueryNodeList;
 }
 
 /*============================================================================*/

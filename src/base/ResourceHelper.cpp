@@ -4,7 +4,7 @@
 
 #include "BASE.h"
 
-#include "ResourceTracker.hpp" //?
+#include "Resources.hpp" //?
 
 /*----------------------------------------------------------------------------*/
 /* summarize resource usage                                                   */
@@ -16,11 +16,11 @@ void ResourceHelper::vResourceSummary(void)
   printf("\n");
   printf("****************************************************************\n");
   printf((char*)"  BASE: dir %lld file %lld shm %lld socket %lld thread %lld\n"_Stz,
-         AM::pResourceTracker()->nDirOpen(),
-         AM::pResourceTracker()->nFileOpen(),
-         AM::pResourceTracker()->nShmOpen(),
-         AM::pResourceTracker()->nSocketOpen(),
-         AM::pResourceTracker()->nThreadOpen());
+         AM::pResources()->nDirOpen(),
+         AM::pResources()->nFileOpen(),
+         AM::pResources()->nShmOpen(),
+         AM::pResources()->nSocketOpen(),
+         AM::pResources()->nThreadOpen());
   printf("****************************************************************\n");
 }
 

@@ -25,7 +25,7 @@ Lexicon* BASE::_pLexicon(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Lexicon::operator new(size_t)
 {
-  Lexicon* pLexicon = (Lexicon*)(HeapMem::pAllocate(CN_LEXICON));
+  Lexicon* pLexicon = (Lexicon*)(Heaps::pAllocate(CN_LEXICON));
   
   return pLexicon;
 }
@@ -37,7 +37,7 @@ void Lexicon::operator delete(void* pLexiconAddress)
 {  
   Lexicon* pLexicon = reinterpret_cast<Lexicon*>(pLexiconAddress);
   
-  HeapMem::vFree(pLexicon);
+  Heaps::vFree(pLexicon);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -71,6 +71,18 @@
   api::executeRequest
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_EXECERRORS
+  sPath
+  "
+  define table __execErrors (
+    errorCode      INTEGER NOT NULL ,
+    severity       INTEGER NOT NULL ,
+    text           VARCHAR NOT NULL
+  ) ;
+  "
+  api::executeRequest
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_GRIDSANITY
   sPath
   "

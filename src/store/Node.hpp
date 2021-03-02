@@ -31,12 +31,13 @@ namespace STORE
     i8 m_qFreeSpace;   // last known free space
     i8 m_qFreePercent; // last known free percent
 
-
-    Heartbeat m_xHeartbeat; // contains heartbeat info
+    // Need to change the heartbeat into atomic heartbeat
+    std::atomic<Heartbeat> m_atmHeartbeat;
+    //Heartbeat m_xHeartbeat; // contains heartbeat info
     i8 m_iPrevUserUsec;
     i1 m_iNodeStatus;  // One byte should be enough. enum later.
                        // 0=Good, 1=not heard, 2=CPU max, 3=Mem max, 4=Disk max, 5=dead, 99=combination of 2/3/4/5
-    String_t<1024> m_sStartCmd; // 1K is good for now
+    //String_t<1024> m_sStartCmd; // 1K is good for now
 
     // must be last
     Footer m_xFooter;

@@ -5,6 +5,7 @@
 
 #include "json5BaseVisitor.h"
 #include "PlanNodeBuilderStack.hpp"
+#include "PlannerLock.hpp"
 
 namespace Parser
 {
@@ -21,7 +22,7 @@ namespace Parser
     static PlanNode* s_pGraphTemplate;
 
     // The lock for accessing the plan graph template
-    static Lock s_okLock;
+    static PlannerLock s_okLock;
 
     PlanNodeBuilderStack * m_pNodeBuilderStack; // A stack of PlanNodeBuilder objects
     Footer m_xFooter;

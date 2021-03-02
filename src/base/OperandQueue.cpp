@@ -22,7 +22,7 @@ OperandQueue* BASE::_pOperandQueue(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* OperandQueue::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_OPERANDQUEUE);
+  void* pObject = Heaps::pAllocate(CN_OPERANDQUEUE);
   
   return pObject;
 }
@@ -34,7 +34,7 @@ void OperandQueue::operator delete(void* aAddr)
 {
   OperandQueue* pOperandQueue = reinterpret_cast<OperandQueue*>(aAddr);
   
-  HeapMem::vFree(pOperandQueue);
+  Heaps::vFree(pOperandQueue);
 }
 
 /*----------------------------------------------------------------------------*/

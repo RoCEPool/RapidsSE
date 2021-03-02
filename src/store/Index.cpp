@@ -41,7 +41,7 @@ Index* STORE::_pIndex(void* pAddr)
 /*----------------------------------------------------------------------------*/
 void* Index::operator new(size_t)
 {
-  Index* pIndex = (Index*)HeapMem::pAllocate(CN_INDEX);
+  Index* pIndex = (Index*)Heaps::pAllocate(CN_INDEX);
   
   return pIndex;
 }
@@ -61,7 +61,7 @@ void Index::operator delete(void* aAddrIndex)
 {
   Index* pIndex = reinterpret_cast<Index*>(aAddrIndex);
 
-  HeapMem::vFree(pIndex);
+  Heaps::vFree(pIndex);
 }
 
 /*----------------------------------------------------------------------------*/

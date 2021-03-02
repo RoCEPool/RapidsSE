@@ -5,14 +5,14 @@
 
 namespace BASE
 {
-  class Resource : public Focal
+  class Resource : public Loggable
   {
   protected:
-    Focal* m_pIsFor;
+    Object* m_pIsFor;
   
   public:
     Resource(eCN eClass);
-    Resource(eCN eClass, Focal* pIsFor);
+    Resource(eCN eClass, Object* pIsFor);
    ~Resource(void) noexcept(false);
   
     void vFocalOutline(s4K& sOutline);

@@ -109,15 +109,15 @@ RowBuffer* CrwToRow::pFullRowBuffer(void)
     return nullptr;
   
   RowBuffer* pScanRowBuffer = m_pRowBuffer;
-  if (! pScanRowBuffer->pNextBuffer())
+  if (! pScanRowBuffer->pNextLinkedBuffer())
     return nullptr;
 
-  while (pScanRowBuffer->pNextBuffer()->pNextBuffer())
-    pScanRowBuffer = _pRowBuffer(pScanRowBuffer->pNextBuffer());
+  while (pScanRowBuffer->pNextLinkedBuffer()->pNextLinkedBuffer())
+    pScanRowBuffer = _pRowBuffer(pScanRowBuffer->pNextLinkedBuffer());
   
-  RowBuffer* pLastRowBuffer  = _pRowBuffer(pScanRowBuffer->pNextBuffer());
+  RowBuffer* pLastRowBuffer  = _pRowBuffer(pScanRowBuffer->pNextLinkedBuffer());
   
-  pScanRowBuffer->vNextBuffer(nullptr);
+  pScanRowBuffer->vNextLinkedBuffer(nullptr);
 
   return pLastRowBuffer;
 }
@@ -159,7 +159,7 @@ void CrwToRow::vNewRowBuffer(void)
   }
 
   // add as head of existing row buffer chain
-  pNewRowBuffer->vNextBuffer(m_pRowBuffer);
+  pNewRowBuffer->vNextLinkedBuffer(m_pRowBuffer);
   m_pRowBuffer = pNewRowBuffer;
 }
 

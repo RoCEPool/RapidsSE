@@ -384,7 +384,7 @@ void MemLib::vFreeBlock(void* aBlock, i8 nBytes)
   free(aBlock);
   
   //if (AM::bAttached())
-  //  AM::pResourceTracker()->vSubMallocAmt(nBytes);
+  //  AM::pResources()->vSubMallocAmt(nBytes);
 
   //    AM::vLogRes(SL_INF,m_iResId,RK_MALLOC,"Free'd : %lld bytes"_Stz,nBytes); //!format-LogRes
 }
@@ -502,7 +502,7 @@ void* MemLib::aMallocBlock(i8 nBytes)
   void* aBlock = (void*)malloc(nBytes);
   
   //if (AM::bAttached())
-  //  AM::pResourceTracker()->vAddMallocAmt(nBytes);
+  //  AM::pResources()->vAddMallocAmt(nBytes);
   //    AM::vLogRes(SL_INF,m_iResId,RK_MALLOC,"Malloc'd : %lld bytes"_Stz,nBytes); //!format-LogRes
 
   return aBlock;

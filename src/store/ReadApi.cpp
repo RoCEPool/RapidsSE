@@ -329,7 +329,7 @@ void ReadApi::vPurgeEntBuffers(t8 tPerspective)
     Ent* aEnt = pEntBuffer->aLeadEntry();
     
     // save next buffer
-    EntBuffer* pNextBuffer = pEntBuffer->pNextBuffer();
+    EntBuffer* pNextBuffer = pEntBuffer->pNextEntBuffer();
     
     while (aEnt) {
       

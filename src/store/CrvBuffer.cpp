@@ -39,7 +39,7 @@ CrvBuffer* STORE::_pCrvBuffer(void* aAddress)
 void* CrvBuffer::operator new(size_t)
 {
   CrvBuffer* pCrvBuffer =
-    static_cast<CrvBuffer*>(HeapMem::pAllocate(CN_CRVBUFFER));
+    static_cast<CrvBuffer*>(Heaps::pAllocate(CN_CRVBUFFER));
   
   return pCrvBuffer;
 }
@@ -51,7 +51,7 @@ void CrvBuffer::operator delete(void* aAddress)
 {
   CrvBuffer* pCrvBuffer = static_cast<CrvBuffer*>(aAddress);
   
-  HeapMem::vFree(pCrvBuffer);
+  Heaps::vFree(pCrvBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -208,7 +208,7 @@ CrvBuffer* CrvBuffer::pNextBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRVBUFFER,_FOOTER_);
   
-  return _pCrvBuffer(m_pNextBuffer);
+  return _pCrvBuffer(LinkedBuffer::pNextLinkedBuffer());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -218,7 +218,7 @@ CrvBuffer* CrvBuffer::pPrevBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRVBUFFER,_FOOTER_);
   
-  return _pCrvBuffer(m_pPrevBuffer);
+  return _pCrvBuffer(LinkedBuffer::pPrevLinkedBuffer());
 }
 
 /*----------------------------------------------------------------------------*/

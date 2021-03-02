@@ -41,7 +41,7 @@ PlanNode::PlanNode(eCN eClassNo, const PlanNode& oNode)
   m_sType.vCopy(const_cast<PlanNode &>(oNode).m_sType.szStz());
 
   if (oNode.m_pProperties) {
-    m_pProperties = new PlanNodeList();
+    m_pProperties = new PlanNodeList;
     PlanNodeIter* pPropIter = oNode.m_pProperties->pNewIter();
 
     while (pPropIter->bHasNext()) {
@@ -55,7 +55,7 @@ PlanNode::PlanNode(eCN eClassNo, const PlanNode& oNode)
   }
 
   if (oNode.m_pChildren) {
-    m_pChildren = new PlanNodeList();
+    m_pChildren = new PlanNodeList;
     PlanNodeIter* pChildIter = oNode.m_pChildren->pNewIter();
 
     while (pChildIter->bHasNext()) {

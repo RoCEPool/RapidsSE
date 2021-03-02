@@ -247,11 +247,11 @@ void vTest7(void)
   
   Arrange* pArrange = new Arrange;
   
-  Dic* pRootDic = AM::pRootDic();
+  Dic* pDicRoot = AM::pDicRoot();
   
   Word* pWord = nullptr;
   
-  while ( (pWord = pRootDic->pEachWord(pWord)) )
+  while ( (pWord = pDicRoot->pEachWord(pWord)) )
     pArrange->vInsert(pWord->szWordNm(),pWord);
   
   pArrange->vSequence();
@@ -289,7 +289,7 @@ void vTest8(void)
   
   ListExo_t<CN_CLASSPLACEHOLDER,Text>* pListExo;
   
-  pListExo = new ListExo_t<CN_CLASSPLACEHOLDER,Text>();
+  pListExo = new ListExo_t<CN_CLASSPLACEHOLDER,Text>;
   
   pListExo->vAppend(pText0);
   pListExo->vAppend(pText1);

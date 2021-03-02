@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 /* process command flags                                                      */
 /*----------------------------------------------------------------------------*/
-void PromptHelper::vEnumFlags(EnumFlags* pFlags,
+void PromptHelper::vClassFlags(ClassFlags* pFlags,
                               Stz* szGroupNm,
                               Stz* szaEnumNm[],
                               i8   iEnumLimit,

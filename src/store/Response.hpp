@@ -12,7 +12,6 @@ namespace STORE
 
   public:
     i8     m_i_Node;          // node this response came from
-    s4K    m_sResponse;       // response string
     eEC    m_eErrorCode;      // error code
 
     bool   m_bJobHasError;    // this job has an error

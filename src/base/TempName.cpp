@@ -8,18 +8,18 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 TempName::TempName(void)
-: Object(CN_SINCE)
-, m_okLock(LK_TEMP_NAME,this)
+: Object(CN_TEMPNAME)
+, m_okLock(this)
 {
-  _precondition_(_MAGIC_,CN_SINCE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TEMPNAME,_FOOTER_);
   
   m_oBirth.vNow();
   
   m_sClicker = "aaaaaaaa"_Stz;
   
-  _checkInitialised_(CN_SINCE);
+  _checkInitialised_(CN_TEMPNAME);
   
-  _postcondition_(_MAGIC_,CN_SINCE,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_TEMPNAME,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -27,7 +27,7 @@ TempName::TempName(void)
 /*----------------------------------------------------------------------------*/
 TempName::~TempName(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_SINCE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TEMPNAME,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -39,7 +39,7 @@ TempName::~TempName(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void TempName::vNextName(s32& sName)
 {
-  _precondition_(_MAGIC_,CN_SINCE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_TEMPNAME,_FOOTER_);
   
   m_okLock.vGrabWrite();
   

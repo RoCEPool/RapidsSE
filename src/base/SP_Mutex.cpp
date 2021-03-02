@@ -55,7 +55,7 @@ Stz* SP_Mutex::sz_log(Mutex* pMutex)
   StrLib::vSprint(m_caResult,
                   "{%s }"_Stz,
 
-                  aMK[pMutex->m_eMutex],
+                  aCN[pMutex->m_pObjectMutexed->eGetClassNo()],
                   
                   C_VARGS_END);
 

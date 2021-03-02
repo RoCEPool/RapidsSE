@@ -41,6 +41,9 @@
 
 #include "CmdLineArgs.hpp"
 
+#include "DdlLock.hpp"
+#include "DicLock.hpp"
+
 #include "IndexDef.hpp"
 
 #include "Index.hpp"
@@ -105,23 +108,27 @@
 #include "Job.hpp"
 #include "Job__Find.hpp"
 #include "JobList.hpp"
+#include "Jobs.hpp"
 
 #include "LogEntry.hpp"
 #include "Log.hpp"
 #include "LogicUnit.hpp"
 
+#include "Objects.hpp"
 #include "Output.hpp"
 #include "Op.hpp"
 #include "OpSpec.hpp"
 
+#include "PathIdentifier.hpp"
 #include "PipelineSpec.hpp"
 #include "Pipeline.hpp"
+#include "PlannerLock.hpp"
+
 #include "Dynamo.hpp"
 
-#include "PathIdentifier.hpp"
 
 #include "SeApi.hpp"
-#include "SessionArray.hpp"
+#include "Sessions.hpp"
 
 #include "ShortCut.hpp"
 #include "SeDeputy.hpp"
@@ -129,7 +136,7 @@
 #include "Stage.hpp"
 #include "StepAccum.hpp"
 #include "StageSpec.hpp"
-#include "StepTiming.hpp"
+#include "Steps.hpp"
 #include "Stream.hpp"
 #include "StzList.hpp"
 
@@ -147,6 +154,9 @@
 #include "SN_Tsp.hpp"
 #include "SN_Vch.hpp"
 
+#include "TccLock.hpp"
+#include "TraceLock.hpp"
+
 #include "XmitOperand.hpp"
 #include "Xmits.hpp"
 
@@ -156,10 +166,7 @@
 #include "graph/RootNode.hpp"
 #include "graph/DefinitionNode.hpp"
 #include "graph/PrimitiveNode.hpp"
-#include "graph/MutablePlanNode.hpp"
 #include "graph/QueryNode.hpp"
-#include "graph/MetadataNode.hpp"
-#include "graph/StatisticsNode.hpp"
 #include "graph/PlanDefinitionParser.hpp"
 
 #include "graphTools/GraphNav.hpp"
@@ -209,12 +216,14 @@ SizeHeap gxaSizeHeap[]
   { sizeof(CsvMeta),            HT_T_TINY    ,0 }, // CN_CSVMETA
 
   { 'D' - ('A' - 1),            HT_INVALID   ,0 }, // CN__D__
+  { sizeof(DdlLock),            HT_T_TINY    ,0 }, // CN_DDLLOCK
   { sizeof(DecaCnt),            HT_T_TINY    ,0 }, // CN_DECACNT
   { sizeof(Decider),            HT_T_TINY    ,0 }, // CN_DECIDER
   { sizeof(DefinitionNode),     HT_T_TINY    ,-8 }, // CN_DEFINITIONNODE
   { sizeof(DevIXT),             HT_T_TINY    ,0 }, // CN_DEVIXT
   { sizeof(DevROW),             HT_T_TINY    ,0 }, // CN_DEVROW
   { sizeof(Dic),                HT_T_TINY    ,0 }, // CN_DIC
+  { sizeof(DicLock),            HT_T_TINY    ,0 }, // CN_DICLOCK
   { sizeof(DicStack),           HT_T_TINY    ,0 }, // CN_DICSTACK
   { sizeof(Dir),                HT_T_TINY    ,0 }, // CN_DIR
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_DTEVAL
@@ -227,7 +236,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(EntBuffer),          HT_T_LARGE   ,0 }, // CN_ENTBUFFER
   { sizeof(EntBufSorter),       HT_T_LARGE   ,0 }, // CN_ENTBUFSORTER
   { sizeof(EntWrk),             HT_INVALID   ,0 }, // CN_ENTWRK
-  { sizeof(EnumFlags),          HT_T_TINY    ,0 }, // CN_ENUMFLAGS
+  { sizeof(ClassFlags),          HT_T_TINY    ,0 }, // CN_ENUMFLAGS
   { sizeof(Exemplar),           HT_T_TINY    ,0 }, // CN_EXEMPLAR
   { sizeof(ExprEval),           HT_T_LARGE   ,0 }, // CN_EXPREVAL
 
@@ -251,7 +260,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(HashSet),            HT_T_LARGE   ,0 }, // CN_HASHSET
   { sizeof(HashMap),            HT_T_TINY    ,0 }, // CN_HASHMAP
   { sizeof(HeapBuffer),         HT_INVALID   ,0 }, // CN_HEAPBUFFER
-  { sizeof(HeapMem),            HT_INVALID   ,0 }, // CN_HEAPMEM
+  { sizeof(Heaps),              HT_INVALID   ,0 }, // CN_HEAPMEM
 
   { 'I' - ('A' - 1),            HT_INVALID   ,0 }, // CN__I__
   { sizeof(Index),              HT_T_TINY    ,0 }, // CN_INDEX
@@ -273,6 +282,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Job),                HT_T_MEDIUM  ,0 }, // CN_JOB
   { sizeof(Job__Find),          HT_T_MEDIUM  ,0 }, // CN_JOB__FIND
   { sizeof(JobList),            HT_T_TINY    ,0 }, // CN_JOBLIST
+  { sizeof(Jobs),               HT_T_TINY    ,0 }, // CN_JOBS
 
   { 'K' - ('A' - 1),            HT_INVALID   ,0 }, // CN__K__
   { sizeof(Key),                HT_INVALID   ,0 }, // CN_KEY
@@ -302,8 +312,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Heap), /*correct*/   HT_INVALID   ,0 }, // CN_MEDIUMTRANSIENT
   { sizeof(Heap), /*correct*/   HT_INVALID   ,0 }, // CN_MEDIUMTVIRTUAL
   { sizeof(MemTest),            HT_T_TINY    ,0 }, // CN_MEMTEST
-  { sizeof(MetadataNode),       HT_T_TINY    ,-8 }, // CN_METADATANODE
-  { sizeof(MutablePlanNode),    HT_T_TINY    ,-8 }, // CN_MUTABLEPLANNODE
   { sizeof(Mutex),              HT_T_TINY    ,0 }, // CN_MUTEX
 
   { 'N' - ('A' - 1),            HT_INVALID   ,0 }, // CN__N__
@@ -315,7 +323,9 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Numbat),             HT_T_LARGE   ,0 }, // CN_NUMBAT
 
   { 'O' - ('A' - 1),            HT_INVALID   ,0 }, // CN__O__
-  { sizeof(Output),             HT_T_TINY    ,0 }, // CN_OUTUT
+  { sizeof(Objects),            HT_T_MEDIUM  ,0 }, // CN_OBJECTS
+  { sizeof(ObjectSnapshot),     HT_T_SMALL   ,0 }, // CN_OBJECTSNAPSHOT
+  { sizeof(Output),             HT_T_TINY    ,0 }, // CN_OUTPUT
   { sizeof(Op),                 HT_T_LARGE   ,0 }, // CN_OP
   { sizeof(OpenFiles),          HT_T_TINY    ,0 }, // CN_OPENFILES
   { sizeof(OperandQueue),       HT_T_TINY    ,0 }, // CN_OPERANDQUEUE
@@ -328,14 +338,14 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Peruse),               HT_T_MEDIUM  ,0 }, // CN_PERUSE
   { sizeof(Pipeline),             HT_T_SMALL   ,0 }, // CN_PIPELINE
   { sizeof(PipelineSpec),         HT_T_SMALL   ,0 }, // CN_PIPELINESPEC
-  { sizeof(PlanDefinitionParser), HT_T_MEDIUM  ,  -8 }, // CN_PLANDEFINITIONPARSER
+  { sizeof(PlanDefinitionParser), HT_T_MEDIUM  , -8 }, // CN_PLANDEFINITIONPARSER
+  { sizeof(PlannerLock),          HT_T_TINY    ,0 }, // CN_PLANNERLOCK
   { sizeof(PlanNode),             HT_T_TINY    , -8 }, // CN_PLANNODE
   { sizeof(PlanNodeBuilder),      HT_T_TINY    ,0 }, // CN_PLANNODEBUILDER
   { sizeof(PlanNodeBuilderList),  HT_T_TINY    ,0 }, // CN_PLANNODEBUILDERLIST
   { sizeof(PlanNodeBuilderStack), HT_T_MEDIUM  ,0 }, // CN_PLANNODEBUILDERSTACK
   { sizeof(PlanNodeList),         HT_T_TINY    ,0 }, // CN_PLANNODELIST
   { sizeof(PlanOperand),          HT_T_TINY    ,0 }, // CN_PLANOPERAND
-  { sizeof(ObjectSnapshot),       HT_T_SMALL   ,0 }, // CN_OBJECTSNAPSHOT
   { sizeof(Pot),                  HT_T_LARGE   ,0 }, // CN_POT
   { sizeof(Predicate),            HT_T_TINY    ,0 }, // CN_PREDICATE
   { sizeof(PredicateVec),         HT_T_MEDIUM  ,0 }, // CN_PREDICATEVEC
@@ -359,7 +369,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Reader),             HT_T_TINY    ,0 }, // CN_READER
   { sizeof(Record),             HT_T_MEDIUM  ,0 }, // CN_RECORD
   { sizeof(RelOp),              HT_T_TINY    ,0 }, // CN_RELOP
-  { sizeof(ResourceTracker),    HT_T_TINY    ,0 }, // CN_RESOURCETRACKER
+  { sizeof(Resources),          HT_T_TINY    ,0 }, // CN_RESOURCES
   { sizeof(Response),           HT_T_MEDIUM  ,0 }, // CN_RESPONSE
   { sizeof(ResponseVec),        HT_T_SMALL   ,0 }, // CN_RESPONSEVEC
   { sizeof(Result),             HT_T_MEDIUM  ,0 }, // CN_RESULT
@@ -394,7 +404,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(SenCompiler),        HT_T_TINY    ,0 }, // CN_SENCOMPILER
   { sizeof(SePrompt),           HT_T_LARGE   ,0 }, // CN_SEPROMPT
   { sizeof(Session),            HT_T_MEDIUM  ,0 }, // CN_SESSION
-  { sizeof(SessionArray),       HT_T_TINY    ,0 }, // CN_SESSIONARRAY
+  { sizeof(Sessions),           HT_T_TINY    ,0 }, // CN_SESSIONS
   { sizeof(ShortCut),           HT_T_MEDIUM  ,0 }, // CN_SHORTCUT
   { sizeof(ShortCutVec),        HT_T_MEDIUM  ,0 }, // CN_SHORTCUTVEC
   { sizeof(Birth),              HT_INVALID   ,0 }, // CN_SINCE
@@ -426,9 +436,8 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Stage),              HT_T_SMALL   ,0 }, // CN_STAGE
   { sizeof(StageSpec),          HT_T_SMALL   ,0 }, // CN_STAGESPEC
   { sizeof(Statistics),         HT_INVALID   ,0 }, // CN_STATISTICS
-  { sizeof(StatisticsNode),     HT_T_TINY    ,-8 }, // CN_STATISTICSNODE
   { sizeof(StepAccum),          HT_INVALID   ,0 }, // CN_STEPACCUM
-  { sizeof(StepTiming),         HT_T_LARGE   ,0 }, // CN_STEPTIMING
+  { sizeof(Steps),              HT_T_LARGE   ,0 }, // CN_STEPS
   { sizeof(Stream),             HT_T_SMALL   ,0 }, // CN_STREAM
   { sizeof(StreamDef),          HT_T_LARGE   ,0 }, // CN_STREAMDEF
   { sizeof(StreamSet),          HT_T_LARGE   ,0 }, // CN_STREAMSET
@@ -436,7 +445,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(StzList),            HT_T_TINY    ,0 }, // CN_STZLIST
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_STZVAL
   { sizeof(SysCall),            HT_INVALID   ,0 }, // CN_SYSCALL
-  { sizeof(SystemSchedule),     HT_T_TINY    ,0 }, // CN_SYSTEMSCHEDULE
+  { sizeof(Schedule),           HT_T_TINY    ,0 }, // CN_SCHEDULE
 
   { 'T' - ('A' - 1),            HT_INVALID   ,0 }, // CN__T__
   { sizeof(Table),              HT_T_TINY    ,0 }, // CN_TABLE
@@ -444,9 +453,10 @@ SizeHeap gxaSizeHeap[]
   { sizeof(TablePtn),           HT_T_TINY    ,0 }, // CN_TABLEPTN
   { sizeof(TablePtnVec),        HT_T_SMALL   ,0 }, // CN_TABLEPTNVEC
   { sizeof(TagSet),             HT_T_MEDIUM  ,0 }, // CN_TAGSET
-  { sizeof(Task),               HT_T_TINY    ,0 }, // CN_TASK
+  { sizeof(Task),               HT_T_SMALL   ,0 }, // CN_TASK
   { sizeof(TaskList),           HT_T_TINY    ,0 }, // CN_TASKLIST
   { sizeof(TaskQueue),          HT_T_TINY    ,0 }, // CN_TEMPNAME
+  { sizeof(TccLock),            HT_T_TINY    ,0 }, // CN_TCCLOCK
   { sizeof(TempName),           HT_T_TINY    ,0 }, // CN_TENANT
   { sizeof(Tenant),             HT_T_TINY    ,0 }, // CN_TENANTS
   { sizeof(Tenants),            HT_T_TINY    ,0 }, // CN_TASKQUEUE
@@ -471,6 +481,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(ToNstRow),           HT_T_MEDIUM  ,0 }, // CN_TONSTROW
   { sizeof(ToPtnRow),           HT_T_LARGE   ,0 }, // CN_TOPTNROW
   { sizeof(ToRow),              HT_T_MEDIUM  ,0 }, // CN_TOROW
+  { sizeof(TraceLock),          HT_T_TINY    ,0 }, // CN_TRACELOCK
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_TSPVAL
   { sizeof(Tx),                 HT_T_TINY    ,0 }, // CN_TX
   { sizeof(TxSet),              HT_T_TINY    ,0 }, // CN_TXSET

@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 void* StageSpec::operator new(size_t)
 {
-  StageSpec* pStageSpec = reinterpret_cast<StageSpec*>(HeapMem::pAllocate(CN_STAGESPEC));
+  StageSpec* pStageSpec = reinterpret_cast<StageSpec*>(Heaps::pAllocate(CN_STAGESPEC));
   
   return pStageSpec;
 }
@@ -25,7 +25,7 @@ void StageSpec::operator delete(void* aAddr)
 {
   StageSpec* pStageSpec = reinterpret_cast<StageSpec*>(aAddr);
   
-  HeapMem::vFree(pStageSpec);
+  Heaps::vFree(pStageSpec);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -102,6 +102,23 @@ void StageSpec::vCopyOps(StageSpec* pStageSpec_from)
     
     vAdd(pOpSpec_from);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* find op matching given name                                                */
+/*----------------------------------------------------------------------------*/
+OpSpec* StageSpec::pFindOpSpec(Stz* szFindNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+
+  for (i8 i_OpSpec = 0; i_OpSpec < nItems(); i_OpSpec++) {
+    OpSpec* pOpSpec = pGet(i_OpSpec);
+
+    if (pOpSpec->szOpNm()->bSame(szFindNm))
+      return pOpSpec;
+  }
+
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

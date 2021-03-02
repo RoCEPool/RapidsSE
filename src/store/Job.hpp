@@ -12,7 +12,7 @@
 
 namespace STORE
 {
-  class Job : public Focal,
+  class Job : public Loggable,
               public CRM<Job>
   {
   
@@ -130,8 +130,6 @@ namespace STORE
     void vPrintResult(Session* pSession, eRS eResponse);
     void vResetForReuse(Session* pSession);
     Response* pResponse(void);
-    Stz* szResponse(void);
-    void vResponse(Stz* sResponse);
     void vOriginResponseVec(ResponseVec* pResponseVec);
     ResponseVec* pOriginResponseVec(void);
     void vSetFromCascade(Stz* szCascade);

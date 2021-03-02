@@ -21,7 +21,7 @@ TextTiny* BASE::_pTextTiny(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* TextTiny::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_TEXTTINY);
+  void* pObject = Heaps::pAllocate(CN_TEXTTINY);
   
   return pObject;
 }
@@ -33,7 +33,7 @@ void TextTiny::operator delete(void* pTextAddress)
 {
   TextTiny* pTextTiny = reinterpret_cast<TextTiny*>(pTextAddress);
   
-  HeapMem::vFree(pTextTiny);
+  Heaps::vFree(pTextTiny);
 }
 
 /*----------------------------------------------------------------------------*/

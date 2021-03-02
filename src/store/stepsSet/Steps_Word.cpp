@@ -6,7 +6,7 @@
 #include "Step.hpp"
 #include "EnterExit.h"
 #include "StepAccum.hpp"
-#include "StepTiming.hpp"
+#include "Steps.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -454,7 +454,7 @@ void Step::vWordNew(void)
   if (m_oDicStack.iCount())
     pDic = m_oDicStack.pTop();
   else
-    pDic = AM::pRootDic();
+    pDic = AM::pDicRoot();
 
   Word* pNewWord = new(pDic) Word(sWordNm);
     

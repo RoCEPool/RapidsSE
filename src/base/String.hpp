@@ -12,10 +12,10 @@ namespace BASE
   
     i8     m_nArea;          // byte length of char area/array
     i8     m__reserved__;    // reserved for size
+    i8     m__reserved2__;   // reserved
     char   m_caCharArea[1];  // area to hold chars
 
-    // m_xFooter which is :
-    //   this + sizeof(m_xHeader) + sizeof(m_nSize) + m_nSize
+    // m_xFooter the address of which is calculated
   
   public:
     void* operator new(size_t);

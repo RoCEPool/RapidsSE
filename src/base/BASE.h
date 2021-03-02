@@ -52,6 +52,8 @@ extern d8 C_D8_MID;
 #include "Gid.h"
 #include "Null.hpp"
 
+#include "PadWord.hpp"
+
 #include "Asm.h"
 
 #include "Stz.hpp"
@@ -97,7 +99,6 @@ extern d8 C_D8_MID;
 #include "FltLib.hpp"
 
 #include "Statistics.hpp"
-#include "Focal.hpp"
 
 #include "String.hpp"
 
@@ -125,6 +126,10 @@ extern d8 C_D8_MID;
 
 #include "Bytes_t.hpp"
 #include "String_t.hpp"
+#include "Atomic.hpp"
+#include "NextGid.hpp"
+#include "Objects.hpp"
+#include "Loggable.hpp"
 
 #include "SP.hpp"
 #include "SPmedium.hpp"
@@ -156,9 +161,12 @@ extern d8 C_D8_MID;
 #include "Process.hpp"
 #include "Shell.hpp"
 
-#include "Atomic.hpp"
 #include "Lock.hpp"
-#include "LockTracker.hpp"
+#include "MasterLock.hpp"
+#include "DdlLock.hpp"
+#include "DicLock.hpp"
+#include "TccLock.hpp"
+#include "Locks.hpp"
 #include "Mutex.hpp"
 
 #include "SingleWord.hpp"
@@ -189,7 +197,7 @@ extern d8 C_D8_MID;
 #include "BufferMap.hpp"
 
 #include "HeapBuffer.hpp"
-#include "HeapMem.hpp"
+#include "Heaps.hpp"
 #include "Heap.hpp"
 #include "ObjectSnapshot.hpp"
 #include "Region.hpp"
@@ -202,11 +210,10 @@ extern d8 C_D8_MID;
 #include "CRM.hpp"
 #include "DecaCnt.hpp"
 #include "Decider.hpp"
-#include "EnumFlags.hpp"
+#include "ClassFlags.hpp"
 #include "FreqDist.hpp"
 #include "HV.hpp"
 #include "MemTest.hpp"
-#include "NextGid.hpp"
 #include "Now.hpp"
 #include "Rand.hpp"
 #include "SeeMe.hpp"
@@ -284,7 +291,7 @@ extern d8 C_D8_MID;
 
 #include "TlsKeys.hpp"
 
-#include "ResourceTracker.hpp"
+#include "Resources.hpp"
 
 #include "AnnChar.hpp"
 #include "Token.hpp"
@@ -350,6 +357,7 @@ extern d8 C_D8_MID;
 
 #include "OperandQueue.hpp"
 
+#include "BufferNo.hpp"
 #include "LinkedBuffer.hpp"
 
 //------------------------------------------------------------------------------
@@ -379,14 +387,14 @@ extern d8 C_D8_MID;
 #include "ThreadQueue.hpp"
 #include "ThreadVec.hpp"
 
-#include "SystemSchedule.hpp"
+#include "Schedule.hpp"
 
 //------------------------------------------------------------------------------
 
 namespace BASE
 {
   void vCheckAssumptions(void);
-  static void vSubSystem(SelfFn* aSelfFn, TokenVec* pTokenVec);
+  void vSubSystem(SelfFn* aSelfFn, TokenVec* pTokenVec);
 
   bool bTraceWith(Stz* szWith);
   void vTraceWith(void);

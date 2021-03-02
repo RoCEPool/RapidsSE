@@ -6,7 +6,7 @@
 #include "Step.hpp"
 #include "EnterExit.h"
 #include "StepAccum.hpp"
-#include "StepTiming.hpp"
+#include "Steps.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -30,7 +30,7 @@ void Step::vArticleDump(void)
   
   //vTrace("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"_Stz);
   
-  //pArticle = AM::pRootArticle();
+  //pArticle = AM::pArcticleRoot();
   
   //pArticle->vDumpRecursively(0);
   

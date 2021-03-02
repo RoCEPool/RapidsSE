@@ -5,9 +5,11 @@
 #include "BASE.h"
 
 #include "Dir.hpp" //?
-#include "ResourceTracker.hpp" //?
+#include "Resources.hpp" //?
 
 #include <sys/stat.h>
+
+#include "MY.hpp"
 
 Atomic gixDir;
 
@@ -32,7 +34,7 @@ Dir* BASE::_pDir(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Dir::operator new(size_t)
 {
-  void* pDir = HeapMem::pAllocate(CN_DIR);
+  void* pDir = Heaps::pAllocate(CN_DIR);
   
   return pDir;
 }
@@ -44,13 +46,13 @@ void Dir::operator delete(void* pDirAddress)
 {
   Object* pObject = reinterpret_cast<Object*>(pDirAddress);
   
-  HeapMem::vFree(pObject);
+  Heaps::vFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Dir::Dir(Focal* pIsFor)
+Dir::Dir(Loggable* pIsFor)
 : Resource(CN_DIR,pIsFor)
 {
   _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
@@ -118,12 +120,12 @@ bool Dir::bAccess(Stz* szDirPath, i8 iPermission)
 /*----------------------------------------------------------------------------*/
 /* change working directory of the process                                    */
 /*----------------------------------------------------------------------------*/
-bool Dir::bChangeCurrent(Stz* aDirPath)
+bool Dir::bChangeCurrent(Stz* szDirPath)
 {
-  i8 iResult = chdir(aDirPath->azChar());
+  i8 iResult = chdir(szDirPath->azChar());
   
   if (iResult) {
-    vWarn("chdir(%s) error; errno=%d\n"_Stz,aDirPath->azChar(),errno);
+    vWarn("chdir(%s) error; errno=%d\n"_Stz,szDirPath->azChar(),errno);
     return false;
   }
   
@@ -133,9 +135,9 @@ bool Dir::bChangeCurrent(Stz* aDirPath)
 /*----------------------------------------------------------------------------*/
 /* get current working directory                                              */
 /*----------------------------------------------------------------------------*/
-bool Dir::bGetCurrent(Stz* aDirPath)
+bool Dir::bGetCurrent(Stz* szDirPath)
 {
-  char* aCurrPath = getcwd(aDirPath->azChar(),C_MAX_PATH);
+  char* aCurrPath = getcwd(szDirPath->azChar(),C_MAX_PATH);
   
   if ( ! aCurrPath ) {
     vWarn("Dir::bGet: getcwd() error; errno=%d"_Stz,errno);
@@ -148,11 +150,11 @@ bool Dir::bGetCurrent(Stz* aDirPath)
 /*----------------------------------------------------------------------------*/
 /* test if directory path exists                                              */
 /*----------------------------------------------------------------------------*/
-bool Dir::bExists(Stz* aDirPath)
+bool Dir::bExists(Stz* szDirPath)
 {
   struct stat xStat;
   
-  int iResult = stat(aDirPath->azChar(),&xStat);
+  int iResult = stat(szDirPath->azChar(),&xStat);
   
   if (0 == iResult && (xStat.st_mode & S_IFDIR))
     return true;
@@ -160,7 +162,7 @@ bool Dir::bExists(Stz* aDirPath)
   if (iResult && ENOENT == errno)
     return false;
     
-  vWarn("Dir::bExists: stat(%s) error; errno=%d"_Stz,aDirPath->azChar(),errno);
+  vWarn("Dir::bExists: stat(%s) error; errno=%d"_Stz,szDirPath->azChar(),errno);
   
   return false;
 }
@@ -168,9 +170,9 @@ bool Dir::bExists(Stz* aDirPath)
 /*----------------------------------------------------------------------------*/
 /* make specified directory                                                   */
 /*----------------------------------------------------------------------------*/
-bool Dir::bMake(Stz* aDirPath)
+bool Dir::bMake(Stz* szDirPath)
 {
-  char* aPath = aDirPath->azChar();
+  char* aPath = szDirPath->azChar();
   
   if (mkdir(aPath,0777) != 0 && EEXIST != errno) {
     vWarn("Dir::bMake: mkdir() error; errno=%d"_Stz,errno);
@@ -183,9 +185,9 @@ bool Dir::bMake(Stz* aDirPath)
 /*----------------------------------------------------------------------------*/
 /* remove specified directory                                                 */
 /*----------------------------------------------------------------------------*/
-bool Dir::bRemove(Stz* aDirPath)
+bool Dir::bRemove(Stz* szDirPath)
 {
-  char* aPath = aDirPath->azChar();
+  char* aPath = szDirPath->azChar();
   
   int iResult = rmdir(aPath);
   
@@ -220,7 +222,7 @@ void Dir::vClose(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (AM::bAttached()) AM::pResourceTracker()->vDecDirOpen();
+  if (AM::bAttached()) AM::pResources()->vDecDirOpen();
   
   AM::vLogRes(SL_INF,this,RA_DIR_CLOSED,
               "Dir closed : %s"_Stz, //!format-LogRes
@@ -290,13 +292,17 @@ bool Dir::bIsOpen(void)
 /*----------------------------------------------------------------------------*/
 /* open the directory for reading                                             */
 /*----------------------------------------------------------------------------*/
-bool Dir::bOpen(Stz* aDirPath)
+bool Dir::bOpen(Stz* szDirPath)
 {
   _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
   
+  if (! MY::pTask()) {
+    printf("Dir::bOpen %s (with no task)\n",szDirPath->azChar());
+  }
+
   ASSERT(bIsClosed());
   
-  m_sDirPath = aDirPath;
+  m_sDirPath = szDirPath;
   
   char* wPath = m_sDirPath.azChar();
  
@@ -309,11 +315,11 @@ bool Dir::bOpen(Stz* aDirPath)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (AM::bAttached()) AM::pResourceTracker()->vIncDirOpen();
+  if (AM::bAttached()) AM::pResources()->vIncDirOpen();
   
   AM::vLogRes(SL_INF,this,RA_DIR_OPENED,
               "Dir opened : %s"_Stz, //!format-LogRes
-              aDirPath);
+              szDirPath);
 
   ASSERT(bIsOpen());
   return true;

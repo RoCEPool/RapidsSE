@@ -38,6 +38,7 @@ namespace STORE
     i8   i_StageSpec(void);
     void vAddOpSpec(OpSpec* pOpSpec);
     void vCopyOps(StageSpec* pStageSpec);
+    OpSpec* pFindOpSpec(Stz* szFindNm);
     Stz* szStageNm(void);
     bool bNodeTopo(void);
     PipelineSpec* pPipelineSpec(void);

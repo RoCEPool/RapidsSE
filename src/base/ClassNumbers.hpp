@@ -49,12 +49,14 @@ enum eCN : u2 // Class Number
   /* */ CN_CSVMETA,
 
   /* */ CN__D__,
+  /* */ CN_DDLLOCK,
   /* */ CN_DECACNT,
   /* */ CN_DECIDER,
   /* */ CN_DEFINITIONNODE,
   /* */ CN_DEVIXT,
   /* */ CN_DEVROW,
   /* */ CN_DIC,
+  /* */ CN_DICLOCK,
   /* */ CN_DICSTACK,
   /* */ CN_DIR,
   /* */ CN_DTEVAL,
@@ -114,6 +116,7 @@ enum eCN : u2 // Class Number
   /* */ CN_JOB,
   /* */ CN_JOB__FIND,
   /* */ CN_JOBLIST,
+  /* */ CN_JOBS,
 
   /* */ CN__K__,
   /* */ CN_KEY,
@@ -143,8 +146,6 @@ enum eCN : u2 // Class Number
   /* */ CN_MEDIUMTRANSIENT,
   /* */ CN_MEDIUMVIRTUAL,
   /* */ CN_MEMTEST,
-  /* */ CN_METADATANODE,
-  /* */ CN_MUTABLEPLANNODE,
   /* */ CN_MUTEX,
 
   /* */ CN__N__,
@@ -156,6 +157,8 @@ enum eCN : u2 // Class Number
   /* */ CN_NUMBAT,
   
   /* */ CN__O__,
+  /* */ CN_OBJECTS,
+  /* */ CN_OBJECTSNAPSHOT,
   /* */ CN_OUTPUT,
   /* */ CN_OP,
   /* */ CN_OPENFILES,
@@ -170,13 +173,13 @@ enum eCN : u2 // Class Number
   /* */ CN_PIPELINE,
   /* */ CN_PIPELINESPEC,
   /* */ CN_PLANDEFINITIONPARSER,
+  /* */ CN_PLANNERLOCK,
   /* */ CN_PLANNODE,
   /* */ CN_PLANNODEBUILDER,
   /* */ CN_PLANNODEBUILDERLIST,
   /* */ CN_PLANNODEBUILDERSTACK,
   /* */ CN_PLANNODELIST,
   /* */ CN_PLANOPERAND,
-  /* */ CN_OBJECTSNAPSHOT,
   /* */ CN_POT,
   /* */ CN_PREDICATE,
   /* */ CN_PREDICATEVEC,
@@ -200,7 +203,7 @@ enum eCN : u2 // Class Number
   /* */ CN_READER,
   /* */ CN_RECORD,
   /* */ CN_RELOP,
-  /* */ CN_RESOURCETRACKER,
+  /* */ CN_RESOURCES,
   /* */ CN_RESPONSE,
   /* */ CN_RESPONSEVEC,
   /* */ CN_RESULT,
@@ -235,7 +238,7 @@ enum eCN : u2 // Class Number
   /* */ CN_SENCOMPILER,
   /* */ CN_SEPROMPT,
   /* */ CN_SESSION,
-  /* */ CN_SESSIONARRAY,
+  /* */ CN_SESSIONS,
   /* */ CN_SHORTCUT,
   /* */ CN_SHORTCUTVEC,
   /* */ CN_SINCE,
@@ -267,9 +270,8 @@ enum eCN : u2 // Class Number
   /* */ CN_STAGE,
   /* */ CN_STAGESPEC,
   /* */ CN_STATISTICS,
-  /* */ CN_STATISTICSNODE,
   /* */ CN_STEPACCUM,
-  /* */ CN_STEPTIMING,
+  /* */ CN_STEPS,
   /* */ CN_STREAM,
   /* */ CN_STREAMDEF,
   /* */ CN_STREAMSET,
@@ -277,7 +279,7 @@ enum eCN : u2 // Class Number
   /* */ CN_STZLIST,
   /* */ CN_STZVAL,
   /* */ CN_SYSCALL,
-  /* */ CN_SYSTEMSCHEDULE,
+  /* */ CN_SCHEDULE,
 
   /* */ CN__T__,
   /* */ CN_TABLE,
@@ -288,6 +290,7 @@ enum eCN : u2 // Class Number
   /* */ CN_TASK,
   /* */ CN_TASKLIST,
   /* */ CN_TASKQUEUE,
+  /* */ CN_TCCLOCK,
   /* */ CN_TEMPNAME,
   /* */ CN_TENANT,
   /* */ CN_TENANTS,
@@ -312,6 +315,7 @@ enum eCN : u2 // Class Number
   /* */ CN_TONSTROW,
   /* */ CN_TOPTNROW,
   /* */ CN_TOROW,
+  /* */ CN_TRACELOCK,
   /* */ CN_TSPVAL,
   /* */ CN_TX,
   /* */ CN_TXSET,
@@ -377,12 +381,14 @@ static Stz* aCN[]
   /* */ "CSVMETA"_Stz,              // CN_CSVMETA
  
   /* */ "_D__"_Stz,                 // CN__D__
+  /* */ "DDLLOCK"_Stz,              // CN_DDLLOCK
   /* */ "DECACNT"_Stz,              // CN_DECACNT
   /* */ "DECIDER"_Stz,              // CN_DECIDER
   /* */ "DEFINITIONNODE"_Stz,       // CN_DEFINITIONNODE
   /* */ "DEVIXT"_Stz,               // CN_DEVIXT
   /* */ "DEVROW"_Stz,               // CN_DEVROW
   /* */ "DIC"_Stz,                  // CN_DIC
+  /* */ "DICLOCK"_Stz,              // CN_DICLOCK
   /* */ "DICSTACK"_Stz,             // CN_DICSTACK
   /* */ "DIR"_Stz,                  // CN_DIR
   /* */ "DTEVAL"_Stz,               // CN_DTEVAL
@@ -441,7 +447,8 @@ static Stz* aCN[]
   /* */ "JOB"_Stz,                  // CN_JOB
   /* */ "JOB__FIND"_Stz,            // CN_JOB__FIND
   /* */ "JOBLIST"_Stz,              // CN_JOBLIST
- 
+  /* */ "JOBS"_Stz,                 // CN_JOBS
+
   /* */ "_K__"_Stz,                 // CN__K__
   /* */ "KEY"_Stz,                  // CN_KEY
    
@@ -470,8 +477,6 @@ static Stz* aCN[]
   /* */ "MEDIUMTRANSIENT"_Stz,      // CN_MEDIUMTRANSIENT
   /* */ "MEDIUMVIRTUAL"_Stz,        // CN_MEDIUMVIRTUAL
   /* */ "MEMTEST"_Stz,              // CN_MEMTEST
-  /* */ "METADATANODE"_Stz,         // CN_METADATANODE
-  /* */ "MUTABLEPLANNODE"_Stz,      // CN_MUTABLEPLANNODE
   /* */ "MUTEX"_Stz,                // CN_MUTEX
  
   /* */ "_N__"_Stz,                 // CN__N__
@@ -483,6 +488,8 @@ static Stz* aCN[]
   /* */ "NUMBAT"_Stz,               // CN_NUMBAT
    
   /* */ "_O__"_Stz,                 // CN__O__
+  /* */ "OBJECTS"_Stz,              // CN_OBJECTS
+  /* */ "OBJECTSNAPSHOT"_Stz,       // CN_OBJECTSNAPSHOT
   /* */ "OUTPUT"_Stz,               // CN_OUTPUT
   /* */ "OP"_Stz,                   // CN_OP
   /* */ "OPENFILES"_Stz,            // CN_OPENFILES
@@ -497,13 +504,13 @@ static Stz* aCN[]
   /* */ "PIPELINE"_Stz,             // CN_PIPELINE
   /* */ "PIPELINESPEC"_Stz,         // CN_PIPELINESPEC
   /* */ "PLANDEFINITIONPARSER"_Stz, // CN_PLANDEFINITIONPARSER
+  /* */ "PLANNERLOCK"_Stz,          // CN_PLANNERLOCK
   /* */ "PLANNODE"_Stz,             // CN_PLANNODE
   /* */ "PLANNODEBUILDER"_Stz,      // CN_PLANNODEBUILDER
   /* */ "PLANNODEBUILDERLIST"_Stz,  // CN_PLANNODEBUILDERLIST
   /* */ "PLANNODEBUILDERSTAACK"_Stz,// CN_PLANNODEBUILDERSTACK
   /* */ "PLANNODELIST"_Stz,         // CN_PLANNODELIST
   /* */ "PLANOPERAND"_Stz,          // CN_PLANOPERAND
-  /* */ "POOLSNAPSHOT"_Stz,         // CN_OBJECTSNAPSHOT
   /* */ "POT"_Stz,                  // CN_POT
   /* */ "PREDICATE"_Stz,            // CN_PREDICATE
   /* */ "PREDICATEVEC"_Stz,         // CN_PREDICATEVEC
@@ -527,7 +534,7 @@ static Stz* aCN[]
   /* */ "READER"_Stz,               // CN_READER
   /* */ "RECORD"_Stz,               // CN_RECORD
   /* */ "RELOP"_Stz,                // CN_RELOP
-  /* */ "RESOURCETRACKER"_Stz,      // CN_RESOURCETRACKER
+  /* */ "RESOURCETRACKER"_Stz,      // CN_RESOURCES
   /* */ "RESPONSE"_Stz,             // CN_RESPONSE
   /* */ "RESPONSEVEC"_Stz,          // CN_RESPONSEVEC
   /* */ "RESULT"_Stz,               // CN_RESULT
@@ -562,7 +569,7 @@ static Stz* aCN[]
   /* */ "SENCOMPILER"_Stz,          // CN_SENCOMPILER
   /* */ "SEPROMPT"_Stz,             // CN_SEPROMPT
   /* */ "SESSION"_Stz,              // CN_SESSION
-  /* */ "SESSIONARRAY"_Stz,         // CN_SESSIONARRAY
+  /* */ "SESSIONARRAY"_Stz,         // CN_SESSIONS
   /* */ "SHORTCUT"_Stz,             // CN_SHORTCUT
   /* */ "SHORTCUTVEC"_Stz,          // CN_SHORTCUTVEC
   /* */ "SINCE"_Stz,                // CN_SINCE
@@ -594,9 +601,8 @@ static Stz* aCN[]
   /* */ "STAGE"_Stz,                // CN_STAGE
   /* */ "STAGESPEC"_Stz,            // CN_STAGESPEC
   /* */ "STATISTICS"_Stz,           // CN_STATISTICS
-  /* */ "STATISTICSNODE"_Stz,       // CN_STATISTICSNODE
   /* */ "STEPACCUM"_Stz,            // CN_STEPACCUM
-  /* */ "STEPTIMING"_Stz,           // CN_STEPTIMING
+  /* */ "STEPS"_Stz,                // CN_STEPS
   /* */ "STRAND"_Stz,               // CN_STREAM
   /* */ "STREAMDEF"_Stz,            // CN_STREAMDEF
   /* */ "STREAMSET"_Stz,            // CN_STREAMSET
@@ -604,7 +610,7 @@ static Stz* aCN[]
   /* */ "STZLIST"_Stz,              // CN_STZLIST
   /* */ "STZVAL"_Stz,               // CN_STZVAL
   /* */ "SYSCALL"_Stz,              // CN_SYSCALL
-  /* */ "SYSTEMSCHEDULE"_Stz,       // CN_SYSTEMSCHEDULE
+  /* */ "SYSTEMSCHEDULE"_Stz,       // CN_SCHEDULE
 
   /* */ "_T__"_Stz,                 // CN__T__
   /* */ "TABLE"_Stz,                // CN_TABLE
@@ -615,6 +621,7 @@ static Stz* aCN[]
   /* */ "TASK"_Stz,                 // CN_TASK
   /* */ "TASKLIST"_Stz,             // CN_TASKLIST
   /* */ "TASKQUEUE"_Stz,            // CN_TASKQUEUE
+  /* */ "TCCLOCK"_Stz,              // CN_TCCLOCK
   /* */ "TEMPNAME"_Stz,             // CN_TEMPNAME
   /* */ "TENANT"_Stz,               // CN_TENANT
   /* */ "TENANTS"_Stz,              // CN_TENANTS
@@ -639,6 +646,7 @@ static Stz* aCN[]
   /* */ "TONSTROW"_Stz,             // CN_TONSTROW
   /* */ "TOPTNROW"_Stz,             // CN_TOPTNROW
   /* */ "TOROW"_Stz,                // CN_TOROW
+  /* */ "TRACELOCK"_Stz,            // CN_TRACELOCK
   /* */ "TSPVAL"_Stz,               // CN_TSPVAL
   /* */ "TX"_Stz,                   // CN_TX
   /* */ "TXSET"_Stz,                // CN_TXSET

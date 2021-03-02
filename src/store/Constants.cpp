@@ -45,7 +45,7 @@
 #include "eUK.h"
 
 #include "StepAccum.hpp"
-#include "StepTiming.hpp"
+#include "Steps.hpp"
 
 #include "CmdLineArgs.hpp"
 
@@ -62,9 +62,9 @@ extern Stz* gsBuildBranch;
 /*----------------------------------------------------------------------------*/
 void Constants::vAddConstant(Stz* szName, i8 iVal)
 {
-  Word* pNewWord = new(AM::pRootDic()) Word(szName);
+  Word* pNewWord = new(AM::pDicRoot()) Word(szName);
   
-  pNewWord->vCategory(AM::pRootConstant());
+  pNewWord->vCategory(AM::pConstantRoot());
   
   CellSingle xVar;
   xVar = iVal;
@@ -78,7 +78,7 @@ void Constants::vAddConstant(Stz* szName, i8 iVal)
 /*----------------------------------------------------------------------------*/
 void Constants::vAddConstant(Stz* szName, Stz* szVal)
 {
-  Word* pNewWord = new(AM::pRootDic()) Word(szName);
+  Word* pNewWord = new(AM::pDicRoot()) Word(szName);
   
   CellSingle xVar;
   xVar = szVal;
@@ -150,7 +150,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("true"_Stz,    (i8)1);
   vAddConstant("false"_Stz,   (i8)0);
   
-  vAddConstant("RAPIDSSE_VERSION_STRING"_Stz, (Stz*)RAPIDSSE_VERSION_STRING);
+  vAddConstant("RAPIDSSE_VERSION_STRING"_Stz, AM::szVersionString());
   
   vAddConstant("C_BUILD_GIT_HASH"_Stz, gsBuildGitHash);
   vAddConstant("C_BUILD_DATE"_Stz,     gsBuildDate);
@@ -221,6 +221,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_TDEF_COUNT"_Stz,         C_TDEF_COUNT);
   vAddConstant("C_TDEF_COUNTINFO"_Stz,     C_TDEF_COUNTINFO);
   vAddConstant("C_TDEF_GRIDSANITY"_Stz,    C_TDEF_GRIDSANITY);
+  vAddConstant("C_TDEF_EXECERRORS"_Stz,    C_TDEF_EXECERRORS);
   vAddConstant("C_TDEF_LISTCOLUMNS"_Stz,   C_TDEF_LISTCOLUMNS);
   vAddConstant("C_TDEF_LISTCONTENTS"_Stz,  C_TDEF_LISTCONTENTS);
   vAddConstant("C_TDEF_LISTFOLDER"_Stz,    C_TDEF_LISTFOLDER);
@@ -481,10 +482,8 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("EG_LA"_Stz,   EG_LA);
   vAddConstant("EG_LH"_Stz,   EG_LH);
   vAddConstant("EG_LG"_Stz,   EG_LG);
-  vAddConstant("EG_LK"_Stz,   EG_LK);
   vAddConstant("EG_MA"_Stz,   EG_MA);
   vAddConstant("EG_MC"_Stz,   EG_MC);
-  vAddConstant("EG_MK"_Stz,   EG_MK);
   vAddConstant("EG_MM"_Stz,   EG_MM);
   vAddConstant("EG_MT"_Stz,   EG_MT);
   vAddConstant("EG_NE"_Stz,   EG_NE);
@@ -588,6 +587,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("OI_CALLPIPELINE"_Stz,  OI_CALLPIPELINE);
   /*  0 */ vAddConstant("OI_COMMANDERRORS"_Stz, OI_COMMANDERRORS);
   /*  0 */ vAddConstant("OI_COUNTINFO"_Stz,     OI_COUNTINFO);
+  /*  0 */ vAddConstant("OI_EXECERRORS"_Stz,    OI_EXECERRORS);
   /*  0 */ vAddConstant("OI_LOADRESULT"_Stz,    OI_LOADRESULT);
   /*  0 */ vAddConstant("OI_LOCKSTATS"_Stz,     OI_LOCKSTATS);
   /*  0 */ vAddConstant("OI_NODEINFO"_Stz,      OI_NODEINFO);
@@ -696,6 +696,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_ENTBUFFER"_Stz,       ZK_ENTBUFFER);
   /*  0 */ vAddConstant("ZK_ERRORMARKER"_Stz,     ZK_ERRORMARKER);
   /*  0 */ vAddConstant("ZK_ERROREDMARKER"_Stz,   ZK_ERROREDMARKER);
+  /*  0 */ vAddConstant("ZK_EXECERRORS"_Stz,      ZK_EXECERRORS);
   /*  0 */ vAddConstant("ZK_EXITMARKER"_Stz,      ZK_EXITMARKER);
   /*  0 */ vAddConstant("ZK_EXITEDMARKER"_Stz,    ZK_EXITEDMARKER);
   /*  0 */ vAddConstant("ZK_INDEXDEF"_Stz,        ZK_INDEXDEF);

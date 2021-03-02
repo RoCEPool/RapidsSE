@@ -25,7 +25,7 @@ CsvBuffer::CsvBuffer(void)
   m_sReportNm = C_NO_NAME;
   m_nRecords  = 0;
   
-  MemLib::vZero(m__PadToCacheLine,sizeof(m__PadToCacheLine),CN_CSVBUFFER);
+  //MemLib::vZero(m__PadToCacheLine,sizeof(m__PadToCacheLine),CN_CSVBUFFER);
 
 #ifdef WITH_CHECK_INITIALISED
   m_xWsp.vZero(CN_CSVBUFFER);
@@ -141,7 +141,7 @@ CsvBuffer* CsvBuffer::pNextBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
   
-  return _pCsvBuffer(m_pNextBuffer);
+  return _pCsvBuffer(LinkedBuffer::pNextLinkedBuffer());
 }
 
 /*----------------------------------------------------------------------------*/

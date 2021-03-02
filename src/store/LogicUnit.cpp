@@ -52,6 +52,8 @@
 extern EoArg EoArgs[];
 Atomic gixQueryNo;
 
+extern void* C_ADR_REGION;
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -86,7 +88,9 @@ LogicUnit::LogicUnit(Task* pTask)
   m_iCounter2 = 0;
   
   m_sStringA  = ""_Stz;
-  
+
+  m_xRluCommon.m_iCtr0 = 0;
+
   for (i8 i_Local = 0; i_Local < C_LOGIC_LOCALS; i_Local++)
     m_xRluCommon.m_iaLocals[i_Local] = C_UNKNOWN;
 
@@ -99,6 +103,8 @@ LogicUnit::LogicUnit(Task* pTask)
   m_aUpperEntry = nullptr;
   m_pEntBufferOuter = nullptr;
 
+  m_eOperand = ZK_NONE;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   m_afDynFun = nullptr;
@@ -1538,6 +1544,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         iTopA = *(aiDstk--);
         iRes  = (! iTopA) ? 1 : 0;
         dLU2(EO_LGL_NOT,iTopA,iRes);
+        *(++aiDstk) = iRes;
+        break;//+endCase
+
+      case EO_LGL_XOR: ArgNil(); // logical xor top two int's, push result
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  =  (!iTopA && iTopB) || (iTopA && !iTopB) ? 1 : 0;
+        dLU3(EO_LGL_XOR,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
 

@@ -85,7 +85,7 @@ bool STORE::_bIsValidJob(eCN eClass)
 void* Job::operator new(size_t)
 {
   Job* pJob =
-  static_cast<Job*>(HeapMem::pAllocate(CN_JOB));
+  static_cast<Job*>(Heaps::pAllocate(CN_JOB));
   
   return pJob;
 }
@@ -105,16 +105,16 @@ void Job::operator delete(void* aAddress)
 {
   Job* pJob = static_cast<Job*>(aAddress);
   
-  HeapMem::vFree(pJob);
+  Heaps::vFree(pJob);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job::Job(ReqTuple* aReqTuple)
-: Focal(CN_JOB,AM::iNextJobId(),aReqTuple->m_iForId)
-, m_xReqTuple(aReqTuple)
+: Loggable(CN_JOB)
 , CRM<Job>(this)
+, m_xReqTuple(aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB);
     
@@ -159,7 +159,7 @@ Job::Job(ReqTuple* aReqTuple)
 
   // -- -- -- -- -- --
     
-  vIncStepNo(); ++ gixJob;
+  vEventNoInc(); ++ gixJob;
   AM::vLogJob(SL_INF,this,JA_JOB_CONSTRUCT,
               "|gixJob=%lld|"_Stz, //!format-LogJob
               * gixJob);
@@ -171,9 +171,9 @@ Job::Job(ReqTuple* aReqTuple)
 /* constructor (for job__find)                                  TO BE REMOVED */
 /*----------------------------------------------------------------------------*/
 Job::Job(eCN eClassNo)
-: Focal(eClassNo,C_UNKNOWN,C_UNKNOWN)
-, m_xReqTuple(nullptr)
+: Loggable(eClassNo)
 , CRM<Job>(this)
+, m_xReqTuple(nullptr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
 
@@ -218,7 +218,7 @@ Job::Job(eCN eClassNo)
   
   SP_Gid spId;
   
-  vIncStepNo(); ++ gixJob;
+  vEventNoInc(); ++ gixJob;
   AM::vLogJob(SL_INF,this,JA_JOB_CONSTRUCT,
               "|gixJob=%lld|"_Stz, //!format-LogJob
               * gixJob);
@@ -241,7 +241,7 @@ Job::~Job(void) noexcept(false)
 //    //m_oJobTags.vPrint();
 //  }
   
-  vIncStepNo();
+  vEventNoInc();
   if (m_bWasReceived) {
     // do not decrement gixJob
     AM::vLogJob(SL_INF,this,JA_JOB_DESTRUCT,
@@ -619,7 +619,7 @@ i8 Job::iJobId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_iFocalId;
+  return m_iObjectId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -764,7 +764,7 @@ void Job::vMarkJob(void)
   s48K sJobMark;
   
   sJobMark.vSprintCat("Job %03lld %s session %lld tablePtn %lld\n"_Stz,
-                      m_iFocalId,
+                      m_iObjectId,
                       aCN[eGetClassNo()],
                       m_xReqTuple.m_i_Session,
                       m_i_TablePtn);
@@ -778,7 +778,7 @@ void Job::vMarkJob(void)
 
   sJobMark.vConcat("\n"_Stz);
 
-  AM::vLogText(m_iFocalId,sJobMark);
+  AM::vLogText(m_iObjectId,sJobMark);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -908,7 +908,7 @@ i8 Job::iOriginatorNode(void)
   
   i8 iMaskOffLower48Bits = 0xFFFF000000000000;
   
-  i8 iOriginatorNode = m_iFocalId & iMaskOffLower48Bits;
+  i8 iOriginatorNode = m_iObjectId & iMaskOffLower48Bits;
   iOriginatorNode >>= 48;
   
   return iOriginatorNode;
@@ -1023,7 +1023,7 @@ eEC Job::ePopulateJob(TagSet* pTagSet)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add the distid
-  pJobTags()->vInsert(C_TAG_DISTID,m_iFocalId);
+  pJobTags()->vInsert(C_TAG_DISTID,m_iObjectId);
   
   // copy the tagset into the job tag set
   pJobTags()->vCopy(pTagSet);
@@ -1051,24 +1051,6 @@ void Job::vPrintResult(Session* pSession, eRS eResponse)
 Response* Job::pResponse(void)
 {
   return &m_xResult.m_xJobResponse;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get response string                                                        */
-/*----------------------------------------------------------------------------*/
-Stz* Job::szResponse(void)
-{
-  Stz* szResponse = m_xResult.m_xJobResponse.m_sResponse;
-  
-  return szResponse;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set response string                                                        */
-/*----------------------------------------------------------------------------*/
-void Job::vResponse(Stz* sResponse)
-{
-  m_xResult.m_xJobResponse.m_sResponse = sResponse;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1149,7 +1131,7 @@ void Job::vReport(void)
   
   vTrace("Job %llx id %lls ackRemaining %lld\n"_Stz,
          this,
-         m_iFocalId,
+         m_iObjectId,
          m_oAcksRmg_2pc.iPrintOnlyValue());
 }
 
@@ -1405,9 +1387,7 @@ void STORE::vJob_recv(Job* pJob)
   pJob->vJobList(JL_NONE);
   
   pJob->vTask(nullptr);
-  
-  pJob->m_i_Focal        = C_UNKNOWN;
-  
+    
   LogicUnit* pLogicUnit = nullptr;
   pJob->vLogicUnit_job( & pLogicUnit);
 }

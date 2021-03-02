@@ -9,19 +9,9 @@
 #include "Response.hpp"
 #include "Result.hpp"
 #include "Job.hpp"
-
-#include "CmdLineArgs.hpp"
-
-extern CmdLineArgs   gxCmdLineArgs;
-
-extern AttachMap*    gpAttachMap;
-extern BufferPool*   gpBufferPool;
-extern Log*          gpLog;
-extern Header*       gaSeShmRegion;
-extern File*         gpTraceFile;
-
-extern SizeHeap      gxaSizeHeap[];
-
+#include "LogicUnit.hpp"
+#include "Op.hpp"
+#include "Grid.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* get current job name                                                       */
@@ -46,6 +36,19 @@ Stz* MY::szWordNm(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get current grid                                                           */
+/*----------------------------------------------------------------------------*/
+Grid* MY::pGrid(void)
+{
+  Grid* pGrid = AM::pGrid();
+
+  return pGrid;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get current job                                                            */
 /*----------------------------------------------------------------------------*/
 Job* MY::pJob(void)
@@ -55,6 +58,73 @@ Job* MY::pJob(void)
   Job* pJob = AM::pTaskJob(pTask);
   
   return pJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current logic unit                                                     */
+/*----------------------------------------------------------------------------*/
+LogicUnit* MY::pLogicUnit(void)
+{
+  Job* pJob = MY::pJob();
+
+  if (pJob)
+    return pJob->m_pLogicUnit_job;
+  else
+    return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current node                                                           */
+/*----------------------------------------------------------------------------*/
+Node* MY::pNode(void)
+{
+  Grid* pGrid = MY::pGrid();
+  
+  if (! pGrid)
+    return nullptr;
+
+  Node* pNode = pGrid->pThisNode();
+
+  return pNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current op                                                             */
+/*----------------------------------------------------------------------------*/
+Op* MY::pOp(void)
+{
+  Job* pJob = MY::pJob();
+
+  if (pJob)
+    return pJob->m_pOp;
+  else
+    return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current operand kind                                                   */
+/*----------------------------------------------------------------------------*/
+eZK MY::eOperand(void)
+{
+  LogicUnit* pLogicUnit = MY::pLogicUnit();
+
+  if (pLogicUnit)
+    return pLogicUnit->m_eOperand;
+  else
+    return ZK_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current op                                                             */
+/*----------------------------------------------------------------------------*/
+Pipeline* MY::pPipeline(void)
+{
+  Op* pOp = MY::pOp();
+
+  if (pOp)
+    return pOp->pPipeline();
+  else
+    return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -70,6 +140,32 @@ Session* MY::pSession(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get current stage                                                          */
+/*----------------------------------------------------------------------------*/
+Stage* MY::pStage(void)
+{
+  Op* pOp = MY::pOp();
+
+  if (pOp)
+    return pOp->pStage();
+  else
+    return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current stream                                                         */
+/*----------------------------------------------------------------------------*/
+Stream* MY::pStream(void)
+{
+  Op* pOp = MY::pOp();
+
+  if (pOp)
+    return pOp->pStream();
+  else
+    return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get current task                                                           */
 /*----------------------------------------------------------------------------*/
 Task* MY::pTask(void)
@@ -77,6 +173,16 @@ Task* MY::pTask(void)
   Task* pTask = AM::pThisTLSTask();
 
   return pTask;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current thread                                                         */
+/*----------------------------------------------------------------------------*/
+Thread* MY::pThread(void)
+{
+  Thread* pThread = AM::pThisTLSThread();
+
+  return pThread;
 }
 
 /*============================================================================*/

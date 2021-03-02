@@ -64,11 +64,9 @@ enum eEG // enum groups
   EG_LA,
   EG_LG,
   EG_LH,
-  EG_LK,
   
   EG_MA,
   EG_MC,
-  EG_MK,
   EG_MM,
   EG_MT,
 

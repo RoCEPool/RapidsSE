@@ -27,7 +27,7 @@ IoCopy* BASE::_pIoCopy(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* IoCopy::operator new(size_t)
 {
-  IoCopy* pIoCopy = (IoCopy*)HeapMem::pAllocate(CN_IOCOPY);
+  IoCopy* pIoCopy = (IoCopy*)Heaps::pAllocate(CN_IOCOPY);
   
   return pPoolCheck<void*>(pIoCopy);
 }
@@ -39,7 +39,7 @@ void IoCopy::operator delete(void* pIoCopyAddress)
 {
   IoCopy* pIoCopy = static_cast<IoCopy*>(pIoCopyAddress);
   
-  HeapMem::vFree(pIoCopy);
+  Heaps::vFree(pIoCopy);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -11,6 +11,8 @@ namespace BASE
     
     Lock m_okLock;  // lock for the set
   
+    NextGid     m_inNextTxId;
+
     SkipListNL* m_pTxList; // skip list of tx's
     t8          m_tOldestPsp;  // oldest psp in the system
     
@@ -30,6 +32,8 @@ namespace BASE
     Tx*  pFindTx_NL(i8 iTxId);
     i8   iOldestActiveId(void);
     t8   tOldestPsp(void);
+    i8   iNextTxId(void);
+
     void vRemoveTx(Tx* pTx);
     void vRemoveTx_NL(Tx* pTx);
   

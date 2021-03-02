@@ -17,7 +17,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-JobList* STORE::_pJobs(void* aAddr)
+JobList* STORE::_pJobList(void* aAddr)
 {
   JobList* pJobs = reinterpret_cast<JobList*>(aAddr);
   
@@ -31,7 +31,7 @@ JobList* STORE::_pJobs(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* JobList::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_JOBLIST);
+  void* pObject = Heaps::pAllocate(CN_JOBLIST);
   
   return pObject;
 }
@@ -50,7 +50,7 @@ void JobList::operator delete(void*)
 /*----------------------------------------------------------------------------*/
 JobList::JobList(CompareFp fpCompare, eJL eJobsList)
 : Object(CN_JOBLIST)
-, m_okLock(LK_JOBS,this)
+, m_okLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
   
@@ -113,7 +113,7 @@ Job* JobList::pFindJob(i8 iJobId)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
   
   Job__Find* pJob__Find = new Job__Find;
-  pJob__Find->m_iFocalId = iJobId;
+  pJob__Find->m_iObjectId = iJobId;
   
   vGrabLock();
   Job* pJobFound = pFindJob(pJob__Find);
@@ -236,7 +236,7 @@ void JobList::vLogJobs(i8 iJobId)
                
                  aCN[pJob->eGetClassNo()],
                  pJob,
-                 pJob->m_iFocalId,
+                 pJob->m_iObjectId,
                  pJob->iParentId(),
                  pJob->i_TablePtn(),
                 
@@ -306,7 +306,7 @@ void JobList::vContentDump(void)
            pJob,
            pJob->szJobNm(),
            aCN[pJob->eGetClassNo()],
-           pJob->m_iFocalId,
+           pJob->m_iObjectId,
            pJob->iParticipantNode(),
            pNode->m_nRight);
     
@@ -325,7 +325,7 @@ void JobList::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 void JobList::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  JobList* pJobs = _pJobs(pObject);
+  JobList* pJobs = _pJobList(pObject);
   //vSkipListDump(pJobs->m_pJobsSkipList);
   SkipListNL* pSkipList = pJobs->m_pJobsSkipList;
   vTrace("HEIGHT %lld HEAD 0x%llx\n"_Stz,pSkipList->m_iHeight,pSkipList->m_pHead);
@@ -345,7 +345,7 @@ void JobList::vDump(eCN eClass, Object* pObject, Stz* aTab)
              pJob,
              pJob->szJobNm(),
              aCN[pJob->eGetClassNo()],
-             pJob->m_iFocalId,
+             pJob->m_iObjectId,
              pJob->iParticipantNode(),
              pNode->m_nRight);
       

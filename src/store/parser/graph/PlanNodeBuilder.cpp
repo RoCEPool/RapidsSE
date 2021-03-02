@@ -10,8 +10,8 @@
 #include "PrimitiveNode.hpp"
 #include "DefinitionNode.hpp"
 #include "QueryNode.hpp"
+
 #include "MetadataNode.hpp"
-#include "StatisticsNode.hpp"
 
 using namespace Parser;
 
@@ -103,19 +103,38 @@ PlanNode* PlanNodeBuilder::pBuild(void)
                               pPropertiesList,
                               pChildrenList);
 
-  } else if (m_sPath.bBeginsWith(const_cast<Stz*>(C_METADATA_PATH))) {
-    pPlanNode = new MetadataNode(m_sName.szStz(),
-                                 m_sType.szStz(),
-                                 static_cast<Value&&>(m_xValue),
-                                 pPropertiesList,
-                                 pChildrenList);
+  } else if (m_sPath.bEqual(const_cast<Stz*>(C_METADATA_PATH))) {
+    // Shouldn't have any children at this point
 
-  } else if (m_sPath.bBeginsWith(const_cast<Stz*>(C_STATISTICS_PATH))) {
-    pPlanNode = new StatisticsNode(m_sName.szStz(),
-                                   m_sType.szStz(),
-                                   static_cast<Value&&>(m_xValue),
-                                   pPropertiesList,
-                                   pChildrenList);
+    if (pPropertiesList) {
+      ASSERT(pPropertiesList->nItems() == 0);
+      delete pPropertiesList;
+    }
+
+    if (pChildrenList) {
+      ASSERT(pChildrenList->nItems() == 0);
+      delete pChildrenList;
+    }
+
+    pPlanNode = MetadataNode::pCreate();
+
+
+  } else if (m_sPath.bEqual(const_cast<Stz*>(C_STATISTICS_PATH))) {
+    // Shouldn't have any children at this point
+
+    if (pPropertiesList) {
+      ASSERT(pPropertiesList->nItems() == 0);
+      delete pPropertiesList;
+    }
+
+    if (pChildrenList) {
+      ASSERT(pChildrenList->nItems() == 0);
+      delete pChildrenList;
+    }
+
+    pPlanNode = new QueryNode(m_sName.szStz(),
+                              m_sType.szStz());
+
   } else {
     NEVER_REACH
   }
@@ -133,7 +152,7 @@ PlanNodeList* PlanNodeBuilder::pBuildList(PlanNodeBuilderList* builderList)
     return nullptr;
   }
 
-  PlanNodeList *pPlanNodeList = new PlanNodeList();
+  PlanNodeList *pPlanNodeList = new PlanNodeList;
 
   PlanNodeBuilderIter* pBuilderIter = builderList->pNewIter();
 

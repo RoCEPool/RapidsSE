@@ -15,7 +15,7 @@
 #include "JobList.hpp"
 #include "Op.hpp"
 #include "Procedure.hpp"
-#include "SessionArray.hpp"
+#include "Sessions.hpp"
 #include "Output.hpp"
 
 #include "TagConstants.h"
@@ -39,9 +39,9 @@ Session* Api::pAllocSession(eSK eSession)
   _static_
   
   
-  SessionArray* pSessionArray = AM::pSessionArray();
+  Sessions* pSessions = AM::pSessions();
   
-  Session* pSession = pSessionArray->pAllocSession(eSession);
+  Session* pSession = pSessions->pAllocSession(eSession);
     
   return pSession;
 }
@@ -53,9 +53,9 @@ void Api::vFreeSession(Session* pSession)
 {
   _static_
   
-  SessionArray* pSessionArray = AM::pSessionArray();
+  Sessions* pSessions = AM::pSessions();
 
-  pSessionArray->vFreeSession(pSession);
+  pSessions->vFreeSession(pSession);
 }
 
 
@@ -285,7 +285,7 @@ void Api::vWaitJob(Session* pSession)
 {
   Job* pJob = pSession->m_pSsnJob;
   
-  pSession->m_oSsnMutex.vObserve(true);
+  //pSession->m_oMutex.vObserve(true);
   Api::vMutexWaitCond(pSession,pJob);
   pJob->vTimerUpdate();
   
@@ -335,14 +335,14 @@ bool Api::bShortForm(TokenVec* pCmdTknVec)
   
 //  Token* pTkn0 = pCmdTknVec->pGet(0);
 //
-//  Dic* pRootDic = AM::pRootDic();
+//  Dic* pDicRoot = AM::pDicRoot();
 //
-//  Word* pOperatorCatg = pRootDic->pFindWord("\\operator"_Stz);
+//  Word* pOperatorCatg = pDicRoot->pFindWord("\\operator"_Stz);
 //
 //  s32 sOpReq = pTkn0->szChars();
 //  sOpReq.vConcat("_req"_Stz);
 //
-//  Word* pOp_maybe = pRootDic->pFindWord(sOpReq);
+//  Word* pOp_maybe = pDicRoot->pFindWord(sOpReq);
 //
 //  if (pOp_maybe && pOp_maybe->pCategory() == pOperatorCatg)
 //    return true;
@@ -472,7 +472,7 @@ void Api::vMutexLock(Session* pSession, Job* pJob)
 {
   _static_
   
-  pSession->m_oSsnMutex.vLock(pSession);
+  pSession->m_oMutex.vLock(pSession);
         
   pJob->vJobState(JS_LOCKED);
 }
@@ -488,7 +488,7 @@ void Api::vMutexUnlock(Session* pSession, Job* pJob)
     
   pJob->vJobState(JS_RUNNING);
   
-  pSession->m_oSsnMutex.vUnlock(pSession);
+  pSession->m_oMutex.vUnlock(pSession);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -500,7 +500,7 @@ void Api::vMutexWaitCond(Session* pSession, Job* pJob)
   
   do {
     
-    pSession->m_oSsnMutex.vWait(pSession);
+    pSession->m_oMutex.vWait(pSession);
     
   } while (pJob->eJobState() != JS_SIGNALLED);
 
@@ -771,7 +771,7 @@ bool Api::bSpawnJob_session(Job* pJob)
   Scheduler::vTaskApi_AddPrompt(pJob->pTask());
 
   if (! pJob->bHasTag_noWait()) {
-    pSession->m_oSsnMutex.vObserve(true);
+    //pSession->m_oMutex.vObserve(true);
     Api::vMutexWaitCond(pSession,pJob);
     pJob->vTimerUpdate();
   }

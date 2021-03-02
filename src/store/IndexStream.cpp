@@ -161,7 +161,7 @@ bool IndexStream::bDelete(void)
         
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // move to next buffer
-        m_pEntBuffer = m_pEntBuffer->pNextBuffer();
+        m_pEntBuffer = m_pEntBuffer->pNextEntBuffer();
         
         // next buffer ?
         if ( m_pEntBuffer )
@@ -266,7 +266,7 @@ CrwBuffer* IndexStream::pRead_idxstm(RowOnce* pRowOnce)
         
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // move to next buffer
-        m_pEntBuffer = m_pEntBuffer->pNextBuffer();
+        m_pEntBuffer = m_pEntBuffer->pNextEntBuffer();
         
         // next buffer ?
         if ( m_pEntBuffer )

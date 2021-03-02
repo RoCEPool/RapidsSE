@@ -707,7 +707,7 @@ i8 Log::iEntryOpr(eSL eSeverity, Op* pOpr, eOA eOprAct,
 /*----------------------------------------------------------------------------*/
 /* add a queues log entry                                                     */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntryQue(eSL eSeverity, SystemSchedule* pQue, eQA eQueAct,
+i8 Log::iEntryQue(eSL eSeverity, Schedule* pQue, eQA eQueAct,
                   Stz* szFormat, va_list xVarArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
@@ -966,7 +966,7 @@ LogEntry* Log::pNewEntry(eSL eSeverity, eCN eClassNo,
 /*----------------------------------------------------------------------------*/
 /* get a new mark in Log                                                      */
 /*----------------------------------------------------------------------------*/
-LogEntry* Log::pNewEntry(eSL eSeverity, Focal* pFocal,
+LogEntry* Log::pNewEntry(eSL eSeverity, Loggable* pFocal,
                          Stz* szFormat, va_list xVarArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
@@ -1096,7 +1096,7 @@ void Log::vWriteToFile(bool bCsv, bool bShortForm)
   s256 sLogPath;
   sLogPath = bCsv ? (Stz*)AM::szLogCsvFile() : (Stz*)AM::szLogTxtFile();
 
-  File* pLogFile = new File(nullptr);
+  File* pLogFile = new File(this);
   
   bool bOpened = pLogFile->bOpenWrite(sLogPath);
   if (! bOpened) {
@@ -1216,7 +1216,7 @@ void Log::vLogMark(TokenVec* pTknVec)
   i8 nTokens = pTknVec->nItems();
   
   if (3 == nTokens && pTknVec->pGet(2)->bSame("all"_Stz)) {
-    EnumFlags* pClassFlags = AM::pClassFlags();
+    ClassFlags* pClassFlags = AM::pClassFlags();
     pClassFlags->vAll(true);
     return;
   }
@@ -1231,7 +1231,7 @@ void Log::vMarkAll(bool bAll)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  EnumFlags* pClassFlags = AM::pClassFlags();
+  ClassFlags* pClassFlags = AM::pClassFlags();
   
   pClassFlags->vAll(bAll);
 }
@@ -1246,7 +1246,7 @@ bool Log::bIsLoggable(Object* pObject)
   if (! pObject)
     return false;
   
-  EnumFlags* pClassFlags = AM::pClassFlags();
+  ClassFlags* pClassFlags = AM::pClassFlags();
   
   eCN eClassNo = pObject->eGetClassNo();
   

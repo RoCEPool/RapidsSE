@@ -88,9 +88,11 @@
 #include "Result.hpp"
 #include "Job.hpp"
 #include "JobList.hpp"
+#include "Jobs.hpp"
 #include "Session.hpp"
-#include "SessionArray.hpp"
+#include "Sessions.hpp"
 #include "XmitOperand.hpp"
+#include "Objects.hpp"
 #include "Output.hpp"
 
 #include "TagConstants.h"
@@ -111,6 +113,8 @@
 
 #include "SP_Word.hpp"
 
+#include "TraceLock.hpp"
+
 extern CmdLineArgs          gxCmdLineArgs;
 
 extern AttachMap*    gpAttachMap;
@@ -121,6 +125,18 @@ extern Index*        gpReadApiIndex;
 extern Log*          gpLog;
 
 extern SizeHeap      gxaSizeHeap[];
+
+static Stz*  RAPIDSSE_VERSION_STRING = "0.6.0 alpha"_Stz;
+static i8    RAPIDSSE_VERSION_NUMBER = 0x000600;
+
+static Stz*  RAPIDSSE_FORMAT_STRING  = "0.6.0"_Stz;
+static i8    RAPIDSSE_FORMAT_NUMBER  = 0x000600;
+
+Stz*  AM::szVersionString(void) { return RAPIDSSE_VERSION_STRING; }
+i8    AM::iVersionNumber(void)  { return RAPIDSSE_VERSION_NUMBER; }
+
+Stz*  AM::szFormatString(void)  { return RAPIDSSE_FORMAT_STRING;  }
+i8    AM::iFormatNumber(void)   { return RAPIDSSE_FORMAT_NUMBER;  }
 
 // Arg
 bool AM::bDebugIndex(void)    { return gpAttachMap->m_xSysArgs.m_bDebugIndex;        }
@@ -165,35 +181,35 @@ Stz* AM::szLogCsvFile(void)   { return gpAttachMap->m_sLogCsvFile;            }
 Stz* AM::szLogTxtFile(void)   { return gpAttachMap->m_sLogTxtFile;            }
 
 //
-SessionArray* AM::pSessionArray(void) { return gpAttachMap->m_pSessionArray;  }
+Sessions* AM::pSessions(void) { return gpAttachMap->m_pSessions;  }
 
 
 bool AM::bBootError(void)     { return gpAttachMap->m_bBootError;             }
 i8   AM::nBuckets(void)       { return C_MAX_BUCKETS;                         }
 BufferPool* AM::pBufferPool(void) { return gpAttachMap->m_pBufferPool;        }
-EnumFlags* AM::pClassFlags(void)  { return & gpAttachMap->m_oClassFlags;      }
-Lock* AM::pDdlLock(void)      { return & gpAttachMap->m_okDdlLock;            }
+ClassFlags* AM::pClassFlags(void)  { return & gpAttachMap->m_oClassFlags;      }
+MasterLock* AM::pDdlLock(void)      { return & gpAttachMap->m_oLocks.m_oDdlMasterLock;  }
 JobList* AM::pDemonJobs(void) {
-  return gpAttachMap->m_xStore.m_pDemonJobs;                                }
-Lock* AM::pDicLock(void)      { return & gpAttachMap->m_okDicLock;            }
+  return gpAttachMap->m_pJobs->m_pDemonJobs;                                }
+MasterLock* AM::pDicLock(void)      { return & gpAttachMap->m_oLocks.m_oDicMasterLock;            }
 i8   AM::iElapsedSsec(void)   { return gpAttachMap->m_oBirth.iElapsedSsec();  }
 i8   AM::iEpoch(void)         { return gpAttachMap->m_iEpoch;                 }
 Format* AM::pFmt(void)        { return & gpAttachMap->m_oFormat;          }
 Grid* AM::pGrid(void)         { return gpAttachMap->m_pGrid;                  }
 bool AM::bHasStarted(void)    { return gpAttachMap->m_pGrid->bHasStarted();   }
-HeapMem* AM::pHeapMem(void)   { return & gpAttachMap->m_xHeapMem;             }
+Heaps* AM::pHeaps(void)   { return & gpAttachMap->m_xHeaps;             }
 i8   AM::nIndexEntries(void)  { return gpAttachMap->m_xSysArgs.m_nIndexEntries;      }
 JobList* AM::pLocalJobs(void) {
-  return gpAttachMap->m_xStore.m_pLocalJobs;                                }
-LockTracker* AM::pLockTracker(void) { return & gpAttachMap->m_oLockTracker;   }
+  return gpAttachMap->m_pJobs->m_pLocalJobs;                                }
+Locks* AM::pLocks(void) { return & gpAttachMap->m_oLocks;   }
 bool AM::bLogging(void)       { return gpLog ? true : false;                  }
 i8   AM::iNextEpoch(void)     { return ++ gpAttachMap->m_iEpoch;              }
 Stz* AM::szNodeNm(void)       {
   return gpAttachMap->m_pGrid->pThisNode()->szNodeNm();  }
 JobList* AM::pOriginatingJobs(void) {
-  return gpAttachMap->m_xStore.m_pOriginatingJobs; }
+  return gpAttachMap->m_pJobs->m_pOriginatingJobs; }
 JobList* AM::pParticipatingJobs(void) {
-  return gpAttachMap->m_xStore.m_pParticipatingJobs; }
+  return gpAttachMap->m_pJobs->m_pParticipatingJobs; }
 i8   AM::iPid(void)           { return gpAttachMap->m_iPid;                   }
 i8   AM::nConnectedNodes(void){ return gpAttachMap->m_pGrid->nConnectedNodes(); }
 i8   AM::nBootNodes(void)  { return gpAttachMap->m_pGrid->nBootNodes(); }
@@ -208,49 +224,26 @@ i8   AM::iResidentSize(void)  { return Process::iResidentSize();  };
 bool AM::bProgress(void)      { return gpAttachMap->m_xSysArgs.m_bProgress;              }
 bool AM::bMetadata(void)      { return gpAttachMap->m_xSysArgs.m_bMetadata;          }
 
-i8   AM::iNextDiagram(void)   { return ++ gpAttachMap->m_inNextDiagram;       }
-i8   AM::iNextJobId(void)     { return ++ gpAttachMap->m_inNextJobId;         }
-i8   AM::iNextLockId(void)    {
-  if (gpAttachMap)
-    return ++ gpAttachMap->m_inNextLockId;
-  else
-    return C_UNKNOWN;
-}
-i8   AM::iNextOpId(void)      { return ++ gpAttachMap->m_inNextOpId;          }
-i8   AM::iNextPlanId(void)    { return ++ gpAttachMap->m_inNextPlanId;        }
-i8   AM::iNextPromptId(void)  { return ++ gpAttachMap->m_inNextPromptId;      }
-i8   AM::iNextRequest(void)   { return ++ gpAttachMap->m_inNextRequest;       }
-i8   AM::iNextResourceId(void){
-  if (gpAttachMap)
-    return ++ gpAttachMap->m_inNextResourceId;
-  else
-    return C_UNKNOWN;
-}
-i8   AM::iNextSessionId(void) { return ++ gpAttachMap->m_inNextSessionId;     }
-i8   AM::iNextStreamId(void)  { return ++ gpAttachMap->m_inNextStreamId;      }
-i8   AM::iNextTaskId(void)    { return ++ gpAttachMap->m_inNextTaskId;        }
-i8   AM::iNextThreadId(void)  { return ++ gpAttachMap->m_inNextThreadId;      }
-i8   AM::iNextTxId(void)      { return ++ gpAttachMap->m_inNextTxId;          }
+i8   AM::iNextTxId(void)      { return gpAttachMap->m_pTxSet->iNextTxId();    }
 
 i8   AM::nPtnsInGrid(void) {
   return gpAttachMap->m_pPtnMap->nPtnsInGrid();
 }
-SystemSchedule* AM::pSystemSchedule(void)     { return gpAttachMap->m_pSystemSchedule;                }
-ResourceTracker* AM::pResourceTracker(void) {
-  return & gpAttachMap->m_oResourceTracker; }
-Article* AM::pRootArticle(void)     { return gpAttachMap->m_pRootArcticle;    }
-Word* AM::pRootConstant(void) { return gpAttachMap->m_pRootConstant;          }
-Dic* AM::pRootDic(void)       { return gpAttachMap->m_pRootDic;               }
-Word* AM::pRootWord(void)     { return gpAttachMap->m_pRootWord;              }
+Schedule* AM::pSchedule(void)     { return gpAttachMap->m_pSchedule;                }
+Resources* AM::pResources(void) {
+  return & gpAttachMap->m_oResources; }
+Article* AM::pArcticleRoot(void)     { return gpAttachMap->m_pArcticleRoot;    }
+Word* AM::pConstantRoot(void) { return gpAttachMap->m_pConstantRoot;          }
+Dic* AM::pDicRoot(void)       { return gpAttachMap->m_pDicRoot;               }
+Word* AM::pWordRoot(void)     { return gpAttachMap->m_pWordRoot;              }
 Statistics* AM::pStatistics(void)   { return & gpAttachMap->m_oStatistics;    }
-StepTiming* AM::pStepTiming(void)   { return gpAttachMap->m_pStepTiming;      }
-PoolBuffer* AM::pTakenBuffers(void) { return gpAttachMap->m_pTakenBuffers;    }
-i8   AM::nTakenBytes(void)    { return gpAttachMap->m_nTakenBytes;            }
-Lock* AM::pTccLock(void)      { return & gpAttachMap->m_okTccLock;            }
+Steps* AM::pSteps(void)   { return gpAttachMap->m_pSteps;      }
+
+MasterLock* AM::pTccLock(void)      { return & gpAttachMap->m_oLocks.m_oTccMasterLock;            }
 Word* AM::pTenants(void)      { return gpAttachMap->m_pTenants;               }
 i8   AM::iThisNodeNo(void)    { return gpAttachMap->m_pGrid->iThisNode();     }
-void AM::vThreadBegins(void)  { ++ gpAttachMap->m_ixThreads;                  }
-i8   AM::nThreadsBegun(void)  { return * gpAttachMap->m_ixThreads;            }
+void AM::vThreadBegins(void)  { ++ gpAttachMap->m_pSchedule->m_ixThreads; }
+i8   AM::nThreadsBegun(void)  { return * gpAttachMap->m_pSchedule->m_ixThreads; }
 bool AM::bTracepoint(void)    { return gpAttachMap->m_xSysArgs.m_bTracepoint;        }
 TxSet* AM::pTxSet(void)       { return gpAttachMap->m_pTxSet;                 }
 
@@ -371,11 +364,11 @@ void AM::vDeleteOperand(Operand* pOperand)
 void AM::vDropTaskLock(Task* pTask) {
   pTask->vDropTaskLock();
 }
-void AM::vRootConstant(Word* pRootConstant) {
-  gpAttachMap->m_pRootConstant = pRootConstant;
+void AM::vRootConstant(Word* pConstantRoot) {
+  gpAttachMap->m_pConstantRoot = pConstantRoot;
 }
-void AM::vRootWord(Word* pRootWord) {
-  gpAttachMap->m_pRootWord = pRootWord;
+void AM::vRootWord(Word* pWordRoot) {
+  gpAttachMap->m_pWordRoot = pWordRoot;
 }
 void AM::vGrabTaskLock(Task* pTask) {
   pTask->vGrabTaskLock();
@@ -389,17 +382,8 @@ void AM::vNextTempName(s32& sName) {
 void AM::vSetAcksRmg(Task* pTask, i8 nAcks) {
   pTask->vAcksRmg(nAcks);
 }
-void AM::vStepTiming(StepTiming* pStepTiming) {
-  gpAttachMap->m_pStepTiming = pStepTiming;
-}
-void AM::vTakenBuffers(PoolBuffer* pTakenBuffers) {
-  gpAttachMap->m_pTakenBuffers = pTakenBuffers;
-}
-void AM::vTakeBytes(i8 nTakeBytes) {
-  gpAttachMap->m_nTakenBytes = nTakeBytes;
-}
-void AM::vTakenBytes(i8 nTakenBytes) {
-  gpAttachMap->m_nTakenBytes += nTakenBytes;
+void AM::vSteps(Steps* pSteps) {
+  gpAttachMap->m_pSteps = pSteps;
 }
 void AM::vTenants(Word *pTenants) {
   gpAttachMap->m_pTenants = pTenants;
@@ -452,7 +436,7 @@ Session* AM::pJobSession(Job* pJob)
   Session* pSession = nullptr;
   
   if (iSessionId != C_UNKNOWN)
-    pSession = AM::pSessionArray()->pGetSession(iSessionId);
+    pSession = AM::pSessions()->pGetSession(iSessionId);
 
   return pSession;
 }
@@ -470,7 +454,7 @@ bool AM::bJobWasReceived(Job* pJob)
 
 
 void AM::vDumpApi(void) {
-  pSessionArray()->vDump();
+  pSessions()->vDump();
 }
 Task* AM::pExecutingTask(Job* pJob) {
   Task* pTask = pJob->pTask();
@@ -802,7 +786,7 @@ Session* AM::pSessionGet(ReqTuple* aReqTuple)
   if (C_UNKNOWN == aReqTuple->m_i_Session)
     return nullptr;
   
-  Session* pSession = AM::pSessionArray()->pGetSession(aReqTuple->m_i_Session);
+  Session* pSession = AM::pSessions()->pGetSession(aReqTuple->m_i_Session);
 
   return pSession;
 }
@@ -867,61 +851,6 @@ void AM::vScheduleNextPhase(Job* pParticipantJob, Task* pActiviating2PcTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* state diagram                                                              */
-/*----------------------------------------------------------------------------*/
-void AM::vStateDiagram(s256& sDiagram, eCN eJobClass)
-{
-  TaskList* pExecuting     = AM::pSystemSchedule()->m_pExecutingSet;
-  JobList*  pOriginating   = AM::pOriginatingJobs();
-  JobList*  pParticipating = AM::pParticipatingJobs();
-  
-  sDiagram = ""_Stz;
-  
-  switch (eJobClass) {
-/*
-      // generate state diagram for export job
-    case CN_JOB_EXPORT: {
-      
-      i8 iDiagram = AM::iNextDiagram();
-      
-      // whats in the system relevant to export?
-      bool bKE_received   = pExecuting->bHasJobClass(CN_JOB_KIDEXPORT,false);
-      bool bE_neutral     = pExecuting->bHasJobClass(CN_JOB_EXPORT,false);
-      bool bE_originator  = pOriginating->bHasJobClass(CN_JOB_EXPORT);
-      bool bE_participant = pParticipating->bHasJobClass(CN_JOB_EXPORT);
-      bool bE_received    = pExecuting->bHasJobClass(CN_JOB_EXPORT,true);
-      bool bSE_neutral    = pExecuting->bHasJobClass(CN_JOB_SUBEXPORTER,false);
-      
-      // form the state diagram
-      sDiagram.vSprint("%03lld# "_Stz,iDiagram);
-      
-      if (bKE_received)         { sDiagram.vConcat("KE`"_Stz);  }
-      if (bE_originator)        { sDiagram.vConcat("[E]"_Stz);  }
-      if (! bE_originator &&
-          bE_neutral)           { sDiagram.vConcat("E"_Stz);    }
-      if (bE_participant)       { sDiagram.vConcat("(E`)"_Stz); }
-      if (! bE_participant &&
-          bE_received)          { sDiagram.vConcat("E`"_Stz);   }
-      
-      if (bSE_neutral)          { sDiagram.vConcat("SE"_Stz);   }
-      
-      sDiagram.vConcat(":"_Stz);
-      
-      if (bE_participant)       { sDiagram.vConcat("(E`)"_Stz); }
-      if (! bE_participant &&
-          bE_received)          { sDiagram.vConcat("E`"_Stz);   }
-      if (bSE_neutral)          { sDiagram.vConcat("SE"_Stz);   }
-      
-      return;
-    }
-*/
-    default:
-      sDiagram.vSprint("Warning: No diagram for class %lld %s"_Stz,
-                       eJobClass,aCN[eJobClass]);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* quick config summary                                                       */
 /*----------------------------------------------------------------------------*/
 Stz* AM::szSummary(s256& sSummary)
@@ -969,19 +898,20 @@ void AM::vWriteTrace(eYA eSysAct, Stz* aFormat, ...)
 
 }
 
+static TraceLock oTraceLock;
+
 /*----------------------------------------------------------------------------*/
 /* write to trace file etc                                                    */
 /*----------------------------------------------------------------------------*/
 void AM::vWriteTrace_vargs(eYA eSysAct, Stz* aFormat, va_list xArgs)
 {
-  static Lock oLock(LK_TRACE,nullptr);
   static char caFormatted[C_1MB] = {'\0'};
   
   bool bUseLock = (gpAttachMap ? true : false);
   bool bLowMem  = false; //gpBufferPool ? gpBufferPool->bLowMemory() : false;
   
   if (bUseLock)
-    oLock.vGrabWrite();
+    oTraceLock.vGrabWrite();
   
   // produce formatted line
   vsnprintf(caFormatted,sizeof(caFormatted) - 3,aFormat->azChar(),xArgs);
@@ -1003,7 +933,7 @@ void AM::vWriteTrace_vargs(eYA eSysAct, Stz* aFormat, va_list xArgs)
                 caFormatted);
   
   if (bUseLock)
-    oLock.vDropWrite();
+    oTraceLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1011,14 +941,13 @@ void AM::vWriteTrace_vargs(eYA eSysAct, Stz* aFormat, va_list xArgs)
 /*----------------------------------------------------------------------------*/
 void AM::vWriteTrace_vargs(File* pFile, eYA eSysAct, Stz* aFormat, va_list xArgs)
 {
-  static Lock oLock(LK_TRACE,nullptr);
   static char caFormatted[C_1MB] = {'\0'};
   
   bool bUseLock = (gpAttachMap ? true : false);
   bool bLowMem  = gpBufferPool ? gpBufferPool->bLowMemory() : false;
   
   if (bUseLock)
-    oLock.vGrabWrite();
+    oTraceLock.vGrabWrite();
   
   // produce formatted line
   vsnprintf(caFormatted,sizeof(caFormatted) - 3,aFormat->azChar(),xArgs);
@@ -1045,7 +974,7 @@ void AM::vWriteTrace_vargs(File* pFile, eYA eSysAct, Stz* aFormat, va_list xArgs
                 caFormatted);
   
   if (bUseLock)
-    oLock.vDropWrite();
+    oTraceLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1274,7 +1203,7 @@ void AM::vLogPrm(eSL eSeverity, SePrompt* pPrm, ePA ePrmAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a operator log entry                                                   */
 /*----------------------------------------------------------------------------*/
-void AM::vLogQue(eSL eSeverity, SystemSchedule* pQue, eQA eQueAct, Stz* szFormat, ...)
+void AM::vLogQue(eSL eSeverity, Schedule* pQue, eQA eQueAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
 //  if (! AM::bLogging())
@@ -1551,6 +1480,21 @@ void AM::vNapUsec(i8 nMicroSeconds, eCN eCallingClass)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get next object number                                                     */
+/*----------------------------------------------------------------------------*/
+i8 AM::iNextObjectNo(eCN eClassNo)
+{
+  i8 iObjectNo ;
+    
+  if (gpAttachMap && gpAttachMap->m_pObjects)
+    iObjectNo = gpAttachMap->m_pObjects->iNextNo(eClassNo);
+  else
+    iObjectNo = 1;
+  
+  return iObjectNo;
+}
+
+/*----------------------------------------------------------------------------*/
 /* delete the xmitOperand                                                     */
 /*----------------------------------------------------------------------------*/
 void AM::vDeleteXmitOperand(XmitOperand* pXmitOperand)
@@ -1580,11 +1524,13 @@ Operand* AM::pDuplicateOperand(Operand* pOperand)
 /*----------------------------------------------------------------------------*/
 /* new an operand job                                                         */
 /*----------------------------------------------------------------------------*/
-XmitOperand* AM::pNewXmitOperand(Job* pParentJob, Operand* pOperand, Op* pOp,
+XmitOperand* AM::pNewXmitOperand(Job* pParentJob, Operand* pOperand,
+                                 ePX eCrossTopo, i8 iNextStage, i8 iNextOp,
                                  i8 i_Node, i8 tPtnNo)
 {
   XmitOperand* pXmitOperand =
-    XmitOperand::pNewXmitOperand(pOperand,pParentJob->m_iFocalId,pOp,i_Node,tPtnNo);
+    XmitOperand::pNewXmitOperand(pOperand,pParentJob->m_iObjectId,
+                                 eCrossTopo,iNextStage,iNextOp,i_Node,tPtnNo);
   
   return pXmitOperand;
 }
@@ -1699,6 +1645,7 @@ i8 AM::iOperandZkKind(Operand* pOperand)
         case OI_CALLPIPELINE:   eOperand = ZK_CALLPIPELINE;   break;
         case OI_COMMANDERRORS:  eOperand = ZK_COMMANDERRORS;  break;
         case OI_COUNTINFO:      eOperand = ZK_COUNTINFO;      break;
+        case OI_EXECERRORS:     eOperand = ZK_EXECERRORS;     break;
         case OI_LOADRESULT:     eOperand = ZK_LOADRESULT;     break;
         case OI_LOCKSTATS:      eOperand = ZK_LOCKSTATS;      break;
         case OI_NODEINFO:       eOperand = ZK_NODEINFO;       break;
@@ -1939,7 +1886,7 @@ void AM::vLog(TokenVec *pTknVec) { gpLog->vLog(pTknVec);                        
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-i8 AM::iRdTimePoint(void) { return TickingDevice::iGetTick();                  }
+i8 AM::iRdTickingDevice(void) { return TickingDevice::iGetTick();                  }
 i8 AM::iAMTimePoint(void) { return gpAttachMap->m_iTimePoint;                  }
 
 bool AM::bIsOperandOoO(Operand* pOperand)   {
@@ -1960,7 +1907,7 @@ bool AM::bInBufferPool(Object* pObject) {
 }
 
 Stz* AM::szJobName(Job* pJob)    { return pJob->szJobNm();                      }
-i8   AM::iJobUniqueId(Job* pJob) { return pJob->m_iFocalId;                     }
+i8   AM::iJobUniqueId(Job* pJob) { return pJob->m_iObjectId;                     }
 
 void AM::vPrintGlobals(void)
 {
@@ -2002,7 +1949,7 @@ void AM::vJobInitExeContext(Job* pJob) {
 
 
 Task* AM::pTaskNew(Job* pJob) {
-  Task* pTask = new Task(pJob,pJob->m_iFocalId);
+  Task* pTask = new Task(pJob,pJob->m_iObjectId);
   pJob->vTask(pTask);
   return pTask;
 }
@@ -2019,7 +1966,10 @@ Job* AM::pTaskJob(void) {
   return pThisTLSTask()->pJob();
 }
 Job* AM::pTaskJob(Task* pTask) {
-  return pTask->pJob();
+  if (pTask)
+    return pTask->pJob();
+  else
+    return nullptr;
 }
 
 void AM::vJobObjectName(Job* pJob, Stz* szObjectName) {
@@ -2297,12 +2247,10 @@ static Stz* aEG[]
   "EG_KK"_Stz,
 
   "EG_LA"_Stz,
-  "EG_LK"_Stz,
   "EG_LN"_Stz,
   
   "EG_MA"_Stz,
   "EG_MC"_Stz,
-  "EG_MK"_Stz,
   "EG_MM"_Stz,
   "EG_MT"_Stz,
 
@@ -2433,11 +2381,9 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_LA: return aLA[i_Enum];
     case EG_LG: return aLG[i_Enum];
     case EG_LH: return aLH[i_Enum];
-    case EG_LK: return aLK[i_Enum];
       
     case EG_MA: return aMA[i_Enum];
     case EG_MC: return aMC[i_Enum];
-    case EG_MK: return aMK[i_Enum];
     case EG_MM: return aMM[i_Enum];
     case EG_MT: return aMT[i_Enum];
 
@@ -2664,13 +2610,13 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
 void AM::vJob_AddDemon(Job* pJob)
 {
   
-  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
+  Schedule* pSchedule = AM::pSchedule();
   
   AM::pDemonJobs()->vGrabLock();
   AM::pDemonJobs()->vAddJob(pJob);
   AM::pDemonJobs()->vDropLock();
   
-  pJob->vIncStepNo();
+  pJob->vEventNoInc();
   AM::vLogJob(SL_INF,pJob,JA_JOB_ADD_DEMON,
               "Job added to DemonJobs"_Stz); //!format-LogJob
 }
@@ -2681,13 +2627,13 @@ void AM::vJob_AddDemon(Job* pJob)
 void AM::vJob_AddLocal(Job* pJob)
 {
   
-  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
+  Schedule* pSchedule = AM::pSchedule();
   
   AM::pLocalJobs()->vGrabLock();
   AM::pLocalJobs()->vAddJob(pJob);
   AM::pLocalJobs()->vDropLock();
   
-  pJob->vIncStepNo();
+  pJob->vEventNoInc();
   AM::vLogJob(SL_INF,pJob,JA_JOB_ADD_LOCAL,
               "Job added to LocalJobs"_Stz); //!format-LogJob
 }
@@ -2698,13 +2644,13 @@ void AM::vJob_AddLocal(Job* pJob)
 void AM::vJob_AddOriginating(Job* pJob)
 {
   
-  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
+  Schedule* pSchedule = AM::pSchedule();
   
   AM::pOriginatingJobs()->vGrabLock();
   AM::pOriginatingJobs()->vAddJob(pJob);
   AM::pOriginatingJobs()->vDropLock();
   
-  pJob->vIncStepNo();
+  pJob->vEventNoInc();
   AM::vLogJob(SL_INF,pJob,JA_JOB_ADD_ORIGIN,
               "Job added to OriginatingJobs"_Stz); //!format-LogJob
 }
@@ -2714,13 +2660,13 @@ void AM::vJob_AddOriginating(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_AddParticipating(Job* pJob)
 {
-  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
+  Schedule* pSchedule = AM::pSchedule();
   
   AM::pParticipatingJobs()->vGrabLock();
   AM::pParticipatingJobs()->vAddJob(pJob);
   AM::pParticipatingJobs()->vDropLock();
   
-  pJob->vIncStepNo();
+  pJob->vEventNoInc();
   AM::vLogJob(SL_INF,pJob,JA_JOB_ADD_PARTG,
               "Job added to ParticipatingJobs"_Stz); //!format-LogJob
   
@@ -2731,9 +2677,9 @@ void AM::vJob_AddParticipating(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_DumpDemon(void)
 {
-  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
+  Schedule* pSchedule = AM::pSchedule();
   
-  AM::vLogQue(SL_INF,pSystemSchedule,QA_QUE_ORIGINATORS,
+  AM::vLogQue(SL_INF,pSchedule,QA_QUE_ORIGINATORS,
               "DemonJobs list:"_Stz); //!format-LogQue
   
   AM::pDemonJobs()->vGrabLock();
@@ -2746,9 +2692,9 @@ void AM::vJob_DumpDemon(void)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_DumpLocal(void)
 {
-  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
+  Schedule* pSchedule = AM::pSchedule();
   
-  AM::vLogQue(SL_INF,pSystemSchedule,QA_QUE_ORIGINATORS,
+  AM::vLogQue(SL_INF,pSchedule,QA_QUE_ORIGINATORS,
               "LocalJobs list:"_Stz); //!format-LogQue
   
   AM::pLocalJobs()->vGrabLock();
@@ -2761,9 +2707,9 @@ void AM::vJob_DumpLocal(void)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_DumpOriginating(void)
 {
-  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
+  Schedule* pSchedule = AM::pSchedule();
   
-  AM::vLogQue(SL_INF,pSystemSchedule,QA_QUE_ORIGINATORS,
+  AM::vLogQue(SL_INF,pSchedule,QA_QUE_ORIGINATORS,
               "OriginatingJobs list:"_Stz); //!format-LogQue
 
   AM::pOriginatingJobs()->vGrabLock();
@@ -2776,9 +2722,9 @@ void AM::vJob_DumpOriginating(void)
 /*----------------------------------------------------------------------------*/
 void AM::vJob_DumpParticipating(void)
 {
-  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
+  Schedule* pSchedule = AM::pSchedule();
   
-  AM::vLogQue(SL_INF,pSystemSchedule,QA_QUE_PARTICPANTS,
+  AM::vLogQue(SL_INF,pSchedule,QA_QUE_PARTICPANTS,
               "ParticipatingJobs list:"_Stz); //!format-LogQue
   
   AM::pParticipatingJobs()->vGrabLock();
@@ -2791,20 +2737,20 @@ void AM::vJob_DumpParticipating(void)
 /*----------------------------------------------------------------------------*/
 Job* AM::pJob_FindOriginating(i8 iJobId)
 {
-  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
+  Schedule* pSchedule = AM::pSchedule();
   
-  AM::vLogQue(SL_INF,pSystemSchedule,QA_QUE_FIND_ORIG,
+  AM::vLogQue(SL_INF,pSchedule,QA_QUE_FIND_ORIG,
               "Find job %lld in OriginatingJobs"_Stz, //!format-LogQue
               iJobId);
   
   Job* pJob = AM::pOriginatingJobs()->pFindJob(iJobId);
   
   if (pJob)
-    AM::vLogQue(SL_INF,pSystemSchedule,QA_QUE_FOUND_ORIG,
+    AM::vLogQue(SL_INF,pSchedule,QA_QUE_FOUND_ORIG,
                 "found job %lld in OriginatingJobs"_Stz, //!format-LogQue
                 iJobId);
   else
-    AM::vLogQue(SL_INF,pSystemSchedule,QA_QUE_NOT_ORIG,
+    AM::vLogQue(SL_INF,pSchedule,QA_QUE_NOT_ORIG,
                 "did not find job %lld in OriginatingJobs"_Stz, //!format-LogQue
                 iJobId);
   
@@ -2816,20 +2762,20 @@ Job* AM::pJob_FindOriginating(i8 iJobId)
 /*----------------------------------------------------------------------------*/
 Job* AM::pJob_FindParticipating(i8 iJobId)
 {
-  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
+  Schedule* pSchedule = AM::pSchedule();
 
-  AM::vLogQue(SL_INF,pSystemSchedule,QA_QUE_FIND_PARTG,
+  AM::vLogQue(SL_INF,pSchedule,QA_QUE_FIND_PARTG,
               "find job %lld in ParticipatingJobs"_Stz, //!format-LogQue
               iJobId);
   
   Job* pJob = AM::pParticipatingJobs()->pFindJob(iJobId);
   
   if (pJob)
-    AM::vLogQue(SL_INF,pSystemSchedule,QA_QUE_FOUND_PARTG,
+    AM::vLogQue(SL_INF,pSchedule,QA_QUE_FOUND_PARTG,
                 "found job %lld in ParticipatingJobs"_Stz, //!format-LogQue
                 iJobId);
   else
-    AM::vLogQue(SL_INF,pSystemSchedule,QA_QUE_NOT_PARTG,
+    AM::vLogQue(SL_INF,pSchedule,QA_QUE_NOT_PARTG,
                 "did not find job %lld in ParticipatingJobs"_Stz, //!format-LogQue
                 iJobId);
 
@@ -2841,7 +2787,7 @@ Job* AM::pJob_FindParticipating(i8 iJobId)
 /*----------------------------------------------------------------------------*/
 bool AM::bJob_RemoveLocal(Job* pJob, bool bDump)
 {
-  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
+  Schedule* pSchedule = AM::pSchedule();
   
   AM::pLocalJobs()->vGrabLock();
   
@@ -2852,7 +2798,7 @@ bool AM::bJob_RemoveLocal(Job* pJob, bool bDump)
   
   AM::pLocalJobs()->vDropLock();
   
-  pJob->vIncStepNo();
+  pJob->vEventNoInc();
   AM::vLogJob(SL_INF,pJob,JA_JOB_REMOVE_LOCAL,
               "Job removed from LocalJobs"_Stz); //!format-LogJob
   
@@ -2864,7 +2810,7 @@ bool AM::bJob_RemoveLocal(Job* pJob, bool bDump)
 /*----------------------------------------------------------------------------*/
 bool AM::bJob_RemoveOriginating(Job* pJob, bool bDump)
 {
-  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
+  Schedule* pSchedule = AM::pSchedule();
   
   AM::pOriginatingJobs()->vGrabLock();
   
@@ -2875,7 +2821,7 @@ bool AM::bJob_RemoveOriginating(Job* pJob, bool bDump)
   
   AM::pOriginatingJobs()->vDropLock();
   
-  pJob->vIncStepNo();
+  pJob->vEventNoInc();
   AM::vLogJob(SL_INF,pJob,JA_JOB_REMOVE_ORIGIN,
               "Job removed from OriginatingJobs"_Stz); //!format-LogJob
   
@@ -2887,7 +2833,7 @@ bool AM::bJob_RemoveOriginating(Job* pJob, bool bDump)
 /*----------------------------------------------------------------------------*/
 bool AM::bJob_RemoveParticipating(Job* pJob, bool bDump)
 {
-  SystemSchedule* pSystemSchedule = AM::pSystemSchedule();
+  Schedule* pSchedule = AM::pSchedule();
   
   AM::pParticipatingJobs()->vGrabLock();
   
@@ -2898,7 +2844,7 @@ bool AM::bJob_RemoveParticipating(Job* pJob, bool bDump)
   
   AM::pParticipatingJobs()->vDropLock();
   
-  pJob->vIncStepNo();
+  pJob->vEventNoInc();
   AM::vLogJob(SL_INF,pJob,JA_JOB_REMOVE_PARTG,
               "Job fremoved from ParticipatingJobs"_Stz); //!format-LogJob
   
@@ -2974,6 +2920,7 @@ Heartbeat AM::xGetHeartbeat(Stz* pszName)
  * @brief Add new node into the cluster
  * @details When a new node comes up, add it to the cluster.
  * <p>
+ * @param[in] iNodeNo  ID of this node
  * @param[in] pszName  name of this node
  * @param[in] pszAddr  Address this node runs at
  * @param[in] iPort   port number this node listens to
@@ -2982,12 +2929,12 @@ Heartbeat AM::xGetHeartbeat(Stz* pszName)
  * @return none
  *
  */
-void AM::vAddNewNode(Stz* pszName, Stz* pszAddr, i8 iPort)
+void AM::vAddNewNode(i8 iNodeNo, Stz* pszName, Stz* pszAddr, i8 iPort)
 {
   Node* pThisNode = AM::pGrid()->pFindNode(pszName);
   // Check to make sure we don't have this node yet
   if (!pThisNode) {
-    AM::pGrid()->vAddNode(pszName, pszAddr, iPort);
+    AM::pGrid()->vAddNode(iNodeNo, pszName, pszAddr, iPort);
   }
 }
 
@@ -3006,14 +2953,21 @@ void AM::vRemoveNode(Stz* pszName)
   Node* pThisNode = AM::pGrid()->pFindNode(pszName);
   // Check to make sure we have this node in the cluster/grid.
   if (pThisNode) {
-    AM::pGrid()->vRemoveNode(pThisNode);
+
     // we should remove article and delete the node here?
-    AM::pGrid()->pArticle()->vRemove(pThisNode->pArticle());
+    Article* pGridArticle = AM::pLexiconArticle()->pFind("SEgrid"_Stz);
+    if (pGridArticle) {
+      pGridArticle->vRemove(pThisNode->pArticle());
+      pGridArticle->vDumpRecursively(0);
+    }
+
+    AM::pGrid()->vRemoveNode(pThisNode); // BootNodes is decr in this function
     //delete pThisNode;
 
     AM::pGrid()->vDecConnectedNodes();
     AM::pGrid()->vDecDefinedNodes();
-    AM::pGrid()->vDecBootNodes();
+    AM::pGrid()->vDecNodes();
+    //AM::pGrid()->vDecBootNodes();
 
 
   }
@@ -3025,7 +2979,7 @@ void AM::vRemoveNode(Stz* pszName)
 /*----------------------------------------------------------------------------*/
 bool AM::bSupervisorHalt(void)
 {
-  return gpAttachMap->m_xStore.m_bSupervisorHalt;
+  return gpAttachMap->m_bSupervisorHalt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3033,7 +2987,7 @@ bool AM::bSupervisorHalt(void)
 /*----------------------------------------------------------------------------*/
 void AM::vSupervisorHalt(bool bHalt)
 {
-  gpAttachMap->m_xStore.m_bSupervisorHalt = bHalt;
+  gpAttachMap->m_bSupervisorHalt = bHalt;
 }
 
 /*============================================================================*/

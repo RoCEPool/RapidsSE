@@ -28,7 +28,7 @@ void Definition::operator delete(void* aAddress)
 {
   Object* pObject = static_cast<Object*>(aAddress);
   
-  HeapMem::vFree(pObject);
+  Heaps::vFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/

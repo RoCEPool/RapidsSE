@@ -16,8 +16,8 @@ void Step::vAddStep(Stz* aName, fpSTEPFN fpStepFn, bool bImmediate)
   //vTrace("%s Size = %lld\n"_Stz, aName, aName->nSize());
   RASSERT(aName->nSize() <= 32);
   
-  Dic* pRootDic = AM::pRootDic();
-  Word* pNewWord = new(pRootDic) Word(aName);
+  Dic* pDicRoot = AM::pDicRoot();
+  Word* pNewWord = new(pDicRoot) Word(aName);
   
   //m_pSenCompiler->vCurrentWord(pNewWord);
   
@@ -31,12 +31,12 @@ void Step::vAddStep(Stz* aName, fpSTEPFN fpStepFn, bool bImmediate)
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps(void)
 {
-  //Dic* pRootDic = AM::pRootDic();
+  //Dic* pDicRoot = AM::pDicRoot();
   if (AM::bVerbose())
     vTrace("[[mainThread]] Adding primitives...\n"_Stz);
   
   //vAddStep("word"_Stz,            &Step::vWord);
-  //AM::vRootWord(pRootDic->pFindWord("word"_Stz));
+  //AM::vRootWord(pDicRoot->pFindWord("word"_Stz));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -102,7 +102,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_List();
   Step::vAddSteps_Locals();
   Step::vAddSteps_Lock();
-  Step::vAddSteps_LockTracker();
+  Step::vAddSteps_Locks();
   Step::vAddSteps_Log();
   Step::vAddSteps_Logic();
   
@@ -135,7 +135,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_PtnStream();
   Step::vAddSteps_Push();
   
-  Step::vAddSteps_SystemSchedule();
+  Step::vAddSteps_Schedule();
 
   Step::vAddSteps_Range();
   Step::vAddSteps_Register();
@@ -170,7 +170,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Socket();
   Step::vAddSteps_SqlCompiler();
   Step::vAddSteps_SsnState();
-  Step::vAddSteps_StepTiming();
+  Step::vAddSteps_Steps();
   Step::vAddSteps_Str();
   Step::vAddSteps_StringA();
   Step::vAddSteps_StreamDef();

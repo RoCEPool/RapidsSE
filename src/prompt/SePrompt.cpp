@@ -53,8 +53,8 @@ __aFooterFunction(SePrompt)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SePrompt::SePrompt(bool bOneCommand, bool bSethScript)
-: Focal(CN_SEPROMPT,AM::iNextPromptId(),C_UNKNOWN),
-  m_oMutex(MK_THREAD,this)
+: Loggable(CN_SEPROMPT)
+, m_oMutex(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -877,14 +877,14 @@ bool SePrompt::bIsPromptWord(void)
   s32 sWordNm;
   sWordNm = pTkn0->szChars();
   
-  Dic* pRootDic = AM::pRootDic();
+  Dic* pDicRoot = AM::pDicRoot();
 
-  Word* pWord = pRootDic->pFindWord(sWordNm);
+  Word* pWord = pDicRoot->pFindWord(sWordNm);
   
   if (! pWord)
     return false;
     
-  Word* pPromptCatg = pRootDic->pFindWord("\\prompt"_Stz);
+  Word* pPromptCatg = pDicRoot->pFindWord("\\prompt"_Stz);
   if (pPromptCatg == pWord->pCategory())
     return true;
   
@@ -907,7 +907,7 @@ void SePrompt::vLogCommand(void)
   m_pInpTknVec->vVecToString(sCommand,0,true);
   sCommand.vSizeMax(C_MAX_LOG_NOTE / 2);
   
-  vIncStepNo();
+  vEventNoInc();
 //  AM::vLogPrm(SL_INF,this,PA_PRM_COMMAND,
 //              "%lld %s"_Stz, //!format-LogPrm
 //              m_xReqTuple.m_iReqNo,sCommand.szStz());
@@ -926,7 +926,7 @@ void SePrompt::vLogFreeSpace(void)
   s32 sFreeSpaceMag;
   MagLib::vByteMag(iFreeSpace + iFreeSpaceInPool,1,sFreeSpaceMag);
   
-  vIncStepNo();
+  vEventNoInc();
   AM::vLogPrm(SL_INF,this,PA_PRM_FREE_SPACE,
               "%s on node %s"_Stz, //!format-LogPrm
               sFreeSpaceMag.szStz(),
@@ -1093,9 +1093,9 @@ void SePrompt::vPromptUser(void)
         
         AM::bBootError()      ? "*BOOTERROR* "  : "",
         bLowMem               ? "*LOWMEMORY* "  : "",
-        AM::pStepTiming()     ? "*STEPTIMING* " : "",
+        AM::pSteps()     ? "*STEPTIMING* " : "",
         
-        RAPIDSSE_VERSION_STRING,
+        AM::szVersionString(),
 #ifdef WITH_DEBUG_VERSION
         "debug",
 #else

@@ -6,7 +6,7 @@
 #include "Step.hpp"
 #include "EnterExit.h"
 #include "StepAccum.hpp"
-#include "StepTiming.hpp"
+#include "Steps.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -181,8 +181,8 @@ void Step::vDicRoot(void)
 {
   ENTRY();
   
-  Dic* pRootDic = AM::pRootDic();
-  m_pDataStack->vPushPtr(pRootDic);
+  Dic* pDicRoot = AM::pDicRoot();
+  m_pDataStack->vPushPtr(pDicRoot);
   
   EXIT();
 }

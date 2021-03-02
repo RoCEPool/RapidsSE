@@ -6,7 +6,7 @@
 #include "Step.hpp"
 #include "EnterExit.h"
 #include "StepAccum.hpp"
-#include "StepTiming.hpp"
+#include "Steps.hpp"
 
 #include "ePX.h"
 
@@ -113,8 +113,15 @@ void Step::vRegPipeinNext(void)
 {
   ENTRY();
   
-  if (( m_pJob->pLogicUnit_job() )->m_xpPipein.bIsNull())
-    ( m_pJob->pLogicUnit_job() )->m_xpPipein = m_pJob->m_pOp->pPopQueue();
+  if (( m_pJob->pLogicUnit_job() )->m_xpPipein.bIsNull()) {
+    
+    Operand* pOperand = m_pJob->m_pOp->pPopQueue();
+    ( m_pJob->pLogicUnit_job() )->m_xpPipein = pOperand;
+    
+    eZK eOperand = (eZK)AM::iOperandZkKind(pOperand);
+    m_pJob->pLogicUnit_job()->m_eOperand = eOperand;
+  }
+  
   ASSERT(*( m_pJob->pLogicUnit_job() )->m_xpPipein);
   
   EXIT();

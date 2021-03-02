@@ -38,7 +38,7 @@ void Heap::operator delete(void* pHeapAddress)
 /*----------------------------------------------------------------------------*/
 Heap::Heap(eCN eClassNo, i8 iObjectSize, eHT eHeap)
 : PoolBuffer(eClassNo)
-, m_okLock(LK_HEAP,this)
+, m_okLock(this,C_DONT_LOG)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   

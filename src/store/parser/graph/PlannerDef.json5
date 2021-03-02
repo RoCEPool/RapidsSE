@@ -411,8 +411,22 @@
                           children: []
                         }
                       ],
-                      children: []
-                    },
+                      children: [
+// Path: /__root__/definitions/object/planObject/sqlOperator/projectOp/aggregateOp
+                        {
+                          name: "aggregateOp",
+                          value: "A subclass of projectOp that adds a group-by list for aggregate expressions",
+                          properties: [
+                            {
+                              name: "groupBy",
+                              value: "A list of expressions that the projectedExprs are to be grouped by",
+                              type: "/__root__/definitions/object/list/exprList"
+                            }
+                          ],
+                          children: []
+                        } // EndPath: /__root__/definitions/object/planObject/sqlOperator/projectOp/aggregateOp
+                      ]
+                    }, // EndPath: /__root__/definitions/object/planObject/sqlOperator/projectOp
 
 // Path: /__root__/definitions/object/planObject/sqlOperator/filterOp
                     {
@@ -431,9 +445,25 @@
 // TODO Path: /__root__/definitions/object/planObject/sqlOperator/join/sortMergeJoinOp
 // TODO Path: /__root__/definitions/object/planObject/sqlOperator/join/hashJoinOp
 // TODO Path: /__root__/definitions/object/planObject/sqlOperator/join/loopJoinOp
-// TODO Path: /__root__/definitions/object/planObject/sqlOperator/aggregation
 // TODO Path: /__root__/definitions/object/planObject/sqlOperator/orderOp
-// TODO Path: /__root__/definitions/object/planObject/sqlOperator/limitOp
+// Path: /__root__/definitions/object/planObject/sqlOperator/limitOp
+                    {
+                      name: "limitOp",
+                      value: "An operator that limits the number of rows being returned",
+                      properties: [
+                        {
+                          name: "limit",
+                          value: "The maximum number of rows to be returned",
+                          type: "/__root__/definitions/object/valueObject/integerObject"
+                        },
+                        {
+                          name: "offset",
+                          value: "The number of rows to initially be ignored before counting against the limit",
+                          type: "/__root__/definitions/object/valueObject/integerObject"
+                        }
+                      ],
+                      children: []
+                    },
 
 // Path: /__root__/definitions/object/planObject/sqlOperator/dataSource
                     {
@@ -1337,7 +1367,7 @@
                   name: "projectedExprs",
                   value: "A list of projectedExpr objects",
                   properties: [
-                    // We add a constraint that all children must be of type /definitions/object/compound/projectedExpr
+                    // We add a constraint that all children must be of type /__root__/definitions/object/compound/projectedExpr
                     { name: "__constraints", type: "/__root__/primitives/constraints", children: [
                       {
                         name: "childType",
@@ -1352,6 +1382,27 @@
                   ], // end projectedExprs properties
                   children: []
                 }, // EndPath: /__root__/definitions/object/list/projectedExprs
+
+// Path: /__root__/definitions/object/list/exprList
+                {
+                  name: "exprList",
+                  value: "A list of expressions",
+                  properties: [
+                    // We add a constraint that all children must be of type /__root__/definitions/object/expr
+                    { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                      {
+                        name: "childType",
+                        type:  "/__root__/primitives/constraints/childType",
+                        children: [ {
+                          name: "childTypeParam",
+                          type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject",
+                          value: "/__root__/definitions/object/expr"
+                        } ]
+                      }
+                    ]} // end __constraints container
+                  ],
+                  children: []
+                }, // EndPath: /__root__/definitions/object/list/exprList
 
 // Path: /__root__/definitions/object/list/catalogDefs
                 {
@@ -1687,6 +1738,14 @@
               ]
             }, // EndPath: /__root__/definitions/object/metadataNode
 
+// Path: /__root__/definitions/object/statisticsNode
+            {
+              // TODO: Fill this in
+              name: "statisticsNode",
+              value: "A definition for the node that occurs at /__root__/statistics.",
+              properties: [ ]
+            }, // EndPath: /__root__/definitions/object/statisticsNode
+
           ]
         }, // EndPath: /__root__/definitions/object
 
@@ -1829,7 +1888,7 @@
                 {
                   name: "intervalDT",
                   value: "a range between two timestamps in days and time"
-                }
+                },
 // Path: /__root__/definitions/types/sqlType/unknown
                 {
                   name: "unknown",
@@ -1866,7 +1925,7 @@
 // Path: /__root__/statistics
     {
       name: "statistics",
-      type: "/__root__/primitives/trunk",
+      type: "/__root__/definitions/object/statisticsNode",
       children: [
         // Note: Children will get populated when a query is being plannned.
       ]
