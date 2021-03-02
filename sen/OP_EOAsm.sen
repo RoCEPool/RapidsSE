@@ -23,7 +23,6 @@
 
   // generate asm from query text
   Counter0[] <queryText> genAsm not if
-    EC_INVALID_COMMAND op.pipelineJob@ ERROR_JOB
     EC_INVALID_COMMAND op__execErr
     PipeIn[].delete
     true

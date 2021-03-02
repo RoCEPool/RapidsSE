@@ -106,10 +106,17 @@ void Api::vExecuteJob(Session* pSession)
 
   Job* pJob = pSession->m_pSsnJob;
   
+  
+  
+  
+  
+  
+  
   for (;;) {
   
-    Api::bSpawnJob_session(pJob);
-  
+    bool bSpawned = Api::bSpawnJob_session(pJob);
+    UNUSED(bSpawned);
+
     if (! pSession->bHasCascade())
       return;
   
@@ -123,19 +130,61 @@ void Api::vExecuteJob(Session* pSession)
 }
 
 /*----------------------------------------------------------------------------*/
-/* prepare job                                                                */
+/* extract paths                                                              */
 /*----------------------------------------------------------------------------*/
-eEC Api::ePrepareJob(Session*  pSession,
-                     TokenVec* pCmdTknVec,
-                     TokenVec* pLitTknVec,
-                     TagSet*   pExtraTagSet)
+void Api::vExtractPaths(Session* pSession)
+{
+  _static_
+  
+  TokenVec* pInpTknVec = pSession->m_pInput->pTokenVec();;
+  TagSet* pJobTagSet = & pSession->m_oJobTagSet;;
+  
+  i8 i_Paths = pInpTknVec->iFindToken("paths"_Stz,TN_NAME);
+
+  if (C_UNKNOWN == i_Paths)
+    return;
+  
+  pInpTknVec->vRemoveToken(i_Paths);
+
+  s32 sName;
+  
+  i8 nPaths;
+  for (nPaths = 0; i_Paths < pInpTknVec->nTokens(); nPaths++) {
+    sName.vSprint("<path%lld>"_Stz,nPaths);
+    Token* pTkn = pInpTknVec->pGet(i_Paths);
+    pJobTagSet->vAppend(sName,pTkn->szChars());
+    pInpTknVec->vRemoveToken(i_Paths);
+  }
+  
+  pJobTagSet->vAppend("<paths>"_Stz,nPaths);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract tags                                                               */
+/*----------------------------------------------------------------------------*/
+void Api::vExtractTags(Session* pSession)
+{
+  _static_
+}
+
+/*----------------------------------------------------------------------------*/
+/* new a job in the session and prepare it for execution                      */
+/*----------------------------------------------------------------------------*/
+eEC Api::ePrepareJob(Session* pSession, TokenVec* pLitTknVec)
 {
   _static_
 
   RASSERT(pSession);
   RASSERT(! pSession->m_pSsnJob);
     
+ 
+  TokenVec* pCmdTknVec = pSession->m_pInput->pTokenVec();
+      
+  TagSet*  pJobCtlTagSet = & pSession->m_oJobTagSet;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   if (bShortForm(pCmdTknVec)) {
     if (! bExpandToLongForm(pCmdTknVec)) {
       return EC_INVALID_COMMAND;
@@ -156,7 +205,7 @@ eEC Api::ePrepareJob(Session*  pSession,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if ( ! AM::bParseCmd(pCmdTknVec,pExtraTagSet) )
+  if ( ! AM::bParseCmd(pCmdTknVec,pJobCtlTagSet) )
     return EC_INVALID_COMMAND;
   
   //if (! AM::bPassesLowMem())
@@ -204,7 +253,7 @@ eEC Api::ePrepareJob(Session*  pSession,
     //pJobTags->vContentDump();
   }
   
-  pSession->m_pSsnJob->ePopulateJob(pExtraTagSet);
+  pSession->m_pSsnJob->ePopulateJob(pJobCtlTagSet);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add <cmd> into job ename-set

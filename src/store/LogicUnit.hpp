@@ -58,7 +58,7 @@ namespace STORE
 #define I_PushInt(__iValue) \
   *(++aiDstk) = __iValue;
 
-#define I_PopInt(__iValue)   *(aiDstk--)
+#define I_PopInt()   *(aiDstk--)
 
 #define P_PushPtr(__pPtr) \
   *(++aiDstk) = (i8)__pPtr;

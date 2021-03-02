@@ -15,7 +15,6 @@
   // check if are in tenants
   folder[].checkIsTenants not if
     to errorCode
-    errorCode op.pipelineJob@ ERROR_JOB
     errorCode op__execErr
     PipeIn[].delete
     true
@@ -26,7 +25,6 @@
   // check if tenant exits
   <tenantNm> checkIsTenant not if
     to errorCode
-    errorCode op.pipelineJob@ ERROR_JOB
     PipeIn[].delete
     errorCode op__execErr
     true

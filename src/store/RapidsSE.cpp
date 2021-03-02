@@ -90,21 +90,18 @@ eEC RapidsSE::ePrepareJob(void* aSession, char* azCommand)
 {
   _static_
 
-  TokenVec* pCmdTknVec = new TokenVec;;
   TokenVec* pLitTknVec = new TokenVec;;
-  TagSet    oExtTagSet;
 
   Session* pSession = _pSession(aSession);
   
-  pCmdTknVec->vTokeniseC((Stz*)azCommand);
-  //pCmdTknVec->vDumpVec(0);
+  TokenVec* pCmdTknVec = pSession->m_pInput->pTokenVec();
 
-  oExtTagSet.vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
-  //oExtTagSet.vReplace(C_TAG_TRACEOP,1);
-  
-  eEC eError = Api::ePrepareJob(pSession,pCmdTknVec,pLitTknVec,&oExtTagSet);
-  
-  delete pCmdTknVec;
+  pCmdTknVec->vTokeniseC((Stz*)azCommand);
+
+  TagSet* pTagSet =  & pSession->m_oJobTagSet;
+  pTagSet->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
+  eEC eError = Api::ePrepareJob(pSession,pLitTknVec);
+
   delete pLitTknVec;
 
   return eError;
