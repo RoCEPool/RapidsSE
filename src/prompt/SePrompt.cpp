@@ -213,6 +213,20 @@ void SePrompt::vPromptLoop(void)
     
     //vTrace("Prompt-RawInput: %s\n"_Stz,pInputGet()->szRawInput());
     
+    if (bDemo()) {
+      
+      // handle demo statement
+      if ( ! bHandleDemo() ) {
+        vTrace("error: %s\n"_Stz,aEC[EC_INVALID_COMMAND]);
+        if (AM::bDeveloper())
+          vDumpInpTknVec(true);
+        continue;
+      }
+    }
+
+    if (bExecuteFunction())
+      continue;
+
     Stz* szCmdFile = pInputGet()->szPath();
     i8   iCmdLine  = pTkn(0)->iLineNo();
 
@@ -277,16 +291,16 @@ bool SePrompt::bGetCommand(void)
     return false;
 
   // is it a demo statement ?
-  if (bDemo()) {
-    
-    // handle demo statement
-    if ( ! bHandleDemo() ) {
-      vTrace("error: %s\n"_Stz,aEC[EC_INVALID_COMMAND]);
-      if (AM::bDeveloper())
-        vDumpInpTknVec(true);
-      return false;
-    }
-  }
+//  if (bDemo()) {
+//
+//    // handle demo statement
+//    if ( ! bHandleDemo() ) {
+//      vTrace("error: %s\n"_Stz,aEC[EC_INVALID_COMMAND]);
+//      if (AM::bDeveloper())
+//        vDumpInpTknVec(true);
+//      return false;
+//    }
+//  }
   
   while (bSubSsnTags())
     {;}
@@ -298,33 +312,15 @@ bool SePrompt::bGetCommand(void)
   if (! Api::bExtractTags(m_pCurrentDeputy->pSession()))
     return false;
 
-  if (bExecuteFunction())
-    return false;
-
   if (bIsPromptWord())
     m_pInpTknVec->vInsertToken(0,"docol"_Stz,TN_NAME);
-
-
-//  if (AM::bDeveloper() && m_pInpTknVec->nTokens() > C_1KB) {
-//    i8 nTokens = m_pInpTknVec->nTokens();
-//    i8 nUsed   = m_pInpTknVec->nUsedByteSpace();
-//    if (nTokens > C_1KB)
-//       vTrace("TokenVec usage: nTokens=%lld nUsed=%lld(B)\n"_Stz,nTokens,nUsed);
-//    vDebugPoint();
-//  }
-  
+    
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // prompt has finessed the final input token vector at this stage
   
   //m_xReqTuple.m_iReqNo++;
   
   vLogCommand();
-  
-  
-//  Now xNow;
-//  xNow.vSetNow();
-  
-  //vTrace("%s\n"_Stz,xNow.sz());
   
 
 // TBD: remove division and section concepts
