@@ -639,29 +639,29 @@ void PoolHelper::vRegionSummary()
          AM::pHeaps()->Transient.m_pLarge->nCurrAllocated(),
          AM::pHeaps()->Transient.m_pLarge->nFreeChunks());
   
-  printf((char*)"  Persistent TinyHeap   (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
-         sMagTiny.azChar(),
-         AM::pHeaps()->Persistent.m_pTiny->nBufferCount(),
-         AM::pHeaps()->Persistent.m_pTiny->nCurrAllocated(),
-         AM::pHeaps()->Persistent.m_pTiny->nFreeChunks());
-  
-  printf((char*)"  Persistent SmallHeap  (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
-         sMagSmall.azChar(),
-         AM::pHeaps()->Persistent.m_pSmall->nBufferCount(),
-         AM::pHeaps()->Persistent.m_pSmall->nCurrAllocated(),
-         AM::pHeaps()->Persistent.m_pSmall->nFreeChunks());
-  
-  printf((char*)"  Persistent MediumHeap (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
-         sMagMedium.azChar(),
-         AM::pHeaps()->Persistent.m_pMedium->nBufferCount(),
-         AM::pHeaps()->Persistent.m_pMedium->nCurrAllocated(),
-         AM::pHeaps()->Persistent.m_pMedium->nFreeChunks());
-  
-  printf((char*)"  Persistent LargeHeap  (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
-         sMagLarge.azChar(),
-         AM::pHeaps()->Persistent.m_pLarge->nBufferCount(),
-         AM::pHeaps()->Persistent.m_pLarge->nCurrAllocated(),
-         AM::pHeaps()->Persistent.m_pLarge->nFreeChunks());
+//  printf((char*)"  Persistent TinyHeap   (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+//         sMagTiny.azChar(),
+//         AM::pHeaps()->Persistent.m_pTiny->nBufferCount(),
+//         AM::pHeaps()->Persistent.m_pTiny->nCurrAllocated(),
+//         AM::pHeaps()->Persistent.m_pTiny->nFreeChunks());
+//
+//  printf((char*)"  Persistent SmallHeap  (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+//         sMagSmall.azChar(),
+//         AM::pHeaps()->Persistent.m_pSmall->nBufferCount(),
+//         AM::pHeaps()->Persistent.m_pSmall->nCurrAllocated(),
+//         AM::pHeaps()->Persistent.m_pSmall->nFreeChunks());
+//
+//  printf((char*)"  Persistent MediumHeap (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+//         sMagMedium.azChar(),
+//         AM::pHeaps()->Persistent.m_pMedium->nBufferCount(),
+//         AM::pHeaps()->Persistent.m_pMedium->nCurrAllocated(),
+//         AM::pHeaps()->Persistent.m_pMedium->nFreeChunks());
+//
+//  printf((char*)"  Persistent LargeHeap  (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+//         sMagLarge.azChar(),
+//         AM::pHeaps()->Persistent.m_pLarge->nBufferCount(),
+//         AM::pHeaps()->Persistent.m_pLarge->nCurrAllocated(),
+//         AM::pHeaps()->Persistent.m_pLarge->nFreeChunks());
 }
 
 /*----------------------------------------------------------------------------*/
