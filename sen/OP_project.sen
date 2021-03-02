@@ -36,6 +36,29 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_CANCELMARKER ...                                                 END */
+/*----------------------------------------------------------------------------*/
+: project_CancelMarker \handler
+
+  0 ZK_CANCELMARKER EG_ZK LogicUnit[].diaryNote
+
+  // delete the pot
+  Pot[].isNull not if
+    Pot[].pipeoutAllDanglingPtns
+    Pot[].delete
+  then
+
+  StreamDef[].isNull not if
+    StreamDef[].delete
+  then
+
+  Counter0[] cleanUpAsm
+
+  ZK_CANCELMARKER EG_ZK PD_PIPE_OUT 0 ZK_CANCELMARKER EG_ZK LogicUnit[].diaryAction
+  ZK_CANCELMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_CRWBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
 : project_CrwBuffer \handler
@@ -104,6 +127,20 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_ERRORMARKER ...                                             */
+/*----------------------------------------------------------------------------*/
+: project_ERRORMARKER \handler
+
+  find: project_Xyz   ZK_CRWBUFFER   op[].handler!
+  find: project_Xyz   ZK_ROWBUFFER   op[].handler!
+  find: project_Xyz   ZK_EOSMARKER   op[].handler!
+
+  PipeIn[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_STREAMDEF ...                                              STREAMDEF */
 /*----------------------------------------------------------------------------*/
 : project_StreamDef \handler
@@ -121,9 +158,11 @@
 
   // check for error
   eError EC_NONE == not if
+
     find: project_Xyz   ZK_CRWBUFFER     op[].handler!
     find: project_Xyz   ZK_ROWBUFFER     op[].handler!
-    eError op.pipelineJob@ ERROR_JOB
+    find: project_Xyz    ZK_EOSMARKER     op[].handler!
+
     eError op__execErr
     StreamDef[].delete
     StreamDefOut[].delete
@@ -163,11 +202,13 @@
 
   op__topology
 
-  find: project_CrwBuffer   ZK_CRWBUFFER   op[].handler!
-  find: project_EosMarker   ZK_EOSMARKER   op[].handler!
-  find: project_RowBuffer   ZK_ROWBUFFER   op[].handler!
-  find: project_StartMarker ZK_STARTMARKER op[].handler!
-  find: project_StreamDef   ZK_STREAMDEF   op[].handler!
+  find: project_CancelMarker ZK_CANCELMARKER op[].handler!
+  find: project_CrwBuffer    ZK_CRWBUFFER    op[].handler!
+  find: project_EosMarker    ZK_EOSMARKER    op[].handler!
+  find: project_ErrorMarker  ZK_ERRORMARKER  op[].handler!
+  find: project_RowBuffer    ZK_ROWBUFFER    op[].handler!
+  find: project_StartMarker  ZK_STARTMARKER  op[].handler!
+  find: project_StreamDef    ZK_STREAMDEF    op[].handler!
 
   op__loop
 

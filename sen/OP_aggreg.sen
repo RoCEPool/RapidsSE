@@ -36,6 +36,29 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_CANCELMARKER ...                                                 END */
+/*----------------------------------------------------------------------------*/
+: aggreg_CancelMarker \handler
+
+  0 ZK_CANCELMARKER EG_ZK LogicUnit[].diaryNote
+
+  // delete the pot
+  Pot[].isNull not if
+    Pot[].pipeoutAllDanglingPtns
+    Pot[].delete
+  then
+
+  StreamDef[].isNull not if
+    StreamDef[].delete
+  then
+
+  Counter0[] cleanUpAsm
+
+  ZK_CANCELMARKER EG_ZK PD_PIPE_OUT 0 ZK_CANCELMARKER EG_ZK LogicUnit[].diaryAction
+  ZK_CANCELMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_CRWBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
 : aggreg_CrwBuffer \handler
@@ -87,7 +110,7 @@
 : aggreg_EosMarker \handler
 
   0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryNote
-"aggreg_EosMarker" .
+
   // execute the eosMarker asm handler if job has no error
   //op.pipelineJob@ job.hasError not if
     ZK_EOSMARKER Counter0[] executeAsmArgs
@@ -108,24 +131,17 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_EOSMARKER ...                                                    END */
+/* handler for ZK_ERRORMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: aggreg_EosMarker_Err \handler
+: aggreg_ERRORMARKER \handler
 
-  0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryNote
+  find: aggreg_Xyz             ZK_CRWBUFFER   op[].handler!
+  find: aggreg_Xyz             ZK_ROWBUFFER   op[].handler!
+  find: aggreg_Xyz             ZK_EOSMARKER   op[].handler!
 
-  // pipe out all pot[]
-  Pot[].pipeoutAllDanglingPtns
-  Pot[].delete
+  PipeIn[].pipeout
 
-  StreamDef[].isNull not if
-    StreamDef[].delete
-  then
-
-  Counter0[] cleanUpAsm
-
-  ZK_EOSMARKER EG_ZK PD_PIPE_OUT 0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryAction
-  ZK_EOSMARKER_handler
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -146,9 +162,10 @@
 
   // check for error
   eError EC_NONE == not if
+
     find: aggreg_Xyz             ZK_CRWBUFFER   op[].handler!
     find: aggreg_Xyz             ZK_ROWBUFFER   op[].handler!
-    find: aggreg_EosMarker_Err   ZK_EOSMARKER   op[].handler!
+    find: aggreg_Xyz             ZK_EOSMARKER   op[].handler!
 
     eError op__execErr
     StreamDef[].delete
@@ -178,20 +195,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_ERRORMARKER ...                                             */
-/*----------------------------------------------------------------------------*/
-: aggreg_ERRORMARKER \handler
-
-  find: aggreg_Xyz             ZK_CRWBUFFER   op[].handler!
-  find: aggreg_Xyz             ZK_ROWBUFFER   op[].handler!
-  find: aggreg_EosMarker_Err   ZK_EOSMARKER   op[].handler!
-
-  PipeIn[].pipeout
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -206,12 +209,13 @@
 
   op__topology
 
-  find: aggreg_CrwBuffer   ZK_CRWBUFFER   op[].handler!
-  find: aggreg_EosMarker   ZK_EOSMARKER   op[].handler!
-  find: aggreg_ErrorMarker ZK_ERRORMARKER op[].handler!
-  find: aggreg_RowBuffer   ZK_ROWBUFFER   op[].handler!
-  find: aggreg_StartMarker ZK_STARTMARKER op[].handler!
-  find: aggreg_StreamDef   ZK_STREAMDEF   op[].handler!
+  find: aggreg_CancelMarker ZK_CANCELMARKER op[].handler!
+  find: aggreg_CrwBuffer    ZK_CRWBUFFER    op[].handler!
+  find: aggreg_EosMarker    ZK_EOSMARKER    op[].handler!
+  find: aggreg_ErrorMarker  ZK_ERRORMARKER  op[].handler!
+  find: aggreg_RowBuffer    ZK_ROWBUFFER    op[].handler!
+  find: aggreg_StartMarker  ZK_STARTMARKER  op[].handler!
+  find: aggreg_StreamDef    ZK_STREAMDEF    op[].handler!
 
   op__loop
 

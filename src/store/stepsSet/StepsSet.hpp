@@ -1032,6 +1032,7 @@ void vExprEvalEvaluate(void);
   void vPotDangling(void);
   void vPotDanglingPtn(void);
   void vPotDelete(void);
+  void vPotIsNull(void);
   void vPotNew(void);
   void vPotPushBuffer(void);
   void vPotUseStreamDefOut(void);
