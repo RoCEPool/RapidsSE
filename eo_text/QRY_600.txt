@@ -40,12 +40,15 @@ Routine QRY_600
 Label STARTMARKER_HANDLER
   EO_PRINTF "**STARTMARKER_HANDLER : 600**\n"
   EO_POP
+
   //EO_TABLENM_SRC_SET "lineitem"
   EO_PUSH_DEVROW_SRC
   EO_DEVROW_TABLENM_SET "lineitem"
+
   //EO_INDEXNM_SRC_SET "lineitem_idx1"
   EO_PUSH_DEVIXT_SRC
   EO_DEVIXT_INDEXNM_SET "lineitem_idx1"
+
   EO_JMP QRY_600_DONE
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -153,7 +156,10 @@ Label QRY_600_DONE
 // BEGIN: SUBROUTINE_PROCESSROW
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Label SUBROUTINE_PROCESSROW
-  EO_CRW_SRC_DEREF
+  //EO_CRW_SRC_DEREF
+  EO_PUSH_DEVIXT_SRC
+  EO_DEVIXT_DEREF
+
   EO_SET_ITEMS 3
   EO_SET_COLUMN 6
   EO_SET_COLUMN 5

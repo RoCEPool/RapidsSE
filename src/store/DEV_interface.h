@@ -9,6 +9,12 @@ i8   iDev_CRW_NEXT(void* aLU, void* aIXT);
 void vDev_CRW_NULL(void* aLU, void* aIXT);
 i8   iDev_CRW_TEST(void* aLU, void* aIXT);
 
+void vDev_IXT_BEGIN(i8** aaiDstk);
+void vDev_IXT_DEREF(i8** aaiDstk);
+void vDev_IXT_NEXT(i8** aaiDstk);
+void vDev_IXT_NULL(i8** aaiDstk);
+void vDev_IXT_TEST(i8** aaiDstk);
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // prototypes for dev IXT
 
@@ -92,6 +98,8 @@ void vDev_ALT_COL_PUSHSET(void* aLU, i8** aamDstk, i8 ieStrInf, i8* iaColSet);
 void vDev_ROW_COL_PUSHSET(void* aLU, i8** aamDstk, void* aROWDEVICE, i8* iaColSet);
 void vDev_SRC_COL_PUSHDST(void* aLU, void* aROWDEVICE);
 void vDev_SRC_COL_PUSHSET(void* aLU, i8** aamDstk, i8 ieStrInf, i8* iaColSet);
+
+void vDev_IXT_COL_PUSHONE_PST(void* aLU, i8** aaiDstk);
 
 void vDev_INDEXTREE_DEV_SET(void* aLU, i8 iDev);
 

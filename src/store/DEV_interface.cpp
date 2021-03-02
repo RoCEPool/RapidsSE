@@ -54,13 +54,13 @@ void vDev_CRW_BEGIN(void* aLU, void* aIXT)
   pDevIxt->m_nRows = pDevIxt->m_pCrwBuffer ?
                    pDevIxt->m_pCrwBuffer->nRowCount() : 0;
   
-  pLogicUnit->m_xRluCommon.m_nCrwRows = pDevIxt->m_nRows;
-  pLogicUnit->m_xRluCommon.m_i_CrwRow = pDevIxt->m_i_Row;
+  //pLogicUnit->m_xRluCommon.m_nCrwRows = pDevIxt->m_nRows;
+  //pLogicUnit->m_xRluCommon.m_i_CrwRow = pDevIxt->m_i_Row;
       
-  if (pDevIxt->m_pCrwBuffer)
-    pLogicUnit->m_xRluCommon.m_aSrcHeadCrw = pDevIxt->m_pCrwBuffer->aGetHead(0);
-  else
-    pLogicUnit->m_xRluCommon.m_aSrcHeadCrw = nullptr;
+  //if (pDevIxt->m_pCrwBuffer)
+  //  pLogicUnit->m_xRluCommon.m_aSrcHeadCrw = pDevIxt->m_pCrwBuffer->aGetHead(0);
+  //else
+  //  pLogicUnit->m_xRluCommon.m_aSrcHeadCrw = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -73,23 +73,18 @@ void vDev_CRW_DEREF(void* aLU, void* aIXT)
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
   DevIXT* pDevIxt = _pDevIXT(aIXT);
   
-  pDevIxt->m_aCrw  =
-    CrwBuffer::pRefdCrw(pDevIxt->m_aEnt->rxRef());
-  
-  // can we calc it?
+  //pDevIxt->m_aCrw  =
+  //  CrwBuffer::pRefdCrw(pDevIxt->m_aEnt->rxRef());
   
   i8 iBuffer = ((Ent_int*)pDevIxt->m_aEnt)->Rrf.m_uBuffer;
   i8 iItem   = ((Ent_int*)pDevIxt->m_aEnt)->Rrf.m_uItem;
-  
-  Crw* aCrw  = (Crw*)
+
+  pDevIxt->m_aCrw  = (Crw*)
     ( (char*)C_ADR_REGION
              + iBuffer * C_1MB
              + C_CRW_FIRSTHEAD
              + iItem * pLogicUnit->m_xRluCommon.m_nSrcHeadSize );
-  
-  RASSERT(aCrw == pDevIxt->m_aCrw);
-  
-  // ... yes we can
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -104,10 +99,19 @@ i8 iDev_CRW_NEXT(void* aLU, void* aIXT)
 
   i8 iRes;
   
+//  if (++pDevIxt->m_i_Row < pDevIxt->m_nRows) {
+//    pDevIxt->m_aCrw =
+//      pDevIxt->m_pCrwBuffer->aCrw(pDevIxt->m_i_Row);
+//    iRes = 1;
+//  }
+//  else {
+//    iRes = 0;
+//  }
+
   if (++pDevIxt->m_i_Row < pDevIxt->m_nRows) {
     pDevIxt->m_aCrw =
-      pDevIxt->m_pCrwBuffer->aCrw(pDevIxt->m_i_Row);
-    pLogicUnit->m_xRluCommon.m_aSrcCrw = pDevIxt->m_aCrw;
+        (Crw*) ( (char*)pDevIxt->m_pCrwBuffer->aGetHead(0)
+            + (pLogicUnit->m_xRluCommon.m_nSrcHeadSize * pDevIxt->m_i_Row) );
     iRes = 1;
   }
   else {
@@ -149,6 +153,115 @@ i8 iDev_CRW_TEST(void* aLU, void* aIXT)
     iRes = 0;
   
   return iRes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* begin row traverse                                                         */
+/*----------------------------------------------------------------------------*/
+void vDev_IXT_BEGIN(i8** aaiDstk)
+{
+  _static_
+
+  i8 *aiDstk = *aaiDstk;
+
+  //pop the device
+  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
+
+  pDevIxt->m_i_Row = -1;
+  pDevIxt->m_aCrw = nullptr;
+  pDevIxt->m_nRows = pDevIxt->m_pCrwBuffer ?
+                     pDevIxt->m_pCrwBuffer->nRowCount() : 0;
+
+  *aaiDstk = aiDstk;
+}
+
+/*----------------------------------------------------------------------------*/
+/* fetch Crw using m_aEnt.ref                                                 */
+/*----------------------------------------------------------------------------*/
+void vDev_IXT_DEREF(i8** aaiDstk)
+{
+  _static_
+
+  i8 *aiDstk = *aaiDstk;
+
+  //pop the device
+  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
+
+  //pDevIxt->m_aCrw  =
+  //  CrwBuffer::pRefdCrw(pDevIxt->m_aEnt->rxRef());
+
+  i8 iBuffer = ((Ent_int*)pDevIxt->m_aEnt)->Rrf.m_uBuffer;
+  i8 iItem   = ((Ent_int*)pDevIxt->m_aEnt)->Rrf.m_uItem;
+
+  pDevIxt->m_aCrw  = (Crw*)
+      ( (char*)C_ADR_REGION
+        + iBuffer * C_1MB
+        + C_CRW_FIRSTHEAD
+        + iItem * C_CRW_HEADBYTES );  //alka ? C_CRW_HEADBYTES
+
+  *aaiDstk = aiDstk;
+}
+
+/*----------------------------------------------------------------------------*/
+/* move to next src row                                                       */
+/*----------------------------------------------------------------------------*/
+void vDev_IXT_NEXT(i8** aaiDstk)
+{
+  _static_
+
+  i8 *aiDstk = *aaiDstk;
+
+  //pop the device
+  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
+
+  if (++pDevIxt->m_i_Row < pDevIxt->m_nRows) {
+    pDevIxt->m_aCrw =
+        (Crw*) ( (char*)pDevIxt->m_pCrwBuffer->aGetHead(0)
+                 + (C_CRW_HEADBYTES * pDevIxt->m_i_Row) );
+    I_PushInt(1);
+  }
+  else {
+    I_PushInt(0);
+  }
+
+  *aaiDstk = aiDstk;
+}
+
+/*----------------------------------------------------------------------------*/
+/*  null the crw buffer                                                       */
+/*----------------------------------------------------------------------------*/
+void vDev_IXT_NULL(i8** aaiDstk)
+{
+  _static_
+
+  i8 *aiDstk = *aaiDstk;
+
+  //pop the device
+  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
+
+  pDevIxt->m_pCrwBuffer = nullptr;
+
+  *aaiDstk = aiDstk;
+}
+
+/*----------------------------------------------------------------------------*/
+/*  test if there is a crw src                                                */
+/*----------------------------------------------------------------------------*/
+void vDev_IXT_TEST(i8** aaiDstk)
+{
+  _static_
+
+  i8 *aiDstk = *aaiDstk;
+
+  //pop the device
+  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
+
+  if (pDevIxt->m_pCrwBuffer)
+    I_PushInt(1)
+  else
+    I_PushInt(0)
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -360,6 +473,8 @@ void vDev_IXT_INDEXNM_SET(i8** aaiDstk)
   // pop device
   DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
   StrLib::vCopy(pDevIxt->m_sIndexNm.azChar(), azDst);
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -525,6 +640,8 @@ void vDev_IXT_INDEXTREE_DELETE(i8** aaiDstk)
   IndexTree* pIndexTree = pDevIxt->m_pIdxTree;
   pDevIxt->m_pIdxTree = nullptr;
   delete pIndexTree;
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -544,6 +661,8 @@ void vDev_IXT_INDEXTREE_SET(i8** aaiDstk)
 
   // set the indexTree in the device
   pDevIxt->m_pIdxTree = pIndexTree;
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1251,6 +1370,8 @@ void vDev_ROW_TABLENM_SET(i8** aaiDstk)
   // pop row device
   DevROW* pDevRow = _pDevROW(P_PopPtr());
   StrLib::vCopy(pDevRow->m_sTableNm.azChar(), azDst);
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1352,16 +1473,18 @@ void vDev_ALT_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflateRule, i8* iaCo
   char* acStrArea_null = nullptr;
   
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-      
+  DevIXT* pDevIxt = _pDevIXT(pLogicUnit->m_pDevAltIxt);
+
   RowInflator::vInflate_ColumnSet_into_CellArray
   (
     aaiDstk,
     acStrArea_null,
     (eSI)ieStrInflateRule,
-    (Crw*)pLogicUnit->m_xRluCommon.m_aAltCrw,
+    (Crw*)pDevIxt->m_aCrw,
     iaColSet,
     pLogicUnit->m_pDevAltRow->m_pStreamDef
   );
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1371,7 +1494,10 @@ void vDev_SRC_COL_PUSHDST(void* aLU, void* aROWDEVICE) {
   _static_
 
   LogicUnit *pLogicUnit = _pLogicUnit(aLU);
-  HeadLine *aHeadLine = (HeadLine *) pLogicUnit->m_xRluCommon.m_aSrcCrw;
+  DevIXT* pDevIxt = _pDevIXT(pLogicUnit->m_pDevSrcIxt);
+
+  //HeadLine *aHeadLine = (HeadLine *) pLogicUnit->m_xRluCommon.m_aSrcCrw;
+  HeadLine *aHeadLine = (HeadLine *) pDevIxt->m_aCrw;
 
   DevROW* pDevRow = _pDevROW(aROWDEVICE);
 
@@ -1425,7 +1551,12 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflateRule, i8* iaCo
   _static_
   
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-  HeadLine*  aHeadLine  = (HeadLine*)pLogicUnit->m_xRluCommon.m_aSrcCrw;
+
+  DevIXT* pDevIxt = _pDevIXT(pLogicUnit->m_pDevSrcIxt);
+
+  //HeadLine *aHeadLine = (HeadLine *) pLogicUnit->m_xRluCommon.m_aSrcCrw;
+  HeadLine *aHeadLine = (HeadLine *) pDevIxt->m_aCrw;
+
   StreamDef* pStreamDef = pLogicUnit->m_pDevSrcRow->m_pStreamDef;
   
   RowInflator::vInflate_Key_into_ElementArray
@@ -2075,6 +2206,56 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflateRule, i8* iaCo
 }
 
 /*----------------------------------------------------------------------------*/
+/* push column value from m_aSrcCrw                                           */
+/*----------------------------------------------------------------------------*/
+HACK(LogicUnit,"Alka : vInflate_Key_into_ElementArray is not right");
+
+void vDev_IXT_COL_PUSHONE_PST(void* aLU, i8** aaiDstk) {
+  _static_
+
+  i8 iColumn;
+  i8 iaColSet[64];
+
+  i8 *aiDstk = *aaiDstk;
+
+  // pop column no
+  iColumn = I_PopInt();
+
+  // pop row device
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
+
+  // pop IXT device
+  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
+
+  // set the column in the column set
+  iaColSet[1] = -1;
+  iaColSet[0] = iColumn;
+
+  //HeadLine *aHeadLine = (HeadLine *) pLogicUnit->m_xRluCommon.m_aSrcCrw;
+  HeadLine *aHeadLine = (HeadLine *) pDevIxt->m_aCrw;
+
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+
+  StreamDef *pStreamDef = pDevRow->m_pStreamDef;
+  char* acStrArea_null = nullptr;
+
+//  RowInflator::vInflate_ColumnSet_into_CellArray
+//  (
+//      aaiDstk,
+//      acStrArea_null,
+//      (eSI)SI_CELLARRAY_PST,
+//      (Crw*)pDevIxt->m_aCrw,
+//      iaColSet,
+//      pStreamDef
+//  );
+  RowInflator::vInflate_Key_into_ElementArray
+      (aaiDstk,aHeadLine,iaColSet,
+       pStreamDef,nullptr,SI_CELLARRAY_PST);
+
+  *aaiDstk = aiDstk;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set the indexTree[] in the dev                                             */
 /*----------------------------------------------------------------------------*/
 void vDev_INDEXTREE_DEV_SET(void* aLU, i8 i_Dev)
@@ -2220,6 +2401,8 @@ void vREG_INDEXTREE_NULL(i8** aaiDstk)
 
   LogicUnit* pLogicUnit = _pLogicUnit(P_PopPtr());
   pLogicUnit->m_xpIndexTree = nullptr;
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2233,6 +2416,8 @@ void vREG_INDEXTREE_PUSH(i8** aaiDstk)
 
   LogicUnit* pLogicUnit = _pLogicUnit(P_PopPtr());
   P_PushPtr(*pLogicUnit->m_xpIndexTree);
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/

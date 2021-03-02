@@ -262,7 +262,7 @@ void Sessions::vFreeSession(Session* pSession)
   
   pSession->m_eSession = SK_NONE;
 
-  pSession->vFreeSession(m_iFirstFree);
+  pSession->vFinaliseSession(m_iFirstFree);
   
   m_iFirstFree = i_FreedSession;
   
@@ -283,7 +283,7 @@ Session* Sessions::pGetSession(i8 i_Session)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get a portrait of the Sessions vector                                  */
+/* get a portrait of the Sessions vector                                      */
 /*----------------------------------------------------------------------------*/
 void Sessions::vMonitorPortrait(s48K& sPortrait)
 {

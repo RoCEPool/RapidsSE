@@ -27,7 +27,6 @@
   sTableNm check::nameIsaTable not if
     to errorCode
     path[].popNamedTableFolder
-    errorCode op.pipelineJob@ ERROR_JOB
     errorCode op__execErr
     PipeIn[].delete
     false

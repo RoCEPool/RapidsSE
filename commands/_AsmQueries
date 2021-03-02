@@ -26,7 +26,7 @@ create table customer (
 create index Customer_Idx1 ON Customer(C_CUSTKEY);
 
 print "loading Customer...";
- /time load Customer "/DATA/TPCH/customer_10k.csv";
+ /time load Customer "../DATA/TPCH/customer_10k.csv";
 ///time load Customer "/Users/Shared/tpch/SF0/customer_10k.csv";
 
 compactIdx Customer Customer_Idx1;
@@ -50,7 +50,7 @@ create index Orders_Idx1 ON Orders(O_CUSTKEY);
 create index Orders_Idx2 ON Orders(O_ORDERKEY);
 
 print "loading Orders...";
- /time load Orders "/DATA/TPCH/orders_10k.csv";
+ /time load Orders "../DATA/TPCH/orders_10k.csv";
 ///time load Orders "/Users/Shared/tpch/SF0/orders_10k.csv";
 
 compactIdx Orders Orders_Idx1;
@@ -89,6 +89,7 @@ compactIdx LineItem lineItem_Idx1;
 compactIdx LineItem lineItem_Idx2;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/*
 print "*****************************************************************";
 print "executing Query1...";
 
@@ -107,8 +108,7 @@ demo select
     group by l_returnflag,
     l_linestatus order by
     l_returnflag, l_linestatus;
-
-/*
+*/
 print "*****************************************************************";
 print "executing Query3...";
 demo select
@@ -153,7 +153,7 @@ where
 group by
   o_orderpriority order by
   o_orderpriority;
-
+/*
 print "*****************************************************************";
 print "executing Query6...";
 

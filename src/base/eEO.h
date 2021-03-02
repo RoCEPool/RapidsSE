@@ -58,17 +58,17 @@ enum eEO : u1 // expression operators
   /*  S  */ EO_JMP_GREATER,      // pop top and jump to location if >
   
   // index
-  /*  D  */ EO_INDEXNM_ALT_SET,    // set the alt index name
-  /*  D  */ EO_INDEXNM_SRC_SET,    // set the src index name
+  /*  D  */ EO_INDEXNM_ALT_SET,    // set the alt index name                 --- to go
+  /*  D  */ EO_INDEXNM_SRC_SET,    // set the src index name                 --- to go
 
   // index name
   /*     */ EO_DEVIXT_INDEXNM_SET,    // set the index name in the dev
 
   // indexTree
-  /*  D  */ EO_INDEXTREE_ALT_SET,    // set the alt indexTree
-  /*  D  */ EO_INDEXTREE_SRC_SET,    // set the src indexTree
-  /*  D  */ EO_INDEXTREE_TMP_DELETE, // delete the tmp indexTree
-  /*  D  */ EO_INDEXTREE_TMP_SET,    // set the tmp indexTree
+  /*  D  */ EO_INDEXTREE_ALT_SET,    // set the alt indexTree                 --- to go
+  /*  D  */ EO_INDEXTREE_SRC_SET,    // set the src indexTree                 --- to go
+  /*  D  */ EO_INDEXTREE_TMP_DELETE, // delete the tmp indexTree              --- to go
+  /*  D  */ EO_INDEXTREE_TMP_SET,    // set the tmp indexTree                 --- to go
 
   // indexTree
   /*  S  */ EO_DEVIXT_INDEXTREE_SET,    // set the indexTree in the ixt dev
@@ -138,8 +138,8 @@ enum eEO : u1 // expression operators
   /*  D  */ EO_SET_LOCALS_SRC2,  // inflate src columns direct into locals
 
   // table
-  /*  D  */ EO_TABLENM_ALT_SET,    // set the alt table name
-  /*  D  */ EO_TABLENM_SRC_SET,    // set the src table name
+  /*  D  */ EO_TABLENM_ALT_SET,    // set the alt table name                 --- to go
+  /*  D  */ EO_TABLENM_SRC_SET,    // set the src table name                 --- to go
 
   // table name
   /*     */ EO_DEVROW_TABLENM_SET, // set the table name in the row dev
@@ -224,21 +224,33 @@ enum eEO : u1 // expression operators
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // col operators
-  /*  D  */ EO_COL_SRC_PUSHDST,  // push column subset from m_aSrcCrw into dst row
-  /*  D  */ EO_COL_ALT_PUSHONE,  // push column value from m_aAltCrw
-  /*  D  */ EO_COL_ALT_PUSHSET,  // push column subset from m_aAltCrw
-  /*  D  */ EO_COL_SRC_PUSHONE,  // push column value from m_aSrcCrw
-  /*  D  */ EO_COL_SRC_PUSHONE_a,// push value from m_aSrcCrw (str as ptr)
-  /*  D  */ EO_COL_SRC_PUSHSET,  // push column subset from m_aSrcCrw
+  /*  D  */ EO_COL_SRC_PUSHDST,  // push column subset from m_aSrcCrw into dst row   ---to go
+  /*  D  */ EO_COL_ALT_PUSHONE,  // push column value from m_aAltCrw                 ---to go
+  /*  D  */ EO_COL_ALT_PUSHSET,  // push column subset from m_aAltCrw                ---to go
+  /*  D  */ EO_COL_SRC_PUSHONE,  // push column value from m_aSrcCrw                 ---to go
+  /*  D  */ EO_COL_SRC_PUSHONE_a,// push value from m_aSrcCrw (str as ptr)           ---to go
+  /*  D  */ EO_COL_SRC_PUSHSET,  // push column subset from m_aSrcCrw                ---to go
+
+  /*  S  */ EO_DEVIXT_COL_COPYSET,      // copy all columns from one dev to another
+  /*  S  */ EO_DEVIXT_COL_PUSHONE_ADR,  // push column value from dev ixt (str as ptr)
+  /*  S  */ EO_DEVIXT_COL_PUSHONE_PST,  // push column value from dev ixt
+  /*  S  */ EO_DEVIXT_COL_PUSHSET_PST,  // push column subset from dev ixt
 
   // crw operators
-  /*  D  */ EO_CRW_ALT_DEREF,    // deref m_aAltCrw using m_aAltEnt.ref
-  /*  D  */ EO_CRW_SRC_BEGIN,    // begin src crw traverse
-  /*  D  */ EO_CRW_SRC_DEREF,    // deref m_aSrcCrw using m_aSrcEnt.ref
-  /*  D  */ EO_CRW_SRC_NEXT,     // move to next src row
-  /*  D  */ EO_CRW_SRC_NULL,     // null crw src
-  /*  D  */ EO_CRW_SRC_TEST,     // test if there is a crw buffer
-  
+  /*  D  */ EO_CRW_ALT_DEREF,    // deref m_aAltCrw using m_aAltEnt.ref              ---to go
+  /*  D  */ EO_CRW_SRC_BEGIN,    // begin src crw traverse                           ---to go
+  /*  D  */ EO_CRW_SRC_DEREF,    // deref m_aSrcCrw using m_aSrcEnt.ref              ---to go
+  /*  D  */ EO_CRW_SRC_NEXT,     // move to next src row                             ---to go
+  /*  D  */ EO_CRW_SRC_NULL,     // null crw src                                     ---to go
+  /*  D  */ EO_CRW_SRC_TEST,     // test if there is a crw buffer                    ---to go
+
+  // crw operators
+  /*  S  */ EO_DEVIXT_BEGIN,     // begin crw traverse
+  /*  S  */ EO_DEVIXT_DEREF,     // deref Crw using Ent.ref
+  /*  S  */ EO_DEVIXT_NEXT,      // move to next row
+  /*  S  */ EO_DEVIXT_NULL,      // null crw src
+  /*  S  */ EO_DEVIXT_TEST,      // test if there is a crw buffer
+
   // entry
   /*  D  */ EO_ENT_FINDI,        // find entry with int key
   /*  D  */ EO_ENT_NEXT,         // move to next m_pEnt
@@ -578,6 +590,11 @@ static Stz* aEO[]
   /*    */ "EO_COL_SRC_PUSHONE_a"_Stz,
   /*    */ "EO_COL_SRC_PUSHSET"_Stz,
 
+  /*    */ "EO_DEVIXT_COL_COPYSET"_Stz,
+  /*    */ "EO_DEVIXT_COL_PUSHONE_ADR"_Stz,
+  /*    */ "EO_DEVIXT_COL_PUSHONE_PST"_Stz,
+  /*    */ "EO_DEVIXT_COL_PUSHSET_PST"_Stz,
+
   // crw operators
   /*    */ "EO_CRW_ALT_DEREF"_Stz,
   /*    */ "EO_CRW_SRC_BEGIN"_Stz,
@@ -585,7 +602,13 @@ static Stz* aEO[]
   /*    */ "EO_CRW_SRC_NEXT"_Stz,
   /*    */ "EO_CRW_SRC_NULL"_Stz,
   /*    */ "EO_CRW_SRC_TEST"_Stz,
-  
+
+  /*    */ "EO_DEVIXT_BEGIN"_Stz,
+  /*    */ "EO_DEVIXT_DEREF"_Stz,
+  /*    */ "EO_DEVIXT_NEXT"_Stz,
+  /*    */ "EO_DEVIXT_NULL"_Stz,
+  /*    */ "EO_DEVIXT_TEST"_Stz,
+
   // entry
   /*    */ "EO_ENT_FINDI"_Stz,
   /*    */ "EO_ENT_NEXT"_Stz,
@@ -930,6 +953,11 @@ static EoArg EoArgs[]
   { EA_SUBSCR,  8 },  // EO_COL_SRC_PUSHONE_a
   { EA_NONE,    0 },  // EO_COL_SRC_PUSHSET
 
+  { EA_NONE,    0 },  // EO_DEVIXT_COL_COPYSET
+  { EA_SUBSCR,  8 },  // EO_DEVIXT_COL_PUSHONE_ADR
+  { EA_SUBSCR,  8 },  // EO_DEVIXT_COL_PUSHONE_PST
+  { EA_NONE,    0 },  // EO_DEVIXT_COL_PUSHSET_PST
+
   // crw operators
   { EA_NONE,    0 },  // EO_CRW_ALT_DEREF
   { EA_NONE,    0 },  // EO_CRW_SRC_BEGIN
@@ -937,7 +965,13 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_CRW_SRC_NEXT
   { EA_NONE,    0 },  // EO_CRW_SRC_NULL
   { EA_NONE,    0 },  // EO_CRW_SRC_TEST
-  
+
+  { EA_NONE,    0 },  // EO_DEVIXT_BEGIN
+  { EA_NONE,    0 },  // EO_DEVIXT_DEREF
+  { EA_NONE,    0 },  // EO_DEVIXT_NEXT
+  { EA_NONE,    0 },  // EO_DEVIXT_NULL
+  { EA_NONE,    0 },  // EO_DEVIXT_TEST
+
   // entry
   { EA_NONE,    0 },  // EO_ENT_FINDI
   { EA_NONE,    0 },  // EO_ENT_NEXT

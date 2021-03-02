@@ -240,7 +240,7 @@ void Session::vFixedPtn(i8 i_FixedPtn)
 /*----------------------------------------------------------------------------*/
 /* free the session state                                                     */
 /*----------------------------------------------------------------------------*/
-void Session::vFreeSession(i8 i_NextFree)
+void Session::vFinaliseSession(i8 i_NextFree)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
@@ -277,20 +277,16 @@ void Session::vFreeSession(i8 i_NextFree)
   m_pTx        = nullptr;
   
   // -- -- -- -- -- --
+  
+  if (m_pInput)
+    delete m_pInput;
+  m_pInput = nullptr;
 
   if (m_pOutput)
     delete m_pOutput;
   m_pOutput = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* outline                                                                    */
-/*----------------------------------------------------------------------------*/
-void Session::vOutline(s4K& sOutline)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
-  sOutline.vSprint("<%s focal>"_Stz,aCN[eGetClassNo()]);
+  m_oJobTagSet.vReset();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -316,7 +312,7 @@ void Session::vHasCascade(bool bHasCascade)
 /*----------------------------------------------------------------------------*/
 /* initialise this session                                                    */
 /*----------------------------------------------------------------------------*/
-eEC Session::eInitSession(Stz* szCatalogName, Stz* szSchemaName)
+eEC Session::eInitaliseSession(Stz* szCatalogName, Stz* szSchemaName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
@@ -412,6 +408,8 @@ eEC Session::eInitSession(Stz* szCatalogName, Stz* szSchemaName)
 
   //fprintf(stderr,"eInit M\n");
   
+  m_pInput = new Input;
+  
   m_pOutput = new Output;
 
   m_pOutput->m_pOutputQueue = new Queue;
@@ -427,6 +425,16 @@ Job* Session::pJob(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
   return m_pSsnJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* outline                                                                    */
+/*----------------------------------------------------------------------------*/
+void Session::vOutline(s4K& sOutline)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
+  
+  sOutline.vSprint("<%s focal>"_Stz,aCN[eGetClassNo()]);
 }
 
 /*----------------------------------------------------------------------------*/
