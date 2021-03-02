@@ -23,7 +23,7 @@ namespace STORE
     // - - - - - - - - - - - - - - - //
     //        entry                  //
     Ent    m_xEnt;                   // the index entry being formed
-    byte   m_yaSpace[C_MAX_KEY];     // the bytes of the key
+    byte   m_yaKeySpace[C_MAX_KEY];  // the bytes of the key
     // - - - - - - - - - - - - - - - //
   
     // - - - - - - - - - - - - - - - //

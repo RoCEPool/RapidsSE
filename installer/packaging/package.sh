@@ -33,7 +33,7 @@ readonly SOURCE_DIR="${ROOT_DIR}/src"
 readonly MAKESELF_DIR=$(find "${ROOT_DIR}/thirdparty/" -type d -name "makeself*")
 
 readonly GIT_CHECK_MODIFIED_FILES_CMD="git status -uno --porcelain"
-readonly GIT_DESCRIBE_CMD="git describe --long"
+readonly GIT_DESCRIBE_CMD=(git describe --long --match "v*")
 readonly GIT_BRANCH_CMD="git rev-parse --abbrev-ref HEAD"
 
 readonly VERSION_FILE="${LAYOUT_DIR}/version"
@@ -58,7 +58,7 @@ function errorExit() {
 }
 
 function extractVersions() {
-  # SE_VERSION_STR will contain a value that looks something like this:
+  # SE_VERSION_STR will eventually contain a value that looks something like this:
   #  v0.5.0-SNAPSHOT-0-ga7c5a26
   # First validate that we've got a value that can be parsed.
 
@@ -66,7 +66,7 @@ function extractVersions() {
   local git_version_str
   
   regex="^v([0-9]+)\.([0-9]+)\.([0-9]+)(-[^-]+)?-([0-9]+)-([[:alnum:]]+)$"
-  git_version_str="$(${GIT_DESCRIBE_CMD})"
+  git_version_str="$(${GIT_DESCRIBE_CMD[*]})"
 
   if [[ "${git_version_str}" =~ ${regex} ]]
   then
@@ -78,7 +78,7 @@ function extractVersions() {
     SE_COMMIT_HASH="${BASH_REMATCH[6]}"
 
   else
-    errorExit "Could not parse the SE version string: ${SE_VERSION_STR}"
+    errorExit "Could not parse the SE version string: ${git_version_str}"
   fi
 
   # Form a string of the form x.y.z-label
@@ -226,7 +226,7 @@ then
   if [[ -n "${gccver}" && "${gccver}" -lt 5 ]] && which scl 2>/dev/null; then
     (
       cd "${SOURCE_DIR}"
-      scl enable devtoolset-7 'make clean && make -j 8'
+      scl enable devtoolset-8 'make clean && make -j 8'
     )
 
   else

@@ -9,13 +9,14 @@
 /*----------------------------------------------------------------------------*/
 : dropTenant_DataMarker
 
+  0 locals| errorCode |
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if are in tenants
   folder[].checkIsTenants not if
-    op.pipelineJob@ ERROR_JOB
+    to errorCode
+    errorCode op__execErr
     PipeIn[].delete
-    Operand[].newErrorMarker
-    Operand[].pipeOut
     true
     exit
   then
@@ -23,10 +24,9 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if tenant exits
   <tenantNm> checkIsTenant not if
-    op.pipelineJob@ ERROR_JOB
+    to errorCode
     PipeIn[].delete
-    Operand[].newErrorMarker
-    Operand[].pipeOut
+    errorCode op__execErr
     true
     exit
   then

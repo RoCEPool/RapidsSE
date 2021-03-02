@@ -36,8 +36,6 @@
 #include "Node_I.hpp"
 #include "OpSpec.hpp"
 #include "Op.hpp"
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 #include "LogicUnit.hpp"
 
@@ -153,7 +151,7 @@ LogicUnit::LogicUnit(Task* pTask)
   m_xRluCommon.m_i_TablePtn = C_UNKNOWN;
   m_xRluCommon.m_nPtns  = AM::nPtnsInGrid();
   m_xRluCommon.m_iHash  = 0;
-  
+
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_eaCode,sizeof(m_eaCode),CN_LOGICUNIT);
 #endif
@@ -1077,6 +1075,8 @@ struct RluCommon* LogicUnit::aRlu_INIT(void* aLU)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
 
+  UNUSED(aLU);
+  
   return & m_xRluCommon;
 }
 
@@ -1170,34 +1170,6 @@ void LogicUnit::vRlu_DUMP(void* aLU, i8* aiDstk)
 
 #endif
 
-
-#define S_PushStr(__azStr) \
-  /*MemLib::vDumpWords(iaDataStack,nDifference(iaDataStack,aiDstk)+8);*/ \
-  nSize = StrLib::nSize((char*)__azStr); \
-  azDst = (char*)(++aiDstk); \
-  StrLib::vCopy(azDst,(char*)__azStr); \
-  aiDstk += nWordRoundedStrBytes(nSize)/8 - 1; \
-  *(++aiDstk) = nSize;     \
-  /*MemLib::vDumpWords(iaDataStack,nDifference(iaDataStack,aiDstk)+8); */
-
-#define S_PopStr(__azDst) \
-  /*MemLib::vDumpWords(iaDataStack,nDifference(iaDataStack,aiDstk)+8);*/ \
-  nSize = *(aiDstk--); \
-  azSrc = (char*)(aiDstk - (nWordRoundedStrBytes(nSize)/8 - 1)); \
-  StrLib::vCopy(__azDst,azSrc); \
-  aiDstk -= nWordRoundedStrBytes(nSize)/8;                               \
-  /*MemLib::vDumpWords(iaDataStack,nDifference(iaDataStack,aiDstk)+8);*/
-
-#define S_StrAdr() \
-  ( (char*)(aiDstk) - nWordRoundedStrBytes(*aiDstk))
-
-#define S_StrDrp() \
-  nSize = *(aiDstk--); \
-  aiDstk -= nWordRoundedStrBytes(nSize)/8;
-
-#define JumpTo(__iArg,__EO) \
-  aeCode = & m_eaCode[__iArg];
-
 i8 giaVectorSet[] =
 {
 /* 00 */ L_QUANTITY,
@@ -1241,12 +1213,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   i8 iRes;
   Stz* szRes;
   i8 iCmp;
-  i8 i_Cell_ntv;
-  eKC eCmp;
   i8 nSize;
   char* azDst;
   char* azSrc;
-  char* azArg;
   i8 iBuffer;
   i8 iItem;
   tET tNext;
@@ -1254,19 +1223,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   i8 iaColSet[64];
   i8 i_ColSet = 0;
   
-  Key* aSrcKey;
-  Key* aAltKey;
-  Key* aWrkKey;
 
   SP_Ent spEnt;  // this will  tidy up
-  Ent* aEnt;
 
 
-  bool bSrcHasPtnHash = true;
-  bool bCopyPtnHash   = false;
-
-  IndexDef* pIndexDef = nullptr;
-  i8* aPayload = nullptr;
 
   Ent_int* aEnt_int;
   
@@ -1311,9 +1271,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   eEO** aeaRstk = &eaReturnStack[0];
   eEO*  aeCode  = & m_eaCode[0];
 
-  char* aStrAdr;
 
-  i8 iWrkA, iWrkB, iWrkC, iWrkD, iWrkE, iWrkF;
+  i8 iWrkA, iWrkB, iWrkC;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//
   //                    interpretative inner loop proper                      //
@@ -1321,22 +1280,22 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
   for (;;) {
     
-//#ifdef WITH_TRACE_LOGICUNIT
-//    // check for stack growth
-//    if (aiDstk >= &aRluCommon->m_iaDataStack[C_LOGIC_STACK-4])
-//      vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-//             "LogicUnit data stack exhausted\n"_Stz);
-//
-//    i8 nStkUse = nDifference(aiDstk,aRluCommon->m_iaDataStack);
-//    i8 iStkPct = (nStkUse * 100) / C_LOGIC_STACK;
-//    if (iStkPct > 80)
-//      vTrace("WARNING: LogicUnit stack use %lld%%\n"_Stz,iStkPct);
-//#endif
+#ifdef WITH_TRACE_LOGICUNIT
+    // check for stack growth
+    if (aiDstk >= &aRluCommon->m_iaDataStack[C_LOGIC_STACK-4])
+      vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+             "LogicUnit data stack exhausted\n"_Stz);
+
+    i8 nStkUse = nDifference(aiDstk,aRluCommon->m_iaDataStack);
+    i8 iStkPct = (nStkUse * 100) / C_LOGIC_STACK;
+    if (iStkPct > 80)
+      vTrace("WARNING: LogicUnit stack use %lld%%\n"_Stz,iStkPct);
+#endif
     
     eEO eCode = *aeCode++;
-//#ifdef WITH_TRACE_LOGICUNIT
-//    vTrace("%s %lld\n"_Stz, aEO[eCode], nStkUse);
-//#endif
+#ifdef WITH_TRACE_LOGICUNIT
+    vTrace("%s %lld\n"_Stz, aEO[eCode], nStkUse);
+#endif
     
     switch (eCode) { //+ExtractBegin
         
@@ -1405,7 +1364,41 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU1(EO_PUSH_COLUMN_TYPE,iArg);
         *(++aiDstk) = iArg;
         break;//+endCase
-        
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // ixt device pushes
+      case EO_PUSH_DEVIXT_ALT: ArgNil(); // push columnn length
+        dLU0(EO_PUSH_DEVIXT_ALT);
+        P_PushPtr(aRluCommon->m_pDevAltIxt);
+        break;//+endCase
+
+      case EO_PUSH_DEVIXT_SRC: ArgNil(); // push columnn length
+        dLU0(EO_PUSH_DEVIXT_SRC);
+        P_PushPtr(aRluCommon->m_pDevSrcIxt);
+        break;//+endCase
+
+      case EO_PUSH_DEVIXT_TMP: ArgNil(); // push columnn length
+        dLU0(EO_PUSH_DEVIXT_TMP);
+        P_PushPtr(aRluCommon->m_pDevTmpIxt);
+        break;//+endCase
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // row device pushes
+      case EO_PUSH_DEVROW_ALT: ArgNil(); // push columnn length
+        dLU0(EO_PUSH_DEVROW_ALT);
+        P_PushPtr(aRluCommon->m_pDevAltRow);
+        break;//+endCase
+
+      case EO_PUSH_DEVROW_DST: ArgNil(); // push columnn length
+        dLU0(EO_PUSH_DEVROW_DST);
+        P_PushPtr(aRluCommon->m_pDevDstRow);
+        break;//+endCase
+
+      case EO_PUSH_DEVROW_SRC: ArgNil(); // push columnn length
+        dLU0(EO_PUSH_DEVROW_SRC);
+        P_PushPtr(aRluCommon->m_pDevSrcRow);
+        break;//+endCase
+
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // counter
       case EO_CTR_0_DEC: ArgNil(); // dec counter 0
@@ -1485,43 +1478,64 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // index
-      case EO_INDEXNM_ALT_SET: GetStr(iArg); // inflate src columns direct into locals
-        dLU0(EO_INDEXNM_ALT_SET);
-        vDev_IXT_INDEXNM_SET(pLU,aRluCommon->m_pDevAltIxt, (Stz*)iArg);
-        break;//+endCase
+//      case EO_INDEXNM_ALT_SET: GetStr(iArg); // inflate src columns direct into locals
+//        //dLU0(EO_INDEXNM_ALT_SET);
+//        //vDev_IXT_INDEXNM_SET(pLU,aRluCommon->m_pDevAltIxt, (Stz*)iArg);
+//        RASSERT(0);
+//        break;//+endCase
         
-      case EO_INDEXNM_SRC_SET: GetStr(iArg); // inflate src columns direct into locals
-        dLU0(EO_INDEXNM_SRC_SET);
-        vDev_IXT_INDEXNM_SET(pLU,aRluCommon->m_pDevSrcIxt, (Stz*)iArg);
+//      case EO_INDEXNM_SRC_SET: GetStr(iArg); // inflate src columns direct into locals
+//        //dLU0(EO_INDEXNM_SRC_SET);
+//        //vDev_IXT_INDEXNM_SET(pLU,aRluCommon->m_pDevSrcIxt, (Stz*)iArg);
+//        RASSERT(0);
+//        break;//+endCase
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // index name
+      case EO_DEVIXT_INDEXNM_SET: GetStr(iArg); // inflate src columns direct into locals
+        dLU0(EO_DEVIXT_INDEXNM_SET);
+        S_PushStr(iArg);
+        vDev_IXT_INDEXNM_SET(&aiDstk);
         break;//+endCase
-      
+
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // index
-      case EO_INDEXTREE_ALT_SET: ArgNil(); // set indexTree alt from indexTree[]
-        dLU0(EO_INDEXTREE_ALT_SET);
-        vDev_IXT_INDEXTREE_SET(pLU,aRluCommon->m_pDevAltIxt);
-        break;//+endCase
+//      case EO_INDEXTREE_ALT_SET: ArgNil(); // set indexTree alt from indexTree[]
+//        //dLU0(EO_INDEXTREE_ALT_SET);
+//        //vDev_IXT_INDEXTREE_SET(pLU,aRluCommon->m_pDevAltIxt);
+//        RASSERT(0);
+//        break;//+endCase
         
-      case EO_INDEXTREE_SRC_SET: ArgNil(); // set indexTree src from indexTree[]
-        dLU0(EO_INDEXTREE_SRC_SET);
-        vDev_IXT_INDEXTREE_SET(pLU,aRluCommon->m_pDevSrcIxt);
-        break;//+endCase
+//      case EO_INDEXTREE_SRC_SET: ArgNil(); // set indexTree src from indexTree[]
+//        //dLU0(EO_INDEXTREE_SRC_SET);
+//        //vDev_IXT_INDEXTREE_SET(pLU,aRluCommon->m_pDevSrcIxt);
+//        RASSERT(0);
+//        break;//+endCase
         
-      case EO_INDEXTREE_TMP_DELETE: ArgNil(); // delete indexTree from tmp
-        dLU0(EO_INDEXTREE_TMP_DELETE);
-        vDev_IXT_INDEXTREE_DELETE(pLU,aRluCommon->m_pDevTmpIxt);
-        break;//+endCase
+//      case EO_INDEXTREE_TMP_DELETE: ArgNil(); // delete indexTree from tmp
+//        //dLU0(EO_INDEXTREE_TMP_DELETE);
+//        //vDev_IXT_INDEXTREE_DELETE(pLU,aRluCommon->m_pDevTmpIxt);
+//        RASSERT(0);
+//        break;//+endCase
         
-      case EO_INDEXTREE_TMP_SET: ArgNil(); // set indexTree tmp from indexTree[]
-        dLU0(EO_INDEXTREE_TMP_SET);
-        vDev_IXT_INDEXTREE_SET(pLU,aRluCommon->m_pDevTmpIxt);
+//      case EO_INDEXTREE_TMP_SET: ArgNil(); // set indexTree tmp from indexTree[]
+//        //dLU0(EO_INDEXTREE_TMP_SET);
+//        //vDev_IXT_INDEXTREE_SET(pLU,aRluCommon->m_pDevTmpIxt);
+//        RASSERT(0);
+//        break;//+endCase
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // indexTree operators
+      case EO_DEVIXT_INDEXTREE_DELETE: ArgNil(); // delete indexTree
+        dLU0(EO_DEVIXT_INDEXTREE_DELETE);
+        vDev_IXT_INDEXTREE_DELETE(&aiDstk);
         break;//+endCase
-       
-      case EO_INDEXTREE_DEV_SET: ArgGet(iArg); // set m_aaDev to indexTree[]
-        dLU0(EO_INDEXTREE_DEV_SET);
-        vDev_INDEXTREE_DEV_SET(pLU,iArg);
+
+      case EO_DEVIXT_INDEXTREE_SET: ArgNil(); // set indexTree from indexTree[]
+        dLU0(EO_DEVIXT_INDEXTREE_SET);
+        vDev_IXT_INDEXTREE_SET(&aiDstk);
         break;//+endCase
-        
+
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // logical operators
       case EO_LGL_AND: ArgNil(); // logical and top two int's, push result
@@ -1705,15 +1719,21 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(EO_REG_INDEXDEF_DELETE);
         vDev_REG_INDEXDEF_DELETE(pLU);
         break;//+endCase
-        
+
       case EO_REG_INDEXDEF_NEW: GetStr(iArg); // new an indexDef in indexDef[]
         dLU0(EO_REG_INDEXDEF_NEW);
         vDev_REG_INDEXDEF_NEW(pLU, (Stz*)iArg);
         break;//+endCase
-        
+
       case EO_REG_INDEXTREE_NEW: ArgNil(); // new an indexTree in indexTree[]
         dLU0(EO_REG_INDEXTREE_NEW);
         vDev_REG_INDEXTREE_NEW(pLU);
+        break;//+endCase
+
+      case EO_REG_INDEXTREE_NULL: ArgNil(); // null the indexTree[]
+        dLU0(EO_REG_INDEXTREE_NULL);
+        P_PushPtr(this);
+        vREG_INDEXTREE_NULL(&aiDstk);
         break;//+endCase
 
       case EO_REG_PTNSTREAM_CLOSE: ArgNil(); // close ptnStream[]
@@ -1763,7 +1783,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         iTopC = *(aiDstk--); // column scale
         vDev_REG_STREAMDEFOUT_ADDCOLUMN(pLU, (Stz*)iArg, iTopA, iTopB, iTopC);
         break;//+endCase
-      
+
+      // register pushes
+      case EO_PUSH_REG_INDEXTREE: ArgNil(); // push indexTree[]
+        dLU0(EO_PUSH_REG_INDEXTREE);
+        P_PushPtr(pLU);
+        vREG_INDEXTREE_PUSH(&aiDstk);
+        break;//+endCase
+
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // column set
       case EO_SET_COLUMN: ArgGet(iArg); // add column to set
@@ -1778,7 +1805,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU1(EO_SET_COLUMN, iArg);
         i8 iCol = 0;
 
-        for (i8 iBit = 0; iBit < C_BITS_PER_WORD; iBit++) {
+        for (i8 iBit = 0; iBit < (i8)C_BITS_PER_WORD; iBit++) {
           u8 uBitMap = iArg;
           i8 iToLeft  = 63 - iBit;
           i8 iToRight = iBit;
@@ -1834,13 +1861,23 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // table
       case EO_TABLENM_ALT_SET: GetStr(iArg); // inflate src columns direct into locals
-        dLU0(EO_TABLENM_ALT_SET);
-        vDev_ROW_TABLENM_SET(pLU,aRluCommon->m_pDevAltRow,(Stz*)iArg);
+        //dLU0(EO_TABLENM_ALT_SET);
+        //vDev_ROW_TABLENM_SET(pLU,aRluCommon->m_pDevAltRow,(Stz*)iArg);
+        RASSERT(0);
         break;//+endCase
         
       case EO_TABLENM_SRC_SET: GetStr(iArg); // inflate src columns direct into locals
-        dLU0(EO_TABLENM_SRC_SET);
-        vDev_ROW_TABLENM_SET(pLU,aRluCommon->m_pDevSrcRow,(Stz*)iArg);
+        //dLU0(EO_TABLENM_SRC_SET);
+        //vDev_ROW_TABLENM_SET(pLU,aRluCommon->m_pDevSrcRow,(Stz*)iArg);
+        RASSERT(0);
+        break;//+endCase
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // table name
+      case EO_DEVROW_TABLENM_SET: GetStr(iArg); // inflate src columns direct into locals
+        dLU0(EO_DEVROW_TABLENM_SET);
+        S_PushStr(iArg);
+        vDev_ROW_TABLENM_SET(&aiDstk);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -2253,6 +2290,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         iaColSet[0] = iArg;
         vDev_ALT_COL_PUSHSET(pLU,&aiDstk,(i8)SI_CELLARRAY_PST,iaColSet);
         dLU1(EO_COL_ALT_PUSHONE,iArg);
+        //RASSERT(0);
         break;//+endCase
       
       case EO_COL_ALT_PUSHSET: ArgNil(); // push column subset from m_aAltCrw
@@ -2268,6 +2306,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         iaColSet[0] = iArg;
         vDev_SRC_COL_PUSHSET(pLU,&aiDstk,(i8)SI_CELLARRAY_PST,iaColSet);
         dLU1(EO_COL_SRC_PUSHONE,iArg);
+        //RASSERT(0);
         break;//+endCase
         
       case EO_COL_SRC_PUSHONE_a: ArgGet(iArg); // push value from m_aSrcCrw (str as ptr)
@@ -2290,48 +2329,57 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // col operators
+      case EO_DEVIXT_COL_PUSHONE_PST: ArgGet(iArg); // push column value from m_aAltCrw
+        *(++aiDstk) = iArg;
+        vDev_IXT_COL_PUSHONE_PST(pLU, &aiDstk);
+        dLU1(EO_DEVIXT_COL_PUSHONE_PST,iArg);
+        break;//+endCase
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // crw operators
       case EO_CRW_ALT_DEREF: ArgNil(); // deref m_aAltCrw using m_aAltEnt.ref
-        dLU0(EO_CRW_ALT_DEREF);
-        //vDev_CRW_DEREF(pLU,aRluCommon->m_pDevAltIxt);
+//        dLU0(EO_CRW_ALT_DEREF);
+//        vDev_CRW_DEREF(pLU,aRluCommon->m_pDevAltIxt);
 
-        iBuffer = aRluCommon->m_aAltEnt->Rrf.m_uBuffer;
-        iItem   = aRluCommon->m_aAltEnt->Rrf.m_uItem;
+//        iBuffer = aRluCommon->m_aAltEnt->Rrf.m_uBuffer;
+//        iItem = aRluCommon->m_aAltEnt->Rrf.m_uItem;
 
-        aRluCommon->m_aAltCrw = (void*)
-          ( (char*)C_ADR_REGION
-                   + iBuffer * C_1MB
-                   + C_CRW_FIRSTHEAD
-                   + iItem * aRluCommon->m_nAltHeadSize );
-
+//        aRluCommon->m_aAltCrw = (void*)
+//          ( (char*)C_ADR_REGION
+//                   + iBuffer * C_1MB
+//                   + C_CRW_FIRSTHEAD
+//                   + iItem * aRluCommon->m_nAltHeadSize );
+        RASSERT(0);
         break;//+endCase
        
       case EO_CRW_SRC_BEGIN: ArgNil(); // begin src row traverse
-        dLU0(EO_CRW_SRC_BEGIN);
-        vDev_CRW_BEGIN(pLU,aRluCommon->m_pDevSrcIxt);
+//        dLU0(EO_CRW_SRC_BEGIN);
+//        vDev_CRW_BEGIN(pLU,aRluCommon->m_pDevSrcIxt);
+        RASSERT(0);
         break;//+endCase
         
       case EO_CRW_SRC_DEREF: ArgNil(); // deref m_aSrcCrw using m_pDevSrcIxt->m_aEnt.ref
-        dLU0(EO_CRW_SRC_DEREF);
+        //dLU0(EO_CRW_SRC_DEREF);
         //vDev_CRW_DEREF(pLU,aRluCommon->m_pDevSrcIxt);
         
-        iBuffer = aRluCommon->m_aSrcEnt->Rrf.m_uBuffer;
-        iItem   = aRluCommon->m_aSrcEnt->Rrf.m_uItem;
-
-        aRluCommon->m_aSrcCrw = (void*)
-          ( (char*)C_ADR_REGION
-                   + iBuffer * C_1MB
-                   + C_CRW_FIRSTHEAD
-                   + iItem * aRluCommon->m_nSrcHeadSize );
-        
+//        iBuffer = aRluCommon->m_aSrcEnt->Rrf.m_uBuffer;
+//        iItem   = aRluCommon->m_aSrcEnt->Rrf.m_uItem;
+//
+//        aRluCommon->m_aSrcCrw = (void*)
+//          ( (char*)C_ADR_REGION
+//                   + iBuffer * C_1MB
+//                   + C_CRW_FIRSTHEAD
+//                   + iItem * aRluCommon->m_nSrcHeadSize );
+        RASSERT(0);
         break;//+endCase
-        
+
       case EO_CRW_SRC_NEXT: ArgNil(); // move to next src row
-        dLU0(EO_CRW_SRC_NEXT);
-        //((DevIXT*)aRluCommon->m_pDevSrcIxt)->m_pCrwBuffer->vDump();
-        //iRes = iDev_CRW_NEXT(pLU,aRluCommon->m_pDevSrcIxt);
+//        dLU0(EO_CRW_SRC_NEXT);
+//        //((DevIXT*)aRluCommon->m_pDevSrcIxt)->m_pCrwBuffer->vDump();
+//        iRes = iDev_CRW_NEXT(pLU,aRluCommon->m_pDevSrcIxt);
         
-        
+        /*
         if (++aRluCommon->m_i_CrwRow < aRluCommon->m_nCrwRows) {
           aRluCommon->m_aSrcCrw = (char*)aRluCommon->m_aSrcHeadCrw
             + (aRluCommon->m_nSrcHeadSize * aRluCommon->m_i_CrwRow);
@@ -2340,19 +2388,49 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         else {
           *(++aiDstk) = 0;
         }
+        *(++aiDstk) = iRes;
+        */
+        RASSERT(0);
         break;//+endCase
         
       case EO_CRW_SRC_NULL: ArgNil(); // null the crw src
-        dLU0(EO_CRW_SRC_NULL);
-        vDev_CRW_NULL(pLU,aRluCommon->m_pDevSrcIxt);
+//        dLU0(EO_CRW_SRC_NULL);
+//        vDev_CRW_NULL(pLU,aRluCommon->m_pDevSrcIxt);
+        RASSERT(0);
         break;//+endCase
         
       case EO_CRW_SRC_TEST: ArgNil(); // test for src crw
-        dLU0(EO_CRW_SRC_TEST);
-        iRes = iDev_CRW_TEST(pLU,aRluCommon->m_pDevSrcIxt);
-        *(++aiDstk) = iRes;
+//        dLU0(EO_CRW_SRC_TEST);
+//        iRes = iDev_CRW_TEST(pLU,aRluCommon->m_pDevSrcIxt);
+//        *(++aiDstk) = iRes;
+        RASSERT(0);
         break;//+endCase
-        
+
+      case EO_DEVIXT_BEGIN: ArgNil(); // begin row traverse
+        dLU0(EO_DEVIXT_BEGIN);
+        vDev_IXT_BEGIN(&aiDstk);
+        break;//+endCase
+
+      case EO_DEVIXT_NEXT: ArgNil(); // move to next row
+        dLU0(EO_DEVIXT_NEXT);
+        vDev_IXT_NEXT(&aiDstk);
+        break;//+endCase
+
+      case EO_DEVIXT_DEREF: ArgNil(); // deref Crw using m_aEnt.ref
+        dLU0(EO_DEVIXT_DEREF);
+        vDev_IXT_DEREF(&aiDstk);
+        break;//+endCase
+
+      case EO_DEVIXT_NULL: ArgNil(); // null the crw
+        dLU0(EO_DEVIXT_NULL);
+        vDev_IXT_NULL(&aiDstk);
+        break;//+endCase
+
+      case EO_DEVIXT_TEST: ArgNil(); // test for crw
+        dLU0(EO_DEVIXT_TEST);
+        vDev_IXT_TEST(&aiDstk);
+        break;//+endCase
+
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entry
       case EO_ENT_FINDI: ArgNil(); // find entry with int key
@@ -2547,12 +2625,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // index tree operators
       case EO_IXT_DEL_ENT: ArgNil(); // delete current m_aEnt from indexTree
-        dLU0(EO_IXT_DEL_ENT);
-        vDev_IXT_DEL_ENT(pLU,aRluCommon->m_pDevTmpIxt);
+//        dLU0(EO_IXT_DEL_ENT);
+//        vDev_IXT_DEL_ENT(pLU,aRluCommon->m_pDevTmpIxt);
+        RASSERT(0);
         break;//+endCase
 
       case EO_IXT_DUMP: ArgNil(); // dump index tree
-        vDev_IXT_DUMP(pLU,aRluCommon->m_pDevTmpIxt);
+//        vDev_IXT_DUMP(pLU,aRluCommon->m_pDevTmpIxt);
+        RASSERT(0);
         break;//+endCase
 
       case EO_IXT_INS_ENT: ArgNil(); // insert an entry into the indexTree
@@ -2565,7 +2645,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_IXT_TRV_BEGIN: ArgNil(); // begin linear traverse
         dLU0(EO_IXT_TRV_BEGIN);
         aRluCommon->m_aTmpEnt =
-          aDev_IXT_TRV_BEGIN(pLU,aRluCommon->m_pDevTmpIxt);
+          aDev_IXT_TRV_BEGIN_OLD(pLU,aRluCommon->m_pDevTmpIxt);
         aRluCommon->m_aTmpEntArray = aRluCommon->m_aEntArray;
         *(++aiDstk) = (i8)aRluCommon->m_aTmpEnt;
         break;//+endCase
@@ -2573,20 +2653,65 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_IXT_TRV_NEXT: ArgNil(); // traverse to next entry
         dLU0(EO_IXT_TRV_NEXT);
         aRluCommon->m_aTmpEnt =
-          aDev_IXT_TRV_NEXT(pLU,aRluCommon->m_pDevTmpIxt);
+          aDev_IXT_TRV_NEXT_OLD(pLU,aRluCommon->m_pDevTmpIxt);
         *(++aiDstk) = (i8)aRluCommon->m_aTmpEnt;
         break;//+endCase
         
       case EO_IXT_TMP_ENTRIES: ArgNil(); // push number of entries in tmp index
-        iRes = iDev_IXT_TMP_ENTRIES(pLU,aRluCommon->m_pDevTmpIxt);
-        dLU1(EO_IXT_TMP_ENTRIES,iRes);
-        *(++aiDstk) = iRes;
+//        iRes = iDev_IXT_TMP_ENTRIES(pLU,aRluCommon->m_pDevTmpIxt);
+//        dLU1(EO_IXT_TMP_ENTRIES,iRes);
+//        *(++aiDstk) = iRes;
+        RASSERT(0);
         break;//+endCase
-        
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // index tree operators
+      case EO_DEVIXT_DEL_ENT: ArgNil(); // delete current m_aEnt from indexTree
+        dLU0(EO_DEVIXT_DEL_ENT);
+        vDev_IXT_DEL_ENT(&aiDstk);
+        break;//+endCase
+
+      case EO_DEVIXT_DUMP: ArgNil(); // dump index tree
+        dLU0(EO_DEVIXT_DUMP);
+        vDev_IXT_DUMP(&aiDstk);
+        break;//+endCase
+
+      case EO_DEVIXT_INS_ENT: ArgNil(); // insert an entry into the indexTree
+        //dLU0(EO_DEVIXT_INS_ENT);
+        //vDev_IXT_INS_ENT(&aiDstk);
+
+        //ASSERT(m_pDevTmpIxt->m_aEnt);
+        RASSERT(0);
+        break;//+endCase
+
+      case EO_DEVIXT_TRV_BEGIN: ArgNil(); // begin linear traverse
+//        dLU0(EO_DEVIXT_TRV_BEGIN);
+//        vDev_IXT_TRV_BEGIN(&aiDstk);
+//        aRluCommon->m_aTmpEnt = (Ent*)P_PopPtr();
+//        aRluCommon->m_aTmpEntArray = aRluCommon->m_aEntArray;
+//        *(++aiDstk) = (i8)aRluCommon->m_aTmpEnt;
+        RASSERT(0);
+        break;//+endCase
+
+      case EO_DEVIXT_TRV_NEXT: ArgNil(); // traverse to next entry
+//        dLU0(EO_DEVIXT_TRV_NEXT);
+//        vDev_IXT_TRV_NEXT(&aiDstk);
+//        aRluCommon->m_aTmpEnt = (Ent*)P_PopPtr();
+//        *(++aiDstk) = (i8)aRluCommon->m_aTmpEnt;
+        RASSERT(0);
+        break;//+endCase
+
+      case EO_DEVIXT_ENTRIES: ArgNil(); // push number of entries in tmp index
+        vDev_IXT_TMP_ENTRIES(&aiDstk);
+        //dLU1(EO_DEVIXT_ENTRIES,iRes);
+        break;//+endCase
+
+
+
       case EO_IXT_SRC_BEGIN: ArgNil(); // begin linear traverse
         dLU0(EO_IXT_SRC_BEGIN);
         aRluCommon->m_aSrcEnt =
-          aDev_IXT_TRV_BEGIN(pLU,aRluCommon->m_pDevSrcIxt);
+          aDev_IXT_TRV_BEGIN_OLD(pLU,aRluCommon->m_pDevSrcIxt);
         aRluCommon->m_aSrcEntArray = aRluCommon->m_aEntArray;
         *(++aiDstk) = (i8)aRluCommon->m_aSrcEnt;
         break;//+endCase
@@ -2602,7 +2727,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_IXT_SRC_NEXT: ArgNil(); // move to next entry
         dLU0(EO_IXT_SRC_NEXT);
         aRluCommon->m_aSrcEnt =
-          aDev_IXT_TRV_NEXT(pLU,aRluCommon->m_pDevSrcIxt);
+          aDev_IXT_TRV_NEXT_OLD(pLU,aRluCommon->m_pDevSrcIxt);
         *(++aiDstk) = (i8)aRluCommon->m_aSrcEnt;
         break;//+endCase
 
@@ -2629,7 +2754,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_IXT_ALT_BEGIN: ArgNil(); // begin linear traverse
         dLU0(EO_IXT_ALT_BEGIN);
         aRluCommon->m_aAltEnt =
-          aDev_IXT_TRV_BEGIN(pLU,aRluCommon->m_pDevAltIxt);
+          aDev_IXT_TRV_BEGIN_OLD(pLU,aRluCommon->m_pDevAltIxt);
         aRluCommon->m_aAltEntArray = aRluCommon->m_aEntArray;
         *(++aiDstk) = (i8)aRluCommon->m_aAltEnt;
         break;//+endCase
@@ -2644,7 +2769,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
         if (C_ENT_END_TICKET == tNext) {
           aRluCommon->m_aAltEnt =
-            aDev_IXT_TRV_NEXT(pLU,aRluCommon->m_pDevAltIxt);
+            aDev_IXT_TRV_NEXT_OLD(pLU,aRluCommon->m_pDevAltIxt);
           aRluCommon->m_aAltEntArray = aRluCommon->m_aEntArray;
         }
         else {
@@ -2826,29 +2951,34 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // row / rowslab
       case EO_ROW_DST_PRINT: ArgNil(); // print dst row
-        dLU0(EO_ROW_DST_PRINT);
-        vDev_ROW_PRINT(pLU,aRluCommon->m_pDevDstRow);
+//        dLU0(EO_ROW_DST_PRINT);
+//        vDev_ROW_PRINT(pLU,aRluCommon->m_pDevDstRow);
+        RASSERT(0);
         break;//+endCase
 
       case EO_ROW_SRC_PRINT: ArgNil(); // print src row
-        dLU0(EO_ROW_SRC_PRINT);
-        vDev_ROW_PRINT(pLU,aRluCommon->m_pDevSrcRow);
+//        dLU0(EO_ROW_SRC_PRINT);
+//        vDev_ROW_PRINT(pLU,aRluCommon->m_pDevSrcRow);
+        RASSERT(0);
         break;//+endCase
         
       case EO_ROW_ALT_PRINT: ArgNil(); // print alt row
-        dLU0(EO_ROW_ALT_PRINT);
-        vDev_ROW_PRINT(pLU,aRluCommon->m_pDevAltRow);
+//        dLU0(EO_ROW_ALT_PRINT);
+//        vDev_ROW_PRINT(pLU,aRluCommon->m_pDevAltRow);
+        RASSERT(0);
         break;//+endCase
         
       case EO_ROW_DST_NEW: ArgNil(); // create new destination row
-        dLU0(EO_ROW_DST_NEW);
-        iRes = iDev_ROW_NEW(pLU,aRluCommon->m_pDevDstRow);
-        aRluCommon->m_bPotCompleted = iRes;
+//        dLU0(EO_ROW_DST_NEW);
+//        iRes = iDev_ROW_NEW(pLU,aRluCommon->m_pDevDstRow);
+//        aRluCommon->m_bPotCompleted = iRes;
+        RASSERT(0);
         break;//+endCase
 
       case EO_ROW_DST_RESET: ArgNil(); // reset dst rowslab
-        dLU0(EO_ROW_DST_RESET);
-        vDev_ROW_RESET(pLU,aRluCommon->m_pDevDstRow);
+//        dLU0(EO_ROW_DST_RESET);
+//        vDev_ROW_RESET(pLU,aRluCommon->m_pDevDstRow);
+        RASSERT(0);
         break;//+endCase
        
       case EO_ROW_DST_SET: ArgNil(); // set dst row
@@ -2919,6 +3049,24 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // rowdev / rowslab
+      case EO_DEVROW_PRINT: ArgNil(); // print row
+        dLU0(EO_DEVROW_PRINT);
+        vDev_ROW_PRINT(&aiDstk);
+        break;//+endCase
+
+      case EO_DEVROW_RESET: ArgNil(); // reset rowslab
+        dLU0(EO_DEVROW_RESET);
+        vDev_ROW_RESET(&aiDstk);
+        break;//+endCase
+
+      case EO_DEVROW_NEW: ArgNil(); // create new row
+        dLU0(EO_DEVROW_NEW);
+        vDev_ROW_NEW(pLU, &aiDstk);  // need to push pot and ptn
+        aRluCommon->m_bPotCompleted = *(aiDstk--);
+        break;//+endCase
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // row operators
       case EO_ROW_DST_POPCOLI: ArgGet(iArg); // pop and deposit top into dst column
         iTopA = *(aiDstk--);
@@ -2986,39 +3134,46 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
         break;//+endCase
 
-      case EO_SUPER_Z001: ArgNil(); // not yet implemented
-        NEVER_REACH;
-        break;//+endCase
+//      case EO_SUPER_Z001: ArgNil(); // not yet implemented
+//        NEVER_REACH;
+//        break;//+endCase
+//
+//      case EO_SUPER_Z002: ArgNil(); // not yet implemented
+//        NEVER_REACH;
+//        break;//+endCase
+//
+//      case EO_SUPER_Z003: ArgNil(); // not yet implemented
+//        NEVER_REACH;
+//        break;//+endCase
+//
+//      case EO_SUPER_Z004: ArgNil(); // not yet implemented
+//        NEVER_REACH;
+//        break;//+endCase
+//
+//      case EO_SUPER_Z005: ArgNil(); // not yet implemented
+//        NEVER_REACH;
+//        break;//+endCase
+//
+//      case EO_SUPER_Z006: ArgNil(); // not yet implemented
+//        NEVER_REACH;
+//        break;//+endCase
+//
+//      case EO_SUPER_Z007: ArgNil(); // not yet implemented
+//        NEVER_REACH;
+//        break;//+endCase
+//
+//      case EO_SUPER_Z008: ArgNil(); // not yet implemented
+//        NEVER_REACH;
+//        break;//+endCase
+//
+//      case EO_SUPER_Z009: ArgNil(); // not yet implemented
+//        NEVER_REACH;
+//        break;//+endCase
 
-      case EO_SUPER_Z002: ArgNil(); // not yet implemented
-        NEVER_REACH;
-        break;//+endCase
-
-      case EO_SUPER_Z003: ArgNil(); // not yet implemented
-        NEVER_REACH;
-        break;//+endCase
-
-      case EO_SUPER_Z004: ArgNil(); // not yet implemented
-        NEVER_REACH;
-        break;//+endCase
-
-      case EO_SUPER_Z005: ArgNil(); // not yet implemented
-        NEVER_REACH;
-        break;//+endCase
-
-      case EO_SUPER_Z006: ArgNil(); // not yet implemented
-        NEVER_REACH;
-        break;//+endCase
-
-      case EO_SUPER_Z007: ArgNil(); // not yet implemented
-        NEVER_REACH;
-        break;//+endCase
-
-      case EO_SUPER_Z008: ArgNil(); // not yet implemented
-        NEVER_REACH;
-        break;//+endCase
-
-      case EO_SUPER_Z009: ArgNil(); // not yet implemented
+        // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case EO_REVISED_00: ArgNil(); // not yet implemented
+        dLU0(EO_REVISED_00);
+        vRev_00(pLU);
         NEVER_REACH;
         break;//+endCase
 

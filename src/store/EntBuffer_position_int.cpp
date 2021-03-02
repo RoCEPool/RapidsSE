@@ -477,6 +477,7 @@ void EntBuffer::vPosVecPriorToEntry_int(Ent* aToEntry,
         break;
       
       Key* aNextKey = _aKey(aNextEntry_sl->aElmSeq_dtm());
+      UNUSED(aNextKey);
       
       i8 iNextInt = aNextEntry_sl->iIntElm0();
       i8 iWithInt = *(i8*)aWithKey;
@@ -493,6 +494,8 @@ void EntBuffer::vPosVecPriorToEntry_int(Ent* aToEntry,
       }
       
       Ent* aPriorEntry_sl = aScanEntry_sl;
+      UNUSED(aPriorEntry_sl);
+
       aScanEntry_sl = aNextEntry_sl;
       aNextEntry_sl = aNextEntry(aNextEntry_sl,i_ScanLevel);
       iItemAtScanLevel++;

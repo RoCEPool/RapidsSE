@@ -11,6 +11,8 @@ extern FnCatalog gxFnCatalog;
 /*----------------------------------------------------------------------------*/
 FnDesc::FnDesc(Stz* szFnName, void (*fpFnAddr)(void*))
 {
+  UNUSED(szFnName);
+  UNUSED(fpFnAddr);
 }
 
 /*============================================================================*/

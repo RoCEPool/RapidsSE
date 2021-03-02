@@ -400,7 +400,6 @@ Word* Task::pCompileAxiomColon(s48K& sDefinition)
   fpSTEPFN    fpStepFn;
   Word*     pCalledWord;
   CellSingle xVariable;
-  TokenVec* pTokenVec;
   
   SenCompiler* pSenCompiler = m_pSenCompiler;
   Input* pInput = m_pInput;
@@ -526,7 +525,6 @@ void Task::vCompileMungedColon(Stz* szDefinition)
   
   s48K sValue;
   
-  SenCompiler* pSenCompiler = m_pSenCompiler;
   Input* pInput = m_pInput;
 
   pInput->vUseString(szDefinition);

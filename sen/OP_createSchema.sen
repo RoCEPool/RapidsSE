@@ -17,13 +17,14 @@
 /*----------------------------------------------------------------------------*/
 : createSchema_DataMarker
 
+  0 locals| errorCode |
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we have enough buffers
   node::checkEnoughBuffers not if
-    op.pipelineJob@ ERROR_JOB
+    to errorCode
+    errorCode op__execErr
     PipeIn[].delete
-    Operand[].newErrorMarker
-    Operand[].pipeOut
     true
     exit
   then
@@ -31,10 +32,9 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if are in schemas
   folder[].checkIsSchemas not if
-    op.pipelineJob@ ERROR_JOB
+    to errorCode
+    errorCode op__execErr
     PipeIn[].delete
-    Operand[].newErrorMarker
-    Operand[].pipeOut
     true
     exit
   then
@@ -42,10 +42,9 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if schema already exits
   <schemaNm> name::isNotKnownSchema not if
-    op.pipelineJob@ ERROR_JOB
+    to errorCode
+    errorCode op__execErr
     PipeIn[].delete
-    Operand[].newErrorMarker
-    Operand[].pipeOut
     true
     exit
   then

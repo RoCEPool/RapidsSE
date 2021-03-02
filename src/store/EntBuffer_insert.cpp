@@ -26,7 +26,7 @@ void EntBuffer::vBuildSkipList(void)
   
   Ent* aOriginalFirstEntry = aNextEntry(aSkipRoots(),0);
   
-  static i8 nBuild = 0;
+  //static i8 nBuild = 0;
   //vTrace("vBuildSkipList %lld (%lld items)\n"_Stz,++nBuild,nItems());
   
   Ent* aLazyChain = m_aLazyChain;
@@ -181,6 +181,7 @@ void EntBuffer::vCompact(void)
     if (m_iBufferHeight) {
       //vShow();
       int iDebug = 1;
+      UNUSED(iDebug);
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -241,6 +242,7 @@ void EntBuffer::vCompact(void)
     if (m_iBufferHeight) {
       //vDumpPriorVec(xPriorVec);
       int iDebug = 1;
+      UNUSED(iDebug);
     }
     
     tET tWasTicket = tToTicket(aMoveEntry);
@@ -271,7 +273,8 @@ void EntBuffer::vCompact(void)
     
     
     Ent* aCheckEntry = reinterpret_cast<Ent*>(aFreeItem);
-    
+    UNUSED(aCheckEntry);
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the prior vector to the entry being moved
     
@@ -392,6 +395,7 @@ void EntBuffer::vDeleteUpwards(eDU eReason, Ent* aDeleteEntry, i8 iRefdBufferNo,
                                EntBuffer** ppRootBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+  UNUSED(eReason);
   
 #ifdef WITH_EB_LAZY_CHAIN
   ASSERT( ! m_aLazyChain );
@@ -666,9 +670,11 @@ Ent* EntBuffer::aInsertEntAbs(Ent* aEnt)
   // insert the new entry into the skip list
   
   Ent* aPrevEnt = aInsertEntSkipList(aInsertedEntry);
-  
+  UNUSED(aPrevEnt);
+
   Ent_gen* pEnt_gen = (Ent_gen*)aInsertedEntry;
-  
+  UNUSED(pEnt_gen);
+
 #ifdef EB_LOCAL_VERIFY
   if (m_iBufferHeight && aPrevEnt != aSkipRoots()) {
     
@@ -1072,6 +1078,7 @@ Ent* EntBuffer::aInsertEntSkipList(Ent* aEntry)
 Ent* EntBuffer::aInsertEntUpwards(eIU eReason, Ent* aEnt, EntBuffer** ppRootBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+  UNUSED(eReason);
   
   RASSERT(aEnt->eKind() == m_eEntKind);
   
@@ -1218,7 +1225,8 @@ EntBuffer* EntBuffer::pNewInsertBuffer(Ent* aEntry, EntBuffer** ppRootBuffer)
 bool EntBuffer::bNewInsertDecision(Ent* aEntry, EntBuffer** ppRootBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
-  
+  UNUSED(ppRootBuffer);
+
   RASSERT(aEntry->eKind() == m_eEntKind);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1316,6 +1324,7 @@ EntBuffer* EntBuffer::pNewInsertIntoRight(Ent* aEntry, EntBuffer** ppRootBuffer)
     
     Ent* aInsertedEntryLeft =
       pHigherBuffer->aInsertEntUpwards(IU_HIGH_LEFT_LEAD,xEntWrkLeft.aEnt(),ppRootBuffer);
+    UNUSED(aInsertedEntryLeft);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1420,6 +1429,7 @@ EntBuffer* EntBuffer::pNewInsertIntoSplit(Ent* aEntry, EntBuffer** ppRootBuffer)
     
     Ent* aInsertedEntryLeft =
       pLeftHigherBuffer->aInsertEntUpwards(IU_HIGH_LEFT_LEAD,xEntWrkLeft.aEnt(),ppRootBuffer);
+    UNUSED(aInsertedEntryLeft);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1436,7 +1446,8 @@ EntBuffer* EntBuffer::pNewInsertIntoSplit(Ent* aEntry, EntBuffer** ppRootBuffer)
   Ent* aInsertedEntryRight =
     pRightHigherBuffer->aInsertEntUpwards(IU_SPLIT_RIGHT_LEAD,
                                           xEntHighRight.aEnt(),ppRootBuffer);
-  
+  UNUSED(aInsertedEntryRight);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
 #ifdef EB_LOCAL_VERIFY
@@ -1576,7 +1587,7 @@ void EntBuffer::vPurgeUpwards(Ent* aDeleteEntry, EntBuffer** ppRootBuffer)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete the entry to be deleted from this buffer
   
-  void* aAddress = aEntryToBeDeleted;
+  //void* aAddress = aEntryToBeDeleted;
   //MemLib::vDumpWords(aAddress,64);
   vDeleteEntry(&aEntryToBeDeleted);
   //MemLib::vDumpWords(aAddress,64);
@@ -1675,14 +1686,16 @@ EntBuffer* EntBuffer::pSplitBuffer(i8 iSplitRatio)
     xEntWrk.vSetEnt(xRef.iBuffer(), xRef.iItem(), aCopyEntry);
     
     Ent* aNewEntry = pNewRightBuffer->aInsertEntAbsL0(xEntWrk.aEnt(),&aLastEntryRight);
-    
+    UNUSED(aNewEntry);
+
     pNewRightBuffer->m_nMove++;
     
     //.pNewRightBuffer->vShow();
     
     // make the moved entry in the left buffer to be a free entry
     FreeItem* aFreeEntry = aMakeFreeEntry(aCopyEntry);
-    
+    UNUSED(aFreeEntry);
+
     // these can be commented
     ASSERT(! m_iBufferHeight ||
            EntBuffer::pRefdEntBuffer(aNewEntry)->pHigherEntBuffer() == pThisLeftBuffer);
@@ -1694,14 +1707,16 @@ EntBuffer* EntBuffer::pSplitBuffer(i8 iSplitRatio)
     if (m_iBufferHeight) {
       EntBuffer* pChildBuffer =
       reinterpret_cast<EntBuffer*>(pHeapBuffer->aFirstChunk());
-      
+      UNUSED(pChildBuffer);
+
       ASSERT(pChildBuffer->pHigherEntBuffer() ==
              EntBuffer::pRefdEntBuffer(aNewEntry)->pHigherEntBuffer());
     }
     else {
       CrwBuffer* pChildBuffer =
-      reinterpret_cast<CrwBuffer*>(pHeapBuffer->aFirstChunk());
+        reinterpret_cast<CrwBuffer*>(pHeapBuffer->aFirstChunk());
       ASSERT(pChildBuffer);
+      UNUSED(pChildBuffer);
     }
   }
   

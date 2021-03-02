@@ -36,8 +36,6 @@ char gszaAmMacroFiles[C_MACRO_FILES][128] = {
     "../asm/AM_StreamDef.macro"
 };
 
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
 
@@ -58,12 +56,20 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_ROW_COL_PUSHSET"_Stz,   (const void *) vDev_ROW_COL_PUSHSET   },
   { "vDev_SRC_COL_PUSHDST"_Stz,   (const void *) vDev_SRC_COL_PUSHDST   },
   { "vDev_SRC_COL_PUSHSET"_Stz,   (const void *) vDev_SRC_COL_PUSHSET   },
-  
+
+  { "vDev_IXT_COL_PUSHONE_PST"_Stz,(const void *) vDev_IXT_COL_PUSHONE_PST   },
+
   { "vDev_CRW_BEGIN"_Stz,         (const void *) vDev_CRW_BEGIN         },
   { "vDev_CRW_DEREF"_Stz,         (const void *) vDev_CRW_DEREF         },
   { "iDev_CRW_NEXT"_Stz,          (const void *) iDev_CRW_NEXT          },
   { "vDev_CRW_NULL"_Stz,          (const void *) vDev_CRW_NULL          },
   { "iDev_CRW_TEST"_Stz,          (const void *) iDev_CRW_TEST          },
+
+  { "vDev_IXT_BEGIN"_Stz,         (const void *) vDev_IXT_BEGIN         },
+  { "vDev_IXT_DEREF"_Stz,         (const void *) vDev_IXT_DEREF         },
+  { "vDev_IXT_NEXT"_Stz,          (const void *) vDev_IXT_NEXT          },
+  { "vDev_IXT_NULL"_Stz,          (const void *) vDev_IXT_NULL          },
+  { "vDev_IXT_TEST"_Stz,          (const void *) vDev_IXT_TEST          },
 
   { "iDev_ENT_COMPARE"_Stz,       (const void *) iDev_ENT_COMPARE       },
   { "aDev_ENT_NEXT"_Stz,          (const void *) aDev_ENT_NEXT          },
@@ -94,16 +100,18 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_IXT_INDEXTREE_SET"_Stz, (const void *) vDev_IXT_INDEXTREE_SET },
   { "aDev_IXT_INS_ENT"_Stz,       (const void *) aDev_IXT_INS_ENT       },
   { "vDev_IXT_SET_ENT"_Stz,       (const void *) vDev_IXT_SET_ENT       },
-  { "iDev_IXT_TMP_ENTRIES"_Stz,   (const void *) iDev_IXT_TMP_ENTRIES   },
+  { "vDev_IXT_TMP_ENTRIES"_Stz,   (const void *) vDev_IXT_TMP_ENTRIES   },
 
   { "aDev_IXT_POS_ALTBYSRC"_Stz,  (const void *) aDev_IXT_POS_ALTBYSRC  },
   { "aDev_IXT_POS_ALTBYWRK"_Stz,  (const void *) aDev_IXT_POS_ALTBYWRK  },
   { "aDev_IXT_POS_LBOUND"_Stz,    (const void *) aDev_IXT_POS_LBOUND    },
   { "aDev_IXT_POS_UBOUND"_Stz,    (const void *) aDev_IXT_POS_UBOUND    },
   { "aDev_IXT_POS_UBOUND_LT"_Stz, (const void *) aDev_IXT_POS_UBOUND_LT },
-  { "aDev_IXT_TRV_BEGIN"_Stz,     (const void *) aDev_IXT_TRV_BEGIN     },
-  { "aDev_IXT_TRV_NEXT"_Stz,      (const void *) aDev_IXT_TRV_NEXT      },
-      
+  { "vDev_IXT_TRV_BEGIN"_Stz,     (const void *) vDev_IXT_TRV_BEGIN     },
+  { "aDev_IXT_TRV_BEGIN_OLD"_Stz, (const void *) aDev_IXT_TRV_BEGIN_OLD },
+  { "vDev_IXT_TRV_NEXT"_Stz,      (const void *) vDev_IXT_TRV_NEXT      },
+  { "aDev_IXT_TRV_NEXT_OLD"_Stz,  (const void *) aDev_IXT_TRV_NEXT_OLD  },
+
   { "aDev_PAY_ADDRESS"_Stz,       (const void *) aDev_PAY_ADDRESS       },
   { "iDev_PAY_FETCH_COLI"_Stz,    (const void *) iDev_PAY_FETCH_COLI    },
   { "szDev_PAY_FETCH_COLS"_Stz,   (const void *) szDev_PAY_FETCH_COLS   },
@@ -117,7 +125,7 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_POT_USE_STREAMDEFOUT"_Stz, (const void *) vDev_POT_USE_STREAMDEFOUT },
   
   { "vDev_ROW_BEGIN"_Stz,         (const void *) vDev_ROW_BEGIN         },
-  { "iDev_ROW_NEW"_Stz,           (const void *) iDev_ROW_NEW           },
+  { "vDev_ROW_NEW"_Stz,           (const void *) vDev_ROW_NEW           },
   { "iDev_ROW_NEXT"_Stz,          (const void *) iDev_ROW_NEXT          },
   { "vDev_ROW_NULL"_Stz,          (const void *) vDev_ROW_NULL          },
   { "vDev_ROW_POPCOLI"_Stz,       (const void *) vDev_ROW_POPCOLI       },
@@ -148,6 +156,9 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_REG_INDEXDEF_DELETE"_Stz,        (const void *) vDev_REG_INDEXDEF_DELETE    },
   { "vDev_REG_INDEXDEF_NEW"_Stz,           (const void *) vDev_REG_INDEXDEF_NEW       },
   { "vDev_REG_INDEXTREE_NEW"_Stz,          (const void *) vDev_REG_INDEXTREE_NEW      },
+
+  { "vREG_INDEXTREE_NULL"_Stz,             (const void *) vREG_INDEXTREE_NULL         },
+  { "vREG_INDEXTREE_PUSH"_Stz,             (const void *) vREG_INDEXTREE_PUSH         },
 
   { "vDev_REG_PTNSTREAM_CLOSE"_Stz,        (const void *) vDev_REG_PTNSTREAM_CLOSE    },
   { "vDev_REG_PTNSTREAM_DELETE"_Stz,       (const void *) vDev_REG_PTNSTREAM_DELETE   },
@@ -192,6 +203,8 @@ DynamicSymbol gxaDynamicSymbol[]
   { "iRlu_TMR_SINCE"_Stz,         (const void *) iRlu_TMR_SINCE         },
   { "vRlu_TMR_START"_Stz,         (const void *) vRlu_TMR_START         },
   { "vRlu_TMR_UPDATE"_Stz,        (const void *) vRlu_TMR_UPDATE        },
+
+  { "vRev_00"_Stz,                (const void *) vRev_00                },
 
   { nullptr, nullptr },
 };
@@ -252,21 +265,23 @@ void LogicCompiler::vExtract(void)
 {
   _static_
     
-  vTrace("LogicCompiler::vExtract -- Extract EO_ Fragments\n"_Stz);
+  if (AM::bVerbose())
+    vTrace("LogicCompiler::vExtract -- Extract EO_ Fragments\n"_Stz);
   
-  File* pFile = new File(nullptr);
+  LocalFile oFile;
   
-  bool b = pFile->bOpenRead("../src/store/LogicUnit.cpp"_Stz);
+  bool b = oFile.bOpenRead("../src/store/LogicUnit.cpp"_Stz);
   RASSERT(b);
   
   char* azCrs = gcaEoFragments;
   
   s4K sTok;
-  while (pFile->bNextLiteTok(sTok)) {
+  while (oFile.bNextLiteTok(sTok)) {
     
     if (sTok.bSame("//+ExtractBegin"_Stz)) {
-      vTrace("Found +ExtractBegin\n"_Stz);
-      while (bExtractAll(pFile,&azCrs, "case"_Stz, "break;//+endCase"_Stz))
+      if (AM::bVerbose())
+        vTrace("Found +ExtractBegin\n"_Stz);
+      while (bExtractAll(&oFile,&azCrs, "case"_Stz, "break;//+endCase"_Stz))
         {;}
     }
   }
@@ -279,15 +294,13 @@ void LogicCompiler::vExtract(void)
     }
   }
   
-  pFile->vClose();
-  
-  delete pFile;
+  oFile.vClose();
 }
 
 /*----------------------------------------------------------------------------*/
 /* extract all EO_ fragments                                                  */
 /*----------------------------------------------------------------------------*/
-bool LogicCompiler::bExtractAll(File* pFile, char** aazCrs, Stz* startMarker, Stz* endMarker)
+bool LogicCompiler::bExtractAll(LocalFile* pFile, char** aazCrs, Stz* startMarker, Stz* endMarker)
 {
   _static_
   
@@ -295,6 +308,7 @@ bool LogicCompiler::bExtractAll(File* pFile, char** aazCrs, Stz* startMarker, St
   while (pFile->bNextLiteTok(sTok)) {
     if (sTok.bSame(startMarker)) {
       bool b = pFile->bNextLiteTok(sTok);
+      UNUSED(b);
       vExtractFragment(pFile,aazCrs,startMarker,endMarker);
       return true;
     }
@@ -310,25 +324,27 @@ void LogicCompiler::vExtractAsm(void)
 {
   _static_
 
-  vTrace("LogicCompiler::vExtractAsm -- Extract AM_ Macro Fragments\n"_Stz);
+  if (AM::bVerbose())
+    vTrace("LogicCompiler::vExtractAsm -- Extract AM_ Macro Fragments\n"_Stz);
 
-  File* pFile = new File(nullptr);
+  LocalFile oFile;
   char *azCrs = gcaAmMacros;
 
   //bool b = pFile->bOpenRead("../asm/AsmMacros.txt"_Stz);
   for (i8 iMacroFile = 0; iMacroFile < C_MACRO_FILES; iMacroFile++) {
 
-    vTrace("File: %s\n"_Stz,gszaAmMacroFiles[iMacroFile]);
-    bool b = pFile->bOpenRead((Stz*)gszaAmMacroFiles[iMacroFile]);
+    if (AM::bVerbose())
+      vTrace("File: %s\n"_Stz,gszaAmMacroFiles[iMacroFile]);
+    bool b = oFile.bOpenRead((Stz*)gszaAmMacroFiles[iMacroFile]);
     RASSERT(b);
 
     s4K sTok;
-    while (pFile->bNextLiteTok(sTok)) {
+    while (oFile.bNextLiteTok(sTok)) {
 
       //vTrace("Found macro\n"_Stz);
-      while (bExtractAll(pFile, &azCrs, "macro"_Stz, "endMacro"_Stz)) { ; }
+      while (bExtractAll(&oFile, &azCrs, "macro"_Stz, "endMacro"_Stz)) { ; }
     }
-    pFile->vClose();
+    oFile.vClose();
   }
 
    if (AM::bVerbose()) {
@@ -337,13 +353,12 @@ void LogicCompiler::vExtractAsm(void)
     }
   }
 
-  delete pFile;
 }
 
 /*----------------------------------------------------------------------------*/
 /* extract an EO_ fragment                                                    */
 /*----------------------------------------------------------------------------*/
-void LogicCompiler::vExtractFragment(File* pFile, char** aazCrs, Stz* startMarker, Stz* endMarker) {
+void LogicCompiler::vExtractFragment(LocalFile* pFile, char** aazCrs, Stz* startMarker, Stz* endMarker) {
   _static_
 
   i8 i_AM = C_UNKNOWN;
@@ -365,7 +380,7 @@ void LogicCompiler::vExtractFragment(File* pFile, char** aazCrs, Stz* startMarke
     RASSERT(startMarker->bSame("macro"_Stz));
     i_AM = eFindAM(sTok);
 
-    //if (AM::bVerbose())
+    if (AM::bVerbose())
       vTrace("Macro %s [%lld]\n"_Stz, sTok.szStz(), i_AM);
 
     gszaAmMacros[i_AM] = (Stz *) *aazCrs;
@@ -437,6 +452,7 @@ i8 LogicCompiler::iCall(void)
 i8 LogicCompiler::iCompile(LogicUnit* pLogicUnit, void* aDynArg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
+  UNUSED(aDynArg);
 
   m_pLogicUnit = pLogicUnit;
   
@@ -457,6 +473,7 @@ i8 LogicCompiler::iCompile(LogicUnit* pLogicUnit, void* aDynArg)
   
   vAcquire();
   bool b = bCompile();
+  UNUSED(b);
   vSymbols();
   vRelocate();
 
@@ -614,7 +631,9 @@ void LogicCompiler::vAddFragment(i8 i_CodeFrom, i8 i_CodeTill)
   s4K sPrint;
 
   for (i8 i_Code = i_CodeFrom; i_Code <= i_CodeTill; i_Code++) {
-    
+
+    if (i_Code == 148)
+      i8 i = 1;
     eEO eCode = m_pLogicUnit->eCode(i_Code);
 
     i_Label = m_pLogicUnit->iFindLabel(i_Code);
@@ -797,8 +816,7 @@ void LogicCompiler::vRtnSource(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
   s4K sReplaced;
-  char caInt[32];
-  
+
   i8 nCodes = m_pLogicUnit->nCodes();
   
   i8 i_CodeTill = 0;
@@ -949,6 +967,16 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n  #define nWordRoundedStrBytes(_Size) "
   "      ( ( (_Size / C_BYTES_PER_WORD) * C_BYTES_PER_WORD) + "
   "      (_Size %% C_BYTES_PER_WORD ? C_BYTES_PER_WORD : 0) ) "
+  "\n"
+  "\n  #define I_PushInt(__iValue) "
+  "     *(++aiDstk) = __iValue; "
+  "\n"
+  "\n  #define I_PopInt()   *(aiDstk--) "
+  "\n"
+  "\n  #define P_PushPtr(__pPtr) "
+  "     *(++aiDstk) = (i8)__pPtr; "
+  "\n"
+  "\n  #define P_PopPtr()  (void*)(*(aiDstk--)) "
   "\n"
   "\n  #define S_PopStr(__azDst)"
   "      nSize = *(aiDstk--);"

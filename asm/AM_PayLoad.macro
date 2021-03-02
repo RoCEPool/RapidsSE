@@ -80,7 +80,9 @@ macro AM_PAYLOAD_END
 //----------------------------------------------------------------------------//
 // macro AM_PAYLOAD_END                                                       //
 //----------------------------------------------------------------------------//
- EO_IXT_DUMP
+ //EO_IXT_DUMP
+ EO_PUSH_DEVIXT_TMP
+ EO_DEVIXT_DUMP
  EO_RETURN
 endMacro
 
@@ -92,7 +94,9 @@ macro AM_PAYLOAD_TO_BUFFER
   Label PAYLOAD_TO_BUFFER
 
   // new a dst row
-  EO_ROW_DST_NEW
+  //EO_ROW_DST_NEW
+  EO_PUSH_DEVROW_DST
+  EO_DEVROW_NEW
 
   EO_PAY_ADDRESS
 
@@ -104,7 +108,9 @@ macro AM_PAYLOAD_TO_BUFFER_END
 //----------------------------------------------------------------------------//
  // AM_PAYLOAD_TO_BUFFER_END
  Label PAYLOAD_TO_BUFFER_END
- EO_ROW_DST_PRINT
+ //EO_ROW_DST_PRINT
+ EO_PUSH_DEVROW_DST
+ EO_DEVROW_PRINT
  EO_RETURN
 endMacro
 

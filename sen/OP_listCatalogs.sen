@@ -9,13 +9,14 @@
 /*----------------------------------------------------------------------------*/
 : lscat_action
 
+  0 locals| errorCode |
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in the schemas folder
   folder[].checkIsCatalogs not if
-    op.pipelineJob@ ERROR_JOB
+    to errorCode
+    errorCode op__execErr
     PipeIn[].delete
-    Operand[].newErrorMarker
-    Operand[].pipeOut
     false
     exit
   then

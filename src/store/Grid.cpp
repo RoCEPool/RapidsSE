@@ -98,6 +98,10 @@ Grid::~Grid(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Grid::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
+  UNUSED(eClass);
+  UNUSED(pObject);
+  UNUSED(aTab);
+
   //Grid* pGrid = _pGrid(pObject);
   
   //vTrace("\n"_Stz);

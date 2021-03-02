@@ -1,14 +1,26 @@
 /*============================================================================*/
-/* Parser.h -- Parser namespace                                              */
+/* SP_ColumnMetadata.hpp - Column Metadata Sprint Helper                      */
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
+namespace BASE
+{
+  class SP_ColumnMetadata : public SP
+  {
+  public:
 
+    // must be last
+    Footer m_xFooter;
+    
+  public:
+    SP_ColumnMetadata(void);
+   ~SP_ColumnMetadata(void) noexcept(false);
+  
+    Stz* sz(ColumnMetadata* pColMeta);
 
-
-//------------------------------------------------------------------------------
-
+    Footer* aFooter(void);
+  };
+}
 
 /*============================================================================*/
 /* end                                                                        */

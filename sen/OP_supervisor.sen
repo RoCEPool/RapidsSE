@@ -20,7 +20,7 @@
 /*----------------------------------------------------------------------------*/
 : supervisor_StartMarker \handler
 
-  "Supervisor Job Started" .
+  "Supervisor Job Started" .verbose
   
   begin
  

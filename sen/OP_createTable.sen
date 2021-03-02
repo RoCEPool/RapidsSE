@@ -40,7 +40,7 @@
 /*----------------------------------------------------------------------------*/
 : createTable_StreamDef
 
-  0 locals| sTableNm |
+  0 0 locals| sTableNm errorCode |
 
   // get the stream def
   Pipein[] to StreamDef[]
@@ -62,10 +62,9 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check ok to create table
   sTableNm createTable::checkCreate not if ( errorCode )
+    to errorCode
     StreamDef[].delete
-    op.pipelineJob@ ERROR_JOB
-    Operand[].newErrorMarker
-    Operand[].pipeout
+    errorCode op__execErr
     true
     exit
   then

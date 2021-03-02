@@ -46,7 +46,8 @@ static const i8 C_NEVER_THROWN = -1;
 static const i8 C_NIL          = -1;
 static const i8 C_UNKNOWN      = -1;
 static const i8 C_IGNORED      = -1;
-static const b8 C_DONT_LOG     = true;
+static const i8 C_LOG          = 1;
+static const i8 C_DONT_LOG     = 0;
 
 static const bool B_CALL_AGAIN      = true;
 static const bool B_DONT_CALL_AGAIN = false;

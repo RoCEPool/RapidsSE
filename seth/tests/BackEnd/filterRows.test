@@ -4,7 +4,7 @@
 
 //------------------------------------------------------------------------------
 filterRows lineitem "l_discount 0.04 >= <>";
-failure contains: "no such table"
+failure contains: "EC_NO_SUCH_TABLE"
 
 //------------------------------------------------------------------------------
 // create table lineitem

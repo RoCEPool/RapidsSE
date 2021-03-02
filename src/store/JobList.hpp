@@ -34,7 +34,7 @@ namespace STORE
     bool   bGrabLock(void);
     bool   bHasJobClass(eCN eJobClass);
     bool   bIsLocked(void);
-    void   vLogJobs(i8 iJobId);
+    void   vLogJobs();
     bool   bRemoveJob(Job* pJob);
     i8     nJobs(void);
     

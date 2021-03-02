@@ -13,8 +13,6 @@
 #include "EntBufSorter.hpp"
 
 #include "AM.hpp"
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 
 #include "RowOnce.hpp"
@@ -25,6 +23,8 @@
 #include "TagConstants.h"
 #include "Engine.hpp"
 #include "SeApi.hpp"
+#include "ColumnMetadata.hpp"
+#include "SP_ColumnMetadata.hpp"
 
 #include "TpchRatios.h"
 
@@ -228,14 +228,122 @@ void vTest5(void)
 /*----------------------------------------------------------------------------*/
 void vTest6(void)
 {
-//  RefBuffer* pRefBuffer = new RefBuffer(0);
-//  
-//  while (pRefBuffer->aAllotRefSet(2))
-//    {;}
-//  
-//  vDebugPoint();
-//  
-//  delete pRefBuffer;
+  DicStack* pDicStack = AM::pTaskDicStack();
+  pDicStack->vPrint();
+  
+//  s256 sPath;
+//
+//  pDicStack->vToPathStr(sPath);
+  
+//  vTrace("path: %s\n"_Stz,sPath.szStz());
+//
+//  for (i8 i_Dic = pDicStack->iCount() - 1; i_Dic >= 0; i_Dic--) {
+//    Dic* pDic = pDicStack->pPick(i_Dic);
+//    Word* pDicKind = pDic->pDicKind();
+//    vTrace("[%lld] %s %s\n"_Stz,
+//           i_Dic,
+//           pDic->szDicNm(),
+//           pDicKind ? pDicKind->szWordNm() : "n/a"_Stz);
+//  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  SeApi* pSeApi = new SeApi;
+
+  Stz* szCurrTenant = pSeApi->szCurrTenant();
+  vTrace("\nTENANT %s\n"_Stz,szCurrTenant);
+  Dic* pDic = pSeApi->pCurrTenant();
+  //pDic->vListWords(0,true);
+  
+  Stz* szCurrCatalog = pSeApi->szCurrCatalog();
+  vTrace("\nCATALOG %s\n"_Stz,szCurrCatalog);
+  pDic = pSeApi->pCurrCatalog();
+  //pDic->vListWords(0,true);
+
+  Stz* szCurrSchema  = pSeApi->szCurrSchema();
+  vTrace("\nSCHEMA %s\n"_Stz,szCurrSchema);
+  pDic = pSeApi->pCurrSchema();
+  //pDic->vListWords(0,true);
+
+  Stz* szCurrTable   = pSeApi->szCurrTable();
+  vTrace("\nTABLE %s\n"_Stz,szCurrTable);
+
+  RowBuffer* pRowBuffer;
+  pRowBuffer = pSeApi->pLookupCatalog(szCurrCatalog);
+  delete pRowBuffer;
+  pRowBuffer = pSeApi->pLookupSchema(szCurrCatalog,szCurrSchema);
+  delete pRowBuffer;
+
+  
+  vTrace("\n\n"_Stz,szCurrTable);
+  pSeApi->vPrintMetadata();
+  vTrace("\n\n"_Stz,szCurrTable);
+
+  vTrace("Test %s : %s \n"_Stz,
+         "rapidsse"_Stz,
+         pSeApi->bTest("rapidsse"_Stz)
+           ? "found"_Stz : "not-found"_Stz);
+
+  vTrace("Test %s.%s : %s \n"_Stz,
+         "rapidsse"_Stz,"public"_Stz,
+         pSeApi->bTest("rapidsse"_Stz,"public"_Stz)
+           ? "found"_Stz : "not-found"_Stz);
+
+  vTrace("Test %s.%s.%s : %s \n"_Stz,
+         "rapidsse"_Stz,"public"_Stz,"lineitem"_Stz,
+         pSeApi->bTest("rapidsse"_Stz,"public"_Stz,"lineitem"_Stz)
+           ? "found"_Stz : "not-found"_Stz);
+  
+  vTrace("\n\n"_Stz,szCurrTable);
+  InfoSet* pInfoSet;
+  pInfoSet = pSeApi->pLookupCatalog("n/a"_Stz);
+  vTrace("LookupCatalog: %lld rows\n"_Stz,pInfoSet->nInfoRows());
+  delete pInfoSet;
+  pInfoSet = pSeApi->pLookupCatalog("rapidsse"_Stz);
+  vTrace("LookupCatalog: %lld rows\n"_Stz,pInfoSet->nInfoRows());
+  delete pInfoSet;
+  
+  pInfoSet = pSeApi->pLookupSchema("n/a"_Stz,
+                                   "public"_Stz);
+  vTrace("LookupSchema: %lld rows\n"_Stz,pInfoSet->nInfoRows());
+  delete pInfoSet;
+  pInfoSet = pSeApi->pLookupSchema("rapidsse"_Stz,
+                                   "public"_Stz);
+  vTrace("LookupSchema: %lld rows\n"_Stz,pInfoSet->nInfoRows());
+  delete pInfoSet;
+  
+  pInfoSet = pSeApi->pLookupTable("n/a"_Stz,
+                                  "public"_Stz,
+                                  "lineitem"_Stz);
+  vTrace("LookupTable: %lld rows\n"_Stz,pInfoSet->nInfoRows());
+  delete pInfoSet;
+  pInfoSet = pSeApi->pLookupTable("rapidsse"_Stz,
+                                  "public"_Stz,
+                                  "lineitem"_Stz);
+  vTrace("LookupTable: %lld rows\n"_Stz,pInfoSet->nInfoRows());
+  delete pInfoSet;
+
+  pInfoSet = pSeApi->pColumnDefs("rapidsse"_Stz,
+                                 "public"_Stz,
+                                 "lineitem"_Stz,
+                                 nullptr);
+  vTrace("ColumnDefs: %lld rows\n"_Stz,pInfoSet->nInfoRows());
+  
+  for (Row* pRow = pInfoSet->pFirstRow();
+       pRow;
+       pRow = pInfoSet->pNextRow(pRow)) {
+    
+    ColumnMetadata* pColMeta = static_cast<ColumnMetadata*>(pRow);
+    
+    SP_ColumnMetadata spColMeta;
+    vTrace("META %s\n"_Stz,spColMeta.sz(pColMeta));
+
+  }
+  
+  delete pInfoSet;
+
+
+  delete pSeApi;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -430,6 +538,7 @@ void vTest10(void)
     //i8 i2 = Random::iInteger(-999999,999999);
   
     i8 iCmp = MemLib::iCompareWords(&i1, &i2, 8);
+    UNUSED(iCmp);
     //i8 iCmp2 = MemLib::iCompare2(&i1, &i2, 8);
   }
   
@@ -780,7 +889,7 @@ void vTest20(void)
 /*----------------------------------------------------------------------------*/
 /* test21 : determine the number of int entries which fit into an ent buffer  */
 /*----------------------------------------------------------------------------*/
-i8 nTest21_intEnts(eKE eEntKind)
+i8 nTest21_intEnts(void)
 {
   Rrf xRef;
   EntWrk xEntWrk;
@@ -804,6 +913,7 @@ i8 nTest21_intEnts(eKE eEntKind)
     //pEntBufferCalc->vShow();
     Ent* aEntToIns = xEntWrk.aEnt();
     Ent* aEnt = pEntBufferCalc->aInsertEntAbs(aEntToIns);
+    UNUSED(aEnt);
     nEnts++;
     
     xEntWrk.vReset();
@@ -818,12 +928,12 @@ i8 nTest21_intEnts(eKE eEntKind)
 /*----------------------------------------------------------------------------*/
 /* test21 : create an int set for key samples                                 */
 /*----------------------------------------------------------------------------*/
-IntSet* pTest21_keySamples(eKE eEntKind, i8 nSamples)
+IntSet* pTest21_keySamples(i8 nSamples)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // first calculate how many int entries fit into an EntBuffer
   
-  i8 nEntsWhichFit = C_UNKNOWN == nSamples ? nTest21_intEnts(eEntKind) : nSamples;
+  i8 nEntsWhichFit = C_UNKNOWN == nSamples ? nTest21_intEnts() : nSamples;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create that many keys
@@ -943,6 +1053,7 @@ void vTest21_insert(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalIns_)
       break;
     
     Ent* aEnt = pEntBuffer->aInsertEntAbs(xEntWrk.aEnt());
+    UNUSED(aEnt);
     
     //pEntBuffer->vShow();
     
@@ -966,6 +1077,7 @@ void vTest21_search(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalSel_)
     for (i8 i_Int = 0; i_Int < nInts; i_Int++) {
           
       i8 iInt = pKeySamples->iGet(i_Int);
+      UNUSED(iInt);
       //Ent* aSearchedEnt = pEntBuffer->aFindEnt_IntOpt(iInt);
 
       nTotalSel_++;
@@ -990,6 +1102,7 @@ void vTest21_search(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalSel_)
     
     if (aSearchedEnt) {
       bool b = Key::bEqualTo(aSearchedEnt->aKey(),xEntWrk.aKey());
+      UNUSED(b);
     }
     //RASSERT(aSearchedEnt);
 
@@ -1015,7 +1128,7 @@ void vTest21_sort(EntBuffer* pEntBuffer)
 /*----------------------------------------------------------------------------*/
 /* test21 : run delete test                                                   */
 /*----------------------------------------------------------------------------*/
-void vTest21_testDelete(eKE eEntKind, IntSet* pKeySamples,
+void vTest21_testDelete(IntSet* pKeySamples,
                         i8 nBuffers, bool bDump)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1056,7 +1169,7 @@ void vTest21_testDelete(eKE eEntKind, IntSet* pKeySamples,
 /*----------------------------------------------------------------------------*/
 /* test21 : run insert test                                                   */
 /*----------------------------------------------------------------------------*/
-void vTest21_testInsert(eKE eEntKind, IntSet* pKeySamples,
+void vTest21_testInsert(IntSet* pKeySamples,
                         i8 nBuffers, bool bDump)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1093,7 +1206,7 @@ void vTest21_testInsert(eKE eEntKind, IntSet* pKeySamples,
 /*----------------------------------------------------------------------------*/
 /* test21 : run search test                                                   */
 /*----------------------------------------------------------------------------*/
-void vTest21_testSearch(eKE eEntKind, IntSet* pKeySamples,
+void vTest21_testSearch(IntSet* pKeySamples,
                         i8 nBuffers, i8 nTimes, bool bDump)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1150,15 +1263,14 @@ void vTest21_testSearch(eKE eEntKind, IntSet* pKeySamples,
 /*----------------------------------------------------------------------------*/
 void vTest21(void)
 {
-  eKE  eEntKind = KE_INT;
   i8   nSamples = C_UNKNOWN;
   i8   nBuffers = 10;
   i8   nTimes   = 10;
   bool bDump    = true;
 
-  bool bInsertTest = true;
+  //bool bInsertTest = true;
   bool bSearchTest = true;
-  bool bDeleteTest = true;
+  //bool bDeleteTest = true;
   
   vTrace("Test21 -- This is EntBuffer Test MODE: %s %s\n"_Stz,
          AM::szBuild(),
@@ -1168,7 +1280,7 @@ void vTest21(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create key sample int set
 
-  IntSet* pKeySamples = pTest21_keySamples(eEntKind,nSamples);
+  IntSet* pKeySamples = pTest21_keySamples(nSamples);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // run our tests
@@ -1185,7 +1297,7 @@ void vTest21(void)
 
   pKeySamples->vRandomise();
 //  if (bInsertTest) vTest21_testInsert(eEntKind,pKeySamples,nBuffers,bDump);
-  if (bSearchTest) vTest21_testSearch(eEntKind,pKeySamples,nBuffers,nTimes,bDump);
+  if (bSearchTest) vTest21_testSearch(pKeySamples,nBuffers,nTimes,bDump);
 //  if (bDeleteTest) vTest21_testDelete(eEntKind,pKeySamples,nTimes,bDump);
 }
 
@@ -1703,6 +1815,7 @@ void vTest63(void)
   oTimer.vStart();
   for (i8 i_Char = 0; i_Char < C_1K-1; i_Char++) {
     i8 nL = StrLib::nCopy(&b[0],&a[0]);
+    UNUSED(nL);
     n++;
     //RASSERT(nL == C_1K-1);
   }

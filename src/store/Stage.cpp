@@ -137,6 +137,7 @@ Stream* Stage::pGetNodeStream(i8 i_Node)
 void Stage::vDump(Pipeline* pPipeline)
 {
   _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
+  UNUSED(pPipeline);
   
   i8 i_Stage = m_pStageSpec->i_StageSpec();
   vTrace("\n[%lld] Stage %s Topology %s: \n"_Stz,

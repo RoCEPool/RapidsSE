@@ -11,8 +11,6 @@
 #include "ePX.h"
 
 #include "Op.hpp"
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
@@ -252,7 +250,8 @@ void Step::vLogicUnitDynFun(void)
   ENTRY();
   
   i8 iRes = ( m_pJob->pLogicUnit_job() )->iDynFun(0,C_UNKNOWN);
-  
+  UNUSED(iRes);
+
   EXIT();
 }
 
@@ -271,7 +270,8 @@ void Step::vLogicUnitDynFunArgs(void)
   i8 iArg0 = m_pDataStack->iPopInt(__func__);
 
   i8 iRes = ( m_pJob->pLogicUnit_job() )->iDynFun(nArgs,iArg0);
-  
+  UNUSED(iRes);
+
   EXIT();
 }
 
@@ -306,16 +306,17 @@ void Step::vLogicUnitGenAsm(void)
   s256 sFileName;
   m_pDataStack->vPopStr(sFileName, __func__);
   
-  File* pFile = new File(nullptr);
+  LocalFile oFile;
   
-  bool b = pFile->bOpenRead(sFileName.szStz());
+  bool b = oFile.bOpenRead(sFileName.szStz());
   RASSERT(b);
   
   s16KB sText;
   //MemLib::vZero(sText.azChar(),C_16KB,CN_STRING_T);
 
-  i8 nSize = pFile->iSize();
-  i8 nBytes = pFile->nReadBytes((void*)sText.azChar(), nSize);
+  i8 nSize = oFile.iSize();
+  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
+  UNUSED(nBytes);
 
   //vTrace("FILE %s\n"_Stz, sFileName.azChar());
 
@@ -326,6 +327,8 @@ void Step::vLogicUnitGenAsm(void)
   bool bResult = ( m_pJob->pLogicUnit_job() )->bGenerateAsm(sText);
   
   m_pDataStack->vPushInt(bResult);
+  
+  oFile.vClose();
   
   EXIT();
 }
@@ -341,9 +344,12 @@ void Step::vLogicUnitGenAsmTxt(void)
   m_pDataStack->vPopStr(sFileName, __func__);
   
   File* pFile = new File(nullptr);
+  UNUSED(pFile);
 
   i8 iSubQueryNo = m_pDataStack->iPopInt(__func__);
   i8 iQueryNo = m_pDataStack->iPopInt(__func__);
+  UNUSED(iSubQueryNo);
+  UNUSED(iQueryNo);
 
   //( m_pJob->pLogicUnit_job() )->vGenerateAsmTxt(iQueryNo, iSubQueryNo, sFileName);
   
@@ -573,7 +579,8 @@ void Step::vLogicUnitTransform(void)
   ENTRY();
   
   i8 bResult = ( m_pJob->pLogicUnit_job() )->iTransform(0,C_UNKNOWN);
-  
+  UNUSED(bResult);
+
   EXIT();
 }
 
@@ -592,7 +599,8 @@ void Step::vLogicUnitTransformArgs(void)
   i8 iArg0 = m_pDataStack->iPopInt(__func__);
 
   i8 bResult = ( m_pJob->pLogicUnit_job() )->iTransform(nArgs,iArg0);
-  
+  UNUSED(bResult);
+
   EXIT();
 }
 

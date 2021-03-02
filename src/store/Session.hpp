@@ -24,6 +24,7 @@ namespace STORE
 
     DicStack m_oDicStack;     // dictionary stack
     TagSet   m_oSsnTagSet;    // session level tags
+    TagSet   m_oJobTagSet;    // extra tags gleaned from the command
     Input*   m_pInput;        // input processor
     Output*  m_pOutput;       // output processor
 
@@ -89,11 +90,11 @@ namespace STORE
     void vEndTx(void);
     i8   i_FixedPtn(void);
     void vFixedPtn(i8 i_FixedPtn);
-    void vFocalOutline(s4K& sOutline);
-    void vFreeSession(i8 i_NextFree);
+    void vOutline(s4K& sOutline);
+    void vFinaliseSession(i8 i_NextFree);
     bool bHasCascade(void);
     void vHasCascade(bool bHasCascade);
-    eEC  eInitSession(Stz* pCatalogName, Stz* pSchemaName);
+    eEC  eInitaliseSession(Stz* pCatalogName, Stz* pSchemaName);
     Job* pJob(void);
     DicStack* pPathStack(void);
     void vReport(void);

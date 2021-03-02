@@ -12,8 +12,6 @@
 
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -45,6 +43,7 @@ void Step::vMetaTableListTables(void)
   Word* pWord = nullptr;
   while ( (pWord = pDic->pEachWord(pWord)) ) {
     Row* aRow = pPot->aNewDstRow(0,&pRowBuffer,&bNewBuffer);
+    UNUSED((aRow));
     pRowBuffer->vDepositColVal(0,pWord->szWordNm());
   }
 

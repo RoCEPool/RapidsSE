@@ -4,46 +4,14 @@
 
 #include "BASE.h"
 
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-Tx* BASE::_pTx(void* aAddr)
-{
-  Tx* pTx = reinterpret_cast<Tx*>(aAddr);
-  
-  RASSERT_TYPE(pTx,CN_TX);
-  
-  return pTx;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* Tx::operator new(size_t)
-{
-  void* pObject = Heaps::pAllocate(CN_TXSET);
-
-  return pObject;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* Tx::operator new(size_t, Tx* pTx)
-{
-  return pTx;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-void Tx::operator delete(void* pTxAddress)
-{
-  Tx* pTx = reinterpret_cast<Tx*>(pTxAddress);
-  
-  Heaps::vFree(pTx);
-}
+__pCastFunction(BASE,Tx,CN_TX)
+__aNewFunction(Tx,CN_TX)
+__vDeleteFunction(Tx,CN_TX)
+__aFooterFunction(Tx)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -61,6 +29,8 @@ Tx::Tx(void)
   _checkInitialised_(CN_TX);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
+  
+  vLog(EV_CONSTRUCT,"Tx constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -69,6 +39,8 @@ Tx::Tx(void)
 Tx::~Tx(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
+  
+  vLog(EV_DESTRUCT,"Tx destructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -90,6 +62,9 @@ void Tx::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 void Tx::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
+  UNUSED(eClass);
+  UNUSED(aTab);
+
   Tx* pTx = _pTx(pObject);
   
   // get string of the distributed members of this transaction
@@ -101,9 +76,9 @@ void Tx::vDump(eCN eClass, Object* pObject, Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
-/* focal outline                                                              */
+/* outline                                                                    */
 /*----------------------------------------------------------------------------*/
-void Tx::vFocalOutline(s4K& sOutline)
+void Tx::vOutline(s4K& sOutline)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
   
@@ -165,12 +140,6 @@ void Tx::vPhase(eXP ePhase)
   
   m_ePhase = ePhase;
 }
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-__aFooterFunction(Tx);
 
 /*============================================================================*/
 /* end                                                                        */

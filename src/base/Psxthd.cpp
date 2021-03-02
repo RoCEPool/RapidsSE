@@ -70,8 +70,8 @@ void PsxThd::operator delete(void* pPsxThdAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-PsxThd::PsxThd()
-: Resource(CN_PSXTHD)
+PsxThd::PsxThd(Object* pIsFor)
+: Resource(CN_PSXTHD,pIsFor)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PSXTHD,_FOOTER_);
   
@@ -84,11 +84,10 @@ PsxThd::PsxThd()
   _checkInitialised_(CN_PSXTHD);
 
   ++ gixPsxThd;
-  AM::vLogRes(SL_INF,this,RA_THD_CONSTRUCT,
-              "PsxThd construct : %p (%lld pthreads exist)"_Stz, //!format-LogRes
-              this,* gixPsxThd);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PSXTHD,_FOOTER_);
+  
+  vLog(EV_CONSTRUCT,"PsxThd constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -99,15 +98,9 @@ PsxThd::~PsxThd(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PSXTHD,_FOOTER_);
   
   -- gixPsxThd;
-  AM::vLogRes(SL_INF,this,RA_THD_DESTRUCT,
-              "PsxThd destruct : %p (%lld pthreads exist)"_Stz, //!format-LogRes
-              this,* gixPsxThd);
+  
+  vLog(EV_DESTRUCT,"PsxThd destructor"_Stz);
 }
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
@@ -540,9 +533,9 @@ void PsxThd::vEnableRealtime_2(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* focal outline                                                              */
+/* outline                                                                    */
 /*----------------------------------------------------------------------------*/
-void PsxThd::vFocalOutline(s4K& sOutline)
+void PsxThd::vOutline(s4K& sOutline)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PSXTHD,_FOOTER_);
 
@@ -685,6 +678,8 @@ void PsxThd::vSleepInfinite(void)
 /*----------------------------------------------------------------------------*/
 void PsxThd::vSleepMsec(i8 nMilliSeconds, eCN eCallingClass)
 {
+  UNUSED(eCallingClass);
+  
   struct timespec xReq;
   struct timespec xRem;
   
@@ -723,6 +718,8 @@ void PsxThd::vSleepMsec(i8 nMilliSeconds, eCN eCallingClass)
 /*----------------------------------------------------------------------------*/
 void PsxThd::vSleepNsec(i8 nNanoSeconds, eCN eCallingClass)
 {
+  UNUSED(eCallingClass);
+  
   struct timespec xReq;
   struct timespec xRem;
   
@@ -760,6 +757,7 @@ void PsxThd::vSleepNsec(i8 nNanoSeconds, eCN eCallingClass)
 /*----------------------------------------------------------------------------*/
 void PsxThd::vSleepSsec(i8 nSeconds, eCN eCallingClass)
 {
+  UNUSED(eCallingClass);
   
 #ifdef WITH_STATISTICS_COUNTERS
   Statistics* pStats = &gpAttachMap->m_oStatistics;
@@ -783,6 +781,8 @@ void PsxThd::vSleepSsec(i8 nSeconds, eCN eCallingClass)
 /*----------------------------------------------------------------------------*/
 void PsxThd::vSleepUsec(i8 nMicroSeconds, eCN eCallingClass)
 {
+  UNUSED(eCallingClass);
+  
   struct timespec xReq;
   struct timespec xRem;
   
@@ -927,6 +927,7 @@ i8 PsxThd::iThreadPriority(void)
   
   i8 iError = pthread_getschedparam(m_iPsxThdId,&iPolicy,&xSched);
   ASSERT(! iError);
+  UNUSED(iError);
   
   return xSched.sched_priority;
   

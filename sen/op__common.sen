@@ -37,73 +37,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* create the command error info set                                          */
-/*----------------------------------------------------------------------------*/
-: op__cmdErrInfoSet
-
-  // create the infoSetTable for C_TDEF_COMMANDERRORS
-  C_TDEF_COMMANDERRORS op__tableDef_infoSet assert
-
-  // create an infoSet operand for commandErrors
-  infoSetTable[] InfoSet[].new
-  OI_COMMANDERRORS infoSet[].opInfoset!
-;
-
-/*----------------------------------------------------------------------------*/
-/* create the command error info set                                          */
-/*----------------------------------------------------------------------------*/
-: op__cmdErr ( errorMsg severity errorCode )
-
-  params| errorCode severity errorMsg |
-
-  // create the infoSetTable for C_TDEF_COMMANDERRORS
-  C_TDEF_COMMANDERRORS op__tableDef_infoSet assert
-
-  // create an infoSet operand for commandErrors
-  infoSetTable[] InfoSet[].new
-  OI_COMMANDERRORS infoSet[].opInfoset!
-
-  errorMsg severity errorCode infoSetTable[] InfoSet[].addCommandError assert
-;
-
-/*----------------------------------------------------------------------------*/
-/* create the exec error info set                                             */
-/*----------------------------------------------------------------------------*/
-: op__execErr ( errorCode )
-
-  params| errorCode |
-
-  // create the infoSetTable for C_TDEF_EXECERRORS
-  C_TDEF_EXECERRORS op__tableDef_infoSet assert
-
-  // create an infoSet operand for commandErrors
-  infoSetTable[] InfoSet[].new
-  OI_EXECERRORS infoSet[].opInfoset!
-
-  errorCode attachmap::errorText@
-  -1
-  errorCode infoSetTable[]
-  InfoSet[].addExecError assert
-;
-
-/*----------------------------------------------------------------------------*/
-/* create the exec error info set                                             */
-/*----------------------------------------------------------------------------*/
-: op__execErrMsg ( errorMsg severity errorCode )
-
-  params| errorCode severity errorMsg |
-
-  // create the infoSetTable for C_TDEF_EXECERRORS
-  C_TDEF_EXECERRORS op__tableDef_infoSet assert
-
-  // create an infoSet operand for commandErrors
-  infoSetTable[] InfoSet[].new
-  OI_EXECERRORS infoSet[].opInfoset!
-
-  errorMsg severity errorCode infoSetTable[] InfoSet[].addExecError assert
-;
-
-/*----------------------------------------------------------------------------*/
 /* verify and set folder to <tableNm> of tabledef                             */
 /*----------------------------------------------------------------------------*/
 : op__file ( fileNm mode -- )
@@ -116,21 +49,17 @@
   if
     true
   else
+
     File0[].get file.delete assert::stack_0 nullptr File0[].set EC_INVALID_FILE
     op.pipelineJob@ ERROR_JOB !!logError
 
     // create an exec error infoset
-    sFileNm "File '%v' does not exist" str.format
-    -1
+    sFileNm EC_INVALID_FILE attachmap::errorText@ str.format
     EC_INVALID_FILE
     op__execErrMsg
 
-    // pipeout the EXECERROR infoset
-    InfoSet[].pipeOut
-
     PipeIn[].delete
-    Operand[].newErrorMarker
-    Operand[].pipeOut
+
     false
   then
  ;
@@ -172,42 +101,34 @@
 : op__table ( tableNm -- )
 
   params| sTableNm |
-  0 locals| eErrorCode |
+  0 locals| errorCode |
 
   // check in tables folder
   check::folderIsTables not if
-    to eErrorCode
-    eErrorCode op.pipelineJob@ ERROR_JOB
+    to errorCode
+    errorCode op.pipelineJob@ ERROR_JOB
 
     // create an exec error infoset
-    eErrorCode
-    op__execErr
-
-    // pipeout the EXECERROR infoset
-    InfoSet[].pipeOut
+    errorCode op__execErr
 
     PipeIn[].delete
-    Operand[].newErrorMarker
-    Operand[].pipeOut
+
     false
     exit
   then
 
   // table
   sTableNm check::validTableAssembly not if
-    to eErrorCode
-    eErrorCode op.pipelineJob@ ERROR_JOB
+    to errorCode
+    errorCode op.pipelineJob@ ERROR_JOB
 
     // create an exec error infoset
-    eErrorCode
-    op__execErr
-
-    // pipeout the EXECERROR infoset
-    InfoSet[].pipeOut
+    sTableNm errorCode attachmap::errorText@ str.format
+    errorCode
+    op__execErrMsg
 
     PipeIn[].delete
-    Operand[].newErrorMarker
-    Operand[].pipeOut
+
     false
     exit
   then
@@ -219,7 +140,6 @@
 
   // cross-check
   Table[] assert
-
   true
 ;
 
@@ -229,13 +149,18 @@
 : op__index ( tableNmm indexNm )
 
   params| sIndexNm sTableNm |
+  0 locals| errorCode |
 
   // check in tables folder
   check::folderIsTables not if
-    op.pipelineJob@ ERROR_JOB
+    to errorCode
+    errorCode op.pipelineJob@ ERROR_JOB
+
+    // create an exec error infoset
+    errorCode op__execErr
+
     PipeIn[].delete
-    Operand[].newErrorMarker
-    Operand[].pipeOut
+
     false
     exit
   then
@@ -249,10 +174,14 @@
   path[].pushIndexesFolder
 
   sIndexNm check::nameIsaIndex not if
-    op.pipelineJob@ ERROR_JOB
+    to errorCode
+    errorCode op.pipelineJob@ ERROR_JOB
+
+    // create an exec error infoset
+    errorCode op__execErr
+
     PipeIn[].delete
-    Operand[].newErrorMarker
-    Operand[].pipeOut
+
     path[].popNamedTableFolder
     path[].popIndexesFolder
     false
@@ -277,23 +206,34 @@
 : op__table_index ( tableNm indexNm )
 
   params| sIndexNm sTableNm |
+  0 locals| errorCode |
 
   // check in tables folder
   check::folderIsTables not if
-    op.pipelineJob@ ERROR_JOB
+    to errorCode
+    errorCode op.pipelineJob@ ERROR_JOB
+
+    // create an exec error infoset
+    errorCode op__execErr
+
     PipeIn[].delete
-    Operand[].newErrorMarker
-    Operand[].pipeOut
+
     false
     exit
   then
 
   // table
   sTableNm check::validTableAssembly not if
-    op.pipelineJob@ ERROR_JOB
+    to errorCode
+    errorCode op.pipelineJob@ ERROR_JOB
+
+    // create an exec error infoset
+    sTableNm errorCode attachmap::errorText@ str.format
+    errorCode
+    op__execErrMsg
+
     PipeIn[].delete
-    Operand[].newErrorMarker
-    Operand[].pipeOut
+
     false
     exit
   then
@@ -311,10 +251,14 @@
   path[].pushIndexesFolder
 
   sIndexNm check::nameIsaIndex not if
-    op.pipelineJob@ ERROR_JOB
+    to errorCode
+    errorCode op.pipelineJob@ ERROR_JOB
+
+    // create an exec error infoset
+    errorCode op__execErr
+
     PipeIn[].delete
-    Operand[].newErrorMarker
-    Operand[].pipeOut
+
     path[].popNamedTableFolder
     path[].popIndexesFolder
     false

@@ -7,6 +7,8 @@
 #include "EnterExit.h"
 #include "StepAccum.hpp"
 #include "Steps.hpp"
+#include "Grid.hpp"
+#include "Node.hpp"
 
 #include "InfoSet.hpp"
 
@@ -23,8 +25,6 @@
 #include "PipelineSpec.hpp"
 #include "Pipeline.hpp"
 #include "Dynamo.hpp"
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
@@ -39,7 +39,7 @@
 #include "GraphNav.hpp"
 #include "PlanOperand.hpp"
 
-#include "ParserException.hpp"
+#include "SqlException.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -62,6 +62,7 @@ void Step::vSqlCompilerNameValidate(void)
   
   PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
   Parser::RootNode* pPlanRoot = Parser::_pRootNode(pPlanOperand->pPlanNode());
+  UNUSED(pPlanRoot);
 
   // TODO: Walk the graph and validate that each name can be resolved uniquely.
   //       i.e. each table is known and unambiguous, each column refers to tables
@@ -106,27 +107,31 @@ void Step::vSqlCompilerParser(void)
   } catch (Parser::SyntaxException& e) {
     //vTrace("SyntaxException at %lld:%lld : %s\n"_Stz, e.iLine(), e.iColumn(), e.szError());
     InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
+    Grid* pGrid = AM::pGrid();
     Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+                                    pGrid->pThisNode()->szNodeNm(),
                                     EC_SYNTAX_ERROR,
-                                    0,
                                     e.iLine(),
                                     e.iColumn(),
                                     e.szError(),
                                     C_VARGS_END);
-
+    UNUSED(pRow);
+    
     m_pDataStack->vPushPtr(nullptr);
     goto L_Exit;
 
   } catch (Parser::SemanticException& e) {
     //vTrace("SemanticException: %s\n"_Stz, e.szError());
+    Grid* pGrid = AM::pGrid();
     InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
     Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+                                    pGrid->pThisNode()->szNodeNm(),
                                     EC_SEMANTIC_ERROR,
-                                    0,
                                     0,
                                     0,
                                     e.szError(),
                                     C_VARGS_END);
+    UNUSED(pRow);
     m_pDataStack->vPushPtr(nullptr);
     goto L_Exit;
   }
@@ -164,6 +169,7 @@ void Step::vSqlCompilerTransliterate(void)
   // Walk the graph and produce a pipeline statement.
   bool bTransliterate = Dynamo::bPlanToPipeline(sPipelineStmt,pPlanRoot);
   ASSERT(bTransliterate);
+  UNUSED(bTransliterate);
 
   // return the pipeline
   m_pDataStack->vPushStr(sPipelineStmt);

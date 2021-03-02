@@ -466,6 +466,7 @@ void RowCompactor::vPackSamples(void)
   //vDumpTails();
     
   i8 nRowSize = Row::nRowProper(m_pStreamDef->nColumns());
+  UNUSED(nRowSize);
   
   Row* pSampleRow = m_pRowSamples->aFirstRow();
   while (pSampleRow) {

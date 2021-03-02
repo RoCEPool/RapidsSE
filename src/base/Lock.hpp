@@ -12,18 +12,18 @@ namespace BASE
   class Lock : public Loggable
   {
   private:
-    //eCN      m_eClassLocked;      // lock kind
-    Object*  m_pObjectLocked;
-  
     u8       m_uLockWord;         // lock word
   
+    Object*  m_pObjectLocked;
+    Task*    m_pWriteLockingTask;
+
     Atomic   m_ixReadGrabs;       // number of read grabs
     Atomic   m_ixReadCollisions;  // number of read collisions
     
     Atomic   m_ixWriteGrabs;      // number of write grabs
     Atomic   m_ixWriteCollisions; // number of write collisions
   
-    PadWord  m__PadToCacheLine[2];
+    PadWord  m__PadToCacheLine[1];
     
     // must be last
     Footer m_xFooter;
@@ -32,7 +32,7 @@ namespace BASE
     void* operator new(size_t, Lock* pLock);
     void  operator delete(void* pLockAddress);
     
-    Lock(Object* pObjectLocked, bool bDontLog=false);
+    Lock(Object* pObjectLocked, i8 iLogCtl=C_LOG);
    ~Lock(void) noexcept(false);
   
   private:
@@ -43,7 +43,7 @@ namespace BASE
     static u8 iLockIsLocked(u8*);
 
   public:
-    void vFocalOutline(s4K& sOutline);
+    void vOutline(s4K& sOutline);
   
     bool bIsLocked(void);
     i8   iLockId(void);

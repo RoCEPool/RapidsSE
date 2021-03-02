@@ -708,8 +708,11 @@ void RowInflator::vInflate_OneColumn_into_RowSingle(RowSingle* pRow,
                                  i8 i_ColToRetrieve)
 {
   NEVER_REACH;
+  
+  UNUSED(pRow);
+  UNUSED(aHeadLine);
+  UNUSED(i_ColToRetrieve);
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* inflate headline into row                                                  */

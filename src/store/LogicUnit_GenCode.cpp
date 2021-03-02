@@ -7,8 +7,6 @@
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"
 #include "Node_I.hpp"
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 #include "LogicUnit.hpp"
 
@@ -239,12 +237,13 @@ bool LogicUnit::bGenerateAsm(Stz* aText)
 /*----------------------------------------------------------------------------*/
 /* generate asm text for aggregates                                           */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateAggregate(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
-
+void LogicUnit::vGenerateAggregate(ExprEval* pExprEval, StreamDef* pStreamDefOut)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_LOGICUNIT, _FOOTER_);
-
+  UNUSED(pStreamDefOut);
+  
   TagSet oTagSet;
-  File *pFile = new File(this);
+  LocalFile oFile;
 
   s256 sFileName;
   s4K sMacro;
@@ -253,7 +252,7 @@ void LogicUnit::vGenerateAggregate(ExprEval* pExprEval, StreamDef* pStreamDefOut
   sFileName.vSprint("../tmp/Query%lld_%s.txt"_Stz, *gixQueryNo,
                     AM::pGrid()->pThisNode()->szNodeNm());
 
-  bool b = pFile->bOpenWrite(sFileName);
+  bool b = oFile.bOpenWrite(sFileName);
 
   ASSERT(pExprEval->bHasAggregate());
 
@@ -262,16 +261,16 @@ void LogicUnit::vGenerateAggregate(ExprEval* pExprEval, StreamDef* pStreamDefOut
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oTagSet.vAppend(C_TAG_QUERY_NO, (i8) * gixQueryNo);
   oTagSet.vAppend(C_TAG_SUBQUERY_NO, (i8) 0);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_INIT, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_QUERY_INIT, &oTagSet, sMacro));
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // DEFAULT_HANDLERS
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_STARTMARKER, &oTagSet, sMacro));
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_DATAPULSE, &oTagSet, sMacro));
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_EOSMARKER, &oTagSet, sMacro));
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_STREAMDEF, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_STARTMARKER, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_DATAPULSE, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_EOSMARKER, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_STREAMDEF, &oTagSet, sMacro));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // CRWBUFFER_HANDLER
@@ -283,7 +282,7 @@ void LogicUnit::vGenerateAggregate(ExprEval* pExprEval, StreamDef* pStreamDefOut
   else
     oTagSet.vAppend(C_TAG_CRW_PROCESS_ROUTINE, "CRW_PROJECT_NONE"_Stz);
 
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_HANDLER_CRWBUFFER_AGG, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_HANDLER_CRWBUFFER_AGG, &oTagSet, sMacro));
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -296,14 +295,14 @@ void LogicUnit::vGenerateAggregate(ExprEval* pExprEval, StreamDef* pStreamDefOut
   else
     oTagSet.vAppend(C_TAG_ROW_PROCESS_ROUTINE, "ROW_PROJECT_NONE"_Stz);
 
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_HANDLER_ROWBUFFER_AGG, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_HANDLER_ROWBUFFER_AGG, &oTagSet, sMacro));
 
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query Done
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_DONE, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_QUERY_DONE, &oTagSet, sMacro));
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -314,16 +313,16 @@ void LogicUnit::vGenerateAggregate(ExprEval* pExprEval, StreamDef* pStreamDefOut
     oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pExprEval->m_iStreamInColumns);
     oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, pExprEval->m_uExprEvalColumns);
 
-    pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_COLUMNS_AGG, &oTagSet, sMacro));
+    oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_COLUMNS_AGG, &oTagSet, sMacro));
 
     oTagSet.vReset();
   }
   else {
-    pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_NONE, &oTagSet, sMacro));
+    oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_NONE, &oTagSet, sMacro));
   }
 
-  pFile->vPrint("%s\n"_Stz, pExprEval->m_sAsmText.azChar());
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_END, &oTagSet, sMacro));
+  oFile.vPrint("%s\n"_Stz, pExprEval->m_sAsmText.azChar());
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_END, &oTagSet, sMacro));
 
 
 
@@ -334,40 +333,41 @@ void LogicUnit::vGenerateAggregate(ExprEval* pExprEval, StreamDef* pStreamDefOut
   if (pExprEval->m_iStreamInColumns) {
     oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pExprEval->m_iStreamInColumns);
     oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, pExprEval->m_uExprEvalColumns);
-    pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_COLUMNS_AGG, &oTagSet, sMacro));
+    oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_COLUMNS_AGG, &oTagSet, sMacro));
     oTagSet.vReset();
   }
   else {
-    pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_NONE, &oTagSet, sMacro));
+    oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_NONE, &oTagSet, sMacro));
   }
 
   //for (i8 i_Col = 0; i_Col < pStreamDefOut->nTotalColumns(); i_Col++) {
-  pFile->vPrint("%s\n"_Stz, pExprEval->m_sAsmText.azChar());
+  oFile.vPrint("%s\n"_Stz, pExprEval->m_sAsmText.azChar());
   //}
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_END, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_END, &oTagSet, sMacro));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // close the file
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pFile->vClose();
+  oFile.vClose();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Generate asm
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   s16KB sText;
-  b = pFile->bOpenRead(sFileName);
+  b = oFile.bOpenRead(sFileName);
   RASSERT(b);
-  i8 nSize = pFile->iSize();
-  i8 nBytes = pFile->nReadBytes((void*)sText.azChar(), nSize);
-
+  i8 nSize = oFile.iSize();
+  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
+  UNUSED(nBytes);
+  
   // null terminate the read bytes
   char* sReadStr = sText.azChar();
   sReadStr[nSize] = '\0';
 
   bool bResult = bGenerateAsm(sText);
+  UNUSED(bResult);
 
-  pFile->vClose();
-  delete pFile;
+  oFile.vClose();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -378,7 +378,7 @@ void LogicUnit::vGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_LOGICUNIT, _FOOTER_);
 
   TagSet oTagSet;
-  File *pFile = new File(this);
+  LocalFile oFile;
 
   s256 sFileName;
   s4K  sMacro;
@@ -387,7 +387,7 @@ void LogicUnit::vGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
   sFileName.vSprint("../tmp/Query%lld_%s.txt"_Stz, *gixQueryNo,
                     AM::pGrid()->pThisNode()->szNodeNm());
 
-  bool b = pFile->bOpenWrite(sFileName);
+  bool b = oFile.bOpenWrite(sFileName);
 
   ASSERT( ! pExprEval->bHasAggregate() );
 
@@ -396,23 +396,23 @@ void LogicUnit::vGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oTagSet.vAppend(C_TAG_QUERY_NO, (i8) * gixQueryNo);
   oTagSet.vAppend(C_TAG_SUBQUERY_NO, (i8) 0);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_INIT, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_QUERY_INIT, &oTagSet, sMacro));
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // DEFAULT_HANDLERS
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_STARTMARKER, &oTagSet, sMacro));
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_DATAPULSE, &oTagSet, sMacro));
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_EOSMARKER, &oTagSet, sMacro));
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_STREAMDEF, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_STARTMARKER, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_DATAPULSE, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_EOSMARKER, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_STREAMDEF, &oTagSet, sMacro));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // CRWBUFFER_HANDLER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //   to execute FILTER for each row
   oTagSet.vAppend(C_TAG_CRW_PROCESS_ROUTINE, "CRW_FILTER_ROWS"_Stz);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_HANDLER_CRWBUFFER, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_HANDLER_CRWBUFFER, &oTagSet, sMacro));
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -420,13 +420,13 @@ void LogicUnit::vGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //   to execute FILTER_ROWS for each row
   oTagSet.vAppend(C_TAG_ROW_PROCESS_ROUTINE, "ROW_FILTER_ROWS"_Stz);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_HANDLER_ROWBUFFER, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_HANDLER_ROWBUFFER, &oTagSet, sMacro));
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query Done
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_DONE, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_QUERY_DONE, &oTagSet, sMacro));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // CRW_PROJECT_COLUMNS
@@ -434,14 +434,14 @@ void LogicUnit::vGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
   ASSERT(pExprEval->m_iStreamInColumns);
   oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pExprEval->m_iStreamInColumns);
   oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, pExprEval->m_uExprEvalColumns);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_FILTER_ROWS, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_FILTER_ROWS, &oTagSet, sMacro));
   oTagSet.vReset();
 
-  pFile->vPrint(pExprEval->m_sAsmText.szStz());
+  oFile.vPrint(pExprEval->m_sAsmText.szStz());
 
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_FILTER_END, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_FILTER_END, &oTagSet, sMacro));
 
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_STAR, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_STAR, &oTagSet, sMacro));
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -450,19 +450,19 @@ void LogicUnit::vGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
   // add the filter
   oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pExprEval->m_iStreamInColumns);
   oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, pExprEval->m_uExprEvalColumns);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_FILTER_ROWS, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_FILTER_ROWS, &oTagSet, sMacro));
   oTagSet.vReset();
 
-  pFile->vPrint("%s\n"_Stz, pExprEval->m_sAsmText.azChar());
+  oFile.vPrint("%s\n"_Stz, pExprEval->m_sAsmText.azChar());
 
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_FILTER_END, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_FILTER_END, &oTagSet, sMacro));
 
   u8 uProjectColumns = 0;
   for (i8 i = 0; i < pStreamDefOut->nColumns(); i++)
     BitLib::vSetOn(uProjectColumns, i);
   oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pStreamDefOut->nColumns());
   oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, uProjectColumns);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_STAR, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_STAR, &oTagSet, sMacro));
   oTagSet.vReset();
 
   ExprEval* pExprEvalStar = new ExprEval;
@@ -470,44 +470,46 @@ void LogicUnit::vGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
   RASSERT(eError == EC_NONE);
 
   // add the columns to be projected to PROJECT_COLUMNS
-  pFile->vPrint("%s\n"_Stz, pExprEvalStar->m_sAsmText.azChar());
+  oFile.vPrint("%s\n"_Stz, pExprEvalStar->m_sAsmText.azChar());
 
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_END, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_END, &oTagSet, sMacro));
   delete pExprEvalStar;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // close the file
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pFile->vClose();
+  oFile.vClose();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Generate asm
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   s16KB sText;
-  b = pFile->bOpenRead(sFileName);
+  b = oFile.bOpenRead(sFileName);
   RASSERT(b);
-  i8 nSize = pFile->iSize();
-  i8 nBytes = pFile->nReadBytes((void*)sText.azChar(), nSize);
+  i8 nSize = oFile.iSize();
+  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
+  UNUSED(nBytes);
 
   // null terminate the read bytes
   char* sReadStr = sText.azChar();
   sReadStr[nSize] = '\0';
 
   bool bResult = bGenerateAsm(sText);
+  UNUSED(bResult);
 
-  pFile->vClose();
-  delete pFile;
+  oFile.vClose();
 }
 
 /*----------------------------------------------------------------------------*/
 /* generate asm text for groupby                                              */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
-
+void LogicUnit::vGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_LOGICUNIT, _FOOTER_);
+  UNUSED(pStreamDefOut);
 
   TagSet oTagSet;
-  File *pFile = new File(this);
+  LocalFile oFile;
 
   s256 sFileName;
   s4K sMacro;
@@ -516,7 +518,7 @@ void LogicUnit::vGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut) 
   sFileName.vSprint("../tmp/Query%lld_%s.txt"_Stz, *gixQueryNo,
                     AM::pGrid()->pThisNode()->szNodeNm());
 
-  bool b = pFile->bOpenWrite(sFileName);
+  bool b = oFile.bOpenWrite(sFileName);
 
   ASSERT(pExprEval->bHasGroupBy());
 
@@ -525,27 +527,27 @@ void LogicUnit::vGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut) 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oTagSet.vAppend(C_TAG_QUERY_NO, (i8) * gixQueryNo);
   oTagSet.vAppend(C_TAG_SUBQUERY_NO, (i8) 0);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_INIT, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_QUERY_INIT, &oTagSet, sMacro));
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // DEFAULT_HANDLERS
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_STARTMARKER, &oTagSet, sMacro));
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_DATAPULSE, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_STARTMARKER, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_DATAPULSE, &oTagSet, sMacro));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // STREAMDEF_HANDLER for groupBy
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_HANDLER_STREAMDEF_GBY, &oTagSet, sMacro));
-  pFile->vPrint("%s\n"_Stz, pExprEval->m_sAsmGbyIdx.azChar());
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_HANDLER_STREAMDEF_GBY_END, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_HANDLER_STREAMDEF_GBY, &oTagSet, sMacro));
+  oFile.vPrint("%s\n"_Stz, pExprEval->m_sAsmGbyIdx.azChar());
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_HANDLER_STREAMDEF_GBY_END, &oTagSet, sMacro));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // EOSMARKER_HANDLER for groupBy
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oTagSet.vAppend(C_TAG_EOS_PROCESS_ROUTINE, "INDEX_TRAVERSAL"_Stz);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_HANDLER_EOSMARKER_GBY, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_HANDLER_EOSMARKER_GBY, &oTagSet, sMacro));
   oTagSet.vReset();
 
 
@@ -557,7 +559,7 @@ void LogicUnit::vGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut) 
   oTagSet.vAppend(C_TAG_CRW_PROCESS_ROUTINE, "CRW_PROJECT_COLUMNS_AGG"_Stz);
   oTagSet.vAppend(C_TAG_PAYLOAD_ROUTINE, "PAYLOAD_GBY"_Stz);
 
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_HANDLER_CRWBUFFER_AGG_GBY, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_HANDLER_CRWBUFFER_AGG_GBY, &oTagSet, sMacro));
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -567,13 +569,13 @@ void LogicUnit::vGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut) 
   ASSERT(pExprEval->m_iStreamInColumns);
   oTagSet.vAppend(C_TAG_ROW_PROCESS_ROUTINE, "ROW_PROJECT_COLUMNS_AGG"_Stz);
   oTagSet.vAppend(C_TAG_PAYLOAD_ROUTINE, "PAYLOAD_GBY"_Stz);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_HANDLER_ROWBUFFER_AGG_GBY, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_HANDLER_ROWBUFFER_AGG_GBY, &oTagSet, sMacro));
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query Done
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_DONE, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_QUERY_DONE, &oTagSet, sMacro));
 
 
 
@@ -583,57 +585,57 @@ void LogicUnit::vGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut) 
   // Index Traversal routine
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oTagSet.vAppend(C_TAG_INDEX_PROCESS_ROUTINE, "PAYLOAD_TO_BUFFER"_Stz);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_INDEX_TRAVERSAL, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_INDEX_TRAVERSAL, &oTagSet, sMacro));
   oTagSet.vReset();
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // PAYLOAD_TO_BUFFER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_PAYLOAD_TO_BUFFER, &oTagSet, sMacro));
-  pFile->vPrint("%s\n"_Stz, pExprEval->m_sPayLoadToBuffer.azChar());
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_PAYLOAD_TO_BUFFER_END, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_PAYLOAD_TO_BUFFER, &oTagSet, sMacro));
+  oFile.vPrint("%s\n"_Stz, pExprEval->m_sPayLoadToBuffer.azChar());
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_PAYLOAD_TO_BUFFER_END, &oTagSet, sMacro));
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // PAYLOAD_GBY
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oTagSet.vAppend(C_TAG_PAYLOAD_KEY, "PAYLOAD_KEY"_Stz);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_PAYLOAD_GBY, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_PAYLOAD_GBY, &oTagSet, sMacro));
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // PAYLOAD_GBYKEY
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_PAYLOAD_KEY, &oTagSet, sMacro));
-  pFile->vPrint("%s\n"_Stz, pExprEval->m_sPayLoadKey.azChar());
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_PAYLOAD_KEY, &oTagSet, sMacro));
+  oFile.vPrint("%s\n"_Stz, pExprEval->m_sPayLoadKey.azChar());
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // PAYLOAD_STORE
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oTagSet.vAppend(C_TAG_PAYLOAD_BYTES, pExprEval->m_nPayLoadBytes);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_PAYLOAD_STORE, &oTagSet, sMacro));
-  pFile->vPrint("%s\n"_Stz, pExprEval->m_sPayLoadStore.azChar());
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_PAYLOAD_STORE, &oTagSet, sMacro));
+  oFile.vPrint("%s\n"_Stz, pExprEval->m_sPayLoadStore.azChar());
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // PAYLOAD_END
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_PAYLOAD_END, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_PAYLOAD_END, &oTagSet, sMacro));
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // PAYLOAD_ADD
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_PAYLOAD_ADD, &oTagSet, sMacro));
-  pFile->vPrint("%s\n"_Stz, pExprEval->m_sAsmText.azChar());
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_PAYLOAD_ADD, &oTagSet, sMacro));
+  oFile.vPrint("%s\n"_Stz, pExprEval->m_sAsmText.azChar());
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // PAYLOAD_END
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_PAYLOAD_END, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_PAYLOAD_END, &oTagSet, sMacro));
   oTagSet.vReset();
 
 
@@ -645,16 +647,16 @@ void LogicUnit::vGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut) 
     oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pExprEval->m_iStreamInColumns);
     oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, pExprEval->m_uExprEvalColumns);
 
-    pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_COLUMNS_AGG, &oTagSet, sMacro));
+    oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_COLUMNS_AGG, &oTagSet, sMacro));
 
     oTagSet.vReset();
   }
   else {
-    pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_NONE, &oTagSet, sMacro));
+    oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_NONE, &oTagSet, sMacro));
   }
 
-  //pFile->vPrint("%s\n"_Stz, pExprEval->m_sAsmText.azChar());
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_END, &oTagSet, sMacro));
+  //oFile.vPrint("%s\n"_Stz, pExprEval->m_sAsmText.azChar());
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_END, &oTagSet, sMacro));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ROW_PROJECT_COLUMNS
@@ -663,37 +665,38 @@ void LogicUnit::vGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut) 
   if (pExprEval->m_iStreamInColumns) {
     oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pExprEval->m_iStreamInColumns);
     oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, pExprEval->m_uExprEvalColumns);
-    pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_COLUMNS_AGG, &oTagSet, sMacro));
+    oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_COLUMNS_AGG, &oTagSet, sMacro));
     oTagSet.vReset();
   }
   else {
-    pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_NONE, &oTagSet, sMacro));
+    oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_NONE, &oTagSet, sMacro));
   }
 
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_END, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_END, &oTagSet, sMacro));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // close the file
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pFile->vClose();
+  oFile.vClose();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Generate asm
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   s16KB sText;
-  b = pFile->bOpenRead(sFileName);
+  b = oFile.bOpenRead(sFileName);
   RASSERT(b);
-  i8 nSize = pFile->iSize();
-  i8 nBytes = pFile->nReadBytes((void*)sText.azChar(), nSize);
-
+  i8 nSize = oFile.iSize();
+  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
+  UNUSED(nBytes);
+  
   // null terminate the read bytes
   char* sReadStr = sText.azChar();
   sReadStr[nSize] = '\0';
 
   bool bResult = bGenerateAsm(sText);
+  UNUSED(bResult);
 
-  pFile->vClose();
-  delete pFile;
+  oFile.vClose();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -704,7 +707,7 @@ void LogicUnit::vGenerateLimit(i8 iLimitRows, StreamDef* pStreamDefOut) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_LOGICUNIT, _FOOTER_);
 
   TagSet oTagSet;
-  File *pFile = new File(this);
+  LocalFile oFile;
 
   s256 sFileName;
   s4K  sMacro;
@@ -713,23 +716,23 @@ void LogicUnit::vGenerateLimit(i8 iLimitRows, StreamDef* pStreamDefOut) {
   sFileName.vSprint("../tmp/Query%lld_%s.txt"_Stz, *gixQueryNo,
                     AM::pGrid()->pThisNode()->szNodeNm());
 
-  bool b = pFile->bOpenWrite(sFileName);
+  bool b = oFile.bOpenWrite(sFileName);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // AM_QUERY_INIT
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oTagSet.vAppend(C_TAG_QUERY_NO, (i8) * gixQueryNo);
   oTagSet.vAppend(C_TAG_SUBQUERY_NO, (i8) 0);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_INIT, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_QUERY_INIT, &oTagSet, sMacro));
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // DEFAULT_HANDLERS
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_STARTMARKER, &oTagSet, sMacro));
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_DATAPULSE, &oTagSet, sMacro));
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_EOSMARKER, &oTagSet, sMacro));
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_STREAMDEF, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_STARTMARKER, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_DATAPULSE, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_EOSMARKER, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_STREAMDEF, &oTagSet, sMacro));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // CRWBUFFER_HANDLER
@@ -737,7 +740,7 @@ void LogicUnit::vGenerateLimit(i8 iLimitRows, StreamDef* pStreamDefOut) {
   //   to execute project for each row
   oTagSet.vAppend(C_TAG_LIMIT_ROWS, iLimitRows);
   oTagSet.vAppend(C_TAG_CRW_PROCESS_ROUTINE, "CRW_PROJECT_STAR"_Stz);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_HANDLER_CRWBUFFER_LIMIT, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_HANDLER_CRWBUFFER_LIMIT, &oTagSet, sMacro));
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -746,66 +749,69 @@ void LogicUnit::vGenerateLimit(i8 iLimitRows, StreamDef* pStreamDefOut) {
   //   to execute project for each row
   oTagSet.vAppend(C_TAG_LIMIT_ROWS, iLimitRows);
   oTagSet.vAppend(C_TAG_ROW_PROCESS_ROUTINE, "ROW_PROJECT_STAR"_Stz);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_HANDLER_ROWBUFFER_LIMIT, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_HANDLER_ROWBUFFER_LIMIT, &oTagSet, sMacro));
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query Done
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_DONE, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_QUERY_DONE, &oTagSet, sMacro));
 
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_STAR, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_STAR, &oTagSet, sMacro));
 
   u8 uProjectColumns = 0;
   for (i8 i = 0; i < pStreamDefOut->nColumns(); i++)
     BitLib::vSetOn(uProjectColumns, i);
   oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pStreamDefOut->nColumns());
   oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, uProjectColumns);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_STAR, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_STAR, &oTagSet, sMacro));
 
   ExprEval* pExprEvalStar = new ExprEval;
   eEC eError = pExprEvalStar->eExprEvalAll(pStreamDefOut);
   RASSERT(eError == EC_NONE);
 
   // add the columns to be projected to PROJECT_COLUMNS
-  pFile->vPrint("%s\n"_Stz, pExprEvalStar->m_sAsmText.azChar());
+  oFile.vPrint("%s\n"_Stz, pExprEvalStar->m_sAsmText.azChar());
 
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_END, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_END, &oTagSet, sMacro));
   delete pExprEvalStar;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // close the file
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pFile->vClose();
+  oFile.vClose();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Generate asm
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   s16KB sText;
-  b = pFile->bOpenRead(sFileName);
+  b = oFile.bOpenRead(sFileName);
   RASSERT(b);
-  i8 nSize = pFile->iSize();
-  i8 nBytes = pFile->nReadBytes((void*)sText.azChar(), nSize);
+  i8 nSize = oFile.iSize();
+  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
+  UNUSED(nBytes);
 
   // null terminate the read bytes
   char* sReadStr = sText.azChar();
   sReadStr[nSize] = '\0';
 
   bool bResult = bGenerateAsm(sText);
+  UNUSED(bResult);
 
-  pFile->vClose();
-  delete pFile;
+  oFile.vClose();
 }
 
 /*----------------------------------------------------------------------------*/
 /* generate asm text for projection                                           */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
-
+void LogicUnit::vGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOut)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_LOGICUNIT, _FOOTER_);
 
+  UNUSED(pStreamDefOut);
+  
   TagSet oTagSet;
-  File *pFile = new File(this);
+  LocalFile oFile;
 
   s256 sFileName;
   s4K sMacro;
@@ -814,7 +820,7 @@ void LogicUnit::vGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOu
   sFileName.vSprint("../tmp/Query%lld_%s.txt"_Stz, *gixQueryNo,
                     AM::pGrid()->pThisNode()->szNodeNm());
 
-  bool b = pFile->bOpenWrite(sFileName);
+  bool b = oFile.bOpenWrite(sFileName);
 
   ASSERT( ! pExprEval->bHasAggregate() );
 
@@ -823,16 +829,16 @@ void LogicUnit::vGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOu
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oTagSet.vAppend(C_TAG_QUERY_NO, (i8) * gixQueryNo);
   oTagSet.vAppend(C_TAG_SUBQUERY_NO, (i8) 0);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_INIT, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_QUERY_INIT, &oTagSet, sMacro));
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // DEFAULT_HANDLERS
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_STARTMARKER, &oTagSet, sMacro));
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_DATAPULSE, &oTagSet, sMacro));
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_EOSMARKER, &oTagSet, sMacro));
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_STREAMDEF, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_STARTMARKER, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_DATAPULSE, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_EOSMARKER, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_STREAMDEF, &oTagSet, sMacro));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // CRWBUFFER_HANDLER
@@ -844,7 +850,7 @@ void LogicUnit::vGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOu
   else
     oTagSet.vAppend(C_TAG_CRW_PROCESS_ROUTINE, "CRW_PROJECT_NONE"_Stz);
 
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_HANDLER_CRWBUFFER, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_HANDLER_CRWBUFFER, &oTagSet, sMacro));
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -857,14 +863,14 @@ void LogicUnit::vGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOu
   else
     oTagSet.vAppend(C_TAG_ROW_PROCESS_ROUTINE, "ROW_PROJECT_NONE"_Stz);
 
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_HANDLER_ROWBUFFER, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_HANDLER_ROWBUFFER, &oTagSet, sMacro));
 
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query Done
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_DONE, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_QUERY_DONE, &oTagSet, sMacro));
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -874,15 +880,15 @@ void LogicUnit::vGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOu
   if (pExprEval->m_iStreamInColumns) {
     oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pExprEval->m_iStreamInColumns);
     oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, pExprEval->m_uExprEvalColumns);
-    pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_COLUMNS, &oTagSet, sMacro));
+    oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_COLUMNS, &oTagSet, sMacro));
     oTagSet.vReset();
   }
   else {
-    pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_NONE, &oTagSet, sMacro));
+    oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_NONE, &oTagSet, sMacro));
   }
 
-  pFile->vPrint("%s\n"_Stz, pExprEval->m_sAsmText.azChar());
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_END, &oTagSet, sMacro));
+  oFile.vPrint("%s\n"_Stz, pExprEval->m_sAsmText.azChar());
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_END, &oTagSet, sMacro));
 
 
 
@@ -893,40 +899,41 @@ void LogicUnit::vGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOu
   if (pExprEval->m_iStreamInColumns) {
     oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pExprEval->m_iStreamInColumns);
     oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, pExprEval->m_uExprEvalColumns);
-    pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_COLUMNS, &oTagSet, sMacro));
+    oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_COLUMNS, &oTagSet, sMacro));
     oTagSet.vReset();
   }
   else {
-    pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_NONE, &oTagSet, sMacro));
+    oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_NONE, &oTagSet, sMacro));
   }
 
   //for (i8 i_Col = 0; i_Col < pStreamDefOut->nTotalColumns(); i_Col++) {
-    pFile->vPrint("%s\n"_Stz, pExprEval->m_sAsmText.azChar());
+    oFile.vPrint("%s\n"_Stz, pExprEval->m_sAsmText.azChar());
   //}
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_END, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_END, &oTagSet, sMacro));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // close the file
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pFile->vClose();
+  oFile.vClose();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Generate asm
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   s16KB sText;
-  b = pFile->bOpenRead(sFileName);
+  b = oFile.bOpenRead(sFileName);
   RASSERT(b);
-  i8 nSize = pFile->iSize();
-  i8 nBytes = pFile->nReadBytes((void*)sText.azChar(), nSize);
+  i8 nSize = oFile.iSize();
+  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
+  UNUSED(nBytes);
 
   // null terminate the read bytes
   char* sReadStr = sText.azChar();
   sReadStr[nSize] = '\0';
 
   bool bResult = bGenerateAsm(sText);
+  UNUSED(bResult);
 
-  pFile->vClose();
-  delete pFile;
+  oFile.vClose();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -935,9 +942,10 @@ void LogicUnit::vGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOu
 void LogicUnit::vGenerateRange(Range* pRange, StreamDef* pStreamDefOut) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_LOGICUNIT, _FOOTER_);
+  UNUSED(pStreamDefOut);
 
   TagSet oTagSet;
-  File *pFile = new File(this);
+  LocalFile oFile;
 
   s256 sFileName;
   s4K sMacro;
@@ -946,70 +954,71 @@ void LogicUnit::vGenerateRange(Range* pRange, StreamDef* pStreamDefOut) {
   sFileName.vSprint("../tmp/Query%lld_%s.txt"_Stz, *gixQueryNo,
                     AM::pGrid()->pThisNode()->szNodeNm());
 
-  bool b = pFile->bOpenWrite(sFileName);
+  bool b = oFile.bOpenWrite(sFileName);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // AM_QUERY_INIT
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oTagSet.vAppend(C_TAG_QUERY_NO, (i8) * gixQueryNo);
   oTagSet.vAppend(C_TAG_SUBQUERY_NO, (i8) 0);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_INIT, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_QUERY_INIT, &oTagSet, sMacro));
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // DEFAULT_HANDLERS
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_STARTMARKER, &oTagSet, sMacro));
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_STREAMDEF, &oTagSet, sMacro));
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_CRWBUFFER, &oTagSet, sMacro));
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_ROWBUFFER, &oTagSet, sMacro));
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_EOSMARKER, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_STARTMARKER, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_STREAMDEF, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_CRWBUFFER, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_ROWBUFFER, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_EOSMARKER, &oTagSet, sMacro));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // DATAPULSE HANDLER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //   handler initiates index iteration
   oTagSet.vAppend(C_TAG_DATAPULSE_PROCESS_ROUTINE, aAM[pRange->m_eMacro]);
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_HANDLER_DATAPULSE, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_HANDLER_DATAPULSE, &oTagSet, sMacro));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // DATAPULSE_INDEXRANGE
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //   handler intiates index iteration
   oTagSet.vAppend(C_TAG_CRW_PROCESS_ROUTINE, "CRW_PROJECT_STAR"_Stz);
-  pFile->vPrint(LogicCompiler::szGetMacro(pRange->m_eMacro, &pRange->m_oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(pRange->m_eMacro, &pRange->m_oTagSet, sMacro));
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // CRW_PROJECT_STAR
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //   to execute PROJECT_ALL for each row
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_STAR, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_STAR, &oTagSet, sMacro));
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query Done
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pFile->vPrint(LogicCompiler::szGetMacro(AM_QUERY_DONE, &oTagSet, sMacro));
-  pFile->vClose();
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_QUERY_DONE, &oTagSet, sMacro));
+  oFile.vClose();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Generate asm
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   s16KB sText;
-  b = pFile->bOpenRead(sFileName);
+  b = oFile.bOpenRead(sFileName);
   RASSERT(b);
-  i8 nSize = pFile->iSize();
-  i8 nBytes = pFile->nReadBytes((void*)sText.azChar(), nSize);
-
+  i8 nSize = oFile.iSize();
+  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
+  UNUSED(nBytes);
+  
   // null terminate the read bytes
   char* sReadStr = sText.azChar();
   sReadStr[nSize] = '\0';
 
   bool bResult = bGenerateAsm(sText);
+  UNUSED(bResult);
 
-  pFile->vClose();
-  delete pFile;
+  oFile.vClose();
 }
 
 /*============================================================================*/

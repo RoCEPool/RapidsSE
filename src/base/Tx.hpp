@@ -28,7 +28,7 @@ namespace BASE
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
     void vContentDump(void);
-    void vFocalOutline(s4K& sOutline);
+    void vOutline(s4K& sOutline);
     bool bIsActive(void);
     t8   tPerspective(void);
     void vPerspective(t8 tPerspective);

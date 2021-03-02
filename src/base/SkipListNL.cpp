@@ -366,6 +366,7 @@ bool SkipListNL::bRemove(void* pObjectRemove)
     vSkipListDump(this);
     SkipNode* pNodePrev =
       pPosition(pObjectRemove,bEqualTo,aPriorVec,false,m_fpCompare);
+    UNUSED(pNodePrev);
     return false;
   }
   
@@ -594,9 +595,9 @@ void BASE::vSkipListDump(SkipListNL* pSkipList)
     SkipNode* pNode = pSkipList->pFirst(iLevel);
     while (pNode) {
       i8 i = (i8)pNode->m_pObject;
+      UNUSED(i);
       vTrace("Node %p : %p (L%lld)\n"_Stz,pNode,(i8)pNode->m_pObject, pNode->m_nRight);
       pNode = pSkipList->pNext(pNode, iLevel);
-      
     }
   } while (--iLevel >= 0);
   vTrace("============================\n"_Stz);

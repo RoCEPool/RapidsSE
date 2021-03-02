@@ -13,6 +13,7 @@ extern ClassCatalog gxClassCatalog;
 /*----------------------------------------------------------------------------*/
 ClassFn::ClassFn(eCN eClass, eCF eFunction, fpCLASSFN* fpClassFn, i8)
 {
+  UNUSED(eFunction);
   m_fpInspectFn = fpClassFn;
   
   gxClassCatalog.vSetClassFn(eClass,this);

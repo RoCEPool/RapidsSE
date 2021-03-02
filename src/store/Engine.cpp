@@ -20,8 +20,6 @@
 #include "Engine.hpp"
 #include "EnvCheck.hpp"
 #include "Error.hpp"
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 #include "JobList.hpp"
 #include "Jobs.hpp"
@@ -359,7 +357,7 @@ void Engine::vCallBoot(void)
   pJob->vSeed(SS_SEED_RUN);
   
   TagSet* pJobTags = pJob->pJobTags();
-  pJobTags->vDumpSet();
+  //pJobTags->vDumpSet();
   pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
   pJobTags->vReplace("<seedRun>"_Stz,"boot_run"_Stz);
   
@@ -415,7 +413,7 @@ void Engine::vCallPrompt(void)
 
   //AM::vPromptCall();
   
-  SePrompt* pSePrompt = new SePrompt(gxCmdLineArgs.m_xSysArgs.m_bCommand, gxCmdLineArgs.m_xSysArgs.m_bSethScript);
+  SePrompt* pSePrompt = new SePrompt(gxCmdLineArgs.m_xSysArgs.m_bCommand);
   
   pSePrompt->vPromptLoop();
   
@@ -545,9 +543,10 @@ void Engine::vCheckNodes(void)
     Process::vUnrecoverableError("This node is not in node list"_Stz,
                                  gxCmdLineArgs.m_xSysArgs.m_sNodeName.szStz());
 
-  vInfo("This is node %lld of %lld nodes\n"_Stz,
-        gxCmdLineArgs.m_xSysArgs.m_iThisNode,
-        gxCmdLineArgs.m_xSysArgs.m_nBootNodes);
+  if (AM::bVerbose())
+    vInfo("This is node %lld of %lld nodes\n"_Stz,
+          gxCmdLineArgs.m_xSysArgs.m_iThisNode,
+          gxCmdLineArgs.m_xSysArgs.m_nBootNodes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -556,7 +555,7 @@ void Engine::vCheckNodes(void)
 void Engine::vCheckPort(void)
 {
   SysCall oSysCall;
-  Socket* pSocket;
+
   i8      iPort;
   
   // nothing to check if not starting SE
@@ -570,7 +569,7 @@ void Engine::vCheckPort(void)
   
   vTestPort(iPort);
   
-//  pSocket = new Socket(gpAttachMap);
+//  Socket* pSocket = new Socket(gpAttachMap);
 //  bool bResult = pSocket->bCreateServer((int)iPort, oSysCall);
 //
 //  if ( ! bResult ) {
@@ -1128,7 +1127,7 @@ void Engine::vOpenTrace(void)
   //if (AM::bVerboseProgress())
   //  vInfo("\n*\n* Opening Trace File\n*\n"_Stz);
   
-  gpTraceFile = new(C_VIA_MALLOC) File(nullptr);
+  gpTraceFile = new(C_VIA_MALLOC) File(nullptr,C_DONT_LOG);
   
   bool bOpened;
 
@@ -1284,7 +1283,8 @@ void Engine::vPrintStatus(void)
                                    gxCmdLineArgs.m_xSysArgs.m_bVerbose,
                                    gxCmdLineArgs.m_xSysArgs.m_aRegionAddr);
     ASSERT(bResult);
-    
+    UNUSED(bResult);
+
     // get globals
     vAttachRegion();
     
@@ -1808,9 +1808,10 @@ void Engine::vWriteRegionName(void)
   // write the regionName into a se.region file
   // used by shell script to start se prompt
   if (gxCmdLineArgs.m_xSysArgs.m_bStart) {
-    File oFile(nullptr);
+    LocalFile oFile;
     bool b = oFile.bOpenMode(sFileName.szStz(),C_OPEN_READ_WRITE_CREATE);
     ASSERT(b);
+    UNUSED(b);
     oFile.vPrint("%s\n"_Stz,gxCmdLineArgs.m_xSysArgs.m_sRegionName.azChar());
     oFile.vClose();
   }

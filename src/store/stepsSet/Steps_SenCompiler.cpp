@@ -296,6 +296,7 @@ void Step::vSenCompilerCondEnd(void)
   ENTRY();
     
   eCM eMode = m_pSenCompiler->eMode();
+  UNUSED(eMode);
 
   m_pSenCompiler->vMode(CM_COMPILING);
 

@@ -35,12 +35,15 @@ PlanNode::PlanNode(eCN eClassNo, Stz* szName, Stz* szType, Value&& xValue,
 /*----------------------------------------------------------------------------*/
 PlanNode::PlanNode(eCN eClassNo, const PlanNode& oNode)
     : Object(eClassNo),
-      m_xValue(const_cast<PlanNode &>(oNode).m_xValue)
+      m_xValue(const_cast<PlanNode &>(oNode).m_xValue),
+      m_pProperties(nullptr),
+      m_pChildren(nullptr)
 {
   m_sName.vCopy(const_cast<PlanNode &>(oNode).m_sName.szStz());
   m_sType.vCopy(const_cast<PlanNode &>(oNode).m_sType.szStz());
 
   if (oNode.m_pProperties) {
+    ASSERT(!m_pProperties);
     m_pProperties = new PlanNodeList;
     PlanNodeIter* pPropIter = oNode.m_pProperties->pNewIter();
 
@@ -49,12 +52,10 @@ PlanNode::PlanNode(eCN eClassNo, const PlanNode& oNode)
       m_pProperties->vAppend(pItem);
     }
     delete pPropIter;
-
-  } else {
-    m_pProperties = nullptr;
   }
 
   if (oNode.m_pChildren) {
+    ASSERT(!m_pChildren);
     m_pChildren = new PlanNodeList;
     PlanNodeIter* pChildIter = oNode.m_pChildren->pNewIter();
 
@@ -63,9 +64,6 @@ PlanNode::PlanNode(eCN eClassNo, const PlanNode& oNode)
       m_pChildren->vAppend(pItem);
     }
     delete pChildIter;
-
-  } else {
-    m_pChildren = nullptr;
   }
 }
 
@@ -77,8 +75,25 @@ PlanNode::~PlanNode(void)
 {
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNODE,_FOOTER_);
 
-  if (m_pProperties != nullptr) delete m_pProperties;
-  if (m_pChildren   != nullptr) delete m_pChildren;
+  if (m_pProperties != nullptr) {
+    PlanNode* pProp;
+
+    while ((pProp = m_pProperties->pPop()) != nullptr) {
+      delete pProp;
+    }
+
+    delete m_pProperties;
+  }
+
+  if (m_pChildren != nullptr) {
+    PlanNode* pChild;
+
+    while ((pChild = m_pChildren->pPop()) != nullptr) {
+      delete pChild;
+    }
+
+    delete m_pChildren;
+  }
 }
 
 /*----------------------------------------------------------------------------*/

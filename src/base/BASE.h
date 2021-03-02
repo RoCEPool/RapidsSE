@@ -21,6 +21,8 @@
 
 namespace BASE { } using namespace BASE;
 
+#define UNUSED(arg) (void)arg
+
 #include "CompiledWith.h"
 
 #include "BaseTypes.h"
@@ -286,6 +288,8 @@ extern d8 C_D8_MID;
 #include "Dir.hpp"
 #include "Fifo.hpp"
 #include "File.hpp"
+#include "LocalFile.hpp"
+#include "LocalDir.hpp"
 #include "PsxThd.hpp"
 #include "Socket.hpp"
 

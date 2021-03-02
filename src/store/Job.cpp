@@ -12,8 +12,6 @@
 #include "Node_I.hpp"
 #include "Grid.hpp"
 #include "Op.hpp"
-#include "Response.hpp"
-#include "Result.hpp"
 
 #include "Job.hpp"
 #include "File.hpp"
@@ -134,6 +132,7 @@ Job::Job(ReqTuple* aReqTuple)
   m_eJobList  = JL_NONE;
   m_eJobPhase = JP_NONE;
   m_eJobState = JS_RUNNING;
+  m_eError    = EC_NONE;
   
   // -- d -------------------
   m_pLogicUnit_job = nullptr;
@@ -159,12 +158,13 @@ Job::Job(ReqTuple* aReqTuple)
 
   // -- -- -- -- -- --
     
-  vEventNoInc(); ++ gixJob;
-  AM::vLogJob(SL_INF,this,JA_JOB_CONSTRUCT,
-              "|gixJob=%lld|"_Stz, //!format-LogJob
-              * gixJob);
+  vEventNoInc();
+  
+  ++ gixJob;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB);
+  
+  vLog(EV_CONSTRUCT,"Job constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -218,12 +218,14 @@ Job::Job(eCN eClassNo)
   
   SP_Gid spId;
   
-  vEventNoInc(); ++ gixJob;
-  AM::vLogJob(SL_INF,this,JA_JOB_CONSTRUCT,
-              "|gixJob=%lld|"_Stz, //!format-LogJob
-              * gixJob);
+  vEventNoInc();
+  
+  ++ gixJob;
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
+  
+  
+  vLog(EV_CONSTRUCT,"Job constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -273,6 +275,8 @@ Job::~Job(void) noexcept(false)
   //  vDebugPoint();
   
   //AM::vTaskDelete(m_pTaskJ);
+  
+  vLog(EV_DESTRUCT,"Job destructor"_Stz);
 
 }
 
@@ -485,9 +489,9 @@ bool Job::bDiaryTag(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* focal outline                                                              */
+/* outline                                                                    */
 /*----------------------------------------------------------------------------*/
-void Job::vFocalOutline(s4K& sOutline)
+void Job::vOutline(s4K& sOutline)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -583,15 +587,17 @@ bool Job::bIsPipeline(void)
 void Job::vJobError(eEC eErrorCode)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-  
-  if (m_xResult.m_xJobResponse.m_bJobHasError) {
-    //vTrace("Job got another error: '%s' (already had error: '%s') \n"_Stz,
-    //  aEC[eErrorCode], aEC[m_xResult.m_xJobResponse.m_eErrorCode]);
-  }
-  else {
-    m_xResult.m_xJobResponse.m_eErrorCode = eErrorCode;
-    m_xResult.m_xJobResponse.m_bJobHasError = true;
-  }
+
+  m_eError = eErrorCode;
+
+//  if (m_xResult.m_xJobResponse.m_bJobHasError) {
+//    //vTrace("Job got another error: '%s' (already had error: '%s') \n"_Stz,
+//    //  aEC[eErrorCode], aEC[m_xResult.m_xJobResponse.m_eErrorCode]);
+//  }
+//  else {
+//    m_xResult.m_xJobResponse.m_eErrorCode = eErrorCode;
+//    m_xResult.m_xJobResponse.m_bJobHasError = true;
+//  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -601,7 +607,7 @@ eEC Job::eJobError(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_xResult.m_xJobResponse.m_eErrorCode;
+  return m_eError;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -609,7 +615,7 @@ eEC Job::eJobError(void)
 /*----------------------------------------------------------------------------*/
 bool Job::bJobHasError(void)
 {
-  return m_xResult.m_xJobResponse.m_bJobHasError;
+  return m_eError == EC_NONE ? false : true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -787,6 +793,7 @@ void Job::vMarkJob(void)
 void Job::vMarkJob(Stz* szFormat, ...)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
+  UNUSED(szFormat);
 
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
@@ -987,26 +994,6 @@ void Job::vPrint(Stz* szFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test if this job has an error                                              */
-/*----------------------------------------------------------------------------*/
-bool Job::bParticipantHasError(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_xResult.m_bPartHasError;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set job has an error                                                       */
-/*----------------------------------------------------------------------------*/
-void Job::vParticipantHasError(bool bHasError)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_xResult.m_bPartHasError = bHasError;
-}
-
-/*----------------------------------------------------------------------------*/
 /* populate node                                                              */
 /*----------------------------------------------------------------------------*/
 eEC Job::ePopulateJob(TagSet* pTagSet)
@@ -1035,38 +1022,6 @@ eEC Job::ePopulateJob(TagSet* pTagSet)
   vJobNm(szJobNm);
   
   return EC_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
-/* print result                                                               */
-/*----------------------------------------------------------------------------*/
-void Job::vPrintResult(Session* pSession, eRS eResponse)
-{
-  m_xResult.vPrint(pSession,eResponse);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get response                                                               */
-/*----------------------------------------------------------------------------*/
-Response* Job::pResponse(void)
-{
-  return &m_xResult.m_xJobResponse;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set origin response vector                                                 */
-/*----------------------------------------------------------------------------*/
-void Job::vOriginResponseVec(ResponseVec* pResonseVec)
-{
-  m_xResult.m_pOriginResponseVec = pResonseVec;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set origin response vector                                                 */
-/*----------------------------------------------------------------------------*/
-ResponseVec* Job::pOriginResponseVec(void)
-{
-  return m_xResult.m_pOriginResponseVec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1372,15 +1327,16 @@ eEC STORE::eJob_checkCluster(void)
 /*----------------------------------------------------------------------------*/
 /* pre-send job function                                                      */
 /*----------------------------------------------------------------------------*/
-void STORE::vJob_send(Job* pJob)
+void STORE::vJob_preSend(Job* pJob)
 {
+  UNUSED(pJob);
 
 }
 
 /*----------------------------------------------------------------------------*/
 /* post-recv job function  (when is this run ????)                            */
 /*----------------------------------------------------------------------------*/
-void STORE::vJob_recv(Job* pJob)
+void STORE::vJob_postRecv(Job* pJob)
 {
   pJob->vWasReceived(true);
   

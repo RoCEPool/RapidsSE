@@ -184,11 +184,6 @@ void vHeartInit(void) {
 }
 
 
-
-
-/*---------------------------------------------------------------------------------*/
-/* heart read loop: to simulate the reading, but doesn't do anything with the data */
-/*---------------------------------------------------------------------------------*/
 /**
  * @brief heart read loop
  * @details reads heartbeat data from the inbound ringbuffer and updates the node heartbeat

@@ -37,6 +37,7 @@ SN_Tme::~SN_Tme(void) noexcept(false)
 i8 SN_Tme::i(char** aacCrs, Format* pFmt)
 {
   _precondition_(_MAGIC_,CN_SNTME);
+  UNUSED(pFmt);
   
   i8 iHour, iMinute, iSecond, iMicro;
   

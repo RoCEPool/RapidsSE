@@ -20,10 +20,9 @@ namespace STORE
 
   static void vDeleteJob(Session* pSession);
   static void vExecuteJob(Session* pSession);
-  static eEC  ePrepareJob(Session* pSession,
-                          TokenVec* pCmdTknVec,
-                          TokenVec* pLitTknVec,
-                          TagSet*   pTagSet);
+  static void vExtractPaths(Session*  pSession);
+  static bool bExtractTags(Session*  pSession);
+  static eEC  ePrepareJob(Session*  pSession, TokenVec* pLitTknVec = nullptr);
 
   static void vSubmitJob(Session* pSession);
   static void vWaitJob(Session* pSession);

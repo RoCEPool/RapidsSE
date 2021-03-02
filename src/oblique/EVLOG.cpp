@@ -11,6 +11,9 @@
 /*----------------------------------------------------------------------------*/
 void EVLOG::vEvent(Object* pObject, eEV eEvent, Stz* szFormat, ...)
 {
+  UNUSED(pObject);
+  UNUSED(eEvent);
+  UNUSED(szFormat);
 
    /*
     

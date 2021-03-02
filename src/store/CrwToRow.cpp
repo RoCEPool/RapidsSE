@@ -137,6 +137,7 @@ void CrwToRow::vAllotNewRow(void)
     vNewRowBuffer();
   
   Row* pRow = m_pRowBuffer->pAllotNewRow();
+  UNUSED(pRow);
 }
 
 /*----------------------------------------------------------------------------*/

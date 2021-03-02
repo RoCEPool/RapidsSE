@@ -11,8 +11,6 @@
 #include "Api.hpp"
 #include "Output.hpp"
 #include "Session.hpp"
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 
 #include "TagConstants.h"
@@ -64,11 +62,9 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
   
   m_pSession = Api::pAllocSession(SK_EXTERNAL);
 
-  eEC eError = m_pSession->eInitSession("rapidsse"_Stz,"public"_Stz);
+  eEC eError = m_pSession->eInitaliseSession("rapidsse"_Stz,"public"_Stz);
   RASSERT(EC_NONE == eError);
   
-  m_pSession->m_pInput = new Input;
-
   m_pThread->vSpawnPsxThd(SeDeputy::aEntryPoint,this);
 }
 
@@ -163,9 +159,17 @@ void SeDeputy::vExecuteJob(void)
   // start the buffer queue processing while the pipeline ops are running
   if (m_pSession->m_pSsnJob->bIsPipeline())
     m_pSession->m_pOutput->vProcessBufferQueue(m_pSession);
-  
-  eRS eResponse = (eRS)m_pSession->m_pSsnJob->pJobTags()->iValue("<rspKind>"_Stz);
-  m_pSession->m_pSsnJob->vPrintResult(m_pSession,eResponse);
+
+  RASSERT(! m_pSession->m_pOutput->m_bExecErr );
+  RASSERT(! m_pSession->m_pOutput->m_bCmdErr );
+
+  //eRS eResponse = (eRS)m_pSession->m_pSsnJob->pJobTags()->iValue("<rspKind>"_Stz);
+  //m_pSession->m_pSsnJob->vPrintResult(m_pSession,eResponse);
+
+  if (m_pSession->m_pSsnJob->bJobHasError()) {
+    vTrace("error: (node%lld) %s\n"_Stz, AM::iThisNodeNo(),
+           aEC[m_pSession->m_pSsnJob->eJobError()]);
+  }
 
   vReportTime();
 }
@@ -200,10 +204,10 @@ void SeDeputy::vDeputiseJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  m_pThread->m_oMutex.vLock(nullptr);
+  m_pThread->m_oMutex.vLock(m_pThread);
   m_bAvailable = false;
-  m_pThread->m_oMutex.vSignal(nullptr);
-  m_pThread->m_oMutex.vUnlock(nullptr);
+  m_pThread->m_oMutex.vSignal(m_pThread);
+  m_pThread->m_oMutex.vUnlock(m_pThread);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -214,6 +218,16 @@ Job* SeDeputy::pJob(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
   return m_pSession->m_pSsnJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get job tag set                                                            */
+/*----------------------------------------------------------------------------*/
+TagSet* SeDeputy::pJobTagSet(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
+  
+  return &m_pSession->m_oJobTagSet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -273,10 +287,10 @@ void SeDeputy::vTerminate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  m_pThread->m_oMutex.vLock(nullptr);
+  m_pThread->m_oMutex.vLock(m_pThread);
   m_bContinue = false;
-  m_pThread->m_oMutex.vSignal(nullptr);
-  m_pThread->m_oMutex.vUnlock(nullptr);
+  m_pThread->m_oMutex.vSignal(m_pThread);
+  m_pThread->m_oMutex.vUnlock(m_pThread);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -11,8 +11,8 @@
 /*----------------------------------------------------------------------------*/
 
 __pCastFunction(BASE,TraceLock,CN_TRACELOCK)
-__aNewFunction(TraceLock,CN_TRACELOCK)
-__vDeleteFunction(TraceLock,CN_TRACELOCK)
+//__aNewFunction(TraceLock,CN_TRACELOCK)
+//__vDeleteFunction(TraceLock,CN_TRACELOCK)
 __aFooterFunction(TraceLock);
 
 /*----------------------------------------------------------------------------*/
@@ -21,11 +21,11 @@ __aFooterFunction(TraceLock);
 TraceLock::TraceLock(void)
 : MasterLock(CN_TRACELOCK)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRACELOCK,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_TRACELOCK,_FOOTER_);
    
   _checkInitialised_(CN_TRACELOCK);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_TRACELOCK,_FOOTER_);
+  //_postcondition_(_ADDRESS_,_MAGIC_,CN_TRACELOCK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +33,7 @@ TraceLock::TraceLock(void)
 /*----------------------------------------------------------------------------*/
 TraceLock::~TraceLock(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TRACELOCK,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_TRACELOCK,_FOOTER_);
   
 }
 

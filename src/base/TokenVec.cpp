@@ -18,10 +18,10 @@ __aFooterFunction(TokenVec)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-TokenVec::TokenVec(bool bNewTokens)
+TokenVec::TokenVec(void)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-      
+    
   m_iCurTkn = -1;
   
   for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++) {
@@ -613,6 +613,7 @@ void TokenVec::vIntegrityCheck(void)
     
     i8 i_TknA = pTknA->i_Token();
     i8 i_TknB = pTknB->i_Token();
+    UNUSED(i_TknB);
     
     ASSERT(i_Token == i_TknA);
     ASSERT(i_TknB  == i_TknA + 1);
@@ -1276,6 +1277,8 @@ void TokenVec::_vTokenRemoveInterior(Token* pTknCut)
   //vIntegrityCheck();
 
   i8 nTkns = nTokens();
+  UNUSED(nTkns);
+  
   i8 i_CutTkn = pTknCut->i_Token();
   SP_Token spTkn;
   //vTrace("Cutting:- %s %p\n"_Stz,spTkn.sz(pTknCut),pTknCut->azChars());
@@ -1285,7 +1288,8 @@ void TokenVec::_vTokenRemoveInterior(Token* pTknCut)
 
   Stz* szCutAt  = pTknCut->szChars();
   char* azChars = szCutAt->azChar();
-  
+  UNUSED(azChars);
+
   i8 nBytesToCut = pTknCut->nChars() + 1;
   
   _vByteSpaceRemove(szCutAt,nBytesToCut);

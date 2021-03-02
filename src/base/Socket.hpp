@@ -55,14 +55,13 @@ namespace BASE
     bool bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall);
     bool bCreateServer(int iPort, SysCall& SysCall);
     void vDropWrite(void);
-    void vFocalOutline(s4K& sOutline);
+    void vOutline(s4K& sOutline);
     void vGrabWrite(void);
-    bool bRecvBuffer(int nBytes, SysCall& SysCall);
     bool bRecvBytes(void* pBuffer, i8 nBytes, SysCall& SysCall);
     bool bSendBytes(void* pBuffer, i8 nBytes, SysCall& SysCall);
+    bool bSetRecvBufferSize(int nBytes, SysCall& SysCall);
     bool bSetNonBlocking(SysCall& SysCall);
     bool bTestForData(SysCall& SysCall);
-    bool bWriteVch(Stz* pVch, SysCall& SysCall);
     
     bool bSocket(SysCall& SysCall);
     bool bBind(SysCall& SysCall);

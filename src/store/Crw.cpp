@@ -44,6 +44,9 @@ void Crw::vDumpCrw(Stz* szTitle, HeadLine* aHeadLine, StreamDef* pStreamDef)
 /*----------------------------------------------------------------------------*/
 void Crw::vDumpCrw_v2(Stz* szTitle, HeadLine* aHeadLine, StreamDef* pStreamDef)
 {
+  UNUSED(szTitle);
+  UNUSED(aHeadLine);
+  UNUSED(pStreamDef);
 }
 
 /*----------------------------------------------------------------------------*/

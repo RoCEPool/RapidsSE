@@ -12,8 +12,6 @@
 #include "EntBuffer.hpp"
 #include "IndexTree.hpp"
 
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
@@ -158,7 +156,8 @@ void Step::vIndexTreeInsEntBuffer(void)
     // ..add code here to insert entry into index tree..
     
     bool bInserted = pIndexTree->bInsertEntry(aEnt);
-    
+    UNUSED(bInserted);
+
     nEntries++;
   }
   

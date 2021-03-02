@@ -112,6 +112,9 @@ void Node::vInit(void)
 /*----------------------------------------------------------------------------*/
 void Node::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
+  UNUSED(eClass);
+  UNUSED(aTab);
+
   Node* pNode = _pNode(pObject);
 
   vTrace("no %lld prev %p next %p\n"_Stz,

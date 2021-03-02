@@ -37,6 +37,8 @@
 /*----------------------------------------------------------------------------*/
 : populateIndex_EosMarker
 
+  0 locals| errorCode |
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // populate the index
 
@@ -44,11 +46,11 @@
 
   tablePtn[] tablePtnGrabWrite_msec
   index[] tablePtn[].populateIndex not if ( errorCode )
+    to errorCode
     tablePtn[] tablePtnDropWrite
-    op.pipelineJob@ ERROR_JOB
+    errorCode op.pipelineJob@ ERROR_JOB
+    errorCode op__execErr
     PipeIn[].delete
-    Operand[].newErrorMarker
-    Operand[].pipeOut
     true
     exit
   then

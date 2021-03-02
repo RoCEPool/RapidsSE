@@ -1,0 +1,260 @@
+// Jenkins pipeline configuration file for running regression tests.
+// N.B.: Thie file is written in groovy syntax. It accepts comments
+// in the form of C++ line comments (//) and C block comments (/*..*/).
+// '#' line comments can only be used when inside a shell script
+// block (i.e., one that starts with sh 'some_script').
+//
+// Some syntax support can be found here:
+// https://www.jenkins.io/doc/book/pipeline/syntax/#declarative-steps
+
+
+
+pipeline {
+  agent {
+    label 'jenkinsMaster'
+  }
+
+  options {
+    // Build has failed if it has taken this long
+    timeout(time: 1, unit: 'HOURS')
+
+    // Only run one of these builds at a time
+    disableConcurrentBuilds()
+
+    // Prepend timestamps to all console output
+    timestamps()
+  }
+
+  stages {
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // SINGLE NODE - RELEASE 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    stage('Build: 1N Release') {
+      steps {
+        sh 'seth/jenkins/build.sh release'
+      }
+    }
+
+    stage('Install: 1N Release') {
+      steps {
+        sh 'seth/jenkins/install.sh seth/jenkins/1node.config'
+      }
+    }
+
+    stage('Start: 1N Release') {
+      steps {
+        sh 'seth/jenkins/start.sh seth/jenkins/1node.config'
+      }
+
+      // Stop RapidsSE if this stage was not successful
+      post {
+        unsuccessful {
+          // Copy the log artifacts into the workspace so they can be archived.
+          // For some reason it doesn't work if they are outside of the workspace.
+          sh 'mkdir -p logs/release/1n'
+          sh 'cp /opt/rapidsse/NODE0/se.log logs/release/1n/se.log'
+
+          sh 'seth/jenkins/stop.sh seth/jenkins/1node.config'
+        }
+      }
+    }
+
+    stage('Test: 1N Release') {
+      steps {
+        sh 'seth/jenkins/test.sh release seth/jenkins/1node.config seth/bamboo/allTestsBamboo'
+      }
+
+      // Always ensure we have stopped SE and SETH
+      post {
+        always {
+          // Copy the log artifacts into the workspace so they can be archived.
+          // For some reason it doesn't work if they are outside of the workspace.
+          sh 'mkdir -p logs/release/1n'
+          sh 'cp /opt/rapidsse/NODE0/se.log logs/release/1n/se.log'
+
+          // Stop SE and SETH
+          sh 'seth/jenkins/stop.sh seth/jenkins/1node.config'
+        }
+      }
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // TWO NODE - RELEASE
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    // We can skip the build stage so long as we ran the 2 node release
+    // test after the 1 node release test
+
+    stage('Install: 2N Release') {
+      steps {
+        sh 'seth/jenkins/install.sh seth/jenkins/2node.config'
+      }
+    }
+
+    stage('Start: 2N Release') {
+      steps {
+        sh 'seth/jenkins/start.sh seth/jenkins/2node.config'
+      }
+
+      // Stop RapidsSE if this stage was not successful
+      post {
+        unsuccessful {
+          // Copy the log artifacts into the workspace so they can be archived.
+          // For some reason it doesn't work if they are outside of the workspace.
+          sh 'mkdir -p logs/release/2n'
+          sh 'cp /opt/rapidsse/NODE0/se.log logs/release/2n/se.NODE0.log || true'
+          sh 'cp /opt/rapidsse/NODE1/se.log logs/release/2n/se.NODE1.log || true'
+
+          sh 'seth/jenkins/stop.sh seth/jenkins/2node.config'
+        }
+      }
+    }
+
+    stage('Test: 2N Release') {
+      steps {
+        sh 'seth/jenkins/test.sh 2N_release seth/jenkins/2node.config seth/bamboo/allTestsBambooMN'
+      }
+
+      // Always ensure we have stopped SE and SETH
+      post {
+        always {
+          // Copy the log artifacts into the workspace so they can be archived.
+          // For some reason it doesn't work if they are outside of the workspace.
+          sh 'mkdir -p logs/release/2n'
+          sh 'cp /opt/rapidsse/NODE0/se.log logs/release/2n/se.NODE0.log'
+          sh 'cp /opt/rapidsse/NODE1/se.log logs/release/2n/se.NODE1.log'
+
+          // Stop SE and SETH
+          sh 'seth/jenkins/stop.sh seth/jenkins/2node.config'
+        }
+      }
+    }
+
+
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // SINGLE NODE - DEBUG
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    stage('Build: 1N Debug') {
+      steps {
+        sh 'seth/jenkins/build.sh debug'
+      }
+    }
+
+    stage('Install: 1N Debug') {
+      steps {
+        sh 'seth/jenkins/install.sh seth/jenkins/1node.config'
+      }
+    }
+
+    stage('Start: 1N Debug') {
+      steps {
+        sh 'seth/jenkins/start.sh seth/jenkins/1node.config'
+      }
+
+      // Stop RapidsSE if this stage was not successful
+      post {
+        unsuccessful {
+          // Copy the log artifacts into the workspace so they can be archived.
+          // For some reason it doesn't work if they are outside of the workspace.
+          sh 'mkdir -p logs/debug/1n'
+          sh 'cp /opt/rapidsse/NODE0/se.log logs/debug/1n/se.log'
+
+          sh 'seth/jenkins/stop.sh seth/jenkins/1node.config'
+        }
+      }
+    }
+
+    stage('Test: 1N Debug') {
+      steps {
+        sh 'seth/jenkins/test.sh debug seth/jenkins/1node.config seth/bamboo/allTestsBamboo'
+      }
+
+      // Always ensure we have stopped SE and SETH
+      post {
+        always {
+          // Copy the log artifacts into the workspace so they can be archived.
+          // For some reason it doesn't work if they are outside of the workspace.
+          sh 'mkdir -p logs/debug/1n'
+          sh 'cp /opt/rapidsse/NODE0/se.log logs/debug/1n/se.log'
+
+          // Stop SE and SETH
+          sh 'seth/jenkins/stop.sh seth/jenkins/1node.config'
+        }
+      }
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // TWO NODE - DEBUG
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    // We can skip the build stage so long as we ran the 2 node debug
+    // test after the 1 node debug test
+
+    stage('Install: 2N Debug') {
+      steps {
+        sh 'seth/jenkins/install.sh seth/jenkins/2node.config'
+      }
+    }
+
+    stage('Start: 2N Debug') {
+      steps {
+        sh 'seth/jenkins/start.sh seth/jenkins/2node.config'
+      }
+
+      // Stop RapidsSE if this stage was not successful
+      post {
+        unsuccessful {
+          // Copy the log artifacts into the workspace so they can be archived.
+          // For some reason it doesn't work if they are outside of the workspace.
+          sh 'mkdir -p logs/debug/2n'
+          sh 'cp /opt/rapidsse/NODE0/se.log logs/debug/2n/se.NODE0.log || true'
+          sh 'cp /opt/rapidsse/NODE1/se.log logs/debug/2n/se.NODE1.log || true'
+
+          sh 'seth/jenkins/stop.sh seth/jenkins/2node.config'
+        }
+      }
+    }
+
+    stage('Test: 2N Debug') {
+      steps {
+        sh 'seth/jenkins/test.sh 2N_debug seth/jenkins/2node.config seth/bamboo/allTestsBambooMN'
+      }
+
+      // Always ensure we have stopped SE and SETH
+      post {
+        always {
+
+          // Copy the log artifacts into the workspace so they can be archived.
+          // For some reason it doesn't work if they are outside of the workspace.
+          sh 'mkdir -p logs/debug/2n'
+          sh 'cp /opt/rapidsse/NODE0/se.log logs/debug/2n/se.NODE0.log'
+          sh 'cp /opt/rapidsse/NODE1/se.log logs/debug/2n/se.NODE1.log'
+
+          // Stop SE and SETH
+          sh 'seth/jenkins/stop.sh seth/jenkins/2node.config'
+        }
+      }
+    }
+
+
+
+  } // stages
+
+
+  post {
+    // TODO: send an email on a change
+
+    unsuccessful {
+      // Capture log artifacts that have been copied back into the workspace
+      archiveArtifacts artifacts: 'logs/**/*', allowEmptyArchive: true
+    }
+
+    always {
+      // Capture all test results
+      junit skipPublishingChecks: true, testResults: 'seth/jenkins/results/*.xml'
+    }
+  }
+
+}

@@ -28,14 +28,14 @@ Mutex* BASE::_pMutex(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Mutex::Mutex(Object* pObjectMutexed)
-: Object(CN_MUTEX)
+Mutex::Mutex(Object* pIsFor)
+: Loggable(CN_MUTEX)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
-  RASSERT(pObjectMutexed);
+  RASSERT(pIsFor);
   
-  m_pObjectMutexed = pObjectMutexed;
+  m_pIsFor = pIsFor;
     
   m_pLockedBy = nullptr;
   m_pWaitedBy = nullptr;
@@ -90,6 +90,8 @@ Mutex::Mutex(Object* pObjectMutexed)
   ++ gixMutex;
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
+  
+  vLog(EV_CONSTRUCT,"Mutex constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -122,6 +124,8 @@ Mutex::~Mutex(void) noexcept(false)
 #endif
   
   -- gixMutex;
+  
+  vLog(EV_DESTRUCT,"Mutex destructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -414,7 +418,8 @@ void Mutex::vSignal(Loggable* pLockedBy)
   //! Calling thread must have locked the mutex
   //!
   ASSERT(pLockedBy == m_pLockedBy);
-
+  UNUSED(pLockedBy);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
 #ifdef WITH_STATISTICS_COUNTERS
@@ -496,6 +501,7 @@ void Mutex::vWait(Loggable* pLockedBy)
   //!
   ASSERT(pLockedBy == m_pLockedBy);
   ASSERT(! m_pWaitedBy);
+  UNUSED(pLockedBy);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -534,9 +540,9 @@ void Mutex::vWait(Loggable* pLockedBy)
 }
 
 /*----------------------------------------------------------------------------*/
-/* focal outline                                                              */
+/* outline                                                                    */
 /*----------------------------------------------------------------------------*/
-void Mutex::vFocalOutline(s4K& sOutline)
+void Mutex::vOutline(s4K& sOutline)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   

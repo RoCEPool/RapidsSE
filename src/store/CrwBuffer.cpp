@@ -106,7 +106,9 @@ bool CrwBuffer::bDeleteRefdCrw(Rrf xRef)
 void CrwBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   _static_
-  
+  UNUSED(eClass);
+  UNUSED(aTab);
+
   CrwBuffer* pCrwBuffer = _pCrwBuffer(pObject);
   
   pCrwBuffer->vShow();

@@ -116,6 +116,7 @@ Row* RowBuffer::aAllotCopyRow(RowSingle* pRowSingle)
       Stz* acDstString = aAllotHead(nSrcLength);
       i8 nCopyBytes = StrLib::nCopy((char*)acDstString, acSrcString);
       ASSERT(nCopyBytes + 1 == nSrcLength);
+      UNUSED(nCopyBytes);
       // set offset of tail string
       pRow->vColVal_ofs(i_Col,iToOffset(acDstString));
       // END STRING_DEPOSIT

@@ -9,8 +9,6 @@
 #include "Steps.hpp"
 
 #include "Node_I.hpp"
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 #include "LogicUnit.hpp"
 
@@ -37,6 +35,8 @@ void Step::vLogicCompilerCompile(void)
   i8 iResult =
     ( m_pJob->pLogicUnit_job() )->m_xpLogicCompiler->iCompile(( m_pJob->pLogicUnit_job() ),( m_pJob->pLogicUnit_job() ));
   
+  UNUSED(iResult);
+
   EXIT();
 }
 

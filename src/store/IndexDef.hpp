@@ -51,6 +51,7 @@ namespace STORE
     eIT    eIndexType(void);
     eKE    eKeyKind(void);
     void   vKeyKind(eKE eKeyKind);
+    void   vListContents(i8 i_Depth);
     Stz*   szTableNm(void);
     void   vTableNm(Stz* szTableNm);
     eEC    eParse(Table* pTable, Stz* szCmd);

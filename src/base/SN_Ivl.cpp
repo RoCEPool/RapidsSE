@@ -37,6 +37,7 @@ SN_Ivl::~SN_Ivl(void) noexcept(false)
 i8 SN_Ivl::i(char** aacCrs, Format* pFmt)
 {
   _precondition_(_MAGIC_,CN_SNIVL);
+  UNUSED(pFmt);
   
   i8 iSecond, iMilli;
   

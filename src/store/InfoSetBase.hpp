@@ -26,14 +26,13 @@ namespace STORE
     ~InfoSetBase(void) noexcept(false);
     
     Row* pAllotRow(void);
-    //Row* pAllotRow(RowSingle* pRowSingle);
-    Row* pAllotRow(StreamDef* pStreamDef, i8 iVargsBegin, ...);
     Row* pAllotRow(i8 iVargsBegin, ...);
-    Row* aFirstRow();
+    Row* pAllotRow(StreamDef* pStreamDef, i8 iVargsBegin, ...);
+    Row* pFirstRow();
     i8   nInfoRows(void);
     Stz* szInfoSetNm(void);
     void vInfoSetNm(Stz* szInfoSetNm);
-    Row* aNextRow(Row* pPrevRow);
+    Row* pNextRow(Row* pPrevRow);
     
   //private:
     i8   iToOffset(Stz* aItem);

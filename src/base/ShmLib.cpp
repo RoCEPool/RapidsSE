@@ -120,6 +120,7 @@ void* ShmLib::aMap(int iShmFd, void* aAddress, i8 iBytes, bool bHugeTlb, SysCall
 #ifdef WITH_APPLE
   int iFlags =   (bShared  ? MAP_SHARED : MAP_PRIVATE | MAP_ANONYMOUS)
                | (aAddress ? MAP_FIXED  : 0);
+  UNUSED(bHugeTlb);
 #else
   int iFlags =   (bShared  ? MAP_SHARED : MAP_PRIVATE)
                | (aAddress ? MAP_FIXED  : 0)

@@ -48,14 +48,14 @@ void Lock::operator delete(void*)
 /*----------------------------------------------------------------------------*/
 /* constructor (for non-focal case)                                           */
 /*----------------------------------------------------------------------------*/
-Lock::Lock(Object* pObjectLocked, bool bDontLog)
-: Loggable(CN_LOCK,bDontLog)
+Lock::Lock(Object* pObjectLocked, i8 iLogCtl)
+: Loggable(CN_LOCK,iLogCtl)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
     
-  m_pObjectLocked = pObjectLocked;
-  
   m_uLockWord = 0;
+  m_pObjectLocked = pObjectLocked;
+  m_pWriteLockingTask  = nullptr;
   
   m_ixReadGrabs.vCheckInit();
   m_ixReadCollisions.vCheckInit();
@@ -66,6 +66,8 @@ Lock::Lock(Object* pObjectLocked, bool bDontLog)
   _checkInitialised_(CN_LOCK);
   
   _postcondition_(_MAGIC_,CN_LOCK,_FOOTER_);
+  
+  vLog(EV_CONSTRUCT,"Lock constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -76,6 +78,8 @@ Lock::~Lock(void) noexcept(false)
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
    
   RASSERT(! m_uLockWord);
+  
+  vLog(EV_DESTRUCT,"Lock destructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -87,9 +91,9 @@ Lock::~Lock(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 u8 Lock::iLockDropRead(u8* pWord)
 {
-#if defined(WITH_APPLE) || defined(WITH_LINUX)
-  //u8 uResult = iDropRead(pWord);
+  _static_
   
+#if defined(WITH_APPLE) || defined(WITH_LINUX)
   bool bWasSet;
   
   do {
@@ -118,9 +122,9 @@ u8 Lock::iLockDropRead(u8* pWord)
 /*----------------------------------------------------------------------------*/
 u8 Lock::iLockGrabRead(u8* pWord)
 {
-#if defined(WITH_APPLE) || defined(WITH_LINUX)
+  _static_
   
-  //u8 uResult = iGrabRead(pWord);
+#if defined(WITH_APPLE) || defined(WITH_LINUX)
   
   u8 uCurrent = *pWord;
   if (uCurrent >= C_WRITELOCK)
@@ -144,14 +148,16 @@ u8 Lock::iLockGrabRead(u8* pWord)
 /*----------------------------------------------------------------------------*/
 u8 Lock::iLockDropWrite(u8* pWord)
 {
+  _static_
+  
 #if defined(WITH_APPLE) || defined(WITH_LINUX)
-  //u8 uResult = iDropWrite(pWord);
   
   u8 uCurrent = *pWord;
   
   ASSERT (uCurrent == C_WRITELOCK);
   
   bool bWasSet = Atomic::bTestAndSet(pWord,uCurrent,0);
+  UNUSED(bWasSet);
   
   u8 uResult = 1;
 #else
@@ -166,8 +172,9 @@ u8 Lock::iLockDropWrite(u8* pWord)
 /*----------------------------------------------------------------------------*/
 u8 Lock::iLockGrabWrite(u8* pWord)
 {
+  _static_
+  
 #if defined(WITH_APPLE) || defined(WITH_LINUX)
-  //u8 uResult = iGrabWrite(pWord);
   
   u8 uCurrent = *pWord;
   
@@ -215,9 +222,9 @@ u8 Lock::iLockIsLocked(u8* pWord)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* focal outline                                                              */
+/* outline                                                                    */
 /*----------------------------------------------------------------------------*/
-void Lock::vFocalOutline(s4K& sOutline)
+void Lock::vOutline(s4K& sOutline)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
@@ -288,10 +295,11 @@ void Lock::vDropRead(void)
   
   vAssertRead();
   
+  // remove the readlock
   i8 iResult = Lock::iLockDropRead(&m_uLockWord);
-  ASSERT(iResult); // logic check
+  RASSERT(iResult);
   
-  // m_iValue could be any value
+  // m_uLockWord could be any value
 }
 
 /*----------------------------------------------------------------------------*/
@@ -434,12 +442,14 @@ void Lock::vDropWrite(void)
   
   vAssertWrite();
   
+  // clear the locking task
+  m_pWriteLockingTask  = nullptr;
+
+  // remove the readlock
   i8 iResult = Lock::iLockDropWrite(&m_uLockWord);
-  RASSERT(iResult); // logic check
-  
-  //m_uLockWord = 0;
-  
-  // m_iValue could be any value
+  RASSERT(iResult);
+    
+  // m_uLockWord could be any value
 }
 
 /*----------------------------------------------------------------------------*/
@@ -459,6 +469,7 @@ bool Lock::bGrabWrite(void)
   i8 iResult = Lock::iLockGrabWrite(&m_uLockWord);
   if (iResult) {
     vAssertWrite();
+    m_pWriteLockingTask = MY::pTask();
     return true;
   }
   
@@ -490,6 +501,7 @@ void Lock::vGrabWrite(void)
   i8 iResult = Lock::iLockGrabWrite(&m_uLockWord);
   if (iResult) {
     vAssertWrite();
+    m_pWriteLockingTask = MY::pTask();
     return;
   }
   
@@ -580,8 +592,9 @@ i8 Lock::iWriteCollisions(void)
 void Lock::vLockTrace(eLS eLockStyle)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
+  UNUSED(eLockStyle);
   
-  if (m_bDontLog)
+  if (C_DONT_LOG == m_iLogCtl)
     return;
   
 //  if (MY::pOp())

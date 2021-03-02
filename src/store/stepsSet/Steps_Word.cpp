@@ -564,11 +564,13 @@ void Step::vWordXcheckInxPtr(void)
   ENTRY();
   
   Word* pTestWord = _pWord(m_pDataStack->pPopPtr(__func__));
-    
+  UNUSED(pTestWord);
+
   Word* pExeWord  = CodeBlock::pToWord(m_aInxPtr);
 
   ASSERT(pExeWord == pTestWord);
-  
+  UNUSED(pExeWord);
+
   EXIT();
 }
 

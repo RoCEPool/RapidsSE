@@ -20,8 +20,6 @@
 
 #include "Node_I.hpp"
 
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 #include "LogicUnit.hpp"
 
@@ -70,6 +68,7 @@ void Step::vToRowConvert(void)
   char* azCsvChunk  = (char*)pCsvBuffer->ayDataArea();
   
   bool bResult = pToRow->bConvertCsv(azCsvChunk,pCsvMeta);
+  UNUSED(bResult);
   
   EXIT();
 }
@@ -91,6 +90,7 @@ void Step::vToRowCreate(void)
   pFmt->vSet(pFmt);
   
   bool b = AM::bFormatSetFromTagSet(pFmt,pJobTags);
+  UNUSED(b);
 
   StreamDef* pStreamDef = ( m_pJob->pLogicUnit_job() )->m_xpTable->pStreamDef();
   BucketMap* pBucketMap = ( m_pJob->pLogicUnit_job() )->m_xpTable->pBucketMap();

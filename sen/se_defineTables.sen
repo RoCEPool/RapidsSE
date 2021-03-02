@@ -45,8 +45,8 @@
   sPath
   "
   define table __commandErrors (
+    nodeName       VARCHAR NOT NULL ,
     errorCode      INTEGER NOT NULL ,
-    severity       INTEGER NOT NULL ,
     line           INTEGER NOT NULL ,
     column         INTEGER NOT NULL ,
     text           VARCHAR NOT NULL
@@ -75,8 +75,8 @@
   sPath
   "
   define table __execErrors (
+    nodeName       VARCHAR NOT NULL ,
     errorCode      INTEGER NOT NULL ,
-    severity       INTEGER NOT NULL ,
     text           VARCHAR NOT NULL
   ) ;
   "
@@ -328,6 +328,25 @@
   api::executeRequest
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_COLUMNDEFS
+  sPath
+  "
+  define table __columnDefs (
+    catalogName    VARCHAR NOT NULL ,
+    schemaName     VARCHAR NOT NULL ,
+    tableName      VARCHAR NOT NULL ,
+    columnNumber   INTEGER NOT NULL ,
+    columnName     VARCHAR NOT NULL ,
+    columnType     VARCHAR NOT NULL ,
+    columnLength   INTEGER NOT NULL ,
+    columnScale    INTEGER NOT NULL ,
+    isNullable     BOOLEAN NOT NULL ,
+    isPartitionKey BOOLEAN NOT NULL
+  ) ;
+  "
+  api::executeRequest
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_LOADRESULT
   sPath
   "
@@ -357,6 +376,39 @@
     writeGrab      INTEGER        NOT NULL ,
     writeCollision INTEGER        NOT NULL ,
     WritePercent   INTEGER        NOT NULL
+  ) ;
+  "
+  api::executeRequest
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_LOOKUPCATALOG
+  sPath
+  "
+  define table __lookupCatalog (
+    catalogName   VARCHAR NOT NULL
+  ) ;
+  "
+  api::executeRequest
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_LOOKUPSCHEMA
+  sPath
+  "
+  define table __lookupSchema (
+    catalogName   VARCHAR NOT NULL ,
+    schemaName    VARCHAR NOT NULL
+  ) ;
+  "
+  api::executeRequest
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_LOOKUPTABLE
+  sPath
+  "
+  define table __lookupTable (
+    catalogName   VARCHAR NOT NULL ,
+    schemaName    VARCHAR NOT NULL ,
+    tableName     VARCHAR NOT NULL
   ) ;
   "
   api::executeRequest

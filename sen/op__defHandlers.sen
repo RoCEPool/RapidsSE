@@ -60,9 +60,7 @@
   Pipein[].delete
 
   // an error if any other operator receives it
-  EC_PIPELINE_PROTOCOL_ERROR op.pipelineJob@ ERROR_JOB !!logError
-  Operand[].newErrorMarker
-  Operand[].pipeOut
+  EC_PIPELINE_PROTOCOL_ERROR op__execErr
 
   true // calling op_loop continues
 ;
@@ -173,9 +171,7 @@
   PipeIn[].delete
 
   // an error if any other operator receives it
-  EC_PIPELINE_PROTOCOL_ERROR op.pipelineJob@ ERROR_JOB !!logError
-  Operand[].newErrorMarker
-  Operand[].pipeOut
+  EC_PIPELINE_PROTOCOL_ERROR op__execErr
 
   true // calling op_loop continues
 ;
@@ -215,9 +211,7 @@
   PipeIn[].delete
 
   // an error if any other operator receives it
-  EC_PIPELINE_PROTOCOL_ERROR op.pipelineJob@ ERROR_JOB !!logError
-  Operand[].newErrorMarker
-  Operand[].pipeOut
+  EC_PIPELINE_PROTOCOL_ERROR op__execErr
 
   true // calling op_loop continues
 ;
@@ -413,9 +407,7 @@
   PipeIn[].delete
 
   // an error if any other operator receives it
-  EC_PIPELINE_PROTOCOL_ERROR op.pipelineJob@ ERROR_JOB !!logError
-  Operand[].newErrorMarker
-  Operand[].pipeOut
+  EC_PIPELINE_PROTOCOL_ERROR op__execErr
 
   true // calling op_loop continues
 ;
@@ -464,9 +456,7 @@
   PipeIn[].delete
 
   // operand incorrectly received
-  EC_PIPELINE_PROTOCOL_ERROR op.pipelineJob@ ERROR_JOB !!logError
-  Operand[].newErrorMarker
-  Operand[].pipeOut
+  EC_PIPELINE_PROTOCOL_ERROR op__execErr
 
   true // calling op_loop continues
 ;

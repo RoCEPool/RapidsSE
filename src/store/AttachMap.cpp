@@ -43,7 +43,7 @@ void* AttachMap::operator new(size_t)
 {
   AttachMap* pAttachMap = (AttachMap*)gpBufferPool->pAllocOtherBuffer();
   
-  return pPoolCheck<void*>(pAttachMap);
+  return pPoolCheck<void*>(pAttachMap,__func__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -151,7 +151,9 @@ AttachMap::~AttachMap(void) noexcept(false)
 void AttachMap::vSubSystem(SelfFn* aSelfFn, TokenVec* pTokenVec)
 {
   _static_
-  
+  UNUSED(aSelfFn);
+  UNUSED(pTokenVec);
+
   vTrace("AttachMap::vSubSystem\n"_Stz);
   
   if (AM::bAttached())
@@ -345,6 +347,9 @@ Sessions* AttachMap::pSessions(void)
 /*----------------------------------------------------------------------------*/
 void AttachMap::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
+  UNUSED(eClass);
+  UNUSED(aTab);
+
   AttachMap* pAttachMap = _pAttachMap(pObject);
   
   vTrace("pid %lld utc %s regionSize %lld\n"_Stz,
@@ -404,9 +409,9 @@ eAC AttachMap::eFindApi(Stz* aApiNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* focal outline                                                              */
+/* outline                                                                    */
 /*----------------------------------------------------------------------------*/
-void AttachMap::vFocalOutline(s4K& sOutline)
+void AttachMap::vOutline(s4K& sOutline)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
   

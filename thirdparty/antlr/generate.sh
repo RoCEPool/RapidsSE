@@ -14,6 +14,26 @@ if [ ! -f "${file}" ]; then
   exit 1
 fi
 
+# Don't generate the parser/lexer from the grammar unless
+# the grammar file has modifications. Since the generated
+# parser/lexer is checked in, this avoids issues where
+# they are regenerated on each system with a slight change
+# in one of the file comments.
+#
+# So if the grammar file does not have any local modifications
+# then we will not generate the parser/lexer code.
+#
+# Ref: https://stackoverflow.com/questions/5143795/how-can-i-check-in-a-bash-script-if-my-local-git-repository-has-changes
+
+git update-index -q --refresh
+
+if git diff-index --quiet HEAD "${file}"; then
+  echo "No need to generate parser/lexer from unmodified grammar: ${file}"
+  exit 0
+else
+  echo "Grammar file has local modifications: ${file}"
+fi
+
 # Get the absolute path of the grammar file
 file="$(cd "$(dirname "${file}")"; pwd -P)/$(basename "${file}")"
 

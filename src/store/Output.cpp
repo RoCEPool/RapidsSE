@@ -22,10 +22,8 @@
 #include "EntBuffer.hpp"
 
 #include "Grid.hpp"
-#include "Response.hpp"
 #include "Output.hpp"
 
-#include "Result.hpp"
 #include "Job.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -49,7 +47,8 @@ Output::Output(void)
   m_pStreamDef_result = nullptr;
   m_bExitMarker       = false;
   m_bCancelMarker     = false;
-
+  m_bCmdErr           = false;
+  m_bExecErr          = false;
 
   _checkInitialised_(CN_OUTPUT);
   
@@ -101,7 +100,7 @@ void Output::vDrainBufferQueue(Session* pSession)
 
   while (! m_bExitMarker   &&
          ! m_bCancelMarker &&
-         ! pSession->m_pSsnJob->m_xResult.m_xJobResponse.m_bJobHasError) {
+         ! pSession->m_pSsnJob->bJobHasError()) {
     
     Operand* pOperand = pPopBufferQueue_blocking(pSession);
     
@@ -117,10 +116,10 @@ void Output::vDrainBufferQueue(Session* pSession)
       eOM eOpMarker = pMarker->eOpMarker();
 
       if (eOpMarker == OM_CANCELMARKER)
-        m_bExitMarker = true;
+        m_bCancelMarker = true;
       else
       if (eOpMarker == OM_EXITMARKER)
-        m_bCancelMarker = true;
+        m_bExitMarker = true;
     }
 
     AM::vDeleteOperand(pOperand);
@@ -224,11 +223,6 @@ Operand* Output::pPopBufferQueue_blocking(Session* pSession)
   
   for (;;) {
     
-    //if (pSession->m_pSsnJob->m_xResult.m_bJobHasError) {
-      //vDrainBufferQueue(pSession);
-      //return nullptr;
-    //}
-    
     Operand* pOperand = _pOperand(pSession->m_pOutput->m_pOutputQueue->pPop());
     
     if (pOperand)
@@ -236,7 +230,7 @@ Operand* Output::pPopBufferQueue_blocking(Session* pSession)
     
     AM::vNapUsec(1000,CN_OUTPUT);
     
-    if (pSession->m_pSsnJob->m_xResult.m_xJobResponse.m_bJobHasError)
+    if (pSession->m_pSsnJob->bJobHasError())
       return nullptr;
   }
   
@@ -249,7 +243,8 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
   
-
+  UNUSED(pSession);
+  
   bool bContinue = true;
   
   //SP_DataBuffer spDataBuffer;
@@ -306,30 +301,40 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
       ASSERT( ! pInfoSet->szInfoSetNm()->bSame(C_NO_NAME) );
       if (pInfoSet->szInfoSetNm()->bSame(C_TDEF_COMMANDERRORS)) {
 
-        Row *pInfoRow = pInfoSet->aFirstRow();
+        if ( ! m_bCmdErr) {
+          Row *pInfoRow = pInfoSet->aFirstRow();
 
-        eEC eErrorCode  = (eEC)pInfoRow->iColVal_int(0);
-        i8 iSeverity    = pInfoRow->iColVal_int(1);
-        i8 iLineNo      = pInfoRow->iColVal_int(2);
-        i8 iColumnNo    = pInfoRow->iColVal_int(3);
-        Stz* sErrorText = pInfoRow->szColVal_ofs(4);
+          Stz *sNodeName = pInfoRow->szColVal_ofs(0);
+          eEC eErrorCode = (eEC) pInfoRow->iColVal_int(1);
+          i8 iLineNo = pInfoRow->iColVal_int(2);
+          i8 iColumnNo = pInfoRow->iColVal_int(3);
+          Stz *sErrorText = pInfoRow->szColVal_ofs(4);
 
-        vTrace("%s : Line: %lld; Column: %lld; ErrorMsg: %s; \n"_Stz,
-               aEC[eErrorCode] , iLineNo, iColumnNo, sErrorText);
-
+          vTrace("%s: Error : %s; Line: %lld; Column: %lld; %s; \n"_Stz,
+                 sNodeName, aEC2[eErrorCode], iLineNo, iColumnNo, sErrorText);
+          m_bCmdErr = true;
+        }
+        else {
+          // LOG error
+        }
         AM::vDeleteOperand(pOperand);
       }
       else if (pInfoSet->szInfoSetNm()->bSame(C_TDEF_EXECERRORS)) {
 
-        Row *pInfoRow = pInfoSet->aFirstRow();
+        if ( ! m_bExecErr) {
+          Row *pInfoRow = pInfoSet->aFirstRow();
 
-        eEC eErrorCode  = (eEC)pInfoRow->iColVal_int(0);
-        i8 iSeverity    = pInfoRow->iColVal_int(1);
-        Stz* sErrorText = pInfoRow->szColVal_ofs(2);
+          Stz *sNodeName = pInfoRow->szColVal_ofs(0);
+          eEC eErrorCode = (eEC) pInfoRow->iColVal_int(1);
+          Stz *sErrorText = pInfoRow->szColVal_ofs(2);
 
-        vTrace("error: %s : ErrorMsg: %s; \n"_Stz,
-               aEC[eErrorCode] , sErrorText);
-
+          vTrace("error: %s; %s; %s; \n"_Stz,
+                 sNodeName, aEC2[eErrorCode], sErrorText);
+          m_bExecErr = true;
+        }
+        else {
+          // LOG error
+        }
         AM::vDeleteOperand(pOperand);
       }
       else if (pInfoSet->szInfoSetNm()->bSame(C_TDEF_LOADRESULT)) {
@@ -373,6 +378,8 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
                  *m_ixRowsProcessed);
           AM::vDeleteOperand(pOperand);
           m_bExitMarker = true;
+          m_bCmdErr = false;
+          m_bExecErr = false;
           bContinue = false;
           goto L_EXIT;
           break;
@@ -412,6 +419,9 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
           //  vTrace("success: %lld rows fetched\n"_Stz, *m_ixRowsProcessed);
           AM::vDeleteOperand(pOperand);
           m_bExitMarker = true;
+          ASSERT( !m_bCmdErr );
+          ASSERT( !m_bExecErr );
+          vPrintResult();
           bContinue = false;
           goto L_EXIT;
           break;

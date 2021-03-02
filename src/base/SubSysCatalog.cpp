@@ -44,7 +44,9 @@ SubSysCatalog::SubSysCatalog(void)
 void SubSysCatalog::vSubSystems(SelfFn* aSelfFn, TokenVec* pTokenVec)
 {
   _static_
-  
+  UNUSED(aSelfFn);
+  UNUSED(pTokenVec);
+
   gxSubSysCatalog.vList();
 }
 
@@ -54,6 +56,8 @@ void SubSysCatalog::vSubSystems(SelfFn* aSelfFn, TokenVec* pTokenVec)
 void SubSysCatalog::vDescribe(SelfFn* aSelfFn, TokenVec* pTokenVec)
 {
   _static_
+  UNUSED(aSelfFn);
+  UNUSED(pTokenVec);
 
   gxSubSysCatalog.vDescribeRecursively("AttachMap"_Stz,0);
 }

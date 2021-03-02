@@ -308,10 +308,19 @@ function findInstallFile() {
   local parentScript
   parentScript="$(cut -f 2 -d '' < /proc/${PPID}/cmdline)"
 
-  if [[ -n "${parentScript}" && "${parentScript:(-4):4}" == ".run" && -f "${USER_PWD}/${parentScript}" ]]
-  then
-    INSTALL_FILE="${USER_PWD}/${parentScript}"
-    return
+  if [[ -n "${parentScript}" && "${parentScript:(-4):4}" == ".run" ]]; then
+
+    # Is it an absolute path?
+    if [[ "${parentScript:0:1}" == "/" && -f "${parentScript}" ]]; then
+      INSTALL_FILE="${parentScript}"
+      return
+    fi
+
+    # Is it a relative path?
+    if [[ -f "${USER_PWD}/${parentScript}"  ]]; then
+      INSTALL_FILE="${USER_PWD}/${parentScript}"
+      return
+    fi
   fi
 
   # Otherwise if there is only one .run file in the $USER_PWD then this would be it.
@@ -329,7 +338,7 @@ function findInstallFile() {
     fi
   fi
 
-  errorExit "Could not find the installation *.run file. Trying specifying it with the --installer argument."
+  errorExit "Could not find the installation *.run file for the purpose of copying to and installing on other nodes. Try specifying the location of this file with the --installer argument."
 }
 
 
@@ -1298,12 +1307,27 @@ function doNodeInstall() {
   else
 
     # If the installation directory does not exist then ensure that the parent
-    # directory is writable.
+    # directory is writable. May need to recurse back for this.
     # Then create the installation directory.
 
-    if [ ! -w "$(dirname "${installDir}")" ]; then
-      errorExit "Parent path of the installation directory (${installDir}) on node ${CURRENT_NODE_NAME} [host: ${hostname}] is not writable by the current user (${USER})."
+    local isWritable
+    isWritable=0
+
+    dname="${installDir}"
+
+    while [ "${dname}" != "/"  ]; do
+      if [[ -d "${dname}" && -w "${dname}" ]]; then
+        isWritable=1
+        break
+      fi
+
+      dname="$(dirname "${dname}")"
+    done
+
+    if [ "${isWritable}" -ne 1 ]; then
+      errorExit "Parent path of the installation directory (${dname}) on node ${CURRENT_NODE_NAME} [host: ${hostname}] is not writable by the current user (${USER})."
     fi
+
 
     debugPrint "About to create the installation directory: ${hostname}:${installDir}"
 

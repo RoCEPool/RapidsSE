@@ -46,6 +46,8 @@ void KeyBuilder::vAddElement_gen(EntWrk* pEntWrk, Column* pCol,
   Dtm* aCell = (Dtm*)azDst;
   
   bool b = Literal::bToCell(aCell,pCol,&azSrc,pFmt);
+  UNUSED(b);
+  
   nElmSize = sizeof(Dtm);
   pEntWrk->vIncElmSeqSize(nElmSize);
 }
@@ -62,6 +64,7 @@ void KeyBuilder::vAddElement_int(EntWrk* pEntWrk, Column* pCol,
 
   Dtm* aCell = pEntWrk->aEnt()->aIntElm0();
   bool b = Literal::bToCell(aCell,pCol,&azSrc,pFmt);
+  UNUSED(b);
 }
 
 /*============================================================================*/

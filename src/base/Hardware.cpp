@@ -71,7 +71,8 @@ i8 Hardware::iClockResNsec(void)
   struct timespec tp;
   
   int iResult = clock_getres(CLOCK_REALTIME,&tp);
-  
+  UNUSED(iResult);
+
   return tp.tv_nsec;
 }
 
@@ -343,6 +344,7 @@ i8 Hardware::iReadClock(void)
 #ifdef WITH_APPLE
   struct timespec tp;
   int iResult = clock_gettime(CLOCK_MONOTONIC_RAW_APPROX,&tp);
+  UNUSED(iResult);
   //int iResult = clock_gettime(CLOCK_REALTIME,&tp);
 
   i8 iTicks = tp.tv_sec * C_1G;

@@ -3,7 +3,7 @@
 --------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// no such table
+// EC_NO_SUCH_TABLE
 demo select
     o_orderpriority,
     count(*) as order_count
@@ -26,7 +26,7 @@ group by
 order by
     o_orderpriority;
 
-failure contains: "no such table"
+failure contains: "EC_NO_SUCH_TABLE"
 
 //------------------------------------------------------------------------------
 // create table lineitem
@@ -75,7 +75,7 @@ group by
 order by
   o_orderpriority;
 
-failure contains: "no such"
+failure contains: "EC_NO_SUCH"
 
 //------------------------------------------------------------------------------
 // create index on orderkey
@@ -83,7 +83,7 @@ create index lineitem_idx2 on lineitem (l_orderkey);
 success
 
 //------------------------------------------------------------------------------
-// no such table
+// EC_NO_SUCH_TABLE
 demo select
   o_orderpriority,
   count(*) as order_count
@@ -106,7 +106,7 @@ group by
 order by
   o_orderpriority;
 
-failure contains: "no such"
+failure contains: "EC_NO_SUCH"
 
 //------------------------------------------------------------------------------
 // create orders table (partitioned on custkey)
@@ -147,7 +147,7 @@ group by
 order by
   o_orderpriority;
 
-failure contains: "no such"
+failure contains: "EC_NO_SUCH"
 
 //------------------------------------------------------------------------------
 // create an index on orderkey

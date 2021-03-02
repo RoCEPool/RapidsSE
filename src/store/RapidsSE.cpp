@@ -6,11 +6,10 @@
 
 #include "Output.hpp"
 #include "Session.hpp"
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 #include "RapidsSE.hpp"
 #include "Api.hpp"
+#include "Marker.hpp"
 
 #include "ePP.h"
 #include "TagConstants.h"
@@ -91,21 +90,18 @@ eEC RapidsSE::ePrepareJob(void* aSession, char* azCommand)
 {
   _static_
 
-  TokenVec* pCmdTknVec = new TokenVec;;
   TokenVec* pLitTknVec = new TokenVec;;
-  TagSet    oExtTagSet;
 
   Session* pSession = _pSession(aSession);
   
-  pCmdTknVec->vTokeniseC((Stz*)azCommand);
-  //pCmdTknVec->vDumpVec(0);
+  TokenVec* pCmdTknVec = pSession->m_pInput->pTokenVec();
 
-  oExtTagSet.vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
-  //oExtTagSet.vReplace(C_TAG_TRACEOP,1);
-  
-  eEC eError = Api::ePrepareJob(pSession,pCmdTknVec,pLitTknVec,&oExtTagSet);
-  
-  delete pCmdTknVec;
+  pCmdTknVec->vTokeniseC((Stz*)azCommand);
+
+  TagSet* pTagSet =  & pSession->m_oJobTagSet;
+  pTagSet->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
+  eEC eError = Api::ePrepareJob(pSession,pLitTknVec);
+
   delete pLitTknVec;
 
   return eError;
@@ -143,7 +139,8 @@ eEC RapidsSE::eWaitJob(void* aSession)
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE::eDeleteOperand(void* aSession, void** aaOperand)
 {
-  Session* pSession = _pSession(aSession);
+  UNUSED(aSession);
+  
   Operand* pOperand = _pOperand(*aaOperand);
   *aaOperand = nullptr;
 
@@ -160,14 +157,13 @@ eEC RapidsSE::ePopOperand(void* aSession, void** aaOperand,
 {
   Session* pSession = _pSession(aSession);
   
-  Job* pJob = pSession->pJob();
-
+ 
   Operand* pOperand = pSession->m_pOutput->pPopBufferQueue_blocking(pSession);
 
   eCN eClassNo;
   eOM eOpMarker;
   
-  Result::vDecode(pOperand,eClassNo,eOpMarker);
+  vDecode(pOperand,eClassNo,eOpMarker);
   
   * aaOperand  = pOperand;
   * aeClassNo  = eClassNo;
@@ -184,8 +180,6 @@ eEC RapidsSE::eProcessOperand(void* aSession, void** aaOperand)
   Session* pSession = _pSession(aSession);
   Operand* pOperand = _pOperand(*aaOperand);
   *aaOperand = nullptr;
-
-  Job* pJob = pSession->pJob();
 
   bool b = pSession->m_pOutput->bProcessOperand(pSession,pOperand);
   
@@ -206,6 +200,29 @@ eEC RapidsSE::ePushOperand(void* aSession, void** aaOperand)
 
   Api::vPushOperand(pSession,pOperand);
   return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* -- Private --------------------------------------------------------------- */
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* decode operand into class and marker                                       */
+/*----------------------------------------------------------------------------*/
+void RapidsSE::vDecode(Operand* pOperand, eCN& eClassNo, eOM& eOpMarker)
+{
+  _static_
+
+  eClassNo = pOperand->eGetClassNo();
+
+  if (CN_MARKER == eClassNo) {
+    Marker* pMarker = _pMarker(pOperand);
+
+    eOpMarker = pMarker->eOpMarker();
+  }
+  else {
+    eOpMarker = OM_NONE;
+  }
 }
 
 /*============================================================================*/

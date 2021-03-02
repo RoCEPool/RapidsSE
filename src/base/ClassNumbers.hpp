@@ -132,7 +132,9 @@ enum eCN : u2 // Class Number
   /* */ CN_LISTEXOITER_t,
   /* */ CN_LOADCHUNK,
   /* */ CN_LOCAL,
-  /* */ CN_LOCALSCHAIN,
+  /* */ CN_LOCALCHAIN,
+  /* */ CN_LOCALDIR,
+  /* */ CN_LOCALFILE,
   /* */ CN_LOCK,
   /* */ CN_LOG,
   /* */ CN_LOGENTRY,
@@ -146,6 +148,7 @@ enum eCN : u2 // Class Number
   /* */ CN_MEDIUMTRANSIENT,
   /* */ CN_MEDIUMVIRTUAL,
   /* */ CN_MEMTEST,
+  /* */ CN_METADATA,
   /* */ CN_MUTEX,
 
   /* */ CN__N__,
@@ -204,9 +207,6 @@ enum eCN : u2 // Class Number
   /* */ CN_RECORD,
   /* */ CN_RELOP,
   /* */ CN_RESOURCES,
-  /* */ CN_RESPONSE,
-  /* */ CN_RESPONSEVEC,
-  /* */ CN_RESULT,
   /* */ CN_RLUDIARY,
   /* */ CN_RN_RAND,
   /* */ CN_ROOTNODE,
@@ -463,7 +463,9 @@ static Stz* aCN[]
   /* */ "LISTEXOITER_t"_Stz,        // CN_LISTEXOITER_t
   /* */ "LOADCHUNK"_Stz,            // CN_LOADCHUNK
   /* */ "LOCAL"_Stz,                // CN_LOCAL
-  /* */ "LOCALSCHAIN"_Stz,          // CN_LOCALSCHAIN
+  /* */ "LOCALCHAIN"_Stz,           // CN_LOCALCHAIN
+  /* */ "LOCALDIR"_Stz,             // CN_LOCALDIR
+  /* */ "LOCALFILE"_Stz,            // CN_LOCALFILE
   /* */ "LOCK"_Stz,                 // CN_LOCK
   /* */ "LOG"_Stz,                  // CN_LOG
   /* */ "LOGENTRY"_Stz,             // CN_LOGENTRY
@@ -477,6 +479,7 @@ static Stz* aCN[]
   /* */ "MEDIUMTRANSIENT"_Stz,      // CN_MEDIUMTRANSIENT
   /* */ "MEDIUMVIRTUAL"_Stz,        // CN_MEDIUMVIRTUAL
   /* */ "MEMTEST"_Stz,              // CN_MEMTEST
+  /* */ "METADATA"_Stz,             // CN_METADATA
   /* */ "MUTEX"_Stz,                // CN_MUTEX
  
   /* */ "_N__"_Stz,                 // CN__N__
@@ -535,9 +538,6 @@ static Stz* aCN[]
   /* */ "RECORD"_Stz,               // CN_RECORD
   /* */ "RELOP"_Stz,                // CN_RELOP
   /* */ "RESOURCETRACKER"_Stz,      // CN_RESOURCES
-  /* */ "RESPONSE"_Stz,             // CN_RESPONSE
-  /* */ "RESPONSEVEC"_Stz,          // CN_RESPONSEVEC
-  /* */ "RESULT"_Stz,               // CN_RESULT
   /* */ "RLUDIARY"_Stz,             // CN_RLUDIARY
   /* */ "RN_RAND"_Stz,              // CN_RN_RAND
   /* */ "ROOTNODE"_Stz,             // CN_ROOTNODE

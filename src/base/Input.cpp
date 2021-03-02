@@ -67,6 +67,8 @@ Input::~Input(void) noexcept(false)
 void Input::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   _static_
+  UNUSED(eClass);
+  UNUSED(aTab);
 
   Input* pInput = _pInput(pObject);
   
@@ -428,6 +430,8 @@ void Input::vReadCommand(void)
 L_Exit:
   if (d_iDebugMode) {
     i8 i = iJotSummary(':',(Stz*)__func__,"TokenVec:"_Stz);
+    UNUSED(i);
+
     m_pTknVec->vListTokens();
     vJot2('<',(Stz*)__func__,""_Stz);
   }
@@ -663,6 +667,8 @@ void Input::vCollectVecFirstLine(void)
   
    if (d_iDebugMode) {
      i8 i = iJotSection('>',(Stz*)__func__,""_Stz);
+     UNUSED(i);
+
      //vInspect();
    }
 
@@ -694,6 +700,8 @@ void Input::vCollectVecFirstLine(void)
 
   if (! m_pTknVec->nTokens() && bSeenEOF()) {
     bool b = bPopCharser();
+    UNUSED(b);
+
     ASSERT(b);
   }
   
@@ -715,6 +723,7 @@ void Input::vCollectVecTillSemicolon(void)
   
   if (d_iDebugMode) {
     i8 i = iJotSection('>',(Stz*)__func__,""_Stz);
+    UNUSED(i);
     vInspect();
   }
 
@@ -766,6 +775,8 @@ void Input::vCollectCpp(void)
   ASSERT(UF_CPP_TOKENS == m_eTknForm);
 
   char* azTermCrs = m_pCurrTkn->azChars();
+  UNUSED(azTermCrs);
+  
   m_pCurrTkn->vReset();
 
   vGetAnnCharStripped();
@@ -1205,7 +1216,8 @@ void Input::vCollectSen(void)
   ASSERT(UF_SEN_TOKENS == m_eTknForm);
   
   char* azTermCrs = m_pCurrTkn->azChars();
-  
+  UNUSED(azTermCrs);
+
   m_pCurrTkn->vReset();
 
   vGetAnnCharStripped();

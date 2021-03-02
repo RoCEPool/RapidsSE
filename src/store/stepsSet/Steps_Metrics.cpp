@@ -9,8 +9,6 @@
 #include "Steps.hpp"
 
 #include "Node_I.hpp"
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 #include "LogicUnit.hpp"
 
@@ -29,7 +27,7 @@ void Step::vExpressionsLockSample(void)
 {
   ENTRY();
 
-  StreamDef* pStreamDef = *( m_pJob->pLogicUnit_job() )->m_xpStreamDef;
+  //StreamDef* pStreamDef = *( m_pJob->pLogicUnit_job() )->m_xpStreamDef;
     
   //InfoSet* pInfoSet = LockMetrics::pSample(pStreamDef);
   

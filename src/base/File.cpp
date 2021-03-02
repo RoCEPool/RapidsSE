@@ -81,10 +81,13 @@ void File::operator delete(void* pFileAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-File::File(Object* bIsFor)
-: Resource(CN_FILE,bIsFor)
+File::File(Object* pIsFor, i8 iLogCtl)
+: Resource(CN_FILE,pIsFor,iLogCtl)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+  
+  // the trace file is malloc'd
+  RASSERT(pIsFor || m_iViaMalloc);
   
   if ( ! (0 == m_iViaMalloc || 1 == m_iViaMalloc) )
     m_iViaMalloc = 0;
@@ -98,15 +101,14 @@ File::File(Object* bIsFor)
   _checkInitialised_(CN_FILE);
   
   ++ gixFile;
-  AM::vLogRes(SL_INF,this,RA_FIL_CONSTRUCT,
-              "File construct |gixFile=%lld|"_Stz, //!format-LogRes
-              * gixFile);
   
   _postcondition_(_MAGIC_,CN_FILE,_FOOTER_);
   
   
   if (! m_iViaMalloc)
     gpOpenFiles->vAppend(this);
+  
+  vLog(EV_CONSTRUCT,"File constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -126,15 +128,14 @@ File::~File(void) noexcept(false)
   }
   
   -- gixFile;
-  AM::vLogRes(SL_INF,this,RA_FIL_DESTRUCT,
-              "File destruct |gixFile=%lld|"_Stz, //!format-LogRes
-              * gixFile);
   
   if (m_iViaMalloc)
     vTrace("~File was via mallocs\n"_Stz);
   
   if (! m_iViaMalloc)
     gpOpenFiles->vRemove(this);
+  
+  vLog(EV_DESTRUCT,"File destructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -149,7 +150,8 @@ void File::vInitGlobals(void)
 {
   _static_
   
-  vTrace("File::vInitGlobals\n"_Stz);
+  if (AM::bVerbose())
+    vTrace("File::vInitGlobals\n"_Stz);
   
    if (! gpOpenFiles)
     gpOpenFiles = new OpenFiles;
@@ -161,7 +163,9 @@ void File::vInitGlobals(void)
 void File::vListOfOpenFiles(SelfFn* aSelfFn, TokenVec* pTokenVec)
 {
   _static_
-  
+  UNUSED(aSelfFn);
+  UNUSED(pTokenVec);
+
   vTrace("File::vListOfOpenFiles\n"_Stz);
 }
 
@@ -374,9 +378,7 @@ void File::vClose(void)
   
   if (! m_iViaMalloc && AM::bAttached()) AM::pResources()->vDecFileOpen();
   
-  AM::vLogRes(SL_INF,this,RA_FIL_CLOSED,
-              "File closed: path=%s"_Stz, //!format-LogRes
-              m_sFilePath.szStz());
+  vLog(EV_CLOSE,"File closed: path=%s"_Stz,m_sFilePath.szStz());
 
   vReset();
   
@@ -425,14 +427,16 @@ void File::vFlush(void)
     vWarn("File::vFlush: fflush() error; errno=%d"_Stz,errno);
     return;
   }
+  
+  vLog(EV_FLUSH,"File flushed: path=%s"_Stz,m_sFilePath.szStz());
 
   m_oSysCall.vSuccess();
 }
 
 /*----------------------------------------------------------------------------*/
-/* focal outline                                                              */
+/* outline                                                                    */
 /*----------------------------------------------------------------------------*/
-void File::vFocalOutline(s4K& sOutline)
+void File::vOutline(s4K& sOutline)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
   
@@ -716,13 +720,9 @@ bool File::bOpenMode(Stz* szFilePath, Stz* szOpenMode)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (! m_iViaMalloc && AM::bAttached()) AM::pResources()->vIncFileOpen();
-  
-  AM::vLogRes(SL_INF,this,RA_FIL_OPENED,
-              "File opened: path=%s; mode=%s"_Stz, //!format-LogRes
-              szFilePath,szOpenMode);
-  
-  EVLOG::vEvent(this,EV_OPENED,"File opened: path=%s; mode=%s"_Stz,
-              szFilePath,szOpenMode);
+    
+  vLog(EV_OPEN,"File opened: path=%s; mode=%s"_Stz,
+       m_sFilePath.szStz(),m_sOpenMode.szStz());
 
   return true;
 }
@@ -831,6 +831,9 @@ i8 File::nReadBytes(void* aDst, i8 nBytes)
 #ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.File.m_nReadBytes += nBytesRead;
 #endif
+  
+  vLog(EV_READ,"File read: path=%s; bytes=%lld"_Stz,m_sFilePath.szStz(),nBytesRead);
+
 
   return nBytesRead;
 }

@@ -40,6 +40,7 @@ void* RowPix::operator new(size_t, RowPix* aInfoPix)
 /*----------------------------------------------------------------------------*/
 void RowPix::operator delete(void* aAddress)
 {
+  UNUSED(aAddress);
 }
 
 /*----------------------------------------------------------------------------*/

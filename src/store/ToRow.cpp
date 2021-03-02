@@ -621,7 +621,9 @@ bool ToRow::bConvertCsv(CsvBuffer* pCsvBuffer)
 bool ToRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
-  
+  UNUSED(azCsvChunk);
+  UNUSED(pCsvMeta);
+
   m_pRowBuffer->nFreeBytes();
 
   // change this to some no longer strib function
@@ -667,8 +669,6 @@ bool ToRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   i8 nMicrosecondShift;
 
   d8 dColVal_float;       // float
-  d8 dUnsignedFloat;
-  i8 nExponentDigits;
   char caBuffer_atof[256];
   char* acFltDst;
   i8 nFloatChars;
@@ -743,15 +743,12 @@ bool ToRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   char cCurChr = *azCsvCrs++;
   char cNxtChr = *azCsvCrs;
 
-  i8 iBucketId = 0;
   i8 i_Fld = 0;
   i8 iPtnKeyHash = 0;
   tPN tPtnNo = 0;
-  tPN tPtnNo_byBkt = 0;
   eEC eError = EC_NONE;
   i8 i_ErrorCodeLine = -1;
   
-  Column* pCol = nullptr;
   ColPix* aColPix = m_pRowBuffer->axaColPix();
   i8 nCols = m_pStreamDef->nColumns();
 
@@ -892,6 +889,7 @@ L_AdvanceNextRecord:
     vNewRowBuffer();
     Row* aNewRow = m_pRowBuffer->pAllotNewRow();
     ASSERT(aNewRow);
+    UNUSED(aNewRow);
   }
  
   m_pRowBuffer->nFreeBytes();

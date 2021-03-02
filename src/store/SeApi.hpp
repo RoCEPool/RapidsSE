@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+namespace STORE { class InfoSet; }
+
 namespace STORE
 {
   class SeApi : public Object
@@ -36,6 +38,35 @@ namespace STORE
     SeApi* pEncode(Stz* szAction, Stz* szArgument);
 
     Stz*   szGet(void);
+
+    Dic* pCurrCatalog(void);
+    Stz* szCurrCatalog(void);
+    Dic* pCurrSchema(void);
+    Stz* szCurrSchema(void);
+    Dic* pCurrTable(void);
+    Stz* szCurrTable(void);
+    Dic* pCurrTenant(void);
+    Stz* szCurrTenant(void);
+  
+    void vPrintMetadata(void);
+
+    InfoSet* pColumnDefs(Stz* szCatalogName,
+                         Stz* szSchemaName,
+                         Stz* szTableName,
+                         Stz* szColumnName);
+
+    InfoSet* pLookupCatalog(Stz* szCatalogName);
+  
+    InfoSet* pLookupSchema(Stz* szCatalogName,
+                             Stz* szSchemaName);
+
+    InfoSet* pLookupTable(Stz* szCatalogName,
+                            Stz* szSchemaName,
+                            Stz* szTableName);
+  
+    bool bTest(Stz* szCatalogNm);
+    bool bTest(Stz* szCatalogNm, Stz* szSchemaNm);
+    bool bTest(Stz* szCatalogNm, Stz* szSchemaNm, Stz* szTableNm);
 
   private:
     

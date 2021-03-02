@@ -28,7 +28,7 @@ void* IoChunk::operator new(size_t)
 {
   IoChunk* pIoChunk = (IoChunk*)Heaps::pAllocate(CN_IOCHUNK);
   
-  return pPoolCheck<void*>(pIoChunk);
+  return pPoolCheck<void*>(pIoChunk,__func__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -67,6 +67,10 @@ IoChunk::~IoChunk(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void IoChunk::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
+  UNUSED(eClass);
+  UNUSED(pObject);
+  UNUSED(aTab);
+
   //IoChunk* pIoChunk = _pIoChunk(pObject);
   
   vTrace("\n"_Stz);

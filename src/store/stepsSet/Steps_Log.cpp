@@ -8,8 +8,6 @@
 #include "StepAccum.hpp"
 #include "Steps.hpp"
 
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 #include "JobLog.hpp"
 
@@ -126,7 +124,8 @@ void Step::vLogMarkSeed(void)
   ENTRY();
   
   i8 iSeed = m_pDataStack->iPopInt(__func__);
-  
+  UNUSED(iSeed);
+
   s32 sWordNm;
   m_pDataStack->vPopStr(sWordNm,__func__);
   
@@ -143,7 +142,8 @@ void Step::vLogMarkWord(void)
   ENTRY();
   
   i8 iAN = m_pDataStack->iPopInt(__func__);
-  
+  UNUSED(iAN);
+
   s32 sWordNm;
   m_pDataStack->vPopStr(sWordNm,__func__);
   

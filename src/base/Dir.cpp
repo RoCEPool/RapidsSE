@@ -18,36 +18,14 @@ Atomic gixDir;
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
+/*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-Dir* BASE::_pDir(void* aAddr)
-{
-  Dir* pDir = reinterpret_cast<Dir*>(aAddr);
-  
-  RASSERT_TYPE(pDir,CN_DIR);
-  
-  return pDir;
-}
 
-/*----------------------------------------------------------------------------*/
-/* new operator                                                               */
-/*----------------------------------------------------------------------------*/
-void* Dir::operator new(size_t)
-{
-  void* pDir = Heaps::pAllocate(CN_DIR);
-  
-  return pDir;
-}
+__pCastFunction(BASE,Dir,CN_DIR)
+__aNewFunction(Dir,CN_DIR)
+__vDeleteFunction(Dir,CN_DIR)
+__aFooterFunction(Dir)
 
-/*----------------------------------------------------------------------------*/
-/* delete operator                                                            */
-/*----------------------------------------------------------------------------*/
-void Dir::operator delete(void* pDirAddress)
-{
-  Object* pObject = reinterpret_cast<Object*>(pDirAddress);
-  
-  Heaps::vFree(pObject);
-}
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -70,11 +48,10 @@ Dir::Dir(Loggable* pIsFor)
   _checkInitialised_(CN_DIR);
   
   ++ gixDir;
-  AM::vLogRes(SL_INF,this,RA_DIR_CONSTRUCT,
-              "Dir construct : %p (%lld dirs exist)"_Stz, //!format-LogRes
-              this,* gixDir);
   
   _postcondition_(_MAGIC_,CN_DIR,_FOOTER_);
+  
+  vLog(EV_CONSTRUCT,"Dir constructor"_Stz);
 };
 
 /*----------------------------------------------------------------------------*/
@@ -95,9 +72,8 @@ Dir::~Dir(void) noexcept(false)
 
   
   -- gixDir;
-  AM::vLogRes(SL_INF,this,RA_DIR_DESTRUCT,
-              "Dir destruct : %p (%lld dirs exist)"_Stz, //!format-LogRes
-              this,* gixDir);
+  
+  vLog(EV_DESTRUCT,"Dir destructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -230,6 +206,8 @@ void Dir::vClose(void)
 
   m_aDir = nullptr;
   
+  vLog(EV_CLOSE,"Dir closed: path=%s"_Stz,m_sDirPath.szStz());
+
   ASSERT(bIsClosed());
 }
 
@@ -254,9 +232,9 @@ i8 Dir::iEntryType(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* focal outline                                                              */
+/* outline                                                                    */
 /*----------------------------------------------------------------------------*/
-void Dir::vFocalOutline(s4K& sOutline)
+void Dir::vOutline(s4K& sOutline)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIR,_FOOTER_);
   
@@ -320,6 +298,8 @@ bool Dir::bOpen(Stz* szDirPath)
   AM::vLogRes(SL_INF,this,RA_DIR_OPENED,
               "Dir opened : %s"_Stz, //!format-LogRes
               szDirPath);
+
+  vLog(EV_OPEN,"Dir opened: path=%s"_Stz,m_sDirPath.szStz());
 
   ASSERT(bIsOpen());
   return true;
@@ -408,21 +388,6 @@ i8 Dir::iTell(void)
   
   m_oSysCall.vSuccess();
   return iPosition;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* Dir::aFooter(void)
-{
-  _precondition_(_MAGIC_,CN_DIR);
-  
-  return &m_xFooter;
 }
 
 /*============================================================================*/

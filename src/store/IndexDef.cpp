@@ -262,6 +262,22 @@ void IndexDef::vKeyKind(eKE eKeyKind)
 }
                            
 /*----------------------------------------------------------------------------*/
+/* list contents                                                              */
+/*----------------------------------------------------------------------------*/
+void IndexDef::vListContents(i8 i_Depth)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+  
+  vTrace("%sIndexDef %s\n"_Stz,Stz::szTab(i_Depth),m_sIndexNm.szStz());
+
+  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
+    Column* pColumn = pGetColumn(i_Col);
+
+    pColumn->vListContents(i_Depth+1);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the table name                                                         */
 /*----------------------------------------------------------------------------*/
 Stz* IndexDef::szTableNm(void)

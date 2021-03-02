@@ -153,8 +153,11 @@ void Word::vArtFun(Object* pObject, SP& spObject)
 void Word::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   _static_
-  
+  UNUSED(eClass);
+  UNUSED(aTab);
+
   Word* pWord = _pWord(pObject);
+  UNUSED(pWord);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -464,7 +467,7 @@ CodeCell* Word::aFirstCell(void)
   
   CodeCell* aFirst = reinterpret_cast<CodeCell*>(m_pCodeBlock->ayWspArea());
   
-  return pPoolCheck<CodeCell*>(aFirst);
+  return pPoolCheck<CodeCell*>(aFirst,__func__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -521,7 +524,7 @@ CodeCell* Word::aLastCell(void)
   
   CodeCell* aLast = reinterpret_cast<CodeCell*>(m_pCodeBlock->ayWspLatter());
   
-  return pPoolCheck<CodeCell*>(aLast);
+  return pPoolCheck<CodeCell*>(aLast,__func__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -586,6 +589,7 @@ void Word::vObject(Object* pObject)
 void Word::vObjectDump(Stz* aTab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  UNUSED(aTab);
   
   vTrace("epoch %lld %s (%s) %s %s DataBytes %lld "_Stz
          "Step %p ..Rows.. %p\n"_Stz,
@@ -739,7 +743,7 @@ char* Word::aWspArea(void)
   
   char* aBody = (char*)m_pCodeBlock->ayWspArea();
   
-  return pPoolCheck<char*>((void*)aBody);
+  return pPoolCheck<char*>((void*)aBody,__func__);
 }
 
 

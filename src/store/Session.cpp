@@ -107,11 +107,10 @@ Session::Session(void)
   m_oSsnTagSet.vInsert(C_TAG_PATH,C_SE_PATH);
   
   ++ gixSession;
-  AM::vLogSsn(SL_INF,this,AA_SSN_CONSTRUCT,
-              "Session construct : %p (%lld tasks exist)"_Stz, //!format-LogSsn
-              this,* gixSession);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
+  
+  vLog(EV_CONSTRUCT,"Session constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -126,9 +125,8 @@ Session::~Session(void) noexcept(false)
   AM::pSessions()->vFreeSession(this);
           
   -- gixSession;
-  AM::vLogSsn(SL_INF,this,AA_SSN_DESTRUCT,
-              "Session destruct : %p (%lld tasks exist)"_Stz, //!format-LogSsn
-              this,* gixSession);
+  
+  vLog(EV_DESTRUCT,"Session destructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -208,6 +206,9 @@ void Session::vEndTx()
 /*----------------------------------------------------------------------------*/
 void Session::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
+  UNUSED(eClass);
+  UNUSED(aTab);
+  
   Session* pSession = _pSession(pObject);
   
   vTrace("pid %lld %s stream %lld"_Stz,
@@ -239,7 +240,7 @@ void Session::vFixedPtn(i8 i_FixedPtn)
 /*----------------------------------------------------------------------------*/
 /* free the session state                                                     */
 /*----------------------------------------------------------------------------*/
-void Session::vFreeSession(i8 i_NextFree)
+void Session::vFinaliseSession(i8 i_NextFree)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
@@ -276,20 +277,16 @@ void Session::vFreeSession(i8 i_NextFree)
   m_pTx        = nullptr;
   
   // -- -- -- -- -- --
+  
+  if (m_pInput)
+    delete m_pInput;
+  m_pInput = nullptr;
 
   if (m_pOutput)
     delete m_pOutput;
   m_pOutput = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* focal outline                                                              */
-/*----------------------------------------------------------------------------*/
-void Session::vFocalOutline(s4K& sOutline)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
-  sOutline.vSprint("<%s focal>"_Stz,aCN[eGetClassNo()]);
+  m_oJobTagSet.vReset();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -315,12 +312,11 @@ void Session::vHasCascade(bool bHasCascade)
 /*----------------------------------------------------------------------------*/
 /* initialise this session                                                    */
 /*----------------------------------------------------------------------------*/
-eEC Session::eInitSession(Stz* pCatalogName, Stz* pSchemaName)
+eEC Session::eInitaliseSession(Stz* szCatalogName, Stz* szSchemaName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
   Dic* pDic = nullptr;
-  CodeCell* aCell =  nullptr;
   //m_oDicStack.vContentDump();
  
   //fprintf(stderr,"eInit A\n");
@@ -363,11 +359,11 @@ eEC Session::eInitSession(Stz* pCatalogName, Stz* pSchemaName)
 
   //fprintf(stderr,"eInit F\n");
   
-  if ( ! pCatalogName)
+  if ( ! szCatalogName)
     return EC_NONE;
   
   // /tenants/boray/catalogs/rapidsse
-  Word* pCatalog = m_oDicStack.pFindInCurrent(pCatalogName);
+  Word* pCatalog = m_oDicStack.pFindInCurrent(szCatalogName);
   if ( ! pCatalog)
     return EC_NO_SUCH_CATALOG;
   
@@ -386,13 +382,13 @@ eEC Session::eInitSession(Stz* pCatalogName, Stz* pSchemaName)
   
   m_oDicStack.vPush(pDic);
 
-  if ( ! pSchemaName )
+  if ( ! szSchemaName )
     return EC_NONE;
   
   //fprintf(stderr,"eInit J\n");
   
   // /tenants/boray/catalogs/rapidsse/schemas/public
-  Word* pSchema = m_oDicStack.pFindInCurrent(pSchemaName);
+  Word* pSchema = m_oDicStack.pFindInCurrent(szSchemaName);
   if ( ! pSchema)
     return EC_NO_SUCH_SCHEMA;
   
@@ -412,6 +408,8 @@ eEC Session::eInitSession(Stz* pCatalogName, Stz* pSchemaName)
 
   //fprintf(stderr,"eInit M\n");
   
+  m_pInput = new Input;
+  
   m_pOutput = new Output;
 
   m_pOutput->m_pOutputQueue = new Queue;
@@ -427,6 +425,16 @@ Job* Session::pJob(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
   return m_pSsnJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* outline                                                                    */
+/*----------------------------------------------------------------------------*/
+void Session::vOutline(s4K& sOutline)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
+  
+  sOutline.vSprint("<%s focal>"_Stz,aCN[eGetClassNo()]);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -26,7 +26,7 @@ void* FileChunk::operator new(size_t)
 {
   FileChunk* pFileChunk = (FileChunk*)Heaps::pAllocate(CN_IOCHUNK);
   
-  return pPoolCheck<void*>(pFileChunk);
+  return pPoolCheck<void*>(pFileChunk,__func__);
 }
 
 /*----------------------------------------------------------------------------*/

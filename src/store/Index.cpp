@@ -111,6 +111,9 @@ Index::~Index(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Index::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
+  UNUSED(eClass);
+  UNUSED(pObject);
+  UNUSED(aTab);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -267,6 +270,21 @@ void Index::vIsUnique(bool bUnique)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
   m_pIndexDef->m_bIsUnique = bUnique;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set index as a primary key index                                           */
+/*----------------------------------------------------------------------------*/
+void Index::vListContents(i8 i_Depth)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  
+  vTrace("%sIndex %lld %s\n"_Stz,
+         Stz::szTab(i_Depth),
+         m_iIndexNo,
+         m_sIndexNm.szStz());
+  
+  m_pIndexDef->vListContents(i_Depth+1);
 }
 
 /*----------------------------------------------------------------------------*/

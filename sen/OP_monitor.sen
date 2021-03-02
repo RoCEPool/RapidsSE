@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* OP_monitor.sen -- Monitor Operator                                   */
+/* OP_monitor.sen -- Monitor Operator                                         */
 /*============================================================================*/
 
 " OP_monitor.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* put the monitors peridiodic activity here                               */
+/* put the monitors peridiodic activity here                                  */
 /*----------------------------------------------------------------------------*/
 : monitor::activity
 
@@ -20,7 +20,7 @@
 /*----------------------------------------------------------------------------*/
 : monitor_StartMarker \handler
 
-  "Monitor Job Started" .
+  "Monitor Job Started" .verbose
 
   begin
 

@@ -22,15 +22,6 @@
   // new a temporary Job__Executed
   pJobParticipant job__Executed::new to pJob__Executed
 
-  // get error if any
-  pJobParticipant job.error@ to error
-
-  error EC_NONE != if
-    // set error in executed job
-    error pJob__Executed job.error!
-  then
-
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // set the originator node as the send target node
@@ -66,10 +57,6 @@
 
   // get the participant node from where this job__begun started
   pJob__Executed job.participant@ to iParticipantNode
-
-  // set the participant response in the originator job
-  //pJob__Executed iParticipantNode JobRef[] job.participantResponse!
-  pJob__Executed JobRef[] job.participantResponse!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // process __executed job on this originating node

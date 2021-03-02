@@ -63,7 +63,7 @@ void Task::operator delete(void* pTaskAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Task::Task(Job* pJob, i8 iFocalId)
+Task::Task(Job* pJob)
 : Loggable(CN_TASK)
 , m_okLock(this)
 {
@@ -105,7 +105,7 @@ Task::Task(Job* pJob, i8 iFocalId)
   m_pLocalsFrame = nullptr;
 
   m_pSenCompiler = new SenCompiler;
-  m_pInput       = nullptr; // new Input;
+  m_pInput       = nullptr;
 
   
   _checkInitialised_(CN_TASK);
@@ -113,14 +113,13 @@ Task::Task(Job* pJob, i8 iFocalId)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   
-  vEventNoInc(); ++ gixTask;
-  AM::vLogTsk(SL_INF,this,TA_TSK_CONSTRUCT,
-              "Task -%s%s |gixTask=%lld|"_Stz, //!format-LogTsk
-              aCN[ AM::eJobClass(m_pJob) ],
-              AM::bJobWasReceived(m_pJob) ? " was-received"_Stz : ""_Stz,
-              * gixTask);
+  vEventNoInc();
+  
+  ++ gixTask;
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  vLog(EV_CONSTRUCT,"Task constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -168,9 +167,8 @@ Task::~Task(void) noexcept(false)
   
   -- gixTask;
   vEventNoInc();
-  AM::vLogTsk(SL_INF,this,TA_TSK_DESTRUCT,
-              "Task destruct |gixTask=%lld|"_Stz, //!format-LogTsk
-              * gixTask);
+
+  vLog(EV_DESTRUCT,"Task destructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -261,6 +259,9 @@ void Task::vAssertStructure(void)
 /*----------------------------------------------------------------------------*/
 void Task::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
+  UNUSED(eClass);
+  UNUSED(aTab);
+
   Task* pTask = _pTask(pObject);
   
   vTrace("%s %p state %s txId %lld\n"_Stz,

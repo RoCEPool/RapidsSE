@@ -102,7 +102,7 @@ b1 Tsp::bIsValid(i8 iYear, i8 iMonth, i8 iDay, i8 iHour, i8 iMin, i8 iSec, i8 iM
     return false;
   }
 
-  if (iMicro > C_TSP_USEC_MAX || iMicro < C_TSP_USEC_MIN) {
+  if (iMicro > (i8)C_TSP_USEC_MAX || iMicro < (i8)C_TSP_USEC_MIN) {
     sErrorBuf.vCopy("Invalid timestamp string format. Microseconds value is out of range"_Stz);
     return false;
   }

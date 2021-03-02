@@ -26,7 +26,7 @@ void* IngestChunk::operator new(size_t)
 {
   IngestChunk* pIngestChunk = (IngestChunk*)Heaps::pAllocate(CN_IOCHUNK);
   
-  return pPoolCheck<void*>(pIngestChunk);
+  return pPoolCheck<void*>(pIngestChunk,__func__);
 }
 
 /*----------------------------------------------------------------------------*/

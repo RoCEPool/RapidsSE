@@ -15,8 +15,6 @@
 #include "Stage.hpp"
 #include "Pipeline.hpp"
 #include "PipelineSpec.hpp"
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"

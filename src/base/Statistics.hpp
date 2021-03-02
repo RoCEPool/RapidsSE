@@ -104,7 +104,7 @@ namespace BASE
     i8 m_nSendTos;
   
     i8 m_nRecvBytes;
-    i8 m_nSendBytes;
+    i8 m_nSentBytes;
   } Socket_;
   
   struct {

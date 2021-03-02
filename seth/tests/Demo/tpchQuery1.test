@@ -3,7 +3,7 @@
 --------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// no such table
+// EC_NO_SUCH_TABLE
 demo select
   l_returnflag,
   l_linestatus,
@@ -25,7 +25,7 @@ group by
 order by
   l_returnflag,
   l_linestatus;
-failure contains: "no such table"
+failure contains: "EC_NO_SUCH_TABLE"
 
 //------------------------------------------------------------------------------
 // create table lineitem

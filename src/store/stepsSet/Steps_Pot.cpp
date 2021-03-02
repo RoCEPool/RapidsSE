@@ -8,8 +8,6 @@
 #include "StepAccum.hpp"
 #include "Steps.hpp"
 
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
@@ -24,6 +22,7 @@ void Step::vAddSteps_Pot(void)
   vAddStep("pot[].dangling"_Stz,        &Step::vPotDangling);
   vAddStep("pot[].danglingPtn"_Stz,     &Step::vPotDanglingPtn);
   vAddStep("pot[].delete"_Stz,          &Step::vPotDelete);
+  vAddStep("pot[].isNull"_Stz,          &Step::vPotIsNull);
   vAddStep("pot[].new"_Stz,             &Step::vPotNew);
   vAddStep("pot[].pushBuffer"_Stz,      &Step::vPotPushBuffer);
   vAddStep("pot[].useStreamDefOut"_Stz, &Step::vPotUseStreamDefOut);
@@ -109,6 +108,18 @@ void Step::vPotDelete(void)
   
   delete pPot;
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* pot[].isNull -- is pot null                                                */
+/*----------------------------------------------------------------------------*/
+void Step::vPotIsNull(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushInt(( m_pJob->pLogicUnit_job() )->m_xpPot.bIsNull() ? 1 : 0);
+
   EXIT();
 }
 

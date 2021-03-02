@@ -101,7 +101,7 @@ namespace BASE
 //    i8 iEntryTxn(eSL, Tx*        pTxn, eXA eTxnAct, Stz* szFormat, va_list xArgs);
 
   public:
-    void vFocalOutline(s4K& sOutline);
+    void vOutline(s4K& sOutline);
 
     LogEntry* pGetEntry(i8 i_Entry);
   

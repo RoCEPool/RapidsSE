@@ -24,8 +24,6 @@
 #include "Node.hpp"
 #include "Node_I.hpp"
 #include "Grid.hpp"
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 #include "LogicUnit.hpp"
 
@@ -237,9 +235,7 @@ void Step::vGridTablePtnToPtnNo(void)
 void Step::vGridThisNodeFetch(void)
 {
   ENTRY();
-  
-  Object* pPtrGrid;
-  
+    
   i8 iNodeNo = AM::pGrid()->iThisNode();
   
   m_pDataStack->vPushInt(iNodeNo);

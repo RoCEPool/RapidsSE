@@ -11,8 +11,8 @@
 /*----------------------------------------------------------------------------*/
 
 __pCastFunction(STORE,PlannerLock,CN_PLANNERLOCK)
-__aNewFunction(PlannerLock,CN_PLANNERLOCK)
-__vDeleteFunction(PlannerLock,CN_PLANNERLOCK)
+//__aNewFunction(PlannerLock,CN_PLANNERLOCK)
+//__vDeleteFunction(PlannerLock,CN_PLANNERLOCK)
 __aFooterFunction(PlannerLock);
 
 /*----------------------------------------------------------------------------*/
@@ -21,11 +21,11 @@ __aFooterFunction(PlannerLock);
 PlannerLock::PlannerLock(void)
 : MasterLock(CN_PLANNERLOCK)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNERLOCK,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_PLANNERLOCK,_FOOTER_);
    
   _checkInitialised_(CN_PLANNERLOCK);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_PLANNERLOCK,_FOOTER_);
+  //_postcondition_(_ADDRESS_,_MAGIC_,CN_PLANNERLOCK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +33,7 @@ PlannerLock::PlannerLock(void)
 /*----------------------------------------------------------------------------*/
 PlannerLock::~PlannerLock(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNERLOCK,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_PLANNERLOCK,_FOOTER_);
   
 }
 

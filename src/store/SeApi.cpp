@@ -14,11 +14,11 @@
 #include "IndexTree.hpp"
 #include "TablePtn.hpp"
 #include "Table.hpp"
+#include "Metadata.hpp"
+#include "InfoSet.hpp"
 
 #include "AM.hpp"
 
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 
 #include "Job.hpp"
@@ -281,6 +281,7 @@ void SeApi::vPrintAllTablesInCurrentFolder(void)
 SeApi& SeApi::operator |(SeApi* pArg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
+  UNUSED(pArg);
   
   return *(SeApi*)this;
 }
@@ -342,6 +343,277 @@ Stz* SeApi::szGet(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
     
   return m_sSequence;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get current catalog                                                        */
+/*----------------------------------------------------------------------------*/
+Dic* SeApi::pCurrCatalog(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
+    
+  Metadata* pMetadata = new Metadata;
+  
+  Dic* pDic = pMetadata->pCurrCatalog();
+
+  delete pMetadata;
+
+  return pDic;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get name of current catalog                                                */
+/*----------------------------------------------------------------------------*/
+Stz* SeApi::szCurrCatalog(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
+    
+  Metadata* pMetadata = new Metadata;
+  
+  Stz* szCatalogNm = pMetadata->szCurrCatalog();
+
+  delete pMetadata;
+
+  return szCatalogNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current schema                                                         */
+/*----------------------------------------------------------------------------*/
+Dic* SeApi::pCurrSchema(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
+    
+  Metadata* pMetadata = new Metadata;
+  
+  Dic* pDic = pMetadata->pCurrSchema();
+
+  delete pMetadata;
+
+  return pDic;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get name of current schema                                                 */
+/*----------------------------------------------------------------------------*/
+Stz* SeApi::szCurrSchema(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
+    
+  Metadata* pMetadata = new Metadata;
+  
+  Stz* szSchemaNm = pMetadata->szCurrSchema();
+
+  delete pMetadata;
+
+  return szSchemaNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current tenant                                                         */
+/*----------------------------------------------------------------------------*/
+Dic* SeApi::pCurrTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
+    
+  Metadata* pMetadata = new Metadata;
+  
+  Dic* pDic = pMetadata->pCurrTable();
+
+  delete pMetadata;
+
+  return pDic;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get name of current table                                                  */
+/*----------------------------------------------------------------------------*/
+Stz* SeApi::szCurrTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
+    
+  Metadata* pMetadata = new Metadata;
+  
+  Stz* szTableNm = pMetadata->szCurrTable();
+  
+  delete pMetadata;
+
+  return szTableNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current tenant                                                         */
+/*----------------------------------------------------------------------------*/
+Dic* SeApi::pCurrTenant(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
+    
+  Metadata* pMetadata = new Metadata;
+  
+  Dic* pDic = pMetadata->pCurrTenant();
+
+  delete pMetadata;
+
+  return pDic;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get name of current tenant                                                 */
+/*----------------------------------------------------------------------------*/
+Stz* SeApi::szCurrTenant(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
+    
+  Metadata* pMetadata = new Metadata;
+  
+  Stz* szTenantNm = pMetadata->szCurrTenant();
+  
+  delete pMetadata;
+
+  return szTenantNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* determine whether a catalog exists and return its full name                */
+/*----------------------------------------------------------------------------*/
+void SeApi::vPrintMetadata(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
+    
+  Metadata* pMetadata = new Metadata;
+  
+  pMetadata->vListContents(0,nullptr);
+
+  delete pMetadata;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* get column set matching given arguments                                    */
+/*----------------------------------------------------------------------------*/
+InfoSet* SeApi::pColumnDefs(Stz* szCatalogName,
+                            Stz* szSchemaName,
+                            Stz* szTableName,
+                            Stz* szColumnName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
+    
+  Metadata* pMetadata = new Metadata;
+  
+  InfoSet* pInfoSet = pMetadata->pColumnDefs(szCatalogName,
+                                             szSchemaName,
+                                             szTableName,
+                                             szColumnName);
+
+  delete pMetadata;
+
+  return pInfoSet;
+}
+
+/*----------------------------------------------------------------------------*/
+/* determine whether a catalog exists and return its full name                */
+/*----------------------------------------------------------------------------*/
+InfoSet* SeApi::pLookupCatalog(Stz* szCatalogName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
+    
+  Metadata* pMetadata = new Metadata;
+  
+  InfoSet* pInfoSet = pMetadata->pLookupCatalog(szCatalogName);
+
+  delete pMetadata;
+
+  return pInfoSet;
+}
+
+/*----------------------------------------------------------------------------*/
+/* determine whether a schema exists and return its full name                 */
+/*----------------------------------------------------------------------------*/
+InfoSet* SeApi::pLookupSchema(Stz* szCatalogName,
+                                Stz* szSchemaName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
+    
+  Metadata* pMetadata = new Metadata;
+ 
+  InfoSet* pInfoSet = pMetadata->pLookupSchema(szCatalogName,
+                                               szSchemaName);
+
+  delete pMetadata;
+
+  return pInfoSet;
+}
+
+/*----------------------------------------------------------------------------*/
+/* determine whether a table exists and return its full name                  */
+/*----------------------------------------------------------------------------*/
+InfoSet* SeApi::pLookupTable(Stz* szCatalogName,
+                               Stz* szSchemaName,
+                               Stz* szTableName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
+    
+  Metadata* pMetadata = new Metadata;
+  
+  InfoSet* pInfoSet = pMetadata->pLookupTable(szCatalogName,
+                                              szSchemaName,
+                                              szTableName);
+
+  delete pMetadata;
+
+  return pInfoSet;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for given catalog                                                     */
+/*----------------------------------------------------------------------------*/
+bool SeApi::bTest(Stz* szCatalogNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
+    
+  Metadata* pMetadata = new Metadata;
+
+  bool bFound = pMetadata->bTest(szCatalogNm);
+  
+  delete pMetadata;
+  
+  return bFound;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for given catalog                                                     */
+/*----------------------------------------------------------------------------*/
+bool SeApi::bTest(Stz* szCatalogNm, Stz* szSchemaNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
+    
+  Metadata* pMetadata = new Metadata;
+
+  bool bFound = pMetadata->bTest(szCatalogNm,szSchemaNm);
+  
+  delete pMetadata;
+  
+  return bFound;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for given catalog                                                     */
+/*----------------------------------------------------------------------------*/
+bool SeApi::bTest(Stz* szCatalogNm, Stz* szSchemaNm, Stz* szTableNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
+    
+  Metadata* pMetadata = new Metadata;
+
+  bool bFound = pMetadata->bTest(szCatalogNm,szSchemaNm,szTableNm);
+  
+  delete pMetadata;
+  
+  return bFound;
 }
 
 /*============================================================================*/

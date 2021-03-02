@@ -1098,12 +1098,12 @@ void CmdLineArgs::vSanityCheck(void)
     Process::vExitFailure();
   }
   
-  i8 iRequiredThreads =
-    1                 // 1 thread for socket answer
-    + m_xSysArgs.m_nBootNodes        // n threads for socket receiver
-    + 1               // a thread for table loader
-    + 1               // 1 for the pot
-  ;
+//  i8 iRequiredThreads =
+//    1                 // 1 thread for socket answer
+//    + m_xSysArgs.m_nBootNodes        // n threads for socket receiver
+//    + 1               // a thread for table loader
+//    + 1               // 1 for the pot
+//  ;
   
 //RJH  if (m_xSysArgs.m_nThreads < iRequiredThreads) {
 //RJH    vTrace("Insufficient threads: %lld. At least %lld threads required\n"_Stz,

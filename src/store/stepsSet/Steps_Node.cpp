@@ -10,8 +10,6 @@
 
 #include "Node.hpp"
 #include "Grid.hpp"
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 
 #include "Socket.hpp" //?
@@ -49,8 +47,8 @@ void Step::vNodeNew(void)
   ENTRY();
   
   Job* pJob = AM::pThisTLSJob();
-  TagSet* pJobTags = pJob->pJobTags();
   
+  //TagSet* pJobTags = pJob->pJobTags();
   //pTagSet->vPrint();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -304,7 +302,8 @@ void Step::vNodeStartNode(void)
   ENTRY();
   
   Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
-  
+  UNUSED(pNode);
+
   m_pDataStack->vPushInt(true);
 
   EXIT();

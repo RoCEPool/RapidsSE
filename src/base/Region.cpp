@@ -91,6 +91,8 @@ void Region::vCreate(s32& sRegionName,  bool bVerbose,
                      bool bLock,        bool bRestart,
                      bool bDontFree,    bool bFreeCB)
 {
+  UNUSED(bRestart);
+  
   int iRegionFd;
   SysCall oSysCall;
   s32 sSizeMag;

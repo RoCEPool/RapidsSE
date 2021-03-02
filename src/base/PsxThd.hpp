@@ -25,7 +25,7 @@ namespace BASE
     void* operator new(size_t);
     void operator delete(void* pPsxThdAddress);
 
-    PsxThd(void);
+    PsxThd(Object* pIsFor);
    ~PsxThd(void) noexcept(false);
   
     static void* aGetStackBase(void);
@@ -51,7 +51,7 @@ namespace BASE
     void vDisableRealtime(void);
     void vEnableRealtime(void);
     void vEnableRealtime_2(void);
-    void vFocalOutline(s4K& sOutline);
+    void vOutline(s4K& sOutline);
     bool bGetCpu(i8& iUser, i8& iSystem, i8& iUsage, i8& iSleep);
     i8   iGetInfo(void);
     void vGetPolicy(void);
@@ -71,8 +71,6 @@ namespace BASE
     void vThreadBoost(i8 nPoints);
     void vThreadPriority(i8 iPriority);
   
-  
- 
     Footer* aFooter(void);
   };
   

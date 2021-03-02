@@ -14,8 +14,6 @@
 #include "Api.hpp"
 #include "Session.hpp"
 #include "Op.hpp"
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
@@ -48,7 +46,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.bideOperand"_Stz,      &Step::vJobBideOperand);
 
   vAddStep("job.class"_Stz,            &Step::vJobClass);
-  vAddStep("job.createResponseVec"_Stz,&Step::vJobCreateResponseVec);
   
   vAddStep("job.dec2pcAcksRmg"_Stz,    &Step::vJobDec2pcAcksRmg);
   vAddStep("job.delete"_Stz,           &Step::vJobDelete);
@@ -85,8 +82,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.parentId@"_Stz,        &Step::vJobParentIdFetch);
   vAddStep("job.participant@"_Stz,     &Step::vJobParticipantFetch);
   vAddStep("job.participant!"_Stz,     &Step::vJobParticipantStore);
-  vAddStep("job.participantResponse!"_Stz, &Step::vJobParticipantResponseStore);
-  vAddStep("job.participantHasError"_Stz,  &Step::vJobParticipantHasError);
   vAddStep("job.phase@"_Stz,           &Step::vJobPhaseFetch);
   vAddStep("job.phase!"_Stz,           &Step::vJobPhaseStore);
   vAddStep("job.postRecv"_Stz,         &Step::vJobPostRecv);
@@ -154,7 +149,7 @@ void Step::vJobAddDemon(void)
     JobLog::vNote(pJob,"Added to Demon List: %s %p"_Stz,
                   aCN[pJob->eGetClassNo()],
                   pJob);
-    AM::pDemonJobs()->vLogJobs(pJob->m_iObjectId);
+    AM::pDemonJobs()->vLogJobs();
   }
   
   EXIT();
@@ -177,7 +172,7 @@ void Step::vJobAddLocal(void)
     JobLog::vNote(pJob,"Added to Local List: %s %p"_Stz,
                   aCN[pJob->eGetClassNo()],
                   pJob);
-    AM::pLocalJobs()->vLogJobs(pJob->m_iObjectId);
+    AM::pLocalJobs()->vLogJobs();
   }
   
   EXIT();
@@ -206,7 +201,7 @@ void Step::vJobAddOriginator(void)
     JobLog::vNote(pJob,"Added to Originator List: %s %p"_Stz,
                        aCN[pJob->eGetClassNo()],
                        pJob);
-    AM::pOriginatingJobs()->vLogJobs(pJob->m_iObjectId);
+    AM::pOriginatingJobs()->vLogJobs();
   }
     
   EXIT();
@@ -233,7 +228,7 @@ void Step::vJobAddParticipant(void)
     JobLog::vNote(pJob,"Added to ParticipantList: %s %p "_Stz,
                           aCN[pJob->eGetClassNo()],
                           pJob);
-    AM::pParticipatingJobs()->vLogJobs(pJob->m_iObjectId);
+    AM::pParticipatingJobs()->vLogJobs();
   }
   
   EXIT();
@@ -504,19 +499,6 @@ void Step::vJobPrintMember(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.createResponseVec -- create the response vector in the job             */
-/*----------------------------------------------------------------------------*/
-void Step::vJobCreateResponseVec(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  pJob->vOriginResponseVec(new ResponseVec);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* job.delete -- delete the job                                               */
 /*----------------------------------------------------------------------------*/
 void Step::vJobDelete(void)
@@ -529,7 +511,8 @@ void Step::vJobDelete(void)
   
   // find the job in the catalog
   eCN eClass = pJob->eGetClassNo();
-  
+  UNUSED(eClass);
+
   delete pJob;
   EXIT();
 }
@@ -934,64 +917,6 @@ void Step::vJobParticipantStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.participantHasError -- has any participant returned an error ?         */
-/*----------------------------------------------------------------------------*/
-void Step::vJobParticipantHasError(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  i8 bHasError = false;
-  i8 iResponses = pJob->pOriginResponseVec()->nItems();
-  
-  for (i8 i_Response = 0; i_Response < iResponses; i_Response++) {
-    if (pJob->pOriginResponseVec()->pGet(i_Response)->m_eErrorCode != EC_NONE) {
-      bHasError = true;
-      break;
-    }
-  }
-  m_pDataStack->vPushInt(bHasError);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.participantResponse! -- store a job response for the participant       */
-/*----------------------------------------------------------------------------*/
-void Step::vJobParticipantResponseStore(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-//  i8 iNode = m_pDataStack->iPopAsInt(__func__);
-  
-  Job* pParticipantJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  // there should be a response vector
-  RASSERT( pJob->pOriginResponseVec() );
-  
-  // create a new response
-  Response* pResponse = new Response;
-  
-  // set node and error in the response
-  pResponse->m_i_Node           = pParticipantJob->iParticipantNode();
-  pResponse->m_eErrorCode      = pParticipantJob->eJobError();
-  
-  if (pResponse->m_eErrorCode != EC_NONE)
-    pJob->vParticipantHasError(true);
-  
-  // add the response to the vector of responses
-  pJob->pOriginResponseVec()->vAdd(pResponse);
-  
-  //if (pResponse->m_eErrorCode != EC_NONE)
-    //ActLog::vAdd(pJob,AN_ERROR_CODE,pResponse->m_eErrorCode);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* job.phase@ -- fetch the job phase                                          */
 /*----------------------------------------------------------------------------*/
 void Step::vJobPhaseFetch(void)
@@ -1034,7 +959,7 @@ void Step::vJobPostRecv(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // run the post recv function
-  STORE::vJob_recv(pJob);
+  STORE::vJob_postRecv(pJob);
   
   if (pJob->m_xReqTuple.m_iDetail) {
     JobLog::vNote(pJob,
@@ -1059,7 +984,7 @@ void Step::vJobPreSend(void)
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   //ActLog::vAdd(pJob,AN_PRE_SEND,pJob());
-  STORE::vJob_send(pJob);
+  STORE::vJob_preSend(pJob);
   
   if (pJob->m_xReqTuple.m_iDetail)
     JobLog::vNote(pJob,
@@ -1112,7 +1037,7 @@ void Step::vJobRemoveLocal(void)
                   "Removed from Local List: %s %p"_Stz,
                   aCN[pJob->eGetClassNo()],
                   pJob);
-    AM::pLocalJobs()->vLogJobs(pJob->m_iObjectId);
+    AM::pLocalJobs()->vLogJobs();
   }
   
   EXIT();
@@ -1143,7 +1068,7 @@ void Step::vJobRemoveOriginator(void)
                        "Removed from Originator List: %s %p"_Stz,
                        aCN[pJob->eGetClassNo()],
                        pJob);
-    AM::pOriginatingJobs()->vLogJobs(pJob->m_iObjectId);
+    AM::pOriginatingJobs()->vLogJobs();
   }
   
   EXIT();
@@ -1173,7 +1098,7 @@ void Step::vJobRemoveParticipant(void)
     JobLog::vNote(pJob,"Removed from Participant List: "_Stz,
                        aCN[pJob->eGetClassNo()],
                        pJob);
-    AM::pParticipatingJobs()->vLogJobs(pJob->m_iObjectId);
+    AM::pParticipatingJobs()->vLogJobs();
   }
     
   EXIT();
@@ -1287,7 +1212,8 @@ void Step::vJobShow(void)
   RASSERT(0);
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
+  UNUSED(pJob);
+
   EXIT();
 }
 

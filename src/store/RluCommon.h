@@ -32,11 +32,12 @@ struct RluCommon                      // **IF YOU CHANGE THIS DO A CLEAN BUILD**
   
   void* m_pDevDstRow;
   void* m_pDevSrcRow;
-  void* m_pDevSrcIxt;
   void* m_pDevAltRow;
+
+  void* m_pDevSrcIxt;
   void* m_pDevAltIxt;
   void* m_pDevTmpIxt;
-  
+
   struct Ent_int* m_aEntArray;
 
   struct Ent_int* m_aAltEntArray;
@@ -52,24 +53,22 @@ struct RluCommon                      // **IF YOU CHANGE THIS DO A CLEAN BUILD**
 
   struct Ent_int* m_aTmpSkipRoots;
   
-  i8 m_nCrwRows;
-  i8 m_i_CrwRow;
+  //i8 m_nCrwRows;
+  //i8 m_i_CrwRow;
 
   i8 m_nAltHeadSize;
   i8 m_nSrcHeadSize;
 
-  void* m_aAltCrw;
-  void* m_aSrcCrw;
+  //void* m_aAltCrw;
+  //void* m_aSrcCrw;
 
-  void* m_aSrcHeadCrw;
+  //void* m_aSrcHeadCrw;
 
   char m_caStrWrk[128];
 
   i8 m_iaDataStack[C_LOGIC_STACK];
   
   i8 m_iaLocals[C_LOGIC_LOCALS]; // locals regs []
-  
-
 
   i8 m_iCmnFooter;
 };

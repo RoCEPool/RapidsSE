@@ -21,7 +21,8 @@ namespace STORE
     Schema(void);
    ~Schema(void) noexcept(false);
     
-   
+    static Stz* szCurrSchema(DicStack* pDicStack);
+
     Footer* aFooter(void);
   };
   

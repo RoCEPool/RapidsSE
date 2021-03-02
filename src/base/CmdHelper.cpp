@@ -176,6 +176,7 @@ bool CmdHelper::bExtractJson(TagSet*   pTagSet,
   Token* pTkn = nullptr;
 
   ASSERT(pSynTags->szName(i_Syn_)->bSame("__json__"_Stz));
+  UNUSED(pSynTags);
   
   pTkn = pTknVec->pGet(i_Tkn_);
   ASSERT(pTkn->bSame("{"_Stz));
@@ -274,7 +275,8 @@ bool CmdHelper::bMatchesSyntax(TokenVec* pTknVec, TagSet* pSynTags)
     // unknown tag in syntax tag set
     else {
       Stz* szTagNm = pSynTags->szName(i_Syn);
-      
+      UNUSED(szTagNm);
+
       //vTrace("unknown tag in syntax tag set\n"_Stz);
       return false;
     }

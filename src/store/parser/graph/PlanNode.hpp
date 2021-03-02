@@ -256,7 +256,7 @@ namespace Parser
           if (m_pText) {
             // copy the string
             newVal.m_pText = new Text(m_pText->szGet());
-            newVal.m_bMustFree = false;
+            newVal.m_bMustFree = true;
 
           } else {
             m_pText = nullptr;
@@ -407,7 +407,7 @@ namespace Parser
 
   /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-  class PlanNode : public Object
+  class PlanNode : public /*VIRTUAL*/ Object
   {
     friend class GraphValidator;  // to aide validation of the plan graph
 
@@ -422,7 +422,7 @@ namespace Parser
     Footer m_xFooter;
     
   public:
-    virtual ~PlanNode(void) = 0;
+    virtual ~PlanNode(void);
 
     Footer* aFooter(void);
 

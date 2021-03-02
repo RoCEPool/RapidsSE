@@ -382,6 +382,7 @@ w8* MemLib::awFindNonZeroEnd(void* aWords, i8 nWords)
 void MemLib::vFreeBlock(void* aBlock, i8 nBytes)
 {
   free(aBlock);
+  UNUSED(nBytes);
   
   //if (AM::bAttached())
   //  AM::pResources()->vSubMallocAmt(nBytes);
@@ -513,6 +514,7 @@ void* MemLib::aMallocBlock(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 void MemLib::vMove(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo)
 {
+  UNUSED(eClassNo);
   memmove(pDst,pSrc,nBytes);
  
 #ifdef WITH_STATISTICS_COUNTERS
@@ -578,6 +580,8 @@ i8 MemLib::nRoundUp(i8 nBytes, i8 nSizeQuanta)
 /*----------------------------------------------------------------------------*/
 void MemLib::vScribble(void* aAddress, i8 nBytes, eCN eClassNo)
 {
+  UNUSED(eClassNo);
+  
   u8* pMchWord = reinterpret_cast<u8*>(aAddress);
   i8  nWords = nBytes / 8;
   
@@ -598,6 +602,8 @@ void MemLib::vScribble(void* aAddress, i8 nBytes, eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 void MemLib::vSet(void* pDst, char iByte, i8 nBytes, eCN eClassNo)
 {
+  UNUSED(eClassNo);
+  
   memset(pDst,iByte,nBytes);
 
 #ifdef WITH_STATISTICS_COUNTERS

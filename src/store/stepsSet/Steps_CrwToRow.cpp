@@ -15,8 +15,6 @@
 #include "Crw.hpp"
 #include "CrwPacker.hpp"
 #include "CrwBuffer.hpp"
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
@@ -61,7 +59,8 @@ void Step::vCrwToRowConvert(void)
   CrwBuffer* pCrwBuffer = _pCrwBuffer(*( m_pJob->pLogicUnit_job() )->m_xpOperandA);
   
   bool bResult = pCrwToRow->bConvertCrwToRow(pCrwBuffer);
-  
+  UNUSED(bResult);
+
   EXIT();
 }
 

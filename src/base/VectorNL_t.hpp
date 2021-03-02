@@ -214,7 +214,8 @@ ITEM* VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::pGet(u8 i_Item, bool bDisableBounds)
   _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
   
   ASSERT(bDisableBounds || (i_Item >= 0 && i_Item < m_nItems));
-  
+  UNUSED(bDisableBounds);
+ 
   ITEM* pItem = m_pItem[i_Item];
   
   return pItem;

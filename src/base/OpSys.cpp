@@ -165,6 +165,7 @@ void OpSys::vRLimitCore(i8& nSoft, i8& nHard)
   struct rlimit xRLimit;
   
   int iRetVal = getrlimit(RLIMIT_CORE,&xRLimit);
+  UNUSED(iRetVal);
   
   nSoft = xRLimit.rlim_cur;
   nHard = xRLimit.rlim_max;
@@ -187,6 +188,7 @@ void OpSys::vRLimitCpu(i8& nSoft, i8& nHard)
   struct rlimit xRLimit;
 
   int iRetVal = getrlimit(RLIMIT_CPU,&xRLimit);
+  UNUSED(iRetVal);
 
   nSoft = xRLimit.rlim_cur;
   nHard = xRLimit.rlim_max;
@@ -209,6 +211,7 @@ void OpSys::vRLimitData(i8& nSoft, i8& nHard)
   struct rlimit xRLimit;
 
   int iRetVal = getrlimit(RLIMIT_DATA,&xRLimit);
+  UNUSED(iRetVal);
 
   nSoft = xRLimit.rlim_cur;
   nHard = xRLimit.rlim_max;
@@ -231,6 +234,7 @@ void OpSys::vRLimitFileSize(i8& nSoft, i8& nHard)
   struct rlimit xRLimit;
 
   int iRetVal = getrlimit(RLIMIT_FSIZE,&xRLimit);
+  UNUSED(iRetVal);
 
   nSoft = xRLimit.rlim_cur;
   nHard = xRLimit.rlim_max;
@@ -253,6 +257,7 @@ void OpSys::vRLimitMemoryLocked(i8& nSoft, i8& nHard)
   struct rlimit xRLimit;
 
   int iRetVal = getrlimit(RLIMIT_MEMLOCK,&xRLimit);
+  UNUSED(iRetVal);
 
   nSoft = xRLimit.rlim_cur;
   nHard = xRLimit.rlim_max;
@@ -275,6 +280,7 @@ void OpSys::vRLimitOpenFiles(i8& nSoft, i8& nHard)
   struct rlimit xRLimit;
 
   int iRetVal = getrlimit(RLIMIT_NOFILE,&xRLimit);
+  UNUSED(iRetVal);
 
   nSoft = xRLimit.rlim_cur;
   nHard = xRLimit.rlim_max;
@@ -297,6 +303,7 @@ void OpSys::vRLimitProcesses(i8& nSoft, i8& nHard)
   struct rlimit xRLimit;
 
   int iRetVal = getrlimit(RLIMIT_NPROC,&xRLimit);
+  UNUSED(iRetVal);
 
   nSoft = xRLimit.rlim_cur;
   nHard = xRLimit.rlim_max;
@@ -319,6 +326,7 @@ void OpSys::vRLimitRss(i8& nSoft, i8& nHard)
   struct rlimit xRLimit;
 
   int iRetVal = getrlimit(RLIMIT_RSS,&xRLimit);
+  UNUSED(iRetVal);
 
   nSoft = xRLimit.rlim_cur;
   nHard = xRLimit.rlim_max;
@@ -341,6 +349,7 @@ void OpSys::vRLimitStack(i8& nSoft, i8& nHard)
   struct rlimit xRLimit;
 
   int iRetVal = getrlimit(RLIMIT_STACK,&xRLimit);
+  UNUSED(iRetVal);
 
   nSoft = xRLimit.rlim_cur;
   nHard = xRLimit.rlim_max;

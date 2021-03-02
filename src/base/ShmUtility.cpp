@@ -122,7 +122,6 @@ void ShmUtility::vCreate(void)
 {
   int iFD;
   SysCall oSysCall;
-  bool bRestart = false;
   bool bResult;
   
   // open a new shm region which will contain the activity map

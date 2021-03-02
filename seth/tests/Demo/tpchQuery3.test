@@ -3,7 +3,7 @@
 --------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// no such table
+// EC_NO_SUCH_TABLE
 demo select
   l_orderkey,
   sum(l_extendedprice*l_discount) as revenue,
@@ -28,7 +28,7 @@ order by
   o_orderdate
 limit 10;
 
-failure contains: "no such table"
+failure contains: "EC_NO_SUCH_TABLE"
 
 //------------------------------------------------------------------------------
 // create table lineitem
@@ -79,7 +79,7 @@ order by
   o_orderdate
 limit 10;
 
-failure contains: "no such"
+failure contains: "EC_NO_SUCH"
 
 //------------------------------------------------------------------------------
 // create index on orderkey
@@ -87,7 +87,7 @@ create index lineitem_idx2 on lineitem (l_orderkey);
 success
 
 //------------------------------------------------------------------------------
-// no such table
+// EC_NO_SUCH_TABLE
 demo select
   l_orderkey,
   sum(l_extendedprice*l_discount) as revenue,
@@ -112,7 +112,7 @@ order by
   o_orderdate
 limit 10;
 
-failure contains: "no such"
+failure contains: "EC_NO_SUCH"
 
 //------------------------------------------------------------------------------
 // create orders table (partitioned on custkey)
@@ -155,7 +155,7 @@ order by
   o_orderdate
 limit 10;
 
-failure contains: "no such"
+failure contains: "EC_NO_SUCH"
 
 //------------------------------------------------------------------------------
 // create an index on custkey
@@ -163,7 +163,7 @@ create index orders_idx1 on orders(O_CUSTKEY);
 affected: 0
 
 //------------------------------------------------------------------------------
-// no such table
+// EC_NO_SUCH_TABLE
 demo select
   l_orderkey,
   sum(l_extendedprice*l_discount) as revenue,
@@ -188,7 +188,7 @@ order by
   o_orderdate
 limit 10;
 
-failure contains: "no such"
+failure contains: "EC_NO_SUCH"
 
 //------------------------------------------------------------------------------
 // create customer table
@@ -205,7 +205,7 @@ create table customer (
 success
 
 //------------------------------------------------------------------------------
-// no such table
+// EC_NO_SUCH_TABLE
 demo select
   l_orderkey,
   sum(l_extendedprice*l_discount) as revenue,
@@ -230,7 +230,7 @@ order by
   o_orderdate
 limit 10;
 
-failure contains: "no such"
+failure contains: "EC_NO_SUCH"
 
 //------------------------------------------------------------------------------
 // create an index on custkey

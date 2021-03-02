@@ -61,6 +61,9 @@ Steps::~Steps(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Steps::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
+  UNUSED(eClass);
+  UNUSED(aTab);
+  
   Steps* pSteps = _pSteps(pObject);
   
   vTrace("\n"_Stz, aTab, pSteps);

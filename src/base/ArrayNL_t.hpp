@@ -92,7 +92,8 @@ ITEM* ArrayNL_t<ARY_CN, ITEM, MAX_ITEMS>::pGet(i8 i_Item, bool bDisableBounds)
   aFooter()->vAssertFooter();
   
   ASSERT(bDisableBounds || (i_Item >= 0 && i_Item < m_nItems));
-
+  UNUSED(bDisableBounds);
+  
   ITEM* pItem = &m_oItem[i_Item];
   
   return pItem;

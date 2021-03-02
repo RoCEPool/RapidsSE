@@ -27,8 +27,6 @@
 #include "LockMetrics.hpp"
 
 #include "Op.hpp"
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
@@ -88,7 +86,6 @@ void Step::vInfoSetAddCommandError(void)
 
   // get the error information
   eEC eErrorCode = (eEC) m_pDataStack->iPopInt(__func__);
-  i8 iSeverity = m_pDataStack->iPopInt(__func__);
   i8 iLineNo = m_pDataStack->iPopInt(__func__);
   i8 iColumnNo = m_pDataStack->iPopInt(__func__);
   m_pDataStack->vPopStr(sErrorText, __func__);
@@ -97,8 +94,8 @@ void Step::vInfoSetAddCommandError(void)
 
   Row* pRow = pInfoSet->pAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
+                                  pGrid->pThisNode()->szNodeNm(),
                                   eErrorCode,
-                                  iSeverity,
                                   iLineNo,
                                   iColumnNo,
                                   sErrorText.azChar(),
@@ -131,15 +128,14 @@ void Step::vInfoSetAddExecError(void)
 
   // get the error information
   eEC eErrorCode = (eEC) m_pDataStack->iPopInt(__func__);
-  i8 iSeverity = m_pDataStack->iPopInt(__func__);
   m_pDataStack->vPopStr(sErrorText, __func__);
 
   Grid* pGrid = AM::pGrid();
 
   Row* pRow = pInfoSet->pAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
+                                  pGrid->pThisNode()->szNodeNm(),
                                   eErrorCode,
-                                  iSeverity,
                                   sErrorText.azChar(),
                                   C_VARGS_END);
 
@@ -513,6 +509,7 @@ void Step::vInfoSetColValFetch(void)
   Table* pTable = _pTable(*( m_pJob->pLogicUnit_job() )->m_xpInfoSetTable);
   StreamDef* pStreamDef = pTable->pStreamDef();
   i8 nCols = pStreamDef->nColumns();
+  UNUSED(nCols);
 
   i8 i_Col = m_pDataStack->iPopInt(__func__);
 
@@ -775,6 +772,8 @@ void Step::vInfoSetRdCsvChunk(void)
   pCsvBuffer->vTake(nBytes);
   i8 nBytesRead = pCsvFile->nReadBytes(azInto,nBytes);
   ASSERT(nBytesRead == nBytes);
+  UNUSED(nBytesRead);
+  
   azInto[nBytes] = '\0';
   
   //vTrace("trailing: %s\n"_Stz,azInto + nBytes - 64);

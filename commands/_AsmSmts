@@ -66,11 +66,13 @@ print "loading Orders...";
  //select L_ORDERKEY, L_QUANTITY from lineitem where  L_ORDERKEY + 1 <= 2;
  //select l_orderkey + 1 , sum (l_discount) as x from lineitem group by l_orderkey;
 
- select l_orderkey + 1 , sum (l_discount) from lineitem;
+ //select l_orderkey + 1 , sum (l_discount) from lineitem;
 
  //aggregRows_I lineitem "l_discount sum , l_orderkey";
 
 //aggregRows_I lineitem "L_LINENUMBER 1 + , L_ORDERKEY sum";
+
+aggregRows_I lineitem "L_LINENUMBER sum , L_ORDERKEY sum";
 
 /*
 //UnionAll_I lineitem orders l_orderkey;

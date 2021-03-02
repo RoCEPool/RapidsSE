@@ -37,6 +37,7 @@ SN_Bol::~SN_Bol(void) noexcept(false)
 i8 SN_Bol::i(char** aacCrs, Format* pFmt)
 {
   _precondition_(_MAGIC_,CN_SNBOL);
+  UNUSED(pFmt);
   
   if ( ! StrLib::bExtractBoolean(aacCrs,m_wDtm.m_wBol.m_iAsI8) ) {
     THROW_USER("StrLib::bExtractBoolean"_Stz);

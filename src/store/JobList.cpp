@@ -4,8 +4,6 @@
 
 #include "BASE.h"
 
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 #include "Job__Find.hpp"
 #include "JobList.hpp"
@@ -211,8 +209,9 @@ bool JobList::bIsLocked(void)
 /*----------------------------------------------------------------------------*/
 /* log the job list                                                           */
 /*----------------------------------------------------------------------------*/
-void JobList::vLogJobs(i8 iJobId)
+void JobList::vLogJobs(void)
 {
+  
   i8 iLevel = 0;
   
   vGrabLock();
@@ -290,8 +289,6 @@ i8 JobList::nJobs(void)
 /*----------------------------------------------------------------------------*/
 void JobList::vContentDump(void)
 {
-  Stz* aTab = Stz::szTab(1);
-  
   //vDump(CN_JOBLIST, this, aTab);
   
   SkipListNL* pSkipList = m_pJobsSkipList;
@@ -300,7 +297,6 @@ void JobList::vContentDump(void)
     
   SkipNode* pNode = pSkipList->pFirst(iLevel);
   while (pNode) {
-    i8 i = (i8)pNode->m_pObject;
     Job* pJob = (Job*)(pNode->m_pObject);
     vTrace("Job %p name %s class %s id %lld partNode %lld (L%lld)\n"_Stz,
            pJob,
@@ -325,6 +321,9 @@ void JobList::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 void JobList::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
+  UNUSED(eClass);
+  UNUSED(aTab);
+
   JobList* pJobs = _pJobList(pObject);
   //vSkipListDump(pJobs->m_pJobsSkipList);
   SkipListNL* pSkipList = pJobs->m_pJobsSkipList;
@@ -339,7 +338,6 @@ void JobList::vDump(eCN eClass, Object* pObject, Stz* aTab)
     
     SkipNode* pNode = pSkipList->pFirst(iLevel);
     while (pNode) {
-      i8 i = (i8)pNode->m_pObject;
       Job* pJob = (Job*)(pNode->m_pObject);
       vTrace("Job %p name %s class %s id %lld partNode %lld (L%lld)\n"_Stz,
              pJob,

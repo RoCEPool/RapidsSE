@@ -19,24 +19,15 @@ namespace BASE
     static bool bIsEnclosedString(char** aazCrs, Format* pFmt);
     static bool bIsThereFieldData(char* aSrc, Format* pFmt);
   
-    static bool bToCellBcd(Dtm* aCell, Column* pCol,
-                           char** aazCrs, Format* pFmt);
-    static bool bToCellBol(Dtm* aCell, Column* pCol,
-                           char** aazCrs, Format* pFmt);
-    static bool bToCellDte(Dtm* aCell, Column* pCol,
-                           char** aazCrs, Format* pFmt);
-    static bool bToCellFlt(Dtm* aCell, Column* pCol,
-                           char** aazCrs, Format* pFmt);
-    static bool bToCellInt(Dtm* aCell, Column* pCol,
-                           char** aazCrs, Format* pFmt);
-    static bool bToCellIvl(Dtm* aCell, Column* pCol,
-                           char** aazCrs, Format* pFmt);
-    static bool bToCellTme(Dtm* aCell, Column* pCol,
-                           char** aazCrs, Format* pFmt);
-    static bool bToCellTsp(Dtm* aCell, Column* pCol,
-                           char** aazCrs, Format* pFmt);
-    static bool bToCellVch(Dtm* aCell, Column* pCol,
-                           char** aazCrs, Format* pFmt);
+    static bool bToCellBcd(Dtm* aCell, Column* pCol, char** aazCrs, Format* pFmt);
+    static bool bToCellBol(Dtm* aCell, char** aazCrs, Format* pFmt);
+    static bool bToCellDte(Dtm* aCell, char** aazCrs, Format* pFmt);
+    static bool bToCellFlt(Dtm* aCell, char** aazCrs, Format* pFmt);
+    static bool bToCellInt(Dtm* aCell, char** aazCrs, Format* pFmt);
+    static bool bToCellIvl(Dtm* aCell, char** aazCrs, Format* pFmt);
+    static bool bToCellTme(Dtm* aCell, char** aazCrs, Format* pFmt);
+    static bool bToCellTsp(Dtm* aCell, char** aazCrs, Format* pFmt);
+    static bool bToCellVch(Dtm* aCell, char** aazCrs, Format* pFmt);
 
     static bool bValidFieldEnd(char* aSrc, Format* pFmt);
     static bool bValidRecordEnd(char* aSrc, Format* pFmt);

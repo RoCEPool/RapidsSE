@@ -113,6 +113,9 @@ IndexTree::~IndexTree(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void IndexTree::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
+  UNUSED(eClass);
+  UNUSED(pObject);
+  UNUSED(aTab);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -141,9 +144,6 @@ Stz* IndexTree::pAnalyze(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
-  i8 nRowsTotal = 0;
-  i8 nBuffersTotal = 0;
-  i8 nStreamsTotal = 0;
   s48K sAnalysis;
   
   sAnalysis.vCatSprint("N%lld: Analysis of Index %s of table %s\n"_Stz,
@@ -209,6 +209,7 @@ void IndexTree::vCompact(void)
       continue;
     
     i8 iSubListLength = pH0SubList->iLengthSubList();
+    UNUSED(iSubListLength);
     
     TRACE_COMPACT( pH0SubList->vShowSubList(); )
     
@@ -473,9 +474,10 @@ void IndexTree::vInsertEntries(CrwBuffer* pCrwBuffer)
   Rrf xRowRef;
   xRowRef.vBuffer(pCrwBuffer->iBufferNo());
 
-  if (! m_pRootEntBuffer)
+  if (! m_pRootEntBuffer) {
     EntBuffer* pRootBuffer = pNewRootBuffer();
-
+    UNUSED(pRootBuffer);
+  }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // iterate thru each crw in buffer
   
@@ -502,6 +504,7 @@ void IndexTree::vInsertEntries(CrwBuffer* pCrwBuffer)
     
     Ent* aInsertedEntry = EntBuffer::aInsertEntTree(xEntWrk.aEnt(),&m_pRootEntBuffer);
     ASSERT(aInsertedEntry);
+    UNUSED(aInsertedEntry);
   }
 }
 
@@ -517,10 +520,12 @@ bool IndexTree::bInsertEntry(Ent* aEnt)
   
   if (! m_pRootEntBuffer) {
     EntBuffer* pRootBuffer = pNewRootBuffer();
+    UNUSED(pRootBuffer);
   }
   
   Ent* aInsertedEntry = EntBuffer::aInsertEntTree(aEnt,&m_pRootEntBuffer);
   ASSERT(aInsertedEntry);
+  UNUSED(aInsertedEntry);
   
   //m_pRootEntBuffer->bVerify();
   
@@ -544,11 +549,13 @@ bool IndexTree::bInsertEntry(CrwBuffer* pCrwBuffer, i8 i_Row, Rrf& xRowRef)
   
   if (! m_pRootEntBuffer) {
     EntBuffer* pRootBuffer = pNewRootBuffer();
+    UNUSED(pRootBuffer);
   }
   
   Ent* aInsertedEntry = EntBuffer::aInsertEntTree(xEntWrk.aEnt(),&m_pRootEntBuffer);
   ASSERT(aInsertedEntry);
-  
+  UNUSED(aInsertedEntry);
+
   //m_pRootEntBuffer->bVerify();
   
   m_okLock.vDropWrite();
@@ -577,11 +584,13 @@ Ent* IndexTree::aInsertPayloadEntry(EntWrk& xEntWrk, i8 nPayloadBytes)
 
   if (! m_pRootEntBuffer) {
     EntBuffer* pRootBuffer = pNewRootBuffer();
+    UNUSED(pRootBuffer);
   }
   
   Ent* aInsertedEntry = EntBuffer::aInsertEntTree(xEntWrk.aEnt(),&m_pRootEntBuffer);
   ASSERT(aInsertedEntry);
-  
+  UNUSED(aInsertedEntry);
+
   //m_pRootEntBuffer->bVerify();
   
   m_okLock.vDropWrite();
@@ -600,6 +609,7 @@ Ent* IndexTree::aInsertEntry(Ent* pEnt)
   
   if (! m_pRootEntBuffer) {
     EntBuffer* pRootBuffer = pNewRootBuffer();
+    UNUSED(pRootBuffer);
   }
   
   Ent* aInsertedEntry = EntBuffer::aInsertEntTree(pEnt,&m_pRootEntBuffer);

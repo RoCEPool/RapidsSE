@@ -8,8 +8,6 @@
 #include "StepAccum.hpp"
 #include "Steps.hpp"
 
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 #include "Sessions.hpp"
 
@@ -106,6 +104,7 @@ void Step::vSsnSenLoc(void)
   ENTRY();
   
   i8 iPosition = m_pDataStack->iPopInt(__func__);
+  UNUSED(iPosition);
 
   //  Session* pSession = m_i_Session->m_pSession;
   //  ApiState::vMarkSenLoc(pSession,iPosition);
@@ -128,7 +127,8 @@ void Step::vSsnTraceSession(void)
   i8 i_Session = pJob->m_xReqTuple.m_i_Session;
   
   Session* pSession = AM::pSessions()->pGetSession(i_Session);
-  
+  UNUSED(pSession);
+
   //pSession->vTraceState();
   
   EXIT();

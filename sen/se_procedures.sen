@@ -55,7 +55,7 @@
     populateIndex $indexNm | stageD
 
   stage stageD on origin :
-    sink | stageA
+    output | sink | stageA
 
   end ;
   "
@@ -80,7 +80,7 @@
     populateIndex $indexNm | stageD
 
   stage stageD on origin :
-    sink | stageA
+    output | sink | stageA
 
   end ;
   "
@@ -182,7 +182,7 @@
     createTable | stageC
 
   stage stageC on origin :
-    sink | stageA
+    output | sink | stageA
 
   end ;
   "
@@ -246,7 +246,7 @@
 
   stage stageA on origin :
     start | periodic once | syntaxTable $tableNm $etc |
-      defineTable $tableNm | sink | stageA
+      defineTable $tableNm | output | sink | stageA
 
   end ;
   "
@@ -325,7 +325,7 @@
     dropCatalog $catalogNm | stageC
 
   stage stageC on origin :
-    sink | stageA
+    output | sink | stageA
 
   end ;
   "
@@ -351,7 +351,7 @@
     dropIndex $tableNm $indexNm | stageD
 
   stage stageD on origin :
-    sink | stageA
+    output | sink | stageA
 
   end ;
   "
@@ -374,7 +374,7 @@
     dropSchema $schemaNm | stageC
 
   stage stageC on origin :
-    sink | stageA
+    output | sink | stageA
 
   end ;
   "
@@ -400,7 +400,7 @@
     dropTable $tableNm | stageD
 
   stage stageD on origin :
-    sink | stageA
+    output | sink | stageA
 
   end ;
   "
@@ -423,7 +423,7 @@
     dropTenant $tenantNm | stageC
 
   stage stageC on origin :
-    sink | stageA
+    output | sink | stageA
 
   end ;
   "
@@ -504,7 +504,7 @@
     wrFile $File | stageD
 
   stage stageD on origin :
-    sink | stageA
+    output | sink | stageA
 
   end ;
   "

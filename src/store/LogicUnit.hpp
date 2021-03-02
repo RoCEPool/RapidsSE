@@ -54,6 +54,44 @@ namespace STORE
     };
   };
 
+
+#define I_PushInt(__iValue) \
+  *(++aiDstk) = __iValue;
+
+#define I_PopInt()   *(aiDstk--)
+
+#define P_PushPtr(__pPtr) \
+  *(++aiDstk) = (i8)__pPtr;
+
+#define P_PopPtr()   (void*)(*(aiDstk--))
+
+#define S_PushStr(__azStr) \
+  /*MemLib::vDumpWords(iaDataStack,nDifference(iaDataStack,aiDstk)+8);*/ \
+  nSize = StrLib::nSize((char*)__azStr); \
+  azDst = (char*)(++aiDstk); \
+  StrLib::vCopy(azDst,(char*)__azStr); \
+  aiDstk += nWordRoundedStrBytes(nSize)/8 - 1; \
+  *(++aiDstk) = nSize;     \
+  /*MemLib::vDumpWords(iaDataStack,nDifference(iaDataStack,aiDstk)+8); */
+
+#define S_PopStr(__azDst) \
+  /*MemLib::vDumpWords(iaDataStack,nDifference(iaDataStack,aiDstk)+8);*/ \
+  nSize = *(aiDstk--); \
+  azSrc = (char*)(aiDstk - (nWordRoundedStrBytes(nSize)/8 - 1)); \
+  StrLib::vCopy(__azDst,azSrc); \
+  aiDstk -= nWordRoundedStrBytes(nSize)/8;                               \
+  /*MemLib::vDumpWords(iaDataStack,nDifference(iaDataStack,aiDstk)+8);*/
+
+#define S_StrAdr() \
+  ( (char*)(aiDstk) - nWordRoundedStrBytes(*aiDstk))
+
+#define S_StrDrp() \
+  nSize = *(aiDstk--); \
+  aiDstk -= nWordRoundedStrBytes(nSize)/8;
+
+#define JumpTo(__iArg,__EO) \
+  aeCode = & m_eaCode[__iArg];
+
   //----------------------------------------------------------------------------
 
   class LogicUnit : public Object

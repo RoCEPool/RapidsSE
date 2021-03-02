@@ -48,7 +48,6 @@ void Step::vEntBufferIndexFetch(void)
 {
   ENTRY();
   
-  Object* pPtrIndex;
   EntBuffer* pIndexBuffer = _pEntBuffer(m_pDataStack->pPopPtr(__func__));
   
   m_pDataStack->vPushPtr(pIndexBuffer->pIndex());
@@ -63,11 +62,11 @@ void Step::vEntBufferNextBuffer(void)
 {
   ENTRY();
   
-  Object* pPtrEntry = nullptr;
   EntBuffer* pIndexBuffer = _pEntBuffer(m_pDataStack->pPopPtr(__func__));
   
   if (pIndexBuffer->pNextEntBuffer()) {
     i8 nBuffer = pIndexBuffer->pNextEntBuffer()->iBufferNo();
+    UNUSED(nBuffer);
   }
   
   m_pDataStack->vPushPtr(pIndexBuffer->pNextEntBuffer());
@@ -82,7 +81,6 @@ void Step::vEntBufferPartitionFetch(void)
 {
   ENTRY();
   
-  Object* pPtrEntry = nullptr;
   EntBuffer* pIndexBuffer = _pEntBuffer(m_pDataStack->pPopPtr(__func__));
   
   m_pDataStack->vPushInt(pIndexBuffer->tPtnNo());
@@ -97,7 +95,6 @@ void Step::vEntBufferPartitionStore(void)
 {
   ENTRY();
   
-  Object* pPtrEntry = nullptr;
   EntBuffer* pIndexBuffer = _pEntBuffer(m_pDataStack->pPopPtr(__func__));
   
   tPN tPtnNo = m_pDataStack->iPopInt(__func__);

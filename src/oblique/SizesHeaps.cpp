@@ -103,8 +103,6 @@
 #include "AttachMap.hpp"
 
 #include "Exemplar.hpp"
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 #include "Job__Find.hpp"
 #include "JobList.hpp"
@@ -113,6 +111,8 @@
 #include "LogEntry.hpp"
 #include "Log.hpp"
 #include "LogicUnit.hpp"
+
+#include "Metadata.hpp"
 
 #include "Objects.hpp"
 #include "Output.hpp"
@@ -298,7 +298,9 @@ SizeHeap gxaSizeHeap[]
   { sizeof(ListExoIter_t<Object>), HT_T_TINY ,0 }, // CN_LISTEXOITER_t
   { sizeof(LoadChunk),          HT_T_LARGE   ,0 }, // CN_LOADCHUNK
   { sizeof(Local),              HT_INVALID   ,0 }, // CN_LOCAL
-  { sizeof(LocalChain),         HT_T_LARGE   ,0 }, // CN_LOCALSCHAIN
+  { sizeof(LocalChain),         HT_T_LARGE   ,0 }, // CN_LOCALCHAIN
+  { sizeof(LocalDir),           HT_INVALID   ,0 }, // CN_LOCALDIR
+  { sizeof(LocalFile),          HT_INVALID   ,0 }, // CN_LOCALFILE
   { sizeof(Lock),               HT_INVALID   ,0 }, // CN_LOCK
   { sizeof(Log),                HT_INVALID   ,0 }, // CN_LOG
   { sizeof(LogEntry),           HT_INVALID   ,0 }, // CN_LOGENTRY
@@ -312,6 +314,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Heap), /*correct*/   HT_INVALID   ,0 }, // CN_MEDIUMTRANSIENT
   { sizeof(Heap), /*correct*/   HT_INVALID   ,0 }, // CN_MEDIUMTVIRTUAL
   { sizeof(MemTest),            HT_T_TINY    ,0 }, // CN_MEMTEST
+  { sizeof(Metadata),           HT_T_TINY    ,0 }, // CN_METADATA
   { sizeof(Mutex),              HT_T_TINY    ,0 }, // CN_MUTEX
 
   { 'N' - ('A' - 1),            HT_INVALID   ,0 }, // CN__N__
@@ -370,9 +373,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Record),             HT_T_MEDIUM  ,0 }, // CN_RECORD
   { sizeof(RelOp),              HT_T_TINY    ,0 }, // CN_RELOP
   { sizeof(Resources),          HT_T_TINY    ,0 }, // CN_RESOURCES
-  { sizeof(Response),           HT_T_MEDIUM  ,0 }, // CN_RESPONSE
-  { sizeof(ResponseVec),        HT_T_SMALL   ,0 }, // CN_RESPONSEVEC
-  { sizeof(Result),             HT_T_MEDIUM  ,0 }, // CN_RESULT
   { sizeof(RluDiary),           HT_T_LARGE   ,0 }, // CN_RLUDIARY
   { sizeof(Rand),               HT_INVALID   ,0 }, // CN_RN_RAND
   { sizeof(RootNode),           HT_T_TINY    ,-8 }, // CN_ROOTNODE
@@ -403,7 +403,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(SeeMe),              HT_INVALID   ,0 }, // CN_SEEME
   { sizeof(SenCompiler),        HT_T_TINY    ,0 }, // CN_SENCOMPILER
   { sizeof(SePrompt),           HT_T_LARGE   ,0 }, // CN_SEPROMPT
-  { sizeof(Session),            HT_T_MEDIUM  ,0 }, // CN_SESSION
+  { sizeof(Session),            HT_T_LARGE   ,0 }, // CN_SESSION
   { sizeof(Sessions),           HT_T_TINY    ,0 }, // CN_SESSIONS
   { sizeof(ShortCut),           HT_T_MEDIUM  ,0 }, // CN_SHORTCUT
   { sizeof(ShortCutVec),        HT_T_MEDIUM  ,0 }, // CN_SHORTCUTVEC

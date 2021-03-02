@@ -37,6 +37,9 @@ void* Ent::operator new(size_t, Ent* aEnt)
 /*----------------------------------------------------------------------------*/
 Ent::Ent(eCN eClassNo, i8 nSizeEnt)
 {
+  UNUSED(eClassNo);
+  UNUSED(nSizeEnt);
+
 #ifdef __ENT_HEADER
   m_xHeader.vSetClassNo(CN_ENT);
   m_xHeader.vMagic();

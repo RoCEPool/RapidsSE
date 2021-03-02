@@ -19,7 +19,7 @@ namespace STORE
   /*                      IMPORTANT NOTE
    
       If you add a pointer member into this class then modify
-        JOBS_fn(vJob_recv) to set it to null when the job is received
+        JOBS_fn(vJob_postRecv) to set it to null when the job is received
    
    */
   
@@ -41,11 +41,11 @@ namespace STORE
     eJL m_eJobList;          // which job list the job is currently in
     eJP m_eJobPhase;         // which job phase the job is currently in
     eJS m_eJobState;         // current state of the job
+    eEC m_eError;            // error when starting job
   
     // -- d -------------------
     LogicUnit* m_pLogicUnit_job;  // set of registers for the task steps
     TagSet     m_oJobTags;   // tags for the job
-    Result     m_xResult;    // result of this job
     
     // -- e -------------------
     Pipeline*  m_pPipeline;  // pipeline
@@ -95,7 +95,7 @@ namespace STORE
     bool bByPromptTag(void);
     void vContentDump(void);
     bool bDiaryTag(void);
-    void vFocalOutline(s4K& sOutline);
+    void vOutline(s4K& sOutline);
     bool bHasTag(Stz* szEnameTag);
     bool bHasTag_bg(void);
     bool bHasTag_time(void);
@@ -124,14 +124,8 @@ namespace STORE
     void vMarkJob(void);
     void vMarkJob(Stz* szFormat, ...);
     void vOperandQueueReport(File* pFile, bool bStdOut);
-    bool bParticipantHasError(void);
-    void vParticipantHasError(bool bHasError);
     eEC ePopulateJob(TagSet* pTagSet);
-    void vPrintResult(Session* pSession, eRS eResponse);
     void vResetForReuse(Session* pSession);
-    Response* pResponse(void);
-    void vOriginResponseVec(ResponseVec* pResponseVec);
-    ResponseVec* pOriginResponseVec(void);
     void vSetFromCascade(Stz* szCascade);
     Stz* szSide(void);
     void vSignalJobMutex(void);
@@ -177,8 +171,8 @@ namespace STORE
 
   ////////////////////////////////////////////////////////////////////////////////
   eEC  eJob_checkCluster(void);
-  void vJob_recv(Job* pJob);
-  void vJob_send(Job* pJob);
+  void vJob_postRecv(Job* pJob);
+  void vJob_preSend(Job* pJob);
 }
 
 bool bJobCompare(void* pObjectInsert, void* pObjectScan, bool& bMatch);

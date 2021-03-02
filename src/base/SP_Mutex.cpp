@@ -39,6 +39,7 @@ SP_Mutex::~SP_Mutex(void) noexcept(false)
 Stz* SP_Mutex::sz(Mutex* pMutex)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+  UNUSED(pMutex);
   
   return (Stz*) &m_caResult[0];
 }
@@ -55,7 +56,7 @@ Stz* SP_Mutex::sz_log(Mutex* pMutex)
   StrLib::vSprint(m_caResult,
                   "{%s }"_Stz,
 
-                  aCN[pMutex->m_pObjectMutexed->eGetClassNo()],
+                  aCN[pMutex->m_pIsFor->eGetClassNo()],
                   
                   C_VARGS_END);
 

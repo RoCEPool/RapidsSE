@@ -217,9 +217,11 @@ function startCluster() {
     remoteClusterInit
 
     echo "Cluster startup complete."
+    true
 
   else
     echo "Cluster startup failed. Please stop the cluster before restarting it."
+    false
   fi
 }
 
@@ -333,7 +335,7 @@ function startCurrentNode() {
   PID=$!
   echo "${PID}" > "${PIDFILE}"
 
-  echo "[Start script]: RapidsSE started as PID ${pid}." >> "${NOHUP_FILE}"
+  echo "[Start script]: RapidsSE started as PID ${PID}." >> "${NOHUP_FILE}"
 }
 
 

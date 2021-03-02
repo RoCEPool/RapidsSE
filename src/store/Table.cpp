@@ -78,7 +78,7 @@ Table::Table(Stz* szTableNm)
     }
   }
   else {
-    vTrace("Did not create table partitions for %s\n"_Stz,szTableNm);
+    //vTrace("Did not create table partitions for %s\n"_Stz,szTableNm);
   }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -127,10 +127,24 @@ Table::~Table(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get name of current table                                                  */
+/*----------------------------------------------------------------------------*/
+Stz* Table::szCurrTable(DicStack* pDicStack)
+{
+  _static_;
+  UNUSED(pDicStack);
+    
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump table                                                                 */
 /*----------------------------------------------------------------------------*/
 void Table::vDump(eCN eClass, Object* pObject, Stz* szTab)
 {
+  UNUSED(eClass);
+  UNUSED(szTab);
+
   Table* pTable = _pTable(pObject);
   
   vTrace("name %s\n"_Stz,
@@ -531,6 +545,21 @@ void Table::vLazyBuildIndexes(i8 i_TablePtn)
     if (pIndexBuffer)
       pIndexBuffer->vLazyBuild();
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* list table contents                                                        */
+/*----------------------------------------------------------------------------*/
+void Table::vListContents(i8 i_Depth)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  vTrace("%sTable %s %s\n"_Stz,
+         Stz::szTab(i_Depth),
+         m_sTableNm.szStz(),
+         m_bDefinitionOnly ? "(definition-only)"_Stz : ""_Stz);
+
+  m_pStreamDef->vListContents(i_Depth+1);
 }
 
 /*----------------------------------------------------------------------------*/

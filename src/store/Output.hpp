@@ -20,7 +20,10 @@ namespace STORE
     StreamDef* m_pStreamDef_result;
     bool       m_bExitMarker;
     bool       m_bCancelMarker;
-  
+
+    bool       m_bCmdErr;
+    bool       m_bExecErr;
+
     Atomic  m_ixRowsProcessed; // rows processed
     Atomic  m_ixRowsInvalid;   // invalid rows detected
     Atomic  m_ixRowsSkipped;   // rows skipped

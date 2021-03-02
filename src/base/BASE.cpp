@@ -114,7 +114,9 @@ void BASE::vCheckAssumptions(void)
 void BASE::vSubSystem(SelfFn* aSelfFn, TokenVec* pTokenVec)
 {
   _static_
-  
+  UNUSED(aSelfFn);
+  UNUSED(pTokenVec);
+
   vTrace("BASE::vSubSystem\n"_Stz);
 }
 
@@ -598,7 +600,8 @@ void BASE::vTraceWithout(void)
 /*----------------------------------------------------------------------------*/
 void BASE::vInitAllGlobals(void)
 {
-  vTrace("BASE::vInitAllGlobals\n"_Stz);
+  if (AM::bVerbose())
+    vTrace("BASE::vInitAllGlobals\n"_Stz);
   
   File::vInitGlobals();
   

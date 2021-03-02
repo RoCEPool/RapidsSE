@@ -220,7 +220,7 @@
 
   "\n"
   pCppFile file.writeLine
-  "void Task::vAddMunged(Task* pTask)\n"
+  "void Task::vAddMunged(Task* )\n"
   pCppFile file.writeLine
   "{\n"
   pCppFile file.writeLine

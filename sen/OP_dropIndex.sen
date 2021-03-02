@@ -9,12 +9,14 @@
 /*----------------------------------------------------------------------------*/
 : dropIndex_StartMarker
 
+  0 locals| errorCode |
+
   // check if we can drop the index
   <indexNm> <tableNm> check::validIndexAssembly not if
-    op.pipelineJob@ ERROR_JOB
+    to errorCode
+    errorCode op.pipelineJob@ ERROR_JOB
     PipeIn[].delete
-    Operand[].newErrorMarker
-    Operand[].pipeOut
+    errorCode op__execErr
   else
     PipeIn[].pipeOut
   then

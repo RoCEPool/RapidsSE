@@ -78,9 +78,7 @@
   sFolderNm folder[].findSymbol to pCurrentFolder
 
   pCurrentFolder word.checkIsAFolder not if
-    op.pipelineJob@ ERROR_JOB
-    Operand[].newErrorMarker
-    Operand[].pipeOut
+    op__execErr
     true
     exit
   then

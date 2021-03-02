@@ -325,6 +325,7 @@ void EntBuffer::vPosVecPriorToEntry_gen(Ent* aToEntry,
         break;
       
       Key* aNextKey = _aKey(aNextEntry_sl->aElmSeq_dtm());
+      UNUSED(aNextKey);
       
       bIsJuxta = Key::bGreaterEqual(aNextEntry_sl->aKey(), aWithKey);
       
@@ -337,6 +338,8 @@ void EntBuffer::vPosVecPriorToEntry_gen(Ent* aToEntry,
       }
       
       Ent* aPriorEntry_sl = aScanEntry_sl;
+      UNUSED(aPriorEntry_sl);
+      
       aScanEntry_sl = aNextEntry_sl;
       aNextEntry_sl = aNextEntry(aNextEntry_sl,i_ScanLevel);
       iItemAtScanLevel++;

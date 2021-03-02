@@ -256,7 +256,9 @@ bool StrLib::bBeginsWith(char* s, const char* sArg)
 i8 StrLib::nBurstArgs(Stz* szaArgv[], Stz* szArgStr)
 {
   _static_
-  
+  UNUSED(szaArgv);
+  UNUSED(szArgStr);
+
   i8 nArgs = 0;
   
   

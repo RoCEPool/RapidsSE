@@ -5,6 +5,8 @@
 
 #include "Index.hpp"
 
+namespace STORE { class StreamDef; }
+
 namespace STORE
 {
   class Table : public Object
@@ -32,6 +34,7 @@ namespace STORE
     Table(Stz* szTableNm);
    ~Table(void) noexcept(false);
     
+    static Stz*       szCurrTable(DicStack* pDicStack);
     static void       vDump(eCN eClass, Object* pObject, Stz* aTab);
     static Table*     pFindTable(DicStack* pDicStack, Stz* aTableNm);
     static IndexDef*  pIndexDef(DicStack* pDicStack, Stz* aTableNm, i8 iIndexNo);
@@ -56,6 +59,7 @@ namespace STORE
     void    vIsLoading(bool bIsLoading);
     bool    bIsLoading(void);
     void    vLazyBuildIndexes(i8 i_TablePtn);
+    void    vListContents(i8 i_Depth);
     void    vMarkTable(void);
     bool    bPopulateIndex(i8 iIndexNo);
     void    vRemoveIndex(Index* pIndex);

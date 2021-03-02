@@ -9,12 +9,13 @@
 /*----------------------------------------------------------------------------*/
 : VerifyIndexPtn_DataMarker \handler
 
+  0 locals| errorCode |
+
   // check if we can verify the index
   <indexNm> <tableNm> check::validIndexAssembly not if
-    op.pipelineJob@ ERROR_JOB
+    to errorCode
+    errorCode op__execErr
     PipeIn[].delete
-    Operand[].newErrorMarker
-    Operand[].pipeOut
     true
     exit
   then

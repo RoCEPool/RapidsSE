@@ -29,7 +29,9 @@ ToolCatalog::ToolCatalog(void)
 void ToolCatalog::vTools(SelfFn* aSelfFn, TokenVec* pTokenVec)
 {
   _static_
-  
+  UNUSED(aSelfFn);
+  UNUSED(pTokenVec);
+
   gxToolCatalog.vList();
 }
 

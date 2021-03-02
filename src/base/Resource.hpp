@@ -11,11 +11,10 @@ namespace BASE
     Object* m_pIsFor;
   
   public:
-    Resource(eCN eClass);
-    Resource(eCN eClass, Object* pIsFor);
+    Resource(eCN eClass, Object* pIsFor, i8 iLogCtl=C_LOG);
    ~Resource(void) noexcept(false);
   
-    void vFocalOutline(s4K& sOutline);
+    void vOutline(s4K& sOutline);
     i8   iResId(void);
   };
   

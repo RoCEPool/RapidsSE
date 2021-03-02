@@ -1,7 +1,9 @@
 /*============================================================================*/
-/* DicStack.hpp -- Dictionary TypedStack                                           */
+/* DicStack.hpp -- Dictionary Stack                                           */
 /*============================================================================*/
 #pragma once
+
+namespace STORE { class StreamDef; }
 
 namespace BASE
 {
@@ -31,15 +33,33 @@ namespace BASE
     void  vContentDump(void);
     void  vCopy(DicStack* pDicStackSrc);
     void  vDiscard(void);
+    void  vDiscardAll(void);
+    Dic*  pFindDic(Stz* szDicNm);
     Word* pFindWord(Stz* szWordNm);
     Word* pFindInCurrent(Stz* szWordNm);
     Word* pLocateRoutine(CodeCell* aCell);
     Word* pLocateStepWord(fpSTEPFN fpStepFn);
-    Word* pRemoveWord(Stz* szWordNm);
-    Dic*  pPick(i8 iDic);
+    Dic*  pPick(i8 i_Dic);
     void  vPop(void);
+    void  vPrint(void);
     void  vPush(Dic* pDic);
-    void  vReset(void);
+    bool  bPush(Stz* szCatalogNm);
+    bool  bPush(Stz* szCatalogNm, Stz* szSchemaNm);
+    bool  bPush(Stz* szCatalogNm, Stz* szSchemaNm, Stz* szTableNm);
+    bool  bPushNamed(Stz* szDicNm);
+    bool  bPush_boray(void);
+    bool  bPush_catalogs(void);
+    bool  bPush_public(void);
+    bool  bPush_rapidsse(void);
+    bool  bPush_schemas(void);
+    bool  bPush_tables(void);
+    bool  bPush_tenants(void);
+    Word* pRemoveWord(Stz* szWordNm);
+    StreamDef* pStreamDef(void);
+    Table* pTable(void);
+    bool  bTest(Stz* szCatalogNm);
+    bool  bTest(Stz* szCatalogNm, Stz* szSchemaNm);
+    bool  bTest(Stz* szCatalogNm, Stz* szSchemaNm, Stz* szTableNm);
     Dic*  pTop(void);
     void  vToPathStr(Stz* szPath);
 

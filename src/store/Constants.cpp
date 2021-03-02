@@ -28,8 +28,6 @@
 #include "Node.hpp"
 #include "Grid.hpp"
 #include "Session.hpp"
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 
 #include "EnumGroups.h"
@@ -217,6 +215,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_TDEF_ANALYZEINDEX"_Stz,  C_TDEF_ANALYZEINDEX);
   vAddConstant("C_TDEF_ANALYZETABLE"_Stz,  C_TDEF_ANALYZETABLE);
   vAddConstant("C_TDEF_CALLPIPELINE"_Stz,  C_TDEF_CALLPIPELINE);
+  vAddConstant("C_TDEF_COLUMNDEFS"_Stz,    C_TDEF_COLUMNDEFS);
   vAddConstant("C_TDEF_COMMANDERRORS"_Stz, C_TDEF_COMMANDERRORS);
   vAddConstant("C_TDEF_COUNT"_Stz,         C_TDEF_COUNT);
   vAddConstant("C_TDEF_COUNTINFO"_Stz,     C_TDEF_COUNTINFO);
@@ -230,6 +229,9 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_TDEF_LISTPARTITIONS"_Stz,C_TDEF_LISTPARTITIONS);
   vAddConstant("C_TDEF_LOADRESULT"_Stz,    C_TDEF_LOADRESULT);
   vAddConstant("C_TDEF_LOCKSTATS"_Stz,     C_TDEF_LOCKSTATS);
+  vAddConstant("C_TDEF_LOOKUPCATALOG"_Stz, C_TDEF_LOOKUPCATALOG);
+  vAddConstant("C_TDEF_LOOKUPSCHEMA"_Stz,  C_TDEF_LOOKUPSCHEMA);
+  vAddConstant("C_TDEF_LOOKUPTABLE"_Stz,   C_TDEF_LOOKUPTABLE);
   vAddConstant("C_TDEF_NODEINFO"_Stz,      C_TDEF_NODEINFO);
   vAddConstant("C_TDEF_PATHINFO"_Stz,      C_TDEF_PATHINFO);
   vAddConstant("C_TDEF_PINGINFO"_Stz,      C_TDEF_PINGINFO);

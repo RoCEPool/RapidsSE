@@ -85,7 +85,7 @@ namespace STORE
     void vAttachMapState(u8 uState);
     u8   uAttachMapState(void);
     eAC  eFindApi(Stz* aApiNm);
-    void vFocalOutline(s4K& sOutline);
+    void vOutline(s4K& sOutline);
     void vGetGlobals(void);
     void vIndexEntries(i8 nIndexEntries);
     void vNextTempName(s32& sName);

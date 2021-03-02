@@ -29,8 +29,6 @@
 #include "TablePtn.hpp"
 #include "Table.hpp"
 #include "Op.hpp"
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
@@ -228,7 +226,8 @@ void Step::vIndexDeleteNext(void)
       // delete the refernced crw
       bool bDeleted = CrwBuffer::bDeleteRefdCrw(xRef);
       ASSERT(bDeleted);
-      
+      UNUSED(bDeleted);
+
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // save the entry
       aEntryToDelete = aLowerEntry;

@@ -24,8 +24,8 @@ void vTest18(void);
 void vTest19(void);
 void vTest20(void);
 
-i8   nTest21_intEnts(eKE eEntKind);
-IntSet* pTest21_keySamples(eKE eEntKind, i8 nSamples=C_UNKNOWN);
+i8   nTest21_intEnts(void);
+IntSet* pTest21_keySamples(i8 nSamples=C_UNKNOWN);
 void vTest21_printResults(Stz* szTestFn, IntSet* pKeySamples,
                           AggTimer* pAggTimer, i8 nTotalEnts);
 
@@ -34,9 +34,9 @@ void vTest21_insert(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalIns_);
 void vTest21_search(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalSel_);
 void vTest21_sort(EntBuffer* pEntBuffer);
 
-void vTest21_testDelete(eKE eEntKind, IntSet* pKeySamples, i8 nBuffers, bool bDump);
-void vTest21_testInsert(eKE eEntKind, IntSet* pKeySamples, i8 nBuffers, bool bDump);
-void vTest21_testSearch(eKE eEntKind, IntSet* pKeySamples, i8 nBuffers, i8 nTimes, bool bDump);
+void vTest21_testDelete(IntSet* pKeySamples, i8 nBuffers, bool bDump);
+void vTest21_testInsert(IntSet* pKeySamples, i8 nBuffers, bool bDump);
+void vTest21_testSearch(IntSet* pKeySamples, i8 nBuffers, i8 nTimes, bool bDump);
 
 void vTest21(void);
 void vTest22(void);

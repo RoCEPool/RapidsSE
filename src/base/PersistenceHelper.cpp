@@ -47,6 +47,7 @@ void PersistenceHelper::vWriteBuffers(Stz* sFilePath)
     PoolBuffer* pBuffer = gpBufferPool->pToPoolBuffer(i_Buffer);
     bool bResult = pFile->bWriteBytes((void*)pBuffer,C_SIZE_POOL_BUFFER);
     ASSERT(bResult);
+    UNUSED(bResult);
     
   }
   i8 iUpdate = TickingDevice::iGetTick();

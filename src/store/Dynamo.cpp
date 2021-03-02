@@ -11,8 +11,6 @@
 #include "PipelineSpec.hpp"
 #include "Pipeline.hpp"
 #include "Dynamo.hpp"
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 #include "StageSpec.hpp"
 
@@ -389,6 +387,8 @@ void Dynamo::vPrintPlanGraph(PlanNode* pPlanRoot) {
 
   auto fVisitor = [](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
+    UNUSED(pvArg);
+    
     vTrace("(%02lld) %s\t\t(%s)\n"_Stz, iDepth, sPath.szStz(), aCN[pNode->eGetClassNo()]);
 
     // Keep walking
@@ -1565,6 +1565,8 @@ void Dynamo::vAppendScanOp(String* sPipeline, QueryNode* pNode)
 GraphNav::eWalkCtrl Dynamo::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 iDepth, void* pvArg)
 {
   _static_
+  UNUSED(sPath);
+  UNUSED(iDepth);
 
   static bool bHasAgg = false;
 

@@ -43,10 +43,7 @@ FreeBuffer::~FreeBuffer(void) noexcept(false)
 /* get next free buffer                                                       */
 /*----------------------------------------------------------------------------*/
 i8 FreeBuffer::iNextFree(void)
-{
-  if (CN_FREEBUFFER != eGetClassNo())
-    int debug = 1;
-  
+{  
   _precondition_(_ADDRESS_,_MAGIC_,CN_FREEBUFFER,_FOOTER_);
   
   return m_iNextFree;

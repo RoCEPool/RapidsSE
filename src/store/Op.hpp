@@ -88,7 +88,7 @@ namespace STORE
     void vDownstreamOp(Op* pDownstreamOp);
     void vDropTaskLock(void);
     void vDump(void);
-    void vFocalOutline(s4K& sOutline);
+    void vOutline(s4K& sOutline);
     void vGrabTaskLock(void);
     void vIncWorkDone(void);
     void vInitOperandHandlers(void);

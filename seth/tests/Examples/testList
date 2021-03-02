@@ -1,4 +1,7 @@
-ex1.test
+// Disabling ex1 because it tries to load a local data file, but this file
+// cannot be found when we run tests against an installed copy of RapidsSE
+// because we do not include all the seth tests in the installation.
+//ex1.test
 ex2.test
 ex3.test
 ex4.test

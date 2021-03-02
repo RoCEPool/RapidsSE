@@ -19,7 +19,7 @@ begin
     aggreg 0 " as revenue sum ( l_extendedPrice l_discount * ) "
     | output | sink | stageA
 end;
-failure contains: "no such table"
+failure contains: "EC_NO_SUCH_TABLE"
 
 //------------------------------------------------------------------------------
 // create table lineitem

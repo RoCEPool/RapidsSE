@@ -70,7 +70,8 @@ void Dic::vAddWord(Word* pWord)
 
   bool b = m_pWordSkipList->bInsert(pWord,bTrace);
   ASSERT(b);
-
+  UNUSED(b);
+  
   SkipNode* pSkipNode = m_pWordSkipList->pNewly();
   pWord->m_pSkipNode = pSkipNode;
   
@@ -100,6 +101,19 @@ Word* Dic::pDicKind(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get name of this dictionary                                                */
+/*----------------------------------------------------------------------------*/
+Stz* Dic::szDicKind(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+  
+  if (m_pDicKind)
+    return m_pDicKind->szWordNm();
+  else
+    return "none"_Stz;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set dictionary kind                                                        */
 /*----------------------------------------------------------------------------*/
 void Dic::vDicKind(Word* pDicKind)
@@ -110,10 +124,35 @@ void Dic::vDicKind(Word* pDicKind)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get name of this dictionary                                                */
+/*----------------------------------------------------------------------------*/
+Stz* Dic::szDicNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+  
+  return m_sDicNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set name of this dictionary                                                */
+/*----------------------------------------------------------------------------*/
+void Dic::vDicNm(Stz* szDicNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+  
+  m_sDicNm = szDicNm;
+  
+  m_pArticle->vName(m_sDicNm);
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump dictionary                                                            */
 /*----------------------------------------------------------------------------*/
 void Dic::vDump(eCN eClass, Object* pObject, Stz* szTab)
 {
+  UNUSED(eClass);
+  UNUSED(szTab);
+  
   Dic* pDic = _pDic(pObject);
   
   vTrace("name %s count %lld\n"_Stz,
@@ -245,6 +284,36 @@ bool Dic::bHasWords(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this dic a catalog?                                                     */
+/*----------------------------------------------------------------------------*/
+bool Dic::bIsCatalog(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+  
+  Word* pKind = pDicKind();
+  
+  if (pKind && pKind->szWordNm()->bSame("\\catalog"_Stz))
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this dic a folder?                                                      */
+/*----------------------------------------------------------------------------*/
+bool Dic::bIsFolder(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+  
+  Word* pKind = pDicKind();
+  
+  if (pKind && pKind->szWordNm()->bSame("\\folder"_Stz))
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is given name?                                                             */
 /*----------------------------------------------------------------------------*/
 bool Dic::bIsName(Stz* szDicNm)
@@ -254,6 +323,21 @@ bool Dic::bIsName(Stz* szDicNm)
   bool b = m_sDicNm.bSame(szDicNm);
   
   return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this dic a schema?                                                      */
+/*----------------------------------------------------------------------------*/
+bool Dic::bIsSchema(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+  
+  Word* pKind = pDicKind();
+  
+  if (pKind && pKind->szWordNm()->bSame("\\schema"_Stz))
+    return true;
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -267,9 +351,39 @@ Word* Dic::pLastWord(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this dic a table?                                                       */
+/*----------------------------------------------------------------------------*/
+bool Dic::bIsTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+  
+  Word* pKind = pDicKind();
+  
+  if (pKind && pKind->szWordNm()->bSame("\\table"_Stz))
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this dic a tenant?                                                      */
+/*----------------------------------------------------------------------------*/
+bool Dic::bIsTenant(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+  
+  Word* pKind = pDicKind();
+  
+  if (pKind && pKind->szWordNm()->bSame("\\tenant"_Stz))
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* list all words in this dic                                                 */
 /*----------------------------------------------------------------------------*/
-void Dic::vListWords(void)
+void Dic::vListWords(i8 i_Depth, bool bListContents)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
@@ -277,32 +391,22 @@ void Dic::vListWords(void)
   
   for (Word* pWord = pFirstWord(); pWord; pWord = pWord->pNextWord()) {
     
-    vTrace(": %s\n"_Stz,pWord->szWordNm());
+    Word* pCategory = pWord->pCategory();
+
+    vTrace("%s: %s %s\n"_Stz,
+           Stz::szTab(i_Depth),
+           pWord->szWordNm(),
+           pCategory ? pCategory->szWordNm() : "n/a"_Stz);
+    
+    if (bListContents) {
+      Object* pObject = pWord->pObject();
+      if (pObject && CN_DIC == pObject->eGetClassNo()) {
+        ((Dic*)pObject)->vListWords(i_Depth+1,bListContents);
+      }
+    }
   }
   
   m_pArticle->vDropRead();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get name of this dictionary                                                */
-/*----------------------------------------------------------------------------*/
-Stz* Dic::szDicNm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
-  
-  return m_sDicNm;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set name of this dictionary                                                */
-/*----------------------------------------------------------------------------*/
-void Dic::vDicNm(Stz* szDicNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
-  
-  m_sDicNm = szDicNm;
-  
-  m_pArticle->vName(m_sDicNm);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -352,6 +456,7 @@ Word* Dic::pRemoveWord(Stz* szWordNm)
   m_pArticle->vGrabWrite();
   
   bool b = m_pWordSkipList->bRemove(pWordRemove);
+  UNUSED(b);
   
   m_pArticle->vDropWrite();
   

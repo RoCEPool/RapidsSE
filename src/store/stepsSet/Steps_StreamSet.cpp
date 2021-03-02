@@ -28,8 +28,6 @@
 #include "Node.hpp"
 #include "Grid.hpp"
 #include "Op.hpp"
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
@@ -206,7 +204,7 @@ void Step::vStreamSetAddGridSanity(void)
   
   StreamSet* pStreamSet = _pStreamSet(*( m_pJob->pLogicUnit_job() )->m_xpStreamSet);
   
-  Grid* pGrid = AM::pGrid();
+  //Grid* pGrid = AM::pGrid();
   
   // get regionSize on this node
   bool bRegionSize = false;
@@ -906,7 +904,8 @@ void Step::vStreamSetReadChunk(void)
   pCsvBuffer->vTake(nBytes);
   i8 nBytesRead = pFile->nReadBytes(pCsvBuffer->ayDataArea(),nBytes);
   ASSERT(nBytesRead == nBytes);
-  
+  UNUSED(nBytesRead);
+
   // return the CsvBuffer
   m_pDataStack->vPushPtr(pCsvBuffer);
   

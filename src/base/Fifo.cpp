@@ -36,11 +36,10 @@ Fifo::Fifo(void)
   _checkInitialised_(CN_FIFO);
   
   ++ gixFifo;
-  AM::vLogRes(SL_INF,this,RA_FIO_CONSTRUCT,
-              "Fifo construct : %p (%lld fifos exist)"_Stz, //!format-LogRes
-              this,* gixFifo);
   
   _postcondition_(_MAGIC_,CN_FIFO,_FOOTER_);
+  
+  vLog(EV_CONSTRUCT,"Fifo constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -54,13 +53,13 @@ Fifo::Fifo(Stz* sFifoPath)
   m_sFifoPath = sFifoPath;
   //m_oSysCall;
 
+  ++ gixFifo;
+ 
   _checkInitialised_(CN_FIFO);
   
-  AM::vLogRes(SL_INF,this,RA_FIO_CONSTRUCT,
-              "Fifo construct : %p (%lld fifos exist)"_Stz, //!format-LogRes
-              this,* gixFifo);
-  
   _postcondition_(_MAGIC_,CN_FIFO,_FOOTER_);
+  
+  vLog(EV_CONSTRUCT,"Fifo constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -71,9 +70,8 @@ Fifo::~Fifo(void) noexcept(false)
   _precondition_(_MAGIC_,CN_FIFO,_FOOTER_);
   
   -- gixFifo;
-  AM::vLogRes(SL_INF,this,RA_MTX_DESTRUCT,
-              "Fifo destruct : %p (%lld fifos exist)"_Stz, //!format-LogRes
-              this,* gixFifo);
+
+  vLog(EV_DESTRUCT,"Fifo destructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -117,9 +115,9 @@ bool Fifo::bRemove(Stz* sFifoPath)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* focal outline                                                              */
+/* outline                                                                    */
 /*----------------------------------------------------------------------------*/
-void Fifo::vFocalOutline(s4K& sOutline)
+void Fifo::vOutline(s4K& sOutline)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FIFO,_FOOTER_);
   

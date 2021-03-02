@@ -27,8 +27,6 @@
 #include "PredicateVec.hpp"
 #include "AccessPath.hpp"
 #include "PathIdentifier.hpp"
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
@@ -147,7 +145,8 @@ void Step::vIndexStreamOpen(void)
   
   bool bOpened = pIndexStream->bOpen();
   ASSERT(bOpened);
-  
+  UNUSED(bOpened);
+
   EXIT();
 }
 

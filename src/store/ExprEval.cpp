@@ -104,7 +104,6 @@ eEC ExprEval::eExprEvalAll(StreamDef* pStreamDefIn)
     }
   }
 
-  L_RETRUN:
   return EC_NONE;
 }
 
@@ -120,7 +119,6 @@ eEC ExprEval::eEvaluate(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Stz* 
 
   eEC eError = EC_NONE;
   Token* pTkn;
-  i8 i_Tkn;
 
   // first collect all the StreamDefIn's source columns needed for projected
   eError = eCollectSourceColumns(pStreamDefIn, pTknVec);
@@ -198,8 +196,8 @@ eEC ExprEval::eAddDate(Token* pTkn, Column* pColumnExpr) {
 /*----------------------------------------------------------------------------*/
 /* add EO code for decimals                                                   */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval::eAddDecimal(Token* pTkn, Column* pColumnExpr) {
-
+eEC ExprEval::eAddDecimal(Token* pTkn, Column* pColumnExpr)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
   eEC eError = EC_NONE;
@@ -222,9 +220,11 @@ eEC ExprEval::eAddDecimal(Token* pTkn, Column* pColumnExpr) {
 /*----------------------------------------------------------------------------*/
 /* add EO code for groupBy                                                    */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval::eAddGby(Column* pColumn, i8 iGby) {
-
+eEC ExprEval::eAddGby(Column* pColumn, i8 iGby)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
+
+  UNUSED(iGby);
 
   i8 iLocal = 0;
   i8 iBit = -1;
@@ -272,8 +272,8 @@ eEC ExprEval::eAddGby(Column* pColumn, i8 iGby) {
 /*----------------------------------------------------------------------------*/
 /* add EO code for logical operators                                          */
 /*----------------------------------------------------------------------------*/
-void ExprEval::vAddLogical(Token* pTkn) {
-
+void ExprEval::vAddLogical(Token* pTkn)
+{
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
 
   if (pTkn->bSame("and"_Stz)) {
@@ -299,8 +299,8 @@ void ExprEval::vAddLogical(Token* pTkn) {
 /*----------------------------------------------------------------------------*/
 /* add EO code for numerics                                                   */
 /*----------------------------------------------------------------------------*/
-void ExprEval::vAddNumeric(Token* pTkn, Column* pColumnExpr) {
-
+void ExprEval::vAddNumeric(Token* pTkn, Column* pColumnExpr)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
   StrLib::vSprintCat(m_sAsmText, "  EO_INTEGER %lld\n"_Stz, pTkn->iToI8());
@@ -310,8 +310,8 @@ void ExprEval::vAddNumeric(Token* pTkn, Column* pColumnExpr) {
 /*----------------------------------------------------------------------------*/
 /* add EO code for pop column                                                 */
 /*----------------------------------------------------------------------------*/
-void ExprEval::vAddPopCol(eCT eColumnType, i8 iColumn) {
-
+void ExprEval::vAddPopCol(eCT eColumnType, i8 iColumn)
+{
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
 
   // switch on column type
@@ -335,8 +335,8 @@ void ExprEval::vAddPopCol(eCT eColumnType, i8 iColumn) {
 /*----------------------------------------------------------------------------*/
 /* add EO code for relational operators                                       */
 /*----------------------------------------------------------------------------*/
-void ExprEval::vAddRelational(Token* pTkn) {
-
+void ExprEval::vAddRelational(Token* pTkn)
+{
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
 
   if (pTkn->bSame(">"_Stz)) {
@@ -363,8 +363,8 @@ void ExprEval::vAddRelational(Token* pTkn) {
 /*----------------------------------------------------------------------------*/
 /* add EO code for store column                                               */
 /*----------------------------------------------------------------------------*/
-void ExprEval::vAddStoreCol(eCT eColumnType, i8 iColumn) {
-
+void ExprEval::vAddStoreCol(eCT eColumnType, i8 iColumn)
+{
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
 
   // switch on column type
@@ -405,8 +405,8 @@ void ExprEval::vAddString(Token* pTkn, Column* pColumnExpr) {
 /*----------------------------------------------------------------------------*/
 /* add EO code for sum                                                        */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval::eAddSum(eCT eColumnType, i8 iColumn) {
-
+eEC ExprEval::eAddSum(eCT eColumnType, i8 iColumn)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
   // switch on column type
@@ -438,8 +438,8 @@ eEC ExprEval::eAddSum(eCT eColumnType, i8 iColumn) {
 /*----------------------------------------------------------------------------*/
 /* add EO code for sum                                                        */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval::eAddSumGby(eCT eColumnType, i8 iColumn) {
-
+eEC ExprEval::eAddSumGby(eCT eColumnType, i8 iColumn)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
   // switch on column type
@@ -471,8 +471,8 @@ eEC ExprEval::eAddSumGby(eCT eColumnType, i8 iColumn) {
 /*----------------------------------------------------------------------------*/
 /* collect source columns needed for projection                               */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec) {
-
+eEC ExprEval::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
   eEC eError = EC_NONE;
@@ -588,18 +588,17 @@ eEC ExprEval::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec) 
     continue;
   }
 
-  L_RETRUN:
-    return eError;
+  return eError;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* parse project                                                              */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec) {
-
+eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
-
+  UNUSED(pStreamDefIn);
+  
   eEC eError = EC_NONE;
 
   Stz *sAliasName = ""_Stz;

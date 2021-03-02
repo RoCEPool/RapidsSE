@@ -13,8 +13,6 @@
 #include "Crw.hpp"
 #include "CrwPacker.hpp"
 #include "CrwBuffer.hpp"
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
@@ -105,7 +103,7 @@ void Step::vSubsetSet(void)
   
   if (pOperand && CN_CRWBUFFER == pOperand->eGetClassNo()) {
     CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
-    vDebugPoint();
+    UNUSED(pCrwBuffer);
   }
   
   ( m_pJob->pLogicUnit_job() )->m_xpSubset = pOperand;

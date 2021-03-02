@@ -51,7 +51,7 @@ namespace BASE
   
     static void vThreadsReport(void);
   
-    void vFocalOutline(s4K& sOutline);
+    void vOutline(s4K& sOutline);
 
   // - - - - - - - - - - - - - - - - - - - - - - -
   // task

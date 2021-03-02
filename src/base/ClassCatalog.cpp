@@ -42,6 +42,9 @@ bool ClassCatalog::bCallClassFn(eCF eFunction, Object* pObject)
 /*----------------------------------------------------------------------------*/
 ClassFn* ClassCatalog::pFindFunction(eCN eClass, i8 iKind)
 {
+  UNUSED(eClass);
+  UNUSED(iKind);
+  
   return nullptr;
 }
 

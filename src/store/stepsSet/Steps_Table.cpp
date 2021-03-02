@@ -25,8 +25,6 @@
 #include "Node_I.hpp"
 #include "OpSpec.hpp"
 #include "Op.hpp"
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 #include "LogicUnit.hpp"
 
@@ -303,9 +301,7 @@ void Step::vTableTablePtnZero(void)
   ENTRY();
   
   Table* pTable = _pTable(*( m_pJob->pLogicUnit_job() )->m_xpTable);
-  
-  Job* pJob = m_pJob;
-  
+    
   tPN tPtnNo = 0;
   
   i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnNo);
@@ -521,7 +517,8 @@ void Step::vTablePurge(void)
   i8 iOlderThanSeconds = m_pDataStack->iPopAsInt(__func__);
   
   bool bPurged = pTable->bPurge(i_TablePtn,iOlderThanSeconds);
-  
+  UNUSED(bPurged);
+
   EXIT();
 }
 

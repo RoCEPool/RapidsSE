@@ -49,7 +49,7 @@ void TaskQueue::operator delete(void* pTaskQueueAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 TaskQueue::TaskQueue(eQK eKind, bool bUniqueKey, CompareFp fpCompare)
-: Object(CN_TASKQUEUE)
+: Loggable(CN_TASKQUEUE)
 , m_okLock(this,C_DONT_LOG)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
@@ -85,6 +85,7 @@ void TaskQueue::vAddTask(Task* pTask)
 
   bool bInserted = m_pTaskSkipList->bInsert(pTask);
   ASSERT(bInserted);
+  UNUSED(bInserted);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -99,6 +100,7 @@ void TaskQueue::vAssertItems(i8 nItems)
   ASSERT(nItems == m_pTaskSkipList->nObjects());
   
   ASSERT(nItems == m_pTaskSkipList->nRecount());
+  UNUSED(nItems);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -116,7 +118,8 @@ void TaskQueue::vContentDump(void)
        pNode = m_pTaskSkipList->pNext(pNode,0)) {
     
     Task* pTask = _pTask(pNode->m_pObject);
- 
+    UNUSED(pTask);
+
     //pTask->vRenderPortrait(sPortrait);
     
     vTrace("%s\n"_Stz,sPortrait.azChar());

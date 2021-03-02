@@ -33,7 +33,7 @@ void Step::vAttachMapErrorTextFetch(void)
   i8 iEnum = m_pDataStack->iPopInt(__func__);
 
   s256 sTextMsg;
-  sTextMsg = AM::szEnumText(EG_EC, iEnum);
+  sTextMsg = aErrorMsg[iEnum];
 
   m_pDataStack->vPushStr(sTextMsg);
 }

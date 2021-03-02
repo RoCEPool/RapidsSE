@@ -28,8 +28,6 @@
 #include "Table.hpp"
 #include "Node_I.hpp"
 #include "Op.hpp"
-#include "Response.hpp"
-#include "Result.hpp"
 #include "Job.hpp"
 #include "LogicUnit.hpp"
 
@@ -207,6 +205,7 @@ void Step::vRegOperandCsvToRow(void)
   ToRow* pToRow = *( m_pJob->pLogicUnit_job() )->m_xpToRow;
   
   bool b = pToRow->bConvertCsv(pCsvBuffer);
+  UNUSED(b);
 
   EXIT();
 }
@@ -402,7 +401,8 @@ void Step::vRegOperandInvokePythonShell(void)
   sCommand.vSprint("python %s %s"_Stz, pPythonFile.azChar(), pData.azChar());
   
   i8 iExitStatus = Shell::iExecute(sCommand.szStz(),oSysCall);
-  
+  UNUSED(iExitStatus);
+
   RASSERT(oSysCall.m_eStatus == SC_SUCCESS);
   
   EXIT();
@@ -800,6 +800,7 @@ void Step::vRegOperandWriteToFile0(void)
 
     bool b = ( m_pJob->pLogicUnit_job() )->m_xpFile0->bWriteBytes(aCrwProper,nSizeCrwProper);
     ASSERT(b);
+    UNUSED(b);
   }
   else {
     NEVER_REACH;

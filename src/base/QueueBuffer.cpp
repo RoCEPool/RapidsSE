@@ -27,7 +27,7 @@ void* QueueBuffer::operator new(size_t)
 {
   QueueBuffer* pQueueBuffer = (QueueBuffer*)gpBufferPool->pAllocOtherBuffer();
   
-  return pPoolCheck<void*>(pQueueBuffer);
+  return pPoolCheck<void*>(pQueueBuffer,__func__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -123,6 +123,9 @@ void QueueBuffer::vContentDump(Stz* aTab)
 /*----------------------------------------------------------------------------*/
 void QueueBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
+  UNUSED(eClass);
+  UNUSED(aTab);
+  
   QueueBuffer* pQueueBuffer = _pQueueBuffer(pObject);
   
   vTrace("values %lld top %p next %p\n"_Stz,

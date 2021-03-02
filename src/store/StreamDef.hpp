@@ -38,6 +38,7 @@ namespace STORE
     i8      nColumns(void);
     Column* pFindColumn(Stz* sColumnNm);
     Column* pGetColumn(i8 i_Col);
+    void    vListContents(i8 i_Depth);
     void    vName(Stz* sName);
     Stz*    szName(void);
     eEC     eParse(Stz* szCmd);

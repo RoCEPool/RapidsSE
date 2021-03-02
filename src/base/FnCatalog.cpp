@@ -10,7 +10,8 @@
 /*----------------------------------------------------------------------------*/
 FnDefn* FnCatalog::aFind(Stz* szFnName)
 {
-
+  UNUSED(szFnName);
+  
   return nullptr;
 }
 
