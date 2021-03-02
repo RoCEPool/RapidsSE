@@ -58,17 +58,17 @@ enum eEO : u1 // expression operators
   /*  S  */ EO_JMP_GREATER,      // pop top and jump to location if >
   
   // index
-  /*  D  */ EO_INDEXNM_ALT_SET,    // set the alt index name                 --- to go
-  /*  D  */ EO_INDEXNM_SRC_SET,    // set the src index name                 --- to go
+  /*  D  */ //EO_INDEXNM_ALT_SET,    // set the alt index name                 --- to go
+  /*  D  */ //EO_INDEXNM_SRC_SET,    // set the src index name                 --- to go
 
   // index name
   /*     */ EO_DEVIXT_INDEXNM_SET,    // set the index name in the dev
 
   // indexTree
-  /*  D  */ EO_INDEXTREE_ALT_SET,    // set the alt indexTree                 --- to go
-  /*  D  */ EO_INDEXTREE_SRC_SET,    // set the src indexTree                 --- to go
-  /*  D  */ EO_INDEXTREE_TMP_DELETE, // delete the tmp indexTree              --- to go
-  /*  D  */ EO_INDEXTREE_TMP_SET,    // set the tmp indexTree                 --- to go
+  /*  D  */ //EO_INDEXTREE_ALT_SET,    // set the alt indexTree                 --- to go
+  /*  D  */ //EO_INDEXTREE_SRC_SET,    // set the src indexTree                 --- to go
+  /*  D  */ //EO_INDEXTREE_TMP_DELETE, // delete the tmp indexTree              --- to go
+  /*  D  */ //EO_INDEXTREE_TMP_SET,    // set the tmp indexTree                 --- to go
 
   // indexTree
   /*  S  */ EO_DEVIXT_INDEXTREE_SET,    // set the indexTree in the ixt dev
@@ -327,24 +327,36 @@ enum eEO : u1 // expression operators
   /*  R  */ EO_POT_COMPLETED,    // do we have a full pot buffer ?
   
   // row / rowslab
-  /*  D  */ EO_ROW_DST_PRINT,    // print dst row
-  /*  D  */ EO_ROW_DST_RESET,    // reset dst rowslab
-  /*  D  */ EO_ROW_DST_NEW,      // create new destination row
-  /*  D  */ EO_ROW_DST_SET,      // set dst rowslab
-  /*  D  */ EO_ROW_DST_TESTROW,  // test if destination row
-  /*  D  */ EO_ROW_DST_ZERO,     // zero destination row
-  /*  D  */ EO_ROW_SRC_BEGIN,    // begin src row traverse
-  /*  D  */ EO_ROW_SRC_NEXT,     // move to next src row
-  /*  D  */ EO_ROW_SRC_NULL,     // null rb src src
-  /*  D  */ EO_ROW_SRC_PRINT,    // print src row
-  /*  D  */ EO_ROW_SRC_PUSHOFS,  // push offset of source row
-  /*  D  */ EO_ROW_SRC_SETBYOFS, // set src row by using offset on stack
-  /*  D  */ EO_ROW_SRC_TEST,     // test if there is a row src buffer
-  /*  -  */ EO_ROW_ALT_BEGIN,    // begin linear traverse
-  /*  -  */ EO_ROW_ALT_NEXT,     // move to next row
-  /*  -  */ EO_ROW_ALT_PRINT,    // print alt row
-  /*  -  */ EO_ROW_ALT_PUSHOFS,  // push offset of alt row
-  /*  -  */ EO_ROW_ALT_SETBYOFS, // set alt row by using offset on stack
+  /*  D  */ EO_ROW_DST_PRINT,    // print dst row                            ---to go
+  /*  D  */ EO_ROW_DST_RESET,    // reset dst rowslab                        ---to go
+  /*  D  */ EO_ROW_DST_NEW,      // create new destination row               ---to go
+  /*  D  */ EO_ROW_DST_SET,      // set dst rowslab                          ---to go
+  /*  D  */ EO_ROW_DST_TESTROW,  // test if destination row                  ---to go
+  /*  D  */ EO_ROW_DST_ZERO,     // zero destination row                     ---to go
+  /*  D  */ EO_ROW_SRC_BEGIN,    // begin src row traverse                   ---to go
+  /*  D  */ EO_ROW_SRC_NEXT,     // move to next src row                     ---to go
+  /*  D  */ EO_ROW_SRC_NULL,     // null rb src src                          ---to go
+  /*  D  */ EO_ROW_SRC_PRINT,    // print src row                            ---to go
+  /*  D  */ EO_ROW_SRC_PUSHOFS,  // push offset of source row                ---to go
+  /*  D  */ EO_ROW_SRC_SETBYOFS, // set src row by using offset on stack     ---to go
+  /*  D  */ EO_ROW_SRC_TEST,     // test if there is a row src buffer        ---to go
+  /*  -  */ EO_ROW_ALT_BEGIN,    // begin linear traverse                    ---to go
+  /*  -  */ EO_ROW_ALT_NEXT,     // move to next row                         ---to go
+  /*  -  */ EO_ROW_ALT_PRINT,    // print alt row                            ---to go
+  /*  -  */ EO_ROW_ALT_PUSHOFS,  // push offset of alt row                   ---to go
+  /*  -  */ EO_ROW_ALT_SETBYOFS, // set alt row by using offset on stack     ---to go
+
+  /*     */ EO_DEVROW_PRINT,     // print row from row dev
+  /*     */ EO_DEVROW_RESET,     // reset rowslab in row dev
+  /*     */ EO_DEVROW_NEW,       // create new row in row dev
+  /*     */ EO_DEVROW_SET,       // set rowslab in row dev
+  /*     */ EO_RDEVOW_TESTROW,   // test if row in row dev
+  /*     */ EO_DEVROW_ZERO,      // zero destination row in row dev
+  /*     */ EO_DEVROW_BEGIN,     // begin src row traverse in row dev
+  /*     */ EO_DEVROW_NEXT,      // move to next src row in row dev
+  /*     */ EO_DEVROW_NULL,      // null rb src src in row dev
+  /*     */ EO_DEVROW_PUSHOFS,   // push offset of source row in row dev
+  /*     */ EO_DEVROW_SETBYOFS,  // set src row  in row dev by using offset on stack
 
   // row operators
   /*  D  */ EO_ROW_DST_POPCOLI,  // pop and deposit top into dst column
@@ -356,15 +368,15 @@ enum eEO : u1 // expression operators
 
   // super fragments
   /*  M  */ EO_SUPER_Q100,       // super fragment Q100
-  /*  -  */ EO_SUPER_Z001,       // super fragment
-  /*  -  */ EO_SUPER_Z002,       // super fragment
-  /*  -  */ EO_SUPER_Z003,       // super fragment
-  /*  -  */ EO_SUPER_Z004,       // super fragment
-  /*  -  */ EO_SUPER_Z005,       // super fragment
-  /*  -  */ EO_SUPER_Z006,       // super fragment
-  /*  -  */ EO_SUPER_Z007,       // super fragment
-  /*  -  */ EO_SUPER_Z008,       // super fragment
-  /*  -  */ EO_SUPER_Z009,       // super fragment
+  /*  -  */ //EO_SUPER_Z001,       // super fragment
+  /*  -  */ //EO_SUPER_Z002,       // super fragment
+  /*  -  */ //EO_SUPER_Z003,       // super fragment
+  /*  -  */ //EO_SUPER_Z004,       // super fragment
+  /*  -  */ //EO_SUPER_Z005,       // super fragment
+  /*  -  */ //EO_SUPER_Z006,       // super fragment
+  /*  -  */ //EO_SUPER_Z007,       // super fragment
+  /*  -  */ //EO_SUPER_Z008,       // super fragment
+  /*  -  */ //EO_SUPER_Z009,       // super fragment
 
   
   // revised
@@ -424,17 +436,17 @@ static Stz* aEO[]
   /*    */ "EO_JMP_GREATER"_Stz,
   
   // index
-  /*    */ "EO_INDEXNM_ALT_SET"_Stz,
-  /*    */ "EO_INDEXNM_SRC_SET"_Stz,
+  /*    */ //"EO_INDEXNM_ALT_SET"_Stz,
+  /*    */ //"EO_INDEXNM_SRC_SET"_Stz,
 
   // index name
   /*    */ "EO_DEVIXT_INDEXNM_SET"_Stz,
 
   // indexTree
-  /*    */ "EO_INDEXTREE_ALT_SET"_Stz,
-  /*    */ "EO_INDEXTREE_SRC_SET"_Stz,
-  /*    */ "EO_INDEXTREE_TMP_DELETE"_Stz,
-  /*    */ "EO_INDEXTREE_TMP_SET"_Stz,
+  /*    */ //"EO_INDEXTREE_ALT_SET"_Stz,
+  /*    */ //"EO_INDEXTREE_SRC_SET"_Stz,
+  /*    */ //"EO_INDEXTREE_TMP_DELETE"_Stz,
+  /*    */ //"EO_INDEXTREE_TMP_SET"_Stz,
 
   // indexTree
   /*    */ "EO_DEVIXT_INDEXTREE_SET"_Stz,
@@ -711,6 +723,19 @@ static Stz* aEO[]
   /*    */ "EO_ROW_ALT_PUSHOFS"_Stz,
   /*    */ "EO_ROW_ALT_SETBYOFS"_Stz,
 
+  // row / rowslab
+  /*     */ "EO_DEVROW_PRINT"_Stz,
+  /*     */ "EO_DEVROW_RESET"_Stz,
+  /*     */ "EO_DEVROW_NEW"_Stz,
+  /*     */ "EO_DEVROW_SET"_Stz,
+  /*     */ "EO_RDEVOW_TESTROW"_Stz,
+  /*     */ "EO_DEVROW_ZERO"_Stz,
+  /*     */ "EO_DEVROW_BEGIN"_Stz,
+  /*     */ "EO_DEVROW_NEXT"_Stz,
+  /*     */ "EO_DEVROW_NULL"_Stz,
+  /*     */ "EO_DEVROW_PUSHOFS"_Stz,
+  /*     */ "EO_DEVROW_SETBYOFS"_Stz,
+
   // row operators
   /*    */ "EO_ROW_DST_POPCOLI"_Stz,
   /*    */ "EO_ROW_DST_POPCOLS"_Stz,
@@ -721,15 +746,15 @@ static Stz* aEO[]
 
   // super fragments
   /*    */ "EO_SUPER_Q100"_Stz,
-  /*    */ "EO_SUPER_Z001"_Stz,
-  /*    */ "EO_SUPER_Z002"_Stz,
-  /*    */ "EO_SUPER_Z003"_Stz,
-  /*    */ "EO_SUPER_Z004"_Stz,
-  /*    */ "EO_SUPER_Z005"_Stz,
-  /*    */ "EO_SUPER_Z006"_Stz,
-  /*    */ "EO_SUPER_Z007"_Stz,
-  /*    */ "EO_SUPER_Z008"_Stz,
-  /*    */ "EO_SUPER_Z009"_Stz,
+  /*    */ //"EO_SUPER_Z001"_Stz,
+  /*    */ //"EO_SUPER_Z002"_Stz,
+  /*    */ //"EO_SUPER_Z003"_Stz,
+  /*    */ //"EO_SUPER_Z004"_Stz,
+  /*    */ //"EO_SUPER_Z005"_Stz,
+  /*    */ //"EO_SUPER_Z006"_Stz,
+  /*    */ //"EO_SUPER_Z007"_Stz,
+  /*    */ //"EO_SUPER_Z008"_Stz,
+  /*    */ //"EO_SUPER_Z009"_Stz,
   
   // srevised
   /*    */ "EO_REVISED_00"_Stz,
@@ -794,17 +819,17 @@ static EoArg EoArgs[]
   { EA_LABEL,   8 },  // EO_JMP_GREATEREQUAL
 
   // index
-  { EA_STRING, -1 },  // EO_INDEXNM_ALT_SET
-  { EA_STRING, -1 },  // EO_INDEXNM_SRC_SET
+  //{ EA_STRING, -1 },  // EO_INDEXNM_ALT_SET
+  //{ EA_STRING, -1 },  // EO_INDEXNM_SRC_SET
 
   // index name
   { EA_STRING, -1 },  // EO_DEVIXT_INDEXNM_SET
 
   // indexTree
-  { EA_NONE,    0 },  // EO_INDEXTREE_ALT_SET
-  { EA_NONE,    0 },  // EO_INDEXTREE_SRC_SET
-  { EA_NONE,    0 },  // EO_INDEXTREE_TMP_DELETE
-  { EA_NONE,    0 },  // EO_INDEXTREE_TMP_SET
+  //{ EA_NONE,    0 },  // EO_INDEXTREE_ALT_SET
+  //{ EA_NONE,    0 },  // EO_INDEXTREE_SRC_SET
+  //{ EA_NONE,    0 },  // EO_INDEXTREE_TMP_DELETE
+  //{ EA_NONE,    0 },  // EO_INDEXTREE_TMP_SET
 
     // indexTree
   { EA_NONE,    0 },  // EO_DEVIXT_INDEXTREE_SET
@@ -1083,7 +1108,20 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_ROW_ALT_PUSHOFS
   { EA_NONE,    0 },  // EO_ROW_ALT_SETBYOFS
 
-  // row operators
+    // row / rowslab
+  { EA_NONE,    0 },  // EO_DEVROW_PRINT
+  { EA_NONE,    0 },  // EO_DEVROW_RESET
+  { EA_NONE,    0 },  // EO_DEVROW_NEW
+  { EA_NONE,    0 },  // EO_DEVROW_SET
+  { EA_NONE,    0 },  // EO_RDEVOW_TESTROW
+  { EA_NONE,    0 },  // EO_DEVROW_ZERO
+  { EA_NONE,    0 },  // EO_DEVROW_BEGIN
+  { EA_NONE,    0 },  // EO_DEVROW_NEXT
+  { EA_NONE,    0 },  // EO_DEVROW_NULL
+  { EA_NONE,    0 },  // EO_DEVROW_PUSHOFS
+  { EA_NONE,    0 },  // EO_DEVROW_SETBYOFS
+
+    // row operators
   { EA_SUBSCR,  8 },  // EO_ROW_DST_POPCOLI
   { EA_SUBSCR,  8 },  // EO_ROW_DST_POPCOLS
   { EA_SUBSCR,  8 },  // EO_ROW_DST_PUSHCOLI
@@ -1092,15 +1130,15 @@ static EoArg EoArgs[]
   { EA_SUBSCR,  8 },  // EO_ROW_ALT_PUSHCOLI
 
   { EA_NONE,    0 },  // super fragment Q100
-  { EA_NONE,    0 },  // super fragment
-  { EA_NONE,    0 },  // super fragment
-  { EA_NONE,    0 },  // super fragment
-  { EA_NONE,    0 },  // super fragment
-  { EA_NONE,    0 },  // super fragment
-  { EA_NONE,    0 },  // super fragment
-  { EA_NONE,    0 },  // super fragment
-  { EA_NONE,    0 },  // super fragment
-  { EA_NONE,    0 },  // super fragment
+  //{ EA_NONE,    0 },  // super fragment
+  //{ EA_NONE,    0 },  // super fragment
+  //{ EA_NONE,    0 },  // super fragment
+  //{ EA_NONE,    0 },  // super fragment
+  //{ EA_NONE,    0 },  // super fragment
+  //{ EA_NONE,    0 },  // super fragment
+  //{ EA_NONE,    0 },  // super fragment
+  //{ EA_NONE,    0 },  // super fragment
+  //{ EA_NONE,    0 },  // super fragment
 
   // -- end --
   { EA_NONE,    0 },  // EO_ENUMS

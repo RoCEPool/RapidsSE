@@ -631,7 +631,9 @@ void LogicCompiler::vAddFragment(i8 i_CodeFrom, i8 i_CodeTill)
   s4K sPrint;
 
   for (i8 i_Code = i_CodeFrom; i_Code <= i_CodeTill; i_Code++) {
-    
+
+    if (i_Code == 148)
+      i8 i = 1;
     eEO eCode = m_pLogicUnit->eCode(i_Code);
 
     i_Label = m_pLogicUnit->iFindLabel(i_Code);
