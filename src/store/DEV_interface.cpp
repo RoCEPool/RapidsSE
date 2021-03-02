@@ -1357,15 +1357,16 @@ i8 iDev_ROW_PUSHOFS(void* aLU, void* aROWDEVICE)
 /*----------------------------------------------------------------------------*/
 /* reset row                                                                  */
 /*----------------------------------------------------------------------------*/
-void vDev_ROW_RESET(void* aLU, void* aROWDEVICE)
+void vDev_ROW_RESET(i8** aaiDstk)
 {
   _static_
 
-  UNUSED(aLU);
-
-  DevROW* pDevRow = _pDevROW(aROWDEVICE);
+  i8 *aiDstk = *aaiDstk;
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
   
   pDevRow->m_pRowBuffer->vReset();
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -2975,8 +2975,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       case EO_ROW_DST_RESET: ArgNil(); // reset dst rowslab
-        dLU0(EO_ROW_DST_RESET);
-        vDev_ROW_RESET(pLU,aRluCommon->m_pDevDstRow);
+//        dLU0(EO_ROW_DST_RESET);
+//        vDev_ROW_RESET(pLU,aRluCommon->m_pDevDstRow);
+        RASSERT(0);
         break;//+endCase
        
       case EO_ROW_DST_SET: ArgNil(); // set dst row
@@ -3051,6 +3052,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_DEVROW_PRINT: ArgNil(); // print row
         dLU0(EO_DEVROW_PRINT);
         vDev_ROW_PRINT(&aiDstk);
+        break;//+endCase
+
+      case EO_DEVROW_RESET: ArgNil(); // reset dst rowslab
+        dLU0(EO_DEVROW_RESET);
+        vDev_ROW_RESET(&aiDstk);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
