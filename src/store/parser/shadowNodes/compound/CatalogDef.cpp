@@ -43,7 +43,7 @@ QueryNode* CatalogDef::pCreate(Stz* szCatalogName, QueryNode* pSchemaDefs)
   ASSERT(pSchemaDefs);
 
   // Create the catalogDef object
-  QueryNode* pCatalogDef = new QueryNode(C_CATALOGDEF_NAME, C_CATALOGDEF_DEFN);
+  QueryNode* pCatalogDef = new QueryNode(szCatalogName, C_CATALOGDEF_DEFN);
 
   // Create the catalogName property
   Value xCatalogNameVal(szCatalogName);

@@ -10,7 +10,9 @@
 #include "PlanConstants.hpp"
 
 #include "CatalogDef.hpp"
+#include "SchemaDefs.hpp"
 #include "SchemaDef.hpp"
+#include "TableDefs.hpp"
 #include "TableDef.hpp"
 #include "ColumnDef.hpp"
 #include "IndexDef.hpp"
@@ -84,11 +86,18 @@ void MetadataNode::vAddSchema(QueryNode* pMetadataNode, QueryNode* pSchemaDef)
   ASSERT(szCatalogName);
 
   QueryNode* pCatalogDefNode = pCatalogDef(pMetadataNode, szCatalogName);
+
+  if (!pCatalogDefNode) {
+    QueryNode* pSchemaDefs = SchemaDefs::pCreate();
+    pCatalogDefNode = CatalogDef::pCreate(szCatalogName, pSchemaDefs);
+    vAddCatalog(pMetadataNode, pCatalogDefNode);
+  }
+
   CatalogDef::vAddSchema(pCatalogDefNode, pSchemaDef);
 }
 
 /*----------------------------------------------------------------------------*/
-/* Add a table definition to the metadata                                     */
+/* Add a table definition to the metadata. Creates the schema/catalog if req  */
 /*----------------------------------------------------------------------------*/
 void MetadataNode::vAddTable(QueryNode* pMetadataNode, QueryNode* pTableDef)
 {
@@ -103,6 +112,13 @@ void MetadataNode::vAddTable(QueryNode* pMetadataNode, QueryNode* pTableDef)
   ASSERT(szSchemaName);
 
   QueryNode* pSchemaDefNode = pSchemaDef(pMetadataNode, szCatalogName, szSchemaName);
+
+  if (!pSchemaDefNode) {
+    QueryNode* pTableDefs = TableDefs::pCreate();
+    pSchemaDefNode = SchemaDef::pCreate(szCatalogName, szSchemaName, pTableDefs);
+    vAddSchema(pMetadataNode, pSchemaDefNode);
+  }
+
   SchemaDef::vAddTable(pSchemaDefNode, pTableDef);
 }
 

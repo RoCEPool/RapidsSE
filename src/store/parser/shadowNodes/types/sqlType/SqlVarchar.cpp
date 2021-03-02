@@ -25,6 +25,14 @@ static Stz* C_LENGTH_DEFN      = "/__root__/definitions/object/valueObject/integ
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* Creates an instance of this type with the default length                   */
+/*----------------------------------------------------------------------------*/
+PlanNode* SqlVarchar::pCreate()
+{
+  return pCreate(-1);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Creates an instance of this type                                           */
 /* Use -1 for length if not applicable.                                       */
 /*----------------------------------------------------------------------------*/
@@ -35,8 +43,8 @@ PlanNode* SqlVarchar::pCreate(i8 iLength)
   // Create a unique name for this object
   s256 sName;
   ShadowNode::vObjName(GraphNav::szLeafType(C_SQLVARCHAR_DEFN), sName);
-
-  QueryNode* pNode = new QueryNode(sName, C_SQLVARCHAR_DEFN);
+  Value xTypeValue((i8) ST_VARCHAR);
+  QueryNode* pNode = new QueryNode(sName, C_SQLVARCHAR_DEFN, static_cast<Value&&>(xTypeValue));
 
   if (iLength != -1) {
     ASSERT(iLength > 0);

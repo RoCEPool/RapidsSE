@@ -35,6 +35,7 @@ namespace Parser
 
 
   public:
+    static QueryNode* pCreate(Type eType);
     static void vDescribe(PlanNode* pNode, s2K& sBuf);
 
     // Returns true if a given node is a given type ** or is derived from that type **
@@ -42,6 +43,7 @@ namespace Parser
 
     static Stz* szTypeName(PlanNode* pNode);
     static Type eType(PlanNode* pNode);
+    static Type eType(Stz* szMetadataType);
   };
 
 }

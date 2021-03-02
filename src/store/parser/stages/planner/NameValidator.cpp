@@ -7,12 +7,22 @@
 #include "NameValidator.hpp"
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
-#include "DefinitionNode.hpp"
-#include "PrimitiveNode.hpp"
 #include "PlanConstants.hpp"
 #include "GraphNav.hpp"
+#include "MetadataNode.hpp"
+#include "SqlException.hpp"
 
-#include "ListExo_t.hpp"
+#include "SeApi.hpp"
+#include "InfoSet.hpp"
+
+#include "TableRef.hpp"
+#include "ColumnRef.hpp"
+#include "TableDef.hpp"
+#include "ColumnDefs.hpp"
+#include "ColumnDef.hpp"
+#include "IndexDefs.hpp"
+#include "IndexDef.hpp"
+
 
 using namespace Parser;
 
@@ -35,7 +45,128 @@ using namespace Parser;
 /*----------------------------------------------------------------------------*/
 void NameValidator::vValidateNames(PlanNode *pRootNode)
 {
+  // First find the metadata node
+  QueryNode* pMetadataNode = static_cast<QueryNode*>(GraphNav::pFind(const_cast<Stz*>(C_METADATA_PATH), pRootNode));
+  ASSERT(pMetadataNode);
 
+  // Find the /plan node
+  QueryNode* pPlanNode = static_cast<QueryNode*>(GraphNav::pFind(const_cast<Stz*>(C_PLAN_PATH), pRootNode));
+  ASSERT(pPlanNode);
+
+  STORE::SeApi* pSeApi = new STORE::SeApi();
+
+  try {
+    // First resolve all of the tables in the plan. We will need them to
+    // then resolve columns and indexes.
+    vValidateTables(pRootNode, pPlanNode, pMetadataNode, pSeApi);
+
+  } catch (SqlException& e) {
+    delete pSeApi;
+    throw e;
+  }
+
+  delete pSeApi;
+}
+
+
+void NameValidator::vValidateTables(PlanNode *pRootNode, QueryNode* pPlanNode, QueryNode* pMetadataNode, STORE::SeApi* pSeApi)
+{
+  ASSERT(pRootNode);
+  ASSERT(pMetadataNode);
+  ASSERT(pPlanNode);
+
+  // Walk the graph, looking for TableRefs, ColumnRefs and others
+  auto fVisitor = [&pMetadataNode, &pSeApi](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
+
+    if (!TableRef::bIsOfType(pNode)) {
+      return GraphNav::WALK_CONTINUE;   // Keep walking
+    }
+
+    Stz* szCatalogName = TableRef::szCatalog(static_cast<QueryNode*>(pNode));
+    Stz* szSchemaName  = TableRef::szSchema(static_cast<QueryNode*>(pNode));
+    Stz* szTableName   = TableRef::szTable(static_cast<QueryNode*>(pNode));
+
+    // Is this table already in the metadata? It must have a fully qualified name if it does.
+    if (szCatalogName && szSchemaName && szTableName) {
+      QueryNode* pTableDef = MetadataNode::pTableDef(pMetadataNode, szCatalogName, szSchemaName, szTableName);
+      if (pTableDef) {
+        // Table is in the metadata. Nothing to do here.
+        return GraphNav::WALK_CONTINUE;   // Keep walking
+      }
+    }
+
+    // Look up table in SE API
+    STORE::InfoSet* pTableInfoSet = pSeApi->pLookupTable(szCatalogName, szSchemaName, szTableName);
+    ASSERT(pTableInfoSet);
+
+    if (pTableInfoSet->nInfoRows() == 0) {
+      // We couldn't resolve the table in the SE metadata
+      delete pTableInfoSet;
+      NameValidationException::vThrowUnknownTable(szCatalogName, szSchemaName, szTableName);
+    }
+
+    if (pTableInfoSet->nInfoRows() > 1) {
+      // We've resolved more than one table in the metadata. The table name is ambiguous.
+      NameValidationException::vThrowAmbiguousTable(szCatalogName, szSchemaName, szTableName, pTableInfoSet);
+    }
+
+    ASSERT(pTableInfoSet->nInfoRows() == 1);
+    Row* pTblRow = pTableInfoSet->pFirstRow();
+
+    // TODO: Replace this with TableMetadata when it exists
+    // Get the full name from the metadata as we may not have had all of the details before
+    szCatalogName = pTblRow->szColVal_ofs(0);
+    szSchemaName = pTblRow->szColVal_ofs(1);
+    szTableName = pTblRow->szColVal_ofs(2);
+
+    // Retrieve the column definitions and make a node our of these
+    QueryNode* pColumnDefs = ColumnDefs::pCreate();
+    InfoSet* pColumnInfoSet = pSeApi->pColumnDefs(szCatalogName, szSchemaName, szTableName, nullptr);
+
+    for (Row* pColRow = pColumnInfoSet->pFirstRow();
+         pColRow;
+         pColRow = pColumnInfoSet->pNextRow(pColRow)) {
+
+      ColumnMetadata* pColMeta = static_cast<ColumnMetadata*>(pColRow);
+
+      // Convert the metadata type string to an enum and use this to create
+      // a QueryNode of the correct type.
+      // TODO: Change this to look at the eCT enum
+      QueryNode* pTypeNode = SqlType::pCreate(SqlType::eType(pColMeta->szColumnType()));
+
+      // Make the column definition node and add it to the list of column definitions
+      QueryNode* pColumnDef = ColumnDef::pCreate(pColMeta->szColumnName(),
+                                                 pTypeNode,
+                                                 !pColMeta->bIsNullable(),
+                                                 pColMeta->iColumnNumber(),
+                                                 pColMeta->iColumnLength(),
+                                                 pColMeta->iColumnScale());
+      ColumnDefs::vAddColumnDef(pColumnDefs, pColumnDef);
+    }
+
+    // TODO: Get the index definitions and make a node out of it.
+    // TODO: For now this is empty
+    QueryNode* pIndexDefs = IndexDefs::pCreate();
+
+    // Now form a TableDef object out of the table metadata, columnDefs and indexDefs
+    QueryNode* pTableDef;
+    pTableDef = TableDef::pCreate(szCatalogName, szSchemaName, szTableName, pColumnDefs, pIndexDefs);
+
+    // Add to the plan metadata
+    MetadataNode::vAddTable(pMetadataNode, pTableDef);
+
+    // Mark TableRef node as resolved
+
+    delete pTableInfoSet;
+    delete pColumnInfoSet;
+
+    return GraphNav::WALK_CONTINUE;   // Keep walking
+  };
+
+  // Walk the /plan node, it's properties and its children
+  GraphNav::bWalk(pPlanNode, true, true, fVisitor, pRootNode);
 }
 
 /*============================================================================*/

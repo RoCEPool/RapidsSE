@@ -39,6 +39,8 @@
 #include "GraphNav.hpp"
 #include "PlanOperand.hpp"
 
+#include "NameValidator.hpp"
+
 #include "SqlException.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -69,13 +71,30 @@ void Step::vSqlCompilerNameValidate(void)
   //       that are being used, etc.
   // TODO: Fill in the catalog/schema/table fields of the columnRef and tableRefs
   //       where applicable.
+  try {
+    NameValidator::vValidateNames(pPlanRoot);
 
+  } catch (Parser::SqlException& e) {
+    Grid* pGrid = AM::pGrid();
+    InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
+    Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+                                    pGrid->pThisNode()->szNodeNm(),
+                                    EC_SEMANTIC_ERROR,
+                                    0,
+                                    0,
+                                    e.szError(),
+                                    C_VARGS_END);
+    UNUSED(pRow);
+    m_pDataStack->vPushPtr(nullptr);
+    goto L_Exit;
+  }
 
   // TODO: eventually we want the received plan graph to be immutable,
   //       so we would send a different version. But for now we will just
   //       manipulate and send the same plan graph
   m_pDataStack->vPushPtr(pPlanOperand);
 
+L_Exit:
   EXIT();
 }
 

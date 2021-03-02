@@ -4,6 +4,9 @@
 #pragma once
 
 #include <exception>
+#include "BASE.h"
+#include "InfoSet.hpp"
+#include "ColumnMetadata.hpp"
 
 namespace Parser
 {
@@ -77,9 +80,45 @@ namespace Parser
     NameValidationException(const Stz* szErrorMsg) : SqlException(szErrorMsg)   { /* noop */ }
 
     // Creates and throws a NameValidationException
-    static void vThrowUnknownTable(Stz* szTableName) {
+    static void vThrowUnknownTable(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName)
+    {
       s256 sErrMsg;
-      sErrMsg.vSprint("Unknown table name: %s"_Stz, szTableName);
+      sErrMsg.vConcat("Unknown table name: "_Stz);
+
+      if (szCatalogName) {
+        sErrMsg.vCatSprint("%s.%s.%s"_Stz, szCatalogName, szSchemaName, szTableName);
+      } else if (szSchemaName) {
+        sErrMsg.vCatSprint("%s.%s"_Stz, szSchemaName, szTableName);
+      } else {
+        sErrMsg.vCatSprint("%s"_Stz, szTableName);
+      }
+      throw NameValidationException(sErrMsg.szStz());
+    }
+
+    static void vThrowAmbiguousTable(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName, STORE::InfoSet* pInfoSet)
+    {
+      s256 sErrMsg;
+      sErrMsg.vConcat("Ambiguous table name: "_Stz);
+
+      if (szCatalogName) {
+        sErrMsg.vCatSprint("%s.%s.%s"_Stz, szCatalogName, szSchemaName, szTableName);
+      } else if (szSchemaName) {
+        sErrMsg.vCatSprint("%s.%s"_Stz, szSchemaName, szTableName);
+      } else {
+        sErrMsg.vCatSprint("%s"_Stz, szTableName);
+      }
+
+      sErrMsg.vConcat(". Could be one of:"_Stz);
+
+      for (Row* pRow = pInfoSet->pFirstRow();
+           pRow;
+           pRow = pInfoSet->pNextRow(pRow)) {
+
+        // TODO: Replace the pRow->szColVal_ofs(0) with TableMetadata when it exists
+        sErrMsg.vCatSprint("\n%s.%s.%s"_Stz, pRow->szColVal_ofs(0), pRow->szColVal_ofs(1), pRow->szColVal_ofs(2));
+      }
+
+      delete pInfoSet;
       throw NameValidationException(sErrMsg.szStz());
     }
 

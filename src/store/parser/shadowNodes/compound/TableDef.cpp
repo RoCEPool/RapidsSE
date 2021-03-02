@@ -68,7 +68,7 @@ QueryNode* TableDef::pCreate(Stz* szCatalogName, Stz* szSchemaName, Stz* szTable
 
 
   // Create the tableDef object
-  QueryNode* pTableDef = new QueryNode(C_TABLEDEF_NAME, C_TABLEDEF_DEFN);
+  QueryNode* pTableDef = new QueryNode(szTableName, C_TABLEDEF_DEFN);
 
   // Create the catalogName property
   Value xCatalogNameVal(szCatalogName);

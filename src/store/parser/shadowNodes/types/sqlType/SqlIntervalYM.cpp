@@ -32,8 +32,8 @@ PlanNode* SqlIntervalYM::pCreate()
   // Create a unique name for this object
   s256 sName;
   ShadowNode::vObjName(GraphNav::szLeafType(C_SQLINTERVAL_DEFN), sName);
-
-  PlanNode* pNode = new QueryNode(sName, C_SQLINTERVAL_DEFN);
+  Value xTypeValue((i8) ST_INTERVAL_YM);
+  PlanNode* pNode = new QueryNode(sName, C_SQLINTERVAL_DEFN, static_cast<Value&&>(xTypeValue));
 
   return pNode;
 }

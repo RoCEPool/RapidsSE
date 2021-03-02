@@ -28,6 +28,15 @@ static Stz* C_COLUMNTYPE_DEFN  = "/__root__/definitions/types/sqlType"_Stz;
 static Stz* C_NOTNULL_PROP     = "notNull"_Stz;
 static Stz* C_NOTNULL_DEFN     = "/__root__/definitions/object/valueObject/booleanObject"_Stz;
 
+static Stz* C_ORDINAL_PROP     = "ordinal"_Stz;
+static Stz* C_ORDINAL_DEFN     = "/__root__/definitions/object/valueObject/integerObject"_Stz;
+
+static Stz* C_PRECISION_PROP   = "precision"_Stz;
+static Stz* C_PRECISION_DEFN   = "/__root__/definitions/object/valueObject/integerObject"_Stz;
+
+static Stz* C_SCALE_PROP       = "scale"_Stz;
+static Stz* C_SCALE_DEFN       = "/__root__/definitions/object/valueObject/integerObject"_Stz;
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -36,15 +45,19 @@ static Stz* C_NOTNULL_DEFN     = "/__root__/definitions/object/valueObject/boole
 
 
 /*----------------------------------------------------------------------------*/
-/* Helper function to create columnDef nodes.                                  */
+/* Helper function to create columnDef nodes.                                 */
+/* Ordinal is 1 based. Use -1 for precision and scale if not set or n/a.      */
 /*----------------------------------------------------------------------------*/
-QueryNode* ColumnDef::pCreate(Stz* szColumnName, SqlType::Type eColumnType, b1 bNotNull)
+QueryNode* ColumnDef::pCreate(Stz* szColumnName, QueryNode* pTypeNode, b1 bNotNull,
+                              i8 iOrdinal, i8 iPrecision, i8 iScale)
 {
   _static_
 
   ASSERT(szColumnName);
   ASSERT(szColumnName->nLength() > 0);
-
+  ASSERT(iOrdinal > 0);
+  ASSERT(iPrecision >= -1);
+  ASSERT(iScale >= -1);
 
   // Create the columnDef object
   QueryNode* pColumnDef = new QueryNode(C_COLUMNDEF_NAME, C_COLUMNDEF_DEFN);
@@ -54,15 +67,29 @@ QueryNode* ColumnDef::pCreate(Stz* szColumnName, SqlType::Type eColumnType, b1 b
   QueryNode* pName = new QueryNode(C_COLUMNNAME_PROP, C_COLUMNNAME_DEFN, static_cast<Value&&>(xNameVal));
   pColumnDef->vAppendProperty(pName);
 
-  // Create the type property
-  Value xTypeVal((i8) eColumnType);
-  QueryNode* pType = new QueryNode(C_COLUMNTYPE_PROP, C_COLUMNTYPE_DEFN, static_cast<Value&&>(xTypeVal));
-  pColumnDef->vAppendProperty(pType);
+  // Add the type property
+  pTypeNode->vSetName(C_COLUMNTYPE_PROP);
+  pColumnDef->vAppendProperty(pTypeNode);
 
   // Create the notNull property
   Value xNotNullVal(bNotNull);
   QueryNode* pNotNull = new QueryNode(C_NOTNULL_PROP, C_NOTNULL_DEFN, static_cast<Value&&>(xNotNullVal));
   pColumnDef->vAppendProperty(pNotNull);
+
+  // Create the ordinal property
+  Value xOrdinalVal(bNotNull);
+  QueryNode* pOrdinal = new QueryNode(C_ORDINAL_PROP, C_ORDINAL_DEFN, static_cast<Value&&>(xOrdinalVal));
+  pColumnDef->vAppendProperty(pOrdinal);
+
+  // Create the precision property
+  Value xPrecisionVal(bNotNull);
+  QueryNode* pPrecision = new QueryNode(C_PRECISION_PROP, C_PRECISION_DEFN, static_cast<Value&&>(xPrecisionVal));
+  pColumnDef->vAppendProperty(pPrecision);
+
+  // Create the scale property
+  Value xScaleVal(bNotNull);
+  QueryNode* pScale = new QueryNode(C_SCALE_PROP, C_SCALE_DEFN, static_cast<Value&&>(xScaleVal));
+  pColumnDef->vAppendProperty(pScale);
 
   return pColumnDef;
 }
@@ -149,6 +176,45 @@ b1 ColumnDef::bNotNull(QueryNode* pNode)
 
   ASSERT(pNotNullNode);
   return pNotNullNode->bValue();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the 1-based index of the column number                             */
+/*----------------------------------------------------------------------------*/
+i8 ColumnDef::iOrdinal(QueryNode* pNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pOrdinalNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_ORDINAL_PROP, pNode));
+
+  ASSERT(pOrdinalNode);
+  return pOrdinalNode->iValue();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the length/precision of the column, or -1 if not set/applicable    */
+/*----------------------------------------------------------------------------*/
+i8 ColumnDef::iPrecision(QueryNode* pNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pPrecisionNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_PRECISION_PROP, pNode));
+
+  ASSERT(pPrecisionNode);
+  return pPrecisionNode->iValue();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the scale (num digits to the right of the decimal point), or -1    */
+/*----------------------------------------------------------------------------*/
+i8 ColumnDef::iScale(QueryNode* pNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pScaleNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_SCALE_PROP, pNode));
+
+  ASSERT(pScaleNode);
+  return pScaleNode->iValue();
 }
 
 /*============================================================================*/

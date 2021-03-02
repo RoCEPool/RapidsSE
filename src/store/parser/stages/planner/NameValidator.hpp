@@ -4,10 +4,15 @@
 /*============================================================================*/
 #pragma once
 
+namespace STORE
+{
+  class SeApi;
+}
 
 namespace Parser
 {
   class PlanNode;
+  class QueryNode;
 
   class NameValidator
   {
@@ -22,6 +27,10 @@ namespace Parser
     // the plan with metadata.
     // A SqlException will be thrown if a name cannot be resolved.
     static void vValidateNames(PlanNode* pRootNode);
+
+  private:
+    static void vValidateTables(PlanNode* pRootNode, QueryNode* pPlanNode,
+                                QueryNode* pMetadataNode, STORE::SeApi* pSeApi);
   };
 }
 

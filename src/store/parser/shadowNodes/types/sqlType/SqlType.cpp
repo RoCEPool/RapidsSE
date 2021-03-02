@@ -47,7 +47,54 @@ static Stz* C_TYPE_NAMES[SqlType::ST_NENUMS] = {
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* Create a type from enum with default properties                            */
+/*----------------------------------------------------------------------------*/
+QueryNode* SqlType::pCreate(Type eType)
+{
+  _static_
 
+  // Manual Polymorphism
+  switch (eType) {
+    case ST_BOOLEAN:
+      return static_cast<QueryNode*>(SqlBoolean::pCreate());
+
+    case ST_INTEGER:
+      return static_cast<QueryNode*>(SqlInteger::pCreate());
+
+    case ST_FLOAT:
+      return static_cast<QueryNode*>(SqlFloat::pCreate());
+
+    case ST_DECIMAL:
+      return static_cast<QueryNode*>(SqlDecimal::pCreate());
+
+    case ST_VARCHAR:
+      return static_cast<QueryNode*>(SqlVarchar::pCreate());
+
+    case ST_DATE:
+      return static_cast<QueryNode*>(SqlDate::pCreate());
+
+    case ST_TIME:
+      return static_cast<QueryNode*>(SqlTime::pCreate());
+
+    case ST_TIMESTAMP:
+      return static_cast<QueryNode*>(SqlTimestamp::pCreate());
+
+    case ST_INTERVAL_YM:
+      return static_cast<QueryNode*>(SqlIntervalYM::pCreate());
+
+    case ST_INTERVAL_DT:
+      return static_cast<QueryNode*>(SqlIntervalDT::pCreate());
+
+    case ST_UNKNOWN:
+      return static_cast<QueryNode*>(SqlUnknown::pCreate());
+
+    case ST_NONE:
+    case ST_NENUMS:
+    default:
+      NEVER_REACH
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
@@ -56,8 +103,6 @@ void SqlType::vDescribe(PlanNode* pNode, s2K& sBuf)
 {
   _static_
   ASSERT(bIsOfType(pNode));
-
-  QueryNode* pExpr = static_cast<QueryNode*>(pNode);
 
   // Manual Polymorphism
   if      (SqlBoolean::bIsOfType(pNode))    { SqlBoolean::vDescribe(pNode, sBuf);    }
@@ -121,6 +166,30 @@ SqlType::Type SqlType::eType(PlanNode* pNode)
   else if (SqlUnknown::bIsOfType(pNode))    { return ST_UNKNOWN;     }
   else {
     // Need to add in manual polymorphism here
+    NEVER_REACH
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the enum of a SQL data type given string returned from the         */
+/* SE Metadata API.                                                           */
+/*----------------------------------------------------------------------------*/
+SqlType::Type SqlType::eType(Stz* szMetadataType)
+{
+  ASSERT(szMetadataType);
+
+  if      (szMetadataType->bEqual("BOOLEAN"_Stz))         { return ST_BOOLEAN;     }
+  else if (szMetadataType->bEqual("INTEGER"_Stz))         { return ST_INTEGER;     }
+  else if (szMetadataType->bEqual("FLOAT"_Stz))           { return ST_FLOAT;       }
+  else if (szMetadataType->bEqual("DECIMAL"_Stz))         { return ST_DECIMAL;     }
+  else if (szMetadataType->bEqual("VARCHAR"_Stz))         { return ST_VARCHAR;     }
+  else if (szMetadataType->bEqual("DATE"_Stz))            { return ST_DATE;        }
+  else if (szMetadataType->bEqual("TIME"_Stz))            { return ST_TIME;        }
+  else if (szMetadataType->bEqual("TIMESTAMP"_Stz))       { return ST_TIMESTAMP;   }
+  else if (szMetadataType->bEqual("INTERVAL"_Stz))        { return ST_INTERVAL_YM; }  // TODO: EE only has one interval type
+  else if (szMetadataType->bEqual("xxxINTERVAL_DT"_Stz))  { return ST_INTERVAL_DT; }  // TODO: EE only has one interval type
+  else if (szMetadataType->bEqual("xxxUNKNOWN"_Stz))      { return ST_UNKNOWN;     }  // TODO: Not yet supported in the EE
+  else {
     NEVER_REACH
   }
 }
