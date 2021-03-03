@@ -49,6 +49,10 @@ namespace STORE
     Stz* szCurrTenant(void);
   
     void vPrintMetadata(void);
+  
+    InfoSet* pSearchMetadata(Stz* szCatalogName,
+                             Stz* szSchemaName,
+                             Stz* szTableName);
 
     InfoSet* pColumnDefs(Stz* szCatalogName,
                          Stz* szSchemaName,
@@ -58,11 +62,11 @@ namespace STORE
     InfoSet* pLookupCatalog(Stz* szCatalogName);
   
     InfoSet* pLookupSchema(Stz* szCatalogName,
-                             Stz* szSchemaName);
+                           Stz* szSchemaName);
 
     InfoSet* pLookupTable(Stz* szCatalogName,
-                            Stz* szSchemaName,
-                            Stz* szTableName);
+                          Stz* szSchemaName,
+                          Stz* szTableName);
   
     bool bTest(Stz* szCatalogNm);
     bool bTest(Stz* szCatalogNm, Stz* szSchemaNm);

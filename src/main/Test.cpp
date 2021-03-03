@@ -231,21 +231,6 @@ void vTest6(void)
   DicStack* pDicStack = AM::pTaskDicStack();
   pDicStack->vPrint();
   
-//  s256 sPath;
-//
-//  pDicStack->vToPathStr(sPath);
-  
-//  vTrace("path: %s\n"_Stz,sPath.szStz());
-//
-//  for (i8 i_Dic = pDicStack->iCount() - 1; i_Dic >= 0; i_Dic--) {
-//    Dic* pDic = pDicStack->pPick(i_Dic);
-//    Word* pDicKind = pDic->pDicKind();
-//    vTrace("[%lld] %s %s\n"_Stz,
-//           i_Dic,
-//           pDic->szDicNm(),
-//           pDicKind ? pDicKind->szWordNm() : "n/a"_Stz);
-//  }
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   SeApi* pSeApi = new SeApi;
@@ -274,10 +259,13 @@ void vTest6(void)
   pRowBuffer = pSeApi->pLookupSchema(szCurrCatalog,szCurrSchema);
   delete pRowBuffer;
 
-  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   vTrace("\n\n"_Stz,szCurrTable);
   pSeApi->vPrintMetadata();
   vTrace("\n\n"_Stz,szCurrTable);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vTrace("Test %s : %s \n"_Stz,
          "rapidsse"_Stz,
@@ -294,7 +282,10 @@ void vTest6(void)
          pSeApi->bTest("rapidsse"_Stz,"public"_Stz,"lineitem"_Stz)
            ? "found"_Stz : "not-found"_Stz);
   
-  vTrace("\n\n"_Stz,szCurrTable);
+  vTrace("\n\n"_Stz);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   InfoSet* pInfoSet;
   pInfoSet = pSeApi->pLookupCatalog("n/a"_Stz);
   vTrace("LookupCatalog: %lld rows\n"_Stz,pInfoSet->nInfoRows());
@@ -323,26 +314,39 @@ void vTest6(void)
   vTrace("LookupTable: %lld rows\n"_Stz,pInfoSet->nInfoRows());
   delete pInfoSet;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   pInfoSet = pSeApi->pColumnDefs("rapidsse"_Stz,
                                  "public"_Stz,
                                  "lineitem"_Stz,
                                  nullptr);
   vTrace("ColumnDefs: %lld rows\n"_Stz,pInfoSet->nInfoRows());
-  
   for (Row* pRow = pInfoSet->pFirstRow();
        pRow;
        pRow = pInfoSet->pNextRow(pRow)) {
-    
     ColumnMetadata* pColMeta = static_cast<ColumnMetadata*>(pRow);
     
     SP_ColumnMetadata spColMeta;
     vTrace("META %s\n"_Stz,spColMeta.sz(pColMeta));
-
   }
-  
   delete pInfoSet;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  pInfoSet = pSeApi->pSearchMetadata("rapidsse"_Stz,
+                                     nullptr,
+                                     "lineitem"_Stz);
+  vTrace("SearchMetadata: %lld rows\n"_Stz,pInfoSet->nInfoRows());
+  for (Row* pRow = pInfoSet->pFirstRow();
+       pRow;
+       pRow = pInfoSet->pNextRow(pRow)) {
+    ColumnMetadata* pColMeta = static_cast<ColumnMetadata*>(pRow);
+
+    SP_ColumnMetadata spColMeta;
+    vTrace("META %s\n"_Stz,spColMeta.sz(pColMeta));
+  }
+  delete pInfoSet;
+  
   delete pSeApi;
 }
 

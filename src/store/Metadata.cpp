@@ -248,6 +248,53 @@ void Metadata::vListContents(i8 i_Depth, Dic* pDic)
 }
 
 /*----------------------------------------------------------------------------*/
+/* search all metadata                                                        */
+/*----------------------------------------------------------------------------*/
+void Metadata::vSearchContents(InfoSet* pInfoSet,
+                               Stz* szCatalogName,
+                               Stz* szSchemaName,
+                               Stz* szTableName,
+                               i8 i_Depth, Dic* pDic)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
+  
+  if (! pDic) {
+    Dic* pDic = pCurrTenant();
+    vTrace("\nTENANT %s \\folder\n"_Stz,pDic->szDicNm());
+    vSearchContents(pInfoSet,
+                    szCatalogName,szSchemaName,szTableName,
+                    0,pDic);
+    return;
+  }
+  
+  pDic->pArticle()->vGrabRead();
+  
+  for (Word* pWord = pDic->pFirstWord(); pWord; pWord = pWord->pNextWord()) {
+    
+    Word* pCategory = pWord->pCategory();
+
+    vTrace("%s%s %s\n"_Stz,
+           Stz::szTab(i_Depth),
+           pWord->szWordNm(),
+           pCategory ? pCategory->szWordNm() : "n/a"_Stz);
+    
+    Object* pObject = pWord->pObject();
+    if (pObject && CN_DIC == pObject->eGetClassNo())
+      vSearchContents(pInfoSet,
+                      szCatalogName,szSchemaName,szTableName,
+                      i_Depth+1,(Dic*)pObject);
+    else
+    if (pObject && CN_TABLE == pObject->eGetClassNo())
+      ((Table*)pObject)->vListContents(i_Depth+1);
+    else
+    if (pObject && CN_INDEX == pObject->eGetClassNo())
+      ((Index*)pObject)->vListContents(i_Depth+1);
+  }
+  
+  pDic->pArticle()->vDropRead();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get column set matching given arguments                                    */
 /*----------------------------------------------------------------------------*/
 InfoSet* Metadata::pColumnDefs(Stz* szCatalogName,
