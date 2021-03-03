@@ -34,10 +34,20 @@
   " --partitionsPerNode " str.cat args.partitionsPerNode >str   str.cat
   " --maxReadyLP "        str.cat args.maxReadyLP        >str   str.cat
 
-  user::name "ray" str.same if
-    " --commands /Users/ray/rapidsse/commands"  str.cat
-  else
+  user::name "alka" str.same if
     " --commands /Users/alka/rapidsse/commands" str.cat
+  then
+
+  // user::name "craig" str.same if
+  //       " --commands /Users/craig/rapidsse/commands" str.cat
+  //    then
+
+  user::name "ray" str.same if
+     " --commands /Users/ray/rapidsse/commands"  str.cat
+  then
+
+  user::name "myvanquoc" str.same if
+     " --commands /Users/myvanquoc/dev/src/SE/rapidsse/commands" str.cat
   then
 
   args.tracepoint  if " --tracepoint"  str.cat then

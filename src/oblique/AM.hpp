@@ -4,6 +4,8 @@
 #pragma once
 
 //!                    ** Do not include BASE.h **
+#include <list>
+#include <iterator>
 
 #include <Heartbeat.hpp>
 #include "eAA.h"
@@ -198,6 +200,11 @@ namespace OBLIQUE
     static i8   nConnectedNodes(void);
     static i8   nDefinedNodes(void);
     static i8   nNodes(void);
+
+    // newcode
+    static std::list<Node*>::const_iterator itBeginNodes(void);
+    static std::list<Node*>::const_iterator itEndNodes(void);
+
     static JobList* pDemonJobs(void);
     static bool bHasStarted(void);
     static Heaps* pHeaps(void);

@@ -66,6 +66,7 @@ namespace STORE
     static void vUnlinkSystem(void);
     static void vWaitStop(void);
     static void vWriteRegionName(void);
+    static void vCreateGridOfNodes(void); // newcode
   
   };
 }

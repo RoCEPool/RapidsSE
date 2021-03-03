@@ -1553,8 +1553,11 @@ void Engine::vStartSystem(void)
   if (AM::bVerboseProgress())
     vInfo("  Creating Grid and Node's\n"_Stz);
 
+  vCreateGridOfNodes(); // newcode
+
+  /*
   for (i8 i_Node = 0; i_Node < gxCmdLineArgs.m_xSysArgs.m_nBootNodes; i_Node++) {
-    ASSERT(AM::pGrid()->nNodes() == i_Node);
+    //ASSERT(AM::pGrid()->nNodes() == i_Node);
     Node* pNode = new Node(i_Node,
                            gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sNodeName,
                            AM::nDegOfPar(),
@@ -1567,17 +1570,24 @@ void Engine::vStartSystem(void)
     Article* pNodeArticle = pNode->pArticle();
     
     pGridArticle->vAppend(pNodeArticle);
-  }
+  } */
   
   Node* pThisNode = AM::pGrid()->pFindNode(gxCmdLineArgs.m_xSysArgs.m_sNodeName);
   if (! pThisNode)
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "Cannot find Node %s in the cluster"_Stz,
            gxCmdLineArgs.m_xSysArgs.m_sNodeName.azChar());
-  
-  i8 iThisNodeNo = pThisNode->iNodeNo();
+
+  // newcode: we might generate a unique node_no, so it can be used as part of jobid
+  // the unique node_no can be a hash of ipaddr and port number
+  // for the sake of first try, let's use port number
+  //i8 iThisNodeNo = pThisNode->iPortNo(); // newcode
+
+
+  i8 iThisNodeNo = pThisNode->iNodeNo(); // oldcode
   AM::pGrid()->vThisNode(iThisNodeNo);
-  
+
+  AM::pGrid()->vSetThisNode(pThisNode);
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // initialize the next id generators
   //gpAttachMap->m_inNextJobId.vNodeNo(iThisNodeNo);
@@ -1715,6 +1725,29 @@ void Engine::vStartSystem(void)
     
   if (AM::bVerboseProgress()) {
     vInfo("\n++\n++ System Started\n++\n"_Stz);
+  }
+}
+
+// newcode
+void Engine::vCreateGridOfNodes(void)
+{
+  Article* pGridArticle = gpAttachMap->m_pGrid->pArticle();
+
+  for (i8 i_Node = 0; i_Node < gxCmdLineArgs.m_xSysArgs.m_nBootNodes; i_Node++) {
+
+    Node* pNode = new Node(i_Node,
+                           gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sNodeName,
+                           AM::nDegOfPar(),
+                           gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress,
+                           gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_iPortNo);
+
+    AM::pGrid()->vPutNode(pNode);
+    AM::pGrid()->vIncBootNodes();
+    AM::pGrid()->vIncDefinedNodes();
+
+    Article* pNodeArticle = pNode->pArticle();
+
+    pGridArticle->vAppend(pNodeArticle);
   }
 }
 

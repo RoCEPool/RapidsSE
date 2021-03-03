@@ -71,9 +71,11 @@ Grid::Grid(Stz* szGridNm, i8 iConnectCode)
   m_nDefinedNodes   = 0;
   m_nConnectedNodes = 0;
   m_nNodes          = 0;
-  for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++) {
-    m_pNodes[i_Node] = nullptr;
-  }
+  //for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++) {
+  //  m_pNodes[i_Node] = nullptr;
+ // }
+
+  m_lNodes.clear();
 
   _checkInitialised_(CN_GRID);
   
@@ -188,25 +190,41 @@ void Grid::vDsv(void)
          m_nDefinedNodes,
          m_nConnectedNodes,
          m_nNodes);
-  
+
+  // newcode
+  for (std::list<Node*>::const_iterator it = m_lNodes.begin(), end = m_lNodes.end();
+       it != end; ++it) {
+    (*it)->vDsv();
+
+  }
+
+  /* oldcode
   for (Node_I oNode_I(0,C_ALL); oNode_I.bMore(); oNode_I.vNext()) {
     Node* pNode = (*oNode_I);
     pNode->vDsv();
-  }
+  } */
 }
 
 /*----------------------------------------------------------------------------*/
-/* find node                                                                  */
+/* find node by name                                                                 */
 /*----------------------------------------------------------------------------*/
 Node* Grid::pFindNode(Stz* sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  
+
+  // newcode
+  for (std::list<Node*>::const_iterator it = m_lNodes.begin(), end = m_lNodes.end();
+       it != end; ++it) {
+    if((*it)->szNodeNm()->bSame(sName))
+      return *it;
+  }
+
+  /* oldcode
   for (Node_I oNode_I(0,C_ALL); oNode_I.bMore(); oNode_I.vNext()) {
     Node* pNode = (*oNode_I);
     if (pNode && pNode->szNodeNm()->bSame(sName))
       return pNode;
-  }
+  } */
   
   return nullptr;
 }
@@ -218,6 +236,15 @@ Node* Grid::pGetNode(i8 i_Node)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
+  // newcode
+  for (std::list<Node*>::const_iterator it = m_lNodes.begin(), end = m_lNodes.end();
+       it != end; ++it) {
+    if ((*it)->iNodeNo() == i_Node)
+      return *it;
+  }
+  return nullptr;
+
+  /* oldcode
   RASSERT(i_Node >= 0 and
           (i_Node < m_nBootNodes or
            i_Node < m_nConnectedNodes or
@@ -225,7 +252,17 @@ Node* Grid::pGetNode(i8 i_Node)
   
   Node* pNode = m_pNodes[i_Node];
   
-  return pNode;
+  return pNode; */
+}
+
+std::list<Node*>::const_iterator Grid::itBeginNodes(void)
+{
+  return m_lNodes.begin();
+}
+
+std::list<Node*>::const_iterator Grid::itEndNodes(void)
+{
+  return m_lNodes.end();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -294,8 +331,12 @@ void Grid::vIncDefinedNodes(void)
 i8 Grid::nNodes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  
-  return m_nNodes;
+
+  // newcode
+  return m_lNodes.size();
+
+  /* oldcode
+  return m_nNodes; */
 }
 
 /*----------------------------------------------------------------------------*/
@@ -305,11 +346,16 @@ void Grid::vPutNode(Node* pNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
+  // newcode
+  m_lNodes.push_back(pNode);
+  m_nNodes++;
+
+  /* oldcode
   i8 i_Node = pNode->iNodeNo();
   
   m_pNodes[i_Node] = pNode;
   
-  m_nNodes++;
+  m_nNodes++; */
   
 //  if (i_Node >= m_nBootNodes)
 //    m_nBootNodes++;
@@ -321,14 +367,19 @@ void Grid::vPutNode(Node* pNode)
 void Grid::vRemoveNode(Node* pNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  
+
+  // newcode
+  m_lNodes.remove(pNode);
+  m_nBootNodes--;
+
+  /* oldcode
   ASSERT(! pNode->pRecvSocket());
   
   i8 i_Node = pNode->iNodeNo();
   
   m_pNodes[i_Node] = nullptr;
   
-  m_nBootNodes--;
+  m_nBootNodes--; */
 }
 
 /*----------------------------------------------------------------------------*/
@@ -342,7 +393,7 @@ i8 Grid::iStartNode(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set grid node wher ecluster was started                                    */
+/* set grid node where cluster was started                                    */
 /*----------------------------------------------------------------------------*/
 void Grid::vStartNode(i8 iStartNode)
 {
@@ -359,7 +410,17 @@ void Grid::vThisNode(i8 iNode)
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
   m_iThisNode = iNode;
-  m_pThisNode = pGetNode(iNode);
+  //m_pThisNode = pGetNode(iNode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this node object                                                       */
+/*----------------------------------------------------------------------------*/
+void Grid::vSetThisNode(Node* pNode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+
+  m_pThisNode = pNode;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -378,7 +439,7 @@ i8 Grid::iThisNode(void)
 Node* Grid::pThisNode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  
+  if (!m_pThisNode) printf("Grid::pThisNode is null \n");
   return m_pThisNode;
 }
 
