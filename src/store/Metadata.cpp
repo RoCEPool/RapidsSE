@@ -285,12 +285,20 @@ void Metadata::vSearch(InfoSet* pInfoSet,
         if (szCatalogName && ! pDic->szDicNm()->bSame(szCatalogName))
           continue;
         pCatalog = pDic;
+        if (1 == iScope) {
+          vSearchCatalogs(pInfoSet,pCatalog);
+          continue;
+        }
       }
       else
       if (pDic->bIsSchema()) {
         if (szSchemaName && ! pDic->szDicNm()->bSame(szSchemaName))
           continue;
         pSchema = pDic;
+        if (2 == iScope) {
+          vSearchSchemas(pInfoSet,pCatalog,pSchema);
+          continue;
+        }
       }
       vSearch(pInfoSet,iScope,
               szCatalogName,szSchemaName,szTableName,
@@ -305,7 +313,10 @@ void Metadata::vSearch(InfoSet* pInfoSet,
       Table* pTable = _pTable(pObject);
       if (szTableName && ! pTable->szTableNm()->bSame(szTableName))
         continue;
-      vSearchColumns(pInfoSet,pCatalog,pSchema,pTable);
+      if (3 == iScope)
+        vSearchColumns(pInfoSet,pCatalog,pSchema,pTable);
+      else
+        vSearchTables(pInfoSet,pCatalog,pSchema,pTable);
       continue;
     }
     

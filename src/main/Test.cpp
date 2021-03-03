@@ -228,6 +228,7 @@ void vTest5(void)
 /*----------------------------------------------------------------------------*/
 void vTest6(void)
 {
+  /*
   DicStack* pDicStack = AM::pTaskDicStack();
   pDicStack->vPrint();
   
@@ -348,6 +349,27 @@ void vTest6(void)
   delete pInfoSet;
   
   delete pSeApi;
+   
+  */
+
+  InfoSet* pInfoSet;
+
+  SeApi* pSeApi = new SeApi;
+
+  pInfoSet = pSeApi->pSearchCatalogs(nullptr);
+  vTrace("pSearchCatalogs: %lld rows\n"_Stz,pInfoSet->nInfoRows());
+  for (Row* pRow = pInfoSet->pFirstRow();
+       pRow;
+       pRow = pInfoSet->pNextRow(pRow)) {
+    ColumnMetadata* pColMeta = static_cast<ColumnMetadata*>(pRow);
+
+    SP_ColumnMetadata spColMeta;
+    vTrace("SEARCH %s\n"_Stz,spColMeta.sz(pColMeta));
+  }
+  delete pInfoSet;
+
+  delete pSeApi;
+
 }
 
 /*----------------------------------------------------------------------------*/
