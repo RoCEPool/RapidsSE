@@ -106,7 +106,7 @@ void NameValidator::vValidateTables(PlanNode *pRootNode, QueryNode* pPlanNode, Q
     }
 
     // Look up table in SE API
-    STORE::InfoSet* pTableInfoSet = pSeApi->pLookupTable(szCatalogName, szSchemaName, szTableName);
+    STORE::InfoSet* pTableInfoSet = pSeApi->pSearchTables(szCatalogName, szSchemaName, szTableName);
     ASSERT(pTableInfoSet);
 
     if (pTableInfoSet->nInfoRows() == 0) {

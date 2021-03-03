@@ -60,6 +60,8 @@ void Step::vSqlCompilerNameValidate(void)
 {
   ENTRY();
 
+  s48K sExplainBuf;
+
   PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
   Parser::RootNode* pPlanRoot = Parser::_pRootNode(pPlanOperand->pPlanNode());
   UNUSED(pPlanRoot);
@@ -89,6 +91,9 @@ void Step::vSqlCompilerNameValidate(void)
     goto L_Exit;
   }
 
+  Parser::ShadowRoot::vExplain(pPlanRoot, sExplainBuf, 0);
+  vTrace("%s\n"_Stz, sExplainBuf.szStz());
+
   // TODO: eventually we want the received plan graph to be immutable,
   //       so we would send a different version. But for now we will just
   //       manipulate and send the same plan graph
@@ -105,7 +110,6 @@ void Step::vSqlCompilerParser(void)
 {
   ENTRY();
 
-  s48K sExplainBuf;
   PlanOperand* pPlanOperand;
 
   // Get the original SQL statement entered
@@ -156,9 +160,6 @@ void Step::vSqlCompilerParser(void)
   }
 
   ASSERT(pPlanRoot);
-
-  Parser::ShadowRoot::vExplain(pPlanRoot, sExplainBuf, 0);
-  vTrace("%s\n"_Stz, sExplainBuf.szStz());
 
   pPlanOperand = new PlanOperand(pPlanRoot);
   m_pDataStack->vPushPtr(pPlanOperand);
