@@ -323,23 +323,6 @@ void vTest6(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pInfoSet = pSeApi->pColumnDefs("rapidsse"_Stz,
-                                 "public"_Stz,
-                                 "lineitem"_Stz,
-                                 nullptr);
-  vTrace("ColumnDefs: %lld rows\n"_Stz,pInfoSet->nInfoRows());
-  for (Row* pRow = pInfoSet->pFirstRow();
-       pRow;
-       pRow = pInfoSet->pNextRow(pRow)) {
-    ColumnMetadata* pColMeta = static_cast<ColumnMetadata*>(pRow);
-    
-    SP_ColumnMetadata spColMeta;
-    vTrace("META %s\n"_Stz,spColMeta.sz(pColMeta));
-  }
-  delete pInfoSet;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   pInfoSet = pSeApi->pSearchMetadata("rapidsse"_Stz,
                                      nullptr,
                                      "lineitem"_Stz);
@@ -358,9 +341,32 @@ void vTest6(void)
    
   */
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   InfoSet* pInfoSet;
 
   SeApi* pSeApi = new SeApi;
+
+//  vTrace("\n\n"_Stz);
+//  pSeApi->vPrintMetadata();
+//  vTrace("\n\n"_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pInfoSet = pSeApi->pColumnDefs("rapidsse"_Stz,
+                                 "public"_Stz,
+                                 "lineitem"_Stz,
+                                 nullptr);
+  vTrace("ColumnDefs: %lld rows\n"_Stz,pInfoSet->nInfoRows());
+  for (Row* pRow = pInfoSet->pFirstRow();
+       pRow;
+       pRow = pInfoSet->pNextRow(pRow)) {
+    ColumnMetadata* pColMeta = static_cast<ColumnMetadata*>(pRow);
+    
+    SP_ColumnMetadata spColMeta;
+    vTrace("META %s\n"_Stz,spColMeta.sz(pColMeta));
+  }
+  delete pInfoSet;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // search catalogs

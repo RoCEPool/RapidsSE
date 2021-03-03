@@ -513,6 +513,28 @@ InfoSet* SeApi::pSearchCatalogs(Stz* szCatalogName)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get column set matching given arguments                                    */
+/*----------------------------------------------------------------------------*/
+InfoSet* SeApi::pSearchColumns(Stz* szCatalogName,
+                               Stz* szSchemaName,
+                               Stz* szTableName,
+                               Stz* szColumnName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
+    
+  Metadata* pMetadata = new Metadata;
+  
+  InfoSet* pInfoSet = pMetadata->pColumnDefs(szCatalogName,
+                                             szSchemaName,
+                                             szTableName,
+                                             szColumnName);
+
+  delete pMetadata;
+
+  return pInfoSet;
+}
+
+/*----------------------------------------------------------------------------*/
 /* search schemas for matching name (or nullptr for all)                      */
 /*----------------------------------------------------------------------------*/
 InfoSet* SeApi::pSearchSchemas(Stz* szCatalogName,

@@ -8187,6 +8187,7 @@ void Task::vAddMunged(Task* )
     "    tableName      VARCHAR NOT NULL ,\n"
     "    columnNumber   INTEGER NOT NULL ,\n"
     "    columnName     VARCHAR NOT NULL ,\n"
+    "    typeEnum       INTEGER NOT NULL ,\n"
     "    columnType     VARCHAR NOT NULL ,\n"
     "    columnLength   INTEGER NOT NULL ,\n"
     "    columnScale    INTEGER NOT NULL ,\n"
