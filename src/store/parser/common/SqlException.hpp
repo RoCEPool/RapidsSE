@@ -6,6 +6,7 @@
 #include <exception>
 #include "BASE.h"
 #include "InfoSet.hpp"
+#include "TableMetadata.hpp"
 #include "ColumnMetadata.hpp"
 #include "TableDef.hpp"
 
@@ -115,8 +116,11 @@ namespace Parser
            pRow;
            pRow = pInfoSet->pNextRow(pRow)) {
 
-        // TODO: Replace the pRow->szColVal_ofs(0) with TableMetadata when it exists
-        sErrMsg.vCatSprint("\n  %s.%s.%s"_Stz, pRow->szColVal_ofs(0), pRow->szColVal_ofs(1), pRow->szColVal_ofs(2));
+        TableMetadata* pTableMeta = static_cast<TableMetadata*>(pRow);
+        sErrMsg.vCatSprint("\n  %s.%s.%s"_Stz,
+                           pTableMeta->szCatalogName(),
+                           pTableMeta->szSchemaName(),
+                           pTableMeta->szTableName());
       }
 
       delete pInfoSet;

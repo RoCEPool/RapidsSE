@@ -14,6 +14,7 @@
 
 #include "SeApi.hpp"
 #include "InfoSet.hpp"
+#include "TableMetadata.hpp"
 
 #include "TableRef.hpp"
 #include "ColumnRef.hpp"
@@ -121,12 +122,12 @@ void NameValidator::vValidateTables(PlanNode *pRootNode, QueryNode* pPlanNode, Q
 
     ASSERT(pTableInfoSet->nInfoRows() == 1);
     Row* pTblRow = pTableInfoSet->pFirstRow();
+    TableMetadata* pTableMeta = static_cast<TableMetadata*>(pTblRow);
 
-    // TODO: Replace this with TableMetadata when it exists
     // Get the full name from the metadata as we may not have had all of the details before
-    szCatalogName = pTblRow->szColVal_ofs(0);
-    szSchemaName = pTblRow->szColVal_ofs(1);
-    szTableName = pTblRow->szColVal_ofs(2);
+    szCatalogName = pTableMeta->szCatalogName();
+    szSchemaName = pTableMeta->szSchemaName();
+    szTableName = pTableMeta->szTableName();
 
     // Retrieve the column definitions and make a node our of these
     QueryNode* pColumnDefs = ColumnDefs::pCreate();
