@@ -507,9 +507,7 @@ InfoSet* SeApi::pSearchMetadata(Stz* szCatalogName,
 
   InfoSet* pInfoSet = new InfoSet(pLookupStreamDef);
 
-  pMetadata->vSearchContents(pInfoSet,
-                             szCatalogName,szSchemaName,szTableName,
-                             0,nullptr);
+  pMetadata->vSearchContents(pInfoSet,szCatalogName,szSchemaName,szTableName);
 
   delete pMetadata;
   

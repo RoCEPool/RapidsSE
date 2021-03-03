@@ -254,7 +254,9 @@ void Metadata::vSearchContents(InfoSet* pInfoSet,
                                Stz* szCatalogName,
                                Stz* szSchemaName,
                                Stz* szTableName,
-                               i8 i_Depth, Dic* pDic)
+                               Dic* pDic,
+                               Dic* pCatalog,
+                               Dic* pSchema)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
   
@@ -263,7 +265,7 @@ void Metadata::vSearchContents(InfoSet* pInfoSet,
     vTrace("\nTENANT %s \\folder\n"_Stz,pDic->szDicNm());
     vSearchContents(pInfoSet,
                     szCatalogName,szSchemaName,szTableName,
-                    0,pDic);
+                    pDic,nullptr,nullptr);
     return;
   }
   
@@ -274,24 +276,74 @@ void Metadata::vSearchContents(InfoSet* pInfoSet,
     Word* pCategory = pWord->pCategory();
 
     vTrace("%s%s %s\n"_Stz,
-           Stz::szTab(i_Depth),
+           Stz::szTab(0),
            pWord->szWordNm(),
            pCategory ? pCategory->szWordNm() : "n/a"_Stz);
     
     Object* pObject = pWord->pObject();
-    if (pObject && CN_DIC == pObject->eGetClassNo())
+    if (pObject && CN_DIC == pObject->eGetClassNo()) {
+      Dic* pDic = _pDic(pObject);
+      if (pDic->bIsCatalog()) {
+        if (szCatalogName && ! pDic->szDicNm()->bSame(szCatalogName))
+          continue;
+        pCatalog = pDic;
+      }
+      else
+      if (pDic->bIsSchema()) {
+        if (szSchemaName && ! pDic->szDicNm()->bSame(szSchemaName))
+          continue;
+        pSchema = pDic;
+      }
       vSearchContents(pInfoSet,
                       szCatalogName,szSchemaName,szTableName,
-                      i_Depth+1,(Dic*)pObject);
+                      pDic,pCatalog,pSchema);
+    }
     else
-    if (pObject && CN_TABLE == pObject->eGetClassNo())
-      ((Table*)pObject)->vSearchContents(pInfoSet);
-//    else
-//    if (pObject && CN_INDEX == pObject->eGetClassNo())
-//      ((Index*)pObject)->vListContents(i_Depth+1);
+    if (pObject && CN_TABLE == pObject->eGetClassNo()) {
+      Table* pTable = _pTable(pObject);
+      if (szTableName && ! pTable->szTableNm()->bSame(szTableName))
+        continue;
+      vSearchContents(pInfoSet,pCatalog,pSchema,pTable);
+    }
+    
   }
   
   pDic->pArticle()->vDropRead();
+}
+
+/*----------------------------------------------------------------------------*/
+/* search all metadata                                                        */
+/*----------------------------------------------------------------------------*/
+void Metadata::vSearchContents(InfoSet* pInfoSet,
+                               Dic* pCatalog,
+                               Dic* pSchema,
+                               Table* pTable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
+  
+  Row* pRow;
+
+  StreamDef* pStreamDef = pTable->pStreamDef();
+  
+  i8 nCols = pStreamDef->nColumns();
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+    Column* pColumn = pStreamDef->pGetColumn(i_Col);
+    
+    pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+                               pCatalog->szDicNm(),
+                               pSchema->szDicNm(),
+                               pTable->szTableNm(),
+
+                               pColumn->iColumnNo(),
+                               pColumn->szColNm(),
+                               aCT[pColumn->eColumnType()],
+                               pColumn->iColumnLength(),
+                               pColumn->iColumnScale(),
+                               pColumn->bIsNullable(),
+                               pColumn->bIsPtnKey(),
+
+                               C_VARGS_END);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
