@@ -285,10 +285,10 @@ void Metadata::vSearchContents(InfoSet* pInfoSet,
                       i_Depth+1,(Dic*)pObject);
     else
     if (pObject && CN_TABLE == pObject->eGetClassNo())
-      ((Table*)pObject)->vListContents(i_Depth+1);
-    else
-    if (pObject && CN_INDEX == pObject->eGetClassNo())
-      ((Index*)pObject)->vListContents(i_Depth+1);
+      ((Table*)pObject)->vSearchContents(pInfoSet);
+//    else
+//    if (pObject && CN_INDEX == pObject->eGetClassNo())
+//      ((Index*)pObject)->vListContents(i_Depth+1);
   }
   
   pDic->pArticle()->vDropRead();

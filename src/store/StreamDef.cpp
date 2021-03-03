@@ -380,6 +380,22 @@ RowPix* StreamDef::pRowPix(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* list contents                                                              */
+/*----------------------------------------------------------------------------*/
+void StreamDef::vSearchContents(InfoSet* pInfoSet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
+  
+  vTrace("%sStreamDef %s\n"_Stz,Stz::szTab(0),m_sName.szStz());
+
+  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
+    Column* pColumn = pGetColumn(i_Col);
+
+    pColumn->vSearchContents(pInfoSet);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert columns of this streamDef to colPix (opt. adding a ptnhash column) */
 /*----------------------------------------------------------------------------*/
 void StreamDef::vToColPix(RowPix* pRowPixDst, bool bAddPtnHash)

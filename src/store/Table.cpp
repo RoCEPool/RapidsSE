@@ -696,6 +696,21 @@ EntBuffer* Table::pRootBuffer(i8 i_TablePtn, i8 i_Index)
 }
 
 /*----------------------------------------------------------------------------*/
+/* search table contents                                                      */
+/*----------------------------------------------------------------------------*/
+void Table::vSearchContents(InfoSet* pInfoSet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  vTrace("%sTable %s %s\n"_Stz,
+         Stz::szTab(0),
+         m_sTableNm.szStz(),
+         m_bDefinitionOnly ? "(definition-only)"_Stz : ""_Stz);
+
+  m_pStreamDef->vSearchContents(pInfoSet);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get StreamDef                                                              */
 /*----------------------------------------------------------------------------*/
 StreamDef* Table::pStreamDef(void)

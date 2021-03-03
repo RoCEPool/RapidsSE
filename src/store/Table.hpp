@@ -5,7 +5,7 @@
 
 #include "Index.hpp"
 
-namespace STORE { class StreamDef; }
+namespace STORE { class InfoSet; class StreamDef; }
 
 namespace STORE
 {
@@ -66,6 +66,7 @@ namespace STORE
     StreamDef* pPtnStreamDef(void);
     bool    bPurge(i8 i_TablePtn, i8 iOlderThanSeconds);
     EntBuffer* pRootBuffer(i8 i_TablePtn, i8 i_Index);
+    void    vSearchContents(InfoSet* pInfoSet);
     StreamDef* pStreamDef(void);
     void       vStreamDef(StreamDef* pStreamDef);
     Stz*    szTableNm(void);
