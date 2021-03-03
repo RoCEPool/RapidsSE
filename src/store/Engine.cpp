@@ -1580,14 +1580,11 @@ void Engine::vStartSystem(void)
 
   // newcode: we might generate a unique node_no, so it can be used as part of jobid
   // the unique node_no can be a hash of ipaddr and port number
-  // for the sake of first try, let's use port number
-  //i8 iThisNodeNo = pThisNode->iPortNo(); // newcode
 
-
-  i8 iThisNodeNo = pThisNode->iNodeNo(); // oldcode
+  i8 iThisNodeNo = pThisNode->iNodeNo();
   AM::pGrid()->vThisNode(iThisNodeNo);
 
-  AM::pGrid()->vSetThisNode(pThisNode);
+  AM::pGrid()->vSetThisNode(pThisNode); // newcode
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // initialize the next id generators
   //gpAttachMap->m_inNextJobId.vNodeNo(iThisNodeNo);
