@@ -250,22 +250,23 @@ void Metadata::vListContents(i8 i_Depth, Dic* pDic)
 /*----------------------------------------------------------------------------*/
 /* search all metadata                                                        */
 /*----------------------------------------------------------------------------*/
-void Metadata::vSearchContents(InfoSet* pInfoSet,
-                               Stz* szCatalogName,
-                               Stz* szSchemaName,
-                               Stz* szTableName,
-                               Dic* pDic,
-                               Dic* pCatalog,
-                               Dic* pSchema)
+void Metadata::vSearch(InfoSet* pInfoSet,
+                       i8 iScope,
+                       Stz* szCatalogName,
+                       Stz* szSchemaName,
+                       Stz* szTableName,
+                       Dic* pDic,
+                       Dic* pCatalog,
+                       Dic* pSchema)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
   
   if (! pDic) {
     Dic* pDic = pCurrTenant();
     vTrace("\nTENANT %s \\folder\n"_Stz,pDic->szDicNm());
-    vSearchContents(pInfoSet,
-                    szCatalogName,szSchemaName,szTableName,
-                    pDic,nullptr,nullptr);
+    vSearch(pInfoSet,iScope,
+            szCatalogName,szSchemaName,szTableName,
+            pDic,nullptr,nullptr);
     return;
   }
   
@@ -273,7 +274,6 @@ void Metadata::vSearchContents(InfoSet* pInfoSet,
   
   for (Word* pWord = pDic->pFirstWord(); pWord; pWord = pWord->pNextWord()) {
     
-    Word* pCategory = pWord->pCategory();    
     Object* pObject = pWord->pObject();
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -292,9 +292,9 @@ void Metadata::vSearchContents(InfoSet* pInfoSet,
           continue;
         pSchema = pDic;
       }
-      vSearchContents(pInfoSet,
-                      szCatalogName,szSchemaName,szTableName,
-                      pDic,pCatalog,pSchema);
+      vSearch(pInfoSet,iScope,
+              szCatalogName,szSchemaName,szTableName,
+              pDic,pCatalog,pSchema);
       continue;
     }
 
@@ -305,7 +305,7 @@ void Metadata::vSearchContents(InfoSet* pInfoSet,
       Table* pTable = _pTable(pObject);
       if (szTableName && ! pTable->szTableNm()->bSame(szTableName))
         continue;
-      vSearchContents(pInfoSet,pCatalog,pSchema,pTable);
+      vSearchColumns(pInfoSet,pCatalog,pSchema,pTable);
       continue;
     }
     
@@ -315,12 +315,26 @@ void Metadata::vSearchContents(InfoSet* pInfoSet,
 }
 
 /*----------------------------------------------------------------------------*/
-/* search all metadata                                                        */
+/* search catalogs                                                            */
 /*----------------------------------------------------------------------------*/
-void Metadata::vSearchContents(InfoSet* pInfoSet,
-                               Dic* pCatalog,
-                               Dic* pSchema,
-                               Table* pTable)
+void Metadata::vSearchCatalogs(InfoSet* pInfoSet,
+                               Dic* pCatalog)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
+  
+  Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+                                  pCatalog->szDicNm(),
+                                  C_VARGS_END);
+  UNUSED(pRow);
+}
+
+/*----------------------------------------------------------------------------*/
+/* search columns                                                             */
+/*----------------------------------------------------------------------------*/
+void Metadata::vSearchColumns(InfoSet* pInfoSet,
+                              Dic* pCatalog,
+                              Dic* pSchema,
+                              Table* pTable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
   
@@ -347,6 +361,40 @@ void Metadata::vSearchContents(InfoSet* pInfoSet,
 
                                C_VARGS_END);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* search schemas                                                             */
+/*----------------------------------------------------------------------------*/
+void Metadata::vSearchSchemas(InfoSet* pInfoSet,
+                              Dic* pCatalog,
+                              Dic* pSchema)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
+  
+  Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+                                  pCatalog->szDicNm(),
+                                  pSchema->szDicNm(),
+                                  C_VARGS_END);
+  UNUSED(pRow);
+}
+
+/*----------------------------------------------------------------------------*/
+/* search tables                                                              */
+/*----------------------------------------------------------------------------*/
+void Metadata::vSearchTables(InfoSet* pInfoSet,
+                             Dic* pCatalog,
+                             Dic* pSchema,
+                             Table* pTable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
+  
+  Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+                                  pCatalog->szDicNm(),
+                                  pSchema->szDicNm(),
+                                  pTable->szTableNm(),
+                                  C_VARGS_END);
+  UNUSED(pRow);
 }
 
 /*----------------------------------------------------------------------------*/
