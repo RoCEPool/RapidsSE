@@ -50,10 +50,15 @@ namespace STORE
   
     void vPrintMetadata(void);
   
-    InfoSet* pSearchMetadata(Stz* szCatalogName,
-                             Stz* szSchemaName,
-                             Stz* szTableName);
+    InfoSet* pSearchCatalogs(Stz* szCatalogName);
 
+    InfoSet* pSearchSchemas(Stz* szCatalogName,
+                            Stz* szSchemaName);
+
+    InfoSet* pSearchTables(Stz* szCatalogName,
+                           Stz* szSchemaName,
+                           Stz* szTableName);
+  
     InfoSet* pColumnDefs(Stz* szCatalogName,
                          Stz* szSchemaName,
                          Stz* szTableName,

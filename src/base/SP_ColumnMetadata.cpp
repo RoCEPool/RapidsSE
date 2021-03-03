@@ -38,7 +38,7 @@ SP_ColumnMetadata::~SP_ColumnMetadata(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* sprint Header and return Stz* to result                                    */
 /*----------------------------------------------------------------------------*/
-Stz* SP_ColumnMetadata::sz(ColumnMetadata* pColMeta)
+Stz* SP_ColumnMetadata::sz(ColumnMetadata* pColumnMeta)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
           
@@ -46,19 +46,19 @@ Stz* SP_ColumnMetadata::sz(ColumnMetadata* pColMeta)
                   
     ,"%s/%s/%s : [%02lld] %16s : type %7s length %5lld scale %2lld %s %s"_Stz
                   
-    ,pColMeta->szCatalogName()
-    ,pColMeta->szSchemaName()
-    ,pColMeta->szTableName()
+    ,pColumnMeta->szCatalogName()
+    ,pColumnMeta->szSchemaName()
+    ,pColumnMeta->szTableName()
 
-    ,pColMeta->iColumnNumber()
-    ,pColMeta->szColumnName()
-    ,pColMeta->szColumnType()
+    ,pColumnMeta->iColumnNumber()
+    ,pColumnMeta->szColumnName()
+    ,pColumnMeta->szColumnType()
                   
-    ,pColMeta->iColumnLength()
-    ,pColMeta->iColumnScale()
+    ,pColumnMeta->iColumnLength()
+    ,pColumnMeta->iColumnScale()
 
-    ,pColMeta->bIsNullable()     ? "nullable"_Stz : "cantnull"_Stz
-    ,pColMeta->bIsPartitionKey() ? "partnKey"_Stz : ""_Stz
+    ,pColumnMeta->bIsNullable()     ? "nullable"_Stz : "cantnull"_Stz
+    ,pColumnMeta->bIsPartitionKey() ? "partnKey"_Stz : ""_Stz
                   
     );
 

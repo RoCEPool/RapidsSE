@@ -16,7 +16,7 @@ namespace BASE
     SP_ColumnMetadata(void);
    ~SP_ColumnMetadata(void) noexcept(false);
   
-    Stz* sz(ColumnMetadata* pColMeta);
+    Stz* sz(ColumnMetadata* pColumnMeta);
 
     Footer* aFooter(void);
   };
