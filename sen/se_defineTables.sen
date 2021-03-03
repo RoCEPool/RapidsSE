@@ -23,7 +23,7 @@
       partition      INTEGER NOT NULL ,
       buffers        INTEGER NOT NULL ,
       entries        INTEGER NOT NULL
-    ) ;
+    ) < traceApi > = 1 ;
   "
   api::executeRequest
 

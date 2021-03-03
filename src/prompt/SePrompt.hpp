@@ -98,6 +98,7 @@ namespace PROMPT
     bool bDumpTokens(void);
     void vDumpTokens(bool bDumpTokens);
     void vDumpInpTknVec(bool bForce);
+    bool bExamineCommand(void);
     bool bExecuteFunction(void);
     SeDeputy* pFindDeputy(void);
     bool bHandleDemo(void);

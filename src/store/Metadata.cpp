@@ -248,6 +248,108 @@ void Metadata::vListContents(i8 i_Depth, Dic* pDic)
 }
 
 /*----------------------------------------------------------------------------*/
+/* search all metadata                                                        */
+/*----------------------------------------------------------------------------*/
+void Metadata::vSearchContents(InfoSet* pInfoSet,
+                               Stz* szCatalogName,
+                               Stz* szSchemaName,
+                               Stz* szTableName,
+                               Dic* pDic,
+                               Dic* pCatalog,
+                               Dic* pSchema)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
+  
+  if (! pDic) {
+    Dic* pDic = pCurrTenant();
+    vTrace("\nTENANT %s \\folder\n"_Stz,pDic->szDicNm());
+    vSearchContents(pInfoSet,
+                    szCatalogName,szSchemaName,szTableName,
+                    pDic,nullptr,nullptr);
+    return;
+  }
+  
+  pDic->pArticle()->vGrabRead();
+  
+  for (Word* pWord = pDic->pFirstWord(); pWord; pWord = pWord->pNextWord()) {
+    
+    Word* pCategory = pWord->pCategory();    
+    Object* pObject = pWord->pObject();
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // catalog or schema
+    
+    if (pObject && CN_DIC == pObject->eGetClassNo()) {
+      Dic* pDic = _pDic(pObject);
+      if (pDic->bIsCatalog()) {
+        if (szCatalogName && ! pDic->szDicNm()->bSame(szCatalogName))
+          continue;
+        pCatalog = pDic;
+      }
+      else
+      if (pDic->bIsSchema()) {
+        if (szSchemaName && ! pDic->szDicNm()->bSame(szSchemaName))
+          continue;
+        pSchema = pDic;
+      }
+      vSearchContents(pInfoSet,
+                      szCatalogName,szSchemaName,szTableName,
+                      pDic,pCatalog,pSchema);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // table
+
+    if (pObject && CN_TABLE == pObject->eGetClassNo()) {
+      Table* pTable = _pTable(pObject);
+      if (szTableName && ! pTable->szTableNm()->bSame(szTableName))
+        continue;
+      vSearchContents(pInfoSet,pCatalog,pSchema,pTable);
+      continue;
+    }
+    
+  }
+  
+  pDic->pArticle()->vDropRead();
+}
+
+/*----------------------------------------------------------------------------*/
+/* search all metadata                                                        */
+/*----------------------------------------------------------------------------*/
+void Metadata::vSearchContents(InfoSet* pInfoSet,
+                               Dic* pCatalog,
+                               Dic* pSchema,
+                               Table* pTable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
+  
+  Row* pRow;
+
+  StreamDef* pStreamDef = pTable->pStreamDef();
+  
+  i8 nCols = pStreamDef->nColumns();
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+    Column* pColumn = pStreamDef->pGetColumn(i_Col);
+    
+    pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+                               pCatalog->szDicNm(),
+                               pSchema->szDicNm(),
+                               pTable->szTableNm(),
+
+                               pColumn->iColumnNo(),
+                               pColumn->szColNm(),
+                               aCT[pColumn->eColumnType()],
+                               pColumn->iColumnLength(),
+                               pColumn->iColumnScale(),
+                               pColumn->bIsNullable(),
+                               pColumn->bIsPtnKey(),
+
+                               C_VARGS_END);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get column set matching given arguments                                    */
 /*----------------------------------------------------------------------------*/
 InfoSet* Metadata::pColumnDefs(Stz* szCatalogName,
