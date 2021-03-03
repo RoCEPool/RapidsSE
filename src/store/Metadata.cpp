@@ -273,14 +273,12 @@ void Metadata::vSearchContents(InfoSet* pInfoSet,
   
   for (Word* pWord = pDic->pFirstWord(); pWord; pWord = pWord->pNextWord()) {
     
-    Word* pCategory = pWord->pCategory();
-
-    vTrace("%s%s %s\n"_Stz,
-           Stz::szTab(0),
-           pWord->szWordNm(),
-           pCategory ? pCategory->szWordNm() : "n/a"_Stz);
-    
+    Word* pCategory = pWord->pCategory();    
     Object* pObject = pWord->pObject();
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // catalog or schema
+    
     if (pObject && CN_DIC == pObject->eGetClassNo()) {
       Dic* pDic = _pDic(pObject);
       if (pDic->bIsCatalog()) {
@@ -297,13 +295,18 @@ void Metadata::vSearchContents(InfoSet* pInfoSet,
       vSearchContents(pInfoSet,
                       szCatalogName,szSchemaName,szTableName,
                       pDic,pCatalog,pSchema);
+      continue;
     }
-    else
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // table
+
     if (pObject && CN_TABLE == pObject->eGetClassNo()) {
       Table* pTable = _pTable(pObject);
       if (szTableName && ! pTable->szTableNm()->bSame(szTableName))
         continue;
       vSearchContents(pInfoSet,pCatalog,pSchema,pTable);
+      continue;
     }
     
   }
