@@ -337,6 +337,7 @@
     tableName      VARCHAR NOT NULL ,
     columnNumber   INTEGER NOT NULL ,
     columnName     VARCHAR NOT NULL ,
+    typeEnum       INTEGER NOT NULL ,
     columnType     VARCHAR NOT NULL ,
     columnLength   INTEGER NOT NULL ,
     columnScale    INTEGER NOT NULL ,
