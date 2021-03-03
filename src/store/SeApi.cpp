@@ -478,7 +478,7 @@ Stz* SeApi::szCurrTenant(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* determine whether a catalog exists and return its full name                */
+/* print full list of metadata                                                */
 /*----------------------------------------------------------------------------*/
 void SeApi::vPrintMetadata(void)
 {
@@ -492,7 +492,7 @@ void SeApi::vPrintMetadata(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* determine whether a catalog exists and return its full name                */
+/* search catalogs for matching name (or nullptr for all)                     */
 /*----------------------------------------------------------------------------*/
 InfoSet* SeApi::pSearchCatalogs(Stz* szCatalogName)
 {
@@ -513,30 +513,7 @@ InfoSet* SeApi::pSearchCatalogs(Stz* szCatalogName)
 }
 
 /*----------------------------------------------------------------------------*/
-/* determine whether a catalog exists and return its full name                */
-/*----------------------------------------------------------------------------*/
-InfoSet* SeApi::pSearchMetadata(Stz* szCatalogName,
-                                Stz* szSchemaName,
-                                Stz* szTableName)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
-    
-  Metadata* pMetadata = new Metadata;
-  
-  Table* pLookupTable = AM::pTableFind(C_TDEF_COLUMNDEFS);
-  StreamDef* pLookupStreamDef = pLookupTable->pStreamDef();
-
-  InfoSet* pInfoSet = new InfoSet(pLookupStreamDef);
-
-  pMetadata->vSearch(pInfoSet,0,szCatalogName,szSchemaName,szTableName);
-
-  delete pMetadata;
-  
-  return pInfoSet;
-}
-
-/*----------------------------------------------------------------------------*/
-/* determine whether a catalog exists and return its full name                */
+/* search schemas for matching name (or nullptr for all)                      */
 /*----------------------------------------------------------------------------*/
 InfoSet* SeApi::pSearchSchemas(Stz* szCatalogName,
                                Stz* szSchemaName)
@@ -558,7 +535,7 @@ InfoSet* SeApi::pSearchSchemas(Stz* szCatalogName,
 }
 
 /*----------------------------------------------------------------------------*/
-/* determine whether a catalog exists and return its full name                */
+/* search tables for matching name (or nullptr for all)                       */
 /*----------------------------------------------------------------------------*/
 InfoSet* SeApi::pSearchTables(Stz* szCatalogName,
                               Stz* szSchemaName,
