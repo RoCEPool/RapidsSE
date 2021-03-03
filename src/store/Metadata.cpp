@@ -314,9 +314,10 @@ void Metadata::vSearch(InfoSet* pInfoSet,
       if (szTableName && ! pTable->szTableNm()->bSame(szTableName))
         continue;
       if (3 == iScope)
-        vSearchColumns(pInfoSet,pCatalog,pSchema,pTable);
-      else
         vSearchTables(pInfoSet,pCatalog,pSchema,pTable);
+      else
+      if (4 == iScope)
+        vSearchColumns(pInfoSet,pCatalog,pSchema,pTable);
       continue;
     }
     

@@ -56,6 +56,13 @@ namespace STORE
                              Stz* szSchemaName,
                              Stz* szTableName);
 
+    InfoSet* pSearchSchemas(Stz* szCatalogName,
+                            Stz* szSchemaName);
+
+    InfoSet* pSearchTables(Stz* szCatalogName,
+                           Stz* szSchemaName,
+                           Stz* szTableName);
+  
     InfoSet* pColumnDefs(Stz* szCatalogName,
                          Stz* szSchemaName,
                          Stz* szTableName,

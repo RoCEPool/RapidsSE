@@ -25,8 +25,12 @@
 #include "SeApi.hpp"
 #include "CatalogMetadata.hpp"
 #include "ColumnMetadata.hpp"
+#include "SchemaMetadata.hpp"
+#include "TableMetadata.hpp"
 #include "SP_CatalogMetadata.hpp"
 #include "SP_ColumnMetadata.hpp"
+#include "SP_SchemaMetadata.hpp"
+#include "SP_TableMetadata.hpp"
 
 #include "TpchRatios.h"
 
@@ -372,6 +376,36 @@ void vTest6(void)
   }
   delete pInfoSet;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // search schemas
+  
+  pInfoSet = pSeApi->pSearchSchemas(nullptr,nullptr);
+  for (Row* pRow = pInfoSet->pFirstRow();
+       pRow;
+       pRow = pInfoSet->pNextRow(pRow)) {
+    SchemaMetadata* pSchemaMeta = static_cast<SchemaMetadata*>(pRow);
+
+    SP_SchemaMetadata spSchemaMeta;
+    vTrace("SEARCHSCHEMA %s\n"_Stz,spSchemaMeta.sz(pSchemaMeta));
+  }
+  delete pInfoSet;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // search tables
+  
+  pInfoSet = pSeApi->pSearchTables(nullptr,nullptr,nullptr);
+  for (Row* pRow = pInfoSet->pFirstRow();
+       pRow;
+       pRow = pInfoSet->pNextRow(pRow)) {
+    TableMetadata* pTableMeta = static_cast<TableMetadata*>(pRow);
+
+    SP_TableMetadata spTableMeta;
+    vTrace("SEARCHTABLE %s\n"_Stz,spTableMeta.sz(pTableMeta));
+  }
+  delete pInfoSet;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   delete pSeApi;
 
 }
