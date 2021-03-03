@@ -7873,7 +7873,7 @@ void Task::vAddMunged(Task* )
     "      partition      INTEGER NOT NULL ,\n"
     "      buffers        INTEGER NOT NULL ,\n"
     "      entries        INTEGER NOT NULL\n"
-    "    ) ;\n"
+    "    ) < traceApi > = 1 ;\n"
     "  \"\n"
     "  api::executeRequest\n"
     "\n"
