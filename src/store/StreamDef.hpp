@@ -44,7 +44,6 @@ namespace STORE
     eEC     eParse(Stz* szCmd);
     void    vPrint(void);
     RowPix* pRowPix(void);
-    void    vSearchContents(InfoSet* pInfoSet);
     void    vToColPix(RowPix* pRowPix, bool bPtnHash);
     void    vToRowPix(RowPix* pRowPix, bool bPtnHash);
     void    vToMetadata(Stz* sMetaData);

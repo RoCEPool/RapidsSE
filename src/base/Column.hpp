@@ -77,8 +77,6 @@ namespace BASE
     void vIsPtnKey(bool bIsPtnKey);
   
     void vListContents(i8 i_Depth);
-
-    void vSearchContents(InfoSet* pInfoSet);
   
     void vSet(Stz* sColumnNm, eCT eColumnType, i8 iColumnLength, i8 iColumnScale);
     void vShow(void);
