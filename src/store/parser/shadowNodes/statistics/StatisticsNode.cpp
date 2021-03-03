@@ -1,9 +1,9 @@
 /*============================================================================*/
-/* ShadowMetadata.hpp - a shadow node of the main /__root__/metadata node     */
+/* ShadowStatistics.hpp - a shadow node of the main /__root__/statistics node     */
 /*============================================================================*/
 
 #include "BASE.h"
-#include "ShadowMetadata.hpp"
+#include "StatisticsNode.hpp"
 
 #include "QueryNode.hpp"
 
@@ -12,8 +12,8 @@ using namespace Parser;
 /*----------------------------------------------------------------------------*/
 /*-- Constants ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-static Stz* C_METADATA_NAME = "metadata"_Stz;
-static Stz* C_METADATA_DEFN = "/__root__/definitions/object/metadataNode"_Stz;
+static Stz* C_STATISTICS_NAME = "statistics"_Stz;
+static Stz* C_STATISTICS_DEFN = "/__root__/definitions/object/statisticsNode"_Stz;
 
 
 
@@ -25,21 +25,21 @@ static Stz* C_METADATA_DEFN = "/__root__/definitions/object/metadataNode"_Stz;
 /*----------------------------------------------------------------------------*/
 /* Appends a description of the ProjectedExpr into a buffer                   */
 /*----------------------------------------------------------------------------*/
-QueryNode* ShadowMetadata::pCreate()
+QueryNode* StatisticsNode::pCreate()
 {
   _static_
 
-  QueryNode* pMetadata = new QueryNode(C_METADATA_NAME, const_cast<Stz*>(C_METADATA_DEFN));
-  return pMetadata;
+  QueryNode* pStatistics = new QueryNode(C_STATISTICS_NAME, const_cast<Stz*>(C_STATISTICS_DEFN));
+  return pStatistics;
 }
 
 
 /*----------------------------------------------------------------------------*/
-/* Returns true if the given node is derived from the root node definition    */
+/* Returns true if the given node is derived from the statistics node defn    */
 /*----------------------------------------------------------------------------*/
-b1 ShadowMetadata::bIsOfType(PlanNode *pNode)
+b1 StatisticsNode::bIsOfType(PlanNode *pNode)
 {
-  return ShadowNode::bIsOfType(pNode, const_cast<Stz*>(C_METADATA_DEFN));
+  return ShadowNode::bIsOfType(pNode, const_cast<Stz*>(C_STATISTICS_DEFN));
 }
 
 

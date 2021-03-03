@@ -31,6 +31,9 @@ namespace Parser
   private:
     static void vValidateTables(PlanNode* pRootNode, QueryNode* pPlanNode,
                                 QueryNode* pMetadataNode, STORE::SeApi* pSeApi);
+
+    static void vValidateColumns(PlanNode* pRootNode, QueryNode* pPlanNode,
+                                QueryNode* pMetadataNode);
   };
 }
 

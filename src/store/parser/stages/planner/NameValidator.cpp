@@ -60,6 +60,9 @@ void NameValidator::vValidateNames(PlanNode *pRootNode)
     // then resolve columns and indexes.
     vValidateTables(pRootNode, pPlanNode, pMetadataNode, pSeApi);
 
+    // Now resolve the columns against the known tables in the plan.
+    vValidateColumns(pRootNode, pPlanNode, pMetadataNode);
+
   } catch (SqlException& e) {
     delete pSeApi;
     throw;
@@ -68,14 +71,16 @@ void NameValidator::vValidateNames(PlanNode *pRootNode)
   delete pSeApi;
 }
 
-
+/*----------------------------------------------------------------------------*/
+/* Validate and qualify all of the tableRefs in the graph                     */
+/*----------------------------------------------------------------------------*/
 void NameValidator::vValidateTables(PlanNode *pRootNode, QueryNode* pPlanNode, QueryNode* pMetadataNode, STORE::SeApi* pSeApi)
 {
   ASSERT(pRootNode);
   ASSERT(pMetadataNode);
   ASSERT(pPlanNode);
 
-  // Walk the graph, looking for TableRefs, ColumnRefs and others
+  // Walk the graph looking for TableRefs
   auto fVisitor = [&pMetadataNode, &pSeApi](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
@@ -84,12 +89,14 @@ void NameValidator::vValidateTables(PlanNode *pRootNode, QueryNode* pPlanNode, Q
       return GraphNav::WALK_CONTINUE;   // Keep walking
     }
 
+    QueryNode* pTableRef = static_cast<QueryNode*>(pNode);
+
     Stz* szCatalogName = TableRef::szCatalog(static_cast<QueryNode*>(pNode));
     Stz* szSchemaName  = TableRef::szSchema(static_cast<QueryNode*>(pNode));
     Stz* szTableName   = TableRef::szTable(static_cast<QueryNode*>(pNode));
 
     // Is this table already in the metadata? It must have a fully qualified name if it does.
-    if (szCatalogName && szSchemaName && szTableName) {
+    if (TableRef::bIsFullyQualified(pTableRef)) {
       QueryNode* pTableDef = MetadataNode::pTableDef(pMetadataNode, szCatalogName, szSchemaName, szTableName);
       if (pTableDef) {
         // Table is in the metadata. Nothing to do here.
@@ -157,12 +164,79 @@ void NameValidator::vValidateTables(PlanNode *pRootNode, QueryNode* pPlanNode, Q
     // Add to the plan metadata
     MetadataNode::vAddTable(pMetadataNode, pTableDef);
 
-    // Mark TableRef node as resolved
+    // Qualify the TableRef
+    TableRef::vQualify(static_cast<QueryNode*>(pNode), szCatalogName, szSchemaName, szTableName);
 
     delete pTableInfoSet;
     delete pColumnInfoSet;
 
     return GraphNav::WALK_CONTINUE;   // Keep walking
+  };
+
+  // Walk the /plan node, it's properties and its children
+  GraphNav::bWalk(pPlanNode, true, true, fVisitor, pRootNode);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Validate and qualify all of the columnRefs using the known tables          */
+/*----------------------------------------------------------------------------*/
+void NameValidator::vValidateColumns(PlanNode *pRootNode, QueryNode* pPlanNode, QueryNode* pMetadataNode)
+{
+  ASSERT(pRootNode);
+  ASSERT(pMetadataNode);
+  ASSERT(pPlanNode);
+
+  // Walk the graph looking for ColumnRefs
+  auto fVisitor = [&pMetadataNode](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
+
+    if (!ColumnRef::bIsOfType(pNode)) {
+      return GraphNav::WALK_CONTINUE;   // Keep walking
+    }
+
+    QueryNode* pColumnRef = static_cast<QueryNode*>(pNode);
+
+    Stz* szCatalogName = ColumnRef::szCatalog(static_cast<QueryNode*>(pNode));
+    Stz* szSchemaName  = ColumnRef::szSchema(static_cast<QueryNode*>(pNode));
+    Stz* szTableName   = ColumnRef::szTable(static_cast<QueryNode*>(pNode));
+    Stz* szColumnName  = ColumnRef::szColumn(static_cast<QueryNode *>(pNode));
+
+    // Is this column already in the metadata? It must have a fully qualified name if it does.
+    if (ColumnRef::bIsFullyQualified(pColumnRef)) {
+      QueryNode* pColumnDef = MetadataNode::pColumnDef(pMetadataNode, szCatalogName, szSchemaName, szTableName, szColumnName);
+      if (pColumnDef) {
+        // Column is in the metadata. Nothing to do here.
+        return GraphNav::WALK_CONTINUE;   // Keep walking
+      }
+    }
+
+    // We need to find this partially-qualified column in the plan graph metadata.
+    // Be careful, it might match against multiple tables.
+    PlanNodeList* pTableDefList = MetadataNode::pMatchColumnRef(pMetadataNode, pColumnRef);
+
+    if (pTableDefList->nItems() == 0) {
+      delete pTableDefList;
+      NameValidationException::vThrowUnknownColumn(szCatalogName, szSchemaName, szTableName, szColumnName);
+
+    } else if (pTableDefList->nItems() > 1) {
+      NameValidationException::vThrowAmbiguousColumn(szCatalogName, szSchemaName, szTableName, szColumnName, pTableDefList);
+    }
+
+    ASSERT(pTableDefList->nItems() == 1);
+
+    // Qualify the ColumnRef
+    QueryNode* pTableDef = static_cast<QueryNode*>(pTableDefList->pPop());
+    szCatalogName = TableDef::szCatalogName(pTableDef);
+    szSchemaName  = TableDef::szSchemaName(pTableDef);
+    szTableName   = TableDef::szTableName(pTableDef);
+
+    ColumnRef::vQualify(static_cast<QueryNode*>(pNode), szCatalogName, szSchemaName,
+                        szTableName, szColumnName);
+
+    delete pTableDefList;
+    return GraphNav::WALK_CONTINUE;   // Keep walking, looking for more ColumnRefs
   };
 
   // Walk the /plan node, it's properties and its children

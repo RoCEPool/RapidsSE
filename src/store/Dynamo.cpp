@@ -1465,7 +1465,7 @@ void Dynamo::vAppendAggregateOp(String* sPipeline, QueryNode* pNode)
         sPipeline->vCatSprint(
             " %s"
             ""_Stz,
-            ColumnRef::szColumnName(pColumnRef));
+            ColumnRef::szColumn(pColumnRef));
       }
       delete pGroupByIter;
     }
@@ -1604,7 +1604,7 @@ GraphNav::eWalkCtrl Dynamo::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 iD
     sPipeline->vCatSprint(
         " %s"
         ""_Stz,
-        ColumnRef::szColumnName(pColumnRef));
+        ColumnRef::szColumn(pColumnRef));
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

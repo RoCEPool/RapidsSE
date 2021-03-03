@@ -9,12 +9,12 @@ namespace Parser
 {
   class QueryNode;
 
-  class ShadowStatistics : public ShadowNode
+  class StatisticsNode : public ShadowNode
   {
 
   private:
     // Shalt never be instantiated. Static functions only.
-    ShadowStatistics();
+    StatisticsNode();
 
   public:
     static QueryNode* pCreate();

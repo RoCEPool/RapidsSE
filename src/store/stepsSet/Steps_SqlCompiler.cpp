@@ -59,18 +59,16 @@ void Step::vAddSteps_SqlCompiler(void)
 void Step::vSqlCompilerNameValidate(void)
 {
   ENTRY();
-  
-  //vTrace("\nStep::vSqlCompilerNameValidate\n"_Stz);
-  
+
   PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
   Parser::RootNode* pPlanRoot = Parser::_pRootNode(pPlanOperand->pPlanNode());
   UNUSED(pPlanRoot);
 
-  // TODO: Walk the graph and validate that each name can be resolved uniquely.
-  //       i.e. each table is known and unambiguous, each column refers to tables
-  //       that are being used, etc.
-  // TODO: Fill in the catalog/schema/table fields of the columnRef and tableRefs
-  //       where applicable.
+  // Walk the graph and validate that each name can be resolved uniquely.
+  // i.e. each table is known and unambiguous, each column refers to tables
+  // that are being used, etc.
+  // Fill in the catalog/schema/table fields of the columnRef and tableRefs
+  // where applicable.
   try {
     NameValidator::vValidateNames(pPlanRoot);
 

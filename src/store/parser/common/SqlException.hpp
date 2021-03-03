@@ -7,6 +7,7 @@
 #include "BASE.h"
 #include "InfoSet.hpp"
 #include "ColumnMetadata.hpp"
+#include "TableDef.hpp"
 
 namespace Parser
 {
@@ -115,16 +116,64 @@ namespace Parser
            pRow = pInfoSet->pNextRow(pRow)) {
 
         // TODO: Replace the pRow->szColVal_ofs(0) with TableMetadata when it exists
-        sErrMsg.vCatSprint("\n%s.%s.%s"_Stz, pRow->szColVal_ofs(0), pRow->szColVal_ofs(1), pRow->szColVal_ofs(2));
+        sErrMsg.vCatSprint("\n  %s.%s.%s"_Stz, pRow->szColVal_ofs(0), pRow->szColVal_ofs(1), pRow->szColVal_ofs(2));
       }
 
       delete pInfoSet;
       throw NameValidationException(sErrMsg.szStz());
     }
 
-    static void vThrowUnknownColumn(Stz* szColumnName) {
+    static void vThrowUnknownColumn(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName, Stz* szColumnName) {
       s256 sErrMsg;
-      sErrMsg.vSprint("Unknown column name: %s"_Stz, szColumnName);
+      sErrMsg.vConcat("Unknown column name: "_Stz);
+
+      if (szCatalogName) {
+        sErrMsg.vCatSprint("%s.%s.%s.%s"_Stz, szCatalogName, szSchemaName, szTableName, szColumnName);
+      } else if (szSchemaName) {
+        sErrMsg.vCatSprint("%s.%s.%s"_Stz, szSchemaName, szTableName, szColumnName);
+      } else if (szTableName) {
+        sErrMsg.vCatSprint("%s.%s"_Stz, szTableName, szColumnName);
+      } else {
+        sErrMsg.vCatSprint("%s"_Stz, szColumnName);
+      }
+      throw NameValidationException(sErrMsg.szStz());
+    }
+
+    static void vThrowAmbiguousColumn(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName,
+                                      Stz* szColumnName, PlanNodeList* pTableDefList)
+    {
+      ASSERT(pTableDefList->nItems() > 1);
+
+      s256 sErrMsg;
+      sErrMsg.vConcat("Ambiguous column name: "_Stz);
+
+      if (szCatalogName) {
+        sErrMsg.vCatSprint("%s.%s.%s.%s"_Stz, szCatalogName, szSchemaName, szTableName, szColumnName);
+      } else if (szSchemaName) {
+        sErrMsg.vCatSprint("%s.%s.%s"_Stz, szSchemaName, szTableName, szColumnName);
+      } else if (szTableName){
+        sErrMsg.vCatSprint("%s.%s"_Stz, szTableName, szColumnName);
+      } else {
+        sErrMsg.vCatSprint("%s"_Stz, szColumnName);
+      }
+
+      sErrMsg.vConcat(". Could be one of:"_Stz);
+
+      PlanNodeIter* pIter = pTableDefList->pNewIter();
+      while (pIter->bHasNext()) {
+        QueryNode* pNode = static_cast<QueryNode*>(pIter->pNext());
+
+        sErrMsg.vCatSprint("\n  %s.%s.%s.%s"_Stz,
+                           TableDef::szCatalogName(pNode),
+                           TableDef::szSchemaName(pNode),
+                           TableDef::szTableName(pNode),
+                           szColumnName);
+      }
+
+      delete pIter;
+      pTableDefList->vRemoveAll();
+      delete pTableDefList;   // yes, delete the list we were passed
+
       throw NameValidationException(sErrMsg.szStz());
     }
   };
