@@ -68,6 +68,8 @@ void Api::vDeleteJob(Session* pSession)
 {
   _static_
     
+  pSession->m_bExamined = false;
+
   Job* pJob = pSession->m_pSsnJob;
 
   if (pJob && pJob->bIsPipeline() && ! pSession->m_pOutput->m_bExitMarker)
@@ -94,6 +96,21 @@ void Api::vDeleteJob(Session* pSession)
 
 }
 
+/*----------------------------------------------------------------------------*/
+/* examine command                                                            */
+/*----------------------------------------------------------------------------*/
+void Api::vExamineCommand(Session* pSession)
+{
+  _static_
+  
+  if (pSession->m_bExamined)
+    return;
+  
+  vExtractPaths(pSession);
+  bExtractTags(pSession);
+  
+  pSession->m_bExamined = true;
+}
 
 /*----------------------------------------------------------------------------*/
 /* execute job (spawn job and wait for completion)                            */
@@ -105,9 +122,17 @@ void Api::vExecuteJob(Session* pSession)
   pSession->m_pOutput->vAssertEmptyQueue();
 
   Job* pJob = pSession->m_pSsnJob;
-  
-  TokenVec* pInpTknVec = pSession->m_pInput->pTokenVec();;
+  TagSet* pJobTagSet = & pSession->m_oJobTagSet;
+  TokenVec* pInpTknVec = pSession->m_pInput->pTokenVec();
 
+  //pInpTknVec->vDumpVec(false);
+  //pJobTagSet->vDumpSet(true);
+
+  if (pJobTagSet->bHasName(C_TAG_TRACEAPI)) {
+    vTrace("TagSet:\n"_Stz);
+    pJobTagSet->vDumpSet(true);
+  }
+      
   if (AM::bDeveloper() && pInpTknVec->nTokens() > C_1KB) {
     i8 nTokens = pInpTknVec->nTokens();
     i8 nUsed   = pInpTknVec->nUsedByteSpace();
@@ -174,6 +199,8 @@ bool Api::bExtractTags(Session* pSession)
 {
   _static_
   
+  pSession->m_bExamined = true;
+
   TokenVec* pInpTknVec = pSession->m_pInput->pTokenVec();;
   TagSet* pJobTagSet = & pSession->m_oJobTagSet;;
 
@@ -200,6 +227,9 @@ bool Api::bExtractTags(Session* pSession)
 
   i8 i_TagBegin = pInpTknVec->iFindToken("<"_Stz,TN_OTHER);
 
+  if (C_UNKNOWN == i_TagBegin)
+    i_TagBegin = pInpTknVec->iFindToken("<"_Stz,TN_TAG);
+  
   if (C_UNKNOWN == i_TagBegin)
     return true;
 
@@ -262,6 +292,11 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pLitTknVec)
   TokenVec* pCmdTknVec = pSession->m_pInput->pTokenVec();
       
   TagSet*  pJobCtlTagSet = & pSession->m_oJobTagSet;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (! pSession->m_bExamined)
+    vExamineCommand(pSession);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

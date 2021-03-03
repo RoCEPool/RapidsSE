@@ -34,7 +34,33 @@ namespace STORE
     Stz* szCurrTenant(void);
 
     void vListContents(i8 i_Depth, Dic* pDic);
+  
+    void vSearch(InfoSet* pInfoSet,
+                 i8 iScope,
+                 Stz* szCatalogName,
+                 Stz* szSchemaName,
+                 Stz* szTableName,
+                 Dic* pDic = nullptr,
+                 Dic* pCatalog = nullptr,
+                 Dic* pSchema = nullptr);
 
+    void vSearchCatalogs(InfoSet* pInfoSet,
+                         Dic* pCatalog);
+  
+    void vSearchColumns(InfoSet* pInfoSet,
+                        Dic* pCatalog,
+                        Dic* pSchema,
+                        Table* pTable);
+
+    void vSearchSchemas(InfoSet* pInfoSet,
+                        Dic* pCatalog,
+                        Dic* pSchema);
+  
+    void vSearchTables(InfoSet* pInfoSet,
+                       Dic* pCatalog,
+                       Dic* pSchema,
+                       Table* pTable);
+  
     InfoSet* pColumnDefs(Stz* szCatalogName,
                          Stz* szSchemaName,
                          Stz* szTableName,

@@ -69,7 +69,6 @@ namespace STORE
       _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
       return iColVal_int(9);
     }
-
   };
 }
 

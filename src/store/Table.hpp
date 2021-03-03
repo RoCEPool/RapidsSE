@@ -5,7 +5,7 @@
 
 #include "Index.hpp"
 
-namespace STORE { class StreamDef; }
+namespace STORE { class InfoSet; class StreamDef; }
 
 namespace STORE
 {
