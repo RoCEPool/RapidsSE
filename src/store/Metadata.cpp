@@ -263,7 +263,7 @@ void Metadata::vSearch(InfoSet* pInfoSet,
   
   if (! pDic) {
     Dic* pDic = pCurrTenant();
-    vTrace("\nTENANT %s \\folder\n"_Stz,pDic->szDicNm());
+    //vTrace("\nTENANT %s \\folder\n"_Stz,pDic->szDicNm());
     vSearch(pInfoSet,iScope,
             szCatalogName,szSchemaName,szTableName,
             pDic,nullptr,nullptr);

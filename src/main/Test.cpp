@@ -23,7 +23,9 @@
 #include "TagConstants.h"
 #include "Engine.hpp"
 #include "SeApi.hpp"
+#include "CatalogMetadata.hpp"
 #include "ColumnMetadata.hpp"
+#include "SP_CatalogMetadata.hpp"
 #include "SP_ColumnMetadata.hpp"
 
 #include "TpchRatios.h"
@@ -356,15 +358,17 @@ void vTest6(void)
 
   SeApi* pSeApi = new SeApi;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // search catalogs
+  
   pInfoSet = pSeApi->pSearchCatalogs(nullptr);
-  vTrace("pSearchCatalogs: %lld rows\n"_Stz,pInfoSet->nInfoRows());
   for (Row* pRow = pInfoSet->pFirstRow();
        pRow;
        pRow = pInfoSet->pNextRow(pRow)) {
-    ColumnMetadata* pColMeta = static_cast<ColumnMetadata*>(pRow);
+    CatalogMetadata* pCatalogMeta = static_cast<CatalogMetadata*>(pRow);
 
-    SP_ColumnMetadata spColMeta;
-    vTrace("SEARCH %s\n"_Stz,spColMeta.sz(pColMeta));
+    SP_CatalogMetadata spCatalogMeta;
+    vTrace("SEARCHCATALOG %s\n"_Stz,spCatalogMeta.sz(pCatalogMeta));
   }
   delete pInfoSet;
 
