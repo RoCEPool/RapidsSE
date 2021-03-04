@@ -1252,15 +1252,16 @@ void vDev_ROW_NEXT(i8** aaiDstk)
 }
 
 /*----------------------------------------------------------------------------*/
-/*  set row to null                                                           */
+/*  set buffer to null                                                        */
 /*----------------------------------------------------------------------------*/
-void vDev_ROW_NULL(void* aLU, void* aROWDEVICE)
+void vDev_ROW_NULL(i8** aaiDstk)
 {
   _static_
 
-  UNUSED(aLU);
+  i8 *aiDstk = *aaiDstk;
 
-  DevROW* pDevRow = _pDevROW(aROWDEVICE);
+  // pop the row dev
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
   pDevRow->m_pRowBuffer = nullptr;
 }
 

@@ -3029,8 +3029,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
       case EO_ROW_SRC_NULL: ArgNil(); // null the crw src
-        dLU0(EO_ROW_SRC_NULL);
-        vDev_ROW_NULL(pLU,aRluCommon->m_pDevSrcRow);
+//        dLU0(EO_ROW_SRC_NULL);
+//        vDev_ROW_NULL(pLU,aRluCommon->m_pDevSrcRow);
+        RASSERT(0);
         break;//+endCase
         
       case EO_ROW_SRC_PUSHOFS: ArgNil(); // push offset of source row
@@ -3081,6 +3082,17 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_ROW_NEXT(&aiDstk);
         break;//+endCase
 
+      case EO_DEVROW_NEW: ArgNil(); // create new row
+        dLU0(EO_DEVROW_NEW);
+        vDev_ROW_NEW(&aiDstk);  // need to push pot and ptn
+        aRluCommon->m_bPotCompleted = *(aiDstk--);
+        break;//+endCase
+
+      case EO_DEVROW_NULL: ArgNil(); // null the buffer
+        dLU0(EO_DEVROW_NULL);
+        vDev_ROW_NULL(&aiDstk);
+        break;//+endCase
+
       case EO_DEVROW_PRINT: ArgNil(); // print row
         dLU0(EO_DEVROW_PRINT);
         vDev_ROW_PRINT(&aiDstk);
@@ -3089,12 +3101,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_DEVROW_RESET: ArgNil(); // reset rowslab
         dLU0(EO_DEVROW_RESET);
         vDev_ROW_RESET(&aiDstk);
-        break;//+endCase
-
-      case EO_DEVROW_NEW: ArgNil(); // create new row
-        dLU0(EO_DEVROW_NEW);
-        vDev_ROW_NEW(&aiDstk);  // need to push pot and ptn
-        aRluCommon->m_bPotCompleted = *(aiDstk--);
         break;//+endCase
 
       case EO_DEVROW_SET: ArgNil(); // set dst row
