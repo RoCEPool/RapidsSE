@@ -524,10 +524,12 @@ InfoSet* SeApi::pSearchColumns(Stz* szCatalogName,
     
   Metadata* pMetadata = new Metadata;
   
-  InfoSet* pInfoSet = pMetadata->pColumnDefs(szCatalogName,
-                                             szSchemaName,
-                                             szTableName,
-                                             szColumnName);
+  Table* pLookupTable = AM::pTableFind(C_TDEF_COLUMNDEFS);
+  StreamDef* pLookupStreamDef = pLookupTable->pStreamDef();
+
+  InfoSet* pInfoSet = new InfoSet(pLookupStreamDef);
+
+  pMetadata->vSearch(pInfoSet,4,szCatalogName,nullptr,nullptr);
 
   delete pMetadata;
 

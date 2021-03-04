@@ -365,6 +365,7 @@ void Metadata::vSearchColumns(InfoSet* pInfoSet,
 
                                pColumn->iColumnNo(),
                                pColumn->szColNm(),
+                               (i8)pColumn->eColumnType(),
                                aCT[pColumn->eColumnType()],
                                pColumn->iColumnLength(),
                                pColumn->iColumnScale(),

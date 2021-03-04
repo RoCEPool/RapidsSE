@@ -411,6 +411,20 @@ void vTest6(void)
   delete pInfoSet;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // search columns
+  
+  pInfoSet = pSeApi->pSearchColumns(nullptr,nullptr,nullptr,nullptr);
+  for (Row* pRow = pInfoSet->pFirstRow();
+       pRow;
+       pRow = pInfoSet->pNextRow(pRow)) {
+    ColumnMetadata* pColumnMeta = static_cast<ColumnMetadata*>(pRow);
+
+    SP_ColumnMetadata spColumnMeta;
+    vTrace("SEARCHCOLUMN %s\n"_Stz,spColumnMeta.sz(pColumnMeta));
+  }
+  delete pInfoSet;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   delete pSeApi;
 
