@@ -40,6 +40,7 @@ namespace STORE
                  Stz* szCatalogName,
                  Stz* szSchemaName,
                  Stz* szTableName,
+                 Stz* szColumnName,
                  Dic* pDic = nullptr,
                  Dic* pCatalog = nullptr,
                  Dic* pSchema = nullptr);

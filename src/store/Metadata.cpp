@@ -255,6 +255,7 @@ void Metadata::vSearch(InfoSet* pInfoSet,
                        Stz* szCatalogName,
                        Stz* szSchemaName,
                        Stz* szTableName,
+                       Stz* szColumnName,
                        Dic* pDic,
                        Dic* pCatalog,
                        Dic* pSchema)
@@ -265,7 +266,7 @@ void Metadata::vSearch(InfoSet* pInfoSet,
     Dic* pDic = pCurrTenant();
     //vTrace("\nTENANT %s \\folder\n"_Stz,pDic->szDicNm());
     vSearch(pInfoSet,iScope,
-            szCatalogName,szSchemaName,szTableName,
+            szCatalogName,szSchemaName,szTableName,szColumnName,
             pDic,nullptr,nullptr);
     return;
   }
@@ -301,7 +302,7 @@ void Metadata::vSearch(InfoSet* pInfoSet,
         }
       }
       vSearch(pInfoSet,iScope,
-              szCatalogName,szSchemaName,szTableName,
+              szCatalogName,szSchemaName,szTableName,szColumnName,
               pDic,pCatalog,pSchema);
       continue;
     }

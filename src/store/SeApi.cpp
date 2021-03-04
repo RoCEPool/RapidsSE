@@ -505,7 +505,7 @@ InfoSet* SeApi::pSearchCatalogs(Stz* szCatalogName)
 
   InfoSet* pInfoSet = new InfoSet(pLookupStreamDef);
 
-  pMetadata->vSearch(pInfoSet,1,szCatalogName,nullptr,nullptr);
+  pMetadata->vSearch(pInfoSet,1,szCatalogName,nullptr,nullptr,nullptr);
 
   delete pMetadata;
   
@@ -529,7 +529,7 @@ InfoSet* SeApi::pSearchColumns(Stz* szCatalogName,
 
   InfoSet* pInfoSet = new InfoSet(pLookupStreamDef);
 
-  pMetadata->vSearch(pInfoSet,4,szCatalogName,nullptr,nullptr);
+  pMetadata->vSearch(pInfoSet,4,szCatalogName,szSchemaName,szTableName,szColumnName);
 
   delete pMetadata;
 
@@ -551,7 +551,7 @@ InfoSet* SeApi::pSearchSchemas(Stz* szCatalogName,
 
   InfoSet* pInfoSet = new InfoSet(pLookupStreamDef);
 
-  pMetadata->vSearch(pInfoSet,2,szCatalogName,szSchemaName,nullptr);
+  pMetadata->vSearch(pInfoSet,2,szCatalogName,szSchemaName,nullptr,nullptr);
 
   delete pMetadata;
   
@@ -574,7 +574,7 @@ InfoSet* SeApi::pSearchTables(Stz* szCatalogName,
 
   InfoSet* pInfoSet = new InfoSet(pLookupStreamDef);
 
-  pMetadata->vSearch(pInfoSet,3,szCatalogName,szSchemaName,szTableName);
+  pMetadata->vSearch(pInfoSet,3,szCatalogName,szSchemaName,szTableName,nullptr);
 
   delete pMetadata;
   
