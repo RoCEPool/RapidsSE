@@ -1186,17 +1186,20 @@ void vDev_ENTWRK_SETINTELM(void* aLU, void* aROWDEVICE, i8 iTop)
 /*----------------------------------------------------------------------------*/
 /* begin src row traverse                                                     */
 /*----------------------------------------------------------------------------*/
-void vDev_ROW_BEGIN(void* aLU, void* aROWDEVICE)
+void vDev_ROW_BEGIN(i8** aaiDstk)
 {
   _static_
 
-  UNUSED(aLU);
+  i8 *aiDstk = *aaiDstk;
 
-  DevROW* pDevRow = _pDevROW(aROWDEVICE);
+  // pop the row dev
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
   
   pDevRow->m_i_Row = -1;
   pDevRow->m_aRow  = nullptr;
   pDevRow->m_nRows = pDevRow->m_pRowBuffer ? pDevRow->m_pRowBuffer->nRows() : 0;
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/

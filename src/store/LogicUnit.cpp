@@ -3016,8 +3016,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
       case EO_ROW_SRC_BEGIN: ArgNil(); // begin src row traverse
-        dLU0(EO_ROW_SRC_BEGIN);
-        vDev_ROW_BEGIN(pLU,aRluCommon->m_pDevSrcRow);
+//        dLU0(EO_ROW_SRC_BEGIN);
+//        vDev_ROW_BEGIN(pLU,aRluCommon->m_pDevSrcRow);
+        RASSERT(0);
         break;//+endCase
 
       case EO_ROW_SRC_NEXT: ArgNil(); // move to next src row
@@ -3050,7 +3051,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
       case EO_ROW_ALT_BEGIN: ArgNil(); // not yet implemented
-        NEVER_REACH;
+ //       NEVER_REACH;
+        RASSERT(0);
         break;//+endCase
 
       case EO_ROW_ALT_NEXT: ArgNil(); // not yet implemented
@@ -3067,6 +3069,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // rowdev / rowslab
+      case EO_DEVROW_BEGIN: ArgNil(); // begin row traverse
+        dLU0(EO_DEVROW_BEGIN);
+        vDev_ROW_BEGIN(&aiDstk);
+        break;//+endCase
+
       case EO_DEVROW_PRINT: ArgNil(); // print row
         dLU0(EO_DEVROW_PRINT);
         vDev_ROW_PRINT(&aiDstk);
