@@ -191,7 +191,7 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* define apriori tables                                                      */
+/* define apriori tables 2                                                    */
 /*----------------------------------------------------------------------------*/
 
 "  start::defineTables2" .verbose
@@ -493,6 +493,28 @@
     FILENAME   VARCHAR NOT NULL ,
     UNITS      INTEGER NOT NULL
   ) ;
+  "
+  api::executeRequest
+;
+
+/*----------------------------------------------------------------------------*/
+/* define infoset tables 2                                                    */
+/*----------------------------------------------------------------------------*/
+
+"  start::defineInfoSets2" .verbose
+
+: start::defineInfoSets2
+
+  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_EVENTS
+  sPath
+  "
+  define table __events (
+    eventEnum      INTEGER NOT NULL ,
+    assocInfo      VARCHAR NOT NULL
+  ) < localTable > = 1 ;
   "
   api::executeRequest
 ;
