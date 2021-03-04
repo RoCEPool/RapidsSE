@@ -42,7 +42,7 @@ RootNode::~RootNode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROOTNODE,_FOOTER_);
 
-  //vTrace("Deleting root node %p\n"_Stz);
+  vTrace("Deleting root node %p\n"_Stz);
   // Don't delete the /primitives and /definitions children because they
   // will be reused by other plan graphs.
 
