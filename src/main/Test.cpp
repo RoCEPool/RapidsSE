@@ -353,24 +353,25 @@ void vTest6(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  vTrace("\n\n"_Stz);
   pInfoSet = pSeApi->pColumnDefs("rapidsse"_Stz,
                                  "public"_Stz,
                                  "lineitem"_Stz,
                                  nullptr);
-  vTrace("ColumnDefs: %lld rows\n"_Stz,pInfoSet->nInfoRows());
   for (Row* pRow = pInfoSet->pFirstRow();
        pRow;
        pRow = pInfoSet->pNextRow(pRow)) {
     ColumnMetadata* pColMeta = static_cast<ColumnMetadata*>(pRow);
     
     SP_ColumnMetadata spColMeta;
-    vTrace("META %s\n"_Stz,spColMeta.sz(pColMeta));
+    vTrace("COLUMNMETA %s\n"_Stz,spColMeta.sz(pColMeta));
   }
   delete pInfoSet;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // search catalogs
   
+  vTrace("\n\n"_Stz);
   pInfoSet = pSeApi->pSearchCatalogs(nullptr);
   for (Row* pRow = pInfoSet->pFirstRow();
        pRow;
@@ -385,6 +386,7 @@ void vTest6(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // search schemas
   
+  vTrace("\n\n"_Stz);
   pInfoSet = pSeApi->pSearchSchemas(nullptr,nullptr);
   for (Row* pRow = pInfoSet->pFirstRow();
        pRow;
@@ -399,6 +401,7 @@ void vTest6(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // search tables
   
+  vTrace("\n\n"_Stz);
   pInfoSet = pSeApi->pSearchTables(nullptr,nullptr,nullptr);
   for (Row* pRow = pInfoSet->pFirstRow();
        pRow;
@@ -407,6 +410,36 @@ void vTest6(void)
 
     SP_TableMetadata spTableMeta;
     vTrace("SEARCHTABLE %s\n"_Stz,spTableMeta.sz(pTableMeta));
+  }
+  delete pInfoSet;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // search columns
+  
+  vTrace("\n\n"_Stz);
+  pInfoSet = pSeApi->pSearchColumns(nullptr,nullptr,nullptr,nullptr);
+  for (Row* pRow = pInfoSet->pFirstRow();
+       pRow;
+       pRow = pInfoSet->pNextRow(pRow)) {
+    ColumnMetadata* pColumnMeta = static_cast<ColumnMetadata*>(pRow);
+
+    SP_ColumnMetadata spColumnMeta;
+    vTrace("SEARCHCOLUMN %s\n"_Stz,spColumnMeta.sz(pColumnMeta));
+  }
+  delete pInfoSet;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // search for nodeName columns
+  
+  vTrace("\n\n"_Stz);
+  pInfoSet = pSeApi->pSearchColumns(nullptr,nullptr,nullptr,"nodeName"_Stz);
+  for (Row* pRow = pInfoSet->pFirstRow();
+       pRow;
+       pRow = pInfoSet->pNextRow(pRow)) {
+    ColumnMetadata* pColumnMeta = static_cast<ColumnMetadata*>(pRow);
+
+    SP_ColumnMetadata spColumnMeta;
+    vTrace("SEARCHCOLUMN %s\n"_Stz,spColumnMeta.sz(pColumnMeta));
   }
   delete pInfoSet;
   
