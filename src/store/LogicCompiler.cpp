@@ -126,7 +126,7 @@ DynamicSymbol gxaDynamicSymbol[]
   
   { "vDev_ROW_BEGIN"_Stz,         (const void *) vDev_ROW_BEGIN         },
   { "vDev_ROW_NEW"_Stz,           (const void *) vDev_ROW_NEW           },
-  { "iDev_ROW_NEXT"_Stz,          (const void *) iDev_ROW_NEXT          },
+  { "vDev_ROW_NEXT"_Stz,          (const void *) vDev_ROW_NEXT          },
   { "vDev_ROW_NULL"_Stz,          (const void *) vDev_ROW_NULL          },
   { "vDev_ROW_POPCOLI"_Stz,       (const void *) vDev_ROW_POPCOLI       },
   { "vDev_ROW_POPCOLS"_Stz,       (const void *) vDev_ROW_POPCOLS       },

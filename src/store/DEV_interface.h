@@ -73,7 +73,7 @@ void vDev_ENTWRK_SETINTELM(void* aLU, void* aROWDEVICE, i8 iTop);
 
 void vDev_ROW_BEGIN(i8** aaiDstk);
 void vDev_ROW_NEW(i8** aaiDstk);
-i8   iDev_ROW_NEXT(void* aLU, void* aROWDEVICE);
+void vDev_ROW_NEXT(i8** aaiDstk);
 void vDev_ROW_NULL(void* aLU, void* aROWDEVICE);
 void vDev_ROW_POPCOLI(void* aLU, void* aROWDEVICE, i8 iArg, i8 iTop);
 void vDev_ROW_POPCOLS(void* aLU, void* aROWDEVICE, i8 iArg, Stz* szTop);

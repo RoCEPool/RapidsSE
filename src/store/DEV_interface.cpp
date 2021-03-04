@@ -1231,25 +1231,24 @@ void vDev_ROW_NEW(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* move to next src row                                                       */
 /*----------------------------------------------------------------------------*/
-i8 iDev_ROW_NEXT(void* aLU, void* aROWDEVICE)
+void vDev_ROW_NEXT(i8** aaiDstk)
 {
   _static_
 
-  UNUSED(aLU);
+  i8 *aiDstk = *aaiDstk;
 
-  DevROW* pDevRow = _pDevROW(aROWDEVICE);
-  
-  i8 iRes;
+  // pop the row dev
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
   
   if (++pDevRow->m_i_Row  < pDevRow->m_nRows) {
     pDevRow->m_aRow = pDevRow->m_pRowBuffer->pRowAddress(pDevRow->m_i_Row );
-    iRes = 1;
+    I_PushInt(1);
   }
   else {
-    iRes = 0;
+    I_PushInt(0);
   }
 
-  return iRes;
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/

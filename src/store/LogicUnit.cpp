@@ -3022,9 +3022,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       case EO_ROW_SRC_NEXT: ArgNil(); // move to next src row
-        dLU0(EO_ROW_SRC_NEXT);
-        iRes = iDev_ROW_NEXT(pLU,aRluCommon->m_pDevSrcRow);
-        *(++aiDstk) = iRes;
+//        dLU0(EO_ROW_SRC_NEXT);
+//        iRes = iDev_ROW_NEXT(pLU,aRluCommon->m_pDevSrcRow);
+//        *(++aiDstk) = iRes;
+        RASSERT(0);
         break;//+endCase
         
       case EO_ROW_SRC_NULL: ArgNil(); // null the crw src
@@ -3056,7 +3057,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       case EO_ROW_ALT_NEXT: ArgNil(); // not yet implemented
-        NEVER_REACH;
+ //       NEVER_REACH;
+        RASSERT(0);
         break;//+endCase
 
       case EO_ROW_ALT_PUSHOFS: ArgNil(); // not yet implemented
@@ -3072,6 +3074,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_DEVROW_BEGIN: ArgNil(); // begin row traverse
         dLU0(EO_DEVROW_BEGIN);
         vDev_ROW_BEGIN(&aiDstk);
+        break;//+endCase
+
+      case EO_DEVROW_NEXT: ArgNil(); // move to next row
+        dLU0(EO_DEVROW_NEXT);
+        vDev_ROW_NEXT(&aiDstk);
         break;//+endCase
 
       case EO_DEVROW_PRINT: ArgNil(); // print row
