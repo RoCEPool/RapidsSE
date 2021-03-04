@@ -82,7 +82,7 @@ i8   iDev_ROW_PUSHCOLI(void* aLU, void* aROWDEVICE, i8 iArg);
 Stz* szDev_ROW_PUSHCOLS(void* aLU, void* aROWDEVICE, i8 iArg);
 i8   iDev_ROW_PUSHOFS(void* aLU, void* aROWDEVICE);
 void vDev_ROW_RESET(i8** aaiDstk);
-void vDev_ROW_SET(void* aLU, void* aROWDEVICE, i8 iRow);
+void vDev_ROW_SET(i8** aaiDstk);
 void vDev_ROW_TABLENM_SET(i8** aaiDstk);
 i8   iDev_ROW_TEST(void* aLU, void* aROWDEVICE);
 i8   iDev_ROW_TESTROW(void* aLU, void* aROWDEVICE);

@@ -2996,9 +2996,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
        
       case EO_ROW_DST_SET: ArgNil(); // set dst row
-        dLU0(EO_ROW_DST_SET);
-        iTopA = *(aiDstk--);
-        vDev_ROW_SET(pLU,aRluCommon->m_pDevDstRow, iTopA);
+//        dLU0(EO_ROW_DST_SET);
+//        iTopA = *(aiDstk--);
+//        vDev_ROW_SET(pLU,aRluCommon->m_pDevDstRow, iTopA);
+        RASSERT(0);
         break;//+endCase
         
       case EO_ROW_DST_TESTROW: ArgNil(); // test if there is a destination row
@@ -3082,8 +3083,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_DEVROW_SET: ArgNil(); // set dst row
         dLU0(EO_ROW_DST_SET);
-        iTopA = *(aiDstk--);
-        vDev_ROW_SET(pLU,aRluCommon->m_pDevDstRow, iTopA);
+        vDev_ROW_SET(&aiDstk);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

@@ -1379,15 +1379,20 @@ void vDev_ROW_RESET(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* set row row                                                                 */
 /*----------------------------------------------------------------------------*/
-void vDev_ROW_SET(void* aLU, void* aROWDEVICE, i8 iRow)
+void vDev_ROW_SET(i8** aaiDstk)
 {
   _static_
-  
-  UNUSED(aLU);
-  
-  DevROW* pDevRow = _pDevROW(aROWDEVICE);
+
+  i8 *aiDstk = *aaiDstk;
+
+  // pop the device
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
+
+  // pop the row no
+  i8 iRow = I_PopInt();
 
   pDevRow->m_aRow = pDevRow->m_pRowBuffer->aSetCurRow(iRow);
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/

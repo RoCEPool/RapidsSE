@@ -355,7 +355,7 @@ enum eEO : u1 // expression operators
   /*     */ EO_DEVROW_PRINT,     // print row from row dev
   /*     */ EO_DEVROW_RESET,     // reset rowslab in row dev
   /*     */ EO_DEVROW_NEW,       // create new row in row dev
-  /*     */ EO_DEVROW_SET,       // set rowslab in row dev
+  /*     */ EO_DEVROW_SET,       // set rowslab in row dev                   ---not invoked
   /*     */ EO_RDEVOW_TESTROW,   // test if row in row dev
   /*     */ EO_DEVROW_ZERO,      // zero destination row in row dev
   /*     */ EO_DEVROW_BEGIN,     // begin src row traverse in row dev
