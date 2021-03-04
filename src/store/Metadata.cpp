@@ -374,8 +374,8 @@ void Metadata::vSearchColumns(InfoSet* pInfoSet,
                                aCT[pColumn->eColumnType()],
                                pColumn->iColumnLength(),
                                pColumn->iColumnScale(),
-                               pColumn->bIsNullable(),
-                               pColumn->bIsPtnKey(),
+                               (i8)pColumn->bIsNullable(),
+                               (i8)pColumn->bIsPtnKey(),
 
                                C_VARGS_END);
   }
@@ -465,8 +465,8 @@ InfoSet* Metadata::pColumnDefs(Stz* szCatalogName,
                                  aCT[pColumn->eColumnType()],
                                  pColumn->iColumnLength(),
                                  pColumn->iColumnScale(),
-                                 pColumn->bIsNullable(),
-                                 pColumn->bIsPtnKey(),
+                                 (i8)pColumn->bIsNullable(),
+                                 (i8)pColumn->bIsPtnKey(),
 
                                  C_VARGS_END);
     }
