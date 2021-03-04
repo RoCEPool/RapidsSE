@@ -1220,8 +1220,10 @@ void vDev_ROW_NEW(void* aLU, i8** aaiDstk)
 
   LogicUnit *pLogicUnit = _pLogicUnit(aLU);
 
+  Pot* pPot = _pPot(pLogicUnit->m_xRluCommon.m_pPot);
+
   pDevRow->m_aRow =
-      pLogicUnit->m_xpPot->aNewDstRow(pLogicUnit->m_xRluCommon.m_i_Ptn,
+      pPot->aNewDstRow(pLogicUnit->m_xRluCommon.m_i_Ptn,
                                       &pDevRow->m_pRowBuffer, &bNewBuffer);
 
   I_PushInt(bNewBuffer);
@@ -2351,8 +2353,10 @@ void vDev_POT_USE_STREAMDEFOUT(void* aLU, i8 iAddPtnHsh)
   
   pLogicUnit->m_xpStreamDefOut->vToRowPix(&pLogicUnit->m_oRowPix,
                                                (bool)iAddPtnHsh);
-  
-  pLogicUnit->m_xpPot->vRowPix(&pLogicUnit->m_oRowPix);
+
+  Pot* pPot = _pPot(pLogicUnit->m_xRluCommon.m_pPot);
+
+  pPot->vRowPix(&pLogicUnit->m_oRowPix);
   
 }
 

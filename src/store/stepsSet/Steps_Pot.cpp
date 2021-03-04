@@ -29,13 +29,13 @@ void Step::vAddSteps_Pot(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* potRlu[].completed -- get any completed/full buffer                           */
+/* potRlu[].completed -- get any completed/full buffer                        */
 /*----------------------------------------------------------------------------*/
 void Step::vPotCompleted(void)
 {
   ENTRY();
   
-  Pot* pPot = *( m_pJob->pLogicUnit_job() )->m_xpPot;
+  Pot* pPot = _pPot(m_pJob->pLogicUnit_job()->m_xRluCommon.m_pPot);
     
   DataBuffer* pCompletedBuffer = pPot->pCompleted(0);
 
@@ -45,15 +45,15 @@ void Step::vPotCompleted(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* potRlu[].completedPtn -- get any completed/full buffer for given ptn          */
+/* potRlu[].completedPtn -- get any completed/full buffer for given ptn       */
 /*----------------------------------------------------------------------------*/
 void Step::vPotCompletedPtn(void)
 {
   ENTRY();
   
   i8 i_Ptn = m_pDataStack->iPopInt(__func__);
-  
-  Pot* pPot = *( m_pJob->pLogicUnit_job() )->m_xpPot;
+
+  Pot* pPot = _pPot(m_pJob->pLogicUnit_job()->m_xRluCommon.m_pPot);
     
   DataBuffer* pCompletedBuffer = pPot->pCompleted(i_Ptn);
 
@@ -63,13 +63,13 @@ void Step::vPotCompletedPtn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* potRlu[].dangling -- get any dangling/last buffer                             */
+/* potRlu[].dangling -- get any dangling/last buffer                          */
 /*----------------------------------------------------------------------------*/
 void Step::vPotDangling(void)
 {
   ENTRY();
-  
-  Pot* pPot = *( m_pJob->pLogicUnit_job() )->m_xpPot;
+
+  Pot* pPot = _pPot(m_pJob->pLogicUnit_job()->m_xRluCommon.m_pPot);
     
   DataBuffer* pDanglingBuffer = pPot->pDangling(0);
 
@@ -79,15 +79,15 @@ void Step::vPotDangling(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* potRlu[].danglingPtn -- get any dangling/last buffer for given ptn            */
+/* potRlu[].danglingPtn -- get any dangling/last buffer for given ptn         */
 /*----------------------------------------------------------------------------*/
 void Step::vPotDanglingPtn(void)
 {
   ENTRY();
   
   i8 i_Ptn = m_pDataStack->iPopInt(__func__);
-  
-  Pot* pPot = *( m_pJob->pLogicUnit_job() )->m_xpPot;
+
+  Pot* pPot = _pPot(m_pJob->pLogicUnit_job()->m_xRluCommon.m_pPot);
     
   DataBuffer* pDanglingBuffer = pPot->pDangling(i_Ptn);
 
@@ -97,14 +97,14 @@ void Step::vPotDanglingPtn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* potRlu[].delete -- delete pot                                                 */
+/* potRlu[].delete -- delete pot                                              */
 /*----------------------------------------------------------------------------*/
 void Step::vPotDelete(void)
 {
   ENTRY();
-  
-  Pot* pPot = *( m_pJob->pLogicUnit_job() )->m_xpPot;
-  ( m_pJob->pLogicUnit_job() )->m_xpPot = nullptr;
+
+  Pot* pPot = _pPot(m_pJob->pLogicUnit_job()->m_xRluCommon.m_pPot);
+  ( m_pJob->pLogicUnit_job() )->m_xRluCommon.m_pPot = nullptr;
   
   delete pPot;
   
@@ -112,19 +112,21 @@ void Step::vPotDelete(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* potRlu[].isNull -- is pot null                                                */
+/* potRlu[].isNull -- is pot null                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vPotIsNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(( m_pJob->pLogicUnit_job() )->m_xpPot.bIsNull() ? 1 : 0);
+  Pot* pPot = _pPot(m_pJob->pLogicUnit_job()->m_xRluCommon.m_pPot);
+
+  m_pDataStack->vPushInt(pPot == nullptr ? 1 : 0);
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* potRlu[].new -- create new pot                                                */
+/* potRlu[].new -- create new pot                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vPotNew(void)
 {
@@ -132,19 +134,19 @@ void Step::vPotNew(void)
     
   Pot* pPot = new Pot;
       
-  ( m_pJob->pLogicUnit_job() )->m_xpPot = pPot;
+  ( m_pJob->pLogicUnit_job() )->m_xRluCommon.m_pPot = pPot;
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* potRlu[].pushBuffer -- push top buffer                                        */
+/* potRlu[].pushBuffer -- push top buffer                                     */
 /*----------------------------------------------------------------------------*/
 void Step::vPotPushBuffer(void)
 {
   ENTRY();
-  
-  Pot* pPot = *( m_pJob->pLogicUnit_job() )->m_xpPot;
+
+  Pot* pPot = _pPot(m_pJob->pLogicUnit_job()->m_xRluCommon.m_pPot);
     
   DataBuffer* pBuffer = pPot->pDangling(0);
 
@@ -154,7 +156,7 @@ void Step::vPotPushBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* potRlu[].useStreamDefOut -- use stream def out for this pot                   */
+/* potRlu[].useStreamDefOut -- use stream def out for this pot                */
 /*----------------------------------------------------------------------------*/
 void Step::vPotUseStreamDefOut(void)
 {
@@ -164,8 +166,8 @@ void Step::vPotUseStreamDefOut(void)
   
   ( m_pJob->pLogicUnit_job() )->m_xpStreamDefOut->vToRowPix(&( m_pJob->pLogicUnit_job() )->m_oRowPix,
                                                (bool)iAddPtnHsh);
-  
-  ( m_pJob->pLogicUnit_job() )->m_xpPot->vRowPix(&( m_pJob->pLogicUnit_job() )->m_oRowPix);
+  Pot* pPot = _pPot(m_pJob->pLogicUnit_job()->m_xRluCommon.m_pPot);
+  pPot->vRowPix(&( m_pJob->pLogicUnit_job() )->m_oRowPix);
 
   EXIT();
 }

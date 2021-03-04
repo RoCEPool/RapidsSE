@@ -29,7 +29,9 @@ struct RluCommon                      // **IF YOU CHANGE THIS DO A CLEAN BUILD**
   i8   m_nPtns;
   i8   m_iHash;
   i8   m_i_Ptn;
-  
+
+  void* m_pPot;
+
   void* m_pDevDstRow;
   void* m_pDevSrcRow;
   void* m_pDevAltRow;
