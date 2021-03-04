@@ -318,7 +318,7 @@ void Metadata::vSearch(InfoSet* pInfoSet,
         vSearchTables(pInfoSet,pCatalog,pSchema,pTable);
       else
       if (4 == iScope)
-        vSearchColumns(pInfoSet,pCatalog,pSchema,pTable);
+        vSearchColumns(pInfoSet,pCatalog,pSchema,pTable,szColumnName);
       continue;
     }
     
@@ -347,7 +347,8 @@ void Metadata::vSearchCatalogs(InfoSet* pInfoSet,
 void Metadata::vSearchColumns(InfoSet* pInfoSet,
                               Dic* pCatalog,
                               Dic* pSchema,
-                              Table* pTable)
+                              Table* pTable,
+                              Stz* szColumnName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
   
