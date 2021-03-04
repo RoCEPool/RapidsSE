@@ -153,14 +153,14 @@ Stz* ColumnDef::szColumnName(QueryNode* pNode)
 /*----------------------------------------------------------------------------*/
 /* get the SQL data type of this column                                       */
 /*----------------------------------------------------------------------------*/
-SqlType::Type ColumnDef::eColumnType(QueryNode* pNode)
+eCT ColumnDef::eColumnType(QueryNode* pNode)
 {
   ASSERT(bIsOfType(pNode));
 
   QueryNode* pTypeNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_COLUMNTYPE_PROP, pNode));
   ASSERT(pTypeNode);
 
-  SqlType::Type eType = SqlType::eType(pTypeNode);
+  eCT eType = SqlType::eType(pTypeNode);
 
   return eType;
 }

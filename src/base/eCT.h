@@ -12,10 +12,13 @@ enum eCT // Column Type
   /*  4 */ CT_DECIMAL,
   /*  5 */ CT_FLOAT,
   /*  6 */ CT_INTEGER,
-  /*  7 */ CT_INTERVAL,
+  // TODO: CT_INTERVAL_YM,  // year-month interval
+  // TODO: CT_INTERVAL_DT,  // day-time interval
+  /*  7 */ CT_INTERVAL,     // TODO: Replace with the above
   /*  8 */ CT_TIME,
   /*  9 */ CT_TIMESTAMP,
   /* 10 */ CT_VARCHAR,
+  // TODO: CT_UNKNOWN,
   /* 11 */ CT_ENUMS
 };
 
@@ -28,10 +31,13 @@ static Stz* aCT[]
     /*  4 */ "DECIMAL"_Stz,
     /*  5 */ "FLOAT"_Stz,
     /*  6 */ "INTEGER"_Stz,
-    /*  7 */ "INTERVAL"_Stz,
+    // TODO: "INTERVAL YEAR TO MONTH"_Stz,
+    // TODO: "INTERVAL DAY TO SECOND"_Stz,
+    /*  7 */ "INTERVAL"_Stz,  // TODO: replace with the above
     /*  8 */ "TIME"_Stz,
     /*  9 */ "TIMESTAMP"_Stz,
     /* 10 */ "VARCHAR"_Stz,
+    // TODO: "NULL"_Stz,
     /* 11 */ "ENUMS"_Stz
 };
 
@@ -44,10 +50,13 @@ static Stz* aCT_long[]
   /*  4 */ "CT_DECIMAL"_Stz,
   /*  5 */ "CT_FLOAT"_Stz,
   /*  6 */ "CT_INTEGER"_Stz,
-  /*  7 */ "CT_INTERVAL"_Stz,
+  // TODO: "CT_INTERVAL_YM"_Stz,
+  // TODO: "CT_INTERVAL_DT"_Stz,
+  /*  7 */ "CT_INTERVAL"_Stz,   // TODO: replace with the above
   /*  8 */ "CT_TIME"_Stz,
   /*  9 */ "CT_TIMESTAMP"_Stz,
   /* 10 */ "CT_VARCHAR"_Stz,
+  // TODO: "CT_UNKNOWN"_Stz,
   /* 11 */ "CT_ENUMS"_Stz
 };
 
@@ -60,10 +69,13 @@ static Stz* aCT_short[]
   /*  4 */ "m"_Stz, // decimal
   /*  5 */ "f"_Stz, // float
   /*  6 */ "i"_Stz, // integer
-  /*  7 */ "l"_Stz, // interval
+  // TODO: "ly"_Stz, // (???) interval year to month
+  // TODO: "ld"_Stz, // (???) interval day to second
+  /*  7 */ "l"_Stz, // interval   // TODO: replace with the above
   /*  8 */ "t"_Stz, // time
   /*  9 */ "p"_Stz, // timestamp
   /* 10 */ "s"_Stz, // varchar
+  // TODO: "x"_Stz, // unknown (???)
   /* 11 */ "ENUMS"_Stz
 };
 

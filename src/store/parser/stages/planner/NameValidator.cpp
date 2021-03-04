@@ -142,7 +142,7 @@ void NameValidator::vValidateTables(PlanNode *pRootNode, QueryNode* pPlanNode, Q
       // Convert the metadata type string to an enum and use this to create
       // a QueryNode of the correct type.
       // TODO: Change this to look at the eCT enum
-      QueryNode* pTypeNode = SqlType::pCreate(SqlType::eType(pColMeta->szColumnType()));
+      QueryNode* pTypeNode = SqlType::pCreate(static_cast<eCT>(pColMeta->iTypeEnum()));
 
       // Make the column definition node and add it to the list of column definitions
       QueryNode* pColumnDef = ColumnDef::pCreate(pColMeta->szColumnName(),

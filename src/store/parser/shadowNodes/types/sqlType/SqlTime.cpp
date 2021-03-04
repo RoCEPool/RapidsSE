@@ -33,7 +33,7 @@ PlanNode* SqlTime::pCreate()
   // Create a unique name for this object
   s256 sName;
   ShadowNode::vObjName(GraphNav::szLeafType(C_SQLTIME_DEFN), sName);
-  Value xTypeValue((i8) ST_TIME);
+  Value xTypeValue((i8) CT_TIME);
   PlanNode* pNode = new QueryNode(sName, C_SQLTIME_DEFN, static_cast<Value&&>(xTypeValue));
 
   return pNode;
@@ -49,7 +49,7 @@ PlanNode* SqlTime::pCreate(i8 iMinOffset)
   // Create a unique name for this object
   s256 sName;
   ShadowNode::vObjName(GraphNav::szLeafType(C_SQLTIME_DEFN), sName);
-  Value xTypeValue((i8) ST_TIME);
+  Value xTypeValue((i8) CT_TIME);
   QueryNode* pNode = new QueryNode(sName, C_SQLTIME_DEFN, static_cast<Value&&>(xTypeValue));
 
   // Create the offset property

@@ -28,12 +28,12 @@ namespace Parser
     // Returns true if a given node is a given type ** or is derived from that type **
     static b1 bIsOfType(PlanNode* pNode);
 
-    static Stz*           szColumnName(QueryNode* pNode);
-    static SqlType::Type eColumnType(QueryNode* pNode);
-    static b1             bNotNull(QueryNode* pNode);
-    static i8             iOrdinal(QueryNode* pNode);   // 0 based column number
-    static i8             iPrecision(QueryNode* pNode); // returns -1 if not set or n/a
-    static i8             iScale(QueryNode* pNode);     // returns -1 if not set or n/a
+    static Stz* szColumnName(QueryNode* pNode);
+    static eCT  eColumnType(QueryNode* pNode);
+    static b1   bNotNull(QueryNode* pNode);
+    static i8   iOrdinal(QueryNode* pNode);   // 0 based column number
+    static i8   iPrecision(QueryNode* pNode); // returns -1 if not set or n/a
+    static i8   iScale(QueryNode* pNode);     // returns -1 if not set or n/a
 
   };
 
