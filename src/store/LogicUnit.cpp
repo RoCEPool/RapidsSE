@@ -3062,7 +3062,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_DEVROW_NEW: ArgNil(); // create new row
         dLU0(EO_DEVROW_NEW);
-        vDev_ROW_NEW(pLU, &aiDstk);  // need to push pot and ptn
+        *(++aiDstk) = (i8)aRluCommon->m_pPot;
+        *(++aiDstk) = aRluCommon->m_i_Ptn;
+        vDev_ROW_NEW(&aiDstk);  // need to push pot and ptn
         aRluCommon->m_bPotCompleted = *(aiDstk--);
         break;//+endCase
 
