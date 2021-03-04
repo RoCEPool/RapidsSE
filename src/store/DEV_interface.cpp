@@ -1437,22 +1437,21 @@ void vDev_ROW_TABLENM_SET(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* push offset of source row                                                  */
 /*----------------------------------------------------------------------------*/
-i8 iDev_ROW_TESTROW(void* aLU, void* aROWDEVICE)
+void vDev_ROW_TESTROW(i8** aaiDstk)
 {
-  _static_
+  i8 *aiDstk = *aaiDstk;
 
-  UNUSED(aLU);
-
-  DevROW* pDevRow = _pDevROW(aROWDEVICE);
+  // pop row device
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
 
   i8 iRes;
 
   if (pDevRow->m_aRow)
-    iRes = 1;
+    I_PushInt(1)
   else
-    iRes = 0;
+    I_PushInt(0)
 
-  return iRes;
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
