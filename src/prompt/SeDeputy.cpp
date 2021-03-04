@@ -9,6 +9,7 @@
 #include "SePrompt.hpp"
 
 #include "Api.hpp"
+#include "SeApi.hpp"
 #include "Output.hpp"
 #include "Session.hpp"
 #include "Job.hpp"
@@ -152,7 +153,11 @@ void SeDeputy::vExecuteJob(void)
     vTrace("vExecuteJob %p v %p\n"_Stz,m_pSession,m_pSession->m_pSsnJob->pSession());
   RASSERT(m_pSession == m_pSession->m_pSsnJob->pSession());
   
-  //vTrace("vSeDeputy::vExecuteJob\n"_Stz);
+//  Craig, try uncommenting this and see what raw input looks like got you
+//         at this point.
+
+//  vTrace("vSeDeputy::vExecuteJob : %s\n"_Stz,
+//         m_pSession->m_pInput->szRawInput());
   
   Api::vExecuteJob(m_pSession);
   
