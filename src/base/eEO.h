@@ -361,6 +361,7 @@ enum eEO : u1 // expression operators
   /*     */ EO_DEVROW_RESET,     // reset rowslab in row dev
   /*     */ EO_DEVROW_SET,       // set rowslab in row dev
   /*     */ EO_DEVROW_SETBYOFS,  // set src row  in row dev by using offset on stack
+  /*     */ EO_DEVROW_TESTBUFFER,// test if buffer in row dev
   /*     */ EO_DEVROW_TESTROW,   // test if row in row dev
   /*     */ EO_DEVROW_ZERO,      // zero destination row in row dev
 
@@ -745,6 +746,7 @@ static Stz* aEO[]
   /*     */ "EO_DEVROW_RESET"_Stz,
   /*     */ "EO_DEVROW_SET"_Stz,
   /*     */ "EO_DEVROW_SETBYOFS"_Stz,
+  /*     */ "EO_DEVROW_TESTBUFFER"_Stz,
   /*     */ "EO_DEVROW_TESTROW"_Stz,
   /*     */ "EO_DEVROW_ZERO"_Stz,
 
@@ -1136,6 +1138,7 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_DEVROW_RESET
   { EA_NONE,    0 },  // EO_DEVROW_SET
   { EA_NONE,    0 },  // EO_DEVROW_SETBYOFS
+  { EA_NONE,    0 },  // EO_DEVROW_TESTBUFFER
   { EA_NONE,    0 },  // EO_DEVROW_TESTROW
   { EA_NONE,    0 },  // EO_DEVROW_ZERO
 

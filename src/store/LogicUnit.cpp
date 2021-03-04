@@ -3049,9 +3049,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
       case EO_ROW_SRC_TEST: ArgNil(); // test for src crw
-        dLU0(EO_ROW_SRC_TEST);
-        iRes = iDev_ROW_TEST(pLU,aRluCommon->m_pDevSrcRow);
-        *(++aiDstk) = iRes;
+//        dLU0(EO_ROW_SRC_TEST);
+//        iRes = iDev_ROW_TEST(pLU,aRluCommon->m_pDevSrcRow);
+//        *(++aiDstk) = iRes;
+        RASSERT(0);
         break;//+endCase
         
       case EO_ROW_ALT_BEGIN: ArgNil(); // not yet implemented
@@ -3120,6 +3121,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_DEVROW_SETBYOFS: ArgNil(); // set row by using offset on stack
         dLU0(EO_DEVROW_SETBYOFS);
         vDev_ROW_SETBYOFS(&aiDstk);
+        break;//+endCase
+
+      case EO_DEVROW_TESTBUFFER: ArgNil(); // test for buffer
+        dLU0(EO_DEVROW_TESTBUFFER);
+        vDev_ROW_TESTBUFFER(&aiDstk);
         break;//+endCase
 
       case EO_DEVROW_TESTROW: ArgNil(); // test for crw

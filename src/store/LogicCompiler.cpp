@@ -138,7 +138,7 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_ROW_SET"_Stz,           (const void *) vDev_ROW_SET           },
   { "vDev_ROW_SETBYOFS"_Stz,      (const void *) vDev_ROW_SETBYOFS      },
   { "vDev_ROW_TABLENM_SET"_Stz,   (const void *) vDev_ROW_TABLENM_SET   },
-  { "iDev_ROW_TEST"_Stz,          (const void *) iDev_ROW_TEST          },
+  { "vDev_ROW_TESTBUFFER"_Stz,    (const void *) vDev_ROW_TESTBUFFER    },
   { "vDev_ROW_TESTROW"_Stz,       (const void *) vDev_ROW_TESTROW       },
   { "vDev_ROW_ZERO"_Stz,          (const void *) vDev_ROW_ZERO          },
 

@@ -1443,7 +1443,7 @@ void vDev_ROW_TABLENM_SET(i8** aaiDstk)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push offset of source row                                                  */
+/* test for row                                                               */
 /*----------------------------------------------------------------------------*/
 void vDev_ROW_TESTROW(i8** aaiDstk)
 {
@@ -1465,24 +1465,23 @@ void vDev_ROW_TESTROW(i8** aaiDstk)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push offset of source row                                                  */
+/* test for buffer                                                            */
 /*----------------------------------------------------------------------------*/
-i8 iDev_ROW_TEST(void* aLU, void* aROWDEVICE)
+void vDev_ROW_TESTBUFFER(i8** aaiDstk)
 {
   _static_
 
-  UNUSED(aLU);
+  i8 *aiDstk = *aaiDstk;
 
-  DevROW* pDevRow = _pDevROW(aROWDEVICE);
-  
-  i8 iRes;
+  // pop row device
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
   
   if (pDevRow->m_pRowBuffer)
-    iRes = 1;
+    I_PushInt(1)
   else
-    iRes = 0;
-  
-  return iRes;
+    I_PushInt(1)
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
