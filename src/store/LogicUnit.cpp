@@ -3035,9 +3035,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
       case EO_ROW_SRC_PUSHOFS: ArgNil(); // push offset of source row
-        dLU0(EO_ROW_SRC_PUSHOFS);
-        iRes = iDev_ROW_PUSHOFS(pLU,aRluCommon->m_pDevSrcRow);
-        *(++aiDstk) = iRes;
+//        dLU0(EO_ROW_SRC_PUSHOFS);
+//        iRes = iDev_ROW_PUSHOFS(pLU,aRluCommon->m_pDevSrcRow);
+//        *(++aiDstk) = iRes;
+        RASSERT(0);
         break;//+endCase
 
       case EO_ROW_SRC_SETBYOFS: ArgNil(); // set src row by using offset on stack
@@ -3096,6 +3097,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_DEVROW_PRINT: ArgNil(); // print row
         dLU0(EO_DEVROW_PRINT);
         vDev_ROW_PRINT(&aiDstk);
+        break;//+endCase
+
+      case EO_DEVROW_PUSHOFS: ArgNil(); // push offset of row
+        dLU0(EO_DEVROW_PUSHOFS);
+        vDev_ROW_PUSHOFS(&aiDstk);
+        *(++aiDstk) = iRes;
         break;//+endCase
 
       case EO_DEVROW_RESET: ArgNil(); // reset rowslab

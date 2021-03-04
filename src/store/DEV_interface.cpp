@@ -1351,17 +1351,18 @@ Stz* szDev_ROW_PUSHCOLS(void* aLU, void* aROWDEVICE, i8 iArg)
 /*----------------------------------------------------------------------------*/
 /* push offset of source row                                                  */
 /*----------------------------------------------------------------------------*/
-i8 iDev_ROW_PUSHOFS(void* aLU, void* aROWDEVICE)
+void vDev_ROW_PUSHOFS(i8** aaiDstk)
 {
   _static_
 
-  UNUSED(aLU);
-
-  DevROW* pDevRow = _pDevROW(aROWDEVICE);
+  i8 *aiDstk = *aaiDstk;
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
   
   i8 iRes = pDevRow->m_pRowBuffer->iOffsetInWsp(pDevRow->m_aRow);
 
-  return iRes;
+  I_PushInt(iRes);
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
