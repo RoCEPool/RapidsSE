@@ -498,12 +498,12 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* define infoset tables 2                                                    */
+/* define internal tables                                                     */
 /*----------------------------------------------------------------------------*/
 
-"  start::defineInfoSets2" .verbose
+"  start::defineInternalTables" .verbose
 
-: start::defineInfoSets2
+: start::defineInternalTables
 
   "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
 
@@ -514,7 +514,7 @@
   define table __events (
     eventEnum      INTEGER NOT NULL ,
     assocInfo      VARCHAR NOT NULL
-  ) < localTable > = 1 ;
+  ) < internal > = 1 ;
   "
   api::executeRequest
 ;

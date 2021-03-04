@@ -44,7 +44,7 @@
 
   // define the apriori infoset tables
   start::defineInfoSets
-  start::defineInfoSets2
+  start::defineInternalTables
 
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   //
