@@ -310,7 +310,7 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
           i8 iColumnNo = pInfoRow->iColVal_int(3);
           Stz *sErrorText = pInfoRow->szColVal_ofs(4);
 
-          vTrace("%s: Error : %s; Line: %lld; Column: %lld; %s; \n"_Stz,
+          vTrace("error: %s; %s; Line: %lld; Column: %lld; %s; \n"_Stz,
                  sNodeName, aEC2[eErrorCode], iLineNo, iColumnNo, sErrorText);
           m_bCmdErr = true;
         }

@@ -3066,6 +3066,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         aRluCommon->m_bPotCompleted = *(aiDstk--);
         break;//+endCase
 
+      case EO_DEVROW_SET: ArgNil(); // set dst row
+        dLU0(EO_ROW_DST_SET);
+        iTopA = *(aiDstk--);
+        vDev_ROW_SET(pLU,aRluCommon->m_pDevDstRow, iTopA);
+        break;//+endCase
+
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // row operators
       case EO_ROW_DST_POPCOLI: ArgGet(iArg); // pop and deposit top into dst column

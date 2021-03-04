@@ -15,8 +15,8 @@
 
   0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryNote
 
-  // new the pot[]
-  Pot[].new
+  // new the PotRlu[]
+  PotRlu[].new
 
   // init the logicUnit[]
   LogicUnit[].init
@@ -118,7 +118,7 @@
     true LogicUnit[].callAgain!
   then
 
-  Pot[].pipeoutAllCompletedPtns
+  PotRlu[].pipeoutCompletedPtns
 
   true
 ;
@@ -160,7 +160,7 @@
 
   then
 
-  Pot[].pipeoutAllCompletedPtns
+  PotRlu[].pipeoutCompletedPtns
 
   true
 ;
@@ -177,7 +177,7 @@
   Operand[].asSrcRowBuffer
   ZK_ROWBUFFER Counter0[] executeAsmArgs
   Operand[].delete
-  Pot[].pipeoutAllCompletedPtns
+  PotRlu[].pipeoutCompletedPtns
 
   true
 ;
@@ -189,9 +189,9 @@
 
   0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryNote
 
-  // pipe out all pot[]
-  Pot[].pipeoutAllDanglingPtns
-  Pot[].delete
+  // pipe out all PotRlu[]
+  PotRlu[].pipeoutDanglingPtns
+  PotRlu[].delete
 
   Pipein[].isNull if
     // create a new eos marker

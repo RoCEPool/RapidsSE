@@ -17,19 +17,19 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Pot(void)
 {
-  vAddStep("pot[].completed"_Stz,       &Step::vPotCompleted);
-  vAddStep("pot[].completedPtn"_Stz,    &Step::vPotCompletedPtn);
-  vAddStep("pot[].dangling"_Stz,        &Step::vPotDangling);
-  vAddStep("pot[].danglingPtn"_Stz,     &Step::vPotDanglingPtn);
-  vAddStep("pot[].delete"_Stz,          &Step::vPotDelete);
-  vAddStep("pot[].isNull"_Stz,          &Step::vPotIsNull);
-  vAddStep("pot[].new"_Stz,             &Step::vPotNew);
-  vAddStep("pot[].pushBuffer"_Stz,      &Step::vPotPushBuffer);
-  vAddStep("pot[].useStreamDefOut"_Stz, &Step::vPotUseStreamDefOut);
+  vAddStep("potRlu[].completed"_Stz,       &Step::vPotCompleted);
+  vAddStep("potRlu[].completedPtn"_Stz,    &Step::vPotCompletedPtn);
+  vAddStep("potRlu[].dangling"_Stz,        &Step::vPotDangling);
+  vAddStep("potRlu[].danglingPtn"_Stz,     &Step::vPotDanglingPtn);
+  vAddStep("potRlu[].delete"_Stz,          &Step::vPotDelete);
+  vAddStep("potRlu[].isNull"_Stz,          &Step::vPotIsNull);
+  vAddStep("potRlu[].new"_Stz,             &Step::vPotNew);
+  vAddStep("potRlu[].pushBuffer"_Stz,      &Step::vPotPushBuffer);
+  vAddStep("potRlu[].useStreamDefOut"_Stz, &Step::vPotUseStreamDefOut);
 }
 
 /*----------------------------------------------------------------------------*/
-/* pot[].completed -- get any completed/full buffer                           */
+/* potRlu[].completed -- get any completed/full buffer                           */
 /*----------------------------------------------------------------------------*/
 void Step::vPotCompleted(void)
 {
@@ -45,7 +45,7 @@ void Step::vPotCompleted(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pot[].completedPtn -- get any completed/full buffer for given ptn          */
+/* potRlu[].completedPtn -- get any completed/full buffer for given ptn          */
 /*----------------------------------------------------------------------------*/
 void Step::vPotCompletedPtn(void)
 {
@@ -63,7 +63,7 @@ void Step::vPotCompletedPtn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pot[].dangling -- get any dangling/last buffer                             */
+/* potRlu[].dangling -- get any dangling/last buffer                             */
 /*----------------------------------------------------------------------------*/
 void Step::vPotDangling(void)
 {
@@ -79,7 +79,7 @@ void Step::vPotDangling(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pot[].danglingPtn -- get any dangling/last buffer for given ptn            */
+/* potRlu[].danglingPtn -- get any dangling/last buffer for given ptn            */
 /*----------------------------------------------------------------------------*/
 void Step::vPotDanglingPtn(void)
 {
@@ -97,7 +97,7 @@ void Step::vPotDanglingPtn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pot[].delete -- delete pot                                                 */
+/* potRlu[].delete -- delete pot                                                 */
 /*----------------------------------------------------------------------------*/
 void Step::vPotDelete(void)
 {
@@ -112,7 +112,7 @@ void Step::vPotDelete(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pot[].isNull -- is pot null                                                */
+/* potRlu[].isNull -- is pot null                                                */
 /*----------------------------------------------------------------------------*/
 void Step::vPotIsNull(void)
 {
@@ -124,7 +124,7 @@ void Step::vPotIsNull(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pot[].new -- create new pot                                                */
+/* potRlu[].new -- create new pot                                                */
 /*----------------------------------------------------------------------------*/
 void Step::vPotNew(void)
 {
@@ -138,7 +138,7 @@ void Step::vPotNew(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pot[].pushBuffer -- push top buffer                                        */
+/* potRlu[].pushBuffer -- push top buffer                                        */
 /*----------------------------------------------------------------------------*/
 void Step::vPotPushBuffer(void)
 {
@@ -154,7 +154,7 @@ void Step::vPotPushBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pot[].useStreamDefOut -- use stream def out for this pot                   */
+/* potRlu[].useStreamDefOut -- use stream def out for this pot                   */
 /*----------------------------------------------------------------------------*/
 void Step::vPotUseStreamDefOut(void)
 {

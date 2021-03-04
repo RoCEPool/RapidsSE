@@ -7,10 +7,10 @@
 /*----------------------------------------------------------------------------*/
 /* pipe out all completed buffers in the pot                                  */
 /*----------------------------------------------------------------------------*/
-: Pot[].pipeoutAllCompleted
+: PotRlu[].pipeoutCompleted
 
   begin
-    Pot[].completed to OperandB[]
+    PotRlu[].completed to OperandB[]
     OperandB[].isNotNull
   while
     OperandB[].pipeOut
@@ -20,12 +20,12 @@
 /*----------------------------------------------------------------------------*/
 /* pipe out all completed buffers in the pot for all partitions               */
 /*----------------------------------------------------------------------------*/
-: Pot[].pipeoutAllCompletedPtns
+: PotRlu[].pipeoutCompletedPtns
 
   grid::partitions 0
   do
     begin
-      I Pot[].completedPtn to OperandB[]
+      I PotRlu[].completedPtn to OperandB[]
       OperandB[].isNotNull
     while
       OperandB[].pipeOut
@@ -36,10 +36,10 @@
 /*----------------------------------------------------------------------------*/
 /* pipe out all dangling buffers in the pot                                   */
 /*----------------------------------------------------------------------------*/
-: Pot[].pipeoutAllDangling
+: PotRlu[].pipeoutDangling
 
   begin
-    Pot[].dangling to OperandB[]
+    PotRlu[].dangling to OperandB[]
     OperandB[].isNotNull
   while
     OperandB[].pipeOut
@@ -49,12 +49,12 @@
 /*----------------------------------------------------------------------------*/
 /* pipe out all dangling buffers in the pot for all partitions                */
 /*----------------------------------------------------------------------------*/
-: Pot[].pipeoutAllDanglingPtns
+: PotRlu[].pipeoutDanglingPtns
 
   grid::partitions 0
   do
     begin
-      I Pot[].danglingPtn to OperandB[]
+      I PotRlu[].danglingPtn to OperandB[]
       OperandB[].isNotNull
     while
       OperandB[].pipeOut
