@@ -1400,6 +1400,20 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // pot
+      case EO_PUSH_POT: ArgNil(); // push pot
+        dLU0(EO_PUSH_POT);
+        P_PushPtr(aRluCommon->m_pPot);
+        break;//+endCase
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // partition
+      case EO_PUSH_PTN: ArgNil(); // push partition
+        dLU0(EO_PUSH_PTN);
+        P_PushPtr(aRluCommon->m_i_Ptn);
+        break;//+endCase
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // counter
       case EO_CTR_0_DEC: ArgNil(); // dec counter 0
         aRluCommon->m_iCtr0--;
@@ -3062,8 +3076,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_DEVROW_NEW: ArgNil(); // create new row
         dLU0(EO_DEVROW_NEW);
-        *(++aiDstk) = (i8)aRluCommon->m_pPot;
-        *(++aiDstk) = aRluCommon->m_i_Ptn;
         vDev_ROW_NEW(&aiDstk);  // need to push pot and ptn
         aRluCommon->m_bPotCompleted = *(aiDstk--);
         break;//+endCase

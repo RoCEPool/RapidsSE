@@ -336,6 +336,8 @@ Label QRY_102_DONE
   // new a dst rsb row
   //EO_ROW_DST_NEW
   EO_PUSH_DEVROW_DST
+  EO_PUSH_POT
+  EO_PUSH_PTN
   EO_DEVROW_NEW
 
   EO_PAY_ADDRESS
