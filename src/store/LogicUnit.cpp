@@ -3010,8 +3010,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
       case EO_ROW_DST_ZERO: ArgNil(); // zero destination row
-        dLU0(EO_ROW_DST_ZERO);
-        vDev_ROW_ZERO(pLU,aRluCommon->m_pDevDstRow);
+//        dLU0(EO_ROW_DST_ZERO);
+//        vDev_ROW_ZERO(pLU,aRluCommon->m_pDevDstRow);
+        RASSERT(0);
         break;//+endCase
         
       case EO_ROW_SRC_BEGIN: ArgNil(); // begin src row traverse
@@ -3090,6 +3091,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_DEVROW_TESTROW: ArgNil(); // test for crw
         dLU0(EO_DEVROW_TESTROW);
         vDev_ROW_TESTROW(&aiDstk);
+        break;//+endCase
+
+      case EO_DEVROW_ZERO: ArgNil(); // zero device row
+        dLU0(EO_DEVROW_ZERO);
+        vDev_ROW_ZERO(&aiDstk);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

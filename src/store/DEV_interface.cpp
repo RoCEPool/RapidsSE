@@ -1439,6 +1439,8 @@ void vDev_ROW_TABLENM_SET(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 void vDev_ROW_TESTROW(i8** aaiDstk)
 {
+  _static_
+
   i8 *aiDstk = *aaiDstk;
 
   // pop row device
@@ -1478,15 +1480,18 @@ i8 iDev_ROW_TEST(void* aLU, void* aROWDEVICE)
 /*----------------------------------------------------------------------------*/
 /* zero row                                                                   */
 /*----------------------------------------------------------------------------*/
-void vDev_ROW_ZERO(void* aLU, void* aROWDEVICE)
+void vDev_ROW_ZERO(i8** aaiDstk)
 {
   _static_
 
-  UNUSED(aLU);
+  i8 *aiDstk = *aaiDstk;
 
-  DevROW* pDevRow = _pDevROW(aROWDEVICE);
+  // pop row device
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
   
   pDevRow->m_pRowBuffer->vZeroRow(pDevRow->m_aRow);
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
