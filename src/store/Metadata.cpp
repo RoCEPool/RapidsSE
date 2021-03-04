@@ -360,6 +360,9 @@ void Metadata::vSearchColumns(InfoSet* pInfoSet,
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     Column* pColumn = pStreamDef->pGetColumn(i_Col);
     
+    if (szColumnName && ! pColumn->szColNm()->bSame(szColumnName))
+      continue;
+    
     pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
                                pCatalog->szDicNm(),
                                pSchema->szDicNm(),
