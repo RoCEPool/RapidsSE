@@ -347,9 +347,9 @@ void vTest6(void)
 
   SeApi* pSeApi = new SeApi;
 
-//  vTrace("\n\n"_Stz);
-//  pSeApi->vPrintMetadata();
-//  vTrace("\n\n"_Stz);
+  vTrace("\n\n"_Stz);
+  pSeApi->vPrintMetadata();
+  vTrace("\n\n"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

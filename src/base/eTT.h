@@ -6,13 +6,17 @@
 enum eTT // Table Type
 {
   /* 0 */ TT_NONE=0,
-  /* 1 */ TT_NORMAL
+  /* 1 */ TT_DEFINE,
+  /* 2 */ TT_INTERNAL,
+  /* 3 */ TT_NORMAL
 };
 
 static Stz* aTT[]
 {
   /* 0 */ "NONE"_Stz,
-  /* 1 */ "NORMAL"_Stz
+  /* 1 */ "TT_DEFINE"_Stz,
+  /* 1 */ "TT_INTERNAL"_Stz,
+  /* 1 */ "TT_NORMAL"_Stz
 };
 
 /*============================================================================*/

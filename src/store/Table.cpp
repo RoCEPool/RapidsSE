@@ -50,6 +50,7 @@ Table::Table(Stz* szTableNm)
 #endif
   
   m_sTableNm   = szTableNm;
+  m_eKind      = TT_NORMAL;
   m_pIdxVec    = new IdxVec;
   m_ixIndexNo.vCheckInit();
   m_pBucketMap = new BucketMap(AM::nPtnsInGrid());
@@ -510,6 +511,26 @@ bool Table::bIsLoading(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get table kind                                                             */
+/*----------------------------------------------------------------------------*/
+eTT Table::eKind(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  return m_eKind;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set table kind                                                             */
+/*----------------------------------------------------------------------------*/
+void Table::vKind(eTT eKind)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  m_eKind = eKind;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set table is loading                                                       */
 /*----------------------------------------------------------------------------*/
 void Table::vIsLoading(bool bIsLoading)
@@ -557,7 +578,9 @@ void Table::vListContents(i8 i_Depth)
   vTrace("%sTable %s %s\n"_Stz,
          Stz::szTab(i_Depth),
          m_sTableNm.szStz(),
-         m_bDefinitionOnly ? "(definition-only)"_Stz : ""_Stz);
+         //m_bDefinitionOnly ? "(definition-only)"_Stz : ""_Stz
+         aTT[m_eKind]
+         );
 
   m_pStreamDef->vListContents(i_Depth+1);
 }
