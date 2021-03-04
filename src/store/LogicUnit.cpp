@@ -3042,9 +3042,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       case EO_ROW_SRC_SETBYOFS: ArgNil(); // set src row by using offset on stack
-        dLU0(EO_ROW_SRC_SETBYOFS);
-        iTopA = *(aiDstk--);
-        vDev_ROW_SETBYOFS(pLU,aRluCommon->m_pDevSrcRow,iTopA);
+//        dLU0(EO_ROW_SRC_SETBYOFS);
+//        iTopA = *(aiDstk--);
+//        vDev_ROW_SETBYOFS(pLU,aRluCommon->m_pDevSrcRow,iTopA);
+        RASSERT(0);
         break;//+endCase
         
       case EO_ROW_SRC_TEST: ArgNil(); // test for src crw
@@ -3064,11 +3065,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       case EO_ROW_ALT_PUSHOFS: ArgNil(); // not yet implemented
-        NEVER_REACH;
+ //       NEVER_REACH;
+        RASSERT(0);
         break;//+endCase
 
       case EO_ROW_ALT_SETBYOFS: ArgNil(); // not yet implemented
-        NEVER_REACH;
+ //       NEVER_REACH;
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -3113,6 +3115,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_DEVROW_SET: ArgNil(); // set dst row
         dLU0(EO_ROW_DST_SET);
         vDev_ROW_SET(&aiDstk);
+        break;//+endCase
+
+      case EO_DEVROW_SETBYOFS: ArgNil(); // set row by using offset on stack
+        dLU0(EO_DEVROW_SETBYOFS);
+        vDev_ROW_SETBYOFS(&aiDstk);
         break;//+endCase
 
       case EO_DEVROW_TESTROW: ArgNil(); // test for crw

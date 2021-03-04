@@ -86,7 +86,7 @@ void vDev_ROW_SET(i8** aaiDstk);
 void vDev_ROW_TABLENM_SET(i8** aaiDstk);
 i8   iDev_ROW_TEST(void* aLU, void* aROWDEVICE);
 void vDev_ROW_TESTROW(i8** aaiDstk);
-void vDev_ROW_SETBYOFS(void* aLU, void* aROWDEVICE, i8 iTop);
+void vDev_ROW_SETBYOFS(i8** aaiDstk);
 void vDev_ROW_ZERO(i8** aaiDstk);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

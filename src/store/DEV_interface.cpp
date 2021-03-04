@@ -1402,15 +1402,19 @@ void vDev_ROW_SET(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* set src row by using offset on stack                                       */
 /*----------------------------------------------------------------------------*/
-void vDev_ROW_SETBYOFS(void* aLU, void* aROWDEVICE, i8 iTop)
+void vDev_ROW_SETBYOFS(i8** aaiDstk)
 {
   _static_
 
-  UNUSED(aLU);
+  i8 *aiDstk = *aaiDstk;
 
-  DevROW* pDevRow = _pDevROW(aROWDEVICE);
+  // pop the offset
+  i8 iOffset = *(aiDstk--);
+
+  // pop the device
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
   
-  pDevRow->m_aRow = pDevRow->m_pRowBuffer->aRowByOfs(iTop);
+  pDevRow->m_aRow = pDevRow->m_pRowBuffer->aRowByOfs(iOffset);
 }
 
 /*----------------------------------------------------------------------------*/
