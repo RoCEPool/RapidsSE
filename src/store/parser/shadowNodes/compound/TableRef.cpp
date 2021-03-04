@@ -28,21 +28,6 @@ static Stz* C_TABLE_PROP    = "tableName"_Stz;
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get catalog name from tableRef                                             */
-/*----------------------------------------------------------------------------*/
-Stz* TableRef::szCatalog(QueryNode* pTableRef)
-{
-  ASSERT(bIsOfType(pTableRef));
-
-  QueryNode* pCatalogNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_CATALOG_PROP, pTableRef));
-  ASSERT(pCatalogNode);
-
-  Stz* szCatalogName = pCatalogNode->szValue();
-
-  return szCatalogName;
-}
-
-/*----------------------------------------------------------------------------*/
 /* Helper function to create tableRef nodes.                                  */
 /*----------------------------------------------------------------------------*/
 QueryNode* TableRef::pCreate(Text* pCatalogName, Text* pSchemaName, Text* pTableName)
@@ -120,25 +105,18 @@ b1 TableRef::bIsOfType(PlanNode *pNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* A tableRef is resolved iff it has a catalog, schema and tablename          */
+/* get catalog name from tableRef                                             */
 /*----------------------------------------------------------------------------*/
-b1 TableRef::bIsResolved(QueryNode* pTableRef)
+Stz* TableRef::szCatalog(QueryNode* pTableRef)
 {
   ASSERT(bIsOfType(pTableRef));
 
   QueryNode* pCatalogNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_CATALOG_PROP, pTableRef));
-  QueryNode* pSchemaNode  = static_cast<QueryNode*>(GraphNav::pFindProperty(C_SCHEMA_PROP, pTableRef));
-  QueryNode* pTableNode   = static_cast<QueryNode*>(GraphNav::pFindProperty(C_TABLE_PROP, pTableRef));
-
   ASSERT(pCatalogNode);
-  ASSERT(pSchemaNode);
-  ASSERT(pTableNode);
 
   Stz* szCatalogName = pCatalogNode->szValue();
-  Stz* szSchemaName  = pSchemaNode->szValue();
-  Stz* szTableName   = pTableNode->szValue();
 
-  return (szCatalogName && szSchemaName && szTableName);
+  return szCatalogName;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -169,6 +147,61 @@ Stz* TableRef::szTable(QueryNode* pTableRef)
   Stz* szTableName = pTableNode->szValue();
 
   return szTableName;
+}
+
+/*----------------------------------------------------------------------------*/
+/* A tableRef is fully qualified iff it has a catalog, schema and tablename   */
+/*----------------------------------------------------------------------------*/
+b1 TableRef::bIsFullyQualified(QueryNode* pTableRef)
+{
+  ASSERT(bIsOfType(pTableRef));
+
+  QueryNode* pCatalogNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_CATALOG_PROP, pTableRef));
+  QueryNode* pSchemaNode  = static_cast<QueryNode*>(GraphNav::pFindProperty(C_SCHEMA_PROP, pTableRef));
+  QueryNode* pTableNode   = static_cast<QueryNode*>(GraphNav::pFindProperty(C_TABLE_PROP, pTableRef));
+
+  ASSERT(pCatalogNode);
+  ASSERT(pSchemaNode);
+  ASSERT(pTableNode);
+
+  Stz* szCatalogName = pCatalogNode->szValue();
+  Stz* szSchemaName  = pSchemaNode->szValue();
+  Stz* szTableName   = pTableNode->szValue();
+
+  return (szCatalogName && szSchemaName && szTableName);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Update the TableRef so that it is fully qualified                          */
+/*----------------------------------------------------------------------------*/
+void TableRef::vQualify(QueryNode* pTableRef, Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName)
+{
+  ASSERT(bIsOfType(pTableRef));
+  ASSERT(szCatalogName);
+  ASSERT(szSchemaName);
+  ASSERT(szTableName);
+
+  QueryNode* pCatalogNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_CATALOG_PROP, pTableRef));
+  QueryNode* pSchemaNode  = static_cast<QueryNode*>(GraphNav::pFindProperty(C_SCHEMA_PROP, pTableRef));
+  QueryNode* pTableNode   = static_cast<QueryNode*>(GraphNav::pFindProperty(C_TABLE_PROP, pTableRef));
+
+  ASSERT(pCatalogNode);
+  ASSERT(pSchemaNode);
+  ASSERT(pTableNode);
+
+  Value xCatValue;
+  xCatValue.vSet(szCatalogName);
+  pCatalogNode->vSetValue(static_cast<Value&&>(xCatValue));
+
+  Value xSchValue;
+  xSchValue.vSet(szSchemaName);
+  pSchemaNode->vSetValue(static_cast<Value&&>(xSchValue));
+
+  Value xTblValue;
+  xTblValue.vSet(szTableName);
+  pTableNode->vSetValue(static_cast<Value&&>(xTblValue));
+
+  ASSERT(bIsFullyQualified(pTableRef));
 }
 
 /*============================================================================*/

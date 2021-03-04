@@ -12,8 +12,8 @@
 #include "GraphNav.hpp"
 
 #include "ShadowPlan.hpp"
-#include "ShadowMetadata.hpp"
-#include "ShadowStatistics.hpp"
+#include "MetadataNode.hpp"
+#include "StatisticsNode.hpp"
 
 using namespace Parser;
 
@@ -49,8 +49,8 @@ PlanNode* GraphEditor::pNewFromTemplate(const PlanNode* pTemplateRoot)
 
   // Create new nodes for plan, metadata and statistics
   QueryNode*      pPlanNode = ShadowPlan::pCreate();
-  QueryNode*      pMetadata = ShadowMetadata::pCreate();
-  QueryNode*      pStatistics = ShadowStatistics::pCreate();
+  QueryNode*      pMetadata = MetadataNode::pCreate();
+  QueryNode*      pStatistics = StatisticsNode::pCreate();
   ASSERT(pPlanNode);
   ASSERT(pMetadata);
   ASSERT(pStatistics);

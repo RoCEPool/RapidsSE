@@ -276,42 +276,54 @@ b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
   if (eCtrl != WALK_SKIP_PROPERTIES && bWalkProperties && pNode->bHasProperties()) {
 
     PlanNodeIter* pIter = pNode->pNewPropertyIter();
-    while (pIter->bHasNext()) {
-      PlanNode* pProp = pIter->pNext();
+    try {
+      while (pIter->bHasNext()) {
+        PlanNode *pProp = pIter->pNext();
 
-      // Don't forget to clip the path and add the appropriate separator before each node
-      sPath.vClip(nLen);
-      sPath.vConcat(StrLib::szCharToStr(C_PROPERTY_SEPARATOR));
+        // Don't forget to clip the path and add the appropriate separator before each node
+        sPath.vClip(nLen);
+        sPath.vConcat(StrLib::szCharToStr(C_PROPERTY_SEPARATOR));
 
-      bRetVal = bWalk(pProp, bWalkProperties, bWalkChildren, fVisitor, pvArg, sPath, iDepth + 1);
+        bRetVal = bWalk(pProp, bWalkProperties, bWalkChildren, fVisitor, pvArg, sPath, iDepth + 1);
 
-      if (!bRetVal) {
-        delete pIter;
-        return false;
+        if (!bRetVal) {
+          delete pIter;
+          return false;
+        }
       }
+      delete pIter;
+
+    } catch (std::runtime_error& e) {
+      delete pIter;
+      throw;
     }
-    delete pIter;
   }
 
   // Any children to walk down?
   if (eCtrl != WALK_SKIP_CHILDREN && bWalkChildren && pNode->bHasChildren()) {
 
     PlanNodeIter* pIter = pNode->pNewChildrenIter();
-    while (pIter->bHasNext()) {
-      PlanNode* pChild = pIter->pNext();
+    try {
+      while (pIter->bHasNext()) {
+        PlanNode *pChild = pIter->pNext();
 
-      // Don't forget to clip the path and add the appropriate separator before each node
-      sPath.vClip(nLen);
-      sPath.vConcat(StrLib::szCharToStr(C_CHILD_SEPARATOR));
+        // Don't forget to clip the path and add the appropriate separator before each node
+        sPath.vClip(nLen);
+        sPath.vConcat(StrLib::szCharToStr(C_CHILD_SEPARATOR));
 
-      bRetVal = bWalk(pChild, bWalkProperties, bWalkChildren, fVisitor, pvArg, sPath, iDepth + 1);
+        bRetVal = bWalk(pChild, bWalkProperties, bWalkChildren, fVisitor, pvArg, sPath, iDepth + 1);
 
-      if (!bRetVal) {
-        delete pIter;
-        return false;
+        if (!bRetVal) {
+          delete pIter;
+          return false;
+        }
       }
+      delete pIter;
+
+    } catch (std::runtime_error& e) {
+      delete pIter;
+      throw;
     }
-    delete pIter;
   }
 
   return true;
@@ -365,42 +377,54 @@ b1 GraphNav::bWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren
   if (bWalkProperties && pNode->bHasProperties()) {
 
     PlanNodeIter* pIter = pNode->pNewPropertyIter();
-    while (pIter->bHasNext()) {
-      PlanNode *pProp = pIter->pNext();
+    try {
+      while (pIter->bHasNext()) {
+        PlanNode *pProp = pIter->pNext();
 
-      // Don't forget to clip the path and add the appropriate separator before each node
-      sPath.vClip(nLen);
-      sPath.vConcat(StrLib::szCharToStr(C_PROPERTY_SEPARATOR));
+        // Don't forget to clip the path and add the appropriate separator before each node
+        sPath.vClip(nLen);
+        sPath.vConcat(StrLib::szCharToStr(C_PROPERTY_SEPARATOR));
 
-      bRetVal = bWalkBottomUp(pProp, bWalkProperties, bWalkChildren, fVisitor, pvArg, sPath, iDepth + 1);
+        bRetVal = bWalkBottomUp(pProp, bWalkProperties, bWalkChildren, fVisitor, pvArg, sPath, iDepth + 1);
 
-      if (!bRetVal) {
-        delete pIter;
-        return false;
+        if (!bRetVal) {
+          delete pIter;
+          return false;
+        }
       }
+      delete pIter;
+
+    } catch (std::runtime_error& e) {
+      delete pIter;
+      throw;
     }
-    delete pIter;
   }
 
   // Any children to walk down?
   if (bWalkChildren && pNode->bHasChildren()) {
 
     PlanNodeIter* pIter = pNode->pNewChildrenIter();
-    while (pIter->bHasNext()) {
-      PlanNode *pChild = pIter->pNext();
+    try {
+      while (pIter->bHasNext()) {
+        PlanNode *pChild = pIter->pNext();
 
-      // Don't forget to clip the path and add the appropriate separator before each node
-      sPath.vClip(nLen);
-      sPath.vConcat(StrLib::szCharToStr(C_CHILD_SEPARATOR));
+        // Don't forget to clip the path and add the appropriate separator before each node
+        sPath.vClip(nLen);
+        sPath.vConcat(StrLib::szCharToStr(C_CHILD_SEPARATOR));
 
-      bRetVal = bWalkBottomUp(pChild, bWalkProperties, bWalkChildren, fVisitor, pvArg, sPath, iDepth + 1);
+        bRetVal = bWalkBottomUp(pChild, bWalkProperties, bWalkChildren, fVisitor, pvArg, sPath, iDepth + 1);
 
-      if (!bRetVal) {
-        delete pIter;
-        return false;
+        if (!bRetVal) {
+          delete pIter;
+          return false;
+        }
       }
+      delete pIter;
+
+    } catch (std::runtime_error& e) {
+      delete pIter;
+      throw;
     }
-    delete pIter;
   }
 
   // Now visit the current node
