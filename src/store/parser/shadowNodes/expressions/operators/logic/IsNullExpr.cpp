@@ -16,6 +16,20 @@ using namespace Parser;
 static Stz* C_ISNULL_NAME_PREFIX = "IsNullExpr"_Stz;
 static Stz* C_ISNULL_DEFN = "/__root__/definitions/object/expr/operator/logic/isnull"_Stz;
 
+// What is the resulting type when we combine these inputs?
+// * The top header row represents the type of the first operand.
+// * The corresponding cell in the matrix represents the type of the resultant from this operation.
+// * Invalid/unsupported combinations are represented with CT_NONE.
+// * Fields marked with /*?*/ are not currently supported but could be.  Refer to
+//   the documentation below marked with this symbol for more information.
+// * Fields marked with /*X*/ are not currently supported but should be.
+static eCT aeTypeCalculus[CT_ENUMS] =
+
+//    NONE     BOOLEAN     CHAR        DATE        DECIMAL     FLOAT       INTEGER     /*IVL_YM      IVL_DT     */ INTERVAL    TIME        TIMESTP     VARCHAR     /*UNKNOWN*/
+    { CT_NONE, CT_BOOLEAN, CT_BOOLEAN, CT_BOOLEAN, CT_BOOLEAN, CT_BOOLEAN, CT_BOOLEAN, /*CT_BOOLEAN, CT_BOOLEAN,*/ CT_BOOLEAN, CT_BOOLEAN, CT_BOOLEAN, CT_BOOLEAN, /*CT_BOOLEAN*/ };
+
+// References:
+
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -77,6 +91,26 @@ QueryNode* IsNullExpr::pChild1(QueryNode *pNode)
 b1 IsNullExpr::bIsOfType(PlanNode *pNode)
 {
   return ShadowNode::bIsOfType(pNode, C_ISNULL_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the resulting type of the expression operation.                    */
+/* A returned value of CT_NONE means that it is not supported or invalid.     */
+/*----------------------------------------------------------------------------*/
+eCT IsNullExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+
+  // Get the types of the two operands
+  QueryNode* pChild1 = IsNullExpr::pChild1(pExprNode);
+
+  eCT eOperand1 = Expr::eType(pChild1, pRootNode);
+
+  // Lookup the type of the result
+  eCT eResult = aeTypeCalculus[eOperand1];
+
+  return eResult;
 }
 
 /*============================================================================*/

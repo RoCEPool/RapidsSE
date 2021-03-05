@@ -78,6 +78,17 @@ b1 FloatLiteral::bIsOfType(PlanNode *pNode)
   return ShadowNode::bIsOfType(pNode, C_FLOAT_LITERAL_DEFN);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns the resulting type of the expression operation                     */
+/*----------------------------------------------------------------------------*/
+eCT FloatLiteral::eType(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+
+  return CT_FLOAT;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

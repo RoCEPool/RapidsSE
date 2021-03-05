@@ -41,17 +41,17 @@ void ComparisonExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
   _static_
   ASSERT(bIsOfType(pNode));
 
-  if      (EqExpr::bIsOfType(pNode))        { EqExpr::vDescribe(pNode, sBuf);       }
-  else if (NeExpr::bIsOfType(pNode))        { NeExpr::vDescribe(pNode, sBuf);       }
-  else if (GtExpr::bIsOfType(pNode))        { GtExpr::vDescribe(pNode, sBuf);       }
-  else if (GeExpr::bIsOfType(pNode))        { GeExpr::vDescribe(pNode, sBuf);       }
-  else if (LtExpr::bIsOfType(pNode))        { LtExpr::vDescribe(pNode, sBuf);       }
-  else if (LeExpr::bIsOfType(pNode))        { LeExpr::vDescribe(pNode, sBuf);       }
-//  else if (BetweenExpr::bIsOfType(pNode))   { BetweenExpr::vDescribe(pNode, sBuf);  }
-//  else if (InExpr::bIsOfType(pNode))        { InExpr::vDescribe(pNode, sBuf);       }
-//  else if (AnyExpr::bIsOfType(pNode))       { AnyExpr::vDescribe(pNode, sBuf);      }
-//  else if (ExistsExpr::bIsOfType(pNode))    { ExistsExpr::vDescribe(pNode, sBuf);   }
-//  else if (LikeExpr::bIsOfType(pNode))      { LikeExpr::vDescribe(pNode, sBuf);     }
+  if      (       EqExpr::bIsOfType(pNode))   {      EqExpr::vDescribe(pNode, sBuf); }
+  else if (       NeExpr::bIsOfType(pNode))   {      NeExpr::vDescribe(pNode, sBuf); }
+  else if (       GtExpr::bIsOfType(pNode))   {      GtExpr::vDescribe(pNode, sBuf); }
+  else if (       GeExpr::bIsOfType(pNode))   {      GeExpr::vDescribe(pNode, sBuf); }
+  else if (       LtExpr::bIsOfType(pNode))   {      LtExpr::vDescribe(pNode, sBuf); }
+  else if (       LeExpr::bIsOfType(pNode))   {      LeExpr::vDescribe(pNode, sBuf); }
+//  else if (BetweenExpr::bIsOfType(pNode))   { BetweenExpr::vDescribe(pNode, sBuf);    }
+//  else if (     InExpr::bIsOfType(pNode))   {      InExpr::vDescribe(pNode, sBuf);    }
+//  else if (    AnyExpr::bIsOfType(pNode))   {     AnyExpr::vDescribe(pNode, sBuf);    }
+//  else if ( ExistsExpr::bIsOfType(pNode))   {  ExistsExpr::vDescribe(pNode, sBuf);    }
+//  else if (   LikeExpr::bIsOfType(pNode))   {    LikeExpr::vDescribe(pNode, sBuf);    }
   else NEVER_REACH
 }
 
@@ -62,6 +62,30 @@ void ComparisonExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
 b1 ComparisonExpr::bIsOfType(PlanNode *pNode)
 {
   return ShadowNode::bIsOfType(pNode, C_COMPARISON_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the resulting type of the expression operation                     */
+/*----------------------------------------------------------------------------*/
+eCT ComparisonExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+
+  // TODO: manual expression polymorphism here
+
+  if      (       EqExpr::bIsOfType(pExprNode))   { return      EqExpr::eType(pExprNode, pRootNode); }
+  else if (       NeExpr::bIsOfType(pExprNode))   { return      NeExpr::eType(pExprNode, pRootNode); }
+  else if (       GtExpr::bIsOfType(pExprNode))   { return      GtExpr::eType(pExprNode, pRootNode); }
+  else if (       GeExpr::bIsOfType(pExprNode))   { return      GeExpr::eType(pExprNode, pRootNode); }
+  else if (       LtExpr::bIsOfType(pExprNode))   { return      LtExpr::eType(pExprNode, pRootNode); }
+  else if (       LeExpr::bIsOfType(pExprNode))   { return      LeExpr::eType(pExprNode, pRootNode); }
+//  else if (BetweenExpr::bIsOfType(pExprNode))   { return BetweenExpr::eType(pExprNode, pRootNode); }
+//  else if (     InExpr::bIsOfType(pExprNode))   { return      InExpr::eType(pExprNode, pRootNode); }
+//  else if (    AnyExpr::bIsOfType(pExprNode))   { return     AnyExpr::eType(pExprNode, pRootNode); }
+//  else if ( ExistsExpr::bIsOfType(pExprNode))   { return  ExistsExpr::eType(pExprNode, pRootNode); }
+//  else if (   LikeExpr::bIsOfType(pExprNode))   { return    LikeExpr::eType(pExprNode, pRootNode); }
+  else NEVER_REACH 
 }
 
 /*============================================================================*/

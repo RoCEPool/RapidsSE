@@ -36,14 +36,14 @@ void MathematicalExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
   _static_
   ASSERT(bIsOfType(pNode));
 
-  if      (AdditionExpr::bIsOfType(pNode))        { AdditionExpr::vDescribe(pNode, sBuf);       }
-  else if (SubtractionExpr::bIsOfType(pNode))     { SubtractionExpr::vDescribe(pNode, sBuf);    }
+  if      (      AdditionExpr::bIsOfType(pNode))  {       AdditionExpr::vDescribe(pNode, sBuf); }
+  else if (   SubtractionExpr::bIsOfType(pNode))  {    SubtractionExpr::vDescribe(pNode, sBuf); }
   else if (MultiplicationExpr::bIsOfType(pNode))  { MultiplicationExpr::vDescribe(pNode, sBuf); }
-  else if (DivisionExpr::bIsOfType(pNode))        { DivisionExpr::vDescribe(pNode, sBuf);       }
-  else if (ModulusExpr::bIsOfType(pNode))         { ModulusExpr::vDescribe(pNode, sBuf);        }
-  else if (NegationExpr::bIsOfType(pNode))        { NegationExpr::vDescribe(pNode, sBuf);       }
-//  else if (PowerExpr::bIsOfType(pNode))           { PowerExpr::vDescribe(pNode, sBuf);          }
-//  else if (LogExpr::bIsOfType(pNode))             { LogExpr::vDescribe(pNode, sBuf);            }
+  else if (      DivisionExpr::bIsOfType(pNode))  {       DivisionExpr::vDescribe(pNode, sBuf); }
+  else if (       ModulusExpr::bIsOfType(pNode))  {        ModulusExpr::vDescribe(pNode, sBuf); }
+  else if (      NegationExpr::bIsOfType(pNode))  {       NegationExpr::vDescribe(pNode, sBuf); }
+//  else if (       PowerExpr::bIsOfType(pNode))  {          PowerExpr::vDescribe(pNode, sBuf);    }
+//  else if (         LogExpr::bIsOfType(pNode))  {            LogExpr::vDescribe(pNode, sBuf);    }
   else NEVER_REACH
 }
 
@@ -54,6 +54,27 @@ void MathematicalExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
 b1 MathematicalExpr::bIsOfType(PlanNode *pNode)
 {
   return ShadowNode::bIsOfType(pNode, C_MATHEMATICAL_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the resulting type of the expression operation                     */
+/*----------------------------------------------------------------------------*/
+eCT MathematicalExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+
+  // TODO: manual expression polymorphism here
+
+  if      (      AdditionExpr::bIsOfType(pExprNode))  { return       AdditionExpr::eType(pExprNode, pRootNode); }
+  else if (   SubtractionExpr::bIsOfType(pExprNode))  { return    SubtractionExpr::eType(pExprNode, pRootNode); }
+  else if (MultiplicationExpr::bIsOfType(pExprNode))  { return MultiplicationExpr::eType(pExprNode, pRootNode); }
+  else if (      DivisionExpr::bIsOfType(pExprNode))  { return       DivisionExpr::eType(pExprNode, pRootNode); }
+  else if (       ModulusExpr::bIsOfType(pExprNode))  { return        ModulusExpr::eType(pExprNode, pRootNode); }
+  else if (      NegationExpr::bIsOfType(pExprNode))  { return       NegationExpr::eType(pExprNode, pRootNode); }
+//  else if (       PowerExpr::bIsOfType(pExprNode))  { return          PowerExpr::eType(pExprNode, pRootNode); }
+//  else if (         LogExpr::bIsOfType(pExprNode))  { return            LogExpr::eType(pExprNode, pRootNode); }
+  else NEVER_REACH
 }
 
 /*============================================================================*/
