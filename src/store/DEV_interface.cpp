@@ -1186,23 +1186,26 @@ void vDev_ENTWRK_SETINTELM(void* aLU, void* aROWDEVICE, i8 iTop)
 /*----------------------------------------------------------------------------*/
 /* begin src row traverse                                                     */
 /*----------------------------------------------------------------------------*/
-void vDev_ROW_BEGIN(void* aLU, void* aROWDEVICE)
+void vDev_ROW_BEGIN(i8** aaiDstk)
 {
   _static_
 
-  UNUSED(aLU);
+  i8 *aiDstk = *aaiDstk;
 
-  DevROW* pDevRow = _pDevROW(aROWDEVICE);
+  // pop the row dev
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
   
   pDevRow->m_i_Row = -1;
   pDevRow->m_aRow  = nullptr;
   pDevRow->m_nRows = pDevRow->m_pRowBuffer ? pDevRow->m_pRowBuffer->nRows() : 0;
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
 /* create new row                                                             */
 /*----------------------------------------------------------------------------*/
-void vDev_ROW_NEW(void* aLU, i8** aaiDstk)
+void vDev_ROW_NEW(i8** aaiDstk)
 {
   _static_
 
@@ -1210,19 +1213,15 @@ void vDev_ROW_NEW(void* aLU, i8** aaiDstk)
   i8 *aiDstk = *aaiDstk;
 
   // pop the partition no
-  //i8 i_Ptn = I_PopInt();
+  i8 i_Ptn = I_PopInt();
 
   // pop the pot
-  //Pot* pPot = _pPot(P_PopPtr());
+  Pot* pPot = _pPot(P_PopPtr());
 
   // pop the row dev
   DevROW* pDevRow = _pDevROW(P_PopPtr());
 
-  LogicUnit *pLogicUnit = _pLogicUnit(aLU);
-
-  pDevRow->m_aRow =
-      pLogicUnit->m_xpPot->aNewDstRow(pLogicUnit->m_xRluCommon.m_i_Ptn,
-                                      &pDevRow->m_pRowBuffer, &bNewBuffer);
+  pDevRow->m_aRow =pPot->aNewDstRow(i_Ptn, &pDevRow->m_pRowBuffer, &bNewBuffer);
 
   I_PushInt(bNewBuffer);
 
@@ -1232,74 +1231,98 @@ void vDev_ROW_NEW(void* aLU, i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* move to next src row                                                       */
 /*----------------------------------------------------------------------------*/
-i8 iDev_ROW_NEXT(void* aLU, void* aROWDEVICE)
+void vDev_ROW_NEXT(i8** aaiDstk)
 {
   _static_
 
-  UNUSED(aLU);
+  i8 *aiDstk = *aaiDstk;
 
-  DevROW* pDevRow = _pDevROW(aROWDEVICE);
-  
-  i8 iRes;
+  // pop the row dev
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
   
   if (++pDevRow->m_i_Row  < pDevRow->m_nRows) {
     pDevRow->m_aRow = pDevRow->m_pRowBuffer->pRowAddress(pDevRow->m_i_Row );
-    iRes = 1;
+    I_PushInt(1);
   }
   else {
-    iRes = 0;
+    I_PushInt(0);
   }
 
-  return iRes;
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
-/*  set row to null                                                           */
+/*  set buffer to null                                                        */
 /*----------------------------------------------------------------------------*/
-void vDev_ROW_NULL(void* aLU, void* aROWDEVICE)
+void vDev_ROW_NULL(i8** aaiDstk)
 {
   _static_
 
-  UNUSED(aLU);
+  i8 *aiDstk = *aaiDstk;
 
-  DevROW* pDevRow = _pDevROW(aROWDEVICE);
+  // pop the row dev
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
   pDevRow->m_pRowBuffer = nullptr;
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
 /* pop and deposit top into dst column                                        */
 /*----------------------------------------------------------------------------*/
-void vDev_ROW_POPCOLI(void* aLU, void* aROWDEVICE, i8 iArg, i8 iTop)
+void vDev_ROW_POPCOLI(i8** aaiDstk)
 {
   _static_
 
-  UNUSED(aLU);
+  i8 *aiDstk = *aaiDstk;
 
-  DevROW* pDevRow = _pDevROW(aROWDEVICE);
-  
-  pDevRow->m_pRowBuffer->vPositionOnCell(iArg);
-  pDevRow->m_pRowBuffer->vDepositColVal(iTop);
+  // pop the column
+  i8 iColumn = *(aiDstk--);
+
+  // pop the row dev
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
+
+  // pop the value
+  i8 iValue = *(aiDstk--);
+
+  // position on cell
+  pDevRow->m_pRowBuffer->vPositionOnCell(iColumn);
+
+  // deposit the value in the cell
+  pDevRow->m_pRowBuffer->vDepositColVal(iValue);
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
 /* pop and deposit top into dst column                                        */
 /*----------------------------------------------------------------------------*/
-void vDev_ROW_POPCOLS(void* aLU, void* aROWDEVICE, i8 iArg, Stz* szTop)
+void vDev_ROW_POPCOLS(i8** aaiDstk)
 {
   _static_
 
-  UNUSED(aLU);
+  i8 *aiDstk = *aaiDstk;
 
-  DevROW* pDevRow = _pDevROW(aROWDEVICE);
-  
-  pDevRow->m_pRowBuffer->vPositionOnCell(iArg);
+  // pop the column
+  i8 iColumn = *(aiDstk--);
+
+  // pop the row dev
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
+
+  // get the str address
+  Stz* szStr = (Stz*)S_StrAdr();
+
+  pDevRow->m_pRowBuffer->vPositionOnCell(iColumn);
   
   char* azDst = pDevRow->m_pRowBuffer->azDepositString_begin();
   
-  StrLib::vCopy(azDst,(char*)szTop);
+  StrLib::vCopy(azDst,(char*)szStr);
   i8 nSize = StrLib::nSize(azDst);
 
   pDevRow->m_pRowBuffer->vDepositString_end(nSize);
+  S_StrDrp();
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1320,17 +1343,23 @@ void vDev_ROW_PRINT(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* push src column                                                            */
 /*----------------------------------------------------------------------------*/
-i8 iDev_ROW_PUSHCOLI(void* aLU, void* aROWDEVICE, i8 iArg)
+void vDev_ROW_PUSHCOLI(i8** aaiDstk)
 {
   _static_
 
-  UNUSED(aLU);
+  i8 *aiDstk = *aaiDstk;
 
-  DevROW* pDevRow = _pDevROW(aROWDEVICE);
+  // pop the column
+  i8 iColumn = *(aiDstk--);
+
+  // pop the device
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
     
-  i8 iRes = pDevRow->m_aRow->iColVal_int(iArg);
+  i8 iRes = pDevRow->m_aRow->iColVal_int(iColumn);
 
-  return iRes;
+  I_PushInt(iRes);
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1350,19 +1379,45 @@ Stz* szDev_ROW_PUSHCOLS(void* aLU, void* aROWDEVICE, i8 iArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push offset of source row                                                  */
+/* push src column                                                            */
 /*----------------------------------------------------------------------------*/
-i8 iDev_ROW_PUSHOFS(void* aLU, void* aROWDEVICE)
+void vDev_ROW_PUSHCOLS(i8** aaiDstk)
 {
   _static_
 
-  UNUSED(aLU);
+  i8 nSize;
+  char* azDst;
 
-  DevROW* pDevRow = _pDevROW(aROWDEVICE);
+  i8 *aiDstk = *aaiDstk;
+
+  // pop the column
+  i8 iColumn = *(aiDstk--);
+
+  // pop the device
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
+
+  Stz* szSrc = pDevRow->m_aRow->szColVal_ofs(iColumn);
+
+  S_PushStr(szSrc);
+
+  *aaiDstk = aiDstk;
+}
+
+/*----------------------------------------------------------------------------*/
+/* push offset of source row                                                  */
+/*----------------------------------------------------------------------------*/
+void vDev_ROW_PUSHOFS(i8** aaiDstk)
+{
+  _static_
+
+  i8 *aiDstk = *aaiDstk;
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
   
   i8 iRes = pDevRow->m_pRowBuffer->iOffsetInWsp(pDevRow->m_aRow);
 
-  return iRes;
+  I_PushInt(iRes);
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1383,29 +1438,38 @@ void vDev_ROW_RESET(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* set row row                                                                 */
 /*----------------------------------------------------------------------------*/
-void vDev_ROW_SET(void* aLU, void* aROWDEVICE, i8 iRow)
+void vDev_ROW_SET(i8** aaiDstk)
 {
   _static_
-  
-  UNUSED(aLU);
-  
-  DevROW* pDevRow = _pDevROW(aROWDEVICE);
+
+  i8 *aiDstk = *aaiDstk;
+
+  // pop the device
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
+
+  // pop the row no
+  i8 iRow = I_PopInt();
 
   pDevRow->m_aRow = pDevRow->m_pRowBuffer->aSetCurRow(iRow);
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set src row by using offset on stack                                       */
 /*----------------------------------------------------------------------------*/
-void vDev_ROW_SETBYOFS(void* aLU, void* aROWDEVICE, i8 iTop)
+void vDev_ROW_SETBYOFS(i8** aaiDstk)
 {
   _static_
 
-  UNUSED(aLU);
+  i8 *aiDstk = *aaiDstk;
 
-  DevROW* pDevRow = _pDevROW(aROWDEVICE);
+  // pop the offset
+  i8 iOffset = *(aiDstk--);
+
+  // pop the device
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
   
-  pDevRow->m_aRow = pDevRow->m_pRowBuffer->aRowByOfs(iTop);
+  pDevRow->m_aRow = pDevRow->m_pRowBuffer->aRowByOfs(iOffset);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1434,59 +1498,62 @@ void vDev_ROW_TABLENM_SET(i8** aaiDstk)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push offset of source row                                                  */
+/* test for row                                                               */
 /*----------------------------------------------------------------------------*/
-i8 iDev_ROW_TESTROW(void* aLU, void* aROWDEVICE)
+void vDev_ROW_TESTROW(i8** aaiDstk)
 {
   _static_
 
-  UNUSED(aLU);
+  i8 *aiDstk = *aaiDstk;
 
-  DevROW* pDevRow = _pDevROW(aROWDEVICE);
+  // pop row device
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
 
   i8 iRes;
 
   if (pDevRow->m_aRow)
-    iRes = 1;
+    I_PushInt(1)
   else
-    iRes = 0;
+    I_PushInt(0)
 
-  return iRes;
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
-/* push offset of source row                                                  */
+/* test for buffer                                                            */
 /*----------------------------------------------------------------------------*/
-i8 iDev_ROW_TEST(void* aLU, void* aROWDEVICE)
+void vDev_ROW_TESTBUFFER(i8** aaiDstk)
 {
   _static_
 
-  UNUSED(aLU);
+  i8 *aiDstk = *aaiDstk;
 
-  DevROW* pDevRow = _pDevROW(aROWDEVICE);
-  
-  i8 iRes;
+  // pop row device
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
   
   if (pDevRow->m_pRowBuffer)
-    iRes = 1;
+    I_PushInt(1)
   else
-    iRes = 0;
-  
-  return iRes;
+    I_PushInt(1)
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
 /* zero row                                                                   */
 /*----------------------------------------------------------------------------*/
-void vDev_ROW_ZERO(void* aLU, void* aROWDEVICE)
+void vDev_ROW_ZERO(i8** aaiDstk)
 {
   _static_
 
-  UNUSED(aLU);
+  i8 *aiDstk = *aaiDstk;
 
-  DevROW* pDevRow = _pDevROW(aROWDEVICE);
+  // pop row device
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
   
   pDevRow->m_pRowBuffer->vZeroRow(pDevRow->m_aRow);
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2351,8 +2418,10 @@ void vDev_POT_USE_STREAMDEFOUT(void* aLU, i8 iAddPtnHsh)
   
   pLogicUnit->m_xpStreamDefOut->vToRowPix(&pLogicUnit->m_oRowPix,
                                                (bool)iAddPtnHsh);
-  
-  pLogicUnit->m_xpPot->vRowPix(&pLogicUnit->m_oRowPix);
+
+  Pot* pPot = _pPot(pLogicUnit->m_xRluCommon.m_pPot);
+
+  pPot->vRowPix(&pLogicUnit->m_oRowPix);
   
 }
 

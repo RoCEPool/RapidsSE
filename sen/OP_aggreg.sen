@@ -26,8 +26,8 @@
 
   0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryNote
 
-  // new the pot[]
-  Pot[].new
+  // new the PotRlu[]
+  PotRlu[].new
 
   // init the logicUnit[]
   LogicUnit[].init
@@ -43,9 +43,9 @@
   0 ZK_CANCELMARKER EG_ZK LogicUnit[].diaryNote
 
   // delete the pot
-  Pot[].isNull not if
-    Pot[].pipeoutAllDanglingPtns
-    Pot[].delete
+  PotRlu[].isNull not if
+    PotRlu[].pipeoutDanglingPtns
+    PotRlu[].delete
   then
 
   StreamDef[].isNull not if
@@ -75,7 +75,7 @@
   Operand[].asSrcCrwBuffer
   ZK_CRWBUFFER Counter0[] executeAsmArgs
 
-  Pot[].pipeoutAllCompletedPtns
+  PotRlu[].pipeoutCompletedPtns
 
   true
 ;
@@ -99,7 +99,7 @@
 
   Operand[].delete
 
-  Pot[].pipeoutAllCompletedPtns
+  PotRlu[].pipeoutCompletedPtns
 
   true
 ;
@@ -116,9 +116,9 @@
     ZK_EOSMARKER Counter0[] executeAsmArgs
   //then
 
-  // pipe out all pot[]
-  Pot[].pipeoutAllDanglingPtns
-  Pot[].delete
+  // pipe out all PotRlu[]
+  PotRlu[].pipeoutDanglingPtns
+  PotRlu[].delete
 
   StreamDef[].isNull not if
     StreamDef[].delete
@@ -179,7 +179,7 @@
   ExprEval[].delete
 
   StreamDef[].asSrcStreamDef
-  false pot[].useStreamDefOut
+  false PotRlu[].useStreamDefOut
 
   StreamDefOut[].pipeout
 

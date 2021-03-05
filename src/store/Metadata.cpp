@@ -248,6 +248,174 @@ void Metadata::vListContents(i8 i_Depth, Dic* pDic)
 }
 
 /*----------------------------------------------------------------------------*/
+/* search all metadata                                                        */
+/*----------------------------------------------------------------------------*/
+void Metadata::vSearch(InfoSet* pInfoSet,
+                       i8 iScope,
+                       Stz* szCatalogName,
+                       Stz* szSchemaName,
+                       Stz* szTableName,
+                       Stz* szColumnName,
+                       Dic* pDic,
+                       Dic* pCatalog,
+                       Dic* pSchema)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
+  
+  if (! pDic) {
+    Dic* pDic = pCurrTenant();
+    //vTrace("\nTENANT %s \\folder\n"_Stz,pDic->szDicNm());
+    vSearch(pInfoSet,iScope,
+            szCatalogName,szSchemaName,szTableName,szColumnName,
+            pDic,nullptr,nullptr);
+    return;
+  }
+  
+  pDic->pArticle()->vGrabRead();
+  
+  for (Word* pWord = pDic->pFirstWord(); pWord; pWord = pWord->pNextWord()) {
+    
+    Object* pObject = pWord->pObject();
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // catalog or schema
+    
+    if (pObject && CN_DIC == pObject->eGetClassNo()) {
+      Dic* pDic = _pDic(pObject);
+      if (pDic->bIsCatalog()) {
+        if (szCatalogName && ! pDic->szDicNm()->bSame(szCatalogName))
+          continue;
+        pCatalog = pDic;
+        if (1 == iScope) {
+          vSearchCatalogs(pInfoSet,pCatalog);
+          continue;
+        }
+      }
+      else
+      if (pDic->bIsSchema()) {
+        if (szSchemaName && ! pDic->szDicNm()->bSame(szSchemaName))
+          continue;
+        pSchema = pDic;
+        if (2 == iScope) {
+          vSearchSchemas(pInfoSet,pCatalog,pSchema);
+          continue;
+        }
+      }
+      vSearch(pInfoSet,iScope,
+              szCatalogName,szSchemaName,szTableName,szColumnName,
+              pDic,pCatalog,pSchema);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // table
+
+    if (pObject && CN_TABLE == pObject->eGetClassNo()) {
+      Table* pTable = _pTable(pObject);
+      if (szTableName && ! pTable->szTableNm()->bSame(szTableName))
+        continue;
+      if (3 == iScope)
+        vSearchTables(pInfoSet,pCatalog,pSchema,pTable);
+      else
+      if (4 == iScope)
+        vSearchColumns(pInfoSet,pCatalog,pSchema,pTable,szColumnName);
+      continue;
+    }
+    
+  }
+  
+  pDic->pArticle()->vDropRead();
+}
+
+/*----------------------------------------------------------------------------*/
+/* search catalogs                                                            */
+/*----------------------------------------------------------------------------*/
+void Metadata::vSearchCatalogs(InfoSet* pInfoSet,
+                               Dic* pCatalog)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
+  
+  Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+                                  pCatalog->szDicNm(),
+                                  C_VARGS_END);
+  UNUSED(pRow);
+}
+
+/*----------------------------------------------------------------------------*/
+/* search columns                                                             */
+/*----------------------------------------------------------------------------*/
+void Metadata::vSearchColumns(InfoSet* pInfoSet,
+                              Dic* pCatalog,
+                              Dic* pSchema,
+                              Table* pTable,
+                              Stz* szColumnName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
+  
+  Row* pRow;
+
+  StreamDef* pStreamDef = pTable->pStreamDef();
+  
+  i8 nCols = pStreamDef->nColumns();
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+    Column* pColumn = pStreamDef->pGetColumn(i_Col);
+    
+    if (szColumnName && ! pColumn->szColNm()->bSame(szColumnName))
+      continue;
+    
+    pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+                               pCatalog->szDicNm(),
+                               pSchema->szDicNm(),
+                               pTable->szTableNm(),
+
+                               pColumn->iColumnNo(),
+                               pColumn->szColNm(),
+                               (i8)pColumn->eColumnType(),
+                               aCT[pColumn->eColumnType()],
+                               pColumn->iColumnLength(),
+                               pColumn->iColumnScale(),
+                               (i8)pColumn->bIsNullable(),
+                               (i8)pColumn->bIsPtnKey(),
+
+                               C_VARGS_END);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* search schemas                                                             */
+/*----------------------------------------------------------------------------*/
+void Metadata::vSearchSchemas(InfoSet* pInfoSet,
+                              Dic* pCatalog,
+                              Dic* pSchema)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
+  
+  Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+                                  pCatalog->szDicNm(),
+                                  pSchema->szDicNm(),
+                                  C_VARGS_END);
+  UNUSED(pRow);
+}
+
+/*----------------------------------------------------------------------------*/
+/* search tables                                                              */
+/*----------------------------------------------------------------------------*/
+void Metadata::vSearchTables(InfoSet* pInfoSet,
+                             Dic* pCatalog,
+                             Dic* pSchema,
+                             Table* pTable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
+  
+  Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+                                  pCatalog->szDicNm(),
+                                  pSchema->szDicNm(),
+                                  pTable->szTableNm(),
+                                  C_VARGS_END);
+  UNUSED(pRow);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get column set matching given arguments                                    */
 /*----------------------------------------------------------------------------*/
 InfoSet* Metadata::pColumnDefs(Stz* szCatalogName,
@@ -293,11 +461,12 @@ InfoSet* Metadata::pColumnDefs(Stz* szCatalogName,
 
                                  pColumn->iColumnNo(),
                                  pColumn->szColNm(),
+                                 (i8)pColumn->eColumnType(),
                                  aCT[pColumn->eColumnType()],
                                  pColumn->iColumnLength(),
                                  pColumn->iColumnScale(),
-                                 pColumn->bIsNullable(),
-                                 pColumn->bIsPtnKey(),
+                                 (i8)pColumn->bIsNullable(),
+                                 (i8)pColumn->bIsPtnKey(),
 
                                  C_VARGS_END);
     }

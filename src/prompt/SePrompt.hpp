@@ -16,15 +16,15 @@ namespace PROMPT
   static Stz* C_PMT_TKNDUMP  = "<dumpTokens>"_Stz;
   static Stz* C_PMT_TRCFILE  = "<traceFile>"_Stz;
 
-  static Stz* C_Query1 = "/time Query1_ASM lineitem \"../eo_text/QRY_100.txt\" \"../eo_text/QRY_102.txt\""_Stz;
+  static Stz* C_Query1 = "/time Query1_ASM_I lineitem \"../eo_text/QRY_100.txt\" \"../eo_text/QRY_102.txt\""_Stz;
   
-  static Stz* C_Query3 = "/time Query3_ASM \"../eo_text/QRY_300.txt\" \"../eo_text/QRY_301.txt\" \"../eo_text/QRY_302.txt\""_Stz;
+  static Stz* C_Query3 = "/time Query3_ASM_I \"../eo_text/QRY_300.txt\" \"../eo_text/QRY_301.txt\" \"../eo_text/QRY_302.txt\""_Stz;
   
-  static Stz* C_Query4 = "/time Query4_ASM \"../eo_text/QRY_400.txt\" \"../eo_text/QRY_401.txt\" \"../eo_text/QRY_402.txt\""_Stz;
+  static Stz* C_Query4 = "/time Query4_ASM_I \"../eo_text/QRY_400.txt\" \"../eo_text/QRY_401.txt\" \"../eo_text/QRY_402.txt\""_Stz;
   
-  static Stz* C_Query6 = "/time Query6_ASM \"../eo_text/QRY_600.txt\" \"../eo_text/QRY_601.txt\""_Stz ;
+  static Stz* C_Query6 = "/time Query6_ASM_I \"../eo_text/QRY_600.txt\" \"../eo_text/QRY_601.txt\""_Stz ;
   
-  static Stz* C_Query6_PL = "/time Query6_ASM \"../eo_text/QRY_600_2.txt\" \"../eo_text/QRY_601.txt\""_Stz ;
+  static Stz* C_Query6_PL = "/time Query6_ASM_I \"../eo_text/QRY_600_2.txt\" \"../eo_text/QRY_601.txt\""_Stz ;
   
   class SePrompt : public Loggable
   {
@@ -98,6 +98,7 @@ namespace PROMPT
     bool bDumpTokens(void);
     void vDumpTokens(bool bDumpTokens);
     void vDumpInpTknVec(bool bForce);
+    bool bExamineCommand(void);
     bool bExecuteFunction(void);
     SeDeputy* pFindDeputy(void);
     bool bHandleDemo(void);

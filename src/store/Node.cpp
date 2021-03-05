@@ -415,6 +415,7 @@ void   Node::vSetPrevUserUsec(i8 iUsec)
 void   Node::vSetStartCmd(Stz* pCmd)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+  (void) pCmd;
   //m_sStartCmd.vCopy(pCmd);
 }
 

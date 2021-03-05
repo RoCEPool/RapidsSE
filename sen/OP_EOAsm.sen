@@ -15,8 +15,8 @@
 
   0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryNote
 
-  // new the pot[]
-  Pot[].new
+  // new the PotRlu[]
+  PotRlu[].new
 
   // init the logicUnit[]
   LogicUnit[].init
@@ -143,10 +143,10 @@
 
   LogicUnit[].callAgain@ if
     //"Completed test" .
-    Pot[].pipeoutAllCompletedPtns
+    PotRlu[].pipeoutCompletedPtns
   else
     //"not called again" .
-    //Pot[].pipeoutAllDanglingPtns
+    //PotRlu[].pipeoutDanglingPtns
     // force op loop to call EOAsm_EosMarker to end
     "EOAsm_EosMarker" word::find LogicUnit[].handler!
     true LogicUnit[].callAgain!
@@ -166,7 +166,7 @@
   Operand[].asSrcCrwBuffer
   ZK_CRWBUFFER Counter0[] executeAsmArgs
   Operand[].delete
-  Pot[].pipeoutAllCompletedPtns
+  PotRlu[].pipeoutCompletedPtns
 
   true
 ;
@@ -183,7 +183,7 @@
   Operand[].asSrcRowBuffer
   ZK_ROWBUFFER Counter0[] executeAsmArgs
   Operand[].delete
-  Pot[].pipeoutAllCompletedPtns
+  PotRlu[].pipeoutCompletedPtns
 
   true
 ;
@@ -215,9 +215,9 @@
   ZK_EOSMARKER Counter0[] executeAsmArgs
   Counter0[] cleanUpAsm
 
-  // pipe out all pot[]
-  Pot[].pipeoutAllDanglingPtns
-  Pot[].delete
+  // pipe out all PotRlu[]
+  PotRlu[].pipeoutDanglingPtns
+  PotRlu[].delete
 
   ZK_EOSMARKER EG_ZK PD_PIPE_OUT 0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryAction
   ZK_EOSMARKER_handler

@@ -16,6 +16,37 @@ using namespace Parser;
 static Stz* C_OR_NAME_PREFIX = "OrExpr"_Stz;
 static Stz* C_OR_DEFN = "/__root__/definitions/object/expr/operator/logic/or"_Stz;
 
+// What is the resulting type when we combine these inputs?
+// * The left header column represents the type of the first operand.
+// * The top header row represents the type of the second operand.
+// * The corresponding cell in the matrix represents the type of the resultant from this operation.
+// * Invalid/unsupported combinations are represented with CT_NONE.
+// * Fields marked with /*?*/ are not currently supported but could be.  Refer to
+//   the documentation below marked with this symbol for more information.
+// * Fields marked with /*X*/ are not currently supported but should be.
+static eCT aeTypeCalculus[CT_ENUMS][CT_ENUMS] = {
+
+//                    NONE     BOOLEAN     CHAR     DATE          DECIMAL     FLOAT       INTEGER       /*IVL_YM          IVL_DT  */     INTERVAL TIME          TIMESTP       VARCHAR  /*UNKNOWN*/
+/*  0 NONE       */ { CT_NONE, CT_NONE,    CT_NONE, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE, CT_NONE,      CT_NONE,      CT_NONE, /*CT_NONE*/    },
+/*  1 BOOLEAN    */ { CT_NONE, CT_BOOLEAN, CT_NONE, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE, CT_NONE,      CT_NONE,      CT_NONE, /*CT_BOOLEAN*/ },
+/*  2 CHAR       */ { CT_NONE, CT_NONE,    CT_NONE, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE, CT_NONE,      CT_NONE,      CT_NONE, /*CT_NONE*/    },
+/*  3 DATE       */ { CT_NONE, CT_NONE,    CT_NONE, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE, CT_NONE,      CT_NONE,      CT_NONE, /*CT_NONE*/    },
+/*  4 DECIMAL    */ { CT_NONE, CT_NONE,    CT_NONE, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE, CT_NONE,      CT_NONE,      CT_NONE, /*CT_NONE*/    },
+/*  5 FLOAT      */ { CT_NONE, CT_NONE,    CT_NONE, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE, CT_NONE,      CT_NONE,      CT_NONE, /*CT_NONE*/    },
+/*  6 INTEGER    */ { CT_NONE, CT_NONE,    CT_NONE, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE, CT_NONE,      CT_NONE,      CT_NONE, /*CT_NONE*/    },
+// XX INTERVAL_YM*/ { CT_NONE, CT_NONE,    CT_NONE, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE, CT_NONE,      CT_NONE,      CT_NONE, /*CT_NONE*/    },
+// XX INTERVAL_DT*/ { CT_NONE, CT_NONE,    CT_NONE, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE, CT_NONE,      CT_NONE,      CT_NONE, /*CT_NONE*/    },
+/*  7 INTERVAL   */ { CT_NONE, CT_NONE,    CT_NONE, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE, CT_NONE,      CT_NONE,      CT_NONE, /*CT_NONE*/    },
+/*  8 TIME       */ { CT_NONE, CT_NONE,    CT_NONE, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE, CT_NONE,      CT_NONE,      CT_NONE, /*CT_NONE*/    },
+/*  9 TIMESTAMP  */ { CT_NONE, CT_NONE,    CT_NONE, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE, CT_NONE,      CT_NONE,      CT_NONE, /*CT_NONE*/    },
+/* 10 VARCHAR    */ { CT_NONE, CT_NONE,    CT_NONE, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE, CT_NONE,      CT_NONE,      CT_NONE, /*CT_NONE*/    },
+// XX UNKNOWN    */ { CT_NONE, CT_BOOLEAN, CT_NONE, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE, CT_NONE,      CT_NONE,      CT_NONE, /*CT_NONE*/    }
+};
+
+// References:
+// OR of a NULL literal will produce a NULL *value*, but the output type will still be a boolean.
+
+
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -102,6 +133,28 @@ QueryNode* OrExpr::pChild2(QueryNode *pNode)
 b1 OrExpr::bIsOfType(PlanNode *pNode)
 {
   return ShadowNode::bIsOfType(pNode, C_OR_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the resulting type of the expression operation.                    */
+/* A returned value of CT_NONE means that it is not supported or invalid.     */
+/*----------------------------------------------------------------------------*/
+eCT OrExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+
+  // Get the types of the two operands
+  QueryNode* pChild1 = OrExpr::pChild1(pExprNode);
+  QueryNode* pChild2 = OrExpr::pChild2(pExprNode);
+
+  eCT eOperand1 = Expr::eType(pChild1, pRootNode);
+  eCT eOperand2 = Expr::eType(pChild2, pRootNode);
+
+  // Lookup the type of the result
+  eCT eResult = aeTypeCalculus[eOperand1][eOperand2];
+
+  return eResult;
 }
 
 /*============================================================================*/

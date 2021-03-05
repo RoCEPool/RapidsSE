@@ -78,6 +78,17 @@ b1 BooleanLiteral::bIsOfType(PlanNode *pNode)
   return ShadowNode::bIsOfType(pNode, C_BOOLEAN_LITERAL_DEFN);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns the resulting type of the expression operation                     */
+/*----------------------------------------------------------------------------*/
+eCT BooleanLiteral::eType(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+
+  return CT_BOOLEAN;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

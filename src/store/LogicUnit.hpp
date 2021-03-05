@@ -132,7 +132,6 @@ namespace STORE
     REG<Operand>        m_xpOperandOoO; // operand OoO
     REG<Operand>        m_xpPipein;    // Pipein
     REG<PathIdentifier> m_xpPathIdentifier;
-    REG<Pot>            m_xpPot;
     REG<PtnStream>      m_xpPtnStream;
     REG<Range>          m_xpRange;     // range
     REG<Object>         m_xpRegister0; // general purpose reg 0[]

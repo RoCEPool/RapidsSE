@@ -7,6 +7,7 @@
 
 namespace STORE
 {
+  // refer: C_TDEF_COLUMNDEFS
   class ColumnMetadata : public Row
   {
   public:
@@ -40,36 +41,41 @@ namespace STORE
       return szColVal_ofs(4);
     }
 
+    inline i8 iTypeEnum(void)
+    {
+      _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
+      return iColVal_int(5);
+    }
+
     inline Stz* szColumnType(void)
     {
       _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
-      return szColVal_ofs(5);
+      return szColVal_ofs(6);
     }
 
     inline i8 iColumnLength(void)
     {
       _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
-      return iColVal_int(6);
+      return iColVal_int(7);
     }
 
     inline i8 iColumnScale(void)
     {
       _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
-      return iColVal_int(7);
+      return iColVal_int(8);
     }
 
     inline bool bIsNullable(void)
     {
       _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
-      return iColVal_int(8);
+      return iColVal_int(9);
     }
 
     inline bool bIsPartitionKey(void)
     {
       _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
-      return iColVal_int(9);
+      return iColVal_int(10);
     }
-
   };
 }
 

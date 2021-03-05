@@ -119,6 +119,7 @@ void QueryNode::vSetType(Stz* szType)
 /*----------------------------------------------------------------------------*/
 void QueryNode::vSetValue(Value&& xValue)
 {
+  m_xValue.vDealloc();
   m_xValue = static_cast<Value&&>(xValue);
 }
 

@@ -3,6 +3,9 @@
 /*============================================================================*/
 #pragma once
 
+#include <list>
+#include <iterator>
+
 namespace STORE
 {
   class Node_I : public Object
@@ -12,6 +15,8 @@ namespace STORE
     i8 m_iStipulate;
     i8 m_i_Node;
 
+    std::list<Node*>::const_iterator m_itNode;
+    std::list<Node*>::const_iterator m_itEndNode;
     // must be last
     Footer m_xFooter;
     

@@ -24,10 +24,11 @@ namespace Parser
     // Returns true if a given node is a given type ** or is derived from that type **
     static b1 bIsOfType(PlanNode* pNode);
 
-    static Stz*       szCatalog(QueryNode* pTableRef);
-    static b1         bIsResolved(QueryNode* pTableRef);
-    static Stz*       szSchema(QueryNode* pTableRef);
-    static Stz*       szTable(QueryNode* pTableRef);
+    static Stz*  szCatalog(QueryNode* pTableRef);
+    static Stz*  szSchema(QueryNode* pTableRef);
+    static Stz*  szTable(QueryNode* pTableRef);
+    static b1    bIsFullyQualified(QueryNode* pTableRef);
+    static void  vQualify(QueryNode* pTableRef, Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName);
 
   };
 

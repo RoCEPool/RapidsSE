@@ -12,23 +12,6 @@ namespace Parser
 
   class Expr : public ShadowNode
   {
-  public:
-    // Sql Expression Type
-    enum eET {
-      ET_NONE = 0,
-      ET_NULL,
-      ET_BOOLEAN,
-      ET_STRING,
-      ET_INTEGER,
-      ET_FLOAT,
-      ET_DECIMAL,
-      ET_DATE,
-      ET_TIME,
-      ET_TIMESTAMP,
-      ET_INTERVAL,
-      ET_NENUMS
-    };
-
   private:
     // Shalt never be instantiated. Static functions only.
     Expr();
@@ -39,12 +22,14 @@ namespace Parser
     // Returns true if a given node is a given type ** or is derived from that type **
     static b1 bIsOfType(PlanNode* pNode);
 
+    // Returns the resulting type of the expression operation
+    static eCT eType(QueryNode* pExprNode, PlanNode* pRootNode);
+
     // Returns true if this expression (and therefore any subexpression elements
     // it contains) is an aggregate expression
     static b1 bIsAnAggregate(PlanNode* pNode);
 
   protected:
-    static Stz* szTypeDefinition(eET eExprType);
 
   };
 

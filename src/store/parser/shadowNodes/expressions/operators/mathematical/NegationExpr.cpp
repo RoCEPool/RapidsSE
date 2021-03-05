@@ -16,6 +16,24 @@ using namespace Parser;
 static Stz* C_NEGATION_NAME_PREFIX = "NegationExpr"_Stz;
 static Stz* C_NEGATION_DEFN = "/__root__/definitions/object/expr/operator/mathematical/negation"_Stz;
 
+// What is the resulting type when we combine these inputs?
+// * The left header column represents the type of the first operand.
+// * The top header row represents the type of the second operand.
+// * The corresponding cell in the matrix represents the type of the resultant from this operation.
+// * Invalid/unsupported combinations are represented with CT_NONE.
+// * Fields marked with /*?*/ are not currently supported but could be.  Refer to
+//   the documentation below marked with this symbol for more information.
+// * Fields marked with /*X*/ are not currently supported but should be.
+static eCT aeTypeCalculus[CT_ENUMS] =
+
+//   NONE     BOOLEAN  CHAR     DATE     DECIMAL     FLOAT     INTEGER     /*IVL_YM       IVL_DT  */     INTERVAL TIME          TIMESTP  VARCHAR  /*UNKNOWN*/
+   { CT_NONE, CT_NONE, CT_NONE, CT_NONE, CT_DECIMAL, CT_FLOAT, CT_INTEGER, /*INTERVAL_YM, INTERVAL_DT,*/ CT_NONE, CT_NONE/*?*/, CT_NONE, CT_NONE, /*CT_NONE*/ };
+
+// References:
+//  /*?*/
+//  Postgres seems to support other enhancements, marked as /*?*/ in the table above:
+//    negation of Time
+
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -75,6 +93,26 @@ QueryNode* NegationExpr::pChild1(QueryNode *pNode)
 b1 NegationExpr::bIsOfType(PlanNode *pNode)
 {
   return ShadowNode::bIsOfType(pNode, C_NEGATION_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the resulting type of the expression operation.                    */
+/* A returned value of CT_NONE means that it is not supported or invalid.     */
+/*----------------------------------------------------------------------------*/
+eCT NegationExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+
+  // Get the types of the two operands
+  QueryNode* pChild1 = NegationExpr::pChild1(pExprNode);
+
+  eCT eOperand1 = Expr::eType(pChild1, pRootNode);
+
+  // Lookup the type of the result
+  eCT eResult = aeTypeCalculus[eOperand1];
+
+  return eResult;
 }
 
 /*============================================================================*/

@@ -9,6 +9,10 @@
 #include "QueryNode.hpp"
 #include "PlanConstants.hpp"
 
+#include "ShadowRoot.hpp"
+#include "MetadataNode.hpp"
+#include "ColumnDef.hpp"
+
 #include "GraphNav.hpp"
 
 using namespace Parser;
@@ -20,25 +24,15 @@ static Stz* C_COLREF_DEFN = "/__root__/definitions/object/expr/columnRef"_Stz;
 
 static Stz* C_COLUMNREF_NAME_PREFIX = "ExprColRef"_Stz;
 
-static Stz* C_CATALOG_NAME_PROP = "catalogName"_Stz;
-static Stz* C_SCHEMA_NAME_PROP  = "schemaName"_Stz;
-static Stz* C_TABLE_NAME_PROP   = "tableName"_Stz;
-static Stz* C_COLUMN_NAME_PROP  = "columnName"_Stz;
+static Stz* C_CATALOG_PROP = "catalogName"_Stz;
+static Stz* C_SCHEMA_PROP  = "schemaName"_Stz;
+static Stz* C_TABLE_PROP   = "tableName"_Stz;
+static Stz* C_COLUMN_PROP  = "columnName"_Stz;
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* Returns the columnName of the projectedExpr                                */
-/*----------------------------------------------------------------------------*/
-Stz* ColumnRef::szColumnName(QueryNode* pNode)
-{
-  QueryNode *pColumnNode = static_cast<QueryNode *>(
-      GraphNav::pFindProperty(C_COLUMN_NAME_PROP, pNode));
-
-  return pColumnNode->szValue();
-}
 
 /*----------------------------------------------------------------------------*/
 /* Helper function to create expression column reference nodes.               */
@@ -59,10 +53,10 @@ QueryNode* ColumnRef::pCreate(Text* pCatalogName, Text* pSchemaName,
   Value xColumnName(pColumnName);
 
   QueryNode* pColRef = new QueryNode(sName, C_COLREF_DEFN);
-  pColRef->vAppendProperty(new QueryNode(C_CATALOG_NAME_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN), static_cast<Value&&>(xCatalogName)));
-  pColRef->vAppendProperty(new QueryNode(C_SCHEMA_NAME_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN), static_cast<Value&&>(xSchemaName)));
-  pColRef->vAppendProperty(new QueryNode(C_TABLE_NAME_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN), static_cast<Value&&>(xTableName)));
-  pColRef->vAppendProperty(new QueryNode(C_COLUMN_NAME_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN_NONNULL), static_cast<Value&&>(xColumnName)));
+  pColRef->vAppendProperty(new QueryNode(C_CATALOG_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN), static_cast<Value&&>(xCatalogName)));
+  pColRef->vAppendProperty(new QueryNode(C_SCHEMA_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN), static_cast<Value&&>(xSchemaName)));
+  pColRef->vAppendProperty(new QueryNode(C_TABLE_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN), static_cast<Value&&>(xTableName)));
+  pColRef->vAppendProperty(new QueryNode(C_COLUMN_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN_NONNULL), static_cast<Value&&>(xColumnName)));
 
   return pColRef;
 }
@@ -77,10 +71,10 @@ void ColumnRef::vDescribe(PlanNode* pNode, s2K& sBuf)
 
   QueryNode* pColumnRef = static_cast<QueryNode*>(pNode);
 
-  QueryNode* pCatalogNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_CATALOG_NAME_PROP, pColumnRef));
-  QueryNode* pSchemaNode  = static_cast<QueryNode*>(GraphNav::pFindProperty(C_SCHEMA_NAME_PROP,  pColumnRef));
-  QueryNode* pTableNode   = static_cast<QueryNode*>(GraphNav::pFindProperty(C_TABLE_NAME_PROP,   pColumnRef));
-  QueryNode* pColumnNode  = static_cast<QueryNode*>(GraphNav::pFindProperty(C_COLUMN_NAME_PROP,  pColumnRef));
+  QueryNode* pCatalogNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_CATALOG_PROP, pColumnRef));
+  QueryNode* pSchemaNode  = static_cast<QueryNode*>(GraphNav::pFindProperty(C_SCHEMA_PROP, pColumnRef));
+  QueryNode* pTableNode   = static_cast<QueryNode*>(GraphNav::pFindProperty(C_TABLE_PROP, pColumnRef));
+  QueryNode* pColumnNode  = static_cast<QueryNode*>(GraphNav::pFindProperty(C_COLUMN_PROP, pColumnRef));
 
   ASSERT(pCatalogNode);
   ASSERT(pSchemaNode);
@@ -119,6 +113,157 @@ void ColumnRef::vDescribe(PlanNode* pNode, s2K& sBuf)
 b1 ColumnRef::bIsOfType(PlanNode *pNode)
 {
   return ShadowNode::bIsOfType(pNode, C_COLREF_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the resulting type of the expression operation                     */
+/*----------------------------------------------------------------------------*/
+eCT ColumnRef::eType(QueryNode* pNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+  ASSERT(bIsFullyQualified(pNode));
+  ASSERT(pRootNode);
+  ASSERT(ShadowRoot::bIsOfType(pRootNode));
+
+  // Get the metadata node
+  QueryNode* pMetadata = ShadowRoot::pMetadataNode(pRootNode);
+  ASSERT(pMetadata);
+
+  Stz* szCatalog = ColumnRef::szCatalog(pNode);
+  Stz* szSchema  = ColumnRef::szSchema(pNode);
+  Stz* szTable   = ColumnRef::szTable(pNode);
+  Stz* szColumn  = ColumnRef::szColumn(pNode);
+
+  QueryNode* pColumnDef = MetadataNode::pColumnDef(pMetadata,
+                                                   szCatalog,
+                                                   szSchema,
+                                                   szTable,
+                                                   szColumn);
+  ASSERT(pColumnDef);
+
+  eCT eType = ColumnDef::eColumnType(pColumnDef);
+  ASSERT(eType > CT_NONE);
+  ASSERT(eType < CT_ENUMS);
+
+  return eType;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the catalogName of the columnRef. May be null.                     */
+/*----------------------------------------------------------------------------*/
+Stz* ColumnRef::szCatalog(QueryNode* pNode)
+{
+  QueryNode *pCatalogNode = static_cast<QueryNode *>(
+      GraphNav::pFindProperty(C_CATALOG_PROP, pNode));
+
+  return pCatalogNode->szValue();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Returns the schemaName of the columnRef. May be null.                      */
+/*----------------------------------------------------------------------------*/
+Stz* ColumnRef::szSchema(QueryNode* pNode)
+{
+  QueryNode *pSchemaNode = static_cast<QueryNode *>(
+      GraphNav::pFindProperty(C_SCHEMA_PROP, pNode));
+
+  return pSchemaNode->szValue();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Returns the tableName of the columnRef. May be null.                       */
+/*----------------------------------------------------------------------------*/
+Stz* ColumnRef::szTable(QueryNode* pNode)
+{
+  QueryNode *pTableNode = static_cast<QueryNode *>(
+      GraphNav::pFindProperty(C_TABLE_PROP, pNode));
+
+  return pTableNode->szValue();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the columnName of the projectedExpr                                */
+/*----------------------------------------------------------------------------*/
+Stz* ColumnRef::szColumn(QueryNode* pNode)
+{
+  QueryNode *pColumnNode = static_cast<QueryNode *>(
+      GraphNav::pFindProperty(C_COLUMN_PROP, pNode));
+
+  return pColumnNode->szValue();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if the columnRef is fully qualified (has cat/sch/tbl names)   */
+/*----------------------------------------------------------------------------*/
+b1 ColumnRef::bIsFullyQualified(QueryNode* pNode)
+{
+  QueryNode *pCatalogNode = static_cast<QueryNode *>(
+      GraphNav::pFindProperty(C_CATALOG_PROP, pNode));
+
+  QueryNode *pSchemaNode = static_cast<QueryNode *>(
+      GraphNav::pFindProperty(C_SCHEMA_PROP, pNode));
+
+  QueryNode *pTableNode = static_cast<QueryNode *>(
+      GraphNav::pFindProperty(C_TABLE_PROP, pNode));
+
+  QueryNode *pColumnNode = static_cast<QueryNode *>(
+      GraphNav::pFindProperty(C_COLUMN_PROP, pNode));
+
+  ASSERT(pCatalogNode);
+  ASSERT(pSchemaNode);
+  ASSERT(pTableNode);
+  ASSERT(pColumnNode);
+
+  Stz* szCatalogName = pCatalogNode->szValue();
+  Stz* szSchemaName  = pSchemaNode->szValue();
+  Stz* szTableName   = pTableNode->szValue();
+  Stz* szColumnName  = pColumnNode->szValue();
+
+  return (szCatalogName && szSchemaName && szTableName && szColumnName);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Update the ColumnRef so that it is fully qualified                         */
+/*----------------------------------------------------------------------------*/
+void ColumnRef::vQualify(QueryNode* pColumnRef, Stz* szCatalogName, Stz* szSchemaName,
+                         Stz* szTableName, Stz* szColumnName)
+{
+  ASSERT(bIsOfType(pColumnRef));
+  ASSERT(szCatalogName);
+  ASSERT(szSchemaName);
+  ASSERT(szTableName);
+  ASSERT(szColumnName);
+
+  QueryNode* pCatalogNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_CATALOG_PROP, pColumnRef));
+  QueryNode* pSchemaNode  = static_cast<QueryNode*>(GraphNav::pFindProperty(C_SCHEMA_PROP, pColumnRef));
+  QueryNode* pTableNode   = static_cast<QueryNode*>(GraphNav::pFindProperty(C_TABLE_PROP, pColumnRef));
+  QueryNode* pColumnNode  = static_cast<QueryNode*>(GraphNav::pFindProperty(C_COLUMN_PROP, pColumnRef));
+
+  ASSERT(pCatalogNode);
+  ASSERT(pSchemaNode);
+  ASSERT(pTableNode);
+  ASSERT(pColumnNode);
+
+  Value xCatValue;
+  xCatValue.vSet(szCatalogName);
+  pCatalogNode->vSetValue(static_cast<Value&&>(xCatValue));
+
+  Value xSchValue;
+  xSchValue.vSet(szSchemaName);
+  pSchemaNode->vSetValue(static_cast<Value&&>(xSchValue));
+
+  Value xTblValue;
+  xTblValue.vSet(szTableName);
+  pTableNode->vSetValue(static_cast<Value&&>(xTblValue));
+
+  Value xColValue;
+  xColValue.vSet(szColumnName);
+  pColumnNode->vSetValue(static_cast<Value&&>(xColValue));
+
+  ASSERT(bIsFullyQualified(pColumnRef));
 }
 
 /*============================================================================*/

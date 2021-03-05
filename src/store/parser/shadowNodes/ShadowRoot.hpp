@@ -8,6 +8,7 @@
 namespace Parser
 {
   class PlanNode;
+  class QueryNode;
 
   class ShadowRoot : public ShadowNode
   {
@@ -22,6 +23,8 @@ namespace Parser
 
     // Returns true if a given node is a given type ** or is derived from that type **
     static b1 bIsOfType(PlanNode* pNode);
+
+    static QueryNode* pMetadataNode(PlanNode* pNode);
   };
 
 }

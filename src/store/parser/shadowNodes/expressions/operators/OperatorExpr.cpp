@@ -35,10 +35,10 @@ void OperatorExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
   ASSERT(bIsOfType(pNode));
 
   if      (MathematicalExpr::bIsOfType(pNode))  { MathematicalExpr::vDescribe(pNode, sBuf); }
-  else if (ComparisonExpr::bIsOfType(pNode))    { ComparisonExpr::vDescribe(pNode, sBuf);   }
-  else if (LogicExpr::bIsOfType(pNode))         { LogicExpr::vDescribe(pNode, sBuf);        }
-  else if (AggregateExpr::bIsOfType(pNode))     { AggregateExpr::vDescribe(pNode, sBuf);    }
-//  else if (FunctionExpr::bIsOfType(pNode))      { FunctionExpr::vDescribe(pNode, sBuf);   }
+  else if (  ComparisonExpr::bIsOfType(pNode))  {   ComparisonExpr::vDescribe(pNode, sBuf); }
+  else if (       LogicExpr::bIsOfType(pNode))  {        LogicExpr::vDescribe(pNode, sBuf); }
+  else if (   AggregateExpr::bIsOfType(pNode))  {    AggregateExpr::vDescribe(pNode, sBuf); }
+//  else if (  FunctionExpr::bIsOfType(pNode))  {     FunctionExpr::vDescribe(pNode, sBuf);     }
   else NEVER_REACH
 }
 
@@ -49,6 +49,24 @@ void OperatorExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
 b1 OperatorExpr::bIsOfType(PlanNode *pNode)
 {
   return ShadowNode::bIsOfType(pNode, C_OPERATOR_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the resulting type of the expression operation                     */
+/*----------------------------------------------------------------------------*/
+eCT OperatorExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+
+  // TODO: manual expression polymorphism here
+
+  if      (MathematicalExpr::bIsOfType(pExprNode))  { return MathematicalExpr::eType(pExprNode, pRootNode); }
+  else if (  ComparisonExpr::bIsOfType(pExprNode))  { return   ComparisonExpr::eType(pExprNode, pRootNode); }
+  else if (       LogicExpr::bIsOfType(pExprNode))  { return        LogicExpr::eType(pExprNode, pRootNode); }
+  else if (   AggregateExpr::bIsOfType(pExprNode))  { return    AggregateExpr::eType(pExprNode, pRootNode); }
+//  else if (  FunctionExpr::bIsOfType(pExprNode))  { return     FunctionExpr::eType(pExprNode, pRootNode); }
+  else NEVER_REACH
 }
 
 /*============================================================================*/

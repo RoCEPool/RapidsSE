@@ -82,6 +82,17 @@ b1 TimeLiteral::bIsOfType(PlanNode *pNode)
   return ShadowNode::bIsOfType(pNode, C_TIME_LITERAL_DEFN);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns the resulting type of the expression operation                     */
+/*----------------------------------------------------------------------------*/
+eCT TimeLiteral::eType(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+
+  return CT_TIME;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

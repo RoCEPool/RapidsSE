@@ -3,6 +3,9 @@
 /*============================================================================*/
 #pragma once
 
+#include <list>
+#include <iterator>
+
 namespace STORE
 {
   class Grid : public Object
@@ -25,8 +28,13 @@ namespace STORE
     i8     m_nConnectedNodes;  // number of connected nodes in the grid
     i8     m_nNodes;           // number of nodes in array
 
-    // NOTE: This array might have to be atomic
+
+    /* oldcode
     Node*  m_pNodes[C_MAX_NODES]; // array of nodes
+    */
+
+    // newcode
+    std::list<Node*> m_lNodes;
   
     // must be last
     Footer m_xFooter;
@@ -68,6 +76,11 @@ namespace STORE
     i8   iThisNode(void);
     Node* pThisNode(void);
     void vThisNode(i8 iNode);
+    void vSetThisNode (Node* pNode); // newcode
+
+    // newcode
+    std::list<Node*>::const_iterator itBeginNodes(void);
+    std::list<Node*>::const_iterator itEndNodes(void);
   
     Footer* aFooter(void);
   };

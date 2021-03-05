@@ -36,12 +36,12 @@ void LogicExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
   _static_
   ASSERT(bIsOfType(pNode));
 
-  if      (AndExpr::bIsOfType(pNode))       { AndExpr::vDescribe(pNode, sBuf);    }
-  else if (OrExpr::bIsOfType(pNode))        { OrExpr::vDescribe(pNode, sBuf);     }
-  else if (XorExpr::bIsOfType(pNode))       { XorExpr::vDescribe(pNode, sBuf);    }
-  else if (NotExpr::bIsOfType(pNode))       { NotExpr::vDescribe(pNode, sBuf);    }
-  else if (IsNullExpr::bIsOfType(pNode))    { IsNullExpr::vDescribe(pNode, sBuf); }
-//  else if (LikeExpr::bIsOfType(pNode))      { LikeExpr::vDescribe(pNode, sBuf);   }
+  if      (   AndExpr::bIsOfType(pNode))    {    AndExpr::vDescribe(pNode, sBuf);  }
+  else if (    OrExpr::bIsOfType(pNode))    {     OrExpr::vDescribe(pNode, sBuf);  }
+  else if (   XorExpr::bIsOfType(pNode))    {    XorExpr::vDescribe(pNode, sBuf);  }
+  else if (   NotExpr::bIsOfType(pNode))    {    NotExpr::vDescribe(pNode, sBuf);  }
+  else if (IsNullExpr::bIsOfType(pNode))    { IsNullExpr::vDescribe(pNode, sBuf);  }
+//  else if (LikeExpr::bIsOfType(pNode))    {   LikeExpr::vDescribe(pNode, sBuf);     }
   else NEVER_REACH
 }
 
@@ -52,6 +52,25 @@ void LogicExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
 b1 LogicExpr::bIsOfType(PlanNode *pNode)
 {
   return ShadowNode::bIsOfType(pNode, C_LOGIC_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the resulting type of the expression operation                     */
+/*----------------------------------------------------------------------------*/
+eCT LogicExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+      ASSERT(bIsOfType(pExprNode));
+
+  // TODO: manual expression polymorphism here
+
+  if      (   AndExpr::bIsOfType(pExprNode))    { return    AndExpr::eType(pExprNode, pRootNode);  }
+  else if (    OrExpr::bIsOfType(pExprNode))    { return     OrExpr::eType(pExprNode, pRootNode);  }
+  else if (   XorExpr::bIsOfType(pExprNode))    { return    XorExpr::eType(pExprNode, pRootNode);  }
+  else if (   NotExpr::bIsOfType(pExprNode))    { return    NotExpr::eType(pExprNode, pRootNode);  }
+  else if (IsNullExpr::bIsOfType(pExprNode))    { return IsNullExpr::eType(pExprNode, pRootNode);  }
+//  else if (LikeExpr::bIsOfType(pExprNode))    { return   LikeExpr::eType(pExprNode, pRootNode);  }
+  else NEVER_REACH
 }
 
 /*============================================================================*/

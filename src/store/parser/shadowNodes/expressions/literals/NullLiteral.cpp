@@ -59,6 +59,18 @@ b1 NullLiteral::bIsOfType(PlanNode *pNode)
   return ShadowNode::bIsOfType(pNode, C_NULL_LITERAL_DEFN);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns the resulting type of the expression operation                     */
+/*----------------------------------------------------------------------------*/
+eCT NullLiteral::eType(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+
+  NOT_IMPLEMENTED_YET
+  //return CT_UNKNOWN; // TODO
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

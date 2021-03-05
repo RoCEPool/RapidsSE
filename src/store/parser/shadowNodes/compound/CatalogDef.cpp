@@ -43,7 +43,7 @@ QueryNode* CatalogDef::pCreate(Stz* szCatalogName, QueryNode* pSchemaDefs)
   ASSERT(pSchemaDefs);
 
   // Create the catalogDef object
-  QueryNode* pCatalogDef = new QueryNode(C_CATALOGDEF_NAME, C_CATALOGDEF_DEFN);
+  QueryNode* pCatalogDef = new QueryNode(szCatalogName, C_CATALOGDEF_DEFN);
 
   // Create the catalogName property
   Value xCatalogNameVal(szCatalogName);
@@ -108,11 +108,15 @@ QueryNode* CatalogDef::pSchemaDef(QueryNode* pNode, Stz* szSchemaName)
   ASSERT(bIsOfType(pNode));
   ASSERT(szSchemaName);
 
+  QueryNode* pSchemaDef = nullptr;
+
   // Get the schemas property
   QueryNode* pSchemasNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_SCHEMAS_PROP, pNode));
-  ASSERT(pSchemasNode);
 
-  QueryNode* pSchemaDef = nullptr;
+  if (!pSchemasNode) {
+    return pSchemaDef;
+  }
+
   PlanNodeIter* pIter = pSchemasNode->pNewChildrenIter();
 
   while (pIter->bHasNext()) {

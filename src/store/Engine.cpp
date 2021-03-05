@@ -1552,35 +1552,22 @@ void Engine::vStartSystem(void) {
   if (AM::bVerboseProgress())
     vInfo("  Creating Grid and Node's\n"_Stz);
 
-  // How about assume the Node Name is unique, we can hash it as index.
-  // But we have to fix all the look up in the system to watch for nullptr pNode
 
-  for (i8 i_Node = 0; i_Node < gxCmdLineArgs.m_xSysArgs.m_nBootNodes; i_Node++) {
-    //ASSERT(AM::pGrid()->nNodes() == i_Node);
-    //i8 iNodeNo = iHashIndex((byte*)gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sNodeName.azChar(), gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sNodeName.nSize());
-    Node *pNode = new Node(i_Node,  //iNodeNo,
-                           gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sNodeName,
-                           AM::nDegOfPar(),
-                           gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress,
-                           gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_iPortNo);
-    AM::pGrid()->vPutNode(pNode);
-    AM::pGrid()->vIncBootNodes();
-    AM::pGrid()->vIncDefinedNodes();
+  vCreateGridOfNodes(); // newcode
 
-    Article *pNodeArticle = pNode->pArticle();
-
-    pGridArticle->vAppend(pNodeArticle);
-  }
-
-
-  Node *pThisNode = AM::pGrid()->pFindNode(gxCmdLineArgs.m_xSysArgs.m_sNodeName);
-  if (!pThisNode)
-    vThrow(FK_FATAL, VL_FATAL, __func__, __FILE__, __LINE__,
+  Node* pThisNode = AM::pGrid()->pFindNode(gxCmdLineArgs.m_xSysArgs.m_sNodeName);
+  if (! pThisNode)
+    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "Cannot find Node %s in the cluster"_Stz,
            gxCmdLineArgs.m_xSysArgs.m_sNodeName.azChar());
 
+  // newcode: we might generate a unique node_no, so it can be used as part of jobid
+  // the unique node_no can be a hash of ipaddr and port number
+
   i8 iThisNodeNo = pThisNode->iNodeNo();
   AM::pGrid()->vThisNode(iThisNodeNo);
+
+  AM::pGrid()->vSetThisNode(pThisNode); // newcode
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // initialize the next id generators
@@ -1719,6 +1706,29 @@ void Engine::vStartSystem(void) {
     
   if (AM::bVerboseProgress()) {
     vInfo("\n++\n++ System Started\n++\n"_Stz);
+  }
+}
+
+// newcode
+void Engine::vCreateGridOfNodes(void)
+{
+  Article* pGridArticle = gpAttachMap->m_pGrid->pArticle();
+
+  for (i8 i_Node = 0; i_Node < gxCmdLineArgs.m_xSysArgs.m_nBootNodes; i_Node++) {
+
+    Node* pNode = new Node(i_Node,
+                           gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sNodeName,
+                           AM::nDegOfPar(),
+                           gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress,
+                           gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_iPortNo);
+
+    AM::pGrid()->vPutNode(pNode);
+    AM::pGrid()->vIncBootNodes();
+    AM::pGrid()->vIncDefinedNodes();
+
+    Article* pNodeArticle = pNode->pArticle();
+
+    pGridArticle->vAppend(pNodeArticle);
   }
 }
 

@@ -212,6 +212,10 @@ i8   AM::iPid(void)           { return gpAttachMap->m_iPid;                   }
 i8   AM::nConnectedNodes(void){ return gpAttachMap->m_pGrid->nConnectedNodes(); }
 i8   AM::nBootNodes(void)  { return gpAttachMap->m_pGrid->nBootNodes(); }
 i8   AM::nNodes(void)  { return gpAttachMap->m_pGrid->nNodes(); }
+// newcode
+std::list<Node*>::const_iterator AM::itBeginNodes(void) {return  gpAttachMap->m_pGrid->itBeginNodes(); }
+std::list<Node*>::const_iterator AM::itEndNodes(void) {return  gpAttachMap->m_pGrid->itEndNodes(); }
+
 Article* AM::pLexiconArticle(void) { return gpAttachMap->m_pLexiconArticle;    }
 void AM::vProcessExit(void)   { return Process::vExitFailure();                      }
 

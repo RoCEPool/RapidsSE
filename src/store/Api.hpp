@@ -19,6 +19,7 @@ namespace STORE
   static void vFreeSession(Session* pSession);
 
   static void vDeleteJob(Session* pSession);
+  static void vExamineCommand(Session* pSession);
   static void vExecuteJob(Session* pSession);
   static void vExtractPaths(Session*  pSession);
   static bool bExtractTags(Session*  pSession);

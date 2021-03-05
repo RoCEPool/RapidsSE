@@ -18,7 +18,7 @@ namespace Parser
     MetadataNode();
 
   public:
-    static PlanNode* pCreate();
+    static QueryNode* pCreate();
 
     // Returns true if a given node is a given type ** or is derived from that type **
     static b1 bIsOfType(PlanNode* pNode);
@@ -30,6 +30,8 @@ namespace Parser
     static QueryNode* pCatalogDef(QueryNode* pMetadataNode, Stz* szCatalogName);
     static QueryNode* pSchemaDef(QueryNode* pMetadataNode, Stz* szCatalogName, Stz* szSchemaName);
     static QueryNode* pTableDef(QueryNode* pMetadataNode, Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName);
+    static QueryNode* pColumnDef(QueryNode* pMetadataNode, Stz* szCatalogName,
+                                 Stz* szSchemaName, Stz* szTableName, Stz* szColumnName);
 
     // Get an iterator of PlanNodes that represent CatalogDefs, SchemaDefs, TableDefs, ColumnDefs and IndexDefs
     static PlanNodeIter* pCatalogDefIter(QueryNode* pMetadataNode);
@@ -37,6 +39,10 @@ namespace Parser
     static PlanNodeIter* pTableDefIter(QueryNode* pMetadataNode, Stz* szCatalogName, Stz* szSchemaName);
     static PlanNodeIter* pColumnDefIter(QueryNode* pMetadataNode, Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName);
     static PlanNodeIter* pIndexDefIter(QueryNode* pMetadataNode, Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName);
+
+    // Lookup and return a list of nodes that represent TableDefs that match
+    // against a given ColumnRef. Returned list needs to be deallocated.
+    static PlanNodeList* pMatchColumnRef(QueryNode* pMetadataNode, QueryNode* pColumnRef);
   };
 
 }

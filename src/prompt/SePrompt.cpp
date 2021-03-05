@@ -210,23 +210,12 @@ void SePrompt::vPromptLoop(void)
     
     if (! bGetCommand())
       continue;
-    
-    //vTrace("Prompt-RawInput: %s\n"_Stz,pInputGet()->szRawInput());
-    
-    if (bDemo()) {
-      
-      // handle demo statement
-      if ( ! bHandleDemo() ) {
-        vTrace("error: %s\n"_Stz,aEC[EC_INVALID_COMMAND]);
-        if (AM::bDeveloper())
-          vDumpInpTknVec(true);
-        continue;
-      }
-    }
-
-    if (bExecuteFunction())
+ 
+    if (! bExamineCommand())
       continue;
 
+    //vTrace("Prompt-RawInput: %s\n"_Stz,pInputGet()->szRawInput());
+    
     Stz* szCmdFile = pInputGet()->szPath();
     i8   iCmdLine  = pTkn(0)->iLineNo();
 
@@ -273,9 +262,16 @@ bool SePrompt::bGetCommand(void)
     return false;
   }
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // examine the command
-  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* examine command                                                            */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bExamineCommand(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+    
   if (bBlankLine())
     return false;
 
@@ -290,45 +286,33 @@ bool SePrompt::bGetCommand(void)
   if (bShortCut())
     return false;
 
+  if (bRedirectFromFile())
+    return false;
+  
   // is it a demo statement ?
-//  if (bDemo()) {
-//
-//    // handle demo statement
-//    if ( ! bHandleDemo() ) {
-//      vTrace("error: %s\n"_Stz,aEC[EC_INVALID_COMMAND]);
-//      if (AM::bDeveloper())
-//        vDumpInpTknVec(true);
-//      return false;
-//    }
-//  }
+  if (bDemo()) {
+    
+    // handle demo statement
+    if ( ! bHandleDemo() ) {
+      vTrace("error: %s\n"_Stz,aEC[EC_INVALID_COMMAND]);
+      if (AM::bDeveloper())
+        vDumpInpTknVec(true);
+      return false;
+    }
+  }
   
   while (bSubSsnTags())
     {;}
 
-  if (bRedirectFromFile())
-    return false;
-  
   Api::vExtractPaths(m_pCurrentDeputy->pSession());
   if (! Api::bExtractTags(m_pCurrentDeputy->pSession()))
     return false;
 
   if (bIsPromptWord())
     m_pInpTknVec->vInsertToken(0,"docol"_Stz,TN_NAME);
-    
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // prompt has finessed the final input token vector at this stage
-  
-  //m_xReqTuple.m_iReqNo++;
-  
-  vLogCommand();
-  
 
-// TBD: remove division and section concepts
-  
-//  if (*pInputGet()->szDivision()->azChar())
-//    m_pJobTagSet->vInsert(C_TAG_DIVISION,pInputGet()->szDivision());
-//  if (*pInputGet()->szSection()->azChar())
-//    m_pJobTagSet->vInsert(C_TAG_SECTION,pInputGet()->szSection());
+  if (bExecuteFunction())
+    return false;
 
   return true;
 }
@@ -1107,7 +1091,7 @@ bool SePrompt::bRedirectFromFile(void)
 //i8 SePrompt::iRequestId(void)
 //{
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-//  
+//
 //  return m_xReqTuple.m_iReqNo;
 //}
 

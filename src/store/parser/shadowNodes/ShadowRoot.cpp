@@ -7,6 +7,7 @@
 #include "Statement.hpp"
 
 #include "PlanNode.hpp"
+#include "QueryNode.hpp"
 #include "PlanConstants.hpp"
 
 #include "GraphNav.hpp"
@@ -64,7 +65,19 @@ b1 ShadowRoot::bIsOfType(PlanNode *pNode)
   return ShadowNode::bIsOfType(pNode, const_cast<Stz*>(C_ROOT_DEFN_PATH));
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns the node representing the metadata node in the plan graph          */
+/*----------------------------------------------------------------------------*/
+QueryNode* ShadowRoot::pMetadataNode(PlanNode* pNode)
+{
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
 
+  QueryNode* pMetadata = static_cast<QueryNode*>(GraphNav::pFindChild(const_cast<Stz*>(C_METADATA_NAME), pNode));
+  ASSERT(pMetadata);
+
+  return pMetadata;
+}
 
 /*============================================================================*/
 /* end                                                                        */
