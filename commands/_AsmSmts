@@ -72,7 +72,7 @@ print "loading Orders...";
 
 //aggregRows_I lineitem "L_LINENUMBER 1 + , L_ORDERKEY sum";
 
-aggregRows_I lineitem "L_LINENUMBER sum , L_ORDERKEY sum";
+aggregRows_I lineitem "l_discount sum";
 
 /*
 //UnionAll_I lineitem orders l_orderkey;

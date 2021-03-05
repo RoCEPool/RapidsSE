@@ -89,7 +89,7 @@ compactIdx LineItem lineItem_Idx1;
 compactIdx LineItem lineItem_Idx2;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-/*
+
 print "*****************************************************************";
 print "executing Query1...";
 
@@ -108,7 +108,7 @@ demo select
     group by l_returnflag,
     l_linestatus order by
     l_returnflag, l_linestatus;
-*/
+
 print "*****************************************************************";
 print "executing Query3...";
 demo select
@@ -153,7 +153,7 @@ where
 group by
   o_orderpriority order by
   o_orderpriority;
-/*
+
 print "*****************************************************************";
 print "executing Query6...";
 
@@ -172,7 +172,7 @@ print "executing Query6...";
 // drop table orders;
 // drop table lineitem;
 // memoryLeaks;
-*/
+
 /*
  SQLITE SF1 Q1:
  

@@ -100,7 +100,8 @@ eEC ExprEval::eExprEvalAll(StreamDef* pStreamDefIn)
     }
     else {
       StrLib::vSprintCat(m_sAsmText, "  EO_PUSH_LOCALI %lld\n"_Stz, iCol);
-      StrLib::vSprintCat(m_sAsmText, "  EO_ROW_DST_POPCOLI %lld\n"_Stz, iCol);
+      StrLib::vSprintCat(m_sAsmText, "  EO_PUSH_DEVROW_DST\n"_Stz);
+      StrLib::vSprintCat(m_sAsmText, "  EO_DEVROW_POPCOLI %lld\n"_Stz, iCol);
     }
   }
 
@@ -319,7 +320,8 @@ void ExprEval::vAddPopCol(eCT eColumnType, i8 iColumn)
     case CT_INTEGER:
     case CT_DECIMAL:
     case CT_DATE:
-      StrLib::vSprintCat(m_sAsmText, "  EO_ROW_DST_POPCOLI %lld\n"_Stz, iColumn);
+      StrLib::vSprintCat(m_sAsmText, "  EO_PUSH_DEVROW_DST\n"_Stz);
+      StrLib::vSprintCat(m_sAsmText, "  EO_DEVROW_POPCOLI %lld\n"_Stz, iColumn);
       break;
 
     case CT_CHAR:
@@ -373,8 +375,10 @@ void ExprEval::vAddStoreCol(eCT eColumnType, i8 iColumn)
     case CT_DECIMAL:
     case CT_DATE:
       StrLib::vSprintCat(m_sPayLoadStore, "  EO_PAY_STORE_COLI %lld\n"_Stz, iColumn);
-      StrLib::vSprintCat(m_sPayLoadToBuffer, "  EO_PAY_FETCH_COLI %lld\n"_Stz, iColumn);
-      StrLib::vSprintCat(m_sPayLoadToBuffer, "  EO_ROW_DST_POPCOLI %lld\n"_Stz, iColumn);
+      StrLib::vSprintCat(m_sPayLoadToBuffer,"  EO_PAY_FETCH_COLI %lld\n"_Stz, iColumn);
+      StrLib::vSprintCat(m_sPayLoadToBuffer,"  EO_PUSH_DEVROW_DST\n"_Stz);
+      StrLib::vSprintCat(m_sPayLoadToBuffer,"  EO_DEVROW_POPCOLI %lld\n"_Stz, iColumn);
+
       break;
 
     case CT_CHAR:
@@ -414,9 +418,11 @@ eEC ExprEval::eAddSum(eCT eColumnType, i8 iColumn)
     case CT_INTEGER:
     case CT_DECIMAL:
     case CT_FLOAT:
-      StrLib::vSprintCat(m_sAsmText, "  EO_ROW_DST_PUSHCOLI %lld\n"_Stz, iColumn);
+      StrLib::vSprintCat(m_sAsmText, "  EO_PUSH_DEVROW_DST\n"_Stz);
+      StrLib::vSprintCat(m_sAsmText, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, iColumn);
       StrLib::vSprintCat(m_sAsmText, "  EO_ADD\n"_Stz);
-      StrLib::vSprintCat(m_sAsmText, "  EO_ROW_DST_POPCOLI %lld\n"_Stz, iColumn);
+      StrLib::vSprintCat(m_sAsmText, "  EO_PUSH_DEVROW_DST\n"_Stz);
+      StrLib::vSprintCat(m_sAsmText, "  EO_DEVROW_POPCOLI %lld\n"_Stz, iColumn);
       return EC_NONE;
 
     case CT_BOOLEAN:

@@ -1263,21 +1263,35 @@ void vDev_ROW_NULL(i8** aaiDstk)
   // pop the row dev
   DevROW* pDevRow = _pDevROW(P_PopPtr());
   pDevRow->m_pRowBuffer = nullptr;
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
 /* pop and deposit top into dst column                                        */
 /*----------------------------------------------------------------------------*/
-void vDev_ROW_POPCOLI(void* aLU, void* aROWDEVICE, i8 iArg, i8 iTop)
+void vDev_ROW_POPCOLI(i8** aaiDstk)
 {
   _static_
 
-  UNUSED(aLU);
+  i8 *aiDstk = *aaiDstk;
 
-  DevROW* pDevRow = _pDevROW(aROWDEVICE);
-  
-  pDevRow->m_pRowBuffer->vPositionOnCell(iArg);
-  pDevRow->m_pRowBuffer->vDepositColVal(iTop);
+  // pop the column
+  i8 iColumn = *(aiDstk--);
+
+  // pop the row dev
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
+
+  // pop the value
+  i8 iValue = *(aiDstk--);
+
+  // position on cell
+  pDevRow->m_pRowBuffer->vPositionOnCell(iColumn);
+
+  // deposit the value in the cell
+  pDevRow->m_pRowBuffer->vDepositColVal(iValue);
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1319,17 +1333,23 @@ void vDev_ROW_PRINT(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* push src column                                                            */
 /*----------------------------------------------------------------------------*/
-i8 iDev_ROW_PUSHCOLI(void* aLU, void* aROWDEVICE, i8 iArg)
+void vDev_ROW_PUSHCOLI(i8** aaiDstk)
 {
   _static_
 
-  UNUSED(aLU);
+  i8 *aiDstk = *aaiDstk;
 
-  DevROW* pDevRow = _pDevROW(aROWDEVICE);
+  // pop the column
+  i8 iColumn = *(aiDstk--);
+
+  // pop the device
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
     
-  i8 iRes = pDevRow->m_aRow->iColVal_int(iArg);
+  i8 iRes = pDevRow->m_aRow->iColVal_int(iColumn);
 
-  return iRes;
+  I_PushInt(iRes);
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
