@@ -16,6 +16,35 @@ using namespace Parser;
 static Stz* C_LT_NAME_PREFIX = "LtExpr"_Stz;
 static Stz* C_LT_DEFN = "/__root__/definitions/object/expr/operator/comparison/lt"_Stz;
 
+// What is the resulting type when we combine these inputs?
+// * The left header column represents the type of the first operand.
+// * The top header row represents the type of the second operand.
+// * The corresponding cell in the matrix represents the type of the resultant from this operation.
+// * Invalid/unsupported combinations are represented with CT_NONE.
+// * Fields marked with /*?*/ are not currently supported but could be.  Refer to
+//   the documentation below marked with this symbol for more information.
+// * Fields marked with /*X*/ are not currently supported but should be.
+static eCT aeTypeCalculus[CT_ENUMS][CT_ENUMS] = {
+
+//                    NONE     BOOLEAN     CHAR        DATE          DECIMAL     FLOAT       INTEGER       /*IVL_YM          IVL_DT  */     INTERVAL    TIME          TIMESTP       VARCHAR     /*UNKNOWN*/
+/*  0 NONE       */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE,    CT_NONE,      CT_NONE,      CT_NONE,    /*CT_NONE*/    },
+/*  1 BOOLEAN    */ { CT_NONE, CT_BOOLEAN, CT_NONE,    CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE,    CT_NONE,      CT_NONE,      CT_NONE,    /*CT_BOOLEAN*/ },
+/*  2 CHAR       */ { CT_NONE, CT_NONE,    CT_BOOLEAN, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE,    CT_NONE,      CT_NONE,      CT_BOOLEAN, /*CT_BOOLEAN*/ },
+/*  3 DATE       */ { CT_NONE, CT_NONE,    CT_NONE,    CT_BOOLEAN,   CT_NONE,    CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE,    CT_NONE,      CT_NONE,      CT_NONE,    /*CT_BOOLEAN*/ },
+/*  4 DECIMAL    */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_BOOLEAN, CT_BOOLEAN, CT_BOOLEAN,   /*CT_NONE,        CT_NONE,*/     CT_NONE,    CT_NONE,      CT_NONE,      CT_NONE,    /*CT_BOOLEAN*/ },
+/*  5 FLOAT      */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_BOOLEAN, CT_BOOLEAN, CT_BOOLEAN,   /*CT_NONE,        CT_NONE,*/     CT_NONE,    CT_NONE,      CT_NONE,      CT_NONE,    /*CT_BOOLEAN*/ },
+/*  6 INTEGER    */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_BOOLEAN, CT_BOOLEAN, CT_BOOLEAN,   /*CT_NONE,        CT_NONE,*/     CT_NONE,    CT_NONE,      CT_NONE,      CT_NONE,    /*CT_BOOLEAN*/ },
+// XX INTERVAL_YM*/ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      /*CT_BOOLEAN,     CT_NONE,*/     CT_NONE,    CT_NONE,      CT_NONE,      CT_NONE,    /*CT_BOOLEAN*/ },
+// XX INTERVAL_DT*/ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      /*CT_NONE,        CT_BOOLEAN,*/  CT_NONE,    CT_NONE,      CT_NONE,      CT_NONE,    /*CT_BOOLEAN*/ },
+/*  7 INTERVAL   */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE,    CT_NONE,      CT_NONE,      CT_NONE,    /*CT_NONE*/    },
+/*  8 TIME       */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE,    CT_BOOLEAN,   CT_NONE,      CT_NONE,    /*CT_BOOLEAN*/ },
+/*  9 TIMESTAMP  */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE,    CT_NONE,      CT_BOOLEAN,   CT_NONE,    /*CT_BOOLEAN*/ },
+/* 10 VARCHAR    */ { CT_NONE, CT_NONE,    CT_BOOLEAN, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE,    CT_NONE,      CT_NONE,      CT_BOOLEAN, /*CT_BOOLEAN*/ },
+// XX UNKNOWN    */ { CT_NONE, CT_BOOLEAN, CT_BOOLEAN, CT_BOOLEAN,   CT_BOOLEAN, CT_BOOLEAN, CT_BOOLEAN,   CT_BOOLEANE,      CT_BOOLEAN,*/  CT_BOOLEAN, CT_BOOLEAN,   CT_BOOLEAN,   CT_BOOLEAN, /*CT_BOOLEAN*/ }
+};
+
+// References:
+
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -99,6 +128,28 @@ QueryNode* LtExpr::pChild2(QueryNode *pNode)
 b1 LtExpr::bIsOfType(PlanNode *pNode)
 {
   return ShadowNode::bIsOfType(pNode, C_LT_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the resulting type of the expression operation.                    */
+/* A returned value of CT_NONE means that it is not supported or invalid.     */
+/*----------------------------------------------------------------------------*/
+eCT LtExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+
+  // Get the types of the two operands
+  QueryNode* pChild1 = LtExpr::pChild1(pExprNode);
+  QueryNode* pChild2 = LtExpr::pChild2(pExprNode);
+
+  eCT eOperand1 = Expr::eType(pChild1, pRootNode);
+  eCT eOperand2 = Expr::eType(pChild2, pRootNode);
+
+  // Lookup the type of the result
+  eCT eResult = aeTypeCalculus[eOperand1][eOperand2];
+
+  return eResult;
 }
 
 /*============================================================================*/

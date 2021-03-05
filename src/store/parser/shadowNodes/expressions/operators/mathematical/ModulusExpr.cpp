@@ -16,6 +16,38 @@ using namespace Parser;
 static Stz* C_MODULUS_NAME_PREFIX = "ModulusExpr"_Stz;
 static Stz* C_MODULUS_DEFN = "/__root__/definitions/object/expr/operator/mathematical/modulus"_Stz;
 
+// What is the resulting type when we combine these inputs?
+// * The left header column represents the type of the first operand.
+// * The top header row represents the type of the second operand.
+// * The corresponding cell in the matrix represents the type of the resultant from this operation.
+// * Invalid/unsupported combinations are represented with CT_NONE.
+// * Fields marked with /*?*/ are not currently supported but could be.  Refer to
+//   the documentation below marked with this symbol for more information.
+// * Fields marked with /*X*/ are not currently supported but should be.
+static eCT aeTypeCalculus[CT_ENUMS][CT_ENUMS] = {
+
+                 //   NONE     BOOLEAN  CHAR     DATE          DECIMAL       FLOAT       INTEGER       /*IVL_YM          IVL_DT  */     INTERVAL TIME          TIMESTP       VARCHAR  /*UNKNOWN*/
+/*  0 NONE       */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,      CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE, CT_NONE,      CT_NONE,      CT_NONE, /*CT_NONE*/    },
+/*  1 BOOLEAN    */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,      CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE, CT_NONE,      CT_NONE,      CT_NONE, /*CT_NONE*/    },
+/*  2 CHAR       */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,      CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE, CT_NONE,      CT_NONE,      CT_NONE, /*CT_NONE*/    },
+/*  3 DATE       */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,      CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE, CT_NONE,      CT_NONE,      CT_NONE, /*CT_NONE*/    },
+/*  4 DECIMAL    */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,      CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE, CT_NONE,      CT_NONE,      CT_NONE, /*CT_NONE*/    },
+/*  5 FLOAT      */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,      CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE, CT_NONE,      CT_NONE,      CT_NONE, /*CT_NONE*/    },
+/*  6 INTEGER    */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,      CT_NONE,    CT_INTEGER,   /*CT_NONE,        CT_NONE,*/     CT_NONE, CT_NONE,      CT_NONE,      CT_NONE, /*CT_UNKNOWN*/ },
+// XX INTERVAL_YM*/ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,      CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE, CT_NONE,      CT_NONE,      CT_NONE, /*CT_NONE*/    },
+// XX INTERVAL_DT*/ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,      CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE, CT_NONE,      CT_NONE,      CT_NONE, /*CT_NONE*/    },
+/*  7 INTERVAL   */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,      CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE, CT_NONE,      CT_NONE,      CT_NONE, /*CT_NONE*/    },
+/*  8 TIME       */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,      CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE, CT_NONE,      CT_NONE,      CT_NONE, /*CT_NONE*/    },
+/*  9 TIMESTAMP  */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,      CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE, CT_NONE,      CT_NONE,      CT_NONE, /*CT_NONE*/    },
+/* 10 VARCHAR    */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,      CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE, CT_NONE,      CT_NONE,      CT_NONE, /*CT_NONE*/    },
+// XX UNKNOWN    */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,      CT_NONE,    CT_UNKNOWN,   /*CT_NONE,        CT_NONE,*/     CT_NONE, CT_NONE,      CT_NONE,      CT_NONE, /*CT_NONE*/    }
+};
+
+// References:
+//  Exact numeric % exact numeric = exact numeric
+//    - SQL standard 2008 (draft): Part 2 (Foundation), section 4.4.3, page 32
+
+
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -99,6 +131,28 @@ QueryNode* ModulusExpr::pChild2(QueryNode *pNode)
 b1 ModulusExpr::bIsOfType(PlanNode *pNode)
 {
   return ShadowNode::bIsOfType(pNode, C_MODULUS_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the resulting type of the expression operation.                    */
+/* A returned value of CT_NONE means that it is not supported or invalid.     */
+/*----------------------------------------------------------------------------*/
+eCT ModulusExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+
+  // Get the types of the two operands
+  QueryNode* pChild1 = ModulusExpr::pChild1(pExprNode);
+  QueryNode* pChild2 = ModulusExpr::pChild2(pExprNode);
+
+  eCT eOperand1 = Expr::eType(pChild1, pRootNode);
+  eCT eOperand2 = Expr::eType(pChild2, pRootNode);
+
+  // Lookup the type of the result
+  eCT eResult = aeTypeCalculus[eOperand1][eOperand2];
+
+  return eResult;
 }
 
 /*============================================================================*/

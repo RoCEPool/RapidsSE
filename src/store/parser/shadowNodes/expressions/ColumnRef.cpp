@@ -9,6 +9,10 @@
 #include "QueryNode.hpp"
 #include "PlanConstants.hpp"
 
+#include "ShadowRoot.hpp"
+#include "MetadataNode.hpp"
+#include "ColumnDef.hpp"
+
 #include "GraphNav.hpp"
 
 using namespace Parser;
@@ -111,6 +115,39 @@ b1 ColumnRef::bIsOfType(PlanNode *pNode)
   return ShadowNode::bIsOfType(pNode, C_COLREF_DEFN);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns the resulting type of the expression operation                     */
+/*----------------------------------------------------------------------------*/
+eCT ColumnRef::eType(QueryNode* pNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+  ASSERT(bIsFullyQualified(pNode));
+  ASSERT(pRootNode);
+  ASSERT(ShadowRoot::bIsOfType(pRootNode));
+
+  // Get the metadata node
+  QueryNode* pMetadata = ShadowRoot::pMetadataNode(pRootNode);
+  ASSERT(pMetadata);
+
+  Stz* szCatalog = ColumnRef::szCatalog(pNode);
+  Stz* szSchema  = ColumnRef::szSchema(pNode);
+  Stz* szTable   = ColumnRef::szTable(pNode);
+  Stz* szColumn  = ColumnRef::szColumn(pNode);
+
+  QueryNode* pColumnDef = MetadataNode::pColumnDef(pMetadata,
+                                                   szCatalog,
+                                                   szSchema,
+                                                   szTable,
+                                                   szColumn);
+  ASSERT(pColumnDef);
+
+  eCT eType = ColumnDef::eColumnType(pColumnDef);
+  ASSERT(eType > CT_NONE);
+  ASSERT(eType < CT_ENUMS);
+
+  return eType;
+}
 
 /*----------------------------------------------------------------------------*/
 /* Returns the catalogName of the columnRef. May be null.                     */
