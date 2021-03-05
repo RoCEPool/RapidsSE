@@ -34,7 +34,7 @@ namespace STORE
     void* operator new(size_t, Table* pTable);
     void  operator delete(void*);
     
-    Table(Stz* szTableNm);
+    Table(Stz* szTableNm, eTT eKind);
    ~Table(void) noexcept(false);
     
     static Stz*       szCurrTable(DicStack* pDicStack);

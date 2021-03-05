@@ -479,7 +479,7 @@ void Step::vTableNew(void)
   s32 sTableNm;
   m_pDataStack->vPopStr(sTableNm,__func__);
 
-  Table* pTable = new Table(sTableNm);
+  Table* pTable = new Table(sTableNm,TT_NORMAL);
   
   m_pDataStack->vPushPtr(pTable);
   

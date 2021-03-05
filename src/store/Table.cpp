@@ -40,7 +40,7 @@ __aFooterFunction(Table)
 /*----------------------------------------------------------------------------*/
 HACK(Table,"define table partitioning");
 
-Table::Table(Stz* szTableNm)
+Table::Table(Stz* szTableNm, eTT eKind)
 : Object(CN_TABLE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
@@ -50,7 +50,7 @@ Table::Table(Stz* szTableNm)
 #endif
   
   m_sTableNm   = szTableNm;
-  m_eKind      = TT_NORMAL;
+  m_eKind      = eKind;
   m_pIdxVec    = new IdxVec;
   m_ixIndexNo.vCheckInit();
   m_pBucketMap = new BucketMap(AM::nPtnsInGrid());
