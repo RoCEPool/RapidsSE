@@ -491,16 +491,6 @@ bool Table::bIsDefinitionOnly(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set if table if definition only                                            */
-/*----------------------------------------------------------------------------*/
-void Table::vIsDefinitionOnly(bool bDefinitionOnly)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  m_bDefinitionOnly = bDefinitionOnly;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get if table is loading                                                    */
 /*----------------------------------------------------------------------------*/
 bool Table::bIsLoading(void)

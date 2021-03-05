@@ -54,7 +54,6 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.indexCount"_Stz,         &Step::vTableIndexCount);
   vAddStep("table.isColumn"_Stz,           &Step::vTableIsColumn);
   vAddStep("table[].isDefinitionOnly@"_Stz, &Step::vTableIsDefinitionOnlyFetch);
-  vAddStep("table[].isDefinitionOnly!"_Stz, &Step::vTableIsDefinitionOnlyStore);
   vAddStep("table.lazyBuildIndexes"_Stz,   &Step::vTableLazyBuildIndexes);
   vAddStep("table[].listPartition"_Stz,    &Step::vTableListPartition);
   vAddStep("table[].ptnStreamDef@"_Stz,    &Step::vTablePtnStreamDefFetch);
@@ -406,20 +405,6 @@ void Step::vTableIsDefinitionOnlyFetch(void)
   Table* pTable = _pTable(*( m_pJob->pLogicUnit_job() )->m_xpTable);
 
   m_pDataStack->vPushInt(pTable->bIsDefinitionOnly());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.isDefinitionOnly! -- store table is definition only                  */
-/*----------------------------------------------------------------------------*/
-void Step::vTableIsDefinitionOnlyStore(void)
-{
-  ENTRY();
-  
-  Table* pTable = _pTable(*( m_pJob->pLogicUnit_job() )->m_xpTable);
-  
-  pTable->vIsDefinitionOnly(m_pDataStack->iPopInt(__func__));
   
   EXIT();
 }

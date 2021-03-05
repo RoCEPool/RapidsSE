@@ -23381,7 +23381,6 @@ void Task::vAddMunged(Task* )
     "  // create the table\n"
     "\n"
     "  streamDef[] <tableNm> table::createTable to table[]\n"
-    "  true table[].isDefinitionOnly!\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"

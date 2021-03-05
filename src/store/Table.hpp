@@ -58,7 +58,6 @@ namespace STORE
     IdxVec* pIdxVec(void);
     i8      nIndexBuffers(i8 i_Index);
     bool    bIsDefinitionOnly(void);
-    void    vIsDefinitionOnly(bool bIsDefinitionOnly);
     void    vIsLoading(bool bIsLoading);
     bool    bIsLoading(void);
     eTT     eKind(void);
