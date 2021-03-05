@@ -1560,6 +1560,8 @@ void vExprEvalEvaluate(void);
   void vTableIndexCount(void);
   void vTableIsColumn(void);
   void vTableIsDefinitionOnlyFetch(void);
+  void vTableIsInternallyDefined(void);
+  void vTableIsUserCreated(void);
   void vTableListPartition(void);
   void vTablePtnStreamDefFetch(void);
   void vTableLazyBuildIndexes(void);

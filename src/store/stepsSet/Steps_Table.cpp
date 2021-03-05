@@ -53,7 +53,9 @@ void Step::vAddSteps_Table(void)
   vAddStep("table[].findColumn"_Stz,       &Step::vTableFindColumn);
   vAddStep("table.indexCount"_Stz,         &Step::vTableIndexCount);
   vAddStep("table.isColumn"_Stz,           &Step::vTableIsColumn);
-  vAddStep("table[].isDefinitionOnly@"_Stz, &Step::vTableIsDefinitionOnlyFetch);
+  vAddStep("table[].isDefinitionOnly@"_Stz,   &Step::vTableIsDefinitionOnlyFetch);
+  vAddStep("table[].isInternallyDefined"_Stz, &Step::vTableIsInternallyDefined);
+  vAddStep("table[].isUserCreated"_Stz,    &Step::vTableIsUserCreated);
   vAddStep("table.lazyBuildIndexes"_Stz,   &Step::vTableLazyBuildIndexes);
   vAddStep("table[].listPartition"_Stz,    &Step::vTableListPartition);
   vAddStep("table[].ptnStreamDef@"_Stz,    &Step::vTablePtnStreamDefFetch);
@@ -405,6 +407,34 @@ void Step::vTableIsDefinitionOnlyFetch(void)
   Table* pTable = _pTable(*( m_pJob->pLogicUnit_job() )->m_xpTable);
 
   m_pDataStack->vPushInt(pTable->bIsDefinitionOnly());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.isUserTable -- is the table a user defined define                    */
+/*----------------------------------------------------------------------------*/
+void Step::vTableIsInternallyDefined(void)
+{
+  ENTRY();
+  
+  Table* pTable = _pTable(*( m_pJob->pLogicUnit_job() )->m_xpTable);
+
+  m_pDataStack->vPushInt(pTable->bIsInternallyDefined());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.isUserTable -- is the table a user defined define                    */
+/*----------------------------------------------------------------------------*/
+void Step::vTableIsUserCreated(void)
+{
+  ENTRY();
+  
+  Table* pTable = _pTable(*( m_pJob->pLogicUnit_job() )->m_xpTable);
+
+  m_pDataStack->vPushInt(pTable->bIsUserCreated());
   
   EXIT();
 }
