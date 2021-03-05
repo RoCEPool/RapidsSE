@@ -28,6 +28,9 @@
 #include "Job.hpp"
 #include "LogicUnit.hpp"
 
+#include "MY.hpp"
+#include "TagConstants.h"
+
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
@@ -478,8 +481,14 @@ void Step::vTableNew(void)
 
   s32 sTableNm;
   m_pDataStack->vPopStr(sTableNm,__func__);
+  
+  eTT eTableKind = TT_NORMAL;
+  Job* pJob = MY::pJob();
+  TagSet* pJobTags = pJob->pJobTags();
+  if (pJobTags && pJobTags->bHasName(C_TAG_INTERNAL))
+    eTableKind = TT_INTERNAL;
 
-  Table* pTable = new Table(sTableNm,TT_NORMAL);
+  Table* pTable = new Table(sTableNm,eTableKind);
   
   m_pDataStack->vPushPtr(pTable);
   
