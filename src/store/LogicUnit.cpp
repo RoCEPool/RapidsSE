@@ -3148,10 +3148,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
       case EO_ROW_DST_POPCOLS: ArgGet(iArg); // pop and deposit top into dst column
-        dLU1(EO_ROW_DST_POPCOLS,iArg);
-        szTopA = (Stz*)S_StrAdr();
-        vDev_ROW_POPCOLS(pLU,aRluCommon->m_pDevDstRow,iArg,szTopA);
-        S_StrDrp();
+//        dLU1(EO_ROW_DST_POPCOLS,iArg);
+//        szTopA = (Stz*)S_StrAdr();
+//        vDev_ROW_POPCOLS(pLU,aRluCommon->m_pDevDstRow,iArg,szTopA);
+//        S_StrDrp();
+        RASSERT(0);
         break;//+endCase
 
       case EO_ROW_DST_PUSHCOLI: ArgGet(iArg); // push dst column
@@ -3183,10 +3184,16 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // row operators
-      case EO_DEVROW_POPCOLI: ArgGet(iArg); // pop and deposit top into column
+      case EO_DEVROW_POPCOLI: ArgGet(iArg); // pop and deposit top into dev column
         *(++aiDstk) = iArg;
         dLU2(EO_DEVROW_POPCOLI,iArg,iTopA);
         vDev_ROW_POPCOLI(&aiDstk);
+        break;//+endCase
+
+      case EO_DEVROW_POPCOLS: ArgGet(iArg); // pop and deposit top into dev column
+        *(++aiDstk) = iArg;
+        dLU0(EO_DEVROW_POPCOLS);
+        vDev_ROW_POPCOLS(&aiDstk);
         break;//+endCase
 
       case EO_DEVROW_PUSHCOLI: ArgGet(iArg); // push column
@@ -3194,6 +3201,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_ROW_PUSHCOLI(&aiDstk);
         dLU2(EO_ROW_SRC_PUSHCOLI,iArg,iRes);
         break;//+endCase
+
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       case EO_SUPER_Q100: ArgNil(); // super frag for Q100
         aiLocals = aRluCommon->m_iaLocals;

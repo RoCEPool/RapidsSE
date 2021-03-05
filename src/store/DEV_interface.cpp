@@ -1297,22 +1297,32 @@ void vDev_ROW_POPCOLI(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* pop and deposit top into dst column                                        */
 /*----------------------------------------------------------------------------*/
-void vDev_ROW_POPCOLS(void* aLU, void* aROWDEVICE, i8 iArg, Stz* szTop)
+void vDev_ROW_POPCOLS(i8** aaiDstk)
 {
   _static_
 
-  UNUSED(aLU);
+  i8 *aiDstk = *aaiDstk;
 
-  DevROW* pDevRow = _pDevROW(aROWDEVICE);
-  
-  pDevRow->m_pRowBuffer->vPositionOnCell(iArg);
+  // pop the column
+  i8 iColumn = *(aiDstk--);
+
+  // pop the row dev
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
+
+  // get the str address
+  Stz* szStr = (Stz*)S_StrAdr();
+
+  pDevRow->m_pRowBuffer->vPositionOnCell(iColumn);
   
   char* azDst = pDevRow->m_pRowBuffer->azDepositString_begin();
   
-  StrLib::vCopy(azDst,(char*)szTop);
+  StrLib::vCopy(azDst,(char*)szStr);
   i8 nSize = StrLib::nSize(azDst);
 
   pDevRow->m_pRowBuffer->vDepositString_end(nSize);
+  S_StrDrp();
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -96,7 +96,8 @@ eEC ExprEval::eExprEvalAll(StreamDef* pStreamDefIn)
     if (pColumn->eColumnType() == CT_VARCHAR ||
         pColumn->eColumnType() == CT_CHAR) {
       StrLib::vSprintCat(m_sAsmText, "  EO_PUSH_LOCALS %lld\n"_Stz, iCol);
-      StrLib::vSprintCat(m_sAsmText, "  EO_ROW_DST_POPCOLS %lld\n"_Stz, iCol);
+      StrLib::vSprintCat(m_sAsmText, "  EO_PUSH_DEVROW_DST\n"_Stz);
+      StrLib::vSprintCat(m_sAsmText, "  EO_DEVROW_POPCOLS %lld\n"_Stz, iCol);
     }
     else {
       StrLib::vSprintCat(m_sAsmText, "  EO_PUSH_LOCALI %lld\n"_Stz, iCol);
@@ -326,7 +327,8 @@ void ExprEval::vAddPopCol(eCT eColumnType, i8 iColumn)
 
     case CT_CHAR:
     case CT_VARCHAR:
-      StrLib::vSprintCat(m_sAsmText, "  EO_ROW_DST_POPCOLS %lld\n"_Stz, iColumn);
+      StrLib::vSprintCat(m_sAsmText, "  EO_PUSH_DEVROW_DST\n"_Stz);
+      StrLib::vSprintCat(m_sAsmText, "  EO_DEVROW_POPCOLS %lld\n"_Stz, iColumn);
       break;
 
     default:
@@ -385,7 +387,8 @@ void ExprEval::vAddStoreCol(eCT eColumnType, i8 iColumn)
     case CT_VARCHAR:
       StrLib::vSprintCat(m_sPayLoadStore, "  EO_PAY_STORE_COLS %lld\n"_Stz, iColumn);
       StrLib::vSprintCat(m_sPayLoadToBuffer, "  EO_PAY_FETCH_COLS %lld\n"_Stz, iColumn);
-      StrLib::vSprintCat(m_sPayLoadToBuffer, "  EO_ROW_DST_POPCOLS %lld\n"_Stz, iColumn);
+      StrLib::vSprintCat(m_sPayLoadToBuffer,"  EO_PUSH_DEVROW_DST\n"_Stz);
+      StrLib::vSprintCat(m_sPayLoadToBuffer,"  EO_DEVROW_POPCOLS %lld\n"_Stz, iColumn);
       break;
 
     default:
