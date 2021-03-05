@@ -79,7 +79,7 @@ void vDev_ROW_POPCOLI(i8** aaiDstk);
 void vDev_ROW_POPCOLS(i8** aaiDstk);
 void vDev_ROW_PRINT(i8** aaiDstk);
 void vDev_ROW_PUSHCOLI(i8** aaiDstk);
-Stz* szDev_ROW_PUSHCOLS(void* aLU, void* aROWDEVICE, i8 iArg);
+void vDev_ROW_PUSHCOLS(i8** aaiDstk);
 void vDev_ROW_PUSHOFS(i8** aaiDstk);
 void vDev_ROW_RESET(i8** aaiDstk);
 void vDev_ROW_SET(i8** aaiDstk);
@@ -88,6 +88,8 @@ void vDev_ROW_TESTBUFFER(i8** aaiDstk);
 void vDev_ROW_TESTROW(i8** aaiDstk);
 void vDev_ROW_SETBYOFS(i8** aaiDstk);
 void vDev_ROW_ZERO(i8** aaiDstk);
+
+Stz* szDev_ROW_PUSHCOLS(void* aLU, void* aROWDEVICE, i8 iArg);     // should go
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

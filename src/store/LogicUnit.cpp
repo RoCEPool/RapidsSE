@@ -3170,9 +3170,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
       case EO_ROW_SRC_PUSHCOLS: ArgGet(iArg); // push src column
-        azSrc = (char*)szDev_ROW_PUSHCOLS(pLU,aRluCommon->m_pDevSrcRow,iArg);
-        dLU2(EO_ROW_SRC_PUSHCOLS,iArg,(i8)azSrc);
-        S_PushStr(azSrc);
+//        azSrc = (char*)szDev_ROW_PUSHCOLS(pLU,aRluCommon->m_pDevSrcRow,iArg);
+//        dLU2(EO_ROW_SRC_PUSHCOLS,iArg,(i8)azSrc);
+//        S_PushStr(azSrc);
+        RASSERT(0);
         break;//+endCase
         
       case EO_ROW_ALT_PUSHCOLI: ArgGet(iArg); // push alt column
@@ -3192,14 +3193,20 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_DEVROW_POPCOLS: ArgGet(iArg); // pop and deposit top into dev column
         *(++aiDstk) = iArg;
-        dLU0(EO_DEVROW_POPCOLS);
+        dLU1(EO_DEVROW_POPCOLS,iArg);
         vDev_ROW_POPCOLS(&aiDstk);
         break;//+endCase
 
       case EO_DEVROW_PUSHCOLI: ArgGet(iArg); // push column
+        dLU1(EO_ROW_SRC_PUSHCOLI,iArg);
         *(++aiDstk) = iArg;
         vDev_ROW_PUSHCOLI(&aiDstk);
-        dLU2(EO_ROW_SRC_PUSHCOLI,iArg,iRes);
+        break;//+endCase
+
+      case EO_DEVROW_PUSHCOLS: ArgGet(iArg); // push column
+        dLU1(EO_ROW_SRC_PUSHCOLS,iArg);
+        *(++aiDstk) = iArg;
+        vDev_ROW_PUSHCOLS(&aiDstk);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

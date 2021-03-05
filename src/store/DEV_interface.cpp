@@ -1379,6 +1379,31 @@ Stz* szDev_ROW_PUSHCOLS(void* aLU, void* aROWDEVICE, i8 iArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* push src column                                                            */
+/*----------------------------------------------------------------------------*/
+void vDev_ROW_PUSHCOLS(i8** aaiDstk)
+{
+  _static_
+
+  i8 nSize;
+  char* azDst;
+
+  i8 *aiDstk = *aaiDstk;
+
+  // pop the column
+  i8 iColumn = *(aiDstk--);
+
+  // pop the device
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
+
+  Stz* szSrc = pDevRow->m_aRow->szColVal_ofs(iColumn);
+
+  S_PushStr(szSrc);
+
+  *aaiDstk = aiDstk;
+}
+
+/*----------------------------------------------------------------------------*/
 /* push offset of source row                                                  */
 /*----------------------------------------------------------------------------*/
 void vDev_ROW_PUSHOFS(i8** aaiDstk)
