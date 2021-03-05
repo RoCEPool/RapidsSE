@@ -16,6 +16,58 @@ using namespace Parser;
 static Stz* C_SUBTRACTION_NAME_PREFIX = "SubtractionExpr"_Stz;
 static Stz* C_SUBTRACTION_DEFN = "/__root__/definitions/object/expr/operator/mathematical/subtraction"_Stz;
 
+// What is the resulting type when we combine these inputs?
+// * The left header column represents the type of the first operand.
+// * The top header row represents the type of the second operand.
+// * The corresponding cell in the matrix represents the type of the resultant from this operation.
+// * Invalid/unsupported combinations are represented with CT_NONE.
+// * Fields marked with /*?*/ are not currently supported but could be.  Refer to
+//   the documentation below marked with this symbol for more information.
+// * Fields marked with /*X*/ are not currently supported but should be.
+static eCT aeTypeCalculus[CT_ENUMS][CT_ENUMS] = {
+
+                 //   NONE     BOOLEAN  CHAR     DATE          DECIMAL     FLOAT       INTEGER       /*IVL_YM          IVL_DT  */     INTERVAL TIME          TIMESTP       VARCHAR  /*UNKNOWN*/
+/*  0 NONE       */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE, CT_NONE,      CT_NONE,      CT_NONE, /*CT_NONE*/    },
+/*  1 BOOLEAN    */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE, CT_NONE,      CT_NONE,      CT_NONE, /*CT_NONE*/    },
+/*  2 CHAR       */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE, CT_NONE,      CT_NONE,      CT_NONE, /*CT_NONE*/    },
+/*  3 DATE       */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE/*X*/, CT_NONE,    CT_NONE,    CT_NONE,      /*CT_DATE,        CT_DATE,*/     CT_DATE, CT_NONE/*?*/, CT_NONE/*?*/, CT_NONE, /*CT_NONE*/    },
+/*  4 DECIMAL    */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_DECIMAL, CT_FLOAT,   CT_DECIMAL,   /*CT_NONE,        CT_NONE,*/     CT_NONE, CT_NONE,      CT_NONE,      CT_NONE, /*CT_UNKNOWN*/ },
+/*  5 FLOAT      */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_FLOAT,   CT_FLOAT,   CT_FLOAT,     /*CT_NONE,        CT_NONE,*/     CT_NONE, CT_NONE,      CT_NONE,      CT_NONE, /*CT_UNKNOWN*/ },
+/*  6 INTEGER    */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_DECIMAL, CT_FLOAT,   CT_INTEGER,   /*CT_NONE,        CT_NONE,*/     CT_NONE, CT_NONE,      CT_NONE,      CT_NONE, /*CT_UNKNOWN*/ },
+// XX INTERVAL_YM*/ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      /*CT_INTERVAL_YM, CT_NONE,*/     CT_NONE, CT_NONE,      CT_NONE,      CT_NONE, /*CT_UNKNOWN*/ },
+// XX INTERVAL_DT*/ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      /*CT_NONE,        INTERVAL_DT,*/ CT_NONE, CT_NONE,      CT_NONE,      CT_NONE, /*CT_UNKNOWN*/ },
+/*  7 INTERVAL   */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE, CT_NONE,      CT_NONE,      CT_NONE, /*CT_NONE*/    },
+/*  8 TIME       */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      /*CT_TIME,        CT_TIME,*/     CT_NONE, CT_NONE/*X*/, CT_NONE,      CT_NONE, /*CT_NONE*/    },
+/*  9 TIMESTAMP  */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE/*?*/, CT_NONE,    CT_NONE,    CT_NONE,      /*CT_TIMESTAMP,   CT_TIMESTAMP,*/CT_NONE, CT_NONE/*?*/, CT_NONE/*X*/, CT_NONE, /*CT_NONE*/    },
+/* 10 VARCHAR    */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE, CT_NONE,      CT_NONE,      CT_NONE, /*CT_NONE*/    },
+// XX UNKNOWN    */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_UNKNOWN, CT_UNKNOWN, CT_UNKNOWN,   /*CT_UNKNOWN,     CT_UNKNOWN,*/  CT_NONE, CT_NONE,      CT_NONE,      CT_NONE, /*CT_NONE*/    }
+};
+
+// References:
+//  Exact numeric - exact numeric = exact numeric
+//    - SQL standard 2008 (draft): Part 2 (Foundation), page 251, point (1)
+//
+//  Approximate numeric - exact numeric (any order) = approximate numeric:
+//    - SQL standard 2008 (draft): Part 2 (Foundation), page 251, point (2)
+//
+//  Datetime & Intervals arithmetic:
+//    Date      +/-     Interval  = Date
+//    Time      +/-     Interval  = Time
+//    Timestamp +/-     Interval  = Timestamp
+//    Date      -       Date      = Interval_DT
+//    Time      -       Time      = Interval_DT
+//    Timestamp -       Timestamp = Interval_DT
+//    Interval  +/-     Interval  = Interval
+//     - SQL standard 2008 (draft): Part 2 (Foundation), page 39 (table 7)
+//
+//  /*?*/
+//  Postgres seems to support other enhancements, marked as /*?*/ in the table above:
+//    Date      -       Time      = Timestamp
+//    Date      -       Integer   = Date  (integer is assumed to be in days)
+//    Date      -       Timestamp = Interval_DT (the date seems to be cast to a timestamp)
+//    Timestamp -       Date      = Interval_DT (the date seems to be cast to a timestamp)
+//    Timestamp -       Time      = Timestamp (the time is cast to a timestamp with the same date)
+
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -99,6 +151,29 @@ QueryNode* SubtractionExpr::pChild2(QueryNode *pNode)
 b1 SubtractionExpr::bIsOfType(PlanNode *pNode)
 {
   return ShadowNode::bIsOfType(pNode, C_SUBTRACTION_DEFN);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Returns the resulting type of the expression operation.                    */
+/* A returned value of CT_NONE means that it is not supported or invalid.     */
+/*----------------------------------------------------------------------------*/
+eCT SubtractionExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+
+  // Get the types of the two operands
+  QueryNode* pChild1 = SubtractionExpr::pChild1(pExprNode);
+  QueryNode* pChild2 = SubtractionExpr::pChild2(pExprNode);
+
+  eCT eOperand1 = Expr::eType(pChild1, pRootNode);
+  eCT eOperand2 = Expr::eType(pChild2, pRootNode);
+
+  // Lookup the type of the result
+  eCT eResult = aeTypeCalculus[eOperand1][eOperand2];
+
+  return eResult;
 }
 
 /*============================================================================*/

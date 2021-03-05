@@ -77,6 +77,17 @@ b1 StringLiteral::bIsOfType(PlanNode *pNode)
   return ShadowNode::bIsOfType(pNode, C_STRING_LITERAL_DEFN);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns the resulting type of the expression operation                     */
+/*----------------------------------------------------------------------------*/
+eCT StringLiteral::eType(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+
+  return CT_VARCHAR;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

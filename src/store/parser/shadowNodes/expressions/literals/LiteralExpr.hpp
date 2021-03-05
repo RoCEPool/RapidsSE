@@ -21,7 +21,10 @@ namespace Parser
     static b1   bIsNull(PlanNode* pNode);
 
     // Returns true if a given node is a given type ** or is derived from that type **
-    static b1 bIsOfType(PlanNode* pNode);
+    static b1   bIsOfType(PlanNode* pNode);
+
+    // Returns the resulting type of the expression operation
+    static eCT  eType(QueryNode* pNode, PlanNode* pRootNode);
   };
 
 }

@@ -12,6 +12,7 @@
 #include "TimeLiteral.hpp"
 #include "TimestampLiteral.hpp"
 #include "NullLiteral.hpp"
+#include "eCT.h"
 
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
@@ -37,16 +38,16 @@ void LiteralExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
   _static_
   ASSERT(bIsOfType(pNode));
 
-  if      (StringLiteral::bIsOfType(pNode))     { StringLiteral::vDescribe(pNode, sBuf);    }
-  else if (BooleanLiteral::bIsOfType(pNode))    { BooleanLiteral::vDescribe(pNode, sBuf);   }
-  else if (IntegerLiteral::bIsOfType(pNode))    { IntegerLiteral::vDescribe(pNode, sBuf);   }
-  else if (FloatLiteral::bIsOfType(pNode))      { FloatLiteral::vDescribe(pNode, sBuf);     }
-//  else if (DecimalLiteral::bIsOfType(pNode))    { DecimalLiteral::vDescribe(pNode, sBuf);     }
-  else if (DateLiteral::bIsOfType(pNode))       { DateLiteral::vDescribe(pNode, sBuf);      }
-  else if (TimeLiteral::bIsOfType(pNode))       { TimeLiteral::vDescribe(pNode, sBuf);      }
+  if      (   StringLiteral::bIsOfType(pNode))  {    StringLiteral::vDescribe(pNode, sBuf); }
+  else if (  BooleanLiteral::bIsOfType(pNode))  {   BooleanLiteral::vDescribe(pNode, sBuf); }
+  else if (  IntegerLiteral::bIsOfType(pNode))  {   IntegerLiteral::vDescribe(pNode, sBuf); }
+  else if (    FloatLiteral::bIsOfType(pNode))  {     FloatLiteral::vDescribe(pNode, sBuf); }
+//  else if (DecimalLiteral::bIsOfType(pNode))  {   DecimalLiteral::vDescribe(pNode, sBuf);    }
+  else if (     DateLiteral::bIsOfType(pNode))  {      DateLiteral::vDescribe(pNode, sBuf); }
+  else if (     TimeLiteral::bIsOfType(pNode))  {      TimeLiteral::vDescribe(pNode, sBuf); }
   else if (TimestampLiteral::bIsOfType(pNode))  { TimestampLiteral::vDescribe(pNode, sBuf); }
-//  else if (IntervalLiteral::bIsOfType(pNode))   { IntervalLiteral::vDescribe(pNode, sBuf);    }
-  else if (NullLiteral::bIsOfType(pNode))       { NullLiteral::vDescribe(pNode, sBuf);      }
+//  else if (IntervalLiteral::bIsOfType(pNode)) {  IntervalLiteral::vDescribe(pNode, sBuf);    }
+  else if (     NullLiteral::bIsOfType(pNode))  {      NullLiteral::vDescribe(pNode, sBuf); }
   else NEVER_REACH
 }
 
@@ -68,6 +69,28 @@ b1 LiteralExpr::bIsNull(PlanNode* pNode)
 b1 LiteralExpr::bIsOfType(PlanNode *pNode)
 {
   return ShadowNode::bIsOfType(pNode, C_LITERAL_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the resulting type of the expression operation                     */
+/*----------------------------------------------------------------------------*/
+eCT LiteralExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+
+  if      (      StringLiteral::bIsOfType(pExprNode))  { return CT_VARCHAR;     }
+  else if (     BooleanLiteral::bIsOfType(pExprNode))  { return CT_BOOLEAN;     }
+  else if (     IntegerLiteral::bIsOfType(pExprNode))  { return CT_INTEGER;     }
+  else if (       FloatLiteral::bIsOfType(pExprNode))  { return CT_FLOAT;       }
+//  else if    (DecimalLiteral::bIsOfType(pExprNode))  { return CT_DECIMAL;     }
+  else if (        DateLiteral::bIsOfType(pExprNode))  { return CT_DATE;        }
+  else if (        TimeLiteral::bIsOfType(pExprNode))  { return CT_TIME;        }
+  else if (   TimestampLiteral::bIsOfType(pExprNode))  { return CT_TIMESTAMP;   }
+//  else if (IntervalYMLiteral::bIsOfType(pExprNode))  { return CT_INTERVAL_YM; }
+//  else if (IntervalDTLiteral::bIsOfType(pExprNode))  { return CT_INTERVAL_DT; }
+//  else if (      NullLiteral::bIsOfType(pExprNode))  { return CT_UNKNOWN;     }
+  else NEVER_REACH
 }
 
 /*============================================================================*/

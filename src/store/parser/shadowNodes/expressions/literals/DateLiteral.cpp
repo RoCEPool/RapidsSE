@@ -82,6 +82,17 @@ b1 DateLiteral::bIsOfType(PlanNode *pNode)
   return ShadowNode::bIsOfType(pNode, C_DATE_LITERAL_DEFN);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns the resulting type of the expression operation                     */
+/*----------------------------------------------------------------------------*/
+eCT DateLiteral::eType(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+
+  return CT_DATE;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
