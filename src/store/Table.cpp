@@ -69,7 +69,8 @@ Table::Table(Stz* szTableNm, eTT eKind)
   //        has started). Experimentally allows new, but non-active nodes to be
   //        added after the cluster has started
   //        This must be fixed properly. Ray 14 Nov 2020
-  if (AM::pGrid()->bHasStarted()) {
+  //if (AM::pGrid()->bHasStarted()) {
+  if (TT_NORMAL == m_eKind) {
     for (i8 i_TablePtn = 0; i_TablePtn < AM::nPtnsPerTable(); i_TablePtn++) {
       
       tPN tPtnNo = Table::tTablePtnToPtnNo(i_TablePtn);
