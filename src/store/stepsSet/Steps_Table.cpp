@@ -485,8 +485,14 @@ void Step::vTableNew(void)
   eTT eTableKind = TT_NORMAL;
   Job* pJob = MY::pJob();
   TagSet* pJobTags = pJob->pJobTags();
+  if (pJobTags && pJobTags->bHasName(C_TAG_INFOSET))
+    eTableKind = TT_INFOSET;
+  else
   if (pJobTags && pJobTags->bHasName(C_TAG_INTERNAL))
     eTableKind = TT_INTERNAL;
+  else
+  if (pJobTags && pJobTags->bHasName(C_TAG_REPLICATED))
+    eTableKind = TT_REPLICATED;
 
   Table* pTable = new Table(sTableNm,eTableKind);
   
