@@ -5,12 +5,12 @@
 " se_defineTables.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* define apriori tables                                                      */
+/* define info sets (group 1)                                                 */
 /*----------------------------------------------------------------------------*/
 
-"  start::defineTables" .verbose
+"  start::defineInfoSets1" .verbose
 
-: start::defineTables
+: start::defineInfoSets1
 
   "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
 
@@ -189,14 +189,13 @@
 ;
 
 
-
 /*----------------------------------------------------------------------------*/
-/* define apriori tables 2                                                    */
+/* define info sets (group 2)                                                 */
 /*----------------------------------------------------------------------------*/
 
-"  start::defineTables2" .verbose
+"  start::defineInfoSets2" .verbose
 
-: start::defineTables2
+: start::defineInfoSets2
 
   "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
 
@@ -299,19 +298,13 @@
 
 ;
 
-
-
-
-
-
-
 /*----------------------------------------------------------------------------*/
-/* define infoset tables                                                      */
+/* define info sets (group 3)                                                 */
 /*----------------------------------------------------------------------------*/
 
-"  start::defineInfoSets" .verbose
+"  start::defineInfoSets3" .verbose
 
-: start::defineInfoSets
+: start::defineInfoSets3
 
   "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
 

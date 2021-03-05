@@ -487,7 +487,7 @@ bool Table::bIsDefinitionOnly(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  return m_bDefinitionOnly;
+  return (TT_INFOSET == m_eKind || TT_INTERNAL == m_eKind);
 }
 
 /*----------------------------------------------------------------------------*/

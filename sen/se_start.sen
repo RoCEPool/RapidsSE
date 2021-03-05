@@ -39,11 +39,11 @@
   start::defProc_SqlCompiler
 
   // define the apriori system tables
-  start::defineTables
-  start::defineTables2
+  start::defineInfoSets1
+  start::defineInfoSets2
 
   // define the apriori infoset tables
-  start::defineInfoSets
+  start::defineInfoSets3
   start::defineInternalTables
 
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
