@@ -17,7 +17,6 @@ namespace Parser
     ColumnRef();
 
   public:
-    static Stz*       szColumnName(QueryNode* pQueryNode);
     static QueryNode* pCreate(Text* pCatalogName, Text* pSchemaName,
                               Text* pTableName, Text* pColumnName);
 
@@ -25,6 +24,15 @@ namespace Parser
 
     // Returns true if a given node is a given type ** or is derived from that type **
     static b1 bIsOfType(PlanNode* pNode);
+
+    static Stz*  szCatalog(QueryNode* pColumnRef);
+    static Stz*  szSchema(QueryNode* pColumnRef);
+    static Stz*  szTable(QueryNode* pColumnRef);
+    static Stz*  szColumn(QueryNode* pColumnRef);
+    static b1    bIsFullyQualified(QueryNode* pColumnRef);
+    static void  vQualify(QueryNode* pColumnRef, Stz* szCatalogName, Stz* szSchemaName,
+                          Stz* szTableName, Stz* szColumnName);
+
   };
 
 }

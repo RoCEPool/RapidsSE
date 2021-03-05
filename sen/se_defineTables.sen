@@ -191,7 +191,7 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* define apriori tables                                                      */
+/* define apriori tables 2                                                    */
 /*----------------------------------------------------------------------------*/
 
 "  start::defineTables2" .verbose
@@ -337,6 +337,7 @@
     tableName      VARCHAR NOT NULL ,
     columnNumber   INTEGER NOT NULL ,
     columnName     VARCHAR NOT NULL ,
+    typeEnum       INTEGER NOT NULL ,
     columnType     VARCHAR NOT NULL ,
     columnLength   INTEGER NOT NULL ,
     columnScale    INTEGER NOT NULL ,
@@ -492,6 +493,28 @@
     FILENAME   VARCHAR NOT NULL ,
     UNITS      INTEGER NOT NULL
   ) ;
+  "
+  api::executeRequest
+;
+
+/*----------------------------------------------------------------------------*/
+/* define internal tables                                                     */
+/*----------------------------------------------------------------------------*/
+
+"  start::defineInternalTables" .verbose
+
+: start::defineInternalTables
+
+  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_EVENTS
+  sPath
+  "
+  define table __events (
+    eventEnum      INTEGER NOT NULL ,
+    assocInfo      VARCHAR NOT NULL
+  ) < internal > = 1 ;
   "
   api::executeRequest
 ;

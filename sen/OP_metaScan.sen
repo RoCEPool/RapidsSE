@@ -23,13 +23,13 @@
 
   // -- -- -- -- -- --
   
-  Pot[].new
+  PotRlu[].new
 
   MetaTable::listTables
 
-  Pot[].pushBuffer
+  PotRlu[].pushBuffer
 
-  Pot[].delete
+  PotRlu[].delete
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -60,13 +60,13 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Pot[].new
+  PotRlu[].new
 
   MetaTable::listTables
   
-  Pot[].pipeoutAllCompleted
-  Pot[].pipeoutAllDangling
-  Pot[].delete
+  PotRlu[].pipeoutCompleted
+  PotRlu[].pipeoutDangling
+  PotRlu[].delete
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

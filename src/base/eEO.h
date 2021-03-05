@@ -39,6 +39,12 @@ enum eEO : u1 // expression operators
   /*  S  */ EO_PUSH_DEVROW_DST,     // push dst row device
   /*  S  */ EO_PUSH_DEVROW_SRC,     // push src row device
 
+  // pot
+  /*  S  */ EO_PUSH_POT,            // push pot
+
+  // partition
+  /*  S  */ EO_PUSH_PTN,           // push partition
+
   // counter
   /*  R  */ EO_CTR_0_DEC,        // dec counter 0
   /*  R  */ EO_CTR_0_INC,        // inc counter 0
@@ -346,17 +352,18 @@ enum eEO : u1 // expression operators
   /*  -  */ EO_ROW_ALT_PUSHOFS,  // push offset of alt row                   ---to go
   /*  -  */ EO_ROW_ALT_SETBYOFS, // set alt row by using offset on stack     ---to go
 
-  /*     */ EO_DEVROW_PRINT,     // print row from row dev
-  /*     */ EO_DEVROW_RESET,     // reset rowslab in row dev
-  /*     */ EO_DEVROW_NEW,       // create new row in row dev
-  /*     */ EO_DEVROW_SET,       // set rowslab in row dev
-  /*     */ EO_RDEVOW_TESTROW,   // test if row in row dev
-  /*     */ EO_DEVROW_ZERO,      // zero destination row in row dev
   /*     */ EO_DEVROW_BEGIN,     // begin src row traverse in row dev
   /*     */ EO_DEVROW_NEXT,      // move to next src row in row dev
+  /*     */ EO_DEVROW_NEW,       // create new row in row dev
   /*     */ EO_DEVROW_NULL,      // null rb src src in row dev
+  /*     */ EO_DEVROW_PRINT,     // print row from row dev
   /*     */ EO_DEVROW_PUSHOFS,   // push offset of source row in row dev
+  /*     */ EO_DEVROW_RESET,     // reset rowslab in row dev
+  /*     */ EO_DEVROW_SET,       // set rowslab in row dev
   /*     */ EO_DEVROW_SETBYOFS,  // set src row  in row dev by using offset on stack
+  /*     */ EO_DEVROW_TESTBUFFER,// test if buffer in row dev
+  /*     */ EO_DEVROW_TESTROW,   // test if row in row dev
+  /*     */ EO_DEVROW_ZERO,      // zero destination row in row dev
 
   // row operators
   /*  D  */ EO_ROW_DST_POPCOLI,  // pop and deposit top into dst column
@@ -416,6 +423,12 @@ static Stz* aEO[]
   /*    */ "EO_PUSH_DEVROW_ALT"_Stz,
   /*    */ "EO_PUSH_DEVROW_DST"_Stz,
   /*    */ "EO_PUSH_DEVROW_SRC"_Stz,
+
+  // pot
+  /*    */ "EO_PUSH_POT"_Stz,
+
+  // partition
+  /*    */ "EO_PUSH_PTN"_Stz,
 
   // counter
   /*    */ "EO_CTR_0_DEC"_Stz,
@@ -724,17 +737,18 @@ static Stz* aEO[]
   /*    */ "EO_ROW_ALT_SETBYOFS"_Stz,
 
   // row / rowslab
-  /*     */ "EO_DEVROW_PRINT"_Stz,
-  /*     */ "EO_DEVROW_RESET"_Stz,
-  /*     */ "EO_DEVROW_NEW"_Stz,
-  /*     */ "EO_DEVROW_SET"_Stz,
-  /*     */ "EO_RDEVOW_TESTROW"_Stz,
-  /*     */ "EO_DEVROW_ZERO"_Stz,
   /*     */ "EO_DEVROW_BEGIN"_Stz,
   /*     */ "EO_DEVROW_NEXT"_Stz,
+  /*     */ "EO_DEVROW_NEW"_Stz,
   /*     */ "EO_DEVROW_NULL"_Stz,
+  /*     */ "EO_DEVROW_PRINT"_Stz,
   /*     */ "EO_DEVROW_PUSHOFS"_Stz,
+  /*     */ "EO_DEVROW_RESET"_Stz,
+  /*     */ "EO_DEVROW_SET"_Stz,
   /*     */ "EO_DEVROW_SETBYOFS"_Stz,
+  /*     */ "EO_DEVROW_TESTBUFFER"_Stz,
+  /*     */ "EO_DEVROW_TESTROW"_Stz,
+  /*     */ "EO_DEVROW_ZERO"_Stz,
 
   // row operators
   /*    */ "EO_ROW_DST_POPCOLI"_Stz,
@@ -799,6 +813,12 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_PUSH_DEVROW_ALT
   { EA_NONE,    0 },  // EO_PUSH_DEVROW_DST
   { EA_NONE,    0 },  // EO_PUSH_DEVROW_SRC
+
+  // pot
+  { EA_NONE,    0 },  // EO_PUSH_POT
+
+  // pot
+  { EA_NONE,    0 },  // EO_PUSH_PTN
 
   // counter
   { EA_NONE,    0 },  // EO_CTR_0_DEC
@@ -1109,17 +1129,18 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_ROW_ALT_SETBYOFS
 
     // row / rowslab
-  { EA_NONE,    0 },  // EO_DEVROW_PRINT
-  { EA_NONE,    0 },  // EO_DEVROW_RESET
-  { EA_NONE,    0 },  // EO_DEVROW_NEW
-  { EA_NONE,    0 },  // EO_DEVROW_SET
-  { EA_NONE,    0 },  // EO_RDEVOW_TESTROW
-  { EA_NONE,    0 },  // EO_DEVROW_ZERO
   { EA_NONE,    0 },  // EO_DEVROW_BEGIN
   { EA_NONE,    0 },  // EO_DEVROW_NEXT
+  { EA_NONE,    0 },  // EO_DEVROW_NEW
   { EA_NONE,    0 },  // EO_DEVROW_NULL
+  { EA_NONE,    0 },  // EO_DEVROW_PRINT
   { EA_NONE,    0 },  // EO_DEVROW_PUSHOFS
+  { EA_NONE,    0 },  // EO_DEVROW_RESET
+  { EA_NONE,    0 },  // EO_DEVROW_SET
   { EA_NONE,    0 },  // EO_DEVROW_SETBYOFS
+  { EA_NONE,    0 },  // EO_DEVROW_TESTBUFFER
+  { EA_NONE,    0 },  // EO_DEVROW_TESTROW
+  { EA_NONE,    0 },  // EO_DEVROW_ZERO
 
     // row operators
   { EA_SUBSCR,  8 },  // EO_ROW_DST_POPCOLI

@@ -1669,9 +1669,25 @@
                       value: "true if the column cannot contain a NULL value",
                       type: "/__root__/definitions/object/valueObject/booleanObject"
                     },
-                    // TODO: collation?
-                    // TODO: is primary key?
-                    // TODO: is unique key?
+                    {
+                      name: "ordinal",
+                      value: "The column number (0 based)",
+                      type: "/__root__/definitions/object/valueObject/integerObject"
+                    },
+                    {
+                      name: "precision",
+                      value: "The length of the column. Could be number of bytes/characters/digits",
+                      type: "/__root__/definitions/object/valueObject/integerObject"
+                    },
+                    {
+                      name: "scale",
+                      value: "The number of digits to the right of the decimal point, if applicable",
+                      type: "/__root__/definitions/object/valueObject/integerObject"
+                    },
+                    // TODO: isPartitionKey???
+                    // TODO: collation???
+                    // TODO: is primary key???
+                    // TODO: is unique key???
                   ]
                 }, // EndPath: /__root__/definitions/object/compound/columnDef
 

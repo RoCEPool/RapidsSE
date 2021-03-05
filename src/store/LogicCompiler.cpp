@@ -126,20 +126,20 @@ DynamicSymbol gxaDynamicSymbol[]
   
   { "vDev_ROW_BEGIN"_Stz,         (const void *) vDev_ROW_BEGIN         },
   { "vDev_ROW_NEW"_Stz,           (const void *) vDev_ROW_NEW           },
-  { "iDev_ROW_NEXT"_Stz,          (const void *) iDev_ROW_NEXT          },
+  { "vDev_ROW_NEXT"_Stz,          (const void *) vDev_ROW_NEXT          },
   { "vDev_ROW_NULL"_Stz,          (const void *) vDev_ROW_NULL          },
   { "vDev_ROW_POPCOLI"_Stz,       (const void *) vDev_ROW_POPCOLI       },
   { "vDev_ROW_POPCOLS"_Stz,       (const void *) vDev_ROW_POPCOLS       },
   { "vDev_ROW_PRINT"_Stz,         (const void *) vDev_ROW_PRINT         },
   { "iDev_ROW_PUSHCOLI"_Stz,      (const void *) iDev_ROW_PUSHCOLI      },
   { "szDev_ROW_PUSHCOLS"_Stz,     (const void *) szDev_ROW_PUSHCOLS     },
-  { "iDev_ROW_PUSHOFS"_Stz,       (const void *) iDev_ROW_PUSHOFS       },
+  { "vDev_ROW_PUSHOFS"_Stz,       (const void *) vDev_ROW_PUSHOFS       },
   { "vDev_ROW_RESET"_Stz,         (const void *) vDev_ROW_RESET         },
   { "vDev_ROW_SET"_Stz,           (const void *) vDev_ROW_SET           },
   { "vDev_ROW_SETBYOFS"_Stz,      (const void *) vDev_ROW_SETBYOFS      },
   { "vDev_ROW_TABLENM_SET"_Stz,   (const void *) vDev_ROW_TABLENM_SET   },
-  { "iDev_ROW_TEST"_Stz,          (const void *) iDev_ROW_TEST          },
-  { "iDev_ROW_TESTROW"_Stz,       (const void *) iDev_ROW_TESTROW       },
+  { "vDev_ROW_TESTBUFFER"_Stz,    (const void *) vDev_ROW_TESTBUFFER    },
+  { "vDev_ROW_TESTROW"_Stz,       (const void *) vDev_ROW_TESTROW       },
   { "vDev_ROW_ZERO"_Stz,          (const void *) vDev_ROW_ZERO          },
 
   { "vDev_TABLEPTN_DROPREAD"_Stz,   (const void *) vDev_TABLEPTN_DROPREAD   },
@@ -632,8 +632,6 @@ void LogicCompiler::vAddFragment(i8 i_CodeFrom, i8 i_CodeTill)
 
   for (i8 i_Code = i_CodeFrom; i_Code <= i_CodeTill; i_Code++) {
 
-    if (i_Code == 148)
-      i8 i = 1;
     eEO eCode = m_pLogicUnit->eCode(i_Code);
 
     i_Label = m_pLogicUnit->iFindLabel(i_Code);

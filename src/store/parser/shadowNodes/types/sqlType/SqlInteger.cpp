@@ -32,8 +32,8 @@ PlanNode* SqlInteger::pCreate()
   // Create a unique name for this object
   s256 sName;
   ShadowNode::vObjName(GraphNav::szLeafType(C_SQLINTEGER_DEFN), sName);
-
-  PlanNode* pNode = new QueryNode(sName, C_SQLINTEGER_DEFN);
+  Value xTypeValue((i8) CT_INTEGER);
+  PlanNode* pNode = new QueryNode(sName, C_SQLINTEGER_DEFN, static_cast<Value&&>(xTypeValue));
 
   return pNode;
 }

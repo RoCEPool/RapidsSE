@@ -4,6 +4,7 @@
 #pragma once
 
 #include "Index.hpp"
+#include "eTT.h"
 
 namespace STORE { class InfoSet; class StreamDef; }
 
@@ -13,6 +14,8 @@ namespace STORE
   {
   private:
     s32        m_sTableNm;    // table name (leave for the moment)
+    eTT        m_eKind  ;     // table kind
+
     IdxVec*    m_pIdxVec;     // index vector
     Atomic     m_ixIndexNo;   // next index no
     BucketMap* m_pBucketMap;  // bucket (to partition) map
@@ -58,6 +61,8 @@ namespace STORE
     void    vIsDefinitionOnly(bool bIsDefinitionOnly);
     void    vIsLoading(bool bIsLoading);
     bool    bIsLoading(void);
+    eTT     eKind(void);
+    void    vKind(eTT eKind);
     void    vLazyBuildIndexes(i8 i_TablePtn);
     void    vListContents(i8 i_Depth);
     void    vMarkTable(void);

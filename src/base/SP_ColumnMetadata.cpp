@@ -44,7 +44,7 @@ Stz* SP_ColumnMetadata::sz(ColumnMetadata* pColumnMeta)
           
   StrLib::vSprint(m_caResult
                   
-    ,"%s/%s/%s : [%02lld] %16s : type %7s length %5lld scale %2lld %s %s"_Stz
+    ,"%s/%s/%s : [%02lld] %16s : type %2lld %7s length %5lld scale %2lld %s %s"_Stz
                   
     ,pColumnMeta->szCatalogName()
     ,pColumnMeta->szSchemaName()
@@ -52,8 +52,9 @@ Stz* SP_ColumnMetadata::sz(ColumnMetadata* pColumnMeta)
 
     ,pColumnMeta->iColumnNumber()
     ,pColumnMeta->szColumnName()
-    ,pColumnMeta->szColumnType()
                   
+    ,pColumnMeta->iTypeEnum()
+    ,pColumnMeta->szColumnType()
     ,pColumnMeta->iColumnLength()
     ,pColumnMeta->iColumnScale()
 

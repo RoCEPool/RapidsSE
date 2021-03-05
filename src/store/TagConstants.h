@@ -19,6 +19,7 @@ static Stz* C_TAG_FREEPCT    = "<freePct>"_Stz;
 static Stz* C_TAG_DISTID     = "<distId>"_Stz;
 static Stz* C_TAG_GRID       = "<grid>"_Stz;
 static Stz* C_TAG_HOST       = "<host>"_Stz;
+static Stz* C_TAG_INTERNAL   = "<internal>"_Stz;
 static Stz* C_TAG_JOBKIND    = "<jobKind>"_Stz;
 static Stz* C_TAG_JOBNM      = "<jobNm>"_Stz;
 static Stz* C_TAG_LIFE       = "<life>"_Stz;

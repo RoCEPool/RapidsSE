@@ -255,6 +255,7 @@ void Metadata::vSearch(InfoSet* pInfoSet,
                        Stz* szCatalogName,
                        Stz* szSchemaName,
                        Stz* szTableName,
+                       Stz* szColumnName,
                        Dic* pDic,
                        Dic* pCatalog,
                        Dic* pSchema)
@@ -265,7 +266,7 @@ void Metadata::vSearch(InfoSet* pInfoSet,
     Dic* pDic = pCurrTenant();
     //vTrace("\nTENANT %s \\folder\n"_Stz,pDic->szDicNm());
     vSearch(pInfoSet,iScope,
-            szCatalogName,szSchemaName,szTableName,
+            szCatalogName,szSchemaName,szTableName,szColumnName,
             pDic,nullptr,nullptr);
     return;
   }
@@ -301,7 +302,7 @@ void Metadata::vSearch(InfoSet* pInfoSet,
         }
       }
       vSearch(pInfoSet,iScope,
-              szCatalogName,szSchemaName,szTableName,
+              szCatalogName,szSchemaName,szTableName,szColumnName,
               pDic,pCatalog,pSchema);
       continue;
     }
@@ -317,7 +318,7 @@ void Metadata::vSearch(InfoSet* pInfoSet,
         vSearchTables(pInfoSet,pCatalog,pSchema,pTable);
       else
       if (4 == iScope)
-        vSearchColumns(pInfoSet,pCatalog,pSchema,pTable);
+        vSearchColumns(pInfoSet,pCatalog,pSchema,pTable,szColumnName);
       continue;
     }
     
@@ -346,7 +347,8 @@ void Metadata::vSearchCatalogs(InfoSet* pInfoSet,
 void Metadata::vSearchColumns(InfoSet* pInfoSet,
                               Dic* pCatalog,
                               Dic* pSchema,
-                              Table* pTable)
+                              Table* pTable,
+                              Stz* szColumnName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
   
@@ -358,6 +360,9 @@ void Metadata::vSearchColumns(InfoSet* pInfoSet,
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     Column* pColumn = pStreamDef->pGetColumn(i_Col);
     
+    if (szColumnName && ! pColumn->szColNm()->bSame(szColumnName))
+      continue;
+    
     pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
                                pCatalog->szDicNm(),
                                pSchema->szDicNm(),
@@ -365,11 +370,12 @@ void Metadata::vSearchColumns(InfoSet* pInfoSet,
 
                                pColumn->iColumnNo(),
                                pColumn->szColNm(),
+                               (i8)pColumn->eColumnType(),
                                aCT[pColumn->eColumnType()],
                                pColumn->iColumnLength(),
                                pColumn->iColumnScale(),
-                               pColumn->bIsNullable(),
-                               pColumn->bIsPtnKey(),
+                               (i8)pColumn->bIsNullable(),
+                               (i8)pColumn->bIsPtnKey(),
 
                                C_VARGS_END);
   }
@@ -455,11 +461,12 @@ InfoSet* Metadata::pColumnDefs(Stz* szCatalogName,
 
                                  pColumn->iColumnNo(),
                                  pColumn->szColNm(),
+                                 (i8)pColumn->eColumnType(),
                                  aCT[pColumn->eColumnType()],
                                  pColumn->iColumnLength(),
                                  pColumn->iColumnScale(),
-                                 pColumn->bIsNullable(),
-                                 pColumn->bIsPtnKey(),
+                                 (i8)pColumn->bIsNullable(),
+                                 (i8)pColumn->bIsPtnKey(),
 
                                  C_VARGS_END);
     }

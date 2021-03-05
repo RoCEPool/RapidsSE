@@ -32,8 +32,10 @@ PlanNode* SqlUnknown::pCreate()
   // Create a unique name for this object
   s256 sName;
   ShadowNode::vObjName(GraphNav::szLeafType(C_SQLUNKNOWN_DEFN), sName);
-
-  PlanNode* pNode = new QueryNode(sName, C_SQLUNKNOWN_DEFN);
+//  Value xTypeValue((i8) CT_UNKNOWN);   // TODO: enable when eCT has been updated
+  RASSERT(0);                   // TODO: temporary
+  Value xTypeValue((i8) -1);
+  PlanNode* pNode = new QueryNode(sName, C_SQLUNKNOWN_DEFN, static_cast<Value&&>(xTypeValue));
 
   return pNode;
 }

@@ -60,9 +60,9 @@
 
   StreamDefOut[] range[] LogicUnit[].genRange
 
-  // new the pot[]
-  Pot[].new
-  false pot[].useStreamDefOut
+  // new the PotRlu[]
+  PotRlu[].new
+  false PotRlu[].useStreamDefOut
 
   // init the logicUnit[]
   LogicUnit[].init
@@ -82,9 +82,9 @@
 
   0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryNote
 
-  // pipe out all pot[]
-  Pot[].pipeoutAllDanglingPtns
-  Pot[].delete
+  // pipe out all PotRlu[]
+  PotRlu[].pipeoutDanglingPtns
+  PotRlu[].delete
 
   Pipein[].isNull if
     // create a new eos marker
@@ -122,7 +122,7 @@
 
   then
 
-  Pot[].pipeoutAllCompletedPtns
+  PotRlu[].pipeoutCompletedPtns
 
   true
 ;

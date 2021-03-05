@@ -27,6 +27,14 @@ static Stz* C_SCALE_DEFN          = "/__root__/definitions/object/valueObject/in
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* Creates an instance of this type with default precision and scale          */
+/*----------------------------------------------------------------------------*/
+PlanNode* SqlDecimal::pCreate()
+{
+  return pCreate(-1, -1);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Creates an instance of this type                                           */
 /* Use -1 for precision and scale if not applicable.                          */
 /*----------------------------------------------------------------------------*/
@@ -37,8 +45,8 @@ PlanNode* SqlDecimal::pCreate(i8 iPrecision, i8 iScale)
   // Create a unique name for this object
   s256 sName;
   ShadowNode::vObjName(GraphNav::szLeafType(C_SQLDECIMAL_DEFN), sName);
-
-  QueryNode* pNode = new QueryNode(sName, C_SQLDECIMAL_DEFN);
+  Value xTypeValue((i8) CT_DECIMAL);
+  QueryNode* pNode = new QueryNode(sName, C_SQLDECIMAL_DEFN, static_cast<Value&&>(xTypeValue));
 
   if (iPrecision != -1) {
     ASSERT(iPrecision > 0);

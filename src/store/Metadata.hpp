@@ -40,6 +40,7 @@ namespace STORE
                  Stz* szCatalogName,
                  Stz* szSchemaName,
                  Stz* szTableName,
+                 Stz* szColumnName,
                  Dic* pDic = nullptr,
                  Dic* pCatalog = nullptr,
                  Dic* pSchema = nullptr);
@@ -50,7 +51,8 @@ namespace STORE
     void vSearchColumns(InfoSet* pInfoSet,
                         Dic* pCatalog,
                         Dic* pSchema,
-                        Table* pTable);
+                        Table* pTable,
+                        Stz* szColumnName);
 
     void vSearchSchemas(InfoSet* pInfoSet,
                         Dic* pCatalog,

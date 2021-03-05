@@ -35,14 +35,26 @@
  
   PipeIn[] to Operand[]
     nullptr to PipeIn[]
-  
+
+  // create the command error info set
+  op__cmdErrInfoSet
+
   Operand[] nullptr to Operand[] sqlCompiler::nameValidate to Operand[]
-  
-  Operand[].pipeout
-  
-  true
-  
-  //PipeIn[].pipeout
+
+  Operand[].isNull if
+    EC_INVALID_COMMAND op.pipelineJob@ ERROR_JOB !!logError
+    InfoSet[].pipeOut
+    Operand[].newErrorMarker
+    Operand[].pipeOut
+
+  else
+    InfoSet[].delete
+    Operand[].pipeOut
+
+  then
+    true
+
+  //Operand[].pipeout
   //true
 ;
 

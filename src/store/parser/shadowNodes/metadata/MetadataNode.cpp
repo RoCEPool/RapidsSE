@@ -10,10 +10,14 @@
 #include "PlanConstants.hpp"
 
 #include "CatalogDef.hpp"
+#include "SchemaDefs.hpp"
 #include "SchemaDef.hpp"
+#include "TableDefs.hpp"
 #include "TableDef.hpp"
 #include "ColumnDef.hpp"
 #include "IndexDef.hpp"
+
+#include "ColumnRef.hpp"
 
 #include "GraphNav.hpp"
 
@@ -36,7 +40,7 @@ static Stz* C_CATALOGS_DEFN = "/__root__/definitions/object/list/catalogDefs"_St
 /*----------------------------------------------------------------------------*/
 /* Returns true if the given node is derived from the metadata definition     */
 /*----------------------------------------------------------------------------*/
-PlanNode* MetadataNode::pCreate()
+QueryNode* MetadataNode::pCreate()
 {
   QueryNode* pMetadataNode = new QueryNode(C_METADATANODE_NAME, C_METADATANODE_DEFN);
   QueryNode* pCatalogsNode = new QueryNode(C_CATALOGS_PROP, C_CATALOGS_DEFN);
@@ -84,11 +88,18 @@ void MetadataNode::vAddSchema(QueryNode* pMetadataNode, QueryNode* pSchemaDef)
   ASSERT(szCatalogName);
 
   QueryNode* pCatalogDefNode = pCatalogDef(pMetadataNode, szCatalogName);
+
+  if (!pCatalogDefNode) {
+    QueryNode* pSchemaDefs = SchemaDefs::pCreate();
+    pCatalogDefNode = CatalogDef::pCreate(szCatalogName, pSchemaDefs);
+    vAddCatalog(pMetadataNode, pCatalogDefNode);
+  }
+
   CatalogDef::vAddSchema(pCatalogDefNode, pSchemaDef);
 }
 
 /*----------------------------------------------------------------------------*/
-/* Add a table definition to the metadata                                     */
+/* Add a table definition to the metadata. Creates the schema/catalog if req  */
 /*----------------------------------------------------------------------------*/
 void MetadataNode::vAddTable(QueryNode* pMetadataNode, QueryNode* pTableDef)
 {
@@ -103,6 +114,13 @@ void MetadataNode::vAddTable(QueryNode* pMetadataNode, QueryNode* pTableDef)
   ASSERT(szSchemaName);
 
   QueryNode* pSchemaDefNode = pSchemaDef(pMetadataNode, szCatalogName, szSchemaName);
+
+  if (!pSchemaDefNode) {
+    QueryNode* pTableDefs = TableDefs::pCreate();
+    pSchemaDefNode = SchemaDef::pCreate(szCatalogName, szSchemaName, pTableDefs);
+    vAddSchema(pMetadataNode, pSchemaDefNode);
+  }
+
   SchemaDef::vAddTable(pSchemaDefNode, pTableDef);
 }
 
@@ -115,11 +133,15 @@ QueryNode* MetadataNode::pCatalogDef(QueryNode* pMetadataNode, Stz* szCatalogNam
   ASSERT(bIsOfType(pMetadataNode));
   ASSERT(szCatalogName);
 
+  QueryNode* pCatalogDef = nullptr;
+
   // Get the catalogs property
   QueryNode* pCatalogsNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_CATALOGS_PROP, pMetadataNode));
-  ASSERT(pCatalogsNode);
 
-  QueryNode* pCatalogDef = nullptr;
+  if (!pCatalogsNode) {
+    return pCatalogDef;
+  }
+
   PlanNodeIter* pIter = pCatalogsNode->pNewChildrenIter();
 
   while (pIter->bHasNext()) {
@@ -175,6 +197,29 @@ QueryNode* MetadataNode::pTableDef(QueryNode* pMetadataNode, Stz* szCatalogName,
   }
 
   return SchemaDef::pTableDef(pSchemaDefNode, szTableName);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get a plan node that represents a column definition and matches a given    */
+/* identifier from the metadata. Will return null if not found.               */
+/*----------------------------------------------------------------------------*/
+QueryNode* MetadataNode::pColumnDef(QueryNode* pMetadataNode, Stz* szCatalogName,
+                                    Stz* szSchemaName, Stz* szTableName, Stz* szColumnName)
+{
+  ASSERT(bIsOfType(pMetadataNode));
+  ASSERT(szCatalogName);
+  ASSERT(szSchemaName);
+  ASSERT(szTableName);
+  ASSERT(szColumnName);
+
+  // Get the tableDef
+  QueryNode* pTableDefNode = MetadataNode::pTableDef(pMetadataNode, szCatalogName, szSchemaName, szTableName);
+
+  if (pTableDefNode == nullptr) {
+    return nullptr;
+  }
+
+  return TableDef::pColumnDef(pTableDefNode, szColumnName);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -258,6 +303,85 @@ PlanNodeIter* MetadataNode::pIndexDefIter(QueryNode* pMetadataNode, Stz* szCatal
 
   ASSERT(TableDef::bIsOfType(pTableDefNode));
   return TableDef::pIndexDefIter(pTableDefNode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return a list of TableDef nodes in the metadata that match a columnRef     */
+/*----------------------------------------------------------------------------*/
+PlanNodeList* MetadataNode::pMatchColumnRef(QueryNode* pMetadataNode, QueryNode* pColumnRef)
+{
+  ASSERT(pMetadataNode);
+  ASSERT(pColumnRef);
+
+  PlanNodeList* pTableDefList = new PlanNodeList();
+  
+  Stz* szCatalogName = ColumnRef::szCatalog(pColumnRef);
+  Stz* szSchemaName  = ColumnRef::szSchema(pColumnRef);
+  Stz* szTableName   = ColumnRef::szTable(pColumnRef);
+  Stz* szColumnName  = ColumnRef::szColumn(pColumnRef);
+  
+  ASSERT(szColumnName);
+  
+  // First get the catalogs property
+  QueryNode* pCatalogsNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_CATALOGS_PROP, pMetadataNode));
+  
+  // Iterate every catalog
+  PlanNodeIter* pCatalogIter = pCatalogsNode->pNewChildrenIter();
+  
+  while (pCatalogIter->bHasNext()) {
+    QueryNode* pCatalogDef = static_cast<QueryNode*>(pCatalogIter->pNext());
+    
+    if (szCatalogName && !szCatalogName->bSame(CatalogDef::szCatalogName(pCatalogDef))) {
+      continue;
+    }
+    
+    // Iterate the schemas of this catalogDef
+    PlanNodeIter* pSchemaIter = CatalogDef::pSchemaDefIter(pCatalogDef);
+    
+    while (pSchemaIter->bHasNext()) {
+      QueryNode* pSchemaDef = static_cast<QueryNode*>(pSchemaIter->pNext());
+
+      if (szSchemaName && !szSchemaName->bSame(SchemaDef::szSchemaName(pSchemaDef))) {
+        continue;
+      }
+      
+      // Iterate the tables of this schemaDef
+      PlanNodeIter* pTableIter = SchemaDef::pTableDefIter(pSchemaDef);
+      
+      while (pTableIter->bHasNext()) {
+        QueryNode* pTableDef = static_cast<QueryNode*>(pTableIter->pNext());
+
+        if (szTableName && !szTableName->bSame(TableDef::szTableName(pTableDef))) {
+          continue;
+        }
+        
+        // Iterate the columns of this tableDef
+        PlanNodeIter* pColumnIter = TableDef::pColumnDefIter(pTableDef);
+
+        while (pColumnIter->bHasNext()) {
+          QueryNode *pColumnDef = static_cast<QueryNode *>(pColumnIter->pNext());
+
+          if (szColumnName && !szColumnName->bSame(ColumnDef::szColumnName(pColumnDef))) {
+            continue;
+          }
+
+          // We've got a match for the columnRef! Save this table definition
+          // but keep looking for other ambiguous matches.
+          pTableDefList->vAppend(pTableDef);
+        }
+
+        delete pColumnIter;
+      }
+      
+      delete pTableIter;
+    }
+    
+    delete pSchemaIter;
+  }  
+
+  delete pCatalogIter;
+
+  return pTableDefList;
 }
 
 /*============================================================================*/

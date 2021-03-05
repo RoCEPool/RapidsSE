@@ -1400,6 +1400,20 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // pot
+      case EO_PUSH_POT: ArgNil(); // push pot
+        dLU0(EO_PUSH_POT);
+        P_PushPtr(aRluCommon->m_pPot);
+        break;//+endCase
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // partition
+      case EO_PUSH_PTN: ArgNil(); // push partition
+        dLU0(EO_PUSH_PTN);
+        P_PushPtr(aRluCommon->m_i_Ptn);
+        break;//+endCase
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // counter
       case EO_CTR_0_DEC: ArgNil(); // dec counter 0
         aRluCommon->m_iCtr0--;
@@ -2982,77 +2996,116 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
        
       case EO_ROW_DST_SET: ArgNil(); // set dst row
-        dLU0(EO_ROW_DST_SET);
-        iTopA = *(aiDstk--);
-        vDev_ROW_SET(pLU,aRluCommon->m_pDevDstRow, iTopA);
+//        dLU0(EO_ROW_DST_SET);
+//        iTopA = *(aiDstk--);
+//        vDev_ROW_SET(pLU,aRluCommon->m_pDevDstRow, iTopA);
+        RASSERT(0);
         break;//+endCase
         
       case EO_ROW_DST_TESTROW: ArgNil(); // test if there is a destination row
-        dLU0(EO_ROW_DST_TESTROW);
-        iRes = iDev_ROW_TESTROW(pLU,aRluCommon->m_pDevDstRow);
-        *(++aiDstk) = iRes;
+//        iResdLU0(EO_ROW_DST_TESTROW);
+//        iRes = iDev_ROW_TESTROW(pLU,aRluCommon->m_pDevDstRow);
+//        *(++aiDstk) = iRes;
+        RASSERT(0);
         break;//+endCase
         
       case EO_ROW_DST_ZERO: ArgNil(); // zero destination row
-        dLU0(EO_ROW_DST_ZERO);
-        vDev_ROW_ZERO(pLU,aRluCommon->m_pDevDstRow);
+//        dLU0(EO_ROW_DST_ZERO);
+//        vDev_ROW_ZERO(pLU,aRluCommon->m_pDevDstRow);
+        RASSERT(0);
         break;//+endCase
         
       case EO_ROW_SRC_BEGIN: ArgNil(); // begin src row traverse
-        dLU0(EO_ROW_SRC_BEGIN);
-        vDev_ROW_BEGIN(pLU,aRluCommon->m_pDevSrcRow);
+//        dLU0(EO_ROW_SRC_BEGIN);
+//        vDev_ROW_BEGIN(pLU,aRluCommon->m_pDevSrcRow);
+        RASSERT(0);
         break;//+endCase
 
       case EO_ROW_SRC_NEXT: ArgNil(); // move to next src row
-        dLU0(EO_ROW_SRC_NEXT);
-        iRes = iDev_ROW_NEXT(pLU,aRluCommon->m_pDevSrcRow);
-        *(++aiDstk) = iRes;
+//        dLU0(EO_ROW_SRC_NEXT);
+//        iRes = iDev_ROW_NEXT(pLU,aRluCommon->m_pDevSrcRow);
+//        *(++aiDstk) = iRes;
+        RASSERT(0);
         break;//+endCase
         
       case EO_ROW_SRC_NULL: ArgNil(); // null the crw src
-        dLU0(EO_ROW_SRC_NULL);
-        vDev_ROW_NULL(pLU,aRluCommon->m_pDevSrcRow);
+//        dLU0(EO_ROW_SRC_NULL);
+//        vDev_ROW_NULL(pLU,aRluCommon->m_pDevSrcRow);
+        RASSERT(0);
         break;//+endCase
         
       case EO_ROW_SRC_PUSHOFS: ArgNil(); // push offset of source row
-        dLU0(EO_ROW_SRC_PUSHOFS);
-        iRes = iDev_ROW_PUSHOFS(pLU,aRluCommon->m_pDevSrcRow);
-        *(++aiDstk) = iRes;
+//        dLU0(EO_ROW_SRC_PUSHOFS);
+//        iRes = iDev_ROW_PUSHOFS(pLU,aRluCommon->m_pDevSrcRow);
+//        *(++aiDstk) = iRes;
+        RASSERT(0);
         break;//+endCase
 
       case EO_ROW_SRC_SETBYOFS: ArgNil(); // set src row by using offset on stack
-        dLU0(EO_ROW_SRC_SETBYOFS);
-        iTopA = *(aiDstk--);
-        vDev_ROW_SETBYOFS(pLU,aRluCommon->m_pDevSrcRow,iTopA);
+//        dLU0(EO_ROW_SRC_SETBYOFS);
+//        iTopA = *(aiDstk--);
+//        vDev_ROW_SETBYOFS(pLU,aRluCommon->m_pDevSrcRow,iTopA);
+        RASSERT(0);
         break;//+endCase
         
       case EO_ROW_SRC_TEST: ArgNil(); // test for src crw
-        dLU0(EO_ROW_SRC_TEST);
-        iRes = iDev_ROW_TEST(pLU,aRluCommon->m_pDevSrcRow);
-        *(++aiDstk) = iRes;
+//        dLU0(EO_ROW_SRC_TEST);
+//        iRes = iDev_ROW_TEST(pLU,aRluCommon->m_pDevSrcRow);
+//        *(++aiDstk) = iRes;
+        RASSERT(0);
         break;//+endCase
         
       case EO_ROW_ALT_BEGIN: ArgNil(); // not yet implemented
-        NEVER_REACH;
+ //       NEVER_REACH;
+        RASSERT(0);
         break;//+endCase
 
       case EO_ROW_ALT_NEXT: ArgNil(); // not yet implemented
-        NEVER_REACH;
+ //       NEVER_REACH;
+        RASSERT(0);
         break;//+endCase
 
       case EO_ROW_ALT_PUSHOFS: ArgNil(); // not yet implemented
-        NEVER_REACH;
+ //       NEVER_REACH;
+        RASSERT(0);
         break;//+endCase
 
       case EO_ROW_ALT_SETBYOFS: ArgNil(); // not yet implemented
-        NEVER_REACH;
+ //       NEVER_REACH;
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // rowdev / rowslab
+      case EO_DEVROW_BEGIN: ArgNil(); // begin row traverse
+        dLU0(EO_DEVROW_BEGIN);
+        vDev_ROW_BEGIN(&aiDstk);
+        break;//+endCase
+
+      case EO_DEVROW_NEXT: ArgNil(); // move to next row
+        dLU0(EO_DEVROW_NEXT);
+        vDev_ROW_NEXT(&aiDstk);
+        break;//+endCase
+
+      case EO_DEVROW_NEW: ArgNil(); // create new row
+        dLU0(EO_DEVROW_NEW);
+        vDev_ROW_NEW(&aiDstk);  // need to push pot and ptn
+        aRluCommon->m_bPotCompleted = *(aiDstk--);
+        break;//+endCase
+
+      case EO_DEVROW_NULL: ArgNil(); // null the buffer
+        dLU0(EO_DEVROW_NULL);
+        vDev_ROW_NULL(&aiDstk);
+        break;//+endCase
+
       case EO_DEVROW_PRINT: ArgNil(); // print row
         dLU0(EO_DEVROW_PRINT);
         vDev_ROW_PRINT(&aiDstk);
+        break;//+endCase
+
+      case EO_DEVROW_PUSHOFS: ArgNil(); // push offset of row
+        dLU0(EO_DEVROW_PUSHOFS);
+        vDev_ROW_PUSHOFS(&aiDstk);
+        *(++aiDstk) = iRes;
         break;//+endCase
 
       case EO_DEVROW_RESET: ArgNil(); // reset rowslab
@@ -3060,10 +3113,29 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_ROW_RESET(&aiDstk);
         break;//+endCase
 
-      case EO_DEVROW_NEW: ArgNil(); // create new row
-        dLU0(EO_DEVROW_NEW);
-        vDev_ROW_NEW(pLU, &aiDstk);  // need to push pot and ptn
-        aRluCommon->m_bPotCompleted = *(aiDstk--);
+      case EO_DEVROW_SET: ArgNil(); // set dst row
+        dLU0(EO_ROW_DST_SET);
+        vDev_ROW_SET(&aiDstk);
+        break;//+endCase
+
+      case EO_DEVROW_SETBYOFS: ArgNil(); // set row by using offset on stack
+        dLU0(EO_DEVROW_SETBYOFS);
+        vDev_ROW_SETBYOFS(&aiDstk);
+        break;//+endCase
+
+      case EO_DEVROW_TESTBUFFER: ArgNil(); // test for buffer
+        dLU0(EO_DEVROW_TESTBUFFER);
+        vDev_ROW_TESTBUFFER(&aiDstk);
+        break;//+endCase
+
+      case EO_DEVROW_TESTROW: ArgNil(); // test for crw
+        dLU0(EO_DEVROW_TESTROW);
+        vDev_ROW_TESTROW(&aiDstk);
+        break;//+endCase
+
+      case EO_DEVROW_ZERO: ArgNil(); // zero device row
+        dLU0(EO_DEVROW_ZERO);
+        vDev_ROW_ZERO(&aiDstk);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
