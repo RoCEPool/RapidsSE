@@ -23,7 +23,7 @@
       partition      INTEGER NOT NULL ,
       buffers        INTEGER NOT NULL ,
       entries        INTEGER NOT NULL
-    ) < traceApi > = 1 ;
+    ) < infoSet > = 1 ;
   "
   api::executeRequest
 
@@ -36,7 +36,7 @@
      partition      INTEGER NOT NULL ,
      buffers        INTEGER NOT NULL ,
      entries        INTEGER NOT NULL
-  ) ;
+  ) < infoSet > = 1 ;
   "
   api::executeRequest
 
@@ -50,7 +50,7 @@
     line           INTEGER NOT NULL ,
     column         INTEGER NOT NULL ,
     text           VARCHAR NOT NULL
-  ) ;
+  ) < infoSet > = 1 ;
   "
   api::executeRequest
 
@@ -58,7 +58,7 @@
   // C_TDEF_COUNT
   sPath
   "
-  define table __count ( rowCount INTEGER NOT NULL ) ;
+  define table __count ( rowCount INTEGER NOT NULL ) < infoSet > = 1 ;
   "
   api::executeRequest
 
@@ -66,7 +66,7 @@
   // C_TDEF_COUNTINFO
   sPath
   "
-  define table __countInfo ( rowCount INTEGER NOT NULL ) ;
+  define table __countInfo ( rowCount INTEGER NOT NULL ) < infoSet > = 1 ;
   "
   api::executeRequest
 
@@ -78,7 +78,7 @@
     nodeName       VARCHAR NOT NULL ,
     errorCode      INTEGER NOT NULL ,
     text           VARCHAR NOT NULL
-  ) ;
+  ) < infoSet > = 1 ;
   "
   api::executeRequest
 
@@ -89,7 +89,7 @@
   define table __gridSanity (
     nodeName   VARCHAR NOT NULL ,
     homogenous BOOLEAN NOT NULL
-  ) ;
+  ) < infoSet > = 1 ;
   "
   api::executeRequest
 
@@ -104,7 +104,7 @@
     columnScale    INTEGER NOT NULL ,
     isNullable     BOOLEAN NOT NULL ,
     isPartitionKey BOOLEAN NOT NULL
-  ) ;
+  ) < infoSet > = 1 ;
   "
   api::executeRequest
 
@@ -114,7 +114,7 @@
   "
   define table __listContents (
     Name       VARCHAR NOT NULL
-  ) ;
+  ) < infoSet > = 1 ;
   "
   api::executeRequest
 
@@ -125,7 +125,7 @@
   define table __listFolder (
     Name       VARCHAR NOT NULL ,
     Type       VARCHAR NOT NULL
-  ) ;
+  ) < infoSet > = 1 ;
   "
   api::executeRequest
 
@@ -137,7 +137,7 @@
     indexName    VARCHAR NOT NULL ,
     isUnique     BOOLEAN NOT NULL ,
     isPrimaryKey BOOLEAN NOT NULL
-  ) ;
+  ) < infoSet > = 1 ;
   "
   api::executeRequest
 
@@ -152,7 +152,7 @@
     ipAdd         VARCHAR NOT NULL ,
     portNo        INTEGER NOT NULL ,
     state         VARCHAR NOT NULL
-  ) ;
+  ) < infoSet > = 1 ;
   "
   api::executeRequest
 
@@ -163,7 +163,7 @@
   define table __listPartitions (
     partition     INTEGER NOT NULL ,
     nodeName      VARCHAR NOT NULL
-  ) ;
+  ) < infoSet > = 1 ;
   "
   api::executeRequest
 
@@ -173,7 +173,7 @@
   "
   define table __pingInfo (
     pong      VARCHAR NOT NULL
-  ) ;
+  ) < infoSet > = 1 ;
   "
   api::executeRequest
 
@@ -183,7 +183,7 @@
   "
   define table __promptOut (
     outLine   VARCHAR NOT NULL
-  ) ;
+  ) < infoSet > = 1 ;
   "
   api::executeRequest
 ;
@@ -209,7 +209,7 @@
     IPAddress VARCHAR NOT NULL ,
     PortNo    INTEGER NOT NULL ,
     Connected BOOLEAN NOT NULL
-  ) ;
+  ) < infoSet > = 1 ;
   "
   api::executeRequest
 
@@ -220,7 +220,7 @@
   define table __sizeIndex (
     NodeName  VARCHAR NOT NULL ,
     size      VARCHAR NOT NULL
-  ) ;
+  ) < infoSet > = 1 ;
   "
   api::executeRequest
 
@@ -231,7 +231,7 @@
   define table __sizeTable (
     NodeName  VARCHAR NOT NULL ,
     size      VARCHAR NOT NULL
-  ) ;
+  ) < infoSet > = 1 ;
   "
   api::executeRequest
 
@@ -244,7 +244,7 @@
     totalSpace VARCHAR NOT NULL ,
     inUseSpace VARCHAR NOT NULL ,
     freeSpace  VARCHAR NOT NULL
-  ) ;
+  ) < infoSet > = 1 ;
   "
   api::executeRequest
 
@@ -256,7 +256,7 @@
     nodeName   VARCHAR NOT NULL ,
     regionName VARCHAR NOT NULL ,
     status     VARCHAR NOT NULL
-  ) ;
+  ) < infoSet > = 1 ;
   "
   api::executeRequest
 
@@ -268,7 +268,7 @@
     NodeName  VARCHAR NOT NULL ,
     TableName VARCHAR NOT NULL ,
     size      VARCHAR NOT NULL
-  ) ;
+  ) < infoSet > = 1 ;
   "
   api::executeRequest
 
@@ -281,7 +281,7 @@
     tableName      VARCHAR NOT NULL ,
     indexName      VARCHAR NOT NULL ,
     status         VARCHAR NOT NULL
-  ) ;
+  ) < infoSet > = 1 ;
   "
   api::executeRequest
 
@@ -293,7 +293,7 @@
     nodeName       VARCHAR NOT NULL ,
     tableName      VARCHAR NOT NULL ,
     status         VARCHAR NOT NULL
-  ) ;
+  ) < infoSet > = 1 ;
   "
   api::executeRequest
 
@@ -323,7 +323,7 @@
     request        VARCHAR NOT NULL ,
     requestNo      INTEGER NOT NULL ,
     requestOf      INTEGER NOT NULL
-  ) ;
+  ) < infoSet > = 1 ;
   "
   api::executeRequest
 
@@ -343,7 +343,7 @@
     columnScale    INTEGER NOT NULL ,
     isNullable     BOOLEAN NOT NULL ,
     isPartitionKey BOOLEAN NOT NULL
-  ) ;
+  ) < infoSet > = 1 ;
   "
   api::executeRequest
 
@@ -355,7 +355,7 @@
     iRowsProcessed INTEGER NOT NULL ,
     iRowsInvalid   INTEGER NOT NULL ,
     iRowsSkipped   INTEGER NOT NULL
-  ) ;
+  ) < infoSet > = 1 ;
   "
   api::executeRequest
 
@@ -377,7 +377,7 @@
     writeGrab      INTEGER        NOT NULL ,
     writeCollision INTEGER        NOT NULL ,
     WritePercent   INTEGER        NOT NULL
-  ) ;
+  ) < infoSet > = 1 ;
   "
   api::executeRequest
 
@@ -387,7 +387,7 @@
   "
   define table __lookupCatalog (
     catalogName   VARCHAR NOT NULL
-  ) ;
+  ) < infoSet > = 1 ;
   "
   api::executeRequest
 
@@ -398,7 +398,7 @@
   define table __lookupSchema (
     catalogName   VARCHAR NOT NULL ,
     schemaName    VARCHAR NOT NULL
-  ) ;
+  ) < infoSet > = 1 ;
   "
   api::executeRequest
 
@@ -410,7 +410,7 @@
     catalogName   VARCHAR NOT NULL ,
     schemaName    VARCHAR NOT NULL ,
     tableName     VARCHAR NOT NULL
-  ) ;
+  ) < infoSet > = 1 ;
   "
   api::executeRequest
 
@@ -424,7 +424,7 @@
     partitionCount INTEGER NOT NULL ,
     started        INTEGER NOT NULL
 
-  ) ;
+  ) < infoSet > = 1 ;
   "
   api::executeRequest
 
@@ -436,7 +436,7 @@
     path           VARCHAR NOT NULL ,
     pathNo         INTEGER NOT NULL ,
     pathOf         INTEGER NOT NULL
-  ) ;
+  ) < infoSet > = 1 ;
   "
   api::executeRequest
 
@@ -446,7 +446,7 @@
   "
   define table __progressUnits (
     units      INTEGER NOT NULL
-  ) ;
+  ) < infoSet > = 1 ;
   "
   api::executeRequest
 
@@ -456,7 +456,7 @@
   "
   define table __pwf (
     folder   VARCHAR NOT NULL
-  ) ;
+  ) < infoSet > = 1 ;
   "
   api::executeRequest
 
@@ -469,7 +469,7 @@
     requestOf      INTEGER NOT NULL ,
     errorCode      INTEGER NOT NULL ,
     assocText      VARCHAR NOT NULL
-  ) ;
+  ) < infoSet > = 1 ;
   "
   api::executeRequest
 
@@ -481,7 +481,7 @@
     offset    INTEGER NOT NULL ,
     size      INTEGER NOT NULL ,
     filename  VARCHAR NOT NULL
-  ) ;
+  ) < infoSet > = 1 ;
   "
   api::executeRequest
 
@@ -492,7 +492,7 @@
   define table __totalUnits (
     FILENAME   VARCHAR NOT NULL ,
     UNITS      INTEGER NOT NULL
-  ) ;
+  ) < infoSet > = 1 ;
   "
   api::executeRequest
 ;
