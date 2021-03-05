@@ -29,8 +29,8 @@ namespace STORE
     i8     m_nNodes;           // number of nodes in array
 
     /* oldcode
-    //Node*  m_pNodes[C_MAX_NODES]; // array of nodes
-     */
+    Node*  m_pNodes[C_MAX_NODES]; // array of nodes
+    */
 
     // newcode
     std::list<Node*> m_lNodes;
