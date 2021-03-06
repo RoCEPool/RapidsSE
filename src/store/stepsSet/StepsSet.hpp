@@ -1559,7 +1559,6 @@ void vExprEvalEvaluate(void);
   void vTableGet(void);
   void vTableIndexCount(void);
   void vTableIsColumn(void);
-  void vTableIsDefinitionOnlyFetch(void);
   void vTableIsInternallyDefined(void);
   void vTableIsUserCreated(void);
   void vTableListPartition(void);

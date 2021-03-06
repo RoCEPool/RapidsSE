@@ -53,7 +53,6 @@ void Step::vAddSteps_Table(void)
   vAddStep("table[].findColumn"_Stz,       &Step::vTableFindColumn);
   vAddStep("table.indexCount"_Stz,         &Step::vTableIndexCount);
   vAddStep("table.isColumn"_Stz,           &Step::vTableIsColumn);
-  vAddStep("table[].isDefinitionOnly@"_Stz,   &Step::vTableIsDefinitionOnlyFetch);
   vAddStep("table[].isInternallyDefined"_Stz, &Step::vTableIsInternallyDefined);
   vAddStep("table[].isUserCreated"_Stz,    &Step::vTableIsUserCreated);
   vAddStep("table.lazyBuildIndexes"_Stz,   &Step::vTableLazyBuildIndexes);
@@ -393,20 +392,6 @@ void Step::vTableIsColumn(void)
   }
   
   m_pDataStack->vPushInt(bFound);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.isDefinitionOnly -- is the table a definition only                   */
-/*----------------------------------------------------------------------------*/
-void Step::vTableIsDefinitionOnlyFetch(void)
-{
-  ENTRY();
-  
-  Table* pTable = _pTable(*( m_pJob->pLogicUnit_job() )->m_xpTable);
-
-  m_pDataStack->vPushInt(pTable->bIsDefinitionOnly());
   
   EXIT();
 }
