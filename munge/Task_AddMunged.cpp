@@ -10860,7 +10860,7 @@ void Task::vAddMunged(Task* )
     "    CT_DECIMAL   of \"decimal\"   endof\n"
     "    CT_FLOAT     of \"float\"     endof\n"
     "    CT_INTEGER   of \"integer\"   endof\n"
-    "    CT_INTERVAL  of \"interval\"  endof\n"
+    "    CT_INTERVAL_DT  of \"interval\"  endof\n"
     "    CT_TIME      of \"time\"      endof\n"
     "    CT_TIMESTAMP of \"timestamp\" endof\n"
     "    CT_VARCHAR   of \"varchar\"   endof\n"

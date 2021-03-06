@@ -140,7 +140,7 @@ eEC Range::eRangeValues(Index* pIndex, Stz* sRangeColumns)
 
       if ( eColumnType != CT_VARCHAR  &&
            eColumnType != CT_CHAR     &&
-           eColumnType != CT_INTERVAL &&
+           eColumnType != CT_INTERVAL_DT &&
            eColumnType != CT_DATE     &&
            eColumnType != CT_TIMESTAMP) {
         eError = EC_INVALID_COMMAND;
@@ -282,7 +282,7 @@ void Range::vInsertLowerBound(eCT eColumnType, char* sValue, i8 iValue) {
     case CT_BOOLEAN:
     case CT_DECIMAL:
     case CT_INTEGER:
-    case CT_INTERVAL:
+    case CT_INTERVAL_DT:
     case CT_FLOAT:
       m_oTagSet.vInsert(C_TAG_LBOUND_TYPE, "EO_INTEGER"_Stz);
       break;
@@ -301,7 +301,7 @@ void Range::vInsertLowerBound(eCT eColumnType, char* sValue, i8 iValue) {
 
   if (eColumnType == CT_VARCHAR  ||
       eColumnType == CT_CHAR     ||
-      eColumnType == CT_INTERVAL ||
+      eColumnType == CT_INTERVAL_DT ||
       eColumnType == CT_DATE     ||
       eColumnType == CT_TIMESTAMP)
     m_oTagSet.vInsert(C_TAG_LBOUND_LITERAL, (Stz *) sValue);
@@ -318,7 +318,7 @@ void Range::vInsertUpperBound(eCT eColumnType, char* sValue, i8 iValue) {
     case CT_BOOLEAN:
     case CT_DECIMAL:
     case CT_INTEGER:
-    case CT_INTERVAL:
+    case CT_INTERVAL_DT:
     case CT_FLOAT:
       m_oTagSet.vInsert(C_TAG_UBOUND_TYPE, "EO_INTEGER"_Stz);
       break;
@@ -337,7 +337,7 @@ void Range::vInsertUpperBound(eCT eColumnType, char* sValue, i8 iValue) {
 
   if (eColumnType == CT_VARCHAR  ||
       eColumnType == CT_CHAR     ||
-      eColumnType == CT_INTERVAL ||
+      eColumnType == CT_INTERVAL_DT ||
       eColumnType == CT_DATE     ||
       eColumnType == CT_TIMESTAMP)
     m_oTagSet.vInsert(C_TAG_UBOUND_LITERAL, (Stz *) sValue);

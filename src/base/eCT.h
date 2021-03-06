@@ -14,7 +14,7 @@ enum eCT // Column Type
   /*  6 */ CT_INTEGER,
   // TODO: CT_INTERVAL_YM,  // year-month interval
   // TODO: CT_INTERVAL_DT,  // day-time interval
-  /*  7 */ CT_INTERVAL,     // TODO: Replace with the above
+  /*  7 */ CT_INTERVAL_DT,     // TODO: Replace with the above
   /*  8 */ CT_TIME,
   /*  9 */ CT_TIMESTAMP,
   /* 10 */ CT_VARCHAR,
@@ -52,7 +52,7 @@ static Stz* aCT_long[]
   /*  6 */ "CT_INTEGER"_Stz,
   // TODO: "CT_INTERVAL_YM"_Stz,
   // TODO: "CT_INTERVAL_DT"_Stz,
-  /*  7 */ "CT_INTERVAL"_Stz,   // TODO: replace with the above
+  /*  7 */ "CT_INTERVAL_DT"_Stz,   // TODO: replace with the above
   /*  8 */ "CT_TIME"_Stz,
   /*  9 */ "CT_TIMESTAMP"_Stz,
   /* 10 */ "CT_VARCHAR"_Stz,
@@ -71,7 +71,7 @@ static Stz* aCT_short[]
   /*  6 */ "i"_Stz, // integer
   // TODO: "ly"_Stz, // (???) interval year to month
   // TODO: "ld"_Stz, // (???) interval day to second
-  /*  7 */ "l"_Stz, // interval   // TODO: replace with the above
+  /*  7 */ "ld"_Stz, // interval   // TODO: replace with the above
   /*  8 */ "t"_Stz, // time
   /*  9 */ "p"_Stz, // timestamp
   /* 10 */ "s"_Stz, // varchar

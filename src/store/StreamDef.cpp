@@ -581,7 +581,7 @@ eEC StreamDef::eParseColumn(TokenVec* pTknVec, i8 i_Col)
     case CT_DECIMAL:   eError = eParseColumnDecimal   (pTknVec,pCol);  break;
     case CT_FLOAT:     eError = eParseColumnFloat     (pTknVec,pCol);  break;
     case CT_INTEGER:   eError = eParseColumnInteger   (pTknVec,pCol);  break;
-    case CT_INTERVAL:  eError = eParseColumnInterval  (pTknVec,pCol);  break;
+    case CT_INTERVAL_DT:  eError = eParseColumnInterval  (pTknVec,pCol);  break;
     case CT_TIME:      eError = eParseColumnTime      (pTknVec,pCol);  break;
     case CT_TIMESTAMP: eError = eParseColumnTimestamp (pTknVec,pCol);  break;
     case CT_VARCHAR:   eError = eParseColumnVarchar   (pTknVec,pCol);  break;
@@ -772,7 +772,7 @@ eEC StreamDef::eParseColumnInterval(TokenVec* pTknVec, Column* pCol)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
   UNUSED(pTknVec);
 
-  pCol->vColumnType(CT_INTERVAL);
+  pCol->vColumnType(CT_INTERVAL_DT);
   pCol->vDatum(DM_IVL);
   
   return EC_NONE;

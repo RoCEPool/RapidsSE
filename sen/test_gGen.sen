@@ -19,7 +19,7 @@
     CT_DECIMAL   of "decimal"   endof
     CT_FLOAT     of "float"     endof
     CT_INTEGER   of "integer"   endof
-    CT_INTERVAL  of "interval"  endof
+    CT_INTERVAL_DT  of "interval"  endof
     CT_TIME      of "time"      endof
     CT_TIMESTAMP of "timestamp" endof
     CT_VARCHAR   of "varchar"   endof

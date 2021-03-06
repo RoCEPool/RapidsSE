@@ -67,7 +67,7 @@ QueryNode* SqlType::pCreate(eCT eType)
 //      return static_cast<QueryNode*>(SqlIntervalDT::pCreate());
 
     // TODO: Temporary until eCT has been updated
-    case CT_INTERVAL:
+    case CT_INTERVAL_DT:
       return static_cast<QueryNode*>(SqlIntervalYM::pCreate());
 
     case CT_TIME:
@@ -162,7 +162,7 @@ eCT SqlType::eType(PlanNode* pNode)
   else if (SqlDate::bIsOfType(pNode))       { return CT_DATE;        }
   else if (SqlTime::bIsOfType(pNode))       { return CT_TIME;        }
   else if (SqlTimestamp::bIsOfType(pNode))  { return CT_TIMESTAMP;   }
-  else if (SqlIntervalYM::bIsOfType(pNode)) { return CT_INTERVAL;    }  // TODO: Temporary
+  else if (SqlIntervalYM::bIsOfType(pNode)) { return CT_INTERVAL_DT;    }  // TODO: Temporary
 //  else if (SqlIntervalYM::bIsOfType(pNode)) { return CT_INTERVAL_YM; }  // TODO: enable when eCT has been updated
 //  else if (SqlIntervalDT::bIsOfType(pNode)) { return CT_INTERVAL_DT; }  // TODO: enable when eCT has been updated
 //  else if (SqlUnknown::bIsOfType(pNode))    { return CT_UNKNOWN;     }  // TODO: enable when eCT has been updated

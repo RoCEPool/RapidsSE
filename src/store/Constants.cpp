@@ -314,7 +314,7 @@ void Constants::vAddConstantsCpp(void)
   /*  4 */ vAddConstant("CT_DECIMAL"_Stz,   CT_DECIMAL);
   /*  5 */ vAddConstant("CT_FLOAT"_Stz,     CT_FLOAT);
   /*  6 */ vAddConstant("CT_INTEGER"_Stz,   CT_INTEGER);
-  /*  7 */ vAddConstant("CT_INTERVAL"_Stz,  CT_INTERVAL);
+  /*  7 */ vAddConstant("CT_INTERVAL_DT"_Stz,  CT_INTERVAL_DT);
   /*  8 */ vAddConstant("CT_TIME"_Stz,      CT_TIME);
   /*  9 */ vAddConstant("CT_TIMESTAMP"_Stz, CT_TIMESTAMP);
   /* 10 */ vAddConstant("CT_VARCHAR"_Stz,   CT_VARCHAR);

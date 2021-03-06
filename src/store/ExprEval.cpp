@@ -258,7 +258,7 @@ eEC ExprEval::eAddGby(Column* pColumn, i8 iGby)
     case CT_BOOLEAN:
     case CT_CHAR:
     case CT_DATE:
-    case CT_INTERVAL:
+    case CT_INTERVAL_DT:
     case CT_TIME:
     case CT_TIMESTAMP:
     case CT_VARCHAR:
@@ -431,7 +431,7 @@ eEC ExprEval::eAddSum(eCT eColumnType, i8 iColumn)
     case CT_BOOLEAN:
     case CT_CHAR:
     case CT_DATE:
-    case CT_INTERVAL:
+    case CT_INTERVAL_DT:
     case CT_TIME:
     case CT_TIMESTAMP:
     case CT_VARCHAR:
@@ -464,7 +464,7 @@ eEC ExprEval::eAddSumGby(eCT eColumnType, i8 iColumn)
     case CT_BOOLEAN:
     case CT_CHAR:
     case CT_DATE:
-    case CT_INTERVAL:
+    case CT_INTERVAL_DT:
     case CT_TIME:
     case CT_TIMESTAMP:
     case CT_VARCHAR:
