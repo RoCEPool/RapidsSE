@@ -412,7 +412,7 @@ void Step::vTableIsDefinitionOnlyFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table.isUserTable -- is the table a user defined define                    */
+/* table.isInternallyDefines -- is the table internally defined?              */
 /*----------------------------------------------------------------------------*/
 void Step::vTableIsInternallyDefined(void)
 {
@@ -426,7 +426,7 @@ void Step::vTableIsInternallyDefined(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table.isUserTable -- is the table a user defined define                    */
+/* table.isUserCreated -- is the table a user created table?                   */
 /*----------------------------------------------------------------------------*/
 void Step::vTableIsUserCreated(void)
 {
