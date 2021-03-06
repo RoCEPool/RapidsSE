@@ -113,6 +113,9 @@ eCT StreamDef::eColumn(Stz* szType)
     
   }
   
+  if (szType->bSame("interval"_Stz))
+    return CT_INTERVAL_DT;
+  
   return (eCT)CT_NONE;
 }
 
