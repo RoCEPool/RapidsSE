@@ -18,7 +18,7 @@ enum eCT // Column Type
   /*  8 */ CT_TIME,
   /*  9 */ CT_TIMESTAMP,
   /* 10 */ CT_VARCHAR,
-  // TODO: CT_UNKNOWN,
+  /*    */ CT_UNKNOWN,
   /* 11 */ CT_ENUMS
 };
 
@@ -37,7 +37,7 @@ static Stz* aCT[]
     /*  8 */ "TIME"_Stz,
     /*  9 */ "TIMESTAMP"_Stz,
     /* 10 */ "VARCHAR"_Stz,
-    // TODO: "NULL"_Stz,
+    /* 10 */ "NULL"_Stz,
     /* 11 */ "ENUMS"_Stz
 };
 
@@ -56,7 +56,7 @@ static Stz* aCT_long[]
   /*  8 */ "CT_TIME"_Stz,
   /*  9 */ "CT_TIMESTAMP"_Stz,
   /* 10 */ "CT_VARCHAR"_Stz,
-  // TODO: "CT_UNKNOWN"_Stz,
+  /* 10 */ "CT_UNKNOWN"_Stz,
   /* 11 */ "CT_ENUMS"_Stz
 };
 
@@ -75,7 +75,7 @@ static Stz* aCT_short[]
   /*  8 */ "t"_Stz, // time
   /*  9 */ "p"_Stz, // timestamp
   /* 10 */ "s"_Stz, // varchar
-  // TODO: "x"_Stz, // unknown (???)
+  /* 10 */ "x"_Stz, // unknown (???)
   /* 11 */ "ENUMS"_Stz
 };
 
