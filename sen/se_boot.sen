@@ -8,8 +8,11 @@ assert::stack_0
 
 "Sen Compilation Progress: " .verbose
 
-"se_boot 9" .verbose
         "se_core.sen"             include
+        
+"<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" constant STD_PATH
+
+"se_boot 9" .verbose
         "se_word.sen"             include
         "se_str.sen"              include
 
