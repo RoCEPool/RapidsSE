@@ -13,12 +13,12 @@
 
 : start::defProc_Query
 
-  "<path>= /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
+  "<path>= /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| STD_PATH |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // q 3b prelim
   
-  sPath
+  STD_PATH
   "
   procedure Query_3b
   begin
@@ -48,7 +48,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // q 3b prelim
   
-  sPath
+  STD_PATH
   "
   procedure Query_3b_I
   begin
@@ -79,7 +79,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // q 4b prelim
   
-  sPath
+  STD_PATH
   "
   procedure Query_4b
   begin
@@ -106,7 +106,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // q 4b prelim
   
-  sPath
+  STD_PATH
   "
   procedure Query_4b_I
   begin
@@ -140,11 +140,9 @@
 
 : start::defProc_DynCompiler
 
-  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // q 3 prelim
-  sPath
+  STD_PATH
   "
   procedure dynCompiler
   begin
@@ -177,12 +175,10 @@
 
 : start::defProc_TPCH
 
-  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 1 - iterating index on l_shipdate
   
-  sPath
+  STD_PATH
   "
   procedure Query1
     parameters $Table
@@ -213,7 +209,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 1 - iterating index on l_shipdate
   
-  sPath
+  STD_PATH
   "
   procedure Query1_I
     parameters $Table
@@ -244,7 +240,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 6 - converting loaded CRW data into ROW
   
-  sPath
+  STD_PATH
   "
   procedure Query6
     parameters $Table $Index
@@ -273,7 +269,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 6 - converting loaded CRW data into ROW
   
-  sPath
+  STD_PATH
   "
   procedure Query6_I
     parameters $Table $Index
@@ -308,12 +304,10 @@
 
 : start::defProc_TPCH_ASM
 
-"<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 1 - compiled
   
-  sPath
+  STD_PATH
   "
   procedure Query1_ASM
     parameters $Table $QueryText_stageB $QueryText_stageC
@@ -343,7 +337,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 3 -- compiled
   
-  sPath
+  STD_PATH
   "
   procedure Query3_ASM
     parameters $QueryText_stageB $QueryText_stageC $QueryText_stageD
@@ -374,7 +368,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 4 -- compiled
   
-  sPath
+  STD_PATH
   "
   procedure Query4_ASM
     parameters $QueryText_stageB $QueryText_stageC $QueryText_stageD
@@ -405,7 +399,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 6 - compiled
   
-  sPath
+  STD_PATH
   "
   procedure Query6_ASM
     parameters $QueryText_stageB $QueryText_stageC
@@ -440,12 +434,10 @@
 
 : start::defProc_TPCH_ASM_I
 
-"<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 1 - interpretive
   
-  sPath
+  STD_PATH
   "
   procedure Query1_ASM_I
   parameters $Table $QueryText_stageB $QueryText_stageC
@@ -475,7 +467,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 3 -- interpretive
   
-  sPath
+  STD_PATH
   "
   procedure Query3_ASM_I
     parameters $QueryText_stageB $QueryText_stageC $QueryText_stageD
@@ -506,7 +498,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 4 -- interpretive
   
-  sPath
+  STD_PATH
   "
   procedure Query4_ASM_I
     parameters $QueryText_stageB $QueryText_stageC $QueryText_stageD
@@ -537,7 +529,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 6 - interpretive
   
-  sPath
+  STD_PATH
   "
   procedure Query6_ASM_I
     parameters $QueryText_stageB $QueryText_stageC
@@ -573,12 +565,10 @@
 
 : start::defProc_Planner
 
-  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
 
-  sPath
+  STD_PATH
   "
   procedure aggregRows_I
     parameters $table $etc
@@ -603,7 +593,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
 
-  sPath
+  STD_PATH
   "
   procedure aggregRows
     parameters $table $etc
@@ -628,7 +618,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
   
-  sPath
+  STD_PATH
   "
   procedure filterRows_I
     parameters $table $etc
@@ -652,7 +642,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
   
-  sPath
+  STD_PATH
   "
   procedure filterRows
     parameters $table $etc
@@ -675,7 +665,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
-  sPath
+  STD_PATH
   "
   procedure limitRows_I
     parameters $table $rows
@@ -699,7 +689,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
-  sPath
+  STD_PATH
   "
   procedure limitRows
     parameters $table $rows
@@ -723,7 +713,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
-  sPath
+  STD_PATH
   "
   procedure projectColumns_I
     parameters $table $etc
@@ -747,7 +737,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
   
-  sPath
+  STD_PATH
   "
   procedure projectColumns
     parameters $table $etc
@@ -771,7 +761,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
   
-  sPath
+  STD_PATH
   "
   procedure indexScan_I
     parameters $table $index $etc
@@ -794,7 +784,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
   
-  sPath
+  STD_PATH
   "
   procedure indexScan
     parameters $table $index $etc
@@ -818,7 +808,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Smt0 - select * from lineitem;
   
-  sPath
+  STD_PATH
   "
   procedure Smt0
   begin
@@ -848,7 +838,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Smt1 - select l_extendedprice from lineitem;
   
-  sPath
+  STD_PATH
   "
   procedure Smt1
   begin
@@ -878,7 +868,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Smt2 - select * from lineitem where l_partkey > 1000000;
   
-  sPath
+  STD_PATH
   "
   procedure Smt2
   begin
@@ -908,7 +898,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Smt3 - select l_extendedprice from lineitem where where l_partkey < 1000000;
   
-  sPath
+  STD_PATH
   "
   procedure Smt3
   begin
@@ -939,7 +929,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Smt4 - select * from lineitem where l_partkey >= 1000000 and l_partKey < 1500000;
   
-  sPath
+  STD_PATH
   "
   procedure Smt4
   begin
@@ -970,7 +960,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Smt5 - select * from lineitem where L_QUANTITY = 1.0 and L_RETURNFLAG = 'R';
   
-  sPath
+  STD_PATH
   "
   procedure Smt5
   begin
@@ -1001,7 +991,7 @@
   // index on orderkey
   // Smt6 - select * from lineitem where l_orderkey >= 70;
   
-  sPath
+  STD_PATH
   "
   procedure Smt6
   begin
@@ -1032,7 +1022,7 @@
   // index on orderkey
   // Smt7 - select * from lineitem where l_orderkey >= 30 and l_orderkey < 50;
   
-  sPath
+  STD_PATH
   "
   procedure Smt7
   begin
@@ -1063,7 +1053,7 @@
   // index on orderkey
   // Smt8 - select sum(l_extendedprice) from lineitem;
   
-  sPath
+  STD_PATH
   "
   procedure Smt8
   begin
@@ -1102,12 +1092,10 @@
 
 : start::defProc_PlannerTPCH
 
-  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query 6 - interpretive
   
-  sPath
+  STD_PATH
   "
   procedure Query6_S
   begin
@@ -1144,7 +1132,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert into tempTable0 select p_partkey from part where p_mfgr = 'Manufacturer#1';
   
-  sPath
+  STD_PATH
   "
   procedure Query20_S0
   begin
@@ -1177,7 +1165,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // select ps_suppkey from partsupp where ps_parkey in tempTable0;
   
-  sPath
+  STD_PATH
   "
   procedure Query20_S1
   begin
@@ -1210,7 +1198,7 @@
   //             [S0] ( select p_partkey from part where p_name like 'forest%' )
   // changed to :[S0] ( select p_partkey from part where p_mfgr = 'Manufacturer#1' )
   
-  sPath
+  STD_PATH
   "
   procedure Smt20_S0
   begin
@@ -1248,7 +1236,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
   
-  sPath
+  STD_PATH
   "
   procedure Smt20
   begin
@@ -1293,13 +1281,10 @@
 
 : start::defProc_Meta
 
-  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables"
-    locals| sPath |
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // scan tables
   
-  sPath
+  STD_PATH
   "
   procedure scanTables
   begin
@@ -1322,13 +1307,10 @@
 
 : start::defProc_SqlCompiler
 
-  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables"
-    locals| sPath |
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // sql Compiler
   
-  sPath
+  STD_PATH
   "
   procedure sqlCompiler
     parameters $sqlStatement

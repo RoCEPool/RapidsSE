@@ -156,7 +156,7 @@
 /*----------------------------------------------------------------------------*/
 : proc: immediate
 
-  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables"
+  STD_PATH
   
   input::tillSemicolon
   
