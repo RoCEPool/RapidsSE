@@ -263,6 +263,7 @@ eEC ExprEval::eAddGby(Column* pColumn, i8 iGby)
     case CT_TIME:
     case CT_TIMESTAMP:
     case CT_VARCHAR:
+    case CT_UNKNOWN:
       return EC_INVALID_COMMAND;
 
     default:
@@ -437,6 +438,7 @@ eEC ExprEval::eAddSum(eCT eColumnType, i8 iColumn)
     case CT_TIME:
     case CT_TIMESTAMP:
     case CT_VARCHAR:
+    case CT_UNKNOWN:
       return EC_INVALID_COMMAND;
 
     default:
@@ -471,6 +473,7 @@ eEC ExprEval::eAddSumGby(eCT eColumnType, i8 iColumn)
     case CT_TIME:
     case CT_TIMESTAMP:
     case CT_VARCHAR:
+    case CT_UNKNOWN:
       return EC_INVALID_COMMAND;
 
     default:

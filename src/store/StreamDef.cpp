@@ -589,7 +589,8 @@ eEC StreamDef::eParseColumn(TokenVec* pTknVec, i8 i_Col)
     case CT_TIME:      eError = eParseColumnTime      (pTknVec,pCol);  break;
     case CT_TIMESTAMP: eError = eParseColumnTimestamp (pTknVec,pCol);  break;
     case CT_VARCHAR:   eError = eParseColumnVarchar   (pTknVec,pCol);  break;
-      
+    case CT_UNKNOWN:   NEVER_REACH;                                    break;
+
     default:
       if (pTkn->bSame("char"_Stz) ||
           pTkn->bSame("varbinary"_Stz)) {
