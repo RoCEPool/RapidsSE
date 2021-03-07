@@ -220,6 +220,11 @@ void Record::vAppendCsvVal(eDM eDatum, i8 iScale, i8 iVal)
       break;
     }
       
+    case DM_IVY: {
+      NEVER_REACH;
+      break;
+    }
+      
     case DM_TME: {
       SP_Tme spTme;
       StrLib::vAppendString(&m_azCursor,(char*)spTme.sz(iVal));

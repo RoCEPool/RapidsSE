@@ -45,6 +45,7 @@ bool Literal::bToCell(Dtm* aCell, Column* pCol,
     case DM_FLT: b = bToCellFlt(aCell,aazCrs,pFmt); break;
     case DM_INT: b = bToCellInt(aCell,aazCrs,pFmt); break;
     case DM_IVL: b = bToCellIvl(aCell,aazCrs,pFmt); break;
+    case DM_IVY: NEVER_REACH;                       break;
     case DM_TME: b = bToCellTme(aCell,aazCrs,pFmt); break;
     case DM_TSP: b = bToCellTsp(aCell,aazCrs,pFmt); break;
     case DM_VCH: b = bToCellVch(aCell,aazCrs,pFmt); break;
@@ -111,6 +112,11 @@ void Literal::vSprint(Stz *szTgt, Dtm *avSrc, Column *pCol)
     case DM_IVL: {
       SP_Ivl spIvl;
       StrLib::vCopy(az,(char*)spIvl.sz(iValue));
+      break;
+    }
+      
+    case DM_IVY: {
+      NEVER_REACH;
       break;
     }
       
