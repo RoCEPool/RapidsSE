@@ -138,10 +138,11 @@ eEC Range::eRangeValues(Index* pIndex, Stz* sRangeColumns)
     else if (pTkn->bIsString()) {
       sValue = pTkn->azChars();
 
-      if ( eColumnType != CT_VARCHAR  &&
-           eColumnType != CT_CHAR     &&
+      if ( eColumnType != CT_VARCHAR     &&
+           eColumnType != CT_CHAR        &&
            eColumnType != CT_INTERVAL_DT &&
-           eColumnType != CT_DATE     &&
+           eColumnType != CT_INTERVAL_YM &&
+           eColumnType != CT_DATE        &&
            eColumnType != CT_TIMESTAMP) {
         eError = EC_INVALID_COMMAND;
         goto L_RETURN;
@@ -283,6 +284,7 @@ void Range::vInsertLowerBound(eCT eColumnType, char* sValue, i8 iValue) {
     case CT_DECIMAL:
     case CT_INTEGER:
     case CT_INTERVAL_DT:
+    case CT_INTERVAL_YM:
     case CT_FLOAT:
       m_oTagSet.vInsert(C_TAG_LBOUND_TYPE, "EO_INTEGER"_Stz);
       break;
@@ -299,10 +301,11 @@ void Range::vInsertLowerBound(eCT eColumnType, char* sValue, i8 iValue) {
       RASSERT(0);
   }
 
-  if (eColumnType == CT_VARCHAR  ||
-      eColumnType == CT_CHAR     ||
+  if (eColumnType == CT_VARCHAR     ||
+      eColumnType == CT_CHAR        ||
       eColumnType == CT_INTERVAL_DT ||
-      eColumnType == CT_DATE     ||
+      eColumnType == CT_INTERVAL_YM ||
+      eColumnType == CT_DATE        ||
       eColumnType == CT_TIMESTAMP)
     m_oTagSet.vInsert(C_TAG_LBOUND_LITERAL, (Stz *) sValue);
   else
@@ -319,6 +322,7 @@ void Range::vInsertUpperBound(eCT eColumnType, char* sValue, i8 iValue) {
     case CT_DECIMAL:
     case CT_INTEGER:
     case CT_INTERVAL_DT:
+    case CT_INTERVAL_YM:
     case CT_FLOAT:
       m_oTagSet.vInsert(C_TAG_UBOUND_TYPE, "EO_INTEGER"_Stz);
       break;
@@ -335,10 +339,11 @@ void Range::vInsertUpperBound(eCT eColumnType, char* sValue, i8 iValue) {
       RASSERT(0);
   }
 
-  if (eColumnType == CT_VARCHAR  ||
-      eColumnType == CT_CHAR     ||
+  if (eColumnType == CT_VARCHAR     ||
+      eColumnType == CT_CHAR        ||
       eColumnType == CT_INTERVAL_DT ||
-      eColumnType == CT_DATE     ||
+      eColumnType == CT_INTERVAL_YM ||
+      eColumnType == CT_DATE        ||
       eColumnType == CT_TIMESTAMP)
     m_oTagSet.vInsert(C_TAG_UBOUND_LITERAL, (Stz *) sValue);
   else
