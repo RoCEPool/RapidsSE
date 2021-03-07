@@ -82,7 +82,7 @@ macro AM_PAYLOAD_END
 //----------------------------------------------------------------------------//
  //EO_IXT_DUMP
  EO_PUSH_DEVIXT_TMP
- EO_DEVIXT_DUMP
+ EO_DEVIXT_IDX_DUMP
  EO_RETURN
 endMacro
 

@@ -2680,26 +2680,26 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // index tree operators
-      case EO_DEVIXT_DEL_ENT: ArgNil(); // delete current m_aEnt from indexTree
-        dLU0(EO_DEVIXT_DEL_ENT);
+      case EO_DEVIXT_IDX_DEL: ArgNil(); // delete current m_aEnt from indexTree
+        dLU0(EO_DEVIXT_IDX_DEL);
         vDev_IXT_DEL_ENT(&aiDstk);
         break;//+endCase
 
-      case EO_DEVIXT_DUMP: ArgNil(); // dump index tree
-        dLU0(EO_DEVIXT_DUMP);
+      case EO_DEVIXT_IDX_DUMP: ArgNil(); // dump index tree
+        dLU0(EO_DEVIXT_IDX_DUMP);
         vDev_IXT_DUMP(&aiDstk);
         break;//+endCase
 
-      case EO_DEVIXT_INS_ENT: ArgNil(); // insert an entry into the indexTree
-        //dLU0(EO_DEVIXT_INS_ENT);
+      case EO_DEVIXT_IDX_INS: ArgNil(); // insert an entry into the indexTree
+        //dLU0(EO_DEVIXT_IDX_INS);
         //vDev_IXT_INS_ENT(&aiDstk);
 
         //ASSERT(m_pDevTmpIxt->m_aEnt);
         RASSERT(0);
         break;//+endCase
 
-      case EO_DEVIXT_TRV_BEGIN: ArgNil(); // begin linear traverse
-//        dLU0(EO_DEVIXT_TRV_BEGIN);
+      case EO_DEVIXT_IDX_BEGIN: ArgNil(); // begin linear traverse
+//        dLU0(EO_DEVIXT_IDX_BEGIN);
 //        vDev_IXT_TRV_BEGIN(&aiDstk);
 //        aRluCommon->m_aTmpEnt = (Ent*)P_PopPtr();
 //        aRluCommon->m_aTmpEntArray = aRluCommon->m_aEntArray;
@@ -2707,17 +2707,17 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         RASSERT(0);
         break;//+endCase
 
-      case EO_DEVIXT_TRV_NEXT: ArgNil(); // traverse to next entry
-//        dLU0(EO_DEVIXT_TRV_NEXT);
+      case EO_DEVIXT_IDX_NEXT: ArgNil(); // traverse to next entry
+//        dLU0(EO_DEVIXT_IDX_NEXT);
 //        vDev_IXT_TRV_NEXT(&aiDstk);
 //        aRluCommon->m_aTmpEnt = (Ent*)P_PopPtr();
 //        *(++aiDstk) = (i8)aRluCommon->m_aTmpEnt;
         RASSERT(0);
         break;//+endCase
 
-      case EO_DEVIXT_ENTRIES: ArgNil(); // push number of entries in tmp index
+      case EO_DEVIXT_IDX_ENTRIES: ArgNil(); // push number of entries in tmp index
         vDev_IXT_TMP_ENTRIES(&aiDstk);
-        //dLU1(EO_DEVIXT_ENTRIES,iRes);
+        //dLU1(EO_DEVIXT_IDX_ENTRIES,iRes);
         break;//+endCase
 
 
