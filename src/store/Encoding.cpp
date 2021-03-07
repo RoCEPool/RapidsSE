@@ -235,7 +235,8 @@ void Encoding::vInitialEncodingRow(Row* pRow)
           wColVal.m_szVch = pRow->szColVal_ofs(i_Col);
         vEncodeVch(xrColEnc,wColVal);
         break;
-        
+      case DM_UNK: NEVER_REACH;                   break;
+
       default:
         NEVER_REACH;
         

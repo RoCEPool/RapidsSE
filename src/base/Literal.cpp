@@ -49,7 +49,7 @@ bool Literal::bToCell(Dtm* aCell, Column* pCol,
     case DM_TME: b = bToCellTme(aCell,aazCrs,pFmt); break;
     case DM_TSP: b = bToCellTsp(aCell,aazCrs,pFmt); break;
     case DM_VCH: b = bToCellVch(aCell,aazCrs,pFmt); break;
-      
+    case DM_UNK: NEVER_REACH;                       break;
     default:
       vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
              "Literal::bToCell: Invalid eDatum : %lld\n"_Stz,eDatum);
@@ -135,6 +135,11 @@ void Literal::vSprint(Stz *szTgt, Dtm *avSrc, Column *pCol)
     case DM_VCH: {
       SP_Vch SP_Vch;
       StrLib::vCopy(az,(char*)SP_Vch.sz((char*)avSrc));
+      break;
+    }
+      
+    case DM_UNK: {
+      NEVER_REACH;
       break;
     }
       

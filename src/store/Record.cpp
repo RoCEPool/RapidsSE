@@ -243,6 +243,11 @@ void Record::vAppendCsvVal(eDM eDatum, i8 iScale, i8 iVal)
       break;
     }
       
+    case DM_UNK: {
+      NEVER_REACH;
+      break;
+    }
+      
     default:
       NEVER_REACH;
   }

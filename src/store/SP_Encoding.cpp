@@ -205,6 +205,11 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
           break;
         }
           
+        case DM_UNK: {
+          NEVER_REACH;
+          break;
+        }
+
         default:
           NEVER_REACH;
       }

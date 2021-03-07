@@ -968,6 +968,7 @@ L_NextFieldInRecord:
     case DM_TME : goto L_Time;
     case DM_TSP : goto L_Timestamp;
     case DM_VCH : goto L_Varchar;
+    case DM_UNK : NEVER_REACH;
     default:
       RASSERT(0);
   }
