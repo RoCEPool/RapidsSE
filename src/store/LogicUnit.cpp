@@ -2420,13 +2420,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         RASSERT(0);
         break;//+endCase
 
-      case EO_DEVIXT_BEGIN: ArgNil(); // begin row traverse
-        dLU0(EO_DEVIXT_BEGIN);
+      case EO_DEVIXT_CRWBUF_BEGIN: ArgNil(); // begin row traverse
+        dLU0(EO_DEVIXT_CRWBUF_BEGIN);
         vDev_IXT_BEGIN(&aiDstk);
         break;//+endCase
 
-      case EO_DEVIXT_NEXT: ArgNil(); // move to next row
-        dLU0(EO_DEVIXT_NEXT);
+      case EO_DEVIXT_CRWBUF_NEXT: ArgNil(); // move to next row
+        dLU0(EO_DEVIXT_CRWBUF_NEXT);
         vDev_IXT_NEXT(&aiDstk);
         break;//+endCase
 
@@ -2435,13 +2435,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_IXT_DEREF(&aiDstk);
         break;//+endCase
 
-      case EO_DEVIXT_NULL: ArgNil(); // null the crw
-        dLU0(EO_DEVIXT_NULL);
+      case EO_DEVIXT_CRWBUF_NULL: ArgNil(); // null the crw
+        dLU0(EO_DEVIXT_CRWBUF_NULL);
         vDev_IXT_NULL(&aiDstk);
         break;//+endCase
 
-      case EO_DEVIXT_TEST: ArgNil(); // test for crw
-        dLU0(EO_DEVIXT_TEST);
+      case EO_DEVIXT_CRWBUF_TEST: ArgNil(); // test for crw
+        dLU0(EO_DEVIXT_CRWBUF_TEST);
         vDev_IXT_TEST(&aiDstk);
         break;//+endCase
 
