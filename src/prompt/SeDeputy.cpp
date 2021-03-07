@@ -155,9 +155,8 @@ void SeDeputy::vExecuteJob(void)
   
 //  Craig, try uncommenting this and see what raw input looks like got you
 //         at this point.
-
-//  vTrace("vSeDeputy::vExecuteJob : %s\n"_Stz,
-//         m_pSession->m_pInput->szRawInput());
+//  Stz* szRaw = m_pSession->m_pInput->szRawInput();
+//  vTrace("vSeDeputy::vExecuteJob : %s\n"_Stz,szRaw);
   
   Api::vExecuteJob(m_pSession);
   
