@@ -12,13 +12,14 @@ enum eDM : u1 // Dtm Kind
   /*  3 */ DM_DTE,
   /*  4 */ DM_FLT,
   /*  5 */ DM_INT,
-  /*  6 */ DM_IVL,
-  /*  7 */ DM_TME,
-  /*  8 */ DM_TSP,
-  /*  9 */ DM_VCH,
-  /* 10 */ DM_UNK,
+  /*  6 */ DM_IVY,
+  /*  7 */ DM_IVL,
+  /*  8 */ DM_TME,
+  /*  9 */ DM_TSP,
+  /* 10 */ DM_VCH,
+  /* 11 */ DM_UNK,
 
-  /* 11 */ DM_ENUMS
+  /* 12 */ DM_ENUMS
 };
 
 static Stz* aDM[]
@@ -30,13 +31,14 @@ static Stz* aDM[]
   /*  3 */ "DTE"_Stz,
   /*  4 */ "FLT"_Stz,
   /*  5 */ "INT"_Stz,
-  /*  6 */ "IVL"_Stz,
-  /*  7 */ "TME"_Stz,
-  /*  8 */ "TSP"_Stz,
-  /*  9 */ "VCH"_Stz,
-  /* 10 */ "UNK"_Stz,
+  /*  6 */ "IVY"_Stz,
+  /*  7 */ "IVL"_Stz,
+  /*  8 */ "TME"_Stz,
+  /*  9 */ "TSP"_Stz,
+  /* 10 */ "VCH"_Stz,
+  /* 11 */ "UNK"_Stz,
 
-  /* 11 */ "ENUMS"_Stz,
+  /* 12 */ "ENUMS"_Stz,
 };
 
 /*============================================================================*/
