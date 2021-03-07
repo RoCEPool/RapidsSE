@@ -341,9 +341,12 @@ void Constants::vAddConstantsCpp(void)
   /*  4 */ vAddConstant("DM_FLT"_Stz, DM_FLT);
   /*  5 */ vAddConstant("DM_INT"_Stz, DM_INT);
   /*  6 */ vAddConstant("DM_IVL"_Stz, DM_IVL);
-  /*  7 */ vAddConstant("DM_TME"_Stz, DM_TME);
-  /*  8 */ vAddConstant("DM_TSP"_Stz, DM_TSP);
-  
+  /*  7 */ vAddConstant("DM_IVY"_Stz, DM_IVY);
+  /*  8 */ vAddConstant("DM_TME"_Stz, DM_TME);
+  /*  9 */ vAddConstant("DM_TSP"_Stz, DM_TSP);
+  /* 10 */ vAddConstant("DM_VCH"_Stz, DM_VCH);
+  /* 10 */ vAddConstant("DM_UNK"_Stz, DM_UNK);
+
   // EC_ : error codes
   /*  0 */ vAddConstant("EC_NONE"_Stz,               EC_NONE);
   /*  1 */ vAddConstant("EC_ASSERT"_Stz,             EC_ASSERT);
