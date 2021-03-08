@@ -33,7 +33,7 @@ i8   iDev_IXT_CMP_SRCALT(void* aLU);
 i8   iDev_IXT_CMP_WRKALT(void* aLU);
 void vDev_IXT_DEL_ENT(i8** aaiDstk);
 void vDev_IXT_DUMP(i8** aaiDstk);
-void vDev_IXT_ENT_PRINT(void* aLU, void* aIXT);
+void vDev_IXT_ENT_PRINT(i8** aaiDstk);
 
 void vDev_IXT_INDEXNM_SET(i8** aaiDstk);
 void vDev_IXT_INDEXTREE_DELETE(i8** aaiDstk);
@@ -49,8 +49,8 @@ struct Ent_int* aDev_IXT_POS_LBOUND(void* aLU, void* aIXT);
 struct Ent_int* aDev_IXT_POS_UBOUND(void* aLU, void* aIXT);
 struct Ent_int* aDev_IXT_POS_UBOUND_LT(void* aLU, void* aIXT);
 struct Ent_int* aDev_IXT_TRV_BEGIN_OLD(void* aLU, void* aIXT);
-void vDev_IXT_TRV_BEGIN(i8** aaiDstk);
-void vDev_IXT_TRV_NEXT(i8** aaiDstk);
+void vDev_IXT_IDX_BEGIN(i8** aaiDstk);
+void vDev_IXT_IDX_NEXT(void* aLU, i8** aaiDstk);
 struct Ent_int* aDev_IXT_TRV_NEXT_OLD(void* aLU, void* aIXT);
 
 i8*  aDev_PAY_ADDRESS(void* aLU, void* aIXT);

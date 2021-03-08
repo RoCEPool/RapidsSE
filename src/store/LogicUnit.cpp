@@ -2708,10 +2708,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       case EO_DEVIXT_IDX_NEXT: ArgNil(); // traverse to next entry
-//        dLU0(EO_DEVIXT_IDX_NEXT);
-//        vDev_IXT_TRV_NEXT(&aiDstk);
-//        aRluCommon->m_aTmpEnt = (Ent*)P_PopPtr();
-//        *(++aiDstk) = (i8)aRluCommon->m_aTmpEnt;
+        dLU0(EO_DEVIXT_IDX_NEXT);
+        //vDev_IXT_TRV_NEXT(&aiDstk);
+        //aRluCommon->m_aTmpEnt = (Ent*)P_PopPtr();
+        //*(++aiDstk) = (i8)aRluCommon->m_aTmpEnt;
         RASSERT(0);
         break;//+endCase
 
@@ -2745,10 +2745,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         *(++aiDstk) = (i8)aRluCommon->m_aSrcEnt;
         break;//+endCase
 
-      case EO_IXT_SRC_PRINT: ArgNil(); // print src ent
-        vDev_IXT_ENT_PRINT(pLU,aRluCommon->m_pDevSrcIxt);
-        break;//+endCase
-
       case EO_IXT_SRC_UBOUND: ArgNil(); // pos in buffer to entry for UBOUND
         dLU0(EO_IXT_SRC_UBOUND);
         aRluCommon->m_aSrcEnt =
@@ -2775,10 +2771,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_IXT_ALT_NEXT: ArgNil();
         dLU0(EO_IXT_ALT_NEXT);
-//        aRluCommon->m_aAltEnt =
-//          aDev_IXT_TRV_NEXT(pLU,aRluCommon->m_pDevAltIxt);
-//        *(++aiDstk) = (i8)aRluCommon->m_aAltEnt;
-        
+        aRluCommon->m_aAltEnt =
+          aDev_IXT_TRV_NEXT_OLD(pLU,aRluCommon->m_pDevAltIxt);
+        *(++aiDstk) = (i8)aRluCommon->m_aAltEnt;
+  /*
         tNext = aRluCommon->m_aAltEnt->m_taNextEntry[0];
         
         if (C_ENT_END_TICKET == tNext) {
@@ -2812,11 +2808,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 //        }
         //printf("  aRluCommon->m_aAltEnt %p\n",(void*)aRluCommon->m_aAltEnt);
         *(++aiDstk) = (i8)aRluCommon->m_aAltEnt;
-
-        break;//+endCase
-
-      case EO_IXT_ALT_PRINT: ArgNil(); // print alt ent
-        vDev_IXT_ENT_PRINT(pLU,aRluCommon->m_pDevAltIxt);
+  */
         break;//+endCase
         
       case EO_IXT_CMP_SRCALT: ArgNil(); // compare src.key to alt.key
@@ -2825,6 +2817,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
                 aRluCommon->m_aAltEnt->m_iIntElm0);
         dLU1(EO_IXT_CMP_SRCALT,iRes);
         *(++aiDstk) = iRes;
+
         break;//+endCase
 
       case EO_IXT_CMP_WRKALT: ArgNil(); // compare wrk.key to alt.key
@@ -2847,6 +2840,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         aRluCommon->m_aAltEnt = aDev_IXT_POS_ALTBYWRK(pLU);
         aRluCommon->m_aAltEntArray = aRluCommon->m_aEntArray;
         *(++aiDstk) = (i8)aRluCommon->m_aAltEnt;
+        break;//+endCase
+
+      case EO_DEVIXT_ENT_PRINT: ArgNil(); // print ent
+        vDev_IXT_ENT_PRINT(&aiDstk);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

@@ -1,0 +1,21 @@
+How to add an operator to the compiler pipeline?
+================================================
+
+This assumes that we are adding a new operator/stage called "exprValidate"
+based on the existing "nameValidate" stage.
+
+ 1. Open sen/se_proceduresB.sen and navigate to the SqlCompiler procedure near the bottom
+ 2. Add the name of the new stage. e.g. exprValidate.
+ 3. We need to add a new file sen/OP_exprValidate.sen. Copy an existing operator
+   (e.g. sen/OP_nameValidate.sen) and rename it.
+ 4. In the new file, change all of the references to "nameValidate" to "exprValidate".
+ 5. Open the file sen/se_bootOps.sen.
+ 6. Since the newly added sen file is called OP_exprValidate.sen, add a line under the "e" section:
+    "OP_exprValidate.sen" include
+ 7. Open up store/stepsSet/Steps_SqlCompiler.cpp
+ 8. In the function Step::vAddSteps_SqlCompiler(), add a line that maps "sqlCompiler::exprValidate"
+   to a new function to be created in that file: Step::vSqlCompilerExprValidate().
+ 9. Copy the existing function Step::vSqlCompilerNameValidate to Step::vSqlCompilerExprValidate.
+10. Open the file store/stepsSet/StepsSet.hpp.
+11. Add a line for the declaration of the new function vSqlCompilerExprValidate().
+12. Compile and be merry.

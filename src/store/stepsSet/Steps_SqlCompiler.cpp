@@ -40,6 +40,7 @@
 #include "PlanOperand.hpp"
 
 #include "NameValidator.hpp"
+#include "ExprValidator.hpp"
 
 #include "SqlException.hpp"
 
@@ -69,7 +70,7 @@ void Step::vSqlCompilerExprValidate(void)
 
 
   try {
-    i8 i = 1;
+    ExprValidator::vValidateExprs(pPlanRoot);
 
   } catch (Parser::SqlException& e) {
     Grid* pGrid = AM::pGrid();

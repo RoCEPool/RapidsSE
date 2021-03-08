@@ -73,7 +73,7 @@ eDM Column::eDatum(eCT eColumnType)
     case CT_TIME        : return DM_TME;
     case CT_TIMESTAMP   : return DM_TSP;
     case CT_VARCHAR     : return DM_VCH;
-    case CT_UNKNOWN     : NEVER_REACH;
+    case CT_UNKNOWN     : return DM_UNK;
     default:
       RASSERT(0);
   }

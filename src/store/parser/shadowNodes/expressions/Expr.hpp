@@ -29,6 +29,10 @@ namespace Parser
     // it contains) is an aggregate expression
     static b1 bIsAnAggregate(PlanNode* pNode);
 
+    // Checks the expression tree to determine that a supported result type
+    // can be produced. Will throw a SqlException if it is an invalid expression.
+    static void vValidateResultType(QueryNode* pExprNode, PlanNode* pRootNode);
+
   protected:
 
   };

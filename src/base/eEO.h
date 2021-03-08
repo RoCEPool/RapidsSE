@@ -308,16 +308,18 @@ enum eEO : u1 // expression operators
   /*  D  */ EO_IXT_SRC_BEGIN,    // begin linear traverse
   /*  D  */ EO_IXT_SRC_LBOUND,   // position at lower bound
   /*  D  */ EO_IXT_SRC_NEXT,     // move to next entry
-  /*  D  */ EO_IXT_SRC_PRINT,    // print src ent
+  /*  D  */ //EO_IXT_SRC_PRINT,    // print src ent
   /*  D  */ EO_IXT_SRC_UBOUND,   // get upper bound
   /*  D  */ EO_IXT_SRC_UBOUND_LT, // get upper bound (less than)
   /*  D  */ EO_IXT_ALT_BEGIN,    // begin linear traverse
   /*  D  */ EO_IXT_ALT_NEXT,     // move to next entry
-  /*  D  */ EO_IXT_ALT_PRINT,    // print src ent
+  /*  D  */ //EO_IXT_ALT_PRINT,    // print src ent
   /*  D  */ EO_IXT_CMP_SRCALT,   // compare src.key to alt.key
   /*  D  */ EO_IXT_CMP_WRKALT,   // compare wrk.key to alt.key
   /*  D  */ EO_IXT_POS_ALTBYSRC, // position alt ixt using src.key
   /*  D  */ EO_IXT_POS_ALTBYWRK, // position alt ixt using entwrk.key
+
+  /*  D  */ EO_DEVIXT_ENT_PRINT, // print ent
 
   // pay load
   /*  R  */ EO_PAY_ADDRESS,      // get payload address
@@ -677,17 +679,19 @@ static Stz* aEO[]
   /*    */ "EO_IXT_SRC_BEGIN"_Stz,
   /*    */ "EO_IXT_SRC_LBOUND"_Stz,
   /*    */ "EO_IXT_SRC_NEXT"_Stz,
-  /*    */ "EO_IXT_SRC_PRINT"_Stz,
+  /*    */ //"EO_IXT_SRC_PRINT"_Stz,
   /*    */ "EO_IXT_SRC_UBOUND"_Stz,
   /*    */ "EO_IXT_SRC_UBOUND_LT"_Stz,
   /*    */ "EO_IXT_ALT_BEGIN"_Stz,
   /*    */ "EO_IXT_ALT_NEXT"_Stz,
-  /*    */ "EO_IXT_ALT_PRINT"_Stz,
+  /*    */ //"EO_IXT_ALT_PRINT"_Stz,
   /*    */ "EO_IXT_CMP_SRCALT"_Stz,
   /*    */ "EO_IXT_CMP_WRKALT"_Stz,
   /*    */ "EO_IXT_POS_ALTBYSRC"_Stz,
   /*    */ "EO_IXT_POS_ALTBYWRK"_Stz,
-  
+
+  /*    */ "EO_DEVIXT_ENT_PRINT"_Stz,
+
   // pay load
   /*    */ "EO_PAY_ADDRESS"_Stz,
   /*    */ "EO_PAY_FETCH_COLI"_Stz,
@@ -1054,16 +1058,18 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_IXT_SRC_BEGIN
   { EA_NONE,    0 },  // EO_IXT_SRC_LBOUND
   { EA_NONE,    0 },  // EO_IXT_SRC_NEXT
-  { EA_NONE,    0 },  // EO_IXT_SRC_PRINT
+  //{ EA_NONE,    0 },  // EO_IXT_SRC_PRINT
   { EA_NONE,    0 },  // EO_IXT_SRC_UBOUND
   { EA_NONE,    0 },  // EO_IXT_SRC_UBOUND_LT
   { EA_NONE,    0 },  // EO_IXT_ALT_BEGIN
   { EA_NONE,    0 },  // EO_IXT_ALT_NEXT
-  { EA_NONE,    0 },  // EO_IXT_ALT_PRINT
+  //{ EA_NONE,    0 },  // EO_IXT_ALT_PRINT
   { EA_NONE,    0 },  // EO_IXT_CMP_SRCALT
   { EA_NONE,    0 },  // EO_IXT_CMP_WRKALT
   { EA_NONE,    0 },  // EO_IXT_POS_ALTBYSRC
   { EA_NONE,    0 },  // EO_IXT_POS_ALTBYWRK
+
+  { EA_NONE,    0 },  // EO_DEVIXT_ENT_PRINT
 
   // pay load
   { EA_NONE,    0 },  // EO_PAY_ADDRESS
