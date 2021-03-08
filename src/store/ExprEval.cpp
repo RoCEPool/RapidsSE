@@ -333,6 +333,11 @@ void ExprEval::vAddPopCol(eCT eColumnType, i8 iColumn)
       StrLib::vSprintCat(m_sAsmText, "  EO_DEVROW_POPCOLS %lld\n"_Stz, iColumn);
       break;
 
+    case CT_UNKNOWN:
+      StrLib::vSprintCat(m_sAsmText, "  EO_PUSH_DEVROW_DST\n"_Stz);
+      StrLib::vSprintCat(m_sAsmText, "  EO_DEVROW_POPCOLI %lld\n"_Stz, iColumn);
+      break;
+
     default:
       RASSERT(0);
   }
@@ -484,6 +489,17 @@ eEC ExprEval::eAddSumGby(eCT eColumnType, i8 iColumn)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add EO code for unknown                                                    */
+/*----------------------------------------------------------------------------*/
+void ExprEval::vAddUnknown(Token* pTkn, Column* pColumnExpr)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
+
+  StrLib::vSprintCat(m_sAsmText, "  EO_PUSHNULL\n"_Stz);
+  pColumnExpr->vSet("NONE"_Stz, CT_UNKNOWN, 19, 0);
+}
+
+/*----------------------------------------------------------------------------*/
 /* collect source columns needed for projection                               */
 /*----------------------------------------------------------------------------*/
 eEC ExprEval::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec)
@@ -541,6 +557,10 @@ eEC ExprEval::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec)
     if (!pTkn->bIsName()) {
       eError = EC_INVALID_COMMAND;
       break;
+    }
+
+    if (pTkn->bIsName()  && pTkn->bSame("null"_Stz) ) {
+      continue;
     }
 
     if (pTkn->bIsName()  && pTkn->bSame("DATE"_Stz) ) {
@@ -714,6 +734,12 @@ eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
     if (!pTkn->bIsName()) {
       eError = EC_INVALID_COMMAND;
       goto L_RETURN;
+    }
+
+    if (pTkn->bIsName()  && pTkn->bSame("null"_Stz) ) {
+      vAddUnknown(pTkn, pColumnExpr);
+      pTkn = pTknVec->pNextToken();
+      continue;
     }
 
     if (pTkn->bIsName()  && pTkn->bSame("DATE"_Stz) ) {
