@@ -79,6 +79,20 @@ QueryNode* ShadowRoot::pMetadataNode(PlanNode* pNode)
   return pMetadata;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns the node representing the /__root__/plan node in the plan graph    */
+/*----------------------------------------------------------------------------*/
+QueryNode* ShadowRoot::pPlanNode(PlanNode* pNode)
+{
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pPlan = static_cast<QueryNode*>(GraphNav::pFindChild(const_cast<Stz*>(C_PLAN_NAME), pNode));
+  ASSERT(pPlan);
+
+  return pPlan;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

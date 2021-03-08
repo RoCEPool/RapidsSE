@@ -159,7 +159,7 @@ QueryNode* SchemaDef::pTableDef(QueryNode* pNode, Stz* szTableName)
     QueryNode* pChild = static_cast<QueryNode*>(pIter->pNext());
     ASSERT(TableDef::bIsOfType(pChild));
 
-    if (TableDef::szTableName(pChild)->bEqual(szTableName)) {
+    if (TableDef::szTableName(pChild)->bSame(szTableName)) {
       pTableDef = pChild;
       break;
     }

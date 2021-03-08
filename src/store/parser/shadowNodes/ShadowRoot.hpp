@@ -25,6 +25,7 @@ namespace Parser
     static b1 bIsOfType(PlanNode* pNode);
 
     static QueryNode* pMetadataNode(PlanNode* pNode);
+    static QueryNode* pPlanNode(PlanNode* pNode);
   };
 
 }

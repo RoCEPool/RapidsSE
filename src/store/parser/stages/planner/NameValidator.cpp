@@ -10,6 +10,7 @@
 #include "PlanConstants.hpp"
 #include "GraphNav.hpp"
 #include "MetadataNode.hpp"
+#include "ShadowRoot.hpp"
 #include "SqlException.hpp"
 
 #include "SeApi.hpp"
@@ -47,11 +48,11 @@ using namespace Parser;
 void NameValidator::vValidateNames(PlanNode *pRootNode)
 {
   // First find the metadata node
-  QueryNode* pMetadataNode = static_cast<QueryNode*>(GraphNav::pFind(const_cast<Stz*>(C_METADATA_PATH), pRootNode));
+  QueryNode* pMetadataNode = ShadowRoot::pMetadataNode(pRootNode);
   ASSERT(pMetadataNode);
 
   // Find the /plan node
-  QueryNode* pPlanNode = static_cast<QueryNode*>(GraphNav::pFind(const_cast<Stz*>(C_PLAN_PATH), pRootNode));
+  QueryNode* pPlanNode = ShadowRoot::pPlanNode(pRootNode);
   ASSERT(pPlanNode);
 
   STORE::SeApi* pSeApi = new STORE::SeApi();
