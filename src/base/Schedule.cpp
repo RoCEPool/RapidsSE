@@ -135,7 +135,7 @@ void Schedule::vThreadsReport(void)
            aHS[pThread->m_eThreadState],
            pThread->m_eDedicated ? aCN[pThread->m_eDedicated]->azChar() : "",
            
-           pThread->m_nAssignedTasks
+           pThread->nAssignedTasks()
            );
   }
   
@@ -172,7 +172,7 @@ void Schedule::vThreadsReport(void)
            aHS[pThread->m_eThreadState],
            pThread->m_eDedicated ? aCN[pThread->m_eDedicated]->azChar() : "",
            
-           pThread->m_nAssignedTasks
+           pThread->nAssignedTasks()
            );
   }
   

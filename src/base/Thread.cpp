@@ -352,6 +352,16 @@ void Thread::vBind(i8 iCore)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get number of tasks assigned so far                                        */
+/*----------------------------------------------------------------------------*/
+i8 Thread::nAssignedTasks(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  return m_nAssignedTasks;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bind calling thread to a core                                              */
 /*----------------------------------------------------------------------------*/
 void Thread::vBindCore(void)
@@ -535,6 +545,9 @@ void Thread::vTask(Task* pTask)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   m_pTask = pTask;
+  
+  if (m_pTask)
+    m_nAssignedTasks++;
 }
 
 /*----------------------------------------------------------------------------*/

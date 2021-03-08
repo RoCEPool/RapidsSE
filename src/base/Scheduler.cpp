@@ -864,7 +864,6 @@ bool Scheduler::bThread_AssignIdle(Task* pKnownTask)
   RASSERT(HS_IDLE == pThread->m_eThreadState);
 
   pThread->vTask(pKnownTask);
-  pThread->m_nAssignedTasks++;
   
   pThread->m_eThreadState = HS_ASSIGNED;
   
@@ -919,7 +918,6 @@ void Scheduler::vThread_WaitAssignment(Thread* pThread)
 
       pThread->vTask(pPoppedTask);
       pThread->m_eThreadState = HS_ASSIGNED;
-      pThread->m_nAssignedTasks++;
       break;
     }
     
