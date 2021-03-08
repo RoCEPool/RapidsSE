@@ -64,13 +64,16 @@ Thread::Thread(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   m_eThreadState = HS_NONE;
-  m_eDedicated   = CN_NONE;
+  m_eDedicated = CN_NONE;
 
-  m_pTask        = nullptr;
+  m_pTask = nullptr;
   m_nAssignedTasks = 0;
 
-  m_pPsxThd     = new PsxThd(this);
+  m_pPsxThd = new PsxThd(this);
   
+  m_pObject0 = nullptr;
+  m_pObject1 = nullptr;
+
   _checkInitialised_(CN_THREAD);
   
   vEventNoInc(); ++ gixThread;
@@ -434,6 +437,46 @@ void Thread::vOutline(s4K& sOutline)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   sOutline.vSprint("<%s focal>"_Stz,aCN[eGetClassNo()]);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get general purpose object 0                                               */
+/*----------------------------------------------------------------------------*/
+Object* Thread::pObject0(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+
+  return m_pObject0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set general purpose object 0                                               */
+/*----------------------------------------------------------------------------*/
+void Thread::vObject0(Object* pObject0)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+
+  m_pObject0 = pObject0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get general purpose object 1                                               */
+/*----------------------------------------------------------------------------*/
+Object* Thread::pObject1(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+
+  return m_pObject1;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set general purpose object 1                                               */
+/*----------------------------------------------------------------------------*/
+void Thread::vObject1(Object* pObject1)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+
+  m_pObject1 = pObject1;
 }
 
 /*----------------------------------------------------------------------------*/

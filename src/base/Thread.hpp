@@ -20,6 +20,9 @@ namespace BASE
 
     PsxThd*  m_pPsxThd;       // its posix structure
   
+    Object*  m_pObject0;      // general purpose object 0
+    Object*  m_pObject1;      // general purpose object 1
+
     // must be last
     Footer m_xFooter;
     
@@ -44,6 +47,10 @@ namespace BASE
     void vOutline(s4K& sOutline);
     void vLoop_dedicated(void);
     void vLoop_general(void);
+    Object* pObject0(void);
+    void    vObject0(Object* pObject0);
+    Object* pObject1(void);
+    void    vObject1(Object* pObject1);
     void vSpawnPsxThd(void* pFun(void*), void* pArg);
     void vSpawnPsxThd_dedicated(void);
     void vSpawnPsxThd_general(void);

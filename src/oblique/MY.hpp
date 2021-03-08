@@ -23,8 +23,9 @@ namespace OBLIQUE
   class MY
   {
   public:
-    static Stz* szJobNm(void);
     static Stz* szGridNm(void);
+    static Stz* szHostNm(void);
+    static Stz* szJobNm(void);
     static Stz* szWordNm(void);
   
     static Grid*      pGrid(void);
