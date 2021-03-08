@@ -8,6 +8,7 @@ namespace STORE
   class WriteBehind : public Object
   {
   private:
+    Lock m_okLock;
   
     RowBuffer*  m_pRowBuffer;
 

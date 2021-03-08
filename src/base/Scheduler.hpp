@@ -7,12 +7,17 @@ namespace BASE
 {
   class Scheduler
   {
- 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // boot
+  public:
+    static void vScheduler_Boot(void);
+  
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // self task transition
   
   public:
     static void vTaskSelf_LoopTransition(Task* pSelfTask, Thread* pThread);
+  
   private:
     static void vTaskSelf_BideForOperand(Task* pSelfTask, Thread* pThread);
     static void vTaskSelf_DeleteThisTask(Task* pSelfTask, Thread* pThread);

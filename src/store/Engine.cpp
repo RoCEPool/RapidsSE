@@ -39,9 +39,9 @@
 
 #include "STORE.h"
 
-CmdLineArgs      gxCmdLineArgs;
-EnvFlags  gxEnvFlags;
-FnCatalog gxFnCatalog;
+CmdLineArgs  gxCmdLineArgs;
+EnvFlags     gxEnvFlags;
+FnCatalog    gxFnCatalog;
 
 AttachMap*   gpAttachMap;
 BufferPool*  gpBufferPool;
@@ -1650,23 +1650,11 @@ void Engine::vStartSystem(void)
   // threading
   
   if (AM::bVerboseProgress())
-    vInfo("  Spawning Expressions\n"_Stz);
+    vInfo("  Spawning Threads\n"_Stz);
   AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_BOOT,
               "spawning threads"_Stz); //!format-LogSys
-  // spawn general threads
-  for (i8 iThreads = 0; iThreads < gxCmdLineArgs.m_xSysArgs.m_nThreads; iThreads++) {
-    Thread* pThread = new Thread;
-    pThread->vSpawnPsxThd_general();
-  }
   
-  // spawn dummy threads
-  for (i8 iThreads = 0; iThreads < gxCmdLineArgs.m_xSysArgs.m_nDummyThreads; iThreads++) {
-    Thread* pThread = new Thread;
-    pThread->vSpawnPsxThd_dummy();
-  }
-  
-  // pause till all general threads are operational 
-  Scheduler::vThread_NapTillGeneralThreads();
+  Scheduler::vScheduler_Boot();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
