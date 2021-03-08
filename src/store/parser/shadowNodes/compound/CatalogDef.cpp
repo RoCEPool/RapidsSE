@@ -123,7 +123,7 @@ QueryNode* CatalogDef::pSchemaDef(QueryNode* pNode, Stz* szSchemaName)
     QueryNode* pChild = static_cast<QueryNode*>(pIter->pNext());
     ASSERT(SchemaDef::bIsOfType(pChild));
 
-    if (SchemaDef::szSchemaName(pChild)->bEqual(szSchemaName)) {
+    if (SchemaDef::szSchemaName(pChild)->bSame(szSchemaName)) {
       pSchemaDef = pChild;
       break;
     }

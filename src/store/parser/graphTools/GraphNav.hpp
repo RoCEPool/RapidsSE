@@ -35,9 +35,9 @@ namespace Parser
       WALK_NONE = 0,
       WALK_CONTINUE,        // Keep walking.
       WALK_ABORT,           // Abort all further walking of nodes in the graph.
-      WALK_SKIP_SUBTREE,    // Slip all properties and children. Not applicable on a bottom-up traversal.
-      WALK_SKIP_PROPERTIES, // Slip properties only. Not applicable on a bottom-up traversal.
-      WALK_SKIP_CHILDREN,   // Slip children only. Not applicable on a bottom-up traversal.
+      WALK_SKIP_SUBTREE,    // Skip all properties and children. Not applicable on a bottom-up traversal.
+      WALK_SKIP_PROPERTIES, // Skip properties only. Not applicable on a bottom-up traversal.
+      WALK_SKIP_CHILDREN,   // Skip children only. Not applicable on a bottom-up traversal.
       WALK_NENUMS
     };
 

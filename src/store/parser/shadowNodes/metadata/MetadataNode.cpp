@@ -148,7 +148,7 @@ QueryNode* MetadataNode::pCatalogDef(QueryNode* pMetadataNode, Stz* szCatalogNam
     QueryNode* pChild = static_cast<QueryNode*>(pIter->pNext());
     ASSERT(CatalogDef::bIsOfType(pChild));
 
-    if (CatalogDef::szCatalogName(pChild)->bEqual(szCatalogName)) {
+    if (CatalogDef::szCatalogName(pChild)->bSame(szCatalogName)) {
       pCatalogDef = pChild;
       break;
     }

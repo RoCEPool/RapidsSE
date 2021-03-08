@@ -13,6 +13,7 @@
 #include "OperatorExpr.hpp"
 
 #include "GraphNav.hpp"
+#include "SqlException.hpp"
 
 using namespace Parser;
 
@@ -104,6 +105,67 @@ b1 Expr::bIsAnAggregate(PlanNode *pNode)
   return bIsAgg;
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* Checks the expression tree to determine that a supported result type       */
+/* can be produced. Will throw a SqlException if it is an invalid expression. */
+/*----------------------------------------------------------------------------*/
+void Expr::vValidateResultType(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  ASSERT(pExprNode);
+  ASSERT(bIsOfType(pExprNode));
+
+  // We check for an invalid result type by calling eType() and looking for
+  // CT_NONE. If an expression produces this result type then we try to
+  // decompose the expression to find the root cause. We can do this without
+  // manual polymorphism because we know that expressions are nested in
+  // parent-child trees, so we can just ask each child of this node for its
+  // result type to help narrow it down.
+
+  // First check the overall result. If it is not CT_NONE then the entire
+  // expression tree should be ok (because no combination of CT_NONE should
+  // produce a valid type).
+
+  eCT eResultType = eType(pExprNode, pRootNode);
+
+  if (eResultType != CT_NONE) {
+    // This expression will produce a valid type
+    // (though this doesn't mean it will produce the correct type for it's location
+    // in the plan)
+    ASSERT(eResultType > CT_NONE);
+    ASSERT(eResultType < CT_ENUMS);
+    return;
+  }
+
+  // Check with each of the children to see we can narrow the problem down further.
+  if (pExprNode->nChildren() > 0) {
+    PlanNodeIter* pIter = pExprNode->pNewChildrenIter();
+
+    while (pIter->bHasNext()) {
+      QueryNode* pChildExpr = static_cast<QueryNode*>(pIter->pNext());
+
+      try {
+      // Recurse into this child.
+        vValidateResultType(pChildExpr, pRootNode);
+
+      } catch (SqlException& e) {
+        delete pIter;
+        throw;
+      }
+    }
+
+    delete pIter;
+  }
+
+  // The problem is in this expression node. Throw an exception
+  s2K sBuf;
+  Expr::vDescribe(pExprNode, sBuf);
+
+  SemanticException::vThrow(
+      "Expression type combination is invalid or unsupported for the expression operator : %s"_Stz,
+      sBuf.szStz()
+      );
+}
 
 /*============================================================================*/
 /* end                                                                        */
