@@ -17,13 +17,8 @@
 #include "InfoSet.hpp"
 #include "TableMetadata.hpp"
 
-#include "TableRef.hpp"
-#include "ColumnRef.hpp"
-#include "TableDef.hpp"
-#include "ColumnDefs.hpp"
-#include "ColumnDef.hpp"
-#include "IndexDefs.hpp"
-#include "IndexDef.hpp"
+#include "Expr.hpp"
+#include "FilterOp.hpp"
 
 
 using namespace Parser;
@@ -53,7 +48,8 @@ void ExprValidator::vValidateExprs(PlanNode *pRootNode)
   // Validate that the result types of any expressions are not invalid.
   vValidateExprResultType(pRootNode, pPlanNode);
 
-  // TODO: Validate that all predicate expressions have a boolean result type
+  // Validate that all predicate expressions have a boolean result type
+  vValidatePredicatesAreBoolean(pRootNode, pPlanNode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -87,6 +83,46 @@ void ExprValidator::vValidateExprResultType(PlanNode *pRootNode, QueryNode* pPla
   GraphNav::bWalk(pPlanNode, true, true, fVisitor, pRootNode);
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* Validate that all predicate expressions (e.g. in filterOps) return a       */
+/* boolean expression.                                                        */
+/*----------------------------------------------------------------------------*/
+void ExprValidator::vValidatePredicatesAreBoolean(PlanNode *pRootNode, QueryNode* pPlanNode)
+{
+  ASSERT(pRootNode);
+  ASSERT(pPlanNode);
+
+  // Walk the graph looking for all filterOps
+  auto fVisitor = [](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
+
+    if (!FilterOp::bIsOfType(pNode)) {
+      return GraphNav::WALK_CONTINUE;   // Keep walking
+    }
+
+    QueryNode* pFilterNode = static_cast<QueryNode*>(pNode);
+    QueryNode* pExprNode = FilterOp::pFilterExpr(pFilterNode);
+
+    eCT eType = Expr::eType(pExprNode, pRootNode);
+
+    if (eType == CT_BOOLEAN) {
+      // All good, keep looking for more filterOps
+      return GraphNav::WALK_CONTINUE;
+    }
+
+    // Throw an error
+    s2K sBuf;
+    Expr::vDescribe(pExprNode, sBuf);
+
+    SemanticException::vThrow("Predicate expression must have a boolean result : %s"_Stz, sBuf.szStz());
+  };
+
+  // Walk the /plan node and its children. We're not interested in walking
+  // the properties because we are looking for filterOps
+  GraphNav::bWalk(pPlanNode, false, true, fVisitor, pRootNode);
+}
 
 
 

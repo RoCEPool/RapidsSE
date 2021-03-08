@@ -28,7 +28,11 @@ namespace Parser
     static void vValidateExprs(PlanNode* pRootNode);
 
   private:
+    // Validate that all expressions do not have an invalid result type
     static void vValidateExprResultType(PlanNode* pRootNode, QueryNode* pPlanNode);
+
+    // Validate that all predicate expressions give a boolean result type
+    static void vValidatePredicatesAreBoolean(PlanNode* pRootNode, QueryNode* pPlanNode);
 
   };
 }
