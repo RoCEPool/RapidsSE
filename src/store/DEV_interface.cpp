@@ -335,8 +335,9 @@ Ent_int* aDev_ENT_POSPRIOR(void* aLU, void* aIXT, Ent_int** aaSkipRoots)
   
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
 
+  Ent *pEnt = (Ent*)pLogicUnit->m_xRluCommon.m_aWrkEnt;
   pDevIxt->m_aEnt =
-    pDevIxt->m_pIdxTree->aPositionPriorEntry(pLogicUnit->m_oEntWrk.aKey(),
+    pDevIxt->m_pIdxTree->aPositionPriorEntry(pEnt->aKey(),
                                              &pDevIxt->m_pEntBuffer);
   
   if (pDevIxt->m_pEntBuffer) {
@@ -359,10 +360,12 @@ void vDev_ENT_PRINTKEYS(void* aLU, void* aIXT)
   DevIXT* pDevIxt = _pDevIXT(aIXT);
   
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-  
+
+  Ent *pEnt = (Ent*)pLogicUnit->m_xRluCommon.m_aWrkEnt;
+
   SP_Ent spEnt;
   vTrace("\n\nEntWrk : %s\n"_Stz,
-         spEnt.sz(pLogicUnit->m_oEntWrk.aEnt(),
+         spEnt.sz(pEnt,
                   pDevIxt->m_pIdxTree->pIndexDef()));
   
   vTrace("\n\nEnt : %s\n"_Stz,
@@ -530,8 +533,10 @@ i8 iDev_IXT_CMP_WRKALT(void* aLU)
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
   
   i8 iRes;
-  
-  Key* aWrkKey = pLogicUnit->m_oEntWrk.aKey();
+
+  Ent *pEnt = (Ent*)pLogicUnit->m_xRluCommon.m_aWrkEnt;
+  Key* aWrkKey = pEnt->aKey();
+
   Key* aAltKey = pLogicUnit->m_pDevAltIxt->m_aEnt->aKey();
 
   if (KE_GENERAL == pLogicUnit->m_pDevAltIxt->m_aEnt->eKind()) {
@@ -619,8 +624,10 @@ Ent_int* aDev_IXT_INS_ENT(void* aLU, void* aIXT) {
   DevIXT *pDevIXT = _pDevIXT(aIXT);
   LogicUnit *pLogicUnit = _pLogicUnit(aLU);
 
+  Ent *pEnt = (Ent*)pLogicUnit->m_xRluCommon.m_aWrkEnt;
+
   pDevIXT->m_aEnt =
-      pDevIXT->m_pIdxTree->aInsertEntry(pLogicUnit->m_oEntWrk.aEnt());
+      pDevIXT->m_pIdxTree->aInsertEntry(pEnt);
 
   return (Ent_int *) pDevIXT->m_aEnt;
 }
@@ -1062,7 +1069,7 @@ Stz* szDev_PAY_STORE_COLS(void* aLU, void* aIXT, i8 iArg)
 /*----------------------------------------------------------------------------*/
 /* append next element value                                                  */
 /*----------------------------------------------------------------------------*/
-void vDev_ENTWRK_APPENDELM(void* aLU, void* aROWDEVICE, i8 iArg)
+void  vDev_ENTWRK_APPENDELM(void* aLU, void* aROWDEVICE, i8 iArg)
 {
   _static_
   
