@@ -2604,9 +2604,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_ROW_ENTWRK_APPENDELMS(&aiDstk);
         break;//+endCase
         
-      case EO_ENTWRK_CREATEPAY: ArgGet(iArg); // create a payload in entwrk
-        dLU1(EO_ENTWRK_CREATEPAY,iArg);
-        vDev_ENTWRK_CREATEPAY(pLU,aRluCommon->m_pDevSrcRow,iArg);
+      case EO_DEVROW_ENTWRK_CREATEPAY: ArgGet(iArg); // create a payload in entwrk
+        dLU1(EO_DEVROW_ENTWRK_CREATEPAY,iArg);
+        *(++aiDstk) = iArg;
+        vDev_ROW_ENTWRK_CREATEPAY(&aiDstk);
         break;//+endCase
                 
       case EO_ENTWRK_POPOFS: ArgNil(); // pop m_oEntWrk.ref.buffer/offset

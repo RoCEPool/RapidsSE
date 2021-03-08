@@ -285,7 +285,7 @@ enum eEO : u1 // expression operators
   // entWrk
   /*  D  */ EO_DEVROW_ENTWRK_APPENDELMI,// append next element value (int)
   /*  D  */ EO_DEVROW_ENTWRK_APPENDELMS,// append next element value (str)
-  /*  D  */ EO_ENTWRK_CREATEPAY, // create a payload in entwrk
+  /*  D  */ EO_DEVROW_ENTWRK_CREATEPAY, // create a payload in entwrk
   /*  D  */ EO_ENTWRK_POPOFS,    // pop m_oEntWrk.ref.buffer/offset
   /*  D  */ EO_ENTWRK_POPREF,    // pop m_oEntWrk.ref
   /*  D  */ EO_ENTWRK_PRINT,     // print m_oEntWrk
@@ -658,7 +658,7 @@ static Stz* aEO[]
   // entWrk
   /*    */ "EO_DEVROW_ENTWRK_APPENDELMI"_Stz,
   /*    */ "EO_DEVROW_ENTWRK_APPENDELMS"_Stz,
-  /*    */ "EO_ENTWRK_CREATEPAY"_Stz,
+  /*    */ "EO_DEVROW_ENTWRK_CREATEPAY"_Stz,
   /*    */ "EO_ENTWRK_POPOFS"_Stz,
   /*    */ "EO_ENTWRK_POPREF"_Stz,
   /*    */ "EO_ENTWRK_PRINT"_Stz,
@@ -1039,7 +1039,7 @@ static EoArg EoArgs[]
   // entWrk
   { EA_NONE,    0 },  // EO_DEVROW_ENTWRK_APPENDELMI
   { EA_NONE,    0 },  // EO_DEVROW_ENTWRK_APPENDELMS
-  { EA_INT,     8 },  // EO_ENTWRK_CREATEPAY
+  { EA_INT,     8 },  // EO_DEVROW_ENTWRK_CREATEPAY
   { EA_NONE,    0 },  // EO_ENTWRK_POPOFS
   { EA_NONE,    0 },  // EO_ENTWRK_POPREF
   { EA_NONE,    0 },  // EO_ENTWRK_PRINT

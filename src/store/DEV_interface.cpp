@@ -1111,17 +1111,18 @@ void vDev_ROW_ENTWRK_APPENDELMS(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* create payload                                                             */
 /*----------------------------------------------------------------------------*/
-void vDev_ENTWRK_CREATEPAY(void* aLU, void* aROWDEVICE, i8 iArg)
+void vDev_ROW_ENTWRK_CREATEPAY(i8** aaiDstk)
 {
   _static_
 
-  UNUSED(aROWDEVICE);
+  i8 *aiDstk = *aaiDstk;
 
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-  EntWrk *pEntWrk = (EntWrk*)pLogicUnit->m_xRluCommon.m_pEntWrk;
+  i8 iPayLoadBytes = I_PopInt();
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
+  EntWrk *pEntWrk = (EntWrk*)P_PopPtr();
 
   pEntWrk->vPayload(true);
-  pEntWrk->vPayloadBytes(iArg);
+  pEntWrk->vPayloadBytes(iPayLoadBytes);
 }
 
 /*----------------------------------------------------------------------------*/
