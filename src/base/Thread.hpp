@@ -49,10 +49,11 @@ namespace BASE
     void vLoop_dedicated(void);
     void vLoop_general(void);
     Object* pObject0(void);
-    void    vObject0(Object* pObject0);
+    void  vObject0(Object* pObject0);
     Object* pObject1(void);
-    void    vObject1(Object* pObject1);
+    void  vObject1(Object* pObject1);
     PsxThd* pPsxThd(void);
+    void vSetIdle(void);
     void vSpawnPsxThd(void* pFun(void*), void* pArg);
     void vSpawnPsxThd_dedicated(void);
     void vSpawnPsxThd_general(void);

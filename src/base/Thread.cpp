@@ -209,7 +209,7 @@ void* Thread::aEntryPoint_dummy(void* pArg)
     Thread* pThread = _pThread(pArg);
     RASSERT(pThread);
 
-    pThread->m_eThreadState = HS_IDLE;
+    pThread->vSetIdle();
     
     pThread->m_pPsxThd->vThreadEntry();
     
@@ -453,6 +453,16 @@ PsxThd* Thread::pPsxThd(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
 
   return m_pPsxThd;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set thread state as idle                                                   */
+/*----------------------------------------------------------------------------*/
+void Thread::vSetIdle(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  m_eThreadState = HS_IDLE;
 }
 
 /*----------------------------------------------------------------------------*/

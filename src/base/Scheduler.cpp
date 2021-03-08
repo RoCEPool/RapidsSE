@@ -682,7 +682,7 @@ void Scheduler::vThread_AddDedicatedThread(Thread* pThread)
   
   Schedule* pSchedule = AM::pSchedule();
   
-  pThread->m_eThreadState = HS_IDLE;
+  pThread->vSetIdle();
   pSchedule->vAddDedicatedThread(pThread);
 }
 
@@ -701,7 +701,7 @@ void Scheduler::vThread_AddGeneralThread(Thread* pThread)
   
   Schedule* pSchedule = AM::pSchedule();
   
-  pThread->m_eThreadState = HS_IDLE;
+  pThread->vSetIdle();
   pSchedule->vAddGeneralThread(pThread);
 }
 
@@ -925,8 +925,8 @@ void Scheduler::vThread_WaitAssignment(Thread* pThread)
     
     // -- -- -- -- -- -- -- -- -- -- -- -- -- --
     
-    pThread->m_eThreadState = HS_IDLE;
     RASSERT(! pThread->pTask());
+    pThread->vSetIdle();
     pSchedule->vThreadAppendIdle(pThread);
 
     ASSERT(pThread->m_oMutex.bIsLockedByCaller(pThread));
