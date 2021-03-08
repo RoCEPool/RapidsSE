@@ -1079,8 +1079,9 @@ void  vDev_ENTWRK_APPENDELM(void* aLU, void* aROWDEVICE, i8 iArg)
   DevROW* pDevRow = _pDevROW(aROWDEVICE);
   
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+  EntWrk *pEntWrk = (EntWrk*)pLogicUnit->m_xRluCommon.m_pEntWrk;
 
-  pLogicUnit->m_oEntWrk.vAppendElement(pDevRow->m_aRow,
+  pEntWrk->vAppendElement(pDevRow->m_aRow,
                                        pDevRow->m_pRowBuffer->pRowPix(),
                                        iArg);
 }
@@ -1095,8 +1096,9 @@ void vDev_ENTWRK_APPENDELMI(void* aLU, void* aROWDEVICE, i8 iTop)
   DevROW* pDevRow = _pDevROW(aROWDEVICE);
 
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+  EntWrk *pEntWrk = (EntWrk*)pLogicUnit->m_xRluCommon.m_pEntWrk;
 
-  pLogicUnit->m_oEntWrk.vAppendElementInt(pDevRow->m_aRow,iTop);
+  pEntWrk->vAppendElementInt(pDevRow->m_aRow,iTop);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1109,8 +1111,9 @@ void vDev_ENTWRK_APPENDELMS(void* aLU, void* aROWDEVICE, Stz* szTop)
   DevROW* pDevRow = _pDevROW(aROWDEVICE);
 
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+  EntWrk *pEntWrk = (EntWrk*)pLogicUnit->m_xRluCommon.m_pEntWrk;
 
-  pLogicUnit->m_oEntWrk.vAppendElementStz(pDevRow->m_aRow,szTop);
+  pEntWrk->vAppendElementStz(pDevRow->m_aRow,szTop);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1123,9 +1126,10 @@ void vDev_ENTWRK_CREATEPAY(void* aLU, void* aROWDEVICE, i8 iArg)
   UNUSED(aROWDEVICE);
 
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+  EntWrk *pEntWrk = (EntWrk*)pLogicUnit->m_xRluCommon.m_pEntWrk;
 
-  pLogicUnit->m_oEntWrk.vPayload(true);
-  pLogicUnit->m_oEntWrk.vPayloadBytes(iArg);
+  pEntWrk->vPayload(true);
+  pEntWrk->vPayloadBytes(iArg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1139,7 +1143,9 @@ void vDev_ENTWRK_POPOFS(void* aLU, void* aROWDEVICE, i8 iTop)
 
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
 
-  pLogicUnit->m_oEntWrk.vBuffer(iTop);
+  Ent *pEnt = (Ent*)pLogicUnit->m_xRluCommon.m_aWrkEnt;
+
+  pEnt->vBuffer(iTop);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1153,12 +1159,12 @@ void vDev_ENTWRK_PRINT(void* aLU, void* aROWDEVICE)
 
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
 
-  Ent* aEnt = pLogicUnit->m_oEntWrk.aEnt();
+  Ent *pEnt = (Ent*)pLogicUnit->m_xRluCommon.m_aWrkEnt;
   IndexDef* pIndexDef = pLogicUnit->m_xpIndexTree->pIndexDef();
   
   SP_Ent spEnt;
 
-  vTrace("EntWrk : %s\n"_Stz,spEnt.sz(aEnt,pIndexDef));
+  vTrace("EntWrk : %s\n"_Stz,spEnt.sz(pEnt,pIndexDef));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1171,8 +1177,9 @@ void vDev_ENTWRK_RESET(void* aLU, void* aROWDEVICE)
   UNUSED(aROWDEVICE);
 
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+  Ent *pEnt = (Ent*)pLogicUnit->m_xRluCommon.m_aWrkEnt;
 
-  pLogicUnit->m_oEntWrk.vReset();
+  pEnt->vReset();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1185,10 +1192,11 @@ void vDev_ENTWRK_SETINTELM(void* aLU, void* aROWDEVICE, i8 iTop)
   UNUSED(aROWDEVICE);
 
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+  Ent *pEnt = (Ent*)pLogicUnit->m_xRluCommon.m_aWrkEnt;
 
   //pLogicUnit->m_oEntWrk.vAppendElementInt(pDevRow->m_aRow,iTop);
-  pLogicUnit->m_oEntWrk.aEnt()->vKind(KE_INT);
-  *(i8*)pLogicUnit->m_oEntWrk.aKey() = iTop;
+  pEnt->vKind(KE_INT);
+  *(i8*)pEnt->aKey() = iTop;
 }
 
 

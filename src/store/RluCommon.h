@@ -53,6 +53,7 @@ struct RluCommon                      // **IF YOU CHANGE THIS DO A CLEAN BUILD**
   struct Ent_int* m_aTmpEnt;
 
   struct Ent_int* m_aWrkEnt;
+  void* m_pEntWrk;
 
   struct Ent_int* m_aTmpSkipRoots;
   

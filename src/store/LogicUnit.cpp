@@ -147,7 +147,8 @@ LogicUnit::LogicUnit(Task* pTask)
   m_xRluCommon.m_pDevTmpIxt = m_pDevTmpIxt;
   
   m_xRluCommon.m_aWrkEnt = (Ent_int*)m_oEntWrk.aEnt();
-  
+  m_xRluCommon.m_pEntWrk = (void*)&m_oEntWrk;
+
   m_xRluCommon.m_i_TablePtn = C_UNKNOWN;
   m_xRluCommon.m_nPtns  = AM::nPtnsInGrid();
   m_xRluCommon.m_iHash  = 0;
