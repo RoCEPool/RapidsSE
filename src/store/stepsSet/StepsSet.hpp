@@ -1407,6 +1407,7 @@ void vExprEvalEvaluate(void);
   void vSocketSendObject(void);
 
   // sql compiler
+  void vSqlCompilerExprValidate(void);
   void vSqlCompilerNameValidate(void);
   void vSqlCompilerParser(void);
   void vSqlCompilerTransliterate(void);

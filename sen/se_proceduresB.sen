@@ -1323,6 +1323,7 @@
       //| sqlInit
       | parser $sqlStatement
       | nameValidate
+      | exprValidate
       | transliterate
       | output
       | sink
