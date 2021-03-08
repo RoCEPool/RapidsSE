@@ -10,6 +10,7 @@ macro AM_PAYLOAD_GBY
   Label PAYLOAD_GBY
 
   // reset entwrk
+  EO_PUSH_ENTWRK
   EO_ENTWRK_RESET
 
   EO_CALL <payLoadKey>

@@ -2616,18 +2616,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_ENTWRK_POPOFS(pLU,aRluCommon->m_pDevSrcRow,iTopA);
         break;//+endCase
 
-      case EO_ENTWRK_POPREF: ArgNil(); // not yet implemented
-        NEVER_REACH;
-        break;//+endCase
-
       case EO_ENTWRK_PRINT: ArgNil(); // print m_oEntWrk
         vDev_ENTWRK_PRINT(pLU,aRluCommon->m_pDevSrcRow);
         break;//+endCase
         
       case EO_ENTWRK_RESET: ArgNil(); // reset m_oEntWrk
         dLU0(EO_ENTWRK_RESET);
-        //vDev_ENTWRK_RESET(pLU,aRluCommon->m_pDevSrcRow);
-        memset(aRluCommon->m_aWrkEnt,0,sizeof(struct Ent_int));
+        vDev_ENTWRK_RESET(&aiDstk);
+        //memset(aRluCommon->m_aWrkEnt,0,sizeof(struct Ent_int));
         break;//+endCase
                               
       case EO_ENTWRK_SETINTELM: ArgNil(); // append next element value (int)

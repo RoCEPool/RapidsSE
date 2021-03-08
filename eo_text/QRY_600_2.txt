@@ -98,6 +98,7 @@ Label DATAPULSE_HANDLER
   // create the upper key
 Label UPPERBOUND
 
+  EO_PUSH_ENTWRK
   EO_ENTWRK_RESET
   EO_DATE <param1>
   EO_ENTWRK_SETINTELM

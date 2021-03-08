@@ -176,6 +176,7 @@ Label ROWBUFFER_HANDLER
   //EO_ROW_SRC_PRINT
 
   // reset entwrk
+  EO_PUSH_ENTWRK
   EO_ENTWRK_RESET
 
   //ray100

@@ -258,6 +258,7 @@ Label CRWBUFFER_HANDLER
 
 
   // reset entwrk
+  EO_PUSH_ENTWRK
   EO_ENTWRK_RESET
 
   // add key L_RETURNFLAG, L_LINESTATUS

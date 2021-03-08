@@ -237,6 +237,7 @@ Label AGG_REV
   EO_PUSH_DEVROW_DST
   EO_DEVROW_POPCOLI 3
 
+  EO_PUSH_ENTWRK
   EO_ENTWRK_RESET
 
   //EO_ROW_DST_PRINT
@@ -357,6 +358,7 @@ Label LIM_SBR
   // -- -- -- -- -- -- -- -- --
   Label LIM_INS
 
+  EO_PUSH_ENTWRK
   EO_ENTWRK_RESET
 
   //EO_ROW_DST_PRINT

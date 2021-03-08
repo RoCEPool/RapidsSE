@@ -1123,6 +1123,8 @@ void vDev_ROW_ENTWRK_CREATEPAY(i8** aaiDstk)
 
   pEntWrk->vPayload(true);
   pEntWrk->vPayloadBytes(iPayLoadBytes);
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1163,16 +1165,16 @@ void vDev_ENTWRK_PRINT(void* aLU, void* aROWDEVICE)
 /*----------------------------------------------------------------------------*/
 /* reset                                                                      */
 /*----------------------------------------------------------------------------*/
-void vDev_ENTWRK_RESET(void* aLU, void* aROWDEVICE)
+void vDev_ENTWRK_RESET(i8** aaiDstk)
 {
   _static_
 
-  UNUSED(aROWDEVICE);
+  i8 *aiDstk = *aaiDstk;
+  EntWrk *pEntWrk = (EntWrk*)P_PopPtr();
 
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-  Ent *pEnt = (Ent*)pLogicUnit->m_xRluCommon.m_aWrkEnt;
+  pEntWrk->aEnt()->vReset();
 
-  pEnt->vReset();
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/

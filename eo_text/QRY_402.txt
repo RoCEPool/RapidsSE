@@ -173,6 +173,7 @@ Label SUP_END
 Label GET_AGR
 
 // reset entwrk
+  EO_PUSH_ENTWRK
   EO_ENTWRK_RESET
 
 // add key O_ORDERPRIORITY
