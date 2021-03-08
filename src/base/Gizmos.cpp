@@ -13,10 +13,9 @@ GizmoFn __Pow2("pow2"_Stz,(fpSELFFN*)Gizmos::vPow2,""_Stz,nullptr);
 /*----------------------------------------------------------------------------*/
 /* the subsystem function                                                     */
 /*----------------------------------------------------------------------------*/
-void Gizmos::vAsciiTable(SelfFn* aSelfFn, TokenVec* pTokenVec)
+void Gizmos::vAsciiTable(TokenVec* pTokenVec)
 {
   _static_
-  UNUSED(aSelfFn);
   UNUSED(pTokenVec);
 
   vTrace("Gizmos::vAsciiTable\n"_Stz);
@@ -60,10 +59,9 @@ void Gizmos::vAsciiTable(SelfFn* aSelfFn, TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 /* the subsystem function                                                     */
 /*----------------------------------------------------------------------------*/
-void Gizmos::vPow2(SelfFn* aSelfFn, TokenVec* pTokenVec)
+void Gizmos::vPow2(TokenVec* pTokenVec)
 {
   _static_
-  UNUSED(aSelfFn);
   UNUSED(pTokenVec);
 
   u8 uVal = 1;

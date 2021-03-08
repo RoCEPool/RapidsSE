@@ -3,6 +3,9 @@
 /*============================================================================*/
 #pragma once
 
+// NOTE: Any additions/subtractions or reordering of eCT will affect the expression type
+// calculus in a bunch of files under store/parser/shadowNodes/expressions/operators
+
 enum eCT // Column Type
 {
   /*  0 */ CT_NONE=0,

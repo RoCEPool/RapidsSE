@@ -49,10 +49,9 @@ Heaps::Heaps(void)
 /*----------------------------------------------------------------------------*/
 /* the subsystem function                                                     */
 /*----------------------------------------------------------------------------*/
-void Heaps::vSubSystem(SelfFn* aSelfFn, TokenVec* pTokenVec)
+void Heaps::vSubSystem(TokenVec* pTokenVec)
 {
   _static_
-  UNUSED(aSelfFn);
   UNUSED(pTokenVec);
 
   vTrace("Heaps::vSubSystem\n"_Stz);

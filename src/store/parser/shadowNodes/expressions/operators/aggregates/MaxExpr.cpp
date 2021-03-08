@@ -17,6 +17,23 @@ using namespace Parser;
 static Stz* C_MAX_EXPR_NAME_PREFIX = "MaxExpr"_Stz;
 static Stz* C_MAX_EXPR_DEFN = "/__root__/definitions/object/expr/operator/aggregate/max"_Stz;
 
+// What is the resulting type when we combine these inputs?
+// * The top header row represents the type of the first operand.
+// * The corresponding cell in the matrix represents the type of the resultant from this operation.
+// * Invalid/unsupported combinations are represented with CT_NONE.
+// * Fields marked with /*?*/ are not currently supported but could be.  Refer to
+//   the documentation below marked with this symbol for more information.
+// * Fields marked with /*X*/ are not currently supported but should be.
+static eCT aeTypeCalculus[CT_ENUMS] =
+
+//    NONE     BOOLEAN     CHAR        DATE     DECIMAL     FLOAT     INTEGER     INTERVAL_DT     INTERVAL_YM     TIME     TIMESTAMP     VARCHAR     UNKNOWN
+    { CT_NONE, CT_NONE,    CT_VARCHAR, CT_DATE, CT_DECIMAL, CT_FLOAT, CT_INTEGER, CT_NONE/*X*/,   CT_NONE/*X*/,   CT_TIME, CT_TIMESTAMP, CT_VARCHAR, CT_NONE };
+
+// References:
+//  If MAX or MIN is specified, then the declared type of the result is the
+//  declared type of the value expression.
+//  - SQL standard 2008 (draft): Part 2 (Foundation), page 537, section 10.9, point (7)(g)
+
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -79,12 +96,45 @@ void MaxExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
   sBuf.vConcat(")"_Stz);
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* Return the first child expression of this operator                         */
+/*----------------------------------------------------------------------------*/
+QueryNode* MaxExpr::pChild1(QueryNode *pNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pNode->nChildren() == 1);
+
+  return static_cast<QueryNode*>(pNode->pFirstChild());
+}
+
 /*----------------------------------------------------------------------------*/
 /* Returns true if the given node is derived from the expr definition         */
 /*----------------------------------------------------------------------------*/
 b1 MaxExpr::bIsOfType(PlanNode *pNode)
 {
   return ShadowNode::bIsOfType(pNode, C_MAX_EXPR_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the resulting type of the expression operation.                    */
+/* A returned value of CT_NONE means that it is not supported or invalid.     */
+/*----------------------------------------------------------------------------*/
+eCT MaxExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+
+  // Get the types of the operand
+  QueryNode* pChild1 = MaxExpr::pChild1(pExprNode);
+
+  eCT eOperand1 = Expr::eType(pChild1, pRootNode);
+
+  // Lookup the type of the result
+  eCT eResult = aeTypeCalculus[eOperand1];
+
+  return eResult;
 }
 
 /*============================================================================*/

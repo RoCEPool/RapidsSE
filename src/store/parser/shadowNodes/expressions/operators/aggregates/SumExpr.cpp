@@ -17,6 +17,29 @@ using namespace Parser;
 static Stz* C_SUM_EXPR_NAME_PREFIX = "SumExpr"_Stz;
 static Stz* C_SUM_EXPR_DEFN = "/__root__/definitions/object/expr/operator/aggregate/sum"_Stz;
 
+// What is the resulting type when we combine these inputs?
+// * The top header row represents the type of the first operand.
+// * The corresponding cell in the matrix represents the type of the resultant from this operation.
+// * Invalid/unsupported combinations are represented with CT_NONE.
+// * Fields marked with /*?*/ are not currently supported but could be.  Refer to
+//   the documentation below marked with this symbol for more information.
+// * Fields marked with /*X*/ are not currently supported but should be.
+static eCT aeTypeCalculus[CT_ENUMS] =
+
+//    NONE     BOOLEAN     CHAR     DATE     DECIMAL     FLOAT     INTEGER     INTERVAL_DT     INTERVAL_YM     TIME     TIMESTAMP  VARCHAR  UNKNOWN
+    { CT_NONE, CT_NONE,    CT_NONE, CT_NONE, CT_DECIMAL, CT_FLOAT, CT_INTEGER, CT_NONE/*X*/,   CT_NONE/*X*/,   CT_NONE, CT_NONE,   CT_NONE, CT_NONE };
+
+// References:
+//
+//  The sum of an exact numeric is an implementation defined exact numeric with the same scale
+//    - SQL standard 2008 (draft): Part 2 (Foundation), page 537, section 10.9, point (7)(g)(iii)
+//
+//  The sum of an approximate numeric is an implementation defined approximate numeric
+//    - SQL standard 2008 (draft): Part 2 (Foundation), page 537, section 10.9, point (7)(g)(iv)
+//
+//  The sum of an interval type is an implementation defined interval type
+//    - SQL standard 2008 (draft): Part 2 (Foundation), page 537, section 10.9, point (7)(g)(v)
+
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -80,11 +103,43 @@ void SumExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Return the first child expression of this operator                         */
+/*----------------------------------------------------------------------------*/
+QueryNode* SumExpr::pChild1(QueryNode *pNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pNode->nChildren() == 1);
+
+  return static_cast<QueryNode*>(pNode->pFirstChild());
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns true if the given node is derived from the expr definition         */
 /*----------------------------------------------------------------------------*/
 b1 SumExpr::bIsOfType(PlanNode *pNode)
 {
   return ShadowNode::bIsOfType(pNode, C_SUM_EXPR_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the resulting type of the expression operation.                    */
+/* A returned value of CT_NONE means that it is not supported or invalid.     */
+/*----------------------------------------------------------------------------*/
+eCT SumExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+
+  // Get the types of the operand
+  QueryNode* pChild1 = SumExpr::pChild1(pExprNode);
+
+  eCT eOperand1 = Expr::eType(pChild1, pRootNode);
+
+  // Lookup the type of the result
+  eCT eResult = aeTypeCalculus[eOperand1];
+
+  return eResult;
 }
 
 /*============================================================================*/

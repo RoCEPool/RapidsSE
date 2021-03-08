@@ -160,10 +160,9 @@ void File::vInitGlobals(void)
 /*----------------------------------------------------------------------------*/
 /* describe function : list of open functions                                 */
 /*----------------------------------------------------------------------------*/
-void File::vListOfOpenFiles(SelfFn* aSelfFn, TokenVec* pTokenVec)
+void File::vListOfOpenFiles(TokenVec* pTokenVec)
 {
   _static_
-  UNUSED(aSelfFn);
   UNUSED(pTokenVec);
 
   vTrace("File::vListOfOpenFiles\n"_Stz);

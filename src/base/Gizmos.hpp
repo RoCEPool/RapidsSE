@@ -9,8 +9,8 @@ namespace BASE
   {
   public:
       
-    static void vAsciiTable(SelfFn* aSelfFn, TokenVec* pTokenVec);
-    static void vPow2(SelfFn* aSelfFn, TokenVec* pTokenVec);
+    static void vAsciiTable(TokenVec* pTokenVec);
+    static void vPow2(TokenVec* pTokenVec);
   };
 }
 

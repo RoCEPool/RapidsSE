@@ -5,7 +5,7 @@
 
 namespace BASE { class SelfFn; }
 
-typedef void (fpSELFFN)(SelfFn* aSelfFn, TokenVec* pTokenVec);
+typedef void (fpSELFFN)(void* aVoid);
 
 namespace BASE
 {

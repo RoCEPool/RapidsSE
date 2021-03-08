@@ -67,7 +67,7 @@ namespace BASE
     static void vStatistics(void);
   
     static void vInitGlobals(void);
-    static void vListOfOpenFiles(SelfFn* aSelfFn, TokenVec* pTokenVec);
+    static void vListOfOpenFiles(TokenVec* pTokenVec);
 
   
     void vClose(void);

@@ -26,8 +26,8 @@ static Stz* C_NEGATION_DEFN = "/__root__/definitions/object/expr/operator/mathem
 // * Fields marked with /*X*/ are not currently supported but should be.
 static eCT aeTypeCalculus[CT_ENUMS] =
 
-//   NONE     BOOLEAN  CHAR     DATE     DECIMAL     FLOAT     INTEGER     /*IVL_YM       IVL_DT  */     INTERVAL TIME          TIMESTP  VARCHAR  /*UNKNOWN*/
-   { CT_NONE, CT_NONE, CT_NONE, CT_NONE, CT_DECIMAL, CT_FLOAT, CT_INTEGER, /*INTERVAL_YM, INTERVAL_DT,*/ CT_NONE, CT_NONE/*?*/, CT_NONE, CT_NONE, /*CT_NONE*/ };
+//   NONE     BOOLEAN  CHAR     DATE     DECIMAL     FLOAT     INTEGER     INTERVAL_DT     INTERVAL_YM     TIME          TIMESTAMP VARCHAR  UNKNOWN
+   { CT_NONE, CT_NONE, CT_NONE, CT_NONE, CT_DECIMAL, CT_FLOAT, CT_INTEGER, CT_INTERVAL_DT, CT_INTERVAL_YM, CT_NONE/*?*/, CT_NONE,  CT_NONE, CT_NONE };
 
 // References:
 //  /*?*/

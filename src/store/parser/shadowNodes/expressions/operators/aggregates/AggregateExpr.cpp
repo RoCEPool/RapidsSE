@@ -38,10 +38,10 @@ void AggregateExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
   ASSERT(bIsOfType(pNode));
 
   if      (CountExpr::bIsOfType(pNode))  { CountExpr::vDescribe(pNode, sBuf); }
-  else if (SumExpr::bIsOfType(pNode))    { SumExpr::vDescribe(pNode, sBuf);   }
-  else if (MinExpr::bIsOfType(pNode))    { MinExpr::vDescribe(pNode, sBuf);   }
-  else if (MaxExpr::bIsOfType(pNode))    { MaxExpr::vDescribe(pNode, sBuf);   }
-  else if (AvgExpr::bIsOfType(pNode))    { AvgExpr::vDescribe(pNode, sBuf);   }
+  else if (  SumExpr::bIsOfType(pNode))  {   SumExpr::vDescribe(pNode, sBuf); }
+  else if (  MinExpr::bIsOfType(pNode))  {   MinExpr::vDescribe(pNode, sBuf); }
+  else if (  MaxExpr::bIsOfType(pNode))  {   MaxExpr::vDescribe(pNode, sBuf); }
+  else if (  AvgExpr::bIsOfType(pNode))  {   AvgExpr::vDescribe(pNode, sBuf); }
   else NEVER_REACH
 }
 
@@ -68,6 +68,24 @@ b1 AggregateExpr::bIsDistinct(PlanNode* pNode)
 b1 AggregateExpr::bIsOfType(PlanNode *pNode)
 {
   return ShadowNode::bIsOfType(pNode, C_AGGREGATE_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the resulting type of the expression operation                     */
+/*----------------------------------------------------------------------------*/
+eCT AggregateExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+
+  // TODO: manual expression polymorphism here
+
+  if      (CountExpr::bIsOfType(pExprNode))  { return CountExpr::eType(pExprNode, pRootNode); }
+  else if (  SumExpr::bIsOfType(pExprNode))  { return   SumExpr::eType(pExprNode, pRootNode); }
+  else if (  MinExpr::bIsOfType(pExprNode))  { return   MinExpr::eType(pExprNode, pRootNode); }
+  else if (  MaxExpr::bIsOfType(pExprNode))  { return   MaxExpr::eType(pExprNode, pRootNode); }
+  else if (  AvgExpr::bIsOfType(pExprNode))  { return   AvgExpr::eType(pExprNode, pRootNode); }
+  else NEVER_REACH
 }
 
 /*============================================================================*/

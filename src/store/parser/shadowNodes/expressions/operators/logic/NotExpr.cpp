@@ -25,8 +25,8 @@ static Stz* C_NOT_DEFN = "/__root__/definitions/object/expr/operator/logic/not"_
 // * Fields marked with /*X*/ are not currently supported but should be.
 static eCT aeTypeCalculus[CT_ENUMS] =
 
-//    NONE     BOOLEAN     CHAR     DATE     DECIMAL  FLOAT    INTEGER  /*IVL_YM   IVL_DT  */ INTERVAL TIME     TIMESTP  VARCHAR  /*UNKNOWN*/
-    { CT_NONE, CT_BOOLEAN, CT_NONE, CT_NONE, CT_NONE, CT_NONE, CT_NONE, /*CT_NONE, CT_NONE,*/ CT_NONE, CT_NONE, CT_NONE, CT_NONE, /*CT_BOOLEAN*/ };
+//    NONE     BOOLEAN     CHAR     DATE     DECIMAL  FLOAT    INTEGER  INTERVAL_DT INTERVAL_YM TIME     TIMESTAMP  VARCHAR  UNKNOWN
+    { CT_NONE, CT_BOOLEAN, CT_NONE, CT_NONE, CT_NONE, CT_NONE, CT_NONE, CT_NONE,    CT_NONE,    CT_NONE, CT_NONE,   CT_NONE, CT_BOOLEAN };
 
 // References:
 //  NOT of a NULL literal will produce a NULL value, but the output type will still be a boolean.

@@ -14,45 +14,11 @@ extern pthread_key_t giTLS_ThreadKey;
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-Thread* BASE::_pThread(void* aAddr)
-{
-  Thread* pThread = reinterpret_cast<Thread*>(aAddr);
-  
-  RASSERT_TYPE(pThread,CN_THREAD);
-  
-  return pThread;
-}
+__pCastFunction(BASE,Thread,CN_THREAD)
+__aNewFunction(Thread,CN_THREAD)
+__vDeleteFunction(Thread,CN_THREAD)
+__aFooterFunction(Thread)
 
-/*----------------------------------------------------------------------------*/
-/* new operator                                                               */
-/*----------------------------------------------------------------------------*/
-void* Thread::operator new(size_t)
-{
-  void* pObject = Heaps::pAllocate(CN_THREAD);
-  
-  return pObject;
-}
-
-/*----------------------------------------------------------------------------*/
-/* new a thread from existing memory                                          */
-/*----------------------------------------------------------------------------*/
-void* Thread::operator new(size_t, Thread* pThread)
-{
-  return pThread;
-}
-
-/*----------------------------------------------------------------------------*/
-/* delete operator                                                            */
-/*----------------------------------------------------------------------------*/
-void Thread::operator delete(void* aAddr)
-{
-  Object* pObject = reinterpret_cast<Object*>(aAddr);
-  
-  Heaps::vFree(pObject);
-}
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -579,12 +545,6 @@ eHS Thread::eThreadState(void)
   
   return m_eThreadState;
 }
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-__aFooterFunction(Thread);
 
 /*============================================================================*/
 /* end                                                                        */

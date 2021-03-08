@@ -35,7 +35,7 @@ namespace BASE
   public:
     Heaps(void);
   
-    static void vSubSystem(SelfFn* aSelfFn, TokenVec* pTokenVec);
+    static void vSubSystem(TokenVec* pTokenVec);
 
 
     static Object* pAllocate(eCN eClass, bool bPersistent=false);

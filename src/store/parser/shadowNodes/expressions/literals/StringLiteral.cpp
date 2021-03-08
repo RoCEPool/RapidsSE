@@ -50,7 +50,7 @@ void StringLiteral::vDescribe(PlanNode* pNode, s2K& sBuf)
   if (pNode->bIsNullValue()) {
     sBuf.vConcat("NULL"_Stz);
   } else {
-    sBuf.vCatSprint("\"%s\""_Stz, pNode->szValue());
+    sBuf.vCatSprint("'%s'"_Stz, pNode->szValue());
   }
 }
 

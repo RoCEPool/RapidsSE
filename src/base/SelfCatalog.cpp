@@ -34,7 +34,7 @@ bool SelfCatalog::bCallFn(Stz* szSelfNm, TokenVec* pTokenVec)
   if (! aSelfFn)
     return false;
   
-  aSelfFn->m_fpSelfFn(aSelfFn,pTokenVec);
+  aSelfFn->m_fpSelfFn(pTokenVec);
   
   return true;
 }

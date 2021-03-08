@@ -85,11 +85,10 @@ BufferPool::~BufferPool(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* the subsystem function                                                     */
 /*----------------------------------------------------------------------------*/
-void BufferPool::vSubSystem(SelfFn* aSelfFn, TokenVec* pTokenVec)
+void BufferPool::vSubSystem(TokenVec* pTokenVec)
 {
   _static_
   
-  RASSERT(aSelfFn);
   RASSERT(pTokenVec);
 
   vTrace("BufferPool::vSubSystem\n"_Stz);
