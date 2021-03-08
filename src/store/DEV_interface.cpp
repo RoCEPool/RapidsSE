@@ -708,7 +708,8 @@ Ent_int* aDev_IXT_POS_ALTBYWRK(void* aLU)
 
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
 
-  Key* aWrkKey = pLogicUnit->m_oEntWrk.aKey();
+  Ent *pEnt = (Ent*)pLogicUnit->m_xRluCommon.m_aWrkEnt;
+  Key* aWrkKey = pEnt->aKey();
   
   pLogicUnit->m_pDevAltIxt->m_aEnt =
     pLogicUnit->m_pDevAltIxt->m_pIdxTree->aPositionPriorEntry(aWrkKey,
@@ -739,14 +740,16 @@ Ent_int* aDev_IXT_POS_LBOUND(void* aLU, void* aIXT)
 
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
 
+  Ent *pEnt = (Ent*)pLogicUnit->m_xRluCommon.m_aWrkEnt;
+
   pDevIXT->m_aEnt = nullptr;
   
   pDevIXT->m_pEntBuffer =
-    pDevIXT->m_pIdxTree->pPositionH0Buffer(pLogicUnit->m_oEntWrk.aKey());
+    pDevIXT->m_pIdxTree->pPositionH0Buffer(pEnt->aKey());
   
   if (pDevIXT->m_pEntBuffer) {
     pDevIXT->m_aEnt =
-      pDevIXT->m_pEntBuffer->aFindEntryBefore(pLogicUnit->m_oEntWrk.aKey());
+      pDevIXT->m_pEntBuffer->aFindEntryBefore(pEnt->aKey());
   }
   
   if (pDevIXT->m_aEnt) {
@@ -770,20 +773,20 @@ Ent_int* aDev_IXT_POS_UBOUND(void* aLU, void* aIXT)
   DevIXT* pDevIXT = _pDevIXT(aIXT);
 
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-
+  Ent *pEnt = (Ent*)pLogicUnit->m_xRluCommon.m_aWrkEnt;
   
   EntBuffer* pUpperEntBuffer =
-    pDevIXT->m_pIdxTree->pPositionH0Buffer(pLogicUnit->m_oEntWrk.aKey());
+    pDevIXT->m_pIdxTree->pPositionH0Buffer(pEnt->aKey());
   
   if (pDevIXT) {
     
     pDevIXT->m_aUpperEnt =
-      pUpperEntBuffer->aFindEntryBefore(pLogicUnit->m_oEntWrk.aKey());
+      pUpperEntBuffer->aFindEntryBefore(pEnt->aKey());
     
     if (pDevIXT->m_aUpperEnt) {
       pDevIXT->m_aUpperEnt =
         EntBuffer::pMoveToGreaterThanEntry(pDevIXT->m_aUpperEnt,
-                                           pLogicUnit->m_oEntWrk.aKey(),
+                                           pEnt->aKey(),
                                            &pUpperEntBuffer);
       if (pDevIXT->m_aUpperEnt) {
         
@@ -812,15 +815,15 @@ Ent_int* aDev_IXT_POS_UBOUND_LT(void* aLU, void* aIXT)
   DevIXT* pDevIXT = _pDevIXT(aIXT);
   
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-  
+  Ent *pEnt = (Ent*)pLogicUnit->m_xRluCommon.m_aWrkEnt;
   
   EntBuffer* pUpperEntBuffer =
-  pDevIXT->m_pIdxTree->pPositionH0Buffer(pLogicUnit->m_oEntWrk.aKey());
+  pDevIXT->m_pIdxTree->pPositionH0Buffer(pEnt->aKey());
   
   if (pUpperEntBuffer) {
     
     pDevIXT->m_aUpperEnt =
-    pUpperEntBuffer->aFindEntryBefore(pLogicUnit->m_oEntWrk.aKey());
+    pUpperEntBuffer->aFindEntryBefore(pEnt->aKey());
     
     if (pDevIXT->m_aUpperEnt) {
       pDevIXT->m_aUpperEnt =
@@ -831,7 +834,7 @@ Ent_int* aDev_IXT_POS_UBOUND_LT(void* aLU, void* aIXT)
         
         pLogicUnit->m_xRluCommon.m_aEntArray =
           (Ent_int*)pUpperEntBuffer->aEntArray();
-        
+
         return (Ent_int*)pDevIXT->m_aUpperEnt;
       }
       else
