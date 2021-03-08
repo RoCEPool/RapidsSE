@@ -1072,48 +1072,40 @@ Stz* szDev_PAY_STORE_COLS(void* aLU, void* aIXT, i8 iArg)
 /*----------------------------------------------------------------------------*/
 /* append next element value                                                  */
 /*----------------------------------------------------------------------------*/
-void  vDev_ENTWRK_APPENDELM(void* aLU, void* aROWDEVICE, i8 iArg)
+void vDev_ROW_ENTWRK_APPENDELMI(i8** aaiDstk)
 {
   _static_
-  
-  DevROW* pDevRow = _pDevROW(aROWDEVICE);
-  
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-  EntWrk *pEntWrk = (EntWrk*)pLogicUnit->m_xRluCommon.m_pEntWrk;
 
-  pEntWrk->vAppendElement(pDevRow->m_aRow,
-                                       pDevRow->m_pRowBuffer->pRowPix(),
-                                       iArg);
-}
+  i8 *aiDstk = *aaiDstk;
 
-/*----------------------------------------------------------------------------*/
-/* append next element value                                                  */
-/*----------------------------------------------------------------------------*/
-void vDev_ENTWRK_APPENDELMI(void* aLU, void* aROWDEVICE, i8 iTop)
-{
-  _static_
-  
-  DevROW* pDevRow = _pDevROW(aROWDEVICE);
-
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-  EntWrk *pEntWrk = (EntWrk*)pLogicUnit->m_xRluCommon.m_pEntWrk;
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
+  EntWrk *pEntWrk = (EntWrk*)P_PopPtr();
+  i8 iTop = I_PopInt();
 
   pEntWrk->vAppendElementInt(pDevRow->m_aRow,iTop);
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
 /* append next element value                                                  */
 /*----------------------------------------------------------------------------*/
-void vDev_ENTWRK_APPENDELMS(void* aLU, void* aROWDEVICE, Stz* szTop)
+void vDev_ROW_ENTWRK_APPENDELMS(i8** aaiDstk)
 {
   _static_
-  
-  DevROW* pDevRow = _pDevROW(aROWDEVICE);
 
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-  EntWrk *pEntWrk = (EntWrk*)pLogicUnit->m_xRluCommon.m_pEntWrk;
+  i8 *aiDstk = *aaiDstk;
+  Stz* szTop;
+  i8 nSize;
+
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
+  EntWrk *pEntWrk = (EntWrk*)P_PopPtr();
+  szTop = (Stz*)S_StrAdr();
 
   pEntWrk->vAppendElementStz(pDevRow->m_aRow,szTop);
+  S_StrDrp();
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/

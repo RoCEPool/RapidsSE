@@ -39,6 +39,9 @@ enum eEO : u1 // expression operators
   /*  S  */ EO_PUSH_DEVROW_DST,     // push dst row device
   /*  S  */ EO_PUSH_DEVROW_SRC,     // push src row device
 
+  // push entwrk
+  /*  S  */ EO_PUSH_ENTWRK,         // push emntwrk
+
   // pot
   /*  S  */ EO_PUSH_POT,            // push pot
 
@@ -280,9 +283,8 @@ enum eEO : u1 // expression operators
   /*  D  */ EO_ENT_PRINTKEYS,    // print both m_pEnt.key and m_oEntWrk.key
 
   // entWrk
-  /*  D  */ EO_ENTWRK_APPENDELM, // append next element value
-  /*  D  */ EO_ENTWRK_APPENDELMI,// append next element value (int)
-  /*  D  */ EO_ENTWRK_APPENDELMS,// append next element value (str)
+  /*  D  */ EO_DEVROW_ENTWRK_APPENDELMI,// append next element value (int)
+  /*  D  */ EO_DEVROW_ENTWRK_APPENDELMS,// append next element value (str)
   /*  D  */ EO_ENTWRK_CREATEPAY, // create a payload in entwrk
   /*  D  */ EO_ENTWRK_POPOFS,    // pop m_oEntWrk.ref.buffer/offset
   /*  D  */ EO_ENTWRK_POPREF,    // pop m_oEntWrk.ref
@@ -410,6 +412,9 @@ static Stz* aEO[]
   /*    */ "EO_PUSH_DEVROW_ALT"_Stz,
   /*    */ "EO_PUSH_DEVROW_DST"_Stz,
   /*    */ "EO_PUSH_DEVROW_SRC"_Stz,
+
+  // push entwrk
+  /*   */ "EO_PUSH_ENTWRK"_Stz,
 
   // pot
   /*    */ "EO_PUSH_POT"_Stz,
@@ -651,9 +656,8 @@ static Stz* aEO[]
   /*    */ "EO_ENT_PRINTKEYS"_Stz,
 
   // entWrk
-  /*    */ "EO_ENTWRK_APPENDELM"_Stz,
-  /*    */ "EO_ENTWRK_APPENDELMI"_Stz,
-  /*    */ "EO_ENTWRK_APPENDELMS"_Stz,
+  /*    */ "EO_DEVROW_ENTWRK_APPENDELMI"_Stz,
+  /*    */ "EO_DEVROW_ENTWRK_APPENDELMS"_Stz,
   /*    */ "EO_ENTWRK_CREATEPAY"_Stz,
   /*    */ "EO_ENTWRK_POPOFS"_Stz,
   /*    */ "EO_ENTWRK_POPREF"_Stz,
@@ -787,6 +791,9 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_PUSH_DEVROW_ALT
   { EA_NONE,    0 },  // EO_PUSH_DEVROW_DST
   { EA_NONE,    0 },  // EO_PUSH_DEVROW_SRC
+
+  // entWrk
+  { EA_NONE,    0 },  // EO_PUSH_ENTWRK
 
   // pot
   { EA_NONE,    0 },  // EO_PUSH_POT
@@ -1030,9 +1037,8 @@ static EoArg EoArgs[]
 
   
   // entWrk
-  { EA_SUBSCR,  8 },  // EO_ENTWRK_APPENDELM
-  { EA_NONE,    0 },  // EO_ENTWRK_APPENDELMI
-  { EA_NONE,    0 },  // EO_ENTWRK_APPENDELMS
+  { EA_NONE,    0 },  // EO_DEVROW_ENTWRK_APPENDELMI
+  { EA_NONE,    0 },  // EO_DEVROW_ENTWRK_APPENDELMS
   { EA_INT,     8 },  // EO_ENTWRK_CREATEPAY
   { EA_NONE,    0 },  // EO_ENTWRK_POPOFS
   { EA_NONE,    0 },  // EO_ENTWRK_POPREF

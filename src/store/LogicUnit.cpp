@@ -1401,6 +1401,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // entwrk push
+      case EO_PUSH_ENTWRK: ArgNil(); // push entwrk
+        dLU0(EO_PUSH_ENTWRK);
+        P_PushPtr(aRluCommon->m_pEntWrk);
+        break;//+endCase
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // pot
       case EO_PUSH_POT: ArgNil(); // push pot
         dLU0(EO_PUSH_POT);
@@ -2581,27 +2588,20 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU1(EO_ENT_GREATER,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
-        
-        case EO_ENT_PRINTKEYS: ArgNil(); // test if m_pEnt.key == m_oEntWrk.key
+
+      case EO_ENT_PRINTKEYS: ArgNil(); // test if m_pEnt.key == m_oEntWrk.key
         vDev_ENT_PRINTKEYS(pLU,aRluCommon->m_pDevTmpIxt);
         break;//+endCase
-      
-      case EO_ENTWRK_APPENDELM: ArgGet(iArg); // append next element value
-        dLU1(EO_ENTWRK_APPENDELM,iArg);
-        vDev_ENTWRK_APPENDELM(pLU,aRluCommon->m_pDevSrcRow,iArg);
+        
+      case EO_DEVROW_ENTWRK_APPENDELMI: ArgNil(); // append next element value (int)
+        //iTopA = *(aiDstk--);
+        dLU0(EO_DEVROW_ENTWRK_APPENDELMI);
+        vDev_ROW_ENTWRK_APPENDELMI(&aiDstk);
         break;//+endCase
         
-      case EO_ENTWRK_APPENDELMI: ArgNil(); // append next element value (int)
-        iTopA = *(aiDstk--);
-        dLU1(EO_ENTWRK_APPENDELMI,iTopA);
-        vDev_ENTWRK_APPENDELMI(pLU,aRluCommon->m_pDevSrcRow,iTopA);
-        break;//+endCase
-        
-      case EO_ENTWRK_APPENDELMS: ArgNil(); // append next element value (str)
-        dLU0(EO_ENTWRK_APPENDELMS);
-        szTopA = (Stz*)S_StrAdr();
-        vDev_ENTWRK_APPENDELMS(pLU,aRluCommon->m_pDevSrcRow,szTopA);
-        S_StrDrp();
+      case EO_DEVROW_ENTWRK_APPENDELMS: ArgNil(); // append next element value (str)
+        dLU0(EO_DEVROW_ENTWRK_APPENDELMS);
+        vDev_ROW_ENTWRK_APPENDELMS(&aiDstk);
         break;//+endCase
         
       case EO_ENTWRK_CREATEPAY: ArgGet(iArg); // create a payload in entwrk

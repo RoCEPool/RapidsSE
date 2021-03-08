@@ -80,10 +80,9 @@ DynamicSymbol gxaDynamicSymbol[]
   { "iDev_ENT_PUSHELMI0"_Stz,     (const void *) iDev_ENT_PUSHELMI0     },
   { "szDev_ENT_PUSHELMS0"_Stz,    (const void *) szDev_ENT_PUSHELMS0    },
   { "iDev_ENT_PUSHOFS"_Stz,       (const void *) iDev_ENT_PUSHOFS       },
-  
-  { "vDev_ENTWRK_APPENDELM"_Stz,  (const void *) vDev_ENTWRK_APPENDELM  },
-  { "vDev_ENTWRK_APPENDELMI"_Stz, (const void *) vDev_ENTWRK_APPENDELMI },
-  { "vDev_ENTWRK_APPENDELMS"_Stz, (const void *) vDev_ENTWRK_APPENDELMS },
+
+  { "vDev_ROW_ENTWRK_APPENDELMI"_Stz, (const void *) vDev_ROW_ENTWRK_APPENDELMI },
+  { "vDev_ROW_ENTWRK_APPENDELMS"_Stz, (const void *) vDev_ROW_ENTWRK_APPENDELMS },
   { "vDev_ENTWRK_CREATEPAY"_Stz,  (const void *) vDev_ENTWRK_CREATEPAY  },
   { "vDev_ENTWRK_POPOFS"_Stz,     (const void *) vDev_ENTWRK_POPOFS     },
   { "vDev_ENTWRK_PRINT"_Stz,      (const void *) vDev_ENTWRK_PRINT      },
