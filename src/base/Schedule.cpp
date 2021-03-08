@@ -113,7 +113,7 @@ void Schedule::vThreadsReport(void)
     
     Thread* pThread = pSchedule->m_pGeneralThreadVec->pGet(i_Thread);
     
-    pThread->m_pPsxThd->bGetCpu(iUserTime,iSystemTime,
+    pThread->pPsxThd()->bGetCpu(iUserTime,iSystemTime,
                                  iPercentageUsage,iSleepSsec);
     
     vTrace("  Gen Thread %2lld %p"
@@ -124,8 +124,8 @@ void Schedule::vThreadsReport(void)
            pThread->iThreadNo(),
            pThread,
            
-           pThread->m_pPsxThd->m_aStackBase,
-           pThread->m_pPsxThd->m_iStackSize,
+           pThread->pPsxThd()->m_aStackBase,
+           pThread->pPsxThd()->m_iStackSize,
            
            iUserTime,
            iSystemTime,
@@ -150,7 +150,7 @@ void Schedule::vThreadsReport(void)
     
     Thread* pThread = pSchedule->m_pDedicatedThreadVec->pGet(i_Thread);
     
-    pThread->m_pPsxThd->bGetCpu(iUserTime,iSystemTime,
+    pThread->pPsxThd()->bGetCpu(iUserTime,iSystemTime,
                                  iPercentageUsage,iSleepSsec);
     
     vTrace("  Ded Thread %2lld %p"
@@ -161,8 +161,8 @@ void Schedule::vThreadsReport(void)
            pThread->iThreadNo(),
            pThread,
            
-           pThread->m_pPsxThd->m_aStackBase,
-           pThread->m_pPsxThd->m_iStackSize,
+           pThread->pPsxThd()->m_aStackBase,
+           pThread->pPsxThd()->m_iStackSize,
            
            iUserTime,
            iSystemTime,

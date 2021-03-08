@@ -704,7 +704,7 @@ Tx* AM::pThisTLSTx(void) {
 
 PsxThd* AM::pThisTLSPsxThd(void) {
   Thread* pThread = Thread::pThisTLSThread();
-  PsxThd* pPsxThd =pThread->m_pPsxThd;
+  PsxThd* pPsxThd =pThread->pPsxThd();
   return pPsxThd;
 }
 

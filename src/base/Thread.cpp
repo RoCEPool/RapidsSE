@@ -446,6 +446,16 @@ void Thread::vObject1(Object* pObject1)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get posix thread                                                           */
+/*----------------------------------------------------------------------------*/
+PsxThd* Thread::pPsxThd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+
+  return m_pPsxThd;
+}
+
+/*----------------------------------------------------------------------------*/
 /* spawn a os/posix pthread associated with this thread                       */
 /*----------------------------------------------------------------------------*/
 void Thread::vSpawnPsxThd(void* pFun(void*), void* pArg)

@@ -18,6 +18,7 @@ namespace BASE
     Task*    m_pTask;         // task current being executed
     i8       m_nAssignedTasks;// no of tasks scheduled so far to this thread
 
+  private:
     PsxThd*  m_pPsxThd;       // its posix structure
   
     Object*  m_pObject0;      // general purpose object 0
@@ -51,6 +52,7 @@ namespace BASE
     void    vObject0(Object* pObject0);
     Object* pObject1(void);
     void    vObject1(Object* pObject1);
+    PsxThd* pPsxThd(void);
     void vSpawnPsxThd(void* pFun(void*), void* pArg);
     void vSpawnPsxThd_dedicated(void);
     void vSpawnPsxThd_general(void);
