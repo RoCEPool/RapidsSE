@@ -1164,18 +1164,19 @@ void vDev_ENTWRK_RESET(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* set int only element                                                       */
 /*----------------------------------------------------------------------------*/
-void vDev_ENTWRK_SETINTELM(void* aLU, void* aROWDEVICE, i8 iTop)
+void vDev_ENTWRK_SETINTELM(i8** aaiDstk)
 {
   _static_
-  
-  UNUSED(aROWDEVICE);
 
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-  Ent *pEnt = (Ent*)pLogicUnit->m_xRluCommon.m_aWrkEnt;
+  i8 *aiDstk = *aaiDstk;
+  EntWrk *pEntWrk = (EntWrk*)P_PopPtr();
+  i8 iTop = I_PopInt();
 
   //pLogicUnit->m_oEntWrk.vAppendElementInt(pDevRow->m_aRow,iTop);
-  pEnt->vKind(KE_INT);
-  *(i8*)pEnt->aKey() = iTop;
+  pEntWrk->aEnt()->vKind(KE_INT);
+  *(i8*)pEntWrk->aEnt()->aKey() = iTop;
+
+  *aaiDstk = aiDstk;
 }
 
 

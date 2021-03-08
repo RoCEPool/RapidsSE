@@ -69,8 +69,7 @@ void vDev_ROW_ENTWRK_CREATEPAY(i8** aaiDstk);
 void vDev_ENTWRK_PRINT(void* aLU, void* aROWDEVICE);
 
 void vDev_ENTWRK_RESET(i8** aaiDstk);
-
-void vDev_ENTWRK_SETINTELM(void* aLU, void* aROWDEVICE, i8 iTop);
+void vDev_ENTWRK_SETINTELM(i8** aaiDstk);
 
 void vDev_ROW_BEGIN(i8** aaiDstk);
 void vDev_ROW_NEW(i8** aaiDstk);
