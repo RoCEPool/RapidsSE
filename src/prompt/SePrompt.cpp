@@ -206,11 +206,17 @@ void SePrompt::vPromptLoop(void)
     m_pInpTknVec = pInputGet()->pTokenVec();
     m_pJobTagSet = m_pCurrentDeputy->pJobTagSet();
     
-    pInputGet()->vRawInputClear();
+    Stz* szToDo = m_pCurrentDeputy->pSession()->m_sToDo;
+    
+    if (! *szToDo->azChar())
+      pInputGet()->vRawInputClear();
     
     if (! bGetCommand())
       continue;
  
+//    Stz* szRaw = m_pCurrentDeputy->pSession()->m_pInput->szRawInput();
+//    vTrace("SePrompt got command : %s\n"_Stz,szRaw);
+    
     if (! bExamineCommand())
       continue;
 
@@ -235,7 +241,6 @@ void SePrompt::vPromptLoop(void)
 
   } // while
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* get next command from input                                                */
