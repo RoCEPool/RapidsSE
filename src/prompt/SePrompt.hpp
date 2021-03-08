@@ -116,6 +116,7 @@ namespace PROMPT
     Stz* szOriginalCommand(void);
     void vOutline(s4K& sOutline);
     void vPromptUser(void);
+    Stz* szRawInput(void);
     bool bReadNextCommand(void);
     bool bRedirectFromFile(void);
     void vReportObjects();

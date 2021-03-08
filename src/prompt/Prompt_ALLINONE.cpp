@@ -4181,14 +4181,17 @@ bool PROMPT::bPrompt_select(SePrompt* pPrompt)
   
   i8 iNumTokens = pInpTknVec->nItems();
   
-  s16KB sSelectStmt;
-  s16KB sSqlCompiler;
-
-  pInpTknVec->vVecToString(sSelectStmt,0,true);
-  
-  sSqlCompiler.vSprint("sqlCompiler \"%s\""_Stz,sSelectStmt.szStz());
+//  s16KB sSelectStmt;
+//  pInpTknVec->vVecToString(sSelectStmt,0,true);
+//
+//  s16KB sSqlCompiler;
+//  sSqlCompiler.vSprint("sqlCompiler \"%s\""_Stz,sSelectStmt.szStz());
   //vTrace(":: %s\n"_Stz,sSqlCompiler.szStz());
   
+  Stz* szRaw = pPrompt->szRawInput();
+
+  s16KB sSqlCompiler;
+  sSqlCompiler.vSprint("sqlCompiler \"%s\""_Stz,szRaw);
 
   pPrompt->pSession()->m_sToDo = sSqlCompiler;
   
