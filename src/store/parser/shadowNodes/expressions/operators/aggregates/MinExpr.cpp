@@ -26,11 +26,13 @@ static Stz* C_MIN_EXPR_DEFN = "/__root__/definitions/object/expr/operator/aggreg
 // * Fields marked with /*X*/ are not currently supported but should be.
 static eCT aeTypeCalculus[CT_ENUMS] =
 
-//    NONE     BOOLEAN     CHAR        DATE     DECIMAL     FLOAT     INTEGER     INTERVAL_DT     INTERVAL_YM     TIME     TIMESTAMP     VARCHAR     UNKNOWN
-    { CT_NONE, CT_NONE,    CT_VARCHAR, CT_DATE, CT_DECIMAL, CT_FLOAT, CT_INTEGER, CT_NONE/*X*/,   CT_NONE/*X*/,   CT_TIME, CT_TIMESTAMP, CT_VARCHAR, CT_NONE };
+//    NONE     BOOLEAN       CHAR        DATE     DECIMAL     FLOAT     INTEGER     INTERVAL_DT     INTERVAL_YM     TIME     TIMESTAMP     VARCHAR     UNKNOWN
+    { CT_NONE, CT_NONE/*X*/, CT_VARCHAR, CT_DATE, CT_DECIMAL, CT_FLOAT, CT_INTEGER, CT_NONE/*X*/,   CT_NONE/*X*/,   CT_TIME, CT_TIMESTAMP, CT_VARCHAR, CT_NONE/*X*/ };
 
 // References:
-//
+//  If MAX or MIN is specified, then the declared type of the result is the
+//  declared type of the value expression.
+//  - SQL standard 2008 (draft): Part 2 (Foundation), page 537, section 10.9, point (7)(g)
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/

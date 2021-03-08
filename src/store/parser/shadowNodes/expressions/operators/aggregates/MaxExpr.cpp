@@ -30,7 +30,9 @@ static eCT aeTypeCalculus[CT_ENUMS] =
     { CT_NONE, CT_NONE,    CT_VARCHAR, CT_DATE, CT_DECIMAL, CT_FLOAT, CT_INTEGER, CT_NONE/*X*/,   CT_NONE/*X*/,   CT_TIME, CT_TIMESTAMP, CT_VARCHAR, CT_NONE };
 
 // References:
-//
+//  If MAX or MIN is specified, then the declared type of the result is the
+//  declared type of the value expression.
+//  - SQL standard 2008 (draft): Part 2 (Foundation), page 537, section 10.9, point (7)(g)
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
