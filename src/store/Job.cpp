@@ -972,13 +972,13 @@ void Job::vPrint(Stz* szFormat, ...)
   
   SP_Timer spTimer;
   
-  va_list args;
+  va_list vaArgs;
   
-  va_start(args,szFormat);
+  va_start(vaArgs,szFormat);
   
   m_oTimer.vUpdate();
   
-  sFormatted.vSprint(args,szFormat);
+  sFormatted.vSprintVA(szFormat,vaArgs);
   
   vTrace("[%s %s %s %s] %s\n"_Stz,
          AM::pGrid()->pThisNode()->szNodeNm(),
@@ -990,7 +990,7 @@ void Job::vPrint(Stz* szFormat, ...)
          
          C_VARGS_END);
 
-  va_end(args);
+  va_end(vaArgs);
 }
 
 /*----------------------------------------------------------------------------*/

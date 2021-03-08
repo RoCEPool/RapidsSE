@@ -43,7 +43,7 @@ namespace Parser
       va_list vaArgs;
 
       va_start(vaArgs,szFormat);
-      sErrMsg.vSprint(vaArgs, szFormat);
+      sErrMsg.vSprintVA(szFormat,vaArgs);
       va_end(vaArgs);
 
       throw SyntaxException(iLine, iColumn, sErrMsg.szStz());
@@ -66,7 +66,7 @@ namespace Parser
       va_list vaArgs;
 
       va_start(vaArgs,szFormat);
-      sErrMsg.vSprint(vaArgs, szFormat);
+      sErrMsg.vSprintVA(szFormat,vaArgs);
       va_end(vaArgs);
 
       throw SemanticException(sErrMsg.szStz());
