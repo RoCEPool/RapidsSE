@@ -869,29 +869,27 @@ void vDev_IXT_TMP_ENTRIES(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* begin linear traverse                                                      */
 /*----------------------------------------------------------------------------*/
-void vDev_IXT_TRV_BEGIN(i8** aaiDstk)
+void vDev_IXT_IDX_BEGIN(i8** aaiDstk)
 {
-//  _static_
-//
-//  i8 *aiDstk = *aaiDstk;
-//  DevIXT* pDevIXT = _pDevIXT(P_PopPtr());
-//
-//  pDevIXT->m_pEntBuffer = pDevIXT->m_pIdxTree->pFirstH0Buffer();
-//
-//  if (pDevIXT->m_pEntBuffer) {
-//    pDevIXT->m_aEnt = pDevIXT->m_pEntBuffer->aLeadEntry();
-//    if (pDevIXT->m_aEnt) {
-//      pLogicUnit->m_xRluCommon.m_aEntArray =
-//        (Ent_int*)pDevIXT->m_pEntBuffer->aEntArray();
-//      P_PushPtr(pDevIXT->m_aEnt);
-//    }
-//    else
-//      P_PushPtr(nullptr);
-//  }
-//  else
-//    P_PushPtr(nullptr);
-//
-//  *aaiDstk = aiDstk;
+  _static_
+
+  i8 *aiDstk = *aaiDstk;
+  DevIXT* pDevIXT = _pDevIXT(P_PopPtr());
+
+  pDevIXT->m_pEntBuffer = pDevIXT->m_pIdxTree->pFirstH0Buffer();
+
+  if (pDevIXT->m_pEntBuffer) {
+    pDevIXT->m_aEnt = pDevIXT->m_pEntBuffer->aLeadEntry();
+    if (pDevIXT->m_aEnt) {
+      P_PushPtr(pDevIXT->m_aEnt);
+    }
+    else
+      P_PushPtr(nullptr);
+  }
+  else
+    P_PushPtr(nullptr);
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -924,24 +922,26 @@ Ent_int* aDev_IXT_TRV_BEGIN_OLD(void* aLU, void* aIXT)
 /*----------------------------------------------------------------------------*/
 /* traverse to next entry                                                     */
 /*----------------------------------------------------------------------------*/
-void vDev_IXT_TRV_NEXT(i8** aaiDstk)
+void vDev_IXT_IDX_NEXT(void* aLU, i8** aaiDstk)
 {
-//  _static_
-//
-//  i8 *aiDstk = *aaiDstk;
-//  DevIXT* pDevIXT = _pDevIXT(P_PopPtr());
-//
-//  pDevIXT->m_aEnt =
-//     EntBuffer::pMoveToNextEntry(pDevIXT->m_aEnt,&pDevIXT->m_pEntBuffer);
-//
-//  if (pDevIXT->m_pEntBuffer)
-//    pLogicUnit->m_xRluCommon.m_aEntArray =
-//      (Ent_int*)pDevIXT->m_pEntBuffer->aEntArray();
-//  else
-//    pLogicUnit->m_xRluCommon.m_aEntArray = nullptr;
-//
-//  P_PushPtr(pDevIXT->m_aEnt);
-//  *aaiDstk = aiDstk;
+  _static_
+
+  i8 *aiDstk = *aaiDstk;
+  DevIXT* pDevIXT = _pDevIXT(P_PopPtr());
+
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+
+  pDevIXT->m_aEnt =
+     EntBuffer::pMoveToNextEntry(pDevIXT->m_aEnt,&pDevIXT->m_pEntBuffer);
+
+  if (pDevIXT->m_pEntBuffer)
+    pLogicUnit->m_xRluCommon.m_aEntArray =
+      (Ent_int*)pDevIXT->m_pEntBuffer->aEntArray();
+  else
+    pLogicUnit->m_xRluCommon.m_aEntArray = nullptr;
+
+  P_PushPtr(pDevIXT->m_aEnt);
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
