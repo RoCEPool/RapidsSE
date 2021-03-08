@@ -214,7 +214,7 @@ void SePrompt::vPromptLoop(void)
     if (! bGetCommand())
       continue;
  
-//    Stz* szRaw = m_pCurrentDeputy->pSession()->m_pInput->szRawInput();
+//    Stz* szRaw = szRawInput();
 //    vTrace("SePrompt got command : %s\n"_Stz,szRaw);
     
     if (! bExamineCommand())
@@ -999,6 +999,18 @@ void SePrompt::vPromptUser(void)
         );
 
   fflush(stdin);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get raw input                                                              */
+/*----------------------------------------------------------------------------*/
+Stz* SePrompt::szRawInput(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  Stz* szRaw = pInputGet()->szRawInput();
+  
+  return szRaw;
 }
 
 /*----------------------------------------------------------------------------*/
