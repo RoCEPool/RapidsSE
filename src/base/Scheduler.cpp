@@ -500,7 +500,7 @@ void Scheduler::vTaskApi_AddDedicated(Task* pNewTask)
   Thread* pThread = new Thread;
   
   pThread->vTask(pNewTask);
-  pThread->m_eDedicated = AM::eJobClass(pNewTask->pJob());
+  pThread->vDedicated(AM::eJobClass(pNewTask->pJob()));
   
   pThread->vSpawnPsxThd_dedicated();
 }
@@ -640,7 +640,7 @@ void Scheduler::vTaskApi_BeginExecutingDedicated(Thread* pThread)
               "Thread executes dedicated task"_Stz);
   
   ASSERT(HS_UNASSIGNED == pThread->eThreadState());
-  ASSERT(pThread->m_oMutex.bIsLocked());
+  ASSERT(pThread->pMutex()->bIsLocked());
   
   RASSERT(pThread->pTask());
   RASSERT(TS_DESISTED == pThread->pTask()->eState());
@@ -672,7 +672,7 @@ void Scheduler::vThread_AddDedicatedThread(Thread* pThread)
 {
   _static_
   
-  RASSERT(CN_NONE != pThread->m_eDedicated);
+  RASSERT(CN_NONE != pThread->eDedicated());
   
   pThread->vEventNoInc();
   AM::vLogThd(SL_INF,pThread,HA_THD_ADD_DEDICATED,
@@ -691,7 +691,7 @@ void Scheduler::vThread_AddGeneralThread(Thread* pThread)
 {
   _static_
   
-  RASSERT(CN_NONE == pThread->m_eDedicated);
+  RASSERT(CN_NONE == pThread->eDedicated());
   
   pThread->vEventNoInc();
   AM::vLogThd(SL_INF,pThread,HA_THD_ADD_GENERAL,
@@ -720,7 +720,7 @@ void Scheduler::vThread_BeginThreadLoop(Thread* pThread)
   
   // thread has mutex while it is running
   pThread->vThreadState(HS_UNASSIGNED);
-  pThread->m_oMutex.vLock(pThread);
+  pThread->pMutex()->vLock(pThread);
   
   // increment m_ixThreads to indicate thread is running
   AM::vThreadBegins();
@@ -737,7 +737,7 @@ void Scheduler::vThread_EndThreadLoop(Thread* pThread)
   AM::vLogThd(SL_INF,pThread,HA_THD_END_LOOP,
               "Thread has ended it's thread loop"_Stz); //!format-LogThd
   
-  pThread->m_oMutex.vUnlock(pThread);
+  pThread->pMutex()->vUnlock(pThread);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -869,9 +869,9 @@ bool Scheduler::bThread_AssignIdle(Task* pKnownTask)
   AM::vLogTsk(SL_INF,pKnownTask,TA_TSK_SIGNAL_THREAD,
               "Task signals its assigned thread"_Stz); //!format-LogTsk
   
-  pThread->m_oMutex.vLock(pKnownTask);
-  pThread->m_oMutex.vSignal(pKnownTask);
-  pThread->m_oMutex.vUnlock(pKnownTask);
+  pThread->pMutex()->vLock(pKnownTask);
+  pThread->pMutex()->vSignal(pKnownTask);
+  pThread->pMutex()->vUnlock(pKnownTask);
   
   // mutex can now be acquired by the m_pPsxThd of pThread
   
@@ -890,8 +890,8 @@ void Scheduler::vThread_WaitAssignment(Thread* pThread)
   AM::vLogThd(SL_INF,pThread,HA_THD_GET_TASK,
               "Thread attempts task assignment"_Stz); //!format-LogThd
   
-  RASSERT(pThread->m_oMutex.bIsLocked());
-  RASSERT(pThread->m_oMutex.bIsLockedByCaller(pThread));
+  RASSERT(pThread->pMutex()->bIsLocked());
+  RASSERT(pThread->pMutex()->bIsLockedByCaller(pThread));
   RASSERT(HS_UNASSIGNED == pThread->eThreadState());
   RASSERT(! pThread->pTask());
 
@@ -922,9 +922,9 @@ void Scheduler::vThread_WaitAssignment(Thread* pThread)
     pThread->vSetIdle();
     pSchedule->vThreadAppendIdle(pThread);
 
-    ASSERT(pThread->m_oMutex.bIsLockedByCaller(pThread));
-    pThread->m_oMutex.vWait(pThread);
-    ASSERT(pThread->m_oMutex.bIsLockedByCaller(pThread));
+    ASSERT(pThread->pMutex()->bIsLockedByCaller(pThread));
+    pThread->pMutex()->vWait(pThread);
+    ASSERT(pThread->pMutex()->bIsLockedByCaller(pThread));
 
     if (pThread->pTask())
       break;
@@ -932,7 +932,7 @@ void Scheduler::vThread_WaitAssignment(Thread* pThread)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  RASSERT(pThread->m_oMutex.bIsLocked());
+  RASSERT(pThread->pMutex()->bIsLocked());
   RASSERT(HS_ASSIGNED == pThread->eThreadState());
   RASSERT(pThread->pTask());
   RASSERT(TS_DESISTED == pThread->pTask()->eState());

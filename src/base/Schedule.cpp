@@ -133,7 +133,7 @@ void Schedule::vThreadsReport(void)
            iSleepSsec,
            
            aHS[pThread->eThreadState()],
-           pThread->m_eDedicated ? aCN[pThread->m_eDedicated]->azChar() : "",
+           pThread->eDedicated() ? aCN[pThread->eDedicated()]->azChar() : "",
            
            pThread->nAssignedTasks()
            );
@@ -170,7 +170,7 @@ void Schedule::vThreadsReport(void)
            iSleepSsec,
            
            aHS[pThread->eThreadState()],
-           pThread->m_eDedicated ? aCN[pThread->m_eDedicated]->azChar() : "",
+           pThread->eDedicated() ? aCN[pThread->eDedicated()]->azChar() : "",
            
            pThread->nAssignedTasks()
            );
@@ -793,7 +793,7 @@ void Schedule::vMonitorThread(s48K& sPortrait)
       if (HS_ASSIGNED == pThread->eThreadState())
         nRunning++;
     
-    if (CN_NONE != pThread->m_eDedicated)
+    if (CN_NONE != pThread->eDedicated())
       nDedicated++;
   }
   

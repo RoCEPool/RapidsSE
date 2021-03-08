@@ -340,6 +340,16 @@ void Thread::vLoop_general(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get number of tasks assigned so far                                        */
+/*----------------------------------------------------------------------------*/
+i8 Thread::nAssignedTasks(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  return m_nAssignedTasks;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bind the os/posix thread to given core                                     */
 /*----------------------------------------------------------------------------*/
 void Thread::vBind(i8 iCore)
@@ -349,16 +359,6 @@ void Thread::vBind(i8 iCore)
   bool bResult = m_pPsxThd->bBindThread(iCore);
   ASSERT(bResult);
   UNUSED(bResult);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of tasks assigned so far                                        */
-/*----------------------------------------------------------------------------*/
-i8 Thread::nAssignedTasks(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-  
-  return m_nAssignedTasks;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -403,6 +403,36 @@ void Thread::vContentDump(void)
          m_nAssignedTasks,
          
          C_VARGS_END );
+}
+
+/*----------------------------------------------------------------------------*/
+/* get dedicated                                                              */
+/*----------------------------------------------------------------------------*/
+eCN Thread::eDedicated(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  return m_eDedicated;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set dedicated                                                              */
+/*----------------------------------------------------------------------------*/
+void Thread::vDedicated(eCN eDedicated)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  m_eDedicated = eDedicated;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get mutex                                                                  */
+/*----------------------------------------------------------------------------*/
+Mutex* Thread::pMutex(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+
+  return & m_oMutex;
 }
 
 /*----------------------------------------------------------------------------*/

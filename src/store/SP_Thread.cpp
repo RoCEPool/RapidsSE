@@ -62,7 +62,7 @@ Stz* SP_Thread::sz_log(Thread* pThread)
                                 ? pThread->pTask()->m_iObjectId
                                 : C_UNKNOWN),
                   
-                  CN_NONE == pThread->m_eDedicated
+                  CN_NONE == pThread->eDedicated()
                     ? ""_Stz
                     : " dedicated"_Stz,
 

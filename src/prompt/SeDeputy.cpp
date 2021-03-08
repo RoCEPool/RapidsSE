@@ -114,11 +114,11 @@ void SeDeputy::vDeputyLoop(void)
 
     RASSERT(!m_pSession->m_pSsnJob);
 
-    m_pThread->m_oMutex.vLock(m_pSePrompt);
+    m_pThread->pMutex()->vLock(m_pSePrompt);
     RASSERT(!m_pSession->m_pSsnJob);
     m_bAvailable = true;
-    m_pThread->m_oMutex.vWait(m_pSePrompt);
-    m_pThread->m_oMutex.vUnlock(m_pSePrompt);
+    m_pThread->pMutex()->vWait(m_pSePrompt);
+    m_pThread->pMutex()->vUnlock(m_pSePrompt);
   
     if (! m_bContinue)
       break;
@@ -208,10 +208,10 @@ void SeDeputy::vDeputiseJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  m_pThread->m_oMutex.vLock(m_pThread);
+  m_pThread->pMutex()->vLock(m_pThread);
   m_bAvailable = false;
-  m_pThread->m_oMutex.vSignal(m_pThread);
-  m_pThread->m_oMutex.vUnlock(m_pThread);
+  m_pThread->pMutex()->vSignal(m_pThread);
+  m_pThread->pMutex()->vUnlock(m_pThread);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -291,10 +291,10 @@ void SeDeputy::vTerminate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  m_pThread->m_oMutex.vLock(m_pThread);
+  m_pThread->pMutex()->vLock(m_pThread);
   m_bContinue = false;
-  m_pThread->m_oMutex.vSignal(m_pThread);
-  m_pThread->m_oMutex.vUnlock(m_pThread);
+  m_pThread->pMutex()->vSignal(m_pThread);
+  m_pThread->pMutex()->vUnlock(m_pThread);
 }
 
 /*----------------------------------------------------------------------------*/

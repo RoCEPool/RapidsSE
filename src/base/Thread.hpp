@@ -10,11 +10,9 @@ namespace BASE
   class Thread : public Loggable,
                  public ListItem_t<Thread>
   {
-  public:  
-    eCN      m_eDedicated;    // thread is dedicated to one specific job?
-    Mutex    m_oMutex;        // this threads mutex
-
   private:
+    Mutex    m_oMutex;        // this threads mutex
+    eCN      m_eDedicated;    // thread is dedicated to one specific job?
     eHS      m_eThreadState;  // thread state
   
     PsxThd*  m_pPsxThd;       // its posix structure
@@ -47,9 +45,12 @@ namespace BASE
     void vBindCore(void);
     i8   iCpu(void);
     void vContentDump(void);
+    eCN  eDedicated(void);
+    void vDedicated(eCN eDedicated);
     void vOutline(s4K& sOutline);
     void vLoop_dedicated(void);
     void vLoop_general(void);
+    Mutex* pMutex(void);
     Object* pObject0(void);
     void  vObject0(Object* pObject0);
     Object* pObject1(void);

@@ -72,7 +72,7 @@ void Step::vThreadDedicatedFetch(void)
   
   Thread* pThread = _pThread(m_pDataStack->pPopPtr(__func__));
   
-  m_pDataStack->vPushInt(pThread->m_eDedicated);
+  m_pDataStack->vPushInt(pThread->eDedicated());
 
   EXIT();
 }
@@ -88,7 +88,7 @@ void Step::vThreadDedicatedStore(void)
   
   i8 iDedicated = m_pDataStack->iPopAsInt(__func__);
 
-  pThread->m_eDedicated = (eCN)iDedicated;
+  pThread->vDedicated((eCN)iDedicated);
   
   EXIT();
 }
