@@ -546,8 +546,10 @@ void Thread::vTask(Task* pTask)
   
   m_pTask = pTask;
   
-  if (m_pTask)
+  if (m_pTask) {
+    m_eThreadState = HS_ASSIGNED;
     m_nAssignedTasks++;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -587,6 +589,16 @@ eHS Thread::eThreadState(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   return m_eThreadState;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set thread state                                                           */
+/*----------------------------------------------------------------------------*/
+void Thread::vThreadState(eHS eThreadState)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  m_eThreadState = eThreadState;
 }
 
 /*============================================================================*/

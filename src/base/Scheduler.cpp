@@ -81,7 +81,7 @@ void Scheduler::vTaskSelf_LoopTransition(Task* pSelfTask, Thread* pThread)
   
   // this thread no longer is assigned to a task
   
-  pThread->m_eThreadState = HS_UNASSIGNED;
+  pThread->vThreadState(HS_UNASSIGNED);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 2) transition task to different state+queue depending on transition request
@@ -241,7 +241,6 @@ void Scheduler::vTaskSelf_SleepSomeTime(Task* pSelfTask, Thread* pThread)
   pSelfTask->vWakeupClear();
   
   pThread->vTask(pSelfTask);
-  pThread->m_eThreadState = HS_ASSIGNED;
 
   pSelfTask->vState(TS_EXECUTING);
   pSelfTask->vThread(pThread);
@@ -323,8 +322,7 @@ void Scheduler::vTaskSelf_YieldForOthers(Task* pSelfTask, Thread* pThread)
   pSelfTask->vThread(pThread);
   
   pThread->vTask(pSelfTask);
-  pThread->m_eThreadState = HS_ASSIGNED;
-
+ 
   pSchedule->vAddExecutingSet(pSelfTask);
   pSelfTask->vDropTaskLock();
   
@@ -641,7 +639,7 @@ void Scheduler::vTaskApi_BeginExecutingDedicated(Thread* pThread)
   AM::vLogThd(SL_INF,pThread,HA_THD_EXECUTE_DEDICATED, //!format-LogThd
               "Thread executes dedicated task"_Stz);
   
-  ASSERT(HS_UNASSIGNED == pThread->m_eThreadState);
+  ASSERT(HS_UNASSIGNED == pThread->eThreadState());
   ASSERT(pThread->m_oMutex.bIsLocked());
   
   RASSERT(pThread->pTask());
@@ -712,7 +710,7 @@ void Scheduler::vThread_BeginThreadLoop(Thread* pThread)
 {
   _static_
   
-  RASSERT(HS_IDLE == pThread->m_eThreadState);
+  RASSERT(HS_IDLE == pThread->eThreadState());
   
   pThread->vEventNoInc();
   AM::vLogThd(SL_INF,pThread,HA_THD_BEGIN_LOOP,
@@ -721,7 +719,7 @@ void Scheduler::vThread_BeginThreadLoop(Thread* pThread)
   pThread->vThisTLSThread();
   
   // thread has mutex while it is running
-  pThread->m_eThreadState = HS_UNASSIGNED;
+  pThread->vThreadState(HS_UNASSIGNED);
   pThread->m_oMutex.vLock(pThread);
   
   // increment m_ixThreads to indicate thread is running
@@ -766,7 +764,7 @@ void Scheduler::vThread_NapTillGeneralThreads(void)
     
     Thread* pThread = pSchedule->m_pGeneralThreadVec->pGet(i_Thread);
     
-    while (HS_IDLE != pThread->m_eThreadState)
+    while (HS_IDLE != pThread->eThreadState())
       AM::vNapMsec(10,CN_SCHEDULE);
   }
 }
@@ -820,7 +818,7 @@ void Scheduler::vThread_WaitForTaskAssignment(Thread* pThread)
   Task* pKnownTask = pThread->pTask();
   RASSERT(TS_DESISTED == pKnownTask->eState());
 
-  RASSERT(HS_ASSIGNED == pThread->m_eThreadState);
+  RASSERT(HS_ASSIGNED == pThread->eThreadState());
   RASSERT(pKnownTask == pThread->pTask());
 
   pKnownTask->vThread(pThread);
@@ -861,12 +859,10 @@ bool Scheduler::bThread_AssignIdle(Task* pKnownTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  RASSERT(HS_IDLE == pThread->m_eThreadState);
+  RASSERT(HS_IDLE == pThread->eThreadState());
 
   pThread->vTask(pKnownTask);
-  
-  pThread->m_eThreadState = HS_ASSIGNED;
-  
+    
   AM::vLogTsk(SL_INF,pKnownTask,TA_TSK_ASSIGNED_THREAD,
               "Task has popped and assigned an idle thread to itself"_Stz); //!format-LogTsk
   
@@ -896,7 +892,7 @@ void Scheduler::vThread_WaitAssignment(Thread* pThread)
   
   RASSERT(pThread->m_oMutex.bIsLocked());
   RASSERT(pThread->m_oMutex.bIsLockedByCaller(pThread));
-  RASSERT(HS_UNASSIGNED == pThread->m_eThreadState);
+  RASSERT(HS_UNASSIGNED == pThread->eThreadState());
   RASSERT(! pThread->pTask());
 
   Schedule* pSchedule = AM::pSchedule();
@@ -917,7 +913,6 @@ void Scheduler::vThread_WaitAssignment(Thread* pThread)
       pPoppedTask->vState(TS_DESISTED);
 
       pThread->vTask(pPoppedTask);
-      pThread->m_eThreadState = HS_ASSIGNED;
       break;
     }
     
@@ -938,7 +933,7 @@ void Scheduler::vThread_WaitAssignment(Thread* pThread)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   RASSERT(pThread->m_oMutex.bIsLocked());
-  RASSERT(HS_ASSIGNED == pThread->m_eThreadState);
+  RASSERT(HS_ASSIGNED == pThread->eThreadState());
   RASSERT(pThread->pTask());
   RASSERT(TS_DESISTED == pThread->pTask()->eState());
 }

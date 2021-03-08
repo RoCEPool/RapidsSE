@@ -56,7 +56,7 @@ Stz* SP_Thread::sz_log(Thread* pThread)
   StrLib::vSprint(m_caResult,
                   "{%s %s%s}"_Stz,
                   
-                  aHS[pThread->m_eThreadState],
+                  aHS[pThread->eThreadState()],
                   
                   spTaskId.sz(pThread->pTask()
                                 ? pThread->pTask()->m_iObjectId

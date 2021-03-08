@@ -11,13 +11,12 @@ namespace BASE
                  public ListItem_t<Thread>
   {
   public:  
-    eHS      m_eThreadState;  // thread state
     eCN      m_eDedicated;    // thread is dedicated to one specific job?
     Mutex    m_oMutex;        // this threads mutex
 
-
-
   private:
+    eHS      m_eThreadState;  // thread state
+  
     PsxThd*  m_pPsxThd;       // its posix structure
     Task*    m_pTask;         // task current being executed
 
@@ -67,7 +66,8 @@ namespace BASE
     void vThreadEntry(void);
     i8   iThreadNo(void);
     eHS  eThreadState(void);
-  
+    void vThreadState(eHS eThreadState);
+
   private:
 
     Footer* aFooter(void);

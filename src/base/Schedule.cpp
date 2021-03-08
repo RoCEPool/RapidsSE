@@ -132,7 +132,7 @@ void Schedule::vThreadsReport(void)
            iPercentageUsage,
            iSleepSsec,
            
-           aHS[pThread->m_eThreadState],
+           aHS[pThread->eThreadState()],
            pThread->m_eDedicated ? aCN[pThread->m_eDedicated]->azChar() : "",
            
            pThread->nAssignedTasks()
@@ -169,7 +169,7 @@ void Schedule::vThreadsReport(void)
            iPercentageUsage,
            iSleepSsec,
            
-           aHS[pThread->m_eThreadState],
+           aHS[pThread->eThreadState()],
            pThread->m_eDedicated ? aCN[pThread->m_eDedicated]->azChar() : "",
            
            pThread->nAssignedTasks()
