@@ -286,7 +286,7 @@ enum eEO : u1 // expression operators
   /*  D  */ EO_DEVROW_ENTWRK_APPENDELMI,// append next element value (int)
   /*  D  */ EO_DEVROW_ENTWRK_APPENDELMS,// append next element value (str)
   /*  D  */ EO_DEVROW_ENTWRK_CREATEPAY, // create a payload in entwrk
-  /*  D  */ EO_ENTWRK_POPOFS,    // pop m_oEntWrk.ref.buffer/offset
+
   /*  D  */ EO_ENTWRK_PRINT,     // print m_oEntWrk
 
   /*  R  */ EO_ENTWRK_RESET,     // reset m_oEntWrk
@@ -660,7 +660,6 @@ static Stz* aEO[]
   /*    */ "EO_DEVROW_ENTWRK_APPENDELMI"_Stz,
   /*    */ "EO_DEVROW_ENTWRK_APPENDELMS"_Stz,
   /*    */ "EO_DEVROW_ENTWRK_CREATEPAY"_Stz,
-  /*    */ "EO_ENTWRK_POPOFS"_Stz,
   /*    */ "EO_ENTWRK_PRINT"_Stz,
 
   /*    */ "EO_ENTWRK_RESET"_Stz,
@@ -1042,7 +1041,6 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_DEVROW_ENTWRK_APPENDELMI
   { EA_NONE,    0 },  // EO_DEVROW_ENTWRK_APPENDELMS
   { EA_INT,     8 },  // EO_DEVROW_ENTWRK_CREATEPAY
-  { EA_NONE,    0 },  // EO_ENTWRK_POPOFS
   { EA_NONE,    0 },  // EO_ENTWRK_PRINT
   { EA_NONE,    0 },  // EO_ENTWRK_RESET
   { EA_NONE,    0 },  // EO_ENTWRK_SETINTELM

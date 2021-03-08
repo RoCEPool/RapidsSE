@@ -2609,12 +2609,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         *(++aiDstk) = iArg;
         vDev_ROW_ENTWRK_CREATEPAY(&aiDstk);
         break;//+endCase
-                
-      case EO_ENTWRK_POPOFS: ArgNil(); // pop m_oEntWrk.ref.buffer/offset
-        iTopA = *(aiDstk--);
-        dLU1(EO_ENTWRK_POPOFS,iTopA);
-        vDev_ENTWRK_POPOFS(pLU,aRluCommon->m_pDevSrcRow,iTopA);
-        break;//+endCase
 
       case EO_ENTWRK_PRINT: ArgNil(); // print m_oEntWrk
         vDev_ENTWRK_PRINT(pLU,aRluCommon->m_pDevSrcRow);

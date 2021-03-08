@@ -1128,22 +1128,6 @@ void vDev_ROW_ENTWRK_CREATEPAY(i8** aaiDstk)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop offset                                                                 */
-/*----------------------------------------------------------------------------*/
-void vDev_ENTWRK_POPOFS(void* aLU, void* aROWDEVICE, i8 iTop)
-{
-  _static_
-
-  UNUSED(aROWDEVICE);
-
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-
-  Ent *pEnt = (Ent*)pLogicUnit->m_xRluCommon.m_aWrkEnt;
-
-  pEnt->vBuffer(iTop);
-}
-
-/*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
 void vDev_ENTWRK_PRINT(void* aLU, void* aROWDEVICE)
