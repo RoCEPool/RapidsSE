@@ -157,6 +157,8 @@
 #include "TccLock.hpp"
 #include "TraceLock.hpp"
 
+#include "WriteBehind.hpp"
+
 #include "XmitOperand.hpp"
 #include "Xmits.hpp"
 
@@ -493,6 +495,7 @@ SizeHeap gxaSizeHeap[]
   { 'W' - ('A' - 1),            HT_INVALID   ,0 }, // CN__W__
   { sizeof(Wilderness),         HT_INVALID   ,0 }, // CN_WILDERNESS
   { sizeof(Word),               HT_T_TINY    ,0 }, // CN_WORD
+  { sizeof(WriteBehind),        HT_T_LARGE   ,0 }, // CN_WRITEBEHIND
   { 0,                          HT_INVALID   ,0 }, // CN_WSPCONVERGENT_t
 
   { 'X' - ('A' - 1),            HT_INVALID   ,0 }, // CN__X__
