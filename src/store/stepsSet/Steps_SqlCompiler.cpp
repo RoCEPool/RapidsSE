@@ -115,6 +115,8 @@ void Step::vSqlCompilerParser(void)
   // Get the original SQL statement entered
   s4K sSqlStatement;
   m_pDataStack->vPopStr(sSqlStatement,__func__);
+  
+  //vTrace("vSqlCompilerParser got : %s\n"_Stz,sSqlStatement.szStz());
 
   // Read in and parse the plan graph definitions
   const Parser::PlanNode* pGraphTemplate = Parser::PlanDefinitionParser::pGraphTemplate();
