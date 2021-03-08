@@ -2745,10 +2745,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         *(++aiDstk) = (i8)aRluCommon->m_aSrcEnt;
         break;//+endCase
 
-      case EO_IXT_SRC_PRINT: ArgNil(); // print src ent
-        vDev_IXT_ENT_PRINT(pLU,aRluCommon->m_pDevSrcIxt);
-        break;//+endCase
-
       case EO_IXT_SRC_UBOUND: ArgNil(); // pos in buffer to entry for UBOUND
         dLU0(EO_IXT_SRC_UBOUND);
         aRluCommon->m_aSrcEnt =
@@ -2814,10 +2810,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         *(++aiDstk) = (i8)aRluCommon->m_aAltEnt;
   */
         break;//+endCase
-
-      case EO_IXT_ALT_PRINT: ArgNil(); // print alt ent
-        vDev_IXT_ENT_PRINT(pLU,aRluCommon->m_pDevAltIxt);
-        break;//+endCase
         
       case EO_IXT_CMP_SRCALT: ArgNil(); // compare src.key to alt.key
 //      iRes = iDev_IXT_CMP_SRCALT(pLU);
@@ -2848,6 +2840,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         aRluCommon->m_aAltEnt = aDev_IXT_POS_ALTBYWRK(pLU);
         aRluCommon->m_aAltEntArray = aRluCommon->m_aEntArray;
         *(++aiDstk) = (i8)aRluCommon->m_aAltEnt;
+        break;//+endCase
+
+      case EO_DEVIXT_ENT_PRINT: ArgNil(); // print ent
+        vDev_IXT_ENT_PRINT(&aiDstk);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

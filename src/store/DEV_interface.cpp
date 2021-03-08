@@ -596,16 +596,18 @@ void vDev_IXT_DUMP(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* print ent                                                                  */
 /*----------------------------------------------------------------------------*/
-void vDev_IXT_ENT_PRINT(void* aLU, void* aIXT)
+void vDev_IXT_ENT_PRINT(i8** aaiDstk)
 {
   _static_
 
-  DevIXT *pDevIXT = _pDevIXT(aIXT);
+  i8 *aiDstk = *aaiDstk;
+  DevIXT* pDevIXT = _pDevIXT(P_PopPtr());
   
   SP_Ent spEnt;
   vTrace("Ent : %s\n"_Stz,
          spEnt.sz(pDevIXT->m_aEnt,
                   pDevIXT->m_pIdxTree->pIndexDef()));
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
