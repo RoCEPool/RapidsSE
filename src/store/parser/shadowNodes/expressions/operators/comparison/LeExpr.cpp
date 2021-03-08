@@ -26,21 +26,20 @@ static Stz* C_LE_DEFN = "/__root__/definitions/object/expr/operator/comparison/l
 // * Fields marked with /*X*/ are not currently supported but should be.
 static eCT aeTypeCalculus[CT_ENUMS][CT_ENUMS] = {
 
-//                    NONE     BOOLEAN     CHAR        DATE          DECIMAL     FLOAT       INTEGER       /*IVL_YM          IVL_DT  */     INTERVAL    TIME          TIMESTP       VARCHAR     /*UNKNOWN*/
-/*  0 NONE       */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE,    CT_NONE,      CT_NONE,      CT_NONE,    /*CT_NONE*/    },
-/*  1 BOOLEAN    */ { CT_NONE, CT_BOOLEAN, CT_NONE,    CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE,    CT_NONE,      CT_NONE,      CT_NONE,    /*CT_BOOLEAN*/ },
-/*  2 CHAR       */ { CT_NONE, CT_NONE,    CT_BOOLEAN, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE,    CT_NONE,      CT_NONE,      CT_BOOLEAN, /*CT_BOOLEAN*/ },
-/*  3 DATE       */ { CT_NONE, CT_NONE,    CT_NONE,    CT_BOOLEAN,   CT_NONE,    CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE,    CT_NONE,      CT_NONE,      CT_NONE,    /*CT_BOOLEAN*/ },
-/*  4 DECIMAL    */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_BOOLEAN, CT_BOOLEAN, CT_BOOLEAN,   /*CT_NONE,        CT_NONE,*/     CT_NONE,    CT_NONE,      CT_NONE,      CT_NONE,    /*CT_BOOLEAN*/ },
-/*  5 FLOAT      */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_BOOLEAN, CT_BOOLEAN, CT_BOOLEAN,   /*CT_NONE,        CT_NONE,*/     CT_NONE,    CT_NONE,      CT_NONE,      CT_NONE,    /*CT_BOOLEAN*/ },
-/*  6 INTEGER    */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_BOOLEAN, CT_BOOLEAN, CT_BOOLEAN,   /*CT_NONE,        CT_NONE,*/     CT_NONE,    CT_NONE,      CT_NONE,      CT_NONE,    /*CT_BOOLEAN*/ },
-// XX INTERVAL_YM*/ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      /*CT_BOOLEAN,     CT_NONE,*/     CT_NONE,    CT_NONE,      CT_NONE,      CT_NONE,    /*CT_BOOLEAN*/ },
-// XX INTERVAL_DT*/ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      /*CT_NONE,        CT_BOOLEAN,*/  CT_NONE,    CT_NONE,      CT_NONE,      CT_NONE,    /*CT_BOOLEAN*/ },
-/*  7 INTERVAL   */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE,    CT_NONE,      CT_NONE,      CT_NONE,    /*CT_NONE*/    },
-/*  8 TIME       */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE,    CT_BOOLEAN,   CT_NONE,      CT_NONE,    /*CT_BOOLEAN*/ },
-/*  9 TIMESTAMP  */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE,    CT_NONE,      CT_BOOLEAN,   CT_NONE,    /*CT_BOOLEAN*/ },
-/* 10 VARCHAR    */ { CT_NONE, CT_NONE,    CT_BOOLEAN, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      /*CT_NONE,        CT_NONE,*/     CT_NONE,    CT_NONE,      CT_NONE,      CT_BOOLEAN, /*CT_BOOLEAN*/ },
-// XX UNKNOWN    */ { CT_NONE, CT_BOOLEAN, CT_BOOLEAN, CT_BOOLEAN,   CT_BOOLEAN, CT_BOOLEAN, CT_BOOLEAN,   CT_BOOLEANE,      CT_BOOLEAN,*/  CT_BOOLEAN, CT_BOOLEAN,   CT_BOOLEAN,   CT_BOOLEAN, /*CT_BOOLEAN*/ }
+//                    NONE     BOOLEAN     CHAR        DATE          DECIMAL     FLOAT       INTEGER       INTERVAL_DT  INTERVAL_YM     TIME          TIMESTAMP     VARCHAR     UNKNOWN
+/*  0 NONE       */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,     CT_NONE,        CT_NONE,      CT_NONE,      CT_NONE,    CT_NONE    },
+/*  1 BOOLEAN    */ { CT_NONE, CT_BOOLEAN, CT_NONE,    CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,     CT_NONE,        CT_NONE,      CT_NONE,      CT_NONE,    CT_BOOLEAN },
+/*  2 CHAR       */ { CT_NONE, CT_NONE,    CT_BOOLEAN, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,     CT_NONE,        CT_NONE,      CT_NONE,      CT_BOOLEAN, CT_BOOLEAN },
+/*  3 DATE       */ { CT_NONE, CT_NONE,    CT_NONE,    CT_BOOLEAN,   CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,     CT_NONE,        CT_NONE,      CT_NONE,      CT_NONE,    CT_BOOLEAN },
+/*  4 DECIMAL    */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_BOOLEAN, CT_BOOLEAN, CT_BOOLEAN,   CT_NONE,     CT_NONE,        CT_NONE,      CT_NONE,      CT_NONE,    CT_BOOLEAN },
+/*  5 FLOAT      */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_BOOLEAN, CT_BOOLEAN, CT_BOOLEAN,   CT_NONE,     CT_NONE,        CT_NONE,      CT_NONE,      CT_NONE,    CT_BOOLEAN },
+/*  6 INTEGER    */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_BOOLEAN, CT_BOOLEAN, CT_BOOLEAN,   CT_NONE,     CT_NONE,        CT_NONE,      CT_NONE,      CT_NONE,    CT_BOOLEAN },
+/*  7 INTERVAL_DT*/ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_BOOLEAN,  CT_NONE,        CT_NONE,      CT_NONE,      CT_NONE,    CT_BOOLEAN },
+/*  8 INTERVAL_YM*/ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,     CT_BOOLEAN,     CT_NONE,      CT_NONE,      CT_NONE,    CT_BOOLEAN },
+/*  9 TIME       */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,     CT_NONE,        CT_BOOLEAN,   CT_NONE,      CT_NONE,    CT_BOOLEAN },
+/* 10 TIMESTAMP  */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,     CT_NONE,        CT_NONE,      CT_BOOLEAN,   CT_NONE,    CT_BOOLEAN },
+/* 11 VARCHAR    */ { CT_NONE, CT_NONE,    CT_BOOLEAN, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,     CT_NONE,        CT_NONE,      CT_NONE,      CT_BOOLEAN, CT_BOOLEAN },
+/* 12 UNKNOWN    */ { CT_NONE, CT_BOOLEAN, CT_BOOLEAN, CT_BOOLEAN,   CT_BOOLEAN, CT_BOOLEAN, CT_BOOLEAN,   CT_BOOLEAN,  CT_BOOLEAN,     CT_BOOLEAN,   CT_BOOLEAN,   CT_BOOLEAN, CT_BOOLEAN }
 };
 
 // References:

@@ -19,6 +19,7 @@ static Stz* C_COUNT_EXPR_DEFN = "/__root__/definitions/object/expr/operator/aggr
 static Stz* C_ISCOUNTALL_PROP_NAME = "isCountAll"_Stz;
 static Stz* C_ISCOUNTALL_DEFN = "/__root__/definitions/object/valueObject/booleanObject"_Stz;
 
+
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -111,6 +112,18 @@ b1 CountExpr::bIsCountAll(PlanNode* pNode)
 b1 CountExpr::bIsOfType(PlanNode *pNode)
 {
   return ShadowNode::bIsOfType(pNode, C_COUNT_EXPR_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the resulting type of the expression operation.                    */
+/* A returned value of CT_NONE means that it is not supported or invalid.     */
+/*----------------------------------------------------------------------------*/
+eCT CountExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pExprNode));
+
+  return CT_INTEGER;
 }
 
 /*============================================================================*/
