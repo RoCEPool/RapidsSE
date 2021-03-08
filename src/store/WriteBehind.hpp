@@ -9,10 +9,7 @@ namespace STORE
   {
   private:
   
-    RowPix* m_pRowPix;    // condensed stream def
-
-    //HashSet    m_oHashSet; // using this as an interim step
-    DataBuffer*  m_paBufferChain[C_MAX_PARTITIONS];
+    RowBuffer*  m_pRowBuffer;
 
     // must be last
     Footer m_xFooter;
@@ -25,16 +22,8 @@ namespace STORE
    ~WriteBehind(void) noexcept(false);
   
   public:
-    
-    DataBuffer* pBuffer(i8 i_Ptn);
-    DataBuffer* pCompleted(i8 i_Ptn);
-    DataBuffer* pDangling(i8 i_Ptn);
-    Row* aNewDstRow(i8 i_Ptn, RowBuffer** ppRowBuffer, bool* pbNewBuffer);
-  
-    void vRowPix(RowPix* pRowPix);
-  
-  private:
-    void vAddBuffer(i8 i_Ptn, DataBuffer* pDataBuffer);
+    RowBuffer* pRowBuffer(void);
+    void vRowBuffer(RowBuffer* pRowBuffer);
 
     Footer* aFooter(void);
   };
