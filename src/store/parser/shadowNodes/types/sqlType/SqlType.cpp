@@ -59,15 +59,10 @@ QueryNode* SqlType::pCreate(eCT eType)
     case CT_INTEGER:
       return static_cast<QueryNode*>(SqlInteger::pCreate());
 
-      // TODO: enable when eCT has been updated
-//    case CT_INTERVAL_YM:
-//      return static_cast<QueryNode*>(SqlIntervalYM::pCreate());
-//
-//    case CT_INTERVAL_DT:
-//      return static_cast<QueryNode*>(SqlIntervalDT::pCreate());
-
-    // TODO: Temporary until eCT has been updated
     case CT_INTERVAL_DT:
+      return static_cast<QueryNode*>(SqlIntervalDT::pCreate());
+
+    case CT_INTERVAL_YM:
       return static_cast<QueryNode*>(SqlIntervalYM::pCreate());
 
     case CT_TIME:
@@ -79,9 +74,8 @@ QueryNode* SqlType::pCreate(eCT eType)
     case CT_VARCHAR:
       return static_cast<QueryNode*>(SqlVarchar::pCreate());
 
-      // TODO: enable when eCT has been updated
-//    case CT_UNKNOWN:
-//      return static_cast<QueryNode*>(SqlUnknown::pCreate());
+    case CT_UNKNOWN:
+      return static_cast<QueryNode*>(SqlUnknown::pCreate());
 
     case CT_NONE:
     case CT_ENUMS:
@@ -99,16 +93,16 @@ void SqlType::vDescribe(PlanNode* pNode, s2K& sBuf)
   ASSERT(bIsOfType(pNode));
 
   // Manual Polymorphism
-  if      (SqlBoolean::bIsOfType(pNode))    { SqlBoolean::vDescribe(pNode, sBuf);    }
-  else if (SqlInteger::bIsOfType(pNode))    { SqlInteger::vDescribe(pNode, sBuf);    }
-  else if (SqlFloat::bIsOfType(pNode))      { SqlFloat::vDescribe(pNode, sBuf);      }
-  else if (SqlDecimal::bIsOfType(pNode))    { SqlDecimal::vDescribe(pNode, sBuf);    }
-  else if (SqlVarchar::bIsOfType(pNode))    { SqlVarchar::vDescribe(pNode, sBuf);    }
-  else if (SqlDate::bIsOfType(pNode))       { SqlDate::vDescribe(pNode, sBuf);       }
-  else if (SqlTime::bIsOfType(pNode))       { SqlTime::vDescribe(pNode, sBuf);       }
-  else if (SqlTimestamp::bIsOfType(pNode))  { SqlTimestamp::vDescribe(pNode, sBuf);  }
-  else if (SqlIntervalYM::bIsOfType(pNode)) { SqlIntervalYM::vDescribe(pNode, sBuf); }
+  if      (SqlBoolean::bIsOfType(pNode))    {    SqlBoolean::vDescribe(pNode, sBuf); }
+  else if (SqlInteger::bIsOfType(pNode))    {    SqlInteger::vDescribe(pNode, sBuf); }
+  else if (SqlFloat::bIsOfType(pNode))      {      SqlFloat::vDescribe(pNode, sBuf); }
+  else if (SqlDecimal::bIsOfType(pNode))    {    SqlDecimal::vDescribe(pNode, sBuf); }
+  else if (SqlVarchar::bIsOfType(pNode))    {    SqlVarchar::vDescribe(pNode, sBuf); }
+  else if (SqlDate::bIsOfType(pNode))       {       SqlDate::vDescribe(pNode, sBuf); }
+  else if (SqlTime::bIsOfType(pNode))       {       SqlTime::vDescribe(pNode, sBuf); }
+  else if (SqlTimestamp::bIsOfType(pNode))  {  SqlTimestamp::vDescribe(pNode, sBuf); }
   else if (SqlIntervalDT::bIsOfType(pNode)) { SqlIntervalDT::vDescribe(pNode, sBuf); }
+  else if (SqlIntervalYM::bIsOfType(pNode)) { SqlIntervalYM::vDescribe(pNode, sBuf); }
   else {
     // Need to add in manual polymorphism here
     NEVER_REACH
@@ -154,18 +148,17 @@ eCT SqlType::eType(PlanNode* pNode)
   }
 
   // Manual Polymorphism
-  if      (SqlBoolean::bIsOfType(pNode))    { return CT_BOOLEAN;     }
-  else if (SqlInteger::bIsOfType(pNode))    { return CT_INTEGER;     }
-  else if (SqlFloat::bIsOfType(pNode))      { return CT_FLOAT;       }
-  else if (SqlDecimal::bIsOfType(pNode))    { return CT_DECIMAL;     }
-  else if (SqlVarchar::bIsOfType(pNode))    { return CT_VARCHAR;     }
-  else if (SqlDate::bIsOfType(pNode))       { return CT_DATE;        }
-  else if (SqlTime::bIsOfType(pNode))       { return CT_TIME;        }
-  else if (SqlTimestamp::bIsOfType(pNode))  { return CT_TIMESTAMP;   }
-  else if (SqlIntervalYM::bIsOfType(pNode)) { return CT_INTERVAL_DT;    }  // TODO: Temporary
-//  else if (SqlIntervalYM::bIsOfType(pNode)) { return CT_INTERVAL_YM; }  // TODO: enable when eCT has been updated
-//  else if (SqlIntervalDT::bIsOfType(pNode)) { return CT_INTERVAL_DT; }  // TODO: enable when eCT has been updated
-//  else if (SqlUnknown::bIsOfType(pNode))    { return CT_UNKNOWN;     }  // TODO: enable when eCT has been updated
+  if      (   SqlBoolean::bIsOfType(pNode))   { return CT_BOOLEAN;     }
+  else if (   SqlInteger::bIsOfType(pNode))   { return CT_INTEGER;     }
+  else if (     SqlFloat::bIsOfType(pNode))   { return CT_FLOAT;       }
+  else if (   SqlDecimal::bIsOfType(pNode))   { return CT_DECIMAL;     }
+  else if (   SqlVarchar::bIsOfType(pNode))   { return CT_VARCHAR;     }
+  else if (      SqlDate::bIsOfType(pNode))   { return CT_DATE;        }
+  else if (      SqlTime::bIsOfType(pNode))   { return CT_TIME;        }
+  else if ( SqlTimestamp::bIsOfType(pNode))   { return CT_TIMESTAMP;   }
+  else if (SqlIntervalDT::bIsOfType(pNode))   { return CT_INTERVAL_DT; }
+  else if (SqlIntervalYM::bIsOfType(pNode))   { return CT_INTERVAL_YM; }
+  else if (   SqlUnknown::bIsOfType(pNode))   { return CT_UNKNOWN;     }
   else {
     // Need to add in manual polymorphism here
     NEVER_REACH

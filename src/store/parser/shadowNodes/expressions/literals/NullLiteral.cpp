@@ -67,8 +67,7 @@ eCT NullLiteral::eType(QueryNode* pExprNode, PlanNode* pRootNode)
   _static_
   ASSERT(bIsOfType(pExprNode));
 
-  NOT_IMPLEMENTED_YET
-  //return CT_UNKNOWN; // TODO
+  return CT_UNKNOWN;
 }
 
 /*============================================================================*/
