@@ -130,6 +130,22 @@ static i8    RAPIDSSE_VERSION_NUMBER = 0x000600;
 static Stz*  RAPIDSSE_FORMAT_STRING  = "0.6.0"_Stz;
 static i8    RAPIDSSE_FORMAT_NUMBER  = 0x000600;
 
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                   Thread                                   */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* new thread                                                                 */
+/*----------------------------------------------------------------------------*/
+Thread* AM::THREAD::pThreadNew(void) {
+  
+  Thread* pThread = new Thread;
+
+  return pThread;
+}
+
+
 Stz*  AM::szVersionString(void) { return RAPIDSSE_VERSION_STRING; }
 i8    AM::iVersionNumber(void)  { return RAPIDSSE_VERSION_NUMBER; }
 
@@ -716,6 +732,8 @@ HeapBuffer* AM::pToHeapBuffer(i8 i_Buffer) {
   return pHeapBuffer;
 
 }
+
+
 
 Object* AM::pToLargeObect(i8 i_Buffer) {
     

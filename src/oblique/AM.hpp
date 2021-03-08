@@ -148,6 +148,12 @@ namespace OBLIQUE
   class AM
   {
   public:
+    class THREAD {
+    public:
+      static Thread* pThreadNew(void);
+    };
+  
+  public:
     static Stz*  szVersionString(void);
     static i8    iVersionNumber(void);
 
@@ -444,7 +450,7 @@ namespace OBLIQUE
     static LogicUnit* pTaskLogicUnit(Task* pTask);
     static i8   iTaskState(Task* pTask);
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
     static HeapBuffer* pToHeapBuffer(i8 iBufferNo);
     static Object* pToLargeObect(i8 iBufferNo);
@@ -484,7 +490,9 @@ namespace OBLIQUE
     static bool bJob_RemoveLocal(Job* pJob, bool bDump=false);
     static bool bJob_RemoveOriginating(Job* pJob, bool bDump=false);
     static bool bJob_RemoveParticipating(Job* pJob, bool bDump=false);
+  
   };
+
 }
 
 /*============================================================================*/
