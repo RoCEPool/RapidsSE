@@ -1873,13 +1873,6 @@ void vExprEvalEvaluate(void);
   void vWordSee(void);
   void vWordXcheckInxPtr(void);
 
-  // write behind
-  void vWriteBehindCreate(void);
-  void vWriteBehindDelete(void);
-  void vWriteBehindGet(void);
-  void vWriteBehindHandleDangling(void);
-  void vWriteBehindset(void);
-
   // XmitOperand
   void vXmitOperandOperandStore(void);
   void vXmitOperandPipeOut(void);
