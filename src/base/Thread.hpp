@@ -15,12 +15,12 @@ namespace BASE
     eCN      m_eDedicated;    // thread is dedicated to one specific job?
     Mutex    m_oMutex;        // this threads mutex
 
-    Task*    m_pTask;         // task current being executed
     i8       m_nAssignedTasks;// no of tasks scheduled so far to this thread
 
   private:
     PsxThd*  m_pPsxThd;       // its posix structure
-  
+    Task*    m_pTask;         // task current being executed
+
     Object*  m_pObject0;      // general purpose object 0
     Object*  m_pObject1;      // general purpose object 1
 
@@ -58,6 +58,7 @@ namespace BASE
     void vSpawnPsxThd_general(void);
     void vSpawnPsxThd_dummy(void);
     Task* pTask(void);
+    void vTask(Task* pTask);
     void vThisTLSThread(void);
     void vThreadEntry(void);
     i8   iThreadNo(void);

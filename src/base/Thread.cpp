@@ -518,6 +518,16 @@ Task* Thread::pTask(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set current task                                                           */
+/*----------------------------------------------------------------------------*/
+void Thread::vTask(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  m_pTask = pTask;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set this thread into TLS of current pthread                                */
 /*----------------------------------------------------------------------------*/
 void Thread::vThisTLSThread(void)

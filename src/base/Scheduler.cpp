@@ -55,7 +55,7 @@ void Scheduler::vTaskSelf_LoopTransition(Task* pSelfTask, Thread* pThread)
   
   RASSERT(pSelfTask->bIsLocked());
   RASSERT(TR_NONE != pSelfTask->eTranstionRequest());
-  RASSERT(pSelfTask == pThread->m_pTask);
+  RASSERT(pSelfTask == pThread->pTask());
   RASSERT(pThread == pSelfTask->pvThread_DONT_DEREF());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -77,7 +77,7 @@ void Scheduler::vTaskSelf_LoopTransition(Task* pSelfTask, Thread* pThread)
   // unlink task from calling thread
   
   pSelfTask->vThread(nullptr);
-  pThread->m_pTask = nullptr;
+  pThread->vTask(nullptr);
   
   // this thread no longer is assigned to a task
   
@@ -240,7 +240,7 @@ void Scheduler::vTaskSelf_SleepSomeTime(Task* pSelfTask, Thread* pThread)
     
   pSelfTask->vWakeupClear();
   
-  pThread->m_pTask = pSelfTask;
+  pThread->vTask(pSelfTask);
   pThread->m_eThreadState = HS_ASSIGNED;
 
   pSelfTask->vState(TS_EXECUTING);
@@ -322,7 +322,7 @@ void Scheduler::vTaskSelf_YieldForOthers(Task* pSelfTask, Thread* pThread)
   pSelfTask->vState(TS_EXECUTING);
   pSelfTask->vThread(pThread);
   
-  pThread->m_pTask = pSelfTask;
+  pThread->vTask(pSelfTask);
   pThread->m_eThreadState = HS_ASSIGNED;
 
   pSchedule->vAddExecutingSet(pSelfTask);
@@ -501,7 +501,7 @@ void Scheduler::vTaskApi_AddDedicated(Task* pNewTask)
   
   Thread* pThread = new Thread;
   
-  pThread->m_pTask = pNewTask;
+  pThread->vTask(pNewTask);
   pThread->m_eDedicated = AM::eJobClass(pNewTask->pJob());
   
   pThread->vSpawnPsxThd_dedicated();
@@ -644,15 +644,15 @@ void Scheduler::vTaskApi_BeginExecutingDedicated(Thread* pThread)
   ASSERT(HS_UNASSIGNED == pThread->m_eThreadState);
   ASSERT(pThread->m_oMutex.bIsLocked());
   
-  RASSERT(pThread->m_pTask);
-  RASSERT(TS_DESISTED == pThread->m_pTask->eState());
+  RASSERT(pThread->pTask());
+  RASSERT(TS_DESISTED == pThread->pTask()->eState());
   
   Schedule* pSchedule = AM::pSchedule();
   
-  pThread->m_pTask->vThread(pThread);
+  pThread->pTask()->vThread(pThread);
   
-  pThread->m_pTask->vState(TS_EXECUTING);
-  pSchedule->vAddExecutingSet(pThread->m_pTask);
+  pThread->pTask()->vState(TS_EXECUTING);
+  pSchedule->vAddExecutingSet(pThread->pTask());
 }
 
 
@@ -817,18 +817,18 @@ void Scheduler::vThread_WaitForTaskAssignment(Thread* pThread)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Task* pKnownTask = pThread->m_pTask;
+  Task* pKnownTask = pThread->pTask();
   RASSERT(TS_DESISTED == pKnownTask->eState());
 
   RASSERT(HS_ASSIGNED == pThread->m_eThreadState);
-  RASSERT(pKnownTask == pThread->m_pTask);
+  RASSERT(pKnownTask == pThread->pTask());
 
   pKnownTask->vThread(pThread);
   
   // ok to touch task
   
-  pThread->m_pTask->vState(TS_EXECUTING);
-  pSchedule->vAddExecutingSet(pThread->m_pTask);
+  pThread->pTask()->vState(TS_EXECUTING);
+  pSchedule->vAddExecutingSet(pThread->pTask());
   
   RASSERT(pThread == pKnownTask->pvThread_DONT_DEREF());
 }
@@ -863,7 +863,7 @@ bool Scheduler::bThread_AssignIdle(Task* pKnownTask)
   
   RASSERT(HS_IDLE == pThread->m_eThreadState);
 
-  pThread->m_pTask = pKnownTask;
+  pThread->vTask(pKnownTask);
   pThread->m_nAssignedTasks++;
   
   pThread->m_eThreadState = HS_ASSIGNED;
@@ -898,14 +898,14 @@ void Scheduler::vThread_WaitAssignment(Thread* pThread)
   RASSERT(pThread->m_oMutex.bIsLocked());
   RASSERT(pThread->m_oMutex.bIsLockedByCaller(pThread));
   RASSERT(HS_UNASSIGNED == pThread->m_eThreadState);
-  RASSERT(! pThread->m_pTask);
+  RASSERT(! pThread->pTask());
 
   Schedule* pSchedule = AM::pSchedule();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // mutex-based loop waiting for
 //for (;;) {
-  while (! pThread->m_pTask) {
+  while (! pThread->pTask()) {
     
     // attempt to po a task from one of the ready queues
     Task* pPoppedTask = pSchedule->pPopReadyQueue();
@@ -917,7 +917,7 @@ void Scheduler::vThread_WaitAssignment(Thread* pThread)
       RASSERT(TS_READY == pPoppedTask->eState());
       pPoppedTask->vState(TS_DESISTED);
 
-      pThread->m_pTask = pPoppedTask;
+      pThread->vTask(pPoppedTask);
       pThread->m_eThreadState = HS_ASSIGNED;
       pThread->m_nAssignedTasks++;
       break;
@@ -926,14 +926,14 @@ void Scheduler::vThread_WaitAssignment(Thread* pThread)
     // -- -- -- -- -- -- -- -- -- -- -- -- -- --
     
     pThread->m_eThreadState = HS_IDLE;
-    RASSERT(! pThread->m_pTask);
+    RASSERT(! pThread->pTask());
     pSchedule->vThreadAppendIdle(pThread);
 
     ASSERT(pThread->m_oMutex.bIsLockedByCaller(pThread));
     pThread->m_oMutex.vWait(pThread);
     ASSERT(pThread->m_oMutex.bIsLockedByCaller(pThread));
 
-    if (pThread->m_pTask)
+    if (pThread->pTask())
       break;
   }
 
@@ -941,8 +941,8 @@ void Scheduler::vThread_WaitAssignment(Thread* pThread)
   
   RASSERT(pThread->m_oMutex.bIsLocked());
   RASSERT(HS_ASSIGNED == pThread->m_eThreadState);
-  RASSERT(pThread->m_pTask);
-  RASSERT(TS_DESISTED == pThread->m_pTask->eState());
+  RASSERT(pThread->pTask());
+  RASSERT(TS_DESISTED == pThread->pTask()->eState());
 }
 
 // /////////////////////////////////////////////////////////////////////////////
