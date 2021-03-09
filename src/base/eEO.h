@@ -121,7 +121,6 @@ enum eEO : u1 // expression operators
   // register operators
   /*  M  */ EO_REG_EOSMARKER_NEW,          // new an eosMarker in Operand[]
   /*  M  */ EO_REG_INDEXDEF_ADDCOLUMN,     // add a column to indexDef[]
-  /*  M  */ EO_REG_INDEXDEF_DELETE,        // delete the indexDef[]
 
   /*  M  */ EO_REG_PTNSTREAM_CLOSE,        // close a ptn stream
   /*  M  */ EO_REG_PTNSTREAM_DELETE,       // delete a ptn stream
@@ -137,8 +136,9 @@ enum eEO : u1 // expression operators
   /*  M  */ EO_PUSH_REG_INDEXTREE,         // push indexTree[]
 
   // RLU operators
+  /*  M  */ EO_RLU_INDEXDEF_DELETE,        // delete the indexDefRlu[]
   /*  M  */ EO_RLU_INDEXDEF_NEW,           // new an indexDef in indexDefRlu[]
-  /*  M  */ EO_RLU_INDEXTREE_NEW,           // new an indexTree in indexTreeRlu[]
+  /*  M  */ EO_RLU_INDEXTREE_NEW,          // new an indexTree in indexTreeRlu[]
   /*  M  */ EO_RLU_INDEXTREE_NULL,          // null indexTreeRlu[]
 
   // column set
@@ -500,7 +500,6 @@ static Stz* aEO[]
   // register operators
   /*    */ "EO_REG_EOSMARKER_NEW"_Stz,
   /*    */ "EO_REG_INDEXDEF_ADDCOLUMN"_Stz,
-  /*    */ "EO_REG_INDEXDEF_DELETE"_Stz,
   /*    */ "EO_REG_PTNSTREAM_CLOSE"_Stz,
   /*    */ "EO_REG_PTNSTREAM_DELETE"_Stz,
   /*    */ "EO_REG_PTNSTREAM_NEW"_Stz,
@@ -515,6 +514,7 @@ static Stz* aEO[]
   /*    */ "EO_PUSH_REG_INDEXTREE"_Stz,
 
   // Rlu operators
+  /*    */ "EO_RLU_INDEXDEF_DELETE"_Stz,
   /*    */ "EO_RLU_INDEXDEF_NEW"_Stz,
   /*    */ "EO_RLU_INDEXTREE_NEW"_Stz,
   /*    */ "EO_RLU_INDEXTREE_NULL"_Stz,
@@ -882,7 +882,6 @@ static EoArg EoArgs[]
   // register operators
   { EA_NONE,    0 },  // EO_REG_EOSMARKER_NEW
   { EA_STRING, -1 },  // EO_REG_INDEXDEF_ADDCOLUMN
-  { EA_NONE,    0 },  // EO_REG_INDEXDEF_DELETE
   { EA_NONE,    0},   // EO_REG_PTNSTREAM_CLOSE
   { EA_NONE,    0},   // EO_REG_PTNSTREAM_DELETE
   { EA_NONE,    0},   // EO_REG_PTNSTREAM_NEW
@@ -897,6 +896,7 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_PUSH_REG_INDEXTREE
 
   // RLU operators
+  { EA_NONE,    0 },  // EO_RLU_INDEXDEF_DELETE
   { EA_NONE,    0 },  // EO_RLU_INDEXDEF_NEW
   { EA_NONE,    0 },  // EO_RLU_INDEXTREE_NEW
   { EA_NONE,    0 },  // EO_RLU_INDEXTREE_NULL

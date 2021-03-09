@@ -2478,17 +2478,15 @@ void vDev_REG_INDEXDEF_ADDCOLUMN(void* aLU, Stz* sColumnNm, i8 iColumnType)
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete indexDef[]                                                          */
+/* delete indexDefRlu[]                                                       */
 /*----------------------------------------------------------------------------*/
-void vDev_REG_INDEXDEF_DELETE(void* aLU)
+void vDev_RLU_INDEXDEF_DELETE(i8** aaiDstk)
 {
   _static_
+
+  i8 *aiDstk = *aaiDstk;
   
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-  
-  IndexDef* pIndexDef = _pIndexDef(pLogicUnit->m_xRluCommon.m_pIndexDef);
-  
-  pLogicUnit->m_xRluCommon.m_pIndexDef = nullptr;
+  IndexDef* pIndexDef = _pIndexDef(P_PopPtr());
   
   delete pIndexDef;
 }

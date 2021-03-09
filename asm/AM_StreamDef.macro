@@ -20,7 +20,7 @@ macro AM_HANDLER_STREAMDEF_GBY_END
 //----------------------------------------------------------------------------//
   // AM_HANDLER_STREAMDEF_GBY_END
   EO_RLU_INDEXTREE_NEW
-  EO_REG_INDEXDEF_DELETE
+  EO_RLU_INDEXDEF_DELETE
 
   //EO_INDEXTREE_TMP_SET
 
