@@ -93,7 +93,7 @@ void Step::vIndexDefRluIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pJob->pLogicUnit_job()->m_xRluCommon.m_pIndexDef ? 1 : 0);
+  m_pDataStack->vPushInt(m_pJob->pLogicUnit_job()->m_xRluCommon.m_pIndexDef ? 0 : 1);
   
   EXIT();
 }
