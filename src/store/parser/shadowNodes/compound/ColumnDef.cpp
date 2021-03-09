@@ -19,6 +19,15 @@ using namespace Parser;
 static Stz* C_COLUMNDEF_DEFN   = "/__root__/definitions/object/compound/columnDef"_Stz;
 static Stz* C_COLUMNDEF_NAME   = "columnDef"_Stz;
 
+static Stz* C_CATALOGNAME_PROP = "catalogName"_Stz;
+static Stz* C_CATALOGNAME_DEFN = "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject"_Stz;
+
+static Stz* C_SCHEMANAME_PROP  = "schemaName"_Stz;
+static Stz* C_SCHEMANAME_DEFN  = "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject"_Stz;
+
+static Stz* C_TABLENAME_PROP   = "tableName"_Stz;
+static Stz* C_TABLENAME_DEFN   = "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject"_Stz;
+
 static Stz* C_COLUMNNAME_PROP  = "columnName"_Stz;
 static Stz* C_COLUMNNAME_DEFN  = "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject"_Stz;
 
@@ -48,7 +57,8 @@ static Stz* C_SCALE_DEFN       = "/__root__/definitions/object/valueObject/integ
 /* Helper function to create columnDef nodes.                                 */
 /* Ordinal is 0 based. Use -1 for precision and scale if not set or n/a.      */
 /*----------------------------------------------------------------------------*/
-QueryNode* ColumnDef::pCreate(Stz* szColumnName, QueryNode* pTypeNode, b1 bNotNull,
+QueryNode* ColumnDef::pCreate(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName,
+                              Stz* szColumnName, QueryNode* pTypeNode, b1 bNotNull,
                               i8 iOrdinal, i8 iPrecision, i8 iScale)
 {
   _static_
@@ -62,10 +72,25 @@ QueryNode* ColumnDef::pCreate(Stz* szColumnName, QueryNode* pTypeNode, b1 bNotNu
   // Create the columnDef object
   QueryNode* pColumnDef = new QueryNode(szColumnName, C_COLUMNDEF_DEFN);
 
+  // Create the catalogName property
+  Value xCatalogNameVal(szCatalogName);
+  QueryNode* pCatalogName = new QueryNode(C_CATALOGNAME_PROP, C_CATALOGNAME_DEFN, static_cast<Value&&>(xCatalogNameVal));
+  pColumnDef->vAppendProperty(pCatalogName);
+
+  // Create the schemaName property
+  Value xSchemaNameVal(szSchemaName);
+  QueryNode* pSchemaName = new QueryNode(C_SCHEMANAME_PROP, C_SCHEMANAME_DEFN, static_cast<Value&&>(xSchemaNameVal));
+  pColumnDef->vAppendProperty(pSchemaName);
+
+  // Create the tableName property
+  Value xTableNameVal(szTableName);
+  QueryNode* pTableName = new QueryNode(C_TABLENAME_PROP, C_TABLENAME_DEFN, static_cast<Value&&>(xTableNameVal));
+  pColumnDef->vAppendProperty(pTableName);
+
   // Create the columnName property
-  Value xNameVal(szColumnName);
-  QueryNode* pName = new QueryNode(C_COLUMNNAME_PROP, C_COLUMNNAME_DEFN, static_cast<Value&&>(xNameVal));
-  pColumnDef->vAppendProperty(pName);
+  Value xColumnNameVal(szColumnName);
+  QueryNode* pColumnName = new QueryNode(C_COLUMNNAME_PROP, C_COLUMNNAME_DEFN, static_cast<Value&&>(xColumnNameVal));
+  pColumnDef->vAppendProperty(pColumnName);
 
   // Add the type property
   pTypeNode->vSetName(C_COLUMNTYPE_PROP);
@@ -133,6 +158,51 @@ void ColumnDef::vDescribe(PlanNode* pNode, s2K& buf)
 b1 ColumnDef::bIsOfType(PlanNode *pNode)
 {
   return ShadowNode::bIsOfType(pNode, C_COLUMNDEF_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get catalog name from columnDef                                            */
+/*----------------------------------------------------------------------------*/
+Stz* ColumnDef::szCatalogName(QueryNode* pNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pCatalogNameNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_CATALOGNAME_PROP, pNode));
+  ASSERT(pCatalogNameNode);
+
+  Stz* szCatalogName = pCatalogNameNode->szValue();
+
+  return szCatalogName;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get schema name from columnDef                                            */
+/*----------------------------------------------------------------------------*/
+Stz* ColumnDef::szSchemaName(QueryNode* pNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pSchemaNameNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_SCHEMANAME_PROP, pNode));
+  ASSERT(pSchemaNameNode);
+
+  Stz* szSchemaName = pSchemaNameNode->szValue();
+
+  return szSchemaName;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get table name from columnDef                                            */
+/*----------------------------------------------------------------------------*/
+Stz* ColumnDef::szTableName(QueryNode* pNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pTableNameNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_TABLENAME_PROP, pNode));
+  ASSERT(pTableNameNode);
+
+  Stz* szTableName = pTableNameNode->szValue();
+
+  return szTableName;
 }
 
 /*----------------------------------------------------------------------------*/

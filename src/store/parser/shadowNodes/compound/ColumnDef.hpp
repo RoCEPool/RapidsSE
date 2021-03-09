@@ -21,13 +21,17 @@ namespace Parser
   public:
     // Helper function to create columnDef nodes
     // Ordinal is 0 based. Use -1 for precision and scale if not set or n/a
-    static QueryNode* pCreate(Stz* szColumnName, QueryNode* pTypeNode, b1 bNotNull,
+    static QueryNode* pCreate(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName,
+                              Stz* szColumnName, QueryNode* pTypeNode, b1 bNotNull,
                               i8 iOrdinal, i8 iPrecision, i8 iScale);
     static void       vDescribe(PlanNode* pNode, s2K& sBuf);
 
     // Returns true if a given node is a given type ** or is derived from that type **
     static b1 bIsOfType(PlanNode* pNode);
 
+    static Stz* szCatalogName(QueryNode* pNode);
+    static Stz* szSchemaName(QueryNode* pNode);
+    static Stz* szTableName(QueryNode* pNode);
     static Stz* szColumnName(QueryNode* pNode);
     static eCT  eColumnType(QueryNode* pNode);
     static b1   bNotNull(QueryNode* pNode);

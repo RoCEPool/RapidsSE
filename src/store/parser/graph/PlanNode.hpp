@@ -410,6 +410,7 @@ namespace Parser
   class PlanNode : public /*VIRTUAL*/ Object
   {
     friend class GraphValidator;  // to aide validation of the plan graph
+    friend class GraphEditor;     // Contains extra node/graph manipulation utilities
 
   protected:
     s256  m_sName;                // Name of the node. Must be unique amongst its siblings
@@ -467,6 +468,7 @@ namespace Parser
     // Convenience functions for accessing children
     PlanNode* pFirstChild();
     PlanNode* pSecondChild();
+    PlanNode* pNthChild(i8 iIdx); // 0-based index
     PlanNode* pLastChild();
   };
   

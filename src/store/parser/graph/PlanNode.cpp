@@ -336,6 +336,18 @@ PlanNode* PlanNode::pSecondChild()
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns the nth PlanNode child, or nullptr if there is none                */
+/*----------------------------------------------------------------------------*/
+PlanNode* PlanNode::pNthChild(i8 iIdx)
+{
+  if (!m_pChildren || m_pChildren->nItems() < (iIdx + 1)) {
+    return nullptr;
+  }
+
+  return m_pChildren->pPeek(iIdx);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns the last PlanNode child, or nullptr if there is none              */
 /*----------------------------------------------------------------------------*/
 PlanNode* PlanNode::pLastChild()

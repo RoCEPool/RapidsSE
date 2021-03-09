@@ -10,6 +10,7 @@
 #include "store/parser/shadowNodes/expressions/literals/LiteralExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/aggregates/AggregateExpr.hpp"
 #include "ColumnRef.hpp"
+#include "ColumnWildcard.hpp"
 #include "OperatorExpr.hpp"
 
 #include "GraphNav.hpp"
@@ -42,9 +43,10 @@ void Expr::vDescribe(PlanNode* pNode, s2K& sBuf)
 
   // TODO: manual expression polymorphism here
 
-  if      ( LiteralExpr::bIsOfType(pNode))  {  LiteralExpr::vDescribe(pNode, sBuf); }
-  else if (   ColumnRef::bIsOfType(pNode))  {    ColumnRef::vDescribe(pNode, sBuf); }
-  else if (OperatorExpr::bIsOfType(pNode))  { OperatorExpr::vDescribe(pNode, sBuf); }
+  if      (   LiteralExpr::bIsOfType(pNode))  {    LiteralExpr::vDescribe(pNode, sBuf); }
+  else if (     ColumnRef::bIsOfType(pNode))  {      ColumnRef::vDescribe(pNode, sBuf); }
+  else if (ColumnWildcard::bIsOfType(pNode))  { ColumnWildcard::vDescribe(pNode, sBuf); }
+  else if (  OperatorExpr::bIsOfType(pNode))  {   OperatorExpr::vDescribe(pNode, sBuf); }
 
   else {
     // Need to add in manual polymorphism here
@@ -70,9 +72,10 @@ eCT Expr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
 
   // TODO: manual expression polymorphism here
 
-  if      ( LiteralExpr::bIsOfType(pExprNode))  { return  LiteralExpr::eType(pExprNode, pRootNode); }
-  else if (   ColumnRef::bIsOfType(pExprNode))  { return    ColumnRef::eType(pExprNode, pRootNode); }
-  else if (OperatorExpr::bIsOfType(pExprNode))  { return OperatorExpr::eType(pExprNode, pRootNode); }
+  if      (    LiteralExpr::bIsOfType(pExprNode))  { return    LiteralExpr::eType(pExprNode, pRootNode); }
+  else if (      ColumnRef::bIsOfType(pExprNode))  { return      ColumnRef::eType(pExprNode, pRootNode); }
+  else if ( ColumnWildcard::bIsOfType(pExprNode))  { return ColumnWildcard::eType(pExprNode, pRootNode); }
+  else if (   OperatorExpr::bIsOfType(pExprNode))  { return   OperatorExpr::eType(pExprNode, pRootNode); }
   else {
     // Need to add in manual polymorphism here
     NEVER_REACH

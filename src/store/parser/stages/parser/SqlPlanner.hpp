@@ -44,6 +44,7 @@ namespace Parser
     virtual antlrcpp::Any visitSelectList(sqlParser::SelectListContext *pCtx)         override;
     virtual antlrcpp::Any visitSelectListItem(sqlParser::SelectListItemContext* pCtx) override;
     virtual antlrcpp::Any visitColumnRef(sqlParser::ColumnRefContext* pCtx)           override;
+    virtual antlrcpp::Any visitColumnWildcard(sqlParser::ColumnWildcardContext* pCtx) override;
     virtual antlrcpp::Any visitLiteral(sqlParser::LiteralContext* pCtx)               override;
     virtual antlrcpp::Any visitUnaryOp(sqlParser::UnaryOpContext *pCtx)               override;
     virtual antlrcpp::Any visitBinaryOp(sqlParser::BinaryOpContext *pCtx)             override;

@@ -31,6 +31,7 @@
 
 // Expressions
 #include "ColumnRef.hpp"
+#include "ColumnWildcard.hpp"
 #include "store/parser/shadowNodes/expressions/literals/NullLiteral.hpp"
 #include "store/parser/shadowNodes/expressions/literals/StringLiteral.hpp"
 #include "store/parser/shadowNodes/expressions/literals/IntegerLiteral.hpp"
@@ -575,11 +576,8 @@ antlrcpp::Any SqlPlanner::visitColumnRef(sqlParser::ColumnRefContext* pCtx)
   visitChildren(pCtx);
   
   Text* pCatalogName = pCtx->catalogName() == nullptr ? nullptr : pCleanId(pCtx->catalogName()->id);
-  
   Text* pSchemaName = pCtx->schemaName() == nullptr ? nullptr : pCleanId(pCtx->schemaName()->id);
-  
   Text* pTableName = pCtx->tableName() == nullptr ? nullptr : pCleanId(pCtx->tableName()->id);
-  
   Text* pColumnName = pCleanId(pCtx->columnName()->id);
 
   QueryNode* pColumnRef = ColumnRef::pCreate(pCatalogName, pSchemaName,
@@ -587,6 +585,26 @@ antlrcpp::Any SqlPlanner::visitColumnRef(sqlParser::ColumnRefContext* pCtx)
 
   m_pExprList->vPush(pColumnRef);
   
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Column Reference node                                                      */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitColumnWildcard(sqlParser::ColumnWildcardContext* pCtx)
+{
+  ASSERT(m_pExprList);
+
+  visitChildren(pCtx);
+
+  Text* pCatalogName = pCtx->catalogName() == nullptr ? nullptr : pCleanId(pCtx->catalogName()->id);
+  Text* pSchemaName = pCtx->schemaName() == nullptr ? nullptr : pCleanId(pCtx->schemaName()->id);
+  Text* pTableName = pCtx->tableName() == nullptr ? nullptr : pCleanId(pCtx->tableName()->id);
+
+  QueryNode* pColumnWildcard = ColumnWildcard::pCreate(pCatalogName, pSchemaName, pTableName);
+
+  m_pExprList->vPush(pColumnWildcard);
+
   return nullptr;
 }
 

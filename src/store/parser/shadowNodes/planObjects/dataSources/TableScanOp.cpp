@@ -11,6 +11,8 @@
 
 #include "GraphNav.hpp"
 
+#include "ShadowRoot.hpp"
+#include "MetadataNode.hpp"
 #include "store/parser/shadowNodes/compound/TableRef.hpp"
 
 using namespace Parser;
@@ -129,6 +131,66 @@ QueryNode* TableScanOp::pTableRef(QueryNode* pNode)
   return pTableRef;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns the catalog name of the table reference                            */
+/*----------------------------------------------------------------------------*/
+Stz* TableScanOp::szCatalogName(QueryNode *pNode)
+{
+  QueryNode* pTableRef = TableScanOp::pTableRef(pNode);
+
+  return TableRef::szCatalog(pTableRef);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the schema name of the table reference                             */
+/*----------------------------------------------------------------------------*/
+Stz* TableScanOp::szSchemaName(QueryNode *pNode)
+{
+  QueryNode* pTableRef = TableScanOp::pTableRef(pNode);
+
+  return TableRef::szSchema(pTableRef);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the table name of the table reference                              */
+/*----------------------------------------------------------------------------*/
+Stz* TableScanOp::szTableName(QueryNode *pNode)
+{
+  QueryNode* pTableRef = TableScanOp::pTableRef(pNode);
+
+  return TableRef::szTable(pTableRef);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get the list of column definitions for this data source                    */
+/* Returned list must be freed, but not its contents                          */
+/*----------------------------------------------------------------------------*/
+PlanNodeList* TableScanOp::pColumnDefs(QueryNode* pNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pRootNode);
+
+  QueryNode* pMetadataNode = ShadowRoot::pMetadataNode(pRootNode);
+  ASSERT(pMetadataNode);
+
+  // Create a list for the columnDefs to be returned
+  PlanNodeList* pColumnDefList = new PlanNodeList();
+
+  // Iterate the columns in the metadata and add them to the above list
+  PlanNodeIter* pIter = MetadataNode::pColumnDefIter(pMetadataNode,
+                                                     szCatalogName(pNode),
+                                                     szSchemaName(pNode),
+                                                     szTableName(pNode));
+
+  while (pIter->bHasNext()) {
+    QueryNode* pColumnDef = static_cast<QueryNode*>(pIter->pNext());
+    pColumnDefList->vAppend(pColumnDef);
+  }
+
+  delete pIter;
+  return pColumnDefList;
+}
 
 /*============================================================================*/
 /* end                                                                        */
