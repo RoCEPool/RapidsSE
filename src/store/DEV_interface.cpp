@@ -2524,21 +2524,6 @@ void vDev_RLU_INDEXTREE_NEW(i8** aaiDstk)
 }
 
 /*----------------------------------------------------------------------------*/
-/* null indexTree[]                                                           */
-/*----------------------------------------------------------------------------*/
-void vREG_INDEXTREE_NULL(i8** aaiDstk)
-{
-  _static_
-
-  i8 *aiDstk = *aaiDstk;
-
-  LogicUnit* pLogicUnit = _pLogicUnit(P_PopPtr());
-  pLogicUnit->m_xRluCommon.m_pIndexTree = nullptr;
-
-  *aaiDstk = aiDstk;
-}
-
-/*----------------------------------------------------------------------------*/
 /* push indexTree[]                                                           */
 /*----------------------------------------------------------------------------*/
 void vREG_INDEXTREE_PUSH(i8** aaiDstk)

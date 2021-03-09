@@ -158,7 +158,6 @@ DynamicSymbol gxaDynamicSymbol[]
 
   { "vDev_RLU_INDEXTREE_NEW"_Stz,          (const void *) vDev_RLU_INDEXTREE_NEW      },
 
-  { "vREG_INDEXTREE_NULL"_Stz,             (const void *) vREG_INDEXTREE_NULL         },
   { "vREG_INDEXTREE_PUSH"_Stz,             (const void *) vREG_INDEXTREE_PUSH         },
 
   { "vDev_REG_PTNSTREAM_CLOSE"_Stz,        (const void *) vDev_REG_PTNSTREAM_CLOSE    },

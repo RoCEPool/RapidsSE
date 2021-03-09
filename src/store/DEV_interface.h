@@ -118,7 +118,6 @@ void vDev_REG_INDEXDEF_NEW(void* aLU, Stz* sName);
 
 void vDev_RLU_INDEXTREE_NEW(i8** aaiDstk);
 
-void vREG_INDEXTREE_NULL(i8** aaiDstk);
 void vREG_INDEXTREE_PUSH(i8** aaiDstk);
 
 void vDev_REG_PTNSTREAM_CLOSE(void* aLU);

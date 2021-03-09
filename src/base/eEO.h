@@ -123,7 +123,6 @@ enum eEO : u1 // expression operators
   /*  M  */ EO_REG_INDEXDEF_DELETE,        // delete the indexDef[]
   /*  M  */ EO_REG_INDEXDEF_NEW,           // new an indexDef in indexDef[]
 
-  /*  M  */ EO_REG_INDEXTREE_NULL,         // null indexTree[]
   /*  M  */ EO_REG_PTNSTREAM_CLOSE,        // close a ptn stream
   /*  M  */ EO_REG_PTNSTREAM_DELETE,       // delete a ptn stream
   /*  M  */ EO_REG_PTNSTREAM_NEW,          // new a ptn stream
@@ -138,7 +137,8 @@ enum eEO : u1 // expression operators
   /*  M  */ EO_PUSH_REG_INDEXTREE,         // push indexTree[]
 
   // RLU operators
-  /*  M  */ EO_RLU_INDEXTREE_NEW,              // new an indexTree in indexTreeRlu[]
+  /*  M  */ EO_RLU_INDEXTREE_NEW,           // new an indexTree in indexTreeRlu[]
+  /*  M  */ EO_RLU_INDEXTREE_NULL,          // null indexTreeRlu[]
 
   // column set
   /*  M  */ EO_SET_COLUMN,       // add column to set
@@ -500,7 +500,6 @@ static Stz* aEO[]
   /*    */ "EO_REG_INDEXDEF_ADDCOLUMN"_Stz,
   /*    */ "EO_REG_INDEXDEF_DELETE"_Stz,
   /*    */ "EO_REG_INDEXDEF_NEW"_Stz,
-  /*    */ "EO_REG_INDEXTREE_NULL"_Stz,
   /*    */ "EO_REG_PTNSTREAM_CLOSE"_Stz,
   /*    */ "EO_REG_PTNSTREAM_DELETE"_Stz,
   /*    */ "EO_REG_PTNSTREAM_NEW"_Stz,
@@ -516,6 +515,7 @@ static Stz* aEO[]
 
     // Rlu operators
   /*    */ "EO_RLU_INDEXTREE_NEW"_Stz,
+  /*    */ "EO_RLU_INDEXTREE_NULL"_Stz,
 
   // column set
   /*    */ "EO_SET_COLUMN"_Stz,
@@ -881,7 +881,6 @@ static EoArg EoArgs[]
   { EA_STRING, -1 },  // EO_REG_INDEXDEF_ADDCOLUMN
   { EA_NONE,    0 },  // EO_REG_INDEXDEF_DELETE
   { EA_STRING, -1 },  // EO_REG_INDEXDEF_NEW
-  { EA_NONE,    0 },  // EO_REG_INDEXTREE_NULL
   { EA_NONE,    0},   // EO_REG_PTNSTREAM_CLOSE
   { EA_NONE,    0},   // EO_REG_PTNSTREAM_DELETE
   { EA_NONE,    0},   // EO_REG_PTNSTREAM_NEW
@@ -897,6 +896,7 @@ static EoArg EoArgs[]
 
   // RLU operators
   { EA_NONE,    0 },  // EO_RLU_INDEXTREE_NEW
+  { EA_NONE,    0 },  // EO_RLU_INDEXTREE_NULL
 
   // column set
   { EA_INT,     8 },  // EO_SET_COLUMN
