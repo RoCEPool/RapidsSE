@@ -87,7 +87,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Index();
   Step::vAddSteps_IndexDef();
   Step::vAddSteps_IndexStream();
-  Step::vAddSteps_IndexTree();
   Step::vAddSteps_IndexTreeRlu();
   Step::vAddSteps_InfoSet();
   Step::vAddSteps_InfoSetTable();
