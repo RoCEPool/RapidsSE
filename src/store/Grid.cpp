@@ -239,6 +239,23 @@ Node* Grid::pGetNode(i8 i_Node)
   return pNode; */
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* get node ID                                                                */
+/*----------------------------------------------------------------------------*/
+i8 Grid::iGetNodeNo(i8 i_Node)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  i8 iSeq = 0;
+  for (Node_I oNode_I(0,C_ALL); oNode_I.bMore(); oNode_I.vNext()) {
+    Node* pNode = (*oNode_I);
+    if (pNode && i_Node == iSeq++)
+      return pNode->iNodeNo();
+  }
+
+  return 0;
+}
+
 std::list<Node*>::const_iterator Grid::itBeginNodes(void)
 {
   return m_lNodes.begin();

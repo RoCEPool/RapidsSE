@@ -57,6 +57,7 @@ namespace STORE
     bool bHasStarted(void);
     Node* pFindNode(Stz* pName);
     Node* pGetNode(i8 i_Node);
+    i8   iGetNodeNo(i8 i_Node);
     void vIncBootNodes(void);
     void vIncDefinedNodes(void);
     void vIncConnectedNodes(void);
