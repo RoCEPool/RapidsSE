@@ -92,9 +92,21 @@ void PtnMap::vRunningHash(i8* aiHash, i8 iMixIn)
 tPN PtnMap::tStreamToLglPtnNo(i8 i_Stream)
 {
   _static_
-  
-  tPN tPtnNo = (i_Stream * AM::nConnectedNodes()) + AM::iThisNodeNo();
-  
+
+  if (AM::nPtnsInGrid()) {
+    for (tPN tPtnNo = 0; tPtnNo < AM::nPtnsInGrid(); tPtnNo++)
+      vTrace("Partition: %lld; Node: %lld\n"_Stz,tPtnNo,AM::pPtnMap()->i_WhichNode(tPtnNo));
+    vTrace("\n"_Stz);
+  }
+
+  vTrace("PtnMap::tStreamToLglPtnNo %lld %lld %lld\n"_Stz, i_Stream ,AM::nConnectedNodes(),AM::iThisNodeNo());
+
+  // THIS IS WHERE THE CRASH HAPPENED
+  // Because if the nodeNo is e.g. 120, then the partitionNo becomes large, will fail
+  tPN tPtnNo = (i_Stream * AM::nConnectedNodes()) + 0;//AM::iThisNodeNo();
+
+
+
   return tPtnNo;
 }
 
@@ -234,10 +246,12 @@ void PtnMap::vPartition(i8 nNodes, i8 nDegOfPar)
     
   RASSERT(m_nPtnsInGrid);
   for (tPN tPtnNo = 0; tPtnNo < m_nPtnsInGrid; tPtnNo++) {
-    
+    // newcode1 we have to replace the node index here with node ID
+    i4 iNodeIdx = (i4)tPtnNo % nNodes;
     m_xaInNodeTablePtn[tPtnNo].m_i_Node =
       //(i4)i_LglPtnNoToInitialNode(tPtnNo);
-      (i4)tPtnNo % nNodes;
+      //(i4)tPtnNo % nNodes; // oldcode1
+      AM::iGetNodeNo(iNodeIdx);  // newcode1
     
     m_xaInNodeTablePtn[tPtnNo].m_i_TablePtn =
       //(i4)i_LglPtnNoToInitialStream(tPtnNo);

@@ -244,6 +244,7 @@ Steps* AM::pSteps(void)   { return gpAttachMap->m_pSteps;      }
 MasterLock* AM::pTccLock(void)      { return & gpAttachMap->m_oLocks.m_oTccMasterLock;            }
 Word* AM::pTenants(void)      { return gpAttachMap->m_pTenants;               }
 i8   AM::iThisNodeNo(void)    { return gpAttachMap->m_pGrid->iThisNode();     }
+i8   AM::iGetNodeNo(i8 i_Node)    { return gpAttachMap->m_pGrid->iGetNodeNo(i_Node);     }
 void AM::vThreadBegins(void)  { ++ gpAttachMap->m_pSchedule->m_ixThreads; }
 i8   AM::nThreadsBegun(void)  { return * gpAttachMap->m_pSchedule->m_ixThreads; }
 bool AM::bTracepoint(void)    { return gpAttachMap->m_xSysArgs.m_bTracepoint;        }
@@ -758,8 +759,8 @@ void AM::vWriteLog(void) {
 void AM::vSend(Task* pTask, Node* pSendNode, XmitOperand* pXmitOperand)
 {
   pTask->pJob()->pLogicUnit_job()->m_pSendNode = pSendNode;
-  
-  // grab socket wite lock
+  if (!pSendNode) printf("pSendNode is null\n");
+  // grab socket write lock SendToAllNodes
   Socket* pSocket = pSendNode->pSendSocket();
   pSocket->vGrabWrite();
   

@@ -269,7 +269,7 @@ void Node::vRecvSocket(Socket* pSocket)
 Socket* Node::pSendSocket(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
-  
+  //if (!m_pSendSocket) vThreadCallStackDump();
   return m_pSendSocket;
 }
 

@@ -1709,14 +1709,14 @@ void Engine::vStartSystem(void) {
   }
 }
 
-// newcode
+// newcode Hardware::iReadTscp();
 void Engine::vCreateGridOfNodes(void)
 {
   Article* pGridArticle = gpAttachMap->m_pGrid->pArticle();
 
   for (i8 i_Node = 0; i_Node < gxCmdLineArgs.m_xSysArgs.m_nBootNodes; i_Node++) {
 
-    Node* pNode = new Node(i_Node,
+    Node* pNode = new Node(i_Node + gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_iPortNo, //abs((i2)Hardware::iReadTscp()),
                            gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sNodeName,
                            AM::nDegOfPar(),
                            gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress,
