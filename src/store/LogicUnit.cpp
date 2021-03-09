@@ -1560,6 +1560,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_DEVIXT_INDEXTREE_SET: ArgNil(); // set indexTree from indexTree[]
         dLU0(EO_DEVIXT_INDEXTREE_SET);
         vDev_IXT_INDEXTREE_SET(&aiDstk);
+        aRluCommon->m_pIndexTree = nullptr; // alka: come back to this
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

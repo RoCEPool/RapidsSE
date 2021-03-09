@@ -112,7 +112,7 @@ void Step::vIndexTreeRluIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pJob->pLogicUnit_job()->m_xRluCommon.m_pIndexTree ? 1 : 0);
+  m_pDataStack->vPushInt(m_pJob->pLogicUnit_job()->m_xRluCommon.m_pIndexTree ? 0 : 1);
   
   EXIT();
 }
