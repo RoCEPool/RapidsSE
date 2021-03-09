@@ -1139,7 +1139,7 @@ void vDev_ENTWRK_PRINT(void* aLU, void* aROWDEVICE)
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
 
   Ent *pEnt = (Ent*)pLogicUnit->m_xRluCommon.m_aWrkEnt;
-  IndexDef* pIndexDef = pLogicUnit->m_xpIndexTree->pIndexDef();
+  IndexDef* pIndexDef = _pIndexTree(pLogicUnit->m_xRluCommon.m_pIndexTree)->pIndexDef();
   
   SP_Ent spEnt;
 
@@ -2392,7 +2392,7 @@ void vDev_INDEXTREE_DEV_SET(void* aLU, i8 i_Dev)
 
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
   UNUSED(pLogicUnit);
-  //pLogicUnit->m_aaDev[i_Dev] = (void*)(* pLogicUnit->m_xpIndexTree);
+  //pLogicUnit->m_aaDev[i_Dev] = (void*)(* pLogicUnit->m_xRluCommon.m_pIndexTree);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2515,7 +2515,7 @@ void vDev_REG_INDEXTREE_NEW(void* aLU)
   
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
   
-  pLogicUnit->m_xpIndexTree = new IndexTree(nullptr, *pLogicUnit->m_xpIndexDef, C_UNKNOWN);
+  pLogicUnit->m_xRluCommon.m_pIndexTree = new IndexTree(nullptr, *pLogicUnit->m_xpIndexDef, C_UNKNOWN);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2528,7 +2528,7 @@ void vREG_INDEXTREE_NULL(i8** aaiDstk)
   i8 *aiDstk = *aaiDstk;
 
   LogicUnit* pLogicUnit = _pLogicUnit(P_PopPtr());
-  pLogicUnit->m_xpIndexTree = nullptr;
+  pLogicUnit->m_xRluCommon.m_pIndexTree = nullptr;
 
   *aaiDstk = aiDstk;
 }
@@ -2543,7 +2543,7 @@ void vREG_INDEXTREE_PUSH(i8** aaiDstk)
   i8 *aiDstk = *aaiDstk;
 
   LogicUnit* pLogicUnit = _pLogicUnit(P_PopPtr());
-  P_PushPtr(*pLogicUnit->m_xpIndexTree);
+  P_PushPtr(pLogicUnit->m_xRluCommon.m_pIndexTree);
 
   *aaiDstk = aiDstk;
 }
