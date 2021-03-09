@@ -108,6 +108,7 @@
 #include "EnumGroups.h"
 
 #include "Step.hpp"
+#include "StreamDef.hpp"
 
 #include "SP_Word.hpp"
 
@@ -164,7 +165,19 @@ Thread* AM::THREAD::pNewThread(void) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* get write behind of thread                                                 */
+/* get write behind of current thread                                         */
+/*----------------------------------------------------------------------------*/
+WriteBehind* AM::THREAD::pWriteBehind(void) {
+  
+  Thread* pThread = AM::pThisTLSThread();
+  
+  WriteBehind* pWriteBehind = AM::THREAD::pWriteBehind(pThread);
+  
+  return pWriteBehind;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get write behind of given thread                                           */
 /*----------------------------------------------------------------------------*/
 WriteBehind* AM::THREAD::pWriteBehind(Thread* pThread) {
   
@@ -597,6 +610,15 @@ Table* AM::pTableFind(Stz* szTableNm) {
   
   return pTable;
 }
+
+StreamDef* AM::pStreamDefFind(Stz* szTableNm) {
+  
+  Table* pTable = AM::pTableFind(szTableNm);
+  StreamDef* pStreamDef = pTable->pStreamDef();
+
+  return pStreamDef;
+}
+
 
 i8 AM::iTaskAcksRmg_assert_only_(Task* pTask) { return pTask->iAcksRmg_assert_only_(); }
 void AM::vTaskDump(void) {

@@ -497,8 +497,8 @@
   STD_PATH
   "
   define table __events (
-    eventEnum      INTEGER NOT NULL ,
-    assocInfo      VARCHAR NOT NULL
+    event  INTEGER NOT NULL ,
+    note   VARCHAR NOT NULL
   ) < internal > = 1 ;
   "
   api::executeRequest

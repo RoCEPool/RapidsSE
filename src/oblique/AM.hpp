@@ -132,34 +132,48 @@ using namespace BASE;
 
 namespace STORE {
   class AttachMap;
+
   class BucketMap;
+
   class Crv;
   class Crw;
   class CrwBuffer;
   class CrwPacker;
+
   class Dynamo;
+
   class Encoding;
   class Engine;
   class EntBuffer;
+
   class Grid;
+
   class HeadLine;
+
   class IdxColVec;
   class Index;
   class IndexTree;
   class InfoSetBase;
+
   class Job;
   class JobList;
+
   class LogicUnit;
+
   class Node;
+
   class Op;
   class OverLine;
+
   class Pipeline;
   class PtnMap;
   class PtnStream;
+
   class Row;
   class RowBuffer;
   class RowCompactor;
   class RowInflator;
+
   class Session;
   class Sessions;
   class SessionState;
@@ -168,11 +182,15 @@ namespace STORE {
   class Step;
   class Steps;
   class Stream;
+  class StreamDef;
+
   class Table;
   class TablePtn;
   class TailLine;
+  
   class WriteBehind;
   class XmitOperand;
+  
   class Xmits;
 
   class SP_Encoding;
@@ -199,6 +217,7 @@ namespace OBLIQUE
     public:
       static void vDeleteThread(Thread* pThread);
       static Thread* pNewThread(void);
+      static WriteBehind* pWriteBehind(void);
       static WriteBehind* pWriteBehind(Thread* pThread);
     };
   
@@ -483,6 +502,7 @@ namespace OBLIQUE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
     static Table* pTableFind(Stz* szTableNm);
+    static StreamDef* pStreamDefFind(Stz* szTableNm);
 
     static i8   iTaskAcksRmg_assert_only_(Task* pTask);
     static DicStack* pTaskDicStack(void);

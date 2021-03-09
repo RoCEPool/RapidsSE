@@ -27,6 +27,8 @@ WriteBehind::WriteBehind(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEBEHIND,_FOOTER_);
   
+  m_pStreamDef = nullptr;  //AM::pStreamDefFind(C_TDEF_EVENTS);
+  
   m_pRowBuffer = nullptr;
     
   _checkInitialised_(CN_WRITEBEHIND);

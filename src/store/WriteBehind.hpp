@@ -10,7 +10,8 @@ namespace STORE
   private:
     Lock m_okLock;
   
-    RowBuffer*  m_pRowBuffer;
+    StreamDef* m_pStreamDef;
+    RowBuffer* m_pRowBuffer;
 
     // must be last
     Footer m_xFooter;

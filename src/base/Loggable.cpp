@@ -58,20 +58,27 @@ void Loggable::vLog(eEV eEvent, Stz* szFormat, ...)
       || CN_OP == eGetClassNo()
       || CN_OPERANDQUEUE == eGetClassNo()
       || CN_PSXTHD == eGetClassNo()
+      || CN_SEPROMPT == eGetClassNo()
       || CN_SESSION == eGetClassNo()
       || CN_SOCKET == eGetClassNo()
       || CN_TASK == eGetClassNo()
       )
     return;
 
+  s4K sNote;
+  
   va_list xVarArgs;
   
   va_start(xVarArgs,szFormat);
   
-  vprintf(szFormat->azChar(),xVarArgs);
-  printf("\n");
+//  vprintf(szFormat->azChar(),xVarArgs);
+//  printf("\n");
 
+  sNote.vSprintVA(szFormat,xVarArgs);
+  
   va_end(xVarArgs);
+  
+  vAddRow(eEvent,sNote);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -201,6 +208,9 @@ void Loggable::vAddRow(eEV eEvent, Stz* szNote)
   _precondition_(_MAGIC_);
   UNUSED(eEvent);
   UNUSED(szNote);
+  
+  WriteBehind* pWriteBehind = AM::THREAD::pWriteBehind();
+  
 }
 
 /*============================================================================*/
