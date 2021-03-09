@@ -2462,7 +2462,7 @@ void vDev_REG_EOSMARKER_NEW(void* aLU)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add a column to indexDef[]                                                 */
+/* add a column to indexDefRlu[]                                              */
 /*----------------------------------------------------------------------------*/
 void vDev_REG_INDEXDEF_ADDCOLUMN(void* aLU, Stz* sColumnNm, i8 iColumnType)
 {
@@ -2472,7 +2472,7 @@ void vDev_REG_INDEXDEF_ADDCOLUMN(void* aLU, Stz* sColumnNm, i8 iColumnType)
   
   eCT eColType = (eCT)iColumnType;
   
-  IndexDef* pIndexDef = * pLogicUnit->m_xpIndexDef;
+  IndexDef* pIndexDef = _pIndexDef(pLogicUnit->m_xRluCommon.m_pIndexDef);
   
   pIndexDef->vAddColumn(sColumnNm,eColType);
 }
@@ -2486,9 +2486,9 @@ void vDev_REG_INDEXDEF_DELETE(void* aLU)
   
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
   
-  IndexDef* pIndexDef = * pLogicUnit->m_xpIndexDef;
+  IndexDef* pIndexDef = _pIndexDef(pLogicUnit->m_xRluCommon.m_pIndexDef);
   
-  pLogicUnit->m_xpIndexDef = nullptr;
+  pLogicUnit->m_xRluCommon.m_pIndexDef = nullptr;
   
   delete pIndexDef;
 }
@@ -2496,14 +2496,24 @@ void vDev_REG_INDEXDEF_DELETE(void* aLU)
 /*----------------------------------------------------------------------------*/
 /* new indexDef[]                                                             */
 /*----------------------------------------------------------------------------*/
-void vDev_REG_INDEXDEF_NEW(void* aLU, Stz* sName)
+void vDev_RLU_INDEXDEF_NEW(i8** aaiDstk)
 {
   _static_
-  
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-  
-  pLogicUnit->m_xpIndexDef = new IndexDef;
-  pLogicUnit->m_xpIndexDef->vIndexNm(sName);
+
+  i8 *aiDstk = *aaiDstk;
+  i8 nSize;
+
+  // get the name of the indexDef
+  Stz* szName = (Stz*)S_StrAdr();
+
+  IndexDef* pIndexDef = new IndexDef;
+  pIndexDef->vIndexNm(szName);
+
+  S_StrDrp();
+
+  P_PushPtr(pIndexDef);
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2515,9 +2525,8 @@ void vDev_RLU_INDEXTREE_NEW(i8** aaiDstk)
 
   i8 *aiDstk = *aaiDstk;
 
-  // ALKA: temp will go
-  LogicUnit* pLogicUnit = _pLogicUnit(P_PopPtr());
-  IndexTree* pIndexTree = new IndexTree(nullptr, *(pLogicUnit->m_xpIndexDef), C_UNKNOWN);
+  IndexDef* pIndexDef = _pIndexDef(P_PopPtr());
+  IndexTree* pIndexTree = new IndexTree(nullptr, pIndexDef, C_UNKNOWN);
   P_PushPtr(pIndexTree);
 
   *aaiDstk = aiDstk;

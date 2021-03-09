@@ -153,6 +153,10 @@ LogicUnit::LogicUnit(Task* pTask)
   m_xRluCommon.m_nPtns  = AM::nPtnsInGrid();
   m_xRluCommon.m_iHash  = 0;
 
+  m_xRluCommon.m_pPot = nullptr;
+  m_xRluCommon.m_pIndexDef = nullptr;
+  m_xRluCommon.m_pIndexTree = nullptr;
+
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_eaCode,sizeof(m_eaCode),CN_LOGICUNIT);
 #endif
@@ -1670,7 +1674,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU2(EO_RANDOM,iArg,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
-      
+
+      case EO_STRING: GetStr(iArg); // push string
+        dLU1(EO_STRING,iArg);
+        S_PushStr(iArg);
+        vRlu_DUMP(pLU,aiDstk);
+        break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // relational operators
@@ -1742,14 +1751,15 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_REG_INDEXDEF_DELETE(pLU);
         break;//+endCase
 
-      case EO_REG_INDEXDEF_NEW: GetStr(iArg); // new an indexDef in indexDef[]
-        dLU0(EO_REG_INDEXDEF_NEW);
-        vDev_REG_INDEXDEF_NEW(pLU, (Stz*)iArg);
+      case EO_RLU_INDEXDEF_NEW: ArgNil(); // new an indexDef in indexDef[]
+        dLU0(EO_RLU_INDEXDEF_NEW);
+        vDev_RLU_INDEXDEF_NEW(&aiDstk);
+        aRluCommon->m_pIndexDef = P_PopPtr();
         break;//+endCase
 
       case EO_RLU_INDEXTREE_NEW: ArgNil(); // new an indexTree in indexTreeRlu[]
         dLU0(EO_RLU_INDEXTREE_NEW);
-        P_PushPtr(pLU);
+        P_PushPtr(aRluCommon->m_pIndexDef);
         vDev_RLU_INDEXTREE_NEW(&aiDstk);
         aRluCommon->m_pIndexTree = P_PopPtr();
         break;//+endCase

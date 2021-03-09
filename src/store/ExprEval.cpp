@@ -413,7 +413,7 @@ void ExprEval::vAddString(Token* pTkn, Column* pColumnExpr) {
 
   char* szToken = (char*)pTkn->szChars();
 
-  StrLib::vSprintCat(m_sAsmText, "  EO_STRING %s\n"_Stz, szToken);
+  StrLib::vSprintCat(m_sAsmText, "  EO_STR_LITERAL %s\n"_Stz, szToken);
   pColumnExpr->vSet("NONE"_Stz, CT_VARCHAR, 128, 0);    // ALKA: come back to this
 }
 

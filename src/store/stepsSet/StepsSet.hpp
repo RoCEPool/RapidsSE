@@ -449,6 +449,15 @@ void vExprEvalEvaluate(void);
   void vIndexDefTableNameFetch(void);
   void vIndexDefTableNameStore(void);
 
+  // index definition in Rlu
+  void vIndexDefRluAddColumn(void);
+  void vIndexDefRluDelete(void);
+  void vIndexDefRluGet(void);
+  void vIndexDefRluIsNull(void);
+  void vIndexDefRluNameStore(void);
+  void vIndexDefRluNew(void);
+  void vIndexDefRluSet(void);
+
   // index reg
   void vRegIndexGet(void);
   void vRegIndexSet(void);
