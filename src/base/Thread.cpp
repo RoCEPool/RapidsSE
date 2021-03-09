@@ -57,8 +57,8 @@ Thread::~Thread(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  RASSERT(! m_pObject0);
-  RASSERT(! m_pObject1);
+  //RASSERT(! m_pObject0);
+  //RASSERT(! m_pObject1);
 
   delete m_pPsxThd;
   
