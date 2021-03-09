@@ -27,11 +27,20 @@
 #include "eXA.h"
 #include "eYA.h"
 
-namespace OBLIQUE { class AM; }
+namespace OBLIQUE {
+  class AM;
+}
+
 using namespace OBLIQUE;
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-namespace BASE { class Format;                                  }
+namespace BASE {
+  class Format;
+}
+
+
+
 namespace BASE {
                             class Datum_h;
                             class SN_Bcd;
@@ -93,7 +102,9 @@ class IvlLib;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-
+namespace STORE {
+  class WriteBehind;
+}
 
 
 namespace STORE    { class Crw;             class CrwBuffer;
@@ -138,7 +149,10 @@ using namespace STORE;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-namespace PROMPT { class SePrompt; }
+namespace PROMPT {
+  class SePrompt;
+}
+
 using namespace PROMPT;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -150,7 +164,9 @@ namespace OBLIQUE
   public:
     class THREAD {
     public:
-      static Thread* pThreadNew(void);
+      static void vDeleteThread(Thread* pThread);
+      static Thread* pNewThread(void);
+      static WriteBehind* pWriteBehind(Thread* pThread);
     };
   
   public:

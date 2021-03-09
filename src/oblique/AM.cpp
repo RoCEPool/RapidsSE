@@ -112,8 +112,9 @@
 #include "SP_Word.hpp"
 
 #include "TraceLock.hpp"
+#include "WriteBehind.hpp"
 
-extern CmdLineArgs          gxCmdLineArgs;
+extern CmdLineArgs   gxCmdLineArgs;
 
 extern AttachMap*    gpAttachMap;
 extern BufferPool*   gpBufferPool;
@@ -136,14 +137,49 @@ static i8    RAPIDSSE_FORMAT_NUMBER  = 0x000600;
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
+/* delete thread                                                              */
+/*----------------------------------------------------------------------------*/
+void AM::THREAD::vDeleteThread(Thread* pThread) {
+
+  WriteBehind* pWriteBehind = AM::THREAD::pWriteBehind(pThread);
+  pThread->vObject0(nullptr);
+
+  delete pWriteBehind;
+  
+  delete pThread;
+}
+
+/*----------------------------------------------------------------------------*/
 /* new thread                                                                 */
 /*----------------------------------------------------------------------------*/
-Thread* AM::THREAD::pThreadNew(void) {
+Thread* AM::THREAD::pNewThread(void) {
   
   Thread* pThread = new Thread;
 
+  WriteBehind* pWriteBehind = new WriteBehind;
+  
+  pThread->vObject0(pWriteBehind);
+  
   return pThread;
 }
+
+/*----------------------------------------------------------------------------*/
+/* get write behind of thread                                                 */
+/*----------------------------------------------------------------------------*/
+WriteBehind* AM::THREAD::pWriteBehind(Thread* pThread) {
+  
+  WriteBehind* pWriteBehind = _pWriteBehind(pThread->pObject0());
+  
+  return pWriteBehind;
+}
+
+
+
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+
 
 
 Stz*  AM::szVersionString(void) { return RAPIDSSE_VERSION_STRING; }

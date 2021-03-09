@@ -23,13 +23,13 @@ void Scheduler::vScheduler_Boot(void)
   
   // spawn general threads
   for (i8 iThreads = 0; iThreads < gxCmdLineArgs.m_xSysArgs.m_nThreads; iThreads++) {
-    Thread* pThread = AM::THREAD::pThreadNew();
+    Thread* pThread = AM::THREAD::pNewThread();
     pThread->vSpawnPsxThd_general();
   }
   
   // spawn dummy threads
   for (i8 iThreads = 0; iThreads < gxCmdLineArgs.m_xSysArgs.m_nDummyThreads; iThreads++) {
-    Thread* pThread = AM::THREAD::pThreadNew();
+    Thread* pThread = AM::THREAD::pNewThread();
     pThread->vSpawnPsxThd_dummy();
   }
   
@@ -497,7 +497,7 @@ void Scheduler::vTaskApi_AddDedicated(Task* pNewTask)
   
   RASSERT(TS_DESISTED == pNewTask->eState());
   
-  Thread* pThread = AM::THREAD::pThreadNew();
+  Thread* pThread = AM::THREAD::pNewThread();
   
   pThread->vTask(pNewTask);
   pThread->vDedicated(AM::eJobClass(pNewTask->pJob()));

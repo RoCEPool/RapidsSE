@@ -57,6 +57,9 @@ Thread::~Thread(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
+  RASSERT(! m_pObject0);
+  RASSERT(! m_pObject1);
+
   delete m_pPsxThd;
   
   vEventNoInc(); -- gixThread;
@@ -114,7 +117,7 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
     
     pThread->m_pPsxThd->vThreadExit();
     
-    delete pThread;
+    AM::THREAD::vDeleteThread(pThread);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -179,7 +182,7 @@ void* Thread::aEntryPoint_general(void* pArg)
     
     pThread->m_pPsxThd->vThreadExit();
 
-    delete pThread;
+    AM::THREAD::vDeleteThread(pThread);
   //}
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -230,7 +233,7 @@ void* Thread::aEntryPoint_dummy(void* pArg)
     
     //pThread->m_pPsxThd->vThreadExit();
     
-    //delete pThread;
+    //AM::THREAD::vDeleteThread(pThread);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
