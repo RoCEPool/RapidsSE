@@ -231,6 +231,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("IndexTreeRlu[]"_Stz)) {
+    pCurrentWord->vEncodeCall("IndexTreeRlu[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("InfoSet[]"_Stz)) {
     pCurrentWord->vEncodeCall("InfoSet[].set"_Stz);
     EXIT();

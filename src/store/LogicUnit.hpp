@@ -199,9 +199,10 @@ namespace STORE
 
     DevROW*    m_pDevDstRow;
     DevROW*    m_pDevSrcRow;
-    DevIXT*    m_pDevSrcIxt;
     DevROW*    m_pDevAltRow;
+
     DevIXT*    m_pDevAltIxt;
+    DevIXT*    m_pDevSrcIxt;
     DevIXT*    m_pDevTmpIxt;
   
     LogicTimer* m_pLogicTimer;

@@ -88,6 +88,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_IndexDef();
   Step::vAddSteps_IndexStream();
   Step::vAddSteps_IndexTree();
+  Step::vAddSteps_IndexTreeRlu();
   Step::vAddSteps_InfoSet();
   Step::vAddSteps_InfoSetTable();
   Step::vAddSteps_Input();
@@ -127,7 +128,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Pipeline();
   Step::vAddSteps_PathIdentifier();
   Step::vAddSteps_Plist();
-  Step::vAddSteps_Pot();
+  Step::vAddSteps_PotRlu();
   Step::vAddSteps_Procedure();
   Step::vAddSteps_Process();
   Step::vAddSteps_Profile();

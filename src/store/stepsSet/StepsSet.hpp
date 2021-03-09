@@ -477,6 +477,17 @@ void vExprEvalEvaluate(void);
   void vIndexTreeNew(void);
   void vIndexTreeSet(void);
 
+  // index tree in Rlu
+  void vIndexTreeRluAsAlt(void);
+  void vIndexTreeRluAsSrc(void);
+  void vIndexTreeRluAsTmp(void);
+  void vIndexTreeRluDelete(void);
+  void vIndexTreeRluGet(void);
+  void vIndexTreeRluInsEntBuffer(void);
+  void vIndexTreeRluIsNull(void);
+  void vIndexTreeRluNew(void);
+  void vIndexTreeRluSet(void);
+
   // reg info set
   void vInfoSetAddCommandError(void);
   void vInfoSetAddExecError(void);

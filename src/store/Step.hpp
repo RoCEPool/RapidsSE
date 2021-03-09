@@ -72,6 +72,7 @@ namespace STORE
     static void vAddSteps_InfoSetTable(void);
     static void vAddSteps_IndexStream(void);
     static void vAddSteps_IndexTree(void);
+    static void vAddSteps_IndexTreeRlu(void);
     static void vAddSteps_Input(void);
     static void vAddSteps_Int(void);
   
@@ -111,7 +112,7 @@ namespace STORE
     static void vAddSteps_Pipeline(void);
     static void vAddSteps_PathIdentifier(void);
     static void vAddSteps_Plist(void);
-    static void vAddSteps_Pot(void);
+    static void vAddSteps_PotRlu(void);
     static void vAddSteps_Procedure(void);
     static void vAddSteps_Process(void);
     static void vAddSteps_Profile(void);

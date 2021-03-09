@@ -660,10 +660,10 @@ static Stz* aEO[]
   /*    */ "EO_DEVROW_ENTWRK_APPENDELMI"_Stz,
   /*    */ "EO_DEVROW_ENTWRK_APPENDELMS"_Stz,
   /*    */ "EO_DEVROW_ENTWRK_CREATEPAY"_Stz,
+
   /*    */ "EO_ENTWRK_PRINT"_Stz,
 
   /*    */ "EO_ENTWRK_RESET"_Stz,
-
   /*    */ "EO_ENTWRK_SETINTELM"_Stz,
 
   // index tree
