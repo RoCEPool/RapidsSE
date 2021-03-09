@@ -3,9 +3,16 @@
 /*============================================================================*/
 #pragma once
 
+#include "PlanNode.hpp"
+
 namespace Parser
 {
-  class PlanNode;
+  class QueryNode;
+
+  // The purpose of this class is to be a utility add-on class for PlanNode.
+  // It will contain more advanced operations, such as editing of graphs,
+  // so that the PlanNode class is kept simpler and isn't filled up with all
+  // of this lesser-used code.
 
   class GraphEditor
   {
@@ -16,6 +23,11 @@ namespace Parser
 
     // Create a new copy of the plan graph using the template
     static PlanNode* pNewFromTemplate(const PlanNode* pTemplateRoot);
+
+    // Remove and replace pReplaceChild in parent node pParentNode with the
+    // nodes in pReplacementList.
+    static void vReplaceChild(QueryNode* pParentNode, QueryNode* pReplaceChild,
+                              PlanNodeList* pReplacementList);
 
     // TODO: Add extra methods here for manipulating plan graphs.
     //       e.g. snipping nodes, reordering, etc.

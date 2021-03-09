@@ -3,12 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "SqlOperator.hpp"
 #include "DataSource.hpp"
+#include "PlanNode.hpp"
 
 namespace Parser
 {
-  class PlanNode;
   class QueryNode;
 
   class TableScanOp : public DataSource
@@ -26,6 +25,14 @@ namespace Parser
     static b1 bIsOfType(PlanNode* pNode);
 
     static QueryNode* pTableRef(QueryNode* pNode);
+
+    static Stz* szCatalogName(QueryNode* pNode);
+    static Stz* szSchemaName(QueryNode* pNode);
+    static Stz* szTableName(QueryNode* pNode);
+
+    // Get the list of column definitions for this data source
+    // Returned list must be freed, but not its contents.
+    static PlanNodeList* pColumnDefs(QueryNode* pNode, PlanNode* pRootNode);
 
   protected:
 

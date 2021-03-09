@@ -526,7 +526,28 @@
                   ]
                 }, // EndPath: /__root__/definitions/object/expr/columnRef
 
-// TODO: Path: /__root__/definitions/object/expr/columnWildcard
+// Path: /__root__/definitions/object/expr/columnWildcard
+                {
+                  name: "columnWildcard",
+                  value: "A reference to multiple columns in the associated table space",
+                  properties: [
+                    {
+                      name: "catalogName",
+                      value: "Name of the catalog that the wildcard refers to. May be null",
+                      type: "/__root__/definitions/object/valueObject/stringObject"
+                    },
+                    {
+                      name: "schemaName",
+                      value: "Name of the schema that the wildcard refers to. May be null",
+                      type: "/__root__/definitions/object/valueObject/stringObject"
+                    },
+                    {
+                      name: "tableName",
+                      value: "Name of the table that the wildcard refers to. May be null",
+                      type: "/__root__/definitions/object/valueObject/stringObject"
+                    }
+                  ]
+                }, // EndPath: /__root__/definitions/object/expr/columnWildcard
 
 // Path: /__root__/definitions/object/expr/literal
                 {
@@ -1654,6 +1675,21 @@
                   name: "columnDef",
                   value: "Definition of a column of a table that is used in the plan",
                   properties: [
+                    {
+                      name: "catalogName",
+                      value: "The name of the catalog the column belongs to, if applicable",
+                      type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject"
+                    },
+                    {
+                      name: "schemaName",
+                      value: "The name of the schema the column belongs to, if applicable",
+                      type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject"
+                    },
+                    {
+                      name: "tableName",
+                      value: "The name of the table the column belongs to, if applicable",
+                      type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject"
+                    },
                     {
                       name: "columnName",
                       value: "The name of the column",

@@ -62,6 +62,22 @@ QueryNode* ColumnRef::pCreate(Text* pCatalogName, Text* pSchemaName,
 }
 
 /*----------------------------------------------------------------------------*/
+/* Helper function to create expression column reference nodes.               */
+/*----------------------------------------------------------------------------*/
+QueryNode* ColumnRef::pCreate(Stz* szCatalogName, Stz* szSchemaName,
+                              Stz* szTableName,   Stz* szColumnName)
+{
+  _static_
+
+  Text* pCatalogName = (szCatalogName ? new Text(szCatalogName) : nullptr);
+  Text* pSchemaName  = (szCatalogName ? new Text(szSchemaName)  : nullptr);
+  Text* pTableName   = (szCatalogName ? new Text(szTableName)   : nullptr);
+  Text* pColumnName  = (szCatalogName ? new Text(szColumnName)  : nullptr);
+
+  return pCreate(pCatalogName, pSchemaName, pTableName, pColumnName);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
 void ColumnRef::vDescribe(PlanNode* pNode, s2K& sBuf)

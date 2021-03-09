@@ -39,7 +39,7 @@ void DataSource::vDescribe(PlanNode* pNode, s2K& sBuf)
   if      (TableScanOp::bIsOfType(pNode))     { TableScanOp::vDescribe(pNode, sBuf);  }
 
   // Others
-  //else if (FilterOp::bIsOfType(pNode))      { FilterOp::vDescribe(pNode, sBuf);   }
+  //else if (IndexScanOp::bIsOfType(pNode))      { IndexScanOp::vDescribe(pNode, sBuf);   }
 
   else {
     // Need to add in manual polymorphism here
@@ -80,6 +80,75 @@ b1 DataSource::bIsOfType(PlanNode *pNode)
   return ShadowNode::bIsOfType(pNode, C_DATASOURCE_DEFN);
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* Retrieves the catalogname of the data source, if applicable, otherwise null*/
+/*----------------------------------------------------------------------------*/
+Stz* DataSource::szCatalogName(QueryNode* pNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  // TODO: manual polymorphism here
+
+  // TableScanOp
+  if      (TableScanOp::bIsOfType(pNode))  { return TableScanOp::szCatalogName(pNode); }
+//else if (IndexScanOp::bIsOfType(pNode))  { return IndexScanOp::szCatalogName(pNode); }
+//else if ( SubqueryOp::bIsOfType(pNode))  { return nullptr;                           }
+  else                                     {  NEVER_REACH                              }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Retrieves the schema name of the data source, if applicable, otherwise null*/
+/*----------------------------------------------------------------------------*/
+Stz* DataSource::szSchemaName(QueryNode* pNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  // TODO: manual polymorphism here
+
+  // TableScanOp
+  if      (TableScanOp::bIsOfType(pNode))  { return TableScanOp::szSchemaName(pNode); }
+//else if (IndexScanOp::bIsOfType(pNode))  { return IndexScanOp::szSchemaName(pNode); }
+//else if ( SubqueryOp::bIsOfType(pNode))  { return nullptr;                          }
+  else                                     {  NEVER_REACH                             }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Retrieves the table name of the data source, if applicable, otherwise null */
+/*----------------------------------------------------------------------------*/
+Stz* DataSource::szTableName(QueryNode* pNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  // TODO: manual polymorphism here
+
+  // TableScanOp
+  if      (TableScanOp::bIsOfType(pNode))  { return TableScanOp::szTableName(pNode); }
+//else if (IndexScanOp::bIsOfType(pNode))  { return IndexScanOp::szTableName(pNode); }
+//else if ( SubqueryOp::bIsOfType(pNode))  { return nullptr;                         }
+  else                                     {  NEVER_REACH                            }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get the list of column definitions for this data source                    */
+/* Returned list must be freed, but not its contents                          */
+/*----------------------------------------------------------------------------*/
+PlanNodeList* DataSource::pColumnDefs(QueryNode* pNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  // TODO: manual polymorphism here
+
+  // TableScanOp
+  if      (TableScanOp::bIsOfType(pNode))  { return TableScanOp::pColumnDefs(pNode, pRootNode); }
+//else if (IndexScanOp::bIsOfType(pNode))  { return IndexScanOp::pColumnDefs(pNode, pRootNode); }
+//else if ( SubqueryOp::bIsOfType(pNode))  { return  SubqueryOp::pColumnDefs(pNode, pRootNode); }
+  else                                     {  NEVER_REACH                            }
+}
 
 /*============================================================================*/
 /* end                                                                        */
