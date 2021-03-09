@@ -115,7 +115,8 @@ void vDev_REG_EOSMARKER_NEW(void* aLU);
 void vDev_REG_INDEXDEF_ADDCOLUMN(void* aLU, Stz* sColumnNm, i8 iColumnType);
 void vDev_REG_INDEXDEF_DELETE(void* aLU);
 void vDev_REG_INDEXDEF_NEW(void* aLU, Stz* sName);
-void vDev_REG_INDEXTREE_NEW(void* aLU);
+
+void vDev_RLU_INDEXTREE_NEW(i8** aaiDstk);
 
 void vREG_INDEXTREE_NULL(i8** aaiDstk);
 void vREG_INDEXTREE_PUSH(i8** aaiDstk);

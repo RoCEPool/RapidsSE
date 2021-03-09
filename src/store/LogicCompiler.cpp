@@ -155,7 +155,8 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_REG_INDEXDEF_ADDCOLUMN"_Stz,     (const void *) vDev_REG_INDEXDEF_ADDCOLUMN },
   { "vDev_REG_INDEXDEF_DELETE"_Stz,        (const void *) vDev_REG_INDEXDEF_DELETE    },
   { "vDev_REG_INDEXDEF_NEW"_Stz,           (const void *) vDev_REG_INDEXDEF_NEW       },
-  { "vDev_REG_INDEXTREE_NEW"_Stz,          (const void *) vDev_REG_INDEXTREE_NEW      },
+
+  { "vDev_RLU_INDEXTREE_NEW"_Stz,          (const void *) vDev_RLU_INDEXTREE_NEW      },
 
   { "vREG_INDEXTREE_NULL"_Stz,             (const void *) vREG_INDEXTREE_NULL         },
   { "vREG_INDEXTREE_PUSH"_Stz,             (const void *) vREG_INDEXTREE_PUSH         },

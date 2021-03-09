@@ -2507,15 +2507,20 @@ void vDev_REG_INDEXDEF_NEW(void* aLU, Stz* sName)
 }
 
 /*----------------------------------------------------------------------------*/
-/* new indexTree[]                                                            */
+/* new indexTreeRlu[]                                                         */
 /*----------------------------------------------------------------------------*/
-void vDev_REG_INDEXTREE_NEW(void* aLU)
+void vDev_RLU_INDEXTREE_NEW(i8** aaiDstk)
 {
   _static_
-  
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-  
-  pLogicUnit->m_xRluCommon.m_pIndexTree = new IndexTree(nullptr, *pLogicUnit->m_xpIndexDef, C_UNKNOWN);
+
+  i8 *aiDstk = *aaiDstk;
+
+  // ALKA: temp will go
+  LogicUnit* pLogicUnit = _pLogicUnit(P_PopPtr());
+  IndexTree* pIndexTree = new IndexTree(nullptr, *(pLogicUnit->m_xpIndexDef), C_UNKNOWN);
+  P_PushPtr(pIndexTree);
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/

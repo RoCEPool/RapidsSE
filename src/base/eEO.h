@@ -122,7 +122,7 @@ enum eEO : u1 // expression operators
   /*  M  */ EO_REG_INDEXDEF_ADDCOLUMN,     // add a column to indexDef[]
   /*  M  */ EO_REG_INDEXDEF_DELETE,        // delete the indexDef[]
   /*  M  */ EO_REG_INDEXDEF_NEW,           // new an indexDef in indexDef[]
-  /*  M  */ EO_REG_INDEXTREE_NEW,          // new an indexTree in indexTree[]
+
   /*  M  */ EO_REG_INDEXTREE_NULL,         // null indexTree[]
   /*  M  */ EO_REG_PTNSTREAM_CLOSE,        // close a ptn stream
   /*  M  */ EO_REG_PTNSTREAM_DELETE,       // delete a ptn stream
@@ -136,6 +136,9 @@ enum eEO : u1 // expression operators
 
   // register pushes
   /*  M  */ EO_PUSH_REG_INDEXTREE,         // push indexTree[]
+
+  // RLU operators
+  /*  M  */ EO_RLU_INDEXTREE_NEW,              // new an indexTree in indexTreeRlu[]
 
   // column set
   /*  M  */ EO_SET_COLUMN,       // add column to set
@@ -497,7 +500,6 @@ static Stz* aEO[]
   /*    */ "EO_REG_INDEXDEF_ADDCOLUMN"_Stz,
   /*    */ "EO_REG_INDEXDEF_DELETE"_Stz,
   /*    */ "EO_REG_INDEXDEF_NEW"_Stz,
-  /*    */ "EO_REG_INDEXTREE_NEW"_Stz,
   /*    */ "EO_REG_INDEXTREE_NULL"_Stz,
   /*    */ "EO_REG_PTNSTREAM_CLOSE"_Stz,
   /*    */ "EO_REG_PTNSTREAM_DELETE"_Stz,
@@ -510,7 +512,10 @@ static Stz* aEO[]
   /*    */ "EO_REG_STREAMDEF_STREAMDEFOUT"_Stz,
 
   // register pushes
-    /*    */ "EO_PUSH_REG_INDEXTREE"_Stz,
+  /*    */ "EO_PUSH_REG_INDEXTREE"_Stz,
+
+    // Rlu operators
+  /*    */ "EO_RLU_INDEXTREE_NEW"_Stz,
 
   // column set
   /*    */ "EO_SET_COLUMN"_Stz,
@@ -876,7 +881,6 @@ static EoArg EoArgs[]
   { EA_STRING, -1 },  // EO_REG_INDEXDEF_ADDCOLUMN
   { EA_NONE,    0 },  // EO_REG_INDEXDEF_DELETE
   { EA_STRING, -1 },  // EO_REG_INDEXDEF_NEW
-  { EA_NONE,    0 },  // EO_REG_INDEXTREE_NEW
   { EA_NONE,    0 },  // EO_REG_INDEXTREE_NULL
   { EA_NONE,    0},   // EO_REG_PTNSTREAM_CLOSE
   { EA_NONE,    0},   // EO_REG_PTNSTREAM_DELETE
@@ -890,6 +894,9 @@ static EoArg EoArgs[]
 
   // register pushes
   { EA_NONE,    0 },  // EO_PUSH_REG_INDEXTREE
+
+  // RLU operators
+  { EA_NONE,    0 },  // EO_RLU_INDEXTREE_NEW
 
   // column set
   { EA_INT,     8 },  // EO_SET_COLUMN
