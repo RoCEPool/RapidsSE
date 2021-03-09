@@ -46,8 +46,8 @@
         exit
       then
 
-      index[].indexTree to indexTree[]
-      indexTree[].asSrc
+      index[].indexTree to indexTreeRlu[]
+      indexTreeRlu[].asSrc
 
     else
       // find the src table
@@ -76,8 +76,8 @@
         exit
       then
 
-      index[].indexTree to indexTree[]
-      indexTree[].asAlt
+      index[].indexTree to indexTreeRlu[]
+      indexTreeRlu[].asAlt
 
     else
 
