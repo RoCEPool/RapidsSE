@@ -809,7 +809,7 @@ void Step::vStreamSetInfoRows(void)
   
   StreamSet* pStreamSet = _pStreamSet(*( m_pJob->pLogicUnit_job() )->m_xpStreamSet);
   
-  m_pDataStack->vPushInt(pStreamSet->nInfoRows());
+  m_pDataStack->vPushInt(pStreamSet->nRows());
   
   EXIT();
 }

@@ -195,26 +195,6 @@ Row* InfoSetBase::pAllotRow(i8 iVArgsBegin, ...)
  }
 
 /*----------------------------------------------------------------------------*/
-/* get first row                                                              */
-/*----------------------------------------------------------------------------*/
-Row* InfoSetBase::pFirstRow(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-  
-  return RowBuffer::pFirstRow();
-}
-
-/*----------------------------------------------------------------------------*/
-/* allot a row                                                                */
-/*----------------------------------------------------------------------------*/
-i8 InfoSetBase::nInfoRows(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-  
-  return nRows();
-}
-
-/*----------------------------------------------------------------------------*/
 /* get name of info set                                                       */
 /*----------------------------------------------------------------------------*/
 Stz* InfoSetBase::szInfoSetNm(void)
@@ -232,16 +212,6 @@ void InfoSetBase::vInfoSetNm(Stz* szInfoSetNm)
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   m_sInfoSetNm = szInfoSetNm;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get next row                                                               */
-/*----------------------------------------------------------------------------*/
-Row* InfoSetBase::pNextRow(Row* aPrevRow)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-  
-  return RowBuffer::pNextRow(aPrevRow);
 }
 
 /*----------------------------------------------------------------------------*/

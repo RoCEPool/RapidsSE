@@ -356,7 +356,7 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
       }
 
       else {
-        m_ixRowsProcessed += pInfoSet->nInfoRows();
+        m_ixRowsProcessed += pInfoSet->nRows();
         vTrace("\n"_Stz);
         pInfoSet->vPrintRows(m_pStreamDef_result);
         AM::vDeleteOperand(pOperand);
@@ -493,7 +493,7 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
     case CN_STREAMSET: {
       StreamSet* pStreamSet = _pStreamSet(pOperand);
       ASSERT( ! pStreamSet->szInfoSetNm()->bSame(C_NO_NAME) );
-      m_ixRowsProcessed += pStreamSet->nInfoRows();
+      m_ixRowsProcessed += pStreamSet->nRows();
       vTrace("\n"_Stz);
       pStreamSet->vPrintRows(m_pStreamDef_result);
       AM::vDeleteOperand(pOperand);

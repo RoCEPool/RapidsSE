@@ -593,7 +593,7 @@ void Step::vInfoSetInfoRows(void)
   
   InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
   
-  m_pDataStack->vPushInt(pInfoSet->nInfoRows());
+  m_pDataStack->vPushInt(pInfoSet->nRows());
   
   EXIT();
 }

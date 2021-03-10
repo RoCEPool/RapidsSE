@@ -118,13 +118,13 @@ void NameValidator::vValidateTables(PlanNode *pRootNode, QueryNode* pPlanNode, Q
     STORE::InfoSet* pTableInfoSet = pSeApi->pSearchTables(szCatalogName, szSchemaName, szTableName);
     ASSERT(pTableInfoSet);
 
-    if (pTableInfoSet->nInfoRows() == 0) {
+    if (pTableInfoSet->nRows() == 0) {
       // We couldn't resolve the table in the SE metadata
       delete pTableInfoSet;
       NameValidationException::vThrowUnknownTable(szCatalogName, szSchemaName, szTableName);
     }
 
-    if (pTableInfoSet->nInfoRows() > 1) {
+    if (pTableInfoSet->nRows() > 1) {
       // We've resolved more than one table in the metadata. The table name is ambiguous.
       NameValidationException::vThrowAmbiguousTable(szCatalogName, szSchemaName, szTableName, pTableInfoSet);
     }
