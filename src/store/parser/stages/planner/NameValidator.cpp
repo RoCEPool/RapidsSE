@@ -261,6 +261,10 @@ void NameValidator::vResolveColumnWildcards(PlanNode *pRootNode, QueryNode* pPla
         delete pResolvedIter;
 #endif
 
+        if (pResolvedWildcardList->nItems() == 0) {
+          NameValidationException::vThrowUnresolvableColumnWildcard(szCatalogName, szSchemaName, szTableName);
+        }
+
         // Now replace the ProjectedExpr that contains the columnWildcard with
         // each of the resolved ProjectedExpr instances that contain columnRefs.
         GraphEditor::vReplaceChild(pProjectedExprs, pProjectedExpr, pResolvedWildcardList);

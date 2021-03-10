@@ -180,6 +180,22 @@ namespace Parser
 
       throw NameValidationException(sErrMsg.szStz());
     }
+
+    static void vThrowUnresolvableColumnWildcard(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName) {
+      s256 sErrMsg;
+      sErrMsg.vConcat("Column wildcard does not resolve to any tables in the query: "_Stz);
+
+      if (szCatalogName) {
+        sErrMsg.vCatSprint("%s.%s.%s.*"_Stz, szCatalogName, szSchemaName, szTableName);
+      } else if (szSchemaName) {
+        sErrMsg.vCatSprint("%s.%s.*"_Stz, szSchemaName, szTableName);
+      } else if (szTableName) {
+        sErrMsg.vCatSprint("%s.*"_Stz, szTableName);
+      } else {
+        sErrMsg.vConcat("*"_Stz);
+      }
+      throw NameValidationException(sErrMsg.szStz());
+    }
   };
 }
 
