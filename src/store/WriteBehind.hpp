@@ -24,6 +24,8 @@ namespace STORE
    ~WriteBehind(void) noexcept(false);
   
   public:
+    Row* pAllotRow(void);
+
     RowBuffer* pRowBuffer(void);
     void vRowBuffer(RowBuffer* pRowBuffer);
 

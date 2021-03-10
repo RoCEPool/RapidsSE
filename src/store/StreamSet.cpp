@@ -52,8 +52,6 @@ StreamSet::StreamSet(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMSET,_FOOTER_);
 
   m_sInfoSetNm = C_NO_NAME;
-  m_nRowSize   = C_UNKNOWN;
-  m_nInfoRows  = 0;
 
   _checkInitialised_(CN_STREAMSET);
 
@@ -69,8 +67,6 @@ StreamSet::StreamSet(StreamDef* pStreamDef)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMSET,_FOOTER_);
   
   m_sInfoSetNm = pStreamDef->szName();
-  m_nRowSize  = Row::nRowProper(pStreamDef->nColumns());
-  m_nInfoRows = 0;
   
   _checkInitialised_(CN_STREAMSET);
   

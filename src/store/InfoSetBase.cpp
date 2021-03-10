@@ -31,8 +31,6 @@ InfoSetBase::InfoSetBase(eCN eClassNo)
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
   
   m_sInfoSetNm = C_NO_NAME;
-  m_nRowSize   = C_UNKNOWN;
-  m_nInfoRows  = 0;
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
 }
@@ -46,9 +44,7 @@ InfoSetBase::InfoSetBase(eCN eClassNo, StreamDef* pStreamDef)
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
   
   m_sInfoSetNm = pStreamDef->szName();
-  m_nRowSize  = Row::nRowProper(pStreamDef->nColumns());
-  m_nInfoRows = 0;
-  
+    
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
 }
 
@@ -69,9 +65,8 @@ Row* InfoSetBase::pAllotRow(void)
 
   Row* pRow = nullptr;
 
-  if (nFreeBytes() >= m_nRowSize) {
+  if (nFreeBytes() >= m_nRowSizeProper) {
     pRow = pAllotNewRow();
-    m_nInfoRows++;
   }
 
   return pRow;
@@ -86,7 +81,6 @@ Row* InfoSetBase::pAllotRow(i8 iVArgsBegin, ...)
 
   // allot a row
   Row* ayRow = pAllotNewRow();
-  m_nInfoRows++;
 
   Stz* ayDst;
 
@@ -149,7 +143,6 @@ Row* InfoSetBase::pAllotRow(i8 iVArgsBegin, ...)
    
    // allot a row
    Row* ayRow = pAllotNewRow();
-   m_nInfoRows++;
    
    Stz* ayDst;
    
@@ -218,7 +211,7 @@ i8 InfoSetBase::nInfoRows(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  return m_nInfoRows;
+  return nRows();
 }
 
 /*----------------------------------------------------------------------------*/

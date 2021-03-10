@@ -13,8 +13,6 @@ namespace STORE
   {
   protected:
     s32 m_sInfoSetNm;
-    i8  m_nRowSize;
-    i8  m_nInfoRows;
     
     // must be last
     Footer m_xFooter;

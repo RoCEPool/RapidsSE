@@ -53,7 +53,7 @@ void Loggable::vLog(eEV eEvent, Stz* szFormat, ...)
   
   if (   CN_DIR == eGetClassNo()
       || CN_FIFO == eGetClassNo()
-      //|| CN_FILE == eGetClassNo()
+      || CN_FILE == eGetClassNo()
       || CN_JOB == eGetClassNo()
       || CN_JOB__FIND == eGetClassNo()
       || CN_LOCK == eGetClassNo()
