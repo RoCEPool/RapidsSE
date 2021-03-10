@@ -129,7 +129,7 @@ void NameValidator::vValidateTables(PlanNode *pRootNode, QueryNode* pPlanNode, Q
       NameValidationException::vThrowAmbiguousTable(szCatalogName, szSchemaName, szTableName, pTableInfoSet);
     }
 
-    ASSERT(pTableInfoSet->nInfoRows() == 1);
+    ASSERT(pTableInfoSet->nRows() == 1);
     Row* pTblRow = pTableInfoSet->pFirstRow();
     TableMetadata* pTableMeta = static_cast<TableMetadata*>(pTblRow);
 
