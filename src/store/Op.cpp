@@ -1416,7 +1416,7 @@ void Op::vSendXmitOperand(Operand* pOperand, Task* pTriggeringTask, bool bSet)
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ALL_PARTITIONS_TO_ALL_NODES: {
       i8 i_Node = AM::pPtnMap()->i_WhichNode(m_tPtnNo);
-      printf("PX_ALL_PARTITIONS_TO_ALL_NODES: %lld\n", i_Node);
+      //printf("PX_ALL_PARTITIONS_TO_ALL_NODES: %lld\n", i_Node);
       vSendToNode(pOperand, pTriggeringTask, bSet, eXmitKind,i_Node);
       break;
     }
@@ -1768,8 +1768,8 @@ void Op::vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask, bo
 
       // xmitNode is the partition node
       m_iXmitNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
-      vTrace("ASSERT: AM::nPtnsPerTable(): %lld tPtnNo:%lld  m_iXmitNode %lld== m_pPipeline->i_Origin() %lld\n"_Stz,
-             AM::nPtnsPerTable(), tPtnNo, m_iXmitNode , m_pPipeline->i_Origin());
+      vTrace("ASSERT: AM::nPtnsPerTable():%lld i_TablePtn:%lld  tPtnNo:%lld  m_iXmitNode:%lld== m_pPipeline->i_Origin():%lld\n"_Stz,
+             AM::nPtnsPerTable(), i_TablePtn, tPtnNo, m_iXmitNode , m_pPipeline->i_Origin());
       ASSERT(m_iXmitNode == m_pPipeline->i_Origin());
    
       if ( m_iXmitNode == m_pPipeline->i_Origin()) {
@@ -1951,7 +1951,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
       
       // xmitNode is this node
       m_iXmitNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
-      RASSERT(m_iXmitNode == AM::pGrid()->iThisNode());
+      RASSERT(m_iXmitNode == AM::pGrid()->iThisNodeNo());
       
       ASSERT( ! bSet );
       //printf("XK_LOCALROBIN vSendToAllPartitions(  %lld\n", m_iXmitNode);
@@ -2065,7 +2065,7 @@ void Op::vSendToOrigin(Operand* pOperand, Task* pTriggeringTask, bool bSet, eXK 
 
   ASSERT(eXmitKind == XK_NORMAL || eXmitKind == XK_ROBIN);
   m_iXmitNode = m_pPipeline->i_Origin();
-  printf("vSendToOrigin(  %lld\n", m_iXmitNode);
+  vTrace("vSendToOrigin(  %lld\n"_Stz, m_iXmitNode);
   vSend(pOperand, bSet, m_iXmitNode, C_UNKNOWN);
   
   // delete the operand
@@ -2109,7 +2109,7 @@ void Op::vSendToPartition(Operand* pOperand, Task* pTriggeringTask, bool bSet,
   }
   
   m_iXmitNode = AM::pPtnMap()->i_WhichNode(tSendPtn);
-  printf("vSendToPartition(  %lld\n", m_iXmitNode);
+  //printf("vSendToPartition(  %lld\n", m_iXmitNode);
   vSend(pOperand, bSet, m_iXmitNode, tSendPtn);
   
   // delete the operand

@@ -77,7 +77,7 @@ void Stage::vCancelPipeline(Task* pTriggeringTask)
   StageSpec* pStageSpec = pStream->pStageSpec();
   
   if (pStageSpec->bNodeTopo() &&
-      pStream->i_Node() == AM::pGrid()->iThisNode()) {
+      pStream->i_Node() == AM::pGrid()->iThisNodeNo()) {
     
     // get first operator of this first stage
     Op* pOp = pStream->pGet(0);
@@ -286,7 +286,7 @@ void Stage::vStartPipeline(Task* pTriggeringTask)
   StageSpec* pStageSpec = pStream->pStageSpec();
   
   if (pStageSpec->bNodeTopo() &&
-      pStream->i_Node() == AM::pGrid()->iThisNode()) {
+      pStream->i_Node() == AM::pGrid()->iThisNodeNo()) {
     
     // get first operator of this first stage
     Op* pOp = pStream->pGet(0);

@@ -17,11 +17,11 @@ namespace STORE
     s32    m_sGridNm;          // name of this grid
     i8     m_iConnectCode;     // connect code for this grid (not yet used)
     
-    i8     m_iThisNode;        // this node number
+    i8     m_iThisNodeNo;      // this node number
     Node*  m_pThisNode;        // this node pointer
   
     bool   m_bHasStarted;      // has the cluster started ?
-    i8     m_iStartNode;       // node that started the cluster
+    i8     m_iStartNodeNo;     // node that started the cluster
 
     i8     m_nBootNodes;       // number of nodes supplied via SE -node
     i8     m_nDefinedNodes;    // number of nodes in the nodes array
@@ -59,7 +59,7 @@ namespace STORE
     bool bHasStarted(void);
     Node* pFindNode(Stz* pName);
     Node* pFindNodeByNodeNo(i8 iNodeNo);
-    Node* pGetNode(i8 i_Node);
+    Node* pGetNode(i8 i_NodeNo);
     i8   iGetNodeNo(i8 i_Node);
     void vIncBootNodes(void);
     void vIncDefinedNodes(void);
@@ -72,12 +72,13 @@ namespace STORE
     i8   nNodes(void);
     void vPutNode(Node* pNode);
     void vRemoveNode(Node* pNode);
-    void vStartNode(i8 iStartNode);
-    i8   iStartNode(void);
-    i8   iThisNode(void);
+    void vStartNodeNo(i8 iStartNodeNo);
+    i8   iStartNodeNo(void);
+    i8   iThisNodeNo(void);
     Node* pThisNode(void);
-    void vThisNode(i8 iNode);
+    void vThisNodeNo(i8 iNode);
     void vSetThisNode (Node* pNode); // newcode
+    bool bFirstNode(i8 iNodeNo);
 
     // newcode
     std::list<Node*>::const_iterator itBeginNodes(void);

@@ -985,8 +985,11 @@ void Engine::vOperandQueueReport(bool bStdOut)
 void Engine::vOpenLog(void)
 {
   bool bStarting = false;
-  if (0 == AM::pGrid()->iThisNode() && gxCmdLineArgs.m_xSysArgs.m_bStart)
+  if (AM::bFirstNode(AM::pGrid()->iThisNodeNo()) && gxCmdLineArgs.m_xSysArgs.m_bStart)
     bStarting = true;
+
+  //if (0 == AM::pGrid()->iThisNodeNo() && gxCmdLineArgs.m_xSysArgs.m_bStart)
+  //  bStarting = true;
   
   AM::vLogOpenBySE(bStarting);
 }
@@ -1565,7 +1568,7 @@ void Engine::vStartSystem(void) {
   // the unique node_no can be a hash of ipaddr and port number
 
   i8 iThisNodeNo = pThisNode->iNodeNo();
-  AM::pGrid()->vThisNode(iThisNodeNo);
+  AM::pGrid()->vThisNodeNo(iThisNodeNo);
 
   AM::pGrid()->vSetThisNode(pThisNode); // newcode
 
@@ -1716,7 +1719,7 @@ void Engine::vCreateGridOfNodes(void)
 
   for (i8 i_Node = 0; i_Node < gxCmdLineArgs.m_xSysArgs.m_nBootNodes; i_Node++) {
 
-    Node* pNode = new Node(i_Node + gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_iPortNo, //abs((i2)Hardware::iReadTscp()),
+    Node* pNode = new Node(gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_iPortNo, //i_Node +  abs((i2)Hardware::iReadTscp()),
                            gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sNodeName,
                            AM::nDegOfPar(),
                            gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress,

@@ -236,7 +236,7 @@ void Step::vGridThisNodeFetch(void)
 {
   ENTRY();
     
-  i8 iNodeNo = AM::pGrid()->iThisNode();
+  i8 iNodeNo = AM::pGrid()->iThisNodeNo();
   
   m_pDataStack->vPushInt(iNodeNo);
   
@@ -279,7 +279,7 @@ void Step::vGridStartNodeFetch(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(AM::pGrid()->iStartNode());
+  m_pDataStack->vPushInt(AM::pGrid()->iStartNodeNo());
   
   EXIT();
 }
@@ -291,9 +291,9 @@ void Step::vGridStartNodeStore(void)
 {
   ENTRY();
   
-  i8 iStartNode = m_pDataStack->iPopInt(__func__);
+  i8 iStartNodeNo = m_pDataStack->iPopInt(__func__);
   
-  AM::pGrid()->vStartNode(iStartNode);
+  AM::pGrid()->vStartNodeNo(iStartNodeNo);
   
   EXIT();
 }

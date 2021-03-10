@@ -35,7 +35,6 @@
   " --maxReadyLP "        str.cat args.maxReadyLP        >str   str.cat
 
   user::name "alka" str.same if
-<<<<<<< HEAD
      " --commands /Users/alka/rapidsse/commands" str.cat
   then
 
@@ -46,27 +45,12 @@
   user::name "ray" str.same if
     " --commands /Users/ray/rapidsse/commands"  str.cat
   then
-  //else
-     //" --commands /Users/alka/rapidsse/commands" str.cat
-
-  user::name "myvanquoc" str.same if
-     " --commands /Users/myvanquoc/dev/src/SE/rapidsse/commands" str.cat
-=======
-    " --commands /Users/alka/rapidsse/commands" str.cat
->>>>>>> master
-  then
-
-  // user::name "craig" str.same if
-  //       " --commands /Users/craig/rapidsse/commands" str.cat
-  //    then
-
-  user::name "ray" str.same if
-     " --commands /Users/ray/rapidsse/commands"  str.cat
-  then
 
   user::name "myvanquoc" str.same if
      " --commands /Users/myvanquoc/dev/src/SE/rapidsse/commands" str.cat
   then
+
+
 
   args.tracepoint  if " --tracepoint"  str.cat then
   args.verbose     if " --verbose"     str.cat then

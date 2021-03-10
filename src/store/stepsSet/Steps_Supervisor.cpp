@@ -39,6 +39,15 @@ void Step::vAddSteps_Supervisor(void)
 /*----------------------------------------------------------------------------*/
 /* Supervisor::collectInfo -- collect heartbeat related info                  */
 /*----------------------------------------------------------------------------*/
+/**
+ * @brief Supervisor Collects Heartbeat Info
+ * @details Supervisor Collects Heartbeat Info for this node to send to other nodes
+ * <p>
+ * @param[in] void * (unused)
+ *
+ * @return none
+ *
+ */
 void Step::vSupervisorCollectInfo(void)
 {
   ENTRY();
@@ -66,10 +75,10 @@ void Step::vSupervisorCollectInfo(void)
   xHeartbeat.xBaseHeartbeat.m_iResidentSize = AM::iResidentSize();
 
   // Debug
+  /*
   s32 sResident_magn;
   MagLib::vByteMag(xHeartbeat.xBaseHeartbeat.m_iResidentSize,3,sResident_magn);
 
-  /*
   vTrace("Node:%s  ** Step::vSupervisorCollectInfo ** SystemUsec:%lld   UserUsec::%lld Resident:%s\n"_Stz,
          gxCmdLineArgs.m_xSysArgs.m_sNodeName.azChar(),
          xHeartbeat.xBaseHeartbeat.m_iSystemUsec,
@@ -104,11 +113,12 @@ void Step::vSupervisorCollectInfo(void)
 
     // Adding Address and Port
     //
-    xHeartbeat.m_iNodeNo = AM::pGrid()->iThisNode();
+    xHeartbeat.m_iNodeNo = AM::pGrid()->iThisNodeNo();
     strncpy(xHeartbeat.m_acAddr, pNode->szIPAddr()->azChar(), sizeof(xHeartbeat.m_acAddr) - 1);
     xHeartbeat.m_acAddr[sizeof(xHeartbeat.m_acAddr) - 1] = 0;
     xHeartbeat.m_iPort = pNode->iPortNo();
     //printf("Hello, My addr:%s and port:%lld\n", pNode->szIPAddr()->azChar(), pNode->iPortNo());
+    // Please keep intouch
   }
 
   CheckSum ChecksumValue((unsigned char *) &xHeartbeat, sizeof(Heartbeat));
