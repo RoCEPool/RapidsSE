@@ -56,6 +56,8 @@ SePrompt::SePrompt(bool bOneCommand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
+  m_pThread   = AM::THREAD::pNewThread();
+  
   m_pInpTknVec = nullptr;
   
   m_iDivisionNo = 0;
@@ -137,6 +139,8 @@ SePrompt::~SePrompt(void) noexcept(false)
   m_pLitTknVec->vSoftReset();
   delete m_pLitTknVec;
   
+  AM::THREAD::vDeleteThread(m_pThread);
+
   vLog(EV_DESTRUCT,"SePrompt destructor"_Stz);
 }
 
@@ -175,8 +179,9 @@ void SePrompt::vPromptLoop(void)
   //
   
   // we need to set the thread key to non-zero
-  PsxThd::vMarkNonSeThread();
-  
+  //PsxThd::vMarkNonSeThread();
+  m_pThread->vThisTLSThread();
+
   ASSERT(0 == pInputGet()->iDepth());
   pInputGet()->vUseStdin();
   pInputGet()->vFormCppTokens();

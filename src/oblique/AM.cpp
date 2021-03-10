@@ -140,8 +140,10 @@ static i8    RAPIDSSE_FORMAT_NUMBER  = 0x000600;
 /*----------------------------------------------------------------------------*/
 /* delete thread                                                              */
 /*----------------------------------------------------------------------------*/
-void AM::THREAD::vDeleteThread(Thread* pThread) {
-
+void AM::THREAD::vDeleteThread(Thread* pThread)
+{
+  _static_
+  
   WriteBehind* pWriteBehind = AM::THREAD::pWriteBehind(pThread);
   pThread->vObject0(nullptr);
 
@@ -153,7 +155,9 @@ void AM::THREAD::vDeleteThread(Thread* pThread) {
 /*----------------------------------------------------------------------------*/
 /* new thread                                                                 */
 /*----------------------------------------------------------------------------*/
-Thread* AM::THREAD::pNewThread(void) {
+Thread* AM::THREAD::pNewThread(void)
+{
+  _static_
   
   Thread* pThread = new Thread;
 
@@ -167,7 +171,9 @@ Thread* AM::THREAD::pNewThread(void) {
 /*----------------------------------------------------------------------------*/
 /* get write behind of current thread                                         */
 /*----------------------------------------------------------------------------*/
-WriteBehind* AM::THREAD::pWriteBehind(void) {
+WriteBehind* AM::THREAD::pWriteBehind(void)
+{
+  _static_
   
   Thread* pThread = AM::pThisTLSThread();
   
@@ -179,7 +185,9 @@ WriteBehind* AM::THREAD::pWriteBehind(void) {
 /*----------------------------------------------------------------------------*/
 /* get write behind of given thread                                           */
 /*----------------------------------------------------------------------------*/
-WriteBehind* AM::THREAD::pWriteBehind(Thread* pThread) {
+WriteBehind* AM::THREAD::pWriteBehind(Thread* pThread)
+{
+  _static_
   
   WriteBehind* pWriteBehind = _pWriteBehind(pThread->pObject0());
   

@@ -29,7 +29,8 @@ namespace PROMPT
   class SePrompt : public Loggable
   {
   private:
-  
+    Thread*   m_pThread;
+
     bool        m_bContinue;    // continue processing commands?
     TagSet      m_oPmtTagSet;   // tag set which controls this prompt
     ShortCutVec m_oShortCutVec; // vector of short cuts

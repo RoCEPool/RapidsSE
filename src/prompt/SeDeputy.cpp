@@ -82,7 +82,7 @@ SeDeputy::~SeDeputy(void) noexcept(false)
   Api::vFreeSession(m_pSession);
   m_pSession = nullptr;
   
-  delete m_pThread;
+  AM::THREAD::vDeleteThread(m_pThread);
 }
 
 /*----------------------------------------------------------------------------*/
