@@ -57,26 +57,6 @@ InfoSetBase::~InfoSetBase(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get name of info set                                                       */
-/*----------------------------------------------------------------------------*/
-Stz* InfoSetBase::szInfoSetNm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-  
-  return m_sInfoSetNm;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set name of info set                                                       */
-/*----------------------------------------------------------------------------*/
-void InfoSetBase::vInfoSetNm(Stz* szInfoSetNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-  
-  m_sInfoSetNm = szInfoSetNm;
-}
-
-/*----------------------------------------------------------------------------*/
 /* calculate the absolute offset within buffer for given item                 */
 /*----------------------------------------------------------------------------*/
 i8 InfoSetBase::iToOffset(Stz* aItem)

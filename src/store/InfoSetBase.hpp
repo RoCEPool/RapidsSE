@@ -12,7 +12,7 @@ namespace STORE
   class InfoSetBase : public RowBuffer
   {
   protected:
-    s32 m_sInfoSetNm;
+    //s32 m_sInfoSetNm;
     
     // must be last
     Footer m_xFooter;
@@ -23,8 +23,6 @@ namespace STORE
     InfoSetBase(eCN eClassNo, StreamDef* pStreamDef);
    ~InfoSetBase(void) noexcept(false);
     
-    Stz* szInfoSetNm(void);
-    void vInfoSetNm(Stz* szInfoSetNm);
     
   //private:
     i8   iToOffset(Stz* aItem);
