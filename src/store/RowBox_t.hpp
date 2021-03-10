@@ -57,8 +57,6 @@ namespace STORE
     Row* pAllotRow(void);
     RowPix* pAllotRowPix(i8 nSizeRowPix);
   
-    void vAssertAux0(void);
-
     i8   nColumns(void);
     ColPix* axaColPix(void);
     i8    iColumn(Row* aRow, i8 iColumn);
@@ -149,14 +147,13 @@ void* RowBox_t<AREA>::operator new(size_t)
 template <i8 AREA>
 RowBox_t<AREA>::RowBox_t(void)
 {
-  //RowBox_t<AREA>::m_xFooter.vAssertFooter();
-
+  _poolAddress_(this); _footer_();
+  
   vInitRowBox_t();
   
   m_nRowSizeProper = 0;
   
-   
-  //RowBox_t<AREA>::m_xFooter.vAssertFooter();
+  _poolAddress_(this); _footer_();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -169,14 +166,13 @@ RowBox_t<AREA>::RowBox_t(StreamDef* pStreamDef, bool bAddPtnHash)
 
   vInitRowBox_t();
 
-  //pAllotRowPix(sizeof(RowPix));
   pAllotRowPix(pStreamDef->pRowPix()->nDynamicSize());
 
   pStreamDef->vToRowPix(m_pRowPix,bAddPtnHash);
   
   m_nRowSizeProper = Row::nRowProper(pStreamDef->nColumns());
     
-  //RowBox_t<AREA>::m_xFooter.vAssertFooter();
+  _poolAddress_(this); _footer_();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -196,7 +192,7 @@ void RowBox_t<AREA>::vInitRowBox_t(void)
 {
   _poolAddress_(this); _footer_();
   
-  //RowBox_t<AREA>::m_xFooter.vAssertFooter();
+  m_sBufferNm = C_NO_NAME;
 
   MemLib::vSet(m_caModel,' ',sizeof(m_caModel),CN_ROWBUFFER);
   m_caModel[sizeof(m_caModel) - 1] = '\0';
@@ -217,7 +213,7 @@ void RowBox_t<AREA>::vInitRowBox_t(void)
 
   m_nRowStringBytes = 0;
   
-  //RowBox_t<AREA>::m_xFooter.vAssertFooter();
+  _poolAddress_(this); _footer_();
 }
 
 
@@ -233,7 +229,6 @@ void RowBox_t<AREA>::vResolveRowPix(StreamDef* pStreamDef)
 {
   _poolAddress_(this); _footer_();
 
-  //pAllotRowPix(sizeof(RowPix));
   pAllotRowPix(pStreamDef->pRowPix()->nDynamicSize());
   
   pStreamDef->vToRowPix(m_pRowPix,false);
@@ -252,7 +247,6 @@ template <i8 AREA>
 Row* RowBox_t<AREA>::pAllotRow(void)
 {
   _poolAddress_(this); _footer_();
-  vAssertAux0();
 
   RASSERT(m_pRowPix);
   
@@ -297,48 +291,14 @@ RowPix* RowBox_t<AREA>::pAllotRowPix(i8 nSizeRowPix)
   
   RowPix* pRowPix = (RowPix*)WspConvergent_t<AREA,Stz,Row>::ayAux0();
   new (pRowPix) RowPix;
-  
-//  Footer* aFooter = (Footer*)WspConvergent_t<AREA,Stz,Row>::ayAux0();
-//  aFooter->vSetFooter();
-  
+    
   RASSERT(! m_pRowPix);
 
   m_pRowPix = pRowPix;
 
-  //vAssertAux0();
   
 
   return m_pRowPix;
-}
-
-/*----------------------------------------------------------------------------*/
-/* assert aux is still valid                                                  */
-/*----------------------------------------------------------------------------*/
-template <i8 AREA>
-void RowBox_t<AREA>::vAssertAux0(void)
-{
-  _poolAddress_(this); _footer_();
-
-//
-//  if (! WspConvergent_t<AREA,Stz,Row>::ayAux0()) {
-//    ASSERT(! m_pRowPix);
-//    ASSERT(! nRows());
-//    return;
-//  }
-//
-//  ASSERT(m_pRowPix);
-//  ASSERT((void*)this == (void*)m_pRowPix);
-//
-////  Footer* aFooter = (Footer*)WspConvergent_t<AREA,Stz,Row>::ayAux0();
-////  aFooter->vAssertFooter();
-//
-//  RowPix* pRowPix = (RowPix*)WspConvergent_t<AREA,Stz,Row>::ayAux0();
-//
-//  pRowPix->vAssertRowPix();
-//
-//  ASSERT(pRowPix == m_pRowPix);
-//  ASSERT(pRowPix->nColumns());
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -348,7 +308,6 @@ template <i8 AREA>
 ColPix* RowBox_t<AREA>::axaColPix(void)
 {
   _poolAddress_(this); _footer_();
-  vAssertAux0();
   
   return m_pRowPix->m_xaColPix;
 }
@@ -361,17 +320,12 @@ template <i8 AREA>
 void RowBox_t<AREA>::vCopyRowPix(RowPix* pRowPixSrc)
 {
   _poolAddress_(this); _footer_();
-  vAssertAux0();
 
-  //pAllotRowPix(sizeof(RowPix));
   pAllotRowPix(pRowPixSrc->nDynamicSize());
 
   MemLib::vCopy(m_pRowPix,pRowPixSrc,sizeof(RowPix),CN_ROWBUFFER);
 
   m_nRowSizeProper = Row::nRowProper(pRowPixSrc->m_nColumns);
-  
-  vAssertAux0();
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -381,7 +335,6 @@ template <i8 AREA>
 void RowBox_t<AREA>::vCopyRow(Row* aRowSrc, bool bSrcHasPtnHash, bool bCopyPtnHash)
 {
   _poolAddress_(this); _footer_();
-  vAssertAux0();
   
   ASSERT(m_pRowPix->m_bInitialised);
   ASSERT(m_pRowPix->m_nColumns);
@@ -432,7 +385,6 @@ template <i8 AREA>
 i8 RowBox_t<AREA>::iColumn(Row* aRow, i8 i_Col)
 {
   _poolAddress_(this); _footer_();
-  vAssertAux0();
 
   i8 iVal;
   Stz* szSrcStz;
@@ -471,7 +423,6 @@ i8 RowBox_t<AREA>::nColumns(void)
 {
   _poolAddress_(this); _footer_();
 
-  vAssertAux0();
 
   return m_pRowPix->m_nColumns;
 }
@@ -483,7 +434,6 @@ template <i8 AREA>
 Dtm* RowBox_t<AREA>::aColDtm(i8 i_Col)
 {
   _poolAddress_(this); _footer_();
-  vAssertAux0();
 
   Dtm* aDtm = m_aRowCur->aColDtm(i_Col);
   
@@ -497,7 +447,6 @@ template <i8 AREA>
 void RowBox_t<AREA>::vColSetNull(i8 i_Col)
 {
   _poolAddress_(this); _footer_();
-  vAssertAux0();
 
   m_aRowCur->vSetColNull(i_Col);
 }
@@ -509,7 +458,6 @@ template <i8 AREA>
 d8 RowBox_t<AREA>::dColVal(i8 i_Col)
 {
   _poolAddress_(this); _footer_();
-  vAssertAux0();
 
   d8 dVal = m_aRowCur->dColVal_flt(i_Col);
   
@@ -524,7 +472,6 @@ i8 RowBox_t<AREA>::iColVal(i8 i_Col)
 {
   _poolAddress_(this); _footer_();
 
-  vAssertAux0();
 
   i8 iVal = m_aRowCur->iColVal_int(i_Col);
   
@@ -538,7 +485,6 @@ template <i8 AREA>
 Stz* RowBox_t<AREA>::szColVal(i8 i_Col)
 {
   _poolAddress_(this); _footer_();
-  vAssertAux0();
 
   Stz* szVal = m_aRowCur->szColVal_ofs(i_Col);
   
@@ -554,7 +500,6 @@ template <i8 AREA>
 bool RowBox_t<AREA>::bIsColNull(i8 i_Col)
 {
   _poolAddress_(this); _footer_();
-  vAssertAux0();
 
   bool bIsNull = m_aRowCur->bIsColNull(i_Col);
   
@@ -571,7 +516,6 @@ Row* RowBox_t<AREA>::pRowAddress(i8 i_Row)
 {
   _poolAddress_(this); _footer_();
 
-  vAssertAux0();
 
   /*          v row[1]            v row[0]
        -------*----+----+----*----+----+---+----+----*
@@ -593,7 +537,6 @@ template <i8 AREA>
 Row* RowBox_t<AREA>::pRowCurrent(void)
 {
   _poolAddress_(this); _footer_();
-  vAssertAux0();
 
   return m_aRowCur;
 }
@@ -617,7 +560,6 @@ template <i8 AREA>
 Row* RowBox_t<AREA>::pFirstRow(void)
 {
   _poolAddress_(this); _footer_();
-  vAssertAux0();
 
   RASSERT(m_pRowPix);
   
@@ -633,7 +575,6 @@ template <i8 AREA>
 Row* RowBox_t<AREA>::pLastRow(void)
 {
   _poolAddress_(this); _footer_();
-  vAssertAux0();
 
   RASSERT(m_pRowPix);
 
@@ -655,7 +596,6 @@ template <i8 AREA>
 Row* RowBox_t<AREA>::pNextRow(Row* pPriorRow)
 {
   _poolAddress_(this); _footer_();
-  vAssertAux0();
 
   RASSERT(m_pRowPix);
 
@@ -682,7 +622,6 @@ template <i8 AREA>
 void RowBox_t<AREA>::vAdvanceCursor(void)
 {
   _poolAddress_(this); _footer_();
-  vAssertAux0();
 
   m_i_ColCrs++;
 }
@@ -695,7 +634,6 @@ template <i8 AREA>
 void RowBox_t<AREA>::vDepositColVal(d8 dColVal)
 {
   _poolAddress_(this); _footer_();
-  vAssertAux0();
 
   m_aRowCur->vColVal_flt(m_i_ColCrs,dColVal);
   
@@ -710,7 +648,6 @@ template <i8 AREA>
 void RowBox_t<AREA>::vDepositColVal(i8 iColVal)
 {
   _poolAddress_(this); _footer_();
-  vAssertAux0();
 
   m_aRowCur->vColVal_int(m_i_ColCrs,iColVal);
 
@@ -724,7 +661,6 @@ template <i8 AREA>
 void RowBox_t<AREA>::vDepositColVal(i8 i_Col, i8 iColVal)
 {
   _poolAddress_(this); _footer_();
-  vAssertAux0();
 
   m_aRowCur->vColVal_int(i_Col,iColVal);
 }
@@ -736,7 +672,6 @@ template <i8 AREA>
 void RowBox_t<AREA>::vDepositColVal(Stz* szColVal)
 {
   _poolAddress_(this); _footer_();
-  vAssertAux0();
 
   char* azTgt = azDepositString_begin();
   
@@ -752,7 +687,6 @@ template <i8 AREA>
 void RowBox_t<AREA>::vDepositColVal(i8 i_Col, Stz* szColVal)
 {
   _poolAddress_(this); _footer_();
-  vAssertAux0();
 
   Stz* szDeposited = WspConvergent_t<AREA,Stz,Row>::szStzDeposit(szColVal);
   
@@ -768,7 +702,6 @@ template <i8 AREA>
 char* RowBox_t<AREA>::azDepositString_begin(void)
 {
   _poolAddress_(this); _footer_();
-  vAssertAux0();
 
   char* azStz = (char*)WspConvergent_t<AREA,Stz,Row>::ayLatterHead() + 1;
   
@@ -790,7 +723,6 @@ template <i8 AREA>
 void RowBox_t<AREA>::vDepositString_end(i8 nSize)
 {
   _poolAddress_(this); _footer_();
-  vAssertAux0();
 
   WspConvergent_t<AREA,Stz,Row>::vTakeHead(nSize);
   
@@ -807,7 +739,6 @@ template <i8 AREA>
 void RowBox_t<AREA>::vDiscardInvalidRow(void)
 {
   _poolAddress_(this); _footer_();
-  vAssertAux0();
 
   // undo the row number increments of vNewRow()
   m_i_RowCrs--;
@@ -832,7 +763,6 @@ template <i8 AREA>
 void RowBox_t<AREA>::vDumpAllRows(void)
 {
   _poolAddress_(this); _footer_();
-  vAssertAux0();
 
   i8 nRows = this->nRows();
   vTrace("RowBuffer of %lld rows...\n"_Stz,nRows);
@@ -847,7 +777,6 @@ template <i8 AREA>
 void RowBox_t<AREA>::vDumpNst(void)
 {
   _poolAddress_(this); _footer_();
-  vAssertAux0();
 
   m_oNmlStr.vDump();
 }
@@ -859,7 +788,6 @@ template <i8 AREA>
 void RowBox_t<AREA>::vDumpRow(i8 i_Row)
 {
   _poolAddress_(this); _footer_();
-  vAssertAux0();
 
   Row* aRow = this->pRowAddress(i_Row);
   vDumpRow(i_Row,aRow);
@@ -873,7 +801,6 @@ void RowBox_t<AREA>::vDumpRow(i8 i_Row, Row* aRow)
 {
   _poolAddress_(this); _footer_();
 
-  vAssertAux0();
 
   HV_Record hvRecord(pRowPix());
 
@@ -888,7 +815,6 @@ template <i8 AREA>
 i8 RowBox_t<AREA>::nExtraCols(void)
 {
   _poolAddress_(this); _footer_();
-  vAssertAux0();
 
   return m_pRowPix->m_nExtraCols;
 }
@@ -902,7 +828,6 @@ template <i8 AREA>
 void RowBox_t<AREA>::vInitPix(StreamDef* pStreamDef, bool bPtnHash)
 {
   _poolAddress_(this); _footer_();
-  vAssertAux0();
 
   //pAllotRowPix(sizeof(RowPix));
   pAllotRowPix(pStreamDef->pRowPix()->nDynamicSize());
@@ -919,7 +844,6 @@ template <i8 AREA>
 NmlStr* RowBox_t<AREA>::pNmlStr(void)
 {
   _poolAddress_(this); _footer_();
-  vAssertAux0();
 
   return & m_oNmlStr;
 }
@@ -931,7 +855,6 @@ template <i8 AREA>
 void RowBox_t<AREA>::vNormaliseStrings(void)
 {
   _poolAddress_(this); _footer_();
-  vAssertAux0();
 
   //m_oNmlStr.vDump();
 
@@ -1013,7 +936,6 @@ template <i8 AREA>
 i8 RowBox_t<AREA>::iOffsetInWsp(Row* aRow)
 {
   _poolAddress_(this); _footer_();
-  vAssertAux0();
 
   i8 iOfs = WspConvergent_t<AREA,Stz,Row>::iOffsetOfItem(aRow);
   
@@ -1027,7 +949,6 @@ template <i8 AREA>
 void RowBox_t<AREA>::vPositionOnCell(i8 i_Col)
 {
   _poolAddress_(this); _footer_();
-  vAssertAux0();
 
   m_i_ColCrs = i_Col;
 }
@@ -1039,7 +960,6 @@ template <i8 AREA>
 bool RowBox_t<AREA>::bPtnHash(void)
 {
   _poolAddress_(this); _footer_();
-  vAssertAux0();
 
   return m_pRowPix->m_bPtnHash;
 }
@@ -1051,7 +971,6 @@ template <i8 AREA>
 i8 RowBox_t<AREA>::iPtnOfRow(Row* aRow)
 {
   _poolAddress_(this); _footer_();
-  vAssertAux0();
 
   i8 i_HshCol = m_pRowPix->m_nColumns - 1;
     
@@ -1067,7 +986,6 @@ template <i8 AREA>
 void RowBox_t<AREA>::vReset(void)
 {
   _poolAddress_(this); _footer_();
-  vAssertAux0();
 
   //vTrace("Reset: %p \n"_Stz,this);
 
@@ -1085,7 +1003,6 @@ template <i8 AREA>
 void RowBox_t<AREA>::vResetRow(void)
 {
   _poolAddress_(this); _footer_();
-  vAssertAux0();
 
   WspConvergent_t<AREA,Stz,Row>::vResetHeads();
 }
@@ -1097,7 +1014,6 @@ template <i8 AREA>
 i8 RowBox_t<AREA>::nRowProperBytes(void)
 {
   _poolAddress_(this); _footer_();
-  vAssertAux0();
 
   i8 nBytes = (m_pRowPix->m_nColumns + 1 /* dummy */ ) * C_BYTES_PER_WORD;
   
@@ -1112,7 +1028,6 @@ Row* RowBox_t<AREA>::aRowByOfs(i8 i_Ofs)
 {
   _poolAddress_(this); _footer_();
 
-  vAssertAux0();
 
   //Row* aRow = aAdd<Row*>(WspConvergent_t<AREA,Stz,Row>::ayArea(),i_Ofs);
   Row* aRow = WspConvergent_t<AREA,Stz,Row>::aItemAtOffset(i_Ofs);
@@ -1127,7 +1042,6 @@ template <i8 AREA>
 Row* RowBox_t<AREA>::aSetCurRow(i8 i_Row)
 {
   _poolAddress_(this); _footer_();
-  vAssertAux0();
 
   m_i_RowCrs = i_Row;
   m_aRowCur = pRowAddress(i_Row);
@@ -1141,7 +1055,6 @@ template <i8 AREA>
 void RowBox_t<AREA>::vSlabReport(void)
 {
   _poolAddress_(this); _footer_();
-  vAssertAux0();
 
   s32 sSlab_magn;
   MagLib::vByteMag(AREA, sSlab_magn);
@@ -1170,7 +1083,6 @@ template <i8 AREA>
 RowPix* RowBox_t<AREA>::pRowPix(void)
 {
   _poolAddress_(this); _footer_();
-  vAssertAux0();
 
   return m_pRowPix;
 }
@@ -1184,7 +1096,6 @@ void RowBox_t<AREA>::vResetRowPix(void)
   _poolAddress_(this); _footer_();
 
   m_pRowPix = (RowPix*)WspConvergent_t<AREA,Stz,Row>::ayAux0();
-  vAssertAux0();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1194,7 +1105,6 @@ template <i8 AREA>
 void RowBox_t<AREA>::vZeroRow(Row *aRow)
 {
   _poolAddress_(this); _footer_();
-  vAssertAux0();
   
   RASSERT((void*)aRow != (void*)m_pRowPix);
 
@@ -1214,7 +1124,6 @@ template <i8 AREA>
 i8 RowBox_t<AREA>::i_RowBufferCell(i8 i_Row)
 {
   _poolAddress_(this); _footer_();
-  vAssertAux0();
 
   i8 i_Cell_slab = (i_Row + 1) * (m_pRowPix->m_nColumns + 1 /* Object */ );
   
@@ -1260,7 +1169,6 @@ Footer* RowBox_t<AREA>::aFooter(void)
 {
   return &m_xFooter;
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

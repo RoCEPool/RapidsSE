@@ -51,8 +51,6 @@ StreamSet::StreamSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMSET,_FOOTER_);
 
-  m_sBufferNm = C_NO_NAME;
-
   _checkInitialised_(CN_STREAMSET);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STREAMSET);
@@ -66,7 +64,7 @@ StreamSet::StreamSet(StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMSET,_FOOTER_);
   
-  m_sBufferNm = pStreamDef->szName();
+  vBufferNm(pStreamDef->szName());
   
   _checkInitialised_(CN_STREAMSET);
   

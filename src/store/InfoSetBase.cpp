@@ -29,9 +29,7 @@ InfoSetBase::InfoSetBase(eCN eClassNo)
 : RowBuffer(eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
-  
-  m_sBufferNm = C_NO_NAME;
-  
+    
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
 }
 
@@ -43,7 +41,7 @@ InfoSetBase::InfoSetBase(eCN eClassNo, StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
   
-  m_sBufferNm = pStreamDef->szName();
+  vBufferNm(pStreamDef->szName());
     
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
 }

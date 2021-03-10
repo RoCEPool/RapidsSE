@@ -133,14 +133,12 @@ Row* Pot::aNewDstRow(i8 i_Ptn, RowBuffer** ppRowBuffer,bool* pbNewBuffer)
   if (! pDstRowBuffer) {
     pDstRowBuffer = new RowBuffer;
     pDstRowBuffer->vCopyRowPix(m_pRowPix);
-    pDstRowBuffer->vAssertAux0();
     vAddBuffer(i_Ptn,pDstRowBuffer);
     bWasNewed = true;
     //vTrace("Newed: %p %lld rows\n"_Stz,pDstRowBuffer,pDstRowBuffer->nRows());
   }
   else {
     //vTrace("Exist: %p %lld rows\n"_Stz,pDstRowBuffer,pDstRowBuffer->nRows());
-    pDstRowBuffer->vAssertAux0();
   }
   
   // new a row in row buffer (new another row buffer if necessary)
@@ -149,7 +147,6 @@ Row* Pot::aNewDstRow(i8 i_Ptn, RowBuffer** ppRowBuffer,bool* pbNewBuffer)
     *pbNewBuffer = true;
     pDstRowBuffer = new RowBuffer;
     pDstRowBuffer->vCopyRowPix(m_pRowPix);
-    pDstRowBuffer->vAssertAux0();
     vAddBuffer(i_Ptn,pDstRowBuffer);
     //vTrace("Repld: %p %lld rows\n"_Stz,pDstRowBuffer,pDstRowBuffer->nRows());
     aDstRow = pDstRowBuffer->pAllotRow();
@@ -160,7 +157,6 @@ Row* Pot::aNewDstRow(i8 i_Ptn, RowBuffer** ppRowBuffer,bool* pbNewBuffer)
     
   * ppRowBuffer = pDstRowBuffer;
   
-  pDstRowBuffer->vAssertAux0();
   
   //vTrace("Allot: %p %lld rows\n"_Stz,pDstRowBuffer,pDstRowBuffer->nRows());
   //if (pDstRowBuffer->nRows() < 2)
