@@ -86,7 +86,7 @@ Row* RowBuffer::pAllotCopyRow(RowSingle* pRowSingle)
   if (! bHasSpaceFor(nVchSize + m_nRowSizeProper))
     return nullptr;
   
-  Row* pRow = pAllotNewRow();
+  Row* pRow = pAllotRow();
   
   new(pRow) Row;
 

@@ -57,22 +57,6 @@ InfoSetBase::~InfoSetBase(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/* allot a row                                                                */
-/*----------------------------------------------------------------------------*/
-Row* InfoSetBase::pAllotRow(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-
-  Row* pRow = nullptr;
-
-  if (nFreeBytes() >= m_nRowSizeProper) {
-    pRow = pAllotNewRow();
-  }
-
-  return pRow;
-}
-
-/*----------------------------------------------------------------------------*/
 /* allot a row copying the rowSingle into it                                  */
 /*----------------------------------------------------------------------------*/
 Row* InfoSetBase::pAllotRow(i8 iVArgsBegin, ...)
@@ -80,7 +64,7 @@ Row* InfoSetBase::pAllotRow(i8 iVArgsBegin, ...)
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
   // allot a row
-  Row* ayRow = pAllotNewRow();
+  Row* ayRow = RowBuffer::pAllotRow();
 
   Stz* ayDst;
 
@@ -142,7 +126,7 @@ Row* InfoSetBase::pAllotRow(i8 iVArgsBegin, ...)
    _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
    
    // allot a row
-   Row* ayRow = pAllotNewRow();
+   Row* ayRow = RowBuffer::pAllotRow();
    
    Stz* ayDst;
    

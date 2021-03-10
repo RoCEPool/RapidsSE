@@ -290,7 +290,7 @@ void Step::vInfoSetAddRowVargs(void)
   
   InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
   
-  Row* aRow = pInfoSet->pAllotRow();
+  Row* aRow = pInfoSet->RowBuffer::pAllotRow();
   Stz* szTail;
   i8   nSize;
 
@@ -411,7 +411,7 @@ void Step::vInfoSetChunkFile(void)
       nChunkBytes = i_EofLoc - i_ChunkLoc;
       pRow = nullptr;
       if (nRows < C_MAX_SEEKOFFSETS)
-        pRow = pInfoSet->pAllotRow();
+        pRow = pInfoSet->RowBuffer::pAllotRow();
       
       if (pRow) {
         nRows++;
@@ -469,7 +469,7 @@ void Step::vInfoSetChunkFile(void)
     
     pRow = nullptr;
     if (nRows < C_MAX_SEEKOFFSETS)
-      pRow = pInfoSet->pAllotRow();
+      pRow = pInfoSet->RowBuffer::pAllotRow();
     
     if (pRow) {
       nRows++;

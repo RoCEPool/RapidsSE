@@ -23,7 +23,6 @@ namespace STORE
     InfoSetBase(eCN eClassNo, StreamDef* pStreamDef);
     ~InfoSetBase(void) noexcept(false);
     
-    Row* pAllotRow(void);
     Row* pAllotRow(i8 iVargsBegin, ...);
     Row* pAllotRow(StreamDef* pStreamDef, i8 iVargsBegin, ...);
     Stz* szInfoSetNm(void);
