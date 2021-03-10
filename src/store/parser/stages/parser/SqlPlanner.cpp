@@ -225,7 +225,7 @@ antlrcpp::Any SqlPlanner::visitStatement(sqlParser::StatementContext *pCtx)
 antlrcpp::Any SqlPlanner::visitQuery(sqlParser::QueryContext *pCtx)
 {
    return visitChildren(pCtx);
- }
+}
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 /* Select node (for each select of each query/subquery)                       */
@@ -336,7 +336,7 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
   // DISTINCT keyword
   // -----------------------
   if (pCtx->distinct) {
-    // TODO: implement
+    __NOT_IMPL("DISTINCT")
   }
 
   // -----------------------

@@ -6,11 +6,15 @@
 #include "sqlBaseVisitor.h"
 #include "QueryNodeStack.hpp"
 #include "QueryNodeList.hpp"
+#include "SqlException.hpp"
+
+#define __NOT_IMPL(FEATURE) \
+  SyntaxException::vThrowNotImplemented(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), FEATURE##_Stz ); \
+  return nullptr; \
+EndDefine
 
 namespace Parser
 {
-  class PlanNode;
-
   class SqlPlanner : public Object, public sqlBaseVisitor
   {
   private:
@@ -35,25 +39,83 @@ namespace Parser
   
     Footer* aFooter(void);
     
-    virtual antlrcpp::Any visitStatement(sqlParser::StatementContext *pCtx)           override;
-    virtual antlrcpp::Any visitQuery(sqlParser::QueryContext *pCtx)                   override;
-    virtual antlrcpp::Any visitSelectQuery(sqlParser::SelectQueryContext *pCtx)       override;
-    virtual antlrcpp::Any visitSelectExpr(sqlParser::SelectExprContext *pCtx)         override;
-    virtual antlrcpp::Any visitFetch(sqlParser::FetchContext *pCtx)                   override;
-    virtual antlrcpp::Any visitTableReference(sqlParser::TableReferenceContext *pCtx) override;
-    virtual antlrcpp::Any visitSelectList(sqlParser::SelectListContext *pCtx)         override;
-    virtual antlrcpp::Any visitSelectListItem(sqlParser::SelectListItemContext* pCtx) override;
-    virtual antlrcpp::Any visitColumnRef(sqlParser::ColumnRefContext* pCtx)           override;
-    virtual antlrcpp::Any visitColumnWildcard(sqlParser::ColumnWildcardContext* pCtx) override;
-    virtual antlrcpp::Any visitLiteral(sqlParser::LiteralContext* pCtx)               override;
-    virtual antlrcpp::Any visitUnaryOp(sqlParser::UnaryOpContext *pCtx)               override;
-    virtual antlrcpp::Any visitBinaryOp(sqlParser::BinaryOpContext *pCtx)             override;
-    virtual antlrcpp::Any visitLogicOp(sqlParser::LogicOpContext *pCtx)               override;
-    virtual antlrcpp::Any visitIsNullOp(sqlParser::IsNullOpContext *pCtx)             override;
-    virtual antlrcpp::Any visitCountAll(sqlParser::CountAllContext *pCtx)             override;
-    virtual antlrcpp::Any visitAggFunc(sqlParser::AggFuncContext *pCtx)               override;
+    antlrcpp::Any visitStatement(sqlParser::StatementContext *pCtx)              override;
+    antlrcpp::Any visitQuery(sqlParser::QueryContext *pCtx)                      override;
+    antlrcpp::Any visitSelectQuery(sqlParser::SelectQueryContext *pCtx)          override;
+    antlrcpp::Any visitSelectExpr(sqlParser::SelectExprContext *pCtx)            override;
+    antlrcpp::Any visitFetch(sqlParser::FetchContext *pCtx)                      override;
+    antlrcpp::Any visitTableReference(sqlParser::TableReferenceContext *pCtx)    override;
+    antlrcpp::Any visitSelectList(sqlParser::SelectListContext *pCtx)            override;
+    antlrcpp::Any visitSelectListItem(sqlParser::SelectListItemContext* pCtx)    override;
+    antlrcpp::Any visitColumnRef(sqlParser::ColumnRefContext* pCtx)              override;
+    antlrcpp::Any visitColumnWildcard(sqlParser::ColumnWildcardContext* pCtx)    override;
+    antlrcpp::Any visitLiteral(sqlParser::LiteralContext* pCtx)                  override;
+    antlrcpp::Any visitUnaryOp(sqlParser::UnaryOpContext *pCtx)                  override;
+    antlrcpp::Any visitBinaryOp(sqlParser::BinaryOpContext *pCtx)                override;
+    antlrcpp::Any visitLogicOp(sqlParser::LogicOpContext *pCtx)                  override;
+    antlrcpp::Any visitIsNullOp(sqlParser::IsNullOpContext *pCtx)                override;
+    antlrcpp::Any visitCountAll(sqlParser::CountAllContext *pCtx)                override;
+    antlrcpp::Any visitAggFunc(sqlParser::AggFuncContext *pCtx)                  override;
 
-    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    // What follows are grammar clauses that are not yet implemented.
+    // For usability purposes we will return a syntax error indicating such.
+
+    // Statement types not implemented
+    antlrcpp::Any visitExplainStatement(sqlParser::ExplainStatementContext *pCtx)       override { __NOT_IMPL("EXPLAIN")}
+    antlrcpp::Any visitStatisticsStatement(sqlParser::StatisticsStatementContext *pCtx) override { __NOT_IMPL("STATISTICS")}
+    antlrcpp::Any visitQueryHint(sqlParser::QueryHintContext *pCtx)                     override { __NOT_IMPL("query hints")}
+
+    // Query types not implemented
+    antlrcpp::Any visitSetQuery(sqlParser::SetQueryContext *pCtx)                  override { __NOT_IMPL("SET")}
+    antlrcpp::Any visitInsertQuery(sqlParser::InsertQueryContext *pCtx)            override { __NOT_IMPL("INSERT")}
+    antlrcpp::Any visitDeleteQuery(sqlParser::DeleteQueryContext *pCtx)            override { __NOT_IMPL("DELETE")}
+    antlrcpp::Any visitUpdateQuery(sqlParser::UpdateQueryContext *pCtx)            override { __NOT_IMPL("UPDATE")}
+    antlrcpp::Any visitCreateQuery(sqlParser::CreateQueryContext *pCtx)            override { __NOT_IMPL("CREATE")}
+    antlrcpp::Any visitDropTable(sqlParser::DropTableContext *pCtx)                override { __NOT_IMPL("DROP TABLE")}
+    antlrcpp::Any visitDropIndex(sqlParser::DropIndexContext *pCtx)                override { __NOT_IMPL("DROP INDEX")}
+    antlrcpp::Any visitTruncateQuery(sqlParser::TruncateQueryContext *pCtx)        override { __NOT_IMPL("TRUNCATE")}
+
+    // SelectQuery clauses not implemented
+    antlrcpp::Any visitWithQuery(sqlParser::WithQueryContext *pCtx)                override { __NOT_IMPL("WITH")}
+    antlrcpp::Any visitOrderByList(sqlParser::OrderByListContext *pCtx)            override { __NOT_IMPL("ORDER BY")}
+    // distinct is handled in visitSelectExpr
+
+    // tableExprs not implemented
+    antlrcpp::Any visitJoinOn(sqlParser::JoinOnContext *pCtx)                      override { __NOT_IMPL("JOIN ON")}
+    antlrcpp::Any visitJoinUsing(sqlParser::JoinUsingContext *pCtx)                override { __NOT_IMPL("JOIN USING")}
+    antlrcpp::Any visitCrossJoin(sqlParser::CrossJoinContext *pCtx)                override { __NOT_IMPL("CROSS JOIN")}
+    antlrcpp::Any visitSubquery(sqlParser::SubqueryContext *pCtx)                  override { __NOT_IMPL("subqueries")}
+    antlrcpp::Any visitValuesSubquery(sqlParser::ValuesSubqueryContext *pCtx)      override { __NOT_IMPL("VALUES")}
+
+    // expressions not implemented
+    antlrcpp::Any visitInlineCast(sqlParser::InlineCastContext *pCtx)              override { __NOT_IMPL("cast")}
+    antlrcpp::Any visitMethodCall(sqlParser::MethodCallContext *pCtx)              override { __NOT_IMPL("method call")}
+    antlrcpp::Any visitCastOp(sqlParser::CastOpContext *pCtx)                      override { __NOT_IMPL("CAST")}
+    antlrcpp::Any visitTypeOfOp(sqlParser::TypeOfOpContext *pCtx)                  override { __NOT_IMPL("TYPEOF")}
+    antlrcpp::Any visitCaseOp(sqlParser::CaseOpContext *pCtx)                      override { __NOT_IMPL("CASE")}
+    antlrcpp::Any visitIfOp(sqlParser::IfOpContext *pCtx)                          override { __NOT_IMPL("IF")}
+    antlrcpp::Any visitIfNullOp(sqlParser::IfNullOpContext *pCtx)                  override { __NOT_IMPL("IFNULL")}
+    antlrcpp::Any visitNullIfOp(sqlParser::NullIfOpContext *pCtx)                  override { __NOT_IMPL("NULLIF")}
+    antlrcpp::Any visitCoalesceOp(sqlParser::CoalesceOpContext *pCtx)              override { __NOT_IMPL("COALESCE")}
+    antlrcpp::Any visitDecodeOp(sqlParser::DecodeOpContext *pCtx)                  override { __NOT_IMPL("DECODE")}
+    antlrcpp::Any visitConcatOp(sqlParser::ConcatOpContext *pCtx)                  override { __NOT_IMPL("CONCAT")}
+    antlrcpp::Any visitOverlayFunc(sqlParser::OverlayFuncContext *pCtx)            override { __NOT_IMPL("OVERLAY")}
+    antlrcpp::Any visitPositionFunc(sqlParser::PositionFuncContext *pCtx)          override { __NOT_IMPL("POSITION")}
+    antlrcpp::Any visitSubStringFunc(sqlParser::SubStringFuncContext *pCtx)        override { __NOT_IMPL("SUBSTR")}
+    antlrcpp::Any visitTrimFunc(sqlParser::TrimFuncContext *pCtx)                  override { __NOT_IMPL("TRIM")}
+    antlrcpp::Any visitExtractFunc(sqlParser::ExtractFuncContext *pCtx)            override { __NOT_IMPL("EXTRACT")}
+    antlrcpp::Any visitScalarFunc(sqlParser::ScalarFuncContext *pCtx)              override { __NOT_IMPL("scalar function")}
+    antlrcpp::Any visitSubqueryExpr(sqlParser::SubqueryExprContext *pCtx)          override { __NOT_IMPL("subquery expression")}
+    antlrcpp::Any visitLikeOp(sqlParser::LikeOpContext *pCtx)                      override { __NOT_IMPL("LIKE")}
+    antlrcpp::Any visitLikeEscapeOp(sqlParser::LikeEscapeOpContext *pCtx)          override { __NOT_IMPL("LIKE")}
+    antlrcpp::Any visitSubqueryExistsOp(sqlParser::SubqueryExistsOpContext *pCtx)  override { __NOT_IMPL("EXISTS")}
+    antlrcpp::Any visitSubqueryInOp(sqlParser::SubqueryInOpContext *pCtx)          override { __NOT_IMPL("IN subquery")}
+    antlrcpp::Any visitInOp(sqlParser::InOpContext *pCtx)                          override { __NOT_IMPL("IN")}
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   private:
     Text* pCleanId(sqlParser::IdentifierContext* pCtx);
     Text* pCleanString(sqlParser::StringLiteralContext* pCtx);

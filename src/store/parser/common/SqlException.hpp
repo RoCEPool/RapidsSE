@@ -9,6 +9,8 @@
 #include "TableMetadata.hpp"
 #include "ColumnMetadata.hpp"
 #include "TableDef.hpp"
+#include "PlanNode.hpp"
+#include "QueryNode.hpp"
 
 namespace Parser
 {
@@ -45,6 +47,13 @@ namespace Parser
       va_start(vaArgs,szFormat);
       sErrMsg.vSprintVA(szFormat,vaArgs);
       va_end(vaArgs);
+
+      throw SyntaxException(iLine, iColumn, sErrMsg.szStz());
+    }
+
+    static void vThrowNotImplemented(i8 iLine, i8 iColumn, Stz* szFeature) {
+      s256 sErrMsg;
+      sErrMsg.vSprint("Feature not yet implemented: %s"_Stz, szFeature);
 
       throw SyntaxException(iLine, iColumn, sErrMsg.szStz());
     }
