@@ -201,7 +201,7 @@ Row* InfoSetBase::pFirstRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  return RowBuffer::aFirstRow();
+  return RowBuffer::pFirstRow();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -241,7 +241,7 @@ Row* InfoSetBase::pNextRow(Row* aPrevRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  return RowBuffer::aNextRow(aPrevRow);
+  return RowBuffer::pNextRow(aPrevRow);
 }
 
 /*----------------------------------------------------------------------------*/

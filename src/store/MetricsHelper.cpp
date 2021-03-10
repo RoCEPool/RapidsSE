@@ -25,13 +25,13 @@ void MetricsHelper::vWriteCsv(InfoSet* pInfoSet, StreamDef* pStreamDef, File* pF
   
   HV_Record hvRecord(pStreamDef->pRowPix());
   
-  for (Row* aInfoRow = pInfoSet->aFirstRow();
-       aInfoRow;
-       aInfoRow = pInfoSet->aNextRow(aInfoRow)) {
+  for (Row* pInfoRow = pInfoSet->pFirstRow();
+       pInfoRow;
+       pInfoRow = pInfoSet->pNextRow(pInfoRow)) {
   
-    vTrace("MetricsHelper: %s\n"_Stz,hvRecord->sz(aInfoRow));
+    vTrace("MetricsHelper: %s\n"_Stz,hvRecord->sz(pInfoRow));
     
-    pFile->vPrint("%s\n"_Stz,hvRecord->sz(aInfoRow));
+    pFile->vPrint("%s\n"_Stz,hvRecord->sz(pInfoRow));
   }
 }
 

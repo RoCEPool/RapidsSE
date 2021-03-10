@@ -74,9 +74,9 @@ namespace STORE
 
     Row* pRowAddress(i8 i_Row);
     i8   nRows(void);
-    Row* aFirstRow(void);
-    Row* aLastRow(void);
-    Row* aNextRow(Row* aPriorRow);
+    Row* pFirstRow(void);
+    Row* pLastRow(void);
+    Row* pNextRow(Row* pPriorRow);
   
 //    void vPrintRows(StreamDef* pStreamDef);
 //    void vShow(StreamDef* pStreamDef);
@@ -604,55 +604,55 @@ i8 RowBox_t<AREA>::nRows(void)
 /* return first ref set in this buffer                                        */
 /*----------------------------------------------------------------------------*/
 template <i8 AREA>
-Row* RowBox_t<AREA>::aFirstRow(void)
+Row* RowBox_t<AREA>::pFirstRow(void)
 {
   //RowBox_t<AREA>::m_xFooter.vAssertFooter();
   vAssertAux0();
 
   RASSERT(m_pRowPix);
   
-  Row* aRow = WspConvergent_t<AREA,Stz,Row>::aFirstItem();
+  Row* pRow = WspConvergent_t<AREA,Stz,Row>::aFirstItem();
   
-  return aRow;
+  return pRow;
 }
 
 /*----------------------------------------------------------------------------*/
 /* return last ref set in this buffer                                         */
 /*----------------------------------------------------------------------------*/
 template <i8 AREA>
-Row* RowBox_t<AREA>::aLastRow(void)
+Row* RowBox_t<AREA>::pLastRow(void)
 {
   //RowBox_t<AREA>::m_xFooter.vAssertFooter();
   vAssertAux0();
 
   RASSERT(m_pRowPix);
 
-  Row* aRow = WspConvergent_t<AREA,Stz,Row>::aFirstItem();
-  Row* aLastRow = nullptr;
+  Row* pRow = WspConvergent_t<AREA,Stz,Row>::aFirstItem();
+  Row* pLastRow = nullptr;
   
-  while (aRow) {
-    aLastRow = aRow;
-    aRow = aNextRow(aRow);
+  while (pRow) {
+    pLastRow = pRow;
+    pRow = pNextRow(pRow);
   };
   
-  return aLastRow;
+  return pLastRow;
 }
 
 /*----------------------------------------------------------------------------*/
 /* return next ref set in this buffer                                         */
 /*----------------------------------------------------------------------------*/
 template <i8 AREA>
-Row* RowBox_t<AREA>::aNextRow(Row* aPriorRow)
+Row* RowBox_t<AREA>::pNextRow(Row* pPriorRow)
 {
   //RowBox_t<AREA>::m_xFooter.vAssertFooter();
   vAssertAux0();
 
   RASSERT(m_pRowPix);
 
-  Row* aRow = WspConvergent_t<AREA,Stz,Row>::aAdjacentTail(aPriorRow,
+  Row* pRow = WspConvergent_t<AREA,Stz,Row>::aAdjacentTail(pPriorRow,
                                                            m_nRowSizeProper);
   
-  return aRow;
+  return pRow;
 }
 
 

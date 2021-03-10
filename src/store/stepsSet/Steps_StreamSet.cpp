@@ -781,7 +781,7 @@ void Step::vStreamSetFirstRow(void)
   
   StreamSet* pStreamSet = _pStreamSet(*( m_pJob->pLogicUnit_job() )->m_xpStreamSet);
   
-  m_pDataStack->vPushPtr(pStreamSet->aFirstRow());
+  m_pDataStack->vPushPtr(pStreamSet->pFirstRow());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -860,7 +860,7 @@ void Step::vStreamSetNextRow(void)
   
   ASSERT(pRow);
   
-  m_pDataStack->vPushPtr(pStreamSet->aNextRow(pRow));
+  m_pDataStack->vPushPtr(pStreamSet->pNextRow(pRow));
 }
 
 /*----------------------------------------------------------------------------*/

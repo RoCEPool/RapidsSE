@@ -302,7 +302,7 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
       if (pInfoSet->szInfoSetNm()->bSame(C_TDEF_COMMANDERRORS)) {
 
         if ( ! m_bCmdErr) {
-          Row *pInfoRow = pInfoSet->aFirstRow();
+          Row *pInfoRow = pInfoSet->pFirstRow();
 
           Stz *sNodeName = pInfoRow->szColVal_ofs(0);
           eEC eErrorCode = (eEC) pInfoRow->iColVal_int(1);
@@ -322,7 +322,7 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
       else if (pInfoSet->szInfoSetNm()->bSame(C_TDEF_EXECERRORS)) {
 
         if ( ! m_bExecErr) {
-          Row *pInfoRow = pInfoSet->aFirstRow();
+          Row *pInfoRow = pInfoSet->pFirstRow();
 
           Stz *sNodeName = pInfoRow->szColVal_ofs(0);
           eEC eErrorCode = (eEC) pInfoRow->iColVal_int(1);
@@ -339,7 +339,7 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
       }
       else if (pInfoSet->szInfoSetNm()->bSame(C_TDEF_LOADRESULT)) {
         
-        Row* pInfoRow = pInfoSet->aFirstRow();
+        Row* pInfoRow = pInfoSet->pFirstRow();
 
         i8 iRowsProcessed = pInfoRow->iColVal_int(0);
         i8 iRowsInvalid   = pInfoRow->iColVal_int(1);

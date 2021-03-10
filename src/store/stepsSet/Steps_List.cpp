@@ -40,9 +40,9 @@ void Step::vListAddRowBuffer(void)
 
   RowSingleList* pRowSingleList = * m_pJob->pLogicUnit_job()->m_xpList;
 
-  for (Row* aRow = pRowBuffer->aFirstRow();
+  for (Row* aRow = pRowBuffer->pFirstRow();
        aRow;
-       aRow = pRowBuffer->aNextRow(aRow)) {
+       aRow = pRowBuffer->pNextRow(aRow)) {
 
     RowSingle* pRowSingle =
       new RowSingle( * m_pJob->pLogicUnit_job()->m_xpStreamDef );

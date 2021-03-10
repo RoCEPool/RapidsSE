@@ -27,7 +27,7 @@ namespace STORE
     RowBuffer(eCN eClassNo, StreamDef* pStreamDef);
    ~RowBuffer(void) noexcept(false);
       
-    Row* aAllotCopyRow(RowSingle* pRowSingle);
+    Row* pAllotCopyRow(RowSingle* pRowSingle);
       
     void vPrintRows(void);
     void vPrintRows(StreamDef* pStreamDef);

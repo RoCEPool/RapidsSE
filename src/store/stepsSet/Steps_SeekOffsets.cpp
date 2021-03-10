@@ -33,9 +33,9 @@ void Step::vSeekOffsetsOperandDump(void)
   
   if (iDetail) {
     i8 i_Ofs = 0;
-    for (Row* pRow = pInfoSet->aFirstRow();
+    for (Row* pRow = pInfoSet->pFirstRow();
          pRow;
-         pRow = pInfoSet->aNextRow(pRow)) {
+         pRow = pInfoSet->pNextRow(pRow)) {
       
       i8 iOffset = pRow->iColVal_int(0);
       i8 nBytes  = pRow->iColVal_int(1);

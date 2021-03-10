@@ -72,7 +72,7 @@ RowBuffer::~RowBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* allot a ref set in this buffer (may return nulltpr)                        */
 /*----------------------------------------------------------------------------*/
-Row* RowBuffer::aAllotCopyRow(RowSingle* pRowSingle)
+Row* RowBuffer::pAllotCopyRow(RowSingle* pRowSingle)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -173,7 +173,7 @@ void RowBuffer::vPrintRows(StreamDef* pStreamDef)
   // as the limitOp may have truncated the rows via setting the nItems()
   
   // get the first row
-  Row* pRow = aFirstRow();
+  Row* pRow = pFirstRow();
   HV_RowSingle hvRowSingle(pStreamDef);
   
   for (i8 i_Row = 0; i_Row < nItems(); i_Row++) {
@@ -182,7 +182,7 @@ void RowBuffer::vPrintRows(StreamDef* pStreamDef)
     hvRecord->vPrintAsRow();
     
     // get the next row
-    pRow = aNextRow(pRow);
+    pRow = pNextRow(pRow);
   }
 }
 
@@ -203,14 +203,14 @@ void RowBuffer::vShow(StreamDef* pStreamDef)
   
   vTrace("  partition: %lld \n"_Stz, m_tPtnNo);
   
-  Row* pRow = aFirstRow();
+  Row* pRow = pFirstRow();
   HV_RowSingle hvRowSingle(pStreamDef);
   
   HV_Record hvRecord(pStreamDef->pRowPix());
   while (pRow) {
     hvRowSingle->vCopyRow(pRow);
     hvRecord->vToCsvRecord(hvRowSingle->pRowCurrent());
-    pRow = aNextRow(pRow);
+    pRow = pNextRow(pRow);
     hvRecord->vPrintAsRow();
   }
   

@@ -565,7 +565,7 @@ void Step::vInfoSetFirstRow(void)
   
   InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
   
-  m_pDataStack->vPushPtr(pInfoSet->aFirstRow());
+  m_pDataStack->vPushPtr(pInfoSet->pFirstRow());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -678,7 +678,7 @@ void Step::vInfoSetNextRow(void)
   
   ASSERT(pRow);
   
-  m_pDataStack->vPushPtr(pInfoSet->aNextRow(pRow));
+  m_pDataStack->vPushPtr(pInfoSet->pNextRow(pRow));
 }
 
 /*----------------------------------------------------------------------------*/
