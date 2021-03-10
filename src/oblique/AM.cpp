@@ -205,8 +205,21 @@ WriteBehind* AM::THREAD::pWriteBehind(Thread* pThread)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
+/*----------------------------------------------------------------------------*/
+/* has the system been fully started?                                         */
+/*----------------------------------------------------------------------------*/
+bool AM::bHasStarted(void)
+{
+  if (! gpAttachMap || ! gpAttachMap->m_pGrid)
+    return false;
+  
+  return gpAttachMap->m_pGrid->bHasStarted();
+}
 
 
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 Stz*  AM::szVersionString(void) { return RAPIDSSE_VERSION_STRING; }
 i8    AM::iVersionNumber(void)  { return RAPIDSSE_VERSION_NUMBER; }
@@ -272,7 +285,6 @@ i8   AM::iElapsedSsec(void)   { return gpAttachMap->m_oBirth.iElapsedSsec();  }
 i8   AM::iEpoch(void)         { return gpAttachMap->m_iEpoch;                 }
 Format* AM::pFmt(void)        { return & gpAttachMap->m_oFormat;          }
 Grid* AM::pGrid(void)         { return gpAttachMap->m_pGrid;                  }
-bool AM::bHasStarted(void)    { return gpAttachMap->m_pGrid->bHasStarted();   }
 Heaps* AM::pHeaps(void)   { return & gpAttachMap->m_xHeaps;             }
 i8   AM::nIndexEntries(void)  { return gpAttachMap->m_xSysArgs.m_nIndexEntries;      }
 JobList* AM::pLocalJobs(void) {
@@ -615,11 +627,23 @@ i8 AM::nRndSkipLevel(void) {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
-Table* AM::pTableFind(Stz* szTableNm) {
-  
+Table* AM::pTableFind(Stz* szTableNm)
+{
+  Table* pTable = nullptr;
+
   DicStack* pDicStack = pTaskDicStack();
   
-  Table* pTable = Table::pFindTable(pDicStack,szTableNm);
+  if (pDicStack) {
+    pTable = Table::pFindTable(pDicStack,szTableNm);
+  }
+  else {
+    pDicStack = new DicStack;
+    
+    if (pDicStack->bTest("rapidsse"_Stz,"public"_Stz,szTableNm))
+      pTable = pDicStack->pTable();
+    
+    delete pDicStack;
+  }
   
   return pTable;
 }
@@ -2047,6 +2071,10 @@ bool AM::bTaskIsLocked(Task* pTask) {
 }
 
 DicStack* AM::pTaskDicStack(void) {
+  
+  if (! pThisTLSTask())
+    return nullptr;
+  
   return pThisTLSTask()->pDicStack();
 }
 

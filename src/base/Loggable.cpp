@@ -48,9 +48,12 @@ void Loggable::vLog(eEV eEvent, Stz* szFormat, ...)
   if (C_DONT_LOG == m_iLogCtl)
     return;
  
+  if (! AM::bHasStarted())
+    return;
+  
   if (   CN_DIR == eGetClassNo()
       || CN_FIFO == eGetClassNo()
-      || CN_FILE == eGetClassNo()
+      //|| CN_FILE == eGetClassNo()
       || CN_JOB == eGetClassNo()
       || CN_JOB__FIND == eGetClassNo()
       || CN_LOCK == eGetClassNo()
@@ -211,6 +214,9 @@ void Loggable::vAddRow(eEV eEvent, Stz* szNote)
   
   WriteBehind* pWriteBehind = AM::THREAD::pWriteBehind();
   
+  printf("Loggable::vAddRow : %s %s\n",
+         aEV[eEvent]->azChar(),
+         szNote->azChar());
 }
 
 /*============================================================================*/
