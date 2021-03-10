@@ -18,7 +18,7 @@ namespace STORE
   {
   protected:
 
-    s32 m_sInfoSetNm;
+    s32 m_sBufferNm;
 
     i8 m_nRowSizeProper;
   
@@ -119,8 +119,8 @@ namespace STORE
     void  vResetRowPix(void);
     void  vZeroRow(Row* aRow);
   
-    Stz* szInfoSetNm(void);
-    void vInfoSetNm(Stz* szInfoSetNm);
+    Stz* szBufferNm(void);
+    void vBufferNm(Stz* szBufferNm);
 
   private:
     i8    i_RowBufferCell(i8 i_Row);
@@ -1226,25 +1226,25 @@ i8 RowBox_t<AREA>::i_RowBufferCell(i8 i_Row)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get name of info set                                                       */
+/* get name of buffer                                                         */
 /*----------------------------------------------------------------------------*/
 template <i8 AREA>
-Stz* RowBox_t<AREA>::szInfoSetNm(void)
+Stz* RowBox_t<AREA>::szBufferNm(void)
 {
   _poolAddress_(this); _footer_();
 
-  return m_sInfoSetNm;
+  return m_sBufferNm;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set name of info set                                                       */
+/* set name of buffer                                                         */
 /*----------------------------------------------------------------------------*/
 template <i8 AREA>
-void RowBox_t<AREA>::vInfoSetNm(Stz* szInfoSetNm)
+void RowBox_t<AREA>::vBufferNm(Stz* szBufferNm)
 {
   _poolAddress_(this); _footer_();
 
-  m_sInfoSetNm = szInfoSetNm;
+  m_sBufferNm = szBufferNm;
 }
 
 

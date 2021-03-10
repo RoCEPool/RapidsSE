@@ -30,7 +30,7 @@ InfoSetBase::InfoSetBase(eCN eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
   
-  m_sInfoSetNm = C_NO_NAME;
+  m_sBufferNm = C_NO_NAME;
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
 }
@@ -43,7 +43,7 @@ InfoSetBase::InfoSetBase(eCN eClassNo, StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
   
-  m_sInfoSetNm = pStreamDef->szName();
+  m_sBufferNm = pStreamDef->szName();
     
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
 }

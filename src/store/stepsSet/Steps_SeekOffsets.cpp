@@ -46,7 +46,7 @@ void Step::vSeekOffsetsOperandDump(void)
   }
   
   vTrace("%s : %lld rows"_Stz,
-         pInfoSet->szInfoSetNm(),
+         pInfoSet->szBufferNm(),
          pInfoSet->nRows());
   
   EXIT();

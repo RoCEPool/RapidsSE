@@ -641,9 +641,9 @@ void Step::vInfoSetName(void)
   
   InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
 
-  Stz* szInfoSetNm = pInfoSet->szInfoSetNm();
+  Stz* szBufferNm = pInfoSet->szBufferNm();
   
-  m_pDataStack->vPushStz(szInfoSetNm);
+  m_pDataStack->vPushStz(szBufferNm);
 
   EXIT();
 }

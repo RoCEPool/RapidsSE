@@ -823,9 +823,9 @@ void Step::vStreamSetName(void)
   
   StreamSet* pStreamSet = _pStreamSet(*( m_pJob->pLogicUnit_job() )->m_xpStreamSet);
 
-  Stz* szInfoSetNm = pStreamSet->szInfoSetNm();
+  Stz* szBufferNm = pStreamSet->szBufferNm();
   
-  m_pDataStack->vPushStz(szInfoSetNm);
+  m_pDataStack->vPushStz(szBufferNm);
 
   EXIT();
 }

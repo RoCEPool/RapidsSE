@@ -298,8 +298,8 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
       
     case CN_INFOSET: {
       InfoSet* pInfoSet = _pInfoSet(pOperand);
-      ASSERT( ! pInfoSet->szInfoSetNm()->bSame(C_NO_NAME) );
-      if (pInfoSet->szInfoSetNm()->bSame(C_TDEF_COMMANDERRORS)) {
+      ASSERT( ! pInfoSet->szBufferNm()->bSame(C_NO_NAME) );
+      if (pInfoSet->szBufferNm()->bSame(C_TDEF_COMMANDERRORS)) {
 
         if ( ! m_bCmdErr) {
           Row *pInfoRow = pInfoSet->pFirstRow();
@@ -319,7 +319,7 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
         }
         AM::vDeleteOperand(pOperand);
       }
-      else if (pInfoSet->szInfoSetNm()->bSame(C_TDEF_EXECERRORS)) {
+      else if (pInfoSet->szBufferNm()->bSame(C_TDEF_EXECERRORS)) {
 
         if ( ! m_bExecErr) {
           Row *pInfoRow = pInfoSet->pFirstRow();
@@ -337,7 +337,7 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
         }
         AM::vDeleteOperand(pOperand);
       }
-      else if (pInfoSet->szInfoSetNm()->bSame(C_TDEF_LOADRESULT)) {
+      else if (pInfoSet->szBufferNm()->bSame(C_TDEF_LOADRESULT)) {
         
         Row* pInfoRow = pInfoSet->pFirstRow();
 
@@ -492,7 +492,7 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
     // -- -- -- -- -- --
     case CN_STREAMSET: {
       StreamSet* pStreamSet = _pStreamSet(pOperand);
-      ASSERT( ! pStreamSet->szInfoSetNm()->bSame(C_NO_NAME) );
+      ASSERT( ! pStreamSet->szBufferNm()->bSame(C_NO_NAME) );
       m_ixRowsProcessed += pStreamSet->nRows();
       vTrace("\n"_Stz);
       pStreamSet->vPrintRows(m_pStreamDef_result);
