@@ -21,10 +21,8 @@ namespace STORE
   
     InfoSetBase(eCN eClassNo);
     InfoSetBase(eCN eClassNo, StreamDef* pStreamDef);
-    ~InfoSetBase(void) noexcept(false);
+   ~InfoSetBase(void) noexcept(false);
     
-    Row* pAllotRow(i8 iVargsBegin, ...);
-    Row* pAllotRow(StreamDef* pStreamDef, i8 iVargsBegin, ...);
     Stz* szInfoSetNm(void);
     void vInfoSetNm(Stz* szInfoSetNm);
     

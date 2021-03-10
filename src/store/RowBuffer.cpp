@@ -136,6 +136,141 @@ Row* RowBuffer::pAllotCopyRow(RowSingle* pRowSingle)
 }
 
 /*----------------------------------------------------------------------------*/
+/* allot a new row                                                            */
+/*----------------------------------------------------------------------------*/
+Row* RowBuffer::pAllotRow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  // allot a row
+  Row* pRow = RowBox_t::pAllotRow();
+  
+  return pRow;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allot a row copying the rowSingle into it                                  */
+/*----------------------------------------------------------------------------*/
+Row* RowBuffer::pAllotRow(i8 iVArgsBegin, ...)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  // allot a row
+  Row* ayRow = RowBuffer::pAllotRow();
+
+  Stz* ayDst;
+
+  if ( ! ayRow )
+    return nullptr;
+
+  ASSERT(C_VARGS_BEGIN == iVArgsBegin);
+
+  ColPix* axaColPix = RowBox_t::axaColPix();
+
+  va_list xVarArgs;
+
+  va_start(xVarArgs,iVArgsBegin);
+
+  for (i8 i_Col = 0; i_Col < nColumns(); i_Col++) {
+
+    ColPix* pColPix = &axaColPix[i_Col];
+
+    // STRING_DEPOSIT
+    if (DM_VCH == pColPix->m_uDatum) {
+      Stz* szVal = va_arg(xVarArgs,Stz*);
+      if (szVal) {
+        ayDst = (Stz*)aAllotHead(StrLib::nSize(szVal->azChar()));
+
+        // return early if no more space for the string
+        if ( ! ayDst )
+          return nullptr;
+
+        StrLib::vCopy((char*)ayDst, szVal->azChar());
+
+        ayRow->vColVal_ofs(i_Col,ayDst);
+      }
+      else {
+        ayRow->vSetColNull(i_Col);
+      }
+    }
+    else {
+      i8 iVal = va_arg(xVarArgs,i8);
+      ayRow->vColVal_int(i_Col,iVal);
+    }
+    // END STRING_DEPOSIT
+
+  }
+
+  i8 iVArgsEnd = va_arg(xVarArgs,i8);
+  ASSERT(C_VARGS_END == iVArgsEnd);
+  UNUSED(iVArgsEnd);
+
+  va_end(xVarArgs);
+
+  return ayRow;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allot a row copying the rowSingle into it                                  */
+/*----------------------------------------------------------------------------*/
+ Row* RowBuffer::pAllotRow(StreamDef* pStreamDef, i8 iVArgsBegin, ...)
+ {
+   _precondition_(_ADDRESS_,_MAGIC_);
+   
+   // allot a row
+   Row* ayRow = RowBuffer::pAllotRow();
+   
+   Stz* ayDst;
+   
+   if ( ! ayRow )
+     return nullptr;
+   
+   ASSERT(C_VARGS_BEGIN == iVArgsBegin);
+   
+   va_list xVarArgs;
+   
+   va_start(xVarArgs,iVArgsBegin);
+   
+   for (i8 i_Col = 0; i_Col < pStreamDef->nColumns(); i_Col++) {
+   
+     Column* pCol = pStreamDef->pGetColumn(i_Col);
+     
+     // STRING_DEPOSIT
+     if (DM_VCH == pCol->eDatum()) {
+       Stz* szVal = va_arg(xVarArgs,Stz*);
+       if (szVal) {
+         ayDst = (Stz*)aAllotHead(StrLib::nSize(szVal->azChar()));
+         
+         // return early if no more space for the string
+         if ( ! ayDst )
+           return nullptr;
+         
+         StrLib::vCopy((char*)ayDst, szVal->azChar());
+
+         ayRow->vColVal_ofs(i_Col,ayDst);
+       }
+       else {
+         ayRow->vSetColNull(i_Col);
+       }
+     }
+     else {
+       i8 iVal = va_arg(xVarArgs,i8);
+       ayRow->vColVal_int(i_Col,iVal);
+     }
+     // END STRING_DEPOSIT
+
+   }
+   
+   i8 iVArgsEnd = va_arg(xVarArgs,i8);
+   ASSERT(C_VARGS_END == iVArgsEnd);
+   UNUSED(iVArgsEnd);
+ 
+   va_end(xVarArgs);
+   
+   return ayRow;
+ }
+
+/*----------------------------------------------------------------------------*/
 /* print rows                                                                 */
 /*----------------------------------------------------------------------------*/
 void RowBuffer::vPrintRows(void)

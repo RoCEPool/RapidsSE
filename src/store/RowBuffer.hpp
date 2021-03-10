@@ -28,7 +28,11 @@ namespace STORE
    ~RowBuffer(void) noexcept(false);
       
     Row* pAllotCopyRow(RowSingle* pRowSingle);
-      
+  
+    Row* pAllotRow(void);
+    Row* pAllotRow(i8 iVargsBegin, ...);
+    Row* pAllotRow(StreamDef* pStreamDef, i8 iVargsBegin, ...);
+
     void vPrintRows(void);
     void vPrintRows(StreamDef* pStreamDef);
     void vShow(StreamDef* pStreamDef);
