@@ -161,9 +161,9 @@ Thread* AM::THREAD::pNewThread(void)
   
   Thread* pThread = new Thread;
 
-  WriteBehind* pWriteBehind = new WriteBehind;
+  //WriteBehind* pWriteBehind = new WriteBehind;
   
-  pThread->vObject0(pWriteBehind);
+  //pThread->vObject0(pWriteBehind);
   
   return pThread;
 }
@@ -183,13 +183,18 @@ WriteBehind* AM::THREAD::pWriteBehind(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get write behind of given thread                                           */
+/* get write behind of given thread (lazy creation of write behind)           */
 /*----------------------------------------------------------------------------*/
 WriteBehind* AM::THREAD::pWriteBehind(Thread* pThread)
 {
   _static_
   
   WriteBehind* pWriteBehind = _pWriteBehind(pThread->pObject0());
+  
+  if (! pWriteBehind) {
+    pWriteBehind = new WriteBehind;
+    pThread->vObject0(pWriteBehind);
+  }
   
   return pWriteBehind;
 }
