@@ -19,7 +19,9 @@ macro AM_HANDLER_STREAMDEF_GBY_END
 // macro AM_HANDLER_STREAMDEF_GBY_END                                         //
 //----------------------------------------------------------------------------//
   // AM_HANDLER_STREAMDEF_GBY_END
+  EO_PUSH_RLU_INDEXDEF
   EO_RLU_INDEXTREE_NEW
+  EO_PUSH_RLU_INDEXDEF
   EO_RLU_INDEXDEF_DELETE
 
   //EO_INDEXTREE_TMP_SET

@@ -2479,7 +2479,7 @@ void vDev_RLU_INDEXDEF_ADDCOLUMN(i8** aaiDstk)
 
   // get the type of the column
   eCT eColType = (eCT)I_PopInt();
-  
+
   pIndexDef->vAddColumn(szColumnName,eColType);
 
   S_StrDrp();

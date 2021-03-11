@@ -248,6 +248,7 @@ eEC ExprEval::eAddGby(Column* pColumn, i8 iGby)
       StrLib::vSprintCat(m_sAsmGbyIdx, "  EO_STRING \"int%lld\"\n"_Stz, iLocal);
       StrLib::vSprintCat(m_sAsmGbyIdx, "  EO_PUSH_COLUMN_TYPE %s\n"_Stz,
                          aCT_long[pColumn->eColumnType()]);
+      StrLib::vSprintCat(m_sAsmGbyIdx, "  EO_PUSH_RLU_INDEXDEF\n"_Stz);
       StrLib::vSprintCat(m_sAsmGbyIdx, "  EO_RLU_INDEXDEF_ADDCOLUMN\n"_Stz);
 
       StrLib::vSprintCat(m_sPayLoadKey, "  EO_PUSH_LOCALI %lld\n"_Stz, iLocal);

@@ -1411,6 +1411,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         P_PushPtr(aRluCommon->m_pEntWrk);
         break;//+endCase
 
+      // entwrk push
+      case EO_PUSH_RLU_INDEXDEF: ArgNil(); // push indexDef
+        dLU0(EO_PUSH_RLU_INDEXDEF);
+        P_PushPtr(aRluCommon->m_pIndexDef);
+        break;//+endCase
+
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // pot
       case EO_PUSH_RLU_POT: ArgNil(); // push pot
@@ -1750,13 +1756,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_RLU_INDEXDEF_ADDCOLUMN: ArgNil(); // add a column to indexDefRlu[]
         dLU0(EO_RLU_INDEXDEF_ADDCOLUMN);
-        P_PushPtr(aRluCommon->m_pIndexDef);
         vDev_RLU_INDEXDEF_ADDCOLUMN(&aiDstk);
         break;//+endCase
 
       case EO_RLU_INDEXDEF_DELETE: ArgNil(); // delete the indexDefRlu[]
         dLU0(EO_RLU_INDEXDEF_DELETE);
-        P_PushPtr(aRluCommon->m_pIndexDef);
         vDev_RLU_INDEXDEF_DELETE(&aiDstk);
         aRluCommon->m_pIndexDef = nullptr;
         break;//+endCase
@@ -1769,7 +1773,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_RLU_INDEXTREE_NEW: ArgNil(); // new an indexTree in indexTreeRlu[]
         dLU0(EO_RLU_INDEXTREE_NEW);
-        P_PushPtr(aRluCommon->m_pIndexDef);
         vDev_RLU_INDEXTREE_NEW(&aiDstk);
         aRluCommon->m_pIndexTree = P_PopPtr();
         break;//+endCase

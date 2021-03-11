@@ -41,6 +41,7 @@ enum eEO : u1 // expression operators
 
   // push RLU
   /*  S  */ EO_PUSH_RLU_ENTWRK,     // push entwrk from the rlu
+  /*  S  */ EO_PUSH_RLU_INDEXDEF,   // push indexdef from the rlu
   /*  S  */ EO_PUSH_RLU_POT,        // push pot from the rlu
   /*  S  */ EO_PUSH_RLU_PTN,        // push partition from the rlu
 
@@ -417,6 +418,7 @@ static Stz* aEO[]
 
   // push rlu
   /*    */ "EO_PUSH_RLU_ENTWRK"_Stz,
+  /*    */ "EO_PUSH_RLU_INDEXDEF"_Stz,
   /*    */ "EO_PUSH_RLU_POT"_Stz,
   /*    */ "EO_PUSH_RLU_PTN"_Stz,
 
@@ -796,6 +798,7 @@ static EoArg EoArgs[]
 
   // push rlu
   { EA_NONE,    0 },  // EO_PUSH_RLU_ENTWRK
+  { EA_NONE,    0 },  // EO_PUSH_RLU_INDEXDEF
   { EA_NONE,    0 },  // EO_PUSH_RLU_POT
   { EA_NONE,    0 },  // EO_PUSH_RLU_PTN
 
