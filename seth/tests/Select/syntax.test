@@ -1,0 +1,165 @@
+/*----------------------------------------------------------------------------*/
+/* SELECT syntax tests                                                        */
+/*----------------------------------------------------------------------------*/
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Resolving table names
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+// Select a non-existent table
+SELECT col1 from badTable;
+failure contains: 'Unknown table name: badTable'
+
+CREATE TABLE selectsyntax1 (
+  col1 INTEGER,
+  col2 VARCHAR(32),
+  col3 INTEGER
+);
+success
+
+// Select an existing table by tablename only
+SELECT col1, col2, col3 FROM selectsyntax1;
+rows: 0
+
+// Select an existing table by schemaName.tableName
+SELECT col1, col2, col3 FROM public.selectsyntax1;
+rows: 0
+
+// Select an existing table by catalogName.schemaName.tableName
+SELECT col1, col2, col3 FROM rapidsse.public.selectsyntax1;
+rows: 0
+
+// Select an existing table but use an incorrect schema
+SELECT col1, col2, col3 FROM badSchema.selectsyntax1;
+failure contains: 'Unknown table name: badSchema.selectsyntax1'
+
+// Select an existing table but use an incorrect schema
+SELECT col1, col2, col3 FROM rapidsse.badSchema.selectsyntax1;
+failure contains: 'Unknown table name: rapidsse.badSchema.selectsyntax1'
+
+// Select an existing table but use an incorrect catalog
+SELECT col1, col2, col3 FROM badCatalog.public.selectsyntax1;
+failure contains: 'Unknown table name: badCatalog.public.selectsyntax1'
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Resolving column names
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Select a non-existant column
+SELECT bad, col2 FROM selectsyntax1;
+failure contains: 'Unknown column name: bad'
+
+SELECT col1, bad FROM selectsyntax1;
+failure contains: 'Unknown column name: bad'
+
+SELECT col1, bad, col2 FROM selectsyntax1;
+failure contains: 'Unknown column name: bad'
+
+
+// Select an existing column by columnName only
+SELECT col1 FROM selectsyntax1;
+rows: 0
+
+// Select an existing column by tableName.columnName
+SELECT selectsyntax1.col1 FROM selectsyntax1;
+rows: 0
+
+// Select an existing column by schemaName.tableName.columnName
+SELECT public.selectsyntax1.col1 FROM selectsyntax1;
+rows: 0
+
+// Select an existing column by catalogName.schemaName.tableName.columnName
+SELECT rapidsse.public.selectsyntax1.col1 FROM selectsyntax1;
+rows: 0
+
+
+// Select *
+SELECT * FROM selectsyntax1;
+rows:
+['col1', 'col2', 'col3']
+
+// Select *,*
+SELECT *, * FROM selectsyntax1;
+rows:
+['col1', 'col2', 'col3', 'col1', 'col2', 'col3']
+
+// Select *, col1
+SELECT *, col1 FROM selectsyntax1;
+rows:
+['col1', 'col2', 'col3', 'col1']
+
+// Select col1, *
+SELECT *, col1 FROM selectsyntax1;
+rows:
+['col1', 'col2', 'col3', 'col1']
+
+// Select catalog.schema.table.*
+SELECT rapidsse.public.selectsyntax1.* FROM selectsyntax1;
+rows:
+['col1', 'col2', 'col3']
+
+// Select schema.table.*
+SELECT public.selectsyntax1.* FROM selectsyntax1;
+rows:
+['col1', 'col2', 'col3']
+
+// Select table.*
+SELECT selectsyntax1.* FROM selectsyntax1;
+rows:
+['col1', 'col2', 'col3']
+
+// Select badTable.*
+SELECT badTable.* FROM selectsyntax1;
+failure contains: 'Column wildcard does not resolve to any tables in the query: badTable.*'
+
+// Select catalog.badSchema.table.*
+SELECT badSchema.selectsyntax1.*, col1 FROM selectsyntax1;
+failure contains: 'Column wildcard does not resolve to any tables in the query: badSchema.selectsyntax1.*'
+
+// Select badCatalog.schema.table.*
+SELECT badCatalog.public.selectsyntax1.*, col1 FROM selectsyntax1;
+failure contains: 'Column wildcard does not resolve to any tables in the query: badCatalog.public.selectsyntax1.*'
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Table & column name case insensitivity
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// select…from SELECTSYNTAX1
+SELECT * FROM SELECTSYNTAX1;
+rows: 0
+
+// select…from selectsyntax1
+SELECT * FROM selectsyntax1;
+rows: 0
+
+// select…from SelectSyntax1
+SELECT * FROM SelectSyntax1;
+rows: 0
+
+
+// select COLUMN…
+SELECT COL1, col2 FROM selectsyntax1;
+rows:
+['col1', 'col2']
+
+// select column…
+SELECT col1, col2 FROM selectsyntax1;
+rows:
+['col1', 'col2']
+
+// select CoLuMn…
+SELECT CoL1, col2 FROM selectsyntax1;
+rows:
+['col1', 'col2']
+
+
+CLEANUP {
+  drop table selectsyntax1;
+  mute
+
+  bye;
+  mute
+}
+
