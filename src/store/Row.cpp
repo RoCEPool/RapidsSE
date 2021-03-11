@@ -6,6 +6,7 @@
 
 
 #include "Row.hpp"
+#include "RowBuffer.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -264,6 +265,18 @@ void Row::vSetColNull(i8 i_Col)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
   
   m_wxaColumnCell[i_Col].vSetNull();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the row buffer that contains this row                                  */
+/*----------------------------------------------------------------------------*/
+RowBuffer* Row::pToRowBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
+
+  RowBuffer* pRowBuffer = RowBuffer::pToRowBuffer(this);
+    
+  return pRowBuffer;
 }
 
 /*============================================================================*/

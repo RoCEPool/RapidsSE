@@ -8,7 +8,6 @@
 
 #include "WriteBehind.hpp"
 
-
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -55,7 +54,20 @@ Row* WriteBehind::pAllotRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEBEHIND,_FOOTER_);
   
-  return nullptr;
+  if (! m_pRowBuffer) {
+    m_pRowBuffer = new RowBuffer(CN_ROWBUFFER,m_pStreamDef);
+  }
+  
+  Row* pRow = m_pRowBuffer->pAllotRow();
+  
+  if (! pRow) {
+    delete m_pRowBuffer;
+    m_pRowBuffer = new RowBuffer(CN_ROWBUFFER,m_pStreamDef);
+    Row* pRow = m_pRowBuffer->pAllotRow();
+    RASSERT(pRow);
+  }
+  
+  return pRow;
 }
 
 /*----------------------------------------------------------------------------*/
