@@ -2670,7 +2670,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(EO_IXT_TRV_BEGIN);
         aRluCommon->m_aTmpEnt =
           aDev_IXT_TRV_BEGIN_OLD(pLU,aRluCommon->m_pDevTmpIxt);
-        aRluCommon->m_aTmpEntArray = aRluCommon->m_aEntArray;
+        //aRluCommon->m_aTmpEntArray = aRluCommon->m_aEntArray;
         *(++aiDstk) = (i8)aRluCommon->m_aTmpEnt;
         break;//+endCase
         

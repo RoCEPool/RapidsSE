@@ -45,9 +45,9 @@ struct RluCommon                      // **IF YOU CHANGE THIS DO A CLEAN BUILD**
   struct Ent_int* m_aEntArray;
 
   //struct Ent_int* m_aAltEntArray;
-  struct Ent_int* m_aDstEntArray;
+  //struct Ent_int* m_aDstEntArray;
   //struct Ent_int* m_aSrcEntArray;
-  struct Ent_int* m_aTmpEntArray;
+  //struct Ent_int* m_aTmpEntArray;
 
   struct Ent_int* m_aAltEnt;
   struct Ent_int* m_aDstEnt;
