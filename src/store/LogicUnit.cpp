@@ -1742,11 +1742,18 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
       case EO_REG_INDEXDEF_ADDCOLUMN: GetStr(iArg); // add a column to indexDef[]
-        dLU0(EO_REG_INDEXDEF_ADDCOLUMN);
-        iTopA = *(aiDstk--);
-        vDev_REG_INDEXDEF_ADDCOLUMN(pLU, (Stz*)iArg, iTopA);
+//        dLU0(EO_REG_INDEXDEF_ADDCOLUMN);
+//        iTopA = *(aiDstk--);
+//        vDev_REG_INDEXDEF_ADDCOLUMN(pLU, (Stz*)iArg, iTopA);
+        RASSERT(0);
         break;//+endCase
-        
+
+      case EO_RLU_INDEXDEF_ADDCOLUMN: ArgNil(); // add a column to indexDefRlu[]
+        dLU0(EO_RLU_INDEXDEF_ADDCOLUMN);
+        P_PushPtr(aRluCommon->m_pIndexDef);
+        vDev_RLU_INDEXDEF_ADDCOLUMN(&aiDstk);
+        break;//+endCase
+
       case EO_RLU_INDEXDEF_DELETE: ArgNil(); // delete the indexDefRlu[]
         dLU0(EO_RLU_INDEXDEF_DELETE);
         P_PushPtr(aRluCommon->m_pIndexDef);

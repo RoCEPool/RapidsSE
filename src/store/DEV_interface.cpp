@@ -2464,17 +2464,27 @@ void vDev_REG_EOSMARKER_NEW(void* aLU)
 /*----------------------------------------------------------------------------*/
 /* add a column to indexDefRlu[]                                              */
 /*----------------------------------------------------------------------------*/
-void vDev_REG_INDEXDEF_ADDCOLUMN(void* aLU, Stz* sColumnNm, i8 iColumnType)
+void vDev_RLU_INDEXDEF_ADDCOLUMN(i8** aaiDstk)
 {
   _static_
+
+  i8 *aiDstk = *aaiDstk;
+  i8 nSize;
+
+  // get the indexDef
+  IndexDef* pIndexDef = _pIndexDef(P_PopPtr());
+
+  // get the name of the column
+  Stz* szColumnName = (Stz*)S_StrAdr();
+
+  // get the type of the column
+  eCT eColType = (eCT)I_PopInt();
   
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-  
-  eCT eColType = (eCT)iColumnType;
-  
-  IndexDef* pIndexDef = _pIndexDef(pLogicUnit->m_xRluCommon.m_pIndexDef);
-  
-  pIndexDef->vAddColumn(sColumnNm,eColType);
+  pIndexDef->vAddColumn(szColumnName,eColType);
+
+  S_StrDrp();
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/

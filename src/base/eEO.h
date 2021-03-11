@@ -136,10 +136,11 @@ enum eEO : u1 // expression operators
   /*  M  */ EO_PUSH_REG_INDEXTREE,         // push indexTree[]
 
   // RLU operators
+  /*  M  */ EO_RLU_INDEXDEF_ADDCOLUMN,     // add a column to indexDefRlu[]
   /*  M  */ EO_RLU_INDEXDEF_DELETE,        // delete the indexDefRlu[]
   /*  M  */ EO_RLU_INDEXDEF_NEW,           // new an indexDef in indexDefRlu[]
   /*  M  */ EO_RLU_INDEXTREE_NEW,          // new an indexTree in indexTreeRlu[]
-  /*  M  */ EO_RLU_INDEXTREE_NULL,          // null indexTreeRlu[]
+  /*  M  */ EO_RLU_INDEXTREE_NULL,         // null indexTreeRlu[]
 
   // column set
   /*  M  */ EO_SET_COLUMN,       // add column to set
@@ -514,6 +515,7 @@ static Stz* aEO[]
   /*    */ "EO_PUSH_REG_INDEXTREE"_Stz,
 
   // Rlu operators
+  /*    */ "EO_RLU_INDEXDEF_ADDCOLUMN"_Stz,
   /*    */ "EO_RLU_INDEXDEF_DELETE"_Stz,
   /*    */ "EO_RLU_INDEXDEF_NEW"_Stz,
   /*    */ "EO_RLU_INDEXTREE_NEW"_Stz,
@@ -896,6 +898,7 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_PUSH_REG_INDEXTREE
 
   // RLU operators
+  { EA_NONE,    0 },  // EO_RLU_INDEXDEF_ADDCOLUMN
   { EA_NONE,    0 },  // EO_RLU_INDEXDEF_DELETE
   { EA_NONE,    0 },  // EO_RLU_INDEXDEF_NEW
   { EA_NONE,    0 },  // EO_RLU_INDEXTREE_NEW

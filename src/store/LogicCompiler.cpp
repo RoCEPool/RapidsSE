@@ -152,7 +152,7 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_POT_USE_STREAMDEFOUT"_Stz, (const void *) vDev_POT_USE_STREAMDEFOUT       },
   
   { "vDev_REG_EOSMARKER_NEW"_Stz,          (const void *) vDev_REG_EOSMARKER_NEW      },
-  { "vDev_REG_INDEXDEF_ADDCOLUMN"_Stz,     (const void *) vDev_REG_INDEXDEF_ADDCOLUMN },
+  { "vDev_RLU_INDEXDEF_ADDCOLUMN"_Stz,     (const void *) vDev_RLU_INDEXDEF_ADDCOLUMN },
   { "vDev_RLU_INDEXDEF_DELETE"_Stz,        (const void *) vDev_RLU_INDEXDEF_DELETE    },
   { "vDev_RLU_INDEXDEF_NEW"_Stz,           (const void *) vDev_RLU_INDEXDEF_NEW       },
 

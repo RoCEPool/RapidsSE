@@ -112,7 +112,8 @@ void vDev_PIX_STM_PRINT(void* aLU);
 void vDev_POT_USE_STREAMDEFOUT(void* aLU, i8 iAddPtnHash);
 
 void vDev_REG_EOSMARKER_NEW(void* aLU);
-void vDev_REG_INDEXDEF_ADDCOLUMN(void* aLU, Stz* sColumnNm, i8 iColumnType);
+
+void vDev_RLU_INDEXDEF_ADDCOLUMN(i8** aaiDstk);
 void vDev_RLU_INDEXDEF_DELETE(i8** aaiDstk);
 void vDev_RLU_INDEXDEF_NEW(i8** aaiDstk);
 
