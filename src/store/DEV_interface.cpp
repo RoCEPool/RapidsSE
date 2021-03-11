@@ -508,7 +508,7 @@ i8 iDev_IXT_CMP_SRCALT(void* aLU)
     return iRes;
   }
   
-
+/*
   i8 iSrcVal = *(i8*)aSrcKey;
   i8 iAltVal = *(i8*)aAltKey;
 
@@ -519,7 +519,9 @@ i8 iDev_IXT_CMP_SRCALT(void* aLU)
    iRes = 0;
   else
    iRes = 1;
-
+*/
+  iRes = ((Ent_int*)(pLogicUnit->m_pDevSrcIxt->m_aEnt))->m_iIntElm0 ==
+         ((Ent_int*)(pLogicUnit->m_pDevAltIxt->m_aEnt))->m_iIntElm0;
   return iRes;
 }
 
@@ -554,7 +556,7 @@ i8 iDev_IXT_CMP_WRKALT(void* aLU)
      return iRes;
   }
 
-  
+ /*
   i8 iWrkVal = *(i8*)aWrkKey;
   i8 iAltVal = *(i8*)aAltKey;
 
@@ -565,6 +567,9 @@ i8 iDev_IXT_CMP_WRKALT(void* aLU)
    iRes = 0;
   else
    iRes = 1;
+*/
+  iRes = ((Ent_int*)(pLogicUnit->m_xRluCommon.m_aWrkEnt))->m_iIntElm0 ==
+         ((Ent_int*)(pLogicUnit->m_pDevAltIxt->m_aEnt))->m_iIntElm0;
 
   return iRes;
 }

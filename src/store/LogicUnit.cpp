@@ -2771,19 +2771,21 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         *(++aiDstk) = (i8)aRluCommon->m_aSrcEnt;
         break;//+endCase
         
-      case EO_IXT_ALT_BEGIN: ArgNil(); // begin linear traverse
+      case EO_IXT_ALT_BEGIN: { ArgNil(); // begin linear traverse
         dLU0(EO_IXT_ALT_BEGIN);
-        aRluCommon->m_aAltEnt =
-          aDev_IXT_TRV_BEGIN_OLD(pLU,aRluCommon->m_pDevAltIxt);
+        void* aAltEnt =
+            aDev_IXT_TRV_BEGIN_OLD(pLU, aRluCommon->m_pDevAltIxt);
         //aRluCommon->m_aAltEntArray = aRluCommon->m_aEntArray;
-        *(++aiDstk) = (i8)aRluCommon->m_aAltEnt;
+        *(++aiDstk) = (i8)aAltEnt;
+      }
         break;//+endCase
 
-      case EO_IXT_ALT_NEXT: ArgNil();
+      case EO_IXT_ALT_NEXT: { ArgNil();
         dLU0(EO_IXT_ALT_NEXT);
-        aRluCommon->m_aAltEnt =
-          aDev_IXT_TRV_NEXT_OLD(pLU,aRluCommon->m_pDevAltIxt);
-        *(++aiDstk) = (i8)aRluCommon->m_aAltEnt;
+        void *aAltEnt =
+            aDev_IXT_TRV_NEXT_OLD(pLU, aRluCommon->m_pDevAltIxt);
+        *(++aiDstk) = (i8) aAltEnt;
+      }
 
 //        tNext = aRluCommon->m_aAltEnt->m_taNextEntry[0];
 //
@@ -2822,34 +2824,36 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
       case EO_IXT_CMP_SRCALT: ArgNil(); // compare src.key to alt.key
-//      iRes = iDev_IXT_CMP_SRCALT(pLU);
-        iRes = (aRluCommon->m_aSrcEnt->m_iIntElm0 ==
-                aRluCommon->m_aAltEnt->m_iIntElm0);
+      iRes = iDev_IXT_CMP_SRCALT(pLU);
+//        iRes = (aRluCommon->m_aSrcEnt->m_iIntElm0 ==
+//                aRluCommon->m_aAltEnt->m_iIntElm0);
         dLU1(EO_IXT_CMP_SRCALT,iRes);
         *(++aiDstk) = iRes;
 
         break;//+endCase
 
       case EO_IXT_CMP_WRKALT: ArgNil(); // compare wrk.key to alt.key
-//      iRes = iDev_IXT_CMP_WRKALT(pLU);
-        iRes = (aRluCommon->m_aWrkEnt->m_iIntElm0 ==
-                aRluCommon->m_aAltEnt->m_iIntElm0);
+      iRes = iDev_IXT_CMP_WRKALT(pLU);
+//        iRes = (aRluCommon->m_aWrkEnt->m_iIntElm0 ==
+//                aRluCommon->m_aAltEnt->m_iIntElm0);
         dLU1(EO_IXT_CMP_WRKALT,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
 
-      case EO_IXT_POS_ALTBYSRC: ArgNil(); // position alt ixt using src.key
+      case EO_IXT_POS_ALTBYSRC: { ArgNil(); // position alt ixt using src.key
         dLU0(EO_IXT_POS_ALTBYSRC);
-        aRluCommon->m_aAltEnt = aDev_IXT_POS_ALTBYSRC(pLU);
+        void *aAltEnt = aDev_IXT_POS_ALTBYSRC(pLU);
         //aRluCommon->m_aAltEntArray = aRluCommon->m_aEntArray;
-        *(++aiDstk) = (i8)aRluCommon->m_aAltEnt;
+        *(++aiDstk) = (i8) aAltEnt;
+      }
         break;//+endCase
 
-      case EO_IXT_POS_ALTBYWRK: ArgNil(); // position alt ixt using entwrk.key
+      case EO_IXT_POS_ALTBYWRK: { ArgNil(); // position alt ixt using entwrk.key
         dLU0(EO_IXT_POS_ALTBYWRK);
-        aRluCommon->m_aAltEnt = aDev_IXT_POS_ALTBYWRK(pLU);
+        void *aAltEnt = aDev_IXT_POS_ALTBYWRK(pLU);
         //aRluCommon->m_aAltEntArray = aRluCommon->m_aEntArray;
-        *(++aiDstk) = (i8)aRluCommon->m_aAltEnt;
+        *(++aiDstk) = (i8) aAltEnt;
+      }
         break;//+endCase
 
       case EO_DEVIXT_ENT_PRINT: ArgNil(); // print ent
