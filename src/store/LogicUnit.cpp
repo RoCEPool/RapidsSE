@@ -1406,22 +1406,22 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entwrk push
-      case EO_PUSH_ENTWRK: ArgNil(); // push entwrk
-        dLU0(EO_PUSH_ENTWRK);
+      case EO_PUSH_RLU_ENTWRK: ArgNil(); // push entwrk
+        dLU0(EO_PUSH_RLU_ENTWRK);
         P_PushPtr(aRluCommon->m_pEntWrk);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // pot
-      case EO_PUSH_POT: ArgNil(); // push pot
-        dLU0(EO_PUSH_POT);
+      case EO_PUSH_RLU_POT: ArgNil(); // push pot
+        dLU0(EO_PUSH_RLU_POT);
         P_PushPtr(aRluCommon->m_pPot);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // partition
-      case EO_PUSH_PTN: ArgNil(); // push partition
-        dLU0(EO_PUSH_PTN);
+      case EO_PUSH_RLU_PTN: ArgNil(); // push partition
+        dLU0(EO_PUSH_RLU_PTN);
         P_PushPtr(aRluCommon->m_i_Ptn);
         break;//+endCase
 

@@ -10,7 +10,7 @@ macro AM_PAYLOAD_GBY
   Label PAYLOAD_GBY
 
   // reset entwrk
-  EO_PUSH_ENTWRK
+  EO_PUSH_RLU_ENTWRK
   EO_ENTWRK_RESET
 
   EO_CALL <payLoadKey>
@@ -56,7 +56,7 @@ macro AM_PAYLOAD_STORE
 //----------------------------------------------------------------------------//
   Label PAYLOAD_STORE
 
-  EO_PUSH_ENTWRK
+  EO_PUSH_RLU_ENTWRK
   EO_PUSH_DEVROW_SRC
   EO_DEVROW_ENTWRK_CREATEPAY <payLoadBytes>
 
@@ -101,8 +101,8 @@ macro AM_PAYLOAD_TO_BUFFER
   // new a dst row
   //EO_ROW_DST_NEW
   EO_PUSH_DEVROW_DST
-  EO_PUSH_POT
-  EO_PUSH_PTN
+  EO_PUSH_RLU_POT
+  EO_PUSH_RLU_PTN
   EO_DEVROW_NEW
 
   EO_PAY_ADDRESS

@@ -39,14 +39,10 @@ enum eEO : u1 // expression operators
   /*  S  */ EO_PUSH_DEVROW_DST,     // push dst row device
   /*  S  */ EO_PUSH_DEVROW_SRC,     // push src row device
 
-  // push entwrk
-  /*  S  */ EO_PUSH_ENTWRK,         // push emntwrk
-
-  // pot
-  /*  S  */ EO_PUSH_POT,            // push pot
-
-  // partition
-  /*  S  */ EO_PUSH_PTN,           // push partition
+  // push RLU
+  /*  S  */ EO_PUSH_RLU_ENTWRK,     // push entwrk from the rlu
+  /*  S  */ EO_PUSH_RLU_POT,        // push pot from the rlu
+  /*  S  */ EO_PUSH_RLU_PTN,        // push partition from the rlu
 
   // counter
   /*  R  */ EO_CTR_0_DEC,        // dec counter 0
@@ -419,14 +415,10 @@ static Stz* aEO[]
   /*    */ "EO_PUSH_DEVROW_DST"_Stz,
   /*    */ "EO_PUSH_DEVROW_SRC"_Stz,
 
-  // push entwrk
-  /*   */ "EO_PUSH_ENTWRK"_Stz,
-
-  // pot
-  /*    */ "EO_PUSH_POT"_Stz,
-
-  // partition
-  /*    */ "EO_PUSH_PTN"_Stz,
+  // push rlu
+  /*    */ "EO_PUSH_RLU_ENTWRK"_Stz,
+  /*    */ "EO_PUSH_RLU_POT"_Stz,
+  /*    */ "EO_PUSH_RLU_PTN"_Stz,
 
   // counter
   /*    */ "EO_CTR_0_DEC"_Stz,
@@ -802,14 +794,10 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_PUSH_DEVROW_DST
   { EA_NONE,    0 },  // EO_PUSH_DEVROW_SRC
 
-  // entWrk
-  { EA_NONE,    0 },  // EO_PUSH_ENTWRK
-
-  // pot
-  { EA_NONE,    0 },  // EO_PUSH_POT
-
-  // pot
-  { EA_NONE,    0 },  // EO_PUSH_PTN
+  // push rlu
+  { EA_NONE,    0 },  // EO_PUSH_RLU_ENTWRK
+  { EA_NONE,    0 },  // EO_PUSH_RLU_POT
+  { EA_NONE,    0 },  // EO_PUSH_RLU_PTN
 
   // counter
   { EA_NONE,    0 },  // EO_CTR_0_DEC

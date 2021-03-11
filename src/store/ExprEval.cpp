@@ -251,7 +251,7 @@ eEC ExprEval::eAddGby(Column* pColumn, i8 iGby)
       StrLib::vSprintCat(m_sAsmGbyIdx, "  EO_RLU_INDEXDEF_ADDCOLUMN\n"_Stz);
 
       StrLib::vSprintCat(m_sPayLoadKey, "  EO_PUSH_LOCALI %lld\n"_Stz, iLocal);
-      StrLib::vSprintCat(m_sPayLoadKey, "  EO_PUSH_ENTWRK\n"_Stz);
+      StrLib::vSprintCat(m_sPayLoadKey, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
       StrLib::vSprintCat(m_sPayLoadKey, "  EO_ENTWRK_SETINTELM\n"_Stz);
       StrLib::vSprintCat(m_sPayLoadKey, "  EO_RETURN\n"_Stz);
 
