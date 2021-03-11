@@ -288,6 +288,50 @@ Row* RowBuffer::pAllotRow(StreamDef* pStreamDef, i8 iVArgsBegin, ...)
 /*----------------------------------------------------------------------------*/
 /* deposit var-arg list of column values into given row                       */
 /*----------------------------------------------------------------------------*/
+bool RowBuffer::bDepositColumns(Row* pRow, va_list xVarArgs)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  ColPix* axaColPix = RowBox_t::axaColPix();
+
+  for (i8 i_Col = 0; i_Col < nColumns(); i_Col++) {
+
+    ColPix* pColPix = &axaColPix[i_Col];
+
+    if (DM_VCH == pColPix->m_uDatum) {
+      Stz* szVal = va_arg(xVarArgs,Stz*);
+      if (szVal) {
+        Stz* szDst = (Stz*)aAllotHead(StrLib::nSize(szVal->azChar()));
+
+        // return early if no more space for the string
+        if ( ! szDst )
+          return false;
+
+        StrLib::vCopy((char*)szDst, szVal->azChar());
+
+        pRow->vColVal_ofs(i_Col,szDst);
+      }
+      else {
+        pRow->vSetColNull(i_Col);
+      }
+    }
+    else {
+      i8 iVal = va_arg(xVarArgs,i8);
+      pRow->vColVal_int(i_Col,iVal);
+    }
+
+  }
+
+  i8 iVArgsEnd = va_arg(xVarArgs,i8);
+  ASSERT(C_VARGS_END == iVArgsEnd);
+  UNUSED(iVArgsEnd);
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* deposit var-arg list of column values into given row                       */
+/*----------------------------------------------------------------------------*/
 void RowBuffer::vDepositRow(Row* pRow, i8 iVargsBegin, ...)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
@@ -452,50 +496,6 @@ void RowBuffer::vRestorePointers(void)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* deposit var-arg list of column values into given row                       */
-/*----------------------------------------------------------------------------*/
-bool RowBuffer::bDepositColumns(Row* pRow, va_list xVarArgs)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  ColPix* axaColPix = RowBox_t::axaColPix();
-
-  for (i8 i_Col = 0; i_Col < nColumns(); i_Col++) {
-
-    ColPix* pColPix = &axaColPix[i_Col];
-
-    if (DM_VCH == pColPix->m_uDatum) {
-      Stz* szVal = va_arg(xVarArgs,Stz*);
-      if (szVal) {
-        Stz* szDst = (Stz*)aAllotHead(StrLib::nSize(szVal->azChar()));
-
-        // return early if no more space for the string
-        if ( ! szDst )
-          return false;
-
-        StrLib::vCopy((char*)szDst, szVal->azChar());
-
-        pRow->vColVal_ofs(i_Col,szDst);
-      }
-      else {
-        pRow->vSetColNull(i_Col);
-      }
-    }
-    else {
-      i8 iVal = va_arg(xVarArgs,i8);
-      pRow->vColVal_int(i_Col,iVal);
-    }
-
-  }
-
-  i8 iVArgsEnd = va_arg(xVarArgs,i8);
-  ASSERT(C_VARGS_END == iVArgsEnd);
-  UNUSED(iVArgsEnd);
-
-  return true;
-}
 
 /*----------------------------------------------------------------------------*/
 /* calculate the absolute offset within buffer for given item                 */

@@ -76,41 +76,6 @@ i8 Row::nRowProper(i8 nColumns)
 
 
 /*----------------------------------------------------------------------------*/
-/* dump the row                                                               */
-/*----------------------------------------------------------------------------*/
-void Row::vDump(StreamDef* pStreamDef)
-{
-  vTrace("ROW: %p"_Stz, this);
-  
-  for (i8 i_Col = 0; i_Col < pStreamDef->nColumns(); i_Col++) {
-    
-    Column* pCol = pStreamDef->pGetColumn(i_Col);
-        
-    // vch
-    
-    if (DM_VCH == pCol->eDatum()) {
-      
-      if (m_wxaColumnCell[i_Col].bIsNull()) {
-        vTrace(" NULL "_Stz);
-        continue;
-      }
-      
-      Stz* acSrcString = szColVal_ofs(i_Col);
-      
-      vTrace(" %s "_Stz, acSrcString);
-      
-      continue;
-    }
-    
-    // all others
-    
-    vTrace(" %ld "_Stz, m_wxaColumnCell[i_Col].m_iWrd);
-  }
-
-  vTrace("\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -243,6 +208,63 @@ void Row::vColVal_ofs(i8 i_Col, Stz* szStz)
   i8 i_Ofs = - nDifference(&m_wxaColumnCell[i_Col],szStz);
   
   m_wxaColumnCell[i_Col].m_iWrd = i_Ofs;
+}
+
+/*----------------------------------------------------------------------------*/
+/* deposit var-arg list of column values into row                             */
+/*----------------------------------------------------------------------------*/
+void Row::vDeposit(i8 iVargsBegin, ...)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
+  
+  ASSERT(C_VARGS_BEGIN == iVArgsBegin);
+  
+  RowBuffer* pRowBuffer = pToRowBuffer();
+
+  va_list xVarArgs;
+  va_start(xVarArgs,iVargsBegin);
+
+  bool b = pRowBuffer->bDepositColumns(this,xVarArgs);
+  RASSERT(b);
+  
+  va_end(xVarArgs);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump the row                                                               */
+/*----------------------------------------------------------------------------*/
+void Row::vDump(StreamDef* pStreamDef)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
+  
+  vTrace("ROW: %p"_Stz, this);
+  
+  for (i8 i_Col = 0; i_Col < pStreamDef->nColumns(); i_Col++) {
+    
+    Column* pCol = pStreamDef->pGetColumn(i_Col);
+        
+    // vch
+    
+    if (DM_VCH == pCol->eDatum()) {
+      
+      if (m_wxaColumnCell[i_Col].bIsNull()) {
+        vTrace(" NULL "_Stz);
+        continue;
+      }
+      
+      Stz* acSrcString = szColVal_ofs(i_Col);
+      
+      vTrace(" %s "_Stz, acSrcString);
+      
+      continue;
+    }
+    
+    // all others
+    
+    vTrace(" %ld "_Stz, m_wxaColumnCell[i_Col].m_iWrd);
+  }
+
+  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

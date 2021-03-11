@@ -4,6 +4,9 @@
 
 #include "BASE.h"
 
+#include "WriteBehind.hpp"
+#include "Row.hpp"
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
@@ -218,6 +221,12 @@ void Loggable::vAddRow(eEV eEvent, Stz* szNote)
          aEV[eEvent]->azChar(),
          szNote->azChar());
   
+  Row* pRow = pWriteBehind->pAllotRow();
+  
+  pRow->vDeposit(C_VARGS_BEGIN,
+                 eEvent,
+                 szNote,
+                 C_VARGS_END);
   
 }
 

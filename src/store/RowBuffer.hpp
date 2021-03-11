@@ -35,6 +35,7 @@ namespace STORE
     Row* pAllotRow(i8 iVargsBegin, ...);
     Row* pAllotRow(StreamDef* pStreamDef, i8 iVargsBegin, ...);
 
+    bool bDepositColumns(Row* pRow, va_list xVarArgs);
     void vDepositRow(Row* pRow, i8 iVargsBegin, ...);
   
     void vPrintRows(void);
@@ -49,7 +50,6 @@ namespace STORE
     CsvBuffer* pToCsvBuffer(void);
   
   private:
-    bool bDepositColumns(Row* pRow, va_list xVarArgs);
 
     i8   iToOffset(Stz* szStr);
   

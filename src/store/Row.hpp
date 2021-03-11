@@ -27,8 +27,6 @@ namespace STORE
   
     static i8 nRowProper(i8 nColumns);
 
-    void vDump(StreamDef* pStreamDef);
-  
     m8*  aCellArray(void);
   
     m8*  aColCell(i8 i_Col);
@@ -40,12 +38,16 @@ namespace STORE
     d8   dColVal_flt(i8 i_Col);
     Stz* szColVal_ofs(i8 i_Col);
 
-    bool bIsColNull(i8 i_Col);
-  
     void vColVal_int(i8 i_Col, i8 iVal);
     void vColVal_flt(i8 i_Col, d8 dVal);
     void vColVal_ofs(i8 i_Col, i8 iOfs);
     void vColVal_ofs(i8 i_Col, Stz* szStz);
+
+    void vDeposit(i8 iVargsBegin, ...);
+
+    void vDump(StreamDef* pStreamDef);
+  
+    bool bIsColNull(i8 i_Col);
 
     void vSetColNull(i8 i_Col);
   
