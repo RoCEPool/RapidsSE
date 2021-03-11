@@ -388,7 +388,7 @@ Ent_int* aDev_ENT_NEXT(void* aLU, void* aIXT)
 /*----------------------------------------------------------------------------*/
 /* position m_pEnt prior using m_oEntWrk.key                                  */
 /*----------------------------------------------------------------------------*/
-Ent_int* aDev_ENT_POSPRIOR(void* aLU, void* aIXT, Ent_int** aaSkipRoots)
+Ent_int* aDev_ENT_POSPRIOR(void* aLU, void* aIXT)
 {
   _static_
   
@@ -407,7 +407,7 @@ Ent_int* aDev_ENT_POSPRIOR(void* aLU, void* aIXT, Ent_int** aaSkipRoots)
     pLogicUnit->m_xRluCommon.m_aEntArray =
       (Ent_int*)pDevIxt->m_pEntBuffer->aEntArray();
     
-    *aaSkipRoots = (Ent_int*)pDevIxt->m_pEntBuffer->aSkipRoots();
+    //*aaSkipRoots = (Ent_int*)pDevIxt->m_pEntBuffer->aSkipRoots();
   }
   
   return (Ent_int*)pDevIxt->m_aEnt;
