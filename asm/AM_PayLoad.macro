@@ -61,6 +61,7 @@ macro AM_PAYLOAD_STORE
   EO_DEVROW_ENTWRK_CREATEPAY <payLoadBytes>
 
   EO_IXT_INS_ENT
+  EO_PUSH_DEVIXT_TMP
   EO_PAY_ADDRESS
   // store L_RETURNFLAG -> Q100_RETURNFLAG
   //EO_PUSH_LOCALS 4
@@ -72,6 +73,7 @@ macro AM_PAYLOAD_ADD
 // macro AM_PAYLOAD_ADD                                                       //
 //----------------------------------------------------------------------------//
   Label PAYLOAD_ADD
+  EO_PUSH_DEVIXT_TMP
   EO_PAY_ADDRESS
   //EO_SUPER_Q100 ???? OPTIMIZATION (ALKA: COME BACK TO THIS)
   // sum(L_QUANTITY) -> Q100_SUM_QTY
@@ -105,6 +107,7 @@ macro AM_PAYLOAD_TO_BUFFER
   EO_PUSH_RLU_PTN
   EO_DEVROW_NEW
 
+  EO_PUSH_DEVIXT_TMP
   EO_PAY_ADDRESS
 
 endMacro

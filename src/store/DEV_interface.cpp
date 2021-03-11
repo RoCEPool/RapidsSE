@@ -350,6 +350,7 @@ void vDev_ENT_FIND(void* aLU, void* aIXT, i8** aaiDstk)
     //printf("Ticket %lld Ent %p\n",(i8)tNext,aEnt_int);
     if (iTopA == iTopB) {
       aRluCommon->m_aTmpEnt = aEnt_int;
+      pDevIxt->m_aEnt = (Ent*)aEnt_int;
       *(++aiDstk) = 1; // found matching key
       goto L_end_FINDI;
     }
@@ -1058,7 +1059,7 @@ i8* aDev_PAY_ADDRESS(void* aLU, void* aIXT)
   DevIXT* pDevIXT = _pDevIXT(aIXT);
 
   i8* aPayload = pDevIXT->m_aEnt->aiPayCell(0);
-    
+
   return aPayload;
 }
 
