@@ -26,9 +26,9 @@ WriteBehind::WriteBehind(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEBEHIND,_FOOTER_);
   
-  m_pStreamDef = AM::pStreamDefFind(C_TDEF_EVENTS);
+  m_pStreamDef_events = AM::pStreamDefFind(C_TDEF_EVENTS);
   
-  m_pRowBuffer = nullptr;
+  m_pRowBuffer_events = nullptr;
     
   _checkInitialised_(CN_WRITEBEHIND);
   
@@ -54,16 +54,16 @@ Row* WriteBehind::pAllotRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEBEHIND,_FOOTER_);
   
-  if (! m_pRowBuffer) {
-    m_pRowBuffer = new RowBuffer(CN_ROWBUFFER,m_pStreamDef);
+  if (! m_pRowBuffer_events) {
+    m_pRowBuffer_events = new RowBuffer(CN_ROWBUFFER,m_pStreamDef_events);
   }
   
-  Row* pRow = m_pRowBuffer->pAllotRow();
+  Row* pRow = m_pRowBuffer_events->pAllotRow();
   
   if (! pRow) {
-    delete m_pRowBuffer;
-    m_pRowBuffer = new RowBuffer(CN_ROWBUFFER,m_pStreamDef);
-    Row* pRow = m_pRowBuffer->pAllotRow();
+    delete m_pRowBuffer_events;
+    m_pRowBuffer_events = new RowBuffer(CN_ROWBUFFER,m_pStreamDef_events);
+    Row* pRow = m_pRowBuffer_events->pAllotRow();
     RASSERT(pRow);
   }
   
@@ -71,7 +71,7 @@ Row* WriteBehind::pAllotRow(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* deposit var-arg list of column values into __events row                    */
+/* deposit var-arg list of column values into an __events row                 */
 /*----------------------------------------------------------------------------*/
 void WriteBehind::vDepositEvent(i8 iVargsBegin, ...)
 {
@@ -100,7 +100,7 @@ RowBuffer* WriteBehind::pRowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEBEHIND,_FOOTER_);
   
-  return m_pRowBuffer;
+  return m_pRowBuffer_events;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -110,7 +110,7 @@ void WriteBehind::vRowBuffer(RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEBEHIND,_FOOTER_);
   
-  m_pRowBuffer = pRowBuffer;
+  m_pRowBuffer_events = pRowBuffer;
 }
 
 /*============================================================================*/
