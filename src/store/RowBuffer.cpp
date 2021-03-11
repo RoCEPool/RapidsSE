@@ -292,7 +292,7 @@ void RowBuffer::vDepositRow(Row* pRow, i8 iVargsBegin, ...)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  ASSERT(C_VARGS_BEGIN == iVArgsBegin);
+  ASSERT(C_VARGS_BEGIN == iVargsBegin);
 
   va_list xVarArgs;
   va_start(xVarArgs,iVargsBegin);
