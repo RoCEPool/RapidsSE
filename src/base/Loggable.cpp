@@ -217,6 +217,8 @@ void Loggable::vAddRow(eEV eEvent, Stz* szNote)
   printf("Loggable::vAddRow : %s %s\n",
          aEV[eEvent]->azChar(),
          szNote->azChar());
+  
+  
 }
 
 /*============================================================================*/

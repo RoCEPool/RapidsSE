@@ -33,17 +33,22 @@ namespace STORE
     Row* pAllotRow(i8 iVargsBegin, ...);
     Row* pAllotRow(StreamDef* pStreamDef, i8 iVargsBegin, ...);
 
+    void vDepositRow(Row* pRow, i8 iVargsBegin, ...);
+  
     void vPrintRows(void);
     void vPrintRows(StreamDef* pStreamDef);
-    void vShow(StreamDef* pStreamDef);
-  
-    CsvBuffer* pToCsvBuffer(void);
   
     void vRestorePointers(void);
   
+    void vShow(StreamDef* pStreamDef);
+  
     char* azStrArea(void);
-
+  
+    CsvBuffer* pToCsvBuffer(void);
+  
   private:
+    bool bDepositColumns(Row* pRow, va_list xVarArgs);
+
     i8   iToOffset(Stz* szStr);
   
     Footer* aFooter(void);
