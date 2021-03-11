@@ -42,6 +42,7 @@ enum eEO : u1 // expression operators
   // push RLU
   /*  S  */ EO_PUSH_RLU_ENTWRK,     // push entwrk from the rlu
   /*  S  */ EO_PUSH_RLU_INDEXDEF,   // push indexdef from the rlu
+  /*  S  */ EO_PUSH_RLU_INDEXTREE,  // push indextree from the rlu
   /*  S  */ EO_PUSH_RLU_POT,        // push pot from the rlu
   /*  S  */ EO_PUSH_RLU_PTN,        // push partition from the rlu
 
@@ -130,7 +131,7 @@ enum eEO : u1 // expression operators
   /*  M  */ EO_REG_STREAMDEF_STREAMDEFOUT, // copy streamDef[] to streamDefOut[]
 
   // register pushes
-  /*  M  */ EO_PUSH_REG_INDEXTREE,         // push indexTree[]
+  /*  M  */ //EO_PUSH_REG_INDEXTREE,         // push indexTree[]
 
   // RLU operators
   /*  M  */ EO_RLU_INDEXDEF_ADDCOLUMN,     // add a column to indexDefRlu[]
@@ -419,6 +420,7 @@ static Stz* aEO[]
   // push rlu
   /*    */ "EO_PUSH_RLU_ENTWRK"_Stz,
   /*    */ "EO_PUSH_RLU_INDEXDEF"_Stz,
+  /*    */ "EO_PUSH_RLU_INDEXTREE"_Stz,
   /*    */ "EO_PUSH_RLU_POT"_Stz,
   /*    */ "EO_PUSH_RLU_PTN"_Stz,
 
@@ -506,7 +508,7 @@ static Stz* aEO[]
   /*    */ "EO_REG_STREAMDEF_STREAMDEFOUT"_Stz,
 
   // register pushes
-  /*    */ "EO_PUSH_REG_INDEXTREE"_Stz,
+  /*    */ //"EO_PUSH_REG_INDEXTREE"_Stz,
 
   // Rlu operators
   /*    */ "EO_RLU_INDEXDEF_ADDCOLUMN"_Stz,
@@ -799,6 +801,7 @@ static EoArg EoArgs[]
   // push rlu
   { EA_NONE,    0 },  // EO_PUSH_RLU_ENTWRK
   { EA_NONE,    0 },  // EO_PUSH_RLU_INDEXDEF
+  { EA_NONE,    0 },  // EO_PUSH_RLU_INDEXTREE
   { EA_NONE,    0 },  // EO_PUSH_RLU_POT
   { EA_NONE,    0 },  // EO_PUSH_RLU_PTN
 
@@ -886,7 +889,7 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_REG_STREAMDEF_STREAMDEFOUT_ADDCOLUMN
 
   // register pushes
-  { EA_NONE,    0 },  // EO_PUSH_REG_INDEXTREE
+  //{ EA_NONE,    0 },  // EO_PUSH_REG_INDEXTREE
 
   // RLU operators
   { EA_NONE,    0 },  // EO_RLU_INDEXDEF_ADDCOLUMN

@@ -1831,10 +1831,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       // register pushes
-      case EO_PUSH_REG_INDEXTREE: ArgNil(); // push indexTree[]
-        dLU0(EO_PUSH_REG_INDEXTREE);
-        P_PushPtr(pLU);
-        vREG_INDEXTREE_PUSH(&aiDstk);
+      case EO_PUSH_RLU_INDEXTREE: ArgNil(); // push indexTreeRlu[]
+        dLU0(EO_PUSH_RLU_INDEXTREE);
+        P_PushPtr(aRluCommon->m_pIndexTree);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
