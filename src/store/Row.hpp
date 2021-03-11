@@ -43,6 +43,7 @@ namespace STORE
     void vColVal_ofs(i8 i_Col, i8 iOfs);
     void vColVal_ofs(i8 i_Col, Stz* szStz);
 
+    void vDeposit(va_list xVarArgs);
     void vDeposit(i8 iVargsBegin, ...);
 
     void vDump(StreamDef* pStreamDef);

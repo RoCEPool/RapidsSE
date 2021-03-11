@@ -215,19 +215,17 @@ void Loggable::vAddRow(eEV eEvent, Stz* szNote)
   UNUSED(eEvent);
   UNUSED(szNote);
   
-  WriteBehind* pWriteBehind = AM::THREAD::pWriteBehind();
   
   printf("Loggable::vAddRow : %s %s\n",
          aEV[eEvent]->azChar(),
          szNote->azChar());
+
+  WriteBehind* pWriteBehind = AM::THREAD::pWriteBehind();
   
-  Row* pRow = pWriteBehind->pAllotRow();
-  
-  pRow->vDeposit(C_VARGS_BEGIN,
-                 eEvent,
-                 szNote,
-                 C_VARGS_END);
-  
+  pWriteBehind->vDepositEvent(C_VARGS_BEGIN,
+                              eEvent,
+                              szNote,
+                              C_VARGS_END);
 }
 
 /*============================================================================*/

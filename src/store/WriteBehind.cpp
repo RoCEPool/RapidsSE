@@ -71,6 +71,29 @@ Row* WriteBehind::pAllotRow(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* deposit var-arg list of column values into __events row                    */
+/*----------------------------------------------------------------------------*/
+void WriteBehind::vDepositEvent(i8 iVargsBegin, ...)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
+  
+  ASSERT(C_VARGS_BEGIN == iVArgsBegin);
+  
+  m_okLock.vGrabWrite();
+  
+  Row* pRow = pAllotRow();
+
+  va_list xVarArgs;
+  va_start(xVarArgs,iVargsBegin);
+
+  pRow->vDeposit(xVarArgs);
+  
+  va_end(xVarArgs);
+  
+  m_okLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get current row buffer                                                     */
 /*----------------------------------------------------------------------------*/
 RowBuffer* WriteBehind::pRowBuffer(void)

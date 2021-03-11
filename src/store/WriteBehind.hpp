@@ -26,6 +26,8 @@ namespace STORE
   public:
     Row* pAllotRow(void);
 
+    void vDepositEvent(i8 iVargsBegin, ...);
+
     RowBuffer* pRowBuffer(void);
     void vRowBuffer(RowBuffer* pRowBuffer);
 
