@@ -1812,11 +1812,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_REG_STREAMDEF_STREAMDEFOUT(pLU);
         break;//+endCase
 
-      case EO_REG_SRC_STREAMDEFOUT_NEW: ArgNil(); // new a streamDefOut[] from devSrcRow
-        dLU0(EO_REG_SRC_STREAMDEFOUT_NEW);
-        vDev_REG_SRC_STREAMDEFOUT_NEW(pLU);
-        break;//+endCase
-
       case EO_REG_STREAMDEFOUT_NEW: ArgNil(); // new a streamDef in streamDefOut[]
         dLU0(EO_REG_STREAMDEFOUT_NEW);
         vDev_REG_STREAMDEFOUT_NEW(pLU);
@@ -2741,7 +2736,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(EO_IXT_SRC_BEGIN);
         aRluCommon->m_aSrcEnt =
           aDev_IXT_TRV_BEGIN_OLD(pLU,aRluCommon->m_pDevSrcIxt);
-        aRluCommon->m_aSrcEntArray = aRluCommon->m_aEntArray;
+        //aRluCommon->m_aSrcEntArray = aRluCommon->m_aEntArray;
         *(++aiDstk) = (i8)aRluCommon->m_aSrcEnt;
         break;//+endCase
         
@@ -2749,7 +2744,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(EO_IXT_SRC_LBOUND);
         aRluCommon->m_aSrcEnt =
           aDev_IXT_POS_LBOUND(pLU,aRluCommon->m_pDevSrcIxt);
-        aRluCommon->m_aSrcEntArray = aRluCommon->m_aEntArray;
+        //aRluCommon->m_aSrcEntArray = aRluCommon->m_aEntArray;
         *(++aiDstk) = (i8)aRluCommon->m_aSrcEnt;
         break;//+endCase
         
@@ -2764,7 +2759,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(EO_IXT_SRC_UBOUND);
         aRluCommon->m_aSrcEnt =
           aDev_IXT_POS_UBOUND(pLU,aRluCommon->m_pDevSrcIxt);
-        aRluCommon->m_aSrcEntArray = aRluCommon->m_aEntArray;
+        //aRluCommon->m_aSrcEntArray = aRluCommon->m_aEntArray;
         *(++aiDstk) = (i8)aRluCommon->m_aSrcEnt;
         break;//+endCase
         
@@ -2772,7 +2767,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(EO_IXT_SRC_UBOUND);
         aRluCommon->m_aSrcEnt =
           aDev_IXT_POS_UBOUND_LT(pLU,aRluCommon->m_pDevSrcIxt);
-        aRluCommon->m_aSrcEntArray = aRluCommon->m_aEntArray;
+        //aRluCommon->m_aSrcEntArray = aRluCommon->m_aEntArray;
         *(++aiDstk) = (i8)aRluCommon->m_aSrcEnt;
         break;//+endCase
         

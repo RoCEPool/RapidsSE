@@ -117,7 +117,7 @@ enum eEO : u1 // expression operators
   /*  S  */ EO_GREATERTHAN,      // test top > 2nd, push result
 
   // register operators
-  /*  M  */ EO_REG_EOSMARKER_NEW,          // new an eosMarker in Operand[]
+  /*  M  */ EO_REG_EOSMARKER_NEW,          // new an eosMarker in Operand[]           // OLD QUERIES (will go)
   /*  M  */ EO_REG_INDEXDEF_ADDCOLUMN,     // add a column to indexDef[]
 
   /*  M  */ EO_REG_PTNSTREAM_CLOSE,        // close a ptn stream
@@ -125,10 +125,10 @@ enum eEO : u1 // expression operators
   /*  M  */ EO_REG_PTNSTREAM_NEW,          // new a ptn stream
   /*  M  */ EO_REG_PTNSTREAM_OPEN,         // open a ptn stream
   /*  M  */ EO_REG_PTNSTREAM_READ,         // read a ptn stream
-  /*  M  */ EO_REG_SRC_STREAMDEFOUT_NEW,   // new streamDefOut[] from DevSrcRow
-  /*  M  */ EO_REG_STREAMDEFOUT_NEW,       // new an streamDef in streamDefOut[]
-  /*  M  */ EO_REG_STREAMDEFOUT_ADDCOLUMN, // add a column to streamDefOut[]
-  /*  M  */ EO_REG_STREAMDEF_STREAMDEFOUT, // copy streamDef[] to streamDefOut[]
+  /*  M  */ //EO_REG_SRC_STREAMDEFOUT_NEW,   // new streamDefOut[] from DevSrcRow
+  /*  M  */ EO_REG_STREAMDEFOUT_NEW,       // new an streamDef in streamDefOut[]        // OLD QUERIES (will go)
+  /*  M  */ EO_REG_STREAMDEFOUT_ADDCOLUMN, // add a column to streamDefOut[]            // OLD QUERIES (will go)
+  /*  M  */ EO_REG_STREAMDEF_STREAMDEFOUT, // copy streamDef[] to streamDefOut[]        // OLD QUERIES (will go)
 
   // register pushes
   /*  M  */ //EO_PUSH_REG_INDEXTREE,         // push indexTree[]
@@ -502,7 +502,7 @@ static Stz* aEO[]
   /*    */ "EO_REG_PTNSTREAM_NEW"_Stz,
   /*    */ "EO_REG_PTNSTREAM_OPEN"_Stz,
   /*    */ "EO_REG_PTNSTREAM_READ"_Stz,
-  /*    */ "EO_REG_SRC_STREAMDEFOUT_NEW"_Stz,
+  /*    */ //"EO_REG_SRC_STREAMDEFOUT_NEW"_Stz,
   /*    */ "EO_REG_STREAMDEFOUT_NEW"_Stz,
   /*    */ "EO_REG_STREAMDEFOUT_ADDCOLUMN"_Stz,
   /*    */ "EO_REG_STREAMDEF_STREAMDEFOUT"_Stz,
@@ -883,7 +883,7 @@ static EoArg EoArgs[]
   { EA_NONE,    0},   // EO_REG_PTNSTREAM_NEW
   { EA_NONE,    0},   // EO_REG_PTNSTREAM_OPEN
   { EA_NONE,    0},   // EO_REG_PTNSTREAM_READ
-  { EA_NONE,    0 },  // EO_REG_SRC_STREAMDEFOUT_NEW
+  //{ EA_NONE,    0 },  // EO_REG_SRC_STREAMDEFOUT_NEW
   { EA_NONE,    0 },  // EO_REG_STREAMDEFOUT_NEW
   { EA_STRING, -1 },  // EO_REG_STREAMDEFOUT_ADDCOLUMN
   { EA_NONE,    0 },  // EO_REG_STREAMDEF_STREAMDEFOUT_ADDCOLUMN
