@@ -7,3 +7,6 @@ upperBoundKey_int.test
 //upperBoundKey_intLoop.test
 range.test
 rangeCombo.test
+
+// SQL compiler tests
+syntax.test
