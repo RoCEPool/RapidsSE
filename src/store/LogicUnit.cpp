@@ -2732,43 +2732,48 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
 
 
-      case EO_IXT_SRC_BEGIN: ArgNil(); // begin linear traverse
+      case EO_IXT_SRC_BEGIN: { ArgNil(); // begin linear traverse
         dLU0(EO_IXT_SRC_BEGIN);
-        aRluCommon->m_aSrcEnt =
-          aDev_IXT_TRV_BEGIN_OLD(pLU,aRluCommon->m_pDevSrcIxt);
+        void *aSrcEnt =
+            aDev_IXT_TRV_BEGIN_OLD(pLU, aRluCommon->m_pDevSrcIxt);
         //aRluCommon->m_aSrcEntArray = aRluCommon->m_aEntArray;
-        *(++aiDstk) = (i8)aRluCommon->m_aSrcEnt;
+        *(++aiDstk) = (i8) aSrcEnt;
+      }
         break;//+endCase
         
-      case EO_IXT_SRC_LBOUND: ArgNil(); // pos in buffer to entry before LBOUND
+      case EO_IXT_SRC_LBOUND: { ArgNil(); // pos in buffer to entry before LBOUND
         dLU0(EO_IXT_SRC_LBOUND);
-        aRluCommon->m_aSrcEnt =
-          aDev_IXT_POS_LBOUND(pLU,aRluCommon->m_pDevSrcIxt);
+        void *aSrcEnt =
+            aDev_IXT_POS_LBOUND(pLU, aRluCommon->m_pDevSrcIxt);
         //aRluCommon->m_aSrcEntArray = aRluCommon->m_aEntArray;
-        *(++aiDstk) = (i8)aRluCommon->m_aSrcEnt;
+        *(++aiDstk) = (i8) aSrcEnt;
+      }
         break;//+endCase
         
-      case EO_IXT_SRC_NEXT: ArgNil(); // move to next entry
+      case EO_IXT_SRC_NEXT: { ArgNil(); // move to next entry
         dLU0(EO_IXT_SRC_NEXT);
-        aRluCommon->m_aSrcEnt =
-          aDev_IXT_TRV_NEXT_OLD(pLU,aRluCommon->m_pDevSrcIxt);
-        *(++aiDstk) = (i8)aRluCommon->m_aSrcEnt;
+        void *aSrcEnt =
+            aDev_IXT_TRV_NEXT_OLD(pLU, aRluCommon->m_pDevSrcIxt);
+        *(++aiDstk) = (i8) aSrcEnt;
+      }
         break;//+endCase
 
-      case EO_IXT_SRC_UBOUND: ArgNil(); // pos in buffer to entry for UBOUND
+      case EO_IXT_SRC_UBOUND: { ArgNil(); // pos in buffer to entry for UBOUND
         dLU0(EO_IXT_SRC_UBOUND);
-        aRluCommon->m_aSrcEnt =
-          aDev_IXT_POS_UBOUND(pLU,aRluCommon->m_pDevSrcIxt);
+        void *aSrcEnt =
+            aDev_IXT_POS_UBOUND(pLU, aRluCommon->m_pDevSrcIxt);
         //aRluCommon->m_aSrcEntArray = aRluCommon->m_aEntArray;
-        *(++aiDstk) = (i8)aRluCommon->m_aSrcEnt;
+        *(++aiDstk) = (i8) aSrcEnt;
+      }
         break;//+endCase
         
-      case EO_IXT_SRC_UBOUND_LT: ArgNil(); // pos in buffer to entry for UBOUND
+      case EO_IXT_SRC_UBOUND_LT: { ArgNil(); // pos in buffer to entry for UBOUND
         dLU0(EO_IXT_SRC_UBOUND);
-        aRluCommon->m_aSrcEnt =
-          aDev_IXT_POS_UBOUND_LT(pLU,aRluCommon->m_pDevSrcIxt);
+        void *aSrcEnt =
+            aDev_IXT_POS_UBOUND_LT(pLU, aRluCommon->m_pDevSrcIxt);
         //aRluCommon->m_aSrcEntArray = aRluCommon->m_aEntArray;
-        *(++aiDstk) = (i8)aRluCommon->m_aSrcEnt;
+        *(++aiDstk) = (i8) aSrcEnt;
+      }
         break;//+endCase
         
       case EO_IXT_ALT_BEGIN: { ArgNil(); // begin linear traverse
