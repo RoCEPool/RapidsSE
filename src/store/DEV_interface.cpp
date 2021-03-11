@@ -277,7 +277,7 @@ void vDev_IXT_TEST(i8** aaiDstk)
 i8 iDev_ENT_COMPARE(void* aLU, void* aIXT)
 {
   _static_
-  
+
   DevIXT* pDevIxt = _pDevIXT(aIXT);
   
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
@@ -304,6 +304,69 @@ i8 iDev_ENT_COMPARE(void* aLU, void* aIXT)
     eCmp = KC_AFTER;
 
   return (i8)eCmp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* position m_pEnt prior using m_oEntWrk.key                                  */
+/*----------------------------------------------------------------------------*/
+void vDev_ENT_FIND(void* aLU, void* aIXT, i8** aaiDstk)
+{
+  _static_
+
+  UNUSED(aLU);
+
+  i8 *aiDstk = *aaiDstk;
+  Ent_int* aEnt_int;
+  tET tNext;
+  i8 iTopA;
+  i8 iTopB;
+  void* aTempSkipRoots = nullptr;
+
+  DevIXT* pDevIxt = _pDevIXT(aIXT);
+
+  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+  RluCommon* aRluCommon = &pLogicUnit->m_xRluCommon;
+
+  if (pDevIxt->m_pEntBuffer)
+    aTempSkipRoots = (Ent_int*)pDevIxt->m_pEntBuffer->aSkipRoots();
+
+  // can we do a linear search
+  if (! aTempSkipRoots) {
+    *(++aiDstk) = 0;
+    goto L_end_FINDI;
+  }
+  aEnt_int = (Ent_int*)aTempSkipRoots;
+  tNext = aEnt_int->m_taNextEntry[0];
+//        if (C_ENT_END_TICKET == tNext) {
+//          *(++aiDstk) = 0;
+//          goto L_end_FINDI;
+//        }
+
+  iTopA = aRluCommon->m_aWrkEnt->m_iIntElm0;
+  // search for key
+  while (C_ENT_END_TICKET != tNext) {
+    aEnt_int = (struct Ent_int*) &aRluCommon->m_aEntArray[tNext];
+    iTopB = aEnt_int->m_iIntElm0;
+    //printf("Ticket %lld Ent %p\n",(i8)tNext,aEnt_int);
+    if (iTopA == iTopB) {
+      aRluCommon->m_aTmpEnt = aEnt_int;
+      *(++aiDstk) = 1; // found matching key
+      goto L_end_FINDI;
+    }
+    if (iTopA > iTopB) {
+      tNext = aEnt_int->m_taNextEntry[0];
+      continue;
+    }
+    //printf("Did not find %lld\n",aRluCommon->m_aWrkEnt->m_iIntElm0);
+    *(++aiDstk) = 0; // did not find matching key
+    goto L_end_FINDI;
+  }
+  // did not find matching key
+  *(++aiDstk) = 0;
+
+  L_end_FINDI:
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/

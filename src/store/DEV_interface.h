@@ -19,6 +19,7 @@ void vDev_IXT_TEST(i8** aaiDstk);
 // prototypes for dev IXT
 
 i8   iDev_ENT_COMPARE(void* aLU, void* aIXT);
+void vDev_ENT_FIND(void* aLU, void* aIXT, i8** aaiDstk);
 struct Ent_int* aDev_ENT_NEXT(void* aLU, void* aIXT);
 struct Ent_int* aDev_ENT_POSPRIOR(void* aLU, void* aIXT,
                                   struct Ent_int** aaSkipRoots);
