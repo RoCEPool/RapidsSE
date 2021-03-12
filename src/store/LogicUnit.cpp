@@ -2680,13 +2680,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
 
       case EO_IXT_SRC_BEGIN: { ArgNil(); // begin linear traverse
-        dLU0(EO_IXT_SRC_BEGIN);
-        void *aSrcEnt =
-            aDev_IXT_TRV_BEGIN_OLD(pLU, aRluCommon->m_pDevSrcIxt);
-        //aRluCommon->m_aSrcEntArray = aRluCommon->m_aEntArray;
-        *(++aiDstk) = (i8) aSrcEnt;
+//        dLU0(EO_IXT_SRC_BEGIN);
+//        void *aSrcEnt =
+//            aDev_IXT_TRV_BEGIN_OLD(pLU, aRluCommon->m_pDevSrcIxt);
+//        //aRluCommon->m_aSrcEntArray = aRluCommon->m_aEntArray;
+//        *(++aiDstk) = (i8) aSrcEnt;
       }
-        break;//+endCase
+      RASSERT(0);
+      break;//+endCase
         
       case EO_IXT_SRC_LBOUND: { ArgNil(); // pos in buffer to entry before LBOUND
         dLU0(EO_IXT_SRC_LBOUND);
@@ -2695,7 +2696,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         //aRluCommon->m_aSrcEntArray = aRluCommon->m_aEntArray;
         *(++aiDstk) = (i8) aSrcEnt;
       }
-        break;//+endCase
+      break;//+endCase
         
       case EO_IXT_SRC_NEXT: { ArgNil(); // move to next entry
         dLU0(EO_IXT_SRC_NEXT);
@@ -2724,12 +2725,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
       case EO_IXT_ALT_BEGIN: { ArgNil(); // begin linear traverse
-        dLU0(EO_IXT_ALT_BEGIN);
-        void* aAltEnt =
-            aDev_IXT_TRV_BEGIN_OLD(pLU, aRluCommon->m_pDevAltIxt);
-        //aRluCommon->m_aAltEntArray = aRluCommon->m_aEntArray;
-        *(++aiDstk) = (i8)aAltEnt;
+//        dLU0(EO_IXT_ALT_BEGIN);
+//        void* aAltEnt =
+//            aDev_IXT_TRV_BEGIN_OLD(pLU, aRluCommon->m_pDevAltIxt);
+//        //aRluCommon->m_aAltEntArray = aRluCommon->m_aEntArray;
+//        *(++aiDstk) = (i8)aAltEnt;
       }
+      RASSERT(0);
         break;//+endCase
 
       case EO_IXT_ALT_NEXT: { ArgNil();

@@ -31,7 +31,8 @@ macro AM_INDEX_RANGE_LOWER_GE
   EO_JMP_TRUE DATAPULSE_INDEXRANGE_UPD
 
   // no lower key start position at beginning of index
-  EO_IXT_SRC_BEGIN
+  EO_PUSH_DEVIXT_SRC
+  EO_DEVIXT_IDX_BEGIN
 
   // no entry return
   EO_JMP_FALSE DATAPULSE_INDEXRANGE_DONE

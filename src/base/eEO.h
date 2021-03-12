@@ -307,13 +307,13 @@ enum eEO : u1 // expression operators
   /*  S  */ EO_DEVIXT_IDX_NEXT,     // traverse to next entry
   /*  S  */ EO_DEVIXT_IDX_ENTRIES,  // push number of entries in index
 
-  /*  D  */ EO_IXT_SRC_BEGIN,    // begin linear traverse
+  /*  D  */ EO_IXT_SRC_BEGIN,    // begin linear traverse                        --to go
   /*  D  */ EO_IXT_SRC_LBOUND,   // position at lower bound
   /*  D  */ EO_IXT_SRC_NEXT,     // move to next entry
   /*  D  */ //EO_IXT_SRC_PRINT,    // print src ent
   /*  D  */ EO_IXT_SRC_UBOUND,   // get upper bound
   /*  D  */ EO_IXT_SRC_UBOUND_LT, // get upper bound (less than)
-  /*  D  */ EO_IXT_ALT_BEGIN,    // begin linear traverse
+  /*  D  */ EO_IXT_ALT_BEGIN,    // begin linear traverse                        --to go
   /*  D  */ EO_IXT_ALT_NEXT,     // move to next entry
   /*  D  */ //EO_IXT_ALT_PRINT,    // print src ent
   /*  D  */ EO_IXT_CMP_SRCALT,   // compare src.key to alt.key
