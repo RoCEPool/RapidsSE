@@ -1050,17 +1050,35 @@ Ent_int* aDev_IXT_TRV_NEXT_OLD(void* aLU, void* aIXT)
 /*----------------------------------------------------------------------------*/
 /* get address of payload                                                     */
 /*----------------------------------------------------------------------------*/
-i8* aDev_PAY_ADDRESS(void* aLU, void* aIXT)
+i8* aDev_PAY_ADDRESS(i8** aaiDstk)
 {
   _static_
-  
-  UNUSED(aLU);
 
-  DevIXT* pDevIXT = _pDevIXT(aIXT);
+  i8 *aiDstk = *aaiDstk;
+  DevIXT* pDevIXT = _pDevIXT(P_PopPtr());
 
-  i8* aPayload = pDevIXT->m_aEnt->aiPayCell(0);
+  i8* aiPayload;
 
-  return aPayload;
+  // aiPayload = pDevIXT->m_aEnt->aiPayCell(0);
+
+  Ent_int* aEnt = (Ent_int*)pDevIXT->m_aEnt;
+
+  if (aEnt->Rrf.m_uKind) {
+    aiPayload = (i8 *) ((char *) aEnt
+                        + sizeof(struct Ent_int)
+                        + 8
+    );
+  } else {
+    aiPayload = (i8 *) ((char *) aEnt
+                        + sizeof(struct Ent_int)
+                        + aEnt->m_iIntElm0
+                        + 8
+    );
+  }
+
+  *aaiDstk = aiDstk;
+
+  return aiPayload;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -2871,7 +2871,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // pay load
       case EO_PAY_ADDRESS: { ArgNil(); // get payload address
         dLU0(EO_PAY_ADDRESS);
-        //       aiPayload = aDev_PAY_ADDRESS(pLU,aRluCommon->m_pDevTmpIxt);
+               aiPayload = aDev_PAY_ADDRESS(&aiDstk);
 //      {
 //        i8* aiCheck = 0;
 //
@@ -2895,22 +2895,24 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 //        }
 //      }
 
-        void *pDevIXT = P_PopPtr();
+        //void *pDevIXT = P_PopPtr();
         //DevIXT *pDevIXT = _pDevIXT(P_PopPtr());
         //RASSERT((Ent_int *) pDevIXT->m_aEnt == aRluCommon->m_aTmpEnt);
 
-        if (aRluCommon->m_aTmpEnt->Rrf.m_uKind) {
-          aiPayload = (i8 *) ((char *) aRluCommon->m_aTmpEnt
-                              + sizeof(struct Ent_int)
-                              + 8
-          );
-        } else {
-          aiPayload = (i8 *) ((char *) aRluCommon->m_aTmpEnt
-                              + sizeof(struct Ent_int)
-                              + aRluCommon->m_aTmpEnt->m_iIntElm0
-                              + 8
-          );
-        }
+//        if (aRluCommon->m_aTmpEnt->Rrf.m_uKind) {
+//          aiPayload = (i8 *) ((char *) aRluCommon->m_aTmpEnt
+//                              + sizeof(struct Ent_int)
+//                              + 8
+//          );
+//        } else {
+//          aiPayload = (i8 *) ((char *) aRluCommon->m_aTmpEnt
+//                              + sizeof(struct Ent_int)
+//                              + aRluCommon->m_aTmpEnt->m_iIntElm0
+//                              + 8
+//          );
+//        }
+//
+//        RASSERT(iPayload == aiPayload);
       }
         break;//+endCase
 

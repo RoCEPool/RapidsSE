@@ -53,7 +53,7 @@ void vDev_IXT_IDX_BEGIN(i8** aaiDstk);
 void vDev_IXT_IDX_NEXT(void* aLU, i8** aaiDstk);
 struct Ent_int* aDev_IXT_TRV_NEXT_OLD(void* aLU, void* aIXT);
 
-i8*  aDev_PAY_ADDRESS(void* aLU, void* aIXT);
+i8*  aDev_PAY_ADDRESS(i8** aaiDstk);
 i8   iDev_PAY_FETCH_COLI(void* aLU, void* aIXT, i8 iArg);
 Stz* szDev_PAY_FETCH_COLS(void* aLU, void* aIXT, i8 iArg); 
 void vDev_PAY_STORE_COLI(void* aLU, void* aIXT, i8 iArg, i8 iTop);
