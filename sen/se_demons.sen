@@ -5,13 +5,11 @@
 " se_demon.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* install demon pipeline job                                                 */
+/* install a demon pipeline job                                               */
 /*----------------------------------------------------------------------------*/
 : demon::install
 
   //ddlLock[].dropRead  : check with RAY
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   "__" <pipelineNm> str.cat locals| sDemonNm |
 
@@ -26,7 +24,10 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* pipeline command for the answer demon                                      */
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* answer demon pipeline command                                              */
 /*----------------------------------------------------------------------------*/
 : answerDemonPipelineCmd
 
@@ -43,7 +44,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* pipeline command for the connector demon                                   */
+/* connector demon pipeline command                                           */
 /*----------------------------------------------------------------------------*/
 : connDemonPipelineCmd
 
@@ -60,29 +61,12 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* pipeline command for the recurring demon                                   */
+/* event demon pipeline command                                               */
 /*----------------------------------------------------------------------------*/
-: recurringDemonPipelineCmd
+: eventDemonPipelineCmd
 
   "
-    pipelineLocal recurringDemon
-      tag \"<pre_execute>\" = \"demon::install\" endTag
-    begin
-
-      stage stageA on origin :
-        start | recurring | eatAll | stageA
-
-    end ;
-  "
-;
-
-/*----------------------------------------------------------------------------*/
-/* pipeline command for the stat demon                                        */
-/*----------------------------------------------------------------------------*/
-: statDemonPipelineCmd
-
-  "
-    pipelineLocal statDemon
+    pipelineLocal eventDemon
       tag \"<pre_execute>\" = \"demon::install\" endTag
     begin
 
@@ -94,24 +78,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* pipeline command for the supervisor demon                                  */
-/*----------------------------------------------------------------------------*/
-: superDemonPipelineCmd
-
-  "
-    pipelineLocal superDemon
-      tag \"<pre_execute>\" = \"demon::install\" endTag
-    begin
-
-      stage stageA on origin :
-        start | supervisor | eatAll | stageA
-
-    end ;
-  "
-;
-
-/*----------------------------------------------------------------------------*/
-/* pipeline command for the monitor demon                                     */
+/* monitor demon pipeline command                                             */
 /*----------------------------------------------------------------------------*/
 : monDemonPipelineCmd
 
@@ -128,7 +95,58 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* pipeline command for the waker demon                                       */
+/* recurring demon pipeline command                                           */
+/*----------------------------------------------------------------------------*/
+: recurringDemonPipelineCmd
+
+  "
+    pipelineLocal recurringDemon
+      tag \"<pre_execute>\" = \"demon::install\" endTag
+    begin
+
+      stage stageA on origin :
+        start | recurring | eatAll | stageA
+
+    end ;
+  "
+;
+
+/*----------------------------------------------------------------------------*/
+/* statistics demon pipeline command                                          */
+/*----------------------------------------------------------------------------*/
+: statDemonPipelineCmd
+
+  "
+    pipelineLocal statDemon
+      tag \"<pre_execute>\" = \"demon::install\" endTag
+    begin
+
+      stage stageA on origin :
+        start | statWrite | eatAll | stageA
+
+    end ;
+  "
+;
+
+/*----------------------------------------------------------------------------*/
+/* supervisor demon pipeline command                                          */
+/*----------------------------------------------------------------------------*/
+: superDemonPipelineCmd
+
+  "
+    pipelineLocal superDemon
+      tag \"<pre_execute>\" = \"demon::install\" endTag
+    begin
+
+      stage stageA on origin :
+        start | supervisor | eatAll | stageA
+
+    end ;
+  "
+;
+
+/*----------------------------------------------------------------------------*/
+/* waker demon pipeline command                                               */
 /*----------------------------------------------------------------------------*/
 : wakerDemonPipelineCmd
 
