@@ -164,10 +164,9 @@ void Expr::vValidateResultType(QueryNode* pExprNode, PlanNode* pRootNode)
   s2K sBuf;
   Expr::vDescribe(pExprNode, sBuf);
 
-  SemanticException::vThrow(
-      "Expression type combination is invalid or unsupported for the expression operator : %s"_Stz,
-      sBuf.szStz()
-      );
+  SemanticException::vThrow(EC_EXPR_INVALID_COMBINATION,
+                            ": "_Stz,
+                            sBuf.szStz() );
 }
 
 /*============================================================================*/

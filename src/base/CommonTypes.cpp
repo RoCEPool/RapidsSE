@@ -19,17 +19,17 @@ static const i8 C_DAYS_IN_MONTH_LEAP[12] = { 31, 29, 31, 30, 31, 30, 31, 31, 30,
 /*----------------------------------------------------------------------------*/
 b1 Dte::bIsValid(i8 iYear, i8 iMonth, i8 iDay, s256& sErrorBuf) {
   if (iYear > 9999 || iYear < -9999) {
-    sErrorBuf.vCopy("Invalid date string format. Year value is out of range"_Stz);
+    sErrorBuf.vCopy("Year value is out of range"_Stz);
     return false;
   }
 
   if (iMonth > 12 || iMonth < 1) {
-    sErrorBuf.vCopy("Invalid date string format. Month value is out of range"_Stz);
+    sErrorBuf.vCopy("Month value is out of range"_Stz);
     return false;
   }
 
   if (iDay > 31 || iDay < 1) {
-    sErrorBuf.vCopy("Invalid date string format. Day value is out of range"_Stz);
+    sErrorBuf.vCopy("Day value is out of range"_Stz);
     return false;
   }
 
@@ -38,13 +38,13 @@ b1 Dte::bIsValid(i8 iYear, i8 iMonth, i8 iDay, s256& sErrorBuf) {
   // Check days in month
   if ( (!bIsLeapYear && iDay > C_DAYS_IN_MONTH[iMonth - 1]) ||
        (bIsLeapYear &&  iDay > C_DAYS_IN_MONTH_LEAP[iMonth - 1]) ) {
-    sErrorBuf.vCopy("Invalid date string format. Day value is out of range"_Stz);
+    sErrorBuf.vCopy("Day value is out of range"_Stz);
     return false;
   }
 
   // Check that the date is within range of Dte class
   if (iYear < (i8) C_YEAR_MIN || iYear > (i8) C_YEAR_MAX) {
-    sErrorBuf.vCopy("Invalid date string format. Year value is out of range"_Stz);
+    sErrorBuf.vCopy("Year value is out of range"_Stz);
     return false;
   }
 
@@ -64,17 +64,17 @@ b1 Dte::bIsValid(i8 iYear, i8 iMonth, i8 iDay, s256& sErrorBuf) {
 /*----------------------------------------------------------------------------*/
 b1 Tme::bIsValid(i8 iHour, i8 iMin, i8 iSec, s256& sErrorBuf) {
   if (iHour > 23 || iHour < 0) {
-    sErrorBuf.vCopy("Invalid time string format. Hour value is out of range"_Stz);
+    sErrorBuf.vCopy("Hour value is out of range"_Stz);
     return false;
   }
 
   if (iMin > 59 || iMin < 0) {
-    sErrorBuf.vCopy("Invalid time string format. Minute value is out of range"_Stz);
+    sErrorBuf.vCopy("Minute value is out of range"_Stz);
     return false;
   }
 
   if (iSec > 59 || iSec < 0) {
-    sErrorBuf.vCopy("Invalid time string format. Second value is out of range"_Stz);
+    sErrorBuf.vCopy("Second value is out of range"_Stz);
     return false;
   }
 
@@ -103,7 +103,7 @@ b1 Tsp::bIsValid(i8 iYear, i8 iMonth, i8 iDay, i8 iHour, i8 iMin, i8 iSec, i8 iM
   }
 
   if (iMicro > (i8)C_TSP_USEC_MAX || iMicro < (i8)C_TSP_USEC_MIN) {
-    sErrorBuf.vCopy("Invalid timestamp string format. Microseconds value is out of range"_Stz);
+    sErrorBuf.vCopy("Microseconds value is out of range"_Stz);
     return false;
   }
 
