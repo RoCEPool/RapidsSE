@@ -452,15 +452,18 @@ void vDev_ENT_PRINTKEYS(void* aLU, void* aIXT)
 /*----------------------------------------------------------------------------*/
 /* push entry                                                                 */
 /*----------------------------------------------------------------------------*/
-void* aDev_ENT_PUSH(void* aLU, void* aIXT)
+void vDev_ENT_PUSH(i8** aaiDstk)
 {
   _static_
-  
-  UNUSED(aLU);
 
-  DevIXT* pDevIxt = _pDevIXT(aIXT);
+  i8 *aiDstk = *aaiDstk;
+
+  //pop the device
+  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
   
-  return pDevIxt->m_aEnt;
+  P_PushPtr(pDevIxt->m_aEnt);
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/

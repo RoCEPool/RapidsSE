@@ -273,7 +273,6 @@ enum eEO : u1 // expression operators
   /*  D  */ EO_ENT_PUSHOFS,      // push entry offset
   /*  -  */ EO_ENT_PUSHREF,      // push ref of current entry
 
-  /*  D  */ EO_ENT_SRC_PUSH,     // push src entry
   /*  D  */ EO_ENT_SRC_PUSHUPPER,// push src upper entry
   
   // entry relational operators
@@ -649,7 +648,6 @@ static Stz* aEO[]
   /*    */ "EO_ENT_PUSHOFS"_Stz,
   /*    */ "EO_ENT_PUSHREF"_Stz,
 
-  /*    */ "EO_ENT_SRC_PUSH"_Stz,
   /*    */ "EO_ENT_SRC_PUSHUPPER"_Stz,
   
   // entry relational operators
@@ -1030,7 +1028,6 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_ENT_PUSHOFS
   { EA_NONE,    0 },  // EO_ENT_PUSHREF
 
-  { EA_NONE,    0 },  // EO_ENT_SRC_PUSH
   { EA_NONE,    0 },  // EO_ENT_SRC_PUSHUPPER
 
   // entry relational operators

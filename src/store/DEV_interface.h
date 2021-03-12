@@ -25,7 +25,9 @@ void vDev_ENT_NEXT(i8** aaiDstk);
 void vDev_ENT_POSPRIOR(i8** aaiDstk);
 
 void vDev_ENT_PRINTKEYS(void* aLU, void* aIXT);
-void* aDev_ENT_PUSH(void* aLU, void* aIXT);
+
+void vDev_ENT_PUSH(i8** aaiDstk);
+
 void* aDev_ENT_PUSHUPPER(void* aLU, void* aIXT);
 i8   iDev_ENT_PUSHELMI0(void* aLU, void* aIXT);
 Stz* szDev_ENT_PUSHELMS0(void* aLU, void* aIXT); // NOT COMPLETE!!

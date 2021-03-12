@@ -76,7 +76,7 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_ENT_NEXT"_Stz,          (const void *) vDev_ENT_NEXT          },
   { "vDev_ENT_POSPRIOR"_Stz,      (const void *) vDev_ENT_POSPRIOR      },
   { "vDev_ENT_PRINTKEYS"_Stz,     (const void *) vDev_ENT_PRINTKEYS     },
-  { "aDev_ENT_PUSH"_Stz,          (const void *) aDev_ENT_PUSH          },
+  { "vDev_ENT_PUSH"_Stz,          (const void *) vDev_ENT_PUSH          },
   { "aDev_ENT_PUSHUPPER"_Stz,     (const void *) aDev_ENT_PUSHUPPER     },
   { "iDev_ENT_PUSHELMI0"_Stz,     (const void *) iDev_ENT_PUSHELMI0     },
   { "szDev_ENT_PUSHELMS0"_Stz,    (const void *) szDev_ENT_PUSHELMS0    },

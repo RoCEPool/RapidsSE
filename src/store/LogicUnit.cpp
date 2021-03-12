@@ -2492,7 +2492,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_ENT_PUSH: ArgNil(); // push entry on the stack
         dLU0(EO_ENT_PUSH);
-        *(++aiDstk) = (i8)aDev_ENT_PUSH(pLU,aRluCommon->m_pDevTmpIxt);
+        vDev_ENT_PUSH(&aiDstk);
         break;//+endCase
         
       case EO_ENT_PUSHELMI0: ArgNil(); // push entry elm 0 int
@@ -2513,12 +2513,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_ENT_PUSHREF: ArgNil(); // not yet implemented
         NEVER_REACH;
-        break;//+endCase
-
-      case EO_ENT_SRC_PUSH: ArgNil(); // push entry on the stack
-        dLU0(EO_ENT_SRC_PUSH);
-        //*(++aiDstk) = (i8)m_pDevSrcIxt->m_aEnt;
-        *(++aiDstk) = (i8)aDev_ENT_PUSH(pLU, aRluCommon->m_pDevSrcIxt);
         break;//+endCase
         
       case EO_ENT_SRC_PUSHUPPER: ArgNil(); // push entry on the stack
