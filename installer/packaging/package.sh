@@ -33,7 +33,7 @@ readonly SOURCE_DIR="${ROOT_DIR}/src"
 readonly MAKESELF_DIR=$(find "${ROOT_DIR}/thirdparty/" -type d -name "makeself*")
 
 readonly GIT_CHECK_MODIFIED_FILES_CMD="git status -uno --porcelain"
-readonly GIT_DESCRIBE_CMD="git describe --long --match=\"v*\""
+readonly GIT_DESCRIBE_CMD=("git" "describe" "--long" "--match=v*")
 readonly GIT_BRANCH_CMD="git rev-parse --abbrev-ref HEAD"
 
 readonly VERSION_FILE="${LAYOUT_DIR}/version"
@@ -66,7 +66,7 @@ function extractVersions() {
   local git_version_str
   
   regex="^v([0-9]+)\.([0-9]+)\.([0-9]+)(-[^-]+)?-([0-9]+)-([[:alnum:]]+)$"
-  git_version_str="$(${GIT_DESCRIBE_CMD})"
+  git_version_str="$(${GIT_DESCRIBE_CMD[*]})"
 
   if [[ "${git_version_str}" =~ ${regex} ]]
   then
