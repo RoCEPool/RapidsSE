@@ -4,7 +4,7 @@
 
 //------------------------------------------------------------------------------
 select l_discount from lineitem;
-failure contains: "EC_SEMANTIC_ERROR"
+failure contains: "Table does not exist: lineitem"
 
 //------------------------------------------------------------------------------
 // create table lineitem
