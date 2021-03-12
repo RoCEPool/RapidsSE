@@ -349,7 +349,7 @@ void vDev_ENT_FIND(void* aLU, void* aIXT, i8** aaiDstk)
     iTopB = aEnt_int->m_iIntElm0;
     //printf("Ticket %lld Ent %p\n",(i8)tNext,aEnt_int);
     if (iTopA == iTopB) {
-      aRluCommon->m_aTmpEnt = aEnt_int;
+      //aRluCommon->m_aTmpEnt = aEnt_int;
       pDevIxt->m_aEnt = (Ent*)aEnt_int;
       *(++aiDstk) = 1; // found matching key
       goto L_end_FINDI;

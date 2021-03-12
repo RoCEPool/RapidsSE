@@ -2516,16 +2516,18 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 //
         break;//+endCase
         
-      case EO_ENT_NEXT: ArgNil(); // move to next m_pEnt
+      case EO_ENT_NEXT: { ArgNil(); // move to next m_pEnt
         dLU0(EO_ENT_NEXT);
-        aRluCommon->m_aTmpEnt = aDev_ENT_NEXT(pLU,aRluCommon->m_pDevTmpIxt);
-        *(++aiDstk) = (i8)aRluCommon->m_aTmpEnt;
+        void *aTmpEnt = aDev_ENT_NEXT(pLU, aRluCommon->m_pDevTmpIxt);
+        *(++aiDstk) = (i8) aTmpEnt;
+        }
         break;//+endCase
         
-      case EO_ENT_POSPRIOR: ArgNil(); // position m_pEnt prior using m_oEntWrk.key
+      case EO_ENT_POSPRIOR: { ArgNil(); // position m_pEnt prior using m_oEntWrk.key
         dLU0(EO_ENT_POSPRIOR);
-        aRluCommon->m_aTmpEnt = aDev_ENT_POSPRIOR(pLU,aRluCommon->m_pDevTmpIxt);
-        *(++aiDstk) = (i8)aRluCommon->m_aTmpEnt;
+        void *aTmpEnt = aDev_ENT_POSPRIOR(pLU, aRluCommon->m_pDevTmpIxt);
+        *(++aiDstk) = (i8) aTmpEnt;
+      }
         break;//+endCase
         
       case EO_ENT_PUSH: ArgNil(); // push entry on the stack
@@ -2661,26 +2663,29 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         RASSERT(0);
         break;//+endCase
 
-      case EO_IXT_INS_ENT: ArgNil(); // insert an entry into the indexTree
+      case EO_IXT_INS_ENT: { ArgNil(); // insert an entry into the indexTree
         dLU0(EO_IXT_INS_ENT);
-        aRluCommon->m_aTmpEnt =
-          aDev_IXT_INS_ENT(pLU,aRluCommon->m_pDevTmpIxt);
+        void *aTmpEnt =
+            aDev_IXT_INS_ENT(pLU, aRluCommon->m_pDevTmpIxt);
         //ASSERT(m_pDevTmpIxt->m_aEnt);
+      }
         break;//+endCase
         
-      case EO_IXT_TRV_BEGIN: ArgNil(); // begin linear traverse
+      case EO_IXT_TRV_BEGIN: { ArgNil(); // begin linear traverse
         dLU0(EO_IXT_TRV_BEGIN);
-        aRluCommon->m_aTmpEnt =
-          aDev_IXT_TRV_BEGIN_OLD(pLU,aRluCommon->m_pDevTmpIxt);
+        void *aTmpEnt =
+            aDev_IXT_TRV_BEGIN_OLD(pLU, aRluCommon->m_pDevTmpIxt);
         //aRluCommon->m_aTmpEntArray = aRluCommon->m_aEntArray;
-        *(++aiDstk) = (i8)aRluCommon->m_aTmpEnt;
+        *(++aiDstk) = (i8) aTmpEnt;
+      }
         break;//+endCase
         
-      case EO_IXT_TRV_NEXT: ArgNil(); // traverse to next entry
+      case EO_IXT_TRV_NEXT: { ArgNil(); // traverse to next entry
         dLU0(EO_IXT_TRV_NEXT);
-        aRluCommon->m_aTmpEnt =
-          aDev_IXT_TRV_NEXT_OLD(pLU,aRluCommon->m_pDevTmpIxt);
-        *(++aiDstk) = (i8)aRluCommon->m_aTmpEnt;
+        void *aTmpEnt =
+            aDev_IXT_TRV_NEXT_OLD(pLU, aRluCommon->m_pDevTmpIxt);
+        *(++aiDstk) = (i8) aTmpEnt;
+      }
         break;//+endCase
         
       case EO_IXT_TMP_ENTRIES: ArgNil(); // push number of entries in tmp index
