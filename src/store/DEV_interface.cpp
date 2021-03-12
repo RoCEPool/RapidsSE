@@ -986,23 +986,15 @@ void vDev_IXT_IDX_BEGIN(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* traverse to next entry                                                     */
 /*----------------------------------------------------------------------------*/
-void vDev_IXT_IDX_NEXT(void* aLU, i8** aaiDstk)
+void vDev_IXT_IDX_NEXT(i8** aaiDstk)
 {
   _static_
 
   i8 *aiDstk = *aaiDstk;
   DevIXT* pDevIXT = _pDevIXT(P_PopPtr());
 
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-
   pDevIXT->m_aEnt =
      EntBuffer::pMoveToNextEntry(pDevIXT->m_aEnt,&pDevIXT->m_pEntBuffer);
-
-//  if (pDevIXT->m_pEntBuffer)
-//    pLogicUnit->m_xRluCommon.m_aEntArray =
-//      (Ent_int*)pDevIXT->m_pEntBuffer->aEntArray();
-//  else
-//    pLogicUnit->m_xRluCommon.m_aEntArray = nullptr;
 
   P_PushPtr(pDevIXT->m_aEnt);
   *aaiDstk = aiDstk;

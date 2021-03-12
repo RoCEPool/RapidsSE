@@ -52,7 +52,7 @@ struct Ent_int* aDev_IXT_POS_UBOUND(void* aLU, void* aIXT);
 struct Ent_int* aDev_IXT_POS_UBOUND_LT(void* aLU, void* aIXT);
 
 void vDev_IXT_IDX_BEGIN(i8** aaiDstk);
-void vDev_IXT_IDX_NEXT(void* aLU, i8** aaiDstk);
+void vDev_IXT_IDX_NEXT(i8** aaiDstk);
 struct Ent_int* aDev_IXT_TRV_NEXT_OLD(void* aLU, void* aIXT);
 
 i8*  aDev_PAY_ADDRESS(i8** aaiDstk);

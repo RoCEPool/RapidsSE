@@ -113,7 +113,8 @@ Label UPPERBOUND
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // no upper key traverse till end
 Label TRV_TILL_END
-  EO_IXT_SRC_NEXT
+  EO_PUSH_DEVIXT_SRC
+  EO_DEVIXT_IDX_NEXT
   EO_JMP_FALSE QRY_600_DONE
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -130,7 +131,8 @@ Label TRV_TILL_UPPER
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fetch next entry from index
-  EO_IXT_SRC_NEXT
+  EO_PUSH_DEVIXT_SRC
+  EO_DEVIXT_IDX_NEXT
   EO_JMP_FALSE QRY_600_DONE
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

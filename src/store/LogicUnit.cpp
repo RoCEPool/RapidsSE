@@ -2625,11 +2625,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
       case EO_IXT_TRV_NEXT: { ArgNil(); // traverse to next entry
-        dLU0(EO_IXT_TRV_NEXT);
-        void *aTmpEnt =
-            aDev_IXT_TRV_NEXT_OLD(pLU, aRluCommon->m_pDevTmpIxt);
-        *(++aiDstk) = (i8) aTmpEnt;
+//        dLU0(EO_IXT_TRV_NEXT);
+//        void *aTmpEnt =
+//            aDev_IXT_TRV_NEXT_OLD(pLU, aRluCommon->m_pDevTmpIxt);
+//        *(++aiDstk) = (i8) aTmpEnt;
       }
+      RASSERT(0);
         break;//+endCase
         
       case EO_IXT_TMP_ENTRIES: ArgNil(); // push number of entries in tmp index
@@ -2666,10 +2667,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_DEVIXT_IDX_NEXT: ArgNil(); // traverse to next entry
         dLU0(EO_DEVIXT_IDX_NEXT);
-        //vDev_IXT_TRV_NEXT(&aiDstk);
-        //aRluCommon->m_aTmpEnt = (Ent*)P_PopPtr();
-        //*(++aiDstk) = (i8)aRluCommon->m_aTmpEnt;
-        RASSERT(0);
+        vDev_IXT_IDX_NEXT(&aiDstk);
         break;//+endCase
 
       case EO_DEVIXT_IDX_ENTRIES: ArgNil(); // push number of entries in tmp index
@@ -2699,11 +2697,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       break;//+endCase
         
       case EO_IXT_SRC_NEXT: { ArgNil(); // move to next entry
-        dLU0(EO_IXT_SRC_NEXT);
-        void *aSrcEnt =
-            aDev_IXT_TRV_NEXT_OLD(pLU, aRluCommon->m_pDevSrcIxt);
-        *(++aiDstk) = (i8) aSrcEnt;
+//        dLU0(EO_IXT_SRC_NEXT);
+//        void *aSrcEnt =
+//            aDev_IXT_TRV_NEXT_OLD(pLU, aRluCommon->m_pDevSrcIxt);
+//        *(++aiDstk) = (i8) aSrcEnt;
       }
+      RASSERT(0);
         break;//+endCase
 
       case EO_IXT_SRC_UBOUND: { ArgNil(); // pos in buffer to entry for UBOUND
@@ -2735,11 +2734,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       case EO_IXT_ALT_NEXT: { ArgNil();
-        dLU0(EO_IXT_ALT_NEXT);
-        void *aAltEnt =
-            aDev_IXT_TRV_NEXT_OLD(pLU, aRluCommon->m_pDevAltIxt);
-        *(++aiDstk) = (i8) aAltEnt;
+//        dLU0(EO_IXT_ALT_NEXT);
+//        void *aAltEnt =
+//            aDev_IXT_TRV_NEXT_OLD(pLU, aRluCommon->m_pDevAltIxt);
+//        *(++aiDstk) = (i8) aAltEnt;
       }
+      RASSERT(0);
 
 //        tNext = aRluCommon->m_aAltEnt->m_taNextEntry[0];
 //
