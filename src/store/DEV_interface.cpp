@@ -512,15 +512,18 @@ void vDev_ENT_PUSHELMS0(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* push entry                                                                 */
 /*----------------------------------------------------------------------------*/
-void* aDev_ENT_PUSHUPPER(void* aLU, void* aIXT)
+void vDev_ENT_PUSHUPPER(i8** aaiDstk)
 {
   _static_
 
-  UNUSED(aLU);
+  i8 *aiDstk = *aaiDstk;
 
-  DevIXT* pDevIxt = _pDevIXT(aIXT);
+  //pop the device
+  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
 
-  return pDevIxt->m_aUpperEnt;
+  P_PushPtr(pDevIxt->m_aUpperEnt);
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -2505,10 +2505,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_ENT_PUSHELMS0(&aiDstk);
         break;//+endCase
         
-      case EO_ENT_SRC_PUSHUPPER: ArgNil(); // push entry on the stack
-        dLU0(EO_ENT_SRC_PUSHUPPER);
-        //*(++aiDstk) = (i8)m_pDevSrcIxt->m_aUpperEnt;
-        *(++aiDstk) = (i8)aDev_ENT_PUSHUPPER(pLU, aRluCommon->m_pDevSrcIxt);
+      case EO_ENT_PUSHUPPER: ArgNil(); // push entry on the stack
+        dLU0(EO_ENT_PUSHUPPER);
+        vDev_ENT_PUSHUPPER(&aiDstk);
         break;//+endCase
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

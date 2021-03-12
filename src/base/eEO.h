@@ -270,8 +270,7 @@ enum eEO : u1 // expression operators
   /*  D  */ EO_ENT_PUSH,         // push entry
   /*  D  */ EO_ENT_PUSHELMI0,    // push entry elm 0 int
   /*  D  */ EO_ENT_PUSHELMS0,    // push entry elm 0 str
-
-  /*  D  */ EO_ENT_SRC_PUSHUPPER,// push src upper entry
+  /*  D  */ EO_ENT_PUSHUPPER,    // push upper entry
   
   // entry relational operators
   /*  D  */ EO_ENT_LESS,         // test if m_pEnt.key <  m_oEntWrk.key
@@ -643,8 +642,7 @@ static Stz* aEO[]
   /*    */ "EO_ENT_PUSH"_Stz,
   /*    */ "EO_ENT_PUSHELMI0"_Stz,
   /*    */ "EO_ENT_PUSHELMS0"_Stz,
-
-  /*    */ "EO_ENT_SRC_PUSHUPPER"_Stz,
+  /*    */ "EO_ENT_PUSHUPPER"_Stz,
   
   // entry relational operators
   /*    */ "EO_ENT_LESS"_Stz,
@@ -1021,8 +1019,7 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_ENT_PUSH
   { EA_NONE,    0 },  // EO_ENT_PUSHELMI0
   { EA_NONE,    0 },  // EO_ENT_PUSHELMS0
-
-  { EA_NONE,    0 },  // EO_ENT_SRC_PUSHUPPER
+  { EA_NONE,    0 },  // EO_ENT_PUSHUPPER
 
   // entry relational operators
   { EA_NONE,    0 },  // EO_ENT_LESS
