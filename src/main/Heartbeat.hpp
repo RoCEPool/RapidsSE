@@ -297,11 +297,12 @@ public:
 class CheckSum {
 public:
   CheckSum(const byte *data, size_t len);
-  u2 uGetFletcher16(void) { return m_uValue;}
+  u2 uGetFletcher16(void);
+  i8 iGetBernstein(void);
 private:
-  u2 m_uValue;
-
-
+  u2          m_uValue;
+  const byte* m_pData;
+  size_t      m_iDataLen;
 };
 
 

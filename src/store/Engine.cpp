@@ -1719,17 +1719,19 @@ void Engine::vCreateGridOfNodes(void)
 
   for (i8 i_Node = 0; i_Node < gxCmdLineArgs.m_xSysArgs.m_nBootNodes; i_Node++) {
 
-    Node* pNode = new Node(gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_iPortNo, //i_Node +  abs((i2)Hardware::iReadTscp()),
+    CheckSum ChecksumValue((unsigned char *)gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress.azChar(),
+                           gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress.nLength());
+    //i8 iNodeNo = (ChecksumValue.uGetFletcher16() + gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_iPortNo)/2;
+
+    i8 iNodeNo = (ChecksumValue.iGetBernstein() + gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_iPortNo);
+
+    Node* pNode = new Node(iNodeNo, //gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_iPortNo, //i_Node +  abs((i2)Hardware::iReadTscp()),
                            gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sNodeName,
                            AM::nDegOfPar(),
                            gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress,
                            gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_iPortNo);
 
-    Grid* pGrid = AM::pGrid();
-    if (gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sNodeName.bSame("NODE1"_Stz))
-      pGrid->vPutNodeR(pNode);
-    else
-      AM::pGrid()->vPutNode(pNode);
+    AM::pGrid()->vPutNode(pNode);
 
     AM::pGrid()->vIncBootNodes();
     AM::pGrid()->vIncDefinedNodes();
@@ -1764,7 +1766,7 @@ void Engine::vTestPort(i8 iPort)
 {
   SysCall oSysCall;
   Socket* pSocket;
-    
+
   pSocket = new Socket(gpAttachMap);
   bool bResult = pSocket->bCreateServer((int)iPort, oSysCall);
   
@@ -1840,20 +1842,7 @@ void Engine::vWriteRegionName(void)
 
 
 
-// An algorithm produced by Professor Daniel J. Bernstein
-i8 Engine::iHashIndex(const byte* str, unsigned int length)
-{
-  i8 hash = 5381;
-  unsigned int i    = 0;
 
-  for (i = 0; i < length; ++str, ++i)
-  {
-    hash = ((hash << 5) + hash) + (*str);
-  }
-
-  return hash & (C_MAX_NODES-1);
-
-}
 
 
 

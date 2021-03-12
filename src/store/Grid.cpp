@@ -445,34 +445,21 @@ void Grid::vPutNode(Node* pNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
-
   // newcode
   m_lNodes.push_back(pNode);
   m_nNodes++;
 
-  /* oldcode
-  i8 i_Node = pNode->iNodeNo();
-  
-  m_pNodes[i_Node] = pNode;
-  
-  m_nNodes++; */
-  
-//  if (i_Node >= m_nBootNodes)
-//    m_nBootNodes++;
 }
 
 /*----------------------------------------------------------------------------*/
-/* put node                                                                   */
+/* put node Reverse                                                           */
 /*----------------------------------------------------------------------------*/
 void Grid::vPutNodeR(Node* pNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
-
-  // newcode
   m_lNodes.push_front(pNode);
   m_nNodes++;
-
 
 }
 
@@ -510,21 +497,34 @@ void Grid::vAddNode(i8 iNodeNo, Stz* pszName, Stz* pszAddr, i8 iPort)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
+
+  // Search List using Lambda function as comparator
   std::list<Node*>::iterator itFound = std::find_if(m_lNodes.begin(), m_lNodes.end(),
-               [&] (Node* rNode) { return rNode->iNodeNo() == iNodeNo; });
+               [&] (Node* pNode) { return pNode->iNodeNo() == iNodeNo; });
 
   if (itFound == m_lNodes.end()) { // not found, let's add
     vTrace("NOT FOUND\n"_Stz);
-    Node *pNode = new Node(iNodeNo,
+
+    CheckSum ChecksumValue((unsigned char *)pszAddr->azChar(), pszAddr->nLength());
+    //i8 l_iNodeNo = (ChecksumValue.uGetFletcher16() + iPort)/2;
+    i8 l_iNodeNo = (ChecksumValue.iGetBernstein() + iPort);
+
+
+    Node *pNode = new Node(l_iNodeNo,
                            pszName,
                            AM::nDegOfPar(),
                            pszAddr,
                            iPort);
 
-    if (gxCmdLineArgs.m_xSysArgs.m_xBootNode[0].m_sNodeName.bSame("NODE1"_Stz))
-      vPutNodeR(pNode);
-    else
     vPutNode(pNode); // this also incr m_nNodes;
+
+    // Sorting List using Lambda function as comparator
+    m_lNodes.sort([](Node* pNode1, Node* pNode2)
+                  {
+                    if(pNode1->iNodeNo() == pNode2->iNodeNo())
+                      return pNode1 < pNode2;
+                    return pNode1->iNodeNo() < pNode2->iNodeNo();
+                  });
 
     vIncBootNodes();
     vIncDefinedNodes();
@@ -538,34 +538,7 @@ void Grid::vAddNode(i8 iNodeNo, Stz* pszName, Stz* pszAddr, i8 iPort)
 
   // Found, nothing to do
 
-  /*
-   *
-   *  for (Node_I oNode_I(0,C_ALL); oNode_I.bMore(); oNode_I.vNext()) {
-    Node* pNode = (*oNode_I);
-    if (pNode && pNode->iNodeNo() == iNodeNo)
-      return pNode;
-  }
-      for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++) {
-        //ASSERT(AM::pGrid()->nNodes() == i_Node);
-        if (m_pNodes[i_Node] == nullptr) { // Add to this slot
-          Node *pNode = new Node(i_Node,
-                                 pszName,
-                                 AM::nDegOfPar(),
-                                 pszAddr,
-                                 iPort);
 
-          vPutNode(pNode); // this also incr m_nNodes;
-          vIncBootNodes();
-          vIncDefinedNodes();
-
-          Article *pNodeArticle = pNode->pArticle();
-
-          pArticle()->vAppend(pNodeArticle);
-
-          break; // done with adding
-        }
-      }
-*/
 }
 
 /*----------------------------------------------------------------------------*/

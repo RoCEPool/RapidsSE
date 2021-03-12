@@ -4,7 +4,7 @@
 
 //bc; assume the system is already started the cluster
 
-create table bolTbl (
+create table bolTbl2 (
   bol_col1   BOOLEAN     NOT NULL,
   vch_col2   VARCHAR(32) NOT NULL,
   int_col3   INTEGER     NOT NULL,
@@ -15,11 +15,11 @@ create table bolTbl (
   bol_col8   BOOLEAN
 );
 
-//create index bol_idx1 on bolTbl (bol_col1);
+create index bol_idx1 on bolTbl2 (bol_col1);
 
-//create index bol_idx2 on bolTbl (bol_col8);
+create index bol_idx2 on bolTbl2 (bol_col8);
 
-lsidx bolTbl;
+lsidx bolTbl2;
 
 /*============================================================================*/
 /* end                  vSendToAllPartitions                                                      */

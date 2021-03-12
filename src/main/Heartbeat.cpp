@@ -265,19 +265,25 @@ bool TestConnection::bTryConnect(void)
  */
 CheckSum::CheckSum (const byte *pData, size_t iLen)
 {
+  m_pData = pData;
+  m_iDataLen = iLen;
+}
+
+u2 CheckSum::uGetFletcher16(void)
+{
   u4 c0 = 0, c1 = 0;
   m_uValue = 0;
   /*  Found by solving for c1 overflow: */
   /* n > 0 and n * (n+1) / 2 * (2^8-1) < (2^32-1). */
-  while (iLen > 0) {
-    size_t blocklen = iLen;
+  while (m_iDataLen > 0) {
+    size_t blocklen = m_iDataLen;
     if (blocklen > 5002) {
       blocklen = 5002;
     }
-    iLen -= blocklen;
+    m_iDataLen -= blocklen;
 
     do {
-      c0 = c0 + *pData++;
+      c0 = c0 + *m_pData++;
       c1 = c1 + c0;
     } while (--blocklen);
 
@@ -285,6 +291,22 @@ CheckSum::CheckSum (const byte *pData, size_t iLen)
     c1 = c1 % 255;
   }
   m_uValue = (c1 << 8 | c0);
+  return m_uValue;
+}
+
+// An algorithm produced by Professor Daniel J. Bernstein
+i8 CheckSum::iGetBernstein(void)
+{
+  i8 hash = 5381;
+  unsigned int i    = 0;
+
+  for (i = 0; i < m_iDataLen; ++m_pData, ++i)
+  {
+    hash = ((hash << 5) + hash) + (*m_pData);
+  }
+
+  return hash & (1024-1);
+
 }
 
 /*============================================================================*/
