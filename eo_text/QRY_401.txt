@@ -291,7 +291,9 @@ Label END_AGR
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Label OUT_AGG
 
-  EO_IXT_TRV_BEGIN
+  EO_PUSH_DEVIXT_TMP
+  EO_DEVIXT_IDX_BEGIN
+
   EO_JMP_FALSE TRV_RET
 
   Label TRV_ECH

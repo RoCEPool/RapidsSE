@@ -2615,12 +2615,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
       case EO_IXT_TRV_BEGIN: { ArgNil(); // begin linear traverse
-        dLU0(EO_IXT_TRV_BEGIN);
-        void *aTmpEnt =
-            aDev_IXT_TRV_BEGIN_OLD(pLU, aRluCommon->m_pDevTmpIxt);
-        //aRluCommon->m_aTmpEntArray = aRluCommon->m_aEntArray;
-        *(++aiDstk) = (i8) aTmpEnt;
+//        dLU0(EO_IXT_TRV_BEGIN);
+//        void *aTmpEnt =
+//            aDev_IXT_TRV_BEGIN_OLD(pLU, aRluCommon->m_pDevTmpIxt);
+//        //aRluCommon->m_aTmpEntArray = aRluCommon->m_aEntArray;
+//        *(++aiDstk) = (i8) aTmpEnt;
       }
+        RASSERT(0);
         break;//+endCase
         
       case EO_IXT_TRV_NEXT: { ArgNil(); // traverse to next entry
@@ -2659,12 +2660,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       case EO_DEVIXT_IDX_BEGIN: ArgNil(); // begin linear traverse
-//        dLU0(EO_DEVIXT_IDX_BEGIN);
-//        vDev_IXT_TRV_BEGIN(&aiDstk);
-//        aRluCommon->m_aTmpEnt = (Ent*)P_PopPtr();
-//        aRluCommon->m_aTmpEntArray = aRluCommon->m_aEntArray;
-//        *(++aiDstk) = (i8)aRluCommon->m_aTmpEnt;
-        RASSERT(0);
+        dLU0(EO_DEVIXT_IDX_BEGIN);
+        vDev_IXT_IDX_BEGIN(&aiDstk);
         break;//+endCase
 
       case EO_DEVIXT_IDX_NEXT: ArgNil(); // traverse to next entry
