@@ -282,15 +282,13 @@ enum eEO : u1 // expression operators
   /*    */ EO_ENT_PRINTKEYS,    // print both m_pEnt.key and m_oEntWrk.key
 
   // entWrk
-  /*  D  */ EO_DEVROW_ENTWRK_APPENDELMI,// append next element value (int)
-  /*  D  */ EO_DEVROW_ENTWRK_APPENDELMS,// append next element value (str)
-  /*  D  */ EO_DEVROW_ENTWRK_CREATEPAY, // create a payload in entwrk
+  /*    */ EO_DEVROW_ENTWRK_APPENDELMI,// append next element value (int)
+  /*    */ EO_DEVROW_ENTWRK_APPENDELMS,// append next element value (str)
+  /*    */ EO_DEVROW_ENTWRK_CREATEPAY, // create a payload in entwrk
 
-  /*  D  */ EO_ENTWRK_PRINT,     // print m_oEntWrk
-
-  /*  R  */ EO_ENTWRK_RESET,     // reset m_oEntWrk
-
-  /*  R  */ EO_ENTWRK_SETINTELM, // set int only element value
+  /*    */ EO_ENTWRK_PRINT,     // print m_oEntWrk
+  /*    */ EO_ENTWRK_RESET,     // reset m_oEntWrk
+  /*    */ EO_ENTWRK_SETINTELM, // set int only element value
 
   // index tree
   /*  D  */ EO_IXT_DEL_ENT,      // delete current m_aEnt from indexTree          ---to go

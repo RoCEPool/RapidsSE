@@ -2576,20 +2576,16 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       case EO_ENTWRK_PRINT: ArgNil(); // print m_oEntWrk
-        vDev_ENTWRK_PRINT(pLU,aRluCommon->m_pDevSrcRow);
+        vDev_ENTWRK_PRINT(&aiDstk);
         break;//+endCase
         
       case EO_ENTWRK_RESET: ArgNil(); // reset m_oEntWrk
         dLU0(EO_ENTWRK_RESET);
         vDev_ENTWRK_RESET(&aiDstk);
-        //memset(aRluCommon->m_aWrkEnt,0,sizeof(struct Ent_int));
         break;//+endCase
-                              
+
       case EO_ENTWRK_SETINTELM: ArgNil(); // append next element value (int)
         dLU0(EO_ENTWRK_SETINTELM);
- //       aRluCommon->m_aWrkEnt->m_iIntElm0 = *(aiDstk--);
- //       aRluCommon->m_aWrkEnt->Rrf.m_uKind = 1; //KE_INT;
-//        iTopA = *(aiDstk--);
         vDev_ENTWRK_SETINTELM(&aiDstk);
         break;//+endCase
       

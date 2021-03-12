@@ -1170,20 +1170,22 @@ void vDev_ROW_ENTWRK_CREATEPAY(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
-void vDev_ENTWRK_PRINT(void* aLU, void* aROWDEVICE)
+void vDev_ENTWRK_PRINT(i8** aaiDstk)
 {
   _static_
 
-  UNUSED(aROWDEVICE);
+  i8 *aiDstk = *aaiDstk;
 
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+  EntWrk *pEntWrk = (EntWrk*)P_PopPtr();
+  IndexTree *pIndexTree = _pIndexTree(P_PopPtr());
 
-  Ent *pEnt = (Ent*)pLogicUnit->m_xRluCommon.m_aWrkEnt;
-  IndexDef* pIndexDef = _pIndexTree(pLogicUnit->m_xRluCommon.m_pIndexTree)->pIndexDef();
-  
+  Ent *pEnt = pEntWrk->aEnt();
+  IndexDef* pIndexDef = pIndexTree->pIndexDef();
   SP_Ent spEnt;
 
   vTrace("EntWrk : %s\n"_Stz,spEnt.sz(pEnt,pIndexDef));
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/

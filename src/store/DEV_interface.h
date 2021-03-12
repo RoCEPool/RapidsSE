@@ -67,7 +67,7 @@ void vDev_ROW_ENTWRK_APPENDELMI(i8** aaiDstk);
 void vDev_ROW_ENTWRK_APPENDELMS(i8** aaiDstk);
 void vDev_ROW_ENTWRK_CREATEPAY(i8** aaiDstk);
 
-void vDev_ENTWRK_PRINT(void* aLU, void* aROWDEVICE);
+void vDev_ENTWRK_PRINT(i8** aaiDstk);
 
 void vDev_ENTWRK_RESET(i8** aaiDstk);
 void vDev_ENTWRK_SETINTELM(i8** aaiDstk);
