@@ -661,8 +661,10 @@ Dic* DicStack::pTop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
 
-  ASSERT(m_iTop >= 0);
   ASSERT(m_iTop <  C_DIC_STACKDEPTH);
+  
+  if (-1 == m_iTop)
+    return nullptr;
   
   Dic* pTop = m_pDic[m_iTop];
   

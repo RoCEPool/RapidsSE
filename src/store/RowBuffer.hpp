@@ -24,7 +24,7 @@ namespace STORE
   
     RowBuffer(void);
     RowBuffer(eCN eClassNo);
-    RowBuffer(eCN eClassNo, StreamDef* pStreamDef);
+    RowBuffer(eCN eClassNo, StreamDef* pStreamDef, i8 iLogCtl=C_LOG);
    ~RowBuffer(void) noexcept(false);
       
     static RowBuffer* pToRowBuffer(void* aAddr);

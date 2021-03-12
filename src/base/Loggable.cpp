@@ -221,6 +221,9 @@ void Loggable::vAddRow(eEV eEvent, Stz* szNote)
 
   WriteBehind* pWriteBehind = AM::THREAD::pWriteBehind();
   
+  if (! pWriteBehind)
+    return;
+  
   pWriteBehind->vDepositEvent(C_VARGS_BEGIN,
                               eEvent,
                               szNote,

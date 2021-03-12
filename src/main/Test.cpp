@@ -235,7 +235,7 @@ void vTest5(void)
 void vTest6(void)
 {
   /*
-  DicStack* pDicStack = AM::pTaskDicStack();
+  DicStack* pDicStack = AM::TASK::pDicStack();
   pDicStack->vPrint();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

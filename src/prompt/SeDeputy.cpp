@@ -110,6 +110,9 @@ void SeDeputy::vDeputyLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
     
+  m_pThread->vThisTLSThread();
+  RASSERT(AM::pThisTLSThread());
+  
   while (m_bContinue) {
 
     RASSERT(!m_pSession->m_pSsnJob);

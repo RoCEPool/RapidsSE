@@ -100,7 +100,7 @@ void vRlu_HANDLER(void* aLU, Stz* aHandler)
   _static_
 
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-  DicStack* pDicStack = AM::pTaskDicStack();
+  DicStack* pDicStack = AM::TASK::pDicStack();
   Word* pWordHandler = pDicStack->pFindWord(aHandler);
 
   pLogicUnit->m_xpHandler = pWordHandler;
