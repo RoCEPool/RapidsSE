@@ -116,7 +116,9 @@ void ExprValidator::vValidatePredicatesAreBoolean(PlanNode *pRootNode, QueryNode
     s2K sBuf;
     Expr::vDescribe(pExprNode, sBuf);
 
-    SemanticException::vThrow("Predicate expression must have a boolean result : %s"_Stz, sBuf.szStz());
+    SemanticException::vThrow(EC_EXPR_MUST_BE_BOOLEAN,
+                              " : %s"_Stz,
+                              sBuf.szStz());
   };
 
   // Walk the /plan node and its children. We're not interested in walking
