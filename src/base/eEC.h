@@ -756,7 +756,7 @@ static Stz* aErrorMsg[]
   /* EC_NO_SUCH_NODE                  */ "no such node"_Stz,
   /* EC_NO_SUCH_SCHEMA                */ "no such schema"_Stz,
   /* EC_NO_SUCH_TABLE                 */ "Table '%v' does not exist"_Stz,
-  /* EC_NO_SUCH_TABLE2                */ "Table does not exist"_Stz,          // SQL Compiler Subsystem
+  /* EC_NO_SUCH_TABLE2                */ "No such table"_Stz,          // SQL Compiler Subsystem
   /* EC_NO_SUCH_TENANT                */ "no such tenant"_Stz,
   /* EC_NO_SUCH_WORD                  */ "no such word"_Stz,
   /* EC_NODE_EXISTS                   */ "node exists"_Stz,
