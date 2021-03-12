@@ -2497,13 +2497,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_ENT_PUSHELMI0: ArgNil(); // push entry elm 0 int
         dLU0(EO_ENT_PUSHELMI0);
-        *(++aiDstk) = iDev_ENT_PUSHELMI0(pLU,aRluCommon->m_pDevTmpIxt);
+        vDev_ENT_PUSHELMI0(&aiDstk);
         break;//+endCase
         
       case EO_ENT_PUSHELMS0: ArgNil(); // push entry elm 0 str
         dLU0(EO_ENT_PUSHELMS0);
-        azSrc = (char*)szDev_ENT_PUSHELMS0(pLU,aRluCommon->m_pDevTmpIxt);
-        S_PushStr(azSrc);
+        vDev_ENT_PUSHELMS0(&aiDstk);
         break;//+endCase
         
       case EO_ENT_PUSHOFS: ArgNil(); // push entry offset

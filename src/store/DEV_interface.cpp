@@ -467,51 +467,46 @@ void vDev_ENT_PUSH(i8** aaiDstk)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push entry                                                                 */
-/*----------------------------------------------------------------------------*/
-void* aDev_ENT_PUSHUPPER(void* aLU, void* aIXT)
-{
-  _static_
-  
-  UNUSED(aLU);
-
-  DevIXT* pDevIxt = _pDevIXT(aIXT);
-  
-  return pDevIxt->m_aUpperEnt;
-}
-
-/*----------------------------------------------------------------------------*/
 /* push entry elm 0 int                                                       */
 /*----------------------------------------------------------------------------*/
-i8 iDev_ENT_PUSHELMI0(void* aLU, void* aIXT)
+void vDev_ENT_PUSHELMI0(i8** aaiDstk)
 {
   _static_
-  
-  UNUSED(aLU);
 
-  DevIXT* pDevIxt = _pDevIXT(aIXT);
+  i8 *aiDstk = *aaiDstk;
+
+  //pop the device
+  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
   
   i8 iRes = pDevIxt->m_aEnt->iIntElm0();
 
-  return iRes;
+  I_PushInt(iRes);
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
 /* push entry elm 0 str                                                       */
 /*----------------------------------------------------------------------------*/
-Stz* szDev_ENT_PUSHELMS0(void* aLU, void* aIXT)
+void vDev_ENT_PUSHELMS0(i8** aaiDstk)
 {
   _static_
-  
-  DevIXT* pDevIxt = _pDevIXT(aIXT);
+
+  i8 *aiDstk = *aaiDstk;
+  char caStrWrk[128];
+  i8 nSize;
+  char* azDst;
+
+  //pop the device
+  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
   
   Stz* szSrc = pDevIxt->m_aEnt->aKey()->szGetStrElm();
-  
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
 
-  StrLib::iWordFlipBack(pLogicUnit->m_xRluCommon.m_caStrWrk,(char*)szSrc);
+  StrLib::iWordFlipBack(caStrWrk,(char*)szSrc);
 
-  return (Stz*)pLogicUnit->m_xRluCommon.m_caStrWrk;
+  S_PushStr(caStrWrk);
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -530,6 +525,19 @@ i8 iDev_ENT_PUSHOFS(void* aLU, void* aIXT)
   return iRes;
 }
 
+/*----------------------------------------------------------------------------*/
+/* push entry                                                                 */
+/*----------------------------------------------------------------------------*/
+void* aDev_ENT_PUSHUPPER(void* aLU, void* aIXT)
+{
+  _static_
+
+  UNUSED(aLU);
+
+  DevIXT* pDevIxt = _pDevIXT(aIXT);
+
+  return pDevIxt->m_aUpperEnt;
+}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

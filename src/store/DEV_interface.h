@@ -27,12 +27,11 @@ void vDev_ENT_POSPRIOR(i8** aaiDstk);
 void vDev_ENT_PRINTKEYS(void* aLU, void* aIXT);
 
 void vDev_ENT_PUSH(i8** aaiDstk);
+void vDev_ENT_PUSHELMI0(i8** aaiDstk);
+void vDev_ENT_PUSHELMS0(i8** aaiDstk); // NOT COMPLETE!!
 
-void* aDev_ENT_PUSHUPPER(void* aLU, void* aIXT);
-i8   iDev_ENT_PUSHELMI0(void* aLU, void* aIXT);
-Stz* szDev_ENT_PUSHELMS0(void* aLU, void* aIXT); // NOT COMPLETE!!
 i8   iDev_ENT_PUSHOFS(void* aLU, void* aIXT);
-
+void* aDev_ENT_PUSHUPPER(void* aLU, void* aIXT);
 i8   iDev_IXT_CMP_SRCALT(void* aLU);
 i8   iDev_IXT_CMP_WRKALT(void* aLU);
 void vDev_IXT_DEL_ENT(i8** aaiDstk);
