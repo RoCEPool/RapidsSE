@@ -230,7 +230,7 @@ void Row::vDeposit(i8 iVargsBegin, ...)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
   
-  ASSERT(C_VARGS_BEGIN == iVArgsBegin);
+  ASSERT(C_VARGS_BEGIN == iVargsBegin);
   
   RowBuffer* pRowBuffer = pToRowBuffer();
 

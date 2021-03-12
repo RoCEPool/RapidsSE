@@ -182,44 +182,6 @@ Row* RowBuffer::pAllotRow(i8 iVArgsBegin, ...)
   bool b = bDepositColumns(pRow,xVarArgs);
   RASSERT(b);
 
-//  ColPix* axaColPix = RowBox_t::axaColPix();
-//
-//  Stz* szDst;
-//
-//  for (i8 i_Col = 0; i_Col < nColumns(); i_Col++) {
-//
-//    ColPix* pColPix = &axaColPix[i_Col];
-//
-//    // STRING_DEPOSIT
-//    if (DM_VCH == pColPix->m_uDatum) {
-//      Stz* szVal = va_arg(xVarArgs,Stz*);
-//      if (szVal) {
-//        szDst = (Stz*)aAllotHead(StrLib::nSize(szVal->azChar()));
-//
-//        // return early if no more space for the string
-//        if ( ! szDst )
-//          return nullptr;
-//
-//        StrLib::vCopy((char*)szDst, szVal->azChar());
-//
-//        pRow->vColVal_ofs(i_Col,szDst);
-//      }
-//      else {
-//        pRow->vSetColNull(i_Col);
-//      }
-//    }
-//    else {
-//      i8 iVal = va_arg(xVarArgs,i8);
-//      pRow->vColVal_int(i_Col,iVal);
-//    }
-//    // END STRING_DEPOSIT
-//
-//  }
-//
-//  i8 iVArgsEnd = va_arg(xVarArgs,i8);
-//  ASSERT(C_VARGS_END == iVArgsEnd);
-//  UNUSED(iVArgsEnd);
-
   va_end(xVarArgs);
 
   return pRow;
@@ -336,7 +298,7 @@ void RowBuffer::vDepositRow(Row* pRow, i8 iVargsBegin, ...)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  ASSERT(C_VARGS_BEGIN == iVArgsBegin);
+  ASSERT(C_VARGS_BEGIN == iVargsBegin);
 
   va_list xVarArgs;
   va_start(xVarArgs,iVargsBegin);
