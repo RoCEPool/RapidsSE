@@ -309,13 +309,12 @@ i8 iDev_ENT_COMPARE(void* aLU, void* aIXT)
 /*----------------------------------------------------------------------------*/
 /* position m_pEnt prior using m_oEntWrk.key                                  */
 /*----------------------------------------------------------------------------*/
-void vDev_ENT_FIND(void* aLU, void* aIXT, i8** aaiDstk)
+void vDev_ENT_FIND(i8** aaiDstk)
 {
   _static_
 
-  UNUSED(aLU);
-
   i8 *aiDstk = *aaiDstk;
+
   Ent_int* aEnt_int;
   tET tNext;
   i8 iTopA;
@@ -323,10 +322,11 @@ void vDev_ENT_FIND(void* aLU, void* aIXT, i8** aaiDstk)
   void* aTempSkipRoots = nullptr;
   Ent* pEntArray;
 
-  DevIXT* pDevIxt = _pDevIXT(aIXT);
+  // pop the wrk ent
+  Ent_int* aWrkEnt = (Ent_int*)P_PopPtr();
 
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-  RluCommon* aRluCommon = &pLogicUnit->m_xRluCommon;
+  //pop the device
+  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
 
   if (pDevIxt->m_pEntBuffer)
     aTempSkipRoots = (Ent_int*)pDevIxt->m_pEntBuffer->aSkipRoots();
@@ -343,7 +343,7 @@ void vDev_ENT_FIND(void* aLU, void* aIXT, i8** aaiDstk)
 //          goto L_end_FINDI;
 //        }
 
-  iTopA = aRluCommon->m_aWrkEnt->m_iIntElm0;
+  iTopA = aWrkEnt->m_iIntElm0;
   // search for key
   pEntArray = pDevIxt->m_pEntBuffer->aEntArray();
 
