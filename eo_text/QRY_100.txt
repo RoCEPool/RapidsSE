@@ -283,6 +283,7 @@ Label CRWBUFFER_HANDLER
   EO_JMP_TRUE FOUND
 
   // find the key in the indexTree
+  EO_PUSH_DEVIXT_TMP
   EO_ENT_POSPRIOR
   //  EO_ENT_PUSH
   //  EO_PUSH_0

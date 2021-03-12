@@ -2484,11 +2484,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_ENT_NEXT(&aiDstk);
         break;//+endCase
         
-      case EO_ENT_POSPRIOR: { ArgNil(); // position m_pEnt prior using m_oEntWrk.key
+      case EO_ENT_POSPRIOR: ArgNil(); // position m_pEnt prior using m_oEntWrk.key
         dLU0(EO_ENT_POSPRIOR);
-        void *aTmpEnt = aDev_ENT_POSPRIOR(pLU, aRluCommon->m_pDevTmpIxt);
-        *(++aiDstk) = (i8) aTmpEnt;
-      }
+        P_PushPtr(aRluCommon->m_aWrkEnt);
+        vDev_ENT_POSPRIOR(&aiDstk);
         break;//+endCase
         
       case EO_ENT_PUSH: ArgNil(); // push entry on the stack

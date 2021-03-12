@@ -396,17 +396,20 @@ void vDev_ENT_NEXT(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* position m_pEnt prior using m_oEntWrk.key                                  */
 /*----------------------------------------------------------------------------*/
-Ent_int* aDev_ENT_POSPRIOR(void* aLU, void* aIXT)
+void vDev_ENT_POSPRIOR(i8** aaiDstk)
 {
   _static_
-  
-  UNUSED(aLU);
 
-  DevIXT* pDevIxt = _pDevIXT(aIXT);
-  
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+  i8 *aiDstk = *aaiDstk;
+  Ent* pEntArray;
 
-  Ent *pEnt = (Ent*)pLogicUnit->m_xRluCommon.m_aWrkEnt;
+  // pop the wrk ent
+  Ent_int* aWrkEnt = (Ent_int*)P_PopPtr();
+
+  //pop the device
+  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
+
+  Ent *pEnt = (Ent*)aWrkEnt;
   pDevIxt->m_aEnt =
     pDevIxt->m_pIdxTree->aPositionPriorEntry(pEnt->aKey(),
                                              &pDevIxt->m_pEntBuffer);
@@ -418,7 +421,9 @@ Ent_int* aDev_ENT_POSPRIOR(void* aLU, void* aIXT)
 //    //*aaSkipRoots = (Ent_int*)pDevIxt->m_pEntBuffer->aSkipRoots();
 //  }
   
-  return (Ent_int*)pDevIxt->m_aEnt;
+  P_PushPtr(pDevIxt->m_aEnt);
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/

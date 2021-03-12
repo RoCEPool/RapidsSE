@@ -20,6 +20,7 @@ macro AM_PAYLOAD_GBY
   EO_JMP_TRUE FOUND
 
   // find the key in the indexTree
+  EO_PUSH_DEVIXT_TMP
   EO_ENT_POSPRIOR
   EO_JMP_FALSE NOT_FOUND
 

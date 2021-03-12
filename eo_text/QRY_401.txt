@@ -245,6 +245,7 @@ Label GET_AGR
   EO_DEVROW_ENTWRK_APPENDELMS
 
   // attempt to find the key in the indexTree
+  EO_PUSH_DEVIXT_TMP
   EO_ENT_POSPRIOR
   EO_JMP_FALSE NEW_AGR
 

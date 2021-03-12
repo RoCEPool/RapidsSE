@@ -74,7 +74,7 @@ DynamicSymbol gxaDynamicSymbol[]
   { "iDev_ENT_COMPARE"_Stz,       (const void *) iDev_ENT_COMPARE       },
   { "vDev_ENT_FIND"_Stz,          (const void *) vDev_ENT_FIND          },
   { "vDev_ENT_NEXT"_Stz,          (const void *) vDev_ENT_NEXT          },
-  { "aDev_ENT_POSPRIOR"_Stz,      (const void *) aDev_ENT_POSPRIOR      },
+  { "vDev_ENT_POSPRIOR"_Stz,      (const void *) vDev_ENT_POSPRIOR      },
   { "vDev_ENT_PRINTKEYS"_Stz,     (const void *) vDev_ENT_PRINTKEYS     },
   { "aDev_ENT_PUSH"_Stz,          (const void *) aDev_ENT_PUSH          },
   { "aDev_ENT_PUSHUPPER"_Stz,     (const void *) aDev_ENT_PUSHUPPER     },

@@ -22,8 +22,8 @@ i8   iDev_ENT_COMPARE(void* aLU, void* aIXT);
 
 void vDev_ENT_FIND(i8** aaiDstk);
 void vDev_ENT_NEXT(i8** aaiDstk);
+void vDev_ENT_POSPRIOR(i8** aaiDstk);
 
-struct Ent_int* aDev_ENT_POSPRIOR(void* aLU, void* aIXT);
 void vDev_ENT_PRINTKEYS(void* aLU, void* aIXT);
 void* aDev_ENT_PUSH(void* aLU, void* aIXT);
 void* aDev_ENT_PUSHUPPER(void* aLU, void* aIXT);
