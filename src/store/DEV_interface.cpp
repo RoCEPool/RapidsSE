@@ -984,33 +984,6 @@ void vDev_IXT_IDX_BEGIN(i8** aaiDstk)
 }
 
 /*----------------------------------------------------------------------------*/
-/* begin linear traverse                                                      */
-/*----------------------------------------------------------------------------*/
-Ent_int* aDev_IXT_TRV_BEGIN_OLD(void* aLU, void* aIXT)
-{
-  _static_
-
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-  DevIXT* pDevIXT = _pDevIXT(aIXT);
-
-  pDevIXT->m_pEntBuffer = pDevIXT->m_pIdxTree->pFirstH0Buffer();
-
-  if (pDevIXT->m_pEntBuffer) {
-    pDevIXT->m_aEnt = pDevIXT->m_pEntBuffer->aLeadEntry();
-    if (pDevIXT->m_aEnt) {
-//      pLogicUnit->m_xRluCommon.m_aEntArray =
-//          (Ent_int*)pDevIXT->m_pEntBuffer->aEntArray();
-      return (Ent_int*)pDevIXT->m_aEnt;
-    }
-    else
-      return nullptr;
-  }
-  else
-    return nullptr;
-
-}
-
-/*----------------------------------------------------------------------------*/
 /* traverse to next entry                                                     */
 /*----------------------------------------------------------------------------*/
 void vDev_IXT_IDX_NEXT(void* aLU, i8** aaiDstk)
