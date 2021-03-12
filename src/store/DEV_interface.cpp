@@ -309,7 +309,7 @@ i8 iDev_ENT_COMPARE(void* aLU, void* aIXT)
 /*----------------------------------------------------------------------------*/
 /* position m_pEnt prior using m_oEntWrk.key                                  */
 /*----------------------------------------------------------------------------*/
-void vDev_ENT_FIND(i8** aaiDstk)
+void vDev_IXT_ENT_FIND(i8** aaiDstk)
 {
   _static_
 
@@ -377,7 +377,7 @@ void vDev_ENT_FIND(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* move to next m_pEnt                                                        */
 /*----------------------------------------------------------------------------*/
-void vDev_ENT_NEXT(i8** aaiDstk)
+void vDev_IXT_ENT_NEXT(i8** aaiDstk)
 {
   _static_
 
@@ -396,7 +396,7 @@ void vDev_ENT_NEXT(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* position m_pEnt prior using m_oEntWrk.key                                  */
 /*----------------------------------------------------------------------------*/
-void vDev_ENT_POSPRIOR(i8** aaiDstk)
+void vDev_IXT_ENT_POSPRIOR(i8** aaiDstk)
 {
   _static_
 
@@ -452,7 +452,7 @@ void vDev_ENT_PRINTKEYS(void* aLU, void* aIXT)
 /*----------------------------------------------------------------------------*/
 /* push entry                                                                 */
 /*----------------------------------------------------------------------------*/
-void vDev_ENT_PUSH(i8** aaiDstk)
+void vDev_IXT_ENT_PUSH(i8** aaiDstk)
 {
   _static_
 
@@ -469,7 +469,7 @@ void vDev_ENT_PUSH(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* push entry elm 0 int                                                       */
 /*----------------------------------------------------------------------------*/
-void vDev_ENT_PUSHELMI0(i8** aaiDstk)
+void vDev_IXT_ENT_PUSHELMI0(i8** aaiDstk)
 {
   _static_
 
@@ -488,7 +488,7 @@ void vDev_ENT_PUSHELMI0(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* push entry elm 0 str                                                       */
 /*----------------------------------------------------------------------------*/
-void vDev_ENT_PUSHELMS0(i8** aaiDstk)
+void vDev_IXT_ENT_PUSHELMS0(i8** aaiDstk)
 {
   _static_
 
@@ -512,7 +512,7 @@ void vDev_ENT_PUSHELMS0(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* push entry                                                                 */
 /*----------------------------------------------------------------------------*/
-void vDev_ENT_PUSHUPPER(i8** aaiDstk)
+void vDev_IXT_ENT_PUSHUPPER(i8** aaiDstk)
 {
   _static_
 

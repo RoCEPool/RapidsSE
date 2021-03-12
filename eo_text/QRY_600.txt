@@ -135,10 +135,10 @@ Label TRV_TILL_UPPER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // have we reached the upper entry
   EO_PUSH_DEVIXT_SRC
-  EO_ENT_PUSH
+  EO_DEVIXT_ENT_PUSH
 
   EO_PUSH_DEVIXT_SRC
-  EO_ENT_PUSHUPPER
+  EO_DEVIXT_ENT_PUSHUPPER
   EO_EQUAL
   EO_JMP_TRUE QRY_600_DONE
   

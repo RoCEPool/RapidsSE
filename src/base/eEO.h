@@ -264,22 +264,22 @@ enum eEO : u1 // expression operators
   /*  S  */ EO_DEVIXT_CRWBUF_TEST,  // test if there is a crw buffer
 
   // entry
-  /*  D  */ EO_ENT_FINDI,        // find entry with int key
-  /*  D  */ EO_ENT_NEXT,         // move to next m_pEnt
-  /*  D  */ EO_ENT_POSPRIOR,     // position m_pEnt prior using m_oEntWrk.key
-  /*  D  */ EO_ENT_PUSH,         // push entry
-  /*  D  */ EO_ENT_PUSHELMI0,    // push entry elm 0 int
-  /*  D  */ EO_ENT_PUSHELMS0,    // push entry elm 0 str
-  /*  D  */ EO_ENT_PUSHUPPER,    // push upper entry
+  /*  D  */ EO_DEVIXT_ENT_FINDI,     // find entry with int key
+  /*  D  */ EO_DEVIXT_ENT_NEXT,      // move to next m_pEnt
+  /*  D  */ EO_DEVIXT_ENT_POSPRIOR,  // position m_pEnt prior using m_oEntWrk.key
+  /*  D  */ EO_DEVIXT_ENT_PUSH,      // push entry
+  /*  D  */ EO_DEVIXT_ENT_PUSHELMI0, // push entry elm 0 int
+  /*  D  */ EO_DEVIXT_ENT_PUSHELMS0, // push entry elm 0 str
+  /*  D  */ EO_DEVIXT_ENT_PUSHUPPER, // push upper entry
   
   // entry relational operators
-  /*  D  */ EO_ENT_LESS,         // test if m_pEnt.key <  m_oEntWrk.key
-  /*  D  */ EO_ENT_LESSEQUAL,    // test if m_pEnt.key <= m_oEntWrk.key
-  /*  D  */ EO_ENT_EQUAL,        // test if m_pEnt.key == m_oEntWrk.key
-  /*  D  */ EO_ENT_NOTEQUAL,     // test if m_pEnt.key != m_oEntWrk.key
-  /*  D  */ EO_ENT_GREATEREQUAL, // test if m_pEnt.key >= m_oEntWrk.key
-  /*  D  */ EO_ENT_GREATER,      // test if m_pEnt.key >  m_oEntWrk.key
-  /*  D  */ EO_ENT_PRINTKEYS,    // print both m_pEnt.key and m_oEntWrk.key
+  /*    */ EO_ENT_LESS,         // test if m_pEnt.key <  m_oEntWrk.key
+  /*    */ EO_ENT_LESSEQUAL,    // test if m_pEnt.key <= m_oEntWrk.key
+  /*    */ EO_ENT_EQUAL,        // test if m_pEnt.key == m_oEntWrk.key
+  /*    */ EO_ENT_NOTEQUAL,     // test if m_pEnt.key != m_oEntWrk.key
+  /*    */ EO_ENT_GREATEREQUAL, // test if m_pEnt.key >= m_oEntWrk.key
+  /*    */ EO_ENT_GREATER,      // test if m_pEnt.key >  m_oEntWrk.key
+  /*    */ EO_ENT_PRINTKEYS,    // print both m_pEnt.key and m_oEntWrk.key
 
   // entWrk
   /*  D  */ EO_DEVROW_ENTWRK_APPENDELMI,// append next element value (int)
@@ -636,13 +636,13 @@ static Stz* aEO[]
   /*    */ "EO_DEVIXT_CRWBUF_TEST"_Stz,
 
   // entry
-  /*    */ "EO_ENT_FINDI"_Stz,
-  /*    */ "EO_ENT_NEXT"_Stz,
-  /*    */ "EO_ENT_POSPRIOR"_Stz,
-  /*    */ "EO_ENT_PUSH"_Stz,
-  /*    */ "EO_ENT_PUSHELMI0"_Stz,
-  /*    */ "EO_ENT_PUSHELMS0"_Stz,
-  /*    */ "EO_ENT_PUSHUPPER"_Stz,
+  /*    */ "EO_DEVIXT_ENT_FINDI"_Stz,
+  /*    */ "EO_DEVIXT_ENT_NEXT"_Stz,
+  /*    */ "EO_DEVIXT_ENT_POSPRIOR"_Stz,
+  /*    */ "EO_DEVIXT_ENT_PUSH"_Stz,
+  /*    */ "EO_DEVIXT_ENT_PUSHELMI0"_Stz,
+  /*    */ "EO_DEVIXT_ENT_PUSHELMS0"_Stz,
+  /*    */ "EO_DEVIXT_ENT_PUSHUPPER"_Stz,
   
   // entry relational operators
   /*    */ "EO_ENT_LESS"_Stz,
@@ -1013,13 +1013,13 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_DEVIXT_CRWBUF_TEST
 
   // entry
-  { EA_NONE,    0 },  // EO_ENT_FINDI
-  { EA_NONE,    0 },  // EO_ENT_NEXT
-  { EA_NONE,    0 },  // EO_ENT_POSPRIOR
-  { EA_NONE,    0 },  // EO_ENT_PUSH
-  { EA_NONE,    0 },  // EO_ENT_PUSHELMI0
-  { EA_NONE,    0 },  // EO_ENT_PUSHELMS0
-  { EA_NONE,    0 },  // EO_ENT_PUSHUPPER
+  { EA_NONE,    0 },  // EO_DEVIXT_ENT_FINDI
+  { EA_NONE,    0 },  // EO_DEVIXT_ENT_NEXT
+  { EA_NONE,    0 },  // EO_DEVIXT_ENT_POSPRIOR
+  { EA_NONE,    0 },  // EO_DEVIXT_ENT_PUSH
+  { EA_NONE,    0 },  // EO_DEVIXT_ENT_PUSHELMI0
+  { EA_NONE,    0 },  // EO_DEVIXT_ENT_PUSHELMS0
+  { EA_NONE,    0 },  // EO_DEVIXT_ENT_PUSHUPPER
 
   // entry relational operators
   { EA_NONE,    0 },  // EO_ENT_LESS

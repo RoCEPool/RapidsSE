@@ -2473,41 +2473,41 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entry
-      case EO_ENT_FINDI: ArgNil(); // find entry with int key
-        dLU0(EO_ENT_FINDI);
+      case EO_DEVIXT_ENT_FINDI: ArgNil(); // find entry with int key
+        dLU0(EO_DEVIXT_ENT_FINDI);
         P_PushPtr(aRluCommon->m_aWrkEnt);
-        vDev_ENT_FIND(&aiDstk);
+        vDev_IXT_ENT_FIND(&aiDstk);
         break;//+endCase
         
-      case EO_ENT_NEXT: ArgNil(); // move to next m_pEnt
-        dLU0(EO_ENT_NEXT);
-        vDev_ENT_NEXT(&aiDstk);
+      case EO_DEVIXT_ENT_NEXT: ArgNil(); // move to next m_pEnt
+        dLU0(EO_DEVIXT_ENT_NEXT);
+        vDev_IXT_ENT_NEXT(&aiDstk);
         break;//+endCase
         
-      case EO_ENT_POSPRIOR: ArgNil(); // position m_pEnt prior using m_oEntWrk.key
-        dLU0(EO_ENT_POSPRIOR);
+      case EO_DEVIXT_ENT_POSPRIOR: ArgNil(); // position m_pEnt prior using m_oEntWrk.key
+        dLU0(EO_DEVIXT_ENT_POSPRIOR);
         P_PushPtr(aRluCommon->m_aWrkEnt);
-        vDev_ENT_POSPRIOR(&aiDstk);
+        vDev_IXT_ENT_POSPRIOR(&aiDstk);
         break;//+endCase
         
-      case EO_ENT_PUSH: ArgNil(); // push entry on the stack
-        dLU0(EO_ENT_PUSH);
-        vDev_ENT_PUSH(&aiDstk);
+      case EO_DEVIXT_ENT_PUSH: ArgNil(); // push entry on the stack
+        dLU0(EO_DEVIXT_ENT_PUSH);
+        vDev_IXT_ENT_PUSH(&aiDstk);
         break;//+endCase
         
-      case EO_ENT_PUSHELMI0: ArgNil(); // push entry elm 0 int
-        dLU0(EO_ENT_PUSHELMI0);
-        vDev_ENT_PUSHELMI0(&aiDstk);
+      case EO_DEVIXT_ENT_PUSHELMI0: ArgNil(); // push entry elm 0 int
+        dLU0(EO_DEVIXT_ENT_PUSHELMI0);
+        vDev_IXT_ENT_PUSHELMI0(&aiDstk);
         break;//+endCase
         
-      case EO_ENT_PUSHELMS0: ArgNil(); // push entry elm 0 str
-        dLU0(EO_ENT_PUSHELMS0);
-        vDev_ENT_PUSHELMS0(&aiDstk);
+      case EO_DEVIXT_ENT_PUSHELMS0: ArgNil(); // push entry elm 0 str
+        dLU0(EO_DEVIXT_ENT_PUSHELMS0);
+        vDev_IXT_ENT_PUSHELMS0(&aiDstk);
         break;//+endCase
         
-      case EO_ENT_PUSHUPPER: ArgNil(); // push entry on the stack
-        dLU0(EO_ENT_PUSHUPPER);
-        vDev_ENT_PUSHUPPER(&aiDstk);
+      case EO_DEVIXT_ENT_PUSHUPPER: ArgNil(); // push entry on the stack
+        dLU0(EO_DEVIXT_ENT_PUSHUPPER);
+        vDev_IXT_ENT_PUSHUPPER(&aiDstk);
         break;//+endCase
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
