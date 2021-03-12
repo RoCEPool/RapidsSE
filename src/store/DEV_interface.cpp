@@ -1001,28 +1001,6 @@ void vDev_IXT_IDX_NEXT(i8** aaiDstk)
 }
 
 /*----------------------------------------------------------------------------*/
-/* traverse to next entry                                                     */
-/*----------------------------------------------------------------------------*/
-Ent_int* aDev_IXT_TRV_NEXT_OLD(void* aLU, void* aIXT)
-{
-  _static_
-
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-  DevIXT* pDevIXT = _pDevIXT(aIXT);
-
-  pDevIXT->m_aEnt =
-      EntBuffer::pMoveToNextEntry(pDevIXT->m_aEnt,&pDevIXT->m_pEntBuffer);
-
-//  if (pDevIXT->m_pEntBuffer)
-//    pLogicUnit->m_xRluCommon.m_aEntArray =
-//        (Ent_int*)pDevIXT->m_pEntBuffer->aEntArray();
-//  else
-//    pLogicUnit->m_xRluCommon.m_aEntArray = nullptr;
-
-  return (Ent_int*)pDevIXT->m_aEnt;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get address of payload                                                     */
 /*----------------------------------------------------------------------------*/
 i8* aDev_PAY_ADDRESS(i8** aaiDstk)
