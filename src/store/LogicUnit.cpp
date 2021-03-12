@@ -2479,11 +2479,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_ENT_FIND(&aiDstk);
         break;//+endCase
         
-      case EO_ENT_NEXT: { ArgNil(); // move to next m_pEnt
+      case EO_ENT_NEXT: ArgNil(); // move to next m_pEnt
         dLU0(EO_ENT_NEXT);
-        void *aTmpEnt = aDev_ENT_NEXT(pLU, aRluCommon->m_pDevTmpIxt);
-        *(++aiDstk) = (i8) aTmpEnt;
-        }
+        vDev_ENT_NEXT(&aiDstk);
         break;//+endCase
         
       case EO_ENT_POSPRIOR: { ArgNil(); // position m_pEnt prior using m_oEntWrk.key
