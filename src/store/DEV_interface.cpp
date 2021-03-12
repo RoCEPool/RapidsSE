@@ -510,22 +510,6 @@ void vDev_ENT_PUSHELMS0(i8** aaiDstk)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push entry offset                                                          */
-/*----------------------------------------------------------------------------*/
-i8 iDev_ENT_PUSHOFS(void* aLU, void* aIXT)
-{
-  _static_
-  
-  UNUSED(aLU);
-
-  DevIXT* pDevIxt = _pDevIXT(aIXT);
-  
-  i8 iRes = pDevIxt->m_aEnt->iBuffer();
-  
-  return iRes;
-}
-
-/*----------------------------------------------------------------------------*/
 /* push entry                                                                 */
 /*----------------------------------------------------------------------------*/
 void* aDev_ENT_PUSHUPPER(void* aLU, void* aIXT)

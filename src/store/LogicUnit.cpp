@@ -2505,15 +2505,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_ENT_PUSHELMS0(&aiDstk);
         break;//+endCase
         
-      case EO_ENT_PUSHOFS: ArgNil(); // push entry offset
-        dLU0(EO_ENT_PUSHOFS);
-        *(++aiDstk) = iDev_ENT_PUSHOFS(pLU,aRluCommon->m_pDevTmpIxt);
-        break;//+endCase
-        
-      case EO_ENT_PUSHREF: ArgNil(); // not yet implemented
-        NEVER_REACH;
-        break;//+endCase
-        
       case EO_ENT_SRC_PUSHUPPER: ArgNil(); // push entry on the stack
         dLU0(EO_ENT_SRC_PUSHUPPER);
         //*(++aiDstk) = (i8)m_pDevSrcIxt->m_aUpperEnt;
