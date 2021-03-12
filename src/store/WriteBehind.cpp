@@ -82,7 +82,7 @@ Row* WriteBehind::pAllotEventRow(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEBEHIND,_FOOTER_);
   
   if (! m_pRowBuffer_events) {
-    m_pRowBuffer_events = new RowBuffer(CN_ROWBUFFER,m_pStreamDef_events);
+    m_pRowBuffer_events = new RowBuffer(CN_ROWBUFFER,m_pStreamDef_events,C_DONT_LOG);
   }
   
   Row* pRow = m_pRowBuffer_events->pAllotRow();
@@ -91,9 +91,11 @@ Row* WriteBehind::pAllotEventRow(void)
     
     // temp until the demon is in place
     delete m_pRowBuffer_events;
+    //NEVER_REACH;
     
-    m_pRowBuffer_events = new RowBuffer(CN_ROWBUFFER,m_pStreamDef_events);
-    Row* pRow = m_pRowBuffer_events->pAllotRow();
+    
+    m_pRowBuffer_events = new RowBuffer(CN_ROWBUFFER,m_pStreamDef_events,C_DONT_LOG);
+    pRow = m_pRowBuffer_events->pAllotRow();
     RASSERT(pRow);
   }
   

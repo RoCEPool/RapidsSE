@@ -213,14 +213,22 @@ namespace OBLIQUE
   class AM
   {
   public:
-    class THREAD {
+  
+    class TASK
+    {
+    public:
+      static DicStack* pDicStack(void);
+    };
+  
+    class THREAD
+    {
     public:
       static void vDeleteThread(Thread* pThread);
       static Thread* pNewThread(void);
       static WriteBehind* pWriteBehind(void);
       static WriteBehind* pWriteBehind(Thread* pThread);
     };
-  
+
   public:
     static Stz*  szVersionString(void);
     static i8    iVersionNumber(void);
@@ -505,7 +513,6 @@ namespace OBLIQUE
     static StreamDef* pStreamDefFind(Stz* szTableNm);
 
     static i8   iTaskAcksRmg_assert_only_(Task* pTask);
-    static DicStack* pTaskDicStack(void);
     static void vTaskDump(void);
     static void vTaskDump(Task* pTask);
     static Job* pTaskJob(void);

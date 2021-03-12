@@ -45,8 +45,8 @@ RowBuffer::RowBuffer(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-RowBuffer::RowBuffer(eCN eClassNo, StreamDef* pStreamDef)
-: DataBuffer(eClassNo, false)
+RowBuffer::RowBuffer(eCN eClassNo, StreamDef* pStreamDef, i8 iLogCtl)
+: DataBuffer(eClassNo, false, iLogCtl)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   

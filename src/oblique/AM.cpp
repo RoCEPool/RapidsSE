@@ -134,6 +134,25 @@ static i8    RAPIDSSE_FORMAT_NUMBER  = 0x000600;
 
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                    Task                                    */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* get task dic stack                                                         */
+/*----------------------------------------------------------------------------*/
+DicStack* AM::TASK::pDicStack(void)
+{
+  Task* pTask = pThisTLSTask();
+  if (! pTask)
+    return nullptr;
+  
+  DicStack* pDicStack = pTask->pDicStack();
+  
+  return pDicStack;
+}
+
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                   Thread                                   */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
@@ -176,6 +195,9 @@ WriteBehind* AM::THREAD::pWriteBehind(void)
   _static_
   
   Thread* pThread = AM::pThisTLSThread();
+  
+  if (! pThread)
+    return nullptr;
   
   WriteBehind* pWriteBehind = AM::THREAD::pWriteBehind(pThread);
   
@@ -631,9 +653,9 @@ Table* AM::pTableFind(Stz* szTableNm)
 {
   Table* pTable = nullptr;
 
-  DicStack* pDicStack = pTaskDicStack();
+  DicStack* pDicStack = AM::TASK::pDicStack();
   
-  if (pDicStack) {
+  if (pDicStack && pDicStack->pTop()) {
     pTable = Table::pFindTable(pDicStack,szTableNm);
   }
   else {
@@ -2068,14 +2090,6 @@ Task* AM::pTaskNew(Job* pJob) {
 bool AM::bTaskIsLocked(Task* pTask) {
   bool bLocked = pTask->bIsLocked();
   return bLocked;
-}
-
-DicStack* AM::pTaskDicStack(void) {
-  
-  if (! pThisTLSTask())
-    return nullptr;
-  
-  return pThisTLSTask()->pDicStack();
 }
 
 Job* AM::pTaskJob(void) {

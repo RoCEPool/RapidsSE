@@ -182,6 +182,8 @@ void SePrompt::vPromptLoop(void)
   //PsxThd::vMarkNonSeThread();
   m_pThread->vThisTLSThread();
 
+  Thread* pThreadTest = AM::pThisTLSThread();
+
   ASSERT(0 == pInputGet()->iDepth());
   pInputGet()->vUseStdin();
   pInputGet()->vFormCppTokens();

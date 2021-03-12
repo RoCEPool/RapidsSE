@@ -161,17 +161,17 @@ Table* Table::pFindTable(DicStack* pDicStack, Stz* szTableNm)
   _static_
   
   Dic* pDic = pDicStack->pTop();
-  
+  if (! pDic)
+    return nullptr;
+
   Word* pTableDicWord = pDic->pFindWord(szTableNm);
-  
-  if ( !pTableDicWord )
+  if (! pTableDicWord )
     return nullptr;
   
   Dic* pTableDic = _pDic(pTableDicWord->pObject());
   
   Word* pTableWord = pTableDic->pFindWord(szTableNm);
-  
-  if ( !pTableWord )
+  if (! pTableWord)
     return nullptr;
   
   Table* pTable = _pTable(pTableWord->pObject());
