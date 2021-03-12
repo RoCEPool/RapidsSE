@@ -251,8 +251,11 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask, bool bSet)
       pOperand = pDataBuffer->pNextLinkedBuffer();
     }
   }
-  else
+  else {
+    if (!pOperand)
+    vTrace("NO vAppendLeft\n"_Stz);
     pQueueLeft()->vAppendOperand(pOperand);
+  }
 
   AM::vOperandsInc();
 
@@ -1409,6 +1412,7 @@ void Op::vSendXmitOperand(Operand* pOperand, Task* pTriggeringTask, bool bSet)
     case PX_ORIGIN_TO_SPECIFIC_PARTITION: {
       Stream* pStream = pNextStage->pGetPartitionStream(m_tPtnNo);
       tPN tPtnNo = pStream->tPtnNo();
+      printf("PX_ORIGIN_TO_SPECIFIC_PARTITION: %lld\n", tPtnNo);
       vSendToPartition(pOperand, pTriggeringTask,bSet, eXmitKind, tPtnNo);
       break;
     }
@@ -1416,7 +1420,7 @@ void Op::vSendXmitOperand(Operand* pOperand, Task* pTriggeringTask, bool bSet)
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ALL_PARTITIONS_TO_ALL_NODES: {
       i8 i_Node = AM::pPtnMap()->i_WhichNode(m_tPtnNo);
-      //printf("PX_ALL_PARTITIONS_TO_ALL_NODES: %lld\n", i_Node);
+      printf("PX_ALL_PARTITIONS_TO_ALL_NODES: %lld\n", i_Node);
       vSendToNode(pOperand, pTriggeringTask, bSet, eXmitKind,i_Node);
       break;
     }
@@ -1719,7 +1723,6 @@ void Op::vSendToAllNodes(Operand* pOperand, Task* pTriggeringTask, bool bSet, eX
   
   //ASSERT(pNextStage->nItems() == AM::pGrid()->nBootNodes());
 
-  //AM::pGrid()->vSendToAllNodes(pOperand, bSet, i_Node, C_UNKNOWN); // newcode
 
   // newcode
   for (Node_I oNode_I(0,C_ALL); oNode_I.bMore(); oNode_I.vNext()) {
@@ -2002,7 +2005,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
           vSend(pOperand, bSet, m_iXmitNode, tPtnNo);
         }
 #else
-        vTrace("XK_NORMAL vSendToAllPartitions(  %lld\n"_Stz, m_iXmitNode);
+        vTrace("XK_NORMAL AM::nPtnsInGrid():%lld vSendToAllPartitions(  %lld\n"_Stz, AM::nPtnsInGrid(), m_iXmitNode);
         vSend(pOperand, bSet, m_iXmitNode, tPtnNo);
 #endif
       }
@@ -2019,7 +2022,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
       m_iXmitNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
       
       ASSERT( ! bSet );
-      //vTrace("XK_ROBIN vSendToAllPartitions(  %lld\n"_Stz, m_iXmitNode);
+      vTrace("XK_ROBIN AM::nPtnsInGrid():%lld  vSendToAllPartitions(  %lld\n"_Stz, AM::nPtnsInGrid(), m_iXmitNode);
       vSend(pOperand, bSet, m_iXmitNode, tPtnNo);
       AM::vDeleteOperand(pOperand);
       break;
@@ -2109,7 +2112,7 @@ void Op::vSendToPartition(Operand* pOperand, Task* pTriggeringTask, bool bSet,
   }
   
   m_iXmitNode = AM::pPtnMap()->i_WhichNode(tSendPtn);
-  //printf("vSendToPartition(  %lld\n", m_iXmitNode);
+  printf("vSendToPartition(  %lld\n", m_iXmitNode);
   vSend(pOperand, bSet, m_iXmitNode, tSendPtn);
   
   // delete the operand

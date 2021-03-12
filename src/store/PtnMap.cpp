@@ -95,7 +95,7 @@ tPN PtnMap::tStreamToLglPtnNo(i8 i_Stream)
 
   if (AM::nPtnsInGrid()) {
     for (tPN tPtnNo = 0; tPtnNo < AM::nPtnsInGrid(); tPtnNo++)
-      vTrace("Partition: %lld; Node: %lld\n"_Stz,tPtnNo,AM::pPtnMap()->i_WhichNode(tPtnNo));
+      vTrace("tStreamToLglPtnNo  Partition: %lld; Node: %lld\n"_Stz,tPtnNo,AM::pPtnMap()->i_WhichNode(tPtnNo));
     vTrace("\n"_Stz);
   }
 
@@ -213,7 +213,7 @@ i8 PtnMap::i_LglPtnNoToInitialNode(tPN tPtnNo)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 
   i8 i_Node = tPtnNo % AM::nBootNodes();
-  
+  vTrace("i_LglPtnNoToInitialNode    BootNodes:%lld i_Node:%lld\n"_Stz,AM::nBootNodes(), i_Node);
   return i_Node;
 }
 
@@ -225,7 +225,7 @@ i8 PtnMap::i_LglPtnNoToInitialStream(tPN tPtnNo)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 
   i8 i_Stream = tPtnNo / AM::nBootNodes();
-  
+  vTrace("i_LglPtnNoToInitialStream    BootNodes:%lld i_Stream:%lld\n"_Stz,AM::nBootNodes(), i_Stream);
   return i_Stream;
 }
 

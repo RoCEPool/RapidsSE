@@ -340,7 +340,7 @@ void Grid::vHasStarted(bool bHasStarted)
 }
 
 /*----------------------------------------------------------------------------*/
-/* increment number of put nodes                                              */
+/* increment number of boot nodes                                              */
 /*----------------------------------------------------------------------------*/
 void Grid::vIncBootNodes(void)
 {
@@ -350,7 +350,7 @@ void Grid::vIncBootNodes(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* decrement number of put nodes                                              */
+/* decrement number of boot nodes                                              */
 /*----------------------------------------------------------------------------*/
 void Grid::vDecBootNodes(void)
 {
@@ -462,6 +462,21 @@ void Grid::vPutNode(Node* pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* put node                                                                   */
+/*----------------------------------------------------------------------------*/
+void Grid::vPutNodeR(Node* pNode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+
+
+  // newcode
+  m_lNodes.push_front(pNode);
+  m_nNodes++;
+
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* remove given node                                                          */
 /*----------------------------------------------------------------------------*/
 void Grid::vRemoveNode(Node* pNode)
@@ -506,7 +521,11 @@ void Grid::vAddNode(i8 iNodeNo, Stz* pszName, Stz* pszAddr, i8 iPort)
                            pszAddr,
                            iPort);
 
+    if (gxCmdLineArgs.m_xSysArgs.m_xBootNode[0].m_sNodeName.bSame("NODE1"_Stz))
+      vPutNodeR(pNode);
+    else
     vPutNode(pNode); // this also incr m_nNodes;
+
     vIncBootNodes();
     vIncDefinedNodes();
 

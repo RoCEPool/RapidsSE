@@ -15,12 +15,12 @@ create table bolTbl (
   bol_col8   BOOLEAN
 );
 
-create index bol_idx1 on bolTbl (bol_col1);
+//create index bol_idx1 on bolTbl (bol_col1);
 
-create index bol_idx2 on bolTbl (bol_col8);
+//create index bol_idx2 on bolTbl (bol_col8);
 
 lsidx bolTbl;
 
 /*============================================================================*/
-/* end                                                                        */
+/* end                  vSendToAllPartitions                                                      */
 /*============================================================================*/

@@ -1725,7 +1725,12 @@ void Engine::vCreateGridOfNodes(void)
                            gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress,
                            gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_iPortNo);
 
-    AM::pGrid()->vPutNode(pNode);
+    Grid* pGrid = AM::pGrid();
+    if (gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sNodeName.bSame("NODE1"_Stz))
+      pGrid->vPutNodeR(pNode);
+    else
+      AM::pGrid()->vPutNode(pNode);
+
     AM::pGrid()->vIncBootNodes();
     AM::pGrid()->vIncDefinedNodes();
 

@@ -66,7 +66,7 @@ void Step::vXmitOperandPipeOut(void)
                                pXmitOperand->m_iNextOp);
   
   //! ALKA come back to this. May need a m_bAppendLeft in pXmitOperand
-  vTrace("Step::vXmitOperandPipeOut pXmitOperand->m_i_Node:%lld\n"_Stz, pXmitOperand->m_i_Node);
+  vTrace("Step::vXmitOperandPipeOut pXmitOperand->m_i_Node:%lld   pXmitOperand->m_tPtnNo:%lld\n"_Stz, pXmitOperand->m_i_Node, pXmitOperand->m_tPtnNo);
   // append to left queue
   if (pXmitOperand->m_pOperand)
     pOp->vAppendLeft(pXmitOperand->m_pOperand,this);
