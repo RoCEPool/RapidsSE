@@ -309,23 +309,24 @@ i8 iDev_ENT_COMPARE(void* aLU, void* aIXT)
 /*----------------------------------------------------------------------------*/
 /* position m_pEnt prior using m_oEntWrk.key                                  */
 /*----------------------------------------------------------------------------*/
-void vDev_ENT_FIND(void* aLU, void* aIXT, i8** aaiDstk)
+void vDev_ENT_FIND(i8** aaiDstk)
 {
   _static_
 
-  UNUSED(aLU);
-
   i8 *aiDstk = *aaiDstk;
+
   Ent_int* aEnt_int;
   tET tNext;
   i8 iTopA;
   i8 iTopB;
   void* aTempSkipRoots = nullptr;
+  Ent* pEntArray;
 
-  DevIXT* pDevIxt = _pDevIXT(aIXT);
+  // pop the wrk ent
+  Ent_int* aWrkEnt = (Ent_int*)P_PopPtr();
 
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-  RluCommon* aRluCommon = &pLogicUnit->m_xRluCommon;
+  //pop the device
+  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
 
   if (pDevIxt->m_pEntBuffer)
     aTempSkipRoots = (Ent_int*)pDevIxt->m_pEntBuffer->aSkipRoots();
@@ -342,14 +343,17 @@ void vDev_ENT_FIND(void* aLU, void* aIXT, i8** aaiDstk)
 //          goto L_end_FINDI;
 //        }
 
-  iTopA = aRluCommon->m_aWrkEnt->m_iIntElm0;
+  iTopA = aWrkEnt->m_iIntElm0;
   // search for key
+  pEntArray = pDevIxt->m_pEntBuffer->aEntArray();
+
   while (C_ENT_END_TICKET != tNext) {
-    aEnt_int = (struct Ent_int*) &aRluCommon->m_aEntArray[tNext];
+    //aEnt_int = (struct Ent_int*) &aRluCommon->m_aEntArray[tNext];
+    aEnt_int = (struct Ent_int*) &pEntArray[tNext];
     iTopB = aEnt_int->m_iIntElm0;
     //printf("Ticket %lld Ent %p\n",(i8)tNext,aEnt_int);
     if (iTopA == iTopB) {
-      aRluCommon->m_aTmpEnt = aEnt_int;
+      //aRluCommon->m_aTmpEnt = aEnt_int;
       pDevIxt->m_aEnt = (Ent*)aEnt_int;
       *(++aiDstk) = 1; // found matching key
       goto L_end_FINDI;
@@ -373,45 +377,53 @@ void vDev_ENT_FIND(void* aLU, void* aIXT, i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* move to next m_pEnt                                                        */
 /*----------------------------------------------------------------------------*/
-Ent_int* aDev_ENT_NEXT(void* aLU, void* aIXT)
+void vDev_ENT_NEXT(i8** aaiDstk)
 {
   _static_
-  
-  UNUSED(aLU);
 
-  DevIXT* pDevIxt = _pDevIXT(aIXT);
+  i8 *aiDstk = *aaiDstk;
+
+  //pop the device
+  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
    
   pDevIxt->m_aEnt = EntBuffer::pMoveToNextEntry(pDevIxt->m_aEnt,
                                                 &pDevIxt->m_pEntBuffer);
-  return (Ent_int*)pDevIxt->m_aEnt;
+  P_PushPtr(pDevIxt->m_aEnt);
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
 /* position m_pEnt prior using m_oEntWrk.key                                  */
 /*----------------------------------------------------------------------------*/
-Ent_int* aDev_ENT_POSPRIOR(void* aLU, void* aIXT)
+void vDev_ENT_POSPRIOR(i8** aaiDstk)
 {
   _static_
-  
-  UNUSED(aLU);
 
-  DevIXT* pDevIxt = _pDevIXT(aIXT);
-  
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+  i8 *aiDstk = *aaiDstk;
+  Ent* pEntArray;
 
-  Ent *pEnt = (Ent*)pLogicUnit->m_xRluCommon.m_aWrkEnt;
+  // pop the wrk ent
+  Ent_int* aWrkEnt = (Ent_int*)P_PopPtr();
+
+  //pop the device
+  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
+
+  Ent *pEnt = (Ent*)aWrkEnt;
   pDevIxt->m_aEnt =
     pDevIxt->m_pIdxTree->aPositionPriorEntry(pEnt->aKey(),
                                              &pDevIxt->m_pEntBuffer);
   
-  if (pDevIxt->m_pEntBuffer) {
-    pLogicUnit->m_xRluCommon.m_aEntArray =
-      (Ent_int*)pDevIxt->m_pEntBuffer->aEntArray();
-    
-    //*aaSkipRoots = (Ent_int*)pDevIxt->m_pEntBuffer->aSkipRoots();
-  }
+//  if (pDevIxt->m_pEntBuffer) {
+//    pLogicUnit->m_xRluCommon.m_aEntArray =
+//      (Ent_int*)pDevIxt->m_pEntBuffer->aEntArray();
+//
+//    //*aaSkipRoots = (Ent_int*)pDevIxt->m_pEntBuffer->aSkipRoots();
+//  }
   
-  return (Ent_int*)pDevIxt->m_aEnt;
+  P_PushPtr(pDevIxt->m_aEnt);
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -440,81 +452,79 @@ void vDev_ENT_PRINTKEYS(void* aLU, void* aIXT)
 /*----------------------------------------------------------------------------*/
 /* push entry                                                                 */
 /*----------------------------------------------------------------------------*/
-void* aDev_ENT_PUSH(void* aLU, void* aIXT)
+void vDev_ENT_PUSH(i8** aaiDstk)
 {
   _static_
-  
-  UNUSED(aLU);
 
-  DevIXT* pDevIxt = _pDevIXT(aIXT);
-  
-  return pDevIxt->m_aEnt;
-}
+  i8 *aiDstk = *aaiDstk;
 
-/*----------------------------------------------------------------------------*/
-/* push entry                                                                 */
-/*----------------------------------------------------------------------------*/
-void* aDev_ENT_PUSHUPPER(void* aLU, void* aIXT)
-{
-  _static_
+  //pop the device
+  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
   
-  UNUSED(aLU);
+  P_PushPtr(pDevIxt->m_aEnt);
 
-  DevIXT* pDevIxt = _pDevIXT(aIXT);
-  
-  return pDevIxt->m_aUpperEnt;
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
 /* push entry elm 0 int                                                       */
 /*----------------------------------------------------------------------------*/
-i8 iDev_ENT_PUSHELMI0(void* aLU, void* aIXT)
+void vDev_ENT_PUSHELMI0(i8** aaiDstk)
 {
   _static_
-  
-  UNUSED(aLU);
 
-  DevIXT* pDevIxt = _pDevIXT(aIXT);
+  i8 *aiDstk = *aaiDstk;
+
+  //pop the device
+  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
   
   i8 iRes = pDevIxt->m_aEnt->iIntElm0();
 
-  return iRes;
+  I_PushInt(iRes);
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
 /* push entry elm 0 str                                                       */
 /*----------------------------------------------------------------------------*/
-Stz* szDev_ENT_PUSHELMS0(void* aLU, void* aIXT)
+void vDev_ENT_PUSHELMS0(i8** aaiDstk)
 {
   _static_
-  
-  DevIXT* pDevIxt = _pDevIXT(aIXT);
+
+  i8 *aiDstk = *aaiDstk;
+  char caStrWrk[128];
+  i8 nSize;
+  char* azDst;
+
+  //pop the device
+  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
   
   Stz* szSrc = pDevIxt->m_aEnt->aKey()->szGetStrElm();
-  
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
 
-  StrLib::iWordFlipBack(pLogicUnit->m_xRluCommon.m_caStrWrk,(char*)szSrc);
+  StrLib::iWordFlipBack(caStrWrk,(char*)szSrc);
 
-  return (Stz*)pLogicUnit->m_xRluCommon.m_caStrWrk;
+  S_PushStr(caStrWrk);
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
-/* push entry offset                                                          */
+/* push entry                                                                 */
 /*----------------------------------------------------------------------------*/
-i8 iDev_ENT_PUSHOFS(void* aLU, void* aIXT)
+void vDev_ENT_PUSHUPPER(i8** aaiDstk)
 {
   _static_
-  
-  UNUSED(aLU);
 
-  DevIXT* pDevIxt = _pDevIXT(aIXT);
-  
-  i8 iRes = pDevIxt->m_aEnt->iBuffer();
-  
-  return iRes;
+  i8 *aiDstk = *aaiDstk;
+
+  //pop the device
+  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
+
+  P_PushPtr(pDevIxt->m_aUpperEnt);
+
+  *aaiDstk = aiDstk;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -756,8 +766,8 @@ Ent_int* aDev_IXT_POS_ALTBYSRC(void* aLU)
   
   if (pLogicUnit->m_pDevAltIxt->m_pEntBuffer) {
     
-    pLogicUnit->m_xRluCommon.m_aEntArray =
-      (Ent_int*)pLogicUnit->m_pDevAltIxt->m_pEntBuffer->aEntArray();
+//    pLogicUnit->m_xRluCommon.m_aEntArray =
+//      (Ent_int*)pLogicUnit->m_pDevAltIxt->m_pEntBuffer->aEntArray();
     
     if (pLogicUnit->m_pDevAltIxt->m_aEnt)
       return (Ent_int*)pLogicUnit->m_pDevAltIxt->m_aEnt;
@@ -786,8 +796,8 @@ Ent_int* aDev_IXT_POS_ALTBYWRK(void* aLU)
   
   if (pLogicUnit->m_pDevAltIxt->m_pEntBuffer) {
     
-    pLogicUnit->m_xRluCommon.m_aEntArray =
-      (Ent_int*)pLogicUnit->m_pDevAltIxt->m_pEntBuffer->aEntArray();
+//    pLogicUnit->m_xRluCommon.m_aEntArray =
+//      (Ent_int*)pLogicUnit->m_pDevAltIxt->m_pEntBuffer->aEntArray();
 
     if (pLogicUnit->m_pDevAltIxt->m_aEnt)
       return (Ent_int*)pLogicUnit->m_pDevAltIxt->m_aEnt;
@@ -823,8 +833,8 @@ Ent_int* aDev_IXT_POS_LBOUND(void* aLU, void* aIXT)
   
   if (pDevIXT->m_aEnt) {
     
-    pLogicUnit->m_xRluCommon.m_aEntArray =
-      (Ent_int*)pDevIXT->m_pEntBuffer->aEntArray();
+//    pLogicUnit->m_xRluCommon.m_aEntArray =
+//      (Ent_int*)pDevIXT->m_pEntBuffer->aEntArray();
 
     return (Ent_int*)pDevIXT->m_aEnt;
   }
@@ -859,8 +869,8 @@ Ent_int* aDev_IXT_POS_UBOUND(void* aLU, void* aIXT)
                                            &pUpperEntBuffer);
       if (pDevIXT->m_aUpperEnt) {
         
-        pLogicUnit->m_xRluCommon.m_aEntArray =
-          (Ent_int*)pUpperEntBuffer->aEntArray();
+//        pLogicUnit->m_xRluCommon.m_aEntArray =
+//          (Ent_int*)pUpperEntBuffer->aEntArray();
 
         return (Ent_int*)pDevIXT->m_aUpperEnt;
       }
@@ -901,8 +911,8 @@ Ent_int* aDev_IXT_POS_UBOUND_LT(void* aLU, void* aIXT)
       
       if (pDevIXT->m_aUpperEnt) {
         
-        pLogicUnit->m_xRluCommon.m_aEntArray =
-          (Ent_int*)pUpperEntBuffer->aEntArray();
+//        pLogicUnit->m_xRluCommon.m_aEntArray =
+//          (Ent_int*)pUpperEntBuffer->aEntArray();
 
         return (Ent_int*)pDevIXT->m_aUpperEnt;
       }
@@ -988,8 +998,8 @@ Ent_int* aDev_IXT_TRV_BEGIN_OLD(void* aLU, void* aIXT)
   if (pDevIXT->m_pEntBuffer) {
     pDevIXT->m_aEnt = pDevIXT->m_pEntBuffer->aLeadEntry();
     if (pDevIXT->m_aEnt) {
-      pLogicUnit->m_xRluCommon.m_aEntArray =
-          (Ent_int*)pDevIXT->m_pEntBuffer->aEntArray();
+//      pLogicUnit->m_xRluCommon.m_aEntArray =
+//          (Ent_int*)pDevIXT->m_pEntBuffer->aEntArray();
       return (Ent_int*)pDevIXT->m_aEnt;
     }
     else
@@ -1015,11 +1025,11 @@ void vDev_IXT_IDX_NEXT(void* aLU, i8** aaiDstk)
   pDevIXT->m_aEnt =
      EntBuffer::pMoveToNextEntry(pDevIXT->m_aEnt,&pDevIXT->m_pEntBuffer);
 
-  if (pDevIXT->m_pEntBuffer)
-    pLogicUnit->m_xRluCommon.m_aEntArray =
-      (Ent_int*)pDevIXT->m_pEntBuffer->aEntArray();
-  else
-    pLogicUnit->m_xRluCommon.m_aEntArray = nullptr;
+//  if (pDevIXT->m_pEntBuffer)
+//    pLogicUnit->m_xRluCommon.m_aEntArray =
+//      (Ent_int*)pDevIXT->m_pEntBuffer->aEntArray();
+//  else
+//    pLogicUnit->m_xRluCommon.m_aEntArray = nullptr;
 
   P_PushPtr(pDevIXT->m_aEnt);
   *aaiDstk = aiDstk;
@@ -1038,11 +1048,11 @@ Ent_int* aDev_IXT_TRV_NEXT_OLD(void* aLU, void* aIXT)
   pDevIXT->m_aEnt =
       EntBuffer::pMoveToNextEntry(pDevIXT->m_aEnt,&pDevIXT->m_pEntBuffer);
 
-  if (pDevIXT->m_pEntBuffer)
-    pLogicUnit->m_xRluCommon.m_aEntArray =
-        (Ent_int*)pDevIXT->m_pEntBuffer->aEntArray();
-  else
-    pLogicUnit->m_xRluCommon.m_aEntArray = nullptr;
+//  if (pDevIXT->m_pEntBuffer)
+//    pLogicUnit->m_xRluCommon.m_aEntArray =
+//        (Ent_int*)pDevIXT->m_pEntBuffer->aEntArray();
+//  else
+//    pLogicUnit->m_xRluCommon.m_aEntArray = nullptr;
 
   return (Ent_int*)pDevIXT->m_aEnt;
 }
@@ -1050,17 +1060,35 @@ Ent_int* aDev_IXT_TRV_NEXT_OLD(void* aLU, void* aIXT)
 /*----------------------------------------------------------------------------*/
 /* get address of payload                                                     */
 /*----------------------------------------------------------------------------*/
-i8* aDev_PAY_ADDRESS(void* aLU, void* aIXT)
+i8* aDev_PAY_ADDRESS(i8** aaiDstk)
 {
   _static_
-  
-  UNUSED(aLU);
 
-  DevIXT* pDevIXT = _pDevIXT(aIXT);
+  i8 *aiDstk = *aaiDstk;
+  DevIXT* pDevIXT = _pDevIXT(P_PopPtr());
 
-  i8* aPayload = pDevIXT->m_aEnt->aiPayCell(0);
+  i8* aiPayload;
 
-  return aPayload;
+  // aiPayload = pDevIXT->m_aEnt->aiPayCell(0);
+
+  Ent_int* aEnt = (Ent_int*)pDevIXT->m_aEnt;
+
+  if (aEnt->Rrf.m_uKind) {
+    aiPayload = (i8 *) ((char *) aEnt
+                        + sizeof(struct Ent_int)
+                        + 8
+    );
+  } else {
+    aiPayload = (i8 *) ((char *) aEnt
+                        + sizeof(struct Ent_int)
+                        + aEnt->m_iIntElm0
+                        + 8
+    );
+  }
+
+  *aaiDstk = aiDstk;
+
+  return aiPayload;
 }
 
 /*----------------------------------------------------------------------------*/

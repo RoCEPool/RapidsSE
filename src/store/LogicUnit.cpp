@@ -2475,94 +2475,39 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // entry
       case EO_ENT_FINDI: ArgNil(); // find entry with int key
         dLU0(EO_ENT_FINDI);
-        vDev_ENT_FIND(pLU,aRluCommon->m_pDevTmpIxt,&aiDstk);
-
-//
-//        // can we do a linear search
-//        if (! aRluCommon->m_aTmpSkipRoots) {
-//          *(++aiDstk) = 0;
-//          goto L_end_FINDI;
-//        }
-//        aEnt_int = aRluCommon->m_aTmpSkipRoots;
-//        tNext = aEnt_int->m_taNextEntry[0];
-////        if (C_ENT_END_TICKET == tNext) {
-////          *(++aiDstk) = 0;
-////          goto L_end_FINDI;
-////        }
-//
-//        iTopA = aRluCommon->m_aWrkEnt->m_iIntElm0;
-//        // search for key
-//        while (C_ENT_END_TICKET != tNext) {
-//          aEnt_int = (struct Ent_int*) &aRluCommon->m_aEntArray[tNext];
-//          iTopB = aEnt_int->m_iIntElm0;
-//          //printf("Ticket %lld Ent %p\n",(i8)tNext,aEnt_int);
-//          if (iTopA == iTopB) {
-//            aRluCommon->m_aTmpEnt = aEnt_int;
-//            *(++aiDstk) = 1; // found matching key
-//            goto L_end_FINDI;
-//          }
-//          if (iTopA > iTopB) {
-//            tNext = aEnt_int->m_taNextEntry[0];
-//            continue;
-//          }
-//          //printf("Did not find %lld\n",aRluCommon->m_aWrkEnt->m_iIntElm0);
-//          *(++aiDstk) = 0; // did not find matching key
-//          goto L_end_FINDI;
-//        }
-//        // did not find matching key
-//        *(++aiDstk) = 0;
-//
-//        L_end_FINDI:
-//
+        P_PushPtr(aRluCommon->m_aWrkEnt);
+        vDev_ENT_FIND(&aiDstk);
         break;//+endCase
         
       case EO_ENT_NEXT: ArgNil(); // move to next m_pEnt
         dLU0(EO_ENT_NEXT);
-        aRluCommon->m_aTmpEnt = aDev_ENT_NEXT(pLU,aRluCommon->m_pDevTmpIxt);
-        *(++aiDstk) = (i8)aRluCommon->m_aTmpEnt;
+        vDev_ENT_NEXT(&aiDstk);
         break;//+endCase
         
       case EO_ENT_POSPRIOR: ArgNil(); // position m_pEnt prior using m_oEntWrk.key
         dLU0(EO_ENT_POSPRIOR);
-        aRluCommon->m_aTmpEnt = aDev_ENT_POSPRIOR(pLU,aRluCommon->m_pDevTmpIxt);
-        *(++aiDstk) = (i8)aRluCommon->m_aTmpEnt;
+        P_PushPtr(aRluCommon->m_aWrkEnt);
+        vDev_ENT_POSPRIOR(&aiDstk);
         break;//+endCase
         
       case EO_ENT_PUSH: ArgNil(); // push entry on the stack
         dLU0(EO_ENT_PUSH);
-        *(++aiDstk) = (i8)aDev_ENT_PUSH(pLU,aRluCommon->m_pDevTmpIxt);
+        vDev_ENT_PUSH(&aiDstk);
         break;//+endCase
         
       case EO_ENT_PUSHELMI0: ArgNil(); // push entry elm 0 int
         dLU0(EO_ENT_PUSHELMI0);
-        *(++aiDstk) = iDev_ENT_PUSHELMI0(pLU,aRluCommon->m_pDevTmpIxt);
+        vDev_ENT_PUSHELMI0(&aiDstk);
         break;//+endCase
         
       case EO_ENT_PUSHELMS0: ArgNil(); // push entry elm 0 str
         dLU0(EO_ENT_PUSHELMS0);
-        azSrc = (char*)szDev_ENT_PUSHELMS0(pLU,aRluCommon->m_pDevTmpIxt);
-        S_PushStr(azSrc);
+        vDev_ENT_PUSHELMS0(&aiDstk);
         break;//+endCase
         
-      case EO_ENT_PUSHOFS: ArgNil(); // push entry offset
-        dLU0(EO_ENT_PUSHOFS);
-        *(++aiDstk) = iDev_ENT_PUSHOFS(pLU,aRluCommon->m_pDevTmpIxt);
-        break;//+endCase
-        
-      case EO_ENT_PUSHREF: ArgNil(); // not yet implemented
-        NEVER_REACH;
-        break;//+endCase
-
-      case EO_ENT_SRC_PUSH: ArgNil(); // push entry on the stack
-        dLU0(EO_ENT_SRC_PUSH);
-        //*(++aiDstk) = (i8)m_pDevSrcIxt->m_aEnt;
-        *(++aiDstk) = (i8)aDev_ENT_PUSH(pLU, aRluCommon->m_pDevSrcIxt);
-        break;//+endCase
-        
-      case EO_ENT_SRC_PUSHUPPER: ArgNil(); // push entry on the stack
-        dLU0(EO_ENT_SRC_PUSHUPPER);
-        //*(++aiDstk) = (i8)m_pDevSrcIxt->m_aUpperEnt;
-        *(++aiDstk) = (i8)aDev_ENT_PUSHUPPER(pLU, aRluCommon->m_pDevSrcIxt);
+      case EO_ENT_PUSHUPPER: ArgNil(); // push entry on the stack
+        dLU0(EO_ENT_PUSHUPPER);
+        vDev_ENT_PUSHUPPER(&aiDstk);
         break;//+endCase
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -2661,26 +2606,29 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         RASSERT(0);
         break;//+endCase
 
-      case EO_IXT_INS_ENT: ArgNil(); // insert an entry into the indexTree
+      case EO_IXT_INS_ENT: { ArgNil(); // insert an entry into the indexTree
         dLU0(EO_IXT_INS_ENT);
-        aRluCommon->m_aTmpEnt =
-          aDev_IXT_INS_ENT(pLU,aRluCommon->m_pDevTmpIxt);
+        void *aTmpEnt =
+            aDev_IXT_INS_ENT(pLU, aRluCommon->m_pDevTmpIxt);
         //ASSERT(m_pDevTmpIxt->m_aEnt);
+      }
         break;//+endCase
         
-      case EO_IXT_TRV_BEGIN: ArgNil(); // begin linear traverse
+      case EO_IXT_TRV_BEGIN: { ArgNil(); // begin linear traverse
         dLU0(EO_IXT_TRV_BEGIN);
-        aRluCommon->m_aTmpEnt =
-          aDev_IXT_TRV_BEGIN_OLD(pLU,aRluCommon->m_pDevTmpIxt);
+        void *aTmpEnt =
+            aDev_IXT_TRV_BEGIN_OLD(pLU, aRluCommon->m_pDevTmpIxt);
         //aRluCommon->m_aTmpEntArray = aRluCommon->m_aEntArray;
-        *(++aiDstk) = (i8)aRluCommon->m_aTmpEnt;
+        *(++aiDstk) = (i8) aTmpEnt;
+      }
         break;//+endCase
         
-      case EO_IXT_TRV_NEXT: ArgNil(); // traverse to next entry
+      case EO_IXT_TRV_NEXT: { ArgNil(); // traverse to next entry
         dLU0(EO_IXT_TRV_NEXT);
-        aRluCommon->m_aTmpEnt =
-          aDev_IXT_TRV_NEXT_OLD(pLU,aRluCommon->m_pDevTmpIxt);
-        *(++aiDstk) = (i8)aRluCommon->m_aTmpEnt;
+        void *aTmpEnt =
+            aDev_IXT_TRV_NEXT_OLD(pLU, aRluCommon->m_pDevTmpIxt);
+        *(++aiDstk) = (i8) aTmpEnt;
+      }
         break;//+endCase
         
       case EO_IXT_TMP_ENTRIES: ArgNil(); // push number of entries in tmp index
@@ -2871,7 +2819,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // pay load
       case EO_PAY_ADDRESS: { ArgNil(); // get payload address
         dLU0(EO_PAY_ADDRESS);
-        //       aiPayload = aDev_PAY_ADDRESS(pLU,aRluCommon->m_pDevTmpIxt);
+               aiPayload = aDev_PAY_ADDRESS(&aiDstk);
 //      {
 //        i8* aiCheck = 0;
 //
@@ -2895,22 +2843,24 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 //        }
 //      }
 
-        void *pDevIXT = P_PopPtr();
+        //void *pDevIXT = P_PopPtr();
         //DevIXT *pDevIXT = _pDevIXT(P_PopPtr());
         //RASSERT((Ent_int *) pDevIXT->m_aEnt == aRluCommon->m_aTmpEnt);
 
-        if (aRluCommon->m_aTmpEnt->Rrf.m_uKind) {
-          aiPayload = (i8 *) ((char *) aRluCommon->m_aTmpEnt
-                              + sizeof(struct Ent_int)
-                              + 8
-          );
-        } else {
-          aiPayload = (i8 *) ((char *) aRluCommon->m_aTmpEnt
-                              + sizeof(struct Ent_int)
-                              + aRluCommon->m_aTmpEnt->m_iIntElm0
-                              + 8
-          );
-        }
+//        if (aRluCommon->m_aTmpEnt->Rrf.m_uKind) {
+//          aiPayload = (i8 *) ((char *) aRluCommon->m_aTmpEnt
+//                              + sizeof(struct Ent_int)
+//                              + 8
+//          );
+//        } else {
+//          aiPayload = (i8 *) ((char *) aRluCommon->m_aTmpEnt
+//                              + sizeof(struct Ent_int)
+//                              + aRluCommon->m_aTmpEnt->m_iIntElm0
+//                              + 8
+//          );
+//        }
+//
+//        RASSERT(iPayload == aiPayload);
       }
         break;//+endCase
 

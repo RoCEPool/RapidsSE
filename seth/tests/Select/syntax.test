@@ -9,7 +9,7 @@
 
 // Select a non-existent table
 SELECT col1 from badTable;
-failure contains: 'Unknown table name: badTable'
+failure contains: 'No such table: badTable'
 
 CREATE TABLE selectsyntax1 (
   col1 INTEGER,
@@ -32,15 +32,15 @@ rows: 0
 
 // Select an existing table but use an incorrect schema
 SELECT col1, col2, col3 FROM badSchema.selectsyntax1;
-failure contains: 'Unknown table name: badSchema.selectsyntax1'
+failure contains: 'No such table: badSchema.selectsyntax1'
 
 // Select an existing table but use an incorrect schema
 SELECT col1, col2, col3 FROM rapidsse.badSchema.selectsyntax1;
-failure contains: 'Unknown table name: rapidsse.badSchema.selectsyntax1'
+failure contains: 'No such table: rapidsse.badSchema.selectsyntax1'
 
 // Select an existing table but use an incorrect catalog
 SELECT col1, col2, col3 FROM badCatalog.public.selectsyntax1;
-failure contains: 'Unknown table name: badCatalog.public.selectsyntax1'
+failure contains: 'No such table: badCatalog.public.selectsyntax1'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Resolving column names
@@ -48,13 +48,13 @@ failure contains: 'Unknown table name: badCatalog.public.selectsyntax1'
 
 // Select a non-existant column
 SELECT bad, col2 FROM selectsyntax1;
-failure contains: 'Unknown column name: bad'
+failure contains: 'No such column: bad'
 
 SELECT col1, bad FROM selectsyntax1;
-failure contains: 'Unknown column name: bad'
+failure contains: 'No such column: bad'
 
 SELECT col1, bad, col2 FROM selectsyntax1;
-failure contains: 'Unknown column name: bad'
+failure contains: 'No such column: bad'
 
 
 // Select an existing column by columnName only

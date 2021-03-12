@@ -19,15 +19,17 @@ void vDev_IXT_TEST(i8** aaiDstk);
 // prototypes for dev IXT
 
 i8   iDev_ENT_COMPARE(void* aLU, void* aIXT);
-void vDev_ENT_FIND(void* aLU, void* aIXT, i8** aaiDstk);
-struct Ent_int* aDev_ENT_NEXT(void* aLU, void* aIXT);
-struct Ent_int* aDev_ENT_POSPRIOR(void* aLU, void* aIXT);
+
+void vDev_ENT_FIND(i8** aaiDstk);
+void vDev_ENT_NEXT(i8** aaiDstk);
+void vDev_ENT_POSPRIOR(i8** aaiDstk);
+
 void vDev_ENT_PRINTKEYS(void* aLU, void* aIXT);
-void* aDev_ENT_PUSH(void* aLU, void* aIXT);
-void* aDev_ENT_PUSHUPPER(void* aLU, void* aIXT);
-i8   iDev_ENT_PUSHELMI0(void* aLU, void* aIXT);
-Stz* szDev_ENT_PUSHELMS0(void* aLU, void* aIXT); // NOT COMPLETE!!
-i8   iDev_ENT_PUSHOFS(void* aLU, void* aIXT);
+
+void vDev_ENT_PUSH(i8** aaiDstk);
+void vDev_ENT_PUSHELMI0(i8** aaiDstk);
+void vDev_ENT_PUSHELMS0(i8** aaiDstk); // NOT COMPLETE!!
+void vDev_ENT_PUSHUPPER(i8** aaiDstk);
 
 i8   iDev_IXT_CMP_SRCALT(void* aLU);
 i8   iDev_IXT_CMP_WRKALT(void* aLU);
@@ -53,7 +55,7 @@ void vDev_IXT_IDX_BEGIN(i8** aaiDstk);
 void vDev_IXT_IDX_NEXT(void* aLU, i8** aaiDstk);
 struct Ent_int* aDev_IXT_TRV_NEXT_OLD(void* aLU, void* aIXT);
 
-i8*  aDev_PAY_ADDRESS(void* aLU, void* aIXT);
+i8*  aDev_PAY_ADDRESS(i8** aaiDstk);
 i8   iDev_PAY_FETCH_COLI(void* aLU, void* aIXT, i8 iArg);
 Stz* szDev_PAY_FETCH_COLS(void* aLU, void* aIXT, i8 iArg); 
 void vDev_PAY_STORE_COLI(void* aLU, void* aIXT, i8 iArg, i8 iTop);
