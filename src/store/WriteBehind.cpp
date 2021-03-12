@@ -8,7 +8,6 @@
 
 #include "WriteBehind.hpp"
 
-
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -27,9 +26,9 @@ WriteBehind::WriteBehind(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEBEHIND,_FOOTER_);
   
-  m_pStreamDef = AM::pStreamDefFind(C_TDEF_EVENTS);
+  m_pStreamDef_events = AM::pStreamDefFind(C_TDEF_EVENTS);
   
-  m_pRowBuffer = nullptr;
+  m_pRowBuffer_events = nullptr;
     
   _checkInitialised_(CN_WRITEBEHIND);
   
@@ -49,33 +48,56 @@ WriteBehind::~WriteBehind(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* allot a row                                                                */
+/* deposit var-arg list of column values into an __events row                 */
 /*----------------------------------------------------------------------------*/
-Row* WriteBehind::pAllotRow(void)
+void WriteBehind::vDepositEvent(i8 iVargsBegin, ...)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEBEHIND,_FOOTER_);
+
+  ASSERT(C_VARGS_BEGIN == iVargsBegin);
   
-  return nullptr;
+  //m_okLock.vGrabWrite();
+  
+  Row* pRow = pAllotEventRow();
+
+  va_list xVarArgs;
+  va_start(xVarArgs,iVargsBegin);
+
+  pRow->vDeposit(xVarArgs);
+  
+  va_end(xVarArgs);
+  
+  //m_okLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
-/* get current row buffer                                                     */
+/*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-RowBuffer* WriteBehind::pRowBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEBEHIND,_FOOTER_);
-  
-  return m_pRowBuffer;
-}
 
 /*----------------------------------------------------------------------------*/
-/* set current row buffer                                                     */
+/* allot a event row                                                          */
 /*----------------------------------------------------------------------------*/
-void WriteBehind::vRowBuffer(RowBuffer* pRowBuffer)
+Row* WriteBehind::pAllotEventRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEBEHIND,_FOOTER_);
   
-  m_pRowBuffer = pRowBuffer;
+  if (! m_pRowBuffer_events) {
+    m_pRowBuffer_events = new RowBuffer(CN_ROWBUFFER,m_pStreamDef_events);
+  }
+  
+  Row* pRow = m_pRowBuffer_events->pAllotRow();
+  
+  if (! pRow) {
+    
+    // temp until the demon is in place
+    delete m_pRowBuffer_events;
+    
+    m_pRowBuffer_events = new RowBuffer(CN_ROWBUFFER,m_pStreamDef_events);
+    Row* pRow = m_pRowBuffer_events->pAllotRow();
+    RASSERT(pRow);
+  }
+  
+  return pRow;
 }
 
 /*============================================================================*/

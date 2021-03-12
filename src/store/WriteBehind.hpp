@@ -10,8 +10,9 @@ namespace STORE
   private:
     Lock m_okLock;
   
-    StreamDef* m_pStreamDef;
-    RowBuffer* m_pRowBuffer;
+    // events
+    StreamDef* m_pStreamDef_events;
+    RowBuffer* m_pRowBuffer_events;
 
     // must be last
     Footer m_xFooter;
@@ -24,11 +25,10 @@ namespace STORE
    ~WriteBehind(void) noexcept(false);
   
   public:
-    Row* pAllotRow(void);
-
-    RowBuffer* pRowBuffer(void);
-    void vRowBuffer(RowBuffer* pRowBuffer);
-
+    void vDepositEvent(i8 iVargsBegin, ...);
+  
+  private:
+    Row* pAllotEventRow(void);
     Footer* aFooter(void);
   };
 

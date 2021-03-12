@@ -4,6 +4,9 @@
 
 #include "BASE.h"
 
+#include "WriteBehind.hpp"
+#include "Row.hpp"
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
@@ -212,11 +215,16 @@ void Loggable::vAddRow(eEV eEvent, Stz* szNote)
   UNUSED(eEvent);
   UNUSED(szNote);
   
-  WriteBehind* pWriteBehind = AM::THREAD::pWriteBehind();
-  
   printf("Loggable::vAddRow : %s %s\n",
          aEV[eEvent]->azChar(),
          szNote->azChar());
+
+  WriteBehind* pWriteBehind = AM::THREAD::pWriteBehind();
+  
+  pWriteBehind->vDepositEvent(C_VARGS_BEGIN,
+                              eEvent,
+                              szNote,
+                              C_VARGS_END);
 }
 
 /*============================================================================*/

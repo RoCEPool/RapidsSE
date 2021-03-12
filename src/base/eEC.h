@@ -10,11 +10,13 @@ enum eEC // error code
   /* */ EC_DONE,
   
   // - - - - - - - - - - - - - - - - - - -
-  
+  /* _A_ */
   /* */ EC_ASSERT,
-  
+
+  /* _B_ */
   /* */ EC_BLANKLINE,
 
+  /* _C_ */
   /* */ EC_CATALOG_EXISTS,
   /* */ EC_CLUSTER_NOT_CONNECTED,
   /* */ EC_CLUSTER_PARTITIONS_MISMATCH,
@@ -53,12 +55,21 @@ enum eEC // error code
   /* */ EC_CSV_YEAR_TOO_SMALL,
   /* */ EC_CSV_YEAR_TOO_LARGE,
 
+  /* _D_ */
   /* */ EC_DUPLICATE_COLUMN,
   /* */ EC_DUPLICATE_KEY,
-  
+
+  /* _E_ */
+
+  /* _F_ */
   /* */ EC_FOLDER_IN_USE,
   /* */ EC_FOLDER_NOT_EMPTY,
-  
+
+  /* _G_ */
+
+  /* _H_ */
+
+  /* _I_ */
   /* */ EC_IDXVFY_ADJACENT_ENTRIES,
   /* */ EC_IDXVFY_BUFFER_REFS,
   /* */ EC_IDXVFY_FIRST_KEYS,
@@ -86,13 +97,20 @@ enum eEC // error code
   /* */ EC_INVALID_SIZE,
   /* */ EC_INVALID_SYNTAX,
   /* */ EC_INVALID_VALUE,
-  
+
+  /* _J_ */
+
+  /* _K_ */
+
+  /* _L_ */
   /* */ EC_LOW_MEMORY,
-  
+
+  /* _M_ */
   /* */ EC_MAX_INDEXES,
   /* */ EC_MAX_COLUMNS,
   /* */ EC_MAX_ROW_LENGTH,
 
+  /* _N_ */
   /* */ EC_NO_COLUMNS_DIC,
   /* */ EC_NO_SUCH_CATALOG,
   /* */ EC_NO_SUCH_DIRECTORY,
@@ -121,22 +139,29 @@ enum eEC // error code
   /* */ EC_NOT_IN_TENANTS,
   /* */ EC_NULL_INTERFACE,
   /* */ EC_NULLPTR,
-  
+
+  /* _O_ */
   /* */ EC_OBJECT_CLASSNO_INVALID,
   /* */ EC_OBJECT_FOOTER_INVALID,
   /* */ EC_OBJECT_MAGIC_INVALID,
 
+  /* _P_ */
   /* */ EC_PIPELINE_PROTOCOL_ERROR,
-  
+
+  /* _Q_ */
+
+  /* _R_ */
   /* */ EC_RESPONSE_PENDING,
-  
+
+  /* _S_ */
   /* */ EC_SCHEMA_EXISTS,
   /* */ EC_SE_NOT_RUNNING,
   /* */ EC_SE_UNKNOWN_ERROR,
   /* */ EC_SEMANTIC_ERROR,
   /* */ EC_SEND_FAILURE,
   /* */ EC_SYNTAX_ERROR,
-  
+
+  /* _T_ */
   /* */ EC_TABLE_ALREADY_LOADED,
   /* */ EC_TABLE_EXISTS,
   /* */ EC_TABLE_NOT_EMPTY,
@@ -146,10 +171,20 @@ enum eEC // error code
   /* */ EC_TX_COMMIT_FAILED,
   /* */ EC_TX_END_FAILED,
   /* */ EC_TX_ROLLBACK_FAILED,
-    
+
+  /* _U_ */
+
+  /* _V_ */
   /* */ EC_VALIDATION_FAILURE,
   /* */ EC_VERSION_MISMATCH,
-  
+
+  /* _W_ */
+
+  /* _X_ */
+
+  /* _Y_ */
+
+  /* _Z_ */
   /* */ EC_ZZZ_OTHER,
   
   /* */ EC_ENUMS
@@ -163,10 +198,13 @@ static Stz* aEC[]
 
   // - - - - - - - - - - - - - - - - - - -
 
+  /* _A_ */
   /* */ "assert"_Stz,
-  
+
+  /* _B_ */
   /* */ "blank line"_Stz,
-  
+
+  /* _C_ */
   /* */ "catalog exists"_Stz,
   /* */ "cluster not connected (use connectCluster command)"_Stz,
   /* */ "cluster partitions per node mismatch"_Stz,
@@ -205,12 +243,21 @@ static Stz* aEC[]
   /* */ "EC_CSV_YEAR_TOO_SMALL"_Stz,
   /* */ "EC_CSV_YEAR_TOO_LARGE"_Stz,
 
+  /* _D_ */
   /* */ "duplicate column"_Stz,
   /* */ "duplicate key"_Stz,
-  
+
+  /* _E_ */
+
+  /* _F_ */
   /* */ "folder in use"_Stz,
   /* */ "folder not empty"_Stz,
-  
+
+  /* _G_ */
+
+  /* _H_ */
+
+  /* _I_ */
   /* */ "EC_IDXVFY_ADJACENT_ENTRIES"_Stz,
   /* */ "EC_IDXVFY_BUFFER_REFS"_Stz,
   /* */ "EC_IDXVFY_FIRST_KEYS"_Stz,
@@ -238,13 +285,20 @@ static Stz* aEC[]
   /* */ "invalid size"_Stz,
   /* */ "invalid syntax"_Stz,
   /* */ "invalid value"_Stz,
-  
+
+  /* _J_ */
+
+  /* _K_ */
+
+  /* _L_ */
   /* */ "low memory"_Stz,
-  
+
+  /* _M_ */
   /* */ "max allowed indexes already created"_Stz,
   /* */ "max 150 columns supported in a table"_Stz,
   /* */ "max row length allowed is 16k bytes"_Stz,
 
+  /* _N_ */
   /* */ "no columns dictionary"_Stz,
   /* */ "no such catalog"_Stz,
   /* */ "no such directory"_Stz,
@@ -274,38 +328,55 @@ static Stz* aEC[]
   /* */ "null interface"_Stz,
   /* */ "nullptr"_Stz,
 
+  /* _O_ */
   /* */ "EC_OBJECT_CLASSNO_INVALID"_Stz,
   /* */ "EC_OBJECT_FOOTER_INVALID"_Stz,
   /* */ "EC_OBJECT_MAGIC_INVALID"_Stz,
+
+  /* _P_ */
   /* */ "pipeline protocol error"_Stz,
-  
+
+  /* _Q_ */
+
+  /* _R_ */
   /* */ "response pending"_Stz,
-  
+
+  /* _S_ */
   /* */ "schema exists"_Stz,
   /* */ "SE is not running"_Stz,
   /* */ "SE unknown error"_Stz,
   /* */ "semantic error"_Stz,
   /* */ "send failure"_Stz,
   /* */ "syntax error"_Stz,
-  
+
+  /* _T_ */
   /* */ "table already loaded"_Stz,
   /* */ "table exists"_Stz,
   /* */ "table not empty"_Stz,
   /* */ "table in use"_Stz,
   /* */ "tenant exists"_Stz,
-    
+
+  /* _U_ */
+
   /* */ "begin transaction failed"_Stz,
   /* */ "commit transaction failed"_Stz,
   /* */ "end transaction failed"_Stz,
   /* */ "rollback transaction failed"_Stz,
-    
+
+  /* _V_ */
   /* */ "validation failure"_Stz,
   /* */ "version mismatch"_Stz,
 
+  /* _W_ */
+
+  /* _X_ */
+
+  /* _Y_ */
+
+  /* _Z_ */
   /* */ "zzz other error (temp filler)"_Stz,
   
   /* */ "enums"_Stz
-  
 };
 
 static Stz* aEC2[] // error code
@@ -316,15 +387,19 @@ static Stz* aEC2[] // error code
 
   // - - - - - - - - - - - - - - - - - - -
 
+  /* _A_ */
   /* */ "EC_ASSERT"_Stz,
 
+  /* _B_ */
   /* */ "EC_BLANKLINE"_Stz,
 
+  /* _C_ */
   /* */ "EC_CATALOG_EXISTS"_Stz,
   /* */ "EC_CLUSTER_NOT_CONNECTED"_Stz,
   /* */ "EC_CLUSTER_PARTITIONS_MISMATCH"_Stz,
   /* */ "EC_CLUSTER_SIZE_MISMATCH"_Stz,
 
+  /* _D_ */
   /* */ "EC_CSV_BOOLEAN_INVALID"_Stz,
   /* */ "EC_CSV_BOOLEAN_TOO_LARGE"_Stz,
   /* */ "EC_CSV_DATE_INVALID"_Stz,
@@ -361,9 +436,17 @@ static Stz* aEC2[] // error code
   /* */ "EC_DUPLICATE_COLUMN"_Stz,
   /* */ "EC_DUPLICATE_KEY"_Stz,
 
+  /* _E_ */
   /* */ "EC_FOLDER_IN_USE"_Stz,
   /* */ "EC_FOLDER_NOT_EMPTY"_Stz,
 
+  /* _F_ */
+
+  /* _G_ */
+
+  /* _H_ */
+
+  /* _I_ */
   /* */ "EC_IDXVFY_ADJACENT_ENTRIES"_Stz,
   /* */ "EC_IDXVFY_BUFFER_REFS"_Stz,
   /* */ "EC_IDXVFY_FIRST_KEYS"_Stz,
@@ -392,12 +475,19 @@ static Stz* aEC2[] // error code
   /* */ "EC_INVALID_SYNTAX"_Stz,
   /* */ "EC_INVALID_VALUE"_Stz,
 
+  /* _J_ */
+
+  /* _K_ */
+
+  /* _L_ */
   /* */ "EC_LOW_MEMORY"_Stz,
 
+  /* _M_ */
   /* */ "EC_MAX_INDEXES"_Stz,
   /* */ "EC_MAX_COLUMNS"_Stz,
   /* */ "EC_MAX_ROW_LENGTH"_Stz,
 
+  /* _N_ */
   /* */ "EC_NO_COLUMNS_DIC"_Stz,
   /* */ "EC_NO_SUCH_CATALOG"_Stz,
   /* */ "EC_NO_SUCH_DIRECTORY"_Stz,
@@ -427,14 +517,20 @@ static Stz* aEC2[] // error code
   /* */ "EC_NULL_INTERFACE"_Stz,
   /* */ "EC_NULLPTR"_Stz,
 
+  /* _O_ */
   /* */ "EC_OBJECT_CLASSNO_INVALID"_Stz,
   /* */ "EC_OBJECT_FOOTER_INVALID"_Stz,
   /* */ "EC_OBJECT_MAGIC_INVALID"_Stz,
 
+  /* _P_ */
   /* */ "EC_PIPELINE_PROTOCOL_ERROR"_Stz,
 
+  /* _Q_ */
+
+  /* _R_ */
   /* */ "EC_RESPONSE_PENDING"_Stz,
 
+  /* _S_ */
   /* */ "EC_SCHEMA_EXISTS"_Stz,
   /* */ "EC_SE_NOT_RUNNING"_Stz,
   /* */ "EC_SE_UNKNOWN_ERROR"_Stz,
@@ -442,6 +538,7 @@ static Stz* aEC2[] // error code
   /* */ "EC_SEND_FAILURE"_Stz,
   /* */ "EC_SYNTAX_ERROR"_Stz,
 
+  /* _T_ */
   /* */ "EC_TABLE_ALREADY_LOADED"_Stz,
   /* */ "EC_TABLE_EXISTS"_Stz,
   /* */ "EC_TABLE_NOT_EMPTY"_Stz,
@@ -452,166 +549,214 @@ static Stz* aEC2[] // error code
   /* */ "EC_TX_END_FAILED"_Stz,
   /* */ "EC_TX_ROLLBACK_FAILED"_Stz,
 
+  /* _U_ */
+
+  /* _V_ */
   /* */ "EC_VALIDATION_FAILURE"_Stz,
   /* */ "EC_VERSION_MISMATCH"_Stz,
 
+  /* _W_ */
+
+  /* _X_ */
+
+  /* _Y_ */
+
+  /* _Z_ */
   /* */ "EC_ZZZ_OTHER"_Stz,
 
   /* */ "EC_ENUMS"_Stz
 };
 
 static Stz* aErrorMsg[]
-    {
-        /* */ "none"_Stz,
+{
+  /* EC_NONE                          */ "none"_Stz,
 
-        /* */ "done"_Stz,
+  /* EC_DONE                          */ "done"_Stz,
 
-        // - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - -
+  /* _A_ */
+  /* EC_ASSERT                        */ "assert"_Stz,
 
-        /* */ "assert"_Stz,
+  /* _B_ */
+  /* EC_BLANKLINE                     */ "blank line"_Stz,
 
-        /* */ "blank line"_Stz,
+  /* _C_ */
+  /* EC_CATALOG_EXISTS                */ "catalog exists"_Stz,
+  /* EC_CLUSTER_NOT_CONNECTED         */ "cluster not connected (use connectCluster command)"_Stz,
+  /* EC_CLUSTER_PARTITIONS_MISMATCH   */ "cluster partitions per node mismatch"_Stz,
+  /* EC_CLUSTER_SIZE_MISMATCH         */ "cluster node size mismatch"_Stz,
 
-        /* */ "catalog exists"_Stz,
-        /* */ "cluster not connected (use connectCluster command)"_Stz,
-        /* */ "cluster partitions per node mismatch"_Stz,
-        /* */ "cluster node size mismatch"_Stz,
+  /* EC_CSV_BOOLEAN_INVALID           */ "EC_CSV_BOOLEAN_INVALID"_Stz,
+  /* EC_CSV_BOOLEAN_TOO_LARGE         */ "EC_CSV_BOOLEAN_TOO_LARGE"_Stz,
+  /* EC_CSV_DATE_INVALID              */ "EC_CSV_DATE_INVALID"_Stz,
+  /* EC_CSV_DATE_SEP_MISSING          */ "EC_CSV_DATE_SEP_MISSING"_Stz,
+  /* EC_CSV_DAY_INVALID               */ "EC_CSV_DAY_INVALID"_Stz,
+  /* EC_CSV_DAY_NOT_LEAPYEAR          */ "EC_CSV_DAY_NOT_LEAPYEAR"_Stz,
+  /* EC_CSV_DAY_TOO_LARGE             */ "EC_CSV_DAY_TOO_LARGE"_Stz,
+  /* EC_CSV_DECIMAL_INVALID           */ "EC_CSV_DECIMAL_INVALID"_Stz,
+  /* EC_CSV_DECIMAL_TOO_LARGE         */ "EC_CSV_DECIMAL_TOO_LARGE"_Stz,
+  /* EC_CSV_DECIMAL_TOO_SMALL         */ "EC_CSV_DECIMAL_TOO_SMALL"_Stz,
+  /* EC_CSV_EXPONENT_MISSING          */ "EC_CSV_EXPONENT_MISSING"_Stz,
+  /* EC_CSV_FLOAT_INVALID             */ "EC_CSV_FLOAT_INVALID"_Stz,
+  /* EC_CSV_HOUR_INVALID              */ "EC_CSV_HOUR_INVALID"_Stz,
+  /* EC_CSV_HOUR_TOO_LARGE            */ "EC_CSV_HOUR_TOO_LARGE"_Stz,
+  /* EC_CSV_INTEGER_INVALID           */ "EC_CSV_INTEGER_INVALID"_Stz,
+  /* EC_CSV_INTEGER_TOO_LARGE         */ "EC_CSV_INTEGER_TOO_LARGE"_Stz,
+  /* EC_CSV_INTERVAL_INVALID          */ "EC_CSV_INTERVAL_INVALID"_Stz,
+  /* EC_CSV_INTERVAL_SECS_TOO_LARGE   */ "EC_CSV_INTERVAL_SECS_TOO_LARGE"_Stz,
+  /* EC_CSV_INTERVAL_USECS_TOO_LARGE  */ "EC_CSV_INTERVAL_USECS_TOO_LARGE"_Stz,
+  /* EC_CSV_MINUTE_INVALID            */ "EC_CSV_MINUTE_INVALID"_Stz,
+  /* EC_CSV_MINUTE_TOO_LARGE          */ "EC_CSV_MINUTE_TOO_LARGE"_Stz,
+  /* EC_CSV_MONTH_INVALID             */ "EC_CSV_MONTH_INVALID"_Stz,
+  /* EC_CSV_MONTH_TOO_LARGE           */ "EC_CSV_MONTH_TOO_LARGE"_Stz,
+  /* EC_CSV_SECOND_INVALID            */ "EC_CSV_SECOND_INVALID"_Stz,
+  /* EC_CSV_SECOND_TOO_LARGE          */ "EC_CSV_SECOND_TOO_LARGE"_Stz,
+  /* EC_CSV_TIME_INVALID              */ "EC_CSV_TIME_INVALID"_Stz,
+  /* EC_CSV_TIME_SEP_MISSING          */ "EC_CSV_TIME_SEP_MISSING"_Stz,
+  /* EC_CSV_TIMESTAMP_INVALID         */ "EC_CSV_TIMESTAMP_INVALID"_Stz,
+  /* EC_CSV_VARCHAR_INVALID           */ "EC_CSV_VARCHAR_INVALID"_Stz,
+  /* EC_CSV_YEAR_INVALID              */ "EC_CSV_YEAR_INVALID"_Stz,
+  /* EC_CSV_YEAR_TOO_SMALL            */ "EC_CSV_YEAR_TOO_SMALL"_Stz,
+  /* EC_CSV_YEAR_TOO_LARGE            */ "EC_CSV_YEAR_TOO_LARGE"_Stz,
 
-        /* */ "EC_CSV_BOOLEAN_INVALID"_Stz,
-        /* */ "EC_CSV_BOOLEAN_TOO_LARGE"_Stz,
-        /* */ "EC_CSV_DATE_INVALID"_Stz,
-        /* */ "EC_CSV_DATE_SEP_MISSING"_Stz,
-        /* */ "EC_CSV_DAY_INVALID"_Stz,
-        /* */ "EC_CSV_DAY_NOT_LEAPYEAR"_Stz,
-        /* */ "EC_CSV_DAY_TOO_LARGE"_Stz,
-        /* */ "EC_CSV_DECIMAL_INVALID"_Stz,
-        /* */ "EC_CSV_DECIMAL_TOO_LARGE"_Stz,
-        /* */ "EC_CSV_DECIMAL_TOO_SMALL"_Stz,
-        /* */ "EC_CSV_EXPONENT_MISSING"_Stz,
-        /* */ "EC_CSV_FLOAT_INVALID"_Stz,
-        /* */ "EC_CSV_HOUR_INVALID"_Stz,
-        /* */ "EC_CSV_HOUR_TOO_LARGE"_Stz,
-        /* */ "EC_CSV_INTEGER_INVALID"_Stz,
-        /* */ "EC_CSV_INTEGER_TOO_LARGE"_Stz,
-        /* */ "EC_CSV_INTERVAL_INVALID"_Stz,
-        /* */ "EC_CSV_INTERVAL_SECS_TOO_LARGE"_Stz,
-        /* */ "EC_CSV_INTERVAL_USECS_TOO_LARGE"_Stz,
-        /* */ "EC_CSV_MINUTE_INVALID"_Stz,
-        /* */ "EC_CSV_MINUTE_TOO_LARGE"_Stz,
-        /* */ "EC_CSV_MONTH_INVALID"_Stz,
-        /* */ "EC_CSV_MONTH_TOO_LARGE"_Stz,
-        /* */ "EC_CSV_SECOND_INVALID"_Stz,
-        /* */ "EC_CSV_SECOND_TOO_LARGE"_Stz,
-        /* */ "EC_CSV_TIME_INVALID"_Stz,
-        /* */ "EC_CSV_TIME_SEP_MISSING"_Stz,
-        /* */ "EC_CSV_TIMESTAMP_INVALID"_Stz,
-        /* */ "EC_CSV_VARCHAR_INVALID"_Stz,
-        /* */ "EC_CSV_YEAR_INVALID"_Stz,
-        /* */ "EC_CSV_YEAR_TOO_SMALL"_Stz,
-        /* */ "EC_CSV_YEAR_TOO_LARGE"_Stz,
+  /* _D_ */
+  /* EC_DUPLICATE_COLUMN              */ "duplicate column"_Stz,
+  /* EC_DUPLICATE_KEY                 */ "duplicate key"_Stz,
 
-        /* */ "duplicate column"_Stz,
-        /* */ "duplicate key"_Stz,
+  /* _E_ */
 
-        /* */ "folder in use"_Stz,
-        /* */ "folder not empty"_Stz,
+  /* _F_ */
+  /* EC_FOLDER_IN_USE                 */ "folder in use"_Stz,
+  /* EC_FOLDER_NOT_EMPTY              */ "folder not empty"_Stz,
 
-        /* */ "EC_IDXVFY_ADJACENT_ENTRIES"_Stz,
-        /* */ "EC_IDXVFY_BUFFER_REFS"_Stz,
-        /* */ "EC_IDXVFY_FIRST_KEYS"_Stz,
-        /* */ "EC_IDXVFY_ITEMS"_Stz,
-        /* */ "EC_IDXVFY_KEY_BUFFER"_Stz,
-        /* */ "EC_IDXVFY_KEY_ORDER"_Stz,
-        /* */ "EC_IDXVFY_NEXT_PREV"_Stz,
-        /* */ "EC_IDXVFY_ROW_REFS"_Stz,
-        /* */ "EC_IDXVFY_SKIPLIST_ENTRY"_Stz,
-        /* */ "EC_IDXVFY_SKIPLIST_LEVELS"_Stz,
+  /* _G_ */
 
-        /* */ "index exists"_Stz,
-        /* */ "invalid class"_Stz,
-        /* */ "invalid column"_Stz,
-        /* */ "invalid columns for unique index (include all partitioning columns)"_Stz,
-        /* */ "invalid command"_Stz,
-        /* */ "File '%v' does not exist"_Stz,
-        /* */ "invalid interface"_Stz,
-        /* */ "invalid parameter"_Stz,
-        /* */ "invalid parameters"_Stz,
-        /* */ "invalid partition"_Stz,
-        /* */ "invalid partition key"_Stz,
-        /* */ "invalid index column"_Stz,
-        /* */ "invalid instance"_Stz,
-        /* */ "invalid size"_Stz,
-        /* */ "invalid syntax"_Stz,
-        /* */ "invalid value"_Stz,
+  /* _H_ */
 
-        /* */ "low memory"_Stz,
+  /* _I_ */
+  /* EC_IDXVFY_ADJACENT_ENTRIES       */ "EC_IDXVFY_ADJACENT_ENTRIES"_Stz,
+  /* EC_IDXVFY_BUFFER_REFS            */ "EC_IDXVFY_BUFFER_REFS"_Stz,
+  /* EC_IDXVFY_FIRST_KEYS             */ "EC_IDXVFY_FIRST_KEYS"_Stz,
+  /* EC_IDXVFY_ITEMS                  */ "EC_IDXVFY_ITEMS"_Stz,
+  /* EC_IDXVFY_KEY_BUFFER             */ "EC_IDXVFY_KEY_BUFFER"_Stz,
+  /* EC_IDXVFY_KEY_ORDER              */ "EC_IDXVFY_KEY_ORDER"_Stz,
+  /* EC_IDXVFY_NEXT_PREV              */ "EC_IDXVFY_NEXT_PREV"_Stz,
+  /* EC_IDXVFY_ROW_REFS               */ "EC_IDXVFY_ROW_REFS"_Stz,
+  /* EC_IDXVFY_SKIPLIST_ENTRY         */ "EC_IDXVFY_SKIPLIST_ENTRY"_Stz,
+  /* EC_IDXVFY_SKIPLIST_LEVELS        */ "EC_IDXVFY_SKIPLIST_LEVELS"_Stz,
 
-        /* */ "max allowed indexes already created"_Stz,
-        /* */ "max 150 columns supported in a table"_Stz,
-        /* */ "max row length allowed is 16k bytes"_Stz,
+  /* EC_INDEX_EXISTS                  */ "index exists"_Stz,
+  /* EC_INVALID_CLASS                 */ "invalid class"_Stz,
+  /* EC_INVALID_COLUMN                */ "invalid column"_Stz,
+  /* EC_INVALID_COLUMNS_UNIQUE_IND    */ "invalid columns for unique index (include all partitioning columns)"_Stz,
+  /* EC_INVALID_COMMAND               */ "invalid command"_Stz,
+  /* EC_INVALID_FILE                  */ "File '%v' does not exist"_Stz,
+  /* EC_INVALID_INTERFACE             */ "invalid interface"_Stz,
+  /* EC_INVALID_PARAMETER             */ "invalid parameter"_Stz,
+  /* EC_INVALID_PARAMETERS            */ "invalid parameters"_Stz,
+  /* EC_INVALID_PARTITION             */ "invalid partition"_Stz,
+  /* EC_INVALID_PARTITION_KEY         */ "invalid partition key"_Stz,
+  /* EC_INVALID_INDEX_COLUMN          */ "invalid index column"_Stz,
+  /* EC_INVALID_INSTANCE              */ "invalid instance"_Stz,
+  /* EC_INVALID_SIZE                  */ "invalid size"_Stz,
+  /* EC_INVALID_SYNTAX                */ "invalid syntax"_Stz,
+  /* EC_INVALID_VALUE                 */ "invalid value"_Stz,
 
-        /* */ "no columns dictionary"_Stz,
-        /* */ "no such catalog"_Stz,
-        /* */ "no such directory"_Stz,
-        /* */ "no such file"_Stz,
-        /* */ "no such folder"_Stz,
-        /* */ "no such index"_Stz,
-        /* */ "no such node"_Stz,
-        /* */ "no such schema"_Stz,
-        /* */ "Table '%v' does not exist"_Stz,
-        /* */ "no such tenant"_Stz,
-        /* */ "no such word"_Stz,
-        /* */ "node exists"_Stz,
-        /* */ "not a catalog"_Stz,
-        /* */ "not a folder"_Stz,
-        /* */ "'%v' not an index"_Stz,
-        /* */ "not a schema"_Stz,
-        /* */ "not a table"_Stz,
-        /* */ "not a tenant"_Stz,
-        /* */ "not in catalogs"_Stz,
-        /* */ "not in columns"_Stz,
-        /* */ "not in indexes"_Stz,
-        /* */ "not in partitions"_Stz,
-        /* */ "not in schemas"_Stz,
-        /* */ "not in table"_Stz,
-        /* */ "not in tables"_Stz,
-        /* */ "not in tenants"_Stz,
-        /* */ "null interface"_Stz,
-        /* */ "nullptr"_Stz,
+  /* _J_ */
 
-        /* */ "EC_OBJECT_CLASSNO_INVALID"_Stz,
-        /* */ "EC_OBJECT_FOOTER_INVALID"_Stz,
-        /* */ "EC_OBJECT_MAGIC_INVALID"_Stz,
-        /* */ "pipeline protocol error"_Stz,
+  /* _K_ */
 
-        /* */ "response pending"_Stz,
+  /* _L_ */
+  /* EC_LOW_MEMORY                    */ "low memory"_Stz,
 
-        /* */ "schema exists"_Stz,
-        /* */ "SE is not running"_Stz,
-        /* */ "SE unknown error"_Stz,
-        /* */ "semantic error"_Stz,
-        /* */ "send failure"_Stz,
-        /* */ "syntax error"_Stz,
+  /* _M_ */
+  /* EC_MAX_INDEXES                   */ "max allowed indexes already created"_Stz,
+  /* EC_MAX_COLUMNS                   */ "max 150 columns supported in a table"_Stz,
+  /* EC_MAX_ROW_LENGTH                */ "max row length allowed is 16k bytes"_Stz,
 
-        /* */ "table already loaded"_Stz,
-        /* */ "table exists"_Stz,
-        /* */ "table not empty"_Stz,
-        /* */ "table in use"_Stz,
-        /* */ "tenant exists"_Stz,
+  /* _N_ */
+  /* EC_NO_COLUMNS_DIC                */ "no columns dictionary"_Stz,
+  /* EC_NO_SUCH_CATALOG               */ "no such catalog"_Stz,
+  /* EC_NO_SUCH_DIRECTORY             */ "no such directory"_Stz,
+  /* EC_NO_SUCH_FILE                  */ "no such file"_Stz,
+  /* EC_NO_SUCH_FOLDER                */ "no such folder"_Stz,
+  /* EC_NO_SUCH_INDEX                 */ "no such index"_Stz,
+  /* EC_NO_SUCH_NODE                  */ "no such node"_Stz,
+  /* EC_NO_SUCH_SCHEMA                */ "no such schema"_Stz,
+  /* EC_NO_SUCH_TABLE                 */ "Table '%v' does not exist"_Stz,
+  /* EC_NO_SUCH_TENANT                */ "no such tenant"_Stz,
+  /* EC_NO_SUCH_WORD                  */ "no such word"_Stz,
+  /* EC_NODE_EXISTS                   */ "node exists"_Stz,
+  /* EC_NOT_A_CATALOG                 */ "not a catalog"_Stz,
+  /* EC_NOT_A_FOLDER                  */ "not a folder"_Stz,
+  /* EC_NOT_AN_INDEX                  */ "'%v' not an index"_Stz,
+  /* EC_NOT_A_SCHEMA                  */ "not a schema"_Stz,
+  /* EC_NOT_A_TABLE                   */ "not a table"_Stz,
+  /* EC_NOT_A_TENANT                  */ "not a tenant"_Stz,
+  /* EC_NOT_IN_CATALOGS               */ "not in catalogs"_Stz,
+  /* EC_NOT_IN_COLUMNS                */ "not in columns"_Stz,
+  /* EC_NOT_IN_INDEXES                */ "not in indexes"_Stz,
+  /* EC_NOT_IN_PARTITIONS             */ "not in partitions"_Stz,
+  /* EC_NOT_IN_SCHEMAS                */ "not in schemas"_Stz,
+  /* EC_NOT_IN_TABLE                  */ "not in table"_Stz,
+  /* EC_NOT_IN_TABLES                 */ "not in tables"_Stz,
+  /* EC_NOT_IN_TENANTS                */ "not in tenants"_Stz,
+  /* EC_NULL_INTERFACE                */ "null interface"_Stz,
+  /* EC_NULLPTR                       */ "nullptr"_Stz,
 
-        /* */ "begin transaction failed"_Stz,
-        /* */ "commit transaction failed"_Stz,
-        /* */ "end transaction failed"_Stz,
-        /* */ "rollback transaction failed"_Stz,
+  /* _O_ */
+  /* EC_OBJECT_CLASSNO_INVALID        */ "EC_OBJECT_CLASSNO_INVALID"_Stz,
+  /* EC_OBJECT_FOOTER_INVALID         */ "EC_OBJECT_FOOTER_INVALID"_Stz,
+  /* EC_OBJECT_MAGIC_INVALID          */ "EC_OBJECT_MAGIC_INVALID"_Stz,
 
-        /* */ "validation failure"_Stz,
-        /* */ "version mismatch"_Stz,
+  /* _P_ */
+  /* EC_PIPELINE_PROTOCOL_ERROR       */ "pipeline protocol error"_Stz,
 
-        /* */ "zzz other error (temp filler)"_Stz,
+  /* _Q_ */
 
-        /* */ "enums"_Stz
+  /* _R_ */
+  /* EC_RESPONSE_PENDING              */ "response pending"_Stz,
 
-    };
+  /* _S_ */
+  /* EC_SCHEMA_EXISTS                 */ "schema exists"_Stz,
+  /* EC_SE_NOT_RUNNING                */ "SE is not running"_Stz,
+  /* EC_SE_UNKNOWN_ERROR              */ "SE unknown error"_Stz,
+  /* EC_SEMANTIC_ERROR                */ "semantic error"_Stz,
+  /* EC_SEND_FAILURE                  */ "send failure"_Stz,
+  /* EC_SYNTAX_ERROR                  */ "syntax error"_Stz,
+
+  /* _T_ */
+  /* EC_TABLE_ALREADY_LOADED          */ "table already loaded"_Stz,
+  /* EC_TABLE_EXISTS                  */ "table exists"_Stz,
+  /* EC_TABLE_NOT_EMPTY               */ "table not empty"_Stz,
+  /* EC_TABLE_IN_USE                  */ "table in use"_Stz,
+  /* EC_TENANT_EXISTS                 */ "tenant exists"_Stz,
+
+  /* EC_TX_BEGIN_FAILED               */ "begin transaction failed"_Stz,
+  /* EC_TX_COMMIT_FAILED              */ "commit transaction failed"_Stz,
+  /* EC_TX_END_FAILED                 */ "end transaction failed"_Stz,
+  /* EC_TX_ROLLBACK_FAILED            */ "rollback transaction failed"_Stz,
+
+  /* _U_ */
+
+  /* _V_ */
+  /* EC_VALIDATION_FAILURE            */ "validation failure"_Stz,
+  /* EC_VERSION_MISMATCH              */ "version mismatch"_Stz,
+
+  /* _W_ */
+
+  /* _X_ */
+
+  /* _Y_ */
+
+  /* _Z_ */
+  /* EC_ZZZ_OTHER                     */ "zzz other error (temp filler)"_Stz,
+
+  // - - - - - - - - - - - - - - - - - - -
+
+  /* EC_ENUMS                         */ "enums"_Stz
+
+};
 
 /*============================================================================*/
 /* end                                                                        */

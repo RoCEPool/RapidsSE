@@ -22,7 +22,8 @@ namespace BASE
    ~DataBuffer(void) noexcept(false);
 
     static DataBuffer* pRefdDataBuffer(Rrf& xRef);
-    
+    static DataBuffer* pToDataBuffer(void* aAddr);
+
     i8          iAgeSec(void);
 
     i8          iBufferHeight(void);

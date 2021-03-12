@@ -6,6 +6,7 @@
 
 
 #include "Row.hpp"
+#include "RowBuffer.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -73,41 +74,6 @@ i8 Row::nRowProper(i8 nColumns)
   return nSize;
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* dump the row                                                               */
-/*----------------------------------------------------------------------------*/
-void Row::vDump(StreamDef* pStreamDef)
-{
-  vTrace("ROW: %p"_Stz, this);
-  
-  for (i8 i_Col = 0; i_Col < pStreamDef->nColumns(); i_Col++) {
-    
-    Column* pCol = pStreamDef->pGetColumn(i_Col);
-        
-    // vch
-    
-    if (DM_VCH == pCol->eDatum()) {
-      
-      if (m_wxaColumnCell[i_Col].bIsNull()) {
-        vTrace(" NULL "_Stz);
-        continue;
-      }
-      
-      Stz* acSrcString = szColVal_ofs(i_Col);
-      
-      vTrace(" %s "_Stz, acSrcString);
-      
-      continue;
-    }
-    
-    // all others
-    
-    vTrace(" %ld "_Stz, m_wxaColumnCell[i_Col].m_iWrd);
-  }
-
-  vTrace("\n"_Stz);
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -245,6 +211,76 @@ void Row::vColVal_ofs(i8 i_Col, Stz* szStz)
 }
 
 /*----------------------------------------------------------------------------*/
+/* deposit var-arg list of column values into row                             */
+/*----------------------------------------------------------------------------*/
+void Row::vDeposit(va_list xVarArgs)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
+    
+  RowBuffer* pRowBuffer = pToRowBuffer();
+
+  bool b = pRowBuffer->bDepositColumns(this,xVarArgs);
+  RASSERT(b);
+}
+
+/*----------------------------------------------------------------------------*/
+/* deposit var-arg list of column values into row                             */
+/*----------------------------------------------------------------------------*/
+void Row::vDeposit(i8 iVargsBegin, ...)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
+  
+  ASSERT(C_VARGS_BEGIN == iVargsBegin);
+  
+  RowBuffer* pRowBuffer = pToRowBuffer();
+
+  va_list xVarArgs;
+  va_start(xVarArgs,iVargsBegin);
+
+  bool b = pRowBuffer->bDepositColumns(this,xVarArgs);
+  RASSERT(b);
+  
+  va_end(xVarArgs);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump the row                                                               */
+/*----------------------------------------------------------------------------*/
+void Row::vDump(StreamDef* pStreamDef)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
+  
+  vTrace("ROW: %p"_Stz, this);
+  
+  for (i8 i_Col = 0; i_Col < pStreamDef->nColumns(); i_Col++) {
+    
+    Column* pCol = pStreamDef->pGetColumn(i_Col);
+        
+    // vch
+    
+    if (DM_VCH == pCol->eDatum()) {
+      
+      if (m_wxaColumnCell[i_Col].bIsNull()) {
+        vTrace(" NULL "_Stz);
+        continue;
+      }
+      
+      Stz* acSrcString = szColVal_ofs(i_Col);
+      
+      vTrace(" %s "_Stz, acSrcString);
+      
+      continue;
+    }
+    
+    // all others
+    
+    vTrace(" %ld "_Stz, m_wxaColumnCell[i_Col].m_iWrd);
+  }
+
+  vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* is column a null value?                                                    */
 /*----------------------------------------------------------------------------*/
 bool Row::bIsColNull(i8 i_Col)
@@ -264,6 +300,18 @@ void Row::vSetColNull(i8 i_Col)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
   
   m_wxaColumnCell[i_Col].vSetNull();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the row buffer that contains this row                                  */
+/*----------------------------------------------------------------------------*/
+RowBuffer* Row::pToRowBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
+
+  RowBuffer* pRowBuffer = RowBuffer::pToRowBuffer(this);
+    
+  return pRowBuffer;
 }
 
 /*============================================================================*/
