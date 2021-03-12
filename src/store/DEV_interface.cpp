@@ -408,12 +408,12 @@ Ent_int* aDev_ENT_POSPRIOR(void* aLU, void* aIXT)
     pDevIxt->m_pIdxTree->aPositionPriorEntry(pEnt->aKey(),
                                              &pDevIxt->m_pEntBuffer);
   
-  if (pDevIxt->m_pEntBuffer) {
-    pLogicUnit->m_xRluCommon.m_aEntArray =
-      (Ent_int*)pDevIxt->m_pEntBuffer->aEntArray();
-    
-    //*aaSkipRoots = (Ent_int*)pDevIxt->m_pEntBuffer->aSkipRoots();
-  }
+//  if (pDevIxt->m_pEntBuffer) {
+//    pLogicUnit->m_xRluCommon.m_aEntArray =
+//      (Ent_int*)pDevIxt->m_pEntBuffer->aEntArray();
+//
+//    //*aaSkipRoots = (Ent_int*)pDevIxt->m_pEntBuffer->aSkipRoots();
+//  }
   
   return (Ent_int*)pDevIxt->m_aEnt;
 }
@@ -760,8 +760,8 @@ Ent_int* aDev_IXT_POS_ALTBYSRC(void* aLU)
   
   if (pLogicUnit->m_pDevAltIxt->m_pEntBuffer) {
     
-    pLogicUnit->m_xRluCommon.m_aEntArray =
-      (Ent_int*)pLogicUnit->m_pDevAltIxt->m_pEntBuffer->aEntArray();
+//    pLogicUnit->m_xRluCommon.m_aEntArray =
+//      (Ent_int*)pLogicUnit->m_pDevAltIxt->m_pEntBuffer->aEntArray();
     
     if (pLogicUnit->m_pDevAltIxt->m_aEnt)
       return (Ent_int*)pLogicUnit->m_pDevAltIxt->m_aEnt;
@@ -790,8 +790,8 @@ Ent_int* aDev_IXT_POS_ALTBYWRK(void* aLU)
   
   if (pLogicUnit->m_pDevAltIxt->m_pEntBuffer) {
     
-    pLogicUnit->m_xRluCommon.m_aEntArray =
-      (Ent_int*)pLogicUnit->m_pDevAltIxt->m_pEntBuffer->aEntArray();
+//    pLogicUnit->m_xRluCommon.m_aEntArray =
+//      (Ent_int*)pLogicUnit->m_pDevAltIxt->m_pEntBuffer->aEntArray();
 
     if (pLogicUnit->m_pDevAltIxt->m_aEnt)
       return (Ent_int*)pLogicUnit->m_pDevAltIxt->m_aEnt;
@@ -827,8 +827,8 @@ Ent_int* aDev_IXT_POS_LBOUND(void* aLU, void* aIXT)
   
   if (pDevIXT->m_aEnt) {
     
-    pLogicUnit->m_xRluCommon.m_aEntArray =
-      (Ent_int*)pDevIXT->m_pEntBuffer->aEntArray();
+//    pLogicUnit->m_xRluCommon.m_aEntArray =
+//      (Ent_int*)pDevIXT->m_pEntBuffer->aEntArray();
 
     return (Ent_int*)pDevIXT->m_aEnt;
   }
@@ -863,8 +863,8 @@ Ent_int* aDev_IXT_POS_UBOUND(void* aLU, void* aIXT)
                                            &pUpperEntBuffer);
       if (pDevIXT->m_aUpperEnt) {
         
-        pLogicUnit->m_xRluCommon.m_aEntArray =
-          (Ent_int*)pUpperEntBuffer->aEntArray();
+//        pLogicUnit->m_xRluCommon.m_aEntArray =
+//          (Ent_int*)pUpperEntBuffer->aEntArray();
 
         return (Ent_int*)pDevIXT->m_aUpperEnt;
       }
@@ -905,8 +905,8 @@ Ent_int* aDev_IXT_POS_UBOUND_LT(void* aLU, void* aIXT)
       
       if (pDevIXT->m_aUpperEnt) {
         
-        pLogicUnit->m_xRluCommon.m_aEntArray =
-          (Ent_int*)pUpperEntBuffer->aEntArray();
+//        pLogicUnit->m_xRluCommon.m_aEntArray =
+//          (Ent_int*)pUpperEntBuffer->aEntArray();
 
         return (Ent_int*)pDevIXT->m_aUpperEnt;
       }
@@ -992,8 +992,8 @@ Ent_int* aDev_IXT_TRV_BEGIN_OLD(void* aLU, void* aIXT)
   if (pDevIXT->m_pEntBuffer) {
     pDevIXT->m_aEnt = pDevIXT->m_pEntBuffer->aLeadEntry();
     if (pDevIXT->m_aEnt) {
-      pLogicUnit->m_xRluCommon.m_aEntArray =
-          (Ent_int*)pDevIXT->m_pEntBuffer->aEntArray();
+//      pLogicUnit->m_xRluCommon.m_aEntArray =
+//          (Ent_int*)pDevIXT->m_pEntBuffer->aEntArray();
       return (Ent_int*)pDevIXT->m_aEnt;
     }
     else
@@ -1019,11 +1019,11 @@ void vDev_IXT_IDX_NEXT(void* aLU, i8** aaiDstk)
   pDevIXT->m_aEnt =
      EntBuffer::pMoveToNextEntry(pDevIXT->m_aEnt,&pDevIXT->m_pEntBuffer);
 
-  if (pDevIXT->m_pEntBuffer)
-    pLogicUnit->m_xRluCommon.m_aEntArray =
-      (Ent_int*)pDevIXT->m_pEntBuffer->aEntArray();
-  else
-    pLogicUnit->m_xRluCommon.m_aEntArray = nullptr;
+//  if (pDevIXT->m_pEntBuffer)
+//    pLogicUnit->m_xRluCommon.m_aEntArray =
+//      (Ent_int*)pDevIXT->m_pEntBuffer->aEntArray();
+//  else
+//    pLogicUnit->m_xRluCommon.m_aEntArray = nullptr;
 
   P_PushPtr(pDevIXT->m_aEnt);
   *aaiDstk = aiDstk;
@@ -1042,11 +1042,11 @@ Ent_int* aDev_IXT_TRV_NEXT_OLD(void* aLU, void* aIXT)
   pDevIXT->m_aEnt =
       EntBuffer::pMoveToNextEntry(pDevIXT->m_aEnt,&pDevIXT->m_pEntBuffer);
 
-  if (pDevIXT->m_pEntBuffer)
-    pLogicUnit->m_xRluCommon.m_aEntArray =
-        (Ent_int*)pDevIXT->m_pEntBuffer->aEntArray();
-  else
-    pLogicUnit->m_xRluCommon.m_aEntArray = nullptr;
+//  if (pDevIXT->m_pEntBuffer)
+//    pLogicUnit->m_xRluCommon.m_aEntArray =
+//        (Ent_int*)pDevIXT->m_pEntBuffer->aEntArray();
+//  else
+//    pLogicUnit->m_xRluCommon.m_aEntArray = nullptr;
 
   return (Ent_int*)pDevIXT->m_aEnt;
 }

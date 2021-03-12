@@ -42,7 +42,7 @@ struct RluCommon                      // **IF YOU CHANGE THIS DO A CLEAN BUILD**
   void* m_pDevAltIxt;
   void* m_pDevTmpIxt;
 
-  struct Ent_int* m_aEntArray;
+  //struct Ent_int* m_aEntArray;
 
   //struct Ent_int* m_aAltEntArray;
   //struct Ent_int* m_aDstEntArray;
