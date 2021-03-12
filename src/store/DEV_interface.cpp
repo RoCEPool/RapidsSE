@@ -321,6 +321,7 @@ void vDev_ENT_FIND(void* aLU, void* aIXT, i8** aaiDstk)
   i8 iTopA;
   i8 iTopB;
   void* aTempSkipRoots = nullptr;
+  Ent* pEntArray;
 
   DevIXT* pDevIxt = _pDevIXT(aIXT);
 
@@ -344,8 +345,11 @@ void vDev_ENT_FIND(void* aLU, void* aIXT, i8** aaiDstk)
 
   iTopA = aRluCommon->m_aWrkEnt->m_iIntElm0;
   // search for key
+  pEntArray = pDevIxt->m_pEntBuffer->aEntArray();
+
   while (C_ENT_END_TICKET != tNext) {
-    aEnt_int = (struct Ent_int*) &aRluCommon->m_aEntArray[tNext];
+    //aEnt_int = (struct Ent_int*) &aRluCommon->m_aEntArray[tNext];
+    aEnt_int = (struct Ent_int*) &pEntArray[tNext];
     iTopB = aEnt_int->m_iIntElm0;
     //printf("Ticket %lld Ent %p\n",(i8)tNext,aEnt_int);
     if (iTopA == iTopB) {
