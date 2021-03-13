@@ -214,6 +214,12 @@ namespace OBLIQUE
   {
   public:
   
+    class DEMON
+    {
+    public:
+      static void vPipeTo(Stz* szDemonNm, RowBuffer* pRowBuffer);
+    };
+  
     class TASK
     {
     public:

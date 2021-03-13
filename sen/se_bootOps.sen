@@ -60,6 +60,7 @@ assert::stack_0
   "OP_eachPath.sen"             include
   "OP_emitStreamDef.sen"        include
   "OP_etcTest.sen"              include
+  "OP_eventWrite.sen"           include
   "OP_exemplar.sen"             include
   "OP_exprValidate.sen"         include
 
