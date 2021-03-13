@@ -254,7 +254,8 @@ bool TestConnection::bTryConnect(void)
 
 /**
  * @brief Checksum Constructor
- * @details uses 8-bit blocks, it is not affected by byte endianness.
+ * @details has two methods to get the checksum/hash values
+ * Fletcher16 and Bernstein
  * <p>
  * @param[in] pData  pointer to char buffer
  * @param[in] iLen   length of data
@@ -269,6 +270,15 @@ CheckSum::CheckSum (const byte *pData, size_t iLen)
   m_iDataLen = iLen;
 }
 
+
+/**
+ * @brief Checksum by Fletcher
+ * @details uses 8-bit blocks, it is not affected by byte endianness.
+ * <p>
+ *
+ * @return 16-bit value
+ *
+ */
 u2 CheckSum::uGetFletcher16(void)
 {
   u4 c0 = 0, c1 = 0;
@@ -294,7 +304,15 @@ u2 CheckSum::uGetFletcher16(void)
   return m_uValue;
 }
 
-// An algorithm produced by Professor Daniel J. Bernstein
+
+/**
+ * @brief Hash by Bernstein
+ * @details An algorithm produced by Professor Daniel J. Bernstein
+ * <p>
+ *
+ * @return i8 value
+ *
+ */
 i8 CheckSum::iGetBernstein(void)
 {
   i8 hash = 5381;

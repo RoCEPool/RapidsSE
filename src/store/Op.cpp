@@ -1999,7 +1999,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
           vSend(pOperand, bSet, m_iXmitNode, tPtnNo);
         }
 #else
-        vTrace("XK_NORMAL AM::nPtnsInGrid():%lld vSendToAllPartitions(  %lld\n"_Stz, AM::nPtnsInGrid(), m_iXmitNode);
+        //vTrace("XK_NORMAL AM::nPtnsInGrid():%lld vSendToAllPartitions(  %lld\n"_Stz, AM::nPtnsInGrid(), m_iXmitNode);
         vSend(pOperand, bSet, m_iXmitNode, tPtnNo);
 #endif
       }
@@ -2062,7 +2062,7 @@ void Op::vSendToOrigin(Operand* pOperand, Task* pTriggeringTask, bool bSet, eXK 
 
   ASSERT(eXmitKind == XK_NORMAL || eXmitKind == XK_ROBIN);
   m_iXmitNode = m_pPipeline->i_Origin();
-  vTrace("vSendToOrigin(  %lld\n"_Stz, m_iXmitNode);
+  //vTrace("vSendToOrigin(  %lld\n"_Stz, m_iXmitNode);
   vSend(pOperand, bSet, m_iXmitNode, C_UNKNOWN);
   
   // delete the operand

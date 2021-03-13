@@ -1564,9 +1564,6 @@ void Engine::vStartSystem(void) {
            "Cannot find Node %s in the cluster"_Stz,
            gxCmdLineArgs.m_xSysArgs.m_sNodeName.azChar());
 
-  // newcode: we might generate a unique node_no, so it can be used as part of jobid
-  // the unique node_no can be a hash of ipaddr and port number
-
   i8 iThisNodeNo = pThisNode->iNodeNo();
   AM::pGrid()->vThisNodeNo(iThisNodeNo);
 
@@ -1712,7 +1709,19 @@ void Engine::vStartSystem(void) {
   }
 }
 
-// newcode Hardware::iReadTscp();
+
+/**
+ * @brief Initial creation of a Grid of Nodes
+ * @details It uses a hash IP/Port of a node for the NodeNo
+ *
+ * <p>
+ * @note We can use Hardware::iReadTscp() for unique NodeNo,
+ *       But it seems the value is very large and somewhere int system
+ *       doesn't like it.
+ *
+ *
+ * @return none
+ */
 void Engine::vCreateGridOfNodes(void)
 {
   Article* pGridArticle = gpAttachMap->m_pGrid->pArticle();
@@ -1721,7 +1730,6 @@ void Engine::vCreateGridOfNodes(void)
 
     CheckSum ChecksumValue((unsigned char *)gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress.azChar(),
                            gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress.nLength());
-    //i8 iNodeNo = (ChecksumValue.uGetFletcher16() + gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_iPortNo)/2;
 
     i8 iNodeNo = (ChecksumValue.iGetBernstein() + gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_iPortNo);
 

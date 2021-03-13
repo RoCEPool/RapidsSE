@@ -271,12 +271,12 @@ i8 Grid::iGetNodeNo(i8 i_Node)
 
   // called from  PtnMap::vPartition()
 
-  vTrace("Grid::iGetNodeNo for this index: %lld  "_Stz, i_Node);
+  //vTrace("Grid::iGetNodeNo for this index: %lld  "_Stz, i_Node);
   i8 iSeq = 0;
   for (Node_I oNode_I(0,C_ALL); oNode_I.bMore(); oNode_I.vNext()) {
     Node* pNode = (*oNode_I);
     if (pNode && i_Node == iSeq++) {
-      vTrace("%lld\n"_Stz, pNode->iNodeNo());
+      vTrace("iGetNodeNo %lld\n"_Stz, pNode->iNodeNo());
       return pNode->iNodeNo();
     }
   }
@@ -289,7 +289,7 @@ i8 Grid::iGetNodeNo(i8 i_Node)
 /*----------------------------------------------------------------------------*/
 bool Grid::bFirstNode(i8 iNodeNo)
 {
-  // Get first node, check isf the same
+  // Get first node, check if the same
   Node_I oNode_I(0,C_ALL);
   if (oNode_I.bMore()) {
     if ((*oNode_I)->iNodeNo() == iNodeNo)
@@ -503,10 +503,9 @@ void Grid::vAddNode(i8 iNodeNo, Stz* pszName, Stz* pszAddr, i8 iPort)
                [&] (Node* pNode) { return pNode->iNodeNo() == iNodeNo; });
 
   if (itFound == m_lNodes.end()) { // not found, let's add
-    vTrace("NOT FOUND\n"_Stz);
+    //vTrace("NOT FOUND\n"_Stz);
 
     CheckSum ChecksumValue((unsigned char *)pszAddr->azChar(), pszAddr->nLength());
-    //i8 l_iNodeNo = (ChecksumValue.uGetFletcher16() + iPort)/2;
     i8 l_iNodeNo = (ChecksumValue.iGetBernstein() + iPort);
 
 
@@ -534,7 +533,7 @@ void Grid::vAddNode(i8 iNodeNo, Stz* pszName, Stz* pszAddr, i8 iPort)
     pArticle()->vAppend(pNodeArticle);
 
 
-  } else { vTrace("FOUND\n"_Stz);}
+  } //else { vTrace("FOUND\n"_Stz);}
 
   // Found, nothing to do
 
