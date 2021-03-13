@@ -47,7 +47,9 @@ void vDev_IXT_TMP_ENTRIES(i8** aaiDstk);
 
 struct Ent_int* aDev_IXT_POS_ALTBYSRC(void* aLU);
 struct Ent_int* aDev_IXT_POS_ALTBYWRK(void* aLU);
-struct Ent_int* aDev_IXT_POS_LBOUND(void* aLU, void* aIXT);
+
+void vDev_IXT_POS_LBOUND(void* aLU, i8** aaiDstk);
+
 struct Ent_int* aDev_IXT_POS_UBOUND(void* aLU, void* aIXT);
 struct Ent_int* aDev_IXT_POS_UBOUND_LT(void* aLU, void* aIXT);
 

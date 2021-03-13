@@ -1468,6 +1468,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_JMP_TRUE: ArgGet(iArg); // pop top and jump to location if true
         dLU1(EO_JMP_TRUE,iArg);
+        iRes = *(aiDstk);
         if (*(aiDstk--))
           JumpTo(iArg,EO_JMP_TRUE); // aeCode = & m_eaCode[iArg];
         break;//+endCase
@@ -2683,13 +2684,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       RASSERT(0);
       break;//+endCase
         
-      case EO_IXT_SRC_LBOUND: { ArgNil(); // pos in buffer to entry before LBOUND
-        dLU0(EO_IXT_SRC_LBOUND);
-        void *aSrcEnt =
-            aDev_IXT_POS_LBOUND(pLU, aRluCommon->m_pDevSrcIxt);
-        //aRluCommon->m_aSrcEntArray = aRluCommon->m_aEntArray;
-        *(++aiDstk) = (i8) aSrcEnt;
-      }
+      case EO_DEVIXT_LBOUND: ArgNil(); // pos in buffer to entry before LBOUND
+        dLU0(EO_DEVIXT_LBOUND);
+        vDev_IXT_POS_LBOUND(pLU, &aiDstk);
       break;//+endCase
         
       case EO_IXT_SRC_NEXT: { ArgNil(); // move to next entry

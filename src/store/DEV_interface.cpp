@@ -811,15 +811,23 @@ Ent_int* aDev_IXT_POS_ALTBYWRK(void* aLU)
 /*----------------------------------------------------------------------------*/
 /* insert an entry into the indexTree                                         */
 /*----------------------------------------------------------------------------*/
-Ent_int* aDev_IXT_POS_LBOUND(void* aLU, void* aIXT)
+void vDev_IXT_POS_LBOUND(void* aLU, i8** aaiDstk)
 {
   _static_
 
-  DevIXT* pDevIXT = _pDevIXT(aIXT);
+  i8 *aiDstk = *aaiDstk;
+
+  // pop the device
+  DevIXT* pDevIXT = _pDevIXT(P_PopPtr());
+
+  // pop the wrkent
+  EntWrk* pEntWrk = (EntWrk*)(P_PopPtr());
+  Ent *pEnt = (Ent*)pEntWrk->aEnt();
 
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+  Ent *pEnt2 = (Ent*)pLogicUnit->m_xRluCommon.m_aWrkEnt;
 
-  Ent *pEnt = (Ent*)pLogicUnit->m_xRluCommon.m_aWrkEnt;
+  RASSERT(pEnt2 == pEnt);
 
   pDevIXT->m_aEnt = nullptr;
   
@@ -830,16 +838,20 @@ Ent_int* aDev_IXT_POS_LBOUND(void* aLU, void* aIXT)
     pDevIXT->m_aEnt =
       pDevIXT->m_pEntBuffer->aFindEntryBefore(pEnt->aKey());
   }
-  
+
+
   if (pDevIXT->m_aEnt) {
     
 //    pLogicUnit->m_xRluCommon.m_aEntArray =
 //      (Ent_int*)pDevIXT->m_pEntBuffer->aEntArray();
 
-    return (Ent_int*)pDevIXT->m_aEnt;
+    P_PushPtr(pDevIXT->m_aEnt);
   }
-  else
-    return nullptr;
+  else {
+    P_PushPtr(nullptr);
+  }
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
