@@ -198,6 +198,20 @@ Job* Pipeline::pPipelineJob(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get op 0                                                                   */
+/*----------------------------------------------------------------------------*/
+Op* Pipeline::pOp0(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
+  Stage*  pStage0   = pGet(0);
+  Stream* pStand0   = pStage0->pGet(0);
+  Op*     pOp0      = pStand0->pGet(0);
+
+  return pOp0;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of ops to be excuted on given node                              */
 /*----------------------------------------------------------------------------*/
 i8 Pipeline::nOpsOnNode(i8 iNode)
