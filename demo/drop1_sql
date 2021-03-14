@@ -12,7 +12,7 @@ create table nation (
 );
 
 print "loading nation.csv..." ;
-load nation "../TPCH/SF1/nation.tbl" ;
+load nation "../demo/nation.tbl" ;
 
 create table lineitem (
   L_ORDERKEY      INTEGER       NOT NULL,
@@ -33,7 +33,7 @@ create table lineitem (
   L_COMMENT       VARCHAR(44)   NOT NULL
 );
 
-load lineitem "/Users/Shared/tpch/SF0/lineitem_1k.csv";
+load lineitem "../demo/lineitem_1k.csv";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
