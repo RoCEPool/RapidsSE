@@ -597,50 +597,42 @@ void vDev_IXT_CMP_KEYS(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* compare wrk.key to alt.key                                                 */
 /*----------------------------------------------------------------------------*/
-i8 iDev_IXT_CMP_WRKALT(void* aLU)
+void vDev_IXT_CMP_WRKALT(i8** aaiDstk)
 {
   _static_
 
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+  i8 *aiDstk = *aaiDstk;
+
+  // pop wrk ent
+  EntWrk *pEntWrk = (EntWrk*)P_PopPtr();
+
+  // pop the device
+  DevIXT* pDevIXT = _pDevIXT(P_PopPtr());
+
+  Ent *pWrkEnt = (Ent*)pEntWrk->aEnt();
+  Key* aWrkKey = pWrkEnt->aKey();
+
+  Key* aDevKey = pDevIXT->m_aEnt->aKey();
+
+  if (KE_GENERAL == pDevIXT->m_aEnt->eKind()) {
   
-  i8 iRes;
-
-  Ent *pEnt = (Ent*)pLogicUnit->m_xRluCommon.m_aWrkEnt;
-  Key* aWrkKey = pEnt->aKey();
-
-  Key* aAltKey = pLogicUnit->m_pDevAltIxt->m_aEnt->aKey();
-
-  if (KE_GENERAL == pLogicUnit->m_pDevAltIxt->m_aEnt->eKind()) {
-  
-    eKC  eCmp = Key::eCompare(aWrkKey,aAltKey);
+    eKC  eCmp = Key::eCompare(aWrkKey,aDevKey);
 
     if (KC_BEFORE == eCmp)
-     iRes = -1;
+      I_PushInt(-1)
     else
     if (KC_SAME == eCmp)
-     iRes = 0;
+      I_PushInt(0)
     else
-     iRes = 1;
-
-     return iRes;
+      I_PushInt(1);
+  }
+  else {
+    i8 iRes = ((Ent_int *) (pWrkEnt))->m_iIntElm0 ==
+              ((Ent_int *) (pDevIXT->m_aEnt))->m_iIntElm0;
+    I_PushInt(iRes);
   }
 
- /*
-  i8 iWrkVal = *(i8*)aWrkKey;
-  i8 iAltVal = *(i8*)aAltKey;
-
-  if (iWrkVal < iAltVal)
-     iRes = -1;
-  else
-  if (iWrkVal == iAltVal)
-   iRes = 0;
-  else
-   iRes = 1;
-*/
-  iRes = ((Ent_int*)(pLogicUnit->m_xRluCommon.m_aWrkEnt))->m_iIntElm0 ==
-         ((Ent_int*)(pLogicUnit->m_pDevAltIxt->m_aEnt))->m_iIntElm0;
-
-  return iRes;
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/

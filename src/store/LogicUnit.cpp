@@ -2768,11 +2768,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       case EO_IXT_CMP_WRKALT: ArgNil(); // compare wrk.key to alt.key
-      iRes = iDev_IXT_CMP_WRKALT(pLU);
-//        iRes = (aRluCommon->m_aWrkEnt->m_iIntElm0 ==
-//                aRluCommon->m_aAltEnt->m_iIntElm0);
+        vDev_IXT_CMP_WRKALT(&aiDstk);
         dLU1(EO_IXT_CMP_WRKALT,iRes);
-        *(++aiDstk) = iRes;
         break;//+endCase
 
       case EO_IXT_POS_ALTBYSRC: { ArgNil(); // position alt ixt using src.key
