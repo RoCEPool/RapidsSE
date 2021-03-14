@@ -555,26 +555,26 @@ void vDev_IXT_INDEXNM_SET(i8** aaiDstk)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compare src.key to alt.key                                                 */
+/* compare keys of two devices                                                 */
 /*----------------------------------------------------------------------------*/
-void vDev_IXT_CMP_SRCALT(i8** aaiDstk)
+void vDev_IXT_CMP_KEYS(i8** aaiDstk)
 {
   _static_
 
   i8 *aiDstk = *aaiDstk;
 
   // pop the alt device
-  DevIXT* pDevAltIXT = _pDevIXT(P_PopPtr());
+  DevIXT* pDevSecondIXT = _pDevIXT(P_PopPtr());
 
   // pop the src device
-  DevIXT* pDevSrcIXT = _pDevIXT(P_PopPtr());
+  DevIXT* pDevFirstIXT = _pDevIXT(P_PopPtr());
 
   // get the entries from the devices
-  Key* aSrcKey = pDevSrcIXT->m_aEnt->aKey();
-  Key* aAltKey = pDevAltIXT->m_aEnt->aKey();
+  Key* aFirstKey = pDevFirstIXT->m_aEnt->aKey();
+  Key* aSecondKey = pDevSecondIXT->m_aEnt->aKey();
 
-  if (KE_GENERAL == pDevSrcIXT->m_aEnt->eKind()) {
-    eKC  eCmp = Key::eCompare(aSrcKey,aAltKey);
+  if (KE_GENERAL == pDevFirstIXT->m_aEnt->eKind()) {
+    eKC  eCmp = Key::eCompare(aFirstKey,aSecondKey);
   
     if (KC_BEFORE == eCmp)
      I_PushInt(-1)
@@ -586,8 +586,8 @@ void vDev_IXT_CMP_SRCALT(i8** aaiDstk)
   }
   else {
 
-    i8 iRes = ((Ent_int *) (pDevSrcIXT->m_aEnt))->m_iIntElm0 ==
-              ((Ent_int *) (pDevSrcIXT->m_aEnt))->m_iIntElm0;
+    i8 iRes = ((Ent_int *) (pDevFirstIXT->m_aEnt))->m_iIntElm0 ==
+              ((Ent_int *) (pDevSecondIXT->m_aEnt))->m_iIntElm0;
 
     I_PushInt(iRes);
   }
