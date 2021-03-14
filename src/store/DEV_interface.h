@@ -31,7 +31,7 @@ void vDev_IXT_ENT_PUSHELMI0(i8** aaiDstk);
 void vDev_IXT_ENT_PUSHELMS0(i8** aaiDstk); // NOT COMPLETE!!
 void vDev_IXT_ENT_PUSHUPPER(i8** aaiDstk);
 void vDev_IXT_CMP_KEYS(i8** aaiDstk);
-void vDev_IXT_CMP_WRKALT(i8** aaiDstk);
+void vDev_IXT_CMP_ENTKEY(i8** aaiDstk);
 void vDev_IXT_DEL_ENT(i8** aaiDstk);
 void vDev_IXT_DUMP(i8** aaiDstk);
 void vDev_IXT_ENT_PRINT(i8** aaiDstk);

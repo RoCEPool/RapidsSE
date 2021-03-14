@@ -595,9 +595,9 @@ void vDev_IXT_CMP_KEYS(i8** aaiDstk)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compare wrk.key to alt.key                                                 */
+/* compare ent.key to dev.key                                                 */
 /*----------------------------------------------------------------------------*/
-void vDev_IXT_CMP_WRKALT(i8** aaiDstk)
+void vDev_IXT_CMP_ENTKEY(i8** aaiDstk)
 {
   _static_
 

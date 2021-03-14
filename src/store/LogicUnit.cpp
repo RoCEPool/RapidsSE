@@ -2763,13 +2763,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
       case EO_DEVIXT_CMP_KEYS: ArgNil(); // compare keys of two devices
+        dLU0(EO_DEVIXT_CMP_KEYS);
         vDev_IXT_CMP_KEYS(&aiDstk);
-        dLU1(EO_DEVIXT_CMP_KEYS,iRes);
         break;//+endCase
 
-      case EO_IXT_CMP_WRKALT: ArgNil(); // compare wrk.key to alt.key
-        vDev_IXT_CMP_WRKALT(&aiDstk);
-        dLU1(EO_IXT_CMP_WRKALT,iRes);
+      case EO_DEVIXT_CMP_ENTKEY: ArgNil(); // compare ent.key to dev.key
+        dLU0(EO_DEVIXT_CMP_ENTKEY);
+        vDev_IXT_CMP_ENTKEY(&aiDstk);
         break;//+endCase
 
       case EO_IXT_POS_ALTBYSRC: { ArgNil(); // position alt ixt using src.key
