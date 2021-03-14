@@ -811,7 +811,7 @@ Ent_int* aDev_IXT_POS_ALTBYWRK(void* aLU)
 /*----------------------------------------------------------------------------*/
 /* insert an entry into the indexTree                                         */
 /*----------------------------------------------------------------------------*/
-void vDev_IXT_POS_LBOUND(void* aLU, i8** aaiDstk)
+void vDev_IXT_POS_LBOUND(i8** aaiDstk)
 {
   _static_
 
@@ -824,11 +824,6 @@ void vDev_IXT_POS_LBOUND(void* aLU, i8** aaiDstk)
   EntWrk* pEntWrk = (EntWrk*)(P_PopPtr());
   Ent *pEnt = (Ent*)pEntWrk->aEnt();
 
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-  Ent *pEnt2 = (Ent*)pLogicUnit->m_xRluCommon.m_aWrkEnt;
-
-  RASSERT(pEnt2 == pEnt);
-
   pDevIXT->m_aEnt = nullptr;
   
   pDevIXT->m_pEntBuffer =
@@ -839,17 +834,7 @@ void vDev_IXT_POS_LBOUND(void* aLU, i8** aaiDstk)
       pDevIXT->m_pEntBuffer->aFindEntryBefore(pEnt->aKey());
   }
 
-
-  if (pDevIXT->m_aEnt) {
-    
-//    pLogicUnit->m_xRluCommon.m_aEntArray =
-//      (Ent_int*)pDevIXT->m_pEntBuffer->aEntArray();
-
-    P_PushPtr(pDevIXT->m_aEnt);
-  }
-  else {
-    P_PushPtr(nullptr);
-  }
+  P_PushPtr(pDevIXT->m_aEnt);
 
   *aaiDstk = aiDstk;
 }
@@ -857,14 +842,18 @@ void vDev_IXT_POS_LBOUND(void* aLU, i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* insert an entry into the indexTree                                         */
 /*----------------------------------------------------------------------------*/
-Ent_int* aDev_IXT_POS_UBOUND(void* aLU, void* aIXT)
+void vDev_IXT_POS_UBOUND(i8** aaiDstk)
 {
   _static_
 
-  DevIXT* pDevIXT = _pDevIXT(aIXT);
+  i8 *aiDstk = *aaiDstk;
 
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-  Ent *pEnt = (Ent*)pLogicUnit->m_xRluCommon.m_aWrkEnt;
+  // pop the device
+  DevIXT* pDevIXT = _pDevIXT(P_PopPtr());
+
+  // pop the wrkent
+  EntWrk* pEntWrk = (EntWrk*)(P_PopPtr());
+  Ent *pEnt = (Ent*)pEntWrk->aEnt();
   
   EntBuffer* pUpperEntBuffer =
     pDevIXT->m_pIdxTree->pPositionH0Buffer(pEnt->aKey());
@@ -879,34 +868,30 @@ Ent_int* aDev_IXT_POS_UBOUND(void* aLU, void* aIXT)
         EntBuffer::pMoveToGreaterThanEntry(pDevIXT->m_aUpperEnt,
                                            pEnt->aKey(),
                                            &pUpperEntBuffer);
-      if (pDevIXT->m_aUpperEnt) {
-        
-//        pLogicUnit->m_xRluCommon.m_aEntArray =
-//          (Ent_int*)pUpperEntBuffer->aEntArray();
-
-        return (Ent_int*)pDevIXT->m_aUpperEnt;
-      }
-      else
-        return nullptr;
+      P_PushPtr(pDevIXT->m_aUpperEnt);
     }
     else
-      return nullptr;
+      P_PushPtr( nullptr);
   }
   else
-    return nullptr;
+    P_PushPtr( nullptr);
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
 /* insert an entry into the indexTree                                         */
 /*----------------------------------------------------------------------------*/
-Ent_int* aDev_IXT_POS_UBOUND_LT(void* aLU, void* aIXT)
+void vDev_IXT_POS_UBOUND_LT(i8** aaiDstk)
 {
-  _static_
-    
-  DevIXT* pDevIXT = _pDevIXT(aIXT);
-  
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-  Ent *pEnt = (Ent*)pLogicUnit->m_xRluCommon.m_aWrkEnt;
+  i8 *aiDstk = *aaiDstk;
+
+  // pop the device
+  DevIXT* pDevIXT = _pDevIXT(P_PopPtr());
+
+  // pop the wrkent
+  EntWrk* pEntWrk = (EntWrk*)(P_PopPtr());
+  Ent *pEnt = (Ent*)pEntWrk->aEnt();
   
   EntBuffer* pUpperEntBuffer =
   pDevIXT->m_pIdxTree->pPositionH0Buffer(pEnt->aKey());
@@ -921,21 +906,13 @@ Ent_int* aDev_IXT_POS_UBOUND_LT(void* aLU, void* aIXT)
       EntBuffer::pMoveToNextEntry(pDevIXT->m_aUpperEnt,
                                   &pUpperEntBuffer);
       
-      if (pDevIXT->m_aUpperEnt) {
-        
-//        pLogicUnit->m_xRluCommon.m_aEntArray =
-//          (Ent_int*)pUpperEntBuffer->aEntArray();
-
-        return (Ent_int*)pDevIXT->m_aUpperEnt;
-      }
-      else
-        return nullptr;
+      P_PushPtr(pDevIXT->m_aUpperEnt);
     }
     else
-      return nullptr;
+      P_PushPtr( nullptr);
   }
   else
-    return nullptr;
+      P_PushPtr( nullptr);
 }
 
 /*----------------------------------------------------------------------------*/

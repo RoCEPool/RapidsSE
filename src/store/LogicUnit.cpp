@@ -2686,7 +2686,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_DEVIXT_LBOUND: ArgNil(); // pos in buffer to entry before LBOUND
         dLU0(EO_DEVIXT_LBOUND);
-        vDev_IXT_POS_LBOUND(pLU, &aiDstk);
+        vDev_IXT_POS_LBOUND(&aiDstk);
       break;//+endCase
         
       case EO_IXT_SRC_NEXT: { ArgNil(); // move to next entry
@@ -2698,22 +2698,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       RASSERT(0);
         break;//+endCase
 
-      case EO_IXT_SRC_UBOUND: { ArgNil(); // pos in buffer to entry for UBOUND
-        dLU0(EO_IXT_SRC_UBOUND);
-        void *aSrcEnt =
-            aDev_IXT_POS_UBOUND(pLU, aRluCommon->m_pDevSrcIxt);
-        //aRluCommon->m_aSrcEntArray = aRluCommon->m_aEntArray;
-        *(++aiDstk) = (i8) aSrcEnt;
-      }
+      case EO_DEVIXT_SRC_UBOUND: ArgNil(); // pos in buffer to entry for UBOUND
+        dLU0(EO_DEVIXT_SRC_UBOUND);
+        vDev_IXT_POS_UBOUND(&aiDstk);
         break;//+endCase
         
-      case EO_IXT_SRC_UBOUND_LT: { ArgNil(); // pos in buffer to entry for UBOUND
-        dLU0(EO_IXT_SRC_UBOUND);
-        void *aSrcEnt =
-            aDev_IXT_POS_UBOUND_LT(pLU, aRluCommon->m_pDevSrcIxt);
-        //aRluCommon->m_aSrcEntArray = aRluCommon->m_aEntArray;
-        *(++aiDstk) = (i8) aSrcEnt;
-      }
+      case EO_DEVIXT_SRC_UBOUND_LT: ArgNil(); // pos in buffer to entry for UBOUND
+        dLU0(EO_DEVIXT_SRC_UBOUND_LT);
+        vDev_IXT_POS_UBOUND_LT(&aiDstk);
         break;//+endCase
         
       case EO_IXT_ALT_BEGIN: { ArgNil(); // begin linear traverse

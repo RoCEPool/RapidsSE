@@ -111,7 +111,9 @@ Label UPPERBOUND
 
   EO_PUSH_RLU_ENTWRK
   EO_ENTWRK_SETINTELM
-  EO_IXT_SRC_UBOUND_LT
+  EO_PUSH_RLU_ENTWRK
+  EO_PUSH_DEVIXT_SRC
+  EO_DEVIXT_SRC_UBOUND_LT
   EO_JMP_TRUE TRV_TILL_UPPER
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
