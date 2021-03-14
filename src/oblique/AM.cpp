@@ -134,6 +134,39 @@ static i8    RAPIDSSE_FORMAT_NUMBER  = 0x000600;
 
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                   Demon                                    */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* pipe given row buffer to named demon                                       */
+/*----------------------------------------------------------------------------*/
+void AM::DEMON::vPipeTo(Stz* szDemonNm, RowBuffer* pRowBuffer)
+{
+
+  // for reference: sen code from : OP_toStatDemon_Profile \handler
+  
+//  PipeIn[]
+//  "__statDemon" find dup if
+//    word.object@
+//    pipeline.pipeout
+//    nullptr to PipeIn[]
+//  else
+//    discard discard
+//    PipeIn[].delete
+//  then
+
+  Dic* pRootDic = AM::pDicRoot();
+  Word* pDemonWord = pRootDic->pFindWord(szDemonNm);
+  Job* pPipelineJob = _pJob(pDemonWord->pObject());
+  Pipeline* pPipeline = pPipelineJob->m_pPipeline;
+  Op* pOp0 = pPipeline->pOp0();
+
+  Task* pThisTask = AM::pThisTLSTask();
+  
+  pOp0->vPipeOut_thisOp(pRowBuffer,pThisTask);
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                    Task                                    */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
