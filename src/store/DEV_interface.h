@@ -30,8 +30,8 @@ void vDev_IXT_ENT_PUSH(i8** aaiDstk);
 void vDev_IXT_ENT_PUSHELMI0(i8** aaiDstk);
 void vDev_IXT_ENT_PUSHELMS0(i8** aaiDstk); // NOT COMPLETE!!
 void vDev_IXT_ENT_PUSHUPPER(i8** aaiDstk);
+void vDev_IXT_CMP_SRCALT(i8** aaiDstk);
 
-i8   iDev_IXT_CMP_SRCALT(void* aLU);
 i8   iDev_IXT_CMP_WRKALT(void* aLU);
 void vDev_IXT_DEL_ENT(i8** aaiDstk);
 void vDev_IXT_DUMP(i8** aaiDstk);

@@ -557,46 +557,41 @@ void vDev_IXT_INDEXNM_SET(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* compare src.key to alt.key                                                 */
 /*----------------------------------------------------------------------------*/
-i8 iDev_IXT_CMP_SRCALT(void* aLU)
+void vDev_IXT_CMP_SRCALT(i8** aaiDstk)
 {
   _static_
 
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-  
-  i8 iRes;
-  
-  Key* aSrcKey = pLogicUnit->m_pDevSrcIxt->m_aEnt->aKey();
-  Key* aAltKey = pLogicUnit->m_pDevAltIxt->m_aEnt->aKey();
+  i8 *aiDstk = *aaiDstk;
 
-  if (KE_GENERAL == pLogicUnit->m_pDevSrcIxt->m_aEnt->eKind()) {
+  // pop the alt device
+  DevIXT* pDevAltIXT = _pDevIXT(P_PopPtr());
+
+  // pop the src device
+  DevIXT* pDevSrcIXT = _pDevIXT(P_PopPtr());
+
+  // get the entries from the devices
+  Key* aSrcKey = pDevSrcIXT->m_aEnt->aKey();
+  Key* aAltKey = pDevAltIXT->m_aEnt->aKey();
+
+  if (KE_GENERAL == pDevSrcIXT->m_aEnt->eKind()) {
     eKC  eCmp = Key::eCompare(aSrcKey,aAltKey);
   
     if (KC_BEFORE == eCmp)
-     iRes = -1;
+     I_PushInt(-1)
     else
     if (KC_SAME == eCmp)
-     iRes = 0;
+      I_PushInt(0)
     else
-     iRes = 1;
-    
-    return iRes;
+      I_PushInt(1)
   }
-  
-/*
-  i8 iSrcVal = *(i8*)aSrcKey;
-  i8 iAltVal = *(i8*)aAltKey;
+  else {
 
-  if (iSrcVal < iAltVal)
-     iRes = -1;
-  else
-  if (iSrcVal == iAltVal)
-   iRes = 0;
-  else
-   iRes = 1;
-*/
-  iRes = ((Ent_int*)(pLogicUnit->m_pDevSrcIxt->m_aEnt))->m_iIntElm0 ==
-         ((Ent_int*)(pLogicUnit->m_pDevAltIxt->m_aEnt))->m_iIntElm0;
-  return iRes;
+    i8 iRes = ((Ent_int *) (pDevSrcIXT->m_aEnt))->m_iIntElm0 ==
+              ((Ent_int *) (pDevSrcIXT->m_aEnt))->m_iIntElm0;
+
+    I_PushInt(iRes);
+  }
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/

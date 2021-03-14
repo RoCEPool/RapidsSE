@@ -2762,11 +2762,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
         break;//+endCase
         
-      case EO_IXT_CMP_SRCALT: ArgNil(); // compare src.key to alt.key
-      iRes = iDev_IXT_CMP_SRCALT(pLU);
-//        iRes = (aRluCommon->m_aSrcEnt->m_iIntElm0 ==
-//                aRluCommon->m_aAltEnt->m_iIntElm0);
-        dLU1(EO_IXT_CMP_SRCALT,iRes);
+      case EO_DEVIXT_CMP_SRCALT: ArgNil(); // compare src.key to alt.key
+        vDev_IXT_CMP_SRCALT(&aiDstk);
+        dLU1(EO_DEVIXT_CMP_SRCALT,iRes);
         *(++aiDstk) = iRes;
 
         break;//+endCase

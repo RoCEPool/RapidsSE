@@ -89,7 +89,7 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_ENTWRK_RESET"_Stz,      (const void *) vDev_ENTWRK_RESET      },
   { "vDev_ENTWRK_SETINTELM"_Stz,  (const void *) vDev_ENTWRK_SETINTELM  },
 
-  { "iDev_IXT_CMP_SRCALT"_Stz,    (const void *) iDev_IXT_CMP_SRCALT    },
+  { "vDev_IXT_CMP_SRCALT"_Stz,    (const void *) vDev_IXT_CMP_SRCALT    },
   { "iDev_IXT_CMP_WRKALT"_Stz,    (const void *) iDev_IXT_CMP_WRKALT    },
   { "vDev_IXT_DEL_ENT"_Stz,       (const void *) vDev_IXT_DEL_ENT       },
   { "vDev_IXT_DUMP"_Stz,          (const void *) vDev_IXT_DUMP          },
