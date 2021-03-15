@@ -238,15 +238,7 @@ enum eEO : u1 // expression operators
   /*  S  */ EO_DEVIXT_COL_PUSHONE_PST,  // push column value from dev ixt
   /*  S  */ EO_DEVIXT_COL_PUSHSET_PST,  // push column subset from dev ixt
 
-  // crw operators
-  /*  D  */ EO_CRW_ALT_DEREF,    // deref m_aAltCrw using m_aAltEnt.ref              ---to go
-  /*  D  */ EO_CRW_SRC_BEGIN,    // begin src crw traverse                           ---to go
-  /*  D  */ EO_CRW_SRC_DEREF,    // deref m_aSrcCrw using m_aSrcEnt.ref              ---to go
-  /*  D  */ EO_CRW_SRC_NEXT,     // move to next src row                             ---to go
-  /*  D  */ EO_CRW_SRC_NULL,     // null crw src                                     ---to go
-  /*  D  */ EO_CRW_SRC_TEST,     // test if there is a crw buffer                    ---to go
-
-  // crw operators
+  // device crwbuffer operators
   /*  S  */ EO_DEVIXT_CRWBUF_BEGIN, // begin crw buffer traverse
   /*  S  */ EO_DEVIXT_DEREF,        // deref crw using Ent.ref
   /*  S  */ EO_DEVIXT_CRWBUF_NEXT,  // move to next row in crw buffer
@@ -576,14 +568,7 @@ static Stz* aEO[]
   /*    */ "EO_DEVIXT_COL_PUSHONE_PST"_Stz,
   /*    */ "EO_DEVIXT_COL_PUSHSET_PST"_Stz,
 
-  // crw operators
-  /*    */ "EO_CRW_ALT_DEREF"_Stz,
-  /*    */ "EO_CRW_SRC_BEGIN"_Stz,
-  /*    */ "EO_CRW_SRC_DEREF"_Stz,
-  /*    */ "EO_CRW_SRC_NEXT"_Stz,
-  /*    */ "EO_CRW_SRC_NULL"_Stz,
-  /*    */ "EO_CRW_SRC_TEST"_Stz,
-
+  // device crwbuffer operators
   /*    */ "EO_DEVIXT_CRWBUF_BEGIN"_Stz,
   /*    */ "EO_DEVIXT_DEREF"_Stz,
   /*    */ "EO_DEVIXT_CRWBUF_NEXT"_Stz,
@@ -918,14 +903,7 @@ static EoArg EoArgs[]
   { EA_SUBSCR,  8 },  // EO_DEVIXT_COL_PUSHONE_PST
   { EA_NONE,    0 },  // EO_DEVIXT_COL_PUSHSET_PST
 
-  // crw operators
-  { EA_NONE,    0 },  // EO_CRW_ALT_DEREF
-  { EA_NONE,    0 },  // EO_CRW_SRC_BEGIN
-  { EA_NONE,    0 },  // EO_CRW_SRC_DEREF
-  { EA_NONE,    0 },  // EO_CRW_SRC_NEXT
-  { EA_NONE,    0 },  // EO_CRW_SRC_NULL
-  { EA_NONE,    0 },  // EO_CRW_SRC_TEST
-
+  // device crwbuffer operators
   { EA_NONE,    0 },  // EO_DEVIXT_CRWBUF_BEGIN
   { EA_NONE,    0 },  // EO_DEVIXT_DEREF
   { EA_NONE,    0 },  // EO_DEVIXT_CRWBUF_NEXT

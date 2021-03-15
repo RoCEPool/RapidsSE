@@ -2338,75 +2338,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      // crw operators
-      case EO_CRW_ALT_DEREF: ArgNil(); // deref m_aAltCrw using m_aAltEnt.ref
-//        dLU0(EO_CRW_ALT_DEREF);
-//        vDev_CRW_DEREF(pLU,aRluCommon->m_pDevAltIxt);
-
-//        iBuffer = aRluCommon->m_aAltEnt->Rrf.m_uBuffer;
-//        iItem = aRluCommon->m_aAltEnt->Rrf.m_uItem;
-
-//        aRluCommon->m_aAltCrw = (void*)
-//          ( (char*)C_ADR_REGION
-//                   + iBuffer * C_1MB
-//                   + C_CRW_FIRSTHEAD
-//                   + iItem * aRluCommon->m_nAltHeadSize );
-        RASSERT(0);
-        break;//+endCase
-       
-      case EO_CRW_SRC_BEGIN: ArgNil(); // begin src row traverse
-//        dLU0(EO_CRW_SRC_BEGIN);
-//        vDev_CRW_BEGIN(pLU,aRluCommon->m_pDevSrcIxt);
-        RASSERT(0);
-        break;//+endCase
-        
-      case EO_CRW_SRC_DEREF: ArgNil(); // deref m_aSrcCrw using m_pDevSrcIxt->m_aEnt.ref
-        //dLU0(EO_CRW_SRC_DEREF);
-        //vDev_CRW_DEREF(pLU,aRluCommon->m_pDevSrcIxt);
-        
-//        iBuffer = aRluCommon->m_aSrcEnt->Rrf.m_uBuffer;
-//        iItem   = aRluCommon->m_aSrcEnt->Rrf.m_uItem;
-//
-//        aRluCommon->m_aSrcCrw = (void*)
-//          ( (char*)C_ADR_REGION
-//                   + iBuffer * C_1MB
-//                   + C_CRW_FIRSTHEAD
-//                   + iItem * aRluCommon->m_nSrcHeadSize );
-        RASSERT(0);
-        break;//+endCase
-
-      case EO_CRW_SRC_NEXT: ArgNil(); // move to next src row
-//        dLU0(EO_CRW_SRC_NEXT);
-//        //((DevIXT*)aRluCommon->m_pDevSrcIxt)->m_pCrwBuffer->vDump();
-//        iRes = iDev_CRW_NEXT(pLU,aRluCommon->m_pDevSrcIxt);
-        
-        /*
-        if (++aRluCommon->m_i_CrwRow < aRluCommon->m_nCrwRows) {
-          aRluCommon->m_aSrcCrw = (char*)aRluCommon->m_aSrcHeadCrw
-            + (aRluCommon->m_nSrcHeadSize * aRluCommon->m_i_CrwRow);
-          *(++aiDstk) = 1;
-        }
-        else {
-          *(++aiDstk) = 0;
-        }
-        *(++aiDstk) = iRes;
-        */
-        RASSERT(0);
-        break;//+endCase
-        
-      case EO_CRW_SRC_NULL: ArgNil(); // null the crw src
-//        dLU0(EO_CRW_SRC_NULL);
-//        vDev_CRW_NULL(pLU,aRluCommon->m_pDevSrcIxt);
-        RASSERT(0);
-        break;//+endCase
-        
-      case EO_CRW_SRC_TEST: ArgNil(); // test for src crw
-//        dLU0(EO_CRW_SRC_TEST);
-//        iRes = iDev_CRW_TEST(pLU,aRluCommon->m_pDevSrcIxt);
-//        *(++aiDstk) = iRes;
-        RASSERT(0);
-        break;//+endCase
-
+      // device crwbuffer operators
       case EO_DEVIXT_CRWBUF_BEGIN: ArgNil(); // begin row traverse
         dLU0(EO_DEVIXT_CRWBUF_BEGIN);
         vDev_IXT_BEGIN(&aiDstk);
