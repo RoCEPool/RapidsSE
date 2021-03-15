@@ -319,7 +319,6 @@ enum eEO : u1 // expression operators
   /*  D  */ EO_IXT_ALT_NEXT,     // move to next entry                           --to go
   /*  D  */ EO_DEVIXT_CMP_KEYS,  // compare keys of two devices
   /*  D  */ EO_DEVIXT_POS_BYKEY, // position dev ixt by key
-  /*  D  */ EO_IXT_POS_ALTBYWRK, // position alt ixt using entwrk.key
 
   /*  D  */ EO_DEVIXT_ENT_PRINT, // print ent
 
@@ -693,7 +692,6 @@ static Stz* aEO[]
   /*    */ //"EO_IXT_ALT_PRINT"_Stz,
   /*    */ "EO_DEVIXT_CMP_KEYS"_Stz,
   /*    */ "EO_DEVIXT_POS_BYKEY"_Stz,
-  /*    */ "EO_IXT_POS_ALTBYWRK"_Stz,
 
   /*    */ "EO_DEVIXT_ENT_PRINT"_Stz,
 
@@ -1073,7 +1071,6 @@ static EoArg EoArgs[]
   //{ EA_NONE,    0 },  // EO_IXT_ALT_PRINT
   { EA_NONE,    0 },  // EO_DEVIXT_CMP_KEYS
   { EA_NONE,    0 },  // EO_DEVIXT_POS_BYKEY
-  { EA_NONE,    0 },  // EO_IXT_POS_ALTBYWRK
 
   { EA_NONE,    0 },  // EO_DEVIXT_ENT_PRINT
 

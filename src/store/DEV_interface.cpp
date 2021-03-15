@@ -726,36 +726,6 @@ void vDev_IXT_POS_BYKEY(i8** aaiDstk)
 }
 
 /*----------------------------------------------------------------------------*/
-/*  position alt ixt using entwrk.key                                         */
-/*----------------------------------------------------------------------------*/
-Ent_int* aDev_IXT_POS_ALTBYWRK(void* aLU)
-{
-  _static_
-
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-
-  Ent *pEnt = (Ent*)pLogicUnit->m_xRluCommon.m_aWrkEnt;
-  Key* aWrkKey = pEnt->aKey();
-  
-  pLogicUnit->m_pDevAltIxt->m_aEnt =
-    pLogicUnit->m_pDevAltIxt->m_pIdxTree->aPositionPriorEntry(aWrkKey,
-                                       &pLogicUnit->m_pDevAltIxt->m_pEntBuffer);
-  
-  if (pLogicUnit->m_pDevAltIxt->m_pEntBuffer) {
-    
-//    pLogicUnit->m_xRluCommon.m_aEntArray =
-//      (Ent_int*)pLogicUnit->m_pDevAltIxt->m_pEntBuffer->aEntArray();
-
-    if (pLogicUnit->m_pDevAltIxt->m_aEnt)
-      return (Ent_int*)pLogicUnit->m_pDevAltIxt->m_aEnt;
-    else
-      return nullptr;
-  }
-  else
-    return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
 /* insert an entry into the indexTree                                         */
 /*----------------------------------------------------------------------------*/
 void vDev_IXT_POS_LBOUND(i8** aaiDstk)

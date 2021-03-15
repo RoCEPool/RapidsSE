@@ -44,8 +44,6 @@ void vDev_IXT_SET_ENT(void* aLU, void* aIXT, void* aEnt);
 void vDev_IXT_TMP_ENTRIES(i8** aaiDstk);
 void vDev_IXT_POS_BYKEY(i8** aaiDstk);
 
-struct Ent_int* aDev_IXT_POS_ALTBYWRK(void* aLU);
-
 void vDev_IXT_POS_LBOUND(i8** aaiDstk);
 void vDev_IXT_POS_UBOUND(i8** aaiDstk);
 
