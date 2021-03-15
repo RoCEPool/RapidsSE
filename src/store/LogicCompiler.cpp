@@ -100,7 +100,7 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_IXT_SET_ENT"_Stz,       (const void *) vDev_IXT_SET_ENT       },
   { "vDev_IXT_TMP_ENTRIES"_Stz,   (const void *) vDev_IXT_TMP_ENTRIES   },
 
-  { "aDev_IXT_POS_ALTBYSRC"_Stz,  (const void *) aDev_IXT_POS_ALTBYSRC  },
+  { "vDev_IXT_POS_BYKEY"_Stz,     (const void *) vDev_IXT_POS_BYKEY     },
   { "aDev_IXT_POS_ALTBYWRK"_Stz,  (const void *) aDev_IXT_POS_ALTBYWRK  },
   { "vDev_IXT_POS_LBOUND"_Stz,    (const void *) vDev_IXT_POS_LBOUND    },
   { "vDev_IXT_POS_UBOUND"_Stz,    (const void *) vDev_IXT_POS_UBOUND    },

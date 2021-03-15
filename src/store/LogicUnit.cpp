@@ -2781,12 +2781,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_IXT_CMP_KEYS(&aiDstk);
         break;//+endCase
 
-      case EO_IXT_POS_ALTBYSRC: { ArgNil(); // position alt ixt using src.key
-        dLU0(EO_IXT_POS_ALTBYSRC);
-        void *aAltEnt = aDev_IXT_POS_ALTBYSRC(pLU);
-        //aRluCommon->m_aAltEntArray = aRluCommon->m_aEntArray;
-        *(++aiDstk) = (i8) aAltEnt;
-      }
+      case EO_DEVIXT_POS_BYKEY: ArgNil(); // position alt ixt using src.key
+        dLU0(EO_DEVIXT_POS_BYKEY);
+        vDev_IXT_POS_BYKEY(&aiDstk);
         break;//+endCase
 
       case EO_IXT_POS_ALTBYWRK: { ArgNil(); // position alt ixt using entwrk.key
