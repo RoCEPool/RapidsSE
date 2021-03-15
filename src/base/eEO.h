@@ -281,11 +281,6 @@ enum eEO : u1 // expression operators
   /*    */ EO_ENTWRK_SETINTELM, // set int only element value
 
   // index tree
-  /*  D  */ EO_IXT_DEL_ENT,      // delete current m_aEnt from indexTree          ---to go
-  /*  D  */ EO_IXT_DUMP,         // dump index tree                               ---to go
-  /*  D  */ EO_IXT_INS_ENT,      // insert an entry into the indexTree            ---to go
-  /*  D  */ EO_IXT_TRV_BEGIN,    // begin linear traverse                         ---to go
-  /*  D  */ EO_IXT_TRV_NEXT,     // traverse to next entry                        ---to go
   /*  D  */ EO_IXT_TMP_ENTRIES,  // push number of entries in tmp index           ---to go
 
   /*  S  */ EO_DEVIXT_IDX_DEL,      // delete current m_aEnt from indexTree
@@ -628,16 +623,10 @@ static Stz* aEO[]
   /*    */ "EO_DEVROW_ENTWRK_CREATEPAY"_Stz,
 
   /*    */ "EO_ENTWRK_PRINT"_Stz,
-
   /*    */ "EO_ENTWRK_RESET"_Stz,
   /*    */ "EO_ENTWRK_SETINTELM"_Stz,
 
   // index tree
-  /*    */ "EO_IXT_DEL_ENT"_Stz,
-  /*    */ "EO_IXT_DUMP"_Stz,
-  /*    */ "EO_IXT_INS_ENT"_Stz,
-  /*    */ "EO_IXT_TRV_BEGIN"_Stz,
-  /*    */ "EO_IXT_TRV_NEXT"_Stz,
   /*    */ "EO_IXT_TMP_ENTRIES"_Stz,
 
   /*    */ "EO_DEVIXT_IDX_DEL"_Stz,
@@ -990,11 +979,6 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_ENTWRK_SETINTELM
 
   // index tree
-  { EA_NONE,    0 },  // EO_IXT_DEL_ENT
-  { EA_NONE,    0 },  // EO_IXT_DUMP
-  { EA_NONE,    0 },  // EO_IXT_INS_ENT
-  { EA_NONE,    0 },  // EO_IXT_TRV_BEGIN
-  { EA_NONE,    0 },  // EO_IXT_TRV_NEXT
   { EA_NONE,    0 },  // EO_IXT_TMP_ENTRIES
 
   { EA_NONE,    0 },  // EO_DEVIXT_IDX_DEL

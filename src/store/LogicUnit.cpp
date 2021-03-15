@@ -2559,47 +2559,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(EO_ENTWRK_SETINTELM);
         vDev_ENTWRK_SETINTELM(&aiDstk);
         break;//+endCase
-      
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      // index tree operators
-      case EO_IXT_DEL_ENT: ArgNil(); // delete current m_aEnt from indexTree
-//        dLU0(EO_IXT_DEL_ENT);
-//        vDev_IXT_DEL_ENT(pLU,aRluCommon->m_pDevTmpIxt);
-        RASSERT(0);
-        break;//+endCase
-
-      case EO_IXT_DUMP: ArgNil(); // dump index tree
-//        vDev_IXT_DUMP(pLU,aRluCommon->m_pDevTmpIxt);
-        RASSERT(0);
-        break;//+endCase
-
-      case EO_IXT_INS_ENT: { ArgNil(); // insert an entry into the indexTree
-//        dLU0(EO_IXT_INS_ENT);
-//        void *aTmpEnt =
-//            aDev_IXT_INS_ENT(pLU, aRluCommon->m_pDevTmpIxt);
-        //ASSERT(m_pDevTmpIxt->m_aEnt);
-      }
-      RASSERT(0);
-        break;//+endCase
-        
-      case EO_IXT_TRV_BEGIN: { ArgNil(); // begin linear traverse
-//        dLU0(EO_IXT_TRV_BEGIN);
-//        void *aTmpEnt =
-//            aDev_IXT_TRV_BEGIN_OLD(pLU, aRluCommon->m_pDevTmpIxt);
-//        //aRluCommon->m_aTmpEntArray = aRluCommon->m_aEntArray;
-//        *(++aiDstk) = (i8) aTmpEnt;
-      }
-        RASSERT(0);
-        break;//+endCase
-        
-      case EO_IXT_TRV_NEXT: { ArgNil(); // traverse to next entry
-//        dLU0(EO_IXT_TRV_NEXT);
-//        void *aTmpEnt =
-//            aDev_IXT_TRV_NEXT_OLD(pLU, aRluCommon->m_pDevTmpIxt);
-//        *(++aiDstk) = (i8) aTmpEnt;
-      }
-      RASSERT(0);
-        break;//+endCase
         
       case EO_IXT_TMP_ENTRIES: ArgNil(); // push number of entries in tmp index
 //        iRes = iDev_IXT_TMP_ENTRIES(pLU,aRluCommon->m_pDevTmpIxt);
