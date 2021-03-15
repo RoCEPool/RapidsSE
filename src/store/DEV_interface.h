@@ -18,7 +18,7 @@ void vDev_IXT_TEST(i8** aaiDstk);
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // prototypes for dev IXT
 
-i8   iDev_ENT_COMPARE(void* aLU, void* aIXT);
+void vDev_IXT_ENT_COMPARE(i8** aaiDstk);
 
 void vDev_IXT_ENT_FIND(i8** aaiDstk);
 void vDev_IXT_ENT_NEXT(i8** aaiDstk);

@@ -272,38 +272,43 @@ void vDev_IXT_TEST(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* compare m_pEnt.key to m_oEntWrk.key                                        */
+/* compare device m_pEnt.key to entry key                                     */
 /*----------------------------------------------------------------------------*/
-i8 iDev_ENT_COMPARE(void* aLU, void* aIXT)
+void vDev_IXT_ENT_COMPARE(i8** aaiDstk)
 {
   _static_
 
-  DevIXT* pDevIxt = _pDevIXT(aIXT);
-  
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+  i8 *aiDstk = *aaiDstk;
 
-  
+  // pop the entry
+  Ent* pEnt = (Ent*)P_PopPtr();
+
+  //pop the device
+  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
+
   Key* aEntKey = pDevIxt->m_aEnt->aKey();
-  Key* aWrkKey = pLogicUnit->pEntWrk()->aKey();
+  Key* aKey = pEnt->aKey();
   
   if (KE_GENERAL == pDevIxt->m_aEnt->eKind()) {
-    eKC eCmp = Key::eCompare(aEntKey,aWrkKey);
-    return eCmp;
+    eKC eCmp = Key::eCompare(aEntKey,aKey);
+    I_PushInt((i8)eCmp);
   }
-  
-  i8 iEntVal = *(i8*)aEntKey;
-  i8 iWrkVal = *(i8*)aWrkKey;
+  else {
+    i8 iEntVal = *(i8 *) aEntKey;
+    i8 iWrkVal = *(i8 *) aKey;
 
-  eKC eCmp;
-  if (iEntVal < iWrkVal)
-    eCmp = KC_BEFORE;
-  else
-  if (iEntVal == iWrkVal)
-    eCmp = KC_SAME;
-  else
-    eCmp = KC_AFTER;
+    eKC eCmp;
+    if (iEntVal < iWrkVal)
+      eCmp = KC_BEFORE;
+    else if (iEntVal == iWrkVal)
+      eCmp = KC_SAME;
+    else
+      eCmp = KC_AFTER;
 
-  return (i8)eCmp;
+    I_PushInt((i8) eCmp);
+  }
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -278,12 +278,12 @@ enum eEO : u1 // expression operators
   /*  D  */ EO_DEVIXT_ENT_PUSHUPPER, // push upper entry
   
   // entry relational operators
-  /*    */ EO_ENT_LESS,         // test if m_pEnt.key <  m_oEntWrk.key
-  /*    */ EO_ENT_LESSEQUAL,    // test if m_pEnt.key <= m_oEntWrk.key
-  /*    */ EO_ENT_EQUAL,        // test if m_pEnt.key == m_oEntWrk.key
-  /*    */ EO_ENT_NOTEQUAL,     // test if m_pEnt.key != m_oEntWrk.key
-  /*    */ EO_ENT_GREATEREQUAL, // test if m_pEnt.key >= m_oEntWrk.key
-  /*    */ EO_ENT_GREATER,      // test if m_pEnt.key >  m_oEntWrk.key
+  /*    */ EO_DEVIXT_ENT_LESS,         // test if m_pEnt.key <  m_oEntWrk.key
+  /*    */ EO_DEVIXT_ENT_LESSEQUAL,    // test if m_pEnt.key <= m_oEntWrk.key
+  /*    */ EO_DEVIXT_ENT_EQUAL,        // test if m_pEnt.key == m_oEntWrk.key
+  /*    */ EO_DEVIXT_ENT_NOTEQUAL,     // test if m_pEnt.key != m_oEntWrk.key
+  /*    */ EO_DEVIXT_ENT_GREATEREQUAL, // test if m_pEnt.key >= m_oEntWrk.key
+  /*    */ EO_DEVIXT_ENT_GREATER,      // test if m_pEnt.key >  m_oEntWrk.key
   /*    */ EO_ENT_PRINTKEYS,    // print both m_pEnt.key and m_oEntWrk.key
 
   // entWrk
@@ -644,13 +644,13 @@ static Stz* aEO[]
   /*    */ "EO_DEVIXT_ENT_PUSHUPPER"_Stz,
   
   // entry relational operators
-  /*    */ "EO_ENT_LESS"_Stz,
-  /*    */ "EO_ENT_LESSEQUAL"_Stz,
-  /*    */ "EO_ENT_EQUAL"_Stz,
-  /*    */ "EO_ENT_NOTEQUAL"_Stz,
-  /*    */ "EO_ENT_GREATEREQUAL"_Stz,
-  /*    */ "EO_ENT_GREATER"_Stz,
-  /*    */ "EO_ENT_PRINTKEYS"_Stz,
+  /*    */ "EO_DEVIXT_ENT_LESS"_Stz,
+  /*    */ "EO_DEVIXT_ENT_LESSEQUAL"_Stz,
+  /*    */ "EO_DEVIXT_ENT_EQUAL"_Stz,
+  /*    */ "EO_DEVIXT_ENT_NOTEQUAL"_Stz,
+  /*    */ "EO_DEVIXT_ENT_GREATEREQUAL"_Stz,
+  /*    */ "EO_DEVIXT_ENT_GREATER"_Stz,
+  /*    */ "EO_DEVIXT_ENT_PRINTKEYS"_Stz,
 
   // entWrk
   /*    */ "EO_DEVROW_ENTWRK_APPENDELMI"_Stz,
@@ -1016,12 +1016,12 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_DEVIXT_ENT_PUSHUPPER
 
   // entry relational operators
-  { EA_NONE,    0 },  // EO_ENT_LESS
-  { EA_NONE,    0 },  // EO_ENT_LESSEQUAL
-  { EA_NONE,    0 },  // EO_ENT_EQUAL
-  { EA_NONE,    0 },  // EO_ENT_NOTEQUAL
-  { EA_NONE,    0 },  // EO_ENT_GREATEREQUAL
-  { EA_NONE,    0 },  // EO_ENT_GREATER
+  { EA_NONE,    0 },  // EO_DEVIXT_ENT_LESS
+  { EA_NONE,    0 },  // EO_DEVIXT_ENT_LESSEQUAL
+  { EA_NONE,    0 },  // EO_DEVIXT_ENT_EQUAL
+  { EA_NONE,    0 },  // EO_DEVIXT_ENT_NOTEQUAL
+  { EA_NONE,    0 },  // EO_DEVIXT_ENT_GREATEREQUAL
+  { EA_NONE,    0 },  // EO_DEVIXT_ENT_GREATER
   { EA_NONE,    0 },  // EO_ENT_PRINTKEYS
 
 
