@@ -2,16 +2,11 @@
 /* DEV_interface.h -- Interface for RLU Devices                               */
 /*============================================================================*/
 
-void vDev_CRW_DEREF(void* aLU, void* aIXT);
-i8   iDev_CRW_NEXT(void* aLU, void* aIXT);
-void vDev_CRW_NULL(void* aLU, void* aIXT);
-i8   iDev_CRW_TEST(void* aLU, void* aIXT);
-
 void vDev_IXT_BEGIN(i8** aaiDstk);
 void vDev_IXT_DEREF(i8** aaiDstk);
-void vDev_IXT_NEXT(i8** aaiDstk);
-void vDev_IXT_NULL(i8** aaiDstk);
-void vDev_IXT_TEST(i8** aaiDstk);
+void vDev_IXT_NEXT (i8** aaiDstk);
+void vDev_IXT_NULL (i8** aaiDstk);
+void vDev_IXT_TEST (i8** aaiDstk);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // prototypes for dev IXT
@@ -30,21 +25,20 @@ void vDev_IXT_DEL_ENT      (i8** aaiDstk);
 void vDev_IXT_DUMP         (i8** aaiDstk);
 void vDev_IXT_ENT_PRINT    (i8** aaiDstk);
 
-void vDev_IXT_INDEXNM_SET(i8** aaiDstk);
+void vDev_IXT_INDEXNM_SET     (i8** aaiDstk);
 void vDev_IXT_INDEXTREE_DELETE(i8** aaiDstk);
-void vDev_IXT_INDEXTREE_SET(i8** aaiDstk);
-void vDev_IXT_INS_ENT(i8** aaiDstk);
+void vDev_IXT_INDEXTREE_SET   (i8** aaiDstk);
+void vDev_IXT_INS_ENT         (i8** aaiDstk);
+void vDev_IXT_SET_ENT         (void* aLU, void* aIXT, void* aEnt);
 
-void vDev_IXT_SET_ENT(void* aLU, void* aIXT, void* aEnt);
-
-void vDev_IXT_TMP_ENTRIES(i8** aaiDstk);
-void vDev_IXT_POS_BYKEY(i8** aaiDstk);
-void vDev_IXT_POS_LBOUND(i8** aaiDstk);
-void vDev_IXT_POS_UBOUND(i8** aaiDstk);
+void vDev_IXT_TMP_ENTRIES  (i8** aaiDstk);
+void vDev_IXT_POS_BYKEY    (i8** aaiDstk);
+void vDev_IXT_POS_LBOUND   (i8** aaiDstk);
+void vDev_IXT_POS_UBOUND   (i8** aaiDstk);
 void vDev_IXT_POS_UBOUND_LT(i8** aaiDstk);
-void vDev_IXT_PUSH_ENT(i8** aaiDstk);
-void vDev_IXT_IDX_BEGIN(i8** aaiDstk);
-void vDev_IXT_IDX_NEXT(i8** aaiDstk);
+void vDev_IXT_PUSH_ENT     (i8** aaiDstk);
+void vDev_IXT_IDX_BEGIN    (i8** aaiDstk);
+void vDev_IXT_IDX_NEXT     (i8** aaiDstk);
 
 i8*  aDev_PAY_ADDRESS(i8** aaiDstk);
 i8   iDev_PAY_FETCH_COLI(void* aLU, void* aIXT, i8 iArg);
@@ -60,7 +54,6 @@ void vDev_ROW_ENTWRK_APPENDELMS(i8** aaiDstk);
 void vDev_ROW_ENTWRK_CREATEPAY(i8** aaiDstk);
 
 void vDev_ENTWRK_PRINT(i8** aaiDstk);
-
 void vDev_ENTWRK_RESET(i8** aaiDstk);
 void vDev_ENTWRK_SETINTELM(i8** aaiDstk);
 
