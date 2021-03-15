@@ -2237,7 +2237,7 @@ void vDev_PIX_STM_PRINT(void* aLU)
   
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
   
-  pLogicUnit->m_oRowPix.vPrint();
+  ((RowPix*)pLogicUnit->m_xRluCommon.m_pRowPix)->vPrint();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2249,12 +2249,12 @@ void vDev_POT_USE_STREAMDEFOUT(void* aLU, i8 iAddPtnHsh)
   
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
   
-  pLogicUnit->m_xpStreamDefOut->vToRowPix(&pLogicUnit->m_oRowPix,
+  pLogicUnit->m_xpStreamDefOut->vToRowPix((RowPix*)pLogicUnit->m_xRluCommon.m_pRowPix,
                                                (bool)iAddPtnHsh);
 
   Pot* pPot = _pPot(pLogicUnit->m_xRluCommon.m_pPot);
 
-  pPot->vRowPix(&pLogicUnit->m_oRowPix);
+  pPot->vRowPix((RowPix*)pLogicUnit->m_xRluCommon.m_pRowPix);
   
 }
 

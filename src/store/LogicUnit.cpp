@@ -149,6 +149,8 @@ LogicUnit::LogicUnit(Task* pTask)
   m_xRluCommon.m_aWrkEnt = (Ent_int*)m_oEntWrk.aEnt();
   m_xRluCommon.m_pEntWrk = (void*)&m_oEntWrk;
 
+  m_xRluCommon.m_pRowPix = (void*)&m_oRowPix;
+
   m_xRluCommon.m_i_TablePtn = C_UNKNOWN;
   m_xRluCommon.m_nPtns  = AM::nPtnsInGrid();
   m_xRluCommon.m_iHash  = 0;
@@ -1443,6 +1445,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_PUSH_RLU_PTN: ArgNil(); // push partition
         dLU0(EO_PUSH_RLU_PTN);
         P_PushPtr(aRluCommon->m_i_Ptn);
+        break;//+endCase
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // partition
+      case EO_PUSH_RLU_ROWPIX: ArgNil(); // push row pix
+        dLU0(EO_PUSH_RLU_ROWPIX);
+        P_PushPtr(aRluCommon->m_pRowPix);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
