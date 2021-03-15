@@ -34,12 +34,17 @@ enum eEO : u1 // expression operators
   /*  S  */ EO_PUSH_DEVIXT_SRC,     // push src Ixt device
   /*  S  */ EO_PUSH_DEVIXT_TMP,     // push tmp Ixt device
 
+  // ixt device member pushes
+  /*  S  */ EO_PUSH_DEVIXT_ENT,   // push entry of ixt device
+
   // row device pushes
   /*  S  */ EO_PUSH_DEVROW_ALT,     // push alt row device
   /*  S  */ EO_PUSH_DEVROW_DST,     // push dst row device
   /*  S  */ EO_PUSH_DEVROW_SRC,     // push src row device
 
+
   // push RLU
+  /*  S  */ EO_PUSH_RLU_ENT,        // push ent from the rlu
   /*  S  */ EO_PUSH_RLU_ENTWRK,     // push entwrk from the rlu
   /*  S  */ EO_PUSH_RLU_INDEXDEF,   // push indexdef from the rlu
   /*  S  */ EO_PUSH_RLU_INDEXTREE,  // push indextree from the rlu
@@ -313,9 +318,7 @@ enum eEO : u1 // expression operators
   /*  D  */ EO_IXT_ALT_BEGIN,    // begin linear traverse                        --to go
   /*  D  */ EO_IXT_ALT_NEXT,     // move to next entry                           --to go
   /*  D  */ EO_DEVIXT_CMP_KEYS,  // compare keys of two devices
-  /*  D  */ EO_DEVIXT_CMP_ENTKEY,// compare ent key to debice key
-  /*  D  */ EO_IXT_POS_ALTBYSRC, // position alt ixt using src.key
-  /*  D  */ EO_IXT_POS_ALTBYWRK, // position alt ixt using entwrk.key
+  /*  D  */ EO_DEVIXT_POS_BYKEY, // position dev ixt by key
 
   /*  D  */ EO_DEVIXT_ENT_PRINT, // print ent
 
@@ -404,12 +407,16 @@ static Stz* aEO[]
   /*    */ "EO_PUSH_DEVIXT_SRC"_Stz,
   /*    */ "EO_PUSH_DEVIXT_TMP"_Stz,
 
+  // ixt device member pushes
+  /*    */ "EO_PUSH_DEVIXT_ENT"_Stz,
+
   // row device pushes
   /*    */ "EO_PUSH_DEVROW_ALT"_Stz,
   /*    */ "EO_PUSH_DEVROW_DST"_Stz,
   /*    */ "EO_PUSH_DEVROW_SRC"_Stz,
 
   // push rlu
+  /*    */ "EO_PUSH_RLU_ENT"_Stz,
   /*    */ "EO_PUSH_RLU_ENTWRK"_Stz,
   /*    */ "EO_PUSH_RLU_INDEXDEF"_Stz,
   /*    */ "EO_PUSH_RLU_INDEXTREE"_Stz,
@@ -684,9 +691,7 @@ static Stz* aEO[]
   /*    */ "EO_IXT_ALT_NEXT"_Stz,
   /*    */ //"EO_IXT_ALT_PRINT"_Stz,
   /*    */ "EO_DEVIXT_CMP_KEYS"_Stz,
-  /*    */ "EO_DEVIXT_CMP_ENTKEY"_Stz,
-  /*    */ "EO_IXT_POS_ALTBYSRC"_Stz,
-  /*    */ "EO_IXT_POS_ALTBYWRK"_Stz,
+  /*    */ "EO_DEVIXT_POS_BYKEY"_Stz,
 
   /*    */ "EO_DEVIXT_ENT_PRINT"_Stz,
 
@@ -781,12 +786,16 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_PUSH_DEVIXT_SRC
   { EA_NONE,    0 },  // EO_PUSH_DEVIXT_TMP
 
-  // Ixt device pushes
+  // ixt device member pushes
+  { EA_NONE,    0 },  // EO_PUSH_DEVIXT_ENT
+
+  // row device pushes
   { EA_NONE,    0 },  // EO_PUSH_DEVROW_ALT
   { EA_NONE,    0 },  // EO_PUSH_DEVROW_DST
   { EA_NONE,    0 },  // EO_PUSH_DEVROW_SRC
 
   // push rlu
+  { EA_NONE,    0 },  // EO_PUSH_RLU_ENT
   { EA_NONE,    0 },  // EO_PUSH_RLU_ENTWRK
   { EA_NONE,    0 },  // EO_PUSH_RLU_INDEXDEF
   { EA_NONE,    0 },  // EO_PUSH_RLU_INDEXTREE
@@ -1061,9 +1070,7 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_IXT_ALT_NEXT
   //{ EA_NONE,    0 },  // EO_IXT_ALT_PRINT
   { EA_NONE,    0 },  // EO_DEVIXT_CMP_KEYS
-  { EA_NONE,    0 },  // EO_DEVIXT_CMP_ENTKEY
-  { EA_NONE,    0 },  // EO_IXT_POS_ALTBYSRC
-  { EA_NONE,    0 },  // EO_IXT_POS_ALTBYWRK
+  { EA_NONE,    0 },  // EO_DEVIXT_POS_BYKEY
 
   { EA_NONE,    0 },  // EO_DEVIXT_ENT_PRINT
 

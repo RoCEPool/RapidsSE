@@ -1388,6 +1388,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // ixt device member pushes
+      case EO_PUSH_DEVIXT_ENT: ArgNil(); // push entry
+        dLU0(EO_PUSH_DEVIXT_ENT);
+        vDev_IXT_PUSH_ENT(&aiDstk);
+        break;//+endCase
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // row device pushes
       case EO_PUSH_DEVROW_ALT: ArgNil(); // push columnn length
         dLU0(EO_PUSH_DEVROW_ALT);
@@ -1402,6 +1409,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_PUSH_DEVROW_SRC: ArgNil(); // push columnn length
         dLU0(EO_PUSH_DEVROW_SRC);
         P_PushPtr(aRluCommon->m_pDevSrcRow);
+        break;//+endCase
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // RLU pushes
+      case EO_PUSH_RLU_ENT: ArgNil(); // push ent
+        dLU0(EO_PUSH_RLU_ENT);
+        P_PushPtr(aRluCommon->m_aWrkEnt);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -2767,25 +2781,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_IXT_CMP_KEYS(&aiDstk);
         break;//+endCase
 
-      case EO_DEVIXT_CMP_ENTKEY: ArgNil(); // compare ent.key to dev.key
-        dLU0(EO_DEVIXT_CMP_ENTKEY);
-        vDev_IXT_CMP_ENTKEY(&aiDstk);
-        break;//+endCase
-
-      case EO_IXT_POS_ALTBYSRC: { ArgNil(); // position alt ixt using src.key
-        dLU0(EO_IXT_POS_ALTBYSRC);
-        void *aAltEnt = aDev_IXT_POS_ALTBYSRC(pLU);
-        //aRluCommon->m_aAltEntArray = aRluCommon->m_aEntArray;
-        *(++aiDstk) = (i8) aAltEnt;
-      }
-        break;//+endCase
-
-      case EO_IXT_POS_ALTBYWRK: { ArgNil(); // position alt ixt using entwrk.key
-        dLU0(EO_IXT_POS_ALTBYWRK);
-        void *aAltEnt = aDev_IXT_POS_ALTBYWRK(pLU);
-        //aRluCommon->m_aAltEntArray = aRluCommon->m_aEntArray;
-        *(++aiDstk) = (i8) aAltEnt;
-      }
+      case EO_DEVIXT_POS_BYKEY: ArgNil(); // position alt ixt using src.key
+        dLU0(EO_DEVIXT_POS_BYKEY);
+        vDev_IXT_POS_BYKEY(&aiDstk);
         break;//+endCase
 
       case EO_DEVIXT_ENT_PRINT: ArgNil(); // print ent

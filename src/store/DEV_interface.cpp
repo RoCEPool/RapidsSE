@@ -555,7 +555,7 @@ void vDev_IXT_INDEXNM_SET(i8** aaiDstk)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compare keys of two devices                                                 */
+/* compare keys of two devices                                                */
 /*----------------------------------------------------------------------------*/
 void vDev_IXT_CMP_KEYS(i8** aaiDstk)
 {
@@ -563,17 +563,17 @@ void vDev_IXT_CMP_KEYS(i8** aaiDstk)
 
   i8 *aiDstk = *aaiDstk;
 
-  // pop the alt device
-  DevIXT* pDevSecondIXT = _pDevIXT(P_PopPtr());
+  // pop the second Ent
+  Ent* pEntSecond = (Ent*)(P_PopPtr());
 
-  // pop the src device
-  DevIXT* pDevFirstIXT = _pDevIXT(P_PopPtr());
+  // pop the first Ent
+  Ent* pEntFirst = (Ent*)(P_PopPtr());
 
   // get the entries from the devices
-  Key* aFirstKey = pDevFirstIXT->m_aEnt->aKey();
-  Key* aSecondKey = pDevSecondIXT->m_aEnt->aKey();
+  Key* aFirstKey = pEntFirst->aKey();
+  Key* aSecondKey = pEntSecond->aKey();
 
-  if (KE_GENERAL == pDevFirstIXT->m_aEnt->eKind()) {
+  if (KE_GENERAL == pEntFirst->eKind()) {
     eKC  eCmp = Key::eCompare(aFirstKey,aSecondKey);
   
     if (KC_BEFORE == eCmp)
@@ -586,52 +586,11 @@ void vDev_IXT_CMP_KEYS(i8** aaiDstk)
   }
   else {
 
-    i8 iRes = ((Ent_int *) (pDevFirstIXT->m_aEnt))->m_iIntElm0 ==
-              ((Ent_int *) (pDevSecondIXT->m_aEnt))->m_iIntElm0;
+    i8 iRes = ((Ent_int *) (pEntFirst))->m_iIntElm0 ==
+              ((Ent_int *) (pEntSecond))->m_iIntElm0;
 
     I_PushInt(iRes);
   }
-  *aaiDstk = aiDstk;
-}
-
-/*----------------------------------------------------------------------------*/
-/* compare ent.key to dev.key                                                 */
-/*----------------------------------------------------------------------------*/
-void vDev_IXT_CMP_ENTKEY(i8** aaiDstk)
-{
-  _static_
-
-  i8 *aiDstk = *aaiDstk;
-
-  // pop wrk ent
-  EntWrk *pEntWrk = (EntWrk*)P_PopPtr();
-
-  // pop the device
-  DevIXT* pDevIXT = _pDevIXT(P_PopPtr());
-
-  Ent *pWrkEnt = (Ent*)pEntWrk->aEnt();
-  Key* aWrkKey = pWrkEnt->aKey();
-
-  Key* aDevKey = pDevIXT->m_aEnt->aKey();
-
-  if (KE_GENERAL == pDevIXT->m_aEnt->eKind()) {
-  
-    eKC  eCmp = Key::eCompare(aWrkKey,aDevKey);
-
-    if (KC_BEFORE == eCmp)
-      I_PushInt(-1)
-    else
-    if (KC_SAME == eCmp)
-      I_PushInt(0)
-    else
-      I_PushInt(1);
-  }
-  else {
-    i8 iRes = ((Ent_int *) (pWrkEnt))->m_iIntElm0 ==
-              ((Ent_int *) (pDevIXT->m_aEnt))->m_iIntElm0;
-    I_PushInt(iRes);
-  }
-
   *aaiDstk = aiDstk;
 }
 
@@ -739,60 +698,31 @@ void vDev_IXT_INDEXTREE_SET(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /*  position alt ixt using src.key                                            */
 /*----------------------------------------------------------------------------*/
-Ent_int* aDev_IXT_POS_ALTBYSRC(void* aLU)
+void vDev_IXT_POS_BYKEY(i8** aaiDstk)
 {
   _static_
 
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
+  i8 *aiDstk = *aaiDstk;
+
+  // pop the entry
+  Ent* aEnt = (Ent*)P_PopPtr();
+  Key* aKey = aEnt->aKey();
+
+  // pop the device
+  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
+
+  pDevIxt->m_aEnt =
+      pDevIxt->m_pIdxTree->aPositionPriorEntry(aKey,
+                                       &pDevIxt->m_pEntBuffer);
   
-  Key* aSrcKey = pLogicUnit->m_pDevSrcIxt->m_aEnt->aKey();
-  
-  pLogicUnit->m_pDevAltIxt->m_aEnt =
-    pLogicUnit->m_pDevAltIxt->m_pIdxTree->aPositionPriorEntry(aSrcKey,
-                                       &pLogicUnit->m_pDevAltIxt->m_pEntBuffer);
-  
-  if (pLogicUnit->m_pDevAltIxt->m_pEntBuffer) {
-    
-//    pLogicUnit->m_xRluCommon.m_aEntArray =
-//      (Ent_int*)pLogicUnit->m_pDevAltIxt->m_pEntBuffer->aEntArray();
-    
-    if (pLogicUnit->m_pDevAltIxt->m_aEnt)
-      return (Ent_int*)pLogicUnit->m_pDevAltIxt->m_aEnt;
-    else
-      return nullptr;
+  if (pDevIxt->m_pEntBuffer) {
+    P_PushPtr(pDevIxt->m_aEnt);
   }
-  else
-    return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/*  position alt ixt using entwrk.key                                         */
-/*----------------------------------------------------------------------------*/
-Ent_int* aDev_IXT_POS_ALTBYWRK(void* aLU)
-{
-  _static_
-
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-
-  Ent *pEnt = (Ent*)pLogicUnit->m_xRluCommon.m_aWrkEnt;
-  Key* aWrkKey = pEnt->aKey();
-  
-  pLogicUnit->m_pDevAltIxt->m_aEnt =
-    pLogicUnit->m_pDevAltIxt->m_pIdxTree->aPositionPriorEntry(aWrkKey,
-                                       &pLogicUnit->m_pDevAltIxt->m_pEntBuffer);
-  
-  if (pLogicUnit->m_pDevAltIxt->m_pEntBuffer) {
-    
-//    pLogicUnit->m_xRluCommon.m_aEntArray =
-//      (Ent_int*)pLogicUnit->m_pDevAltIxt->m_pEntBuffer->aEntArray();
-
-    if (pLogicUnit->m_pDevAltIxt->m_aEnt)
-      return (Ent_int*)pLogicUnit->m_pDevAltIxt->m_aEnt;
-    else
-      return nullptr;
+  else {
+    P_PushPtr(nullptr);
   }
-  else
-    return nullptr;
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -900,6 +830,23 @@ void vDev_IXT_POS_UBOUND_LT(i8** aaiDstk)
   }
   else
       P_PushPtr( nullptr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* push entry of devixt                                                       */
+/*----------------------------------------------------------------------------*/
+void vDev_IXT_PUSH_ENT(i8** aaiDstk)
+{
+  _static_
+
+  i8 *aiDstk = *aaiDstk;
+
+  // pop the device
+  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
+
+  P_PushPtr(pDevIxt->m_aEnt);
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/

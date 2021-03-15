@@ -31,7 +31,6 @@ void vDev_IXT_ENT_PUSHELMI0(i8** aaiDstk);
 void vDev_IXT_ENT_PUSHELMS0(i8** aaiDstk); // NOT COMPLETE!!
 void vDev_IXT_ENT_PUSHUPPER(i8** aaiDstk);
 void vDev_IXT_CMP_KEYS(i8** aaiDstk);
-void vDev_IXT_CMP_ENTKEY(i8** aaiDstk);
 void vDev_IXT_DEL_ENT(i8** aaiDstk);
 void vDev_IXT_DUMP(i8** aaiDstk);
 void vDev_IXT_ENT_PRINT(i8** aaiDstk);
@@ -43,14 +42,13 @@ void vDev_IXT_INDEXTREE_SET(i8** aaiDstk);
 struct Ent_int* aDev_IXT_INS_ENT(void* aLU, void* aIXT);
 void vDev_IXT_SET_ENT(void* aLU, void* aIXT, void* aEnt);
 void vDev_IXT_TMP_ENTRIES(i8** aaiDstk);
-
-struct Ent_int* aDev_IXT_POS_ALTBYSRC(void* aLU);
-struct Ent_int* aDev_IXT_POS_ALTBYWRK(void* aLU);
+void vDev_IXT_POS_BYKEY(i8** aaiDstk);
 
 void vDev_IXT_POS_LBOUND(i8** aaiDstk);
 void vDev_IXT_POS_UBOUND(i8** aaiDstk);
 
 void vDev_IXT_POS_UBOUND_LT(i8** aaiDstk);
+void vDev_IXT_PUSH_ENT(i8** aaiDstk);
 
 void vDev_IXT_IDX_BEGIN(i8** aaiDstk);
 void vDev_IXT_IDX_NEXT(i8** aaiDstk);
