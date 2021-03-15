@@ -2685,32 +2685,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_IXT_TMP_ENTRIES(&aiDstk);
         //dLU1(EO_DEVIXT_IDX_ENTRIES,iRes);
         break;//+endCase
-
-
-
-      case EO_IXT_SRC_BEGIN: { ArgNil(); // begin linear traverse
-//        dLU0(EO_IXT_SRC_BEGIN);
-//        void *aSrcEnt =
-//            aDev_IXT_TRV_BEGIN_OLD(pLU, aRluCommon->m_pDevSrcIxt);
-//        //aRluCommon->m_aSrcEntArray = aRluCommon->m_aEntArray;
-//        *(++aiDstk) = (i8) aSrcEnt;
-      }
-      RASSERT(0);
-      break;//+endCase
         
       case EO_DEVIXT_LBOUND: ArgNil(); // pos in buffer to entry before LBOUND
         dLU0(EO_DEVIXT_LBOUND);
         vDev_IXT_POS_LBOUND(&aiDstk);
       break;//+endCase
-        
-      case EO_IXT_SRC_NEXT: { ArgNil(); // move to next entry
-//        dLU0(EO_IXT_SRC_NEXT);
-//        void *aSrcEnt =
-//            aDev_IXT_TRV_NEXT_OLD(pLU, aRluCommon->m_pDevSrcIxt);
-//        *(++aiDstk) = (i8) aSrcEnt;
-      }
-      RASSERT(0);
-        break;//+endCase
 
       case EO_DEVIXT_SRC_UBOUND: ArgNil(); // pos in buffer to entry for UBOUND
         dLU0(EO_DEVIXT_SRC_UBOUND);
