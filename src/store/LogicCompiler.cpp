@@ -60,12 +60,13 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_IXT_COL_PUSHONE_PST"_Stz,(const void *) vDev_IXT_COL_PUSHONE_PST   },
 
   { "vDev_IXT_CRWBUF_BEGIN"_Stz,   (const void *) vDev_IXT_CRWBUF_BEGIN      },
-  { "vDev_IXT_DEREF"_Stz,          (const void *) vDev_IXT_DEREF             },
   { "vDev_IXT_CRWBUF_NEXT"_Stz,    (const void *) vDev_IXT_CRWBUF_NEXT       },
   { "vDev_IXT_CRWBUF_NULL"_Stz,    (const void *) vDev_IXT_CRWBUF_NULL       },
   { "vDev_IXT_CRWBUF_TEST"_Stz,    (const void *) vDev_IXT_CRWBUF_TEST       },
 
   { "vDev_IXT_ENT_COMPARE"_Stz,   (const void *) vDev_IXT_ENT_COMPARE       },
+  { "vDev_IXT_ENT_DEREF"_Stz,     (const void *) vDev_IXT_ENT_DEREF         },
+
   { "vDev_IXT_ENT_FIND"_Stz,      (const void *) vDev_IXT_ENT_FIND          },
   { "vDev_IXT_ENT_NEXT"_Stz,      (const void *) vDev_IXT_ENT_NEXT          },
   { "vDev_IXT_ENT_POSPRIOR"_Stz,  (const void *) vDev_IXT_ENT_POSPRIOR      },

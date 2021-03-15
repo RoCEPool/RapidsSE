@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 void vDev_IXT_CRWBUF_BEGIN(i8** aaiDstk);
-void vDev_IXT_DEREF(i8** aaiDstk);
 void vDev_IXT_CRWBUF_NEXT (i8** aaiDstk);
 void vDev_IXT_CRWBUF_NULL (i8** aaiDstk);
 void vDev_IXT_CRWBUF_TEST (i8** aaiDstk);
@@ -12,6 +11,7 @@ void vDev_IXT_CRWBUF_TEST (i8** aaiDstk);
 // prototypes for dev IXT
 
 void vDev_IXT_ENT_COMPARE  (i8** aaiDstk);
+void vDev_IXT_ENT_DEREF(i8** aaiDstk);
 void vDev_IXT_ENT_FIND     (i8** aaiDstk);
 void vDev_IXT_ENT_NEXT     (i8** aaiDstk);
 void vDev_IXT_ENT_POSPRIOR (i8** aaiDstk);

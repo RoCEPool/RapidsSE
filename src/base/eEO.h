@@ -243,12 +243,12 @@ enum eEO : u1 // expression operators
 
   // device crwbuffer operators
   /*  S  */ EO_DEVIXT_CRWBUF_BEGIN, // begin crw buffer traverse
-  /*  S  */ EO_DEVIXT_DEREF,        // deref crw using Ent.ref
   /*  S  */ EO_DEVIXT_CRWBUF_NEXT,  // move to next row in crw buffer
   /*  S  */ EO_DEVIXT_CRWBUF_NULL,  // null crw buffer
   /*  S  */ EO_DEVIXT_CRWBUF_TEST,  // test if there is a crw buffer
 
   // entry
+  /*  S  */ EO_DEVIXT_ENT_DEREF,     // deref crw using Ent.ref
   /*  D  */ EO_DEVIXT_ENT_FINDI,     // find entry with int key
   /*  D  */ EO_DEVIXT_ENT_NEXT,      // move to next m_pEnt
   /*  D  */ EO_DEVIXT_ENT_POSPRIOR,  // position m_pEnt prior using m_oEntWrk.key
@@ -567,12 +567,12 @@ static Stz* aEO[]
 
   // device crwbuffer operators
   /*    */ "EO_DEVIXT_CRWBUF_BEGIN"_Stz,
-  /*    */ "EO_DEVIXT_DEREF"_Stz,
   /*    */ "EO_DEVIXT_CRWBUF_NEXT"_Stz,
   /*    */ "EO_DEVIXT_CRWBUF_NULL"_Stz,
   /*    */ "EO_DEVIXT_CRWBUF_TEST"_Stz,
 
   // entry
+  /*    */ "EO_DEVIXT_ENT_DEREF"_Stz,
   /*    */ "EO_DEVIXT_ENT_FINDI"_Stz,
   /*    */ "EO_DEVIXT_ENT_NEXT"_Stz,
   /*    */ "EO_DEVIXT_ENT_POSPRIOR"_Stz,
@@ -899,12 +899,12 @@ static EoArg EoArgs[]
 
   // device crwbuffer operators
   { EA_NONE,    0 },  // EO_DEVIXT_CRWBUF_BEGIN
-  { EA_NONE,    0 },  // EO_DEVIXT_DEREF
   { EA_NONE,    0 },  // EO_DEVIXT_CRWBUF_NEXT
   { EA_NONE,    0 },  // EO_DEVIXT_CRWBUF_NULL
   { EA_NONE,    0 },  // EO_DEVIXT_CRWBUF_TEST
 
   // entry
+  { EA_NONE,    0 },  // EO_DEVIXT_RNT_DEREF
   { EA_NONE,    0 },  // EO_DEVIXT_ENT_FINDI
   { EA_NONE,    0 },  // EO_DEVIXT_ENT_NEXT
   { EA_NONE,    0 },  // EO_DEVIXT_ENT_POSPRIOR

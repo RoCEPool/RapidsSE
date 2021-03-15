@@ -2368,11 +2368,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_IXT_CRWBUF_NEXT(&aiDstk);
         break;//+endCase
 
-      case EO_DEVIXT_DEREF: ArgNil(); // deref Crw using m_aEnt.ref
-        dLU0(EO_DEVIXT_DEREF);
-        vDev_IXT_DEREF(&aiDstk);
-        break;//+endCase
-
       case EO_DEVIXT_CRWBUF_NULL: ArgNil(); // null the crw
         dLU0(EO_DEVIXT_CRWBUF_NULL);
         vDev_IXT_CRWBUF_NULL(&aiDstk);
@@ -2385,6 +2380,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entry
+      case EO_DEVIXT_ENT_DEREF: ArgNil(); // deref Crw using m_aEnt.ref
+        dLU0(EO_DEVIXT_ENT_DEREF);
+        vDev_IXT_ENT_DEREF(&aiDstk);
+        break;//+endCase
+
       case EO_DEVIXT_ENT_FINDI: ArgNil(); // find entry with int key
         dLU0(EO_DEVIXT_ENT_FINDI);
         P_PushPtr(aRluCommon->m_aWrkEnt);
