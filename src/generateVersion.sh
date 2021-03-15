@@ -1,7 +1,8 @@
 #!/bin/bash
 
-DIR="$(dirname "$0")"
-VERSION_FILE="${DIR}/Version.h"
+readonly DIR="$(dirname "$0")"
+readonly VERSION_FILE="${DIR}/Version.h"
+readonly GIT_DESCRIBE_CMD=("git" "describe" "--long" "--match=v*")
 
 BUILD_GIT_HASH="$(git rev-parse --short=16 HEAD)"
 BUILD_DATE="$(date)"
@@ -11,6 +12,36 @@ BUILD_BRANCH="$(git rev-parse --abbrev-ref HEAD)"
 
 function updateVersionFile() {
   rm -f "${VERSION_FILE}"
+
+  # Extract out the version number information
+  local regex
+  local git_version_str
+
+  regex="^v([0-9]+)\.([0-9]+)\.([0-9]+)(-[^-]+)?-([0-9]+)-([[:alnum:]]+)$"
+  git_version_str="$(${GIT_DESCRIBE_CMD[*]})"
+
+  if [[ "${git_version_str}" =~ ${regex} ]]
+  then
+    SE_MAJOR_VER="${BASH_REMATCH[1]}"
+    SE_MINOR_VER="${BASH_REMATCH[2]}"
+    SE_PATCH_VER="${BASH_REMATCH[3]}"
+    SE_VER_LABEL="${BASH_REMATCH[4]}"
+    SE_BUILD_NUM="${BASH_REMATCH[5]}"
+    SE_COMMIT_HASH="${BASH_REMATCH[6]}"
+
+  else
+    >&2 echo "Could not parse the SE version string: ${git_version_str}"
+    exit 1
+  fi
+
+  # Form a string of the form x.y.z-label
+  SE_VERSION_STR="${SE_MAJOR_VER}.${SE_MINOR_VER}.${SE_PATCH_VER}${SE_VER_LABEL}"
+
+  # If the version label is not null then strip off the leading '-'
+  if [ -n "${SE_VER_LABEL}" ]
+  then
+    SE_VER_LABEL="${SE_VER_LABEL:1}"
+  fi
 
   {
     echo "/*============================================================================*/"
@@ -24,6 +55,12 @@ function updateVersionFile() {
     echo "static const Stz* C_BUILD_HOSTNAME = \"${BUILD_HOSTNAME}\"_Stz;"
     echo "static const Stz* C_BUILD_USERNAME = \"${BUILD_USERNAME}\"_Stz;"
     echo "static const Stz* C_BUILD_BRANCH   = \"${BUILD_BRANCH}\"_Stz;"
+    echo "static const Stz* C_VERSION_STRING = \"${SE_VERSION_STR}\"_Stz;"
+    echo "static const i8   C_MAJOR_VERSION  = ${SE_MAJOR_VER};"
+    echo "static const i8   C_MINOR_VERSION  = ${SE_MINOR_VER};"
+    echo "static const i8   C_PATCH_VERSION  = ${SE_PATCH_VER};"
+    echo "static const i8   C_VERSION_NUMBER = $(printf "0x%02x%02x%02x" "${SE_MAJOR_VER}" "${SE_MINOR_VER}" "${SE_PATCH_VER}");"
+    echo "static const Stz* C_VERSION_LABEL  = \"${SE_VER_LABEL}\"_Stz;"
     echo ""
     echo "/*============================================================================*/"
     echo "/* end                                                                        */"
