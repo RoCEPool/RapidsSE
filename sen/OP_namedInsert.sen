@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* OP_eventWrite.sen -- Operator eventWrite                                   */
+/* OP_namedInsert.sen -- Operator namedInsert                                 */
 /*============================================================================*/
 
-" OP_eventWrite.sen" .verbose
+" OP_namedInsert.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_LOCKSTATS ...                                               */
 /*----------------------------------------------------------------------------*/
-: OP_eventWrite_LockStats \handler
+: OP_namedInsert_LockStats \handler
 
   //"eventWrite_InfoSet --- --- ---" .
 
@@ -63,7 +63,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_PROFILE ...                                                 */
 /*----------------------------------------------------------------------------*/
-: OP_eventWrite_Profile \handler
+: OP_namedInsert_Profile \handler
 
   //"eventWrite_Profile --- --- ---" .
 
@@ -90,8 +90,8 @@
 
   op__topology
 
-  find: OP_eventWrite_LockStats ZK_LOCKSTATS op[].handler!
-  find: OP_eventWrite_Profile   ZK_PROFILE   op[].handler!
+  find: OP_namedInsert_LockStats ZK_LOCKSTATS op[].handler!
+  find: OP_namedInsert_Profile   ZK_PROFILE   op[].handler!
 
   op__loop
 
