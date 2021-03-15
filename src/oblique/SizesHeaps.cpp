@@ -60,6 +60,7 @@
 #include "Pot.hpp"
 
 #include "InfoSet.hpp"
+#include "NamedBuffer.hpp"
 #include "StreamSet.hpp"
 #include "RowCoder.hpp"
 
@@ -320,6 +321,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Mutex),              HT_T_TINY    ,0 }, // CN_MUTEX
 
   { 'N' - ('A' - 1),            HT_INVALID   ,0 }, // CN__N__
+  { sizeof(NamedBuffer),        HT_T_LARGE   ,0 }, // CN_NAMEDBUFFER
   { sizeof(NextGid),            HT_INVALID   ,0 }, // CN_NEXTGID
   { sizeof(NmlStr),             HT_T_MEDIUM  ,0 }, // CN_NMLSTR
   { sizeof(Node),               HT_T_TINY    ,0 }, // CN_NODE

@@ -152,6 +152,7 @@ enum eCN : u2 // Class Number
   /* */ CN_MUTEX,
 
   /* */ CN__N__,
+  /* */ CN_NAMEDBUFFER,
   /* */ CN_NEXTGID,
   /* */ CN_NMLSTR,
   /* */ CN_NODE,
@@ -484,6 +485,7 @@ static Stz* aCN[]
   /* */ "MUTEX"_Stz,                // CN_MUTEX
  
   /* */ "_N__"_Stz,                 // CN__N__
+  /* */ "NAMEDBUFFER"_Stz,          // CN_NAMEDBUFFER
   /* */ "NEXTGID"_Stz,              // CN_NEXTGID
   /* */ "NMLSTR"_Stz,               // CN_NMLSTR
   /* */ "NODE"_Stz,                 // CN_NODE
