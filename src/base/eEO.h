@@ -323,13 +323,6 @@ enum eEO : u1 // expression operators
   /*     */ EO_DEVROW_ZERO,      // zero destination row in row dev
 
   // row operators
-  /*  D  */ EO_ROW_DST_POPCOLI,  // pop and deposit top into dst column
-  /*  D  */ EO_ROW_DST_POPCOLS,  // pop and deposit top into dst column
-  /*  D  */ EO_ROW_DST_PUSHCOLI, // push dst column
-  /*  D  */ EO_ROW_SRC_PUSHCOLI, // push src column (integer)
-  /*  D  */ EO_ROW_SRC_PUSHCOLS, // push src column (string)
-  /*  D  */ EO_ROW_ALT_PUSHCOLI, // push alt column
-
   /*    */ EO_DEVROW_POPCOLI,  // pop and deposit top into column
   /*    */ EO_DEVROW_POPCOLS,  // pop and deposit top string into column
   /*    */ EO_DEVROW_PUSHCOLI, // push column
@@ -667,13 +660,6 @@ static Stz* aEO[]
   /*     */ "EO_DEVROW_ZERO"_Stz,
 
   // row operators
-  /*    */ "EO_ROW_DST_POPCOLI"_Stz,
-  /*    */ "EO_ROW_DST_POPCOLS"_Stz,
-  /*    */ "EO_ROW_DST_PUSHCOLI"_Stz,
-  /*    */ "EO_ROW_SRC_PUSHCOLI"_Stz,
-  /*    */ "EO_ROW_SRC_PUSHCOLS"_Stz,
-  /*    */ "EO_ROW_ALT_PUSHCOLI"_Stz,
-
   /*    */ "EO_DEVROW_POPCOLI"_Stz,
   /*    */ "EO_DEVROW_POPCOLS"_Stz,
   /*    */ "EO_DEVROW_PUSHCOLI"_Stz,
@@ -1001,28 +987,8 @@ static EoArg EoArgs[]
   
   // pot
   { EA_NONE,    0 },  // EO_POT_COMPLETED
-/*
+
   // row / rowslab
-  { EA_NONE,    0 },  // EO_ROW_DST_PRINT
-  { EA_NONE,    0 },  // EO_ROW_DST_RESET
-  { EA_NONE,    0 },  // EO_ROW_DST_NEW
-  { EA_NONE,    0 },  // EO_ROW_DST_SET
-  { EA_NONE,    0 },  // EO_ROW_DST_TESTROW
-  { EA_NONE,    0 },  // EO_ROW_DST_ZERO
-  { EA_NONE,    0 },  // EO_ROW_SRC_BEGIN
-  { EA_NONE,    0 },  // EO_ROW_SRC_NEXT
-  { EA_NONE,    0 },  // EO_ROW_SRC_NULL
-  { EA_NONE,    0 },  // EO_ROW_SRC_PRINT
-  { EA_NONE,    0 },  // EO_ROW_SRC_PUSHOFS
-  { EA_NONE,    0 },  // EO_ROW_SRC_SETBYOFS
-  { EA_NONE,    0 },  // EO_ROW_SRC_TEST
-  { EA_NONE,    0 },  // EO_ROW_ALT_BEGIN
-  { EA_NONE,    0 },  // EO_ROW_ALT_NEXT
-  { EA_NONE,    0 },  // EO_ROW_ALT_PRINT
-  { EA_NONE,    0 },  // EO_ROW_ALT_PUSHOFS
-  { EA_NONE,    0 },  // EO_ROW_ALT_SETBYOFS
-*/
-    // row / rowslab
   { EA_NONE,    0 },  // EO_DEVROW_BEGIN
   { EA_NONE,    0 },  // EO_DEVROW_NEXT
   { EA_NONE,    0 },  // EO_DEVROW_NEW
@@ -1035,14 +1001,6 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_DEVROW_TESTBUFFER
   { EA_NONE,    0 },  // EO_DEVROW_TESTROW
   { EA_NONE,    0 },  // EO_DEVROW_ZERO
-
-  // row operators
-  { EA_SUBSCR,  8 },  // EO_ROW_DST_POPCOLI
-  { EA_SUBSCR,  8 },  // EO_ROW_DST_POPCOLS
-  { EA_SUBSCR,  8 },  // EO_ROW_DST_PUSHCOLI
-  { EA_SUBSCR,  8 },  // EO_ROW_SRC_PUSHCOLI
-  { EA_SUBSCR,  8 },  // EO_ROW_SRC_PUSHCOLS
-  { EA_SUBSCR,  8 },  // EO_ROW_ALT_PUSHCOLI
 
   // row operators
   { EA_SUBSCR,  8 },  // EO_DEVROW_POPCOLI

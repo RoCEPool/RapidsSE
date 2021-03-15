@@ -2623,51 +2623,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // pay load
-      case EO_PAY_ADDRESS: { ArgNil(); // get payload address
+      case EO_PAY_ADDRESS: ArgNil(); // get payload address
         dLU0(EO_PAY_ADDRESS);
-               aiPayload = aDev_PAY_ADDRESS(&aiDstk);
-//      {
-//        i8* aiCheck = 0;
-//
-//        if (aRluCommon->m_aTmpEnt->Rrf.m_uKind) {
-//          aiCheck = (i8*) ( (char*)aRluCommon->m_aTmpEnt
-//                                     + sizeof(struct Ent_int)
-//                                     + 8
-//                           );
-//        }
-//        else {
-//          aiCheck = (i8*) ( (char*)aRluCommon->m_aTmpEnt
-//                                     + sizeof(struct Ent_int)
-//                                     + aRluCommon->m_aTmpEnt->m_iIntElm0
-//                                     + 8
-//                           );
-//        }
-//        if (aiCheck != aiPayload) {
-//          printf("EO_PAY_ADDRESS does not match %p v %p\n",aiPayload,aiCheck);
-//          iTopA = 0;
-//          iTopA = 1 / iTopA;
-//        }
-//      }
-
-        //void *pDevIXT = P_PopPtr();
-        //DevIXT *pDevIXT = _pDevIXT(P_PopPtr());
-        //RASSERT((Ent_int *) pDevIXT->m_aEnt == aRluCommon->m_aTmpEnt);
-
-//        if (aRluCommon->m_aTmpEnt->Rrf.m_uKind) {
-//          aiPayload = (i8 *) ((char *) aRluCommon->m_aTmpEnt
-//                              + sizeof(struct Ent_int)
-//                              + 8
-//          );
-//        } else {
-//          aiPayload = (i8 *) ((char *) aRluCommon->m_aTmpEnt
-//                              + sizeof(struct Ent_int)
-//                              + aRluCommon->m_aTmpEnt->m_iIntElm0
-//                              + 8
-//          );
-//        }
-//
-//        RASSERT(iPayload == aiPayload);
-      }
+        aiPayload = aDev_PAY_ADDRESS(&aiDstk);
         break;//+endCase
 
       case EO_PAY_FETCH_COLI: ArgGet(iArg); // fetch a column from entry payload
@@ -2738,119 +2696,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(EO_POT_COMPLETED);
         *(++aiDstk) = aRluCommon->m_bPotCompleted;
         break;//+endCase
-/*
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      // row / rowslab
-      case EO_ROW_DST_PRINT: ArgNil(); // print dst row
-//        dLU0(EO_ROW_DST_PRINT);
-//        vDev_ROW_PRINT(pLU,aRluCommon->m_pDevDstRow);
-        RASSERT(0);
-        break;//+endCase
 
-      case EO_ROW_SRC_PRINT: ArgNil(); // print src row
-//        dLU0(EO_ROW_SRC_PRINT);
-//        vDev_ROW_PRINT(pLU,aRluCommon->m_pDevSrcRow);
-        RASSERT(0);
-        break;//+endCase
-        
-      case EO_ROW_ALT_PRINT: ArgNil(); // print alt row
-//        dLU0(EO_ROW_ALT_PRINT);
-//        vDev_ROW_PRINT(pLU,aRluCommon->m_pDevAltRow);
-        RASSERT(0);
-        break;//+endCase
-        
-      case EO_ROW_DST_NEW: ArgNil(); // create new destination row
-//        dLU0(EO_ROW_DST_NEW);
-//        iRes = iDev_ROW_NEW(pLU,aRluCommon->m_pDevDstRow);
-//        aRluCommon->m_bPotCompleted = iRes;
-        RASSERT(0);
-        break;//+endCase
-
-      case EO_ROW_DST_RESET: ArgNil(); // reset dst rowslab
-//        dLU0(EO_ROW_DST_RESET);
-//        vDev_ROW_RESET(pLU,aRluCommon->m_pDevDstRow);
-        RASSERT(0);
-        break;//+endCase
-       
-      case EO_ROW_DST_SET: ArgNil(); // set dst row
-//        dLU0(EO_ROW_DST_SET);
-//        iTopA = *(aiDstk--);
-//        vDev_ROW_SET(pLU,aRluCommon->m_pDevDstRow, iTopA);
-        RASSERT(0);
-        break;//+endCase
-        
-      case EO_ROW_DST_TESTROW: ArgNil(); // test if there is a destination row
-//        iResdLU0(EO_ROW_DST_TESTROW);
-//        iRes = iDev_ROW_TESTROW(pLU,aRluCommon->m_pDevDstRow);
-//        *(++aiDstk) = iRes;
-        RASSERT(0);
-        break;//+endCase
-        
-      case EO_ROW_DST_ZERO: ArgNil(); // zero destination row
-//        dLU0(EO_ROW_DST_ZERO);
-//        vDev_ROW_ZERO(pLU,aRluCommon->m_pDevDstRow);
-        RASSERT(0);
-        break;//+endCase
-        
-      case EO_ROW_SRC_BEGIN: ArgNil(); // begin src row traverse
-//        dLU0(EO_ROW_SRC_BEGIN);
-//        vDev_ROW_BEGIN(pLU,aRluCommon->m_pDevSrcRow);
-        RASSERT(0);
-        break;//+endCase
-
-      case EO_ROW_SRC_NEXT: ArgNil(); // move to next src row
-//        dLU0(EO_ROW_SRC_NEXT);
-//        iRes = iDev_ROW_NEXT(pLU,aRluCommon->m_pDevSrcRow);
-//        *(++aiDstk) = iRes;
-        RASSERT(0);
-        break;//+endCase
-        
-      case EO_ROW_SRC_NULL: ArgNil(); // null the crw src
-//        dLU0(EO_ROW_SRC_NULL);
-//        vDev_ROW_NULL(pLU,aRluCommon->m_pDevSrcRow);
-        RASSERT(0);
-        break;//+endCase
-        
-      case EO_ROW_SRC_PUSHOFS: ArgNil(); // push offset of source row
-//        dLU0(EO_ROW_SRC_PUSHOFS);
-//        iRes = iDev_ROW_PUSHOFS(pLU,aRluCommon->m_pDevSrcRow);
-//        *(++aiDstk) = iRes;
-        RASSERT(0);
-        break;//+endCase
-
-      case EO_ROW_SRC_SETBYOFS: ArgNil(); // set src row by using offset on stack
-//        dLU0(EO_ROW_SRC_SETBYOFS);
-//        iTopA = *(aiDstk--);
-//        vDev_ROW_SETBYOFS(pLU,aRluCommon->m_pDevSrcRow,iTopA);
-        RASSERT(0);
-        break;//+endCase
-        
-      case EO_ROW_SRC_TEST: ArgNil(); // test for src crw
-//        dLU0(EO_ROW_SRC_TEST);
-//        iRes = iDev_ROW_TEST(pLU,aRluCommon->m_pDevSrcRow);
-//        *(++aiDstk) = iRes;
-        RASSERT(0);
-        break;//+endCase
-        
-      case EO_ROW_ALT_BEGIN: ArgNil(); // not yet implemented
- //       NEVER_REACH;
-        RASSERT(0);
-        break;//+endCase
-
-      case EO_ROW_ALT_NEXT: ArgNil(); // not yet implemented
- //       NEVER_REACH;
-        RASSERT(0);
-        break;//+endCase
-
-      case EO_ROW_ALT_PUSHOFS: ArgNil(); // not yet implemented
- //       NEVER_REACH;
-        RASSERT(0);
-        break;//+endCase
-
-      case EO_ROW_ALT_SETBYOFS: ArgNil(); // not yet implemented
- //       NEVER_REACH;
-        break;//+endCase
-*/
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // rowdev / rowslab
       case EO_DEVROW_BEGIN: ArgNil(); // begin row traverse
@@ -2917,51 +2763,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // row operators
-      case EO_ROW_DST_POPCOLI: ArgGet(iArg); // pop and deposit top into dst column
-//        iTopA = *(aiDstk--);
-//        dLU2(EO_ROW_DST_POPCOLI,iArg,iTopA);
-//        vDev_ROW_POPCOLI(pLU,aRluCommon->m_pDevDstRow,iArg,iTopA);
-        RASSERT(0);
-        break;//+endCase
-        
-      case EO_ROW_DST_POPCOLS: ArgGet(iArg); // pop and deposit top into dst column
-//        dLU1(EO_ROW_DST_POPCOLS,iArg);
-//        szTopA = (Stz*)S_StrAdr();
-//        vDev_ROW_POPCOLS(pLU,aRluCommon->m_pDevDstRow,iArg,szTopA);
-//        S_StrDrp();
-        RASSERT(0);
-        break;//+endCase
-
-      case EO_ROW_DST_PUSHCOLI: ArgGet(iArg); // push dst column
-//        iRes = iDev_ROW_PUSHCOLI(pLU,aRluCommon->m_pDevDstRow,iArg);
-//        dLU2(EO_ROW_DST_PUSHCOLI,iArg,iRes);
-//        *(++aiDstk) = iRes;
-        RASSERT(0);
-        break;//+endCase
-        
-      case EO_ROW_SRC_PUSHCOLI: ArgGet(iArg); // push src column
-//        iRes = iDev_ROW_PUSHCOLI(pLU,aRluCommon->m_pDevSrcRow,iArg);
-//        dLU2(EO_ROW_SRC_PUSHCOLI,iArg,iRes);
-//        *(++aiDstk) = iRes;
-        RASSERT(0);
-        break;//+endCase
-        
-      case EO_ROW_SRC_PUSHCOLS: ArgGet(iArg); // push src column
-//        azSrc = (char*)szDev_ROW_PUSHCOLS(pLU,aRluCommon->m_pDevSrcRow,iArg);
-//        dLU2(EO_ROW_SRC_PUSHCOLS,iArg,(i8)azSrc);
-//        S_PushStr(azSrc);
-        RASSERT(0);
-        break;//+endCase
-        
-      case EO_ROW_ALT_PUSHCOLI: ArgGet(iArg); // push alt column
-//        iRes = iDev_ROW_PUSHCOLI(pLU,aRluCommon->m_pDevAltRow,iArg);
-//        dLU2(EO_ROW_ALT_PUSHCOLI,iArg,iRes);
-//        *(++aiDstk) = iRes;
-        RASSERT(0);
-        break;//+endCase
-
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      // row operators
       case EO_DEVROW_POPCOLI: ArgGet(iArg); // pop and deposit top into dev column
         *(++aiDstk) = iArg;
         dLU2(EO_DEVROW_POPCOLI,iArg,iTopA);
@@ -2975,13 +2776,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       case EO_DEVROW_PUSHCOLI: ArgGet(iArg); // push column
-        dLU1(EO_ROW_SRC_PUSHCOLI,iArg);
+        dLU1(EO_DEVROW_PUSHCOLI,iArg);
         *(++aiDstk) = iArg;
         vDev_ROW_PUSHCOLI(&aiDstk);
         break;//+endCase
 
       case EO_DEVROW_PUSHCOLS: ArgGet(iArg); // push column
-        dLU1(EO_ROW_SRC_PUSHCOLS,iArg);
+        dLU1(EO_DEVROW_PUSHCOLS,iArg);
         *(++aiDstk) = iArg;
         vDev_ROW_PUSHCOLS(&aiDstk);
         break;//+endCase
