@@ -2360,12 +2360,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // device crwbuffer operators
       case EO_DEVIXT_CRWBUF_BEGIN: ArgNil(); // begin row traverse
         dLU0(EO_DEVIXT_CRWBUF_BEGIN);
-        vDev_IXT_BEGIN(&aiDstk);
+        vDev_IXT_CRWBUF_BEGIN(&aiDstk);
         break;//+endCase
 
       case EO_DEVIXT_CRWBUF_NEXT: ArgNil(); // move to next row
         dLU0(EO_DEVIXT_CRWBUF_NEXT);
-        vDev_IXT_NEXT(&aiDstk);
+        vDev_IXT_CRWBUF_NEXT(&aiDstk);
         break;//+endCase
 
       case EO_DEVIXT_DEREF: ArgNil(); // deref Crw using m_aEnt.ref
@@ -2375,12 +2375,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_DEVIXT_CRWBUF_NULL: ArgNil(); // null the crw
         dLU0(EO_DEVIXT_CRWBUF_NULL);
-        vDev_IXT_NULL(&aiDstk);
+        vDev_IXT_CRWBUF_NULL(&aiDstk);
         break;//+endCase
 
       case EO_DEVIXT_CRWBUF_TEST: ArgNil(); // test for crw
         dLU0(EO_DEVIXT_CRWBUF_TEST);
-        vDev_IXT_TEST(&aiDstk);
+        vDev_IXT_CRWBUF_TEST(&aiDstk);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -2515,17 +2515,22 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // index tree operators
       case EO_DEVIXT_IDX_DEL: ArgNil(); // delete current m_aEnt from indexTree
         dLU0(EO_DEVIXT_IDX_DEL);
-        vDev_IXT_DEL_ENT(&aiDstk);
+        vDev_IXT_IDX_DEL(&aiDstk);
         break;//+endCase
 
       case EO_DEVIXT_IDX_DUMP: ArgNil(); // dump index tree
         dLU0(EO_DEVIXT_IDX_DUMP);
-        vDev_IXT_DUMP(&aiDstk);
+        vDev_IXT_IDX_DUMP(&aiDstk);
+        break;//+endCase
+
+      case EO_DEVIXT_IDX_ENTRIES: ArgNil(); // push number of entries in dev index
+        dLU0(EO_DEVIXT_IDX_ENTRIES);
+        vDev_IXT_IDX_ENTRIES(&aiDstk);
         break;//+endCase
 
       case EO_DEVIXT_IDX_INS: ArgNil(); // insert an entry into the indexTree
         dLU0(EO_DEVIXT_IDX_INS);
-        vDev_IXT_INS_ENT(&aiDstk);
+        vDev_IXT_IDX_INS(&aiDstk);
         break;//+endCase
 
       case EO_DEVIXT_IDX_BEGIN: ArgNil(); // begin linear traverse
@@ -2536,11 +2541,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_DEVIXT_IDX_NEXT: ArgNil(); // traverse to next entry
         dLU0(EO_DEVIXT_IDX_NEXT);
         vDev_IXT_IDX_NEXT(&aiDstk);
-        break;//+endCase
-
-      case EO_DEVIXT_IDX_ENTRIES: ArgNil(); // push number of entries in tmp index
-        vDev_IXT_TMP_ENTRIES(&aiDstk);
-        //dLU1(EO_DEVIXT_IDX_ENTRIES,iRes);
         break;//+endCase
         
       case EO_DEVIXT_LBOUND: ArgNil(); // pos in buffer to entry before LBOUND

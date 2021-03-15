@@ -42,7 +42,7 @@ extern void* C_ADR_REGION;
 /*----------------------------------------------------------------------------*/
 /* begin row traverse                                                         */
 /*----------------------------------------------------------------------------*/
-void vDev_IXT_BEGIN(i8** aaiDstk)
+void vDev_IXT_CRWBUF_BEGIN(i8** aaiDstk)
 {
   _static_
 
@@ -89,7 +89,7 @@ void vDev_IXT_DEREF(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* move to next src row                                                       */
 /*----------------------------------------------------------------------------*/
-void vDev_IXT_NEXT(i8** aaiDstk)
+void vDev_IXT_CRWBUF_NEXT(i8** aaiDstk)
 {
   _static_
 
@@ -114,7 +114,7 @@ void vDev_IXT_NEXT(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /*  null the crw buffer                                                       */
 /*----------------------------------------------------------------------------*/
-void vDev_IXT_NULL(i8** aaiDstk)
+void vDev_IXT_CRWBUF_NULL(i8** aaiDstk)
 {
   _static_
 
@@ -131,7 +131,7 @@ void vDev_IXT_NULL(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /*  test if there is a crw src                                                */
 /*----------------------------------------------------------------------------*/
-void vDev_IXT_TEST(i8** aaiDstk)
+void vDev_IXT_CRWBUF_TEST(i8** aaiDstk)
 {
   _static_
 
@@ -489,7 +489,7 @@ void vDev_IXT_CMP_KEYS(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* delete current entry m_aEnt from indexTree                                 */
 /*----------------------------------------------------------------------------*/
-void vDev_IXT_DEL_ENT(i8** aaiDstk)
+void vDev_IXT_IDX_DEL(i8** aaiDstk)
 {
   _static_
 
@@ -504,7 +504,7 @@ void vDev_IXT_DEL_ENT(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* dump index tree                                                            */
 /*----------------------------------------------------------------------------*/
-void vDev_IXT_DUMP(i8** aaiDstk)
+void vDev_IXT_IDX_DUMP(i8** aaiDstk)
 {
   _static_
 
@@ -535,7 +535,7 @@ void vDev_IXT_ENT_PRINT(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* insert an entry into the indexTree                                         */
 /*----------------------------------------------------------------------------*/
-void vDev_IXT_INS_ENT(i8** aaiDstk)
+void vDev_IXT_IDX_INS(i8** aaiDstk)
 {
   _static_
 
@@ -746,9 +746,9 @@ void vDev_IXT_PUSH_ENT(i8** aaiDstk)
 }
 
 /*----------------------------------------------------------------------------*/
-/*  push number of entries in tmp index                                       */
+/*  push number of entries in dev index                                       */
 /*----------------------------------------------------------------------------*/
-void vDev_IXT_TMP_ENTRIES(i8** aaiDstk)
+void vDev_IXT_IDX_ENTRIES(i8** aaiDstk)
 {
   _static_
 

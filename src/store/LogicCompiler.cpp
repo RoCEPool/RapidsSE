@@ -59,11 +59,11 @@ DynamicSymbol gxaDynamicSymbol[]
 
   { "vDev_IXT_COL_PUSHONE_PST"_Stz,(const void *) vDev_IXT_COL_PUSHONE_PST   },
 
-  { "vDev_IXT_BEGIN"_Stz,         (const void *) vDev_IXT_BEGIN         },
-  { "vDev_IXT_DEREF"_Stz,         (const void *) vDev_IXT_DEREF         },
-  { "vDev_IXT_NEXT"_Stz,          (const void *) vDev_IXT_NEXT          },
-  { "vDev_IXT_NULL"_Stz,          (const void *) vDev_IXT_NULL          },
-  { "vDev_IXT_TEST"_Stz,          (const void *) vDev_IXT_TEST          },
+  { "vDev_IXT_CRWBUF_BEGIN"_Stz,   (const void *) vDev_IXT_CRWBUF_BEGIN      },
+  { "vDev_IXT_DEREF"_Stz,          (const void *) vDev_IXT_DEREF             },
+  { "vDev_IXT_CRWBUF_NEXT"_Stz,    (const void *) vDev_IXT_CRWBUF_NEXT       },
+  { "vDev_IXT_CRWBUF_NULL"_Stz,    (const void *) vDev_IXT_CRWBUF_NULL       },
+  { "vDev_IXT_CRWBUF_TEST"_Stz,    (const void *) vDev_IXT_CRWBUF_TEST       },
 
   { "vDev_IXT_ENT_COMPARE"_Stz,   (const void *) vDev_IXT_ENT_COMPARE       },
   { "vDev_IXT_ENT_FIND"_Stz,      (const void *) vDev_IXT_ENT_FIND          },
@@ -84,14 +84,14 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_ENTWRK_SETINTELM"_Stz,  (const void *) vDev_ENTWRK_SETINTELM  },
 
   { "vDev_IXT_CMP_KEYS"_Stz,      (const void *) vDev_IXT_CMP_KEYS      },
-  { "vDev_IXT_DEL_ENT"_Stz,       (const void *) vDev_IXT_DEL_ENT       },
-  { "vDev_IXT_DUMP"_Stz,          (const void *) vDev_IXT_DUMP          },
+  { "vDev_IXT_IDX_DEL"_Stz,       (const void *) vDev_IXT_IDX_DEL       },
+  { "vDev_IXT_IDX_DUMP"_Stz,      (const void *) vDev_IXT_IDX_DUMP      },
   { "vDev_IXT_ENT_PRINT"_Stz,     (const void *) vDev_IXT_ENT_PRINT     },
   { "vDev_IXT_INDEXNM_SET"_Stz,   (const void *) vDev_IXT_INDEXNM_SET   },
   { "vDev_IXT_INDEXTREE_DELETE"_Stz,(const void *) vDev_IXT_INDEXTREE_DELETE },
   { "vDev_IXT_INDEXTREE_SET"_Stz, (const void *) vDev_IXT_INDEXTREE_SET },
-  { "vDev_IXT_INS_ENT"_Stz,       (const void *) vDev_IXT_INS_ENT       },
-  { "vDev_IXT_TMP_ENTRIES"_Stz,   (const void *) vDev_IXT_TMP_ENTRIES   },
+  { "vDev_IXT_IDX_INS"_Stz,       (const void *) vDev_IXT_IDX_INS       },
+  { "vDev_IXT_IDX_ENTRIES"_Stz,   (const void *) vDev_IXT_IDX_ENTRIES   },
 
   { "vDev_IXT_POS_BYKEY"_Stz,     (const void *) vDev_IXT_POS_BYKEY     },
   { "vDev_IXT_POS_LBOUND"_Stz,    (const void *) vDev_IXT_POS_LBOUND    },

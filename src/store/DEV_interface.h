@@ -2,11 +2,11 @@
 /* DEV_interface.h -- Interface for RLU Devices                               */
 /*============================================================================*/
 
-void vDev_IXT_BEGIN(i8** aaiDstk);
+void vDev_IXT_CRWBUF_BEGIN(i8** aaiDstk);
 void vDev_IXT_DEREF(i8** aaiDstk);
-void vDev_IXT_NEXT (i8** aaiDstk);
-void vDev_IXT_NULL (i8** aaiDstk);
-void vDev_IXT_TEST (i8** aaiDstk);
+void vDev_IXT_CRWBUF_NEXT (i8** aaiDstk);
+void vDev_IXT_CRWBUF_NULL (i8** aaiDstk);
+void vDev_IXT_CRWBUF_TEST (i8** aaiDstk);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // prototypes for dev IXT
@@ -21,16 +21,19 @@ void vDev_IXT_ENT_PUSHELMI0(i8** aaiDstk);
 void vDev_IXT_ENT_PUSHELMS0(i8** aaiDstk); // NOT COMPLETE!!
 void vDev_IXT_ENT_PUSHUPPER(i8** aaiDstk);
 void vDev_IXT_CMP_KEYS     (i8** aaiDstk);
-void vDev_IXT_DEL_ENT      (i8** aaiDstk);
-void vDev_IXT_DUMP         (i8** aaiDstk);
 void vDev_IXT_ENT_PRINT    (i8** aaiDstk);
+
+void vDev_IXT_IDX_DEL      (i8** aaiDstk);
+void vDev_IXT_IDX_DUMP     (i8** aaiDstk);
+void vDev_IXT_IDX_ENTRIES  (i8** aaiDstk);
+void vDev_IXT_IDX_INS         (i8** aaiDstk);
 
 void vDev_IXT_INDEXNM_SET     (i8** aaiDstk);
 void vDev_IXT_INDEXTREE_DELETE(i8** aaiDstk);
 void vDev_IXT_INDEXTREE_SET   (i8** aaiDstk);
-void vDev_IXT_INS_ENT         (i8** aaiDstk);
 
-void vDev_IXT_TMP_ENTRIES  (i8** aaiDstk);
+
+
 void vDev_IXT_POS_BYKEY    (i8** aaiDstk);
 void vDev_IXT_POS_LBOUND   (i8** aaiDstk);
 void vDev_IXT_POS_UBOUND   (i8** aaiDstk);
