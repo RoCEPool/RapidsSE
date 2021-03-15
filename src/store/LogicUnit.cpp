@@ -2574,11 +2574,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       case EO_IXT_INS_ENT: { ArgNil(); // insert an entry into the indexTree
-        dLU0(EO_IXT_INS_ENT);
-        void *aTmpEnt =
-            aDev_IXT_INS_ENT(pLU, aRluCommon->m_pDevTmpIxt);
+//        dLU0(EO_IXT_INS_ENT);
+//        void *aTmpEnt =
+//            aDev_IXT_INS_ENT(pLU, aRluCommon->m_pDevTmpIxt);
         //ASSERT(m_pDevTmpIxt->m_aEnt);
       }
+      RASSERT(0);
         break;//+endCase
         
       case EO_IXT_TRV_BEGIN: { ArgNil(); // begin linear traverse
@@ -2620,11 +2621,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       case EO_DEVIXT_IDX_INS: ArgNil(); // insert an entry into the indexTree
-        //dLU0(EO_DEVIXT_IDX_INS);
-        //vDev_IXT_INS_ENT(&aiDstk);
-
-        //ASSERT(m_pDevTmpIxt->m_aEnt);
-        RASSERT(0);
+        dLU0(EO_DEVIXT_IDX_INS);
+        vDev_IXT_INS_ENT(&aiDstk);
         break;//+endCase
 
       case EO_DEVIXT_IDX_BEGIN: ArgNil(); // begin linear traverse

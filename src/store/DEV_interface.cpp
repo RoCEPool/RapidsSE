@@ -651,18 +651,22 @@ void vDev_IXT_ENT_PRINT(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* insert an entry into the indexTree                                         */
 /*----------------------------------------------------------------------------*/
-Ent_int* aDev_IXT_INS_ENT(void* aLU, void* aIXT) {
+void vDev_IXT_INS_ENT(i8** aaiDstk)
+{
   _static_
 
-  DevIXT *pDevIXT = _pDevIXT(aIXT);
-  LogicUnit *pLogicUnit = _pLogicUnit(aLU);
+  i8 *aiDstk = *aaiDstk;
 
-  Ent *pEnt = (Ent*)pLogicUnit->m_xRluCommon.m_aWrkEnt;
+  // pop entry
+  Ent *pEnt = (Ent*)P_PopPtr();
+
+  DevIXT* pDevIXT = _pDevIXT(P_PopPtr());
 
   pDevIXT->m_aEnt =
       pDevIXT->m_pIdxTree->aInsertEntry(pEnt);
 
-  return (Ent_int *) pDevIXT->m_aEnt;
+  P_PushPtr(pDevIXT->m_aEnt);
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
