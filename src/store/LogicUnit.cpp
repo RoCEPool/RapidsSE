@@ -1388,6 +1388,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // ixt device member pushes
+      case EO_PUSH_DEVIXT_ENT: ArgNil(); // push entry
+        dLU0(EO_PUSH_DEVIXT_ENT);
+        vDev_IXT_PUSH_ENT(&aiDstk);
+        break;//+endCase
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // row device pushes
       case EO_PUSH_DEVROW_ALT: ArgNil(); // push columnn length
         dLU0(EO_PUSH_DEVROW_ALT);

@@ -51,6 +51,7 @@ void vDev_IXT_POS_LBOUND(i8** aaiDstk);
 void vDev_IXT_POS_UBOUND(i8** aaiDstk);
 
 void vDev_IXT_POS_UBOUND_LT(i8** aaiDstk);
+void vDev_IXT_PUSH_ENT(i8** aaiDstk);
 
 void vDev_IXT_IDX_BEGIN(i8** aaiDstk);
 void vDev_IXT_IDX_NEXT(i8** aaiDstk);

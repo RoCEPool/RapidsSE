@@ -903,6 +903,23 @@ void vDev_IXT_POS_UBOUND_LT(i8** aaiDstk)
 }
 
 /*----------------------------------------------------------------------------*/
+/* push entry of devixt                                                       */
+/*----------------------------------------------------------------------------*/
+void vDev_IXT_PUSH_ENT(i8** aaiDstk)
+{
+  _static_
+
+  i8 *aiDstk = *aaiDstk;
+
+  // pop the device
+  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
+
+  P_PushPtr(pDevIxt->m_aEnt);
+
+  *aaiDstk = aiDstk;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set m_aEnt                                                                 */
 /*----------------------------------------------------------------------------*/
 void vDev_IXT_SET_ENT(void* aLU, void* aIXT, void* aEnt)

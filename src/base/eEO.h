@@ -34,10 +34,14 @@ enum eEO : u1 // expression operators
   /*  S  */ EO_PUSH_DEVIXT_SRC,     // push src Ixt device
   /*  S  */ EO_PUSH_DEVIXT_TMP,     // push tmp Ixt device
 
+  // ixt device member pushes
+  /*  S  */ EO_PUSH_DEVIXT_ENT,   // push entry of ixt device
+
   // row device pushes
   /*  S  */ EO_PUSH_DEVROW_ALT,     // push alt row device
   /*  S  */ EO_PUSH_DEVROW_DST,     // push dst row device
   /*  S  */ EO_PUSH_DEVROW_SRC,     // push src row device
+
 
   // push RLU
   /*  S  */ EO_PUSH_RLU_ENTWRK,     // push entwrk from the rlu
@@ -403,6 +407,9 @@ static Stz* aEO[]
   /*    */ "EO_PUSH_DEVIXT_ALT"_Stz,
   /*    */ "EO_PUSH_DEVIXT_SRC"_Stz,
   /*    */ "EO_PUSH_DEVIXT_TMP"_Stz,
+
+  // ixt device member pushes
+  /*    */ "EO_PUSH_DEVIXT_ENT"_Stz,
 
   // row device pushes
   /*    */ "EO_PUSH_DEVROW_ALT"_Stz,
@@ -781,7 +788,10 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_PUSH_DEVIXT_SRC
   { EA_NONE,    0 },  // EO_PUSH_DEVIXT_TMP
 
-  // Ixt device pushes
+  // ixt device member pushes
+  { EA_NONE,    0 },  // EO_PUSH_DEVIXT_ENT
+
+  // row device pushes
   { EA_NONE,    0 },  // EO_PUSH_DEVROW_ALT
   { EA_NONE,    0 },  // EO_PUSH_DEVROW_DST
   { EA_NONE,    0 },  // EO_PUSH_DEVROW_SRC

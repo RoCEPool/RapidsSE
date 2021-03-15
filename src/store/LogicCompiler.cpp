@@ -106,6 +106,7 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_IXT_POS_LBOUND"_Stz,    (const void *) vDev_IXT_POS_LBOUND    },
   { "vDev_IXT_POS_UBOUND"_Stz,    (const void *) vDev_IXT_POS_UBOUND    },
   { "vDev_IXT_POS_UBOUND_LT"_Stz, (const void *) vDev_IXT_POS_UBOUND_LT },
+  { "vDev_IXT_PUSH_ENT"_Stz,    (const void *) vDev_IXT_PUSH_ENT },
   { "vDev_IXT_IDX_BEGIN"_Stz,     (const void *) vDev_IXT_IDX_BEGIN     },
   { "vDev_IXT_IDX_NEXT"_Stz,      (const void *) vDev_IXT_IDX_NEXT      },
 
