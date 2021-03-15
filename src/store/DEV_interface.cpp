@@ -746,20 +746,6 @@ void vDev_IXT_PUSH_ENT(i8** aaiDstk)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set m_aEnt                                                                 */
-/*----------------------------------------------------------------------------*/
-void vDev_IXT_SET_ENT(void* aLU, void* aIXT, void* aEnt)
-{
-  _static_
-
-  UNUSED(aLU);
-
-  DevIXT* pDevIXT = _pDevIXT(aIXT);
-  
-  pDevIXT->m_aEnt = (Ent*)aEnt;
-}
-
-/*----------------------------------------------------------------------------*/
 /*  push number of entries in tmp index                                       */
 /*----------------------------------------------------------------------------*/
 void vDev_IXT_TMP_ENTRIES(i8** aaiDstk)
@@ -822,7 +808,7 @@ void vDev_IXT_IDX_NEXT(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* get address of payload                                                     */
 /*----------------------------------------------------------------------------*/
-i8* aDev_PAY_ADDRESS(i8** aaiDstk)
+void vDev_PAY_ADDRESS(i8** aaiDstk)
 {
   _static_
 
@@ -848,9 +834,9 @@ i8* aDev_PAY_ADDRESS(i8** aaiDstk)
     );
   }
 
-  *aaiDstk = aiDstk;
+  P_PushPtr(aiPayload);
 
-  return aiPayload;
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2240,20 +2226,6 @@ void vDev_IXT_COL_PUSHONE_PST(void* aLU, i8** aaiDstk) {
        pStreamDef,nullptr,SI_CELLARRAY_PST);
 
   *aaiDstk = aiDstk;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the indexTree[] in the dev                                             */
-/*----------------------------------------------------------------------------*/
-void vDev_INDEXTREE_DEV_SET(void* aLU, i8 i_Dev)
-{
-  _static_
-  
-  UNUSED(i_Dev);
-
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-  UNUSED(pLogicUnit);
-  //pLogicUnit->m_aaDev[i_Dev] = (void*)(* pLogicUnit->m_xRluCommon.m_pIndexTree);
 }
 
 /*----------------------------------------------------------------------------*/
