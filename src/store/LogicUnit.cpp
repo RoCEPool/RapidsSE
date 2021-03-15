@@ -1771,6 +1771,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_RLU_PIX_STM_PRINT(&aiDstk);
         break;//+endCase
 
+      case EO_RLU_POT_COMPLETED: ArgNil(); // do we have a full pot buffer ?
+        dLU0(EO_RLU_POT_COMPLETED);
+        *(++aiDstk) = aRluCommon->m_bPotCompleted;
+        break;//+endCase
+
       case EO_REG_PTNSTREAM_CLOSE: ArgNil(); // close ptnStream[]
         dLU0(EO_REG_PTNSTREAM_CLOSE);
         vDev_REG_PTNSTREAM_CLOSE(pLU);
@@ -2601,13 +2606,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         //azDst = (char*)szDev_PAY_STORE_COLS(pLU,aRluCommon->m_pDevTmpIxt,iArg);
         azDst = (char*)&aiPayload[iArg];
         S_PopStr(azDst);
-        break;//+endCase
-
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      // pot
-      case EO_POT_COMPLETED: ArgNil(); // do we have a full pot buffer ?
-        dLU0(EO_POT_COMPLETED);
-        *(++aiDstk) = aRluCommon->m_bPotCompleted;
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

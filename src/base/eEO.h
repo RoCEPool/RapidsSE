@@ -135,6 +135,7 @@ enum eEO : u1 // expression operators
   /*  M  */ EO_RLU_INDEXTREE_NEW,          // new an indexTree in indexTreeRlu[]
   /*  M  */ EO_RLU_INDEXTREE_NULL,         // null indexTreeRlu[]
   /*  M  */ EO_RLU_PIX_STM_PRINT,          // print stream pix
+  /*  M  */ EO_RLU_POT_COMPLETED,          // do we have a full pot buffer ?
 
   // column set
   /*  M  */ EO_SET_COLUMN,       // add column to set
@@ -297,9 +298,6 @@ enum eEO : u1 // expression operators
   /*  M  */ EO_PAY_STORE_COLI,   // store a column into entry payload
   /*  M  */ EO_PAY_STORE_COLS,   // store a column into entry payload
 
-  // pot operators
-  /*  R  */ EO_POT_COMPLETED,    // do we have a full pot buffer ?
-
   /*     */ EO_DEVROW_BEGIN,     // begin src row traverse in row dev
   /*     */ EO_DEVROW_NEXT,      // move to next src row in row dev
   /*     */ EO_DEVROW_NEW,       // create new row in row dev
@@ -454,9 +452,6 @@ static Stz* aEO[]
   /*    */ "EO_REG_STREAMDEFOUT_ADDCOLUMN"_Stz,
   /*    */ "EO_REG_STREAMDEF_STREAMDEFOUT"_Stz,
 
-  // register pushes
-  /*    */ //"EO_PUSH_REG_INDEXTREE"_Stz,
-
   // Rlu operators
   /*    */ "EO_RLU_INDEXDEF_ADDCOLUMN"_Stz,
   /*    */ "EO_RLU_INDEXDEF_DELETE"_Stz,
@@ -464,6 +459,7 @@ static Stz* aEO[]
   /*    */ "EO_RLU_INDEXTREE_NEW"_Stz,
   /*    */ "EO_RLU_INDEXTREE_NULL"_Stz,
   /*    */ "EO_RLU_PIX_STM_PRINT"_Stz,
+  /*    */ "EO_RLU_POT_COMPLETED"_Stz,
 
   // column set
   /*    */ "EO_SET_COLUMN"_Stz,
@@ -624,9 +620,6 @@ static Stz* aEO[]
   /*    */ "EO_PAY_FETCH_COLS"_Stz,
   /*    */ "EO_PAY_STORE_COLI"_Stz,
   /*    */ "EO_PAY_STORE_COLS"_Stz,
-  
-  // pot
-  /*    */ "EO_POT_COMPLETED"_Stz,
 
   // row / rowslab
   /*     */ "EO_DEVROW_BEGIN"_Stz,
@@ -798,6 +791,7 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_RLU_INDEXTREE_NEW
   { EA_NONE,    0 },  // EO_RLU_INDEXTREE_NULL
   { EA_NONE,    0 },  // EO_RLU_PIX_STM_PRINT
+  { EA_NONE,    0 },  // EO_RLU_POT_COMPLETED
 
   // column set
   { EA_INT,     8 },  // EO_SET_COLUMN
@@ -959,9 +953,6 @@ static EoArg EoArgs[]
   { EA_SUBSCR,  8 },  // EO_PAY_FETCH_COLS
   { EA_SUBSCR,  8 },  // EO_PAY_STORE_COLI
   { EA_SUBSCR,  8 },  // EO_PAY_STORE_COLS
-  
-  // pot
-  { EA_NONE,    0 },  // EO_POT_COMPLETED
 
   // row / rowslab
   { EA_NONE,    0 },  // EO_DEVROW_BEGIN
