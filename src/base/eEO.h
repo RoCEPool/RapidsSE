@@ -281,8 +281,6 @@ enum eEO : u1 // expression operators
   /*    */ EO_ENTWRK_SETINTELM, // set int only element value
 
   // index tree
-  /*  D  */ EO_IXT_TMP_ENTRIES,  // push number of entries in tmp index           ---to go
-
   /*  S  */ EO_DEVIXT_IDX_DEL,      // delete current m_aEnt from indexTree
   /*  S  */ EO_DEVIXT_IDX_DUMP,     // dump index tree
   /*  S  */ EO_DEVIXT_IDX_INS,      // insert an entry into the indexTree
@@ -627,8 +625,6 @@ static Stz* aEO[]
   /*    */ "EO_ENTWRK_SETINTELM"_Stz,
 
   // index tree
-  /*    */ "EO_IXT_TMP_ENTRIES"_Stz,
-
   /*    */ "EO_DEVIXT_IDX_DEL"_Stz,
   /*    */ "EO_DEVIXT_IDX_DUMP"_Stz,
   /*    */ "EO_DEVIXT_IDX_INS"_Stz,
@@ -979,8 +975,6 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_ENTWRK_SETINTELM
 
   // index tree
-  { EA_NONE,    0 },  // EO_IXT_TMP_ENTRIES
-
   { EA_NONE,    0 },  // EO_DEVIXT_IDX_DEL
   { EA_NONE,    0 },  // EO_DEVIXT_IDX_DUMP
   { EA_NONE,    0 },  // EO_DEVIXT_IDX_INS

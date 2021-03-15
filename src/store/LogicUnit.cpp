@@ -2559,13 +2559,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(EO_ENTWRK_SETINTELM);
         vDev_ENTWRK_SETINTELM(&aiDstk);
         break;//+endCase
-        
-      case EO_IXT_TMP_ENTRIES: ArgNil(); // push number of entries in tmp index
-//        iRes = iDev_IXT_TMP_ENTRIES(pLU,aRluCommon->m_pDevTmpIxt);
-//        dLU1(EO_IXT_TMP_ENTRIES,iRes);
-//        *(++aiDstk) = iRes;
-        RASSERT(0);
-        break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // index tree operators
