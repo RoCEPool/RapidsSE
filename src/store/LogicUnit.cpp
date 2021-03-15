@@ -2701,60 +2701,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_IXT_POS_UBOUND_LT(&aiDstk);
         break;//+endCase
         
-      case EO_IXT_ALT_BEGIN: { ArgNil(); // begin linear traverse
-//        dLU0(EO_IXT_ALT_BEGIN);
-//        void* aAltEnt =
-//            aDev_IXT_TRV_BEGIN_OLD(pLU, aRluCommon->m_pDevAltIxt);
-//        //aRluCommon->m_aAltEntArray = aRluCommon->m_aEntArray;
-//        *(++aiDstk) = (i8)aAltEnt;
-      }
-      RASSERT(0);
-        break;//+endCase
-
-      case EO_IXT_ALT_NEXT: { ArgNil();
-//        dLU0(EO_IXT_ALT_NEXT);
-//        void *aAltEnt =
-//            aDev_IXT_TRV_NEXT_OLD(pLU, aRluCommon->m_pDevAltIxt);
-//        *(++aiDstk) = (i8) aAltEnt;
-      }
-      RASSERT(0);
-
-//        tNext = aRluCommon->m_aAltEnt->m_taNextEntry[0];
-//
-//        if (C_ENT_END_TICKET == tNext) {
-//          aRluCommon->m_aAltEnt =
-//            aDev_IXT_TRV_NEXT_OLD(pLU,aRluCommon->m_pDevAltIxt);
-//          aRluCommon->m_aAltEntArray = aRluCommon->m_aEntArray;
-//        }
-//        else {
-//
-//          //printf("  m_aAltEntArray %p\n",(void*)aRluCommon->m_aAltEntArray);
-//          //printf("  tNext %d\n",tNext);
-//          aRluCommon->m_aAltEnt =
-//            (struct Ent_int*) ( (char*)aRluCommon->m_aAltEntArray + (tNext*32) ) ;
-//
-//          //
-//          // This is to fix the problem where the last entry in the index
-//          // was being returned twice !!!
-//          //
-//          // we need to set the m_aEnt back in the m_pDevAltIxt so that when we come in
-//          // and hit C_ENT_TICKET pMoveToNextEntry moves to the end rather than return
-//          // the last entry again !!!
-//          vDev_IXT_SET_ENT(pLU,aRluCommon->m_pDevAltIxt,aRluCommon->m_aAltEnt);
-//
-//          //printf("  m_aAltEnt %p\n",(void*)aRluCommon->m_aAltEnt);
-//
-//        }
-////        else {
-////          aRluCommon->m_aAltEnt =
-////            aDev_IXT_TRV_NEXT(pLU,aRluCommon->m_pDevAltIxt);
-////          aRluCommon->m_aAltEntArray = aRluCommon->m_aEntArray;
-////        }
-//        //printf("  aRluCommon->m_aAltEnt %p\n",(void*)aRluCommon->m_aAltEnt);
-//        *(++aiDstk) = (i8)aRluCommon->m_aAltEnt;
-
-        break;//+endCase
-        
       case EO_DEVIXT_CMP_KEYS: ArgNil(); // compare keys of two devices
         dLU0(EO_DEVIXT_CMP_KEYS);
         vDev_IXT_CMP_KEYS(&aiDstk);

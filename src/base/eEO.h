@@ -313,8 +313,6 @@ enum eEO : u1 // expression operators
   /*  D  */ EO_DEVIXT_LBOUND,   // position at lower bound
   /*  D  */ EO_DEVIXT_SRC_UBOUND,// get upper bound
   /*  D  */ EO_DEVIXT_SRC_UBOUND_LT, // get upper bound (less than)
-  /*  D  */ EO_IXT_ALT_BEGIN,    // begin linear traverse                        --to go
-  /*  D  */ EO_IXT_ALT_NEXT,     // move to next entry                           --to go
   /*  D  */ EO_DEVIXT_CMP_KEYS,  // compare keys of two devices
   /*  D  */ EO_DEVIXT_POS_BYKEY, // position dev ixt by key
 
@@ -682,11 +680,8 @@ static Stz* aEO[]
   /*    */ "EO_DEVIXT_LBOUND"_Stz,
   /*    */ "EO_DEVIXT_SRC_UBOUND"_Stz,
   /*    */ "EO_DEVIXT_SRC_UBOUND_LT"_Stz,
-  /*    */ "EO_IXT_ALT_BEGIN"_Stz,
-  /*    */ "EO_IXT_ALT_NEXT"_Stz,
   /*    */ "EO_DEVIXT_CMP_KEYS"_Stz,
   /*    */ "EO_DEVIXT_POS_BYKEY"_Stz,
-
   /*    */ "EO_DEVIXT_ENT_PRINT"_Stz,
 
   // pay load
@@ -1055,15 +1050,10 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_DEVIXT_IDX_ENTRIES
 
   { EA_NONE,    0 },  // EO_DEVIXT_LBOUND
-  //{ EA_NONE,    0 },  // EO_IXT_SRC_PRINT
   { EA_NONE,    0 },  // EO_DEVIXT_SRC_UBOUND
   { EA_NONE,    0 },  // EO_DEVIXT_SRC_UBOUND_LT
-  { EA_NONE,    0 },  // EO_IXT_ALT_BEGIN
-  { EA_NONE,    0 },  // EO_IXT_ALT_NEXT
-  //{ EA_NONE,    0 },  // EO_IXT_ALT_PRINT
   { EA_NONE,    0 },  // EO_DEVIXT_CMP_KEYS
   { EA_NONE,    0 },  // EO_DEVIXT_POS_BYKEY
-
   { EA_NONE,    0 },  // EO_DEVIXT_ENT_PRINT
 
   // pay load
