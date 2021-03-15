@@ -595,47 +595,6 @@ void vDev_IXT_CMP_KEYS(i8** aaiDstk)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compare ent.key to dev.key                                                 */
-/*----------------------------------------------------------------------------*/
-void vDev_IXT_CMP_ENTKEY(i8** aaiDstk)
-{
-  _static_
-
-  i8 *aiDstk = *aaiDstk;
-
-  // pop wrk ent
-  EntWrk *pEntWrk = (EntWrk*)P_PopPtr();
-
-  // pop the device
-  DevIXT* pDevIXT = _pDevIXT(P_PopPtr());
-
-  Ent *pWrkEnt = (Ent*)pEntWrk->aEnt();
-  Key* aWrkKey = pWrkEnt->aKey();
-
-  Key* aDevKey = pDevIXT->m_aEnt->aKey();
-
-  if (KE_GENERAL == pDevIXT->m_aEnt->eKind()) {
-  
-    eKC  eCmp = Key::eCompare(aWrkKey,aDevKey);
-
-    if (KC_BEFORE == eCmp)
-      I_PushInt(-1)
-    else
-    if (KC_SAME == eCmp)
-      I_PushInt(0)
-    else
-      I_PushInt(1);
-  }
-  else {
-    i8 iRes = ((Ent_int *) (pWrkEnt))->m_iIntElm0 ==
-              ((Ent_int *) (pDevIXT->m_aEnt))->m_iIntElm0;
-    I_PushInt(iRes);
-  }
-
-  *aaiDstk = aiDstk;
-}
-
-/*----------------------------------------------------------------------------*/
 /* delete current entry m_aEnt from indexTree                                 */
 /*----------------------------------------------------------------------------*/
 void vDev_IXT_DEL_ENT(i8** aaiDstk)

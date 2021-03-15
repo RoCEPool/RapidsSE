@@ -2781,11 +2781,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_IXT_CMP_KEYS(&aiDstk);
         break;//+endCase
 
-      case EO_DEVIXT_CMP_ENTKEY: ArgNil(); // compare ent.key to dev.key
-        dLU0(EO_DEVIXT_CMP_ENTKEY);
-        vDev_IXT_CMP_ENTKEY(&aiDstk);
-        break;//+endCase
-
       case EO_IXT_POS_ALTBYSRC: { ArgNil(); // position alt ixt using src.key
         dLU0(EO_IXT_POS_ALTBYSRC);
         void *aAltEnt = aDev_IXT_POS_ALTBYSRC(pLU);
