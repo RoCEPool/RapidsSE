@@ -1524,52 +1524,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      // index
-//      case EO_INDEXNM_ALT_SET: GetStr(iArg); // inflate src columns direct into locals
-//        //dLU0(EO_INDEXNM_ALT_SET);
-//        //vDev_IXT_INDEXNM_SET(pLU,aRluCommon->m_pDevAltIxt, (Stz*)iArg);
-//        RASSERT(0);
-//        break;//+endCase
-        
-//      case EO_INDEXNM_SRC_SET: GetStr(iArg); // inflate src columns direct into locals
-//        //dLU0(EO_INDEXNM_SRC_SET);
-//        //vDev_IXT_INDEXNM_SET(pLU,aRluCommon->m_pDevSrcIxt, (Stz*)iArg);
-//        RASSERT(0);
-//        break;//+endCase
-
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // index name
       case EO_DEVIXT_INDEXNM_SET: GetStr(iArg); // inflate src columns direct into locals
         dLU0(EO_DEVIXT_INDEXNM_SET);
         S_PushStr(iArg);
         vDev_IXT_INDEXNM_SET(&aiDstk);
         break;//+endCase
-
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      // index
-//      case EO_INDEXTREE_ALT_SET: ArgNil(); // set indexTree alt from indexTree[]
-//        //dLU0(EO_INDEXTREE_ALT_SET);
-//        //vDev_IXT_INDEXTREE_SET(pLU,aRluCommon->m_pDevAltIxt);
-//        RASSERT(0);
-//        break;//+endCase
-        
-//      case EO_INDEXTREE_SRC_SET: ArgNil(); // set indexTree src from indexTree[]
-//        //dLU0(EO_INDEXTREE_SRC_SET);
-//        //vDev_IXT_INDEXTREE_SET(pLU,aRluCommon->m_pDevSrcIxt);
-//        RASSERT(0);
-//        break;//+endCase
-        
-//      case EO_INDEXTREE_TMP_DELETE: ArgNil(); // delete indexTree from tmp
-//        //dLU0(EO_INDEXTREE_TMP_DELETE);
-//        //vDev_IXT_INDEXTREE_DELETE(pLU,aRluCommon->m_pDevTmpIxt);
-//        RASSERT(0);
-//        break;//+endCase
-        
-//      case EO_INDEXTREE_TMP_SET: ArgNil(); // set indexTree tmp from indexTree[]
-//        //dLU0(EO_INDEXTREE_TMP_SET);
-//        //vDev_IXT_INDEXTREE_SET(pLU,aRluCommon->m_pDevTmpIxt);
-//        RASSERT(0);
-//        break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // indexTree operators
@@ -1911,20 +1871,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(EO_SET_LOCALS_ROW);
         aiLocals = aRluCommon->m_iaLocals - 1;
         vDev_ROW_COL_PUSHSET(pLU,&aiLocals,aRluCommon->m_pDevSrcRow,iaColSet);
-        break;//+endCase
-
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      // table
-      case EO_TABLENM_ALT_SET: GetStr(iArg); // inflate src columns direct into locals
-        //dLU0(EO_TABLENM_ALT_SET);
-        //vDev_ROW_TABLENM_SET(pLU,aRluCommon->m_pDevAltRow,(Stz*)iArg);
-        RASSERT(0);
-        break;//+endCase
-        
-      case EO_TABLENM_SRC_SET: GetStr(iArg); // inflate src columns direct into locals
-        //dLU0(EO_TABLENM_SRC_SET);
-        //vDev_ROW_TABLENM_SET(pLU,aRluCommon->m_pDevSrcRow,(Stz*)iArg);
-        RASSERT(0);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

@@ -68,19 +68,9 @@ enum eEO : u1 // expression operators
   /*  S  */ EO_JMP_NOTEQUAL,     // pop top and jump to location if !=
   /*  S  */ EO_JMP_GREATEREQUAL, // pop top and jump to location if >=
   /*  S  */ EO_JMP_GREATER,      // pop top and jump to location if >
-  
-  // index
-  /*  D  */ //EO_INDEXNM_ALT_SET,    // set the alt index name                 --- to go
-  /*  D  */ //EO_INDEXNM_SRC_SET,    // set the src index name                 --- to go
 
   // index name
   /*     */ EO_DEVIXT_INDEXNM_SET,    // set the index name in the dev
-
-  // indexTree
-  /*  D  */ //EO_INDEXTREE_ALT_SET,    // set the alt indexTree                 --- to go
-  /*  D  */ //EO_INDEXTREE_SRC_SET,    // set the src indexTree                 --- to go
-  /*  D  */ //EO_INDEXTREE_TMP_DELETE, // delete the tmp indexTree              --- to go
-  /*  D  */ //EO_INDEXTREE_TMP_SET,    // set the tmp indexTree                 --- to go
 
   // indexTree
   /*  S  */ EO_DEVIXT_INDEXTREE_SET,    // set the indexTree in the ixt dev
@@ -130,7 +120,6 @@ enum eEO : u1 // expression operators
   /*  M  */ EO_REG_PTNSTREAM_NEW,          // new a ptn stream
   /*  M  */ EO_REG_PTNSTREAM_OPEN,         // open a ptn stream
   /*  M  */ EO_REG_PTNSTREAM_READ,         // read a ptn stream
-  /*  M  */ //EO_REG_SRC_STREAMDEFOUT_NEW,   // new streamDefOut[] from DevSrcRow
   /*  M  */ EO_REG_STREAMDEFOUT_NEW,       // new an streamDef in streamDefOut[]        // OLD QUERIES (will go)
   /*  M  */ EO_REG_STREAMDEFOUT_ADDCOLUMN, // add a column to streamDefOut[]            // OLD QUERIES (will go)
   /*  M  */ EO_REG_STREAMDEF_STREAMDEFOUT, // copy streamDef[] to streamDefOut[]        // OLD QUERIES (will go)
@@ -153,10 +142,6 @@ enum eEO : u1 // expression operators
   /*  D  */ EO_SET_LOCALS_ROW,   // row columns into locals
   /*  D  */ EO_SET_LOCALS_SRC,   // inflate src columns direct into locals
   /*  D  */ EO_SET_LOCALS_SRC2,  // inflate src columns direct into locals
-
-  // table
-  /*  D  */ EO_TABLENM_ALT_SET,    // set the alt table name                 --- to go
-  /*  D  */ EO_TABLENM_SRC_SET,    // set the src table name                 --- to go
 
   // table name
   /*     */ EO_DEVROW_TABLENM_SET, // set the table name in the row dev
@@ -436,19 +421,9 @@ static Stz* aEO[]
   /*    */ "EO_JMP_NOTEQUAL"_Stz,
   /*    */ "EO_JMP_GREATEREQUAL"_Stz,
   /*    */ "EO_JMP_GREATER"_Stz,
-  
-  // index
-  /*    */ //"EO_INDEXNM_ALT_SET"_Stz,
-  /*    */ //"EO_INDEXNM_SRC_SET"_Stz,
 
   // index name
   /*    */ "EO_DEVIXT_INDEXNM_SET"_Stz,
-
-  // indexTree
-  /*    */ //"EO_INDEXTREE_ALT_SET"_Stz,
-  /*    */ //"EO_INDEXTREE_SRC_SET"_Stz,
-  /*    */ //"EO_INDEXTREE_TMP_DELETE"_Stz,
-  /*    */ //"EO_INDEXTREE_TMP_SET"_Stz,
 
   // indexTree
   /*    */ "EO_DEVIXT_INDEXTREE_SET"_Stz,
@@ -497,7 +472,6 @@ static Stz* aEO[]
   /*    */ "EO_REG_PTNSTREAM_NEW"_Stz,
   /*    */ "EO_REG_PTNSTREAM_OPEN"_Stz,
   /*    */ "EO_REG_PTNSTREAM_READ"_Stz,
-  /*    */ //"EO_REG_SRC_STREAMDEFOUT_NEW"_Stz,
   /*    */ "EO_REG_STREAMDEFOUT_NEW"_Stz,
   /*    */ "EO_REG_STREAMDEFOUT_ADDCOLUMN"_Stz,
   /*    */ "EO_REG_STREAMDEF_STREAMDEFOUT"_Stz,
@@ -520,10 +494,6 @@ static Stz* aEO[]
   /*    */ "EO_SET_LOCALS_ROW"_Stz,
   /*    */ "EO_SET_LOCALS_SRC"_Stz,
   /*    */ "EO_SET_LOCALS_SRC2"_Stz,
-
-  // table
-  /*    */ "EO_TABLENM_ALT_SET"_Stz,
-  /*    */ "EO_TABLENM_SRC_SET"_Stz,
 
   // table name
   /*    */ "EO_DEVROW_TABLENM_SET"_Stz,
@@ -809,18 +779,8 @@ static EoArg EoArgs[]
   { EA_LABEL,   8 },  // EO_JMP_GREATEREQUAL
   { EA_LABEL,   8 },  // EO_JMP_GREATEREQUAL
 
-  // index
-  //{ EA_STRING, -1 },  // EO_INDEXNM_ALT_SET
-  //{ EA_STRING, -1 },  // EO_INDEXNM_SRC_SET
-
   // index name
   { EA_STRING, -1 },  // EO_DEVIXT_INDEXNM_SET
-
-  // indexTree
-  //{ EA_NONE,    0 },  // EO_INDEXTREE_ALT_SET
-  //{ EA_NONE,    0 },  // EO_INDEXTREE_SRC_SET
-  //{ EA_NONE,    0 },  // EO_INDEXTREE_TMP_DELETE
-  //{ EA_NONE,    0 },  // EO_INDEXTREE_TMP_SET
 
     // indexTree
   { EA_NONE,    0 },  // EO_DEVIXT_INDEXTREE_SET
@@ -869,7 +829,6 @@ static EoArg EoArgs[]
   { EA_NONE,    0},   // EO_REG_PTNSTREAM_NEW
   { EA_NONE,    0},   // EO_REG_PTNSTREAM_OPEN
   { EA_NONE,    0},   // EO_REG_PTNSTREAM_READ
-  //{ EA_NONE,    0 },  // EO_REG_SRC_STREAMDEFOUT_NEW
   { EA_NONE,    0 },  // EO_REG_STREAMDEFOUT_NEW
   { EA_STRING, -1 },  // EO_REG_STREAMDEFOUT_ADDCOLUMN
   { EA_NONE,    0 },  // EO_REG_STREAMDEF_STREAMDEFOUT_ADDCOLUMN
@@ -892,10 +851,6 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_SET_LOCALS_ROW
   { EA_INT,     8 },  // EO_SET_LOCALS_SRC
   { EA_NONE,    0 },  // EO_SET_LOCALS_SRC2
-
-  // table
-  { EA_STRING, -1 },  // EO_TABLENM_ALT_SET
-  { EA_STRING, -1 },  // EO_TABLENM_SRC_SET
 
   // table name
   { EA_STRING, -1 },  // EO_DEVROW_TABLENM_SET
