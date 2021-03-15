@@ -555,7 +555,7 @@ void vDev_IXT_INDEXNM_SET(i8** aaiDstk)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compare keys of two devices                                                 */
+/* compare keys of two devices                                                */
 /*----------------------------------------------------------------------------*/
 void vDev_IXT_CMP_KEYS(i8** aaiDstk)
 {
@@ -563,17 +563,17 @@ void vDev_IXT_CMP_KEYS(i8** aaiDstk)
 
   i8 *aiDstk = *aaiDstk;
 
-  // pop the alt device
-  DevIXT* pDevSecondIXT = _pDevIXT(P_PopPtr());
+  // pop the second Ent
+  Ent* pEntSecond = (Ent*)(P_PopPtr());
 
-  // pop the src device
-  DevIXT* pDevFirstIXT = _pDevIXT(P_PopPtr());
+  // pop the first Ent
+  Ent* pEntFirst = (Ent*)(P_PopPtr());
 
   // get the entries from the devices
-  Key* aFirstKey = pDevFirstIXT->m_aEnt->aKey();
-  Key* aSecondKey = pDevSecondIXT->m_aEnt->aKey();
+  Key* aFirstKey = pEntFirst->aKey();
+  Key* aSecondKey = pEntSecond->aKey();
 
-  if (KE_GENERAL == pDevFirstIXT->m_aEnt->eKind()) {
+  if (KE_GENERAL == pEntFirst->eKind()) {
     eKC  eCmp = Key::eCompare(aFirstKey,aSecondKey);
   
     if (KC_BEFORE == eCmp)
@@ -586,8 +586,8 @@ void vDev_IXT_CMP_KEYS(i8** aaiDstk)
   }
   else {
 
-    i8 iRes = ((Ent_int *) (pDevFirstIXT->m_aEnt))->m_iIntElm0 ==
-              ((Ent_int *) (pDevSecondIXT->m_aEnt))->m_iIntElm0;
+    i8 iRes = ((Ent_int *) (pEntFirst))->m_iIntElm0 ==
+              ((Ent_int *) (pEntSecond))->m_iIntElm0;
 
     I_PushInt(iRes);
   }
