@@ -1848,7 +1848,8 @@ i8 AM::iOperandZkKind(Operand* pOperand)
       }
       break;
     }
-      
+
+    case CN_NAMEDBUFFER:  eOperand = ZK_NAMEDBUFFER;    break;
     case CN_OTHEROPERAND: eOperand = ZK_OTHEROPERAND;   break;
     case CN_PLANOPERAND:  eOperand = ZK_PLANOPERAND;    break;
     case CN_PROFILE:      eOperand = ZK_PROFILE;        break;

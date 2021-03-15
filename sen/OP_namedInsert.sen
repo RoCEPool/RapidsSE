@@ -5,93 +5,23 @@
 " OP_namedInsert.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_LOCKSTATS ...                                               */
+/* handler for ZK_NAMEDBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
-: OP_namedInsert_LockStats \handler
-
-  //"eventWrite_InfoSet --- --- ---" .
-
-//! ALKA TO CHECK WITH RAY
-//  File0[].isNull not if
-//    "File not null" .
-//    process::quit
-//  then
-/*
-  file::new to File0[]
-  "/tmp/SE_Stats.csv" OPEN_APPEND File0[].get file.open
-  not if
-    File0[].get file.delete assert::stack_0 EC_INVALID_FILE
-    op__execErr
-    Operand[].delete
-    EC_INVALID_FILE op__execErr
-  then
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  operand[] to infoset[]
-  nullptr to operand[]
-
-  InfoSet[].writeCsv
-
-  infoset[].delete
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
- File0[].get file.close
- File0[].get file.delete
- */
-
-  // open the file for writing
-  "/tmp/SE_Stats.csv" OPEN_APPEND op__file if
-
-    PipeIn[] to infoset[]
-    nullptr to PipeIn[]
-
-    C_TDEF_LOCKSTATS op__tableDef_infoSet assert
-
-    infoSetTable[] InfoSet[].writeCsv
-
-    infoset[].delete
-
-    File0[].get file.close
-    File0[].get file.delete
-  then
+: OP_namedInsert \handler
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_PROFILE ...                                                 */
+/* execute for namedInsert req                        (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: OP_namedInsert_Profile \handler
-
-  //"eventWrite_Profile --- --- ---" .
-
-  // open the file for writing
-  "/tmp/SE_Profile.csv" OPEN_APPEND op__file if
-
-    PipeIn[].writeProfile
-
-    PipeIn[].delete
-
-    File0[].get file.close
-    File0[].get file.delete
-  then
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* execute for eventWrite req                         (on node where spawned) */
-/*----------------------------------------------------------------------------*/
- : eventWrite_req \operator
+ : namedInsert_req \operator
  
   LogReqEntry SEED_REQ
 
   op__topology
 
-  find: OP_namedInsert_LockStats ZK_LOCKSTATS op[].handler!
-  find: OP_namedInsert_Profile   ZK_PROFILE   op[].handler!
+  find: OP_namedInsert ZK_NAMEDBUFFER op[].handler!
 
   op__loop
 
@@ -103,9 +33,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: eventWrite :: eventWrite ;
+cmdSyntax: namedInsert :: namedInsert ;
 
-: eventWrite_cmdTags _cmdTags tagCopy: op_tags
+: namedInsert_cmdTags _cmdTags tagCopy: op_tags
   tags{ <cmdDesc>  = "--desc for op--" }
 ;
 

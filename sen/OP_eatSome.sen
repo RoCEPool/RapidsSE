@@ -37,6 +37,7 @@
 //  pEatSomeHandler ZK_EXITMARKER       op[].handler!
 //  pEatSomeHandler ZK_EXITEDMARKER     op[].handler!
 //  pEatSomeHandler ZK_LOCKSTATS        op[].handler!
+//  pEatSomeHandler ZK_NAMEDBUFFER      op[].handler!
 //  pEatSomeHandler ZK_NODEINFO         op[].handler!
 //  pEatSomeHandler ZK_PROFILE          op[].handler!
 //  pEatSomeHandler ZK_PROGRESSUNITS    op[].handler!
