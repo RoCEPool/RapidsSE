@@ -134,6 +134,7 @@ enum eEO : u1 // expression operators
   /*  M  */ EO_RLU_INDEXDEF_NEW,           // new an indexDef in indexDefRlu[]
   /*  M  */ EO_RLU_INDEXTREE_NEW,          // new an indexTree in indexTreeRlu[]
   /*  M  */ EO_RLU_INDEXTREE_NULL,         // null indexTreeRlu[]
+  /*  M  */ EO_RLU_PIX_STM_PRINT,          // print stream pix
 
   // column set
   /*  M  */ EO_SET_COLUMN,       // add column to set
@@ -295,9 +296,6 @@ enum eEO : u1 // expression operators
   /*  M  */ EO_PAY_FETCH_COLS,   // fetch a column from entry payload
   /*  M  */ EO_PAY_STORE_COLI,   // store a column into entry payload
   /*  M  */ EO_PAY_STORE_COLS,   // store a column into entry payload
-  
-  // pix operators
-  /*  M  */ EO_PIX_STM_PRINT,    // print stream pix
 
   // pot operators
   /*  R  */ EO_POT_COMPLETED,    // do we have a full pot buffer ?
@@ -465,6 +463,7 @@ static Stz* aEO[]
   /*    */ "EO_RLU_INDEXDEF_NEW"_Stz,
   /*    */ "EO_RLU_INDEXTREE_NEW"_Stz,
   /*    */ "EO_RLU_INDEXTREE_NULL"_Stz,
+  /*    */ "EO_RLU_PIX_STM_PRINT"_Stz,
 
   // column set
   /*    */ "EO_SET_COLUMN"_Stz,
@@ -625,9 +624,6 @@ static Stz* aEO[]
   /*    */ "EO_PAY_FETCH_COLS"_Stz,
   /*    */ "EO_PAY_STORE_COLI"_Stz,
   /*    */ "EO_PAY_STORE_COLS"_Stz,
-  
-  // pix
-  /*    */ "EO_PIX_STM_PRINT"_Stz,
   
   // pot
   /*    */ "EO_POT_COMPLETED"_Stz,
@@ -801,6 +797,7 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_RLU_INDEXDEF_NEW
   { EA_NONE,    0 },  // EO_RLU_INDEXTREE_NEW
   { EA_NONE,    0 },  // EO_RLU_INDEXTREE_NULL
+  { EA_NONE,    0 },  // EO_RLU_PIX_STM_PRINT
 
   // column set
   { EA_INT,     8 },  // EO_SET_COLUMN
@@ -962,9 +959,6 @@ static EoArg EoArgs[]
   { EA_SUBSCR,  8 },  // EO_PAY_FETCH_COLS
   { EA_SUBSCR,  8 },  // EO_PAY_STORE_COLI
   { EA_SUBSCR,  8 },  // EO_PAY_STORE_COLS
-
-  // pix
-  { EA_NONE,    0 },  // EO_PIX_STM_PRINT
   
   // pot
   { EA_NONE,    0 },  // EO_POT_COMPLETED

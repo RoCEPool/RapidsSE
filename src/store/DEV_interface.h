@@ -93,7 +93,7 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aamDstk, i8 ieStrInf, i8* iaColSet);
 
 void vDev_IXT_COL_PUSHONE_PST(void* aLU, i8** aaiDstk);
 
-void vDev_PIX_STM_PRINT(void* aLU);
+void vDev_RLU_PIX_STM_PRINT(i8** aaiDstk);
 
 void vDev_POT_USE_STREAMDEFOUT(void* aLU, i8 iAddPtnHash);
 

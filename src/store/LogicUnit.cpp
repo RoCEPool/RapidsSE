@@ -1766,6 +1766,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         aRluCommon->m_pIndexTree = nullptr;
         break;//+endCase
 
+      case EO_RLU_PIX_STM_PRINT: ArgNil(); // print stream pix
+        dLU0(EO_RLU_PIX_STM_PRINT);
+        vDev_RLU_PIX_STM_PRINT(&aiDstk);
+        break;//+endCase
+
       case EO_REG_PTNSTREAM_CLOSE: ArgNil(); // close ptnStream[]
         dLU0(EO_REG_PTNSTREAM_CLOSE);
         vDev_REG_PTNSTREAM_CLOSE(pLU);
@@ -2596,13 +2601,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         //azDst = (char*)szDev_PAY_STORE_COLS(pLU,aRluCommon->m_pDevTmpIxt,iArg);
         azDst = (char*)&aiPayload[iArg];
         S_PopStr(azDst);
-        break;//+endCase
-        
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      // pix
-      case EO_PIX_STM_PRINT: ArgNil(); // print stream pix
-        dLU0(EO_PIX_STM_PRINT);
-        vDev_PIX_STM_PRINT(pLU);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

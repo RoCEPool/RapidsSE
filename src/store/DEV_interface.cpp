@@ -2231,13 +2231,14 @@ void vDev_IXT_COL_PUSHONE_PST(void* aLU, i8** aaiDstk) {
 /*----------------------------------------------------------------------------*/
 /* print stream pix                                                           */
 /*----------------------------------------------------------------------------*/
-void vDev_PIX_STM_PRINT(void* aLU)
+void vDev_RLU_PIX_STM_PRINT(i8** aaiDstk)
 {
   _static_
-  
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-  
-  ((RowPix*)pLogicUnit->m_xRluCommon.m_pRowPix)->vPrint();
+
+  i8 *aiDstk = *aaiDstk;
+  RowPix* pRowPix = _pRowPix(P_PopPtr());
+
+  pRowPix->vPrint();
 }
 
 /*----------------------------------------------------------------------------*/
