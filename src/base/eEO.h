@@ -278,13 +278,13 @@ enum eEO : u1 // expression operators
   /*  D  */ EO_DEVIXT_ENT_PUSHUPPER, // push upper entry
   
   // entry relational operators
-  /*    */ EO_DEVIXT_ENT_LESS,         // test if m_pEnt.key <  m_oEntWrk.key
-  /*    */ EO_DEVIXT_ENT_LESSEQUAL,    // test if m_pEnt.key <= m_oEntWrk.key
-  /*    */ EO_DEVIXT_ENT_EQUAL,        // test if m_pEnt.key == m_oEntWrk.key
-  /*    */ EO_DEVIXT_ENT_NOTEQUAL,     // test if m_pEnt.key != m_oEntWrk.key
-  /*    */ EO_DEVIXT_ENT_GREATEREQUAL, // test if m_pEnt.key >= m_oEntWrk.key
-  /*    */ EO_DEVIXT_ENT_GREATER,      // test if m_pEnt.key >  m_oEntWrk.key
-  /*    */ EO_ENT_PRINTKEYS,    // print both m_pEnt.key and m_oEntWrk.key
+  /*    */ EO_DEVIXT_ENT_LESS,         // test if dev key <  other working key
+  /*    */ EO_DEVIXT_ENT_LESSEQUAL,    // test if dev key <= other working key
+  /*    */ EO_DEVIXT_ENT_EQUAL,        // test if dev key == other working key
+  /*    */ EO_DEVIXT_ENT_NOTEQUAL,     // test if dev key != other working key
+  /*    */ EO_DEVIXT_ENT_GREATEREQUAL, // test if dev key >= other working key
+  /*    */ EO_DEVIXT_ENT_GREATER,      // test if dev key >  other working key
+  /*    */ EO_DEVIXT_ENT_PRINTKEYS,    // print device key and other working key
 
   // entWrk
   /*    */ EO_DEVROW_ENTWRK_APPENDELMI,// append next element value (int)
@@ -1022,7 +1022,7 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_DEVIXT_ENT_NOTEQUAL
   { EA_NONE,    0 },  // EO_DEVIXT_ENT_GREATEREQUAL
   { EA_NONE,    0 },  // EO_DEVIXT_ENT_GREATER
-  { EA_NONE,    0 },  // EO_ENT_PRINTKEYS
+  { EA_NONE,    0 },  // EO_DEVIXT_ENT_PRINTKEYS
 
 
   

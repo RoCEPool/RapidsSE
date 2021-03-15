@@ -2579,8 +2579,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         *(++aiDstk) = iRes;
         break;//+endCase
 
-      case EO_ENT_PRINTKEYS: ArgNil(); // test if m_pEnt.key == m_oEntWrk.key
-        vDev_ENT_PRINTKEYS(pLU,aRluCommon->m_pDevTmpIxt);
+      case EO_DEVIXT_ENT_PRINTKEYS: ArgNil(); // print dev m_pEnt.key and other working key
+        vDev_IXT_ENT_PRINTKEYS(&aiDstk);
         break;//+endCase
         
       case EO_DEVROW_ENTWRK_APPENDELMI: ArgNil(); // append next element value (int)

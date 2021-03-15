@@ -23,9 +23,7 @@ void vDev_IXT_ENT_COMPARE(i8** aaiDstk);
 void vDev_IXT_ENT_FIND(i8** aaiDstk);
 void vDev_IXT_ENT_NEXT(i8** aaiDstk);
 void vDev_IXT_ENT_POSPRIOR(i8** aaiDstk);
-
-void vDev_ENT_PRINTKEYS(void* aLU, void* aIXT);
-
+void vDev_IXT_ENT_PRINTKEYS(i8** aaiDstk);
 void vDev_IXT_ENT_PUSH(i8** aaiDstk);
 void vDev_IXT_ENT_PUSHELMI0(i8** aaiDstk);
 void vDev_IXT_ENT_PUSHELMS0(i8** aaiDstk); // NOT COMPLETE!!

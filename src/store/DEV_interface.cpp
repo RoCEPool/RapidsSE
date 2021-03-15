@@ -432,24 +432,27 @@ void vDev_IXT_ENT_POSPRIOR(i8** aaiDstk)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print both m_pEnt.key and m_oEntWrk.key                                    */
+/* print entry key of device and other entry working key                      */
 /*----------------------------------------------------------------------------*/
-void vDev_ENT_PRINTKEYS(void* aLU, void* aIXT)
+void vDev_IXT_ENT_PRINTKEYS(i8** aaiDstk)
 {
   _static_
-  
-  DevIXT* pDevIxt = _pDevIXT(aIXT);
-  
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
 
-  Ent *pEnt = (Ent*)pLogicUnit->m_xRluCommon.m_aWrkEnt;
+  i8 *aiDstk = *aaiDstk;
+  Ent* pEntArray;
+
+  // pop the entry
+  Ent* pEnt = (Ent*)P_PopPtr();
+
+  //pop the device
+  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
 
   SP_Ent spEnt;
   vTrace("\n\nEntWrk : %s\n"_Stz,
          spEnt.sz(pEnt,
                   pDevIxt->m_pIdxTree->pIndexDef()));
   
-  vTrace("\n\nEnt : %s\n"_Stz,
+  vTrace("\n\nDevEnt : %s\n"_Stz,
          spEnt.sz(pDevIxt->m_aEnt,
                   pDevIxt->m_pIdxTree->pIndexDef()));
 }
