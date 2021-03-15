@@ -1412,6 +1412,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // RLU pushes
+      case EO_PUSH_RLU_ENT: ArgNil(); // push ent
+        dLU0(EO_PUSH_RLU_ENT);
+        P_PushPtr(aRluCommon->m_aWrkEnt);
+        break;//+endCase
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // entwrk push
       case EO_PUSH_RLU_ENTWRK: ArgNil(); // push entwrk
         dLU0(EO_PUSH_RLU_ENTWRK);
