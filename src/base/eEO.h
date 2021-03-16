@@ -142,7 +142,6 @@ enum eEO : u1 // expression operators
   /*  M  */ EO_SET_COLUMN,       // add column to set
   /*  M  */ EO_SET_COLUMNS,      // add columns to set
   /*  M  */ EO_SET_ITEMS,        // set number of column items
-  /*  D  */ EO_SET_LOCALS_ROW,   // row columns into locals
 
 
   // table name
@@ -232,6 +231,7 @@ enum eEO : u1 // expression operators
   /*  S  */ EO_DEVIXT_COL_PUSHSET_ADR,   // push column value from dev ixt (str as ptr)
   /*  S  */ EO_DEVIXT_COL_PUSHSET_PST,   // push column subset from dev ixt
   /*  S  */ EO_DEVIXT_COL_PUSHSET_TOROW, // push all columns from ixt dev to row dev
+  /*  S  */ EO_DEVROW_COL_LOCALS_ADR,    // row columns into locals
 
   // device crwbuffer operators
   /*  S  */ EO_DEVIXT_CRWBUF_BEGIN, // begin crw buffer traverse
@@ -458,7 +458,6 @@ static Stz* aEO[]
   /*    */ "EO_SET_COLUMN"_Stz,
   /*    */ "EO_SET_COLUMNS"_Stz,
   /*    */ "EO_SET_ITEMS"_Stz,
-  /*    */ "EO_SET_LOCALS_ROW"_Stz,
 
   // table name
   /*    */ "EO_DEVROW_TABLENM_SET"_Stz,
@@ -547,6 +546,7 @@ static Stz* aEO[]
   /*    */ "EO_DEVIXT_COL_PUSHSET_ADR"_Stz,
   /*    */ "EO_DEVIXT_COL_PUSHSET_PST"_Stz,
   /*    */ "EO_DEVIXT_COL_PUSHSET_TOROW"_Stz,
+  /*    */ "EO_DEVROW_COL_LOCALS_ADR"_Stz,
 
   // device crwbuffer operators
   /*    */ "EO_DEVIXT_CRWBUF_BEGIN"_Stz,
@@ -781,7 +781,6 @@ static EoArg EoArgs[]
   { EA_INT,     8 },  // EO_SET_COLUMN
   { EA_INT,     8 },  // EO_SET_COLUMNS
   { EA_INT,     8 },  // EO_SET_ITEMS
-  { EA_NONE,    0 },  // EO_SET_LOCALS_ROW
 
   // table name
   { EA_STRING, -1 },  // EO_DEVROW_TABLENM_SET
@@ -870,6 +869,7 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_DEVIXT_COL_PUSHSET_ADR
   { EA_NONE,    0 },  // EO_DEVIXT_COL_PUSHSET_PST
   { EA_NONE,    0 },  // EO_DEVIXT_COL_PUSHSET_TOROW
+  { EA_NONE,    0 },  // EO_DEVROW_COL_LOCALS_ADR
 
   // device crwbuffer operators
   { EA_NONE,    0 },  // EO_DEVIXT_CRWBUF_BEGIN
