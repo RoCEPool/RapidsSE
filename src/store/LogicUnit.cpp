@@ -113,8 +113,6 @@ LogicUnit::LogicUnit(Task* pTask)
   
   m_pRluDiary = nullptr;
   
-  MemLib::vZero(&m_aaDev,sizeof(m_aaDev),CN_LOGICUNIT);
-  
   MemLib::vZero(&m_xRluCommon,sizeof(m_xRluCommon),CN_LOGICUNIT);
   m_xRluCommon.m_iCmnMagic  = 123456789;
   m_xRluCommon.m_iCmnFooter = 987654321;
@@ -1214,38 +1212,21 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   i8 iTopA;
   i8 iTopB;
   i8 iTopC;
+
   char* azTopA;
   char* azTopB;
   Stz* szTopA;
   Stz* szTopB;
+
   i8 iRes;
   Stz* szRes;
+
   i8 iCmp;
+
   i8 nSize;
   char* azDst;
   char* azSrc;
-  i8 iBuffer;
-  i8 iItem;
-  tET tNext;
 
-  //i8 iaColSet[64];
-  //i8 i_ColSet = 0;
-
-
-  SP_Ent spEnt;  // this will  tidy up
-
-
-
-  Ent_int* aEnt_int;
-  
-  // -- -- -- -- -- -- -- -- -- --
-
-  
-  // temp
-  m_aaDev[0] = m_pDevTmpIxt->m_pIdxTree;
-  // end temp
-  
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // this code equates to aiDynFun() preliminary
   

@@ -184,8 +184,6 @@ namespace STORE
   
     RluDiary*  m_pRluDiary;
   
-    void*      m_aaDev[C_LOGIC_DEV]; // device array
-  
     Timer      m_oSince;
   
     Timer      m_oTimer;

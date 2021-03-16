@@ -895,8 +895,6 @@ void vExprEvalEvaluate(void);
   void vLogicUnitGenLimit(void);
   void vLogicUnitGenProjection(void);
   void vLogicUnitGenRange(void);
-  void vLogicUnitDevFetch(void);
-  void vLogicUnitDevStore(void);
   void vLogicUnitHandlerFetch(void);
   void vLogicUnitHandlerStore(void);
   void vLogicUnitInit(void);
