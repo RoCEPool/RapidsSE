@@ -1874,13 +1874,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         //*(++aiDstk) = -1;
         break;//+endCase
 
-      case EO_SET_LOCALS_SRC: ArgGet(iArg); // inflate src columns direct into locals
-        dLU0(EO_SET_LOCALS_SRC);
-        vDev_IXT_COL_PUSHSET_ADR_LOCALS(&aiDstk, &giaVectorSet[iArg]);
-        break;//+endCase
+//      case EO_SET_LOCALS_SRC: ArgGet(iArg); // inflate src columns direct into locals
+//        dLU0(EO_SET_LOCALS_SRC);
+//        vDev_IXT_COL_PUSHSET_ADR_LOCALS(&aiDstk, &giaVectorSet[iArg]);
+//        break;//+endCase
 
       case EO_SET_LOCALS_SRC2: ArgNil(); // inflate src columns direct into locals
-        dLU0(EO_SET_LOCALS_SRC);
+        dLU0(EO_SET_LOCALS_SRC2);
         //aiLocals = aRluCommon->m_iaLocals - 1;
         vDev_IXT_COL_PUSHSET_ADR_LOCALS(&aiDstk, iaColSet);
         break;//+endCase
