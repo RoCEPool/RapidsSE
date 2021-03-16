@@ -1262,18 +1262,18 @@ void vExprEvalEvaluate(void);
   void vRegPathRestore(void);
 
   // reg Pipein
-  void vRegPipeinBide(void);
-  void vRegPipeinDelete(void);
-  void vRegPipeinGet(void);
-  void vRegPipeinGetAndClear(void);
-  void vRegPipeinIsNull(void);
-  void vRegPipeinKind(void);
-  void vRegPipeinNext(void);
-  void vRegPipeinPeek(void);
-  void vRegPipeinPipeOut(void);
-  void vRegPipeinPipeToOutput(void);
-  void vRegPipeinSet(void);
-  void vRegPipeinWriteProfile(void);
+  void vPipeinBide(void);
+  void vPipeinDelete(void);
+  void vPipeinGet(void);
+  void vPipeinGetAndClear(void);
+  void vPipeinIsNull(void);
+  void vPipeinKind(void);
+  void vPipeinNext(void);
+  void vPipeinPeek(void);
+  void vPipeinPipeOut(void);
+  void vPipeinPipeToOutput(void);
+  void vPipeinSet(void);
+  void vPipeinWriteProfile(void);
 
   // reg task
   void vRegTaskGet(void);

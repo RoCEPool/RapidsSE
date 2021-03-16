@@ -153,7 +153,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_OperandC();
   Step::vAddSteps_OperandOoO();
   Step::vAddSteps_RegPath();
-  Step::vAddSteps_RegPipein();
+  Step::vAddSteps_Pipein();
   Step::vAddSteps_LogicCompiler();
   Step::vAddSteps_LogicUnit();
   Step::vAddSteps_RegTask();

@@ -19,26 +19,26 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_RegPipein(void)
+void Step::vAddSteps_Pipein(void)
 {
-  vAddStep("PipeIn[]"_Stz,                &Step::vRegPipeinGet);
-  vAddStep("PipeIn[]\\clear"_Stz,         &Step::vRegPipeinGetAndClear);
-  vAddStep("PipeIn[].bide"_Stz,           &Step::vRegPipeinBide);
-  vAddStep("PipeIn[].delete"_Stz,         &Step::vRegPipeinDelete);
-  vAddStep("PipeIn[].isNull"_Stz,         &Step::vRegPipeinIsNull);
-  vAddStep("PipeIn[].kind"_Stz,           &Step::vRegPipeinKind);
-  vAddStep("PipeIn[].next"_Stz,           &Step::vRegPipeinNext);
-  vAddStep("PipeIn[].peek"_Stz,           &Step::vRegPipeinPeek);
-  vAddStep("PipeIn[].pipeOut"_Stz,        &Step::vRegPipeinPipeOut);
-  vAddStep("PipeIn[].pipeToOutput"_Stz,   &Step::vRegPipeinPipeToOutput);
-  vAddStep("PipeIn[].set"_Stz,            &Step::vRegPipeinSet);
-  vAddStep("PipeIn[].writeProfile"_Stz,   &Step::vRegPipeinWriteProfile);
+  vAddStep("PipeIn[]"_Stz,                &Step::vPipeinGet);
+  vAddStep("PipeIn[]\\clear"_Stz,         &Step::vPipeinGetAndClear);
+  vAddStep("PipeIn[].bide"_Stz,           &Step::vPipeinBide);
+  vAddStep("PipeIn[].delete"_Stz,         &Step::vPipeinDelete);
+  vAddStep("PipeIn[].isNull"_Stz,         &Step::vPipeinIsNull);
+  vAddStep("PipeIn[].kind"_Stz,           &Step::vPipeinKind);
+  vAddStep("PipeIn[].next"_Stz,           &Step::vPipeinNext);
+  vAddStep("PipeIn[].peek"_Stz,           &Step::vPipeinPeek);
+  vAddStep("PipeIn[].pipeOut"_Stz,        &Step::vPipeinPipeOut);
+  vAddStep("PipeIn[].pipeToOutput"_Stz,   &Step::vPipeinPipeToOutput);
+  vAddStep("PipeIn[].set"_Stz,            &Step::vPipeinSet);
+  vAddStep("PipeIn[].writeProfile"_Stz,   &Step::vPipeinWriteProfile);
 }
 
 /*----------------------------------------------------------------------------*/
 /* PipeIn[].bide -- pipein operand bide                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vRegPipeinBide(void)
+void Step::vPipeinBide(void)
 {
   ENTRY();
   
@@ -54,7 +54,7 @@ void Step::vRegPipeinBide(void)
 /*----------------------------------------------------------------------------*/
 /* PipeIn[].delete -- operand delete                                          */
 /*----------------------------------------------------------------------------*/
-void Step::vRegPipeinDelete(void)
+void Step::vPipeinDelete(void)
 {
   ENTRY();
   
@@ -68,7 +68,7 @@ void Step::vRegPipeinDelete(void)
 /*----------------------------------------------------------------------------*/
 /* PipeIn[].get -- fetch operand                                              */
 /*----------------------------------------------------------------------------*/
-void Step::vRegPipeinGet(void)
+void Step::vPipeinGet(void)
 {
   ENTRY();
   
@@ -80,7 +80,7 @@ void Step::vRegPipeinGet(void)
 /*----------------------------------------------------------------------------*/
 /* PipeIn[]\clear -- fetch operand and clear pipein[]                         */
 /*----------------------------------------------------------------------------*/
-void Step::vRegPipeinGetAndClear(void)
+void Step::vPipeinGetAndClear(void)
 {
   ENTRY();
   
@@ -94,7 +94,7 @@ void Step::vRegPipeinGetAndClear(void)
 /*----------------------------------------------------------------------------*/
 /* PipeIn[].isNull -- is operand null ?                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vRegPipeinIsNull(void)
+void Step::vPipeinIsNull(void)
 {
   ENTRY();
   
@@ -106,7 +106,7 @@ void Step::vRegPipeinIsNull(void)
 /*----------------------------------------------------------------------------*/
 /* PipeIn[].kind -- decode operand into its operand kind                      */
 /*----------------------------------------------------------------------------*/
-void Step::vRegPipeinKind(void)
+void Step::vPipeinKind(void)
 {
   ENTRY();
   
@@ -122,7 +122,7 @@ void Step::vRegPipeinKind(void)
 /*----------------------------------------------------------------------------*/
 /* PipeIn[].next -- get next operand                                          */
 /*----------------------------------------------------------------------------*/
-void Step::vRegPipeinNext(void)
+void Step::vPipeinNext(void)
 {
   ENTRY();
   
@@ -143,7 +143,7 @@ void Step::vRegPipeinNext(void)
 /*----------------------------------------------------------------------------*/
 /* PipeIn[].peek -- peek next operand                                         */
 /*----------------------------------------------------------------------------*/
-void Step::vRegPipeinPeek(void)
+void Step::vPipeinPeek(void)
 {
   ENTRY();
   
@@ -155,7 +155,7 @@ void Step::vRegPipeinPeek(void)
 /*----------------------------------------------------------------------------*/
 /* PipeIn[].pipeOut -- append operand onto next operator in pipeline          */
 /*----------------------------------------------------------------------------*/
-void Step::vRegPipeinPipeOut(void)
+void Step::vPipeinPipeOut(void)
 {
   ENTRY();
   
@@ -173,7 +173,7 @@ void Step::vRegPipeinPipeOut(void)
 /*----------------------------------------------------------------------------*/
 /* PipeIn[].pipeToOutput -- append operand onto the pipeline job buffer queue */
 /*----------------------------------------------------------------------------*/
-void Step::vRegPipeinPipeToOutput(void)
+void Step::vPipeinPipeToOutput(void)
 {
   ENTRY();
   
@@ -191,7 +191,7 @@ void Step::vRegPipeinPipeToOutput(void)
 /*----------------------------------------------------------------------------*/
 /* PipeIn[].set -- set operand                                                */
 /*----------------------------------------------------------------------------*/
-void Step::vRegPipeinSet(void)
+void Step::vPipeinSet(void)
 {
   ENTRY();
   
@@ -210,7 +210,7 @@ void Step::vRegPipeinSet(void)
 /*----------------------------------------------------------------------------*/
 /* PipeIn[].writeProfile -- write profile to file as csv                      */
 /*----------------------------------------------------------------------------*/
-void Step::vRegPipeinWriteProfile(void)
+void Step::vPipeinWriteProfile(void)
 {
   ENTRY();
   
