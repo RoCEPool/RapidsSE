@@ -2340,8 +2340,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
       case EO_COL_SRC_PUSHSET: ArgNil(); // push column subset from m_aSrcCrw
-        vDev_SRC_COL_PUSHSET(pLU,&aiDstk,(i8)SI_CELLARRAY_PST,iaColSet);
-        dLU0(EO_COL_SRC_PUSHSET);
+//        vDev_SRC_COL_PUSHSET(pLU,&aiDstk,(i8)SI_CELLARRAY_PST,iaColSet);
+//        dLU0(EO_COL_SRC_PUSHSET);
+        RASSERT(0);
         break;//+endCase
 
       case EO_COL_SRC_PUSHDST: ArgNil(); // push all columns from m_aSrcCrw into dst
