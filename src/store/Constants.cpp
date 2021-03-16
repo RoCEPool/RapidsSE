@@ -301,9 +301,10 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("CK_SERVICE"_Stz,  CK_SERVICE);
 
   
-  /*    */ vAddConstant("CN_JOB"_Stz,                CN_JOB);
-  /*  8 */ vAddConstant("CN_STZVAL"_Stz,       CN_STZVAL);
-  /* 89 */ vAddConstant("CN_XMITOPERAND"_Stz,  CN_XMITOPERAND);
+  /*    */ vAddConstant("CN_JOB"_Stz,          CN_JOB);
+  /*    */ vAddConstant("CN_ROWBUFFER"_Stz,    CN_ROWBUFFER);
+  /*    */ vAddConstant("CN_STZVAL"_Stz,       CN_STZVAL);
+  /*    */ vAddConstant("CN_XMITOPERAND"_Stz,  CN_XMITOPERAND);
 
   
   // CT_ : columne type

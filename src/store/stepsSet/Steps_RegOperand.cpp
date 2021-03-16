@@ -57,6 +57,7 @@ void Step::vAddSteps_RegOperand(void)
   vAddStep("Operand[].invokePython"_Stz,   &Step::vRegOperandInvokePython);
   vAddStep("Operand[].invokePythonShell"_Stz, &Step::vRegOperandInvokePythonShell);
   vAddStep("Operand[].kind"_Stz,           &Step::vRegOperandKind);
+  vAddStep("Operand[].morphClass"_Stz,     &Step::vRegOperandMorphClass);
   vAddStep("Operand[].newCancelMarker"_Stz,&Step::vRegOperandNewCancelMarker);
   vAddStep("Operand[].newCsvBuffer"_Stz,   &Step::vRegOperandNewCsvBuffer);
   vAddStep("Operand[].newDataPulse"_Stz,   &Step::vRegOperandNewDataPulse);
@@ -420,6 +421,22 @@ void Step::vRegOperandKind(void)
   eZK eOperand = (eZK)AM::iOperandZkKind(pOperand);
   
   m_pDataStack->vPushInt(eOperand);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].morphClass -- change the class number of operand                 */
+/*----------------------------------------------------------------------------*/
+void Step::vRegOperandMorphClass(void)
+{
+  ENTRY();
+  
+  i8 iClassNo = m_pDataStack->iPopInt(__func__);
+
+  Operand* pOperand = *( m_pJob->pLogicUnit_job() )->m_xpOperandA;
+  
+  pOperand->vSetClassNo((eCN)iClassNo);
   
   EXIT();
 }

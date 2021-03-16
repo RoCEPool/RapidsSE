@@ -1197,6 +1197,7 @@ void vExprEvalEvaluate(void);
   void vRegOperandInvokePython(void);
   void vRegOperandInvokePythonShell(void);
   void vRegOperandKind(void);
+  void vRegOperandMorphClass(void);
   void vRegOperandNewCancelMarker(void);
   void vRegOperandNewCsvBuffer(void);
   void vRegOperandNewDataPulse(void);
