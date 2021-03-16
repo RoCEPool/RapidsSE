@@ -229,10 +229,6 @@ enum eEO : u1 // expression operators
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // col operators
-  /*  D  */ EO_COL_SRC_PUSHONE,  // push column value from m_aSrcCrw                 ---to go
-  /*  D  */ EO_COL_SRC_PUSHONE_a,// push value from m_aSrcCrw (str as ptr)           ---to go
-  /*  D  */ EO_COL_SRC_PUSHSET,  // push column subset from m_aSrcCrw                ---to go
-
   /*  S  */ EO_DEVIXT_COL_PUSHSET_ADR,  // push column value from dev ixt (str as ptr)
   /*  S  */ EO_DEVIXT_COL_PUSHSET_PST,  // push column subset from dev ixt
   /*  S  */ EO_DEVIXT_COL_PUSHSET_TOROW, // push all columns from ixt dev to row dev
@@ -549,10 +545,6 @@ static Stz* aEO[]
   //----------------------------------------------------------------------------
 
   // col operators
-  /*    */ "EO_COL_SRC_PUSHONE"_Stz,
-  /*    */ "EO_COL_SRC_PUSHONE_a"_Stz,
-  /*    */ "EO_COL_SRC_PUSHSET"_Stz,
-
   /*    */ "EO_DEVIXT_COL_PUSHSET_ADR"_Stz,
   /*    */ "EO_DEVIXT_COL_PUSHSET_PST"_Stz,
   /*    */ "EO_DEVIXT_COL_PUSHSET_TOROW"_Stz,
@@ -877,10 +869,6 @@ static EoArg EoArgs[]
   //----------------------------------------------------------------------------
   
   // col operators
-  { EA_SUBSCR,  8 },  // EO_COL_SRC_PUSHONE
-  { EA_SUBSCR,  8 },  // EO_COL_SRC_PUSHONE_a
-  { EA_NONE,    0 },  // EO_COL_SRC_PUSHSET
-
   { EA_NONE,    0 },  // EO_DEVIXT_COL_PUSHSET_ADR
   { EA_NONE,    0 },  // EO_DEVIXT_COL_PUSHSET_PST
   { EA_NONE,    0 },  // EO_DEVIXT_COL_PUSHSET_TOROW
