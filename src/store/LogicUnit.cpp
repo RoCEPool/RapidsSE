@@ -1874,13 +1874,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         //*(++aiDstk) = -1;
         break;//+endCase
 
-      case EO_SET_LOCALS_ALT: ArgGet(iArg); // inflate alt columns direct into locals
-        dLU0(EO_SET_LOCALS_ALT);
-        aiLocals = aRluCommon->m_iaLocals - 1;
-        vDev_ALT_COL_PUSHSET(pLU,&aiLocals,(i8)SI_CELLARRAY_ADR,
-                             iArg == -1 ? iaColSet : &giaVectorSet[iArg]);
-        break;//+endCase
-
       case EO_SET_LOCALS_SRC: ArgGet(iArg); // inflate src columns direct into locals
         dLU0(EO_SET_LOCALS_SRC);
         //aiLocals = aRluCommon->m_iaLocals - 1;
