@@ -229,7 +229,6 @@ enum eEO : u1 // expression operators
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // col operators
-  /*  D  */ EO_COL_SRC_PUSHDST,  // push column subset from m_aSrcCrw into dst row   ---to go
   /*  D  */ EO_COL_ALT_PUSHONE,  // push column value from m_aAltCrw                 ---to go
   /*  D  */ EO_COL_ALT_PUSHSET,  // push column subset from m_aAltCrw                ---to go
   /*  D  */ EO_COL_SRC_PUSHONE,  // push column value from m_aSrcCrw                 ---to go
@@ -553,7 +552,6 @@ static Stz* aEO[]
   //----------------------------------------------------------------------------
 
   // col operators
-  /*    */ "EO_COL_SRC_PUSHDST"_Stz,
   /*    */ "EO_COL_ALT_PUSHONE"_Stz,
   /*    */ "EO_COL_ALT_PUSHSET"_Stz,
   /*    */ "EO_COL_SRC_PUSHONE"_Stz,
@@ -885,7 +883,6 @@ static EoArg EoArgs[]
   //----------------------------------------------------------------------------
   
   // col operators
-  { EA_NONE,    0 },  // EO_COL_SRC_PUSHDST
   { EA_SUBSCR,  8 },  // EO_COL_ALT_PUSHONE
   { EA_NONE,    0 },  // EO_COL_ALT_PUSHSET
   { EA_SUBSCR,  8 },  // EO_COL_SRC_PUSHONE

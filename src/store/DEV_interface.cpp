@@ -1474,25 +1474,6 @@ void vDev_ALT_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflateRule, i8* iaCo
 }
 
 /*----------------------------------------------------------------------------*/
-/* push column value from m_aSrcCrw to dst row                                */
-/*----------------------------------------------------------------------------*/
-void vDev_SRC_COL_PUSHDST(void* aLU, void* aROWDEVICE) {
-  _static_
-
-  LogicUnit *pLogicUnit = _pLogicUnit(aLU);
-  DevIXT* pDevIxt = _pDevIXT(pLogicUnit->m_pDevSrcIxt);
-
-  //HeadLine *aHeadLine = (HeadLine *) pLogicUnit->m_xRluCommon.m_aSrcCrw;
-  HeadLine *aHeadLine = (HeadLine *) pDevIxt->m_aCrw;
-
-  DevROW* pDevRow = _pDevROW(aROWDEVICE);
-
-  RowInflator::vInflate_AllColumns_into_RowBuffer(pDevRow->m_pRowBuffer,aHeadLine);
-
-  return;
-}
-
-/*----------------------------------------------------------------------------*/
 /* push column value from m_aSrcCrw                                           */
 /*----------------------------------------------------------------------------*/
 void vDev_ROW_COL_PUSHSET(void* aLU, i8** aaiDstk, void* aROWDEVICE, i8* iaColSet)

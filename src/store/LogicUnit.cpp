@@ -2346,12 +2346,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         RASSERT(0);
         break;//+endCase
 
-      case EO_COL_SRC_PUSHDST: ArgNil(); // push all columns from m_aSrcCrw into dst
-//        vDev_SRC_COL_PUSHDST(pLU,aRluCommon->m_pDevDstRow);
-//        dLU0(EO_COL_SRC_PUSHDST);
-        RASSERT(0);
-        break;//+endCase
-
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // col operators
       case EO_DEVIXT_COL_PUSHONE_ADR: ArgGet(iArg); // push column value from dev crw
