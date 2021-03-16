@@ -2347,20 +2347,21 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       case EO_COL_SRC_PUSHDST: ArgNil(); // push all columns from m_aSrcCrw into dst
-        vDev_SRC_COL_PUSHDST(pLU,aRluCommon->m_pDevDstRow);
-        dLU0(EO_COL_SRC_PUSHDST);
+//        vDev_SRC_COL_PUSHDST(pLU,aRluCommon->m_pDevDstRow);
+//        dLU0(EO_COL_SRC_PUSHDST);
+        RASSERT(0);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // col operators
-      case EO_DEVIXT_COL_PUSHONE_ADR: ArgGet(iArg); // push column value from m_aAltCrw
+      case EO_DEVIXT_COL_PUSHONE_ADR: ArgGet(iArg); // push column value from dev crw
         iaColSet[1] = -1;
         iaColSet[0] = iArg;
         vDev_IXT_COL_PUSHSET_ADR(&aiDstk, iaColSet);
         dLU1(EO_DEVIXT_COL_PUSHONE_ADR,iArg);
         break;//+endCase
 
-      case EO_DEVIXT_COL_PUSHONE_PST: ArgGet(iArg); // push column value from m_aAltCrw
+      case EO_DEVIXT_COL_PUSHONE_PST: ArgGet(iArg); // push column value from dev crw
         iaColSet[1] = -1;
         iaColSet[0] = iArg;
         vDev_IXT_COL_PUSHSET_PST(&aiDstk, iaColSet);
@@ -2369,6 +2370,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_DEVIXT_COL_PUSHSET_PST: ArgNil(); // push column value from m_aAltCrw
         vDev_IXT_COL_PUSHSET_PST(&aiDstk, iaColSet);
+        dLU0(EO_DEVIXT_COL_PUSHSET_PST);
+        break;//+endCase
+
+      case EO_DEVIXT_COL_PUSHSET_TOROW: ArgNil(); // push column value from dev ixt to dev row
+        vDev_IXT_COL_PUSHSET_TOROW(&aiDstk, iaColSet);
         dLU0(EO_DEVIXT_COL_PUSHSET_PST);
         break;//+endCase
 

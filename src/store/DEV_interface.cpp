@@ -1368,6 +1368,36 @@ void vDev_TABLEPTN_GRABREAD(void* aLU)
 /*----------------------------------------------------------------------------*/
 /* push column value from m_aSrcCrw                                           */
 /*----------------------------------------------------------------------------*/
+void vDev_IXT_COL_PUSHSET_ADR(i8** aaiDstk, i8* iaColSet)
+{
+  _static_
+
+  i8 *aiDstk = *aaiDstk;
+
+  char* acStrArea_null = nullptr;
+
+  // pop the ixt device
+  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
+
+  // pop the row device
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
+
+  *aaiDstk = aiDstk;
+  RowInflator::vInflate_ColumnSet_into_CellArray
+      (
+          aaiDstk,
+          acStrArea_null,
+          SI_CELLARRAY_ADR,
+          (Crw*)pDevIxt->m_aCrw,
+          iaColSet,
+          pDevRow->m_pStreamDef
+      );
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* push column value from m_aSrcCrw                                           */
+/*----------------------------------------------------------------------------*/
 void vDev_IXT_COL_PUSHSET_PST(i8** aaiDstk, i8* iaColSet)
 {
   _static_
@@ -1395,9 +1425,9 @@ void vDev_IXT_COL_PUSHSET_PST(i8** aaiDstk, i8* iaColSet)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push column value from m_aSrcCrw                                           */
+/* push column value from m_aSrcCrw to dst row                                */
 /*----------------------------------------------------------------------------*/
-void vDev_IXT_COL_PUSHSET_ADR(i8** aaiDstk, i8* iaColSet)
+void vDev_IXT_COL_PUSHSET_TOROW(i8** aaiDstk, i8* iaColSet)
 {
   _static_
 
@@ -1411,16 +1441,12 @@ void vDev_IXT_COL_PUSHSET_ADR(i8** aaiDstk, i8* iaColSet)
   // pop the row device
   DevROW* pDevRow = _pDevROW(P_PopPtr());
 
+  //HeadLine *aHeadLine = (HeadLine *) pLogicUnit->m_xRluCommon.m_aSrcCrw;
+  HeadLine *aHeadLine = (HeadLine *) pDevIxt->m_aCrw;
+
+  RowInflator::vInflate_AllColumns_into_RowBuffer(pDevRow->m_pRowBuffer,aHeadLine);
+
   *aaiDstk = aiDstk;
-  RowInflator::vInflate_ColumnSet_into_CellArray
-      (
-          aaiDstk,
-          acStrArea_null,
-          SI_CELLARRAY_ADR,
-          (Crw*)pDevIxt->m_aCrw,
-          iaColSet,
-          pDevRow->m_pStreamDef
-      );
 }
 
 /*----------------------------------------------------------------------------*/
