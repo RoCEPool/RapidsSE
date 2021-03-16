@@ -2597,13 +2597,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_PAY_STORE_COLI: ArgGet(iArg); // store a column into entry payload
         iTopA = *(aiDstk--);
         dLU2(EO_PAY_STORE_COLI,iArg,iTopA);
-        //vDev_PAY_STORE_COLI(pLU,aRluCommon->m_pDevTmpIxt,iArg,iTopA);
         aiPayload[iArg] = iTopA;
         break;//+endCase
       
       case EO_PAY_STORE_COLS: ArgGet(iArg); // store a column into entry payload
         dLU1(EO_PAY_STORE_COLS,iArg);
-        //azDst = (char*)szDev_PAY_STORE_COLS(pLU,aRluCommon->m_pDevTmpIxt,iArg);
         azDst = (char*)&aiPayload[iArg];
         S_PopStr(azDst);
         break;//+endCase

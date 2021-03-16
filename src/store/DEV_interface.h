@@ -26,7 +26,7 @@ void vDev_IXT_ENT_PRINT    (i8** aaiDstk);
 void vDev_IXT_IDX_DEL      (i8** aaiDstk);
 void vDev_IXT_IDX_DUMP     (i8** aaiDstk);
 void vDev_IXT_IDX_ENTRIES  (i8** aaiDstk);
-void vDev_IXT_IDX_INS         (i8** aaiDstk);
+void vDev_IXT_IDX_INS      (i8** aaiDstk);
 
 void vDev_IXT_INDEXNM_SET     (i8** aaiDstk);
 void vDev_IXT_INDEXTREE_DELETE(i8** aaiDstk);
@@ -43,13 +43,6 @@ void vDev_IXT_IDX_BEGIN    (i8** aaiDstk);
 void vDev_IXT_IDX_NEXT     (i8** aaiDstk);
 
 void vDev_PAY_ADDRESS(i8** aaiDstk);
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// TO GO
-i8   iDev_PAY_FETCH_COLI(void* aLU, void* aIXT, i8 iArg);
-Stz* szDev_PAY_FETCH_COLS(void* aLU, void* aIXT, i8 iArg); 
-void vDev_PAY_STORE_COLI(void* aLU, void* aIXT, i8 iArg, i8 iTop);
-Stz* szDev_PAY_STORE_COLS(void* aLU, void* aIXT, i8 iArg);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // prototypes for dev ROW

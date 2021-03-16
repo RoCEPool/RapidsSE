@@ -103,10 +103,6 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_IXT_IDX_NEXT"_Stz,      (const void *) vDev_IXT_IDX_NEXT      },
 
   { "vDev_PAY_ADDRESS"_Stz,       (const void *) vDev_PAY_ADDRESS       },
-  { "iDev_PAY_FETCH_COLI"_Stz,    (const void *) iDev_PAY_FETCH_COLI    },
-  { "szDev_PAY_FETCH_COLS"_Stz,   (const void *) szDev_PAY_FETCH_COLS   },
-  { "vDev_PAY_STORE_COLI"_Stz,    (const void *) vDev_PAY_STORE_COLI    },
-  { "szDev_PAY_STORE_COLS"_Stz,   (const void *) szDev_PAY_STORE_COLS   },
   
   { "vDev_RLU_PIX_STM_PRINT"_Stz, (const void *) vDev_RLU_PIX_STM_PRINT },
   
