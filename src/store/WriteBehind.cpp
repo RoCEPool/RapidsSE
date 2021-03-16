@@ -4,7 +4,7 @@
 
 #include "BASE.h"
 
-#include "RowBuffer.hpp"
+#include "NamedBuffer.hpp"
 
 #include "WriteBehind.hpp"
 
@@ -28,7 +28,7 @@ WriteBehind::WriteBehind(void)
   
   m_pStreamDef_events = AM::pStreamDefFind(C_TDEF_EVENTS);
   
-  m_pRowBuffer_events = nullptr;
+  m_pNamedBuffer_events = nullptr;
     
   _checkInitialised_(CN_WRITEBEHIND);
   
@@ -81,21 +81,21 @@ Row* WriteBehind::pAllotEventRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEBEHIND,_FOOTER_);
   
-  if (! m_pRowBuffer_events) {
-    m_pRowBuffer_events = new RowBuffer(CN_ROWBUFFER,m_pStreamDef_events,C_DONT_LOG);
+  if (! m_pNamedBuffer_events) {
+    m_pNamedBuffer_events = new NamedBuffer(m_pStreamDef_events,C_DONT_LOG);
   }
   
-  Row* pRow = m_pRowBuffer_events->pAllotRow();
+  Row* pRow = m_pNamedBuffer_events->pAllotRow();
   
   if (! pRow) {
     
     // temp until the demon is in place
-    delete m_pRowBuffer_events;
+    delete m_pNamedBuffer_events;
     //NEVER_REACH;
     
     
-    m_pRowBuffer_events = new RowBuffer(CN_ROWBUFFER,m_pStreamDef_events,C_DONT_LOG);
-    pRow = m_pRowBuffer_events->pAllotRow();
+    m_pNamedBuffer_events = new NamedBuffer(m_pStreamDef_events,C_DONT_LOG);
+    pRow = m_pNamedBuffer_events->pAllotRow();
     RASSERT(pRow);
   }
   

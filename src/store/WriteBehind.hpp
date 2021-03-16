@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+namespace STORE { class NamedBuffer; }
+
 namespace STORE
 {
   class WriteBehind : public Object
@@ -11,8 +13,8 @@ namespace STORE
     Lock m_okLock;
   
     // events
-    StreamDef* m_pStreamDef_events;
-    RowBuffer* m_pRowBuffer_events;
+    StreamDef*   m_pStreamDef_events;
+    NamedBuffer* m_pNamedBuffer_events;
 
     // must be last
     Footer m_xFooter;

@@ -23,25 +23,25 @@ NamedBuffer* STORE::_pNamedBuffer(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-NamedBuffer::NamedBuffer(eCN eClassNo)
-: RowBuffer(eClassNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
-    
-  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
-}
+//NamedBuffer::NamedBuffer(void)
+//: RowBuffer(CN_NAMEDBUFFER)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_NAMEDBUFFER);
+//
+//  _postcondition_(_ADDRESS_,_MAGIC_,CN_NAMEDBUFFER);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-NamedBuffer::NamedBuffer(eCN eClassNo, StreamDef* pStreamDef)
-: RowBuffer(eClassNo,pStreamDef)
+NamedBuffer::NamedBuffer(StreamDef* pStreamDef, i8 iLogCtl)
+: RowBuffer(CN_NAMEDBUFFER,pStreamDef,iLogCtl)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NAMEDBUFFER);
+
   vBufferNm(pStreamDef->szName());
     
-  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_NAMEDBUFFER);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -49,26 +49,8 @@ NamedBuffer::NamedBuffer(eCN eClassNo, StreamDef* pStreamDef)
 /*----------------------------------------------------------------------------*/
 NamedBuffer::~NamedBuffer(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NAMEDBUFFER);
 }
-
-/*----------------------------------------------------------------------------*/
-/* calculate the absolute offset within buffer for given item                 */
-/*----------------------------------------------------------------------------*/
-i8 NamedBuffer::iToOffset(Stz* aItem)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-  
-  i4 iOffset = static_cast<i4>(nDifference(aItem,this));
-  
-  return iOffset;
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-__aFooterFunction(NamedBuffer);
-
 
 /*============================================================================*/
 /* end                                                                        */
