@@ -82,9 +82,9 @@ void vDev_TABLEPTN_GRABREAD(void* aLU);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-void vDev_ALT_COL_PUSHSET(void* aLU, i8** aamDstk, i8 ieStrInf, i8* iaColSet);
-void vDev_ROW_COL_PUSHSET(void* aLU, i8** aamDstk, void* aROWDEVICE, i8* iaColSet);
-void vDev_SRC_COL_PUSHSET(void* aLU, i8** aamDstk, i8 ieStrInf, i8* iaColSet);
+void vDev_ALT_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInf, i8* iaColSet);
+void vDev_ROW_COL_PUSHSET(i8** aaiDstk, i8* iaColSet);
+void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInf, i8* iaColSet);
 
 void vDev_IXT_COL_PUSHSET_ADR(i8** aaiDstk, i8* iaColSet);
 void vDev_IXT_COL_PUSHSET_ADR_LOCALS(i8** aaiDstk, i8* iaColSet);

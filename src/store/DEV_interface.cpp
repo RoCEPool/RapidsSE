@@ -1508,16 +1508,20 @@ void vDev_ALT_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflateRule, i8* iaCo
 /*----------------------------------------------------------------------------*/
 /* push column value from m_aSrcCrw                                           */
 /*----------------------------------------------------------------------------*/
-void vDev_ROW_COL_PUSHSET(void* aLU, i8** aaiDstk, void* aROWDEVICE, i8* iaColSet)
+void vDev_ROW_COL_PUSHSET(i8** aaiDstk, i8* iaColSet)
 {
   _static_
-  
-  UNUSED(aLU);
 
-  DevROW* pDevRow = _pDevROW(aROWDEVICE);
+  i8 *aiDstk = *aaiDstk;
 
-  i8* aiDstk_lcl = *aaiDstk;
-  i8* ayDst = ++aiDstk_lcl;
+  // pop the row device
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
+
+  // pop the locals address
+  i8** aaiLocals = (i8**)P_PopPtr();
+
+  i8* aiDst_lcl = *aaiLocals;
+  i8* ayDst = ++aiDst_lcl;
 
   for (i8 i_ColSet = 0; iaColSet[i_ColSet] != -1; i_ColSet++) {
     Column* pColumn = pDevRow->m_pStreamDef->pGetColumn(iaColSet[i_ColSet]);
@@ -1538,6 +1542,8 @@ void vDev_ROW_COL_PUSHSET(void* aLU, i8** aaiDstk, void* aROWDEVICE, i8* iaColSe
         ASSERT(0);
     }
   }
+
+  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/

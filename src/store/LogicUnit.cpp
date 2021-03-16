@@ -1889,8 +1889,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_SET_LOCALS_ROW: ArgNil(); // row buffer columns into locals
         dLU0(EO_SET_LOCALS_ROW);
-        aiLocals = aRluCommon->m_iaLocals - 1;
-        vDev_ROW_COL_PUSHSET(pLU,&aiLocals,aRluCommon->m_pDevSrcRow,iaColSet);
+        //aiLocals = aRluCommon->m_iaLocals - 1;
+        vDev_ROW_COL_PUSHSET(&aiDstk,iaColSet);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
