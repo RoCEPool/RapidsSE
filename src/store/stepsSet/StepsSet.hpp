@@ -985,6 +985,7 @@ void vExprEvalEvaluate(void);
   void vOperandCsvToRow(void);
   void vOperandDelete(void);
   void vOperandGet(void);
+  void vOperandGetAndClear(void);
   void vOperandIsNotNull(void);
   void vOperandIsNull(void);
   void vOperandIsReport(void);

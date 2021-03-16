@@ -20,11 +20,9 @@
   0 Table[].tablePtnGet to TablePtn[]
   
   tablePtn[].grabWrite_msecLoop
-  Operand[] tablePtn[].appendBuffer
+  Operand[]\clear tablePtn[].appendBuffer
   tablePtn[].dropWrite
   
-  nullptr to Operand[]
-
   true
 ;
 

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_RegOperand.cpp -- Register Operand step group                        */
+/* Steps_Operand.cpp -- Register Operand step group                           */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -41,6 +41,7 @@
 void Step::vAddSteps_Operand(void)
 {
   vAddStep("Operand[]"_Stz,                &Step::vOperandGet);
+  vAddStep("Operand[]\\clear"_Stz,         &Step::vOperandGetAndClear);
   vAddStep("Operand[].asSrcCrwBuffer"_Stz, &Step::vOperandAsSrcCrwBuffer);
   vAddStep("Operand[].asSrcRowBuffer"_Stz, &Step::vOperandAsSrcRowBuffer);
   vAddStep("Operand[].bide"_Stz,           &Step::vOperandBide);
@@ -99,7 +100,7 @@ void Step::vOperandAsSrcCrwBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].asSrcRowBuffer -- use this operand as src row slab                 */
+/* Operand[].asSrcRowBuffer -- use this operand as src row slab               */
 /*----------------------------------------------------------------------------*/
 void Step::vOperandAsSrcRowBuffer(void)
 {
@@ -234,6 +235,20 @@ void Step::vOperandGet(void)
   
   m_pDataStack->vPushPtr(*( m_pJob->pLogicUnit_job() )->m_xpOperandA);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].getAndClear -- fetch operand and set to nullptr                  */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandGetAndClear(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushPtr(*( m_pJob->pLogicUnit_job() )->m_xpOperandA);
+  
+  ( m_pJob->pLogicUnit_job() )->m_xpOperandA = nullptr;
+
   EXIT();
 }
 
