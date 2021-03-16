@@ -114,6 +114,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Monitor();
   Step::vAddSteps_Expressions();
 
+  Step::vAddSteps_NamedBuffer();
   Step::vAddSteps_Node();
   Step::vAddSteps_Node_I();
   Step::vAddSteps_Now();

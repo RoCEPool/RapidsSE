@@ -929,6 +929,10 @@ void vExprEvalEvaluate(void);
   // Monitor (Nodes)
   void vMonitorUpdateNodeStatus(void);
 
+  // named buffer
+  void vNamedBufferNameFetch(void);
+  void vNamedBufferNameStore(void);
+
   // node (of grid)
   void vNodeForget(void);
   void vNodeIP(void);
@@ -1285,7 +1289,8 @@ void vExprEvalEvaluate(void);
   void vRegister0Get(void);
   void vRegister0Set(void);
 
-  void vRowIntColumnFetch(void);
+  // row buffer
+  void vRowBufferOperandDump(void);
 
   // rowCursor
   void vRowCursorBegin(void);
@@ -1305,6 +1310,7 @@ void vExprEvalEvaluate(void);
   void vRowGet(void);
   void vRowGetIntColumn(void);
   void vRowGetVchColumn(void);
+  void vRowIntColumnFetch(void);
   void vRowIsNull(void);
   void vRowSet(void);
 
@@ -1313,9 +1319,6 @@ void vExprEvalEvaluate(void);
   void vRowOnceGet(void);
   void vRowOnceIsNull(void);
   void vRowOnceNew(void);
-
-  // row buffer
-  void vRowBufferOperandDump(void);
 
   // rstack
   void vRstackCsPick(void);

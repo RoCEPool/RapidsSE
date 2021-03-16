@@ -98,6 +98,7 @@ namespace STORE
     static void vAddSteps_Monitor(void);
     static void vAddSteps_Expressions(void);
 
+    static void vAddSteps_NamedBuffer(void);
     static void vAddSteps_Node(void);
     static void vAddSteps_Node_I(void);
     static void vAddSteps_Now(void);
