@@ -2300,66 +2300,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       //------------------------------------------------------------------------
       //------------------------------------------------------------------------
 
-
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // col operators
-      case EO_COL_ALT_PUSHONE: ArgGet(iArg); // push column value from m_aAltCrw
-//        //*(++aiDstk) = -1;
-//        //*(++aiDstk) = iArg; // col to inflate
-//        iaColSet[1] = -1;
-//        iaColSet[0] = iArg;
-//        vDev_ALT_COL_PUSHSET(pLU,&aiDstk,(i8)SI_CELLARRAY_PST,iaColSet);
-//        dLU1(EO_COL_ALT_PUSHONE,iArg);
-        RASSERT(0);
-        break;//+endCase
-      
-      case EO_COL_ALT_PUSHSET: ArgNil(); // push column subset from m_aAltCrw
-//        vDev_ALT_COL_PUSHSET(pLU,&aiDstk,(i8)SI_CELLARRAY_PST,iaColSet);
-//        dLU0(EO_COL_ALT_PUSHSET);
-        RASSERT(0);
-        break;//+endCase
-    
-
-      case EO_COL_SRC_PUSHONE: ArgGet(iArg); // push column value from m_aSrcCrw
-//        //*(++aiDstk) = -1;
-//        //*(++aiDstk) = iArg; // col to inflate
-//        iaColSet[1] = -1;
-//        iaColSet[0] = iArg;
-//        vDev_SRC_COL_PUSHSET(pLU,&aiDstk,(i8)SI_CELLARRAY_PST,iaColSet);
-//        dLU1(EO_COL_SRC_PUSHONE,iArg);
-        RASSERT(0);
-        break;//+endCase
-        
-      case EO_COL_SRC_PUSHONE_a: ArgGet(iArg); // push value from m_aSrcCrw (str as ptr)
-//        //*(++aiDstk) = -1;
-//        //*(++aiDstk) = iArg; // col to inflate
-//        iaColSet[1] = -1;
-//        iaColSet[0] = iArg;
-//        vDev_SRC_COL_PUSHSET(pLU,&aiDstk,(i8)SI_CELLARRAY_ADR,iaColSet);
-//        dLU1(EO_COL_SRC_PUSHONE_a,iArg);
-        RASSERT(0);
-        break;//+endCase
-        
-      case EO_COL_SRC_PUSHSET: ArgNil(); // push column subset from m_aSrcCrw
-//        vDev_SRC_COL_PUSHSET(pLU,&aiDstk,(i8)SI_CELLARRAY_PST,iaColSet);
-//        dLU0(EO_COL_SRC_PUSHSET);
-        RASSERT(0);
-        break;//+endCase
-
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      // col operators
-      case EO_DEVIXT_COL_PUSHONE_ADR: ArgGet(iArg); // push column value from dev crw
-        iaColSet[1] = -1;
-        iaColSet[0] = iArg;
+      case EO_DEVIXT_COL_PUSHSET_ADR: ArgNil(); // push column value from dev crw
         vDev_IXT_COL_PUSHSET_ADR(&aiDstk, iaColSet);
-        dLU1(EO_DEVIXT_COL_PUSHONE_ADR,iArg);
-        break;//+endCase
-
-      case EO_DEVIXT_COL_PUSHONE_PST: ArgGet(iArg); // push column value from dev crw
-        iaColSet[1] = -1;
-        iaColSet[0] = iArg;
-        vDev_IXT_COL_PUSHSET_PST(&aiDstk, iaColSet);
-        dLU1(EO_DEVIXT_COL_PUSHONE_PST,iArg);
+        dLU0(EO_DEVIXT_COL_PUSHSET_ADR);
         break;//+endCase
 
       case EO_DEVIXT_COL_PUSHSET_PST: ArgNil(); // push column value from m_aAltCrw
