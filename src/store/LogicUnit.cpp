@@ -1843,7 +1843,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // columns set
       case EO_SET_COLUMNS: { ArgGet(iArg); // add columns to set
-        dLU1(EO_SET_COLUMN, iArg);
+        dLU1(EO_SET_COLUMNS, iArg);
         i8 iCol = 0;
 
         for (i8 iBit = 0; iBit < (i8)C_BITS_PER_WORD; iBit++) {
