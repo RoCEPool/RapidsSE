@@ -14,6 +14,9 @@
 #include "ShadowRoot.hpp"
 #include "MetadataNode.hpp"
 #include "store/parser/shadowNodes/compound/TableRef.hpp"
+#include "ColumnRef.hpp"
+#include "ColumnDef.hpp"
+#include "ProjectedExpr.hpp"
 
 using namespace Parser;
 
@@ -190,6 +193,49 @@ PlanNodeList* TableScanOp::pColumnDefs(QueryNode* pNode, PlanNode* pRootNode)
 
   delete pIter;
   return pColumnDefList;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return a list of ProjectedExprs that represent the column expressions      */
+/* that this PlanObject will return. All nodes returned here must be freed.   */
+/*----------------------------------------------------------------------------*/
+PlanNodeList* TableScanOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pRootNode);
+
+  QueryNode* pMetadataNode = ShadowRoot::pMetadataNode(pRootNode);
+  ASSERT(pMetadataNode);
+
+  // Create a list for the columnRefs to be returned  (note: columnREFS not columnDEFS)
+  PlanNodeList* pColumnRefList = new PlanNodeList();
+
+  // Iterate the columns in the metadata and add them to the above list
+  PlanNodeIter* pIter = MetadataNode::pColumnDefIter(pMetadataNode,
+                                                     szCatalogName(pNode),
+                                                     szSchemaName(pNode),
+                                                     szTableName(pNode));
+
+  while (pIter->bHasNext()) {
+    QueryNode* pColumnDef = static_cast<QueryNode*>(pIter->pNext());
+
+    // Create a columnRef expression object from this column definition
+    QueryNode* pColumnRef = ColumnRef::pCreate(ColumnDef::szCatalogName(pColumnDef),
+                                               ColumnDef::szSchemaName(pColumnDef),
+                                               ColumnDef::szTableName(pColumnDef),
+                                               ColumnDef::szColumnName(pColumnDef));
+
+    // Create a ProjectedExpr for this expression
+    QueryNode* pProjectedExpr = ProjectedExpr::pCreate(pColumnRef,
+                                                       new Text(ColumnDef::szColumnName(pColumnDef)));
+
+    // Append it to the list
+    pColumnRefList->vAppend(pProjectedExpr);
+  }
+
+  delete pIter;
+  return pColumnRefList;
 }
 
 /*============================================================================*/

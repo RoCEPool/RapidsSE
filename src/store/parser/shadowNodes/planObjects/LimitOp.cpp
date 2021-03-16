@@ -169,6 +169,23 @@ i8 LimitOp::iOffset(QueryNode* pNode)
   return pOffsetNode->iValue();
 }
 
+/*----------------------------------------------------------------------------*/
+/* Return a list of ProjectedExprs that represent the column expressions      */
+/* that this PlanObject will return. All nodes returned here must be freed.   */
+/*----------------------------------------------------------------------------*/
+PlanNodeList* LimitOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pRootNode);
+
+  // The LimitOp doesn't change the projected expressions, so ask its child.
+  QueryNode* pChild = static_cast<QueryNode*>(pNode->pFirstChild());
+  ASSERT(pChild);
+
+  return PlanObject::pColumnExprs(pChild, pRootNode);
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

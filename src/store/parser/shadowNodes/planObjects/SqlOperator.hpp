@@ -5,6 +5,7 @@
 #pragma once
 
 #include "PlanObject.hpp"
+#include "PlanNode.hpp"
 
 namespace Parser
 {
@@ -24,6 +25,9 @@ namespace Parser
     // Returns true if a given node is a given type ** or is derived from that type **
     static b1 bIsOfType(PlanNode* pNode);
 
+    // Return a list of ProjectedExprs that represent the column expressions
+    // that this PlanObject will return. All nodes returned here must be freed.
+    static PlanNodeList* pColumnExprs(QueryNode* pNode, PlanNode* pRootNode);
   };
 
 }

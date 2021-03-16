@@ -187,6 +187,38 @@ QueryNode* ProjectOp::pProjectedExprs(QueryNode* pNode)
   return pProjExprs;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Return a list of ProjectedExprs that represent the column expressions      */
+/* that this PlanObject will return. All nodes returned here must be freed.   */
+/*----------------------------------------------------------------------------*/
+PlanNodeList* ProjectOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pRootNode);
+
+  // Create a list for the columnRefs to be returned
+  PlanNodeList* pColumnRefList = new PlanNodeList();
+
+  // The list we return and all of its elements need to be deletable.
+  // So we need to duplicate each projected expression before adding it
+  // to the list.
+  QueryNode* pProjExprs = pProjectedExprs(pNode);
+
+  PlanNodeIter* pIter = pProjExprs->pNewChildrenIter();
+  while (pIter->bHasNext()) {
+
+    QueryNode* pProjExpr = static_cast<QueryNode*>(pIter->pNext());
+    ASSERT(ProjectedExpr::bIsOfType(pProjExpr));
+
+    QueryNode* pDup = pProjExpr->pDeepCopy();
+    pColumnRefList->vAppend(pDup);
+  }
+
+  delete pIter;
+  return pColumnRefList;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

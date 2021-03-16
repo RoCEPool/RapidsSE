@@ -143,11 +143,28 @@ PlanNodeList* DataSource::pColumnDefs(QueryNode* pNode, PlanNode* pRootNode)
 
   // TODO: manual polymorphism here
 
-  // TableScanOp
   if      (TableScanOp::bIsOfType(pNode))  { return TableScanOp::pColumnDefs(pNode, pRootNode); }
 //else if (IndexScanOp::bIsOfType(pNode))  { return IndexScanOp::pColumnDefs(pNode, pRootNode); }
 //else if ( SubqueryOp::bIsOfType(pNode))  { return  SubqueryOp::pColumnDefs(pNode, pRootNode); }
-  else                                     {  NEVER_REACH                            }
+  else                                     {  NEVER_REACH                                       }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return a list of ProjectedExprs that represent the column expressions      */
+/* that this PlanObject will return. All nodes returned here must be freed.   */
+/*----------------------------------------------------------------------------*/
+PlanNodeList* DataSource::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pRootNode);
+
+  // manual polymorphism here
+
+  if      (TableScanOp::bIsOfType(pNode))  { return TableScanOp::pColumnExprs(pNode, pRootNode); }
+//else if (IndexScanOp::bIsOfType(pNode))  { return IndexScanOp::pColumnExprs(pNode, pRootNode); }
+//else if ( SubqueryOp::bIsOfType(pNode))  { return  SubqueryOp::pColumnExprs(pNode, pRootNode); }
+  else                                     {  NEVER_REACH                                       }
 }
 
 /*============================================================================*/

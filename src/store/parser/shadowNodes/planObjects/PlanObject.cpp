@@ -45,10 +45,7 @@ void PlanObject::vDescribe(PlanNode* pNode, s2K& sBuf)
 
   // TODO: manual polymorphism here
 
-  // Statement
-  if      (Statement::bIsOfType(pNode))     { Statement::vDescribe(pNode, sBuf);    }
-
-  // SqlOperator
+  if      (  Statement::bIsOfType(pNode))   {   Statement::vDescribe(pNode, sBuf);  }
   else if (SqlOperator::bIsOfType(pNode))   { SqlOperator::vDescribe(pNode, sBuf);  }
 
   else {
@@ -69,10 +66,7 @@ void PlanObject::vExplain(PlanNode* pNode, s48K& sBuf, i8 iIndent)
 
   // Manual polymorphism here
 
-  // Statement
-  if      (Statement::bIsOfType(pNode))     { Statement::vExplain(pNode, sBuf, iIndent);    }
-
-    // SqlOperator
+  if      (  Statement::bIsOfType(pNode))   {   Statement::vExplain(pNode, sBuf, iIndent);  }
   else if (SqlOperator::bIsOfType(pNode))   { SqlOperator::vExplain(pNode, sBuf, iIndent);  }
 
   else {
@@ -88,6 +82,27 @@ void PlanObject::vExplain(PlanNode* pNode, s48K& sBuf, i8 iIndent)
 b1 PlanObject::bIsOfType(PlanNode *pNode)
 {
   return ShadowNode::bIsOfType(pNode, C_PLANOBJECT_DEFN);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Return a list of ProjectedExprs that represent the column expressions      */
+/* that this PlanObject will return. All nodes returned here must be freed.   */
+/*----------------------------------------------------------------------------*/
+PlanNodeList* PlanObject::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  // Manual polymorphism here
+
+  if      (  Statement::bIsOfType(pNode))   { return   Statement::pColumnExprs(pNode, pRootNode);  }
+  else if (SqlOperator::bIsOfType(pNode))   { return SqlOperator::pColumnExprs(pNode, pRootNode);  }
+
+  else {
+    // Need to add in manual polymorphism here
+    NEVER_REACH
+  }
 }
 
 

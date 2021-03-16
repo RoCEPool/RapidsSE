@@ -40,21 +40,11 @@ void SqlOperator::vDescribe(PlanNode* pNode, s2K& sBuf)
 
   // TODO: manual polymorphism here
 
-  // Aggregation (group by). Must come before ProjectOp
-  if      (AggregateOp::bIsOfType(pNode))   { AggregateOp::vDescribe(pNode, sBuf);   }
-
-  // Projection
-  else if (ProjectOp::bIsOfType(pNode))     { ProjectOp::vDescribe(pNode, sBuf);  }
-
-  // DataSource
-  else if (DataSource::bIsOfType(pNode))    { DataSource::vDescribe(pNode, sBuf); }
-  
-  // Filter
-  else if (FilterOp::bIsOfType(pNode))      { FilterOp::vDescribe(pNode, sBuf);   }
-
-  // Limit
-  else if (LimitOp::bIsOfType(pNode))       { LimitOp::vDescribe(pNode, sBuf);    }
-
+  if      (AggregateOp::bIsOfType(pNode))   { AggregateOp::vDescribe(pNode, sBuf); }
+  else if (  ProjectOp::bIsOfType(pNode))   {   ProjectOp::vDescribe(pNode, sBuf); }
+  else if ( DataSource::bIsOfType(pNode))   {  DataSource::vDescribe(pNode, sBuf); }
+  else if (   FilterOp::bIsOfType(pNode))   {    FilterOp::vDescribe(pNode, sBuf); }
+  else if (    LimitOp::bIsOfType(pNode))   {     LimitOp::vDescribe(pNode, sBuf); }
   else {
     // Need to add in manual polymorphism here
     NEVER_REACH
@@ -72,21 +62,11 @@ void SqlOperator::vExplain(PlanNode* pNode, s48K& sBuf, i8 iIndent)
   QueryNode* pExpr = static_cast<QueryNode*>(pNode);
 
   // Manual polymorphism here
-
-  if      (AggregateOp::bIsOfType(pNode)) { AggregateOp::vExplain(pNode, sBuf, iIndent);  }
-
-  // Projection
-  else if (ProjectOp::bIsOfType(pNode))   { ProjectOp::vExplain(pNode, sBuf, iIndent);    }
-
-  // DataSource
-  else if (DataSource::bIsOfType(pNode))  { DataSource::vExplain(pNode, sBuf, iIndent);   }
-
-  // Filter
-  else if (FilterOp::bIsOfType(pNode))    { FilterOp::vExplain(pNode, sBuf, iIndent);     }
-  
-  // Limit
-  else if (LimitOp::bIsOfType(pNode))     { LimitOp::vExplain(pNode, sBuf, iIndent);      }
-
+  if      (AggregateOp::bIsOfType(pNode)) { AggregateOp::vExplain(pNode, sBuf, iIndent); }
+  else if (  ProjectOp::bIsOfType(pNode)) {   ProjectOp::vExplain(pNode, sBuf, iIndent); }
+  else if ( DataSource::bIsOfType(pNode)) {  DataSource::vExplain(pNode, sBuf, iIndent); }
+  else if (   FilterOp::bIsOfType(pNode)) {    FilterOp::vExplain(pNode, sBuf, iIndent); }
+  else if (    LimitOp::bIsOfType(pNode)) {     LimitOp::vExplain(pNode, sBuf, iIndent); }
   else {
     // Need to add in manual polymorphism here
     NEVER_REACH
@@ -102,6 +82,28 @@ b1 SqlOperator::bIsOfType(PlanNode *pNode)
   return ShadowNode::bIsOfType(pNode, C_SQLOPERATOR_DEFN);
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* Return a list of ProjectedExprs that represent the column expressions      */
+/* that this PlanObject will return. All nodes returned here must be freed.   */
+/*----------------------------------------------------------------------------*/
+PlanNodeList* SqlOperator::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pRootNode);
+
+  // Manual polymorphism here
+  if      (AggregateOp::bIsOfType(pNode)) { return AggregateOp::pColumnExprs(pNode, pRootNode); }
+  else if (  ProjectOp::bIsOfType(pNode)) { return   ProjectOp::pColumnExprs(pNode, pRootNode); }
+  else if ( DataSource::bIsOfType(pNode)) { return  DataSource::pColumnExprs(pNode, pRootNode); }
+  else if (   FilterOp::bIsOfType(pNode)) { return    FilterOp::pColumnExprs(pNode, pRootNode); }
+  else if (    LimitOp::bIsOfType(pNode)) { return     LimitOp::pColumnExprs(pNode, pRootNode); }
+  else {
+    // Need to add in manual polymorphism here
+    NEVER_REACH
+  }
+}
 
 /*============================================================================*/
 /* end                                                                        */

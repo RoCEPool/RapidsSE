@@ -124,6 +124,23 @@ QueryNode* FilterOp::pFilterExpr(QueryNode* pNode)
   return pExprNode;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Return a list of ProjectedExprs that represent the column expressions      */
+/* that this PlanObject will return. All nodes returned here must be freed.   */
+/*----------------------------------------------------------------------------*/
+PlanNodeList* FilterOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pRootNode);
+
+  // The FilterOp doesn't change the projected expressions, so ask its child.
+  QueryNode* pChild = static_cast<QueryNode*>(pNode->pFirstChild());
+  ASSERT(pChild);
+
+  return PlanObject::pColumnExprs(pChild, pRootNode);
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

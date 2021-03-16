@@ -138,6 +138,20 @@ b1 Statement::bIsOfType(PlanNode *pNode)
 
 
 /*----------------------------------------------------------------------------*/
+/* Return a list of ProjectedExprs that represent the column expressions      */
+/* that this PlanObject will return. All nodes returned here must be freed.   */
+/*----------------------------------------------------------------------------*/
+PlanNodeList* Statement::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  // Statements don't change the columns being returned. So ask its descendant.
+  ASSERT(pNode->iNumChildren() == 1);
+  return PlanObject::pColumnExprs(static_cast<QueryNode*>(pNode->pFirstChild()), pRootNode);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns the statement enum type from a given node                          */
 /*----------------------------------------------------------------------------*/
 Statement::eST Statement::eStatementType(PlanNode* pNode)
