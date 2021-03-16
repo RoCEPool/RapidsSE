@@ -34,6 +34,10 @@ namespace Parser
     // Returned list must be freed, but not its contents.
     static PlanNodeList* pColumnDefs(QueryNode* pNode, PlanNode* pRootNode);
 
+    // Return a list of ProjectedExprs that represent the column expressions
+    // that this PlanObject will return. All nodes returned here must be freed.
+    static PlanNodeList* pColumnExprs(QueryNode* pNode, PlanNode* pRootNode);
+
   protected:
 
   };

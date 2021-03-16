@@ -64,6 +64,9 @@ namespace Parser
     QueryNode* pPopChild();
 
     void vAppendProperty(QueryNode* pNode);
+
+    // Return a deep copy of the current node, it's properties and all children
+    QueryNode* pDeepCopy();
   };
   
   QueryNode* _pQueryNode(void* aAddr);

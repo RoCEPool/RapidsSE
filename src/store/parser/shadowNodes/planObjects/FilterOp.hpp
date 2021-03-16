@@ -27,6 +27,10 @@ namespace Parser
 
     static QueryNode* pFilterExpr(QueryNode* pNode);
 
+    // Return a list of ProjectedExprs that represent the column expressions
+    // that this PlanObject will return. All nodes returned here must be freed.
+    static PlanNodeList* pColumnExprs(QueryNode* pNode, PlanNode* pRootNode);
+
   protected:
 
   };
