@@ -14,7 +14,7 @@
 
   tablePtn[] tablePtnGrabWrite
   Operand[].insdelIntoTable
-  tablePtn[] tablePtnDropWrite
+  tablePtn[].dropWrite
 
   Operand[].delete
 
@@ -33,7 +33,7 @@
 
   tablePtn[] tablePtnGrabWrite
   Operand[].insdelIntoTable
-  tablePtn[] tablePtnDropWrite
+  tablePtn[].dropWrite
 
   Operand[].delete
 

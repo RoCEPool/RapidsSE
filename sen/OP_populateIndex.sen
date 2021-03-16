@@ -44,10 +44,10 @@
 
   Table[].tablePtn@ to tablePtn[]
 
-  tablePtn[] tablePtnGrabWrite_msec
+  tablePtn[].grabWrite_msec
   index[] tablePtn[].populateIndex not if ( errorCode )
     to errorCode
-    tablePtn[] tablePtnDropWrite
+    tablePtn[].dropWrite
     errorCode op.pipelineJob@ ERROR_JOB
     errorCode op__execErr
     PipeIn[].delete
@@ -55,7 +55,7 @@
     exit
   then
 
-  tablePtn[] tablePtnDropWrite
+  tablePtn[].dropWrite
 
   // should be in tables
   folder[].isTables assert

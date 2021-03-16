@@ -16,7 +16,7 @@
   tx[].begin
   tablePtn[] tablePtnGrabWrite
   Operand[].upsertIntoTable
-  tablePtn[] tablePtnDropWrite
+  tablePtn[].dropWrite
   tx[].commit
   Operand[].delete
 

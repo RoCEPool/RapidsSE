@@ -12,7 +12,17 @@
   PipeIn[] to Operand[]
   nullptr to PipeIn[]
   
+  Operand[] namedBuffer.name@ locals| sBufferNm |
+  
+  sBufferNm op__table assert
+
   CN_ROWBUFFER Operand[].morphClass
+
+  0 Table[].tablePtnGet to TablePtn[]
+  
+  tablePtn[].grabWrite_msec
+  Operand[] tablePtn[].appendBuffer
+  tablePtn[].dropWrite
   
   true
 ;

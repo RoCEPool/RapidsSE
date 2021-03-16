@@ -63,6 +63,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("table[].streamDef@"_Stz,       &Step::vTableStreamDefFetch);
   vAddStep("table.streamDef!"_Stz,         &Step::vTableStreamDefStore);
   vAddStep("table[].tablePtn@"_Stz,        &Step::vTableTablePtnFetch);
+  vAddStep("table[].tablePtnGet"_Stz,      &Step::vTableTablePtnGet);
   vAddStep("table[].tablePtnZero"_Stz,     &Step::vTableTablePtnZero);
   vAddStep("table[].verify"_Stz,           &Step::vTableVerify);
   vAddStep("table[].visualize"_Stz,        &Step::vTableVisualize);
@@ -288,6 +289,25 @@ void Step::vTableTablePtnFetch(void)
   Job* pJob = m_pJob;
   
   tPN tPtnNo = pJob->m_pOp->tPtnNo();
+  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnNo);
+  TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
+  
+  m_pDataStack->vPushPtr(pTablePtn);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Table[].tablePtnGet -- fetch given table partition[tPtnNo]                 */
+/*----------------------------------------------------------------------------*/
+void Step::vTableTablePtnGet(void)
+{
+  ENTRY();
+  
+  Table* pTable = _pTable(*( m_pJob->pLogicUnit_job() )->m_xpTable);
+    
+  tPN tPtnNo = m_pDataStack->iPopInt(__func__);;
+  
   i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnNo);
   TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
   

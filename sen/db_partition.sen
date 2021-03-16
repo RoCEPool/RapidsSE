@@ -66,6 +66,20 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* grab read lock on a partition of given table                               */
+/*----------------------------------------------------------------------------*/
+: tablePtnGrabRead ( pTablePtn -- )
+
+  params| pTablePtn |   // table partition
+
+  begin
+    pTablePtn tablePtn.attemptGrabRead
+  not while
+    task::yield
+  repeat
+;
+
+/*----------------------------------------------------------------------------*/
 /* grab write lock on a partition of given table                              */
 /*----------------------------------------------------------------------------*/
 : tablePtnGrabWrite ( pTablePtn -- )
@@ -82,26 +96,12 @@
 /*----------------------------------------------------------------------------*/
 /* grab write lock on given table ptn (with 1ms sleep loop till grabbed)      */
 /*----------------------------------------------------------------------------*/
-: tablePtnGrabWrite_msec params| pTablePtn |
+: tablePtn[].grabWrite_msec
 
   begin
-    pTablePtn tablePtn.attemptGrabWrite
+    TablePtn[] tablePtn.attemptGrabWrite
   not while
     1 task::sleepMsec
-  repeat
-;
-
-/*----------------------------------------------------------------------------*/
-/* grab read lock on a partition of given table                               */
-/*----------------------------------------------------------------------------*/
-: tablePtnGrabRead ( pTablePtn -- )
-
-  params| pTablePtn |   // table partition
-
-  begin
-    pTablePtn tablePtn.attemptGrabRead
-  not while
-    task::yield
   repeat
 ;
 
@@ -118,11 +118,9 @@
 /*----------------------------------------------------------------------------*/
 /* drop write lock on a partition of given table                              */
 /*----------------------------------------------------------------------------*/
-: tablePtnDropWrite ( pTablePtn -- )
+: tablePtn[].dropWrite
 
-  params| pTablePtn |  // given tablePtn
-
-  pTablePtn tablePtn.dropWrite
+  TablePtn[] tablePtn.dropWrite
 ;
 
 /*============================================================================*/
