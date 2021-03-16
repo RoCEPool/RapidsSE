@@ -37,11 +37,11 @@ NamedBuffer* STORE::_pNamedBuffer(void* aAddr)
 NamedBuffer::NamedBuffer(StreamDef* pStreamDef, i8 iLogCtl)
 : RowBuffer(CN_NAMEDBUFFER,pStreamDef,iLogCtl)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NAMEDBUFFER);
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_NAMEDBUFFER);
 
   vBufferNm(pStreamDef->szName());
     
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_NAMEDBUFFER);
+//  _postcondition_(_ADDRESS_,_MAGIC_,CN_NAMEDBUFFER);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -49,7 +49,7 @@ NamedBuffer::NamedBuffer(StreamDef* pStreamDef, i8 iLogCtl)
 /*----------------------------------------------------------------------------*/
 NamedBuffer::~NamedBuffer(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NAMEDBUFFER);
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_NAMEDBUFFER);
 }
 
 /*============================================================================*/

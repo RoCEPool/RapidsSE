@@ -2320,13 +2320,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
     
 
       case EO_COL_SRC_PUSHONE: ArgGet(iArg); // push column value from m_aSrcCrw
-        //*(++aiDstk) = -1;
-        //*(++aiDstk) = iArg; // col to inflate
-        iaColSet[1] = -1;
-        iaColSet[0] = iArg;
-        vDev_SRC_COL_PUSHSET(pLU,&aiDstk,(i8)SI_CELLARRAY_PST,iaColSet);
-        dLU1(EO_COL_SRC_PUSHONE,iArg);
-       // RASSERT(0);
+//        //*(++aiDstk) = -1;
+//        //*(++aiDstk) = iArg; // col to inflate
+//        iaColSet[1] = -1;
+//        iaColSet[0] = iArg;
+//        vDev_SRC_COL_PUSHSET(pLU,&aiDstk,(i8)SI_CELLARRAY_PST,iaColSet);
+//        dLU1(EO_COL_SRC_PUSHONE,iArg);
+        RASSERT(0);
         break;//+endCase
         
       case EO_COL_SRC_PUSHONE_a: ArgGet(iArg); // push value from m_aSrcCrw (str as ptr)
