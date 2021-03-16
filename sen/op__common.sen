@@ -7,6 +7,34 @@
 /*----------------------------------------------------------------------------*/
 /* verify and set folder to <tableNm> of tabledef                             */
 /*----------------------------------------------------------------------------*/
+: op__file ( fileNm mode -- )
+
+  params| mode sFileNm |
+
+  // open the file for reading
+  file::new to File0[]
+  sfileNm mode File0[].get file.open
+  if
+    true
+  else
+
+    File0[].get file.delete assert::stack_0 nullptr File0[].set EC_INVALID_FILE
+    op.pipelineJob@ ERROR_JOB !!logError
+
+    // create an exec error infoset
+    sFileNm EC_INVALID_FILE attachmap::errorText@ str.format
+    EC_INVALID_FILE
+    op__execErrMsg
+
+    PipeIn[].delete
+
+    false
+  then
+ ;
+
+/*----------------------------------------------------------------------------*/
+/* verify and set folder to <tableNm> of tabledef                             */
+/*----------------------------------------------------------------------------*/
 : op__tableDef_infoSet ( tableNm -- )
 
   params| sTableNm |
@@ -35,34 +63,6 @@
 
   true
 ;
-
-/*----------------------------------------------------------------------------*/
-/* verify and set folder to <tableNm> of tabledef                             */
-/*----------------------------------------------------------------------------*/
-: op__file ( fileNm mode -- )
-
-  params| mode sFileNm |
-
-  // open the file for reading
-  file::new to File0[]
-  sfileNm mode File0[].get file.open
-  if
-    true
-  else
-
-    File0[].get file.delete assert::stack_0 nullptr File0[].set EC_INVALID_FILE
-    op.pipelineJob@ ERROR_JOB !!logError
-
-    // create an exec error infoset
-    sFileNm EC_INVALID_FILE attachmap::errorText@ str.format
-    EC_INVALID_FILE
-    op__execErrMsg
-
-    PipeIn[].delete
-
-    false
-  then
- ;
 
 /*----------------------------------------------------------------------------*/
 /* verify and set folder to <tableNm> of tabledef                             */
