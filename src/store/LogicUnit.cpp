@@ -1889,8 +1889,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_SET_LOCALS_SRC2: ArgNil(); // inflate src columns direct into locals
         dLU0(EO_SET_LOCALS_SRC);
-        aiLocals = aRluCommon->m_iaLocals - 1;
-        vDev_SRC_COL_PUSHSET(pLU,&aiLocals,(i8)SI_CELLARRAY_ADR,iaColSet);
+        //aiLocals = aRluCommon->m_iaLocals - 1;
+        vDev_IXT_COL_PUSHSET_ADR_LOCALS(&aiDstk, iaColSet);
         break;//+endCase
 
       case EO_SET_LOCALS_ROW: ArgNil(); // row buffer columns into locals

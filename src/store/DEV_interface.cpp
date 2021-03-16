@@ -1394,6 +1394,38 @@ void vDev_IXT_COL_PUSHSET_ADR(i8** aaiDstk, i8* iaColSet)
       );
 }
 
+/*----------------------------------------------------------------------------*/
+/* push column value from m_aSrcCrw                                           */
+/*----------------------------------------------------------------------------*/
+void vDev_IXT_COL_PUSHSET_ADR_LOCALS(i8** aaiDstk, i8* iaColSet)
+{
+  _static_
+
+  i8 *aiDstk = *aaiDstk;
+
+  char* acStrArea_null = nullptr;
+
+  // pop the ixt device
+  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
+
+  // pop the row device
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
+
+  // pop the locals address
+  i8** aaiLocals = (i8**)P_PopPtr();
+
+  RowInflator::vInflate_ColumnSet_into_CellArray
+      (
+          aaiLocals,
+          acStrArea_null,
+          SI_CELLARRAY_ADR,
+          (Crw*)pDevIxt->m_aCrw,
+          iaColSet,
+          pDevRow->m_pStreamDef
+      );
+
+  *aaiDstk = aiDstk;
+}
 
 /*----------------------------------------------------------------------------*/
 /* push column value from m_aSrcCrw                                           */

@@ -57,6 +57,7 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_SRC_COL_PUSHSET"_Stz,   (const void *) vDev_SRC_COL_PUSHSET   },
 
   { "vDev_IXT_COL_PUSHSET_ADR"_Stz,(const void *) vDev_IXT_COL_PUSHSET_ADR   },
+  { "vDev_IXT_COL_PUSHSET_ADR_LOCALS"_Stz,(const void *) vDev_IXT_COL_PUSHSET_ADR_LOCALS   },
   { "vDev_IXT_COL_PUSHSET_PST"_Stz,(const void *) vDev_IXT_COL_PUSHSET_PST   },
   { "vDev_IXT_COL_PUSHSET_TOROW"_Stz,(const void *) vDev_IXT_COL_PUSHSET_TOROW   },
 
