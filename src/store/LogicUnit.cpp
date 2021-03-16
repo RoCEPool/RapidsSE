@@ -2292,7 +2292,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       case EO_DEVIXT_COL_PUSHSET_ADR: ArgNil(); // push column value from dev crw
-        vDev_IXT_COL_PUSHSET_ADR(&aiDstk, aRluCommon->m_iaColSet);
+        vDev_IXT_COL_PUSHSET_ADR(&aiDstk);
         dLU0(EO_DEVIXT_COL_PUSHSET_ADR);
         break;//+endCase
 
