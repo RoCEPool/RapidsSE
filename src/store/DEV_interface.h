@@ -87,7 +87,12 @@ void vDev_ROW_COL_PUSHSET(void* aLU, i8** aamDstk, void* aROWDEVICE, i8* iaColSe
 void vDev_SRC_COL_PUSHDST(void* aLU, void* aROWDEVICE);
 void vDev_SRC_COL_PUSHSET(void* aLU, i8** aamDstk, i8 ieStrInf, i8* iaColSet);
 
-void vDev_IXT_COL_PUSHONE_PST(void* aLU, i8** aaiDstk);
+
+
+void vDev_IXT_COL_PUSHSET_PST(i8** aaiDstk, i8* iaColSet);
+
+
+
 
 void vDev_RLU_PIX_STM_PRINT(i8** aaiDstk);
 

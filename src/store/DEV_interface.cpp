@@ -1368,12 +1368,41 @@ void vDev_TABLEPTN_GRABREAD(void* aLU)
 /*----------------------------------------------------------------------------*/
 /* push column value from m_aSrcCrw                                           */
 /*----------------------------------------------------------------------------*/
+void vDev_IXT_COL_PUSHSET_PST(i8** aaiDstk, i8* iaColSet)
+{
+  _static_
+
+  i8 *aiDstk = *aaiDstk;
+
+  char* acStrArea_null = nullptr;
+
+  // pop the ixt device
+  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
+
+  // pop the row device
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
+
+  *aaiDstk = aiDstk;
+  RowInflator::vInflate_ColumnSet_into_CellArray
+      (
+          aaiDstk,
+          acStrArea_null,
+          SI_CELLARRAY_PST,
+          (Crw*)pDevIxt->m_aCrw,
+          iaColSet,
+          pDevRow->m_pStreamDef
+      );
+}
+
+/*----------------------------------------------------------------------------*/
+/* push column value from m_aSrcCrw                                           */
+/*----------------------------------------------------------------------------*/
 void vDev_ALT_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflateRule, i8* iaColSet)
 {
   _static_
-  
+
   char* acStrArea_null = nullptr;
-  
+
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
   DevIXT* pDevIxt = _pDevIXT(pLogicUnit->m_pDevAltIxt);
 
@@ -2105,56 +2134,6 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aaiDstk, i8 ieStrInflateRule, i8* iaCo
   
   *aaiDstk = --aiDstk_lcl;
 
-}
-
-/*----------------------------------------------------------------------------*/
-/* push column value from m_aSrcCrw                                           */
-/*----------------------------------------------------------------------------*/
-HACK(LogicUnit,"Alka : vInflate_Key_into_ElementArray is not right");
-
-void vDev_IXT_COL_PUSHONE_PST(void* aLU, i8** aaiDstk) {
-  _static_
-
-  i8 iColumn;
-  i8 iaColSet[64];
-
-  i8 *aiDstk = *aaiDstk;
-
-  // pop column no
-  iColumn = I_PopInt();
-
-  // pop row device
-  DevROW* pDevRow = _pDevROW(P_PopPtr());
-
-  // pop IXT device
-  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
-
-  // set the column in the column set
-  iaColSet[1] = -1;
-  iaColSet[0] = iColumn;
-
-  //HeadLine *aHeadLine = (HeadLine *) pLogicUnit->m_xRluCommon.m_aSrcCrw;
-  HeadLine *aHeadLine = (HeadLine *) pDevIxt->m_aCrw;
-
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-
-  StreamDef *pStreamDef = pDevRow->m_pStreamDef;
-  char* acStrArea_null = nullptr;
-
-//  RowInflator::vInflate_ColumnSet_into_CellArray
-//  (
-//      aaiDstk,
-//      acStrArea_null,
-//      (eSI)SI_CELLARRAY_PST,
-//      (Crw*)pDevIxt->m_aCrw,
-//      iaColSet,
-//      pStreamDef
-//  );
-  RowInflator::vInflate_Key_into_ElementArray
-      (aaiDstk,aHeadLine,iaColSet,
-       pStreamDef,nullptr,SI_CELLARRAY_PST);
-
-  *aaiDstk = aiDstk;
 }
 
 /*----------------------------------------------------------------------------*/
