@@ -48,6 +48,7 @@ enum eEO : u1 // expression operators
   /*  S  */ EO_PUSH_RLU_ENTWRK,     // push entwrk from the rlu
   /*  S  */ EO_PUSH_RLU_INDEXDEF,   // push indexdef from the rlu
   /*  S  */ EO_PUSH_RLU_INDEXTREE,  // push indextree from the rlu
+  /*  S  */ EO_PUSH_RLU_LOCALS,     // push locals pointer from the rlu
   /*  S  */ EO_PUSH_RLU_POT,        // push pot from the rlu
   /*  S  */ EO_PUSH_RLU_PTN,        // push partition from the rlu
   /*  S  */ EO_PUSH_RLU_ROWPIX,     // push rowpix from the rlu
@@ -368,6 +369,7 @@ static Stz* aEO[]
   /*    */ "EO_PUSH_RLU_ENTWRK"_Stz,
   /*    */ "EO_PUSH_RLU_INDEXDEF"_Stz,
   /*    */ "EO_PUSH_RLU_INDEXTREE"_Stz,
+  /*    */ "EO_PUSH_RLU_LOCALS"_Stz,
   /*    */ "EO_PUSH_RLU_POT"_Stz,
   /*    */ "EO_PUSH_RLU_PTN"_Stz,
   /*    */ "EO_PUSH_RLU_ROWPIX"_Stz,
@@ -689,6 +691,7 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_PUSH_RLU_ENTWRK
   { EA_NONE,    0 },  // EO_PUSH_RLU_INDEXDEF
   { EA_NONE,    0 },  // EO_PUSH_RLU_INDEXTREE
+  { EA_NONE,    0 },  // EO_PUSH_RLU_LOCALS
   { EA_NONE,    0 },  // EO_PUSH_RLU_POT
   { EA_NONE,    0 },  // EO_PUSH_RLU_PTN
   { EA_NONE,    0 },  // EO_PUSH_RLU_ROWPIX

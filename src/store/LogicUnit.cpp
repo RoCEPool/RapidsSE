@@ -1819,6 +1819,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_REG_STREAMDEFOUT_ADDCOLUMN(pLU, (Stz*)iArg, iTopA, iTopB, iTopC);
         break;//+endCase
 
+      // locals pushes
+      case EO_PUSH_RLU_LOCALS: ArgNil(); // push aRluCommon->m_iaLocals
+        dLU0(EO_PUSH_RLU_LOCALS);
+        aiLocals = aRluCommon->m_iaLocals - 1;
+        P_PushPtr(&aiLocals);
+        break;//+endCase
+
       // register pushes
       case EO_PUSH_RLU_INDEXTREE: ArgNil(); // push indexTreeRlu[]
         dLU0(EO_PUSH_RLU_INDEXTREE);
