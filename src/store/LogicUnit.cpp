@@ -2288,7 +2288,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // col operators
       case EO_DEVIXT_COL_LOCALS_ADR: ArgNil(); // inflate src columns direct into locals
         dLU0(EO_DEVIXT_COL_LOCALS_ADR);
-        vDev_IXT_COL_PUSHSET_ADR_LOCALS(&aiDstk, aRluCommon->m_iaColSet);
+        vDev_IXT_COL_PUSHSET_ADR_LOCALS(&aiDstk);
         break;//+endCase
 
       case EO_DEVIXT_COL_PUSHSET_ADR: ArgNil(); // push column value from dev crw
