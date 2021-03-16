@@ -311,19 +311,6 @@ enum eEO : u1 // expression operators
 
   // super fragments
   /*  M  */ EO_SUPER_Q100,       // super fragment Q100
-  /*  -  */ //EO_SUPER_Z001,       // super fragment
-  /*  -  */ //EO_SUPER_Z002,       // super fragment
-  /*  -  */ //EO_SUPER_Z003,       // super fragment
-  /*  -  */ //EO_SUPER_Z004,       // super fragment
-  /*  -  */ //EO_SUPER_Z005,       // super fragment
-  /*  -  */ //EO_SUPER_Z006,       // super fragment
-  /*  -  */ //EO_SUPER_Z007,       // super fragment
-  /*  -  */ //EO_SUPER_Z008,       // super fragment
-  /*  -  */ //EO_SUPER_Z009,       // super fragment
-
-  
-  // revised
-  /*  -  */ EO_REVISED_00,       // revised
 
   /*    */ EO_ENUMS
 };
@@ -626,18 +613,6 @@ static Stz* aEO[]
 
   // super fragments
   /*    */ "EO_SUPER_Q100"_Stz,
-  /*    */ //"EO_SUPER_Z001"_Stz,
-  /*    */ //"EO_SUPER_Z002"_Stz,
-  /*    */ //"EO_SUPER_Z003"_Stz,
-  /*    */ //"EO_SUPER_Z004"_Stz,
-  /*    */ //"EO_SUPER_Z005"_Stz,
-  /*    */ //"EO_SUPER_Z006"_Stz,
-  /*    */ //"EO_SUPER_Z007"_Stz,
-  /*    */ //"EO_SUPER_Z008"_Stz,
-  /*    */ //"EO_SUPER_Z009"_Stz,
-  
-  // srevised
-  /*    */ "EO_REVISED_00"_Stz,
 
   /*    */ "ENUMS"_Stz
 };
@@ -651,7 +626,7 @@ struct EoArg
 };
 
 /*----------------------------------------------------------------------------*/
-/* Description of EO CmdLineArgs                                                     */
+/* Description of EO CmdLineArgs                                              */
 /*----------------------------------------------------------------------------*/
 static EoArg EoArgs[]
 {
@@ -949,16 +924,6 @@ static EoArg EoArgs[]
   { EA_SUBSCR,  8 },  // EO_DEVROW_PUSHCOLS
 
   { EA_NONE,    0 },  // super fragment Q100
-  //{ EA_NONE,    0 },  // super fragment
-  //{ EA_NONE,    0 },  // super fragment
-  //{ EA_NONE,    0 },  // super fragment
-  //{ EA_NONE,    0 },  // super fragment
-  //{ EA_NONE,    0 },  // super fragment
-  //{ EA_NONE,    0 },  // super fragment
-  //{ EA_NONE,    0 },  // super fragment
-  //{ EA_NONE,    0 },  // super fragment
-  //{ EA_NONE,    0 },  // super fragment
-
   // -- end --
   { EA_NONE,    0 },  // EO_ENUMS
 };

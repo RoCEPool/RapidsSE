@@ -78,6 +78,9 @@ struct RluCommon                      // **IF YOU CHANGE THIS DO A CLEAN BUILD**
   
   i8 m_iaLocals[C_LOGIC_LOCALS]; // locals regs []
 
+  i8 m_iaColSet[64];
+  i8 m_i_ColSet;
+
   i8 m_iCmnFooter;
 };
 

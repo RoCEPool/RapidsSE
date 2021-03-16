@@ -121,7 +121,8 @@ LogicUnit::LogicUnit(Task* pTask)
   
   m_xRluCommon.m_nAltHeadSize = C_CRW_HEADBYTES;
   m_xRluCommon.m_nSrcHeadSize = C_CRW_HEADBYTES;
-  
+  m_xRluCommon.m_i_ColSet = 0;
+
   m_oSince.vStart();
   
   // m_oEntWrk
@@ -1226,10 +1227,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   i8 iBuffer;
   i8 iItem;
   tET tNext;
-  
-  i8 iaColSet[64];
-  i8 i_ColSet = 0;
-  
+
+  //i8 iaColSet[64];
+  //i8 i_ColSet = 0;
+
 
   SP_Ent spEnt;  // this will  tidy up
 
@@ -1836,7 +1837,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // column set
       case EO_SET_COLUMN: ArgGet(iArg); // add column to set
         dLU1(EO_SET_COLUMN,iArg);
-        iaColSet[--i_ColSet] = iArg;
+        aRluCommon->m_iaColSet[--aRluCommon->m_i_ColSet] = iArg;
         //*(++aiDstk) = iArg;
         break;//+endCase
 
@@ -1860,17 +1861,17 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
           // test if given bit is on
           if (uBitMap) {
-            iaColSet[iCol++] = iBit;
+            aRluCommon->m_iaColSet[iCol++] = iBit;
           }
         }
-        iaColSet[iCol] = C_UNKNOWN;
+        aRluCommon->m_iaColSet[iCol] = C_UNKNOWN;
       }
       break;//+endCase
         
       case EO_SET_ITEMS: ArgGet(iArg); // set number of column items
         dLU1(EO_SET_ITEMS,iArg);
-        i_ColSet = iArg;
-        iaColSet[i_ColSet] = C_UNKNOWN;
+        aRluCommon->m_i_ColSet = iArg;
+        aRluCommon->m_iaColSet[aRluCommon->m_i_ColSet] = C_UNKNOWN;
         //*(++aiDstk) = -1;
         break;//+endCase
 
@@ -2291,27 +2292,27 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // col operators
       case EO_DEVIXT_COL_LOCALS_ADR: ArgNil(); // inflate src columns direct into locals
         dLU0(EO_DEVIXT_COL_LOCALS_ADR);
-        vDev_IXT_COL_PUSHSET_ADR_LOCALS(&aiDstk, iaColSet);
+        vDev_IXT_COL_PUSHSET_ADR_LOCALS(&aiDstk, aRluCommon->m_iaColSet);
         break;//+endCase
 
       case EO_DEVIXT_COL_PUSHSET_ADR: ArgNil(); // push column value from dev crw
-        vDev_IXT_COL_PUSHSET_ADR(&aiDstk, iaColSet);
+        vDev_IXT_COL_PUSHSET_ADR(&aiDstk, aRluCommon->m_iaColSet);
         dLU0(EO_DEVIXT_COL_PUSHSET_ADR);
         break;//+endCase
 
       case EO_DEVIXT_COL_PUSHSET_PST: ArgNil(); // push column value from m_aAltCrw
-        vDev_IXT_COL_PUSHSET_PST(&aiDstk, iaColSet);
+        vDev_IXT_COL_PUSHSET_PST(&aiDstk, aRluCommon->m_iaColSet);
         dLU0(EO_DEVIXT_COL_PUSHSET_PST);
         break;//+endCase
 
       case EO_DEVIXT_COL_PUSHSET_TOROW: ArgNil(); // push column value from dev ixt to dev row
-        vDev_IXT_COL_PUSHSET_TOROW(&aiDstk, iaColSet);
+        vDev_IXT_COL_PUSHSET_TOROW(&aiDstk, aRluCommon->m_iaColSet);
         dLU0(EO_DEVIXT_COL_PUSHSET_PST);
         break;//+endCase
 
       case EO_DEVROW_COL_LOCALS_ADR: ArgNil(); // row buffer columns of row dev into locals
         dLU0(EO_DEVROW_COL_LOCALS_ADR);
-        vDev_ROW_COL_PUSHSET(&aiDstk,iaColSet);
+        vDev_ROW_COL_PUSHSET(&aiDstk, aRluCommon->m_iaColSet);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -2681,49 +2682,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
         aiPayload[Q100_COUNT_ORDER]++;
         
-        break;//+endCase
-
-//      case EO_SUPER_Z001: ArgNil(); // not yet implemented
-//        NEVER_REACH;
-//        break;//+endCase
-//
-//      case EO_SUPER_Z002: ArgNil(); // not yet implemented
-//        NEVER_REACH;
-//        break;//+endCase
-//
-//      case EO_SUPER_Z003: ArgNil(); // not yet implemented
-//        NEVER_REACH;
-//        break;//+endCase
-//
-//      case EO_SUPER_Z004: ArgNil(); // not yet implemented
-//        NEVER_REACH;
-//        break;//+endCase
-//
-//      case EO_SUPER_Z005: ArgNil(); // not yet implemented
-//        NEVER_REACH;
-//        break;//+endCase
-//
-//      case EO_SUPER_Z006: ArgNil(); // not yet implemented
-//        NEVER_REACH;
-//        break;//+endCase
-//
-//      case EO_SUPER_Z007: ArgNil(); // not yet implemented
-//        NEVER_REACH;
-//        break;//+endCase
-//
-//      case EO_SUPER_Z008: ArgNil(); // not yet implemented
-//        NEVER_REACH;
-//        break;//+endCase
-//
-//      case EO_SUPER_Z009: ArgNil(); // not yet implemented
-//        NEVER_REACH;
-//        break;//+endCase
-
-        // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      case EO_REVISED_00: ArgNil(); // not yet implemented
-        dLU0(EO_REVISED_00);
-        vRev_00(pLU);
-        NEVER_REACH;
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
