@@ -1436,7 +1436,7 @@ void vDev_IXT_COL_PUSHSET_ADR_LOCALS(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* push column value from m_aSrcCrw                                           */
 /*----------------------------------------------------------------------------*/
-void vDev_IXT_COL_PUSHSET_PST(i8** aaiDstk, i8* iaColSet)
+void vDev_IXT_COL_PUSHSET_PST(i8** aaiDstk)
 {
   _static_
 
@@ -1449,6 +1449,9 @@ void vDev_IXT_COL_PUSHSET_PST(i8** aaiDstk, i8* iaColSet)
 
   // pop the row device
   DevROW* pDevRow = _pDevROW(P_PopPtr());
+
+  // pop the column set
+  i8* iaColSet = (i8*)P_PopPtr();
 
   *aaiDstk = aiDstk;
   RowInflator::vInflate_ColumnSet_into_CellArray
