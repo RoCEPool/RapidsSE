@@ -90,7 +90,7 @@ void vDev_SRC_COL_PUSHSET(void* aLU, i8** aamDstk, i8 ieStrInf, i8* iaColSet);
 
 
 void vDev_IXT_COL_PUSHSET_PST(i8** aaiDstk, i8* iaColSet);
-
+void vDev_IXT_COL_PUSHSET_ADR(i8** aaiDstk, i8* iaColSet);
 
 
 
