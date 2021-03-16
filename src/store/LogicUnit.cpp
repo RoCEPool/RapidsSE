@@ -1416,40 +1416,36 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // RLU pushes
+      case EO_PUSH_RLU_COLSET: ArgNil(); // push colset
+        dLU0(EO_PUSH_RLU_COLSET);
+        P_PushPtr(aRluCommon->m_iaColSet);
+        break;//+endCase
+
       case EO_PUSH_RLU_ENT: ArgNil(); // push ent
         dLU0(EO_PUSH_RLU_ENT);
         P_PushPtr(aRluCommon->m_aWrkEnt);
         break;//+endCase
 
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      // entwrk push
       case EO_PUSH_RLU_ENTWRK: ArgNil(); // push entwrk
         dLU0(EO_PUSH_RLU_ENTWRK);
         P_PushPtr(aRluCommon->m_pEntWrk);
         break;//+endCase
 
-      // entwrk push
       case EO_PUSH_RLU_INDEXDEF: ArgNil(); // push indexDef
         dLU0(EO_PUSH_RLU_INDEXDEF);
         P_PushPtr(aRluCommon->m_pIndexDef);
         break;//+endCase
 
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      // pot
       case EO_PUSH_RLU_POT: ArgNil(); // push pot
         dLU0(EO_PUSH_RLU_POT);
         P_PushPtr(aRluCommon->m_pPot);
         break;//+endCase
 
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      // partition
       case EO_PUSH_RLU_PTN: ArgNil(); // push partition
         dLU0(EO_PUSH_RLU_PTN);
         P_PushPtr(aRluCommon->m_i_Ptn);
         break;//+endCase
 
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      // partition
       case EO_PUSH_RLU_ROWPIX: ArgNil(); // push row pix
         dLU0(EO_PUSH_RLU_ROWPIX);
         P_PushPtr(aRluCommon->m_pRowPix);

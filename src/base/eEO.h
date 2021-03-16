@@ -44,6 +44,7 @@ enum eEO : u1 // expression operators
 
 
   // push RLU
+  /*  S  */ EO_PUSH_RLU_COLSET,     // push colset from the rlu
   /*  S  */ EO_PUSH_RLU_ENT,        // push ent from the rlu
   /*  S  */ EO_PUSH_RLU_ENTWRK,     // push entwrk from the rlu
   /*  S  */ EO_PUSH_RLU_INDEXDEF,   // push indexdef from the rlu
@@ -351,6 +352,7 @@ static Stz* aEO[]
   /*    */ "EO_PUSH_DEVROW_SRC"_Stz,
 
   // push rlu
+  /*    */ "EO_PUSH_RLU_COLSET"_Stz,
   /*    */ "EO_PUSH_RLU_ENT"_Stz,
   /*    */ "EO_PUSH_RLU_ENTWRK"_Stz,
   /*    */ "EO_PUSH_RLU_INDEXDEF"_Stz,
@@ -659,6 +661,7 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_PUSH_DEVROW_SRC
 
   // push rlu
+  { EA_NONE,    0 },  // EO_PUSH_RLU_COLSET
   { EA_NONE,    0 },  // EO_PUSH_RLU_ENT
   { EA_NONE,    0 },  // EO_PUSH_RLU_ENTWRK
   { EA_NONE,    0 },  // EO_PUSH_RLU_INDEXDEF
