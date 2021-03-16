@@ -1267,6 +1267,7 @@ void vExprEvalEvaluate(void);
   void vRegPipeinBide(void);
   void vRegPipeinDelete(void);
   void vRegPipeinGet(void);
+  void vRegPipeinGetAndClear(void);
   void vRegPipeinIsNull(void);
   void vRegPipeinKind(void);
   void vRegPipeinNext(void);

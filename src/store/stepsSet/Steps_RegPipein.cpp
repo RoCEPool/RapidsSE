@@ -22,6 +22,7 @@
 void Step::vAddSteps_RegPipein(void)
 {
   vAddStep("PipeIn[]"_Stz,                &Step::vRegPipeinGet);
+  vAddStep("PipeIn[]\\clear"_Stz,         &Step::vRegPipeinGetAndClear);
   vAddStep("PipeIn[].bide"_Stz,           &Step::vRegPipeinBide);
   vAddStep("PipeIn[].delete"_Stz,         &Step::vRegPipeinDelete);
   vAddStep("PipeIn[].isNull"_Stz,         &Step::vRegPipeinIsNull);
@@ -73,6 +74,20 @@ void Step::vRegPipeinGet(void)
   
   m_pDataStack->vPushPtr(*( m_pJob->pLogicUnit_job() )->m_xpPipein);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* PipeIn[]\clear -- fetch operand and clear pipein[]                         */
+/*----------------------------------------------------------------------------*/
+void Step::vRegPipeinGetAndClear(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushPtr(*( m_pJob->pLogicUnit_job() )->m_xpPipein);
+  
+  ( m_pJob->pLogicUnit_job() )->m_xpPipein = nullptr;
+
   EXIT();
 }
 

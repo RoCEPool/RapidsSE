@@ -9,8 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : OP_namedInsert \handler
 
-  PipeIn[] to Operand[]
-  nullptr to PipeIn[]
+  PipeIn[]\clear to Operand[]
   
   Operand[] namedBuffer.name@ locals| sBufferNm |
   
@@ -24,6 +23,8 @@
   Operand[] tablePtn[].appendBuffer
   tablePtn[].dropWrite
   
+  nullptr to Operand[]
+
   true
 ;
 
