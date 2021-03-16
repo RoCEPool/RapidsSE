@@ -1879,12 +1879,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 //        vDev_IXT_COL_PUSHSET_ADR_LOCALS(&aiDstk, &giaVectorSet[iArg]);
 //        break;//+endCase
 
-      case EO_SET_LOCALS_SRC2: ArgNil(); // inflate src columns direct into locals
-        dLU0(EO_SET_LOCALS_SRC2);
-        //aiLocals = aRluCommon->m_iaLocals - 1;
-        vDev_IXT_COL_PUSHSET_ADR_LOCALS(&aiDstk, iaColSet);
-        break;//+endCase
-
       case EO_SET_LOCALS_ROW: ArgNil(); // row buffer columns into locals
         dLU0(EO_SET_LOCALS_ROW);
         //aiLocals = aRluCommon->m_iaLocals - 1;
@@ -2301,6 +2295,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // col operators
+      case EO_DEVIXT_COL_LOCALS_ADR: ArgNil(); // inflate src columns direct into locals
+        dLU0(EO_DEVIXT_COL_LOCALS_ADR);
+        vDev_IXT_COL_PUSHSET_ADR_LOCALS(&aiDstk, iaColSet);
+        break;//+endCase
+
       case EO_DEVIXT_COL_PUSHSET_ADR: ArgNil(); // push column value from dev crw
         vDev_IXT_COL_PUSHSET_ADR(&aiDstk, iaColSet);
         dLU0(EO_DEVIXT_COL_PUSHSET_ADR);

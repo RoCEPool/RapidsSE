@@ -143,7 +143,7 @@ enum eEO : u1 // expression operators
   /*  M  */ EO_SET_COLUMNS,      // add columns to set
   /*  M  */ EO_SET_ITEMS,        // set number of column items
   /*  D  */ EO_SET_LOCALS_ROW,   // row columns into locals
-  /*  D  */ EO_SET_LOCALS_SRC2,  // inflate src columns direct into locals
+
 
   // table name
   /*     */ EO_DEVROW_TABLENM_SET, // set the table name in the row dev
@@ -228,8 +228,9 @@ enum eEO : u1 // expression operators
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // col operators
-  /*  S  */ EO_DEVIXT_COL_PUSHSET_ADR,  // push column value from dev ixt (str as ptr)
-  /*  S  */ EO_DEVIXT_COL_PUSHSET_PST,  // push column subset from dev ixt
+  /*  S  */ EO_DEVIXT_COL_LOCALS_ADR,    // inflate dev columns direct into locals (str as ptr)
+  /*  S  */ EO_DEVIXT_COL_PUSHSET_ADR,   // push column value from dev ixt (str as ptr)
+  /*  S  */ EO_DEVIXT_COL_PUSHSET_PST,   // push column subset from dev ixt
   /*  S  */ EO_DEVIXT_COL_PUSHSET_TOROW, // push all columns from ixt dev to row dev
 
   // device crwbuffer operators
@@ -458,7 +459,6 @@ static Stz* aEO[]
   /*    */ "EO_SET_COLUMNS"_Stz,
   /*    */ "EO_SET_ITEMS"_Stz,
   /*    */ "EO_SET_LOCALS_ROW"_Stz,
-  /*    */ "EO_SET_LOCALS_SRC2"_Stz,
 
   // table name
   /*    */ "EO_DEVROW_TABLENM_SET"_Stz,
@@ -543,6 +543,7 @@ static Stz* aEO[]
   //----------------------------------------------------------------------------
 
   // col operators
+  /*    */ "EO_DEVIXT_COL_LOCALS_ADR"_Stz,
   /*    */ "EO_DEVIXT_COL_PUSHSET_ADR"_Stz,
   /*    */ "EO_DEVIXT_COL_PUSHSET_PST"_Stz,
   /*    */ "EO_DEVIXT_COL_PUSHSET_TOROW"_Stz,
@@ -781,7 +782,6 @@ static EoArg EoArgs[]
   { EA_INT,     8 },  // EO_SET_COLUMNS
   { EA_INT,     8 },  // EO_SET_ITEMS
   { EA_NONE,    0 },  // EO_SET_LOCALS_ROW
-  { EA_NONE,    0 },  // EO_SET_LOCALS_SRC2
 
   // table name
   { EA_STRING, -1 },  // EO_DEVROW_TABLENM_SET
@@ -866,6 +866,7 @@ static EoArg EoArgs[]
   //----------------------------------------------------------------------------
   
   // col operators
+  { EA_NONE,    0 },  // EO_DEVIXT_COL_LOCALS_ADR
   { EA_NONE,    0 },  // EO_DEVIXT_COL_PUSHSET_ADR
   { EA_NONE,    0 },  // EO_DEVIXT_COL_PUSHSET_PST
   { EA_NONE,    0 },  // EO_DEVIXT_COL_PUSHSET_TOROW
