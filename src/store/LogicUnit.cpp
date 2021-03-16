@@ -2308,7 +2308,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_DEVROW_COL_LOCALS_ADR: ArgNil(); // row buffer columns of row dev into locals
         dLU0(EO_DEVROW_COL_LOCALS_ADR);
-        vDev_ROW_COL_PUSHSET(&aiDstk, aRluCommon->m_iaColSet);
+        vDev_ROW_COL_PUSHSET(&aiDstk);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
