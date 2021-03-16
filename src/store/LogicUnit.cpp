@@ -2314,8 +2314,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
       
       case EO_COL_ALT_PUSHSET: ArgNil(); // push column subset from m_aAltCrw
-        vDev_ALT_COL_PUSHSET(pLU,&aiDstk,(i8)SI_CELLARRAY_PST,iaColSet);
-        dLU0(EO_COL_ALT_PUSHSET);
+//        vDev_ALT_COL_PUSHSET(pLU,&aiDstk,(i8)SI_CELLARRAY_PST,iaColSet);
+//        dLU0(EO_COL_ALT_PUSHSET);
+        RASSERT(0);
         break;//+endCase
     
 
@@ -2355,6 +2356,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         iaColSet[0] = iArg;
         vDev_IXT_COL_PUSHSET_PST(&aiDstk, iaColSet);
         dLU1(EO_DEVIXT_COL_PUSHONE_PST,iArg);
+        break;//+endCase
+
+      case EO_DEVIXT_COL_PUSHSET_PST: ArgNil(); // push column value from m_aAltCrw
+        vDev_IXT_COL_PUSHSET_PST(&aiDstk, iaColSet);
+        dLU0(EO_DEVIXT_COL_PUSHSET_PST);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
