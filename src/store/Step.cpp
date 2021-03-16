@@ -148,10 +148,10 @@ void Step::vAddSteps(void)
   Step::vAddSteps_RegJob();
   Step::vAddSteps_RegNow();
   Step::vAddSteps_RegOp();
-  Step::vAddSteps_RegOperand();
-  Step::vAddSteps_RegOperandB();
-  Step::vAddSteps_RegOperandC();
-  Step::vAddSteps_RegOperandOoO();
+  Step::vAddSteps_Operand();
+  Step::vAddSteps_OperandB();
+  Step::vAddSteps_OperandC();
+  Step::vAddSteps_OperandOoO();
   Step::vAddSteps_RegPath();
   Step::vAddSteps_RegPipein();
   Step::vAddSteps_LogicCompiler();

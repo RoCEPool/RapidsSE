@@ -20,21 +20,21 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_RegOperandOoO(void)
+void Step::vAddSteps_OperandOoO(void)
 {
-  vAddStep("OperandOoO[]"_Stz,             &Step::vRegOperandOoOGet);
-  vAddStep("OperandOoO[].delete"_Stz,      &Step::vRegOperandOoODelete);
-  vAddStep("OperandOoO[].isNull"_Stz,      &Step::vRegOperandOoOIsNull);
-  vAddStep("OperandOoO[].next"_Stz,        &Step::vRegOperandNextOoO);
-  vAddStep("OperandOoO[].pipeOut"_Stz,     &Step::vRegOperandOoOPipeOut);
-  vAddStep("OperandOoO[].pipeToOutput"_Stz,   &Step::vRegOperandOoOPipeToOutput);
-  vAddStep("OperandOoO[].set"_Stz,         &Step::vRegOperandOoOSet);
+  vAddStep("OperandOoO[]"_Stz,             &Step::vOperandOoOGet);
+  vAddStep("OperandOoO[].delete"_Stz,      &Step::vOperandOoODelete);
+  vAddStep("OperandOoO[].isNull"_Stz,      &Step::vOperandOoOIsNull);
+  vAddStep("OperandOoO[].next"_Stz,        &Step::vOperandNextOoO);
+  vAddStep("OperandOoO[].pipeOut"_Stz,     &Step::vOperandOoOPipeOut);
+  vAddStep("OperandOoO[].pipeToOutput"_Stz,   &Step::vOperandOoOPipeToOutput);
+  vAddStep("OperandOoO[].set"_Stz,         &Step::vOperandOoOSet);
 }
 
 /*----------------------------------------------------------------------------*/
 /* OperandOoO[].delete -- operand delete                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vRegOperandOoODelete(void)
+void Step::vOperandOoODelete(void)
 {
   ENTRY();
   
@@ -48,7 +48,7 @@ void Step::vRegOperandOoODelete(void)
 /*----------------------------------------------------------------------------*/
 /* OperandOoO[].get -- fetch operand                                          */
 /*----------------------------------------------------------------------------*/
-void Step::vRegOperandOoOGet(void)
+void Step::vOperandOoOGet(void)
 {
   ENTRY();
   
@@ -60,7 +60,7 @@ void Step::vRegOperandOoOGet(void)
 /*----------------------------------------------------------------------------*/
 /* OperandOoO[].isNull -- is operand null ?                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vRegOperandOoOIsNull(void)
+void Step::vOperandOoOIsNull(void)
 {
   ENTRY();
   
@@ -72,7 +72,7 @@ void Step::vRegOperandOoOIsNull(void)
 /*----------------------------------------------------------------------------*/
 /* OperandOoO[].Next -- get next OoO operand                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vRegOperandNextOoO(void)
+void Step::vOperandNextOoO(void)
 {
   ENTRY();
   
@@ -90,7 +90,7 @@ void Step::vRegOperandNextOoO(void)
 /*----------------------------------------------------------------------------*/
 /* OperandOoO[].pipeOut -- append operand onto next operator in pipeline      */
 /*----------------------------------------------------------------------------*/
-void Step::vRegOperandOoOPipeOut(void)
+void Step::vOperandOoOPipeOut(void)
 {
   ENTRY();
   
@@ -108,7 +108,7 @@ void Step::vRegOperandOoOPipeOut(void)
 /*----------------------------------------------------------------------------*/
 /* OperandOoO[].pipeToOutput -- append operand onto the pipeline job buffer queue*/
 /*----------------------------------------------------------------------------*/
-void Step::vRegOperandOoOPipeToOutput(void)
+void Step::vOperandOoOPipeToOutput(void)
 {
   ENTRY();
   
@@ -126,7 +126,7 @@ void Step::vRegOperandOoOPipeToOutput(void)
 /*----------------------------------------------------------------------------*/
 /* OperandOoO[].set -- set operand                                            */
 /*----------------------------------------------------------------------------*/
-void Step::vRegOperandOoOSet(void)
+void Step::vOperandOoOSet(void)
 {
   ENTRY();
   

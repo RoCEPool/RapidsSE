@@ -974,6 +974,50 @@ void vExprEvalEvaluate(void);
   // olist (originator list)
   void vOlistFindJob(void);
 
+  // operand[]
+  void vOperandAsSrcCrwBuffer(void);
+  void vOperandAsSrcRowBuffer(void);
+  void vOperandCsvAppend(void);
+  void vOperandBide(void);
+  void vOperandCrwDuplicate(void);
+  void vOperandCrwToCsv(void);
+  void vOperandCsvData(void);
+  void vOperandCsvToRow(void);
+  void vOperandDelete(void);
+  void vOperandGet(void);
+  void vOperandIsNotNull(void);
+  void vOperandIsNull(void);
+  void vOperandIsReport(void);
+  void vOperandInsdelIntoTable(void);
+  void vOperandInvokePython(void);
+  void vOperandInvokePythonShell(void);
+  void vOperandKind(void);
+  void vOperandMorphClass(void);
+  void vOperandNewCancelMarker(void);
+  void vOperandNewCsvBuffer(void);
+  void vOperandNewDataPulse(void);
+  void vOperandNewDestroyMarker(void);
+  void vOperandNewEosMarker(void);
+  void vOperandNewErrorMarker(void);
+  void vOperandNewErroredMarker(void);
+  void vOperandNewExitMarker(void);
+  void vOperandNewExitedMarker(void);
+  void vOperandNewPulsedMarker(void);
+  void vOperandNewStartMarker(void);
+  void vOperandNewStartedMarker(void);
+  void vOperandNewStreamDef(void);
+  void vOperandNext(void);
+  void vOperandPipeIn(void);
+  void vOperandPipeOut(void);
+  void vOperandPipeOutSet(void);
+  void vOperandPipeToOutput(void);
+  void vOperandReport(void);
+  void vOperandRowCountFetch(void);
+  void vOperandSet(void);
+  void vOperandUpsertIntoTable(void);
+  void vOperandRowToCsv(void);
+  void vOperandWriteToFile0(void);
+
   // operator
   void vOpAckPipelineJob(void);
   void vOpDownstreamOpStore(void);
@@ -993,8 +1037,31 @@ void vExprEvalEvaluate(void);
   void vOpTopologyStore(void);
   void vOpXmitKindStore(void);
 
-  // operand
-  void vOperandKind(void);
+  // operandB
+  void vOperandBAppendClose(void);
+  void vOperandBDelete(void);
+  void vOperandBGet(void);
+  void vOperandBIsNotNull(void);
+  void vOperandBIsNull(void);
+  void vOperandBPipeOut(void);
+  void vOperandBSet(void);
+
+  // operandC
+  void vOperandCCollect(void);
+  void vOperandCGet(void);
+  void vOperandCPipeOut(void);
+  void vOperandCPipeOutSet(void);
+  void vOperandCSet(void);
+  void vOperandCSetFirst(void);
+
+  // OperandOoO
+  void vOperandOoODelete(void);
+  void vOperandOoOGet(void);
+  void vOperandOoOIsNull(void);
+  void vOperandNextOoO(void);
+  void vOperandOoOPipeOut(void);
+  void vOperandOoOPipeToOutput(void);
+  void vOperandOoOSet(void);
 
   // opsys
   void vOpSysIsLinux(void);
@@ -1180,76 +1247,6 @@ void vExprEvalEvaluate(void);
   void vRegOpInit(void);
   void vRegOpIsOperandValid(void);
   void vRegOpIncOperandCount(void);
-
-  // operand
-  void vRegOperandAsSrcCrwBuffer(void);
-  void vRegOperandAsSrcRowBuffer(void);
-  void vRegOperandCsvAppend(void);
-  void vRegOperandBide(void);
-  void vRegOperandCrwDuplicate(void);
-  void vRegOperandCrwToCsv(void);
-  void vRegOperandCsvData(void);
-  void vRegOperandCsvToRow(void);
-  void vRegOperandDelete(void);
-  void vRegOperandGet(void);
-  void vRegOperandIsNotNull(void);
-  void vRegOperandIsNull(void);
-  void vRegOperandIsReport(void);
-  void vRegOperandInsdelIntoTable(void);
-  void vRegOperandInvokePython(void);
-  void vRegOperandInvokePythonShell(void);
-  void vRegOperandKind(void);
-  void vRegOperandMorphClass(void);
-  void vRegOperandNewCancelMarker(void);
-  void vRegOperandNewCsvBuffer(void);
-  void vRegOperandNewDataPulse(void);
-  void vRegOperandNewDestroyMarker(void);
-  void vRegOperandNewEosMarker(void);
-  void vRegOperandNewErrorMarker(void);
-  void vRegOperandNewErroredMarker(void);
-  void vRegOperandNewExitMarker(void);
-  void vRegOperandNewExitedMarker(void);
-  void vRegOperandNewPulsedMarker(void);
-  void vRegOperandNewStartMarker(void);
-  void vRegOperandNewStartedMarker(void);
-  void vRegOperandNewStreamDef(void);
-  void vRegOperandNext(void);
-  void vRegOperandPipeIn(void);
-  void vRegOperandPipeOut(void);
-  void vRegOperandPipeOutSet(void);
-  void vRegOperandPipeToOutput(void);
-  void vRegOperandReport(void);
-  void vRegOperandRowCountFetch(void);
-  void vRegOperandSet(void);
-  void vRegOperandUpsertIntoTable(void);
-  void vRegOperandRowToCsv(void);
-  void vRegOperandWriteToFile0(void);
-
-  // operandB
-  void vRegOperandBAppendClose(void);
-  void vRegOperandBDelete(void);
-  void vRegOperandBGet(void);
-  void vRegOperandBIsNotNull(void);
-  void vRegOperandBIsNull(void);
-  void vRegOperandBPipeOut(void);
-  void vRegOperandBSet(void);
-
-  // operandC
-  void vRegOperandCCollect(void);
-  void vRegOperandCGet(void);
-  void vRegOperandCPipeOut(void);
-  void vRegOperandCPipeOutSet(void);
-  void vRegOperandCSet(void);
-  void vRegOperandCSetFirst(void);
-
-  // OperandOoO
-  void vRegOperandOoODelete(void);
-  void vRegOperandOoOGet(void);
-  void vRegOperandOoOIsNull(void);
-  void vRegOperandNextOoO(void);
-  void vRegOperandOoOPipeOut(void);
-  void vRegOperandOoOPipeToOutput(void);
-  void vRegOperandOoOSet(void);
 
   // reg Path
   void vRegPathGet(void);

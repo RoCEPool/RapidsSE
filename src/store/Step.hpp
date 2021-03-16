@@ -107,6 +107,9 @@ namespace STORE
     static void vAddSteps_Olist(void);
     static void vAddSteps_Op(void);
     static void vAddSteps_Operand(void);
+    static void vAddSteps_OperandB(void);
+    static void vAddSteps_OperandC(void);
+    static void vAddSteps_OperandOoO(void);
     static void vAddSteps_OpSys(void);
 
     static void vAddSteps_Persistence(void);
@@ -132,10 +135,6 @@ namespace STORE
     static void vAddSteps_RegIndex(void);
     static void vAddSteps_RegNow(void);
     static void vAddSteps_RegOp(void);
-    static void vAddSteps_RegOperand(void);
-    static void vAddSteps_RegOperandB(void);
-    static void vAddSteps_RegOperandC(void);
-    static void vAddSteps_RegOperandOoO(void);
     static void vAddSteps_RegPath(void);
     static void vAddSteps_RegPipein(void);
     static void vAddSteps_RegTask(void);

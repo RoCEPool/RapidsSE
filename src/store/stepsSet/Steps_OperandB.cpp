@@ -25,22 +25,22 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_RegOperandB(void)
+void Step::vAddSteps_OperandB(void)
 {
-  vAddStep("OperandB[]"_Stz,                &Step::vRegOperandBGet);
-  vAddStep("OperandB[].appendClose"_Stz,    &Step::vRegOperandBAppendClose);
-  vAddStep("OperandB[].delete"_Stz,         &Step::vRegOperandBDelete);
-  vAddStep("OperandB[].get"_Stz,            &Step::vRegOperandBGet);
-  vAddStep("OperandB[].isNotNull"_Stz,      &Step::vRegOperandBIsNotNull);
-  vAddStep("OperandB[].isNull"_Stz,         &Step::vRegOperandBIsNull);
-  vAddStep("OperandB[].pipeOut"_Stz,        &Step::vRegOperandBPipeOut);
-  vAddStep("OperandB[].set"_Stz,            &Step::vRegOperandBSet);
+  vAddStep("OperandB[]"_Stz,                &Step::vOperandBGet);
+  vAddStep("OperandB[].appendClose"_Stz,    &Step::vOperandBAppendClose);
+  vAddStep("OperandB[].delete"_Stz,         &Step::vOperandBDelete);
+  vAddStep("OperandB[].get"_Stz,            &Step::vOperandBGet);
+  vAddStep("OperandB[].isNotNull"_Stz,      &Step::vOperandBIsNotNull);
+  vAddStep("OperandB[].isNull"_Stz,         &Step::vOperandBIsNull);
+  vAddStep("OperandB[].pipeOut"_Stz,        &Step::vOperandBPipeOut);
+  vAddStep("OperandB[].set"_Stz,            &Step::vOperandBSet);
 }
 
 /*----------------------------------------------------------------------------*/
 /* OperandB[].appendClose -- append close                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vRegOperandBAppendClose(void)
+void Step::vOperandBAppendClose(void)
 {
   ENTRY();
   
@@ -53,7 +53,7 @@ void Step::vRegOperandBAppendClose(void)
 /*----------------------------------------------------------------------------*/
 /* OperandB[].delete -- operand delete                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vRegOperandBDelete(void)
+void Step::vOperandBDelete(void)
 {
   ENTRY();
   
@@ -67,7 +67,7 @@ void Step::vRegOperandBDelete(void)
 /*----------------------------------------------------------------------------*/
 /* OperandB[].get -- fetch operand                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vRegOperandBGet(void)
+void Step::vOperandBGet(void)
 {
   ENTRY();
   
@@ -79,7 +79,7 @@ void Step::vRegOperandBGet(void)
 /*----------------------------------------------------------------------------*/
 /* OperandB[].isNotNull -- is operandB not null ?                             */
 /*----------------------------------------------------------------------------*/
-void Step::vRegOperandBIsNotNull(void)
+void Step::vOperandBIsNotNull(void)
 {
   ENTRY();
   
@@ -91,7 +91,7 @@ void Step::vRegOperandBIsNotNull(void)
 /*----------------------------------------------------------------------------*/
 /* OperandB[].isNull -- is operandB null ?                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vRegOperandBIsNull(void)
+void Step::vOperandBIsNull(void)
 {
   ENTRY();
   
@@ -103,7 +103,7 @@ void Step::vRegOperandBIsNull(void)
 /*----------------------------------------------------------------------------*/
 /* OperandB[].pipeOut -- append operand onto next operator in pipeline         */
 /*----------------------------------------------------------------------------*/
-void Step::vRegOperandBPipeOut(void)
+void Step::vOperandBPipeOut(void)
 {
   ENTRY();
   
@@ -121,7 +121,7 @@ void Step::vRegOperandBPipeOut(void)
 /*----------------------------------------------------------------------------*/
 /* OperandB[].set -- set operand                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vRegOperandBSet(void)
+void Step::vOperandBSet(void)
 {
   ENTRY();
   
