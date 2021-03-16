@@ -20,7 +20,7 @@
 
   0 Table[].tablePtnGet to TablePtn[]
   
-  tablePtn[].grabWrite_msec
+  tablePtn[].grabWrite_msecLoop
   Operand[] tablePtn[].appendBuffer
   tablePtn[].dropWrite
   

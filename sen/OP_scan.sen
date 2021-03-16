@@ -22,7 +22,7 @@
 
 // drop the tablePtn lock if held
   counter0[] true == if
-    tablePtn[] tablePtnDropRead
+    tablePtn[].dropRead
     false to counter0[]
   then
 
@@ -59,7 +59,7 @@
     nullptr to ptnStream[]
  
     // drop partition lock
-    tablePtn[] tablePtnDropRead
+    tablePtn[].dropRead
 
     // set counter0 to false to indicate lock released
     false to counter0[]
@@ -106,7 +106,7 @@
   Operand[].pipeOut
 
   // grab table ptn read lock
-  tablePtn[] tablePtnGrabRead
+  tablePtn[].grabRead_yieldLoop
 
   // set counter0 to true to indicate lock held
   true to counter0[]
@@ -129,7 +129,7 @@
     nullptr to ptnStream[]
 
     // drop table ptn lock
-    tablePtn[] tablePtnDropRead
+    tablePtn[].dropRead
 
     // set counter0 to 0 to indicate lock released
     false to counter0[]

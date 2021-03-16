@@ -12,7 +12,7 @@
   //"Operand:- ZK_CRWBUFFER" .verbose
 
   // insert the buffer into the table ptn
-  tablePtn[].grabWrite_msec
+  tablePtn[].grabWrite_msecLoop
   PipeIn[] tablePtn[].appendBuffer
   tablePtn[].dropWrite
 

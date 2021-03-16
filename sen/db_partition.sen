@@ -7,9 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* make a partitions folder under given named table                           */
 /*----------------------------------------------------------------------------*/
-: makePartitions ( "<tableNm>" -- )
-
-  params| tableNm |
+: makePartitions params| tableNm |
 
   args.tracepoint if
     tableNm "MAKING PARTITIONS FOR TABLE " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
@@ -39,7 +37,7 @@
 /*----------------------------------------------------------------------------*/
 /* find the partitions folder and push it onto task dictionary                */
 /*----------------------------------------------------------------------------*/
-: pushPartitions ( -- )
+: pushPartitions
   "partitions" find execute path[].pushFolder
   true
 ;
@@ -66,37 +64,41 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* grab read lock on a partition of given table                               */
+/* grab read lock on TablePtn[]                                               */
 /*----------------------------------------------------------------------------*/
-: tablePtnGrabRead ( pTablePtn -- )
-
-  params| pTablePtn |   // table partition
+: tablePtn[].grabRead_yieldLoop
 
   begin
-    pTablePtn tablePtn.attemptGrabRead
+    TablePtn[] tablePtn.attemptGrabRead
   not while
     task::yield
   repeat
 ;
 
 /*----------------------------------------------------------------------------*/
-/* grab write lock on a partition of given table                              */
+/* drop read lock on TablePtn[]                                               */
 /*----------------------------------------------------------------------------*/
-: tablePtnGrabWrite ( pTablePtn -- )
+: tablePtn[].dropRead
 
-  params| pTablePtn |   // table partition
+  TablePtn[] tablePtn.dropRead
+;
+
+/*----------------------------------------------------------------------------*/
+/* grab write lock on TablePtn[]                                              */
+/*----------------------------------------------------------------------------*/
+: tablePtn[].grabWrite_yieldLoop
 
   begin
-    pTablePtn tablePtn.attemptGrabWrite
+    TablePtn[] tablePtn.attemptGrabWrite
   not while
     task::yield
   repeat
 ;
 
 /*----------------------------------------------------------------------------*/
-/* grab write lock on given table ptn (with 1ms sleep loop till grabbed)      */
+/* grab write lock on TablePtn[] (with 1ms sleep loop till grabbed)           */
 /*----------------------------------------------------------------------------*/
-: tablePtn[].grabWrite_msec
+: tablePtn[].grabWrite_msecLoop
 
   begin
     TablePtn[] tablePtn.attemptGrabWrite
@@ -106,17 +108,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* drop read lock on a partition of given table                               */
-/*----------------------------------------------------------------------------*/
-: tablePtnDropRead ( pTablePtn -- )
-
-  params| pTablePtn |  // given tablePtn
-
-  pTablePtn tablePtn.dropRead
-;
-
-/*----------------------------------------------------------------------------*/
-/* drop write lock on a partition of given table                              */
+/* drop write lock on TablePtn[]                                              */
 /*----------------------------------------------------------------------------*/
 : tablePtn[].dropWrite
 

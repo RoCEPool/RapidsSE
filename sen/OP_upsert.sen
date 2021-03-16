@@ -14,7 +14,7 @@
   nullptr to PipeIn[]
 
   tx[].begin
-  tablePtn[] tablePtnGrabWrite
+  tablePtn[].grabWrite_yieldLoop
   Operand[].upsertIntoTable
   tablePtn[].dropWrite
   tx[].commit

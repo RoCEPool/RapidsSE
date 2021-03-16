@@ -12,7 +12,7 @@
   PipeIn[] to Operand[]
   nullptr to PipeIn[]
 
-  tablePtn[] tablePtnGrabWrite
+  tablePtn[].grabWrite_yieldLoop
   Operand[].insdelIntoTable
   tablePtn[].dropWrite
 
@@ -31,7 +31,7 @@
 
   "insDel_RowBuffer" .
 
-  tablePtn[] tablePtnGrabWrite
+  tablePtn[].grabWrite_yieldLoop
   Operand[].insdelIntoTable
   tablePtn[].dropWrite
 

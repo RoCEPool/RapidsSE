@@ -44,7 +44,7 @@
 
   Table[].tablePtn@ to tablePtn[]
 
-  tablePtn[].grabWrite_msec
+  tablePtn[].grabWrite_msecLoop
   index[] tablePtn[].populateIndex not if ( errorCode )
     to errorCode
     tablePtn[].dropWrite
