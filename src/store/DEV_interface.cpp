@@ -1468,7 +1468,7 @@ void vDev_IXT_COL_PUSHSET_PST(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* push column value from m_aSrcCrw to dst row                                */
 /*----------------------------------------------------------------------------*/
-void vDev_IXT_COL_PUSHSET_TOROW(i8** aaiDstk, i8* iaColSet)
+void vDev_IXT_COL_PUSHSET_TOROW(i8** aaiDstk)
 {
   _static_
 
@@ -1481,6 +1481,9 @@ void vDev_IXT_COL_PUSHSET_TOROW(i8** aaiDstk, i8* iaColSet)
 
   // pop the row device
   DevROW* pDevRow = _pDevROW(P_PopPtr());
+
+  // pop the column set
+  i8* iaColSet = (i8*)P_PopPtr();
 
   //HeadLine *aHeadLine = (HeadLine *) pLogicUnit->m_xRluCommon.m_aSrcCrw;
   HeadLine *aHeadLine = (HeadLine *) pDevIxt->m_aCrw;
