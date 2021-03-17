@@ -70,12 +70,12 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Dot();
   Step::vAddSteps_Dstack();
   
-  Step::vAddSteps_TagSet();
   Step::vAddSteps_Encode();
   Step::vAddSteps_EntBuffer();
   Step::vAddSteps_Env();
   Step::vAddSteps_Error();
   Step::vAddSteps_Executable();
+  Step::vAddSteps_Expressions();
   Step::vAddSteps_ExprEval();
 
   Step::vAddSteps_File();
@@ -106,13 +106,14 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Locks();
   Step::vAddSteps_Log();
   Step::vAddSteps_Logic();
-  
+  Step::vAddSteps_LogicCompiler();
+  Step::vAddSteps_LogicUnit();
+
   Step::vAddSteps_Machine();
   Step::vAddSteps_Magnitude();
   Step::vAddSteps_MetaTable();
   Step::vAddSteps_Memory();
   Step::vAddSteps_Monitor();
-  Step::vAddSteps_Expressions();
 
   Step::vAddSteps_NamedBuffer();
   Step::vAddSteps_Node();
@@ -129,6 +130,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_OpSys();
 
   Step::vAddSteps_Persistence();
+  Step::vAddSteps_Pipein();
   Step::vAddSteps_Pipeline();
   Step::vAddSteps_PathIdentifier();
   Step::vAddSteps_Plist();
@@ -139,8 +141,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_PtnMap();
   Step::vAddSteps_PtnStream();
   Step::vAddSteps_Push();
-  
-  Step::vAddSteps_Schedule();
 
   Step::vAddSteps_Range();
   Step::vAddSteps_Register();
@@ -151,9 +151,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_RegNow();
   Step::vAddSteps_RegOp();
   Step::vAddSteps_RegPath();
-  Step::vAddSteps_Pipein();
-  Step::vAddSteps_LogicCompiler();
-  Step::vAddSteps_LogicUnit();
   Step::vAddSteps_RegTask();
   Step::vAddSteps_RegTimer();
   Step::vAddSteps_RegXmits();
@@ -162,6 +159,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_RowBuffer();
   Step::vAddSteps_Rstack();
   
+  Step::vAddSteps_Schedule();
   Step::vAddSteps_SeekOffsets();
   Step::vAddSteps_Sen();
   Step::vAddSteps_SenCompiler();
@@ -183,6 +181,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Table();
   Step::vAddSteps_TablePtn();
   Step::vAddSteps_Tag();
+  Step::vAddSteps_TagSet();
   Step::vAddSteps_Task();
   Step::vAddSteps_Tenants();
   Step::vAddSteps_Test();
@@ -192,10 +191,10 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Timer();
   Step::vAddSteps_To();
   Step::vAddSteps_ToHshCrw();
+  Step::vAddSteps_TokenVec();
   Step::vAddSteps_ToNstRow();
   Step::vAddSteps_ToPtnRow();
   Step::vAddSteps_ToRow();
-  Step::vAddSteps_TokenVec();
   Step::vAddSteps_Trace();
   Step::vAddSteps_Tx();
   Step::vAddSteps_TxSet();

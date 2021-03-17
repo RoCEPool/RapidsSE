@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* receiver demon                                                             */
 /*----------------------------------------------------------------------------*/
-: recvDemonPipelineCmd params| iConnNo |
+: recvDemonPipeline params| iConnNo |
 
   "pipelineLocal recvDemon" iConnNo >str str.cat
   
@@ -40,7 +40,7 @@
   false
 
   // receiver demon pipeline
-  iConnNo recvDemonPipelineCmd
+  iConnNo recvDemonPipeline
 
   api::spawnDemon not if
     "Error Code %v" .printf

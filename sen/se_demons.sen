@@ -29,7 +29,7 @@
 /*----------------------------------------------------------------------------*/
 /* answer demon pipeline command                                              */
 /*----------------------------------------------------------------------------*/
-: answerDemonPipelineCmd
+: answerDemonPipeline
 
   "
     pipelineLocal answerDemon
@@ -46,7 +46,7 @@
 /*----------------------------------------------------------------------------*/
 /* connector demon pipeline command                                           */
 /*----------------------------------------------------------------------------*/
-: connDemonPipelineCmd
+: connDemonPipeline
 
   "
     pipelineLocal connDemon
@@ -63,7 +63,7 @@
 /*----------------------------------------------------------------------------*/
 /* event demon pipeline command                                               */
 /*----------------------------------------------------------------------------*/
-: eventDemonPipelineCmd
+: eventDemonPipeline
 
   "
     pipelineLocal eventDemon
@@ -80,7 +80,7 @@
 /*----------------------------------------------------------------------------*/
 /* monitor demon pipeline command                                             */
 /*----------------------------------------------------------------------------*/
-: monDemonPipelineCmd
+: monDemonPipeline
 
   "
     pipelineLocal monDemon
@@ -97,7 +97,7 @@
 /*----------------------------------------------------------------------------*/
 /* recurring demon pipeline command                                           */
 /*----------------------------------------------------------------------------*/
-: recurringDemonPipelineCmd
+: recurringDemonPipeline
 
   "
     pipelineLocal recurringDemon
@@ -114,7 +114,7 @@
 /*----------------------------------------------------------------------------*/
 /* statistics demon pipeline command                                          */
 /*----------------------------------------------------------------------------*/
-: statDemonPipelineCmd
+: statDemonPipeline
 
   "
     pipelineLocal statDemon
@@ -131,7 +131,7 @@
 /*----------------------------------------------------------------------------*/
 /* supervisor demon pipeline command                                          */
 /*----------------------------------------------------------------------------*/
-: superDemonPipelineCmd
+: superDemonPipeline
 
   "
     pipelineLocal superDemon
@@ -148,7 +148,7 @@
 /*----------------------------------------------------------------------------*/
 /* waker demon pipeline command                                               */
 /*----------------------------------------------------------------------------*/
-: wakerDemonPipelineCmd
+: wakerDemonPipeline
 
   "
     pipelineLocal wakerDemon
