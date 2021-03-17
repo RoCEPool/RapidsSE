@@ -128,7 +128,7 @@ void AggregateOp::vDescribe(PlanNode* pNode, s2K& sBuf)
 /*----------------------------------------------------------------------------*/
 /* Recurses down the query plan and writes the explain of the stmt to the buf */
 /*----------------------------------------------------------------------------*/
-void AggregateOp::vExplain(PlanNode* pNode, s48K& sBuf, i8 iIndent)
+void AggregateOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iIndent)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -194,7 +194,7 @@ void AggregateOp::vExplain(PlanNode* pNode, s48K& sBuf, i8 iIndent)
       PlanNode* pChild = pIter->pNext();
       ASSERT(PlanObject::bIsOfType(pChild));
 
-      PlanObject::vExplain(pChild, sBuf, iIndent+1);
+      PlanObject::vExplain(pChild, pRootNode, sBuf, iIndent + 1);
     }
     delete pIter;
   }

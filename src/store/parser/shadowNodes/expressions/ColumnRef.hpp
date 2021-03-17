@@ -39,6 +39,10 @@ namespace Parser
     static void  vQualify(QueryNode* pColumnRef, Stz* szCatalogName, Stz* szSchemaName,
                           Stz* szTableName, Stz* szColumnName);
 
+    // Compare two expression trees and return true if they are equal with
+    // respect to the operations and symbols used.
+    // This is overloaded from Expr to provide case insensitive property comparisons
+    static b1 bIsSymbolicallyEqual(QueryNode* pExpr1, QueryNode* pExpr2);
   };
 
 }

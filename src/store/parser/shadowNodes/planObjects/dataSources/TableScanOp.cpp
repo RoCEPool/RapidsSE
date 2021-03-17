@@ -76,7 +76,7 @@ void TableScanOp::vDescribe(PlanNode* pNode, s2K& sBuf)
 /*----------------------------------------------------------------------------*/
 /* Recurses down the query plan and writes the explain of the stmt to the buf */
 /*----------------------------------------------------------------------------*/
-void TableScanOp::vExplain(PlanNode* pNode, s48K& sBuf, i8 iIndent)
+void TableScanOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iIndent)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -105,7 +105,7 @@ void TableScanOp::vExplain(PlanNode* pNode, s48K& sBuf, i8 iIndent)
       PlanNode* pChild = pIter->pNext();
       ASSERT(PlanObject::bIsOfType(pChild));
 
-      PlanObject::vExplain(pChild, sBuf, iIndent+1);
+      PlanObject::vExplain(pChild, pRootNode, sBuf, iIndent + 1);
     }
 
     delete pIter;
@@ -197,7 +197,7 @@ PlanNodeList* TableScanOp::pColumnDefs(QueryNode* pNode, PlanNode* pRootNode)
 
 /*----------------------------------------------------------------------------*/
 /* Return a list of ProjectedExprs that represent the column expressions      */
-/* that this PlanObject will return. All nodes returned here must be freed.   */
+/* that this PlanObject will return. All nodes and the list must be freed.    */
 /*----------------------------------------------------------------------------*/
 PlanNodeList* TableScanOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
 {

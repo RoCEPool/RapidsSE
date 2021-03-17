@@ -4,11 +4,11 @@
 #pragma once
 
 #include "ShadowNode.hpp"
+#include "PlanNode.hpp"
 
 namespace Parser
 {
   class QueryNode;
-  class PlanNode;
 
   class Expr : public ShadowNode
   {
@@ -33,7 +33,21 @@ namespace Parser
     // can be produced. Will throw a SqlException if it is an invalid expression.
     static void vValidateResultType(QueryNode* pExprNode, PlanNode* pRootNode);
 
-  protected:
+    // Takes a symbolic expression and returns a copy of it that is relative to
+    // column ordinals for a given list of column expressions.
+    //   e.g. given the symbolic expression SUM(COUNT(DISTINCT colA) + 1)
+    //   and the fact that COUNT(DISTINCT colA) is already being returned
+    //   by a child operator as the 3rd column, then this function would
+    //   return the ordinal expression: SUM($3 + 1)
+    // The returned QueryNode must be freed.
+    // Column ordinals are 1-based.
+    static QueryNode* pSymbolicToOrdinal(QueryNode*    pSymbolicExpr,
+                                         PlanNodeList* pProjectedExprList,
+                                         PlanNode*     pRootNode);
+
+    // Compare two expression trees and return true if they are equal with
+    // respect to the operations and symbols used.
+    static b1 bIsSymbolicallyEqual(QueryNode* pColRef1, QueryNode* pColRef2);
 
   };
 
