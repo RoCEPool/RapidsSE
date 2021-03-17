@@ -101,11 +101,6 @@ enum eEO : u1 // expression operators
   /*  S  */ EO_PUSH_RLU_PTN,        // push partition from the rlu
   /*  S  */ EO_PUSH_RLU_ROWPIX,     // push rowpix from the rlu
 
-  // column set
-  /*  M  */ EO_SET_COLUMN,       // add column to set
-  /*  M  */ EO_SET_COLUMNS,      // add columns to set
-  /*  M  */ EO_SET_ITEMS,        // set number of column items
-
   // table ptn
   /*  M  */ EO_TABLEPTN_DROPREAD,  // drop a tablePtn read lock
   /*  M  */ EO_TABLEPTN_GRABREAD,  // grab a tablePtn read lock
@@ -180,6 +175,11 @@ enum eEO : u1 // expression operators
   /*  M  */ EO_TMR_AGG_RESET,    // reset agg timer
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // rlu column set
+  /*  M  */ EO_RLU_SET_COLUMN,       // add column to set
+  /*  M  */ EO_RLU_SET_COLUMNS,      // add columns to set
+  /*  M  */ EO_RLU_SET_ITEMS,        // set number of column items
 
   // rlu operators
   /*  M  */ EO_RLU_INDEXDEF_ADDCOLUMN,     // add a column to indexDefRlu[]
@@ -404,11 +404,6 @@ static Stz* aEO[]
   /*    */ "EO_PUSH_RLU_PTN"_Stz,
   /*    */ "EO_PUSH_RLU_ROWPIX"_Stz,
 
-  // column set
-  /*    */ "EO_SET_COLUMN"_Stz,
-  /*    */ "EO_SET_COLUMNS"_Stz,
-  /*    */ "EO_SET_ITEMS"_Stz,
-
   // table ptn
   /*    */ "EO_TABLEPTN_DROPREAD"_Stz,
   /*    */ "EO_TABLEPTN_GRABREAD"_Stz,
@@ -483,6 +478,10 @@ static Stz* aEO[]
   /*    */ "EO_TMR_AGG_RESET"_Stz,
 
   //----------------------------------------------------------------------------
+  // rlu column set
+  /*    */ "EO_RLU_SET_COLUMN"_Stz,
+  /*    */ "EO_RLU_SET_COLUMNS"_Stz,
+  /*    */ "EO_RLU_SET_ITEMS"_Stz,
 
   // rlu operators
   /*    */ "EO_RLU_INDEXDEF_ADDCOLUMN"_Stz,
@@ -714,11 +713,6 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_PUSH_RLU_PTN
   { EA_NONE,    0 },  // EO_PUSH_RLU_ROWPIX
 
-  // column set
-  { EA_INT,     8 },  // EO_SET_COLUMN
-  { EA_INT,     8 },  // EO_SET_COLUMNS
-  { EA_INT,     8 },  // EO_SET_ITEMS
-
   // table
   { EA_NONE, 0 },  // EO_TABLEPTN_DROPREAD
   { EA_NONE, 0 },  // EO_TABLEPTN_GRABREAD
@@ -794,7 +788,12 @@ static EoArg EoArgs[]
 
   //----------------------------------------------------------------------------
 
-  // rlu operators
+    // rlu column set
+  { EA_INT,     8 },  // EO_RLU_SET_COLUMN
+  { EA_INT,     8 },  // EO_RLU_SET_COLUMNS
+  { EA_INT,     8 },  // EO_RLU_SET_ITEMS
+
+    // rlu operators
   { EA_NONE,    0 },  // EO_RLU_INDEXDEF_ADDCOLUMN
   { EA_NONE,    0 },  // EO_RLU_INDEXDEF_DELETE
   { EA_NONE,    0 },  // EO_RLU_INDEXDEF_NEW

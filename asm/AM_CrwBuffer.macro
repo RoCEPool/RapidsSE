@@ -138,8 +138,8 @@ macro AM_CRW_PROJECT_COLUMNS
 //----------------------------------------------------------------------------//
   // CRW_PROJECT_COLUMNS
   Label CRW_PROJECT_COLUMNS
-  EO_SET_ITEMS <projectItems>
-  EO_SET_COLUMNS <projectSrcColumns>
+  EO_RLU_SET_ITEMS <projectItems>
+  EO_RLU_SET_COLUMNS <projectSrcColumns>
   EO_PUSH_RLU_LOCALS
   EO_PUSH_RLU_COLSET
   EO_PUSH_DEVROW_SRC
@@ -161,8 +161,8 @@ macro AM_CRW_PROJECT_COLUMNS_AGG
 //----------------------------------------------------------------------------//
   // CRW_PROJECT_COLUMNS_AGG
   Label CRW_PROJECT_COLUMNS_AGG
-  EO_SET_ITEMS <projectItems>
-  EO_SET_COLUMNS <projectSrcColumns>
+  EO_RLU_SET_ITEMS <projectItems>
+  EO_RLU_SET_COLUMNS <projectSrcColumns>
   EO_PUSH_RLU_LOCALS
   EO_PUSH_RLU_COLSET
   EO_PUSH_DEVROW_SRC
@@ -221,8 +221,8 @@ macro AM_CRW_FILTER_ROWS
 //----------------------------------------------------------------------------//
   // CRW_FILTER_ROWS
   Label CRW_FILTER_ROWS
-  EO_SET_ITEMS <projectItems>
-  EO_SET_COLUMNS <projectSrcColumns>
+  EO_RLU_SET_ITEMS <projectItems>
+  EO_RLU_SET_COLUMNS <projectSrcColumns>
   EO_PUSH_RLU_LOCALS
   EO_PUSH_RLU_COLSET
   EO_PUSH_DEVROW_SRC

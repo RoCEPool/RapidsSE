@@ -1572,11 +1572,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
       case EO_GREATERTHAN: ArgNil(); // test top > 2nd, push result
-//        iTopB = *(aiDstk--);
-//        iTopA = *(aiDstk--);
-//        iRes  = iTopA > iTopB;
-//        dLU3(EO_GREATERTHAN,iTopA,iTopB,iRes);
-//        *(++aiDstk) = iRes;
         iTopB = *(aiDstk--);
         *aiDstk = *aiDstk > iTopB;
         break;//+endCase
@@ -1598,135 +1593,93 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         *(++aiDstk) = iArg;
         break;//+endCase
 
-        // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-        // ixt device pushes
-      case EO_PUSH_DEVIXT_ALT: ArgNil(); // push columnn length
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // ixt device pushes
+      case EO_PUSH_DEVIXT_ALT: ArgNil(); // push alt ixt device
         dLU0(EO_PUSH_DEVIXT_ALT);
         P_PushPtr(aRluCommon->m_pDevAltIxt);
         break;//+endCase
 
-      case EO_PUSH_DEVIXT_ENT: ArgNil(); // push entry
+      case EO_PUSH_DEVIXT_ENT: ArgNil(); // push entry from ixt device
         dLU0(EO_PUSH_DEVIXT_ENT);
         vDev_IXT_PUSH_ENT(&aiDstk);
         break;//+endCase
 
-      case EO_PUSH_DEVIXT_SRC: ArgNil(); // push columnn length
+      case EO_PUSH_DEVIXT_SRC: ArgNil(); // push src ixt devive
         dLU0(EO_PUSH_DEVIXT_SRC);
         P_PushPtr(aRluCommon->m_pDevSrcIxt);
         break;//+endCase
 
-      case EO_PUSH_DEVIXT_TMP: ArgNil(); // push columnn length
+      case EO_PUSH_DEVIXT_TMP: ArgNil(); // push tmp ixt device
         dLU0(EO_PUSH_DEVIXT_TMP);
         P_PushPtr(aRluCommon->m_pDevTmpIxt);
         break;//+endCase
 
-        // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-        // row device pushes
-      case EO_PUSH_DEVROW_ALT: ArgNil(); // push columnn length
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // row device pushes
+      case EO_PUSH_DEVROW_ALT: ArgNil(); // push alt row device
         dLU0(EO_PUSH_DEVROW_ALT);
         P_PushPtr(aRluCommon->m_pDevAltRow);
         break;//+endCase
 
-      case EO_PUSH_DEVROW_DST: ArgNil(); // push columnn length
+      case EO_PUSH_DEVROW_DST: ArgNil(); // push dst row device
         dLU0(EO_PUSH_DEVROW_DST);
         P_PushPtr(aRluCommon->m_pDevDstRow);
         break;//+endCase
 
-      case EO_PUSH_DEVROW_SRC: ArgNil(); // push columnn length
+      case EO_PUSH_DEVROW_SRC: ArgNil(); // push src row device
         dLU0(EO_PUSH_DEVROW_SRC);
         P_PushPtr(aRluCommon->m_pDevSrcRow);
         break;//+endCase
 
-        // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-        // rlu pushes
-      case EO_PUSH_RLU_COLSET: ArgNil(); // push colset
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // rlu pushes
+      case EO_PUSH_RLU_COLSET: ArgNil(); // push rlu colset
         dLU0(EO_PUSH_RLU_COLSET);
         P_PushPtr(aRluCommon->m_iaColSet);
         break;//+endCase
 
-      case EO_PUSH_RLU_ENT: ArgNil(); // push ent
+      case EO_PUSH_RLU_ENT: ArgNil(); // push rlu ent
         dLU0(EO_PUSH_RLU_ENT);
         P_PushPtr(aRluCommon->m_aWrkEnt);
         break;//+endCase
 
-      case EO_PUSH_RLU_ENTWRK: ArgNil(); // push entwrk
+      case EO_PUSH_RLU_ENTWRK: ArgNil(); // push rlu entwrk
         dLU0(EO_PUSH_RLU_ENTWRK);
         P_PushPtr(aRluCommon->m_pEntWrk);
         break;//+endCase
 
-      case EO_PUSH_RLU_INDEXDEF: ArgNil(); // push indexDef
+      case EO_PUSH_RLU_INDEXDEF: ArgNil(); // push rlu indexDef
         dLU0(EO_PUSH_RLU_INDEXDEF);
         P_PushPtr(aRluCommon->m_pIndexDef);
         break;//+endCase
 
-      case EO_PUSH_RLU_POT: ArgNil(); // push pot
+      case EO_PUSH_RLU_POT: ArgNil(); // push rlu pot
         dLU0(EO_PUSH_RLU_POT);
         P_PushPtr(aRluCommon->m_pPot);
         break;//+endCase
 
-      case EO_PUSH_RLU_PTN: ArgNil(); // push partition
+      case EO_PUSH_RLU_PTN: ArgNil(); // push rlu partition
         dLU0(EO_PUSH_RLU_PTN);
         P_PushPtr(aRluCommon->m_i_Ptn);
         break;//+endCase
 
-      case EO_PUSH_RLU_ROWPIX: ArgNil(); // push row pix
+      case EO_PUSH_RLU_ROWPIX: ArgNil(); // push rlu row pix
         dLU0(EO_PUSH_RLU_ROWPIX);
         P_PushPtr(aRluCommon->m_pRowPix);
         break;//+endCase
 
       // locals pushes
-      case EO_PUSH_RLU_LOCALS: ArgNil(); // push aRluCommon->m_iaLocals
+      case EO_PUSH_RLU_LOCALS: ArgNil(); // push rlu locals
         dLU0(EO_PUSH_RLU_LOCALS);
         aiLocals = aRluCommon->m_iaLocals - 1;
         P_PushPtr(&aiLocals);
         break;//+endCase
 
       // register pushes
-      case EO_PUSH_RLU_INDEXTREE: ArgNil(); // push indexTreeRlu[]
+      case EO_PUSH_RLU_INDEXTREE: ArgNil(); // push rlu indexTree
         dLU0(EO_PUSH_RLU_INDEXTREE);
         P_PushPtr(aRluCommon->m_pIndexTree);
-        break;//+endCase
-
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      // column set
-      case EO_SET_COLUMN: ArgGet(iArg); // add column to set
-        dLU1(EO_SET_COLUMN,iArg);
-        aRluCommon->m_iaColSet[--aRluCommon->m_i_ColSet] = iArg;
-        //*(++aiDstk) = iArg;
-        break;//+endCase
-
-      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-      // columns set
-      case EO_SET_COLUMNS: { ArgGet(iArg); // add columns to set
-        dLU1(EO_SET_COLUMNS, iArg);
-        i8 iCol = 0;
-
-        for (i8 iBit = 0; iBit < (i8)C_BITS_PER_WORD; iBit++) {
-          u8 uBitMap = iArg;
-          i8 iToLeft  = 63 - iBit;
-          i8 iToRight = iBit;
-
-          // strip off upper bits
-          uBitMap <<= iToLeft;
-          uBitMap >>= iToLeft;
-
-          // strip off lower bits
-          uBitMap >>= iToRight;
-
-          // test if given bit is on
-          if (uBitMap) {
-            aRluCommon->m_iaColSet[iCol++] = iBit;
-          }
-        }
-        aRluCommon->m_iaColSet[iCol] = C_UNKNOWN;
-      }
-      break;//+endCase
-        
-      case EO_SET_ITEMS: ArgGet(iArg); // set number of column items
-        dLU1(EO_SET_ITEMS,iArg);
-        aRluCommon->m_i_ColSet = iArg;
-        aRluCommon->m_iaColSet[aRluCommon->m_i_ColSet] = C_UNKNOWN;
-        //*(++aiDstk) = -1;
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -2103,7 +2056,50 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
           
 
       //------------------------------------------------------------------------
-      //------------------------------------------------------------------------
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // rlu column set
+      case EO_RLU_SET_COLUMN: ArgGet(iArg); // add column to set
+        dLU1(EO_RLU_SET_COLUMN,iArg);
+        aRluCommon->m_iaColSet[--aRluCommon->m_i_ColSet] = iArg;
+        //*(++aiDstk) = iArg;
+        break;//+endCase
+
+        // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+        // columns set
+      case EO_RLU_SET_COLUMNS: { ArgGet(iArg); // add columns to set
+        dLU1(EO_RLU_SET_COLUMNS, iArg);
+        i8 iCol = 0;
+
+        for (i8 iBit = 0; iBit < (i8)C_BITS_PER_WORD; iBit++) {
+          u8 uBitMap = iArg;
+          i8 iToLeft  = 63 - iBit;
+          i8 iToRight = iBit;
+
+          // strip off upper bits
+          uBitMap <<= iToLeft;
+          uBitMap >>= iToLeft;
+
+          // strip off lower bits
+          uBitMap >>= iToRight;
+
+          // test if given bit is on
+          if (uBitMap) {
+            aRluCommon->m_iaColSet[iCol++] = iBit;
+          }
+        }
+        aRluCommon->m_iaColSet[iCol] = C_UNKNOWN;
+      }
+        break;//+endCase
+
+      case EO_RLU_SET_ITEMS: ArgGet(iArg); // set number of column items
+        dLU1(EO_RLU_SET_ITEMS,iArg);
+        aRluCommon->m_i_ColSet = iArg;
+        aRluCommon->m_iaColSet[aRluCommon->m_i_ColSet] = C_UNKNOWN;
+        //*(++aiDstk) = -1;
+        break;//+endCase
+
+        // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // rlu operators
       case EO_RLU_INDEXDEF_ADDCOLUMN: ArgNil(); // add a column to indexDefRlu[]
         dLU0(EO_RLU_INDEXDEF_ADDCOLUMN);

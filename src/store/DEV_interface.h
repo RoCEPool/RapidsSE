@@ -2,14 +2,15 @@
 /* DEV_interface.h -- Interface for RLU Devices                               */
 /*============================================================================*/
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// prototypes for dev IXT CRWBUF functions
 void vDev_IXT_CRWBUF_BEGIN(i8** aaiDstk);
 void vDev_IXT_CRWBUF_NEXT (i8** aaiDstk);
 void vDev_IXT_CRWBUF_NULL (i8** aaiDstk);
 void vDev_IXT_CRWBUF_TEST (i8** aaiDstk);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// prototypes for dev IXT
-
+// prototypes for dev IXT ENT functions
 void vDev_IXT_ENT_COMPARE  (i8** aaiDstk);
 void vDev_IXT_ENT_DEREF(i8** aaiDstk);
 void vDev_IXT_ENT_FIND     (i8** aaiDstk);
@@ -23,16 +24,15 @@ void vDev_IXT_ENT_PUSHUPPER(i8** aaiDstk);
 void vDev_IXT_CMP_KEYS     (i8** aaiDstk);
 void vDev_IXT_ENT_PRINT    (i8** aaiDstk);
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// prototypes for dev IXT IDX functions
 void vDev_IXT_IDX_DEL      (i8** aaiDstk);
 void vDev_IXT_IDX_DUMP     (i8** aaiDstk);
 void vDev_IXT_IDX_ENTRIES  (i8** aaiDstk);
 void vDev_IXT_IDX_INS      (i8** aaiDstk);
-
 void vDev_IXT_INDEXNM_SET     (i8** aaiDstk);
 void vDev_IXT_INDEXTREE_DELETE(i8** aaiDstk);
 void vDev_IXT_INDEXTREE_SET   (i8** aaiDstk);
-
-
 
 void vDev_IXT_POS_BYKEY    (i8** aaiDstk);
 void vDev_IXT_POS_LBOUND   (i8** aaiDstk);
@@ -73,8 +73,6 @@ void vDev_ROW_PUSHCOLI   (i8** aaiDstk);
 void vDev_ROW_PUSHCOLS   (i8** aaiDstk);
 void vDev_ROW_TABLENM_SET(i8** aaiDstk);
 
-Stz* szDev_ROW_PUSHCOLS(void* aLU, void* aROWDEVICE, i8 iArg);     // should go
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 void vDev_TABLEPTN_DROPREAD(void* aLU);
@@ -106,7 +104,10 @@ void vDev_REG_PTNSTREAM_OPEN(void* aLU);
 void vDev_REG_PTNSTREAM_READ(void* aLU);
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-// will go with old demo queries
+// -TO GO with old demo queries -
+
+Stz* szDev_ROW_PUSHCOLS(void* aLU, void* aROWDEVICE, i8 iArg);
+
 void vDev_REG_EOSMARKER_NEW(void* aLU);
 void vDev_REG_STREAMDEFOUT_NEW(void* aLU);
 void vDev_REG_STREAMDEFOUT_ADDCOLUMN(void* aLU,
