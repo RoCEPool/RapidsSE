@@ -42,12 +42,12 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // populate the index
 
-  Table[].tablePtn@ to tablePtn[]
+  Table[].tablePtn@ to TablePtn[]
 
-  tablePtn[].grabWrite_msecLoop
-  index[] tablePtn[].populateIndex not if ( errorCode )
+  TablePtn[].grabWrite_msecLoop
+  index[] TablePtn[].populateIndex not if ( errorCode )
     to errorCode
-    tablePtn[].dropWrite
+    TablePtn[].dropWrite
     errorCode op.pipelineJob@ ERROR_JOB
     errorCode op__execErr
     PipeIn[].delete
@@ -55,7 +55,7 @@
     exit
   then
 
-  tablePtn[].dropWrite
+  TablePtn[].dropWrite
 
   // should be in tables
   folder[].isTables assert

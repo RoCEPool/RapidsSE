@@ -30,25 +30,23 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_TablePtn(void)
 {
-  vAddStep("tablePtn[]"_Stz,                  &Step::vTablePtnGet);
+  vAddStep("TablePtn[]"_Stz,                  &Step::vTablePtnGet);
   
-  vAddStep("tablePtn[].appendBuffer"_Stz,     &Step::vTablePtnAppendBuffer);
-  vAddStep("tablePtn[].populateIndex"_Stz,    &Step::vTablePtnPopulateIndex);
-  vAddStep("tablePtn[].purge"_Stz,            &Step::vTablePtnPurge);
-  vAddStep("tablePtn[].root"_Stz ,            &Step::vTablePtnRoot);
-  vAddStep("tablePtn[].set"_Stz  ,            &Step::vTablePtnSet);
-  vAddStep("tablePtn[].truncate"_Stz,         &Step::vTablePtnTruncate);
-  vAddStep("tablePtn[].truncateIndex"_Stz,    &Step::vTablePtnTruncateIndex);
-  
-  
-  vAddStep("tablePtn[].attemptGrabRead"_Stz , &Step::vTablePtnAttemptGrabRead);
-  vAddStep("tablePtn[].attemptGrabWrite"_Stz, &Step::vTablePtnAttemptGrabWrite);
-  vAddStep("tablePtn[].dropRead"_Stz,         &Step::vTablePtnDropRead);
-  vAddStep("tablePtn[].dropWrite"_Stz,        &Step::vTablePtnDropWrite);
+  vAddStep("TablePtn[].appendBuffer"_Stz,     &Step::vTablePtnAppendBuffer);
+  vAddStep("TablePtn[].attemptGrabRead"_Stz , &Step::vTablePtnAttemptGrabRead);
+  vAddStep("TablePtn[].attemptGrabWrite"_Stz, &Step::vTablePtnAttemptGrabWrite);
+  vAddStep("TablePtn[].dropRead"_Stz,         &Step::vTablePtnDropRead);
+  vAddStep("TablePtn[].dropWrite"_Stz,        &Step::vTablePtnDropWrite);
+  vAddStep("TablePtn[].populateIndex"_Stz,    &Step::vTablePtnPopulateIndex);
+  vAddStep("TablePtn[].purge"_Stz,            &Step::vTablePtnPurge);
+  vAddStep("TablePtn[].root"_Stz ,            &Step::vTablePtnRoot);
+  vAddStep("TablePtn[].set"_Stz  ,            &Step::vTablePtnSet);
+  vAddStep("TablePtn[].truncate"_Stz,         &Step::vTablePtnTruncate);
+  vAddStep("TablePtn[].truncateIndex"_Stz,    &Step::vTablePtnTruncateIndex);
 }
 
 /*----------------------------------------------------------------------------*/
-/* tablePtn[].appendBuffer -- append a buffer into the tablePtn               */
+/* TablePtn[].appendBuffer -- append a buffer into the tablePtn               */
 /*----------------------------------------------------------------------------*/
 void Step::vTablePtnAppendBuffer(void)
 {
@@ -70,7 +68,76 @@ void Step::vTablePtnAppendBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* tablePtn[] -- get table                                                    */
+/* TablePtn[].attemptGrabRead -- attempt to grab read lock on table partition */
+/*----------------------------------------------------------------------------*/
+void Step::vTablePtnAttemptGrabRead(void)
+{
+  ENTRY();
+  
+  // get the tablePtn from the register
+  TablePtn* pTablePtn = _pTablePtn(*( m_pJob->pLogicUnit_job() )->m_xpTablePtn);
+
+  // attempt to grab the read lock
+  bool bSuccess = pTablePtn->bGrabRead();
+  
+  m_pDataStack->vPushInt(bSuccess);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* TablePtn[].attemptGrabWrite -- attempt grab write lock on table partition  */
+/*----------------------------------------------------------------------------*/
+void Step::vTablePtnAttemptGrabWrite(void)
+{
+  ENTRY();
+  
+  // get the tablePtn from the register
+  TablePtn* pTablePtn = _pTablePtn(*( m_pJob->pLogicUnit_job() )->m_xpTablePtn);
+
+  // attempt to grab the write lock
+  bool bSuccess = pTablePtn->bGrabWrite();
+  
+  m_pDataStack->vPushInt(bSuccess);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* TablePtn[].dropRead -- drop a read lock on the partition of a table        */
+/*----------------------------------------------------------------------------*/
+void Step::vTablePtnDropRead(void)
+{
+  ENTRY();
+  
+  // get the tablePtn from the register
+  TablePtn* pTablePtn = _pTablePtn(*( m_pJob->pLogicUnit_job() )->m_xpTablePtn);
+
+    
+  // drop the read lock
+  pTablePtn->vDropRead();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* TablePtn[].dropWrite -- drop write lock on the partition of a tabl  e      */
+/*----------------------------------------------------------------------------*/
+void Step::vTablePtnDropWrite(void)
+{
+  ENTRY();
+  
+  // get the tablePtn from the register
+  TablePtn* pTablePtn = _pTablePtn(*( m_pJob->pLogicUnit_job() )->m_xpTablePtn);
+
+  // drop the write lock
+  pTablePtn->vDropWrite();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* TablePtn[] -- get table                                                    */
 /*----------------------------------------------------------------------------*/
 void Step::vTablePtnGet(void)
 {
@@ -82,7 +149,7 @@ void Step::vTablePtnGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* tablePtn[].populateIndex -- populate index of this table ptn               */
+/* TablePtn[].populateIndex -- populate index of this table ptn               */
 /*----------------------------------------------------------------------------*/
 void Step::vTablePtnPopulateIndex(void)
 {
@@ -103,7 +170,7 @@ void Step::vTablePtnPopulateIndex(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* tablePtn[].purge -- purge prior versions of this table ptn                 */
+/* TablePtn[].purge -- purge prior versions of this table ptn                 */
 /*----------------------------------------------------------------------------*/
 void Step::vTablePtnPurge(void)
 {
@@ -119,7 +186,7 @@ void Step::vTablePtnPurge(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* tablePtn[].root -- get the tablePtn root                                   */
+/* TablePtn[].root -- get the tablePtn root                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vTablePtnRoot(void)
 {
@@ -133,7 +200,7 @@ void Step::vTablePtnRoot(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* tablePtn[].set -- set the tablePtn                                         */
+/* TablePtn[].set -- set the tablePtn                                         */
 /*----------------------------------------------------------------------------*/
 void Step::vTablePtnSet(void)
 {
@@ -145,7 +212,7 @@ void Step::vTablePtnSet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* tablePtn[].truncate -- truncate the tablePtn for the table                 */
+/* TablePtn[].truncate -- truncate the tablePtn for the table                 */
 /*----------------------------------------------------------------------------*/
 void Step::vTablePtnTruncate(void)
 {
@@ -158,7 +225,7 @@ void Step::vTablePtnTruncate(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* tablePtn[].truncateIndex -- truncate the tablePtn for the index            */
+/* TablePtn[].truncateIndex -- truncate the tablePtn for the index            */
 /*----------------------------------------------------------------------------*/
 void Step::vTablePtnTruncateIndex(void)
 {
@@ -172,81 +239,6 @@ void Step::vTablePtnTruncateIndex(void)
   
   EXIT();
 }
-
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/* tablePtn[].attemptGrabRead -- attempt to grabp read lock on table partition  */
-/*----------------------------------------------------------------------------*/
-void Step::vTablePtnAttemptGrabRead(void)
-{
-  ENTRY();
-  
-  // get the tablePtn from the register
-  TablePtn* pTablePtn = _pTablePtn(*( m_pJob->pLogicUnit_job() )->m_xpTablePtn);
-
-  // attempt to grab the read lock
-  bool bSuccess = pTablePtn->bGrabRead();
-  
-  m_pDataStack->vPushInt(bSuccess);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* tablePtn[].attemptGrabWrite -- attempt to grab write lock on table partition */
-/*----------------------------------------------------------------------------*/
-void Step::vTablePtnAttemptGrabWrite(void)
-{
-  ENTRY();
-  
-  // get the tablePtn from the register
-  TablePtn* pTablePtn = _pTablePtn(*( m_pJob->pLogicUnit_job() )->m_xpTablePtn);
-
-  // attempt to grab the write lock
-  bool bSuccess = pTablePtn->bGrabWrite();
-  
-  m_pDataStack->vPushInt(bSuccess);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* tablePtn[].dropRead -- drop a read lock on the partition of a table          */
-/*----------------------------------------------------------------------------*/
-void Step::vTablePtnDropRead(void)
-{
-  ENTRY();
-  
-  // get the tablePtn from the register
-  TablePtn* pTablePtn = _pTablePtn(*( m_pJob->pLogicUnit_job() )->m_xpTablePtn);
-
-    
-  // drop the read lock
-  pTablePtn->vDropRead();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* tablePtn[].dropWrite -- drop a write lock on the partition of a table        */
-/*----------------------------------------------------------------------------*/
-void Step::vTablePtnDropWrite(void)
-{
-  ENTRY();
-  
-  // get the tablePtn from the register
-  TablePtn* pTablePtn = _pTablePtn(*( m_pJob->pLogicUnit_job() )->m_xpTablePtn);
-
-  // drop the write lock
-  pTablePtn->vDropWrite();
-  
-  EXIT();
-}
-
 
 /*============================================================================*/
 /* end                                                                        */

@@ -66,10 +66,10 @@
 /*----------------------------------------------------------------------------*/
 /* grab read lock on TablePtn[]                                               */
 /*----------------------------------------------------------------------------*/
-: tablePtn[].grabRead_yieldLoop
+: TablePtn[].grabRead_yieldLoop
 
   begin
-    tablePtn[].attemptGrabRead
+    TablePtn[].attemptGrabRead
   not while
     task::yield
   repeat
@@ -78,10 +78,10 @@
 /*----------------------------------------------------------------------------*/
 /* grab write lock on TablePtn[]                                              */
 /*----------------------------------------------------------------------------*/
-: tablePtn[].grabWrite_yieldLoop
+: TablePtn[].grabWrite_yieldLoop
 
   begin
-    tablePtn[].attemptGrabWrite
+    TablePtn[].attemptGrabWrite
   not while
     task::yield
   repeat
@@ -90,10 +90,10 @@
 /*----------------------------------------------------------------------------*/
 /* grab write lock on TablePtn[] (with 1ms sleep loop till grabbed)           */
 /*----------------------------------------------------------------------------*/
-: tablePtn[].grabWrite_msecLoop
+: TablePtn[].grabWrite_msecLoop
 
   begin
-    tablePtn[].attemptGrabWrite
+    TablePtn[].attemptGrabWrite
   not while
     1 task::sleepMsec
   repeat

@@ -57,7 +57,7 @@
 
     // set table streamDef as src streamDef
     Table[].asSrcStreamDef
-    Table[].tablePtn@ to tablePtn[]
+    Table[].tablePtn@ to TablePtn[]
 
   then
 
@@ -88,7 +88,7 @@
 
     // set table streamDef as src streamDef
     Table[].asAltStreamDef
-    Table[].tablePtn@ to tablePtn[]
+    Table[].tablePtn@ to TablePtn[]
 
   then
 

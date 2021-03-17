@@ -17,13 +17,13 @@
   Operand[].pipeOut
 
   // grab a read lock onn the table ptn
-  tablePtn[].grabRead_yieldLoop
+  TablePtn[].grabRead_yieldLoop
 
   // begin a read transaction
   tx[].begin
 
   // pipeout all subsets from tablePtn
-  tablePtn[].root to Subset[]
+  TablePtn[].root to Subset[]
   Subset[] to Operand[]
   begin
     Operand[].isNull
@@ -37,7 +37,7 @@
   tx[].commit
 
   // discard the read lock on the table ptn
-  tablePtn[].dropRead
+  TablePtn[].dropRead
 
   Operand[].newEosMarker
   Operand[].pipeOut
@@ -54,7 +54,7 @@
 
   // check if we can scan the table
   <tableNm> op__table if
-    Table[].tablePtn@ to tablePtn[]
+    Table[].tablePtn@ to TablePtn[]
     PipeIn[].pipeOut
   then
 
