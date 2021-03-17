@@ -10,7 +10,8 @@
 : OP_namedInsert \handler
 
   PipeIn[]\clear to Operand[]
-  
+
+/*
   Operand[] namedBuffer.name@ locals| sBufferNm |
   
   sBufferNm op__table assert
@@ -22,7 +23,9 @@
   TablePtn[].grabWrite_msecLoop
   Operand[]\clear TablePtn[].appendBuffer
   TablePtn[].dropWrite
-  
+*/
+
+  "$$$ OP_namedInsert" .
   true
 ;
 

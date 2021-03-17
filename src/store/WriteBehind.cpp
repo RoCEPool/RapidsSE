@@ -91,9 +91,12 @@ Row* WriteBehind::pAllotEventRow(void)
     
     
     // temp until the demon is in place
-    delete m_pNamedBuffer_events;
+    //delete m_pNamedBuffer_events;
     //NEVER_REACH;
     
+    AM::DEMON::vPipeTo("__eventDemon"_Stz,m_pNamedBuffer_events);
+    
+    m_pNamedBuffer_events = nullptr;
     
     m_pNamedBuffer_events = new NamedBuffer(m_pStreamDef_events,C_DONT_LOG);
     pRow = m_pNamedBuffer_events->pAllotRow();
