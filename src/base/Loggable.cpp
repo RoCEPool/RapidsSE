@@ -77,20 +77,18 @@ void Loggable::vLog(eEV eEvent, Stz* szFormat, ...)
 //      )
 //    return;
 
+
   s4K sNote;
   
   va_list xVarArgs;
   
   va_start(xVarArgs,szFormat);
   
-//  vprintf(szFormat->azChar(),xVarArgs);
-//  printf("\n");
-
   sNote.vSprintVA(szFormat,xVarArgs);
   
   va_end(xVarArgs);
   
-  vAddRow(eEvent,sNote);
+  //vAddRow(eEvent,sNote);
 }
 
 /*----------------------------------------------------------------------------*/

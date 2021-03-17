@@ -89,6 +89,7 @@ Row* WriteBehind::pAllotEventRow(void)
   
   if (! pRow) {
     
+    
     // temp until the demon is in place
     delete m_pNamedBuffer_events;
     //NEVER_REACH;

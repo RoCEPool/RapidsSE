@@ -348,7 +348,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     if (szArg->bSame("--events"_Stz)) {
-      m_xSysArgs.m_nEntries = true;
+      m_xSysArgs.m_bEvents = true;
       continue;
     }
     
