@@ -165,7 +165,6 @@ namespace STORE
 
     static void vAddSteps_Table(void);
     static void vAddSteps_TablePartition(void);
-    static void vAddSteps_TablePartition2(void);
     static void vAddSteps_Tag(void);
     static void vAddSteps_TagSet(void);
     static void vAddSteps_Task(void);
