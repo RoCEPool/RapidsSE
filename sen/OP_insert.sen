@@ -77,7 +77,7 @@
   //nullptr task[] task.profile!
   //Operand[].pipeOut
 
-  path[].popNamedTableFolder
+  Path[].popNamedTableFolder
   PipeIn[].pipeOut
   Op.ackPipelineJob
 

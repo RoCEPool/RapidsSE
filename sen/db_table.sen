@@ -28,17 +28,17 @@
 /*----------------------------------------------------------------------------*/
 /* find the named table folder and push it onto task dictionary               */
 /*----------------------------------------------------------------------------*/
-: path[].pushNamedTableFolder params| sTblFolderNm |
+: Path[].pushNamedTableFolder params| sTblFolderNm |
 
-  sTblFolderNm find execute path[].pushFolder
+  sTblFolderNm find execute Path[].pushFolder
 ;
 
 /*----------------------------------------------------------------------------*/
-/* pop current folder (which was pushed by path[].pushNamedTableFolder)       */
+/* pop current folder (which was pushed by Path[].pushNamedTableFolder)       */
 /*----------------------------------------------------------------------------*/
-: path[].popNamedTableFolder ( -- )
+: Path[].popNamedTableFolder ( -- )
 
-  path[].popFolder
+  Path[].popFolder
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -108,13 +108,13 @@
   sTableNm word::isKnown not if discard EC_NO_SUCH_TABLE false exit then
 
   // push table folder
-  sTableNm path[].pushNamedTableFolder
+  sTableNm Path[].pushNamedTableFolder
 
   // check if sTableNm translates to a word of \table category
-  sTableNm check::nameIsaTable not if path[].popNamedTableFolder false exit then
+  sTableNm check::nameIsaTable not if Path[].popNamedTableFolder false exit then
  
   // pop table folder
-  path[].popNamedTableFolder
+  Path[].popNamedTableFolder
 
   // assert we are back in tables
   folder[].isTables assert
@@ -182,7 +182,7 @@
 
  sTableNm table::makeNamedTableFolder
 
- sTableNm path[].pushNamedTableFolder
+ sTableNm Path[].pushNamedTableFolder
 
  sTableNm "index::makeIndexesAssembly" find execute
 
@@ -192,7 +192,7 @@
 
  pTable table.createPtnDef
 
- path[].popNamedTableFolder
+ Path[].popNamedTableFolder
 
  pTable
 ;
@@ -236,7 +236,7 @@
   // path: /tenants/boray/catalogs/rapidsse/schemas/public/tables
 
   // push to named table folder
-  sTableNm path[].pushNamedTableFolder
+  sTableNm Path[].pushNamedTableFolder
 
   // ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++ ++
 
@@ -249,7 +249,7 @@
     sTableNm table::deleteTable
 
     // pop back to table
-    path[].popNamedTableFolder
+    Path[].popNamedTableFolder
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 

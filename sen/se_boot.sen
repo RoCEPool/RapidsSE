@@ -158,37 +158,37 @@ assert::stack_0
   "tenants" folder::makeFolder attachMap::tenants!
   //attachmap::tenants@ execute
   attachmap::tenants@ /*dup word.see*/ execute
-  path[].pushFolder
+  Path[].pushFolder
 
     // make 'boray' tenant folder:
     //  /tenants/boray
     //  /tenants/boray/catalogs
     "boray" :makeTenantFolder
     "boray" folder[].findSymbol execute
-    path[].pushFolder
+    Path[].pushFolder
 
       "catalogs" folder[].findSymbol execute
-      path[].pushFolder
+      Path[].pushFolder
 
         // make 'rapidsse' catalog folder:
         //  /tenants/boray/catalogs/rapidsse
         //  /tenants/boray/catalogs/rapidsse/schemas
         "rapidsse" :makeCatalogFolder
         "rapidsse" folder[].findSymbol execute
-        path[].pushFolder
+        Path[].pushFolder
 
           "schemas" folder[].findSymbol execute
-          path[].pushFolder
+          Path[].pushFolder
 
             // make 'public' schema folder:
             //  /tenants/boray/catalogs/rapidsse/schemas/public
             //  /tenants/boray/catalogs/rapidsse/schemas/public/tables
             "public" :makeSchemaFolder
 
-          path[].popFolder
-      path[].popFolder
-    path[].popFolder
-  path[].popFolder
+          Path[].popFolder
+      Path[].popFolder
+    Path[].popFolder
+  Path[].popFolder
 
   assert::stack_0
 ;

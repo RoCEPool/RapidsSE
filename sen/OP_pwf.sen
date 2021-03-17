@@ -13,11 +13,11 @@
 
   "/"
   // iterate thru each folder in path and concat to end
-  path[].depth 0 do
+  Path[].depth 0 do
     // compute the path subscript
-    path[].depth 1 - I -
+    Path[].depth 1 - I -
     // pick the path, get its name and concat name to working string
-    path[].pick dic.name@ str.cat
+    Path[].pick dic.name@ str.cat
     // concat "/" to end of working string
     "/" str.cat
   loop

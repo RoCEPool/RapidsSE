@@ -21,7 +21,7 @@
 
   //debug::breakPoint
 
-  <path> str.toStrVec path[].set
+  <path> str.toStrVec Path[].set
 
   job::acquireDdlLock
 
@@ -125,7 +125,7 @@
 
   JP_BEGINNING job[] job.phase!
 
-  <path> str.toStrVec path[].set
+  <path> str.toStrVec Path[].set
 
   job::becomeParticipant
 
@@ -157,7 +157,7 @@
   // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
   // set task's dictionary stack from path in job
 
-  <path> str.toStrVec path[].set
+  <path> str.toStrVec Path[].set
   //task::dump
 
   job::acquireDdlLock

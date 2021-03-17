@@ -10,13 +10,13 @@
 : setPath ( -- )
 
   // copy the path from task dic stack onto data stack
-  path[].depth 0 ?do
-    path[].depth 1 - I - path[].pick dic.name@
+  Path[].depth 0 ?do
+    Path[].depth 1 - I - Path[].pick dic.name@
   loop
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // store path into the sessions <path>=<...>
-  path[].depth strVec::toPath to /session <path>
+  Path[].depth strVec::toPath to /session <path>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -24,7 +24,7 @@
 /*----------------------------------------------------------------------------*/
 : setCatalogs ( )
   "/tenants/boray/catalogs/"
-  str.toStrVec path[].set
+  str.toStrVec Path[].set
   setPath
 ;
 
@@ -33,7 +33,7 @@
 /*----------------------------------------------------------------------------*/
 : setSchemas ( )
   "/tenants/boray/catalogs/rapidsse/schemas"
-  str.toStrVec path[].set
+  str.toStrVec Path[].set
   setPath
 ;
 
@@ -42,7 +42,7 @@
 /*----------------------------------------------------------------------------*/
 : setTables ( )
   "/tenants/boray/catalogs/rapidsse/schemas/public/tables"
-  str.toStrVec path[].set
+  str.toStrVec Path[].set
   setPath
 ;
 

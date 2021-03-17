@@ -36,7 +36,7 @@
 /*----------------------------------------------------------------------------*/
 : folder[] ( -- )
 
-  path[].depth 1 - path[].pick
+  Path[].depth 1 - Path[].pick
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -80,7 +80,7 @@ dicLock.dropwrite
 
   args.verbose if
     pwFolder word.name@
-    path[].toStr
+    Path[].toStr
       "Created folder %v/%v" .printf
   then
 
@@ -94,12 +94,12 @@ dicLock.dropwrite
 /*----------------------------------------------------------------------------*/
 : folder::makeSubFolder params| pFolder sSubFolderNm |
 
-  pFolder path[].pushFolder
+  pFolder Path[].pushFolder
 
     find: \folder
     sSubFolderNm folder::makeFolder execute dic.kind!
 
-  path[].popFolder
+  Path[].popFolder
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -141,7 +141,7 @@ dicLock.dropwrite
 /*----------------------------------------------------------------------------*/
 : symbols \prompt
 
-  path[].toStr .put "::" .put .\n
+  Path[].toStr .put "::" .put .\n
 
   folder[] dic.lastWord
   begin dup while

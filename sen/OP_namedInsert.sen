@@ -5,6 +5,28 @@
 " OP_namedInsert.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* locate named table and set Table[]                                         */
+/*----------------------------------------------------------------------------*/
+: locateNamedTable params| sTableNm |
+
+  // move to default tables folder
+  "/tenants/boray/catalogs/rapidsse/schemas/public/tables"
+    str.toStrVec Path[].set
+
+  // check table assembly : ../schemas/public/tables/<sTableNm>
+  sTableNm check::validTableAssembly assert
+
+  // move into table folder : ../schemas/public/tables/<sTableNm>
+  sTableNm Path[].pushNamedTableFolder
+  
+  // find the pTable : ../schemas/public/tables/<sTableNm>/<sTableNm>
+  sTableNm find execute to Table[]
+
+  // cross-check Table[]
+  Table[] assert
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_NAMEDBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : OP_namedInsert \handler
@@ -13,8 +35,9 @@
 
   Operand[] namedBuffer.name@ locals| sBufferNm |
 
+  sBufferNm locateNamedTable
+
 /*
-  sBufferNm op__table assert
 
   CN_ROWBUFFER Operand[].morphClass
 

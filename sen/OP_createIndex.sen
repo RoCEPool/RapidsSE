@@ -21,10 +21,10 @@
   // change working folder to : ./t/indexes
 
   // cf to: ./t
-  sTableNm path[].pushNamedTableFolder
+  sTableNm Path[].pushNamedTableFolder
 
   // cf to: ./indexes
-  path[].pushIndexesFolder
+  Path[].pushIndexesFolder
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // parse cmd and create index definition
@@ -45,8 +45,8 @@
     pIndex index.isValidUniqueIndex not if
       EC_INVALID_COLUMNS_UNIQUE_INDEX job::error!
       EC_INVALID_COLUMNS_UNIQUE_INDEX op__execErr
-      path[].popIndexesFolder
-      path[].popNamedTableFolder
+      Path[].popIndexesFolder
+      Path[].popNamedTableFolder
       folder[].isTables assert
       exit
     then
@@ -57,8 +57,8 @@
 /*
   pIndex index.populate not if ( errorCode )
     job::error!
-    path[].popIndexesFolder
-    path[].popNamedTableFolder
+    Path[].popIndexesFolder
+    Path[].popNamedTableFolder
     folder[].isTables assert
     exit
   then
@@ -66,8 +66,8 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move back to ./tables
 
-  path[].popIndexesFolder
-  path[].popNamedTableFolder
+  Path[].popIndexesFolder
+  Path[].popNamedTableFolder
   folder[].isTables assert
 ;
 /*----------------------------------------------------------------------------*/

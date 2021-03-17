@@ -38,7 +38,7 @@
 /* find the partitions folder and push it onto task dictionary                */
 /*----------------------------------------------------------------------------*/
 : pushPartitions
-  "partitions" find execute path[].pushFolder
+  "partitions" find execute Path[].pushFolder
   true
 ;
 
@@ -46,14 +46,14 @@
 /* pop the partitions folder                                                  */
 /*----------------------------------------------------------------------------*/
 : popPartitions
-  path[].popFolder
+  Path[].popFolder
 ;
 
 /*----------------------------------------------------------------------------*/
 /* pop the partition sub folder                                               */
 /*----------------------------------------------------------------------------*/
 : popPartitionSub
-  path[].popFolder
+  Path[].popFolder
 ;
 
 /*----------------------------------------------------------------------------*/
