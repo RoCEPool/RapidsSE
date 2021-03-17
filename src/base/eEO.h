@@ -212,13 +212,13 @@ enum eEO : u1 // expression operators
   /*  D  */ EO_DEVIXT_ENT_PUSHUPPER, // push upper entry
   
   // ixt device entry relational operators
-  /*    */ EO_DEVIXT_ENT_LESS,         // test if dev key <  other working key
-  /*    */ EO_DEVIXT_ENT_LESSEQUAL,    // test if dev key <= other working key
-  /*    */ EO_DEVIXT_ENT_EQUAL,        // test if dev key == other working key
-  /*    */ EO_DEVIXT_ENT_NOTEQUAL,     // test if dev key != other working key
-  /*    */ EO_DEVIXT_ENT_GREATEREQUAL, // test if dev key >= other working key
-  /*    */ EO_DEVIXT_ENT_GREATER,      // test if dev key >  other working key
-  /*    */ EO_DEVIXT_ENT_PRINTKEYS,    // print device key and other working key
+  /*    */ EO_DEVIXT_ENTKEY_LESS,         // test if dev key <  other working key
+  /*    */ EO_DEVIXT_ENTKEY_LESSEQUAL,    // test if dev key <= other working key
+  /*    */ EO_DEVIXT_ENTKEY_EQUAL,        // test if dev key == other working key
+  /*    */ EO_DEVIXT_ENTKEY_NOTEQUAL,     // test if dev key != other working key
+  /*    */ EO_DEVIXT_ENTKEY_GREATEREQUAL, // test if dev key >= other working key
+  /*    */ EO_DEVIXT_ENTKEY_GREATER,      // test if dev key >  other working key
+  /*    */ EO_DEVIXT_ENTKEY_PRINTKEYS,    // print device key and other working key
 
   // ixt device entwrk operators
   /*    */ EO_ENTWRK_PRINT,     // print m_oEntWrk
@@ -515,13 +515,13 @@ static Stz* aEO[]
   /*    */ "EO_DEVIXT_ENT_PUSHUPPER"_Stz,
   
   // ixt device entry relational operators
-  /*    */ "EO_DEVIXT_ENT_LESS"_Stz,
-  /*    */ "EO_DEVIXT_ENT_LESSEQUAL"_Stz,
-  /*    */ "EO_DEVIXT_ENT_EQUAL"_Stz,
-  /*    */ "EO_DEVIXT_ENT_NOTEQUAL"_Stz,
-  /*    */ "EO_DEVIXT_ENT_GREATEREQUAL"_Stz,
-  /*    */ "EO_DEVIXT_ENT_GREATER"_Stz,
-  /*    */ "EO_DEVIXT_ENT_PRINTKEYS"_Stz,
+  /*    */ "EO_DEVIXT_ENTKEY_LESS"_Stz,
+  /*    */ "EO_DEVIXT_ENTKEY_LESSEQUAL"_Stz,
+  /*    */ "EO_DEVIXT_ENTKEY_EQUAL"_Stz,
+  /*    */ "EO_DEVIXT_ENTKEY_NOTEQUAL"_Stz,
+  /*    */ "EO_DEVIXT_ENTKEY_GREATEREQUAL"_Stz,
+  /*    */ "EO_DEVIXT_ENTKEY_GREATER"_Stz,
+  /*    */ "EO_DEVIXT_ENTKEY_PRINTKEYS"_Stz,
 
   // ixt device entwrk operators
   /*    */ "EO_ENTWRK_PRINT"_Stz,
@@ -825,13 +825,13 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_DEVIXT_ENT_PUSHUPPER
 
   // ixt device  relational operators
-  { EA_NONE,    0 },  // EO_DEVIXT_ENT_LESS
-  { EA_NONE,    0 },  // EO_DEVIXT_ENT_LESSEQUAL
-  { EA_NONE,    0 },  // EO_DEVIXT_ENT_EQUAL
-  { EA_NONE,    0 },  // EO_DEVIXT_ENT_NOTEQUAL
-  { EA_NONE,    0 },  // EO_DEVIXT_ENT_GREATEREQUAL
-  { EA_NONE,    0 },  // EO_DEVIXT_ENT_GREATER
-  { EA_NONE,    0 },  // EO_DEVIXT_ENT_PRINTKEYS
+  { EA_NONE,    0 },  // EO_DEVIXT_ENTKEY_LESS
+  { EA_NONE,    0 },  // EO_DEVIXT_ENTKEY_LESSEQUAL
+  { EA_NONE,    0 },  // EO_DEVIXT_ENTKEY_EQUAL
+  { EA_NONE,    0 },  // EO_DEVIXT_ENTKEY_NOTEQUAL
+  { EA_NONE,    0 },  // EO_DEVIXT_ENTKEY_GREATEREQUAL
+  { EA_NONE,    0 },  // EO_DEVIXT_ENTKEY_GREATER
+  { EA_NONE,    0 },  // EO_DEVIXT_ENTKEY_PRINTKEYS
 
   // ixt device entwrk operators
   { EA_NONE,    0 },  // EO_ENTWRK_PRINT

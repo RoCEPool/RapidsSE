@@ -2228,59 +2228,59 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // ixt device entry relational operators
-      case EO_DEVIXT_ENT_LESS: ArgNil(); // test if dev m_pEnt.key <  ent.key
+      case EO_DEVIXT_ENTKEY_LESS: ArgNil(); // test if dev m_pEnt.key <  ent.key
         vDev_IXT_ENT_COMPARE(&aiDstk);
         iCmp = *(aiDstk--);
         iRes = (KC_BEFORE == iCmp);
-        dLU1(EO_DEVIXT_ENT_LESS, iRes);
+        dLU1(EO_DEVIXT_ENTKEY_LESS, iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
         
-      case EO_DEVIXT_ENT_LESSEQUAL: ArgNil(); // test if dev m_pEnt.key <= m_oEntWrk.key
+      case EO_DEVIXT_ENTKEY_LESSEQUAL: ArgNil(); // test if dev m_pEnt.key <= m_oEntWrk.key
         vDev_IXT_ENT_COMPARE(&aiDstk);
         iCmp = *(aiDstk--);
         iRes = (KC_BEFORE == iCmp || KC_SAME == iCmp);
-        dLU1(EO_DEVIXT_ENT_LESSEQUAL, iRes);
+        dLU1(EO_DEVIXT_ENTKEY_LESSEQUAL, iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
         
-      case EO_DEVIXT_ENT_EQUAL: ArgNil(); // test if dev m_pEnt.key == m_oEntWrk.key
-        dLU0(EO_DEVIXT_ENT_EQUAL);
+      case EO_DEVIXT_ENTKEY_EQUAL: ArgNil(); // test if dev m_pEnt.key == m_oEntWrk.key
+        dLU0(EO_DEVIXT_ENTKEY_EQUAL);
         vDev_IXT_ENT_COMPARE(&aiDstk);
         iCmp = *(aiDstk--);
         iRes = (KC_SAME == iCmp);
-        dLU1(EO_DEVIXT_ENT_EQUAL, iRes);
+        dLU1(EO_DEVIXT_ENTKEY_EQUAL, iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
         
-      case EO_DEVIXT_ENT_NOTEQUAL: ArgNil(); // test if dev m_pEnt.key != m_oEntWrk.key
-        dLU0(EO_DEVIXT_ENT_NOTEQUAL);
+      case EO_DEVIXT_ENTKEY_NOTEQUAL: ArgNil(); // test if dev m_pEnt.key != m_oEntWrk.key
+        dLU0(EO_DEVIXT_ENTKEY_NOTEQUAL);
         vDev_IXT_ENT_COMPARE(&aiDstk);
         iCmp = *(aiDstk--);
         iRes = (KC_SAME != iCmp);
-        dLU1(EO_DEVIXT_ENT_NOTEQUAL, iRes);
+        dLU1(EO_DEVIXT_ENTKEY_NOTEQUAL, iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
         
-      case EO_DEVIXT_ENT_GREATEREQUAL: ArgNil(); // test if dev m_pEnt.key >= m_oEntWrk.key
-        dLU0(EO_DEVIXT_ENT_GREATEREQUAL);
+      case EO_DEVIXT_ENTKEY_GREATEREQUAL: ArgNil(); // test if dev m_pEnt.key >= m_oEntWrk.key
+        dLU0(EO_DEVIXT_ENTKEY_GREATEREQUAL);
         vDev_IXT_ENT_COMPARE(&aiDstk);
         iCmp = *(aiDstk--);
         iRes = (KC_AFTER == iCmp || KC_SAME == iCmp);
-        dLU1(EO_DEVIXT_ENT_GREATEREQUAL, iRes);
+        dLU1(EO_DEVIXT_ENTKEY_GREATEREQUAL, iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
         
-      case EO_DEVIXT_ENT_GREATER: ArgNil(); // test if dev m_pEnt.key >  m_oEntWrk.key
-        dLU0(EO_DEVIXT_ENT_GREATER);
+      case EO_DEVIXT_ENTKEY_GREATER: ArgNil(); // test if dev m_pEnt.key >  m_oEntWrk.key
+        dLU0(EO_DEVIXT_ENTKEY_GREATER);
         vDev_IXT_ENT_COMPARE(&aiDstk);
         iCmp = *(aiDstk--);
         iRes = (KC_AFTER == iCmp);
-        dLU1(EO_DEVIXT_ENT_GREATER, iRes);
+        dLU1(EO_DEVIXT_ENTKEY_GREATER, iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
 
-      case EO_DEVIXT_ENT_PRINTKEYS: ArgNil(); // print dev m_pEnt.key and other working key
+      case EO_DEVIXT_ENTKEY_PRINTKEYS: ArgNil(); // print dev m_pEnt.key and other working key
         vDev_IXT_ENT_PRINTKEYS(&aiDstk);
         break;//+endCase
 
