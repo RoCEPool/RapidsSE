@@ -11,9 +11,9 @@
 
   PipeIn[]\clear to Operand[]
 
-/*
   Operand[] namedBuffer.name@ locals| sBufferNm |
-  
+
+/*
   sBufferNm op__table assert
 
   CN_ROWBUFFER Operand[].morphClass
@@ -25,7 +25,8 @@
   TablePtn[].dropWrite
 */
 
-  "$$$ OP_namedInsert" .
+  sBufferNm "$$$ OP_namedInsert %v" .printf
+  
   true
 ;
 
