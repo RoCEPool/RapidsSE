@@ -981,7 +981,7 @@ void vDev_ROW_ROWBUF_BEGIN(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* create new row                                                             */
 /*----------------------------------------------------------------------------*/
-void vDev_ROW_NEW(i8** aaiDstk)
+void vDev_ROW_ROW_NEW(i8** aaiDstk)
 {
   _static_
 

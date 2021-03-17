@@ -2416,9 +2416,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_ROW_ROWBUF_NEXT(&aiDstk);
         break;//+endCase
 
-      case EO_DEVROW_NEW: ArgNil(); // create new row
-        dLU0(EO_DEVROW_NEW);
-        vDev_ROW_NEW(&aiDstk);  // need to push pot and ptn
+      case EO_DEVROW_ROW_NEW: ArgNil(); // create new row
+        dLU0(EO_DEVROW_ROW_NEW);
+        vDev_ROW_ROW_NEW(&aiDstk);  // need to push pot and ptn
         aRluCommon->m_bPotCompleted = *(aiDstk--);
         break;//+endCase
 
