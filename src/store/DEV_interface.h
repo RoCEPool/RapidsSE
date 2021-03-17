@@ -86,8 +86,6 @@ void vDev_IXT_COL_PUSHSET_PST       (i8** aaiDstk);
 void vDev_IXT_COL_PUSHSET_TOROW     (i8** aaiDstk);
 void vDev_ROW_COL_PUSHSET           (i8** aaiDstk);
 
-void vDev_RLU_PIX_STM_PRINT(i8** aaiDstk);
-
 void vDev_POT_USE_STREAMDEFOUT(void* aLU, i8 iAddPtnHash);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -96,6 +94,7 @@ void vDev_RLU_INDEXDEF_ADDCOLUMN(i8** aaiDstk);
 void vDev_RLU_INDEXDEF_DELETE   (i8** aaiDstk);
 void vDev_RLU_INDEXDEF_NEW      (i8** aaiDstk);
 void vDev_RLU_INDEXTREE_NEW     (i8** aaiDstk);
+void vDev_RLU_ROWPIX_PRINT(i8** aaiDstk);
 
 void vDev_REG_PTNSTREAM_CLOSE(void* aLU);
 void vDev_REG_PTNSTREAM_DELETE(void* aLU);

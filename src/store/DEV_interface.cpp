@@ -1517,9 +1517,9 @@ void vDev_ROW_COL_PUSHSET(i8** aaiDstk)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print stream pix                                                           */
+/* print row pix                                                              */
 /*----------------------------------------------------------------------------*/
-void vDev_RLU_PIX_STM_PRINT(i8** aaiDstk)
+void vDev_RLU_ROWPIX_PRINT(i8** aaiDstk)
 {
   _static_
 

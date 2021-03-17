@@ -2099,42 +2099,37 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         //*(++aiDstk) = -1;
         break;//+endCase
 
-        // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // rlu operators
-      case EO_RLU_INDEXDEF_ADDCOLUMN: ArgNil(); // add a column to indexDefRlu[]
+      case EO_RLU_INDEXDEF_ADDCOLUMN: ArgNil(); // add a column to indexDef in rlu
         dLU0(EO_RLU_INDEXDEF_ADDCOLUMN);
-        vDev_RLU_INDEXDEF_ADDCOLUMN(&aiDstk);
+        vDev_RLU_INDEXDEF_ADDCOLUMN(&aiDstk);  // dstk: column type / column name / indexdef
         break;//+endCase
 
-      case EO_RLU_INDEXDEF_DELETE: ArgNil(); // delete the indexDefRlu[]
+      case EO_RLU_INDEXDEF_DELETE: ArgNil();   // delete the indexDef from rlu
         dLU0(EO_RLU_INDEXDEF_DELETE);
-        vDev_RLU_INDEXDEF_DELETE(&aiDstk);
+        vDev_RLU_INDEXDEF_DELETE(&aiDstk);     // dstk: indexdef
         aRluCommon->m_pIndexDef = nullptr;
         break;//+endCase
 
-      case EO_RLU_INDEXDEF_NEW: ArgNil(); // new an indexDef in indexDef[]
+      case EO_RLU_INDEXDEF_NEW: ArgNil();      // new an indexDef in the rlu
         dLU0(EO_RLU_INDEXDEF_NEW);
-        vDev_RLU_INDEXDEF_NEW(&aiDstk);
+        vDev_RLU_INDEXDEF_NEW(&aiDstk);        // dstk: name
         aRluCommon->m_pIndexDef = P_PopPtr();
         break;//+endCase
 
-      case EO_RLU_INDEXTREE_NEW: ArgNil(); // new an indexTree in indexTreeRlu[]
+      case EO_RLU_INDEXTREE_NEW: ArgNil();     // new an indexTree in the rlu
         dLU0(EO_RLU_INDEXTREE_NEW);
-        vDev_RLU_INDEXTREE_NEW(&aiDstk);
+        vDev_RLU_INDEXTREE_NEW(&aiDstk);       // dstk: indexdef
         aRluCommon->m_pIndexTree = P_PopPtr();
         break;//+endCase
 
-      case EO_RLU_INDEXTREE_NULL: ArgNil(); // null the indexTreeRlu[]
-        dLU0(EO_RLU_INDEXTREE_NULL);
-        aRluCommon->m_pIndexTree = nullptr;
+      case EO_RLU_ROWPIX_PRINT: ArgNil();      // print row pix from rlu
+        dLU0(EO_RLU_ROWPIX_PRINT);
+        vDev_RLU_ROWPIX_PRINT(&aiDstk);        // dstk: rowPix
         break;//+endCase
 
-      case EO_RLU_PIX_STM_PRINT: ArgNil(); // print stream pix
-        dLU0(EO_RLU_PIX_STM_PRINT);
-        vDev_RLU_PIX_STM_PRINT(&aiDstk);
-        break;//+endCase
-
-      case EO_RLU_POT_COMPLETED: ArgNil(); // do we have a full pot buffer ?
+      case EO_RLU_POT_COMPLETED: ArgNil();     // do we have a full pot buffer ?
         dLU0(EO_RLU_POT_COMPLETED);
         *(++aiDstk) = aRluCommon->m_bPotCompleted;
         break;//+endCase

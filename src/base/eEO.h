@@ -186,8 +186,7 @@ enum eEO : u1 // expression operators
   /*  M  */ EO_RLU_INDEXDEF_DELETE,        // delete the indexDefRlu[]
   /*  M  */ EO_RLU_INDEXDEF_NEW,           // new an indexDef in indexDefRlu[]
   /*  M  */ EO_RLU_INDEXTREE_NEW,          // new an indexTree in indexTreeRlu[]
-  /*  M  */ EO_RLU_INDEXTREE_NULL,         // null indexTreeRlu[]
-  /*  M  */ EO_RLU_PIX_STM_PRINT,          // print stream pix
+  /*  M  */ EO_RLU_ROWPIX_PRINT,           // print row pix
   /*  M  */ EO_RLU_POT_COMPLETED,          // do we have a full pot buffer ?
 
   // ixt device col operators
@@ -488,8 +487,7 @@ static Stz* aEO[]
   /*    */ "EO_RLU_INDEXDEF_DELETE"_Stz,
   /*    */ "EO_RLU_INDEXDEF_NEW"_Stz,
   /*    */ "EO_RLU_INDEXTREE_NEW"_Stz,
-  /*    */ "EO_RLU_INDEXTREE_NULL"_Stz,
-  /*    */ "EO_RLU_PIX_STM_PRINT"_Stz,
+  /*    */ "EO_RLU_ROWPIX_PRINT"_Stz,
   /*    */ "EO_RLU_POT_COMPLETED"_Stz,
 
   // ixt device col operators
@@ -798,8 +796,7 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_RLU_INDEXDEF_DELETE
   { EA_NONE,    0 },  // EO_RLU_INDEXDEF_NEW
   { EA_NONE,    0 },  // EO_RLU_INDEXTREE_NEW
-  { EA_NONE,    0 },  // EO_RLU_INDEXTREE_NULL
-  { EA_NONE,    0 },  // EO_RLU_PIX_STM_PRINT
+  { EA_NONE,    0 },  // EO_RLU_ROWPIX_PRINT
   { EA_NONE,    0 },  // EO_RLU_POT_COMPLETED
 
   // ixt device col operators
