@@ -2352,7 +2352,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // ixt device index set operators
-      case EO_DEVIXT_INDEXNM_SET: GetStr(iArg); // set the index name
+      case EO_DEVIXT_INDEXNM_SET: GetStr(iArg); // ALKA: set the index name
         dLU0(EO_DEVIXT_INDEXNM_SET);
         S_PushStr(iArg);
         vDev_IXT_INDEXNM_SET(&aiDstk);
@@ -2360,34 +2360,34 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_DEVIXT_INDEXTREE_SET: ArgNil(); // set indexTree from indexTree[]
         dLU0(EO_DEVIXT_INDEXTREE_SET);
-        vDev_IXT_INDEXTREE_SET(&aiDstk);
+        vDev_IXT_INDEXTREE_SET(&aiDstk);      // indextree / devixt
         break;//+endCase
 
       case EO_DEVIXT_INDEXTREE_DELETE: ArgNil(); // delete indexTree
         dLU0(EO_DEVIXT_INDEXTREE_DELETE);
-        vDev_IXT_INDEXTREE_DELETE(&aiDstk);
-        aRluCommon->m_pIndexTree = nullptr; // alka: come back to this
+        vDev_IXT_INDEXTREE_DELETE(&aiDstk);   // devixt
+        aRluCommon->m_pIndexTree = nullptr;
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // row device entWrk operators
       case EO_DEVROW_ENTWRK_APPENDELMI: ArgNil(); // append next element value (int)
         dLU0(EO_DEVROW_ENTWRK_APPENDELMI);
-        vDev_ROW_ENTWRK_APPENDELMI(&aiDstk);
+        vDev_ROW_ENTWRK_APPENDELMI(&aiDstk);      // entry / devrow
         break;//+endCase
 
       case EO_DEVROW_ENTWRK_APPENDELMS: ArgNil(); // append next element value (str)
         dLU0(EO_DEVROW_ENTWRK_APPENDELMS);
-        vDev_ROW_ENTWRK_APPENDELMS(&aiDstk);
+        vDev_ROW_ENTWRK_APPENDELMS(&aiDstk);      // entry / devrow
         break;//+endCase
 
-      case EO_DEVROW_ENTWRK_CREATEPAY: ArgGet(iArg); // create a payload in entwrk
+      case EO_DEVROW_ENTWRK_CREATEPAY: ArgGet(iArg); // ALKA: create a payload in entwrk
         dLU1(EO_DEVROW_ENTWRK_CREATEPAY,iArg);
         *(++aiDstk) = iArg;
-        vDev_ROW_ENTWRK_CREATEPAY(&aiDstk);
+        vDev_ROW_ENTWRK_CREATEPAY(&aiDstk);          // entry / devrow
         break;//+endCase
 
-      case EO_DEVROW_TABLENM_SET: GetStr(iArg); // inflate src columns direct into locals
+      case EO_DEVROW_TABLENM_SET: GetStr(iArg); // ALKA: set tablenm in dev row
         dLU0(EO_DEVROW_TABLENM_SET);
         S_PushStr(iArg);
         vDev_ROW_TABLENM_SET(&aiDstk);
@@ -2397,81 +2397,81 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // row device row operators
       case EO_DEVROW_ROW_NEW: ArgNil(); // create new row
         dLU0(EO_DEVROW_ROW_NEW);
-        vDev_ROW_ROW_NEW(&aiDstk);  // need to push pot and ptn
+        vDev_ROW_ROW_NEW(&aiDstk);     // devrow / pot /ptn
         aRluCommon->m_bPotCompleted = *(aiDstk--);
         break;//+endCase
 
       case EO_DEVROW_ROW_PRINT: ArgNil(); // print row
         dLU0(EO_DEVROW_ROW_PRINT);
-        vDev_ROW_ROW_PRINT(&aiDstk);
+        vDev_ROW_ROW_PRINT(&aiDstk);      // devrow
         break;//+endCase
 
       case EO_DEVROW_ROW_SET: ArgNil(); // set dst row
         dLU0(EO_DEVROW_ROW_SET);
-        vDev_ROW_ROW_SET(&aiDstk);
+        vDev_ROW_ROW_SET(&aiDstk);      // rowNo / devrow
         break;//+endCase
 
       case EO_DEVROW_ROW_TEST: ArgNil(); // test for row
         dLU0(EO_DEVROW_ROW_TEST);
-        vDev_ROW_ROW_TEST(&aiDstk);
+        vDev_ROW_ROW_TEST(&aiDstk);      // devrow
         break;//+endCase
 
       case EO_DEVROW_ROW_ZERO: ArgNil(); // zero device row
         dLU0(EO_DEVROW_ROW_ZERO);
-        vDev_ROW_ROW_ZERO(&aiDstk);
+        vDev_ROW_ROW_ZERO(&aiDstk);      // devrow
         break;//+endCase
 
        // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // row device row buffer operators
       case EO_DEVROW_ROWBUF_BEGIN: ArgNil(); // begin row traverse
         dLU0(EO_DEVROW_ROWBUF_BEGIN);
-        vDev_ROW_ROWBUF_BEGIN(&aiDstk);
+        vDev_ROW_ROWBUF_BEGIN(&aiDstk);      // devrow
         break;//+endCase
 
       case EO_DEVROW_ROWBUF_NEXT: ArgNil(); // move to next row
         dLU0(EO_DEVROW_ROWBUF_NEXT);
-        vDev_ROW_ROWBUF_NEXT(&aiDstk);
+        vDev_ROW_ROWBUF_NEXT(&aiDstk);      // devrow
         break;//+endCase
 
       case EO_DEVROW_ROWBUF_NULL: ArgNil(); // null the buffer
         dLU0(EO_DEVROW_ROWBUF_NULL);
-        vDev_ROW_ROWBUF_NULL(&aiDstk);
+        vDev_ROW_ROWBUF_NULL(&aiDstk);      // devrow
         break;//+endCase
 
       case EO_DEVROW_ROWBUF_RESET: ArgNil(); // reset rowslab
         dLU0(EO_DEVROW_ROWBUF_RESET);
-        vDev_ROW_ROWBUF_RESET(&aiDstk);
+        vDev_ROW_ROWBUF_RESET(&aiDstk);      // devrow
         break;//+endCase
 
       case EO_DEVROW_ROWBUF_TEST: ArgNil(); // test for buffer
         dLU0(EO_DEVROW_ROWBUF_TEST);
-        vDev_ROW_ROWBUF_TEST(&aiDstk);
+        vDev_ROW_ROWBUF_TEST(&aiDstk);      // devrow
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       //  row device column operators
-      case EO_DEVROW_POPCOLI: ArgGet(iArg); // pop and deposit top into dev column
+      case EO_DEVROW_POPCOLI: ArgGet(iArg); // ALKA: pop and deposit top into dev column
         *(++aiDstk) = iArg;
         dLU2(EO_DEVROW_POPCOLI,iArg,iTopA);
-        vDev_ROW_POPCOLI(&aiDstk);
+        vDev_ROW_POPCOLI(&aiDstk);          // columnNo / devrow
         break;//+endCase
 
-      case EO_DEVROW_POPCOLS: ArgGet(iArg); // pop and deposit top into dev column
+      case EO_DEVROW_POPCOLS: ArgGet(iArg); // ALKA : pop and deposit top into dev column
         *(++aiDstk) = iArg;
         dLU1(EO_DEVROW_POPCOLS,iArg);
-        vDev_ROW_POPCOLS(&aiDstk);
+        vDev_ROW_POPCOLS(&aiDstk);         // columnNo / devrow
         break;//+endCase
 
-      case EO_DEVROW_PUSHCOLI: ArgGet(iArg); // push column
+      case EO_DEVROW_PUSHCOLI: ArgGet(iArg); // ALKA: push column
         dLU1(EO_DEVROW_PUSHCOLI,iArg);
         *(++aiDstk) = iArg;
-        vDev_ROW_PUSHCOLI(&aiDstk);
+        vDev_ROW_PUSHCOLI(&aiDstk);         // columnNo / devrow
         break;//+endCase
 
-      case EO_DEVROW_PUSHCOLS: ArgGet(iArg); // push column
+      case EO_DEVROW_PUSHCOLS: ArgGet(iArg); // ALKA: push column
         dLU1(EO_DEVROW_PUSHCOLS,iArg);
         *(++aiDstk) = iArg;
-        vDev_ROW_PUSHCOLS(&aiDstk);
+        vDev_ROW_PUSHCOLS(&aiDstk);          // columnNo / devrow
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

@@ -987,7 +987,7 @@ void vDev_ROW_ROW_NEW(i8** aaiDstk)
   // pop the row dev
   DevROW* pDevRow = _pDevROW(P_PopPtr());
 
-  pDevRow->m_aRow =pPot->aNewDstRow(i_Ptn, &pDevRow->m_pRowBuffer, &bNewBuffer);
+  pDevRow->m_aRow = pPot->aNewDstRow(i_Ptn, &pDevRow->m_pRowBuffer, &bNewBuffer);
 
   I_PushInt(bNewBuffer);
 
