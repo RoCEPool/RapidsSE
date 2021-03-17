@@ -123,6 +123,9 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Olist();
   Step::vAddSteps_Op();
   Step::vAddSteps_Operand();
+  Step::vAddSteps_OperandB();
+  Step::vAddSteps_OperandC();
+  Step::vAddSteps_OperandOoO();
   Step::vAddSteps_OpSys();
 
   Step::vAddSteps_Persistence();
@@ -147,10 +150,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_RegJob();
   Step::vAddSteps_RegNow();
   Step::vAddSteps_RegOp();
-  Step::vAddSteps_Operand();
-  Step::vAddSteps_OperandB();
-  Step::vAddSteps_OperandC();
-  Step::vAddSteps_OperandOoO();
   Step::vAddSteps_RegPath();
   Step::vAddSteps_Pipein();
   Step::vAddSteps_LogicCompiler();
