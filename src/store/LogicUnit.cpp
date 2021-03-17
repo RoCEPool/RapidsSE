@@ -2405,7 +2405,35 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-        // row device row buffer operators
+      // row device row operators
+      case EO_DEVROW_ROW_NEW: ArgNil(); // create new row
+        dLU0(EO_DEVROW_ROW_NEW);
+        vDev_ROW_ROW_NEW(&aiDstk);  // need to push pot and ptn
+        aRluCommon->m_bPotCompleted = *(aiDstk--);
+        break;//+endCase
+
+      case EO_DEVROW_ROW_PRINT: ArgNil(); // print row
+        dLU0(EO_DEVROW_ROW_PRINT);
+        vDev_ROW_ROW_PRINT(&aiDstk);
+        break;//+endCase
+
+      case EO_DEVROW_ROW_SET: ArgNil(); // set dst row
+        dLU0(EO_DEVROW_ROW_SET);
+        vDev_ROW_ROW_SET(&aiDstk);
+        break;//+endCase
+
+      case EO_DEVROW_ROW_TEST: ArgNil(); // test for row
+        dLU0(EO_DEVROW_ROW_TEST);
+        vDev_ROW_ROW_TEST(&aiDstk);
+        break;//+endCase
+
+      case EO_DEVROW_ROW_ZERO: ArgNil(); // zero device row
+        dLU0(EO_DEVROW_ROW_ZERO);
+        vDev_ROW_ROW_ZERO(&aiDstk);
+        break;//+endCase
+
+       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // row device row buffer operators
       case EO_DEVROW_ROWBUF_BEGIN: ArgNil(); // begin row traverse
         dLU0(EO_DEVROW_ROWBUF_BEGIN);
         vDev_ROW_ROWBUF_BEGIN(&aiDstk);
@@ -2416,56 +2444,19 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_ROW_ROWBUF_NEXT(&aiDstk);
         break;//+endCase
 
-      case EO_DEVROW_ROW_NEW: ArgNil(); // create new row
-        dLU0(EO_DEVROW_ROW_NEW);
-        vDev_ROW_ROW_NEW(&aiDstk);  // need to push pot and ptn
-        aRluCommon->m_bPotCompleted = *(aiDstk--);
-        break;//+endCase
-
       case EO_DEVROW_ROWBUF_NULL: ArgNil(); // null the buffer
         dLU0(EO_DEVROW_ROWBUF_NULL);
         vDev_ROW_ROWBUF_NULL(&aiDstk);
         break;//+endCase
 
-      case EO_DEVROW_PRINT: ArgNil(); // print row
-        dLU0(EO_DEVROW_PRINT);
-        vDev_ROW_PRINT(&aiDstk);
+      case EO_DEVROW_ROWBUF_RESET: ArgNil(); // reset rowslab
+        dLU0(EO_DEVROW_ROWBUF_RESET);
+        vDev_ROW_ROWBUF_RESET(&aiDstk);
         break;//+endCase
 
-      case EO_DEVROW_PUSHOFS: ArgNil(); // push offset of row
-        dLU0(EO_DEVROW_PUSHOFS);
-        vDev_ROW_PUSHOFS(&aiDstk);
-        *(++aiDstk) = iRes;
-        break;//+endCase
-
-      case EO_DEVROW_RESET: ArgNil(); // reset rowslab
-        dLU0(EO_DEVROW_RESET);
-        vDev_ROW_RESET(&aiDstk);
-        break;//+endCase
-
-      case EO_DEVROW_SET: ArgNil(); // set dst row
-        dLU0(EO_DEVROW_SET);
-        vDev_ROW_SET(&aiDstk);
-        break;//+endCase
-
-      case EO_DEVROW_SETBYOFS: ArgNil(); // set row by using offset on stack
-        dLU0(EO_DEVROW_SETBYOFS);
-        vDev_ROW_SETBYOFS(&aiDstk);
-        break;//+endCase
-
-      case EO_DEVROW_TESTBUFFER: ArgNil(); // test for buffer
-        dLU0(EO_DEVROW_TESTBUFFER);
-        vDev_ROW_TESTBUFFER(&aiDstk);
-        break;//+endCase
-
-      case EO_DEVROW_TESTROW: ArgNil(); // test for row
-        dLU0(EO_DEVROW_TESTROW);
-        vDev_ROW_TESTROW(&aiDstk);
-        break;//+endCase
-
-      case EO_DEVROW_ZERO: ArgNil(); // zero device row
-        dLU0(EO_DEVROW_ZERO);
-        vDev_ROW_ZERO(&aiDstk);
+      case EO_DEVROW_ROWBUF_TEST: ArgNil(); // test for buffer
+        dLU0(EO_DEVROW_ROWBUF_TEST);
+        vDev_ROW_ROWBUF_TEST(&aiDstk);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

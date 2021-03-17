@@ -1104,7 +1104,7 @@ void vDev_ROW_POPCOLS(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* print src row                                                              */
 /*----------------------------------------------------------------------------*/
-void vDev_ROW_PRINT(i8** aaiDstk)
+void vDev_ROW_ROW_PRINT(i8** aaiDstk)
 {
   _static_
 
@@ -1199,7 +1199,7 @@ void vDev_ROW_PUSHOFS(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* reset row                                                                  */
 /*----------------------------------------------------------------------------*/
-void vDev_ROW_RESET(i8** aaiDstk)
+void vDev_ROW_ROWBUF_RESET(i8** aaiDstk)
 {
   _static_
 
@@ -1212,9 +1212,9 @@ void vDev_ROW_RESET(i8** aaiDstk)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set row row                                                                 */
+/* set row row                                                                */
 /*----------------------------------------------------------------------------*/
-void vDev_ROW_SET(i8** aaiDstk)
+void vDev_ROW_ROW_SET(i8** aaiDstk)
 {
   _static_
 
@@ -1228,24 +1228,6 @@ void vDev_ROW_SET(i8** aaiDstk)
 
   pDevRow->m_aRow = pDevRow->m_pRowBuffer->aSetCurRow(iRow);
   *aaiDstk = aiDstk;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set src row by using offset on stack                                       */
-/*----------------------------------------------------------------------------*/
-void vDev_ROW_SETBYOFS(i8** aaiDstk)
-{
-  _static_
-
-  i8 *aiDstk = *aaiDstk;
-
-  // pop the offset
-  i8 iOffset = *(aiDstk--);
-
-  // pop the device
-  DevROW* pDevRow = _pDevROW(P_PopPtr());
-  
-  pDevRow->m_aRow = pDevRow->m_pRowBuffer->aRowByOfs(iOffset);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1276,7 +1258,7 @@ void vDev_ROW_TABLENM_SET(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* test for row                                                               */
 /*----------------------------------------------------------------------------*/
-void vDev_ROW_TESTROW(i8** aaiDstk)
+void vDev_ROW_ROW_TEST(i8** aaiDstk)
 {
   _static_
 
@@ -1298,7 +1280,7 @@ void vDev_ROW_TESTROW(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* test for buffer                                                            */
 /*----------------------------------------------------------------------------*/
-void vDev_ROW_TESTBUFFER(i8** aaiDstk)
+void vDev_ROW_ROWBUF_TEST(i8** aaiDstk)
 {
   _static_
 
@@ -1318,7 +1300,7 @@ void vDev_ROW_TESTBUFFER(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* zero row                                                                   */
 /*----------------------------------------------------------------------------*/
-void vDev_ROW_ZERO(i8** aaiDstk)
+void vDev_ROW_ROW_ZERO(i8** aaiDstk)
 {
   _static_
 

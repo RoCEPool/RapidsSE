@@ -249,21 +249,21 @@ enum eEO : u1 // expression operators
   /*    */ EO_DEVROW_ENTWRK_APPENDELMI,// append next element value (int)
   /*    */ EO_DEVROW_ENTWRK_APPENDELMS,// append next element value (str)
   /*    */ EO_DEVROW_ENTWRK_CREATEPAY, // create a payload in entwrk
-  /*    */ EO_DEVROW_TABLENM_SET, // set the table name in the row dev
+  /*    */ EO_DEVROW_TABLENM_SET,      // set the table name in the row dev
+
+  // row device row operators
+  /*     */ EO_DEVROW_ROW_NEW,       // create new row in row dev
+  /*     */ EO_DEVROW_ROW_PRINT,     // print row from row dev
+  /*     */ EO_DEVROW_ROW_SET,       // set rowslab in row dev
+  /*     */ EO_DEVROW_ROW_TEST,      // test if row in row dev
+  /*     */ EO_DEVROW_ROW_ZERO,      // zero destination row in row dev
 
   // row device row buffer operators
   /*     */ EO_DEVROW_ROWBUF_BEGIN,  // begin row traverse in row dev
   /*     */ EO_DEVROW_ROWBUF_NEXT,   // move to next src row in row dev
-  /*     */ EO_DEVROW_ROW_NEW,       // create new row in row dev
   /*     */ EO_DEVROW_ROWBUF_NULL,   // null row buffer in the row dev
-  /*     */ EO_DEVROW_PRINT,     // print row from row dev
-  /*     */ EO_DEVROW_PUSHOFS,   // push offset of source row in row dev
-  /*     */ EO_DEVROW_RESET,     // reset rowslab in row dev
-  /*     */ EO_DEVROW_SET,       // set rowslab in row dev
-  /*     */ EO_DEVROW_SETBYOFS,  // set src row  in row dev by using offset on stack
-  /*     */ EO_DEVROW_TESTBUFFER,// test if buffer in row dev
-  /*     */ EO_DEVROW_TESTROW,   // test if row in row dev
-  /*     */ EO_DEVROW_ZERO,      // zero destination row in row dev
+  /*     */ EO_DEVROW_ROWBUF_RESET,  // reset rowslab in row dev
+  /*     */ EO_DEVROW_ROWBUF_TEST,   // test if buffer in row dev
 
   // row device column operators
   /*    */ EO_DEVROW_POPCOLI,  // pop and deposit top into column
@@ -554,19 +554,19 @@ static Stz* aEO[]
   /*    */ "EO_DEVROW_ENTWRK_CREATEPAY"_Stz,
   /*    */ "EO_DEVROW_TABLENM_SET"_Stz,
 
+  // row device row operators
+  /*     */ "EO_DEVROW_ROW_NEW"_Stz,
+  /*     */ "EO_DEVROW_ROW_PRINT"_Stz,
+  /*     */ "EO_DEVROW_ROW_SET"_Stz,
+  /*     */ "EO_DEVROW_ROW_TEST"_Stz,
+  /*     */ "EO_DEVROW_ROW_ZERO"_Stz,
+
   // row device row buffer operators
   /*     */ "EO_DEVROW_ROWBUF_BEGIN"_Stz,
   /*     */ "EO_DEVROW_ROWBUF_NEXT"_Stz,
-  /*     */ "EO_DEVROW_ROW_NEW"_Stz,
   /*     */ "EO_DEVROW_ROWBUF_NULL"_Stz,
-  /*     */ "EO_DEVROW_PRINT"_Stz,
-  /*     */ "EO_DEVROW_PUSHOFS"_Stz,
-  /*     */ "EO_DEVROW_RESET"_Stz,
-  /*     */ "EO_DEVROW_SET"_Stz,
-  /*     */ "EO_DEVROW_SETBYOFS"_Stz,
-  /*     */ "EO_DEVROW_TESTBUFFER"_Stz,
-  /*     */ "EO_DEVROW_TESTROW"_Stz,
-  /*     */ "EO_DEVROW_ZERO"_Stz,
+  /*     */ "EO_DEVROW_ROWBUF_RESET"_Stz,
+  /*     */ "EO_DEVROW_ROWBUF_TEST"_Stz,
 
   //  row device column operators
   /*    */ "EO_DEVROW_POPCOLI"_Stz,
@@ -864,19 +864,19 @@ static EoArg EoArgs[]
   { EA_INT,     8 },  // EO_DEVROW_ENTWRK_CREATEPAY
   { EA_STRING, -1 },  // EO_DEVROW_TABLENM_SET
 
+  // row device row operators
+  { EA_NONE,    0 },  // EO_DEVROW_ROW_NEW
+  { EA_NONE,    0 },  // EO_DEVROW_ROW_PRINT
+  { EA_NONE,    0 },  // EO_DEVROW_ROW_SET
+  { EA_NONE,    0 },  // EO_DEVROW_ROW_TEST
+  { EA_NONE,    0 },  // EO_DEVROW_ROW_ZERO
+
   // row device row buffer operators
   { EA_NONE,    0 },  // EO_DEVROW_ROWBUF_BEGIN
   { EA_NONE,    0 },  // EO_DEVROW_ROWBUF_NEXT
-  { EA_NONE,    0 },  // EO_DEVROW_ROW_NEW
   { EA_NONE,    0 },  // EO_DEVROW_ROWBUF_NULL
-  { EA_NONE,    0 },  // EO_DEVROW_PRINT
-  { EA_NONE,    0 },  // EO_DEVROW_PUSHOFS
-  { EA_NONE,    0 },  // EO_DEVROW_RESET
-  { EA_NONE,    0 },  // EO_DEVROW_SET
-  { EA_NONE,    0 },  // EO_DEVROW_SETBYOFS
-  { EA_NONE,    0 },  // EO_DEVROW_TESTBUFFER
-  { EA_NONE,    0 },  // EO_DEVROW_TESTROW
-  { EA_NONE,    0 },  // EO_DEVROW_ZERO
+  { EA_NONE,    0 },  // EO_DEVROW_ROWBUF_RESET
+  { EA_NONE,    0 },  // EO_DEVROW_ROWBUF_TEST
 
   //  row device column operators
   { EA_SUBSCR,  8 },  // EO_DEVROW_POPCOLI

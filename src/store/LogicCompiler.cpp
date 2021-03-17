@@ -107,25 +107,27 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_RLU_PIX_STM_PRINT"_Stz, (const void *) vDev_RLU_PIX_STM_PRINT },
   
   { "vDev_POT_USE_STREAMDEFOUT"_Stz, (const void *) vDev_POT_USE_STREAMDEFOUT },
-  
-  { "vDev_ROW_ROWBUF_BEGIN"_Stz,  (const void *) vDev_ROW_ROWBUF_BEGIN  },
+
   { "vDev_ROW_ROW_NEW"_Stz,       (const void *) vDev_ROW_ROW_NEW       },
+  { "vDev_ROW_ROW_PRINT"_Stz,     (const void *) vDev_ROW_ROW_PRINT     },
+  { "vDev_ROW_ROW_SET"_Stz,       (const void *) vDev_ROW_ROW_SET       },
+  { "vDev_ROW_ROW_TEST"_Stz,      (const void *) vDev_ROW_ROW_TEST      },
+  { "vDev_ROW_ROW_ZERO"_Stz,      (const void *) vDev_ROW_ROW_ZERO      },
+
+  { "vDev_ROW_ROWBUF_BEGIN"_Stz,  (const void *) vDev_ROW_ROWBUF_BEGIN  },
   { "vDev_ROW_ROWBUF_NEXT"_Stz,   (const void *) vDev_ROW_ROWBUF_NEXT   },
   { "vDev_ROW_ROWBUF_NULL"_Stz,   (const void *) vDev_ROW_ROWBUF_NULL   },
+  { "vDev_ROW_ROWBUF_RESET"_Stz,  (const void *) vDev_ROW_ROWBUF_RESET  },
+  { "vDev_ROW_ROWBUF_TEST"_Stz,    (const void *) vDev_ROW_ROWBUF_TEST  },
+
   { "vDev_ROW_POPCOLI"_Stz,       (const void *) vDev_ROW_POPCOLI       },
   { "vDev_ROW_POPCOLS"_Stz,       (const void *) vDev_ROW_POPCOLS       },
-  { "vDev_ROW_PRINT"_Stz,         (const void *) vDev_ROW_PRINT         },
   { "vDev_ROW_PUSHCOLI"_Stz,      (const void *) vDev_ROW_PUSHCOLI      },
   { "szDev_ROW_PUSHCOLS"_Stz,     (const void *) szDev_ROW_PUSHCOLS     },
   { "vDev_ROW_PUSHCOLS"_Stz,      (const void *) vDev_ROW_PUSHCOLS      },
-  { "vDev_ROW_PUSHOFS"_Stz,       (const void *) vDev_ROW_PUSHOFS       },
-  { "vDev_ROW_RESET"_Stz,         (const void *) vDev_ROW_RESET         },
-  { "vDev_ROW_SET"_Stz,           (const void *) vDev_ROW_SET           },
-  { "vDev_ROW_SETBYOFS"_Stz,      (const void *) vDev_ROW_SETBYOFS      },
+
   { "vDev_ROW_TABLENM_SET"_Stz,   (const void *) vDev_ROW_TABLENM_SET   },
-  { "vDev_ROW_TESTBUFFER"_Stz,    (const void *) vDev_ROW_TESTBUFFER    },
-  { "vDev_ROW_TESTROW"_Stz,       (const void *) vDev_ROW_TESTROW       },
-  { "vDev_ROW_ZERO"_Stz,          (const void *) vDev_ROW_ZERO          },
+
 
   { "vDev_TABLEPTN_DROPREAD"_Stz,   (const void *) vDev_TABLEPTN_DROPREAD   },
   { "vDev_TABLEPTN_GRABREAD"_Stz,   (const void *) vDev_TABLEPTN_GRABREAD   },
