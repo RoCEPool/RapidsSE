@@ -54,7 +54,7 @@ void ShadowRoot::vExplain(PlanNode* pRoot, s48K& sBuf, i8 iIndent)
   ASSERT(pStatement);
   ASSERT(Statement::bIsOfType(pStatement));
 
-  Statement::vExplain(pStatement, sBuf, iIndent);
+  Statement::vExplain(pStatement, pRoot, sBuf, iIndent);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -52,12 +52,11 @@ DynamicSymbol gxaDynamicSymbol[]
 {
   { "giaVectorSet"_Stz,          (const void *) giaVectorSet          },
 
-  { "vDev_ROW_COL_PUSHSET"_Stz,   (const void *) vDev_ROW_COL_PUSHSET   },
+  { "vDev_IXT_COLS_TO_LOCALS"_Stz, (const void *) vDev_IXT_COLS_TO_LOCALS    },
+  { "vDev_IXT_COLS_TO_ROW"_Stz,    (const void *) vDev_IXT_COLS_TO_ROW       },
 
   { "vDev_IXT_COL_PUSHSET_ADR"_Stz,(const void *) vDev_IXT_COL_PUSHSET_ADR   },
-  { "vDev_IXT_COL_PUSHSET_ADR_LOCALS"_Stz,(const void *) vDev_IXT_COL_PUSHSET_ADR_LOCALS   },
   { "vDev_IXT_COL_PUSHSET_PST"_Stz,(const void *) vDev_IXT_COL_PUSHSET_PST   },
-  { "vDev_IXT_COL_PUSHSET_TOROW"_Stz,(const void *) vDev_IXT_COL_PUSHSET_TOROW   },
 
   { "vDev_IXT_CRWBUF_BEGIN"_Stz,   (const void *) vDev_IXT_CRWBUF_BEGIN      },
   { "vDev_IXT_CRWBUF_NEXT"_Stz,    (const void *) vDev_IXT_CRWBUF_NEXT       },
@@ -75,6 +74,8 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_IXT_ENT_PUSHELMI0"_Stz, (const void *) vDev_IXT_ENT_PUSHELMI0     },
   { "vDev_IXT_ENT_PUSHELMS0"_Stz, (const void *) vDev_IXT_ENT_PUSHELMS0     },
   { "vDev_IXT_ENT_PUSHUPPER"_Stz, (const void *) vDev_IXT_ENT_PUSHUPPER     },
+
+  { "vDev_ROW_COLS_TO_LOCALS"_Stz, (const void *) vDev_ROW_COLS_TO_LOCALS   },
 
   { "vDev_ROW_ENTWRK_APPENDELMI"_Stz, (const void *) vDev_ROW_ENTWRK_APPENDELMI },
   { "vDev_ROW_ENTWRK_APPENDELMS"_Stz, (const void *) vDev_ROW_ENTWRK_APPENDELMS },
@@ -98,42 +99,44 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_IXT_POS_LBOUND"_Stz,    (const void *) vDev_IXT_POS_LBOUND    },
   { "vDev_IXT_POS_UBOUND"_Stz,    (const void *) vDev_IXT_POS_UBOUND    },
   { "vDev_IXT_POS_UBOUND_LT"_Stz, (const void *) vDev_IXT_POS_UBOUND_LT },
-  { "vDev_IXT_PUSH_ENT"_Stz,    (const void *) vDev_IXT_PUSH_ENT },
+  { "vDev_IXT_PUSH_ENT"_Stz,      (const void *) vDev_IXT_PUSH_ENT      },
   { "vDev_IXT_IDX_BEGIN"_Stz,     (const void *) vDev_IXT_IDX_BEGIN     },
   { "vDev_IXT_IDX_NEXT"_Stz,      (const void *) vDev_IXT_IDX_NEXT      },
 
   { "vDev_PAY_ADDRESS"_Stz,       (const void *) vDev_PAY_ADDRESS       },
-  
-  { "vDev_RLU_PIX_STM_PRINT"_Stz, (const void *) vDev_RLU_PIX_STM_PRINT },
-  
+
+  { "vDev_RLU_ROWPIX_PRINT"_Stz,  (const void *) vDev_RLU_ROWPIX_PRINT  },
+
   { "vDev_POT_USE_STREAMDEFOUT"_Stz, (const void *) vDev_POT_USE_STREAMDEFOUT },
-  
-  { "vDev_ROW_BEGIN"_Stz,         (const void *) vDev_ROW_BEGIN         },
-  { "vDev_ROW_NEW"_Stz,           (const void *) vDev_ROW_NEW           },
-  { "vDev_ROW_NEXT"_Stz,          (const void *) vDev_ROW_NEXT          },
-  { "vDev_ROW_NULL"_Stz,          (const void *) vDev_ROW_NULL          },
+
+  { "vDev_ROW_ROW_NEW"_Stz,       (const void *) vDev_ROW_ROW_NEW       },
+  { "vDev_ROW_ROW_PRINT"_Stz,     (const void *) vDev_ROW_ROW_PRINT     },
+  { "vDev_ROW_ROW_SET"_Stz,       (const void *) vDev_ROW_ROW_SET       },
+  { "vDev_ROW_ROW_TEST"_Stz,      (const void *) vDev_ROW_ROW_TEST      },
+  { "vDev_ROW_ROW_ZERO"_Stz,      (const void *) vDev_ROW_ROW_ZERO      },
+
+  { "vDev_ROW_ROWBUF_BEGIN"_Stz,  (const void *) vDev_ROW_ROWBUF_BEGIN  },
+  { "vDev_ROW_ROWBUF_NEXT"_Stz,   (const void *) vDev_ROW_ROWBUF_NEXT   },
+  { "vDev_ROW_ROWBUF_NULL"_Stz,   (const void *) vDev_ROW_ROWBUF_NULL   },
+  { "vDev_ROW_ROWBUF_RESET"_Stz,  (const void *) vDev_ROW_ROWBUF_RESET  },
+  { "vDev_ROW_ROWBUF_TEST"_Stz,    (const void *) vDev_ROW_ROWBUF_TEST  },
+
   { "vDev_ROW_POPCOLI"_Stz,       (const void *) vDev_ROW_POPCOLI       },
   { "vDev_ROW_POPCOLS"_Stz,       (const void *) vDev_ROW_POPCOLS       },
-  { "vDev_ROW_PRINT"_Stz,         (const void *) vDev_ROW_PRINT         },
   { "vDev_ROW_PUSHCOLI"_Stz,      (const void *) vDev_ROW_PUSHCOLI      },
   { "szDev_ROW_PUSHCOLS"_Stz,     (const void *) szDev_ROW_PUSHCOLS     },
   { "vDev_ROW_PUSHCOLS"_Stz,      (const void *) vDev_ROW_PUSHCOLS      },
-  { "vDev_ROW_PUSHOFS"_Stz,       (const void *) vDev_ROW_PUSHOFS       },
-  { "vDev_ROW_RESET"_Stz,         (const void *) vDev_ROW_RESET         },
-  { "vDev_ROW_SET"_Stz,           (const void *) vDev_ROW_SET           },
-  { "vDev_ROW_SETBYOFS"_Stz,      (const void *) vDev_ROW_SETBYOFS      },
+
   { "vDev_ROW_TABLENM_SET"_Stz,   (const void *) vDev_ROW_TABLENM_SET   },
-  { "vDev_ROW_TESTBUFFER"_Stz,    (const void *) vDev_ROW_TESTBUFFER    },
-  { "vDev_ROW_TESTROW"_Stz,       (const void *) vDev_ROW_TESTROW       },
-  { "vDev_ROW_ZERO"_Stz,          (const void *) vDev_ROW_ZERO          },
+
 
   { "vDev_TABLEPTN_DROPREAD"_Stz,   (const void *) vDev_TABLEPTN_DROPREAD   },
   { "vDev_TABLEPTN_GRABREAD"_Stz,   (const void *) vDev_TABLEPTN_GRABREAD   },
 
-  { "vDev_ROW_COL_PUSHSET"_Stz,   (const void *) vDev_ROW_COL_PUSHSET          },
-  
+  { "vDev_ROW_COLS_TO_LOCALS"_Stz,  (const void *) vDev_ROW_COLS_TO_LOCALS  },
+
   { "vDev_POT_USE_STREAMDEFOUT"_Stz, (const void *) vDev_POT_USE_STREAMDEFOUT       },
-  
+
   { "vDev_REG_EOSMARKER_NEW"_Stz,          (const void *) vDev_REG_EOSMARKER_NEW      },
   { "vDev_RLU_INDEXDEF_ADDCOLUMN"_Stz,     (const void *) vDev_RLU_INDEXDEF_ADDCOLUMN },
   { "vDev_RLU_INDEXDEF_DELETE"_Stz,        (const void *) vDev_RLU_INDEXDEF_DELETE    },
@@ -150,7 +153,7 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_REG_STREAMDEFOUT_NEW"_Stz,       (const void *) vDev_REG_STREAMDEFOUT_NEW },
   { "vDev_REG_STREAMDEFOUT_ADDCOLUMN"_Stz, (const void *) vDev_REG_STREAMDEFOUT_ADDCOLUMN },
   { "vDev_REG_STREAMDEF_STREAMDEFOUT"_Stz, (const void *) vDev_REG_STREAMDEF_STREAMDEFOUT },
-  
+
   { "vLib_ASSERT"_Stz,            (const void *) vLib_ASSERT            },
   { "vLib_BREAKPOINT"_Stz,        (const void *) vLib_BREAKPOINT        },
   { "iLib_DTE_NOW"_Stz,           (const void *) iLib_DTE_NOW           },

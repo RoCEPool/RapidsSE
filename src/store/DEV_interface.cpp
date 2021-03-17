@@ -180,9 +180,6 @@ void vDev_IXT_ENT_DEREF(i8** aaiDstk)
   //pop the device
   DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
 
-  //pDevIxt->m_aCrw  =
-  //  CrwBuffer::pRefdCrw(pDevIxt->m_aEnt->rxRef());
-
   i8 iBuffer = ((Ent_int*)pDevIxt->m_aEnt)->Rrf.m_uBuffer;
   i8 iItem   = ((Ent_int*)pDevIxt->m_aEnt)->Rrf.m_uItem;
 
@@ -302,13 +299,6 @@ void vDev_IXT_ENT_POSPRIOR(i8** aaiDstk)
   pDevIxt->m_aEnt =
     pDevIxt->m_pIdxTree->aPositionPriorEntry(pEnt->aKey(),
                                              &pDevIxt->m_pEntBuffer);
-  
-//  if (pDevIxt->m_pEntBuffer) {
-//    pLogicUnit->m_xRluCommon.m_aEntArray =
-//      (Ent_int*)pDevIxt->m_pEntBuffer->aEntArray();
-//
-//    //*aaSkipRoots = (Ent_int*)pDevIxt->m_pEntBuffer->aSkipRoots();
-//  }
   
   P_PushPtr(pDevIxt->m_aEnt);
 
@@ -962,7 +952,7 @@ void vDev_ENTWRK_SETINTELM(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* begin src row traverse                                                     */
 /*----------------------------------------------------------------------------*/
-void vDev_ROW_BEGIN(i8** aaiDstk)
+void vDev_ROW_ROWBUF_BEGIN(i8** aaiDstk)
 {
   _static_
 
@@ -981,7 +971,7 @@ void vDev_ROW_BEGIN(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* create new row                                                             */
 /*----------------------------------------------------------------------------*/
-void vDev_ROW_NEW(i8** aaiDstk)
+void vDev_ROW_ROW_NEW(i8** aaiDstk)
 {
   _static_
 
@@ -997,7 +987,7 @@ void vDev_ROW_NEW(i8** aaiDstk)
   // pop the row dev
   DevROW* pDevRow = _pDevROW(P_PopPtr());
 
-  pDevRow->m_aRow =pPot->aNewDstRow(i_Ptn, &pDevRow->m_pRowBuffer, &bNewBuffer);
+  pDevRow->m_aRow = pPot->aNewDstRow(i_Ptn, &pDevRow->m_pRowBuffer, &bNewBuffer);
 
   I_PushInt(bNewBuffer);
 
@@ -1007,7 +997,7 @@ void vDev_ROW_NEW(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* move to next src row                                                       */
 /*----------------------------------------------------------------------------*/
-void vDev_ROW_NEXT(i8** aaiDstk)
+void vDev_ROW_ROWBUF_NEXT(i8** aaiDstk)
 {
   _static_
 
@@ -1030,7 +1020,7 @@ void vDev_ROW_NEXT(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /*  set buffer to null                                                        */
 /*----------------------------------------------------------------------------*/
-void vDev_ROW_NULL(i8** aaiDstk)
+void vDev_ROW_ROWBUF_NULL(i8** aaiDstk)
 {
   _static_
 
@@ -1104,7 +1094,7 @@ void vDev_ROW_POPCOLS(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* print src row                                                              */
 /*----------------------------------------------------------------------------*/
-void vDev_ROW_PRINT(i8** aaiDstk)
+void vDev_ROW_ROW_PRINT(i8** aaiDstk)
 {
   _static_
 
@@ -1199,7 +1189,7 @@ void vDev_ROW_PUSHOFS(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* reset row                                                                  */
 /*----------------------------------------------------------------------------*/
-void vDev_ROW_RESET(i8** aaiDstk)
+void vDev_ROW_ROWBUF_RESET(i8** aaiDstk)
 {
   _static_
 
@@ -1212,9 +1202,9 @@ void vDev_ROW_RESET(i8** aaiDstk)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set row row                                                                 */
+/* set row row                                                                */
 /*----------------------------------------------------------------------------*/
-void vDev_ROW_SET(i8** aaiDstk)
+void vDev_ROW_ROW_SET(i8** aaiDstk)
 {
   _static_
 
@@ -1228,24 +1218,6 @@ void vDev_ROW_SET(i8** aaiDstk)
 
   pDevRow->m_aRow = pDevRow->m_pRowBuffer->aSetCurRow(iRow);
   *aaiDstk = aiDstk;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set src row by using offset on stack                                       */
-/*----------------------------------------------------------------------------*/
-void vDev_ROW_SETBYOFS(i8** aaiDstk)
-{
-  _static_
-
-  i8 *aiDstk = *aaiDstk;
-
-  // pop the offset
-  i8 iOffset = *(aiDstk--);
-
-  // pop the device
-  DevROW* pDevRow = _pDevROW(P_PopPtr());
-  
-  pDevRow->m_aRow = pDevRow->m_pRowBuffer->aRowByOfs(iOffset);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1276,7 +1248,7 @@ void vDev_ROW_TABLENM_SET(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* test for row                                                               */
 /*----------------------------------------------------------------------------*/
-void vDev_ROW_TESTROW(i8** aaiDstk)
+void vDev_ROW_ROW_TEST(i8** aaiDstk)
 {
   _static_
 
@@ -1298,7 +1270,7 @@ void vDev_ROW_TESTROW(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* test for buffer                                                            */
 /*----------------------------------------------------------------------------*/
-void vDev_ROW_TESTBUFFER(i8** aaiDstk)
+void vDev_ROW_ROWBUF_TEST(i8** aaiDstk)
 {
   _static_
 
@@ -1318,7 +1290,7 @@ void vDev_ROW_TESTBUFFER(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* zero row                                                                   */
 /*----------------------------------------------------------------------------*/
-void vDev_ROW_ZERO(i8** aaiDstk)
+void vDev_ROW_ROW_ZERO(i8** aaiDstk)
 {
   _static_
 
@@ -1398,9 +1370,9 @@ void vDev_IXT_COL_PUSHSET_ADR(i8** aaiDstk)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push column value from m_aSrcCrw                                           */
+/* // inflate dev columns direct into locals                                  */
 /*----------------------------------------------------------------------------*/
-void vDev_IXT_COL_PUSHSET_ADR_LOCALS(i8** aaiDstk)
+void vDev_IXT_COLS_TO_LOCALS(i8** aaiDstk)
 {
   _static_
 
@@ -1466,9 +1438,9 @@ void vDev_IXT_COL_PUSHSET_PST(i8** aaiDstk)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push column value from m_aSrcCrw to dst row                                */
+/* inflate dev columns to dev row                                             */
 /*----------------------------------------------------------------------------*/
-void vDev_IXT_COL_PUSHSET_TOROW(i8** aaiDstk)
+void vDev_IXT_COLS_TO_ROW(i8** aaiDstk)
 {
   _static_
 
@@ -1491,9 +1463,9 @@ void vDev_IXT_COL_PUSHSET_TOROW(i8** aaiDstk)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push column value from m_aSrcCrw                                           */
+/* row buffer columns of row dev into locals                                  */
 /*----------------------------------------------------------------------------*/
-void vDev_ROW_COL_PUSHSET(i8** aaiDstk)
+void vDev_ROW_COLS_TO_LOCALS(i8** aaiDstk)
 {
   _static_
 
@@ -1535,9 +1507,9 @@ void vDev_ROW_COL_PUSHSET(i8** aaiDstk)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print stream pix                                                           */
+/* print row pix                                                              */
 /*----------------------------------------------------------------------------*/
-void vDev_RLU_PIX_STM_PRINT(i8** aaiDstk)
+void vDev_RLU_ROWPIX_PRINT(i8** aaiDstk)
 {
   _static_
 

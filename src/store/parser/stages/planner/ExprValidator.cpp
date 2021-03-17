@@ -119,6 +119,8 @@ void ExprValidator::vValidatePredicatesAreBoolean(PlanNode *pRootNode, QueryNode
     SemanticException::vThrow(EC_EXPR_MUST_BE_BOOLEAN,
                               " : %s"_Stz,
                               sBuf.szStz());
+
+    return GraphNav::WALK_ABORT; // Only required to silence a compiler warning
   };
 
   // Walk the /plan node and its children. We're not interested in walking

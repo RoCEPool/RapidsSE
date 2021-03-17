@@ -65,8 +65,13 @@ namespace Parser
 
     void vAppendProperty(QueryNode* pNode);
 
-    // Return a deep copy of the current node, it's properties and all children
+    // Return a deep copy of the current node, it's properties and all children.
+    // NB: May need to make the name unique if using this copy as a sibling of its original.
     QueryNode* pDeepCopy();
+
+    // Return a deep copy of the current node and it's properties but use the supplied children
+    // NB: May need to make the name unique if using this copy as a sibling of its original.
+    QueryNode* pDeepCopy(PlanNodeList* pNewChildren);
   };
   
   QueryNode* _pQueryNode(void* aAddr);

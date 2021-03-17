@@ -38,7 +38,7 @@ macro AM_HANDLER_CRWBUFFER_AGG
 
   //EO_ROW_DST_TESTROW
   EO_PUSH_DEVROW_DST
-  EO_DEVROW_TESTROW
+  EO_DEVROW_ROW_TEST
 
   EO_JMP_TRUE HANDLER_CRWBUFFER_AGG_BEGIN
 
@@ -47,7 +47,7 @@ macro AM_HANDLER_CRWBUFFER_AGG
   EO_PUSH_DEVROW_DST
   EO_PUSH_RLU_POT
   EO_PUSH_RLU_PTN
-  EO_DEVROW_NEW
+  EO_DEVROW_ROW_NEW
 
   Label HANDLER_CRWBUFFER_AGG_BEGIN
   //EO_CRW_SRC_BEGIN
@@ -138,19 +138,19 @@ macro AM_CRW_PROJECT_COLUMNS
 //----------------------------------------------------------------------------//
   // CRW_PROJECT_COLUMNS
   Label CRW_PROJECT_COLUMNS
-  EO_SET_ITEMS <projectItems>
-  EO_SET_COLUMNS <projectSrcColumns>
+  EO_RLU_SET_ITEMS <projectItems>
+  EO_RLU_SET_COLUMNS <projectSrcColumns>
   EO_PUSH_RLU_LOCALS
   EO_PUSH_RLU_COLSET
   EO_PUSH_DEVROW_SRC
   EO_PUSH_DEVIXT_SRC
-  EO_DEVIXT_COL_LOCALS_ADR
+  EO_DEVIXT_COLS_TO_LOCALS
 
   //EO_ROW_DST_NEW
   EO_PUSH_DEVROW_DST
   EO_PUSH_RLU_POT
   EO_PUSH_RLU_PTN
-  EO_DEVROW_NEW
+  EO_DEVROW_ROW_NEW
 
   //EO_DUMP
 endMacro
@@ -161,13 +161,13 @@ macro AM_CRW_PROJECT_COLUMNS_AGG
 //----------------------------------------------------------------------------//
   // CRW_PROJECT_COLUMNS_AGG
   Label CRW_PROJECT_COLUMNS_AGG
-  EO_SET_ITEMS <projectItems>
-  EO_SET_COLUMNS <projectSrcColumns>
+  EO_RLU_SET_ITEMS <projectItems>
+  EO_RLU_SET_COLUMNS <projectSrcColumns>
   EO_PUSH_RLU_LOCALS
   EO_PUSH_RLU_COLSET
   EO_PUSH_DEVROW_SRC
   EO_PUSH_DEVIXT_SRC
-  EO_DEVIXT_COL_LOCALS_ADR
+  EO_DEVIXT_COLS_TO_LOCALS
   //EO_DUMP
 endMacro
 
@@ -181,7 +181,7 @@ macro AM_CRW_PROJECT_NONE
   EO_PUSH_DEVROW_DST
   EO_PUSH_RLU_POT
   EO_PUSH_RLU_PTN
-  EO_DEVROW_NEW
+  EO_DEVROW_ROW_NEW
 
   //EO_DUMP
 endMacro
@@ -196,11 +196,11 @@ macro AM_CRW_PROJECT_STAR
   EO_PUSH_DEVROW_DST
   EO_PUSH_RLU_POT
   EO_PUSH_RLU_PTN
-  EO_DEVROW_NEW
+  EO_DEVROW_ROW_NEW
 
   EO_PUSH_DEVROW_DST
   EO_PUSH_DEVIXT_SRC
-  EO_DEVIXT_COL_PUSHSET_TOROW
+  EO_DEVIXT_COLS_TO_ROW
 
   //EO_ROW_DST_PRINT
   EO_RETURN
@@ -221,13 +221,13 @@ macro AM_CRW_FILTER_ROWS
 //----------------------------------------------------------------------------//
   // CRW_FILTER_ROWS
   Label CRW_FILTER_ROWS
-  EO_SET_ITEMS <projectItems>
-  EO_SET_COLUMNS <projectSrcColumns>
+  EO_RLU_SET_ITEMS <projectItems>
+  EO_RLU_SET_COLUMNS <projectSrcColumns>
   EO_PUSH_RLU_LOCALS
   EO_PUSH_RLU_COLSET
   EO_PUSH_DEVROW_SRC
   EO_PUSH_DEVIXT_SRC
-  EO_DEVIXT_COL_LOCALS_ADR
+  EO_DEVIXT_COLS_TO_LOCALS
 endMacro
 
 //----------------------------------------------------------------------------//
