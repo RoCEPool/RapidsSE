@@ -69,18 +69,10 @@
 : tablePtn[].grabRead_yieldLoop
 
   begin
-    TablePtn[] tablePtn.attemptGrabRead
+    tablePtn[].attemptGrabRead
   not while
     task::yield
   repeat
-;
-
-/*----------------------------------------------------------------------------*/
-/* drop read lock on TablePtn[]                                               */
-/*----------------------------------------------------------------------------*/
-: tablePtn[].dropRead
-
-  TablePtn[] tablePtn.dropRead
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -89,7 +81,7 @@
 : tablePtn[].grabWrite_yieldLoop
 
   begin
-    TablePtn[] tablePtn.attemptGrabWrite
+    tablePtn[].attemptGrabWrite
   not while
     task::yield
   repeat
@@ -101,18 +93,10 @@
 : tablePtn[].grabWrite_msecLoop
 
   begin
-    TablePtn[] tablePtn.attemptGrabWrite
+    tablePtn[].attemptGrabWrite
   not while
     1 task::sleepMsec
   repeat
-;
-
-/*----------------------------------------------------------------------------*/
-/* drop write lock on TablePtn[]                                              */
-/*----------------------------------------------------------------------------*/
-: tablePtn[].dropWrite
-
-  TablePtn[] tablePtn.dropWrite
 ;
 
 /*============================================================================*/

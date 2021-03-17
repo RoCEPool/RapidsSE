@@ -183,7 +183,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Supervisor();   // step group for Supervisor
 
   Step::vAddSteps_Table();
-  Step::vAddSteps_TablePartition();
+  Step::vAddSteps_TablePtn();
   Step::vAddSteps_Tag();
   Step::vAddSteps_Task();
   Step::vAddSteps_Tenants();
