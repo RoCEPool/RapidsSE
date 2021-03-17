@@ -45,7 +45,7 @@
   Table[].tablePtn@ to TablePtn[]
 
   TablePtn[].grabWrite_msecLoop
-  index[] TablePtn[].populateIndex not if ( errorCode )
+  Index[] TablePtn[].populateIndex not if ( errorCode )
     to errorCode
     TablePtn[].dropWrite
     errorCode op.pipelineJob@ ERROR_JOB

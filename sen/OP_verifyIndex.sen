@@ -26,10 +26,10 @@
   // create an infoSet operand
   streamSetTable[] StreamSet[].new
 
-  index[].verify
+  Index[].verify
 
   // insert index verify
-  index[] streamSetTable[] StreamSet[].addVerifyIndex assert
+  Index[] streamSetTable[] StreamSet[].addVerifyIndex assert
 
   // pipeout the infoset
   StreamSet[].pipeOut

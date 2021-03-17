@@ -188,10 +188,10 @@
     exit
   then
 
-  sIndexNm find execute to index[]
+  sIndexNm find execute to Index[]
 
   // cross-check
-  index[] assert
+  Index[] assert
 
   path[].popNamedTableFolder
   path[].popIndexesFolder
@@ -265,10 +265,10 @@
     exit
   then
 
-  sIndexNm find execute to index[]
+  sIndexNm find execute to Index[]
 
   // cross-check
-  index[] assert
+  Index[] assert
 
   path[].popNamedTableFolder
   path[].popIndexesFolder

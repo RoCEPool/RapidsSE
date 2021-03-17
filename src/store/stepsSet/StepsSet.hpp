@@ -459,8 +459,8 @@ void vExprEvalEvaluate(void);
   void vIndexDefRluSet(void);
 
   // index reg
-  void vRegIndexGet(void);
-  void vRegIndexSet(void);
+  void vIndexGet(void);
+  void vIndexSet(void);
 
   // indexStream
   void vIndexStreamBufferNo(void);

@@ -46,7 +46,7 @@
         exit
       then
 
-      index[].indexTree to indexTreeRlu[]
+      Index[].indexTree to indexTreeRlu[]
       indexTreeRlu[].asSrc
 
     else
@@ -76,7 +76,7 @@
         exit
       then
 
-      index[].indexTree to indexTreeRlu[]
+      Index[].indexTree to indexTreeRlu[]
       indexTreeRlu[].asAlt
 
     else

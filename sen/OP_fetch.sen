@@ -20,7 +20,7 @@
   TablePtn[].grabRead_yieldLoop
 
   // new an index stream
-  index[] TablePtn[] indexStream::new to indexStream[]
+  Index[] TablePtn[] indexStream::new to indexStream[]
 
   // open index stream to access index
   indexStream[].open

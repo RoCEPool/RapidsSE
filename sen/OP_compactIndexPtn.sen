@@ -14,7 +14,7 @@
   PipeIn[].pipeOut
 
   // compact the index
-  index[].compactPtn
+  Index[].compactPtn
 
   Operand[].newEosMarker
   Operand[].pipeOut

@@ -10,7 +10,7 @@
 : compactIdx_action
 
   <tableNm> <indexNm> op__table_index if
-    index[].compact
+    Index[].compact
     true
   else
     false

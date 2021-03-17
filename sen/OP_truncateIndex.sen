@@ -14,7 +14,7 @@
   PipeIn[].pipeOut
 
   // truncate the buffers of the tablePtn
-  index[] TablePtn[].truncateIndex
+  Index[] TablePtn[].truncateIndex
 
   Operand[].newDestroyMarker
   Operand[].pipeOut

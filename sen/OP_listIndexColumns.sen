@@ -30,16 +30,16 @@
   streamSetTable[] StreamSet[].new
 
   // get no of columns in the index
-  index[].columnCount@ to iColumns
+  Index[].columnCount@ to iColumns
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert a row in the infoSet for each index column
   iColumns 0 do
-    I index[].column@
+    I Index[].column@
     streamSetTable[] StreamSet[].addColumnDef  not if
       StreamSet[].pipeOut
       streamSetTable[] streamSet[].new
-      I index[].column@
+      I Index[].column@
       streamSetTable[] StreamSet[].addColumnDef assert
     then
   loop

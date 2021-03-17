@@ -10,7 +10,7 @@
 : dumpIdx_action
 
   <tableNm> <indexNm> op__table_index if
-    index[].dump
+    Index[].dump
     true
   else
     false

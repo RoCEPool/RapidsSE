@@ -33,7 +33,7 @@
     exit
   then
 
-  index[].indexTree to indexTreeRlu[]
+  Index[].indexTree to indexTreeRlu[]
   indexTreeRlu[].asSrc
   Table[].asSrcStreamDef
 
@@ -42,7 +42,7 @@
   StreamDef[].duplicate to streamDefOut[]
 
   range[].new
-  <etc> index[] range[].rangeBounds to eError
+  <etc> Index[] range[].rangeBounds to eError
 
   // check for error
   eError EC_NONE == not if
