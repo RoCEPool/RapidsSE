@@ -23,36 +23,6 @@ enum eEO : u1 // expression operators
   /*  S  */ EO_MULTIPLY,         // multiply top two int's push result
   /*  S  */ EO_NEGATE,           // negate the top value
   /*  S  */ EO_SUBTRACT,         // subtract second int from top push result
-  
-  // column pushes
-  /*  S  */ EO_PUSH_COLUMN_LENGTH, // push column length
-  /*  S  */ EO_PUSH_COLUMN_SCALE,  // push column scale
-  /*  S  */ EO_PUSH_COLUMN_TYPE,   // push column type
-
-  // ixt device pushes
-  /*  S  */ EO_PUSH_DEVIXT_ALT,     // push alt Ixt device
-  /*  S  */ EO_PUSH_DEVIXT_SRC,     // push src Ixt device
-  /*  S  */ EO_PUSH_DEVIXT_TMP,     // push tmp Ixt device
-
-  // ixt device member pushes
-  /*  S  */ EO_PUSH_DEVIXT_ENT,   // push entry of ixt device
-
-  // row device pushes
-  /*  S  */ EO_PUSH_DEVROW_ALT,     // push alt row device
-  /*  S  */ EO_PUSH_DEVROW_DST,     // push dst row device
-  /*  S  */ EO_PUSH_DEVROW_SRC,     // push src row device
-
-
-  // push RLU
-  /*  S  */ EO_PUSH_RLU_COLSET,     // push colset from the rlu
-  /*  S  */ EO_PUSH_RLU_ENT,        // push ent from the rlu
-  /*  S  */ EO_PUSH_RLU_ENTWRK,     // push entwrk from the rlu
-  /*  S  */ EO_PUSH_RLU_INDEXDEF,   // push indexdef from the rlu
-  /*  S  */ EO_PUSH_RLU_INDEXTREE,  // push indextree from the rlu
-  /*  S  */ EO_PUSH_RLU_LOCALS,     // push locals pointer from the rlu
-  /*  S  */ EO_PUSH_RLU_POT,        // push pot from the rlu
-  /*  S  */ EO_PUSH_RLU_PTN,        // push partition from the rlu
-  /*  S  */ EO_PUSH_RLU_ROWPIX,     // push rowpix from the rlu
 
   // counter
   /*  R  */ EO_CTR_0_DEC,        // dec counter 0
@@ -72,13 +42,6 @@ enum eEO : u1 // expression operators
   /*  S  */ EO_JMP_GREATEREQUAL, // pop top and jump to location if >=
   /*  S  */ EO_JMP_GREATER,      // pop top and jump to location if >
 
-  // index name
-  /*     */ EO_DEVIXT_INDEXNM_SET,    // set the index name in the dev
-
-  // indexTree
-  /*  S  */ EO_DEVIXT_INDEXTREE_SET,    // set the indexTree in the ixt dev
-  /*  S  */ EO_DEVIXT_INDEXTREE_DELETE, // delete the indexTree in the ixt dev
-
   // logical operators
   /*  S  */ EO_LGL_AND,          // logical and top two int's, push result
   /*  S  */ EO_LGL_OR,           // logical or top two int's, push result
@@ -88,10 +51,7 @@ enum eEO : u1 // expression operators
   // null test operators
   /*  S  */ EO_ISNULL,           // test if top is null, push result
   /*  S  */ EO_ISNOTNULL,        // test if top is not null, push result
-  
-  // pot
-  /*  M  */ EO_POT_USE_STREAMDEFOUT, // use streamDefOut in the pot
-  
+
   // prints
   /*  S  */ EO_PRINT,            // print top
   /*  S  */ EO_PRINTF,           // formatted print
@@ -114,39 +74,37 @@ enum eEO : u1 // expression operators
   /*  S  */ EO_GREATEREQUAL,     // test top >= 2nd, push result
   /*  S  */ EO_GREATERTHAN,      // test top > 2nd, push result
 
-  // register operators
-  /*  M  */ EO_REG_EOSMARKER_NEW,          // new an eosMarker in Operand[]           // OLD QUERIES (will go)
-  /*  M  */ EO_REG_INDEXDEF_ADDCOLUMN,     // add a column to indexDef[]
+  // column pushes
+  /*  S  */ EO_PUSH_COLUMN_LENGTH, // push column length
+  /*  S  */ EO_PUSH_COLUMN_SCALE,  // push column scale
+  /*  S  */ EO_PUSH_COLUMN_TYPE,   // push column type
 
-  /*  M  */ EO_REG_PTNSTREAM_CLOSE,        // close a ptn stream
-  /*  M  */ EO_REG_PTNSTREAM_DELETE,       // delete a ptn stream
-  /*  M  */ EO_REG_PTNSTREAM_NEW,          // new a ptn stream
-  /*  M  */ EO_REG_PTNSTREAM_OPEN,         // open a ptn stream
-  /*  M  */ EO_REG_PTNSTREAM_READ,         // read a ptn stream
-  /*  M  */ EO_REG_STREAMDEFOUT_NEW,       // new an streamDef in streamDefOut[]        // OLD QUERIES (will go)
-  /*  M  */ EO_REG_STREAMDEFOUT_ADDCOLUMN, // add a column to streamDefOut[]            // OLD QUERIES (will go)
-  /*  M  */ EO_REG_STREAMDEF_STREAMDEFOUT, // copy streamDef[] to streamDefOut[]        // OLD QUERIES (will go)
+  // ixt device pushes
+  /*  S  */ EO_PUSH_DEVIXT_ALT,     // push alt Ixt device
+  /*  S  */ EO_PUSH_DEVIXT_ENT,     // push entry of ixt device
+  /*  S  */ EO_PUSH_DEVIXT_SRC,     // push src Ixt device
+  /*  S  */ EO_PUSH_DEVIXT_TMP,     // push tmp Ixt device
 
-  // register pushes
-  /*  M  */ //EO_PUSH_REG_INDEXTREE,         // push indexTree[]
+  // row device pushes
+  /*  S  */ EO_PUSH_DEVROW_ALT,     // push alt row device
+  /*  S  */ EO_PUSH_DEVROW_DST,     // push dst row device
+  /*  S  */ EO_PUSH_DEVROW_SRC,     // push src row device
 
-  // RLU operators
-  /*  M  */ EO_RLU_INDEXDEF_ADDCOLUMN,     // add a column to indexDefRlu[]
-  /*  M  */ EO_RLU_INDEXDEF_DELETE,        // delete the indexDefRlu[]
-  /*  M  */ EO_RLU_INDEXDEF_NEW,           // new an indexDef in indexDefRlu[]
-  /*  M  */ EO_RLU_INDEXTREE_NEW,          // new an indexTree in indexTreeRlu[]
-  /*  M  */ EO_RLU_INDEXTREE_NULL,         // null indexTreeRlu[]
-  /*  M  */ EO_RLU_PIX_STM_PRINT,          // print stream pix
-  /*  M  */ EO_RLU_POT_COMPLETED,          // do we have a full pot buffer ?
+  // rlu pushes
+  /*  S  */ EO_PUSH_RLU_COLSET,     // push colset from the rlu
+  /*  S  */ EO_PUSH_RLU_ENT,        // push ent from the rlu
+  /*  S  */ EO_PUSH_RLU_ENTWRK,     // push entwrk from the rlu
+  /*  S  */ EO_PUSH_RLU_INDEXDEF,   // push indexdef from the rlu
+  /*  S  */ EO_PUSH_RLU_INDEXTREE,  // push indextree from the rlu
+  /*  S  */ EO_PUSH_RLU_LOCALS,     // push locals pointer from the rlu
+  /*  S  */ EO_PUSH_RLU_POT,        // push pot from the rlu
+  /*  S  */ EO_PUSH_RLU_PTN,        // push partition from the rlu
+  /*  S  */ EO_PUSH_RLU_ROWPIX,     // push rowpix from the rlu
 
   // column set
   /*  M  */ EO_SET_COLUMN,       // add column to set
   /*  M  */ EO_SET_COLUMNS,      // add columns to set
   /*  M  */ EO_SET_ITEMS,        // set number of column items
-
-
-  // table name
-  /*     */ EO_DEVROW_TABLENM_SET, // set the table name in the row dev
 
   // table ptn
   /*  M  */ EO_TABLEPTN_DROPREAD,  // drop a tablePtn read lock
@@ -201,14 +159,10 @@ enum eEO : u1 // expression operators
   /*  M  */ EO_DTE_NOW,          // push current date
   /*  R  */ EO_DTE_PRINT,        // pop top and print as date
   /*  M  */ EO_DTE_YEAR,         // pop top, push year of date
-  
+
   // hashing
   /*  R  */ EO_HSH_ADD_HASHI,    // add hash of top int to running hash
   /*  R  */ EO_HSH_RESET,        // reset hash
-
-  // key
-  /*  M  */ EO_KEY_LCL2C_TO_I,   // convert two local varchar(1) to int
-  /*  D  */ EO_KEY_ROW2C_TO_I,   // convert two row varchar(1) to int
 
   // partitioning
   /*  R  */ EO_PTN_CALC,         // calculate i_Ptn using running iHash
@@ -226,21 +180,30 @@ enum eEO : u1 // expression operators
   /*  M  */ EO_TMR_AGG_RESET,    // reset agg timer
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // col operators
+
+  // rlu operators
+  /*  M  */ EO_RLU_INDEXDEF_ADDCOLUMN,     // add a column to indexDefRlu[]
+  /*  M  */ EO_RLU_INDEXDEF_DELETE,        // delete the indexDefRlu[]
+  /*  M  */ EO_RLU_INDEXDEF_NEW,           // new an indexDef in indexDefRlu[]
+  /*  M  */ EO_RLU_INDEXTREE_NEW,          // new an indexTree in indexTreeRlu[]
+  /*  M  */ EO_RLU_INDEXTREE_NULL,         // null indexTreeRlu[]
+  /*  M  */ EO_RLU_PIX_STM_PRINT,          // print stream pix
+  /*  M  */ EO_RLU_POT_COMPLETED,          // do we have a full pot buffer ?
+
+  // ixt device col operators
   /*  S  */ EO_DEVIXT_COL_LOCALS_ADR,    // inflate dev columns direct into locals (str as ptr)
   /*  S  */ EO_DEVIXT_COL_PUSHSET_ADR,   // push column value from dev ixt (str as ptr)
   /*  S  */ EO_DEVIXT_COL_PUSHSET_PST,   // push column subset from dev ixt
   /*  S  */ EO_DEVIXT_COL_PUSHSET_TOROW, // push all columns from ixt dev to row dev
   /*  S  */ EO_DEVROW_COL_LOCALS_ADR,    // row columns into locals
 
-  // device crwbuffer operators
+  // ixt device crwbuffer operators
   /*  S  */ EO_DEVIXT_CRWBUF_BEGIN, // begin crw buffer traverse
   /*  S  */ EO_DEVIXT_CRWBUF_NEXT,  // move to next row in crw buffer
   /*  S  */ EO_DEVIXT_CRWBUF_NULL,  // null crw buffer
   /*  S  */ EO_DEVIXT_CRWBUF_TEST,  // test if there is a crw buffer
 
-  // entry
+  // ixt device entry operators
   /*  S  */ EO_DEVIXT_ENT_DEREF,     // deref crw using Ent.ref
   /*  D  */ EO_DEVIXT_ENT_FINDI,     // find entry with int key
   /*  D  */ EO_DEVIXT_ENT_NEXT,      // move to next m_pEnt
@@ -250,7 +213,7 @@ enum eEO : u1 // expression operators
   /*  D  */ EO_DEVIXT_ENT_PUSHELMS0, // push entry elm 0 str
   /*  D  */ EO_DEVIXT_ENT_PUSHUPPER, // push upper entry
   
-  // entry relational operators
+  // ixt device entry relational operators
   /*    */ EO_DEVIXT_ENT_LESS,         // test if dev key <  other working key
   /*    */ EO_DEVIXT_ENT_LESSEQUAL,    // test if dev key <= other working key
   /*    */ EO_DEVIXT_ENT_EQUAL,        // test if dev key == other working key
@@ -259,16 +222,12 @@ enum eEO : u1 // expression operators
   /*    */ EO_DEVIXT_ENT_GREATER,      // test if dev key >  other working key
   /*    */ EO_DEVIXT_ENT_PRINTKEYS,    // print device key and other working key
 
-  // entWrk
-  /*    */ EO_DEVROW_ENTWRK_APPENDELMI,// append next element value (int)
-  /*    */ EO_DEVROW_ENTWRK_APPENDELMS,// append next element value (str)
-  /*    */ EO_DEVROW_ENTWRK_CREATEPAY, // create a payload in entwrk
-
+  // ixt device entwrk operators
   /*    */ EO_ENTWRK_PRINT,     // print m_oEntWrk
   /*    */ EO_ENTWRK_RESET,     // reset m_oEntWrk
   /*    */ EO_ENTWRK_SETINTELM, // set int only element value
 
-  // index tree
+  // ixt device index operators
   /*  S  */ EO_DEVIXT_IDX_DEL,      // delete current m_aEnt from indexTree
   /*  S  */ EO_DEVIXT_IDX_DUMP,     // dump index tree
   /*  S  */ EO_DEVIXT_IDX_INS,      // insert an entry into the indexTree
@@ -281,17 +240,21 @@ enum eEO : u1 // expression operators
   /*  D  */ EO_DEVIXT_SRC_UBOUND_LT, // get upper bound (less than)
   /*  D  */ EO_DEVIXT_CMP_KEYS,  // compare keys of two devices
   /*  D  */ EO_DEVIXT_POS_BYKEY, // position dev ixt by key
-
   /*  D  */ EO_DEVIXT_ENT_PRINT, // print ent
 
-  // pay load
-  /*  R  */ EO_PAY_ADDRESS,      // get payload address
-  /*  M  */ EO_PAY_FETCH_COLI,   // fetch a column from entry payload
-  /*  M  */ EO_PAY_FETCH_COLS,   // fetch a column from entry payload
-  /*  M  */ EO_PAY_STORE_COLI,   // store a column into entry payload
-  /*  M  */ EO_PAY_STORE_COLS,   // store a column into entry payload
+  // ixt device index set operators
+  /*  S  */ EO_DEVIXT_INDEXNM_SET,      // set the index name in the dev
+  /*  S  */ EO_DEVIXT_INDEXTREE_SET,    // set the indexTree in the ixt dev
+  /*  S  */ EO_DEVIXT_INDEXTREE_DELETE, // delete the indexTree in the ixt dev
 
-  /*     */ EO_DEVROW_BEGIN,     // begin src row traverse in row dev
+  // row device entWrk
+  /*    */ EO_DEVROW_ENTWRK_APPENDELMI,// append next element value (int)
+  /*    */ EO_DEVROW_ENTWRK_APPENDELMS,// append next element value (str)
+  /*    */ EO_DEVROW_ENTWRK_CREATEPAY, // create a payload in entwrk
+  /*    */ EO_DEVROW_TABLENM_SET, // set the table name in the row dev
+
+  // row device row buffer operators
+  /*     */ EO_DEVROW_BEGIN,     // begin row traverse in row dev
   /*     */ EO_DEVROW_NEXT,      // move to next src row in row dev
   /*     */ EO_DEVROW_NEW,       // create new row in row dev
   /*     */ EO_DEVROW_NULL,      // null rb src src in row dev
@@ -304,11 +267,40 @@ enum eEO : u1 // expression operators
   /*     */ EO_DEVROW_TESTROW,   // test if row in row dev
   /*     */ EO_DEVROW_ZERO,      // zero destination row in row dev
 
-  // row operators
+  // row device column operators
   /*    */ EO_DEVROW_POPCOLI,  // pop and deposit top into column
   /*    */ EO_DEVROW_POPCOLS,  // pop and deposit top string into column
   /*    */ EO_DEVROW_PUSHCOLI, // push column
   /*    */ EO_DEVROW_PUSHCOLS, // push column string
+
+  // pay load
+  /*  R  */ EO_PAY_ADDRESS,      // get payload address
+  /*  M  */ EO_PAY_FETCH_COLI,   // fetch a column from entry payload
+  /*  M  */ EO_PAY_FETCH_COLS,   // fetch a column from entry payload
+  /*  M  */ EO_PAY_STORE_COLI,   // store a column into entry payload
+  /*  M  */ EO_PAY_STORE_COLS,   // store a column into entry payload
+
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  // -- TO GO --
+
+  // key
+  /*  M  */ EO_KEY_LCL2C_TO_I,   // convert two local varchar(1) to int
+  /*  D  */ EO_KEY_ROW2C_TO_I,   // convert two row varchar(1) to int
+
+  // pot
+  /*  M  */ EO_POT_USE_STREAMDEFOUT, // use streamDefOut in the pot
+
+  // register operators
+  /*  M  */ EO_REG_EOSMARKER_NEW,          // new an eosMarker in Operand[]           // OLD QUERIES (will go)
+  /*  M  */ EO_REG_INDEXDEF_ADDCOLUMN,     // add a column to indexDef[]
+  /*  M  */ EO_REG_PTNSTREAM_CLOSE,        // close a ptn stream
+  /*  M  */ EO_REG_PTNSTREAM_DELETE,       // delete a ptn stream
+  /*  M  */ EO_REG_PTNSTREAM_NEW,          // new a ptn stream
+  /*  M  */ EO_REG_PTNSTREAM_OPEN,         // open a ptn stream
+  /*  M  */ EO_REG_PTNSTREAM_READ,         // read a ptn stream
+  /*  M  */ EO_REG_STREAMDEFOUT_NEW,       // new an streamDef in streamDefOut[]        // OLD QUERIES (will go)
+  /*  M  */ EO_REG_STREAMDEFOUT_ADDCOLUMN, // add a column to streamDefOut[]            // OLD QUERIES (will go)
+  /*  M  */ EO_REG_STREAMDEF_STREAMDEFOUT, // copy streamDef[] to streamDefOut[]        // OLD QUERIES (will go)
 
   // super fragments
   /*  M  */ EO_SUPER_Q100,       // super fragment Q100
@@ -332,35 +324,6 @@ static Stz* aEO[]
   /*    */ "EO_MULTIPLY"_Stz,
   /*    */ "EO_NEGATE"_Stz,
   /*    */ "EO_SUBTRACT"_Stz,
-  
-  // column pushes
-  /*    */ "EO_PUSH_COLUMN_LENGTH"_Stz,
-  /*    */ "EO_PUSH_COLUMN_SCALE"_Stz,
-  /*    */ "EO_PUSH_COLUMN_TYPE"_Stz,
-
-  // ixt device pushes
-  /*    */ "EO_PUSH_DEVIXT_ALT"_Stz,
-  /*    */ "EO_PUSH_DEVIXT_SRC"_Stz,
-  /*    */ "EO_PUSH_DEVIXT_TMP"_Stz,
-
-  // ixt device member pushes
-  /*    */ "EO_PUSH_DEVIXT_ENT"_Stz,
-
-  // row device pushes
-  /*    */ "EO_PUSH_DEVROW_ALT"_Stz,
-  /*    */ "EO_PUSH_DEVROW_DST"_Stz,
-  /*    */ "EO_PUSH_DEVROW_SRC"_Stz,
-
-  // push rlu
-  /*    */ "EO_PUSH_RLU_COLSET"_Stz,
-  /*    */ "EO_PUSH_RLU_ENT"_Stz,
-  /*    */ "EO_PUSH_RLU_ENTWRK"_Stz,
-  /*    */ "EO_PUSH_RLU_INDEXDEF"_Stz,
-  /*    */ "EO_PUSH_RLU_INDEXTREE"_Stz,
-  /*    */ "EO_PUSH_RLU_LOCALS"_Stz,
-  /*    */ "EO_PUSH_RLU_POT"_Stz,
-  /*    */ "EO_PUSH_RLU_PTN"_Stz,
-  /*    */ "EO_PUSH_RLU_ROWPIX"_Stz,
 
   // counter
   /*    */ "EO_CTR_0_DEC"_Stz,
@@ -380,13 +343,6 @@ static Stz* aEO[]
   /*    */ "EO_JMP_GREATEREQUAL"_Stz,
   /*    */ "EO_JMP_GREATER"_Stz,
 
-  // index name
-  /*    */ "EO_DEVIXT_INDEXNM_SET"_Stz,
-
-  // indexTree
-  /*    */ "EO_DEVIXT_INDEXTREE_SET"_Stz,
-  /*    */ "EO_DEVIXT_INDEXTREE_DELETE"_Stz,
-
   // logical operators
   /*    */ "EO_LGL_AND"_Stz,
   /*    */ "EO_LGL_OR"_Stz,
@@ -396,10 +352,7 @@ static Stz* aEO[]
   // null test operators
   /*    */ "EO_ISNULL"_Stz,
   /*    */ "EO_ISNOTNULL"_Stz,
-  
-  // pot
-  /*    */ "EO_POT_USE_STREAMDEFOUT"_Stz,
-  
+
   // prints
   /*    */ "EO_PRINT"_Stz,
   /*    */ "EO_PRINTF"_Stz,
@@ -421,35 +374,38 @@ static Stz* aEO[]
   /*    */ "EO_NOTEQUAL"_Stz,
   /*    */ "EO_GREATEREQUAL"_Stz,
   /*    */ "EO_GREATERTHAN"_Stz,
-  
-  // register operators
-  /*    */ "EO_REG_EOSMARKER_NEW"_Stz,
-  /*    */ "EO_REG_INDEXDEF_ADDCOLUMN"_Stz,
-  /*    */ "EO_REG_PTNSTREAM_CLOSE"_Stz,
-  /*    */ "EO_REG_PTNSTREAM_DELETE"_Stz,
-  /*    */ "EO_REG_PTNSTREAM_NEW"_Stz,
-  /*    */ "EO_REG_PTNSTREAM_OPEN"_Stz,
-  /*    */ "EO_REG_PTNSTREAM_READ"_Stz,
-  /*    */ "EO_REG_STREAMDEFOUT_NEW"_Stz,
-  /*    */ "EO_REG_STREAMDEFOUT_ADDCOLUMN"_Stz,
-  /*    */ "EO_REG_STREAMDEF_STREAMDEFOUT"_Stz,
 
-  // Rlu operators
-  /*    */ "EO_RLU_INDEXDEF_ADDCOLUMN"_Stz,
-  /*    */ "EO_RLU_INDEXDEF_DELETE"_Stz,
-  /*    */ "EO_RLU_INDEXDEF_NEW"_Stz,
-  /*    */ "EO_RLU_INDEXTREE_NEW"_Stz,
-  /*    */ "EO_RLU_INDEXTREE_NULL"_Stz,
-  /*    */ "EO_RLU_PIX_STM_PRINT"_Stz,
-  /*    */ "EO_RLU_POT_COMPLETED"_Stz,
+  // column pushes
+  /*    */ "EO_PUSH_COLUMN_LENGTH"_Stz,
+  /*    */ "EO_PUSH_COLUMN_SCALE"_Stz,
+  /*    */ "EO_PUSH_COLUMN_TYPE"_Stz,
+
+  // ixt device pushes
+  /*    */ "EO_PUSH_DEVIXT_ALT"_Stz,
+  /*    */ "EO_PUSH_DEVIXT_ENT"_Stz,
+  /*    */ "EO_PUSH_DEVIXT_SRC"_Stz,
+  /*    */ "EO_PUSH_DEVIXT_TMP"_Stz,
+
+  // row device pushes
+  /*    */ "EO_PUSH_DEVROW_ALT"_Stz,
+  /*    */ "EO_PUSH_DEVROW_DST"_Stz,
+  /*    */ "EO_PUSH_DEVROW_SRC"_Stz,
+
+  // rlu pushes
+  /*    */ "EO_PUSH_RLU_COLSET"_Stz,
+  /*    */ "EO_PUSH_RLU_ENT"_Stz,
+  /*    */ "EO_PUSH_RLU_ENTWRK"_Stz,
+  /*    */ "EO_PUSH_RLU_INDEXDEF"_Stz,
+  /*    */ "EO_PUSH_RLU_INDEXTREE"_Stz,
+  /*    */ "EO_PUSH_RLU_LOCALS"_Stz,
+  /*    */ "EO_PUSH_RLU_POT"_Stz,
+  /*    */ "EO_PUSH_RLU_PTN"_Stz,
+  /*    */ "EO_PUSH_RLU_ROWPIX"_Stz,
 
   // column set
   /*    */ "EO_SET_COLUMN"_Stz,
   /*    */ "EO_SET_COLUMNS"_Stz,
   /*    */ "EO_SET_ITEMS"_Stz,
-
-  // table name
-  /*    */ "EO_DEVROW_TABLENM_SET"_Stz,
 
   // table ptn
   /*    */ "EO_TABLEPTN_DROPREAD"_Stz,
@@ -508,17 +464,13 @@ static Stz* aEO[]
   // hashing
   /*    */ "EO_HSH_ADD_HASHI"_Stz,
   /*    */ "EO_HSH_RESET"_Stz,
-  
-  // key
-  /*    */ "EO_KEY_LCL2C_TO_I"_Stz,
-  /*    */ "EO_KEY_ROW2C_TO_I"_Stz,
 
   // partitioning
   /*    */ "EO_PTN_CALC"_Stz,
   /*    */ "EO_PTN_PUSH"_Stz,
   /*    */ "EO_PTN_RESET"_Stz,
   /*    */ "EO_PTN_RUNNING"_Stz,
-  
+
   // timer
   /*    */ "EO_TMR_SINCE"_Stz,
   /*    */ "EO_TMR_START"_Stz,
@@ -530,20 +482,29 @@ static Stz* aEO[]
 
   //----------------------------------------------------------------------------
 
-  // col operators
+  // rlu operators
+  /*    */ "EO_RLU_INDEXDEF_ADDCOLUMN"_Stz,
+  /*    */ "EO_RLU_INDEXDEF_DELETE"_Stz,
+  /*    */ "EO_RLU_INDEXDEF_NEW"_Stz,
+  /*    */ "EO_RLU_INDEXTREE_NEW"_Stz,
+  /*    */ "EO_RLU_INDEXTREE_NULL"_Stz,
+  /*    */ "EO_RLU_PIX_STM_PRINT"_Stz,
+  /*    */ "EO_RLU_POT_COMPLETED"_Stz,
+
+  // ixt device col operators
   /*    */ "EO_DEVIXT_COL_LOCALS_ADR"_Stz,
   /*    */ "EO_DEVIXT_COL_PUSHSET_ADR"_Stz,
   /*    */ "EO_DEVIXT_COL_PUSHSET_PST"_Stz,
   /*    */ "EO_DEVIXT_COL_PUSHSET_TOROW"_Stz,
   /*    */ "EO_DEVROW_COL_LOCALS_ADR"_Stz,
 
-  // device crwbuffer operators
+  // ixt device crwbuffer operators
   /*    */ "EO_DEVIXT_CRWBUF_BEGIN"_Stz,
   /*    */ "EO_DEVIXT_CRWBUF_NEXT"_Stz,
   /*    */ "EO_DEVIXT_CRWBUF_NULL"_Stz,
   /*    */ "EO_DEVIXT_CRWBUF_TEST"_Stz,
 
-  // entry
+  // ixt device entry operators
   /*    */ "EO_DEVIXT_ENT_DEREF"_Stz,
   /*    */ "EO_DEVIXT_ENT_FINDI"_Stz,
   /*    */ "EO_DEVIXT_ENT_NEXT"_Stz,
@@ -553,7 +514,7 @@ static Stz* aEO[]
   /*    */ "EO_DEVIXT_ENT_PUSHELMS0"_Stz,
   /*    */ "EO_DEVIXT_ENT_PUSHUPPER"_Stz,
   
-  // entry relational operators
+  // ixt device entry relational operators
   /*    */ "EO_DEVIXT_ENT_LESS"_Stz,
   /*    */ "EO_DEVIXT_ENT_LESSEQUAL"_Stz,
   /*    */ "EO_DEVIXT_ENT_EQUAL"_Stz,
@@ -562,16 +523,12 @@ static Stz* aEO[]
   /*    */ "EO_DEVIXT_ENT_GREATER"_Stz,
   /*    */ "EO_DEVIXT_ENT_PRINTKEYS"_Stz,
 
-  // entWrk
-  /*    */ "EO_DEVROW_ENTWRK_APPENDELMI"_Stz,
-  /*    */ "EO_DEVROW_ENTWRK_APPENDELMS"_Stz,
-  /*    */ "EO_DEVROW_ENTWRK_CREATEPAY"_Stz,
-
+  // ixt device entwrk operators
   /*    */ "EO_ENTWRK_PRINT"_Stz,
   /*    */ "EO_ENTWRK_RESET"_Stz,
   /*    */ "EO_ENTWRK_SETINTELM"_Stz,
 
-  // index tree
+  // ixt device index operators
   /*    */ "EO_DEVIXT_IDX_DEL"_Stz,
   /*    */ "EO_DEVIXT_IDX_DUMP"_Stz,
   /*    */ "EO_DEVIXT_IDX_INS"_Stz,
@@ -586,14 +543,18 @@ static Stz* aEO[]
   /*    */ "EO_DEVIXT_POS_BYKEY"_Stz,
   /*    */ "EO_DEVIXT_ENT_PRINT"_Stz,
 
-  // pay load
-  /*    */ "EO_PAY_ADDRESS"_Stz,
-  /*    */ "EO_PAY_FETCH_COLI"_Stz,
-  /*    */ "EO_PAY_FETCH_COLS"_Stz,
-  /*    */ "EO_PAY_STORE_COLI"_Stz,
-  /*    */ "EO_PAY_STORE_COLS"_Stz,
+  // ixt device index set operators
+  /*    */ "EO_DEVIXT_INDEXNM_SET"_Stz,
+  /*    */ "EO_DEVIXT_INDEXTREE_SET"_Stz,
+  /*    */ "EO_DEVIXT_INDEXTREE_DELETE"_Stz,
 
-  // row / rowslab
+  // row device entWrk operators
+  /*    */ "EO_DEVROW_ENTWRK_APPENDELMI"_Stz,
+  /*    */ "EO_DEVROW_ENTWRK_APPENDELMS"_Stz,
+  /*    */ "EO_DEVROW_ENTWRK_CREATEPAY"_Stz,
+  /*    */ "EO_DEVROW_TABLENM_SET"_Stz,
+
+  // row device row buffer operators
   /*     */ "EO_DEVROW_BEGIN"_Stz,
   /*     */ "EO_DEVROW_NEXT"_Stz,
   /*     */ "EO_DEVROW_NEW"_Stz,
@@ -607,16 +568,46 @@ static Stz* aEO[]
   /*     */ "EO_DEVROW_TESTROW"_Stz,
   /*     */ "EO_DEVROW_ZERO"_Stz,
 
-  // row operators
+  //  row device column operators
   /*    */ "EO_DEVROW_POPCOLI"_Stz,
   /*    */ "EO_DEVROW_POPCOLS"_Stz,
   /*    */ "EO_DEVROW_PUSHCOLI"_Stz,
   /*    */ "EO_DEVROW_PUSHCOLS"_Stz,
 
+  // pay load operators
+  /*    */ "EO_PAY_ADDRESS"_Stz,
+  /*    */ "EO_PAY_FETCH_COLI"_Stz,
+  /*    */ "EO_PAY_FETCH_COLS"_Stz,
+  /*    */ "EO_PAY_STORE_COLI"_Stz,
+  /*    */ "EO_PAY_STORE_COLS"_Stz,
+
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  // -- TO GO --
+
+  // key
+  /*    */ "EO_KEY_LCL2C_TO_I"_Stz,
+  /*    */ "EO_KEY_ROW2C_TO_I"_Stz,
+
+  // pot
+  /*    */ "EO_POT_USE_STREAMDEFOUT"_Stz,
+
+    // register operators
+  /*    */ "EO_REG_EOSMARKER_NEW"_Stz,
+  /*    */ "EO_REG_INDEXDEF_ADDCOLUMN"_Stz,
+  /*    */ "EO_REG_PTNSTREAM_CLOSE"_Stz,
+  /*    */ "EO_REG_PTNSTREAM_DELETE"_Stz,
+  /*    */ "EO_REG_PTNSTREAM_NEW"_Stz,
+  /*    */ "EO_REG_PTNSTREAM_OPEN"_Stz,
+  /*    */ "EO_REG_PTNSTREAM_READ"_Stz,
+  /*    */ "EO_REG_STREAMDEFOUT_NEW"_Stz,
+  /*    */ "EO_REG_STREAMDEFOUT_ADDCOLUMN"_Stz,
+  /*    */ "EO_REG_STREAMDEF_STREAMDEFOUT"_Stz,
+
   // super fragments
   /*    */ "EO_SUPER_Q100"_Stz,
 
-  /*    */ "ENUMS"_Stz
+
+    /*    */ "ENUMS"_Stz
 };
 
 //----------------------------------------------------------------------------
@@ -642,35 +633,6 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_NEGATE
   { EA_NONE,    0 },  // EO_SUBTRACT
 
-  // column pushes
-  { EA_INT,     8 },  // EO_PUSH_COLUMN_LENGTH
-  { EA_INT,     8 },  // EO_PUSH_COLUMN_SCALE
-  { EA_INT,     8 },  // EO_PUSH_COLUMN_TYPE
-
-  // ixt device pushes
-  { EA_NONE,    0 },  // EO_PUSH_DEVIXT_ALT
-  { EA_NONE,    0 },  // EO_PUSH_DEVIXT_SRC
-  { EA_NONE,    0 },  // EO_PUSH_DEVIXT_TMP
-
-  // ixt device member pushes
-  { EA_NONE,    0 },  // EO_PUSH_DEVIXT_ENT
-
-  // row device pushes
-  { EA_NONE,    0 },  // EO_PUSH_DEVROW_ALT
-  { EA_NONE,    0 },  // EO_PUSH_DEVROW_DST
-  { EA_NONE,    0 },  // EO_PUSH_DEVROW_SRC
-
-  // push rlu
-  { EA_NONE,    0 },  // EO_PUSH_RLU_COLSET
-  { EA_NONE,    0 },  // EO_PUSH_RLU_ENT
-  { EA_NONE,    0 },  // EO_PUSH_RLU_ENTWRK
-  { EA_NONE,    0 },  // EO_PUSH_RLU_INDEXDEF
-  { EA_NONE,    0 },  // EO_PUSH_RLU_INDEXTREE
-  { EA_NONE,    0 },  // EO_PUSH_RLU_LOCALS
-  { EA_NONE,    0 },  // EO_PUSH_RLU_POT
-  { EA_NONE,    0 },  // EO_PUSH_RLU_PTN
-  { EA_NONE,    0 },  // EO_PUSH_RLU_ROWPIX
-
   // counter
   { EA_NONE,    0 },  // EO_CTR_0_DEC
   { EA_NONE,    0 },  // EO_CTR_0_INC
@@ -689,13 +651,6 @@ static EoArg EoArgs[]
   { EA_LABEL,   8 },  // EO_JMP_GREATEREQUAL
   { EA_LABEL,   8 },  // EO_JMP_GREATEREQUAL
 
-  // index name
-  { EA_STRING, -1 },  // EO_DEVIXT_INDEXNM_SET
-
-    // indexTree
-  { EA_NONE,    0 },  // EO_DEVIXT_INDEXTREE_SET
-  { EA_NONE,    0 },  // EO_DEVIXT_INDEXTREE_DELETE
-
   // logical operators
   { EA_NONE,    0 },  // EO_LGL_AND
   { EA_NONE,    0 },  // EO_LGL_OR
@@ -706,9 +661,6 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_ISNULL
   { EA_NONE,    0 },  // EO_ISNOTNULL
 
-  // pot
-  { EA_INT,     8 },  // EO_POT_USE_STREAMDEFOUT
-  
   // prints
   { EA_NONE,    0 },  // EO_PRINT
   { EA_STRING, -1 },  // EO_PRINTF
@@ -731,37 +683,37 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_GREATEREQUAL
   { EA_NONE,    0 },  // EO_GREATERTHAN
 
-  // register operators
-  { EA_NONE,    0 },  // EO_REG_EOSMARKER_NEW
-  { EA_STRING, -1 },  // EO_REG_INDEXDEF_ADDCOLUMN
-  { EA_NONE,    0},   // EO_REG_PTNSTREAM_CLOSE
-  { EA_NONE,    0},   // EO_REG_PTNSTREAM_DELETE
-  { EA_NONE,    0},   // EO_REG_PTNSTREAM_NEW
-  { EA_NONE,    0},   // EO_REG_PTNSTREAM_OPEN
-  { EA_NONE,    0},   // EO_REG_PTNSTREAM_READ
-  { EA_NONE,    0 },  // EO_REG_STREAMDEFOUT_NEW
-  { EA_STRING, -1 },  // EO_REG_STREAMDEFOUT_ADDCOLUMN
-  { EA_NONE,    0 },  // EO_REG_STREAMDEF_STREAMDEFOUT_ADDCOLUMN
+  // column pushes
+  { EA_INT,     8 },  // EO_PUSH_COLUMN_LENGTH
+  { EA_INT,     8 },  // EO_PUSH_COLUMN_SCALE
+  { EA_INT,     8 },  // EO_PUSH_COLUMN_TYPE
 
-  // register pushes
-  //{ EA_NONE,    0 },  // EO_PUSH_REG_INDEXTREE
+  // ixt device pushes
+  { EA_NONE,    0 },  // EO_PUSH_DEVIXT_ALT
+  { EA_NONE,    0 },  // EO_PUSH_DEVIXT_ENT
+  { EA_NONE,    0 },  // EO_PUSH_DEVIXT_SRC
+  { EA_NONE,    0 },  // EO_PUSH_DEVIXT_TMP
 
-  // RLU operators
-  { EA_NONE,    0 },  // EO_RLU_INDEXDEF_ADDCOLUMN
-  { EA_NONE,    0 },  // EO_RLU_INDEXDEF_DELETE
-  { EA_NONE,    0 },  // EO_RLU_INDEXDEF_NEW
-  { EA_NONE,    0 },  // EO_RLU_INDEXTREE_NEW
-  { EA_NONE,    0 },  // EO_RLU_INDEXTREE_NULL
-  { EA_NONE,    0 },  // EO_RLU_PIX_STM_PRINT
-  { EA_NONE,    0 },  // EO_RLU_POT_COMPLETED
+  // row device pushes
+  { EA_NONE,    0 },  // EO_PUSH_DEVROW_ALT
+  { EA_NONE,    0 },  // EO_PUSH_DEVROW_DST
+  { EA_NONE,    0 },  // EO_PUSH_DEVROW_SRC
+
+  // rlu pushes
+  { EA_NONE,    0 },  // EO_PUSH_RLU_COLSET
+  { EA_NONE,    0 },  // EO_PUSH_RLU_ENT
+  { EA_NONE,    0 },  // EO_PUSH_RLU_ENTWRK
+  { EA_NONE,    0 },  // EO_PUSH_RLU_INDEXDEF
+  { EA_NONE,    0 },  // EO_PUSH_RLU_INDEXTREE
+  { EA_NONE,    0 },  // EO_PUSH_RLU_LOCALS
+  { EA_NONE,    0 },  // EO_PUSH_RLU_POT
+  { EA_NONE,    0 },  // EO_PUSH_RLU_PTN
+  { EA_NONE,    0 },  // EO_PUSH_RLU_ROWPIX
 
   // column set
   { EA_INT,     8 },  // EO_SET_COLUMN
   { EA_INT,     8 },  // EO_SET_COLUMNS
   { EA_INT,     8 },  // EO_SET_ITEMS
-
-  // table name
-  { EA_STRING, -1 },  // EO_DEVROW_TABLENM_SET
 
   // table
   { EA_NONE, 0 },  // EO_TABLEPTN_DROPREAD
@@ -821,17 +773,13 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_HSH_ADD_HASHI
   { EA_NONE,    0 },  // EO_HSH_RESET
 
-  // key
-  { EA_INT,     8 },  // EO_KEY_LCL2C_TO_I
-  { EA_INT,     8 },  // EO_KEY_ROW2C_TO_I
-
   // partitioning
   { EA_NONE,    0 },  // EO_PTN_CALC
   { EA_NONE,    0 },  // EO_PTN_PUSH
   { EA_NONE,    0 },  // EO_PTN_RESET
   { EA_NONE,    0 },  // EO_PTN_RUNNING
 
-  // timer
+    // timer
   { EA_NONE,    0 },  // EO_TMR_SINCE
   { EA_NONE,    0 },  // EO_TMR_START
   { EA_NONE,    0 },  // EO_TMR_NSECS
@@ -841,21 +789,30 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_TMR_AGG_RESET
 
   //----------------------------------------------------------------------------
-  
-  // col operators
+
+  // rlu operators
+  { EA_NONE,    0 },  // EO_RLU_INDEXDEF_ADDCOLUMN
+  { EA_NONE,    0 },  // EO_RLU_INDEXDEF_DELETE
+  { EA_NONE,    0 },  // EO_RLU_INDEXDEF_NEW
+  { EA_NONE,    0 },  // EO_RLU_INDEXTREE_NEW
+  { EA_NONE,    0 },  // EO_RLU_INDEXTREE_NULL
+  { EA_NONE,    0 },  // EO_RLU_PIX_STM_PRINT
+  { EA_NONE,    0 },  // EO_RLU_POT_COMPLETED
+
+  // ixt device col operators
   { EA_NONE,    0 },  // EO_DEVIXT_COL_LOCALS_ADR
   { EA_NONE,    0 },  // EO_DEVIXT_COL_PUSHSET_ADR
   { EA_NONE,    0 },  // EO_DEVIXT_COL_PUSHSET_PST
   { EA_NONE,    0 },  // EO_DEVIXT_COL_PUSHSET_TOROW
   { EA_NONE,    0 },  // EO_DEVROW_COL_LOCALS_ADR
 
-  // device crwbuffer operators
+  // ixt device crwbuffer operators
   { EA_NONE,    0 },  // EO_DEVIXT_CRWBUF_BEGIN
   { EA_NONE,    0 },  // EO_DEVIXT_CRWBUF_NEXT
   { EA_NONE,    0 },  // EO_DEVIXT_CRWBUF_NULL
   { EA_NONE,    0 },  // EO_DEVIXT_CRWBUF_TEST
 
-  // entry
+  // ixt device entry relational operators
   { EA_NONE,    0 },  // EO_DEVIXT_RNT_DEREF
   { EA_NONE,    0 },  // EO_DEVIXT_ENT_FINDI
   { EA_NONE,    0 },  // EO_DEVIXT_ENT_NEXT
@@ -865,7 +822,7 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_DEVIXT_ENT_PUSHELMS0
   { EA_NONE,    0 },  // EO_DEVIXT_ENT_PUSHUPPER
 
-  // entry relational operators
+  // ixt device  relational operators
   { EA_NONE,    0 },  // EO_DEVIXT_ENT_LESS
   { EA_NONE,    0 },  // EO_DEVIXT_ENT_LESSEQUAL
   { EA_NONE,    0 },  // EO_DEVIXT_ENT_EQUAL
@@ -874,17 +831,12 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_DEVIXT_ENT_GREATER
   { EA_NONE,    0 },  // EO_DEVIXT_ENT_PRINTKEYS
 
-
-  
-  // entWrk
-  { EA_NONE,    0 },  // EO_DEVROW_ENTWRK_APPENDELMI
-  { EA_NONE,    0 },  // EO_DEVROW_ENTWRK_APPENDELMS
-  { EA_INT,     8 },  // EO_DEVROW_ENTWRK_CREATEPAY
+  // ixt device entwrk operators
   { EA_NONE,    0 },  // EO_ENTWRK_PRINT
   { EA_NONE,    0 },  // EO_ENTWRK_RESET
   { EA_NONE,    0 },  // EO_ENTWRK_SETINTELM
 
-  // index tree
+  // ixt device index operators
   { EA_NONE,    0 },  // EO_DEVIXT_IDX_DEL
   { EA_NONE,    0 },  // EO_DEVIXT_IDX_DUMP
   { EA_NONE,    0 },  // EO_DEVIXT_IDX_INS
@@ -899,14 +851,18 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_DEVIXT_POS_BYKEY
   { EA_NONE,    0 },  // EO_DEVIXT_ENT_PRINT
 
-  // pay load
-  { EA_NONE,    0 },  // EO_PAY_ADDRESS
-  { EA_SUBSCR,  8 },  // EO_PAY_FETCH_COLI
-  { EA_SUBSCR,  8 },  // EO_PAY_FETCH_COLS
-  { EA_SUBSCR,  8 },  // EO_PAY_STORE_COLI
-  { EA_SUBSCR,  8 },  // EO_PAY_STORE_COLS
+  // ixt device index set operators
+  { EA_STRING, -1 },  // EO_DEVIXT_INDEXNM_SET
+  { EA_NONE,    0 },  // EO_DEVIXT_INDEXTREE_SET
+  { EA_NONE,    0 },  // EO_DEVIXT_INDEXTREE_DELETE
 
-  // row / rowslab
+  // row device entWrk
+  { EA_NONE,    0 },  // EO_DEVROW_ENTWRK_APPENDELMI
+  { EA_NONE,    0 },  // EO_DEVROW_ENTWRK_APPENDELMS
+  { EA_INT,     8 },  // EO_DEVROW_ENTWRK_CREATEPAY
+  { EA_STRING, -1 },  // EO_DEVROW_TABLENM_SET
+
+  // row device row buffer operators
   { EA_NONE,    0 },  // EO_DEVROW_BEGIN
   { EA_NONE,    0 },  // EO_DEVROW_NEXT
   { EA_NONE,    0 },  // EO_DEVROW_NEW
@@ -920,14 +876,45 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_DEVROW_TESTROW
   { EA_NONE,    0 },  // EO_DEVROW_ZERO
 
-  // row operators
+  //  row device column operators
   { EA_SUBSCR,  8 },  // EO_DEVROW_POPCOLI
   { EA_SUBSCR,  8 },  // EO_DEVROW_POPCOLS
   { EA_SUBSCR,  8 },  // EO_DEVROW_PUSHCOLI
   { EA_SUBSCR,  8 },  // EO_DEVROW_PUSHCOLS
 
+  // pay load
+  { EA_NONE,    0 },  // EO_PAY_ADDRESS
+  { EA_SUBSCR,  8 },  // EO_PAY_FETCH_COLI
+  { EA_SUBSCR,  8 },  // EO_PAY_FETCH_COLS
+  { EA_SUBSCR,  8 },  // EO_PAY_STORE_COLI
+  { EA_SUBSCR,  8 },  // EO_PAY_STORE_COLS
+
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  // ---TO GO ---
+
+  // key
+  { EA_INT,     8 },  // EO_KEY_LCL2C_TO_I
+  { EA_INT,     8 },  // EO_KEY_ROW2C_TO_I
+
+    // pot
+  { EA_INT,     8 },  // EO_POT_USE_STREAMDEFOUT
+
+    // register operators
+  { EA_NONE,    0 },  // EO_REG_EOSMARKER_NEW
+  { EA_STRING, -1 },  // EO_REG_INDEXDEF_ADDCOLUMN
+  { EA_NONE,    0},   // EO_REG_PTNSTREAM_CLOSE
+  { EA_NONE,    0},   // EO_REG_PTNSTREAM_DELETE
+  { EA_NONE,    0},   // EO_REG_PTNSTREAM_NEW
+  { EA_NONE,    0},   // EO_REG_PTNSTREAM_OPEN
+  { EA_NONE,    0},   // EO_REG_PTNSTREAM_READ
+  { EA_NONE,    0 },  // EO_REG_STREAMDEFOUT_NEW
+  { EA_STRING, -1 },  // EO_REG_STREAMDEFOUT_ADDCOLUMN
+  { EA_NONE,    0 },  // EO_REG_STREAMDEF_STREAMDEFOUT_ADDCOLUMN
+
+  // super
   { EA_NONE,    0 },  // super fragment Q100
-  // -- end --
+
+    // -- end --
   { EA_NONE,    0 },  // EO_ENUMS
 };
 #endif
