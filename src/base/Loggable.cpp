@@ -4,8 +4,11 @@
 
 #include "BASE.h"
 
-#include "WriteBehind.hpp"
+#include "CmdLineArgs.hpp"
 #include "Row.hpp"
+#include "WriteBehind.hpp"
+
+extern CmdLineArgs gxCmdLineArgs;
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -48,28 +51,31 @@ void Loggable::vLog(eEV eEvent, Stz* szFormat, ...)
   _precondition_(_MAGIC_);
   UNUSED(eEvent);
     
+  if (! gxCmdLineArgs.m_xSysArgs.m_bEvents)
+    return;
+  
   if (C_DONT_LOG == m_iLogCtl)
     return;
  
   if (! AM::bHasStarted())
     return;
   
-  if (   CN_DIR == eGetClassNo()
-      || CN_FIFO == eGetClassNo()
-      || CN_FILE == eGetClassNo()
-      || CN_JOB == eGetClassNo()
-      || CN_JOB__FIND == eGetClassNo()
-      || CN_LOCK == eGetClassNo()
-      || CN_MUTEX == eGetClassNo()
-      || CN_OP == eGetClassNo()
-      || CN_OPERANDQUEUE == eGetClassNo()
-      || CN_PSXTHD == eGetClassNo()
-      || CN_SEPROMPT == eGetClassNo()
-      || CN_SESSION == eGetClassNo()
-      || CN_SOCKET == eGetClassNo()
-      || CN_TASK == eGetClassNo()
-      )
-    return;
+//  if (   CN_DIR == eGetClassNo()
+//      || CN_FIFO == eGetClassNo()
+//      || CN_FILE == eGetClassNo()
+//      || CN_JOB == eGetClassNo()
+//      || CN_JOB__FIND == eGetClassNo()
+//      || CN_LOCK == eGetClassNo()
+//      || CN_MUTEX == eGetClassNo()
+//      || CN_OP == eGetClassNo()
+//      || CN_OPERANDQUEUE == eGetClassNo()
+//      || CN_PSXTHD == eGetClassNo()
+//      || CN_SEPROMPT == eGetClassNo()
+//      || CN_SESSION == eGetClassNo()
+//      || CN_SOCKET == eGetClassNo()
+//      || CN_TASK == eGetClassNo()
+//      )
+//    return;
 
   s4K sNote;
   
