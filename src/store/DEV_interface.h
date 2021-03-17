@@ -55,10 +55,10 @@ void vDev_ENTWRK_PRINT    (i8** aaiDstk);
 void vDev_ENTWRK_RESET    (i8** aaiDstk);
 void vDev_ENTWRK_SETINTELM(i8** aaiDstk);
 
-void vDev_ROW_BEGIN      (i8** aaiDstk);
-void vDev_ROW_NEW        (i8** aaiDstk);
-void vDev_ROW_NEXT       (i8** aaiDstk);
-void vDev_ROW_NULL       (i8** aaiDstk);
+void vDev_ROW_ROWBUF_BEGIN (i8** aaiDstk);
+void vDev_ROW_NEW          (i8** aaiDstk);
+void vDev_ROW_ROWBUF_NEXT  (i8** aaiDstk);
+void vDev_ROW_ROWBUF_NULL  (i8** aaiDstk);
 void vDev_ROW_POPCOLI    (i8** aaiDstk);
 void vDev_ROW_POPCOLS    (i8** aaiDstk);
 void vDev_ROW_PRINT      (i8** aaiDstk);

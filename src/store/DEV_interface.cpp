@@ -962,7 +962,7 @@ void vDev_ENTWRK_SETINTELM(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* begin src row traverse                                                     */
 /*----------------------------------------------------------------------------*/
-void vDev_ROW_BEGIN(i8** aaiDstk)
+void vDev_ROW_ROWBUF_BEGIN(i8** aaiDstk)
 {
   _static_
 
@@ -1007,7 +1007,7 @@ void vDev_ROW_NEW(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* move to next src row                                                       */
 /*----------------------------------------------------------------------------*/
-void vDev_ROW_NEXT(i8** aaiDstk)
+void vDev_ROW_ROWBUF_NEXT(i8** aaiDstk)
 {
   _static_
 
@@ -1030,7 +1030,7 @@ void vDev_ROW_NEXT(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /*  set buffer to null                                                        */
 /*----------------------------------------------------------------------------*/
-void vDev_ROW_NULL(i8** aaiDstk)
+void vDev_ROW_ROWBUF_NULL(i8** aaiDstk)
 {
   _static_
 

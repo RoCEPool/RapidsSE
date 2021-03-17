@@ -252,10 +252,10 @@ enum eEO : u1 // expression operators
   /*    */ EO_DEVROW_TABLENM_SET, // set the table name in the row dev
 
   // row device row buffer operators
-  /*     */ EO_DEVROW_BEGIN,     // begin row traverse in row dev
-  /*     */ EO_DEVROW_NEXT,      // move to next src row in row dev
-  /*     */ EO_DEVROW_NEW,       // create new row in row dev
-  /*     */ EO_DEVROW_NULL,      // null rb src src in row dev
+  /*     */ EO_DEVROW_ROWBUF_BEGIN,     // begin row traverse in row dev
+  /*     */ EO_DEVROW_ROWBUF_NEXT,      // move to next src row in row dev
+  /*     */ EO_DEVROW_NEW,              // create new row in row dev
+  /*     */ EO_DEVROW_ROWBUF_NULL,      // null row buffer in the row dev
   /*     */ EO_DEVROW_PRINT,     // print row from row dev
   /*     */ EO_DEVROW_PUSHOFS,   // push offset of source row in row dev
   /*     */ EO_DEVROW_RESET,     // reset rowslab in row dev
@@ -555,10 +555,10 @@ static Stz* aEO[]
   /*    */ "EO_DEVROW_TABLENM_SET"_Stz,
 
   // row device row buffer operators
-  /*     */ "EO_DEVROW_BEGIN"_Stz,
-  /*     */ "EO_DEVROW_NEXT"_Stz,
+  /*     */ "EO_DEVROW_ROWBUF_BEGIN"_Stz,
+  /*     */ "EO_DEVROW_ROWBUF_NEXT"_Stz,
   /*     */ "EO_DEVROW_NEW"_Stz,
-  /*     */ "EO_DEVROW_NULL"_Stz,
+  /*     */ "EO_DEVROW_ROWBUF_NULL"_Stz,
   /*     */ "EO_DEVROW_PRINT"_Stz,
   /*     */ "EO_DEVROW_PUSHOFS"_Stz,
   /*     */ "EO_DEVROW_RESET"_Stz,
@@ -865,10 +865,10 @@ static EoArg EoArgs[]
   { EA_STRING, -1 },  // EO_DEVROW_TABLENM_SET
 
   // row device row buffer operators
-  { EA_NONE,    0 },  // EO_DEVROW_BEGIN
-  { EA_NONE,    0 },  // EO_DEVROW_NEXT
+  { EA_NONE,    0 },  // EO_DEVROW_ROWBUF_BEGIN
+  { EA_NONE,    0 },  // EO_DEVROW_ROWBUF_NEXT
   { EA_NONE,    0 },  // EO_DEVROW_NEW
-  { EA_NONE,    0 },  // EO_DEVROW_NULL
+  { EA_NONE,    0 },  // EO_DEVROW_ROWBUF_NULL
   { EA_NONE,    0 },  // EO_DEVROW_PRINT
   { EA_NONE,    0 },  // EO_DEVROW_PUSHOFS
   { EA_NONE,    0 },  // EO_DEVROW_RESET

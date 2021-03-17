@@ -2406,14 +2406,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
         // row device row buffer operators
-      case EO_DEVROW_BEGIN: ArgNil(); // begin row traverse
-        dLU0(EO_DEVROW_BEGIN);
-        vDev_ROW_BEGIN(&aiDstk);
+      case EO_DEVROW_ROWBUF_BEGIN: ArgNil(); // begin row traverse
+        dLU0(EO_DEVROW_ROWBUF_BEGIN);
+        vDev_ROW_ROWBUF_BEGIN(&aiDstk);
         break;//+endCase
 
-      case EO_DEVROW_NEXT: ArgNil(); // move to next row
-        dLU0(EO_DEVROW_NEXT);
-        vDev_ROW_NEXT(&aiDstk);
+      case EO_DEVROW_ROWBUF_NEXT: ArgNil(); // move to next row
+        dLU0(EO_DEVROW_ROWBUF_NEXT);
+        vDev_ROW_ROWBUF_NEXT(&aiDstk);
         break;//+endCase
 
       case EO_DEVROW_NEW: ArgNil(); // create new row
@@ -2422,9 +2422,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         aRluCommon->m_bPotCompleted = *(aiDstk--);
         break;//+endCase
 
-      case EO_DEVROW_NULL: ArgNil(); // null the buffer
-        dLU0(EO_DEVROW_NULL);
-        vDev_ROW_NULL(&aiDstk);
+      case EO_DEVROW_ROWBUF_NULL: ArgNil(); // null the buffer
+        dLU0(EO_DEVROW_ROWBUF_NULL);
+        vDev_ROW_ROWBUF_NULL(&aiDstk);
         break;//+endCase
 
       case EO_DEVROW_PRINT: ArgNil(); // print row
