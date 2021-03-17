@@ -192,8 +192,6 @@ enum eEO : u1 // expression operators
 
   // ixt device col operators
   /*  S  */ EO_DEVIXT_COL_LOCALS_ADR,    // inflate dev columns direct into locals (str as ptr)
-  /*  S  */ EO_DEVIXT_COL_PUSHSET_ADR,   // push column value from dev ixt (str as ptr)
-  /*  S  */ EO_DEVIXT_COL_PUSHSET_PST,   // push column subset from dev ixt
   /*  S  */ EO_DEVIXT_COL_PUSHSET_TOROW, // push all columns from ixt dev to row dev
   /*  S  */ EO_DEVROW_COL_LOCALS_ADR,    // row columns into locals
 
@@ -282,6 +280,10 @@ enum eEO : u1 // expression operators
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   // -- TO GO --
+
+  // dev col operators
+  /*  S  */ EO_DEVIXT_COL_PUSHSET_ADR,   // push column value from dev ixt (str as ptr)
+  /*  S  */ EO_DEVIXT_COL_PUSHSET_PST,   // push column subset from dev ixt
 
   // key
   /*  M  */ EO_KEY_LCL2C_TO_I,   // convert two local varchar(1) to int
@@ -493,8 +495,6 @@ static Stz* aEO[]
 
   // ixt device col operators
   /*    */ "EO_DEVIXT_COL_LOCALS_ADR"_Stz,
-  /*    */ "EO_DEVIXT_COL_PUSHSET_ADR"_Stz,
-  /*    */ "EO_DEVIXT_COL_PUSHSET_PST"_Stz,
   /*    */ "EO_DEVIXT_COL_PUSHSET_TOROW"_Stz,
   /*    */ "EO_DEVROW_COL_LOCALS_ADR"_Stz,
 
@@ -583,6 +583,10 @@ static Stz* aEO[]
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   // -- TO GO --
+
+  // dev col
+  /*    */ "EO_DEVIXT_COL_PUSHSET_ADR"_Stz,
+  /*    */ "EO_DEVIXT_COL_PUSHSET_PST"_Stz,
 
   // key
   /*    */ "EO_KEY_LCL2C_TO_I"_Stz,
@@ -801,8 +805,6 @@ static EoArg EoArgs[]
 
   // ixt device col operators
   { EA_NONE,    0 },  // EO_DEVIXT_COL_LOCALS_ADR
-  { EA_NONE,    0 },  // EO_DEVIXT_COL_PUSHSET_ADR
-  { EA_NONE,    0 },  // EO_DEVIXT_COL_PUSHSET_PST
   { EA_NONE,    0 },  // EO_DEVIXT_COL_PUSHSET_TOROW
   { EA_NONE,    0 },  // EO_DEVROW_COL_LOCALS_ADR
 
@@ -891,6 +893,10 @@ static EoArg EoArgs[]
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   // ---TO GO ---
+
+  // dev column
+  { EA_NONE,    0 },  // EO_DEVIXT_COL_PUSHSET_ADR
+  { EA_NONE,    0 },  // EO_DEVIXT_COL_PUSHSET_PST
 
   // key
   { EA_INT,     8 },  // EO_KEY_LCL2C_TO_I

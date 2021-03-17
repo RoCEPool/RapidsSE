@@ -1729,11 +1729,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         //*(++aiDstk) = -1;
         break;//+endCase
 
-//      case EO_SET_LOCALS_SRC: ArgGet(iArg); // inflate src columns direct into locals
-//        dLU0(EO_SET_LOCALS_SRC);
-//        vDev_IXT_COL_PUSHSET_ADR_LOCALS(&aiDstk, &giaVectorSet[iArg]);
-//        break;//+endCase
-
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // table ptn
       case EO_TABLEPTN_DROPREAD: ArgNil(); // drop the tableptn read lock
@@ -2155,16 +2150,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_IXT_COL_PUSHSET_ADR_LOCALS(&aiDstk);
         break;//+endCase
 
-      case EO_DEVIXT_COL_PUSHSET_ADR: ArgNil(); // push column value from dev crw
-        vDev_IXT_COL_PUSHSET_ADR(&aiDstk);
-        dLU0(EO_DEVIXT_COL_PUSHSET_ADR);
-        break;//+endCase
-
-      case EO_DEVIXT_COL_PUSHSET_PST: ArgNil(); // push column value from m_aAltCrw
-        vDev_IXT_COL_PUSHSET_PST(&aiDstk);
-        dLU0(EO_DEVIXT_COL_PUSHSET_PST);
-        break;//+endCase
-
       case EO_DEVIXT_COL_PUSHSET_TOROW: ArgNil(); // push column value from dev ixt to dev row
         vDev_IXT_COL_PUSHSET_TOROW(&aiDstk);
         dLU0(EO_DEVIXT_COL_PUSHSET_PST);
@@ -2546,6 +2531,18 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // -- TO GO --
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // ixt device col operators
+      case EO_DEVIXT_COL_PUSHSET_ADR: ArgNil(); // push column value from dev crw
+        vDev_IXT_COL_PUSHSET_ADR(&aiDstk);
+        dLU0(EO_DEVIXT_COL_PUSHSET_ADR);
+        break;//+endCase
+
+      case EO_DEVIXT_COL_PUSHSET_PST: ArgNil(); // push column value from dev
+        vDev_IXT_COL_PUSHSET_PST(&aiDstk); // colset / devrow / devixt
+        dLU0(EO_DEVIXT_COL_PUSHSET_PST);
+        break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // key
