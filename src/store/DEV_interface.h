@@ -55,6 +55,8 @@ void vDev_ENTWRK_PRINT    (i8** aaiDstk);
 void vDev_ENTWRK_RESET    (i8** aaiDstk);
 void vDev_ENTWRK_SETINTELM(i8** aaiDstk);
 
+void vDev_ROW_COLS_TO_LOCALS     (i8** aaiDstk);
+
 void vDev_ROW_ROW_NEW      (i8** aaiDstk);
 void vDev_ROW_ROW_PRINT    (i8** aaiDstk);
 void vDev_ROW_ROW_SET        (i8** aaiDstk);
@@ -80,11 +82,8 @@ void vDev_TABLEPTN_GRABREAD(void* aLU);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-void vDev_IXT_COL_PUSHSET_ADR       (i8** aaiDstk);
-void vDev_IXT_COL_PUSHSET_ADR_LOCALS(i8** aaiDstk);
-void vDev_IXT_COL_PUSHSET_PST       (i8** aaiDstk);
-void vDev_IXT_COL_PUSHSET_TOROW     (i8** aaiDstk);
-void vDev_ROW_COL_PUSHSET           (i8** aaiDstk);
+void vDev_IXT_COLS_TO_LOCALS     (i8** aaiDstk);
+void vDev_IXT_COLS_TO_ROW        (i8** aaiDstk);
 
 void vDev_POT_USE_STREAMDEFOUT(void* aLU, i8 iAddPtnHash);
 
@@ -94,7 +93,7 @@ void vDev_RLU_INDEXDEF_ADDCOLUMN(i8** aaiDstk);
 void vDev_RLU_INDEXDEF_DELETE   (i8** aaiDstk);
 void vDev_RLU_INDEXDEF_NEW      (i8** aaiDstk);
 void vDev_RLU_INDEXTREE_NEW     (i8** aaiDstk);
-void vDev_RLU_ROWPIX_PRINT(i8** aaiDstk);
+void vDev_RLU_ROWPIX_PRINT      (i8** aaiDstk);
 
 void vDev_REG_PTNSTREAM_CLOSE(void* aLU);
 void vDev_REG_PTNSTREAM_DELETE(void* aLU);
@@ -104,6 +103,9 @@ void vDev_REG_PTNSTREAM_READ(void* aLU);
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 // -TO GO with old demo queries -
+
+void vDev_IXT_COL_PUSHSET_ADR    (i8** aaiDstk);
+void vDev_IXT_COL_PUSHSET_PST    (i8** aaiDstk);
 
 Stz* szDev_ROW_PUSHCOLS(void* aLU, void* aROWDEVICE, i8 iArg);
 

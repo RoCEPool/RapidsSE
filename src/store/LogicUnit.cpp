@@ -2136,19 +2136,19 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // ixt device col operators
-      case EO_DEVIXT_COL_LOCALS_ADR: ArgNil(); // inflate src columns direct into locals
-        dLU0(EO_DEVIXT_COL_LOCALS_ADR);
-        vDev_IXT_COL_PUSHSET_ADR_LOCALS(&aiDstk);
+      case EO_DEVIXT_COLS_TO_LOCALS: ArgNil(); // inflate dev columns direct into locals
+        dLU0(EO_DEVIXT_COLS_TO_LOCALS);
+        vDev_IXT_COLS_TO_LOCALS(&aiDstk);      // locals / colset / devRow / devIxt
         break;//+endCase
 
-      case EO_DEVIXT_COL_PUSHSET_TOROW: ArgNil(); // push column value from dev ixt to dev row
-        vDev_IXT_COL_PUSHSET_TOROW(&aiDstk);
-        dLU0(EO_DEVIXT_COL_PUSHSET_PST);
+      case EO_DEVIXT_COLS_TO_ROW: ArgNil();    // inflate dev columns to dev row
+        dLU0(EO_DEVIXT_COLS_TO_ROW);
+        vDev_IXT_COLS_TO_ROW(&aiDstk);         // devRow / devIxt
         break;//+endCase
 
-      case EO_DEVROW_COL_LOCALS_ADR: ArgNil(); // row buffer columns of row dev into locals
-        dLU0(EO_DEVROW_COL_LOCALS_ADR);
-        vDev_ROW_COL_PUSHSET(&aiDstk);
+      case EO_DEVROW_COLS_TO_LOCALS: ArgNil(); // row buffer columns of row dev into locals
+        dLU0(EO_DEVROW_COLS_TO_LOCALS);
+        vDev_ROW_COLS_TO_LOCALS(&aiDstk);      // locals / colset / devRow
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

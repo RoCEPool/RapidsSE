@@ -1380,9 +1380,9 @@ void vDev_IXT_COL_PUSHSET_ADR(i8** aaiDstk)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push column value from m_aSrcCrw                                           */
+/* // inflate dev columns direct into locals                                  */
 /*----------------------------------------------------------------------------*/
-void vDev_IXT_COL_PUSHSET_ADR_LOCALS(i8** aaiDstk)
+void vDev_IXT_COLS_TO_LOCALS(i8** aaiDstk)
 {
   _static_
 
@@ -1448,9 +1448,9 @@ void vDev_IXT_COL_PUSHSET_PST(i8** aaiDstk)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push column value from m_aSrcCrw to dst row                                */
+/* inflate dev columns to dev row                                             */
 /*----------------------------------------------------------------------------*/
-void vDev_IXT_COL_PUSHSET_TOROW(i8** aaiDstk)
+void vDev_IXT_COLS_TO_ROW(i8** aaiDstk)
 {
   _static_
 
@@ -1473,9 +1473,9 @@ void vDev_IXT_COL_PUSHSET_TOROW(i8** aaiDstk)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push column value from m_aSrcCrw                                           */
+/* row buffer columns of row dev into locals                                  */
 /*----------------------------------------------------------------------------*/
-void vDev_ROW_COL_PUSHSET(i8** aaiDstk)
+void vDev_ROW_COLS_TO_LOCALS(i8** aaiDstk)
 {
   _static_
 

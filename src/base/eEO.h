@@ -190,9 +190,9 @@ enum eEO : u1 // expression operators
   /*  M  */ EO_RLU_POT_COMPLETED,          // do we have a full pot buffer ?
 
   // ixt device col operators
-  /*  S  */ EO_DEVIXT_COL_LOCALS_ADR,    // inflate dev columns direct into locals (str as ptr)
-  /*  S  */ EO_DEVIXT_COL_PUSHSET_TOROW, // push all columns from ixt dev to row dev
-  /*  S  */ EO_DEVROW_COL_LOCALS_ADR,    // row columns into locals
+  /*  S  */ EO_DEVIXT_COLS_TO_LOCALS,    // inflate dev columns direct into locals
+  /*  S  */ EO_DEVIXT_COLS_TO_ROW,       // push all columns from ixt dev to row dev
+  /*  S  */ EO_DEVROW_COLS_TO_LOCALS,     // row columns into locals
 
   // ixt device crwbuffer operators
   /*  S  */ EO_DEVIXT_CRWBUF_BEGIN, // begin crw buffer traverse
@@ -491,9 +491,9 @@ static Stz* aEO[]
   /*    */ "EO_RLU_POT_COMPLETED"_Stz,
 
   // ixt device col operators
-  /*    */ "EO_DEVIXT_COL_LOCALS_ADR"_Stz,
-  /*    */ "EO_DEVIXT_COL_PUSHSET_TOROW"_Stz,
-  /*    */ "EO_DEVROW_COL_LOCALS_ADR"_Stz,
+  /*    */ "EO_DEVIXT_COLS_TO_LOCALS"_Stz,
+  /*    */ "EO_DEVIXT_COLS_TO_ROW"_Stz,
+  /*    */ "EO_DEVROW_COLS_TO_LOCALS"_Stz,
 
   // ixt device crwbuffer operators
   /*    */ "EO_DEVIXT_CRWBUF_BEGIN"_Stz,
@@ -800,9 +800,9 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_RLU_POT_COMPLETED
 
   // ixt device col operators
-  { EA_NONE,    0 },  // EO_DEVIXT_COL_LOCALS_ADR
-  { EA_NONE,    0 },  // EO_DEVIXT_COL_PUSHSET_TOROW
-  { EA_NONE,    0 },  // EO_DEVROW_COL_LOCALS_ADR
+  { EA_NONE,    0 },  // EO_DEVIXT_COLS_TO_LOCALS
+  { EA_NONE,    0 },  // EO_DEVIXT_COLS_TOROW
+  { EA_NONE,    0 },  // EO_DEVROW_COLS_TO_LOCALS
 
   // ixt device crwbuffer operators
   { EA_NONE,    0 },  // EO_DEVIXT_CRWBUF_BEGIN
