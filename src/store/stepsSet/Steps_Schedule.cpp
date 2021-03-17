@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_Schedule.cpp - System Schedule step group                      */
+/* Steps_Schedule.cpp - System Schedule step group                            */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -7,7 +7,6 @@
 #include "EnterExit.h"
 #include "StepAccum.hpp"
 #include "Steps.hpp"
-
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -23,7 +22,7 @@ void Step::vAddSteps_Schedule(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Schedule::QueuesCheckSleeping -- check the sleeping queue            */
+/* Schedule::QueuesCheckSleeping -- check the sleeping queue                  */
 /*----------------------------------------------------------------------------*/
 void Step::vScheduleCheckSleeping(void)
 {
@@ -35,7 +34,7 @@ void Step::vScheduleCheckSleeping(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Schedule::QueuesExecutingLength -- get the executing queue length    */
+/* Schedule::QueuesExecutingLength -- get the executing queue length          */
 /*----------------------------------------------------------------------------*/
 void Step::vScheduleExecutingLength(void)
 {
@@ -51,7 +50,7 @@ void Step::vScheduleExecutingLength(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Schedule::QueuesReadyLength -- get the ready queue length            */
+/* Schedule::QueuesReadyLength -- get the ready queue length                  */
 /*----------------------------------------------------------------------------*/
 void Step::vScheduleReadyLength(void)
 {
@@ -67,7 +66,7 @@ void Step::vScheduleReadyLength(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Schedule::QueuesSleepingLength -- get the sleeping queue length      */
+/* Schedule::QueuesSleepingLength -- get the sleeping queue length            */
 /*----------------------------------------------------------------------------*/
 void Step::vScheduleSleepingLength(void)
 {
@@ -80,7 +79,7 @@ void Step::vScheduleSleepingLength(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Schedule::QueuesWaitingLength -- get the sleeping queue length       */
+/* Schedule::QueuesWaitingLength -- get the sleeping queue length             */
 /*----------------------------------------------------------------------------*/
 void Step::vScheduleWaitingLength(void)
 {
