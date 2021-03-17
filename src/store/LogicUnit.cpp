@@ -2155,72 +2155,72 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // ixt device crwbuffer operators
       case EO_DEVIXT_CRWBUF_BEGIN: ArgNil(); // begin row traverse
         dLU0(EO_DEVIXT_CRWBUF_BEGIN);
-        vDev_IXT_CRWBUF_BEGIN(&aiDstk);
+        vDev_IXT_CRWBUF_BEGIN(&aiDstk);      // devixt
         break;//+endCase
 
       case EO_DEVIXT_CRWBUF_NEXT: ArgNil(); // move to next row
         dLU0(EO_DEVIXT_CRWBUF_NEXT);
-        vDev_IXT_CRWBUF_NEXT(&aiDstk);
+        vDev_IXT_CRWBUF_NEXT(&aiDstk);      // devixt
         break;//+endCase
 
       case EO_DEVIXT_CRWBUF_NULL: ArgNil(); // null the crw
         dLU0(EO_DEVIXT_CRWBUF_NULL);
-        vDev_IXT_CRWBUF_NULL(&aiDstk);
+        vDev_IXT_CRWBUF_NULL(&aiDstk);      // devixt
         break;//+endCase
 
       case EO_DEVIXT_CRWBUF_TEST: ArgNil(); // test for crw
         dLU0(EO_DEVIXT_CRWBUF_TEST);
-        vDev_IXT_CRWBUF_TEST(&aiDstk);
+        vDev_IXT_CRWBUF_TEST(&aiDstk);      // devixt
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // ixt device entry operators
       case EO_DEVIXT_ENT_DEREF: ArgNil(); // deref Crw using m_aEnt.ref
         dLU0(EO_DEVIXT_ENT_DEREF);
-        vDev_IXT_ENT_DEREF(&aiDstk);
+        vDev_IXT_ENT_DEREF(&aiDstk);      // devixt
         break;//+endCase
 
       case EO_DEVIXT_ENT_FINDI: ArgNil(); // find entry with int key
         dLU0(EO_DEVIXT_ENT_FINDI);
         P_PushPtr(aRluCommon->m_aWrkEnt);
-        vDev_IXT_ENT_FIND(&aiDstk);
+        vDev_IXT_ENT_FIND(&aiDstk);       // devixt / entry
         break;//+endCase
         
       case EO_DEVIXT_ENT_NEXT: ArgNil(); // move to next m_pEnt
         dLU0(EO_DEVIXT_ENT_NEXT);
-        vDev_IXT_ENT_NEXT(&aiDstk);
+        vDev_IXT_ENT_NEXT(&aiDstk);      // devixt
         break;//+endCase
         
       case EO_DEVIXT_ENT_POSPRIOR: ArgNil(); // position m_pEnt prior using m_oEntWrk.key
         dLU0(EO_DEVIXT_ENT_POSPRIOR);
         P_PushPtr(aRluCommon->m_aWrkEnt);
-        vDev_IXT_ENT_POSPRIOR(&aiDstk);
+        vDev_IXT_ENT_POSPRIOR(&aiDstk);      // devixt / entry
         break;//+endCase
         
       case EO_DEVIXT_ENT_PUSH: ArgNil(); // push entry on the stack
         dLU0(EO_DEVIXT_ENT_PUSH);
-        vDev_IXT_ENT_PUSH(&aiDstk);
+        vDev_IXT_ENT_PUSH(&aiDstk);         // devixt
         break;//+endCase
         
       case EO_DEVIXT_ENT_PUSHELMI0: ArgNil(); // push entry elm 0 int
         dLU0(EO_DEVIXT_ENT_PUSHELMI0);
-        vDev_IXT_ENT_PUSHELMI0(&aiDstk);
+        vDev_IXT_ENT_PUSHELMI0(&aiDstk);      // devixt
         break;//+endCase
         
       case EO_DEVIXT_ENT_PUSHELMS0: ArgNil(); // push entry elm 0 str
         dLU0(EO_DEVIXT_ENT_PUSHELMS0);
-        vDev_IXT_ENT_PUSHELMS0(&aiDstk);
+        vDev_IXT_ENT_PUSHELMS0(&aiDstk);      // devixt
         break;//+endCase
         
       case EO_DEVIXT_ENT_PUSHUPPER: ArgNil(); // push entry on the stack
         dLU0(EO_DEVIXT_ENT_PUSHUPPER);
-        vDev_IXT_ENT_PUSHUPPER(&aiDstk);
+        vDev_IXT_ENT_PUSHUPPER(&aiDstk);      // devixt
         break;//+endCase
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // ixt device entry relational operators
       case EO_DEVIXT_ENTKEY_LESS: ArgNil(); // test if dev m_pEnt.key <  ent.key
-        vDev_IXT_ENT_COMPARE(&aiDstk);
+        vDev_IXT_ENT_COMPARE(&aiDstk);      // devixt / entry
         iCmp = *(aiDstk--);
         iRes = (KC_BEFORE == iCmp);
         dLU1(EO_DEVIXT_ENTKEY_LESS, iRes);
@@ -2228,7 +2228,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
       case EO_DEVIXT_ENTKEY_LESSEQUAL: ArgNil(); // test if dev m_pEnt.key <= m_oEntWrk.key
-        vDev_IXT_ENT_COMPARE(&aiDstk);
+        vDev_IXT_ENT_COMPARE(&aiDstk);           // devixt / entry
         iCmp = *(aiDstk--);
         iRes = (KC_BEFORE == iCmp || KC_SAME == iCmp);
         dLU1(EO_DEVIXT_ENTKEY_LESSEQUAL, iRes);
@@ -2236,8 +2236,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
       case EO_DEVIXT_ENTKEY_EQUAL: ArgNil(); // test if dev m_pEnt.key == m_oEntWrk.key
-        dLU0(EO_DEVIXT_ENTKEY_EQUAL);
-        vDev_IXT_ENT_COMPARE(&aiDstk);
+        vDev_IXT_ENT_COMPARE(&aiDstk);       // devixt / entry
         iCmp = *(aiDstk--);
         iRes = (KC_SAME == iCmp);
         dLU1(EO_DEVIXT_ENTKEY_EQUAL, iRes);
@@ -2245,8 +2244,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
       case EO_DEVIXT_ENTKEY_NOTEQUAL: ArgNil(); // test if dev m_pEnt.key != m_oEntWrk.key
-        dLU0(EO_DEVIXT_ENTKEY_NOTEQUAL);
-        vDev_IXT_ENT_COMPARE(&aiDstk);
+        vDev_IXT_ENT_COMPARE(&aiDstk);          // devixt / entry
         iCmp = *(aiDstk--);
         iRes = (KC_SAME != iCmp);
         dLU1(EO_DEVIXT_ENTKEY_NOTEQUAL, iRes);
@@ -2254,8 +2252,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
       case EO_DEVIXT_ENTKEY_GREATEREQUAL: ArgNil(); // test if dev m_pEnt.key >= m_oEntWrk.key
-        dLU0(EO_DEVIXT_ENTKEY_GREATEREQUAL);
-        vDev_IXT_ENT_COMPARE(&aiDstk);
+        vDev_IXT_ENT_COMPARE(&aiDstk);              // devixt / entry
         iCmp = *(aiDstk--);
         iRes = (KC_AFTER == iCmp || KC_SAME == iCmp);
         dLU1(EO_DEVIXT_ENTKEY_GREATEREQUAL, iRes);
@@ -2263,8 +2260,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
         
       case EO_DEVIXT_ENTKEY_GREATER: ArgNil(); // test if dev m_pEnt.key >  m_oEntWrk.key
-        dLU0(EO_DEVIXT_ENTKEY_GREATER);
-        vDev_IXT_ENT_COMPARE(&aiDstk);
+        vDev_IXT_ENT_COMPARE(&aiDstk);         // devixt / entry
         iCmp = *(aiDstk--);
         iRes = (KC_AFTER == iCmp);
         dLU1(EO_DEVIXT_ENTKEY_GREATER, iRes);
@@ -2272,89 +2268,91 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       case EO_DEVIXT_ENTKEY_PRINTKEYS: ArgNil(); // print dev m_pEnt.key and other working key
-        vDev_IXT_ENT_PRINTKEYS(&aiDstk);
+        vDev_IXT_ENT_PRINTKEYS(&aiDstk);         // devixt / entry
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // ixt device entwrk operators
       case EO_ENTWRK_PRINT: ArgNil(); // print m_oEntWrk
-        vDev_ENTWRK_PRINT(&aiDstk);
+        dLU0(EO_ENTWRK_PRINT);
+        vDev_ENTWRK_PRINT(&aiDstk);   // entry
         break;//+endCase
 
       case EO_ENTWRK_RESET: ArgNil(); // reset m_oEntWrk
         dLU0(EO_ENTWRK_RESET);
-        vDev_ENTWRK_RESET(&aiDstk);
+        vDev_ENTWRK_RESET(&aiDstk);   // entry
         break;//+endCase
 
       case EO_ENTWRK_SETINTELM: ArgNil(); // append next element value (int)
         dLU0(EO_ENTWRK_SETINTELM);
-        vDev_ENTWRK_SETINTELM(&aiDstk);
+        vDev_ENTWRK_SETINTELM(&aiDstk);   // int /entry
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // ixt device index operators
       case EO_DEVIXT_IDX_DEL: ArgNil(); // delete current m_aEnt from indexTree
         dLU0(EO_DEVIXT_IDX_DEL);
-        vDev_IXT_IDX_DEL(&aiDstk);
+        vDev_IXT_IDX_DEL(&aiDstk);      // devixt
         break;//+endCase
 
       case EO_DEVIXT_IDX_DUMP: ArgNil(); // dump index tree
         dLU0(EO_DEVIXT_IDX_DUMP);
-        vDev_IXT_IDX_DUMP(&aiDstk);
+        vDev_IXT_IDX_DUMP(&aiDstk);      // devixt
         break;//+endCase
 
       case EO_DEVIXT_IDX_ENTRIES: ArgNil(); // push number of entries in dev index
         dLU0(EO_DEVIXT_IDX_ENTRIES);
-        vDev_IXT_IDX_ENTRIES(&aiDstk);
+        vDev_IXT_IDX_ENTRIES(&aiDstk);      // devixt
         break;//+endCase
 
       case EO_DEVIXT_IDX_INS: ArgNil(); // insert an entry into the indexTree
         dLU0(EO_DEVIXT_IDX_INS);
-        vDev_IXT_IDX_INS(&aiDstk);
+        vDev_IXT_IDX_INS(&aiDstk);      // devixt/ entry
         break;//+endCase
 
       case EO_DEVIXT_IDX_BEGIN: ArgNil(); // begin linear traverse
         dLU0(EO_DEVIXT_IDX_BEGIN);
-        vDev_IXT_IDX_BEGIN(&aiDstk);
+        vDev_IXT_IDX_BEGIN(&aiDstk);      // devixt
         break;//+endCase
 
       case EO_DEVIXT_IDX_NEXT: ArgNil(); // traverse to next entry
         dLU0(EO_DEVIXT_IDX_NEXT);
-        vDev_IXT_IDX_NEXT(&aiDstk);
+        vDev_IXT_IDX_NEXT(&aiDstk);      // devixt
         break;//+endCase
         
       case EO_DEVIXT_LBOUND: ArgNil(); // pos in buffer to entry before LBOUND
         dLU0(EO_DEVIXT_LBOUND);
-        vDev_IXT_POS_LBOUND(&aiDstk);
+        vDev_IXT_POS_LBOUND(&aiDstk);  // entry / devixt
       break;//+endCase
 
-      case EO_DEVIXT_SRC_UBOUND: ArgNil(); // pos in buffer to entry for UBOUND
-        dLU0(EO_DEVIXT_SRC_UBOUND);
-        vDev_IXT_POS_UBOUND(&aiDstk);
+      case EO_DEVIXT_UBOUND: ArgNil(); // pos in buffer to entry for UBOUND
+        dLU0(EO_DEVIXT_UBOUND);
+        vDev_IXT_POS_UBOUND(&aiDstk);      // entry / devixt
         break;//+endCase
         
-      case EO_DEVIXT_SRC_UBOUND_LT: ArgNil(); // pos in buffer to entry for UBOUND
-        dLU0(EO_DEVIXT_SRC_UBOUND_LT);
-        vDev_IXT_POS_UBOUND_LT(&aiDstk);
+      case EO_DEVIXT_UBOUND_LT: ArgNil(); // pos in buffer to entry for UBOUND
+        dLU0(EO_DEVIXT_UBOUND_LT);
+        vDev_IXT_POS_UBOUND_LT(&aiDstk);  // entry / devixt
         break;//+endCase
         
       case EO_DEVIXT_CMP_KEYS: ArgNil(); // compare keys of two devices
         dLU0(EO_DEVIXT_CMP_KEYS);
-        vDev_IXT_CMP_KEYS(&aiDstk);
+        vDev_IXT_CMP_KEYS(&aiDstk);     // entry / entry
         break;//+endCase
 
       case EO_DEVIXT_POS_BYKEY: ArgNil(); // position alt ixt using src.key
         dLU0(EO_DEVIXT_POS_BYKEY);
-        vDev_IXT_POS_BYKEY(&aiDstk);
+        vDev_IXT_POS_BYKEY(&aiDstk);      // devixt / entry
         break;//+endCase
 
       case EO_DEVIXT_ENT_PRINT: ArgNil(); // print ent
-        vDev_IXT_ENT_PRINT(&aiDstk);
+        dLU0(EO_DEVIXT_ENT_PRINT);
+        vDev_IXT_ENT_PRINT(&aiDstk);      // devixt
         break;//+endCase
 
-        // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-        // ixt device index set operators
-      case EO_DEVIXT_INDEXNM_SET: GetStr(iArg); // inflate src columns direct into locals
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // ixt device index set operators
+      case EO_DEVIXT_INDEXNM_SET: GetStr(iArg); // set the index name
         dLU0(EO_DEVIXT_INDEXNM_SET);
         S_PushStr(iArg);
         vDev_IXT_INDEXNM_SET(&aiDstk);
@@ -2371,9 +2369,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         aRluCommon->m_pIndexTree = nullptr; // alka: come back to this
         break;//+endCase
 
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // row device entWrk operators
       case EO_DEVROW_ENTWRK_APPENDELMI: ArgNil(); // append next element value (int)
-        //iTopA = *(aiDstk--);
         dLU0(EO_DEVROW_ENTWRK_APPENDELMI);
         vDev_ROW_ENTWRK_APPENDELMI(&aiDstk);
         break;//+endCase

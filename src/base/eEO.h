@@ -232,9 +232,9 @@ enum eEO : u1 // expression operators
   /*  S  */ EO_DEVIXT_IDX_NEXT,     // traverse to next entry
   /*  S  */ EO_DEVIXT_IDX_ENTRIES,  // push number of entries in index
 
-  /*  D  */ EO_DEVIXT_LBOUND,   // position at lower bound
-  /*  D  */ EO_DEVIXT_SRC_UBOUND,// get upper bound
-  /*  D  */ EO_DEVIXT_SRC_UBOUND_LT, // get upper bound (less than)
+  /*  D  */ EO_DEVIXT_LBOUND,    // position at lower bound
+  /*  D  */ EO_DEVIXT_UBOUND,    // get upper bound
+  /*  D  */ EO_DEVIXT_UBOUND_LT, // get upper bound (less than)
   /*  D  */ EO_DEVIXT_CMP_KEYS,  // compare keys of two devices
   /*  D  */ EO_DEVIXT_POS_BYKEY, // position dev ixt by key
   /*  D  */ EO_DEVIXT_ENT_PRINT, // print ent
@@ -534,8 +534,8 @@ static Stz* aEO[]
   /*    */ "EO_DEVIXT_IDX_ENTRIES"_Stz,
 
   /*    */ "EO_DEVIXT_LBOUND"_Stz,
-  /*    */ "EO_DEVIXT_SRC_UBOUND"_Stz,
-  /*    */ "EO_DEVIXT_SRC_UBOUND_LT"_Stz,
+  /*    */ "EO_DEVIXT_UBOUND"_Stz,
+  /*    */ "EO_DEVIXT_UBOUND_LT"_Stz,
   /*    */ "EO_DEVIXT_CMP_KEYS"_Stz,
   /*    */ "EO_DEVIXT_POS_BYKEY"_Stz,
   /*    */ "EO_DEVIXT_ENT_PRINT"_Stz,
@@ -843,8 +843,8 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_DEVIXT_IDX_ENTRIES
 
   { EA_NONE,    0 },  // EO_DEVIXT_LBOUND
-  { EA_NONE,    0 },  // EO_DEVIXT_SRC_UBOUND
-  { EA_NONE,    0 },  // EO_DEVIXT_SRC_UBOUND_LT
+  { EA_NONE,    0 },  // EO_DEVIXT_UBOUND
+  { EA_NONE,    0 },  // EO_DEVIXT_UBOUND_LT
   { EA_NONE,    0 },  // EO_DEVIXT_CMP_KEYS
   { EA_NONE,    0 },  // EO_DEVIXT_POS_BYKEY
   { EA_NONE,    0 },  // EO_DEVIXT_ENT_PRINT

@@ -180,9 +180,6 @@ void vDev_IXT_ENT_DEREF(i8** aaiDstk)
   //pop the device
   DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
 
-  //pDevIxt->m_aCrw  =
-  //  CrwBuffer::pRefdCrw(pDevIxt->m_aEnt->rxRef());
-
   i8 iBuffer = ((Ent_int*)pDevIxt->m_aEnt)->Rrf.m_uBuffer;
   i8 iItem   = ((Ent_int*)pDevIxt->m_aEnt)->Rrf.m_uItem;
 
@@ -302,13 +299,6 @@ void vDev_IXT_ENT_POSPRIOR(i8** aaiDstk)
   pDevIxt->m_aEnt =
     pDevIxt->m_pIdxTree->aPositionPriorEntry(pEnt->aKey(),
                                              &pDevIxt->m_pEntBuffer);
-  
-//  if (pDevIxt->m_pEntBuffer) {
-//    pLogicUnit->m_xRluCommon.m_aEntArray =
-//      (Ent_int*)pDevIxt->m_pEntBuffer->aEntArray();
-//
-//    //*aaSkipRoots = (Ent_int*)pDevIxt->m_pEntBuffer->aSkipRoots();
-//  }
   
   P_PushPtr(pDevIxt->m_aEnt);
 
