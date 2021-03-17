@@ -549,6 +549,27 @@
                   ]
                 }, // EndPath: /__root__/definitions/object/expr/columnWildcard
 
+// Path: /__root__/definitions/object/expr/columnOrdinal
+                {
+                  name: "columnOrdinal",
+                  value: "A reference to a column by its ordinal number (1-based)",
+                  properties: [
+                    // The value field of an instance of a columnOrdinal object must be an integer type
+                    {name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                      {
+                        name: "valueType",
+                        type:  "/__root__/primitives/constraints/valueType",
+                        children: [{
+                          name: "valueTypeParam",
+                          value: "/__root__/primitives/types/scalarType/integer",
+                          type: "/__root__/definitions/object/valueObject/stringObject"
+                        }]
+                      }
+                    ]}
+
+                  ]
+                }, // EndPath: /__root__/definitions/object/expr/columnOrdinal
+
 // Path: /__root__/definitions/object/expr/literal
                 {
                   name: "literal",
@@ -1750,7 +1771,7 @@
                     // TODO: method?
                     // TODO: is primary key?
                   ]
-                }, // EndPath: /__root__/definitions/object/compound/columnDef
+                }, // EndPath: /__root__/definitions/object/compound/indexDef
 
               ]
             }, // EndPath: /__root__/definitions/object/compound

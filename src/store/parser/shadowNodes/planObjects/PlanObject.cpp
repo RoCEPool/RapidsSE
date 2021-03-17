@@ -57,7 +57,7 @@ void PlanObject::vDescribe(PlanNode* pNode, s2K& sBuf)
 /*----------------------------------------------------------------------------*/
 /* Recurses down the query plan and writes the explain of the stmt to the buf */
 /*----------------------------------------------------------------------------*/
-void PlanObject::vExplain(PlanNode* pNode, s48K& sBuf, i8 iIndent)
+void PlanObject::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iIndent)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -66,8 +66,8 @@ void PlanObject::vExplain(PlanNode* pNode, s48K& sBuf, i8 iIndent)
 
   // Manual polymorphism here
 
-  if      (  Statement::bIsOfType(pNode))   {   Statement::vExplain(pNode, sBuf, iIndent);  }
-  else if (SqlOperator::bIsOfType(pNode))   { SqlOperator::vExplain(pNode, sBuf, iIndent);  }
+  if      (  Statement::bIsOfType(pNode))   {   Statement::vExplain(pNode, pRootNode, sBuf, iIndent);  }
+  else if (SqlOperator::bIsOfType(pNode))   { SqlOperator::vExplain(pNode, pRootNode, sBuf, iIndent);  }
 
   else {
     // Need to add in manual polymorphism here
@@ -87,7 +87,7 @@ b1 PlanObject::bIsOfType(PlanNode *pNode)
 
 /*----------------------------------------------------------------------------*/
 /* Return a list of ProjectedExprs that represent the column expressions      */
-/* that this PlanObject will return. All nodes returned here must be freed.   */
+/* that this PlanObject will return. All nodes and the list must be freed.    */
 /*----------------------------------------------------------------------------*/
 PlanNodeList* PlanObject::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
 {

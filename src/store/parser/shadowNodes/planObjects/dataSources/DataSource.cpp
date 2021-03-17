@@ -50,20 +50,18 @@ void DataSource::vDescribe(PlanNode* pNode, s2K& sBuf)
 /*----------------------------------------------------------------------------*/
 /* Recurses down the query plan and writes the explain of the stmt to the buf */
 /*----------------------------------------------------------------------------*/
-void DataSource::vExplain(PlanNode* pNode, s48K& sBuf, i8 iIndent)
+void DataSource::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iIndent)
 {
   _static_
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pExpr = static_cast<QueryNode*>(pNode);
-
   // Manual polymorphism here
 
   // TableScanOp
-  if      (TableScanOp::bIsOfType(pNode))   { TableScanOp::vExplain(pNode, sBuf, iIndent); }
+  if      (TableScanOp::bIsOfType(pNode))   { TableScanOp::vExplain(pNode, pRootNode, sBuf, iIndent); }
 
   // IndexScanOp
-  //else if (IndexScanOp::bIsOfType(pNode))   { IndexScanOp::vExplain(pNode, sBuf, iIndent); }
+  //else if (IndexScanOp::bIsOfType(pNode))   { IndexScanOp::vExplain(pNode, pRootNode, sBuf, iIndent); }
 
   else {
     // Need to add in manual polymorphism here
@@ -151,7 +149,7 @@ PlanNodeList* DataSource::pColumnDefs(QueryNode* pNode, PlanNode* pRootNode)
 
 /*----------------------------------------------------------------------------*/
 /* Return a list of ProjectedExprs that represent the column expressions      */
-/* that this PlanObject will return. All nodes returned here must be freed.   */
+/* that this PlanObject will return. All nodes and the list must be freed.    */
 /*----------------------------------------------------------------------------*/
 PlanNodeList* DataSource::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
 {

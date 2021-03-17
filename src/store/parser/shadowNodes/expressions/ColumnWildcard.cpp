@@ -119,7 +119,7 @@ eCT ColumnWildcard::eType(QueryNode* pNode, PlanNode* pRootNode)
 
   // This should never be called. The ColumnWildcard should instead be replaced
   // with specific ColumnRefs once the tables in the plan have been resolved.
-  return CT_NONE;
+  NEVER_REACH
 }
 
 /*----------------------------------------------------------------------------*/
