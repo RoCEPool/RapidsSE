@@ -88,7 +88,7 @@ void Loggable::vLog(eEV eEvent, Stz* szFormat, ...)
   
   va_end(xVarArgs);
   
-  //vAddRow(eEvent,sNote);
+  vAddRow(eEvent,sNote);
 }
 
 /*----------------------------------------------------------------------------*/
