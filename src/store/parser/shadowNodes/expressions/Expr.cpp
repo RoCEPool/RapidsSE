@@ -14,6 +14,17 @@
 #include "ColumnOrdinal.hpp"
 #include "OperatorExpr.hpp"
 #include "ProjectedExpr.hpp"
+#include "AdditionExpr.hpp"
+#include "MultiplicationExpr.hpp"
+#include "AndExpr.hpp"
+#include "OrExpr.hpp"
+#include "XorExpr.hpp"
+#include "EqExpr.hpp"
+#include "NeExpr.hpp"
+#include "LtExpr.hpp"
+#include "GtExpr.hpp"
+#include "LeExpr.hpp"
+#include "GeExpr.hpp"
 
 #include "GraphNav.hpp"
 #include "SqlException.hpp"
@@ -266,6 +277,7 @@ QueryNode* Expr::pSymbolicToOrdinal(QueryNode*    pSymbolicExpr,
 /*----------------------------------------------------------------------------*/
 b1 Expr::bIsSymbolicallyEqual(QueryNode* pExpr1, QueryNode* pExpr2)
 {
+  // Are we comparising the same actual objects?
   if (pExpr1 == pExpr2) return true;
 
   // Is one of them not null and the other null?
@@ -275,8 +287,12 @@ b1 Expr::bIsSymbolicallyEqual(QueryNode* pExpr1, QueryNode* pExpr2)
   // We don't compare names as they are allowed to be different
   // (except in the case of properties, but see below).
 
-  // Types must match
-  if (!pExpr1->szType()->bEqual(pExpr2->szType())) return false;
+  // The type of the expressions must must match
+  if (!pExpr1->szType()->bEqual(pExpr2->szType())) {
+    // if the types are not equal, then are the at least comparable?
+    //  e.g. A<B is symbolically equal to B>A
+    return bIsMathematicallyEqual(pExpr1, pExpr2);
+  }
 
   // Special case: the property values for ColumnRef nodes need to
   // be compared in a case insensitive way.
@@ -290,7 +306,10 @@ b1 Expr::bIsSymbolicallyEqual(QueryNode* pExpr1, QueryNode* pExpr2)
   // All properties must match. Ideally they shouldn't need to be in
   // the same order, but it is simpler this way for now.
   if (pExpr1->nProperties() != pExpr2->nProperties()) return false;
+
   if (pExpr1->nProperties() > 0) {
+    b1 bPropertiesEqual = true;
+
     PlanNodeIter* pIter1 = pExpr1->pNewPropertyIter();
     PlanNodeIter* pIter2 = pExpr2->pNewPropertyIter();
 
@@ -299,21 +318,31 @@ b1 Expr::bIsSymbolicallyEqual(QueryNode* pExpr1, QueryNode* pExpr2)
       QueryNode* pProp2 = static_cast<QueryNode*>(pIter2->pNext());
 
       // Compare the properties
-      if (!bIsSymbolicallyEqual(pProp1, pProp2)) return false;
+      if (!bIsSymbolicallyEqual(pProp1, pProp2)) {
+        bPropertiesEqual = false;
+        break;
+      }
 
       // Both properties should also have the same name
-      if (!pProp1->szName()->bEqual(pProp2->szName())) return false;
+      if (!pProp1->szName()->bEqual(pProp2->szName())) {
+        bPropertiesEqual = false;
+        break;
+      }
     }
 
     delete pIter1;
     delete pIter2;
+
+    if (!bPropertiesEqual) return false;
   }
 
   // All children must match and must be in the same order.
-  // TODO: There are a number of operations where the order of children is
-  //  not significant to the outcome. e.g. (1 + col2) == (col2 + 1)
+  // If this fails then we will check for the commutative property.
   if (pExpr1->nChildren() != pExpr2->nChildren()) return false;
+
   if (pExpr1->nChildren() > 0) {
+    b1 bChildrenEqual = true;
+
     PlanNodeIter* pIter1 = pExpr1->pNewChildrenIter();
     PlanNodeIter* pIter2 = pExpr2->pNewChildrenIter();
 
@@ -322,11 +351,22 @@ b1 Expr::bIsSymbolicallyEqual(QueryNode* pExpr1, QueryNode* pExpr2)
       QueryNode* pChild2 = static_cast<QueryNode*>(pIter2->pNext());
 
       // Compare the children
-      if (!bIsSymbolicallyEqual(pChild1, pChild2)) return false;
+      if (!bIsSymbolicallyEqual(pChild1, pChild2)) {
+        bChildrenEqual = false;
+        break;
+      }
     }
 
     delete pIter1;
     delete pIter2;
+
+    if (!bChildrenEqual) {
+      // Children are not equal, but maybe we've got a commutative operator
+      // such as the AddOp, where A+B is symbolically the same as B+A.
+      // Check that the expression is commutative and check if the expressions
+      // are symbolically equal by rearranging the order of their children.
+      if (!bIsCommutativelyEqual(pExpr1, pExpr2)) return false;
+    }
   }
 
   // The two expressions must be symbolically equal
@@ -360,6 +400,114 @@ b1 Expr::bIsOrdinal(QueryNode* pExpr)
 
   return bIsOrdinal;
 }
+
+/*----------------------------------------------------------------------------*/
+/* Compare two expression trees and return true if they are equal with        */
+/* respect to the operations and symbols used.                                */
+/*----------------------------------------------------------------------------*/
+b1 Expr::bIsCommutativelyEqual(QueryNode* pExpr1, QueryNode* pExpr2)
+{
+  ASSERT(pExpr1 != pExpr2);
+  ASSERT(pExpr1);
+  ASSERT(pExpr2);
+  ASSERT(pExpr1->szType()->bEqual(pExpr2->szType()));
+
+  // First check that we've got a commutative operator
+  b1 bCommutativeExpr =
+            AdditionExpr::bIsOfType(pExpr1) ||
+      MultiplicationExpr::bIsOfType(pExpr1) ||
+                 AndExpr::bIsOfType(pExpr1) ||
+                  OrExpr::bIsOfType(pExpr1) ||
+                 XorExpr::bIsOfType(pExpr1) ||
+                  EqExpr::bIsOfType(pExpr1) ||
+                  NeExpr::bIsOfType(pExpr1) ;
+
+  if (!bCommutativeExpr) {
+    return false;
+  }
+
+  ASSERT(pExpr1->nChildren() == 2);
+  ASSERT(pExpr1->nChildren() == pExpr2->nChildren());
+
+  // We already know that the two expressions are not symbolically equal as
+  // they are. But if the types are the same and both have two children, what
+  // if we symbolically compare:
+  //   pExpr1->pChild1() and pExr2->pChild2()
+  //   and
+  //   pExpr1->pChild2() and pExr2->pChild1()
+  // If these are symbolically equal then the two parent expressions are also
+  // symbolically equal.
+
+  QueryNode* pChild1 = static_cast<QueryNode*>(pExpr1->pFirstChild());
+  QueryNode* pChild2 = static_cast<QueryNode*>(pExpr2->pSecondChild());
+
+  if (!bIsSymbolicallyEqual(pChild1, pChild2)) {
+    return false;
+  }
+
+  pChild1 = static_cast<QueryNode*>(pExpr1->pSecondChild());
+  pChild2 = static_cast<QueryNode*>(pExpr2->pFirstChild());
+
+  b1 bIsEqual = bIsSymbolicallyEqual(pChild1, pChild2);
+  return bIsEqual;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Compare two expression trees and return true if they are equal with        */
+/* respect to the operations and symbols used.                                */
+/*----------------------------------------------------------------------------*/
+b1 Expr::bIsMathematicallyEqual(QueryNode* pExpr1, QueryNode* pExpr2)
+{
+  ASSERT(pExpr1 != pExpr2);
+  ASSERT(pExpr1);
+  ASSERT(pExpr2);
+
+  if (pExpr1->nChildren() != 2) return false;
+  if (pExpr1->nChildren() != pExpr2->nChildren())  return false;
+
+
+  QueryNode* pChild11 = static_cast<QueryNode*>(pExpr1->pFirstChild());
+  QueryNode* pChild12 = static_cast<QueryNode*>(pExpr1->pSecondChild());
+  QueryNode* pChild21 = static_cast<QueryNode*>(pExpr2->pFirstChild());
+  QueryNode* pChild22 = static_cast<QueryNode*>(pExpr2->pSecondChild());
+
+  // First check that we've got compatible operators
+
+  // Comparing: < and > operators
+  // Check if the following combinations of expression operator types are equal
+  //   <  and >
+  //   >  and <
+  //   <= and >=
+  //   >= and <=
+  if ( (LtExpr::bIsOfType(pExpr1) && GtExpr::bIsOfType(pExpr2)) ||
+       (GtExpr::bIsOfType(pExpr1) && LtExpr::bIsOfType(pExpr2)) ||
+       (LeExpr::bIsOfType(pExpr1) && GeExpr::bIsOfType(pExpr2)) ||
+       (GeExpr::bIsOfType(pExpr1) && LeExpr::bIsOfType(pExpr2)) )
+  {
+    // child11 < child12 is symbolically to  child21 > child22
+    //  if child11 is symbolically equal to child22
+    // and child12 is symbolically equal to child21
+    return bIsSymbolicallyEqual(pChild11, pChild22) && bIsSymbolicallyEqual(pChild12, pChild21);
+  }
+
+  // TODO: We can add in other checks here as they come up
+  // TODO: e.g.
+  // TODO:    A  = B   <-->  A-B = 0   (and vice versa)
+  // TODO:    A  = B+C <-->  A-C = B   (and vice versa)
+  // TODO:    A  = B+C <-->  A-B = C
+  // TODO:    A  <  B  <-->  A-B <  0
+  // TODO:    A  <= B  <-->  A-B <= 0
+  // TODO:    A  >  B  <-->  A-B >  0
+  // TODO:    A  >= B  <-->  A-B >= 0
+  // TODO:
+  // TODO:    De Morgan's Laws:
+  // TODO:      NOT(A OR B)  <--> NOT(A) AND NOT(B)
+  // TODO:      NOT(A AND B) <--> NOT(A) OR NOT(B)
+
+
+  return false;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */
