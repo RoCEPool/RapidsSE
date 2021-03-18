@@ -213,25 +213,21 @@ b1 AggregateOp::bIsOfType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 i8 AggregateOp::nGroups(QueryNode* pNode)
 {
-  Parser::PlanNode *pGroupByExprs =
+  QueryNode *pGroupByExprs =
       static_cast<QueryNode*>(GraphNav::pFindProperty(const_cast<Stz *>(C_GROUPBY_PROP), pNode));
 
   return pGroupByExprs->nChildren();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Return an iterator to the groupby expression list. Must be freed afterwards*/
+/* Returns the internal node that represents a list of groupby expressions    */
 /*----------------------------------------------------------------------------*/
-PlanNodeIter* AggregateOp::pGroupByIter(QueryNode* pNode)
+QueryNode* AggregateOp::pGroupByList(QueryNode* pNode)
 {
-  Parser::PlanNode *pGroupByExprs =
+  QueryNode *pGroupByExprs =
       static_cast<QueryNode*>(GraphNav::pFindProperty(const_cast<Stz *>(C_GROUPBY_PROP), pNode));
 
-  if (pGroupByExprs->nChildren() == 0) {
-    return nullptr;
-  }
-
-  return pGroupByExprs->pNewChildrenIter();
+  return pGroupByExprs;
 }
 
 /*============================================================================*/

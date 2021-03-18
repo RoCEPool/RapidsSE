@@ -27,8 +27,11 @@ namespace Parser
     // Returns the number of groupby expressions
     static i8 nGroups(QueryNode* pNode);
 
-    // Return an iterator to the groupby expression list. Must be freed afterwards.
-    static PlanNodeIter* pGroupByIter(QueryNode* pNode);
+    // Returns the internal node that represents a list of groupby expressions. Each groupby
+    // expression can be iterated by calling pNewChildrenIter() on the returned node
+    static QueryNode* pGroupByList(QueryNode* pNode);
+
+
 
   protected:
 

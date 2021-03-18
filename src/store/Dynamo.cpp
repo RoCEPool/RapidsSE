@@ -1445,7 +1445,8 @@ void Dynamo::vAppendAggregateOp(String* sPipeline, QueryNode* pNode)
       sPipeline->vCatSprint(" groupBy "_Stz);
       bFirstExpr = false;
 
-      PlanNodeIter *pGroupByIter = AggregateOp::pGroupByIter(pNode);
+      QueryNode *pGroupByList = AggregateOp::pGroupByList(pNode);
+      PlanNodeIter *pGroupByIter = pGroupByList->pNewChildrenIter();
       while (pGroupByIter->bHasNext()) {
 
         // append comma
