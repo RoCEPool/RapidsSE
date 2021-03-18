@@ -22,7 +22,6 @@
 
   <sqlStatement> sqlCompiler::parser to Operand[]
   Operand[].isNull if
-    EC_INVALID_COMMAND op.pipelineJob@ ERROR_JOB !!logError
     InfoSet[].pipeOut
     Pipein[].delete
     Operand[].newErrorMarker
