@@ -35,6 +35,7 @@ namespace STORE
     void vAddIndex(IndexTree* pIndexTree);
     Crw* aAllotFixedSizeCrw(Rrf& xRowRef);
     void vAppendBuffer(CrwBuffer* pCrwBuffer);
+    void vAppendBuffer(RowBuffer* pRowBuffer);
     void vAppendRow(RowCompactor* pRowCompactor, RowSingle* pRow);
     i8   nCrwBuffers(void);
     void vDeleteRow(IndexTree* pIndexTree, EntBuffer* pEntBuffer, Ent* aEnt);

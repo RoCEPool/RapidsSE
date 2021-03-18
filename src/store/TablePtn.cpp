@@ -149,7 +149,7 @@ Crw* TablePtn::aAllotFixedSizeCrw(Rrf& xRowRef)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append a row buffer into the TablePtn                                      */
+/* append a crw buffer into the TablePtn                                      */
 /*----------------------------------------------------------------------------*/
 void TablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
 {
@@ -190,13 +190,23 @@ void TablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set the root buffer
+  // set the current buffer
   m_pCurrentCrwBuffer = pCrwBuffer;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // now insert entries from the buffer into the indexes
   vInsertIndexEntries(pCrwBuffer);
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* append a row buffer into the TablePtn                                      */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vAppendBuffer(RowBuffer* pRowBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/
