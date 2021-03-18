@@ -13,7 +13,7 @@ count;
 failure contains: "invalid command"
 
 count x;
-failure contains: "EC_NO_SUCH_TABLE"
+failure contains: "Table does not exist"
 
 count customer;
 rows:

@@ -28,7 +28,7 @@ pipeline unionAll_I
 
 end ;
 
-failure contains: "EC_NO_SUCH_TABLE"
+failure contains: "Table does not exist"
 
 MemoryLeaks;
 rows: 0
@@ -78,7 +78,7 @@ pipeline unionAll_I
     output | sink | stageA
 
 end ;
-failure contains: "EC_NO_SUCH_TABLE"
+failure contains: "Table does not exist"
 
 //------------------------------------------------------------------------------
 create table orders (

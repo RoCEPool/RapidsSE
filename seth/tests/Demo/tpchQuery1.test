@@ -25,7 +25,7 @@ group by
 order by
   l_returnflag,
   l_linestatus;
-failure contains: "EC_NO_SUCH_TABLE"
+failure contains: "Table does not exist"
 
 //------------------------------------------------------------------------------
 // create table lineitem

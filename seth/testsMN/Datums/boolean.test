@@ -82,7 +82,7 @@ dumpidx bolTbl bol_idx1;
 
 // export to non-existent dir
 export bolTbl "/noDir/bolTbl.csv";
-failure contains: 'EC_INVALID_FILE'
+failure contains: "File does not exist"
 
 // export a non-existent table
 export bolTbl1 "/tmp/bolTbl.csv";

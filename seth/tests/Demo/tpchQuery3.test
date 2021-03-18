@@ -28,7 +28,7 @@ order by
   o_orderdate
 limit 10;
 
-failure contains: "EC_NO_SUCH_TABLE"
+failure contains: "Table does not exist"
 
 //------------------------------------------------------------------------------
 // create table lineitem
