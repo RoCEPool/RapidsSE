@@ -67,7 +67,12 @@ DataBuffer* DataBuffer::pRefdDataBuffer(Rrf& xRef)
   reinterpret_cast<DataBuffer*>(pHeapBuffer->aFirstChunk());
   
   ASSERT(pDataBuffer);
-  ASSERT(pDataBuffer->eGetClassNo() == CN_CRWBUFFER || pDataBuffer->eGetClassNo() == CN_CRVBUFFER);
+  ASSERT(   pDataBuffer->eGetClassNo() == CN_CRVBUFFER
+         || pDataBuffer->eGetClassNo() == CN_CRWBUFFER
+         || pDataBuffer->eGetClassNo() == CN_CSVBUFFER
+         || pDataBuffer->eGetClassNo() == CN_ENTBUFFER
+         || pDataBuffer->eGetClassNo() == CN_ROWBUFFER
+         );
   
   return pDataBuffer;
 }

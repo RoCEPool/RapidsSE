@@ -52,17 +52,28 @@ void Step::vTablePtnAppendBuffer(void)
 {
   ENTRY();
   
-  // get the CrwBuffer
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pDataStack->pPopPtr(__func__));
-  
-  ASSERT(! pCrwBuffer->pNextItem());
-  ASSERT(! pCrwBuffer->pPrevItem());
+  DataBuffer* pDataBuffer = _pDataBuffer(m_pDataStack->pPopPtr(__func__));
+  ASSERT(! pDataBuffer->pNextItem());
+  ASSERT(! pDataBuffer->pPrevItem());
 
   // get the tablePtn from the register
   TablePtn* pTablePtn = _pTablePtn(*( m_pJob->pLogicUnit_job() )->m_xpTablePtn);
   
   // append the buffer to the tablePtn
-  pTablePtn->vAppendBuffer(pCrwBuffer);
+  
+  eCN eClassNo = pDataBuffer->eGetClassNo();
+  if (CN_CRWBUFFER == eClassNo) {
+    CrwBuffer* pCrwBuffer = _pCrwBuffer(pDataBuffer);
+    pTablePtn->vAppendBuffer(pCrwBuffer);
+  }
+  else if (CN_ROWBUFFER == eClassNo) {
+    RowBuffer* pRowBuffer = _pRowBuffer(pDataBuffer);
+    NEVER_REACH;
+    //pTablePtn->vAppendBuffer(pRowBuffer);
+  }
+  else {
+    NEVER_REACH;
+  }
   
   EXIT();
 }
