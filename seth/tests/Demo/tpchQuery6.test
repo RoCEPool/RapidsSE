@@ -170,6 +170,9 @@ and l_quantity < 24;
 unordered rows:
 ( 123140554.79 )
 
+drop table lineitem;
+success
+
 CLEANUP {
   
   drop table lineitem;
