@@ -217,11 +217,11 @@ QueryNode* Expr::pSymbolicToOrdinal(QueryNode*    pSymbolicExpr,
     QueryNode* pProjectedExpr = static_cast<QueryNode*>(pIter->pNext());
     QueryNode* pColExpr = ProjectedExpr::pExprNode(pProjectedExpr);
 
-    s2K sBuf1;
-    s2K sBuf2;
-    Expr::vDescribe(pSymbolicExpr, sBuf1);
-    Expr::vDescribe(pColExpr, sBuf2);
-    vTrace("bIsSymbolicallyEqual:\n  %s\n  %s\n\n"_Stz, sBuf1.szStz(), sBuf2.szStz());
+//    s2K sBuf1;
+//    s2K sBuf2;
+//    Expr::vDescribe(pSymbolicExpr, sBuf1);
+//    Expr::vDescribe(pColExpr, sBuf2);
+//    vTrace("bIsSymbolicallyEqual:\n  %s\n  %s\n\n"_Stz, sBuf1.szStz(), sBuf2.szStz());
 
     if (Expr::bIsSymbolicallyEqual(pSymbolicExpr, pColExpr)) {
       // Create an ordinal expression that represents this entire expression

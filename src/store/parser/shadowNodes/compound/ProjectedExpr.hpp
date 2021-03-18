@@ -4,11 +4,11 @@
 #pragma once
 
 #include "ShadowNode.hpp"
+#include "PlanNode.hpp"
 
 namespace Parser
 {
   class QueryNode;
-  class PlanNode;
 
   class ProjectedExpr : public ShadowNode
   {
@@ -21,6 +21,7 @@ namespace Parser
     static Stz*       szAliasName(QueryNode* pQueryNode);
     static QueryNode* pCreate(QueryNode* pExprNode, Text* pAlias);
     static void       vDescribe(PlanNode* pNode, s2K& sBuf);
+    static void       vDescribe(PlanNode* pNode, s2K& sBuf, PlanNodeList* pColumnExprList, PlanNode* pRootNode);
 
     // Returns true if a given node is a given type ** or is derived from that type **
     static b1 bIsOfType(PlanNode* pNode);
@@ -30,6 +31,12 @@ namespace Parser
 
     // Returns the node that represents the expression
     static QueryNode* pExprNode(QueryNode* pQueryNode);
+
+    // Returns a new copy of this projected expression rewritten relative to column ordinals.
+    // Must be freed after use.
+    static QueryNode* pSymbolicToOrdinal(QueryNode* pQueryNode,
+                                         PlanNodeList* pColExprList,
+                                         PlanNode* pRootNode);
   };
 
 }
