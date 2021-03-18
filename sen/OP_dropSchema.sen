@@ -15,7 +15,6 @@
   // check if we can remove schema
   <schemaNm> checkRemoveSchema not if
     to errorCode
-    errorCode op.pipelineJob@ ERROR_JOB
     PipeIn[].delete
     errorCode op__execErr
     true

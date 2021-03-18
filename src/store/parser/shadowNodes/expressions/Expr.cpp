@@ -333,6 +333,34 @@ b1 Expr::bIsSymbolicallyEqual(QueryNode* pExpr1, QueryNode* pExpr2)
   return true;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns true if the expression does not contain any column references.     */
+/* All expressions are relative column ordinals, operators or literals only.  */
+/*----------------------------------------------------------------------------*/
+b1 Expr::bIsOrdinal(QueryNode* pExpr)
+{
+  b1 bIsOrdinal = true;
+
+  // Walk the expression graph (children only), looking for ColumnRef.
+  // Lambda to execute on each node:
+  auto fVisitor = [&bIsOrdinal](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    if (ColumnRef::bIsOfType(pNode)) {
+      bIsOrdinal = false;
+      return GraphNav::WALK_ABORT;
+    }
+
+    // Column wildcards should have been replaced by now
+    ASSERT(!ColumnWildcard::bIsOfType(pNode));
+
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  GraphNav::bWalk(pExpr, fVisitor, nullptr);
+
+  return bIsOrdinal;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

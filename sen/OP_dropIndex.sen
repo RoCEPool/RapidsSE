@@ -14,7 +14,6 @@
   // check if we can drop the index
   <indexNm> <tableNm> check::validIndexAssembly not if
     to errorCode
-    errorCode op.pipelineJob@ ERROR_JOB
     PipeIn[].delete
     errorCode op__execErr
   else

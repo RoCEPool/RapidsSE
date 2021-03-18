@@ -18,8 +18,7 @@
     true
   else
 
-    File0[].get file.delete assert::stack_0 nullptr File0[].set EC_INVALID_FILE
-    op.pipelineJob@ ERROR_JOB !!logError
+    File0[].get file.delete assert::stack_0 nullptr File0[].set
 
     // create an exec error infoset
     sFileNm EC_INVALID_FILE attachmap::errorText@ str.format
@@ -106,7 +105,6 @@
   // check in tables folder
   check::folderIsTables not if
     to errorCode
-    errorCode op.pipelineJob@ ERROR_JOB
 
     // create an exec error infoset
     errorCode op__execErr
@@ -120,7 +118,6 @@
   // table
   sTableNm check::validTableAssembly not if
     to errorCode
-    errorCode op.pipelineJob@ ERROR_JOB
 
     // create an exec error infoset
     sTableNm errorCode attachmap::errorText@ str.format
@@ -154,7 +151,6 @@
   // check in tables folder
   check::folderIsTables not if
     to errorCode
-    errorCode op.pipelineJob@ ERROR_JOB
 
     // create an exec error infoset
     errorCode op__execErr
@@ -175,7 +171,6 @@
 
   sIndexNm check::nameIsaIndex not if
     to errorCode
-    errorCode op.pipelineJob@ ERROR_JOB
 
     // create an exec error infoset
     errorCode op__execErr
@@ -211,7 +206,6 @@
   // check in tables folder
   check::folderIsTables not if
     to errorCode
-    errorCode op.pipelineJob@ ERROR_JOB
 
     // create an exec error infoset
     errorCode op__execErr
@@ -225,7 +219,6 @@
   // table
   sTableNm check::validTableAssembly not if
     to errorCode
-    errorCode op.pipelineJob@ ERROR_JOB
 
     // create an exec error infoset
     sTableNm errorCode attachmap::errorText@ str.format
@@ -252,7 +245,6 @@
 
   sIndexNm check::nameIsaIndex not if
     to errorCode
-    errorCode op.pipelineJob@ ERROR_JOB
 
     // create an exec error infoset
     errorCode op__execErr

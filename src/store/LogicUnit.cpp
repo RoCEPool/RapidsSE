@@ -2103,7 +2103,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // rlu operators
       case EO_RLU_INDEXDEF_ADDCOLUMN: ArgNil(); // add a column to indexDef in rlu
         dLU0(EO_RLU_INDEXDEF_ADDCOLUMN);
-        vDev_RLU_INDEXDEF_ADDCOLUMN(&aiDstk);  // dstk: column type / column name / indexdef
+        vDev_RLU_INDEXDEF_ADDCOLUMN(&aiDstk);  // dstk: column name / column type / indexdef
         break;//+endCase
 
       case EO_RLU_INDEXDEF_DELETE: ArgNil();   // delete the indexDef from rlu
@@ -2146,6 +2146,8 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_IXT_COLS_TO_ROW(&aiDstk);         // devRow / devIxt
         break;//+endCase
 
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // row device col operators
       case EO_DEVROW_COLS_TO_LOCALS: ArgNil(); // row buffer columns of row dev into locals
         dLU0(EO_DEVROW_COLS_TO_LOCALS);
         vDev_ROW_COLS_TO_LOCALS(&aiDstk);      // locals / colset / devRow

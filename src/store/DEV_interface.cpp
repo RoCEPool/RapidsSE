@@ -1574,11 +1574,11 @@ void vDev_RLU_INDEXDEF_ADDCOLUMN(i8** aaiDstk)
   // get the indexDef
   IndexDef* pIndexDef = _pIndexDef(P_PopPtr());
 
-  // get the name of the column
-  Stz* szColumnName = (Stz*)S_StrAdr();
-
   // get the type of the column
   eCT eColType = (eCT)I_PopInt();
+
+  // get the name of the column
+  Stz* szColumnName = (Stz*)S_StrAdr();
 
   pIndexDef->vAddColumn(szColumnName,eColType);
 

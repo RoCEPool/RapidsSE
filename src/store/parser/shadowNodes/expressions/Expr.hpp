@@ -49,6 +49,9 @@ namespace Parser
     // respect to the operations and symbols used.
     static b1 bIsSymbolicallyEqual(QueryNode* pColRef1, QueryNode* pColRef2);
 
+    // Returns true if the expression does not contain any column references.
+    // All expressions are relative column ordinals, operators or literals only.
+    static b1 bIsOrdinal(QueryNode* pExpr);
   };
 
 }

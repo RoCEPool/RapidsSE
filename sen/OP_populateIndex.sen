@@ -48,7 +48,6 @@
   Index[] TablePtn[].populateIndex not if ( errorCode )
     to errorCode
     TablePtn[].dropWrite
-    errorCode op.pipelineJob@ ERROR_JOB
     errorCode op__execErr
     PipeIn[].delete
     true
