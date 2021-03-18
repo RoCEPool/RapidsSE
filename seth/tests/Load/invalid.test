@@ -20,7 +20,7 @@ failure contains: 'invalid command'
 
 // load non-existent table T1
 load T1 "../DATA/Load/null.csv" ;
-failure contains: 'EC_NO_SUCH_TABLE'
+failure contains: 'Table does not exist'
 
 create table T1 (
   col_id       INTEGER,
@@ -35,7 +35,7 @@ success
 
 // load T1 with invalid file
 load T1 "no-such-file" ;
-failure contains: 'EC_INVALID_FILE'
+failure contains: 'File does not exist'
 
 // drop the table
 drop table T1;

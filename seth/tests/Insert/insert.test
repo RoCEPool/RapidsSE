@@ -74,7 +74,7 @@ tableScan T1;
 rows: 22
 
 insert row "21,null";
-failure: 'EC_NO_SUCH_TABLE'
+failure: 'Table does not exist'
 
 // (5) insert some invalid row
 begin insert T1;

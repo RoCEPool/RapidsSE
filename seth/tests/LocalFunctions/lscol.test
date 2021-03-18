@@ -4,7 +4,7 @@
 
 // list columns of a non-existent table
 lscol lstTbl;
-failure contains: 'EC_NO_SUCH_TABLE'
+failure contains: 'Table does not exist'
 
 // list all the functions
 create table lstTbl (

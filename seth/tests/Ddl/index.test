@@ -26,19 +26,19 @@ failure contains: 'invalid command'
 //! should be invalid command
 // (5) create an index (syntax error)
 create index idx on T1;
-failure contains: 'EC_NO_SUCH_TABLE'
+failure contains: 'Table does not exist'
 
 // (6) create an index (syntax error)
 create index idx on T1(;
-failure contains: 'EC_NO_SUCH_TABLE'
+failure contains: 'Table does not exist'
 
 // (7) create an index (syntax error)
 create index idx on T1();
-failure contains: 'EC_NO_SUCH_TABLE'
+failure contains: 'Table does not exist'
 
 // (8) create an index (syntax error)
 create index idx on T1(key) junk;
-failure contains: 'EC_NO_SUCH_TABLE'
+failure contains: 'Table does not exist'
 
 // create a table
 create table T1 (
@@ -65,7 +65,7 @@ failure contains: 'invalid command'
                        
 // check idx of invalid table
 lsidx T2;
-failure contains: 'EC_NO_SUCH_TABLE'
+failure contains: 'Table does not exist'
 
 // check lidx when not in tables
 cf ~;
@@ -84,7 +84,7 @@ rows:
 
 // check columns of invalid table
 lsidxcol T2 Idx;
-failure contains: 'EC_NO_SUCH_TABLE'
+failure contains: 'Table does not exist'
 
 // check columns of invalid index
 lsidxcol T1 Idx2;
@@ -115,7 +115,7 @@ rows: 0
 
 // create index where table does not exist
 create index Idx on noTable (key);
-failure contains: 'EC_NO_SUCH_TABLE'
+failure contains: 'Table does not exist'
 
 pwf;
 rows:

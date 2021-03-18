@@ -716,7 +716,7 @@ static Stz* aErrorMsg[]
   /* EC_INVALID_COLUMNS_UNIQUE_IND    */ "invalid columns for unique index (include all partitioning columns)"_Stz,
   /* EC_INVALID_COMMAND               */ "invalid command"_Stz,
   /* EC_INVALID_DATE_FORMAT           */ "Invalid date string format. Must be of the form 'YYYY-MM-DD'"_Stz,    // SQL Compiler Subsystem
-  /* EC_INVALID_FILE                  */ "File '%v' does not exist"_Stz,
+  /* EC_INVALID_FILE                  */ "File does not exist : '%v'"_Stz,
   /* EC_INVALID_FLOAT_FORMAT          */ "Invalid format of floating point literal"_Stz,    // SQL Compiler Subsystem
   /* EC_INVALID_INTEGER_FORMAT        */ "Invalid format of integer literal"_Stz,           // SQL Compiler Subsystem
   /* EC_INVALID_INTERFACE             */ "invalid interface"_Stz,
@@ -756,7 +756,7 @@ static Stz* aErrorMsg[]
   /* EC_NO_SUCH_INDEX                 */ "no such index"_Stz,
   /* EC_NO_SUCH_NODE                  */ "no such node"_Stz,
   /* EC_NO_SUCH_SCHEMA                */ "no such schema"_Stz,
-  /* EC_NO_SUCH_TABLE                 */ "Table '%v' does not exist"_Stz,
+  /* EC_NO_SUCH_TABLE                 */ "Table does not exist : '%v'"_Stz,
   /* EC_NO_SUCH_TABLE2                */ "No such table"_Stz,          // SQL Compiler Subsystem
   /* EC_NO_SUCH_TENANT                */ "no such tenant"_Stz,
   /* EC_NO_SUCH_WORD                  */ "no such word"_Stz,
