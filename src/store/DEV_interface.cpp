@@ -950,6 +950,23 @@ void vDev_ENTWRK_SETINTELM(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* delete the streamDef from the dev                                          */
+/*----------------------------------------------------------------------------*/
+void vDev_ROW_STREAMDEF_DELETE(i8** aaiDstk)
+{
+  _static_
+
+  i8 *aiDstk = *aaiDstk;
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
+
+  StreamDef* pStreamDef = pDevRow->m_pStreamDef;
+  pDevRow->m_pStreamDef = nullptr;
+  delete pStreamDef;
+
+  *aaiDstk = aiDstk;
+}
+
+/*----------------------------------------------------------------------------*/
 /* begin src row traverse                                                     */
 /*----------------------------------------------------------------------------*/
 void vDev_ROW_ROWBUF_BEGIN(i8** aaiDstk)

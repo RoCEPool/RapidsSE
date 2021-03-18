@@ -134,7 +134,11 @@ void Step::vTableAsAltStreamDef(void)
     
   StreamDef* pStreamDef = pTable->pStreamDef();
 
-  ( m_pJob->pLogicUnit_job() )->m_pDevAltRow->m_pStreamDef = pStreamDef;
+  StreamDef* pStreamDefOld = ( m_pJob->pLogicUnit_job() )->m_pDevAltRow->m_pStreamDef;
+  if (pStreamDefOld)
+    delete pStreamDefOld;
+
+  ( m_pJob->pLogicUnit_job() )->m_pDevAltRow->m_pStreamDef = new StreamDef(pStreamDef);
 
   EXIT();
 }
@@ -150,7 +154,11 @@ void Step::vTableAsSrcStreamDef(void)
     
   StreamDef* pStreamDef = pTable->pStreamDef();
 
-  ( m_pJob->pLogicUnit_job() )->m_pDevSrcRow->m_pStreamDef = pStreamDef;
+  StreamDef* pStreamDefOld = ( m_pJob->pLogicUnit_job() )->m_pDevSrcRow->m_pStreamDef;
+  if (pStreamDefOld)
+    delete pStreamDefOld;
+
+  ( m_pJob->pLogicUnit_job() )->m_pDevSrcRow->m_pStreamDef = new StreamDef(pStreamDef);
   
   EXIT();
 }
