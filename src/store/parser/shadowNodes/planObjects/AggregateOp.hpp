@@ -31,6 +31,11 @@ namespace Parser
     // expression can be iterated by calling pNewChildrenIter() on the returned node
     static QueryNode* pGroupByList(QueryNode* pNode);
 
+    // Returns a copy of the node that represents a list of groupby expressions. Each groupby
+    // expression can be iterated by calling pNewChildrenIter() on the returned node.
+    // Must be freed after use.
+    static QueryNode* pOrdinalGroupByList(QueryNode* pNode, PlanNode* pRootNode);
+
 
 
   protected:

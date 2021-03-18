@@ -36,8 +36,6 @@ void SqlOperator::vDescribe(PlanNode* pNode, s2K& sBuf)
   _static_
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pExpr = static_cast<QueryNode*>(pNode);
-
   // TODO: manual polymorphism here
 
   if      (AggregateOp::bIsOfType(pNode))   { AggregateOp::vDescribe(pNode, sBuf); }
@@ -58,8 +56,6 @@ void SqlOperator::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 
 {
   _static_
   ASSERT(bIsOfType(pNode));
-
-  QueryNode* pExpr = static_cast<QueryNode*>(pNode);
 
   // Manual polymorphism here
   if      (AggregateOp::bIsOfType(pNode)) { AggregateOp::vExplain(pNode, pRootNode, sBuf, iIndent); }

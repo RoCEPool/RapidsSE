@@ -1287,9 +1287,6 @@ Tsp SqlPlanner::xCleanTimestamp(sqlParser::StringLiteralContext *pCtx)
 {
   ASSERT(pCtx);
 
-  static const Stz* _szInvalidFormat =
-      "Invalid timestamp string format. Must be of the form: 'YYYY-MM-DD hh:mm:ss[.ffffff]'"_Stz;
-
   // First check that it can fit into the 256 buffer
   if (pCtx->getText().length() > 255) {
     SyntaxException::vThrow(pCtx->start->getLine(),
