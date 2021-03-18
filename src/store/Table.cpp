@@ -70,7 +70,7 @@ Table::Table(Stz* szTableNm, eTT eKind)
   //        added after the cluster has started
   //        This must be fixed properly. Ray 14 Nov 2020
   //if (AM::pGrid()->bHasStarted()) {
-  if (TT_NORMAL == m_eKind) {
+  if (TT_NORMAL == m_eKind || TT_INTERNAL == m_eKind) {
     for (i8 i_TablePtn = 0; i_TablePtn < AM::nPtnsPerTable(); i_TablePtn++) {
       
       tPN tPtnNo = Table::tTablePtnToPtnNo(i_TablePtn);

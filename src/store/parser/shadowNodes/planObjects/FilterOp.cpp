@@ -158,6 +158,7 @@ QueryNode* FilterOp::pOrdinalFilterExpr(QueryNode* pNode, PlanNode* pRootNode)
   // ordinals only).
   QueryNode* pOrdinalExpr = Expr::pSymbolicToOrdinal(pSymbolicExpr, pColExprList, pRootNode);
   ASSERT(pOrdinalExpr);
+  ASSERT(Expr::bIsOrdinal(pOrdinalExpr));
 
   pColExprList->vDeleteAll();
   delete pColExprList;

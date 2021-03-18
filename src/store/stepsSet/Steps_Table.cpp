@@ -57,6 +57,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("table[].isUserCreated"_Stz,    &Step::vTableIsUserCreated);
   vAddStep("table.lazyBuildIndexes"_Stz,   &Step::vTableLazyBuildIndexes);
   vAddStep("table[].listPartition"_Stz,    &Step::vTableListPartition);
+  vAddStep("table[].name@"_Stz,            &Step::vTableNameFetch);
   vAddStep("table[].ptnStreamDef@"_Stz,    &Step::vTablePtnStreamDefFetch);
   vAddStep("table.purge"_Stz,              &Step::vTablePurge);
   vAddStep("table[].size"_Stz,             &Step::vTableSize);
@@ -70,7 +71,7 @@ void Step::vAddSteps_Table(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table::new -- delete an instance of table                                  */
+/* table::delete -- delete an instance of table                               */
 /*----------------------------------------------------------------------------*/
 void Step::vTableDelete(void)
 {
@@ -493,6 +494,22 @@ void Step::vTableListPartition(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Table[].name@ -- fetch table name                                          */
+/*----------------------------------------------------------------------------*/
+void Step::vTableNameFetch(void)
+{
+  ENTRY();
+  
+  Table* pTable = _pTable(*( m_pJob->pLogicUnit_job() )->m_xpTable);
+  
+  Stz* szTableNm = pTable->szTableNm();
+  
+  m_pDataStack->vPushStz(szTableNm);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* table::new -- create a new instance of table                               */
 /*----------------------------------------------------------------------------*/
 void Step::vTableNew(void)
@@ -502,9 +519,10 @@ void Step::vTableNew(void)
   s32 sTableNm;
   m_pDataStack->vPopStr(sTableNm,__func__);
   
-  eTT eTableKind = TT_NORMAL;
   Job* pJob = MY::pJob();
   TagSet* pJobTags = pJob->pJobTags();
+
+  eTT eTableKind = TT_NORMAL;
   if (pJobTags && pJobTags->bHasName(C_TAG_INFOSET))
     eTableKind = TT_INFOSET;
   else
