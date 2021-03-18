@@ -75,6 +75,16 @@ void ProjectedExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
 {
   _static_
 
+  vDescribe(pNode, sBuf, nullptr, nullptr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Appends a description of the ProjectedExpr into a buffer                   */
+/*----------------------------------------------------------------------------*/
+void ProjectedExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNodeList* pColumnExprList, PlanNode* pRootNode)
+{
+  _static_
+
   ASSERT(bIsOfType(pNode));
 
   QueryNode* pProjectedExpr = static_cast<QueryNode*>(pNode);
@@ -96,6 +106,15 @@ void ProjectedExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
   }
 
   sBuf.vSprintCat("Expr = %s"_Stz, sExprBuf.szStz());
+
+  if (pColumnExprList && pRootNode) {
+    sExprBuf.vReset();
+    QueryNode* pOrdinalExpr = Expr::pSymbolicToOrdinal(pExprNode, pColumnExprList, pRootNode);
+    Expr::vDescribe(pOrdinalExpr, sExprBuf);
+    delete pOrdinalExpr;
+
+    sBuf.vSprintCat(" ; Ordinal Expr = %s"_Stz, sExprBuf.szStz());
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -125,6 +144,38 @@ QueryNode* ProjectedExpr::pExprNode(QueryNode* pNode)
       static_cast<QueryNode*>(GraphNav::pFindProperty(const_cast<Stz *>(C_EXPR_PROP), pNode));
 
   return pExprNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns a new copy of this projected expression rewritten relative to      */
+/* column ordinals. Must be freed after use.                                  */
+/*----------------------------------------------------------------------------*/
+QueryNode* ProjectedExpr::pSymbolicToOrdinal(QueryNode* pNode,
+                                             PlanNodeList* pColExprList,
+                                             PlanNode* pRootNode)
+{
+  // Get the column projection expression out of this ProjectedExpr and convert it
+  // from symbolic to ordinal representation.
+  QueryNode* pSymbolicExpr = pExprNode(pNode);
+  ASSERT(pSymbolicExpr);
+
+  // Use the column expression list and the above symbolic column projection expression to
+  // generate an ordinal column projection expression (one that is relative to column
+  // ordinals only, not column names).
+  QueryNode* pOrdinalExpr = Expr::pSymbolicToOrdinal(pSymbolicExpr, pColExprList, pRootNode);
+  ASSERT(pOrdinalExpr);
+  ASSERT(Expr::bIsOrdinal(pOrdinalExpr));
+
+  // Get the alias name of this column and (if applicable) duplicate it
+  Text* pAlias = nullptr;
+  if (ProjectedExpr::szAliasName(pNode)) {
+    pAlias = new Text(ProjectedExpr::szAliasName(pNode));
+  }
+
+  // Create a new ProjectedExpr and return it
+  QueryNode* pOrdinalProjectedExpr = ProjectedExpr::pCreate(pOrdinalExpr, pAlias);
+
+  return pOrdinalProjectedExpr;
 }
 
 /*============================================================================*/

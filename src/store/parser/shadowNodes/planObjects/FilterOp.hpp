@@ -28,7 +28,7 @@ namespace Parser
     // Returns the internal symbolic filterExpr node of the filterOp
     static QueryNode* pFilterExpr(QueryNode* pNode);
 
-    // Returns a new copy of the filter expression relative to column ordinals.
+    // Returns a new copy of the filter expression rewritten relative to column ordinals.
     // Must be freed after use.
     static QueryNode* pOrdinalFilterExpr(QueryNode* pNode, PlanNode* pRootNode);
 
