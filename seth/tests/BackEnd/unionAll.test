@@ -2,6 +2,9 @@
 -- unionAll tests
 --------------------------------------------------------------------------------
 
+trackMemory;
+success;
+
 //------------------------------------------------------------------------------
 // neither table exists
 pipeline unionAll
@@ -247,6 +250,9 @@ success;
 // drop the table
 drop table orders;
 success;
+
+MemoryLeaks;
+rows: 0
 
 CLEANUP {
   

@@ -2,6 +2,9 @@
 -- unionAll tests
 --------------------------------------------------------------------------------
 
+trackMemory;
+success;
+
 //------------------------------------------------------------------------------
 // neither table exists
 pipeline unionAll_I
@@ -26,6 +29,9 @@ pipeline unionAll_I
 end ;
 
 failure contains: "EC_NO_SUCH_TABLE"
+
+MemoryLeaks;
+rows: 0
 
 //------------------------------------------------------------------------------
 // create table lineitem

@@ -2,6 +2,9 @@
 -- query6 tests
 --------------------------------------------------------------------------------
 
+trackMemory;
+success;
+
 //------------------------------------------------------------------------------
 pipeline Query6
 begin
@@ -241,6 +244,9 @@ rows:
 // drop the table
 drop table lineitem;
 success;
+
+MemoryLeaks;
+rows: 0
 
 CLEANUP {
 
