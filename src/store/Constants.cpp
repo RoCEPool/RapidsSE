@@ -301,6 +301,8 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("CK_SERVICE"_Stz,  CK_SERVICE);
 
   
+  // CN_ : class number
+  /*    */ vAddConstant("CN_CRWBUFFER"_Stz,    CN_CRWBUFFER);
   /*    */ vAddConstant("CN_JOB"_Stz,          CN_JOB);
   /*    */ vAddConstant("CN_ROWBUFFER"_Stz,    CN_ROWBUFFER);
   /*    */ vAddConstant("CN_STZVAL"_Stz,       CN_STZVAL);

@@ -48,8 +48,9 @@
   TablePtn[].dropWrite
 */
 
-  sBufferNm "$$$ OP_namedInsert %v" .printf
-  
+  //sBufferNm "$$$ OP_namedInsert %v" .printf
+  Table[].name@ "$$$ OP_namedInsert %v" .printf
+
   true
 ;
 

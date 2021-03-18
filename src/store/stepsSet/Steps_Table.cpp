@@ -57,6 +57,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("table[].isUserCreated"_Stz,    &Step::vTableIsUserCreated);
   vAddStep("table.lazyBuildIndexes"_Stz,   &Step::vTableLazyBuildIndexes);
   vAddStep("table[].listPartition"_Stz,    &Step::vTableListPartition);
+  vAddStep("table[].name@"_Stz,            &Step::vTableNameFetch);
   vAddStep("table[].ptnStreamDef@"_Stz,    &Step::vTablePtnStreamDefFetch);
   vAddStep("table.purge"_Stz,              &Step::vTablePurge);
   vAddStep("table[].size"_Stz,             &Step::vTableSize);
@@ -489,6 +490,22 @@ void Step::vTableListPartition(void)
     }
   }
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Table[].name@ -- fetch table name                                          */
+/*----------------------------------------------------------------------------*/
+void Step::vTableNameFetch(void)
+{
+  ENTRY();
+  
+  Table* pTable = _pTable(*( m_pJob->pLogicUnit_job() )->m_xpTable);
+  
+  Stz* szTableNm = pTable->szTableNm();
+  
+  m_pDataStack->vPushStz(szTableNm);
+  
   EXIT();
 }
 

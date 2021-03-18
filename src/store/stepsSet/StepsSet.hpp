@@ -1586,6 +1586,7 @@ void vExprEvalEvaluate(void);
   void vTableListPartition(void);
   void vTablePtnStreamDefFetch(void);
   void vTableLazyBuildIndexes(void);
+  void vTableNameFetch(void);
   void vTableNew(void);
   void vTablePurge(void);
   void vTableDeleteIndex(void);
