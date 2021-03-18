@@ -32,7 +32,7 @@ rows: 26
 
 // export to non-existent dir
 export OpTable1 "/noDir/opTable1.csv";
-failure contains: "File does not exist"
+failure contains: 'EC_INVALID_FILE'
 
 // export a non-existent table
 export OpTable2 "/tmp/opTable1.csv";

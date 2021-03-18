@@ -28,7 +28,7 @@ pipeline unionAll
 
 end ;
 
-failure contains: "Table does not exist"
+failure contains: "EC_NO_SUCH_TABLE"
 
 //------------------------------------------------------------------------------
 // create table lineitem
@@ -75,7 +75,7 @@ pipeline unionAll
     output | sink | stageA
 
 end ;
-failure contains: "Table does not exist"
+failure contains: "EC_NO_SUCH_TABLE"
 
 //------------------------------------------------------------------------------
 create table orders (

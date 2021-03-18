@@ -7,7 +7,7 @@ success;
 
 //------------------------------------------------------------------------------
 filterRows_I lineitem "l_discount 0.04 >= <>";
-failure contains: "Table does not exist"
+failure contains: "EC_NO_SUCH_TABLE"
 
 //------------------------------------------------------------------------------
 // create table lineitem

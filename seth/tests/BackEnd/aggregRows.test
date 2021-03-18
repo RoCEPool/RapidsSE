@@ -7,7 +7,7 @@ success;
 
 //------------------------------------------------------------------------------
 aggregRows lineitem "l_discount sum";
-failure contains: "Table does not exist"
+failure contains: "EC_NO_SUCH_TABLE"
 
 //------------------------------------------------------------------------------
 // create table lineitem

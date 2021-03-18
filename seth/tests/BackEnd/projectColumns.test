@@ -7,7 +7,7 @@ success;
 
 //------------------------------------------------------------------------------
 projectColumns lineitem "l_discount";
-failure contains: "Table does not exist"
+failure contains: "EC_NO_SUCH_TABLE"
 
 //------------------------------------------------------------------------------
 // create table lineitem

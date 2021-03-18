@@ -35,7 +35,7 @@ success
 
 // load T1 with invalid file
 load T1 "no-such-file" ;
-failure contains: "File does not exist"
+failure contains: 'EC_INVALID_FILE'
 
 // drop the table
 drop table T1;
