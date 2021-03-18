@@ -71,7 +71,7 @@ void Step::vAddSteps_Table(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table::new -- delete an instance of table                                  */
+/* table::delete -- delete an instance of table                               */
 /*----------------------------------------------------------------------------*/
 void Step::vTableDelete(void)
 {
@@ -519,9 +519,10 @@ void Step::vTableNew(void)
   s32 sTableNm;
   m_pDataStack->vPopStr(sTableNm,__func__);
   
-  eTT eTableKind = TT_NORMAL;
   Job* pJob = MY::pJob();
   TagSet* pJobTags = pJob->pJobTags();
+
+  eTT eTableKind = TT_NORMAL;
   if (pJobTags && pJobTags->bHasName(C_TAG_INFOSET))
     eTableKind = TT_INFOSET;
   else
