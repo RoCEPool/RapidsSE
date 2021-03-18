@@ -502,6 +502,7 @@ static Stz* aEC2[] // error code
   /* EC_INVALID_COMMAND               */ "EC_INVALID_COMMAND"_Stz,
   /* EC_INVALID_DATE_FORMAT           */ "EC_INVALID_DATE_FORMAT"_Stz,            // SQL Compiler Subsystem
   /* EC_INVALID_FILE                  */ "EC_INVALID_FILE"_Stz,
+  /* EC_INVALID_FLOAT_FORMAT          */ "EC_INVALID_FLOAT_FORMAT"_Stz,           // SQL Compiler Subsystem
   /* EC_INVALID_INTEGER_FORMAT        */ "EC_INVALID_INTEGER_FORMAT"_Stz,         // SQL Compiler Subsystem
   /* EC_INVALID_INTERFACE             */ "EC_INVALID_INTERFACE"_Stz,
   /* EC_INVALID_LIMIT_VALUE           */ "EC_INVALID_LIMIT_VALUE"_Stz,            // SQL Compiler Subsystem
