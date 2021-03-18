@@ -9,6 +9,18 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_CANCELMARKER ...                                                INIT */
+/*----------------------------------------------------------------------------*/
+: EOAsm_CancelMarker \handler
+
+  potRlu[].isNull not if
+    potRlu[].delete
+  then
+
+  ZK_CANCELMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_STARTMARKER ...                                                 INIT */
 /*----------------------------------------------------------------------------*/
 : EOAsm_StartMarker \handler
@@ -262,12 +274,13 @@
 
   op__topology
 
-  find: EOAsm_CrwBuffer   ZK_CRWBUFFER   op[].handler!
-  find: EOAsm_EosMarker   ZK_EOSMARKER   op[].handler!
-  find: EOAsm_DataMarker ZK_DATAPULSE op[].handler!
-  find: EOAsm_RowBuffer   ZK_ROWBUFFER   op[].handler!
-  find: EOAsm_StartMarker ZK_STARTMARKER op[].handler!
-  find: EOAsm_StreamDef   ZK_STREAMDEF   op[].handler!
+  find: EOAsm_CancelMarker ZK_CANCELMARKER   op[].handler!
+  find: EOAsm_CrwBuffer    ZK_CRWBUFFER   op[].handler!
+  find: EOAsm_EosMarker    ZK_EOSMARKER   op[].handler!
+  find: EOAsm_DataMarker   ZK_DATAPULSE op[].handler!
+  find: EOAsm_RowBuffer    ZK_ROWBUFFER   op[].handler!
+  find: EOAsm_StartMarker  ZK_STARTMARKER op[].handler!
+  find: EOAsm_StreamDef    ZK_STREAMDEF   op[].handler!
 
   op__loop
 

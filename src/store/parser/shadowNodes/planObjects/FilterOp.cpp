@@ -147,7 +147,9 @@ QueryNode* FilterOp::pOrdinalFilterExpr(QueryNode* pNode, PlanNode* pRootNode)
   QueryNode *pSymbolicExpr = pFilterExpr(pNode);
   ASSERT(pSymbolicExpr);
 
-  // Get the list of column expressions being given to this plan.
+  // Get the list of column expressions being given to this plan from its child.
+  // This is the list of expression symbols that represent each column of
+  // each row that this sql operator will receive.
   ASSERT(pNode->nChildren() == 1);
   PlanNodeList* pColExprList = PlanObject::pColumnExprs(static_cast<QueryNode*>(pNode->pFirstChild()), pRootNode);
   ASSERT(pColExprList);

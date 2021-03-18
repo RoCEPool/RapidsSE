@@ -47,11 +47,21 @@ namespace Parser
 
     // Compare two expression trees and return true if they are equal with
     // respect to the operations and symbols used.
-    static b1 bIsSymbolicallyEqual(QueryNode* pColRef1, QueryNode* pColRef2);
+    static b1 bIsSymbolicallyEqual(QueryNode* pExpr1, QueryNode* pExpr2);
 
     // Returns true if the expression does not contain any column references.
     // All expressions are relative column ordinals, operators or literals only.
     static b1 bIsOrdinal(QueryNode* pExpr);
+
+  protected:
+    // Returns true if the expression is commutative (e.g. A+B = B+A)
+    // and the underlying expression children are also symbolically equal.
+    static b1 bIsCommutativelyEqual(QueryNode* pExpr1, QueryNode* pExpr2);
+
+    // Returns true if the two expressions are not equal but still represent
+    // the same logical result. e.g. A<B is symbolically equal to B>A
+    static b1 bIsMathematicallyEqual(QueryNode* pExpr1, QueryNode* pExpr2);
+
   };
 
 }

@@ -10,7 +10,7 @@ success;
 
 // truncate where table does not exist
 truncate noTable;
-failure contains: 'EC_NO_SUCH_TABLE'
+failure contains: 'Table does not exist'
 
 // create a table
 create table LINEITEM (

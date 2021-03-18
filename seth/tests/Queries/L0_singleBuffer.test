@@ -29,13 +29,13 @@ dumpidx Q1 idx2;
 failure contains: 'no such index'
 
 dumpidx Q2 idx;
-failure contains: 'EC_NO_SUCH_TABLE'
+failure contains: 'Table does not exist'
 
 dumpidx Q1 idx;
 success
 
 vfyidx Q2 idx;
-failure contains: 'EC_NO_SUCH_TABLE'
+failure contains: 'Table does not exist'
 
 vfyidx Q1 idx2;
 failure contains: 'no such index'

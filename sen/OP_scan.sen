@@ -20,10 +20,15 @@
 /*----------------------------------------------------------------------------*/
 : Scan_CancelMarker \handler
 
-// drop the tablePtn lock if held
+  // drop the tablePtn lock if held
   counter0[] true == if
     TablePtn[].dropRead
     false to counter0[]
+  then
+
+  // delete the ptn stream
+  ptnStream[].isNull not if
+    ptnStream[] ptnStream.delete
   then
 
   ZK_CANCELMARKER_handler
@@ -143,26 +148,6 @@
   true
 ;
 
-//  // -- partition stream test --
-//  TablePtn[] ptnStream::new to ptnStream[]
-//
-//  ptnStream[] ptnStream.open if
-//
-//    begin
-//      ptnStream[] ptnStream.read to Operand[]
-//      Operand[].isNull not
-//    while
-//      Operand[].pipeout
-//    repeat
-//
-//    ptnStream[] ptnStream.close
-//  then
-//
-//  ptnStream[] ptnStream.delete
-//  nullptr to ptnStream[]
-//  // -- end partition stream test --
-
-
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_STARTMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
@@ -174,8 +159,11 @@
     Table[].tablePtn@ to TablePtn[]
     PipeIn[].pipeOut
   else
-    find: Scan_Xyz   ZK_DATAPULSE     op[].handler!
-    find: Scan_Xyz   ZK_PULSEDMARKER  op[].handler!
+    // is possible that a PULSEDMARKER arrives after this STARTMARKER
+    // as per pipeline protocol no op can receive a pulsedmarker without a startmarker
+    // we need eat the pulsedmarker here
+    find: Scan_Xyz   ZK_DATAPULSE      op[].handler!
+    find: Scan_Xyz   ZK_PULSEDMARKER   op[].handler!
   then
 
   //args.developer if

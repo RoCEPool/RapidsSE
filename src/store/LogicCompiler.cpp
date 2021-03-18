@@ -109,6 +109,8 @@ DynamicSymbol gxaDynamicSymbol[]
 
   { "vDev_POT_USE_STREAMDEFOUT"_Stz, (const void *) vDev_POT_USE_STREAMDEFOUT },
 
+  { "vDev_ROW_STREAMDEF_DELETE"_Stz, (const void *) vDev_ROW_STREAMDEF_DELETE  },
+
   { "vDev_ROW_ROW_NEW"_Stz,       (const void *) vDev_ROW_ROW_NEW       },
   { "vDev_ROW_ROW_PRINT"_Stz,     (const void *) vDev_ROW_ROW_PRINT     },
   { "vDev_ROW_ROW_SET"_Stz,       (const void *) vDev_ROW_ROW_SET       },
@@ -982,7 +984,7 @@ void LogicCompiler::v_DynPreliminary(void)
   s16KB sReplaced;
 
   sReplaced.vSprint((Stz*)azFrag,m_pLogicUnit->iQueryFragment());
-  vTrace("After : %s\n"_Stz, sReplaced.azChar());
+  //vTrace("After : %s\n"_Stz, sReplaced.azChar());
 
   StrLib::vAppendString(&m_azSrcCrs,sReplaced.azChar());
   if (AM::bRLUTimer())

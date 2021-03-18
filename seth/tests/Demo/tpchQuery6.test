@@ -3,7 +3,7 @@
 --------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// EC_NO_SUCH_TABLE
+// Table does not exist
 demo select
     sum(l_extendedprice*l_discount) as revenue
 from
@@ -169,6 +169,9 @@ and l_quantity < 24;
 
 unordered rows:
 ( 123140554.79 )
+
+drop table lineitem;
+success
 
 CLEANUP {
   

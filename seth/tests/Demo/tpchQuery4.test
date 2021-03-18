@@ -3,7 +3,7 @@
 --------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// EC_NO_SUCH_TABLE
+// Table does not exist
 demo select
     o_orderpriority,
     count(*) as order_count
@@ -26,7 +26,7 @@ group by
 order by
     o_orderpriority;
 
-failure contains: "EC_NO_SUCH_TABLE"
+failure contains: "Table does not exist"
 
 //------------------------------------------------------------------------------
 // create table lineitem
@@ -83,7 +83,7 @@ create index lineitem_idx2 on lineitem (l_orderkey);
 success
 
 //------------------------------------------------------------------------------
-// EC_NO_SUCH_TABLE
+// Table does not exist
 demo select
   o_orderpriority,
   count(*) as order_count

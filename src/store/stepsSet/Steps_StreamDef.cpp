@@ -74,7 +74,11 @@ void Step::vStreamDefAsSrcStreamDef(void)
   ENTRY();
   
   StreamDef* pStreamDef = *( m_pJob->pLogicUnit_job() )->m_xpStreamDef;
-  
+
+  StreamDef* pStreamDefOld = ( m_pJob->pLogicUnit_job() )->m_pDevSrcRow->m_pStreamDef;
+  if (pStreamDefOld)
+    delete pStreamDefOld;
+
   ( m_pJob->pLogicUnit_job() )->m_pDevSrcRow->m_pStreamDef = pStreamDef;
   
   EXIT();

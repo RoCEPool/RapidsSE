@@ -1,9 +1,10 @@
 --------------------------------------------------------------------------------
 -- aggregGby_I tests
 --------------------------------------------------------------------------------
+
 //------------------------------------------------------------------------------
 aggregRows_I lineitem "l_discount sum groupby l_orderkey";
-failure contains: "EC_NO_SUCH_TABLE"
+failure contains: "Table does not exist"
 
 //------------------------------------------------------------------------------
 // create table lineitem
@@ -28,9 +29,15 @@ create table LineItem
  );
 success
 
+trackMemory;
+success;
+
 //------------------------------------------------------------------------------
 aggregRows_I lineitem " l_discount * 2 groupby l_orderkey";
 failure contains: "invalid command"
+
+MemoryLeaks;
+rows: 0
 
 //------------------------------------------------------------------------------
 aggregRows_I lineitem "l_discount sum groupby l_orderkey";

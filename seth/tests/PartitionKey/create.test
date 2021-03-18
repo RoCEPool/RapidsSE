@@ -24,7 +24,7 @@ success
 
 -- check existence of partition key
 lspartcol createT1;
-failure contains: 'EC_NO_SUCH_TABLE'
+failure contains: 'Table does not exist'
 
 create table createT1 (
   key   INTEGER NOT NULL,
@@ -34,7 +34,7 @@ failure contains: 'invalid command'
 
 -- check existence of partition key
 lspartcol createT1;
-failure contains: 'EC_NO_SUCH_TABLE'
+failure contains: 'Table does not exist'
 
 create table createT1 (
   key   INTEGER NOT NULL,
@@ -44,7 +44,7 @@ failure contains: 'invalid command'
 
 -- check existence of partition key
 lspartcol createT1;
-failure contains: 'EC_NO_SUCH_TABLE'
+failure contains: 'Table does not exist'
 
 create table createT1 (
   key   INTEGER NOT NULL,
