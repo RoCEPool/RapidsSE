@@ -159,7 +159,11 @@
     Table[].tablePtn@ to TablePtn[]
     PipeIn[].pipeOut
   else
-    find: Scan_Xyz   ZK_DATAPULSE     op[].handler!
+    // is possible that a PULSEDMARKER arrives after this STARTMARKER
+    // as per pipeline protocol no op can receive a pulsedmarker without a startmarker
+    // we need eat the pulsedmarker here
+    find: Scan_Xyz   ZK_DATAPULSE      op[].handler!
+    find: Scan_Xyz   ZK_PULSEDMARKER   op[].handler!
   then
 
   //args.developer if
