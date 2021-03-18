@@ -11,10 +11,9 @@ namespace STORE
     Lock   m_okLock;       // lock on the partition
     Table* m_pTable;       // table this partition belongs to
     tPN    m_tPtnNo;       // partition number (in grid)
-    bool   m_bLowMemLoad;  // was low memory detected during this load
 
-    CrwBuffer* m_pRootCrwBuffer;    // the data root buffer
-    CrwBuffer* m_pCurrentCrwBuffer; // the data current buffer for insert
+    CrwBuffer* m_pRootBuffer;    // the data root buffer
+    CrwBuffer* m_pCurrentBuffer; // the data current buffer for insert
     
     IndexTreeVec* m_pIndexTreeVec;  // vector of index trees
   

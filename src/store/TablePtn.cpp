@@ -40,11 +40,9 @@ TablePtn::TablePtn(Table* pTable, tPN tPtnNo)
   
   m_pTable = pTable;
   m_tPtnNo = tPtnNo;
-
-  m_bLowMemLoad = false;
   
-  m_pRootCrwBuffer  = nullptr;
-  m_pCurrentCrwBuffer = nullptr;
+  m_pRootBuffer  = nullptr;
+  m_pCurrentBuffer = nullptr;
   
   m_pIndexTreeVec = new IndexTreeVec;
   
@@ -118,17 +116,17 @@ Crw* TablePtn::aAllotFixedSizeCrw(Rrf& xRowRef)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // new the first buffer?
   
-  if (! m_pRootCrwBuffer)
+  if (! m_pRootBuffer)
     RASSERT(pNewCurrentCrwBuffer());                  //! this needs to be fixed
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allot from latest buffer
   
-  RowNub* pRowNub = m_pCurrentCrwBuffer->m_oRowTray.pNub();
+  RowNub* pRowNub = m_pCurrentBuffer->m_oRowTray.pNub();
   i8 i_Head = pRowNub->iAllotHead(jCrwSize);
   if (C_UNKNOWN != i_Head) {
     aCrw = (Crw*)pRowNub->aGetHead(i_Head);
-    xRowRef.vBuffer(m_pCurrentCrwBuffer->iBufferNo());
+    xRowRef.vBuffer(m_pCurrentBuffer->iBufferNo());
     xRowRef.vItem(i_Head);
     return aCrw;
   }
@@ -137,12 +135,12 @@ Crw* TablePtn::aAllotFixedSizeCrw(Rrf& xRowRef)
   // allot from a new buffer
 
   RASSERT(pNewCurrentCrwBuffer());                    //! this needs to be fixed
-  pRowNub = m_pCurrentCrwBuffer->m_oRowTray.pNub();
+  pRowNub = m_pCurrentBuffer->m_oRowTray.pNub();
   i_Head = pRowNub->iAllotHead(jCrwSize);
   aCrw = (Crw*)pRowNub->aGetHead(i_Head);
   RASSERT(aCrw);
   
-  xRowRef.vBuffer(m_pCurrentCrwBuffer->iBufferNo());
+  xRowRef.vBuffer(m_pCurrentBuffer->iBufferNo());
   xRowRef.vItem(i_Head);
   
   return aCrw;
@@ -179,19 +177,19 @@ void TablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the root buffer
-  if (m_pRootCrwBuffer == nullptr) {
-    ASSERT( ! m_pCurrentCrwBuffer )
-    m_pRootCrwBuffer = pCrwBuffer;
+  if (m_pRootBuffer == nullptr) {
+    ASSERT( ! m_pCurrentBuffer )
+    m_pRootBuffer = pCrwBuffer;
   }
   else {
-    pCrwBuffer->vNextLinkedBuffer(m_pCurrentCrwBuffer->pNextLinkedBuffer());
-    pCrwBuffer->vPrevLinkedBuffer(m_pCurrentCrwBuffer);
-    m_pCurrentCrwBuffer->vNextLinkedBuffer(pCrwBuffer);
+    pCrwBuffer->vNextLinkedBuffer(m_pCurrentBuffer->pNextLinkedBuffer());
+    pCrwBuffer->vPrevLinkedBuffer(m_pCurrentBuffer);
+    m_pCurrentBuffer->vNextLinkedBuffer(pCrwBuffer);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the current buffer
-  m_pCurrentCrwBuffer = pCrwBuffer;
+  m_pCurrentBuffer = pCrwBuffer;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // now insert entries from the buffer into the indexes
@@ -223,25 +221,25 @@ void TablePtn::vAppendRow(RowCompactor* pRowCompactor, RowSingle* pSrw)
   RASSERT(m_okLock.bIsLocked());
   //m_okLock.vGrabWrite();
   
-  if (! m_pRootCrwBuffer)
+  if (! m_pRootBuffer)
     RASSERT(pNewCurrentCrwBuffer());                  //! this needs to be fixed
   
-  m_pCurrentCrwBuffer->vAppendOpen(pRowCompactor, false);
-  bool bAppended = m_pCurrentCrwBuffer->bAppendRow(pSrw->pRowCurrent());
+  m_pCurrentBuffer->vAppendOpen(pRowCompactor, false);
+  bool bAppended = m_pCurrentBuffer->bAppendRow(pSrw->pRowCurrent());
   
   if (! bAppended) {
     RASSERT(pNewCurrentCrwBuffer());                  //! this needs to be fixed
 
-    m_pCurrentCrwBuffer->vAppendOpen(pRowCompactor, false);
-    bAppended = m_pCurrentCrwBuffer->bAppendRow(pSrw->pRowCurrent());
+    m_pCurrentBuffer->vAppendOpen(pRowCompactor, false);
+    bAppended = m_pCurrentBuffer->bAppendRow(pSrw->pRowCurrent());
     RASSERT(bAppended);
   }
   
-  m_pCurrentCrwBuffer->vAppendClose();
+  m_pCurrentBuffer->vAppendClose();
   
   // get the row from the buffer
   Rrf xRowRef;
-  i8 iRow = m_pCurrentCrwBuffer->nRowCount() - 1;
+  i8 iRow = m_pCurrentBuffer->nRowCount() - 1;
   xRowRef.vItem(iRow);
   
   // get no of indexes of the table
@@ -254,7 +252,7 @@ void TablePtn::vAppendRow(RowCompactor* pRowCompactor, RowSingle* pSrw)
     IndexTree* pIndexTree = m_pIndexTreeVec->pGet(i_Index);
     
     // insert entry into other indexes
-    bool bResult = pIndexTree->bInsertEntry(m_pCurrentCrwBuffer,iRow,xRowRef);
+    bool bResult = pIndexTree->bInsertEntry(m_pCurrentBuffer,iRow,xRowRef);
     RASSERT(bResult);
   }
   
@@ -270,8 +268,8 @@ i8 TablePtn::nCrwBuffers(void)
   
   i8 nBufferCount = 0;
   
-  if (m_pRootCrwBuffer)
-    m_pRootCrwBuffer->vBufferCount(nBufferCount);
+  if (m_pRootBuffer)
+    m_pRootBuffer->vBufferCount(nBufferCount);
   
   return nBufferCount;
 }
@@ -298,12 +296,12 @@ void TablePtn::vDeleteRow(IndexTree* pIndexTree, EntBuffer* pEntBuffer, Ent* aEn
     pCrwBuffer->vUnLink();
     
     // is it the currentBuffer ?
-    if (m_pCurrentCrwBuffer == pCrwBuffer)
-      m_pCurrentCrwBuffer = m_pCurrentCrwBuffer->pPrevCrwBuffer();
+    if (m_pCurrentBuffer == pCrwBuffer)
+      m_pCurrentBuffer = m_pCurrentBuffer->pPrevCrwBuffer();
     
     // is it the root buffer ?
-    if (m_pRootCrwBuffer == pCrwBuffer) {
-      m_pRootCrwBuffer = m_pRootCrwBuffer->pNextCrwBuffer();
+    if (m_pRootBuffer == pCrwBuffer) {
+      m_pRootBuffer = m_pRootBuffer->pNextCrwBuffer();
     }
     
     // now delete the buffer
@@ -345,7 +343,7 @@ void TablePtn::vDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  CrwBuffer* pCrwBuffer = m_pRootCrwBuffer;
+  CrwBuffer* pCrwBuffer = m_pRootBuffer;
     
   while (pCrwBuffer) {
     pCrwBuffer->vShow();
@@ -448,17 +446,17 @@ CrwBuffer* TablePtn::pNewCurrentCrwBuffer(void)
   
   RASSERT(m_okLock.bIsLocked());
   
-  if (m_pRootCrwBuffer == nullptr) {
-    ASSERT( ! m_pCurrentCrwBuffer );
+  if (m_pRootBuffer == nullptr) {
+    ASSERT( ! m_pCurrentBuffer );
     
-    m_pRootCrwBuffer = new CrwBuffer;
-    m_pRootCrwBuffer->vTable(m_pTable);
-    m_pRootCrwBuffer->vPtnNo(m_tPtnNo);
-    m_pRootCrwBuffer->vIsPermanent(true);
+    m_pRootBuffer = new CrwBuffer;
+    m_pRootBuffer->vTable(m_pTable);
+    m_pRootBuffer->vPtnNo(m_tPtnNo);
+    m_pRootBuffer->vIsPermanent(true);
     
-    m_pCurrentCrwBuffer = m_pRootCrwBuffer;
+    m_pCurrentBuffer = m_pRootBuffer;
     
-    return m_pCurrentCrwBuffer;
+    return m_pCurrentBuffer;
   }
   
   CrwBuffer* pCrwBuffer = new CrwBuffer;
@@ -466,13 +464,13 @@ CrwBuffer* TablePtn::pNewCurrentCrwBuffer(void)
   pCrwBuffer->vPtnNo(m_tPtnNo);
   pCrwBuffer->vIsPermanent(true);
 
-  pCrwBuffer->vNextLinkedBuffer(m_pCurrentCrwBuffer->pNextLinkedBuffer());
-  pCrwBuffer->vPrevLinkedBuffer(m_pCurrentCrwBuffer);
-  m_pCurrentCrwBuffer->vNextLinkedBuffer(pCrwBuffer);
+  pCrwBuffer->vNextLinkedBuffer(m_pCurrentBuffer->pNextLinkedBuffer());
+  pCrwBuffer->vPrevLinkedBuffer(m_pCurrentBuffer);
+  m_pCurrentBuffer->vNextLinkedBuffer(pCrwBuffer);
   
-  m_pCurrentCrwBuffer = pCrwBuffer;
+  m_pCurrentBuffer = pCrwBuffer;
     
-  return m_pCurrentCrwBuffer;
+  return m_pCurrentBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -494,7 +492,7 @@ bool TablePtn::bPopulateIndex(i8 iIndexNo)
   
   IndexTree* pIndexTree = this->pIndexTree(iIndexNo);
   
-  CrwBuffer* pCrwBuffer = m_pRootCrwBuffer;
+  CrwBuffer* pCrwBuffer = m_pRootBuffer;
   
   while (pCrwBuffer) {
     pIndexTree->vInsertEntries(pCrwBuffer);
@@ -514,12 +512,12 @@ bool TablePtn::bPurge(i8 iOlderThanSeconds)
   static i8 iMaxAge = 0;
   static i8 nMaxBuffers = 0;
   
-  if (! m_pRootCrwBuffer)
+  if (! m_pRootBuffer)
     return false;
   
   m_okLock.vGrabWrite();
   
-  i8 iAge = m_pRootCrwBuffer->iAgeSec();
+  i8 iAge = m_pRootBuffer->iAgeSec();
   
   //  if (iAge <= 1) {
   //    vTrace("Purge: age is %llds\n"_Stz,iMaxAge);
@@ -530,7 +528,7 @@ bool TablePtn::bPurge(i8 iOlderThanSeconds)
     //    vTrace("Purge: max age now %llds\n"_Stz,iMaxAge);
   }
   
-  i8 iLengthList = m_pRootCrwBuffer->iLengthList();
+  i8 iLengthList = m_pRootBuffer->iLengthList();
   if (iLengthList > nMaxBuffers) {
     nMaxBuffers = iLengthList;
     //vTrace("Purge: max buffer chain now %lld buffers\n"_Stz,nMaxBuffers);
@@ -543,18 +541,18 @@ bool TablePtn::bPurge(i8 iOlderThanSeconds)
   }
   
   // is currentBuffer same as rootBuffer ?
-  if (m_pCurrentCrwBuffer == m_pRootCrwBuffer)
-    m_pCurrentCrwBuffer = nullptr;
+  if (m_pCurrentBuffer == m_pRootBuffer)
+    m_pCurrentBuffer = nullptr;
   
-  CrwBuffer* pCrwBuffer = m_pRootCrwBuffer;
+  CrwBuffer* pCrwBuffer = m_pRootBuffer;
   
   // get next entry buffer
-  m_pRootCrwBuffer = m_pRootCrwBuffer->pNextCrwBuffer();
+  m_pRootBuffer = m_pRootBuffer->pNextCrwBuffer();
   
   // set prev pointer to null
-  if (m_pRootCrwBuffer) {
-    ASSERT(pCrwBuffer ==  m_pRootCrwBuffer->pPrevLinkedBuffer());
-    m_pRootCrwBuffer->vPrevLinkedBuffer(nullptr);
+  if (m_pRootBuffer) {
+    ASSERT(pCrwBuffer ==  m_pRootBuffer->pPrevLinkedBuffer());
+    m_pRootBuffer->vPrevLinkedBuffer(nullptr);
   }
   
   m_okLock.vDropWrite();
@@ -586,7 +584,7 @@ CrwBuffer* TablePtn::pRootCrwBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  return m_pRootCrwBuffer;
+  return m_pRootBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -659,11 +657,11 @@ void TablePtn::vTruncate(void)
     pIndexTree->vTruncate();
   }
   
-  if (m_pRootCrwBuffer)
-    m_pRootCrwBuffer->vTruncate();
+  if (m_pRootBuffer)
+    m_pRootBuffer->vTruncate();
   
-  m_pRootCrwBuffer    = nullptr;
-  m_pCurrentCrwBuffer = nullptr;
+  m_pRootBuffer    = nullptr;
+  m_pCurrentBuffer = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -697,7 +695,7 @@ bool TablePtn::bVerifyTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  CrwBuffer* pCrwBuffer = m_pRootCrwBuffer;
+  CrwBuffer* pCrwBuffer = m_pRootBuffer;
   bool bVerify = true;
   
   while (pCrwBuffer) {
@@ -717,7 +715,7 @@ void TablePtn::vVisualizeTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  CrwBuffer* pCrwBuffer = m_pRootCrwBuffer;
+  CrwBuffer* pCrwBuffer = m_pRootBuffer;
   
   while (pCrwBuffer) {
     // print the decile of the this buffer
