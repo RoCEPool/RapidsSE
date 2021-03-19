@@ -55,8 +55,6 @@ CrwBuffer::CrwBuffer(void)
 
   m_pRowCompactor = nullptr;
   
-  m_tTxnNo = C_UNKNOWN;
-  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
   _checkInitialised_(CN_CRWBUFFER);
@@ -801,26 +799,6 @@ void CrwBuffer::vTruncate(void)
   }
   delete this;
   
-}
-
-/*----------------------------------------------------------------------------*/
-/* get transaction number                                                     */
-/*----------------------------------------------------------------------------*/
-tXN CrwBuffer::tTxnNo(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-  
-  return m_tTxnNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set transaction number                                                     */
-/*----------------------------------------------------------------------------*/
-void CrwBuffer::vTxnNo(tXN tTxnNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-  
-  m_tTxnNo = tTxnNo;
 }
 
 /*----------------------------------------------------------------------------*/

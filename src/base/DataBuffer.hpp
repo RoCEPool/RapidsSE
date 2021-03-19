@@ -18,7 +18,9 @@ namespace BASE
     Table*     m_pTable;
     StreamDef* m_pStreamDef;
 
-    PadWord m__PadToCacheLine[4];
+    tXN m_tTxnNo; // transaction number
+
+    PadWord m__PadToCacheLine[3];
 
   public:
     DataBuffer(eCN eClass, bool bIsPermanent, i8 iLogCtl=C_LOG);
@@ -32,6 +34,9 @@ namespace BASE
 
   Table*     pTable(void);
   void       vTable(Table* pTable);
+
+  tXN        tTxnNo(void);
+  void       vTxnNo(tXN tTxnNo);
 
     i8          iAgeSec(void);
 

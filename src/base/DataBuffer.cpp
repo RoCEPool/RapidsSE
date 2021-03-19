@@ -39,7 +39,8 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent, i8 iLogCtl)
   m_pTable = nullptr;
   m_pStreamDef = nullptr;
 
-  
+  m_tTxnNo = C_UNKNOWN;
+    
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);  
 }
 
@@ -116,7 +117,7 @@ StreamDef* DataBuffer::pStreamDef(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the table of the row buffer                                            */
+/* set the table                                                              */
 /*----------------------------------------------------------------------------*/
 void DataBuffer::vStreamDef(StreamDef* pStreamDef)
 {
@@ -126,7 +127,7 @@ void DataBuffer::vStreamDef(StreamDef* pStreamDef)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the table of the index buffer                                          */
+/* get the table                                                              */
 /*----------------------------------------------------------------------------*/
 Table* DataBuffer::pTable(void)
 {
@@ -136,7 +137,7 @@ Table* DataBuffer::pTable(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the table of the row buffer                                            */
+/* set the table                                                              */
 /*----------------------------------------------------------------------------*/
 void DataBuffer::vTable(Table* pTable)
 {
@@ -144,6 +145,31 @@ void DataBuffer::vTable(Table* pTable)
   
   m_pTable = pTable;
 }
+
+/*----------------------------------------------------------------------------*/
+/* get transaction number                                                     */
+/*----------------------------------------------------------------------------*/
+tXN DataBuffer::tTxnNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_tTxnNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set transaction number                                                     */
+/*----------------------------------------------------------------------------*/
+void DataBuffer::vTxnNo(tXN tTxnNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_tTxnNo = tTxnNo;
+}
+
+
+
+
+
 
 
 /*----------------------------------------------------------------------------*/

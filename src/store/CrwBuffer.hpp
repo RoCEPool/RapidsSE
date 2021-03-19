@@ -14,7 +14,6 @@ namespace STORE
     SeeMe      m_xSeeMe;
     RowCompactor* m_pRowCompactor;
   
-    tXN m_tTxnNo; // transaction number
   
     // must be last
     Footer m_xFooter;
@@ -45,8 +44,6 @@ namespace STORE
     void       vOperandDump(i8 iDetail);
     i8         nRowCount(void);
 
-    tXN        tTxnNo(void);
-    void       vTxnNo(tXN tTxnNo);
 
     ////////////////////////////////////////////////////////////////////////////
     // buffer functions
