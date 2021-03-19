@@ -11,6 +11,7 @@ enum eEC // error code
   
   // - - - - - - - - - - - - - - - - - - -
   /* _A_ */
+  EC_AGG_EXPR_IN_WHERE_CLAUSE,      // SQL Compiler Subsystem
   EC_AMBIGUOUS_COLUMN,              // SQL Compiler Subsystem
   EC_AMBIGUOUS_TABLE,               // SQL Compiler Subsystem
   EC_ASSERT,
@@ -23,7 +24,6 @@ enum eEC // error code
   EC_CLUSTER_NOT_CONNECTED,
   EC_CLUSTER_PARTITIONS_MISMATCH,
   EC_CLUSTER_SIZE_MISMATCH,
-  
   EC_CSV_BOOLEAN_INVALID,
   EC_CSV_BOOLEAN_TOO_LARGE,
   EC_CSV_DATE_INVALID,
@@ -62,8 +62,12 @@ enum eEC // error code
   EC_DUPLICATE_KEY,
 
   /* _E_ */
+  EC_EXPR_AGG_MIX_NO_GROUPBY_LIST,  // SQL Compiler Subsystem
   EC_EXPR_INVALID_COMBINATION,      // SQL Compiler Subsystem
+  EC_EXPR_IS_AGG_IN_GROUPBY_LIST,   // SQL Compiler Subsystem
+  EC_EXPR_IS_LIT_IN_GROUPBY_LIST,   // SQL Compiler Subsystem
   EC_EXPR_MUST_BE_BOOLEAN,          // SQL Compiler Subsystem
+  EC_EXPR_NOT_IN_GROUPBY_LIST,      // SQL Compiler Subsystem
 
   /* _F_ */
   EC_FOLDER_IN_USE,
@@ -72,6 +76,7 @@ enum eEC // error code
   /* _G_ */
 
   /* _H_ */
+  EC_HAVING_EXPR_NOT_AGG_OR_IN_GROUPBY, // SQL Compiler Subsystem
 
   /* _I_ */
   EC_IDXVFY_ADJACENT_ENTRIES,
@@ -84,7 +89,6 @@ enum eEC // error code
   EC_IDXVFY_ROW_REFS,
   EC_IDXVFY_SKIPLIST_ENTRY,
   EC_IDXVFY_SKIPLIST_LEVELS,
-
   EC_INDEX_EXISTS,
   EC_INVALID_CLASS,
   EC_INVALID_COLUMN,
@@ -216,8 +220,9 @@ static Stz* aEC[]
   // - - - - - - - - - - - - - - - - - - -
 
   /* _A_ */
-  /* EC_AMBIGUOUS_COLUMN              */ "EC_AMBIGUOUS_COLUMN"_Stz,       // SQL Compiler Subsystem
-  /* EC_AMBIGUOUS_TABLE               */ "EC_AMBIGUOUS_TABLE"_Stz,        // SQL Compiler Subsystem
+  /* EC_AGG_EXPR_IN_WHERE_CLAUSE      */ "EC_AGG_EXPR_IN_WHERE_CLAUSE"_Stz, // SQL Compiler Subsystem
+  /* EC_AMBIGUOUS_COLUMN              */ "EC_AMBIGUOUS_COLUMN"_Stz,         // SQL Compiler Subsystem
+  /* EC_AMBIGUOUS_TABLE               */ "EC_AMBIGUOUS_TABLE"_Stz,          // SQL Compiler Subsystem
   /* EC_ASSERT                        */ "assert"_Stz,
 
   /* _B_ */
@@ -228,7 +233,6 @@ static Stz* aEC[]
   /* EC_CLUSTER_NOT_CONNECTED         */ "cluster not connected (use connectCluster command)"_Stz,
   /* EC_CLUSTER_PARTITIONS_MISMATCH   */ "cluster partitions per node mismatch"_Stz,
   /* EC_CLUSTER_SIZE_MISMATCH         */ "cluster node size mismatch"_Stz,
-  
   /* EC_CSV_BOOLEAN_INVALID           */ "EC_CSV_BOOLEAN_INVALID"_Stz,
   /* EC_CSV_BOOLEAN_TOO_LARGE         */ "EC_CSV_BOOLEAN_TOO_LARGE"_Stz,
   /* EC_CSV_DATE_INVALID              */ "EC_CSV_DATE_INVALID"_Stz,
@@ -267,8 +271,12 @@ static Stz* aEC[]
   /* EC_DUPLICATE_KEY                 */ "duplicate key"_Stz,
 
   /* _E_ */
-  /* EC_EXPR_INVALID_COMBINATION      */ "EC_EXPR_INVALID_COMBINATION"_Stz,   // SQL Compiler Subsystem
-  /* EC_EXPR_MUST_BE_BOOLEAN          */ "EC_EXPR_MUST_BE_BOOLEAN"_Stz,       // SQL Compiler Subsystem
+  /* EC_EXPR_AGG_MIX_NO_GROUPBY_LIST  */ "EC_EXPR_AGG_MIX_NO_GROUPBY_LIST"_Stz, // SQL Compiler Subsystem
+  /* EC_EXPR_INVALID_COMBINATION      */ "EC_EXPR_INVALID_COMBINATION"_Stz,     // SQL Compiler Subsystem
+  /* EC_EXPR_IS_AGG_IN_GROUPBY_LIST   */ "EC_EXPR_IS_AGG_IN_GROUPBY_LIST"_Stz,  // SQL Compiler Subsystem
+  /* EC_EXPR_IS_LIT_IN_GROUPBY_LIST   */ "EC_EXPR_IS_LIT_IN_GROUPBY_LIST"_Stz,  // SQL Compiler Subsystem
+  /* EC_EXPR_MUST_BE_BOOLEAN          */ "EC_EXPR_MUST_BE_BOOLEAN"_Stz,         // SQL Compiler Subsystem
+  /* EC_EXPR_NOT_IN_GROUPBY_LIST      */ "EC_EXPR_NOT_IN_GROUPBY_LIST"_Stz,     // SQL Compiler Subsystem
 
   /* _F_ */
   /* EC_FOLDER_IN_USE                 */ "folder in use"_Stz,
@@ -277,6 +285,7 @@ static Stz* aEC[]
   /* _G_ */
 
   /* _H_ */
+  /* EC_HAVING_EXPR_NOT_AGG_OR_IN_GROUPBY */ "EC_HAVING_EXPR_NOT_AGG_OR_IN_GROUPBY"_Stz, // SQL Compiler Subsystem
 
   /* _I_ */
   /* EC_IDXVFY_ADJACENT_ENTRIES       */ "EC_IDXVFY_ADJACENT_ENTRIES"_Stz,
@@ -289,7 +298,6 @@ static Stz* aEC[]
   /* EC_IDXVFY_ROW_REFS               */ "EC_IDXVFY_ROW_REFS"_Stz,
   /* EC_IDXVFY_SKIPLIST_ENTRY         */ "EC_IDXVFY_SKIPLIST_ENTRY"_Stz,
   /* EC_IDXVFY_SKIPLIST_LEVELS        */ "EC_IDXVFY_SKIPLIST_LEVELS"_Stz,
-
   /* EC_INDEX_EXISTS                  */ "index exists"_Stz,
   /* EC_INVALID_CLASS                 */ "invalid class"_Stz,
   /* EC_INVALID_COLUMN                */ "invalid column"_Stz,
@@ -421,6 +429,7 @@ static Stz* aEC2[] // error code
   // - - - - - - - - - - - - - - - - - - -
 
   /* _A_ */
+  /* EC_AGG_EXPR_IN_WHERE_CLAUSE      */ "EC_AGG_EXPR_IN_WHERE_CLAUSE"_Stz,       // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_COLUMN              */ "EC_AMBIGUOUS_COLUMN"_Stz,               // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_TABLE               */ "EC_AMBIGUOUS_TABLE"_Stz,                // SQL Compiler Subsystem
   /* EC_ASSERT                        */ "EC_ASSERT"_Stz,
@@ -472,8 +481,12 @@ static Stz* aEC2[] // error code
   /* EC_DUPLICATE_KEY                 */ "EC_DUPLICATE_KEY"_Stz,
 
   /* _E_ */
+  /* EC_EXPR_AGG_MIX_NO_GROUPBY_LIST  */ "EC_EXPR_AGG_MIX_NO_GROUPBY_LIST"_Stz,   // SQL Compiler Subsystem
   /* EC_EXPR_INVALID_COMBINATION      */ "EC_EXPR_INVALID_COMBINATION"_Stz,       // SQL Compiler Subsystem
+  /* EC_EXPR_IS_AGG_IN_GROUPBY_LIST   */ "EC_EXPR_IS_AGG_IN_GROUPBY_LIST"_Stz,    // SQL Compiler Subsystem
+  /* EC_EXPR_IS_LIT_IN_GROUPBY_LIST   */ "EC_EXPR_IS_LIT_IN_GROUPBY_LIST"_Stz,    // SQL Compiler Subsystem
   /* EC_EXPR_MUST_BE_BOOLEAN          */ "EC_EXPR_MUST_BE_BOOLEAN"_Stz,           // SQL Compiler Subsystem
+  /* EC_EXPR_NOT_IN_GROUPBY_LIST      */ "EC_EXPR_NOT_IN_GROUPBY_LIST"_Stz,       // SQL Compiler Subsystem
 
   /* _F_ */
   /* EC_FOLDER_IN_USE                 */ "EC_FOLDER_IN_USE"_Stz,
@@ -482,6 +495,7 @@ static Stz* aEC2[] // error code
   /* _G_ */
 
   /* _H_ */
+  /* EC_HAVING_EXPR_NOT_AGG_OR_IN_GROUPBY */ "EC_HAVING_EXPR_NOT_AGG_OR_IN_GROUPBY"_Stz,  // SQL Compiler Subsystem
 
   /* _I_ */
   /* EC_IDXVFY_ADJACENT_ENTRIES       */ "EC_IDXVFY_ADJACENT_ENTRIES"_Stz,
@@ -636,6 +650,7 @@ static Stz* aErrorMsg[]
 
   // - - - - - - - - - - - - - - - - - - -
   /* _A_ */
+  /* EC_AGG_EXPR_IN_WHERE_CLAUSE      */ "Cannot specify an aggregate expression in a WHERE clause"_Stz, // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_COLUMN              */ "Ambiguous column name"_Stz,     // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_TABLE               */ "Ambiguous table name"_Stz,      // SQL Compiler Subsystem
   /* EC_ASSERT                        */ "assert"_Stz,
@@ -687,8 +702,12 @@ static Stz* aErrorMsg[]
   /* EC_DUPLICATE_KEY                 */ "duplicate key"_Stz,
 
   /* _E_ */
-  /* EC_EXPR_INVALID_COMBINATION      */ "Expression type combination is invalid or unsupported for the expression operator"_Stz,   // SQL Compiler Subsystem
-  /* EC_EXPR_MUST_BE_BOOLEAN          */ "Predicate expression must have a boolean result"_Stz,   // SQL Compiler Subsystem
+  /* EC_EXPR_AGG_MIX_NO_GROUPBY_LIST  */ "Cannot select both aggregate and non-aggregate expressions without a GROUP BY clause"_Stz, // SQL Compiler Subsystem
+  /* EC_EXPR_INVALID_COMBINATION      */ "Expression type combination is invalid or unsupported for the expression operator"_Stz,    // SQL Compiler Subsystem
+  /* EC_EXPR_IS_AGG_IN_GROUPBY_LIST   */ "Cannot have an aggregate expression in the GROUP BY list"_Stz, // SQL Compiler Subsystem
+  /* EC_EXPR_IS_LIT_IN_GROUPBY_LIST   */ "Cannot have a literal expression in the GROUP BY list"_Stz,    // SQL Compiler Subsystem
+  /* EC_EXPR_MUST_BE_BOOLEAN          */ "Predicate expression must have a boolean result"_Stz,          // SQL Compiler Subsystem
+  /* EC_EXPR_NOT_IN_GROUPBY_LIST      */ "Expression is not present in the GROUP BY list"_Stz,           // SQL Compiler Subsystem
 
   /* _F_ */
   /* EC_FOLDER_IN_USE                 */ "folder in use"_Stz,
@@ -697,6 +716,7 @@ static Stz* aErrorMsg[]
   /* _G_ */
 
   /* _H_ */
+  /* EC_HAVING_EXPR_NOT_AGG_OR_IN_GROUPBY */ "The HAVING expression is not an aggregate or not in the GROUP BY list"_Stz,  // SQL Compiler Subsystem
 
   /* _I_ */
   /* EC_IDXVFY_ADJACENT_ENTRIES       */ "EC_IDXVFY_ADJACENT_ENTRIES"_Stz,

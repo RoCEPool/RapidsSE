@@ -487,6 +487,13 @@
                       ]
                     }, // EndPath: /definitions/object/planObject/sqlOperator/dataSource
 
+// TODO Path: /__root__/definitions/object/planObject/sqlOperator/setOp
+                    // isDistinct
+                    // correspondingList <-- may be empty
+// TODO Path: /__root__/definitions/object/planObject/sqlOperator/setOp/unionOp
+// TODO Path: /__root__/definitions/object/planObject/sqlOperator/setOp/intersectOp
+// TODO Path: /__root__/definitions/object/planObject/sqlOperator/setOp/exceptOp
+
                   ]
                 } // EndPath: /__root__/definitions/object/planObject/sqlOperator
               ],

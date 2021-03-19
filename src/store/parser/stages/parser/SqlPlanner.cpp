@@ -403,10 +403,7 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
   QueryNode* pHavingFilterOp = nullptr;
   if (pCtx->having) {
 
-    // Check that the having clause is valid.
-    // The expressions in a having clause must either be the grouping column
-    // in the group by list or columns that are functionally dependant on
-    // the grouping column.
+
     // TODO
 //    b1 bHasAggregate = (pAggregateOp || (pProjectOp && ProjectOp::bHasAnAggregate(pProjectOp)));
 //    if (!bHasAggregate) {
@@ -426,6 +423,18 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
     ASSERT(m_pExprList->nItems() == 0);
     delete m_pExprList;
     m_pExprList = nullptr;
+
+    // Check that the having clause is valid.
+    // The expressions in a having clause must either be the grouping column
+    // in the group by list or columns that are functionally dependant on
+    // the grouping column.
+    if (!Expr::bIsAnAggregate(pExpr) && !pAggregateOp) {
+      // There's no aggregate op, so the having clause must contain an aggregate
+      SemanticException::vThrow(EC_HAVING_EXPR_NOT_AGG_OR_IN_GROUPBY);
+    }
+
+    // TODO: Check if all of the columnRefs in the HAVING expression are either
+    //       aggregates or they are supersets of expressions in the group by list.
   }
 
 
@@ -447,6 +456,11 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
     ASSERT(m_pExprList->nItems() == 0);
     delete m_pExprList;
     m_pExprList = nullptr;
+
+    // Check if this expression is an aggregate
+    if (Expr::bIsAnAggregate(pExpr)) {
+      SemanticException::vThrow(EC_AGG_EXPR_IN_WHERE_CLAUSE);
+    }
   }
 
 

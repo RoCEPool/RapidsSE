@@ -1462,6 +1462,9 @@ void Dynamo::vAppendAggregateOp(String* sPipeline, QueryNode* pNode)
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // columnRef
 
+        // TODO: Alka, please note that the pGroupByExpr may not necessarily
+        //       be a columnRef. It could be any arbitrary expression.
+        //       e.g. "GROUP BY (2 * colA / 3) % 18..."
         ASSERT(ColumnRef::bIsOfType(pGroupByExpr));
         QueryNode *pColumnRef = static_cast<QueryNode *>(pGroupByExpr);
         sPipeline->vCatSprint(
