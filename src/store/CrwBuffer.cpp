@@ -193,7 +193,8 @@ StreamDef* CrwBuffer::pStreamDef(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  return m_oRowTray.pNub()->pDesc();
+  //return m_oRowTray.pNub()->pDesc();
+  return m_pStreamDef;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -217,7 +218,9 @@ void CrwBuffer::vTable(Table* pTable)
   
   //m_pTable = pTable;
   DataBuffer::vTable(pTable);
-  m_oRowTray.pNub()->vDesc(pTable->pStreamDef());
+  //m_pStreamDef = pTable->pStreamDef();
+  //m_oRowTray.pNub()->vDesc(pTable->pStreamDef());
+  vStreamDef(pTable->pStreamDef());
 }
 
 /*----------------------------------------------------------------------------*/
