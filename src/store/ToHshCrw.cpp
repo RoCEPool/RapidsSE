@@ -136,7 +136,7 @@ void ToHshCrw::vAddNst(RowBuffer* pRowBuffer)
   while ( (szNmlStr = pNmlStr->szEach(szNmlStr)) ) {
     //vTrace("vAddNst : %s\n"_Stz,szNmlStr);
 
-    bool bAdded = m_pCrwBuffer->m_pRowCompactor->bCompactTail(szNmlStr);
+    bool bAdded = m_pCrwBuffer->pRowCompactor()->bCompactTail(szNmlStr);
     ASSERT(bAdded);
     UNUSED(bAdded);
   }

@@ -220,6 +220,26 @@ void CrwBuffer::vTable(Table* pTable)
   m_oRowTray.pNub()->vDesc(pTable->pStreamDef());
 }
 
+/*----------------------------------------------------------------------------*/
+/* get row compactor                                                          */
+/*----------------------------------------------------------------------------*/
+RowCompactor* CrwBuffer::pRowCompactor(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+  
+  return m_pRowCompactor;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get row tray                                                               */
+/*----------------------------------------------------------------------------*/
+RowTray* CrwBuffer::pRowTray(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+  
+  return & m_oRowTray;
+}
+
 
 
 

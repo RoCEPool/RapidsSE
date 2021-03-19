@@ -101,7 +101,7 @@ void RowCompactor::vCompactBegin(CrwBuffer* pCrwBuffer, bool bCollectSamples)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
   m_pCrwBuffer   = pCrwBuffer;
-  m_pCrwNub      = pCrwBuffer->m_oRowTray.pNub();
+  m_pCrwNub      = pCrwBuffer->pRowTray()->pNub();
   m_pStreamDef   = m_pCrwNub->pDesc();
   
   m_pEncoding = new Encoding(m_pStreamDef);

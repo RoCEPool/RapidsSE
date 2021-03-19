@@ -122,7 +122,7 @@ Crw* TablePtn::aAllotFixedSizeCrw(Rrf& xRowRef)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allot from latest buffer
   
-  RowNub* pRowNub = m_pCurrentBuffer->m_oRowTray.pNub();
+  RowNub* pRowNub = m_pCurrentBuffer->pRowTray()->pNub();
   i8 i_Head = pRowNub->iAllotHead(jCrwSize);
   if (C_UNKNOWN != i_Head) {
     aCrw = (Crw*)pRowNub->aGetHead(i_Head);
@@ -135,7 +135,7 @@ Crw* TablePtn::aAllotFixedSizeCrw(Rrf& xRowRef)
   // allot from a new buffer
 
   RASSERT(pNewCurrentCrwBuffer());                    //! this needs to be fixed
-  pRowNub = m_pCurrentBuffer->m_oRowTray.pNub();
+  pRowNub = m_pCurrentBuffer->pRowTray()->pNub();
   i_Head = pRowNub->iAllotHead(jCrwSize);
   aCrw = (Crw*)pRowNub->aGetHead(i_Head);
   RASSERT(aCrw);

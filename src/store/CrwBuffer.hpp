@@ -9,13 +9,10 @@ namespace STORE
 {
   class CrwBuffer : public DataBuffer
   {
-  public:
+  private:
     RowTray    m_oRowTray;  // tray of rows
     SeeMe      m_xSeeMe;
-  
     RowCompactor* m_pRowCompactor;
-  
-  private:
   
     tXN m_tTxnNo; // transaction number
   
@@ -41,6 +38,9 @@ namespace STORE
     void       vStreamDef(StreamDef* pStreamDef);
     void       vTable(Table* pTable);
 
+    RowCompactor* pRowCompactor(void);;
+    RowTray* pRowTray(void);;
+  
     void       vDelete(Crw* aCrw);
     HeadLine*  aGetHead(i8 i_Crw);
     void       vOperandDump(i8 iDetail);
