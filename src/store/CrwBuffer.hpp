@@ -34,7 +34,6 @@ namespace STORE
     static CrwBuffer* pToCrwBuffer(void* aAddr);
     static void       vToRow(RowSingle* pRow, Crw* aCrw);
 
-    StreamDef* pStreamDef(void);
     void       vStreamDef(StreamDef* pStreamDef);
     void       vTable(Table* pTable);
 

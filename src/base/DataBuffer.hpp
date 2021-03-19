@@ -28,6 +28,7 @@ namespace BASE
     static DataBuffer* pToDataBuffer(void* aAddr);
 
   void       vStreamDef(StreamDef* pStreamDef);
+  StreamDef* pStreamDef(void);
 
   Table*     pTable(void);
   void       vTable(Table* pTable);
