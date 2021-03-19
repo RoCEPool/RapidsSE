@@ -39,7 +39,6 @@ namespace STORE
 
     StreamDef* pStreamDef(void);
     void       vStreamDef(StreamDef* pStreamDef);
-    Table*     pTable(void);
     void       vTable(Table* pTable);
 
     void       vDelete(Crw* aCrw);
