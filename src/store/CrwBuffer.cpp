@@ -96,7 +96,7 @@ bool CrwBuffer::bDeleteRefdCrw(Rrf xRef)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump entry buffer                                                          */
+/* dump crw buffer                                                            */
 /*----------------------------------------------------------------------------*/
 void CrwBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
@@ -128,7 +128,7 @@ Crw* CrwBuffer::pRefdCrw(Rrf xRef)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the entry buffer that given id references                              */
+/* get the crw buffer that given id references                                */
 /*----------------------------------------------------------------------------*/
 CrwBuffer* CrwBuffer::pRefdCrwBuffer(Rrf& xRef)
 {
@@ -149,7 +149,7 @@ CrwBuffer* CrwBuffer::pRefdCrwBuffer(Rrf& xRef)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the row buffer that contains the given address                         */
+/* get the crw buffer that contains the given address                         */
 /*----------------------------------------------------------------------------*/
 CrwBuffer* CrwBuffer::pToCrwBuffer(void* aAddr)
 {
@@ -308,7 +308,7 @@ void CrwBuffer::vAppendOpen(RowCompactor* pRowCompactor, bool bCollectSamples)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append an row into this crw buffer                                         */
+/* append a row into this crw buffer                                          */
 /*----------------------------------------------------------------------------*/
 bool CrwBuffer::bAppendRow(Row* aRowSrc)
 {

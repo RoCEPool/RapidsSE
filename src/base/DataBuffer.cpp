@@ -4,6 +4,15 @@
 
 #include "BASE.h"
 
+#include "SkipRoots.hpp"
+#include "EntBuffer.hpp"
+#include "IndexTree.hpp"
+#include "CrvBuffer.hpp"
+#include "ReadApi.hpp"
+#include "TablePtn.hpp"
+#include "RowOnce.hpp"
+#include "IndexStream.hpp"
+#include "Table.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -144,6 +153,7 @@ void DataBuffer::vTable(Table* pTable)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_pTable = pTable;
+  vStreamDef(pTable->pStreamDef());
 }
 
 /*----------------------------------------------------------------------------*/
