@@ -47,7 +47,6 @@ namespace STORE
 
     ////////////////////////////////////////////////////////////////////////////
     // buffer functions
-    void       vBufferCount(i8& nBufferCount);
     void       vCopy(CrwBuffer* pArgCrwBuffer);
     i8         iDecile(void);
     i8         iLengthList(void);

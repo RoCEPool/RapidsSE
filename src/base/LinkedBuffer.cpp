@@ -54,6 +54,24 @@ LinkedBuffer::~LinkedBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get buffer count                                                           */
+/*----------------------------------------------------------------------------*/
+i8 LinkedBuffer::nLinkedBufferCount(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  i8 nCount = 1;
+  
+  LinkedBuffer* pNext = pNextLinkedBuffer();
+  while (pNext) {
+    nCount++;
+    pNext = pNext->pNextLinkedBuffer();
+  }
+  
+  return nCount;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get buffer no of this buffer                                               */
 /*----------------------------------------------------------------------------*/
 BufferNo LinkedBuffer::tBufferNo(void)

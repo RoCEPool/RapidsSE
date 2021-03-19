@@ -592,8 +592,8 @@ void Step::vTableSize(void)
   
   Table* pTable = _pTable(*( m_pJob->pLogicUnit_job() )->m_xpTable);
   
-  i8 iBuffers = pTable->nCrwBuffers();
-  i8 iSize = iBuffers * C_SIZE_POOL_BUFFER;
+  i8 nBuffers = pTable->nBuffers();
+  i8 iSize = nBuffers * C_SIZE_POOL_BUFFER;
   m_pDataStack->vPushInt(iSize);
   
   EXIT();

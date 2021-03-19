@@ -50,9 +50,9 @@ namespace STORE
     void    vAddIndex(Index* pIndex);
     void    vAnalyze(i8 i_TablePtn, i8& nBuffers, i8& nRows);
     BucketMap* pBucketMap(void);
+    i8      nBuffers(void);
     void    vCompactIndex(Index* pIndex);
     void    vCreatePtnDef(void);
-    i8      nCrwBuffers(void);
     void    vContentDump(void);
     Column* pFindColumn(Stz* szColNm);
     IdxVec* pIdxVec(void);

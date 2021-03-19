@@ -208,68 +208,16 @@ void TablePtn::vAppendBuffer(RowBuffer* pRowBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append a row to the row buffer into the TablePtn                           */
+/* get the number of buffers in this partition                                */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vAppendRow(RowCompactor* pRowCompactor, RowSingle* pSrw)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-#ifdef WITH_STATISTICS_COUNTERS
-  gpAttachMap->m_oStatistics.IndexTree.m_nAppendBuffers++;
-#endif
-  
-  RASSERT(m_okLock.bIsLocked());
-  //m_okLock.vGrabWrite();
-  
-  if (! m_pRootBuffer)
-    RASSERT(pNewCurrentCrwBuffer());                  //! this needs to be fixed
-  
-  m_pCurrentBuffer->vAppendOpen(pRowCompactor, false);
-  bool bAppended = m_pCurrentBuffer->bAppendRow(pSrw->pRowCurrent());
-  
-  if (! bAppended) {
-    RASSERT(pNewCurrentCrwBuffer());                  //! this needs to be fixed
-
-    m_pCurrentBuffer->vAppendOpen(pRowCompactor, false);
-    bAppended = m_pCurrentBuffer->bAppendRow(pSrw->pRowCurrent());
-    RASSERT(bAppended);
-  }
-  
-  m_pCurrentBuffer->vAppendClose();
-  
-  // get the row from the buffer
-  Rrf xRowRef;
-  i8 iRow = m_pCurrentBuffer->nRowCount() - 1;
-  xRowRef.vItem(iRow);
-  
-  // get no of indexes of the table
-  i8 nIndexes = m_pIndexTreeVec->nItems();
-  
-  // iterate all indexes of the table
-  for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
-    
-    // get index
-    IndexTree* pIndexTree = m_pIndexTreeVec->pGet(i_Index);
-    
-    // insert entry into other indexes
-    bool bResult = pIndexTree->bInsertEntry(m_pCurrentBuffer,iRow,xRowRef);
-    RASSERT(bResult);
-  }
-  
-  //m_okLock.vDropWrite();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the row buffers used                                                   */
-/*----------------------------------------------------------------------------*/
-i8 TablePtn::nCrwBuffers(void)
+i8 TablePtn::nBuffers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
   i8 nBufferCount = 0;
   
   if (m_pRootBuffer)
-    m_pRootBuffer->vBufferCount(nBufferCount);
+    nBufferCount = m_pRootBuffer->nLinkedBufferCount();
   
   return nBufferCount;
 }
@@ -277,7 +225,7 @@ i8 TablePtn::nCrwBuffers(void)
 /*----------------------------------------------------------------------------*/
 /* delete an existing row                                                     */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vDeleteRow(IndexTree* pIndexTree, EntBuffer* pEntBuffer, Ent* aEnt)
+void TablePtn::vDeleteCrw(IndexTree* pIndexTree, EntBuffer* pEntBuffer, Ent* aEnt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   

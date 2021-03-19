@@ -328,29 +328,6 @@ void CrwBuffer::vAssertCrwBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* return number of row buffers under this buffer                             */
-/*----------------------------------------------------------------------------*/
-void CrwBuffer::vBufferCount(i8& nBuffers)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-  
-  CrwBuffer* pNextBuffer = nullptr;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // table ?
-  
-  RASSERT(pTable());
-  
-  pNextBuffer = this->pNextCrwBuffer();
-  nBuffers++;
-  
-  while (pNextBuffer) {
-    pNextBuffer = pNextBuffer->pNextCrwBuffer();
-    nBuffers++;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* copy given argument into this crw buffer                                   */
 /*----------------------------------------------------------------------------*/
 void CrwBuffer::vCopy(CrwBuffer* pArgCrwBuffer)

@@ -27,6 +27,8 @@ namespace BASE
     void vLinkAsPrev(LinkedBuffer* pArgBuffer);
     void vUnLink(void);
 
+    i8            nLinkedBufferCount(void);
+
     LinkedBuffer* pHigherLinkedBuffer(void);
     void          vHigherLinkedBuffer(BufferNo tHigherBufferNo);
     void          vHigherLinkedBuffer(LinkedBuffer* pHigherBuffer);

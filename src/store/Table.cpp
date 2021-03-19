@@ -311,6 +311,22 @@ BucketMap* Table::pBucketMap(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get number of buffers in this table                                        */
+/*----------------------------------------------------------------------------*/
+i8 Table::nBuffers(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  i8 nBuffers = 0;
+  
+  for (i8 i_TablePtn = 0; i_TablePtn < AM::nPtnsPerTable(); i_TablePtn++) {
+    nBuffers += pTablePtn(i_TablePtn)->nBuffers();
+  }
+  
+  return nBuffers;
+}
+
+/*----------------------------------------------------------------------------*/
 /* create ptn stream def                                                      */
 /*----------------------------------------------------------------------------*/
 void Table::vCreatePtnDef(void)
@@ -331,22 +347,6 @@ void Table::vCreatePtnDef(void)
       m_pPtnStreamDef->m_nColumns++;
     }
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of crw buffers in this table                                    */
-/*----------------------------------------------------------------------------*/
-i8 Table::nCrwBuffers(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  i8 iBuffers = 0;
-  
-  for (i8 i_TablePtn = 0; i_TablePtn < AM::nPtnsPerTable(); i_TablePtn++) {
-    iBuffers += pTablePtn(i_TablePtn)->nCrwBuffers();
-  }
-  
-  return iBuffers;
 }
 
 /*----------------------------------------------------------------------------*/
