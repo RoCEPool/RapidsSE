@@ -32,7 +32,6 @@ namespace STORE
     ~TablePtn(void) noexcept(false);
   
     void vAddIndex(IndexTree* pIndexTree);
-    Crw* aAllotFixedSizeCrw(Rrf& xRowRef);
     void vAppendBuffer(CrwBuffer* pCrwBuffer);
     void vAppendBuffer(RowBuffer* pRowBuffer);
     i8   nBuffers(void);

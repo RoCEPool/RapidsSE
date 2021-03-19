@@ -101,52 +101,6 @@ void TablePtn::vAddIndex(IndexTree* pIndexTree)
 }
 
 /*----------------------------------------------------------------------------*/
-/* allot a row (from a table defined with a fixed row size)                   */
-/*----------------------------------------------------------------------------*/
-Crw* TablePtn::aAllotFixedSizeCrw(Rrf& xRowRef)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  Crw* aCrw = nullptr;
-  
-  StreamDef* pStreamDef = m_pTable->pStreamDef();
-  i8 jCrwSize = pStreamDef->m_nFixedSized;
-  RASSERT(jCrwSize > 0);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // new the first buffer?
-  
-  if (! m_pRootBuffer)
-    RASSERT(pNewCurrentCrwBuffer());                  //! this needs to be fixed
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // allot from latest buffer
-  
-  RowNub* pRowNub = m_pCurrentBuffer->pRowTray()->pNub();
-  i8 i_Head = pRowNub->iAllotHead(jCrwSize);
-  if (C_UNKNOWN != i_Head) {
-    aCrw = (Crw*)pRowNub->aGetHead(i_Head);
-    xRowRef.vBuffer(m_pCurrentBuffer->iBufferNo());
-    xRowRef.vItem(i_Head);
-    return aCrw;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // allot from a new buffer
-
-  RASSERT(pNewCurrentCrwBuffer());                    //! this needs to be fixed
-  pRowNub = m_pCurrentBuffer->pRowTray()->pNub();
-  i_Head = pRowNub->iAllotHead(jCrwSize);
-  aCrw = (Crw*)pRowNub->aGetHead(i_Head);
-  RASSERT(aCrw);
-  
-  xRowRef.vBuffer(m_pCurrentBuffer->iBufferNo());
-  xRowRef.vItem(i_Head);
-  
-  return aCrw;
-}
-
-/*----------------------------------------------------------------------------*/
 /* append a crw buffer into the TablePtn                                      */
 /*----------------------------------------------------------------------------*/
 void TablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
