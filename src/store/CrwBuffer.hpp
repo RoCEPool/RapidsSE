@@ -11,8 +11,6 @@ namespace STORE
   {
   public:
     RowTray    m_oRowTray;  // tray of rows
-    Table*     m_pTable;
-    StreamDef* m_pStreamDef;
     SeeMe      m_xSeeMe;
   
     RowCompactor* m_pRowCompactor;
@@ -39,13 +37,15 @@ namespace STORE
     static CrwBuffer* pToCrwBuffer(void* aAddr);
     static void       vToRow(RowSingle* pRow, Crw* aCrw);
 
+    StreamDef* pStreamDef(void);
+    void       vStreamDef(StreamDef* pStreamDef);
+    Table*     pTable(void);
+    void       vTable(Table* pTable);
+
     void       vDelete(Crw* aCrw);
     HeadLine*  aGetHead(i8 i_Crw);
     void       vOperandDump(i8 iDetail);
     i8         nRowCount(void);
-    void       vStreamDef(StreamDef* pStreamDef);
-    void       vTable(Table* pTable);
-    Table*     pTable(void);
 
     tXN        tTxnNo(void);
     void       vTxnNo(tXN tTxnNo);
@@ -72,7 +72,6 @@ namespace STORE
     void       vGetRow_single(RowSingle* pRowSingle, i8 i_Row);
     void       vShow(void);
     void       vShowRow(i8 i_Row);
-    StreamDef* pStreamDef(void);
 
     ////////////////////////////////////////////////////////////////////////////
     // row functions

@@ -15,7 +15,10 @@ namespace BASE
     Birth  m_oWhenNewed;    // when was this buffer created?
     b8     m_bIsPermanent;  // is buffer permanent ?
   
-    PadWord m__PadToCacheLine[6];
+    Table*     m_pTable;
+    StreamDef* m_pStreamDef;
+
+    PadWord m__PadToCacheLine[4];
 
   public:
     DataBuffer(eCN eClass, bool bIsPermanent, i8 iLogCtl=C_LOG);

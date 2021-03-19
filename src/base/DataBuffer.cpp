@@ -36,6 +36,10 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent, i8 iLogCtl)
   m_oWhenNewed.vNow();
   m_bIsPermanent = bIsPermanent;
   
+  m_pTable = nullptr;
+  m_pStreamDef = nullptr;
+
+  
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);  
 }
 

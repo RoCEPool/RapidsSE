@@ -190,6 +190,55 @@ void CrwBuffer::vToRow(RowSingle* pRowSingle, Crw* aCrw)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get the stream def                                                         */
+/*----------------------------------------------------------------------------*/
+StreamDef* CrwBuffer::pStreamDef(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+  
+  return m_oRowTray.pNub()->pDesc();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the table of the row buffer                                            */
+/*----------------------------------------------------------------------------*/
+void CrwBuffer::vStreamDef(StreamDef* pStreamDef)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+  
+  //RASSERT(pTable);
+  m_pStreamDef = pStreamDef;
+  m_oRowTray.pNub()->vDesc(pStreamDef);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the table of the index buffer                                          */
+/*----------------------------------------------------------------------------*/
+Table* CrwBuffer::pTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+
+  return m_pTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the table of the row buffer                                            */
+/*----------------------------------------------------------------------------*/
+void CrwBuffer::vTable(Table* pTable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+  
+  //RASSERT(pTable);
+  m_pTable = pTable;
+  m_oRowTray.pNub()->vDesc(pTable->pStreamDef());
+}
+
+
+
+
+
+
+/*----------------------------------------------------------------------------*/
 /* analyze this buffer                                                        */
 /*----------------------------------------------------------------------------*/
 void CrwBuffer::vAnalyze(i8& nBuffers, i8& nRows)
@@ -643,50 +692,6 @@ void CrwBuffer::vShow(void)
   vTrace("\n"_Stz);
   vTrace("=================================================="
          "==================================================\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the stream def                                                         */
-/*----------------------------------------------------------------------------*/
-StreamDef* CrwBuffer::pStreamDef(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-  
-  return m_oRowTray.pNub()->pDesc();
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the table of the row buffer                                            */
-/*----------------------------------------------------------------------------*/
-void CrwBuffer::vStreamDef(StreamDef* pStreamDef)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-  
-  //RASSERT(pTable);
-  m_pStreamDef = pStreamDef;
-  m_oRowTray.pNub()->vDesc(pStreamDef);
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the table of the row buffer                                            */
-/*----------------------------------------------------------------------------*/
-void CrwBuffer::vTable(Table* pTable)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-  
-  //RASSERT(pTable);
-  m_pTable = pTable;
-  m_oRowTray.pNub()->vDesc(pTable->pStreamDef());
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the table of the index buffer                                          */
-/*----------------------------------------------------------------------------*/
-Table* CrwBuffer::pTable(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-
-  return m_pTable;
 }
 
 /*----------------------------------------------------------------------------*/
