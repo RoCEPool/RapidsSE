@@ -205,7 +205,7 @@ void CrwBuffer::vStreamDef(StreamDef* pStreamDef)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
   //RASSERT(pTable);
-  m_pStreamDef = pStreamDef;
+  DataBuffer::vStreamDef(pStreamDef);
   m_oRowTray.pNub()->vDesc(pStreamDef);
 }
 

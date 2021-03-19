@@ -106,6 +106,16 @@ DataBuffer* DataBuffer::pToDataBuffer(void* aAddr)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* set the table of the row buffer                                            */
+/*----------------------------------------------------------------------------*/
+void DataBuffer::vStreamDef(StreamDef* pStreamDef)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_pStreamDef = pStreamDef;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the table of the index buffer                                          */
 /*----------------------------------------------------------------------------*/
 Table* DataBuffer::pTable(void)

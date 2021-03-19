@@ -27,6 +27,8 @@ namespace BASE
     static DataBuffer* pRefdDataBuffer(Rrf& xRef);
     static DataBuffer* pToDataBuffer(void* aAddr);
 
+  void       vStreamDef(StreamDef* pStreamDef);
+
   Table*     pTable(void);
   void       vTable(Table* pTable);
 
