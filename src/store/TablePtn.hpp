@@ -45,9 +45,6 @@ namespace STORE
     IndexTreeVec* pIndexTreeVec(void);
     void vInsertIndexEntries(CrwBuffer* pCrwBuffer);
     bool bIsLocked(void);
-    CrwBuffer* pNewCurrentCrwBuffer(void);
-    void vParentJobId(i8 iJobId);
-    i8   iParentJobId(void);
     tPN  tPtnNo(void);
     bool bPopulateIndex(i8 iIndexNo);
     bool bPurge(i8 iOlderThanSeconds);

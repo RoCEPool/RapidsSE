@@ -336,46 +336,6 @@ bool TablePtn::bIsLocked(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* new a CrwBuffer and make it the current                                    */
-/*----------------------------------------------------------------------------*/
-CrwBuffer* TablePtn::pNewCurrentCrwBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-#ifdef WITH_STATISTICS_COUNTERS
-  gpAttachMap->m_oStatistics.IndexTree.m_nAppendBuffers++;
-#endif
-  
-  RASSERT(m_okLock.bIsLocked());
-  
-  if (m_pRootBuffer == nullptr) {
-    ASSERT( ! m_pCurrentBuffer );
-    
-    m_pRootBuffer = new CrwBuffer;
-    m_pRootBuffer->vTable(m_pTable);
-    m_pRootBuffer->vPtnNo(m_tPtnNo);
-    m_pRootBuffer->vIsPermanent(true);
-    
-    m_pCurrentBuffer = m_pRootBuffer;
-    
-    return m_pCurrentBuffer;
-  }
-  
-  CrwBuffer* pCrwBuffer = new CrwBuffer;
-  pCrwBuffer->vTable(m_pTable);
-  pCrwBuffer->vPtnNo(m_tPtnNo);
-  pCrwBuffer->vIsPermanent(true);
-
-  pCrwBuffer->vNextLinkedBuffer(m_pCurrentBuffer->pNextLinkedBuffer());
-  pCrwBuffer->vPrevLinkedBuffer(m_pCurrentBuffer);
-  m_pCurrentBuffer->vNextLinkedBuffer(pCrwBuffer);
-  
-  m_pCurrentBuffer = pCrwBuffer;
-    
-  return m_pCurrentBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get the partition number (in grid) of this table partition                 */
 /*----------------------------------------------------------------------------*/
 tPN TablePtn::tPtnNo(void)
