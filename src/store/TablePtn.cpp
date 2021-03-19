@@ -450,39 +450,6 @@ CrwBuffer* TablePtn::pRootCrwBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* take a read-consistent snaphot of buffer                                   */
-/*----------------------------------------------------------------------------*/
-CrwBuffer* TablePtn::pSnapshot(CrwBuffer* pCrwBufferSrc, t8 tPerspective)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  CrwBuffer* pCrwBuffer = new CrwBuffer;
-  
-  pCrwBuffer->vTable(pTable());
-  pCrwBuffer->vPtnNo(tPtnNo());
-  pCrwBuffer->vIsPermanent(false);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  i8 nCrw = pCrwBufferSrc->nRowCount();
-  for (i8 i_Crw = 0 ; i_Crw < nCrw; i_Crw++) {
-    
-    Crw* aCrw = pCrwBufferSrc->aCrw(i_Crw);
-    Rrf xwRef;
-    xwRef.vBuffer(pCrwBufferSrc->iBufferNo());
-    xwRef.vItem(i_Crw);
-
-    Crw* aCrw_snapshot = m_pReadApi->aGetCrwVersion(xwRef,aCrw,tPerspective);
-    
-    if (! aCrw_snapshot)
-      continue;
-    
-    pCrwBuffer->bAppendCrw(aCrw_snapshot);
-  }
-  
-  return pCrwBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get table                                                                  */
 /*----------------------------------------------------------------------------*/
 Table* TablePtn::pTable(void)

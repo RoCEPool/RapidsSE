@@ -51,17 +51,9 @@ namespace STORE
     ReadApi* pReadApi(void);
     void vRemoveIndex(i8 iIndexNo);
     CrwBuffer* pRootCrwBuffer(void);
-    CrwBuffer* pSnapshot(CrwBuffer* pCrwBufferSrc, t8 tPerspective);
     Table* pTable(void);
     void vTruncate(void);
     void vTruncateIndex(Index* pIndex);
-//    void vUpsertBuffer(CrwBuffer* pCrwBuffer, t8 tPerspective);
-//    void vUpsertRow_insert(Crw* aCrw_nosuch, EntWrk* aEntWrk,
-//                           Encoding_v1* pEncoding_upsert, t8 tPerspective);
-//    void vUpsertRow_insert(RowBuffer* pRowBuffer, i8 i_Row, EntWrk* aEntWrk,
-//                           Encoding_v1* pEncoding_upsert, t8 tPerspective);
-//    void vUpsertRow_update(Crw* aCrw_exists, Ent* aEnt_Found,
-//                           Encoding_v1* pEncoding_upsert, t8 tPerspective);
     bool bVerifyTable(void);
     void vVisualizeTable(void);
     

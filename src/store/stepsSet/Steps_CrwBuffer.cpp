@@ -30,7 +30,6 @@ void Step::vAddSteps_CrwBuffer(void)
   
   vAddStep("crwBuffer.delete"_Stz,        &Step::vCrwBufferDelete);
   vAddStep("crwBuffer.operandDump"_Stz,   &Step::vCrwBufferOperandDump);
-  vAddStep("crwBuffer.snapshot"_Stz,      &Step::vCrwBufferSnapshot);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -74,32 +73,6 @@ void Step::vCrwBufferOperandDump(void)
   
   pCrwBuffer->vOperandDump(iDetail);
 
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* crwBuffer.snapshot -- take read-consistent snapshot of crw buffer          */
-/*----------------------------------------------------------------------------*/
-void Step::vCrwBufferSnapshot(void)
-{
-  ENTRY();
-  
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pDataStack->pPopPtr(__func__));
-
-  Table* pTable = pCrwBuffer->pTable();
-  i8 i_Ptn = pCrwBuffer->tPtnNo();
-  TablePtn* pTablePtn = pTable->pTablePtn(i_Ptn);
-  
-  t8 tPerspective = AM::tThisTLSPespective();
-
-  CrwBuffer* pCrwBuffer_snaphot = pTablePtn->pSnapshot(pCrwBuffer,tPerspective);
-
-  vTrace("\n*************************************\n"_Stz);
-  vTrace("SNAPSHOT BUFFER %p (t%lld)\n"_Stz, pCrwBuffer_snaphot, tPerspective);
-  vTrace("*************************************\n\n"_Stz);
-  
-  m_pDataStack->vPushPtr(pCrwBuffer_snaphot);
-  
   EXIT();
 }
 
