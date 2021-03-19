@@ -152,6 +152,14 @@ b1 ProjectOp::bIsOfType(PlanNode *pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely same as its definition         */
+/*----------------------------------------------------------------------------*/
+b1 ProjectOp::bIsExactType(PlanNode *pNode)
+{
+  return ShadowNode::bIsExactType(pNode, C_PROJECTOP_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns true if any of the projected expressions are aggregate expressions */
 /*----------------------------------------------------------------------------*/
 b1 ProjectOp::bHasAnAggregate(QueryNode* pNode)

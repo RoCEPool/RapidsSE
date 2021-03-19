@@ -34,6 +34,24 @@ namespace Parser
     // Validate that all predicate expressions give a boolean result type
     static void vValidatePredicatesAreBoolean(PlanNode* pRootNode, QueryNode* pPlanNode);
 
+    // Validate that the aggregate and group-by expressions are correctly specified
+    static void vValidateGroupByExprs(PlanNode* pRootNode, QueryNode* pPlanNode);
+
+    // Checks that all non-aggregate exprs being projected are in the group by list
+    static void vCheckNonAggExprsAreInGroupBy(QueryNode* pProjectExprs, QueryNode *pGroupByList);
+
+    // Check that the group by expressions cannot be aggregate expressions
+    static void vCheckGroupByExprsNotAggregates(QueryNode *pGroupByList);
+
+    // Check that the group by expressions are not literals.
+    static void vCheckGroupByExprsNotLiterals(QueryNode *pGroupByList);
+
+    // Validate that if there is no group by list then projections must either be
+    // all aggregates or all non-aggregates
+    static void vValidateAggsWithNoGroupBy(PlanNode* pRootNode, QueryNode* pPlanNode);
+
+    // Validate that any HAVING exprs are correctly specified
+    static void vValidateHavingExprs(PlanNode* pRootNode, QueryNode* pPlanNode);
   };
 }
 

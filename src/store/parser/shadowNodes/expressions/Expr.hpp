@@ -29,6 +29,10 @@ namespace Parser
     // it contains) is an aggregate expression
     static b1 bIsAnAggregate(PlanNode* pNode);
 
+    // Returns true if this expression tree only comprises literals and operators.
+    // i.e., returns false if a ColumnRef or ColumnOrdinal is encountered.
+    static b1 bIsLiteral(PlanNode* pNode);
+
     // Checks the expression tree to determine that a supported result type
     // can be produced. Will throw a SqlException if it is an invalid expression.
     static void vValidateResultType(QueryNode* pExprNode, PlanNode* pRootNode);
@@ -42,12 +46,16 @@ namespace Parser
     // The returned QueryNode must be freed.
     // Column ordinals are 1-based.
     static QueryNode* pSymbolicToOrdinal(QueryNode*    pSymbolicExpr,
-                                         PlanNodeList* pProjectedExprList,
+                                         PlanNodeList* pColumnExprList,
                                          PlanNode*     pRootNode);
 
     // Compare two expression trees and return true if they are equal with
     // respect to the operations and symbols used.
     static b1 bIsSymbolicallyEqual(QueryNode* pExpr1, QueryNode* pExpr2);
+
+    // Compare two expression trees symbolically and return true if
+    // pSuperExpr is equal to, or a superset of, pSubExpr.
+    static b1 bIsEqualOrSupersetOf(QueryNode* pSuperExpr, QueryNode* pSubExpr);
 
     // Returns true if the expression does not contain any column references.
     // All expressions are relative column ordinals, operators or literals only.

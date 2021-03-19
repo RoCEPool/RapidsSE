@@ -122,6 +122,37 @@ b1 Expr::bIsAnAggregate(PlanNode *pNode)
   return bIsAgg;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns true if this expression tree only comprises literals and operators.*/
+/* i.e., returns false if a ColumnRef or ColumnOrdinal is encountered.        */
+/*----------------------------------------------------------------------------*/
+b1 Expr::bIsLiteral(PlanNode *pNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  b1 bIsLit = true;
+
+  // Walk the graph, looking at the children only and return if any of them
+  // are ColumnRefs or ColumnOrdinals expressions.
+  auto fVisitor = [&bIsLit](PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
+
+    if (    ColumnRef::bIsOfType(pNode) ||
+        ColumnOrdinal::bIsOfType(pNode)) {
+      bIsLit = false;
+      return GraphNav::WALK_ABORT;
+    }
+
+    // Should not encounter column wildcards
+    ASSERT(!ColumnWildcard::bIsOfType(pNode));
+
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  GraphNav::bWalk(pNode, false, true, fVisitor, nullptr);
+
+  return bIsLit;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* Checks the expression tree to determine that a supported result type       */
@@ -189,7 +220,7 @@ void Expr::vValidateResultType(QueryNode* pExprNode, PlanNode* pRootNode)
 /* The returned QueryNode must be freed. Column ordinals are 1-based.         */
 /*----------------------------------------------------------------------------*/
 QueryNode* Expr::pSymbolicToOrdinal(QueryNode*    pSymbolicExpr,
-                                    PlanNodeList* pProjectedExprList,
+                                    PlanNodeList* pColumnExprList,
                                     PlanNode*     pRootNode)
 {
   ASSERT(bIsOfType(pSymbolicExpr));
@@ -210,7 +241,7 @@ QueryNode* Expr::pSymbolicToOrdinal(QueryNode*    pSymbolicExpr,
 
   // First we need to check if any of the columns in the columnExprList
   // exactly match our symbolic expression.
-  PlanNodeIter* pIter = pProjectedExprList->pNewIter();
+  PlanNodeIter* pIter = pColumnExprList->pNewIter();
   i8 iOrdinal = 1;
 
   while (pIter->bHasNext()) {
@@ -260,7 +291,7 @@ QueryNode* Expr::pSymbolicToOrdinal(QueryNode*    pSymbolicExpr,
 
     // Convert the child from symbolic to ordinal. If not, this will
     // duplicate the child expression anyway. Add it to a list of such children.
-    QueryNode* pChildOrdinalExpr  = pSymbolicToOrdinal(pChildSymbolicExpr, pProjectedExprList, pRootNode);
+    QueryNode* pChildOrdinalExpr  = pSymbolicToOrdinal(pChildSymbolicExpr, pColumnExprList, pRootNode);
     pOrdinalChildren->vAppend(pChildOrdinalExpr);
   }
   delete pIter;
@@ -372,6 +403,43 @@ b1 Expr::bIsSymbolicallyEqual(QueryNode* pExpr1, QueryNode* pExpr2)
   // The two expressions must be symbolically equal
   return true;
 }
+
+/*----------------------------------------------------------------------------*/
+/* Compare two expression trees symbolically and return true if               */
+/* pSuperExpr is equal to, or a superset of, pSubExpr.                        */
+/*----------------------------------------------------------------------------*/
+b1 Expr::bIsEqualOrSupersetOf(QueryNode* pSuperExpr, QueryNode* pSubExpr)
+{
+  ASSERT(pSuperExpr);
+  ASSERT(pSubExpr);
+  ASSERT(bIsOfType(pSuperExpr));
+  ASSERT(bIsOfType(pSubExpr));
+
+  // Check if the two expression trees are equal
+  if (bIsSymbolicallyEqual(pSuperExpr, pSubExpr))   return true;
+
+  // Expressions are not equal at this point but may be equal in a child
+  // of pSuperExpr.
+
+  // Walk the children of pSuperExpr and test again
+  PlanNodeIter* pIter = pSuperExpr->pNewChildrenIter();
+  while (pIter->bHasNext()) {
+    QueryNode* pChildExpr = static_cast<QueryNode*>(pIter->pNext());
+
+    // Recurse this function
+    if (bIsEqualOrSupersetOf(pChildExpr, pSubExpr)) {
+      // We got a match, no need to keep checking
+      return true;
+    }
+
+    // try the next child
+  }
+
+  // Couldn't find a match
+  delete pIter;
+  return false;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* Returns true if the expression does not contain any column references.     */
