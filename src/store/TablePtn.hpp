@@ -33,24 +33,25 @@ namespace STORE
     TablePtn(Table* pTable, tPN tPtnNo);
    ~TablePtn(void) noexcept(false);
   
+    void vDropRead(void);
+    void vDropWrite();
+    bool bGrabRead(void);
+    bool bGrabWrite(void);
+    bool bIsLocked(void);
+    tPN  tPtnNo(void);
+    Table* pTable(void);
+
     void vAddIndex(IndexTree* pIndexTree);
     void vAppendBuffer(CrwBuffer* pCrwBuffer);
     void vAppendBuffer(RowBuffer* pRowBuffer);
     i8   nBuffers(void);
-    void vDropRead(void);
-    void vDropWrite();
     void vDump(void);
-    bool bGrabRead(void);
-    bool bGrabWrite(void);
     IndexTree* pIndexTree(i8 iIndexNo);
     IndexTreeVec* pIndexTreeVec(void);
     void vInsertIndexEntries(CrwBuffer* pCrwBuffer);
-    bool bIsLocked(void);
-    tPN  tPtnNo(void);
     bool bPopulateIndex(i8 iIndexNo);
     void vRemoveIndex(i8 iIndexNo);
     CrwBuffer* pRootCrwBuffer(void);
-    Table* pTable(void);
     void vTruncate(void);
     void vTruncateIndex(Index* pIndex);
     bool bVerifyTable(void);

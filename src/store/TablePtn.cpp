@@ -34,7 +34,6 @@ __aFooterFunction(TablePtn)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-#ifdef __CRWTABLEPTN
 TablePtn::TablePtn(Table* pTable, tPN tPtnNo)
 : Object(CN_TABLEPTN)
 , m_okLock(this)
@@ -55,34 +54,10 @@ TablePtn::TablePtn(Table* pTable, tPN tPtnNo)
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
 }
-#else
-//??????????????????????????????????????????????????????????????????????????????
-TablePtn::TablePtn(Table* pTable, tPN tPtnNo)
-: Object(CN_TABLEPTN)
-, m_okLock(this)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  m_pTable = pTable;
-  m_tPtnNo = tPtnNo;
-  
-  m_pCrwTablePtn = new CrwTablePtn(m_pTable,m_tPtnNo,this);
-  
-  m_pRootBuffer  = nullptr;
-  m_pCurrentBuffer = nullptr;
-  
-  m_pIndexTreeVec = new IndexTreeVec;
-    
-  _checkInitialised_(CN_TABLEPTN);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-}
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-#ifdef __CRWTABLEPTN
 TablePtn::~TablePtn(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
@@ -92,21 +67,87 @@ TablePtn::~TablePtn(void) noexcept(false)
   delete m_pCrwTablePtn;
   delete m_pIndexTreeVec;
 }
-#else
-//??????????????????????????????????????????????????????????????????????????????
-TablePtn::~TablePtn(void) noexcept(false)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  // delete the index data vector
-  
-  delete m_pCrwTablePtn;
-  delete m_pIndexTreeVec;
-}
-#endif
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* drop a read lock on the partition                                          */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vDropRead(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  ASSERT(m_okLock.bIsLocked());
+  m_okLock.vDropRead();
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop a write lock on the partition                                          */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vDropWrite(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  ASSERT(m_okLock.bIsLocked());
+  m_okLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt at grabbing a read lock on the partition                           */
+/*----------------------------------------------------------------------------*/
+bool TablePtn::bGrabRead(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+
+  return m_okLock.bGrabRead();
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt at grabbing a write lock on the partition                          */
+/*----------------------------------------------------------------------------*/
+bool TablePtn::bGrabWrite(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  return m_okLock.bGrabWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* is the table partition locked?                                             */
+/*----------------------------------------------------------------------------*/
+bool TablePtn::bIsLocked(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  return m_okLock.bIsLocked();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the partition number (in grid) of this table partition                 */
+/*----------------------------------------------------------------------------*/
+tPN TablePtn::tPtnNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  return m_tPtnNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get table                                                                  */
+/*----------------------------------------------------------------------------*/
+Table* TablePtn::pTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  return m_pTable;
+}
+
+
+
+/*----------------------------------------------------------------------------*/
+/*                                    CRW                                     */
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -284,50 +325,6 @@ i8 TablePtn::nBuffers(void)
 #endif
 
 /*----------------------------------------------------------------------------*/
-/* drop a read lock on the partition                                          */
-/*----------------------------------------------------------------------------*/
-#ifdef __CRWTABLEPTN
-void TablePtn::vDropRead(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  ASSERT(m_okLock.bIsLocked());
-  m_okLock.vDropRead();
-}
-#else
-//??????????????????????????????????????????????????????????????????????????????
-void TablePtn::vDropRead(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  ASSERT(m_okLock.bIsLocked());
-  m_okLock.vDropRead();
-}
-#endif
-
-/*----------------------------------------------------------------------------*/
-/* drop a write lock on the partition                                          */
-/*----------------------------------------------------------------------------*/
-#ifdef __CRWTABLEPTN
-void TablePtn::vDropWrite(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  ASSERT(m_okLock.bIsLocked());
-  m_okLock.vDropWrite();
-}
-#else
-//??????????????????????????????????????????????????????????????????????????????
-void TablePtn::vDropWrite(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  ASSERT(m_okLock.bIsLocked());
-  m_okLock.vDropWrite();
-}
-#endif
-
-/*----------------------------------------------------------------------------*/
 /* dump the table                                                             */
 /*----------------------------------------------------------------------------*/
 #ifdef __CRWTABLEPTN
@@ -356,46 +353,6 @@ void TablePtn::vDump(void)
     pCrwBuffer = pCrwBuffer->pNextCrwBuffer();
   }
 
-}
-#endif
-
-/*----------------------------------------------------------------------------*/
-/* attempt at grabbing a read lock on the partition                           */
-/*----------------------------------------------------------------------------*/
-#ifdef __CRWTABLEPTN
-bool TablePtn::bGrabRead(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-
-  return m_okLock.bGrabRead();
-}
-#else
-//??????????????????????????????????????????????????????????????????????????????
-bool TablePtn::bGrabRead(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-
-  return m_okLock.bGrabRead();
-}
-#endif
-
-/*----------------------------------------------------------------------------*/
-/* attempt at grabbing a write lock on the partition                          */
-/*----------------------------------------------------------------------------*/
-#ifdef __CRWTABLEPTN
-bool TablePtn::bGrabWrite(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  return m_okLock.bGrabWrite();
-}
-#else
-//??????????????????????????????????????????????????????????????????????????????
-bool TablePtn::bGrabWrite(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  return m_okLock.bGrabWrite();
 }
 #endif
 
@@ -502,46 +459,6 @@ void TablePtn::vInsertIndexEntries(CrwBuffer* pCrwBuffer)
 #endif
 
 /*----------------------------------------------------------------------------*/
-/* is the table partition locked?                                             */
-/*----------------------------------------------------------------------------*/
-#ifdef __CRWTABLEPTN
-bool TablePtn::bIsLocked(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  return m_okLock.bIsLocked();
-}
-#else
-//??????????????????????????????????????????????????????????????????????????????
-bool TablePtn::bIsLocked(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  return m_okLock.bIsLocked();
-}
-#endif
-
-/*----------------------------------------------------------------------------*/
-/* get the partition number (in grid) of this table partition                 */
-/*----------------------------------------------------------------------------*/
-#ifdef __CRWTABLEPTN
-tPN TablePtn::tPtnNo(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  return m_tPtnNo;
-}
-#else
-//??????????????????????????????????????????????????????????????????????????????
-tPN TablePtn::tPtnNo(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  return m_tPtnNo;
-}
-#endif
-
-/*----------------------------------------------------------------------------*/
 /* insert entries into given index for all rows in this partition             */
 /*----------------------------------------------------------------------------*/
 #ifdef __CRWTABLEPTN
@@ -596,26 +513,6 @@ CrwBuffer* TablePtn::pRootCrwBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
   return m_pRootBuffer;
-}
-#endif
-
-/*----------------------------------------------------------------------------*/
-/* get table                                                                  */
-/*----------------------------------------------------------------------------*/
-#ifdef __CRWTABLEPTN
-Table* TablePtn::pTable(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  return m_pTable;
-}
-#else
-//??????????????????????????????????????????????????????????????????????????????
-Table* TablePtn::pTable(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  return m_pTable;
 }
 #endif
 
