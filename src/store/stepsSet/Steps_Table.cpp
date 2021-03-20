@@ -59,7 +59,6 @@ void Step::vAddSteps_Table(void)
   vAddStep("table[].listPartition"_Stz,    &Step::vTableListPartition);
   vAddStep("table[].name@"_Stz,            &Step::vTableNameFetch);
   vAddStep("table[].ptnStreamDef@"_Stz,    &Step::vTablePtnStreamDefFetch);
-  vAddStep("table.purge"_Stz,              &Step::vTablePurge);
   vAddStep("table[].size"_Stz,             &Step::vTableSize);
   vAddStep("table[].streamDef@"_Stz,       &Step::vTableStreamDefFetch);
   vAddStep("table.streamDef!"_Stz,         &Step::vTableStreamDefStore);
@@ -561,25 +560,6 @@ void Step::vTablePtnStreamDefFetch(void)
   
   m_pDataStack->vPushPtr(pStreamDef);
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.purge -- purge rows/buffers in table on data stack                   */
-/*----------------------------------------------------------------------------*/
-void Step::vTablePurge(void)
-{
-  ENTRY();
-  
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
-  i8 i_TablePtn = m_pDataStack->iPopAsInt(__func__);
-  
-  i8 iOlderThanSeconds = m_pDataStack->iPopAsInt(__func__);
-  
-  bool bPurged = pTable->bPurge(i_TablePtn,iOlderThanSeconds);
-  UNUSED(bPurged);
-
   EXIT();
 }
 
