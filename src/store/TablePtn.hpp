@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+namespace STORE { class CrwTablePtn; }
+
 namespace STORE
 {
   class TablePtn : public Object
@@ -12,6 +14,10 @@ namespace STORE
     Table* m_pTable;       // table this partition belongs to
     tPN    m_tPtnNo;       // partition number (in grid)
 
+    union {
+      CrwTablePtn* m_pCrwTablePtn;
+    };
+  
     CrwBuffer* m_pRootBuffer;    // the data root buffer
     CrwBuffer* m_pCurrentBuffer; // the data current buffer for insert
     

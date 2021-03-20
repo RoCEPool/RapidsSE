@@ -17,6 +17,7 @@
 #include "CrvBuffer.hpp"
 #include "TablePtn.hpp"
 #include "Table.hpp"
+#include "CrwTablePtn.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -40,6 +41,8 @@ TablePtn::TablePtn(Table* pTable, tPN tPtnNo)
   m_pTable = pTable;
   m_tPtnNo = tPtnNo;
   
+  m_pCrwTablePtn = new CrwTablePtn(m_pTable,m_tPtnNo,this);
+  
   m_pRootBuffer  = nullptr;
   m_pCurrentBuffer = nullptr;
   
@@ -58,6 +61,8 @@ TablePtn::~TablePtn(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
   // delete the index data vector
+  
+  delete m_pCrwTablePtn;
   delete m_pIndexTreeVec;
 }
 
