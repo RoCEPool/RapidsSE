@@ -1614,7 +1614,6 @@ void vExprEvalEvaluate(void);
   void vTablePtnAppendBuffer(void);
   void vTablePtnGet(void);
   void vTablePtnPopulateIndex(void);
-  void vTablePtnPurge(void);
   void vTablePtnRoot(void);
   void vTablePtnSet(void);
   void vTablePtnTruncate(void);
