@@ -18,7 +18,7 @@
 
 #include "Crv.hpp"
 #include "CrvBuffer.hpp"
-#include "ReadApi.hpp"
+//#include "ReadApi.hpp"
 #include "TablePtn.hpp"
 #include "Table.hpp"
 
@@ -711,25 +711,11 @@ StreamDef* Table::pStreamDef(void)
 /*----------------------------------------------------------------------------*/
 /* set StreamDef                                                              */
 /*----------------------------------------------------------------------------*/
-HACK(Table,"define table partitioning");
-
 void Table::vStreamDef(StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   m_pStreamDef = pStreamDef;
-  
-  // HACK : Don't do this for DEFINE TABLES (which occur before cluster
-  //        has started). Experimentally allows new, but non-active nodes to be
-  //        added after the cluster has started
-  //        This must be fixed properly. Ray 14 Nov 2020
-//  if (AM::pGrid()->bHasStarted()) {
-//    for (i8 i_TablePtn = 0; i_TablePtn < AM::nPtnsPerTable(); i_TablePtn++) {
-//      TablePtn* pTablePtn = this->pTablePtn(i_TablePtn);
-//      ReadApi* pReadApi = pTablePtn->pReadApi();
-//      pReadApi->vStreamDef(pStreamDef);
-//    }
-//  }
 }
 
 /*----------------------------------------------------------------------------*/

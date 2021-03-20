@@ -203,7 +203,6 @@ enum eCN : u2 // Class Number
 
   /* */ CN__R__,
   /* */ CN_RANGE,
-  /* */ CN_READAPI,
   /* */ CN_READER,
   /* */ CN_RECORD,
   /* */ CN_RELOP,
@@ -536,7 +535,6 @@ static Stz* aCN[]
    
   /* */ "_R__"_Stz,                 // CN__R__
   /* */ "RANGE"_Stz,                // CN_RANGE
-  /* */ "READAPI"_Stz,              // CN_READAPI
   /* */ "READER"_Stz,               // CN_READER
   /* */ "RECORD"_Stz,               // CN_RECORD
   /* */ "RELOP"_Stz,                // CN_RELOP
