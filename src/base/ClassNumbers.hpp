@@ -44,6 +44,7 @@ enum eCN : u2 // Class Number
   /* */ CN_COLUMN,
   /* */ CN_CRVBUFFER,
   /* */ CN_CRWBUFFER,
+  /* */ CN_CRWTABLEPTN,
   /* */ CN_CRWTOROW,
   /* */ CN_CSVBUFFER,
   /* */ CN_CSVMETA,
@@ -377,6 +378,7 @@ static Stz* aCN[]
   /* */ "COLUMN"_Stz,               // CN_COLUMN
   /* */ "CRVBUFFER"_Stz,            // CN_CRVBUFFER
   /* */ "CRWBUFFER"_Stz,            // CN_CRWBUFFER
+  /* */ "CRWTABLEPTN"_Stz,          // CN_CRWTABLEPTN
   /* */ "CRWTOROW"_Stz,             // CN_CRWTOROW
   /* */ "CSVBUFFER"_Stz,            // CN_CSVBUFFER
   /* */ "CSVMETA"_Stz,              // CN_CSVMETA

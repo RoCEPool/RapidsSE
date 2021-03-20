@@ -86,6 +86,7 @@
 
 #include "CrvBuffer.hpp"
 #include "TablePtn.hpp"
+#include "CrwTablePtn.hpp"
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"
 #include "PtnStream.hpp"
@@ -213,6 +214,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Column),             HT_T_TINY    ,0 }, // CN_COLUMN
   { sizeof(CrvBuffer),          HT_T_LARGE   ,0 }, // CN_CRVBUFFER
   { sizeof(CrwBuffer),          HT_T_LARGE   ,0 }, // CN_CRWBUFFER
+  { sizeof(CrwTablePtn),        HT_T_LARGE   ,0 }, // CN_CRWTABLEPTN
   { sizeof(CrwToRow),           HT_T_LARGE   ,0 }, // CN_CRWTOROW
   { sizeof(CsvBuffer),          HT_T_LARGE   ,0 }, // CN_CSVBUFFER
   { sizeof(CsvMeta),            HT_T_TINY    ,0 }, // CN_CSVMETA
