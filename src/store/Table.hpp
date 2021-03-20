@@ -70,7 +70,6 @@ namespace STORE
     bool    bPopulateIndex(i8 iIndexNo);
     void    vRemoveIndex(Index* pIndex);
     StreamDef* pPtnStreamDef(void);
-    bool    bPurge(i8 i_TablePtn, i8 iOlderThanSeconds);
     EntBuffer* pRootBuffer(i8 i_TablePtn, i8 i_Index);
     StreamDef* pStreamDef(void);
     void       vStreamDef(StreamDef* pStreamDef);

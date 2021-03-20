@@ -45,9 +45,7 @@ TablePtn::TablePtn(Table* pTable, tPN tPtnNo)
   m_pCurrentBuffer = nullptr;
   
   m_pIndexTreeVec = new IndexTreeVec;
-  
-  m_pReadApi = new ReadApi;
-  
+    
   _checkInitialised_(CN_TABLEPTN);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
@@ -62,27 +60,6 @@ TablePtn::~TablePtn(void) noexcept(false)
   
   // delete the index data vector
   delete m_pIndexTreeVec;
-  
-  // delete the readApi
-  delete m_pReadApi;
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* dump partition                                                             */
-/*----------------------------------------------------------------------------*/
-void TablePtn::vDump(eCN eClass, Object* pObject, Stz* aTab)
-{
-  UNUSED(eClass);
-  UNUSED(aTab);
-
-  TablePtn* pTablePtn = _pTablePtn(pObject);
-  
-  vTrace("m_tPtnNo %lld, DataVec %p\n"_Stz,
-         pTablePtn->m_tPtnNo, pTablePtn->m_pIndexTreeVec);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -174,46 +151,6 @@ i8 TablePtn::nBuffers(void)
     nBufferCount = m_pRootBuffer->nLinkedBufferCount();
   
   return nBufferCount;
-}
-
-/*----------------------------------------------------------------------------*/
-/* delete an existing row                                                     */
-/*----------------------------------------------------------------------------*/
-void TablePtn::vDeleteCrw(IndexTree* pIndexTree, EntBuffer* pEntBuffer, Ent* aEnt)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // delete the crw
-  bool bBufferEmpty = CrwBuffer::bDeleteRefdCrw(aEnt->rxRef());
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // is the crw buffer empty ?
-  if ( bBufferEmpty) {
-    
-    // get the referenced buffer
-    CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(aEnt->rxRef());
-    
-    // unlink the buffer
-    pCrwBuffer->vUnLink();
-    
-    // is it the currentBuffer ?
-    if (m_pCurrentBuffer == pCrwBuffer)
-      m_pCurrentBuffer = m_pCurrentBuffer->pPrevCrwBuffer();
-    
-    // is it the root buffer ?
-    if (m_pRootBuffer == pCrwBuffer) {
-      m_pRootBuffer = m_pRootBuffer->pNextCrwBuffer();
-    }
-    
-    // now delete the buffer
-    delete pCrwBuffer;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // now purge the entry
-  pIndexTree->vDelete(pEntBuffer, aEnt);
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -365,81 +302,6 @@ bool TablePtn::bPopulateIndex(i8 iIndexNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* purge the table buffers                                                    */
-/*----------------------------------------------------------------------------*/
-bool TablePtn::bPurge(i8 iOlderThanSeconds)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  static i8 iMaxAge = 0;
-  static i8 nMaxBuffers = 0;
-  
-  if (! m_pRootBuffer)
-    return false;
-  
-  m_okLock.vGrabWrite();
-  
-  i8 iAge = m_pRootBuffer->iAgeSec();
-  
-  //  if (iAge <= 1) {
-  //    vTrace("Purge: age is %llds\n"_Stz,iMaxAge);
-  //  }
-  
-  if (iAge > iMaxAge) {
-    iMaxAge = iAge;
-    //    vTrace("Purge: max age now %llds\n"_Stz,iMaxAge);
-  }
-  
-  i8 iLengthList = m_pRootBuffer->iLengthList();
-  if (iLengthList > nMaxBuffers) {
-    nMaxBuffers = iLengthList;
-    //vTrace("Purge: max buffer chain now %lld buffers\n"_Stz,nMaxBuffers);
-  }
-  
-  
-  if (iAge <= iOlderThanSeconds) {
-    m_okLock.vDropWrite();
-    return false;
-  }
-  
-  // is currentBuffer same as rootBuffer ?
-  if (m_pCurrentBuffer == m_pRootBuffer)
-    m_pCurrentBuffer = nullptr;
-  
-  CrwBuffer* pCrwBuffer = m_pRootBuffer;
-  
-  // get next entry buffer
-  m_pRootBuffer = m_pRootBuffer->pNextCrwBuffer();
-  
-  // set prev pointer to null
-  if (m_pRootBuffer) {
-    ASSERT(pCrwBuffer ==  m_pRootBuffer->pPrevLinkedBuffer());
-    m_pRootBuffer->vPrevLinkedBuffer(nullptr);
-  }
-  
-  m_okLock.vDropWrite();
-  
-  // delete the root buffer
-  delete pCrwBuffer;
-
-#ifdef WITH_STATISTICS_COUNTERS
-  gpAttachMap->m_oStatistics.IndexTree.m_nBuffersPurged++;
-#endif
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get read api                                                               */
-/*----------------------------------------------------------------------------*/
-ReadApi* TablePtn::pReadApi(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  return m_pReadApi;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get the root row buffer                                                    */
 /*----------------------------------------------------------------------------*/
 CrwBuffer* TablePtn::pRootCrwBuffer(void)
@@ -557,3 +419,45 @@ void TablePtn::vVisualizeTable(void)
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
+
+
+/*----------------------------------------------------------------------------*/
+/* delete an existing row                                                     */
+/*----------------------------------------------------------------------------*/
+//void TablePtn::vDeleteCrw(IndexTree* pIndexTree, EntBuffer* pEntBuffer, Ent* aEnt)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // delete the crw
+//  bool bBufferEmpty = CrwBuffer::bDeleteRefdCrw(aEnt->rxRef());
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // is the crw buffer empty ?
+//  if ( bBufferEmpty) {
+//
+//    // get the referenced buffer
+//    CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(aEnt->rxRef());
+//
+//    // unlink the buffer
+//    pCrwBuffer->vUnLink();
+//
+//    // is it the currentBuffer ?
+//    if (m_pCurrentBuffer == pCrwBuffer)
+//      m_pCurrentBuffer = m_pCurrentBuffer->pPrevCrwBuffer();
+//
+//    // is it the root buffer ?
+//    if (m_pRootBuffer == pCrwBuffer) {
+//      m_pRootBuffer = m_pRootBuffer->pNextCrwBuffer();
+//    }
+//
+//    // now delete the buffer
+//    delete pCrwBuffer;
+//  }
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // now purge the entry
+//  pIndexTree->vDelete(pEntBuffer, aEnt);
+//
+//}
+

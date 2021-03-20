@@ -683,35 +683,6 @@ StreamDef*  Table::pPtnStreamDef(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* attempt to purge oldest buffer                                             */
-/*----------------------------------------------------------------------------*/
-bool Table::bPurge(i8 i_TablePtn, i8 iOlderThanSeconds)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  //vTrace("Purging table %s\n"_Stz, m_sTableNm.azChar());
-  
-  // get the table ptn
-  TablePtn* pTablePtn = m_pTablePtnVec->pGet(i_TablePtn);
-  
-  // purge the table ptn
-  bool bPurged = pTablePtn->bPurge(iOlderThanSeconds);
-  
-  // purge all other indexes
-//  for (i8 iIndexNo = 0; iIndexNo < m_pIdxVec->nItems(); iIndexNo++) {
-//
-//    Index* pIndex = m_pIdxVec->pGet(iIndexNo);
-//
-//    bool bPurged =bPurgeIndex(i_TablePtn, pIndex->iIndexNo(), iOlderThanSeconds);
-//
-//    if (! bPurged)
-//      return false;
-//  }
-  
-  return bPurged;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get root buffer of given index                                             */
 /*----------------------------------------------------------------------------*/
 EntBuffer* Table::pRootBuffer(i8 i_TablePtn, i8 i_Index)
@@ -752,13 +723,13 @@ void Table::vStreamDef(StreamDef* pStreamDef)
   //        has started). Experimentally allows new, but non-active nodes to be
   //        added after the cluster has started
   //        This must be fixed properly. Ray 14 Nov 2020
-  if (AM::pGrid()->bHasStarted()) {
-    for (i8 i_TablePtn = 0; i_TablePtn < AM::nPtnsPerTable(); i_TablePtn++) {
-      TablePtn* pTablePtn = this->pTablePtn(i_TablePtn);
-      ReadApi* pReadApi = pTablePtn->pReadApi();
-      pReadApi->vStreamDef(pStreamDef);
-    }
-  }
+//  if (AM::pGrid()->bHasStarted()) {
+//    for (i8 i_TablePtn = 0; i_TablePtn < AM::nPtnsPerTable(); i_TablePtn++) {
+//      TablePtn* pTablePtn = this->pTablePtn(i_TablePtn);
+//      ReadApi* pReadApi = pTablePtn->pReadApi();
+//      pReadApi->vStreamDef(pStreamDef);
+//    }
+//  }
 }
 
 /*----------------------------------------------------------------------------*/
