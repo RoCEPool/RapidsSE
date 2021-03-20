@@ -32,19 +32,19 @@ __aFooterFunction(CrwTablePtn)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-CrwTablePtn::CrwTablePtn(Table* pTable, tPN tPtnNo)
+CrwTablePtn::CrwTablePtn(Table* pTable, tPN tPtnNo, TablePtn* pTablePtn)
 : Object(CN_CRWTABLEPTN)
-, m_okLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
   
-  m_pTable = pTable;
-  m_tPtnNo = tPtnNo;
+  m_pTable    = pTable;
+  m_pTablePtn = pTablePtn;
+  m_tPtnNo    = tPtnNo;
   
-  m_pRootBuffer  = nullptr;
+  m_pRootBuffer    = nullptr;
   m_pCurrentBuffer = nullptr;
   
-  m_pIndexTreeVec = new IndexTreeVec;
+  m_pIndexTreeVec  = new IndexTreeVec;
     
   _checkInitialised_(CN_CRWTABLEPTN);
   
@@ -104,9 +104,6 @@ void CrwTablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
   pCrwBuffer->vTable(m_pTable);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  RASSERT(m_okLock.bIsLocked());
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the root buffer
   if (m_pRootBuffer == nullptr) {
     ASSERT( ! m_pCurrentBuffer )
@@ -154,28 +151,6 @@ i8 CrwTablePtn::nBuffers(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* drop a read lock on the partition                                          */
-/*----------------------------------------------------------------------------*/
-void CrwTablePtn::vDropRead(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
-  
-  ASSERT(m_okLock.bIsLocked());
-  m_okLock.vDropRead();
-}
-
-/*----------------------------------------------------------------------------*/
-/* drop a write lock on the partition                                          */
-/*----------------------------------------------------------------------------*/
-void CrwTablePtn::vDropWrite(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
-  
-  ASSERT(m_okLock.bIsLocked());
-  m_okLock.vDropWrite();
-}
-
-/*----------------------------------------------------------------------------*/
 /* dump the table                                                             */
 /*----------------------------------------------------------------------------*/
 void CrwTablePtn::vDump(void)
@@ -189,26 +164,6 @@ void CrwTablePtn::vDump(void)
     pCrwBuffer = pCrwBuffer->pNextCrwBuffer();
   }
 
-}
-
-/*----------------------------------------------------------------------------*/
-/* attempt at grabbing a read lock on the partition                           */
-/*----------------------------------------------------------------------------*/
-bool CrwTablePtn::bGrabRead(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
-
-  return m_okLock.bGrabRead();
-}
-
-/*----------------------------------------------------------------------------*/
-/* attempt at grabbing a write lock on the partition                          */
-/*----------------------------------------------------------------------------*/
-bool CrwTablePtn::bGrabWrite(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
-  
-  return m_okLock.bGrabWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -260,16 +215,6 @@ void CrwTablePtn::vInsertIndexEntries(CrwBuffer* pCrwBuffer)
     // insert entries from EntBuffer into the index
     pIndexTree->vInsertEntries(pCrwBuffer);
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* is the table partition locked?                                             */
-/*----------------------------------------------------------------------------*/
-bool CrwTablePtn::bIsLocked(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
-  
-  return m_okLock.bIsLocked();
 }
 
 /*----------------------------------------------------------------------------*/
