@@ -53,7 +53,7 @@ void vDev_IXT_CRWBUF_BEGIN(i8** aaiDstk)
   pDevIxt->m_i_Row = -1;
   pDevIxt->m_aCrw = nullptr;
   pDevIxt->m_nRows = pDevIxt->m_pCrwBuffer ?
-                     pDevIxt->m_pCrwBuffer->nRowCount() : 0;
+                     pDevIxt->m_pCrwBuffer->nRows() : 0;
 
   *aaiDstk = aiDstk;
 }

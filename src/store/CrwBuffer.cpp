@@ -87,7 +87,7 @@ bool CrwBuffer::bDeleteRefdCrw(Rrf xRef)
   
   pCrwBuffer->m_oRowTray.pNub()->vDelete(aCrw);
   
-  if (pCrwBuffer->nRowCount() == 0) {
+  if (pCrwBuffer->nRows() == 0) {
     return true;
   }
   
@@ -242,14 +242,14 @@ void CrwBuffer::vAnalyze(i8& nBuffers, i8& nRows)
   do {
     
     nBuffers++;
-    nRows += (pNextBuffer->nRowCount());
+    nRows += (pNextBuffer->nRows());
     
 //    if (bDetailed)
 //      sAnalysis.vCatSprint("row: (%s, %lld, %5lld, %lld )\n"_Stz,
 //                           AM::szNodeNm(),
 //                           pNextBuffer->m_tPtnNo,
 //                           iBuffers,
-//                           pNextBuffer->nRowCount());
+//                           pNextBuffer->nRows());
     
     pNextBuffer = pNextBuffer->pNextCrwBuffer();
     
@@ -417,7 +417,7 @@ bool CrwBuffer::bHasSpace(i8 nBytes)
   //! is this correct now that we have separated CrwBuffer from EntBuffer?
   if (AM::nIndexEntries() > 0) {
     // has space calculation based on no of entries
-    if (nRowCount() >= AM::nIndexEntries())
+    if (nRows() >= AM::nIndexEntries())
       return false;
     else
       return true;
@@ -476,7 +476,7 @@ void CrwBuffer::vOperandDump(i8 iDetail)
          "headItems: %lld tailItems: %lld strItems: %lld "
          "free: %lld(B)\n"_Stz,
 
-         nRowCount(),
+         nRows(),
          
          m_oRowTray.pNub()->nHeads(),
          m_oRowTray.pNub()->nTails(),
@@ -545,7 +545,7 @@ void CrwBuffer::vPrintRows(StreamDef* pStreamDef)
 /*----------------------------------------------------------------------------*/
 /* get the no of rows in the buffer                                           */
 /*----------------------------------------------------------------------------*/
-i8 CrwBuffer::nRowCount(void)
+i8 CrwBuffer::nRows(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
@@ -634,7 +634,7 @@ void CrwBuffer::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  i8 nRows = nRowCount();
+  i8 nRows = this->nRows();
   
   vTrace("CrwBuffer: %p (buffer %lld %s): rows: %lld headItems: %lld tailItems: %lld free: %lldB\n"_Stz,
          this,m_iBufferNo,
@@ -678,7 +678,7 @@ CsvBuffer* CrwBuffer::pToCsvBuffer(void)
   HV_Record hvRecord(pStreamDef->pRowPix());
   HV_RowSingle hvRowSingle(pStreamDef);
   
-  i8 nRows = nRowCount();
+  i8 nRows = this->nRows();
   i8 nBytes = 1;
   Stz* szRecord = nullptr;
   
@@ -722,7 +722,7 @@ CsvBuffer* CrwBuffer::pToCsvBuffer(void)
 //  HV_RowSingle hvRowSingle(pTable()->pStreamDef(),C_ALL);
 //  SrtBuffer* pSrtBuffer = new SrtBuffer(nRowRefs, m_tPtnNo);
 //  
-//  i8 nRows = nRowCount();
+//  i8 nRows = nRows();
 //  
 //  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
 //    
@@ -844,7 +844,7 @@ bool CrwBuffer::bVerifyRows(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  i8 nRows = nRowCount();
+  i8 nRows = this->nRows();
   
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     Crw* aRowCacheLine = (Crw*)aGetHead(i_Row);
