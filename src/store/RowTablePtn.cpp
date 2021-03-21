@@ -70,7 +70,36 @@ void RowTablePtn::vAppendBuffer(RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWTABLEPTN,_FOOTER_);
   
-  NEVER_REACH;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // if buffer has 0 entries (only head) then should be last buffer
+  if (pRowBuffer->nRows() == 0) {
+    delete pRowBuffer;
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // mark crwBuffer as permanent
+  pRowBuffer->vIsPermanent(true);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the table in the buffer
+  pRowBuffer->vTable(m_pTable);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the root buffer
+  if (m_pRootBuffer == nullptr) {
+    ASSERT( ! m_pCurrentBuffer )
+    m_pRootBuffer = pRowBuffer;
+  }
+  else {
+    pRowBuffer->vNextLinkedBuffer(m_pCurrentBuffer->pNextLinkedBuffer());
+    pRowBuffer->vPrevLinkedBuffer(m_pCurrentBuffer);
+    m_pCurrentBuffer->vNextLinkedBuffer(pRowBuffer);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the current buffer
+  m_pCurrentBuffer = pRowBuffer;
 }
 
 /*----------------------------------------------------------------------------*/

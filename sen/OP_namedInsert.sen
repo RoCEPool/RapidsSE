@@ -44,8 +44,8 @@
   0 Table[].tablePtnGet to TablePtn[]
   
   TablePtn[].grabWrite_msecLoop
-  nullptr to Operand[]
-  //Operand[]\clear TablePtn[].appendBuffer
+  //nullptr to Operand[]
+  Operand[]\clear TablePtn[].appendBuffer
   TablePtn[].dropWrite
 
   //sBufferNm "$$$ OP_namedInsert %v" .printf
