@@ -18,6 +18,7 @@
 #include "TablePtn.hpp"
 #include "Table.hpp"
 #include "CrwTablePtn.hpp"
+#include "RowTablePtn.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -40,8 +41,33 @@ TablePtn::TablePtn(Table* pTable, tPN tPtnNo)
   m_pTable = pTable;
   m_tPtnNo = tPtnNo;
   
-  m_pCrwTablePtn = new CrwTablePtn(m_pTable,m_tPtnNo,this);
-        
+  eTT eTableKind = m_pTable->eKind();
+  switch (eTableKind) {
+    case TT_INFOSET:
+      NEVER_REACH;
+      break;
+    case TT_INTERNAL:
+      m_eKind = CN_ROWTABLEPTN;
+      break;
+    case TT_NORMAL:
+      m_eKind = CN_CRWTABLEPTN;
+      break;
+    case TT_REPLICATED:
+      NEVER_REACH;
+      break;
+    default: NEVER_REACH;
+  }
+  
+  switch (m_eKind) {
+    case CN_ROWTABLEPTN:
+      m_pRowTablePtn = new RowTablePtn(m_pTable,m_tPtnNo,this);
+      break;
+    case CN_CRWTABLEPTN:
+      m_pCrwTablePtn = new CrwTablePtn(m_pTable,m_tPtnNo,this);
+      break;
+    default: NEVER_REACH;
+  }
+
   _checkInitialised_(CN_TABLEPTN);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
@@ -54,9 +80,11 @@ TablePtn::~TablePtn(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  // delete the index data vector
-  
-  delete m_pCrwTablePtn;
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:  delete m_pCrwTablePtn; break;
+    case CN_ROWTABLEPTN:  delete m_pRowTablePtn; break;
+    default: NEVER_REACH;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -152,23 +180,13 @@ void TablePtn::vAddIndex(IndexTree* pIndexTree)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append a crw buffer into the TablePtn                                      */
+/* append a buffer into the TablePtn                                          */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
+void TablePtn::vAppendBuffer(DataBuffer* pDataBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  m_pCrwTablePtn->vAppendBuffer(pCrwBuffer);
-}
-
-/*----------------------------------------------------------------------------*/
-/* append a row buffer into the TablePtn                                      */
-/*----------------------------------------------------------------------------*/
-void TablePtn::vAppendBuffer(RowBuffer* pRowBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  NEVER_REACH;
+  m_pCrwTablePtn->vAppendBuffer(_pCrwBuffer(pDataBuffer));
 }
 
 /*----------------------------------------------------------------------------*/

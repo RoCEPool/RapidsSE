@@ -10,9 +10,11 @@ namespace STORE
   class TablePtn : public Object
   {
   private:
-    Lock   m_okLock;       // lock on the partition
-    Table* m_pTable;       // table this partition belongs to
-    tPN    m_tPtnNo;       // partition number (in grid)
+    Lock   m_okLock;  // lock on the partition
+    Table* m_pTable;  // table this partition belongs to
+    tPN    m_tPtnNo;  // partition number (in grid)
+  
+    eCN    m_eKind;   // what kind of table partition
 
     union {
       CrwTablePtn* m_pCrwTablePtn;
@@ -38,8 +40,7 @@ namespace STORE
     Table* pTable(void);
 
     void vAddIndex(IndexTree* pIndexTree);
-    void vAppendBuffer(CrwBuffer* pCrwBuffer);
-    void vAppendBuffer(RowBuffer* pRowBuffer);
+    void vAppendBuffer(DataBuffer* pDataBuffer);
     i8   nBuffers(void);
     void vDump(void);
     IndexTree* pIndexTree(i8 iIndexNo);
