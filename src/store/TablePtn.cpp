@@ -19,6 +19,7 @@
 #include "Table.hpp"
 #include "CrwTablePtn.hpp"
 #include "RowTablePtn.hpp"
+#include "RowBuffer.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -81,8 +82,12 @@ TablePtn::~TablePtn(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
   switch (m_eKind) {
-    case CN_CRWTABLEPTN:  delete m_pCrwTablePtn; break;
-    case CN_ROWTABLEPTN:  delete m_pRowTablePtn; break;
+    case CN_CRWTABLEPTN:
+      delete m_pCrwTablePtn;
+      break;
+    case CN_ROWTABLEPTN:
+      delete m_pRowTablePtn;
+      break;
     default: NEVER_REACH;
   }
 }
@@ -103,7 +108,7 @@ void TablePtn::vDropRead(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* drop a write lock on the partition                                          */
+/* drop a write lock on the partition                                         */
 /*----------------------------------------------------------------------------*/
 void TablePtn::vDropWrite(void)
 {
@@ -164,7 +169,6 @@ Table* TablePtn::pTable(void)
 }
 
 
-
 /*----------------------------------------------------------------------------*/
 /*                                    CRW                                     */
 /*----------------------------------------------------------------------------*/
@@ -176,7 +180,16 @@ void TablePtn::vAddIndex(IndexTree* pIndexTree)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  m_pCrwTablePtn->vAddIndex(pIndexTree);
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      m_pCrwTablePtn->vAddIndex(pIndexTree);
+      break;
+    case CN_ROWTABLEPTN:
+      NEVER_REACH;
+      break;
+    default:
+      NEVER_REACH;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -185,8 +198,16 @@ void TablePtn::vAddIndex(IndexTree* pIndexTree)
 void TablePtn::vAppendBuffer(DataBuffer* pDataBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  m_pCrwTablePtn->vAppendBuffer(_pCrwBuffer(pDataBuffer));
+    
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      m_pCrwTablePtn->vAppendBuffer(_pCrwBuffer(pDataBuffer));
+      break;
+    case CN_ROWTABLEPTN:
+      m_pRowTablePtn->vAppendBuffer(_pRowBuffer(pDataBuffer));
+      break;
+    default: NEVER_REACH;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -208,7 +229,16 @@ void TablePtn::vDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  m_pCrwTablePtn->vDump();
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      m_pCrwTablePtn->vDump();
+      break;
+    case CN_ROWTABLEPTN:
+      m_pRowTablePtn->vDump();
+      break;
+    default:
+      NEVER_REACH;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -241,8 +271,16 @@ IndexTreeVec* TablePtn::pIndexTreeVec(void)
 void TablePtn::vInsertIndexEntries(CrwBuffer* pCrwBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  m_pCrwTablePtn->vInsertIndexEntries(pCrwBuffer);
+    
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      m_pCrwTablePtn->vInsertIndexEntries(pCrwBuffer);
+      break;
+    case CN_ROWTABLEPTN:
+      NEVER_REACH
+      break;
+    default: NEVER_REACH;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -276,7 +314,15 @@ void TablePtn::vRemoveIndex(i8 iIndexNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  m_pCrwTablePtn->vRemoveIndex(iIndexNo);
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      m_pCrwTablePtn->vRemoveIndex(iIndexNo);
+      break;
+    case CN_ROWTABLEPTN:
+      NEVER_REACH
+      break;
+    default: NEVER_REACH;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -285,8 +331,16 @@ void TablePtn::vRemoveIndex(i8 iIndexNo)
 void TablePtn::vTruncate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  m_pCrwTablePtn->vTruncate();
+    
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      m_pCrwTablePtn->vTruncate();
+      break;
+    case CN_ROWTABLEPTN:
+      m_pRowTablePtn->vTruncate();
+      break;
+    default: NEVER_REACH;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -295,8 +349,16 @@ void TablePtn::vTruncate(void)
 void TablePtn::vTruncateIndex(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  m_pCrwTablePtn->vTruncateIndex(pIndex);
+    
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      m_pCrwTablePtn->vTruncateIndex(pIndex);
+      break;
+    case CN_ROWTABLEPTN:
+      NEVER_REACH;
+      break;
+    default: NEVER_REACH;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -306,7 +368,6 @@ bool TablePtn::bVerifyTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-
   bool bVerify = m_pCrwTablePtn->bVerifyTable();
   
   return bVerify;
@@ -319,7 +380,15 @@ void TablePtn::vVisualizeTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  m_pCrwTablePtn->vVisualizeTable();
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      m_pCrwTablePtn->vVisualizeTable();
+      break;
+    case CN_ROWTABLEPTN:
+      m_pRowTablePtn->vTruncate();
+      break;
+    default: NEVER_REACH;
+  }
 }
 
 /*============================================================================*/
