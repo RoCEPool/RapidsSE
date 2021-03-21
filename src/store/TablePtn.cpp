@@ -217,8 +217,19 @@ i8 TablePtn::nBuffers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  i8 nBufferCount = m_pCrwTablePtn->nBuffers();
-    
+  i8 nBufferCount;
+  
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      nBufferCount = m_pCrwTablePtn->nBuffers();
+      break;
+    case CN_ROWTABLEPTN:
+      nBufferCount = m_pRowTablePtn->nBuffers();
+      break;
+    default:
+      NEVER_REACH;
+  }
+
   return nBufferCount;
 }
 
@@ -248,8 +259,19 @@ IndexTree* TablePtn::pIndexTree(i8 iIndexNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  IndexTree* pIndexTree = m_pCrwTablePtn->pIndexTree(iIndexNo);
+  IndexTree* pIndexTree;
   
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      pIndexTree = m_pCrwTablePtn->pIndexTree(iIndexNo);
+      break;
+    case CN_ROWTABLEPTN:
+      NEVER_REACH;
+      break;
+    default:
+      NEVER_REACH;
+  }
+
   return pIndexTree;
 }
 
@@ -260,8 +282,19 @@ IndexTreeVec* TablePtn::pIndexTreeVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  IndexTreeVec* pIndexTreeVec = m_pCrwTablePtn->pIndexTreeVec();
-  
+  IndexTreeVec* pIndexTreeVec;
+
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      pIndexTreeVec = m_pCrwTablePtn->pIndexTreeVec();
+      break;
+    case CN_ROWTABLEPTN:
+      pIndexTreeVec = m_pCrwTablePtn->pIndexTreeVec();
+      break;
+    default:
+      NEVER_REACH;
+  }
+
   return pIndexTreeVec;
 }
 
@@ -290,7 +323,18 @@ bool TablePtn::bPopulateIndex(i8 iIndexNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  bool b = m_pCrwTablePtn->bPopulateIndex(iIndexNo);
+  bool b;
+    
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      b = m_pCrwTablePtn->bPopulateIndex(iIndexNo);
+      break;
+    case CN_ROWTABLEPTN:
+      NEVER_REACH;
+      break;
+    default:
+      NEVER_REACH;
+  }
 
   return b;
 }
@@ -302,7 +346,17 @@ CrwBuffer* TablePtn::pRootCrwBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  CrwBuffer* pRootBuffer = m_pCrwTablePtn->pRootCrwBuffer();
+  CrwBuffer* pRootBuffer;
+  
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      pRootBuffer = m_pCrwTablePtn->pRootCrwBuffer();
+      break;
+    case CN_ROWTABLEPTN:
+      NEVER_REACH
+      break;
+    default: NEVER_REACH;
+  }
 
   return pRootBuffer;
 }
@@ -368,8 +422,19 @@ bool TablePtn::bVerifyTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  bool bVerify = m_pCrwTablePtn->bVerifyTable();
-  
+  bool bVerify;
+
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      bVerify = m_pCrwTablePtn->bVerifyTable();
+      break;
+    case CN_ROWTABLEPTN:
+      bVerify = m_pRowTablePtn->bVerifyTable();
+      break;
+    default:
+      NEVER_REACH;
+  }
+
   return bVerify;
 }
 
