@@ -1,0 +1,191 @@
+/*============================================================================*/
+/* RowTablePtn.cpp -- Row Table Partition                                     */
+/*============================================================================*/
+
+#include "BASE.h"
+
+#include "RowCoder.hpp"
+#include "HeadLine.hpp"
+
+#include "Crw.hpp"
+#include "CrwPacker.hpp"
+#include "CrwBuffer.hpp"
+#include "SkipRoots.hpp"
+#include "EntBuffer.hpp"
+#include "IndexTree.hpp"
+
+#include "RowBuffer.hpp"
+
+#include "CrvBuffer.hpp"
+#include "TablePtn.hpp"
+#include "RowTablePtn.hpp"
+#include "Table.hpp"
+
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+__pCastFunction(STORE,RowTablePtn,CN_ROWTABLEPTN)
+__aNewFunction(RowTablePtn,CN_ROWTABLEPTN)
+__vDeleteFunction(RowTablePtn,CN_ROWTABLEPTN)
+__aFooterFunction(RowTablePtn)
+
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+RowTablePtn::RowTablePtn(Table* pTable, tPN tPtnNo, TablePtn* pTablePtn)
+: Object(CN_ROWTABLEPTN)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWTABLEPTN,_FOOTER_);
+  
+  m_pTable    = pTable;
+  m_pTablePtn = pTablePtn;
+  m_tPtnNo    = tPtnNo;
+  
+  m_pRootBuffer    = nullptr;
+  m_pCurrentBuffer = nullptr;
+  
+  _checkInitialised_(CN_ROWTABLEPTN);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWTABLEPTN,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+RowTablePtn::~RowTablePtn(void) noexcept(false)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWTABLEPTN,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* append a row buffer into the RowTablePtn                                   */
+/*----------------------------------------------------------------------------*/
+void RowTablePtn::vAppendBuffer(RowBuffer* pRowBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWTABLEPTN,_FOOTER_);
+  
+  NEVER_REACH;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the number of buffers in this partition                                */
+/*----------------------------------------------------------------------------*/
+i8 RowTablePtn::nBuffers(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWTABLEPTN,_FOOTER_);
+  
+  i8 nBufferCount = 0;
+  
+  if (m_pRootBuffer)
+    nBufferCount = m_pRootBuffer->nLinkedBufferCount();
+  
+  return nBufferCount;
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump the table                                                             */
+/*----------------------------------------------------------------------------*/
+void RowTablePtn::vDump(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWTABLEPTN,_FOOTER_);
+  
+  RowBuffer* pRowBuffer = m_pRootBuffer;
+    
+  while (pRowBuffer) {
+// TBD    pRowBuffer->vShow();
+// TBD    pRowBuffer = pRowBuffer->pNextRowBuffer();
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the partition number (in grid) of this table partition                 */
+/*----------------------------------------------------------------------------*/
+tPN RowTablePtn::tPtnNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWTABLEPTN,_FOOTER_);
+  
+  return m_tPtnNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the root row buffer                                                    */
+/*----------------------------------------------------------------------------*/
+RowBuffer* RowTablePtn::pRootRowBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWTABLEPTN,_FOOTER_);
+  
+  return m_pRootBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get table                                                                  */
+/*----------------------------------------------------------------------------*/
+Table* RowTablePtn::pTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWTABLEPTN,_FOOTER_);
+  
+  return m_pTable;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* truncate the table data                                                    */
+/*----------------------------------------------------------------------------*/
+void RowTablePtn::vTruncate(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWTABLEPTN,_FOOTER_);
+    
+  // TBD  if (m_pRootBuffer)
+  // TBD    m_pRootBuffer->vTruncate();
+  
+  m_pRootBuffer    = nullptr;
+  m_pCurrentBuffer = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* verify the table data of this partition                                    */
+/*----------------------------------------------------------------------------*/
+bool RowTablePtn::bVerifyTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWTABLEPTN,_FOOTER_);
+  
+  RowBuffer* pRowBuffer = m_pRootBuffer;
+  bool bVerify = true;
+  
+  while (pRowBuffer) {
+    // TBD    bVerify = pRowBuffer->bVerify();
+    if (! bVerify )
+      break;
+    // TBD    pRowBuffer = pRowBuffer->pNextRowBuffer();
+  }
+  
+  return bVerify;
+}
+
+/*----------------------------------------------------------------------------*/
+/* visualize the table data of this partition                                 */
+/*----------------------------------------------------------------------------*/
+void RowTablePtn::vVisualizeTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWTABLEPTN,_FOOTER_);
+  
+  RowBuffer* pRowBuffer = m_pRootBuffer;
+  
+  while (pRowBuffer) {
+    // print the decile of the this buffer
+    // TBDvTrace("%lld"_Stz, pRowBuffer->iDecile());
+    // TBDpRowBuffer = pRowBuffer->pNextRowBuffer();
+  }
+  vTrace("\n"_Stz);
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -41,12 +41,7 @@ TablePtn::TablePtn(Table* pTable, tPN tPtnNo)
   m_tPtnNo = tPtnNo;
   
   m_pCrwTablePtn = new CrwTablePtn(m_pTable,m_tPtnNo,this);
-  
-  m_pRootBuffer  = nullptr;
-  m_pCurrentBuffer = nullptr;
-  
-  m_pIndexTreeVec = new IndexTreeVec;
-    
+        
   _checkInitialised_(CN_TABLEPTN);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
@@ -62,7 +57,6 @@ TablePtn::~TablePtn(void) noexcept(false)
   // delete the index data vector
   
   delete m_pCrwTablePtn;
-  delete m_pIndexTreeVec;
 }
 
 /*----------------------------------------------------------------------------*/

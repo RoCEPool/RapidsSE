@@ -127,6 +127,7 @@
 
 #include "Dynamo.hpp"
 
+#include "RowTablePtn.hpp"
 
 #include "SeApi.hpp"
 #include "Sessions.hpp"
@@ -389,6 +390,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(RowPix),             HT_INVALID   ,0 }, // CN_ROWPIX
   { sizeof(RowSingle),          HT_T_MEDIUM  ,0 }, // CN_ROWSINGLE
   { sizeof(RowSingleList),      HT_T_TINY    ,0 }, // CN_ROWSINGLELIST
+  { sizeof(RowTablePtn),        HT_T_LARGE   ,0 }, // CN_ROWTABLEPTN
   { sizeof(RowTray),            HT_T_LARGE   ,0 }, // CN_ROWTRAY
   { sizeof(RU_Cpu),             HT_INVALID   ,0 }, // CN_RUCPU
   { 0,/*sizeof(RU_Dir)*/        HT_INVALID   ,0 }, // CN_RUDIR

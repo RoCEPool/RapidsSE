@@ -18,11 +18,6 @@ namespace STORE
       CrwTablePtn* m_pCrwTablePtn;
     };
   
-    CrwBuffer* m_pRootBuffer;    // the data root buffer
-    CrwBuffer* m_pCurrentBuffer; // the data current buffer for insert
-    
-    IndexTreeVec* m_pIndexTreeVec;  // vector of index trees
-      
     // must be last
     Footer m_xFooter;
     
