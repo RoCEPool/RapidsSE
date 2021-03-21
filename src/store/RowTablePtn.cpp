@@ -160,7 +160,7 @@ bool RowTablePtn::bVerifyTable(void)
   bool bVerify = true;
   
   while (pRowBuffer) {
-    // TBD    bVerify = pRowBuffer->bVerify();
+    bVerify = pRowBuffer->bVerify();
     if (! bVerify )
       break;
     pRowBuffer = pRowBuffer->pNextRowBuffer();
@@ -180,7 +180,7 @@ void RowTablePtn::vVisualizeTable(void)
   
   while (pRowBuffer) {
     // print the decile of the this buffer
-    // TBDvTrace("%lld"_Stz, pRowBuffer->iDecile());
+    vTrace("%lld"_Stz, pRowBuffer->iDecile());
     pRowBuffer = pRowBuffer->pNextRowBuffer();
   }
   vTrace("\n"_Stz);

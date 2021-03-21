@@ -248,6 +248,19 @@ Row* RowBuffer::pAllotRow(StreamDef* pStreamDef, i8 iVArgsBegin, ...)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get decile full of the buffer                                              */
+/*----------------------------------------------------------------------------*/
+i8 RowBuffer::iDecile(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  i8 iSpaceUsed = nUsedBytes();
+  i8 iDecile = IntLib::iDecile( iSpaceUsed , C_SIZE_POOL_BUFFER);
+  
+  return iDecile;
+}
+
+/*----------------------------------------------------------------------------*/
 /* deposit var-arg list of column values into given row                       */
 /*----------------------------------------------------------------------------*/
 bool RowBuffer::bDepositColumns(Row* pRow, va_list xVarArgs)
@@ -501,6 +514,16 @@ CsvBuffer* RowBuffer::pToCsvBuffer(void)
 void RowBuffer::vTruncate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* verify this row buffer                                                 TBD */
+/*----------------------------------------------------------------------------*/
+bool RowBuffer::bVerify(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
