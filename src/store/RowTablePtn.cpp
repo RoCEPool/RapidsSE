@@ -98,7 +98,7 @@ void RowTablePtn::vDump(void)
   RowBuffer* pRowBuffer = m_pRootBuffer;
     
   while (pRowBuffer) {
-// TBD    pRowBuffer->vShow();
+    pRowBuffer->vShow(m_pTable->pStreamDef());
 // TBD    pRowBuffer = pRowBuffer->pNextRowBuffer();
   }
 
@@ -142,8 +142,8 @@ void RowTablePtn::vTruncate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWTABLEPTN,_FOOTER_);
     
-  // TBD  if (m_pRootBuffer)
-  // TBD    m_pRootBuffer->vTruncate();
+  if (m_pRootBuffer)
+    m_pRootBuffer->vTruncate();
   
   m_pRootBuffer    = nullptr;
   m_pCurrentBuffer = nullptr;

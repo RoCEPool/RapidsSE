@@ -361,6 +361,16 @@ void RowBuffer::vPrintRows(StreamDef* pStreamDef)
 }
 
 /*----------------------------------------------------------------------------*/
+/* restore pointers are recv()                                                */
+/*----------------------------------------------------------------------------*/
+void RowBuffer::vRestorePointers(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+    
+  RowBox_t<C_WSP_ROWBUFFER>::vResetRowPix();
+}
+
+/*----------------------------------------------------------------------------*/
 /* show contents of buffer                                                    */
 /*----------------------------------------------------------------------------*/
 void RowBuffer::vShow(StreamDef* pStreamDef)
@@ -446,13 +456,11 @@ CsvBuffer* RowBuffer::pToCsvBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* restore pointers are recv()                                                */
+/* truncate this buffer by removing all entries                               */
 /*----------------------------------------------------------------------------*/
-void RowBuffer::vRestorePointers(void)
+void RowBuffer::vTruncate(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-    
-  RowBox_t<C_WSP_ROWBUFFER>::vResetRowPix();
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

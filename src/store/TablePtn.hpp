@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace STORE { class CrwTablePtn; }
+namespace STORE { class CrwTablePtn; class RowTablePtn; }
 
 namespace STORE
 {
@@ -16,6 +16,7 @@ namespace STORE
 
     union {
       CrwTablePtn* m_pCrwTablePtn;
+      RowTablePtn* m_pRowTablePtn;
     };
   
     // must be last

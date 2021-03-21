@@ -51,7 +51,6 @@ namespace STORE
     i8         iDecile(void);
     i8         iLengthList(void);
     CrwBuffer* pNextCrwBuffer(void);
-    CrwBuffer* pNextCrwBuffer(PtnStream* pPtnStream);
     void       vNextCrwBuffer(CrwBuffer* pNextBuffer);
     CrwBuffer* pPrevCrwBuffer(void);
     void       vPrevCrwBuffer(CrwBuffer* pPrevBuffer);

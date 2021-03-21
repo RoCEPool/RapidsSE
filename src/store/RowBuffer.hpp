@@ -48,7 +48,8 @@ namespace STORE
     char* azStrArea(void);
   
     CsvBuffer* pToCsvBuffer(void);
-  
+    void       vTruncate(void);
+
   private:
 
     i8   iToOffset(Stz* szStr);
