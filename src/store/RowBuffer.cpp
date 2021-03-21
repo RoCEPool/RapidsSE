@@ -310,6 +310,46 @@ void RowBuffer::vDepositRow(Row* pRow, i8 iVargsBegin, ...)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get next buffer                                                            */
+/*----------------------------------------------------------------------------*/
+RowBuffer* RowBuffer::pNextRowBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  return _pRowBuffer(this->pNextLinkedBuffer());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set next buffer                                                            */
+/*----------------------------------------------------------------------------*/
+void RowBuffer::vNextRowBuffer(RowBuffer* pNextBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  LinkedBuffer::vNextLinkedBuffer(pNextBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get prev buffer                                                            */
+/*----------------------------------------------------------------------------*/
+RowBuffer* RowBuffer::pPrevRowBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  return _pRowBuffer(this->pPrevLinkedBuffer());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set prev buffer                                                            */
+/*----------------------------------------------------------------------------*/
+void RowBuffer::vPrevRowBuffer(RowBuffer* pPrevBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  vPrevLinkedBuffer(pPrevBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
 /* print rows                                                                 */
 /*----------------------------------------------------------------------------*/
 void RowBuffer::vPrintRows(void)

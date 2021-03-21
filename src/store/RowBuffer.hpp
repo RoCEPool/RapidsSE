@@ -38,6 +38,11 @@ namespace STORE
     bool bDepositColumns(Row* pRow, va_list xVarArgs);
     void vDepositRow(Row* pRow, i8 iVargsBegin, ...);
   
+    RowBuffer* pNextRowBuffer(void);
+    void       vNextRowBuffer(RowBuffer* pNextBuffer);
+    RowBuffer* pPrevRowBuffer(void);
+    void       vPrevRowBuffer(RowBuffer* pPrevBuffer);
+
     void vPrintRows(void);
     void vPrintRows(StreamDef* pStreamDef);
   

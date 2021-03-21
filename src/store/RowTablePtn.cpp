@@ -99,7 +99,7 @@ void RowTablePtn::vDump(void)
     
   while (pRowBuffer) {
     pRowBuffer->vShow(m_pTable->pStreamDef());
-// TBD    pRowBuffer = pRowBuffer->pNextRowBuffer();
+    pRowBuffer = pRowBuffer->pNextRowBuffer();
   }
 
 }
@@ -163,7 +163,7 @@ bool RowTablePtn::bVerifyTable(void)
     // TBD    bVerify = pRowBuffer->bVerify();
     if (! bVerify )
       break;
-    // TBD    pRowBuffer = pRowBuffer->pNextRowBuffer();
+    pRowBuffer = pRowBuffer->pNextRowBuffer();
   }
   
   return bVerify;
@@ -181,7 +181,7 @@ void RowTablePtn::vVisualizeTable(void)
   while (pRowBuffer) {
     // print the decile of the this buffer
     // TBDvTrace("%lld"_Stz, pRowBuffer->iDecile());
-    // TBDpRowBuffer = pRowBuffer->pNextRowBuffer();
+    pRowBuffer = pRowBuffer->pNextRowBuffer();
   }
   vTrace("\n"_Stz);
 }
