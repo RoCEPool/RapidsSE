@@ -51,6 +51,7 @@ namespace STORE
     void vRemoveIndex(i8 iIndexNo);
     CrwBuffer* pRootCrwBuffer(void);
     RowBuffer* pRootRowBuffer(void);
+    DataBuffer* pRootBuffer(void);
     void vTruncate(void);
     void vTruncateIndex(Index* pIndex);
     bool bVerifyTable(void);

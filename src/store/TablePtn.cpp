@@ -372,6 +372,28 @@ CrwBuffer* TablePtn::pRootCrwBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the root buffer                                                        */
+/*----------------------------------------------------------------------------*/
+DataBuffer* TablePtn::pRootBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+
+  DataBuffer* pRootBuffer;
+
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      pRootBuffer = m_pCrwTablePtn->pRootCrwBuffer();
+      break;
+    case CN_ROWTABLEPTN:
+      pRootBuffer = m_pRowTablePtn->pRootRowBuffer();
+      break;
+    default: NEVER_REACH;
+  }
+
+  return pRootBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the root row buffer                                                    */
 /*----------------------------------------------------------------------------*/
 RowBuffer* TablePtn::pRootRowBuffer(void)

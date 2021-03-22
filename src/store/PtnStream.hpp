@@ -9,12 +9,7 @@ namespace STORE
   {
   private:
     TablePtn*  m_pTablePtn;
-
-    union {
-      CrwBuffer* m_pNextCrwBuffer;
-      RowBuffer* m_pNextRowBuffer;
-    };
-
+    DataBuffer* m_pNextBuffer;
     i8         m_iLglBufferNo;
 
     // must be last
