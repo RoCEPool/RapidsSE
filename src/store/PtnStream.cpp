@@ -9,6 +9,7 @@
 #include "Crw.hpp"
 #include "CrwPacker.hpp"
 #include "CrwBuffer.hpp"
+#include "RowBuffer.hpp"
 #include "SkipRoots.hpp"
 #include "EntBuffer.hpp"
 #include "IndexTree.hpp"
@@ -90,23 +91,22 @@ bool PtnStream::bOpen(void)
 /*----------------------------------------------------------------------------*/
 /* read next buffer                                                           */
 /*----------------------------------------------------------------------------*/
-CrwBuffer* PtnStream::pRead(void)
+DataBuffer* PtnStream::pRead(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNSTREAM,_FOOTER_);
-  
-  if (! m_pNextBuffer)
+
+  if (!m_pNextBuffer)
     return nullptr;
 
-  CrwBuffer* pReadBuffer = m_pNextBuffer;
-  
-  m_pNextBuffer = m_pNextBuffer->pNextCrwBuffer();
-  
+  DataBuffer *pReadBuffer = m_pNextBuffer;
+
+  m_pNextBuffer = _pDataBuffer(m_pNextBuffer->pNextLinkedBuffer());
+
   if (pReadBuffer)
     m_iLglBufferNo++;
   else
     m_iLglBufferNo = -1;
 
-  
   return pReadBuffer;
 }
 
@@ -116,28 +116,27 @@ CrwBuffer* PtnStream::pRead(void)
 void PtnStream::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNSTREAM,_FOOTER_);
- 
-  m_pNextBuffer  = m_pTablePtn->pRootCrwBuffer();
+
+  m_pNextBuffer  = m_pTablePtn->pRootBuffer();
   m_iLglBufferNo = -1; // correct
 }
 
 /*----------------------------------------------------------------------------*/
 /* seek                                                                       */
 /*----------------------------------------------------------------------------*/
-bool PtnStream::bSeek(i8 iBufferNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNSTREAM,_FOOTER_);
-  
+bool PtnStream::bSeek(i8 iBufferNo) {
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PTNSTREAM, _FOOTER_);
+
   if (iBufferNo < m_iLglBufferNo)
     vReset();
-  
+
   while (m_iLglBufferNo < iBufferNo) {
-    m_pNextBuffer = m_pNextBuffer->pNextCrwBuffer();
-    if (! m_pNextBuffer)
+    m_pNextBuffer = _pDataBuffer(m_pNextBuffer->pNextLinkedBuffer());
+    if (!m_pNextBuffer)
       return false;
     m_iLglBufferNo++;
   }
-  
+
   if (iBufferNo == m_iLglBufferNo)
     return true;
   else

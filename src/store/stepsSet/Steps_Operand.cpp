@@ -747,7 +747,7 @@ void Step::vOperandRowCountFetch(void)
   ASSERT(*( m_pJob->pLogicUnit_job() )->m_xpOperandA);
   CrwBuffer* pCrwBuffer = _pCrwBuffer(*( m_pJob->pLogicUnit_job() )->m_xpOperandA);
   
-  m_pDataStack->vPushInt(pCrwBuffer->nRowCount());
+  m_pDataStack->vPushInt(pCrwBuffer->nRows());
   
   EXIT();
 }

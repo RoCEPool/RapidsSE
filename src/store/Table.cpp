@@ -423,7 +423,7 @@ i8 Table::nIndexBuffers(i8 iIndexNo)
 //  ASSERT(i_TablePtn < AM::nPtnsPerTable());
 //
 //  // if buffer has 0 entries (only head) then should be last buffer
-//  if (pCrwBuffer->nRowCount() == 0) {
+//  if (pCrwBuffer->nRows() == 0) {
 //    delete pCrwBuffer;
 //    return;
 //  }
@@ -771,7 +771,7 @@ i8 Table::iToPartition(i8 iRowHash)
 //  ASSERT(i_TablePtn < AM::nPtnsPerTable());
 //
 //  // if buffer has 0 entries (only head) then should be last buffer
-//  if (pCrwBuffer->nRowCount() == 0) {
+//  if (pCrwBuffer->nRows() == 0) {
 //    delete pCrwBuffer;
 //    return;
 //  }

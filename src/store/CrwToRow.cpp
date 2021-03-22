@@ -71,7 +71,7 @@ bool CrwToRow::bConvertCrwToRow(CrwBuffer* pCrwBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTOROW,_FOOTER_);
     
-  i8 nCrws = pCrwBuffer->nRowCount();
+  i8 nCrws = pCrwBuffer->nRows();
   for (i8 i_Crw = 0; i_Crw <nCrws; i_Crw++) {
     
     HeadLine* pCrwHead = pCrwBuffer->aGetHead(i_Crw);

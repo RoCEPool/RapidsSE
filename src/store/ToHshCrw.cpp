@@ -128,7 +128,7 @@ void ToHshCrw::vAddNst(RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOHSHCRW,_FOOTER_);
   
-  ASSERT(0 == m_pCrwBuffer->nRowCount());
+  ASSERT(0 == m_pCrwBuffer->nRows());
 
   NmlStr* pNmlStr = pRowBuffer->pNmlStr();
 

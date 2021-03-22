@@ -240,9 +240,8 @@ macro AM_ROW_FILTER_END
 //----------------------------------------------------------------------------//
   // ROW_FILTER_END
   EO_CALL ROW_PROJECT_STAR
-  //EO_ROW_DST_PRINT
-  EO_PUSH_DEVROW_DST
-  EO_DEVROW_ROW_PRINT
+  //EO_PUSH_DEVROW_DST
+  //EO_DEVROW_ROW_PRINT
 
   EO_RETURN
 endMacro

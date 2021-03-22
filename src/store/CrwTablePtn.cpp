@@ -90,7 +90,7 @@ void CrwTablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // if buffer has 0 entries (only head) then should be last buffer
-  if (pCrwBuffer->nRowCount() == 0) {
+  if (pCrwBuffer->nRows() == 0) {
     delete pCrwBuffer;
     return;
   }
@@ -123,16 +123,6 @@ void CrwTablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
   // now insert entries from the buffer into the indexes
   vInsertIndexEntries(pCrwBuffer);
   
-}
-
-/*----------------------------------------------------------------------------*/
-/* append a row buffer into the CrwTablePtn                                      */
-/*----------------------------------------------------------------------------*/
-void CrwTablePtn::vAppendBuffer(RowBuffer* pRowBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
-  
-  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -29,7 +29,6 @@ namespace STORE
   
     void vAddIndex(IndexTree* pIndexTree);
     void vAppendBuffer(CrwBuffer* pCrwBuffer);
-    void vAppendBuffer(RowBuffer* pRowBuffer);
     i8   nBuffers(void);
     void vDump(void);
     IndexTree* pIndexTree(i8 iIndexNo);

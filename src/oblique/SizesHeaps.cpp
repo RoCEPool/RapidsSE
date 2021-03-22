@@ -332,6 +332,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Numbat),             HT_T_LARGE   ,0 }, // CN_NUMBAT
 
   { 'O' - ('A' - 1),            HT_INVALID   ,0 }, // CN__O__
+  { sizeof(ObjBuffer),          HT_T_LARGE   ,0 }, // CN_OBJBUFFER
   { sizeof(Objects),            HT_T_MEDIUM  ,0 }, // CN_OBJECTS
   { sizeof(ObjectSnapshot),     HT_T_SMALL   ,0 }, // CN_OBJECTSNAPSHOT
   { sizeof(Output),             HT_T_TINY    ,0 }, // CN_OUTPUT

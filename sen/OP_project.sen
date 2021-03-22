@@ -9,33 +9,6 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_Xyz ...                                                     */
-/*----------------------------------------------------------------------------*/
-: project_Xyz \handler
-
-  // delete all operands
-  PipeIn[].delete
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* on ZK_STARTMARKER ...                                                 INIT */
-/*----------------------------------------------------------------------------*/
-: project_StartMarker \handler
-
-  0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryNote
-
-  // new the PotRlu[]
-  PotRlu[].new
-
-  // init the logicUnit[]
-  LogicUnit[].init
-
-  ZK_STARTMARKER_handler
-;
-
-/*----------------------------------------------------------------------------*/
 /* on ZK_CANCELMARKER ...                                                 END */
 /*----------------------------------------------------------------------------*/
 : project_CancelMarker \handler
@@ -65,39 +38,9 @@
 
   0 ZK_CRWBUFFER EG_ZK LogicUnit[].diaryNote
 
-  //op.pipelineJob@ job.hasError if
-  //  Pipein[].delete
-  //  true
-  //  exit
-  //then
-
   Operand[].pipeIn
   Operand[].asSrcCrwBuffer
   ZK_CRWBUFFER Counter0[] executeAsmArgs
-
-  PotRlu[].pipeoutCompletedPtns
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* on ZK_ROWBUFFER ...                                                   EACH */
-/*----------------------------------------------------------------------------*/
-: project_RowBuffer \handler
-
-  0 ZK_ROWBUFFER EG_ZK LogicUnit[].diaryNote
-
-  //op.pipelineJob@ job.hasError if
-  //  Pipein[].delete
-  //  true
-  //  exit
-  //then
-
-  Operand[].pipeIn
-  Operand[].asSrcRowBuffer
-  ZK_ROWBUFFER Counter0[] executeAsmArgs
-
-  Operand[].delete
 
   PotRlu[].pipeoutCompletedPtns
 
@@ -124,6 +67,51 @@
 
   ZK_EOSMARKER EG_ZK PD_PIPE_OUT 0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryAction
   ZK_EOSMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_ROWBUFFER ...                                                   EACH */
+/*----------------------------------------------------------------------------*/
+: project_RowBuffer \handler
+
+  0 ZK_ROWBUFFER EG_ZK LogicUnit[].diaryNote
+
+  Operand[].pipeIn
+  Operand[].asSrcRowBuffer
+  ZK_ROWBUFFER Counter0[] executeAsmArgs
+
+  Operand[].delete
+
+  PotRlu[].pipeoutCompletedPtns
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_STARTMARKER ...                                                 INIT */
+/*----------------------------------------------------------------------------*/
+: project_StartMarker \handler
+
+  0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryNote
+
+  // new the PotRlu[]
+  PotRlu[].new
+
+  // init the logicUnit[]
+  LogicUnit[].init
+
+  ZK_STARTMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_Xyz ...                                                     */
+/*----------------------------------------------------------------------------*/
+: project_Xyz \handler
+
+  // delete all operands
+  PipeIn[].delete
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -161,7 +149,7 @@
 
     find: project_Xyz   ZK_CRWBUFFER     op[].handler!
     find: project_Xyz   ZK_ROWBUFFER     op[].handler!
-    find: project_Xyz    ZK_EOSMARKER     op[].handler!
+    find: project_Xyz   ZK_EOSMARKER     op[].handler!
 
     eError op__execErr
     StreamDef[].delete

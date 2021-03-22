@@ -477,6 +477,9 @@ void AM::vDeleteOperand(Operand* pOperand)
       
     case CN_ROWBUFFER: {
       RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
+      // permament row buffers not to be deleted
+      if (pRowBuffer->bIsPermanent())
+        break;
       delete pRowBuffer;
       break;
     }

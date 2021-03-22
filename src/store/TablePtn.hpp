@@ -36,6 +36,7 @@ namespace STORE
     bool bGrabRead(void);
     bool bGrabWrite(void);
     bool bIsLocked(void);
+    eCN  eKind(void);
     tPN  tPtnNo(void);
     Table* pTable(void);
 
@@ -49,6 +50,8 @@ namespace STORE
     bool bPopulateIndex(i8 iIndexNo);
     void vRemoveIndex(i8 iIndexNo);
     CrwBuffer* pRootCrwBuffer(void);
+    RowBuffer* pRootRowBuffer(void);
+    DataBuffer* pRootBuffer(void);
     void vTruncate(void);
     void vTruncateIndex(Index* pIndex);
     bool bVerifyTable(void);

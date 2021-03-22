@@ -9,7 +9,7 @@ namespace STORE
   {
   private:
     TablePtn*  m_pTablePtn;
-    CrwBuffer* m_pNextBuffer;
+    DataBuffer* m_pNextBuffer;
     i8         m_iLglBufferNo;
 
     // must be last
@@ -25,7 +25,7 @@ namespace STORE
     i8   iBufferNo(void);
     void vClose(void);
     bool bOpen(void);
-    CrwBuffer* pRead(void);
+    DataBuffer* pRead(void);
     void vReset(void);
     bool bSeek(i8 iBufferNo);
 
