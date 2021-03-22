@@ -11,7 +11,10 @@ namespace STORE
                     public WspConvergent_t<C_64KB,void,void>
   {
   public:
-    s256   m_sName;                       // streamDef name
+    s256 m_sStreamDefNm; // streamDef name
+  
+    Location m_oLocation; // logical location of stream def
+
     i8     m_nColumns;                    // total columns
     Column m_xaColumn[C_MAX_DEFCOLUMNS];  // array of columns
     i8     m_nFixedSized;                 // size of fixed size row
@@ -39,8 +42,8 @@ namespace STORE
     Column* pFindColumn(Stz* sColumnNm);
     Column* pGetColumn(i8 i_Col);
     void    vListContents(i8 i_Depth);
-    void    vName(Stz* sName);
-    Stz*    szName(void);
+    void    vStreamDefNm(Stz* szStreamDefNm);
+    Stz*    szStreamDefNm(void);
     eEC     eParse(Stz* szCmd);
     void    vPrint(void);
     RowPix* pRowPix(void);

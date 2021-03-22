@@ -39,7 +39,7 @@ NamedBuffer::NamedBuffer(StreamDef* pStreamDef, i8 iLogCtl)
 {
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_NAMEDBUFFER);
 
-  vBufferNm(pStreamDef->szName());
+  vBufferNm(pStreamDef->szStreamDefNm());
     
 //  _postcondition_(_ADDRESS_,_MAGIC_,CN_NAMEDBUFFER);
 }

@@ -54,7 +54,6 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.isColumn"_Stz,           &Step::vTableIsColumn);
   vAddStep("table[].isInternallyDefined"_Stz, &Step::vTableIsInternallyDefined);
   vAddStep("table[].isUserCreated"_Stz,    &Step::vTableIsUserCreated);
-  vAddStep("table.lazyBuildIndexes"_Stz,   &Step::vTableLazyBuildIndexes);
   vAddStep("table[].listPartition"_Stz,    &Step::vTableListPartition);
   vAddStep("table[].name@"_Stz,            &Step::vTableNameFetch);
   vAddStep("table[].ptnStreamDef@"_Stz,    &Step::vTablePtnStreamDefFetch);
@@ -157,29 +156,6 @@ void Step::vTableAsSrcStreamDef(void)
     delete pStreamDefOld;
 
   ( m_pJob->pLogicUnit_job() )->m_pDevSrcRow->m_pStreamDef = new StreamDef(pStreamDef);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.lazyBuildIndexes -- lazy build of indexes (from lazy chains)         */
-/*----------------------------------------------------------------------------*/
-void Step::vTableLazyBuildIndexes(void)
-{
-  ENTRY();
-  i8 i_TablePtn;
-  s48K sString;
-  
-  m_pDataStack->vPopStr(sString,__func__);
-  
-  Table* pTable = reinterpret_cast<Table*>(sString.iToI8());
-  ASSERT(CN_TABLE == pTable->eGetClassNo());
-  
-  m_pDataStack->vPopStr(sString,__func__);
-  
-  i_TablePtn = sString.iToI8();
-  
-  pTable->vLazyBuildIndexes(i_TablePtn);
   
   EXIT();
 }

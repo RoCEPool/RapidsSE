@@ -176,7 +176,7 @@ void Step::vStreamDefName(void)
   
   StreamDef* pStreamDef = _pStreamDef(*( m_pJob->pLogicUnit_job() )->m_xpStreamDef);
   
-  s32 sName = pStreamDef->szName();
+  s32 sName = pStreamDef->szStreamDefNm();
   m_pDataStack->vPushStr(sName);
   
   EXIT();

@@ -1584,7 +1584,6 @@ void vExprEvalEvaluate(void);
   void vTableIsColumn(void);
   void vTableIsInternallyDefined(void);
   void vTableIsUserCreated(void);
-  void vTableLazyBuildIndexes(void);
   void vTableListPartition(void);
   void vTableNameFetch(void);
   void vTableNew(void);

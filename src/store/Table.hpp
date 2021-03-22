@@ -62,7 +62,6 @@ namespace STORE
     bool    bIsUserCreated(void);
     eTT     eKind(void);
     void    vKind(eTT eKind);
-    void    vLazyBuildIndexes(i8 i_TablePtn);
     void    vListContents(i8 i_Depth);
     void    vMarkTable(void);
     bool    bPopulateIndex(i8 iIndexNo);

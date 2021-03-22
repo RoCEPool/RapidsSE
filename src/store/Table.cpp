@@ -526,34 +526,6 @@ void Table::vKind(eTT eKind)
 }
 
 /*----------------------------------------------------------------------------*/
-/* lazy build of index                                                        */
-/*----------------------------------------------------------------------------*/
-void Table::vLazyBuildIndexes(i8 i_TablePtn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  TablePtn* pTablePtn = this->pTablePtn(i_TablePtn);
-  IndexTreeVec* pInedexTreeVec = pTablePtn->pIndexTreeVec();
-  i8 nIndexes = pInedexTreeVec->nItems();
-  
-  // iterate all indexes of the table
-  for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
-    
-    // get index
-    IndexTree* pNewIndexTree = pInedexTreeVec->pGet(i_Index);
-    
-    Index* pIndex = pNewIndexTree->pIndex();
-    
-    // get an H0 buffer
-    EntBuffer *pIndexBuffer = pTablePtn->pIndexTree(pIndex->iIndexNo())->pFirstH0Buffer();
-    
-    // build skip list for all H0 buffers
-    if (pIndexBuffer)
-      pIndexBuffer->vLazyBuild();
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* list table contents                                                        */
 /*----------------------------------------------------------------------------*/
 void Table::vListContents(i8 i_Depth)

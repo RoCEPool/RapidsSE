@@ -117,7 +117,7 @@ void Step::vStreamDefOutNameFetch(void)
 {
   ENTRY();
     
-  s32 sName = ( m_pJob->pLogicUnit_job() )->m_xpStreamDefOut->szName();
+  s32 sName = ( m_pJob->pLogicUnit_job() )->m_xpStreamDefOut->szStreamDefNm();
   
   m_pDataStack->vPushStz(sName);
   
@@ -134,7 +134,7 @@ void Step::vStreamDefOutNameStore(void)
   s32 sName;
   m_pDataStack->vPopStr(sName,__func__);
 
-  ( m_pJob->pLogicUnit_job() )->m_xpStreamDefOut->vName(sName);
+  ( m_pJob->pLogicUnit_job() )->m_xpStreamDefOut->vStreamDefNm(sName);
   
   EXIT();
 }
