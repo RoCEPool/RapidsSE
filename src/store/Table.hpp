@@ -10,7 +10,7 @@ namespace STORE { class InfoSet; class StreamDef; }
 
 namespace STORE
 {
-  class Table : public Object
+  class Table : public Operand
   {
   private:
     s32        m_sTableNm;    // table name (leave for the moment)

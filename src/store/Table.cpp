@@ -40,7 +40,7 @@ __aFooterFunction(Table)
 HACK(Table,"define table partitioning");
 
 Table::Table(Stz* szTableNm, eTT eKind)
-: Object(CN_TABLE)
+: Operand(CN_TABLE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 
