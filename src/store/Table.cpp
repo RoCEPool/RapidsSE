@@ -53,7 +53,6 @@ Table::Table(Stz* szTableNm, eTT eKind)
   m_pIdxVec    = new IdxVec;
   m_ixIndexNo.vCheckInit();
   m_pBucketMap = new BucketMap(AM::nPtnsInGrid());
-  m_bIsLoading = false;
 
   m_pStreamDef    = nullptr;
   m_pTablePtnVec  = new TablePtnVec;
@@ -497,16 +496,6 @@ bool Table::bIsInternallyDefined(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get if table is loading                                                    */
-/*----------------------------------------------------------------------------*/
-bool Table::bIsLoading(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  return m_bIsLoading;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get if table is user created                                               */
 /*----------------------------------------------------------------------------*/
 bool Table::bIsUserCreated(void)
@@ -534,16 +523,6 @@ void Table::vKind(eTT eKind)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   m_eKind = eKind;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set table is loading                                                       */
-/*----------------------------------------------------------------------------*/
-void Table::vIsLoading(bool bIsLoading)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  m_bIsLoading = bIsLoading;
 }
 
 /*----------------------------------------------------------------------------*/

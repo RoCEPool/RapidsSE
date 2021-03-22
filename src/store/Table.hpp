@@ -21,7 +21,6 @@ namespace STORE
     IdxVec*    m_pIdxVec;     // index vector
     Atomic     m_ixIndexNo;   // next index no
     BucketMap* m_pBucketMap;  // bucket (to partition) map
-    bool       m_bIsLoading;  // data is loading
     
     StreamDef*    m_pStreamDef;    // table stream def
     TablePtnVec*  m_pTablePtnVec;  // table partition vector
@@ -60,8 +59,6 @@ namespace STORE
     i8      nIndexBuffers(i8 i_Index);
     bool    bIsDefinitionOnly(void);
     bool    bIsInternallyDefined(void);
-    void    vIsLoading(bool bIsLoading);
-    bool    bIsLoading(void);
     bool    bIsUserCreated(void);
     eTT     eKind(void);
     void    vKind(eTT eKind);
