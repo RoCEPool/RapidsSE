@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Limits.hpp - Enforced Limits of CmdLineArgs                                              */
+/* Limits.hpp - Enforced Limits of CmdLineArgs                                */
 /*============================================================================*/
 #pragma once
 

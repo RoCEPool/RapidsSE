@@ -255,6 +255,7 @@ extern d8 C_D8_MID;
 #include "ListExo_t.hpp"
 #include "ListNL_t__.hpp"
 #include "ListNL_t.hpp"
+#include "Location.hpp"
 
 #include "QueueBuffer.hpp"
 #include "Queue.hpp"
