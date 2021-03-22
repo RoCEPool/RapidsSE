@@ -180,7 +180,7 @@ b1 ProjectOp::bHasAnAggregate(QueryNode* pNode)
     QueryNode* pProjExpr = static_cast<QueryNode*>(pIter->pNext());
 
     ASSERT(ProjectedExpr::bIsOfType(pProjExpr));
-    if (ProjectedExpr::bIsAnAggregate(pProjExpr)) {
+    if (ProjectedExpr::bContainsAnAggregate(pProjExpr)) {
       bResult = true;
       break;
     }

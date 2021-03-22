@@ -98,9 +98,10 @@ eCT Expr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
 
 /*----------------------------------------------------------------------------*/
 /* Returns true if this expression (and therefore any subexpression elements  */
-/* it contains) is an aggregate expression                                    */
+/* it contains) contains an aggregate expression. It may also contain non-    */
+/* aggregated terms too.                                                      */
 /*----------------------------------------------------------------------------*/
-b1 Expr::bIsAnAggregate(PlanNode *pNode)
+b1 Expr::bContainsAnAggregate(PlanNode *pNode)
 {
   ASSERT(bIsOfType(pNode));
 

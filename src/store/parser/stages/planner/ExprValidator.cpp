@@ -243,7 +243,7 @@ void ExprValidator::vValidateAggsWithNoGroupBy(PlanNode *pRootNode, QueryNode* p
       QueryNode* pOrdExpr = Expr::pSymbolicToOrdinal(pExpr, pColExprList, pRootNode);
 
       // Check if this ordinal expression is an aggregate
-      if (Expr::bIsAnAggregate(pOrdExpr)) {
+      if (Expr::bContainsAnAggregate(pOrdExpr)) {
         ++iNumAggCols;
       }
 
@@ -288,7 +288,7 @@ void ExprValidator::vCheckNonAggExprsAreInGroupBy(QueryNode* pProjectExprs, Quer
 
     // If we have an aggregate expression then skip over it.
     // We're interested in non-aggregates instead.
-    if (Expr::bIsAnAggregate(pExpr)) {
+    if (Expr::bContainsAnAggregate(pExpr)) {
       continue;
     }
 
@@ -337,7 +337,7 @@ void ExprValidator::vCheckGroupByExprsNotAggregates(QueryNode *pGroupByList)
   while (pIter->bHasNext()) {
     QueryNode* pExpr = static_cast<QueryNode*>(pIter->pNext());
 
-    if (Expr::bIsAnAggregate(pExpr)) {
+    if (Expr::bContainsAnAggregate(pExpr)) {
       delete pIter;
 
       // Throw an error

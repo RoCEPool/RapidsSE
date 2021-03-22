@@ -26,8 +26,9 @@ namespace Parser
     static eCT eType(QueryNode* pExprNode, PlanNode* pRootNode);
 
     // Returns true if this expression (and therefore any subexpression elements
-    // it contains) is an aggregate expression
-    static b1 bIsAnAggregate(PlanNode* pNode);
+    // it contains) is an aggregate expression. It may also contain non-aggregated
+    // terms too.
+    static b1 bContainsAnAggregate(PlanNode* pNode);
 
     // Returns true if this expression tree only comprises literals and operators.
     // i.e., returns false if a ColumnRef or ColumnOrdinal is encountered.
