@@ -14,7 +14,7 @@ namespace STORE
   {
   private:
     s32        m_sTableNm;    // table name (leave for the moment)
-    eTT        m_eKind  ;     // table kind
+    eTT        m_eKind;       // table kind
   
     Location   m_oLocation;   // logical location of table
 
@@ -22,7 +22,6 @@ namespace STORE
     Atomic     m_ixIndexNo;   // next index no
     BucketMap* m_pBucketMap;  // bucket (to partition) map
     bool       m_bIsLoading;  // data is loading
-    bool       m_bDefinitionOnly; // table is a definition only
     
     StreamDef*    m_pStreamDef;    // table stream def
     TablePtnVec*  m_pTablePtnVec;  // table partition vector

@@ -53,9 +53,7 @@ Table::Table(Stz* szTableNm, eTT eKind)
   m_pIdxVec    = new IdxVec;
   m_ixIndexNo.vCheckInit();
   m_pBucketMap = new BucketMap(AM::nPtnsInGrid());
-  //m_pPtnMap    = new PtnMap(AM::nPtnsInGrid());
   m_bIsLoading = false;
-  m_bDefinitionOnly = false;
 
   m_pStreamDef    = nullptr;
   m_pTablePtnVec  = new TablePtnVec;
@@ -586,7 +584,6 @@ void Table::vListContents(i8 i_Depth)
   vTrace("%sTable %s %s\n"_Stz,
          Stz::szTab(i_Depth),
          m_sTableNm.szStz(),
-         //m_bDefinitionOnly ? "(definition-only)"_Stz : ""_Stz
          aTT[m_eKind]
          );
 
