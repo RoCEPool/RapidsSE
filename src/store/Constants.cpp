@@ -772,13 +772,7 @@ void Constants::vAddConstantsCpp(void)
   #else
   vAddConstant("WITH_DEBUG_VERSION"_Stz,(i8)false);
   #endif
-    
-  #ifdef WITH_EB_LAZY_CHAIN
-  vAddConstant("WITH_EB_LAZY_CHAIN"_Stz,(i8)true);
-  #else
-  vAddConstant("WITH_EB_LAZY_CHAIN"_Stz,(i8)false);
-  #endif
-    
+        
   #ifdef WITH_ENCODING_TRACE
   vAddConstant("WITH_ENCODING_TRACE"_Stz,(i8)true);
   #else

@@ -20,13 +20,6 @@ EntBuffer* EntBuffer::pFindLeafBuffer_gen(Key* aForKey)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   RASSERT(KE_GENERAL == m_eEntKind);
-
-#ifdef WITH_EB_LAZY_CHAIN
-  ASSERT( ! m_aLazyChain );
-  
-  //if (m_aLazyChain)
-  //  vBuildSkipList();
-#endif
   
   /*
    
@@ -98,10 +91,6 @@ Ent* EntBuffer::aFindEntryBefore_gen(Key* aGivenKey)
   
   RASSERT(KE_GENERAL == m_eEntKind);
 
-#ifdef WITH_EB_LAZY_CHAIN
-  ASSERT( ! m_aLazyChain );
-#endif
-  
   i8 nLvlLevels = AM::nLvlLevels();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -177,10 +166,6 @@ void EntBuffer::vPosVecPriorToBuffer_gen(EntBuffer* pToRefdBuffer,
   RASSERT(KE_GENERAL == m_eEntKind);
 
   ASSERT(0 != m_iBufferHeight);
-
-#ifdef WITH_EB_LAZY_CHAIN
-  ASSERT( ! m_aLazyChain );
-#endif
 
   /*
 
@@ -293,10 +278,6 @@ void EntBuffer::vPosVecPriorToEntry_gen(Ent* aToEntry,
   RASSERT(KE_GENERAL == m_eEntKind);
 
   //ASSERT(0 == m_iBufferHeight);
-  
-#ifdef WITH_EB_LAZY_CHAIN
-  ASSERT( ! m_aLazyChain );
-#endif
   
   i8 nLvlLevels = AM::nLvlLevels();
   
