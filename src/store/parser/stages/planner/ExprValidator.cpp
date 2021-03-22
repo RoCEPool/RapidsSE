@@ -18,6 +18,9 @@
 #include "TableMetadata.hpp"
 
 #include "Expr.hpp"
+#include "AggregateExpr.hpp"
+#include "LiteralExpr.hpp"
+#include "ColumnRef.hpp"
 #include "ProjectedExpr.hpp"
 #include "FilterOp.hpp"
 #include "AggregateOp.hpp"
@@ -56,12 +59,13 @@ void ExprValidator::vValidateExprs(PlanNode *pRootNode)
   // Validate any aggregate/group-by expressions
   vValidateGroupByExprs(pRootNode, pPlanNode);
 
+  // Validate that all expressions that
+  vValidateSqlOpExprsAgainstGroupBy(pRootNode, pPlanNode);
+
   // Validate that ProjectOps cannot produce both aggregate & non-aggregate
   // expressions without a group-by clause
-  vValidateAggsWithNoGroupBy(pRootNode, pPlanNode);
+  vValidateProjectExprs(pRootNode, pPlanNode);
 
-  // Validate any HAVING expressions
-  vValidateHavingExprs(pRootNode, pPlanNode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -92,7 +96,7 @@ void ExprValidator::vValidateExprResultType(PlanNode *pRootNode, QueryNode* pPla
   };
 
   // Walk the /plan node, it's properties and its children
-  GraphNav::bWalk(pPlanNode, true, true, fVisitor, pRootNode);
+  GraphNav::bWalk(pPlanNode->pFirstChild(), true, true, fVisitor, pRootNode);
 }
 
 
@@ -137,7 +141,7 @@ void ExprValidator::vValidatePredicatesAreBoolean(PlanNode *pRootNode, QueryNode
 
   // Walk the /plan node and its children. We're not interested in walking
   // the properties because we are looking for filterOps
-  GraphNav::bWalk(pPlanNode, false, true, fVisitor, pRootNode);
+  GraphNav::bWalk(pPlanNode->pFirstChild(), false, true, fVisitor, pRootNode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -148,180 +152,184 @@ void ExprValidator::vValidateGroupByExprs(PlanNode *pRootNode, QueryNode* pPlanN
   ASSERT(pRootNode);
   ASSERT(pPlanNode);
 
-  // A lambda we use when walking the graph to check each Aggregate Op we encounter
-  auto fVisitor = [](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
-
-    PlanNode *pRootNode = static_cast<PlanNode *>(pvArg);
-
-    if (!AggregateOp::bIsOfType(pNode)) {
-      return GraphNav::WALK_CONTINUE;   // Keep walking
-    }
-
-    QueryNode* pAggNode = static_cast<QueryNode*>(pNode);
-
-    // Get the list of projected expressions
-    QueryNode* pProjectExprs = AggregateOp::pProjectedExprs(pAggNode);
-
-    // Get the group by list
-    QueryNode* pGroupByList = AggregateOp::pGroupByList(pAggNode);
-
-    // Check that all non-aggregate expressions that are being projected
-    // are either a part of the group by list or are dependent on the
-    // expressions in the group by list
-    vCheckNonAggExprsAreInGroupBy(pProjectExprs, pGroupByList);
-
-    // Check that the group by expressions cannot be aggregate expressions
-    vCheckGroupByExprsNotAggregates(pGroupByList);
-
-    // Check that the group by expressions are not literals.
-    // TODO: Eventually we will support integer literals here to refer to column ordinals
-    vCheckGroupByExprsNotLiterals(pGroupByList);
-
-    return GraphNav::WALK_CONTINUE;
+  // If there is group by list then an AggregateOp will be generated
+  // rather than an ProjectOp for an early plan.
+  auto fCondition = [](PlanNode* pNode, void* pvArg) -> b1 {
+    return AggregateOp::bIsExactType(pNode);
   };
 
-  // Walk the /plan node and its children. We're not interested in walking
-  // the properties because we are looking for aggregateOps
-  GraphNav::bWalk(pPlanNode, false, true, fVisitor, pRootNode);
+  QueryNode* pAggregateOp = static_cast<QueryNode*>(
+      GraphNav::pSearch(pPlanNode, false, true, fCondition, nullptr) );
+
+  if (!pAggregateOp) {
+    return;
+  }
+
+  // Get the list of projected expressions
+  QueryNode* pProjectExprs = AggregateOp::pProjectedExprs(pAggregateOp);
+
+  // Get the group by list
+  QueryNode* pGroupByList = AggregateOp::pGroupByList(pAggregateOp);
+
+  // Check that all non-aggregate expressions that are being projected
+  // are either a part of the group by list or are dependent on the
+  // expressions in the group by list
+  // This is done in vValidateExprsAgainstGroupBy()
+
+  // Check that the group by expressions cannot be aggregate expressions
+  vCheckGroupByExprsNotAggregates(pGroupByList);
+
+  // Check that the group by expressions are not literals.
+  // TODO: Eventually we will support integer literals here to refer to column ordinals
+  vCheckGroupByExprsNotLiterals(pGroupByList);
 }
 
 /*----------------------------------------------------------------------------*/
 /* Validate that if there is no group by list then projections must either be */
-/* all aggregates or all non-aggregates                                       */
+/* all aggregates or all non-aggregates. This is applicable to an early plan. */
 /*----------------------------------------------------------------------------*/
-void ExprValidator::vValidateAggsWithNoGroupBy(PlanNode *pRootNode, QueryNode* pPlanNode)
+void ExprValidator::vValidateProjectExprs(PlanNode *pRootNode, QueryNode* pPlanNode)
 {
   ASSERT(pRootNode);
   ASSERT(pPlanNode);
 
   // If there is no group by list then a simple ProjectOp will be generated
   // rather than an AggregateOp.
-
-  // A lambda we use when walking the graph to check each Project Op we encounter
-  auto fVisitor = [](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
-
-    PlanNode *pRootNode = static_cast<PlanNode *>(pvArg);
-
-    if (!ProjectOp::bIsExactType(pNode)) {    // <-- note bIsExactType(), not bIsOfType()
-      return GraphNav::WALK_CONTINUE;   // Keep walking
-    }
-
-    QueryNode* pProjectOpNode = static_cast<QueryNode*>(pNode);
-
-    // Get the list of projected expressions
-    QueryNode* pProjectExprs = ProjectOp::pProjectedExprs(pProjectOpNode);
-
-    // Iterate the expressions being projected
-    PlanNodeIter* pIter = pProjectExprs->pNewChildrenIter();
-
-    // The basic algorithm is to work out whether this ProjectOp is producing
-    // a mix of aggregate expressions and non-aggregate expressions together.
-    // To do that we will iterate each of the expressions in the projection
-    // list, convert them to ordinal expressions (as this will represent the
-    // work that this ProjectOp is doing rather than what work has been done
-    // in the plan below it), and then count how many of these expressions
-    // are aggregate/non-aggregates.
-
-    // Get the list of column expressions being given to this plan from its child.
-    // This is the list of expression symbols that represent each column of
-    // each row that this sql operator will receive.
-    ASSERT(pNode->nChildren() == 1);
-    PlanNodeList* pColExprList = PlanObject::pColumnExprs(static_cast<QueryNode*>(pNode->pFirstChild()), pRootNode);
-    ASSERT(pColExprList);
-    ASSERT(pColExprList->nItems() > 0);
-
-    // Let's count how many aggregate columns there are and compare to the number of children
-    i8 iNumColumns = pProjectExprs->iNumChildren();
-    i8 iNumAggCols = 0;
-
-    while (pIter->bHasNext()) {
-      QueryNode* pProjExpr = static_cast<QueryNode*>(pIter->pNext());
-      QueryNode* pExpr = ProjectedExpr::pExprNode(pProjExpr);
-
-      // Convert the expression from a symbolic expression to an ordinal one.
-      // This represents the work that this ProjectOp has to do.
-      QueryNode* pOrdExpr = Expr::pSymbolicToOrdinal(pExpr, pColExprList, pRootNode);
-
-      // Check if this ordinal expression is an aggregate
-      if (Expr::bIsAnAggregate(pOrdExpr)) {
-        ++iNumAggCols;
-      }
-
-      delete pOrdExpr;
-    }
-    delete pIter;
-    delete pColExprList;
-
-    if (iNumAggCols == 0 || iNumAggCols == iNumColumns) {
-      // We are projecting all aggregates or all non-aggregates.
-      // So no problems here
-      return GraphNav::WALK_CONTINUE;
-    }
-
-    // Throw an error
-    SemanticException::vThrow(EC_EXPR_AGG_MIX_NO_GROUPBY_LIST);
-
-    return GraphNav::WALK_ABORT; // This is purely to avoid a compiler warning
+  auto fCondition = [](PlanNode* pNode, void* pvArg) -> b1 {
+    return ProjectOp::bIsExactType(pNode);
   };
 
-  // Walk the /plan node and its children. We're not interested in walking
-  // the properties because we are looking for ProjectOps
-  GraphNav::bWalk(pPlanNode, false, true, fVisitor, pRootNode);
+  QueryNode* pProjectOp = static_cast<QueryNode*>(
+      GraphNav::pSearch(pPlanNode, false, true, fCondition, nullptr) );
+
+  if (!pProjectOp) {
+    return;
+  }
+
+  // Get the list of projected expressions
+  QueryNode* pProjectExprs = ProjectOp::pProjectedExprs(pProjectOp);
+
+  // Iterate the expressions being projected
+  PlanNodeIter* pIter = pProjectExprs->pNewChildrenIter();
+
+  // The basic algorithm is to work out whether this ProjectOp is producing
+  // a mix of aggregate expressions and non-aggregate expressions together.
+  // To do that we will iterate each of the expressions in the projection
+  // list, convert them to ordinal expressions (as this will represent the
+  // work that this ProjectOp is doing rather than what work has been done
+  // in the plan below it), and then count how many of these expressions
+  // are aggregate/non-aggregates.
+
+  // Get the list of column expressions being given to this plan from its child.
+  // This is the list of expression symbols that represent each column of
+  // each row that this sql operator will receive.
+  ASSERT(pProjectOp->nChildren() == 1);
+  PlanNodeList* pColExprList = PlanObject::pColumnExprs(static_cast<QueryNode*>(pProjectOp->pFirstChild()), pRootNode);
+  ASSERT(pColExprList);
+  ASSERT(pColExprList->nItems() > 0);
+
+  // Let's count how many aggregate columns there are and compare to the number of children
+  i8 iNumColumns = pProjectExprs->iNumChildren();
+  i8 iNumAggCols = 0;
+  i8 iNumLitCols = 0; // literal values only
+
+  while (pIter->bHasNext()) {
+    QueryNode* pProjExpr = static_cast<QueryNode*>(pIter->pNext());
+    QueryNode* pExpr = ProjectedExpr::pExprNode(pProjExpr);
+
+    // Convert the expression from a symbolic expression to an ordinal one.
+    // This represents the work that this ProjectOp has to do.
+    QueryNode* pOrdExpr = Expr::pSymbolicToOrdinal(pExpr, pColExprList, pRootNode);
+
+    // Check if this ordinal expression is an aggregate
+    if (Expr::bContainsAnAggregate(pOrdExpr)) {
+      ++iNumAggCols;
+
+    } else if (Expr::bIsLiteral(pOrdExpr)) {
+      ++iNumLitCols;
+    }
+
+    delete pOrdExpr;
+  }
+  delete pIter;
+  delete pColExprList;
+
+  if (iNumAggCols == 0 || iNumAggCols == iNumColumns - iNumLitCols) {
+    // We are projecting all aggregates or all non-aggregates.
+    // So no problems here
+    return;
+  }
+
+  // Throw an error
+  SemanticException::vThrow(EC_EXPR_AGG_MIX_NO_GROUPBY_LIST);
 }
 
 
 /*----------------------------------------------------------------------------*/
-/* Check that all non-aggregate expressions that are being projected are      */
-/* either a part of the group by list or are dependent on the expressions in  */
-/* the group by list                                                          */
+/* Check that any non-aggregated columnRefs in the expression are either a    */
+/* part of the group by list or are dependent on the expressions in the group */
+/* by list                                                                    */
 /*----------------------------------------------------------------------------*/
-void ExprValidator::vCheckNonAggExprsAreInGroupBy(QueryNode* pProjectExprs, QueryNode *pGroupByList)
+void ExprValidator::vCheckNonAggExprIsInGroupBy(QueryNode* pExpr, QueryNode *pGroupByList)
 {
-  ASSERT(pProjectExprs);
-  ASSERT(pProjectExprs->nChildren() > 0);
-  ASSERT(pGroupByList);
+  ASSERT(pExpr);
 
-  PlanNodeIter* pProjectExprIter = pProjectExprs->pNewChildrenIter();
-  while (pProjectExprIter->bHasNext()) {
-    QueryNode* pProjectExpr = static_cast<QueryNode*>(pProjectExprIter->pNext());
-    QueryNode* pExpr = ProjectedExpr::pExprNode(pProjectExpr);
+  PlanNodeIter* pGroupByIter = pGroupByList->pNewChildrenIter();
 
-    // If we have an aggregate expression then skip over it.
-    // We're interested in non-aggregates instead.
-    if (Expr::bIsAnAggregate(pExpr)) {
-      continue;
+  // We will walk the expression tree and:
+  //  - if the subExpr is an actual expression aggregate then skip that subtree
+  //  - if the subExpr is a literal then skip that subtree
+  //  - if the subExpr matches any of the group-by expressions then skip that subtree
+  //  - if the subExpr is a ColumnRef then we have an error (because it is not in
+  //    the groupby list)
+  //  - otherwise continue walking/descending the expression graph
+
+  auto fVisitor = [pGroupByList](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    ASSERT(Expr::bIsOfType(pNode));
+
+    QueryNode* pExpr = static_cast<QueryNode*>(pNode);
+
+    // Ignore aggregate expressions
+    if (AggregateExpr::bIsOfType(pExpr)) {
+      return GraphNav::WALK_SKIP_SUBTREE;
     }
 
-    // Got a non-aggregate expression. Is this expr a superset of any
-    // expressions in the group-by list?
-    b1 bInGroupByList = false;
-    PlanNodeIter* pGroupByIter = pGroupByList->pNewChildrenIter();
-    while (pGroupByIter->bHasNext()) {
-      QueryNode* pGroupExpr = static_cast<QueryNode*>(pGroupByIter->pNext());
+    // Ignore literals
+    if (LiteralExpr::bIsOfType(pExpr)) {
+      return GraphNav::WALK_SKIP_SUBTREE;
+    }
 
-      // Is the projected non-aggregate expression equal to or a superset
-      // of this group-by expression?
-      if (Expr::bIsEqualOrSupersetOf(pExpr, pGroupExpr)) {
-        bInGroupByList = true;
-        break;
+    // if this expression exactly matches any of the group by expressions then
+    // we can skip this subtree
+    PlanNodeIter* pIter = pGroupByList->pNewChildrenIter();;
+
+    while (pIter->bHasNext()) {
+      QueryNode* pGroupByExpr = static_cast<QueryNode*>(pIter->pNext());
+
+      if (Expr::bIsSymbolicallyEqual(pExpr, pGroupByExpr)) {
+        delete pIter;
+        return GraphNav::WALK_SKIP_SUBTREE;
       }
     }
-    delete pGroupByIter;
 
-    if (!bInGroupByList) {
-      delete pProjectExprIter;
+    delete pIter;
 
-      // Throw an error
+    // If this is a ColumnRef then we know it is not in an aggregation and not in
+    // the group by list so it is an error.
+    if (ColumnRef::bIsOfType(pExpr)) {
       s2K sBuf;
       Expr::vDescribe(pExpr, sBuf);
 
-      SemanticException::vThrow(EC_EXPR_NOT_IN_GROUPBY_LIST,
-                                " : %s"_Stz,
-                                sBuf.szStz());
+      SemanticException::vThrow(EC_EXPR_NOT_IN_GROUPBY_LIST, ": %s"_Stz, sBuf.szStz());
     }
 
-  }
-  delete pProjectExprIter;
+    // Keep walking/descending the expression graph
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  // Walk the expression graph
+  GraphNav::bWalk(pExpr, false, true, fVisitor, nullptr);
 }
 
 
@@ -337,7 +345,7 @@ void ExprValidator::vCheckGroupByExprsNotAggregates(QueryNode *pGroupByList)
   while (pIter->bHasNext()) {
     QueryNode* pExpr = static_cast<QueryNode*>(pIter->pNext());
 
-    if (Expr::bIsAnAggregate(pExpr)) {
+    if (Expr::bContainsAnAggregate(pExpr)) {
       delete pIter;
 
       // Throw an error
@@ -387,18 +395,206 @@ void ExprValidator::vCheckGroupByExprsNotLiterals(QueryNode *pGroupByList)
 
 
 /*----------------------------------------------------------------------------*/
-/* Validate that any HAVING exprs are correctly specified                     */
+/* If there is a GROUP BY then validate that all sql operators that sit above */
+/* an AggregateOp and have expressions, those expressions must only refer to  */
+/* aggregated columns or columns that appear in the group by list             */
 /*----------------------------------------------------------------------------*/
-void ExprValidator::vValidateHavingExprs(PlanNode *pRootNode, QueryNode* pPlanNode)
+void ExprValidator::vValidateSqlOpExprsAgainstGroupBy(PlanNode* pRootNode, QueryNode* pPlanNode)
 {
-  ASSERT(pRootNode);
-  ASSERT(pPlanNode);
+  // First find the AggregateOp (if one exists) so we can get the group by list
+  auto fCondition = [](PlanNode* pNode, void* pvArg)-> b1 {
+    return (AggregateOp::bIsExactType(pNode));
+  };
 
-  // TODO
-  //  - expr must either be dependent on a column from the group by list or it must be an aggregate expression
+  QueryNode* pAggregateOp = static_cast<QueryNode*>(
+      GraphNav::pSearch(pPlanNode, false, true,
+                        fCondition, nullptr) );
 
+  if (!pAggregateOp) {
+    return;
+  }
 
+  // Get the group by list
+  QueryNode* pGroupByList = AggregateOp::pGroupByList(pAggregateOp);
+
+  // Now walk the plan again until we hit this AggregateOp and check that
+  // all expressions are either aggregates or they use expressions from
+  // the group by list.
+
+  auto fVisitor = [pAggregateOp, pGroupByList](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    ASSERT(PlanObject::bIsOfType(pNode));
+    QueryNode* pPlanOp = static_cast<QueryNode*>(pNode);
+
+    b1 bExit = false;
+
+    if (pNode == pAggregateOp) {
+      // We've reach the last node
+      bExit = true;
+    }
+
+    if (FilterOp::bIsOfType(pPlanOp)) {
+      // Covers the HAVING clause
+      QueryNode* pExpr = FilterOp::pFilterExpr(pPlanOp);
+      vCheckNonAggExprIsInGroupBy(pExpr, pGroupByList);
+
+    } else if (ProjectOp::bIsOfType(pPlanOp)) {
+      // Covers both ProjectOp in the case of no group by, as well
+      // as AggregateOp when a groupby does exit.
+      QueryNode* pProjectedExprs = ProjectOp::pProjectedExprs(pPlanOp);
+
+      PlanNodeIter* pProjectedExprIter = pProjectedExprs->pNewChildrenIter();
+      while (pProjectedExprIter->bHasNext()) {
+        QueryNode* pProjectExpr = static_cast<QueryNode*>(pProjectedExprIter->pNext());
+        ASSERT(ProjectedExpr::bIsOfType(pProjectExpr));
+
+        QueryNode* pExpr = ProjectedExpr::pExprNode(pProjectExpr);
+
+        try {
+          vCheckNonAggExprIsInGroupBy(pExpr, pGroupByList);
+
+        } catch (SemanticException& e) {
+          delete pProjectedExprIter;
+          throw;
+        }
+      }
+
+      delete pProjectedExprIter;
+    }
+
+//    } else if (OrderByOp::bIsOfType(pPlanOp)) {
+//      QueryNode* pExpr = OrderByOp::pOrderExpr(pPlanOp);
+//      vCheckNonAggExprIsInGroupBy(pExpr, pGroupByList);
+//    }
+
+    if (bExit) {
+      return GraphNav::WALK_ABORT;
+    }
+
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  // Now walk the graph, looking at the SqlOps
+  GraphNav::bWalk(pPlanNode->pFirstChild(), false, true, fVisitor, nullptr);
 }
+
+
+
+/*----------------------------------------------------------------------------*/
+/* If there is no GROUP BY then validate the expressions of all sql operators */
+/* that sit above the ProjectOp. Aggregate exprs may or may not be allowed    */
+/* depending on the expressions in the ProjectOp.                             */
+/*----------------------------------------------------------------------------*/
+void ExprValidator::vValidateSqlOpExprsAgainstProjectOp(PlanNode* pRootNode, QueryNode* pPlanNode)
+{
+  // First find the ProjectOp
+  auto fCondition = [](PlanNode *pNode, void *pvArg) -> b1 {
+    return (ProjectOp::bIsExactType(pNode));
+  };
+
+  QueryNode *pProjectOp = static_cast<QueryNode *>(
+      GraphNav::pSearch(pPlanNode, false, true,
+                        fCondition, nullptr));
+
+  if (!pProjectOp) {
+    return;
+  }
+
+  // If the project expressions contain any columnRefs that are not part of
+  // an aggregate then we cannot have any aggregate terms in the SqlOps
+  // above it in the plan. So first determine if aggregations are allowed.
+  b1 bAggregationAllowed = true;
+  QueryNode* pNonAggColRef = nullptr;
+
+  QueryNode* pProjectedExprs = ProjectOp::pProjectedExprs(pProjectOp);
+  PlanNodeIter* pIter = pProjectedExprs->pNewChildrenIter();
+  while (pIter->bHasNext()) {
+    QueryNode* pProjectedExpr = static_cast<QueryNode*>(pIter->pNext());
+    QueryNode* pExpr = ProjectedExpr::pExprNode(pProjectedExpr);
+
+    if (Expr::bContainsNonaggregatedColumnRefs(pExpr)) {
+      bAggregationAllowed = false;
+      pNonAggColRef = pExpr;
+      break;
+    }
+  }
+
+  delete pIter;
+
+  // Now walk the graph until we hit the ProjectOp above and check the expressions
+  // of any nodes we encounter.
+
+
+  auto fVisitor = [pProjectOp, bAggregationAllowed, pNonAggColRef]
+      (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    ASSERT(PlanObject::bIsOfType(pNode));
+    QueryNode* pPlanOp = static_cast<QueryNode*>(pNode);
+
+
+    if (pNode == pProjectOp) {
+      // We don't need to check ProjectOp. That already occurred in vValidateProjectExprs()
+      return GraphNav::WALK_ABORT;
+    }
+
+    if (FilterOp::bIsOfType(pPlanOp)) {
+      // Covers the HAVING clause
+      QueryNode* pExpr = FilterOp::pFilterExpr(pPlanOp);
+      b1 bHasAgg = Expr::bContainsAnAggregate(pExpr);
+      if (!bAggregationAllowed) {
+        if (bHasAgg) {
+          // Throw an error that the first non-aggregated columnRef is not in the group by list
+          s2K sBuf;
+          Expr::vDescribe(pNonAggColRef, sBuf);
+          SemanticException::vThrow(EC_EXPR_NOT_IN_GROUPBY_LIST,
+                                    " : %s"_Stz,
+                                    sBuf.szStz());
+
+        } else {
+          // Throw an error that the expression is not in the group by list
+          s2K sBuf;
+          Expr::vDescribe(pExpr, sBuf);
+          SemanticException::vThrow(EC_EXPR_NOT_IN_GROUPBY_LIST,
+                                    " : %s"_Stz,
+                                    sBuf.szStz());
+        }
+      } else if (bAggregationAllowed && !bHasAgg) {
+        // Throw an error that the expression is not in the group by list
+        s2K sBuf;
+        Expr::vDescribe(pExpr, sBuf);
+        SemanticException::vThrow(EC_EXPR_NOT_IN_GROUPBY_LIST,
+                                  " : %s"_Stz,
+                                  sBuf.szStz());
+      }
+    }
+
+//    } else if (OrderByOp::bIsOfType(pPlanOp)) {
+//      QueryNode* pExpr = OrderByOp::pOrderExpr(pPlanOp);
+//      b1 bHasAgg = Expr::bContainsAnAggregate(pExpr);
+//      if (!bAggregationAllowed && bHasAgg) {
+//        // Throw an error that the first non-aggregated columnRef is not in the group by list
+//          s2K sBuf;
+//          Expr::vDescribe(pNonAggColRef, sBuf);
+//          SemanticException::vThrow(EC_EXPR_NOT_IN_GROUPBY_LIST,
+//                                    " : %s"_Stz,
+//                                    sBuf.szStz());
+//      } else if (bAggregationAllowed && !bHasAgg) {
+//        // Throw an error that the expression is not in the group by list
+//          s2K sBuf;
+//          Expr::vDescribe(pExpr, sBuf);
+//          SemanticException::vThrow(EC_EXPR_NOT_IN_GROUPBY_LIST,
+//                                    " : %s"_Stz,
+//                                    sBuf.szStz());
+//      }
+//    }
+
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  // Now walk the graph, looking at the SqlOps
+  GraphNav::bWalk(pPlanNode->pFirstChild(), false, true, fVisitor, nullptr);
+}
+
 
 /*============================================================================*/
 

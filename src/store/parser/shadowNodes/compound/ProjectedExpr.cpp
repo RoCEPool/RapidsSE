@@ -126,13 +126,13 @@ b1 ProjectedExpr::bIsOfType(PlanNode *pNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Returns true if the expression in this node is an aggregate expression     */
+/* Returns true if the expression in this node contains an aggregate expression*/
 /*----------------------------------------------------------------------------*/
-b1 ProjectedExpr::bIsAnAggregate(QueryNode* pNode)
+b1 ProjectedExpr::bContainsAnAggregate(QueryNode* pNode)
 {
   QueryNode *pExprNode = ProjectedExpr::pExprNode(pNode);
 
-  return Expr::bIsAnAggregate(pExprNode);
+  return Expr::bContainsAnAggregate(pExprNode);
 }
 
 /*----------------------------------------------------------------------------*/

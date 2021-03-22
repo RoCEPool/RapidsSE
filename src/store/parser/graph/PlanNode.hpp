@@ -231,6 +231,26 @@ namespace Parser
       if (  m_bIsNull != xOther.m_bIsNull)    return false;
 
       switch (m_eType) {
+        case VT_UNKNOWN:
+          // Not return false here because we are comparing PlanNodes, not SQL NULLs.
+          break;
+
+        case VT_BOOLEAN:
+          if (m_bBoolean != xOther.m_bBoolean)  return false;
+          break;
+
+        case VT_INT:
+          if (m_iInt != xOther.m_iInt)          return false;
+          break;
+
+        case VT_UINT:
+          if (m_uInt != xOther.m_uInt)          return false;
+          break;
+
+        case VT_FLOAT:
+          if (m_dFloat != xOther.m_dFloat)      return false;
+          break;
+
         case VT_STRING:
           if (m_bIsNull) {
             // Both are null. Just compare pointers.
@@ -242,9 +262,23 @@ namespace Parser
           }
           break;
 
+          case VT_DATE:
+            if (m_xDate.m_iAsI8 != xOther.m_xDate.m_iAsI8)  return false;
+            break;
+
+          case VT_TIME:
+            if (m_xTime.m_iAsI8 != xOther.m_xTime.m_iAsI8)  return false;
+            break;
+
+          case VT_TIMESTAMP:
+            if (m_xTsp.m_iAsI8 != xOther.m_xTsp.m_iAsI8)  return false;
+            break;
+
+          case VT_INTERVAL:
+            NOT_IMPLEMENTED_YET
+
         default:
-          // Just compare the union as an integer
-          if (m_iInt != xOther.m_iInt)        return false;
+          NEVER_REACH
       }
 
       // We are equal
