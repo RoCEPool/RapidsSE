@@ -149,6 +149,16 @@ bool TablePtn::bIsLocked(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return tablePtn kind                                                       */
+/*----------------------------------------------------------------------------*/
+eCN TablePtn::eKind(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+
+  return m_eKind;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the partition number (in grid) of this table partition                 */
 /*----------------------------------------------------------------------------*/
 tPN TablePtn::tPtnNo(void)
@@ -340,7 +350,7 @@ bool TablePtn::bPopulateIndex(i8 iIndexNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the root row buffer                                                    */
+/* get the root crw buffer                                                    */
 /*----------------------------------------------------------------------------*/
 CrwBuffer* TablePtn::pRootCrwBuffer(void)
 {
@@ -354,6 +364,28 @@ CrwBuffer* TablePtn::pRootCrwBuffer(void)
       break;
     case CN_ROWTABLEPTN:
       NEVER_REACH
+      break;
+    default: NEVER_REACH;
+  }
+
+  return pRootBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the root row buffer                                                    */
+/*----------------------------------------------------------------------------*/
+RowBuffer* TablePtn::pRootRowBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+
+  RowBuffer* pRootBuffer;
+
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      NEVER_REACH
+      break;
+    case CN_ROWTABLEPTN:
+      pRootBuffer = m_pRowTablePtn->pRootRowBuffer();
       break;
     default: NEVER_REACH;
   }

@@ -60,18 +60,20 @@ void Step::vTablePtnAppendBuffer(void)
   // append the buffer to the tablePtn
   
   eCN eClassNo = pDataBuffer->eGetClassNo();
-  if (CN_CRWBUFFER == eClassNo) {
-    CrwBuffer* pCrwBuffer = _pCrwBuffer(pDataBuffer);
-    pTablePtn->vAppendBuffer(pCrwBuffer);
-  }
-  else if (CN_ROWBUFFER == eClassNo) {
-    RowBuffer* pRowBuffer = _pRowBuffer(pDataBuffer);
-    NEVER_REACH;
-    //pTablePtn->vAppendBuffer(pRowBuffer);
-  }
-  else {
-    NEVER_REACH;
-  }
+  pTablePtn->vAppendBuffer(pDataBuffer);
+
+//  if (CN_CRWBUFFER == eClassNo) {
+//    CrwBuffer* pCrwBuffer = _pCrwBuffer(pDataBuffer);
+//    pTablePtn->vAppendBuffer(pCrwBuffer);
+//  }
+//  else if (CN_ROWBUFFER == eClassNo) {
+//    RowBuffer* pRowBuffer = _pRowBuffer(pDataBuffer);
+//    NEVER_REACH;
+//    //pTablePtn->vAppendBuffer(pRowBuffer);
+//  }
+//  else {
+//    NEVER_REACH;
+//  }
   
   EXIT();
 }

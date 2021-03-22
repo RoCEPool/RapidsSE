@@ -9,6 +9,7 @@
 #include "Crw.hpp"
 #include "CrwPacker.hpp"
 #include "CrwBuffer.hpp"
+#include "RowBuffer.hpp"
 #include "SkipRoots.hpp"
 #include "EntBuffer.hpp"
 #include "IndexTree.hpp"
@@ -34,7 +35,7 @@ PtnStream::PtnStream(TablePtn* pTablePtn)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNSTREAM,_FOOTER_);
   
   m_pTablePtn    = pTablePtn;
-  m_pNextBuffer  = nullptr;
+  m_pNextCrwBuffer  = nullptr;
   m_iLglBufferNo = -1; // correct
 
   _checkInitialised_(CN_PTNSTREAM);
@@ -72,7 +73,7 @@ void PtnStream::vClose(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNSTREAM,_FOOTER_);
  
-  m_pNextBuffer = nullptr;
+  m_pNextCrwBuffer = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -90,24 +91,41 @@ bool PtnStream::bOpen(void)
 /*----------------------------------------------------------------------------*/
 /* read next buffer                                                           */
 /*----------------------------------------------------------------------------*/
-CrwBuffer* PtnStream::pRead(void)
+DataBuffer* PtnStream::pRead(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNSTREAM,_FOOTER_);
-  
-  if (! m_pNextBuffer)
-    return nullptr;
 
-  CrwBuffer* pReadBuffer = m_pNextBuffer;
-  
-  m_pNextBuffer = m_pNextBuffer->pNextCrwBuffer();
-  
-  if (pReadBuffer)
-    m_iLglBufferNo++;
-  else
-    m_iLglBufferNo = -1;
+  if (m_pTablePtn->eKind() == CN_CRWTABLEPTN) {
+    if (!m_pNextCrwBuffer)
+      return nullptr;
 
-  
-  return pReadBuffer;
+    CrwBuffer *pReadBuffer = m_pNextCrwBuffer;
+
+    m_pNextCrwBuffer = m_pNextCrwBuffer->pNextCrwBuffer();
+
+    if (pReadBuffer)
+      m_iLglBufferNo++;
+    else
+      m_iLglBufferNo = -1;
+
+    return pReadBuffer;
+  }
+  else {
+    if (! m_pNextRowBuffer)
+      return nullptr;
+
+    RowBuffer* pReadBuffer = m_pNextRowBuffer;
+
+    m_pNextRowBuffer = m_pNextRowBuffer->pNextRowBuffer();
+
+    if (pReadBuffer)
+      m_iLglBufferNo++;
+    else
+      m_iLglBufferNo = -1;
+
+    return pReadBuffer;
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -116,28 +134,39 @@ CrwBuffer* PtnStream::pRead(void)
 void PtnStream::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNSTREAM,_FOOTER_);
- 
-  m_pNextBuffer  = m_pTablePtn->pRootCrwBuffer();
+
+  if (m_pTablePtn->eKind() == CN_CRWTABLEPTN)
+    m_pNextCrwBuffer  = m_pTablePtn->pRootCrwBuffer();
+  else
+    m_pNextRowBuffer  = m_pTablePtn->pRootRowBuffer();
   m_iLglBufferNo = -1; // correct
 }
 
 /*----------------------------------------------------------------------------*/
 /* seek                                                                       */
 /*----------------------------------------------------------------------------*/
-bool PtnStream::bSeek(i8 iBufferNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNSTREAM,_FOOTER_);
-  
+bool PtnStream::bSeek(i8 iBufferNo) {
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PTNSTREAM, _FOOTER_);
+
   if (iBufferNo < m_iLglBufferNo)
     vReset();
-  
-  while (m_iLglBufferNo < iBufferNo) {
-    m_pNextBuffer = m_pNextBuffer->pNextCrwBuffer();
-    if (! m_pNextBuffer)
-      return false;
-    m_iLglBufferNo++;
+
+  if (m_pTablePtn->eKind() == CN_CRWTABLEPTN) {
+    while (m_iLglBufferNo < iBufferNo) {
+      m_pNextCrwBuffer = m_pNextCrwBuffer->pNextCrwBuffer();
+      if (!m_pNextCrwBuffer)
+        return false;
+      m_iLglBufferNo++;
+    }
   }
-  
+  else {
+    while (m_iLglBufferNo < iBufferNo) {
+      m_pNextRowBuffer = m_pNextRowBuffer->pNextRowBuffer();
+      if (!m_pNextRowBuffer)
+        return false;
+      m_iLglBufferNo++;
+    }
+  }
   if (iBufferNo == m_iLglBufferNo)
     return true;
   else
