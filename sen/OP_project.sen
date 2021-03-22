@@ -21,9 +21,9 @@
     PotRlu[].delete
   then
 
-  StreamDef[].isNull not if
-    StreamDef[].delete
-  then
+  //StreamDef[].isNull not if
+  //  StreamDef[].delete
+  //then
 
   Counter0[] cleanUpAsm
 
@@ -59,9 +59,9 @@
   PotRlu[].delete
 
   // delete the src streamDef linked asSrcStreamDef
-  StreamDef[].isNull not if
-    StreamDef[].delete
-  then
+  //StreamDef[].isNull not if
+  //  StreamDef[].delete
+  //then
 
   Counter0[] cleanUpAsm
 

@@ -48,9 +48,9 @@
     PotRlu[].delete
   then
 
-  StreamDef[].isNull not if
-    StreamDef[].delete
-  then
+  //StreamDef[].isNull not if
+  //  StreamDef[].delete
+  //then
 
   indexTreeRlu[].isNull not if
     indexTreeRlu[].delete
@@ -124,9 +124,9 @@
   PotRlu[].pipeoutDanglingPtns
   PotRlu[].delete
 
-  StreamDef[].isNull not if
-    StreamDef[].delete
-  then
+  //StreamDef[].isNull not if
+  //  StreamDef[].delete
+  //then
 
   Counter0[] cleanUpAsm
 
