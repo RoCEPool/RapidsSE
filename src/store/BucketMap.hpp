@@ -10,6 +10,8 @@ namespace STORE
   private:
     Lock m_okLock;
   
+    Location   m_oLocation;   // logical location of bucketMap
+
     tPN m_taInLglPtn[C_MAX_BUCKETS]; // which logical partition a bucket is in
   
     // must be last
