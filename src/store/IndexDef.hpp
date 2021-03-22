@@ -20,6 +20,8 @@ namespace STORE
     eIT    m_eIndexType;     // index type
     eKE    m_eKeyKind;       // key entry kind
   
+    Location   m_oLocation;   // logical location of indexDef
+
     bool   m_bIsPrimaryKey;  // is this the primary key?
     bool   m_bIsUnique;      // is this index unique?
     

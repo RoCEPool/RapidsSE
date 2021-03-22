@@ -14,6 +14,8 @@ namespace STORE
   private:
     IndexDef*  m_pIndexDef;  // definition of this index
 
+    Location   m_oLocation;   // logical location of index
+
     i8         m_iIndexNo;   //
     s32        m_sIndexNm;   //
   
