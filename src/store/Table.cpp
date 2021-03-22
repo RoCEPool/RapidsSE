@@ -51,7 +51,6 @@ Table::Table(Stz* szTableNm, eTT eKind)
   m_sTableNm   = szTableNm;
   m_eKind      = eKind;
   m_pIdxVec    = new IdxVec;
-  m_ixIndexNo.vCheckInit();
   m_pBucketMap = new BucketMap(AM::nPtnsInGrid());
 
   m_pStreamDef    = nullptr;
@@ -263,7 +262,9 @@ void Table::vAddIndex(Index* pIndex)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   // set the index no in the index
-  pIndex->vIndexNo(++m_ixIndexNo);
+  
+  i8 iIndexNo = m_pIdxVec->nItems();
+  pIndex->vIndexNo(iIndexNo);
   
   // add index to table
   m_pIdxVec->vAdd(pIndex);

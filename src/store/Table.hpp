@@ -19,7 +19,6 @@ namespace STORE
     Location   m_oLocation;   // logical location of table
 
     IdxVec*    m_pIdxVec;     // index vector
-    Atomic     m_ixIndexNo;   // next index no
     BucketMap* m_pBucketMap;  // bucket (to partition) map
     
     StreamDef*    m_pStreamDef;    // table stream def
