@@ -9,7 +9,7 @@ static Stz* S_READAPI_I = "__READAPI_I"_Stz;
 
 namespace STORE
 {
-  class Index : public Object
+  class Index : public Operand
   {
   private:
     IndexDef*  m_pIndexDef;  // definition of this index

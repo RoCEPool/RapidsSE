@@ -20,7 +20,7 @@ __aFooterFunction(BucketMap);
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 BucketMap::BucketMap(i8 nPartitions)
-: Object(CN_BUCKETMAP)
+: Operand(CN_BUCKETMAP)
 , m_okLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);

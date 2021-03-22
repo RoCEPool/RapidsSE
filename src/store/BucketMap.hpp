@@ -5,7 +5,7 @@
 
 namespace STORE
 {
-  class BucketMap : public Object
+  class BucketMap : public Operand
   {
   private:
     Lock m_okLock;

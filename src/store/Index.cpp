@@ -67,7 +67,7 @@ void Index::operator delete(void* aAddrIndex)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Index::Index(Stz* szIndexNm)
-: Object(CN_INDEX)
+: Operand(CN_INDEX)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
 
