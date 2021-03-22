@@ -87,6 +87,16 @@ namespace Parser
     // it if found. Otherwise returns nullptr.
     static PlanNode* pFindChild(Stz* szChildName, PlanNode* pNode);
 
+    // Search for a node that matches a given condition. If found then the node*
+    // is returned.
+    // The condition function is a lambda or function with the following definition:
+    //   b1 bCondition(PlanNode* pNode, void* pvArg);
+    // Returning true out of this function will return pNode and abort the search.
+    // Returning false out of this function will continue the search.
+    // If no node matching the condition is found then a nullptr is returned.
+    static PlanNode* pSearch(PlanNode* pStartNode, b1 bSearchProperties, b1 bSearchChildren,
+                             std::function<b1(PlanNode*, void*)> fCondition, void* pvArg);
+
     // Returns the parent node of a given definition node
     static PlanNode* pGetParent(DefinitionNode* pDefnNode, PlanNode* pRootNode);
 

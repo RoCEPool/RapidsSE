@@ -30,6 +30,14 @@ namespace Parser
     // terms too.
     static b1 bContainsAnAggregate(PlanNode* pNode);
 
+    // Returns true if this expression (and any subexpression elements it contains)
+    // has a ColumnRef that is not part of an aggregation. If true, this is not to
+    // say that this expression tree doesn't contain aggregations, it could, but
+    // it may also contain non-aggregated ColumnRefs too. e.g. the expression
+    // "col1 + SUM(col2)" contains both an aggregate term and a non-aggregated
+    // ColumnRef.
+    static b1 bContainsNonaggregatedColumnRefs(PlanNode* pNode);
+
     // Returns true if this expression tree only comprises literals and operators.
     // i.e., returns false if a ColumnRef or ColumnOrdinal is encountered.
     static b1 bIsLiteral(PlanNode* pNode);

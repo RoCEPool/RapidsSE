@@ -238,6 +238,14 @@ b1 AggregateOp::bIsOfType(PlanNode *pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely same as its definition         */
+/*----------------------------------------------------------------------------*/
+b1 AggregateOp::bIsExactType(PlanNode *pNode)
+{
+  return ShadowNode::bIsExactType(pNode, C_AGGREGATEOP_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
 /*  Returns the number of groupby expressions                                 */
 /*----------------------------------------------------------------------------*/
 i8 AggregateOp::nGroups(QueryNode* pNode)

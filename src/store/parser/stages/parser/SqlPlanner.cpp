@@ -407,7 +407,7 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
     m_pExprList = new QueryNodeList();
 
     // Visit the children of the HAVING clause
-    pCtx->where->accept(this);
+    pCtx->having->accept(this);
     ASSERT(m_pExprList->nItems() == 1);
 
     QueryNode* pExpr = m_pExprList->pPop();

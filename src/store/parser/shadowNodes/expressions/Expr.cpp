@@ -124,6 +124,41 @@ b1 Expr::bContainsAnAggregate(PlanNode *pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns true if this expression (and any subexpression elements it contains)*/
+/* has a ColumnRef that is not part of an aggregation. If true, this is not to */
+/* say that this expression tree doesn't contain aggregations, it could, but  */
+/* it may also contain non-aggregated ColumnRefs too. e.g. the expression     */
+/* "col1 + SUM(col2)" contains both an aggregate term and a non-aggregated    */
+/* ColumnRef.                                                                 */
+/*----------------------------------------------------------------------------*/
+b1 Expr::bContainsNonaggregatedColumnRefs(PlanNode *pNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  b1 bHasNonAggColumnRef = false;
+
+  // Walk the graph, looking at the children only and return if any of them
+  // are aggregate expressions.
+  auto fVisitor = [&bHasNonAggColumnRef](PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
+
+    if (AggregateExpr::bIsOfType(pNode)) {
+      return GraphNav::WALK_SKIP_SUBTREE;
+    }
+
+    if (ColumnRef::bIsOfType(pNode)) {
+      bHasNonAggColumnRef = true;
+      return GraphNav::WALK_ABORT;
+    }
+
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  GraphNav::bWalk(pNode, false, true, fVisitor, nullptr);
+
+  return bHasNonAggColumnRef;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns true if this expression tree only comprises literals and operators.*/
 /* i.e., returns false if a ColumnRef or ColumnOrdinal is encountered.        */
 /*----------------------------------------------------------------------------*/
