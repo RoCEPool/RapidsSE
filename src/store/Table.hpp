@@ -15,6 +15,8 @@ namespace STORE
   private:
     s32        m_sTableNm;    // table name (leave for the moment)
     eTT        m_eKind  ;     // table kind
+  
+    Location   m_oLocation;   // logical location of table
 
     IdxVec*    m_pIdxVec;     // index vector
     Atomic     m_ixIndexNo;   // next index no
