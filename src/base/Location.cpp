@@ -20,7 +20,7 @@ __aFooterFunction(Location)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Location::Location(void)
-: Object(CN_CMDLINEARGS)
+: Object(CN_LOCATION)
 {
   _precondition_(_MAGIC_,CN_LOCATION,_FOOTER_);
     
