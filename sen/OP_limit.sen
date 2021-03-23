@@ -39,12 +39,6 @@
 
   0 ZK_CRWBUFFER EG_ZK LogicUnit[].diaryNote
 
-  //op.pipelineJob@ job.hasError if
-  //  Pipein[].delete
-  //  true
-  //  exit
-  //then
-
   Operand[].pipeIn
   Operand[].asSrcCrwBuffer
   ZK_CRWBUFFER Counter0[] executeAsmArgs
@@ -60,12 +54,6 @@
 : limit_RowBuffer \handler
 
   0 ZK_ROWBUFFER EG_ZK LogicUnit[].diaryNote
-
-  //op.pipelineJob@ job.hasError if
-  //  Pipein[].delete
-  //  true
-  //  exit
-  //then
 
   Operand[].pipeIn
   Operand[].asSrcRowBuffer
@@ -89,11 +77,6 @@
   PotRlu[].pipeoutDanglingPtns
   PotRlu[].delete
 
-  // delete the src streamDef linked asSrcStreamDef
-  //StreamDef[].isNull not if
-  //  StreamDef[].delete
-  //then
-
   Counter0[] cleanUpAsm
 
   ZK_EOSMARKER EG_ZK PD_PIPE_OUT 0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryAction
@@ -115,7 +98,9 @@
   StreamDef[].duplicate to StreamDefOut[]
   StreamDefOut[] <rows> >int LogicUnit[].genLimit
 
-  StreamDef[].asSrcStreamDef
+  // set the streamDef in the devSrcRow
+  StreamDef[]\clear DevSrcRow.streamDef!
+
   false PotRlu[].useStreamDefOut
 
   StreamDefOut[].pipeout

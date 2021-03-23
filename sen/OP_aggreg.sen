@@ -48,10 +48,6 @@
     PotRlu[].delete
   then
 
-  //StreamDef[].isNull not if
-  //  StreamDef[].delete
-  //then
-
   indexTreeRlu[].isNull not if
     indexTreeRlu[].delete
   then
@@ -69,12 +65,6 @@
 
   0 ZK_CRWBUFFER EG_ZK LogicUnit[].diaryNote
 
-  //op.pipelineJob@ job.hasError if
-  //  Pipein[].delete
-  //  true
-  //  exit
-  //then
-
   Operand[].pipeIn
   Operand[].asSrcCrwBuffer
   ZK_CRWBUFFER Counter0[] executeAsmArgs
@@ -90,12 +80,6 @@
 : aggreg_RowBuffer \handler
 
   0 ZK_ROWBUFFER EG_ZK LogicUnit[].diaryNote
-
-  //op.pipelineJob@ job.hasError if
-  //  Pipein[].delete
-  //  true
-  //  exit
-  //then
 
   Operand[].pipeIn
   Operand[].asSrcRowBuffer
@@ -115,18 +99,12 @@
 
   0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryNote
 
-  // execute the eosMarker asm handler if job has no error
-  //op.pipelineJob@ job.hasError not if
-    ZK_EOSMARKER Counter0[] executeAsmArgs
-  //then
+  // execute the eosMarker asm handler
+  ZK_EOSMARKER Counter0[] executeAsmArgs
 
   // pipe out all PotRlu[]
   PotRlu[].pipeoutDanglingPtns
   PotRlu[].delete
-
-  //StreamDef[].isNull not if
-  //  StreamDef[].delete
-  //then
 
   Counter0[] cleanUpAsm
 
@@ -182,7 +160,9 @@
   StreamDefOut[] ExprEval[] LogicUnit[].genAggregate
   ExprEval[].delete
 
-  StreamDef[].asSrcStreamDef
+  // set the streamDef in the devSrcRow
+  StreamDef[]\clear DevSrcRow.streamDef!
+
   false PotRlu[].useStreamDefOut
 
   StreamDefOut[].pipeout

@@ -153,7 +153,7 @@
   StreamDefOut[] ExprEval[] LogicUnit[].genProjection
   ExprEval[].delete
 
-  // set the streamDef as the src devrow streamDef
+  // set the streamDef in the devSrcRow
   StreamDef[]\clear DevSrcRow.streamDef!
 
   false PotRlu[].useStreamDefOut
