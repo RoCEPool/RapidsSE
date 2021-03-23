@@ -691,8 +691,9 @@ void Constants::vAddConstantsCpp(void)
   
   // ZK_ : operand kind
   /*  0 */ vAddConstant("ZK_NONE"_Stz,            ZK_NONE);
+  /*  0 */ vAddConstant("ZK_BUCKETMAP"_Stz,       ZK_BUCKETMAP);
   /*  0 */ vAddConstant("ZK_CALLPIPELINE"_Stz,    ZK_CALLPIPELINE);
-  /*  0 */ vAddConstant("ZK_COMMANDERRORS"_Stz,    ZK_COMMANDERRORS);
+  /*  0 */ vAddConstant("ZK_COMMANDERRORS"_Stz,   ZK_COMMANDERRORS);
   /*  0 */ vAddConstant("ZK_CANCELMARKER"_Stz,    ZK_CANCELMARKER);
   /*  0 */ vAddConstant("ZK_CANCELLEDMARKER"_Stz, ZK_CANCELLEDMARKER);
   /*  0 */ vAddConstant("ZK_COUNTINFO"_Stz,       ZK_COUNTINFO);
@@ -707,6 +708,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_EXECERRORS"_Stz,      ZK_EXECERRORS);
   /*  0 */ vAddConstant("ZK_EXITMARKER"_Stz,      ZK_EXITMARKER);
   /*  0 */ vAddConstant("ZK_EXITEDMARKER"_Stz,    ZK_EXITEDMARKER);
+  /*  0 */ vAddConstant("ZK_INDEX"_Stz,           ZK_INDEX);
   /*  0 */ vAddConstant("ZK_INDEXDEF"_Stz,        ZK_INDEXDEF);
   /*  0 */ vAddConstant("ZK_LOADRESULT"_Stz,      ZK_LOADRESULT);
   /*  0 */ vAddConstant("ZK_LOCKSTATS"_Stz,       ZK_LOCKSTATS);
@@ -726,6 +728,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_STARTEDMARKER"_Stz,   ZK_STARTEDMARKER);
   /*  0 */ vAddConstant("ZK_STREAMDEF"_Stz,       ZK_STREAMDEF);
   /*  0 */ vAddConstant("ZK_STREAMSET"_Stz,       ZK_STREAMSET);
+  /*  0 */ vAddConstant("ZK_TABLE"_Stz,           ZK_TABLE);
   /*  0 */ vAddConstant("ZK_TOTALUNITS"_Stz,      ZK_TOTALUNITS);
   /*  0 */ vAddConstant("ZK_ENUMS"_Stz,           ZK_ENUMS);
 
