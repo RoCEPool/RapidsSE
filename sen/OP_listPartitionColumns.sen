@@ -30,19 +30,21 @@
   streamSetTable[] StreamSet[].new
 
   // get the ptn stream def from the table
-  Table[].shardDef@ to StreamDef[]
-  StreamDef[].columnCount@ to nPtnCols
+  Table[].shardDef@ to ShardDef[]
+  ShardDef[].columnCount@ to nPtnCols
 
   // insert a row in the infoset for each column
   nPtnCols 0 do
-    I StreamDef[].column@
+    I ShardDef[].column@
     streamSetTable[] StreamSet[].addColumnDef  not if
       StreamSet[].pipeOut
       streamSetTable[] streamSet[].new
-      I StreamDef[].column@
+      I ShardDef[].column@
       streamSetTable[] StreamSet[].addColumnDef assert
     then
   loop
+  
+  nullptr to ShardDef[]
 
   // pipeout the infoset
   StreamSet[].pipeOut
