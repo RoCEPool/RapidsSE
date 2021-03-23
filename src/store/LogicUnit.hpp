@@ -26,6 +26,7 @@
 #include "LogicCompiler.hpp"
 #include "ExprEval.hpp"
 #include "Range.hpp"
+#include "ShardDef.hpp"
 
 #include "InflateSet.h"
 #include "InfoSet.hpp"
@@ -139,6 +140,7 @@ namespace STORE
     REG<Object>         m_xpRegister3; // general purpose reg 3[]
     REG<Row>            m_xpRow;
     REG<RowOnce>        m_xpRowOnce;
+    REG<ShardDef>       m_xpShardDef;
     REG<StreamDef>      m_xpStreamDef;     // maybe rename this to stream def in ?
     REG<StreamDef>      m_xpStreamDefOut;
     REG<Operand>        m_xpStreamSet;

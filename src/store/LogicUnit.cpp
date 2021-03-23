@@ -2593,7 +2593,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_REG_PTNSTREAM_READ(pLU);
         break;//+endCase
 
-      case EO_REG_STREAMDEF_STREAMDEFOUT: ArgNil(); // new a streamDefOut[] from streamDef[]
+      case EO_REG_STREAMDEF_STREAMDEFOUT: ArgNil(); // new a streamDefOut[] from StreamDef[]
         dLU0(EO_REG_STREAMDEF_STREAMDEFOUT);
         vDev_REG_STREAMDEF_STREAMDEFOUT(pLU);
         break;//+endCase

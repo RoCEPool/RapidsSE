@@ -118,7 +118,7 @@
 
   EC_NONE locals| eError |
 
-  // move pipein[] to streamDef[]
+  // move pipein[] to StreamDef[]
   Pipein[]\clear to StreamDef[]
 
   // evalute the expression

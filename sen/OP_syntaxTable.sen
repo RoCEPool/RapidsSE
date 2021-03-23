@@ -14,9 +14,9 @@
   //job[] job.tagSet@ tagSet.asStr .
 
   <etc> <tableNm> "create table %v %v ;" str.format // dup .
-  job[] streamDef::parse to streamDef[]
+  job[] streamDef::parse to StreamDef[]
 
-  streamDef[].isNull if
+  StreamDef[].isNull if
     job[] job.error@ to errorCode
     errorCode op__execErr
     Pipein[].delete

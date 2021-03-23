@@ -209,7 +209,7 @@ void Step::vTableColumnCountFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table.deleteIndex -- remove an index from the table                   */
+/* table.deleteIndex -- remove an index from the table                        */
 /*----------------------------------------------------------------------------*/
 void Step::vTableDeleteIndex(void)
 {
@@ -261,7 +261,7 @@ void Step::vTableStreamDefFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Table[].tablePtn@ -- fetch the table partition                              */
+/* Table[].tablePtn@ -- fetch the table partition                             */
 /*----------------------------------------------------------------------------*/
 void Step::vTableTablePtnFetch(void)
 {
@@ -414,7 +414,7 @@ void Step::vTableIsInternallyDefined(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table.isUserCreated -- is the table a user created table?                   */
+/* table.isUserCreated -- is the table a user created table?                  */
 /*----------------------------------------------------------------------------*/
 void Step::vTableIsUserCreated(void)
 {
@@ -522,7 +522,7 @@ void Step::vTableNew(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Table[].shardDef@ -- get the table ptn stream def                      */
+/* Table[].shardDef@ -- get the table ptn stream def                          */
 /*----------------------------------------------------------------------------*/
 void Step::vTableShardDefFetch(void)
 {
