@@ -10,3 +10,4 @@ rangeCombo.test
 
 // SQL compiler tests
 syntax.test
+//semantics_aggregates.test  // commented until we can break out of the pipeline early and short circuit the EE
