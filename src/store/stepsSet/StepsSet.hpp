@@ -1415,6 +1415,15 @@ void vExprEvalEvaluate(void);
   void vSessionTxFetch(void);
   void vSessionTxStore(void);
 
+  // shard def
+  void vShardDefColumnFetch(void);
+  void vShardDefColumnCountFetch(void);
+  void vShardDefGet(void);
+  void vShardDefGetAndClear(void);
+  void vShardDefIsNull(void);
+  void vShardDefPrint(void);
+  void vShardDefSet(void);
+
   // shell
   void vShellExecute(void);
 
