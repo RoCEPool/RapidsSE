@@ -135,6 +135,14 @@ b1 LimitOp::bIsOfType(PlanNode *pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely the same as its definition     */
+/*----------------------------------------------------------------------------*/
+b1 LimitOp::bIsExactType(PlanNode *pNode)
+{
+  return ShadowNode::bIsExactType(pNode, C_LIMIT_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns the limit value of the limitOp                                     */
 /*----------------------------------------------------------------------------*/
 i8 LimitOp::iLimit(QueryNode* pNode)

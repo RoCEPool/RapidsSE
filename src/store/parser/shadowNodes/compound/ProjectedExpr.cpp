@@ -126,6 +126,14 @@ b1 ProjectedExpr::bIsOfType(PlanNode *pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely the same as its definition     */
+/*----------------------------------------------------------------------------*/
+b1 ProjectedExpr::bIsExactType(PlanNode *pNode)
+{
+  return ShadowNode::bIsExactType(pNode, C_PROJECTEDEXPR_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns true if the expression in this node contains an aggregate expression*/
 /*----------------------------------------------------------------------------*/
 b1 ProjectedExpr::bContainsAnAggregate(QueryNode* pNode)

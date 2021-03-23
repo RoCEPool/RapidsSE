@@ -89,6 +89,13 @@ b1 TableDefs::bIsOfType(PlanNode *pNode)
   return ShadowNode::bIsOfType(pNode, C_TABLEDEFS_DEFN);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely the same as its definition     */
+/*----------------------------------------------------------------------------*/
+b1 TableDefs::bIsExactType(PlanNode *pNode)
+{
+  return ShadowNode::bIsExactType(pNode, C_TABLEDEFS_DEFN);
+}
 
 /*----------------------------------------------------------------------------*/
 /* get the number of tables in this list                                     */

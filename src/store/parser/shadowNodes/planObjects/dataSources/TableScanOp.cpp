@@ -121,6 +121,13 @@ b1 TableScanOp::bIsOfType(PlanNode *pNode)
   return ShadowNode::bIsOfType(pNode, C_TABLESCAN_DEFN);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely the same as its definition     */
+/*----------------------------------------------------------------------------*/
+b1 TableScanOp::bIsExactType(PlanNode *pNode)
+{
+  return ShadowNode::bIsExactType(pNode, C_TABLESCAN_DEFN);
+}
 
 /*----------------------------------------------------------------------------*/
 /* Returns the tableRef of the queryNode                                      */

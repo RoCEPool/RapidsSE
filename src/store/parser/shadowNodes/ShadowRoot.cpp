@@ -66,6 +66,14 @@ b1 ShadowRoot::bIsOfType(PlanNode *pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely the same as its definition     */
+/*----------------------------------------------------------------------------*/
+b1 ShadowRoot::bIsExactType(PlanNode *pNode)
+{
+  return ShadowNode::bIsExactType(pNode, const_cast<Stz*>(C_ROOT_DEFN_PATH));
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns the node representing the metadata node in the plan graph          */
 /*----------------------------------------------------------------------------*/
 QueryNode* ShadowRoot::pMetadataNode(PlanNode* pNode)

@@ -78,6 +78,13 @@ b1 DataSource::bIsOfType(PlanNode *pNode)
   return ShadowNode::bIsOfType(pNode, C_DATASOURCE_DEFN);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely the same as its definition     */
+/*----------------------------------------------------------------------------*/
+b1 DataSource::bIsExactType(PlanNode *pNode)
+{
+  return ShadowNode::bIsExactType(pNode, C_DATASOURCE_DEFN);
+}
 
 /*----------------------------------------------------------------------------*/
 /* Retrieves the catalogname of the data source, if applicable, otherwise null*/

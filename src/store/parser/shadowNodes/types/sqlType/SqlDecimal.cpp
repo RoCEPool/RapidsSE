@@ -98,6 +98,13 @@ b1 SqlDecimal::bIsOfType(PlanNode *pNode)
   return ShadowNode::bIsOfType(pNode, C_SQLDECIMAL_DEFN);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely the same as its definition     */
+/*----------------------------------------------------------------------------*/
+b1 SqlDecimal::bIsExactType(PlanNode *pNode)
+{
+  return ShadowNode::bIsExactType(pNode, C_SQLDECIMAL_DEFN);
+}
 
 
 /*============================================================================*/

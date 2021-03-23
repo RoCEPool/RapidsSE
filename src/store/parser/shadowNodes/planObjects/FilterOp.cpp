@@ -122,6 +122,14 @@ b1 FilterOp::bIsOfType(PlanNode *pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely the same as its definition     */
+/*----------------------------------------------------------------------------*/
+b1 FilterOp::bIsExactType(PlanNode *pNode)
+{
+  return ShadowNode::bIsExactType(pNode, C_FILTEROP_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns the filterExpr node of the filterOp                                */
 /*----------------------------------------------------------------------------*/
 QueryNode* FilterOp::pFilterExpr(QueryNode* pNode)

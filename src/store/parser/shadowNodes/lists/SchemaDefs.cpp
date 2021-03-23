@@ -89,6 +89,13 @@ b1 SchemaDefs::bIsOfType(PlanNode *pNode)
   return ShadowNode::bIsOfType(pNode, C_SCHEMADEFS_DEFN);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely the same as its definition     */
+/*----------------------------------------------------------------------------*/
+b1 SchemaDefs::bIsExactType(PlanNode *pNode)
+{
+  return ShadowNode::bIsExactType(pNode, C_SCHEMADEFS_DEFN);
+}
 
 /*----------------------------------------------------------------------------*/
 /* get the number of schemas in this list                                     */

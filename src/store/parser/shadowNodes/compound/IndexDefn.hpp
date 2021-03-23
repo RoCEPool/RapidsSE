@@ -26,6 +26,9 @@ namespace Parser
     // Returns true if a given node is a given type ** or is derived from that type **
     static b1 bIsOfType(PlanNode* pNode);
 
+    // Returns true if a given node is this exact given type.
+    static b1 bIsExactType(PlanNode* pNode);
+
     static Stz*           szIndexName(QueryNode* pNode);
     static i8             iNumColumns(QueryNode* pNode);
     static PlanNodeIter*  pColumnIter(QueryNode* pNode);

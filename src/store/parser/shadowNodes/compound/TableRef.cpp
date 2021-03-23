@@ -105,6 +105,14 @@ b1 TableRef::bIsOfType(PlanNode *pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely the same as its definition     */
+/*----------------------------------------------------------------------------*/
+b1 TableRef::bIsExactType(PlanNode *pNode)
+{
+  return ShadowNode::bIsExactType(pNode, C_TABLEREF_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get catalog name from tableRef                                             */
 /*----------------------------------------------------------------------------*/
 Stz* TableRef::szCatalog(QueryNode* pTableRef)

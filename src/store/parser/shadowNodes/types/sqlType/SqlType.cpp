@@ -118,6 +118,14 @@ b1 SqlType::bIsOfType(PlanNode *pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely the same as its definition     */
+/*----------------------------------------------------------------------------*/
+b1 SqlType::bIsExactType(PlanNode *pNode)
+{
+  return ShadowNode::bIsExactType(pNode, C_SQLTYPE_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns the name of a SQL data type given a node                           */
 /*----------------------------------------------------------------------------*/
 Stz* SqlType::szTypeName(PlanNode *pNode)

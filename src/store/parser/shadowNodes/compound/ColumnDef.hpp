@@ -29,6 +29,9 @@ namespace Parser
     // Returns true if a given node is a given type ** or is derived from that type **
     static b1 bIsOfType(PlanNode* pNode);
 
+    // Returns true if a given node is this exact given type.
+    static b1 bIsExactType(PlanNode* pNode);
+
     static Stz* szCatalogName(QueryNode* pNode);
     static Stz* szSchemaName(QueryNode* pNode);
     static Stz* szTableName(QueryNode* pNode);
