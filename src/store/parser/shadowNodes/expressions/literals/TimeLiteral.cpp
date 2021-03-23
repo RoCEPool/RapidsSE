@@ -83,6 +83,14 @@ b1 TimeLiteral::bIsOfType(PlanNode *pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely the same as its definition     */
+/*----------------------------------------------------------------------------*/
+b1 TimeLiteral::bIsExactType(PlanNode *pNode)
+{
+  return ShadowNode::bIsExactType(pNode, C_TIME_LITERAL_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation                     */
 /*----------------------------------------------------------------------------*/
 eCT TimeLiteral::eType(QueryNode* pExprNode, PlanNode* pRootNode)

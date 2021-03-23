@@ -26,6 +26,9 @@ namespace Parser
     // Returns true if a given node is a given type ** or is derived from that type **
     static b1 bIsOfType(PlanNode* pNode);
 
+    // Returns true if a given node is this exact given type.
+    static b1 bIsExactType(PlanNode* pNode);
+
     // Returns true if the expression in this node is an aggregate expression.
     static b1 bContainsAnAggregate(QueryNode* pNode);
 

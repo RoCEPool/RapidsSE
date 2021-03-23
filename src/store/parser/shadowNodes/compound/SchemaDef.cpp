@@ -107,6 +107,14 @@ b1 SchemaDef::bIsOfType(PlanNode *pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely the same as its definition     */
+/*----------------------------------------------------------------------------*/
+b1 SchemaDef::bIsExactType(PlanNode *pNode)
+{
+  return ShadowNode::bIsExactType(pNode, C_SCHEMADEF_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the catalog name from schemaDef                                        */
 /*----------------------------------------------------------------------------*/
 Stz* SchemaDef::szCatalogName(QueryNode* pNode)

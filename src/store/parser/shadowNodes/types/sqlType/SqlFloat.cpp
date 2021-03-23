@@ -57,7 +57,13 @@ b1 SqlFloat::bIsOfType(PlanNode *pNode)
   return ShadowNode::bIsOfType(pNode, C_SQLFLOAT_DEFN);
 }
 
-
+/*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely the same as its definition     */
+/*----------------------------------------------------------------------------*/
+b1 SqlFloat::bIsExactType(PlanNode *pNode)
+{
+  return ShadowNode::bIsExactType(pNode, C_SQLFLOAT_DEFN);
+}
 
 /*============================================================================*/
 /* end                                                                        */

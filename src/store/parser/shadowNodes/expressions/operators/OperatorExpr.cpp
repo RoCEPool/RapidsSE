@@ -52,6 +52,14 @@ b1 OperatorExpr::bIsOfType(PlanNode *pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely the same as its definition     */
+/*----------------------------------------------------------------------------*/
+b1 OperatorExpr::bIsExactType(PlanNode *pNode)
+{
+  return ShadowNode::bIsExactType(pNode, C_OPERATOR_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation                     */
 /*----------------------------------------------------------------------------*/
 eCT OperatorExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)

@@ -84,6 +84,13 @@ b1 PlanObject::bIsOfType(PlanNode *pNode)
   return ShadowNode::bIsOfType(pNode, C_PLANOBJECT_DEFN);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely the same as its definition     */
+/*----------------------------------------------------------------------------*/
+b1 PlanObject::bIsExactType(PlanNode *pNode)
+{
+  return ShadowNode::bIsExactType(pNode, C_PLANOBJECT_DEFN);
+}
 
 /*----------------------------------------------------------------------------*/
 /* Return a list of ProjectedExprs that represent the column expressions      */
