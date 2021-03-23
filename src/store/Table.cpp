@@ -52,11 +52,11 @@ Table::Table(Stz* szTableNm, eTT eKind)
   m_eKind    = eKind;
   
   //m_oLocation
-  m_pStreamDef    = nullptr;
-  m_pPtnStreamDef = new StreamDef;
-  m_pBucketMap    = new BucketMap(AM::nPtnsInGrid());
-  m_pIdxVec       = new IdxVec;
-  m_pTablePtnVec  = new TablePtnVec;
+  m_pStreamDef   = nullptr;
+  m_pShardDef    = new StreamDef;
+  m_pBucketMap   = new BucketMap(AM::nPtnsInGrid());
+  m_pIdxVec      = new IdxVec;
+  m_pTablePtnVec = new TablePtnVec;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the table partitions
@@ -107,7 +107,7 @@ Table::~Table(void) noexcept(false)
   delete m_pBucketMap;
 
   delete m_pStreamDef;
-  delete m_pPtnStreamDef;
+  delete m_pShardDef;
   
   // delete the TablePtn's
   for (i8 i_TablePtn = 0; i_TablePtn < AM::nPtnsPerTable(); i_TablePtn++) {
@@ -333,7 +333,7 @@ void Table::vCreatePtnDef(void)
   
   Column* pColumn = nullptr;
 
-  m_pPtnStreamDef->m_nColumns = 0;
+  m_pShardDef->m_nColumns = 0;
   
   // find the column from the table columnVector
   i8 iColumns = pStreamDef()->nColumns();
@@ -341,8 +341,8 @@ void Table::vCreatePtnDef(void)
   for (i8 i_Col = 0; i_Col < iColumns; i_Col++) {
     pColumn = pStreamDef()->pGetColumn(i_Col);
     if (pColumn->bIsPtnKey()) {
-      m_pPtnStreamDef->m_xaColumn[m_pPtnStreamDef->m_nColumns].vCopy(pColumn);
-      m_pPtnStreamDef->m_nColumns++;
+      m_pShardDef->m_xaColumn[m_pShardDef->m_nColumns].vCopy(pColumn);
+      m_pShardDef->m_nColumns++;
     }
   }
 }
@@ -628,7 +628,7 @@ StreamDef*  Table::pShardDef(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  return m_pPtnStreamDef;
+  return m_pShardDef;
 }
 
 /*----------------------------------------------------------------------------*/

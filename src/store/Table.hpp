@@ -16,11 +16,11 @@ namespace STORE
     s32 m_sTableNm; // table name (leave for the moment)
     eTT m_eKind;    // table kind
   
-    Location   m_oLocation;     // logical location of table
-    StreamDef* m_pStreamDef;    // table stream def
-    StreamDef* m_pPtnStreamDef; // partition/sharding key def
-    BucketMap* m_pBucketMap;    // bucket (to partition) map
-    IdxVec*    m_pIdxVec;       // index vector
+    Location   m_oLocation;   // logical location of table
+    StreamDef* m_pStreamDef;  // table stream def
+    StreamDef* m_pShardDef;   // partition/sharding key def
+    BucketMap* m_pBucketMap;  // bucket (to partition) map
+    IdxVec*    m_pIdxVec;     // index vector
     
     TablePtnVec*  m_pTablePtnVec; // table partition vector
         
