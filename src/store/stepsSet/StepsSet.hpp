@@ -195,6 +195,9 @@ public:
   void vDebugFlagFetch(void);
   void vDebugFlagStore(void);
 
+  // devSrcRow
+  void vDevSrcRowStreamDefStore(void);
+
   // dic
   void vDicDelete(void);
   void vDicFirstWord(void);
@@ -1485,6 +1488,7 @@ void vExprEvalEvaluate(void);
   void vStreamDefDelete(void);
   void vStreamDefDuplicate(void);
   void vStreamDefGet(void);
+  void vStreamDefGetAndClear(void);
   void vStreamDefIsNull(void);
   void vStreamDefName(void);
   void vStreamDefNew(void);

@@ -28,6 +28,7 @@
 void Step::vAddSteps_StreamDef(void)
 {
   vAddStep("StreamDef[]"_Stz,                 &Step::vStreamDefGet);
+  vAddStep("StreamDef[]\\clear"_Stz,          &Step::vStreamDefGetAndClear);
   vAddStep("StreamDef[].asSrcStreamDef"_Stz,  &Step::vStreamDefAsSrcStreamDef);
   vAddStep("StreamDef[].asStr"_Stz,           &Step::vStreamDefAsStr);
   vAddStep("StreamDef[].columnCount@"_Stz,    &Step::vStreamDefColumnCountFetch);
@@ -152,6 +153,20 @@ void Step::vStreamDefGet(void)
   
   m_pDataStack->vPushPtr(*( m_pJob->pLogicUnit_job() )->m_xpStreamDef);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamDef[].getAndClear -- get streamDef and set to nullptr                */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamDefGetAndClear(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushPtr(*( m_pJob->pLogicUnit_job() )->m_xpStreamDef);
+
+  ( m_pJob->pLogicUnit_job() )->m_xpStreamDef = nullptr;
+
   EXIT();
 }
 

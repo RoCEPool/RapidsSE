@@ -64,6 +64,7 @@ void Step::vAddSteps(void)
   
   Step::vAddSteps_DdlLock();
   Step::vAddSteps_Debug();
+  Step::vAddSteps_DevSrcRow();
   Step::vAddSteps_Dic();
   Step::vAddSteps_DicLock();
   Step::vAddSteps_Dir();

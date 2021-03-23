@@ -21,10 +21,6 @@
     PotRlu[].delete
   then
 
-  //StreamDef[].isNull not if
-  //  StreamDef[].delete
-  //then
-
   Counter0[] cleanUpAsm
 
   ZK_CANCELMARKER EG_ZK PD_PIPE_OUT 0 ZK_CANCELMARKER EG_ZK LogicUnit[].diaryAction
@@ -57,11 +53,6 @@
   // pipe out all PotRlu[]
   PotRlu[].pipeoutDanglingPtns
   PotRlu[].delete
-
-  // delete the src streamDef linked asSrcStreamDef
-  //StreamDef[].isNull not if
-  //  StreamDef[].delete
-  //then
 
   Counter0[] cleanUpAsm
 
@@ -162,7 +153,9 @@
   StreamDefOut[] ExprEval[] LogicUnit[].genProjection
   ExprEval[].delete
 
-  StreamDef[].asSrcStreamDef
+  // set the streamDef as the src devrow streamDef
+  StreamDef[]\clear DevSrcRow.streamDef!
+
   false PotRlu[].useStreamDefOut
 
   StreamDefOut[].pipeout
