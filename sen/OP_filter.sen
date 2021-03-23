@@ -23,11 +23,8 @@
 
   0 ZK_CANCELMARKER EG_ZK LogicUnit[].diaryNote
 
-  // delete the pot
-  PotRlu[].isNull not if
-    PotRlu[].pipeoutDanglingPtns
-    PotRlu[].delete
-  then
+  // cleanup the pot
+  PotRlu[].cleanup
 
   Counter0[] cleanUpAsm
 
