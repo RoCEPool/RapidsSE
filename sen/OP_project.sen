@@ -50,14 +50,32 @@
 
   0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryNote
 
-  // pipe out all PotRlu[]
+  // execute the eosMarker asm handler
+  ZK_EOSMARKER Counter0[] executeAsmArgs
+
+  // pipeout all PotRlu[]
   PotRlu[].pipeoutDanglingPtns
   PotRlu[].delete
 
+  // cleanup compiler
   Counter0[] cleanUpAsm
 
   ZK_EOSMARKER EG_ZK PD_PIPE_OUT 0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryAction
   ZK_EOSMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_ERRORMARKER ...                                             */
+/*----------------------------------------------------------------------------*/
+: project_ERRORMARKER \handler
+
+  find: EATOPERAND_handler   ZK_CRWBUFFER   op[].handler!
+  find: EATOPERAND_handler   ZK_ROWBUFFER   op[].handler!
+  find: EATOPERAND_handler   ZK_EOSMARKER   op[].handler!
+
+  PipeIn[].pipeout
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -95,20 +113,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_ERRORMARKER ...                                             */
-/*----------------------------------------------------------------------------*/
-: project_ERRORMARKER \handler
-
-  find: EATOPERAND_handler   ZK_CRWBUFFER   op[].handler!
-  find: EATOPERAND_handler   ZK_ROWBUFFER   op[].handler!
-  find: EATOPERAND_handler   ZK_EOSMARKER   op[].handler!
-
-  PipeIn[].pipeout
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* on ZK_STREAMDEF ...                                              STREAMDEF */
 /*----------------------------------------------------------------------------*/
 : project_StreamDef \handler
@@ -117,9 +121,10 @@
 
   EC_NONE locals| eError |
 
-  Pipein[] to StreamDef[]
-  nullptr to Pipein[]
+  // move pipein[] to streamDef[]
+  Pipein[]\clear to StreamDef[]
 
+  // evalute the expression
   ExprEval[].new
   StreamDefOut[].new
   <etc> StreamDef[] StreamDefOut[] ExprEval[].project to eError
@@ -131,6 +136,7 @@
     exit
   then
 
+  // generate the asm for projection
   StreamDefOut[] ExprEval[] LogicUnit[].genProjection
   ExprEval[].delete
 
@@ -140,14 +146,17 @@
   // create rowPix in potRlu[] from streamDefOut[]
   false streamDefOut[] PotRlu[].rowPix!
 
-  //false PotRlu[].useStreamDefOut
-
+  // pipeout the streamDefOut
   StreamDefOut[].pipeout
 
+  // create the compiler
   Counter0[] if
     LogicCompiler[].new
     LogicCompiler[].compile
   then
+
+  // execute the streamDef asm handler
+  ZK_STREAMDEF Counter0[] executeAsmArgs
 
   true
 ;

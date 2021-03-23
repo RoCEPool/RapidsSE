@@ -9,22 +9,6 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_STARTMARKER ...                                                 INIT */
-/*----------------------------------------------------------------------------*/
-: aggreg_StartMarker \handler
-
-  0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryNote
-
-  // new the PotRlu[]
-  PotRlu[].new
-
-  // init the logicUnit[]
-  LogicUnit[].init
-
-  ZK_STARTMARKER_handler
-;
-
-/*----------------------------------------------------------------------------*/
 /* on ZK_CANCELMARKER ...                                                 END */
 /*----------------------------------------------------------------------------*/
 : aggreg_CancelMarker \handler
@@ -64,24 +48,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_ROWBUFFER ...                                                   EACH */
-/*----------------------------------------------------------------------------*/
-: aggreg_RowBuffer \handler
-
-  0 ZK_ROWBUFFER EG_ZK LogicUnit[].diaryNote
-
-  Operand[].pipeIn
-  Operand[].asSrcRowBuffer
-  ZK_ROWBUFFER Counter0[] executeAsmArgs
-
-  Operand[].delete
-
-  PotRlu[].pipeoutCompletedPtns
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* on ZK_EOSMARKER ...                                                    END */
 /*----------------------------------------------------------------------------*/
 : aggreg_EosMarker \handler
@@ -95,6 +61,7 @@
   PotRlu[].pipeoutDanglingPtns
   PotRlu[].delete
 
+  // cleanup compiler
   Counter0[] cleanUpAsm
 
   ZK_EOSMARKER EG_ZK PD_PIPE_OUT 0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryAction
@@ -117,6 +84,40 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_ROWBUFFER ...                                                   EACH */
+/*----------------------------------------------------------------------------*/
+: aggreg_RowBuffer \handler
+
+  0 ZK_ROWBUFFER EG_ZK LogicUnit[].diaryNote
+
+  Operand[].pipeIn
+  Operand[].asSrcRowBuffer
+  ZK_ROWBUFFER Counter0[] executeAsmArgs
+
+  Operand[].delete
+
+  PotRlu[].pipeoutCompletedPtns
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_STARTMARKER ...                                                 INIT */
+/*----------------------------------------------------------------------------*/
+: aggreg_StartMarker \handler
+
+  0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryNote
+
+  // new the PotRlu[]
+  PotRlu[].new
+
+  // init the logicUnit[]
+  LogicUnit[].init
+
+  ZK_STARTMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_STREAMDEF ...                                              STREAMDEF */
 /*----------------------------------------------------------------------------*/
 : aggreg_StreamDef \handler
@@ -125,9 +126,10 @@
 
   EC_NONE locals| eError |
 
-  Pipein[] to StreamDef[]
-  nullptr to Pipein[]
+  // move pipein[] to streamDef[]
+  Pipein[]\clear to StreamDef[]
 
+  // evalute the expression
   ExprEval[].new
   StreamDefOut[].new
   <etc> StreamDef[] StreamDefOut[] ExprEval[].aggregate to eError
@@ -139,6 +141,7 @@
     exit
   then
 
+  // generate the asm for projection
   StreamDefOut[] ExprEval[] LogicUnit[].genAggregate
   ExprEval[].delete
 
@@ -148,8 +151,10 @@
   // create rowPix in potRlu[] from streamDefOut[]
   false streamDefOut[] PotRlu[].rowPix!
 
+  // pipeout the streamDefOut
   StreamDefOut[].pipeout
 
+  // create the compiler
   Counter0[] if
     LogicCompiler[].new
     LogicCompiler[].compile
