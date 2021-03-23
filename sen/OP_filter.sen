@@ -17,17 +17,6 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_Xyz ...                                                     */
-/*----------------------------------------------------------------------------*/
-: filter_Xyz \handler
-
-  // delete all operands
-  PipeIn[].delete
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* on ZK_STARTMARKER ...                                                 INIT */
 /*----------------------------------------------------------------------------*/
 : filter_StartMarker \handler
@@ -118,9 +107,9 @@
 /*----------------------------------------------------------------------------*/
 : filter_ERRORMARKER \handler
 
-  find: filter_Xyz             ZK_CRWBUFFER   op[].handler!
-  find: filter_Xyz             ZK_ROWBUFFER   op[].handler!
-  find: filter_Xyz             ZK_EOSMARKER   op[].handler!
+  find: EATOPERAND_handler   ZK_CRWBUFFER   op[].handler!
+  find: EATOPERAND_handler   ZK_ROWBUFFER   op[].handler!
+  find: EATOPERAND_handler   ZK_EOSMARKER   op[].handler!
 
   PipeIn[].pipeout
 
@@ -139,6 +128,7 @@
   Pipein[] to StreamDef[]
   nullptr to Pipein[]
 
+  // evaluate the expression
   ExprEval[].new
   StreamDef[].duplicate to StreamDefOut[]
   <etc> StreamDef[] nullptr ExprEval[].filter to eError
@@ -150,17 +140,17 @@
     exit
   then
 
+  // generate the filter asm
   StreamDefOut[] ExprEval[] LogicUnit[].genFilter
   ExprEval[].delete
 
   // set the streamDef in the devSrcRow
   StreamDef[]\clear DevSrcRow.streamDef!
 
-  //false PotRlu[].useStreamDefOut
-
   // create rowPix in potRlu[] from streamDefOut[]
   false streamDefOut[] PotRlu[].rowPix!
 
+  // pipeout the streamDefOut
   StreamDefOut[].pipeout
 
   Counter0[] if

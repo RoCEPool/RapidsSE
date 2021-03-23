@@ -9,17 +9,6 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_Xyz ...                                                     */
-/*----------------------------------------------------------------------------*/
-: aggreg_Xyz \handler
-
-  // delete all operands
-  PipeIn[].delete
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* on ZK_STARTMARKER ...                                                 INIT */
 /*----------------------------------------------------------------------------*/
 : aggreg_StartMarker \handler
@@ -117,9 +106,10 @@
 /*----------------------------------------------------------------------------*/
 : aggreg_ERRORMARKER \handler
 
-  find: aggreg_Xyz             ZK_CRWBUFFER   op[].handler!
-  find: aggreg_Xyz             ZK_ROWBUFFER   op[].handler!
-  find: aggreg_Xyz             ZK_EOSMARKER   op[].handler!
+  find: EATOPERAND_handler   ZK_CRWBUFFER   op[].handler!
+  find: EATOPERAND_handler   ZK_ROWBUFFER   op[].handler!
+  find: EATOPERAND_handler   ZK_EOSMARKER   op[].handler!
+
 
   PipeIn[].pipeout
 
@@ -144,15 +134,7 @@
 
   // check for error
   eError EC_NONE == not if
-
-    find: aggreg_Xyz             ZK_CRWBUFFER   op[].handler!
-    find: aggreg_Xyz             ZK_ROWBUFFER   op[].handler!
-    find: aggreg_Xyz             ZK_EOSMARKER   op[].handler!
-
-    eError op__execErr
-    StreamDef[].delete
-    StreamDefOut[].delete
-    ExprEval[].delete
+    eError op__dataExecErr
     true
     exit
   then
@@ -162,8 +144,6 @@
 
   // set the streamDef in the devSrcRow
   StreamDef[]\clear DevSrcRow.streamDef!
-
-  //false PotRlu[].useStreamDefOut
 
   // create rowPix in potRlu[] from streamDefOut[]
   false streamDefOut[] PotRlu[].rowPix!
