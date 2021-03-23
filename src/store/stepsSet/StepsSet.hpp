@@ -1119,16 +1119,16 @@ void vExprEvalEvaluate(void);
   // plist (participant list)
   void vPlistFindJob(void);
 
-  // pot
-  void vPotCompleted(void);
-  void vPotCompletedPtn(void);
-  void vPotDangling(void);
-  void vPotDanglingPtn(void);
-  void vPotDelete(void);
-  void vPotIsNull(void);
-  void vPotNew(void);
-  void vPotPushBuffer(void);
-  void vPotUseStreamDefOut(void);
+  // pot Rlu
+  void vPotRluCompleted(void);
+  void vPotRluCompletedPtn(void);
+  void vPotRluDangling(void);
+  void vPotRluDanglingPtn(void);
+  void vPotRluDelete(void);
+  void vPotRluIsNull(void);
+  void vPotRluNew(void);
+  void vPotRluPushBuffer(void);
+  void vPotRluRowPixStore(void);
 
   // procedure
   void vProcedureAdd(void);

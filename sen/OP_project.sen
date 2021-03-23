@@ -156,7 +156,10 @@
   // set the streamDef in the devSrcRow
   StreamDef[]\clear DevSrcRow.streamDef!
 
-  false PotRlu[].useStreamDefOut
+  // create rowPix in potRlu[] from streamDefOut[]
+  false streamDefOut[] PotRlu[].rowPix!
+
+  //false PotRlu[].useStreamDefOut
 
   StreamDefOut[].pipeout
 

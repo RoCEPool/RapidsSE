@@ -61,7 +61,11 @@
 
   // new the PotRlu[]
   PotRlu[].new
-  false PotRlu[].useStreamDefOut
+
+  //false PotRlu[].useStreamDefOut
+
+  // create rowPix in potRlu[] from streamDefOut[]
+  false streamDefOut[] PotRlu[].rowPix!
 
   // init the logicUnit[]
   LogicUnit[].init
