@@ -13,17 +13,16 @@ namespace STORE
   class Table : public Operand
   {
   private:
-    s32        m_sTableNm;    // table name (leave for the moment)
-    eTT        m_eKind;       // table kind
+    s32 m_sTableNm; // table name (leave for the moment)
+    eTT m_eKind;    // table kind
   
-    Location   m_oLocation;   // logical location of table
-
-    IdxVec*    m_pIdxVec;     // index vector
-    BucketMap* m_pBucketMap;  // bucket (to partition) map
+    Location   m_oLocation;     // logical location of table
+    StreamDef* m_pStreamDef;    // table stream def
+    StreamDef* m_pPtnStreamDef; // partition/sharding key def
+    BucketMap* m_pBucketMap;    // bucket (to partition) map
+    IdxVec*    m_pIdxVec;       // index vector
     
-    StreamDef*    m_pStreamDef;    // table stream def
-    TablePtnVec*  m_pTablePtnVec;  // table partition vector
-    StreamDef*    m_pPtnStreamDef; // partition stream def
+    TablePtnVec*  m_pTablePtnVec; // table partition vector
         
     // must be last
     Footer m_xFooter;

@@ -48,14 +48,15 @@ Table::Table(Stz* szTableNm, eTT eKind)
   gpAttachMap->m_oStatistics.Table.m_nCreates++;
 #endif
   
-  m_sTableNm   = szTableNm;
-  m_eKind      = eKind;
-  m_pIdxVec    = new IdxVec;
-  m_pBucketMap = new BucketMap(AM::nPtnsInGrid());
-
+  m_sTableNm = szTableNm;
+  m_eKind    = eKind;
+  
+  //m_oLocation
   m_pStreamDef    = nullptr;
-  m_pTablePtnVec  = new TablePtnVec;
   m_pPtnStreamDef = new StreamDef;
+  m_pBucketMap    = new BucketMap(AM::nPtnsInGrid());
+  m_pIdxVec       = new IdxVec;
+  m_pTablePtnVec  = new TablePtnVec;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the table partitions
