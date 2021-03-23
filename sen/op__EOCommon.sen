@@ -1,8 +1,29 @@
 /*============================================================================*/
-/* op__common.sen -- operator common words                                    */
+/* op__EOcommon.sen -- EO operator common words                               */
 /*============================================================================*/
 
-" op__common.sen" .verbose
+" op__EOcommon.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* create the exec error info set for data handling operators                 */
+/*----------------------------------------------------------------------------*/
+: op__dataExecErr ( eError )
+
+  params| eError |
+
+  // cleanup
+  StreamDef[].delete
+  StreamDefOut[].delete
+  ExprEval[].delete
+
+  // set EATOPERAND handler for buffers and EOS markers coming in
+  find: EATOPERAND_handler ZK_CRWBUFFER op[].handler!
+  find: EATOPERAND_handler ZK_ROWBUFFER op[].handler!
+  find: EATOPERAND_handler ZK_EOSMARKER op[].handler!
+
+  // generate the error infoset
+  eError op__execErr
+;
 
 /*----------------------------------------------------------------------------*/
 /* create an (int) index def                                                  */

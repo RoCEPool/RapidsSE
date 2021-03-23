@@ -145,13 +145,7 @@
 
   // check for error
   eError EC_NONE == not if
-    eError op__execErr
-    StreamDef[].delete
-    StreamDefOut[].delete
-    ExprEval[].delete
-    find: filter_Xyz   ZK_CRWBUFFER     op[].handler!
-    find: filter_Xyz   ZK_ROWBUFFER     op[].handler!
-    find: filter_Xyz   ZK_EOSMARKER     op[].handler!
+    eError op__dataExecErr
     true
     exit
   then

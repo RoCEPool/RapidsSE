@@ -137,15 +137,7 @@
 
   // check for error
   eError EC_NONE == not if
-
-    find: EATOPERAND_handler ZK_CRWBUFFER op[].handler!
-    find: EATOPERAND_handler ZK_ROWBUFFER op[].handler!
-    find: EATOPERAND_handler ZK_EOSMARKER op[].handler!
-
-    eError op__execErr
-    StreamDef[].delete
-    StreamDefOut[].delete
-    ExprEval[].delete
+    eError op__dataExecErr
     true
     exit
   then

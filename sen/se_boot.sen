@@ -79,8 +79,8 @@ assert::stack_0
 "se_boot 4" .verbose
         "op__errors.sen"              include
         "op__defHandlers.sen"         include
-        "op__common.sen"              include
         "op__EOCommon.sen"            include
+        "op__common.sen"              include
         "reg__common.sen"             include
         
         "se_bootOps.sen"              include
