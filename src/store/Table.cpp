@@ -20,6 +20,7 @@
 #include "CrvBuffer.hpp"
 #include "TablePtn.hpp"
 #include "Table.hpp"
+#include "ShardDef.hpp"
 
 #include "Grid.hpp"
 
@@ -53,7 +54,7 @@ Table::Table(Stz* szTableNm, eTT eKind)
   
   //m_oLocation
   m_pStreamDef   = nullptr;
-  m_pShardDef    = new StreamDef;
+  m_pShardDef    = new ShardDef;
   m_pBucketMap   = new BucketMap(AM::nPtnsInGrid());
   m_pIdxVec      = new IdxVec;
   m_pTablePtnVec = new TablePtnVec;
@@ -624,7 +625,7 @@ void Table::vRemoveIndex(Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /* get the sharding definition                                                */
 /*----------------------------------------------------------------------------*/
-StreamDef*  Table::pShardDef(void)
+ShardDef*  Table::pShardDef(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   

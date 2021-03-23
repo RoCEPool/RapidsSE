@@ -6,7 +6,7 @@
 #include "Index.hpp"
 #include "eTT.h"
 
-namespace STORE { class InfoSet; class StreamDef; }
+namespace STORE { class InfoSet; class StreamDef; class ShardDef; }
 
 namespace STORE
 {
@@ -18,7 +18,7 @@ namespace STORE
   
     Location   m_oLocation;   // logical location of table
     StreamDef* m_pStreamDef;  // table stream def
-    StreamDef* m_pShardDef;   // partition/sharding key def
+    ShardDef*  m_pShardDef;   // partition/sharding key def
     BucketMap* m_pBucketMap;  // bucket (to partition) map
     IdxVec*    m_pIdxVec;     // index vector
     
@@ -65,7 +65,7 @@ namespace STORE
     bool    bPopulateIndex(i8 iIndexNo);
     void    vRemoveIndex(Index* pIndex);
     EntBuffer* pRootBuffer(i8 i_TablePtn, i8 i_Index);
-    StreamDef* pShardDef(void);
+    ShardDef*  pShardDef(void);
     StreamDef* pStreamDef(void);
     void       vStreamDef(StreamDef* pStreamDef);
     Stz*    szTableNm(void);

@@ -531,9 +531,9 @@ void Step::vTableShardDefFetch(void)
   Table* pTable = _pTable(*( m_pJob->pLogicUnit_job() )->m_xpTable);
   ASSERT(CN_TABLE == pTable->eGetClassNo());
   
-  StreamDef* pStreamDef = pTable->pShardDef();
+  ShardDef* pShardDef = pTable->pShardDef();
   
-  m_pDataStack->vPushPtr(pStreamDef);
+  m_pDataStack->vPushPtr(pShardDef);
   
   EXIT();
 }
