@@ -622,9 +622,9 @@ void Table::vRemoveIndex(Index* pIndex)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get partition column vector                                                */
+/* get the sharding definition                                                */
 /*----------------------------------------------------------------------------*/
-StreamDef*  Table::pPtnStreamDef(void)
+StreamDef*  Table::pShardDef(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   

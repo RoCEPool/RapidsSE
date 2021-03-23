@@ -28,7 +28,7 @@
 
   begin
     streamSetTable[] StreamSet[].new
-    iCursor table[].listPartition to iCursor
+    iCursor Table[].listPartition to iCursor
     
     iCursor while
       StreamSet[].pipeOut

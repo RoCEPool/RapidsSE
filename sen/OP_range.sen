@@ -38,7 +38,7 @@
   Table[].asSrcStreamDef
 
   // new a stream def
-  table[] StreamDef[].new
+  Table[] StreamDef[].new
   StreamDef[].duplicate to streamDefOut[]
 
   range[].new

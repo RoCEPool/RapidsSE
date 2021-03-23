@@ -32,7 +32,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the table
 
-  streamDef[] sTableNm table::createTable to table[]
+  streamDef[] sTableNm table::createTable to Table[]
 ;
 
 /*----------------------------------------------------------------------------*/

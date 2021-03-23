@@ -30,7 +30,7 @@
   streamSetTable[] StreamSet[].new
 
   // get the ptn stream def from the table
-  Table[].ptnStreamDef@ to streamDef[]
+  Table[].shardDef@ to streamDef[]
   streamDef[].columnCount@ to nPtnCols
 
   // insert a row in the infoset for each column

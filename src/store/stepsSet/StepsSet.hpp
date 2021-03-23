@@ -1591,7 +1591,7 @@ void vExprEvalEvaluate(void);
   void vTableListPartition(void);
   void vTableNameFetch(void);
   void vTableNew(void);
-  void vTablePtnStreamDefFetch(void);
+  void vTableShardDefFetch(void);
   void vTableSet(void);
   void vTableSize(void);
   void vTableStreamDefFetch(void);
