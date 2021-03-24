@@ -21,6 +21,7 @@
 void Step::vAddSteps_OperandC(void)
 {
   vAddStep("OperandC[]"_Stz,             &Step::vOperandCGet);
+  vAddStep("OperandC[]\\clear"_Stz,      &Step::vOperandCGetAndClear);
   vAddStep("OperandC[].collect"_Stz,     &Step::vOperandCCollect);
   vAddStep("OperandC[].get"_Stz,         &Step::vOperandCGet);
   vAddStep("OperandC[].pipeOut"_Stz,     &Step::vOperandCPipeOut);
@@ -70,6 +71,20 @@ void Step::vOperandCGet(void)
   
   m_pDataStack->vPushPtr(*( m_pJob->pLogicUnit_job() )->m_xpOperandC);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* OperandC[].getAndClear -- fetch operand and set to nullptr                  */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandCGetAndClear(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushPtr(*( m_pJob->pLogicUnit_job() )->m_xpOperandC);
+  
+  ( m_pJob->pLogicUnit_job() )->m_xpOperandC = nullptr;
+
   EXIT();
 }
 
