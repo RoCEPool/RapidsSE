@@ -23,11 +23,9 @@
 /*----------------------------------------------------------------------------*/
 : receiver_loop ( -- )
 
-  0 locals| pSocket |
-
   "<ansNode>" job[] job.tagSet@ tagSet.hasName assert
 
-  <ansNode> >int >ptr node.recvSocket@ to pSocket
+  <ansNode> >int >ptr node.recvSocket@ to Socket[]
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   begin
@@ -37,7 +35,7 @@
     // -- -- -- -- -- -- -- --
     // recv job
 
-    pSocket socket.recvObject
+    Socket[] socket.recvObject
 
     not if
       //ifAgain
@@ -61,7 +59,7 @@
     // recv operand
 
     OperandC[] object.class@ CN_XMITOPERAND == if
-      pSocket socket.recvObject true == if
+      Socket[] socket.recvObject true == if
         to OperandB[]
         OperandB[] OperandC[] xmitOperand.operand!
         OperandC[] xmitOperand.pipeOut
