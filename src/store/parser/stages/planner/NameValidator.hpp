@@ -32,11 +32,11 @@ namespace Parser
   private:
     // Validate that all table names can be found in the system metadata.
     // Populate the plan metadata at the same time.
-    static void vValidateTables(PlanNode* pRootNode, QueryNode* pPlanNode,
+    static void vValidateTables(PlanNode* pRootNode, QueryNode* pStartNode,
                                 QueryNode* pMetadataNode, STORE::SeApi* pSeApi);
 
     // Convert any column wildcards into column references.
-    static void vResolveColumnWildcards(PlanNode* pRootNode, QueryNode* pPlanNode,
+    static void vResolveColumnWildcards(PlanNode* pRootNode, QueryNode* pStartNode,
                                         QueryNode* pMetadataNode);
 
     // Look up and return a list of columns that match a column wildcard
@@ -45,8 +45,12 @@ namespace Parser
                                                 Stz* szCatalog, Stz* szSchema, Stz* szTable);
 
     // Validate that all column references can be found in the plan metadata.
-    static void vValidateColumns(PlanNode* pRootNode, QueryNode* pPlanNode,
+    static void vValidateColumns(PlanNode* pRootNode, QueryNode* pStartNode,
                                 QueryNode* pMetadataNode);
+
+    // Assert that all tables and columns are fully resolved and that there are
+    // no columnWildcards left in the plan
+    static void vAssertNamesResolved(PlanNode* pRootNode, QueryNode* pPlanNode);
   };
 }
 

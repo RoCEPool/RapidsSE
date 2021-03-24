@@ -24,6 +24,7 @@
 #include "ProjectedColumn.hpp"
 #include "FilterOp.hpp"
 #include "AggregateOp.hpp"
+#include "StatementMarker.hpp"
 
 
 using namespace Parser;
@@ -50,21 +51,28 @@ void ExprValidator::vValidateExprs(PlanNode *pRootNode)
   QueryNode* pPlanNode = ShadowRoot::pPlanNode(pRootNode);
   ASSERT(pPlanNode);
 
+  // The plan node should have one child which is a StatementMarker node
+  ASSERT(pPlanNode->nChildren() == 1);
+  ASSERT(StatementMarker::bIsOfType(pPlanNode->pFirstChild()));
+  QueryNode* pStatementMarker = static_cast<QueryNode*>(pPlanNode->pFirstChild());
+
+  // TODO: repeat for each StatementMarker subgraph
+
   // Validate that the result types of any expressions are not invalid.
-  vValidateExprResultType(pRootNode, pPlanNode);
+  vValidateExprResultType(pRootNode, pStatementMarker);
 
   // Validate that all predicate expressions have a boolean result type
-  vValidatePredicatesAreBoolean(pRootNode, pPlanNode);
+  vValidatePredicatesAreBoolean(pRootNode, pStatementMarker);
 
   // Validate any aggregate/group-by expressions
-  vValidateGroupByExprs(pRootNode, pPlanNode);
+  vValidateGroupByExprs(pRootNode, pStatementMarker);
 
   // Validate that all expressions that
-  vValidateSqlOpExprsAgainstGroupBy(pRootNode, pPlanNode);
+  vValidateSqlOpExprsAgainstGroupBy(pRootNode, pStatementMarker);
 
   // Validate that ProjectOps cannot produce both aggregate & non-aggregate
   // expressions without a group-by clause
-  vValidateProjectExprs(pRootNode, pPlanNode);
+  vValidateProjectExprs(pRootNode, pStatementMarker);
 
 }
 
@@ -72,10 +80,10 @@ void ExprValidator::vValidateExprs(PlanNode *pRootNode)
 /* Validate that the result types of any expressions are not invalid.         */
 /* An invalid combination of exprs is one that returns CT_NONE for its type.  */
 /*----------------------------------------------------------------------------*/
-void ExprValidator::vValidateExprResultType(PlanNode *pRootNode, QueryNode* pPlanNode)
+void ExprValidator::vValidateExprResultType(PlanNode *pRootNode, QueryNode* pStartNode)
 {
   ASSERT(pRootNode);
-  ASSERT(pPlanNode);
+  ASSERT(pStartNode);
 
   // Walk the graph looking for all expressions
   auto fVisitor = [](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
@@ -96,7 +104,7 @@ void ExprValidator::vValidateExprResultType(PlanNode *pRootNode, QueryNode* pPla
   };
 
   // Walk the /plan node, it's properties and its children
-  GraphNav::bWalk(pPlanNode->pFirstChild(), true, true, fVisitor, pRootNode);
+  GraphNav::bBoundedWalk(pStartNode->pFirstChild(), true, true, fVisitor, pRootNode);
 }
 
 
@@ -104,10 +112,10 @@ void ExprValidator::vValidateExprResultType(PlanNode *pRootNode, QueryNode* pPla
 /* Validate that all predicate expressions (e.g. in filterOps) return a       */
 /* boolean expression.                                                        */
 /*----------------------------------------------------------------------------*/
-void ExprValidator::vValidatePredicatesAreBoolean(PlanNode *pRootNode, QueryNode* pPlanNode)
+void ExprValidator::vValidatePredicatesAreBoolean(PlanNode *pRootNode, QueryNode* pStartNode)
 {
   ASSERT(pRootNode);
-  ASSERT(pPlanNode);
+  ASSERT(pStartNode);
 
   // Walk the graph looking for all filterOps
   auto fVisitor = [](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
@@ -141,16 +149,16 @@ void ExprValidator::vValidatePredicatesAreBoolean(PlanNode *pRootNode, QueryNode
 
   // Walk the /plan node and its children. We're not interested in walking
   // the properties because we are looking for filterOps
-  GraphNav::bWalk(pPlanNode->pFirstChild(), false, true, fVisitor, pRootNode);
+  GraphNav::bBoundedWalk(pStartNode->pFirstChild(), false, true, fVisitor, pRootNode);
 }
 
 /*----------------------------------------------------------------------------*/
 /* Validate that aggregate and group-by expressions are correctly specified   */
 /*----------------------------------------------------------------------------*/
-void ExprValidator::vValidateGroupByExprs(PlanNode *pRootNode, QueryNode* pPlanNode)
+void ExprValidator::vValidateGroupByExprs(PlanNode *pRootNode, QueryNode* pStartNode)
 {
   ASSERT(pRootNode);
-  ASSERT(pPlanNode);
+  ASSERT(pStartNode);
 
   // If there is group by list then an AggregateOp will be generated
   // rather than an ProjectOp for an early plan.
@@ -159,7 +167,7 @@ void ExprValidator::vValidateGroupByExprs(PlanNode *pRootNode, QueryNode* pPlanN
   };
 
   QueryNode* pAggregateOp = static_cast<QueryNode*>(
-      GraphNav::pSearch(pPlanNode, false, true, fCondition, nullptr) );
+      GraphNav::pSearch(pStartNode, false, true, fCondition, nullptr) );
 
   if (!pAggregateOp) {
     return;
@@ -188,10 +196,10 @@ void ExprValidator::vValidateGroupByExprs(PlanNode *pRootNode, QueryNode* pPlanN
 /* Validate that if there is no group by list then projections must either be */
 /* all aggregates or all non-aggregates. This is applicable to an early plan. */
 /*----------------------------------------------------------------------------*/
-void ExprValidator::vValidateProjectExprs(PlanNode *pRootNode, QueryNode* pPlanNode)
+void ExprValidator::vValidateProjectExprs(PlanNode *pRootNode, QueryNode* pStartNode)
 {
   ASSERT(pRootNode);
-  ASSERT(pPlanNode);
+  ASSERT(pStartNode);
 
   // If there is no group by list then a simple ProjectOp will be generated
   // rather than an AggregateOp.
@@ -200,7 +208,7 @@ void ExprValidator::vValidateProjectExprs(PlanNode *pRootNode, QueryNode* pPlanN
   };
 
   QueryNode* pProjectOp = static_cast<QueryNode*>(
-      GraphNav::pSearch(pPlanNode, false, true, fCondition, nullptr) );
+      GraphNav::pSearch(pStartNode, false, true, fCondition, nullptr) );
 
   if (!pProjectOp) {
     return;
@@ -329,7 +337,7 @@ void ExprValidator::vCheckNonAggExprIsInGroupBy(QueryNode* pExpr, QueryNode *pGr
   };
 
   // Walk the expression graph
-  GraphNav::bWalk(pExpr, false, true, fVisitor, nullptr);
+  GraphNav::bBoundedWalk(pExpr, false, true, fVisitor, nullptr);
 }
 
 
@@ -399,7 +407,7 @@ void ExprValidator::vCheckGroupByExprsNotLiterals(QueryNode *pGroupByList)
 /* an AggregateOp and have expressions, those expressions must only refer to  */
 /* aggregated columns or columns that appear in the group by list             */
 /*----------------------------------------------------------------------------*/
-void ExprValidator::vValidateSqlOpExprsAgainstGroupBy(PlanNode* pRootNode, QueryNode* pPlanNode)
+void ExprValidator::vValidateSqlOpExprsAgainstGroupBy(PlanNode* pRootNode, QueryNode* pStartNode)
 {
   // First find the AggregateOp (if one exists) so we can get the group by list
   auto fCondition = [](PlanNode* pNode, void* pvArg)-> b1 {
@@ -407,7 +415,7 @@ void ExprValidator::vValidateSqlOpExprsAgainstGroupBy(PlanNode* pRootNode, Query
   };
 
   QueryNode* pAggregateOp = static_cast<QueryNode*>(
-      GraphNav::pSearch(pPlanNode, false, true,
+      GraphNav::pSearch(pStartNode, false, true,
                         fCondition, nullptr) );
 
   if (!pAggregateOp) {
@@ -475,7 +483,7 @@ void ExprValidator::vValidateSqlOpExprsAgainstGroupBy(PlanNode* pRootNode, Query
   };
 
   // Now walk the graph, looking at the SqlOps
-  GraphNav::bWalk(pPlanNode->pFirstChild(), false, true, fVisitor, nullptr);
+  GraphNav::bBoundedWalk(pStartNode->pFirstChild(), false, true, fVisitor, nullptr);
 }
 
 
@@ -485,7 +493,7 @@ void ExprValidator::vValidateSqlOpExprsAgainstGroupBy(PlanNode* pRootNode, Query
 /* that sit above the ProjectOp. Aggregate exprs may or may not be allowed    */
 /* depending on the expressions in the ProjectOp.                             */
 /*----------------------------------------------------------------------------*/
-void ExprValidator::vValidateSqlOpExprsAgainstProjectOp(PlanNode* pRootNode, QueryNode* pPlanNode)
+void ExprValidator::vValidateSqlOpExprsAgainstProjectOp(PlanNode* pRootNode, QueryNode* pStartNode)
 {
   // First find the ProjectOp
   auto fCondition = [](PlanNode *pNode, void *pvArg) -> b1 {
@@ -493,7 +501,7 @@ void ExprValidator::vValidateSqlOpExprsAgainstProjectOp(PlanNode* pRootNode, Que
   };
 
   QueryNode *pProjectOp = static_cast<QueryNode *>(
-      GraphNav::pSearch(pPlanNode, false, true,
+      GraphNav::pSearch(pStartNode, false, true,
                         fCondition, nullptr));
 
   if (!pProjectOp) {
@@ -592,7 +600,7 @@ void ExprValidator::vValidateSqlOpExprsAgainstProjectOp(PlanNode* pRootNode, Que
   };
 
   // Now walk the graph, looking at the SqlOps
-  GraphNav::bWalk(pPlanNode->pFirstChild(), false, true, fVisitor, nullptr);
+  GraphNav::bBoundedWalk(pStartNode->pFirstChild(), false, true, fVisitor, nullptr);
 }
 
 

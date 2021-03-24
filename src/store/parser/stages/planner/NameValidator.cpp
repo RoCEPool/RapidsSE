@@ -29,6 +29,7 @@
 #include "ProjectOp.hpp"
 #include "ProjectedColumn.hpp"
 #include "DataSource.hpp"
+#include "StatementMarker.hpp"
 
 
 using namespace Parser;
@@ -60,18 +61,25 @@ void NameValidator::vValidateNames(PlanNode *pRootNode)
   QueryNode* pPlanNode = ShadowRoot::pPlanNode(pRootNode);
   ASSERT(pPlanNode);
 
+  // The plan node should have one child which is a StatementMarker node
+  ASSERT(pPlanNode->nChildren() == 1);
+  ASSERT(StatementMarker::bIsOfType(pPlanNode->pFirstChild()));
+  QueryNode* pStatementMarker = static_cast<QueryNode*>(pPlanNode->pFirstChild());
+
+
   STORE::SeApi* pSeApi = new STORE::SeApi();
 
+  // TODO: repeat for each StatementMarker subgraph
   try {
     // First resolve all of the tables in the plan. We will need them to
     // then resolve columns and indexes.
-    vValidateTables(pRootNode, pPlanNode, pMetadataNode, pSeApi);
+    vValidateTables(pRootNode, pStatementMarker, pMetadataNode, pSeApi);
 
     // Convert any column wildcards to column references
-    vResolveColumnWildcards(pRootNode, pPlanNode, pMetadataNode);
+    vResolveColumnWildcards(pRootNode, pStatementMarker, pMetadataNode);
 
     // Now resolve the columns against the known tables in the plan.
-    vValidateColumns(pRootNode, pPlanNode, pMetadataNode);
+    vValidateColumns(pRootNode, pStatementMarker, pMetadataNode);
 
   } catch (SqlException& e) {
     delete pSeApi;
@@ -79,16 +87,20 @@ void NameValidator::vValidateNames(PlanNode *pRootNode)
   }
 
   delete pSeApi;
+
+#ifdef WITH_ASSERT_MACRO
+  vAssertNamesResolved(pRootNode, pPlanNode);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
 /* Validate and qualify all of the tableRefs in the graph                     */
 /*----------------------------------------------------------------------------*/
-void NameValidator::vValidateTables(PlanNode *pRootNode, QueryNode* pPlanNode, QueryNode* pMetadataNode, STORE::SeApi* pSeApi)
+void NameValidator::vValidateTables(PlanNode *pRootNode, QueryNode* pStartNode, QueryNode* pMetadataNode, STORE::SeApi* pSeApi)
 {
   ASSERT(pRootNode);
   ASSERT(pMetadataNode);
-  ASSERT(pPlanNode);
+  ASSERT(pStartNode);
 
   // Walk the graph looking for TableRefs
   auto fVisitor = [&pMetadataNode, &pSeApi](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
@@ -186,17 +198,17 @@ void NameValidator::vValidateTables(PlanNode *pRootNode, QueryNode* pPlanNode, Q
   };
 
   // Walk the /plan node, it's properties and its children
-  GraphNav::bWalk(pPlanNode, true, true, fVisitor, pRootNode);
+  GraphNav::bBoundedWalk(pStartNode, true, true, fVisitor, pRootNode);
 }
 
 /*----------------------------------------------------------------------------*/
 /* Convert any column wildcards into column references                        */
 /*----------------------------------------------------------------------------*/
-void NameValidator::vResolveColumnWildcards(PlanNode *pRootNode, QueryNode* pPlanNode, QueryNode* pMetadataNode)
+void NameValidator::vResolveColumnWildcards(PlanNode *pRootNode, QueryNode* pStartNode, QueryNode* pMetadataNode)
 {
   ASSERT(pRootNode);
   ASSERT(pMetadataNode);
-  ASSERT(pPlanNode);
+  ASSERT(pStartNode);
 
   // Walk the graph looking for ColumnWildcards
   auto fVisitor = [&pMetadataNode](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
@@ -289,7 +301,7 @@ void NameValidator::vResolveColumnWildcards(PlanNode *pRootNode, QueryNode* pPla
   // We do this so that we can modify the properties of the ProjectOp without it
   // affecting the walking of the graph. We do not want to modify the graph that
   // we are walking as this will lead to bad conclusions.
-  GraphNav::bWalk(pPlanNode, false, true, fVisitor, pRootNode);
+  GraphNav::bBoundedWalk(pStartNode, false, true, fVisitor, pRootNode);
 }
 
 
@@ -363,7 +375,7 @@ PlanNodeList* NameValidator::pLookupWildcardColumns(QueryNode* pStartNode, PlanN
   };
 
 
-  GraphNav::bWalk(pStartNode, false, true, fVisitor, pRootNode);
+  GraphNav::bBoundedWalk(pStartNode, false, true, fVisitor, pRootNode);
 
   return pProjectedColumnList;
 }
@@ -371,11 +383,11 @@ PlanNodeList* NameValidator::pLookupWildcardColumns(QueryNode* pStartNode, PlanN
 /*----------------------------------------------------------------------------*/
 /* Validate and qualify all of the columnRefs using the known tables          */
 /*----------------------------------------------------------------------------*/
-void NameValidator::vValidateColumns(PlanNode *pRootNode, QueryNode* pPlanNode, QueryNode* pMetadataNode)
+void NameValidator::vValidateColumns(PlanNode *pRootNode, QueryNode* pStartNode, QueryNode* pMetadataNode)
 {
   ASSERT(pRootNode);
   ASSERT(pMetadataNode);
-  ASSERT(pPlanNode);
+  ASSERT(pStartNode);
 
   // Walk the graph looking for ColumnRefs
   auto fVisitor = [&pMetadataNode](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
@@ -430,7 +442,37 @@ void NameValidator::vValidateColumns(PlanNode *pRootNode, QueryNode* pPlanNode, 
   };
 
   // Walk the /plan node, it's properties and its children
-  GraphNav::bWalk(pPlanNode, true, true, fVisitor, pRootNode);
+  GraphNav::bBoundedWalk(pStartNode, true, true, fVisitor, pRootNode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Assert that all tables and columns are fully resolved and that there are   */
+/* no columnWildcards left in the plan                                        */
+/*----------------------------------------------------------------------------*/
+void NameValidator::vAssertNamesResolved(PlanNode *pRootNode, QueryNode* pPlanNode)
+{
+  // Walk every node (property and child). If we encounter a:
+  //  - ColumnWildcard,
+  //  - ColumnRef that is not fully resolved, or
+  //  - TableRef that is not fully resolved
+  // then assert an error.
+
+  auto fVisitor = [](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    ASSERT(!ColumnWildcard::bIsOfType(pNode));
+
+    if (ColumnRef::bIsOfType(pNode)) {
+      ASSERT(ColumnRef::bIsFullyQualified(static_cast<QueryNode*>(pNode)));
+      return GraphNav::WALK_CONTINUE;
+    }
+
+    if (TableRef::bIsOfType(pNode)) {
+      ASSERT(TableRef::bIsFullyQualified(static_cast<QueryNode*>(pNode)));
+      return GraphNav::WALK_CONTINUE;
+    }
+  };
+
+  GraphNav::bGlobalWalk(pPlanNode, true, true, fVisitor, pRootNode);
 }
 
 /*============================================================================*/

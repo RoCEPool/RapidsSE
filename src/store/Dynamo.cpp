@@ -329,7 +329,7 @@ bool Dynamo::bPlanToPipeline(String* pAsPipelineStmt,
   // path and not an absolute one.
   // Let's also pass in the root node as an argument as it can be useful within
   // the visitor function.
-  GraphNav::bWalkBottomUp(pPlanRoot, false, true, vVisitorPlan, (void*)pAsPipelineStmt);
+  GraphNav::bGlobalWalkBottomUp(pPlanRoot, false, true, vVisitorPlan, (void *) pAsPipelineStmt);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -395,7 +395,7 @@ void Dynamo::vPrintPlanGraph(PlanNode* pPlanRoot) {
     return GraphNav::WALK_CONTINUE;
   };
 
-  GraphNav::bWalk(pPlanRoot, true, true, fVisitor, pPlanRoot);
+  GraphNav::bGlobalWalk(pPlanRoot, true, true, fVisitor, pPlanRoot);
 }
 
 
@@ -1394,7 +1394,7 @@ void Dynamo::vAppendExpr(String* sPipeline, QueryNode* pNode) {
   ASSERT(pExprNode);
 
   // Walk the expr node plan graph
-  GraphNav::bWalkBottomUp(pExprNode, false, true, vVisitorExpr, (void*)sPipeline);
+  GraphNav::bGlobalWalkBottomUp(pExprNode, false, true, vVisitorExpr, (void *) sPipeline);
 
 }
 
@@ -1497,7 +1497,7 @@ void Dynamo::vAppendFilterOp(String* sPipeline, QueryNode* pNode)
       ""_Stz);
 
   // Walk the expr node plan graph
-  GraphNav::bWalkBottomUp(pFilterExpr, false, true, vVisitorExpr, (void*)sPipeline);
+  GraphNav::bGlobalWalkBottomUp(pFilterExpr, false, true, vVisitorExpr, (void *) sPipeline);
 
   sPipeline->vCatSprint(" \" \n"_Stz);
 }

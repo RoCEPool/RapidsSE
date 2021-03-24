@@ -37,27 +37,27 @@ void GraphValidator::vValidateAll(PlanNode *pRootNode)
   // Validate primitives
   PlanNode* pPrimitives = GraphNav::pFind(const_cast<Stz*>(C_PRIMITIVES_PATH), pRootNode);
   ASSERT(pPrimitives);
-  GraphNav::bWalk(pPrimitives, GraphValidator::eValidatePrimitiveNode, pRootNode);
+  GraphNav::bGlobalWalk(pPrimitives, GraphValidator::eValidatePrimitiveNode, pRootNode);
 
   // Validate definitions
   PlanNode* pDefinitions = GraphNav::pFind(const_cast<Stz*>(C_DEFINITIONS_PATH), pRootNode);
   ASSERT(pDefinitions);
-  GraphNav::bWalk(pDefinitions, GraphValidator::eValidateDefinitionNode, pRootNode);
+  GraphNav::bGlobalWalk(pDefinitions, GraphValidator::eValidateDefinitionNode, pRootNode);
 
   // Validate plan
   PlanNode* pPlanNode = GraphNav::pFind(const_cast<Stz*>(C_PLAN_PATH), pRootNode);
   ASSERT(pPlanNode);
-  GraphNav::bWalk(pPlanNode, GraphValidator::eValidatePlanNode, pRootNode);
+  GraphNav::bGlobalWalk(pPlanNode, GraphValidator::eValidatePlanNode, pRootNode);
 
   // Validate metadata
   PlanNode* pMetadata = GraphNav::pFind(const_cast<Stz*>(C_METADATA_PATH), pRootNode);
   ASSERT(pMetadata);
-  GraphNav::bWalk(pMetadata, GraphValidator::eValidateMetadataNode, pRootNode);
+  GraphNav::bGlobalWalk(pMetadata, GraphValidator::eValidateMetadataNode, pRootNode);
 
   // Validate statistics
   PlanNode* pStatistics = GraphNav::pFind(const_cast<Stz*>(C_STATISTICS_PATH), pRootNode);
   ASSERT(pStatistics);
-  GraphNav::bWalk(pStatistics, GraphValidator::eValidateStatisticsNode, pRootNode);
+  GraphNav::bGlobalWalk(pStatistics, GraphValidator::eValidateStatisticsNode, pRootNode);
 
 }
 
@@ -68,7 +68,7 @@ void GraphValidator::vValidatePlan(PlanNode* pRootNode)
 {
   PlanNode* pPlanNode = GraphNav::pFind(const_cast<Stz*>(C_PLAN_PATH), pRootNode);
   ASSERT(pPlanNode);
-  GraphNav::bWalk(pPlanNode, GraphValidator::eValidatePlanNode, pRootNode);
+  GraphNav::bGlobalWalk(pPlanNode, GraphValidator::eValidatePlanNode, pRootNode);
 
 }
 

@@ -15,9 +15,38 @@ namespace Parser
   {
 
   private:
+    // Not to be instantiated
     GraphNav();
 
   public:
+
+    /*
+     * Notes:
+     *
+     * The plan graph of a query can be comprised of multiple distinct logical sub-graphs
+     * that represent different parts of the query.
+     * Some of these sub-graphs may be very different or they may be almost identical.
+     * e.g. an INSERT..SELECT statement comprises a SELECT sub-graph and an
+     * INSERT sub-graph. A UNIONed SELECT statement comprises of the UNION sub-graph
+     * and two SELECT sub-graphs.
+     *
+     * These logical sub-graphs are separated by StatementMarker objects (please refer
+     * to the PlannerDef.json5 definition file). These StatementMarker objects identify
+     * what a logical sub-graph does (is it a SELECT statement, INSERT statement, etc).
+     *
+     * A logical sub-graph is bounded by a StatementMarker as its root. It's leaves are
+     * bounded by the physical leaf nodes of the graph, or another StatementMarker node.
+     *
+     * When we navigate the graph we can either choose to navigate the entire graph
+     * or we can navigate one of these logical sub-graphs only. We refer to navigating
+     * the entire graph as a global operation whereas navigating a sub-graph is a
+     * bounded operation. So a global walk of the graph will visit every node regardless
+     * of its type. A bounded walk of the graph will stop when it hits a StatementMarker
+     * node or the end of the graph (whichever comes first).
+     *
+     * This named distinction in operations is used in the API that follows.
+     */
+
 
     // Returns the leaf element of a type definition path.
     // e.g. given a definition path of /a/b/c this will return 'c'.
@@ -27,6 +56,7 @@ namespace Parser
     static void vParentType(Stz* szTypePath, s256& buf);
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+    // ---------------------------------
     // Methods for walking a plan graph.
     // ---------------------------------
 
@@ -56,19 +86,41 @@ namespace Parser
     // calling the visitor function for each node encountered. This is a
     // top-down, depth-first traversal.
     // Returns false if the walk was aborted or true if it completed normally.
-    static b1 bWalk(PlanNode* pNode, std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor, void* pvArg);
-    static b1 bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
-                    std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor, void* pvArg);
+    // A global walk traverses all nodes in the graph.
+    static b1 bGlobalWalk(PlanNode* pNode, std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor, void* pvArg);
+    static b1 bGlobalWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
+                          std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor, void* pvArg);
+
+    // As per bGlobalWalk() above except a bounded walk will stop when it hits a
+    // StatementMarker node as this represents the start of another logical sub-graph.
+    // Starting on a StatementMarker will walk until the subsequent StatementMarker
+    // node is encountered.
+    static b1 bBoundedWalk(PlanNode* pNode, std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor, void* pvArg);
+    static b1 bBoundedWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
+                           std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor, void* pvArg);
 
     // Walk the current node and (potenitially) its properties and children,
     // calling the visitor function for each node encountered. This is a
     // bottom-up, depth-first traversal.
     // Returns false if the walk was aborted or true if it completed normally.
-    static b1 bWalkBottomUp(PlanNode* pNode, std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor, void* pvArg);
-    static b1 bWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
-                            std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor, void* pvArg);
+    // A global walk traverses all nodes in the graph.
+    static b1 bGlobalWalkBottomUp(PlanNode* pNode, std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor, void* pvArg);
+    static b1 bGlobalWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
+                                  std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor, void* pvArg);
+
+    // As per bGlobalWalkBottomUp() above except a bounded walk will stop when it hits a
+    // StatementMarker node as this represents the start of another logical sub-graph.
+    // Starting on a StatementMarker will walk until the subsequent StatementMarker
+    // node is encountered.
+    static b1 bBoundedWalkBottomUp(PlanNode* pNode, std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor, void* pvArg);
+    static b1 bBoundedWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
+                                   std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor, void* pvArg);
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+    // -------------------------------------------
+    // Methods for finding/searching a plan graph.
+    // -------------------------------------------
 
     // Returns a PlanNode* for a given path if one is found. Otherwise null.
     // The path may be absolute (starts with a '/') or relative.
@@ -97,6 +149,10 @@ namespace Parser
     static PlanNode* pSearch(PlanNode* pStartNode, b1 bSearchProperties, b1 bSearchChildren,
                              std::function<b1(PlanNode*, void*)> fCondition, void* pvArg);
 
+
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+
     // Returns the parent node of a given definition node
     static PlanNode* pGetParent(DefinitionNode* pDefnNode, PlanNode* pRootNode);
 
@@ -109,10 +165,10 @@ namespace Parser
   private:
     static b1 bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
                     std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor,
-                    void* pvArg, s256& sPath, i8 iDepth);
+                    void* pvArg, s256& sPath, i8 iDepth, b1 bBoundedWalk);
     static b1 bWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
                             std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor,
-                            void* pvArg, s256& sPath, i8 iDepth);
+                            void* pvArg, s256& sPath, i8 iDepth, b1 bBoundedWalk);
 
     static i8 iNextSeparator(Stz* szPath);
 

@@ -203,8 +203,9 @@ void Step::vSqlCompilerParser(void)
    * instead. So the select list can be found by looking for either the ProjectOp
    * or AggregateOp.
    *
-   * The basic structure of the plan is as follows:
+   * The basic structure of the plan is as follows (for a SELECT statement):
    *
+   *    StatementMarker            (denotes the type of statement that follows)
    *    SetOp                      (represents UNION/INTERSECT/EXCEPT)
    *    LimitOp
    *    OrderOp
@@ -213,6 +214,31 @@ void Step::vSqlCompilerParser(void)
    *    FilterOp                   (represents WHERE clause)
    *    JoinOp
    *    DataSource                 (e.g. TableScanOp etc)
+   *
+   * A more complicated query that contains multiple distinct sub parts are
+   * delineated by further StatementMarkers. Examples of this could include
+   * an INSERT..SELECT statement, CREATE TABLE AS SELECT, a UNION of two
+   * SELECT statements, a SELECT statement with subqueries, etc.
+   *
+   * Here's an example of a UNIONed SELECT statement:
+   *
+   *                   StatementMarker           (indicates it is a SELECT statement)
+   *                   UnionOp
+   *    StatementMarker       StatementMarker
+   *    LimitOp               LimitOp
+   *    OrderOp               OrderOp
+   *    FilterOp              FilterOp
+   *    ProjectOp             ProjectOp
+   *    FilterOp              FilterOp
+   *    JoinOp                JoinOp
+   *    DataSource            DataSource
+   *
+   * Note that there is a StatementMarker for the top level unioned statement
+   * as well as for each of the children. This allows us to walk the graph
+   * between StatementMarkers easily, that way the same algorithms can focus on
+   * a single SELECT statement and not be concerned about the shape of the overall
+   * query.
+   *
    */
 
   PlanOperand* pPlanOperand;

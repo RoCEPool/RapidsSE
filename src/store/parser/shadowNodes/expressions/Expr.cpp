@@ -126,7 +126,7 @@ b1 Expr::bContainsAnAggregate(PlanNode *pNode)
     return GraphNav::WALK_CONTINUE;
   };
 
-  GraphNav::bWalk(pNode, false, true, fVisitor, nullptr);
+  GraphNav::bBoundedWalk(pNode, false, true, fVisitor, nullptr);
 
   return bIsAgg;
 }
@@ -161,7 +161,7 @@ b1 Expr::bContainsNonaggregatedColumnRefs(PlanNode *pNode)
     return GraphNav::WALK_CONTINUE;
   };
 
-  GraphNav::bWalk(pNode, false, true, fVisitor, nullptr);
+  GraphNav::bBoundedWalk(pNode, false, true, fVisitor, nullptr);
 
   return bHasNonAggColumnRef;
 }
@@ -192,7 +192,7 @@ b1 Expr::bIsLiteral(PlanNode *pNode)
     return GraphNav::WALK_CONTINUE;
   };
 
-  GraphNav::bWalk(pNode, false, true, fVisitor, nullptr);
+  GraphNav::bBoundedWalk(pNode, false, true, fVisitor, nullptr);
 
   return bIsLit;
 }
@@ -508,7 +508,7 @@ b1 Expr::bIsOrdinal(QueryNode* pExpr)
     return GraphNav::WALK_CONTINUE;
   };
 
-  GraphNav::bWalk(pExpr, fVisitor, nullptr);
+  GraphNav::bBoundedWalk(pExpr, fVisitor, nullptr);
 
   return bIsOrdinal;
 }
