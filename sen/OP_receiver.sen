@@ -23,9 +23,7 @@
 /*----------------------------------------------------------------------------*/
 : receiver_loop ( -- )
 
-  0 locals| pReceivedObject |
-  0 locals| pOperand        |
-  0 locals| pSocket         |
+  0 locals| pSocket |
 
   "<ansNode>" job[] job.tagSet@ tagSet.hasName assert
 
@@ -47,7 +45,7 @@
       exit
     then
 
-    to pReceivedObject
+    to OperandC[]
 
     // -- -- -- -- -- -- -- --
     // log received job
@@ -62,14 +60,14 @@
     // -- -- -- -- -- -- -- --
     // recv operand
 
-    pReceivedObject object.class@ CN_XMITOPERAND == if
+    OperandC[] object.class@ CN_XMITOPERAND == if
       pSocket socket.recvObject true == if
-        to pOperand
-        pOperand pReceivedObject xmitOperand.operand!
-        pReceivedObject xmitOperand.pipeOut
+        to OperandB[]
+        OperandB[] OperandC[] xmitOperand.operand!
+        OperandC[] xmitOperand.pipeOut
       else
-       nullptr pReceivedObject xmitOperand.operand!
-       pReceivedObject xmitOperand.pipeOut
+       nullptr OperandC[] xmitOperand.operand!
+       OperandC[] xmitOperand.pipeOut
       then
     else
 
@@ -80,11 +78,11 @@
       //  pReceivedJob job.tagSet@ tagSet.asStr .
       //then
 
-      pReceivedObject job.postRecv
+      OperandC[] job.postRecv
       //pReceivedJob job.name@ grid::thisNodeName@ "(%v) receiver_loop %v" .printf
-      pReceivedObject job.seedDecode
-      pReceivedObject job.seed!
-      pReceivedObject job.spawn_received
+      OperandC[] job.seedDecode
+      OperandC[] job.seed!
+      OperandC[] job.spawn_received
     then
 
   again
