@@ -1,0 +1,58 @@
+/*============================================================================*/
+/* Steps_Node.cpp - node step group                                           */
+/*============================================================================*/
+
+#include "BASE.h"
+#include "Step.hpp"
+#include "EnterExit.h"
+#include "StepAccum.hpp"
+#include "Steps.hpp"
+
+#include "Node.hpp"
+#include "Grid.hpp"
+
+#include "Op.hpp"
+#include "Job.hpp"
+#include "LogicUnit.hpp"
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Step::vAddSteps_SendNode(void)
+{
+  vAddStep("SendNode[]"_Stz,      &Step::vSendNodeGet);
+  vAddStep("SendNode[].get"_Stz,  &Step::vSendNodeGet);
+  vAddStep("SendNode[].set"_Stz,  &Step::vSendNodeSet);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Send[].get -- get sendNode                                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vSendNodeGet(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushPtr(*( m_pJob->pLogicUnit_job() )->m_xpSendNode);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Send[].set -- set sendNode                                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vSendNodeSet(void)
+{
+  ENTRY();
+  
+  Node* pSendNode = _pNode(m_pDataStack->pPopPtr(__func__));
+  
+  ASSERT(! pSendNode || ( m_pJob->pLogicUnit_job() )->m_xpSendNode.bIsNull());
+  
+  ( m_pJob->pLogicUnit_job() )->m_xpSendNode = pSendNode;
+
+  EXIT();
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

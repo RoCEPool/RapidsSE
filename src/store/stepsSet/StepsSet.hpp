@@ -1400,6 +1400,9 @@ void vExprEvalEvaluate(void);
   void vSenCompilerNestedStore(void);
   void vSenCompilerPostponing(void);
 
+  void vSendNodeGet(void);
+  void vSendNodeSet(void);
+
   // session
   void vSessionCascadeFetch(void);
   void vSessionCascadeStore(void);

@@ -148,6 +148,7 @@ namespace STORE
     static void vAddSteps_SeekOffsets(void);
     static void vAddSteps_Sen(void);
     static void vAddSteps_SenCompiler(void);
+    static void vAddSteps_SendNode(void);
     static void vAddSteps_Session(void);
     static void vAddSteps_ShardDef(void);
     static void vAddSteps_Shell(void);
