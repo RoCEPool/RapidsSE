@@ -1044,7 +1044,7 @@ void Step::vSocketSet(void)
   ENTRY();
   
   Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
-  ASSERT(! pSocket || ( m_pJob->pLogicUnit_job() )->m_xpOSocket.bIsNull());
+  ASSERT(! pSocket || ( m_pJob->pLogicUnit_job() )->m_xpSocket.bIsNull());
   ( m_pJob->pLogicUnit_job() )->m_xpSocket = _pSocket(pSocket);
   
   EXIT();
