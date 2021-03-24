@@ -84,6 +84,9 @@
       OperandC[] job.spawn_received
     then
 
+    nullptr to OperandC[]
+    nullptr to OperandB[]
+
   again
 ;
 

@@ -140,9 +140,12 @@ void Step::vOperandBSet(void)
 {
   ENTRY();
   
-  ASSERT(( m_pJob->pLogicUnit_job() )->m_xpOperandB.bIsNull());
-  ( m_pJob->pLogicUnit_job() )->m_xpOperandB = _pOperand(m_pDataStack->pPopPtr(__func__));
+  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
   
+  ASSERT(! pOperand || ( m_pJob->pLogicUnit_job() )->m_xpOperandB.bIsNull());
+  
+  ( m_pJob->pLogicUnit_job() )->m_xpOperandB = _pOperand(pOperand);
+
   EXIT();
 }
 

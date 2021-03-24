@@ -132,6 +132,8 @@
   pJob Socket[] socket.sendObject discard
 
   Socket[] socket.dropWrite
+  
+  nullptr to Socket[]
 ;
 
 /*----------------------------------------------------------------------------*/
