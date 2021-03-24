@@ -918,7 +918,7 @@ void AM::vWriteLog(void) {
 /*----------------------------------------------------------------------------*/
 void AM::vSend(Task* pTask, Node* pSendNode, XmitOperand* pXmitOperand)
 {
-  pTask->pJob()->pLogicUnit_job()->m_pSendNode = pSendNode;
+  pTask->pJob()->pLogicUnit_job()->m_xpSendNode = pSendNode;
   
   // grab socket wite lock
   Socket* pSocket = pSendNode->pSendSocket();

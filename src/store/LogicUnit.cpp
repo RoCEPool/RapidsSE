@@ -72,7 +72,7 @@ LogicUnit::LogicUnit(Task* pTask)
   
   m_eDdlLocked = LH_HAVE_NO_LOCK;
   m_i_NextRnd  = AM::bDeveloper() ? 0 : C_UNKNOWN;
-  m_pSendNode  = nullptr;
+  m_xpSendNode  = nullptr;
   
   m_xpHandler  = nullptr;
 
@@ -246,14 +246,14 @@ void LogicUnit::vContentDump(void)
 
   vTrace("%p:\n"
          "m_i_NextRnd=%lld\n"
-         "m_pSendNode=%p %s\n"_Stz,
+         "m_xpSendNode=%p %s\n"_Stz,
 
          this,
          
          m_i_NextRnd,
          
-         m_pSendNode,
-         m_pSendNode ? m_pSendNode->szNodeNm() : ""_Stz,
+         m_xpSendNode,
+         m_xpSendNode.bIsNotNull() ? m_xpSendNode->szNodeNm() : ""_Stz,
          
          C_VARGS_END
          );

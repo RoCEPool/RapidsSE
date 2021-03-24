@@ -103,8 +103,6 @@ namespace STORE
     i8    m_i_NextRnd;  // which next repeatable random nummber?
     i8    m_iDebugFlag; // general purpose debug flag
 
-    Node* m_pSendNode;  // node to send to
-
     REG<AggTimer>       m_xpAggTimer;  // aggregate timer
     REG<CrwToRow>       m_xpCrwToRow;
     REG<Dir>            m_xpDir0;     // dir0[]
@@ -140,6 +138,7 @@ namespace STORE
     REG<Object>         m_xpRegister3; // general purpose reg 3[]
     REG<Row>            m_xpRow;
     REG<RowOnce>        m_xpRowOnce;
+    REG<Node>           m_xpSendNode;  // node to send to
     REG<ShardDef>       m_xpShardDef;
     REG<Socket>         m_xpSocket;
     REG<StreamDef>      m_xpStreamDef;     // maybe rename this to stream def in ?
