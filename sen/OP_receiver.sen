@@ -16,6 +16,12 @@
   args.verbose if
     grid::thisNode@ "receiver running on node %v" .printf
   then
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  "<ansNode>" job[] job.tagSet@ tagSet.hasName assert
+
+  <ansNode> >int >ptr node.recvSocket@ to Socket[]
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -23,11 +29,6 @@
 /*----------------------------------------------------------------------------*/
 : receiver_loop ( -- )
 
-  "<ansNode>" job[] job.tagSet@ tagSet.hasName assert
-
-  <ansNode> >int >ptr node.recvSocket@ to Socket[]
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   begin
 
     trap::stackDepthZero
