@@ -141,6 +141,7 @@ namespace STORE
     REG<Row>            m_xpRow;
     REG<RowOnce>        m_xpRowOnce;
     REG<ShardDef>       m_xpShardDef;
+    REG<Socket>         m_xpSocket;
     REG<StreamDef>      m_xpStreamDef;     // maybe rename this to stream def in ?
     REG<StreamDef>      m_xpStreamDefOut;
     REG<Operand>        m_xpStreamSet;

@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* get this tasks send socket                                                 */
 /*----------------------------------------------------------------------------*/
-: socket[]
+: TaskSocket[]
 
   task[] task.sendNode@ node.sendSocket@
 ;
@@ -15,7 +15,7 @@
 /*----------------------------------------------------------------------------*/
 /* grab lock on the tasks send socket                                         */
 /*----------------------------------------------------------------------------*/
-: socket[].lock ( -- )
+: TaskSocket[].lock ( -- )
 
   task[] task.sendNode@ node.sendSocket@ socket.grabWrite
 ;
@@ -23,7 +23,7 @@
 /*----------------------------------------------------------------------------*/
 /* drop lock on the tasks send socket                                         */
 /*----------------------------------------------------------------------------*/
-: socket[].unlock ( -- )
+: TaskSocket[].unlock ( -- )
 
   task[] task.sendNode@ node.sendSocket@ socket.dropWrite
 ;

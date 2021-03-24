@@ -306,6 +306,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("Socket[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Socket[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("StreamDef[]"_Stz)) {
     pCurrentWord->vEncodeCall("StreamDef[].set"_Stz);
     EXIT();
