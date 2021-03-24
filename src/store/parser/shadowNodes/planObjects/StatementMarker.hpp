@@ -11,12 +11,13 @@ namespace Parser
   class PlanNode;
   class QueryNode;
 
-  class Statement : public PlanObject
+  class StatementMarker : public PlanObject
   {
   public:
     // Statement types
     enum eST {
       ST_NONE = 0,
+      ST_EXPLAIN,
       ST_CREATETABLE,
       ST_DROPTABLE,
       ST_CREATEINDEX,
@@ -32,7 +33,7 @@ namespace Parser
 
   private:
     // Shalt never be instantiated. Static functions only.
-    Statement();
+    StatementMarker();
 
   public:
     static QueryNode* pCreate(eST eStmtType, Stz* szQueryText);

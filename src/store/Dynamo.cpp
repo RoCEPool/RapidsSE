@@ -21,7 +21,7 @@
 #include "SqlOperator.hpp"
 #include "ShadowNode.hpp"
 #include "ShadowRoot.hpp"
-#include "Statement.hpp"
+#include "StatementMarker.hpp"
 #include "PlanConstants.hpp"
 #include "GraphNav.hpp"
 #include "PlanOperand.hpp"

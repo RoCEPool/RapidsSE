@@ -20,7 +20,7 @@
 #include "GraphEditor.hpp"
 
 #include "ShadowNode.hpp"
-#include "store/parser/shadowNodes/planObjects/Statement.hpp"
+#include "store/parser/shadowNodes/planObjects/StatementMarker.hpp"
 #include "store/parser/shadowNodes/planObjects/FilterOp.hpp"
 #include "store/parser/shadowNodes/planObjects/LimitOp.hpp"
 #include "store/parser/shadowNodes/planObjects/ProjectOp.hpp"
@@ -233,7 +233,7 @@ antlrcpp::Any SqlPlanner::visitQuery(sqlParser::QueryContext *pCtx)
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *pCtx)
 {
-  QueryNode* pStmt = Statement::pCreate(Statement::ST_SELECT, m_sQueryStr.szStz());
+  QueryNode* pStmt = StatementMarker::pCreate(StatementMarker::ST_SELECT, m_sQueryStr.szStz());
   m_pStatementStack->vPush(pStmt);
 
   visitChildren(pCtx);
@@ -523,7 +523,7 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
 
   // Now attach the sql operator chain to the statement object.
   QueryNode* pStatement = m_pStatementStack->pPeek(0);
-  ASSERT(Statement::bIsOfType(pStatement));
+  ASSERT(StatementMarker::bIsOfType(pStatement));
   pStatement->vAppendChild(pFirstOp);
   
   return nullptr;
