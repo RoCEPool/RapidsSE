@@ -54,6 +54,7 @@ namespace STORE
     Table* pTable(void);
     void   vTidyUp(void);
     
+    void vPostRecv(void);
   
     Footer* aFooter(void);
   };

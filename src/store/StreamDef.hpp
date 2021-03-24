@@ -51,6 +51,8 @@ namespace STORE
     void    vToRowPix(RowPix* pRowPix, bool bPtnHash);
     void    vToMetadata(Stz* sMetaData);
     
+    void vPostRecv(void);
+
   private:
     
     eEC eParseColumn(TokenVec* pTknVec, i8 i_Col);
