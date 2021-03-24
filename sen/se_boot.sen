@@ -23,7 +23,6 @@ assert::stack_0
         "se_path.sen"             include
         "se_folder.sen"           include
         "se_object.sen"           include
-        "se_socket.sen"           include
         "se_dbg.sen"              include
 
 "se_boot 8" .verbose

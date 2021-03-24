@@ -121,17 +121,17 @@
 
   //pJob job.name@ grid::thisNodeName@ "(%v) job.send %v" .printf
 
-  task.sendNode@ node.sendSocket@ locals| pSocket |
+  task.sendNode@ node.sendSocket@ to Socket[]
 
   pJob job.preSend
 
   job::</seeXfer/>
 
-  pSocket socket.grabWrite
+  Socket[] socket.grabWrite
 
-    pJob pSocket socket.sendObject discard
+  pJob Socket[] socket.sendObject discard
 
-  pSocket socket.dropWrite
+  Socket[] socket.dropWrite
 ;
 
 /*----------------------------------------------------------------------------*/
