@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : TaskSocket[]
 
-  task[] task.sendNode@ node.sendSocket@
+  task.sendNode@ node.sendSocket@
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -17,7 +17,7 @@
 /*----------------------------------------------------------------------------*/
 : TaskSocket[].lock ( -- )
 
-  task[] task.sendNode@ node.sendSocket@ socket.grabWrite
+  task.sendNode@ node.sendSocket@ socket.grabWrite
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -25,7 +25,7 @@
 /*----------------------------------------------------------------------------*/
 : TaskSocket[].unlock ( -- )
 
-  task[] task.sendNode@ node.sendSocket@ socket.dropWrite
+  task.sendNode@ node.sendSocket@ socket.dropWrite
 ;
 
 /*============================================================================*/

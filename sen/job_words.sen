@@ -142,7 +142,7 @@
   params| pJob |
   params| i_Node |
 
-  i_Node grid::node task[] task.sendNode!
+  i_Node grid::node task.sendNode!
 
   pJob job.send
 ;
@@ -155,7 +155,7 @@
   params| pJob |
   params| i_Node |
 
-  i_Node grid::node task[] task.sendNode!
+  i_Node grid::node task.sendNode!
 
   pJob job.send
 ;
