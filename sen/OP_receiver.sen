@@ -25,11 +25,7 @@
 
   0 locals| pReceivedObject |
   0 locals| pOperand        |
-  0 locals| pSendWith       |
   0 locals| pSocket         |
-  0 locals| bRecvd          |
-  0 locals| pTask           |
-  0 locals| pParentJob      |
 
   "<ansNode>" job[] job.tagSet@ tagSet.hasName assert
 
