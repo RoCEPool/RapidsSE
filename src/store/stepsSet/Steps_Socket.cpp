@@ -46,6 +46,10 @@ void Step::vAddSteps_Socket(void)
   vAddStep("socket::open"_Stz,      &Step::vSocketOpen);
   vAddStep("socket::listen"_Stz,    &Step::vSocketListen);
   
+  vAddStep("Socket[]"_Stz,          &Step::vSocketGet);
+  vAddStep("Socket[].get"_Stz,      &Step::vSocketGet);
+  vAddStep("Socket[].set"_Stz,      &Step::vSocketSet);
+
   vAddStep("socket.accept"_Stz,     &Step::vSocketAccept);
   vAddStep("socket.close"_Stz,      &Step::vSocketClose);
   vAddStep("socket.connect"_Stz,    &Step::vSocketConnect);
@@ -173,6 +177,18 @@ void Step::vSocketDropWrite(void)
   
   pSocket->vDropWrite();
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* socket.get: fetch socket                                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vSocketGet(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushPtr(*( m_pJob->pLogicUnit_job() )->m_xpSocket);
+
   EXIT();
 }
 
@@ -1017,6 +1033,20 @@ void Step::vSocketSendObject(void)
 
   m_pDataStack->vPushInt(bResult);
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Socket[].set -- set socket                                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vSocketSet(void)
+{
+  ENTRY();
+  
+  Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
+  ASSERT(! pSocket || ( m_pJob->pLogicUnit_job() )->m_xpOSocket.bIsNull());
+  ( m_pJob->pLogicUnit_job() )->m_xpSocket = _pSocket(pSocket);
+  
   EXIT();
 }
 

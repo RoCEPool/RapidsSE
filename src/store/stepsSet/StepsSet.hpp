@@ -1433,6 +1433,7 @@ void vExprEvalEvaluate(void);
   void vSocketAccept(void);
   void vSocketClose(void);
   void vSocketConnect(void);
+  void vSocketGet(void);
   void vSocketDropWrite(void);
   void vSocketGrabWrite(void);
   void vSocketListen(void);
@@ -1440,6 +1441,7 @@ void vExprEvalEvaluate(void);
   void vSocketRecvObject(void);
   void vSocketRecvObject_LowMem(void);
   void vSocketSendObject(void);
+  void vSocketSet(void);
 
   // sql compiler
   void vSqlCompilerExprValidate(void);
