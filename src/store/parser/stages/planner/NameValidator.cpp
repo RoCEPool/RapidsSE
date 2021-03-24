@@ -27,7 +27,7 @@
 #include "IndexDefs.hpp"
 #include "IndexDef.hpp"
 #include "ProjectOp.hpp"
-#include "ProjectedExpr.hpp"
+#include "ProjectedColumn.hpp"
 #include "DataSource.hpp"
 
 
@@ -224,17 +224,17 @@ void NameValidator::vResolveColumnWildcards(PlanNode *pRootNode, QueryNode* pPla
       PlanNodeIter *pIter = pProjectedExprs->pNewChildrenIter();
 
       while (pIter->bHasNext()) {
-        QueryNode *pProjectedExpr = static_cast<QueryNode *>(pIter->pNext());
+        QueryNode *pProjectedColumn = static_cast<QueryNode *>(pIter->pNext());
 
-        // Get the expr out of the ProjectedExpr
-        QueryNode *pExpr = ProjectedExpr::pExprNode(pProjectedExpr);
+        // Get the expr out of the ProjectedColumn
+        QueryNode *pExpr = ProjectedColumn::pExprNode(pProjectedColumn);
 
         if (!ColumnWildcard::bIsOfType(pExpr)) {
           continue;
         }
 
-        // We've got a columnWildcard. We need to remove this projectedExpr
-        // from the projectedExprs list and replace it with new projectedExpr
+        // We've got a columnWildcard. We need to remove this projectedColumn
+        // from the projectedExprs list and replace it with new projectedColumn
         // instances that have columnRefs from the resolved tables.
 
         // First get any catalog/schema/table scopes that may limit the wildcard
@@ -242,7 +242,7 @@ void NameValidator::vResolveColumnWildcards(PlanNode *pRootNode, QueryNode* pPla
         Stz* szSchemaName  = ColumnWildcard::szSchema(static_cast<QueryNode*>(pExpr));
         Stz* szTableName   = ColumnWildcard::szTable(static_cast<QueryNode*>(pExpr));
 
-        // Now generate a list of ProjectedExpr instances, but importantly we can only
+        // Now generate a list of ProjectedColumn instances, but importantly we can only
         // use tableRefs that we find underneath this part of the graph, as there can be
         // other tableRefs that are not visible to this part of the query.
         PlanNodeList* pResolvedWildcardList = pLookupWildcardColumns(static_cast<QueryNode*>(pNode),
@@ -251,12 +251,12 @@ void NameValidator::vResolveColumnWildcards(PlanNode *pRootNode, QueryNode* pPla
                                                                      szSchemaName,
                                                                      szTableName);
 
-        // Ensure that the returned list is a list of ProjectedExpr instances
+        // Ensure that the returned list is a list of ProjectedColumn instances
 #ifdef WITH_ASSERT_MACRO
         PlanNodeIter* pResolvedIter = pResolvedWildcardList->pNewIter();
         while (pResolvedIter->bHasNext()) {
           PlanNode* pResolvedNode = pResolvedIter->pNext();
-          ASSERT(ProjectedExpr::bIsOfType(pResolvedNode));
+          ASSERT(ProjectedColumn::bIsOfType(pResolvedNode));
         }
         delete pResolvedIter;
 #endif
@@ -265,9 +265,9 @@ void NameValidator::vResolveColumnWildcards(PlanNode *pRootNode, QueryNode* pPla
           NameValidationException::vThrowUnresolvableColumnWildcard(szCatalogName, szSchemaName, szTableName);
         }
 
-        // Now replace the ProjectedExpr that contains the columnWildcard with
-        // each of the resolved ProjectedExpr instances that contain columnRefs.
-        GraphEditor::vReplaceChild(pProjectedExprs, pProjectedExpr, pResolvedWildcardList);
+        // Now replace the ProjectedColumn that contains the columnWildcard with
+        // each of the resolved ProjectedColumn instances that contain columnRefs.
+        GraphEditor::vReplaceChild(pProjectedExprs, pProjectedColumn, pResolvedWildcardList);
 
         ASSERT(pResolvedWildcardList->nItems() == 0);
         delete pResolvedWildcardList;
@@ -303,12 +303,12 @@ PlanNodeList* NameValidator::pLookupWildcardColumns(QueryNode* pStartNode, PlanN
   ASSERT(pStartNode);
   ASSERT(PlanObject::bIsOfType(pStartNode));
 
-  PlanNodeList* pProjectedExprList = new PlanNodeList();
+  PlanNodeList* pProjectedColumnList = new PlanNodeList();
 
 
   // Walk the graph from here on down, looking for all data sources.
   auto fVisitor =
-      [&pProjectedExprList, &szCatalog, &szSchema, &szTable](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+      [&pProjectedColumnList, &szCatalog, &szSchema, &szTable](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
 
@@ -348,10 +348,10 @@ PlanNodeList* NameValidator::pLookupWildcardColumns(QueryNode* pStartNode, PlanN
 
       // Make a projectedExpr from the columnRef.
       // We're not going to give the column an alias.
-      QueryNode* pProjectedExpr = ProjectedExpr::pCreate(pColumnRef, nullptr);
+      QueryNode* pProjectedColumn = ProjectedColumn::pCreate(pColumnRef, nullptr);
 
       // Add it to the list
-      pProjectedExprList->vAppend(pProjectedExpr);
+      pProjectedColumnList->vAppend(pProjectedColumn);
     }
 
     // Clean up
@@ -365,7 +365,7 @@ PlanNodeList* NameValidator::pLookupWildcardColumns(QueryNode* pStartNode, PlanN
 
   GraphNav::bWalk(pStartNode, false, true, fVisitor, pRootNode);
 
-  return pProjectedExprList;
+  return pProjectedColumnList;
 }
 
 /*----------------------------------------------------------------------------*/

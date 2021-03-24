@@ -21,7 +21,7 @@
 #include "AggregateExpr.hpp"
 #include "LiteralExpr.hpp"
 #include "ColumnRef.hpp"
-#include "ProjectedExpr.hpp"
+#include "ProjectedColumn.hpp"
 #include "FilterOp.hpp"
 #include "AggregateOp.hpp"
 
@@ -235,7 +235,7 @@ void ExprValidator::vValidateProjectExprs(PlanNode *pRootNode, QueryNode* pPlanN
 
   while (pIter->bHasNext()) {
     QueryNode* pProjExpr = static_cast<QueryNode*>(pIter->pNext());
-    QueryNode* pExpr = ProjectedExpr::pExprNode(pProjExpr);
+    QueryNode* pExpr = ProjectedColumn::pExprNode(pProjExpr);
 
     // Convert the expression from a symbolic expression to an ordinal one.
     // This represents the work that this ProjectOp has to do.
@@ -443,23 +443,23 @@ void ExprValidator::vValidateSqlOpExprsAgainstGroupBy(PlanNode* pRootNode, Query
       // as AggregateOp when a groupby does exit.
       QueryNode* pProjectedExprs = ProjectOp::pProjectedExprs(pPlanOp);
 
-      PlanNodeIter* pProjectedExprIter = pProjectedExprs->pNewChildrenIter();
-      while (pProjectedExprIter->bHasNext()) {
-        QueryNode* pProjectExpr = static_cast<QueryNode*>(pProjectedExprIter->pNext());
-        ASSERT(ProjectedExpr::bIsOfType(pProjectExpr));
+      PlanNodeIter* pProjectedColumnIter = pProjectedExprs->pNewChildrenIter();
+      while (pProjectedColumnIter->bHasNext()) {
+        QueryNode* pProjectColumn = static_cast<QueryNode*>(pProjectedColumnIter->pNext());
+        ASSERT(ProjectedColumn::bIsOfType(pProjectColumn));
 
-        QueryNode* pExpr = ProjectedExpr::pExprNode(pProjectExpr);
+        QueryNode* pExpr = ProjectedColumn::pExprNode(pProjectColumn);
 
         try {
           vCheckNonAggExprIsInGroupBy(pExpr, pGroupByList);
 
         } catch (SemanticException& e) {
-          delete pProjectedExprIter;
+          delete pProjectedColumnIter;
           throw;
         }
       }
 
-      delete pProjectedExprIter;
+      delete pProjectedColumnIter;
     }
 
 //    } else if (OrderByOp::bIsOfType(pPlanOp)) {
@@ -509,8 +509,8 @@ void ExprValidator::vValidateSqlOpExprsAgainstProjectOp(PlanNode* pRootNode, Que
   QueryNode* pProjectedExprs = ProjectOp::pProjectedExprs(pProjectOp);
   PlanNodeIter* pIter = pProjectedExprs->pNewChildrenIter();
   while (pIter->bHasNext()) {
-    QueryNode* pProjectedExpr = static_cast<QueryNode*>(pIter->pNext());
-    QueryNode* pExpr = ProjectedExpr::pExprNode(pProjectedExpr);
+    QueryNode* pProjectedColumn = static_cast<QueryNode*>(pIter->pNext());
+    QueryNode* pExpr = ProjectedColumn::pExprNode(pProjectedColumn);
 
     if (Expr::bContainsNonaggregatedColumnRefs(pExpr)) {
       bAggregationAllowed = false;

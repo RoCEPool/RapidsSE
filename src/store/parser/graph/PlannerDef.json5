@@ -1415,9 +1415,9 @@
 // Path: /__root__/definitions/object/list/projectedExprs
                 {
                   name: "projectedExprs",
-                  value: "A list of projectedExpr objects",
+                  value: "A list of projectedColumn objects",
                   properties: [
-                    // We add a constraint that all children must be of type /__root__/definitions/object/compound/projectedExpr
+                    // We add a constraint that all children must be of type /__root__/definitions/object/compound/projectedColumn
                     { name: "__constraints", type: "/__root__/primitives/constraints", children: [
                       {
                         name: "childType",
@@ -1425,7 +1425,7 @@
                         children: [ {
                           name: "childTypeParam",
                           type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject",
-                          value: "/__root__/definitions/object/compound/projectedExpr"
+                          value: "/__root__/definitions/object/compound/projectedColumn"
                         } ]
                       }
                     ]} // end __constraints container
@@ -1607,10 +1607,10 @@
                   ]
                 },
 
-// Path: /__root__/definitions/object/compound/projectedExpr
+// Path: /__root__/definitions/object/compound/projectedColumn
                 {
-                  name: "projectedExpr",
-                  value: "An expression and an alias that it will be known by",
+                  name: "projectedColumn",
+                  value: "A compound object of an expression and an alias that it will be known by",
                   properties: [
                     {
                       name: "alias",
@@ -1623,7 +1623,7 @@
                       type: "/__root__/definitions/object/expr"
                     }
                   ]
-                }, // EndPath: /__root__/definitions/object/compound/projectedExpr
+                }, // EndPath: /__root__/definitions/object/compound/projectedColumn
 
 // Path: /__root__/definitions/object/compound/catalogDef
                 {

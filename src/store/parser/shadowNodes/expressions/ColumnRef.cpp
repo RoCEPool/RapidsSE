@@ -209,7 +209,7 @@ Stz* ColumnRef::szTable(QueryNode* pNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Returns the columnName of the projectedExpr                                */
+/* Returns the columnName of the ColumnRef                                    */
 /*----------------------------------------------------------------------------*/
 Stz* ColumnRef::szColumn(QueryNode* pNode)
 {

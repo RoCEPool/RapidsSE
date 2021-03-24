@@ -178,7 +178,7 @@ i8 LimitOp::iOffset(QueryNode* pNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Return a list of ProjectedExprs that represent the column expressions      */
+/* Return a list of ProjectedColumn that represent the column expressions     */
 /* that this PlanObject will return. All nodes and the list must be freed.    */
 /*----------------------------------------------------------------------------*/
 PlanNodeList* LimitOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)

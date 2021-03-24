@@ -38,7 +38,7 @@
 #include "FilterOp.hpp"
 #include "IntegerLiteral.hpp"
 #include "Literal.hpp"
-#include "ProjectedExpr.hpp"
+#include "ProjectedColumn.hpp"
 #include "ProjectOp.hpp"
 
 #include "ComparisonExpr.hpp"
@@ -1380,7 +1380,7 @@ void Dynamo::vAppendExpr(String* sPipeline, QueryNode* pNode) {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // alias
-  Stz *szAliasName = ProjectedExpr::szAliasName(pNode);
+  Stz *szAliasName = ProjectedColumn::szAliasName(pNode);
 
   if (szAliasName) {
     sPipeline->vCatSprint(
@@ -1429,12 +1429,12 @@ void Dynamo::vAppendAggregateOp(String* sPipeline, QueryNode* pNode)
       else
         bFirstExpr = true;
 
-      // get the next projExpr from the iterator
-      QueryNode *pProjectedExpr = static_cast<QueryNode *>(pIter->pNext());
-      ASSERT(pProjectedExpr);
-      ASSERT(ProjectedExpr::bIsOfType(pProjectedExpr));
+      // get the next projectedColumn from the iterator
+      QueryNode *pProjectedColumn = static_cast<QueryNode *>(pIter->pNext());
+      ASSERT(pProjectedColumn);
+      ASSERT(ProjectedColumn::bIsOfType(pProjectedColumn));
 
-      vAppendExpr(sPipeline, pProjectedExpr);
+      vAppendExpr(sPipeline, pProjectedColumn);
     }
     delete pIter;
 
@@ -1533,12 +1533,12 @@ void Dynamo::vAppendProjectOp(String* sPipeline, QueryNode* pNode)
       else
         bFirstExpr = true;
 
-      // get the next projExpr from the iterator
-      QueryNode *pProjectedExpr = static_cast<QueryNode *>(pIter->pNext());
-      ASSERT(pProjectedExpr);
-      ASSERT(ProjectedExpr::bIsOfType(pProjectedExpr));
+      // get the next projectedColumn from the iterator
+      QueryNode *pProjectedColumn = static_cast<QueryNode *>(pIter->pNext());
+      ASSERT(pProjectedColumn);
+      ASSERT(ProjectedColumn::bIsOfType(pProjectedColumn));
 
-      vAppendExpr(sPipeline, pProjectedExpr);
+      vAppendExpr(sPipeline, pProjectedColumn);
     }
     delete pIter;
 

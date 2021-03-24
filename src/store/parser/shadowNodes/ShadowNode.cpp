@@ -11,7 +11,7 @@
 #include "store/parser/shadowNodes/planObjects/StatementMarker.hpp"
 #include "store/parser/shadowNodes/compound/TableRef.hpp"
 #include "Expr.hpp"
-#include "store/parser/shadowNodes/compound/ProjectedExpr.hpp"
+#include "store/parser/shadowNodes/compound/ProjectedColumn.hpp"
 #include "ShadowRoot.hpp"
 
 #include "GraphValidator.hpp"
@@ -77,8 +77,8 @@ void ShadowNode::vDescribe(PlanNode* pNode, s2K& sBuf)
   // TableRefs
   else if (TableRef::bIsOfType(pNode))        { TableRef::vDescribe(pNode, sBuf);  }
 
-  // ProjectedExpr
-  else if (ProjectedExpr::bIsOfType(pNode))   { ProjectedExpr::vDescribe(pNode, sBuf);  }
+  // ProjectedColumn
+  else if (ProjectedColumn::bIsOfType(pNode))   { ProjectedColumn::vDescribe(pNode, sBuf);  }
 
   // Root node
   else if (ShadowRoot::bIsOfType(pNode))        { ShadowRoot::vDescribe(pNode, sBuf); }

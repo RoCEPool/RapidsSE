@@ -63,7 +63,7 @@
 #include "store/parser/shadowNodes/expressions/operators/aggregates/MinExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/aggregates/MaxExpr.hpp"
 
-#include "store/parser/shadowNodes/compound/ProjectedExpr.hpp"
+#include "store/parser/shadowNodes/compound/ProjectedColumn.hpp"
 
 #include "SqlException.hpp"
 
@@ -565,9 +565,9 @@ antlrcpp::Any SqlPlanner::visitSelectListItem(sqlParser::SelectListItemContext* 
   // Is there an alias?
   Text* pAliasText = pCleanId(pCtx->as);
 
-  QueryNode* pProjectedExpr = ProjectedExpr::pCreate(pExprNode, pAliasText);
+  QueryNode* pProjectedColumn = ProjectedColumn::pCreate(pExprNode, pAliasText);
 
-  m_pSelectItems->vAppend(pProjectedExpr);
+  m_pSelectItems->vAppend(pProjectedColumn);
 
   return nullptr;
 }

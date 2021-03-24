@@ -13,7 +13,7 @@
 #include "ColumnWildcard.hpp"
 #include "ColumnOrdinal.hpp"
 #include "OperatorExpr.hpp"
-#include "ProjectedExpr.hpp"
+#include "ProjectedColumn.hpp"
 #include "AdditionExpr.hpp"
 #include "MultiplicationExpr.hpp"
 #include "AndExpr.hpp"
@@ -289,8 +289,8 @@ QueryNode* Expr::pSymbolicToOrdinal(QueryNode*    pSymbolicExpr,
   i8 iOrdinal = 1;
 
   while (pIter->bHasNext()) {
-    QueryNode* pProjectedExpr = static_cast<QueryNode*>(pIter->pNext());
-    QueryNode* pColExpr = ProjectedExpr::pExprNode(pProjectedExpr);
+    QueryNode* pProjectedColumn = static_cast<QueryNode*>(pIter->pNext());
+    QueryNode* pColExpr = ProjectedColumn::pExprNode(pProjectedColumn);
 
 //    s2K sBuf1;
 //    s2K sBuf2;

@@ -16,7 +16,7 @@
 #include "store/parser/shadowNodes/compound/TableRef.hpp"
 #include "ColumnRef.hpp"
 #include "ColumnDef.hpp"
-#include "ProjectedExpr.hpp"
+#include "ProjectedColumn.hpp"
 
 using namespace Parser;
 
@@ -234,11 +234,11 @@ PlanNodeList* TableScanOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
                                                ColumnDef::szColumnName(pColumnDef));
 
     // Create a ProjectedExpr for this expression
-    QueryNode* pProjectedExpr = ProjectedExpr::pCreate(pColumnRef,
-                                                       new Text(ColumnDef::szColumnName(pColumnDef)));
+    QueryNode* pProjectedColumn = ProjectedColumn::pCreate(pColumnRef,
+                                                           new Text(ColumnDef::szColumnName(pColumnDef)));
 
     // Append it to the list
-    pColumnRefList->vAppend(pProjectedExpr);
+    pColumnRefList->vAppend(pProjectedColumn);
   }
 
   delete pIter;

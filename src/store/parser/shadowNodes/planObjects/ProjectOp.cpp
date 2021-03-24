@@ -8,7 +8,7 @@
 #include "PlanConstants.hpp"
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
-#include "store/parser/shadowNodes/compound/ProjectedExpr.hpp"
+#include "store/parser/shadowNodes/compound/ProjectedColumn.hpp"
 #include "Expr.hpp"
 
 #include "GraphNav.hpp"
@@ -75,11 +75,11 @@ void ProjectOp::vDescribe(PlanNode* pNode, s2K& sBuf)
     PlanNodeIter* pIter = pProjectedExprs->pNewChildrenIter();
 
     while (pIter->bHasNext()) {
-      QueryNode* pProjectedExpr = static_cast<QueryNode*>(pIter->pNext());
-      ASSERT(ProjectedExpr::bIsOfType(pProjectedExpr));
+      QueryNode* pProjectedColumn = static_cast<QueryNode*>(pIter->pNext());
+      ASSERT(ProjectedColumn::bIsOfType(pProjectedColumn));
 
       sBuf.vConcat("\n  "_Stz);
-      ProjectedExpr::vDescribe(pProjectedExpr, sBuf);
+      ProjectedColumn::vDescribe(pProjectedColumn, sBuf);
     }
 
     delete pIter;
@@ -114,11 +114,11 @@ void ProjectOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iI
     while (pIter->bHasNext()) {
       QueryNode* pProjExpr = static_cast<QueryNode*>(pIter->pNext());
       ASSERT(pProjExpr);
-      ASSERT(ProjectedExpr::bIsOfType(pProjExpr));
+      ASSERT(ProjectedColumn::bIsOfType(pProjExpr));
 
       // Get the description of the projected expression
       s2K sColBuf;
-      ProjectedExpr::vDescribe(pProjExpr, sColBuf, pColExprList, pRootNode);
+      ProjectedColumn::vDescribe(pProjExpr, sColBuf, pColExprList, pRootNode);
       sBuf.vConcat("\n"_Stz);
       vAppendIndent(sBuf, iIndent, IF_PLAIN);
       sBuf.vCatSprint("column: (%s)"_Stz, sColBuf.szStz());
@@ -179,8 +179,8 @@ b1 ProjectOp::bHasAnAggregate(QueryNode* pNode)
   while (pIter->bHasNext()) {
     QueryNode* pProjExpr = static_cast<QueryNode*>(pIter->pNext());
 
-    ASSERT(ProjectedExpr::bIsOfType(pProjExpr));
-    if (ProjectedExpr::bContainsAnAggregate(pProjExpr)) {
+    ASSERT(ProjectedColumn::bIsOfType(pProjExpr));
+    if (ProjectedColumn::bContainsAnAggregate(pProjExpr)) {
       bResult = true;
       break;
     }
@@ -221,16 +221,16 @@ QueryNode* ProjectOp::pOrdinalProjectedExprs(QueryNode* pNode, PlanNode* pRootNo
   // Create a container node, but without any children
   QueryNode* pProjectedExprs = pNode->pDeepCopy(new PlanNodeList());
 
-  // Iterate over each of the ProjectedExpr children of pNode
+  // Iterate over each of the ProjectedColumn children of pNode
   PlanNodeIter* pIter = pNode->pNewChildrenIter();
 
   while (pIter->bHasNext()) {
-    QueryNode* pProjectedExpr = static_cast<QueryNode*>(pIter->pNext());
-    ASSERT(ProjectedExpr::bIsOfType(pProjectedExpr));
+    QueryNode* pProjectedColumn = static_cast<QueryNode*>(pIter->pNext());
+    ASSERT(ProjectedColumn::bIsOfType(pProjectedColumn));
 
-    // Convert the ProjectedExpr from a symbolic representation to an ordinal representation
-    QueryNode* pOrdinalProjectedExpr = ProjectedExpr::pSymbolicToOrdinal(pProjectedExpr, pColExprList, pRootNode);
-    pProjectedExprs->vAppendChild(pOrdinalProjectedExpr);
+    // Convert the ProjectedColumn from a symbolic representation to an ordinal representation
+    QueryNode* pOrdinalProjectedColumn = ProjectedColumn::pSymbolicToOrdinal(pProjectedColumn, pColExprList, pRootNode);
+    pProjectedExprs->vAppendChild(pOrdinalProjectedColumn);
   }
 
   delete pIter;
@@ -263,7 +263,7 @@ PlanNodeList* ProjectOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
   while (pIter->bHasNext()) {
 
     QueryNode* pProjExpr = static_cast<QueryNode*>(pIter->pNext());
-    ASSERT(ProjectedExpr::bIsOfType(pProjExpr));
+    ASSERT(ProjectedColumn::bIsOfType(pProjExpr));
 
     QueryNode* pDup = pProjExpr->pDeepCopy();
     pColumnRefList->vAppend(pDup);
