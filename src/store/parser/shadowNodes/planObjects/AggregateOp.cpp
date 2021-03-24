@@ -73,13 +73,13 @@ void AggregateOp::vDescribe(PlanNode* pNode, s2K& sBuf)
 
   sBuf.vConcat("AggregateOp : "_Stz);
 
-  QueryNode* pProjectedExprs = static_cast<QueryNode*>(GraphNav::pFindProperty(C_PROJECTEDEXPRS_PROP, pAggregateOp));
-  ASSERT(pProjectedExprs);
+  QueryNode* pProjectedColumns = static_cast<QueryNode*>(GraphNav::pFindProperty(C_PROJECTEDCOLUMNS_PROP, pAggregateOp));
+  ASSERT(pProjectedColumns);
 
-  if (pProjectedExprs->bHasChildren()) {
+  if (pProjectedColumns->bHasChildren()) {
     sBuf.vConcat("project { "_Stz);
     b1 bFirst = true;
-    PlanNodeIter* pIter = pProjectedExprs->pNewChildrenIter();
+    PlanNodeIter* pIter = pProjectedColumns->pNewChildrenIter();
 
     while (pIter->bHasNext()) {
       QueryNode* pProjectedColumn = static_cast<QueryNode*>(pIter->pNext());
@@ -138,7 +138,7 @@ void AggregateOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 
   sBuf.vConcat(GraphNav::szLeafType(pNode->szType()));
 
   // Get the list of Projected expressions
-  PlanNode* pProjExprs = GraphNav::pFindProperty(const_cast<Stz*>(C_PROJECTEDEXPRS_PROP), pNode);
+  PlanNode* pProjExprs = GraphNav::pFindProperty(const_cast<Stz*>(C_PROJECTEDCOLUMNS_PROP), pNode);
   ASSERT(pProjExprs);
 
   ASSERT(pNode->nChildren() == 1);

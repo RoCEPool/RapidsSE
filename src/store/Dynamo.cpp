@@ -1408,18 +1408,18 @@ void Dynamo::vAppendAggregateOp(String* sPipeline, QueryNode* pNode)
   bool bFirstExpr = false;
 
   // Get the list of projected expressions from ProjectOp
-  QueryNode *pProjectedExprs = AggregateOp::pProjectedExprs(pNode);
-  ASSERT(pProjectedExprs);
+  QueryNode *pProjectedColumns = AggregateOp::pProjectedColumns(pNode);
+  ASSERT(pProjectedColumns);
 
   // Iterate each projected expression
-  if (pProjectedExprs->bHasChildren()) {
+  if (pProjectedColumns->bHasChildren()) {
 
     sPipeline->vCatSprint(
         "    | aggreg 0 \""
         ""_Stz);
 
     // get a plan node iterator
-    PlanNodeIter *pIter = pProjectedExprs->pNewChildrenIter();
+    PlanNodeIter *pIter = pProjectedColumns->pNewChildrenIter();
 
     while (pIter->bHasNext()) {
 
@@ -1512,18 +1512,18 @@ void Dynamo::vAppendProjectOp(String* sPipeline, QueryNode* pNode)
   bool bFirstExpr = false;
 
   // Get the list of projected expressions from ProjectOp
-  QueryNode *pProjectedExprs = ProjectOp::pProjectedExprs(pNode);
-  ASSERT(pProjectedExprs);
+  QueryNode *pProjectedColumns = ProjectOp::pProjectedColumns(pNode);
+  ASSERT(pProjectedColumns);
 
   // Iterate each projected expression
-  if (pProjectedExprs->bHasChildren()) {
+  if (pProjectedColumns->bHasChildren()) {
 
     sPipeline->vCatSprint(
         "    | project 0 \""
         ""_Stz);
 
     // get a plan node iterator
-    PlanNodeIter *pIter = pProjectedExprs->pNewChildrenIter();
+    PlanNodeIter *pIter = pProjectedColumns->pNewChildrenIter();
 
     while (pIter->bHasNext()) {
 

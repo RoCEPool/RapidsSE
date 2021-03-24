@@ -180,7 +180,7 @@ QueryNode* ProjectedColumn::pSymbolicToOrdinal(QueryNode* pNode,
     pAlias = new Text(ProjectedColumn::szAliasName(pNode));
   }
 
-  // Create a new ProjectedExpr and return it
+  // Create a new ProjectedColumn and return it
   QueryNode* pOrdinalProjectedColumn = ProjectedColumn::pCreate(pOrdinalExpr, pAlias);
 
   return pOrdinalProjectedColumn;

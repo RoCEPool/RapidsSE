@@ -20,8 +20,8 @@ using namespace Parser;
 /*----------------------------------------------------------------------------*/
 static Stz* C_PROJECTOP_DEFN = "/__root__/definitions/object/planObject/sqlOperator/projectOp"_Stz;
 
-Stz* ProjectOp::C_PROJECTEDEXPRS_PROP = "projectedExprs"_Stz;
-Stz* ProjectOp::C_PROJECTEDEXPRS_DEFN = "/__root__/definitions/object/list/projectedExprs"_Stz;
+Stz* ProjectOp::C_PROJECTEDCOLUMNS_PROP = "projectedColumns"_Stz;
+Stz* ProjectOp::C_PROJECTEDCOLUMNS_DEFN = "/__root__/definitions/object/list/projectedColumns"_Stz;
 
 
 
@@ -37,21 +37,21 @@ QueryNode* ProjectOp::pCreate(QueryNodeList* pSelectItems)
   ASSERT(pSelectItems);
   ASSERT(pSelectItems->nItems() > 0);
 
-  // Create the projectedExprs property of the ProjectOp
-  QueryNode* pProjectedExprs = new QueryNode(C_PROJECTEDEXPRS_PROP, const_cast<Stz*>(C_PROJECTEDEXPRS_DEFN));
+  // Create the projectedColumns property of the ProjectOp
+  QueryNode* pProjectedColumns = new QueryNode(C_PROJECTEDCOLUMNS_PROP, const_cast<Stz*>(C_PROJECTEDCOLUMNS_DEFN));
 
   QueryNode* pItem;
   while ((pItem = pSelectItems->pPop()) != nullptr) {
-    pProjectedExprs->vAppendChild(pItem);
+    pProjectedColumns->vAppendChild(pItem);
   }
 
   // Create a unique name for this ProjectOp object
   s256 sName;
   ShadowNode::vObjName(GraphNav::szLeafType(C_PROJECTOP_DEFN), sName);
 
-  // Create the object and add  its projectedExprs property
+  // Create the object and add  its projectedColumns property
   QueryNode* pProjectOp = new QueryNode(sName, C_PROJECTOP_DEFN);
-  pProjectOp->vAppendProperty(pProjectedExprs);
+  pProjectOp->vAppendProperty(pProjectedColumns);
 
   return pProjectOp;
 }
@@ -68,11 +68,11 @@ void ProjectOp::vDescribe(PlanNode* pNode, s2K& sBuf)
 
   sBuf.vConcat("ProjectOp :"_Stz);
 
-  QueryNode* pProjectedExprs = static_cast<QueryNode*>(GraphNav::pFindProperty(C_PROJECTEDEXPRS_PROP, pProjectOp));
-  ASSERT(pProjectedExprs);
+  QueryNode* pProjectedColumns = static_cast<QueryNode*>(GraphNav::pFindProperty(C_PROJECTEDCOLUMNS_PROP, pProjectOp));
+  ASSERT(pProjectedColumns);
 
-  if (pProjectedExprs->bHasChildren()) {
-    PlanNodeIter* pIter = pProjectedExprs->pNewChildrenIter();
+  if (pProjectedColumns->bHasChildren()) {
+    PlanNodeIter* pIter = pProjectedColumns->pNewChildrenIter();
 
     while (pIter->bHasNext()) {
       QueryNode* pProjectedColumn = static_cast<QueryNode*>(pIter->pNext());
@@ -100,7 +100,7 @@ void ProjectOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iI
   sBuf.vConcat(GraphNav::szLeafType(pNode->szType()));
 
   // Get the list of projected expressions
-  PlanNode* pProjExprs = GraphNav::pFindProperty(const_cast<Stz*>(C_PROJECTEDEXPRS_PROP), pNode);
+  PlanNode* pProjExprs = GraphNav::pFindProperty(const_cast<Stz*>(C_PROJECTEDCOLUMNS_PROP), pNode);
   ASSERT(pProjExprs);
 
   ASSERT(pNode->nChildren() == 1);
@@ -165,7 +165,7 @@ b1 ProjectOp::bIsExactType(PlanNode *pNode)
 b1 ProjectOp::bHasAnAggregate(QueryNode* pNode)
 {
   QueryNode* pProjExprs =
-      static_cast<QueryNode*>(GraphNav::pFindProperty(const_cast<Stz *>(C_PROJECTEDEXPRS_PROP), pNode));
+      static_cast<QueryNode*>(GraphNav::pFindProperty(const_cast<Stz *>(C_PROJECTEDCOLUMNS_PROP), pNode));
 
   b1 bResult = false;
 
@@ -191,12 +191,12 @@ b1 ProjectOp::bHasAnAggregate(QueryNode* pNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Returns the projectedExprs node of the projectOp                           */
+/* Returns the projectedColumns node of the projectOp                           */
 /*----------------------------------------------------------------------------*/
-QueryNode* ProjectOp::pProjectedExprs(QueryNode* pNode)
+QueryNode* ProjectOp::pProjectedColumns(QueryNode* pNode)
 {
   QueryNode* pProjExprs =
-      static_cast<QueryNode*>(GraphNav::pFindProperty(const_cast<Stz *>(C_PROJECTEDEXPRS_PROP), pNode));
+      static_cast<QueryNode*>(GraphNav::pFindProperty(const_cast<Stz *>(C_PROJECTEDCOLUMNS_PROP), pNode));
 
   return pProjExprs;
 }
@@ -205,7 +205,7 @@ QueryNode* ProjectOp::pProjectedExprs(QueryNode* pNode)
 /* Returns a new copy of the projected expressions rewritten relative to      */
 /* column ordinals. Must be freed after use.                                  */
 /*----------------------------------------------------------------------------*/
-QueryNode* ProjectOp::pOrdinalProjectedExprs(QueryNode* pNode, PlanNode* pRootNode)
+QueryNode* ProjectOp::pOrdinalProjectedColumns(QueryNode* pNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -219,7 +219,7 @@ QueryNode* ProjectOp::pOrdinalProjectedExprs(QueryNode* pNode, PlanNode* pRootNo
   ASSERT(pColExprList->nItems() > 0);
 
   // Create a container node, but without any children
-  QueryNode* pProjectedExprs = pNode->pDeepCopy(new PlanNodeList());
+  QueryNode* pProjectedColumns = pNode->pDeepCopy(new PlanNodeList());
 
   // Iterate over each of the ProjectedColumn children of pNode
   PlanNodeIter* pIter = pNode->pNewChildrenIter();
@@ -230,7 +230,7 @@ QueryNode* ProjectOp::pOrdinalProjectedExprs(QueryNode* pNode, PlanNode* pRootNo
 
     // Convert the ProjectedColumn from a symbolic representation to an ordinal representation
     QueryNode* pOrdinalProjectedColumn = ProjectedColumn::pSymbolicToOrdinal(pProjectedColumn, pColExprList, pRootNode);
-    pProjectedExprs->vAppendChild(pOrdinalProjectedColumn);
+    pProjectedColumns->vAppendChild(pOrdinalProjectedColumn);
   }
 
   delete pIter;
@@ -238,11 +238,11 @@ QueryNode* ProjectOp::pOrdinalProjectedExprs(QueryNode* pNode, PlanNode* pRootNo
   pColExprList->vDeleteAll();
   delete pColExprList;
 
-  return pProjectedExprs;
+  return pProjectedColumns;
 }
 
 /*----------------------------------------------------------------------------*/
-/* Return a list of ProjectedExprs that represent the column expressions      */
+/* Return a list of ProjectedColumns that represent the column expressions      */
 /* that this PlanObject will return. All nodes and the list must be freed.    */
 /*----------------------------------------------------------------------------*/
 PlanNodeList* ProjectOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
@@ -257,7 +257,7 @@ PlanNodeList* ProjectOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
   // The list we return and all of its elements need to be deletable.
   // So we need to duplicate each projected expression before adding it
   // to the list.
-  QueryNode* pProjExprs = pProjectedExprs(pNode);
+  QueryNode* pProjExprs = pProjectedColumns(pNode);
 
   PlanNodeIter* pIter = pProjExprs->pNewChildrenIter();
   while (pIter->bHasNext()) {

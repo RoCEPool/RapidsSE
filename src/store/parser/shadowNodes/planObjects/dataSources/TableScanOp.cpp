@@ -203,7 +203,7 @@ PlanNodeList* TableScanOp::pColumnDefs(QueryNode* pNode, PlanNode* pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Return a list of ProjectedExprs that represent the column expressions      */
+/* Return a list of ProjectedColumns that represent the column expressions      */
 /* that this PlanObject will return. All nodes and the list must be freed.    */
 /*----------------------------------------------------------------------------*/
 PlanNodeList* TableScanOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
@@ -233,7 +233,7 @@ PlanNodeList* TableScanOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
                                                ColumnDef::szTableName(pColumnDef),
                                                ColumnDef::szColumnName(pColumnDef));
 
-    // Create a ProjectedExpr for this expression
+    // Create a ProjectedColumn for this expression
     QueryNode* pProjectedColumn = ProjectedColumn::pCreate(pColumnRef,
                                                            new Text(ColumnDef::szColumnName(pColumnDef)));
 

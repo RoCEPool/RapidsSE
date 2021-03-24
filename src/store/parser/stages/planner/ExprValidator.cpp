@@ -166,7 +166,7 @@ void ExprValidator::vValidateGroupByExprs(PlanNode *pRootNode, QueryNode* pPlanN
   }
 
   // Get the list of projected expressions
-  QueryNode* pProjectExprs = AggregateOp::pProjectedExprs(pAggregateOp);
+  QueryNode* pProjectExprs = AggregateOp::pProjectedColumns(pAggregateOp);
 
   // Get the group by list
   QueryNode* pGroupByList = AggregateOp::pGroupByList(pAggregateOp);
@@ -207,7 +207,7 @@ void ExprValidator::vValidateProjectExprs(PlanNode *pRootNode, QueryNode* pPlanN
   }
 
   // Get the list of projected expressions
-  QueryNode* pProjectExprs = ProjectOp::pProjectedExprs(pProjectOp);
+  QueryNode* pProjectExprs = ProjectOp::pProjectedColumns(pProjectOp);
 
   // Iterate the expressions being projected
   PlanNodeIter* pIter = pProjectExprs->pNewChildrenIter();
@@ -441,9 +441,9 @@ void ExprValidator::vValidateSqlOpExprsAgainstGroupBy(PlanNode* pRootNode, Query
     } else if (ProjectOp::bIsOfType(pPlanOp)) {
       // Covers both ProjectOp in the case of no group by, as well
       // as AggregateOp when a groupby does exit.
-      QueryNode* pProjectedExprs = ProjectOp::pProjectedExprs(pPlanOp);
+      QueryNode* pProjectedColumns = ProjectOp::pProjectedColumns(pPlanOp);
 
-      PlanNodeIter* pProjectedColumnIter = pProjectedExprs->pNewChildrenIter();
+      PlanNodeIter* pProjectedColumnIter = pProjectedColumns->pNewChildrenIter();
       while (pProjectedColumnIter->bHasNext()) {
         QueryNode* pProjectColumn = static_cast<QueryNode*>(pProjectedColumnIter->pNext());
         ASSERT(ProjectedColumn::bIsOfType(pProjectColumn));
@@ -506,8 +506,8 @@ void ExprValidator::vValidateSqlOpExprsAgainstProjectOp(PlanNode* pRootNode, Que
   b1 bAggregationAllowed = true;
   QueryNode* pNonAggColRef = nullptr;
 
-  QueryNode* pProjectedExprs = ProjectOp::pProjectedExprs(pProjectOp);
-  PlanNodeIter* pIter = pProjectedExprs->pNewChildrenIter();
+  QueryNode* pProjectedColumns = ProjectOp::pProjectedColumns(pProjectOp);
+  PlanNodeIter* pIter = pProjectedColumns->pNewChildrenIter();
   while (pIter->bHasNext()) {
     QueryNode* pProjectedColumn = static_cast<QueryNode*>(pIter->pNext());
     QueryNode* pExpr = ProjectedColumn::pExprNode(pProjectedColumn);

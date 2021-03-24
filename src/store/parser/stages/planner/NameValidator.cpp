@@ -211,9 +211,9 @@ void NameValidator::vResolveColumnWildcards(PlanNode *pRootNode, QueryNode* pPla
 
     // Get the list of projected expressions and iterate these,
     // looking for columnWildcards.
-    QueryNode* pProjectedExprs = ProjectOp::pProjectedExprs(pProjectOp);
+    QueryNode* pProjectedColumns = ProjectOp::pProjectedColumns(pProjectOp);
 
-    if (pProjectedExprs->nChildren() == 0) {
+    if (pProjectedColumns->nChildren() == 0) {
       return GraphNav::WALK_CONTINUE;   // Keep walking
     }
 
@@ -221,7 +221,7 @@ void NameValidator::vResolveColumnWildcards(PlanNode *pRootNode, QueryNode* pPla
 
     while (bRetry) {
       bRetry = false;
-      PlanNodeIter *pIter = pProjectedExprs->pNewChildrenIter();
+      PlanNodeIter *pIter = pProjectedColumns->pNewChildrenIter();
 
       while (pIter->bHasNext()) {
         QueryNode *pProjectedColumn = static_cast<QueryNode *>(pIter->pNext());
@@ -234,7 +234,7 @@ void NameValidator::vResolveColumnWildcards(PlanNode *pRootNode, QueryNode* pPla
         }
 
         // We've got a columnWildcard. We need to remove this projectedColumn
-        // from the projectedExprs list and replace it with new projectedColumn
+        // from the projectedColumns list and replace it with new projectedColumn
         // instances that have columnRefs from the resolved tables.
 
         // First get any catalog/schema/table scopes that may limit the wildcard
@@ -267,12 +267,12 @@ void NameValidator::vResolveColumnWildcards(PlanNode *pRootNode, QueryNode* pPla
 
         // Now replace the ProjectedColumn that contains the columnWildcard with
         // each of the resolved ProjectedColumn instances that contain columnRefs.
-        GraphEditor::vReplaceChild(pProjectedExprs, pProjectedColumn, pResolvedWildcardList);
+        GraphEditor::vReplaceChild(pProjectedColumns, pProjectedColumn, pResolvedWildcardList);
 
         ASSERT(pResolvedWildcardList->nItems() == 0);
         delete pResolvedWildcardList;
 
-        // We can't modify the projectedExprs list and keep iterating it.
+        // We can't modify the projectedColumns list and keep iterating it.
         // And there may be more columnWildcards. So we need to start again
         // and reiterate it from the beginning with a new iterator.
         bRetry = true;
@@ -346,7 +346,7 @@ PlanNodeList* NameValidator::pLookupWildcardColumns(QueryNode* pStartNode, PlanN
                                                   ColumnDef::szTableName(pColumnDef),
                                                   ColumnDef::szColumnName(pColumnDef) );
 
-      // Make a projectedExpr from the columnRef.
+      // Make a projectedColumn from the columnRef.
       // We're not going to give the column an alias.
       QueryNode* pProjectedColumn = ProjectedColumn::pCreate(pColumnRef, nullptr);
 

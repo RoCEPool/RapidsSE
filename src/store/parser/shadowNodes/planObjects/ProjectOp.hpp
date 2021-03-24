@@ -14,8 +14,8 @@ namespace Parser
   class ProjectOp : public SqlOperator
   {
   protected:
-    static Stz* C_PROJECTEDEXPRS_PROP;
-    static Stz* C_PROJECTEDEXPRS_DEFN;
+    static Stz* C_PROJECTEDCOLUMNS_PROP;
+    static Stz* C_PROJECTEDCOLUMNS_DEFN;
 
   private:
     // Shalt never be instantiated. Static functions only.
@@ -37,15 +37,15 @@ namespace Parser
 
     // Return the internal node that represents the list of projected expressions.
     // Individual projected expressions are children of this node.
-    static QueryNode* pProjectedExprs(QueryNode* pNode);
+    static QueryNode* pProjectedColumns(QueryNode* pNode);
 
     // Returns a new copy of the projected expressions rewritten relative to column ordinals.
     // Must be freed after use.
-    static QueryNode* pOrdinalProjectedExprs(QueryNode* pNode, PlanNode* pRootNode);
+    static QueryNode* pOrdinalProjectedColumns(QueryNode* pNode, PlanNode* pRootNode);
 
-    // Return a list of ProjectedExprs that represent the column expressions
+    // Return a list of ProjectedColumns that represent the column expressions
     // that this PlanObject will return. All nodes and the list must be freed.
-    // This is conceptually the same as pProjectedExprs() above, except this
+    // This is conceptually the same as pProjectedColumns() above, except this
     // function is implemented by all PlanObjects.
     static PlanNodeList* pColumnExprs(QueryNode* pNode, PlanNode* pRootNode);
 

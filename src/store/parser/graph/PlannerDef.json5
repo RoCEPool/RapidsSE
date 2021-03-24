@@ -406,9 +406,9 @@
                       value: "An operator that changes the definition of the rows that it processes",
                       properties: [
                         {
-                          name: "projectedExprs",
+                          name: "projectedColumns",
                           value: "A list of expressions to be projected and their aliases",
-                          type: "/__root__/definitions/object/list/projectedExprs",
+                          type: "/__root__/definitions/object/list/projectedColumns",
                           children: []
                         }
                       ],
@@ -420,7 +420,7 @@
                           properties: [
                             {
                               name: "groupBy",
-                              value: "A list of expressions that the projectedExprs are to be grouped by",
+                              value: "A list of expressions that the projectedColumns are to be grouped by",
                               type: "/__root__/definitions/object/list/exprList"
                             }
                           ],
@@ -1412,9 +1412,9 @@
               value: "A container of various specific list types",
               children: [
 
-// Path: /__root__/definitions/object/list/projectedExprs
+// Path: /__root__/definitions/object/list/projectedColumns
                 {
-                  name: "projectedExprs",
+                  name: "projectedColumns",
                   value: "A list of projectedColumn objects",
                   properties: [
                     // We add a constraint that all children must be of type /__root__/definitions/object/compound/projectedColumn
@@ -1429,9 +1429,9 @@
                         } ]
                       }
                     ]} // end __constraints container
-                  ], // end projectedExprs properties
+                  ], // end projectedColumns properties
                   children: []
-                }, // EndPath: /__root__/definitions/object/list/projectedExprs
+                }, // EndPath: /__root__/definitions/object/list/projectedColumns
 
 // Path: /__root__/definitions/object/list/exprList
                 {
