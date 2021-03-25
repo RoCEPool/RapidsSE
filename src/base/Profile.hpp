@@ -28,6 +28,8 @@ namespace BASE
     Profile(Stz* szOpName);
    ~Profile(void) noexcept(false);
     
+    static void vPostRecv(void* aProfile);
+
     void       vOpName(Stz* aName);
     RU_Cpu*    pRU_Cpu();
     RU_Memory* pRU_Memory();

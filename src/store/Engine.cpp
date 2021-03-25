@@ -42,6 +42,9 @@
 #include "Table.hpp"
 #include "Index.hpp"
 #include "BucketMap.hpp"
+#include "CrwBuffer.hpp"
+#include "StreamSet.hpp"
+#include "Marker.hpp"
 
 #include "eBO.h"
 #include "TagConstants.h"
@@ -1158,9 +1161,16 @@ void Engine::vOpenTrace(void)
 void Engine::vPostRecvFns(void)
 {
   gxaSizeHeap[CN_BUCKETMAP].m_fpPostRecvFn = (fpPOSTFN*)BucketMap::vPostRecv;
+  gxaSizeHeap[CN_CRWBUFFER].m_fpPostRecvFn = (fpPOSTFN*)CrwBuffer::vPostRecv;
+  gxaSizeHeap[CN_CSVBUFFER].m_fpPostRecvFn = (fpPOSTFN*)CsvBuffer::vPostRecv;
   gxaSizeHeap[CN_INDEX].m_fpPostRecvFn     = (fpPOSTFN*)Index::vPostRecv;
   gxaSizeHeap[CN_INDEXDEF].m_fpPostRecvFn  = (fpPOSTFN*)IndexDef::vPostRecv;
+  gxaSizeHeap[CN_INFOSET].m_fpPostRecvFn   = (fpPOSTFN*)InfoSet::vPostRecv;
+  gxaSizeHeap[CN_MARKER].m_fpPostRecvFn    = (fpPOSTFN*)Marker::vPostRecv;
+  gxaSizeHeap[CN_PROFILE].m_fpPostRecvFn   = (fpPOSTFN*)Profile::vPostRecv;
+  gxaSizeHeap[CN_ROWBUFFER].m_fpPostRecvFn = (fpPOSTFN*)RowBuffer::vPostRecv;
   gxaSizeHeap[CN_STREAMDEF].m_fpPostRecvFn = (fpPOSTFN*)StreamDef::vPostRecv;
+  gxaSizeHeap[CN_STREAMSET].m_fpPostRecvFn = (fpPOSTFN*)StreamSet::vPostRecv;
   gxaSizeHeap[CN_TABLE].m_fpPostRecvFn     = (fpPOSTFN*)Table::vPostRecv;
 }
 

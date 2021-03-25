@@ -537,8 +537,9 @@ void StreamDef::vToMetadata(Stz* sMetadata)
 /*----------------------------------------------------------------------------*/
 void StreamDef::vPostRecv(void* aStreamDef)
 {
-
+  _static_
   
+  StreamDef* pStreamDef = _pStreamDef(aStreamDef);
 }
 
 

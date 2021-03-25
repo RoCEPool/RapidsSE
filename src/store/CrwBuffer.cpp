@@ -178,6 +178,16 @@ void CrwBuffer::vToRow(RowSingle* pRowSingle, Crw* aCrw)
   RowInflator::vInflate_AllColumns_into_RowSingle(pRowSingle,aCrw);
 }
 
+/*----------------------------------------------------------------------------*/
+/* post recv function                                                         */
+/*----------------------------------------------------------------------------*/
+void CrwBuffer::vPostRecv(void* aCrwBuffer)
+{
+  _static_
+  
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(aCrwBuffer);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/

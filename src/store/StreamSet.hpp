@@ -19,6 +19,8 @@ namespace STORE
     void* operator new(size_t);
     void operator delete(void*);
   
+    static void vPostRecv(void* aStreamSet);
+
     StreamSet(void);
     StreamSet(StreamDef* pStreamDef);
     ~StreamSet(void) noexcept(false);

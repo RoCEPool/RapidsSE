@@ -689,6 +689,7 @@ L_RETURN:
 void IndexDef::vPostRecv(void* aIndexDef)
 {
   
+  IndexDef* pIndexDef = _pIndexDef(aIndexDef);
 }
 
 

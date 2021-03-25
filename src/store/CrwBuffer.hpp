@@ -4,6 +4,7 @@
 #pragma once
 
 #include "RowSingle.hpp"
+#include "Crw.hpp"
 
 namespace STORE
 {
@@ -32,6 +33,8 @@ namespace STORE
     static CrwBuffer* pRefdCrwBuffer(Rrf& xRef);
     static CrwBuffer* pToCrwBuffer(void* aAddr);
     static void       vToRow(RowSingle* pRow, Crw* aCrw);
+  
+    static void       vPostRecv(void* aCrwBuffer);
 
     void       vStreamDef(StreamDef* pStreamDef);
     void       vTable(Table* pTable);

@@ -29,6 +29,8 @@ namespace STORE
       
     static RowBuffer* pToRowBuffer(void* aAddr);
 
+    static void       vPostRecv(void* aRowBuffer);
+
     Row* pAllotCopyRow(RowSingle* pRowSingle);
   
     Row* pAllotRow(void);
