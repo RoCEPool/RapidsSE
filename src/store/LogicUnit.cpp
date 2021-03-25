@@ -2368,12 +2368,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_IXT_INDEXTREE_SET(&aiDstk);      // indextree / devixt
         break;//+endCase
 
-      case EO_DEVIXT_INDEXTREE_DELETE: ArgNil(); // delete indexTree
-        dLU0(EO_DEVIXT_INDEXTREE_DELETE);
-        vDev_IXT_INDEXTREE_DELETE(&aiDstk);   // devixt
-        aRluCommon->m_pIndexTree = nullptr;
-        break;//+endCase
-
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // row device entWrk operators
       case EO_DEVROW_ENTWRK_APPENDELMI: ArgNil(); // append next element value (int)

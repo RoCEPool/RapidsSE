@@ -242,7 +242,6 @@ enum eEO : u1 // expression operators
   // ixt device index set operators
   /*  S  */ EO_DEVIXT_INDEXNM_SET,      // set the index name in the dev
   /*  S  */ EO_DEVIXT_INDEXTREE_SET,    // set the indexTree in the ixt dev
-  /*  S  */ EO_DEVIXT_INDEXTREE_DELETE, // delete the indexTree in the ixt dev
 
   // row device entWrk
   /*    */ EO_DEVROW_ENTWRK_APPENDELMI,// append next element value (int)
@@ -544,7 +543,6 @@ static Stz* aEO[]
   // ixt device index set operators
   /*    */ "EO_DEVIXT_INDEXNM_SET"_Stz,
   /*    */ "EO_DEVIXT_INDEXTREE_SET"_Stz,
-  /*    */ "EO_DEVIXT_INDEXTREE_DELETE"_Stz,
 
   // row device entWrk operators
   /*    */ "EO_DEVROW_ENTWRK_APPENDELMI"_Stz,
@@ -854,7 +852,6 @@ static EoArg EoArgs[]
   // ixt device index set operators
   { EA_STRING, -1 },  // EO_DEVIXT_INDEXNM_SET
   { EA_NONE,    0 },  // EO_DEVIXT_INDEXTREE_SET
-  { EA_NONE,    0 },  // EO_DEVIXT_INDEXTREE_DELETE
 
   // row device entWrk
   { EA_NONE,    0 },  // EO_DEVROW_ENTWRK_APPENDELMI

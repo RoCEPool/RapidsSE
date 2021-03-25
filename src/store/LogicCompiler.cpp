@@ -90,7 +90,6 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_IXT_IDX_DUMP"_Stz,      (const void *) vDev_IXT_IDX_DUMP      },
   { "vDev_IXT_ENT_PRINT"_Stz,     (const void *) vDev_IXT_ENT_PRINT     },
   { "vDev_IXT_INDEXNM_SET"_Stz,   (const void *) vDev_IXT_INDEXNM_SET   },
-  { "vDev_IXT_INDEXTREE_DELETE"_Stz,(const void *) vDev_IXT_INDEXTREE_DELETE },
   { "vDev_IXT_INDEXTREE_SET"_Stz, (const void *) vDev_IXT_INDEXTREE_SET },
   { "vDev_IXT_IDX_INS"_Stz,       (const void *) vDev_IXT_IDX_INS       },
   { "vDev_IXT_IDX_ENTRIES"_Stz,   (const void *) vDev_IXT_IDX_ENTRIES   },
