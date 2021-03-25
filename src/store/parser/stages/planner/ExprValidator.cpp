@@ -56,24 +56,41 @@ void ExprValidator::vValidateExprs(PlanNode *pRootNode)
   ASSERT(StatementMarker::bIsOfType(pPlanNode->pFirstChild()));
   QueryNode* pStatementMarker = static_cast<QueryNode*>(pPlanNode->pFirstChild());
 
-  // TODO: repeat for each StatementMarker subgraph
+  // We want to iterate over each logical subgraph, bounded by StatementMarkers,
+  // and run the validation checks on each of them.
 
-  // Validate that the result types of any expressions are not invalid.
-  vValidateExprResultType(pRootNode, pStatementMarker);
+  auto fVisitor = [pRootNode]
+      (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
-  // Validate that all predicate expressions have a boolean result type
-  vValidatePredicatesAreBoolean(pRootNode, pStatementMarker);
+    if (!StatementMarker::bIsOfType(pNode)) {
+      return GraphNav::WALK_CONTINUE;
+    }
 
-  // Validate any aggregate/group-by expressions
-  vValidateGroupByExprs(pRootNode, pStatementMarker);
+    QueryNode* pStatementMarker = static_cast<QueryNode*>(pNode);
 
-  // Validate that all expressions that
-  vValidateSqlOpExprsAgainstGroupBy(pRootNode, pStatementMarker);
+    // Run the validation logic on the logical subgraph of each StatementMarker encountered.
 
-  // Validate that ProjectOps cannot produce both aggregate & non-aggregate
-  // expressions without a group-by clause
-  vValidateProjectExprs(pRootNode, pStatementMarker);
+    // Validate that the result types of any expressions are not invalid.
+    vValidateExprResultType(pRootNode, pStatementMarker);
 
+    // Validate that all predicate expressions have a boolean result type
+    vValidatePredicatesAreBoolean(pRootNode, pStatementMarker);
+
+    // Validate any aggregate/group-by expressions
+    vValidateGroupByExprs(pRootNode, pStatementMarker);
+
+    // Validate that all expressions that
+    vValidateSqlOpExprsAgainstGroupBy(pRootNode, pStatementMarker);
+
+    // Validate that ProjectOps cannot produce both aggregate & non-aggregate
+    // expressions without a group-by clause
+    vValidateProjectExprs(pRootNode, pStatementMarker);
+
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  // Walk the entire plan graph to look for StatementMarkers
+  GraphNav::bGlobalWalk(pStatementMarker, false, true, fVisitor, pRootNode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -242,8 +259,8 @@ void ExprValidator::vValidateProjectExprs(PlanNode *pRootNode, QueryNode* pStart
   i8 iNumLitCols = 0; // literal values only
 
   while (pIter->bHasNext()) {
-    QueryNode* pProjExpr = static_cast<QueryNode*>(pIter->pNext());
-    QueryNode* pExpr = ProjectedColumn::pExprNode(pProjExpr);
+    QueryNode* pProjColumn = static_cast<QueryNode*>(pIter->pNext());
+    QueryNode* pExpr = ProjectedColumn::pExprNode(pProjColumn);
 
     // Convert the expression from a symbolic expression to an ordinal one.
     // This represents the work that this ProjectOp has to do.
@@ -260,6 +277,7 @@ void ExprValidator::vValidateProjectExprs(PlanNode *pRootNode, QueryNode* pStart
     delete pOrdExpr;
   }
   delete pIter;
+  pColExprList->vDeleteAll();
   delete pColExprList;
 
   if (iNumAggCols == 0 || iNumAggCols == iNumColumns - iNumLitCols) {
@@ -281,8 +299,6 @@ void ExprValidator::vValidateProjectExprs(PlanNode *pRootNode, QueryNode* pStart
 void ExprValidator::vCheckNonAggExprIsInGroupBy(QueryNode* pExpr, QueryNode *pGroupByList)
 {
   ASSERT(pExpr);
-
-  PlanNodeIter* pGroupByIter = pGroupByList->pNewChildrenIter();
 
   // We will walk the expression tree and:
   //  - if the subExpr is an actual expression aggregate then skip that subtree

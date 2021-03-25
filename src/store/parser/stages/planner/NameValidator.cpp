@@ -53,6 +53,8 @@ using namespace Parser;
 /*----------------------------------------------------------------------------*/
 void NameValidator::vValidateNames(PlanNode *pRootNode)
 {
+  STORE::SeApi* pSeApi = new STORE::SeApi();
+
   // First find the metadata node
   QueryNode* pMetadataNode = ShadowRoot::pMetadataNode(pRootNode);
   ASSERT(pMetadataNode);
@@ -66,25 +68,40 @@ void NameValidator::vValidateNames(PlanNode *pRootNode)
   ASSERT(StatementMarker::bIsOfType(pPlanNode->pFirstChild()));
   QueryNode* pStatementMarker = static_cast<QueryNode*>(pPlanNode->pFirstChild());
 
+  // We want to iterate over each logical subgraph, bounded by StatementMarkers,
+  // and run the validation checks on each of them.
 
-  STORE::SeApi* pSeApi = new STORE::SeApi();
+  auto fVisitor = [pRootNode, pMetadataNode, pSeApi]
+      (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
-  // TODO: repeat for each StatementMarker subgraph
-  try {
-    // First resolve all of the tables in the plan. We will need them to
-    // then resolve columns and indexes.
-    vValidateTables(pRootNode, pStatementMarker, pMetadataNode, pSeApi);
+    if (!StatementMarker::bIsOfType(pNode)) {
+      return GraphNav::WALK_CONTINUE;
+    }
 
-    // Convert any column wildcards to column references
-    vResolveColumnWildcards(pRootNode, pStatementMarker, pMetadataNode);
+    QueryNode* pStatementMarker = static_cast<QueryNode*>(pNode);
 
-    // Now resolve the columns against the known tables in the plan.
-    vValidateColumns(pRootNode, pStatementMarker, pMetadataNode);
+    // Run the validation logic on the logical subgraph of each StatementMarker encountered.
+    try {
+      // First resolve all of the tables in the plan. We will need them to
+      // then resolve columns and indexes.
+      vValidateTables(pRootNode, pStatementMarker, pMetadataNode, pSeApi);
 
-  } catch (SqlException& e) {
-    delete pSeApi;
-    throw;
-  }
+      // Convert any column wildcards to column references
+      vResolveColumnWildcards(pRootNode, pStatementMarker, pMetadataNode);
+
+      // Now resolve the columns against the known tables in the plan.
+      vValidateColumns(pRootNode, pStatementMarker, pMetadataNode);
+
+    } catch (SqlException& e) {
+      delete pSeApi;
+      throw;
+    }
+
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  // Walk the entire plan graph to look for StatementMarkers
+  GraphNav::bGlobalWalk(pStatementMarker, false, true, fVisitor, pRootNode);
 
   delete pSeApi;
 
@@ -274,6 +291,7 @@ void NameValidator::vResolveColumnWildcards(PlanNode *pRootNode, QueryNode* pSta
 #endif
 
         if (pResolvedWildcardList->nItems() == 0) {
+          delete pResolvedWildcardList;
           NameValidationException::vThrowUnresolvableColumnWildcard(szCatalogName, szSchemaName, szTableName);
         }
 
@@ -423,6 +441,7 @@ void NameValidator::vValidateColumns(PlanNode *pRootNode, QueryNode* pStartNode,
       NameValidationException::vThrowUnknownColumn(szCatalogName, szSchemaName, szTableName, szColumnName);
 
     } else if (pTableDefList->nItems() > 1) {
+      delete pTableDefList;
       NameValidationException::vThrowAmbiguousColumn(szCatalogName, szSchemaName, szTableName, szColumnName, pTableDefList);
     }
 
@@ -470,6 +489,8 @@ void NameValidator::vAssertNamesResolved(PlanNode *pRootNode, QueryNode* pPlanNo
       ASSERT(TableRef::bIsFullyQualified(static_cast<QueryNode*>(pNode)));
       return GraphNav::WALK_CONTINUE;
     }
+
+    return GraphNav::WALK_CONTINUE;
   };
 
   GraphNav::bGlobalWalk(pPlanNode, true, true, fVisitor, pRootNode);

@@ -138,25 +138,25 @@ void AggregateOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 
   sBuf.vConcat(GraphNav::szLeafType(pNode->szType()));
 
   // Get the list of Projected expressions
-  PlanNode* pProjExprs = GraphNav::pFindProperty(const_cast<Stz*>(C_PROJECTEDCOLUMNS_PROP), pNode);
-  ASSERT(pProjExprs);
+  PlanNode* pProjColumns = GraphNav::pFindProperty(const_cast<Stz*>(C_PROJECTEDCOLUMNS_PROP), pNode);
+  ASSERT(pProjColumns);
 
   ASSERT(pNode->nChildren() == 1);
   ASSERT(PlanObject::bIsOfType(pNode->pFirstChild()));
   PlanNodeList* pColExprList = PlanObject::pColumnExprs(static_cast<QueryNode*>(pNode->pFirstChild()), pRootNode);
 
   // Iterate each Projected expression
-  if (pProjExprs->bHasChildren()) {
-    PlanNodeIter* pIter = pProjExprs->pNewChildrenIter();
+  if (pProjColumns->bHasChildren()) {
+    PlanNodeIter* pIter = pProjColumns->pNewChildrenIter();
 
     while (pIter->bHasNext()) {
-      QueryNode* pProjExpr = static_cast<QueryNode*>(pIter->pNext());
-      ASSERT(pProjExpr);
-      ASSERT(ProjectedColumn::bIsOfType(pProjExpr));
+      QueryNode* pProjColumn = static_cast<QueryNode*>(pIter->pNext());
+      ASSERT(pProjColumn);
+      ASSERT(ProjectedColumn::bIsOfType(pProjColumn));
 
       // Get the description of the Projected expression
       s2K sColBuf;
-      ProjectedColumn::vDescribe(pProjExpr, sColBuf, pColExprList, pRootNode);
+      ProjectedColumn::vDescribe(pProjColumn, sColBuf, pColExprList, pRootNode);
       sBuf.vConcat("\n"_Stz);
       vAppendIndent(sBuf, iIndent, IF_PLAIN);
       sBuf.vCatSprint("column: (%s)"_Stz, sColBuf.szStz());
@@ -165,6 +165,7 @@ void AggregateOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 
     delete pIter;
   }
 
+  pColExprList->vDeleteAll();
   delete pColExprList;
 
 
@@ -213,6 +214,8 @@ void AggregateOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 
 
     delete pIter;
   }
+
+  delete pOrdinalGroupByExprs;
 
 
   // Recurse any children of pNode
