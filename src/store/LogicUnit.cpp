@@ -221,6 +221,10 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   delete m_pDevSrcRow;
   delete m_pDevAltRow;
 
+  // delete any temporary index tree's
+  if (m_pDevTmpIxt->m_pIdxTree)
+    delete m_pDevTmpIxt->m_pIdxTree;
+
   delete m_pDevTmpIxt;
   delete m_pDevAltIxt;
   delete m_pDevSrcIxt;

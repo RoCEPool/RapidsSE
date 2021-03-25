@@ -75,7 +75,8 @@ print "loading Orders...";
 //aggregRows_I lineitem "l_discount sum";
 
 //projectColumns_I lineitem null;
-aggregRows_I lineitem "l_discount sum groupby l_orderkey";
+projectColumns lineitem " sum ( l_discount ) ";
+
 /*
 //UnionAll_I lineitem orders l_orderkey;
 
