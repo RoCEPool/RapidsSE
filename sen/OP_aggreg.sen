@@ -18,9 +18,9 @@
   // cleanup the pot
   PotRlu[].cleanup
 
-  indexTreeRlu[].isNull not if
-    indexTreeRlu[].delete
-  then
+  //indexTreeRlu[].isNull not if
+  //  indexTreeRlu[].delete
+  //then
 
   Counter0[] cleanUpAsm
 
