@@ -322,7 +322,9 @@ eEC LogicUnit::eGenerateAggregate(ExprEval* pExprEval, StreamDef* pStreamDefOut)
     oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_NONE, &oTagSet, sMacro));
   }
 
-  oFile.vPrint("%s\n"_Stz, pExprEval->m_sAsmText.azChar());
+  oFile.vPrint("  // *** begin generated code: m_sAsmText *** //\n"_Stz);
+  oFile.vPrint("%s"_Stz, pExprEval->m_sAsmText.azChar());
+  oFile.vPrint("  // *** end generated code: m_sAsmText *** //\n"_Stz);
   oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_END, &oTagSet, sMacro));
 
 
@@ -341,9 +343,9 @@ eEC LogicUnit::eGenerateAggregate(ExprEval* pExprEval, StreamDef* pStreamDefOut)
     oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_NONE, &oTagSet, sMacro));
   }
 
-  //for (i8 i_Col = 0; i_Col < pStreamDefOut->nTotalColumns(); i_Col++) {
-  oFile.vPrint("%s\n"_Stz, pExprEval->m_sAsmText.azChar());
-  //}
+  oFile.vPrint("  // *** begin generated code: m_sAsmText *** //\n"_Stz);
+  oFile.vPrint("%s"_Stz, pExprEval->m_sAsmText.azChar());
+  oFile.vPrint("  // *** end generated code: m_sAsmText *** //\n"_Stz);
   oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_END, &oTagSet, sMacro));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -441,7 +443,9 @@ eEC LogicUnit::eGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
   oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_FILTER_ROWS, &oTagSet, sMacro));
   oTagSet.vReset();
 
-  oFile.vPrint(pExprEval->m_sAsmText.szStz());
+  oFile.vPrint("  // *** begin generated code: m_sAsmText *** //\n"_Stz);
+  oFile.vPrint("%s"_Stz, pExprEval->m_sAsmText.azChar());
+  oFile.vPrint("  // *** end generated code: m_sAsmText *** //\n"_Stz);
 
   oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_FILTER_END, &oTagSet, sMacro));
 
@@ -457,7 +461,9 @@ eEC LogicUnit::eGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
   oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_FILTER_ROWS, &oTagSet, sMacro));
   oTagSet.vReset();
 
-  oFile.vPrint("%s\n"_Stz, pExprEval->m_sAsmText.azChar());
+  oFile.vPrint("  // *** begin generated code: m_sAsmText *** //\n"_Stz);
+  oFile.vPrint("%s"_Stz, pExprEval->m_sAsmText.azChar());
+  oFile.vPrint("  // *** end generated code: m_sAsmText *** //\n"_Stz);
 
   oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_FILTER_END, &oTagSet, sMacro));
 
@@ -474,7 +480,9 @@ eEC LogicUnit::eGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
   RASSERT(eError == EC_NONE);
 
   // add the columns to be projected to PROJECT_COLUMNS
-  oFile.vPrint("%s\n"_Stz, pExprEvalStar->m_sAsmText.azChar());
+  oFile.vPrint("  // *** begin generated code: m_sAsmText *** //\n"_Stz);
+  oFile.vPrint("%s"_Stz, pExprEvalStar->m_sAsmText.azChar());
+  oFile.vPrint("  // *** end generated code: m_sAsmText *** //\n"_Stz);
 
   oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_END, &oTagSet, sMacro));
   delete pExprEvalStar;
@@ -547,7 +555,11 @@ eEC LogicUnit::eGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut)
   // STREAMDEF_HANDLER for groupBy
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oFile.vPrint(LogicCompiler::szGetMacro(AM_HANDLER_STREAMDEF_GBY, &oTagSet, sMacro));
-  oFile.vPrint("%s\n"_Stz, pExprEval->m_sAsmGbyIdx.azChar());
+
+  oFile.vPrint("  // *** begin generated code: m_sAsmGbyIdx *** //\n"_Stz);
+  oFile.vPrint("%s"_Stz, pExprEval->m_sAsmGbyIdx.azChar());
+  oFile.vPrint("  // *** end generated code: m_sAsmGbyIdx *** //\n"_Stz);
+
   oFile.vPrint(LogicCompiler::szGetMacro(AM_HANDLER_STREAMDEF_GBY_END, &oTagSet, sMacro));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -600,7 +612,11 @@ eEC LogicUnit::eGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut)
   // PAYLOAD_TO_BUFFER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oFile.vPrint(LogicCompiler::szGetMacro(AM_PAYLOAD_TO_BUFFER, &oTagSet, sMacro));
-  oFile.vPrint("%s\n"_Stz, pExprEval->m_sPayLoadToBuffer.azChar());
+
+  oFile.vPrint("  // *** begin generated code: m_sPayLoadToBuffer *** //\n"_Stz);
+  oFile.vPrint("%s"_Stz, pExprEval->m_sPayLoadToBuffer.azChar());
+  oFile.vPrint("  // *** end generated code: m_sPayLoadToBuffer *** //\n"_Stz);
+
   oFile.vPrint(LogicCompiler::szGetMacro(AM_PAYLOAD_TO_BUFFER_END, &oTagSet, sMacro));
 
 
@@ -615,7 +631,11 @@ eEC LogicUnit::eGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut)
   // PAYLOAD_GBYKEY
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oFile.vPrint(LogicCompiler::szGetMacro(AM_PAYLOAD_KEY, &oTagSet, sMacro));
-  oFile.vPrint("%s\n"_Stz, pExprEval->m_sPayLoadKey.azChar());
+
+  oFile.vPrint("  // *** begin generated code: m_sPayLoadKey *** //\n"_Stz);
+  oFile.vPrint("%s"_Stz, pExprEval->m_sPayLoadKey.azChar());
+  oFile.vPrint("  // *** end generated code: m_sPayLoadKey *** //\n"_Stz);
+
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -623,7 +643,11 @@ eEC LogicUnit::eGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oTagSet.vAppend(C_TAG_PAYLOAD_BYTES, pExprEval->m_nPayLoadBytes);
   oFile.vPrint(LogicCompiler::szGetMacro(AM_PAYLOAD_STORE, &oTagSet, sMacro));
-  oFile.vPrint("%s\n"_Stz, pExprEval->m_sPayLoadStore.azChar());
+
+  oFile.vPrint("  // *** begin generated code: m_sPayLoadStore *** //\n"_Stz);
+  oFile.vPrint("%s"_Stz, pExprEval->m_sPayLoadStore.azChar());
+  oFile.vPrint("  // *** end generated code: m_sPayLoadStore *** //\n"_Stz);
+
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -636,7 +660,9 @@ eEC LogicUnit::eGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut)
   // PAYLOAD_ADD
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oFile.vPrint(LogicCompiler::szGetMacro(AM_PAYLOAD_ADD, &oTagSet, sMacro));
-  oFile.vPrint("%s\n"_Stz, pExprEval->m_sAsmText.azChar());
+  oFile.vPrint("  // *** begin generated code: m_sAsmText *** //\n"_Stz);
+  oFile.vPrint("%s"_Stz, pExprEval->m_sAsmText.azChar());
+  oFile.vPrint("  // *** end generated code: m_sAsmText *** //\n"_Stz);
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -780,7 +806,9 @@ eEC LogicUnit::eGenerateLimit(i8 iLimitRows, StreamDef* pStreamDefOut) {
   RASSERT(eError == EC_NONE);
 
   // add the columns to be projected to PROJECT_COLUMNS
-  oFile.vPrint("%s\n"_Stz, pExprEvalStar->m_sAsmText.azChar());
+  oFile.vPrint("  // *** begin generated code: m_sAsmText *** //\n"_Stz);
+  oFile.vPrint("%s"_Stz, pExprEvalStar->m_sAsmText.azChar());
+  oFile.vPrint("  // *** end generated code: m_sAsmText *** //\n"_Stz);
 
   oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_END, &oTagSet, sMacro));
   delete pExprEvalStar;

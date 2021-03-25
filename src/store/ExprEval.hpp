@@ -14,14 +14,14 @@ namespace STORE
   public:
 
     u8      m_uExprEvalColumns;
-    s4K     m_sAsmText;
-    s4K     m_sAsmGbyIdx;
-
+    i8      m_nPayLoadBytes;
     i8      m_iStreamInColumns;
+
     bool    m_bHasAgg;
     bool    m_bHasGby;
 
-    i8      m_nPayLoadBytes;
+    s4K     m_sAsmText;
+    s4K     m_sAsmGbyIdx;
     s4K     m_sPayLoadKey;
     s4K     m_sPayLoadStore;
     s4K     m_sPayLoadToBuffer;

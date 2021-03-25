@@ -49,14 +49,19 @@ ExprEval::ExprEval(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
 
-  m_iStreamInColumns = 0;
   m_uExprEvalColumns = 0;
+  m_nPayLoadBytes = 0;
+  m_iStreamInColumns = 0;
+
+  m_bHasAgg = false;
+  m_bHasGby = false;
+
   //m_sAsmText;
   //m_sAsmGbyIdx;
   //m_sAsmGbyKey;
-  m_bHasAgg = false;
-  m_bHasGby = false;
-  m_nPayLoadBytes = 0;
+  //m_sPayLoadKey;
+  //m_sPayLoadStore;
+  //m_sPayLoadToBuffer;
 
   //m_pStreamInCol;
 

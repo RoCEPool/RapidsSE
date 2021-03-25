@@ -10,7 +10,7 @@ macro AM_HANDLER_EOSMARKER_GBY
   Label HANDLER_EOSMARKER
   EO_PRINTF "**AM_HANDLER_EOSMARKER_GBY**\n"
   EO_POP
-  EO_CALL <eosProcessRoutine>
+  EO_CALL <eosProcessRoutine>  // C_TAG_EOS_PROCESS_ROUTINE
   EO_RETURN
 endMacro
 
