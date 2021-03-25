@@ -7,9 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* send node info to node we just connected to                                */
 /*----------------------------------------------------------------------------*/
-: connector_sendNodeInfo ( pSocket -- )
-
-  params| pSocket |
+: connector_sendNodeInfo ( -- )
 
   // find the __nodeinfo table
   C_TDEF_NODEINFO op__tableDef_infoSet assert
@@ -22,9 +20,9 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // send node info job to the other node
-  pSocket socket.grabWrite
-  infoSet[] pSocket socket.sendObject assert
-  pSocket socket.dropWrite
+  Socket[] socket.grabWrite
+  infoSet[] Socket[] socket.sendObject assert
+  Socket[] socket.dropWrite
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete infoset
@@ -38,8 +36,6 @@
 
   params| pNode |
 
-  0 locals| pSocket |
-
   args.verbose if
     pNode node.no grid::thisNode@ "Node %v connecting to node %v" .printf
   then
@@ -49,16 +45,16 @@
   pNode node.IP   ( port IP )
 
   // attempt connect to that node
-  pNode socket::open socket.connect to pSocket
+  pNode socket::open socket.connect to Socket[]
 
-  pSocket not if
+  Socket[].isNull if
     pNode node.no grid::thisNode@ "Node %v unable to connect to node %v" .printf
     exit
   then
 
   // set the send socket in the node
   grid::incConnectedNodes
-  pSocket pNode node.sendSocket!
+  Socket[] pNode node.sendSocket!
 
  
   // print connection message
@@ -67,7 +63,9 @@
   then
 
   // send this node's info to the node we just connected to
-  pSocket connector_sendNodeInfo
+  connector_sendNodeInfo
+  
+  nullptr to Socket[]
 ;
 
 /*----------------------------------------------------------------------------*/
