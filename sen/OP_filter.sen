@@ -132,18 +132,25 @@
   // evaluate the expression
   ExprEval[].new
   StreamDef[].duplicate to StreamDefOut[]
-  <etc> StreamDef[] nullptr ExprEval[].filter to eError
+  <etc> StreamDef[] nullptr ExprEval[].evaluate to eError
 
   // check for error
   eError EC_NONE == not if
-    eError op__dataExecErr
+    eError op__exprEvalExecErr
     true
     exit
   then
 
   // generate the asm for the filter
-  StreamDefOut[] ExprEval[] LogicUnit[].genFilter
+  StreamDefOut[] ExprEval[] LogicUnit[].genFilter to eError
   ExprEval[].delete
+
+  // check for error
+  eError EC_NONE == not if
+    eError op__asmGenExecErr
+    true
+    exit
+  then
 
   // set the streamDef in the devSrcRow
   StreamDef[]\clear DevSrcRow.streamDef!

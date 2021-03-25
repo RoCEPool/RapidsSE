@@ -95,9 +95,6 @@ void Step::vExprEvalEvaluate(void)
 
   eEC eError = pExprEval->eEvaluate(pStreamDefIn, pStreamDefOut, sProjectColumns);
 
-  if ( ! pExprEval->bHasAggregate()  && ! pExprEval->bHasGroupBy() )
-    eError = EC_INVALID_COMMAND;
-
   m_pDataStack->vPushInt(eError);
 
   EXIT();

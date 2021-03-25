@@ -237,7 +237,7 @@ bool LogicUnit::bGenerateAsm(Stz* aText)
 /*----------------------------------------------------------------------------*/
 /* generate asm text for aggregates                                           */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateAggregate(ExprEval* pExprEval, StreamDef* pStreamDefOut)
+eEC LogicUnit::eGenerateAggregate(ExprEval* pExprEval, StreamDef* pStreamDefOut)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_LOGICUNIT, _FOOTER_);
   UNUSED(pStreamDefOut);
@@ -254,7 +254,8 @@ void LogicUnit::vGenerateAggregate(ExprEval* pExprEval, StreamDef* pStreamDefOut
 
   bool b = oFile.bOpenWrite(sFileName);
 
-  ASSERT(pExprEval->bHasAggregate());
+  if ( ! pExprEval->bHasAggregate() )
+    return EC_INVALID_COMMAND;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // AM_QUERY_INIT
@@ -368,12 +369,14 @@ void LogicUnit::vGenerateAggregate(ExprEval* pExprEval, StreamDef* pStreamDefOut
   UNUSED(bResult);
 
   oFile.vClose();
+
+  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
 /* generate asm text for filter                                              */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
+eEC LogicUnit::eGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_LOGICUNIT, _FOOTER_);
 
@@ -389,7 +392,8 @@ void LogicUnit::vGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
 
   bool b = oFile.bOpenWrite(sFileName);
 
-  ASSERT( ! pExprEval->bHasAggregate() );
+  if ( pExprEval->bHasAggregate() )
+    return EC_INVALID_COMMAND;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // AM_QUERY_INIT
@@ -498,12 +502,14 @@ void LogicUnit::vGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
   UNUSED(bResult);
 
   oFile.vClose();
+
+  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
 /* generate asm text for groupby                                              */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut)
+eEC LogicUnit::eGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_LOGICUNIT, _FOOTER_);
   UNUSED(pStreamDefOut);
@@ -520,7 +526,8 @@ void LogicUnit::vGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut)
 
   bool b = oFile.bOpenWrite(sFileName);
 
-  ASSERT(pExprEval->bHasGroupBy());
+  if ( ! pExprEval->bHasGroupBy() )
+    return EC_INVALID_COMMAND;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // AM_QUERY_INIT
@@ -697,12 +704,14 @@ void LogicUnit::vGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut)
   UNUSED(bResult);
 
   oFile.vClose();
+
+  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
 /* generate asm text for limit                                                */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateLimit(i8 iLimitRows, StreamDef* pStreamDefOut) {
+eEC LogicUnit::eGenerateLimit(i8 iLimitRows, StreamDef* pStreamDefOut) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_LOGICUNIT, _FOOTER_);
 
@@ -799,12 +808,14 @@ void LogicUnit::vGenerateLimit(i8 iLimitRows, StreamDef* pStreamDefOut) {
   UNUSED(bResult);
 
   oFile.vClose();
+
+  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
 /* generate asm text for projection                                           */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOut)
+eEC LogicUnit::eGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOut)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_LOGICUNIT, _FOOTER_);
 
@@ -822,7 +833,8 @@ void LogicUnit::vGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOu
 
   bool b = oFile.bOpenWrite(sFileName);
 
-  ASSERT( ! pExprEval->bHasAggregate() );
+  if ( pExprEval->bHasAggregate() )
+    return EC_INVALID_COMMAND;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // AM_QUERY_INIT
@@ -934,12 +946,14 @@ void LogicUnit::vGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOu
   UNUSED(bResult);
 
   oFile.vClose();
+
+  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
 /* generate asm text for range (index)                                        */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vGenerateRange(Range* pRange, StreamDef* pStreamDefOut) {
+eEC LogicUnit::eGenerateRange(Range* pRange, StreamDef* pStreamDefOut) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_LOGICUNIT, _FOOTER_);
   UNUSED(pStreamDefOut);
@@ -1019,6 +1033,8 @@ void LogicUnit::vGenerateRange(Range* pRange, StreamDef* pStreamDefOut) {
   UNUSED(bResult);
 
   oFile.vClose();
+
+  return EC_NONE;
 }
 
 /*============================================================================*/

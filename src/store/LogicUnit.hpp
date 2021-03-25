@@ -270,12 +270,12 @@ namespace STORE
   
     bool bGenerateAsm(Stz* sText);
 
-    void vGenerateAggregate(ExprEval* pExprEval, StreamDef* pStreamDefOut);
-    void vGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut);
-    void vGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut);
-    void vGenerateLimit(i8 iLimit, StreamDef* pStreamDefOut);
-    void vGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOut);
-    void vGenerateRange(Range* pRange, StreamDef* pStreamDefOut);
+    eEC eGenerateAggregate(ExprEval* pExprEval, StreamDef* pStreamDefOut);
+    eEC eGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut);
+    eEC eGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut);
+    eEC eGenerateLimit(i8 iLimit, StreamDef* pStreamDefOut);
+    eEC eGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOut);
+    eEC eGenerateRange(Range* pRange, StreamDef* pStreamDefOut);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

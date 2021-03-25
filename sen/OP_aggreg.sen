@@ -129,18 +129,25 @@
   // evalute the expression
   ExprEval[].new
   StreamDefOut[].new
-  <etc> StreamDef[] StreamDefOut[] ExprEval[].aggregate to eError
+  <etc> StreamDef[] StreamDefOut[] ExprEval[].evaluate to eError
 
   // check for error
   eError EC_NONE == not if
-    eError op__dataExecErr
+    eError op__exprEvalExecErr
     true
     exit
   then
 
   // generate the asm for projection
-  StreamDefOut[] ExprEval[] LogicUnit[].genAggregate
+  StreamDefOut[] ExprEval[] LogicUnit[].genAggregate to eError
   ExprEval[].delete
+
+  // check for error
+  eError EC_NONE == not if
+    eError op__asmGenExecErr
+    true
+    exit
+  then
 
   // set the streamDef in the devSrcRow
   StreamDef[]\clear DevSrcRow.streamDef!

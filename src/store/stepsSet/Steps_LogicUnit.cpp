@@ -283,12 +283,15 @@ void Step::vLogicUnitGenAggregate(void)
   pExprEval = _pExprEval(m_pDataStack->pPopPtr(__func__));
 
   StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  eEC eError;
 
   if (pExprEval->bHasGroupBy())
-    ( m_pJob->pLogicUnit_job() )->vGenerateGroupBy(pExprEval, pStreamDefOut);
+    eError = ( m_pJob->pLogicUnit_job() )->eGenerateGroupBy(pExprEval, pStreamDefOut);
   else {
-    ( m_pJob->pLogicUnit_job() )->vGenerateAggregate(pExprEval, pStreamDefOut);
+    eError = ( m_pJob->pLogicUnit_job() )->eGenerateAggregate(pExprEval, pStreamDefOut);
   }
+
+  m_pDataStack->vPushInt(eError);
 
   EXIT();
 }
@@ -364,7 +367,9 @@ void Step::vLogicUnitGenFilter(void)
 
   StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
 
-  ( m_pJob->pLogicUnit_job() )->vGenerateFilter(pExprEval, pStreamDefOut);
+  eEC eError = ( m_pJob->pLogicUnit_job() )->eGenerateFilter(pExprEval, pStreamDefOut);
+
+  m_pDataStack->vPushInt(eError);
 
   EXIT();
 }
@@ -380,7 +385,9 @@ void Step::vLogicUnitGenLimit(void)
 
   StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
 
-  ( m_pJob->pLogicUnit_job() )->vGenerateLimit(iLimit, pStreamDefOut);
+  eEC eError = ( m_pJob->pLogicUnit_job() )->eGenerateLimit(iLimit, pStreamDefOut);
+
+  m_pDataStack->vPushInt(eError);
 
   EXIT();
 }
@@ -397,7 +404,9 @@ void Step::vLogicUnitGenProjection(void)
 
   StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
 
-  ( m_pJob->pLogicUnit_job() )->vGenerateProjection(pExprEval, pStreamDefOut);
+  eEC eError = ( m_pJob->pLogicUnit_job() )->eGenerateProjection(pExprEval, pStreamDefOut);
+
+  m_pDataStack->vPushInt(eError);
 
   EXIT();
 }
@@ -413,7 +422,7 @@ void Step::vLogicUnitGenRange(void)
 
   StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
 
-  ( m_pJob->pLogicUnit_job() )->vGenerateRange(pRange, pStreamDefOut);
+  ( m_pJob->pLogicUnit_job() )->eGenerateRange(pRange, pStreamDefOut);
 
   EXIT();
 }
