@@ -5,6 +5,8 @@
 
 #include "eHT.h"
 
+typedef void (fpPOSTFN)(void* aObject);
+
 struct SizeHeap {
   
   i8  m_nClassSize;
@@ -15,7 +17,7 @@ struct SizeHeap {
   
   b8  m__Test0;
   
-  i8  m__Test1;
+  fpPOSTFN* m_fpPostRecvFn; // post receive function
 };
 
 /*============================================================================*/
