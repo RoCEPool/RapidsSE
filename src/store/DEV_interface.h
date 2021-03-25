@@ -62,8 +62,6 @@ void vDev_ROW_ROW_SET        (i8** aaiDstk);
 void vDev_ROW_ROW_TEST    (i8** aaiDstk);
 void vDev_ROW_ROW_ZERO    (i8** aaiDstk);
 
-void vDev_ROW_STREAMDEF_DELETE(i8** aaiDstk);
-
 void vDev_ROW_ROWBUF_BEGIN (i8** aaiDstk);
 void vDev_ROW_ROWBUF_NEXT  (i8** aaiDstk);
 void vDev_ROW_ROWBUF_NULL  (i8** aaiDstk);

@@ -2392,11 +2392,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_ROW_TABLENM_SET(&aiDstk);
         break;//+endCase
 
-      case EO_DEVROW_STREAMDEF_DELETE: ArgNil(); // delete streamDef
-        dLU0(EO_DEVROW_STREAMDEF_DELETE);
-        vDev_ROW_STREAMDEF_DELETE(&aiDstk);   // devixt
-        break;//+endCase
-
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // row device row operators
       case EO_DEVROW_ROW_NEW: ArgNil(); // create new row
