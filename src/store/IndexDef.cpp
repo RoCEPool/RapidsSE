@@ -686,9 +686,8 @@ L_RETURN:
 /*----------------------------------------------------------------------------*/
 /* post recv function                                                         */
 /*----------------------------------------------------------------------------*/
-void IndexDef::vPostRecv(void)
+void IndexDef::vPostRecv(void* aIndexDef)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
   
 }
 

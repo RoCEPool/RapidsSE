@@ -40,6 +40,8 @@
 #include "CrvBuffer.hpp"
 #include "TablePtn.hpp"
 #include "Table.hpp"
+#include "Index.hpp"
+#include "BucketMap.hpp"
 
 #include "eBO.h"
 #include "TagConstants.h"
@@ -1155,7 +1157,11 @@ void Engine::vOpenTrace(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vPostRecvFns(void)
 {
-  gxaSizeHeap[CN_TABLE].m_fpPostRecvFn = (fpPOSTFN*)Table::vPostRecv;
+  gxaSizeHeap[CN_BUCKETMAP].m_fpPostRecvFn = (fpPOSTFN*)BucketMap::vPostRecv;
+  gxaSizeHeap[CN_INDEX].m_fpPostRecvFn     = (fpPOSTFN*)Index::vPostRecv;
+  gxaSizeHeap[CN_INDEXDEF].m_fpPostRecvFn  = (fpPOSTFN*)IndexDef::vPostRecv;
+  gxaSizeHeap[CN_STREAMDEF].m_fpPostRecvFn = (fpPOSTFN*)StreamDef::vPostRecv;
+  gxaSizeHeap[CN_TABLE].m_fpPostRecvFn     = (fpPOSTFN*)Table::vPostRecv;
 }
 
 /*----------------------------------------------------------------------------*/

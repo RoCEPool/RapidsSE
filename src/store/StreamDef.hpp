@@ -51,7 +51,7 @@ namespace STORE
     void    vToRowPix(RowPix* pRowPix, bool bPtnHash);
     void    vToMetadata(Stz* sMetaData);
     
-    void vPostRecv(void);
+    static void vPostRecv(void* aStreamDef);
 
   private:
     

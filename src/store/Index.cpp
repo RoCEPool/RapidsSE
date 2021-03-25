@@ -335,9 +335,8 @@ void Index::vTidyUp(void)
 /*----------------------------------------------------------------------------*/
 /* post recv function                                                         */
 /*----------------------------------------------------------------------------*/
-void Index::vPostRecv(void)
+void Index::vPostRecv(void* aIndex)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
 }
 

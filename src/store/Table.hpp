@@ -81,8 +81,6 @@ namespace STORE
     bool bVerifyIndexes(void);
     bool bVerifyIndex(Index* pIndex);
    
-    void vPostRecv(void);
-
   private:
     Footer* aFooter(void);
   };

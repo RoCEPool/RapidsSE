@@ -67,9 +67,8 @@ tPN BucketMap::tWhichLglPtnNo(i8 iBucketId)
 /*----------------------------------------------------------------------------*/
 /* post recv function                                                         */
 /*----------------------------------------------------------------------------*/
-void BucketMap::vPostRecv(void)
+void BucketMap::vPostRecv(void* aBucketMap)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
   
 }
 

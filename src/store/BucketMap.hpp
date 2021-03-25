@@ -26,7 +26,7 @@ namespace STORE
   
     tPN tWhichLglPtnNo(i8 iBucketId);
   
-    void vPostRecv(void);
+    static void vPostRecv(void* aBucketMap);
 
   private:
     Footer* aFooter(void);

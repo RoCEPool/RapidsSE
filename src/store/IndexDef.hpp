@@ -63,7 +63,7 @@ namespace STORE
     void   vIsUnique(bool bUnique);
     i8     iSortKeyDatum(void);
   
-    void vPostRecv(void);
+    static void vPostRecv(void* aIndexDef);
 
   private:
     bool bAddIdxCol(Table* pTable, i8 iCol, Stz* szColNm);

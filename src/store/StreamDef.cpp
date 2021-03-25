@@ -535,9 +535,9 @@ void StreamDef::vToMetadata(Stz* sMetadata)
 /*----------------------------------------------------------------------------*/
 /* post recv function                                                         */
 /*----------------------------------------------------------------------------*/
-void StreamDef::vPostRecv(void)
+void StreamDef::vPostRecv(void* aStreamDef)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
+
   
 }
 
