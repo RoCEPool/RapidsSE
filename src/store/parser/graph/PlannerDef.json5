@@ -488,13 +488,40 @@
                       ]
                     }, // EndPath: /definitions/object/planObject/sqlOperator/dataSource
 
-// TODO Path: /__root__/definitions/object/planObject/sqlOperator/setOp
-                    // isDistinct
-                    // correspondingList <-- may be empty
-// TODO Path: /__root__/definitions/object/planObject/sqlOperator/setOp/unionOp
+// Path: /__root__/definitions/object/planObject/sqlOperator/setOp
+                    {
+                      name: "setOp",
+                      value: "An abstract operator that is a common base class of UNION/INSERSECT/EXCEPT operators",
+                      properties: [
+                        {
+                          name: "isDistinct",
+                          value: "If true then duplicate rows are removed from the result",
+                          type: "/__root__/definitions/object/valueObject/booleanObject"
+                        },
+                        {
+                          name: "correspondingByList",
+                          value: "An optional list of column names that the setOp should operate on. May be empty. May be null.",
+                          type: "/__root__/definitions/object/list/stringList",
+                          properties: [
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                              { name: "optional", type:  "/__root__/primitives/constraints/optional"},
+                            ]}
+                          ]
+                        }
+                      ],
+                      children: [
+// Path: /__root__/definitions/object/planObject/sqlOperator/setOp/unionOp
+                        {
+                          name: "unionOp",
+                          value: "Merges all rows from two sources",
+                          properties: [],
+                          children: [],
+                        },
 // TODO Path: /__root__/definitions/object/planObject/sqlOperator/setOp/intersectOp
 // TODO Path: /__root__/definitions/object/planObject/sqlOperator/setOp/exceptOp
 
+                      ]
+                    }, // EndPath: /definitions/object/planObject/sqlOperator/setOp
                   ]
                 } // EndPath: /__root__/definitions/object/planObject/sqlOperator
               ],
@@ -1447,6 +1474,27 @@
                           name: "childTypeParam",
                           type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject",
                           value: "/__root__/definitions/object/expr"
+                        } ]
+                      }
+                    ]} // end __constraints container
+                  ],
+                  children: []
+                }, // EndPath: /__root__/definitions/object/list/exprList
+
+// Path: /__root__/definitions/object/list/stringList
+                {
+                  name: "stringList",
+                  value: "A list of string objects",
+                  properties: [
+                    // We add a constraint that all children must be of type /__root__/definitions/object/valueObject/stringObject
+                    { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                      {
+                        name: "childType",
+                        type:  "/__root__/primitives/constraints/childType",
+                        children: [ {
+                          name: "childTypeParam",
+                          type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject",
+                          value: "/__root__/definitions/object/valueObject/stringObject"
                         } ]
                       }
                     ]} // end __constraints container
