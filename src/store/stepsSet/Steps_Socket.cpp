@@ -647,27 +647,47 @@ void Step::vSocketRecvObject(void)
     }
       
     case CN_STREAMDEF: {
-      StreamDef* pStreamDef = new StreamDef();
       
-      MemLib::vCopy(pStreamDef,pObject,sizeof(Object),CN_STREAMDEF);
-      
-      aBody = aAdd<void*>(pStreamDef,sizeof(Object));
-      nRemainingBytes = gxaSizeHeap[CN_STREAMDEF].m_nClassSize - sizeof(Object);
-      
+      Object* pReceivedObject = Heaps::pAllocate(eClass);
+
+      MemLib::vCopy(pReceivedObject,pObject,sizeof(Object),eClass);
+
+      aBody = aAdd<void*>(pReceivedObject,sizeof(Object));
+      nRemainingBytes = gxaSizeHeap[eClass].m_nClassSize - sizeof(Object);
+
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
         m_pDataStack->vPushInt(false);
         EXIT();
         return;
       }
-      
-      //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
-      //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
-      
-      m_pDataStack->vPushPtr(pStreamDef);
+
+      m_pDataStack->vPushPtr(pReceivedObject);
       m_pDataStack->vPushInt(true);
       EXIT();
       return;
+      
+//      StreamDef* pStreamDef = new StreamDef();
+//
+//      MemLib::vCopy(pStreamDef,pObject,sizeof(Object),CN_STREAMDEF);
+//
+//      aBody = aAdd<void*>(pStreamDef,sizeof(Object));
+//      nRemainingBytes = gxaSizeHeap[CN_STREAMDEF].m_nClassSize - sizeof(Object);
+//
+//      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
+//      if (! bResult) {
+//        m_pDataStack->vPushInt(false);
+//        EXIT();
+//        return;
+//      }
+//
+//      //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
+//      //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
+//
+//      m_pDataStack->vPushPtr(pStreamDef);
+//      m_pDataStack->vPushInt(true);
+//      EXIT();
+//      return;
     }
 
     default:
