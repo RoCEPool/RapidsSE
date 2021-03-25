@@ -34,6 +34,13 @@
 
 #include "Step.hpp"
 
+#include "SkipRoots.hpp"
+#include "EntBuffer.hpp"
+#include "IndexTree.hpp"
+#include "CrvBuffer.hpp"
+#include "TablePtn.hpp"
+#include "Table.hpp"
+
 #include "eBO.h"
 #include "TagConstants.h"
 
@@ -47,7 +54,7 @@ AttachMap*   gpAttachMap;
 BufferPool*  gpBufferPool;
 Header*      gaSeShmRegion;
 File*        gpTraceFile;
-Log*          gpLog;
+Log*         gpLog;
 
 Stz* gsBuildGitHash;
 Stz* gsBuildDate;
@@ -55,7 +62,7 @@ Stz* gsBuildHostName;
 Stz* gsBuildUserName;
 Stz* gsBuildBranch;
 
-extern SizeHeap     gxaSizeHeap[];
+extern SizeHeap gxaSizeHeap[];
 
 extern Atomic gixDir;
 extern Atomic gixFile;
@@ -1144,6 +1151,14 @@ void Engine::vOpenTrace(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set post receive functions                                                 */
+/*----------------------------------------------------------------------------*/
+void Engine::vPostRecvFns(void)
+{
+  gxaSizeHeap[CN_TABLE].m_fpPostRecvFn = (fpPOSTFN*)Table::vPostRecv;
+}
+
+/*----------------------------------------------------------------------------*/
 /* print build                                                                */
 /*----------------------------------------------------------------------------*/
 void Engine::vPrintBuild(void)
@@ -1631,7 +1646,11 @@ void Engine::vStartSystem(void)
               "adding steps"_Stz); //!format-LogSys
   Step::vAddSteps();
   
+  if (AM::bVerboseProgress())
+    vInfo("  Adding PostRecv functions\n"_Stz);
+  vPostRecvFns();
   
+
   if (AM::bVerboseProgress())
     vInfo("  Adding Constants\n"_Stz);
   AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_BOOT,
