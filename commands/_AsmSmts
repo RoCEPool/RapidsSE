@@ -61,12 +61,12 @@ create index Orders_Idx2 ON Orders(O_ORDERKEY);
 print "loading Orders...";
  /time load Orders "../DATA/TPCH/orders10.csv";
 
-//projectColumns_I lineitem "1";
+projectColumns_I lineitem "1";
 //projectColumns_I lineitem "l_discount , 1";
 
 //filterRows lineitem "l_orderkey 1 == <>";
 
-filterRows lineitem "1 1 == <>";
+//filterRows lineitem "1 1 == <>";
 
 /*
 
