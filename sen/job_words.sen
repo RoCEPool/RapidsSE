@@ -121,7 +121,7 @@
 
   //pJob job.name@ grid::thisNodeName@ "(%v) job.send %v" .printf
 
-  task.sendNode@ node.sendSocket@ to Socket[]
+  SendNode[] node.sendSocket@ to Socket[]
 
   pJob job.preSend
 
@@ -144,9 +144,11 @@
   params| pJob |
   params| i_Node |
 
-  i_Node grid::node task.sendNode!
+  i_Node grid::node to SendNode[]
 
   pJob job.send
+  
+  nullptr to SendNode[]
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -157,9 +159,11 @@
   params| pJob |
   params| i_Node |
 
-  i_Node grid::node task.sendNode!
+  i_Node grid::node to SendNode[]
 
   pJob job.send
+  
+  nullptr to SendNode[]
 ;
 
 /*----------------------------------------------------------------------------*/

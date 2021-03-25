@@ -301,6 +301,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("SendNode[]"_Stz)) {
+    pCurrentWord->vEncodeCall("SendNode[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("ShardDef[]"_Stz)) {
     pCurrentWord->vEncodeCall("ShardDef[].set"_Stz);
     EXIT();
