@@ -48,6 +48,7 @@ namespace STORE
     static void vOpenPool(void);
     static bool bOpenPool(s32& sPoolName);
     static void vOpenTrace(void);
+    static void vPostRecvFns(void);
     static void vPrintBuild(void);
     static void vPrintConstants(void);
     static void vPrintExit(void);
