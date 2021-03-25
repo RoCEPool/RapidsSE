@@ -1439,6 +1439,8 @@ void vExprEvalEvaluate(void);
   void vSocketGet(void);
   void vSocketDropWrite(void);
   void vSocketGrabWrite(void);
+  void vSocketIsNotNull(void);
+  void vSocketIsNull(void);
   void vSocketListen(void);
   void vSocketOpen(void);
   void vSocketRecvObject(void);
