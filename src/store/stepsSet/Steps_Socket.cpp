@@ -340,6 +340,7 @@ void Step::vSocketRecvObject(void)
   Header* aHeader = (Header*) & caObjectHeader[0];
   i8 nObjectBytes = sizeof(Object);
   SysCall oSysCall;
+  Object* pReceivedOperand;
 
   bool bResult = pSocket->bRecvBytes(aHeader,nObjectBytes,oSysCall);
   if (! bResult) {
@@ -457,6 +458,27 @@ void Step::vSocketRecvObject(void)
   void* aBody;
   i8 nRemainingBytes;
   
+  
+//  Object* pReceivedOperand = Heaps::pAllocate(eClass);
+//
+//  MemLib::vCopy(pReceivedOperand,pObject,sizeof(Object),eClass);
+//
+//  aBody = aAdd<void*>(pReceivedOperand,sizeof(Object));
+//  nRemainingBytes = gxaSizeHeap[eClass].m_nClassSize - sizeof(Object);
+//
+//  bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
+//  if (! bResult) {
+//    m_pDataStack->vPushInt(false);
+//    EXIT();
+//    return;
+//  }
+//
+//  m_pDataStack->vPushPtr(pReceivedOperand);
+//  m_pDataStack->vPushInt(true);
+//  EXIT();
+
+  
+
   switch(eClass) {
       
     case CN_CRWBUFFER: {
@@ -513,29 +535,29 @@ void Step::vSocketRecvObject(void)
       return;
     }
      
-    case CN_INDEXDEF: {
-      IndexDef* pIndexDef = new IndexDef();
-      
-      MemLib::vCopy(pIndexDef,pObject,sizeof(Object),CN_INDEXDEF);
-      
-      aBody = aAdd<void*>(pIndexDef,sizeof(Object));
-      nRemainingBytes = gxaSizeHeap[CN_INDEXDEF].m_nClassSize - sizeof(Object);
-      
-      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
-      if (! bResult) {
-        m_pDataStack->vPushInt(false);
-        EXIT();
-        return;
-      }
-      
-      //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
-      //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
-      
-      m_pDataStack->vPushPtr(pIndexDef);
-      m_pDataStack->vPushInt(true);
-      EXIT();
-      return;
-    }
+//    case CN_INDEXDEF: {
+//      IndexDef* pIndexDef = new IndexDef();
+//
+//      MemLib::vCopy(pIndexDef,pObject,sizeof(Object),CN_INDEXDEF);
+//
+//      aBody = aAdd<void*>(pIndexDef,sizeof(Object));
+//      nRemainingBytes = gxaSizeHeap[CN_INDEXDEF].m_nClassSize - sizeof(Object);
+//
+//      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
+//      if (! bResult) {
+//        m_pDataStack->vPushInt(false);
+//        EXIT();
+//        return;
+//      }
+//
+//      //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
+//      //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
+//
+//      m_pDataStack->vPushPtr(pIndexDef);
+//      m_pDataStack->vPushInt(true);
+//      EXIT();
+//      return;
+//    }
       
     case CN_INFOSET: {
       InfoSet* pInfoSet = new InfoSet;
@@ -562,111 +584,115 @@ void Step::vSocketRecvObject(void)
       
     case CN_ROWBUFFER: {
       RowBuffer* pRowBuffer = new RowBuffer;
-      
+
       MemLib::vCopy(pRowBuffer,pObject,sizeof(Object),CN_ROWBUFFER);
-      
+
       aBody = aAdd<void*>(pRowBuffer,sizeof(Object));
       nRemainingBytes = gxaSizeHeap[CN_ROWBUFFER].m_nClassSize - sizeof(Object);
-      
+
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
         m_pDataStack->vPushInt(false);
         EXIT();
         return;
       }
-      
+
       pRowBuffer->vRestorePointers();
-      
+
       m_pDataStack->vPushPtr(pRowBuffer);
       m_pDataStack->vPushInt(true);
       EXIT();
       return;
     }
       
-    case CN_STREAMSET: {
-      StreamSet* pStreamSet = new StreamSet();
+//    case CN_STREAMSET: {
+//      StreamSet* pStreamSet = new StreamSet();
+//
+//      MemLib::vCopy(pStreamSet,pObject,sizeof(Object),CN_STREAMSET);
+//
+//      aBody = aAdd<void*>(pStreamSet,sizeof(Object));
+//      nRemainingBytes = gxaSizeHeap[CN_STREAMSET].m_nClassSize - sizeof(Object);
+//
+//      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
+//      if (! bResult) {
+//        m_pDataStack->vPushInt(false);
+//        EXIT();
+//        return;
+//      }
+//
+//      m_pDataStack->vPushPtr(pStreamSet);
+//      m_pDataStack->vPushInt(true);
+//      EXIT();
+//      return;
+//    }
       
-      MemLib::vCopy(pStreamSet,pObject,sizeof(Object),CN_STREAMSET);
-      
-      aBody = aAdd<void*>(pStreamSet,sizeof(Object));
-      nRemainingBytes = gxaSizeHeap[CN_STREAMSET].m_nClassSize - sizeof(Object);
-      
-      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
-      if (! bResult) {
-        m_pDataStack->vPushInt(false);
-        EXIT();
-        return;
-      }
-      
-      m_pDataStack->vPushPtr(pStreamSet);
-      m_pDataStack->vPushInt(true);
-      EXIT();
-      return;
-    }
-      
-    case CN_MARKER: {
-      Marker* pMarker = new Marker();
-      
-      MemLib::vCopy(pMarker,pObject,sizeof(Object),CN_MARKER);
-      
-      aBody = aAdd<void*>(pMarker,sizeof(Object));
-      nRemainingBytes = gxaSizeHeap[CN_MARKER].m_nClassSize - sizeof(Object);
-      
-      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
-      if (! bResult) {
-        m_pDataStack->vPushInt(false);
-        EXIT();
-        return;
-      }
-      
-      m_pDataStack->vPushPtr(pMarker);
-      m_pDataStack->vPushInt(true);
-      EXIT();
-      return;
-    }
+//    case CN_MARKER: {
+//      Marker* pMarker = new Marker();
+//
+//      MemLib::vCopy(pMarker,pObject,sizeof(Object),CN_MARKER);
+//
+//      aBody = aAdd<void*>(pMarker,sizeof(Object));
+//      nRemainingBytes = gxaSizeHeap[CN_MARKER].m_nClassSize - sizeof(Object);
+//
+//      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
+//      if (! bResult) {
+//        m_pDataStack->vPushInt(false);
+//        EXIT();
+//        return;
+//      }
+//
+//      m_pDataStack->vPushPtr(pMarker);
+//      m_pDataStack->vPushInt(true);
+//      EXIT();
+//      return;
+//    }
      
-    case CN_PROFILE: {
-      Profile* pProfile = new Profile(""_Stz);
+//    case CN_PROFILE: {
+//      Profile* pProfile = new Profile(""_Stz);
+//
+//      MemLib::vCopy(pProfile,pObject,sizeof(Object),CN_PROFILE);
+//
+//      aBody = aAdd<void*>(pProfile,sizeof(Object));
+//      nRemainingBytes = gxaSizeHeap[CN_PROFILE].m_nClassSize - sizeof(Object);
+//
+//      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
+//      if (! bResult) {
+//        m_pDataStack->vPushInt(false);
+//        EXIT();
+//        return;
+//      }
+//
+//      m_pDataStack->vPushPtr(pProfile);
+//      m_pDataStack->vPushInt(true);
+//      EXIT();
+//      return;
+//    }
       
-      MemLib::vCopy(pProfile,pObject,sizeof(Object),CN_PROFILE);
+    case CN_INDEXDEF:
+    case CN_STREAMSET:
+    case CN_MARKER:
+    case CN_PROFILE:
+    case CN_STREAMDEF:
       
-      aBody = aAdd<void*>(pProfile,sizeof(Object));
-      nRemainingBytes = gxaSizeHeap[CN_PROFILE].m_nClassSize - sizeof(Object);
-      
-      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
-      if (! bResult) {
-        m_pDataStack->vPushInt(false);
-        EXIT();
-        return;
-      }
-      
-      m_pDataStack->vPushPtr(pProfile);
-      m_pDataStack->vPushInt(true);
-      EXIT();
-      return;
-    }
-      
-    case CN_STREAMDEF: {
-      
-      Object* pReceivedObject = Heaps::pAllocate(eClass);
 
-      MemLib::vCopy(pReceivedObject,pObject,sizeof(Object),eClass);
+     pReceivedOperand = Heaps::pAllocate(eClass);
+     MemLib::vCopy(pReceivedOperand,pObject,sizeof(Object),eClass);
 
-      aBody = aAdd<void*>(pReceivedObject,sizeof(Object));
-      nRemainingBytes = gxaSizeHeap[eClass].m_nClassSize - sizeof(Object);
+     aBody = aAdd<void*>(pReceivedOperand,sizeof(Object));
+     nRemainingBytes = gxaSizeHeap[eClass].m_nClassSize - sizeof(Object);
 
-      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
-      if (! bResult) {
-        m_pDataStack->vPushInt(false);
-        EXIT();
-        return;
-      }
+     bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
+     if (! bResult) {
+       m_pDataStack->vPushInt(false);
+       EXIT();
+       return;
+     }
 
-      m_pDataStack->vPushPtr(pReceivedObject);
-      m_pDataStack->vPushInt(true);
-      EXIT();
-      return;
-      
+     m_pDataStack->vPushPtr(pReceivedOperand);
+     m_pDataStack->vPushInt(true);
+     EXIT();
+     return;
+
 //      StreamDef* pStreamDef = new StreamDef();
 //
 //      MemLib::vCopy(pStreamDef,pObject,sizeof(Object),CN_STREAMDEF);
@@ -688,7 +714,7 @@ void Step::vSocketRecvObject(void)
 //      m_pDataStack->vPushInt(true);
 //      EXIT();
 //      return;
-    }
+//    }
 
     default:
       vTrace("socket.recvObject: unknown object; class %lld\n"_Stz,eClass);
