@@ -32,34 +32,32 @@
 /*----------------------------------------------------------------------------*/
 /* attempt connect to given node                                              */
 /*----------------------------------------------------------------------------*/
-: connector_attemptConnect ( pNode -- )
-
-  params| pNode |
+: connector_attemptConnect ( Node[] -- )
 
   args.verbose if
-    pNode node.no grid::thisNode@ "Node %v connecting to node %v" .printf
+    Node[] node.no grid::thisNode@ "Node %v connecting to node %v" .printf
   then
 
   // get the nodes port and IP address
-  pNode node.port ( port )
-  pNode node.IP   ( port IP )
+  Node[] node.port ( port )
+  Node[] node.IP   ( port IP )
 
   // attempt connect to that node
-  pNode socket::open socket.connect to Socket[]
+  Node[] socket::open socket.connect to Socket[]
 
   Socket[].isNull if
-    pNode node.no grid::thisNode@ "Node %v unable to connect to node %v" .printf
+    Node[] node.no grid::thisNode@ "Node %v unable to connect to node %v" .printf
     exit
   then
 
   // set the send socket in the node
   grid::incConnectedNodes
-  Socket[] pNode node.sendSocket!
+  Socket[] Node[] node.sendSocket!
 
  
   // print connection message
   args.verbose if
-    pNode node.no grid::thisNode@ "Node %v connected to node %v" .printf
+    Node[] node.no grid::thisNode@ "Node %v connected to node %v" .printf
   then
 
   // send this node's info to the node we just connected to
@@ -73,17 +71,17 @@
 /*----------------------------------------------------------------------------*/
 : connector_take ( -- )
 
-  0 locals| pNode |
-
   C_ALL node_I[].new
 
   begin
 
-    node_I[].node to pNode
+    node_I[].node to Node[]
 
-    pNode node.sendSocket@ not if
-      pNode connector_attemptConnect
+    Node[] node.sendSocket@ not if
+      connector_attemptConnect
     then
+    
+    nullptr to Node[]
 
     node_I[].next
     node_i[].more while
