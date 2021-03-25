@@ -45,8 +45,6 @@ void Step::vAddSteps_Task(void)
   vAddStep("task.name@"_Stz,          &Step::vTaskNameFetch);
   vAddStep("task.profile@"_Stz,       &Step::vTaskProfileFetch);
   vAddStep("task.profile!"_Stz,       &Step::vTaskProfileStore);
-  vAddStep("task.sendNode@"_Stz,      &Step::vTaskSendNodeFetch);
-  vAddStep("task.sendNode!"_Stz,      &Step::vTaskSendNodeStore);
   vAddStep("task.state@"_Stz,         &Step::vTaskStateFetch);
   vAddStep("task.thread"_Stz,         &Step::vTaskThread);
 }
@@ -331,43 +329,6 @@ void Step::vTaskSeedInitially(void)
   
   m_bSeedInitially = true;
 
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.sendNode@ -- fetch send node of task on data stack                    */
-/*----------------------------------------------------------------------------*/
-void Step::vTaskSendNodeFetch(void)
-{
-  ENTRY();
-  
-  //Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
-  //RASSERT(pThatTask->pJob() == m_pJob);
-
-  Node* pSendNode = * m_pJob->pLogicUnit_job()->m_xpSendNode;
-  
-  Object* pPtrSendNode = pSendNode;
-  
-  m_pDataStack->vPushPtr(pPtrSendNode);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.sendNode! -- store send node on data stack into task on data stack    */
-/*----------------------------------------------------------------------------*/
-void Step::vTaskSendNodeStore(void)
-{
-  ENTRY();
-  
-  //Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
-  //RASSERT(pThatTask->pJob() == m_pJob);
-
-  Node* pSendNode = _pNode(m_pDataStack->pPopPtr(__func__));
-  
-  m_pJob->pLogicUnit_job()->m_xpSendNode = pSendNode;
-
-  
   EXIT();
 }
 

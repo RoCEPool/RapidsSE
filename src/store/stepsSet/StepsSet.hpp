@@ -1678,8 +1678,6 @@ void vExprEvalEvaluate(void);
   void vTaskProfileFetch(void);
   void vTaskProfileStore(void);
   void vTaskSeedInitially(void);
-  void vTaskSendNodeFetch(void);
-  void vTaskSendNodeStore(void);
   void vTaskSleepMsec(void);
   void vTaskSleepNsec(void);
   void vTaskSleepSsec(void);
