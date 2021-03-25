@@ -10,19 +10,17 @@ macro AM_HANDLER_CRWBUFFER
   Label HANDLER_CRWBUFFER
   EO_PRINTF "**CRWBUFFER HANDLER**\n"
   EO_POP
-  //EO_CRW_SRC_BEGIN
   EO_PUSH_DEVIXT_SRC
   EO_DEVIXT_CRWBUF_BEGIN
 
   // NEXT_CRW_SRC
   Label NEXT_CRW_SRC
 
-  //EO_CRW_SRC_NEXT
   EO_PUSH_DEVIXT_SRC
   EO_DEVIXT_CRWBUF_NEXT
 
   EO_JMP_FALSE QUERY_DONE
-  EO_CALL <crwProcessRoutine>
+  EO_CALL <crwProcessRoutine>   // C_TAG_CRW_PROCESS_ROUTINE
   EO_JMP NEXT_CRW_SRC
   EO_JMP QUERY_DONE
 endMacro
@@ -36,7 +34,6 @@ macro AM_HANDLER_CRWBUFFER_AGG
   EO_PRINTF "**CRWBUFFER HANDLER**\n"
   EO_POP
 
-  //EO_ROW_DST_TESTROW
   EO_PUSH_DEVROW_DST
   EO_DEVROW_ROW_TEST
 
@@ -50,18 +47,16 @@ macro AM_HANDLER_CRWBUFFER_AGG
   EO_DEVROW_ROW_NEW
 
   Label HANDLER_CRWBUFFER_AGG_BEGIN
-  //EO_CRW_SRC_BEGIN
   EO_PUSH_DEVIXT_SRC
   EO_DEVIXT_CRWBUF_BEGIN
 
   // NEXT_CRW_SRC
   Label NEXT_CRW_SRC
-  //EO_CRW_SRC_NEXT
   EO_PUSH_DEVIXT_SRC
   EO_DEVIXT_CRWBUF_NEXT
 
   EO_JMP_FALSE QUERY_DONE
-  EO_CALL <crwProcessRoutine>
+  EO_CALL <crwProcessRoutine>    // C_TAG_CRW_PROCESS_ROUTINE
   EO_JMP NEXT_CRW_SRC
   EO_JMP QUERY_DONE
 endMacro
@@ -87,8 +82,8 @@ macro AM_HANDLER_CRWBUFFER_AGG_GBY
   EO_DEVIXT_CRWBUF_NEXT
 
   EO_JMP_FALSE QUERY_DONE
-  EO_CALL <crwProcessRoutine>
-  EO_CALL <payLoadRoutine>
+  EO_CALL <crwProcessRoutine>    // C_TAG_CRW_PROCESS_ROUTINE
+  EO_CALL <payLoadRoutine>       // C_TAG_PAYLOAD_ROUTINE
   EO_JMP NEXT_CRW_SRC
   EO_JMP QUERY_DONE
 endMacro
@@ -101,12 +96,11 @@ macro AM_HANDLER_CRWBUFFER_LIMIT
   Label HANDLER_CRWBUFFER
   EO_PRINTF "**CRWBUFFER HANDLER**\n"
   EO_POP
-  //EO_CRW_SRC_BEGIN
   EO_PUSH_DEVIXT_SRC
   EO_DEVIXT_CRWBUF_BEGIN
 
   // push limit on stack
-  EO_INTEGER <limitRows>
+  EO_INTEGER <limitRows>     // C_TAG_LIMIT_ROWS
   EO_DUMP
 
   // NEXT_CRW_SRC
@@ -122,12 +116,11 @@ macro AM_HANDLER_CRWBUFFER_LIMIT
   // increment rows processed
   EO_CTR_0_INC
 
-  //EO_CRW_SRC_NEXT
   EO_PUSH_DEVIXT_SRC
   EO_DEVIXT_CRWBUF_NEXT
 
   EO_JMP_FALSE QUERY_DONE
-  EO_CALL <crwProcessRoutine>
+  EO_CALL <crwProcessRoutine>   // C_TAG_CRW_PROCESS_ROUTINE
   EO_JMP NEXT_CRW_SRC
   EO_JMP QUERY_DONE
 endMacro
@@ -138,8 +131,8 @@ macro AM_CRW_PROJECT_COLUMNS
 //----------------------------------------------------------------------------//
   // CRW_PROJECT_COLUMNS
   Label CRW_PROJECT_COLUMNS
-  EO_RLU_SET_ITEMS <projectItems>
-  EO_RLU_SET_COLUMNS <projectSrcColumns>
+  EO_RLU_SET_ITEMS <projectItems>  // C_TAG_PROJECT_ITEMS
+  EO_RLU_SET_COLUMNS <projectSrcColumns>  // C_TAG_PROJECT_SRC_COLUMN
   EO_PUSH_RLU_LOCALS
   EO_PUSH_RLU_COLSET
   EO_PUSH_DEVROW_SRC
@@ -161,14 +154,13 @@ macro AM_CRW_PROJECT_COLUMNS_AGG
 //----------------------------------------------------------------------------//
   // CRW_PROJECT_COLUMNS_AGG
   Label CRW_PROJECT_COLUMNS_AGG
-  EO_RLU_SET_ITEMS <projectItems>
-  EO_RLU_SET_COLUMNS <projectSrcColumns>
+  EO_RLU_SET_ITEMS <projectItems>  // C_TAG_PROJECT_ITEMS
+  EO_RLU_SET_COLUMNS <projectSrcColumns>  // C_TAG_PROJECT_SRC_COLUMN
   EO_PUSH_RLU_LOCALS
   EO_PUSH_RLU_COLSET
   EO_PUSH_DEVROW_SRC
   EO_PUSH_DEVIXT_SRC
   EO_DEVIXT_COLS_TO_LOCALS
-  //EO_DUMP
 endMacro
 
 macro AM_CRW_PROJECT_NONE
@@ -177,13 +169,11 @@ macro AM_CRW_PROJECT_NONE
 //----------------------------------------------------------------------------//
   // CRW_PROJECT_NONE
   Label CRW_PROJECT_NONE
-  //EO_ROW_DST_NEW
   EO_PUSH_DEVROW_DST
   EO_PUSH_RLU_POT
   EO_PUSH_RLU_PTN
   EO_DEVROW_ROW_NEW
 
-  //EO_DUMP
 endMacro
 
 macro AM_CRW_PROJECT_STAR
@@ -192,7 +182,6 @@ macro AM_CRW_PROJECT_STAR
 //----------------------------------------------------------------------------//
   // CRW_PROJECT_STAR
   Label CRW_PROJECT_STAR
-  //EO_ROW_DST_NEW
   EO_PUSH_DEVROW_DST
   EO_PUSH_RLU_POT
   EO_PUSH_RLU_PTN
@@ -206,10 +195,10 @@ macro AM_CRW_PROJECT_STAR
   EO_RETURN
 endMacro
 
+macro AM_CRW_PROJECT_END
 //----------------------------------------------------------------------------//
 // macro AM_CRW_PROJECT_END                                                   //
 //----------------------------------------------------------------------------//
-macro AM_CRW_PROJECT_END
   // CRW_PROJECT_END
   //EO_ROW_DST_PRINT
   EO_RETURN
@@ -221,8 +210,8 @@ macro AM_CRW_FILTER_ROWS
 //----------------------------------------------------------------------------//
   // CRW_FILTER_ROWS
   Label CRW_FILTER_ROWS
-  EO_RLU_SET_ITEMS <projectItems>
-  EO_RLU_SET_COLUMNS <projectSrcColumns>
+  EO_RLU_SET_ITEMS <projectItems>  // C_TAG_PROJECT_ITEMS
+  EO_RLU_SET_COLUMNS <projectSrcColumns>  // C_TAG_PROJECT_SRC_COLUMN
   EO_PUSH_RLU_LOCALS
   EO_PUSH_RLU_COLSET
   EO_PUSH_DEVROW_SRC

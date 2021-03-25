@@ -899,7 +899,10 @@ eEC LogicUnit::eGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOut
     oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_NONE, &oTagSet, sMacro));
   }
 
-  oFile.vPrint("%s\n"_Stz, pExprEval->m_sAsmText.azChar());
+  oFile.vPrint("  // *** begin generated code: m_sAsmText *** //\n"_Stz);
+  oFile.vPrint("%s"_Stz, pExprEval->m_sAsmText.azChar());
+  oFile.vPrint("  // *** end generated code: m_sAsmText *** //\n"_Stz);
+
   oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_END, &oTagSet, sMacro));
 
 
@@ -918,9 +921,10 @@ eEC LogicUnit::eGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOut
     oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_NONE, &oTagSet, sMacro));
   }
 
-  //for (i8 i_Col = 0; i_Col < pStreamDefOut->nTotalColumns(); i_Col++) {
-    oFile.vPrint("%s\n"_Stz, pExprEval->m_sAsmText.azChar());
-  //}
+  oFile.vPrint("  // *** begin generated code: m_sAsmText *** //\n"_Stz);
+  oFile.vPrint("%s"_Stz, pExprEval->m_sAsmText.azChar());
+  oFile.vPrint("  // *** end generated code: m_sAsmText *** //\n"_Stz);
+
   oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_END, &oTagSet, sMacro));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
