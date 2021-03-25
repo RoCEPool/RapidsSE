@@ -13,7 +13,7 @@
 #include "ColumnWildcard.hpp"
 #include "ColumnOrdinal.hpp"
 #include "OperatorExpr.hpp"
-#include "ProjectedExpr.hpp"
+#include "ProjectedColumn.hpp"
 #include "AdditionExpr.hpp"
 #include "MultiplicationExpr.hpp"
 #include "AndExpr.hpp"
@@ -126,7 +126,7 @@ b1 Expr::bContainsAnAggregate(PlanNode *pNode)
     return GraphNav::WALK_CONTINUE;
   };
 
-  GraphNav::bWalk(pNode, false, true, fVisitor, nullptr);
+  GraphNav::bBoundedWalk(pNode, false, true, fVisitor, nullptr);
 
   return bIsAgg;
 }
@@ -161,7 +161,7 @@ b1 Expr::bContainsNonaggregatedColumnRefs(PlanNode *pNode)
     return GraphNav::WALK_CONTINUE;
   };
 
-  GraphNav::bWalk(pNode, false, true, fVisitor, nullptr);
+  GraphNav::bBoundedWalk(pNode, false, true, fVisitor, nullptr);
 
   return bHasNonAggColumnRef;
 }
@@ -192,7 +192,7 @@ b1 Expr::bIsLiteral(PlanNode *pNode)
     return GraphNav::WALK_CONTINUE;
   };
 
-  GraphNav::bWalk(pNode, false, true, fVisitor, nullptr);
+  GraphNav::bBoundedWalk(pNode, false, true, fVisitor, nullptr);
 
   return bIsLit;
 }
@@ -289,8 +289,8 @@ QueryNode* Expr::pSymbolicToOrdinal(QueryNode*    pSymbolicExpr,
   i8 iOrdinal = 1;
 
   while (pIter->bHasNext()) {
-    QueryNode* pProjectedExpr = static_cast<QueryNode*>(pIter->pNext());
-    QueryNode* pColExpr = ProjectedExpr::pExprNode(pProjectedExpr);
+    QueryNode* pProjectedColumn = static_cast<QueryNode*>(pIter->pNext());
+    QueryNode* pColExpr = ProjectedColumn::pExprNode(pProjectedColumn);
 
 //    s2K sBuf1;
 //    s2K sBuf2;
@@ -508,7 +508,7 @@ b1 Expr::bIsOrdinal(QueryNode* pExpr)
     return GraphNav::WALK_CONTINUE;
   };
 
-  GraphNav::bWalk(pExpr, fVisitor, nullptr);
+  GraphNav::bBoundedWalk(pExpr, fVisitor, nullptr);
 
   return bIsOrdinal;
 }

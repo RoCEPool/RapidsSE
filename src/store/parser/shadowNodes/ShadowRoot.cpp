@@ -4,7 +4,7 @@
 
 #include "BASE.h"
 #include "ShadowRoot.hpp"
-#include "Statement.hpp"
+#include "StatementMarker.hpp"
 
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
@@ -26,7 +26,7 @@ using namespace Parser;
 
 
 /*----------------------------------------------------------------------------*/
-/* Appends a description of the ProjectedExpr into a buffer                   */
+/* Appends a description of the graph node into a buffer                      */
 /*----------------------------------------------------------------------------*/
 void ShadowRoot::vDescribe(PlanNode* pRoot, s2K& sBuf)
 {
@@ -52,9 +52,9 @@ void ShadowRoot::vExplain(PlanNode* pRoot, s48K& sBuf, i8 iIndent)
 
   PlanNode* pStatement = pPlan->pFirstChild();
   ASSERT(pStatement);
-  ASSERT(Statement::bIsOfType(pStatement));
+  ASSERT(StatementMarker::bIsOfType(pStatement));
 
-  Statement::vExplain(pStatement, pRoot, sBuf, iIndent);
+  StatementMarker::vExplain(pStatement, pRoot, sBuf, iIndent);
 }
 
 /*----------------------------------------------------------------------------*/

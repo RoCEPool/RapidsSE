@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ProjectedExpr.hpp - a projected expression that may have an alias          */
+/* ProjectedColumn.hpp - a projected expression that may have an alias        */
 /*============================================================================*/
 #pragma once
 
@@ -10,12 +10,12 @@ namespace Parser
 {
   class QueryNode;
 
-  class ProjectedExpr : public ShadowNode
+  class ProjectedColumn : public ShadowNode
   {
 
   private:
     // Shalt never be instantiated. Static functions only.
-    ProjectedExpr();
+    ProjectedColumn();
 
   public:
     static Stz*       szAliasName(QueryNode* pQueryNode);

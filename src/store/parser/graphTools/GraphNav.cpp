@@ -9,6 +9,7 @@
 #include "DefinitionNode.hpp"
 #include "PrimitiveNode.hpp"
 #include "PlanConstants.hpp"
+#include "StatementMarker.hpp"
 
 using namespace Parser;
 
@@ -67,6 +68,7 @@ void GraphNav::vParentType(Stz* szTypePath, s256& buf)
  * This function returns a boolean where true indicates that it walked every
  * node and false indicates that it stopped walking nodes early (on request
  * of the function).
+ * A global walk traverses all nodes in the graph.
  *
  * Params:
  *   pNode    - The node of the graph to start with (may not be the root).
@@ -84,11 +86,44 @@ void GraphNav::vParentType(Stz* szTypePath, s256& buf)
  * can often be easier than creating a new class to specifically overload
  * the operator().                                                            */
 /*----------------------------------------------------------------------------*/
-b1 GraphNav::bWalk(PlanNode* pNode,
-                   std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor,
-                   void* pvArg)
+b1 GraphNav::bGlobalWalk(PlanNode* pNode,
+                         std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor,
+                         void* pvArg)
 {
-  return bWalk(pNode, true, true, fVisitor, pvArg);
+  return bGlobalWalk(pNode, true, true, fVisitor, pvArg);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Walks a node graph (including all properties and children) and calls a
+ * function for each PlanNode visited (i.e., it's a visitor pattern). This is a
+ * TOP-DOWN, depth-first traversal.
+ * This function returns a boolean where true indicates that it walked every
+ * node and false indicates that it stopped walking nodes early (on request
+ * of the function).
+ * A bounded walk traverses all nodes until a StatementMarker node is encountered.
+ * If the starting node is a StatementMarker then it is ignored.
+ *
+ * Params:
+ *   pNode    - The node of the graph to start with (may not be the root).
+ *   fVisitor - A function that is called for each node visited. This function
+ *              must have the following definition:
+ *                 eWalkCtrl func(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+ *              The function should return the appropriate enum value to control
+ *              the continuing traversal of the graph.
+ * Returns: false if the function aborted the walk prematurely otherwise true.
+ *
+ * NOTES:
+ *
+ *
+ * Functions or C++11 lambdas can be passed to this function. Using lambdas
+ * can often be easier than creating a new class to specifically overload
+ * the operator().                                                            */
+/*----------------------------------------------------------------------------*/
+b1 GraphNav::bBoundedWalk(PlanNode* pNode,
+                         std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor,
+                         void* pvArg)
+{
+  return bBoundedWalk(pNode, true, true, fVisitor, pvArg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -98,6 +133,7 @@ b1 GraphNav::bWalk(PlanNode* pNode,
  * This function returns a boolean where true indicates that it walked every
  * node and false indicates that it stopped walking nodes early (on request
  * of the function).
+ * A global walk traverses all nodes in the graph.
  *
  * Params:
  *   pNode    - The node of the graph to start with (may not be the root).
@@ -115,11 +151,44 @@ b1 GraphNav::bWalk(PlanNode* pNode,
  * can often be easier than creating a new class to specifically overload
  * the operator().                                                            */
 /*----------------------------------------------------------------------------*/
-b1 GraphNav::bWalkBottomUp(PlanNode* pNode,
-                           std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor,
-                           void* pvArg)
+b1 GraphNav::bGlobalWalkBottomUp(PlanNode* pNode,
+                                 std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor,
+                                 void* pvArg)
 {
-  return bWalkBottomUp(pNode, true, true, fVisitor, pvArg);
+  return bGlobalWalkBottomUp(pNode, true, true, fVisitor, pvArg);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Walks a node graph (including all properties and children) and calls a
+ * function for each PlanNode visited (i.e., it's a visitor pattern). This is a
+ * BOTTOM-UP, depth-first traversal.
+ * This function returns a boolean where true indicates that it walked every
+ * node and false indicates that it stopped walking nodes early (on request
+ * of the function).
+ * A bounded walk traverses all nodes until a StatementMarker node is encountered.
+ * If the starting node is a StatementMarker then it is ignored.
+ *
+ * Params:
+ *   pNode    - The node of the graph to start with (may not be the root).
+ *   fVisitor - A function that is called for each node visited. This function
+ *              must have the following definition:
+ *                 b1 func(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+ *              The function should return the appropriate enum value to control
+ *              the continuing traversal of the graph.
+ * Returns: false if the function aborted the walk prematurely otherwise true.
+ *
+ * NOTES:
+ *
+ *
+ * Functions or C++11 lambdas can be passed to this function. Using lambdas
+ * can often be easier than creating a new class to specifically overload
+ * the operator().                                                            */
+/*----------------------------------------------------------------------------*/
+b1 GraphNav::bBoundedWalkBottomUp(PlanNode* pNode,
+                                 std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor,
+                                 void* pvArg)
+{
+  return bBoundedWalkBottomUp(pNode, true, true, fVisitor, pvArg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -129,6 +198,7 @@ b1 GraphNav::bWalkBottomUp(PlanNode* pNode,
  * This function returns a boolean where true indicates that it walked every
  * node and false indicates that it stopped walking nodes early (on request
  * of the function).
+ * A global walk traverses all nodes in the graph.
  *
  * Params:
  *   pNode    - The node of the graph to start with (may not be the root).
@@ -149,8 +219,8 @@ b1 GraphNav::bWalkBottomUp(PlanNode* pNode,
  * can often be easier than creating a new class to specifically overload
  * the operator().                                                            */
 /*----------------------------------------------------------------------------*/
-b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
-                   std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor, void* pvArg)
+b1 GraphNav::bGlobalWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
+                         std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor, void* pvArg)
 {
   if (!pNode) {
     return true;
@@ -167,7 +237,57 @@ b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
     // We don't know where we're starting, so it will be a relative path
   }
 
-  return bWalk(pNode, bWalkProperties, bWalkChildren, fVisitor, pvArg, sPath, 0);
+  return bWalk(pNode, bWalkProperties, bWalkChildren, fVisitor, pvArg, sPath, 0, false);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Walks a node graph (including properties and children if desired) and calls a
+ * function for each PlanNode visited (i.e., it's a visitor pattern). This is a
+ * TOP-DOWN, depth-first traversal.
+ * This function returns a boolean where true indicates that it walked every
+ * node and false indicates that it stopped walking nodes early (on request
+ * of the function).
+ * A bounded walk traverses all nodes until a StatementMarker node is encountered.
+ * If the starting node is a StatementMarker then it is ignored.
+ *
+ * Params:
+ *   pNode    - The node of the graph to start with (may not be the root).
+ *   bWalkProperties - If true then any property nodes will be walked as well.
+ *                     If false then any property nodes will be skipped.
+ *   bWalkChildren - If true then any child nodes will be walked as well.
+ *                   If false then any child nodes will be skipped.
+ *   fVisitor - A function that is called for each node visited. This function
+ *              must have the following definition:
+ *                 eWalkCtrl func(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+ *              The function should return the appropriate enum value to control
+ *              the continuing traversal of the graph.
+ *   pvArg - An optional argument to be passed to the visitor function.
+ * Returns: false if the function aborted the walk prematurely otherwise true.
+ *
+ * NOTES:
+ * Functions or C++11 lambdas can be passed to this function. Using lambdas
+ * can often be easier than creating a new class to specifically overload
+ * the operator().                                                            */
+/*----------------------------------------------------------------------------*/
+b1 GraphNav::bBoundedWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
+                          std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor, void* pvArg)
+{
+  if (!pNode) {
+    return true;
+  }
+
+  s256 sPath;
+
+  // We may not be starting with the root node. If we are then set the path to "/"
+  // so that each node can append its name appropriately.
+  if (pNode->szName()->bEqual(const_cast<Stz*>(C_ROOT_NAME))) {
+    sPath.vCopy("/"_Stz);
+
+  } else {
+    // We don't know where we're starting, so it will be a relative path
+  }
+
+  return bWalk(pNode, bWalkProperties, bWalkChildren, fVisitor, pvArg, sPath, 0, true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -177,6 +297,7 @@ b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
  * This function returns a boolean where true indicates that it walked every
  * node and false indicates that it stopped walking nodes early (on request
  * of the function).
+ * A global walk traverses all nodes in the graph.
  *
  * Params:
  *   pNode    - The node of the graph to start with (may not be the root).
@@ -197,8 +318,8 @@ b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
  * can often be easier than creating a new class to specifically overload
  * the operator().                                                            */
 /*----------------------------------------------------------------------------*/
-b1 GraphNav::bWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
-                           std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor, void* pvArg)
+b1 GraphNav::bGlobalWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
+                                 std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor, void* pvArg)
 {
   if (!pNode) {
     return true;
@@ -215,7 +336,57 @@ b1 GraphNav::bWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren
     // We don't know where we're starting, so it will be a relative path
   }
 
-  return bWalkBottomUp(pNode, bWalkProperties, bWalkChildren, fVisitor, pvArg, sPath, 0);
+  return bWalkBottomUp(pNode, bWalkProperties, bWalkChildren, fVisitor, pvArg, sPath, 0, false);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Walks a node graph (including properties and children if desired) and calls a
+ * function for each PlanNode visited (i.e., it's a visitor pattern). This is a
+ * BOTTOM-UP, depth-first traversal.
+ * This function returns a boolean where true indicates that it walked every
+ * node and false indicates that it stopped walking nodes early (on request
+ * of the function).
+ * A bounded walk traverses all nodes until a StatementMarker node is encountered.
+ * If the starting node is a StatementMarker then it is ignored.
+ *
+ * Params:
+ *   pNode    - The node of the graph to start with (may not be the root).
+ *   bWalkProperties - If true then any property nodes will be walked as well.
+ *                     If false then any property nodes will be skipped.
+ *   bWalkChildren - If true then any child nodes will be walked as well.
+ *                   If false then any child nodes will be skipped.
+ *   fVisitor - A function that is called for each node visited. This function
+ *              must have the following definition:
+ *                 eWalkCtrl func(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
+ *              The function should return the appropriate enum value to control
+ *              the continuing traversal of the graph.
+ *   pvArg - An optional argument to be passed to the visitor function.
+ * Returns: false if the function aborted the walk prematurely otherwise true.
+ *
+ * NOTES:
+ * Functions or C++11 lambdas can be passed to this function. Using lambdas
+ * can often be easier than creating a new class to specifically overload
+ * the operator().                                                            */
+/*----------------------------------------------------------------------------*/
+b1 GraphNav::bBoundedWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
+                                  std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor, void* pvArg)
+{
+  if (!pNode) {
+    return true;
+  }
+
+  s256 sPath;
+
+  // We may not be starting with the root node. If we are then set the path to "/"
+  // so that each node can append its name appropriately.
+  if (pNode->szName()->bEqual(const_cast<Stz*>(C_ROOT_NAME))) {
+    sPath.vCopy("/"_Stz);
+
+  } else {
+    // We don't know where we're starting, so it will be a relative path
+  }
+
+  return bWalkBottomUp(pNode, bWalkProperties, bWalkChildren, fVisitor, pvArg, sPath, 0, true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -225,6 +396,8 @@ b1 GraphNav::bWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren
  * This function returns a boolean where true indicates that it walked every
  * node and false indicates that it stopped walking nodes early (on request
  * of the function).
+ * A global walk traverses all nodes in the graph. A bounded walk will stop
+ * when a StatementMarker node is encountered (see bBoundedWalk parameter)
  *
  * Params:
  *   pNode    - The node of the graph to start with (may not be the root).
@@ -241,6 +414,10 @@ b1 GraphNav::bWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren
  *   sPath - the path (absolute or relative) of the parent node. The current
  *           node should be appended to this and cleared before returning.
  *   iDepth - the depth of the current node, starting at 0 for the first node.
+ *   bBoundedWalk - if true then the walk stops when it hits the first
+ *                  StatementMarker node (ignoring the initial pNode if it happens
+ *                  to be a StatementMarker node). If false then all nodes of
+ *                  the graph are walked.
  * Returns: false if the function aborted the walk prematurely otherwise true.
  *
  * NOTES:
@@ -250,9 +427,14 @@ b1 GraphNav::bWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren
 /*----------------------------------------------------------------------------*/
 b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
                    std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor,
-                   void* pvArg, s256& sPath, i8 iDepth)
+                   void* pvArg, s256& sPath, i8 iDepth, b1 bBoundedWalk)
 {
   if (!pNode) {
+    return true;
+  }
+
+  // Have we hit a StatementMarker node on a bounded walk?
+  if (bBoundedWalk && StatementMarker::bIsOfType(pNode) && iDepth > 0) {
     return true;
   }
 
@@ -284,7 +466,7 @@ b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
         sPath.vClip(nLen);
         sPath.vConcat(StrLib::szCharToStr(C_PROPERTY_SEPARATOR));
 
-        bRetVal = bWalk(pProp, bWalkProperties, bWalkChildren, fVisitor, pvArg, sPath, iDepth + 1);
+        bRetVal = bWalk(pProp, bWalkProperties, bWalkChildren, fVisitor, pvArg, sPath, iDepth + 1, bBoundedWalk);
 
         if (!bRetVal) {
           delete pIter;
@@ -311,7 +493,7 @@ b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
         sPath.vClip(nLen);
         sPath.vConcat(StrLib::szCharToStr(C_CHILD_SEPARATOR));
 
-        bRetVal = bWalk(pChild, bWalkProperties, bWalkChildren, fVisitor, pvArg, sPath, iDepth + 1);
+        bRetVal = bWalk(pChild, bWalkProperties, bWalkChildren, fVisitor, pvArg, sPath, iDepth + 1, bBoundedWalk);
 
         if (!bRetVal) {
           delete pIter;
@@ -337,6 +519,8 @@ b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
  * This function returns a boolean where true indicates that it walked every
  * node and false indicates that it stopped walking nodes early (on request
  * of the function).
+ * A global walk traverses all nodes in the graph. A bounded walk will stop
+ * when a StatementMarker node is encountered (see bBoundedWalk parameter)
  *
  * Params:
  *   pNode    - The node of the graph to start with (may not be the root).
@@ -353,6 +537,10 @@ b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
  *   sPath - the path (absolute or relative) of the parent node. The current
  *           node should be appended to this and cleared before returning.
  *   iDepth - the depth of the current node, starting at 0 for the first node.
+ *   bBoundedWalk - if true then the walk stops when it hits the first
+ *                  StatementMarker node (ignoring the initial pNode if it happens
+ *                  to be a StatementMarker node). If false then all nodes of
+ *                  the graph are walked.
  * Returns: false if the function aborted the walk prematurely otherwise true.
  *
  * NOTES:
@@ -362,9 +550,14 @@ b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
 /*----------------------------------------------------------------------------*/
 b1 GraphNav::bWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
                            std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor,
-                           void* pvArg, s256& sPath, i8 iDepth)
+                           void* pvArg, s256& sPath, i8 iDepth, b1 bBoundedWalk)
 {
   if (!pNode) {
+    return true;
+  }
+
+  // Have we hit a StatementMarker node on a bounded walk?
+  if (bBoundedWalk && StatementMarker::bIsOfType(pNode) && iDepth > 0) {
     return true;
   }
 
@@ -385,7 +578,7 @@ b1 GraphNav::bWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren
         sPath.vClip(nLen);
         sPath.vConcat(StrLib::szCharToStr(C_PROPERTY_SEPARATOR));
 
-        bRetVal = bWalkBottomUp(pProp, bWalkProperties, bWalkChildren, fVisitor, pvArg, sPath, iDepth + 1);
+        bRetVal = bWalkBottomUp(pProp, bWalkProperties, bWalkChildren, fVisitor, pvArg, sPath, iDepth + 1, bBoundedWalk);
 
         if (!bRetVal) {
           delete pIter;
@@ -412,7 +605,7 @@ b1 GraphNav::bWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren
         sPath.vClip(nLen);
         sPath.vConcat(StrLib::szCharToStr(C_CHILD_SEPARATOR));
 
-        bRetVal = bWalkBottomUp(pChild, bWalkProperties, bWalkChildren, fVisitor, pvArg, sPath, iDepth + 1);
+        bRetVal = bWalkBottomUp(pChild, bWalkProperties, bWalkChildren, fVisitor, pvArg, sPath, iDepth + 1, bBoundedWalk);
 
         if (!bRetVal) {
           delete pIter;
@@ -651,7 +844,7 @@ PlanNode* GraphNav::pSearch(PlanNode* pStartNode, b1 bSearchProperties, b1 bSear
   };
 
   // Walk the graph then return the result, if any
-  bWalk(pStartNode, bSearchProperties, bSearchChildren, fVisitor, pvArg);
+  bGlobalWalk(pStartNode, bSearchProperties, bSearchChildren, fVisitor, pvArg);
 
   return pResult;
 }

@@ -1,9 +1,9 @@
 /*============================================================================*/
-/* ProjectedExpr.hpp - a projected expression that may have an alias          */
+/* ProjectedColumn.hpp - an expression that may also have an alias            */
 /*============================================================================*/
 
 #include "BASE.h"
-#include "ProjectedExpr.hpp"
+#include "ProjectedColumn.hpp"
 
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
@@ -17,8 +17,8 @@ using namespace Parser;
 /*----------------------------------------------------------------------------*/
 /*-- Constants ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-static Stz* C_PROJECTEDEXPR_DEFN = "/__root__/definitions/object/compound/projectedExpr"_Stz;
-static Stz* C_PROJECTEDEXPR_NAME = "projectedExpr"_Stz;
+static Stz* C_PROJECTEDCOLUMN_DEFN = "/__root__/definitions/object/compound/projectedColumn"_Stz;
+static Stz* C_PROJECTEDCOLUMN_NAME = "projectedColumn"_Stz;
 static Stz* C_EXPR_PROP  = "expr"_Stz;
 static Stz* C_ALIAS_PROP = "alias"_Stz;
 
@@ -28,9 +28,9 @@ static Stz* C_ALIAS_PROP = "alias"_Stz;
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* Returns the aliasName of the projectedExpr                                 */
+/* Returns the aliasName of the projectedColumn                               */
 /*----------------------------------------------------------------------------*/
-Stz* ProjectedExpr::szAliasName(QueryNode* pNode)
+Stz* ProjectedColumn::szAliasName(QueryNode* pNode)
 {
   QueryNode *pAliasNode =
       static_cast<QueryNode*>(GraphNav::pFindProperty(const_cast<Stz *>(C_ALIAS_PROP), pNode));
@@ -39,9 +39,9 @@ Stz* ProjectedExpr::szAliasName(QueryNode* pNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Helper function to create ProjectedExpr nodes.                             */
+/* Helper function to create ProjectedColumn nodes.                           */
 /*----------------------------------------------------------------------------*/
-QueryNode* ProjectedExpr::pCreate(QueryNode* pExprNode, Text* pAlias)
+QueryNode* ProjectedColumn::pCreate(QueryNode* pExprNode, Text* pAlias)
 {
   _static_
 
@@ -51,27 +51,27 @@ QueryNode* ProjectedExpr::pCreate(QueryNode* pExprNode, Text* pAlias)
   Value xAliasValue(pAlias);
 
   s256 sName;
-  ShadowNode::vObjName(C_PROJECTEDEXPR_NAME, sName);
+  ShadowNode::vObjName(C_PROJECTEDCOLUMN_NAME, sName);
 
-  // Create the ProjectedExpr object
-  QueryNode* pProjectedExpr = new QueryNode(sName.szStz(), const_cast<Stz*>(C_PROJECTEDEXPR_DEFN));
+  // Create the ProjectedColumn object
+  QueryNode* pProjectedColumn = new QueryNode(sName.szStz(), const_cast<Stz*>(C_PROJECTEDCOLUMN_DEFN));
 
   // Add the expression as a property
   // Make sure it has the right property name first
   pExprNode->vSetName(C_EXPR_PROP);
-  pProjectedExpr->vAppendProperty(pExprNode);
+  pProjectedColumn->vAppendProperty(pExprNode);
 
   // Create the alias and append it as a property
   QueryNode* pAliasNode  = new QueryNode(C_ALIAS_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN), static_cast<Value&&>(xAliasValue));
-  pProjectedExpr->vAppendProperty(pAliasNode);
+  pProjectedColumn->vAppendProperty(pAliasNode);
 
-  return pProjectedExpr;
+  return pProjectedColumn;
 }
 
 /*----------------------------------------------------------------------------*/
-/* Appends a description of the ProjectedExpr into a buffer                   */
+/* Appends a description of the graph node into a buffer                      */
 /*----------------------------------------------------------------------------*/
-void ProjectedExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
+void ProjectedColumn::vDescribe(PlanNode* pNode, s2K& sBuf)
 {
   _static_
 
@@ -79,18 +79,18 @@ void ProjectedExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Appends a description of the ProjectedExpr into a buffer                   */
+/* Appends a description of the graph node into a buffer                      */
 /*----------------------------------------------------------------------------*/
-void ProjectedExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNodeList* pColumnExprList, PlanNode* pRootNode)
+void ProjectedColumn::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNodeList* pColumnExprList, PlanNode* pRootNode)
 {
   _static_
 
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pProjectedExpr = static_cast<QueryNode*>(pNode);
+  QueryNode* pProjectedColumn = static_cast<QueryNode*>(pNode);
 
-  QueryNode* pExprNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_EXPR_PROP, pProjectedExpr));
-  QueryNode* pAliasNode  = static_cast<QueryNode*>(GraphNav::pFindProperty(C_ALIAS_PROP, pProjectedExpr));
+  QueryNode* pExprNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_EXPR_PROP, pProjectedColumn));
+  QueryNode* pAliasNode  = static_cast<QueryNode*>(GraphNav::pFindProperty(C_ALIAS_PROP, pProjectedColumn));
 
   ASSERT(pExprNode);
   ASSERT(pAliasNode);
@@ -118,35 +118,35 @@ void ProjectedExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNodeList* pColumnE
 }
 
 /*----------------------------------------------------------------------------*/
-/* Returns true if the given node is derived from the ProjectedExpr definition*/
+/* Returns true if the given node is derived from the ProjectedColumn defn    */
 /*----------------------------------------------------------------------------*/
-b1 ProjectedExpr::bIsOfType(PlanNode *pNode)
+b1 ProjectedColumn::bIsOfType(PlanNode *pNode)
 {
-  return ShadowNode::bIsOfType(pNode, C_PROJECTEDEXPR_DEFN);
+  return ShadowNode::bIsOfType(pNode, C_PROJECTEDCOLUMN_DEFN);
 }
 
 /*----------------------------------------------------------------------------*/
 /* Returns true if the given node is precisely the same as its definition     */
 /*----------------------------------------------------------------------------*/
-b1 ProjectedExpr::bIsExactType(PlanNode *pNode)
+b1 ProjectedColumn::bIsExactType(PlanNode *pNode)
 {
-  return ShadowNode::bIsExactType(pNode, C_PROJECTEDEXPR_DEFN);
+  return ShadowNode::bIsExactType(pNode, C_PROJECTEDCOLUMN_DEFN);
 }
 
 /*----------------------------------------------------------------------------*/
 /* Returns true if the expression in this node contains an aggregate expression*/
 /*----------------------------------------------------------------------------*/
-b1 ProjectedExpr::bContainsAnAggregate(QueryNode* pNode)
+b1 ProjectedColumn::bContainsAnAggregate(QueryNode* pNode)
 {
-  QueryNode *pExprNode = ProjectedExpr::pExprNode(pNode);
+  QueryNode *pExprNode = ProjectedColumn::pExprNode(pNode);
 
   return Expr::bContainsAnAggregate(pExprNode);
 }
 
 /*----------------------------------------------------------------------------*/
-/* Returns the exprNode of the ProjectedExpr                                  */
+/* Returns the exprNode of the ProjectedColumn                                */
 /*----------------------------------------------------------------------------*/
-QueryNode* ProjectedExpr::pExprNode(QueryNode* pNode)
+QueryNode* ProjectedColumn::pExprNode(QueryNode* pNode)
 {
   QueryNode *pExprNode =
       static_cast<QueryNode*>(GraphNav::pFindProperty(const_cast<Stz *>(C_EXPR_PROP), pNode));
@@ -158,11 +158,11 @@ QueryNode* ProjectedExpr::pExprNode(QueryNode* pNode)
 /* Returns a new copy of this projected expression rewritten relative to      */
 /* column ordinals. Must be freed after use.                                  */
 /*----------------------------------------------------------------------------*/
-QueryNode* ProjectedExpr::pSymbolicToOrdinal(QueryNode* pNode,
-                                             PlanNodeList* pColExprList,
-                                             PlanNode* pRootNode)
+QueryNode* ProjectedColumn::pSymbolicToOrdinal(QueryNode* pNode,
+                                               PlanNodeList* pColExprList,
+                                               PlanNode* pRootNode)
 {
-  // Get the column projection expression out of this ProjectedExpr and convert it
+  // Get the expression out of this ProjectedColumn and convert it
   // from symbolic to ordinal representation.
   QueryNode* pSymbolicExpr = pExprNode(pNode);
   ASSERT(pSymbolicExpr);
@@ -176,14 +176,14 @@ QueryNode* ProjectedExpr::pSymbolicToOrdinal(QueryNode* pNode,
 
   // Get the alias name of this column and (if applicable) duplicate it
   Text* pAlias = nullptr;
-  if (ProjectedExpr::szAliasName(pNode)) {
-    pAlias = new Text(ProjectedExpr::szAliasName(pNode));
+  if (ProjectedColumn::szAliasName(pNode)) {
+    pAlias = new Text(ProjectedColumn::szAliasName(pNode));
   }
 
-  // Create a new ProjectedExpr and return it
-  QueryNode* pOrdinalProjectedExpr = ProjectedExpr::pCreate(pOrdinalExpr, pAlias);
+  // Create a new ProjectedColumn and return it
+  QueryNode* pOrdinalProjectedColumn = ProjectedColumn::pCreate(pOrdinalExpr, pAlias);
 
-  return pOrdinalProjectedExpr;
+  return pOrdinalProjectedColumn;
 }
 
 /*============================================================================*/

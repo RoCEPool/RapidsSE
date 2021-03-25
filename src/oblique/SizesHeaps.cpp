@@ -132,6 +132,7 @@
 #include "SeApi.hpp"
 #include "Sessions.hpp"
 
+#include "ShardDef.hpp"
 #include "ShortCut.hpp"
 #include "SeDeputy.hpp"
 #include "SePrompt.hpp"
@@ -413,6 +414,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(SePrompt),           HT_T_LARGE   ,0 }, // CN_SEPROMPT
   { sizeof(Session),            HT_T_LARGE   ,0 }, // CN_SESSION
   { sizeof(Sessions),           HT_T_TINY    ,0 }, // CN_SESSIONS
+  { sizeof(ShardDef),           HT_T_LARGE   ,0 }, // CN_SHARDDEF
   { sizeof(ShortCut),           HT_T_MEDIUM  ,0 }, // CN_SHORTCUT
   { sizeof(ShortCutVec),        HT_T_MEDIUM  ,0 }, // CN_SHORTCUTVEC
   { sizeof(Birth),              HT_INVALID   ,0 }, // CN_SINCE

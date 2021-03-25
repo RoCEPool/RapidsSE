@@ -21,7 +21,7 @@
 #include "SqlOperator.hpp"
 #include "ShadowNode.hpp"
 #include "ShadowRoot.hpp"
-#include "Statement.hpp"
+#include "StatementMarker.hpp"
 #include "PlanConstants.hpp"
 #include "GraphNav.hpp"
 #include "PlanOperand.hpp"
@@ -38,7 +38,7 @@
 #include "FilterOp.hpp"
 #include "IntegerLiteral.hpp"
 #include "Literal.hpp"
-#include "ProjectedExpr.hpp"
+#include "ProjectedColumn.hpp"
 #include "ProjectOp.hpp"
 
 #include "ComparisonExpr.hpp"
@@ -329,7 +329,7 @@ bool Dynamo::bPlanToPipeline(String* pAsPipelineStmt,
   // path and not an absolute one.
   // Let's also pass in the root node as an argument as it can be useful within
   // the visitor function.
-  GraphNav::bWalkBottomUp(pPlanRoot, false, true, vVisitorPlan, (void*)pAsPipelineStmt);
+  GraphNav::bGlobalWalkBottomUp(pPlanRoot, false, true, vVisitorPlan, (void *) pAsPipelineStmt);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -395,7 +395,7 @@ void Dynamo::vPrintPlanGraph(PlanNode* pPlanRoot) {
     return GraphNav::WALK_CONTINUE;
   };
 
-  GraphNav::bWalk(pPlanRoot, true, true, fVisitor, pPlanRoot);
+  GraphNav::bGlobalWalk(pPlanRoot, true, true, fVisitor, pPlanRoot);
 }
 
 
@@ -1380,7 +1380,7 @@ void Dynamo::vAppendExpr(String* sPipeline, QueryNode* pNode) {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // alias
-  Stz *szAliasName = ProjectedExpr::szAliasName(pNode);
+  Stz *szAliasName = ProjectedColumn::szAliasName(pNode);
 
   if (szAliasName) {
     sPipeline->vCatSprint(
@@ -1394,7 +1394,7 @@ void Dynamo::vAppendExpr(String* sPipeline, QueryNode* pNode) {
   ASSERT(pExprNode);
 
   // Walk the expr node plan graph
-  GraphNav::bWalkBottomUp(pExprNode, false, true, vVisitorExpr, (void*)sPipeline);
+  GraphNav::bGlobalWalkBottomUp(pExprNode, false, true, vVisitorExpr, (void *) sPipeline);
 
 }
 
@@ -1408,18 +1408,18 @@ void Dynamo::vAppendAggregateOp(String* sPipeline, QueryNode* pNode)
   bool bFirstExpr = false;
 
   // Get the list of projected expressions from ProjectOp
-  QueryNode *pProjectedExprs = AggregateOp::pProjectedExprs(pNode);
-  ASSERT(pProjectedExprs);
+  QueryNode *pProjectedColumns = AggregateOp::pProjectedColumns(pNode);
+  ASSERT(pProjectedColumns);
 
   // Iterate each projected expression
-  if (pProjectedExprs->bHasChildren()) {
+  if (pProjectedColumns->bHasChildren()) {
 
     sPipeline->vCatSprint(
         "    | aggreg 0 \""
         ""_Stz);
 
     // get a plan node iterator
-    PlanNodeIter *pIter = pProjectedExprs->pNewChildrenIter();
+    PlanNodeIter *pIter = pProjectedColumns->pNewChildrenIter();
 
     while (pIter->bHasNext()) {
 
@@ -1429,12 +1429,12 @@ void Dynamo::vAppendAggregateOp(String* sPipeline, QueryNode* pNode)
       else
         bFirstExpr = true;
 
-      // get the next projExpr from the iterator
-      QueryNode *pProjectedExpr = static_cast<QueryNode *>(pIter->pNext());
-      ASSERT(pProjectedExpr);
-      ASSERT(ProjectedExpr::bIsOfType(pProjectedExpr));
+      // get the next projectedColumn from the iterator
+      QueryNode *pProjectedColumn = static_cast<QueryNode *>(pIter->pNext());
+      ASSERT(pProjectedColumn);
+      ASSERT(ProjectedColumn::bIsOfType(pProjectedColumn));
 
-      vAppendExpr(sPipeline, pProjectedExpr);
+      vAppendExpr(sPipeline, pProjectedColumn);
     }
     delete pIter;
 
@@ -1497,7 +1497,7 @@ void Dynamo::vAppendFilterOp(String* sPipeline, QueryNode* pNode)
       ""_Stz);
 
   // Walk the expr node plan graph
-  GraphNav::bWalkBottomUp(pFilterExpr, false, true, vVisitorExpr, (void*)sPipeline);
+  GraphNav::bGlobalWalkBottomUp(pFilterExpr, false, true, vVisitorExpr, (void *) sPipeline);
 
   sPipeline->vCatSprint(" \" \n"_Stz);
 }
@@ -1512,18 +1512,18 @@ void Dynamo::vAppendProjectOp(String* sPipeline, QueryNode* pNode)
   bool bFirstExpr = false;
 
   // Get the list of projected expressions from ProjectOp
-  QueryNode *pProjectedExprs = ProjectOp::pProjectedExprs(pNode);
-  ASSERT(pProjectedExprs);
+  QueryNode *pProjectedColumns = ProjectOp::pProjectedColumns(pNode);
+  ASSERT(pProjectedColumns);
 
   // Iterate each projected expression
-  if (pProjectedExprs->bHasChildren()) {
+  if (pProjectedColumns->bHasChildren()) {
 
     sPipeline->vCatSprint(
         "    | project 0 \""
         ""_Stz);
 
     // get a plan node iterator
-    PlanNodeIter *pIter = pProjectedExprs->pNewChildrenIter();
+    PlanNodeIter *pIter = pProjectedColumns->pNewChildrenIter();
 
     while (pIter->bHasNext()) {
 
@@ -1533,12 +1533,12 @@ void Dynamo::vAppendProjectOp(String* sPipeline, QueryNode* pNode)
       else
         bFirstExpr = true;
 
-      // get the next projExpr from the iterator
-      QueryNode *pProjectedExpr = static_cast<QueryNode *>(pIter->pNext());
-      ASSERT(pProjectedExpr);
-      ASSERT(ProjectedExpr::bIsOfType(pProjectedExpr));
+      // get the next projectedColumn from the iterator
+      QueryNode *pProjectedColumn = static_cast<QueryNode *>(pIter->pNext());
+      ASSERT(pProjectedColumn);
+      ASSERT(ProjectedColumn::bIsOfType(pProjectedColumn));
 
-      vAppendExpr(sPipeline, pProjectedExpr);
+      vAppendExpr(sPipeline, pProjectedColumn);
     }
     delete pIter;
 

@@ -72,7 +72,7 @@ LogicUnit::LogicUnit(Task* pTask)
   
   m_eDdlLocked = LH_HAVE_NO_LOCK;
   m_i_NextRnd  = AM::bDeveloper() ? 0 : C_UNKNOWN;
-  m_pSendNode  = nullptr;
+  m_xpSendNode  = nullptr;
   
   m_xpHandler  = nullptr;
 
@@ -250,14 +250,14 @@ void LogicUnit::vContentDump(void)
 
   vTrace("%p:\n"
          "m_i_NextRnd=%lld\n"
-         "m_pSendNode=%p %s\n"_Stz,
+         "m_xpSendNode=%p %s\n"_Stz,
 
          this,
          
          m_i_NextRnd,
          
-         m_pSendNode,
-         m_pSendNode ? m_pSendNode->szNodeNm() : ""_Stz,
+         m_xpSendNode,
+         m_xpSendNode.bIsNotNull() ? m_xpSendNode->szNodeNm() : ""_Stz,
          
          C_VARGS_END
          );
@@ -2597,7 +2597,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_REG_PTNSTREAM_READ(pLU);
         break;//+endCase
 
-      case EO_REG_STREAMDEF_STREAMDEFOUT: ArgNil(); // new a streamDefOut[] from streamDef[]
+      case EO_REG_STREAMDEF_STREAMDEFOUT: ArgNil(); // new a streamDefOut[] from StreamDef[]
         dLU0(EO_REG_STREAMDEF_STREAMDEFOUT);
         vDev_REG_STREAMDEF_STREAMDEFOUT(pLU);
         break;//+endCase

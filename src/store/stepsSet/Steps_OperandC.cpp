@@ -21,6 +21,7 @@
 void Step::vAddSteps_OperandC(void)
 {
   vAddStep("OperandC[]"_Stz,             &Step::vOperandCGet);
+  vAddStep("OperandC[]\\clear"_Stz,      &Step::vOperandCGetAndClear);
   vAddStep("OperandC[].collect"_Stz,     &Step::vOperandCCollect);
   vAddStep("OperandC[].get"_Stz,         &Step::vOperandCGet);
   vAddStep("OperandC[].pipeOut"_Stz,     &Step::vOperandCPipeOut);
@@ -74,6 +75,20 @@ void Step::vOperandCGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* OperandC[].getAndClear -- fetch operand and set to nullptr                  */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandCGetAndClear(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushPtr(*( m_pJob->pLogicUnit_job() )->m_xpOperandC);
+  
+  ( m_pJob->pLogicUnit_job() )->m_xpOperandC = nullptr;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* OperandC[].pipeOut -- append operand onto next operator in pipeline        */
 /*----------------------------------------------------------------------------*/
 void Step::vOperandCPipeOut(void)
@@ -118,9 +133,11 @@ void Step::vOperandCSet(void)
   ENTRY();
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
-  ASSERT(! pOperand || ( m_pJob->pLogicUnit_job() )->m_xpOperandC.bIsNull());
-  ( m_pJob->pLogicUnit_job() )->m_xpOperandC = _pOperand(pOperand);
   
+  ASSERT(! pOperand || ( m_pJob->pLogicUnit_job() )->m_xpOperandC.bIsNull());
+  
+  ( m_pJob->pLogicUnit_job() )->m_xpOperandC = _pOperand(pOperand);
+
   EXIT();
 }
 

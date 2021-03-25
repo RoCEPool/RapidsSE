@@ -26,13 +26,14 @@
 #include "LogicCompiler.hpp"
 #include "ExprEval.hpp"
 #include "Range.hpp"
+#include "ShardDef.hpp"
 
 #include "InflateSet.h"
 #include "InfoSet.hpp"
 
 #include "eLH.h"
 
-namespace STORE { class IndexStream; class Node_I;
+namespace STORE { class IndexStream; class Node; class Node_I;
                   class PathIdentifier;  class RowOnce;}
 
 namespace STORE
@@ -102,8 +103,6 @@ namespace STORE
     i8    m_i_NextRnd;  // which next repeatable random nummber?
     i8    m_iDebugFlag; // general purpose debug flag
 
-    Node* m_pSendNode;  // node to send to
-
     REG<AggTimer>       m_xpAggTimer;  // aggregate timer
     REG<CrwToRow>       m_xpCrwToRow;
     REG<Dir>            m_xpDir0;     // dir0[]
@@ -121,7 +120,7 @@ namespace STORE
     REF<Job>            m_xpJobRef;   // job reference
     REG<RowSingleList>  m_xpList;
     REG<LogicCompiler>  m_xpLogicCompiler;
-    REF<Node>           m_xpNodeRef;   // node reference
+    REG<Node>           m_xpNode;      // node reference
     REG<Node_I>         m_xpNode_I;    // node iterator
     REG<Now>            m_xpNow;       // now
     REG<Op>             m_xpOp;        // operator
@@ -139,6 +138,9 @@ namespace STORE
     REG<Object>         m_xpRegister3; // general purpose reg 3[]
     REG<Row>            m_xpRow;
     REG<RowOnce>        m_xpRowOnce;
+    REG<Node>           m_xpSendNode;  // node to send to
+    REG<ShardDef>       m_xpShardDef;
+    REG<Socket>         m_xpSocket;
     REG<StreamDef>      m_xpStreamDef;     // maybe rename this to stream def in ?
     REG<StreamDef>      m_xpStreamDefOut;
     REG<Operand>        m_xpStreamSet;

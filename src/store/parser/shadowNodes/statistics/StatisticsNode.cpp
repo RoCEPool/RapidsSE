@@ -23,7 +23,7 @@ static Stz* C_STATISTICS_DEFN = "/__root__/definitions/object/statisticsNode"_St
 
 
 /*----------------------------------------------------------------------------*/
-/* Appends a description of the ProjectedExpr into a buffer                   */
+/* Create the statistics node                                                 */
 /*----------------------------------------------------------------------------*/
 QueryNode* StatisticsNode::pCreate()
 {

@@ -20,7 +20,7 @@
 #include "GraphEditor.hpp"
 
 #include "ShadowNode.hpp"
-#include "store/parser/shadowNodes/planObjects/Statement.hpp"
+#include "store/parser/shadowNodes/planObjects/StatementMarker.hpp"
 #include "store/parser/shadowNodes/planObjects/FilterOp.hpp"
 #include "store/parser/shadowNodes/planObjects/LimitOp.hpp"
 #include "store/parser/shadowNodes/planObjects/ProjectOp.hpp"
@@ -63,7 +63,7 @@
 #include "store/parser/shadowNodes/expressions/operators/aggregates/MinExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/aggregates/MaxExpr.hpp"
 
-#include "store/parser/shadowNodes/compound/ProjectedExpr.hpp"
+#include "store/parser/shadowNodes/compound/ProjectedColumn.hpp"
 
 #include "SqlException.hpp"
 
@@ -233,7 +233,7 @@ antlrcpp::Any SqlPlanner::visitQuery(sqlParser::QueryContext *pCtx)
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *pCtx)
 {
-  QueryNode* pStmt = Statement::pCreate(Statement::ST_SELECT, m_sQueryStr.szStz());
+  QueryNode* pStmt = StatementMarker::pCreate(StatementMarker::ST_SELECT, m_sQueryStr.szStz());
   m_pStatementStack->vPush(pStmt);
 
   visitChildren(pCtx);
@@ -523,7 +523,7 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
 
   // Now attach the sql operator chain to the statement object.
   QueryNode* pStatement = m_pStatementStack->pPeek(0);
-  ASSERT(Statement::bIsOfType(pStatement));
+  ASSERT(StatementMarker::bIsOfType(pStatement));
   pStatement->vAppendChild(pFirstOp);
   
   return nullptr;
@@ -565,9 +565,9 @@ antlrcpp::Any SqlPlanner::visitSelectListItem(sqlParser::SelectListItemContext* 
   // Is there an alias?
   Text* pAliasText = pCleanId(pCtx->as);
 
-  QueryNode* pProjectedExpr = ProjectedExpr::pCreate(pExprNode, pAliasText);
+  QueryNode* pProjectedColumn = ProjectedColumn::pCreate(pExprNode, pAliasText);
 
-  m_pSelectItems->vAppend(pProjectedExpr);
+  m_pSelectItems->vAppend(pProjectedColumn);
 
   return nullptr;
 }

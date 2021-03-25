@@ -46,6 +46,12 @@ void Step::vAddSteps_Socket(void)
   vAddStep("socket::open"_Stz,      &Step::vSocketOpen);
   vAddStep("socket::listen"_Stz,    &Step::vSocketListen);
   
+  vAddStep("Socket[]"_Stz,          &Step::vSocketGet);
+  vAddStep("Socket[].get"_Stz,      &Step::vSocketGet);
+  vAddStep("Socket[].isNotNull"_Stz,&Step::vSocketIsNotNull);
+  vAddStep("Socket[].isNull"_Stz,   &Step::vSocketIsNull);
+  vAddStep("Socket[].set"_Stz,      &Step::vSocketSet);
+
   vAddStep("socket.accept"_Stz,     &Step::vSocketAccept);
   vAddStep("socket.close"_Stz,      &Step::vSocketClose);
   vAddStep("socket.connect"_Stz,    &Step::vSocketConnect);
@@ -177,6 +183,18 @@ void Step::vSocketDropWrite(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* socket.get: fetch socket                                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vSocketGet(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushPtr(*( m_pJob->pLogicUnit_job() )->m_xpSocket);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* socket.grabWrite: grab socket write lock                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vSocketGrabWrite(void)
@@ -186,6 +204,30 @@ void Step::vSocketGrabWrite(void)
   Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
   
   pSocket->vGrabWrite();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Socket[].isNotNull -- is socket not null ?                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vSocketIsNotNull(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushInt(( m_pJob->pLogicUnit_job() )->m_xpSocket.bIsNull() ? 0 : 1);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Socket[].isNull -- is Socket null ?                                        */
+/*----------------------------------------------------------------------------*/
+void Step::vSocketIsNull(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushInt(( m_pJob->pLogicUnit_job() )->m_xpSocket.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -993,8 +1035,8 @@ void Step::vSocketSendObject(void)
               "Object %s %lldB to node %s"_Stz, //!format-LogRes
               aCN[eClass],
               nObjectSize,
-              ( m_pJob->pLogicUnit_job() )->m_pSendNode ?
-                ( m_pJob->pLogicUnit_job() )->m_pSendNode->szNodeNm() : "<unknown>"_Stz,
+              ( m_pJob->pLogicUnit_job() )->m_xpSendNode.bIsNotNull() ?
+                ( m_pJob->pLogicUnit_job() )->m_xpSendNode->szNodeNm() : "<unknown>"_Stz,
               C_VARGS_END);
 
     
@@ -1017,6 +1059,20 @@ void Step::vSocketSendObject(void)
 
   m_pDataStack->vPushInt(bResult);
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Socket.set -- set socket                                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vSocketSet(void)
+{
+  ENTRY();
+  
+  Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
+  ASSERT(! pSocket || ( m_pJob->pLogicUnit_job() )->m_xpSocket.bIsNull());
+  ( m_pJob->pLogicUnit_job() )->m_xpSocket = _pSocket(pSocket);
+  
   EXIT();
 }
 

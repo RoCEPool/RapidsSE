@@ -164,7 +164,9 @@ void Step::vAddSteps(void)
   Step::vAddSteps_SeekOffsets();
   Step::vAddSteps_Sen();
   Step::vAddSteps_SenCompiler();
+  Step::vAddSteps_SendNode();
   Step::vAddSteps_Session();
+  Step::vAddSteps_ShardDef();
   Step::vAddSteps_Shell();
   Step::vAddSteps_Socket();
   Step::vAddSteps_SqlCompiler();

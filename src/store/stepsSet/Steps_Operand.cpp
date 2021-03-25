@@ -760,7 +760,9 @@ void Step::vOperandSet(void)
   ENTRY();
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+  
   ASSERT(! pOperand || ( m_pJob->pLogicUnit_job() )->m_xpOperandA.bIsNull());
+  
   ( m_pJob->pLogicUnit_job() )->m_xpOperandA = _pOperand(pOperand);
   
   EXIT();

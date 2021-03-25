@@ -302,7 +302,7 @@ enum eEO : u1 // expression operators
   /*  M  */ EO_REG_PTNSTREAM_READ,         // read a ptn stream
   /*  M  */ EO_REG_STREAMDEFOUT_NEW,       // new an streamDef in streamDefOut[]        // OLD QUERIES (will go)
   /*  M  */ EO_REG_STREAMDEFOUT_ADDCOLUMN, // add a column to streamDefOut[]            // OLD QUERIES (will go)
-  /*  M  */ EO_REG_STREAMDEF_STREAMDEFOUT, // copy streamDef[] to streamDefOut[]        // OLD QUERIES (will go)
+  /*  M  */ EO_REG_STREAMDEF_STREAMDEFOUT, // copy StreamDef[] to streamDefOut[]        // OLD QUERIES (will go)
 
   // super fragments
   /*  M  */ EO_SUPER_Q100,       // super fragment Q100

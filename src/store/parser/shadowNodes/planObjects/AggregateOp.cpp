@@ -8,7 +8,7 @@
 #include "PlanConstants.hpp"
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
-#include "ProjectedExpr.hpp"
+#include "ProjectedColumn.hpp"
 #include "Expr.hpp"
 
 #include "GraphNav.hpp"
@@ -73,17 +73,17 @@ void AggregateOp::vDescribe(PlanNode* pNode, s2K& sBuf)
 
   sBuf.vConcat("AggregateOp : "_Stz);
 
-  QueryNode* pProjectedExprs = static_cast<QueryNode*>(GraphNav::pFindProperty(C_PROJECTEDEXPRS_PROP, pAggregateOp));
-  ASSERT(pProjectedExprs);
+  QueryNode* pProjectedColumns = static_cast<QueryNode*>(GraphNav::pFindProperty(C_PROJECTEDCOLUMNS_PROP, pAggregateOp));
+  ASSERT(pProjectedColumns);
 
-  if (pProjectedExprs->bHasChildren()) {
+  if (pProjectedColumns->bHasChildren()) {
     sBuf.vConcat("project { "_Stz);
     b1 bFirst = true;
-    PlanNodeIter* pIter = pProjectedExprs->pNewChildrenIter();
+    PlanNodeIter* pIter = pProjectedColumns->pNewChildrenIter();
 
     while (pIter->bHasNext()) {
-      QueryNode* pProjectedExpr = static_cast<QueryNode*>(pIter->pNext());
-      ASSERT(ProjectedExpr::bIsOfType(pProjectedExpr));
+      QueryNode* pProjectedColumn = static_cast<QueryNode*>(pIter->pNext());
+      ASSERT(ProjectedColumn::bIsOfType(pProjectedColumn));
 
       if (bFirst) {
         bFirst = false;
@@ -91,7 +91,7 @@ void AggregateOp::vDescribe(PlanNode* pNode, s2K& sBuf)
         sBuf.vConcat(", "_Stz);
       }
 
-      ProjectedExpr::vDescribe(pProjectedExpr, sBuf);
+      ProjectedColumn::vDescribe(pProjectedColumn, sBuf);
     }
 
     delete pIter;
@@ -138,7 +138,7 @@ void AggregateOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 
   sBuf.vConcat(GraphNav::szLeafType(pNode->szType()));
 
   // Get the list of Projected expressions
-  PlanNode* pProjExprs = GraphNav::pFindProperty(const_cast<Stz*>(C_PROJECTEDEXPRS_PROP), pNode);
+  PlanNode* pProjExprs = GraphNav::pFindProperty(const_cast<Stz*>(C_PROJECTEDCOLUMNS_PROP), pNode);
   ASSERT(pProjExprs);
 
   ASSERT(pNode->nChildren() == 1);
@@ -152,11 +152,11 @@ void AggregateOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 
     while (pIter->bHasNext()) {
       QueryNode* pProjExpr = static_cast<QueryNode*>(pIter->pNext());
       ASSERT(pProjExpr);
-      ASSERT(ProjectedExpr::bIsOfType(pProjExpr));
+      ASSERT(ProjectedColumn::bIsOfType(pProjExpr));
 
       // Get the description of the Projected expression
       s2K sColBuf;
-      ProjectedExpr::vDescribe(pProjExpr, sColBuf, pColExprList, pRootNode);
+      ProjectedColumn::vDescribe(pProjExpr, sColBuf, pColExprList, pRootNode);
       sBuf.vConcat("\n"_Stz);
       vAppendIndent(sBuf, iIndent, IF_PLAIN);
       sBuf.vCatSprint("column: (%s)"_Stz, sColBuf.szStz());

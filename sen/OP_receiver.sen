@@ -16,6 +16,12 @@
   args.verbose if
     grid::thisNode@ "receiver running on node %v" .printf
   then
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  "<ansNode>" job[] job.tagSet@ tagSet.hasName assert
+
+  <ansNode> >int >ptr node.recvSocket@ to Socket[]
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -23,19 +29,6 @@
 /*----------------------------------------------------------------------------*/
 : receiver_loop ( -- )
 
-  0 locals| pReceivedObject |
-  0 locals| pOperand        |
-  0 locals| pSendWith       |
-  0 locals| pSocket         |
-  0 locals| bRecvd          |
-  0 locals| pTask           |
-  0 locals| pParentJob      |
-
-  "<ansNode>" job[] job.tagSet@ tagSet.hasName assert
-
-  <ansNode> >int >ptr node.recvSocket@ to pSocket
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   begin
 
     trap::stackDepthZero
@@ -43,7 +36,7 @@
     // -- -- -- -- -- -- -- --
     // recv job
 
-    pSocket socket.recvObject
+    Socket[] socket.recvObject
 
     not if
       //ifAgain
@@ -51,7 +44,7 @@
       exit
     then
 
-    to pReceivedObject
+    to OperandC[]
 
     // -- -- -- -- -- -- -- --
     // log received job
@@ -66,17 +59,19 @@
     // -- -- -- -- -- -- -- --
     // recv operand
 
-    pReceivedObject object.class@ CN_XMITOPERAND == if
-      pSocket socket.recvObject true == if
-        to pOperand
-        pOperand pReceivedObject xmitOperand.operand!
-        pReceivedObject xmitOperand.pipeOut
+    OperandC[] object.class@ CN_XMITOPERAND == if
+      Socket[] socket.recvObject true == if
+        to OperandB[]
+        OperandB[] OperandC[] xmitOperand.operand!
+        OperandC[] xmitOperand.pipeOut
       else
-       nullptr pReceivedObject xmitOperand.operand!
-       pReceivedObject xmitOperand.pipeOut
+       nullptr OperandC[] xmitOperand.operand!
+       OperandC[] xmitOperand.pipeOut
       then
+      
     else
-
+    OperandC[] object.class@ CN_JOB == if
+    
       // -- -- -- -- -- -- -- --
       // examine job
       //pReceivedJob job.kind@ JK_GENERIC == if
@@ -84,12 +79,17 @@
       //  pReceivedJob job.tagSet@ tagSet.asStr .
       //then
 
-      pReceivedObject job.postRecv
+      OperandC[] job.postRecv
       //pReceivedJob job.name@ grid::thisNodeName@ "(%v) receiver_loop %v" .printf
-      pReceivedObject job.seedDecode
-      pReceivedObject job.seed!
-      pReceivedObject job.spawn_received
-    then
+      OperandC[] job.seedDecode
+      OperandC[] job.seed!
+      OperandC[] job.spawn_received
+    else
+      HAZARD
+    then then
+
+    nullptr to OperandC[]
+    nullptr to OperandB[]
 
   again
 ;

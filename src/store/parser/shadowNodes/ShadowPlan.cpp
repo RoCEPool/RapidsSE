@@ -23,7 +23,7 @@ static Stz* C_PLAN_DEFN = "/__root__/definitions/object/planNode"_Stz;
 
 
 /*----------------------------------------------------------------------------*/
-/* Appends a description of the ProjectedExpr into a buffer                   */
+/* Creates a node to represent the /__root__/plan node in the graph           */
 /*----------------------------------------------------------------------------*/
 QueryNode* ShadowPlan::pCreate()
 {

@@ -6,24 +6,23 @@
 #include "Index.hpp"
 #include "eTT.h"
 
-namespace STORE { class InfoSet; class StreamDef; }
+namespace STORE { class InfoSet; class StreamDef; class ShardDef; }
 
 namespace STORE
 {
   class Table : public Operand
   {
   private:
-    s32        m_sTableNm;    // table name (leave for the moment)
-    eTT        m_eKind;       // table kind
+    s32 m_sTableNm; // table name (leave for the moment)
+    eTT m_eKind;    // table kind
   
     Location   m_oLocation;   // logical location of table
-
-    IdxVec*    m_pIdxVec;     // index vector
+    StreamDef* m_pStreamDef;  // table stream def
+    ShardDef*  m_pShardDef;   // partition/sharding key def
     BucketMap* m_pBucketMap;  // bucket (to partition) map
+    IdxVec*    m_pIdxVec;     // index vector
     
-    StreamDef*    m_pStreamDef;    // table stream def
-    TablePtnVec*  m_pTablePtnVec;  // table partition vector
-    StreamDef*    m_pPtnStreamDef; // partition stream def
+    TablePtnVec*  m_pTablePtnVec; // table partition vector
         
     // must be last
     Footer m_xFooter;
@@ -65,8 +64,8 @@ namespace STORE
     void    vMarkTable(void);
     bool    bPopulateIndex(i8 iIndexNo);
     void    vRemoveIndex(Index* pIndex);
-    StreamDef* pPtnStreamDef(void);
     EntBuffer* pRootBuffer(i8 i_TablePtn, i8 i_Index);
+    ShardDef*  pShardDef(void);
     StreamDef* pStreamDef(void);
     void       vStreamDef(StreamDef* pStreamDef);
     Stz*    szTableNm(void);
@@ -80,6 +79,9 @@ namespace STORE
     bool bVerifyIndexes(void);
     bool bVerifyIndex(Index* pIndex);
    
+    void vPostRecv(void);
+
+  private:
     Footer* aFooter(void);
   };
   

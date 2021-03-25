@@ -29,14 +29,14 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // parse cmd and create index definition
 
-  sTableNm find execute to table[]
+  sTableNm find execute to Table[]
 
   //dbg>
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the index
 
-  IndexDef[] <indexNm> table[] index::createIndex locals| pIndex |
+  IndexDef[] <indexNm> Table[] index::createIndex locals| pIndex |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // validate the unqiue index columns are a subset of the partition keys

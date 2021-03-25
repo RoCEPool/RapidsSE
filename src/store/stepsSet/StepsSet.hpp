@@ -936,6 +936,7 @@ void vExprEvalEvaluate(void);
 
   // node (of grid)
   void vNodeForget(void);
+  void vNodeGet(void);
   void vNodeIP(void);
   void vNodeIsThisNode(void);
   void vNodeName(void);
@@ -947,6 +948,7 @@ void vExprEvalEvaluate(void);
   void vNodeRecvSocketFetch(void);
   void vNodeSendSocketStore(void);
   void vNodeSendSocketFetch(void);
+  void vNodeSet(void);
   void vNodeSize(void);
   void vNodeStartNode(void);
   void vNodeStateStore(void);
@@ -976,6 +978,25 @@ void vExprEvalEvaluate(void);
 
   // olist (originator list)
   void vOlistFindJob(void);
+
+  // operator
+  void vOpAckPipelineJob(void);
+  void vOpDownstreamOpStore(void);
+  void vOpFindOp(void);
+  void vOpNextOpStore(void);
+  void vOpNextStageStore(void);
+  void vOpOpNameFetch(void);
+  void vOpOtherOpStore(void);
+  void vOpOtherStageStore(void);
+  void vOpPartitionFetch(void);
+  void vOpPiplineJobFetch(void);
+  void vOpPipeOut(void);
+  void vOpOutboundOperandFetch(void);
+  void vOpOutboundOperandStore(void);
+  void vOpQueueLength(void);
+  void vOpStageNameFetch(void);
+  void vOpTopologyStore(void);
+  void vOpXmitKindStore(void);
 
   // operand[]
   void vOperandAsSrcCrwBuffer(void);
@@ -1022,29 +1043,11 @@ void vExprEvalEvaluate(void);
   void vOperandRowToCsv(void);
   void vOperandWriteToFile0(void);
 
-  // operator
-  void vOpAckPipelineJob(void);
-  void vOpDownstreamOpStore(void);
-  void vOpFindOp(void);
-  void vOpNextOpStore(void);
-  void vOpNextStageStore(void);
-  void vOpOpNameFetch(void);
-  void vOpOtherOpStore(void);
-  void vOpOtherStageStore(void);
-  void vOpPartitionFetch(void);
-  void vOpPiplineJobFetch(void);
-  void vOpPipeOut(void);
-  void vOpOutboundOperandFetch(void);
-  void vOpOutboundOperandStore(void);
-  void vOpQueueLength(void);
-  void vOpStageNameFetch(void);
-  void vOpTopologyStore(void);
-  void vOpXmitKindStore(void);
-
   // operandB
   void vOperandBAppendClose(void);
   void vOperandBDelete(void);
   void vOperandBGet(void);
+  void vOperandBGetAndClear(void);
   void vOperandBIsNotNull(void);
   void vOperandBIsNull(void);
   void vOperandBPipeOut(void);
@@ -1053,6 +1056,7 @@ void vExprEvalEvaluate(void);
   // operandC
   void vOperandCCollect(void);
   void vOperandCGet(void);
+  void vOperandCGetAndClear(void);
   void vOperandCPipeOut(void);
   void vOperandCPipeOutSet(void);
   void vOperandCSet(void);
@@ -1398,6 +1402,9 @@ void vExprEvalEvaluate(void);
   void vSenCompilerNestedStore(void);
   void vSenCompilerPostponing(void);
 
+  void vSendNodeGet(void);
+  void vSendNodeSet(void);
+
   // session
   void vSessionCascadeFetch(void);
   void vSessionCascadeStore(void);
@@ -1415,6 +1422,15 @@ void vExprEvalEvaluate(void);
   void vSessionTxFetch(void);
   void vSessionTxStore(void);
 
+  // shard def
+  void vShardDefColumnFetch(void);
+  void vShardDefColumnCountFetch(void);
+  void vShardDefGet(void);
+  void vShardDefGetAndClear(void);
+  void vShardDefIsNull(void);
+  void vShardDefPrint(void);
+  void vShardDefSet(void);
+
   // shell
   void vShellExecute(void);
 
@@ -1422,13 +1438,17 @@ void vExprEvalEvaluate(void);
   void vSocketAccept(void);
   void vSocketClose(void);
   void vSocketConnect(void);
+  void vSocketGet(void);
   void vSocketDropWrite(void);
   void vSocketGrabWrite(void);
+  void vSocketIsNotNull(void);
+  void vSocketIsNull(void);
   void vSocketListen(void);
   void vSocketOpen(void);
   void vSocketRecvObject(void);
   void vSocketRecvObject_LowMem(void);
   void vSocketSendObject(void);
+  void vSocketSet(void);
 
   // sql compiler
   void vSqlCompilerExprValidate(void);
@@ -1591,7 +1611,7 @@ void vExprEvalEvaluate(void);
   void vTableListPartition(void);
   void vTableNameFetch(void);
   void vTableNew(void);
-  void vTablePtnStreamDefFetch(void);
+  void vTableShardDefFetch(void);
   void vTableSet(void);
   void vTableSize(void);
   void vTableStreamDefFetch(void);
@@ -1662,8 +1682,6 @@ void vExprEvalEvaluate(void);
   void vTaskProfileFetch(void);
   void vTaskProfileStore(void);
   void vTaskSeedInitially(void);
-  void vTaskSendNodeFetch(void);
-  void vTaskSendNodeStore(void);
   void vTaskSleepMsec(void);
   void vTaskSleepNsec(void);
   void vTaskSleepSsec(void);
