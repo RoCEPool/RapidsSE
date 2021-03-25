@@ -37,7 +37,6 @@ void Step::vAddSteps_LogicUnit(void)
   vAddStep("LogicUnit[].dynFunArgs"_Stz,    &Step::vLogicUnitDynFunArgs);
   vAddStep("LogicUnit[].genAggregate"_Stz,  &Step::vLogicUnitGenAggregate);
   vAddStep("LogicUnit[].genAsm"_Stz,        &Step::vLogicUnitGenAsm);
-  vAddStep("LogicUnit[].genAsmTxt"_Stz,     &Step::vLogicUnitGenAsmTxt);
   vAddStep("LogicUnit[].genFilter"_Stz,     &Step::vLogicUnitGenFilter);
   vAddStep("LogicUnit[].genLimit"_Stz,      &Step::vLogicUnitGenLimit);
   vAddStep("LogicUnit[].genProjection"_Stz, &Step::vLogicUnitGenProjection);
@@ -329,29 +328,6 @@ void Step::vLogicUnitGenAsm(void)
   m_pDataStack->vPushInt(bResult);
   
   oFile.vClose();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* LogicUnit[].genAsmTxt -- generate asm text into file                       */
-/*----------------------------------------------------------------------------*/
-void Step::vLogicUnitGenAsmTxt(void)
-{
-  ENTRY();
-  
-  s256 sFileName;
-  m_pDataStack->vPopStr(sFileName, __func__);
-  
-  File* pFile = new File(nullptr);
-  UNUSED(pFile);
-
-  i8 iSubQueryNo = m_pDataStack->iPopInt(__func__);
-  i8 iQueryNo = m_pDataStack->iPopInt(__func__);
-  UNUSED(iSubQueryNo);
-  UNUSED(iQueryNo);
-
-  //( m_pJob->pLogicUnit_job() )->vGenerateAsmTxt(iQueryNo, iSubQueryNo, sFileName);
   
   EXIT();
 }

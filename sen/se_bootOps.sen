@@ -70,7 +70,6 @@ assert::stack_0
 
 "g" .verbose
 
-  "OP_genAsmTxt.sen"            include
   "OP_gridSanity.sen"           include
  
 "h" .verbose

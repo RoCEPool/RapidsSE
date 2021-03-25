@@ -890,7 +890,6 @@ public:
   void vLogicUnitDynFunArgs(void);
   void vLogicUnitGenAggregate(void);
   void vLogicUnitGenAsm(void);
-  void vLogicUnitGenAsmTxt(void);
   void vLogicUnitGenFilter(void);
   void vLogicUnitGenLimit(void);
   void vLogicUnitGenProjection(void);
