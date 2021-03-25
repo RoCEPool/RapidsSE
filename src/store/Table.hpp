@@ -41,6 +41,8 @@ namespace STORE
     static IndexDef*  pIndexDef(DicStack* pDicStack, Stz* aTableNm, i8 iIndexNo);
     static void       vMonitorPortrait(s48K& sPortrait);
     static StreamDef* pStreamDef(DicStack* pDicStack, Stz* aTableNm);
+  
+    static void       vPostRecv(void* aTable);
     
     i8      iPtnNoToTablePtn(tPN tPtnNo);
     tPN     tTablePtnToPtnNo(i8 i_TablePtn);

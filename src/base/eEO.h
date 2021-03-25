@@ -242,13 +242,11 @@ enum eEO : u1 // expression operators
   // ixt device index set operators
   /*  S  */ EO_DEVIXT_INDEXNM_SET,      // set the index name in the dev
   /*  S  */ EO_DEVIXT_INDEXTREE_SET,    // set the indexTree in the ixt dev
-  /*  S  */ EO_DEVIXT_INDEXTREE_DELETE, // delete the indexTree in the ixt dev
 
   // row device entWrk
   /*    */ EO_DEVROW_ENTWRK_APPENDELMI,// append next element value (int)
   /*    */ EO_DEVROW_ENTWRK_APPENDELMS,// append next element value (str)
   /*    */ EO_DEVROW_ENTWRK_CREATEPAY, // create a payload in entwrk
-  /*    */ EO_DEVROW_STREAMDEF_DELETE, // delete the streamdef from the row dev
   /*    */ EO_DEVROW_TABLENM_SET,      // set the table name in the row dev
 
   // row device row operators
@@ -544,13 +542,11 @@ static Stz* aEO[]
   // ixt device index set operators
   /*    */ "EO_DEVIXT_INDEXNM_SET"_Stz,
   /*    */ "EO_DEVIXT_INDEXTREE_SET"_Stz,
-  /*    */ "EO_DEVIXT_INDEXTREE_DELETE"_Stz,
 
   // row device entWrk operators
   /*    */ "EO_DEVROW_ENTWRK_APPENDELMI"_Stz,
   /*    */ "EO_DEVROW_ENTWRK_APPENDELMS"_Stz,
   /*    */ "EO_DEVROW_ENTWRK_CREATEPAY"_Stz,
-  /*    */ "EO_DEVROW_STREAMDEF_DELETE"_Stz,
   /*    */ "EO_DEVROW_TABLENM_SET"_Stz,
 
   // row device row operators
@@ -854,13 +850,11 @@ static EoArg EoArgs[]
   // ixt device index set operators
   { EA_STRING, -1 },  // EO_DEVIXT_INDEXNM_SET
   { EA_NONE,    0 },  // EO_DEVIXT_INDEXTREE_SET
-  { EA_NONE,    0 },  // EO_DEVIXT_INDEXTREE_DELETE
 
   // row device entWrk
   { EA_NONE,    0 },  // EO_DEVROW_ENTWRK_APPENDELMI
   { EA_NONE,    0 },  // EO_DEVROW_ENTWRK_APPENDELMS
   { EA_INT,     8 },  // EO_DEVROW_ENTWRK_CREATEPAY
-  { EA_NONE,    0 },  // EO_DEVROW_STREAMDEF_DELETE
   { EA_STRING, -1 },  // EO_DEVROW_TABLENM_SET
 
   // row device row operators

@@ -246,6 +246,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("Node[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Node[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("Operand[]"_Stz)) {
     pCurrentWord->vEncodeCall("Operand[].set"_Stz);
     EXIT();

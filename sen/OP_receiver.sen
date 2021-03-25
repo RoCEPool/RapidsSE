@@ -68,8 +68,10 @@
        nullptr OperandC[] xmitOperand.operand!
        OperandC[] xmitOperand.pipeOut
       then
+      
     else
-
+    OperandC[] object.class@ CN_JOB == if
+    
       // -- -- -- -- -- -- -- --
       // examine job
       //pReceivedJob job.kind@ JK_GENERIC == if
@@ -82,7 +84,9 @@
       OperandC[] job.seedDecode
       OperandC[] job.seed!
       OperandC[] job.spawn_received
-    then
+    else
+      HAZARD
+    then then
 
     nullptr to OperandC[]
     nullptr to OperandB[]
