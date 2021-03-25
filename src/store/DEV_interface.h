@@ -31,7 +31,6 @@ void vDev_IXT_IDX_DUMP     (i8** aaiDstk);
 void vDev_IXT_IDX_ENTRIES  (i8** aaiDstk);
 void vDev_IXT_IDX_INS      (i8** aaiDstk);
 void vDev_IXT_INDEXNM_SET     (i8** aaiDstk);
-void vDev_IXT_INDEXTREE_DELETE(i8** aaiDstk);
 void vDev_IXT_INDEXTREE_SET   (i8** aaiDstk);
 
 void vDev_IXT_POS_BYKEY    (i8** aaiDstk);
@@ -62,8 +61,6 @@ void vDev_ROW_ROW_PRINT    (i8** aaiDstk);
 void vDev_ROW_ROW_SET        (i8** aaiDstk);
 void vDev_ROW_ROW_TEST    (i8** aaiDstk);
 void vDev_ROW_ROW_ZERO    (i8** aaiDstk);
-
-void vDev_ROW_STREAMDEF_DELETE(i8** aaiDstk);
 
 void vDev_ROW_ROWBUF_BEGIN (i8** aaiDstk);
 void vDev_ROW_ROWBUF_NEXT  (i8** aaiDstk);

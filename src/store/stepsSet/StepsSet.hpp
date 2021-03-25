@@ -322,10 +322,7 @@ public:
   void vExprEvalGet(void);
   void vExprEvalDelete(void);
   void vExprEvalNew(void);
-  void vExprEvalAggregate(void);
-void vExprEvalEvaluate(void);
-  void vExprEvalFilter(void);
-  void vExprEvalProject(void);
+  void vExprEvalEvaluate(void);
   void vExprEvalSet(void);
 
   // fact
@@ -893,7 +890,6 @@ void vExprEvalEvaluate(void);
   void vLogicUnitDynFunArgs(void);
   void vLogicUnitGenAggregate(void);
   void vLogicUnitGenAsm(void);
-  void vLogicUnitGenAsmTxt(void);
   void vLogicUnitGenFilter(void);
   void vLogicUnitGenLimit(void);
   void vLogicUnitGenProjection(void);

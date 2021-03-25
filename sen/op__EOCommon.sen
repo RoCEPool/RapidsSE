@@ -5,9 +5,9 @@
 " op__EOcommon.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* create the exec error info set for data handling operators                 */
+/* create the exec error info set for expr evalation errors                   */
 /*----------------------------------------------------------------------------*/
-: op__dataExecErr ( eError )
+: op__exprEvalExecErr ( eError )
 
   params| eError |
 
@@ -15,6 +15,26 @@
   StreamDef[].delete
   StreamDefOut[].delete
   ExprEval[].delete
+
+  // set EATOPERAND handler for buffers and EOS markers coming in
+  find: EATOPERAND_handler ZK_CRWBUFFER op[].handler!
+  find: EATOPERAND_handler ZK_ROWBUFFER op[].handler!
+  find: EATOPERAND_handler ZK_EOSMARKER op[].handler!
+
+  // generate the error infoset
+  eError op__execErr
+;
+
+/*----------------------------------------------------------------------------*/
+/* create the exec error info set for asm generation  errors                  */
+/*----------------------------------------------------------------------------*/
+: op__asmGenExecErr ( eError )
+
+  params| eError |
+
+  // cleanup
+  StreamDef[].delete
+  StreamDefOut[].delete
 
   // set EATOPERAND handler for buffers and EOS markers coming in
   find: EATOPERAND_handler ZK_CRWBUFFER op[].handler!

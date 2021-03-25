@@ -46,18 +46,22 @@
 
   // check for error
   eError EC_NONE == not if
-    eError op__execErr
+    op__exprEvalExecErr
     Pipein[].delete
-    StreamDef[].delete
-    StreamDefOut[].delete
-    ExprEval[].delete
     true
     exit
   then
 
   ZK_STARTMARKER_handler
 
-  StreamDefOut[] range[] LogicUnit[].genRange
+  StreamDefOut[] range[] LogicUnit[].genRange to eError
+
+  // check for error
+  eError EC_NONE == not if
+    eError op__asmGenExecErr
+    true
+    exit
+  then
 
   // new the PotRlu[]
   PotRlu[].new

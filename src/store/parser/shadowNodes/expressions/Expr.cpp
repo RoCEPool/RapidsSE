@@ -319,6 +319,7 @@ QueryNode* Expr::pSymbolicToOrdinal(QueryNode*    pSymbolicExpr,
   if (pSymbolicExpr->nChildren() == 0) {
     // Duplicate this expression and return it
     pOrdinalExpr = pSymbolicExpr->pDeepCopy();
+    return pOrdinalExpr;
   }
 
   // This symbolic expr has children. We will need to try to convert all children
