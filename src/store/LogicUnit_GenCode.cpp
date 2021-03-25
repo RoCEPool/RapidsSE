@@ -435,9 +435,8 @@ eEC LogicUnit::eGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
   oFile.vPrint(LogicCompiler::szGetMacro(AM_QUERY_DONE, &oTagSet, sMacro));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // CRW_PROJECT_COLUMNS
+  // CRW_FILTER_ROWS
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  ASSERT(pExprEval->m_iStreamInColumns);
   oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pExprEval->m_iStreamInColumns);
   oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, pExprEval->m_uExprEvalColumns);
   oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_FILTER_ROWS, &oTagSet, sMacro));
@@ -451,13 +450,13 @@ eEC LogicUnit::eGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
 
   oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_STAR, &oTagSet, sMacro));
 
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ROW_FILTER_ROWS
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add the filter
   oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pExprEval->m_iStreamInColumns);
   oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, pExprEval->m_uExprEvalColumns);
+
   oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_FILTER_ROWS, &oTagSet, sMacro));
   oTagSet.vReset();
 
@@ -475,7 +474,7 @@ eEC LogicUnit::eGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
   oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_STAR, &oTagSet, sMacro));
   oTagSet.vReset();
 
-  ExprEval* pExprEvalStar = new ExprEval;
+  ExprEval *pExprEvalStar = new ExprEval;
   eEC eError = pExprEvalStar->eExprEvalAll(pStreamDefOut);
   RASSERT(eError == EC_NONE);
 
@@ -485,6 +484,7 @@ eEC LogicUnit::eGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
   oFile.vPrint("  // *** end generated code: m_sAsmText *** //\n"_Stz);
 
   oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_END, &oTagSet, sMacro));
+
   delete pExprEvalStar;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -914,7 +914,7 @@ eEC LogicUnit::eGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOut
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // CRW_PROJECT_COLUMNS
+  // CRW_PROJECT_COLUMNS/ AM_CRW_PROJECT_NONE
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add the columns to be projected to PROJECT_COLUMNS
   if (pExprEval->m_iStreamInColumns) {
@@ -966,6 +966,7 @@ eEC LogicUnit::eGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOut
   s16KB sText;
   b = oFile.bOpenRead(sFileName);
   RASSERT(b);
+
   i8 nSize = oFile.iSize();
   i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
   UNUSED(nBytes);

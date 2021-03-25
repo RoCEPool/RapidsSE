@@ -210,6 +210,10 @@ macro AM_CRW_FILTER_ROWS
 //----------------------------------------------------------------------------//
   // CRW_FILTER_ROWS
   Label CRW_FILTER_ROWS
+
+  EO_INTEGER <projectItems>  // C_TAG_PROJECT_ITEMS
+  EO_JMP_FALSE CRW_FILTER
+
   EO_RLU_SET_ITEMS <projectItems>  // C_TAG_PROJECT_ITEMS
   EO_RLU_SET_COLUMNS <projectSrcColumns>  // C_TAG_PROJECT_SRC_COLUMN
   EO_PUSH_RLU_LOCALS
@@ -217,7 +221,10 @@ macro AM_CRW_FILTER_ROWS
   EO_PUSH_DEVROW_SRC
   EO_PUSH_DEVIXT_SRC
   EO_DEVIXT_COLS_TO_LOCALS
+
+  Label CRW_FILTER
 endMacro
+
 
 //----------------------------------------------------------------------------//
 // macro AM_CRW_FILTER_END                                                    //
