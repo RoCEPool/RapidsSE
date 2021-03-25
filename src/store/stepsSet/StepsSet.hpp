@@ -936,6 +936,7 @@ void vExprEvalEvaluate(void);
 
   // node (of grid)
   void vNodeForget(void);
+  void vNodeGet(void);
   void vNodeIP(void);
   void vNodeIsThisNode(void);
   void vNodeName(void);
@@ -947,6 +948,7 @@ void vExprEvalEvaluate(void);
   void vNodeRecvSocketFetch(void);
   void vNodeSendSocketStore(void);
   void vNodeSendSocketFetch(void);
+  void vNodeSet(void);
   void vNodeSize(void);
   void vNodeStartNode(void);
   void vNodeStateStore(void);

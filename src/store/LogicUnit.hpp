@@ -33,7 +33,7 @@
 
 #include "eLH.h"
 
-namespace STORE { class IndexStream; class Node_I;
+namespace STORE { class IndexStream; class Node; class Node_I;
                   class PathIdentifier;  class RowOnce;}
 
 namespace STORE
@@ -120,7 +120,7 @@ namespace STORE
     REF<Job>            m_xpJobRef;   // job reference
     REG<RowSingleList>  m_xpList;
     REG<LogicCompiler>  m_xpLogicCompiler;
-    REF<Node>           m_xpNodeRef;   // node reference
+    REG<Node>           m_xpNode;      // node reference
     REG<Node_I>         m_xpNode_I;    // node iterator
     REG<Now>            m_xpNow;       // now
     REG<Op>             m_xpOp;        // operator
