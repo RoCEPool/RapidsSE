@@ -322,10 +322,7 @@ public:
   void vExprEvalGet(void);
   void vExprEvalDelete(void);
   void vExprEvalNew(void);
-  void vExprEvalAggregate(void);
-void vExprEvalEvaluate(void);
-  void vExprEvalFilter(void);
-  void vExprEvalProject(void);
+  void vExprEvalEvaluate(void);
   void vExprEvalSet(void);
 
   // fact
