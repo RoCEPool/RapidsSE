@@ -870,7 +870,7 @@ eEC LogicUnit::eGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOut
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // CRW_PROJECT_COLUMNS/ AM_CRW_PROJECT_NONE
+  // CRW_PROJECT_COLUMNS
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add the columns to be projected to PROJECT_COLUMNS
   oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pExprEval->m_iStreamInColumns);

@@ -175,19 +175,6 @@ macro AM_CRW_PROJECT_COLUMNS_AGG
 
 endMacro
 
-macro AM_CRW_PROJECT_NONE
-//----------------------------------------------------------------------------//
-// macro AM_CRW_PROJECT_NONE                                                  //
-//----------------------------------------------------------------------------//
-  // CRW_PROJECT_NONE
-  Label CRW_PROJECT_NONE
-  EO_PUSH_DEVROW_DST
-  EO_PUSH_RLU_POT
-  EO_PUSH_RLU_PTN
-  EO_DEVROW_ROW_NEW
-
-endMacro
-
 macro AM_CRW_PROJECT_STAR
 //----------------------------------------------------------------------------//
 // macro AM_CRW_PROJECT_STAR                                                  //
