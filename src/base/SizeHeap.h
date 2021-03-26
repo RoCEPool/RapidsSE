@@ -13,9 +13,9 @@ struct SizeHeap {
   
   eHT m_eWhichHeap;
   
-  i8  m_nVtableAdjust; // temp: explore support for vtable
+  i8  m_nVtableAdjust;      // temp: explore support for vtable
   
-  b8  m__Test0;
+  b8  m_bLowMemDiscard;     // discard received object when low memory?
   
   fpPOSTFN* m_fpPostRecvFn; // post receive function
 };
