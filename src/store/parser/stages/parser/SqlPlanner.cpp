@@ -26,8 +26,11 @@
 #include "store/parser/shadowNodes/planObjects/ProjectOp.hpp"
 #include "store/parser/shadowNodes/planObjects/AggregateOp.hpp"
 #include "store/parser/shadowNodes/planObjects/dataSources/TableScanOp.hpp"
+#include "store/parser/shadowNodes/planObjects/UnionOp.hpp"
 
 #include "store/parser/shadowNodes/compound/TableRef.hpp"
+#include "store/parser/shadowNodes/compound/StringObject.hpp"
+#include "store/parser/shadowNodes/lists/StringList.hpp"
 
 // Expressions
 #include "ColumnRef.hpp"
@@ -244,7 +247,7 @@ antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *pCtx)
 
   if (pCtx->ORDER()) {
     // TODO
-
+    __NOT_IMPL("ORDER BY")
   }
 
   if (pCtx->LIMIT()) {
@@ -268,7 +271,54 @@ antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *pCtx)
 
     // Insert the limit op as the top-most child underneath the statement.
     // Need to make any current children of statement now children of limitOp.
-    QueryNode* pStatement = m_pStatementStack->pPeek(0);
+    QueryNode* pStatement = m_pStatementStack->pTop();
+    pStatement->vInsertAsParentOfChildren(pLimitOp);
+  }
+
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Set operations (union, intersect, except) over select queries              */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitSetQuery(sqlParser::SetQueryContext *pCtx)
+{
+  // Get the statement string for this part of the query
+  antlr4::misc::Interval interval(pCtx->start->getStartIndex(), pCtx->stop->getStopIndex());
+  std::string queryStlStr = pCtx->start->getInputStream()->getText(interval);
+
+  QueryNode *pStatement = SelectMarker::pCreate((Stz *) (queryStlStr.c_str()));
+  m_pStatementStack->vPush(pStatement);
+
+  visitChildren(pCtx);
+
+  if (pCtx->ORDER()) {
+    // TODO
+    __NOT_IMPL("ORDER BY")
+  }
+
+  if (pCtx->LIMIT()) {
+    i8 iLimit = iCleanInt(pCtx->limit);
+    i8 iOffset = -1;
+
+    if (iLimit < 0) {
+      SemanticException::vThrow(EC_INVALID_LIMIT_VALUE);
+    }
+
+    if (pCtx->OFFSET()) {
+      iOffset = iCleanInt(pCtx->offset);
+
+      if (iOffset < -1) {
+        SemanticException::vThrow(EC_INVALID_OFFSET_VALUE);
+      }
+    }
+
+    // Create the limit op
+    QueryNode* pLimitOp = LimitOp::pCreate(iLimit, iOffset);
+
+    // Insert the limit op as the top-most child underneath the statement.
+    // Need to make any current children of statement now children of limitOp.
+    QueryNode* pStatement = m_pStatementStack->pTop();
     pStatement->vInsertAsParentOfChildren(pLimitOp);
   }
 
@@ -313,13 +363,106 @@ antlrcpp::Any SqlPlanner::visitTableReference(sqlParser::TableReferenceContext *
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Set Expression node                                                        */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitSetExpr(sqlParser::SetExprContext* pCtx)
+{
+  ASSERT(m_pStatementStack->nItems() > 0);
+  ASSERT(SelectMarker::bIsOfType(m_pStatementStack->pTop()));
+  ASSERT(!m_pSelectItems);
+
+  if (pCtx->selectExpr()) {
+    // Add a SelectMarker to the statement stack. After visiting children
+    // then we can pop the entire logical subgraph off the statement stack
+    // and add them as children to a union/intersect/except operator.
+
+    // Get the statement string for this part of the query
+    antlr4::misc::Interval interval(pCtx->selectExpr()->start->getStartIndex(),
+                                    pCtx->selectExpr()->stop->getStopIndex());
+    std::string queryStlStr = pCtx->selectExpr()->start->getInputStream()->getText(interval);
+
+    QueryNode *pStatement = SelectMarker::pCreate((Stz *) (queryStlStr.c_str()));
+    m_pStatementStack->vPush(pStatement);
+  }
+
+  visitChildren(pCtx);
+
+  if (pCtx->op == nullptr) {
+    // Nothing more to do here, we're nested
+    return nullptr;
+  }
+
+  // Got a set operation.
+  // First get any properties of it.
+
+  b1 bIsDistinct = (pCtx->all == nullptr);
+
+  if (bIsDistinct) {
+    __NOT_IMPL("DISTINCT")
+  }
+
+  QueryNode* pCorrespondingByList = nullptr;
+
+  if (pCtx->corrClause()) {
+    pCorrespondingByList = StringList::pCreate();
+
+    // The vector of corresponding by list items
+    std::vector<sqlParser::CorrListItemContext*> xItemCtxVector = pCtx->corrClause()->corrList()->corrListItem();
+
+    // Iterate the item contexts, extract the column names, create nodes to hold
+    // these string values and add them to the correspondingByList
+    for (sqlParser::CorrListItemContext* pItemCtx : xItemCtxVector) {
+      Text* pColumnName = pCleanId(pItemCtx->id);
+      QueryNode* pColumnNode = StringObject::pCreate(pColumnName);
+      pCorrespondingByList->vAppendChild(pColumnNode);
+    }
+  }
+
+  // Get the actual set operation type and create it.
+  QueryNode* pSetOp;
+
+  switch (pCtx->op->getType()) {
+
+    case sqlLexer::UNION:
+      pSetOp = UnionOp::pCreate(bIsDistinct, pCorrespondingByList);
+      break;
+
+    case sqlLexer::INTERSECT:
+      __NOT_IMPL("INTERSECT")
+      break;
+
+    case sqlLexer::EXCEPT:
+      __NOT_IMPL("EXCEPT")
+      break;
+
+    default:
+      NEVER_REACH
+  }
+
+  // Add the children. They should have been added to the statement list
+  ASSERT(m_pStatementStack->nItems() >= 3);
+  QueryNode* pChild2 = m_pStatementStack->pPop();
+  QueryNode* pChild1 = m_pStatementStack->pPop();
+
+  pSetOp->vAppendChild(pChild1);
+  pSetOp->vAppendChild(pChild2);
+
+  // Add this set operator to the existing statement on the stack
+  QueryNode* pStatementMarker = m_pStatementStack->pTop();
+  ASSERT(SelectMarker::bIsOfType(pStatementMarker));
+  pStatementMarker->vAppendChild(pSetOp);
+
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 /* Select Expression node (for each select of each query/subquery)            */
 /* Contains select list / FROM / WHERE / GROUP BY / HAVING                    */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
 {
   ASSERT(m_pStatementStack->nItems() > 0);
-  ASSERT(SelectMarker::bIsOfType(m_pStatementStack->pPeek(0)));
+  ASSERT(SelectMarker::bIsOfType(m_pStatementStack->pTop()));
   ASSERT(!m_pSelectItems);
 
   // N.B. We don't call visitChildren() in this function. Instead we manually
@@ -527,7 +670,7 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
   }
 
   // Now attach the sql operator chain to the statement object.
-  QueryNode* pStatement = m_pStatementStack->pPeek(0);
+  QueryNode* pStatement = m_pStatementStack->pTop();
   ASSERT(StatementMarker::bIsOfType(pStatement));
   pStatement->vAppendChild(pFirstOp);
   

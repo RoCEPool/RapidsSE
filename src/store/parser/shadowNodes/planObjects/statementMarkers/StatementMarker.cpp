@@ -1,9 +1,9 @@
 /*============================================================================*/
 /* StatementMarker.hpp - identifies the type of query being planned           */
 /*                                                                            */
-/* Not intending to create subclasses of this to represent each statement type*/
-/* because it doesn't really add any value. Instead we can capture all        */
-/* behaviour in this class.                                                   */
+/* Only intending to create basic subclasses of this so that it is easier to  */
+/* assert that a node is of a given type. Most other functionality falls back */
+/* to this base class.                                                        */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -78,7 +78,7 @@ void StatementMarker::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf,
   ASSERT(bIsOfType(pNode));
 
   if (sBuf.nLength() > 0) {
-    sBuf.vConcat("\n"_Stz);
+    sBuf.vConcat("\n\n"_Stz);
   }
 
   vAppendIndent(sBuf, iIndent, eIndentFormat::IF_ARROW);
