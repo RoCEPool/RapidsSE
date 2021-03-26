@@ -25,6 +25,7 @@ enum eCN : u2 // Class Number
   /* */ CN_ATTACHMAP,
   
   /* */ CN__B__,
+  /* */ CN_BACKEND,
   /* */ CN_BCDVAL,
   /* */ CN_BIRTH,
   /* */ CN_BOLVAL,
@@ -363,6 +364,7 @@ static Stz* aCN[]
   /* */ "ATTACHMAP"_Stz,            // CN_ATTACHMAP
    
   /* */ "_B__"_Stz,                 // CN__B__
+  /* */ "BACKEND"_Stz,              // CN_BACKEND
   /* */ "BCDVAL"_Stz,               // CN_BCDVAL
   /* */ "BIRTH"_Stz,                // CN_BIRTH
   /* */ "BOLVAL"_Stz,               // CN_BOLVAL

@@ -23,7 +23,7 @@
 #include "StageSpec.hpp"
 #include "PipelineSpec.hpp"
 #include "Pipeline.hpp"
-#include "Dynamo.hpp"
+#include "Backend.hpp"
 #include "Job.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
@@ -317,12 +317,17 @@ void Step::vSqlCompilerTransliterate(void)
   PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
   Parser::RootNode* pPlanRoot = Parser::_pRootNode(pPlanOperand->pPlanNode());
 
+  // Walk the graph and produce a pipeline statement.
+  //bool bTransliterate = Dynamo::bPlanToPipeline(sPipelineStmt,pPlanRoot);
+
   s48K sPipelineStmt;
 
-  // Walk the graph and produce a pipeline statement.
-  bool bTransliterate = Dynamo::bPlanToPipeline(sPipelineStmt,pPlanRoot);
+  Backend* pBackend = new Backend(pPlanRoot);
+  bool bTransliterate = pBackend->bTransliterate(sPipelineStmt);
   ASSERT(bTransliterate);
   UNUSED(bTransliterate);
+
+  delete pBackend;
 
   // return the pipeline
   m_pDataStack->vPushStr(sPipelineStmt);

@@ -35,7 +35,6 @@ namespace STORE
    ~Dynamo(void) noexcept(false);
 
     static bool bCmdToPipeline(String* pAsPipelineStmt, TokenVec* pFromTokenVec);
-    static bool bPlanToPipeline(String* pAsPipelineStmt, Parser::RootNode* pPlanRoot);
     static ePX eTopoloyX(StageSpec* pFromStageSpec, StageSpec* pToStageSpec);
 
     bool bCompile(void);
@@ -79,22 +78,6 @@ namespace STORE
     void vAddToConsumeParams(OpSpec* pOpSpec, ePX eCrossTopo);
     void vReplaceTopologyParams(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage, i8 i_Op);
     void vReplaceWithXmit(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage);
-
-    //
-    // plan transliteration
-    //
-    static void vAppendAggregateOp(String* sPipeline, QueryNode* pNode);
-    static void vAppendExpr(String* sPipeline, QueryNode* pNode);
-    static void vAppendFilterOp( String* sPipeline, QueryNode* pNode);
-    static void vAppendProjectOp( String* sPipeline, QueryNode* pNode);
-    static void vAppendScanOp(String* sPipeline, QueryNode* pNode);
-
-    static void vPrintPlanGraph(Parser::PlanNode* pPlanRoot);
-
-    static Parser::GraphNav::eWalkCtrl vVisitorExpr(PlanNode* pNode,
-                                                    s256& sPath, i8 iDepth, void* pvArg);
-    static Parser::GraphNav::eWalkCtrl vVisitorPlan(PlanNode* pNode,
-                                                    s256& sPath, i8 iDepth, void* pvArg);
 
     Footer* aFooter(void);
   };

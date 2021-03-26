@@ -39,6 +39,8 @@
 
 #include "SizesHeaps.hpp"
 
+#include "Backend.hpp"
+
 #include "CmdLineArgs.hpp"
 
 #include "DdlLock.hpp"
@@ -197,6 +199,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(AttachMap),          HT_INVALID   ,0 }, // CN_ATTACHMAP
 
   { 'B' - ('A' - 1),            HT_INVALID   ,0 }, // CN__B__
+  { sizeof(Backend),/*yes*/     HT_T_MEDIUM  ,0 }, // CN_BACKEND
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_BCDVAL
   { sizeof(Birth),              HT_INVALID   ,0 }, // CN_BIRTH
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_BOLVAL
