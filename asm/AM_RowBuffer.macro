@@ -184,18 +184,16 @@ macro AM_ROW_PROJECT_STAR
 //----------------------------------------------------------------------------//
   // AM_ROW_PROJECT_STAR
   Label ROW_PROJECT_STAR
-  EO_RLU_SET_ITEMS <projectItems>  // C_TAG_PROJECT_ITEMS
-  EO_RLU_SET_COLUMNS <projectSrcColumns>  // C_TAG_PROJECT_SRC_COLUMNS
-  EO_PUSH_RLU_LOCALS
-  EO_PUSH_RLU_COLSET
-  EO_PUSH_DEVROW_SRC
-  EO_DEVROW_COLS_TO_LOCALS
-
-  //EO_ROW_DST_NEW
   EO_PUSH_DEVROW_DST
   EO_PUSH_RLU_POT
   EO_PUSH_RLU_PTN
   EO_DEVROW_ROW_NEW
+
+  EO_PUSH_DEVROW_SRC
+  EO_PUSH_DEVROW_DST
+  EO_DEVROW_COLS_TO_ROW
+
+  EO_RETURN
 
 endMacro
 
@@ -204,7 +202,6 @@ macro AM_ROW_PROJECT_END
 // macro AM_ROW_PROJECT_END                                                   //
 //----------------------------------------------------------------------------//
   // PROJECT_END
-  //EO_ROW_DST_PRINT
   EO_RETURN
 endMacro
 

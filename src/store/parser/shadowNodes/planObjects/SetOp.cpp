@@ -19,7 +19,7 @@ using namespace Parser;
 /*----------------------------------------------------------------------------*/
 static Stz* C_SETOP_DEFN = "/__root__/definitions/object/planObject/sqlOperator/setOp"_Stz;
 
-static Stz* C_ISDISTINCT_PROP = "projectedColumns"_Stz;
+static Stz* C_ISDISTINCT_PROP = "isDistinct"_Stz;
 static Stz* C_ISDISTINCT_DEFN = "/__root__/definitions/object/valueObject/booleanObject"_Stz;
 
 static Stz* C_CORRESPONDING_PROP = "correspondingByList"_Stz;
@@ -133,7 +133,7 @@ b1 SetOp::bIsDistinct(QueryNode* pNode)
 /*----------------------------------------------------------------------------*/
 /* Returns the node representing the list of columns that are to used         */
 /*----------------------------------------------------------------------------*/
-QueryNode* SetOp::pCorrelatedByList(QueryNode* pNode)
+QueryNode* SetOp::pCorrespondingByList(QueryNode* pNode)
 {
   QueryNode* pCorrespondingByList =
       static_cast<QueryNode*>(GraphNav::pFindProperty(const_cast<Stz *>(C_CORRESPONDING_PROP), pNode));

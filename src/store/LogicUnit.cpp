@@ -2156,6 +2156,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_ROW_COLS_TO_LOCALS(&aiDstk);      // locals / colset / devRow
         break;//+endCase
 
+      case EO_DEVROW_COLS_TO_ROW: ArgNil(); // row buffer columns of row dev into row
+        dLU0(EO_DEVROW_COLS_TO_ROW);
+        vDev_ROW_COLS_TO_ROW(&aiDstk);      //  src devRow / dst devRow
+        break;//+endCase
+
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // ixt device crwbuffer operators
       case EO_DEVIXT_CRWBUF_BEGIN: ArgNil(); // begin row traverse

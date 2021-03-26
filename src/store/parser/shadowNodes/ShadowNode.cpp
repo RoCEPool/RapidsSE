@@ -8,7 +8,7 @@
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
 
-#include "store/parser/shadowNodes/planObjects/StatementMarker.hpp"
+#include "store/parser/shadowNodes/planObjects/statementMarkers/StatementMarker.hpp"
 #include "store/parser/shadowNodes/compound/TableRef.hpp"
 #include "Expr.hpp"
 #include "store/parser/shadowNodes/compound/ProjectedColumn.hpp"

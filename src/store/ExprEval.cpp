@@ -90,33 +90,6 @@ ExprEval::~ExprEval(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add column vec from stream def                                             */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval::eExprEvalAll(StreamDef* pStreamDefIn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
-
-  for (i8 iCol = 0; iCol < pStreamDefIn->nColumns(); iCol++) {
-    Column* pColumn = pStreamDefIn->pGetColumn(iCol);
-    //Stz* m_sAsmText = m_sAsmText[iCol].szStz();
-
-    if (pColumn->eColumnType() == CT_VARCHAR ||
-        pColumn->eColumnType() == CT_CHAR) {
-      StrLib::vSprintCat(m_sAsmText, "  EO_PUSH_LOCALS %lld\n"_Stz, iCol);
-      StrLib::vSprintCat(m_sAsmText, "  EO_PUSH_DEVROW_DST\n"_Stz);
-      StrLib::vSprintCat(m_sAsmText, "  EO_DEVROW_POPCOLS %lld\n"_Stz, iCol);
-    }
-    else {
-      StrLib::vSprintCat(m_sAsmText, "  EO_PUSH_LOCALI %lld\n"_Stz, iCol);
-      StrLib::vSprintCat(m_sAsmText, "  EO_PUSH_DEVROW_DST\n"_Stz);
-      StrLib::vSprintCat(m_sAsmText, "  EO_DEVROW_POPCOLI %lld\n"_Stz, iCol);
-    }
-  }
-
-  return EC_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
-/* add column vec from stream def                                             */
-/*----------------------------------------------------------------------------*/
 eEC ExprEval::eEvaluate(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Stz* sExprEvalColumns)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);

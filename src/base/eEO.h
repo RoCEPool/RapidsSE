@@ -192,7 +192,8 @@ enum eEO : u1 // expression operators
   // ixt device col operators
   /*  S  */ EO_DEVIXT_COLS_TO_LOCALS,    // inflate dev columns direct into locals
   /*  S  */ EO_DEVIXT_COLS_TO_ROW,       // push all columns from ixt dev to row dev
-  /*  S  */ EO_DEVROW_COLS_TO_LOCALS,     // row columns into locals
+  /*  S  */ EO_DEVROW_COLS_TO_LOCALS,    // row columns into locals
+  /*  S  */ EO_DEVROW_COLS_TO_ROW,       // row columns into row
 
   // ixt device crwbuffer operators
   /*  S  */ EO_DEVIXT_CRWBUF_BEGIN, // begin crw buffer traverse
@@ -493,6 +494,7 @@ static Stz* aEO[]
   /*    */ "EO_DEVIXT_COLS_TO_LOCALS"_Stz,
   /*    */ "EO_DEVIXT_COLS_TO_ROW"_Stz,
   /*    */ "EO_DEVROW_COLS_TO_LOCALS"_Stz,
+  /*    */ "EO_DEVROW_COLS_TO_ROW"_Stz,
 
   // ixt device crwbuffer operators
   /*    */ "EO_DEVIXT_CRWBUF_BEGIN"_Stz,
@@ -801,6 +803,7 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_DEVIXT_COLS_TO_LOCALS
   { EA_NONE,    0 },  // EO_DEVIXT_COLS_TOROW
   { EA_NONE,    0 },  // EO_DEVROW_COLS_TO_LOCALS
+  { EA_NONE,    0 },  // EO_DEVROW_COLS_TO_ROW
 
   // ixt device crwbuffer operators
   { EA_NONE,    0 },  // EO_DEVIXT_CRWBUF_BEGIN

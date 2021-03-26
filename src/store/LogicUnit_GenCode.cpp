@@ -424,6 +424,9 @@ eEC LogicUnit::eGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
 
   oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_FILTER_END, &oTagSet, sMacro));
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // CRW_PROJECT_STAR
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_STAR, &oTagSet, sMacro));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -442,26 +445,10 @@ eEC LogicUnit::eGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
 
   oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_FILTER_END, &oTagSet, sMacro));
 
-  u8 uProjectColumns = 0;
-  for (i8 i = 0; i < pStreamDefOut->nColumns(); i++)
-    BitLib::vSetOn(uProjectColumns, i);
-  oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pStreamDefOut->nColumns());
-  oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, uProjectColumns);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ROWPROJECT_STAR
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_STAR, &oTagSet, sMacro));
-  oTagSet.vReset();
-
-  ExprEval *pExprEvalStar = new ExprEval;
-  eEC eError = pExprEvalStar->eExprEvalAll(pStreamDefOut);
-  RASSERT(eError == EC_NONE);
-
-  // add the columns to be projected to PROJECT_COLUMNS
-  oFile.vPrint("  // *** begin generated code: m_sAsmText *** //\n"_Stz);
-  oFile.vPrint("%s"_Stz, pExprEvalStar->m_sAsmText.azChar());
-  oFile.vPrint("  // *** end generated code: m_sAsmText *** //\n"_Stz);
-
-  oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_END, &oTagSet, sMacro));
-
-  delete pExprEvalStar;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // close the file
@@ -753,26 +740,15 @@ eEC LogicUnit::eGenerateLimit(i8 iLimitRows, StreamDef* pStreamDefOut) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oFile.vPrint(LogicCompiler::szGetMacro(AM_QUERY_DONE, &oTagSet, sMacro));
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // CRW_PROJECT_STAR
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_STAR, &oTagSet, sMacro));
 
-  u8 uProjectColumns = 0;
-  for (i8 i = 0; i < pStreamDefOut->nColumns(); i++)
-    BitLib::vSetOn(uProjectColumns, i);
-  oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pStreamDefOut->nColumns());
-  oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, uProjectColumns);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ROW_PROJECT_STAR
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_STAR, &oTagSet, sMacro));
-
-  ExprEval* pExprEvalStar = new ExprEval;
-  eEC eError = pExprEvalStar->eExprEvalAll(pStreamDefOut);
-  RASSERT(eError == EC_NONE);
-
-  // add the columns to be projected to PROJECT_COLUMNS
-  oFile.vPrint("  // *** begin generated code: m_sAsmText *** //\n"_Stz);
-  oFile.vPrint("%s"_Stz, pExprEvalStar->m_sAsmText.azChar());
-  oFile.vPrint("  // *** end generated code: m_sAsmText *** //\n"_Stz);
-
-  oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_END, &oTagSet, sMacro));
-  delete pExprEvalStar;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // close the file

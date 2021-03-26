@@ -35,7 +35,7 @@ namespace Parser
 
     // Returns the node representing the list of columns that are to used.
     // This node may be null or empty.
-    static QueryNode* pCorrelatedByList(QueryNode* pNode);
+    static QueryNode* pCorrespondingByList(QueryNode* pNode);
 
     static PlanNodeList* pColumnExprs(QueryNode* pNode, PlanNode* pRootNode);
 
