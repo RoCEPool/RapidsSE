@@ -871,6 +871,16 @@ void Engine::vKillPrev(void)
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/* set low-memory receive discards                                            */
+/*----------------------------------------------------------------------------*/
+void Engine::vLowMemoryDiscard(void)
+{
+  gxaSizeHeap[CN_CRWBUFFER].m_bLowMemoryDiscard = true;
+  gxaSizeHeap[CN_CSVBUFFER].m_bLowMemoryDiscard = true;
+  gxaSizeHeap[CN_PROFILE].m_bLowMemoryDiscard   = true;
+  gxaSizeHeap[CN_ROWBUFFER].m_bLowMemoryDiscard = true;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get monitor portrait profile of system                                     */
@@ -1665,6 +1675,10 @@ void Engine::vStartSystem(void)
   if (AM::bVerboseProgress())
     vInfo("  Adding PostRecv functions\n"_Stz);
   vPostRecvFns();
+  
+  if (AM::bVerboseProgress())
+    vInfo("  Adding LowMemory Discard\n"_Stz);
+  vLowMemoryDiscard();
   
 
   if (AM::bVerboseProgress())

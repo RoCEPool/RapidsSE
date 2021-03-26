@@ -9,6 +9,7 @@
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
 #include "Expr.hpp"
+#include "StringList.hpp"
 
 #include "GraphNav.hpp"
 
@@ -50,9 +51,11 @@ void UnionOp::vDescribe(PlanNode* pNode, s2K& sBuf)
   _static_
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pExpr = static_cast<QueryNode*>(pNode);
+  QueryNode* pUnionOp = static_cast<QueryNode*>(pNode);
 
+  sBuf.vConcat("UnionOp :\n  "_Stz);
 
+  // TODO: ???
 }
 
 
@@ -64,9 +67,43 @@ void UnionOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iInd
   _static_
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pExpr = static_cast<QueryNode*>(pNode);
+  QueryNode* pUnionOp = static_cast<QueryNode*>(pNode);
 
+  sBuf.vConcat("\n\n"_Stz);
+  vAppendIndent(sBuf, iIndent, eIndentFormat::IF_ARROW);
+  sBuf.vConcat(GraphNav::szLeafType(pNode->szType()));
 
+  // Get the isDistinct property
+  b1 bIsDistinct = SetOp::bIsDistinct(pUnionOp);
+
+  sBuf.vConcat("\n"_Stz);
+  vAppendIndent(sBuf, iIndent, IF_PLAIN);
+  sBuf.vCatSprint("isDistinct: (%s)"_Stz, bIsDistinct ? "true"_Stz : "false"_Stz);
+
+  // Get the corresponding by list
+  QueryNode* pCorrespondingByList = SetOp::pCorrespondingByList(pUnionOp);
+
+  if (pCorrespondingByList) {
+    s2K sColumnBuf;
+    StringList::vDescribe(pCorrespondingByList, sColumnBuf);
+
+    sBuf.vConcat("\n"_Stz);
+    vAppendIndent(sBuf, iIndent, IF_PLAIN);
+    sBuf.vCatSprint("corresponding by: (%s)"_Stz, sColumnBuf.szStz());
+  }
+
+  // Recurse any children of pNode
+  if (pNode->bHasChildren()) {
+    PlanNodeIter* pIter = pNode->pNewChildrenIter();
+
+    while (pIter->bHasNext()) {
+      PlanNode* pChild = pIter->pNext();
+      ASSERT(PlanObject::bIsOfType(pChild));
+
+      PlanObject::vExplain(pChild, pRootNode, sBuf, iIndent + 1);
+    }
+    delete pIter;
+  }
 }
 
 /*----------------------------------------------------------------------------*/

@@ -42,7 +42,9 @@ namespace Parser
     antlrcpp::Any visitStatement(sqlParser::StatementContext *pCtx)              override;
     antlrcpp::Any visitQuery(sqlParser::QueryContext *pCtx)                      override;
     antlrcpp::Any visitSelectQuery(sqlParser::SelectQueryContext *pCtx)          override;
+    antlrcpp::Any visitSetQuery(sqlParser::SetQueryContext *pCtx)                override;
     antlrcpp::Any visitSelectExpr(sqlParser::SelectExprContext *pCtx)            override;
+    antlrcpp::Any visitSetExpr(sqlParser::SetExprContext *pCtx)                  override;
     antlrcpp::Any visitFetch(sqlParser::FetchContext *pCtx)                      override;
     antlrcpp::Any visitTableReference(sqlParser::TableReferenceContext *pCtx)    override;
     antlrcpp::Any visitSelectList(sqlParser::SelectListContext *pCtx)            override;
@@ -68,7 +70,6 @@ namespace Parser
     antlrcpp::Any visitQueryHint(sqlParser::QueryHintContext *pCtx)                     override { __NOT_IMPL("query hints")}
 
     // Query types not implemented
-    antlrcpp::Any visitSetQuery(sqlParser::SetQueryContext *pCtx)                  override { __NOT_IMPL("SET")}
     antlrcpp::Any visitInsertQuery(sqlParser::InsertQueryContext *pCtx)            override { __NOT_IMPL("INSERT")}
     antlrcpp::Any visitDeleteQuery(sqlParser::DeleteQueryContext *pCtx)            override { __NOT_IMPL("DELETE")}
     antlrcpp::Any visitUpdateQuery(sqlParser::UpdateQueryContext *pCtx)            override { __NOT_IMPL("UPDATE")}

@@ -175,7 +175,7 @@ void Step::vSqlCompilerNameValidate(void)
   // i.e. they have catalog/schema/table names.
 
   Parser::ShadowRoot::vExplain(pPlanRoot, sExplainBuf, 0);
-  vTrace("%s\n"_Stz, sExplainBuf.szStz());
+  vTrace("\n%s\n\n"_Stz, sExplainBuf.szStz());
 
   // TODO: eventually we want the received plan graph to be immutable,
   //       so we would send a different version. But for now we will just

@@ -317,32 +317,21 @@ void Step::vSocketOpen(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSocketRecvObject(void)
 {
-  // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
-  // test for low memory condition
-  
-  bool bLowMem = gpBufferPool->bLowMemory();
-  if (bLowMem) {
-    //AM::vPoolAnalyze();
-    vSocketRecvObject_LowMem();
-    return;
-  }
-  
-  // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
-  
   ENTRY();
   
-  Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // receive the header of the next object
+  bool bLowMem = gpBufferPool->bLowMemory();
   
   char caObjectHeader[sizeof(Object) + C_1K];
   Header* aHeader = (Header*) & caObjectHeader[0];
-  i8 nObjectBytes = sizeof(Object);
-  SysCall oSysCall;
-  Object* pReceivedOperand;
+  Object* pObject = reinterpret_cast<Object*>(&caObjectHeader);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // receive the header of the next object
 
-  bool bResult = pSocket->bRecvBytes(aHeader,nObjectBytes,oSysCall);
+  Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
+  
+  SysCall oSysCall;
+  bool bResult = pSocket->bRecvBytes(aHeader,sizeof(Object),oSysCall);
   if (! bResult) {
     m_pDataStack->vPushInt(false);
     EXIT();
@@ -355,35 +344,119 @@ void Step::vSocketRecvObject(void)
 //         spHeader.sz(aHeader));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the details about the received object
-  
-  Object* pObject = reinterpret_cast<Object*>(&caObjectHeader);
+  // receive the body of the obect (enough memory condition)
+
   eCN eClass = pObject->eGetClassNo();
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // receive the body of the obect
   
-  void* aBody;
-  i8 nRemainingBytes;
-  
-  pReceivedOperand = Heaps::pAllocate(eClass);
-  MemLib::vCopy(pReceivedOperand,pObject,sizeof(Object),eClass);
+  if (! bLowMem || ! gxaSizeHeap[eClass].m_bLowMemoryDiscard) {
 
-  aBody = aAdd<void*>(pReceivedOperand,sizeof(Object));
-  nRemainingBytes = gxaSizeHeap[eClass].m_nClassSize - sizeof(Object);
+    Object* pReceivedOperand = Heaps::pAllocate(eClass);
+    MemLib::vCopy(pReceivedOperand,pObject,sizeof(Object),eClass);
 
-  bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
-  if (! bResult) {
-   m_pDataStack->vPushInt(false);
-   EXIT();
-   return;
+    void* aBody = aAdd<void*>(pReceivedOperand,sizeof(Object));
+    i8 nRemainingBytes = gxaSizeHeap[eClass].m_nClassSize - sizeof(Object);
+
+    bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
+    if (! bResult) {
+     m_pDataStack->vPushInt(false);
+     EXIT();
+     return;
+    }
+
+    m_pDataStack->vPushPtr(pReceivedOperand);
+    m_pDataStack->vPushInt(true);
+    EXIT();
+    return;
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // receive and discard the body of the obect (low memory condition)
 
-  m_pDataStack->vPushPtr(pReceivedOperand);
-  m_pDataStack->vPushInt(true);
+  void* aLowBuff = pSocket->m_aLowBuff;
+
+  // copy the object header into the LowBuffer
+  MemLib::vCopy(aLowBuff,pObject,sizeof(Object),eClass);
+  
+  // recv rest of the buffer into LowBuffer
+  void* aLowBody = aAdd<void*>(aLowBuff,sizeof(Object));
+  i8 nRemainingBytes = gxaSizeHeap[eClass].m_nClassSize - sizeof(Object);
+  
+  bResult = pSocket->bRecvBytes(aLowBody,nRemainingBytes,oSysCall);
+  
+  // whether able to recv or not, return false
+  m_pDataStack->vPushInt(false);
   EXIT();
 }
+/*----------------------------------------------------------------------------*/
+//void Step::vSocketRecvObject(void)
+//{
+//  // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
+//  // test for low memory condition
+//
+//  bool bLowMem = gpBufferPool->bLowMemory();
+//  if (bLowMem) {
+//    //AM::vPoolAnalyze();
+//    vSocketRecvObject_LowMem();
+//    return;
+//  }
+//
+//  // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
+//
+//  ENTRY();
+//
+//  Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // receive the header of the next object
+//
+//  char caObjectHeader[sizeof(Object) + C_1K];
+//  Header* aHeader = (Header*) & caObjectHeader[0];
+//  i8 nObjectBytes = sizeof(Object);
+//  SysCall oSysCall;
+//  Object* pReceivedOperand;
+//
+//  bool bResult = pSocket->bRecvBytes(aHeader,nObjectBytes,oSysCall);
+//  if (! bResult) {
+//    m_pDataStack->vPushInt(false);
+//    EXIT();
+//    return;
+//  }
+//
+////  SP_Header spHeader;
+////  vTrace("%lld: vSocketRecvObject: Header %s\n"_Stz,
+////         AM::iThisNodeNo(),
+////         spHeader.sz(aHeader));
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // get the details about the received object
+//
+//  Object* pObject = reinterpret_cast<Object*>(&caObjectHeader);
+//  eCN eClass = pObject->eGetClassNo();
+//
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // receive the body of the obect
+//
+//  void* aBody;
+//  i8 nRemainingBytes;
+//
+//  pReceivedOperand = Heaps::pAllocate(eClass);
+//  MemLib::vCopy(pReceivedOperand,pObject,sizeof(Object),eClass);
+//
+//  aBody = aAdd<void*>(pReceivedOperand,sizeof(Object));
+//  nRemainingBytes = gxaSizeHeap[eClass].m_nClassSize - sizeof(Object);
+//
+//  bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
+//  if (! bResult) {
+//   m_pDataStack->vPushInt(false);
+//   EXIT();
+//   return;
+//  }
+//
+//  m_pDataStack->vPushPtr(pReceivedOperand);
+//  m_pDataStack->vPushInt(true);
+//  EXIT();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* socket.recvObject_LowMem: recv object from a socket (under low mem cond)   */

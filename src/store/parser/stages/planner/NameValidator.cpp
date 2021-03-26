@@ -167,6 +167,14 @@ void NameValidator::vValidateTables(PlanNode *pRootNode, QueryNode* pStartNode, 
     szSchemaName = pTableMeta->szSchemaName();
     szTableName = pTableMeta->szTableName();
 
+    // Now that the table is fully qualified, check again if this is already in the metadata
+    QueryNode* pTableDef = MetadataNode::pTableDef(pMetadataNode, szCatalogName, szSchemaName, szTableName);
+    if (pTableDef) {
+      TableRef::vQualify(static_cast<QueryNode*>(pNode), szCatalogName, szSchemaName, szTableName);
+      delete pTableInfoSet;
+      return GraphNav::WALK_CONTINUE;
+    }
+
     // Retrieve the column definitions and make a node our of these
     QueryNode* pColumnDefs = ColumnDefs::pCreate();
     InfoSet* pColumnInfoSet = pSeApi->pColumnDefs(szCatalogName, szSchemaName, szTableName, nullptr);
@@ -199,7 +207,6 @@ void NameValidator::vValidateTables(PlanNode *pRootNode, QueryNode* pStartNode, 
     QueryNode* pIndexDefs = IndexDefs::pCreate();
 
     // Now form a TableDef object out of the table metadata, columnDefs and indexDefs
-    QueryNode* pTableDef;
     pTableDef = TableDef::pCreate(szCatalogName, szSchemaName, szTableName, pColumnDefs, pIndexDefs);
 
     // Add to the plan metadata
