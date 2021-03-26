@@ -35,16 +35,27 @@
   Socket[] socket.recvObject not if false exit then
     to Register0[]
 
-  Register0[] not if
+  Register0[] if
+  
+    Register0[] object.postRecv
+    
+    Register0[] object.class@ CN_JOB == if
+      true exit
+    then
+    
+  else
     true exit
   then
   
-  Register0[] object.class@ CN_JOB == if
-    true exit
-  then
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Socket[] socket.recvObject not if false exit then
     to Register1[]
+    
+  Register1[] if
+    Register1[] object.postRecv
+  then
+  
   true
 ;
 
@@ -57,7 +68,6 @@
 
     trap::stackDepthZero
 
-    // recv first object
     receiver_recvNext not if
       exit
     then
@@ -70,7 +80,7 @@
       // first object is a Job
 
       //Register0[] job.postRecv
-      Register0[] object.postRecv
+      //Register0[] object.postRecv
 
       Register0[] job.spawn_received
 
@@ -78,11 +88,11 @@
     Register0[] object.class@ CN_XMITOPERAND == if
       // first object is a XmitOperand
 
-      Register0[] object.postRecv
+      //Register0[] object.postRecv
 
-      Register1[] if
-        Register1[] object.postRecv
-      then
+      //Register1[] if
+      //  Register1[] object.postRecv
+      //then
       
       //Register1[] Register0[] xmitOperand.operand!
       //Register0[] xmitOperand.pipeOut
