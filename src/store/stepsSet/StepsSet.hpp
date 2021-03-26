@@ -970,6 +970,7 @@ public:
   void vObjectClassStore(void);
   void vObjectFetch(void);
   void vObjectMagicMark(void);
+  void vObjectPostRecv(void);
   void vObjectStore(void);
 
   // olist (originator list)

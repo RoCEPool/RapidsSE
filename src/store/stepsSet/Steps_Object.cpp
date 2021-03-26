@@ -8,6 +8,7 @@
 #include "StepAccum.hpp"
 #include "Steps.hpp"
 
+extern SizeHeap gxaSizeHeap[];
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -18,6 +19,7 @@ void Step::vAddSteps_Object(void)
   vAddStep("object.class!"_Stz,     &Step::vObjectClassStore);
   vAddStep("object@"_Stz,           &Step::vObjectFetch);
   vAddStep("object.magic!"_Stz,     &Step::vObjectMagicMark);
+  vAddStep("object.postRecv"_Stz,   &Step::vObjectPostRecv);
   vAddStep("object!"_Stz,           &Step::vObjectStore);
 }
 
@@ -72,7 +74,7 @@ void Step::vObjectFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* object.magic! -- put magic number into object                             */
+/* object.magic! -- put magic number into object                              */
 /*----------------------------------------------------------------------------*/
 void Step::vObjectMagicMark(void)
 {
@@ -82,6 +84,30 @@ void Step::vObjectMagicMark(void)
   
   pObject->vSetMagic();
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* object.postRecv -- run post-receive function of object                     */
+/*----------------------------------------------------------------------------*/
+void Step::vObjectPostRecv(void)
+{
+  ENTRY();
+  
+  Object* pObject = m_pDataStack->pPopPtr(__func__);
+  
+  eCN eClassNo = pObject->eGetClassNo();
+  
+  if (eClassNo != CN_JOB && eClassNo != CN_XMITOPERAND)
+    vDebugPoint();
+  
+  fpPOSTFN* fpPostRecvFn = gxaSizeHeap[eClassNo].m_fpPostRecvFn;
+  
+  if (! fpPostRecvFn)
+    return;
+  
+  fpPostRecvFn(pObject);
+    
   EXIT();
 }
 

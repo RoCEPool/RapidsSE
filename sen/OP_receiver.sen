@@ -54,7 +54,8 @@
     // -- -- -- -- -- -- -- --
     // run post receive function
 
-
+    OperandC[] object.postRecv
+    
 
     // -- -- -- -- -- -- -- --
     // recv operand
@@ -62,6 +63,9 @@
     OperandC[] object.class@ CN_XMITOPERAND == if
       Socket[] socket.recvObject true == if
         to OperandB[]
+        
+        OperandB[] object.postRecv
+        
         OperandB[] OperandC[] xmitOperand.operand!
         OperandC[] xmitOperand.pipeOut
       else
