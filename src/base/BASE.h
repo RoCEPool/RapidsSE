@@ -62,7 +62,6 @@ extern d8 C_D8_MID;
 #include "StrLib.hpp"
 
 #include "ClassNumbers.hpp"
-#include "SizeHeap.h"
 #include "LimitsFormats.h"
 
 #include "FnDesc.hpp"
@@ -396,6 +395,8 @@ extern d8 C_D8_MID;
 #include "Schedule.hpp"
 
 //------------------------------------------------------------------------------
+
+#include "SizeHeap.h"
 
 namespace BASE
 {

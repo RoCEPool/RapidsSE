@@ -36,6 +36,7 @@ namespace STORE
     static eBO  eDecodeCommandLine(void);
     static void vDeleteImmmediate(Task** ppTask);
     static void vDeleteSession(Session* pSession);
+    static void vDispatchWords(void);
     static void vEnvFlags(void);
     static void vErrorHandler(Error* pError);
     static void vGetCopyright(s256& sCopyright);

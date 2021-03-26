@@ -234,6 +234,13 @@ namespace OBLIQUE
       static WriteBehind* pWriteBehind(void);
       static WriteBehind* pWriteBehind(Thread* pThread);
     };
+  
+    class WORD
+    {
+    public:
+      static Word* pFind(Stz* szWordNm);
+    };
+
 
   public:
     static Stz*  szVersionString(void);

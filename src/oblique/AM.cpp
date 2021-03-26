@@ -249,6 +249,22 @@ WriteBehind* AM::THREAD::pWriteBehind(Thread* pThread)
   return pWriteBehind;
 }
 
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                   Word                                     */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* find given word                                                            */
+/*----------------------------------------------------------------------------*/
+Word* AM::WORD::pFind(Stz* szWordNm)
+{
+  Dic* pRootDic = AM::pDicRoot();
+  
+  Word* pWord = pRootDic->pFindWord(szWordNm);
+  
+  return pWord;
+}
+
 
 
 
