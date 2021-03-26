@@ -334,7 +334,7 @@ void Step::vSocketRecvObject(void)
   Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // receive the object header
+  // receive the header of the next object
   
   char caObjectHeader[sizeof(Object) + C_1K];
   Header* aHeader = (Header*) & caObjectHeader[0];
@@ -349,15 +349,7 @@ void Step::vSocketRecvObject(void)
     return;
   }
   
-  SP_Header spHeader;
-  
-  //vTrace("Socket received: Header %s"_Stz,
-  //       spHeader.sz(aHeader));
-  
-//  AM::vLogRes(SL_INF,pSocket,RA_SKT_RECEIVED,
-//              "Socket received: Header %s"_Stz, //!format-LogRes
-//              spHeader.sz(aHeader));
-  
+//  SP_Header spHeader;
 //  vTrace("%lld: vSocketRecvObject: Header %s\n"_Stz,
 //         AM::iThisNodeNo(),
 //         spHeader.sz(aHeader));
@@ -367,366 +359,29 @@ void Step::vSocketRecvObject(void)
   
   Object* pObject = reinterpret_cast<Object*>(&caObjectHeader);
   eCN eClass = pObject->eGetClassNo();
-  i8 nObjectSize = gxaSizeHeap[eClass].m_nClassSize;
 
-  RASSERT(_bIsValidJob(eClass) ||
-          _bIsValidOperand(eClass) ||
-          eClass == CN_XMITOPERAND);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // receive rest of a job
-  
-  if ( _bIsValidJob(eClass) ) {
-        
-    //! temp. to be fixed
-    Job* pJob = static_cast<Job*>(Heaps::pAllocate(eClass));
-
-    MemLib::vCopy(pJob,pObject,sizeof(Object),eClass);
-    
-    void* aBody = aAdd<void*>(pJob,sizeof(Object));
-    i8 nRemainingBytes = nObjectSize - sizeof(Object);
-
-    bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
-    if (! bResult) {
-      m_pDataStack->vPushInt(false);
-      EXIT();
-      return;
-    }
-
-    //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
-    //       pJob,eClass,aCN[eClass],nObjectSize);
-    
-    SP_Job spJob;
-    AM::vLogRes(SL_INF,pSocket,RA_SKT_RECEIVED,
-                "Socket received Job: %s"_Stz, //!format-LogRes
-                 spJob.sz_recv(pJob));
-
-//    vTrace("%lld %p: vSocketRecvObject: Job %s\n"_Stz,
-//           AM::iThisNodeNo(),
-//           pSocket,
-//           spJob.sz_detail(pJob));
-
-    if (pJob->m_xReqTuple.m_iDetail) {
-      JobLog::vNote(pJob,
-                         "Recv: %s %p socket %llx"_Stz,
-                         aCN[eClass],
-                         pJob,
-                         pSocket);
-      pJob->vMarkJob();
-    }
-    
-    //ActLog::vAdd(pJob,AN_RECV_JOB,pJob(),nObjectSize);
-    
-    m_pDataStack->vPushPtr(pJob);
-    m_pDataStack->vPushInt(true);
-    EXIT();
-    return;
-  }
-  
-  if (eClass == CN_XMITOPERAND) {
-    XmitOperand* pXmitOperand = static_cast<XmitOperand*>(Heaps::pAllocate(eClass));
-    
-    MemLib::vCopy(pXmitOperand,pObject,sizeof(Object),eClass);
-    
-    void* aBody = aAdd<void*>(pXmitOperand,sizeof(Object));
-    i8 nRemainingBytes = nObjectSize - sizeof(Object);
-    
-    bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
-    if (! bResult) {
-      m_pDataStack->vPushInt(false);
-      EXIT();
-      return;
-    }
-    
-    //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
-    //       pJob,eClass,aCN[eClass],nObjectSize);
-    
-//    SP_Job spJob;
-//    AM::vLogRes(SL_INF,pSocket,RA_SKT_RECEIVED,
-//                "Socket received XmitOperand: %s"_Stz, //!format-LogRes
-//                spJob.sz_recv(pXmitOperand));
-    
-    m_pDataStack->vPushPtr(pXmitOperand);
-    m_pDataStack->vPushInt(true);
-    EXIT();
-    return;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // receive an operand
+  // receive the body of the obect
   
   void* aBody;
   i8 nRemainingBytes;
   
-  
-//  Object* pReceivedOperand = Heaps::pAllocate(eClass);
-//
-//  MemLib::vCopy(pReceivedOperand,pObject,sizeof(Object),eClass);
-//
-//  aBody = aAdd<void*>(pReceivedOperand,sizeof(Object));
-//  nRemainingBytes = gxaSizeHeap[eClass].m_nClassSize - sizeof(Object);
-//
-//  bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
-//  if (! bResult) {
-//    m_pDataStack->vPushInt(false);
-//    EXIT();
-//    return;
-//  }
-//
-//  m_pDataStack->vPushPtr(pReceivedOperand);
-//  m_pDataStack->vPushInt(true);
-//  EXIT();
+  pReceivedOperand = Heaps::pAllocate(eClass);
+  MemLib::vCopy(pReceivedOperand,pObject,sizeof(Object),eClass);
 
-  
+  aBody = aAdd<void*>(pReceivedOperand,sizeof(Object));
+  nRemainingBytes = gxaSizeHeap[eClass].m_nClassSize - sizeof(Object);
 
-  switch(eClass) {
-      
-//    case CN_CRWBUFFER: {
-//
-//      CrwBuffer* pCrwBuffer = new CrwBuffer;
-//
-//      MemLib::vCopy(pCrwBuffer,pObject,sizeof(Object),CN_CRWBUFFER);
-//
-//      aBody = aAdd<void*>(pCrwBuffer,sizeof(Object));
-//      nRemainingBytes = gxaSizeHeap[CN_CRWBUFFER].m_nClassSize - sizeof(Object);
-//
-//      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
-//      if (! bResult) {
-//        m_pDataStack->vPushInt(false);
-//        EXIT();
-//        return;
-//      }
-//      pCrwBuffer->vIsPermanent(false);
-//
-//      //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
-//      //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
-//
-//      // restore the nub of the crwbuffer
-//      pCrwBuffer->vRestoreNub();
-//
-//      m_pDataStack->vPushPtr(pCrwBuffer);
-//      m_pDataStack->vPushInt(true);
-//      EXIT();
-//      return;
-//    }
-     
-//    case CN_CSVBUFFER: {
-//
-//      CsvBuffer* pCsvBuffer = new CsvBuffer();
-//
-//      MemLib::vCopy(pCsvBuffer,pObject,sizeof(Object),CN_CSVBUFFER);
-//
-//      aBody = aAdd<void*>(pCsvBuffer,sizeof(Object));
-//      nRemainingBytes = gxaSizeHeap[CN_CSVBUFFER].m_nClassSize - sizeof(Object);
-//
-//      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
-//      if (! bResult) {
-//        m_pDataStack->vPushInt(false);
-//        EXIT();
-//        return;
-//      }
-//
-//      //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
-//      //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
-//
-//      m_pDataStack->vPushPtr(pCsvBuffer);
-//      m_pDataStack->vPushInt(true);
-//      EXIT();
-//      return;
-//    }
-     
-//    case CN_INDEXDEF: {
-//      IndexDef* pIndexDef = new IndexDef();
-//
-//      MemLib::vCopy(pIndexDef,pObject,sizeof(Object),CN_INDEXDEF);
-//
-//      aBody = aAdd<void*>(pIndexDef,sizeof(Object));
-//      nRemainingBytes = gxaSizeHeap[CN_INDEXDEF].m_nClassSize - sizeof(Object);
-//
-//      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
-//      if (! bResult) {
-//        m_pDataStack->vPushInt(false);
-//        EXIT();
-//        return;
-//      }
-//
-//      //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
-//      //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
-//
-//      m_pDataStack->vPushPtr(pIndexDef);
-//      m_pDataStack->vPushInt(true);
-//      EXIT();
-//      return;
-//    }
-      
-//    case CN_INFOSET: {
-//      InfoSet* pInfoSet = new InfoSet;
-//
-//      MemLib::vCopy(pInfoSet,pObject,sizeof(Object),CN_INFOSET);
-//
-//      aBody = aAdd<void*>(pInfoSet,sizeof(Object));
-//      nRemainingBytes = gxaSizeHeap[CN_INFOSET].m_nClassSize - sizeof(Object);
-//
-//      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
-//      if (! bResult) {
-//        m_pDataStack->vPushInt(false);
-//        EXIT();
-//        return;
-//      }
-//
-//      //pInfoSet->vRestorePointers();
-//
-//      m_pDataStack->vPushPtr(pInfoSet);
-//      m_pDataStack->vPushInt(true);
-//      EXIT();
-//      return;
-//    }
-      
-//    case CN_ROWBUFFER: {
-//      RowBuffer* pRowBuffer = new RowBuffer;
-//
-//      MemLib::vCopy(pRowBuffer,pObject,sizeof(Object),CN_ROWBUFFER);
-//
-//      aBody = aAdd<void*>(pRowBuffer,sizeof(Object));
-//      nRemainingBytes = gxaSizeHeap[CN_ROWBUFFER].m_nClassSize - sizeof(Object);
-//
-//      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
-//      if (! bResult) {
-//        m_pDataStack->vPushInt(false);
-//        EXIT();
-//        return;
-//      }
-//
-//      //pRowBuffer->vRestorePointers();
-//
-//      m_pDataStack->vPushPtr(pRowBuffer);
-//      m_pDataStack->vPushInt(true);
-//      EXIT();
-//      return;
-//    }
-      
-//    case CN_STREAMSET: {
-//      StreamSet* pStreamSet = new StreamSet();
-//
-//      MemLib::vCopy(pStreamSet,pObject,sizeof(Object),CN_STREAMSET);
-//
-//      aBody = aAdd<void*>(pStreamSet,sizeof(Object));
-//      nRemainingBytes = gxaSizeHeap[CN_STREAMSET].m_nClassSize - sizeof(Object);
-//
-//      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
-//      if (! bResult) {
-//        m_pDataStack->vPushInt(false);
-//        EXIT();
-//        return;
-//      }
-//
-//      m_pDataStack->vPushPtr(pStreamSet);
-//      m_pDataStack->vPushInt(true);
-//      EXIT();
-//      return;
-//    }
-      
-//    case CN_MARKER: {
-//      Marker* pMarker = new Marker();
-//
-//      MemLib::vCopy(pMarker,pObject,sizeof(Object),CN_MARKER);
-//
-//      aBody = aAdd<void*>(pMarker,sizeof(Object));
-//      nRemainingBytes = gxaSizeHeap[CN_MARKER].m_nClassSize - sizeof(Object);
-//
-//      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
-//      if (! bResult) {
-//        m_pDataStack->vPushInt(false);
-//        EXIT();
-//        return;
-//      }
-//
-//      m_pDataStack->vPushPtr(pMarker);
-//      m_pDataStack->vPushInt(true);
-//      EXIT();
-//      return;
-//    }
-     
-//    case CN_PROFILE: {
-//      Profile* pProfile = new Profile(""_Stz);
-//
-//      MemLib::vCopy(pProfile,pObject,sizeof(Object),CN_PROFILE);
-//
-//      aBody = aAdd<void*>(pProfile,sizeof(Object));
-//      nRemainingBytes = gxaSizeHeap[CN_PROFILE].m_nClassSize - sizeof(Object);
-//
-//      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
-//      if (! bResult) {
-//        m_pDataStack->vPushInt(false);
-//        EXIT();
-//        return;
-//      }
-//
-//      m_pDataStack->vPushPtr(pProfile);
-//      m_pDataStack->vPushInt(true);
-//      EXIT();
-//      return;
-//    }
-      
-    case CN_CRWBUFFER:
-    case CN_INFOSET:
-    case CN_ROWBUFFER:
-    case CN_CSVBUFFER:
-    case CN_INDEXDEF:
-    case CN_STREAMSET:
-    case CN_MARKER:
-    case CN_PROFILE:
-    case CN_STREAMDEF:
-      
-
-     pReceivedOperand = Heaps::pAllocate(eClass);
-     MemLib::vCopy(pReceivedOperand,pObject,sizeof(Object),eClass);
-
-     aBody = aAdd<void*>(pReceivedOperand,sizeof(Object));
-     nRemainingBytes = gxaSizeHeap[eClass].m_nClassSize - sizeof(Object);
-
-     bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
-     if (! bResult) {
-       m_pDataStack->vPushInt(false);
-       EXIT();
-       return;
-     }
-
-     m_pDataStack->vPushPtr(pReceivedOperand);
-     m_pDataStack->vPushInt(true);
-     EXIT();
-     return;
-
-//      StreamDef* pStreamDef = new StreamDef();
-//
-//      MemLib::vCopy(pStreamDef,pObject,sizeof(Object),CN_STREAMDEF);
-//
-//      aBody = aAdd<void*>(pStreamDef,sizeof(Object));
-//      nRemainingBytes = gxaSizeHeap[CN_STREAMDEF].m_nClassSize - sizeof(Object);
-//
-//      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
-//      if (! bResult) {
-//        m_pDataStack->vPushInt(false);
-//        EXIT();
-//        return;
-//      }
-//
-//      //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
-//      //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
-//
-//      m_pDataStack->vPushPtr(pStreamDef);
-//      m_pDataStack->vPushInt(true);
-//      EXIT();
-//      return;
-//    }
-
-    default:
-      vTrace("socket.recvObject: unknown object; class %lld\n"_Stz,eClass);
-      RASSERT(0);
+  bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
+  if (! bResult) {
+   m_pDataStack->vPushInt(false);
+   EXIT();
+   return;
   }
-  
-  //////////////////////////////////////////////////////////////////////////////
-  
+
+  m_pDataStack->vPushPtr(pReceivedOperand);
+  m_pDataStack->vPushInt(true);
   EXIT();
 }
 
