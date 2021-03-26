@@ -510,30 +510,30 @@ void Step::vSocketRecvObject(void)
       return;
     }
      
-    case CN_CSVBUFFER: {
-      
-      CsvBuffer* pCsvBuffer = new CsvBuffer();
-      
-      MemLib::vCopy(pCsvBuffer,pObject,sizeof(Object),CN_CSVBUFFER);
-      
-      aBody = aAdd<void*>(pCsvBuffer,sizeof(Object));
-      nRemainingBytes = gxaSizeHeap[CN_CSVBUFFER].m_nClassSize - sizeof(Object);
-      
-      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
-      if (! bResult) {
-        m_pDataStack->vPushInt(false);
-        EXIT();
-        return;
-      }
-      
-      //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
-      //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
-            
-      m_pDataStack->vPushPtr(pCsvBuffer);
-      m_pDataStack->vPushInt(true);
-      EXIT();
-      return;
-    }
+//    case CN_CSVBUFFER: {
+//
+//      CsvBuffer* pCsvBuffer = new CsvBuffer();
+//
+//      MemLib::vCopy(pCsvBuffer,pObject,sizeof(Object),CN_CSVBUFFER);
+//
+//      aBody = aAdd<void*>(pCsvBuffer,sizeof(Object));
+//      nRemainingBytes = gxaSizeHeap[CN_CSVBUFFER].m_nClassSize - sizeof(Object);
+//
+//      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
+//      if (! bResult) {
+//        m_pDataStack->vPushInt(false);
+//        EXIT();
+//        return;
+//      }
+//
+//      //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
+//      //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
+//
+//      m_pDataStack->vPushPtr(pCsvBuffer);
+//      m_pDataStack->vPushInt(true);
+//      EXIT();
+//      return;
+//    }
      
 //    case CN_INDEXDEF: {
 //      IndexDef* pIndexDef = new IndexDef();
@@ -559,51 +559,51 @@ void Step::vSocketRecvObject(void)
 //      return;
 //    }
       
-    case CN_INFOSET: {
-      InfoSet* pInfoSet = new InfoSet;
+//    case CN_INFOSET: {
+//      InfoSet* pInfoSet = new InfoSet;
+//
+//      MemLib::vCopy(pInfoSet,pObject,sizeof(Object),CN_INFOSET);
+//
+//      aBody = aAdd<void*>(pInfoSet,sizeof(Object));
+//      nRemainingBytes = gxaSizeHeap[CN_INFOSET].m_nClassSize - sizeof(Object);
+//
+//      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
+//      if (! bResult) {
+//        m_pDataStack->vPushInt(false);
+//        EXIT();
+//        return;
+//      }
+//
+//      //pInfoSet->vRestorePointers();
+//
+//      m_pDataStack->vPushPtr(pInfoSet);
+//      m_pDataStack->vPushInt(true);
+//      EXIT();
+//      return;
+//    }
       
-      MemLib::vCopy(pInfoSet,pObject,sizeof(Object),CN_INFOSET);
-      
-      aBody = aAdd<void*>(pInfoSet,sizeof(Object));
-      nRemainingBytes = gxaSizeHeap[CN_INFOSET].m_nClassSize - sizeof(Object);
-      
-      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
-      if (! bResult) {
-        m_pDataStack->vPushInt(false);
-        EXIT();
-        return;
-      }
-      
-      //pInfoSet->vRestorePointers();
-      
-      m_pDataStack->vPushPtr(pInfoSet);
-      m_pDataStack->vPushInt(true);
-      EXIT();
-      return;
-    }
-      
-    case CN_ROWBUFFER: {
-      RowBuffer* pRowBuffer = new RowBuffer;
-
-      MemLib::vCopy(pRowBuffer,pObject,sizeof(Object),CN_ROWBUFFER);
-
-      aBody = aAdd<void*>(pRowBuffer,sizeof(Object));
-      nRemainingBytes = gxaSizeHeap[CN_ROWBUFFER].m_nClassSize - sizeof(Object);
-
-      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
-      if (! bResult) {
-        m_pDataStack->vPushInt(false);
-        EXIT();
-        return;
-      }
-
-      //pRowBuffer->vRestorePointers();
-
-      m_pDataStack->vPushPtr(pRowBuffer);
-      m_pDataStack->vPushInt(true);
-      EXIT();
-      return;
-    }
+//    case CN_ROWBUFFER: {
+//      RowBuffer* pRowBuffer = new RowBuffer;
+//
+//      MemLib::vCopy(pRowBuffer,pObject,sizeof(Object),CN_ROWBUFFER);
+//
+//      aBody = aAdd<void*>(pRowBuffer,sizeof(Object));
+//      nRemainingBytes = gxaSizeHeap[CN_ROWBUFFER].m_nClassSize - sizeof(Object);
+//
+//      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
+//      if (! bResult) {
+//        m_pDataStack->vPushInt(false);
+//        EXIT();
+//        return;
+//      }
+//
+//      //pRowBuffer->vRestorePointers();
+//
+//      m_pDataStack->vPushPtr(pRowBuffer);
+//      m_pDataStack->vPushInt(true);
+//      EXIT();
+//      return;
+//    }
       
 //    case CN_STREAMSET: {
 //      StreamSet* pStreamSet = new StreamSet();
@@ -668,6 +668,9 @@ void Step::vSocketRecvObject(void)
 //      return;
 //    }
       
+    case CN_INFOSET:
+    case CN_ROWBUFFER:
+    case CN_CSVBUFFER:
     case CN_INDEXDEF:
     case CN_STREAMSET:
     case CN_MARKER:
