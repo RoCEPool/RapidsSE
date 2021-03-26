@@ -11,12 +11,6 @@ macro AM_QUERY_INIT
   EO_ENTER            
   EO_SQL <subQueryNo>  // C_TAG_SUBQUERY_NO
 
-  // check for ZK_STARTMARKER
-  EO_DUP                          
-  EO_INTEGER ZK_STARTMARKER       
-  EO_EQUAL                        
-  EO_JMP_TRUE HANDLER_STARTMARKER
-
   // check for ZK_DATAPULSE
   EO_DUP                        
   EO_INTEGER ZK_DATAPULSE       
