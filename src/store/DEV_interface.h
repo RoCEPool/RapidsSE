@@ -55,6 +55,7 @@ void vDev_ENTWRK_RESET    (i8** aaiDstk);
 void vDev_ENTWRK_SETINTELM(i8** aaiDstk);
 
 void vDev_ROW_COLS_TO_LOCALS     (i8** aaiDstk);
+void vDev_ROW_COLS_TO_ROW        (i8** aaiDstk);
 
 void vDev_ROW_ROW_NEW      (i8** aaiDstk);
 void vDev_ROW_ROW_PRINT    (i8** aaiDstk);

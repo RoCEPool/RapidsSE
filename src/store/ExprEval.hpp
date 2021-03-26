@@ -38,7 +38,6 @@ namespace STORE
     ExprEval(void);
    ~ExprEval(void) noexcept(false);
 
-    eEC eExprEvalAll(StreamDef* pStreamDefIn);
     eEC eEvaluate(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Stz* sExprEvalColumns);
 
     bool bHasAggregate(void);
