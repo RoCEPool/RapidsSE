@@ -350,10 +350,10 @@ void Step::vSocketRecvObject(void)
   
   if (! bLowMem || ! gxaSizeHeap[eClass].m_bLowMemoryDiscard) {
 
-    Object* pReceivedOperand = Heaps::pAllocate(eClass);
-    MemLib::vCopy(pReceivedOperand,pObject,sizeof(Object),eClass);
+    Object* pReceivedObject = Heaps::pAllocate(eClass);
+    MemLib::vCopy(pReceivedObject,pObject,sizeof(Object),eClass);
 
-    void* aBody = aAdd<void*>(pReceivedOperand,sizeof(Object));
+    void* aBody = aAdd<void*>(pReceivedObject,sizeof(Object));
     i8 nRemainingBytes = gxaSizeHeap[eClass].m_nClassSize - sizeof(Object);
 
     bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
@@ -363,7 +363,10 @@ void Step::vSocketRecvObject(void)
      return;
     }
 
-    m_pDataStack->vPushPtr(pReceivedOperand);
+    pReceivedObject->vSetWasReceived(true);
+    pReceivedObject->vSetPostRecvRun(false);
+
+    m_pDataStack->vPushPtr(pReceivedObject);
     m_pDataStack->vPushInt(true);
     EXIT();
     return;

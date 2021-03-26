@@ -135,7 +135,6 @@ namespace STORE
     REG<Object>         m_xpRegister0; // general purpose reg 0[]
     REG<Object>         m_xpRegister1; // general purpose reg 1[]
     REG<Object>         m_xpRegister2; // general purpose reg 2[]
-    REG<Object>         m_xpRegister3; // general purpose reg 3[]
     REG<Row>            m_xpRow;
     REG<RowOnce>        m_xpRowOnce;
     REG<Node>           m_xpSendNode;  // node to send to

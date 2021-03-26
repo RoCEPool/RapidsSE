@@ -34,7 +34,7 @@
     trap::stackDepthZero
 
     // -- -- -- -- -- -- -- --
-    // recv job
+    // recv first object
 
     Socket[] socket.recvObject
 
@@ -44,7 +44,7 @@
       exit
     then
 
-    to OperandC[]
+    to Register0[]
 
     // -- -- -- -- -- -- -- --
     // log received job
@@ -54,27 +54,27 @@
     // -- -- -- -- -- -- -- --
     // run post receive function
 
-    OperandC[] object.postRecv
+    Register0[] object.postRecv
     
 
     // -- -- -- -- -- -- -- --
     // recv operand
 
-    OperandC[] object.class@ CN_XMITOPERAND == if
+    Register0[] object.class@ CN_XMITOPERAND == if
       Socket[] socket.recvObject true == if
-        to OperandB[]
+        to Register1[]
         
-        OperandB[] object.postRecv
+        Register1[] object.postRecv
         
-        OperandB[] OperandC[] xmitOperand.operand!
-        OperandC[] xmitOperand.pipeOut
+        Register1[] Register0[] xmitOperand.operand!
+        Register0[] xmitOperand.pipeOut
       else
-       nullptr OperandC[] xmitOperand.operand!
-       OperandC[] xmitOperand.pipeOut
+       nullptr Register0[] xmitOperand.operand!
+       Register0[] xmitOperand.pipeOut
       then
       
     else
-    OperandC[] object.class@ CN_JOB == if
+    Register0[] object.class@ CN_JOB == if
     
       // -- -- -- -- -- -- -- --
       // examine job
@@ -83,17 +83,17 @@
       //  pReceivedJob job.tagSet@ tagSet.asStr .
       //then
 
-      OperandC[] job.postRecv
+      Register0[] job.postRecv
       //pReceivedJob job.name@ grid::thisNodeName@ "(%v) receiver_loop %v" .printf
-      OperandC[] job.seedDecode
-      OperandC[] job.seed!
-      OperandC[] job.spawn_received
+      Register0[] job.seedDecode
+      Register0[] job.seed!
+      Register0[] job.spawn_received
     else
       HAZARD
     then then
 
-    nullptr to OperandC[]
-    nullptr to OperandB[]
+    nullptr to Register0[]
+    nullptr to Register1[]
 
   again
 ;

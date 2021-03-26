@@ -95,6 +95,8 @@ void Step::vObjectPostRecv(void)
   ENTRY();
   
   Object* pObject = m_pDataStack->pPopPtr(__func__);
+  RASSERT(pObject->bGetWasReceived());
+  RASSERT(!pObject->bGetPostRecvRun());
   
   eCN eClassNo = pObject->eGetClassNo();
   
@@ -103,11 +105,15 @@ void Step::vObjectPostRecv(void)
   
   fpPOSTFN* fpPostRecvFn = gxaSizeHeap[eClassNo].m_fpPostRecvFn;
   
-  if (! fpPostRecvFn)
+  if (! fpPostRecvFn) {
+    pObject->vSetPostRecvRun(true);
     return;
+  }
   
+  pObject->vSetPostRecvRun(true);
   fpPostRecvFn(pObject);
-    
+
+  
   EXIT();
 }
 
