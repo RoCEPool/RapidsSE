@@ -69,6 +69,8 @@ void RowBuffer::vPostRecv(void* aRowBuffer)
   _static_
   
   RowBuffer* pRowBuffer = _pRowBuffer(aRowBuffer);
+  
+  pRowBuffer->vRestorePointers();
 }
 
 

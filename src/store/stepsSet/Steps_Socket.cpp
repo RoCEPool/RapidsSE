@@ -574,7 +574,7 @@ void Step::vSocketRecvObject(void)
         return;
       }
       
-      pInfoSet->vRestorePointers();
+      //pInfoSet->vRestorePointers();
       
       m_pDataStack->vPushPtr(pInfoSet);
       m_pDataStack->vPushInt(true);
@@ -597,7 +597,7 @@ void Step::vSocketRecvObject(void)
         return;
       }
 
-      pRowBuffer->vRestorePointers();
+      //pRowBuffer->vRestorePointers();
 
       m_pDataStack->vPushPtr(pRowBuffer);
       m_pDataStack->vPushInt(true);
