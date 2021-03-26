@@ -159,6 +159,10 @@ macro AM_CRW_PROJECT_COLUMNS_AGG
 //----------------------------------------------------------------------------//
   // CRW_PROJECT_COLUMNS_AGG
   Label CRW_PROJECT_COLUMNS_AGG
+
+  EO_INTEGER <projectItems>  // C_TAG_PROJECT_ITEMS
+  EO_JMP_FALSE CRW_PROJECT_AGG
+
   EO_RLU_SET_ITEMS <projectItems>  // C_TAG_PROJECT_ITEMS
   EO_RLU_SET_COLUMNS <projectSrcColumns>  // C_TAG_PROJECT_SRC_COLUMN
   EO_PUSH_RLU_LOCALS
@@ -166,18 +170,8 @@ macro AM_CRW_PROJECT_COLUMNS_AGG
   EO_PUSH_DEVROW_SRC
   EO_PUSH_DEVIXT_SRC
   EO_DEVIXT_COLS_TO_LOCALS
-endMacro
 
-macro AM_CRW_PROJECT_NONE
-//----------------------------------------------------------------------------//
-// macro AM_CRW_PROJECT_NONE                                                  //
-//----------------------------------------------------------------------------//
-  // CRW_PROJECT_NONE
-  Label CRW_PROJECT_NONE
-  EO_PUSH_DEVROW_DST
-  EO_PUSH_RLU_POT
-  EO_PUSH_RLU_PTN
-  EO_DEVROW_ROW_NEW
+  Label CRW_PROJECT_AGG
 
 endMacro
 

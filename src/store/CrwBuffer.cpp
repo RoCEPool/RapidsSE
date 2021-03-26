@@ -186,6 +186,9 @@ void CrwBuffer::vPostRecv(void* aCrwBuffer)
   _static_
   
   CrwBuffer* pCrwBuffer = _pCrwBuffer(aCrwBuffer);
+  
+  pCrwBuffer->vIsPermanent(false);
+  pCrwBuffer->vRestoreNub();
 }
 
 

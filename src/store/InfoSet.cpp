@@ -88,6 +88,8 @@ void InfoSet::vPostRecv(void* aInfoSet)
   _static_
   
   InfoSet* pInfoSet = _pInfoSet(aInfoSet);
+  
+  pInfoSet->vRestorePointers();
 }
 
 
