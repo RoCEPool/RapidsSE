@@ -162,6 +162,10 @@ macro AM_ROW_PROJECT_COLUMNS_AGG
 //----------------------------------------------------------------------------//
   // ROW_PROJECT_COLUMNS_AGG
   Label ROW_PROJECT_COLUMNS_AGG
+
+  EO_INTEGER <projectItems>  // C_TAG_PROJECT_ITEMS
+  EO_JMP_FALSE ROW_PROJECT_AGG
+
   EO_RLU_SET_ITEMS <projectItems>  // C_TAG_PROJECT_ITEMS
   EO_RLU_SET_COLUMNS <projectSrcColumns>  // C_TAG_PROJECT_SRC_COLUMNS
   EO_PUSH_RLU_LOCALS
@@ -169,6 +173,9 @@ macro AM_ROW_PROJECT_COLUMNS_AGG
   EO_PUSH_DEVROW_SRC
   EO_DEVROW_COLS_TO_LOCALS
   //EO_DUMP
+
+  Label ROW_PROJECT_AGG
+
 endMacro
 
 macro AM_ROW_PROJECT_NONE
