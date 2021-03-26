@@ -25,9 +25,81 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* receive next object(s)                                                     */
+/*----------------------------------------------------------------------------*/
+: receiver_recvNext
+
+  nullptr to Register0[]
+  nullptr to Register1[]
+
+  Socket[] socket.recvObject not if false exit then
+    to Register0[]
+
+  Register0[] not if
+    true exit
+  then
+  
+  Register0[] object.class@ CN_JOB == if
+    true exit
+  then
+  
+  Socket[] socket.recvObject not if false exit then
+    to Register1[]
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* receiver loop: receive a job (possibly with operand), dispatch it          */
 /*----------------------------------------------------------------------------*/
-: receiver_loop ( -- )
+: receiver_loop_new ( -- )
+
+  begin
+
+    trap::stackDepthZero
+
+    // recv first object
+    receiver_recvNext not if
+      exit
+    then
+        
+    Register0[] not if
+      // null first object continue
+      
+    else
+    Register0[] object.class@ CN_JOB == if
+      // first object is a Job
+
+      Register0[] job.postRecv
+
+      Register0[] job.seedDecode
+      Register0[] job.seed!
+      Register0[] job.spawn_received
+
+    else
+    Register0[] object.class@ CN_XMITOPERAND == if
+      // first object is a XmitOperand
+
+      Register0[] object.postRecv
+
+      Register1[] if
+        Register1[] object.postRecv
+      then
+      
+      Register1[] Register0[] xmitOperand.operand!
+      Register0[] xmitOperand.pipeOut
+
+    else
+      // first object is not supported
+      HAZARD
+    then then then
+
+  again
+;
+
+/*----------------------------------------------------------------------------*/
+/* receiver loop: receive a job (possibly with operand), dispatch it          */
+/*----------------------------------------------------------------------------*/
+: receiver_loop_original ( -- )
 
   begin
 
@@ -107,7 +179,7 @@
   receiver_init
 
   // loop, receiving and executing jobs
-  receiver_loop
+  receiver_loop_new
 
   // should never exit
   //hazard

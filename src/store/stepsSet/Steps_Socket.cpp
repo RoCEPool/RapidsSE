@@ -387,7 +387,8 @@ void Step::vSocketRecvObject(void)
   bResult = pSocket->bRecvBytes(aLowBody,nRemainingBytes,oSysCall);
   
   // whether able to recv or not, return false
-  m_pDataStack->vPushInt(false);
+  m_pDataStack->vPushPtr(nullptr);
+  m_pDataStack->vPushInt(true);
   EXIT();
 }
 /*----------------------------------------------------------------------------*/
