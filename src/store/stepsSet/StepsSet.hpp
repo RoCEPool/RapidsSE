@@ -643,7 +643,7 @@ public:
   void vJobShow(void);
   void vJobSignalSession(void);
   void vJobScheduleNextPhase(void);
-  void vJobSpawnReceived(void);
+  void vJobSpawn(void);
   void vJobTablePtnFetch(void);
 
   void vJobTaskFetch(void);

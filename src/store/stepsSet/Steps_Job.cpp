@@ -101,8 +101,8 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.sessionState@"_Stz,    &Step::vJobSessionStateFetch);
   vAddStep("job.show"_Stz,             &Step::vJobShow);
   vAddStep("job.signalSession"_Stz,    &Step::vJobSignalSession);
-  vAddStep("job.scheduleNextPhase"_Stz, &Step::vJobScheduleNextPhase);
-  vAddStep("job.spawn_received"_Stz,   &Step::vJobSpawnReceived);
+  vAddStep("job.scheduleNextPhase"_Stz,&Step::vJobScheduleNextPhase);
+  vAddStep("job.spawn"_Stz,            &Step::vJobSpawn);
   vAddStep("job.tablePtn@"_Stz,        &Step::vJobTablePtnFetch);
 
   vAddStep("job.task@"_Stz,            &Step::vJobTaskFetch);
@@ -1303,7 +1303,7 @@ void Step::vJobScheduleNextPhase(void)
 /*----------------------------------------------------------------------------*/
 /* job.spawn -- spawn the job on the stack                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vJobSpawnReceived(void)
+void Step::vJobSpawn(void)
 {
   ENTRY();
   

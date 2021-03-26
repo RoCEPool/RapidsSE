@@ -73,7 +73,7 @@
 
       Register0[] job.seedDecode
       Register0[] job.seed!
-      Register0[] job.spawn_received
+      Register0[] job.spawn
 
     else
     Register0[] object.class@ CN_XMITOPERAND == if
@@ -160,7 +160,7 @@
       //pReceivedJob job.name@ grid::thisNodeName@ "(%v) receiver_loop %v" .printf
       Register0[] job.seedDecode
       Register0[] job.seed!
-      Register0[] job.spawn_received
+      Register0[] job.spawn
     else
       HAZARD
     then then
