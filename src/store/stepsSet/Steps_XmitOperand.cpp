@@ -52,6 +52,8 @@ void Step::vXmitOperandPipeOut(void)
   
   XmitOperand* pXmitOperand = _pXmitOperand(m_pDataStack->pPopPtr(__func__));
   
+  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+  
   // find the pipeline participant job
   i8 iPipelineJob = pXmitOperand->m_iPipelineJobId;
   Job* pPipelineJob = AM::pJob_FindParticipating(iPipelineJob);
@@ -68,7 +70,7 @@ void Step::vXmitOperandPipeOut(void)
   //! ALKA come back to this. May need a m_bAppendLeft in pXmitOperand
   // append to left queue
   if (pXmitOperand->m_pOperand)
-    pOp->vAppendLeft(pXmitOperand->m_pOperand,this);
+    pOp->vAppendLeft(pOperand,this);
   
   // now delete the pXmitOperand
   delete pXmitOperand;
