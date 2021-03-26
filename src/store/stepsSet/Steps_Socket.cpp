@@ -481,34 +481,34 @@ void Step::vSocketRecvObject(void)
 
   switch(eClass) {
       
-    case CN_CRWBUFFER: {
-      
-      CrwBuffer* pCrwBuffer = new CrwBuffer;
-      
-      MemLib::vCopy(pCrwBuffer,pObject,sizeof(Object),CN_CRWBUFFER);
-      
-      aBody = aAdd<void*>(pCrwBuffer,sizeof(Object));
-      nRemainingBytes = gxaSizeHeap[CN_CRWBUFFER].m_nClassSize - sizeof(Object);
-      
-      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
-      if (! bResult) {
-        m_pDataStack->vPushInt(false);
-        EXIT();
-        return;
-      }
-      pCrwBuffer->vIsPermanent(false);
-      
-      //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
-      //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
-      
-      // restore the nub of the crwbuffer
-      pCrwBuffer->vRestoreNub();
-      
-      m_pDataStack->vPushPtr(pCrwBuffer);
-      m_pDataStack->vPushInt(true);
-      EXIT();
-      return;
-    }
+//    case CN_CRWBUFFER: {
+//
+//      CrwBuffer* pCrwBuffer = new CrwBuffer;
+//
+//      MemLib::vCopy(pCrwBuffer,pObject,sizeof(Object),CN_CRWBUFFER);
+//
+//      aBody = aAdd<void*>(pCrwBuffer,sizeof(Object));
+//      nRemainingBytes = gxaSizeHeap[CN_CRWBUFFER].m_nClassSize - sizeof(Object);
+//
+//      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
+//      if (! bResult) {
+//        m_pDataStack->vPushInt(false);
+//        EXIT();
+//        return;
+//      }
+//      pCrwBuffer->vIsPermanent(false);
+//
+//      //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
+//      //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
+//
+//      // restore the nub of the crwbuffer
+//      pCrwBuffer->vRestoreNub();
+//
+//      m_pDataStack->vPushPtr(pCrwBuffer);
+//      m_pDataStack->vPushInt(true);
+//      EXIT();
+//      return;
+//    }
      
 //    case CN_CSVBUFFER: {
 //
@@ -668,6 +668,7 @@ void Step::vSocketRecvObject(void)
 //      return;
 //    }
       
+    case CN_CRWBUFFER:
     case CN_INFOSET:
     case CN_ROWBUFFER:
     case CN_CSVBUFFER:
