@@ -33,6 +33,7 @@
 #include "AggregateOp.hpp"
 #include "SumExpr.hpp"
 
+#include "ColumnOrdinal.hpp"
 #include "ColumnRef.hpp"
 #include "Expr.hpp"
 #include "FilterOp.hpp"
@@ -150,7 +151,7 @@ bool Backend::bTransliterate(String* sPipeline) {
   // path and not an absolute one.
   // Let's also pass in the root node as an argument as it can be useful within
   // the visitor function.
-  GraphNav::bGlobalWalkBottomUp(m_pPlanRoot, false, true, vVisitorPlan, (void *) m_sPipeline);
+  GraphNav::bGlobalWalkBottomUp(m_pPlanRoot, false, true, vVisitorPlan, (void *) this);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -226,8 +227,10 @@ void Backend::vPrintPlanGraph(PlanNode* pPlanRoot) {
 /*----------------------------------------------------------------------------*/
 /* append project Op to the pipeline                                          */
 /*----------------------------------------------------------------------------*/
-void Backend::vAppendExpr(String* sPipeline, QueryNode* pNode) {
+void Backend::vAppendExpr(Backend* pBackend, QueryNode* pNode) {
   _static_
+
+  String* sPipeline = pBackend->m_sPipeline;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // alias
@@ -252,11 +255,12 @@ void Backend::vAppendExpr(String* sPipeline, QueryNode* pNode) {
 /*----------------------------------------------------------------------------*/
 /* append aggregate Op to the pipeline                                        */
 /*----------------------------------------------------------------------------*/
-void Backend::vAppendAggregateOp(String* sPipeline, QueryNode* pNode)
+void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
 {
   _static_
 
   bool bFirstExpr = false;
+  String* sPipeline = pBackend->m_sPipeline;
 
   // Get the list of projected expressions from ProjectOp
   QueryNode *pProjectedColumns = AggregateOp::pProjectedColumns(pNode);
@@ -285,7 +289,7 @@ void Backend::vAppendAggregateOp(String* sPipeline, QueryNode* pNode)
       ASSERT(pProjectedColumn);
       ASSERT(ProjectedColumn::bIsOfType(pProjectedColumn));
 
-      vAppendExpr(sPipeline, pProjectedColumn);
+      vAppendExpr(pBackend, pProjectedColumn);
     }
     delete pIter;
 
@@ -334,14 +338,17 @@ void Backend::vAppendAggregateOp(String* sPipeline, QueryNode* pNode)
 /*----------------------------------------------------------------------------*/
 /* append filter Op to the pipeline                                           */
 /*----------------------------------------------------------------------------*/
-void Backend::vAppendFilterOp(String* sPipeline, QueryNode* pNode)
+void Backend::vAppendFilterOp(Backend* pBackend, QueryNode* pNode)
 {
   _static_
 
+  String* sPipeline = pBackend->m_sPipeline;
+
   // Get the list of projected expressions from ProjectOp
   QueryNode *pFilterExpr = FilterOp::pFilterExpr(pNode);
-  ASSERT(pFilterExpr);
+  //QueryNode *pFilterExpr = FilterOp::pOrdinalFilterExpr(pNode, pBackend->m_pPlanRoot);
 
+  ASSERT(pFilterExpr);
 
   sPipeline->vCatSprint(
       "    | filter 0 \""
@@ -349,6 +356,7 @@ void Backend::vAppendFilterOp(String* sPipeline, QueryNode* pNode)
 
   // Walk the expr node plan graph
   GraphNav::bGlobalWalkBottomUp(pFilterExpr, false, true, vVisitorExpr, (void *) sPipeline);
+  //delete pFilterExpr;
 
   sPipeline->vCatSprint(" \" \n"_Stz);
 }
@@ -356,11 +364,12 @@ void Backend::vAppendFilterOp(String* sPipeline, QueryNode* pNode)
 /*----------------------------------------------------------------------------*/
 /* append project Op to the pipeline                                          */
 /*----------------------------------------------------------------------------*/
-void Backend::vAppendProjectOp(String* sPipeline, QueryNode* pNode)
+void Backend::vAppendProjectOp(Backend* pBackend, QueryNode* pNode)
 {
   _static_
 
   bool bFirstExpr = false;
+  String* sPipeline = pBackend->m_sPipeline;
 
   // Get the list of projected expressions from ProjectOp
   QueryNode *pProjectedColumns = ProjectOp::pProjectedColumns(pNode);
@@ -389,7 +398,7 @@ void Backend::vAppendProjectOp(String* sPipeline, QueryNode* pNode)
       ASSERT(pProjectedColumn);
       ASSERT(ProjectedColumn::bIsOfType(pProjectedColumn));
 
-      vAppendExpr(sPipeline, pProjectedColumn);
+      vAppendExpr(pBackend, pProjectedColumn);
     }
     delete pIter;
 
@@ -402,9 +411,11 @@ void Backend::vAppendProjectOp(String* sPipeline, QueryNode* pNode)
 /*----------------------------------------------------------------------------*/
 /* append scan Op to the pipeline                                             */
 /*----------------------------------------------------------------------------*/
-void Backend::vAppendScanOp(String* sPipeline, QueryNode* pNode)
+void Backend::vAppendScanOp(Backend* pBackend, QueryNode* pNode)
 {
   _static_
+
+  String* sPipeline = pBackend->m_sPipeline;
 
   QueryNode *pTableRef = TableScanOp::pTableRef(pNode);
   Stz *szTableName = TableRef::szTable(pTableRef);
@@ -455,11 +466,16 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // columnRef
 
-  if (ColumnRef::bIsOfType(pExprNode)) {
-    QueryNode *pColumnRef = static_cast<QueryNode *>(pExprNode);
-    sPipeline->vCatSprint(
+  //if (ColumnOrdinal::bIsOfType(pExprNode)) {
+  //  QueryNode* pColumnOrdinal = static_cast<QueryNode*>(pExprNode);
+
+    if (ColumnRef::bIsOfType(pExprNode)) {
+      QueryNode *pColumnRef = static_cast<QueryNode *>(pExprNode);
+
+      sPipeline->vCatSprint(
         " %s"
         ""_Stz,
+        //ColumnOrdinal::iOrdinal(pColumnOrdinal));
         ColumnRef::szColumn(pColumnRef));
   }
 
@@ -583,7 +599,8 @@ GraphNav::eWalkCtrl Backend::vVisitorPlan(PlanNode* pRootNode, s256& sPath, i8 i
   // e.g. finding other nodes.
   //RootNode* pPlanRoot = _pRootNode(pvArg);
 
-  String* sPipeline = (String*)pvArg;
+  Backend* pBackend = (Backend*)pvArg;
+  String* sPipeline = pBackend->m_sPipeline;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // SqlOperator
@@ -594,14 +611,14 @@ GraphNav::eWalkCtrl Backend::vVisitorPlan(PlanNode* pRootNode, s256& sPath, i8 i
     // AggregateOp
 
     if (AggregateOp::bIsOfType(pQueryNode)) {
-      vAppendAggregateOp(sPipeline, pQueryNode);
+      vAppendAggregateOp(pBackend, pQueryNode);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // FilterOp
 
     else if (FilterOp::bIsOfType(pQueryNode)) {
-      vAppendFilterOp(sPipeline, pQueryNode);
+      vAppendFilterOp(pBackend, pQueryNode);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -609,16 +626,16 @@ GraphNav::eWalkCtrl Backend::vVisitorPlan(PlanNode* pRootNode, s256& sPath, i8 i
 
     else if (ProjectOp::bIsOfType(pQueryNode)) {
       if (ProjectOp::bHasAnAggregate(pQueryNode))
-        vAppendAggregateOp(sPipeline, pQueryNode);
+        vAppendAggregateOp(pBackend, pQueryNode);
       else
-        vAppendProjectOp(sPipeline, pQueryNode);
+        vAppendProjectOp(pBackend, pQueryNode);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // TableScanOp
 
     else if (TableScanOp::bIsOfType(pQueryNode)) {
-      vAppendScanOp(sPipeline, pQueryNode);
+      vAppendScanOp(pBackend, pQueryNode);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

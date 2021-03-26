@@ -35,11 +35,11 @@ namespace STORE
     //
     // plan transliteration
     //
-    static void vAppendAggregateOp(String* sPipeline, QueryNode* pNode);
-    static void vAppendExpr(String* sPipeline, QueryNode* pNode);
-    static void vAppendFilterOp( String* sPipeline, QueryNode* pNode);
-    static void vAppendProjectOp( String* sPipeline, QueryNode* pNode);
-    static void vAppendScanOp(String* sPipeline, QueryNode* pNode);
+    static void vAppendAggregateOp(Backend* pBackend, QueryNode* pNode);
+    static void vAppendExpr(Backend* pBackend, QueryNode* pNode);
+    static void vAppendFilterOp(Backend* pBackend, QueryNode* pNode);
+    static void vAppendProjectOp(Backend* pBackend,  QueryNode* pNode);
+    static void vAppendScanOp(Backend* pBackend,  QueryNode* pNode);
 
     static void vPrintPlanGraph(Parser::PlanNode* pPlanRoot);
 
