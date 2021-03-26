@@ -69,11 +69,10 @@
     Register0[] object.class@ CN_JOB == if
       // first object is a Job
 
-      Register0[] job.postRecv
+      //Register0[] job.postRecv
+      Register0[] object.postRecv
 
-      Register0[] job.seedDecode
-      Register0[] job.seed!
-      Register0[] job.spawn
+      Register0[] job.spawn_received
 
     else
     Register0[] object.class@ CN_XMITOPERAND == if

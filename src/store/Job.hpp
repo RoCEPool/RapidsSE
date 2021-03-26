@@ -87,6 +87,8 @@ namespace STORE
     static i8   iNodeNo(i8 iJobId);
     static i8   iOriginatorNode(i8 iJobId);
     static i8   iAsNodeNo_Bits(i8 iNodeNo);
+  
+    static void vPostRecv(void* aJob);
 
     i8   iAcksOriginal(void);
     i8   iAcksRmg_printOnlyValue(void);
