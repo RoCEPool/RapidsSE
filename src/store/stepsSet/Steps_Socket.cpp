@@ -359,61 +359,61 @@ void Step::vSocketRecvObject(void)
   
   Object* pObject = reinterpret_cast<Object*>(&caObjectHeader);
   eCN eClass = pObject->eGetClassNo();
-  i8 nObjectSize = gxaSizeHeap[eClass].m_nClassSize;
-
-  RASSERT(_bIsValidJob(eClass) ||
-          _bIsValidOperand(eClass) ||
-          eClass == CN_XMITOPERAND);
+//  i8 nObjectSize = gxaSizeHeap[eClass].m_nClassSize;
+//
+//  RASSERT(_bIsValidJob(eClass) ||
+//          _bIsValidOperand(eClass) ||
+//          eClass == CN_XMITOPERAND);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receive rest of a job
   
-  if ( _bIsValidJob(eClass) ) {
-        
-    //! temp. to be fixed
-    Job* pJob = static_cast<Job*>(Heaps::pAllocate(eClass));
-
-    MemLib::vCopy(pJob,pObject,sizeof(Object),eClass);
-    
-    void* aBody = aAdd<void*>(pJob,sizeof(Object));
-    i8 nRemainingBytes = nObjectSize - sizeof(Object);
-
-    bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
-    if (! bResult) {
-      m_pDataStack->vPushInt(false);
-      EXIT();
-      return;
-    }
-
-    //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
-    //       pJob,eClass,aCN[eClass],nObjectSize);
-    
-    SP_Job spJob;
-    AM::vLogRes(SL_INF,pSocket,RA_SKT_RECEIVED,
-                "Socket received Job: %s"_Stz, //!format-LogRes
-                 spJob.sz_recv(pJob));
-
-//    vTrace("%lld %p: vSocketRecvObject: Job %s\n"_Stz,
-//           AM::iThisNodeNo(),
-//           pSocket,
-//           spJob.sz_detail(pJob));
-
-    if (pJob->m_xReqTuple.m_iDetail) {
-      JobLog::vNote(pJob,
-                         "Recv: %s %p socket %llx"_Stz,
-                         aCN[eClass],
-                         pJob,
-                         pSocket);
-      pJob->vMarkJob();
-    }
-    
-    //ActLog::vAdd(pJob,AN_RECV_JOB,pJob(),nObjectSize);
-    
-    m_pDataStack->vPushPtr(pJob);
-    m_pDataStack->vPushInt(true);
-    EXIT();
-    return;
-  }
+//  if ( _bIsValidJob(eClass) ) {
+//
+//    //! temp. to be fixed
+//    Job* pJob = static_cast<Job*>(Heaps::pAllocate(eClass));
+//
+//    MemLib::vCopy(pJob,pObject,sizeof(Object),eClass);
+//
+//    void* aBody = aAdd<void*>(pJob,sizeof(Object));
+//    i8 nRemainingBytes = nObjectSize - sizeof(Object);
+//
+//    bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
+//    if (! bResult) {
+//      m_pDataStack->vPushInt(false);
+//      EXIT();
+//      return;
+//    }
+//
+//    //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
+//    //       pJob,eClass,aCN[eClass],nObjectSize);
+//
+//    SP_Job spJob;
+//    AM::vLogRes(SL_INF,pSocket,RA_SKT_RECEIVED,
+//                "Socket received Job: %s"_Stz, //!format-LogRes
+//                 spJob.sz_recv(pJob));
+//
+////    vTrace("%lld %p: vSocketRecvObject: Job %s\n"_Stz,
+////           AM::iThisNodeNo(),
+////           pSocket,
+////           spJob.sz_detail(pJob));
+//
+//    if (pJob->m_xReqTuple.m_iDetail) {
+//      JobLog::vNote(pJob,
+//                         "Recv: %s %p socket %llx"_Stz,
+//                         aCN[eClass],
+//                         pJob,
+//                         pSocket);
+//      pJob->vMarkJob();
+//    }
+//
+//    //ActLog::vAdd(pJob,AN_RECV_JOB,pJob(),nObjectSize);
+//
+//    m_pDataStack->vPushPtr(pJob);
+//    m_pDataStack->vPushInt(true);
+//    EXIT();
+//    return;
+//  }
   
 //  if (eClass == CN_XMITOPERAND) {
 //    XmitOperand* pXmitOperand = static_cast<XmitOperand*>(Heaps::pAllocate(eClass));
