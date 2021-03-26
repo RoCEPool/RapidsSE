@@ -15,12 +15,13 @@ extern SizeHeap gxaSizeHeap[];
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Object(void)
 {
-  vAddStep("object.class@"_Stz,     &Step::vObjectClassFetch);
-  vAddStep("object.class!"_Stz,     &Step::vObjectClassStore);
-  vAddStep("object@"_Stz,           &Step::vObjectFetch);
-  vAddStep("object.magic!"_Stz,     &Step::vObjectMagicMark);
-  vAddStep("object.postRecv"_Stz,   &Step::vObjectPostRecv);
-  vAddStep("object!"_Stz,           &Step::vObjectStore);
+  vAddStep("object.class@"_Stz,       &Step::vObjectClassFetch);
+  vAddStep("object.class!"_Stz,       &Step::vObjectClassStore);
+  vAddStep("object.dispatchWord@"_Stz,&Step::vObjectDispatchWordFetch);
+  vAddStep("object@"_Stz,             &Step::vObjectFetch);
+  vAddStep("object.magic!"_Stz,       &Step::vObjectMagicMark);
+  vAddStep("object.postRecv"_Stz,     &Step::vObjectPostRecv);
+  vAddStep("object!"_Stz,             &Step::vObjectStore);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -51,6 +52,24 @@ void Step::vObjectClassStore(void)
   i8 iClassNo = m_pDataStack->iPopInt(__func__);
 
   pObject->vSetClassNo((eCN)iClassNo);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* object.dispatchWord@ -- fetch dispatch word for class of object            */
+/*----------------------------------------------------------------------------*/
+void Step::vObjectDispatchWordFetch(void)
+{
+  ENTRY();
+  
+  Object* pObject = m_pDataStack->pPopPtr(__func__);
+  
+  eCN eClassNo = pObject->eGetClassNo();
+  
+  Word* pWord = gxaSizeHeap[eClassNo].m_pDispatchWord;
+  
+  m_pDataStack->vPushPtr(pWord);
   
   EXIT();
 }

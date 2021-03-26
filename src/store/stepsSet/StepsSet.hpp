@@ -968,6 +968,7 @@ public:
   // object
   void vObjectClassFetch(void);
   void vObjectClassStore(void);
+  void vObjectDispatchWordFetch(void);
   void vObjectFetch(void);
   void vObjectMagicMark(void);
   void vObjectPostRecv(void);

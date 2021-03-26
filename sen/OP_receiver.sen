@@ -86,7 +86,8 @@
       then
       
       Register1[] Register0[] xmitOperand.operand!
-      Register0[] xmitOperand.pipeOut
+      //Register0[] xmitOperand.pipeOut
+      Register0[] Register0[] object.dispatchWord@ execute
 
     else
       // first object is not supported
