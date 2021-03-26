@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Statement.hpp - identifies the type of query being planned                 */
+/* StatementMarker.hpp - identifies the type of query being planned           */
 /*============================================================================*/
 #pragma once
 
@@ -35,8 +35,10 @@ namespace Parser
     // Shalt never be instantiated. Static functions only.
     StatementMarker();
 
+  protected:
+    static QueryNode* pCreate(eST eStmtType, Stz* szDefn, Stz* szQueryText);
+
   public:
-    static QueryNode* pCreate(eST eStmtType, Stz* szQueryText);
     static void       vDescribe(PlanNode* pNode, s2K& sBuf);
     static void vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iIndent);
 

@@ -20,7 +20,7 @@
 #include "GraphEditor.hpp"
 
 #include "ShadowNode.hpp"
-#include "store/parser/shadowNodes/planObjects/StatementMarker.hpp"
+#include "store/parser/shadowNodes/planObjects/statementMarkers/SelectMarker.hpp"
 #include "store/parser/shadowNodes/planObjects/FilterOp.hpp"
 #include "store/parser/shadowNodes/planObjects/LimitOp.hpp"
 #include "store/parser/shadowNodes/planObjects/ProjectOp.hpp"
@@ -233,7 +233,11 @@ antlrcpp::Any SqlPlanner::visitQuery(sqlParser::QueryContext *pCtx)
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *pCtx)
 {
-  QueryNode* pStmt = StatementMarker::pCreate(StatementMarker::ST_SELECT, m_sQueryStr.szStz());
+  // Get the statement string for this part of the query
+  antlr4::misc::Interval interval(pCtx->start->getStartIndex(), pCtx->stop->getStopIndex());
+  std::string queryStlStr = pCtx->start->getInputStream()->getText(interval);
+
+  QueryNode* pStmt = SelectMarker::pCreate((Stz*)(queryStlStr.c_str()));
   m_pStatementStack->vPush(pStmt);
 
   visitChildren(pCtx);
@@ -315,6 +319,7 @@ antlrcpp::Any SqlPlanner::visitTableReference(sqlParser::TableReferenceContext *
 antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
 {
   ASSERT(m_pStatementStack->nItems() > 0);
+  ASSERT(SelectMarker::bIsOfType(m_pStatementStack->pPeek(0)));
   ASSERT(!m_pSelectItems);
 
   // N.B. We don't call visitChildren() in this function. Instead we manually
