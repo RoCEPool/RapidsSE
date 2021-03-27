@@ -62,7 +62,7 @@
 /*----------------------------------------------------------------------------*/
 /* receiver loop: receive a job (possibly with operand), dispatch it          */
 /*----------------------------------------------------------------------------*/
-: receiver_loop_new ( -- )
+: receiver_loop ( -- )
 
   begin
 
@@ -73,109 +73,22 @@
     then
         
     Register0[] not if
-      // null first object continue
+      // null object continue
       
     else
     Register0[] object.class@ CN_JOB == if
-      // first object is a Job
-
-      //Register0[] job.postRecv
-      //Register0[] object.postRecv
 
       Register0[] job.spawn_received
 
     else
     Register0[] object.class@ CN_XMITOPERAND == if
-      // first object is a XmitOperand
 
-      //Register0[] object.postRecv
-
-      //Register1[] if
-      //  Register1[] object.postRecv
-      //then
-      
-      //Register1[] Register0[] xmitOperand.operand!
-      //Register0[] xmitOperand.pipeOut
       Register1[] Register0[] Register0[] object.dispatchWord@ execute
 
     else
-      // first object is not supported
+    
       HAZARD
     then then then
-
-  again
-;
-
-/*----------------------------------------------------------------------------*/
-/* receiver loop: receive a job (possibly with operand), dispatch it          */
-/*----------------------------------------------------------------------------*/
-: receiver_loop_original ( -- )
-
-  begin
-
-    trap::stackDepthZero
-
-    // -- -- -- -- -- -- -- --
-    // recv first object
-
-    Socket[] socket.recvObject
-
-    not if
-      //ifAgain
-      "receiver exiting" .
-      exit
-    then
-
-    to Register0[]
-
-    // -- -- -- -- -- -- -- --
-    // log received job
-
-    //pReceivedJob job_receiver::jobReceived
-
-    // -- -- -- -- -- -- -- --
-    // run post receive function
-
-    Register0[] object.postRecv
-    
-
-    // -- -- -- -- -- -- -- --
-    // recv operand
-
-    Register0[] object.class@ CN_XMITOPERAND == if
-      Socket[] socket.recvObject true == if
-        to Register1[]
-        
-        Register1[] object.postRecv
-        
-        Register1[] Register0[] xmitOperand.operand!
-        Register0[] xmitOperand.pipeOut
-      else
-       nullptr Register0[] xmitOperand.operand!
-       Register0[] xmitOperand.pipeOut
-      then
-      
-    else
-    Register0[] object.class@ CN_JOB == if
-    
-      // -- -- -- -- -- -- -- --
-      // examine job
-      //pReceivedJob job.kind@ JK_GENERIC == if
-      //"received a generic job" .
-      //  pReceivedJob job.tagSet@ tagSet.asStr .
-      //then
-
-      Register0[] job.postRecv
-      //pReceivedJob job.name@ grid::thisNodeName@ "(%v) receiver_loop %v" .printf
-      Register0[] job.seedDecode
-      Register0[] job.seed!
-      Register0[] job.spawn
-    else
-      HAZARD
-    then then
-
-    nullptr to Register0[]
-    nullptr to Register1[]
 
   again
 ;
@@ -189,7 +102,7 @@
   receiver_init
 
   // loop, receiving and executing jobs
-  receiver_loop_new
+  receiver_loop
 
   // should never exit
   //hazard
