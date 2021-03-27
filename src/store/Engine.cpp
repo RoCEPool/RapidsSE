@@ -741,7 +741,14 @@ void Engine::vDeleteSession(Session* pSession)
 /*----------------------------------------------------------------------------*/
 void Engine::vDispatchWords(void)
 {
-  Word* pWord = AM::WORD::pFind("xmitOperand.pipeOut"_Stz);
+  Word* pWord;
+  
+  pWord = AM::WORD::pFind("job.spawn_received"_Stz);
+  RASSERT(pWord);
+  gxaSizeHeap[CN_JOB].m_pDispatchWord = pWord;
+
+  pWord = AM::WORD::pFind("xmitOperand.pipeOut"_Stz);
+  RASSERT(pWord);
   gxaSizeHeap[CN_XMITOPERAND].m_pDispatchWord = pWord;
   gxaSizeHeap[CN_XMITOPERAND].m_nRecvArgs = 1;
 }

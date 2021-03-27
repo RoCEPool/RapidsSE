@@ -76,12 +76,13 @@
       // null object continue
       
     else
-    Register0[] object.class@ CN_JOB == if
+    Register0[] object.recvArgs@ 0 == if
 
-      Register0[] job.spawn_received
+      //Register0[] job.spawn_received
+      Register0[] Register0[] object.dispatchWord@ execute
 
     else
-    Register0[] object.class@ CN_XMITOPERAND == if
+    Register0[] object.recvArgs@ 1 == if
 
       Register1[] Register0[] Register0[] object.dispatchWord@ execute
 
