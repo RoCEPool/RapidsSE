@@ -32,29 +32,33 @@
   nullptr to Register0[]
   nullptr to Register1[]
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get first object
+  
   Socket[] socket.recvObject not if false exit then
     to Register0[]
 
-  Register0[] if
-  
-    Register0[] object.postRecv
-    
-    Register0[] object.recvArgs@ 0 == if
-      true exit
-    then
-    
-  else
+  Register0[] not if
     true exit
   then
-  
+
+  Register0[] object.postRecv
+    
+  Register0[] object.recvArgs@ 0 == if
+    true exit
+  then
+      
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+  // get argument object
+
   Socket[] socket.recvObject not if false exit then
     to Register1[]
     
-  Register1[] if
-    Register1[] object.postRecv
+  Register0[] not if
+    true exit
   then
+
+  Register1[] object.postRecv
   
   true
 ;
@@ -72,24 +76,24 @@
       exit
     then
         
+    // null object
     Register0[] not if
-      // null object continue
-      
-    else
-    Register0[] object.recvArgs@ 0 == if
-
-      //Register0[] job.spawn_received
-      Register0[] Register0[] object.dispatchWord@ execute
-
-    else
-    Register0[] object.recvArgs@ 1 == if
-
-      Register1[] Register0[] Register0[] object.dispatchWord@ execute
-
-    else
+      continue_if
+    then
     
-      HAZARD
-    then then then
+    // probably job, no argument object
+    Register0[] object.recvArgs@ 0 == if
+      Register0[] Register0[] object.dispatchWord@ execute
+      continue_if
+    then
+    
+    // probably xmitoperand, with one argument
+    Register0[] object.recvArgs@ 1 == if
+      Register1[] Register0[] Register0[] object.dispatchWord@ execute
+      continue_if
+    then
+    
+    HAZARD
 
   again
 ;
