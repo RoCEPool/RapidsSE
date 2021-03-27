@@ -21,6 +21,7 @@ void Step::vAddSteps_Object(void)
   vAddStep("object@"_Stz,             &Step::vObjectFetch);
   vAddStep("object.magic!"_Stz,       &Step::vObjectMagicMark);
   vAddStep("object.postRecv"_Stz,     &Step::vObjectPostRecv);
+  vAddStep("object.recvArgs@"_Stz,    &Step::vObjectRecvArgsFetch);
   vAddStep("object!"_Stz,             &Step::vObjectStore);
 }
 
@@ -132,6 +133,24 @@ void Step::vObjectPostRecv(void)
   pObject->vSetPostRecvRun(true);
   fpPostRecvFn(pObject);
 
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* object.recvArgs@ -- fetch number of receive arguments                      */
+/*----------------------------------------------------------------------------*/
+void Step::vObjectRecvArgsFetch(void)
+{
+  ENTRY();
+  
+  Object* pObject = m_pDataStack->pPopPtr(__func__);
+  
+  eCN eClassNo = pObject->eGetClassNo();
+  
+  i8 nRecvArgs = gxaSizeHeap[eClassNo].m_nRecvArgs;
+  
+  m_pDataStack->vPushInt(nRecvArgs);
   
   EXIT();
 }
