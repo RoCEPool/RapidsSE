@@ -28915,7 +28915,7 @@ void Task::vAddMunged(Task* )
     "  \n"
     "    Register0[] object.postRecv\n"
     "    \n"
-    "    Register0[] object.class@ CN_JOB == if\n"
+    "    Register0[] object.recvArgs@ 0 == if\n"
     "      true exit\n"
     "    then\n"
     "    \n"
