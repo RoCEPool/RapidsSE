@@ -16,6 +16,8 @@
 /*----------------------------------------------------------------------------*/
 Stz* MY::szJobNm(void)
 {
+  _static_
+  
   Job* pJob = AM::pThisTLSJob();
   
   return aCN[pJob->eGetClassNo()];
@@ -26,6 +28,8 @@ Stz* MY::szJobNm(void)
 /*----------------------------------------------------------------------------*/
 Stz* MY::szHostNm(void)
 {
+  _static_
+
   return nullptr;
 }
 
@@ -34,6 +38,8 @@ Stz* MY::szHostNm(void)
 /*----------------------------------------------------------------------------*/
 Stz* MY::szWordNm(void)
 {
+  _static_
+
   Task* pTask = AM::pThisTLSTask();
   
   Word* pWord = pTask->pSenCompiler()->pCurrentWord();
@@ -45,10 +51,42 @@ Stz* MY::szWordNm(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get current dictionary                                                     */
+/*----------------------------------------------------------------------------*/
+Dic* MY::pDic(void)
+{
+  _static_
+
+  DicStack* pDicStack = MY::pDicStack();
+
+  if (pDicStack)
+    return pDicStack->pTop();
+  else
+    return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current dictionary stack                                               */
+/*----------------------------------------------------------------------------*/
+DicStack* MY::pDicStack(void)
+{
+  _static_
+
+  Task* pTask = MY::pTask();
+
+  if (pTask)
+    return pTask->pDicStack();
+  else
+    return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get current grid                                                           */
 /*----------------------------------------------------------------------------*/
 Grid* MY::pGrid(void)
 {
+  _static_
+
   Grid* pGrid = AM::pGrid();
 
   return pGrid;
@@ -59,6 +97,8 @@ Grid* MY::pGrid(void)
 /*----------------------------------------------------------------------------*/
 Job* MY::pJob(void)
 {
+  _static_
+
   Task* pTask = MY::pTask();
   
   Job* pJob = AM::pTaskJob(pTask);
@@ -71,6 +111,8 @@ Job* MY::pJob(void)
 /*----------------------------------------------------------------------------*/
 LogicUnit* MY::pLogicUnit(void)
 {
+  _static_
+
   Job* pJob = MY::pJob();
 
   if (pJob)
@@ -84,6 +126,8 @@ LogicUnit* MY::pLogicUnit(void)
 /*----------------------------------------------------------------------------*/
 Node* MY::pNode(void)
 {
+  _static_
+
   Grid* pGrid = MY::pGrid();
   
   if (! pGrid)
@@ -99,6 +143,8 @@ Node* MY::pNode(void)
 /*----------------------------------------------------------------------------*/
 Op* MY::pOp(void)
 {
+  _static_
+
   Job* pJob = MY::pJob();
 
   if (pJob)
@@ -112,6 +158,8 @@ Op* MY::pOp(void)
 /*----------------------------------------------------------------------------*/
 eZK MY::eOperand(void)
 {
+  _static_
+
   LogicUnit* pLogicUnit = MY::pLogicUnit();
 
   if (pLogicUnit)
@@ -125,6 +173,8 @@ eZK MY::eOperand(void)
 /*----------------------------------------------------------------------------*/
 Pipeline* MY::pPipeline(void)
 {
+  _static_
+
   Op* pOp = MY::pOp();
 
   if (pOp)
@@ -138,6 +188,8 @@ Pipeline* MY::pPipeline(void)
 /*----------------------------------------------------------------------------*/
 Session* MY::pSession(void)
 {
+  _static_
+
   Job* pJob = MY::pJob();
  
   Session* pSession = AM::pJobSession(pJob);
@@ -150,6 +202,8 @@ Session* MY::pSession(void)
 /*----------------------------------------------------------------------------*/
 Stage* MY::pStage(void)
 {
+  _static_
+
   Op* pOp = MY::pOp();
 
   if (pOp)
@@ -163,6 +217,8 @@ Stage* MY::pStage(void)
 /*----------------------------------------------------------------------------*/
 Stream* MY::pStream(void)
 {
+  _static_
+
   Op* pOp = MY::pOp();
 
   if (pOp)
@@ -176,6 +232,8 @@ Stream* MY::pStream(void)
 /*----------------------------------------------------------------------------*/
 Task* MY::pTask(void)
 {
+  _static_
+
   Task* pTask = AM::pThisTLSTask();
 
   return pTask;
@@ -186,6 +244,8 @@ Task* MY::pTask(void)
 /*----------------------------------------------------------------------------*/
 Thread* MY::pThread(void)
 {
+  _static_
+
   Thread* pThread = AM::pThisTLSThread();
 
   return pThread;
