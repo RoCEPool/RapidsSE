@@ -50,21 +50,7 @@ namespace OBLIQUE
     static Task*      pTask(void);
     static Dic*       pTenantDic(void);
     static Thread*    pThread(void);
-
-    // tbd...
-
-    /*
-     
-     Possible Other Functions:
-         
-     pTenant()
-     pCatalog()
-     pSchema()
-     
-     
-     szPath();
-
-     */
+    static void       vPath(Stz* szPath);
   };
 }
 
