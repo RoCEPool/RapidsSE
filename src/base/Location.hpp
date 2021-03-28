@@ -24,6 +24,18 @@ namespace BASE
     Location(void);
    ~Location(void) noexcept(false);
     
+    Stz* szTenant(void);
+    void vTenant(Stz* szTenant);
+
+    Stz* szCatalog(void);
+    void vCatalog(Stz* szCatalog);
+
+    Stz* szSchema(void);
+    void vSchema(Stz* szSchema);
+
+    Stz* szTable(void);
+    void vTable(Stz* szTable);
+
     Footer* aFooter(void);
   };
 

@@ -109,9 +109,6 @@
   // loop, receiving and executing jobs
   receiver_loop
 
-  // should never exit
-  //hazard
-
   job::completed
 
   HAZARD
@@ -131,7 +128,7 @@
   // get the pipeline job of the operator
   Op.pipelineJob@ locals| pPipelineJob |
 
- // peek to see if any operand
+  // peek to see if any operand
   begin
     Pipein[].peek
   not while
