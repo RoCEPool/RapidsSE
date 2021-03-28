@@ -27,7 +27,7 @@ namespace BASE
     
     static void vDump(eCN eClass, Object* pObject, Stz* szTab);
 
-    i8    iCount(void);
+    Dic*  pCatalogDic(void);
     void  vContentDump(void);
     void  vCopy(DicStack* pDicStackSrc);
     void  vDiscard(void);
@@ -35,6 +35,7 @@ namespace BASE
     Dic*  pFindDic(Stz* szDicNm);
     Word* pFindWord(Stz* szWordNm);
     Word* pFindInCurrent(Stz* szWordNm);
+    i8    nItems(void);
     Word* pLocateRoutine(CodeCell* aCell);
     Word* pLocateStepWord(fpSTEPFN fpStepFn);
     Dic*  pPick(i8 i_Dic);
@@ -53,8 +54,11 @@ namespace BASE
     bool  bPush_tables(void);
     bool  bPush_tenants(void);
     Word* pRemoveWord(Stz* szWordNm);
+    Dic*  pSchemaDic(void);
     StreamDef* pStreamDef(void);
     Table* pTable(void);
+    Dic*  pTableDic(void);
+    Dic*  pTenantsDic(void);
     bool  bTest(Stz* szCatalogNm);
     bool  bTest(Stz* szCatalogNm, Stz* szSchemaNm);
     bool  bTest(Stz* szCatalogNm, Stz* szSchemaNm, Stz* szTableNm);

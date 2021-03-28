@@ -28,7 +28,7 @@ namespace OBLIQUE
     static Stz* szJobNm(void);
     static Stz* szWordNm(void);
   
-  static Dic*       pDic(void);
+    static Dic*       pDic(void);
     static DicStack*  pDicStack(void);
     static Grid*      pGrid(void);
     static Job*       pJob(void);

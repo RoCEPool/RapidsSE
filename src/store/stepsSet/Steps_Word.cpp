@@ -451,7 +451,7 @@ void Step::vWordNew(void)
   m_pDataStack->vPopStr(sWordNm,__func__);
   
   Dic* pDic;
-  if (m_oDicStack.iCount())
+  if (m_oDicStack.nItems())
     pDic = m_oDicStack.pTop();
   else
     pDic = AM::pDicRoot();

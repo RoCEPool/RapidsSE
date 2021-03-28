@@ -72,7 +72,7 @@ Dic* Metadata::pCurrCatalog(void)
     
   DicStack* pDicStack = AM::TASK::pDicStack();
 
-  for (i8 i_Dic = pDicStack->iCount() - 1; i_Dic >= 0; i_Dic--) {
+  for (i8 i_Dic = pDicStack->nItems() - 1; i_Dic >= 0; i_Dic--) {
     
     Dic* pDic = pDicStack->pPick(i_Dic);
     
@@ -108,7 +108,7 @@ Dic* Metadata::pCurrSchema(void)
     
   DicStack* pDicStack = AM::TASK::pDicStack();
 
-  for (i8 i_Dic = pDicStack->iCount() - 1; i_Dic >= 0; i_Dic--) {
+  for (i8 i_Dic = pDicStack->nItems() - 1; i_Dic >= 0; i_Dic--) {
     
     Dic* pDic = pDicStack->pPick(i_Dic);
     
@@ -144,7 +144,7 @@ Dic* Metadata::pCurrTable(void)
     
   DicStack* pDicStack = AM::TASK::pDicStack();
 
-  for (i8 i_Dic = pDicStack->iCount() - 1; i_Dic >= 0; i_Dic--) {
+  for (i8 i_Dic = pDicStack->nItems() - 1; i_Dic >= 0; i_Dic--) {
     
     Dic* pDic = pDicStack->pPick(i_Dic);
     
@@ -180,7 +180,7 @@ Dic* Metadata::pCurrTenant(void)
     
   DicStack* pDicStack = AM::TASK::pDicStack();
 
-  for (i8 i_Dic = pDicStack->iCount() - 1; i_Dic >= 0; i_Dic--) {
+  for (i8 i_Dic = pDicStack->nItems() - 1; i_Dic >= 0; i_Dic--) {
     
     Dic* pDic = pDicStack->pPick(i_Dic);
     
