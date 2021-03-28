@@ -58,7 +58,7 @@ namespace BASE
     StreamDef* pStreamDef(void);
     Table* pTable(void);
     Dic*  pTableDic(void);
-    Dic*  pTenantsDic(void);
+    Dic*  pTenantDic(void);
     bool  bTest(Stz* szCatalogNm);
     bool  bTest(Stz* szCatalogNm, Stz* szSchemaNm);
     bool  bTest(Stz* szCatalogNm, Stz* szSchemaNm, Stz* szTableNm);

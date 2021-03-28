@@ -648,9 +648,9 @@ Table* DicStack::pTable(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get tenants dictionary                                                     */
+/* get tenant dictionary                                                      */
 /*----------------------------------------------------------------------------*/
-Dic* DicStack::pTenantsDic(void)
+Dic* DicStack::pTenantDic(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   

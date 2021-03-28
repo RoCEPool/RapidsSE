@@ -12,6 +12,33 @@
 #include "Grid.hpp"
 
 /*----------------------------------------------------------------------------*/
+/* get current catalog name                                                   */
+/*----------------------------------------------------------------------------*/
+Stz* MY::szCatalogNm(void)
+{
+  _static_
+  
+  Dic* pCatalogDic = MY::pCatalogDic();
+  
+  if (! pCatalogDic)
+    return nullptr;
+  
+  Stz* szCatalogNm = pCatalogDic->szDicNm();
+  
+  return szCatalogNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current host name                                                      */
+/*----------------------------------------------------------------------------*/
+Stz* MY::szHostNm(void)
+{
+  _static_
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get current job name                                                       */
 /*----------------------------------------------------------------------------*/
 Stz* MY::szJobNm(void)
@@ -24,13 +51,54 @@ Stz* MY::szJobNm(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get current host name                                                      */
+/* get current schema name                                                    */
 /*----------------------------------------------------------------------------*/
-Stz* MY::szHostNm(void)
+Stz* MY::szSchemaNm(void)
 {
   _static_
+  
+  Dic* pSchemaDic = MY::pSchemaDic();
+  
+  if (! pSchemaDic)
+    return nullptr;
+  
+  Stz* szSchemaNm = pSchemaDic->szDicNm();
+  
+  return szSchemaNm;
+}
 
-  return nullptr;
+/*----------------------------------------------------------------------------*/
+/* get current table name                                                     */
+/*----------------------------------------------------------------------------*/
+Stz* MY::szTableNm(void)
+{
+  _static_
+  
+  Dic* pTableDic = MY::pTableDic();
+  
+  if (! pTableDic)
+    return nullptr;
+  
+  Stz* szTableNm = pTableDic->szDicNm();
+  
+  return szTableNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current tenant name                                                    */
+/*----------------------------------------------------------------------------*/
+Stz* MY::szTenantNm(void)
+{
+  _static_
+  
+  Dic* pTenantDic = MY::pTenantDic();
+  
+  if (! pTenantDic)
+    return nullptr;
+  
+  Stz* szTenantNm = pTenantDic->szDicNm();
+  
+  return szTenantNm;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -49,6 +117,23 @@ Stz* MY::szWordNm(void)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get current catalog dictionary                                             */
+/*----------------------------------------------------------------------------*/
+Dic* MY::pCatalogDic(void)
+{
+  _static_
+
+  DicStack* pDicStack = MY::pDicStack();
+
+  if (! pDicStack)
+    return nullptr;
+  
+  Dic* pCatalogDic = pDicStack->pCatalogDic();
+  
+  return pCatalogDic;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get current dictionary                                                     */
@@ -184,6 +269,23 @@ Pipeline* MY::pPipeline(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get current schema dictionary                                              */
+/*----------------------------------------------------------------------------*/
+Dic* MY::pSchemaDic(void)
+{
+  _static_
+
+  DicStack* pDicStack = MY::pDicStack();
+
+  if (! pDicStack)
+    return nullptr;
+  
+  Dic* pSchemaDic = pDicStack->pSchemaDic();
+  
+  return pSchemaDic;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get current session                                                        */
 /*----------------------------------------------------------------------------*/
 Session* MY::pSession(void)
@@ -228,6 +330,23 @@ Stream* MY::pStream(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get current table dictionary                                               */
+/*----------------------------------------------------------------------------*/
+Dic* MY::pTableDic(void)
+{
+  _static_
+
+  DicStack* pDicStack = MY::pDicStack();
+
+  if (! pDicStack)
+    return nullptr;
+  
+  Dic* pTableDic = pDicStack->pTableDic();
+  
+  return pTableDic;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get current task                                                           */
 /*----------------------------------------------------------------------------*/
 Task* MY::pTask(void)
@@ -237,6 +356,23 @@ Task* MY::pTask(void)
   Task* pTask = AM::pThisTLSTask();
 
   return pTask;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current tenant dictionary                                              */
+/*----------------------------------------------------------------------------*/
+Dic* MY::pTenantDic(void)
+{
+  _static_
+
+  DicStack* pDicStack = MY::pDicStack();
+
+  if (! pDicStack)
+    return nullptr;
+  
+  Dic* pTenantDic = pDicStack->pTenantDic();
+  
+  return pTenantDic;
 }
 
 /*----------------------------------------------------------------------------*/

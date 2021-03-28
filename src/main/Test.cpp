@@ -1430,6 +1430,9 @@ void vTest23(void)
     Dic* pDic = pDicStack->pPick(i_Dic);
     vTrace("  %s %s\n"_Stz,pDic->szDicNm(),pDic->szDicKind());
   }
+  
+  vTrace("Path: %s %s %s\n"_Stz,
+         MY::szTenantNm(),MY::szCatalogNm(),MY::szSchemaNm());
 }
 
 /*----------------------------------------------------------------------------*/
