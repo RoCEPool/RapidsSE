@@ -50,7 +50,9 @@ namespace OBLIQUE
     static Task*      pTask(void);
     static Dic*       pTenantDic(void);
     static Thread*    pThread(void);
-    static void       vPath(Stz* szPath);
+  
+    static Stz*       szPath(Stz* szPathBuffer);
+    static void       vPath(Stz* szPathBuffer);
   };
 }
 

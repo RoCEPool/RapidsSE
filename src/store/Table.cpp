@@ -23,6 +23,7 @@
 #include "ShardDef.hpp"
 
 #include "Grid.hpp"
+#include "MY.hpp"
 
 Atomic gixTable;
 
@@ -91,7 +92,12 @@ Table::Table(Stz* szTableNm, eTT eKind)
               "%s |gixTable=%lld|"_Stz, //!format-LogOpr
               m_sTableNm.szStz(),* gixTable);
 
-  
+//  s256 sPathBuffer;
+//  vTrace("Path: %s\n"_Stz,MY::szPath(sPathBuffer.szStz()));
+//
+//  vTrace("Path Parts: %s %s %s %s\n"_Stz,
+//         MY::szTenantNm(),MY::szCatalogNm(),MY::szSchemaNm(),MY::szTableNm());
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 }
 

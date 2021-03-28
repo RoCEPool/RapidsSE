@@ -74,7 +74,7 @@ Stz* MY::szTableNm(void)
 {
   _static_
   
-  Dic* pTableDic = MY::pTableDic();
+  Dic* pTableDic = MY::pDicStack()->pTop();
   
   if (! pTableDic)
     return nullptr;
@@ -385,6 +385,46 @@ Thread* MY::pThread(void)
   Thread* pThread = AM::pThisTLSThread();
 
   return pThread;
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get current path                                                           */
+/*----------------------------------------------------------------------------*/
+Stz* MY::szPath(Stz* szPathBuffer)
+{
+  _static_
+  
+  *szPathBuffer = ""_Stz;
+
+  DicStack* pDicStack = MY::pDicStack();
+
+  if (! pDicStack)
+    return szPathBuffer;
+  
+  pDicStack->vToPathStr(szPathBuffer);
+  
+  return szPathBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current path                                                           */
+/*----------------------------------------------------------------------------*/
+void MY::vPath(Stz* szPathBuffer)
+{
+  _static_
+
+  szPathBuffer = ""_Stz;
+  
+  DicStack* pDicStack = MY::pDicStack();
+
+  if (! pDicStack)
+    return;
+  
+  pDicStack->vToPathStr(szPathBuffer);
+
 }
 
 /*============================================================================*/

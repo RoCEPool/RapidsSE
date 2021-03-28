@@ -613,6 +613,11 @@ Dic* DicStack::pTableDic(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   
   for (i8 i_Dic = 0; i_Dic <= m_iTop; i_Dic++) {
+    Dic* pDic = pPick(i_Dic);
+    vTrace("  %s %s\n"_Stz,pDic->szDicNm(),pDic->szDicKind());
+  }
+  
+  for (i8 i_Dic = 0; i_Dic <= m_iTop; i_Dic++) {
     
     Dic* pDic = pPick(i_Dic);
     
