@@ -815,10 +815,10 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
-/*
+
   STD_PATH
   "
-  procedure aggregRows_I
+  procedure aggregRows$_I
     parameters $table $etc
     begin
 
@@ -827,12 +827,11 @@
 
     stage stageB on all partitions :
       scan $table
-      | aggreg 0 $etc
+      | aggreg ordinal 0 $etc
       | stageC
 
     stage stageC on origin :
-      aggreg 0 $etc
-      | output | sink | stageA
+      output | sink | stageA
 
   end ;
   "
@@ -843,7 +842,7 @@
 
   STD_PATH
   "
-  procedure aggregRows
+  procedure aggregRows$
     parameters $table $etc
     begin
 
@@ -852,17 +851,16 @@
 
     stage stageB on all partitions :
       scan $table
-      | aggreg 1 $etc
+      | aggreg ordinal 1 $etc
       | stageC
 
     stage stageC on origin :
-      aggreg 1 $etc
-     | output | sink | stageA
+     output | sink | stageA
 
   end ;
   "
   api::addProcedure
-*/
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
 

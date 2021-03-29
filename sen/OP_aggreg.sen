@@ -129,7 +129,12 @@
   // evalute the expression
   ExprEval[].new
   StreamDefOut[].new
-  <etc> StreamDef[] StreamDefOut[] ExprEval[].evaluateColumns to eError
+
+  "<ordinal>" job[] job.tagSet@ tagSet.hasName if
+    <etc> StreamDef[] StreamDefOut[] ExprEval[].evaluateOrdinals to eError
+  else
+    <etc> StreamDef[] StreamDefOut[] ExprEval[].evaluateColumns to eError
+  then
 
   // check for error
   eError EC_NONE == not if
@@ -204,6 +209,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 cmdSyntax: aggreg :: aggreg <compiled> <etc> ;
+cmdSyntax: aggreg :: aggreg <ordinal> <compiled> <etc> ;
 
 : aggreg_cmdTags _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
 
