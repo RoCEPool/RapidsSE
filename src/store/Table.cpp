@@ -656,6 +656,11 @@ void Table::vRemoveIndex(Index* pIndex)
 void Table::vResetPointers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  m_pStreamDef = nullptr;
+  m_pShardDef  = nullptr;
+  m_pBucketMap = nullptr;
+  m_pIdxVec    = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
