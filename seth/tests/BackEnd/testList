@@ -8,6 +8,9 @@ aggregGby.test
 filterRows_I.test
 filterRows.test
 
+filterRows$_I.test
+filterRows$.test
+
 projectColumns_I.test
 projectColumns.test
 
