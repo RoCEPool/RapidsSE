@@ -26,5 +26,8 @@ projectColumns$.test
 unionAll_I.test
 unionAll.test
 
+unionAll$_I.test
+unionAll$.test
+
 query6_I.test
 query6.test
