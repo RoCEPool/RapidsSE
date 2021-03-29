@@ -664,16 +664,6 @@ void Table::vResetPointers(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the sharding definition                                                */
-/*----------------------------------------------------------------------------*/
-ShardDef* Table::pShardDef(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  return m_pShardDef;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get root buffer of given index                                             */
 /*----------------------------------------------------------------------------*/
 EntBuffer* Table::pRootBuffer(i8 i_TablePtn, i8 i_Index)
@@ -687,6 +677,16 @@ EntBuffer* Table::pRootBuffer(i8 i_TablePtn, i8 i_Index)
   EntBuffer* pRootBuffer = pIdxTree->pRootBuffer();
   
   return pRootBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the sharding definition                                                */
+/*----------------------------------------------------------------------------*/
+ShardDef* Table::pShardDef(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  return m_pShardDef;
 }
 
 /*----------------------------------------------------------------------------*/
