@@ -247,6 +247,8 @@ Location* StreamDef::pLocation(void)
 void StreamDef::vResetPointers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
+  
+  // no pointers need to be reset
 }
 
 /*----------------------------------------------------------------------------*/

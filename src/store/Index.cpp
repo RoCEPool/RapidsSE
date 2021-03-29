@@ -317,6 +317,9 @@ Location* Index::pLocation(void)
 void Index::vResetPointers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  
+  m_pIndexDef = nullptr;
+  m_pTable    = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

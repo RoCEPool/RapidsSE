@@ -80,6 +80,8 @@ Location* BucketMap::pLocation(void)
 void BucketMap::vResetPointers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
+  
+  // no pointers need to be reset
 }
 
 /*----------------------------------------------------------------------------*/

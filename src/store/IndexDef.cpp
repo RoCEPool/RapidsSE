@@ -558,6 +558,8 @@ Location* IndexDef::pLocation(void)
 void IndexDef::vResetPointers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+  
+  // no pointers need to be reset
 }
 
 /*----------------------------------------------------------------------------*/

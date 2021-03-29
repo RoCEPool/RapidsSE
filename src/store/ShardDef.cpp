@@ -401,6 +401,8 @@ RowPix* ShardDef::pRowPix(void)
 void ShardDef::vResetPointers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SHARDDEF,_FOOTER_);
+  
+  // no pointers need to be reset
 }
 
 /*----------------------------------------------------------------------------*/
