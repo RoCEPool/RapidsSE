@@ -1,0 +1,108 @@
+/*============================================================================*/
+/* OP_setOpValidate.sen -- SetOp Simplification & Validate Op (SQL Compiler)  */
+/*============================================================================*/
+
+" OP_setOpValidate.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_CANCELMARKER ...                                            */
+/*----------------------------------------------------------------------------*/
+: setOpValidate_CancelMarker \handler
+
+  ZK_CANCELMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_DATAPULSE ...                                               */
+/*----------------------------------------------------------------------------*/
+: setOpValidate_DataMarker \handler
+ 
+  ZK_DATAPULSE_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_EOSMARKER ...                                               */
+/*----------------------------------------------------------------------------*/
+: setOpValidate_EosMarker \handler
+ 
+  ZK_EOSMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_PLANOPERAND ...                                             */
+/*----------------------------------------------------------------------------*/
+: setOpValidate_PlanOperand \handler
+ 
+  PipeIn[] to Operand[]
+    nullptr to PipeIn[]
+
+  // create the command error info set
+  op__cmdErrInfoSet
+
+  Operand[] nullptr to Operand[] sqlCompiler::setOpValidate to Operand[]
+
+  Operand[].isNull if
+    InfoSet[].pipeOut
+    Operand[].newErrorMarker
+    Operand[].pipeOut
+
+  else
+    InfoSet[].delete
+    Operand[].pipeOut
+
+  then
+    true
+
+  //Operand[].pipeout
+  //true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_STARTMARKER ...                                             */
+/*----------------------------------------------------------------------------*/
+: setOpValidate_StartMarker \handler
+
+  ZK_STARTMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* compiler op request                                (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: setOpValidate_req \operator
+
+  LogReqEntry SEED_REQ
+
+  op__topology
+
+  find: setOpValidate_CancelMarker ZK_CANCELMARKER op[].handler!
+  find: setOpValidate_DataMarker   ZK_DATAPULSE    op[].handler!
+  find: setOpValidate_EosMarker    ZK_EOSMARKER    op[].handler!
+  find: setOpValidate_PlanOperand  ZK_PLANOPERAND  op[].handler!
+  find: setOpValidate_StartMarker  ZK_STARTMARKER  op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: setOpValidate :: setOpValidate ;
+
+: setOpValidate_cmdTags _cmdTags tagCopy: op_tags
+
+  tags{
+    <cmdDesc>    = "--desc for op--"
+  }
+
+;
+  
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

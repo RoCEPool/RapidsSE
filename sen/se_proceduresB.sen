@@ -856,6 +856,7 @@
       | parser $sqlStatement
       | nameValidate
       | exprValidate
+      | setOpValidate
       | transliterate
       | output
       | sink
