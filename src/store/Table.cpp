@@ -53,7 +53,7 @@ Table::Table(Stz* szTableNm, eTT eKind)
   m_sTableNm = szTableNm;
   m_eKind    = eKind;
   
-  //m_oLocation
+  m_oLocation.vSet();
   m_pStreamDef   = nullptr;
   m_pShardDef    = new ShardDef;
   m_pBucketMap   = new BucketMap(AM::nPtnsInGrid());
@@ -98,6 +98,8 @@ Table::Table(Stz* szTableNm, eTT eKind)
 //  vTrace("Path Parts: %s %s %s %s\n"_Stz,
 //         MY::szTenantNm(),MY::szCatalogNm(),MY::szSchemaNm(),MY::szTableNm());
 
+  m_oLocation.vPrint();
+  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 }
 

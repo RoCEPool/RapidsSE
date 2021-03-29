@@ -23,7 +23,10 @@ namespace BASE
   
     Location(void);
    ~Location(void) noexcept(false);
-    
+  
+    void vPrint(void);
+    void vSet(void);
+
     Stz* szTenant(void);
     void vTenant(Stz* szTenant);
 

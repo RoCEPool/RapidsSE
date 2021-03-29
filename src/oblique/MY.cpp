@@ -21,7 +21,7 @@ Stz* MY::szCatalogNm(void)
   Dic* pCatalogDic = MY::pCatalogDic();
   
   if (! pCatalogDic)
-    return nullptr;
+    return ""_Stz;
   
   Stz* szCatalogNm = pCatalogDic->szDicNm();
   
@@ -60,7 +60,7 @@ Stz* MY::szSchemaNm(void)
   Dic* pSchemaDic = MY::pSchemaDic();
   
   if (! pSchemaDic)
-    return nullptr;
+    return ""_Stz;
   
   Stz* szSchemaNm = pSchemaDic->szDicNm();
   
@@ -77,7 +77,7 @@ Stz* MY::szTableNm(void)
   Dic* pTableDic = MY::pDicStack()->pTop();
   
   if (! pTableDic)
-    return nullptr;
+    return ""_Stz;
   
   Stz* szTableNm = pTableDic->szDicNm();
   
@@ -94,7 +94,7 @@ Stz* MY::szTenantNm(void)
   Dic* pTenantDic = MY::pTenantDic();
   
   if (! pTenantDic)
-    return nullptr;
+    return ""_Stz;
   
   Stz* szTenantNm = pTenantDic->szDicNm();
   
