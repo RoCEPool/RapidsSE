@@ -1,0 +1,112 @@
+--------------------------------------------------------------------------------
+-- aggregRows$_I tests
+--------------------------------------------------------------------------------
+
+trackMemory;
+success;
+
+//------------------------------------------------------------------------------
+aggregRows$_I lineitem "$7 sum";
+failure contains: "Table does not exist"
+
+//------------------------------------------------------------------------------
+// create table lineitem
+create table LineItem
+(
+ $1      INTEGER       NOT NULL,
+ L_PARTKEY       INTEGER       NOT NULL,
+ L_SUPPKEY       INTEGER       NOT NULL,
+ $4    INTEGER       NOT NULL,
+ L_QUANTITY      DECIMAL(15,2) NOT NULL,
+ L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,
+ L_DISCOUNT      DECIMAL(15,2) NOT NULL,
+ L_TAX           DECIMAL(15,2) NOT NULL,
+ $9    CHAR(1)       NOT NULL,
+ L_LINESTATUS    CHAR(1)       NOT NULL,
+ L_SHIPDATE      DATE NOT      NULL,
+ $12    DATE NOT      NULL,
+ L_RECEIPTDATE   DATE NOT      NULL,
+ $14  CHAR(25)      NOT NULL,
+ L_SHIPMODE      CHAR(10)      NOT NULL,
+ $16       VARCHAR(44)   NOT NULL
+ );
+success
+
+//------------------------------------------------------------------------------
+aggregRows$_I lineitem " $7 * 2";
+failure contains: "invalid command"
+
+//------------------------------------------------------------------------------
+//aggregRows$_I lineitem "$7 sum groupby $1";
+//failure contains: "invalid command"
+
+//------------------------------------------------------------------------------
+aggregRows$_I lineitem "$1 , $7 sum groupby $1";
+rows: 0
+
+// load data
+load lineitem "../DATA/TPCH/lineitem10.csv";
+success
+
+//------------------------------------------------------------------------------
+aggregRows$_I lineitem "$7 sum";
+rows:
+  (0.00)
+  (0.22)
+  (0.49)
+
+//------------------------------------------------------------------------------
+aggregRows$_I lineitem "$16 sum";
+failure contains: "invalid command"
+
+//------------------------------------------------------------------------------
+aggregRows$_I lineitem "$1 sum";
+rows:
+  (6)
+  (2)
+  (9)
+
+//------------------------------------------------------------------------------
+aggregRows$_I lineitem "$4 sum";
+rows:
+ (1)
+ (6)
+ (21)
+
+//------------------------------------------------------------------------------
+aggregRows$_I lineitem "$4 sum , $1 sum";
+rows:
+ (21,6)
+ (6,9)
+ (1,2)
+
+//------------------------------------------------------------------------------
+aggregRows$_I lineitem "$9 sum";
+failure contains: "invalid command"
+
+//------------------------------------------------------------------------------
+aggregRows$_I lineitem "$12 sum";
+failure contains: "invalid command"
+
+//------------------------------------------------------------------------------
+aggregRows$_I lineitem "$14 sum";
+failure contains: "invalid command"
+
+//------------------------------------------------------------------------------
+// drop the table
+drop table lineitem;
+success;
+
+MemoryLeaks;
+rows: 0
+
+CLEANUP {
+  
+  drop table lineitem;
+  mute
+  
+  bye;
+  mute
+}
+
+

@@ -2,6 +2,7 @@
 aggregRows_I.test
 aggregRows.test
 
+aggregRows$_I.test
 aggregRows$.test
 
 aggregGby_I.test
