@@ -1459,6 +1459,7 @@ public:
   void vSqlCompilerExprValidate(void);
   void vSqlCompilerNameValidate(void);
   void vSqlCompilerParser(void);
+  void vSqlCompilerSetOpValidate(void);
   void vSqlCompilerTransliterate(void);
 
   // ssn

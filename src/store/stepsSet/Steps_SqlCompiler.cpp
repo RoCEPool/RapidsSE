@@ -40,6 +40,7 @@
 
 #include "NameValidator.hpp"
 #include "ExprValidator.hpp"
+#include "SetOpValidator.hpp"
 
 #include "SqlException.hpp"
 
@@ -51,6 +52,7 @@ void Step::vAddSteps_SqlCompiler(void)
   vAddStep("sqlCompiler::exprValidate"_Stz,   &Step::vSqlCompilerExprValidate);
   vAddStep("sqlCompiler::nameValidate"_Stz,   &Step::vSqlCompilerNameValidate);
   vAddStep("sqlCompiler::parser"_Stz,         &Step::vSqlCompilerParser);
+  vAddStep("sqlCompiler::setOpValidate"_Stz,  &Step::vSqlCompilerSetOpValidate);
   vAddStep("sqlCompiler::transliterate"_Stz,  &Step::vSqlCompilerTransliterate);
 }
 
@@ -302,6 +304,59 @@ void Step::vSqlCompilerParser(void)
 
 L_Exit:
   delete pPlanner;
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* sqlCompiler::setOpValidate -- SetOp simplication & validation              */
+/*----------------------------------------------------------------------------*/
+void Step::vSqlCompilerSetOpValidate(void)
+{
+  ENTRY();
+
+  /**
+   * This stage of the plan is about looking for set operators (UNION,
+   * INTERSECT, etc) and handling their CORRESPONDING BY list if applicable.
+   * Then we can validate that the semantics of the set operation are valid.
+   */
+
+  s48K sExplainBuf;
+
+  PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
+  Parser::RootNode* pPlanRoot = Parser::_pRootNode(pPlanOperand->pPlanNode());
+  UNUSED(pPlanRoot);
+
+
+  try {
+    if (SetOpValidator::bHasSetOps(pPlanRoot)) {
+      SetOpValidator::vSimplifySetOps(pPlanRoot);
+      SetOpValidator::vValidateSetOps(pPlanRoot);
+    }
+
+  } catch (Parser::SqlException& e) {
+    Grid* pGrid = AM::pGrid();
+    InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
+    Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+                                    pGrid->pThisNode()->szNodeNm(),
+                                    EC_SEMANTIC_ERROR,
+                                    0,
+                                    0,
+                                    e.szError(),
+                                    C_VARGS_END);
+    UNUSED(pRow);
+    delete pPlanRoot;
+    delete pPlanOperand;
+    m_pDataStack->vPushPtr(nullptr);
+    goto L_Exit;
+  }
+
+
+  // TODO: eventually we want the received plan graph to be immutable,
+  //       so we would send a different version. But for now we will just
+  //       manipulate and send the same plan graph
+  m_pDataStack->vPushPtr(pPlanOperand);
+
+  L_Exit:
   EXIT();
 }
 
