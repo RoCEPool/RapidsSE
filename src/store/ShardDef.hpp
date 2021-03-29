@@ -44,6 +44,7 @@ namespace STORE
     Column* pFindColumn(Stz* sColumnNm);
     Column* pGetColumn(i8 i_Col);
     void    vListContents(i8 i_Depth);
+    Location* pLocation(void);
     void    vShardDefNm(Stz* szShardDefNm);
     Stz*    szShardDefNm(void);
     eEC     eParse(Stz* szCmd);
