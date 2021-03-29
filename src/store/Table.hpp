@@ -67,6 +67,7 @@ namespace STORE
     void    vMarkTable(void);
     bool    bPopulateIndex(i8 iIndexNo);
     void    vRemoveIndex(Index* pIndex);
+    void    vResetPointers(void);
     EntBuffer* pRootBuffer(i8 i_TablePtn, i8 i_Index);
     ShardDef*  pShardDef(void);
     StreamDef* pStreamDef(void);

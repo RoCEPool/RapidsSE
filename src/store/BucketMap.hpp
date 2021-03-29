@@ -10,7 +10,7 @@ namespace STORE
   private:
     Lock m_okLock;
   
-    Location   m_oLocation;   // logical location of bucketMap
+    Location m_oLocation; // logical location of bucketMap
 
     tPN m_taInLglPtn[C_MAX_BUCKETS]; // which logical partition a bucket is in
   
@@ -24,12 +24,13 @@ namespace STORE
     BucketMap(i8 nPartitions);
    ~BucketMap(void) noexcept(false);
   
+    static void vPostRecv(void* aBucketMap);
+  
     Location* pLocation(void);
   
-    tPN tWhichLglPtnNo(i8 iBucketId);
+    void vResetPointers(void);
+    tPN  tWhichLglPtnNo(i8 iBucketId);
   
-    static void vPostRecv(void* aBucketMap);
-
   private:
     Footer* aFooter(void);
   };

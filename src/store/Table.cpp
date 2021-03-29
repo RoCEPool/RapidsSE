@@ -261,6 +261,8 @@ void Table::vPostRecv(void* aTable)
   _static_
   
   Table* pTable = _pTable(aTable);
+  
+  pTable->vResetPointers();
 }
 
 
@@ -649,9 +651,17 @@ void Table::vRemoveIndex(Index* pIndex)
 }
 
 /*----------------------------------------------------------------------------*/
+/* reset members which are pointers (after being received)                    */
+/*----------------------------------------------------------------------------*/
+void Table::vResetPointers(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the sharding definition                                                */
 /*----------------------------------------------------------------------------*/
-ShardDef*  Table::pShardDef(void)
+ShardDef* Table::pShardDef(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   

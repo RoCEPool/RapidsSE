@@ -31,6 +31,7 @@ namespace STORE
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static void vMonitorPortrait(s48K& sPortrait);
+    static void vPostRecv(void* aIndex);
 
     Index(Stz* szIndexNm);
    ~Index(void) noexcept(false);
@@ -50,13 +51,12 @@ namespace STORE
     void   vIsPrimaryKey(bool bPrimaryKey);
     bool   bIsUnique(void);
     void   vIsUnique(bool bUnique);
+    void   vResetPointers(void);
     i8     iSortKeyDatum(void);
     void   vTable(Table* pTable);
     Table* pTable(void);
     void   vTidyUp(void);
     
-    static void vPostRecv(void* aIndex);
-  
     Footer* aFooter(void);
   };
   

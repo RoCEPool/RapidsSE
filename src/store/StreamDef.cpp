@@ -120,8 +120,19 @@ eCT StreamDef::eColumn(Stz* szType)
 }
 
 /*----------------------------------------------------------------------------*/
+/* post recv function                                                         */
+/*----------------------------------------------------------------------------*/
+void StreamDef::vPostRecv(void* aStreamDef)
+{
+  _static_
+  
+  StreamDef* pStreamDef = _pStreamDef(aStreamDef);
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
 /*----------------------------------------------------------------------------*/
 /* add a column to the stream def to the current def set                      */
 /*----------------------------------------------------------------------------*/
@@ -228,6 +239,14 @@ Location* StreamDef::pLocation(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
   
   return & m_oLocation;
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset members which are pointers (after being received)                    */
+/*----------------------------------------------------------------------------*/
+void StreamDef::vResetPointers(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -540,16 +559,6 @@ void StreamDef::vToMetadata(Stz* sMetadata)
   }
 
   sMetadata->vConcat(")"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* post recv function                                                         */
-/*----------------------------------------------------------------------------*/
-void StreamDef::vPostRecv(void* aStreamDef)
-{
-  _static_
-  
-  StreamDef* pStreamDef = _pStreamDef(aStreamDef);
 }
 
 

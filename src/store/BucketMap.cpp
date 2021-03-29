@@ -49,6 +49,18 @@ BucketMap::~BucketMap(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/* post recv function                                                         */
+/*----------------------------------------------------------------------------*/
+void BucketMap::vPostRecv(void* aBucketMap)
+{
+  _static_
+  
+  BucketMap* pBucketMap = _pBucketMap(aBucketMap);
+  
+  pBucketMap->vResetPointers();
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -63,6 +75,14 @@ Location* BucketMap::pLocation(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* reset members which are pointers (after being received)                    */
+/*----------------------------------------------------------------------------*/
+void BucketMap::vResetPointers(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get which logical partition a bucket is currently mapped to                */
 /*----------------------------------------------------------------------------*/
 tPN BucketMap::tWhichLglPtnNo(i8 iBucketId)
@@ -72,14 +92,6 @@ tPN BucketMap::tWhichLglPtnNo(i8 iBucketId)
   tPN tPtnNo = m_taInLglPtn[iBucketId];
   
   return tPtnNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* post recv function                                                         */
-/*----------------------------------------------------------------------------*/
-void BucketMap::vPostRecv(void* aBucketMap)
-{
-  
 }
 
 /*============================================================================*/

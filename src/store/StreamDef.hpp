@@ -35,8 +35,10 @@ namespace STORE
    ~StreamDef(void) noexcept(false);
     
     static eCT eColumn(Stz* szType);
+    static void vPostRecv(void* aStreamDef);
 
-    void    vAddColumn(Stz* sColumnNm, eCT eColumnType, i8 iColumnLength, i8 iColumnScale);
+    void    vAddColumn(Stz* sColumnNm, eCT eColumnType,
+                       i8 iColumnLength, i8 iColumnScale);
     void    vAsString(String* pString);
     i8      nColumns(void);
     Column* pFindColumn(Stz* sColumnNm);
@@ -47,13 +49,12 @@ namespace STORE
     Stz*    szStreamDefNm(void);
     eEC     eParse(Stz* szCmd);
     void    vPrint(void);
+    void    vResetPointers(void);
     RowPix* pRowPix(void);
     void    vToColPix(RowPix* pRowPix, bool bPtnHash);
     void    vToRowPix(RowPix* pRowPix, bool bPtnHash);
     void    vToMetadata(Stz* sMetaData);
     
-    static void vPostRecv(void* aStreamDef);
-
   private:
     
     eEC eParseColumn(TokenVec* pTknVec, i8 i_Col);

@@ -133,6 +133,17 @@ IndexDef::~IndexDef(void) noexcept(false)
   //! ALKA CHECK
 }
 
+/*----------------------------------------------------------------------------*/
+/* post recv function                                                         */
+/*----------------------------------------------------------------------------*/
+void IndexDef::vPostRecv(void* aIndexDef)
+{
+  
+  IndexDef* pIndexDef = _pIndexDef(aIndexDef);
+  
+  pIndexDef->vResetPointers();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -542,6 +553,14 @@ Location* IndexDef::pLocation(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* reset members which are pointers (after being received)                    */
+/*----------------------------------------------------------------------------*/
+void IndexDef::vResetPointers(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* compute the size of sort key datum                                         */
 /*----------------------------------------------------------------------------*/
 i8 IndexDef::iSortKeyDatum(void)
@@ -692,15 +711,6 @@ L_RETURN:
 }
 
 #undef dPT
-
-/*----------------------------------------------------------------------------*/
-/* post recv function                                                         */
-/*----------------------------------------------------------------------------*/
-void IndexDef::vPostRecv(void* aIndexDef)
-{
-  
-  IndexDef* pIndexDef = _pIndexDef(aIndexDef);
-}
 
 
 /*----------------------------------------------------------------------------*/
