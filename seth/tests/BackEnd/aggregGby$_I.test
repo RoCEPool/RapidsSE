@@ -1,0 +1,112 @@
+--------------------------------------------------------------------------------
+-- aggregGby_I tests
+--------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
+aggregRows$_I lineitem "$7 sum groupby $1";
+failure contains: "Table does not exist"
+
+//------------------------------------------------------------------------------
+// create table lineitem
+create table LineItem
+(
+ L_ORDERKEY      INTEGER       NOT NULL,
+ L_PARTKEY       INTEGER       NOT NULL,
+ L_SUPPKEY       INTEGER       NOT NULL,
+ $4    INTEGER       NOT NULL,
+ $4      DECIMAL(15,2) NOT NULL,
+ L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,
+ $7      DECIMAL(15,2) NOT NULL,
+ L_TAX           DECIMAL(15,2) NOT NULL,
+ $9    CHAR(1)       NOT NULL,
+ L_LINESTATUS    CHAR(1)       NOT NULL,
+ L_SHIPDATE      DATE NOT      NULL,
+ $12    DATE NOT      NULL,
+ L_RECEIPTDATE   DATE NOT      NULL,
+ $14  CHAR(25)      NOT NULL,
+ L_SHIPMODE      CHAR(10)      NOT NULL,
+ L_COMMENT       VARCHAR(44)   NOT NULL
+ );
+success
+
+//------------------------------------------------------------------------------
+//aggregRows$_I lineitem " $7 * 2 groupby $1";
+//failure contains: "invalid command"
+
+//------------------------------------------------------------------------------
+//aggregRows$_I lineitem "$7 sum groupby $1";
+//failure contains: "invalid command"
+
+//------------------------------------------------------------------------------
+aggregRows$_I lineitem "$1 , $7 sum groupby $1";
+rows: 0
+
+// load data
+load lineitem "../DATA/TPCH/lineitem10.csv";
+success
+
+//------------------------------------------------------------------------------
+//aggregRows$_I lineitem "$7 sum groupby $1" ;
+//failure contains: "invalid command"
+
+//------------------------------------------------------------------------------
+aggregRows$_I lineitem "$1 , $7 sum groupby $1" ;
+rows:
+  (1,0.49)
+  (2,0.00)
+  (3,0.22)
+
+//------------------------------------------------------------------------------
+//aggregRows$_I lineitem "$1 , L_COMMENT sum groupby $1";
+//failure contains: "invalid command"
+
+//------------------------------------------------------------------------------
+aggregRows$_I lineitem "$1 , $4 sum groupby $1";
+rows:
+ (1,21)
+ (2,1)
+ (3,6)
+
+//------------------------------------------------------------------------------
+aggregRows$_I lineitem "$4 , $7 sum , $4 sum groupby $4";
+rows:
+ (1,0.00,1)
+
+ (1,0.04,1)
+ (2,0.09,2)
+ (3,0.10,3)
+ (4,0.09,4)
+ (5,0.10,5)
+ (6,0.07,6)
+
+ (1,0.06,1)
+ (2,0.10,2)
+ (3,0.06,3)
+
+//------------------------------------------------------------------------------
+aggregRows$_I lineitem "$1 , $9 sum groupby $1";
+failure contains: "invalid command"
+
+//------------------------------------------------------------------------------
+aggregRows$_I lineitem "$1 , $12 sum groupby $1";
+failure contains: "invalid command"
+
+//------------------------------------------------------------------------------
+aggregRows$_I lineitem "$1 , $14 sum groupby $1";
+failure contains: "invalid command"
+
+//------------------------------------------------------------------------------
+// drop the table
+drop table lineitem;
+success;
+
+CLEANUP {
+  
+  drop table lineitem;
+  mute
+  
+  bye;
+  mute
+}
+
+
