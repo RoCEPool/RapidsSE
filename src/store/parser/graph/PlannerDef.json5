@@ -507,7 +507,19 @@
                               { name: "optional", type:  "/__root__/primitives/constraints/optional"},
                             ]}
                           ]
-                        }
+                        },
+                        // A constraint on the setOp that it must have exactly 2 children
+                        { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                          {
+                            name: "childCount",
+                            type:  "/__root__/primitives/constraints/childCount",
+                            children: [ {
+                              name: "childCountParam",
+                              type: "/__root__/definitions/object/valueObject/integerObject",
+                              value: 2
+                            } ]
+                          }
+                        ]}
                       ],
                       children: [
 // Path: /__root__/definitions/object/planObject/sqlOperator/setOp/unionOp

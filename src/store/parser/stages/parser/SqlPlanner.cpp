@@ -629,20 +629,20 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
   QueryNode *pFirstOp = nullptr;
   QueryNode *pLastOp = nullptr;
 
-  /// PROJECT
-  if(pProjectOp) {
-    if (!pFirstOp)  pFirstOp = pProjectOp;
-    if (pLastOp)    pLastOp->vAppendChild(pProjectOp);
-
-    pLastOp = pProjectOp;
-  }
-
   /// HAVING
   if (pHavingFilterOp) {
     if (!pFirstOp)  pFirstOp = pHavingFilterOp;
     if (pLastOp)    pLastOp->vAppendChild(pHavingFilterOp);
 
     pLastOp = pHavingFilterOp;
+  }
+
+  /// PROJECT
+  if(pProjectOp) {
+    if (!pFirstOp)  pFirstOp = pProjectOp;
+    if (pLastOp)    pLastOp->vAppendChild(pProjectOp);
+
+    pLastOp = pProjectOp;
   }
 
   /// GROUP BY

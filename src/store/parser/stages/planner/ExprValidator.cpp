@@ -7,15 +7,9 @@
 #include "ExprValidator.hpp"
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
-#include "PlanConstants.hpp"
 #include "GraphNav.hpp"
-#include "MetadataNode.hpp"
 #include "ShadowRoot.hpp"
 #include "SqlException.hpp"
-
-#include "SeApi.hpp"
-#include "InfoSet.hpp"
-#include "TableMetadata.hpp"
 
 #include "Expr.hpp"
 #include "AggregateExpr.hpp"
@@ -79,8 +73,14 @@ void ExprValidator::vValidateExprs(PlanNode *pRootNode)
     // Validate any aggregate/group-by expressions
     vValidateGroupByExprs(pRootNode, pStatementMarker);
 
-    // Validate that all expressions that
+    // Validate that expressions above an AggregateOp are consistent with the
+    // group by list (if applicable)
     vValidateSqlOpExprsAgainstGroupBy(pRootNode, pStatementMarker);
+
+    // Similarly, if there is no GROUP BY list then check that expressions
+    // above the ProjectOp are consistent with whether the ProjectOp is
+    // projecting "grand totals" (single group) or non-aggregated columns
+    vValidateSqlOpExprsAgainstProjectOp(pRootNode, pStatementMarker);
 
     // Validate that ProjectOps cannot produce both aggregate & non-aggregate
     // expressions without a group-by clause
