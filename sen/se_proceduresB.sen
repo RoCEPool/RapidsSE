@@ -981,13 +981,13 @@
   end ;
   "
   api::addProcedure
-/*
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
 
   STD_PATH
   "
-  procedure projectColumns
+  procedure projectColumns$
     parameters $table $etc
     begin
 
@@ -996,7 +996,7 @@
 
     stage stageB on all partitions :
       scan $table
-      | project 1 $etc
+      | project ordinal 1 $etc
       | stageC
 
     stage stageC on origin :
@@ -1005,7 +1005,7 @@
   end ;
   "
   api::addProcedure
-
+/*
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
 

@@ -660,12 +660,10 @@ eEC ExprEval::eCollectSourceOrdinals(StreamDef* pStreamDefIn, TokenVec* pTknVec)
       continue;
     }
 
-    if (pTkn->bIsName() && pTkn->bSame("$"_Stz)) {
+    if (pTkn->bIsName() && pTkn->szChars()->bContains("$"_Stz)) {
 
-      // get the column ordinals
-      i_Tkn++;
-      pTkn = pTknVec->pGet(i_Tkn);
-      i8 i_ColumnOrdinal = pTkn->iToI8();
+      Stz* sOrdinalColumn = pTkn->szChars() + 1;
+      i8 i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
 
       // look for the column in the streamDefIn
       i8 nColumns = pStreamDefIn->nColumns();
@@ -685,6 +683,239 @@ eEC ExprEval::eCollectSourceOrdinals(StreamDef* pStreamDefIn, TokenVec* pTknVec)
 
   }
 
+  return eError;
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse project                                                              */
+/*----------------------------------------------------------------------------*/
+eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
+  UNUSED(pStreamDefIn);
+
+  eEC eError = EC_NONE;
+
+  Stz *sAliasName = ""_Stz;
+  i8 i_DstColumn = C_UNKNOWN;
+  i8 i_GbyColumn = C_UNKNOWN;
+  Column *pColumn = nullptr;
+  Column *pColumnExpr =  new Column;
+  TagSet oTagSet;
+  bool bSum = false;
+  bool bGroupBy = false;
+
+  Token* pTkn = pTknVec->pCurrToken();
+
+  while ( pTkn ) {
+
+    if (pTkn->bSame(","_Stz)) {
+
+      i_DstColumn++;
+
+      // discovered a comma, add the column to the streamDefOut
+      if (pStreamDefOut) {
+        eError = eHandleOutColumn(pStreamDefOut, pColumn ? pColumn : pColumnExpr,
+                                  sAliasName, i_DstColumn, bSum);
+        if (eError == EC_INVALID_COMMAND)
+          goto L_RETURN;
+        bSum = false;
+      }
+
+      pColumn = nullptr;
+      pTkn = pTknVec->pNextToken();
+    }
+
+    // alias ?
+    if (pTkn->bSame("as"_Stz)) {
+      pTkn = pTknVec->pNextToken();
+      if (!pTkn->bIsName()) {
+        eError = EC_INVALID_COMMAND;
+        goto L_RETURN;
+      }
+
+      // extract column name
+      sAliasName = pTkn->szChars();
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // arithmetic operator ?
+    if (pTkn->bIsArithmetic()) {
+      vAddArithmetic(pTkn, pColumn);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // logical operator ?
+    if (pTkn->bIsLogical() || pTkn->bSame("isNull"_Stz)) {
+      vAddLogical(pTkn);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // relational operator ?
+    if (pTkn->bIsRelational()) {
+      vAddRelational(pTkn);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // is it a numeric ?
+    if (pTkn->bIsNumeric()) {
+      vAddNumeric(pTkn, pColumnExpr);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // is it a decimal no ?
+    if (pTkn->bIsDecimalNo()) {
+      eError = eAddDecimal(pTkn, pColumnExpr);
+      if (eError == EC_INVALID_COMMAND) {
+        goto L_RETURN;
+      }
+
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bIsString()) {
+      vAddString(pTkn, pColumnExpr);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->eToken() == TN_TAG && pTkn->bSame("<>"_Stz)) {
+      StrLib::vSprintCat(m_sAsmText, "  EO_RETURN_FALSE\n"_Stz);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (!pTkn->bIsName()) {
+      eError = EC_INVALID_COMMAND;
+      goto L_RETURN;
+    }
+
+    if (pTkn->bSame("null"_Stz) ) {
+      vAddUnknown(pTkn, pColumnExpr);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("DATE"_Stz) ) {
+      pTkn = pTknVec->pNextToken();
+      if (pTkn->bIsString()) {
+        eError = eAddDate(pTkn, pColumnExpr);
+        if (eError == EC_INVALID_COMMAND) {
+          goto L_RETURN;
+        }
+        pTkn = pTknVec->pNextToken();
+        continue;
+      }
+      else
+        pTkn = pTknVec->pPrevToken();
+    }
+
+    if (pTkn->bSame("SUM"_Stz) ) {
+
+      bSum = true;
+      ASSERT(m_bHasAgg);
+
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("GROUPBY"_Stz) ) {
+
+      i_GbyColumn++;
+      bGroupBy = true;
+
+      ASSERT(m_bHasGby);
+
+      i_DstColumn++;
+
+      // discovered a comma, add the column to the streamDefOut
+      if (pStreamDefOut)
+        eError = eHandleOutColumn(pStreamDefOut, pColumn ? pColumn : pColumnExpr,
+                                  sAliasName, i_DstColumn, bSum);
+      if ( eError == EC_INVALID_COMMAND)
+        goto L_RETURN;
+
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // found a src column
+    Stz *sColumnNm = pTkn->szChars();
+
+    // get in column from m_iStreamInCol ~ to out column
+    pColumn = nullptr;
+    i8 i_StreamInCol;
+    for (i_StreamInCol = 0; m_pStreamInCol[i_StreamInCol] != nullptr; i_StreamInCol++) {
+      pColumn = m_pStreamInCol[i_StreamInCol];
+      if (pColumn->szColNm()->bSame(sColumnNm)) {
+        break;
+      }
+    }
+    RASSERT(pColumn);
+
+    // check how many bits are on till this i_StreamInCol bit
+    i8 iLocal = 0;
+    i8 iBit = -1;
+    for (i8 i = 0; i < pColumn->iColumnNo(); i++) {
+      if (BitLib::bEachBit(m_uExprEvalColumns, iBit)) {
+        if (iBit < pColumn->iColumnNo()) {
+          iLocal++;
+        } else {
+          break;
+        }
+      }
+    }
+
+    if ( ! bGroupBy ) {
+
+      if (m_bHasGby) {
+        if (pColumn->eColumnType() == CT_VARCHAR ||
+            pColumn->eColumnType() == CT_CHAR) {
+          StrLib::vSprintCat(m_sAsmText, "  EO_PUSH_LOCALS %lld\n"_Stz, iLocal);
+          StrLib::vSprintCat(m_sPayLoadStore, "  EO_PUSH_LOCALS %lld\n"_Stz, iLocal);
+          //StrLib::vSprintCat(m_sPayLoadToBuffer, "  EO_PAY_FETCH_COLS %lld\n"_Stz, iLocal);
+        } else {
+          StrLib::vSprintCat(m_sAsmText, "  EO_PUSH_LOCALI %lld\n"_Stz, iLocal);
+          StrLib::vSprintCat(m_sPayLoadStore, "  EO_PUSH_LOCALI %lld\n"_Stz, iLocal);
+          //StrLib::vSprintCat(m_sPayLoadToBuffer, "  EO_PAY_FETCH_COLI %lld\n"_Stz, iLocal);
+        }
+
+      } else {
+        if (pColumn->eColumnType() == CT_VARCHAR ||
+            pColumn->eColumnType() == CT_CHAR)
+          StrLib::vSprintCat(m_sAsmText, "  EO_PUSH_LOCALS %lld\n"_Stz, iLocal);
+        else
+          StrLib::vSprintCat(m_sAsmText, "  EO_PUSH_LOCALI %lld\n"_Stz, iLocal);
+      }
+    }
+    else {
+      eError = eHandleGbyColumn(pColumn, i_GbyColumn);
+      if (eError == EC_INVALID_COMMAND)
+        goto L_RETURN;
+    }
+    pTkn = pTknVec->pNextToken();
+  }
+
+  if (m_bHasGby) {
+    //eError = eHandleGbyColumn(pColumn, i_GbyColumn);
+  }
+  else {
+    i_DstColumn++;
+
+    // add the last column to the streamDefOut
+    if (pStreamDefOut)
+      eError = eHandleOutColumn(pStreamDefOut, pColumn ? pColumn : pColumnExpr,
+                                sAliasName, i_DstColumn, bSum);
+  }
+
+  L_RETURN:
+  delete pColumnExpr;
   return eError;
 }
 
@@ -798,13 +1029,13 @@ eEC ExprEval::eExprEvalOrdinal(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut
       goto L_RETURN;
     }
 
-    if (pTkn->bIsName()  && pTkn->bSame("null"_Stz) ) {
+    if (pTkn->bSame("null"_Stz) ) {
       vAddUnknown(pTkn, pColumnExpr);
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
-    if (pTkn->bIsName()  && pTkn->bSame("DATE"_Stz) ) {
+    if (pTkn->bSame("DATE"_Stz) ) {
       pTkn = pTknVec->pNextToken();
       if (pTkn->bIsString()) {
         eError = eAddDate(pTkn, pColumnExpr);
@@ -818,7 +1049,7 @@ eEC ExprEval::eExprEvalOrdinal(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut
         pTkn = pTknVec->pPrevToken();
     }
 
-    if (pTkn->bIsName()  && pTkn->bSame("SUM"_Stz) ) {
+    if (pTkn->bSame("SUM"_Stz) ) {
 
       bSum = true;
       ASSERT(m_bHasAgg);
@@ -827,7 +1058,7 @@ eEC ExprEval::eExprEvalOrdinal(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut
       continue;
     }
 
-    if (pTkn->bIsName()  && pTkn->bSame("GROUPBY"_Stz) ) {
+    if (pTkn->bSame("GROUPBY"_Stz) ) {
 
       i_GbyColumn++;
       bGroupBy = true;
@@ -848,31 +1079,28 @@ eEC ExprEval::eExprEvalOrdinal(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut
     }
 
     // found a src column
-    Stz *sColumnNm = pTkn->szChars();
-
-    // get in column from m_iStreamInCol ~ to out column
-    pColumn = nullptr;
-    i8 i_StreamInCol;
-    for (i_StreamInCol = 0; m_pStreamInCol[i_StreamInCol] != nullptr; i_StreamInCol++) {
-      pColumn = m_pStreamInCol[i_StreamInCol];
-      if (pColumn->szColNm()->bSame(sColumnNm)) {
-        break;
-      }
+    if ( ! pTkn->szChars()->bContains("$"_Stz)) {
+      eError = EC_INVALID_COMMAND;
+      goto L_RETURN;
     }
-    RASSERT(pColumn);
+
+    Stz *sOrdinalColumn = pTkn->szChars() + 1;
+    i8 i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
 
     // check how many bits are on till this i_StreamInCol bit
     i8 iLocal = 0;
     i8 iBit = -1;
-    for (i8 i = 0; i < pColumn->iColumnNo(); i++) {
+    for (i8 i = 0; i < i_ColumnOrdinal; i++) {
       if (BitLib::bEachBit(m_uExprEvalColumns, iBit)) {
-        if (iBit < pColumn->iColumnNo()) {
+        if (iBit < i_ColumnOrdinal) {
           iLocal++;
         } else {
           break;
         }
       }
     }
+
+    pColumn = pStreamDefIn->pGetColumn(i_ColumnOrdinal);
 
     if ( ! bGroupBy ) {
 
@@ -919,239 +1147,6 @@ eEC ExprEval::eExprEvalOrdinal(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut
   L_RETURN:
     delete pColumnExpr;
     return eError;
-}
-
-/*----------------------------------------------------------------------------*/
-/* parse project                                                              */
-/*----------------------------------------------------------------------------*/
-eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
-  UNUSED(pStreamDefIn);
-
-  eEC eError = EC_NONE;
-
-  Stz *sAliasName = ""_Stz;
-  i8 i_DstColumn = C_UNKNOWN;
-  i8 i_GbyColumn = C_UNKNOWN;
-  Column *pColumn = nullptr;
-  Column *pColumnExpr =  new Column;
-  TagSet oTagSet;
-  bool bSum = false;
-  bool bGroupBy = false;
-
-  Token* pTkn = pTknVec->pCurrToken();
-
-  while ( pTkn ) {
-
-    if (pTkn->bSame(","_Stz)) {
-
-      i_DstColumn++;
-
-      // discovered a comma, add the column to the streamDefOut
-      if (pStreamDefOut) {
-        eError = eHandleOutColumn(pStreamDefOut, pColumn ? pColumn : pColumnExpr,
-                                  sAliasName, i_DstColumn, bSum);
-        if (eError == EC_INVALID_COMMAND)
-          goto L_RETURN;
-        bSum = false;
-      }
-
-      pColumn = nullptr;
-      pTkn = pTknVec->pNextToken();
-    }
-
-    // alias ?
-    if (pTkn->bSame("as"_Stz)) {
-      pTkn = pTknVec->pNextToken();
-      if (!pTkn->bIsName()) {
-        eError = EC_INVALID_COMMAND;
-        goto L_RETURN;
-      }
-
-      // extract column name
-      sAliasName = pTkn->szChars();
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // arithmetic operator ?
-    if (pTkn->bIsArithmetic()) {
-      vAddArithmetic(pTkn, pColumn);
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // logical operator ?
-    if (pTkn->bIsLogical() || pTkn->bSame("isNull"_Stz)) {
-      vAddLogical(pTkn);
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // relational operator ?
-    if (pTkn->bIsRelational()) {
-      vAddRelational(pTkn);
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // is it a numeric ?
-    if (pTkn->bIsNumeric()) {
-      vAddNumeric(pTkn, pColumnExpr);
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // is it a decimal no ?
-    if (pTkn->bIsDecimalNo()) {
-      eError = eAddDecimal(pTkn, pColumnExpr);
-      if (eError == EC_INVALID_COMMAND) {
-        goto L_RETURN;
-      }
-
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    if (pTkn->bIsString()) {
-      vAddString(pTkn, pColumnExpr);
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    if (pTkn->eToken() == TN_TAG && pTkn->bSame("<>"_Stz)) {
-      StrLib::vSprintCat(m_sAsmText, "  EO_RETURN_FALSE\n"_Stz);
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    if (!pTkn->bIsName()) {
-      eError = EC_INVALID_COMMAND;
-      goto L_RETURN;
-    }
-
-    if (pTkn->bIsName()  && pTkn->bSame("null"_Stz) ) {
-      vAddUnknown(pTkn, pColumnExpr);
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    if (pTkn->bIsName()  && pTkn->bSame("DATE"_Stz) ) {
-      pTkn = pTknVec->pNextToken();
-      if (pTkn->bIsString()) {
-        eError = eAddDate(pTkn, pColumnExpr);
-        if (eError == EC_INVALID_COMMAND) {
-          goto L_RETURN;
-        }
-        pTkn = pTknVec->pNextToken();
-        continue;
-      }
-      else
-        pTkn = pTknVec->pPrevToken();
-    }
-
-    if (pTkn->bIsName()  && pTkn->bSame("SUM"_Stz) ) {
-
-      bSum = true;
-      ASSERT(m_bHasAgg);
-
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    if (pTkn->bIsName()  && pTkn->bSame("GROUPBY"_Stz) ) {
-
-      i_GbyColumn++;
-      bGroupBy = true;
-
-      ASSERT(m_bHasGby);
-
-      i_DstColumn++;
-
-      // discovered a comma, add the column to the streamDefOut
-      if (pStreamDefOut)
-        eError = eHandleOutColumn(pStreamDefOut, pColumn ? pColumn : pColumnExpr,
-                                  sAliasName, i_DstColumn, bSum);
-      if ( eError == EC_INVALID_COMMAND)
-        goto L_RETURN;
-
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // found a src column
-    Stz *sColumnNm = pTkn->szChars();
-
-    // get in column from m_iStreamInCol ~ to out column
-    pColumn = nullptr;
-    i8 i_StreamInCol;
-    for (i_StreamInCol = 0; m_pStreamInCol[i_StreamInCol] != nullptr; i_StreamInCol++) {
-      pColumn = m_pStreamInCol[i_StreamInCol];
-      if (pColumn->szColNm()->bSame(sColumnNm)) {
-        break;
-      }
-    }
-    RASSERT(pColumn);
-
-    // check how many bits are on till this i_StreamInCol bit
-    i8 iLocal = 0;
-    i8 iBit = -1;
-    for (i8 i = 0; i < pColumn->iColumnNo(); i++) {
-      if (BitLib::bEachBit(m_uExprEvalColumns, iBit)) {
-        if (iBit < pColumn->iColumnNo()) {
-          iLocal++;
-        } else {
-          break;
-        }
-      }
-    }
-
-    if ( ! bGroupBy ) {
-
-      if (m_bHasGby) {
-        if (pColumn->eColumnType() == CT_VARCHAR ||
-            pColumn->eColumnType() == CT_CHAR) {
-          StrLib::vSprintCat(m_sAsmText, "  EO_PUSH_LOCALS %lld\n"_Stz, iLocal);
-          StrLib::vSprintCat(m_sPayLoadStore, "  EO_PUSH_LOCALS %lld\n"_Stz, iLocal);
-          //StrLib::vSprintCat(m_sPayLoadToBuffer, "  EO_PAY_FETCH_COLS %lld\n"_Stz, iLocal);
-        } else {
-          StrLib::vSprintCat(m_sAsmText, "  EO_PUSH_LOCALI %lld\n"_Stz, iLocal);
-          StrLib::vSprintCat(m_sPayLoadStore, "  EO_PUSH_LOCALI %lld\n"_Stz, iLocal);
-          //StrLib::vSprintCat(m_sPayLoadToBuffer, "  EO_PAY_FETCH_COLI %lld\n"_Stz, iLocal);
-        }
-
-      } else {
-        if (pColumn->eColumnType() == CT_VARCHAR ||
-            pColumn->eColumnType() == CT_CHAR)
-          StrLib::vSprintCat(m_sAsmText, "  EO_PUSH_LOCALS %lld\n"_Stz, iLocal);
-        else
-          StrLib::vSprintCat(m_sAsmText, "  EO_PUSH_LOCALI %lld\n"_Stz, iLocal);
-      }
-    }
-    else {
-      eError = eHandleGbyColumn(pColumn, i_GbyColumn);
-      if (eError == EC_INVALID_COMMAND)
-        goto L_RETURN;
-    }
-    pTkn = pTknVec->pNextToken();
-  }
-
-  if (m_bHasGby) {
-    //eError = eHandleGbyColumn(pColumn, i_GbyColumn);
-  }
-  else {
-    i_DstColumn++;
-
-    // add the last column to the streamDefOut
-    if (pStreamDefOut)
-      eError = eHandleOutColumn(pStreamDefOut, pColumn ? pColumn : pColumnExpr,
-                                sAliasName, i_DstColumn, bSum);
-  }
-
-  L_RETURN:
-  delete pColumnExpr;
-  return eError;
 }
 
 /*----------------------------------------------------------------------------*/
