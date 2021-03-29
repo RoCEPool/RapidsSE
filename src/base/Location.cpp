@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Location.cpp - Logical Location of Object                                   */
+/* Location.cpp - Logical Location of Object                                  */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -26,6 +26,8 @@ Location::Location(void)
   _precondition_(_MAGIC_,CN_LOCATION,_FOOTER_);
     
   _checkInitialised_(CN_LOCATION);
+  
+  vSet();
 }
 
 /*----------------------------------------------------------------------------*/

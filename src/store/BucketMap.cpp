@@ -53,6 +53,16 @@ BucketMap::~BucketMap(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get location                                                               */
+/*----------------------------------------------------------------------------*/
+Location* BucketMap::pLocation(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
+  
+  return & m_oLocation;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get which logical partition a bucket is currently mapped to                */
 /*----------------------------------------------------------------------------*/
 tPN BucketMap::tWhichLglPtnNo(i8 iBucketId)

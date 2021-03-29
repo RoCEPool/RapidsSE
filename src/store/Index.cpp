@@ -195,6 +195,8 @@ void Index::vIndexDef(IndexDef* pIndexDef)
   
   m_pIndexDef = pIndexDef;
   
+  m_pIndexDef->pLocation()->vSet();
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (m_pIndexDef->szIndexNm()->bSame(S_READAPI_I))
@@ -284,6 +286,16 @@ void Index::vListContents(i8 i_Depth)
          m_sIndexNm.szStz());
   
   m_pIndexDef->vListContents(i_Depth+1);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get location                                                               */
+/*----------------------------------------------------------------------------*/
+Location* Index::pLocation(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  
+  return & m_oLocation;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -221,6 +221,16 @@ void StreamDef::vListContents(i8 i_Depth)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get location                                                               */
+/*----------------------------------------------------------------------------*/
+Location* StreamDef::pLocation(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
+  
+  return & m_oLocation;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get stream name                                                            */
 /*----------------------------------------------------------------------------*/
 Stz* StreamDef::szStreamDefNm(void)

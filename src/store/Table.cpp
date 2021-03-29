@@ -275,6 +275,8 @@ void Table::vAddIndex(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
+  pIndex->pLocation()->vSet();
+  
   // set the index no in the index
   
   i8 iIndexNo = m_pIdxVec->nItems();
@@ -319,6 +321,18 @@ BucketMap* Table::pBucketMap(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   return m_pBucketMap;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the bucket map for this table                                          */
+/*----------------------------------------------------------------------------*/
+void Table::vBucketMap(BucketMap* pBucketMap)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  m_pBucketMap = pBucketMap;
+  
+  m_pBucketMap->pLocation()->vSet();
 }
 
 /*----------------------------------------------------------------------------*/

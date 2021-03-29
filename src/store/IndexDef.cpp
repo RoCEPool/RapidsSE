@@ -532,6 +532,16 @@ Column* IndexDef::pGetColumn(i8 iColumn)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get location                                                               */
+/*----------------------------------------------------------------------------*/
+Location* IndexDef::pLocation(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+  
+  return & m_oLocation;
+}
+
+/*----------------------------------------------------------------------------*/
 /* compute the size of sort key datum                                         */
 /*----------------------------------------------------------------------------*/
 i8 IndexDef::iSortKeyDatum(void)

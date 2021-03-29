@@ -24,6 +24,8 @@ namespace STORE
     BucketMap(i8 nPartitions);
    ~BucketMap(void) noexcept(false);
   
+    Location* pLocation(void);
+  
     tPN tWhichLglPtnNo(i8 iBucketId);
   
     static void vPostRecv(void* aBucketMap);
