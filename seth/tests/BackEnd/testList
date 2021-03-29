@@ -8,6 +8,7 @@ aggregRows$.test
 aggregGby_I.test
 aggregGby.test
 
+aggregGby$.test
 aggregGby$_I.test
 
 filterRows_I.test
