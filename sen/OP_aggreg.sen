@@ -129,7 +129,7 @@
   // evalute the expression
   ExprEval[].new
   StreamDefOut[].new
-  <etc> StreamDef[] StreamDefOut[] ExprEval[].evaluate to eError
+  <etc> StreamDef[] StreamDefOut[] ExprEval[].evaluateColumns to eError
 
   // check for error
   eError EC_NONE == not if

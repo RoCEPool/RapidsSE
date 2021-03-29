@@ -19,7 +19,8 @@ void Step::vAddSteps_ExprEval(void)
 {
   vAddStep("exprEval[]"_Stz,                 &Step::vExprEvalGet);
   vAddStep("exprEval[].delete"_Stz,          &Step::vExprEvalDelete);
-  vAddStep("exprEval[].evaluate"_Stz,        &Step::vExprEvalEvaluate);
+  vAddStep("exprEval[].evaluateColumns"_Stz, &Step::vExprEvalEvaluateColumns);
+  vAddStep("exprEval[].evaluateOrdinals"_Stz,&Step::vExprEvalEvaluateOrdinals);
   vAddStep("exprEval[].new"_Stz,             &Step::vExprEvalNew);
   vAddStep("exprEval[].set"_Stz,             &Step::vExprEvalSet);
 }
@@ -51,9 +52,9 @@ void Step::vExprEvalDelete(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* exprEval[].evaluate -- evaluate expression                                 */
+/* exprEval[].evaluateColumns -- evaluate expression with column refs         */
 /*----------------------------------------------------------------------------*/
-void Step::vExprEvalEvaluate(void)
+void Step::vExprEvalEvaluateColumns(void)
 {
   ENTRY();
 
@@ -65,7 +66,29 @@ void Step::vExprEvalEvaluate(void)
   s4K sProjectColumns;
   m_pDataStack->vPopStr(sProjectColumns, __func__);
 
-  eEC eError = pExprEval->eEvaluate(pStreamDefIn, pStreamDefOut, sProjectColumns);
+  eEC eError = pExprEval->eEvaluateColumns(pStreamDefIn, pStreamDefOut, sProjectColumns);
+
+  m_pDataStack->vPushInt(eError);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* exprEval[].evaluateOrdinals -- evaluate expression with column ordinals    */
+/*----------------------------------------------------------------------------*/
+void Step::vExprEvalEvaluateOrdinals(void)
+{
+  ENTRY();
+
+  ExprEval* pExprEval = *( m_pJob->pLogicUnit_job() )->m_xpExprEval;
+
+  StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  StreamDef* pStreamDefIn = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+
+  s4K sProjectColumns;
+  m_pDataStack->vPopStr(sProjectColumns, __func__);
+
+  eEC eError = pExprEval->eEvaluateOrdinals(pStreamDefIn, pStreamDefOut, sProjectColumns);
 
   m_pDataStack->vPushInt(eError);
 

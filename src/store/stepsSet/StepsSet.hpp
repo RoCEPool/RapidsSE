@@ -322,7 +322,8 @@ public:
   void vExprEvalGet(void);
   void vExprEvalDelete(void);
   void vExprEvalNew(void);
-  void vExprEvalEvaluate(void);
+  void vExprEvalEvaluateColumns(void);
+  void vExprEvalEvaluateOrdinals(void);
   void vExprEvalSet(void);
 
   // fact

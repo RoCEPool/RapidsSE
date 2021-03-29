@@ -132,7 +132,7 @@
   // evaluate the expression
   ExprEval[].new
   StreamDef[].duplicate to StreamDefOut[]
-  <etc> StreamDef[] nullptr ExprEval[].evaluate to eError
+  <etc> StreamDef[] nullptr ExprEval[].evaluateColumns to eError
 
   // check for error
   eError EC_NONE == not if

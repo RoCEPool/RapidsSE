@@ -38,7 +38,8 @@ namespace STORE
     ExprEval(void);
    ~ExprEval(void) noexcept(false);
 
-    eEC eEvaluate(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Stz* sExprEvalColumns);
+    eEC eEvaluateColumns(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Stz* sExprEvalColumns);
+    eEC eEvaluateOrdinals(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Stz* sExprEvalColumns);
 
     bool bHasAggregate(void);
     bool bHasGroupBy(void);
@@ -59,7 +60,9 @@ namespace STORE
     void vAddUnknown(Token*  pTkn, Column* pColumnExpr);
 
     eEC eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec);
+    eEC eCollectSourceOrdinals(StreamDef* pStreamDefIn, TokenVec* pTknVec);
     eEC eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);
+    eEC eExprEvalOrdinal(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);
     eEC eHandleGbyColumn(Column* pColumn, i8 iGby);
     eEC eHandleOutColumn(StreamDef* pStreamDefOut, Column* pColumn,
                          Stz* sAliasName, i8 i_DstColumn, bool bSum);

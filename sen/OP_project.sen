@@ -124,7 +124,11 @@
   // evalute the expression
   ExprEval[].new
   StreamDefOut[].new
-  <etc> StreamDef[] StreamDefOut[] ExprEval[].evaluate to eError
+  "<ordinal>" job[] job.tagSet@ tagSet.hasName if
+    <etc> StreamDef[] StreamDefOut[] ExprEval[].evaluateOrdinals to eError
+  else
+    <etc> StreamDef[] StreamDefOut[] ExprEval[].evaluateColumns to eError
+  then
 
   // check for error
   eError EC_NONE == not if
@@ -199,6 +203,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 cmdSyntax: project :: project <compiled> <etc> ;
+cmdSyntax: project :: project <ordinal> <compiled> <etc> ;
 
 : project_cmdTags _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
 
