@@ -184,7 +184,7 @@ void ExprValidator::vValidateGroupByExprs(PlanNode *pRootNode, QueryNode* pStart
   };
 
   QueryNode* pAggregateOp = static_cast<QueryNode*>(
-      GraphNav::pSearch(pStartNode, false, true, fCondition, nullptr) );
+      GraphNav::pGlobalSearch(pStartNode, false, true, fCondition, nullptr) );
 
   if (!pAggregateOp) {
     return;
@@ -225,7 +225,7 @@ void ExprValidator::vValidateProjectExprs(PlanNode *pRootNode, QueryNode* pStart
   };
 
   QueryNode* pProjectOp = static_cast<QueryNode*>(
-      GraphNav::pSearch(pStartNode, false, true, fCondition, nullptr) );
+      GraphNav::pGlobalSearch(pStartNode, false, true, fCondition, nullptr) );
 
   if (!pProjectOp) {
     return;
@@ -431,8 +431,8 @@ void ExprValidator::vValidateSqlOpExprsAgainstGroupBy(PlanNode* pRootNode, Query
   };
 
   QueryNode* pAggregateOp = static_cast<QueryNode*>(
-      GraphNav::pSearch(pStartNode, false, true,
-                        fCondition, nullptr) );
+      GraphNav::pGlobalSearch(pStartNode, false, true,
+                              fCondition, nullptr) );
 
   if (!pAggregateOp) {
     return;
@@ -517,8 +517,8 @@ void ExprValidator::vValidateSqlOpExprsAgainstProjectOp(PlanNode* pRootNode, Que
   };
 
   QueryNode *pProjectOp = static_cast<QueryNode *>(
-      GraphNav::pSearch(pStartNode, false, true,
-                        fCondition, nullptr));
+      GraphNav::pGlobalSearch(pStartNode, false, true,
+                              fCondition, nullptr));
 
   if (!pProjectOp) {
     return;

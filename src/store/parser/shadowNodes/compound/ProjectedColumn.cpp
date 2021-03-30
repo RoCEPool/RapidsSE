@@ -186,6 +186,18 @@ QueryNode* ProjectedColumn::pSymbolicToOrdinal(QueryNode* pNode,
   return pOrdinalProjectedColumn;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Sets or changes the alias for this ProjectedColumn                         */
+/*----------------------------------------------------------------------------*/
+void ProjectedColumn::vSetAlias(QueryNode* pNode, Text *pNewAlias)
+{
+  QueryNode *pAliasNode =
+      static_cast<QueryNode*>(GraphNav::pFindProperty(const_cast<Stz *>(C_ALIAS_PROP), pNode));
+
+  Value xVal(pNewAlias);
+  pAliasNode->vSetValue(static_cast<Value&&>(xVal));
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

@@ -40,6 +40,9 @@ namespace Parser
     static QueryNode* pSymbolicToOrdinal(QueryNode* pQueryNode,
                                          PlanNodeList* pColExprList,
                                          PlanNode* pRootNode);
+
+    // Changes the alias for this projected column
+    static void vSetAlias(QueryNode* pNode, Text* pNewAlias);
   };
 
 }

@@ -53,6 +53,14 @@ namespace Parser
     // See implementation for more details.
     void vInsertAsParentOfChildren(QueryNode* pInsNode);
 
+    // Inserts a child in the current node in place of the first child and
+    // makes that first child a child of the node being inserted.
+    void vInsertAsParentOfChild1(QueryNode* pInsNode);
+
+    // Inserts a child in the current node in place of the second child and
+    // makes that second child a child of the node being inserted.
+    void vInsertAsParentOfChild2(QueryNode* pInsNode);
+
     // Removes a given child from the list. The removed node retains all of its children.
     void vRemoveChild(QueryNode* pNode);
 
@@ -64,6 +72,9 @@ namespace Parser
     QueryNode* pPopChild();
 
     void vAppendProperty(QueryNode* pNode);
+
+    // Removes and returns the property, otherwise returns nullptr
+    QueryNode* pRemoveProperty(Stz* szPropName);
 
     // Return a deep copy of the current node, it's properties and all children.
     // NB: May need to make the name unique if using this copy as a sibling of its original.

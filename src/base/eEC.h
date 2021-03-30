@@ -24,6 +24,9 @@ enum eEC // error code
   EC_CLUSTER_NOT_CONNECTED,
   EC_CLUSTER_PARTITIONS_MISMATCH,
   EC_CLUSTER_SIZE_MISMATCH,
+  EC_CORRBY_COLUMN_NOT_FOUND,       // SQL Compiler Subsystem
+  EC_CORRBY_COLUMN_TYPE_MISMATCH,   // SQL Compiler Subsystem
+  EC_CORRBY_NO_COMMON_COLUMNS,      // SQL Compiler Subsystem
   EC_CSV_BOOLEAN_INVALID,
   EC_CSV_BOOLEAN_TOO_LARGE,
   EC_CSV_DATE_INVALID,
@@ -233,6 +236,9 @@ static Stz* aEC[]
   /* EC_CLUSTER_NOT_CONNECTED         */ "cluster not connected (use connectCluster command)"_Stz,
   /* EC_CLUSTER_PARTITIONS_MISMATCH   */ "cluster partitions per node mismatch"_Stz,
   /* EC_CLUSTER_SIZE_MISMATCH         */ "cluster node size mismatch"_Stz,
+  /* EC_CORRBY_COLUMN_NOT_FOUND       */ "EC_CORRBY_COLUMN_NOT_FOUND"_Stz,      // SQL Compiler Subsystem
+  /* EC_CORRBY_COLUMN_TYPE_MISMATCH   */ "EC_CORRBY_COLUMN_TYPE_MISMATCH"_Stz,  // SQL Compiler Subsystem
+  /* EC_CORRBY_NO_COMMON_COLUMNS      */ "EC_CORRBY_NO_COMMON_COLUMNS"_Stz,     // SQL Compiler Subsystem
   /* EC_CSV_BOOLEAN_INVALID           */ "EC_CSV_BOOLEAN_INVALID"_Stz,
   /* EC_CSV_BOOLEAN_TOO_LARGE         */ "EC_CSV_BOOLEAN_TOO_LARGE"_Stz,
   /* EC_CSV_DATE_INVALID              */ "EC_CSV_DATE_INVALID"_Stz,
@@ -442,6 +448,9 @@ static Stz* aEC2[] // error code
   /* EC_CLUSTER_NOT_CONNECTED         */ "EC_CLUSTER_NOT_CONNECTED"_Stz,
   /* EC_CLUSTER_PARTITIONS_MISMATCH   */ "EC_CLUSTER_PARTITIONS_MISMATCH"_Stz,
   /* EC_CLUSTER_SIZE_MISMATCH         */ "EC_CLUSTER_SIZE_MISMATCH"_Stz,
+  /* EC_CORRBY_COLUMN_NOT_FOUND       */ "EC_CORRBY_COLUMN_NOT_FOUND"_Stz,        // SQL Compiler Subsystem
+  /* EC_CORRBY_COLUMN_TYPE_MISMATCH   */ "EC_CORRBY_COLUMN_TYPE_MISMATCH"_Stz,    // SQL Compiler Subsystem
+  /* EC_CORRBY_NO_COMMON_COLUMNS      */ "EC_CORRBY_NO_COMMON_COLUMNS"_Stz,       // SQL Compiler Subsystem
 
   /* EC_CSV_BOOLEAN_INVALID           */ "EC_CSV_BOOLEAN_INVALID"_Stz,
   /* EC_CSV_BOOLEAN_TOO_LARGE         */ "EC_CSV_BOOLEAN_TOO_LARGE"_Stz,
@@ -663,6 +672,9 @@ static Stz* aErrorMsg[]
   /* EC_CLUSTER_NOT_CONNECTED         */ "cluster not connected (use connectCluster command)"_Stz,
   /* EC_CLUSTER_PARTITIONS_MISMATCH   */ "cluster partitions per node mismatch"_Stz,
   /* EC_CLUSTER_SIZE_MISMATCH         */ "cluster node size mismatch"_Stz,
+  /* EC_CORRBY_COLUMN_NOT_FOUND       */ "Column in CORRESPONDING BY list is not found in select list"_Stz,   // SQL Compiler Subsystem
+  /* EC_CORRBY_COLUMN_TYPE_MISMATCH   */ "Column in CORRESPONDING BY list has mismatched types in child queries"_Stz, // SQL Compiler Subsystem
+  /* EC_CORRBY_NO_COMMON_COLUMNS      */ "No common column names of the subqueries could be found for the CORRESPONDING list"_Stz,  // SQL Compiler Subsystem
 
   /* EC_CSV_BOOLEAN_INVALID           */ "EC_CSV_BOOLEAN_INVALID"_Stz,
   /* EC_CSV_BOOLEAN_TOO_LARGE         */ "EC_CSV_BOOLEAN_TOO_LARGE"_Stz,
