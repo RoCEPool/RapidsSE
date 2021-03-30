@@ -345,18 +345,18 @@ void Backend::vAppendFilterOp(Backend* pBackend, QueryNode* pNode)
   String* sPipeline = pBackend->m_sPipeline;
 
   // Get the list of projected expressions from ProjectOp
-  QueryNode *pFilterExpr = FilterOp::pFilterExpr(pNode);
-  //QueryNode *pFilterExpr = FilterOp::pOrdinalFilterExpr(pNode, pBackend->m_pPlanRoot);
+  //QueryNode *pFilterExpr = FilterOp::pFilterExpr(pNode);
+  QueryNode *pOrdinalFilterExpr = FilterOp::pOrdinalFilterExpr(pNode, pBackend->m_pPlanRoot);
 
-  ASSERT(pFilterExpr);
+  ASSERT(pOrdinalFilterExpr);
 
   sPipeline->vCatSprint(
-      "    | filter 0 \""
+      "    | filter ordinal 0 \""
       ""_Stz);
 
   // Walk the expr node plan graph
-  GraphNav::bGlobalWalkBottomUp(pFilterExpr, false, true, vVisitorExpr, (void *) sPipeline);
-  //delete pFilterExpr;
+  GraphNav::bGlobalWalkBottomUp(pOrdinalFilterExpr, false, true, vVisitorExpr, (void *) sPipeline);
+  delete pOrdinalFilterExpr;
 
   sPipeline->vCatSprint(" \" \n"_Stz);
 }
@@ -406,6 +406,7 @@ void Backend::vAppendProjectOp(Backend* pBackend, QueryNode* pNode)
     delete pIter;
 
   }
+  delete pOrdinalProjectedColumns;
 
   sPipeline->vCatSprint(" \" \n"_Stz);
 
@@ -472,14 +473,10 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
   if (ColumnOrdinal::bIsOfType(pExprNode)) {
     QueryNode* pColumnOrdinal = static_cast<QueryNode*>(pExprNode);
 
-    //if (ColumnRef::bIsOfType(pExprNode)) {
-    //  QueryNode *pColumnRef = static_cast<QueryNode *>(pExprNode);
-
       sPipeline->vCatSprint(
         " $%lld"
         ""_Stz,
         ColumnOrdinal::iOrdinal(pColumnOrdinal));
-        //ColumnRef::szColumn(pColumnRef));
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
