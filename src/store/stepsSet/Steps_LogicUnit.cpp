@@ -24,7 +24,9 @@ void Step::vAddSteps_LogicUnit(void)
 {
   vAddStep("LogicUnit[].altIndex@"_Stz,     &Step::vLogicUnitAltIndexFetch);
   vAddStep("LogicUnit[].altTable@"_Stz,     &Step::vLogicUnitAltTableFetch);
-  
+
+  vAddStep("LogicUnit[].compilerToExit"_Stz,&Step::vLogicUnitCompilerToExit);
+
   vAddStep("LogicUnit[].diaryAction"_Stz,   &Step::vLogicUnitDiaryAction);
   vAddStep("LogicUnit[].diaryDir"_Stz,      &Step::vLogicUnitDiaryDir);
   vAddStep("LogicUnit[].diary@"_Stz,        &Step::vLogicUnitDiaryFetch);
@@ -84,6 +86,20 @@ void Step::vLogicUnitAltTableFetch(void)
   
   m_pDataStack->vPushStr(pDevRow->m_sTableNm);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].compilerToExit --                                              */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitCompilerToExit(void)
+{
+  ENTRY();
+
+  bool bCompilerToExit = m_pJob->pLogicUnit_job()->m_bCompilerToExit;
+
+  m_pDataStack->vPushInt(bCompilerToExit);
+
   EXIT();
 }
 

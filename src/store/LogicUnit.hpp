@@ -154,7 +154,9 @@ namespace STORE
     REG<ToRow>          m_xpToRow;
     REG<Tx>             m_xpTx;
     REG<Xmits>          m_xpXmits;     // consume xmits
-    
+
+    bool                m_bCompilerToExit;
+
     i8                  m_iCounter0;   // counter
     i8                  m_iCounter1;   // counter
     i8                  m_iCounter2;   // counter

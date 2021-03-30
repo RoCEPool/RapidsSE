@@ -880,6 +880,7 @@ public:
   void vLogicUnitCallAgainStore(void);
   void vLogicUnitCalledAgainFetch(void);
   void vLogicUnitCalledAgainStore(void);
+  void vLogicUnitCompilerToExit(void);
   void vLogicUnitDiaryAction(void);
   void vLogicUnitDiaryDir(void);
   void vLogicUnitDiaryFetch(void);
