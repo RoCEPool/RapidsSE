@@ -4,6 +4,12 @@
 
 #include "BASE.h"
 
+#include "CmdLineArgs.hpp"
+#include "Row.hpp"
+#include "WriteBehind.hpp"
+
+extern CmdLineArgs gxCmdLineArgs;
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
@@ -33,7 +39,6 @@ Loggable::~Loggable(void) noexcept(false)
 {
 }
 
-
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -46,33 +51,44 @@ void Loggable::vLog(eEV eEvent, Stz* szFormat, ...)
   _precondition_(_MAGIC_);
   UNUSED(eEvent);
     
+  if (! gxCmdLineArgs.m_xSysArgs.m_bEvents)
+    return;
+  
   if (C_DONT_LOG == m_iLogCtl)
     return;
  
-  if (   CN_DIR == eGetClassNo()
-      || CN_FIFO == eGetClassNo()
-      || CN_FILE == eGetClassNo()
-      || CN_JOB == eGetClassNo()
-      || CN_JOB__FIND == eGetClassNo()
-      || CN_LOCK == eGetClassNo()
-      || CN_MUTEX == eGetClassNo()
-      || CN_OP == eGetClassNo()
-      || CN_OPERANDQUEUE == eGetClassNo()
-      || CN_PSXTHD == eGetClassNo()
-      || CN_SESSION == eGetClassNo()
-      || CN_SOCKET == eGetClassNo()
-      || CN_TASK == eGetClassNo()
-      )
+  if (! AM::bHasStarted())
     return;
+  
+//  if (   CN_DIR == eGetClassNo()
+//      || CN_FIFO == eGetClassNo()
+//      || CN_FILE == eGetClassNo()
+//      || CN_JOB == eGetClassNo()
+//      || CN_JOB__FIND == eGetClassNo()
+//      || CN_LOCK == eGetClassNo()
+//      || CN_MUTEX == eGetClassNo()
+//      || CN_OP == eGetClassNo()
+//      || CN_OPERANDQUEUE == eGetClassNo()
+//      || CN_PSXTHD == eGetClassNo()
+//      || CN_SEPROMPT == eGetClassNo()
+//      || CN_SESSION == eGetClassNo()
+//      || CN_SOCKET == eGetClassNo()
+//      || CN_TASK == eGetClassNo()
+//      )
+//    return;
 
+
+  s4K sNote;
+  
   va_list xVarArgs;
   
   va_start(xVarArgs,szFormat);
   
-  vprintf(szFormat->azChar(),xVarArgs);
-  printf("\n");
-
+  sNote.vSprintVA(szFormat,xVarArgs);
+  
   va_end(xVarArgs);
+  
+  vAddRow(eEvent,sNote);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -188,6 +204,34 @@ void Loggable::vNextEvent(eEV eEvent)
   vEventTickSet();
   vEvent(eEvent);
   vEventNoInc();
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* log next event                                                             */
+/*----------------------------------------------------------------------------*/
+void Loggable::vAddRow(eEV eEvent, Stz* szNote)
+{
+  _precondition_(_MAGIC_);
+  UNUSED(eEvent);
+  UNUSED(szNote);
+  
+//  printf("Loggable::vAddRow : %s %s\n",
+//         aEV[eEvent]->azChar(),
+//         szNote->azChar());
+
+  WriteBehind* pWriteBehind = AM::THREAD::pWriteBehind();
+  
+  if (! pWriteBehind)
+    return;
+  
+  pWriteBehind->vDepositEvent(C_VARGS_BEGIN,
+                              eEvent,
+                              szNote,
+                              C_VARGS_END);
 }
 
 /*============================================================================*/

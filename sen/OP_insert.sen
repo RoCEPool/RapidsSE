@@ -12,9 +12,9 @@
   //"Operand:- ZK_CRWBUFFER" .verbose
 
   // insert the buffer into the table ptn
-  tablePtn[] tablePtnGrabWrite_msec
-  PipeIn[] tablePtn[].appendBuffer
-  tablePtn[] tablePtnDropWrite
+  TablePtn[].grabWrite_msecLoop
+  PipeIn[] TablePtn[].appendBuffer
+  TablePtn[].dropWrite
 
   // null the Pipein
   nullptr to PipeIn[]
@@ -77,7 +77,7 @@
   //nullptr task[] task.profile!
   //Operand[].pipeOut
 
-  path[].popNamedTableFolder
+  Path[].popNamedTableFolder
   PipeIn[].pipeOut
   Op.ackPipelineJob
 
@@ -96,8 +96,8 @@
 
   // get Table[] to be inserted into
   <tableNm> op__table if
-    Table[].tablePtn@ to tablePtn[]
-    //Table[].tablePtnZero to tablePtn[] // hack by ray to simulate insert lock collision
+    Table[].tablePtn@ to TablePtn[]
+    //Table[].tablePtnZero to TablePtn[] // hack by ray to simulate insert lock collision
     PipeIn[].pipeOut
   then
 

@@ -7,34 +7,34 @@
 /*----------------------------------------------------------------------------*/
 /* discard all folders from path stack                                        */
 /*----------------------------------------------------------------------------*/
-: path[].popAllFolders ( -- )
+: Path[].popAllFolders ( -- )
 
-  path[].depth 0 ?do
-    path[].popFolder
+  Path[].depth 0 ?do
+    Path[].popFolder
   loop
 ;
 
 /*----------------------------------------------------------------------------*/
 /* set path from string vector                                                */
 /*----------------------------------------------------------------------------*/
-: path[].set ( ... #dics -- )
+: Path[].set ( ... #dics -- )
 
   // this word puts the folder path on the stack into task dictionary stack
   // ( ... "<subFolderC>"  "<subFolderB>"  "<subFolderA>" "main" 4 )
 
 
-  path[].popAllFolders
+  Path[].popAllFolders
 
   dup not if discard exit_rt then
 
   0 do
 
-    // dup "path[].set %v" .printf
+    // dup "Path[].set %v" .printf
 
     dup "__dicRoot" str.same if
       discard
       dic::root
-      path[].pushFolder
+      Path[].pushFolder
     else
 
       dup "session" str.same if
@@ -42,10 +42,10 @@
       else
 
         dup "tenants" str.same if
-          discard attachmap::tenants@ execute path[].pushFolder
+          discard attachmap::tenants@ execute Path[].pushFolder
         else
 
-          find execute path[].pushFolder
+          find execute Path[].pushFolder
         then
 
       then
@@ -58,21 +58,21 @@
 /*----------------------------------------------------------------------------*/
 /* get current folder path as string                                          */
 /*----------------------------------------------------------------------------*/
-: path[].toStr ( -- s )
+: Path[].toStr ( -- s )
 
   "/"
 
   // iterate thru each folder in path and concat to end
-  path[].depth 0 ?do
+  Path[].depth 0 ?do
 
     I if "/" str.cat then
 
     // compute the path subscript
-    //path[].depth 1 - I -
+    //Path[].depth 1 - I -
     I
 
     // pick the path, get its name and concat name to working string
-    path[].pick dic.name@ str.cat
+    Path[].pick dic.name@ str.cat
 
   loop
 ;

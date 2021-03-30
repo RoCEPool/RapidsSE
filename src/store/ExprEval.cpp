@@ -245,11 +245,14 @@ eEC ExprEval::eAddGby(Column* pColumn, i8 iGby)
     case CT_INTEGER:
     case CT_DECIMAL:
     case CT_FLOAT:
+      StrLib::vSprintCat(m_sAsmGbyIdx, "  EO_STRING \"int%lld\"\n"_Stz, iLocal);
       StrLib::vSprintCat(m_sAsmGbyIdx, "  EO_PUSH_COLUMN_TYPE %s\n"_Stz,
                          aCT_long[pColumn->eColumnType()]);
-      StrLib::vSprintCat(m_sAsmGbyIdx, "  EO_REG_INDEXDEF_ADDCOLUMN \"int%lld\"\n"_Stz, iLocal);
+      StrLib::vSprintCat(m_sAsmGbyIdx, "  EO_PUSH_RLU_INDEXDEF\n"_Stz);
+      StrLib::vSprintCat(m_sAsmGbyIdx, "  EO_RLU_INDEXDEF_ADDCOLUMN\n"_Stz);
 
       StrLib::vSprintCat(m_sPayLoadKey, "  EO_PUSH_LOCALI %lld\n"_Stz, iLocal);
+      StrLib::vSprintCat(m_sPayLoadKey, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
       StrLib::vSprintCat(m_sPayLoadKey, "  EO_ENTWRK_SETINTELM\n"_Stz);
       StrLib::vSprintCat(m_sPayLoadKey, "  EO_RETURN\n"_Stz);
 
@@ -258,10 +261,12 @@ eEC ExprEval::eAddGby(Column* pColumn, i8 iGby)
     case CT_BOOLEAN:
     case CT_CHAR:
     case CT_DATE:
-    case CT_INTERVAL:
+    case CT_INTERVAL_DT:
+    case CT_INTERVAL_YM:
     case CT_TIME:
     case CT_TIMESTAMP:
     case CT_VARCHAR:
+    case CT_UNKNOWN:
       return EC_INVALID_COMMAND;
 
     default:
@@ -329,6 +334,11 @@ void ExprEval::vAddPopCol(eCT eColumnType, i8 iColumn)
     case CT_VARCHAR:
       StrLib::vSprintCat(m_sAsmText, "  EO_PUSH_DEVROW_DST\n"_Stz);
       StrLib::vSprintCat(m_sAsmText, "  EO_DEVROW_POPCOLS %lld\n"_Stz, iColumn);
+      break;
+
+    case CT_UNKNOWN:
+      StrLib::vSprintCat(m_sAsmText, "  EO_PUSH_DEVROW_DST\n"_Stz);
+      StrLib::vSprintCat(m_sAsmText, "  EO_DEVROW_POPCOLI %lld\n"_Stz, iColumn);
       break;
 
     default:
@@ -405,7 +415,7 @@ void ExprEval::vAddString(Token* pTkn, Column* pColumnExpr) {
 
   char* szToken = (char*)pTkn->szChars();
 
-  StrLib::vSprintCat(m_sAsmText, "  EO_STRING %s\n"_Stz, szToken);
+  StrLib::vSprintCat(m_sAsmText, "  EO_STR_LITERAL %s\n"_Stz, szToken);
   pColumnExpr->vSet("NONE"_Stz, CT_VARCHAR, 128, 0);    // ALKA: come back to this
 }
 
@@ -431,10 +441,12 @@ eEC ExprEval::eAddSum(eCT eColumnType, i8 iColumn)
     case CT_BOOLEAN:
     case CT_CHAR:
     case CT_DATE:
-    case CT_INTERVAL:
+    case CT_INTERVAL_DT:
+    case CT_INTERVAL_YM:
     case CT_TIME:
     case CT_TIMESTAMP:
     case CT_VARCHAR:
+    case CT_UNKNOWN:
       return EC_INVALID_COMMAND;
 
     default:
@@ -464,10 +476,12 @@ eEC ExprEval::eAddSumGby(eCT eColumnType, i8 iColumn)
     case CT_BOOLEAN:
     case CT_CHAR:
     case CT_DATE:
-    case CT_INTERVAL:
+    case CT_INTERVAL_DT:
+    case CT_INTERVAL_YM:
     case CT_TIME:
     case CT_TIMESTAMP:
     case CT_VARCHAR:
+    case CT_UNKNOWN:
       return EC_INVALID_COMMAND;
 
     default:
@@ -475,6 +489,17 @@ eEC ExprEval::eAddSumGby(eCT eColumnType, i8 iColumn)
   }
 
   return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add EO code for unknown                                                    */
+/*----------------------------------------------------------------------------*/
+void ExprEval::vAddUnknown(Token* pTkn, Column* pColumnExpr)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
+
+  StrLib::vSprintCat(m_sAsmText, "  EO_PUSHNULL\n"_Stz);
+  pColumnExpr->vSet("NONE"_Stz, CT_UNKNOWN, 19, 0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -535,6 +560,10 @@ eEC ExprEval::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec)
     if (!pTkn->bIsName()) {
       eError = EC_INVALID_COMMAND;
       break;
+    }
+
+    if (pTkn->bIsName()  && pTkn->bSame("null"_Stz) ) {
+      continue;
     }
 
     if (pTkn->bIsName()  && pTkn->bSame("DATE"_Stz) ) {
@@ -708,6 +737,12 @@ eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
     if (!pTkn->bIsName()) {
       eError = EC_INVALID_COMMAND;
       goto L_RETURN;
+    }
+
+    if (pTkn->bIsName()  && pTkn->bSame("null"_Stz) ) {
+      vAddUnknown(pTkn, pColumnExpr);
+      pTkn = pTknVec->pNextToken();
+      continue;
     }
 
     if (pTkn->bIsName()  && pTkn->bSame("DATE"_Stz) ) {

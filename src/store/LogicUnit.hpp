@@ -116,7 +116,6 @@ namespace STORE
     REG<Index>          m_xpIndex;
     REG<IndexDef>       m_xpIndexDef;
     REG<IndexStream>    m_xpIndexStream;
-    REG<IndexTree>      m_xpIndexTree;
     REG<InfoSet>        m_xpInfoSet;
     REG<Table>          m_xpInfoSetTable;
     REF<Job>            m_xpJobRef;   // job reference
@@ -182,26 +181,20 @@ namespace STORE
     i8         m_i_Tkn;
     
     RluCommon  m_xRluCommon ;
-  
     RluDiary*  m_pRluDiary;
-  
-    void*      m_aaDev[C_LOGIC_DEV]; // device array
-  
     Timer      m_oSince;
-  
     Timer      m_oTimer;
     AggTimer   m_oAggTimer;
 
-    
-    RowPix  m_oRowPix;    // condensed stream def
-  
+    RowPix     m_oRowPix;    // condensed stream def
     EntWrk     m_oEntWrk;
 
     DevROW*    m_pDevDstRow;
     DevROW*    m_pDevSrcRow;
-    DevIXT*    m_pDevSrcIxt;
     DevROW*    m_pDevAltRow;
+
     DevIXT*    m_pDevAltIxt;
+    DevIXT*    m_pDevSrcIxt;
     DevIXT*    m_pDevTmpIxt;
   
     LogicTimer* m_pLogicTimer;
@@ -306,10 +299,6 @@ namespace STORE
     // last
     void vDumpCode(void);
     i8   iCompute(i8 nOuterArgs, i8 iArg0);
-
-    i8   iCompute2(i8 nOuterArgs, i8 iArg0);
-    i8   iCompute3(i8 nOuterArgs, i8 iArg0);
-
 
   private:
     Footer* aFooter(void);

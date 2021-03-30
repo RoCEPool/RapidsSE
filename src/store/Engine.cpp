@@ -39,9 +39,9 @@
 
 #include "STORE.h"
 
-CmdLineArgs      gxCmdLineArgs;
-EnvFlags  gxEnvFlags;
-FnCatalog gxFnCatalog;
+CmdLineArgs  gxCmdLineArgs;
+EnvFlags     gxEnvFlags;
+FnCatalog    gxFnCatalog;
 
 AttachMap*   gpAttachMap;
 BufferPool*  gpBufferPool;
@@ -1556,9 +1556,16 @@ void Engine::vStartSystem(void) {
     vInfo("  Creating Grid and Node's\n"_Stz);
 
 
-  vCreateGridOfNodes(); // newcode
+  vCreateGridOfNodes();
 
-  Node* pThisNode = AM::pGrid()->pFindNode(gxCmdLineArgs.m_xSysArgs.m_sNodeName);
+  s32 szNodeName;
+  if (gxCmdLineArgs.m_xSysArgs.m_nBootNodes > 1)
+    szNodeName = gxCmdLineArgs.m_xSysArgs.m_sNodeName;
+  else
+    szNodeName.vSprint("%s:%lld"_Stz, gxCmdLineArgs.m_xSysArgs.m_xBootNode[0].m_sIPAddress.azChar(),
+                     gxCmdLineArgs.m_xSysArgs.m_xBootNode[0].m_iPortNo);
+
+  Node* pThisNode = AM::pGrid()->pFindNode(szNodeName); //gxCmdLineArgs.m_xSysArgs.m_sNodeName);
   if (! pThisNode)
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "Cannot find Node %s in the cluster"_Stz,
@@ -1634,23 +1641,12 @@ void Engine::vStartSystem(void) {
   // threading
 
   if (AM::bVerboseProgress())
-    vInfo("  Spawning Expressions\n"_Stz);
-  AM::vLogSys(SL_INF, gpAttachMap, YA_SYS_BOOT,
+    vInfo("  Spawning Threads\n"_Stz);
+  AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_BOOT,
               "spawning threads"_Stz); //!format-LogSys
-  // spawn general threads
-  for (i8 iThreads = 0; iThreads < gxCmdLineArgs.m_xSysArgs.m_nThreads; iThreads++) {
-    Thread *pThread = new Thread;
-    pThread->vSpawnPsxThd_general();
-  }
-
-  // spawn dummy threads
-  for (i8 iThreads = 0; iThreads < gxCmdLineArgs.m_xSysArgs.m_nDummyThreads; iThreads++) {
-    Thread *pThread = new Thread;
-    pThread->vSpawnPsxThd_dummy();
-  }
-
-  // pause till all general threads are operational 
-  Scheduler::vThread_NapTillGeneralThreads();
+  
+  Scheduler::vScheduler_Boot();
+  
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -1724,17 +1720,31 @@ void Engine::vStartSystem(void) {
  */
 void Engine::vCreateGridOfNodes(void)
 {
+
+  s32 szNodeName;
+  i8 iNodeNo =0 ;
   Article* pGridArticle = gpAttachMap->m_pGrid->pArticle();
 
   for (i8 i_Node = 0; i_Node < gxCmdLineArgs.m_xSysArgs.m_nBootNodes; i_Node++) {
 
-    CheckSum ChecksumValue((unsigned char *)gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress.azChar(),
+    if (gxCmdLineArgs.m_xSysArgs.m_nBootNodes > 1) {
+      iNodeNo = i_Node;
+      szNodeName = gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sNodeName;
+    } else {
+      CheckSum ChecksumValue((unsigned char *) gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress.azChar(),
                            gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress.nLength());
 
-    i8 iNodeNo = (ChecksumValue.iGetBernstein() + gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_iPortNo);
+      iNodeNo = (ChecksumValue.iGetBernstein() + gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_iPortNo);
 
-    Node* pNode = new Node(iNodeNo, //gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_iPortNo, //i_Node +  abs((i2)Hardware::iReadTscp()),
-                           gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sNodeName,
+      szNodeName.vSprint("%s:%lld"_Stz, gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress.azChar(),
+                         gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_iPortNo);
+   }
+
+
+
+
+    Node* pNode = new Node(iNodeNo, //i_Node +  abs((i2)Hardware::iReadTscp()),
+                           szNodeName, //gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sNodeName,
                            AM::nDegOfPar(),
                            gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress,
                            gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_iPortNo);

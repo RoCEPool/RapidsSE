@@ -4,6 +4,7 @@
 #pragma once
 
 #include "PlanObject.hpp"
+#include "PlanNode.hpp"
 
 namespace Parser
 {
@@ -36,10 +37,14 @@ namespace Parser
   public:
     static QueryNode* pCreate(eST eStmtType, Stz* szQueryText);
     static void       vDescribe(PlanNode* pNode, s2K& sBuf);
-    static void       vExplain(PlanNode* pNode, s48K& sBuf, i8 iIndent);
+    static void vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iIndent);
 
     // Returns true if a given node is a given type ** or is derived from that type **
     static b1 bIsOfType(PlanNode* pNode);
+
+    // Return a list of ProjectedExprs that represent the column expressions
+    // that this PlanObject will return. All nodes and the list must be freed.
+    static PlanNodeList* pColumnExprs(QueryNode* pNode, PlanNode* pRootNode);
 
   protected:
     static eST eStatementType(PlanNode* pNode);

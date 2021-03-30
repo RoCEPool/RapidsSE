@@ -10,15 +10,18 @@ namespace BASE
   class Thread : public Loggable,
                  public ListItem_t<Thread>
   {
-  public:  
-    eHS      m_eThreadState;  // thread state
-    eCN      m_eDedicated;    // thread is dedicated to one specific job?
+  private:
     Mutex    m_oMutex;        // this threads mutex
-
-    Task*    m_pTask;         // task current being executed
-    i8       m_nAssignedTasks;// no of tasks scheduled so far to this thread
-
+    eCN      m_eDedicated;    // thread is dedicated to one specific job?
+    eHS      m_eThreadState;  // thread state
+  
     PsxThd*  m_pPsxThd;       // its posix structure
+    Task*    m_pTask;         // task current being executed
+
+    Object*  m_pObject0;      // general purpose object 0
+    Object*  m_pObject1;      // general purpose object 1
+
+    i8       m_nAssignedTasks;// no of tasks scheduled so far to this thread
   
     // must be last
     Footer m_xFooter;
@@ -37,23 +40,35 @@ namespace BASE
     static void* aEntryPoint_dummy(void* pArg);
     static void* aEntryPoint_general(void* pArg);
 
+    i8   nAssignedTasks(void);
     void vBind(i8 iCore);
     void vBindCore(void);
     i8   iCpu(void);
     void vContentDump(void);
+    eCN  eDedicated(void);
+    void vDedicated(eCN eDedicated);
     void vOutline(s4K& sOutline);
     void vLoop_dedicated(void);
     void vLoop_general(void);
+    Mutex* pMutex(void);
+    Object* pObject0(void);
+    void  vObject0(Object* pObject0);
+    Object* pObject1(void);
+    void  vObject1(Object* pObject1);
+    PsxThd* pPsxThd(void);
+    void vSetIdle(void);
     void vSpawnPsxThd(void* pFun(void*), void* pArg);
     void vSpawnPsxThd_dedicated(void);
     void vSpawnPsxThd_general(void);
     void vSpawnPsxThd_dummy(void);
     Task* pTask(void);
+    void vTask(Task* pTask);
     void vThisTLSThread(void);
     void vThreadEntry(void);
     i8   iThreadNo(void);
     eHS  eThreadState(void);
-  
+    void vThreadState(eHS eThreadState);
+
   private:
 
     Footer* aFooter(void);

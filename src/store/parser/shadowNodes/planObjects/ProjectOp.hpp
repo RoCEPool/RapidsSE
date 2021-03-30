@@ -24,7 +24,7 @@ namespace Parser
   public:
     static QueryNode* pCreate(QueryNodeList* pSelectItems);
     static void       vDescribe(PlanNode* pNode, s2K& sBuf);
-    static void       vExplain(PlanNode* pNode, s48K& sBuf, i8 iIndent);
+    static void       vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iIndent);
 
     // Returns true if a given node is a given type ** or is derived from that type **
     static b1 bIsOfType(PlanNode* pNode);
@@ -32,9 +32,19 @@ namespace Parser
     // Returns true if any of the projected expressions are aggregate expressions
     static b1 bHasAnAggregate(QueryNode* pNode);
 
-    // Return the node that represents the list of projected expressions.
+    // Return the internal node that represents the list of projected expressions.
     // Individual projected expressions are children of this node.
     static QueryNode* pProjectedExprs(QueryNode* pNode);
+
+    // Returns a new copy of the projected expressions rewritten relative to column ordinals.
+    // Must be freed after use.
+    static QueryNode* pOrdinalProjectedExprs(QueryNode* pNode, PlanNode* pRootNode);
+
+    // Return a list of ProjectedExprs that represent the column expressions
+    // that this PlanObject will return. All nodes and the list must be freed.
+    // This is conceptually the same as pProjectedExprs() above, except this
+    // function is implemented by all PlanObjects.
+    static PlanNodeList* pColumnExprs(QueryNode* pNode, PlanNode* pRootNode);
 
   protected:
 

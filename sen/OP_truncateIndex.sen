@@ -14,7 +14,7 @@
   PipeIn[].pipeOut
 
   // truncate the buffers of the tablePtn
-  index[] tablePtn[].truncateIndex
+  Index[] TablePtn[].truncateIndex
 
   Operand[].newDestroyMarker
   Operand[].pipeOut
@@ -31,7 +31,7 @@
 
   // check if we can scan the table
   <tableNm> <indexNm> op__table_index if
-    Table[].tablePtn@ to tablePtn[]
+    Table[].tablePtn@ to TablePtn[]
     PipeIn[].pipeOut
   then
 

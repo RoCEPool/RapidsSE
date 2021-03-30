@@ -7,38 +7,6 @@
 /*----------------------------------------------------------------------------*/
 /* verify and set folder to <tableNm> of tabledef                             */
 /*----------------------------------------------------------------------------*/
-: op__tableDef_infoSet ( tableNm -- )
-
-  params| sTableNm |
-
-  // save current path
-  path[].save
-
-  // move to default tables folder
-  "/tenants/boray/catalogs/rapidsse/schemas/public/tables"
-  str.toStrVec path[].set
-
-  // table
-  sTableNm check::validTableAssembly assert
-
-  // move to table folder and find the table
-  sTableNm path[].pushNamedTableFolder
-  sTableNm find execute to infoSetTable[]
-
-  // cross-check
-  infoSetTable[] assert
-
-  path[].popNamedTableFolder
-
-  // restore path
-  path[].restore
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* verify and set folder to <tableNm> of tabledef                             */
-/*----------------------------------------------------------------------------*/
 : op__file ( fileNm mode -- )
 
   params| mode sFileNm |
@@ -50,8 +18,7 @@
     true
   else
 
-    File0[].get file.delete assert::stack_0 nullptr File0[].set EC_INVALID_FILE
-    op.pipelineJob@ ERROR_JOB !!logError
+    File0[].get file.delete assert::stack_0 nullptr File0[].set
 
     // create an exec error infoset
     sFileNm EC_INVALID_FILE attachmap::errorText@ str.format
@@ -67,31 +34,63 @@
 /*----------------------------------------------------------------------------*/
 /* verify and set folder to <tableNm> of tabledef                             */
 /*----------------------------------------------------------------------------*/
-: op__tableDef_streamSet ( tableNm -- )
+: op__tableDef_infoSet ( tableNm -- )
 
   params| sTableNm |
 
   // save current path
-  path[].save
+  Path[].save
 
   // move to default tables folder
   "/tenants/boray/catalogs/rapidsse/schemas/public/tables"
-  str.toStrVec path[].set
+  str.toStrVec Path[].set
 
   // table
   sTableNm check::validTableAssembly assert
 
   // move to table folder and find the table
-  sTableNm path[].pushNamedTableFolder
+  sTableNm Path[].pushNamedTableFolder
+  sTableNm find execute to infoSetTable[]
+
+  // cross-check
+  infoSetTable[] assert
+
+  Path[].popNamedTableFolder
+
+  // restore path
+  Path[].restore
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* verify and set folder to <tableNm> of tabledef                             */
+/*----------------------------------------------------------------------------*/
+: op__tableDef_streamSet ( tableNm -- )
+
+  params| sTableNm |
+
+  // save current path
+  Path[].save
+
+  // move to default tables folder
+  "/tenants/boray/catalogs/rapidsse/schemas/public/tables"
+  str.toStrVec Path[].set
+
+  // table
+  sTableNm check::validTableAssembly assert
+
+  // move to table folder and find the table
+  sTableNm Path[].pushNamedTableFolder
   sTableNm find execute to streamSetTable[]
 
   // cross-check
   streamSetTable[] assert
 
-  path[].popNamedTableFolder
+  Path[].popNamedTableFolder
 
   // restore path
-  path[].restore
+  Path[].restore
   true
   ;
 
@@ -106,7 +105,6 @@
   // check in tables folder
   check::folderIsTables not if
     to errorCode
-    errorCode op.pipelineJob@ ERROR_JOB
 
     // create an exec error infoset
     errorCode op__execErr
@@ -120,7 +118,6 @@
   // table
   sTableNm check::validTableAssembly not if
     to errorCode
-    errorCode op.pipelineJob@ ERROR_JOB
 
     // create an exec error infoset
     sTableNm errorCode attachmap::errorText@ str.format
@@ -134,9 +131,9 @@
   then
 
   // move to table folder and find the table
-  sTableNm path[].pushNamedTableFolder
+  sTableNm Path[].pushNamedTableFolder
   sTableNm find execute to Table[]
-  path[].popNamedTableFolder
+  Path[].popNamedTableFolder
 
   // cross-check
   Table[] assert
@@ -154,7 +151,6 @@
   // check in tables folder
   check::folderIsTables not if
     to errorCode
-    errorCode op.pipelineJob@ ERROR_JOB
 
     // create an exec error infoset
     errorCode op__execErr
@@ -166,35 +162,34 @@
   then
 
   // move to table folder
-  sTableNm path[].pushNamedTableFolder
+  sTableNm Path[].pushNamedTableFolder
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // move to indexes folder
-  path[].pushIndexesFolder
+  Path[].pushIndexesFolder
 
   sIndexNm check::nameIsaIndex not if
     to errorCode
-    errorCode op.pipelineJob@ ERROR_JOB
 
     // create an exec error infoset
     errorCode op__execErr
 
     PipeIn[].delete
 
-    path[].popNamedTableFolder
-    path[].popIndexesFolder
+    Path[].popNamedTableFolder
+    Path[].popIndexesFolder
     false
     exit
   then
 
-  sIndexNm find execute to index[]
+  sIndexNm find execute to Index[]
 
   // cross-check
-  index[] assert
+  Index[] assert
 
-  path[].popNamedTableFolder
-  path[].popIndexesFolder
+  Path[].popNamedTableFolder
+  Path[].popIndexesFolder
 
   //pathStr .
   true
@@ -211,7 +206,6 @@
   // check in tables folder
   check::folderIsTables not if
     to errorCode
-    errorCode op.pipelineJob@ ERROR_JOB
 
     // create an exec error infoset
     errorCode op__execErr
@@ -225,7 +219,6 @@
   // table
   sTableNm check::validTableAssembly not if
     to errorCode
-    errorCode op.pipelineJob@ ERROR_JOB
 
     // create an exec error infoset
     sTableNm errorCode attachmap::errorText@ str.format
@@ -239,7 +232,7 @@
   then
 
   // move to table folder and find the table
-  sTableNm path[].pushNamedTableFolder
+  sTableNm Path[].pushNamedTableFolder
   sTableNm find execute to Table[]
 
   // cross-check
@@ -248,30 +241,29 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // move to indexes folder
-  path[].pushIndexesFolder
+  Path[].pushIndexesFolder
 
   sIndexNm check::nameIsaIndex not if
     to errorCode
-    errorCode op.pipelineJob@ ERROR_JOB
 
     // create an exec error infoset
     errorCode op__execErr
 
     PipeIn[].delete
 
-    path[].popNamedTableFolder
-    path[].popIndexesFolder
+    Path[].popNamedTableFolder
+    Path[].popIndexesFolder
     false
     exit
   then
 
-  sIndexNm find execute to index[]
+  sIndexNm find execute to Index[]
 
   // cross-check
-  index[] assert
+  Index[] assert
 
-  path[].popNamedTableFolder
-  path[].popIndexesFolder
+  Path[].popNamedTableFolder
+  Path[].popIndexesFolder
 
   //pathStr .
   true

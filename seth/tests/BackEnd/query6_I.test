@@ -2,6 +2,9 @@
 -- query6 tests
 --------------------------------------------------------------------------------
 
+trackMemory;
+success;
+
 //------------------------------------------------------------------------------
 pipeline Query6
 begin
@@ -19,7 +22,7 @@ begin
     aggreg 0 " as revenue sum ( l_extendedPrice l_discount * ) "
     | output | sink | stageA
 end;
-failure contains: "EC_NO_SUCH_TABLE"
+failure contains: "Table does not exist"
 
 //------------------------------------------------------------------------------
 // create table lineitem
@@ -241,6 +244,9 @@ rows:
 // drop the table
 drop table lineitem;
 success;
+
+MemoryLeaks;
+rows: 0
 
 CLEANUP {
 

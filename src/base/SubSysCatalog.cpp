@@ -41,10 +41,9 @@ SubSysCatalog::SubSysCatalog(void)
 /*----------------------------------------------------------------------------*/
 /* list subsystems                                                            */
 /*----------------------------------------------------------------------------*/
-void SubSysCatalog::vSubSystems(SelfFn* aSelfFn, TokenVec* pTokenVec)
+void SubSysCatalog::vSubSystems(TokenVec* pTokenVec)
 {
   _static_
-  UNUSED(aSelfFn);
   UNUSED(pTokenVec);
 
   gxSubSysCatalog.vList();
@@ -53,10 +52,9 @@ void SubSysCatalog::vSubSystems(SelfFn* aSelfFn, TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 /* describe susbsystems recursively                                           */
 /*----------------------------------------------------------------------------*/
-void SubSysCatalog::vDescribe(SelfFn* aSelfFn, TokenVec* pTokenVec)
+void SubSysCatalog::vDescribe(TokenVec* pTokenVec)
 {
   _static_
-  UNUSED(aSelfFn);
   UNUSED(pTokenVec);
 
   gxSubSysCatalog.vDescribeRecursively("AttachMap"_Stz,0);

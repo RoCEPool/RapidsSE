@@ -39,11 +39,11 @@ namespace Parser
       i8 m_iInt;        // signed 8-byte integer value
       u8 m_uInt;        // unsigned 8-byte integer value
       d8 m_dFloat;      // 8-byte floating point value
-      Text *m_pText;       // string data
-      Dte m_xDate;       // date
-      Tme m_xTime;       // time
-      Tsp m_xTsp;        // timestamp
-      Ivl m_xIvl;        // interval
+      Text *m_pText;    // string data
+      Dte m_xDate;      // date
+      Tme m_xTime;      // time
+      Tsp m_xTsp;       // timestamp
+      Ivl m_xIvl;       // interval
     };
 
     Type m_eType;     // The type of the value stored in the union.
@@ -219,6 +219,42 @@ namespace Parser
       }
 
       return *this;
+    }
+
+    // Equality operator
+    b1 operator==(const Value& xOther)
+    {
+      if (this == &xOther)  return true;
+
+      if (    m_eType != xOther.m_eType)      return false;
+      if (m_bMustFree != xOther.m_bMustFree)  return false;
+      if (  m_bIsNull != xOther.m_bIsNull)    return false;
+
+      switch (m_eType) {
+        case VT_STRING:
+          if (m_bIsNull) {
+            // Both are null. Just compare pointers.
+            if (m_pText != xOther.m_pText)    return false;
+
+          } else {
+            // Compare the strings
+            if (!m_pText->szGet()->bEqual(xOther.m_pText->szGet())) return false;
+          }
+          break;
+
+        default:
+          // Just compare the union as an integer
+          if (m_iInt != xOther.m_iInt)        return false;
+      }
+
+      // We are equal
+      return true;
+    }
+
+    // Inequality operator
+    b1 operator!=(const Value& xOther)
+    {
+      return !(*this == xOther);
     }
 
     // Destructor
@@ -410,6 +446,7 @@ namespace Parser
   class PlanNode : public /*VIRTUAL*/ Object
   {
     friend class GraphValidator;  // to aide validation of the plan graph
+    friend class GraphEditor;     // Contains extra node/graph manipulation utilities
 
   protected:
     s256  m_sName;                // Name of the node. Must be unique amongst its siblings
@@ -467,6 +504,7 @@ namespace Parser
     // Convenience functions for accessing children
     PlanNode* pFirstChild();
     PlanNode* pSecondChild();
+    PlanNode* pNthChild(i8 iIdx); // 0-based index
     PlanNode* pLastChild();
   };
   

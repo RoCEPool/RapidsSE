@@ -12,9 +12,9 @@
   PipeIn[] to Operand[]
   nullptr to PipeIn[]
 
-  tablePtn[] tablePtnGrabWrite
+  TablePtn[].grabWrite_yieldLoop
   Operand[].insdelIntoTable
-  tablePtn[] tablePtnDropWrite
+  TablePtn[].dropWrite
 
   Operand[].delete
 
@@ -31,9 +31,9 @@
 
   "insDel_RowBuffer" .
 
-  tablePtn[] tablePtnGrabWrite
+  TablePtn[].grabWrite_yieldLoop
   Operand[].insdelIntoTable
-  tablePtn[] tablePtnDropWrite
+  TablePtn[].dropWrite
 
   Operand[].delete
 
@@ -46,7 +46,7 @@
 : insDel_StartMarker \handler
 
   <tableNm> op__table if
-    Table[].tablePtn@ to tablePtn[]
+    Table[].tablePtn@ to TablePtn[]
     PipeIn[].pipeOut
   then
 

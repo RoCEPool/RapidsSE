@@ -382,6 +382,29 @@ public:
   static b1 bIsValid(i8 iYear, i8 iMonth, i8 iDay, i8 iHour, i8 iMin, i8 iSec, i8 iMicro, s256& sErrorBuf);
 };
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// unknown
+class Unk
+{
+public:
+  union {
+    i8 m_iInt;
+    i8 m_iAsI8;
+  };
+  
+  operator i8(void)                    { return m_iAsI8; }  // auto conversion
+  
+  void operator = (i8 iArg)            { m_iAsI8 = iArg; }  // assign from i8
+  
+  void vSetMax(void)               { m_iAsI8 = C_I8_MAX; }  // set max value
+  void vSetMid(void)               { m_iAsI8 = C_I8_MID; }  // set mid value
+  void vSetMin(void)               { m_iAsI8 = C_I8_MIN; }  // set min value
+  void vSetNull(void)          { m_iAsI8 = C_DATUM_NULL; }  // set to be null
+  void vSetUsual(void)                   { m_iAsI8 = 42; }  // set usual value
+
+  bool bIsNull(void) { return (C_DATUM_NULL == m_iAsI8); }  // test for null
+};
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

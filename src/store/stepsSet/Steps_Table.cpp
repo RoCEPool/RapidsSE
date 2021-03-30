@@ -53,23 +53,25 @@ void Step::vAddSteps_Table(void)
   vAddStep("table[].findColumn"_Stz,       &Step::vTableFindColumn);
   vAddStep("table.indexCount"_Stz,         &Step::vTableIndexCount);
   vAddStep("table.isColumn"_Stz,           &Step::vTableIsColumn);
-  vAddStep("table[].isDefinitionOnly@"_Stz, &Step::vTableIsDefinitionOnlyFetch);
-  vAddStep("table[].isDefinitionOnly!"_Stz, &Step::vTableIsDefinitionOnlyStore);
+  vAddStep("table[].isInternallyDefined"_Stz, &Step::vTableIsInternallyDefined);
+  vAddStep("table[].isUserCreated"_Stz,    &Step::vTableIsUserCreated);
   vAddStep("table.lazyBuildIndexes"_Stz,   &Step::vTableLazyBuildIndexes);
   vAddStep("table[].listPartition"_Stz,    &Step::vTableListPartition);
+  vAddStep("table[].name@"_Stz,            &Step::vTableNameFetch);
   vAddStep("table[].ptnStreamDef@"_Stz,    &Step::vTablePtnStreamDefFetch);
   vAddStep("table.purge"_Stz,              &Step::vTablePurge);
   vAddStep("table[].size"_Stz,             &Step::vTableSize);
   vAddStep("table[].streamDef@"_Stz,       &Step::vTableStreamDefFetch);
   vAddStep("table.streamDef!"_Stz,         &Step::vTableStreamDefStore);
   vAddStep("table[].tablePtn@"_Stz,        &Step::vTableTablePtnFetch);
+  vAddStep("table[].tablePtnGet"_Stz,      &Step::vTableTablePtnGet);
   vAddStep("table[].tablePtnZero"_Stz,     &Step::vTableTablePtnZero);
   vAddStep("table[].verify"_Stz,           &Step::vTableVerify);
   vAddStep("table[].visualize"_Stz,        &Step::vTableVisualize);
 }
 
 /*----------------------------------------------------------------------------*/
-/* table::new -- delete an instance of table                                  */
+/* table::delete -- delete an instance of table                               */
 /*----------------------------------------------------------------------------*/
 void Step::vTableDelete(void)
 {
@@ -132,7 +134,11 @@ void Step::vTableAsAltStreamDef(void)
     
   StreamDef* pStreamDef = pTable->pStreamDef();
 
-  ( m_pJob->pLogicUnit_job() )->m_pDevAltRow->m_pStreamDef = pStreamDef;
+  StreamDef* pStreamDefOld = ( m_pJob->pLogicUnit_job() )->m_pDevAltRow->m_pStreamDef;
+  if (pStreamDefOld)
+    delete pStreamDefOld;
+
+  ( m_pJob->pLogicUnit_job() )->m_pDevAltRow->m_pStreamDef = new StreamDef(pStreamDef);
 
   EXIT();
 }
@@ -148,7 +154,11 @@ void Step::vTableAsSrcStreamDef(void)
     
   StreamDef* pStreamDef = pTable->pStreamDef();
 
-  ( m_pJob->pLogicUnit_job() )->m_pDevSrcRow->m_pStreamDef = pStreamDef;
+  StreamDef* pStreamDefOld = ( m_pJob->pLogicUnit_job() )->m_pDevSrcRow->m_pStreamDef;
+  if (pStreamDefOld)
+    delete pStreamDefOld;
+
+  ( m_pJob->pLogicUnit_job() )->m_pDevSrcRow->m_pStreamDef = new StreamDef(pStreamDef);
   
   EXIT();
 }
@@ -297,6 +307,25 @@ void Step::vTableTablePtnFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Table[].tablePtnGet -- fetch given table partition[tPtnNo]                 */
+/*----------------------------------------------------------------------------*/
+void Step::vTableTablePtnGet(void)
+{
+  ENTRY();
+  
+  Table* pTable = _pTable(*( m_pJob->pLogicUnit_job() )->m_xpTable);
+    
+  tPN tPtnNo = m_pDataStack->iPopInt(__func__);;
+  
+  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnNo);
+  TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
+  
+  m_pDataStack->vPushPtr(pTablePtn);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Table[].tablePtnZer0 -- fetch table partition[0]                           */
 /*----------------------------------------------------------------------------*/
 void Step::vTableTablePtnZero(void)
@@ -397,29 +426,29 @@ void Step::vTableIsColumn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table.isDefinitionOnly -- is the table a definition only                   */
+/* table.isInternallyDefines -- is the table internally defined?              */
 /*----------------------------------------------------------------------------*/
-void Step::vTableIsDefinitionOnlyFetch(void)
+void Step::vTableIsInternallyDefined(void)
 {
   ENTRY();
   
   Table* pTable = _pTable(*( m_pJob->pLogicUnit_job() )->m_xpTable);
 
-  m_pDataStack->vPushInt(pTable->bIsDefinitionOnly());
+  m_pDataStack->vPushInt(pTable->bIsInternallyDefined());
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* table.isDefinitionOnly! -- store table is definition only                  */
+/* table.isUserCreated -- is the table a user created table?                   */
 /*----------------------------------------------------------------------------*/
-void Step::vTableIsDefinitionOnlyStore(void)
+void Step::vTableIsUserCreated(void)
 {
   ENTRY();
   
   Table* pTable = _pTable(*( m_pJob->pLogicUnit_job() )->m_xpTable);
-  
-  pTable->vIsDefinitionOnly(m_pDataStack->iPopInt(__func__));
+
+  m_pDataStack->vPushInt(pTable->bIsUserCreated());
   
   EXIT();
 }
@@ -473,6 +502,22 @@ void Step::vTableListPartition(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Table[].name@ -- fetch table name                                          */
+/*----------------------------------------------------------------------------*/
+void Step::vTableNameFetch(void)
+{
+  ENTRY();
+  
+  Table* pTable = _pTable(*( m_pJob->pLogicUnit_job() )->m_xpTable);
+  
+  Stz* szTableNm = pTable->szTableNm();
+  
+  m_pDataStack->vPushStz(szTableNm);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* table::new -- create a new instance of table                               */
 /*----------------------------------------------------------------------------*/
 void Step::vTableNew(void)
@@ -482,9 +527,10 @@ void Step::vTableNew(void)
   s32 sTableNm;
   m_pDataStack->vPopStr(sTableNm,__func__);
   
-  eTT eTableKind = TT_NORMAL;
   Job* pJob = MY::pJob();
   TagSet* pJobTags = pJob->pJobTags();
+
+  eTT eTableKind = TT_NORMAL;
   if (pJobTags && pJobTags->bHasName(C_TAG_INFOSET))
     eTableKind = TT_INFOSET;
   else

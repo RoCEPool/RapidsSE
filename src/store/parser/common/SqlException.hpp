@@ -9,6 +9,9 @@
 #include "TableMetadata.hpp"
 #include "ColumnMetadata.hpp"
 #include "TableDef.hpp"
+#include "PlanNode.hpp"
+#include "QueryNode.hpp"
+#include "eEC.h"
 
 namespace Parser
 {
@@ -16,60 +19,121 @@ namespace Parser
   class SqlException : public std::runtime_error
   {
   protected:
+    eEC m_eErrorCode;
+    i8  m_iLine;
+    i8  m_iColumn;
+
     // Constructor
-    SqlException(const Stz* szErrorMsg)
-      : std::runtime_error(const_cast<Stz*>(szErrorMsg)->azChar())    { /* noop */ }
+    SqlException(eEC eErrorCode, const Stz* szErrorMsg)
+      : std::runtime_error(const_cast<Stz*>(szErrorMsg)->azChar()),
+        m_eErrorCode(eErrorCode),
+        m_iLine(0),
+        m_iColumn(0)
+    { /* noop */ }
+
+    // Constructor, with line and column information
+    SqlException(eEC eErrorCode, const Stz* szErrorMsg, i8 iLine, i8 iColumn)
+        : std::runtime_error(const_cast<Stz*>(szErrorMsg)->azChar()),
+          m_eErrorCode(eErrorCode),
+          m_iLine(iLine),
+          m_iColumn(iColumn)
+    { /* noop */ }
 
   public:
     Stz* szError()    { return (Stz*) this->what(); }
+    eEC  eErrorCode() { return m_eErrorCode;        }
+    i8   iLine()      { return m_iLine;             }
+    i8   iColumn()    { return m_iColumn;           }
   };
 
   // An error with the format of the input
   class SyntaxException : public SqlException
   {
-  private:
-    i8 m_iLine;
-    i8 m_iColumn;
-
-  public:
-    // Constructor
-    SyntaxException(i8 iLine, i8 iColumn, const Stz* szErrorMsg)
-      : SqlException(szErrorMsg), m_iLine(iLine), m_iColumn(iColumn)
+  protected:
+    // Constructor. Can only be created by calling vThrow() methods
+    SyntaxException(eEC eErrorCode, const Stz* szErrorMsg, i8 iLine, i8 iColumn)
+      : SqlException(eErrorCode, szErrorMsg, iLine, iColumn)
       { /* noop */ }
 
-    // Creates and throws a SyntaxException
-    static void vThrow(i8 iLine, i8 iColumn, Stz* szFormat, ...) {
+  public:
+    // Creates and throws a SyntaxException. The error message should come from ANTLR.
+    static void vThrowAntlr(i8 iLine, i8 iColumn, Stz* szFormat, ...)
+    {
       s256 sErrMsg;
       va_list vaArgs;
 
       va_start(vaArgs,szFormat);
-      sErrMsg.vSprint(vaArgs, szFormat);
+      sErrMsg.vSprintVA(szFormat,vaArgs);
       va_end(vaArgs);
 
-      throw SyntaxException(iLine, iColumn, sErrMsg.szStz());
+      throw SyntaxException(EC_SYNTAX_ERROR, sErrMsg.szStz(), iLine, iColumn);
     }
 
-    i8 iLine()            { return m_iLine;   }
-    i8 iColumn()          { return m_iColumn; }
+    // An error that indicates that the given syntax feature is not yet implemented
+    static void vThrowNotImplemented(i8 iLine, i8 iColumn, Stz* szFeatureName)
+    {
+      s256 sErrMsg(aErrorMsg[EC_NOT_IMPLEMENTED]);
+      sErrMsg.vCatSprint(": %s"_Stz, szFeatureName);
+
+      throw SyntaxException(EC_NOT_IMPLEMENTED, sErrMsg.szStz(), iLine, iColumn);
+    }
+
+    static void vThrow(i8 iLine, i8 iColumn, eEC eErrorCode)
+    {
+      s256 sErrMsg(aErrorMsg[eErrorCode]);
+      throw SyntaxException(eErrorCode, sErrMsg.szStz(), iLine, iColumn);
+    }
+
+    static void vThrow(i8 iLine, i8 iColumn, eEC eErrorCode, Stz* szParamFormat, ...)
+    {
+      // Get the default error message for this error code
+      s256 sErrMsg(aErrorMsg[eErrorCode]);
+
+      // Form a string from the ParamFormat and any arguments
+      s256 sParamStr;
+      va_list vaArgs;
+
+      va_start(vaArgs,szParamFormat);
+      sParamStr.vSprintVA(szParamFormat,vaArgs);
+      va_end(vaArgs);
+
+      // Combine the ParamFormat string with the default error message
+      sErrMsg.vConcat(sParamStr);
+
+      throw SyntaxException(eErrorCode, sErrMsg.szStz(), iLine, iColumn);
+    }
   };
 
   // An error with the meaning of the input
   class SemanticException : public SqlException
   {
-  public:
+  protected:
     // Constructor
-    SemanticException(const Stz* szErrorMsg) : SqlException(szErrorMsg)   { /* noop */ }
+    SemanticException(eEC eErrorCode, Stz* szErrorMsg) : SqlException(eErrorCode, szErrorMsg)   { /* noop */ }
 
-    // Creates and throws a SemanticException
-    static void vThrow(Stz* szFormat, ...) {
-      s256 sErrMsg;
+  public:
+    // Creates and throws a type of SemanticException. No parameters are appended to the error message.
+    static void vThrow(eEC eErrorCode)
+    {
+      throw SemanticException(eErrorCode, aErrorMsg[eErrorCode]);
+    }
+
+    // Creates and throws a type of SemanticException. Parameters are appended to the error message.
+    static void vThrow(eEC eErrorCode, Stz* szParamFormat, ...)
+    {
+      s256 sErrMsg(aErrorMsg[eErrorCode]);
       va_list vaArgs;
 
-      va_start(vaArgs,szFormat);
-      sErrMsg.vSprint(vaArgs, szFormat);
+      // Print the parameters to a string
+      s256 sParamStr;
+      va_start(vaArgs,szParamFormat);
+      sParamStr.vSprintVA(szParamFormat,vaArgs);
       va_end(vaArgs);
 
-      throw SemanticException(sErrMsg.szStz());
+      // Combine the base error message and the parameters
+      sErrMsg.vConcat(sParamStr);
+
+      throw SemanticException(eErrorCode, sErrMsg.szStz());
     }
   };
 
@@ -77,37 +141,40 @@ namespace Parser
   // An error looking up a name in the system
   class NameValidationException : public SqlException
   {
-  public:
+  protected:
     // Constructor
-    NameValidationException(const Stz* szErrorMsg) : SqlException(szErrorMsg)   { /* noop */ }
+    NameValidationException(eEC eErrorCode, const Stz* szErrorMsg)
+      : SqlException(eErrorCode, szErrorMsg)
+    { /* noop */ }
 
-    // Creates and throws a NameValidationException
+  public:
+    // Convenience functions for creating and throwing errors with custom
+    // formatting and appending of parameters
+
     static void vThrowUnknownTable(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName)
     {
-      s256 sErrMsg;
-      sErrMsg.vConcat("Unknown table name: "_Stz);
+      s256 sErrMsg(aErrorMsg[EC_NO_SUCH_TABLE2]);
 
       if (szCatalogName) {
-        sErrMsg.vCatSprint("%s.%s.%s"_Stz, szCatalogName, szSchemaName, szTableName);
+        sErrMsg.vCatSprint(": %s.%s.%s"_Stz, szCatalogName, szSchemaName, szTableName);
       } else if (szSchemaName) {
-        sErrMsg.vCatSprint("%s.%s"_Stz, szSchemaName, szTableName);
+        sErrMsg.vCatSprint(": %s.%s"_Stz, szSchemaName, szTableName);
       } else {
-        sErrMsg.vCatSprint("%s"_Stz, szTableName);
+        sErrMsg.vCatSprint(": %s"_Stz, szTableName);
       }
-      throw NameValidationException(sErrMsg.szStz());
+      throw NameValidationException(EC_NO_SUCH_TABLE2, sErrMsg.szStz());
     }
 
     static void vThrowAmbiguousTable(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName, STORE::InfoSet* pInfoSet)
     {
-      s256 sErrMsg;
-      sErrMsg.vConcat("Ambiguous table name: "_Stz);
+      s256 sErrMsg(aErrorMsg[EC_AMBIGUOUS_TABLE]);
 
       if (szCatalogName) {
-        sErrMsg.vCatSprint("%s.%s.%s"_Stz, szCatalogName, szSchemaName, szTableName);
+        sErrMsg.vCatSprint(": %s.%s.%s"_Stz, szCatalogName, szSchemaName, szTableName);
       } else if (szSchemaName) {
-        sErrMsg.vCatSprint("%s.%s"_Stz, szSchemaName, szTableName);
+        sErrMsg.vCatSprint(": %s.%s"_Stz, szSchemaName, szTableName);
       } else {
-        sErrMsg.vCatSprint("%s"_Stz, szTableName);
+        sErrMsg.vCatSprint(": %s"_Stz, szTableName);
       }
 
       sErrMsg.vConcat(". Could be one of:"_Stz);
@@ -124,23 +191,22 @@ namespace Parser
       }
 
       delete pInfoSet;
-      throw NameValidationException(sErrMsg.szStz());
+      throw NameValidationException(EC_AMBIGUOUS_TABLE, sErrMsg.szStz());
     }
 
     static void vThrowUnknownColumn(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName, Stz* szColumnName) {
-      s256 sErrMsg;
-      sErrMsg.vConcat("Unknown column name: "_Stz);
+      s256 sErrMsg(aErrorMsg[EC_NO_SUCH_COLUMN]);
 
       if (szCatalogName) {
-        sErrMsg.vCatSprint("%s.%s.%s.%s"_Stz, szCatalogName, szSchemaName, szTableName, szColumnName);
+        sErrMsg.vCatSprint(": %s.%s.%s.%s"_Stz, szCatalogName, szSchemaName, szTableName, szColumnName);
       } else if (szSchemaName) {
-        sErrMsg.vCatSprint("%s.%s.%s"_Stz, szSchemaName, szTableName, szColumnName);
+        sErrMsg.vCatSprint(": %s.%s.%s"_Stz, szSchemaName, szTableName, szColumnName);
       } else if (szTableName) {
-        sErrMsg.vCatSprint("%s.%s"_Stz, szTableName, szColumnName);
+        sErrMsg.vCatSprint(": %s.%s"_Stz, szTableName, szColumnName);
       } else {
-        sErrMsg.vCatSprint("%s"_Stz, szColumnName);
+        sErrMsg.vCatSprint(": %s"_Stz, szColumnName);
       }
-      throw NameValidationException(sErrMsg.szStz());
+      throw NameValidationException(EC_NO_SUCH_COLUMN, sErrMsg.szStz());
     }
 
     static void vThrowAmbiguousColumn(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName,
@@ -148,17 +214,16 @@ namespace Parser
     {
       ASSERT(pTableDefList->nItems() > 1);
 
-      s256 sErrMsg;
-      sErrMsg.vConcat("Ambiguous column name: "_Stz);
+      s256 sErrMsg(aErrorMsg[EC_AMBIGUOUS_COLUMN]);
 
       if (szCatalogName) {
-        sErrMsg.vCatSprint("%s.%s.%s.%s"_Stz, szCatalogName, szSchemaName, szTableName, szColumnName);
+        sErrMsg.vCatSprint(": %s.%s.%s.%s"_Stz, szCatalogName, szSchemaName, szTableName, szColumnName);
       } else if (szSchemaName) {
-        sErrMsg.vCatSprint("%s.%s.%s"_Stz, szSchemaName, szTableName, szColumnName);
+        sErrMsg.vCatSprint(": %s.%s.%s"_Stz, szSchemaName, szTableName, szColumnName);
       } else if (szTableName){
-        sErrMsg.vCatSprint("%s.%s"_Stz, szTableName, szColumnName);
+        sErrMsg.vCatSprint(": %s.%s"_Stz, szTableName, szColumnName);
       } else {
-        sErrMsg.vCatSprint("%s"_Stz, szColumnName);
+        sErrMsg.vCatSprint(": %s"_Stz, szColumnName);
       }
 
       sErrMsg.vConcat(". Could be one of:"_Stz);
@@ -178,9 +243,25 @@ namespace Parser
       pTableDefList->vRemoveAll();
       delete pTableDefList;   // yes, delete the list we were passed
 
-      throw NameValidationException(sErrMsg.szStz());
+      throw NameValidationException(EC_AMBIGUOUS_COLUMN, sErrMsg.szStz());
+    }
+
+    static void vThrowUnresolvableColumnWildcard(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName) {
+      s256 sErrMsg(aErrorMsg[EC_UNRESOLVED_COLUMN_WILDCARD]);
+
+      if (szCatalogName) {
+        sErrMsg.vCatSprint(": %s.%s.%s.*"_Stz, szCatalogName, szSchemaName, szTableName);
+      } else if (szSchemaName) {
+        sErrMsg.vCatSprint(": %s.%s.*"_Stz, szSchemaName, szTableName);
+      } else if (szTableName) {
+        sErrMsg.vCatSprint(": %s.*"_Stz, szTableName);
+      } else {
+        sErrMsg.vConcat(": *"_Stz);
+      }
+      throw NameValidationException(EC_UNRESOLVED_COLUMN_WILDCARD, sErrMsg.szStz());
     }
   };
+
 }
 
 /*============================================================================*/

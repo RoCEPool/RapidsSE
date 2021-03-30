@@ -13,7 +13,7 @@
   //"Operand:- ZK_DATAPULSE" .verbose
 
   // truncate the buffers of the tablePtn
-  tablePtn[].truncate
+  TablePtn[].truncate
 
   PipeIn[].pipeout
 
@@ -32,7 +32,7 @@
 
   // check if we can truncate the table
   <tableNm> op__table if
-    Table[].tablePtn@ to tablePtn[]
+    Table[].tablePtn@ to TablePtn[]
     PipeIn[].pipeOut
   then
 

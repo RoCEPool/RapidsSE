@@ -14,9 +14,9 @@
   nullptr to PipeIn[]
 
   tx[].begin
-  tablePtn[] tablePtnGrabWrite
+  TablePtn[].grabWrite_yieldLoop
   Operand[].upsertIntoTable
-  tablePtn[] tablePtnDropWrite
+  TablePtn[].dropWrite
   tx[].commit
   Operand[].delete
 
@@ -31,7 +31,7 @@
   //"Operand:- ZK_STARTMARKER" .verbose
   // check if we can insert into the table
   <tableNm> op__table if
-    Table[].tablePtn@ to tablePtn[]
+    Table[].tablePtn@ to TablePtn[]
     PipeIn[].pipeOut
   then
 

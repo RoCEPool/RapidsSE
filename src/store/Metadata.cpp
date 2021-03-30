@@ -71,7 +71,7 @@ Dic* Metadata::pCurrCatalog(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
     
-  DicStack* pDicStack = AM::pTaskDicStack();
+  DicStack* pDicStack = AM::TASK::pDicStack();
 
   for (i8 i_Dic = pDicStack->iCount() - 1; i_Dic >= 0; i_Dic--) {
     
@@ -107,7 +107,7 @@ Dic* Metadata::pCurrSchema(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
     
-  DicStack* pDicStack = AM::pTaskDicStack();
+  DicStack* pDicStack = AM::TASK::pDicStack();
 
   for (i8 i_Dic = pDicStack->iCount() - 1; i_Dic >= 0; i_Dic--) {
     
@@ -143,7 +143,7 @@ Dic* Metadata::pCurrTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
     
-  DicStack* pDicStack = AM::pTaskDicStack();
+  DicStack* pDicStack = AM::TASK::pDicStack();
 
   for (i8 i_Dic = pDicStack->iCount() - 1; i_Dic >= 0; i_Dic--) {
     
@@ -179,7 +179,7 @@ Dic* Metadata::pCurrTenant(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
     
-  DicStack* pDicStack = AM::pTaskDicStack();
+  DicStack* pDicStack = AM::TASK::pDicStack();
 
   for (i8 i_Dic = pDicStack->iCount() - 1; i_Dic >= 0; i_Dic--) {
     

@@ -16,9 +16,7 @@ INCLUDE 'tpchLoad.test';
 LOG 'Running tpch queries...';
 
 //------------------------------------------------------------------------------
-LOOP 25 {
 INCLUDE 'tpchQueries.test';
-} -- end of loop
 
 //------------------------------------------------------------------------------
 //LOG 'Dropping tpch schema...';

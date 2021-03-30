@@ -218,7 +218,7 @@ QueryNode* TableDef::pColumnDef(QueryNode* pNode, Stz* szColumnName)
     QueryNode* pChild = static_cast<QueryNode*>(pIter->pNext());
     ASSERT(ColumnDef::bIsOfType(pChild));
 
-    if (ColumnDef::szColumnName(pChild)->bEqual(szColumnName)) {
+    if (ColumnDef::szColumnName(pChild)->bSame(szColumnName)) {
       pColumnDef = pChild;
       break;
     }
@@ -264,7 +264,7 @@ QueryNode* TableDef::pIndexDef(QueryNode* pNode, Stz* szIndexName)
     QueryNode* pChild = static_cast<QueryNode*>(pIter->pNext());
     ASSERT(IndexDefn::bIsOfType(pChild));
 
-    if (IndexDefn::szIndexName(pChild)->bEqual(szIndexName)) {
+    if (IndexDefn::szIndexName(pChild)->bSame(szIndexName)) {
       pIndexDef = pChild;
       break;
     }

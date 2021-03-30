@@ -17,10 +17,10 @@
   <tableNm> sIndexNm op__index assert
 
   // grab the table ptn read lock
-  tablePtn[] tablePtnGrabRead
+  TablePtn[].grabRead_yieldLoop
 
   // new an index stream
-  index[] tablePtn[] indexStream::new to indexStream[]
+  Index[] TablePtn[] indexStream::new to indexStream[]
 
   // open index stream to access index
   indexStream[].open
@@ -94,8 +94,8 @@
     AT_SCAN of
       "*scan*" .verbose
       // now get excat key rows from index
-      tablePtn[] tablePtnGrabRead
-      tablePtn[] ptnStream::new to ptnStream[]
+      TablePtn[].grabRead_yieldLoop
+      TablePtn[] ptnStream::new to ptnStream[]
 
       // open ptn stream for the tablePtn
       ptnStream[] ptnStream.open assert
@@ -168,7 +168,7 @@
         nullptr to indexStream[]
       then
  
-      tablePtn[] tablePtnDropRead
+      TablePtn[].dropRead
 
       // delete the path identifier
       PathIdentifier[].delete
@@ -183,7 +183,7 @@
       Operand[].pipeOut
     else
 
-      tablePtn[] tablePtnDropRead
+      TablePtn[].dropRead
 
       // position and fetch first buffer for next phrase
       Counter1[] fetchFirstBuffer
@@ -249,7 +249,7 @@
   0 locals| iPhrases |
 
   <tableNm> op__table if
-    Table[].tablePtn@ to tablePtn[]
+    Table[].tablePtn@ to TablePtn[]
     PipeIn[].pipeOut
   then
 

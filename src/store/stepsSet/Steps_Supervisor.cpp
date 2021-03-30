@@ -68,7 +68,14 @@ void Step::vSupervisorCollectInfo(void)
 
   // Add node name to the packet
   MemLib::vZero(xHeartbeat.m_acNodeName,sizeof(xHeartbeat.m_acNodeName),CN_NONE);
-  strncpy(xHeartbeat.m_acNodeName, gxCmdLineArgs.m_xSysArgs.m_sNodeName.azChar(), sizeof(xHeartbeat.m_acNodeName) - 1);
+  s32 szNodeName;
+  if (gxCmdLineArgs.m_xSysArgs.m_nBootNodes > 1)
+    szNodeName = gxCmdLineArgs.m_xSysArgs.m_sNodeName;
+  else
+    szNodeName.vSprint("%s:%lld"_Stz, gxCmdLineArgs.m_xSysArgs.m_xBootNode[0].m_sIPAddress.azChar(),
+                     gxCmdLineArgs.m_xSysArgs.m_xBootNode[0].m_iPortNo);
+  strncpy(xHeartbeat.m_acNodeName, szNodeName.azChar(), sizeof(xHeartbeat.m_acNodeName) - 1);
+  //strncpy(xHeartbeat.m_acNodeName, gxCmdLineArgs.m_xSysArgs.m_sNodeName.azChar(), sizeof(xHeartbeat.m_acNodeName) - 1);
 
   xHeartbeat.xBaseHeartbeat.m_iSystemUsec = AM::iSystemUsec();
   xHeartbeat.xBaseHeartbeat.m_iUserUsec = AM::iUserUsec();
@@ -118,7 +125,6 @@ void Step::vSupervisorCollectInfo(void)
     xHeartbeat.m_acAddr[sizeof(xHeartbeat.m_acAddr) - 1] = 0;
     xHeartbeat.m_iPort = pNode->iPortNo();
     //printf("Hello, My addr:%s and port:%lld\n", pNode->szIPAddr()->azChar(), pNode->iPortNo());
-    // Please keep intouch
   }
 
   CheckSum ChecksumValue((unsigned char *) &xHeartbeat, sizeof(Heartbeat));

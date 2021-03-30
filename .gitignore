@@ -13,3 +13,5 @@ bin
 
 # For the Bamboo box
 TPCH/
+tpch/
+tpch

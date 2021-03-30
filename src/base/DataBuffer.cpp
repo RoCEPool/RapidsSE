@@ -22,9 +22,9 @@ DataBuffer* BASE::_pDataBuffer(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
+DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent, i8 iLogCtl)
 : LinkedBuffer(eClassNo)
-, m_okLock(this)
+, m_okLock(this,iLogCtl)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
@@ -45,6 +45,50 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
 DataBuffer::~DataBuffer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get the entry buffer that given id references                              */
+/*----------------------------------------------------------------------------*/
+DataBuffer* DataBuffer::pRefdDataBuffer(Rrf& xRef)
+{
+  _static_
+  
+  i8 i_Buffer = xRef.iBuffer();
+  
+  HeapBuffer* pHeapBuffer =
+  reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(i_Buffer));
+  
+  DataBuffer* pDataBuffer =
+  reinterpret_cast<DataBuffer*>(pHeapBuffer->aFirstChunk());
+  
+  ASSERT(pDataBuffer);
+  ASSERT(pDataBuffer->eGetClassNo() == CN_CRWBUFFER || pDataBuffer->eGetClassNo() == CN_CRVBUFFER);
+  
+  return pDataBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the data buffer that contains the given address                        */
+/*----------------------------------------------------------------------------*/
+DataBuffer* DataBuffer::pToDataBuffer(void* aAddr)
+{
+  _static_
+  
+  PoolBuffer* pPoolBuffer =
+    PoolBuffer::pWithinPoolBuffer((Object*)aAddr);
+  
+  HeapBuffer* pHeapBuffer =
+    reinterpret_cast<HeapBuffer*>(pPoolBuffer);
+
+  DataBuffer* pDataBuffer =
+    reinterpret_cast<DataBuffer*>(pHeapBuffer->aFirstChunk());
+    
+  return pDataBuffer;
 }
 
 
@@ -169,25 +213,6 @@ void DataBuffer::vIsPermanent(bool bIsPermanent)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_bIsPermanent = bIsPermanent;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the entry buffer that given id references                              */
-/*----------------------------------------------------------------------------*/
-DataBuffer* DataBuffer::pRefdDataBuffer(Rrf& xRef)
-{
-  i8 i_Buffer = xRef.iBuffer();
-  
-  HeapBuffer* pHeapBuffer =
-  reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(i_Buffer));
-  
-  DataBuffer* pDataBuffer =
-  reinterpret_cast<DataBuffer*>(pHeapBuffer->aFirstChunk());
-  
-  ASSERT(pDataBuffer);
-  ASSERT(pDataBuffer->eGetClassNo() == CN_CRWBUFFER || pDataBuffer->eGetClassNo() == CN_CRVBUFFER);
-  
-  return pDataBuffer;
 }
 
 /*============================================================================*/

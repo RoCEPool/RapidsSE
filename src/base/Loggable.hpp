@@ -27,6 +27,9 @@ namespace BASE
     Loggable(eCN eClassNo, i8 iLogCtl=C_LOG);
    ~Loggable(void) noexcept(false);
   
+    void vLog(eEV eEvent, Stz* szFormat, ...);
+  
+  
     eEV  eEvent(void);
     void vEvent(eEV eEvent);
 
@@ -44,7 +47,9 @@ namespace BASE
 
     void vNextEvent(eEV m_eEvent);
   
-    void vLog(eEV m_eEvent, Stz* szFormat, ...);
+  private:
+    void vAddRow(eEV eEvent, Stz* szNote);
+
   };
 }
 

@@ -22,13 +22,13 @@
   // check if max indexes already on table
 
   // push into t: ../schemas/public/tables/t \folder
-  sTableNm path[].pushNamedTableFolder
+  sTableNm Path[].pushNamedTableFolder
 
   // check max indexes
   sTableNm find execute to table[]
   table[] table.indexCount C_MAX_INDEXES == if
     EC_MAX_INDEXES
-    path[].popNamedTableFolder
+    Path[].popNamedTableFolder
     folder[].isTables assert
     false exit
   then
@@ -37,13 +37,13 @@
   // check name doesn't already exist
 
   // push into indexes: ../schemas/public/tables/t/indexes
-  path[].pushIndexesFolder
+  Path[].pushIndexesFolder
   folder[].isIndexes assert
 
   // error if given name already exists
   <indexNm> check::nameIsUnknownIndex not if
-    path[].popIndexesFolder
-    path[].popNamedTableFolder
+    Path[].popIndexesFolder
+    Path[].popNamedTableFolder
     folder[].isTables assert
     false exit
   then
@@ -51,8 +51,8 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop upto tables: ../schemas/public/tables
 
-  path[].popIndexesFolder
-  path[].popNamedTableFolder
+  Path[].popIndexesFolder
+  Path[].popNamedTableFolder
   folder[].isTables assert
 
   true

@@ -28,17 +28,17 @@
 /*----------------------------------------------------------------------------*/
 /* find the indexes folder and push it onto task dictionary                   */
 /*----------------------------------------------------------------------------*/
-: path[].pushIndexesFolder ( -- )
+: Path[].pushIndexesFolder ( -- )
 
-  "indexes" find execute path[].pushFolder
+  "indexes" find execute Path[].pushFolder
 ;
 
 /*----------------------------------------------------------------------------*/
-/* pop the indexes folder (which was pushed by path[].pushIndexesFolder)      */
+/* pop the indexes folder (which was pushed by Path[].pushIndexesFolder)      */
 /*----------------------------------------------------------------------------*/
-: path[].popIndexesFolder ( -- )
+: Path[].popIndexesFolder ( -- )
 
-  path[].popFolder
+  Path[].popFolder
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -87,23 +87,23 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table dictionary
-  sTableNm path[].pushNamedTableFolder
+  sTableNm Path[].pushNamedTableFolder
 
 // push indexes folder
-  path[].pushIndexesFolder
+  Path[].pushIndexesFolder
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is an index we are dropping
   sIndexNm check::nameIsaIndex not if
-    path[].popIndexesFolder
-    path[].popNamedTableFolder
+    Path[].popIndexesFolder
+    Path[].popNamedTableFolder
     folder[].isTables assert
     false
     exit
   then
 
-  path[].popIndexesFolder
-  path[].popNamedTableFolder
+  Path[].popIndexesFolder
+  Path[].popNamedTableFolder
   folder[].isTables assert
 
   true
@@ -224,10 +224,10 @@
 : index::dropIndex params| sTableNm sIndexNm |
 
   // push table dictionary
-  sTableNm path[].pushNamedTableFolder
+  sTableNm Path[].pushNamedTableFolder
 
   // push indexes folder
-  path[].pushIndexesFolder
+  Path[].pushIndexesFolder
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -236,10 +236,10 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // pop indexes folder
-  path[].popIndexesFolder
+  Path[].popIndexesFolder
 
   // pop table folder
-  path[].popNamedTableFolder
+  Path[].popNamedTableFolder
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -255,7 +255,7 @@
 
   pFolder dic.lastWord not if  exit_rt then
 
-  pFolder path[].pushFolder
+  pFolder Path[].pushFolder
 
   begin
 
@@ -266,7 +266,7 @@
  
     pFolder dic.lastWord not until
 
-  path[].popFolder
+  Path[].popFolder
 ;
 
 /*----------------------------------------------------------------------------*/

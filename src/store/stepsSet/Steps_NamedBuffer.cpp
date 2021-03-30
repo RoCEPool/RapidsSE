@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_RegIndex.cpp - index[] step group                                    */
+/* Steps_NamedBuffer.cpp - NamedBuffer step group                             */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -8,41 +8,46 @@
 #include "StepAccum.hpp"
 #include "Steps.hpp"
 
-#include "Index.hpp"
-
-#include "Job.hpp"
-#include "Node_I.hpp"
-#include "LogicUnit.hpp"
+#include "NamedBuffer.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_RegIndex(void)
+void Step::vAddSteps_NamedBuffer(void)
 {
-  vAddStep("index[]"_Stz,      &Step::vRegIndexGet);
-  vAddStep("index[].set"_Stz,  &Step::vRegIndexSet);
+  vAddStep("namedBuffer.name@"_Stz, &Step::vNamedBufferNameFetch);
+  vAddStep("namedBuffer.name!"_Stz, &Step::vNamedBufferNameStore);
 }
 
 /*----------------------------------------------------------------------------*/
-/* index[] -- get index                                                       */
+/* namedBuffer.name@ -- fetch name of NamedBuffer                             */
 /*----------------------------------------------------------------------------*/
-void Step::vRegIndexGet(void)
+void Step::vNamedBufferNameFetch(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*( m_pJob->pLogicUnit_job() )->m_xpIndex);
+  NamedBuffer* pNamedBuffer = _pNamedBuffer(m_pDataStack->pPopPtr(__func__));
+  
+  Stz* szBufferNm = pNamedBuffer->szBufferNm();
+  
+  m_pDataStack->vPushStz(szBufferNm);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* index[].set -- set index                                                   */
+/* namedBuffer.name! -- store name of NamedBuffer                             */
 /*----------------------------------------------------------------------------*/
-void Step::vRegIndexSet(void)
+void Step::vNamedBufferNameStore(void)
 {
   ENTRY();
   
-  ( m_pJob->pLogicUnit_job() )->m_xpIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+  NamedBuffer* pNamedBuffer = _pNamedBuffer(m_pDataStack->pPopPtr(__func__));
+  
+  s32 sBufferNm;
+  m_pDataStack->vPopStr(sBufferNm,__func__);
+
+  pNamedBuffer->vBufferNm(sBufferNm);
   
   EXIT();
 }

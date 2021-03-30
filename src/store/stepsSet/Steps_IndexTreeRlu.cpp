@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_IndexTree.cpp - indexTree[] step group                                */
+/* Steps_IndexTreeRlu.cpp - indexTreeRlu[] step group                         */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -19,66 +19,72 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_IndexTree(void)
+void Step::vAddSteps_IndexTreeRlu(void)
 {
-  vAddStep("IndexTree[]"_Stz,           &Step::vIndexTreeGet);
-  vAddStep("IndexTree[].asAlt"_Stz,     &Step::vIndexTreeAsAlt);
-  vAddStep("IndexTree[].asSrc"_Stz,     &Step::vIndexTreeAsSrc);
-  vAddStep("IndexTree[].asTmp"_Stz,     &Step::vIndexTreeAsTmp);
-  vAddStep("IndexTree[].delete"_Stz,    &Step::vIndexTreeDelete);
-  vAddStep("IndexTree[].isNull"_Stz,    &Step::vIndexTreeIsNull);
-  vAddStep("IndexTree[].new"_Stz,       &Step::vIndexTreeNew);
-  vAddStep("IndexTree[].set"_Stz,       &Step::vIndexTreeSet);
+  vAddStep("IndexTreeRlu[]"_Stz,           &Step::vIndexTreeRluGet);
+  vAddStep("IndexTreeRlu[].asAlt"_Stz,     &Step::vIndexTreeRluAsAlt);
+  vAddStep("IndexTreeRlu[].asSrc"_Stz,     &Step::vIndexTreeRluAsSrc);
+  vAddStep("IndexTreeRlu[].asTmp"_Stz,     &Step::vIndexTreeRluAsTmp);
+  vAddStep("IndexTreeRlu[].delete"_Stz,    &Step::vIndexTreeRluDelete);
+  vAddStep("IndexTreeRlu[].isNull"_Stz,    &Step::vIndexTreeRluIsNull);
+  vAddStep("IndexTreeRlu[].new"_Stz,       &Step::vIndexTreeRluNew);
+  vAddStep("IndexTreeRlu[].set"_Stz,       &Step::vIndexTreeRluSet);
   
-  vAddStep("IndexTree.insEntBuffer"_Stz,    &Step::vIndexTreeInsEntBuffer);
+  vAddStep("IndexTree.insEntBuffer"_Stz,    &Step::vIndexTreeRluInsEntBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
-/* IndexTree[].asAlt -- set this index tree as m_pAltIdxTree                  */
+/* IndexTreeRlu[].asAlt -- set this index tree as m_pAltIdxTree               */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexTreeAsAlt(void)
+void Step::vIndexTreeRluAsAlt(void)
 {
   ENTRY();
-  
-  ( m_pJob->pLogicUnit_job() )->m_pDevAltIxt->m_pIdxTree = * ( m_pJob->pLogicUnit_job() )->m_xpIndexTree;
+
+  IndexTree* pIndexTree = _pIndexTree(m_pJob->pLogicUnit_job()->m_xRluCommon.m_pIndexTree);
+
+  ( m_pJob->pLogicUnit_job() )->m_pDevAltIxt->m_pIdxTree = pIndexTree;
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* IndexTree[].asSrc -- set this index tree as m_pSrcIdxTree                  */
+/* IndexTreeRlu[].asSrc -- set this index tree as m_pSrcIdxTree               */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexTreeAsSrc(void)
+void Step::vIndexTreeRluAsSrc(void)
 {
   ENTRY();
-  
-  ( m_pJob->pLogicUnit_job() )->m_pDevSrcIxt->m_pIdxTree = * ( m_pJob->pLogicUnit_job() )->m_xpIndexTree;
+
+  IndexTree* pIndexTree = _pIndexTree(m_pJob->pLogicUnit_job()->m_xRluCommon.m_pIndexTree);
+
+  ( m_pJob->pLogicUnit_job() )->m_pDevSrcIxt->m_pIdxTree = pIndexTree;
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* IndexTree[].asTmp -- set this index tree as m_pIndexTree                   */
+/* IndexTreeRlu[].asTmp -- set this index tree as m_pIndexTree                */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexTreeAsTmp(void)
+void Step::vIndexTreeRluAsTmp(void)
 {
   ENTRY();
-  
-  ( m_pJob->pLogicUnit_job() )->m_pDevTmpIxt->m_pIdxTree = * ( m_pJob->pLogicUnit_job() )->m_xpIndexTree;
+
+  IndexTree* pIndexTree = _pIndexTree(m_pJob->pLogicUnit_job()->m_xRluCommon.m_pIndexTree);
+
+  ( m_pJob->pLogicUnit_job() )->m_pDevTmpIxt->m_pIdxTree = pIndexTree;
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* IndexTree[].delete -- delete index tree                                    */
+/* IndexTreeRlu[].delete -- delete index tree                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexTreeDelete(void)
+void Step::vIndexTreeRluDelete(void)
 {
   ENTRY();
-  
-  IndexTree* pIndexTree = * ( m_pJob->pLogicUnit_job() )->m_xpIndexTree;
-  
-  ( m_pJob->pLogicUnit_job() )->m_xpIndexTree = nullptr;
+
+  IndexTree* pIndexTree = _pIndexTree(m_pJob->pLogicUnit_job()->m_xRluCommon.m_pIndexTree);
+
+  m_pJob->pLogicUnit_job()->m_xRluCommon.m_pIndexTree = nullptr;
   
   delete pIndexTree;
   
@@ -86,58 +92,60 @@ void Step::vIndexTreeDelete(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* IndexTree[].get -- get index tree                                           */
+/* IndexTreeRlu[].get -- get index tree                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexTreeGet(void)
+void Step::vIndexTreeRluGet(void)
 {
   ENTRY();
-  
-  m_pDataStack->vPushPtr(*( m_pJob->pLogicUnit_job() )->m_xpIndexTree);
+
+  IndexTree* pIndexTree = _pIndexTree(m_pJob->pLogicUnit_job()->m_xRluCommon.m_pIndexTree);
+
+  m_pDataStack->vPushPtr(pIndexTree);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* IndexTree[].isNull -- is indexTree null ?                                  */
+/* IndexTreeRlu[].isNull -- is indexTree null ?                               */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexTreeIsNull(void)
+void Step::vIndexTreeRluIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(( m_pJob->pLogicUnit_job() )->m_xpIndexTree.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(m_pJob->pLogicUnit_job()->m_xRluCommon.m_pIndexTree ? 0 : 1);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* IndexTree[].new -- new a index tree                                        */
+/* IndexTreeRlu[].new -- new a index tree                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexTreeNew(void)
+void Step::vIndexTreeRluNew(void)
 {
   ENTRY();
   
   IndexDef* pIndexDef = _pIndexDef(m_pDataStack->pPopPtr(__func__));
-  ( m_pJob->pLogicUnit_job() )->m_xpIndexTree = new IndexTree(nullptr, pIndexDef, C_UNKNOWN);
+  m_pJob->pLogicUnit_job()->m_xRluCommon.m_pIndexTree = new IndexTree(nullptr, pIndexDef, C_UNKNOWN);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* IndexTree[].set -- set index tree                                          */
+/* IndexTreeRlu[].set -- set index tree                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexTreeSet(void)
+void Step::vIndexTreeRluSet(void)
 {
   ENTRY();
-  
-  ( m_pJob->pLogicUnit_job() )->m_xpIndexTree = _pIndexTree(m_pDataStack->pPopPtr(__func__));
+
+  m_pJob->pLogicUnit_job()->m_xRluCommon.m_pIndexTree = _pIndexTree(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* IndexTree.insEntBuffer -- insert all entries from given ent buffer          */
+/* IndexTree.insEntBuffer -- insert all entries from given ent buffer         */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexTreeInsEntBuffer(void)
+void Step::vIndexTreeRluInsEntBuffer(void)
 {
   ENTRY();
   

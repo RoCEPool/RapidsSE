@@ -57,6 +57,7 @@ namespace STORE
     void vAddString(Token*  pTkn, Column* pColumnExpr);
     eEC  eAddSum(eCT eColumnType, i8 iColumn);
     eEC  eAddSumGby(eCT eColumnType, i8 iColumn);
+    void vAddUnknown(Token*  pTkn, Column* pColumnExpr);
 
     eEC eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec);
     eEC eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);

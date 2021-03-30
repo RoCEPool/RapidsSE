@@ -10,7 +10,7 @@
 : visidx_action
 
   <tableNm> <indexNm> op__table_index if
-    index[].visualize
+    Index[].visualize
     true
   else
     false

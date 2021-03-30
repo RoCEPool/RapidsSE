@@ -18,21 +18,21 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_RegOperandC(void)
+void Step::vAddSteps_OperandC(void)
 {
-  vAddStep("OperandC[]"_Stz,             &Step::vRegOperandCGet);
-  vAddStep("OperandC[].collect"_Stz,     &Step::vRegOperandCCollect);
-  vAddStep("OperandC[].get"_Stz,         &Step::vRegOperandCGet);
-  vAddStep("OperandC[].pipeOut"_Stz,     &Step::vRegOperandCPipeOut);
-  vAddStep("OperandC[].pipeOutSet"_Stz,  &Step::vRegOperandCPipeOutSet);
-  vAddStep("OperandC[].set"_Stz,         &Step::vRegOperandCSet);
-  vAddStep("OperandC[].setFirst"_Stz,    &Step::vRegOperandCSetFirst);
+  vAddStep("OperandC[]"_Stz,             &Step::vOperandCGet);
+  vAddStep("OperandC[].collect"_Stz,     &Step::vOperandCCollect);
+  vAddStep("OperandC[].get"_Stz,         &Step::vOperandCGet);
+  vAddStep("OperandC[].pipeOut"_Stz,     &Step::vOperandCPipeOut);
+  vAddStep("OperandC[].pipeOutSet"_Stz,  &Step::vOperandCPipeOutSet);
+  vAddStep("OperandC[].set"_Stz,         &Step::vOperandCSet);
+  vAddStep("OperandC[].setFirst"_Stz,    &Step::vOperandCSetFirst);
 }
 
 /*----------------------------------------------------------------------------*/
 /* OperandC[].collect -- collect operands                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vRegOperandCCollect(void)
+void Step::vOperandCCollect(void)
 {
   ENTRY();
     
@@ -64,7 +64,7 @@ void Step::vRegOperandCCollect(void)
 /*----------------------------------------------------------------------------*/
 /* OperandC[].get -- fetch operand                                            */
 /*----------------------------------------------------------------------------*/
-void Step::vRegOperandCGet(void)
+void Step::vOperandCGet(void)
 {
   ENTRY();
   
@@ -76,7 +76,7 @@ void Step::vRegOperandCGet(void)
 /*----------------------------------------------------------------------------*/
 /* OperandC[].pipeOut -- append operand onto next operator in pipeline        */
 /*----------------------------------------------------------------------------*/
-void Step::vRegOperandCPipeOut(void)
+void Step::vOperandCPipeOut(void)
 {
   ENTRY();
   
@@ -94,7 +94,7 @@ void Step::vRegOperandCPipeOut(void)
 /*----------------------------------------------------------------------------*/
 /* OperandC[].pipeOut -- append operand onto next operator in pipeline        */
 /*----------------------------------------------------------------------------*/
-void Step::vRegOperandCPipeOutSet(void)
+void Step::vOperandCPipeOutSet(void)
 {
   ENTRY();
   
@@ -113,7 +113,7 @@ void Step::vRegOperandCPipeOutSet(void)
 /*----------------------------------------------------------------------------*/
 /* OperandC[].set -- set operand                                              */
 /*----------------------------------------------------------------------------*/
-void Step::vRegOperandCSet(void)
+void Step::vOperandCSet(void)
 {
   ENTRY();
   
@@ -127,7 +127,7 @@ void Step::vRegOperandCSet(void)
 /*----------------------------------------------------------------------------*/
 /* OperandC[].setFirst -- set to first buffer                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vRegOperandCSetFirst(void)
+void Step::vOperandCSetFirst(void)
 {
   ENTRY();
   

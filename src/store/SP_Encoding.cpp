@@ -181,6 +181,11 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
           break;
         }
           
+        case DM_IVY: {
+          NEVER_REACH;
+          break;
+        }
+
         case DM_TME: {
           SP_Tme SP_Tme;
           StrLib::vAppendString(&szCrs,
@@ -200,6 +205,11 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
           break;
         }
           
+        case DM_UNK: {
+          NEVER_REACH;
+          break;
+        }
+
         default:
           NEVER_REACH;
       }

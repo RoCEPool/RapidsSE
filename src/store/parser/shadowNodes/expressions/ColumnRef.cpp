@@ -62,6 +62,22 @@ QueryNode* ColumnRef::pCreate(Text* pCatalogName, Text* pSchemaName,
 }
 
 /*----------------------------------------------------------------------------*/
+/* Helper function to create expression column reference nodes.               */
+/*----------------------------------------------------------------------------*/
+QueryNode* ColumnRef::pCreate(Stz* szCatalogName, Stz* szSchemaName,
+                              Stz* szTableName,   Stz* szColumnName)
+{
+  _static_
+
+  Text* pCatalogName = (szCatalogName ? new Text(szCatalogName) : nullptr);
+  Text* pSchemaName  = (szCatalogName ? new Text(szSchemaName)  : nullptr);
+  Text* pTableName   = (szCatalogName ? new Text(szTableName)   : nullptr);
+  Text* pColumnName  = (szCatalogName ? new Text(szColumnName)  : nullptr);
+
+  return pCreate(pCatalogName, pSchemaName, pTableName, pColumnName);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
 void ColumnRef::vDescribe(PlanNode* pNode, s2K& sBuf)
@@ -264,6 +280,66 @@ void ColumnRef::vQualify(QueryNode* pColumnRef, Stz* szCatalogName, Stz* szSchem
   pColumnNode->vSetValue(static_cast<Value&&>(xColValue));
 
   ASSERT(bIsFullyQualified(pColumnRef));
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Compare two expression trees and return true if they are equal with        */
+/* respect to the operations and symbols used.                                */
+/*----------------------------------------------------------------------------*/
+b1 ColumnRef::bIsSymbolicallyEqual(QueryNode* pColRef1, QueryNode* pColRef2)
+{
+  // This is already validated
+//  if (pExpr1 == pExpr2) return true;
+//
+//  // Is one of them not null and the other null?
+//  if (pExpr1 && !pExpr2) return false;
+//  if (!pExpr1 && pExpr2) return false;
+//
+//  // We don't compare names as they are allowed to be different
+//  // (except in the case of properties, but see below).
+//
+//  // Types must match
+//  if (!pExpr1->szType()->bEqual(pExpr2->szType())) return false;
+
+  ASSERT(bIsOfType(pColRef1));
+  ASSERT(bIsOfType(pColRef2));
+
+
+  // Values must match. Note that this does a case sensitive comparison.
+  if (pColRef1->xValue() != pColRef2->xValue()) return false;
+
+  // All properties must match, but catalog/schema/table/column names
+  // must be compared case insensitively.
+  if (pColRef1->nProperties() != pColRef2->nProperties()) return false;
+  ASSERT(pColRef1->nProperties() == 4);
+
+  if (!ColumnRef::szCatalog(pColRef1)->bSame(ColumnRef::szCatalog(pColRef2))) return false;
+  if (!ColumnRef::szSchema(pColRef1)->bSame( ColumnRef::szSchema(pColRef2)))  return false;
+  if (!ColumnRef::szTable(pColRef1)->bSame(  ColumnRef::szTable(pColRef2)))   return false;
+  if (!ColumnRef::szColumn(pColRef1)->bSame( ColumnRef::szColumn(pColRef2)))  return false;
+
+
+  // All children must match and must be in the same order.
+  if (pColRef1->nChildren() != pColRef2->nChildren()) return false;
+  if (pColRef1->nChildren() > 0) {
+    PlanNodeIter* pIter1 = pColRef1->pNewChildrenIter();
+    PlanNodeIter* pIter2 = pColRef2->pNewChildrenIter();
+
+    while (pIter1->bHasNext()) {
+      QueryNode* pChild1 = static_cast<QueryNode*>(pIter1->pNext());
+      QueryNode* pChild2 = static_cast<QueryNode*>(pIter2->pNext());
+
+      // Compare the children
+      if (!Expr::bIsSymbolicallyEqual(pChild1, pChild2)) return false;
+    }
+
+    delete pIter1;
+    delete pIter2;
+  }
+
+  // The two expressions must be symbolically equal
+  return true;
 }
 
 /*============================================================================*/

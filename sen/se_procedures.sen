@@ -12,12 +12,10 @@
 
 : start::defProc_Create
 
- "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create catalog
   
-  sPath
+  STD_PATH
   "
   procedure create catalog
     parameters $catalogNm
@@ -39,7 +37,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create index
   
-  sPath
+  STD_PATH
   "
   procedure create index
     parameters $indexNm $etc
@@ -64,7 +62,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create unique index
   
-  sPath
+  STD_PATH
   "
   procedure create unique index
     parameters $indexNm $etc
@@ -90,7 +88,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create index
   
-  sPath
+  STD_PATH
   "
   procedure create index
     parameters $indexNm $etc
@@ -118,7 +116,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create unique index
   
-  sPath
+  STD_PATH
   "
   procedure create unique index
     parameters $indexNm $etc
@@ -147,7 +145,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create schema
   
-  sPath
+  STD_PATH
   "
   procedure create schema
     parameters $schemaNm
@@ -169,7 +167,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create table
   
-  sPath
+  STD_PATH
   "
   procedure create table
     parameters $tableNm $etc
@@ -191,7 +189,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create tenant
   
-  sPath
+  STD_PATH
   "
   procedure create tenant
     parameters $tenantNm
@@ -213,7 +211,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create table as
   
-  sPath
+  STD_PATH
   "
   procedure ctas
     parameters $table1 $table2
@@ -238,7 +236,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // define table
   
-  sPath
+  STD_PATH
   "
   procedureLocal define table
     parameters $tableNm $etc
@@ -255,7 +253,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete
   
-  sPath
+  STD_PATH
   "
   procedure delete
     parameters $table $predicate
@@ -284,12 +282,10 @@
 
 : start::defProc_Drop
 
-  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compact index
   
-  sPath
+  STD_PATH
   "
   procedure compact index
     parameters $tableNm $indexNm
@@ -311,7 +307,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // drop catalog
   
-  sPath
+  STD_PATH
   "
   procedure drop catalog
     tags <lowMemory>
@@ -334,7 +330,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // drop index
   
-  sPath
+  STD_PATH
   "
   procedure drop index
     tags <lowMemory>
@@ -360,7 +356,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // drop schema
   
-  sPath
+  STD_PATH
   "
   procedure drop schema
     tags <lowMemory>
@@ -383,7 +379,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // drop table
   
-  sPath
+  STD_PATH
   "
   procedure drop table
     tags <lowMemory>
@@ -409,7 +405,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // drop tenant
   
-  sPath
+  STD_PATH
   "
   procedure drop tenant
     tags <lowMemory>
@@ -432,7 +428,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // verify index
   
-  sPath
+  STD_PATH
   "
   procedure verify index
     parameters $tableNm $indexNm
@@ -460,12 +456,10 @@
 
 : start::defProc_Scan
 
-  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // count
   
-  sPath
+  STD_PATH
   "
   procedure count
     tags <lowMemory>
@@ -488,7 +482,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // export
   
-  sPath
+  STD_PATH
   "
   procedure export
     parameters $Table $File
@@ -513,7 +507,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // gridSanity
   
-  sPath
+  STD_PATH
   "
   procedure gridSanity
     tags <lowMemory>
@@ -534,7 +528,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // partitionScan
   
-  sPath
+  STD_PATH
   "
   procedure partitionScan
     parameters $table $partition
@@ -557,7 +551,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // predicateFetch
   
-  sPath
+  STD_PATH
   "
   procedure predicateFetch
     parameters $table $predicate
@@ -579,7 +573,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // select table
   
-  sPath
+  STD_PATH
   "
   procedure select table
     parameters $Table
@@ -601,7 +595,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tableScan
   
-  sPath
+  STD_PATH
   "
   procedure tableScan
     parameters $table
@@ -623,7 +617,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // truncate
   
-  sPath
+  STD_PATH
   "
   procedure truncate
     tags <lowMemory>
@@ -652,12 +646,10 @@
 
 : start::defProc_Load
 
-  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // load
   
-  sPath
+  STD_PATH
   "
   procedure load
     parameters $table $file
@@ -721,7 +713,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dfload
   
-  sPath
+  STD_PATH
   "
   procedure dfload
     parameters $table $file
@@ -786,7 +778,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dload
   
-  sPath
+  STD_PATH
   "
   procedure dload
     parameters $table
@@ -815,12 +807,10 @@
 
 : start::defProc_Api
 
-  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // getRows
   
-  sPath
+  STD_PATH
   "
   procedure getRows
     parameters $Table
@@ -848,7 +838,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // putRows
   
-  sPath
+  STD_PATH
   "
   procedure putRows
     parameters $Table
@@ -888,13 +878,10 @@
 
 : start::defProc_File
 
-  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables"
-    locals| sPath |
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy file
   
-  sPath
+  STD_PATH
   "
   procedure copyFile
     parameters $FileIn $FileOut
@@ -913,7 +900,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // list file
   
-  sPath
+  STD_PATH
   "
   procedure listFile
     parameters $File
@@ -931,7 +918,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // xyz file
   
-  sPath
+  STD_PATH
   "
   procedure xyzFile
     parameters $Table $File $Ntimes
@@ -965,7 +952,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cycle read file
   
-  sPath
+  STD_PATH
   "
   procedure cyclicRdFile
     parameters $FileIn $NTimes
@@ -992,13 +979,10 @@
 
 : start::defProc_Elasticity
 
-  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables"
-    locals| sPath |
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add node
   
-  sPath
+  STD_PATH
   "
   procedure add node
     parameters $NodeNm $IpAddr $PortNo
@@ -1027,7 +1011,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // adjust partitions
   
-  sPath
+  STD_PATH
   "
   procedure adjust partitions
   begin
@@ -1055,7 +1039,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove node
   
-  sPath
+  STD_PATH
   "
   procedure remove node
     parameters $NodeNm
@@ -1076,7 +1060,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn node
   
-  sPath
+  STD_PATH
   "
   procedure spawn node
     parameters $NodeNm
@@ -1103,12 +1087,10 @@
 
 : start::defProc_SteadyState
 
-  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // steady state test 1
   
-  sPath
+  STD_PATH
   "
   procedure steadyState_1
     parameters $Table $File $NTimes
@@ -1141,7 +1123,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // steady state test 2
   
-  sPath
+  STD_PATH
   "
   procedure steadyState_2
     parameters $Table $File $NTimes
@@ -1174,7 +1156,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // steady state test 3
   
-  sPath
+  STD_PATH
   "
   procedure steadyState_3
    parameters $Table $File $NTimes
@@ -1232,13 +1214,10 @@
 
 : start::defProc_UnloadReload
 
-  "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables" locals| sPath |
-
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // unload
   
-  sPath
+  STD_PATH
   "
   procedure unload
     parameters $Table $File
@@ -1266,7 +1245,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // reload
   
-  sPath
+  STD_PATH
   "
   procedure reload
     parameters $Table $File
@@ -1290,7 +1269,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // reorder table
   
-  sPath
+  STD_PATH
   "
   procedure reorder
     parameters $table1 $table2 $predicate

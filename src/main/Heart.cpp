@@ -101,7 +101,7 @@ void vHeartInit(void) {
       pSender->iSend((char *) &xHeartbeat, sizeof(Heartbeat));
 
       if (iCnt++ <= 1) // debug only: print twice
-        vTrace("Node: %lld sent HB\n"_Stz, xHeartbeat.m_iNodeNo);
+        vTrace("Node: %s sent HB\n"_Stz, xHeartbeat.m_acNodeName);
     }
 
 
@@ -165,7 +165,7 @@ void vHeartInit(void) {
                     xHeartbeat.m_iSincePosixEpoch, xHeartbeat.m_acBuildGitHash, azTimeBuffer
             );*/
 
-            vTrace("Received HB from Node %lld\n"_Stz, xHeartbeat.m_iNodeNo);
+            vTrace("Received HB from Node %s\n"_Stz, xHeartbeat.m_acNodeName);
             vTrace("iLen=%d m_u2DataLen=%d checksum=%lld \n"_Stz, iLen, xHeartbeat.m_u2DataLen,
                    iSaveChk);
           }

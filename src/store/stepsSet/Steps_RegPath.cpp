@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_RegPath.cpp - path[] step group                                      */
+/* Steps_RegPath.cpp - Path[] step group                                      */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -14,19 +14,19 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_RegPath(void)
 {
-  vAddStep("path[]"_Stz,               &Step::vRegPathGet);
+  vAddStep("Path[]"_Stz,               &Step::vRegPathGet);
   
-  vAddStep("path[].depth"_Stz,         &Step::vRegPathDepth);
-  vAddStep("path[].popFolder"_Stz,     &Step::vRegPathDiscard);
-  vAddStep("path[].dump"_Stz,          &Step::vRegPathDump);
-  vAddStep("path[].pick"_Stz,          &Step::vRegPathPick);
-  vAddStep("path[].pushFolder"_Stz,    &Step::vRegPathPush);
-  vAddStep("path[].save"_Stz,          &Step::vRegPathSave);
-  vAddStep("path[].restore"_Stz,       &Step::vRegPathRestore);
+  vAddStep("Path[].depth"_Stz,         &Step::vRegPathDepth);
+  vAddStep("Path[].popFolder"_Stz,     &Step::vRegPathDiscard);
+  vAddStep("Path[].dump"_Stz,          &Step::vRegPathDump);
+  vAddStep("Path[].pick"_Stz,          &Step::vRegPathPick);
+  vAddStep("Path[].pushFolder"_Stz,    &Step::vRegPathPush);
+  vAddStep("Path[].save"_Stz,          &Step::vRegPathSave);
+  vAddStep("Path[].restore"_Stz,       &Step::vRegPathRestore);
 }
 
 /*----------------------------------------------------------------------------*/
-/* path[] -- push task dictionary onto data stack                             */
+/* Path[] -- push task dictionary onto data stack                             */
 /*----------------------------------------------------------------------------*/
 void Step::vRegPathGet(void)
 {
@@ -40,7 +40,7 @@ void Step::vRegPathGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* path[].depth -- get number of dictionaries on dictionary stack             */
+/* Path[].depth -- get number of dictionaries on dictionary stack             */
 /*----------------------------------------------------------------------------*/
 void Step::vRegPathDepth(void)
 {
@@ -54,7 +54,7 @@ void Step::vRegPathDepth(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* path[].popFolder -- discard top of dictionary stack                        */
+/* Path[].popFolder -- discard top of dictionary stack                        */
 /*----------------------------------------------------------------------------*/
 void Step::vRegPathDiscard(void)
 {
@@ -66,7 +66,7 @@ void Step::vRegPathDiscard(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* path[].dump -- dump dictionary stack                                       */
+/* Path[].dump -- dump dictionary stack                                       */
 /*----------------------------------------------------------------------------*/
 void Step::vRegPathDump(void)
 {
@@ -78,7 +78,7 @@ void Step::vRegPathDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* path[].pick -- pick a dic from dic stack and push onto data stack          */
+/* Path[].pick -- pick a dic from dic stack and push onto data stack          */
 /*----------------------------------------------------------------------------*/
 void Step::vRegPathPick(void)
 {
@@ -94,7 +94,7 @@ void Step::vRegPathPick(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* path[].pushFolder -- push a dictionary onto given dictionary stack         */
+/* Path[].pushFolder -- push a dictionary onto given dictionary stack         */
 /*----------------------------------------------------------------------------*/
 void Step::vRegPathPush(void)
 {
@@ -108,7 +108,7 @@ void Step::vRegPathPush(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* path[].save -- save path onto save stack                                   */
+/* Path[].save -- save path onto save stack                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vRegPathSave(void)
 {
@@ -120,7 +120,7 @@ void Step::vRegPathSave(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* path[].restore -- retore path from save stack                              */
+/* Path[].restore -- retore path from save stack                              */
 /*----------------------------------------------------------------------------*/
 void Step::vRegPathRestore(void)
 {

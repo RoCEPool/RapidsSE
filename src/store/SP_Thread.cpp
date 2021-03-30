@@ -56,13 +56,13 @@ Stz* SP_Thread::sz_log(Thread* pThread)
   StrLib::vSprint(m_caResult,
                   "{%s %s%s}"_Stz,
                   
-                  aHS[pThread->m_eThreadState],
+                  aHS[pThread->eThreadState()],
                   
-                  spTaskId.sz(pThread->m_pTask
-                                ? pThread->m_pTask->m_iObjectId
+                  spTaskId.sz(pThread->pTask()
+                                ? pThread->pTask()->m_iObjectId
                                 : C_UNKNOWN),
                   
-                  CN_NONE == pThread->m_eDedicated
+                  CN_NONE == pThread->eDedicated()
                     ? ""_Stz
                     : " dedicated"_Stz,
 

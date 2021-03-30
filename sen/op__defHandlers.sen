@@ -253,6 +253,18 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* default handler for ZK_NAMEDBUFFER operand                                 */
+/*----------------------------------------------------------------------------*/
+: ZK_NAMEDBUFFER_handler \handler
+
+  //"ZK_NAMEDBUFFER" .verbose
+  
+  PipeIn[].pipeOut
+  
+  true // calling op_loop continues
+;
+
+/*----------------------------------------------------------------------------*/
 /* default handler for ZK_NODEINFO operand                                    */
 /*----------------------------------------------------------------------------*/
 : ZK_NODEINFO_handler \handler

@@ -2,9 +2,12 @@
 -- filter tests
 --------------------------------------------------------------------------------
 
+trackMemory;
+success;
+
 //------------------------------------------------------------------------------
 filterRows lineitem "l_discount 0.04 >= <>";
-failure contains: "EC_NO_SUCH_TABLE"
+failure contains: "Table does not exist"
 
 //------------------------------------------------------------------------------
 // create table lineitem
@@ -154,6 +157,9 @@ rows:
 // drop the table
 drop table lineitem;
 success;
+
+MemoryLeaks;
+rows: 0
 
 CLEANUP {
   

@@ -2,6 +2,9 @@
 -- unionAll tests
 --------------------------------------------------------------------------------
 
+trackMemory;
+success;
+
 //------------------------------------------------------------------------------
 // neither table exists
 pipeline unionAll_I
@@ -25,7 +28,10 @@ pipeline unionAll_I
 
 end ;
 
-failure contains: "EC_NO_SUCH_TABLE"
+failure contains: "Table does not exist"
+
+MemoryLeaks;
+rows: 0
 
 //------------------------------------------------------------------------------
 // create table lineitem
@@ -72,7 +78,7 @@ pipeline unionAll_I
     output | sink | stageA
 
 end ;
-failure contains: "EC_NO_SUCH_TABLE"
+failure contains: "Table does not exist"
 
 //------------------------------------------------------------------------------
 create table orders (

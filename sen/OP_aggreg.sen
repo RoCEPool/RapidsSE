@@ -52,6 +52,10 @@
     StreamDef[].delete
   then
 
+  indexTreeRlu[].isNull not if
+    indexTreeRlu[].delete
+  then
+
   Counter0[] cleanUpAsm
 
   ZK_CANCELMARKER EG_ZK PD_PIPE_OUT 0 ZK_CANCELMARKER EG_ZK LogicUnit[].diaryAction

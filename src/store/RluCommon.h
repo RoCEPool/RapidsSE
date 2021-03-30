@@ -31,6 +31,8 @@ struct RluCommon                      // **IF YOU CHANGE THIS DO A CLEAN BUILD**
   i8   m_i_Ptn;
 
   void* m_pPot;
+  void* m_pIndexDef;
+  void* m_pIndexTree;
 
   void* m_pDevDstRow;
   void* m_pDevSrcRow;
@@ -40,20 +42,24 @@ struct RluCommon                      // **IF YOU CHANGE THIS DO A CLEAN BUILD**
   void* m_pDevAltIxt;
   void* m_pDevTmpIxt;
 
-  struct Ent_int* m_aEntArray;
+  //struct Ent_int* m_aEntArray;
 
-  struct Ent_int* m_aAltEntArray;
-  struct Ent_int* m_aDstEntArray;
-  struct Ent_int* m_aSrcEntArray;
-  struct Ent_int* m_aTmpEntArray;
+  //struct Ent_int* m_aAltEntArray;
+  //struct Ent_int* m_aDstEntArray;
+  //struct Ent_int* m_aSrcEntArray;
+  //struct Ent_int* m_aTmpEntArray;
 
-  struct Ent_int* m_aAltEnt;
-  struct Ent_int* m_aDstEnt;
-  struct Ent_int* m_aSrcEnt;
-  struct Ent_int* m_aTmpEnt;
+  //struct Ent_int* m_aAltEnt;
+  //struct Ent_int* m_aDstEnt;
+  //struct Ent_int* m_aSrcEnt;
+  //struct Ent_int* m_aTmpEnt;
+
   struct Ent_int* m_aWrkEnt;
+  void* m_pEntWrk;
 
-  struct Ent_int* m_aTmpSkipRoots;
+  void*  m_pRowPix;
+
+  //struct Ent_int* m_aTmpSkipRoots;
   
   //i8 m_nCrwRows;
   //i8 m_i_CrwRow;
@@ -71,6 +77,9 @@ struct RluCommon                      // **IF YOU CHANGE THIS DO A CLEAN BUILD**
   i8 m_iaDataStack[C_LOGIC_STACK];
   
   i8 m_iaLocals[C_LOGIC_LOCALS]; // locals regs []
+
+  i8 m_iaColSet[64];
+  i8 m_i_ColSet;
 
   i8 m_iCmnFooter;
 };

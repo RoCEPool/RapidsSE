@@ -108,12 +108,16 @@
 #include "EnumGroups.h"
 
 #include "Step.hpp"
+#include "StreamDef.hpp"
 
 #include "SP_Word.hpp"
 
 #include "TraceLock.hpp"
+#include "WriteBehind.hpp"
 
-extern CmdLineArgs          gxCmdLineArgs;
+#include "Version.h"
+
+extern CmdLineArgs   gxCmdLineArgs;
 
 extern AttachMap*    gpAttachMap;
 extern BufferPool*   gpBufferPool;
@@ -124,17 +128,155 @@ extern Log*          gpLog;
 
 extern SizeHeap      gxaSizeHeap[];
 
-static Stz*  RAPIDSSE_VERSION_STRING = "0.6.0 alpha"_Stz;
-static i8    RAPIDSSE_VERSION_NUMBER = 0x000600;
 
-static Stz*  RAPIDSSE_FORMAT_STRING  = "0.6.0"_Stz;
-static i8    RAPIDSSE_FORMAT_NUMBER  = 0x000600;
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                   Demon                                    */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
-Stz*  AM::szVersionString(void) { return RAPIDSSE_VERSION_STRING; }
-i8    AM::iVersionNumber(void)  { return RAPIDSSE_VERSION_NUMBER; }
+/*----------------------------------------------------------------------------*/
+/* pipe given row buffer to named demon                                       */
+/*----------------------------------------------------------------------------*/
+void AM::DEMON::vPipeTo(Stz* szDemonNm, RowBuffer* pRowBuffer)
+{
 
-Stz*  AM::szFormatString(void)  { return RAPIDSSE_FORMAT_STRING;  }
-i8    AM::iFormatNumber(void)   { return RAPIDSSE_FORMAT_NUMBER;  }
+  // for reference: sen code from : OP_toStatDemon_Profile \handler
+  
+//  PipeIn[]
+//  "__statDemon" find dup if
+//    word.object@
+//    pipeline.pipeout
+//    nullptr to PipeIn[]
+//  else
+//    discard discard
+//    PipeIn[].delete
+//  then
+
+  Dic* pRootDic = AM::pDicRoot();
+  Word* pDemonWord = pRootDic->pFindWord(szDemonNm);
+  Job* pPipelineJob = _pJob(pDemonWord->pObject());
+  Pipeline* pPipeline = pPipelineJob->m_pPipeline;
+  Op* pOp0 = pPipeline->pOp0();
+
+  Task* pThisTask = AM::pThisTLSTask();
+  
+  pOp0->vPipeOut_thisOp(pRowBuffer,pThisTask);
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                    Task                                    */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* get task dic stack                                                         */
+/*----------------------------------------------------------------------------*/
+DicStack* AM::TASK::pDicStack(void)
+{
+  Task* pTask = pThisTLSTask();
+  if (! pTask)
+    return nullptr;
+  
+  DicStack* pDicStack = pTask->pDicStack();
+  
+  return pDicStack;
+}
+
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                   Thread                                   */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* delete thread                                                              */
+/*----------------------------------------------------------------------------*/
+void AM::THREAD::vDeleteThread(Thread* pThread)
+{
+  _static_
+  
+  WriteBehind* pWriteBehind = AM::THREAD::pWriteBehind(pThread);
+  pThread->vObject0(nullptr);
+
+  delete pWriteBehind;
+  
+  delete pThread;
+}
+
+/*----------------------------------------------------------------------------*/
+/* new thread                                                                 */
+/*----------------------------------------------------------------------------*/
+Thread* AM::THREAD::pNewThread(void)
+{
+  _static_
+  
+  Thread* pThread = new Thread;
+
+  //WriteBehind* pWriteBehind = new WriteBehind;
+  
+  //pThread->vObject0(pWriteBehind);
+  
+  return pThread;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get write behind of current thread                                         */
+/*----------------------------------------------------------------------------*/
+WriteBehind* AM::THREAD::pWriteBehind(void)
+{
+  _static_
+  
+  Thread* pThread = AM::pThisTLSThread();
+  
+  if (! pThread)
+    return nullptr;
+  
+  WriteBehind* pWriteBehind = AM::THREAD::pWriteBehind(pThread);
+  
+  return pWriteBehind;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get write behind of given thread (lazy creation of write behind)           */
+/*----------------------------------------------------------------------------*/
+WriteBehind* AM::THREAD::pWriteBehind(Thread* pThread)
+{
+  _static_
+  
+  WriteBehind* pWriteBehind = _pWriteBehind(pThread->pObject0());
+  
+  if (! pWriteBehind) {
+    pWriteBehind = new WriteBehind;
+    pThread->vObject0(pWriteBehind);
+  }
+  
+  return pWriteBehind;
+}
+
+
+
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* has the system been fully started?                                         */
+/*----------------------------------------------------------------------------*/
+bool AM::bHasStarted(void)
+{
+  if (! gpAttachMap || ! gpAttachMap->m_pGrid)
+    return false;
+  
+  return gpAttachMap->m_pGrid->bHasStarted();
+}
+
+
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+Stz*  AM::szVersionString(void) { return const_cast<Stz*>(C_VERSION_STRING); }
+i8    AM::iVersionNumber(void)  { return C_VERSION_NUMBER; }
+
+Stz*  AM::szFormatString(void)  { return const_cast<Stz*>(C_VERSION_STRING);  }  // For now
+i8    AM::iFormatNumber(void)   { return C_VERSION_NUMBER;  }                    // For now
 
 // Arg
 bool AM::bDebugIndex(void)    { return gpAttachMap->m_xSysArgs.m_bDebugIndex;        }
@@ -194,7 +336,6 @@ i8   AM::iElapsedSsec(void)   { return gpAttachMap->m_oBirth.iElapsedSsec();  }
 i8   AM::iEpoch(void)         { return gpAttachMap->m_iEpoch;                 }
 Format* AM::pFmt(void)        { return & gpAttachMap->m_oFormat;          }
 Grid* AM::pGrid(void)         { return gpAttachMap->m_pGrid;                  }
-bool AM::bHasStarted(void)    { return gpAttachMap->m_pGrid->bHasStarted();   }
 Heaps* AM::pHeaps(void)   { return & gpAttachMap->m_xHeaps;             }
 i8   AM::nIndexEntries(void)  { return gpAttachMap->m_xSysArgs.m_nIndexEntries;      }
 JobList* AM::pLocalJobs(void) {
@@ -212,7 +353,7 @@ i8   AM::iPid(void)           { return gpAttachMap->m_iPid;                   }
 i8   AM::nConnectedNodes(void){ return gpAttachMap->m_pGrid->nConnectedNodes(); }
 i8   AM::nBootNodes(void)  { return gpAttachMap->m_pGrid->nBootNodes(); }
 i8   AM::nNodes(void)  { return gpAttachMap->m_pGrid->nNodes(); }
-// newcode
+
 std::list<Node*>::const_iterator AM::itBeginNodes(void) {return  gpAttachMap->m_pGrid->itBeginNodes(); }
 std::list<Node*>::const_iterator AM::itEndNodes(void) {return  gpAttachMap->m_pGrid->itEndNodes(); }
 
@@ -544,14 +685,35 @@ i8 AM::nRndSkipLevel(void) {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
-Table* AM::pTableFind(Stz* szTableNm) {
+Table* AM::pTableFind(Stz* szTableNm)
+{
+  Table* pTable = nullptr;
+
+  DicStack* pDicStack = AM::TASK::pDicStack();
   
-  DicStack* pDicStack = pTaskDicStack();
-  
-  Table* pTable = Table::pFindTable(pDicStack,szTableNm);
+  if (pDicStack && pDicStack->pTop()) {
+    pTable = Table::pFindTable(pDicStack,szTableNm);
+  }
+  else {
+    pDicStack = new DicStack;
+    
+    if (pDicStack->bTest("rapidsse"_Stz,"public"_Stz,szTableNm))
+      pTable = pDicStack->pTable();
+    
+    delete pDicStack;
+  }
   
   return pTable;
 }
+
+StreamDef* AM::pStreamDefFind(Stz* szTableNm) {
+  
+  Table* pTable = AM::pTableFind(szTableNm);
+  StreamDef* pStreamDef = pTable->pStreamDef();
+
+  return pStreamDef;
+}
+
 
 i8 AM::iTaskAcksRmg_assert_only_(Task* pTask) { return pTask->iAcksRmg_assert_only_(); }
 void AM::vTaskDump(void) {
@@ -711,7 +873,7 @@ Tx* AM::pThisTLSTx(void) {
 
 PsxThd* AM::pThisTLSPsxThd(void) {
   Thread* pThread = Thread::pThisTLSThread();
-  PsxThd* pPsxThd =pThread->m_pPsxThd;
+  PsxThd* pPsxThd =pThread->pPsxThd();
   return pPsxThd;
 }
 
@@ -723,6 +885,8 @@ HeapBuffer* AM::pToHeapBuffer(i8 i_Buffer) {
   return pHeapBuffer;
 
 }
+
+
 
 Object* AM::pToLargeObect(i8 i_Buffer) {
     
@@ -1687,7 +1851,8 @@ i8 AM::iOperandZkKind(Operand* pOperand)
       }
       break;
     }
-      
+
+    case CN_NAMEDBUFFER:  eOperand = ZK_NAMEDBUFFER;    break;
     case CN_OTHEROPERAND: eOperand = ZK_OTHEROPERAND;   break;
     case CN_PLANOPERAND:  eOperand = ZK_PLANOPERAND;    break;
     case CN_PROFILE:      eOperand = ZK_PROFILE;        break;
@@ -1962,10 +2127,6 @@ Task* AM::pTaskNew(Job* pJob) {
 bool AM::bTaskIsLocked(Task* pTask) {
   bool bLocked = pTask->bIsLocked();
   return bLocked;
-}
-
-DicStack* AM::pTaskDicStack(void) {
-  return pThisTLSTask()->pDicStack();
 }
 
 Job* AM::pTaskJob(void) {

@@ -152,6 +152,7 @@ enum eCN : u2 // Class Number
   /* */ CN_MUTEX,
 
   /* */ CN__N__,
+  /* */ CN_NAMEDBUFFER,
   /* */ CN_NEXTGID,
   /* */ CN_NMLSTR,
   /* */ CN_NODE,
@@ -327,6 +328,7 @@ enum eCN : u2 // Class Number
   /* */ CN__W__,
   /* */ CN_WILDERNESS,
   /* */ CN_WORD,
+  /* */ CN_WRITEBEHIND,
   /* */ CN_WSPCONVERGENT_t,
 
   /* */ CN__X__,
@@ -483,6 +485,7 @@ static Stz* aCN[]
   /* */ "MUTEX"_Stz,                // CN_MUTEX
  
   /* */ "_N__"_Stz,                 // CN__N__
+  /* */ "NAMEDBUFFER"_Stz,          // CN_NAMEDBUFFER
   /* */ "NEXTGID"_Stz,              // CN_NEXTGID
   /* */ "NMLSTR"_Stz,               // CN_NMLSTR
   /* */ "NODE"_Stz,                 // CN_NODE
@@ -658,6 +661,7 @@ static Stz* aCN[]
   /* */ "_W__"_Stz,                 // CN__W__
   /* */ "WILDERNESS"_Stz,           // CN_WILDERNESS
   /* */ "WORD"_Stz,                 // CN_WORD
+  /* */ "WRITEBEHIND"_Stz,          // CN_WRITEBEHIND
   /* */ "WSPCONVERGENT_t"_Stz,      // CN_WSPCONVERGENT_t
  
   /* */ "_X__"_Stz,                 // CN__X__

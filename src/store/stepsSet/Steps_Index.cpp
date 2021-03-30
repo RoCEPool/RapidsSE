@@ -41,31 +41,36 @@ void Step::vAddSteps_Index(void)
   vAddStep("index::delete"_Stz,         &Step::vIndexDelete);
   vAddStep("index::new"_Stz,            &Step::vIndexNew);
   
-  vAddStep("index[].columnCount@"_Stz,  &Step::vIndexColumnCountFetch);
-  vAddStep("index[].column@"_Stz,       &Step::vIndexColumnFetch);
-  vAddStep("index[].compact"_Stz,       &Step::vIndexCompact);
-  vAddStep("index[].compactPtn"_Stz,    &Step::vIndexCompactPtn);
-  vAddStep("index[].deleteNext"_Stz,    &Step::vIndexDeleteNext);
-  vAddStep("index[].dump"_Stz,          &Step::vIndexDump);
+  vAddStep("Index[].columnCount@"_Stz,  &Step::vIndexColumnCountFetch);
+  vAddStep("Index[].column@"_Stz,       &Step::vIndexColumnFetch);
+  vAddStep("Index[].compact"_Stz,       &Step::vIndexCompact);
+  vAddStep("Index[].compactPtn"_Stz,    &Step::vIndexCompactPtn);
+  vAddStep("Index[].deleteNext"_Stz,    &Step::vIndexDeleteNext);
+  vAddStep("Index[].dump"_Stz,          &Step::vIndexDump);
   vAddStep("index.indexDef@"_Stz,       &Step::vIndexIndexDefFetch);
   vAddStep("index.indexDef!"_Stz,       &Step::vIndexIndexDefStore);
-  vAddStep("index[].indexTree"_Stz,     &Step::vIndexIndexTree);
+  vAddStep("Index[].indexTree"_Stz,     &Step::vIndexIndexTree);
   vAddStep("index.isPrimaryKey@"_Stz,   &Step::vIndexIsPrimaryKeyFetch);
   vAddStep("index.isPrimaryKey!"_Stz,   &Step::vIndexIsPrimaryKeyStore);
   vAddStep("index.isUnique@"_Stz,       &Step::vIndexIsUniqueFetch);
   vAddStep("index.isValidUniqueIndex"_Stz,&Step::vIndexIsValidUniqueIndex);
-  vAddStep("index[].name@"_Stz,         &Step::vIndexNameFetch);
+  vAddStep("Index[].name@"_Stz,         &Step::vIndexNameFetch);
   vAddStep("index.populate"_Stz,        &Step::vIndexPopulate);
-  vAddStep("index[].size"_Stz,          &Step::vIndexSize);
+  vAddStep("Index[].size"_Stz,          &Step::vIndexSize);
   vAddStep("index.table@"_Stz,          &Step::vIndexTableFetch);
   vAddStep("index.table!"_Stz,          &Step::vIndexTableStore);
-  vAddStep("index[].verify"_Stz,        &Step::vIndexVerify);
-  vAddStep("index[].verifyPtn"_Stz,     &Step::vIndexVerifyPtn);
-  vAddStep("index[].visualize"_Stz,     &Step::vIndexVisualize);
+  vAddStep("Index[].verify"_Stz,        &Step::vIndexVerify);
+  vAddStep("Index[].verifyPtn"_Stz,     &Step::vIndexVerifyPtn);
+  vAddStep("Index[].visualize"_Stz,     &Step::vIndexVisualize);
+  
+  
+  vAddStep("Index[]"_Stz,      &Step::vIndexGet);
+  vAddStep("Index[].set"_Stz,  &Step::vIndexSet);
+
 }
 
 /*----------------------------------------------------------------------------*/
-/* index[].column@ -- get the column from the index                           */
+/* Index[].column@ -- get the column from the index                           */
 /*----------------------------------------------------------------------------*/
 void Step::vIndexColumnFetch(void)
 {
@@ -100,7 +105,7 @@ void Step::vIndexColumnCountFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* index[].compact -- index compaction                                        */
+/* Index[].compact -- index compaction                                        */
 /*----------------------------------------------------------------------------*/
 void Step::vIndexCompact(void)
 {
@@ -115,7 +120,7 @@ void Step::vIndexCompact(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* index[].compactPtn -- compact index partition                              */
+/* Index[].compactPtn -- compact index partition                              */
 /*----------------------------------------------------------------------------*/
 void Step::vIndexCompactPtn(void)
 {
@@ -154,7 +159,7 @@ void Step::vIndexDelete(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* index[].deleteNext -- delete rows within the range                         */
+/* Index[].deleteNext -- delete rows within the range                         */
 /*----------------------------------------------------------------------------*/
 void Step::vIndexDeleteNext(void)
 {
@@ -274,7 +279,7 @@ L_Exit:
 }
 
 /*----------------------------------------------------------------------------*/
-/* index[].dump -- dump the index                                             */
+/* Index[].dump -- dump the index                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vIndexDump(void)
 {
@@ -328,7 +333,7 @@ void Step::vIndexIndexDefStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* index[].IndexTree -- get index tree of index[] for current partition       */
+/* Index[].IndexTree -- get index tree of Index[] for current partition       */
 /*----------------------------------------------------------------------------*/
 void Step::vIndexIndexTree(void)
 {
@@ -511,7 +516,7 @@ void Step::vIndexPopulate(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* index[].size -- push space used by index                                   */
+/* Index[].size -- push space used by index                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vIndexSize(void)
 {
@@ -564,7 +569,7 @@ void Step::vIndexTableStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* index[].verify -- verify index                                             */
+/* Index[].verify -- verify index                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vIndexVerify(void)
 {
@@ -580,7 +585,7 @@ void Step::vIndexVerify(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* index[].verifyPtn -- verify partition of index                             */
+/* Index[].verifyPtn -- verify partition of index                             */
 /*----------------------------------------------------------------------------*/
 void Step::vIndexVerifyPtn(void)
 {
@@ -612,7 +617,7 @@ void Step::vIndexVerifyPtn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* index[].visualize -- visualize the index                                   */
+/* Index[].visualize -- visualize the index                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vIndexVisualize(void)
 {
@@ -633,6 +638,31 @@ void Step::vIndexVisualize(void)
   
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* Index[] -- get index                                                       */
+/*----------------------------------------------------------------------------*/
+void Step::vIndexGet(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushPtr(*( m_pJob->pLogicUnit_job() )->m_xpIndex);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Index[].set -- set index                                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vIndexSet(void)
+{
+  ENTRY();
+  
+  ( m_pJob->pLogicUnit_job() )->m_xpIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+  
+  EXIT();
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

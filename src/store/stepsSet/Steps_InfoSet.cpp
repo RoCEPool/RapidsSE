@@ -290,7 +290,7 @@ void Step::vInfoSetAddRowVargs(void)
   
   InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
   
-  Row* aRow = pInfoSet->pAllotRow();
+  Row* aRow = pInfoSet->RowBuffer::pAllotRow();
   Stz* szTail;
   i8   nSize;
 
@@ -411,7 +411,7 @@ void Step::vInfoSetChunkFile(void)
       nChunkBytes = i_EofLoc - i_ChunkLoc;
       pRow = nullptr;
       if (nRows < C_MAX_SEEKOFFSETS)
-        pRow = pInfoSet->pAllotRow();
+        pRow = pInfoSet->RowBuffer::pAllotRow();
       
       if (pRow) {
         nRows++;
@@ -469,7 +469,7 @@ void Step::vInfoSetChunkFile(void)
     
     pRow = nullptr;
     if (nRows < C_MAX_SEEKOFFSETS)
-      pRow = pInfoSet->pAllotRow();
+      pRow = pInfoSet->RowBuffer::pAllotRow();
     
     if (pRow) {
       nRows++;
@@ -565,7 +565,7 @@ void Step::vInfoSetFirstRow(void)
   
   InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
   
-  m_pDataStack->vPushPtr(pInfoSet->aFirstRow());
+  m_pDataStack->vPushPtr(pInfoSet->pFirstRow());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -593,7 +593,7 @@ void Step::vInfoSetInfoRows(void)
   
   InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
   
-  m_pDataStack->vPushInt(pInfoSet->nInfoRows());
+  m_pDataStack->vPushInt(pInfoSet->nRows());
   
   EXIT();
 }
@@ -641,9 +641,9 @@ void Step::vInfoSetName(void)
   
   InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
 
-  Stz* szInfoSetNm = pInfoSet->szInfoSetNm();
+  Stz* szBufferNm = pInfoSet->szBufferNm();
   
-  m_pDataStack->vPushStz(szInfoSetNm);
+  m_pDataStack->vPushStz(szBufferNm);
 
   EXIT();
 }
@@ -678,7 +678,7 @@ void Step::vInfoSetNextRow(void)
   
   ASSERT(pRow);
   
-  m_pDataStack->vPushPtr(pInfoSet->aNextRow(pRow));
+  m_pDataStack->vPushPtr(pInfoSet->pNextRow(pRow));
 }
 
 /*----------------------------------------------------------------------------*/

@@ -90,7 +90,7 @@ void Statement::vDescribe(PlanNode* pNode, s2K& buf)
 /*----------------------------------------------------------------------------*/
 /* Recurses down the query plan and writes the explain of the stmt to the buf */
 /*----------------------------------------------------------------------------*/
-void Statement::vExplain(PlanNode* pNode, s48K& sBuf, i8 iIndent)
+void Statement::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iIndent)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -121,7 +121,7 @@ void Statement::vExplain(PlanNode* pNode, s48K& sBuf, i8 iIndent)
       PlanNode* pChild = pIter->pNext();
       ASSERT(PlanObject::bIsOfType(pChild));
 
-      PlanObject::vExplain(pChild, sBuf, iIndent+1);
+      PlanObject::vExplain(pChild, pRootNode, sBuf, iIndent + 1);
     }
 
     delete pIter;
@@ -136,6 +136,20 @@ b1 Statement::bIsOfType(PlanNode *pNode)
   return ShadowNode::bIsOfType(pNode, C_STATEMENT_DEFN);
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* Return a list of ProjectedExprs that represent the column expressions      */
+/* that this PlanObject will return. All nodes and the list must be freed.    */
+/*----------------------------------------------------------------------------*/
+PlanNodeList* Statement::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  // Statements don't change the columns being returned. So ask its descendant.
+  ASSERT(pNode->iNumChildren() == 1);
+  return PlanObject::pColumnExprs(static_cast<QueryNode*>(pNode->pFirstChild()), pRootNode);
+}
 
 /*----------------------------------------------------------------------------*/
 /* Returns the statement enum type from a given node                          */

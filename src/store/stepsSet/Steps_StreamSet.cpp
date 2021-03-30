@@ -781,7 +781,7 @@ void Step::vStreamSetFirstRow(void)
   
   StreamSet* pStreamSet = _pStreamSet(*( m_pJob->pLogicUnit_job() )->m_xpStreamSet);
   
-  m_pDataStack->vPushPtr(pStreamSet->aFirstRow());
+  m_pDataStack->vPushPtr(pStreamSet->pFirstRow());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -809,7 +809,7 @@ void Step::vStreamSetInfoRows(void)
   
   StreamSet* pStreamSet = _pStreamSet(*( m_pJob->pLogicUnit_job() )->m_xpStreamSet);
   
-  m_pDataStack->vPushInt(pStreamSet->nInfoRows());
+  m_pDataStack->vPushInt(pStreamSet->nRows());
   
   EXIT();
 }
@@ -823,9 +823,9 @@ void Step::vStreamSetName(void)
   
   StreamSet* pStreamSet = _pStreamSet(*( m_pJob->pLogicUnit_job() )->m_xpStreamSet);
 
-  Stz* szInfoSetNm = pStreamSet->szInfoSetNm();
+  Stz* szBufferNm = pStreamSet->szBufferNm();
   
-  m_pDataStack->vPushStz(szInfoSetNm);
+  m_pDataStack->vPushStz(szBufferNm);
 
   EXIT();
 }
@@ -860,7 +860,7 @@ void Step::vStreamSetNextRow(void)
   
   ASSERT(pRow);
   
-  m_pDataStack->vPushPtr(pStreamSet->aNextRow(pRow));
+  m_pDataStack->vPushPtr(pStreamSet->pNextRow(pRow));
 }
 
 /*----------------------------------------------------------------------------*/

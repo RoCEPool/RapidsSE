@@ -26,10 +26,9 @@ ToolCatalog::ToolCatalog(void)
 /*----------------------------------------------------------------------------*/
 /* flist gizmos                                                                */
 /*----------------------------------------------------------------------------*/
-void ToolCatalog::vTools(SelfFn* aSelfFn, TokenVec* pTokenVec)
+void ToolCatalog::vTools(TokenVec* pTokenVec)
 {
   _static_
-  UNUSED(aSelfFn);
   UNUSED(pTokenVec);
 
   gxToolCatalog.vList();

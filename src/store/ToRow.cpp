@@ -885,9 +885,9 @@ L_AdvanceNextRecord:
   m_pRowBuffer->nFreeBytes();
 
   // allot a new row (new another rowBuffer if necessary)
-  if (! m_pRowBuffer->pAllotNewRow()) {    // ? inline ?
+  if (! m_pRowBuffer->pAllotRow()) {    // ? inline ?
     vNewRowBuffer();
-    Row* aNewRow = m_pRowBuffer->pAllotNewRow();
+    Row* aNewRow = m_pRowBuffer->pAllotRow();
     ASSERT(aNewRow);
     UNUSED(aNewRow);
   }
@@ -964,9 +964,11 @@ L_NextFieldInRecord:
     case DM_FLT : goto L_Float;
     case DM_INT : goto L_Integer;
     case DM_IVL : goto L_Interval;
+    case DM_IVY : NEVER_REACH;
     case DM_TME : goto L_Time;
     case DM_TSP : goto L_Timestamp;
     case DM_VCH : goto L_Varchar;
+    case DM_UNK : NEVER_REACH;
     default:
       RASSERT(0);
   }

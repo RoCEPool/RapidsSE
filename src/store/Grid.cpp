@@ -230,7 +230,7 @@ Node* Grid::pFindNodeByNodeNo(i8 iNodeNo)
     if (pNode) vTrace("pFindNodeByNodeNo found %s"_Stz, pNode->szNodeNm()->azChar());
     if (pNode && pNode->iNodeNo() == iNodeNo) {
 
-      vTrace("pFindNodeByNodeNo found %s"_Stz, pNode->szNodeNm()->azChar());
+      //vTrace("pFindNodeByNodeNo found %s"_Stz, pNode->szNodeNm()->azChar());
       return pNode;
     }
   }
@@ -276,7 +276,7 @@ i8 Grid::iGetNodeNo(i8 i_Node)
   for (Node_I oNode_I(0,C_ALL); oNode_I.bMore(); oNode_I.vNext()) {
     Node* pNode = (*oNode_I);
     if (pNode && i_Node == iSeq++) {
-      vTrace("iGetNodeNo %lld\n"_Stz, pNode->iNodeNo());
+      //vTrace("iGetNodeNo %lld\n"_Stz, pNode->iNodeNo());
       return pNode->iNodeNo();
     }
   }
@@ -371,9 +371,9 @@ void Grid::vIncConnectedNodes(void)
   // We have to readjust partition map when new connection or dropped connection
   PtnMap* pPtnMap = AM::pPtnMap();
 
-  pPtnMap->vDumpDataBuffers(); // debug dump
+  //pPtnMap->vDumpDataBuffers(); // debug dump
   pPtnMap->vAdjustDataBuffers(AM::nConnectedNodes(),AM::nDegOfPar());
-  pPtnMap->vDumpDataBuffers();
+  //pPtnMap->vDumpDataBuffers();
 
 }
 

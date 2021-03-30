@@ -31,7 +31,6 @@
   // create the table
 
   streamDef[] <tableNm> table::createTable to table[]
-  true table[].isDefinitionOnly!
 ;
 
 /*----------------------------------------------------------------------------*/

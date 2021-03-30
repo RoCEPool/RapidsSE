@@ -41,6 +41,7 @@ namespace STORE
     bool     bErrored(void);
     void     vErrored(bool bErrored);
     i8       i_Origin(void);
+    Op*      pOp0(void);
     i8       nOpsOnNode(i8 iNode);
     Op*      pOpToPulse(void);
     Job*     pPipelineJob(void);

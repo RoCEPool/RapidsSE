@@ -12,9 +12,9 @@
 /*----------------------------------------------------------------------------*/
 /* pop the catalog folder                                                     */
 /*----------------------------------------------------------------------------*/
-: path[].popCatalogFolder
+: Path[].popCatalogFolder
 
-  path[].popFolder
+  Path[].popFolder
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -37,7 +37,7 @@
 /*----------------------------------------------------------------------------*/
 /* check word is a catalog                                                    */
 /*----------------------------------------------------------------------------*/
-: path[].checkIsCatalog ( word )
+: Path[].checkIsCatalog ( word )
 
   dup word.category@ find: \folder eql not if EC_NOT_A_FOLDER false exit then
   dup execute dic.kind@ find: \catalog eql if true exit then
@@ -119,9 +119,9 @@
 /*----------------------------------------------------------------------------*/
 /* find the catalog folder and push it onto task dictionary                   */
 /*----------------------------------------------------------------------------*/
-: path[].pushCatalogFolder ( "<catalogName>" -- )
+: Path[].pushCatalogFolder ( "<catalogName>" -- )
 
-  find execute path[].pushFolder
+  find execute Path[].pushFolder
   true
 ;
 
@@ -138,11 +138,11 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move to catalog folder
-  sCatalogNm path[].pushCatalogFolder assert
+  sCatalogNm Path[].pushCatalogFolder assert
 
   "schemas" folder::remove
 
-  path[].popCatalogFolder
+  Path[].popCatalogFolder
 
   sCatalogNm folder::remove
 ;

@@ -68,10 +68,11 @@ namespace STORE
   
     static void vAddSteps_Index(void);
     static void vAddSteps_IndexDef(void);
+    static void vAddSteps_IndexDefRlu(void);
     static void vAddSteps_InfoSet(void);
     static void vAddSteps_InfoSetTable(void);
     static void vAddSteps_IndexStream(void);
-    static void vAddSteps_IndexTree(void);
+    static void vAddSteps_IndexTreeRlu(void);
     static void vAddSteps_Input(void);
     static void vAddSteps_Int(void);
   
@@ -97,6 +98,7 @@ namespace STORE
     static void vAddSteps_Monitor(void);
     static void vAddSteps_Expressions(void);
 
+    static void vAddSteps_NamedBuffer(void);
     static void vAddSteps_Node(void);
     static void vAddSteps_Node_I(void);
     static void vAddSteps_Now(void);
@@ -105,13 +107,16 @@ namespace STORE
     static void vAddSteps_Olist(void);
     static void vAddSteps_Op(void);
     static void vAddSteps_Operand(void);
+    static void vAddSteps_OperandB(void);
+    static void vAddSteps_OperandC(void);
+    static void vAddSteps_OperandOoO(void);
     static void vAddSteps_OpSys(void);
 
     static void vAddSteps_Persistence(void);
     static void vAddSteps_Pipeline(void);
     static void vAddSteps_PathIdentifier(void);
     static void vAddSteps_Plist(void);
-    static void vAddSteps_Pot(void);
+    static void vAddSteps_PotRlu(void);
     static void vAddSteps_Procedure(void);
     static void vAddSteps_Process(void);
     static void vAddSteps_Profile(void);
@@ -127,15 +132,10 @@ namespace STORE
     static void vAddSteps_RegCounter(void);
     static void vAddSteps_RegFolder(void);
     static void vAddSteps_RegJob(void);
-    static void vAddSteps_RegIndex(void);
     static void vAddSteps_RegNow(void);
     static void vAddSteps_RegOp(void);
-    static void vAddSteps_RegOperand(void);
-    static void vAddSteps_RegOperandB(void);
-    static void vAddSteps_RegOperandC(void);
-    static void vAddSteps_RegOperandOoO(void);
     static void vAddSteps_RegPath(void);
-    static void vAddSteps_RegPipein(void);
+    static void vAddSteps_Pipein(void);
     static void vAddSteps_RegTask(void);
     static void vAddSteps_RegTimer(void);
     static void vAddSteps_RegXmits(void);
@@ -163,8 +163,7 @@ namespace STORE
     static void vAddSteps_Supervisor(void);
 
     static void vAddSteps_Table(void);
-    static void vAddSteps_TablePartition(void);
-    static void vAddSteps_TablePartition2(void);
+    static void vAddSteps_TablePtn(void);
     static void vAddSteps_Tag(void);
     static void vAddSteps_TagSet(void);
     static void vAddSteps_Task(void);

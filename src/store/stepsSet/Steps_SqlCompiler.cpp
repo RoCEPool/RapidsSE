@@ -40,6 +40,7 @@
 #include "PlanOperand.hpp"
 
 #include "NameValidator.hpp"
+#include "ExprValidator.hpp"
 
 #include "SqlException.hpp"
 
@@ -48,9 +49,54 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_SqlCompiler(void)
 {
+  vAddStep("sqlCompiler::exprValidate"_Stz,   &Step::vSqlCompilerExprValidate);
   vAddStep("sqlCompiler::nameValidate"_Stz,   &Step::vSqlCompilerNameValidate);
   vAddStep("sqlCompiler::parser"_Stz,         &Step::vSqlCompilerParser);
   vAddStep("sqlCompiler::transliterate"_Stz,  &Step::vSqlCompilerTransliterate);
+}
+
+/*----------------------------------------------------------------------------*/
+/* sqlCompiler::exprValidate -- expression validation                         */
+/*----------------------------------------------------------------------------*/
+void Step::vSqlCompilerExprValidate(void)
+{
+  ENTRY();
+
+  s48K sExplainBuf;
+
+  PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
+  Parser::RootNode* pPlanRoot = Parser::_pRootNode(pPlanOperand->pPlanNode());
+  UNUSED(pPlanRoot);
+
+
+  try {
+    ExprValidator::vValidateExprs(pPlanRoot);
+
+  } catch (Parser::SqlException& e) {
+    Grid* pGrid = AM::pGrid();
+    InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
+    Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+                                    pGrid->pThisNode()->szNodeNm(),
+                                    EC_SEMANTIC_ERROR,
+                                    0,
+                                    0,
+                                    e.szError(),
+                                    C_VARGS_END);
+    UNUSED(pRow);
+    delete pPlanRoot;
+    delete pPlanOperand;
+    m_pDataStack->vPushPtr(nullptr);
+    goto L_Exit;
+  }
+
+
+  // TODO: eventually we want the received plan graph to be immutable,
+  //       so we would send a different version. But for now we will just
+  //       manipulate and send the same plan graph
+  m_pDataStack->vPushPtr(pPlanOperand);
+
+  L_Exit:
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -91,6 +137,9 @@ void Step::vSqlCompilerNameValidate(void)
     goto L_Exit;
   }
 
+  // At this point all names in the graph should be fully resolved
+  // i.e. they have catalog/schema/table names.
+
   Parser::ShadowRoot::vExplain(pPlanRoot, sExplainBuf, 0);
   vTrace("%s\n"_Stz, sExplainBuf.szStz());
 
@@ -115,6 +164,8 @@ void Step::vSqlCompilerParser(void)
   // Get the original SQL statement entered
   s4K sSqlStatement;
   m_pDataStack->vPopStr(sSqlStatement,__func__);
+  
+  //vTrace("vSqlCompilerParser got : %s\n"_Stz,sSqlStatement.szStz());
 
   // Read in and parse the plan graph definitions
   const Parser::PlanNode* pGraphTemplate = Parser::PlanDefinitionParser::pGraphTemplate();

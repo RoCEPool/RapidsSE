@@ -24,22 +24,33 @@ namespace STORE
   
     RowBuffer(void);
     RowBuffer(eCN eClassNo);
-    RowBuffer(eCN eClassNo, StreamDef* pStreamDef);
+    RowBuffer(eCN eClassNo, StreamDef* pStreamDef, i8 iLogCtl=C_LOG);
    ~RowBuffer(void) noexcept(false);
       
-    Row* aAllotCopyRow(RowSingle* pRowSingle);
-      
+    static RowBuffer* pToRowBuffer(void* aAddr);
+
+    Row* pAllotCopyRow(RowSingle* pRowSingle);
+  
+    Row* pAllotRow(void);
+    Row* pAllotRow(i8 iVargsBegin, ...);
+    Row* pAllotRow(StreamDef* pStreamDef, i8 iVargsBegin, ...);
+
+    bool bDepositColumns(Row* pRow, va_list xVarArgs);
+    void vDepositRow(Row* pRow, i8 iVargsBegin, ...);
+  
     void vPrintRows(void);
     void vPrintRows(StreamDef* pStreamDef);
-    void vShow(StreamDef* pStreamDef);
-  
-    CsvBuffer* pToCsvBuffer(void);
   
     void vRestorePointers(void);
   
+    void vShow(StreamDef* pStreamDef);
+  
     char* azStrArea(void);
-
+  
+    CsvBuffer* pToCsvBuffer(void);
+  
   private:
+
     i8   iToOffset(Stz* szStr);
   
     Footer* aFooter(void);

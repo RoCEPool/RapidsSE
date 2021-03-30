@@ -27,118 +27,183 @@
 #include "eXA.h"
 #include "eYA.h"
 
-namespace OBLIQUE { class AM; }
-using namespace OBLIQUE;
-
-
-namespace BASE { class Format;                                  }
-namespace BASE {
-                            class Datum_h;
-                            class SN_Bcd;
-                            class SN_Bol;
-                            class SN_Dte;
-                            class SN_Flt;
-                            class SN_Int;
-                            class SN_Ivl;
-                            class SN_Tme;
-                            class SN_Tsp;
-
-                            class SP_Bcd;
-                            class SP_Bol;
-                            class SP_Dte;
-                            class SP_Flt;
-                            class SP_Int;
-                            class SP_Ivl;
-                            class SP_Tme;
-                            class SP_Tsp;
-                            template <i8 SPACE> class Datum_t;                 }
-namespace BASE           { class ClassFlags;       class TagSet;
-                            class Birth; class Now;                            }
-namespace BASE   { class Token;           class Charser;
-                              class Input;           class TokenVec;          }
-namespace BASE     { class RU_Cpu;          class RU_Memory;         }
-namespace BASE        { class Article;         class Queue;
-        class Heap; class PoolHelper; class ObjectSnapshot;            }
-
-using namespace BASE;
-
-namespace BASE { class File;  class PsxThd; class Resource; class Resources;}
-namespace BASE { class Operand;                                  }
-namespace BASE { class Dic;             class DicStack;
-                 class Word;              }
-namespace BASE             { class Task;                                     }
-namespace BASE      { class Tx;              class TxSet;             }
-
-namespace BASE       { class DataBuffer;      class CsvBuffer;       }
-
-namespace STORE          { class Session;         class SessionState;      }
-namespace BASE           { class Log;             class LogEntry;          }
-
-namespace BASE           { class Scheduler;       class Thread;
-                              class Schedule;                                   }
-
-namespace BASE       { class CodeCell;            class Loggable;
-                              class Header;          class Object;
-                              class Statistics;     class Mutex;              }
-namespace BASE            { class ReqTuple;                              }
-namespace BASE           { class Lock;            class Locks;   class MasterLock;    }
-namespace BASE              { class BufferPool;      class HeapBuffer;
-                              class Heaps;         class PoolBuffer;
-
-class IvlLib;
-
+namespace OBLIQUE {
+  class AM;
 }
 
-
+using namespace OBLIQUE;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+namespace BASE {
 
+  class Article;
+         
+  class Birth;
+  class BufferPool;
 
+  class Charser;
+  class ClassFlags;
+  class CodeCell;
+  class CsvBuffer;
 
-namespace STORE    { class Crw;             class CrwBuffer;
-                              class RowCompactor;    class RowInflator;
-                              class HeadLine;        class Encoding;
-                     class SP_Encoding;
-                      class CrwPacker;
-                              class OverLine;        class TailLine;          }
-namespace STORE       { class RowBuffer;       class RowBuffer;         }
+  class DataBuffer;
+  class Datum_h;
+  class Dic;
+  class DicStack;
 
+  class File;
+  class Format;
 
-namespace STORE    { class Dynamo;                                   }
-namespace STORE       { class LogicUnit;                                }
+  class Header;
+  class Heap;
+  class Heaps;
+  class HeapBuffer;
 
-namespace STORE             { class Grid;            class Node;              }
+  class Input;
+  class IvlLib;
 
-namespace STORE          { class EntBuffer;       class IndexTree;         }
-namespace STORE          { class InfoSetBase;                              }
-namespace STORE         { class Sessions;                             }
-namespace STORE              { class Job;
-                              class JobList;         class Job_CreateTable;
-                              class Job_CreateIndex; class XmitOperand;
-                              class Job_Distributed;                          }
-namespace STORE          { class Table;           class IdxColVec;
-                              class Index;
-                              class BucketMap;       class PtnMap;            }
-namespace STORE      {
-                              class PtnStream;       class TablePtn;          }
-namespace STORE         { class Xmits;           class Op;
-                              class Pipeline;        class Stage;
-                              class StageVec;        class Stream;            }
+  class Lock;
+  class Locks;
+  class Log;
+  class LogEntry;
+  class Loggable;
 
-namespace STORE   { class Crv;                                      }
-namespace STORE              { class Row;                                      }
-namespace STORE             { class Step;            class Steps;        }
-namespace STORE     { class AttachMap;       class Engine;            }
+  class MasterLock;
+  class Mutex;
 
+  class Now;
 
+  class Object;
+  class ObjectSnapshot;
+  class Operand;
 
+  class PoolBuffer;
+  class PoolHelper;
+  class PsxThd;
+
+  class Queue;
+
+  class ReqTuple;
+  class Resource;
+  class Resources;
+
+  class Schedule;
+  class Scheduler;
+  class Statistics;
+
+  class TagSet;
+  class Task;
+  class Thread;
+  class Token;
+  class TokenVec;
+  class Tx;
+  class TxSet;
+
+  class Word;
+
+  class RU_Cpu;
+  class RU_Memory;
+
+  class SN_Bcd;
+  class SN_Bol;
+  class SN_Dte;
+  class SN_Flt;
+  class SN_Int;
+  class SN_Ivl;
+  class SN_Tme;
+  class SN_Tsp;
+
+  class SP_Bcd;
+  class SP_Bol;
+  class SP_Dte;
+  class SP_Flt;
+  class SP_Int;
+  class SP_Ivl;
+  class SP_Tme;
+  class SP_Tsp;
+
+  template <i8 SPACE> class Datum_t;
+}
+
+using namespace BASE;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+namespace STORE {
+  class AttachMap;
+
+  class BucketMap;
+
+  class Crv;
+  class Crw;
+  class CrwBuffer;
+  class CrwPacker;
+
+  class Dynamo;
+
+  class Encoding;
+  class Engine;
+  class EntBuffer;
+
+  class Grid;
+
+  class HeadLine;
+
+  class IdxColVec;
+  class Index;
+  class IndexTree;
+  class InfoSetBase;
+
+  class Job;
+  class JobList;
+
+  class LogicUnit;
+
+  class Node;
+
+  class Op;
+  class OverLine;
+
+  class Pipeline;
+  class PtnMap;
+  class PtnStream;
+
+  class Row;
+  class RowBuffer;
+  class RowCompactor;
+  class RowInflator;
+
+  class Session;
+  class Sessions;
+  class SessionState;
+  class Stage;
+  class StageVec;
+  class Step;
+  class Steps;
+  class Stream;
+  class StreamDef;
+
+  class Table;
+  class TablePtn;
+  class TailLine;
+  
+  class WriteBehind;
+  class XmitOperand;
+  
+  class Xmits;
+
+  class SP_Encoding;
+}
 
 using namespace STORE;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-namespace PROMPT { class SePrompt; }
+namespace PROMPT {
+  class SePrompt;
+}
+
 using namespace PROMPT;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -147,6 +212,29 @@ namespace OBLIQUE
 {
   class AM
   {
+  public:
+  
+    class DEMON
+    {
+    public:
+      static void vPipeTo(Stz* szDemonNm, RowBuffer* pRowBuffer);
+    };
+  
+    class TASK
+    {
+    public:
+      static DicStack* pDicStack(void);
+    };
+  
+    class THREAD
+    {
+    public:
+      static void vDeleteThread(Thread* pThread);
+      static Thread* pNewThread(void);
+      static WriteBehind* pWriteBehind(void);
+      static WriteBehind* pWriteBehind(Thread* pThread);
+    };
+
   public:
     static Stz*  szVersionString(void);
     static i8    iVersionNumber(void);
@@ -435,9 +523,9 @@ namespace OBLIQUE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
     static Table* pTableFind(Stz* szTableNm);
+    static StreamDef* pStreamDefFind(Stz* szTableNm);
 
     static i8   iTaskAcksRmg_assert_only_(Task* pTask);
-    static DicStack* pTaskDicStack(void);
     static void vTaskDump(void);
     static void vTaskDump(Task* pTask);
     static Job* pTaskJob(void);
@@ -451,7 +539,7 @@ namespace OBLIQUE
     static LogicUnit* pTaskLogicUnit(Task* pTask);
     static i8   iTaskState(Task* pTask);
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
     static HeapBuffer* pToHeapBuffer(i8 iBufferNo);
     static Object* pToLargeObect(i8 iBufferNo);
@@ -491,7 +579,9 @@ namespace OBLIQUE
     static bool bJob_RemoveLocal(Job* pJob, bool bDump=false);
     static bool bJob_RemoveOriginating(Job* pJob, bool bDump=false);
     static bool bJob_RemoveParticipating(Job* pJob, bool bDump=false);
+  
   };
+
 }
 
 /*============================================================================*/

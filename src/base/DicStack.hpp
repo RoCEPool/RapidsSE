@@ -12,8 +12,6 @@ namespace BASE
   class DicStack : public Object
   {
   private:
-    
-  private:
     i8    m_iTop;
     Dic*  m_pDic[C_DIC_STACKDEPTH];
     

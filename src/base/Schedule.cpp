@@ -113,7 +113,7 @@ void Schedule::vThreadsReport(void)
     
     Thread* pThread = pSchedule->m_pGeneralThreadVec->pGet(i_Thread);
     
-    pThread->m_pPsxThd->bGetCpu(iUserTime,iSystemTime,
+    pThread->pPsxThd()->bGetCpu(iUserTime,iSystemTime,
                                  iPercentageUsage,iSleepSsec);
     
     vTrace("  Gen Thread %2lld %p"
@@ -124,18 +124,18 @@ void Schedule::vThreadsReport(void)
            pThread->iThreadNo(),
            pThread,
            
-           pThread->m_pPsxThd->m_aStackBase,
-           pThread->m_pPsxThd->m_iStackSize,
+           pThread->pPsxThd()->m_aStackBase,
+           pThread->pPsxThd()->m_iStackSize,
            
            iUserTime,
            iSystemTime,
            iPercentageUsage,
            iSleepSsec,
            
-           aHS[pThread->m_eThreadState],
-           pThread->m_eDedicated ? aCN[pThread->m_eDedicated]->azChar() : "",
+           aHS[pThread->eThreadState()],
+           pThread->eDedicated() ? aCN[pThread->eDedicated()]->azChar() : "",
            
-           pThread->m_nAssignedTasks
+           pThread->nAssignedTasks()
            );
   }
   
@@ -150,7 +150,7 @@ void Schedule::vThreadsReport(void)
     
     Thread* pThread = pSchedule->m_pDedicatedThreadVec->pGet(i_Thread);
     
-    pThread->m_pPsxThd->bGetCpu(iUserTime,iSystemTime,
+    pThread->pPsxThd()->bGetCpu(iUserTime,iSystemTime,
                                  iPercentageUsage,iSleepSsec);
     
     vTrace("  Ded Thread %2lld %p"
@@ -161,18 +161,18 @@ void Schedule::vThreadsReport(void)
            pThread->iThreadNo(),
            pThread,
            
-           pThread->m_pPsxThd->m_aStackBase,
-           pThread->m_pPsxThd->m_iStackSize,
+           pThread->pPsxThd()->m_aStackBase,
+           pThread->pPsxThd()->m_iStackSize,
            
            iUserTime,
            iSystemTime,
            iPercentageUsage,
            iSleepSsec,
            
-           aHS[pThread->m_eThreadState],
-           pThread->m_eDedicated ? aCN[pThread->m_eDedicated]->azChar() : "",
+           aHS[pThread->eThreadState()],
+           pThread->eDedicated() ? aCN[pThread->eDedicated()]->azChar() : "",
            
-           pThread->m_nAssignedTasks
+           pThread->nAssignedTasks()
            );
   }
   
@@ -793,7 +793,7 @@ void Schedule::vMonitorThread(s48K& sPortrait)
       if (HS_ASSIGNED == pThread->eThreadState())
         nRunning++;
     
-    if (CN_NONE != pThread->m_eDedicated)
+    if (CN_NONE != pThread->eDedicated())
       nDedicated++;
   }
   

@@ -69,7 +69,8 @@ Table::Table(Stz* szTableNm, eTT eKind)
   //        has started). Experimentally allows new, but non-active nodes to be
   //        added after the cluster has started
   //        This must be fixed properly. Ray 14 Nov 2020
-  if (AM::pGrid()->bHasStarted()) {
+  //if (AM::pGrid()->bHasStarted()) {
+  if (TT_NORMAL == m_eKind || TT_INTERNAL == m_eKind) {
     for (i8 i_TablePtn = 0; i_TablePtn < AM::nPtnsPerTable(); i_TablePtn++) {
       
       tPN tPtnNo = Table::tTablePtnToPtnNo(i_TablePtn);
@@ -160,17 +161,17 @@ Table* Table::pFindTable(DicStack* pDicStack, Stz* szTableNm)
   _static_
   
   Dic* pDic = pDicStack->pTop();
-  
+  if (! pDic)
+    return nullptr;
+
   Word* pTableDicWord = pDic->pFindWord(szTableNm);
-  
-  if ( !pTableDicWord )
+  if (! pTableDicWord )
     return nullptr;
   
   Dic* pTableDic = _pDic(pTableDicWord->pObject());
   
   Word* pTableWord = pTableDic->pFindWord(szTableNm);
-  
-  if ( !pTableWord )
+  if (! pTableWord)
     return nullptr;
   
   Table* pTable = _pTable(pTableWord->pObject());
@@ -252,8 +253,6 @@ tPN Table::tTablePtnToPtnNo(i8 i_TablePtn)
   
   return tPtnNo;
 }
-
-
 
 
 /*----------------------------------------------------------------------------*/
@@ -487,17 +486,17 @@ bool Table::bIsDefinitionOnly(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  return m_bDefinitionOnly;
+  return (TT_INFOSET == m_eKind || TT_INTERNAL == m_eKind);
 }
 
 /*----------------------------------------------------------------------------*/
-/* set if table if definition only                                            */
+/* get if table is a definition only                                          */
 /*----------------------------------------------------------------------------*/
-void Table::vIsDefinitionOnly(bool bDefinitionOnly)
+bool Table::bIsInternallyDefined(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  m_bDefinitionOnly = bDefinitionOnly;
+  return (TT_INTERNAL == m_eKind);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -508,6 +507,16 @@ bool Table::bIsLoading(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   return m_bIsLoading;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get if table is user created                                               */
+/*----------------------------------------------------------------------------*/
+bool Table::bIsUserCreated(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  return (TT_NORMAL == m_eKind);
 }
 
 /*----------------------------------------------------------------------------*/

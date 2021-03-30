@@ -9,7 +9,9 @@
 #include "QueryNode.hpp"
 #include "PlanConstants.hpp"
 #include "GraphNav.hpp"
+#include "GraphEditor.hpp"
 #include "MetadataNode.hpp"
+#include "ShadowRoot.hpp"
 #include "SqlException.hpp"
 
 #include "SeApi.hpp"
@@ -18,11 +20,15 @@
 
 #include "TableRef.hpp"
 #include "ColumnRef.hpp"
+#include "ColumnWildcard.hpp"
 #include "TableDef.hpp"
 #include "ColumnDefs.hpp"
 #include "ColumnDef.hpp"
 #include "IndexDefs.hpp"
 #include "IndexDef.hpp"
+#include "ProjectOp.hpp"
+#include "ProjectedExpr.hpp"
+#include "DataSource.hpp"
 
 
 using namespace Parser;
@@ -47,11 +53,11 @@ using namespace Parser;
 void NameValidator::vValidateNames(PlanNode *pRootNode)
 {
   // First find the metadata node
-  QueryNode* pMetadataNode = static_cast<QueryNode*>(GraphNav::pFind(const_cast<Stz*>(C_METADATA_PATH), pRootNode));
+  QueryNode* pMetadataNode = ShadowRoot::pMetadataNode(pRootNode);
   ASSERT(pMetadataNode);
 
   // Find the /plan node
-  QueryNode* pPlanNode = static_cast<QueryNode*>(GraphNav::pFind(const_cast<Stz*>(C_PLAN_PATH), pRootNode));
+  QueryNode* pPlanNode = ShadowRoot::pPlanNode(pRootNode);
   ASSERT(pPlanNode);
 
   STORE::SeApi* pSeApi = new STORE::SeApi();
@@ -60,6 +66,9 @@ void NameValidator::vValidateNames(PlanNode *pRootNode)
     // First resolve all of the tables in the plan. We will need them to
     // then resolve columns and indexes.
     vValidateTables(pRootNode, pPlanNode, pMetadataNode, pSeApi);
+
+    // Convert any column wildcards to column references
+    vResolveColumnWildcards(pRootNode, pPlanNode, pMetadataNode);
 
     // Now resolve the columns against the known tables in the plan.
     vValidateColumns(pRootNode, pPlanNode, pMetadataNode);
@@ -109,18 +118,18 @@ void NameValidator::vValidateTables(PlanNode *pRootNode, QueryNode* pPlanNode, Q
     STORE::InfoSet* pTableInfoSet = pSeApi->pSearchTables(szCatalogName, szSchemaName, szTableName);
     ASSERT(pTableInfoSet);
 
-    if (pTableInfoSet->nInfoRows() == 0) {
+    if (pTableInfoSet->nRows() == 0) {
       // We couldn't resolve the table in the SE metadata
       delete pTableInfoSet;
       NameValidationException::vThrowUnknownTable(szCatalogName, szSchemaName, szTableName);
     }
 
-    if (pTableInfoSet->nInfoRows() > 1) {
+    if (pTableInfoSet->nRows() > 1) {
       // We've resolved more than one table in the metadata. The table name is ambiguous.
       NameValidationException::vThrowAmbiguousTable(szCatalogName, szSchemaName, szTableName, pTableInfoSet);
     }
 
-    ASSERT(pTableInfoSet->nInfoRows() == 1);
+    ASSERT(pTableInfoSet->nRows() == 1);
     Row* pTblRow = pTableInfoSet->pFirstRow();
     TableMetadata* pTableMeta = static_cast<TableMetadata*>(pTblRow);
 
@@ -141,11 +150,13 @@ void NameValidator::vValidateTables(PlanNode *pRootNode, QueryNode* pPlanNode, Q
 
       // Convert the metadata type string to an enum and use this to create
       // a QueryNode of the correct type.
-      // TODO: Change this to look at the eCT enum
       QueryNode* pTypeNode = SqlType::pCreate(static_cast<eCT>(pColMeta->iTypeEnum()));
 
       // Make the column definition node and add it to the list of column definitions
-      QueryNode* pColumnDef = ColumnDef::pCreate(pColMeta->szColumnName(),
+      QueryNode* pColumnDef = ColumnDef::pCreate(pColMeta->szCatalogName(),
+                                                 pColMeta->szSchemaName(),
+                                                 pColMeta->szTableName(),
+                                                 pColMeta->szColumnName(),
                                                  pTypeNode,
                                                  !pColMeta->bIsNullable(),
                                                  pColMeta->iColumnNumber(),
@@ -178,6 +189,184 @@ void NameValidator::vValidateTables(PlanNode *pRootNode, QueryNode* pPlanNode, Q
   GraphNav::bWalk(pPlanNode, true, true, fVisitor, pRootNode);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Convert any column wildcards into column references                        */
+/*----------------------------------------------------------------------------*/
+void NameValidator::vResolveColumnWildcards(PlanNode *pRootNode, QueryNode* pPlanNode, QueryNode* pMetadataNode)
+{
+  ASSERT(pRootNode);
+  ASSERT(pMetadataNode);
+  ASSERT(pPlanNode);
+
+  // Walk the graph looking for ColumnWildcards
+  auto fVisitor = [&pMetadataNode](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
+
+    if (!ProjectOp::bIsOfType(pNode)) {
+      return GraphNav::WALK_CONTINUE;   // Keep walking
+    }
+
+    QueryNode* pProjectOp = static_cast<QueryNode*>(pNode);
+
+    // Get the list of projected expressions and iterate these,
+    // looking for columnWildcards.
+    QueryNode* pProjectedExprs = ProjectOp::pProjectedExprs(pProjectOp);
+
+    if (pProjectedExprs->nChildren() == 0) {
+      return GraphNav::WALK_CONTINUE;   // Keep walking
+    }
+
+    b1 bRetry = true;
+
+    while (bRetry) {
+      bRetry = false;
+      PlanNodeIter *pIter = pProjectedExprs->pNewChildrenIter();
+
+      while (pIter->bHasNext()) {
+        QueryNode *pProjectedExpr = static_cast<QueryNode *>(pIter->pNext());
+
+        // Get the expr out of the ProjectedExpr
+        QueryNode *pExpr = ProjectedExpr::pExprNode(pProjectedExpr);
+
+        if (!ColumnWildcard::bIsOfType(pExpr)) {
+          continue;
+        }
+
+        // We've got a columnWildcard. We need to remove this projectedExpr
+        // from the projectedExprs list and replace it with new projectedExpr
+        // instances that have columnRefs from the resolved tables.
+
+        // First get any catalog/schema/table scopes that may limit the wildcard
+        Stz* szCatalogName = ColumnWildcard::szCatalog(static_cast<QueryNode*>(pExpr));
+        Stz* szSchemaName  = ColumnWildcard::szSchema(static_cast<QueryNode*>(pExpr));
+        Stz* szTableName   = ColumnWildcard::szTable(static_cast<QueryNode*>(pExpr));
+
+        // Now generate a list of ProjectedExpr instances, but importantly we can only
+        // use tableRefs that we find underneath this part of the graph, as there can be
+        // other tableRefs that are not visible to this part of the query.
+        PlanNodeList* pResolvedWildcardList = pLookupWildcardColumns(static_cast<QueryNode*>(pNode),
+                                                                     pRootNode,
+                                                                     szCatalogName,
+                                                                     szSchemaName,
+                                                                     szTableName);
+
+        // Ensure that the returned list is a list of ProjectedExpr instances
+#ifdef WITH_ASSERT_MACRO
+        PlanNodeIter* pResolvedIter = pResolvedWildcardList->pNewIter();
+        while (pResolvedIter->bHasNext()) {
+          PlanNode* pResolvedNode = pResolvedIter->pNext();
+          ASSERT(ProjectedExpr::bIsOfType(pResolvedNode));
+        }
+        delete pResolvedIter;
+#endif
+
+        if (pResolvedWildcardList->nItems() == 0) {
+          NameValidationException::vThrowUnresolvableColumnWildcard(szCatalogName, szSchemaName, szTableName);
+        }
+
+        // Now replace the ProjectedExpr that contains the columnWildcard with
+        // each of the resolved ProjectedExpr instances that contain columnRefs.
+        GraphEditor::vReplaceChild(pProjectedExprs, pProjectedExpr, pResolvedWildcardList);
+
+        ASSERT(pResolvedWildcardList->nItems() == 0);
+        delete pResolvedWildcardList;
+
+        // We can't modify the projectedExprs list and keep iterating it.
+        // And there may be more columnWildcards. So we need to start again
+        // and reiterate it from the beginning with a new iterator.
+        bRetry = true;
+        break;
+      }
+
+      delete pIter;
+    } // while (bRetry)
+
+    return GraphNav::WALK_CONTINUE;   // Keep walking, looking for more ProjectOps
+  };
+
+  // Walk the /plan node and its children only. We only want to stop at ProjectOps.
+  // We do this so that we can modify the properties of the ProjectOp without it
+  // affecting the walking of the graph. We do not want to modify the graph that
+  // we are walking as this will lead to bad conclusions.
+  GraphNav::bWalk(pPlanNode, false, true, fVisitor, pRootNode);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Look up and return a list of columns that match a column wildcard          */
+/* for a given location in the plan hierarchy.                                */
+/*----------------------------------------------------------------------------*/
+PlanNodeList* NameValidator::pLookupWildcardColumns(QueryNode* pStartNode, PlanNode* pRootNode,
+                                                    Stz* szCatalog, Stz* szSchema, Stz* szTable)
+{
+  ASSERT(pStartNode);
+  ASSERT(PlanObject::bIsOfType(pStartNode));
+
+  PlanNodeList* pProjectedExprList = new PlanNodeList();
+
+
+  // Walk the graph from here on down, looking for all data sources.
+  auto fVisitor =
+      [&pProjectedExprList, &szCatalog, &szSchema, &szTable](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
+
+    if (!DataSource::bIsOfType(pNode)) {
+      return GraphNav::WALK_CONTINUE;   // Keep walking
+    }
+
+    QueryNode* pDataSourceOp = static_cast<QueryNode*>(pNode);
+    Stz* szSrcCatalog = DataSource::szCatalogName(pDataSourceOp);
+    Stz* szSrcSchema  = DataSource::szSchemaName(pDataSourceOp);
+    Stz* szSrcTable   = DataSource::szTableName(pDataSourceOp);
+
+    // Check if the wildcard constraints match the data source
+    b1 bConstraintsMatch = 
+        (!szCatalog || (szSrcCatalog && szCatalog->bSame(szSrcCatalog))) &&
+        (!szSchema  || (szSrcSchema  && szSchema->bSame(szSrcSchema))  ) &&
+        (!szTable   || (szSrcTable   && szTable->bSame(szSrcTable))    );
+
+    if (!bConstraintsMatch) {
+      // Don't include these columns
+      return GraphNav::WALK_CONTINUE;   // Keep walking
+    }
+
+    // We do want to include these columns
+    // Get the column definitions of the data source and convert them to columnRefs
+    PlanNodeList* pColumnDefList = DataSource::pColumnDefs(pDataSourceOp, pRootNode);
+
+    // Iterate through the columnDefs, convert them to columnRefs and add them to the list
+    PlanNodeIter* pIter = pColumnDefList->pNewIter();
+    while (pIter->bHasNext()) {
+      QueryNode* pColumnDef = static_cast<QueryNode*>(pIter->pNext());
+
+      QueryNode* pColumnRef = ColumnRef::pCreate( ColumnDef::szCatalogName(pColumnDef),
+                                                  ColumnDef::szSchemaName(pColumnDef),
+                                                  ColumnDef::szTableName(pColumnDef),
+                                                  ColumnDef::szColumnName(pColumnDef) );
+
+      // Make a projectedExpr from the columnRef.
+      // We're not going to give the column an alias.
+      QueryNode* pProjectedExpr = ProjectedExpr::pCreate(pColumnRef, nullptr);
+
+      // Add it to the list
+      pProjectedExprList->vAppend(pProjectedExpr);
+    }
+
+    // Clean up
+    delete pIter;
+    pColumnDefList->vRemoveAll();
+    delete pColumnDefList;
+
+    return GraphNav::WALK_CONTINUE;   // Keep walking
+  };
+
+
+  GraphNav::bWalk(pStartNode, false, true, fVisitor, pRootNode);
+
+  return pProjectedExprList;
+}
 
 /*----------------------------------------------------------------------------*/
 /* Validate and qualify all of the columnRefs using the known tables          */

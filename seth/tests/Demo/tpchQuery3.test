@@ -3,7 +3,7 @@
 --------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// EC_NO_SUCH_TABLE
+// Table does not exist
 demo select
   l_orderkey,
   sum(l_extendedprice*l_discount) as revenue,
@@ -28,7 +28,7 @@ order by
   o_orderdate
 limit 10;
 
-failure contains: "EC_NO_SUCH_TABLE"
+failure contains: "Table does not exist"
 
 //------------------------------------------------------------------------------
 // create table lineitem
@@ -87,7 +87,7 @@ create index lineitem_idx2 on lineitem (l_orderkey);
 success
 
 //------------------------------------------------------------------------------
-// EC_NO_SUCH_TABLE
+// Table does not exist
 demo select
   l_orderkey,
   sum(l_extendedprice*l_discount) as revenue,
@@ -163,7 +163,7 @@ create index orders_idx1 on orders(O_CUSTKEY);
 affected: 0
 
 //------------------------------------------------------------------------------
-// EC_NO_SUCH_TABLE
+// Table does not exist
 demo select
   l_orderkey,
   sum(l_extendedprice*l_discount) as revenue,
@@ -205,7 +205,7 @@ create table customer (
 success
 
 //------------------------------------------------------------------------------
-// EC_NO_SUCH_TABLE
+// Table does not exist
 demo select
   l_orderkey,
   sum(l_extendedprice*l_discount) as revenue,

@@ -17,9 +17,9 @@
   Operand[].pipeOut
 
   // purge
-  tablePtn[] tablePtnGrabWrite
-  tablePtn[].purge
-  tablePtn[] tablePtnDropWrite
+  TablePtn[].grabWrite_yieldLoop
+  TablePtn[].purge
+  TablePtn[].dropWrite
   Operand[].newEosMarker
   Operand[].pipeOut
 
@@ -35,7 +35,7 @@
 
   // check if we can scan the table
   <tableNm> op__table if
-    Table[].tablePtn@ to tablePtn[]
+    Table[].tablePtn@ to TablePtn[]
     PipeIn[].pipeOut
   then
 

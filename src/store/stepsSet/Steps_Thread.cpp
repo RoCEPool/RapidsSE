@@ -72,7 +72,7 @@ void Step::vThreadDedicatedFetch(void)
   
   Thread* pThread = _pThread(m_pDataStack->pPopPtr(__func__));
   
-  m_pDataStack->vPushInt(pThread->m_eDedicated);
+  m_pDataStack->vPushInt(pThread->eDedicated());
 
   EXIT();
 }
@@ -88,7 +88,7 @@ void Step::vThreadDedicatedStore(void)
   
   i8 iDedicated = m_pDataStack->iPopAsInt(__func__);
 
-  pThread->m_eDedicated = (eCN)iDedicated;
+  pThread->vDedicated((eCN)iDedicated);
   
   EXIT();
 }
@@ -102,7 +102,7 @@ void Step::vThreadDisableRealtime(void)
   
   Thread* pThread = Thread::pThisTLSThread();
   
-  pThread->m_pPsxThd->vDisableRealtime();
+  pThread->pPsxThd()->vDisableRealtime();
   
   EXIT();
 }
@@ -130,7 +130,7 @@ void Step::vThreadEnableRealtime(void)
   
   Thread* pThread = Thread::pThisTLSThread();
   
-  pThread->m_pPsxThd->vEnableRealtime();
+  pThread->pPsxThd()->vEnableRealtime();
   
   EXIT();
 }
@@ -144,7 +144,7 @@ void Step::vThreadId(void)
   
   Thread* pThread = _pThread(m_pDataStack->pPopPtr(__func__));
   
-  m_pDataStack->vPushInt(pThread->m_pPsxThd->m_iOsThdId);
+  m_pDataStack->vPushInt(pThread->pPsxThd()->m_iOsThdId);
   
   EXIT();
 }
@@ -161,7 +161,7 @@ void Step::vThreadSleepMsec(void)
   
   Thread* pThread = Thread::pThisTLSThread();
   
-  pThread->m_pPsxThd->vSleepMsec(nMilliseconds,CN_WORD);
+  pThread->pPsxThd()->vSleepMsec(nMilliseconds,CN_WORD);
   
   EXIT();
 }
@@ -177,7 +177,7 @@ void Step::vThreadSleepNsec(void)
   
   Thread* pThread = Thread::pThisTLSThread();
   
-  pThread->m_pPsxThd->vSleepNsec(nNanoseconds,CN_WORD);
+  pThread->pPsxThd()->vSleepNsec(nNanoseconds,CN_WORD);
   
   EXIT();
 }
@@ -193,7 +193,7 @@ void Step::vThreadSleepSsec(void)
   
   Thread* pThread = Thread::pThisTLSThread();
   
-  pThread->m_pPsxThd->vSleepSsec(nSeconds,CN_WORD);
+  pThread->pPsxThd()->vSleepSsec(nSeconds,CN_WORD);
   
   EXIT();
 }
@@ -209,7 +209,7 @@ void Step::vThreadSleepUsec(void)
   
   Thread* pThread = Thread::pThisTLSThread();
   
-  pThread->m_pPsxThd->vSleepUsec(nMicroseconds,CN_WORD);
+  pThread->pPsxThd()->vSleepUsec(nMicroseconds,CN_WORD);
   
   EXIT();
 }

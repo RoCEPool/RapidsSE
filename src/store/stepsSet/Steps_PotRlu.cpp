@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_Pot.cpp - Working pot of buffers                                     */
+/* Steps_PotRlu.cpp - Working pot of buffers in Rlu                           */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -15,7 +15,7 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_Pot(void)
+void Step::vAddSteps_PotRlu(void)
 {
   vAddStep("potRlu[].completed"_Stz,       &Step::vPotCompleted);
   vAddStep("potRlu[].completedPtn"_Stz,    &Step::vPotCompletedPtn);

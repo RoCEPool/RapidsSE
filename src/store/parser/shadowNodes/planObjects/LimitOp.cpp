@@ -86,7 +86,7 @@ void LimitOp::vDescribe(PlanNode* pNode, s2K& sBuf)
 /*----------------------------------------------------------------------------*/
 /* Recurses down the query plan and writes the explain of the stmt to the buf */
 /*----------------------------------------------------------------------------*/
-void LimitOp::vExplain(PlanNode* pNode, s48K& sBuf, i8 iIndent)
+void LimitOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iIndent)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -120,7 +120,7 @@ void LimitOp::vExplain(PlanNode* pNode, s48K& sBuf, i8 iIndent)
       PlanNode* pChild = pIter->pNext();
       ASSERT(PlanObject::bIsOfType(pChild));
 
-      PlanObject::vExplain(pChild, sBuf, iIndent+1);
+      PlanObject::vExplain(pChild, pRootNode, sBuf, iIndent + 1);
     }
     delete pIter;
   }
@@ -167,6 +167,23 @@ i8 LimitOp::iOffset(QueryNode* pNode)
   }
 
   return pOffsetNode->iValue();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return a list of ProjectedExprs that represent the column expressions      */
+/* that this PlanObject will return. All nodes and the list must be freed.    */
+/*----------------------------------------------------------------------------*/
+PlanNodeList* LimitOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pRootNode);
+
+  // The LimitOp doesn't change the projected expressions, so ask its child.
+  QueryNode* pChild = static_cast<QueryNode*>(pNode->pFirstChild());
+  ASSERT(pChild);
+
+  return PlanObject::pColumnExprs(pChild, pRootNode);
 }
 
 /*============================================================================*/

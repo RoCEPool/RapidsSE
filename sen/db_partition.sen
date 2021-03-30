@@ -7,9 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* make a partitions folder under given named table                           */
 /*----------------------------------------------------------------------------*/
-: makePartitions ( "<tableNm>" -- )
-
-  params| tableNm |
+: makePartitions params| tableNm |
 
   args.tracepoint if
     tableNm "MAKING PARTITIONS FOR TABLE " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
@@ -39,8 +37,8 @@
 /*----------------------------------------------------------------------------*/
 /* find the partitions folder and push it onto task dictionary                */
 /*----------------------------------------------------------------------------*/
-: pushPartitions ( -- )
-  "partitions" find execute path[].pushFolder
+: pushPartitions
+  "partitions" find execute Path[].pushFolder
   true
 ;
 
@@ -48,14 +46,14 @@
 /* pop the partitions folder                                                  */
 /*----------------------------------------------------------------------------*/
 : popPartitions
-  path[].popFolder
+  Path[].popFolder
 ;
 
 /*----------------------------------------------------------------------------*/
 /* pop the partition sub folder                                               */
 /*----------------------------------------------------------------------------*/
 : popPartitionSub
-  path[].popFolder
+  Path[].popFolder
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -66,63 +64,39 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* grab write lock on a partition of given table                              */
+/* grab read lock on TablePtn[]                                               */
 /*----------------------------------------------------------------------------*/
-: tablePtnGrabWrite ( pTablePtn -- )
-
-  params| pTablePtn |   // table partition
+: TablePtn[].grabRead_yieldLoop
 
   begin
-    pTablePtn tablePtn.attemptGrabWrite
+    TablePtn[].attemptGrabRead
   not while
     task::yield
   repeat
 ;
 
 /*----------------------------------------------------------------------------*/
-/* grab write lock on given table ptn (with 1ms sleep loop till grabbed)      */
+/* grab write lock on TablePtn[]                                              */
 /*----------------------------------------------------------------------------*/
-: tablePtnGrabWrite_msec params| pTablePtn |
+: TablePtn[].grabWrite_yieldLoop
 
   begin
-    pTablePtn tablePtn.attemptGrabWrite
+    TablePtn[].attemptGrabWrite
+  not while
+    task::yield
+  repeat
+;
+
+/*----------------------------------------------------------------------------*/
+/* grab write lock on TablePtn[] (with 1ms sleep loop till grabbed)           */
+/*----------------------------------------------------------------------------*/
+: TablePtn[].grabWrite_msecLoop
+
+  begin
+    TablePtn[].attemptGrabWrite
   not while
     1 task::sleepMsec
   repeat
-;
-
-/*----------------------------------------------------------------------------*/
-/* grab read lock on a partition of given table                               */
-/*----------------------------------------------------------------------------*/
-: tablePtnGrabRead ( pTablePtn -- )
-
-  params| pTablePtn |   // table partition
-
-  begin
-    pTablePtn tablePtn.attemptGrabRead
-  not while
-    task::yield
-  repeat
-;
-
-/*----------------------------------------------------------------------------*/
-/* drop read lock on a partition of given table                               */
-/*----------------------------------------------------------------------------*/
-: tablePtnDropRead ( pTablePtn -- )
-
-  params| pTablePtn |  // given tablePtn
-
-  pTablePtn tablePtn.dropRead
-;
-
-/*----------------------------------------------------------------------------*/
-/* drop write lock on a partition of given table                              */
-/*----------------------------------------------------------------------------*/
-: tablePtnDropWrite ( pTablePtn -- )
-
-  params| pTablePtn |  // given tablePtn
-
-  pTablePtn tablePtn.dropWrite
 ;
 
 /*============================================================================*/

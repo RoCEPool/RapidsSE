@@ -14,45 +14,11 @@ extern pthread_key_t giTLS_ThreadKey;
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-Thread* BASE::_pThread(void* aAddr)
-{
-  Thread* pThread = reinterpret_cast<Thread*>(aAddr);
-  
-  RASSERT_TYPE(pThread,CN_THREAD);
-  
-  return pThread;
-}
+__pCastFunction(BASE,Thread,CN_THREAD)
+__aNewFunction(Thread,CN_THREAD)
+__vDeleteFunction(Thread,CN_THREAD)
+__aFooterFunction(Thread)
 
-/*----------------------------------------------------------------------------*/
-/* new operator                                                               */
-/*----------------------------------------------------------------------------*/
-void* Thread::operator new(size_t)
-{
-  void* pObject = Heaps::pAllocate(CN_THREAD);
-  
-  return pObject;
-}
-
-/*----------------------------------------------------------------------------*/
-/* new a thread from existing memory                                          */
-/*----------------------------------------------------------------------------*/
-void* Thread::operator new(size_t, Thread* pThread)
-{
-  return pThread;
-}
-
-/*----------------------------------------------------------------------------*/
-/* delete operator                                                            */
-/*----------------------------------------------------------------------------*/
-void Thread::operator delete(void* aAddr)
-{
-  Object* pObject = reinterpret_cast<Object*>(aAddr);
-  
-  Heaps::vFree(pObject);
-}
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -64,13 +30,16 @@ Thread::Thread(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   m_eThreadState = HS_NONE;
-  m_eDedicated   = CN_NONE;
+  m_eDedicated = CN_NONE;
 
-  m_pTask        = nullptr;
+  m_pTask = nullptr;
   m_nAssignedTasks = 0;
 
-  m_pPsxThd     = new PsxThd(this);
+  m_pPsxThd = new PsxThd(this);
   
+  m_pObject0 = nullptr;
+  m_pObject1 = nullptr;
+
   _checkInitialised_(CN_THREAD);
   
   vEventNoInc(); ++ gixThread;
@@ -88,6 +57,9 @@ Thread::~Thread(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
+  //RASSERT(! m_pObject0);
+  //RASSERT(! m_pObject1);
+
   delete m_pPsxThd;
   
   vEventNoInc(); -- gixThread;
@@ -145,7 +117,7 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
     
     pThread->m_pPsxThd->vThreadExit();
     
-    delete pThread;
+    AM::THREAD::vDeleteThread(pThread);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -210,7 +182,7 @@ void* Thread::aEntryPoint_general(void* pArg)
     
     pThread->m_pPsxThd->vThreadExit();
 
-    delete pThread;
+    AM::THREAD::vDeleteThread(pThread);
   //}
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -240,7 +212,7 @@ void* Thread::aEntryPoint_dummy(void* pArg)
     Thread* pThread = _pThread(pArg);
     RASSERT(pThread);
 
-    pThread->m_eThreadState = HS_IDLE;
+    pThread->vSetIdle();
     
     pThread->m_pPsxThd->vThreadEntry();
     
@@ -261,7 +233,7 @@ void* Thread::aEntryPoint_dummy(void* pArg)
     
     //pThread->m_pPsxThd->vThreadExit();
     
-    //delete pThread;
+    //AM::THREAD::vDeleteThread(pThread);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -290,6 +262,11 @@ Thread* Thread::pThisTLSThread(void)
     return nullptr;
   
   Thread* pThread = static_cast<Thread*>(PsxThd::pTlsGet(giTLS_ThreadKey));
+
+  if (C_UNKNOWN == (i8)pThread)
+    return nullptr;
+
+  _pThread(pThread);
   
   return pThread;
 }
@@ -371,6 +348,16 @@ void Thread::vLoop_general(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get number of tasks assigned so far                                        */
+/*----------------------------------------------------------------------------*/
+i8 Thread::nAssignedTasks(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  return m_nAssignedTasks;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bind the os/posix thread to given core                                     */
 /*----------------------------------------------------------------------------*/
 void Thread::vBind(i8 iCore)
@@ -427,6 +414,36 @@ void Thread::vContentDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get dedicated                                                              */
+/*----------------------------------------------------------------------------*/
+eCN Thread::eDedicated(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  return m_eDedicated;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set dedicated                                                              */
+/*----------------------------------------------------------------------------*/
+void Thread::vDedicated(eCN eDedicated)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  m_eDedicated = eDedicated;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get mutex                                                                  */
+/*----------------------------------------------------------------------------*/
+Mutex* Thread::pMutex(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+
+  return & m_oMutex;
+}
+
+/*----------------------------------------------------------------------------*/
 /* outline                                                                    */
 /*----------------------------------------------------------------------------*/
 void Thread::vOutline(s4K& sOutline)
@@ -434,6 +451,66 @@ void Thread::vOutline(s4K& sOutline)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   sOutline.vSprint("<%s focal>"_Stz,aCN[eGetClassNo()]);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get general purpose object 0                                               */
+/*----------------------------------------------------------------------------*/
+Object* Thread::pObject0(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+
+  return m_pObject0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set general purpose object 0                                               */
+/*----------------------------------------------------------------------------*/
+void Thread::vObject0(Object* pObject0)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+
+  m_pObject0 = pObject0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get general purpose object 1                                               */
+/*----------------------------------------------------------------------------*/
+Object* Thread::pObject1(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+
+  return m_pObject1;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set general purpose object 1                                               */
+/*----------------------------------------------------------------------------*/
+void Thread::vObject1(Object* pObject1)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+
+  m_pObject1 = pObject1;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get posix thread                                                           */
+/*----------------------------------------------------------------------------*/
+PsxThd* Thread::pPsxThd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+
+  return m_pPsxThd;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set thread state as idle                                                   */
+/*----------------------------------------------------------------------------*/
+void Thread::vSetIdle(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  m_eThreadState = HS_IDLE;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -499,6 +576,21 @@ Task* Thread::pTask(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set current task                                                           */
+/*----------------------------------------------------------------------------*/
+void Thread::vTask(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  m_pTask = pTask;
+  
+  if (m_pTask) {
+    m_eThreadState = HS_ASSIGNED;
+    m_nAssignedTasks++;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* set this thread into TLS of current pthread                                */
 /*----------------------------------------------------------------------------*/
 void Thread::vThisTLSThread(void)
@@ -537,11 +629,15 @@ eHS Thread::eThreadState(void)
   return m_eThreadState;
 }
 
-
 /*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
+/* set thread state                                                           */
 /*----------------------------------------------------------------------------*/
-__aFooterFunction(Thread);
+void Thread::vThreadState(eHS eThreadState)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  m_eThreadState = eThreadState;
+}
 
 /*============================================================================*/
 /* end                                                                        */

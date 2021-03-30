@@ -302,24 +302,29 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("CK_SERVICE"_Stz,  CK_SERVICE);
 
   
-  /*    */ vAddConstant("CN_JOB"_Stz,                CN_JOB);
-  /*  8 */ vAddConstant("CN_STZVAL"_Stz,       CN_STZVAL);
-  /* 89 */ vAddConstant("CN_XMITOPERAND"_Stz,  CN_XMITOPERAND);
+  // CN_ : class number
+  /*    */ vAddConstant("CN_CRWBUFFER"_Stz,    CN_CRWBUFFER);
+  /*    */ vAddConstant("CN_JOB"_Stz,          CN_JOB);
+  /*    */ vAddConstant("CN_ROWBUFFER"_Stz,    CN_ROWBUFFER);
+  /*    */ vAddConstant("CN_STZVAL"_Stz,       CN_STZVAL);
+  /*    */ vAddConstant("CN_XMITOPERAND"_Stz,  CN_XMITOPERAND);
 
   
   // CT_ : columne type
-  /*  0 */ vAddConstant("CT_NONE"_Stz,      CT_NONE);
-  /*  1 */ vAddConstant("CT_BOOLEAN"_Stz,   CT_BOOLEAN);
-  /*  2 */ vAddConstant("CT_CHAR"_Stz,      CT_CHAR);
-  /*  3 */ vAddConstant("CT_DATE"_Stz,      CT_DATE);
-  /*  4 */ vAddConstant("CT_DECIMAL"_Stz,   CT_DECIMAL);
-  /*  5 */ vAddConstant("CT_FLOAT"_Stz,     CT_FLOAT);
-  /*  6 */ vAddConstant("CT_INTEGER"_Stz,   CT_INTEGER);
-  /*  7 */ vAddConstant("CT_INTERVAL"_Stz,  CT_INTERVAL);
-  /*  8 */ vAddConstant("CT_TIME"_Stz,      CT_TIME);
-  /*  9 */ vAddConstant("CT_TIMESTAMP"_Stz, CT_TIMESTAMP);
-  /* 10 */ vAddConstant("CT_VARCHAR"_Stz,   CT_VARCHAR);
-  /* 11 */ vAddConstant("CT_ENUMS"_Stz,     CT_ENUMS);
+  /*  0 */ vAddConstant("CT_NONE"_Stz,        CT_NONE);
+  /*  1 */ vAddConstant("CT_BOOLEAN"_Stz,     CT_BOOLEAN);
+  /*  2 */ vAddConstant("CT_CHAR"_Stz,        CT_CHAR);
+  /*  3 */ vAddConstant("CT_DATE"_Stz,        CT_DATE);
+  /*  4 */ vAddConstant("CT_DECIMAL"_Stz,     CT_DECIMAL);
+  /*  5 */ vAddConstant("CT_FLOAT"_Stz,       CT_FLOAT);
+  /*  6 */ vAddConstant("CT_INTEGER"_Stz,     CT_INTEGER);
+  /*  7 */ vAddConstant("CT_INTERVAL_DT"_Stz, CT_INTERVAL_DT);
+  /*  8 */ vAddConstant("CT_INTERVAL_YM"_Stz, CT_INTERVAL_YM);
+  /*  9 */ vAddConstant("CT_TIME"_Stz,        CT_TIME);
+  /* 10 */ vAddConstant("CT_TIMESTAMP"_Stz,   CT_TIMESTAMP);
+  /* 11 */ vAddConstant("CT_VARCHAR"_Stz,     CT_VARCHAR);
+  /* 12 */ vAddConstant("CT_UNKNOWN"_Stz,     CT_UNKNOWN);
+  /* 13 */ vAddConstant("CT_ENUMS"_Stz,       CT_ENUMS);
 
   // DE_ : directory entry type -- n.b. the DT_FIFO etc are from dirent.h
   /*  1 */ vAddConstant("DE_FIFO"_Stz, DT_FIFO);
@@ -342,9 +347,12 @@ void Constants::vAddConstantsCpp(void)
   /*  4 */ vAddConstant("DM_FLT"_Stz, DM_FLT);
   /*  5 */ vAddConstant("DM_INT"_Stz, DM_INT);
   /*  6 */ vAddConstant("DM_IVL"_Stz, DM_IVL);
-  /*  7 */ vAddConstant("DM_TME"_Stz, DM_TME);
-  /*  8 */ vAddConstant("DM_TSP"_Stz, DM_TSP);
-  
+  /*  7 */ vAddConstant("DM_IVY"_Stz, DM_IVY);
+  /*  8 */ vAddConstant("DM_TME"_Stz, DM_TME);
+  /*  9 */ vAddConstant("DM_TSP"_Stz, DM_TSP);
+  /* 10 */ vAddConstant("DM_VCH"_Stz, DM_VCH);
+  /* 10 */ vAddConstant("DM_UNK"_Stz, DM_UNK);
+
   // EC_ : error codes
   /*  0 */ vAddConstant("EC_NONE"_Stz,               EC_NONE);
   /*  1 */ vAddConstant("EC_ASSERT"_Stz,             EC_ASSERT);
@@ -704,6 +712,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_INDEXDEF"_Stz,        ZK_INDEXDEF);
   /*  0 */ vAddConstant("ZK_LOADRESULT"_Stz,      ZK_LOADRESULT);
   /*  0 */ vAddConstant("ZK_LOCKSTATS"_Stz,       ZK_LOCKSTATS);
+  /*  0 */ vAddConstant("ZK_NAMEDBUFFER"_Stz,     ZK_NAMEDBUFFER);
   /*  0 */ vAddConstant("ZK_NODEINFO"_Stz,        ZK_NODEINFO);
   /*  0 */ vAddConstant("ZK_OTHEROPERAND"_Stz,    ZK_OTHEROPERAND);
   /*  0 */ vAddConstant("ZK_PATHINFO"_Stz,        ZK_PATHINFO);

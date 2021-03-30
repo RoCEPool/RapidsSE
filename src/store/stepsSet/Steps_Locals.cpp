@@ -221,13 +221,18 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("IndexDefRlu[]"_Stz)) {
+    pCurrentWord->vEncodeCall("IndexDefRlu[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("IndexStream[]"_Stz)) {
     pCurrentWord->vEncodeCall("IndexStream[].set"_Stz);
     EXIT();
     return;
   }
-  else if (szTerm->bSame("IndexTree[]"_Stz)) {
-    pCurrentWord->vEncodeCall("IndexTree[].set"_Stz);
+  else if (szTerm->bSame("IndexTreeRlu[]"_Stz)) {
+    pCurrentWord->vEncodeCall("IndexTreeRlu[].set"_Stz);
     EXIT();
     return;
   }

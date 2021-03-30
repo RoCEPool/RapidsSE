@@ -20,13 +20,13 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table dictionary
-  sTableNm path[].pushNamedTableFolder
+  sTableNm Path[].pushNamedTableFolder
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is a table
   sTableNm check::nameIsaTable not if
     to errorCode
-    path[].popNamedTableFolder
+    Path[].popNamedTableFolder
     errorCode op__execErr
     PipeIn[].delete
     false
@@ -34,7 +34,7 @@
   then
 
   // push indexes folder
-  path[].pushIndexesFolder
+  Path[].pushIndexesFolder
 
   // find the __ table
   <streamDef> op__tableDef_streamSet assert
@@ -66,11 +66,11 @@
   next
 
   // pop indexes folder
-  path[].popIndexesFolder
+  Path[].popIndexesFolder
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table dictionary
-  path[].popNamedTableFolder
+  Path[].popNamedTableFolder
   folder[].isTables assert
 
   // pipeout the infoset

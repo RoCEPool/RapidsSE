@@ -148,10 +148,9 @@ AttachMap::~AttachMap(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* the subsystem function                                                     */
 /*----------------------------------------------------------------------------*/
-void AttachMap::vSubSystem(SelfFn* aSelfFn, TokenVec* pTokenVec)
+void AttachMap::vSubSystem(TokenVec* pTokenVec)
 {
   _static_
-  UNUSED(aSelfFn);
   UNUSED(pTokenVec);
 
   vTrace("AttachMap::vSubSystem\n"_Stz);

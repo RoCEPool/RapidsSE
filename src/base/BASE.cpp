@@ -111,10 +111,9 @@ void BASE::vCheckAssumptions(void)
 /*----------------------------------------------------------------------------*/
 /* the subsystem function                                                     */
 /*----------------------------------------------------------------------------*/
-void BASE::vSubSystem(SelfFn* aSelfFn, TokenVec* pTokenVec)
+void BASE::vSubSystem(TokenVec* pTokenVec)
 {
   _static_
-  UNUSED(aSelfFn);
   UNUSED(pTokenVec);
 
   vTrace("BASE::vSubSystem\n"_Stz);

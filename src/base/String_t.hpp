@@ -58,8 +58,8 @@ namespace BASE
     void vSizeMax(i8 nSIZE);
     i8   nSpace(void);
     void vSprint(Stz* szFormat, ...);
-    void vSprint(va_list vaArgs, Stz* szFormat);
     void vSprintCat(Stz* szFormat, ...);
+    void vSprintVA(Stz* szFormat, va_list vaArgs);
     String* pString(void);
     Stz* szStz(void);
     i8   iToI8(void);
@@ -516,15 +516,6 @@ void String_t<AREA>::vSprint(Stz* szFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* sprint                                                                     */
-/*----------------------------------------------------------------------------*/
-template <i8 AREA>
-void String_t<AREA>::vSprint(va_list vaArgs, Stz* szFormat)
-{
-  StrLib::vSprint(azChar(),vaArgs,szFormat->azChar());
-}
-
-/*----------------------------------------------------------------------------*/
 /* concatenated sprint                                                        */
 /*----------------------------------------------------------------------------*/
 template <i8 AREA>
@@ -535,6 +526,15 @@ void String_t<AREA>::vSprintCat(Stz* szFormat, ...)
   va_start(vaArgs,szFormat);
   StrLib::vSprintCat(azChar(),vaArgs,szFormat->azChar());
   va_end(vaArgs);
+}
+
+/*----------------------------------------------------------------------------*/
+/* var-args sprint                                                            */
+/*----------------------------------------------------------------------------*/
+template <i8 AREA>
+void String_t<AREA>::vSprintVA(Stz* szFormat, va_list vaArgs)
+{
+  StrLib::vSprint(azChar(),vaArgs,szFormat->azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -549,7 +549,7 @@ String* String_t<AREA>::pString(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get m_caCharArea                                                                */
+/* get m_caCharArea                                                           */
 /*----------------------------------------------------------------------------*/
 template <i8 AREA>
 Stz* String_t<AREA>::szStz(void)

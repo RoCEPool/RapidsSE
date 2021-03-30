@@ -47,7 +47,7 @@ namespace BASE
                bool bDontFree, bool bFreeCB);
    ~BufferPool(void) noexcept(false);
   
-    static void vSubSystem(SelfFn* aSelfFn, TokenVec* pTokenVec);
+    static void vSubSystem(TokenVec* pTokenVec);
   
     static void vReport(void);
     

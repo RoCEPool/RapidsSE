@@ -131,13 +131,13 @@ void ToPtnRow::vNewDstRow(i8 i_Ptn)
   }
   
   // new a row in row buffer (new another row buffer if necessary)
-  Row* aNewRow = pDstRowBuffer->pAllotNewRow();
+  Row* aNewRow = pDstRowBuffer->pAllotRow();
   if (! aNewRow) {
     pDstRowBuffer = new RowBuffer;
     pDstRowBuffer->vCopyRowPix(m_pFromRowBuffer->pRowPix());
     pDstRowBuffer->pRowPix()->vRemovePtnHash();
     m_oHashSet.vAddBuffer(i_Ptn,pDstRowBuffer);
-    aNewRow = pDstRowBuffer->pAllotNewRow();
+    aNewRow = pDstRowBuffer->pAllotRow();
     ASSERT(aNewRow);
   }
   

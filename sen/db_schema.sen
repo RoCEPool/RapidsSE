@@ -12,9 +12,9 @@
 /*----------------------------------------------------------------------------*/
 /* pop the schema folder                                                      */
 /*----------------------------------------------------------------------------*/
-: path[].popSchemaFolder
+: Path[].popSchemaFolder
 
-  path[].popFolder
+  Path[].popFolder
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -47,7 +47,7 @@
 /*----------------------------------------------------------------------------*/
 /* check word is a schema                                                     */
 /*----------------------------------------------------------------------------*/
-: path[].checkIsSchema ( word )
+: Path[].checkIsSchema ( word )
 
   dup word.category@ find: \folder eql not if EC_NOT_A_FOLDER false exit then
   dup execute dic.kind@ find: \schema eql if true exit then
@@ -111,9 +111,9 @@
 /*----------------------------------------------------------------------------*/
 /* find the schema folder and push it onto task dictionary                     */
 /*----------------------------------------------------------------------------*/
-: path[].pushSchemaFolder ( "<schemaName>" -- )
+: Path[].pushSchemaFolder ( "<schemaName>" -- )
 
-  find execute path[].pushFolder
+  find execute Path[].pushFolder
   true
 ;
 
@@ -130,11 +130,11 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move to schema folder
-  sSchemaNm path[].pushSchemaFolder assert
+  sSchemaNm Path[].pushSchemaFolder assert
 
   "tables" folder::remove
 
-  path[].popSchemaFolder
+  Path[].popSchemaFolder
 
   sSchemaNm folder::remove
 ;

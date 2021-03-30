@@ -8,14 +8,16 @@ macro AM_INDEX_TRAVERSAL
 //----------------------------------------------------------------------------//
   // INDEX TRAVERSAL
   Label INDEX_TRAVERSAL
-  EO_IXT_TRV_BEGIN
+  EO_PUSH_DEVIXT_TMP
+  EO_DEVIXT_IDX_BEGIN
   EO_JMP_FALSE INDEX_TRAVERSAL_END
 
   Label INDEX_TRAVERSAL_NEXT
   EO_CALL <indexProcessRoutine>
 
   // NEXT_IXT_SRC:
-  EO_ENT_NEXT
+  EO_PUSH_DEVIXT_TMP
+  EO_DEVIXT_ENT_NEXT
   EO_JMP_TRUE INDEX_TRAVERSAL_NEXT
 
   Label INDEX_TRAVERSAL_END

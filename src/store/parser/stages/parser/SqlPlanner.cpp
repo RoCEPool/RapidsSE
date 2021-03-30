@@ -31,6 +31,7 @@
 
 // Expressions
 #include "ColumnRef.hpp"
+#include "ColumnWildcard.hpp"
 #include "store/parser/shadowNodes/expressions/literals/NullLiteral.hpp"
 #include "store/parser/shadowNodes/expressions/literals/StringLiteral.hpp"
 #include "store/parser/shadowNodes/expressions/literals/IntegerLiteral.hpp"
@@ -172,7 +173,7 @@ PlanNode* SqlPlanner::plan(Stz* pStr, const PlanNode* pTemplate)
   // Check for any syntax errors
   if (errorListener.bGotError()) {
     //vTrace("%s\n"_Stz, errorListener.szErrorMsg()->azChar());
-    SyntaxException::vThrow(errorListener.iLine(), errorListener.iColumn(), errorListener.szErrorMsg());
+    SyntaxException::vThrowAntlr(errorListener.iLine(), errorListener.iColumn(), errorListener.szErrorMsg());
   }
   
   // Visit the parse tree that resulted from the above parsing.
@@ -224,7 +225,7 @@ antlrcpp::Any SqlPlanner::visitStatement(sqlParser::StatementContext *pCtx)
 antlrcpp::Any SqlPlanner::visitQuery(sqlParser::QueryContext *pCtx)
 {
    return visitChildren(pCtx);
- }
+}
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 /* Select node (for each select of each query/subquery)                       */
@@ -247,14 +248,14 @@ antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *pCtx)
     i8 iOffset = -1;
 
     if (iLimit < 0) {
-      SemanticException::vThrow("LIMIT value must be >= 0"_Stz);
+      SemanticException::vThrow(EC_INVALID_LIMIT_VALUE);
     }
 
     if (pCtx->OFFSET()) {
       iOffset = iCleanInt(pCtx->offset);
 
       if (iOffset < -1) {
-        SemanticException::vThrow("OFFSET value must be >= 0"_Stz);
+        SemanticException::vThrow(EC_INVALID_OFFSET_VALUE);
       }
     }
 
@@ -335,7 +336,7 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
   // DISTINCT keyword
   // -----------------------
   if (pCtx->distinct) {
-    // TODO: implement
+    __NOT_IMPL("DISTINCT")
   }
 
   // -----------------------
@@ -463,7 +464,9 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
     pTableScanOp = TableScanOp::pCreate(m_pTableRefStack->pPop());
 
   } else {
-    SemanticException::vThrow("No table source specified"_Stz);
+    SyntaxException::vThrowNotImplemented(pCtx->start->getLine(),
+                                          pCtx->start->getCharPositionInLine(),
+                                          "No table source specified"_Stz);
   }
 
 
@@ -575,11 +578,8 @@ antlrcpp::Any SqlPlanner::visitColumnRef(sqlParser::ColumnRefContext* pCtx)
   visitChildren(pCtx);
   
   Text* pCatalogName = pCtx->catalogName() == nullptr ? nullptr : pCleanId(pCtx->catalogName()->id);
-  
   Text* pSchemaName = pCtx->schemaName() == nullptr ? nullptr : pCleanId(pCtx->schemaName()->id);
-  
   Text* pTableName = pCtx->tableName() == nullptr ? nullptr : pCleanId(pCtx->tableName()->id);
-  
   Text* pColumnName = pCleanId(pCtx->columnName()->id);
 
   QueryNode* pColumnRef = ColumnRef::pCreate(pCatalogName, pSchemaName,
@@ -587,6 +587,26 @@ antlrcpp::Any SqlPlanner::visitColumnRef(sqlParser::ColumnRefContext* pCtx)
 
   m_pExprList->vPush(pColumnRef);
   
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Column Reference node                                                      */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitColumnWildcard(sqlParser::ColumnWildcardContext* pCtx)
+{
+  ASSERT(m_pExprList);
+
+  visitChildren(pCtx);
+
+  Text* pCatalogName = pCtx->catalogName() == nullptr ? nullptr : pCleanId(pCtx->catalogName()->id);
+  Text* pSchemaName = pCtx->schemaName() == nullptr ? nullptr : pCleanId(pCtx->schemaName()->id);
+  Text* pTableName = pCtx->tableName() == nullptr ? nullptr : pCleanId(pCtx->tableName()->id);
+
+  QueryNode* pColumnWildcard = ColumnWildcard::pCreate(pCatalogName, pSchemaName, pTableName);
+
+  m_pExprList->vPush(pColumnWildcard);
+
   return nullptr;
 }
 
@@ -860,9 +880,7 @@ antlrcpp::Any SqlPlanner::visitAggFunc(sqlParser::AggFuncContext *pCtx)
     pAggExpr = MaxExpr::pCreate(bIsDistinct, pChildExpr);
 
   } else {
-    SyntaxException::vThrow(pCtx->func->getLine(),
-                            pCtx->func->getCharPositionInLine(),
-                            "Unrecognised aggregate function: %s"_Stz, sFunc.szStz());
+    NEVER_REACH
   }
 
   ASSERT(pAggExpr);
@@ -1067,10 +1085,14 @@ i8 SqlPlanner::iCleanInt(std::string& sStr)
     iVal = std::stoll(sStr);
 
   } catch (std::invalid_argument &e) {
-    SemanticException::vThrow("Cannot convert value\"%s\" to an integer"_Stz, sStr.c_str());
+    SemanticException::vThrow(EC_INVALID_INTEGER_FORMAT,
+                              ": \"%s\""_Stz,
+                              sStr.c_str());
 
   } catch (std::out_of_range &e) {
-    SemanticException::vThrow("Cannot convert value\"%s\" to an integer as it is out of range"_Stz, sStr.c_str());
+    SemanticException::vThrow(EC_INVALID_INTEGER_FORMAT,
+                              ": Value of out range: \"%s\""_Stz,
+                              sStr.c_str());
   }
 
   return iVal;
@@ -1090,10 +1112,14 @@ d8 SqlPlanner::dCleanFloat(sqlParser::FloatLiteralContext *pCtx)
     dVal = std::stod(sStr);
 
   } catch (std::invalid_argument &e) {
-    SemanticException::vThrow("Cannot convert value\"%s\" to a float"_Stz, sStr.c_str());
+    SemanticException::vThrow(EC_INVALID_FLOAT_FORMAT,
+                              ": \"%s\""_Stz,
+                              sStr.c_str());
 
   } catch (std::out_of_range &e) {
-    SemanticException::vThrow("Cannot convert value\"%s\" to a float as it is out of range"_Stz, sStr.c_str());
+    SemanticException::vThrow(EC_INVALID_FLOAT_FORMAT,
+                              ": Value of out range: \"%s\""_Stz,
+                              sStr.c_str());
   }
 
   return dVal;
@@ -1117,12 +1143,12 @@ Dte SqlPlanner::xCleanDate(sqlParser::StringLiteralContext *pCtx)
 {
   ASSERT(pCtx);
 
-  static const Stz* _szInvalidFormat =
-      "Invalid date string format. Must be of the form: 'YYYY-MM-DD'"_Stz;
-
   // First check that it can fit into the 256 buffer
   if (pCtx->getText().length() > 255) {
-    throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine(),
+                            EC_INVALID_DATE_FORMAT,
+                            ": date string is too large"_Stz);
   }
 
   // Read it into the local buffer. This will also strip off the outer quotes.
@@ -1130,14 +1156,18 @@ Dte SqlPlanner::xCleanDate(sqlParser::StringLiteralContext *pCtx)
   vCleanString(pCtx, sBuf);
 
   if (sBuf.nLength() != 10) {
-    throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine(),
+                            EC_INVALID_DATE_FORMAT);
   }
 
   char* pcBuf = sBuf.azChar();
 
   // Validate the format
   if (pcBuf[4] != '-' || pcBuf[7] != '-') {
-    throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine(),
+                            EC_INVALID_DATE_FORMAT);
   }
 
   if (!StrLib::bIsDigit(pcBuf[0]) ||
@@ -1148,7 +1178,9 @@ Dte SqlPlanner::xCleanDate(sqlParser::StringLiteralContext *pCtx)
       !StrLib::bIsDigit(pcBuf[6]) ||
       !StrLib::bIsDigit(pcBuf[8]) ||
       !StrLib::bIsDigit(pcBuf[9]) ) {
-    throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine(),
+                            EC_INVALID_DATE_FORMAT);
   }
 
   // Parse out the fields
@@ -1170,7 +1202,7 @@ Dte SqlPlanner::xCleanDate(sqlParser::StringLiteralContext *pCtx)
   // Now check the values
   s256 sErrorMsg;
   if (!Dte::bIsValid(iYear, iMonth, iDay, sErrorMsg)) {
-    throw SemanticException(sErrorMsg.szStz());
+    SemanticException::vThrow(EC_INVALID_DATE_FORMAT, ": %s"_Stz, sErrorMsg.szStz());
   }
 
   Dte xVal;
@@ -1185,12 +1217,12 @@ Tme SqlPlanner::xCleanTime(sqlParser::StringLiteralContext *pCtx)
 {
   ASSERT(pCtx);
 
-  static const Stz* _szInvalidFormat =
-      "Invalid time string format. Must be of the form: 'hh:mm:ss'"_Stz;
-
   // First check that it can fit into the 256 buffer
   if (pCtx->getText().length() > 255) {
-    throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine(),
+                            EC_INVALID_TIME_FORMAT,
+                            ": time string is too large"_Stz);
   }
 
   // Read it into the local buffer. This will also strip off the outer quotes.
@@ -1198,14 +1230,18 @@ Tme SqlPlanner::xCleanTime(sqlParser::StringLiteralContext *pCtx)
   vCleanString(pCtx, sBuf);
 
   if (sBuf.nLength() != 8) {
-    throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine(),
+                            EC_INVALID_TIME_FORMAT);
   }
 
   char* pcBuf = sBuf.azChar();
 
   // Validate the format
   if (pcBuf[2] != ':' || pcBuf[5] != ':') {
-    throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine(),
+                            EC_INVALID_TIME_FORMAT);
   }
 
   if (!StrLib::bIsDigit(pcBuf[0]) ||
@@ -1214,7 +1250,9 @@ Tme SqlPlanner::xCleanTime(sqlParser::StringLiteralContext *pCtx)
       !StrLib::bIsDigit(pcBuf[4]) ||
       !StrLib::bIsDigit(pcBuf[6]) ||
       !StrLib::bIsDigit(pcBuf[7]) ) {
-    throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine(),
+                            EC_INVALID_TIME_FORMAT);
   }
 
   // Parse out the fields
@@ -1234,7 +1272,7 @@ Tme SqlPlanner::xCleanTime(sqlParser::StringLiteralContext *pCtx)
   // Now check the values
   s256 sErrorMsg;
   if (!Tme::bIsValid(iHour, iMin, iSec, sErrorMsg)) {
-    throw SemanticException(sErrorMsg.szStz());
+    SemanticException::vThrow(EC_INVALID_TIME_FORMAT, ": %s"_Stz, sErrorMsg.szStz());
   }
 
   Tme xVal;
@@ -1254,7 +1292,10 @@ Tsp SqlPlanner::xCleanTimestamp(sqlParser::StringLiteralContext *pCtx)
 
   // First check that it can fit into the 256 buffer
   if (pCtx->getText().length() > 255) {
-    throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine(),
+                            EC_INVALID_TIMESTAMP_FORMAT,
+                            ": timestamp string is too large"_Stz);
   }
 
   // Read it into the local buffer. This will also strip off the outer quotes.
@@ -1263,14 +1304,18 @@ Tsp SqlPlanner::xCleanTimestamp(sqlParser::StringLiteralContext *pCtx)
 
   i8 iLen = sBuf.nLength();
   if (iLen < 19) {
-    throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine(),
+                            EC_INVALID_TIMESTAMP_FORMAT);
   }
 
   char* pcBuf = sBuf.azChar();
 
   // Validate the format
   if (pcBuf[4] != '-' || pcBuf[7] != '-' || pcBuf[10] != ' ' || pcBuf[13] != ':' || pcBuf[16] != ':') {
-    throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine(),
+                            EC_INVALID_TIMESTAMP_FORMAT);
   }
 
   if (!StrLib::bIsDigit(pcBuf[0])  ||
@@ -1287,7 +1332,9 @@ Tsp SqlPlanner::xCleanTimestamp(sqlParser::StringLiteralContext *pCtx)
       !StrLib::bIsDigit(pcBuf[15]) ||
       !StrLib::bIsDigit(pcBuf[17]) ||
       !StrLib::bIsDigit(pcBuf[18]) ) {
-    throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
+    SyntaxException::vThrow(pCtx->start->getLine(),
+                            pCtx->start->getCharPositionInLine(),
+                            EC_INVALID_TIMESTAMP_FORMAT);
   }
 
   // check for optional micros
@@ -1295,17 +1342,23 @@ Tsp SqlPlanner::xCleanTimestamp(sqlParser::StringLiteralContext *pCtx)
 
   if (iLen > 19) {
     if (pcBuf[19] != '.') {
-      throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
+      SyntaxException::vThrow(pCtx->start->getLine(),
+                              pCtx->start->getCharPositionInLine(),
+                              EC_INVALID_TIMESTAMP_FORMAT);
     }
 
     for (i8 iIdx = 20; iIdx < iLen; iIdx++) {
       if (iIdx > 25) {
         // can only have 6 digits of microseconds
-        throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
+        SyntaxException::vThrow(pCtx->start->getLine(),
+                                pCtx->start->getCharPositionInLine(),
+                                EC_INVALID_TIMESTAMP_FORMAT);
       }
 
       if (!StrLib::bIsDigit(pcBuf[iIdx])) {
-        throw SyntaxException(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), _szInvalidFormat);
+        SyntaxException::vThrow(pCtx->start->getLine(),
+                                pCtx->start->getCharPositionInLine(),
+                                EC_INVALID_TIMESTAMP_FORMAT);
       }
     }
 
@@ -1352,7 +1405,7 @@ Tsp SqlPlanner::xCleanTimestamp(sqlParser::StringLiteralContext *pCtx)
   // Now check the values
   s256 sErrorMsg;
   if (!Tsp::bIsValid(iYear, iMonth, iDay, iHour, iMin, iSec, iMicro, sErrorMsg)) {
-    throw SemanticException(sErrorMsg.szStz());
+    SemanticException::vThrow(EC_INVALID_TIMESTAMP_FORMAT, ": %s"_Stz, sErrorMsg.szStz());
   }
 
   Tsp xVal;

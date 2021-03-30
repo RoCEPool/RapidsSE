@@ -226,6 +226,7 @@ void Encoding::vInitialEncodingRow(Row* pRow)
       case DM_FLT: vEncodeFlt(xrColEnc,wColVal);  break;
       case DM_INT: vEncodeInt(xrColEnc,wColVal);  break;
       case DM_IVL: vEncodeIvl(xrColEnc,wColVal);  break;
+      case DM_IVY: NEVER_REACH;                   break;
       case DM_TME: vEncodeTme(xrColEnc,wColVal);  break;
       case DM_TSP: vEncodeTsp(xrColEnc,wColVal);  break;
       case DM_VCH:
@@ -234,7 +235,8 @@ void Encoding::vInitialEncodingRow(Row* pRow)
           wColVal.m_szVch = pRow->szColVal_ofs(i_Col);
         vEncodeVch(xrColEnc,wColVal);
         break;
-        
+      case DM_UNK: NEVER_REACH;                   break;
+
       default:
         NEVER_REACH;
         

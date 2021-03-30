@@ -9,9 +9,9 @@
 /*----------------------------------------------------------------------------*/
 : idxDef_int
 
-  indexDef[].new
-  "idx_int" indexDef[].name!
-  CT_INTEGER "intA" indexDef[].addColumn
+  indexDefRlu[].new
+  "idx_int" indexDefRlu[].name!
+  CT_INTEGER "intA" indexDefRlu[].addColumn
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -19,10 +19,10 @@
 /*----------------------------------------------------------------------------*/
 : idxDef_intInt
 
-  indexDef[].new
-  "idx_intInt" indexDef[].name!
-  CT_INTEGER "intA" indexDef[].addColumn
-  CT_INTEGER "intB" indexDef[].addColumn
+  indexDefRlu[].new
+  "idx_intInt" indexDefRlu[].name!
+  CT_INTEGER "intA" indexDefRlu[].addColumn
+  CT_INTEGER "intB" indexDefRlu[].addColumn
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -30,9 +30,9 @@
 /*----------------------------------------------------------------------------*/
 : idxDef_vch
 
-  indexDef[].new
-  "idx_vch" indexDef[].name!
-  CT_VARCHAR "vchA" indexDef[].addColumn
+  indexDefRlu[].new
+  "idx_vch" indexDefRlu[].name!
+  CT_VARCHAR "vchA" indexDefRlu[].addColumn
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -40,10 +40,10 @@
 /*----------------------------------------------------------------------------*/
 : idxDef_vchVch
 
-  indexDef[].new
-  "idx_vchVch" indexDef[].name!
-  CT_VARCHAR "vchA" indexDef[].addColumn
-  CT_VARCHAR "vchB" indexDef[].addColumn
+  indexDefRlu[].new
+  "idx_vchVch" indexDefRlu[].name!
+  CT_VARCHAR "vchA" indexDefRlu[].addColumn
+  CT_VARCHAR "vchB" indexDefRlu[].addColumn
 ;
 
 /*----------------------------------------------------------------------------*/

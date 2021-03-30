@@ -526,7 +526,49 @@
                   ]
                 }, // EndPath: /__root__/definitions/object/expr/columnRef
 
-// TODO: Path: /__root__/definitions/object/expr/columnWildcard
+// Path: /__root__/definitions/object/expr/columnWildcard
+                {
+                  name: "columnWildcard",
+                  value: "A reference to multiple columns in the associated table space",
+                  properties: [
+                    {
+                      name: "catalogName",
+                      value: "Name of the catalog that the wildcard refers to. May be null",
+                      type: "/__root__/definitions/object/valueObject/stringObject"
+                    },
+                    {
+                      name: "schemaName",
+                      value: "Name of the schema that the wildcard refers to. May be null",
+                      type: "/__root__/definitions/object/valueObject/stringObject"
+                    },
+                    {
+                      name: "tableName",
+                      value: "Name of the table that the wildcard refers to. May be null",
+                      type: "/__root__/definitions/object/valueObject/stringObject"
+                    }
+                  ]
+                }, // EndPath: /__root__/definitions/object/expr/columnWildcard
+
+// Path: /__root__/definitions/object/expr/columnOrdinal
+                {
+                  name: "columnOrdinal",
+                  value: "A reference to a column by its ordinal number (1-based)",
+                  properties: [
+                    // The value field of an instance of a columnOrdinal object must be an integer type
+                    {name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                      {
+                        name: "valueType",
+                        type:  "/__root__/primitives/constraints/valueType",
+                        children: [{
+                          name: "valueTypeParam",
+                          value: "/__root__/primitives/types/scalarType/integer",
+                          type: "/__root__/definitions/object/valueObject/stringObject"
+                        }]
+                      }
+                    ]}
+
+                  ]
+                }, // EndPath: /__root__/definitions/object/expr/columnOrdinal
 
 // Path: /__root__/definitions/object/expr/literal
                 {
@@ -1655,6 +1697,21 @@
                   value: "Definition of a column of a table that is used in the plan",
                   properties: [
                     {
+                      name: "catalogName",
+                      value: "The name of the catalog the column belongs to, if applicable",
+                      type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject"
+                    },
+                    {
+                      name: "schemaName",
+                      value: "The name of the schema the column belongs to, if applicable",
+                      type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject"
+                    },
+                    {
+                      name: "tableName",
+                      value: "The name of the table the column belongs to, if applicable",
+                      type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject"
+                    },
+                    {
                       name: "columnName",
                       value: "The name of the column",
                       type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject"
@@ -1714,7 +1771,7 @@
                     // TODO: method?
                     // TODO: is primary key?
                   ]
-                }, // EndPath: /__root__/definitions/object/compound/columnDef
+                }, // EndPath: /__root__/definitions/object/compound/indexDef
 
               ]
             }, // EndPath: /__root__/definitions/object/compound

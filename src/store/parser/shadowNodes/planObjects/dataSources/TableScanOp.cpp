@@ -11,7 +11,12 @@
 
 #include "GraphNav.hpp"
 
+#include "ShadowRoot.hpp"
+#include "MetadataNode.hpp"
 #include "store/parser/shadowNodes/compound/TableRef.hpp"
+#include "ColumnRef.hpp"
+#include "ColumnDef.hpp"
+#include "ProjectedExpr.hpp"
 
 using namespace Parser;
 
@@ -71,7 +76,7 @@ void TableScanOp::vDescribe(PlanNode* pNode, s2K& sBuf)
 /*----------------------------------------------------------------------------*/
 /* Recurses down the query plan and writes the explain of the stmt to the buf */
 /*----------------------------------------------------------------------------*/
-void TableScanOp::vExplain(PlanNode* pNode, s48K& sBuf, i8 iIndent)
+void TableScanOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iIndent)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -100,7 +105,7 @@ void TableScanOp::vExplain(PlanNode* pNode, s48K& sBuf, i8 iIndent)
       PlanNode* pChild = pIter->pNext();
       ASSERT(PlanObject::bIsOfType(pChild));
 
-      PlanObject::vExplain(pChild, sBuf, iIndent+1);
+      PlanObject::vExplain(pChild, pRootNode, sBuf, iIndent + 1);
     }
 
     delete pIter;
@@ -129,6 +134,109 @@ QueryNode* TableScanOp::pTableRef(QueryNode* pNode)
   return pTableRef;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns the catalog name of the table reference                            */
+/*----------------------------------------------------------------------------*/
+Stz* TableScanOp::szCatalogName(QueryNode *pNode)
+{
+  QueryNode* pTableRef = TableScanOp::pTableRef(pNode);
+
+  return TableRef::szCatalog(pTableRef);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the schema name of the table reference                             */
+/*----------------------------------------------------------------------------*/
+Stz* TableScanOp::szSchemaName(QueryNode *pNode)
+{
+  QueryNode* pTableRef = TableScanOp::pTableRef(pNode);
+
+  return TableRef::szSchema(pTableRef);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the table name of the table reference                              */
+/*----------------------------------------------------------------------------*/
+Stz* TableScanOp::szTableName(QueryNode *pNode)
+{
+  QueryNode* pTableRef = TableScanOp::pTableRef(pNode);
+
+  return TableRef::szTable(pTableRef);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get the list of column definitions for this data source                    */
+/* Returned list must be freed, but not its contents                          */
+/*----------------------------------------------------------------------------*/
+PlanNodeList* TableScanOp::pColumnDefs(QueryNode* pNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pRootNode);
+
+  QueryNode* pMetadataNode = ShadowRoot::pMetadataNode(pRootNode);
+  ASSERT(pMetadataNode);
+
+  // Create a list for the columnDefs to be returned
+  PlanNodeList* pColumnDefList = new PlanNodeList();
+
+  // Iterate the columns in the metadata and add them to the above list
+  PlanNodeIter* pIter = MetadataNode::pColumnDefIter(pMetadataNode,
+                                                     szCatalogName(pNode),
+                                                     szSchemaName(pNode),
+                                                     szTableName(pNode));
+
+  while (pIter->bHasNext()) {
+    QueryNode* pColumnDef = static_cast<QueryNode*>(pIter->pNext());
+    pColumnDefList->vAppend(pColumnDef);
+  }
+
+  delete pIter;
+  return pColumnDefList;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return a list of ProjectedExprs that represent the column expressions      */
+/* that this PlanObject will return. All nodes and the list must be freed.    */
+/*----------------------------------------------------------------------------*/
+PlanNodeList* TableScanOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pRootNode);
+
+  QueryNode* pMetadataNode = ShadowRoot::pMetadataNode(pRootNode);
+  ASSERT(pMetadataNode);
+
+  // Create a list for the columnRefs to be returned  (note: columnREFS not columnDEFS)
+  PlanNodeList* pColumnRefList = new PlanNodeList();
+
+  // Iterate the columns in the metadata and add them to the above list
+  PlanNodeIter* pIter = MetadataNode::pColumnDefIter(pMetadataNode,
+                                                     szCatalogName(pNode),
+                                                     szSchemaName(pNode),
+                                                     szTableName(pNode));
+
+  while (pIter->bHasNext()) {
+    QueryNode* pColumnDef = static_cast<QueryNode*>(pIter->pNext());
+
+    // Create a columnRef expression object from this column definition
+    QueryNode* pColumnRef = ColumnRef::pCreate(ColumnDef::szCatalogName(pColumnDef),
+                                               ColumnDef::szSchemaName(pColumnDef),
+                                               ColumnDef::szTableName(pColumnDef),
+                                               ColumnDef::szColumnName(pColumnDef));
+
+    // Create a ProjectedExpr for this expression
+    QueryNode* pProjectedExpr = ProjectedExpr::pCreate(pColumnRef,
+                                                       new Text(ColumnDef::szColumnName(pColumnDef)));
+
+    // Append it to the list
+    pColumnRefList->vAppend(pProjectedExpr);
+  }
+
+  delete pIter;
+  return pColumnRefList;
+}
 
 /*============================================================================*/
 /* end                                                                        */

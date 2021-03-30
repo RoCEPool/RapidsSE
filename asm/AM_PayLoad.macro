@@ -10,21 +10,27 @@ macro AM_PAYLOAD_GBY
   Label PAYLOAD_GBY
 
   // reset entwrk
+  EO_PUSH_RLU_ENTWRK
   EO_ENTWRK_RESET
 
   EO_CALL <payLoadKey>
 
-  EO_ENT_FINDI
+  EO_PUSH_DEVIXT_TMP
+  EO_DEVIXT_ENT_FINDI
   EO_JMP_TRUE FOUND
 
   // find the key in the indexTree
-  EO_ENT_POSPRIOR
+  EO_PUSH_DEVIXT_TMP
+  EO_DEVIXT_ENT_POSPRIOR
   EO_JMP_FALSE NOT_FOUND
 
-  EO_ENT_NEXT
+  EO_PUSH_DEVIXT_TMP
+  EO_DEVIXT_ENT_NEXT
   EO_JMP_FALSE NOT_FOUND
 
-  EO_ENT_EQUAL
+  EO_PUSH_DEVIXT_TMP
+  EO_PUSH_RLU_ENT
+  EO_DEVIXT_ENTKEY_EQUAL
   EO_JMP_TRUE FOUND
 
   // NOT_FOUND:
@@ -54,8 +60,15 @@ macro AM_PAYLOAD_STORE
 // macro AM_PAYLOAD_STORE                                                     //
 //----------------------------------------------------------------------------//
   Label PAYLOAD_STORE
-  EO_ENTWRK_CREATEPAY <payLoadBytes>
-  EO_IXT_INS_ENT
+
+  EO_PUSH_RLU_ENTWRK
+  EO_PUSH_DEVROW_SRC
+  EO_DEVROW_ENTWRK_CREATEPAY <payLoadBytes>
+
+  EO_PUSH_DEVIXT_TMP
+  EO_PUSH_RLU_ENT
+  EO_DEVIXT_IDX_INS
+  EO_PUSH_DEVIXT_TMP
   EO_PAY_ADDRESS
   // store L_RETURNFLAG -> Q100_RETURNFLAG
   //EO_PUSH_LOCALS 4
@@ -67,6 +80,7 @@ macro AM_PAYLOAD_ADD
 // macro AM_PAYLOAD_ADD                                                       //
 //----------------------------------------------------------------------------//
   Label PAYLOAD_ADD
+  EO_PUSH_DEVIXT_TMP
   EO_PAY_ADDRESS
   //EO_SUPER_Q100 ???? OPTIMIZATION (ALKA: COME BACK TO THIS)
   // sum(L_QUANTITY) -> Q100_SUM_QTY
@@ -82,7 +96,7 @@ macro AM_PAYLOAD_END
 //----------------------------------------------------------------------------//
  //EO_IXT_DUMP
  EO_PUSH_DEVIXT_TMP
- EO_DEVIXT_DUMP
+ EO_DEVIXT_IDX_DUMP
  EO_RETURN
 endMacro
 
@@ -96,10 +110,11 @@ macro AM_PAYLOAD_TO_BUFFER
   // new a dst row
   //EO_ROW_DST_NEW
   EO_PUSH_DEVROW_DST
-  EO_PUSH_POT
-  EO_PUSH_PTN
-  EO_DEVROW_NEW
+  EO_PUSH_RLU_POT
+  EO_PUSH_RLU_PTN
+  EO_DEVROW_ROW_NEW
 
+  EO_PUSH_DEVIXT_TMP
   EO_PAY_ADDRESS
 
 endMacro
@@ -112,7 +127,7 @@ macro AM_PAYLOAD_TO_BUFFER_END
  Label PAYLOAD_TO_BUFFER_END
  //EO_ROW_DST_PRINT
  EO_PUSH_DEVROW_DST
- EO_DEVROW_PRINT
+ EO_DEVROW_ROW_PRINT
  EO_RETURN
 endMacro
 

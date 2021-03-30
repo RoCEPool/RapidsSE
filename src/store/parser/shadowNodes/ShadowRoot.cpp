@@ -54,7 +54,7 @@ void ShadowRoot::vExplain(PlanNode* pRoot, s48K& sBuf, i8 iIndent)
   ASSERT(pStatement);
   ASSERT(Statement::bIsOfType(pStatement));
 
-  Statement::vExplain(pStatement, sBuf, iIndent);
+  Statement::vExplain(pStatement, pRoot, sBuf, iIndent);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -77,6 +77,20 @@ QueryNode* ShadowRoot::pMetadataNode(PlanNode* pNode)
   ASSERT(pMetadata);
 
   return pMetadata;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the node representing the /__root__/plan node in the plan graph    */
+/*----------------------------------------------------------------------------*/
+QueryNode* ShadowRoot::pPlanNode(PlanNode* pNode)
+{
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pPlan = static_cast<QueryNode*>(GraphNav::pFindChild(const_cast<Stz*>(C_PLAN_NAME), pNode));
+  ASSERT(pPlan);
+
+  return pPlan;
 }
 
 /*============================================================================*/

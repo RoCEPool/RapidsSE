@@ -26,7 +26,7 @@
   // create an infoSet operand
   streamSetTable[] StreamSet[].new
 
-  0 index[].size number.magnitude >str
+  0 Index[].size number.magnitude >str
 
   // insert index size
   streamSetTable[] StreamSet[].addSizeIndex assert

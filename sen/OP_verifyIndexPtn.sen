@@ -25,7 +25,7 @@
   PipeIn[].pipeOut
 
   // verify partition of index
-  index[].verifyPtn assert
+  Index[].verifyPtn assert
 
   Operand[].newEosMarker
   Operand[].pipeOut

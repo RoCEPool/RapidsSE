@@ -38,6 +38,10 @@ ssh-keygen
 cp id_rsa.pub authorized_keys
 chmod 600 authorized_keys 
 
+Edit /etc/sysconfig/jenkins
+on the line starting JENKINS_JAVA_OPTIONS, add this parameter:
+  -Dcom.cloudbees.workflow.rest.external.JobExt.maxRunsPerJob=64
+
 Starting Jenkins
 ================
 

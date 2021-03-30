@@ -62,16 +62,18 @@ Column::~Column(void) noexcept(false)
 eDM Column::eDatum(eCT eColumnType)
 {
   switch(eColumnType) {
-    case CT_BOOLEAN   : return DM_BOL;
-    case CT_CHAR      : return DM_VCH;
-    case CT_DATE      : return DM_DTE;
-    case CT_DECIMAL   : return DM_BCD;
-    case CT_FLOAT     : return DM_FLT;
-    case CT_INTEGER   : return DM_INT;
-    case CT_INTERVAL  : return DM_IVL;
-    case CT_TIME      : return DM_TME;
-    case CT_TIMESTAMP : return DM_TSP;
-    case CT_VARCHAR   : return DM_VCH;
+    case CT_BOOLEAN     : return DM_BOL;
+    case CT_CHAR        : return DM_VCH;
+    case CT_DATE        : return DM_DTE;
+    case CT_DECIMAL     : return DM_BCD;
+    case CT_FLOAT       : return DM_FLT;
+    case CT_INTEGER     : return DM_INT;
+    case CT_INTERVAL_DT : return DM_IVL;
+    case CT_INTERVAL_YM : NEVER_REACH;
+    case CT_TIME        : return DM_TME;
+    case CT_TIMESTAMP   : return DM_TSP;
+    case CT_VARCHAR     : return DM_VCH;
+    case CT_UNKNOWN     : return DM_UNK;
     default:
       RASSERT(0);
   }

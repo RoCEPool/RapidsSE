@@ -106,10 +106,10 @@ void Heap::vDump(eCN eClass, Object* pObject, Stz* aTab)
          pHeap->m_nBufferCount,
          pHeap->m_nFreeChunks);
   
-  i8 iCountObjects[CN_ENUMS];
-  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
-    iCountObjects[i_Index] = 0;
-  }
+//  i8 iCountObjects[CN_ENUMS];
+//  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
+//    iCountObjects[i_Index] = 0;
+//  }
   
 //  pHeap->vAnalyse(iCountObjects);
 //  

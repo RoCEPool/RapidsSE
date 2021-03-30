@@ -135,6 +135,8 @@ static Stz* C_TDEF_TOTALUNITS       = "__totalUnits"_Stz;
 static Stz* C_TDEF_VERIFYINDEX      = "__verifyIndex"_Stz;
 static Stz* C_TDEF_VERIFYTABLE      = "__verifyTable"_Stz;
 
+static Stz* C_EVENT_DEMON           = "__eventDemon"_Stz;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

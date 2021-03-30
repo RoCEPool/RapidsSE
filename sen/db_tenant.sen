@@ -12,9 +12,9 @@
 /*----------------------------------------------------------------------------*/
 /* pop the tenant folder                                                     */
 /*----------------------------------------------------------------------------*/
-: path[].popTenantFolder
+: Path[].popTenantFolder
 
-  path[].popFolder
+  Path[].popFolder
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -37,7 +37,7 @@
 /*----------------------------------------------------------------------------*/
 /* check if word is a tenant folder                                           */
 /*----------------------------------------------------------------------------*/
-: path[].checkIsTenant ( word )
+: Path[].checkIsTenant ( word )
 
   dup word.category@ find: \folder eql not if EC_NOT_A_FOLDER false exit then
   dup execute dic.kind@ find: \tenant eql if true exit then
@@ -86,9 +86,9 @@
 /*----------------------------------------------------------------------------*/
 /* find the tenant folder and push it onto task dictionary                   */
 /*----------------------------------------------------------------------------*/
-: path[].pushTenantFolder ( "<tenantName>" -- )
+: Path[].pushTenantFolder ( "<tenantName>" -- )
 
-  find execute path[].pushFolder
+  find execute Path[].pushFolder
   true
 ;
 
@@ -105,11 +105,11 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move to tenant folder
-  sTenantNm path[].pushTenantFolder assert
+  sTenantNm Path[].pushTenantFolder assert
 
   "catalogs" folder::remove
 
-  path[].popTenantFolder
+  Path[].popTenantFolder
 
   sTenantNm folder::remove
 ;

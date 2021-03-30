@@ -21,7 +21,7 @@
 
   // pop up one folder, but not into tenants
   sFolderNm ".." str.same if
-    folder[] dic.name@ "tenants" str.same not if path[].popFolder then
+    folder[] dic.name@ "tenants" str.same not if Path[].popFolder then
     setPath
     true
     exit                                                         // *EARLY EXIT*
@@ -32,7 +32,7 @@
 
   // pop up to tenants
   sFolderNm "~" str.same if
-    begin folder[] dic.name@ "tenants" str.same not while path[].popFolder repeat
+    begin folder[] dic.name@ "tenants" str.same not while Path[].popFolder repeat
     setPath
     true
     exit                                                         // *EARLY EXIT*
@@ -64,8 +64,8 @@
 
   // clear dic path and push tenants
   sFolderNm "tenants" str.same if
-    path[].popAllFolders
-    attachmap::tenants@ execute path[].pushFolder
+    Path[].popAllFolders
+    attachmap::tenants@ execute Path[].pushFolder
     setPath
     true
     exit                                                         // *EARLY EXIT*
@@ -83,7 +83,7 @@
     exit
   then
 
-  pCurrentFolder execute path[].pushFolder
+  pCurrentFolder execute Path[].pushFolder
   setPath
 
   true

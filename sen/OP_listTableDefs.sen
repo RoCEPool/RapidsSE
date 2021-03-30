@@ -40,11 +40,11 @@
   iterate                          // setup iteration of words
 
     object@ word.name@ to sTableNm
-    sTableNm path[].pushNamedTableFolder
+    sTableNm Path[].pushNamedTableFolder
     sTableNm find execute to Table[]
 
     // skip definition only tables
-    Table[].isDefinitionOnly@ if
+    Table[].isInternallyDefined if
 
     sTableNm streamSetTable[] StreamSet[].addListContents  not if
       StreamSet[].pipeOut
@@ -55,7 +55,7 @@
 
     then
 
-    "path[].popNamedTableFolder" find execute
+    "Path[].popNamedTableFolder" find execute
 
     object@ word.prev object!      // step backwards thru words
   next

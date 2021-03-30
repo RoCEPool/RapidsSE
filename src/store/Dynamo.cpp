@@ -1168,6 +1168,7 @@ bool Dynamo::bPhase2_staging(void)
 
           // we already have a xmit, so just remove the stage
           pStageSpec->vRemove(pOpSpec);
+          delete pOpSpec;
 
           // add otherStage and otherOp tags into teh xmit
           pOpSpecFound->vAddTopologyEnamePair(C_TAG_OTHERSTAGE,(i8)i_FoundStage,TN_INTEGER);
@@ -1175,7 +1176,7 @@ bool Dynamo::bPhase2_staging(void)
 
           //pTopologyTagSet->vContentDump();
 
-          // orepend a consume op in the stage
+          // prepend a consume op in the stage
           OpSpec* pConsumeOpSpec = pStageSpecFound->pPrependConsumeOp(eCrossTopo, i_FoundStage, i_Op + 1);
           vAddConsumeParams(pConsumeOpSpec, eCrossTopo);
         }

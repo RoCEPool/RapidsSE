@@ -449,9 +449,18 @@ void vExprEvalEvaluate(void);
   void vIndexDefTableNameFetch(void);
   void vIndexDefTableNameStore(void);
 
+  // index definition in Rlu
+  void vIndexDefRluAddColumn(void);
+  void vIndexDefRluDelete(void);
+  void vIndexDefRluGet(void);
+  void vIndexDefRluIsNull(void);
+  void vIndexDefRluNameStore(void);
+  void vIndexDefRluNew(void);
+  void vIndexDefRluSet(void);
+
   // index reg
-  void vRegIndexGet(void);
-  void vRegIndexSet(void);
+  void vIndexGet(void);
+  void vIndexSet(void);
 
   // indexStream
   void vIndexStreamBufferNo(void);
@@ -476,6 +485,17 @@ void vExprEvalEvaluate(void);
   void vIndexTreeIsNull(void);
   void vIndexTreeNew(void);
   void vIndexTreeSet(void);
+
+  // index tree in Rlu
+  void vIndexTreeRluAsAlt(void);
+  void vIndexTreeRluAsSrc(void);
+  void vIndexTreeRluAsTmp(void);
+  void vIndexTreeRluDelete(void);
+  void vIndexTreeRluGet(void);
+  void vIndexTreeRluInsEntBuffer(void);
+  void vIndexTreeRluIsNull(void);
+  void vIndexTreeRluNew(void);
+  void vIndexTreeRluSet(void);
 
   // reg info set
   void vInfoSetAddCommandError(void);
@@ -875,8 +895,6 @@ void vExprEvalEvaluate(void);
   void vLogicUnitGenLimit(void);
   void vLogicUnitGenProjection(void);
   void vLogicUnitGenRange(void);
-  void vLogicUnitDevFetch(void);
-  void vLogicUnitDevStore(void);
   void vLogicUnitHandlerFetch(void);
   void vLogicUnitHandlerStore(void);
   void vLogicUnitInit(void);
@@ -908,6 +926,10 @@ void vExprEvalEvaluate(void);
 
   // Monitor (Nodes)
   void vMonitorUpdateNodeStatus(void);
+
+  // named buffer
+  void vNamedBufferNameFetch(void);
+  void vNamedBufferNameStore(void);
 
   // node (of grid)
   void vNodeForget(void);
@@ -952,6 +974,51 @@ void vExprEvalEvaluate(void);
   // olist (originator list)
   void vOlistFindJob(void);
 
+  // operand[]
+  void vOperandAsSrcCrwBuffer(void);
+  void vOperandAsSrcRowBuffer(void);
+  void vOperandCsvAppend(void);
+  void vOperandBide(void);
+  void vOperandCrwDuplicate(void);
+  void vOperandCrwToCsv(void);
+  void vOperandCsvData(void);
+  void vOperandCsvToRow(void);
+  void vOperandDelete(void);
+  void vOperandGet(void);
+  void vOperandGetAndClear(void);
+  void vOperandIsNotNull(void);
+  void vOperandIsNull(void);
+  void vOperandIsReport(void);
+  void vOperandInsdelIntoTable(void);
+  void vOperandInvokePython(void);
+  void vOperandInvokePythonShell(void);
+  void vOperandKind(void);
+  void vOperandMorphClass(void);
+  void vOperandNewCancelMarker(void);
+  void vOperandNewCsvBuffer(void);
+  void vOperandNewDataPulse(void);
+  void vOperandNewDestroyMarker(void);
+  void vOperandNewEosMarker(void);
+  void vOperandNewErrorMarker(void);
+  void vOperandNewErroredMarker(void);
+  void vOperandNewExitMarker(void);
+  void vOperandNewExitedMarker(void);
+  void vOperandNewPulsedMarker(void);
+  void vOperandNewStartMarker(void);
+  void vOperandNewStartedMarker(void);
+  void vOperandNewStreamDef(void);
+  void vOperandNext(void);
+  void vOperandPipeIn(void);
+  void vOperandPipeOut(void);
+  void vOperandPipeOutSet(void);
+  void vOperandPipeToOutput(void);
+  void vOperandReport(void);
+  void vOperandRowCountFetch(void);
+  void vOperandSet(void);
+  void vOperandUpsertIntoTable(void);
+  void vOperandRowToCsv(void);
+  void vOperandWriteToFile0(void);
+
   // operator
   void vOpAckPipelineJob(void);
   void vOpDownstreamOpStore(void);
@@ -971,8 +1038,31 @@ void vExprEvalEvaluate(void);
   void vOpTopologyStore(void);
   void vOpXmitKindStore(void);
 
-  // operand
-  void vOperandKind(void);
+  // operandB
+  void vOperandBAppendClose(void);
+  void vOperandBDelete(void);
+  void vOperandBGet(void);
+  void vOperandBIsNotNull(void);
+  void vOperandBIsNull(void);
+  void vOperandBPipeOut(void);
+  void vOperandBSet(void);
+
+  // operandC
+  void vOperandCCollect(void);
+  void vOperandCGet(void);
+  void vOperandCPipeOut(void);
+  void vOperandCPipeOutSet(void);
+  void vOperandCSet(void);
+  void vOperandCSetFirst(void);
+
+  // OperandOoO
+  void vOperandOoODelete(void);
+  void vOperandOoOGet(void);
+  void vOperandOoOIsNull(void);
+  void vOperandNextOoO(void);
+  void vOperandOoOPipeOut(void);
+  void vOperandOoOPipeToOutput(void);
+  void vOperandOoOSet(void);
 
   // opsys
   void vOpSysIsLinux(void);
@@ -1159,75 +1249,6 @@ void vExprEvalEvaluate(void);
   void vRegOpIsOperandValid(void);
   void vRegOpIncOperandCount(void);
 
-  // operand
-  void vRegOperandAsSrcCrwBuffer(void);
-  void vRegOperandAsSrcRowBuffer(void);
-  void vRegOperandCsvAppend(void);
-  void vRegOperandBide(void);
-  void vRegOperandCrwDuplicate(void);
-  void vRegOperandCrwToCsv(void);
-  void vRegOperandCsvData(void);
-  void vRegOperandCsvToRow(void);
-  void vRegOperandDelete(void);
-  void vRegOperandGet(void);
-  void vRegOperandIsNotNull(void);
-  void vRegOperandIsNull(void);
-  void vRegOperandIsReport(void);
-  void vRegOperandInsdelIntoTable(void);
-  void vRegOperandInvokePython(void);
-  void vRegOperandInvokePythonShell(void);
-  void vRegOperandKind(void);
-  void vRegOperandNewCancelMarker(void);
-  void vRegOperandNewCsvBuffer(void);
-  void vRegOperandNewDataPulse(void);
-  void vRegOperandNewDestroyMarker(void);
-  void vRegOperandNewEosMarker(void);
-  void vRegOperandNewErrorMarker(void);
-  void vRegOperandNewErroredMarker(void);
-  void vRegOperandNewExitMarker(void);
-  void vRegOperandNewExitedMarker(void);
-  void vRegOperandNewPulsedMarker(void);
-  void vRegOperandNewStartMarker(void);
-  void vRegOperandNewStartedMarker(void);
-  void vRegOperandNewStreamDef(void);
-  void vRegOperandNext(void);
-  void vRegOperandPipeIn(void);
-  void vRegOperandPipeOut(void);
-  void vRegOperandPipeOutSet(void);
-  void vRegOperandPipeToOutput(void);
-  void vRegOperandReport(void);
-  void vRegOperandRowCountFetch(void);
-  void vRegOperandSet(void);
-  void vRegOperandUpsertIntoTable(void);
-  void vRegOperandRowToCsv(void);
-  void vRegOperandWriteToFile0(void);
-
-  // operandB
-  void vRegOperandBAppendClose(void);
-  void vRegOperandBDelete(void);
-  void vRegOperandBGet(void);
-  void vRegOperandBIsNotNull(void);
-  void vRegOperandBIsNull(void);
-  void vRegOperandBPipeOut(void);
-  void vRegOperandBSet(void);
-
-  // operandC
-  void vRegOperandCCollect(void);
-  void vRegOperandCGet(void);
-  void vRegOperandCPipeOut(void);
-  void vRegOperandCPipeOutSet(void);
-  void vRegOperandCSet(void);
-  void vRegOperandCSetFirst(void);
-
-  // OperandOoO
-  void vRegOperandOoODelete(void);
-  void vRegOperandOoOGet(void);
-  void vRegOperandOoOIsNull(void);
-  void vRegOperandNextOoO(void);
-  void vRegOperandOoOPipeOut(void);
-  void vRegOperandOoOPipeToOutput(void);
-  void vRegOperandOoOSet(void);
-
   // reg Path
   void vRegPathGet(void);
 
@@ -1241,17 +1262,18 @@ void vExprEvalEvaluate(void);
   void vRegPathRestore(void);
 
   // reg Pipein
-  void vRegPipeinBide(void);
-  void vRegPipeinDelete(void);
-  void vRegPipeinGet(void);
-  void vRegPipeinIsNull(void);
-  void vRegPipeinKind(void);
-  void vRegPipeinNext(void);
-  void vRegPipeinPeek(void);
-  void vRegPipeinPipeOut(void);
-  void vRegPipeinPipeToOutput(void);
-  void vRegPipeinSet(void);
-  void vRegPipeinWriteProfile(void);
+  void vPipeinBide(void);
+  void vPipeinDelete(void);
+  void vPipeinGet(void);
+  void vPipeinGetAndClear(void);
+  void vPipeinIsNull(void);
+  void vPipeinKind(void);
+  void vPipeinNext(void);
+  void vPipeinPeek(void);
+  void vPipeinPipeOut(void);
+  void vPipeinPipeToOutput(void);
+  void vPipeinSet(void);
+  void vPipeinWriteProfile(void);
 
   // reg task
   void vRegTaskGet(void);
@@ -1264,7 +1286,8 @@ void vExprEvalEvaluate(void);
   void vRegister0Get(void);
   void vRegister0Set(void);
 
-  void vRowIntColumnFetch(void);
+  // row buffer
+  void vRowBufferOperandDump(void);
 
   // rowCursor
   void vRowCursorBegin(void);
@@ -1284,6 +1307,7 @@ void vExprEvalEvaluate(void);
   void vRowGet(void);
   void vRowGetIntColumn(void);
   void vRowGetVchColumn(void);
+  void vRowIntColumnFetch(void);
   void vRowIsNull(void);
   void vRowSet(void);
 
@@ -1292,9 +1316,6 @@ void vExprEvalEvaluate(void);
   void vRowOnceGet(void);
   void vRowOnceIsNull(void);
   void vRowOnceNew(void);
-
-  // row buffer
-  void vRowBufferOperandDump(void);
 
   // rstack
   void vRstackCsPick(void);
@@ -1408,6 +1429,7 @@ void vExprEvalEvaluate(void);
   void vUpdateNodeStatus(void);
 
   // sql compiler
+  void vSqlCompilerExprValidate(void);
   void vSqlCompilerNameValidate(void);
   void vSqlCompilerParser(void);
   void vSqlCompilerTransliterate(void);
@@ -1560,11 +1582,12 @@ void vExprEvalEvaluate(void);
   void vTableGet(void);
   void vTableIndexCount(void);
   void vTableIsColumn(void);
-  void vTableIsDefinitionOnlyFetch(void);
-  void vTableIsDefinitionOnlyStore(void);
+  void vTableIsInternallyDefined(void);
+  void vTableIsUserCreated(void);
   void vTableListPartition(void);
   void vTablePtnStreamDefFetch(void);
   void vTableLazyBuildIndexes(void);
+  void vTableNameFetch(void);
   void vTableNew(void);
   void vTablePurge(void);
   void vTableDeleteIndex(void);
@@ -1573,6 +1596,7 @@ void vExprEvalEvaluate(void);
   void vTableStreamDefFetch(void);
   void vTableStreamDefStore(void);
   void vTableTablePtnFetch(void);
+  void vTableTablePtnGet(void);
   void vTableTablePtnZero(void);
   void vTableVerify(void);
   void vTableVisualize(void);
@@ -1873,13 +1897,6 @@ void vExprEvalEvaluate(void);
   void vWordResetRoutine(void);
   void vWordSee(void);
   void vWordXcheckInxPtr(void);
-
-  // write behind
-  void vWriteBehindCreate(void);
-  void vWriteBehindDelete(void);
-  void vWriteBehindGet(void);
-  void vWriteBehindHandleDangling(void);
-  void vWriteBehindset(void);
 
   // XmitOperand
   void vXmitOperandOperandStore(void);

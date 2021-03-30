@@ -56,6 +56,8 @@ SePrompt::SePrompt(bool bOneCommand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
+  m_pThread   = AM::THREAD::pNewThread();
+  
   m_pInpTknVec = nullptr;
   
   m_iDivisionNo = 0;
@@ -137,6 +139,8 @@ SePrompt::~SePrompt(void) noexcept(false)
   m_pLitTknVec->vSoftReset();
   delete m_pLitTknVec;
   
+  AM::THREAD::vDeleteThread(m_pThread);
+
   vLog(EV_DESTRUCT,"SePrompt destructor"_Stz);
 }
 
@@ -175,8 +179,11 @@ void SePrompt::vPromptLoop(void)
   //
   
   // we need to set the thread key to non-zero
-  PsxThd::vMarkNonSeThread();
-  
+  //PsxThd::vMarkNonSeThread();
+  m_pThread->vThisTLSThread();
+
+  Thread* pThreadTest = AM::pThisTLSThread();
+
   ASSERT(0 == pInputGet()->iDepth());
   pInputGet()->vUseStdin();
   pInputGet()->vFormCppTokens();
@@ -206,11 +213,17 @@ void SePrompt::vPromptLoop(void)
     m_pInpTknVec = pInputGet()->pTokenVec();
     m_pJobTagSet = m_pCurrentDeputy->pJobTagSet();
     
-    pInputGet()->vRawInputClear();
+    Stz* szToDo = m_pCurrentDeputy->pSession()->m_sToDo;
+    
+    if (! *szToDo->azChar())
+      pInputGet()->vRawInputClear();
     
     if (! bGetCommand())
       continue;
  
+//    Stz* szRaw = szRawInput();
+//    vTrace("SePrompt got command : %s\n"_Stz,szRaw);
+    
     if (! bExamineCommand())
       continue;
 
@@ -235,7 +248,6 @@ void SePrompt::vPromptLoop(void)
 
   } // while
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* get next command from input                                                */
@@ -998,6 +1010,18 @@ void SePrompt::vPromptUser(void)
         );
 
   fflush(stdin);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get raw input                                                              */
+/*----------------------------------------------------------------------------*/
+Stz* SePrompt::szRawInput(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  Stz* szRaw = pInputGet()->szRawInput();
+  
+  return szRaw;
 }
 
 /*----------------------------------------------------------------------------*/

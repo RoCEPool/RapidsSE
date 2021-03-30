@@ -83,6 +83,7 @@ CmdLineArgs::CmdLineArgs(void)
   m_xSysArgs.m_nDummySleep      = 10;
   m_xSysArgs.m_nDummyLoop       = 0;
   m_xSysArgs.m_nEntries         = 0;
+  m_xSysArgs.m_bEvents          = false;
   m_xSysArgs.m_bFreeCB          = false;
   m_xSysArgs.m_bGridTest        = false;
   m_xSysArgs.m_bHugePages       = false;
@@ -341,6 +342,13 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
 
     if (szArg->bSame("--entries"_Stz)) {
       m_xSysArgs.m_nEntries = argv[++i_Arg].iToI8();
+      continue;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    if (szArg->bSame("--events"_Stz)) {
+      m_xSysArgs.m_bEvents = true;
       continue;
     }
     

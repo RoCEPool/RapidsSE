@@ -51,115 +51,100 @@ char gszaAmMacroFiles[C_MACRO_FILES][128] = {
 DynamicSymbol gxaDynamicSymbol[]
 {
   { "giaVectorSet"_Stz,          (const void *) giaVectorSet          },
-  
-  { "vDev_ALT_COL_PUSHSET"_Stz,   (const void *) vDev_ALT_COL_PUSHSET   },
-  { "vDev_ROW_COL_PUSHSET"_Stz,   (const void *) vDev_ROW_COL_PUSHSET   },
-  { "vDev_SRC_COL_PUSHDST"_Stz,   (const void *) vDev_SRC_COL_PUSHDST   },
-  { "vDev_SRC_COL_PUSHSET"_Stz,   (const void *) vDev_SRC_COL_PUSHSET   },
 
-  { "vDev_IXT_COL_PUSHONE_PST"_Stz,(const void *) vDev_IXT_COL_PUSHONE_PST   },
+  { "vDev_IXT_COLS_TO_LOCALS"_Stz, (const void *) vDev_IXT_COLS_TO_LOCALS    },
+  { "vDev_IXT_COLS_TO_ROW"_Stz,    (const void *) vDev_IXT_COLS_TO_ROW       },
 
-  { "vDev_CRW_BEGIN"_Stz,         (const void *) vDev_CRW_BEGIN         },
-  { "vDev_CRW_DEREF"_Stz,         (const void *) vDev_CRW_DEREF         },
-  { "iDev_CRW_NEXT"_Stz,          (const void *) iDev_CRW_NEXT          },
-  { "vDev_CRW_NULL"_Stz,          (const void *) vDev_CRW_NULL          },
-  { "iDev_CRW_TEST"_Stz,          (const void *) iDev_CRW_TEST          },
+  { "vDev_IXT_COL_PUSHSET_ADR"_Stz,(const void *) vDev_IXT_COL_PUSHSET_ADR   },
+  { "vDev_IXT_COL_PUSHSET_PST"_Stz,(const void *) vDev_IXT_COL_PUSHSET_PST   },
 
-  { "vDev_IXT_BEGIN"_Stz,         (const void *) vDev_IXT_BEGIN         },
-  { "vDev_IXT_DEREF"_Stz,         (const void *) vDev_IXT_DEREF         },
-  { "vDev_IXT_NEXT"_Stz,          (const void *) vDev_IXT_NEXT          },
-  { "vDev_IXT_NULL"_Stz,          (const void *) vDev_IXT_NULL          },
-  { "vDev_IXT_TEST"_Stz,          (const void *) vDev_IXT_TEST          },
+  { "vDev_IXT_CRWBUF_BEGIN"_Stz,   (const void *) vDev_IXT_CRWBUF_BEGIN      },
+  { "vDev_IXT_CRWBUF_NEXT"_Stz,    (const void *) vDev_IXT_CRWBUF_NEXT       },
+  { "vDev_IXT_CRWBUF_NULL"_Stz,    (const void *) vDev_IXT_CRWBUF_NULL       },
+  { "vDev_IXT_CRWBUF_TEST"_Stz,    (const void *) vDev_IXT_CRWBUF_TEST       },
 
-  { "iDev_ENT_COMPARE"_Stz,       (const void *) iDev_ENT_COMPARE       },
-  { "aDev_ENT_NEXT"_Stz,          (const void *) aDev_ENT_NEXT          },
-  { "aDev_ENT_POSPRIOR"_Stz,      (const void *) aDev_ENT_POSPRIOR      },
-  { "vDev_ENT_PRINTKEYS"_Stz,     (const void *) vDev_ENT_PRINTKEYS     },
-  { "aDev_ENT_PUSH"_Stz,          (const void *) aDev_ENT_PUSH          },
-  { "aDev_ENT_PUSHUPPER"_Stz,     (const void *) aDev_ENT_PUSHUPPER     },
-  { "iDev_ENT_PUSHELMI0"_Stz,     (const void *) iDev_ENT_PUSHELMI0     },
-  { "szDev_ENT_PUSHELMS0"_Stz,    (const void *) szDev_ENT_PUSHELMS0    },
-  { "iDev_ENT_PUSHOFS"_Stz,       (const void *) iDev_ENT_PUSHOFS       },
-  
-  { "vDev_ENTWRK_APPENDELM"_Stz,  (const void *) vDev_ENTWRK_APPENDELM  },
-  { "vDev_ENTWRK_APPENDELMI"_Stz, (const void *) vDev_ENTWRK_APPENDELMI },
-  { "vDev_ENTWRK_APPENDELMS"_Stz, (const void *) vDev_ENTWRK_APPENDELMS },
-  { "vDev_ENTWRK_CREATEPAY"_Stz,  (const void *) vDev_ENTWRK_CREATEPAY  },
-  { "vDev_ENTWRK_POPOFS"_Stz,     (const void *) vDev_ENTWRK_POPOFS     },
+  { "vDev_IXT_ENT_COMPARE"_Stz,   (const void *) vDev_IXT_ENT_COMPARE       },
+  { "vDev_IXT_ENT_DEREF"_Stz,     (const void *) vDev_IXT_ENT_DEREF         },
+
+  { "vDev_IXT_ENT_FIND"_Stz,      (const void *) vDev_IXT_ENT_FIND          },
+  { "vDev_IXT_ENT_NEXT"_Stz,      (const void *) vDev_IXT_ENT_NEXT          },
+  { "vDev_IXT_ENT_POSPRIOR"_Stz,  (const void *) vDev_IXT_ENT_POSPRIOR      },
+  { "vDev_IXT_ENT_PRINTKEYS"_Stz, (const void *) vDev_IXT_ENT_PRINTKEYS     },
+  { "vDev_IXT_ENT_PUSH"_Stz,      (const void *) vDev_IXT_ENT_PUSH          },
+  { "vDev_IXT_ENT_PUSHELMI0"_Stz, (const void *) vDev_IXT_ENT_PUSHELMI0     },
+  { "vDev_IXT_ENT_PUSHELMS0"_Stz, (const void *) vDev_IXT_ENT_PUSHELMS0     },
+  { "vDev_IXT_ENT_PUSHUPPER"_Stz, (const void *) vDev_IXT_ENT_PUSHUPPER     },
+
+  { "vDev_ROW_COLS_TO_LOCALS"_Stz, (const void *) vDev_ROW_COLS_TO_LOCALS   },
+
+  { "vDev_ROW_ENTWRK_APPENDELMI"_Stz, (const void *) vDev_ROW_ENTWRK_APPENDELMI },
+  { "vDev_ROW_ENTWRK_APPENDELMS"_Stz, (const void *) vDev_ROW_ENTWRK_APPENDELMS },
+  { "vDev_ROW_ENTWRK_CREATEPAY"_Stz,  (const void *) vDev_ROW_ENTWRK_CREATEPAY  },
+
   { "vDev_ENTWRK_PRINT"_Stz,      (const void *) vDev_ENTWRK_PRINT      },
   { "vDev_ENTWRK_RESET"_Stz,      (const void *) vDev_ENTWRK_RESET      },
   { "vDev_ENTWRK_SETINTELM"_Stz,  (const void *) vDev_ENTWRK_SETINTELM  },
 
-  { "iDev_IXT_CMP_SRCALT"_Stz,    (const void *) iDev_IXT_CMP_SRCALT    },
-  { "iDev_IXT_CMP_WRKALT"_Stz,    (const void *) iDev_IXT_CMP_WRKALT    },
-  { "vDev_IXT_DEL_ENT"_Stz,       (const void *) vDev_IXT_DEL_ENT       },
-  { "vDev_IXT_DUMP"_Stz,          (const void *) vDev_IXT_DUMP          },
+  { "vDev_IXT_CMP_KEYS"_Stz,      (const void *) vDev_IXT_CMP_KEYS      },
+  { "vDev_IXT_IDX_DEL"_Stz,       (const void *) vDev_IXT_IDX_DEL       },
+  { "vDev_IXT_IDX_DUMP"_Stz,      (const void *) vDev_IXT_IDX_DUMP      },
   { "vDev_IXT_ENT_PRINT"_Stz,     (const void *) vDev_IXT_ENT_PRINT     },
   { "vDev_IXT_INDEXNM_SET"_Stz,   (const void *) vDev_IXT_INDEXNM_SET   },
   { "vDev_IXT_INDEXTREE_DELETE"_Stz,(const void *) vDev_IXT_INDEXTREE_DELETE },
   { "vDev_IXT_INDEXTREE_SET"_Stz, (const void *) vDev_IXT_INDEXTREE_SET },
-  { "aDev_IXT_INS_ENT"_Stz,       (const void *) aDev_IXT_INS_ENT       },
-  { "vDev_IXT_SET_ENT"_Stz,       (const void *) vDev_IXT_SET_ENT       },
-  { "vDev_IXT_TMP_ENTRIES"_Stz,   (const void *) vDev_IXT_TMP_ENTRIES   },
+  { "vDev_IXT_IDX_INS"_Stz,       (const void *) vDev_IXT_IDX_INS       },
+  { "vDev_IXT_IDX_ENTRIES"_Stz,   (const void *) vDev_IXT_IDX_ENTRIES   },
 
-  { "aDev_IXT_POS_ALTBYSRC"_Stz,  (const void *) aDev_IXT_POS_ALTBYSRC  },
-  { "aDev_IXT_POS_ALTBYWRK"_Stz,  (const void *) aDev_IXT_POS_ALTBYWRK  },
-  { "aDev_IXT_POS_LBOUND"_Stz,    (const void *) aDev_IXT_POS_LBOUND    },
-  { "aDev_IXT_POS_UBOUND"_Stz,    (const void *) aDev_IXT_POS_UBOUND    },
-  { "aDev_IXT_POS_UBOUND_LT"_Stz, (const void *) aDev_IXT_POS_UBOUND_LT },
-  { "vDev_IXT_TRV_BEGIN"_Stz,     (const void *) vDev_IXT_TRV_BEGIN     },
-  { "aDev_IXT_TRV_BEGIN_OLD"_Stz, (const void *) aDev_IXT_TRV_BEGIN_OLD },
-  { "vDev_IXT_TRV_NEXT"_Stz,      (const void *) vDev_IXT_TRV_NEXT      },
-  { "aDev_IXT_TRV_NEXT_OLD"_Stz,  (const void *) aDev_IXT_TRV_NEXT_OLD  },
+  { "vDev_IXT_POS_BYKEY"_Stz,     (const void *) vDev_IXT_POS_BYKEY     },
+  { "vDev_IXT_POS_LBOUND"_Stz,    (const void *) vDev_IXT_POS_LBOUND    },
+  { "vDev_IXT_POS_UBOUND"_Stz,    (const void *) vDev_IXT_POS_UBOUND    },
+  { "vDev_IXT_POS_UBOUND_LT"_Stz, (const void *) vDev_IXT_POS_UBOUND_LT },
+  { "vDev_IXT_PUSH_ENT"_Stz,      (const void *) vDev_IXT_PUSH_ENT      },
+  { "vDev_IXT_IDX_BEGIN"_Stz,     (const void *) vDev_IXT_IDX_BEGIN     },
+  { "vDev_IXT_IDX_NEXT"_Stz,      (const void *) vDev_IXT_IDX_NEXT      },
 
-  { "aDev_PAY_ADDRESS"_Stz,       (const void *) aDev_PAY_ADDRESS       },
-  { "iDev_PAY_FETCH_COLI"_Stz,    (const void *) iDev_PAY_FETCH_COLI    },
-  { "szDev_PAY_FETCH_COLS"_Stz,   (const void *) szDev_PAY_FETCH_COLS   },
-  { "vDev_PAY_STORE_COLI"_Stz,    (const void *) vDev_PAY_STORE_COLI    },
-  { "szDev_PAY_STORE_COLS"_Stz,   (const void *) szDev_PAY_STORE_COLS   },
-  
-  { "vDev_INDEXTREE_DEV_SET"_Stz, (const void *) vDev_INDEXTREE_DEV_SET },
-  
-  { "vDev_PIX_STM_PRINT"_Stz,     (const void *) vDev_PIX_STM_PRINT     },
-  
+  { "vDev_PAY_ADDRESS"_Stz,       (const void *) vDev_PAY_ADDRESS       },
+
+  { "vDev_RLU_ROWPIX_PRINT"_Stz,  (const void *) vDev_RLU_ROWPIX_PRINT  },
+
   { "vDev_POT_USE_STREAMDEFOUT"_Stz, (const void *) vDev_POT_USE_STREAMDEFOUT },
-  
-  { "vDev_ROW_BEGIN"_Stz,         (const void *) vDev_ROW_BEGIN         },
-  { "vDev_ROW_NEW"_Stz,           (const void *) vDev_ROW_NEW           },
-  { "vDev_ROW_NEXT"_Stz,          (const void *) vDev_ROW_NEXT          },
-  { "vDev_ROW_NULL"_Stz,          (const void *) vDev_ROW_NULL          },
+
+  { "vDev_ROW_STREAMDEF_DELETE"_Stz, (const void *) vDev_ROW_STREAMDEF_DELETE  },
+
+  { "vDev_ROW_ROW_NEW"_Stz,       (const void *) vDev_ROW_ROW_NEW       },
+  { "vDev_ROW_ROW_PRINT"_Stz,     (const void *) vDev_ROW_ROW_PRINT     },
+  { "vDev_ROW_ROW_SET"_Stz,       (const void *) vDev_ROW_ROW_SET       },
+  { "vDev_ROW_ROW_TEST"_Stz,      (const void *) vDev_ROW_ROW_TEST      },
+  { "vDev_ROW_ROW_ZERO"_Stz,      (const void *) vDev_ROW_ROW_ZERO      },
+
+  { "vDev_ROW_ROWBUF_BEGIN"_Stz,  (const void *) vDev_ROW_ROWBUF_BEGIN  },
+  { "vDev_ROW_ROWBUF_NEXT"_Stz,   (const void *) vDev_ROW_ROWBUF_NEXT   },
+  { "vDev_ROW_ROWBUF_NULL"_Stz,   (const void *) vDev_ROW_ROWBUF_NULL   },
+  { "vDev_ROW_ROWBUF_RESET"_Stz,  (const void *) vDev_ROW_ROWBUF_RESET  },
+  { "vDev_ROW_ROWBUF_TEST"_Stz,    (const void *) vDev_ROW_ROWBUF_TEST  },
+
   { "vDev_ROW_POPCOLI"_Stz,       (const void *) vDev_ROW_POPCOLI       },
   { "vDev_ROW_POPCOLS"_Stz,       (const void *) vDev_ROW_POPCOLS       },
-  { "vDev_ROW_PRINT"_Stz,         (const void *) vDev_ROW_PRINT         },
   { "vDev_ROW_PUSHCOLI"_Stz,      (const void *) vDev_ROW_PUSHCOLI      },
   { "szDev_ROW_PUSHCOLS"_Stz,     (const void *) szDev_ROW_PUSHCOLS     },
   { "vDev_ROW_PUSHCOLS"_Stz,      (const void *) vDev_ROW_PUSHCOLS      },
-  { "vDev_ROW_PUSHOFS"_Stz,       (const void *) vDev_ROW_PUSHOFS       },
-  { "vDev_ROW_RESET"_Stz,         (const void *) vDev_ROW_RESET         },
-  { "vDev_ROW_SET"_Stz,           (const void *) vDev_ROW_SET           },
-  { "vDev_ROW_SETBYOFS"_Stz,      (const void *) vDev_ROW_SETBYOFS      },
+
   { "vDev_ROW_TABLENM_SET"_Stz,   (const void *) vDev_ROW_TABLENM_SET   },
-  { "vDev_ROW_TESTBUFFER"_Stz,    (const void *) vDev_ROW_TESTBUFFER    },
-  { "vDev_ROW_TESTROW"_Stz,       (const void *) vDev_ROW_TESTROW       },
-  { "vDev_ROW_ZERO"_Stz,          (const void *) vDev_ROW_ZERO          },
+
 
   { "vDev_TABLEPTN_DROPREAD"_Stz,   (const void *) vDev_TABLEPTN_DROPREAD   },
   { "vDev_TABLEPTN_GRABREAD"_Stz,   (const void *) vDev_TABLEPTN_GRABREAD   },
 
-  { "vDev_ALT_COL_PUSHSET"_Stz,   (const void *) vDev_ALT_COL_PUSHSET          },
-  { "vDev_ROW_COL_PUSHSET"_Stz,   (const void *) vDev_ROW_COL_PUSHSET          },
-  { "vDev_SRC_COL_PUSHSET"_Stz,   (const void *) vDev_SRC_COL_PUSHSET          },
-  
-  { "vDev_POT_USE_STREAMDEFOUT"_Stz, (const void *) vDev_POT_USE_STREAMDEFOUT       },
-  
-  { "vDev_REG_EOSMARKER_NEW"_Stz,          (const void *) vDev_REG_EOSMARKER_NEW      },
-  { "vDev_REG_INDEXDEF_ADDCOLUMN"_Stz,     (const void *) vDev_REG_INDEXDEF_ADDCOLUMN },
-  { "vDev_REG_INDEXDEF_DELETE"_Stz,        (const void *) vDev_REG_INDEXDEF_DELETE    },
-  { "vDev_REG_INDEXDEF_NEW"_Stz,           (const void *) vDev_REG_INDEXDEF_NEW       },
-  { "vDev_REG_INDEXTREE_NEW"_Stz,          (const void *) vDev_REG_INDEXTREE_NEW      },
+  { "vDev_ROW_COLS_TO_LOCALS"_Stz,  (const void *) vDev_ROW_COLS_TO_LOCALS  },
 
-  { "vREG_INDEXTREE_NULL"_Stz,             (const void *) vREG_INDEXTREE_NULL         },
-  { "vREG_INDEXTREE_PUSH"_Stz,             (const void *) vREG_INDEXTREE_PUSH         },
+  { "vDev_POT_USE_STREAMDEFOUT"_Stz, (const void *) vDev_POT_USE_STREAMDEFOUT       },
+
+  { "vDev_REG_EOSMARKER_NEW"_Stz,          (const void *) vDev_REG_EOSMARKER_NEW      },
+  { "vDev_RLU_INDEXDEF_ADDCOLUMN"_Stz,     (const void *) vDev_RLU_INDEXDEF_ADDCOLUMN },
+  { "vDev_RLU_INDEXDEF_DELETE"_Stz,        (const void *) vDev_RLU_INDEXDEF_DELETE    },
+  { "vDev_RLU_INDEXDEF_NEW"_Stz,           (const void *) vDev_RLU_INDEXDEF_NEW       },
+
+  { "vDev_RLU_INDEXTREE_NEW"_Stz,          (const void *) vDev_RLU_INDEXTREE_NEW      },
 
   { "vDev_REG_PTNSTREAM_CLOSE"_Stz,        (const void *) vDev_REG_PTNSTREAM_CLOSE    },
   { "vDev_REG_PTNSTREAM_DELETE"_Stz,       (const void *) vDev_REG_PTNSTREAM_DELETE   },
@@ -167,11 +152,10 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_REG_PTNSTREAM_OPEN"_Stz,         (const void *) vDev_REG_PTNSTREAM_OPEN     },
   { "vDev_REG_PTNSTREAM_READ"_Stz,         (const void *) vDev_REG_PTNSTREAM_READ     },
 
-  { "vDev_REG_SRC_STREAMDEFOUT_NEW"_Stz,   (const void *) vDev_REG_SRC_STREAMDEFOUT_NEW },
   { "vDev_REG_STREAMDEFOUT_NEW"_Stz,       (const void *) vDev_REG_STREAMDEFOUT_NEW },
   { "vDev_REG_STREAMDEFOUT_ADDCOLUMN"_Stz, (const void *) vDev_REG_STREAMDEFOUT_ADDCOLUMN },
   { "vDev_REG_STREAMDEF_STREAMDEFOUT"_Stz, (const void *) vDev_REG_STREAMDEF_STREAMDEFOUT },
-  
+
   { "vLib_ASSERT"_Stz,            (const void *) vLib_ASSERT            },
   { "vLib_BREAKPOINT"_Stz,        (const void *) vLib_BREAKPOINT        },
   { "iLib_DTE_NOW"_Stz,           (const void *) iLib_DTE_NOW           },
@@ -1000,7 +984,7 @@ void LogicCompiler::v_DynPreliminary(void)
   s16KB sReplaced;
 
   sReplaced.vSprint((Stz*)azFrag,m_pLogicUnit->iQueryFragment());
-  vTrace("After : %s\n"_Stz, sReplaced.azChar());
+  //vTrace("After : %s\n"_Stz, sReplaced.azChar());
 
   StrLib::vAppendString(&m_azSrcCrs,sReplaced.azChar());
   if (AM::bRLUTimer())
