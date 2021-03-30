@@ -25,6 +25,7 @@
 #include "Output.hpp"
 
 #include "Job.hpp"
+#include "MY.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -205,8 +206,10 @@ void Output::vPrintResult(void)
              *m_ixRowsSkipped);
   }
   else {
-    vTrace("\nsuccess: %lld rows fetched\n"_Stz,
-           *m_ixRowsProcessed);
+//    Task* pTask = MY::pTask();
+//    if (! pTask->bIsStart())
+      vTrace("\nsuccess: %lld rows fetched\n"_Stz,
+             *m_ixRowsProcessed);
   }
 
   m_ixRowsProcessed = 0;

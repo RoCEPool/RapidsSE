@@ -400,6 +400,7 @@ void Engine::vCallImmmediate(Task* pImmediateTask)
 {
   Task* pSaveTask = _pTask(PsxThd::pTlsGet(giTLS_TaskKey));
 
+  pImmediateTask->vIsImmediate(true);
   pImmediateTask->vSeedTask();
   
   pImmediateTask->vState(TS_EXECUTING);
@@ -454,6 +455,7 @@ void Engine::vCallStart(void)
   pJobTags->vReplace("<seedRun>"_Stz,"start_run"_Stz);
   
   Task* pStartTask = AM::pTaskNew(pJob);
+  pStartTask->vIsStart(true);
   pStartTask->vInitExeContext();
   LogicUnit* pLogicUnit = new LogicUnit(pStartTask);
 
