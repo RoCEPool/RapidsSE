@@ -398,7 +398,9 @@ antlrcpp::Any SqlPlanner::visitSetExpr(sqlParser::SetExprContext* pCtx)
   b1 bIsDistinct = (pCtx->all == nullptr);
 
   if (bIsDistinct) {
-    __NOT_IMPL("DISTINCT")
+    s256 sBuf;
+    sBuf.vCatSprint("%s DISTINCT"_Stz, pCtx->op->getText().c_str());
+    __NOT_IMPL2(sBuf.szStz())
   }
 
   QueryNode* pCorrespondingByList = nullptr;
@@ -407,14 +409,16 @@ antlrcpp::Any SqlPlanner::visitSetExpr(sqlParser::SetExprContext* pCtx)
     pCorrespondingByList = StringList::pCreate();
 
     // The vector of corresponding by list items
-    std::vector<sqlParser::CorrListItemContext*> xItemCtxVector = pCtx->corrClause()->corrList()->corrListItem();
+    if (pCtx->corrClause()->corrList()) {
+      std::vector<sqlParser::CorrListItemContext *> xItemCtxVector = pCtx->corrClause()->corrList()->corrListItem();
 
-    // Iterate the item contexts, extract the column names, create nodes to hold
-    // these string values and add them to the correspondingByList
-    for (sqlParser::CorrListItemContext* pItemCtx : xItemCtxVector) {
-      Text* pColumnName = pCleanId(pItemCtx->id);
-      QueryNode* pColumnNode = StringObject::pCreate(pColumnName);
-      pCorrespondingByList->vAppendChild(pColumnNode);
+      // Iterate the item contexts, extract the column names, create nodes to hold
+      // these string values and add them to the correspondingByList
+      for (sqlParser::CorrListItemContext *pItemCtx : xItemCtxVector) {
+        Text *pColumnName = pCleanId(pItemCtx->id);
+        QueryNode *pColumnNode = StringObject::pCreate(pColumnName);
+        pCorrespondingByList->vAppendChild(pColumnNode);
+      }
     }
   }
 

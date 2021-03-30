@@ -234,6 +234,42 @@ void QueryNode::vInsertAsParentOfChildren(QueryNode* pInsNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Inserts a child in the current node in place of the first child and        */
+/* makes that first child a child of the node being inserted.                 */
+/* e.g. if node A has children B and C and we are inserting node D then       */
+/* node A will have children D and C, and node D will have a child node B.    */
+/*----------------------------------------------------------------------------*/
+void QueryNode::vInsertAsParentOfChild1(QueryNode* pInsNode)
+{
+  ASSERT(m_pChildren);
+  ASSERT(m_pChildren->nItems() > 0);
+  ASSERT(pInsNode);
+
+  QueryNode* pChild1 = static_cast<QueryNode*>(m_pChildren->pPop());
+  pInsNode->vAppendChild(pChild1);
+  m_pChildren->vPush(pInsNode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Inserts a child in the current node in place of the second child and       */
+/* makes that second child a child of the node being inserted.                */
+/* e.g. if node A has children B and C and we are inserting node D then       */
+/* node A will have children B and D, and node D will have a child node C.    */
+/*----------------------------------------------------------------------------*/
+void QueryNode::vInsertAsParentOfChild2(QueryNode* pInsNode)
+{
+  ASSERT(m_pChildren);
+  ASSERT(m_pChildren->nItems() > 1);
+  ASSERT(pInsNode);
+
+  QueryNode* pChild1 = static_cast<QueryNode*>(m_pChildren->pPop());
+  QueryNode* pChild2 = static_cast<QueryNode*>(m_pChildren->pPop());
+  pInsNode->vAppendChild(pChild2);
+  m_pChildren->vPush(pInsNode);
+  m_pChildren->vPush(pChild1);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Removes a given child from the list. The removed node retains all of       */
 /* its children.                                                              */
 /*----------------------------------------------------------------------------*/
@@ -282,6 +318,32 @@ void QueryNode::vAppendProperty(QueryNode* pNode)
   }
 
   m_pProperties->vAppend(pNode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Removes and returns the property, otherwise returns nullptr                */
+/*----------------------------------------------------------------------------*/
+QueryNode* QueryNode::pRemoveProperty(Stz* szPropName)
+{
+  if (!m_pProperties) {
+    return nullptr;
+  }
+
+  QueryNode* pProp = nullptr;
+
+  PlanNodeIter* pPropIter = m_pProperties->pNewIter();
+  while (pPropIter->bHasNext()) {
+    PlanNode* pItem = pPropIter->pNext();
+
+    if (pItem->szName()->bEqual(szPropName)) {
+      pProp = static_cast<QueryNode*>(pItem);
+      break;
+    }
+  }
+  delete pPropIter;
+
+  m_pProperties->vRemove(pProp);
+  return pProp;
 }
 
 /*----------------------------------------------------------------------------*/

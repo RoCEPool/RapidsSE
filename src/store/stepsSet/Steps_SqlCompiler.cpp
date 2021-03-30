@@ -142,8 +142,6 @@ void Step::vSqlCompilerNameValidate(void)
    * Therefore the plan is modified in this stage.
    */
 
-  s48K sExplainBuf;
-
   PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
   Parser::RootNode* pPlanRoot = Parser::_pRootNode(pPlanOperand->pPlanNode());
   UNUSED(pPlanRoot);
@@ -175,9 +173,6 @@ void Step::vSqlCompilerNameValidate(void)
 
   // At this point all names in the graph should be fully resolved
   // i.e. they have catalog/schema/table names.
-
-  Parser::ShadowRoot::vExplain(pPlanRoot, sExplainBuf, 0);
-  vTrace("\n%s\n\n"_Stz, sExplainBuf.szStz());
 
   // TODO: eventually we want the received plan graph to be immutable,
   //       so we would send a different version. But for now we will just
@@ -318,6 +313,8 @@ void Step::vSqlCompilerSetOpValidate(void)
    * This stage of the plan is about looking for set operators (UNION,
    * INTERSECT, etc) and handling their CORRESPONDING BY list if applicable.
    * Then we can validate that the semantics of the set operation are valid.
+   * Each set operator should exist in a separate statement section, bounded
+   * by StatementMarkers.
    */
 
   s48K sExplainBuf;
@@ -350,6 +347,8 @@ void Step::vSqlCompilerSetOpValidate(void)
     goto L_Exit;
   }
 
+  Parser::ShadowRoot::vExplain(pPlanRoot, sExplainBuf, 0);
+  vTrace("\n%s\n\n"_Stz, sExplainBuf.szStz());
 
   // TODO: eventually we want the received plan graph to be immutable,
   //       so we would send a different version. But for now we will just

@@ -415,7 +415,7 @@ void NameValidator::vValidateColumns(PlanNode *pRootNode, QueryNode* pStartNode,
   ASSERT(pStartNode);
 
   // Walk the graph looking for ColumnRefs
-  auto fVisitor = [&pMetadataNode](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+  auto fVisitor = [&pMetadataNode, pStartNode](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
 
@@ -440,9 +440,20 @@ void NameValidator::vValidateColumns(PlanNode *pRootNode, QueryNode* pStartNode,
     }
 
     // We need to find this partially-qualified column in the plan graph metadata.
-    // Be careful, it might match against multiple tables.
-    PlanNodeList* pTableDefList = MetadataNode::pMatchColumnRef(pMetadataNode, pColumnRef);
+    // First we need to work which table it might be from by looking for TableRefs
+    // underneath the sql operator that contains this columnRef.
 
+    // Get the Sql operator by using the current path and the starting node
+    s256 sSqlOpPath;
+    sSqlOpPath.vCopyTill(sPath, ':');
+
+    QueryNode* pSqlOp = static_cast<QueryNode*>(GraphNav::pFind(sSqlOpPath.szStz(), pStartNode));
+    ASSERT(pSqlOp);
+    ASSERT(SqlOperator::bIsOfType(pSqlOp));
+
+    PlanNodeList* pTableDefList = pMatchingTableDefsFor(pColumnRef, pSqlOp, pRootNode, pMetadataNode);
+
+    // Be careful, it might match against multiple tables.
     if (pTableDefList->nItems() == 0) {
       delete pTableDefList;
       NameValidationException::vThrowUnknownColumn(szCatalogName, szSchemaName, szTableName, szColumnName);
@@ -469,6 +480,66 @@ void NameValidator::vValidateColumns(PlanNode *pRootNode, QueryNode* pStartNode,
 
   // Walk the /plan node, it's properties and its children
   GraphNav::bBoundedWalk(pStartNode, true, true, fVisitor, pRootNode);
+}
+
+//
+//
+/*----------------------------------------------------------------------------*/
+/* Return a list of TableDef nodes that are reachable from a given sql op     */
+/* and that contain a column as referenced by pColumnRef.                     */
+/*----------------------------------------------------------------------------*/
+PlanNodeList* NameValidator::pMatchingTableDefsFor(QueryNode* pColumnRef,
+                                                   QueryNode* pSqlOp,
+                                                   PlanNode*  pRootNode,
+                                                   QueryNode* pMetadataNode)
+{
+  // List of matching TableDefs to be returned
+  PlanNodeList* pTableDefList = new PlanNodeList();
+
+  // Lambda called for each node under SqlOp, to look for TableRefs.
+  auto fVisitor = [pColumnRef, pMetadataNode, &pTableDefList]
+      (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    if (!TableRef::bIsOfType(pNode)) {
+      return GraphNav::WALK_CONTINUE;
+    }
+
+    QueryNode* pTableRef = static_cast<QueryNode*>(pNode);
+    ASSERT(TableRef::bIsFullyQualified(pTableRef));
+
+    Stz* szCatalogName = ColumnRef::szCatalog(pColumnRef);
+    Stz* szSchemaName  = ColumnRef::szSchema(pColumnRef);
+    Stz* szTableName   = ColumnRef::szTable(pColumnRef);
+
+    if ( (szCatalogName == nullptr || szCatalogName->bSame(TableRef::szCatalog(pTableRef))) &&
+         (szSchemaName  == nullptr ||  szSchemaName->bSame(TableRef::szSchema(pTableRef)))  &&
+         (szTableName   == nullptr ||   szTableName->bSame(TableRef::szTable(pTableRef))) ) {
+
+      // This column partially or fully matches the name of this table. Get the
+      // table definition of this table from the metadata
+      QueryNode* pTableDef = MetadataNode::pTableDef(pMetadataNode,
+                                                     TableRef::szCatalog(pTableRef),
+                                                     TableRef::szSchema(pTableRef),
+                                                     TableRef::szTable(pTableRef));
+      ASSERT(pTableDef);
+
+      // Test if the column belongs to this table definition
+      QueryNode* pColumnDef = TableDef::pColumnDef(pTableDef, ColumnRef::szColumn(pColumnRef));
+      if (pColumnDef) {
+        // Add the table definition to the list
+        pTableDefList->vAppend(pTableDef);
+      }
+    }
+
+    // Keep looking, even if we found a matching TableRef - it might be an
+    // ambiguous column.
+    return GraphNav::WALK_CONTINUE;
+  };
+
+    // Walk the graph from pSqlOp looking for TableRefs
+  GraphNav::bBoundedWalk(pSqlOp, true, true, fVisitor, pRootNode);
+
+  return pTableDefList;
 }
 
 /*----------------------------------------------------------------------------*/

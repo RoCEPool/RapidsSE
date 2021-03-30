@@ -116,7 +116,7 @@ bool Backend::bTransliterate(String* sPipeline) {
   m_sPipeline = sPipeline;
 
 //#ifdef WITH_TRACE_Backend
-  vPrintPlanGraph(m_pPlanRoot);
+  //vPrintPlanGraph(m_pPlanRoot);
 //#endif
 
   char cStageStart   = 'A';
@@ -165,26 +165,26 @@ bool Backend::bTransliterate(String* sPipeline) {
   // check if any aggregation in previous stage
   char* sAggreg = m_sPipeline->azStr();
 
-  if (StrLib::bFind(&sAggreg, "aggreg")) {
-
-   // now append the aggreg as the super aggregate in the last stage (on origin)
-   s4K sAgg;
-   StrLib::vCopyTill(sAgg.azChar(), sAggreg, '|');
-
-    m_sPipeline->vCatSprint(
-        "  stage stage%c on origin :\n"
-        "    %s"
-        "    | output\n"
-        ""_Stz,
-        cStageCurrent, sAgg.azChar());
-  }
-  else {
+//  if (StrLib::bFind(&sAggreg, "aggreg")) {
+//
+//   // now append the aggreg as the super aggregate in the last stage (on origin)
+//   s4K sAgg;
+//   StrLib::vCopyTill(sAgg.azChar(), sAggreg, '|');
+//
+//    m_sPipeline->vCatSprint(
+//        "  stage stage%c on origin :\n"
+//        "    %s"
+//        "    | output\n"
+//        ""_Stz,
+//        cStageCurrent, sAgg.azChar());
+//  }
+//  else {
     m_sPipeline->vCatSprint(
         "  stage stage%c on origin :\n"
         "    output\n"
         ""_Stz,
         cStageCurrent);
-  }
+  //}
   m_sPipeline->vCatSprint(
       "    | sink\n"
       "    | stage%c\n"
@@ -345,18 +345,18 @@ void Backend::vAppendFilterOp(Backend* pBackend, QueryNode* pNode)
   String* sPipeline = pBackend->m_sPipeline;
 
   // Get the list of projected expressions from ProjectOp
-  QueryNode *pFilterExpr = FilterOp::pFilterExpr(pNode);
-  //QueryNode *pFilterExpr = FilterOp::pOrdinalFilterExpr(pNode, pBackend->m_pPlanRoot);
+  //QueryNode *pFilterExpr = FilterOp::pFilterExpr(pNode);
+  QueryNode *pOrdinalFilterExpr = FilterOp::pOrdinalFilterExpr(pNode, pBackend->m_pPlanRoot);
 
-  ASSERT(pFilterExpr);
+  ASSERT(pOrdinalFilterExpr);
 
   sPipeline->vCatSprint(
-      "    | filter 0 \""
+      "    | filter ordinal 0 \""
       ""_Stz);
 
   // Walk the expr node plan graph
-  GraphNav::bGlobalWalkBottomUp(pFilterExpr, false, true, vVisitorExpr, (void *) sPipeline);
-  //delete pFilterExpr;
+  GraphNav::bGlobalWalkBottomUp(pOrdinalFilterExpr, false, true, vVisitorExpr, (void *) sPipeline);
+  delete pOrdinalFilterExpr;
 
   sPipeline->vCatSprint(" \" \n"_Stz);
 }
@@ -372,18 +372,21 @@ void Backend::vAppendProjectOp(Backend* pBackend, QueryNode* pNode)
   String* sPipeline = pBackend->m_sPipeline;
 
   // Get the list of projected expressions from ProjectOp
-  QueryNode *pProjectedColumns = ProjectOp::pProjectedColumns(pNode);
-  ASSERT(pProjectedColumns);
+  //QueryNode *pProjectedColumns = ProjectOp::pProjectedColumns(pNode);
+  //ASSERT(pProjectedColumns);
+
+  QueryNode *pOrdinalProjectedColumns = ProjectOp::pOrdinalProjectedColumns(pNode, pBackend->m_pPlanRoot);
+  ASSERT(pOrdinalProjectedColumns);
 
   // Iterate each projected expression
-  if (pProjectedColumns->bHasChildren()) {
+  if (pOrdinalProjectedColumns->bHasChildren()) {
 
     sPipeline->vCatSprint(
-        "    | project 0 \""
+        "    | project ordinal 0 \""
         ""_Stz);
 
     // get a plan node iterator
-    PlanNodeIter *pIter = pProjectedColumns->pNewChildrenIter();
+    PlanNodeIter *pIter = pOrdinalProjectedColumns->pNewChildrenIter();
 
     while (pIter->bHasNext()) {
 
@@ -403,6 +406,7 @@ void Backend::vAppendProjectOp(Backend* pBackend, QueryNode* pNode)
     delete pIter;
 
   }
+  delete pOrdinalProjectedColumns;
 
   sPipeline->vCatSprint(" \" \n"_Stz);
 
@@ -466,17 +470,13 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // columnRef
 
-  //if (ColumnOrdinal::bIsOfType(pExprNode)) {
-  //  QueryNode* pColumnOrdinal = static_cast<QueryNode*>(pExprNode);
-
-    if (ColumnRef::bIsOfType(pExprNode)) {
-      QueryNode *pColumnRef = static_cast<QueryNode *>(pExprNode);
+  if (ColumnOrdinal::bIsOfType(pExprNode)) {
+    QueryNode* pColumnOrdinal = static_cast<QueryNode*>(pExprNode);
 
       sPipeline->vCatSprint(
-        " %s"
+        " $%lld"
         ""_Stz,
-        //ColumnOrdinal::iOrdinal(pColumnOrdinal));
-        ColumnRef::szColumn(pColumnRef));
+        ColumnOrdinal::iOrdinal(pColumnOrdinal));
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

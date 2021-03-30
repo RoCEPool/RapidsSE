@@ -79,7 +79,9 @@ LogicUnit::LogicUnit(Task* pTask)
   m_iDebugFlag = 0;
 
   m_xpNow = new Now;
-  
+
+  m_bCompilerToExit = false;
+
   m_iCounter0 = 0;
   m_iCounter1 = 0;
   m_iCounter2 = 0;
