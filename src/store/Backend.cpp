@@ -116,7 +116,7 @@ bool Backend::bTransliterate(String* sPipeline) {
   m_sPipeline = sPipeline;
 
 //#ifdef WITH_TRACE_Backend
-  vPrintPlanGraph(m_pPlanRoot);
+  //vPrintPlanGraph(m_pPlanRoot);
 //#endif
 
   char cStageStart   = 'A';
@@ -372,18 +372,21 @@ void Backend::vAppendProjectOp(Backend* pBackend, QueryNode* pNode)
   String* sPipeline = pBackend->m_sPipeline;
 
   // Get the list of projected expressions from ProjectOp
-  QueryNode *pProjectedColumns = ProjectOp::pProjectedColumns(pNode);
-  ASSERT(pProjectedColumns);
+  //QueryNode *pProjectedColumns = ProjectOp::pProjectedColumns(pNode);
+  //ASSERT(pProjectedColumns);
+
+  QueryNode *pOrdinalProjectedColumns = ProjectOp::pOrdinalProjectedColumns(pNode, pBackend->m_pPlanRoot);
+  ASSERT(pOrdinalProjectedColumns);
 
   // Iterate each projected expression
-  if (pProjectedColumns->bHasChildren()) {
+  if (pOrdinalProjectedColumns->bHasChildren()) {
 
     sPipeline->vCatSprint(
-        "    | project 0 \""
+        "    | project ordinal 0 \""
         ""_Stz);
 
     // get a plan node iterator
-    PlanNodeIter *pIter = pProjectedColumns->pNewChildrenIter();
+    PlanNodeIter *pIter = pOrdinalProjectedColumns->pNewChildrenIter();
 
     while (pIter->bHasNext()) {
 
@@ -466,17 +469,17 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // columnRef
 
-  //if (ColumnOrdinal::bIsOfType(pExprNode)) {
-  //  QueryNode* pColumnOrdinal = static_cast<QueryNode*>(pExprNode);
+  if (ColumnOrdinal::bIsOfType(pExprNode)) {
+    QueryNode* pColumnOrdinal = static_cast<QueryNode*>(pExprNode);
 
-    if (ColumnRef::bIsOfType(pExprNode)) {
-      QueryNode *pColumnRef = static_cast<QueryNode *>(pExprNode);
+    //if (ColumnRef::bIsOfType(pExprNode)) {
+    //  QueryNode *pColumnRef = static_cast<QueryNode *>(pExprNode);
 
       sPipeline->vCatSprint(
-        " %s"
+        " $%lld"
         ""_Stz,
-        //ColumnOrdinal::iOrdinal(pColumnOrdinal));
-        ColumnRef::szColumn(pColumnRef));
+        ColumnOrdinal::iOrdinal(pColumnOrdinal));
+        //ColumnRef::szColumn(pColumnRef));
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

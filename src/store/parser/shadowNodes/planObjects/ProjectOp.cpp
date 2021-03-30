@@ -219,11 +219,13 @@ QueryNode* ProjectOp::pOrdinalProjectedColumns(QueryNode* pNode, PlanNode* pRoot
   ASSERT(pColExprList);
   ASSERT(pColExprList->nItems() > 0);
 
+  QueryNode* pProjectedColumns = ProjectOp::pProjectedColumns(pNode);
+
   // Create a container node, but without any children
-  QueryNode* pProjectedColumns = pNode->pDeepCopy(new PlanNodeList());
+  QueryNode* pOrdinalProjectedColumns = ProjectOp::pProjectedColumns(pNode)->pDeepCopy(new PlanNodeList());
 
   // Iterate over each of the ProjectedColumn children of pNode
-  PlanNodeIter* pIter = pNode->pNewChildrenIter();
+  PlanNodeIter* pIter = pProjectedColumns->pNewChildrenIter();
 
   while (pIter->bHasNext()) {
     QueryNode* pProjectedColumn = static_cast<QueryNode*>(pIter->pNext());
@@ -231,7 +233,7 @@ QueryNode* ProjectOp::pOrdinalProjectedColumns(QueryNode* pNode, PlanNode* pRoot
 
     // Convert the ProjectedColumn from a symbolic representation to an ordinal representation
     QueryNode* pOrdinalProjectedColumn = ProjectedColumn::pSymbolicToOrdinal(pProjectedColumn, pColExprList, pRootNode);
-    pProjectedColumns->vAppendChild(pOrdinalProjectedColumn);
+    pOrdinalProjectedColumns->vAppendChild(pOrdinalProjectedColumn);
   }
 
   delete pIter;
@@ -239,7 +241,7 @@ QueryNode* ProjectOp::pOrdinalProjectedColumns(QueryNode* pNode, PlanNode* pRoot
   pColExprList->vDeleteAll();
   delete pColExprList;
 
-  return pProjectedColumns;
+  return pOrdinalProjectedColumns;
 }
 
 /*----------------------------------------------------------------------------*/
