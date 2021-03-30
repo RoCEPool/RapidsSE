@@ -165,26 +165,26 @@ bool Backend::bTransliterate(String* sPipeline) {
   // check if any aggregation in previous stage
   char* sAggreg = m_sPipeline->azStr();
 
-  if (StrLib::bFind(&sAggreg, "aggreg")) {
-
-   // now append the aggreg as the super aggregate in the last stage (on origin)
-   s4K sAgg;
-   StrLib::vCopyTill(sAgg.azChar(), sAggreg, '|');
-
-    m_sPipeline->vCatSprint(
-        "  stage stage%c on origin :\n"
-        "    %s"
-        "    | output\n"
-        ""_Stz,
-        cStageCurrent, sAgg.azChar());
-  }
-  else {
+//  if (StrLib::bFind(&sAggreg, "aggreg")) {
+//
+//   // now append the aggreg as the super aggregate in the last stage (on origin)
+//   s4K sAgg;
+//   StrLib::vCopyTill(sAgg.azChar(), sAggreg, '|');
+//
+//    m_sPipeline->vCatSprint(
+//        "  stage stage%c on origin :\n"
+//        "    %s"
+//        "    | output\n"
+//        ""_Stz,
+//        cStageCurrent, sAgg.azChar());
+//  }
+//  else {
     m_sPipeline->vCatSprint(
         "  stage stage%c on origin :\n"
         "    output\n"
         ""_Stz,
         cStageCurrent);
-  }
+  //}
   m_sPipeline->vCatSprint(
       "    | sink\n"
       "    | stage%c\n"
