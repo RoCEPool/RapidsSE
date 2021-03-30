@@ -4,6 +4,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "PlanNode.hpp"
+
 namespace STORE
 {
   class SeApi;
@@ -11,7 +13,6 @@ namespace STORE
 
 namespace Parser
 {
-  class PlanNode;
   class QueryNode;
 
   class SetOpValidator
@@ -35,6 +36,11 @@ namespace Parser
     static void vValidateSetOps(PlanNode* pRootNode);
 
   private:
+
+    static void vSimplifySetOp(QueryNode* pStatementMarker, PlanNode* pRootNode);
+    static void vDetermineCommonColumns(QueryNode* pSetOp, PlanNode* pRootNode);
+    static void vConvertCorrByToProjectOp(QueryNode* pSetOp, PlanNode* pRootNode);
+    static QueryNode* pFindProjectedColumn(PlanNodeIter* pProjColumnIter, Stz* szColumnName);
 
   };
 }

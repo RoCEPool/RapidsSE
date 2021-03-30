@@ -146,8 +146,11 @@ namespace Parser
     // Returning true out of this function will return pNode and abort the search.
     // Returning false out of this function will continue the search.
     // If no node matching the condition is found then a nullptr is returned.
-    static PlanNode* pSearch(PlanNode* pStartNode, b1 bSearchProperties, b1 bSearchChildren,
-                             std::function<b1(PlanNode*, void*)> fCondition, void* pvArg);
+    static PlanNode* pGlobalSearch(PlanNode* pStartNode, b1 bSearchProperties, b1 bSearchChildren,
+                                   std::function<b1(PlanNode*, void*)> fCondition, void* pvArg);
+
+    static PlanNode* pBoundedSearch(PlanNode* pStartNode, b1 bSearchProperties, b1 bSearchChildren,
+                                    std::function<b1(PlanNode*, void*)> fCondition, void* pvArg);
 
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

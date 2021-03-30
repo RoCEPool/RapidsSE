@@ -13,6 +13,11 @@
   return nullptr; \
 EndDefine
 
+#define __NOT_IMPL2(FEATURE) \
+  SyntaxException::vThrowNotImplemented(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), FEATURE ); \
+  return nullptr; \
+EndDefine
+
 namespace Parser
 {
   class SqlPlanner : public Object, public sqlBaseVisitor

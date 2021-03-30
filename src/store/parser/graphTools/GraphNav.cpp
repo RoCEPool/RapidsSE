@@ -817,16 +817,16 @@ PlanNode* GraphNav::pFindChild(Stz* szChildName, PlanNode* pNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Search for a node that matches a given condition. If found then the node*  */
-/* is returned.                                                               */
+/* Search for a node that matches a given condition. If found then the node^  */
+/* is returned. Searches the entire graph from the starting node.             */
 /* The condition function is a lambda/function with the following definition: */
 /*   b1 bCondition(PlanNode* pNode, void* pvArg);                             */
 /* Returning true out of this function will return pNode and abort the search.*/
 /* Returning false out of this function will continue the search.             */
 /* If no node matching the condition is found then a nullptr is returned.     */
 /*----------------------------------------------------------------------------*/
-PlanNode* GraphNav::pSearch(PlanNode* pStartNode, b1 bSearchProperties, b1 bSearchChildren,
-                         std::function<b1(PlanNode*, void*)> fCondition, void* pvArg)
+PlanNode* GraphNav::pGlobalSearch(PlanNode* pStartNode, b1 bSearchProperties, b1 bSearchChildren,
+                                  std::function<b1(PlanNode*, void*)> fCondition, void* pvArg)
 {
   ASSERT(pStartNode);
 
@@ -845,6 +845,40 @@ PlanNode* GraphNav::pSearch(PlanNode* pStartNode, b1 bSearchProperties, b1 bSear
 
   // Walk the graph then return the result, if any
   bGlobalWalk(pStartNode, bSearchProperties, bSearchChildren, fVisitor, pvArg);
+
+  return pResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Search for a node that matches a given condition. If found then the node^  */
+/* is returned. Searches this plan segment only (until a StatementMarker      */
+/* is hit).                                                                   */
+/* The condition function is a lambda/function with the following definition: */
+/*   b1 bCondition(PlanNode* pNode, void* pvArg);                             */
+/* Returning true out of this function will return pNode and abort the search.*/
+/* Returning false out of this function will continue the search.             */
+/* If no node matching the condition is found then a nullptr is returned.     */
+/*----------------------------------------------------------------------------*/
+PlanNode* GraphNav::pBoundedSearch(PlanNode* pStartNode, b1 bSearchProperties, b1 bSearchChildren,
+                                  std::function<b1(PlanNode*, void*)> fCondition, void* pvArg)
+{
+  ASSERT(pStartNode);
+
+  PlanNode* pResult = nullptr;
+
+  auto fVisitor = [&pResult, fCondition](PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
+
+    // test the condition
+    if (fCondition(pNode, pvArg)) {
+      pResult = pNode;
+      return WALK_ABORT;
+    }
+
+    return WALK_CONTINUE;
+  };
+
+  // Walk the graph then return the result, if any
+  bBoundedWalk(pStartNode, bSearchProperties, bSearchChildren, fVisitor, pvArg);
 
   return pResult;
 }

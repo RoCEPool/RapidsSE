@@ -52,6 +52,9 @@ QueryNode* SetOp::pCreate(b1 bIsDistinct, QueryNode* pCorrelatedByList)
 
   pSetOp->vAppendProperty(pIsDistinct);
   if (pCorrelatedByList) {
+    pCorrelatedByList->vSetName(C_CORRESPONDING_PROP);
+    ASSERT(pCorrelatedByList->szType()->bEqual(C_CORRESPONDING_DEFN));
+
     pSetOp->vAppendProperty(pCorrelatedByList);
   }
 
@@ -124,6 +127,8 @@ b1 SetOp::bIsExactType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 b1 SetOp::bIsDistinct(QueryNode* pNode)
 {
+  ASSERT(bIsOfType(pNode));
+
   QueryNode* pIsDistinctNode =
       static_cast<QueryNode*>(GraphNav::pFindProperty(const_cast<Stz *>(C_ISDISTINCT_PROP), pNode));
 
@@ -135,13 +140,27 @@ b1 SetOp::bIsDistinct(QueryNode* pNode)
 /*----------------------------------------------------------------------------*/
 QueryNode* SetOp::pCorrespondingByList(QueryNode* pNode)
 {
+  ASSERT(bIsOfType(pNode));
+
   QueryNode* pCorrespondingByList =
       static_cast<QueryNode*>(GraphNav::pFindProperty(const_cast<Stz *>(C_CORRESPONDING_PROP), pNode));
 
   return pCorrespondingByList;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Remove and null the CORRESPONDING BY list                                  */
+/*----------------------------------------------------------------------------*/
+void SetOp::vRemoveCorrespondingByList(QueryNode* pNode)
+{
+  ASSERT(bIsOfType(pNode));
 
+  QueryNode* pProp = pNode->pRemoveProperty(C_CORRESPONDING_PROP);
+
+  if (pProp) {
+    delete pProp;
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* Return a list of ProjectedColumns that represent the column expressions      */
@@ -150,7 +169,7 @@ QueryNode* SetOp::pCorrespondingByList(QueryNode* pNode)
 PlanNodeList* SetOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
 {
   _static_
-      ASSERT(bIsOfType(pNode));
+  ASSERT(bIsOfType(pNode));
   ASSERT(pRootNode);
   ASSERT(pNode->nChildren() == 2);
 

@@ -37,6 +37,9 @@ namespace Parser
     // This node may be null or empty.
     static QueryNode* pCorrespondingByList(QueryNode* pNode);
 
+    // Remove and null the CORRESPONDING BY list
+    static void vRemoveCorrespondingByList(QueryNode* pNode);
+
     static PlanNodeList* pColumnExprs(QueryNode* pNode, PlanNode* pRootNode);
 
 

@@ -30,7 +30,8 @@ Stz* ProjectOp::C_PROJECTEDCOLUMNS_DEFN = "/__root__/definitions/object/list/pro
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* Helper function to create ProjectOp nodes.                                 */
+/* Helper function to create ProjectOp nodes. Must be passed a list of        */
+/* ProjectedColumn objects                                                    */
 /*----------------------------------------------------------------------------*/
 QueryNode* ProjectOp::pCreate(QueryNodeList* pSelectItems)
 {
