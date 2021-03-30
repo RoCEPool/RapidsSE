@@ -1618,11 +1618,11 @@ void Engine::vStartSystem(void) {
   vCreateGridOfNodes();
 
   s32 szNodeName;
-  if (gxCmdLineArgs.m_xSysArgs.m_nBootNodes > 1)
+  //if (gxCmdLineArgs.m_xSysArgs.m_nBootNodes > 1)
     szNodeName = gxCmdLineArgs.m_xSysArgs.m_sNodeName;
-  else
-    szNodeName.vSprint("%s:%lld"_Stz, gxCmdLineArgs.m_xSysArgs.m_xBootNode[0].m_sIPAddress.azChar(),
-                     gxCmdLineArgs.m_xSysArgs.m_xBootNode[0].m_iPortNo);
+  //else
+    //szNodeName.vSprint("%s:%lld"_Stz, gxCmdLineArgs.m_xSysArgs.m_xBootNode[0].m_sIPAddress.azChar(),
+                     //gxCmdLineArgs.m_xSysArgs.m_xBootNode[0].m_iPortNo);
 
   Node* pThisNode = AM::pGrid()->pFindNode(szNodeName); //gxCmdLineArgs.m_xSysArgs.m_sNodeName);
   if (! pThisNode)
@@ -1807,11 +1807,10 @@ void Engine::vCreateGridOfNodes(void)
 
       iNodeNo = (ChecksumValue.iGetBernstein() + gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_iPortNo);
 
-      szNodeName.vSprint("%s:%lld"_Stz, gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress.azChar(),
-                         gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_iPortNo);
+      //szNodeName.vSprint("%s:%lld"_Stz, gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sIPAddress.azChar(),
+      //                   gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_iPortNo);
+      szNodeName = gxCmdLineArgs.m_xSysArgs.m_xBootNode[i_Node].m_sNodeName;
    }
-
-
 
 
     Node* pNode = new Node(iNodeNo, //i_Node +  abs((i2)Hardware::iReadTscp()),

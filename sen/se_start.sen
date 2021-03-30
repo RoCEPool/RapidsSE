@@ -89,26 +89,26 @@
   then
 
 
-  // What if we start the cluster here, then we can execute any DDL
-  // We can use the same pipe command to start the cluster, because
-  // in the new model, it's only one node to start
-  //args.nodeName .
-  args.nodeName "NODE0" str.same if
-  //"START CLUSTER OF 1" .
-  "
-   bootCluster
-  "
-  locals| sStmt |
-
-  "" sStmt api::executeRequest
- then
-
-
   // spawn event demon
   "" false eventDemonPipeline api::spawnDemon not if
     "Error Code %v" .printf
   then
-  
+
+  // What if we start the cluster here?
+  // We can use the same pipe command to start the cluster, because
+  // in the new model, it's only one node to start
+  // WHY IT DOESN'T WORK ANYMORE
+
+  //args.nodeName .
+  //"START CLUSTER OF 1" .
+
+  //args.nodeName "NODE0" str.same if
+  //"
+  // bootCluster
+  //"
+  //locals| sStmt |
+  //"" sStmt api::executeRequest
+  //then
 
   "end start_run" .verbose
 
