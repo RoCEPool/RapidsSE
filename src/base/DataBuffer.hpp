@@ -15,7 +15,12 @@ namespace BASE
     Birth  m_oWhenNewed;    // when was this buffer created?
     b8     m_bIsPermanent;  // is buffer permanent ?
   
-    PadWord m__PadToCacheLine[6];
+    Table*     m_pTable;
+    StreamDef* m_pStreamDef;
+
+    tXN m_tTxnNo; // transaction number
+
+    PadWord m__PadToCacheLine[3];
 
   public:
     DataBuffer(eCN eClass, bool bIsPermanent, i8 iLogCtl=C_LOG);
@@ -23,6 +28,15 @@ namespace BASE
 
     static DataBuffer* pRefdDataBuffer(Rrf& xRef);
     static DataBuffer* pToDataBuffer(void* aAddr);
+
+  void       vStreamDef(StreamDef* pStreamDef);
+  StreamDef* pStreamDef(void);
+
+  Table*     pTable(void);
+  void       vTable(Table* pTable);
+
+  tXN        tTxnNo(void);
+  void       vTxnNo(tXN tTxnNo);
 
     i8          iAgeSec(void);
 

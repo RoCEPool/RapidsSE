@@ -131,6 +131,14 @@ b1 GeExpr::bIsOfType(PlanNode *pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely the same as its definition     */
+/*----------------------------------------------------------------------------*/
+b1 GeExpr::bIsExactType(PlanNode *pNode)
+{
+  return ShadowNode::bIsExactType(pNode, C_GE_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation.                    */
 /* A returned value of CT_NONE means that it is not supported or invalid.     */
 /*----------------------------------------------------------------------------*/

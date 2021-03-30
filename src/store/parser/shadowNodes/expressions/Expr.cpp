@@ -13,7 +13,7 @@
 #include "ColumnWildcard.hpp"
 #include "ColumnOrdinal.hpp"
 #include "OperatorExpr.hpp"
-#include "ProjectedExpr.hpp"
+#include "ProjectedColumn.hpp"
 #include "AdditionExpr.hpp"
 #include "MultiplicationExpr.hpp"
 #include "AndExpr.hpp"
@@ -77,6 +77,14 @@ b1 Expr::bIsOfType(PlanNode *pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely the same as its definition     */
+/*----------------------------------------------------------------------------*/
+b1 Expr::bIsExactType(PlanNode *pNode)
+{
+  return ShadowNode::bIsExactType(pNode, C_EXPR_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation                     */
 /*----------------------------------------------------------------------------*/
 eCT Expr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
@@ -98,9 +106,10 @@ eCT Expr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
 
 /*----------------------------------------------------------------------------*/
 /* Returns true if this expression (and therefore any subexpression elements  */
-/* it contains) is an aggregate expression                                    */
+/* it contains) contains an aggregate expression. It may also contain non-    */
+/* aggregated terms too.                                                      */
 /*----------------------------------------------------------------------------*/
-b1 Expr::bIsAnAggregate(PlanNode *pNode)
+b1 Expr::bContainsAnAggregate(PlanNode *pNode)
 {
   ASSERT(bIsOfType(pNode));
 
@@ -117,9 +126,75 @@ b1 Expr::bIsAnAggregate(PlanNode *pNode)
     return GraphNav::WALK_CONTINUE;
   };
 
-  GraphNav::bWalk(pNode, false, true, fVisitor, nullptr);
+  GraphNav::bBoundedWalk(pNode, false, true, fVisitor, nullptr);
 
   return bIsAgg;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if this expression (and any subexpression elements it contains)*/
+/* has a ColumnRef that is not part of an aggregation. If true, this is not to */
+/* say that this expression tree doesn't contain aggregations, it could, but  */
+/* it may also contain non-aggregated ColumnRefs too. e.g. the expression     */
+/* "col1 + SUM(col2)" contains both an aggregate term and a non-aggregated    */
+/* ColumnRef.                                                                 */
+/*----------------------------------------------------------------------------*/
+b1 Expr::bContainsNonaggregatedColumnRefs(PlanNode *pNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  b1 bHasNonAggColumnRef = false;
+
+  // Walk the graph, looking at the children only and return if any of them
+  // are aggregate expressions.
+  auto fVisitor = [&bHasNonAggColumnRef](PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
+
+    if (AggregateExpr::bIsOfType(pNode)) {
+      return GraphNav::WALK_SKIP_SUBTREE;
+    }
+
+    if (ColumnRef::bIsOfType(pNode)) {
+      bHasNonAggColumnRef = true;
+      return GraphNav::WALK_ABORT;
+    }
+
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  GraphNav::bBoundedWalk(pNode, false, true, fVisitor, nullptr);
+
+  return bHasNonAggColumnRef;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if this expression tree only comprises literals and operators.*/
+/* i.e., returns false if a ColumnRef or ColumnOrdinal is encountered.        */
+/*----------------------------------------------------------------------------*/
+b1 Expr::bIsLiteral(PlanNode *pNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  b1 bIsLit = true;
+
+  // Walk the graph, looking at the children only and return if any of them
+  // are ColumnRefs or ColumnOrdinals expressions.
+  auto fVisitor = [&bIsLit](PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
+
+    if (    ColumnRef::bIsOfType(pNode) ||
+        ColumnOrdinal::bIsOfType(pNode)) {
+      bIsLit = false;
+      return GraphNav::WALK_ABORT;
+    }
+
+    // Should not encounter column wildcards
+    ASSERT(!ColumnWildcard::bIsOfType(pNode));
+
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  GraphNav::bBoundedWalk(pNode, false, true, fVisitor, nullptr);
+
+  return bIsLit;
 }
 
 
@@ -189,7 +264,7 @@ void Expr::vValidateResultType(QueryNode* pExprNode, PlanNode* pRootNode)
 /* The returned QueryNode must be freed. Column ordinals are 1-based.         */
 /*----------------------------------------------------------------------------*/
 QueryNode* Expr::pSymbolicToOrdinal(QueryNode*    pSymbolicExpr,
-                                    PlanNodeList* pProjectedExprList,
+                                    PlanNodeList* pColumnExprList,
                                     PlanNode*     pRootNode)
 {
   ASSERT(bIsOfType(pSymbolicExpr));
@@ -210,12 +285,12 @@ QueryNode* Expr::pSymbolicToOrdinal(QueryNode*    pSymbolicExpr,
 
   // First we need to check if any of the columns in the columnExprList
   // exactly match our symbolic expression.
-  PlanNodeIter* pIter = pProjectedExprList->pNewIter();
+  PlanNodeIter* pIter = pColumnExprList->pNewIter();
   i8 iOrdinal = 1;
 
   while (pIter->bHasNext()) {
-    QueryNode* pProjectedExpr = static_cast<QueryNode*>(pIter->pNext());
-    QueryNode* pColExpr = ProjectedExpr::pExprNode(pProjectedExpr);
+    QueryNode* pProjectedColumn = static_cast<QueryNode*>(pIter->pNext());
+    QueryNode* pColExpr = ProjectedColumn::pExprNode(pProjectedColumn);
 
 //    s2K sBuf1;
 //    s2K sBuf2;
@@ -244,6 +319,7 @@ QueryNode* Expr::pSymbolicToOrdinal(QueryNode*    pSymbolicExpr,
   if (pSymbolicExpr->nChildren() == 0) {
     // Duplicate this expression and return it
     pOrdinalExpr = pSymbolicExpr->pDeepCopy();
+    return pOrdinalExpr;
   }
 
   // This symbolic expr has children. We will need to try to convert all children
@@ -260,7 +336,7 @@ QueryNode* Expr::pSymbolicToOrdinal(QueryNode*    pSymbolicExpr,
 
     // Convert the child from symbolic to ordinal. If not, this will
     // duplicate the child expression anyway. Add it to a list of such children.
-    QueryNode* pChildOrdinalExpr  = pSymbolicToOrdinal(pChildSymbolicExpr, pProjectedExprList, pRootNode);
+    QueryNode* pChildOrdinalExpr  = pSymbolicToOrdinal(pChildSymbolicExpr, pColumnExprList, pRootNode);
     pOrdinalChildren->vAppend(pChildOrdinalExpr);
   }
   delete pIter;
@@ -374,6 +450,43 @@ b1 Expr::bIsSymbolicallyEqual(QueryNode* pExpr1, QueryNode* pExpr2)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Compare two expression trees symbolically and return true if               */
+/* pSuperExpr is equal to, or a superset of, pSubExpr.                        */
+/*----------------------------------------------------------------------------*/
+b1 Expr::bIsEqualOrSupersetOf(QueryNode* pSuperExpr, QueryNode* pSubExpr)
+{
+  ASSERT(pSuperExpr);
+  ASSERT(pSubExpr);
+  ASSERT(bIsOfType(pSuperExpr));
+  ASSERT(bIsOfType(pSubExpr));
+
+  // Check if the two expression trees are equal
+  if (bIsSymbolicallyEqual(pSuperExpr, pSubExpr))   return true;
+
+  // Expressions are not equal at this point but may be equal in a child
+  // of pSuperExpr.
+
+  // Walk the children of pSuperExpr and test again
+  PlanNodeIter* pIter = pSuperExpr->pNewChildrenIter();
+  while (pIter->bHasNext()) {
+    QueryNode* pChildExpr = static_cast<QueryNode*>(pIter->pNext());
+
+    // Recurse this function
+    if (bIsEqualOrSupersetOf(pChildExpr, pSubExpr)) {
+      // We got a match, no need to keep checking
+      return true;
+    }
+
+    // try the next child
+  }
+
+  // Couldn't find a match
+  delete pIter;
+  return false;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* Returns true if the expression does not contain any column references.     */
 /* All expressions are relative column ordinals, operators or literals only.  */
 /*----------------------------------------------------------------------------*/
@@ -396,7 +509,7 @@ b1 Expr::bIsOrdinal(QueryNode* pExpr)
     return GraphNav::WALK_CONTINUE;
   };
 
-  GraphNav::bWalk(pExpr, fVisitor, nullptr);
+  GraphNav::bBoundedWalk(pExpr, fVisitor, nullptr);
 
   return bIsOrdinal;
 }

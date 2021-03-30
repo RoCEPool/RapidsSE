@@ -46,6 +46,7 @@ namespace STORE
   
     static void vAddSteps_DdlLock(void);
     static void vAddSteps_Debug(void);
+    static void vAddSteps_DevSrcRow(void);
     static void vAddSteps_Dic(void);
     static void vAddSteps_DicLock(void);
     static void vAddSteps_Dir(void);
@@ -147,7 +148,9 @@ namespace STORE
     static void vAddSteps_SeekOffsets(void);
     static void vAddSteps_Sen(void);
     static void vAddSteps_SenCompiler(void);
+    static void vAddSteps_SendNode(void);
     static void vAddSteps_Session(void);
+    static void vAddSteps_ShardDef(void);
     static void vAddSteps_Shell(void);
     static void vAddSteps_Socket(void);
     static void vAddSteps_SqlCompiler(void);

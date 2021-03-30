@@ -324,7 +324,7 @@ eEC Session::eInitaliseSession(Stz* szCatalogName, Stz* szSchemaName)
   //fprintf(stderr,"eInit A\n");
   
   // first discard whatever is there on the DicStack
-  for (i8 iCount = m_oDicStack.iCount(); iCount; iCount--)
+  for (i8 iCount = m_oDicStack.nItems(); iCount; iCount--)
     m_oDicStack.vDiscard();
   
   //fprintf(stderr,"eInit B\n");

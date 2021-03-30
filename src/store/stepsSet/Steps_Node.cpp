@@ -13,6 +13,7 @@
 #include "Job.hpp"
 
 #include "Socket.hpp" //?
+#include "LogicUnit.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -21,6 +22,10 @@ void Step::vAddSteps_Node(void)
 {
   vAddStep("node::new"_Stz,        &Step::vNodeNew);
   
+  vAddStep("Node[]"_Stz,           &Step::vNodeGet);
+  vAddStep("Node[].get"_Stz,       &Step::vNodeGet);
+  vAddStep("Node[].set"_Stz,       &Step::vNodeSet);
+
   vAddStep("node.forget"_Stz,      &Step::vNodeForget);
   vAddStep("node.IP"_Stz,          &Step::vNodeIP);
   vAddStep("node.isThisNode"_Stz,  &Step::vNodeIsThisNode);
@@ -111,6 +116,17 @@ void Step::vNodeForget(void)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* Node[].get -- get Node[]                                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vNodeGet(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushPtr(*( m_pJob->pLogicUnit_job() )->m_xpNode);
+
+  EXIT();
+}
 /*----------------------------------------------------------------------------*/
 /* node.IP -- push IP of node                                                 */
 /*----------------------------------------------------------------------------*/
@@ -268,6 +284,22 @@ void Step::vNodeSendSocketFetch(void)
   
   m_pDataStack->vPushPtr(pSocket);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Node[].set -- set Node[]                                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vNodeSet(void)
+{
+  ENTRY();
+  
+  Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
+  
+  ASSERT(! pNode || ( m_pJob->pLogicUnit_job() )->m_xpNode.bIsNull());
+  
+  ( m_pJob->pLogicUnit_job() )->m_xpNode = pNode;
+
   EXIT();
 }
 

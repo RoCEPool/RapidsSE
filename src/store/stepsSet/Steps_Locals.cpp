@@ -246,6 +246,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("Node[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Node[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("Operand[]"_Stz)) {
     pCurrentWord->vEncodeCall("Operand[].set"_Stz);
     EXIT();
@@ -291,6 +296,16 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("Register1[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Register1[].set"_Stz);
+    EXIT();
+    return;
+  }
+  else if (szTerm->bSame("Register2[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Register2[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("Row[]"_Stz)) {
     pCurrentWord->vEncodeCall("Row[].set"_Stz);
     EXIT();
@@ -298,6 +313,21 @@ void Step::vLocalsTo(void)
   }
   else if (szTerm->bSame("RowOnce[]"_Stz)) {
     pCurrentWord->vEncodeCall("RowOnce[].set"_Stz);
+    EXIT();
+    return;
+  }
+  else if (szTerm->bSame("SendNode[]"_Stz)) {
+    pCurrentWord->vEncodeCall("SendNode[].set"_Stz);
+    EXIT();
+    return;
+  }
+  else if (szTerm->bSame("ShardDef[]"_Stz)) {
+    pCurrentWord->vEncodeCall("ShardDef[].set"_Stz);
+    EXIT();
+    return;
+  }
+  else if (szTerm->bSame("Socket[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Socket[].set"_Stz);
     EXIT();
     return;
   }

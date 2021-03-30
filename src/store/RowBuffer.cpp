@@ -62,6 +62,19 @@ RowBuffer::~RowBuffer(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/* post recv function                                                         */
+/*----------------------------------------------------------------------------*/
+void RowBuffer::vPostRecv(void* aRowBuffer)
+{
+  _static_
+  
+  RowBuffer* pRowBuffer = _pRowBuffer(aRowBuffer);
+  
+  pRowBuffer->vRestorePointers();
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -248,6 +261,19 @@ Row* RowBuffer::pAllotRow(StreamDef* pStreamDef, i8 iVArgsBegin, ...)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get decile full of the buffer                                              */
+/*----------------------------------------------------------------------------*/
+i8 RowBuffer::iDecile(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  i8 iSpaceUsed = nUsedBytes();
+  i8 iDecile = IntLib::iDecile( iSpaceUsed , C_SIZE_POOL_BUFFER);
+  
+  return iDecile;
+}
+
+/*----------------------------------------------------------------------------*/
 /* deposit var-arg list of column values into given row                       */
 /*----------------------------------------------------------------------------*/
 bool RowBuffer::bDepositColumns(Row* pRow, va_list xVarArgs)
@@ -310,6 +336,46 @@ void RowBuffer::vDepositRow(Row* pRow, i8 iVargsBegin, ...)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get next buffer                                                            */
+/*----------------------------------------------------------------------------*/
+RowBuffer* RowBuffer::pNextRowBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  return _pRowBuffer(this->pNextLinkedBuffer());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set next buffer                                                            */
+/*----------------------------------------------------------------------------*/
+void RowBuffer::vNextRowBuffer(RowBuffer* pNextBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  LinkedBuffer::vNextLinkedBuffer(pNextBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get prev buffer                                                            */
+/*----------------------------------------------------------------------------*/
+RowBuffer* RowBuffer::pPrevRowBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  return _pRowBuffer(this->pPrevLinkedBuffer());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set prev buffer                                                            */
+/*----------------------------------------------------------------------------*/
+void RowBuffer::vPrevRowBuffer(RowBuffer* pPrevBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  vPrevLinkedBuffer(pPrevBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
 /* print rows                                                                 */
 /*----------------------------------------------------------------------------*/
 void RowBuffer::vPrintRows(void)
@@ -358,6 +424,16 @@ void RowBuffer::vPrintRows(StreamDef* pStreamDef)
     // get the next row
     pRow = pNextRow(pRow);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* restore pointers are recv()                                                */
+/*----------------------------------------------------------------------------*/
+void RowBuffer::vRestorePointers(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+    
+  RowBox_t<C_WSP_ROWBUFFER>::vResetRowPix();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -446,13 +522,21 @@ CsvBuffer* RowBuffer::pToCsvBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* restore pointers are recv()                                                */
+/* truncate this buffer by removing all entries                               */
 /*----------------------------------------------------------------------------*/
-void RowBuffer::vRestorePointers(void)
+void RowBuffer::vTruncate(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-    
-  RowBox_t<C_WSP_ROWBUFFER>::vResetRowPix();
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* verify this row buffer                                                 TBD */
+/*----------------------------------------------------------------------------*/
+bool RowBuffer::bVerify(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

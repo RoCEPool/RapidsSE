@@ -39,6 +39,8 @@
 
 #include "SizesHeaps.hpp"
 
+#include "Backend.hpp"
+
 #include "CmdLineArgs.hpp"
 
 #include "DdlLock.hpp"
@@ -85,8 +87,8 @@
 #include "IndexTree.hpp"
 
 #include "CrvBuffer.hpp"
-#include "ReadApi.hpp"
 #include "TablePtn.hpp"
+#include "CrwTablePtn.hpp"
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"
 #include "PtnStream.hpp"
@@ -127,10 +129,12 @@
 
 #include "Dynamo.hpp"
 
+#include "RowTablePtn.hpp"
 
 #include "SeApi.hpp"
 #include "Sessions.hpp"
 
+#include "ShardDef.hpp"
 #include "ShortCut.hpp"
 #include "SeDeputy.hpp"
 #include "SePrompt.hpp"
@@ -195,6 +199,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(AttachMap),          HT_INVALID   ,0 }, // CN_ATTACHMAP
 
   { 'B' - ('A' - 1),            HT_INVALID   ,0 }, // CN__B__
+  { sizeof(Backend),/*yes*/     HT_T_MEDIUM  ,0 }, // CN_BACKEND
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_BCDVAL
   { sizeof(Birth),              HT_INVALID   ,0 }, // CN_BIRTH
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_BOLVAL
@@ -214,6 +219,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Column),             HT_T_TINY    ,0 }, // CN_COLUMN
   { sizeof(CrvBuffer),          HT_T_LARGE   ,0 }, // CN_CRVBUFFER
   { sizeof(CrwBuffer),          HT_T_LARGE   ,0 }, // CN_CRWBUFFER
+  { sizeof(CrwTablePtn),        HT_T_LARGE   ,0 }, // CN_CRWTABLEPTN
   { sizeof(CrwToRow),           HT_T_LARGE   ,0 }, // CN_CRWTOROW
   { sizeof(CsvBuffer),          HT_T_LARGE   ,0 }, // CN_CSVBUFFER
   { sizeof(CsvMeta),            HT_T_TINY    ,0 }, // CN_CSVMETA
@@ -304,6 +310,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(LocalChain),         HT_T_LARGE   ,0 }, // CN_LOCALCHAIN
   { sizeof(LocalDir),           HT_INVALID   ,0 }, // CN_LOCALDIR
   { sizeof(LocalFile),          HT_INVALID   ,0 }, // CN_LOCALFILE
+  { sizeof(Location),           HT_INVALID   ,0 }, // CN_LOCATION
   { sizeof(Lock),               HT_INVALID   ,0 }, // CN_LOCK
   { sizeof(Log),                HT_INVALID   ,0 }, // CN_LOG
   { sizeof(LogEntry),           HT_INVALID   ,0 }, // CN_LOGENTRY
@@ -330,6 +337,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Numbat),             HT_T_LARGE   ,0 }, // CN_NUMBAT
 
   { 'O' - ('A' - 1),            HT_INVALID   ,0 }, // CN__O__
+  { sizeof(ObjBuffer),          HT_T_LARGE   ,0 }, // CN_OBJBUFFER
   { sizeof(Objects),            HT_T_MEDIUM  ,0 }, // CN_OBJECTS
   { sizeof(ObjectSnapshot),     HT_T_SMALL   ,0 }, // CN_OBJECTSNAPSHOT
   { sizeof(Output),             HT_T_TINY    ,0 }, // CN_OUTPUT
@@ -372,7 +380,6 @@ SizeHeap gxaSizeHeap[]
 
   { 'R' - ('A' - 1),            HT_INVALID   ,0 }, // CN__R__
   { sizeof(Range),              HT_T_LARGE   ,0 }, // CN_RANGE
-  { sizeof(ReadApi),            HT_T_TINY    ,0 }, // CN_READAPI
   { sizeof(Reader),             HT_T_TINY    ,0 }, // CN_READER
   { sizeof(Record),             HT_T_MEDIUM  ,0 }, // CN_RECORD
   { sizeof(RelOp),              HT_T_TINY    ,0 }, // CN_RELOP
@@ -389,6 +396,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(RowPix),             HT_INVALID   ,0 }, // CN_ROWPIX
   { sizeof(RowSingle),          HT_T_MEDIUM  ,0 }, // CN_ROWSINGLE
   { sizeof(RowSingleList),      HT_T_TINY    ,0 }, // CN_ROWSINGLELIST
+  { sizeof(RowTablePtn),        HT_T_LARGE   ,0 }, // CN_ROWTABLEPTN
   { sizeof(RowTray),            HT_T_LARGE   ,0 }, // CN_ROWTRAY
   { sizeof(RU_Cpu),             HT_INVALID   ,0 }, // CN_RUCPU
   { 0,/*sizeof(RU_Dir)*/        HT_INVALID   ,0 }, // CN_RUDIR
@@ -409,6 +417,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(SePrompt),           HT_T_LARGE   ,0 }, // CN_SEPROMPT
   { sizeof(Session),            HT_T_LARGE   ,0 }, // CN_SESSION
   { sizeof(Sessions),           HT_T_TINY    ,0 }, // CN_SESSIONS
+  { sizeof(ShardDef),           HT_T_LARGE   ,0 }, // CN_SHARDDEF
   { sizeof(ShortCut),           HT_T_MEDIUM  ,0 }, // CN_SHORTCUT
   { sizeof(ShortCutVec),        HT_T_MEDIUM  ,0 }, // CN_SHORTCUTVEC
   { sizeof(Birth),              HT_INVALID   ,0 }, // CN_SINCE

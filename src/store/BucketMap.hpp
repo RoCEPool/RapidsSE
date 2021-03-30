@@ -5,11 +5,13 @@
 
 namespace STORE
 {
-  class BucketMap : public Object
+  class BucketMap : public Operand
   {
   private:
     Lock m_okLock;
   
+    Location m_oLocation; // logical location of bucketMap
+
     tPN m_taInLglPtn[C_MAX_BUCKETS]; // which logical partition a bucket is in
   
     // must be last
@@ -22,7 +24,12 @@ namespace STORE
     BucketMap(i8 nPartitions);
    ~BucketMap(void) noexcept(false);
   
-    tPN tWhichLglPtnNo(i8 iBucketId);
+    static void vPostRecv(void* aBucketMap);
+  
+    Location* pLocation(void);
+  
+    void vResetPointers(void);
+    tPN  tWhichLglPtnNo(i8 iBucketId);
   
   private:
     Footer* aFooter(void);

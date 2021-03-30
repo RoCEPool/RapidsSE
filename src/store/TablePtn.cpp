@@ -15,9 +15,11 @@
 #include "IndexTree.hpp"
 
 #include "CrvBuffer.hpp"
-#include "ReadApi.hpp"
 #include "TablePtn.hpp"
 #include "Table.hpp"
+#include "CrwTablePtn.hpp"
+#include "RowTablePtn.hpp"
+#include "RowBuffer.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -27,7 +29,6 @@ __pCastFunction(STORE,TablePtn,CN_TABLEPTN)
 __aNewFunction(TablePtn,CN_TABLEPTN)
 __vDeleteFunction(TablePtn,CN_TABLEPTN)
 __aFooterFunction(TablePtn)
-
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -40,16 +41,34 @@ TablePtn::TablePtn(Table* pTable, tPN tPtnNo)
   
   m_pTable = pTable;
   m_tPtnNo = tPtnNo;
+  
+  eTT eTableKind = m_pTable->eKind();
+  switch (eTableKind) {
+    case TT_INFOSET:
+      NEVER_REACH;
+      break;
+    case TT_INTERNAL:
+      m_eKind = CN_ROWTABLEPTN;
+      break;
+    case TT_NORMAL:
+      m_eKind = CN_CRWTABLEPTN;
+      break;
+    case TT_REPLICATED:
+      NEVER_REACH;
+      break;
+    default: NEVER_REACH;
+  }
+  
+  switch (m_eKind) {
+    case CN_ROWTABLEPTN:
+      m_pRowTablePtn = new RowTablePtn(m_pTable,m_tPtnNo,this);
+      break;
+    case CN_CRWTABLEPTN:
+      m_pCrwTablePtn = new CrwTablePtn(m_pTable,m_tPtnNo,this);
+      break;
+    default: NEVER_REACH;
+  }
 
-  m_bLowMemLoad = false;
-  
-  m_pRootCrwBuffer  = nullptr;
-  m_pCurrentCrwBuffer = nullptr;
-  
-  m_pIndexTreeVec = new IndexTreeVec;
-  
-  m_pReadApi = new ReadApi;
-  
   _checkInitialised_(CN_TABLEPTN);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
@@ -62,249 +81,20 @@ TablePtn::~TablePtn(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  // delete the index data vector
-  delete m_pIndexTreeVec;
-  
-  // delete the readApi
-  delete m_pReadApi;
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* dump partition                                                             */
-/*----------------------------------------------------------------------------*/
-void TablePtn::vDump(eCN eClass, Object* pObject, Stz* aTab)
-{
-  UNUSED(eClass);
-  UNUSED(aTab);
-
-  TablePtn* pTablePtn = _pTablePtn(pObject);
-  
-  vTrace("m_tPtnNo %lld, DataVec %p\n"_Stz,
-         pTablePtn->m_tPtnNo, pTablePtn->m_pIndexTreeVec);
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      delete m_pCrwTablePtn;
+      break;
+    case CN_ROWTABLEPTN:
+      delete m_pRowTablePtn;
+      break;
+    default: NEVER_REACH;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* add index                                                                  */
-/*----------------------------------------------------------------------------*/
-void TablePtn::vAddIndex(IndexTree* pIndexTree)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  ASSERT(m_pIndexTreeVec->nItems() < C_MAX_INDEXES);
-  m_pIndexTreeVec->vAdd(pIndexTree);
-}
-
-/*----------------------------------------------------------------------------*/
-/* allot a row (from a table defined with a fixed row size)                   */
-/*----------------------------------------------------------------------------*/
-Crw* TablePtn::aAllotFixedSizeCrw(Rrf& xRowRef)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  Crw* aCrw = nullptr;
-  
-  StreamDef* pStreamDef = m_pTable->pStreamDef();
-  i8 jCrwSize = pStreamDef->m_nFixedSized;
-  RASSERT(jCrwSize > 0);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // new the first buffer?
-  
-  if (! m_pRootCrwBuffer)
-    RASSERT(pNewCurrentCrwBuffer());                  //! this needs to be fixed
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // allot from latest buffer
-  
-  RowNub* pRowNub = m_pCurrentCrwBuffer->m_oRowTray.pNub();
-  i8 i_Head = pRowNub->iAllotHead(jCrwSize);
-  if (C_UNKNOWN != i_Head) {
-    aCrw = (Crw*)pRowNub->aGetHead(i_Head);
-    xRowRef.vBuffer(m_pCurrentCrwBuffer->iBufferNo());
-    xRowRef.vItem(i_Head);
-    return aCrw;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // allot from a new buffer
-
-  RASSERT(pNewCurrentCrwBuffer());                    //! this needs to be fixed
-  pRowNub = m_pCurrentCrwBuffer->m_oRowTray.pNub();
-  i_Head = pRowNub->iAllotHead(jCrwSize);
-  aCrw = (Crw*)pRowNub->aGetHead(i_Head);
-  RASSERT(aCrw);
-  
-  xRowRef.vBuffer(m_pCurrentCrwBuffer->iBufferNo());
-  xRowRef.vItem(i_Head);
-  
-  return aCrw;
-}
-
-/*----------------------------------------------------------------------------*/
-/* append a row buffer into the TablePtn                                      */
-/*----------------------------------------------------------------------------*/
-void TablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-
-#ifdef WITH_STATISTICS_COUNTERS
-  gpAttachMap->m_oStatistics.IndexTree.m_nAppendBuffers++;
-#endif
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // if buffer has 0 entries (only head) then should be last buffer
-  if (pCrwBuffer->nRowCount() == 0) {
-    delete pCrwBuffer;
-    return;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // mark crwBuffer as permanent
-  pCrwBuffer->vIsPermanent(true);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set the table in the buffer
-  pCrwBuffer->vTable(m_pTable);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  RASSERT(m_okLock.bIsLocked());
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set the root buffer
-  if (m_pRootCrwBuffer == nullptr) {
-    ASSERT( ! m_pCurrentCrwBuffer )
-    m_pRootCrwBuffer = pCrwBuffer;
-  }
-  else {
-    pCrwBuffer->vNextLinkedBuffer(m_pCurrentCrwBuffer->pNextLinkedBuffer());
-    pCrwBuffer->vPrevLinkedBuffer(m_pCurrentCrwBuffer);
-    m_pCurrentCrwBuffer->vNextLinkedBuffer(pCrwBuffer);
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set the root buffer
-  m_pCurrentCrwBuffer = pCrwBuffer;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // now insert entries from the buffer into the indexes
-  vInsertIndexEntries(pCrwBuffer);
-  
-}
-
-/*----------------------------------------------------------------------------*/
-/* append a row to the row buffer into the TablePtn                           */
-/*----------------------------------------------------------------------------*/
-void TablePtn::vAppendRow(RowCompactor* pRowCompactor, RowSingle* pSrw)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-#ifdef WITH_STATISTICS_COUNTERS
-  gpAttachMap->m_oStatistics.IndexTree.m_nAppendBuffers++;
-#endif
-  
-  RASSERT(m_okLock.bIsLocked());
-  //m_okLock.vGrabWrite();
-  
-  if (! m_pRootCrwBuffer)
-    RASSERT(pNewCurrentCrwBuffer());                  //! this needs to be fixed
-  
-  m_pCurrentCrwBuffer->vAppendOpen(pRowCompactor, false);
-  bool bAppended = m_pCurrentCrwBuffer->bAppendRow(pSrw->pRowCurrent());
-  
-  if (! bAppended) {
-    RASSERT(pNewCurrentCrwBuffer());                  //! this needs to be fixed
-
-    m_pCurrentCrwBuffer->vAppendOpen(pRowCompactor, false);
-    bAppended = m_pCurrentCrwBuffer->bAppendRow(pSrw->pRowCurrent());
-    RASSERT(bAppended);
-  }
-  
-  m_pCurrentCrwBuffer->vAppendClose();
-  
-  // get the row from the buffer
-  Rrf xRowRef;
-  i8 iRow = m_pCurrentCrwBuffer->nRowCount() - 1;
-  xRowRef.vItem(iRow);
-  
-  // get no of indexes of the table
-  i8 nIndexes = m_pIndexTreeVec->nItems();
-  
-  // iterate all indexes of the table
-  for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
-    
-    // get index
-    IndexTree* pIndexTree = m_pIndexTreeVec->pGet(i_Index);
-    
-    // insert entry into other indexes
-    bool bResult = pIndexTree->bInsertEntry(m_pCurrentCrwBuffer,iRow,xRowRef);
-    RASSERT(bResult);
-  }
-  
-  //m_okLock.vDropWrite();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the row buffers used                                                   */
-/*----------------------------------------------------------------------------*/
-i8 TablePtn::nCrwBuffers(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  i8 nBufferCount = 0;
-  
-  if (m_pRootCrwBuffer)
-    m_pRootCrwBuffer->vBufferCount(nBufferCount);
-  
-  return nBufferCount;
-}
-
-/*----------------------------------------------------------------------------*/
-/* delete an existing row                                                     */
-/*----------------------------------------------------------------------------*/
-void TablePtn::vDeleteRow(IndexTree* pIndexTree, EntBuffer* pEntBuffer, Ent* aEnt)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // delete the crw
-  bool bBufferEmpty = CrwBuffer::bDeleteRefdCrw(aEnt->rxRef());
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // is the crw buffer empty ?
-  if ( bBufferEmpty) {
-    
-    // get the referenced buffer
-    CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(aEnt->rxRef());
-    
-    // unlink the buffer
-    pCrwBuffer->vUnLink();
-    
-    // is it the currentBuffer ?
-    if (m_pCurrentCrwBuffer == pCrwBuffer)
-      m_pCurrentCrwBuffer = m_pCurrentCrwBuffer->pPrevCrwBuffer();
-    
-    // is it the root buffer ?
-    if (m_pRootCrwBuffer == pCrwBuffer) {
-      m_pRootCrwBuffer = m_pRootCrwBuffer->pNextCrwBuffer();
-    }
-    
-    // now delete the buffer
-    delete pCrwBuffer;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // now purge the entry
-  pIndexTree->vDelete(pEntBuffer, aEnt);
-  
-}
 
 /*----------------------------------------------------------------------------*/
 /* drop a read lock on the partition                                          */
@@ -318,7 +108,7 @@ void TablePtn::vDropRead(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* drop a write lock on the partition                                          */
+/* drop a write lock on the partition                                         */
 /*----------------------------------------------------------------------------*/
 void TablePtn::vDropWrite(void)
 {
@@ -326,22 +116,6 @@ void TablePtn::vDropWrite(void)
   
   ASSERT(m_okLock.bIsLocked());
   m_okLock.vDropWrite();
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump the table                                                             */
-/*----------------------------------------------------------------------------*/
-void TablePtn::vDump(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  CrwBuffer* pCrwBuffer = m_pRootCrwBuffer;
-    
-  while (pCrwBuffer) {
-    pCrwBuffer->vShow();
-    pCrwBuffer = pCrwBuffer->pNextCrwBuffer();
-  }
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -365,57 +139,6 @@ bool TablePtn::bGrabWrite(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get IndexTree                                                              */
-/*----------------------------------------------------------------------------*/
-IndexTree* TablePtn::pIndexTree(i8 iIndexNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  IndexTree* pIndexTree = nullptr;
-  i8 nIndexes = m_pIndexTreeVec->nItems();
-  
-  for (i8 i_Index=0; i_Index < nIndexes; i_Index++) {
-    pIndexTree = m_pIndexTreeVec->pGet(i_Index);
-    Index* pIndex = pIndexTree->pIndex();
-    if (pIndex->iIndexNo() == iIndexNo)
-      break;
-  }
-  
-  return pIndexTree;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get index data vector                                                      */
-/*----------------------------------------------------------------------------*/
-IndexTreeVec* TablePtn::pIndexTreeVec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  return m_pIndexTreeVec;
-}
-
-/*----------------------------------------------------------------------------*/
-/* insert entries into all indexes for all rows in given buffer               */
-/*----------------------------------------------------------------------------*/
-void TablePtn::vInsertIndexEntries(CrwBuffer* pCrwBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  // get no of indexes of the table
-  i8 nIndexes = m_pIndexTreeVec->nItems();
-  
-  // iterate all indexes of the table
-  for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
-    
-    // get index
-    IndexTree* pIndexTree = m_pIndexTreeVec->pGet(i_Index);
-    
-    // insert entries from EntBuffer into the index
-    pIndexTree->vInsertEntries(pCrwBuffer);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* is the table partition locked?                                             */
 /*----------------------------------------------------------------------------*/
 bool TablePtn::bIsLocked(void)
@@ -426,43 +149,13 @@ bool TablePtn::bIsLocked(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* new a CrwBuffer and make it the current                                    */
+/* return tablePtn kind                                                       */
 /*----------------------------------------------------------------------------*/
-CrwBuffer* TablePtn::pNewCurrentCrwBuffer(void)
+eCN TablePtn::eKind(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-#ifdef WITH_STATISTICS_COUNTERS
-  gpAttachMap->m_oStatistics.IndexTree.m_nAppendBuffers++;
-#endif
-  
-  RASSERT(m_okLock.bIsLocked());
-  
-  if (m_pRootCrwBuffer == nullptr) {
-    ASSERT( ! m_pCurrentCrwBuffer );
-    
-    m_pRootCrwBuffer = new CrwBuffer;
-    m_pRootCrwBuffer->vTable(m_pTable);
-    m_pRootCrwBuffer->vPtnNo(m_tPtnNo);
-    m_pRootCrwBuffer->vIsPermanent(true);
-    
-    m_pCurrentCrwBuffer = m_pRootCrwBuffer;
-    
-    return m_pCurrentCrwBuffer;
-  }
-  
-  CrwBuffer* pCrwBuffer = new CrwBuffer;
-  pCrwBuffer->vTable(m_pTable);
-  pCrwBuffer->vPtnNo(m_tPtnNo);
-  pCrwBuffer->vIsPermanent(true);
 
-  pCrwBuffer->vNextLinkedBuffer(m_pCurrentCrwBuffer->pNextLinkedBuffer());
-  pCrwBuffer->vPrevLinkedBuffer(m_pCurrentCrwBuffer);
-  m_pCurrentCrwBuffer->vNextLinkedBuffer(pCrwBuffer);
-  
-  m_pCurrentCrwBuffer = pCrwBuffer;
-    
-  return m_pCurrentCrwBuffer;
+  return m_eKind;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -476,143 +169,6 @@ tPN TablePtn::tPtnNo(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert entries into given index for all rows in this partition             */
-/*----------------------------------------------------------------------------*/
-bool TablePtn::bPopulateIndex(i8 iIndexNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  IndexTree* pIndexTree = this->pIndexTree(iIndexNo);
-  
-  CrwBuffer* pCrwBuffer = m_pRootCrwBuffer;
-  
-  while (pCrwBuffer) {
-    pIndexTree->vInsertEntries(pCrwBuffer);
-    pCrwBuffer = pCrwBuffer->pNextCrwBuffer();
-  }
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* purge the table buffers                                                    */
-/*----------------------------------------------------------------------------*/
-bool TablePtn::bPurge(i8 iOlderThanSeconds)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  static i8 iMaxAge = 0;
-  static i8 nMaxBuffers = 0;
-  
-  if (! m_pRootCrwBuffer)
-    return false;
-  
-  m_okLock.vGrabWrite();
-  
-  i8 iAge = m_pRootCrwBuffer->iAgeSec();
-  
-  //  if (iAge <= 1) {
-  //    vTrace("Purge: age is %llds\n"_Stz,iMaxAge);
-  //  }
-  
-  if (iAge > iMaxAge) {
-    iMaxAge = iAge;
-    //    vTrace("Purge: max age now %llds\n"_Stz,iMaxAge);
-  }
-  
-  i8 iLengthList = m_pRootCrwBuffer->iLengthList();
-  if (iLengthList > nMaxBuffers) {
-    nMaxBuffers = iLengthList;
-    //vTrace("Purge: max buffer chain now %lld buffers\n"_Stz,nMaxBuffers);
-  }
-  
-  
-  if (iAge <= iOlderThanSeconds) {
-    m_okLock.vDropWrite();
-    return false;
-  }
-  
-  // is currentBuffer same as rootBuffer ?
-  if (m_pCurrentCrwBuffer == m_pRootCrwBuffer)
-    m_pCurrentCrwBuffer = nullptr;
-  
-  CrwBuffer* pCrwBuffer = m_pRootCrwBuffer;
-  
-  // get next entry buffer
-  m_pRootCrwBuffer = m_pRootCrwBuffer->pNextCrwBuffer();
-  
-  // set prev pointer to null
-  if (m_pRootCrwBuffer) {
-    ASSERT(pCrwBuffer ==  m_pRootCrwBuffer->pPrevLinkedBuffer());
-    m_pRootCrwBuffer->vPrevLinkedBuffer(nullptr);
-  }
-  
-  m_okLock.vDropWrite();
-  
-  // delete the root buffer
-  delete pCrwBuffer;
-
-#ifdef WITH_STATISTICS_COUNTERS
-  gpAttachMap->m_oStatistics.IndexTree.m_nBuffersPurged++;
-#endif
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get read api                                                               */
-/*----------------------------------------------------------------------------*/
-ReadApi* TablePtn::pReadApi(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  return m_pReadApi;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the root row buffer                                                    */
-/*----------------------------------------------------------------------------*/
-CrwBuffer* TablePtn::pRootCrwBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  return m_pRootCrwBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* take a read-consistent snaphot of buffer                                   */
-/*----------------------------------------------------------------------------*/
-CrwBuffer* TablePtn::pSnapshot(CrwBuffer* pCrwBufferSrc, t8 tPerspective)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  CrwBuffer* pCrwBuffer = new CrwBuffer;
-  
-  pCrwBuffer->vTable(pTable());
-  pCrwBuffer->vPtnNo(tPtnNo());
-  pCrwBuffer->vIsPermanent(false);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  i8 nCrw = pCrwBufferSrc->nRowCount();
-  for (i8 i_Crw = 0 ; i_Crw < nCrw; i_Crw++) {
-    
-    Crw* aCrw = pCrwBufferSrc->aCrw(i_Crw);
-    Rrf xwRef;
-    xwRef.vBuffer(pCrwBufferSrc->iBufferNo());
-    xwRef.vItem(i_Crw);
-
-    Crw* aCrw_snapshot = m_pReadApi->aGetCrwVersion(xwRef,aCrw,tPerspective);
-    
-    if (! aCrw_snapshot)
-      continue;
-    
-    pCrwBuffer->bAppendCrw(aCrw_snapshot);
-  }
-  
-  return pCrwBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get table                                                                  */
 /*----------------------------------------------------------------------------*/
 Table* TablePtn::pTable(void)
@@ -622,6 +178,243 @@ Table* TablePtn::pTable(void)
   return m_pTable;
 }
 
+
+/*----------------------------------------------------------------------------*/
+/*                                CRW/ROW                                     */
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* add index                                                                  */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vAddIndex(IndexTree* pIndexTree)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      m_pCrwTablePtn->vAddIndex(pIndexTree);
+      break;
+    case CN_ROWTABLEPTN:
+      NEVER_REACH;
+      break;
+    default:
+      NEVER_REACH;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* append a buffer into the TablePtn                                          */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vAppendBuffer(DataBuffer* pDataBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+    
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      m_pCrwTablePtn->vAppendBuffer(_pCrwBuffer(pDataBuffer));
+      break;
+    case CN_ROWTABLEPTN:
+      m_pRowTablePtn->vAppendBuffer(_pRowBuffer(pDataBuffer));
+      break;
+    default: NEVER_REACH;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the number of buffers in this partition                                */
+/*----------------------------------------------------------------------------*/
+i8 TablePtn::nBuffers(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  i8 nBufferCount;
+  
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      nBufferCount = m_pCrwTablePtn->nBuffers();
+      break;
+    case CN_ROWTABLEPTN:
+      nBufferCount = m_pRowTablePtn->nBuffers();
+      break;
+    default:
+      NEVER_REACH;
+  }
+
+  return nBufferCount;
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump the table                                                             */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vDump(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      m_pCrwTablePtn->vDump();
+      break;
+    case CN_ROWTABLEPTN:
+      m_pRowTablePtn->vDump();
+      break;
+    default:
+      NEVER_REACH;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* get IndexTree                                                              */
+/*----------------------------------------------------------------------------*/
+IndexTree* TablePtn::pIndexTree(i8 iIndexNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  IndexTree* pIndexTree;
+  
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      pIndexTree = m_pCrwTablePtn->pIndexTree(iIndexNo);
+      break;
+    case CN_ROWTABLEPTN:
+      NEVER_REACH;
+      break;
+    default:
+      NEVER_REACH;
+  }
+
+  return pIndexTree;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get index data vector                                                      */
+/*----------------------------------------------------------------------------*/
+IndexTreeVec* TablePtn::pIndexTreeVec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  IndexTreeVec* pIndexTreeVec;
+
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      pIndexTreeVec = m_pCrwTablePtn->pIndexTreeVec();
+      break;
+    case CN_ROWTABLEPTN:
+      pIndexTreeVec = m_pCrwTablePtn->pIndexTreeVec();
+      break;
+    default:
+      NEVER_REACH;
+  }
+
+  return pIndexTreeVec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert entries into all indexes for all rows in given buffer               */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vInsertIndexEntries(CrwBuffer* pCrwBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+    
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      m_pCrwTablePtn->vInsertIndexEntries(pCrwBuffer);
+      break;
+    case CN_ROWTABLEPTN:
+      NEVER_REACH
+      break;
+    default: NEVER_REACH;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert entries into given index for all rows in this partition             */
+/*----------------------------------------------------------------------------*/
+bool TablePtn::bPopulateIndex(i8 iIndexNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  bool b;
+    
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      b = m_pCrwTablePtn->bPopulateIndex(iIndexNo);
+      break;
+    case CN_ROWTABLEPTN:
+      NEVER_REACH;
+      break;
+    default:
+      NEVER_REACH;
+  }
+
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the root crw buffer                                                    */
+/*----------------------------------------------------------------------------*/
+CrwBuffer* TablePtn::pRootCrwBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  CrwBuffer* pRootBuffer;
+  
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      pRootBuffer = m_pCrwTablePtn->pRootCrwBuffer();
+      break;
+    case CN_ROWTABLEPTN:
+      NEVER_REACH
+      break;
+    default: NEVER_REACH;
+  }
+
+  return pRootBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the root buffer                                                        */
+/*----------------------------------------------------------------------------*/
+DataBuffer* TablePtn::pRootBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+
+  DataBuffer* pRootBuffer;
+
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      pRootBuffer = m_pCrwTablePtn->pRootCrwBuffer();
+      break;
+    case CN_ROWTABLEPTN:
+      pRootBuffer = m_pRowTablePtn->pRootRowBuffer();
+      break;
+    default: NEVER_REACH;
+  }
+
+  return pRootBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the root row buffer                                                    */
+/*----------------------------------------------------------------------------*/
+RowBuffer* TablePtn::pRootRowBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+
+  RowBuffer* pRootBuffer;
+
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      NEVER_REACH
+      break;
+    case CN_ROWTABLEPTN:
+      pRootBuffer = m_pRowTablePtn->pRootRowBuffer();
+      break;
+    default: NEVER_REACH;
+  }
+
+  return pRootBuffer;
+}
+
 /*----------------------------------------------------------------------------*/
 /* remove index                                                               */
 /*----------------------------------------------------------------------------*/
@@ -629,11 +422,15 @@ void TablePtn::vRemoveIndex(i8 iIndexNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  IndexTree* pIndexTree = this->pIndexTree(iIndexNo);
-  
-  // remove the index from the IdxDataVec
-  m_pIndexTreeVec->vRemove(pIndexTree);
-  delete pIndexTree;
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      m_pCrwTablePtn->vRemoveIndex(iIndexNo);
+      break;
+    case CN_ROWTABLEPTN:
+      NEVER_REACH
+      break;
+    default: NEVER_REACH;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -642,18 +439,16 @@ void TablePtn::vRemoveIndex(i8 iIndexNo)
 void TablePtn::vTruncate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  // first truncate all indexes for this table ptn
-  for (i8 iIdxTre = 0; iIdxTre < m_pIndexTreeVec->nItems(); iIdxTre++) {
-    IndexTree* pIndexTree = m_pIndexTreeVec->pGet(iIdxTre);
-    pIndexTree->vTruncate();
+    
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      m_pCrwTablePtn->vTruncate();
+      break;
+    case CN_ROWTABLEPTN:
+      m_pRowTablePtn->vTruncate();
+      break;
+    default: NEVER_REACH;
   }
-  
-  if (m_pRootCrwBuffer)
-    m_pRootCrwBuffer->vTruncate();
-  
-  m_pRootCrwBuffer    = nullptr;
-  m_pCurrentCrwBuffer = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -662,22 +457,16 @@ void TablePtn::vTruncate(void)
 void TablePtn::vTruncateIndex(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  bool bFoundIndex = false;
-  
-  // find the index to be truncated for this table ptn
-  for (i8 iIdxTre = 0; iIdxTre < m_pIndexTreeVec->nItems(); iIdxTre++) {
-    IndexTree* pIndexTree = m_pIndexTreeVec->pGet(iIdxTre);
     
-    if (pIndexTree->pIndex() == pIndex) {
-      bFoundIndex = true;
-      // truncate the index
-      pIndexTree->vTruncate();
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      m_pCrwTablePtn->vTruncateIndex(pIndex);
       break;
-    }
+    case CN_ROWTABLEPTN:
+      NEVER_REACH;
+      break;
+    default: NEVER_REACH;
   }
-  
-  ASSERT(bFoundIndex);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -687,16 +476,19 @@ bool TablePtn::bVerifyTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  CrwBuffer* pCrwBuffer = m_pRootCrwBuffer;
-  bool bVerify = true;
-  
-  while (pCrwBuffer) {
-    bVerify = pCrwBuffer->bVerify();
-    if (! bVerify )
+  bool bVerify;
+
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      bVerify = m_pCrwTablePtn->bVerifyTable();
       break;
-    pCrwBuffer = pCrwBuffer->pNextCrwBuffer();
+    case CN_ROWTABLEPTN:
+      bVerify = m_pRowTablePtn->bVerifyTable();
+      break;
+    default:
+      NEVER_REACH;
   }
-  
+
   return bVerify;
 }
 
@@ -707,14 +499,15 @@ void TablePtn::vVisualizeTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  CrwBuffer* pCrwBuffer = m_pRootCrwBuffer;
-  
-  while (pCrwBuffer) {
-    // print the decile of the this buffer
-    vTrace("%lld"_Stz, pCrwBuffer->iDecile());
-    pCrwBuffer = pCrwBuffer->pNextCrwBuffer();
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      m_pCrwTablePtn->vVisualizeTable();
+      break;
+    case CN_ROWTABLEPTN:
+      m_pRowTablePtn->vTruncate();
+      break;
+    default: NEVER_REACH;
   }
-  vTrace("\n"_Stz);
 }
 
 /*============================================================================*/

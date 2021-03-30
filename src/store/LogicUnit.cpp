@@ -27,7 +27,6 @@
 #include "IndexTree.hpp"
 #include "Crv.hpp"
 #include "CrvBuffer.hpp"
-#include "ReadApi.hpp"
 #include "TablePtn.hpp"
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"
@@ -73,7 +72,7 @@ LogicUnit::LogicUnit(Task* pTask)
   
   m_eDdlLocked = LH_HAVE_NO_LOCK;
   m_i_NextRnd  = AM::bDeveloper() ? 0 : C_UNKNOWN;
-  m_pSendNode  = nullptr;
+  m_xpSendNode  = nullptr;
   
   m_xpHandler  = nullptr;
 
@@ -222,6 +221,10 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   delete m_pDevSrcRow;
   delete m_pDevAltRow;
 
+  // delete any temporary index tree's
+  if (m_pDevTmpIxt->m_pIdxTree)
+    delete m_pDevTmpIxt->m_pIdxTree;
+
   delete m_pDevTmpIxt;
   delete m_pDevAltIxt;
   delete m_pDevSrcIxt;
@@ -247,14 +250,14 @@ void LogicUnit::vContentDump(void)
 
   vTrace("%p:\n"
          "m_i_NextRnd=%lld\n"
-         "m_pSendNode=%p %s\n"_Stz,
+         "m_xpSendNode=%p %s\n"_Stz,
 
          this,
          
          m_i_NextRnd,
          
-         m_pSendNode,
-         m_pSendNode ? m_pSendNode->szNodeNm() : ""_Stz,
+         m_xpSendNode,
+         m_xpSendNode.bIsNotNull() ? m_xpSendNode->szNodeNm() : ""_Stz,
          
          C_VARGS_END
          );
@@ -2153,6 +2156,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_ROW_COLS_TO_LOCALS(&aiDstk);      // locals / colset / devRow
         break;//+endCase
 
+      case EO_DEVROW_COLS_TO_ROW: ArgNil(); // row buffer columns of row dev into row
+        dLU0(EO_DEVROW_COLS_TO_ROW);
+        vDev_ROW_COLS_TO_ROW(&aiDstk);      //  src devRow / dst devRow
+        break;//+endCase
+
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // ixt device crwbuffer operators
       case EO_DEVIXT_CRWBUF_BEGIN: ArgNil(); // begin row traverse
@@ -2365,12 +2373,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_IXT_INDEXTREE_SET(&aiDstk);      // indextree / devixt
         break;//+endCase
 
-      case EO_DEVIXT_INDEXTREE_DELETE: ArgNil(); // delete indexTree
-        dLU0(EO_DEVIXT_INDEXTREE_DELETE);
-        vDev_IXT_INDEXTREE_DELETE(&aiDstk);   // devixt
-        aRluCommon->m_pIndexTree = nullptr;
-        break;//+endCase
-
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // row device entWrk operators
       case EO_DEVROW_ENTWRK_APPENDELMI: ArgNil(); // append next element value (int)
@@ -2393,11 +2395,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU0(EO_DEVROW_TABLENM_SET);
         S_PushStr(iArg);
         vDev_ROW_TABLENM_SET(&aiDstk);
-        break;//+endCase
-
-      case EO_DEVROW_STREAMDEF_DELETE: ArgNil(); // delete streamDef
-        dLU0(EO_DEVROW_STREAMDEF_DELETE);
-        vDev_ROW_STREAMDEF_DELETE(&aiDstk);   // devixt
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -2594,7 +2591,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_REG_PTNSTREAM_READ(pLU);
         break;//+endCase
 
-      case EO_REG_STREAMDEF_STREAMDEFOUT: ArgNil(); // new a streamDefOut[] from streamDef[]
+      case EO_REG_STREAMDEF_STREAMDEFOUT: ArgNil(); // new a streamDefOut[] from StreamDef[]
         dLU0(EO_REG_STREAMDEF_STREAMDEFOUT);
         vDev_REG_STREAMDEF_STREAMDEFOUT(pLU);
         break;//+endCase

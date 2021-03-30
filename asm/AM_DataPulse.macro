@@ -10,7 +10,7 @@ macro AM_HANDLER_DATAPULSE
   EO_PRINTF "**HANDLER_DATAPULSE**\\n"
   EO_POP
 
-  EO_CALL <dataPulseProcessRoutine>
+  EO_CALL <dataPulseProcessRoutine>  // C_TAG_DATAPULSE_PROCESS_ROUTINE
   EO_JMP QUERY_DONE
 endMacro
 
@@ -19,7 +19,7 @@ macro AM_INDEX_RANGE_LOWER_GE
 // macro AM_INDEX_RANGE_LOWER_GE                                              //
 //----------------------------------------------------------------------------//
   Label INDEX_RANGE_LOWER_GE
-  <lboundType> <lboundLiteral>
+  <lboundType> <lboundLiteral>  // C_TAG_LBOUND_TYPE , C_TAG_LBOUND_LITERAL
   EO_DUMP
   EO_PUSH_RLU_ENTWRK
   EO_ENTWRK_SETINTELM
@@ -43,7 +43,7 @@ macro AM_INDEX_RANGE_LOWER_GE
   Label DATAPULSE_INDEXRANGE_UPD
   EO_PUSH_RLU_ENTWRK
   EO_ENTWRK_RESET
-  <uboundType> <uboundLiteral>
+  <uboundType> <uboundLiteral>  // C_TAG_UBOUND_TYPE , C_TAG_UBOUND_LITERAL
   EO_PUSH_RLU_ENTWRK
   EO_ENTWRK_SETINTELM
   EO_PUSH_RLU_ENTWRK
@@ -86,7 +86,7 @@ macro AM_INDEX_RANGE_LOWER_GE
   EO_PUSH_DEVIXT_SRC
   EO_DEVIXT_ENT_DEREF
 
-  EO_CALL <crwProcessRoutine>
+  EO_CALL <crwProcessRoutine>  // C_TAG_CRW_PROCESS_ROUTINE
 
   EO_JMP DATAPULSE_INDEXRANGE_TILL_UBD
 

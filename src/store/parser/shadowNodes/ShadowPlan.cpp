@@ -23,7 +23,7 @@ static Stz* C_PLAN_DEFN = "/__root__/definitions/object/planNode"_Stz;
 
 
 /*----------------------------------------------------------------------------*/
-/* Appends a description of the ProjectedExpr into a buffer                   */
+/* Creates a node to represent the /__root__/plan node in the graph           */
 /*----------------------------------------------------------------------------*/
 QueryNode* ShadowPlan::pCreate()
 {
@@ -42,6 +42,13 @@ b1 ShadowPlan::bIsOfType(PlanNode *pNode)
   return ShadowNode::bIsOfType(pNode, const_cast<Stz*>(C_PLAN_DEFN));
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely the same as its definition     */
+/*----------------------------------------------------------------------------*/
+b1 ShadowPlan::bIsExactType(PlanNode *pNode)
+{
+  return ShadowNode::bIsExactType(pNode, const_cast<Stz*>(C_PLAN_DEFN));
+}
 
 
 /*============================================================================*/

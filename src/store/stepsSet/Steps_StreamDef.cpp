@@ -14,7 +14,6 @@
 #include "EntBuffer.hpp"
 #include "IndexTree.hpp"
 #include "CrvBuffer.hpp"
-#include "ReadApi.hpp"
 #include "TablePtn.hpp"
 #include "Table.hpp"
 #include "Op.hpp"
@@ -29,6 +28,7 @@
 void Step::vAddSteps_StreamDef(void)
 {
   vAddStep("StreamDef[]"_Stz,                 &Step::vStreamDefGet);
+  vAddStep("StreamDef[]\\clear"_Stz,          &Step::vStreamDefGetAndClear);
   vAddStep("StreamDef[].asSrcStreamDef"_Stz,  &Step::vStreamDefAsSrcStreamDef);
   vAddStep("StreamDef[].asStr"_Stz,           &Step::vStreamDefAsStr);
   vAddStep("StreamDef[].columnCount@"_Stz,    &Step::vStreamDefColumnCountFetch);
@@ -157,6 +157,20 @@ void Step::vStreamDefGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* StreamDef[].getAndClear -- get streamDef and set to nullptr                */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamDefGetAndClear(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushPtr(*( m_pJob->pLogicUnit_job() )->m_xpStreamDef);
+
+  ( m_pJob->pLogicUnit_job() )->m_xpStreamDef = nullptr;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* StreamDef[].isNull -- is streamDef null ?                                  */
 /*----------------------------------------------------------------------------*/
 void Step::vStreamDefIsNull(void)
@@ -177,7 +191,7 @@ void Step::vStreamDefName(void)
   
   StreamDef* pStreamDef = _pStreamDef(*( m_pJob->pLogicUnit_job() )->m_xpStreamDef);
   
-  s32 sName = pStreamDef->szName();
+  s32 sName = pStreamDef->szStreamDefNm();
   m_pDataStack->vPushStr(sName);
   
   EXIT();

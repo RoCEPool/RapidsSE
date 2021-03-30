@@ -46,7 +46,7 @@ void Step::vRegPathDepth(void)
 {
   ENTRY();
   
-  i8 iDepth =  m_oDicStack.iCount();
+  i8 iDepth =  m_oDicStack.nItems();
   
   m_pDataStack->vPushInt(iDepth);
   

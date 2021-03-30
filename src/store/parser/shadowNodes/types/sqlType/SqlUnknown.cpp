@@ -57,7 +57,13 @@ b1 SqlUnknown::bIsOfType(PlanNode *pNode)
   return ShadowNode::bIsOfType(pNode, C_SQLUNKNOWN_DEFN);
 }
 
-
+/*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely the same as its definition     */
+/*----------------------------------------------------------------------------*/
+b1 SqlUnknown::bIsExactType(PlanNode *pNode)
+{
+  return ShadowNode::bIsExactType(pNode, C_SQLUNKNOWN_DEFN);
+}
 
 /*============================================================================*/
 /* end                                                                        */

@@ -20,7 +20,6 @@
 #include "EntBuffer.hpp"
 #include "IndexTree.hpp"
 #include "CrvBuffer.hpp"
-#include "ReadApi.hpp"
 #include "TablePtn.hpp"
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"
@@ -55,11 +54,6 @@ CrwBuffer::CrwBuffer(void)
 
   m_pRowCompactor = nullptr;
   
-  m_pTable = nullptr;
-  m_pStreamDef = nullptr;
-  
-  m_tTxnNo = C_UNKNOWN;
-  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
   _checkInitialised_(CN_CRWBUFFER);
@@ -93,7 +87,7 @@ bool CrwBuffer::bDeleteRefdCrw(Rrf xRef)
   
   pCrwBuffer->m_oRowTray.pNub()->vDelete(aCrw);
   
-  if (pCrwBuffer->nRowCount() == 0) {
+  if (pCrwBuffer->nRows() == 0) {
     return true;
   }
   
@@ -101,7 +95,7 @@ bool CrwBuffer::bDeleteRefdCrw(Rrf xRef)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump entry buffer                                                          */
+/* dump crw buffer                                                            */
 /*----------------------------------------------------------------------------*/
 void CrwBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
@@ -133,7 +127,7 @@ Crw* CrwBuffer::pRefdCrw(Rrf xRef)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the entry buffer that given id references                              */
+/* get the crw buffer that given id references                                */
 /*----------------------------------------------------------------------------*/
 CrwBuffer* CrwBuffer::pRefdCrwBuffer(Rrf& xRef)
 {
@@ -154,7 +148,7 @@ CrwBuffer* CrwBuffer::pRefdCrwBuffer(Rrf& xRef)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the row buffer that contains the given address                         */
+/* get the crw buffer that contains the given address                         */
 /*----------------------------------------------------------------------------*/
 CrwBuffer* CrwBuffer::pToCrwBuffer(void* aAddr)
 {
@@ -184,10 +178,70 @@ void CrwBuffer::vToRow(RowSingle* pRowSingle, Crw* aCrw)
   RowInflator::vInflate_AllColumns_into_RowSingle(pRowSingle,aCrw);
 }
 
+/*----------------------------------------------------------------------------*/
+/* post recv function                                                         */
+/*----------------------------------------------------------------------------*/
+void CrwBuffer::vPostRecv(void* aCrwBuffer)
+{
+  _static_
+  
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(aCrwBuffer);
+  
+  pCrwBuffer->vIsPermanent(false);
+  pCrwBuffer->vRestoreNub();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* set the table of the crw buffer                                            */
+/*----------------------------------------------------------------------------*/
+void CrwBuffer::vStreamDef(StreamDef* pStreamDef)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+  
+  DataBuffer::vStreamDef(pStreamDef);
+  m_oRowTray.pNub()->vDesc(pStreamDef);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the table of the crw buffer                                            */
+/*----------------------------------------------------------------------------*/
+void CrwBuffer::vTable(Table* pTable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+  
+  DataBuffer::vTable(pTable);
+  vStreamDef(pTable->pStreamDef());
+}
+
+/*----------------------------------------------------------------------------*/
+/* get row compactor                                                          */
+/*----------------------------------------------------------------------------*/
+RowCompactor* CrwBuffer::pRowCompactor(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+  
+  return m_pRowCompactor;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get row tray                                                               */
+/*----------------------------------------------------------------------------*/
+RowTray* CrwBuffer::pRowTray(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+  
+  return & m_oRowTray;
+}
+
+
+
+
+
 
 /*----------------------------------------------------------------------------*/
 /* analyze this buffer                                                        */
@@ -201,14 +255,14 @@ void CrwBuffer::vAnalyze(i8& nBuffers, i8& nRows)
   do {
     
     nBuffers++;
-    nRows += (pNextBuffer->nRowCount());
+    nRows += (pNextBuffer->nRows());
     
 //    if (bDetailed)
 //      sAnalysis.vCatSprint("row: (%s, %lld, %5lld, %lld )\n"_Stz,
 //                           AM::szNodeNm(),
 //                           pNextBuffer->m_tPtnNo,
 //                           iBuffers,
-//                           pNextBuffer->nRowCount());
+//                           pNextBuffer->nRows());
     
     pNextBuffer = pNextBuffer->pNextCrwBuffer();
     
@@ -266,7 +320,7 @@ void CrwBuffer::vAppendOpen(RowCompactor* pRowCompactor, bool bCollectSamples)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append an row into this crw buffer                                         */
+/* append a row into this crw buffer                                          */
 /*----------------------------------------------------------------------------*/
 bool CrwBuffer::bAppendRow(Row* aRowSrc)
 {
@@ -283,29 +337,6 @@ bool CrwBuffer::bAppendRow(Row* aRowSrc)
 void CrwBuffer::vAssertCrwBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* return number of row buffers under this buffer                             */
-/*----------------------------------------------------------------------------*/
-void CrwBuffer::vBufferCount(i8& nBuffers)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-  
-  CrwBuffer* pNextBuffer = nullptr;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // table ?
-  
-  RASSERT(pTable());
-  
-  pNextBuffer = this->pNextCrwBuffer();
-  nBuffers++;
-  
-  while (pNextBuffer) {
-    pNextBuffer = pNextBuffer->pNextCrwBuffer();
-    nBuffers++;
-  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -399,7 +430,7 @@ bool CrwBuffer::bHasSpace(i8 nBytes)
   //! is this correct now that we have separated CrwBuffer from EntBuffer?
   if (AM::nIndexEntries() > 0) {
     // has space calculation based on no of entries
-    if (nRowCount() >= AM::nIndexEntries())
+    if (nRows() >= AM::nIndexEntries())
       return false;
     else
       return true;
@@ -458,7 +489,7 @@ void CrwBuffer::vOperandDump(i8 iDetail)
          "headItems: %lld tailItems: %lld strItems: %lld "
          "free: %lld(B)\n"_Stz,
 
-         nRowCount(),
+         nRows(),
          
          m_oRowTray.pNub()->nHeads(),
          m_oRowTray.pNub()->nTails(),
@@ -527,7 +558,7 @@ void CrwBuffer::vPrintRows(StreamDef* pStreamDef)
 /*----------------------------------------------------------------------------*/
 /* get the no of rows in the buffer                                           */
 /*----------------------------------------------------------------------------*/
-i8 CrwBuffer::nRowCount(void)
+i8 CrwBuffer::nRows(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
@@ -616,7 +647,7 @@ void CrwBuffer::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  i8 nRows = nRowCount();
+  i8 nRows = this->nRows();
   
   vTrace("CrwBuffer: %p (buffer %lld %s): rows: %lld headItems: %lld tailItems: %lld free: %lldB\n"_Stz,
          this,m_iBufferNo,
@@ -646,50 +677,6 @@ void CrwBuffer::vShow(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the stream def                                                         */
-/*----------------------------------------------------------------------------*/
-StreamDef* CrwBuffer::pStreamDef(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-  
-  return m_oRowTray.pNub()->pDesc();
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the table of the row buffer                                            */
-/*----------------------------------------------------------------------------*/
-void CrwBuffer::vStreamDef(StreamDef* pStreamDef)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-  
-  //RASSERT(pTable);
-  m_pStreamDef = pStreamDef;
-  m_oRowTray.pNub()->vDesc(pStreamDef);
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the table of the row buffer                                            */
-/*----------------------------------------------------------------------------*/
-void CrwBuffer::vTable(Table* pTable)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-  
-  //RASSERT(pTable);
-  m_pTable = pTable;
-  m_oRowTray.pNub()->vDesc(pTable->pStreamDef());
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the table of the index buffer                                          */
-/*----------------------------------------------------------------------------*/
-Table* CrwBuffer::pTable(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-
-  return m_pTable;
-}
-
-/*----------------------------------------------------------------------------*/
 /* generate a CsvBuffer from a crw buffer with a csv row                      */
 /*----------------------------------------------------------------------------*/
 CsvBuffer* CrwBuffer::pToCsvBuffer(void)
@@ -704,7 +691,7 @@ CsvBuffer* CrwBuffer::pToCsvBuffer(void)
   HV_Record hvRecord(pStreamDef->pRowPix());
   HV_RowSingle hvRowSingle(pStreamDef);
   
-  i8 nRows = nRowCount();
+  i8 nRows = this->nRows();
   i8 nBytes = 1;
   Stz* szRecord = nullptr;
   
@@ -748,7 +735,7 @@ CsvBuffer* CrwBuffer::pToCsvBuffer(void)
 //  HV_RowSingle hvRowSingle(pTable()->pStreamDef(),C_ALL);
 //  SrtBuffer* pSrtBuffer = new SrtBuffer(nRowRefs, m_tPtnNo);
 //  
-//  i8 nRows = nRowCount();
+//  i8 nRows = nRows();
 //  
 //  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
 //    
@@ -801,26 +788,6 @@ void CrwBuffer::vTruncate(void)
   }
   delete this;
   
-}
-
-/*----------------------------------------------------------------------------*/
-/* get transaction number                                                     */
-/*----------------------------------------------------------------------------*/
-tXN CrwBuffer::tTxnNo(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-  
-  return m_tTxnNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set transaction number                                                     */
-/*----------------------------------------------------------------------------*/
-void CrwBuffer::vTxnNo(tXN tTxnNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-  
-  m_tTxnNo = tTxnNo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -890,7 +857,7 @@ bool CrwBuffer::bVerifyRows(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  i8 nRows = nRowCount();
+  i8 nRows = this->nRows();
   
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     Crw* aRowCacheLine = (Crw*)aGetHead(i_Row);

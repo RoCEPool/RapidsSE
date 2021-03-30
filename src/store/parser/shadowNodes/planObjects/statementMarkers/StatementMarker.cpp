@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* Statement.hpp - identifies the type of query being planned                 */
+/* StatementMarker.hpp - identifies the type of query being planned           */
 /*                                                                            */
-/* Not intending to create subclasses of this to represent each statement type*/
-/* because it doesn't really add any value. Instead we can capture all        */
-/* behaviour in this class.                                                   */
+/* Only intending to create basic subclasses of this so that it is easier to  */
+/* assert that a node is of a given type. Most other functionality falls back */
+/* to this base class.                                                        */
 /*============================================================================*/
 
 #include "BASE.h"
-#include "Statement.hpp"
+#include "StatementMarker.hpp"
 
 #include "PlanConstants.hpp"
 #include "PlanNode.hpp"
@@ -21,23 +21,7 @@ using namespace Parser;
 /*-- Constants ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 static Stz* C_QUERYTEXT_PROP = "queryText"_Stz;
-static Stz* C_STATEMENT_DEFN = "/__root__/definitions/object/planObject/statement"_Stz;
-
-// Definition paths of the above statement types
-static Stz* aST_definition[] = {
-  /*ST_NONE         */ ""_Stz,
-  /*ST_CREATETABLE  */ ""_Stz,
-  /*ST_DROPTABLE    */ ""_Stz,
-  /*ST_CREATEINDEX  */ ""_Stz,
-  /*ST_DROPINDEX    */ ""_Stz,
-  /*ST_CTAS         */ ""_Stz,
-  /*ST_SELECT       */ "/__root__/definitions/object/planObject/statement/dml/select"_Stz,
-  /*ST_INSERT       */ ""_Stz,
-  /*ST_UPDATE       */ ""_Stz,
-  /*ST_DELETE       */ ""_Stz,
-  /*ST_INSERTSELECT */ ""_Stz,
-  /*ST_ENUMS        */ ""_Stz
-};
+static Stz* C_STATEMENT_DEFN = "/__root__/definitions/object/planObject/statementMarker"_Stz;
 
 
 /*----------------------------------------------------------------------------*/
@@ -48,24 +32,22 @@ static Stz* aST_definition[] = {
 /* Helper function to create statement nodes. These are the top level         */
 /* "headings" in a plan graph that identify what comes below them.            */
 /*----------------------------------------------------------------------------*/
-QueryNode* Statement::pCreate(eST eStmtType, Stz* szQueryText)
+QueryNode* StatementMarker::pCreate(eST eStmtType, Stz* szDefn, Stz* szQueryText)
 {
   ASSERT(eStmtType > ST_NONE);
   ASSERT(eStmtType < ST_NENUMS);
+  ASSERT(szDefn);
   ASSERT(szQueryText);
-
-  // Get the definition of the statement we're creating
-  Stz* szDef = aST_definition[eStmtType];
 
   // Store the enum value in the value field of the statement node
   Value xValue((i8) eStmtType);
 
   // Create a unique name for this object
   s256 sName;
-  ShadowNode::vObjName(GraphNav::szLeafType(szDef), sName);
+  ShadowNode::vObjName(GraphNav::szLeafType(szDefn), sName);
 
   // Create the object with its queryText property
-  QueryNode* pStmt = new QueryNode(sName, szDef, static_cast<Value&&>(xValue));
+  QueryNode* pStmt = new QueryNode(sName, szDefn, static_cast<Value&&>(xValue));
   Value xQueryTextVal(szQueryText);
   QueryNode* pQueryText = new QueryNode(C_QUERYTEXT_PROP, const_cast<Stz*>(C_STRING_OBJ_DEFN_NONNULL), static_cast<Value&&>(xQueryTextVal));
   pStmt->vAppendProperty(pQueryText);
@@ -76,7 +58,7 @@ QueryNode* Statement::pCreate(eST eStmtType, Stz* szQueryText)
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void Statement::vDescribe(PlanNode* pNode, s2K& buf)
+void StatementMarker::vDescribe(PlanNode* pNode, s2K& buf)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -90,17 +72,17 @@ void Statement::vDescribe(PlanNode* pNode, s2K& buf)
 /*----------------------------------------------------------------------------*/
 /* Recurses down the query plan and writes the explain of the stmt to the buf */
 /*----------------------------------------------------------------------------*/
-void Statement::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iIndent)
+void StatementMarker::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iIndent)
 {
   _static_
   ASSERT(bIsOfType(pNode));
 
   if (sBuf.nLength() > 0) {
-    sBuf.vConcat("\n"_Stz);
+    sBuf.vConcat("\n\n"_Stz);
   }
 
   vAppendIndent(sBuf, iIndent, eIndentFormat::IF_ARROW);
-  sBuf.vCatSprint("%s statement"_Stz, GraphNav::szLeafType(pNode->szType()));
+  sBuf.vCatSprint("StatementMarker: %s"_Stz, GraphNav::szLeafType(pNode->szType()));
 
   PlanNode* pQueryTextProp = GraphNav::pFindProperty(const_cast<Stz*>(C_QUERYTEXT_PROP), pNode);
   ASSERT(pQueryTextProp);
@@ -131,17 +113,25 @@ void Statement::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iI
 /*----------------------------------------------------------------------------*/
 /* Returns true if the given node is derived from the statement definition    */
 /*----------------------------------------------------------------------------*/
-b1 Statement::bIsOfType(PlanNode *pNode)
+b1 StatementMarker::bIsOfType(PlanNode *pNode)
 {
   return ShadowNode::bIsOfType(pNode, C_STATEMENT_DEFN);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely the same as its definition     */
+/*----------------------------------------------------------------------------*/
+b1 StatementMarker::bIsExactType(PlanNode *pNode)
+{
+  return ShadowNode::bIsExactType(pNode, C_STATEMENT_DEFN);
+}
+
 
 /*----------------------------------------------------------------------------*/
-/* Return a list of ProjectedExprs that represent the column expressions      */
+/* Return a list of ProjectedColumns that represent the column expressions      */
 /* that this PlanObject will return. All nodes and the list must be freed.    */
 /*----------------------------------------------------------------------------*/
-PlanNodeList* Statement::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
+PlanNodeList* StatementMarker::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -154,7 +144,7 @@ PlanNodeList* Statement::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
 /*----------------------------------------------------------------------------*/
 /* Returns the statement enum type from a given node                          */
 /*----------------------------------------------------------------------------*/
-Statement::eST Statement::eStatementType(PlanNode* pNode)
+StatementMarker::eST StatementMarker::eStatementType(PlanNode* pNode)
 {
   ASSERT(pNode);
   ASSERT(bIsOfType(pNode));

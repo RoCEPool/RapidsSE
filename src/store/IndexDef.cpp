@@ -16,7 +16,6 @@
 
 #include "Crv.hpp"
 #include "CrvBuffer.hpp"
-#include "ReadApi.hpp"
 #include "TablePtn.hpp"
 #include "Table.hpp"
 
@@ -132,6 +131,17 @@ IndexDef::~IndexDef(void) noexcept(false)
   // Since the column is picked from the ColVec of table
   // we don not need to delete them
   //! ALKA CHECK
+}
+
+/*----------------------------------------------------------------------------*/
+/* post recv function                                                         */
+/*----------------------------------------------------------------------------*/
+void IndexDef::vPostRecv(void* aIndexDef)
+{
+  
+  IndexDef* pIndexDef = _pIndexDef(aIndexDef);
+  
+  pIndexDef->vResetPointers();
 }
 
 
@@ -530,6 +540,26 @@ Column* IndexDef::pGetColumn(i8 iColumn)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
   
   return &m_xaColumn[iColumn];
+}
+
+/*----------------------------------------------------------------------------*/
+/* get location                                                               */
+/*----------------------------------------------------------------------------*/
+Location* IndexDef::pLocation(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+  
+  return & m_oLocation;
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset members which are pointers (after being received)                    */
+/*----------------------------------------------------------------------------*/
+void IndexDef::vResetPointers(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+  
+  // no pointers need to be reset
 }
 
 /*----------------------------------------------------------------------------*/

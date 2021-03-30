@@ -64,6 +64,7 @@ void Step::vAddSteps(void)
   
   Step::vAddSteps_DdlLock();
   Step::vAddSteps_Debug();
+  Step::vAddSteps_DevSrcRow();
   Step::vAddSteps_Dic();
   Step::vAddSteps_DicLock();
   Step::vAddSteps_Dir();
@@ -163,7 +164,9 @@ void Step::vAddSteps(void)
   Step::vAddSteps_SeekOffsets();
   Step::vAddSteps_Sen();
   Step::vAddSteps_SenCompiler();
+  Step::vAddSteps_SendNode();
   Step::vAddSteps_Session();
+  Step::vAddSteps_ShardDef();
   Step::vAddSteps_Shell();
   Step::vAddSteps_Socket();
   Step::vAddSteps_SqlCompiler();

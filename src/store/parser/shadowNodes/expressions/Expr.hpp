@@ -22,12 +22,28 @@ namespace Parser
     // Returns true if a given node is a given type ** or is derived from that type **
     static b1 bIsOfType(PlanNode* pNode);
 
+    // Returns true if a given node is this exact given type.
+    static b1 bIsExactType(PlanNode* pNode);
+
     // Returns the resulting type of the expression operation
     static eCT eType(QueryNode* pExprNode, PlanNode* pRootNode);
 
     // Returns true if this expression (and therefore any subexpression elements
-    // it contains) is an aggregate expression
-    static b1 bIsAnAggregate(PlanNode* pNode);
+    // it contains) is an aggregate expression. It may also contain non-aggregated
+    // terms too.
+    static b1 bContainsAnAggregate(PlanNode* pNode);
+
+    // Returns true if this expression (and any subexpression elements it contains)
+    // has a ColumnRef that is not part of an aggregation. If true, this is not to
+    // say that this expression tree doesn't contain aggregations, it could, but
+    // it may also contain non-aggregated ColumnRefs too. e.g. the expression
+    // "col1 + SUM(col2)" contains both an aggregate term and a non-aggregated
+    // ColumnRef.
+    static b1 bContainsNonaggregatedColumnRefs(PlanNode* pNode);
+
+    // Returns true if this expression tree only comprises literals and operators.
+    // i.e., returns false if a ColumnRef or ColumnOrdinal is encountered.
+    static b1 bIsLiteral(PlanNode* pNode);
 
     // Checks the expression tree to determine that a supported result type
     // can be produced. Will throw a SqlException if it is an invalid expression.
@@ -42,12 +58,16 @@ namespace Parser
     // The returned QueryNode must be freed.
     // Column ordinals are 1-based.
     static QueryNode* pSymbolicToOrdinal(QueryNode*    pSymbolicExpr,
-                                         PlanNodeList* pProjectedExprList,
+                                         PlanNodeList* pColumnExprList,
                                          PlanNode*     pRootNode);
 
     // Compare two expression trees and return true if they are equal with
     // respect to the operations and symbols used.
     static b1 bIsSymbolicallyEqual(QueryNode* pExpr1, QueryNode* pExpr2);
+
+    // Compare two expression trees symbolically and return true if
+    // pSuperExpr is equal to, or a superset of, pSubExpr.
+    static b1 bIsEqualOrSupersetOf(QueryNode* pSuperExpr, QueryNode* pSubExpr);
 
     // Returns true if the expression does not contain any column references.
     // All expressions are relative column ordinals, operators or literals only.

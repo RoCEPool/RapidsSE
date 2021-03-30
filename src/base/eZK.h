@@ -7,6 +7,7 @@ enum eZK // operand kind
 {
   /*  0 */ ZK_NONE=0,
 
+  /*    */ ZK_BUCKETMAP,
   /*    */ ZK_CALLPIPELINE,
   /*    */ ZK_COMMANDERRORS,
   /*    */ ZK_CANCELMARKER,
@@ -23,6 +24,7 @@ enum eZK // operand kind
   /*    */ ZK_EXECERRORS,
   /*    */ ZK_EXITMARKER,
   /*    */ ZK_EXITEDMARKER,
+  /*    */ ZK_INDEX,
   /*    */ ZK_INDEXDEF,
   /*    */ ZK_LOADRESULT,
   /*    */ ZK_LOCKSTATS,
@@ -42,6 +44,7 @@ enum eZK // operand kind
   /*    */ ZK_STARTEDMARKER,
   /*    */ ZK_STREAMDEF,
   /*    */ ZK_STREAMSET,
+  /*    */ ZK_TABLE,
   /*    */ ZK_TOTALUNITS,
   /*    */ ZK_ENUMS
 };
@@ -50,6 +53,7 @@ static Stz* aZK[]
 {
   /*  0 */ "NONE"_Stz,
   
+  /*    */ "ZK_BUCKETMAP"_Stz,
   /*    */ "ZK_CALLPIPELINE"_Stz,
   /*    */ "ZK_COMMANDERRORS"_Stz,
   /*    */ "ZK_CANCELMARKER"_Stz,
@@ -66,6 +70,7 @@ static Stz* aZK[]
   /*    */ "ZK_EXECERRORS"_Stz,
   /*    */ "ZK_EXITMARKER"_Stz,
   /*    */ "ZK_EXITEDMARKER"_Stz,
+  /*    */ "ZK_INDEX"_Stz,
   /*    */ "ZK_INDEXDEF"_Stz,
   /*    */ "ZK_LOADRESULT"_Stz,
   /*    */ "ZK_LOCKSTATS"_Stz,
@@ -85,6 +90,7 @@ static Stz* aZK[]
   /*    */ "ZK_STARTEDMARKER"_Stz,
   /*    */ "ZK_STREAMDEF"_Stz,
   /*    */ "ZK_STREAMSET"_Stz,
+  /*    */ "ZK_TABLE"_Stz,
   /*    */ "ZK_TOTALUNITS"_Stz,
   
   /*    */ "ENUMS"_Stz

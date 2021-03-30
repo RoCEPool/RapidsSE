@@ -26,9 +26,6 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // set the originator node as the send target node
-  //iJobId job::originator@ grid::node task[] task.sendNode!
-
   // send the ended job
   iJobId job::originator@ pJob__Ended job.reply
 
@@ -42,7 +39,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* run received Job__Ended on originating node       recv: job.spawn_received */
+/* run received Job__Ended on originating node       recv: job.spawn */
 /*----------------------------------------------------------------------------*/
 : _Ended_run _run_suffix
 

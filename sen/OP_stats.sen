@@ -18,8 +18,8 @@
 //    Path[].toStr .
 //    C_TDEF_LOCKSTATS find execute to Table[]
 //    Operand[].newStreamDef
-//    Operand[] to streamDef[]
-//    streamDef[].asStr .
+//    Operand[] to StreamDef[]
+//    StreamDef[].asStr .
 //    nullptr to Operand[]
 //  then
 /*
@@ -27,9 +27,9 @@
   C_TDEF_LOCKSTATS op__tableDef_infoSet assert
 
   // create a new streamDef
-  infoSetTable[] streamDef[].new
+  infoSetTable[] StreamDef[].new
 
-  //streamDef[].asStr .
+  //StreamDef[].asStr .
   Expressions::lockSample to operandC[]
   OperandC[].pipeOut
 */

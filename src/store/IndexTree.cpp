@@ -25,7 +25,6 @@
 #include "EntBuffer.hpp"
 #include "IndexTree.hpp"
 #include "CrvBuffer.hpp"
-#include "ReadApi.hpp"
 #include "TablePtn.hpp"
 #include "Table.hpp"
 
@@ -481,7 +480,7 @@ void IndexTree::vInsertEntries(CrwBuffer* pCrwBuffer)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // iterate thru each crw in buffer
   
-  i8 nRows = pCrwBuffer->nRowCount();
+  i8 nRows = pCrwBuffer->nRows();
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
 
     xEntWrk.vReset();

@@ -34,6 +34,18 @@
 
 #include "Step.hpp"
 
+#include "SkipRoots.hpp"
+#include "EntBuffer.hpp"
+#include "IndexTree.hpp"
+#include "CrvBuffer.hpp"
+#include "TablePtn.hpp"
+#include "Table.hpp"
+#include "Index.hpp"
+#include "BucketMap.hpp"
+#include "CrwBuffer.hpp"
+#include "StreamSet.hpp"
+#include "Marker.hpp"
+
 #include "eBO.h"
 #include "TagConstants.h"
 
@@ -47,7 +59,7 @@ AttachMap*   gpAttachMap;
 BufferPool*  gpBufferPool;
 Header*      gaSeShmRegion;
 File*        gpTraceFile;
-Log*          gpLog;
+Log*         gpLog;
 
 Stz* gsBuildGitHash;
 Stz* gsBuildDate;
@@ -55,7 +67,7 @@ Stz* gsBuildHostName;
 Stz* gsBuildUserName;
 Stz* gsBuildBranch;
 
-extern SizeHeap     gxaSizeHeap[];
+extern SizeHeap gxaSizeHeap[];
 
 extern Atomic gixDir;
 extern Atomic gixFile;
@@ -725,6 +737,23 @@ void Engine::vDeleteSession(Session* pSession)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set dispatch words for receiver                                            */
+/*----------------------------------------------------------------------------*/
+void Engine::vDispatchWords(void)
+{
+  Word* pWord;
+  
+  pWord = AM::WORD::pFind("job.spawn_received"_Stz);
+  RASSERT(pWord);
+  gxaSizeHeap[CN_JOB].m_pDispatchWord = pWord;
+
+  pWord = AM::WORD::pFind("xmitOperand.pipeOut"_Stz);
+  RASSERT(pWord);
+  gxaSizeHeap[CN_XMITOPERAND].m_pDispatchWord = pWord;
+  gxaSizeHeap[CN_XMITOPERAND].m_nRecvArgs = 1;
+}
+
+/*----------------------------------------------------------------------------*/
 /* translate debug flag env variables                                         */
 /*----------------------------------------------------------------------------*/
 void Engine::vEnvFlags(void)
@@ -859,6 +888,16 @@ void Engine::vKillPrev(void)
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/* set low-memory receive discards                                            */
+/*----------------------------------------------------------------------------*/
+void Engine::vLowMemoryDiscard(void)
+{
+  gxaSizeHeap[CN_CRWBUFFER].m_bLowMemoryDiscard = true;
+  gxaSizeHeap[CN_CSVBUFFER].m_bLowMemoryDiscard = true;
+  gxaSizeHeap[CN_PROFILE].m_bLowMemoryDiscard   = true;
+  gxaSizeHeap[CN_ROWBUFFER].m_bLowMemoryDiscard = true;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get monitor portrait profile of system                                     */
@@ -1144,6 +1183,26 @@ void Engine::vOpenTrace(void)
     vInfo("Opened trace file for %s: %s\n"_Stz,
           (gxCmdLineArgs.m_xSysArgs.m_bAppendTrace) ? "append" : "write",
           sTracePath.szStz());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set post receive functions                                                 */
+/*----------------------------------------------------------------------------*/
+void Engine::vPostRecvFns(void)
+{
+  gxaSizeHeap[CN_BUCKETMAP].m_fpPostRecvFn = (fpPOSTFN*)BucketMap::vPostRecv;
+  gxaSizeHeap[CN_CRWBUFFER].m_fpPostRecvFn = (fpPOSTFN*)CrwBuffer::vPostRecv;
+  gxaSizeHeap[CN_CSVBUFFER].m_fpPostRecvFn = (fpPOSTFN*)CsvBuffer::vPostRecv;
+  gxaSizeHeap[CN_INDEX].m_fpPostRecvFn     = (fpPOSTFN*)Index::vPostRecv;
+  gxaSizeHeap[CN_INDEXDEF].m_fpPostRecvFn  = (fpPOSTFN*)IndexDef::vPostRecv;
+  gxaSizeHeap[CN_INFOSET].m_fpPostRecvFn   = (fpPOSTFN*)InfoSet::vPostRecv;
+  gxaSizeHeap[CN_JOB].m_fpPostRecvFn       = (fpPOSTFN*)Job::vPostRecv;
+  gxaSizeHeap[CN_MARKER].m_fpPostRecvFn    = (fpPOSTFN*)Marker::vPostRecv;
+  gxaSizeHeap[CN_PROFILE].m_fpPostRecvFn   = (fpPOSTFN*)Profile::vPostRecv;
+  gxaSizeHeap[CN_ROWBUFFER].m_fpPostRecvFn = (fpPOSTFN*)RowBuffer::vPostRecv;
+  gxaSizeHeap[CN_STREAMDEF].m_fpPostRecvFn = (fpPOSTFN*)StreamDef::vPostRecv;
+  gxaSizeHeap[CN_STREAMSET].m_fpPostRecvFn = (fpPOSTFN*)StreamSet::vPostRecv;
+  gxaSizeHeap[CN_TABLE].m_fpPostRecvFn     = (fpPOSTFN*)Table::vPostRecv;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1621,7 +1680,14 @@ void Engine::vStartSystem(void) {
   AM::vLogSys(SL_INF, gpAttachMap, YA_SYS_BOOT,
               "adding steps"_Stz); //!format-LogSys
   Step::vAddSteps();
-
+  
+  if (AM::bVerboseProgress())
+    vInfo("  Adding PostRecv Functions\n"_Stz);
+  vPostRecvFns();
+  
+  if (AM::bVerboseProgress())
+    vInfo("  Adding LowMemory Discard\n"_Stz);
+  vLowMemoryDiscard();
 
   if (AM::bVerboseProgress())
     vInfo("  Adding Constants\n"_Stz);
@@ -1666,6 +1732,11 @@ void Engine::vStartSystem(void) {
     vInfo("Engine Instance %s started\n"_Stz, gxCmdLineArgs.m_xSysArgs.m_sRegionName.azChar());
     gpAttachMap->m_pPtnMap->vDumpDataBuffers();
   }
+
+  if (AM::bVerboseProgress())
+      vInfo("  Adding Dispatch Words\n"_Stz);
+    vDispatchWords();
+
 
   s32 sResident_magn;
   MagLib::vByteMag(Process::iResidentSize(), 3, sResident_magn);

@@ -9,12 +9,91 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_Xyz ...                                                     */
+/* on ZK_CANCELMARKER ...                                                 END */
 /*----------------------------------------------------------------------------*/
-: aggreg_Xyz \handler
+: aggreg_CancelMarker \handler
 
-  // delete all operands
-  PipeIn[].delete
+  0 ZK_CANCELMARKER EG_ZK LogicUnit[].diaryNote
+
+  // cleanup the pot
+  PotRlu[].cleanup
+
+  //indexTreeRlu[].isNull not if
+  //  indexTreeRlu[].delete
+  //then
+
+  Counter0[] cleanUpAsm
+
+  ZK_CANCELMARKER EG_ZK PD_PIPE_OUT 0 ZK_CANCELMARKER EG_ZK LogicUnit[].diaryAction
+  ZK_CANCELMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_CRWBUFFER ...                                                   EACH */
+/*----------------------------------------------------------------------------*/
+: aggreg_CrwBuffer \handler
+
+  0 ZK_CRWBUFFER EG_ZK LogicUnit[].diaryNote
+
+  Operand[].pipeIn
+  Operand[].asSrcCrwBuffer
+  ZK_CRWBUFFER Counter0[] executeAsmArgs
+
+  PotRlu[].pipeoutCompletedPtns
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_EOSMARKER ...                                                    END */
+/*----------------------------------------------------------------------------*/
+: aggreg_EosMarker \handler
+
+  0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryNote
+
+  // execute the eosMarker asm handler
+  ZK_EOSMARKER Counter0[] executeAsmArgs
+
+  // pipe out all PotRlu[]
+  PotRlu[].pipeoutDanglingPtns
+  PotRlu[].delete
+
+  // cleanup compiler
+  Counter0[] cleanUpAsm
+
+  ZK_EOSMARKER EG_ZK PD_PIPE_OUT 0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryAction
+  ZK_EOSMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_ERRORMARKER ...                                             */
+/*----------------------------------------------------------------------------*/
+: aggreg_ERRORMARKER \handler
+
+  find: EATOPERAND_handler   ZK_CRWBUFFER   op[].handler!
+  find: EATOPERAND_handler   ZK_ROWBUFFER   op[].handler!
+  find: EATOPERAND_handler   ZK_EOSMARKER   op[].handler!
+
+
+  PipeIn[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_ROWBUFFER ...                                                   EACH */
+/*----------------------------------------------------------------------------*/
+: aggreg_RowBuffer \handler
+
+  0 ZK_ROWBUFFER EG_ZK LogicUnit[].diaryNote
+
+  Operand[].pipeIn
+  Operand[].asSrcRowBuffer
+  ZK_ROWBUFFER Counter0[] executeAsmArgs
+
+  Operand[].delete
+
+  PotRlu[].pipeoutCompletedPtns
 
   true
 ;
@@ -36,119 +115,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_CANCELMARKER ...                                                 END */
-/*----------------------------------------------------------------------------*/
-: aggreg_CancelMarker \handler
-
-  0 ZK_CANCELMARKER EG_ZK LogicUnit[].diaryNote
-
-  // delete the pot
-  PotRlu[].isNull not if
-    PotRlu[].pipeoutDanglingPtns
-    PotRlu[].delete
-  then
-
-  StreamDef[].isNull not if
-    StreamDef[].delete
-  then
-
-  indexTreeRlu[].isNull not if
-    indexTreeRlu[].delete
-  then
-
-  Counter0[] cleanUpAsm
-
-  ZK_CANCELMARKER EG_ZK PD_PIPE_OUT 0 ZK_CANCELMARKER EG_ZK LogicUnit[].diaryAction
-  ZK_CANCELMARKER_handler
-;
-
-/*----------------------------------------------------------------------------*/
-/* on ZK_CRWBUFFER ...                                                   EACH */
-/*----------------------------------------------------------------------------*/
-: aggreg_CrwBuffer \handler
-
-  0 ZK_CRWBUFFER EG_ZK LogicUnit[].diaryNote
-
-  //op.pipelineJob@ job.hasError if
-  //  Pipein[].delete
-  //  true
-  //  exit
-  //then
-
-  Operand[].pipeIn
-  Operand[].asSrcCrwBuffer
-  ZK_CRWBUFFER Counter0[] executeAsmArgs
-
-  PotRlu[].pipeoutCompletedPtns
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* on ZK_ROWBUFFER ...                                                   EACH */
-/*----------------------------------------------------------------------------*/
-: aggreg_RowBuffer \handler
-
-  0 ZK_ROWBUFFER EG_ZK LogicUnit[].diaryNote
-
-  //op.pipelineJob@ job.hasError if
-  //  Pipein[].delete
-  //  true
-  //  exit
-  //then
-
-  Operand[].pipeIn
-  Operand[].asSrcRowBuffer
-  ZK_ROWBUFFER Counter0[] executeAsmArgs
-
-  Operand[].delete
-
-  PotRlu[].pipeoutCompletedPtns
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* on ZK_EOSMARKER ...                                                    END */
-/*----------------------------------------------------------------------------*/
-: aggreg_EosMarker \handler
-
-  0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryNote
-
-  // execute the eosMarker asm handler if job has no error
-  //op.pipelineJob@ job.hasError not if
-    ZK_EOSMARKER Counter0[] executeAsmArgs
-  //then
-
-  // pipe out all PotRlu[]
-  PotRlu[].pipeoutDanglingPtns
-  PotRlu[].delete
-
-  StreamDef[].isNull not if
-    StreamDef[].delete
-  then
-
-  Counter0[] cleanUpAsm
-
-  ZK_EOSMARKER EG_ZK PD_PIPE_OUT 0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryAction
-  ZK_EOSMARKER_handler
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for ZK_ERRORMARKER ...                                             */
-/*----------------------------------------------------------------------------*/
-: aggreg_ERRORMARKER \handler
-
-  find: aggreg_Xyz             ZK_CRWBUFFER   op[].handler!
-  find: aggreg_Xyz             ZK_ROWBUFFER   op[].handler!
-  find: aggreg_Xyz             ZK_EOSMARKER   op[].handler!
-
-  PipeIn[].pipeout
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* on ZK_STREAMDEF ...                                              STREAMDEF */
 /*----------------------------------------------------------------------------*/
 : aggreg_StreamDef \handler
@@ -157,36 +123,47 @@
 
   EC_NONE locals| eError |
 
-  Pipein[] to StreamDef[]
-  nullptr to Pipein[]
+  // move pipein[] to StreamDef[]
+  Pipein[]\clear to StreamDef[]
 
+  // evalute the expression
   ExprEval[].new
   StreamDefOut[].new
-  <etc> StreamDef[] StreamDefOut[] ExprEval[].aggregate to eError
+
+  "<ordinal>" job[] job.tagSet@ tagSet.hasName if
+    <etc> StreamDef[] StreamDefOut[] ExprEval[].evaluateOrdinals to eError
+  else
+    <etc> StreamDef[] StreamDefOut[] ExprEval[].evaluateColumns to eError
+  then
 
   // check for error
   eError EC_NONE == not if
-
-    find: aggreg_Xyz             ZK_CRWBUFFER   op[].handler!
-    find: aggreg_Xyz             ZK_ROWBUFFER   op[].handler!
-    find: aggreg_Xyz             ZK_EOSMARKER   op[].handler!
-
-    eError op__execErr
-    StreamDef[].delete
-    StreamDefOut[].delete
-    ExprEval[].delete
+    eError op__exprEvalExecErr
     true
     exit
   then
 
-  StreamDefOut[] ExprEval[] LogicUnit[].genAggregate
+  // generate the asm for projection
+  StreamDefOut[] ExprEval[] LogicUnit[].genAggregate to eError
   ExprEval[].delete
 
-  StreamDef[].asSrcStreamDef
-  false PotRlu[].useStreamDefOut
+  // check for error
+  eError EC_NONE == not if
+    eError op__asmGenExecErr
+    true
+    exit
+  then
 
+  // set the streamDef in the devSrcRow
+  StreamDef[]\clear DevSrcRow.streamDef!
+
+  // create rowPix in potRlu[] from streamDefOut[]
+  false streamDefOut[] PotRlu[].rowPix!
+
+  // pipeout the streamDefOut
   StreamDefOut[].pipeout
 
+  // create the compiler
   Counter0[] if
     LogicCompiler[].new
     LogicCompiler[].compile
@@ -232,6 +209,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 cmdSyntax: aggreg :: aggreg <compiled> <etc> ;
+cmdSyntax: aggreg :: aggreg <ordinal> <compiled> <etc> ;
 
 : aggreg_cmdTags _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
 

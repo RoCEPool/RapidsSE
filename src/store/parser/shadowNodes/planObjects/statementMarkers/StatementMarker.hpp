@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Statement.hpp - identifies the type of query being planned                 */
+/* StatementMarker.hpp - identifies the type of query being planned           */
 /*============================================================================*/
 #pragma once
 
@@ -11,12 +11,13 @@ namespace Parser
   class PlanNode;
   class QueryNode;
 
-  class Statement : public PlanObject
+  class StatementMarker : public PlanObject
   {
   public:
     // Statement types
     enum eST {
       ST_NONE = 0,
+      ST_EXPLAIN,
       ST_CREATETABLE,
       ST_DROPTABLE,
       ST_CREATEINDEX,
@@ -32,17 +33,22 @@ namespace Parser
 
   private:
     // Shalt never be instantiated. Static functions only.
-    Statement();
+    StatementMarker();
+
+  protected:
+    static QueryNode* pCreate(eST eStmtType, Stz* szDefn, Stz* szQueryText);
 
   public:
-    static QueryNode* pCreate(eST eStmtType, Stz* szQueryText);
     static void       vDescribe(PlanNode* pNode, s2K& sBuf);
     static void vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iIndent);
 
     // Returns true if a given node is a given type ** or is derived from that type **
     static b1 bIsOfType(PlanNode* pNode);
 
-    // Return a list of ProjectedExprs that represent the column expressions
+    // Returns true if a given node is this exact given type.
+    static b1 bIsExactType(PlanNode* pNode);
+
+    // Return a list of ProjectedColumns that represent the column expressions
     // that this PlanObject will return. All nodes and the list must be freed.
     static PlanNodeList* pColumnExprs(QueryNode* pNode, PlanNode* pRootNode);
 

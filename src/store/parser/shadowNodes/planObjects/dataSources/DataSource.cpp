@@ -78,6 +78,13 @@ b1 DataSource::bIsOfType(PlanNode *pNode)
   return ShadowNode::bIsOfType(pNode, C_DATASOURCE_DEFN);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely the same as its definition     */
+/*----------------------------------------------------------------------------*/
+b1 DataSource::bIsExactType(PlanNode *pNode)
+{
+  return ShadowNode::bIsExactType(pNode, C_DATASOURCE_DEFN);
+}
 
 /*----------------------------------------------------------------------------*/
 /* Retrieves the catalogname of the data source, if applicable, otherwise null*/
@@ -148,7 +155,7 @@ PlanNodeList* DataSource::pColumnDefs(QueryNode* pNode, PlanNode* pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Return a list of ProjectedExprs that represent the column expressions      */
+/* Return a list of ProjectedColumns that represent the column expressions      */
 /* that this PlanObject will return. All nodes and the list must be freed.    */
 /*----------------------------------------------------------------------------*/
 PlanNodeList* DataSource::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)

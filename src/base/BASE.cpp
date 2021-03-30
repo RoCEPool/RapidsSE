@@ -159,12 +159,7 @@ bool BASE::bTraceWith(Stz* szWith)
   if (szWith->bSame("WITH_DEBUG_VERSION"_Stz))
     return true;
 #endif
-  
-#ifdef WITH_EB_LAZY_CHAIN
-  if (szWith->bSame("WITH_EB_LAZY_CHAIN"_Stz))
-    return true;
-#endif
-  
+    
 #ifdef WITH_ENCODING_TRACE
   if (szWith->bSame("WITH_ENCODING_TRACE"_Stz))
     return true;
@@ -283,10 +278,6 @@ void BASE::vTraceWith(void)
   vTrace("  WITH_DEBUG_VERSION\n"_Stz);
 #endif
   
-#ifdef WITH_EB_LAZY_CHAIN
-  vTrace("  WITH_EB_LAZY_CHAIN\n"_Stz);
-#endif
-  
 #ifdef WITH_ENCODING_TRACE
   vTrace("  WITH_ENCODING_TRACE\n"_Stz);
 #endif
@@ -390,11 +381,6 @@ bool BASE::bTraceWithout(Stz* szWith)
       
 #ifndef WITH_DEBUG_VERSION
   if (szWith->bSame("WITH_DEBUG_VERSION"_Stz))
-    return true;
-#endif
-  
-#ifndef WITH_EB_LAZY_CHAIN
-  if (szWith->bSame("WITH_EB_LAZY_CHAIN"_Stz))
     return true;
 #endif
   
@@ -515,11 +501,7 @@ void BASE::vTraceWithout(void)
 #ifndef WITH_DEBUG_VERSION
   vTrace("  WITH_DEBUG_VERSION\n"_Stz);
 #endif
-  
-#ifndef WITH_EB_LAZY_CHAIN
-  vTrace("  WITH_EB_LAZY_CHAIN\n"_Stz);
-#endif
-  
+    
 #ifndef WITH_ENCODING_TRACE
   vTrace("  WITH_ENCODING_TRACE\n"_Stz);
 #endif

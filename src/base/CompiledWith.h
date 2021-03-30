@@ -28,7 +28,6 @@
 #define WITH_CHECK_INITIALISED EndDefine     // _checkInitialised_()
 #define WITH_CORRECTNESS_ALGEBRA EndDefine   // magic, class, footer, pre, post
 
-//#define WITH_EB_LAZY_CHAIN EndDefine       // build lazy chain on insert
 //#define WITH_IT_COMPACT_TRACE EndDefine    // compaction progress
 //#define WITH_LOCK_TRACKING EndDefine       // code for tracking lock activity
 //#define WITH_PYTHON_SUPPORT EndDefine      // code for python support
@@ -53,7 +52,6 @@
 //#define WITH_CHECK_INITIALISED EndDefine   // _checkInitialised_()
 //#define WITH_CORRECTNESS_ALGEBRA EndDefine // magic, class, footer, pre, post
 
-//#define WITH_EB_LAZY_CHAIN EndDefine       // build lazy chain on insert
 //#define WITH_IT_COMPACT_TRACE EndDefine    // compaction progress
 //#define WITH_LOCK_TRACKING EndDefine       // code for tracking lock activity
 //#define WITH_PYTHON_SUPPORT EndDefine      // code for python support

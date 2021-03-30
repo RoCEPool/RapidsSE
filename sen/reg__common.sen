@@ -5,6 +5,29 @@
 " reg__common.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* cleanup                                                                    */
+/*----------------------------------------------------------------------------*/
+: PotRlu[].cleanup
+
+  PotRlu[].isNull not if
+
+    grid::partitions 0
+    do
+      begin
+        I PotRlu[].danglingPtn to OperandB[]
+        OperandB[].isNotNull
+      while
+        OperandB[].delete
+      repeat
+    loop
+
+    PotRlu[].delete
+
+  then
+
+;
+
+/*----------------------------------------------------------------------------*/
 /* pipe out all completed buffers in the pot                                  */
 /*----------------------------------------------------------------------------*/
 : PotRlu[].pipeoutCompleted

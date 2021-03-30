@@ -13,9 +13,54 @@
 
   NS_ACTIVE grid::thisNode@ grid::node node.state!
 
-  //args.verbose if
+  args.verbose if
     grid::thisNode@ "receiver running on node %v" .printf
-  //then
+  then
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  "<ansNode>" job[] job.tagSet@ tagSet.hasName assert
+
+  <ansNode> >int >ptr node.recvSocket@ to Socket[]
+;
+
+/*----------------------------------------------------------------------------*/
+/* receive next object(s)                                                     */
+/*----------------------------------------------------------------------------*/
+: receiver_recvNext
+
+  nullptr to Register0[]
+  nullptr to Register1[]
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get first object
+  
+  Socket[] socket.recvObject not if false exit then
+    to Register0[]
+
+  Register0[] not if
+    true exit
+  then
+
+  Register0[] object.postRecv
+    
+  Register0[] object.recvArgs@ 0 == if
+    true exit
+  then
+      
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get argument object
+
+  Socket[] socket.recvObject not if false exit then
+    to Register1[]
+    
+  Register0[] not if
+    true exit
+  then
+
+  Register1[] object.postRecv
+  
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -23,73 +68,32 @@
 /*----------------------------------------------------------------------------*/
 : receiver_loop ( -- )
 
-  0 locals| pReceivedObject |
-  0 locals| pOperand        |
-  0 locals| pSendWith       |
-  0 locals| pSocket         |
-  0 locals| bRecvd          |
-  0 locals| pTask           |
-  0 locals| pParentJob      |
-
-  "<ansNode>" job[] job.tagSet@ tagSet.hasName assert
-
-  <ansNode> >int >ptr node.recvSocket@ to pSocket
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   begin
 
     trap::stackDepthZero
 
-    // -- -- -- -- -- -- -- --
-    // recv job
-
-    pSocket socket.recvObject
-
-    not if
-      //ifAgain
-      "receiver exiting" .
+    receiver_recvNext not if
       exit
     then
-
-    to pReceivedObject
-
-    // -- -- -- -- -- -- -- --
-    // log received job
-
-    //pReceivedJob job_receiver::jobReceived
-
-    // -- -- -- -- -- -- -- --
-    // run post receive function
-
-
-
-    // -- -- -- -- -- -- -- --
-    // recv operand
-
-    pReceivedObject object.class@ CN_XMITOPERAND == if
-      pSocket socket.recvObject true == if
-        to pOperand
-        pOperand pReceivedObject xmitOperand.operand!
-        pReceivedObject xmitOperand.pipeOut
-      else
-       nullptr pReceivedObject xmitOperand.operand!
-       pReceivedObject xmitOperand.pipeOut
-      then
-    else
-
-      // -- -- -- -- -- -- -- --
-      // examine job
-      //pReceivedJob job.kind@ JK_GENERIC == if
-      //"received a generic job" .
-      //  pReceivedJob job.tagSet@ tagSet.asStr .
-      //then
-
-      pReceivedObject job.postRecv
-      //pReceivedJob job.name@ grid::thisNodeName@ "(%v) receiver_loop %v" .printf
-      pReceivedObject job.seedDecode
-      pReceivedObject job.seed!
-      pReceivedObject job.spawn_received
+        
+    // null object
+    Register0[] not if
+      continue_if
     then
+    
+    // probably job, no argument object
+    Register0[] object.recvArgs@ 0 == if
+      Register0[] Register0[] object.dispatchWord@ execute
+      continue_if
+    then
+    
+    // probably xmitoperand, with one argument
+    Register0[] object.recvArgs@ 1 == if
+      Register1[] Register0[] Register0[] object.dispatchWord@ execute
+      continue_if
+    then
+    
+    HAZARD
 
   again
 ;
@@ -104,9 +108,6 @@
 
   // loop, receiving and executing jobs
   receiver_loop
-
-  // should never exit
-  //hazard
 
   job::completed
 
@@ -127,7 +128,7 @@
   // get the pipeline job of the operator
   Op.pipelineJob@ locals| pPipelineJob |
 
- // peek to see if any operand
+  // peek to see if any operand
   begin
     Pipein[].peek
   not while

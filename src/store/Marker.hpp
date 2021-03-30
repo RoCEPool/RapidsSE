@@ -25,6 +25,8 @@ namespace STORE
     
     static bool bInspect(Object* pObject);
   
+    static void vPostRecv(void* aMarker);
+
     eOM eOpMarker(void);
   };
 

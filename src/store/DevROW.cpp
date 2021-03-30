@@ -5,6 +5,7 @@
 #include "BASE.h"
 
 #include "DevROW.hpp"
+#include "StreamDef.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -27,10 +28,9 @@ DevROW::DevROW(void)
   m_i_Row      = C_UNKNOWN;
   m_nRows      = C_UNKNOWN;
   m_aRow       = nullptr;
-  m_pRowBuffer   = nullptr;
+  m_pRowBuffer = nullptr;
   m_pStreamDef = nullptr;
 
-  
   _checkInitialised_(CN_DEVROW);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_DEVROW,_FOOTER_);
@@ -43,6 +43,8 @@ DevROW::~DevROW(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DEVROW,_FOOTER_);
 
+  if (m_pStreamDef)
+    delete m_pStreamDef;
 }
 
 

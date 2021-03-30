@@ -9,10 +9,12 @@ static Stz* S_READAPI_I = "__READAPI_I"_Stz;
 
 namespace STORE
 {
-  class Index : public Object
+  class Index : public Operand
   {
   private:
     IndexDef*  m_pIndexDef;  // definition of this index
+
+    Location   m_oLocation;   // logical location of index
 
     i8         m_iIndexNo;   //
     s32        m_sIndexNm;   //
@@ -29,6 +31,7 @@ namespace STORE
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static void vMonitorPortrait(s48K& sPortrait);
+    static void vPostRecv(void* aIndex);
 
     Index(Stz* szIndexNm);
    ~Index(void) noexcept(false);
@@ -42,17 +45,18 @@ namespace STORE
     Stz*   szIndexNm(void);
     void   vIndexNo(i8 iIndexNo);
     i8     iIndexNo(void);
+    Location* pLocation(void);
     void   vListContents(i8 i_Depth);
     bool   bIsPrimaryKey(void);
     void   vIsPrimaryKey(bool bPrimaryKey);
     bool   bIsUnique(void);
     void   vIsUnique(bool bUnique);
+    void   vResetPointers(void);
     i8     iSortKeyDatum(void);
     void   vTable(Table* pTable);
     Table* pTable(void);
     void   vTidyUp(void);
     
-  
     Footer* aFooter(void);
   };
   

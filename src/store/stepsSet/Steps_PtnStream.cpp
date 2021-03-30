@@ -17,7 +17,6 @@
 #include "EntBuffer.hpp"
 #include "IndexTree.hpp"
 #include "CrvBuffer.hpp"
-#include "ReadApi.hpp"
 #include "TablePtn.hpp"
 #include "PtnStream.hpp"
 #include "Job.hpp"
@@ -153,12 +152,12 @@ void Step::vPtnStreamRead(void)
     
   PtnStream* pPtnStream = _pPtnStream(m_pDataStack->pPopPtr(__func__));
   
-  CrwBuffer* pCrwBuffer = pPtnStream->pRead();
+  DataBuffer* pDataBuffer = pPtnStream->pRead();
 
-  ASSERT(! pCrwBuffer || ! pCrwBuffer->pNextItem());
-  ASSERT(! pCrwBuffer || ! pCrwBuffer->pPrevItem());
+  ASSERT(! pDataBuffer || ! pDataBuffer->pNextItem());
+  ASSERT(! pDataBuffer || ! pDataBuffer->pPrevItem());
 
-  m_pDataStack->vPushPtr(pCrwBuffer);
+  m_pDataStack->vPushPtr(pDataBuffer);
 
   EXIT();
 }

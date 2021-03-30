@@ -28,7 +28,9 @@ namespace BASE
     
     CsvBuffer(void);
    ~CsvBuffer(void) noexcept(false);
-    
+  
+    static void       vPostRecv(void* aCsvBuffer);
+
     Stz*       szAllotRecord(i8 nBytes);
     Stz*       szAppendRecord(Stz* szRecord);
     CsvMeta*   pCsvMeta(void);

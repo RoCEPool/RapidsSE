@@ -422,7 +422,7 @@ Word* Task::pCompileAxiomColon(s48K& sDefinition)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Dic* pDic;
-  if (m_oDicStack.iCount())
+  if (m_oDicStack.nItems())
     pDic = m_oDicStack.pTop();
   else
     pDic = AM::pDicRoot();

@@ -19,11 +19,17 @@ namespace BASE
   {
   protected:
     union {
-      u4   m_uMagic;      // 4 byte magic signature
+      u4   m_uMagic; // 4 byte magic signature
       char m_caMagic[4];
     };
-    eCN  m_eClassNo;      // 2 byte class enum
-    u2   m__spareBytes;   // 2 spare bytes
+  
+    eCN m_eClassNo; // 2 byte class enum
+  
+    struct {
+      u2 m_bWasReceived:1; // object was received
+      u2 m_bPostRecvRun:1; // post receive function run
+      u2 m__spareBytes:14; // spare bits
+    };
 
     // ! observe there are no constructors
   
@@ -132,6 +138,39 @@ namespace BASE
     
     return EC_OBJECT_MAGIC_INVALID;
   }
+
+  /*--------------------------------------------------------------------------*/
+  /* get was received flag                                                    */
+  /*--------------------------------------------------------------------------*/
+  inline bool bGetWasReceived(void)
+  {
+    return m_bWasReceived;
+  }
+  
+  /*--------------------------------------------------------------------------*/
+  /* set was received                                                         */
+  /*--------------------------------------------------------------------------*/
+  inline void vSetWasReceived(bool bWasReceived)
+  {
+    m_bWasReceived = bWasReceived;
+  }
+  
+  /*--------------------------------------------------------------------------*/
+  /* get was received                                                         */
+  /*--------------------------------------------------------------------------*/
+  inline bool bGetPostRecvRun(void)
+  {
+    return m_bPostRecvRun;
+  }
+  
+  /*--------------------------------------------------------------------------*/
+  /* set post receive has been run flag                                       */
+  /*--------------------------------------------------------------------------*/
+  inline void vSetPostRecvRun(bool bPostRecvRun)
+  {
+  m_bPostRecvRun = bPostRecvRun;
+  }
+  
 
 
   }; // class _Header

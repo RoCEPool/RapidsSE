@@ -35,13 +35,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CRWBUFFER ...                                               */
+/* handler for ZK_CRWBUFFER / ZK_ROWBUFFER...                                 */
 /*----------------------------------------------------------------------------*/
-// ": scan_CrwBuffer" .
+// ": scan_RowCrwBuffer" .
 
-: scan_CrwBuffer \handler
+: scan_RowCrwBuffer \handler
   
-  debug::flag@ if "(Revised) scan_CrwBuffer handler" . then
+  debug::flag@ if "(Revised) scan_RowCrwBuffer handler" . then
 
   // read next buffer from ptn stream
   ptnStream[] ptnStream.read to Operand[]
@@ -123,7 +123,7 @@
   ptnStream[] ptnStream.open if
 
     // force op loop to call scan_CrwBuffer to start processing buffers
-    "scan_CrwBuffer" word::find LogicUnit[].handler!
+    "scan_RowCrwBuffer" word::find LogicUnit[].handler!
     true LogicUnit[].callAgain!
 
   else
@@ -183,8 +183,9 @@
   op__topology
 
   find: scan_CancelMarker ZK_CANCELMARKER op[].handler!
-  find: scan_CrwBuffer    ZK_CRWBUFFER    op[].handler!
+  find: scan_RowCrwBuffer ZK_CRWBUFFER    op[].handler!
   find: scan_DataMarker   ZK_DATAPULSE    op[].handler!
+  find: scan_RowCrwBuffer ZK_ROWBUFFER    op[].handler!
   find: scan_StartMarker  ZK_STARTMARKER  op[].handler!
 
   op__loop

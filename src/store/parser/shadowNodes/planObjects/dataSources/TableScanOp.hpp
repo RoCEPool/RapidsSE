@@ -24,6 +24,9 @@ namespace Parser
     // Returns true if a given node is a given type ** or is derived from that type **
     static b1 bIsOfType(PlanNode* pNode);
 
+    // Returns true if a given node is this exact given type.
+    static b1 bIsExactType(PlanNode* pNode);
+
     static QueryNode* pTableRef(QueryNode* pNode);
 
     static Stz* szCatalogName(QueryNode* pNode);
@@ -34,7 +37,7 @@ namespace Parser
     // Returned list must be freed, but not its contents.
     static PlanNodeList* pColumnDefs(QueryNode* pNode, PlanNode* pRootNode);
 
-    // Return a list of ProjectedExprs that represent the column expressions
+    // Return a list of ProjectedColumns that represent the column expressions
     // that this PlanObject will return. All nodes and the list must be freed.
     static PlanNodeList* pColumnExprs(QueryNode* pNode, PlanNode* pRootNode);
 

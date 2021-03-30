@@ -5,6 +5,29 @@
 " op__defHandlers.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* handler for eating operand                                                 */
+/*----------------------------------------------------------------------------*/
+: EATOPERAND_handler \handler
+
+  // delete operand
+  PipeIn[].delete
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* default handler for ZK_BUCKETMAP operand                                   */
+/*----------------------------------------------------------------------------*/
+: ZK_BUCKETMAP_handler \handler
+
+  //"ZK_BUCKETMAP_handler" .verbose
+  
+  PipeIn[].pipeOut
+  
+  true // calling op_loop continues
+;
+
+/*----------------------------------------------------------------------------*/
 /* default handler for ZK_CALLPIPELINE operand                                */
 /*----------------------------------------------------------------------------*/
 : ZK_CALLPIPELINE_handler \handler
@@ -213,6 +236,18 @@
   // an error if any other operator receives it
   EC_PIPELINE_PROTOCOL_ERROR op__execErr
 
+  true // calling op_loop continues
+;
+
+/*----------------------------------------------------------------------------*/
+/* default handler for ZK_INDEX operand                                       */
+/*----------------------------------------------------------------------------*/
+: ZK_INDEX_handler \handler
+
+  //"ZK_INDEX_handler" .verbose
+  
+  PipeIn[].pipeOut
+  
   true // calling op_loop continues
 ;
 
@@ -442,6 +477,18 @@
 : ZK_STREAMSET_handler \handler
 
   //"ZK_STREAMSET" .verbose
+  
+  PipeIn[].pipeOut
+  
+  true // calling op_loop continues
+;
+
+/*----------------------------------------------------------------------------*/
+/* default handler for ZK_TABLE operand                                       */
+/*----------------------------------------------------------------------------*/
+: ZK_TABLE_handler \handler
+
+  //"ZK_TABLE_handler" .verbose
   
   PipeIn[].pipeOut
   

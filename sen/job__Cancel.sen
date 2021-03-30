@@ -61,7 +61,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* run received Job__Cancel on participating node    recv: job.spawn_received */
+/* run received Job__Cancel on participating node    recv: job.spawn */
 /*----------------------------------------------------------------------------*/
 : _Cancel_run _run_suffix
 

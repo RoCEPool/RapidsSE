@@ -28,18 +28,31 @@ extern i8   giProgressPoint;
 
 //#include <readline/readline.h>
 
+
+#include "StreamDef.hpp"
+#include "IndexDef.hpp"
+#include "Key.hpp"
+#include "Pay.hpp"
+#include "Ent.hpp"
+#include "RowSingle.hpp"
+#include "EntWrk.hpp"
+#include "IndexTree.hpp"
+#include "BucketMap.hpp"
+#include "TablePtn.hpp"
+#include "Table.hpp"
+
 /*----------------------------------------------------------------------------*/
 /* main                                                                       */
 /*----------------------------------------------------------------------------*/
 int main(int argc, char* argv[])
 {
-  //printf("sizeof(ColPix) %lld\n",(i8)sizeof(ColPix));
-  //printf("sizeof(Word) %lld\n",(i8)sizeof(Word));
-
   //char* s = readline ("Enter a line: ");
 
-  //printf("sizeof(s32) %lld\n",(i8)sizeof(s32));
-  //printf("sizeof(DataBuffer) %lld\n",(i8)sizeof(DataBuffer));
+//  printf("sizeof(Table) %lld\n",(i8)sizeof(Table));
+//  printf("sizeof(StreamDef) %lld\n",(i8)sizeof(StreamDef));
+//  printf("sizeof(IndexDef) %lld\n",(i8)sizeof(IndexDef));
+//  printf("sizeof(BucketMap) %lld\n",(i8)sizeof(BucketMap));
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   TlsKeys::vInit();

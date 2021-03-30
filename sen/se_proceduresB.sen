@@ -803,431 +803,35 @@
   end ;
   "
   api::addProcedure
-
-  /*
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Smt0 - select * from lineitem;
-  
-  STD_PATH
-  "
-  procedure Smt0
-  begin
-
-  stage stageA on origin :
-    start
-    | periodic once
-    | stageB
-
-  stage stageB on all nodes :
-    genAsmTxt 0 0 ../eo_text/asmSmt0_s0.txt
-    | stageC
-
-  stage stageC on all partitions :
-    EOAsm2 ../eo_text/asmSmt0_s0.txt 0
-    | stageD
-
-  stage stageD on origin :
-    output
-    | sink
-    | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Smt1 - select l_extendedprice from lineitem;
-  
-  STD_PATH
-  "
-  procedure Smt1
-  begin
-
-  stage stageA on origin :
-    start
-    | periodic once
-    | stageB
-
-  stage stageB on all nodes :
-    genAsmTxt 1 0 ../eo_text/asmSmt1_s0.txt
-    | stageC
-
-  stage stageC on all partitions :
-    EOAsm2 ../eo_text/asmSmt1_s0.txt 0
-    | stageD
-
-  stage stageD on origin :
-    output
-    | sink
-    | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Smt2 - select * from lineitem where l_partkey > 1000000;
-  
-  STD_PATH
-  "
-  procedure Smt2
-  begin
-
-  stage stageA on origin :
-    start
-    | periodic once
-    | stageB
-
-  stage stageB on all nodes :
-    genAsmTxt 2 0 ../eo_text/asmSmt2_s0.txt
-    | stageC
-
-  stage stageC on all partitions :
-    EOAsm2 ../eo_text/asmSmt2_s0.txt 0
-    | stageD
-
-  stage stageD on origin :
-    output
-    | sink
-    | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Smt3 - select l_extendedprice from lineitem where where l_partkey < 1000000;
-  
-  STD_PATH
-  "
-  procedure Smt3
-  begin
-
-  stage stageA on origin :
-    start
-    | periodic once
-    | stageB
-
-  stage stageB on all nodes :
-    genAsmTxt 3 0 ../eo_text/asmSmt3_s0.txt
-    | stageC
-
-  stage stageC on all partitions :
-    EOAsm2 ../eo_text/asmSmt3_s0.txt 0
-    | stageD
-
-  stage stageD on origin :
-    output
-    | sink
-    | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Smt4 - select * from lineitem where l_partkey >= 1000000 and l_partKey < 1500000;
-  
-  STD_PATH
-  "
-  procedure Smt4
-  begin
-
-  stage stageA on origin :
-    start
-    | periodic once
-    | stageB
-
-  stage stageB on all nodes :
-    genAsmTxt 4 0 ../eo_text/asmSmt4_s0.txt
-    | stageC
-
-  stage stageC on all partitions :
-    EOAsm2 ../eo_text/asmSmt4_s0.txt 0
-    | stageD
-
-  stage stageD on origin :
-    output
-    | sink
-    | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Smt5 - select * from lineitem where L_QUANTITY = 1.0 and L_RETURNFLAG = 'R';
-  
-  STD_PATH
-  "
-  procedure Smt5
-  begin
-
-  stage stageA on origin :
-    start
-    | periodic once
-    | stageB
-
-  stage stageB on all nodes :
-    genAsmTxt 5 0 ../eo_text/asmSmt5_s0.txt
-    | stageC
-
-  stage stageC on all partitions :
-    EOAsm2 ../eo_text/asmSmt5_s0.txt 0
-    | stageD
-
-  stage stageD on origin :
-    output
-    | sink
-    | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // index on orderkey
-  // Smt6 - select * from lineitem where l_orderkey >= 70;
-  
-  STD_PATH
-  "
-  procedure Smt6
-  begin
-
-  stage stageA on origin :
-    start
-    | periodic once
-    | stageB
-
-  stage stageB on all nodes :
-    genAsmTxt 6 0 ../eo_text/asmSmt6_s0.txt
-    | stageC
-
-  stage stageC on all partitions :
-    EOAsm2 ../eo_text/asmSmt6_s0.txt 0
-    | stageD
-
-  stage stageD on origin :
-    output
-    | sink
-    | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // index on orderkey
-  // Smt7 - select * from lineitem where l_orderkey >= 30 and l_orderkey < 50;
-  
-  STD_PATH
-  "
-  procedure Smt7
-  begin
-
-  stage stageA on origin :
-    start
-    | periodic once
-    | stageB
-
-  stage stageB on all nodes :
-    genAsmTxt 7 0 ../eo_text/asmSmt7_s0.txt
-    | stageC
-
-  stage stageC on all partitions :
-    EOAsm2 ../eo_text/asmSmt7_s0.txt 0
-    | stageD
-
-  stage stageD on origin :
-    output
-    | sink
-    | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // index on orderkey
-  // Smt8 - select sum(l_extendedprice) from lineitem;
-  
-  STD_PATH
-  "
-  procedure Smt8
-  begin
-
-  stage stageA on origin :
-    start
-    | periodic once
-    | genAsmTxt 8 1 ../eo_text/asmSmt8_s1.txt
-    | stageB
-
-  stage stageB on all nodes :
-    genAsmTxt 8 0 ../eo_text/asmSmt8_s0.txt
-    | stageC
-
-  stage stageC on all partitions :
-    EOAsm2 ../eo_text/asmSmt8_s0.txt 0
-    | stageD
-
-  stage stageD on origin :
-    //EOAsm2 ../eo_text/asmSmt8_s1.txt 1
-    output
-    | sink
-    | stageA
-
-  end ;
-  "
-  api::addProcedure
-*/
 ;
 
 /*----------------------------------------------------------------------------*/
-/* Planner TPCH experiment related procedures                                 */
+/* Planner experiment related procedures                                      */
 /*----------------------------------------------------------------------------*/
 
-"  start::defProc_PlannerTPCH" .verbose
+"  start::defProc_Planner$" .verbose
 
-: start::defProc_PlannerTPCH
+: start::defProc_Planner$
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Query 6 - interpretive
-  
+  //
+
   STD_PATH
   "
-  procedure Query6_S
-  begin
+  procedure aggregRows$_I
+    parameters $table $etc
+    begin
 
-  stage stageA on origin :
-    start
-    | periodic once
-    | genAsmTxt 6 1 ../eo_text/asm6_s1.txt
-    | stageB
+    stage stageA on origin :
+      start | periodic once | stageB
 
-  stage stageB on all nodes :
-    genAsmTxt 6 0 ../eo_text/asm6_s0.txt
-    | stageC
+    stage stageB on all partitions :
+      scan $table
+      | aggreg ordinal 0 $etc
+      | stageC
 
-  stage stageB on all partitions :
-    EOAsm2 ./eo_text/asm6_s0.txt 0
-    | stageC
-
-  stage stageC on origin :
-    //EOAsm2 ./eo_text/asm6_s1.txt 0
-    output
-    | sink
-    | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Query 20 -
-  //   [P0] ( insert into temptable select p_partkey from part where p_mfgr = 'Manufacturer#1' )
-  
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // insert into tempTable0 select p_partkey from part where p_mfgr = 'Manufacturer#1';
-  
-  STD_PATH
-  "
-  procedure Query20_S0
-  begin
-
-  stage stageA on origin :
-    start
-    | periodic once
-    | stageB
-
-  stage stageB on all nodes :
-    genAsmTxt 20 0 ../eo_text/asm20_s0.txt
-    | stageC
-
-  stage stageC on all partitions :
-    EOAsm2 ../eo_text/asm20_s0.txt 0
-    | toNstRow
-    | toHshCrw
-    | insert tempTable0
-    | stageD
-
-  stage stageD on origin :
-    output
-    | sink
-    | stageA
-
-    end ;
-  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // select ps_suppkey from partsupp where ps_parkey in tempTable0;
-  
-  STD_PATH
-  "
-  procedure Query20_S1
-  begin
-
-  stage stageA on origin :
-    start
-    | periodic once
-    | stageB
-
-  stage stageB on all nodes :
-    genAsmTxt 20 1 ../eo_text/asm20_s1.txt
-    | stageC
-
-  stage stageC on all partitions :
-    EOAsm2 ../eo_text/asm20_s1.txt 0
-    | stageD
-
-  stage stageD on origin :
-    output
-    | sink
-    | stageA
-
-    end ;
-  "
-  api::addProcedure
-
-/*
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Query 20 -  [S1] select ps_suppkey from partsupp where ps_partKey in
-  //             [S0] ( select p_partkey from part where p_name like 'forest%' )
-  // changed to :[S0] ( select p_partkey from part where p_mfgr = 'Manufacturer#1' )
-  
-  STD_PATH
-  "
-  procedure Smt20_S0
-  begin
-
-  stage stageA on origin :
-    start
-    | periodic once
-    | stageB
-
-  stage stageB on all nodes :
-    genAsmTxt 20 0 ../eo_text/asm20_s0.txt
-    | stageC
-
-  stage stageC on all partitions :
-    EOAsm ../eo_text/asm20_s0.txt 0
-    | stageD
-
-  stage stageD on all nodes :
-    createTable
-    | stageE hashed
-
-  stage stageE on all partitions :
-    insert tempTable
-    | stageF
-
-  stage stageF on origin :
-    output
-    | sink
-    | stageA
+    stage stageC on origin :
+      output | sink | stageA
 
   end ;
   "
@@ -1235,42 +839,218 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
-  
+
   STD_PATH
   "
-  procedure Smt20
-  begin
+  procedure aggregRows$
+    parameters $table $etc
+    begin
 
-  stage stageA on origin :
-    start
-    | periodic once
-    | genAsmTxt 20 1 ../eo_text/asm20_s1_origin.txt
-    | EOAsm ../eo_text/asm20_s1_origin.txt   //callPipeline Smt20_S0
-    | waitPipeline
-    | stageB
+    stage stageA on origin :
+      start | periodic once | stageB
 
-  stage stageB on all nodes :
-     genAsmTxt 20 1 ../eo_text/asm20_s1_all_partitions.txt
-     | stageC
+    stage stageB on all partitions :
+      scan $table
+      | aggreg ordinal 1 $etc
+      | stageC
 
-  stage stageC on all partitions :
-    EOAsm ../eo_text/asm20_s1_all_partitions.txt 0
-    | truncateTable tempTable
-    | stageD
+    stage stageC on origin :
+     output | sink | stageA
 
-  stage stageD on all nodes :
-    dropTable tempTable
-    | stage E
+  end ;
+  "
+  api::addProcedure
 
-  stage stageE on origin :
-      output
-      | sink
-      | stageA
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //
 
-    end ;
-    "
-    api::addProcedure
+  STD_PATH
+  "
+  procedure filterRows$_I
+    parameters $table $etc
+    begin
+
+    stage stageA on origin :
+      start | periodic once | stageB
+
+    stage stageB on all partitions :
+      scan $table
+      | filter ordinal 0 $etc
+      | stageC
+
+    stage stageC on origin :
+      output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //
+
+  STD_PATH
+  "
+  procedure filterRows$
+    parameters $table $etc
+    begin
+
+    stage stageA on origin :
+      start | periodic once | stageB
+
+    stage stageB on all partitions :
+      scan $table
+      | filter ordinal 1 $etc
+      | stageC
+
+    stage stageC on origin :
+      output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+/*
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //
+  STD_PATH
+  "
+  procedure limitRows_I
+    parameters $table $rows
+    begin
+
+    stage stageA on origin :
+      start | periodic once | stageB
+
+    stage stageB on all partitions :
+      scan $table
+      | limit 0 $rows
+      | stageC
+
+    stage stageC on origin :
+      limit 0 $rows
+      | output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //
+  STD_PATH
+  "
+  procedure limitRows
+    parameters $table $rows
+    begin
+
+    stage stageA on origin :
+      start | periodic once | stageB
+
+    stage stageB on all partitions :
+      scan $table
+      | limit 1 $rows
+      | stageC
+
+    stage stageC on origin :
+      limit 1 $rows
+      | output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
 */
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //
+  STD_PATH
+  "
+  procedure projectColumns$_I
+    parameters $table $etc
+    begin
+
+    stage stageA on origin :
+      start | periodic once | stageB
+
+    stage stageB on all partitions :
+      scan $table
+      | project ordinal 0 $etc
+      | stageC
+
+    stage stageC on origin :
+      output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //
+
+  STD_PATH
+  "
+  procedure projectColumns$
+    parameters $table $etc
+    begin
+
+    stage stageA on origin :
+      start | periodic once | stageB
+
+    stage stageB on all partitions :
+      scan $table
+      | project ordinal 1 $etc
+      | stageC
+
+    stage stageC on origin :
+      output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+/*
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //
+
+  STD_PATH
+  "
+  procedure indexScan_I
+    parameters $table $index $etc
+    begin
+
+    stage stageA on origin :
+      start | periodic once | stageB
+
+    stage stageB on all partitions :
+      range 0 $table by $index $etc
+      | stageC
+
+    stage stageC on origin :
+      output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //
+
+  STD_PATH
+  "
+  procedure indexScan
+    parameters $table $index $etc
+    begin
+
+    stage stageA on origin :
+      start | periodic once | stageB
+
+    stage stageB on all partitions :
+      range 1 $table by $index $etc
+      | stageC
+
+    stage stageC on origin :
+      output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  */
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -1324,6 +1104,7 @@
       | parser $sqlStatement
       | nameValidate
       | exprValidate
+      | setOpValidate
       | transliterate
       | output
       | sink

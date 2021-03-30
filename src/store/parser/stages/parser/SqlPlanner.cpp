@@ -20,14 +20,17 @@
 #include "GraphEditor.hpp"
 
 #include "ShadowNode.hpp"
-#include "store/parser/shadowNodes/planObjects/Statement.hpp"
+#include "store/parser/shadowNodes/planObjects/statementMarkers/SelectMarker.hpp"
 #include "store/parser/shadowNodes/planObjects/FilterOp.hpp"
 #include "store/parser/shadowNodes/planObjects/LimitOp.hpp"
 #include "store/parser/shadowNodes/planObjects/ProjectOp.hpp"
 #include "store/parser/shadowNodes/planObjects/AggregateOp.hpp"
 #include "store/parser/shadowNodes/planObjects/dataSources/TableScanOp.hpp"
+#include "store/parser/shadowNodes/planObjects/UnionOp.hpp"
 
 #include "store/parser/shadowNodes/compound/TableRef.hpp"
+#include "store/parser/shadowNodes/compound/StringObject.hpp"
+#include "store/parser/shadowNodes/lists/StringList.hpp"
 
 // Expressions
 #include "ColumnRef.hpp"
@@ -63,7 +66,7 @@
 #include "store/parser/shadowNodes/expressions/operators/aggregates/MinExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/aggregates/MaxExpr.hpp"
 
-#include "store/parser/shadowNodes/compound/ProjectedExpr.hpp"
+#include "store/parser/shadowNodes/compound/ProjectedColumn.hpp"
 
 #include "SqlException.hpp"
 
@@ -233,14 +236,18 @@ antlrcpp::Any SqlPlanner::visitQuery(sqlParser::QueryContext *pCtx)
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *pCtx)
 {
-  QueryNode* pStmt = Statement::pCreate(Statement::ST_SELECT, m_sQueryStr.szStz());
+  // Get the statement string for this part of the query
+  antlr4::misc::Interval interval(pCtx->start->getStartIndex(), pCtx->stop->getStopIndex());
+  std::string queryStlStr = pCtx->start->getInputStream()->getText(interval);
+
+  QueryNode* pStmt = SelectMarker::pCreate((Stz*)(queryStlStr.c_str()));
   m_pStatementStack->vPush(pStmt);
 
   visitChildren(pCtx);
 
   if (pCtx->ORDER()) {
     // TODO
-
+    __NOT_IMPL("ORDER BY")
   }
 
   if (pCtx->LIMIT()) {
@@ -264,7 +271,54 @@ antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *pCtx)
 
     // Insert the limit op as the top-most child underneath the statement.
     // Need to make any current children of statement now children of limitOp.
-    QueryNode* pStatement = m_pStatementStack->pPeek(0);
+    QueryNode* pStatement = m_pStatementStack->pTop();
+    pStatement->vInsertAsParentOfChildren(pLimitOp);
+  }
+
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Set operations (union, intersect, except) over select queries              */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitSetQuery(sqlParser::SetQueryContext *pCtx)
+{
+  // Get the statement string for this part of the query
+  antlr4::misc::Interval interval(pCtx->start->getStartIndex(), pCtx->stop->getStopIndex());
+  std::string queryStlStr = pCtx->start->getInputStream()->getText(interval);
+
+  QueryNode *pStatement = SelectMarker::pCreate((Stz *) (queryStlStr.c_str()));
+  m_pStatementStack->vPush(pStatement);
+
+  visitChildren(pCtx);
+
+  if (pCtx->ORDER()) {
+    // TODO
+    __NOT_IMPL("ORDER BY")
+  }
+
+  if (pCtx->LIMIT()) {
+    i8 iLimit = iCleanInt(pCtx->limit);
+    i8 iOffset = -1;
+
+    if (iLimit < 0) {
+      SemanticException::vThrow(EC_INVALID_LIMIT_VALUE);
+    }
+
+    if (pCtx->OFFSET()) {
+      iOffset = iCleanInt(pCtx->offset);
+
+      if (iOffset < -1) {
+        SemanticException::vThrow(EC_INVALID_OFFSET_VALUE);
+      }
+    }
+
+    // Create the limit op
+    QueryNode* pLimitOp = LimitOp::pCreate(iLimit, iOffset);
+
+    // Insert the limit op as the top-most child underneath the statement.
+    // Need to make any current children of statement now children of limitOp.
+    QueryNode* pStatement = m_pStatementStack->pTop();
     pStatement->vInsertAsParentOfChildren(pLimitOp);
   }
 
@@ -309,12 +363,106 @@ antlrcpp::Any SqlPlanner::visitTableReference(sqlParser::TableReferenceContext *
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Set Expression node                                                        */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitSetExpr(sqlParser::SetExprContext* pCtx)
+{
+  ASSERT(m_pStatementStack->nItems() > 0);
+  ASSERT(SelectMarker::bIsOfType(m_pStatementStack->pTop()));
+  ASSERT(!m_pSelectItems);
+
+  if (pCtx->selectExpr()) {
+    // Add a SelectMarker to the statement stack. After visiting children
+    // then we can pop the entire logical subgraph off the statement stack
+    // and add them as children to a union/intersect/except operator.
+
+    // Get the statement string for this part of the query
+    antlr4::misc::Interval interval(pCtx->selectExpr()->start->getStartIndex(),
+                                    pCtx->selectExpr()->stop->getStopIndex());
+    std::string queryStlStr = pCtx->selectExpr()->start->getInputStream()->getText(interval);
+
+    QueryNode *pStatement = SelectMarker::pCreate((Stz *) (queryStlStr.c_str()));
+    m_pStatementStack->vPush(pStatement);
+  }
+
+  visitChildren(pCtx);
+
+  if (pCtx->op == nullptr) {
+    // Nothing more to do here, we're nested
+    return nullptr;
+  }
+
+  // Got a set operation.
+  // First get any properties of it.
+
+  b1 bIsDistinct = (pCtx->all == nullptr);
+
+  if (bIsDistinct) {
+    __NOT_IMPL("DISTINCT")
+  }
+
+  QueryNode* pCorrespondingByList = nullptr;
+
+  if (pCtx->corrClause()) {
+    pCorrespondingByList = StringList::pCreate();
+
+    // The vector of corresponding by list items
+    std::vector<sqlParser::CorrListItemContext*> xItemCtxVector = pCtx->corrClause()->corrList()->corrListItem();
+
+    // Iterate the item contexts, extract the column names, create nodes to hold
+    // these string values and add them to the correspondingByList
+    for (sqlParser::CorrListItemContext* pItemCtx : xItemCtxVector) {
+      Text* pColumnName = pCleanId(pItemCtx->id);
+      QueryNode* pColumnNode = StringObject::pCreate(pColumnName);
+      pCorrespondingByList->vAppendChild(pColumnNode);
+    }
+  }
+
+  // Get the actual set operation type and create it.
+  QueryNode* pSetOp;
+
+  switch (pCtx->op->getType()) {
+
+    case sqlLexer::UNION:
+      pSetOp = UnionOp::pCreate(bIsDistinct, pCorrespondingByList);
+      break;
+
+    case sqlLexer::INTERSECT:
+      __NOT_IMPL("INTERSECT")
+      break;
+
+    case sqlLexer::EXCEPT:
+      __NOT_IMPL("EXCEPT")
+      break;
+
+    default:
+      NEVER_REACH
+  }
+
+  // Add the children. They should have been added to the statement list
+  ASSERT(m_pStatementStack->nItems() >= 3);
+  QueryNode* pChild2 = m_pStatementStack->pPop();
+  QueryNode* pChild1 = m_pStatementStack->pPop();
+
+  pSetOp->vAppendChild(pChild1);
+  pSetOp->vAppendChild(pChild2);
+
+  // Add this set operator to the existing statement on the stack
+  QueryNode* pStatementMarker = m_pStatementStack->pTop();
+  ASSERT(SelectMarker::bIsOfType(pStatementMarker));
+  pStatementMarker->vAppendChild(pSetOp);
+
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 /* Select Expression node (for each select of each query/subquery)            */
 /* Contains select list / FROM / WHERE / GROUP BY / HAVING                    */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
 {
   ASSERT(m_pStatementStack->nItems() > 0);
+  ASSERT(SelectMarker::bIsOfType(m_pStatementStack->pTop()));
   ASSERT(!m_pSelectItems);
 
   // N.B. We don't call visitChildren() in this function. Instead we manually
@@ -403,21 +551,11 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
   QueryNode* pHavingFilterOp = nullptr;
   if (pCtx->having) {
 
-    // Check that the having clause is valid.
-    // The expressions in a having clause must either be the grouping column
-    // in the group by list or columns that are functionally dependant on
-    // the grouping column.
-    // TODO
-//    b1 bHasAggregate = (pAggregateOp || (pProjectOp && ProjectOp::bHasAnAggregate(pProjectOp)));
-//    if (!bHasAggregate) {
-//      SemanticException::vThrow("Cannot specify a HAVING clause with no aggregate expressions"_Stz);
-//    }
-
     ASSERT(!m_pExprList);
     m_pExprList = new QueryNodeList();
 
     // Visit the children of the HAVING clause
-    pCtx->where->accept(this);
+    pCtx->having->accept(this);
     ASSERT(m_pExprList->nItems() == 1);
 
     QueryNode* pExpr = m_pExprList->pPop();
@@ -426,6 +564,15 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
     ASSERT(m_pExprList->nItems() == 0);
     delete m_pExprList;
     m_pExprList = nullptr;
+
+    // Check that the having clause is valid.
+    // The expressions in a having clause must either be the grouping column
+    // in the group by list or columns that are functionally dependant on
+    // the grouping column.
+    if (!Expr::bContainsAnAggregate(pExpr) && !pAggregateOp) {
+      // There's no aggregate op, so the having clause must contain an aggregate
+      SemanticException::vThrow(EC_HAVING_EXPR_NOT_AGG_OR_IN_GROUPBY);
+    }
   }
 
 
@@ -447,6 +594,11 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
     ASSERT(m_pExprList->nItems() == 0);
     delete m_pExprList;
     m_pExprList = nullptr;
+
+    // Check if this expression is an aggregate
+    if (Expr::bContainsAnAggregate(pExpr)) {
+      SemanticException::vThrow(EC_AGG_EXPR_IN_WHERE_CLAUSE);
+    }
   }
 
 
@@ -477,20 +629,20 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
   QueryNode *pFirstOp = nullptr;
   QueryNode *pLastOp = nullptr;
 
-  /// PROJECT
-  if(pProjectOp) {
-    if (!pFirstOp)  pFirstOp = pProjectOp;
-    if (pLastOp)    pLastOp->vAppendChild(pProjectOp);
-
-    pLastOp = pProjectOp;
-  }
-
   /// HAVING
   if (pHavingFilterOp) {
     if (!pFirstOp)  pFirstOp = pHavingFilterOp;
     if (pLastOp)    pLastOp->vAppendChild(pHavingFilterOp);
 
     pLastOp = pHavingFilterOp;
+  }
+
+  /// PROJECT
+  if(pProjectOp) {
+    if (!pFirstOp)  pFirstOp = pProjectOp;
+    if (pLastOp)    pLastOp->vAppendChild(pProjectOp);
+
+    pLastOp = pProjectOp;
   }
 
   /// GROUP BY
@@ -518,8 +670,8 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
   }
 
   // Now attach the sql operator chain to the statement object.
-  QueryNode* pStatement = m_pStatementStack->pPeek(0);
-  ASSERT(Statement::bIsOfType(pStatement));
+  QueryNode* pStatement = m_pStatementStack->pTop();
+  ASSERT(StatementMarker::bIsOfType(pStatement));
   pStatement->vAppendChild(pFirstOp);
   
   return nullptr;
@@ -561,9 +713,9 @@ antlrcpp::Any SqlPlanner::visitSelectListItem(sqlParser::SelectListItemContext* 
   // Is there an alias?
   Text* pAliasText = pCleanId(pCtx->as);
 
-  QueryNode* pProjectedExpr = ProjectedExpr::pCreate(pExprNode, pAliasText);
+  QueryNode* pProjectedColumn = ProjectedColumn::pCreate(pExprNode, pAliasText);
 
-  m_pSelectItems->vAppend(pProjectedExpr);
+  m_pSelectItems->vAppend(pProjectedColumn);
 
   return nullptr;
 }
@@ -1286,9 +1438,6 @@ Tme SqlPlanner::xCleanTime(sqlParser::StringLiteralContext *pCtx)
 Tsp SqlPlanner::xCleanTimestamp(sqlParser::StringLiteralContext *pCtx)
 {
   ASSERT(pCtx);
-
-  static const Stz* _szInvalidFormat =
-      "Invalid timestamp string format. Must be of the form: 'YYYY-MM-DD hh:mm:ss[.ffffff]'"_Stz;
 
   // First check that it can fit into the 256 buffer
   if (pCtx->getText().length() > 255) {

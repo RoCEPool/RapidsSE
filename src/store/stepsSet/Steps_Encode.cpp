@@ -17,9 +17,9 @@ void Step::vAddSteps_Encode(void)
   vAddStep("again"_Stz,         &Step::vEncodeAgain,         true );
   vAddStep("ahead"_Stz,         &Step::vEncodeAhead,         true );
   vAddStep("continue"_Stz,      &Step::vEncodeContinue,      true );
+  vAddStep("continue_if"_Stz,   &Step::vEncodeContinue_if,   true );
   vAddStep("here"_Stz,          &Step::vEncodeHere);
   vAddStep("if"_Stz,            &Step::vEncodeIf,            true );
-  vAddStep("ifAgain"_Stz,       &Step::vEncodeIfAgain,       true );
   vAddStep("loop"_Stz,          &Step::vEncodeLoop,          true );
   vAddStep("+loop"_Stz,         &Step::vEncodeLoopPlus,      true );
   vAddStep("next"_Stz,          &Step::vEncodeNext,          true );
@@ -166,6 +166,33 @@ void Step::vEncodeContinue(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* continue_if -- encode jump to known backward address (inside if) immediate */
+/*----------------------------------------------------------------------------*/
+void Step::vEncodeContinue_if(void)
+{
+  ENTRY();
+  
+  Word* pCurrentWord =  m_pSenCompiler->pCurrentWord();
+  
+  // cstack: pop known if address
+  CodeCell* aIfDestination = m_pDataStack->aPopFip(__func__);
+  
+  // cstack: pop known backward address
+  CodeCell* aKnownDestination = m_pDataStack->aPopFip(__func__);
+  
+  // append : jump to known backward address
+  pCurrentWord->vEncodeJump("jump"_Stz,aKnownDestination);
+  
+  // cstack: push known forward address
+  m_pDataStack->vPushFip(aKnownDestination);
+  
+  // cstack: push known forward address
+  m_pDataStack->vPushFip(aIfDestination);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* here -- push address of last cell of word                        immediate */
 /*----------------------------------------------------------------------------*/
 void Step::vEncodeHere(void)
@@ -197,33 +224,6 @@ void Step::vEncodeIf(void)
   
   // cstack: push unknown forward address
   m_pDataStack->vPushFip(aUnknownOrigin);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* ifAgain -- encode jump to known backward address (inside if)     immediate */
-/*----------------------------------------------------------------------------*/
-void Step::vEncodeIfAgain(void)
-{
-  ENTRY();
-  
-  Word* pCurrentWord =  m_pSenCompiler->pCurrentWord();
-  
-  // cstack: pop known if address
-  CodeCell* aIfDestination = m_pDataStack->aPopFip(__func__);
-  
-  // cstack: pop known backward address
-  CodeCell* aKnownDestination = m_pDataStack->aPopFip(__func__);
-  
-  // append : jump to known backward address
-  pCurrentWord->vEncodeJump("jump"_Stz,aKnownDestination);
-  
-  // cstack: push known forward address
-  m_pDataStack->vPushFip(aKnownDestination);
-  
-  // cstack: push known forward address
-  m_pDataStack->vPushFip(aIfDestination);
   
   EXIT();
 }

@@ -4,22 +4,17 @@
 #pragma once
 
 #include "RowSingle.hpp"
+#include "Crw.hpp"
 
 namespace STORE
 {
   class CrwBuffer : public DataBuffer
   {
-  public:
+  private:
     RowTray    m_oRowTray;  // tray of rows
-    Table*     m_pTable;
-    StreamDef* m_pStreamDef;
     SeeMe      m_xSeeMe;
-  
     RowCompactor* m_pRowCompactor;
   
-  private:
-  
-    tXN m_tTxnNo; // transaction number
   
     // must be last
     Footer m_xFooter;
@@ -38,26 +33,27 @@ namespace STORE
     static CrwBuffer* pRefdCrwBuffer(Rrf& xRef);
     static CrwBuffer* pToCrwBuffer(void* aAddr);
     static void       vToRow(RowSingle* pRow, Crw* aCrw);
+  
+    static void       vPostRecv(void* aCrwBuffer);
 
+    void       vStreamDef(StreamDef* pStreamDef);
+    void       vTable(Table* pTable);
+
+    RowCompactor* pRowCompactor(void);;
+    RowTray* pRowTray(void);;
+  
     void       vDelete(Crw* aCrw);
     HeadLine*  aGetHead(i8 i_Crw);
     void       vOperandDump(i8 iDetail);
-    i8         nRowCount(void);
-    void       vStreamDef(StreamDef* pStreamDef);
-    void       vTable(Table* pTable);
-    Table*     pTable(void);
+    i8         nRows(void);
 
-    tXN        tTxnNo(void);
-    void       vTxnNo(tXN tTxnNo);
 
     ////////////////////////////////////////////////////////////////////////////
     // buffer functions
-    void       vBufferCount(i8& nBufferCount);
     void       vCopy(CrwBuffer* pArgCrwBuffer);
     i8         iDecile(void);
     i8         iLengthList(void);
     CrwBuffer* pNextCrwBuffer(void);
-    CrwBuffer* pNextCrwBuffer(PtnStream* pPtnStream);
     void       vNextCrwBuffer(CrwBuffer* pNextBuffer);
     CrwBuffer* pPrevCrwBuffer(void);
     void       vPrevCrwBuffer(CrwBuffer* pPrevBuffer);
@@ -72,7 +68,6 @@ namespace STORE
     void       vGetRow_single(RowSingle* pRowSingle, i8 i_Row);
     void       vShow(void);
     void       vShowRow(i8 i_Row);
-    StreamDef* pStreamDef(void);
 
     ////////////////////////////////////////////////////////////////////////////
     // row functions

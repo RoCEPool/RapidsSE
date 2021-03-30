@@ -105,6 +105,14 @@ b1 TimestampLiteral::bIsOfType(PlanNode *pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely the same as its definition     */
+/*----------------------------------------------------------------------------*/
+b1 TimestampLiteral::bIsExactType(PlanNode *pNode)
+{
+  return ShadowNode::bIsExactType(pNode, C_TIMESTAMP_LITERAL_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation                     */
 /*----------------------------------------------------------------------------*/
 eCT TimestampLiteral::eType(QueryNode* pExprNode, PlanNode* pRootNode)

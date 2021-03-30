@@ -306,9 +306,9 @@
               name: "planObject",
               value: "The root of all objects that appear in the main data path of the plan graph",
               children: [
-// Path: /__root__/definitions/object/planObject/statement
+// Path: /__root__/definitions/object/planObject/statementMarker
                 {
-                  name: "statement",
+                  name: "statementMarker",
                   value: "The root of all top-level objects that represent user-input queries",
                   properties: [
                     {
@@ -317,7 +317,7 @@
                       type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject"
                     },
                     {
-                      // Add a constraint that children of statement objects must be planObjects
+                      // Add a constraint that children of statementMarker objects must be planObjects
                       name: "__constraints", type: "/__root__/primitives/constraints", children: [
                         {
                           name: "childType",
@@ -334,47 +334,48 @@
                   ],
                   children: [
 
-// Path: /__root__/definitions/object/planObject/statement/ddl
+// Path: /__root__/definitions/object/planObject/statementMarker/ddl
                     {
                       name: "ddl",
                       value: "A container of all DDL statement objects",
                       children: [
-// TODO Path: /__root__/definitions/object/planObject/statement/ddl/createTable
-// TODO Path: /__root__/definitions/object/planObject/statement/ddl/dropTable
-// TODO Path: /__root__/definitions/object/planObject/statement/ddl/createIndex
-// TODO Path: /__root__/definitions/object/planObject/statement/ddl/dropIndex
-// TODO Path: /__root__/definitions/object/planObject/statement/ddl/createTableAsSelect
+// TODO Path: /__root__/definitions/object/planObject/statementMarker/ddl/createTable
+// TODO Path: /__root__/definitions/object/planObject/statementMarker/ddl/dropTable
+// TODO Path: /__root__/definitions/object/planObject/statementMarker/ddl/createIndex
+// TODO Path: /__root__/definitions/object/planObject/statementMarker/ddl/dropIndex
+// TODO Path: /__root__/definitions/object/planObject/statementMarker/ddl/createTableAsSelect
                       ]
-                    }, // EndPath: /__root__/definitions/object/planObject/statement/ddl
+                    }, // EndPath: /__root__/definitions/object/planObject/statementMarker/ddl
 
-// Path: /__root__/definitions/object/planObject/statement/dml
+// Path: /__root__/definitions/object/planObject/statementMarker/dml
                     {
                       name: "dml",
-                      value: "A container of all DML statement objects",
+                      value: "A container of all DML statementMarker objects",
                       children: [
-// Path: /__root__/definitions/object/planObject/statement/dml/select
+// TODO Path: /__root__/definitions/object/planObject/statementMarker/dml/explain
+// Path: /__root__/definitions/object/planObject/statementMarker/dml/select
                         {
                           name: "select",
-                          value: "A SELECT statement query",
+                          value: "A marker for a SELECT statement",
                           children: []
                         },
-// TODO Path: /__root__/definitions/object/planObject/statement/dml/insert
-// TODO Path: /__root__/definitions/object/planObject/statement/dml/update
-// TODO Path: /__root__/definitions/object/planObject/statement/dml/delete
-// TODO Path: /__root__/definitions/object/planObject/statement/dml/insertSelect
+// TODO Path: /__root__/definitions/object/planObject/statementMarker/dml/insert
+// TODO Path: /__root__/definitions/object/planObject/statementMarker/dml/update
+// TODO Path: /__root__/definitions/object/planObject/statementMarker/dml/delete
+// TODO Path: /__root__/definitions/object/planObject/statementMarker/dml/insertSelect
                       ]
-                    }, // EndPath: /__root__/definitions/object/planObject/statement/dml
+                    }, // EndPath: /__root__/definitions/object/planObject/statementMarker/dml
 
-// Path: /__root__/definitions/object/planObject/statement/dcl
+// Path: /__root__/definitions/object/planObject/statementMarker/dcl
                     {
                       name: "dcl",
-                      value: "A container of all DCL statement objects",
+                      value: "A container of all DCL statementMarker objects",
                       children: [
-// TODO Path: /__root__/definitions/object/planObject/statement/dcl/xxxx
+// TODO Path: /__root__/definitions/object/planObject/statementMarker/dcl/xxxx
                       ]
-                    } // EndPath: /__root__/definitions/object/planObject/statement/dcl
+                    } // EndPath: /__root__/definitions/object/planObject/statementMarker/dcl
                   ]
-                }, // EndPath: /__root__/definitions/object/planObject/statement
+                }, // EndPath: /__root__/definitions/object/planObject/statementMarker
 
 // Path: /__root__/definitions/object/planObject/sqlOperator
                 {
@@ -405,9 +406,9 @@
                       value: "An operator that changes the definition of the rows that it processes",
                       properties: [
                         {
-                          name: "projectedExprs",
+                          name: "projectedColumns",
                           value: "A list of expressions to be projected and their aliases",
-                          type: "/__root__/definitions/object/list/projectedExprs",
+                          type: "/__root__/definitions/object/list/projectedColumns",
                           children: []
                         }
                       ],
@@ -419,7 +420,7 @@
                           properties: [
                             {
                               name: "groupBy",
-                              value: "A list of expressions that the projectedExprs are to be grouped by",
+                              value: "A list of expressions that the projectedColumns are to be grouped by",
                               type: "/__root__/definitions/object/list/exprList"
                             }
                           ],
@@ -487,6 +488,52 @@
                       ]
                     }, // EndPath: /definitions/object/planObject/sqlOperator/dataSource
 
+// Path: /__root__/definitions/object/planObject/sqlOperator/setOp
+                    {
+                      name: "setOp",
+                      value: "An abstract operator that is a common base class of UNION/INSERSECT/EXCEPT operators",
+                      properties: [
+                        {
+                          name: "isDistinct",
+                          value: "If true then duplicate rows are removed from the result",
+                          type: "/__root__/definitions/object/valueObject/booleanObject"
+                        },
+                        {
+                          name: "correspondingByList",
+                          value: "An optional list of column names that the setOp should operate on. May be empty. May be null.",
+                          type: "/__root__/definitions/object/list/stringList",
+                          properties: [
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                              { name: "optional", type:  "/__root__/primitives/constraints/optional"},
+                            ]}
+                          ]
+                        },
+                        // A constraint on the setOp that it must have exactly 2 children
+                        { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                          {
+                            name: "childCount",
+                            type:  "/__root__/primitives/constraints/childCount",
+                            children: [ {
+                              name: "childCountParam",
+                              type: "/__root__/definitions/object/valueObject/integerObject",
+                              value: 2
+                            } ]
+                          }
+                        ]}
+                      ],
+                      children: [
+// Path: /__root__/definitions/object/planObject/sqlOperator/setOp/unionOp
+                        {
+                          name: "unionOp",
+                          value: "Merges all rows from two sources",
+                          properties: [],
+                          children: [],
+                        },
+// TODO Path: /__root__/definitions/object/planObject/sqlOperator/setOp/intersectOp
+// TODO Path: /__root__/definitions/object/planObject/sqlOperator/setOp/exceptOp
+
+                      ]
+                    }, // EndPath: /definitions/object/planObject/sqlOperator/setOp
                   ]
                 } // EndPath: /__root__/definitions/object/planObject/sqlOperator
               ],
@@ -1404,12 +1451,12 @@
               value: "A container of various specific list types",
               children: [
 
-// Path: /__root__/definitions/object/list/projectedExprs
+// Path: /__root__/definitions/object/list/projectedColumns
                 {
-                  name: "projectedExprs",
-                  value: "A list of projectedExpr objects",
+                  name: "projectedColumns",
+                  value: "A list of projectedColumn objects",
                   properties: [
-                    // We add a constraint that all children must be of type /__root__/definitions/object/compound/projectedExpr
+                    // We add a constraint that all children must be of type /__root__/definitions/object/compound/projectedColumn
                     { name: "__constraints", type: "/__root__/primitives/constraints", children: [
                       {
                         name: "childType",
@@ -1417,13 +1464,13 @@
                         children: [ {
                           name: "childTypeParam",
                           type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject",
-                          value: "/__root__/definitions/object/compound/projectedExpr"
+                          value: "/__root__/definitions/object/compound/projectedColumn"
                         } ]
                       }
                     ]} // end __constraints container
-                  ], // end projectedExprs properties
+                  ], // end projectedColumns properties
                   children: []
-                }, // EndPath: /__root__/definitions/object/list/projectedExprs
+                }, // EndPath: /__root__/definitions/object/list/projectedColumns
 
 // Path: /__root__/definitions/object/list/exprList
                 {
@@ -1439,6 +1486,27 @@
                           name: "childTypeParam",
                           type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject",
                           value: "/__root__/definitions/object/expr"
+                        } ]
+                      }
+                    ]} // end __constraints container
+                  ],
+                  children: []
+                }, // EndPath: /__root__/definitions/object/list/exprList
+
+// Path: /__root__/definitions/object/list/stringList
+                {
+                  name: "stringList",
+                  value: "A list of string objects",
+                  properties: [
+                    // We add a constraint that all children must be of type /__root__/definitions/object/valueObject/stringObject
+                    { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                      {
+                        name: "childType",
+                        type:  "/__root__/primitives/constraints/childType",
+                        children: [ {
+                          name: "childTypeParam",
+                          type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject",
+                          value: "/__root__/definitions/object/valueObject/stringObject"
                         } ]
                       }
                     ]} // end __constraints container
@@ -1599,10 +1667,10 @@
                   ]
                 },
 
-// Path: /__root__/definitions/object/compound/projectedExpr
+// Path: /__root__/definitions/object/compound/projectedColumn
                 {
-                  name: "projectedExpr",
-                  value: "An expression and an alias that it will be known by",
+                  name: "projectedColumn",
+                  value: "A compound object of an expression and an alias that it will be known by",
                   properties: [
                     {
                       name: "alias",
@@ -1615,7 +1683,7 @@
                       type: "/__root__/definitions/object/expr"
                     }
                   ]
-                }, // EndPath: /__root__/definitions/object/compound/projectedExpr
+                }, // EndPath: /__root__/definitions/object/compound/projectedColumn
 
 // Path: /__root__/definitions/object/compound/catalogDef
                 {
@@ -1781,10 +1849,10 @@
               name: "planNode",
               value: "A definition for the node that occurs at /__root__/plan.",
               properties: [
-                // Add a constraint that the children of a plan node must be a single statement node
+                // Add a constraint that the children of a plan node must be a single statementMarker node
                 { name: "__constraints", type: "/__root__/primitives/constraints", children: [
                   { name: "childType", type:  "/__root__/primitives/constraints/childType", children: [
-                    { name: "childTypeParam", type: "/__root__/definitions/object/valueObject/stringObject", value: "/__root__/definitions/object/planObject/statement" }
+                    { name: "childTypeParam", type: "/__root__/definitions/object/valueObject/stringObject", value: "/__root__/definitions/object/planObject/statementMarker" }
                   ]},
                   { name: "childCount", type:  "/__root__/primitives/constraints/childCount", children: [
                     { name: "childCountParam", type: "/__root__/definitions/object/valueObject/integerObject", value: 1 }

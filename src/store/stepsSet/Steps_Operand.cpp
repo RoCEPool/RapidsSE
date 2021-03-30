@@ -23,7 +23,6 @@
 #include "EntBuffer.hpp"
 #include "IndexTree.hpp"
 #include "CrvBuffer.hpp"
-#include "ReadApi.hpp"
 #include "TablePtn.hpp"
 #include "Table.hpp"
 #include "Node_I.hpp"
@@ -748,7 +747,7 @@ void Step::vOperandRowCountFetch(void)
   ASSERT(*( m_pJob->pLogicUnit_job() )->m_xpOperandA);
   CrwBuffer* pCrwBuffer = _pCrwBuffer(*( m_pJob->pLogicUnit_job() )->m_xpOperandA);
   
-  m_pDataStack->vPushInt(pCrwBuffer->nRowCount());
+  m_pDataStack->vPushInt(pCrwBuffer->nRows());
   
   EXIT();
 }
@@ -761,7 +760,9 @@ void Step::vOperandSet(void)
   ENTRY();
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+  
   ASSERT(! pOperand || ( m_pJob->pLogicUnit_job() )->m_xpOperandA.bIsNull());
+  
   ( m_pJob->pLogicUnit_job() )->m_xpOperandA = _pOperand(pOperand);
   
   EXIT();

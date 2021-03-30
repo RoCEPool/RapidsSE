@@ -64,7 +64,7 @@ StreamSet::StreamSet(StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMSET,_FOOTER_);
   
-  vBufferNm(pStreamDef->szName());
+  vBufferNm(pStreamDef->szStreamDefNm());
   
   _checkInitialised_(CN_STREAMSET);
   
@@ -79,6 +79,17 @@ StreamSet::~StreamSet(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMSET,_FOOTER_);
 }
+
+/*----------------------------------------------------------------------------*/
+/* post recv function                                                         */
+/*----------------------------------------------------------------------------*/
+void StreamSet::vPostRecv(void* aStreamSet)
+{
+  _static_
+  
+  StreamSet* pStreamSet = _pStreamSet(aStreamSet);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

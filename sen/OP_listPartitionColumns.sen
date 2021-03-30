@@ -21,28 +21,30 @@
   <streamDef> op__tableDef_streamSet assert
 
   // create a new streamDef
-  streamSetTable[] streamDef[].new
+  streamSetTable[] StreamDef[].new
 
   // pipeout the streamDef
-  streamDef[].pipeOut
+  StreamDef[].pipeOut
 
   // create an infoSet operand
   streamSetTable[] StreamSet[].new
 
   // get the ptn stream def from the table
-  Table[].ptnStreamDef@ to streamDef[]
-  streamDef[].columnCount@ to nPtnCols
+  Table[].shardDef@ to ShardDef[]
+  ShardDef[].columnCount@ to nPtnCols
 
   // insert a row in the infoset for each column
   nPtnCols 0 do
-    I streamDef[].column@
+    I ShardDef[].column@
     streamSetTable[] StreamSet[].addColumnDef  not if
       StreamSet[].pipeOut
       streamSetTable[] streamSet[].new
-      I streamDef[].column@
+      I ShardDef[].column@
       streamSetTable[] StreamSet[].addColumnDef assert
     then
   loop
+  
+  nullptr to ShardDef[]
 
   // pipeout the infoset
   StreamSet[].pipeOut

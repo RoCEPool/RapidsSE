@@ -37,7 +37,6 @@ void Step::vAddSteps_LogicUnit(void)
   vAddStep("LogicUnit[].dynFunArgs"_Stz,    &Step::vLogicUnitDynFunArgs);
   vAddStep("LogicUnit[].genAggregate"_Stz,  &Step::vLogicUnitGenAggregate);
   vAddStep("LogicUnit[].genAsm"_Stz,        &Step::vLogicUnitGenAsm);
-  vAddStep("LogicUnit[].genAsmTxt"_Stz,     &Step::vLogicUnitGenAsmTxt);
   vAddStep("LogicUnit[].genFilter"_Stz,     &Step::vLogicUnitGenFilter);
   vAddStep("LogicUnit[].genLimit"_Stz,      &Step::vLogicUnitGenLimit);
   vAddStep("LogicUnit[].genProjection"_Stz, &Step::vLogicUnitGenProjection);
@@ -283,12 +282,15 @@ void Step::vLogicUnitGenAggregate(void)
   pExprEval = _pExprEval(m_pDataStack->pPopPtr(__func__));
 
   StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  eEC eError;
 
   if (pExprEval->bHasGroupBy())
-    ( m_pJob->pLogicUnit_job() )->vGenerateGroupBy(pExprEval, pStreamDefOut);
+    eError = ( m_pJob->pLogicUnit_job() )->eGenerateGroupBy(pExprEval, pStreamDefOut);
   else {
-    ( m_pJob->pLogicUnit_job() )->vGenerateAggregate(pExprEval, pStreamDefOut);
+    eError = ( m_pJob->pLogicUnit_job() )->eGenerateAggregate(pExprEval, pStreamDefOut);
   }
+
+  m_pDataStack->vPushInt(eError);
 
   EXIT();
 }
@@ -331,29 +333,6 @@ void Step::vLogicUnitGenAsm(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* LogicUnit[].genAsmTxt -- generate asm text into file                       */
-/*----------------------------------------------------------------------------*/
-void Step::vLogicUnitGenAsmTxt(void)
-{
-  ENTRY();
-  
-  s256 sFileName;
-  m_pDataStack->vPopStr(sFileName, __func__);
-  
-  File* pFile = new File(nullptr);
-  UNUSED(pFile);
-
-  i8 iSubQueryNo = m_pDataStack->iPopInt(__func__);
-  i8 iQueryNo = m_pDataStack->iPopInt(__func__);
-  UNUSED(iSubQueryNo);
-  UNUSED(iQueryNo);
-
-  //( m_pJob->pLogicUnit_job() )->vGenerateAsmTxt(iQueryNo, iSubQueryNo, sFileName);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* LogicUnit[].genFilter -- generate filter asm text into file                */
 /*----------------------------------------------------------------------------*/
 void Step::vLogicUnitGenFilter(void)
@@ -364,7 +343,9 @@ void Step::vLogicUnitGenFilter(void)
 
   StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
 
-  ( m_pJob->pLogicUnit_job() )->vGenerateFilter(pExprEval, pStreamDefOut);
+  eEC eError = ( m_pJob->pLogicUnit_job() )->eGenerateFilter(pExprEval, pStreamDefOut);
+
+  m_pDataStack->vPushInt(eError);
 
   EXIT();
 }
@@ -380,7 +361,9 @@ void Step::vLogicUnitGenLimit(void)
 
   StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
 
-  ( m_pJob->pLogicUnit_job() )->vGenerateLimit(iLimit, pStreamDefOut);
+  eEC eError = ( m_pJob->pLogicUnit_job() )->eGenerateLimit(iLimit, pStreamDefOut);
+
+  m_pDataStack->vPushInt(eError);
 
   EXIT();
 }
@@ -397,7 +380,9 @@ void Step::vLogicUnitGenProjection(void)
 
   StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
 
-  ( m_pJob->pLogicUnit_job() )->vGenerateProjection(pExprEval, pStreamDefOut);
+  eEC eError = ( m_pJob->pLogicUnit_job() )->eGenerateProjection(pExprEval, pStreamDefOut);
+
+  m_pDataStack->vPushInt(eError);
 
   EXIT();
 }
@@ -413,7 +398,7 @@ void Step::vLogicUnitGenRange(void)
 
   StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
 
-  ( m_pJob->pLogicUnit_job() )->vGenerateRange(pRange, pStreamDefOut);
+  ( m_pJob->pLogicUnit_job() )->eGenerateRange(pRange, pStreamDefOut);
 
   EXIT();
 }

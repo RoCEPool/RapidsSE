@@ -41,7 +41,7 @@ InfoSetBase::InfoSetBase(eCN eClassNo, StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
   
-  vBufferNm(pStreamDef->szName());
+  vBufferNm(pStreamDef->szStreamDefNm());
     
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
 }

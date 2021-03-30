@@ -89,6 +89,13 @@ b1 CatalogDefs::bIsOfType(PlanNode *pNode)
   return ShadowNode::bIsOfType(pNode, C_CATALOGDEFS_DEFN);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely the same as its definition     */
+/*----------------------------------------------------------------------------*/
+b1 CatalogDefs::bIsExactType(PlanNode *pNode)
+{
+  return ShadowNode::bIsExactType(pNode, C_CATALOGDEFS_DEFN);
+}
 
 /*----------------------------------------------------------------------------*/
 /* get the number of catalogs in this list                                     */

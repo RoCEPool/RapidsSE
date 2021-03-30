@@ -56,8 +56,7 @@ setQuery          : (WITH withQuery (',' withQuery)*)?
                   ;
 
 setExpr           : selectExpr
-                  | setExpr op = INTERSECT (DISTINCT | all = ALL)? (corrClause)? setExpr
-                  | setExpr op = (UNION|EXCEPT) (DISTINCT | all = ALL)? (corrClause)? setExpr
+                  | setExpr op = (UNION|EXCEPT|INTERSECT) (DISTINCT | all = ALL)? (corrClause)? setExpr
                   | '(' setExpr ')'
                   ;
 

@@ -8,17 +8,21 @@
 #include "StepAccum.hpp"
 #include "Steps.hpp"
 
+extern SizeHeap gxaSizeHeap[];
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Object(void)
 {
-  vAddStep("object.class@"_Stz,     &Step::vObjectClassFetch);
-  vAddStep("object.class!"_Stz,     &Step::vObjectClassStore);
-  vAddStep("object@"_Stz,           &Step::vObjectFetch);
-  vAddStep("object.magic!"_Stz,     &Step::vObjectMagicMark);
-  vAddStep("object!"_Stz,           &Step::vObjectStore);
+  vAddStep("object.class@"_Stz,       &Step::vObjectClassFetch);
+  vAddStep("object.class!"_Stz,       &Step::vObjectClassStore);
+  vAddStep("object.dispatchWord@"_Stz,&Step::vObjectDispatchWordFetch);
+  vAddStep("object@"_Stz,             &Step::vObjectFetch);
+  vAddStep("object.magic!"_Stz,       &Step::vObjectMagicMark);
+  vAddStep("object.postRecv"_Stz,     &Step::vObjectPostRecv);
+  vAddStep("object.recvArgs@"_Stz,    &Step::vObjectRecvArgsFetch);
+  vAddStep("object!"_Stz,             &Step::vObjectStore);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -54,6 +58,24 @@ void Step::vObjectClassStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* object.dispatchWord@ -- fetch dispatch word for class of object            */
+/*----------------------------------------------------------------------------*/
+void Step::vObjectDispatchWordFetch(void)
+{
+  ENTRY();
+  
+  Object* pObject = m_pDataStack->pPopPtr(__func__);
+  
+  eCN eClassNo = pObject->eGetClassNo();
+  
+  Word* pWord = gxaSizeHeap[eClassNo].m_pDispatchWord;
+  
+  m_pDataStack->vPushPtr(pWord);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* object@ -- fetch object from return stack onto data stack                  */
 /*----------------------------------------------------------------------------*/
 void Step::vObjectFetch(void)
@@ -72,7 +94,7 @@ void Step::vObjectFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* object.magic! -- put magic number into object                             */
+/* object.magic! -- put magic number into object                              */
 /*----------------------------------------------------------------------------*/
 void Step::vObjectMagicMark(void)
 {
@@ -81,6 +103,54 @@ void Step::vObjectMagicMark(void)
   Object* pObject = m_pDataStack->pPopPtr(__func__);
   
   pObject->vSetMagic();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* object.postRecv -- run post-receive function of object                     */
+/*----------------------------------------------------------------------------*/
+void Step::vObjectPostRecv(void)
+{
+  ENTRY();
+  
+  Object* pObject = m_pDataStack->pPopPtr(__func__);
+  RASSERT(pObject->bGetWasReceived());
+  RASSERT(!pObject->bGetPostRecvRun());
+  
+  eCN eClassNo = pObject->eGetClassNo();
+  
+  if (eClassNo != CN_JOB && eClassNo != CN_XMITOPERAND)
+    vDebugPoint();
+  
+  fpPOSTFN* fpPostRecvFn = gxaSizeHeap[eClassNo].m_fpPostRecvFn;
+  
+  if (! fpPostRecvFn) {
+    pObject->vSetPostRecvRun(true);
+    return;
+  }
+  
+  pObject->vSetPostRecvRun(true);
+  fpPostRecvFn(pObject);
+
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* object.recvArgs@ -- fetch number of receive arguments                      */
+/*----------------------------------------------------------------------------*/
+void Step::vObjectRecvArgsFetch(void)
+{
+  ENTRY();
+  
+  Object* pObject = m_pDataStack->pPopPtr(__func__);
+  
+  eCN eClassNo = pObject->eGetClassNo();
+  
+  i8 nRecvArgs = gxaSizeHeap[eClassNo].m_nRecvArgs;
+  
+  m_pDataStack->vPushInt(nRecvArgs);
   
   EXIT();
 }

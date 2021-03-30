@@ -89,6 +89,13 @@ b1 ColumnDefs::bIsOfType(PlanNode *pNode)
   return ShadowNode::bIsOfType(pNode, C_COLUMNDEFS_DEFN);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely the same as its definition     */
+/*----------------------------------------------------------------------------*/
+b1 ColumnDefs::bIsExactType(PlanNode *pNode)
+{
+  return ShadowNode::bIsExactType(pNode, C_COLUMNDEFS_DEFN);
+}
 
 /*----------------------------------------------------------------------------*/
 /* get the number of columns in this list                                     */

@@ -6,25 +6,23 @@
 #include "Index.hpp"
 #include "eTT.h"
 
-namespace STORE { class InfoSet; class StreamDef; }
+namespace STORE { class InfoSet; class StreamDef; class ShardDef; }
 
 namespace STORE
 {
-  class Table : public Object
+  class Table : public Operand
   {
   private:
-    s32        m_sTableNm;    // table name (leave for the moment)
-    eTT        m_eKind  ;     // table kind
-
-    IdxVec*    m_pIdxVec;     // index vector
-    Atomic     m_ixIndexNo;   // next index no
+    s32 m_sTableNm; // table name (leave for the moment)
+    eTT m_eKind;    // table kind
+  
+    Location   m_oLocation;   // logical location of table
+    StreamDef* m_pStreamDef;  // table stream def
+    ShardDef*  m_pShardDef;   // partition/sharding key def
     BucketMap* m_pBucketMap;  // bucket (to partition) map
-    bool       m_bIsLoading;  // data is loading
-    bool       m_bDefinitionOnly; // table is a definition only
+    IdxVec*    m_pIdxVec;     // index vector
     
-    StreamDef*    m_pStreamDef;    // table stream def
-    TablePtnVec*  m_pTablePtnVec;  // table partition vector
-    StreamDef*    m_pPtnStreamDef; // partition stream def
+    TablePtnVec*  m_pTablePtnVec; // table partition vector
         
     // must be last
     Footer m_xFooter;
@@ -43,6 +41,8 @@ namespace STORE
     static IndexDef*  pIndexDef(DicStack* pDicStack, Stz* aTableNm, i8 iIndexNo);
     static void       vMonitorPortrait(s48K& sPortrait);
     static StreamDef* pStreamDef(DicStack* pDicStack, Stz* aTableNm);
+  
+    static void       vPostRecv(void* aTable);
     
     i8      iPtnNoToTablePtn(tPN tPtnNo);
     tPN     tTablePtnToPtnNo(i8 i_TablePtn);
@@ -50,28 +50,26 @@ namespace STORE
     void    vAddIndex(Index* pIndex);
     void    vAnalyze(i8 i_TablePtn, i8& nBuffers, i8& nRows);
     BucketMap* pBucketMap(void);
+    void    vBucketMap(BucketMap* pBucketMap);
+    i8      nBuffers(void);
     void    vCompactIndex(Index* pIndex);
     void    vCreatePtnDef(void);
-    i8      nCrwBuffers(void);
     void    vContentDump(void);
     Column* pFindColumn(Stz* szColNm);
     IdxVec* pIdxVec(void);
     i8      nIndexBuffers(i8 i_Index);
     bool    bIsDefinitionOnly(void);
     bool    bIsInternallyDefined(void);
-    void    vIsLoading(bool bIsLoading);
-    bool    bIsLoading(void);
     bool    bIsUserCreated(void);
     eTT     eKind(void);
     void    vKind(eTT eKind);
-    void    vLazyBuildIndexes(i8 i_TablePtn);
     void    vListContents(i8 i_Depth);
     void    vMarkTable(void);
     bool    bPopulateIndex(i8 iIndexNo);
     void    vRemoveIndex(Index* pIndex);
-    StreamDef* pPtnStreamDef(void);
-    bool    bPurge(i8 i_TablePtn, i8 iOlderThanSeconds);
+    void    vResetPointers(void);
     EntBuffer* pRootBuffer(i8 i_TablePtn, i8 i_Index);
+    ShardDef*  pShardDef(void);
     StreamDef* pStreamDef(void);
     void       vStreamDef(StreamDef* pStreamDef);
     Stz*    szTableNm(void);
@@ -85,6 +83,7 @@ namespace STORE
     bool bVerifyIndexes(void);
     bool bVerifyIndex(Index* pIndex);
    
+  private:
     Footer* aFooter(void);
   };
   

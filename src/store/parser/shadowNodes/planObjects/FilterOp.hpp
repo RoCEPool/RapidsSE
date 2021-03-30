@@ -25,6 +25,9 @@ namespace Parser
     // Returns true if a given node is a given type ** or is derived from that type **
     static b1 bIsOfType(PlanNode* pNode);
 
+    // Returns true if a given node is this exact given type.
+    static b1 bIsExactType(PlanNode* pNode);
+
     // Returns the internal symbolic filterExpr node of the filterOp
     static QueryNode* pFilterExpr(QueryNode* pNode);
 
@@ -32,7 +35,7 @@ namespace Parser
     // Must be freed after use.
     static QueryNode* pOrdinalFilterExpr(QueryNode* pNode, PlanNode* pRootNode);
 
-    // Return a list of ProjectedExprs that represent the column expressions
+    // Return a list of ProjectedColumns that represent the column expressions
     // that this PlanObject will return. All nodes and the list must be freed.
     static PlanNodeList* pColumnExprs(QueryNode* pNode, PlanNode* pRootNode);
 

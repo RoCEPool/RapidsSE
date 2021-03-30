@@ -128,7 +128,7 @@ void ToHshCrw::vAddNst(RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOHSHCRW,_FOOTER_);
   
-  ASSERT(0 == m_pCrwBuffer->nRowCount());
+  ASSERT(0 == m_pCrwBuffer->nRows());
 
   NmlStr* pNmlStr = pRowBuffer->pNmlStr();
 
@@ -136,7 +136,7 @@ void ToHshCrw::vAddNst(RowBuffer* pRowBuffer)
   while ( (szNmlStr = pNmlStr->szEach(szNmlStr)) ) {
     //vTrace("vAddNst : %s\n"_Stz,szNmlStr);
 
-    bool bAdded = m_pCrwBuffer->m_pRowCompactor->bCompactTail(szNmlStr);
+    bool bAdded = m_pCrwBuffer->pRowCompactor()->bCompactTail(szNmlStr);
     ASSERT(bAdded);
     UNUSED(bAdded);
   }

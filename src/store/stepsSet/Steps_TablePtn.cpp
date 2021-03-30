@@ -19,7 +19,6 @@
 #include "EntBuffer.hpp"
 #include "IndexTree.hpp"
 #include "CrvBuffer.hpp"
-#include "ReadApi.hpp"
 #include "TablePtn.hpp"
 #include "Job.hpp"
 #include "Node_I.hpp"
@@ -38,7 +37,6 @@ void Step::vAddSteps_TablePtn(void)
   vAddStep("TablePtn[].dropRead"_Stz,         &Step::vTablePtnDropRead);
   vAddStep("TablePtn[].dropWrite"_Stz,        &Step::vTablePtnDropWrite);
   vAddStep("TablePtn[].populateIndex"_Stz,    &Step::vTablePtnPopulateIndex);
-  vAddStep("TablePtn[].purge"_Stz,            &Step::vTablePtnPurge);
   vAddStep("TablePtn[].root"_Stz ,            &Step::vTablePtnRoot);
   vAddStep("TablePtn[].set"_Stz  ,            &Step::vTablePtnSet);
   vAddStep("TablePtn[].truncate"_Stz,         &Step::vTablePtnTruncate);
@@ -52,17 +50,30 @@ void Step::vTablePtnAppendBuffer(void)
 {
   ENTRY();
   
-  // get the CrwBuffer
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pDataStack->pPopPtr(__func__));
-  
-  ASSERT(! pCrwBuffer->pNextItem());
-  ASSERT(! pCrwBuffer->pPrevItem());
+  DataBuffer* pDataBuffer = _pDataBuffer(m_pDataStack->pPopPtr(__func__));
+  ASSERT(! pDataBuffer->pNextItem());
+  ASSERT(! pDataBuffer->pPrevItem());
 
   // get the tablePtn from the register
   TablePtn* pTablePtn = _pTablePtn(*( m_pJob->pLogicUnit_job() )->m_xpTablePtn);
   
   // append the buffer to the tablePtn
-  pTablePtn->vAppendBuffer(pCrwBuffer);
+  
+  eCN eClassNo = pDataBuffer->eGetClassNo();
+  pTablePtn->vAppendBuffer(pDataBuffer);
+
+//  if (CN_CRWBUFFER == eClassNo) {
+//    CrwBuffer* pCrwBuffer = _pCrwBuffer(pDataBuffer);
+//    pTablePtn->vAppendBuffer(pCrwBuffer);
+//  }
+//  else if (CN_ROWBUFFER == eClassNo) {
+//    RowBuffer* pRowBuffer = _pRowBuffer(pDataBuffer);
+//    NEVER_REACH;
+//    //pTablePtn->vAppendBuffer(pRowBuffer);
+//  }
+//  else {
+//    NEVER_REACH;
+//  }
   
   EXIT();
 }
@@ -165,22 +176,6 @@ void Step::vTablePtnPopulateIndex(void)
   bool bPopulated = pTablePtn->bPopulateIndex(iIndexNo);
   
   m_pDataStack->vPushInt(bPopulated ? 1 : 0);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* TablePtn[].purge -- purge prior versions of this table ptn                 */
-/*----------------------------------------------------------------------------*/
-void Step::vTablePtnPurge(void)
-{
-  ENTRY();
-  
-  TablePtn* pTablePtn = *( m_pJob->pLogicUnit_job() )->m_xpTablePtn;
-  
-  // get the oldest perspective
-  t8 tOldestPsp = AM::pTxSet()->tOldestPsp();
-  pTablePtn->pReadApi()->vPurgePriorVersions(tOldestPsp);
   
   EXIT();
 }

@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "RowCoder.hpp"
+
 namespace STORE
 {
   static const i8 C_HEADLINE_OFS_WORDS = 0;

@@ -27,7 +27,6 @@
 
 #include "Crv.hpp"
 #include "CrvBuffer.hpp"
-#include "ReadApi.hpp"
 #include "TablePtn.hpp"
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"
@@ -54,7 +53,7 @@ void vDev_IXT_CRWBUF_BEGIN(i8** aaiDstk)
   pDevIxt->m_i_Row = -1;
   pDevIxt->m_aCrw = nullptr;
   pDevIxt->m_nRows = pDevIxt->m_pCrwBuffer ?
-                     pDevIxt->m_pCrwBuffer->nRowCount() : 0;
+                     pDevIxt->m_pCrwBuffer->nRows() : 0;
 
   *aaiDstk = aiDstk;
 }
@@ -553,9 +552,9 @@ void vDev_IXT_INDEXTREE_DELETE(i8** aaiDstk)
   i8 *aiDstk = *aaiDstk;
   DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
 
-  IndexTree* pIndexTree = pDevIxt->m_pIdxTree;
-  pDevIxt->m_pIdxTree = nullptr;
-  delete pIndexTree;
+  //IndexTree* pIndexTree = pDevIxt->m_pIdxTree;
+  //pDevIxt->m_pIdxTree = nullptr;
+  //delete pIndexTree;
 
   *aaiDstk = aiDstk;
 }
@@ -948,23 +947,6 @@ void vDev_ENTWRK_SETINTELM(i8** aaiDstk)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* delete the streamDef from the dev                                          */
-/*----------------------------------------------------------------------------*/
-void vDev_ROW_STREAMDEF_DELETE(i8** aaiDstk)
-{
-  _static_
-
-  i8 *aiDstk = *aaiDstk;
-  DevROW* pDevRow = _pDevROW(P_PopPtr());
-
-  StreamDef* pStreamDef = pDevRow->m_pStreamDef;
-  pDevRow->m_pStreamDef = nullptr;
-  delete pStreamDef;
-
-  *aaiDstk = aiDstk;
-}
 
 /*----------------------------------------------------------------------------*/
 /* begin src row traverse                                                     */
@@ -1515,6 +1497,57 @@ void vDev_ROW_COLS_TO_LOCALS(i8** aaiDstk)
         *ayDst = (i8)pDevRow->m_aRow->szColVal_ofs(iaColSet[i_ColSet]);
         ayDst++;
         break;
+      default:
+        ASSERT(0);
+    }
+  }
+
+  *aaiDstk = aiDstk;
+}
+
+/*----------------------------------------------------------------------------*/
+/* row buffer columns of row dev into row                                     */
+/*----------------------------------------------------------------------------*/
+void vDev_ROW_COLS_TO_ROW(i8** aaiDstk)
+{
+  _static_
+
+  i8 *aiDstk = *aaiDstk;
+
+  // pop the dst row device
+  DevROW* pDevRowDst = _pDevROW(P_PopPtr());
+
+  // pop the src row device
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
+
+  Stz* szStr;
+  char* azDst;
+  i8 nSize;
+
+  for (i8 i_Col = 0; i_Col < pDevRow->m_pStreamDef->nColumns(); i_Col++) {
+    Column* pColumn = pDevRow->m_pStreamDef->pGetColumn(i_Col);
+    switch (pColumn->eColumnType()) {
+      case CT_INTEGER:
+      case CT_DATE:
+      case CT_TIMESTAMP:
+      case CT_DECIMAL:
+        pDevRowDst->m_aRow->vColVal_int(i_Col, pDevRow->m_aRow->iColVal_int(i_Col));
+        break;
+      case CT_CHAR:
+      case CT_VARCHAR:
+        // get the str address
+        szStr = pDevRow->m_aRow->szColVal_ofs(i_Col);
+
+        pDevRowDst->m_pRowBuffer->vPositionOnCell(i_Col);
+
+        azDst = pDevRowDst->m_pRowBuffer->azDepositString_begin();
+
+        StrLib::vCopy(azDst,(char*)szStr);
+        nSize = StrLib::nSize(azDst);
+
+        pDevRowDst->m_pRowBuffer->vDepositString_end(nSize);
+        break;
+
       default:
         ASSERT(0);
     }

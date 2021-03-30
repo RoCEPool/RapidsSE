@@ -171,6 +171,20 @@ rows:
   (2,'ven requests. deposits breach a',DATE '1997-01-28',0.00,2)
 
 //------------------------------------------------------------------------------
+ projectColumns lineitem 1, 2, null;
+ rows:
+  (1,2,null)
+  (1,2,null)
+  (1,2,null)
+  (1,2,null)
+  (1,2,null)
+  (1,2,null)
+  (1,2,null)
+  (1,2,null)
+  (1,2,null)
+  (1,2,null)
+
+//------------------------------------------------------------------------------
 // drop the table
 drop table lineitem;
 success;

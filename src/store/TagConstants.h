@@ -83,55 +83,25 @@ static Stz* C_TAG_SEEDRUN  = "<seedRun>"_Stz;
 static Stz* C_TAG_QUERY_NO = "<queryNo>"_Stz;
 static Stz* C_TAG_SUBQUERY_NO = "<subQueryNo>"_Stz;
 
-static Stz* C_TAG_SRC_TABLENM  = "<srcTableNm>"_Stz;
-static Stz* C_TAG_SRC_INDEXNM  = "<srcIndexNm>"_Stz;
-static Stz* C_TAG_ALT_TABLENM  = "<altTableNm>"_Stz;
-static Stz* C_TAG_ALT_INDEXNM  = "<altIndexNm>"_Stz;
-
-static Stz* C_TAG_COLUMN_SCALE  = "<columnScale>"_Stz;
-static Stz* C_TAG_COLUMN_LENGTH = "<columnLength>"_Stz;
-static Stz* C_TAG_COLUMN_TYPE   = "<columnType>"_Stz;
-static Stz* C_TAG_COLUMN_NAME   = "<columnName>"_Stz;
-
 static Stz* C_TAG_LOGICUNIT_HANDLER     = "<logicUnitHandler>"_Stz;
-static Stz* C_TAG_CRW_PROCESS_ROUTINE   = "<crwProcessRoutine>"_Stz;
-static Stz* C_TAG_CRW_FILTER_ROUTINE    = "<crwFilterRoutine>"_Stz;
-static Stz* C_TAG_DATAPULSE_PROCESS_ROUTINE = "<dataPulseProcessRoutine>"_Stz;
-static Stz* C_TAG_ROW_PROCESS_ROUTINE   = "<rowProcessRoutine>"_Stz;
 
+static Stz* C_TAG_CRW_PROCESS_ROUTINE   = "<crwProcessRoutine>"_Stz;
+static Stz* C_TAG_DATAPULSE_PROCESS_ROUTINE = "<dataPulseProcessRoutine>"_Stz;
 static Stz* C_TAG_EOS_PROCESS_ROUTINE   = "<eosProcessRoutine>"_Stz;
+static Stz* C_TAG_INDEX_PROCESS_ROUTINE = "<indexProcessRoutine>"_Stz;
+static Stz* C_TAG_ROW_PROCESS_ROUTINE   = "<rowProcessRoutine>"_Stz;
 
 static Stz* C_TAG_LIMIT_ROWS            = "<limitRows>"_Stz;
 
 static Stz* C_TAG_PAYLOAD_BYTES         = "<payLoadBytes>"_Stz;
 static Stz* C_TAG_PAYLOAD_ROUTINE       = "<payLoadRoutine>"_Stz;
 static Stz* C_TAG_PAYLOAD_KEY           = "<payLoadKey>"_Stz;
-static Stz* C_TAG_PAYLOAD_STORE         = "<payLoadStore>"_Stz;
 static Stz* C_TAG_PAYLOAD_TO_BUFFER     = "<payLoadToBuffer>"_Stz;
-
-static Stz* C_TAG_INDEX_RANGE_ROUTINE   = "<indexRangeRoutine>"_Stz;
-static Stz* C_TAG_INDEX_PROCESS_ROUTINE = "<indexProcessRoutine>"_Stz;
-
-static Stz* C_TAG_SRC_EXISTS_ALTIDX     = "<srcExistsAltIdx>"_Stz;
-
-static Stz* C_TAG_ADD_PTN_HASH          = "<addPtnHash>"_Stz;
 
 static Stz* C_TAG_PROJECT_ITEMS         = "<projectItems>"_Stz;
 static Stz* C_TAG_PROJECT_SRC_COLUMN    = "<projectSrcColumn>"_Stz;
 static Stz* C_TAG_PROJECT_SRC_COLUMNS   = "<projectSrcColumns>"_Stz;
 
-static Stz* C_TAG_LOCALS_COLUMN = "<localsColumn>"_Stz;
-static Stz* C_TAG_SUM_COLUMN    = "<sumColumn>"_Stz;
-
-static Stz* C_TAG_DST_COLUMN       = "<dstColumn>"_Stz;
-static Stz* C_TAG_SRC_COLUMN       = "<srcColumn>"_Stz;
-
-static Stz* C_TAG_PREDICATE_COLUMNS     = "<predicateColumns>"_Stz;
-static Stz* C_TAG_PREDICATE_SRC_COLUMN  = "<predicateSrcColumn>"_Stz;
-static Stz* C_TAG_FILTERNO  = "<filterNo>"_Stz;
-
-static Stz* C_TAG_LITERAL_TYPE     = "<literalType>"_Stz;
-static Stz* C_TAG_LITERAL_VALUE    = "<literalValue>"_Stz;
 static Stz* C_TAG_RELATIONAL_UPPER = "<relationalUpper>"_Stz;
 
 static Stz* C_TAG_LBOUND_TYPE     = "<lboundType>"_Stz;
@@ -139,9 +109,6 @@ static Stz* C_TAG_UBOUND_TYPE     = "<uboundType>"_Stz;
 
 static Stz* C_TAG_LBOUND_LITERAL = "<lboundLiteral>"_Stz;
 static Stz* C_TAG_UBOUND_LITERAL = "<uboundLiteral>"_Stz;
-
-static Stz* C_TAG_LOWER_BOUND = "<lowerBound>"_Stz;
-static Stz* C_TAG_UPPER_BOUND = "<upperBound>"_Stz;
 
 
 /*============================================================================*/

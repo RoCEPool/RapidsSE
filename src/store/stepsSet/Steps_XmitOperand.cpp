@@ -52,6 +52,8 @@ void Step::vXmitOperandPipeOut(void)
   
   XmitOperand* pXmitOperand = _pXmitOperand(m_pDataStack->pPopPtr(__func__));
   
+  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+  
   // find the pipeline participant job
   i8 iPipelineJob = pXmitOperand->m_iPipelineJobId;
   Job* pPipelineJob = AM::pJob_FindParticipating(iPipelineJob);
@@ -69,7 +71,7 @@ void Step::vXmitOperandPipeOut(void)
   //vTrace("Step::vXmitOperandPipeOut pXmitOperand->m_i_Node:%lld   pXmitOperand->m_tPtnNo:%lld\n"_Stz, pXmitOperand->m_i_Node, pXmitOperand->m_tPtnNo);
   // append to left queue
   if (pXmitOperand->m_pOperand)
-    pOp->vAppendLeft(pXmitOperand->m_pOperand,this);
+    pOp->vAppendLeft(pOperand,this);
   
   // now delete the pXmitOperand
   delete pXmitOperand;

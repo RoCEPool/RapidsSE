@@ -19,7 +19,6 @@
 #include "EntBuffer.hpp"
 #include "IndexTree.hpp"
 #include "CrvBuffer.hpp"
-#include "ReadApi.hpp"
 #include "TablePtn.hpp"
 #include "Table.hpp"
 #include "Node_I.hpp"
@@ -39,35 +38,33 @@ void Step::vAddSteps_Table(void)
   vAddStep("table::delete"_Stz,            &Step::vTableDelete);
   vAddStep("table::new"_Stz,               &Step::vTableNew);
   
-  vAddStep("table[]"_Stz,                  &Step::vTableGet);
-  vAddStep("table[].set"_Stz,              &Step::vTableSet);
+  vAddStep("Table[]"_Stz,                  &Step::vTableGet);
+  vAddStep("Table[].set"_Stz,              &Step::vTableSet);
   
   vAddStep("table.addIndex"_Stz,           &Step::vTableAddIndex);
-  vAddStep("table[].asAltStreamDef"_Stz,   &Step::vTableAsAltStreamDef);
-  vAddStep("table[].asSrcStreamDef"_Stz,   &Step::vTableAsSrcStreamDef);
-  vAddStep("table[].columnCount@"_Stz,     &Step::vTableColumnCountFetch);
-  vAddStep("table[].column@"_Stz,          &Step::vTableColumnFetch);
+  vAddStep("Table[].asAltStreamDef"_Stz,   &Step::vTableAsAltStreamDef);
+  vAddStep("Table[].asSrcStreamDef"_Stz,   &Step::vTableAsSrcStreamDef);
+  vAddStep("Table[].columnCount@"_Stz,     &Step::vTableColumnCountFetch);
+  vAddStep("Table[].column@"_Stz,          &Step::vTableColumnFetch);
   vAddStep("table.createPtnDef"_Stz,       &Step::vTableCreatePtnDef);
   vAddStep("table.deleteIndex"_Stz,        &Step::vTableDeleteIndex);
-  vAddStep("table[].dump"_Stz,             &Step::vTableDump);
-  vAddStep("table[].findColumn"_Stz,       &Step::vTableFindColumn);
+  vAddStep("Table[].dump"_Stz,             &Step::vTableDump);
+  vAddStep("Table[].findColumn"_Stz,       &Step::vTableFindColumn);
   vAddStep("table.indexCount"_Stz,         &Step::vTableIndexCount);
   vAddStep("table.isColumn"_Stz,           &Step::vTableIsColumn);
-  vAddStep("table[].isInternallyDefined"_Stz, &Step::vTableIsInternallyDefined);
-  vAddStep("table[].isUserCreated"_Stz,    &Step::vTableIsUserCreated);
-  vAddStep("table.lazyBuildIndexes"_Stz,   &Step::vTableLazyBuildIndexes);
-  vAddStep("table[].listPartition"_Stz,    &Step::vTableListPartition);
-  vAddStep("table[].name@"_Stz,            &Step::vTableNameFetch);
-  vAddStep("table[].ptnStreamDef@"_Stz,    &Step::vTablePtnStreamDefFetch);
-  vAddStep("table.purge"_Stz,              &Step::vTablePurge);
-  vAddStep("table[].size"_Stz,             &Step::vTableSize);
-  vAddStep("table[].streamDef@"_Stz,       &Step::vTableStreamDefFetch);
+  vAddStep("Table[].isInternallyDefined"_Stz, &Step::vTableIsInternallyDefined);
+  vAddStep("Table[].isUserCreated"_Stz,    &Step::vTableIsUserCreated);
+  vAddStep("Table[].listPartition"_Stz,    &Step::vTableListPartition);
+  vAddStep("Table[].name@"_Stz,            &Step::vTableNameFetch);
+  vAddStep("Table[].shardDef@"_Stz,        &Step::vTableShardDefFetch);
+  vAddStep("Table[].size"_Stz,             &Step::vTableSize);
+  vAddStep("Table[].streamDef@"_Stz,       &Step::vTableStreamDefFetch);
   vAddStep("table.streamDef!"_Stz,         &Step::vTableStreamDefStore);
-  vAddStep("table[].tablePtn@"_Stz,        &Step::vTableTablePtnFetch);
-  vAddStep("table[].tablePtnGet"_Stz,      &Step::vTableTablePtnGet);
-  vAddStep("table[].tablePtnZero"_Stz,     &Step::vTableTablePtnZero);
-  vAddStep("table[].verify"_Stz,           &Step::vTableVerify);
-  vAddStep("table[].visualize"_Stz,        &Step::vTableVisualize);
+  vAddStep("Table[].tablePtn@"_Stz,        &Step::vTableTablePtnFetch);
+  vAddStep("Table[].tablePtnGet"_Stz,      &Step::vTableTablePtnGet);
+  vAddStep("Table[].tablePtnZero"_Stz,     &Step::vTableTablePtnZero);
+  vAddStep("Table[].verify"_Stz,           &Step::vTableVerify);
+  vAddStep("Table[].visualize"_Stz,        &Step::vTableVisualize);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -124,7 +121,7 @@ void Step::vTableAddIndex(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table[].asAltStreamDef -- use this tables stream def as alt stream def     */
+/* Table[].asAltStreamDef -- use this tables stream def as alt stream def     */
 /*----------------------------------------------------------------------------*/
 void Step::vTableAsAltStreamDef(void)
 {
@@ -144,7 +141,7 @@ void Step::vTableAsAltStreamDef(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table[].asSrcStreamDef -- use this tables stream def as src stream def     */
+/* Table[].asSrcStreamDef -- use this tables stream def as src stream def     */
 /*----------------------------------------------------------------------------*/
 void Step::vTableAsSrcStreamDef(void)
 {
@@ -159,29 +156,6 @@ void Step::vTableAsSrcStreamDef(void)
     delete pStreamDefOld;
 
   ( m_pJob->pLogicUnit_job() )->m_pDevSrcRow->m_pStreamDef = new StreamDef(pStreamDef);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.lazyBuildIndexes -- lazy build of indexes (from lazy chains)         */
-/*----------------------------------------------------------------------------*/
-void Step::vTableLazyBuildIndexes(void)
-{
-  ENTRY();
-  i8 i_TablePtn;
-  s48K sString;
-  
-  m_pDataStack->vPopStr(sString,__func__);
-  
-  Table* pTable = reinterpret_cast<Table*>(sString.iToI8());
-  ASSERT(CN_TABLE == pTable->eGetClassNo());
-  
-  m_pDataStack->vPopStr(sString,__func__);
-  
-  i_TablePtn = sString.iToI8();
-  
-  pTable->vLazyBuildIndexes(i_TablePtn);
   
   EXIT();
 }
@@ -235,7 +209,7 @@ void Step::vTableColumnCountFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table.deleteIndex -- remove an index from the table                   */
+/* table.deleteIndex -- remove an index from the table                        */
 /*----------------------------------------------------------------------------*/
 void Step::vTableDeleteIndex(void)
 {
@@ -287,7 +261,7 @@ void Step::vTableStreamDefFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Table[].tablePtn@ -- fetch the table partition                              */
+/* Table[].tablePtn@ -- fetch the table partition                             */
 /*----------------------------------------------------------------------------*/
 void Step::vTableTablePtnFetch(void)
 {
@@ -440,7 +414,7 @@ void Step::vTableIsInternallyDefined(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table.isUserCreated -- is the table a user created table?                   */
+/* table.isUserCreated -- is the table a user created table?                  */
 /*----------------------------------------------------------------------------*/
 void Step::vTableIsUserCreated(void)
 {
@@ -454,7 +428,7 @@ void Step::vTableIsUserCreated(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table[].listPartition -- list partition                                    */
+/* Table[].listPartition -- list partition                                    */
 /*----------------------------------------------------------------------------*/
 void Step::vTableListPartition(void)
 {
@@ -548,38 +522,19 @@ void Step::vTableNew(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Table[].ptnStreamDef@ -- get the table ptn stream def                      */
+/* Table[].shardDef@ -- get the table ptn stream def                          */
 /*----------------------------------------------------------------------------*/
-void Step::vTablePtnStreamDefFetch(void)
+void Step::vTableShardDefFetch(void)
 {
   ENTRY();
   
   Table* pTable = _pTable(*( m_pJob->pLogicUnit_job() )->m_xpTable);
   ASSERT(CN_TABLE == pTable->eGetClassNo());
   
-  StreamDef* pStreamDef = pTable->pPtnStreamDef();
+  ShardDef* pShardDef = pTable->pShardDef();
   
-  m_pDataStack->vPushPtr(pStreamDef);
+  m_pDataStack->vPushPtr(pShardDef);
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.purge -- purge rows/buffers in table on data stack                   */
-/*----------------------------------------------------------------------------*/
-void Step::vTablePurge(void)
-{
-  ENTRY();
-  
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
-  i8 i_TablePtn = m_pDataStack->iPopAsInt(__func__);
-  
-  i8 iOlderThanSeconds = m_pDataStack->iPopAsInt(__func__);
-  
-  bool bPurged = pTable->bPurge(i_TablePtn,iOlderThanSeconds);
-  UNUSED(bPurged);
-
   EXIT();
 }
 
@@ -592,8 +547,8 @@ void Step::vTableSize(void)
   
   Table* pTable = _pTable(*( m_pJob->pLogicUnit_job() )->m_xpTable);
   
-  i8 iBuffers = pTable->nCrwBuffers();
-  i8 iSize = iBuffers * C_SIZE_POOL_BUFFER;
+  i8 nBuffers = pTable->nBuffers();
+  i8 iSize = nBuffers * C_SIZE_POOL_BUFFER;
   m_pDataStack->vPushInt(iSize);
   
   EXIT();

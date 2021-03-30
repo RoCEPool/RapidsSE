@@ -8,7 +8,6 @@
 #include "EntBuffer.hpp"
 #include "IndexTree.hpp"
 #include "CrvBuffer.hpp"
-#include "ReadApi.hpp"
 #include "TablePtn.hpp"
 #include "Table.hpp"
 
@@ -68,7 +67,7 @@ void Index::operator delete(void* aAddrIndex)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Index::Index(Stz* szIndexNm)
-: Object(CN_INDEX)
+: Operand(CN_INDEX)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
 
@@ -128,6 +127,19 @@ void Index::vMonitorPortrait(s48K& sPortrait)
                     pStats->Index.m_nDrops
                     );
 }
+
+/*----------------------------------------------------------------------------*/
+/* post recv function                                                         */
+/*----------------------------------------------------------------------------*/
+void Index::vPostRecv(void* aIndex)
+{
+  _static_
+  
+  Index* pIndex = _pIndex(aIndex);
+  
+  pIndex->vResetPointers();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -195,6 +207,8 @@ void Index::vIndexDef(IndexDef* pIndexDef)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
   m_pIndexDef = pIndexDef;
+  
+  m_pIndexDef->pLocation()->vSet();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -288,6 +302,27 @@ void Index::vListContents(i8 i_Depth)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get location                                                               */
+/*----------------------------------------------------------------------------*/
+Location* Index::pLocation(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  
+  return & m_oLocation;
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset members which are pointers (after being received)                    */
+/*----------------------------------------------------------------------------*/
+void Index::vResetPointers(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  
+  m_pIndexDef = nullptr;
+  m_pTable    = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* compute the size of sort key datum                                         */
 /*----------------------------------------------------------------------------*/
 i8 Index::iSortKeyDatum(void)
@@ -332,6 +367,7 @@ void Index::vTidyUp(void)
   
   delete m_pIndexDef;
 }
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

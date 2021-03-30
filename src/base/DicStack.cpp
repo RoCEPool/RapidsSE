@@ -11,7 +11,6 @@
 #include "EntBuffer.hpp"
 #include "IndexTree.hpp"
 #include "CrvBuffer.hpp"
-#include "ReadApi.hpp"
 #include "TablePtn.hpp"
 #include "Table.hpp"
 
@@ -53,13 +52,25 @@ DicStack::~DicStack(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of dictionaries in the stack                                    */
+/*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-i8 DicStack::iCount(void)
+
+/*----------------------------------------------------------------------------*/
+/* get catalog dictionary                                                     */
+/*----------------------------------------------------------------------------*/
+Dic* DicStack::pCatalogDic(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   
-  return m_iTop + 1;
+  for (i8 i_Dic = 0; i_Dic <= m_iTop; i_Dic++) {
+    
+    Dic* pDic = pPick(i_Dic);
+    
+    if (pDic->bIsCatalog())
+      return pDic;
+  }
+  
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -208,6 +219,16 @@ Word* DicStack::pFindInCurrent(Stz* szWordNm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get number of dictionaries in the stack                                    */
+/*----------------------------------------------------------------------------*/
+i8 DicStack::nItems(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
+  
+  return m_iTop + 1;
+}
+
+/*----------------------------------------------------------------------------*/
 /* locate word in stack of dictionaries that has given cell                   */
 /*----------------------------------------------------------------------------*/
 Word* DicStack::pLocateRoutine(CodeCell* aCell)
@@ -303,7 +324,7 @@ void DicStack::vPrint(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
 
-  for (i8 i_Dic = iCount() - 1; i_Dic >= 0; i_Dic--) {
+  for (i8 i_Dic = nItems() - 1; i_Dic >= 0; i_Dic--) {
     
     Dic* pDic = pPick(i_Dic);
     Stz* szDicNm = pDic->szDicNm();
@@ -557,11 +578,52 @@ Word* DicStack::pRemoveWord(Stz* szName)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get schema dictionary                                                      */
+/*----------------------------------------------------------------------------*/
+Dic* DicStack::pSchemaDic(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
+  
+  for (i8 i_Dic = 0; i_Dic <= m_iTop; i_Dic++) {
+    
+    Dic* pDic = pPick(i_Dic);
+    
+    if (pDic->bIsSchema())
+      return pDic;
+  }
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get current streamDef                                                      */
 /*----------------------------------------------------------------------------*/
 StreamDef* DicStack::pStreamDef(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get table dictionary                                                       */
+/*----------------------------------------------------------------------------*/
+Dic* DicStack::pTableDic(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
+  
+  for (i8 i_Dic = 0; i_Dic <= m_iTop; i_Dic++) {
+    Dic* pDic = pPick(i_Dic);
+    vTrace("  %s %s\n"_Stz,pDic->szDicNm(),pDic->szDicKind());
+  }
+  
+  for (i8 i_Dic = 0; i_Dic <= m_iTop; i_Dic++) {
+    
+    Dic* pDic = pPick(i_Dic);
+    
+    if (pDic->bIsTable())
+      return pDic;
+  }
   
   return nullptr;
 }
@@ -588,6 +650,24 @@ Table* DicStack::pTable(void)
   Table* pTable = _pTable(pTableWd->pObject());
 
   return pTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get tenant dictionary                                                      */
+/*----------------------------------------------------------------------------*/
+Dic* DicStack::pTenantDic(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
+  
+  for (i8 i_Dic = 0; i_Dic <= m_iTop; i_Dic++) {
+    
+    Dic* pDic = pPick(i_Dic);
+    
+    if (pDic->bIsTenant())
+      return pDic;
+  }
+  
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

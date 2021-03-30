@@ -135,6 +135,14 @@ b1 LimitOp::bIsOfType(PlanNode *pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely the same as its definition     */
+/*----------------------------------------------------------------------------*/
+b1 LimitOp::bIsExactType(PlanNode *pNode)
+{
+  return ShadowNode::bIsExactType(pNode, C_LIMIT_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns the limit value of the limitOp                                     */
 /*----------------------------------------------------------------------------*/
 i8 LimitOp::iLimit(QueryNode* pNode)
@@ -170,7 +178,7 @@ i8 LimitOp::iOffset(QueryNode* pNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Return a list of ProjectedExprs that represent the column expressions      */
+/* Return a list of ProjectedColumn that represent the column expressions     */
 /* that this PlanObject will return. All nodes and the list must be freed.    */
 /*----------------------------------------------------------------------------*/
 PlanNodeList* LimitOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)

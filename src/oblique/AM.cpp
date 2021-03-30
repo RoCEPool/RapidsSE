@@ -63,7 +63,6 @@
 #include "IndexTree.hpp"
 
 #include "CrvBuffer.hpp"
-#include "ReadApi.hpp"
 #include "TablePtn.hpp"
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"
@@ -248,6 +247,22 @@ WriteBehind* AM::THREAD::pWriteBehind(Thread* pThread)
   }
   
   return pWriteBehind;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                   Word                                     */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* find given word                                                            */
+/*----------------------------------------------------------------------------*/
+Word* AM::WORD::pFind(Stz* szWordNm)
+{
+  Dic* pRootDic = AM::pDicRoot();
+  
+  Word* pWord = pRootDic->pFindWord(szWordNm);
+  
+  return pWord;
 }
 
 
@@ -485,6 +500,9 @@ void AM::vDeleteOperand(Operand* pOperand)
       
     case CN_ROWBUFFER: {
       RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
+      // permament row buffers not to be deleted
+      if (pRowBuffer->bIsPermanent())
+        break;
       delete pRowBuffer;
       break;
     }
@@ -923,9 +941,9 @@ void AM::vWriteLog(void) {
 /*----------------------------------------------------------------------------*/
 void AM::vSend(Task* pTask, Node* pSendNode, XmitOperand* pXmitOperand)
 {
-  pTask->pJob()->pLogicUnit_job()->m_pSendNode = pSendNode;
-  if (!pSendNode) printf("pSendNode is null\n");
-  // grab socket write lock SendToAllNodes
+  pTask->pJob()->pLogicUnit_job()->m_xpSendNode = pSendNode;
+  
+  // grab socket write lock
   Socket* pSocket = pSendNode->pSendSocket();
   pSocket->vGrabWrite();
   

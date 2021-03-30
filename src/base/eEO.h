@@ -192,7 +192,8 @@ enum eEO : u1 // expression operators
   // ixt device col operators
   /*  S  */ EO_DEVIXT_COLS_TO_LOCALS,    // inflate dev columns direct into locals
   /*  S  */ EO_DEVIXT_COLS_TO_ROW,       // push all columns from ixt dev to row dev
-  /*  S  */ EO_DEVROW_COLS_TO_LOCALS,     // row columns into locals
+  /*  S  */ EO_DEVROW_COLS_TO_LOCALS,    // row columns into locals
+  /*  S  */ EO_DEVROW_COLS_TO_ROW,       // row columns into row
 
   // ixt device crwbuffer operators
   /*  S  */ EO_DEVIXT_CRWBUF_BEGIN, // begin crw buffer traverse
@@ -242,13 +243,11 @@ enum eEO : u1 // expression operators
   // ixt device index set operators
   /*  S  */ EO_DEVIXT_INDEXNM_SET,      // set the index name in the dev
   /*  S  */ EO_DEVIXT_INDEXTREE_SET,    // set the indexTree in the ixt dev
-  /*  S  */ EO_DEVIXT_INDEXTREE_DELETE, // delete the indexTree in the ixt dev
 
   // row device entWrk
   /*    */ EO_DEVROW_ENTWRK_APPENDELMI,// append next element value (int)
   /*    */ EO_DEVROW_ENTWRK_APPENDELMS,// append next element value (str)
   /*    */ EO_DEVROW_ENTWRK_CREATEPAY, // create a payload in entwrk
-  /*    */ EO_DEVROW_STREAMDEF_DELETE, // delete the streamdef from the row dev
   /*    */ EO_DEVROW_TABLENM_SET,      // set the table name in the row dev
 
   // row device row operators
@@ -302,7 +301,7 @@ enum eEO : u1 // expression operators
   /*  M  */ EO_REG_PTNSTREAM_READ,         // read a ptn stream
   /*  M  */ EO_REG_STREAMDEFOUT_NEW,       // new an streamDef in streamDefOut[]        // OLD QUERIES (will go)
   /*  M  */ EO_REG_STREAMDEFOUT_ADDCOLUMN, // add a column to streamDefOut[]            // OLD QUERIES (will go)
-  /*  M  */ EO_REG_STREAMDEF_STREAMDEFOUT, // copy streamDef[] to streamDefOut[]        // OLD QUERIES (will go)
+  /*  M  */ EO_REG_STREAMDEF_STREAMDEFOUT, // copy StreamDef[] to streamDefOut[]        // OLD QUERIES (will go)
 
   // super fragments
   /*  M  */ EO_SUPER_Q100,       // super fragment Q100
@@ -495,6 +494,7 @@ static Stz* aEO[]
   /*    */ "EO_DEVIXT_COLS_TO_LOCALS"_Stz,
   /*    */ "EO_DEVIXT_COLS_TO_ROW"_Stz,
   /*    */ "EO_DEVROW_COLS_TO_LOCALS"_Stz,
+  /*    */ "EO_DEVROW_COLS_TO_ROW"_Stz,
 
   // ixt device crwbuffer operators
   /*    */ "EO_DEVIXT_CRWBUF_BEGIN"_Stz,
@@ -544,13 +544,11 @@ static Stz* aEO[]
   // ixt device index set operators
   /*    */ "EO_DEVIXT_INDEXNM_SET"_Stz,
   /*    */ "EO_DEVIXT_INDEXTREE_SET"_Stz,
-  /*    */ "EO_DEVIXT_INDEXTREE_DELETE"_Stz,
 
   // row device entWrk operators
   /*    */ "EO_DEVROW_ENTWRK_APPENDELMI"_Stz,
   /*    */ "EO_DEVROW_ENTWRK_APPENDELMS"_Stz,
   /*    */ "EO_DEVROW_ENTWRK_CREATEPAY"_Stz,
-  /*    */ "EO_DEVROW_STREAMDEF_DELETE"_Stz,
   /*    */ "EO_DEVROW_TABLENM_SET"_Stz,
 
   // row device row operators
@@ -805,6 +803,7 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_DEVIXT_COLS_TO_LOCALS
   { EA_NONE,    0 },  // EO_DEVIXT_COLS_TOROW
   { EA_NONE,    0 },  // EO_DEVROW_COLS_TO_LOCALS
+  { EA_NONE,    0 },  // EO_DEVROW_COLS_TO_ROW
 
   // ixt device crwbuffer operators
   { EA_NONE,    0 },  // EO_DEVIXT_CRWBUF_BEGIN
@@ -854,13 +853,11 @@ static EoArg EoArgs[]
   // ixt device index set operators
   { EA_STRING, -1 },  // EO_DEVIXT_INDEXNM_SET
   { EA_NONE,    0 },  // EO_DEVIXT_INDEXTREE_SET
-  { EA_NONE,    0 },  // EO_DEVIXT_INDEXTREE_DELETE
 
   // row device entWrk
   { EA_NONE,    0 },  // EO_DEVROW_ENTWRK_APPENDELMI
   { EA_NONE,    0 },  // EO_DEVROW_ENTWRK_APPENDELMS
   { EA_INT,     8 },  // EO_DEVROW_ENTWRK_CREATEPAY
-  { EA_NONE,    0 },  // EO_DEVROW_STREAMDEF_DELETE
   { EA_STRING, -1 },  // EO_DEVROW_TABLENM_SET
 
   // row device row operators

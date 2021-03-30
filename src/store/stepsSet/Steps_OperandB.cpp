@@ -28,6 +28,7 @@
 void Step::vAddSteps_OperandB(void)
 {
   vAddStep("OperandB[]"_Stz,                &Step::vOperandBGet);
+  vAddStep("OperandB[]\\clear"_Stz,         &Step::vOperandBGetAndClear);
   vAddStep("OperandB[].appendClose"_Stz,    &Step::vOperandBAppendClose);
   vAddStep("OperandB[].delete"_Stz,         &Step::vOperandBDelete);
   vAddStep("OperandB[].get"_Stz,            &Step::vOperandBGet);
@@ -73,6 +74,20 @@ void Step::vOperandBGet(void)
   
   m_pDataStack->vPushPtr(*( m_pJob->pLogicUnit_job() )->m_xpOperandB);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* OperandB[].getAndClear -- fetch operand and set to nullptr                  */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandBGetAndClear(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushPtr(*( m_pJob->pLogicUnit_job() )->m_xpOperandB);
+  
+  ( m_pJob->pLogicUnit_job() )->m_xpOperandB = nullptr;
+
   EXIT();
 }
 
@@ -125,9 +140,12 @@ void Step::vOperandBSet(void)
 {
   ENTRY();
   
-  ASSERT(( m_pJob->pLogicUnit_job() )->m_xpOperandB.bIsNull());
-  ( m_pJob->pLogicUnit_job() )->m_xpOperandB = _pOperand(m_pDataStack->pPopPtr(__func__));
+  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
   
+  ASSERT(! pOperand || ( m_pJob->pLogicUnit_job() )->m_xpOperandB.bIsNull());
+  
+  ( m_pJob->pLogicUnit_job() )->m_xpOperandB = _pOperand(pOperand);
+
   EXIT();
 }
 

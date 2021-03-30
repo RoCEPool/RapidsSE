@@ -14,6 +14,7 @@
 
 #include "AM.hpp"
 #include "Job.hpp"
+#include "MY.hpp"
 
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"
@@ -1416,6 +1417,22 @@ void vTest22(void)
 /*----------------------------------------------------------------------------*/
 void vTest23(void)
 {
+  DicStack* pDicStack = MY::pDicStack();
+  s256 sPath;
+  
+  pDicStack->vToPathStr(sPath);
+  
+  vTrace("Path: %s\n"_Stz,sPath.szStz());
+  
+  i8 nDics = pDicStack->nItems();
+  
+  for (i8 i_Dic = 0; i_Dic < nDics; i_Dic++) {
+    Dic* pDic = pDicStack->pPick(i_Dic);
+    vTrace("  %s %s\n"_Stz,pDic->szDicNm(),pDic->szDicKind());
+  }
+  
+  vTrace("Path: %s %s %s\n"_Stz,
+         MY::szTenantNm(),MY::szCatalogNm(),MY::szSchemaNm());
 }
 
 /*----------------------------------------------------------------------------*/

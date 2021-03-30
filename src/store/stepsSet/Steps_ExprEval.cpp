@@ -19,11 +19,9 @@ void Step::vAddSteps_ExprEval(void)
 {
   vAddStep("exprEval[]"_Stz,                 &Step::vExprEvalGet);
   vAddStep("exprEval[].delete"_Stz,          &Step::vExprEvalDelete);
-  vAddStep("exprEval[].aggregate"_Stz,       &Step::vExprEvalAggregate);
-  vAddStep("exprEval[].evaluate"_Stz,        &Step::vExprEvalEvaluate);
-  vAddStep("exprEval[].filter"_Stz,          &Step::vExprEvalFilter);
+  vAddStep("exprEval[].evaluateColumns"_Stz, &Step::vExprEvalEvaluateColumns);
+  vAddStep("exprEval[].evaluateOrdinals"_Stz,&Step::vExprEvalEvaluateOrdinals);
   vAddStep("exprEval[].new"_Stz,             &Step::vExprEvalNew);
-  vAddStep("exprEval[].project"_Stz,         &Step::vExprEvalProject);
   vAddStep("exprEval[].set"_Stz,             &Step::vExprEvalSet);
 }
 
@@ -54,9 +52,9 @@ void Step::vExprEvalDelete(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* exprEval[].aggregate -- evaluate aggregate                                 */
+/* exprEval[].evaluateColumns -- evaluate expression with column refs         */
 /*----------------------------------------------------------------------------*/
-void Step::vExprEvalAggregate(void)
+void Step::vExprEvalEvaluateColumns(void)
 {
   ENTRY();
 
@@ -68,10 +66,7 @@ void Step::vExprEvalAggregate(void)
   s4K sProjectColumns;
   m_pDataStack->vPopStr(sProjectColumns, __func__);
 
-  eEC eError = pExprEval->eEvaluate(pStreamDefIn, pStreamDefOut, sProjectColumns);
-
-  if ( ! pExprEval->bHasAggregate()  && ! pExprEval->bHasGroupBy() )
-    eError = EC_INVALID_COMMAND;
+  eEC eError = pExprEval->eEvaluateColumns(pStreamDefIn, pStreamDefOut, sProjectColumns);
 
   m_pDataStack->vPushInt(eError);
 
@@ -79,9 +74,9 @@ void Step::vExprEvalAggregate(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* exprEval[].evaluate -- evaluate expression                                 */
+/* exprEval[].evaluateOrdinals -- evaluate expression with column ordinals    */
 /*----------------------------------------------------------------------------*/
-void Step::vExprEvalEvaluate(void)
+void Step::vExprEvalEvaluateOrdinals(void)
 {
   ENTRY();
 
@@ -93,35 +88,7 @@ void Step::vExprEvalEvaluate(void)
   s4K sProjectColumns;
   m_pDataStack->vPopStr(sProjectColumns, __func__);
 
-  eEC eError = pExprEval->eEvaluate(pStreamDefIn, pStreamDefOut, sProjectColumns);
-
-  if ( ! pExprEval->bHasAggregate()  && ! pExprEval->bHasGroupBy() )
-    eError = EC_INVALID_COMMAND;
-
-  m_pDataStack->vPushInt(eError);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* exprEval[].filter -- evaluate filter                                       */
-/*----------------------------------------------------------------------------*/
-void Step::vExprEvalFilter(void)
-{
-  ENTRY();
-
-  ExprEval* pExprEval = *( m_pJob->pLogicUnit_job() )->m_xpExprEval;
-
-  StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
-  StreamDef* pStreamDefIn = _pStreamDef(m_pDataStack->pPopPtr(__func__));
-
-  s4K sProjectColumns;
-  m_pDataStack->vPopStr(sProjectColumns, __func__);
-
-  eEC eError = pExprEval->eEvaluate(pStreamDefIn, pStreamDefOut, sProjectColumns);
-
-  if (pExprEval->bHasAggregate())
-    eError = EC_INVALID_COMMAND;
+  eEC eError = pExprEval->eEvaluateOrdinals(pStreamDefIn, pStreamDefOut, sProjectColumns);
 
   m_pDataStack->vPushInt(eError);
 
@@ -136,31 +103,6 @@ void Step::vExprEvalNew(void)
   ENTRY();
 
   ( m_pJob->pLogicUnit_job() )->m_xpExprEval = new ExprEval;
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* exprEval[].project -- evaluate project columns                             */
-/*----------------------------------------------------------------------------*/
-void Step::vExprEvalProject(void)
-{
-  ENTRY();
-
-  ExprEval* pExprEval = *( m_pJob->pLogicUnit_job() )->m_xpExprEval;
-
-  StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
-  StreamDef* pStreamDefIn = _pStreamDef(m_pDataStack->pPopPtr(__func__));
-
-  s4K sProjectColumns;
-  m_pDataStack->vPopStr(sProjectColumns, __func__);
-
-  eEC eError = pExprEval->eEvaluate(pStreamDefIn, pStreamDefOut, sProjectColumns);
-
-  if (pExprEval->bHasAggregate())
-    eError = EC_INVALID_COMMAND;
-
-  m_pDataStack->vPushInt(eError);
 
   EXIT();
 }

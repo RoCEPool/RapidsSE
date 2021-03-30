@@ -122,6 +122,14 @@ b1 FilterOp::bIsOfType(PlanNode *pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely the same as its definition     */
+/*----------------------------------------------------------------------------*/
+b1 FilterOp::bIsExactType(PlanNode *pNode)
+{
+  return ShadowNode::bIsExactType(pNode, C_FILTEROP_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns the filterExpr node of the filterOp                                */
 /*----------------------------------------------------------------------------*/
 QueryNode* FilterOp::pFilterExpr(QueryNode* pNode)
@@ -160,7 +168,6 @@ QueryNode* FilterOp::pOrdinalFilterExpr(QueryNode* pNode, PlanNode* pRootNode)
   // ordinals only).
   QueryNode* pOrdinalExpr = Expr::pSymbolicToOrdinal(pSymbolicExpr, pColExprList, pRootNode);
   ASSERT(pOrdinalExpr);
-  ASSERT(Expr::bIsOrdinal(pOrdinalExpr));
 
   pColExprList->vDeleteAll();
   delete pColExprList;
@@ -169,7 +176,7 @@ QueryNode* FilterOp::pOrdinalFilterExpr(QueryNode* pNode, PlanNode* pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Return a list of ProjectedExprs that represent the column expressions      */
+/* Return a list of ProjectedColumns that represent the column expressions    */
 /* that this PlanObject will return. All nodes and the list must be freed.    */
 /*----------------------------------------------------------------------------*/
 PlanNodeList* FilterOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)

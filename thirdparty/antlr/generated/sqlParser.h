@@ -1,5 +1,5 @@
 
-// Generated from /Users/craig/repos/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
+// Generated from /Users/myvanquoc/dev/src/SE/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
 
 #pragma once
 
@@ -408,12 +408,12 @@ public:
     SelectExprContext *selectExpr();
     std::vector<SetExprContext *> setExpr();
     SetExprContext* setExpr(size_t i);
+    antlr4::tree::TerminalNode *UNION();
+    antlr4::tree::TerminalNode *EXCEPT();
     antlr4::tree::TerminalNode *INTERSECT();
     antlr4::tree::TerminalNode *DISTINCT();
     CorrClauseContext *corrClause();
     antlr4::tree::TerminalNode *ALL();
-    antlr4::tree::TerminalNode *UNION();
-    antlr4::tree::TerminalNode *EXCEPT();
 
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;

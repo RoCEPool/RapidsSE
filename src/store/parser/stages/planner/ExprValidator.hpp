@@ -29,11 +29,36 @@ namespace Parser
 
   private:
     // Validate that all expressions do not have an invalid result type
-    static void vValidateExprResultType(PlanNode* pRootNode, QueryNode* pPlanNode);
+    static void vValidateExprResultType(PlanNode* pRootNode, QueryNode* pStartNode);
 
     // Validate that all predicate expressions give a boolean result type
-    static void vValidatePredicatesAreBoolean(PlanNode* pRootNode, QueryNode* pPlanNode);
+    static void vValidatePredicatesAreBoolean(PlanNode* pRootNode, QueryNode* pStartNode);
 
+    // Validate that the aggregate and group-by expressions are correctly specified
+    static void vValidateGroupByExprs(PlanNode* pRootNode, QueryNode* pStartNode);
+
+      // Check that the group by expressions cannot be aggregate expressions
+      static void vCheckGroupByExprsNotAggregates(QueryNode *pGroupByList);
+
+      // Check that the group by expressions are not literals.
+      static void vCheckGroupByExprsNotLiterals(QueryNode *pGroupByList);
+
+    // Validate that if there is no group by list then projections must either be
+    // all aggregates or all non-aggregates
+    static void vValidateProjectExprs(PlanNode* pRootNode, QueryNode* pStartNode);
+
+    // If there is a GROUP BY then validate that all sql operators that sit above
+    // an AggregateOp and have expressions, those expressions must only refer to
+    // aggregated columns or columns that appear in the group by list
+    static void vValidateSqlOpExprsAgainstGroupBy(PlanNode* pRootNode, QueryNode* pStartNode);
+
+      // Checks that all non-aggregate exprs being projected are in the group by list
+      static void vCheckNonAggExprIsInGroupBy(QueryNode* pExpr, QueryNode *pGroupByList);
+
+    // If there is no GROUP BY then validate the expressions of all sql operators
+    // that sit above the ProjectOp. Aggregate exprs may or may not be allowed
+    // depending on the expressions in the ProjectOp.
+    static void vValidateSqlOpExprsAgainstProjectOp(PlanNode* pRootNode, QueryNode* pStartNode);
   };
 }
 

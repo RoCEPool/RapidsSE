@@ -23,11 +23,18 @@ namespace OBLIQUE
   class MY
   {
   public:
+    static Stz* szCatalogNm(void);
     static Stz* szGridNm(void);
     static Stz* szHostNm(void);
     static Stz* szJobNm(void);
+    static Stz* szSchemaNm(void);
+    static Stz* szTableNm(void);
+    static Stz* szTenantNm(void);
     static Stz* szWordNm(void);
   
+    static Dic*       pCatalogDic(void);
+    static Dic*       pDic(void);
+    static DicStack*  pDicStack(void);
     static Grid*      pGrid(void);
     static Job*       pJob(void);
     static LogicUnit* pLogicUnit(void);
@@ -35,28 +42,17 @@ namespace OBLIQUE
     static Op*        pOp(void);
     static eZK        eOperand(void);
     static Pipeline*  pPipeline(void);
+    static Dic*       pSchemaDic(void);
     static Session*   pSession(void);
     static Stage*     pStage(void);
     static Stream*    pStream(void);
+    static Dic*       pTableDic(void);
     static Task*      pTask(void);
+    static Dic*       pTenantDic(void);
     static Thread*    pThread(void);
-
-    // tbd...
-
-    /*
-     
-     Possible Other Functions:
-         
-     pTenant()
-     pCatalog()
-     pSchema()
-     
-     pDic()
-     pDicStack()
-     
-     szPath();
-
-     */
+  
+    static Stz*       szPath(Stz* szPathBuffer);
+    static void       vPath(Stz* szPathBuffer);
   };
 }
 

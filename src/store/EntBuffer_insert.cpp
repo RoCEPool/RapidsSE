@@ -148,13 +148,6 @@ void EntBuffer::vCompact(void)
   
   oTimer.vStart();
   
-#ifdef WITH_EB_LAZY_CHAIN
-  //ASSERT( ! m_aLazyChain );
-  
-  if (m_aLazyChain)
-    vBuildSkipList();
-#endif
-
   m_aFreeSpare = nullptr;
   m_nFreeSize  = 0;
   
@@ -325,11 +318,7 @@ void EntBuffer::vCompact(void)
 void EntBuffer::vCompactLeft(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
-  
-#ifdef WITH_EB_LAZY_CHAIN
-  ASSERT(! m_aLazyChain);
-#endif
-  
+    
   m_aFreeSpare = nullptr;
   m_nFreeSize  = 0;
 
@@ -396,11 +385,6 @@ void EntBuffer::vDeleteUpwards(eDU eReason, Ent* aDeleteEntry, i8 iRefdBufferNo,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   UNUSED(eReason);
-  
-#ifdef WITH_EB_LAZY_CHAIN
-  ASSERT( ! m_aLazyChain );
-#endif
-  
   
 #ifdef EB_TRACE_INSERT
   SP_Key spKey;
@@ -596,16 +580,6 @@ Ent* EntBuffer::aInsertEntAbs(Ent* aEnt)
   RASSERT(aEnt->nSkipLevels());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-#ifdef WITH_EB_LAZY_CHAIN
-  if (m_pIndex->pTable() && m_pIndex->pTable()->bIsLoading()) {
-    if (! m_iBufferHeight) {
-      aInsertedEntry = aInsertEntAbsLazy(aEntryWork);
-      return aInsertedEntry;
-    }
-  }
-#endif
-  
   
 #ifdef EB_LOCAL_VERIFY
   if (m_iBufferHeight) {
@@ -912,29 +886,9 @@ Ent* EntBuffer::aInsertEntBuffer(Ent* aEntry, EntBuffer** ppRootBuffer)
   //bVerifyItems();
 
   Ent* aInsertedEntry;
-  
-#ifdef WITH_EB_LAZY_CHAIN
-  if (m_pIndex->pTable()->bIsLoading()) {
-    if (m_iBufferHeight) {
-      Ent* aOriginalFirstEntry = aLeadEntry();
-      aInsertedEntry = aInsertEntAbs(aEntryWork);
-      vHandleFirstInsert(aInsertedEntry,aOriginalFirstEntry,ppRootBuffer);
-    }
-    else {
-      aInsertedEntry = aInsertEntAbs(aEntryWork);
-    }
-  }
-  else {
-    Ent* aOriginalFirstEntry = aLeadEntry();
-    aInsertedEntry = aInsertEntAbs(aEntryWork);
-    vHandleFirstInsert(aInsertedEntry,aOriginalFirstEntry,ppRootBuffer);
-  }
-#else
-  
+    
   EntBuffer* pInsertIntoBuffer =
     pInsertableBuffer(aEntry,ppRootBuffer);
-  
-  
   
   if (m_iBufferHeight) {
     i8 iChildBuffer = aEntry->iBuffer();
@@ -953,19 +907,12 @@ Ent* EntBuffer::aInsertEntBuffer(Ent* aEntry, EntBuffer** ppRootBuffer)
     }
   }
 
-  
-  
-  
-  
-  
-  
   Ent* aOriginalFirstEntry = pInsertIntoBuffer->aLeadEntry();
   aInsertedEntry = pInsertIntoBuffer->aInsertEntAbs(aEntry);
   
   
   //if ( ! (1 == m_nItems && m_pHigherBuffer) )
     pInsertIntoBuffer->vHandleFirstInsert(aInsertedEntry,aOriginalFirstEntry,ppRootBuffer);
-#endif
   
 #ifdef EB_LOCAL_VERIFY
   if (m_iBufferHeight) {
@@ -1525,11 +1472,7 @@ EntBuffer* EntBuffer::pNewNextBuffer(void)
 void EntBuffer::vPurgeUpwards(Ent* aDeleteEntry, EntBuffer** ppRootBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
-  
-#ifdef WITH_EB_LAZY_CHAIN
-  ASSERT( ! m_aLazyChain );
-#endif
-  
+    
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // position to entry prior to the entry to be deleted
   Ent* aPriorEntry = aFindEntryBefore(aDeleteEntry->aKey());
@@ -1631,11 +1574,7 @@ Ent* EntBuffer::aSplitEntry(i8 iSplitRatio, Ent** aaPriorEntry)
 EntBuffer* EntBuffer::pSplitBuffer(i8 iSplitRatio)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
-  
-#ifdef WITH_EB_LAZY_CHAIN
-  ASSERT( ! m_aLazyChain );
-#endif
-  
+    
   EntBuffer* pThisLeftBuffer = this;
   
   m_nSplit++;

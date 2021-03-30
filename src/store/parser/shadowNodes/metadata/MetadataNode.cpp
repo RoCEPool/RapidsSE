@@ -59,6 +59,14 @@ b1 MetadataNode::bIsOfType(PlanNode *pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely the same as its definition     */
+/*----------------------------------------------------------------------------*/
+b1 MetadataNode::bIsExactType(PlanNode *pNode)
+{
+  return ShadowNode::bIsExactType(pNode, C_METADATANODE_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Add a catalog definition to the metadata                                   */
 /*----------------------------------------------------------------------------*/
 void MetadataNode::vAddCatalog(QueryNode* pMetadataNode, QueryNode* pCatalogDef)

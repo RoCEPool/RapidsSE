@@ -44,6 +44,16 @@ CsvBuffer::~CsvBuffer(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
 }
 
+/*----------------------------------------------------------------------------*/
+/* post recv function                                                         */
+/*----------------------------------------------------------------------------*/
+void CsvBuffer::vPostRecv(void* aCsvBuffer)
+{
+  _static_
+  
+  CsvBuffer* pCsvBuffer = _pCsvBuffer(aCsvBuffer);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/

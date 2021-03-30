@@ -24,11 +24,22 @@ namespace Parser
     // Returns true if a given node is a given type ** or is derived from that type **
     static b1 bIsOfType(PlanNode* pNode);
 
+    // Returns true if a given node is this given type only
+    static b1 bIsExactType(PlanNode* pNode);
+
     // Returns the number of groupby expressions
     static i8 nGroups(QueryNode* pNode);
 
-    // Return an iterator to the groupby expression list. Must be freed afterwards.
-    static PlanNodeIter* pGroupByIter(QueryNode* pNode);
+    // Returns the internal node that represents a list of groupby expressions. Each groupby
+    // expression can be iterated by calling pNewChildrenIter() on the returned node
+    static QueryNode* pGroupByList(QueryNode* pNode);
+
+    // Returns a copy of the node that represents a list of groupby expressions. Each groupby
+    // expression can be iterated by calling pNewChildrenIter() on the returned node.
+    // Must be freed after use.
+    static QueryNode* pOrdinalGroupByList(QueryNode* pNode, PlanNode* pRootNode);
+
+
 
   protected:
 

@@ -25,8 +25,8 @@
   sTableNm Path[].pushNamedTableFolder
 
   // check max indexes
-  sTableNm find execute to table[]
-  table[] table.indexCount C_MAX_INDEXES == if
+  sTableNm find execute to Table[]
+  Table[] table.indexCount C_MAX_INDEXES == if
     EC_MAX_INDEXES
     Path[].popNamedTableFolder
     folder[].isTables assert
@@ -96,7 +96,7 @@
     exit
   then
 
-  sSmt table[] job[] indexDef::parse to indexDef[]
+  sSmt Table[] job[] indexDef::parse to indexDef[]
 
   indexDef[].isNull if
     job[] job.error@ to errorCode

@@ -62,7 +62,6 @@ extern d8 C_D8_MID;
 #include "StrLib.hpp"
 
 #include "ClassNumbers.hpp"
-#include "SizeHeap.h"
 #include "LimitsFormats.h"
 
 #include "FnDesc.hpp"
@@ -255,6 +254,7 @@ extern d8 C_D8_MID;
 #include "ListExo_t.hpp"
 #include "ListNL_t__.hpp"
 #include "ListNL_t.hpp"
+#include "Location.hpp"
 
 #include "QueueBuffer.hpp"
 #include "Queue.hpp"
@@ -371,6 +371,7 @@ extern d8 C_D8_MID;
 
 #include "Ref.hpp"
 #include "DataBuffer.hpp"
+#include "ObjBuffer.hpp"
 
 #include "CsvMeta.hpp"
 #include "CsvBuffer.hpp"
@@ -394,6 +395,8 @@ extern d8 C_D8_MID;
 #include "Schedule.hpp"
 
 //------------------------------------------------------------------------------
+
+#include "SizeHeap.h"
 
 namespace BASE
 {

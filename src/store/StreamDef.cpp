@@ -48,7 +48,7 @@ StreamDef::StreamDef(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
   
-  //m_sName;
+  //m_sStreamDefNm;
  
   m_nColumns = 0;
   //m_xaColumn[C_MAX_DEFCOLUMNS];
@@ -70,7 +70,7 @@ StreamDef::StreamDef(StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
   
-  m_sName = pStreamDef->m_sName;
+  m_sStreamDefNm = pStreamDef->m_sStreamDefNm;
   m_nColumns = pStreamDef->m_nColumns;
     
   for (i8 i_DefCol = 0; i_DefCol < m_nColumns; i_DefCol++) {
@@ -120,8 +120,19 @@ eCT StreamDef::eColumn(Stz* szType)
 }
 
 /*----------------------------------------------------------------------------*/
+/* post recv function                                                         */
+/*----------------------------------------------------------------------------*/
+void StreamDef::vPostRecv(void* aStreamDef)
+{
+  _static_
+  
+  StreamDef* pStreamDef = _pStreamDef(aStreamDef);
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
 /*----------------------------------------------------------------------------*/
 /* add a column to the stream def to the current def set                      */
 /*----------------------------------------------------------------------------*/
@@ -146,7 +157,7 @@ void StreamDef::vAsString(String* pString)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
   
-  pString->vSprint("streamDef %s: ("_Stz,m_sName.szStz());
+  pString->vSprint("streamDef %s: ("_Stz,m_sStreamDefNm.szStz());
   
   i8 i_DefSet = 0;
     
@@ -211,7 +222,7 @@ void StreamDef::vListContents(i8 i_Depth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
   
-  vTrace("%sStreamDef %s\n"_Stz,Stz::szTab(i_Depth),m_sName.szStz());
+  vTrace("%sStreamDef %s\n"_Stz,Stz::szTab(i_Depth),m_sStreamDefNm.szStz());
 
   for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
     Column* pColumn = pGetColumn(i_Col);
@@ -221,23 +232,43 @@ void StreamDef::vListContents(i8 i_Depth)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get stream name                                                            */
+/* get location                                                               */
 /*----------------------------------------------------------------------------*/
-Stz* StreamDef::szName(void)
+Location* StreamDef::pLocation(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
   
-  return m_sName;
+  return & m_oLocation;
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset members which are pointers (after being received)                    */
+/*----------------------------------------------------------------------------*/
+void StreamDef::vResetPointers(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
+  
+  // no pointers need to be reset
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stream name                                                            */
+/*----------------------------------------------------------------------------*/
+Stz* StreamDef::szStreamDefNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
+  
+  return m_sStreamDefNm;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get column at index                                                        */
 /*----------------------------------------------------------------------------*/
-void StreamDef::vName(Stz* sName)
+void StreamDef::vStreamDefNm(Stz* sStreamDefNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
   
-  m_sName = sName;
+  m_sStreamDefNm = sStreamDefNm;
 }
 
 #define dPT()
@@ -276,7 +307,7 @@ eEC StreamDef::eParse(Stz* szCmd)
   // -- -- -- --
   
   pTkn = pTknVec->pNextToken(); dPT();
-  m_sName = pTkn->szChars();
+  m_sStreamDefNm = pTkn->szChars();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Parse: ( <columnDef> ,... )
@@ -361,7 +392,7 @@ void StreamDef::vPrint(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
   
-  vTrace("StreamDef %s\n"_Stz,m_sName.szStz());
+  vTrace("StreamDef %s\n"_Stz,m_sStreamDefNm.szStz());
 
   for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
     Column* pColumn = pGetColumn(i_Col);
@@ -483,7 +514,7 @@ void StreamDef::vToRowPix(RowPix* pRowPixDst, bool bAddPtnHash)
   
   ASSERT(! pRowPixDst->m_bPtnHash);
 
-  pRowPixDst->m_sPixNm   = m_sName;
+  pRowPixDst->m_sPixNm   = m_sStreamDefNm;
   pRowPixDst->m_nColumns = m_nColumns;
 
 //  if (bAddPtnHash) {
@@ -531,6 +562,7 @@ void StreamDef::vToMetadata(Stz* sMetadata)
 
   sMetadata->vConcat(")"_Stz);
 }
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/

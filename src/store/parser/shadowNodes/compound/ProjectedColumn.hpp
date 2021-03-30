@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ProjectedExpr.hpp - a projected expression that may have an alias          */
+/* ProjectedColumn.hpp - a projected expression that may have an alias        */
 /*============================================================================*/
 #pragma once
 
@@ -10,12 +10,12 @@ namespace Parser
 {
   class QueryNode;
 
-  class ProjectedExpr : public ShadowNode
+  class ProjectedColumn : public ShadowNode
   {
 
   private:
     // Shalt never be instantiated. Static functions only.
-    ProjectedExpr();
+    ProjectedColumn();
 
   public:
     static Stz*       szAliasName(QueryNode* pQueryNode);
@@ -26,8 +26,11 @@ namespace Parser
     // Returns true if a given node is a given type ** or is derived from that type **
     static b1 bIsOfType(PlanNode* pNode);
 
+    // Returns true if a given node is this exact given type.
+    static b1 bIsExactType(PlanNode* pNode);
+
     // Returns true if the expression in this node is an aggregate expression.
-    static b1 bIsAnAggregate(QueryNode* pQueryNode);
+    static b1 bContainsAnAggregate(QueryNode* pNode);
 
     // Returns the node that represents the expression
     static QueryNode* pExprNode(QueryNode* pQueryNode);

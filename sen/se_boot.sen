@@ -23,7 +23,6 @@ assert::stack_0
         "se_path.sen"             include
         "se_folder.sen"           include
         "se_object.sen"           include
-        "se_socket.sen"           include
         "se_dbg.sen"              include
 
 "se_boot 8" .verbose
@@ -79,8 +78,8 @@ assert::stack_0
 "se_boot 4" .verbose
         "op__errors.sen"              include
         "op__defHandlers.sen"         include
-        "op__common.sen"              include
         "op__EOCommon.sen"            include
+        "op__common.sen"              include
         "reg__common.sen"             include
         
         "se_bootOps.sen"              include

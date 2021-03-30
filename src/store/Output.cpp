@@ -257,7 +257,7 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
       
     case CN_CRWBUFFER: {
       CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
-      m_ixRowsProcessed += pCrwBuffer->nRowCount();
+      m_ixRowsProcessed += pCrwBuffer->nRows();
       vTrace("\n"_Stz);
       pCrwBuffer->vPrintRows(m_pStreamDef_result);
       AM::vDeleteOperand(pOperand);

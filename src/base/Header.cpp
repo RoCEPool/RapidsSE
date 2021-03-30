@@ -23,6 +23,9 @@ Header::Header(eCN eClassNo)
 {
   vSetMagic();
   vSetClassNo(eClassNo);
+  
+  vSetWasReceived(false);
+  vSetPostRecvRun(false);
 }
 
 /*----------------------------------------------------------------------------*/

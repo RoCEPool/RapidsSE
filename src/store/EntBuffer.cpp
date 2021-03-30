@@ -26,7 +26,6 @@
 
 #include "Crv.hpp"
 #include "CrvBuffer.hpp"
-#include "ReadApi.hpp"
 #include "TablePtn.hpp"
 #include "Table.hpp"
 
@@ -787,11 +786,7 @@ void EntBuffer::vEntKind(eKE eEntKind)
 EntBuffer* EntBuffer::pFirstChildBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
-  
-#ifdef WITH_EB_LAZY_CHAIN
-  ASSERT( ! m_aLazyChain );
-#endif
-  
+    
   Ent* aFirstEntry = this->aLeadEntry();
   EntBuffer* pChildEntBuffer = EntBuffer::pRefdEntBuffer(aFirstEntry);
   
@@ -819,11 +814,7 @@ Ent* EntBuffer::aGetEntrySplit(i8 iSplitEntryNo, Ent** aaPriorEntry)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   RASSERT(aSkipRoots());
-  
-#ifdef WITH_EB_LAZY_CHAIN
-  ASSERT( ! m_aLazyChain );
-#endif
-  
+    
   RASSERT(iSplitEntryNo > 10);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -903,14 +894,7 @@ IndexDef* EntBuffer::pIndexDef(void)
 Ent* EntBuffer::aLastEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
-  
-#ifdef WITH_EB_LAZY_CHAIN
-  ASSERT( ! m_aLazyChain );
-  
-  //if (m_aLazyChain)
-  //  vBuildSkipList();
-#endif
-  
+    
   Ent* aLast = aSkipRoots();
   
   for (;;) {
@@ -943,9 +927,6 @@ Ent* EntBuffer::aLeadEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-#ifdef WITH_EB_LAZY_CHAIN
-  ASSERT( ! m_aLazyChain );
-#endif
   
   Ent* aFirst = aNextEntry(aSkipRoots(),0);
   

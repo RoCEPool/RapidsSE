@@ -4,6 +4,14 @@
 
 #include "BASE.h"
 
+#include "SkipRoots.hpp"
+#include "EntBuffer.hpp"
+#include "IndexTree.hpp"
+#include "CrvBuffer.hpp"
+#include "TablePtn.hpp"
+#include "RowOnce.hpp"
+#include "IndexStream.hpp"
+#include "Table.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -36,6 +44,11 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent, i8 iLogCtl)
   m_oWhenNewed.vNow();
   m_bIsPermanent = bIsPermanent;
   
+  m_pTable = nullptr;
+  m_pStreamDef = nullptr;
+
+  m_tTxnNo = C_UNKNOWN;
+    
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);  
 }
 
@@ -67,7 +80,12 @@ DataBuffer* DataBuffer::pRefdDataBuffer(Rrf& xRef)
   reinterpret_cast<DataBuffer*>(pHeapBuffer->aFirstChunk());
   
   ASSERT(pDataBuffer);
-  ASSERT(pDataBuffer->eGetClassNo() == CN_CRWBUFFER || pDataBuffer->eGetClassNo() == CN_CRVBUFFER);
+  ASSERT(   pDataBuffer->eGetClassNo() == CN_CRVBUFFER
+         || pDataBuffer->eGetClassNo() == CN_CRWBUFFER
+         || pDataBuffer->eGetClassNo() == CN_CSVBUFFER
+         || pDataBuffer->eGetClassNo() == CN_ENTBUFFER
+         || pDataBuffer->eGetClassNo() == CN_ROWBUFFER
+         );
   
   return pDataBuffer;
 }
@@ -95,6 +113,73 @@ DataBuffer* DataBuffer::pToDataBuffer(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get the stream def                                                         */
+/*----------------------------------------------------------------------------*/
+StreamDef* DataBuffer::pStreamDef(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_pStreamDef;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the table                                                              */
+/*----------------------------------------------------------------------------*/
+void DataBuffer::vStreamDef(StreamDef* pStreamDef)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_pStreamDef = pStreamDef;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the table                                                              */
+/*----------------------------------------------------------------------------*/
+Table* DataBuffer::pTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_pTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the table                                                              */
+/*----------------------------------------------------------------------------*/
+void DataBuffer::vTable(Table* pTable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_pTable = pTable;
+  vStreamDef(pTable->pStreamDef());
+}
+
+/*----------------------------------------------------------------------------*/
+/* get transaction number                                                     */
+/*----------------------------------------------------------------------------*/
+tXN DataBuffer::tTxnNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_tTxnNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set transaction number                                                     */
+/*----------------------------------------------------------------------------*/
+void DataBuffer::vTxnNo(tXN tTxnNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_tTxnNo = tTxnNo;
+}
+
+
+
+
+
+
 
 /*----------------------------------------------------------------------------*/
 /* get age of buffer in seconds                                               */

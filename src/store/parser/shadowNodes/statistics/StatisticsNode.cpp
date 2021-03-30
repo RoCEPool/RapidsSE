@@ -23,7 +23,7 @@ static Stz* C_STATISTICS_DEFN = "/__root__/definitions/object/statisticsNode"_St
 
 
 /*----------------------------------------------------------------------------*/
-/* Appends a description of the ProjectedExpr into a buffer                   */
+/* Create the statistics node                                                 */
 /*----------------------------------------------------------------------------*/
 QueryNode* StatisticsNode::pCreate()
 {
@@ -42,7 +42,13 @@ b1 StatisticsNode::bIsOfType(PlanNode *pNode)
   return ShadowNode::bIsOfType(pNode, const_cast<Stz*>(C_STATISTICS_DEFN));
 }
 
-
+/*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely the same as its definition     */
+/*----------------------------------------------------------------------------*/
+b1 StatisticsNode::bIsExactType(PlanNode *pNode)
+{
+  return ShadowNode::bIsExactType(pNode, C_STATISTICS_DEFN);
+}
 
 /*============================================================================*/
 /* end                                                                        */

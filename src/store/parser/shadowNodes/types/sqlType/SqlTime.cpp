@@ -79,6 +79,13 @@ b1 SqlTime::bIsOfType(PlanNode *pNode)
   return ShadowNode::bIsOfType(pNode, C_SQLTIME_DEFN);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely the same as its definition     */
+/*----------------------------------------------------------------------------*/
+b1 SqlTime::bIsExactType(PlanNode *pNode)
+{
+  return ShadowNode::bIsExactType(pNode, C_SQLTIME_DEFN);
+}
 
 
 /*============================================================================*/

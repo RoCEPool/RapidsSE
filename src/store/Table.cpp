@@ -18,11 +18,12 @@
 
 #include "Crv.hpp"
 #include "CrvBuffer.hpp"
-#include "ReadApi.hpp"
 #include "TablePtn.hpp"
 #include "Table.hpp"
+#include "ShardDef.hpp"
 
 #include "Grid.hpp"
+#include "MY.hpp"
 
 Atomic gixTable;
 
@@ -41,7 +42,7 @@ __aFooterFunction(Table)
 HACK(Table,"define table partitioning");
 
 Table::Table(Stz* szTableNm, eTT eKind)
-: Object(CN_TABLE)
+: Operand(CN_TABLE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 
@@ -49,18 +50,15 @@ Table::Table(Stz* szTableNm, eTT eKind)
   gpAttachMap->m_oStatistics.Table.m_nCreates++;
 #endif
   
-  m_sTableNm   = szTableNm;
-  m_eKind      = eKind;
-  m_pIdxVec    = new IdxVec;
-  m_ixIndexNo.vCheckInit();
-  m_pBucketMap = new BucketMap(AM::nPtnsInGrid());
-  //m_pPtnMap    = new PtnMap(AM::nPtnsInGrid());
-  m_bIsLoading = false;
-  m_bDefinitionOnly = false;
-
-  m_pStreamDef    = nullptr;
-  m_pTablePtnVec  = new TablePtnVec;
-  m_pPtnStreamDef = new StreamDef;
+  m_sTableNm = szTableNm;
+  m_eKind    = eKind;
+  
+  m_oLocation.vSet();
+  m_pStreamDef   = nullptr;
+  m_pShardDef    = new ShardDef;
+  m_pBucketMap   = new BucketMap(AM::nPtnsInGrid());
+  m_pIdxVec      = new IdxVec;
+  m_pTablePtnVec = new TablePtnVec;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the table partitions
@@ -94,6 +92,7 @@ Table::Table(Stz* szTableNm, eTT eKind)
               "%s |gixTable=%lld|"_Stz, //!format-LogOpr
               m_sTableNm.szStz(),* gixTable);
 
+  //m_oLocation.vPrint();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 }
@@ -111,7 +110,7 @@ Table::~Table(void) noexcept(false)
   delete m_pBucketMap;
 
   delete m_pStreamDef;
-  delete m_pPtnStreamDef;
+  delete m_pShardDef;
   
   // delete the TablePtn's
   for (i8 i_TablePtn = 0; i_TablePtn < AM::nPtnsPerTable(); i_TablePtn++) {
@@ -254,6 +253,18 @@ tPN Table::tTablePtnToPtnNo(i8 i_TablePtn)
   return tPtnNo;
 }
 
+/*----------------------------------------------------------------------------*/
+/* post recv function                                                         */
+/*----------------------------------------------------------------------------*/
+void Table::vPostRecv(void* aTable)
+{
+  _static_
+  
+  Table* pTable = _pTable(aTable);
+  
+  pTable->vResetPointers();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -266,8 +277,12 @@ void Table::vAddIndex(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
+  pIndex->pLocation()->vSet();
+  
   // set the index no in the index
-  pIndex->vIndexNo(++m_ixIndexNo);
+  
+  i8 iIndexNo = m_pIdxVec->nItems();
+  pIndex->vIndexNo(iIndexNo);
   
   // add index to table
   m_pIdxVec->vAdd(pIndex);
@@ -311,6 +326,34 @@ BucketMap* Table::pBucketMap(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set the bucket map for this table                                          */
+/*----------------------------------------------------------------------------*/
+void Table::vBucketMap(BucketMap* pBucketMap)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  m_pBucketMap = pBucketMap;
+  
+  m_pBucketMap->pLocation()->vSet();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of buffers in this table                                        */
+/*----------------------------------------------------------------------------*/
+i8 Table::nBuffers(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  i8 nBuffers = 0;
+  
+  for (i8 i_TablePtn = 0; i_TablePtn < AM::nPtnsPerTable(); i_TablePtn++) {
+    nBuffers += pTablePtn(i_TablePtn)->nBuffers();
+  }
+  
+  return nBuffers;
+}
+
+/*----------------------------------------------------------------------------*/
 /* create ptn stream def                                                      */
 /*----------------------------------------------------------------------------*/
 void Table::vCreatePtnDef(void)
@@ -319,7 +362,7 @@ void Table::vCreatePtnDef(void)
   
   Column* pColumn = nullptr;
 
-  m_pPtnStreamDef->m_nColumns = 0;
+  m_pShardDef->m_nColumns = 0;
   
   // find the column from the table columnVector
   i8 iColumns = pStreamDef()->nColumns();
@@ -327,26 +370,10 @@ void Table::vCreatePtnDef(void)
   for (i8 i_Col = 0; i_Col < iColumns; i_Col++) {
     pColumn = pStreamDef()->pGetColumn(i_Col);
     if (pColumn->bIsPtnKey()) {
-      m_pPtnStreamDef->m_xaColumn[m_pPtnStreamDef->m_nColumns].vCopy(pColumn);
-      m_pPtnStreamDef->m_nColumns++;
+      m_pShardDef->m_xaColumn[m_pShardDef->m_nColumns].vCopy(pColumn);
+      m_pShardDef->m_nColumns++;
     }
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of crw buffers in this table                                    */
-/*----------------------------------------------------------------------------*/
-i8 Table::nCrwBuffers(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  i8 iBuffers = 0;
-  
-  for (i8 i_TablePtn = 0; i_TablePtn < AM::nPtnsPerTable(); i_TablePtn++) {
-    iBuffers += pTablePtn(i_TablePtn)->nCrwBuffers();
-  }
-  
-  return iBuffers;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -424,7 +451,7 @@ i8 Table::nIndexBuffers(i8 iIndexNo)
 //  ASSERT(i_TablePtn < AM::nPtnsPerTable());
 //
 //  // if buffer has 0 entries (only head) then should be last buffer
-//  if (pCrwBuffer->nRowCount() == 0) {
+//  if (pCrwBuffer->nRows() == 0) {
 //    delete pCrwBuffer;
 //    return;
 //  }
@@ -500,16 +527,6 @@ bool Table::bIsInternallyDefined(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get if table is loading                                                    */
-/*----------------------------------------------------------------------------*/
-bool Table::bIsLoading(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  return m_bIsLoading;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get if table is user created                                               */
 /*----------------------------------------------------------------------------*/
 bool Table::bIsUserCreated(void)
@@ -540,44 +557,6 @@ void Table::vKind(eTT eKind)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set table is loading                                                       */
-/*----------------------------------------------------------------------------*/
-void Table::vIsLoading(bool bIsLoading)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  m_bIsLoading = bIsLoading;
-}
-
-/*----------------------------------------------------------------------------*/
-/* lazy build of index                                                        */
-/*----------------------------------------------------------------------------*/
-void Table::vLazyBuildIndexes(i8 i_TablePtn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  TablePtn* pTablePtn = this->pTablePtn(i_TablePtn);
-  IndexTreeVec* pInedexTreeVec = pTablePtn->pIndexTreeVec();
-  i8 nIndexes = pInedexTreeVec->nItems();
-  
-  // iterate all indexes of the table
-  for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
-    
-    // get index
-    IndexTree* pNewIndexTree = pInedexTreeVec->pGet(i_Index);
-    
-    Index* pIndex = pNewIndexTree->pIndex();
-    
-    // get an H0 buffer
-    EntBuffer *pIndexBuffer = pTablePtn->pIndexTree(pIndex->iIndexNo())->pFirstH0Buffer();
-    
-    // build skip list for all H0 buffers
-    if (pIndexBuffer)
-      pIndexBuffer->vLazyBuild();
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* list table contents                                                        */
 /*----------------------------------------------------------------------------*/
 void Table::vListContents(i8 i_Depth)
@@ -587,7 +566,6 @@ void Table::vListContents(i8 i_Depth)
   vTrace("%sTable %s %s\n"_Stz,
          Stz::szTab(i_Depth),
          m_sTableNm.szStz(),
-         //m_bDefinitionOnly ? "(definition-only)"_Stz : ""_Stz
          aTT[m_eKind]
          );
 
@@ -673,42 +651,16 @@ void Table::vRemoveIndex(Index* pIndex)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get partition column vector                                                */
+/* reset members which are pointers (after being received)                    */
 /*----------------------------------------------------------------------------*/
-StreamDef*  Table::pPtnStreamDef(void)
+void Table::vResetPointers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  return m_pPtnStreamDef;
-}
-
-/*----------------------------------------------------------------------------*/
-/* attempt to purge oldest buffer                                             */
-/*----------------------------------------------------------------------------*/
-bool Table::bPurge(i8 i_TablePtn, i8 iOlderThanSeconds)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  //vTrace("Purging table %s\n"_Stz, m_sTableNm.azChar());
-  
-  // get the table ptn
-  TablePtn* pTablePtn = m_pTablePtnVec->pGet(i_TablePtn);
-  
-  // purge the table ptn
-  bool bPurged = pTablePtn->bPurge(iOlderThanSeconds);
-  
-  // purge all other indexes
-//  for (i8 iIndexNo = 0; iIndexNo < m_pIdxVec->nItems(); iIndexNo++) {
-//
-//    Index* pIndex = m_pIdxVec->pGet(iIndexNo);
-//
-//    bool bPurged =bPurgeIndex(i_TablePtn, pIndex->iIndexNo(), iOlderThanSeconds);
-//
-//    if (! bPurged)
-//      return false;
-//  }
-  
-  return bPurged;
+  m_pStreamDef = nullptr;
+  m_pShardDef  = nullptr;
+  m_pBucketMap = nullptr;
+  m_pIdxVec    = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -728,6 +680,16 @@ EntBuffer* Table::pRootBuffer(i8 i_TablePtn, i8 i_Index)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the sharding definition                                                */
+/*----------------------------------------------------------------------------*/
+ShardDef* Table::pShardDef(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  return m_pShardDef;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get StreamDef                                                              */
 /*----------------------------------------------------------------------------*/
 StreamDef* Table::pStreamDef(void)
@@ -740,25 +702,11 @@ StreamDef* Table::pStreamDef(void)
 /*----------------------------------------------------------------------------*/
 /* set StreamDef                                                              */
 /*----------------------------------------------------------------------------*/
-HACK(Table,"define table partitioning");
-
 void Table::vStreamDef(StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   m_pStreamDef = pStreamDef;
-  
-  // HACK : Don't do this for DEFINE TABLES (which occur before cluster
-  //        has started). Experimentally allows new, but non-active nodes to be
-  //        added after the cluster has started
-  //        This must be fixed properly. Ray 14 Nov 2020
-  if (AM::pGrid()->bHasStarted()) {
-    for (i8 i_TablePtn = 0; i_TablePtn < AM::nPtnsPerTable(); i_TablePtn++) {
-      TablePtn* pTablePtn = this->pTablePtn(i_TablePtn);
-      ReadApi* pReadApi = pTablePtn->pReadApi();
-      pReadApi->vStreamDef(pStreamDef);
-    }
-  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -815,7 +763,7 @@ i8 Table::iToPartition(i8 iRowHash)
 //  ASSERT(i_TablePtn < AM::nPtnsPerTable());
 //
 //  // if buffer has 0 entries (only head) then should be last buffer
-//  if (pCrwBuffer->nRowCount() == 0) {
+//  if (pCrwBuffer->nRows() == 0) {
 //    delete pCrwBuffer;
 //    return;
 //  }

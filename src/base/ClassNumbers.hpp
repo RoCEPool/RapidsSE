@@ -25,6 +25,7 @@ enum eCN : u2 // Class Number
   /* */ CN_ATTACHMAP,
   
   /* */ CN__B__,
+  /* */ CN_BACKEND,
   /* */ CN_BCDVAL,
   /* */ CN_BIRTH,
   /* */ CN_BOLVAL,
@@ -44,6 +45,7 @@ enum eCN : u2 // Class Number
   /* */ CN_COLUMN,
   /* */ CN_CRVBUFFER,
   /* */ CN_CRWBUFFER,
+  /* */ CN_CRWTABLEPTN,
   /* */ CN_CRWTOROW,
   /* */ CN_CSVBUFFER,
   /* */ CN_CSVMETA,
@@ -135,6 +137,7 @@ enum eCN : u2 // Class Number
   /* */ CN_LOCALCHAIN,
   /* */ CN_LOCALDIR,
   /* */ CN_LOCALFILE,
+  /* */ CN_LOCATION,
   /* */ CN_LOCK,
   /* */ CN_LOG,
   /* */ CN_LOGENTRY,
@@ -161,6 +164,7 @@ enum eCN : u2 // Class Number
   /* */ CN_NUMBAT,
   
   /* */ CN__O__,
+  /* */ CN_OBJBUFFER,
   /* */ CN_OBJECTS,
   /* */ CN_OBJECTSNAPSHOT,
   /* */ CN_OUTPUT,
@@ -203,7 +207,6 @@ enum eCN : u2 // Class Number
 
   /* */ CN__R__,
   /* */ CN_RANGE,
-  /* */ CN_READAPI,
   /* */ CN_READER,
   /* */ CN_RECORD,
   /* */ CN_RELOP,
@@ -220,6 +223,7 @@ enum eCN : u2 // Class Number
   /* */ CN_ROWPIX,
   /* */ CN_ROWSINGLE,
   /* */ CN_ROWSINGLELIST,
+  /* */ CN_ROWTABLEPTN,
   /* */ CN_ROWTRAY,
   /* */ CN_RUCPU,
   /* */ CN_RUDIR,
@@ -240,6 +244,7 @@ enum eCN : u2 // Class Number
   /* */ CN_SEPROMPT,
   /* */ CN_SESSION,
   /* */ CN_SESSIONS,
+  /* */ CN_SHARDDEF,
   /* */ CN_SHORTCUT,
   /* */ CN_SHORTCUTVEC,
   /* */ CN_SINCE,
@@ -359,6 +364,7 @@ static Stz* aCN[]
   /* */ "ATTACHMAP"_Stz,            // CN_ATTACHMAP
    
   /* */ "_B__"_Stz,                 // CN__B__
+  /* */ "BACKEND"_Stz,              // CN_BACKEND
   /* */ "BCDVAL"_Stz,               // CN_BCDVAL
   /* */ "BIRTH"_Stz,                // CN_BIRTH
   /* */ "BOLVAL"_Stz,               // CN_BOLVAL
@@ -378,6 +384,7 @@ static Stz* aCN[]
   /* */ "COLUMN"_Stz,               // CN_COLUMN
   /* */ "CRVBUFFER"_Stz,            // CN_CRVBUFFER
   /* */ "CRWBUFFER"_Stz,            // CN_CRWBUFFER
+  /* */ "CRWTABLEPTN"_Stz,          // CN_CRWTABLEPTN
   /* */ "CRWTOROW"_Stz,             // CN_CRWTOROW
   /* */ "CSVBUFFER"_Stz,            // CN_CSVBUFFER
   /* */ "CSVMETA"_Stz,              // CN_CSVMETA
@@ -468,6 +475,7 @@ static Stz* aCN[]
   /* */ "LOCALCHAIN"_Stz,           // CN_LOCALCHAIN
   /* */ "LOCALDIR"_Stz,             // CN_LOCALDIR
   /* */ "LOCALFILE"_Stz,            // CN_LOCALFILE
+  /* */ "LOCATION"_Stz,             // CN_LOCATION
   /* */ "LOCK"_Stz,                 // CN_LOCK
   /* */ "LOG"_Stz,                  // CN_LOG
   /* */ "LOGENTRY"_Stz,             // CN_LOGENTRY
@@ -494,6 +502,7 @@ static Stz* aCN[]
   /* */ "NUMBAT"_Stz,               // CN_NUMBAT
    
   /* */ "_O__"_Stz,                 // CN__O__
+  /* */ "OBJBUFFER"_Stz,            // CN_OBJBUFFER
   /* */ "OBJECTS"_Stz,              // CN_OBJECTS
   /* */ "OBJECTSNAPSHOT"_Stz,       // CN_OBJECTSNAPSHOT
   /* */ "OUTPUT"_Stz,               // CN_OUTPUT
@@ -536,7 +545,6 @@ static Stz* aCN[]
    
   /* */ "_R__"_Stz,                 // CN__R__
   /* */ "RANGE"_Stz,                // CN_RANGE
-  /* */ "READAPI"_Stz,              // CN_READAPI
   /* */ "READER"_Stz,               // CN_READER
   /* */ "RECORD"_Stz,               // CN_RECORD
   /* */ "RELOP"_Stz,                // CN_RELOP
@@ -553,6 +561,7 @@ static Stz* aCN[]
   /* */ "ROWPIX"_Stz,               // CN_ROWPIX
   /* */ "ROWSINGLE"_Stz,            // CN_ROWSINGLE
   /* */ "ROWSINGLELIST"_Stz,        // CN_ROWSINGLELIST
+  /* */ "ROWTABLEPTN"_Stz,          // CN_ROWTABLEPTN
   /* */ "ROWTRAY"_Stz,              // CN_ROWTRAY
   /* */ "RUCPU"_Stz,                // CN_RUCPU
   /* */ "RUDIR"_Stz,                // CN_RUDIR
@@ -573,6 +582,7 @@ static Stz* aCN[]
   /* */ "SEPROMPT"_Stz,             // CN_SEPROMPT
   /* */ "SESSION"_Stz,              // CN_SESSION
   /* */ "SESSIONARRAY"_Stz,         // CN_SESSIONS
+  /* */ "SHARDDEF"_Stz,             // CN_SHARDDEF
   /* */ "SHORTCUT"_Stz,             // CN_SHORTCUT
   /* */ "SHORTCUTVEC"_Stz,          // CN_SHORTCUTVEC
   /* */ "SINCE"_Stz,                // CN_SINCE

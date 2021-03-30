@@ -20,7 +20,7 @@ __aFooterFunction(BucketMap);
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 BucketMap::BucketMap(i8 nPartitions)
-: Object(CN_BUCKETMAP)
+: Operand(CN_BUCKETMAP)
 , m_okLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
@@ -49,8 +49,40 @@ BucketMap::~BucketMap(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/* post recv function                                                         */
+/*----------------------------------------------------------------------------*/
+void BucketMap::vPostRecv(void* aBucketMap)
+{
+  _static_
+  
+  BucketMap* pBucketMap = _pBucketMap(aBucketMap);
+  
+  pBucketMap->vResetPointers();
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get location                                                               */
+/*----------------------------------------------------------------------------*/
+Location* BucketMap::pLocation(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
+  
+  return & m_oLocation;
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset members which are pointers (after being received)                    */
+/*----------------------------------------------------------------------------*/
+void BucketMap::vResetPointers(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
+  
+  // no pointers need to be reset
+}
 
 /*----------------------------------------------------------------------------*/
 /* get which logical partition a bucket is currently mapped to                */
