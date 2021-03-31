@@ -49,7 +49,6 @@ namespace STORE
     Grid*         m_pGrid;
     Heaps         m_xHeaps;
     Jobs*         m_pJobs;
-    Article*      m_pLexiconArticle;
     Locks         m_oLocks;
     Objects*      m_pObjects;
     Atomic        m_nxOperands;

@@ -75,16 +75,11 @@ AttachMap::AttachMap(void)
   m_pJobs = new Jobs;
 
   m_pObjects = new Objects;
-
-  Lexicon* pLexicon = new Lexicon("__lexicon"_Stz);
-  m_pLexiconArticle = pLexicon->pArticle();
   
   m_pDicRoot = new Dic("__dicRoot"_Stz);
   
   m_pArcticleRoot = m_pDicRoot->pArticleDic();
-  
-  m_pLexiconArticle->vAppend(m_pArcticleRoot);
-  
+    
   Step::vAddStep("word"_Stz,&Step::vWord);
   AM::vRootWord(m_pDicRoot->pFindWord("word"_Stz));
 
