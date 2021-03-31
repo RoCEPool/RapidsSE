@@ -14,8 +14,6 @@ namespace BASE
                    public ListNL_t__<Article>
   {
   private:
-    Lock    m_okLock;
-  
     s32      m_sName;      // name of the Article
     Object*  m_pObject;    // pointer to the named object
     eNK      m_eKind;      // kind of article
@@ -46,17 +44,11 @@ namespace BASE
   
     Article* pChild(void);
     void  vChild(Article* pChild);
-  
-    void  vDropRead(void);
-    void  vDropWrite(void);
-  
+    
     void  vDumpRecursively(i8 iDepth);
   
     Article* pFind(Stz* szName);
   
-    void  vGrabRead(void);
-    void  vGrabWrite(void);
-
     eNK   eKind(void);
     void  vKind(eNK eKind);
   

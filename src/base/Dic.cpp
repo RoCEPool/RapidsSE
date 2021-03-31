@@ -67,7 +67,7 @@ void Dic::vAddWord(Word* pWord)
 //    bTrace = true;
 //  }
   
-  m_pArticle->vGrabWrite();
+  m_okLock.vGrabWrite();
 
   bool b = m_pWordSkipList->bInsert(pWord,bTrace);
   ASSERT(b);
@@ -76,7 +76,7 @@ void Dic::vAddWord(Word* pWord)
   SkipNode* pSkipNode = m_pWordSkipList->pNewly();
   pWord->m_pSkipNode = pSkipNode;
   
-  m_pArticle->vDropWrite();
+  m_okLock.vDropWrite();
   
   ASSERT(pFindWord(pWord->szWordNm()));
 }
@@ -191,11 +191,11 @@ Word* Dic::pEachWord(Word* pPrior)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  m_pArticle->vGrabRead();
+  m_okLock.vGrabRead();
   
   Word* pNextWord = pPrior ? pPrior->pNextWord() : pFirstWord();
 
-  m_pArticle->vDropRead();
+  m_okLock.vDropRead();
 
   return pNextWord;
 }
@@ -207,19 +207,19 @@ Word* Dic::pEachWord(Word* pPrior, Word* pCategory)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  m_pArticle->vGrabRead();
+  m_okLock.vGrabRead();
   
   Word* pNextWord = pPrior ? pPrior->pNextWord() : pFirstWord();
 
   for ( ; pNextWord; pNextWord = pNextWord->pNextWord()) {
     
     if (pNextWord->pCategory() == pCategory) {
-      m_pArticle->vDropRead();
+      m_okLock.vDropRead();
       return pNextWord;
     }
   }
   
-  m_pArticle->vDropRead();
+  m_okLock.vDropRead();
   
   return nullptr;
 }
@@ -241,12 +241,12 @@ Word* Dic::pFindWord(Stz* szWordNm)
   
   Word* pSearchWord = new (nullptr) Word(szWordNm);
   
-  m_pArticle->vGrabRead();
+  m_okLock.vGrabRead();
   
   Word* pFoundWord =
     _pWord(m_pWordSkipList->pFind(pSearchWord,bTrace,g_fp_bWordCompare));
   
-  m_pArticle->vDropRead();
+  m_okLock.vDropRead();
   
   delete pSearchWord;
   
@@ -260,16 +260,16 @@ Word* Dic::pFindStep(fpSTEPFN fpStepFn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  m_pArticle->vGrabRead();
+  m_okLock.vGrabRead();
   
   for (Word* pWord = pFirstWord(); pWord; pWord = pWord->pNextWord()) {
     if (WK_INTRINSIC == pWord->eWord() && fpStepFn == pWord->fpEntryStep()) {
-      m_pArticle->vDropRead();
+      m_okLock.vDropRead();
       return pWord;
     }
   }
   
-  m_pArticle->vDropRead();
+  m_okLock.vDropRead();
   
   return nullptr;
 }
@@ -428,7 +428,7 @@ void Dic::vListWords(i8 i_Depth, bool bListContents)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  m_pArticle->vGrabRead();
+  m_okLock.vGrabRead();
   
   for (Word* pWord = pFirstWord(); pWord; pWord = pWord->pNextWord()) {
     
@@ -447,7 +447,7 @@ void Dic::vListWords(i8 i_Depth, bool bListContents)
     }
   }
   
-  m_pArticle->vDropRead();
+  m_okLock.vDropRead();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -494,12 +494,12 @@ Word* Dic::pRemoveWord(Stz* szWordNm)
   if (! pWordRemove)
     return pWordRemove;
   
-  m_pArticle->vGrabWrite();
+  m_okLock.vGrabWrite();
   
   bool b = m_pWordSkipList->bRemove(pWordRemove);
   UNUSED(b);
   
-  m_pArticle->vDropWrite();
+  m_okLock.vDropWrite();
   
   return pWordRemove;
 }

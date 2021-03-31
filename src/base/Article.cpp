@@ -33,7 +33,6 @@ void Article::operator delete(void* pAddress)
 /*----------------------------------------------------------------------------*/
 Article::Article(Stz* szName, Object* pObject, fpARTICLEFN* fpArtFun)
 : Object(CN_ARTICLE)
-, m_okLock(this,C_DONT_LOG)
 {
   _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
   
@@ -117,26 +116,6 @@ void Article::vChild(Article* pChild)
 }
 
 /*----------------------------------------------------------------------------*/
-/* drop lock for read                                                         */
-/*----------------------------------------------------------------------------*/
-void Article::vDropRead(void)
-{
-  _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
-  
-  m_okLock.vDropRead();
-}
-
-/*----------------------------------------------------------------------------*/
-/* drop lock for write                                                        */
-/*----------------------------------------------------------------------------*/
-void Article::vDropWrite(void)
-{
-  _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
-
-  m_okLock.vDropWrite();
-}
-
-/*----------------------------------------------------------------------------*/
 /* dump article recursively                                                   */
 /*----------------------------------------------------------------------------*/
 void Article::vDumpRecursively(i8 iDepth)
@@ -181,26 +160,6 @@ Article* Article::pFind(Stz* szName)
   Article* pChildArt = m_pChild->pFind(szName);
   
   return pChildArt;
-}
-
-/*----------------------------------------------------------------------------*/
-/* grab lock for read                                                         */
-/*----------------------------------------------------------------------------*/
-void Article::vGrabRead(void)
-{
-  _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
-  
-  m_okLock.vGrabRead();
-}
-
-/*----------------------------------------------------------------------------*/
-/* grab lock for write                                                        */
-/*----------------------------------------------------------------------------*/
-void Article::vGrabWrite(void)
-{
-  _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
-
-  m_okLock.vGrabWrite();
 }
 
 /*----------------------------------------------------------------------------*/
