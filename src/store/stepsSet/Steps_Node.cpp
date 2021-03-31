@@ -83,11 +83,6 @@ void Step::vNodeNew(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Article* pGridArticle = AM::pLexiconArticle()->pFind("SEgrid"_Stz);
-  
-  pGridArticle->vAppend(pNode->pArticle());
-  pGridArticle->vDumpRecursively(0);
-
   EXIT();
 }
 
@@ -105,11 +100,6 @@ void Step::vNodeForget(void)
   ASSERT(CN_NODE == pNode->eGetClassNo());
   
   Grid* pGrid = AM::pGrid();
-  
-  
-  Article* pGridArticle = AM::pLexiconArticle()->pFind("SEgrid"_Stz);
-  pGridArticle->vRemove(pNode->pArticle());
-  pGridArticle->vDumpRecursively(0);
 
   pGrid->vRemoveNode(pNode);
   
