@@ -65,9 +65,6 @@ public:
   void vArrangeSeqNo(void);
   void vArrangeSequence(void);
 
-  // article
-  void vArticleDump(void);
-
   // assert
   void vAssert(void);
 
