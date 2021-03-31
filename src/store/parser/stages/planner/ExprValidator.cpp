@@ -48,7 +48,7 @@ void ExprValidator::vValidateExprs(PlanNode *pRootNode)
   // The plan node should have one child which is a StatementMarker node
   ASSERT(pPlanNode->nChildren() == 1);
   ASSERT(StatementMarker::bIsOfType(pPlanNode->pFirstChild()));
-  QueryNode* pStatementMarker = static_cast<QueryNode*>(pPlanNode->pFirstChild());
+  QueryNode* pStatementMarker = _pQueryNode(pPlanNode->pFirstChild());
 
   // We want to iterate over each logical subgraph, bounded by StatementMarkers,
   // and run the validation checks on each of them.
@@ -60,7 +60,7 @@ void ExprValidator::vValidateExprs(PlanNode *pRootNode)
       return GraphNav::WALK_CONTINUE;
     }
 
-    QueryNode* pStatementMarker = static_cast<QueryNode*>(pNode);
+    QueryNode* pStatementMarker = _pQueryNode(pNode);
 
     // Run the validation logic on the logical subgraph of each StatementMarker encountered.
 
@@ -111,7 +111,7 @@ void ExprValidator::vValidateExprResultType(PlanNode *pRootNode, QueryNode* pSta
       return GraphNav::WALK_CONTINUE;   // Keep walking
     }
 
-    QueryNode* pExprNode = static_cast<QueryNode*>(pNode);
+    QueryNode* pExprNode = _pQueryNode(pNode);
 
     // This will throw an exception if an error is found.
     Expr::vValidateResultType(pExprNode, pRootNode);
@@ -143,7 +143,7 @@ void ExprValidator::vValidatePredicatesAreBoolean(PlanNode *pRootNode, QueryNode
       return GraphNav::WALK_CONTINUE;   // Keep walking
     }
 
-    QueryNode* pFilterNode = static_cast<QueryNode*>(pNode);
+    QueryNode* pFilterNode = _pQueryNode(pNode);
     QueryNode* pExprNode = FilterOp::pFilterExpr(pFilterNode);
 
     eCT eType = Expr::eType(pExprNode, pRootNode);
@@ -183,7 +183,7 @@ void ExprValidator::vValidateGroupByExprs(PlanNode *pRootNode, QueryNode* pStart
     return AggregateOp::bIsExactType(pNode);
   };
 
-  QueryNode* pAggregateOp = static_cast<QueryNode*>(
+  QueryNode* pAggregateOp = _pQueryNode(
       GraphNav::pGlobalSearch(pStartNode, false, true, fCondition, nullptr) );
 
   if (!pAggregateOp) {
@@ -224,7 +224,7 @@ void ExprValidator::vValidateProjectExprs(PlanNode *pRootNode, QueryNode* pStart
     return ProjectOp::bIsExactType(pNode);
   };
 
-  QueryNode* pProjectOp = static_cast<QueryNode*>(
+  QueryNode* pProjectOp = _pQueryNode(
       GraphNav::pGlobalSearch(pStartNode, false, true, fCondition, nullptr) );
 
   if (!pProjectOp) {
@@ -249,7 +249,7 @@ void ExprValidator::vValidateProjectExprs(PlanNode *pRootNode, QueryNode* pStart
   // This is the list of expression symbols that represent each column of
   // each row that this sql operator will receive.
   ASSERT(pProjectOp->nChildren() == 1);
-  QueryNodeList* pColExprList = PlanObject::pColumnExprs(static_cast<QueryNode*>(pProjectOp->pFirstChild()), pRootNode);
+  QueryNodeList* pColExprList = PlanObject::pColumnExprs(_pQueryNode(pProjectOp->pFirstChild()), pRootNode);
   ASSERT(pColExprList);
   ASSERT(pColExprList->nItems() > 0);
 
@@ -259,7 +259,7 @@ void ExprValidator::vValidateProjectExprs(PlanNode *pRootNode, QueryNode* pStart
   i8 iNumLitCols = 0; // literal values only
 
   while (pIter->bHasNext()) {
-    QueryNode* pProjColumn = static_cast<QueryNode*>(pIter->pNext());
+    QueryNode* pProjColumn = _pQueryNode(pIter->pNext());
     QueryNode* pExpr = ProjectedColumn::pExprNode(pProjColumn);
 
     // Convert the expression from a symbolic expression to an ordinal one.
@@ -312,7 +312,7 @@ void ExprValidator::vCheckNonAggExprIsInGroupBy(QueryNode* pExpr, QueryNode *pGr
 
     ASSERT(Expr::bIsOfType(pNode));
 
-    QueryNode* pExpr = static_cast<QueryNode*>(pNode);
+    QueryNode* pExpr = _pQueryNode(pNode);
 
     // Ignore aggregate expressions
     if (AggregateExpr::bIsOfType(pExpr)) {
@@ -329,7 +329,7 @@ void ExprValidator::vCheckNonAggExprIsInGroupBy(QueryNode* pExpr, QueryNode *pGr
     PlanNodeIter* pIter = pGroupByList->pNewChildrenIter();;
 
     while (pIter->bHasNext()) {
-      QueryNode* pGroupByExpr = static_cast<QueryNode*>(pIter->pNext());
+      QueryNode* pGroupByExpr = _pQueryNode(pIter->pNext());
 
       if (Expr::bIsSymbolicallyEqual(pExpr, pGroupByExpr)) {
         delete pIter;
@@ -367,7 +367,7 @@ void ExprValidator::vCheckGroupByExprsNotAggregates(QueryNode *pGroupByList)
 
   PlanNodeIter* pIter = pGroupByList->pNewChildrenIter();
   while (pIter->bHasNext()) {
-    QueryNode* pExpr = static_cast<QueryNode*>(pIter->pNext());
+    QueryNode* pExpr = _pQueryNode(pIter->pNext());
 
     if (Expr::bContainsAnAggregate(pExpr)) {
       delete pIter;
@@ -399,7 +399,7 @@ void ExprValidator::vCheckGroupByExprsNotLiterals(QueryNode *pGroupByList)
 
   PlanNodeIter* pIter = pGroupByList->pNewChildrenIter();
   while (pIter->bHasNext()) {
-    QueryNode* pExpr = static_cast<QueryNode*>(pIter->pNext());
+    QueryNode* pExpr = _pQueryNode(pIter->pNext());
 
     if (Expr::bIsLiteral(pExpr)) {
       delete pIter;
@@ -430,7 +430,7 @@ void ExprValidator::vValidateSqlOpExprsAgainstGroupBy(PlanNode* pRootNode, Query
     return (AggregateOp::bIsExactType(pNode));
   };
 
-  QueryNode* pAggregateOp = static_cast<QueryNode*>(
+  QueryNode* pAggregateOp = _pQueryNode(
       GraphNav::pGlobalSearch(pStartNode, false, true,
                               fCondition, nullptr) );
 
@@ -448,7 +448,7 @@ void ExprValidator::vValidateSqlOpExprsAgainstGroupBy(PlanNode* pRootNode, Query
   auto fVisitor = [pAggregateOp, pGroupByList](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     ASSERT(PlanObject::bIsOfType(pNode));
-    QueryNode* pPlanOp = static_cast<QueryNode*>(pNode);
+    QueryNode* pPlanOp = _pQueryNode(pNode);
 
     b1 bExit = false;
 
@@ -469,7 +469,7 @@ void ExprValidator::vValidateSqlOpExprsAgainstGroupBy(PlanNode* pRootNode, Query
 
       PlanNodeIter* pProjectedColumnIter = pProjectedColumns->pNewChildrenIter();
       while (pProjectedColumnIter->bHasNext()) {
-        QueryNode* pProjectColumn = static_cast<QueryNode*>(pProjectedColumnIter->pNext());
+        QueryNode* pProjectColumn = _pQueryNode(pProjectedColumnIter->pNext());
         ASSERT(ProjectedColumn::bIsOfType(pProjectColumn));
 
         QueryNode* pExpr = ProjectedColumn::pExprNode(pProjectColumn);
@@ -533,7 +533,7 @@ void ExprValidator::vValidateSqlOpExprsAgainstProjectOp(PlanNode* pRootNode, Que
   QueryNode* pProjectedColumns = ProjectOp::pProjectedColumns(pProjectOp);
   PlanNodeIter* pIter = pProjectedColumns->pNewChildrenIter();
   while (pIter->bHasNext()) {
-    QueryNode* pProjectedColumn = static_cast<QueryNode*>(pIter->pNext());
+    QueryNode* pProjectedColumn = _pQueryNode(pIter->pNext());
     QueryNode* pExpr = ProjectedColumn::pExprNode(pProjectedColumn);
 
     if (Expr::bContainsNonaggregatedColumnRefs(pExpr)) {
@@ -553,7 +553,7 @@ void ExprValidator::vValidateSqlOpExprsAgainstProjectOp(PlanNode* pRootNode, Que
       (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     ASSERT(PlanObject::bIsOfType(pNode));
-    QueryNode* pPlanOp = static_cast<QueryNode*>(pNode);
+    QueryNode* pPlanOp = _pQueryNode(pNode);
 
 
     if (pNode == pProjectOp) {

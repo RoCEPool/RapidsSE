@@ -63,11 +63,11 @@ void TableScanOp::vDescribe(PlanNode* pNode, s2K& sBuf)
   _static_
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pTableScanOp = static_cast<QueryNode*>(pNode);
+  QueryNode* pTableScanOp = _pQueryNode(pNode);
 
   sBuf.vConcat("TableScanOp : "_Stz);
 
-  QueryNode* pTableRef = static_cast<QueryNode*>(GraphNav::pFindProperty(C_TABLEREF_PROP, pTableScanOp));
+  QueryNode* pTableRef = _pQueryNode(GraphNav::pFindProperty(C_TABLEREF_PROP, pTableScanOp));
   ASSERT(pTableRef);
 
   TableRef::vDescribe(pTableRef, sBuf);
@@ -135,7 +135,7 @@ b1 TableScanOp::bIsExactType(PlanNode *pNode)
 QueryNode* TableScanOp::pTableRef(QueryNode* pNode)
 {
   QueryNode *pTableRefNode =
-      static_cast<QueryNode*>(GraphNav::pFindProperty(const_cast<Stz *>(C_TABLEREF_PROP), pNode));
+      _pQueryNode(GraphNav::pFindProperty(const_cast<Stz *>(C_TABLEREF_PROP), pNode));
   QueryNode *pTableRef = static_cast<QueryNode *>(pTableRefNode);
 
   return pTableRef;
@@ -194,7 +194,7 @@ PlanNodeList* TableScanOp::pColumnDefs(QueryNode* pNode, PlanNode* pRootNode)
                                                      szTableName(pNode));
 
   while (pIter->bHasNext()) {
-    QueryNode* pColumnDef = static_cast<QueryNode*>(pIter->pNext());
+    QueryNode* pColumnDef = _pQueryNode(pIter->pNext());
     pColumnDefList->vAppend(pColumnDef);
   }
 
@@ -225,7 +225,7 @@ QueryNodeList* TableScanOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
                                                      szTableName(pNode));
 
   while (pIter->bHasNext()) {
-    QueryNode* pColumnDef = static_cast<QueryNode*>(pIter->pNext());
+    QueryNode* pColumnDef = _pQueryNode(pIter->pNext());
 
     // Create a columnRef expression object from this column definition
     QueryNode* pColumnRef = ColumnRef::pCreate(ColumnDef::szCatalogName(pColumnDef),

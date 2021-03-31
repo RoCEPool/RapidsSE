@@ -56,11 +56,11 @@ void FilterOp::vDescribe(PlanNode* pNode, s2K& sBuf)
   _static_
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pFilterOp = static_cast<QueryNode*>(pNode);
+  QueryNode* pFilterOp = _pQueryNode(pNode);
 
   sBuf.vConcat("FilterOp :\n  "_Stz);
 
-  QueryNode* pFilterExpr = static_cast<QueryNode*>(GraphNav::pFindProperty(C_FILTEREXPR_PROP, pFilterOp));
+  QueryNode* pFilterExpr = _pQueryNode(GraphNav::pFindProperty(C_FILTEREXPR_PROP, pFilterOp));
   ASSERT(pFilterExpr);
 
   Expr::vDescribe(pFilterExpr, sBuf);
@@ -90,7 +90,7 @@ void FilterOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iIn
   vAppendIndent(sBuf, iIndent, IF_PLAIN);
   sBuf.vCatSprint("expr: (%s)"_Stz, sExprBuf.szStz());
 
-  QueryNode* pOrdinalExpr = pOrdinalFilterExpr(static_cast<QueryNode*>(pNode), pRootNode);
+  QueryNode* pOrdinalExpr = pOrdinalFilterExpr(_pQueryNode(pNode), pRootNode);
   sExprBuf.vReset();
   Expr::vDescribe(pOrdinalExpr, sExprBuf);
   sBuf.vConcat("\n"_Stz);
@@ -136,7 +136,7 @@ QueryNode* FilterOp::pFilterExpr(QueryNode* pNode)
 {
   _static_
   QueryNode *pExprNode =
-      static_cast<QueryNode*>(GraphNav::pFindProperty(const_cast<Stz *>(C_FILTEREXPR_PROP), pNode));
+      _pQueryNode(GraphNav::pFindProperty(const_cast<Stz *>(C_FILTEREXPR_PROP), pNode));
 
   ASSERT(pExprNode);
   return pExprNode;
@@ -159,7 +159,7 @@ QueryNode* FilterOp::pOrdinalFilterExpr(QueryNode* pNode, PlanNode* pRootNode)
   // This is the list of expression symbols that represent each column of
   // each row that this sql operator will receive.
   ASSERT(pNode->nChildren() == 1);
-  QueryNodeList* pColExprList = PlanObject::pColumnExprs(static_cast<QueryNode*>(pNode->pFirstChild()), pRootNode);
+  QueryNodeList* pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pRootNode);
   ASSERT(pColExprList);
   ASSERT(pColExprList->nItems() > 0);
 
@@ -186,7 +186,7 @@ QueryNodeList* FilterOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
   ASSERT(pRootNode);
 
   // The FilterOp doesn't change the projected expressions, so ask its child.
-  QueryNode* pChild = static_cast<QueryNode*>(pNode->pFirstChild());
+  QueryNode* pChild = _pQueryNode(pNode->pFirstChild());
   ASSERT(pChild);
 
   return PlanObject::pColumnExprs(pChild, pRootNode);

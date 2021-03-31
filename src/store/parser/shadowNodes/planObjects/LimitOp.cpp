@@ -68,10 +68,10 @@ void LimitOp::vDescribe(PlanNode* pNode, s2K& sBuf)
   _static_
       ASSERT(bIsOfType(pNode));
 
-  QueryNode* pLimitOp = static_cast<QueryNode*>(pNode);
+  QueryNode* pLimitOp = _pQueryNode(pNode);
 
-  QueryNode* pLimitProp = static_cast<QueryNode*>(GraphNav::pFindProperty(C_LIMIT_PROP, pLimitOp));
-  QueryNode* pOffsetProp = static_cast<QueryNode*>(GraphNav::pFindProperty(C_OFFSET_PROP, pLimitOp));
+  QueryNode* pLimitProp = _pQueryNode(GraphNav::pFindProperty(C_LIMIT_PROP, pLimitOp));
+  QueryNode* pOffsetProp = _pQueryNode(GraphNav::pFindProperty(C_OFFSET_PROP, pLimitOp));
   ASSERT(pLimitOp);
   ASSERT(pOffsetProp);
 
@@ -151,7 +151,7 @@ i8 LimitOp::iLimit(QueryNode* pNode)
   ASSERT(bIsOfType(pNode));
 
   QueryNode *pLimitNode =
-      static_cast<QueryNode*>(GraphNav::pFindProperty(const_cast<Stz *>(C_LIMIT_PROP), pNode));
+      _pQueryNode(GraphNav::pFindProperty(const_cast<Stz *>(C_LIMIT_PROP), pNode));
 
   ASSERT(pLimitNode);
   return pLimitNode->iValue();
@@ -166,7 +166,7 @@ i8 LimitOp::iOffset(QueryNode* pNode)
   ASSERT(bIsOfType(pNode));
 
   QueryNode *pOffsetNode =
-      static_cast<QueryNode*>(GraphNav::pFindProperty(const_cast<Stz *>(C_OFFSET_PROP), pNode));
+      _pQueryNode(GraphNav::pFindProperty(const_cast<Stz *>(C_OFFSET_PROP), pNode));
 
   ASSERT(pOffsetNode);
 
@@ -188,7 +188,7 @@ QueryNodeList* LimitOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
   ASSERT(pRootNode);
 
   // The LimitOp doesn't change the projected expressions, so ask its child.
-  QueryNode* pChild = static_cast<QueryNode*>(pNode->pFirstChild());
+  QueryNode* pChild = _pQueryNode(pNode->pFirstChild());
   ASSERT(pChild);
 
   return PlanObject::pColumnExprs(pChild, pRootNode);

@@ -63,7 +63,7 @@ void StatementMarker::vDescribe(PlanNode* pNode, s2K& buf)
   _static_
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pStmt = static_cast<QueryNode*>(pNode);
+  QueryNode* pStmt = _pQueryNode(pNode);
 
   buf.vConcat(GraphNav::szLeafType(pNode->szType()));
 }
@@ -138,7 +138,7 @@ QueryNodeList* StatementMarker::pColumnExprs(QueryNode* pNode, PlanNode* pRootNo
 
   // Statements don't change the columns being returned. So ask its descendant.
   ASSERT(pNode->iNumChildren() == 1);
-  return PlanObject::pColumnExprs(static_cast<QueryNode*>(pNode->pFirstChild()), pRootNode);
+  return PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pRootNode);
 }
 
 /*----------------------------------------------------------------------------*/

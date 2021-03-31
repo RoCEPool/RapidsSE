@@ -56,7 +56,7 @@ void ColumnOrdinal::vDescribe(PlanNode* pNode, s2K& sBuf)
   _static_
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pColumnOrdinal = static_cast<QueryNode*>(pNode);
+  QueryNode* pColumnOrdinal = _pQueryNode(pNode);
 
   sBuf.vCatSprint("$%lld"_Stz, iOrdinal(pColumnOrdinal));
 }

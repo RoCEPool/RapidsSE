@@ -224,7 +224,7 @@ void QueryNode::vInsertAsParentOfChildren(QueryNode* pInsNode)
 
   // Move the children from the current node to the node being inserted
   QueryNode* pChild;
-  while( (pChild = static_cast<QueryNode*>(m_pChildren->pPop())) != nullptr ) {
+  while( (pChild = _pQueryNode(m_pChildren->pPop())) != nullptr ) {
     pInsNode->vAppendChild(pChild);
   }
 
@@ -245,7 +245,7 @@ void QueryNode::vInsertAsParentOfChild1(QueryNode* pInsNode)
   ASSERT(m_pChildren->nItems() > 0);
   ASSERT(pInsNode);
 
-  QueryNode* pChild1 = static_cast<QueryNode*>(m_pChildren->pPop());
+  QueryNode* pChild1 = _pQueryNode(m_pChildren->pPop());
   pInsNode->vAppendChild(pChild1);
   m_pChildren->vPush(pInsNode);
 }
@@ -262,8 +262,8 @@ void QueryNode::vInsertAsParentOfChild2(QueryNode* pInsNode)
   ASSERT(m_pChildren->nItems() > 1);
   ASSERT(pInsNode);
 
-  QueryNode* pChild1 = static_cast<QueryNode*>(m_pChildren->pPop());
-  QueryNode* pChild2 = static_cast<QueryNode*>(m_pChildren->pPop());
+  QueryNode* pChild1 = _pQueryNode(m_pChildren->pPop());
+  QueryNode* pChild2 = _pQueryNode(m_pChildren->pPop());
   pInsNode->vAppendChild(pChild2);
   m_pChildren->vPush(pInsNode);
   m_pChildren->vPush(pChild1);
@@ -304,7 +304,7 @@ void QueryNode::vSnipChild(QueryNode* pNode)
 QueryNode* QueryNode::pPopChild()
 {
   ASSERT(m_pChildren);
-  QueryNode* pNode = static_cast<QueryNode*>(m_pChildren->pPop());
+  QueryNode* pNode = _pQueryNode(m_pChildren->pPop());
   return pNode;
 }
 
@@ -336,7 +336,7 @@ QueryNode* QueryNode::pRemoveProperty(Stz* szPropName)
     PlanNode* pItem = pPropIter->pNext();
 
     if (pItem->szName()->bEqual(szPropName)) {
-      pProp = static_cast<QueryNode*>(pItem);
+      pProp = _pQueryNode(pItem);
       break;
     }
   }
@@ -364,7 +364,7 @@ QueryNode* QueryNode::pDeepCopy()
   if (m_pProperties->nItems() > 0) {
     PlanNodeIter* pPropIter = m_pProperties->pNewIter();
     while (pPropIter->bHasNext()) {
-      QueryNode* pProp = static_cast<QueryNode*>(pPropIter->pNext());
+      QueryNode* pProp = _pQueryNode(pPropIter->pNext());
       QueryNode* pDupProp = pProp->pDeepCopy();
       pNewNode->vAppendProperty(pDupProp);
     }
@@ -375,7 +375,7 @@ QueryNode* QueryNode::pDeepCopy()
   if (m_pChildren->nItems() > 0) {
     PlanNodeIter* pChildIter = m_pChildren->pNewIter();
     while (pChildIter->bHasNext()) {
-      QueryNode* pChild = static_cast<QueryNode*>(pChildIter->pNext());
+      QueryNode* pChild = _pQueryNode(pChildIter->pNext());
       QueryNode* pDupChild = pChild->pDeepCopy();
       pNewNode->vAppendChild(pDupChild);
     }
@@ -406,7 +406,7 @@ QueryNode* QueryNode::pDeepCopy(PlanNodeList* pNewChildren)
   if (m_pProperties->nItems() > 0) {
     PlanNodeIter* pPropIter = m_pProperties->pNewIter();
     while (pPropIter->bHasNext()) {
-      QueryNode* pProp = static_cast<QueryNode*>(pPropIter->pNext());
+      QueryNode* pProp = _pQueryNode(pPropIter->pNext());
       QueryNode* pDupProp = pProp->pDeepCopy();
       pNewNode->vAppendProperty(pDupProp);
     }

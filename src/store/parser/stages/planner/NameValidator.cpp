@@ -66,7 +66,7 @@ void NameValidator::vValidateNames(PlanNode *pRootNode)
   // The plan node should have one child which is a StatementMarker node
   ASSERT(pPlanNode->nChildren() == 1);
   ASSERT(StatementMarker::bIsOfType(pPlanNode->pFirstChild()));
-  QueryNode* pStatementMarker = static_cast<QueryNode*>(pPlanNode->pFirstChild());
+  QueryNode* pStatementMarker = _pQueryNode(pPlanNode->pFirstChild());
 
   // We want to iterate over each logical subgraph, bounded by StatementMarkers,
   // and run the validation checks on each of them.
@@ -78,7 +78,7 @@ void NameValidator::vValidateNames(PlanNode *pRootNode)
       return GraphNav::WALK_CONTINUE;
     }
 
-    QueryNode* pStatementMarker = static_cast<QueryNode*>(pNode);
+    QueryNode* pStatementMarker = _pQueryNode(pNode);
 
     // Run the validation logic on the logical subgraph of each StatementMarker encountered.
     try {
@@ -128,11 +128,11 @@ void NameValidator::vValidateTables(PlanNode *pRootNode, QueryNode* pStartNode, 
       return GraphNav::WALK_CONTINUE;   // Keep walking
     }
 
-    QueryNode* pTableRef = static_cast<QueryNode*>(pNode);
+    QueryNode* pTableRef = _pQueryNode(pNode);
 
-    Stz* szCatalogName = TableRef::szCatalog(static_cast<QueryNode*>(pNode));
-    Stz* szSchemaName  = TableRef::szSchema(static_cast<QueryNode*>(pNode));
-    Stz* szTableName   = TableRef::szTable(static_cast<QueryNode*>(pNode));
+    Stz* szCatalogName = TableRef::szCatalog(_pQueryNode(pNode));
+    Stz* szSchemaName  = TableRef::szSchema(_pQueryNode(pNode));
+    Stz* szTableName   = TableRef::szTable(_pQueryNode(pNode));
 
     // Is this table already in the metadata? It must have a fully qualified name if it does.
     if (TableRef::bIsFullyQualified(pTableRef)) {
@@ -170,7 +170,7 @@ void NameValidator::vValidateTables(PlanNode *pRootNode, QueryNode* pStartNode, 
     // Now that the table is fully qualified, check again if this is already in the metadata
     QueryNode* pTableDef = MetadataNode::pTableDef(pMetadataNode, szCatalogName, szSchemaName, szTableName);
     if (pTableDef) {
-      TableRef::vQualify(static_cast<QueryNode*>(pNode), szCatalogName, szSchemaName, szTableName);
+      TableRef::vQualify(_pQueryNode(pNode), szCatalogName, szSchemaName, szTableName);
       delete pTableInfoSet;
       return GraphNav::WALK_CONTINUE;
     }
@@ -213,7 +213,7 @@ void NameValidator::vValidateTables(PlanNode *pRootNode, QueryNode* pStartNode, 
     MetadataNode::vAddTable(pMetadataNode, pTableDef);
 
     // Qualify the TableRef
-    TableRef::vQualify(static_cast<QueryNode*>(pNode), szCatalogName, szSchemaName, szTableName);
+    TableRef::vQualify(_pQueryNode(pNode), szCatalogName, szSchemaName, szTableName);
 
     delete pTableInfoSet;
     delete pColumnInfoSet;
@@ -243,7 +243,7 @@ void NameValidator::vResolveColumnWildcards(PlanNode *pRootNode, QueryNode* pSta
       return GraphNav::WALK_CONTINUE;   // Keep walking
     }
 
-    QueryNode* pProjectOp = static_cast<QueryNode*>(pNode);
+    QueryNode* pProjectOp = _pQueryNode(pNode);
 
     // Get the list of projected expressions and iterate these,
     // looking for columnWildcards.
@@ -274,14 +274,14 @@ void NameValidator::vResolveColumnWildcards(PlanNode *pRootNode, QueryNode* pSta
         // instances that have columnRefs from the resolved tables.
 
         // First get any catalog/schema/table scopes that may limit the wildcard
-        Stz* szCatalogName = ColumnWildcard::szCatalog(static_cast<QueryNode*>(pExpr));
-        Stz* szSchemaName  = ColumnWildcard::szSchema(static_cast<QueryNode*>(pExpr));
-        Stz* szTableName   = ColumnWildcard::szTable(static_cast<QueryNode*>(pExpr));
+        Stz* szCatalogName = ColumnWildcard::szCatalog(_pQueryNode(pExpr));
+        Stz* szSchemaName  = ColumnWildcard::szSchema(_pQueryNode(pExpr));
+        Stz* szTableName   = ColumnWildcard::szTable(_pQueryNode(pExpr));
 
         // Now generate a list of ProjectedColumn instances, but importantly we can only
         // use tableRefs that we find underneath this part of the graph, as there can be
         // other tableRefs that are not visible to this part of the query.
-        PlanNodeList* pResolvedWildcardList = pLookupWildcardColumns(static_cast<QueryNode*>(pNode),
+        PlanNodeList* pResolvedWildcardList = pLookupWildcardColumns(_pQueryNode(pNode),
                                                                      pRootNode,
                                                                      szCatalogName,
                                                                      szSchemaName,
@@ -353,7 +353,7 @@ PlanNodeList* NameValidator::pLookupWildcardColumns(QueryNode* pStartNode, PlanN
       return GraphNav::WALK_CONTINUE;   // Keep walking
     }
 
-    QueryNode* pDataSourceOp = static_cast<QueryNode*>(pNode);
+    QueryNode* pDataSourceOp = _pQueryNode(pNode);
     Stz* szSrcCatalog = DataSource::szCatalogName(pDataSourceOp);
     Stz* szSrcSchema  = DataSource::szSchemaName(pDataSourceOp);
     Stz* szSrcTable   = DataSource::szTableName(pDataSourceOp);
@@ -376,7 +376,7 @@ PlanNodeList* NameValidator::pLookupWildcardColumns(QueryNode* pStartNode, PlanN
     // Iterate through the columnDefs, convert them to columnRefs and add them to the list
     PlanNodeIter* pIter = pColumnDefList->pNewIter();
     while (pIter->bHasNext()) {
-      QueryNode* pColumnDef = static_cast<QueryNode*>(pIter->pNext());
+      QueryNode* pColumnDef = _pQueryNode(pIter->pNext());
 
       QueryNode* pColumnRef = ColumnRef::pCreate( ColumnDef::szCatalogName(pColumnDef),
                                                   ColumnDef::szSchemaName(pColumnDef),
@@ -423,11 +423,11 @@ void NameValidator::vValidateColumns(PlanNode *pRootNode, QueryNode* pStartNode,
       return GraphNav::WALK_CONTINUE;   // Keep walking
     }
 
-    QueryNode* pColumnRef = static_cast<QueryNode*>(pNode);
+    QueryNode* pColumnRef = _pQueryNode(pNode);
 
-    Stz* szCatalogName = ColumnRef::szCatalog(static_cast<QueryNode*>(pNode));
-    Stz* szSchemaName  = ColumnRef::szSchema(static_cast<QueryNode*>(pNode));
-    Stz* szTableName   = ColumnRef::szTable(static_cast<QueryNode*>(pNode));
+    Stz* szCatalogName = ColumnRef::szCatalog(_pQueryNode(pNode));
+    Stz* szSchemaName  = ColumnRef::szSchema(_pQueryNode(pNode));
+    Stz* szTableName   = ColumnRef::szTable(_pQueryNode(pNode));
     Stz* szColumnName  = ColumnRef::szColumn(static_cast<QueryNode *>(pNode));
 
     // Is this column already in the metadata? It must have a fully qualified name if it does.
@@ -447,7 +447,7 @@ void NameValidator::vValidateColumns(PlanNode *pRootNode, QueryNode* pStartNode,
     s256 sSqlOpPath;
     sSqlOpPath.vCopyTill(sPath, ':');
 
-    QueryNode* pSqlOp = static_cast<QueryNode*>(GraphNav::pFind(sSqlOpPath.szStz(), pStartNode));
+    QueryNode* pSqlOp = _pQueryNode(GraphNav::pFind(sSqlOpPath.szStz(), pStartNode));
     ASSERT(pSqlOp);
     ASSERT(SqlOperator::bIsOfType(pSqlOp));
 
@@ -466,12 +466,12 @@ void NameValidator::vValidateColumns(PlanNode *pRootNode, QueryNode* pStartNode,
     ASSERT(pTableDefList->nItems() == 1);
 
     // Qualify the ColumnRef
-    QueryNode* pTableDef = static_cast<QueryNode*>(pTableDefList->pPop());
+    QueryNode* pTableDef = _pQueryNode(pTableDefList->pPop());
     szCatalogName = TableDef::szCatalogName(pTableDef);
     szSchemaName  = TableDef::szSchemaName(pTableDef);
     szTableName   = TableDef::szTableName(pTableDef);
 
-    ColumnRef::vQualify(static_cast<QueryNode*>(pNode), szCatalogName, szSchemaName,
+    ColumnRef::vQualify(_pQueryNode(pNode), szCatalogName, szSchemaName,
                         szTableName, szColumnName);
 
     delete pTableDefList;
@@ -504,7 +504,7 @@ PlanNodeList* NameValidator::pMatchingTableDefsFor(QueryNode* pColumnRef,
       return GraphNav::WALK_CONTINUE;
     }
 
-    QueryNode* pTableRef = static_cast<QueryNode*>(pNode);
+    QueryNode* pTableRef = _pQueryNode(pNode);
     ASSERT(TableRef::bIsFullyQualified(pTableRef));
 
     Stz* szCatalogName = ColumnRef::szCatalog(pColumnRef);
@@ -559,12 +559,12 @@ void NameValidator::vAssertNamesResolved(PlanNode *pRootNode, QueryNode* pPlanNo
     ASSERT(!ColumnWildcard::bIsOfType(pNode));
 
     if (ColumnRef::bIsOfType(pNode)) {
-      ASSERT(ColumnRef::bIsFullyQualified(static_cast<QueryNode*>(pNode)));
+      ASSERT(ColumnRef::bIsFullyQualified(_pQueryNode(pNode)));
       return GraphNav::WALK_CONTINUE;
     }
 
     if (TableRef::bIsOfType(pNode)) {
-      ASSERT(TableRef::bIsFullyQualified(static_cast<QueryNode*>(pNode)));
+      ASSERT(TableRef::bIsFullyQualified(_pQueryNode(pNode)));
       return GraphNav::WALK_CONTINUE;
     }
 

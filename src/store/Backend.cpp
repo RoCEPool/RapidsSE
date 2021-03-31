@@ -471,7 +471,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
   // columnRef
 
   if (ColumnOrdinal::bIsOfType(pExprNode)) {
-    QueryNode* pColumnOrdinal = static_cast<QueryNode*>(pExprNode);
+    QueryNode* pColumnOrdinal = _pQueryNode(pExprNode);
 
       sPipeline->vCatSprint(
         " $%lld"

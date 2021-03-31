@@ -105,13 +105,13 @@ void TableDef::vDescribe(PlanNode* pNode, s2K& sBuf)
 
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pTableDef = static_cast<QueryNode*>(pNode);
+  QueryNode* pTableDef = _pQueryNode(pNode);
 
-  QueryNode* pCatalogName = static_cast<QueryNode*>(GraphNav::pFindProperty(C_CATALOGNAME_PROP, pTableDef));
-  QueryNode* pSchemaName  = static_cast<QueryNode*>(GraphNav::pFindProperty(C_SCHEMANAME_PROP, pTableDef));
-  QueryNode* pTableName   = static_cast<QueryNode*>(GraphNav::pFindProperty(C_TABLENAME_PROP, pTableDef));
-  QueryNode* pColumns     = static_cast<QueryNode*>(GraphNav::pFindProperty(C_COLUMNS_PROP, pTableDef));
-  QueryNode* pIndexes     = static_cast<QueryNode*>(GraphNav::pFindProperty(C_INDEXES_PROP, pTableDef));
+  QueryNode* pCatalogName = _pQueryNode(GraphNav::pFindProperty(C_CATALOGNAME_PROP, pTableDef));
+  QueryNode* pSchemaName  = _pQueryNode(GraphNav::pFindProperty(C_SCHEMANAME_PROP, pTableDef));
+  QueryNode* pTableName   = _pQueryNode(GraphNav::pFindProperty(C_TABLENAME_PROP, pTableDef));
+  QueryNode* pColumns     = _pQueryNode(GraphNav::pFindProperty(C_COLUMNS_PROP, pTableDef));
+  QueryNode* pIndexes     = _pQueryNode(GraphNav::pFindProperty(C_INDEXES_PROP, pTableDef));
   UNUSED(pIndexes);
   
   ASSERT(pCatalogName);
@@ -165,7 +165,7 @@ Stz* TableDef::szCatalogName(QueryNode* pNode)
 {
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pCatalogNameNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_CATALOGNAME_PROP, pNode));
+  QueryNode* pCatalogNameNode = _pQueryNode(GraphNav::pFindProperty(C_CATALOGNAME_PROP, pNode));
   ASSERT(pCatalogNameNode);
 
   Stz* szCatalogName = pCatalogNameNode->szValue();
@@ -180,7 +180,7 @@ Stz* TableDef::szSchemaName(QueryNode* pNode)
 {
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pSchemaNameNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_SCHEMANAME_PROP, pNode));
+  QueryNode* pSchemaNameNode = _pQueryNode(GraphNav::pFindProperty(C_SCHEMANAME_PROP, pNode));
   ASSERT(pSchemaNameNode);
 
   Stz* szSchemaName = pSchemaNameNode->szValue();
@@ -195,7 +195,7 @@ Stz* TableDef::szTableName(QueryNode* pNode)
 {
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pTableNameNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_TABLENAME_PROP, pNode));
+  QueryNode* pTableNameNode = _pQueryNode(GraphNav::pFindProperty(C_TABLENAME_PROP, pNode));
   ASSERT(pTableNameNode);
 
   Stz* szTableName = pTableNameNode->szValue();
@@ -214,7 +214,7 @@ QueryNode* TableDef::pColumnDef(QueryNode* pNode, Stz* szColumnName)
   QueryNode* pColumnDef = nullptr;
 
   // Get the columns property
-  QueryNode* pColumnsNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_COLUMNS_PROP, pNode));
+  QueryNode* pColumnsNode = _pQueryNode(GraphNav::pFindProperty(C_COLUMNS_PROP, pNode));
 
   if (!pColumnsNode) {
     return pColumnDef;
@@ -223,7 +223,7 @@ QueryNode* TableDef::pColumnDef(QueryNode* pNode, Stz* szColumnName)
   PlanNodeIter* pIter = pColumnsNode->pNewChildrenIter();
 
   while (pIter->bHasNext()) {
-    QueryNode* pChild = static_cast<QueryNode*>(pIter->pNext());
+    QueryNode* pChild = _pQueryNode(pIter->pNext());
     ASSERT(ColumnDef::bIsOfType(pChild));
 
     if (ColumnDef::szColumnName(pChild)->bSame(szColumnName)) {
@@ -243,7 +243,7 @@ PlanNodeIter* TableDef::pColumnDefIter(QueryNode *pNode)
 {
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pColumnsNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_COLUMNS_PROP, pNode));
+  QueryNode* pColumnsNode = _pQueryNode(GraphNav::pFindProperty(C_COLUMNS_PROP, pNode));
   ASSERT(pColumnsNode);
 
   return pColumnsNode->pNewChildrenIter();
@@ -260,7 +260,7 @@ QueryNode* TableDef::pIndexDef(QueryNode* pNode, Stz* szIndexName)
   QueryNode* pIndexDef = nullptr;
 
   // Get the indexs property
-  QueryNode* pIndexsNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_INDEXES_PROP, pNode));
+  QueryNode* pIndexsNode = _pQueryNode(GraphNav::pFindProperty(C_INDEXES_PROP, pNode));
 
   if (!pIndexsNode) {
     return pIndexDef;
@@ -269,7 +269,7 @@ QueryNode* TableDef::pIndexDef(QueryNode* pNode, Stz* szIndexName)
   PlanNodeIter* pIter = pIndexsNode->pNewChildrenIter();
 
   while (pIter->bHasNext()) {
-    QueryNode* pChild = static_cast<QueryNode*>(pIter->pNext());
+    QueryNode* pChild = _pQueryNode(pIter->pNext());
     ASSERT(IndexDefn::bIsOfType(pChild));
 
     if (IndexDefn::szIndexName(pChild)->bSame(szIndexName)) {
@@ -289,7 +289,7 @@ PlanNodeIter* TableDef::pIndexDefIter(QueryNode *pNode)
 {
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pIndexsNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_INDEXES_PROP, pNode));
+  QueryNode* pIndexsNode = _pQueryNode(GraphNav::pFindProperty(C_INDEXES_PROP, pNode));
   ASSERT(pIndexsNode);
 
   return pIndexsNode->pNewChildrenIter();

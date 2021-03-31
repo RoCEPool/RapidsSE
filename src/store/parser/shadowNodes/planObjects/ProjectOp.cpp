@@ -65,18 +65,18 @@ void ProjectOp::vDescribe(PlanNode* pNode, s2K& sBuf)
   _static_
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pProjectOp = static_cast<QueryNode*>(pNode);
+  QueryNode* pProjectOp = _pQueryNode(pNode);
 
   sBuf.vConcat("ProjectOp :"_Stz);
 
-  QueryNode* pProjectedColumns = static_cast<QueryNode*>(GraphNav::pFindProperty(C_PROJECTEDCOLUMNS_PROP, pProjectOp));
+  QueryNode* pProjectedColumns = _pQueryNode(GraphNav::pFindProperty(C_PROJECTEDCOLUMNS_PROP, pProjectOp));
   ASSERT(pProjectedColumns);
 
   if (pProjectedColumns->bHasChildren()) {
     PlanNodeIter* pIter = pProjectedColumns->pNewChildrenIter();
 
     while (pIter->bHasNext()) {
-      QueryNode* pProjectedColumn = static_cast<QueryNode*>(pIter->pNext());
+      QueryNode* pProjectedColumn = _pQueryNode(pIter->pNext());
       ASSERT(ProjectedColumn::bIsOfType(pProjectedColumn));
 
       sBuf.vConcat("\n  "_Stz);
@@ -106,14 +106,14 @@ void ProjectOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iI
 
   ASSERT(pNode->nChildren() == 1);
   ASSERT(PlanObject::bIsOfType(pNode->pFirstChild()));
-  QueryNodeList* pColExprList = PlanObject::pColumnExprs(static_cast<QueryNode*>(pNode->pFirstChild()), pRootNode);
+  QueryNodeList* pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pRootNode);
 
   // Iterate each projected expression
   if (pProjColumns->bHasChildren()) {
     PlanNodeIter* pIter = pProjColumns->pNewChildrenIter();
 
     while (pIter->bHasNext()) {
-      QueryNode* pProjColumn = static_cast<QueryNode*>(pIter->pNext());
+      QueryNode* pProjColumn = _pQueryNode(pIter->pNext());
       ASSERT(pProjColumn);
       ASSERT(ProjectedColumn::bIsOfType(pProjColumn));
 
@@ -167,7 +167,7 @@ b1 ProjectOp::bIsExactType(PlanNode *pNode)
 b1 ProjectOp::bHasAnAggregate(QueryNode* pNode)
 {
   QueryNode* pProjColumns =
-      static_cast<QueryNode*>(GraphNav::pFindProperty(const_cast<Stz *>(C_PROJECTEDCOLUMNS_PROP), pNode));
+      _pQueryNode(GraphNav::pFindProperty(const_cast<Stz *>(C_PROJECTEDCOLUMNS_PROP), pNode));
 
   b1 bResult = false;
 
@@ -179,7 +179,7 @@ b1 ProjectOp::bHasAnAggregate(QueryNode* pNode)
   PlanNodeIter* pIter = pProjColumns->pNewChildrenIter();
 
   while (pIter->bHasNext()) {
-    QueryNode* pProjColumn = static_cast<QueryNode*>(pIter->pNext());
+    QueryNode* pProjColumn = _pQueryNode(pIter->pNext());
 
     ASSERT(ProjectedColumn::bIsOfType(pProjColumn));
     if (ProjectedColumn::bContainsAnAggregate(pProjColumn)) {
@@ -198,7 +198,7 @@ b1 ProjectOp::bHasAnAggregate(QueryNode* pNode)
 QueryNode* ProjectOp::pProjectedColumns(QueryNode* pNode)
 {
   QueryNode* pProjColumns =
-      static_cast<QueryNode*>(GraphNav::pFindProperty(const_cast<Stz *>(C_PROJECTEDCOLUMNS_PROP), pNode));
+      _pQueryNode(GraphNav::pFindProperty(const_cast<Stz *>(C_PROJECTEDCOLUMNS_PROP), pNode));
 
   return pProjColumns;
 }
@@ -216,7 +216,7 @@ QueryNode* ProjectOp::pOrdinalProjectedColumns(QueryNode* pNode, PlanNode* pRoot
   // This is the list of expression symbols that represent each column of
   // each row that this sql operator will receive.
   ASSERT(pNode->nChildren() == 1);
-  QueryNodeList* pColExprList = PlanObject::pColumnExprs(static_cast<QueryNode*>(pNode->pFirstChild()), pRootNode);
+  QueryNodeList* pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pRootNode);
   ASSERT(pColExprList);
   ASSERT(pColExprList->nItems() > 0);
 
@@ -229,7 +229,7 @@ QueryNode* ProjectOp::pOrdinalProjectedColumns(QueryNode* pNode, PlanNode* pRoot
   PlanNodeIter* pIter = pProjectedColumns->pNewChildrenIter();
 
   while (pIter->bHasNext()) {
-    QueryNode* pProjectedColumn = static_cast<QueryNode*>(pIter->pNext());
+    QueryNode* pProjectedColumn = _pQueryNode(pIter->pNext());
     ASSERT(ProjectedColumn::bIsOfType(pProjectedColumn));
 
     // Convert the ProjectedColumn from a symbolic representation to an ordinal representation
@@ -266,7 +266,7 @@ QueryNodeList* ProjectOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
   PlanNodeIter* pIter = pProjColumns->pNewChildrenIter();
   while (pIter->bHasNext()) {
 
-    QueryNode* pProjColumn = static_cast<QueryNode*>(pIter->pNext());
+    QueryNode* pProjColumn = _pQueryNode(pIter->pNext());
     ASSERT(ProjectedColumn::bIsOfType(pProjColumn));
 
     QueryNode* pDup = pProjColumn->pDeepCopy();

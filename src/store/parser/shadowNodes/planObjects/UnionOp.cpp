@@ -52,7 +52,7 @@ void UnionOp::vDescribe(PlanNode* pNode, s2K& sBuf)
   _static_
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pUnionOp = static_cast<QueryNode*>(pNode);
+  QueryNode* pUnionOp = _pQueryNode(pNode);
 
   sBuf.vConcat("UnionOp :\n  "_Stz);
 
@@ -68,7 +68,7 @@ void UnionOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iInd
   _static_
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pUnionOp = static_cast<QueryNode*>(pNode);
+  QueryNode* pUnionOp = _pQueryNode(pNode);
 
   sBuf.vConcat("\n\n"_Stz);
   vAppendIndent(sBuf, iIndent, eIndentFormat::IF_ARROW);

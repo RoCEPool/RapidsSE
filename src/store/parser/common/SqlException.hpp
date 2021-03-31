@@ -230,7 +230,7 @@ namespace Parser
 
       PlanNodeIter* pIter = pTableDefList->pNewIter();
       while (pIter->bHasNext()) {
-        QueryNode* pNode = static_cast<QueryNode*>(pIter->pNext());
+        QueryNode* pNode = _pQueryNode(pIter->pNext());
 
         sErrMsg.vCatSprint("\n  %s.%s.%s.%s"_Stz,
                            TableDef::szCatalogName(pNode),

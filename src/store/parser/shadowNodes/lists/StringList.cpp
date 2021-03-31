@@ -48,7 +48,7 @@ void StringList::vDescribe(PlanNode* pNode, s2K& sBuf)
 
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pStringList = static_cast<QueryNode*>(pNode);
+  QueryNode* pStringList = _pQueryNode(pNode);
 
   PlanNodeIter* pIter = pNode->pNewChildrenIter();
   b1 bFirst = true;

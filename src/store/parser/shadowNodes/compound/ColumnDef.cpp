@@ -128,11 +128,11 @@ void ColumnDef::vDescribe(PlanNode* pNode, s2K& buf)
 
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pColumnRef = static_cast<QueryNode*>(pNode);
+  QueryNode* pColumnRef = _pQueryNode(pNode);
 
-  QueryNode* pName    = static_cast<QueryNode*>(GraphNav::pFindProperty(C_COLUMNNAME_PROP, pColumnRef));
-  QueryNode* pType    = static_cast<QueryNode*>(GraphNav::pFindProperty(C_COLUMNTYPE_PROP, pColumnRef));
-  QueryNode* pNotNull = static_cast<QueryNode*>(GraphNav::pFindProperty(C_NOTNULL_PROP, pColumnRef));
+  QueryNode* pName    = _pQueryNode(GraphNav::pFindProperty(C_COLUMNNAME_PROP, pColumnRef));
+  QueryNode* pType    = _pQueryNode(GraphNav::pFindProperty(C_COLUMNTYPE_PROP, pColumnRef));
+  QueryNode* pNotNull = _pQueryNode(GraphNav::pFindProperty(C_NOTNULL_PROP, pColumnRef));
 
   ASSERT(pName);
   ASSERT(pType);
@@ -175,7 +175,7 @@ Stz* ColumnDef::szCatalogName(QueryNode* pNode)
 {
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pCatalogNameNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_CATALOGNAME_PROP, pNode));
+  QueryNode* pCatalogNameNode = _pQueryNode(GraphNav::pFindProperty(C_CATALOGNAME_PROP, pNode));
   ASSERT(pCatalogNameNode);
 
   Stz* szCatalogName = pCatalogNameNode->szValue();
@@ -190,7 +190,7 @@ Stz* ColumnDef::szSchemaName(QueryNode* pNode)
 {
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pSchemaNameNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_SCHEMANAME_PROP, pNode));
+  QueryNode* pSchemaNameNode = _pQueryNode(GraphNav::pFindProperty(C_SCHEMANAME_PROP, pNode));
   ASSERT(pSchemaNameNode);
 
   Stz* szSchemaName = pSchemaNameNode->szValue();
@@ -205,7 +205,7 @@ Stz* ColumnDef::szTableName(QueryNode* pNode)
 {
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pTableNameNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_TABLENAME_PROP, pNode));
+  QueryNode* pTableNameNode = _pQueryNode(GraphNav::pFindProperty(C_TABLENAME_PROP, pNode));
   ASSERT(pTableNameNode);
 
   Stz* szTableName = pTableNameNode->szValue();
@@ -220,7 +220,7 @@ Stz* ColumnDef::szColumnName(QueryNode* pNode)
 {
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pColumnNameNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_COLUMNNAME_PROP, pNode));
+  QueryNode* pColumnNameNode = _pQueryNode(GraphNav::pFindProperty(C_COLUMNNAME_PROP, pNode));
   ASSERT(pColumnNameNode);
 
   Stz* szColumnName = pColumnNameNode->szValue();
@@ -235,7 +235,7 @@ eCT ColumnDef::eColumnType(QueryNode* pNode)
 {
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pTypeNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_COLUMNTYPE_PROP, pNode));
+  QueryNode* pTypeNode = _pQueryNode(GraphNav::pFindProperty(C_COLUMNTYPE_PROP, pNode));
   ASSERT(pTypeNode);
 
   eCT eType = SqlType::eType(pTypeNode);
@@ -250,7 +250,7 @@ b1 ColumnDef::bNotNull(QueryNode* pNode)
 {
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pNotNullNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_NOTNULL_PROP, pNode));
+  QueryNode* pNotNullNode = _pQueryNode(GraphNav::pFindProperty(C_NOTNULL_PROP, pNode));
 
   ASSERT(pNotNullNode);
   return pNotNullNode->bValue();
@@ -263,7 +263,7 @@ i8 ColumnDef::iOrdinal(QueryNode* pNode)
 {
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pOrdinalNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_ORDINAL_PROP, pNode));
+  QueryNode* pOrdinalNode = _pQueryNode(GraphNav::pFindProperty(C_ORDINAL_PROP, pNode));
 
   ASSERT(pOrdinalNode);
   return pOrdinalNode->iValue();
@@ -276,7 +276,7 @@ i8 ColumnDef::iPrecision(QueryNode* pNode)
 {
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pPrecisionNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_PRECISION_PROP, pNode));
+  QueryNode* pPrecisionNode = _pQueryNode(GraphNav::pFindProperty(C_PRECISION_PROP, pNode));
 
   ASSERT(pPrecisionNode);
   return pPrecisionNode->iValue();
@@ -289,7 +289,7 @@ i8 ColumnDef::iScale(QueryNode* pNode)
 {
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pScaleNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_SCALE_PROP, pNode));
+  QueryNode* pScaleNode = _pQueryNode(GraphNav::pFindProperty(C_SCALE_PROP, pNode));
 
   ASSERT(pScaleNode);
   return pScaleNode->iValue();

@@ -79,11 +79,11 @@ void SchemaDef::vDescribe(PlanNode* pNode, s2K& sBuf)
 
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pSchemaDef = static_cast<QueryNode*>(pNode);
+  QueryNode* pSchemaDef = _pQueryNode(pNode);
 
-  QueryNode* pCatalogName = static_cast<QueryNode*>(GraphNav::pFindProperty(C_CATALOGNAME_PROP, pSchemaDef));
-  QueryNode* pSchemaName  = static_cast<QueryNode*>(GraphNav::pFindProperty(C_SCHEMANAME_PROP, pSchemaDef));
-  QueryNode* pTables     = static_cast<QueryNode*>(GraphNav::pFindProperty(C_TABLES_PROP, pSchemaDef));
+  QueryNode* pCatalogName = _pQueryNode(GraphNav::pFindProperty(C_CATALOGNAME_PROP, pSchemaDef));
+  QueryNode* pSchemaName  = _pQueryNode(GraphNav::pFindProperty(C_SCHEMANAME_PROP, pSchemaDef));
+  QueryNode* pTables     = _pQueryNode(GraphNav::pFindProperty(C_TABLES_PROP, pSchemaDef));
 
   ASSERT(pCatalogName);
   ASSERT(pSchemaName);
@@ -121,7 +121,7 @@ Stz* SchemaDef::szCatalogName(QueryNode* pNode)
 {
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pCatalogNameNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_CATALOGNAME_PROP, pNode));
+  QueryNode* pCatalogNameNode = _pQueryNode(GraphNav::pFindProperty(C_CATALOGNAME_PROP, pNode));
   ASSERT(pCatalogNameNode);
 
   Stz* szCatalogName = pCatalogNameNode->szValue();
@@ -136,7 +136,7 @@ Stz* SchemaDef::szSchemaName(QueryNode* pNode)
 {
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pSchemaNameNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_SCHEMANAME_PROP, pNode));
+  QueryNode* pSchemaNameNode = _pQueryNode(GraphNav::pFindProperty(C_SCHEMANAME_PROP, pNode));
   ASSERT(pSchemaNameNode);
 
   Stz* szSchemaName = pSchemaNameNode->szValue();
@@ -155,7 +155,7 @@ QueryNode* SchemaDef::pTableDef(QueryNode* pNode, Stz* szTableName)
   QueryNode* pTableDef = nullptr;
 
   // Get the tables property
-  QueryNode* pTablesNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_TABLES_PROP, pNode));
+  QueryNode* pTablesNode = _pQueryNode(GraphNav::pFindProperty(C_TABLES_PROP, pNode));
 
   if (!pTablesNode) {
     return pTableDef;
@@ -164,7 +164,7 @@ QueryNode* SchemaDef::pTableDef(QueryNode* pNode, Stz* szTableName)
   PlanNodeIter* pIter = pTablesNode->pNewChildrenIter();
 
   while (pIter->bHasNext()) {
-    QueryNode* pChild = static_cast<QueryNode*>(pIter->pNext());
+    QueryNode* pChild = _pQueryNode(pIter->pNext());
     ASSERT(TableDef::bIsOfType(pChild));
 
     if (TableDef::szTableName(pChild)->bSame(szTableName)) {
@@ -184,7 +184,7 @@ PlanNodeIter* SchemaDef::pTableDefIter(QueryNode *pNode)
 {
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pTablesNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_TABLES_PROP, pNode));
+  QueryNode* pTablesNode = _pQueryNode(GraphNav::pFindProperty(C_TABLES_PROP, pNode));
   ASSERT(pTablesNode);
 
   return pTablesNode->pNewChildrenIter();
@@ -197,7 +197,7 @@ void SchemaDef::vAddTable(QueryNode *pNode, QueryNode *pTableDefNode)
 {
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pTablesNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_TABLES_PROP, pNode));
+  QueryNode* pTablesNode = _pQueryNode(GraphNav::pFindProperty(C_TABLES_PROP, pNode));
   ASSERT(pTablesNode);
 
   pTablesNode->vAppendChild(pTableDefNode);

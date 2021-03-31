@@ -67,11 +67,11 @@ void ColumnWildcard::vDescribe(PlanNode* pNode, s2K& sBuf)
   _static_
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pColumnWildcard = static_cast<QueryNode*>(pNode);
+  QueryNode* pColumnWildcard = _pQueryNode(pNode);
 
-  QueryNode* pCatalogNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_CATALOG_PROP, pColumnWildcard));
-  QueryNode* pSchemaNode  = static_cast<QueryNode*>(GraphNav::pFindProperty(C_SCHEMA_PROP, pColumnWildcard));
-  QueryNode* pTableNode   = static_cast<QueryNode*>(GraphNav::pFindProperty(C_TABLE_PROP, pColumnWildcard));
+  QueryNode* pCatalogNode = _pQueryNode(GraphNav::pFindProperty(C_CATALOG_PROP, pColumnWildcard));
+  QueryNode* pSchemaNode  = _pQueryNode(GraphNav::pFindProperty(C_SCHEMA_PROP, pColumnWildcard));
+  QueryNode* pTableNode   = _pQueryNode(GraphNav::pFindProperty(C_TABLE_PROP, pColumnWildcard));
 
   ASSERT(pCatalogNode);
   ASSERT(pSchemaNode);

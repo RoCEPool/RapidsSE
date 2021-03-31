@@ -69,11 +69,11 @@ void AggregateOp::vDescribe(PlanNode* pNode, s2K& sBuf)
   _static_
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pAggregateOp = static_cast<QueryNode*>(pNode);
+  QueryNode* pAggregateOp = _pQueryNode(pNode);
 
   sBuf.vConcat("AggregateOp : "_Stz);
 
-  QueryNode* pProjectedColumns = static_cast<QueryNode*>(GraphNav::pFindProperty(C_PROJECTEDCOLUMNS_PROP, pAggregateOp));
+  QueryNode* pProjectedColumns = _pQueryNode(GraphNav::pFindProperty(C_PROJECTEDCOLUMNS_PROP, pAggregateOp));
   ASSERT(pProjectedColumns);
 
   if (pProjectedColumns->bHasChildren()) {
@@ -82,7 +82,7 @@ void AggregateOp::vDescribe(PlanNode* pNode, s2K& sBuf)
     PlanNodeIter* pIter = pProjectedColumns->pNewChildrenIter();
 
     while (pIter->bHasNext()) {
-      QueryNode* pProjectedColumn = static_cast<QueryNode*>(pIter->pNext());
+      QueryNode* pProjectedColumn = _pQueryNode(pIter->pNext());
       ASSERT(ProjectedColumn::bIsOfType(pProjectedColumn));
 
       if (bFirst) {
@@ -98,7 +98,7 @@ void AggregateOp::vDescribe(PlanNode* pNode, s2K& sBuf)
     sBuf.vConcat("}"_Stz);
   }
 
-  QueryNode* pGroupByExprs = static_cast<QueryNode*>(GraphNav::pFindProperty(C_GROUPBY_PROP, pAggregateOp));
+  QueryNode* pGroupByExprs = _pQueryNode(GraphNav::pFindProperty(C_GROUPBY_PROP, pAggregateOp));
   ASSERT(pGroupByExprs);
 
   if (pGroupByExprs->bHasChildren()) {
@@ -107,7 +107,7 @@ void AggregateOp::vDescribe(PlanNode* pNode, s2K& sBuf)
     PlanNodeIter* pIter = pGroupByExprs->pNewChildrenIter();
 
     while (pIter->bHasNext()) {
-      QueryNode* pExpr = static_cast<QueryNode*>(pIter->pNext());
+      QueryNode* pExpr = _pQueryNode(pIter->pNext());
       ASSERT(Expr::bIsOfType(pExpr));
 
       if (bFirst) {
@@ -143,14 +143,14 @@ void AggregateOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 
 
   ASSERT(pNode->nChildren() == 1);
   ASSERT(PlanObject::bIsOfType(pNode->pFirstChild()));
-  QueryNodeList* pColExprList = PlanObject::pColumnExprs(static_cast<QueryNode*>(pNode->pFirstChild()), pRootNode);
+  QueryNodeList* pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pRootNode);
 
   // Iterate each Projected expression
   if (pProjColumns->bHasChildren()) {
     PlanNodeIter* pIter = pProjColumns->pNewChildrenIter();
 
     while (pIter->bHasNext()) {
-      QueryNode* pProjColumn = static_cast<QueryNode*>(pIter->pNext());
+      QueryNode* pProjColumn = _pQueryNode(pIter->pNext());
       ASSERT(pProjColumn);
       ASSERT(ProjectedColumn::bIsOfType(pProjColumn));
 
@@ -178,7 +178,7 @@ void AggregateOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 
     PlanNodeIter* pIter = pGroupByExprs->pNewChildrenIter();
 
     while (pIter->bHasNext()) {
-      QueryNode* pGroupByExpr = static_cast<QueryNode*>(pIter->pNext());
+      QueryNode* pGroupByExpr = _pQueryNode(pIter->pNext());
       ASSERT(pGroupByExpr);
       ASSERT(Expr::bIsOfType(pGroupByExpr));
 
@@ -194,7 +194,7 @@ void AggregateOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 
   }
 
   // Get the list of *ordinal* groupby expressions
-  PlanNode* pOrdinalGroupByExprs = pOrdinalGroupByList(static_cast<QueryNode*>(pNode), pRootNode);
+  PlanNode* pOrdinalGroupByExprs = pOrdinalGroupByList(_pQueryNode(pNode), pRootNode);
   ASSERT(pOrdinalGroupByExprs);
 
   // Iterate each ordinal groupby expression
@@ -202,7 +202,7 @@ void AggregateOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 
     PlanNodeIter* pIter = pOrdinalGroupByExprs->pNewChildrenIter();
 
     while (pIter->bHasNext()) {
-      QueryNode* pOrdGroupByExpr = static_cast<QueryNode*>(pIter->pNext());
+      QueryNode* pOrdGroupByExpr = _pQueryNode(pIter->pNext());
       ASSERT(pOrdGroupByExpr);
       ASSERT(Expr::bIsOfType(pOrdGroupByExpr));
 
@@ -256,7 +256,7 @@ i8 AggregateOp::nGroups(QueryNode* pNode)
   ASSERT(bIsOfType(pNode));
 
   QueryNode *pGroupByExprs =
-      static_cast<QueryNode*>(GraphNav::pFindProperty(const_cast<Stz *>(C_GROUPBY_PROP), pNode));
+      _pQueryNode(GraphNav::pFindProperty(const_cast<Stz *>(C_GROUPBY_PROP), pNode));
 
   return pGroupByExprs->nChildren();
 }
@@ -269,7 +269,7 @@ QueryNode* AggregateOp::pGroupByList(QueryNode* pNode)
   ASSERT(bIsOfType(pNode));
 
   QueryNode *pGroupByExprs =
-      static_cast<QueryNode*>(GraphNav::pFindProperty(const_cast<Stz *>(C_GROUPBY_PROP), pNode));
+      _pQueryNode(GraphNav::pFindProperty(const_cast<Stz *>(C_GROUPBY_PROP), pNode));
 
   return pGroupByExprs;
 }
@@ -291,7 +291,7 @@ QueryNode* AggregateOp::pOrdinalGroupByList(QueryNode* pNode, PlanNode* pRootNod
   // This is the list of expression symbols that represent each column of
   // each row that this sql operator will receive.
   ASSERT(pNode->nChildren() == 1);
-  QueryNodeList* pColExprList = PlanObject::pColumnExprs(static_cast<QueryNode*>(pNode->pFirstChild()), pRootNode);
+  QueryNodeList* pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pRootNode);
   ASSERT(pColExprList);
   ASSERT(pColExprList->nItems() > 0);
 
@@ -302,7 +302,7 @@ QueryNode* AggregateOp::pOrdinalGroupByList(QueryNode* pNode, PlanNode* pRootNod
   PlanNodeIter* pIter = pSymbolicExprs->pNewChildrenIter();
 
   while (pIter->bHasNext()) {
-    QueryNode* pSymExpr = static_cast<QueryNode*>(pIter->pNext());
+    QueryNode* pSymExpr = _pQueryNode(pIter->pNext());
     ASSERT(Expr::bIsOfType(pSymExpr));
 
     // Convert pSymExpr from a symbolic representation to an ordinal representation

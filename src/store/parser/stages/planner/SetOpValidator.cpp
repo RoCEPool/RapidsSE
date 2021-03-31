@@ -69,7 +69,7 @@ void SetOpValidator::vSimplifySetOps(PlanNode *pRootNode)
   // The plan node should have one child which is a StatementMarker node
   ASSERT(pPlanNode->nChildren() == 1);
   ASSERT(StatementMarker::bIsOfType(pPlanNode->pFirstChild()));
-  QueryNode* pStatementMarker = static_cast<QueryNode*>(pPlanNode->pFirstChild());
+  QueryNode* pStatementMarker = _pQueryNode(pPlanNode->pFirstChild());
 
   // Iterate each logical subgraph, bounded by StatementMarkers
   auto fVisitor = [pRootNode]
@@ -80,7 +80,7 @@ void SetOpValidator::vSimplifySetOps(PlanNode *pRootNode)
     }
 
     // Simplify the SetOp in this statement section
-    QueryNode* pStatementMarker = static_cast<QueryNode*>(pNode);
+    QueryNode* pStatementMarker = _pQueryNode(pNode);
     vSimplifySetOp(pStatementMarker, pRootNode);
 
     return GraphNav::WALK_CONTINUE;
@@ -112,7 +112,7 @@ void SetOpValidator::vValidateSetOps(PlanNode *pRootNode)
   // The plan node should have one child which is a StatementMarker node
   ASSERT(pPlanNode->nChildren() == 1);
   ASSERT(StatementMarker::bIsOfType(pPlanNode->pFirstChild()));
-  QueryNode* pStatementMarker = static_cast<QueryNode*>(pPlanNode->pFirstChild());
+  QueryNode* pStatementMarker = _pQueryNode(pPlanNode->pFirstChild());
 
   // Iterate each logical subgraph, bounded by StatementMarkers
   auto fVisitor = [pRootNode]
@@ -123,7 +123,7 @@ void SetOpValidator::vValidateSetOps(PlanNode *pRootNode)
     }
 
     // Validate the SetOp in this statement section
-    QueryNode* pStatementMarker = static_cast<QueryNode*>(pNode);
+    QueryNode* pStatementMarker = _pQueryNode(pNode);
     vValidateSetOp(pStatementMarker, pRootNode);
 
     return GraphNav::WALK_CONTINUE;
@@ -159,7 +159,7 @@ void SetOpValidator::vValidateSetOp(QueryNode* pStatementMarker, PlanNode *pRoot
     return;
   }
 
-  QueryNode* pSetOp = static_cast<QueryNode*>(pNode);
+  QueryNode* pSetOp = _pQueryNode(pNode);
   ASSERT(pSetOp->nChildren() == 2);
 
   //  - Check that the set operator has a null CORRESPONDING BY list.
@@ -170,8 +170,8 @@ void SetOpValidator::vValidateSetOp(QueryNode* pStatementMarker, PlanNode *pRoot
   RASSERT(!pCorrByList);
 
   //  - Check that both children are projecting the same number of columns.
-  QueryNode* pChild1 = static_cast<QueryNode*>(pSetOp->pFirstChild());
-  QueryNode* pChild2 = static_cast<QueryNode*>(pSetOp->pSecondChild());
+  QueryNode* pChild1 = _pQueryNode(pSetOp->pFirstChild());
+  QueryNode* pChild2 = _pQueryNode(pSetOp->pSecondChild());
 
   QueryNodeList* pProjectedColumns1 = PlanObject::pColumnExprs(pChild1, pRootNode);
   QueryNodeList* pProjectedColumns2 = PlanObject::pColumnExprs(pChild2, pRootNode);
@@ -291,7 +291,7 @@ void SetOpValidator::vSimplifySetOp(QueryNode* pStatementMarker, PlanNode *pRoot
     return;
   }
 
-  QueryNode* pSetOp = static_cast<QueryNode*>(pNode);
+  QueryNode* pSetOp = _pQueryNode(pNode);
   ASSERT(pSetOp->nChildren() == 2);
 
   QueryNode* pCorrByList = SetOp::pCorrespondingByList(pSetOp);
@@ -338,8 +338,8 @@ void SetOpValidator::vDetermineCommonColumns(QueryNode* pSetOp, PlanNode* pRootN
   ASSERT(pSetOp);
   ASSERT(SetOp::bIsOfType(pSetOp));
 
-  QueryNode* pChild1 = static_cast<QueryNode*>(pSetOp->pFirstChild());
-  QueryNode* pChild2 = static_cast<QueryNode*>(pSetOp->pSecondChild());
+  QueryNode* pChild1 = _pQueryNode(pSetOp->pFirstChild());
+  QueryNode* pChild2 = _pQueryNode(pSetOp->pSecondChild());
 
   QueryNode* pCorrByList = SetOp::pCorrespondingByList(pSetOp);
   ASSERT(pCorrByList);
@@ -426,8 +426,8 @@ void SetOpValidator::vConvertCorrByToProjectOp(QueryNode* pSetOp, PlanNode* pRoo
   ASSERT(pCorrByList->nChildren() > 0);
 
   // Get the projected columns of each child
-  QueryNode* pChild1 = static_cast<QueryNode*>(pSetOp->pFirstChild());
-  QueryNode* pChild2 = static_cast<QueryNode*>(pSetOp->pSecondChild());
+  QueryNode* pChild1 = _pQueryNode(pSetOp->pFirstChild());
+  QueryNode* pChild2 = _pQueryNode(pSetOp->pSecondChild());
 
   QueryNodeList* pProjColumnList1 = PlanObject::pColumnExprs(pChild1, pRootNode);
   QueryNodeList* pProjColumnList2 = PlanObject::pColumnExprs(pChild2, pRootNode);
@@ -441,7 +441,7 @@ void SetOpValidator::vConvertCorrByToProjectOp(QueryNode* pSetOp, PlanNode* pRoo
   // Iterate the CORRESPONDING BY list
   PlanNodeIter* pCorrByIter = pCorrByList->pNewChildrenIter();
   while (pCorrByIter->bHasNext()) {
-    QueryNode* pStringObj = static_cast<QueryNode*>(pCorrByIter->pNext());
+    QueryNode* pStringObj = _pQueryNode(pCorrByIter->pNext());
     Stz* szColumnName = pStringObj->szValue();
     ASSERT(szColumnName);
 

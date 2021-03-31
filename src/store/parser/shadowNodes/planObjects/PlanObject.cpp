@@ -42,7 +42,7 @@ void PlanObject::vDescribe(PlanNode* pNode, s2K& sBuf)
   _static_
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pExpr = static_cast<QueryNode*>(pNode);
+  QueryNode* pExpr = _pQueryNode(pNode);
 
   // TODO: manual polymorphism here
 
@@ -63,7 +63,7 @@ void PlanObject::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 i
   _static_
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pExpr = static_cast<QueryNode*>(pNode);
+  QueryNode* pExpr = _pQueryNode(pNode);
 
   // Manual polymorphism here
 

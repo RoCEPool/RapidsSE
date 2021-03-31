@@ -66,10 +66,10 @@ void CatalogDef::vDescribe(PlanNode* pNode, s2K& sBuf)
 
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pCatalogDef = static_cast<QueryNode*>(pNode);
+  QueryNode* pCatalogDef = _pQueryNode(pNode);
 
-  QueryNode* pCatalogName = static_cast<QueryNode*>(GraphNav::pFindProperty(C_CATALOGNAME_PROP, pCatalogDef));
-  QueryNode* pSchemas     = static_cast<QueryNode*>(GraphNav::pFindProperty(C_SCHEMAS_PROP, pCatalogDef));
+  QueryNode* pCatalogName = _pQueryNode(GraphNav::pFindProperty(C_CATALOGNAME_PROP, pCatalogDef));
+  QueryNode* pSchemas     = _pQueryNode(GraphNav::pFindProperty(C_SCHEMAS_PROP, pCatalogDef));
 
   ASSERT(pCatalogName);
   ASSERT(pCatalogName->szValue());
@@ -100,7 +100,7 @@ Stz* CatalogDef::szCatalogName(QueryNode* pNode)
 {
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pCatalogNameNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_CATALOGNAME_PROP, pNode));
+  QueryNode* pCatalogNameNode = _pQueryNode(GraphNav::pFindProperty(C_CATALOGNAME_PROP, pNode));
   ASSERT(pCatalogNameNode);
 
   Stz* szCatalogName = pCatalogNameNode->szValue();
@@ -119,7 +119,7 @@ QueryNode* CatalogDef::pSchemaDef(QueryNode* pNode, Stz* szSchemaName)
   QueryNode* pSchemaDef = nullptr;
 
   // Get the schemas property
-  QueryNode* pSchemasNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_SCHEMAS_PROP, pNode));
+  QueryNode* pSchemasNode = _pQueryNode(GraphNav::pFindProperty(C_SCHEMAS_PROP, pNode));
 
   if (!pSchemasNode) {
     return pSchemaDef;
@@ -128,7 +128,7 @@ QueryNode* CatalogDef::pSchemaDef(QueryNode* pNode, Stz* szSchemaName)
   PlanNodeIter* pIter = pSchemasNode->pNewChildrenIter();
 
   while (pIter->bHasNext()) {
-    QueryNode* pChild = static_cast<QueryNode*>(pIter->pNext());
+    QueryNode* pChild = _pQueryNode(pIter->pNext());
     ASSERT(SchemaDef::bIsOfType(pChild));
 
     if (SchemaDef::szSchemaName(pChild)->bSame(szSchemaName)) {
@@ -149,7 +149,7 @@ PlanNodeIter* CatalogDef::pSchemaDefIter(QueryNode *pNode)
 {
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pSchemasNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_SCHEMAS_PROP, pNode));
+  QueryNode* pSchemasNode = _pQueryNode(GraphNav::pFindProperty(C_SCHEMAS_PROP, pNode));
   ASSERT(pSchemasNode);
 
   return pSchemasNode->pNewChildrenIter();
@@ -162,7 +162,7 @@ void CatalogDef::vAddSchema(QueryNode *pNode, QueryNode *pSchemaDefNode)
 {
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pSchemasNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_SCHEMAS_PROP, pNode));
+  QueryNode* pSchemasNode = _pQueryNode(GraphNav::pFindProperty(C_SCHEMAS_PROP, pNode));
   ASSERT(pSchemasNode);
 
   pSchemasNode->vAppendChild(pSchemaDefNode);

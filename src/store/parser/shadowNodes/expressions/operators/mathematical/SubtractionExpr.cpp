@@ -95,8 +95,8 @@ void SubtractionExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
   _static_
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pChild1 = SubtractionExpr::pChild1(static_cast<QueryNode*>(pNode));
-  QueryNode* pChild2 = SubtractionExpr::pChild2(static_cast<QueryNode*>(pNode));
+  QueryNode* pChild1 = SubtractionExpr::pChild1(_pQueryNode(pNode));
+  QueryNode* pChild2 = SubtractionExpr::pChild2(_pQueryNode(pNode));
 
   if (pChild1->nChildren() == 0) {
     Expr::vDescribe(pChild1, sBuf);
@@ -128,7 +128,7 @@ QueryNode* SubtractionExpr::pChild1(QueryNode *pNode)
   ASSERT(bIsOfType(pNode));
   ASSERT(pNode->nChildren() == 2);
 
-  return static_cast<QueryNode*>(pNode->pFirstChild());
+  return _pQueryNode(pNode->pFirstChild());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -140,7 +140,7 @@ QueryNode* SubtractionExpr::pChild2(QueryNode *pNode)
   ASSERT(bIsOfType(pNode));
   ASSERT(pNode->nChildren() == 2);
 
-  return static_cast<QueryNode*>(pNode->pSecondChild());
+  return _pQueryNode(pNode->pSecondChild());
 }
 
 

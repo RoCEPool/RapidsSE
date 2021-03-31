@@ -69,7 +69,7 @@ void SetOp::vDescribe(PlanNode* pNode, s2K& sBuf)
   _static_
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pExpr = static_cast<QueryNode*>(pNode);
+  QueryNode* pExpr = _pQueryNode(pNode);
 
   // TODO: manual polymorphism here
 
@@ -92,7 +92,7 @@ void SetOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iInden
   _static_
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pExpr = static_cast<QueryNode*>(pNode);
+  QueryNode* pExpr = _pQueryNode(pNode);
 
   // TODO: manual polymorphism here
 
@@ -130,7 +130,7 @@ b1 SetOp::bIsDistinct(QueryNode* pNode)
   ASSERT(bIsOfType(pNode));
 
   QueryNode* pIsDistinctNode =
-      static_cast<QueryNode*>(GraphNav::pFindProperty(const_cast<Stz *>(C_ISDISTINCT_PROP), pNode));
+      _pQueryNode(GraphNav::pFindProperty(const_cast<Stz *>(C_ISDISTINCT_PROP), pNode));
 
   return pIsDistinctNode->bValue();
 }
@@ -143,7 +143,7 @@ QueryNode* SetOp::pCorrespondingByList(QueryNode* pNode)
   ASSERT(bIsOfType(pNode));
 
   QueryNode* pCorrespondingByList =
-      static_cast<QueryNode*>(GraphNav::pFindProperty(const_cast<Stz *>(C_CORRESPONDING_PROP), pNode));
+      _pQueryNode(GraphNav::pFindProperty(const_cast<Stz *>(C_CORRESPONDING_PROP), pNode));
 
   return pCorrespondingByList;
 }
@@ -177,7 +177,7 @@ QueryNodeList* SetOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
   // Therefore the list of column expressions is the same in either child and
   // we will simply select the first child in this case.
 
-  QueryNode* pChild = static_cast<QueryNode*>(pNode->pFirstChild());
+  QueryNode* pChild = _pQueryNode(pNode->pFirstChild());
 
   return PlanObject::pColumnExprs(pChild, pRootNode);
 }
