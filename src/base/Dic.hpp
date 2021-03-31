@@ -36,11 +36,15 @@ namespace BASE
     Stz*  szDicKind(void);
     void  vDicKind(Word* pDicKind);
     Stz*  szDicNm(void);
+    void  vDropRead(void);
+    void  vDropWrite(void);
     Word* pEachWord(Word* pPrior);
     Word* pEachWord(Word* pPrior, Word* pCategory);
     Word* pFindWord(Stz* szWordNm);
     Word* pFindStep(fpSTEPFN fpStepFn);
     Word* pFirstWord(void);
+    void  vGrabRead(void);
+    void  vGrabWrite(void);
     bool  bHasWords(void);
     bool  bIsCatalog(void);
     bool  bIsName(Stz* szDicNm);

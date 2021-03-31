@@ -147,6 +147,26 @@ void Dic::vDicNm(Stz* szDicNm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* drop lock for read                                                         */
+/*----------------------------------------------------------------------------*/
+void Dic::vDropRead(void)
+{
+  _precondition_(_MAGIC_,CN_DIC,_FOOTER_);
+  
+  m_okLock.vDropRead();
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop lock for write                                                        */
+/*----------------------------------------------------------------------------*/
+void Dic::vDropWrite(void)
+{
+  _precondition_(_MAGIC_,CN_DIC,_FOOTER_);
+
+  m_okLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump dictionary                                                            */
 /*----------------------------------------------------------------------------*/
 void Dic::vDump(eCN eClass, Object* pObject, Stz* szTab)
@@ -269,6 +289,26 @@ Word* Dic::pFirstWord(void)
   Word* pFirstWord = _pWord(pFirstNode->m_pObject);
 
   return pFirstWord;
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab lock for read                                                         */
+/*----------------------------------------------------------------------------*/
+void Dic::vGrabRead(void)
+{
+  _precondition_(_MAGIC_,CN_DIC,_FOOTER_);
+  
+  m_okLock.vGrabRead();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab lock for write                                                        */
+/*----------------------------------------------------------------------------*/
+void Dic::vGrabWrite(void)
+{
+  _precondition_(_MAGIC_,CN_DIC,_FOOTER_);
+
+  m_okLock.vGrabWrite();
 }
 
 /*----------------------------------------------------------------------------*/
