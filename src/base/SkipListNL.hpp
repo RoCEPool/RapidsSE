@@ -18,7 +18,7 @@ namespace BASE
     CompareFp m_fpCompare;  // compare function
     PrintFp   m_fpPrint;    // print function
 
-    i8        m_nObjects;   // number of objects in the list
+    i8        m_nItems;     // number of objects in the list
     i8        m_iHeight;    // current max level in the list
     SkipNode* m_pHead;      // head node of the list
 
@@ -48,9 +48,9 @@ namespace BASE
                 CompareFp fpCompare_alt = nullptr);
     SkipNode* pFirst(i8 iLevel);
     bool  bInsert(void* pObject, bool bTrace=false);
+    i8    nItems(void);
     SkipNode* pNewly(void);
     SkipNode* pNext(SkipNode* pPrev, i8 iLevel);
-    i8    nObjects(void);
     void* pPop(void);
     i8    nRecount(void);
     bool  bRemove(void* pObject);

@@ -82,16 +82,6 @@ void Dic::vAddWord(Word* pWord)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get dictionary article                                                     */
-/*----------------------------------------------------------------------------*/
-Article* Dic::pArticleDic(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
-  
-  return m_pArticle;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get dictionary kind                                                        */
 /*----------------------------------------------------------------------------*/
 Word* Dic::pDicKind(void)
@@ -142,8 +132,6 @@ void Dic::vDicNm(Stz* szDicNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   m_sDicNm = szDicNm;
-  
-  m_pArticle->vName(m_sDicNm);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -176,9 +164,8 @@ void Dic::vDump(eCN eClass, Object* pObject, Stz* szTab)
   
   Dic* pDic = _pDic(pObject);
   
-  vTrace("name %s count %lld\n"_Stz,
-         pDic->m_sDicNm.azChar(),
-         pDic->m_pArticle->nItems());
+  vTrace("name %s \n"_Stz,
+         pDic->m_sDicNm.azChar());
   
   //for (Word* pWord = m_pLastWord; pWord; pWord = pWord->pPrevWord())
   //  pWord->vDump();
@@ -511,7 +498,7 @@ i8 Dic::nWords(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  return m_pArticle->nItems();
+  return m_pWordSkipList->nItems();
 }
 
 /*============================================================================*/

@@ -231,7 +231,7 @@ i8 TaskQueue::nTasks(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
 
-  i8 nTasks = m_pTaskSkipList->nObjects();
+  i8 nTasks = m_pTaskSkipList->nItems();
   
   return nTasks;
 }

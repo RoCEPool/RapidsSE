@@ -216,7 +216,7 @@ void JobList::vLogJobs(void)
   
   vGrabLock();
   
-  if (0 == m_pJobsSkipList->nObjects()) {
+  if (0 == m_pJobsSkipList->nItems()) {
     vDropLock();
     AM::vLogFyi("%s List is empty"_Stz, //!format-LogFyi
                 aJL[m_eJobsList]);
@@ -279,7 +279,7 @@ i8 JobList::nJobs(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
   
-  i8 nJobs = m_pJobsSkipList->nObjects();
+  i8 nJobs = m_pJobsSkipList->nItems();
   
   return nJobs;
 }
