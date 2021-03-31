@@ -20,6 +20,7 @@ using namespace Parser;
 /*----------------------------------------------------------------------------*/
 static Stz* C_UNIONOP_DEFN = "/__root__/definitions/object/planObject/sqlOperator/setOp/unionOp"_Stz;
 
+static Stz* C_SQL_KEYWORD = "UNION"_Stz;
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -122,7 +123,16 @@ b1 UnionOp::bIsExactType(PlanNode *pNode)
   return ShadowNode::bIsExactType(pNode, C_UNIONOP_DEFN);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns the SQL keyword that this operator is known by. e.g UNION          */
+/*----------------------------------------------------------------------------*/
+Stz* UnionOp::szSqlKeyword(QueryNode* pNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
 
+  return C_SQL_KEYWORD;
+}
 
 /*============================================================================*/
 /* end                                                                        */

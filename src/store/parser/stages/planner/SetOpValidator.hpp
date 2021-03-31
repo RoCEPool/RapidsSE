@@ -41,7 +41,7 @@ namespace Parser
     static void vDetermineCommonColumns(QueryNode* pSetOp, PlanNode* pRootNode);
     static void vConvertCorrByToProjectOp(QueryNode* pSetOp, PlanNode* pRootNode);
     static QueryNode* pFindProjectedColumn(PlanNodeIter* pProjColumnIter, Stz* szColumnName);
-
+    static void vValidateSetOp(QueryNode* pStatementMarker, PlanNode* pRootNode);
   };
 }
 

@@ -182,6 +182,26 @@ PlanNodeList* SetOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
   return PlanObject::pColumnExprs(pChild, pRootNode);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns the SQL keyword that this operator is known by. e.g UNION          */
+/*----------------------------------------------------------------------------*/
+Stz* SetOp::szSqlKeyword(QueryNode* pNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  // TODO: manual polymorphism here
+
+  if      (    UnionOp::bIsOfType(pNode)) { return     UnionOp::szSqlKeyword(pNode);  }
+//else if (IntersectOp::bIsOfType(pNode)) { return IntersectOp::szSqlKeyword(pNode);   }
+//else if (   ExceptOp::bIsOfType(pNode)) { return    ExceptOp::szSqlKeyword(pNode);   }
+
+  else {
+    // Need to add in manual polymorphism here
+    NEVER_REACH
+  }
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

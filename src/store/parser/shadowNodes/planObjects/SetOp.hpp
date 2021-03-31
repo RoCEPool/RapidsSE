@@ -42,6 +42,8 @@ namespace Parser
 
     static PlanNodeList* pColumnExprs(QueryNode* pNode, PlanNode* pRootNode);
 
+    // Returns the SQL keyword that this operator is known by. e.g UNION
+    static Stz* szSqlKeyword(QueryNode* pNode);
 
   protected:
 

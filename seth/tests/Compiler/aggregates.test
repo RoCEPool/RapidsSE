@@ -1,6 +1,14 @@
-// Tests the SQL parser/planner for legitimate SQL statements concerning 
-// aggregations, grouping, HAVING, etc.
+/*----------------------------------------------------------------------------*/
+/* Aggregation syntax & semantics tests                                       */
+/*                                                                            */
+/* Tests the SQL parser/planner for legitimate SQL statements concerning      */
+/* aggregations, grouping, HAVING, etc.                                       */
+/*----------------------------------------------------------------------------*/
 
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Setup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 _nation;
 success
@@ -10,6 +18,11 @@ success
 //	 N_NAME            CHAR(25) NOT NULL,
 //	 N_REGIONKEY       INTEGER NOT NULL,
 //	 N_COMMENT         VARCHAR(152)
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Basic aggregations and group bys
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 -- basic select of columnRef 
 SELECT n_name FROM nation;
@@ -31,6 +44,10 @@ failure contains: 'Expression is not present in the GROUP BY list : rapidsse.pub
 SELECT n_name, n_nationkey FROM nation GROUP BY n_name, n_nationkey;
 success
 
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Projected superset of group by
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 -- projected ColumnRef is superset of GROUP BY expr
 SELECT 2*(n_nationkey + 1), SUM(n_regionkey) FROM nation GROUP BY n_nationkey;
@@ -57,7 +74,9 @@ SELECT n_nationkey + n_regionkey + 1, SUM(n_regionkey) FROM nation GROUP BY n_na
 success
 
 
------
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  HAVING clause
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 -- Basic HAVING clause
 SELECT n_name, SUM(n_nationkey) FROM nation GROUP BY n_name HAVING SUM(n_nationkey) > 0;
@@ -83,11 +102,22 @@ SELECT n_name FROM nation GROUP BY n_name HAVING sum(n_nationkey) > 0;
 success
 
 
-------
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Literals in the select list
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
--- Literals in the select list
 SELECT 1 FROM nation HAVING SUM(n_nationkey) > 0;
 success
 
 SELECT SUM(n_nationkey) from nation HAVING SUM(n_nationkey) > 0;
 success
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Cleanup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CLEANUP {
+  DROP TABLE nation;
+  mute
+}
