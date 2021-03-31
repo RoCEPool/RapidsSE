@@ -1590,9 +1590,6 @@ void Engine::vStartSystem(void)
     AM::pGrid()->vIncBootNodes();
     AM::pGrid()->vIncDefinedNodes();
 
-    Article* pNodeArticle = pNode->pArticle();
-    
-    pGridArticle->vAppend(pNodeArticle);
   } */
   
   Node* pThisNode = AM::pGrid()->pFindNode(gxCmdLineArgs.m_xSysArgs.m_sNodeName);
@@ -1752,8 +1749,6 @@ void Engine::vStartSystem(void)
 // newcode
 void Engine::vCreateGridOfNodes(void)
 {
-  Article* pGridArticle = gpAttachMap->m_pGrid->pArticle();
-
   for (i8 i_Node = 0; i_Node < gxCmdLineArgs.m_xSysArgs.m_nBootNodes; i_Node++) {
 
     Node* pNode = new Node(i_Node,
@@ -1765,10 +1760,6 @@ void Engine::vCreateGridOfNodes(void)
     AM::pGrid()->vPutNode(pNode);
     AM::pGrid()->vIncBootNodes();
     AM::pGrid()->vIncDefinedNodes();
-
-    Article* pNodeArticle = pNode->pArticle();
-
-    pGridArticle->vAppend(pNodeArticle);
   }
 }
 
