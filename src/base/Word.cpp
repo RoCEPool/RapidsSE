@@ -696,8 +696,7 @@ void Word::vWordNm(Stz* szWordNm)
   m_sWordNm = szWordNm;
   
   RASSERT(m_sWordNm.bSame(szWordNm));
-  
-  //m_pArticle->vName(szWordNm);
+
 }
 
 /*----------------------------------------------------------------------------*/

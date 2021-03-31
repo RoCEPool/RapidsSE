@@ -81,7 +81,7 @@ AttachMap::AttachMap(void)
   
   m_pDicRoot = new Dic("__dicRoot"_Stz);
   
-  m_pArcticleRoot = m_pDicRoot->pArticle();
+  m_pArcticleRoot = m_pDicRoot->pArticleDic();
   
   m_pLexiconArticle->vAppend(m_pArcticleRoot);
   
@@ -108,22 +108,22 @@ AttachMap::AttachMap(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Lexicon* pSubLex;
-  
-  pSubLex = new Lexicon("__ddlLock"_Stz);
-  m_pLexiconArticle->vAppend(pSubLex->pArticle());
-
-  pSubLex = new Lexicon("__grid"_Stz);
-  m_pLexiconArticle->vAppend(pSubLex->pArticle());
-  
-  pSubLex = new Lexicon("__queues"_Stz);
-  m_pLexiconArticle->vAppend(pSubLex->pArticle());
-  
-  pSubLex = new Lexicon("__tennants"_Stz);
-  m_pLexiconArticle->vAppend(pSubLex->pArticle());
-
-  pSubLex = new Lexicon("__threads"_Stz);
-  m_pLexiconArticle->vAppend(pSubLex->pArticle());
+//  Lexicon* pSubLex;
+//  
+//  pSubLex = new Lexicon("__ddlLock"_Stz);
+//  m_pLexiconArticle->vAppend(pSubLex->pArticle());
+//
+//  pSubLex = new Lexicon("__grid"_Stz);
+//  m_pLexiconArticle->vAppend(pSubLex->pArticle());
+//  
+//  pSubLex = new Lexicon("__queues"_Stz);
+//  m_pLexiconArticle->vAppend(pSubLex->pArticle());
+//  
+//  pSubLex = new Lexicon("__tennants"_Stz);
+//  m_pLexiconArticle->vAppend(pSubLex->pArticle());
+//
+//  pSubLex = new Lexicon("__threads"_Stz);
+//  m_pLexiconArticle->vAppend(pSubLex->pArticle());
   
   m_pBucketMap = nullptr;
   m_pPtnMap    = nullptr;
