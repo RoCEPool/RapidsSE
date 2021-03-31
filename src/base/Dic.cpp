@@ -20,6 +20,7 @@ __aFooterFunction(Dic)
 /*----------------------------------------------------------------------------*/
 Dic::Dic(Stz* szDicNm)
 : Object(CN_DIC)
+, m_okLock(this,C_DONT_LOG)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
 

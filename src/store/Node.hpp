@@ -45,11 +45,8 @@ namespace STORE
     Node(i8 iNodeNo, Stz* szNodeNm, i8 nDegOfPar, Stz* szIPAddr, i8 iPortNo);
     ~Node(void) noexcept(false);
     
-    static void vArtFun(Object* pObject, SP& spObject);
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-  
-    Article* pArticle(void);
-  
+    
     i8   nDegOfPar(void);
     void vInit(void);
     Stz* szIPAddr(void);

@@ -8,6 +8,8 @@ namespace BASE
   class Dic : public Object
   {
   private:
+    Lock      m_okLock;
+  
     Article*  m_pArticle;  // the dictionary article
   
     s32       m_sDicNm;    // name of this dictionary
