@@ -5,6 +5,7 @@
 #pragma once
 
 #include "PlanNode.hpp"
+#include "QueryNodeList.hpp"
 
 namespace STORE
 {
@@ -41,7 +42,7 @@ namespace Parser
 
     // Look up and return a list of columns that match a column wildcard
     // for a given location in the plan hierarchy.
-    static PlanNodeList* pLookupWildcardColumns(QueryNode* pStartNode, PlanNode* pRootNode,
+    static QueryNodeList* pLookupWildcardColumns(QueryNode* pStartNode, PlanNode* pRootNode,
                                                 Stz* szCatalog, Stz* szSchema, Stz* szTable);
 
     // Validate that all column references can be found in the plan metadata.
@@ -50,10 +51,10 @@ namespace Parser
 
     // Return a list of TableDef nodes that are reachable from a given sql operator
     // and that contain a column as referenced by pColumnRef.
-    static PlanNodeList* pMatchingTableDefsFor(QueryNode* pColumnRef,
-                                               QueryNode* pSqlOp,
-                                               PlanNode*  pRootNode,
-                                               QueryNode* pMetadataNode);
+    static QueryNodeList* pMatchingTableDefsFor(QueryNode* pColumnRef,
+                                                QueryNode* pSqlOp,
+                                                PlanNode*  pRootNode,
+                                                QueryNode* pMetadataNode);
 
     // Assert that all tables and columns are fully resolved and that there are
     // no columnWildcards left in the plan

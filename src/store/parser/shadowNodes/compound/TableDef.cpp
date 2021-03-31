@@ -289,10 +289,10 @@ PlanNodeIter* TableDef::pIndexDefIter(QueryNode *pNode)
 {
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pIndexsNode = _pQueryNode(GraphNav::pFindProperty(C_INDEXES_PROP, pNode));
-  ASSERT(pIndexsNode);
+  QueryNode* pIndexesNode = _pQueryNode(GraphNav::pFindProperty(C_INDEXES_PROP, pNode));
+  ASSERT(pIndexesNode);
 
-  return pIndexsNode->pNewChildrenIter();
+  return pIndexesNode->pNewChildrenIter();
 }
 
 /*============================================================================*/

@@ -316,12 +316,12 @@ PlanNodeIter* MetadataNode::pIndexDefIter(QueryNode* pMetadataNode, Stz* szCatal
 /*----------------------------------------------------------------------------*/
 /* Return a list of TableDef nodes in the metadata that match a columnRef     */
 /*----------------------------------------------------------------------------*/
-PlanNodeList* MetadataNode::pMatchColumnRef(QueryNode* pMetadataNode, QueryNode* pColumnRef)
+QueryNodeList* MetadataNode::pMatchColumnRef(QueryNode* pMetadataNode, QueryNode* pColumnRef)
 {
   ASSERT(pMetadataNode);
   ASSERT(pColumnRef);
 
-  PlanNodeList* pTableDefList = new PlanNodeList();
+  QueryNodeList* pTableDefList = new QueryNodeList();
   
   Stz* szCatalogName = ColumnRef::szCatalog(pColumnRef);
   Stz* szSchemaName  = ColumnRef::szSchema(pColumnRef);

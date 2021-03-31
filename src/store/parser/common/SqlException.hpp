@@ -11,6 +11,7 @@
 #include "TableDef.hpp"
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
+#include "QueryNodeList.hpp"
 #include "eEC.h"
 
 namespace Parser
@@ -210,7 +211,7 @@ namespace Parser
     }
 
     static void vThrowAmbiguousColumn(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName,
-                                      Stz* szColumnName, PlanNodeList* pTableDefList)
+                                      Stz* szColumnName, QueryNodeList* pTableDefList)
     {
       ASSERT(pTableDefList->nItems() > 1);
 
@@ -228,9 +229,9 @@ namespace Parser
 
       sErrMsg.vConcat(". Could be one of:"_Stz);
 
-      PlanNodeIter* pIter = pTableDefList->pNewIter();
+      QueryNodeIter* pIter = pTableDefList->pNewIter();
       while (pIter->bHasNext()) {
-        QueryNode* pNode = _pQueryNode(pIter->pNext());
+        QueryNode* pNode = pIter->pNext();
 
         sErrMsg.vCatSprint("\n  %s.%s.%s.%s"_Stz,
                            TableDef::szCatalogName(pNode),

@@ -281,7 +281,7 @@ void NameValidator::vResolveColumnWildcards(PlanNode *pRootNode, QueryNode* pSta
         // Now generate a list of ProjectedColumn instances, but importantly we can only
         // use tableRefs that we find underneath this part of the graph, as there can be
         // other tableRefs that are not visible to this part of the query.
-        PlanNodeList* pResolvedWildcardList = pLookupWildcardColumns(_pQueryNode(pNode),
+        QueryNodeList* pResolvedWildcardList = pLookupWildcardColumns(_pQueryNode(pNode),
                                                                      pRootNode,
                                                                      szCatalogName,
                                                                      szSchemaName,
@@ -289,7 +289,7 @@ void NameValidator::vResolveColumnWildcards(PlanNode *pRootNode, QueryNode* pSta
 
         // Ensure that the returned list is a list of ProjectedColumn instances
 #ifdef WITH_ASSERT_MACRO
-        PlanNodeIter* pResolvedIter = pResolvedWildcardList->pNewIter();
+        QueryNodeIter* pResolvedIter = pResolvedWildcardList->pNewIter();
         while (pResolvedIter->bHasNext()) {
           PlanNode* pResolvedNode = pResolvedIter->pNext();
           ASSERT(ProjectedColumn::bIsOfType(pResolvedNode));
@@ -334,13 +334,13 @@ void NameValidator::vResolveColumnWildcards(PlanNode *pRootNode, QueryNode* pSta
 /* Look up and return a list of columns that match a column wildcard          */
 /* for a given location in the plan hierarchy.                                */
 /*----------------------------------------------------------------------------*/
-PlanNodeList* NameValidator::pLookupWildcardColumns(QueryNode* pStartNode, PlanNode* pRootNode,
+QueryNodeList* NameValidator::pLookupWildcardColumns(QueryNode* pStartNode, PlanNode* pRootNode,
                                                     Stz* szCatalog, Stz* szSchema, Stz* szTable)
 {
   ASSERT(pStartNode);
   ASSERT(PlanObject::bIsOfType(pStartNode));
 
-  PlanNodeList* pProjectedColumnList = new PlanNodeList();
+  QueryNodeList* pProjectedColumnList = new QueryNodeList();
 
 
   // Walk the graph from here on down, looking for all data sources.
@@ -451,7 +451,7 @@ void NameValidator::vValidateColumns(PlanNode *pRootNode, QueryNode* pStartNode,
     ASSERT(pSqlOp);
     ASSERT(SqlOperator::bIsOfType(pSqlOp));
 
-    PlanNodeList* pTableDefList = pMatchingTableDefsFor(pColumnRef, pSqlOp, pRootNode, pMetadataNode);
+    QueryNodeList* pTableDefList = pMatchingTableDefsFor(pColumnRef, pSqlOp, pRootNode, pMetadataNode);
 
     // Be careful, it might match against multiple tables.
     if (pTableDefList->nItems() == 0) {
@@ -488,13 +488,13 @@ void NameValidator::vValidateColumns(PlanNode *pRootNode, QueryNode* pStartNode,
 /* Return a list of TableDef nodes that are reachable from a given sql op     */
 /* and that contain a column as referenced by pColumnRef.                     */
 /*----------------------------------------------------------------------------*/
-PlanNodeList* NameValidator::pMatchingTableDefsFor(QueryNode* pColumnRef,
-                                                   QueryNode* pSqlOp,
-                                                   PlanNode*  pRootNode,
-                                                   QueryNode* pMetadataNode)
+QueryNodeList* NameValidator::pMatchingTableDefsFor(QueryNode* pColumnRef,
+                                                    QueryNode* pSqlOp,
+                                                    PlanNode*  pRootNode,
+                                                    QueryNode* pMetadataNode)
 {
   // List of matching TableDefs to be returned
-  PlanNodeList* pTableDefList = new PlanNodeList();
+  QueryNodeList* pTableDefList = new QueryNodeList();
 
   // Lambda called for each node under SqlOp, to look for TableRefs.
   auto fVisitor = [pColumnRef, pMetadataNode, &pTableDefList]

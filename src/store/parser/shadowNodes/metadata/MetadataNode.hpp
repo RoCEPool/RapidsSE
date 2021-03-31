@@ -5,6 +5,7 @@
 
 #include "ShadowNode.hpp"
 #include "PlanNode.hpp"
+#include "QueryNodeList.hpp"
 
 namespace Parser
 {
@@ -45,7 +46,7 @@ namespace Parser
 
     // Lookup and return a list of nodes that represent TableDefs that match
     // against a given ColumnRef. Returned list needs to be deallocated.
-    static PlanNodeList* pMatchColumnRef(QueryNode* pMetadataNode, QueryNode* pColumnRef);
+    static QueryNodeList* pMatchColumnRef(QueryNode* pMetadataNode, QueryNode* pColumnRef);
   };
 
 }
