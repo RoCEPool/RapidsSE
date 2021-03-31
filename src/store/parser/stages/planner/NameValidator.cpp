@@ -371,12 +371,12 @@ QueryNodeList* NameValidator::pLookupWildcardColumns(QueryNode* pStartNode, Plan
 
     // We do want to include these columns
     // Get the column definitions of the data source and convert them to columnRefs
-    PlanNodeList* pColumnDefList = DataSource::pColumnDefs(pDataSourceOp, pRootNode);
+    QueryNodeList* pColumnDefList = DataSource::pColumnDefs(pDataSourceOp, pRootNode);
 
     // Iterate through the columnDefs, convert them to columnRefs and add them to the list
-    PlanNodeIter* pIter = pColumnDefList->pNewIter();
+    QueryNodeIter* pIter = pColumnDefList->pNewIter();
     while (pIter->bHasNext()) {
-      QueryNode* pColumnDef = _pQueryNode(pIter->pNext());
+      QueryNode* pColumnDef = pIter->pNext();
 
       QueryNode* pColumnRef = ColumnRef::pCreate( ColumnDef::szCatalogName(pColumnDef),
                                                   ColumnDef::szSchemaName(pColumnDef),

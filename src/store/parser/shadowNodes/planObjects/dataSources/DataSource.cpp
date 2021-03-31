@@ -141,7 +141,7 @@ Stz* DataSource::szTableName(QueryNode* pNode)
 /* Get the list of column definitions for this data source                    */
 /* Returned list must be freed, but not its contents                          */
 /*----------------------------------------------------------------------------*/
-PlanNodeList* DataSource::pColumnDefs(QueryNode* pNode, PlanNode* pRootNode)
+QueryNodeList* DataSource::pColumnDefs(QueryNode* pNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));

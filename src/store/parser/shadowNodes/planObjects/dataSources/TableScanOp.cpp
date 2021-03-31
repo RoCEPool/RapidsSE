@@ -175,7 +175,7 @@ Stz* TableScanOp::szTableName(QueryNode *pNode)
 /* Get the list of column definitions for this data source                    */
 /* Returned list must be freed, but not its contents                          */
 /*----------------------------------------------------------------------------*/
-PlanNodeList* TableScanOp::pColumnDefs(QueryNode* pNode, PlanNode* pRootNode)
+QueryNodeList* TableScanOp::pColumnDefs(QueryNode* pNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -185,7 +185,7 @@ PlanNodeList* TableScanOp::pColumnDefs(QueryNode* pNode, PlanNode* pRootNode)
   ASSERT(pMetadataNode);
 
   // Create a list for the columnDefs to be returned
-  PlanNodeList* pColumnDefList = new PlanNodeList();
+  QueryNodeList* pColumnDefList = new QueryNodeList();
 
   // Iterate the columns in the metadata and add them to the above list
   PlanNodeIter* pIter = MetadataNode::pColumnDefIter(pMetadataNode,
