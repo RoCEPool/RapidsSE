@@ -14,7 +14,6 @@ namespace BASE
     friend class Dic;
 
   private:
-    Article*  m_pArticle;     // the word article
     SkipNode* m_pSkipNode;    // the node of this word in dic skiplist
 
     s32       m_sWordNm;      // the name of this word
@@ -69,13 +68,10 @@ namespace BASE
     Word(Stz* szName);
    ~Word(void) noexcept(false);
   
-    static void vArtFun(Object* pObject, SP& spObject);
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static Word* pToWord(void* aEmbeddedObject);
 
     byte* ayAllot(i8 iBytes);
-    Article* pArticle(void);
-    void  vArticle(Article* pArticle);
     bool  bBreakPt(void);
     void  vBreakPt(bool bBreakPt);
     Word* pCategory(void);
