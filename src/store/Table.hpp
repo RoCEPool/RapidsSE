@@ -39,7 +39,6 @@ namespace STORE
     static void       vDump(eCN eClass, Object* pObject, Stz* aTab);
     static Table*     pFindTable(DicStack* pDicStack, Stz* aTableNm);
     static IndexDef*  pIndexDef(DicStack* pDicStack, Stz* aTableNm, i8 iIndexNo);
-    static void       vMonitorPortrait(s48K& sPortrait);
     static StreamDef* pStreamDef(DicStack* pDicStack, Stz* aTableNm);
   
     static void       vPostRecv(void* aTable);

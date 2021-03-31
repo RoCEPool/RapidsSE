@@ -202,20 +202,6 @@ IndexDef* Table::pIndexDef(DicStack* pDicStack, Stz* szTableNm, i8 iIndexNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* monitor portrait                                                           */
-/*----------------------------------------------------------------------------*/
-void Table::vMonitorPortrait(s48K& sPortrait)
-{
-  Statistics* pStats = AM::pStatistics();
-  
-  sPortrait.vSprint("Table: creates %lld drops %lld loads %lld\n"_Stz,
-                    pStats->Table.m_nCreates,
-                    pStats->Table.m_nDrops,
-                    pStats->Table.m_nLoads
-                    );
-}
-
-/*----------------------------------------------------------------------------*/
 /* get streamDef of given table                                               */
 /*----------------------------------------------------------------------------*/
 StreamDef* Table::pStreamDef(DicStack* pDicStack, Stz* szTableNm)

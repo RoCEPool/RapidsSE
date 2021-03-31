@@ -35,7 +35,6 @@ namespace STORE
    ~IndexTree(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    static void vMonitorPortrait(s48K& sPortrait);
   
     Stz*       pAnalyze(void);
     void       vCompact(void);

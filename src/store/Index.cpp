@@ -116,19 +116,6 @@ void Index::vDump(eCN eClass, Object* pObject, Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
-/* monitor portrait                                                           */
-/*----------------------------------------------------------------------------*/
-void Index::vMonitorPortrait(s48K& sPortrait)
-{
-  Statistics* pStats = AM::pStatistics();
-  
-  sPortrait.vSprint("Index: creates %lld drops %lld\n"_Stz,
-                    pStats->Index.m_nCreates,
-                    pStats->Index.m_nDrops
-                    );
-}
-
-/*----------------------------------------------------------------------------*/
 /* post recv function                                                         */
 /*----------------------------------------------------------------------------*/
 void Index::vPostRecv(void* aIndex)
