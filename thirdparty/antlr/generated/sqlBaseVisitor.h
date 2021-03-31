@@ -33,6 +33,26 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitExplainOptions(sqlParser::ExplainOptionsContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitExplainStageList(sqlParser::ExplainStageListContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitExplainRange(sqlParser::ExplainRangeContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitExplainMarker(sqlParser::ExplainMarkerContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitExplainFormat(sqlParser::ExplainFormatContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitStatisticsStatement(sqlParser::StatisticsStatementContext *ctx) override {
     return visitChildren(ctx);
   }

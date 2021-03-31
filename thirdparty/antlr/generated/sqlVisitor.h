@@ -28,6 +28,16 @@ public:
 
     virtual antlrcpp::Any visitExplainStatement(sqlParser::ExplainStatementContext *context) = 0;
 
+    virtual antlrcpp::Any visitExplainOptions(sqlParser::ExplainOptionsContext *context) = 0;
+
+    virtual antlrcpp::Any visitExplainStageList(sqlParser::ExplainStageListContext *context) = 0;
+
+    virtual antlrcpp::Any visitExplainRange(sqlParser::ExplainRangeContext *context) = 0;
+
+    virtual antlrcpp::Any visitExplainMarker(sqlParser::ExplainMarkerContext *context) = 0;
+
+    virtual antlrcpp::Any visitExplainFormat(sqlParser::ExplainFormatContext *context) = 0;
+
     virtual antlrcpp::Any visitStatisticsStatement(sqlParser::StatisticsStatementContext *context) = 0;
 
     virtual antlrcpp::Any visitQuery(sqlParser::QueryContext *context) = 0;
