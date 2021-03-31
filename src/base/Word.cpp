@@ -81,7 +81,6 @@ Word::Word(Stz* szWordNm)
   }
 #endif
   
-  m_pArticle   = new Article(szWordNm,this,Word::vArtFun);
   m_pSkipNode  = nullptr;
   
   m_sWordNm    = szWordNm;
@@ -125,7 +124,6 @@ Word::~Word(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
     
-  delete m_pArticle;
   delete m_pWrdTagSet;
   
   delete m_pCodeBlock;
@@ -134,18 +132,6 @@ Word::~Word(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* article print function                                                     */
-/*----------------------------------------------------------------------------*/
-void Word::vArtFun(Object* pObject, SP& spObject)
-{
-  _static_
-  
-  SP_Word spWord;
-  
-  spObject.vResult(spWord.sz(_pWord(pObject)));
-}
 
 /*----------------------------------------------------------------------------*/
 /* dump dictionary                                                            */
@@ -190,26 +176,6 @@ byte* Word::ayAllot(i8 nBytes)
   _postcondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   return ayAddress;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get article                                                                */
-/*----------------------------------------------------------------------------*/
-Article* Word::pArticle(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  return m_pArticle;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set article                                                                */
-/*----------------------------------------------------------------------------*/
-void Word::vArticle(Article* pArticle)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  m_pArticle = pArticle;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -730,8 +696,7 @@ void Word::vWordNm(Stz* szWordNm)
   m_sWordNm = szWordNm;
   
   RASSERT(m_sWordNm.bSame(szWordNm));
-  
-  m_pArticle->vName(szWordNm);
+
 }
 
 /*----------------------------------------------------------------------------*/

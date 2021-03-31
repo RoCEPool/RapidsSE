@@ -50,7 +50,6 @@ namespace BASE
     Heap* pEachHeap(eHT& reLastHeap);
     Heap* pGetHeap(eHT eHeap);
     void vInit(void);
-    void vMonitorPortrait(s48K& sPortrait);
   };
 }
 

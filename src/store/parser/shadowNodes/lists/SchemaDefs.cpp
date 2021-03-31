@@ -61,7 +61,7 @@ void SchemaDefs::vDescribe(PlanNode* pNode, s2K& sBuf)
 
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pSchemaDefs = static_cast<QueryNode*>(pNode);
+  QueryNode* pSchemaDefs = _pQueryNode(pNode);
 
   PlanNodeIter* pIter = pNode->pNewChildrenIter();
   b1 bFirst = true;
@@ -75,7 +75,7 @@ void SchemaDefs::vDescribe(PlanNode* pNode, s2K& sBuf)
       sBuf.vConcat(", "_Stz);
     }
 
-    sBuf.vConcat(SchemaDef::szSchemaName(static_cast<QueryNode*>(pChild)));
+    sBuf.vConcat(SchemaDef::szSchemaName(_pQueryNode(pChild)));
   }
 
   delete pIter;

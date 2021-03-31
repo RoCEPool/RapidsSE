@@ -85,12 +85,12 @@ void ColumnRef::vDescribe(PlanNode* pNode, s2K& sBuf)
   _static_
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pColumnRef = static_cast<QueryNode*>(pNode);
+  QueryNode* pColumnRef = _pQueryNode(pNode);
 
-  QueryNode* pCatalogNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_CATALOG_PROP, pColumnRef));
-  QueryNode* pSchemaNode  = static_cast<QueryNode*>(GraphNav::pFindProperty(C_SCHEMA_PROP, pColumnRef));
-  QueryNode* pTableNode   = static_cast<QueryNode*>(GraphNav::pFindProperty(C_TABLE_PROP, pColumnRef));
-  QueryNode* pColumnNode  = static_cast<QueryNode*>(GraphNav::pFindProperty(C_COLUMN_PROP, pColumnRef));
+  QueryNode* pCatalogNode = _pQueryNode(GraphNav::pFindProperty(C_CATALOG_PROP, pColumnRef));
+  QueryNode* pSchemaNode  = _pQueryNode(GraphNav::pFindProperty(C_SCHEMA_PROP, pColumnRef));
+  QueryNode* pTableNode   = _pQueryNode(GraphNav::pFindProperty(C_TABLE_PROP, pColumnRef));
+  QueryNode* pColumnNode  = _pQueryNode(GraphNav::pFindProperty(C_COLUMN_PROP, pColumnRef));
 
   ASSERT(pCatalogNode);
   ASSERT(pSchemaNode);
@@ -261,10 +261,10 @@ void ColumnRef::vQualify(QueryNode* pColumnRef, Stz* szCatalogName, Stz* szSchem
   ASSERT(szTableName);
   ASSERT(szColumnName);
 
-  QueryNode* pCatalogNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_CATALOG_PROP, pColumnRef));
-  QueryNode* pSchemaNode  = static_cast<QueryNode*>(GraphNav::pFindProperty(C_SCHEMA_PROP, pColumnRef));
-  QueryNode* pTableNode   = static_cast<QueryNode*>(GraphNav::pFindProperty(C_TABLE_PROP, pColumnRef));
-  QueryNode* pColumnNode  = static_cast<QueryNode*>(GraphNav::pFindProperty(C_COLUMN_PROP, pColumnRef));
+  QueryNode* pCatalogNode = _pQueryNode(GraphNav::pFindProperty(C_CATALOG_PROP, pColumnRef));
+  QueryNode* pSchemaNode  = _pQueryNode(GraphNav::pFindProperty(C_SCHEMA_PROP, pColumnRef));
+  QueryNode* pTableNode   = _pQueryNode(GraphNav::pFindProperty(C_TABLE_PROP, pColumnRef));
+  QueryNode* pColumnNode  = _pQueryNode(GraphNav::pFindProperty(C_COLUMN_PROP, pColumnRef));
 
   ASSERT(pCatalogNode);
   ASSERT(pSchemaNode);
@@ -335,8 +335,8 @@ b1 ColumnRef::bIsSymbolicallyEqual(QueryNode* pColRef1, QueryNode* pColRef2)
     PlanNodeIter* pIter2 = pColRef2->pNewChildrenIter();
 
     while (pIter1->bHasNext()) {
-      QueryNode* pChild1 = static_cast<QueryNode*>(pIter1->pNext());
-      QueryNode* pChild2 = static_cast<QueryNode*>(pIter2->pNext());
+      QueryNode* pChild1 = _pQueryNode(pIter1->pNext());
+      QueryNode* pChild2 = _pQueryNode(pIter2->pNext());
 
       // Compare the children
       if (!Expr::bIsSymbolicallyEqual(pChild1, pChild2)) return false;

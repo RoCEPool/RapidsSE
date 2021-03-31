@@ -35,8 +35,6 @@ namespace BASE
     Mutex(Object* bIsFor);
    ~Mutex(void) noexcept(false);
   
-    static void vMonitorPortrait(s48K& sPortrait);
-  
     void vBroadcast(void);
     bool bIsLocked(void);
     bool bIsLockedByCaller(Loggable* pLockedBy);

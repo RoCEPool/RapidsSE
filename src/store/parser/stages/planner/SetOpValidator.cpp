@@ -69,7 +69,7 @@ void SetOpValidator::vSimplifySetOps(PlanNode *pRootNode)
   // The plan node should have one child which is a StatementMarker node
   ASSERT(pPlanNode->nChildren() == 1);
   ASSERT(StatementMarker::bIsOfType(pPlanNode->pFirstChild()));
-  QueryNode* pStatementMarker = static_cast<QueryNode*>(pPlanNode->pFirstChild());
+  QueryNode* pStatementMarker = _pQueryNode(pPlanNode->pFirstChild());
 
   // Iterate each logical subgraph, bounded by StatementMarkers
   auto fVisitor = [pRootNode]
@@ -80,7 +80,7 @@ void SetOpValidator::vSimplifySetOps(PlanNode *pRootNode)
     }
 
     // Simplify the SetOp in this statement section
-    QueryNode* pStatementMarker = static_cast<QueryNode*>(pNode);
+    QueryNode* pStatementMarker = _pQueryNode(pNode);
     vSimplifySetOp(pStatementMarker, pRootNode);
 
     return GraphNav::WALK_CONTINUE;
@@ -93,16 +93,151 @@ void SetOpValidator::vSimplifySetOps(PlanNode *pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Walk the graph and check the semantics of the expressions.                 */
+/* Walk the graph and check the semantics of any set operators.               */
 /* e.g. Check that the operation supports the input data types.               */
 /* A SqlException will be thrown if an invalid semantic is found.             */
 /*----------------------------------------------------------------------------*/
 void SetOpValidator::vValidateSetOps(PlanNode *pRootNode)
 {
   // For every set operator found:
+  //  - Check that the set operator has a null CORRESPONDING BY list.
+  //  - Check that both children are projecting the same number of columns.
   //  - Check that the columns expression list of each child of a set operator
   //    has a matching type signature.
 
+  // Find the /plan node
+  QueryNode* pPlanNode = ShadowRoot::pPlanNode(pRootNode);
+  ASSERT(pPlanNode);
+
+  // The plan node should have one child which is a StatementMarker node
+  ASSERT(pPlanNode->nChildren() == 1);
+  ASSERT(StatementMarker::bIsOfType(pPlanNode->pFirstChild()));
+  QueryNode* pStatementMarker = _pQueryNode(pPlanNode->pFirstChild());
+
+  // Iterate each logical subgraph, bounded by StatementMarkers
+  auto fVisitor = [pRootNode]
+      (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    if (!StatementMarker::bIsOfType(pNode)) {
+      return GraphNav::WALK_CONTINUE;
+    }
+
+    // Validate the SetOp in this statement section
+    QueryNode* pStatementMarker = _pQueryNode(pNode);
+    vValidateSetOp(pStatementMarker, pRootNode);
+
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  // Walk the entire plan graph to look for StatementMarkers.
+  // We must do so in a bottom up manner because if there are multiple
+  // set operators then the top level ones will depend on the ones below it.
+  GraphNav::bGlobalWalkBottomUp(pStatementMarker, false, true, fVisitor, pRootNode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Validate the semantics of a set operator for a given statement section.    */
+/*----------------------------------------------------------------------------*/
+void SetOpValidator::vValidateSetOp(QueryNode* pStatementMarker, PlanNode *pRootNode)
+{
+  // For every set operator found:
+  //  - Check that the set operator has a null CORRESPONDING BY list.
+  //  - Check that both children are projecting the same number of columns.
+  //  - Check that the columns expression list of each child of a set operator
+  //    has a matching type signature.
+
+  // Firstly, do we have a set operator in this statement section (bounded by StatementMarkers)?
+  // Do a search for them within this statement section only.
+  auto fCondition = [](PlanNode* pNode, void* pvArg) -> b1 {
+    return (SetOp::bIsOfType(pNode));
+  };
+
+  PlanNode* pNode = GraphNav::pBoundedSearch(pStatementMarker, false, true, fCondition, nullptr);
+
+  if (!pNode) {
+    // No set operators, so nothing to do.
+    return;
+  }
+
+  QueryNode* pSetOp = _pQueryNode(pNode);
+  ASSERT(pSetOp->nChildren() == 2);
+
+  //  - Check that the set operator has a null CORRESPONDING BY list.
+  // The corresponding by list should be null. This reflects that if a CORRESPONDING
+  // BY clause was specified by the user that it the specified columns have been
+  // pushed down as ProjectOps underneath this set operator.
+  QueryNode* pCorrByList = SetOp::pCorrespondingByList(pSetOp);
+  RASSERT(!pCorrByList);
+
+  //  - Check that both children are projecting the same number of columns.
+  QueryNode* pChild1 = _pQueryNode(pSetOp->pFirstChild());
+  QueryNode* pChild2 = _pQueryNode(pSetOp->pSecondChild());
+
+  QueryNodeList* pProjectedColumns1 = PlanObject::pColumnExprs(pChild1, pRootNode);
+  QueryNodeList* pProjectedColumns2 = PlanObject::pColumnExprs(pChild2, pRootNode);
+
+  i8 iCount1 = pProjectedColumns1->nItems();
+  i8 iCount2 = pProjectedColumns2->nItems();
+
+  if (iCount1 != iCount2) {
+    pProjectedColumns1->vDeleteAll();
+    pProjectedColumns2->vDeleteAll();
+    delete pProjectedColumns1;
+    delete pProjectedColumns2;
+
+    SemanticException::vThrow(EC_COLUMN_COUNT_MISMATCH,
+                              ": %lld vs %lld, %s operator"_Stz,
+                              iCount1,
+                              iCount2,
+                              SetOp::szSqlKeyword(pSetOp) );
+  }
+
+  //  - Check that the columns expression list of each child of a set operator
+  //    has a matching type signature.
+  QueryNodeIter* pIter1 = pProjectedColumns1->pNewIter();
+  QueryNodeIter* pIter2 = pProjectedColumns2->pNewIter();
+
+  i8 iOrdinal = 0;
+  while (pIter1->bHasNext() && pIter2->bHasNext()) {
+    ++iOrdinal;
+
+    QueryNode* pProjectedColumn1 = pIter1->pNext();
+    QueryNode* pProjectedColumn2 = pIter2->pNext();
+
+    ASSERT(ProjectedColumn::bIsOfType(pProjectedColumn1));
+    ASSERT(ProjectedColumn::bIsOfType(pProjectedColumn2));
+
+    QueryNode* pExpr1 = ProjectedColumn::pExprNode(pProjectedColumn1);
+    QueryNode* pExpr2 = ProjectedColumn::pExprNode(pProjectedColumn2);
+
+    eCT eType1 = Expr::eType(pExpr1, pRootNode);
+    eCT eType2 = Expr::eType(pExpr2, pRootNode);
+
+    if (eType1 != eType2) {
+      delete pIter1;
+      delete pIter2;
+
+      pProjectedColumns1->vDeleteAll();
+      pProjectedColumns2->vDeleteAll();
+      delete pProjectedColumns1;
+      delete pProjectedColumns2;
+
+      SemanticException::vThrow(EC_COLUMN_COUNT_MISMATCH,
+                                ": %s vs %s, column ordinal %lld, %s operator"_Stz,
+                                aCT[eType1],
+                                aCT[eType2],
+                                iOrdinal,
+                                SetOp::szSqlKeyword(pSetOp) );
+    }
+  }
+
+  delete pIter1;
+  delete pIter2;
+
+  pProjectedColumns1->vDeleteAll();
+  pProjectedColumns2->vDeleteAll();
+  delete pProjectedColumns1;
+  delete pProjectedColumns2;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -156,7 +291,7 @@ void SetOpValidator::vSimplifySetOp(QueryNode* pStatementMarker, PlanNode *pRoot
     return;
   }
 
-  QueryNode* pSetOp = static_cast<QueryNode*>(pNode);
+  QueryNode* pSetOp = _pQueryNode(pNode);
   ASSERT(pSetOp->nChildren() == 2);
 
   QueryNode* pCorrByList = SetOp::pCorrespondingByList(pSetOp);
@@ -203,21 +338,21 @@ void SetOpValidator::vDetermineCommonColumns(QueryNode* pSetOp, PlanNode* pRootN
   ASSERT(pSetOp);
   ASSERT(SetOp::bIsOfType(pSetOp));
 
-  QueryNode* pChild1 = static_cast<QueryNode*>(pSetOp->pFirstChild());
-  QueryNode* pChild2 = static_cast<QueryNode*>(pSetOp->pSecondChild());
+  QueryNode* pChild1 = _pQueryNode(pSetOp->pFirstChild());
+  QueryNode* pChild2 = _pQueryNode(pSetOp->pSecondChild());
 
   QueryNode* pCorrByList = SetOp::pCorrespondingByList(pSetOp);
   ASSERT(pCorrByList);
   ASSERT(pCorrByList->nChildren() == 0);
 
-  PlanNodeList* pProjColumnList1 = PlanObject::pColumnExprs(pChild1, pRootNode);
-  PlanNodeList* pProjColumnList2 = PlanObject::pColumnExprs(pChild2, pRootNode);
+  QueryNodeList* pProjColumnList1 = PlanObject::pColumnExprs(pChild1, pRootNode);
+  QueryNodeList* pProjColumnList2 = PlanObject::pColumnExprs(pChild2, pRootNode);
 
-  PlanNodeIter* pIter1 = pProjColumnList1->pNewIter();
-  PlanNodeIter* pIter2 = pProjColumnList2->pNewIter();
+  QueryNodeIter* pIter1 = pProjColumnList1->pNewIter();
+  QueryNodeIter* pIter2 = pProjColumnList2->pNewIter();
 
   while (pIter1->bHasNext()) {
-    QueryNode* pProjColumn1 = static_cast<QueryNode*>(pIter1->pNext());
+    QueryNode* pProjColumn1 = pIter1->pNext();
     ASSERT(ProjectedColumn::bIsOfType(pProjColumn1));
 
     Stz* szName1 = ProjectedColumn::szAliasName(pProjColumn1);
@@ -237,7 +372,7 @@ void SetOpValidator::vDetermineCommonColumns(QueryNode* pSetOp, PlanNode* pRootN
     // Check szName1 against all columns of child2
     pIter2->vBeforeFirst();
     while (pIter2->bHasNext()) {
-      QueryNode* pProjColumn2 = static_cast<QueryNode*>(pIter2->pNext());
+      QueryNode* pProjColumn2 = pIter2->pNext();
       ASSERT(ProjectedColumn::bIsOfType(pProjColumn2));
 
       Stz* szName2 = ProjectedColumn::szAliasName(pProjColumn2);
@@ -291,14 +426,14 @@ void SetOpValidator::vConvertCorrByToProjectOp(QueryNode* pSetOp, PlanNode* pRoo
   ASSERT(pCorrByList->nChildren() > 0);
 
   // Get the projected columns of each child
-  QueryNode* pChild1 = static_cast<QueryNode*>(pSetOp->pFirstChild());
-  QueryNode* pChild2 = static_cast<QueryNode*>(pSetOp->pSecondChild());
+  QueryNode* pChild1 = _pQueryNode(pSetOp->pFirstChild());
+  QueryNode* pChild2 = _pQueryNode(pSetOp->pSecondChild());
 
-  PlanNodeList* pProjColumnList1 = PlanObject::pColumnExprs(pChild1, pRootNode);
-  PlanNodeList* pProjColumnList2 = PlanObject::pColumnExprs(pChild2, pRootNode);
+  QueryNodeList* pProjColumnList1 = PlanObject::pColumnExprs(pChild1, pRootNode);
+  QueryNodeList* pProjColumnList2 = PlanObject::pColumnExprs(pChild2, pRootNode);
 
-  PlanNodeIter* pProjColumnIter1 = pProjColumnList1->pNewIter();
-  PlanNodeIter* pProjColumnIter2 = pProjColumnList2->pNewIter();
+  QueryNodeIter* pProjColumnIter1 = pProjColumnList1->pNewIter();
+  QueryNodeIter* pProjColumnIter2 = pProjColumnList2->pNewIter();
 
   QueryNodeList* pNewProjectedColumnList1 = new QueryNodeList();
   QueryNodeList* pNewProjectedColumnList2 = new QueryNodeList();
@@ -306,7 +441,7 @@ void SetOpValidator::vConvertCorrByToProjectOp(QueryNode* pSetOp, PlanNode* pRoo
   // Iterate the CORRESPONDING BY list
   PlanNodeIter* pCorrByIter = pCorrByList->pNewChildrenIter();
   while (pCorrByIter->bHasNext()) {
-    QueryNode* pStringObj = static_cast<QueryNode*>(pCorrByIter->pNext());
+    QueryNode* pStringObj = _pQueryNode(pCorrByIter->pNext());
     Stz* szColumnName = pStringObj->szValue();
     ASSERT(szColumnName);
 
@@ -414,12 +549,12 @@ void SetOpValidator::vConvertCorrByToProjectOp(QueryNode* pSetOp, PlanNode* pRoo
 /* ProjectedColumn that matches a given column name. If the column is not     */
 /* found then a nullptr is returned.                                          */
 /*----------------------------------------------------------------------------*/
-QueryNode* SetOpValidator::pFindProjectedColumn(PlanNodeIter* pProjColumnIter, Stz* szColumnName)
+QueryNode* SetOpValidator::pFindProjectedColumn(QueryNodeIter* pProjColumnIter, Stz* szColumnName)
 {
   pProjColumnIter->vBeforeFirst();
 
   while (pProjColumnIter->bHasNext()) {
-    QueryNode* pProjColumn = static_cast<QueryNode*>(pProjColumnIter->pNext());
+    QueryNode* pProjColumn = pProjColumnIter->pNext();
     ASSERT(ProjectedColumn::bIsOfType(pProjColumn));
 
     // Can we match the alias?

@@ -372,7 +372,7 @@ i8   AM::nNodes(void)  { return gpAttachMap->m_pGrid->nNodes(); }
 std::list<Node*>::const_iterator AM::itBeginNodes(void) {return  gpAttachMap->m_pGrid->itBeginNodes(); }
 std::list<Node*>::const_iterator AM::itEndNodes(void) {return  gpAttachMap->m_pGrid->itEndNodes(); }
 
-Article* AM::pLexiconArticle(void) { return gpAttachMap->m_pLexiconArticle;    }
+
 void AM::vProcessExit(void)   { return Process::vExitFailure();                      }
 
 i8   AM::iSystemUsec(void)    { return Process::iSystemUsec();                      }
@@ -390,7 +390,7 @@ i8   AM::nPtnsInGrid(void) {
 Schedule* AM::pSchedule(void)     { return gpAttachMap->m_pSchedule;                }
 Resources* AM::pResources(void) {
   return & gpAttachMap->m_oResources; }
-Article* AM::pArcticleRoot(void)     { return gpAttachMap->m_pArcticleRoot;    }
+
 Word* AM::pConstantRoot(void) { return gpAttachMap->m_pConstantRoot;          }
 Dic* AM::pDicRoot(void)       { return gpAttachMap->m_pDicRoot;               }
 Word* AM::pWordRoot(void)     { return gpAttachMap->m_pWordRoot;              }
@@ -3121,13 +3121,6 @@ void AM::vRemoveNode(Stz* pszName)
   // Check to make sure we have this node in the cluster/grid.
   if (pThisNode) {
 
-    // we should remove article and delete the node here?
-    Article* pGridArticle = AM::pLexiconArticle()->pFind("SEgrid"_Stz);
-    if (pGridArticle) {
-      pGridArticle->vRemove(pThisNode->pArticle());
-      pGridArticle->vDumpRecursively(0);
-    }
-
     AM::pGrid()->vRemoveNode(pThisNode); // BootNodes is decr in this function
     //delete pThisNode;
 
@@ -3135,7 +3128,6 @@ void AM::vRemoveNode(Stz* pszName)
     AM::pGrid()->vDecDefinedNodes();
     AM::pGrid()->vDecNodes();
     //AM::pGrid()->vDecBootNodes();
-
 
   }
 }

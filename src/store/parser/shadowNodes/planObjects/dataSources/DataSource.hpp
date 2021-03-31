@@ -5,6 +5,7 @@
 
 #include "SqlOperator.hpp"
 #include "PlanNode.hpp"
+#include "QueryNodeList.hpp"
 
 namespace Parser
 {
@@ -32,11 +33,11 @@ namespace Parser
 
     // Get the list of column definitions for this data source
     // Returned list must be freed, but not its contents.
-    static PlanNodeList* pColumnDefs(QueryNode* pNode, PlanNode* pRootNode);
+    static QueryNodeList* pColumnDefs(QueryNode* pNode, PlanNode* pRootNode);
 
     // Return a list of ProjectedColumns that represent the column expressions
     // that this PlanObject will return. All nodes and the list must be freed.
-    static PlanNodeList* pColumnExprs(QueryNode* pNode, PlanNode* pRootNode);
+    static QueryNodeList* pColumnExprs(QueryNode* pNode, PlanNode* pRootNode);
   };
 
 }

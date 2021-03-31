@@ -75,16 +75,9 @@ AttachMap::AttachMap(void)
   m_pJobs = new Jobs;
 
   m_pObjects = new Objects;
-
-  Lexicon* pLexicon = new Lexicon("__lexicon"_Stz);
-  m_pLexiconArticle = pLexicon->pArticle();
   
   m_pDicRoot = new Dic("__dicRoot"_Stz);
-  
-  m_pArcticleRoot = m_pDicRoot->pArticle();
-  
-  m_pLexiconArticle->vAppend(m_pArcticleRoot);
-  
+      
   Step::vAddStep("word"_Stz,&Step::vWord);
   AM::vRootWord(m_pDicRoot->pFindWord("word"_Stz));
 
@@ -107,24 +100,7 @@ AttachMap::AttachMap(void)
   _checkInitialised_(CN_ATTACHMAP);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  Lexicon* pSubLex;
-  
-  pSubLex = new Lexicon("__ddlLock"_Stz);
-  m_pLexiconArticle->vAppend(pSubLex->pArticle());
-
-  pSubLex = new Lexicon("__grid"_Stz);
-  m_pLexiconArticle->vAppend(pSubLex->pArticle());
-  
-  pSubLex = new Lexicon("__queues"_Stz);
-  m_pLexiconArticle->vAppend(pSubLex->pArticle());
-  
-  pSubLex = new Lexicon("__tennants"_Stz);
-  m_pLexiconArticle->vAppend(pSubLex->pArticle());
-
-  pSubLex = new Lexicon("__threads"_Stz);
-  m_pLexiconArticle->vAppend(pSubLex->pArticle());
-  
+    
   m_pBucketMap = nullptr;
   m_pPtnMap    = nullptr;
 

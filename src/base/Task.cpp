@@ -74,6 +74,9 @@ Task::Task(Job* pJob)
   m_pJob         = pJob;
   m_pThread      = nullptr;
 
+  m_bIsStart     = false;
+  m_bIsImmediate = false;
+
   m_eState       = TS_NONE;
   m_eTransition  = TR_NONE;
   m_eQueue       = QK_NONE;
@@ -561,6 +564,25 @@ Input* Task::pInput(void)
   return m_pInput;
 }
 
+/*----------------------------------------------------------------------------*/
+/* immediate task?                                                            */
+/*----------------------------------------------------------------------------*/
+bool Task::bIsImmediate(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+    
+  return m_bIsImmediate;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set immediate task                                                         */
+/*----------------------------------------------------------------------------*/
+void Task::vIsImmediate(bool bIsImmediate)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+    
+  m_bIsImmediate = bIsImmediate;
+}
 
 /*----------------------------------------------------------------------------*/
 /* is task locked?                                                            */
@@ -572,6 +594,26 @@ bool Task::bIsLocked(void)
   bool b = m_okLock.bIsLocked();
   
   return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is the start task?                                                         */
+/*----------------------------------------------------------------------------*/
+bool Task::bIsStart(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+    
+  return m_bIsStart;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set start task                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vIsStart(bool bIsStart)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+    
+  m_bIsStart = bIsStart;
 }
 
 /*----------------------------------------------------------------------------*/

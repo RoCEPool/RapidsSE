@@ -300,7 +300,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Heap), /*correct*/   HT_INVALID   ,0 }, // CN_LARGEPERSISTENT
   { sizeof(Heap), /*correct*/   HT_INVALID   ,0 }, // CN_LARGETRANSIENT
   { sizeof(Heap), /*correct*/   HT_INVALID   ,0 }, // CN_LARGEVIRTUAL
-  { sizeof(Lexicon),            HT_T_TINY    ,0 }, // CN_LEXICON
   { sizeof(Licence),            HT_T_TINY    ,0 }, // CN_LICENCE
   { sizeof(Limits),             HT_T_TINY    ,0 }, // CN_LIMITS
   { sizeof(ListExoNode_t<Object>), HT_T_TINY ,0 }, // CN_LISTEXONODE_t

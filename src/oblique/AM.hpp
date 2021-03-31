@@ -304,7 +304,6 @@ namespace OBLIQUE
     static bool bHasStarted(void);
     static Heaps* pHeaps(void);
     static i8   nIndexEntries(void);
-    static Article* pLexiconArticle(void);
     static JobList* pLocalJobs(void);
     static Locks* pLocks(void);
     static bool bLogging(void);

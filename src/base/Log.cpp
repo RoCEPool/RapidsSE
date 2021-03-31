@@ -362,39 +362,6 @@ void Log::vHow(i8 iReqId, i8 iDetail, LogEntry* pLogEntry)
 }
 
 /*----------------------------------------------------------------------------*/
-/* monitor profile                                                            */
-/*----------------------------------------------------------------------------*/
-void Log::vMonitorPortrait(s48K& sPortrait)
-{
-#ifdef WITH_SHARED_LOG
-  if (! gpLog) {
-    sPortrait.vSprint("Log: activity map not configured\n"_Stz);
-    return;
-  }
-  
-  gpLog->vGrabLock();
-  i8 iPercentFull = gpLog->iPercentFull_NL();
-  gpLog->vDropLock();
-  
-  i8 iMapSize = gpLog->iSize();
-  s32 sShmMag;
-  MagLib::vByteMag(iMapSize, sShmMag);
-  
-  s32 sArrayMag;
-  MagLib::vUnitMag(gpLog->m_nEntries, sArrayMag);
-
-  sPortrait.vSprint("Log: shm %s array %s marks %lld; %lld%% full;\n"_Stz,
-                    sShmMag.szStz(),
-                    sArrayMag.szStz(),
-                    gpLog->m_i_Entry,
-                    iPercentFull
-                     );
-#else
-  sPortrait.vSprint("Log: not compiled WITH_SHARED_LOG\n"_Stz);
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
 /* open Log (called by API)                                                   */
 /*----------------------------------------------------------------------------*/
 void Log::vOpenByApi(void)

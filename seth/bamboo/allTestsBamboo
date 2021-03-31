@@ -4,6 +4,7 @@
 
 ../tests/Transliterate/testList
 ../tests/BackEnd/testList
+../tests/Compiler/testList
 ../tests/Demo/testList
 ../tests/Datums/testList
 ../tests/Ddl/testList

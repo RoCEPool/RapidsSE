@@ -190,7 +190,7 @@ PlanNode* SqlPlanner::plan(Stz* pStr, const PlanNode* pTemplate)
   PlanNode* pItem = GraphNav::pFind(const_cast<Stz*>(C_PLAN_PATH), pRoot);
   ASSERT(pItem);
   ASSERT(pItem->eGetClassNo() == CN_QUERYNODE);
-  QueryNode* pQueryNode = static_cast<QueryNode*>(pItem);
+  QueryNode* pQueryNode = _pQueryNode(pItem);
 
   // Attach the statement plan we created
   ASSERT(m_pStatementStack->nItems() == 1);

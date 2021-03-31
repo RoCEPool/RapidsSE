@@ -221,7 +221,7 @@ void Metadata::vListContents(i8 i_Depth, Dic* pDic)
     return;
   }
   
-  pDic->pArticle()->vGrabRead();
+  pDic->pArticleDic()->vGrabRead();
   
   for (Word* pWord = pDic->pFirstWord(); pWord; pWord = pWord->pNextWord()) {
     
@@ -243,7 +243,7 @@ void Metadata::vListContents(i8 i_Depth, Dic* pDic)
       ((Index*)pObject)->vListContents(i_Depth+1);
   }
   
-  pDic->pArticle()->vDropRead();
+  pDic->pArticleDic()->vDropRead();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -270,7 +270,7 @@ void Metadata::vSearch(InfoSet* pInfoSet,
     return;
   }
   
-  pDic->pArticle()->vGrabRead();
+  pDic->pArticleDic()->vGrabRead();
   
   for (Word* pWord = pDic->pFirstWord(); pWord; pWord = pWord->pNextWord()) {
     
@@ -323,7 +323,7 @@ void Metadata::vSearch(InfoSet* pInfoSet,
     
   }
   
-  pDic->pArticle()->vDropRead();
+  pDic->pArticleDic()->vDropRead();
 }
 
 /*----------------------------------------------------------------------------*/

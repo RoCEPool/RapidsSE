@@ -47,7 +47,7 @@ namespace Parser
     // that this PlanObject will return. All nodes and the list must be freed.
     // This is conceptually the same as pProjectedColumns() above, except this
     // function is implemented by all PlanObjects.
-    static PlanNodeList* pColumnExprs(QueryNode* pNode, PlanNode* pRootNode);
+    static QueryNodeList* pColumnExprs(QueryNode* pNode, PlanNode* pRootNode);
 
   protected:
 

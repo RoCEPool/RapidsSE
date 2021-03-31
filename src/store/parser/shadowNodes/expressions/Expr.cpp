@@ -234,7 +234,7 @@ void Expr::vValidateResultType(QueryNode* pExprNode, PlanNode* pRootNode)
     PlanNodeIter* pIter = pExprNode->pNewChildrenIter();
 
     while (pIter->bHasNext()) {
-      QueryNode* pChildExpr = static_cast<QueryNode*>(pIter->pNext());
+      QueryNode* pChildExpr = _pQueryNode(pIter->pNext());
 
       try {
       // Recurse into this child.
@@ -263,9 +263,9 @@ void Expr::vValidateResultType(QueryNode* pExprNode, PlanNode* pRootNode)
 /* column ordinals for a given list of column expressions.                    */
 /* The returned QueryNode must be freed. Column ordinals are 1-based.         */
 /*----------------------------------------------------------------------------*/
-QueryNode* Expr::pSymbolicToOrdinal(QueryNode*    pSymbolicExpr,
-                                    PlanNodeList* pColumnExprList,
-                                    PlanNode*     pRootNode)
+QueryNode* Expr::pSymbolicToOrdinal(QueryNode*     pSymbolicExpr,
+                                    QueryNodeList* pColumnExprList,
+                                    PlanNode*      pRootNode)
 {
   ASSERT(bIsOfType(pSymbolicExpr));
 
@@ -285,11 +285,11 @@ QueryNode* Expr::pSymbolicToOrdinal(QueryNode*    pSymbolicExpr,
 
   // First we need to check if any of the columns in the columnExprList
   // exactly match our symbolic expression.
-  PlanNodeIter* pIter = pColumnExprList->pNewIter();
+  QueryNodeIter* pIter = pColumnExprList->pNewIter();
   i8 iOrdinal = 1;
 
   while (pIter->bHasNext()) {
-    QueryNode* pProjectedColumn = static_cast<QueryNode*>(pIter->pNext());
+    QueryNode* pProjectedColumn = pIter->pNext();
     QueryNode* pColExpr = ProjectedColumn::pExprNode(pProjectedColumn);
 
 //    s2K sBuf1;
@@ -329,17 +329,17 @@ QueryNode* Expr::pSymbolicToOrdinal(QueryNode*    pSymbolicExpr,
   PlanNodeList* pOrdinalChildren = new PlanNodeList();
 
   // Iterate the children of the symbolic expression
-  pIter = pSymbolicExpr->pNewChildrenIter();
+  PlanNodeIter* pChildIter = pSymbolicExpr->pNewChildrenIter();
 
-  while (pIter->bHasNext()) {
-    QueryNode* pChildSymbolicExpr = static_cast<QueryNode*>(pIter->pNext());
+  while (pChildIter->bHasNext()) {
+    QueryNode* pChildSymbolicExpr = _pQueryNode(pChildIter->pNext());
 
     // Convert the child from symbolic to ordinal. If not, this will
     // duplicate the child expression anyway. Add it to a list of such children.
     QueryNode* pChildOrdinalExpr  = pSymbolicToOrdinal(pChildSymbolicExpr, pColumnExprList, pRootNode);
     pOrdinalChildren->vAppend(pChildOrdinalExpr);
   }
-  delete pIter;
+  delete pChildIter;
 
   // Now we can deep copy the current symbolic expression but give it new children
   pOrdinalExpr = pSymbolicExpr->pDeepCopy(pOrdinalChildren);
@@ -390,8 +390,8 @@ b1 Expr::bIsSymbolicallyEqual(QueryNode* pExpr1, QueryNode* pExpr2)
     PlanNodeIter* pIter2 = pExpr2->pNewPropertyIter();
 
     while (pIter1->bHasNext()) {
-      QueryNode* pProp1 = static_cast<QueryNode*>(pIter1->pNext());
-      QueryNode* pProp2 = static_cast<QueryNode*>(pIter2->pNext());
+      QueryNode* pProp1 = _pQueryNode(pIter1->pNext());
+      QueryNode* pProp2 = _pQueryNode(pIter2->pNext());
 
       // Compare the properties
       if (!bIsSymbolicallyEqual(pProp1, pProp2)) {
@@ -423,8 +423,8 @@ b1 Expr::bIsSymbolicallyEqual(QueryNode* pExpr1, QueryNode* pExpr2)
     PlanNodeIter* pIter2 = pExpr2->pNewChildrenIter();
 
     while (pIter1->bHasNext()) {
-      QueryNode* pChild1 = static_cast<QueryNode*>(pIter1->pNext());
-      QueryNode* pChild2 = static_cast<QueryNode*>(pIter2->pNext());
+      QueryNode* pChild1 = _pQueryNode(pIter1->pNext());
+      QueryNode* pChild2 = _pQueryNode(pIter2->pNext());
 
       // Compare the children
       if (!bIsSymbolicallyEqual(pChild1, pChild2)) {
@@ -469,7 +469,7 @@ b1 Expr::bIsEqualOrSupersetOf(QueryNode* pSuperExpr, QueryNode* pSubExpr)
   // Walk the children of pSuperExpr and test again
   PlanNodeIter* pIter = pSuperExpr->pNewChildrenIter();
   while (pIter->bHasNext()) {
-    QueryNode* pChildExpr = static_cast<QueryNode*>(pIter->pNext());
+    QueryNode* pChildExpr = _pQueryNode(pIter->pNext());
 
     // Recurse this function
     if (bIsEqualOrSupersetOf(pChildExpr, pSubExpr)) {
@@ -551,15 +551,15 @@ b1 Expr::bIsCommutativelyEqual(QueryNode* pExpr1, QueryNode* pExpr2)
   // If these are symbolically equal then the two parent expressions are also
   // symbolically equal.
 
-  QueryNode* pChild1 = static_cast<QueryNode*>(pExpr1->pFirstChild());
-  QueryNode* pChild2 = static_cast<QueryNode*>(pExpr2->pSecondChild());
+  QueryNode* pChild1 = _pQueryNode(pExpr1->pFirstChild());
+  QueryNode* pChild2 = _pQueryNode(pExpr2->pSecondChild());
 
   if (!bIsSymbolicallyEqual(pChild1, pChild2)) {
     return false;
   }
 
-  pChild1 = static_cast<QueryNode*>(pExpr1->pSecondChild());
-  pChild2 = static_cast<QueryNode*>(pExpr2->pFirstChild());
+  pChild1 = _pQueryNode(pExpr1->pSecondChild());
+  pChild2 = _pQueryNode(pExpr2->pFirstChild());
 
   b1 bIsEqual = bIsSymbolicallyEqual(pChild1, pChild2);
   return bIsEqual;
@@ -579,10 +579,10 @@ b1 Expr::bIsMathematicallyEqual(QueryNode* pExpr1, QueryNode* pExpr2)
   if (pExpr1->nChildren() != pExpr2->nChildren())  return false;
 
 
-  QueryNode* pChild11 = static_cast<QueryNode*>(pExpr1->pFirstChild());
-  QueryNode* pChild12 = static_cast<QueryNode*>(pExpr1->pSecondChild());
-  QueryNode* pChild21 = static_cast<QueryNode*>(pExpr2->pFirstChild());
-  QueryNode* pChild22 = static_cast<QueryNode*>(pExpr2->pSecondChild());
+  QueryNode* pChild11 = _pQueryNode(pExpr1->pFirstChild());
+  QueryNode* pChild12 = _pQueryNode(pExpr1->pSecondChild());
+  QueryNode* pChild21 = _pQueryNode(pExpr2->pFirstChild());
+  QueryNode* pChild22 = _pQueryNode(pExpr2->pSecondChild());
 
   // First check that we've got compatible operators
 

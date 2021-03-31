@@ -77,8 +77,8 @@ void XorExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
   _static_
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pChild1 = XorExpr::pChild1(static_cast<QueryNode*>(pNode));
-  QueryNode* pChild2 = XorExpr::pChild2(static_cast<QueryNode*>(pNode));
+  QueryNode* pChild1 = XorExpr::pChild1(_pQueryNode(pNode));
+  QueryNode* pChild2 = XorExpr::pChild2(_pQueryNode(pNode));
 
   if (pChild1->nChildren() == 0) {
     Expr::vDescribe(pChild1, sBuf);
@@ -110,7 +110,7 @@ QueryNode* XorExpr::pChild1(QueryNode *pNode)
   ASSERT(bIsOfType(pNode));
   ASSERT(pNode->nChildren() == 2);
 
-  return static_cast<QueryNode*>(pNode->pFirstChild());
+  return _pQueryNode(pNode->pFirstChild());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -122,7 +122,7 @@ QueryNode* XorExpr::pChild2(QueryNode *pNode)
   ASSERT(bIsOfType(pNode));
   ASSERT(pNode->nChildren() == 2);
 
-  return static_cast<QueryNode*>(pNode->pSecondChild());
+  return _pQueryNode(pNode->pSecondChild());
 }
 
 

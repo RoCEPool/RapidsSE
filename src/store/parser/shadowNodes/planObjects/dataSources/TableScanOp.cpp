@@ -63,11 +63,11 @@ void TableScanOp::vDescribe(PlanNode* pNode, s2K& sBuf)
   _static_
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pTableScanOp = static_cast<QueryNode*>(pNode);
+  QueryNode* pTableScanOp = _pQueryNode(pNode);
 
   sBuf.vConcat("TableScanOp : "_Stz);
 
-  QueryNode* pTableRef = static_cast<QueryNode*>(GraphNav::pFindProperty(C_TABLEREF_PROP, pTableScanOp));
+  QueryNode* pTableRef = _pQueryNode(GraphNav::pFindProperty(C_TABLEREF_PROP, pTableScanOp));
   ASSERT(pTableRef);
 
   TableRef::vDescribe(pTableRef, sBuf);
@@ -135,7 +135,7 @@ b1 TableScanOp::bIsExactType(PlanNode *pNode)
 QueryNode* TableScanOp::pTableRef(QueryNode* pNode)
 {
   QueryNode *pTableRefNode =
-      static_cast<QueryNode*>(GraphNav::pFindProperty(const_cast<Stz *>(C_TABLEREF_PROP), pNode));
+      _pQueryNode(GraphNav::pFindProperty(const_cast<Stz *>(C_TABLEREF_PROP), pNode));
   QueryNode *pTableRef = static_cast<QueryNode *>(pTableRefNode);
 
   return pTableRef;
@@ -175,7 +175,7 @@ Stz* TableScanOp::szTableName(QueryNode *pNode)
 /* Get the list of column definitions for this data source                    */
 /* Returned list must be freed, but not its contents                          */
 /*----------------------------------------------------------------------------*/
-PlanNodeList* TableScanOp::pColumnDefs(QueryNode* pNode, PlanNode* pRootNode)
+QueryNodeList* TableScanOp::pColumnDefs(QueryNode* pNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -185,7 +185,7 @@ PlanNodeList* TableScanOp::pColumnDefs(QueryNode* pNode, PlanNode* pRootNode)
   ASSERT(pMetadataNode);
 
   // Create a list for the columnDefs to be returned
-  PlanNodeList* pColumnDefList = new PlanNodeList();
+  QueryNodeList* pColumnDefList = new QueryNodeList();
 
   // Iterate the columns in the metadata and add them to the above list
   PlanNodeIter* pIter = MetadataNode::pColumnDefIter(pMetadataNode,
@@ -194,7 +194,7 @@ PlanNodeList* TableScanOp::pColumnDefs(QueryNode* pNode, PlanNode* pRootNode)
                                                      szTableName(pNode));
 
   while (pIter->bHasNext()) {
-    QueryNode* pColumnDef = static_cast<QueryNode*>(pIter->pNext());
+    QueryNode* pColumnDef = _pQueryNode(pIter->pNext());
     pColumnDefList->vAppend(pColumnDef);
   }
 
@@ -206,7 +206,7 @@ PlanNodeList* TableScanOp::pColumnDefs(QueryNode* pNode, PlanNode* pRootNode)
 /* Return a list of ProjectedColumns that represent the column expressions      */
 /* that this PlanObject will return. All nodes and the list must be freed.    */
 /*----------------------------------------------------------------------------*/
-PlanNodeList* TableScanOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
+QueryNodeList* TableScanOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -216,7 +216,7 @@ PlanNodeList* TableScanOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
   ASSERT(pMetadataNode);
 
   // Create a list for the columnRefs to be returned  (note: columnREFS not columnDEFS)
-  PlanNodeList* pColumnRefList = new PlanNodeList();
+  QueryNodeList* pColumnRefList = new QueryNodeList();
 
   // Iterate the columns in the metadata and add them to the above list
   PlanNodeIter* pIter = MetadataNode::pColumnDefIter(pMetadataNode,
@@ -225,7 +225,7 @@ PlanNodeList* TableScanOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
                                                      szTableName(pNode));
 
   while (pIter->bHasNext()) {
-    QueryNode* pColumnDef = static_cast<QueryNode*>(pIter->pNext());
+    QueryNode* pColumnDef = _pQueryNode(pIter->pNext());
 
     // Create a columnRef expression object from this column definition
     QueryNode* pColumnRef = ColumnRef::pCreate(ColumnDef::szCatalogName(pColumnDef),

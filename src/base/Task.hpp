@@ -29,6 +29,9 @@ namespace BASE
 
     SMA<Job>     m_pJob;         // the job for this task
     SMA<Thread>  m_pThread;      // current thread
+  
+    bool         m_bIsStart;     // is this the start task?
+    bool         m_bIsImmediate; // is this an immediate task?
 
     eTS          m_eState;       // state (running, sleeping, ...)
     eTR          m_eTransition;  // schedulre transition request
@@ -107,7 +110,11 @@ namespace BASE
     eEP  eEntryPoint(void);
     void vGrabTaskLock(void);
     void vInitExeContext(void);
+    bool bIsImmediate(void);
+    void vIsImmediate(bool bIsImmediate);
     bool bIsLocked(void);
+    bool bIsStart(void);
+    void vIsStart(bool bIsStart);
     bool bIsTaskLocked(void);
     Job* pJob(void);
     void vJob(Job* pJob);

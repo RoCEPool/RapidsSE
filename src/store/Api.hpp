@@ -51,7 +51,6 @@ namespace STORE
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   static void vIncStatistics(eAC eApiCall);
-  static void vMonitorPortrait(s48K& sPortrait);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

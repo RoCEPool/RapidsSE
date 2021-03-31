@@ -61,7 +61,7 @@ void TableDefs::vDescribe(PlanNode* pNode, s2K& sBuf)
 
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pTableDefs = static_cast<QueryNode*>(pNode);
+  QueryNode* pTableDefs = _pQueryNode(pNode);
 
   PlanNodeIter* pIter = pNode->pNewChildrenIter();
   b1 bFirst = true;
@@ -75,7 +75,7 @@ void TableDefs::vDescribe(PlanNode* pNode, s2K& sBuf)
       sBuf.vConcat(", "_Stz);
     }
 
-    sBuf.vConcat(TableDef::szTableName(static_cast<QueryNode*>(pChild)));
+    sBuf.vConcat(TableDef::szTableName(_pQueryNode(pChild)));
   }
 
   delete pIter;

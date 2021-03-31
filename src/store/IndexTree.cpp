@@ -118,21 +118,6 @@ void IndexTree::vDump(eCN eClass, Object* pObject, Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
-/* monitor portrait                                                           */
-/*----------------------------------------------------------------------------*/
-void IndexTree::vMonitorPortrait(s48K& sPortrait)
-{
-  Statistics* pStats = AM::pStatistics();
-
-  sPortrait.vSprint("IndexTree: appendBuffers %lld appendRows %lld "
-                               "buffersPurged %lld\n"_Stz,
-                    pStats->IndexTree.m_nAppendBuffers,
-                    pStats->IndexTree.m_nAppendRows,
-                    pStats->IndexTree.m_nBuffersPurged
-                    );
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

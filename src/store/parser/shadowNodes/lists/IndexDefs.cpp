@@ -61,7 +61,7 @@ void IndexDefs::vDescribe(PlanNode* pNode, s2K& sBuf)
 
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pIndexDefs = static_cast<QueryNode*>(pNode);
+  QueryNode* pIndexDefs = _pQueryNode(pNode);
 
   PlanNodeIter* pIter = pNode->pNewChildrenIter();
   b1 bFirst = true;

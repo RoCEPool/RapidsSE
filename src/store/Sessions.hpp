@@ -45,7 +45,6 @@ namespace STORE
     void vDump(void);
     void vFreeSession(Session* pSession);
     Session* pGetSession(i8 i_Session);
-    void vMonitorPortrait(s48K& sPortrait);
 
     
   private:

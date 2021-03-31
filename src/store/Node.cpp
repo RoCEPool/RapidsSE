@@ -59,9 +59,7 @@ Node::Node(i8 iNodeNo, Stz* szNodeNm, i8 nDegOfPar, Stz* szIpAddr, i8 iPortNo)
 : Object(CN_NODE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
-  
-  m_pArticle  = new Article(szNodeNm,this,Node::vArtFun);
-  
+    
   m_iNodeNo   = iNodeNo;
   m_sNodeNm   = szNodeNm;
   m_nDegOfPar = nDegOfPar;
@@ -136,16 +134,6 @@ void Node::vArtFun(Object* pObject, SP& spObject)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get Article                                                                */
-/*----------------------------------------------------------------------------*/
-Article* Node::pArticle(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
-  
-  return m_pArticle;
-}
 
 /*----------------------------------------------------------------------------*/
 /* get degree of parallelism                                                  */

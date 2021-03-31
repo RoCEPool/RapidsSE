@@ -61,7 +61,7 @@ void ColumnDefs::vDescribe(PlanNode* pNode, s2K& sBuf)
 
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pColumnDefs = static_cast<QueryNode*>(pNode);
+  QueryNode* pColumnDefs = _pQueryNode(pNode);
 
   PlanNodeIter* pIter = pNode->pNewChildrenIter();
   b1 bFirst = true;

@@ -127,7 +127,6 @@ enum eCN : u2 // Class Number
   /* */ CN_LARGEPERSISTENT,
   /* */ CN_LARGETRANSIENT,
   /* */ CN_LARGEVIRTUAL,
-  /* */ CN_LEXICON,
   /* */ CN_LICENCE,
   /* */ CN_LIMITS,
   /* */ CN_LISTEXONODE_t,
@@ -465,7 +464,6 @@ static Stz* aCN[]
   /* */ "LARGEPERSISTENT"_Stz,      // CN_LARGEPERSISTENT
   /* */ "LARGETRANSIENT"_Stz,       // CN_LARGETRANSIENT
   /* */ "LARGEVIRTUAL"_Stz,         // CN_LARGEVIRTUAL
-  /* */ "LEXICON"_Stz,              // CN_LEXICON
   /* */ "LICENCE"_Stz,              // CN_LICENCE
   /* */ "LIMITS"_Stz,               // CN_LIMITS
   /* */ "LISTEXONODE_t"_Stz,        // CN_LISTEXONODE_t

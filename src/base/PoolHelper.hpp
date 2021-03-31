@@ -16,7 +16,6 @@ namespace BASE
     static void vObjectSummary(void);
     static void vObjectSnapshot(ObjectSnapshot* pPoolSnapshot);
     static void vObjectValidate(void);
-    static void vMonitorPortrait(s48K& sPortrait);
     static void vPoolAnalyze(void);
     static void vPoolDump(void);
     static i8   iPoolFree(void);

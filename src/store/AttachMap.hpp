@@ -35,8 +35,6 @@ namespace STORE
     s256  m_sLogCsvFile;
     s256  m_sLogTxtFile;
   
-        
-    Article*      m_pArcticleRoot;
     bool          m_bBootError;
     BucketMap*    m_pBucketMap;
     BufferMap*    m_pBufferMap;
@@ -49,7 +47,6 @@ namespace STORE
     Grid*         m_pGrid;
     Heaps         m_xHeaps;
     Jobs*         m_pJobs;
-    Article*      m_pLexiconArticle;
     Locks         m_oLocks;
     Objects*      m_pObjects;
     Atomic        m_nxOperands;

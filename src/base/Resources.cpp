@@ -229,27 +229,6 @@ i8 Resources::nThreadOpen(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* monitor portrait                                                           */
-/*----------------------------------------------------------------------------*/
-void Resources::vMonitorPortrait(s48K& sPortrait)
-{
-  s48K s;
-  
-  s = ""_Stz;
-
-  sPortrait.vSprintCat("BASE: "_Stz);
-  sPortrait.vSprintCat("dir %lld file %lld malloc %lldB mutex %lld "
-                       "shm %lld socket %lld thread %lld\n"_Stz,
-                       nDirOpen(),
-                       nFileOpen(),
-                       nMallocAmt(),
-                       nMutexOpen(),
-                       nShmOpen(),
-                       nSocketOpen(),
-                       nThreadOpen());
-}
-
-/*----------------------------------------------------------------------------*/
 /* report                                                                     */
 /*----------------------------------------------------------------------------*/
 void Resources::vReport(void)

@@ -61,7 +61,7 @@ void CatalogDefs::vDescribe(PlanNode* pNode, s2K& sBuf)
 
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pCatalogDefs = static_cast<QueryNode*>(pNode);
+  QueryNode* pCatalogDefs = _pQueryNode(pNode);
 
   PlanNodeIter* pIter = pNode->pNewChildrenIter();
   b1 bFirst = true;
@@ -75,7 +75,7 @@ void CatalogDefs::vDescribe(PlanNode* pNode, s2K& sBuf)
       sBuf.vConcat(", "_Stz);
     }
 
-    sBuf.vConcat(CatalogDef::szCatalogName(static_cast<QueryNode*>(pChild)));
+    sBuf.vConcat(CatalogDef::szCatalogName(_pQueryNode(pChild)));
   }
 
   delete pIter;

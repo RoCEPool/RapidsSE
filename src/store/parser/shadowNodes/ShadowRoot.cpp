@@ -81,7 +81,7 @@ QueryNode* ShadowRoot::pMetadataNode(PlanNode* pNode)
   ASSERT(pNode);
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pMetadata = static_cast<QueryNode*>(GraphNav::pFindChild(const_cast<Stz*>(C_METADATA_NAME), pNode));
+  QueryNode* pMetadata = _pQueryNode(GraphNav::pFindChild(const_cast<Stz*>(C_METADATA_NAME), pNode));
   ASSERT(pMetadata);
 
   return pMetadata;
@@ -95,7 +95,7 @@ QueryNode* ShadowRoot::pPlanNode(PlanNode* pNode)
   ASSERT(pNode);
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pPlan = static_cast<QueryNode*>(GraphNav::pFindChild(const_cast<Stz*>(C_PLAN_NAME), pNode));
+  QueryNode* pPlan = _pQueryNode(GraphNav::pFindChild(const_cast<Stz*>(C_PLAN_NAME), pNode));
   ASSERT(pPlan);
 
   return pPlan;

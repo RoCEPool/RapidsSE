@@ -5,6 +5,7 @@
 
 #include "SqlOperator.hpp"
 #include "PlanNode.hpp"
+#include "QueryNodeList.hpp"
 
 namespace Parser
 {
@@ -40,8 +41,10 @@ namespace Parser
     // Remove and null the CORRESPONDING BY list
     static void vRemoveCorrespondingByList(QueryNode* pNode);
 
-    static PlanNodeList* pColumnExprs(QueryNode* pNode, PlanNode* pRootNode);
+    static QueryNodeList* pColumnExprs(QueryNode* pNode, PlanNode* pRootNode);
 
+    // Returns the SQL keyword that this operator is known by. e.g UNION
+    static Stz* szSqlKeyword(QueryNode* pNode);
 
   protected:
 

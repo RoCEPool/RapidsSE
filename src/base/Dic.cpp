@@ -83,7 +83,7 @@ void Dic::vAddWord(Word* pWord)
 /*----------------------------------------------------------------------------*/
 /* get dictionary article                                                     */
 /*----------------------------------------------------------------------------*/
-Article* Dic::pArticle(void)
+Article* Dic::pArticleDic(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   

@@ -20,6 +20,7 @@ using namespace Parser;
 /*----------------------------------------------------------------------------*/
 static Stz* C_UNIONOP_DEFN = "/__root__/definitions/object/planObject/sqlOperator/setOp/unionOp"_Stz;
 
+static Stz* C_SQL_KEYWORD = "UNION"_Stz;
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -51,7 +52,7 @@ void UnionOp::vDescribe(PlanNode* pNode, s2K& sBuf)
   _static_
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pUnionOp = static_cast<QueryNode*>(pNode);
+  QueryNode* pUnionOp = _pQueryNode(pNode);
 
   sBuf.vConcat("UnionOp :\n  "_Stz);
 
@@ -67,7 +68,7 @@ void UnionOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iInd
   _static_
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pUnionOp = static_cast<QueryNode*>(pNode);
+  QueryNode* pUnionOp = _pQueryNode(pNode);
 
   sBuf.vConcat("\n\n"_Stz);
   vAppendIndent(sBuf, iIndent, eIndentFormat::IF_ARROW);
@@ -122,7 +123,16 @@ b1 UnionOp::bIsExactType(PlanNode *pNode)
   return ShadowNode::bIsExactType(pNode, C_UNIONOP_DEFN);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns the SQL keyword that this operator is known by. e.g UNION          */
+/*----------------------------------------------------------------------------*/
+Stz* UnionOp::szSqlKeyword(QueryNode* pNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
 
+  return C_SQL_KEYWORD;
+}
 
 /*============================================================================*/
 /* end                                                                        */

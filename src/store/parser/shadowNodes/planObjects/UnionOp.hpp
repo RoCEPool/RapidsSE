@@ -27,6 +27,9 @@ namespace Parser
     // Returns true if a given node is this exact given type.
     static b1 bIsExactType(PlanNode* pNode);
 
+    // Returns the SQL keyword that this operator is known by. e.g UNION
+    static Stz* szSqlKeyword(QueryNode* pNode);
+
   protected:
 
   };

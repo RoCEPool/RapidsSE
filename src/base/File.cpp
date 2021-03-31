@@ -225,52 +225,6 @@ bool File::bModTime(Stz* szFilePath, time_t& tTime)
 }
 
 /*----------------------------------------------------------------------------*/
-/* monitor profile                                                            */
-/*----------------------------------------------------------------------------*/
-void File::vMonitorPortrait(s48K& sPortrait)
-{
-  Statistics* pStats = AM::pStatistics();
-
-  s32 sReadMag;  MagLib::vByteMag(pStats->File.m_nReadBytes,  sReadMag);
-  s32 sWriteMag; MagLib::vByteMag(pStats->File.m_nWriteBytes, sWriteMag);
-  s32 sPrintMag; MagLib::vByteMag(pStats->File.m_nPrintBytes, sPrintMag);
-
-  sPortrait.vSprint("File: "
-                    "opens %lld "
-                    "closes %lld "
-                    "seeks %lld "
-                    "tells %lld "
-                    "flushes %lld\n"
-                    "      "
-                    "reads %lld (%s) "
-                    "writes %lld (%s) "
-                    "prints %lld (%s)\n"
-                    "      "
-                    "getcs %lld "
-                    "ungetcs %lld "
-                    "\n"_Stz,
-                   
-                    pStats->File.m_nOpens,
-                    pStats->File.m_nCloses,
-                    pStats->File.m_nSeeks,
-                    pStats->File.m_nTells,
-                    pStats->File.m_nFlushes,
-                    
-                    pStats->File.m_nReads,
-                      sReadMag.szStz(),
-                    pStats->File.m_nWrites,
-                      sWriteMag.szStz(),
-                    pStats->File.m_nPrints,
-                      sPrintMag.szStz(),
-
-                    pStats->File.m_nGetcs,
-                    pStats->File.m_nUngetcs
-                   );
-  
-  
-}
-
-/*----------------------------------------------------------------------------*/
 /* remove given file from file system                                         */
 /*----------------------------------------------------------------------------*/
 bool File::bRemove(Stz* szFilePath)

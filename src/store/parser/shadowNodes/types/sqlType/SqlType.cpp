@@ -42,40 +42,40 @@ QueryNode* SqlType::pCreate(eCT eType)
   // Manual Polymorphism
   switch (eType) {
     case CT_BOOLEAN:
-      return static_cast<QueryNode*>(SqlBoolean::pCreate());
+      return _pQueryNode(SqlBoolean::pCreate());
 
     case CT_CHAR:
-      return static_cast<QueryNode*>(SqlVarchar::pCreate());
+      return _pQueryNode(SqlVarchar::pCreate());
 
     case CT_DATE:
-      return static_cast<QueryNode*>(SqlDate::pCreate());
+      return _pQueryNode(SqlDate::pCreate());
 
     case CT_DECIMAL:
-      return static_cast<QueryNode*>(SqlDecimal::pCreate());
+      return _pQueryNode(SqlDecimal::pCreate());
 
     case CT_FLOAT:
-      return static_cast<QueryNode*>(SqlFloat::pCreate());
+      return _pQueryNode(SqlFloat::pCreate());
 
     case CT_INTEGER:
-      return static_cast<QueryNode*>(SqlInteger::pCreate());
+      return _pQueryNode(SqlInteger::pCreate());
 
     case CT_INTERVAL_DT:
-      return static_cast<QueryNode*>(SqlIntervalDT::pCreate());
+      return _pQueryNode(SqlIntervalDT::pCreate());
 
     case CT_INTERVAL_YM:
-      return static_cast<QueryNode*>(SqlIntervalYM::pCreate());
+      return _pQueryNode(SqlIntervalYM::pCreate());
 
     case CT_TIME:
-      return static_cast<QueryNode*>(SqlTime::pCreate());
+      return _pQueryNode(SqlTime::pCreate());
 
     case CT_TIMESTAMP:
-      return static_cast<QueryNode*>(SqlTimestamp::pCreate());
+      return _pQueryNode(SqlTimestamp::pCreate());
 
     case CT_VARCHAR:
-      return static_cast<QueryNode*>(SqlVarchar::pCreate());
+      return _pQueryNode(SqlVarchar::pCreate());
 
     case CT_UNKNOWN:
-      return static_cast<QueryNode*>(SqlUnknown::pCreate());
+      return _pQueryNode(SqlUnknown::pCreate());
 
     case CT_NONE:
     case CT_ENUMS:

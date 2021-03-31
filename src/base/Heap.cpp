@@ -308,15 +308,6 @@ void Heap::vGrabLock()
 }
 
 /*----------------------------------------------------------------------------*/
-/* monitor portrait                                                           */
-/*----------------------------------------------------------------------------*/
-void Heap::vMonitorPortrait(s48K& sPortrait)
-{
-  sPortrait.vSprint("Heap: size %lld buffers %lld allocated %lld free %lld\n"_Stz,
-                    m_nObjectSize,m_nBufferCount,m_nCurrAllocated,m_nFreeChunks);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get the next buffer                                                        */
 /*----------------------------------------------------------------------------*/
 HeapBuffer* Heap::pNextBuffer(HeapBuffer* pBuffer)

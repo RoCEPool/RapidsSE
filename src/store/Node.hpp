@@ -14,8 +14,7 @@ namespace STORE
                public ListItem_t<Node>
   {
   private:
-    Article* m_pArticle;
-
+ 
     i8  m_iNodeNo;    // node number
     s32 m_sNodeNm;    // name of the node
     i8  m_nDegOfPar;  // degree of parallelism

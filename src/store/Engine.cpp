@@ -400,6 +400,7 @@ void Engine::vCallImmmediate(Task* pImmediateTask)
 {
   Task* pSaveTask = _pTask(PsxThd::pTlsGet(giTLS_TaskKey));
 
+  pImmediateTask->vIsImmediate(true);
   pImmediateTask->vSeedTask();
   
   pImmediateTask->vState(TS_EXECUTING);
@@ -454,6 +455,7 @@ void Engine::vCallStart(void)
   pJobTags->vReplace("<seedRun>"_Stz,"start_run"_Stz);
   
   Task* pStartTask = AM::pTaskNew(pJob);
+  pStartTask->vIsStart(true);
   pStartTask->vInitExeContext();
   LogicUnit* pLogicUnit = new LogicUnit(pStartTask);
 
@@ -897,40 +899,6 @@ void Engine::vLowMemoryDiscard(void)
   gxaSizeHeap[CN_CSVBUFFER].m_bLowMemoryDiscard = true;
   gxaSizeHeap[CN_PROFILE].m_bLowMemoryDiscard   = true;
   gxaSizeHeap[CN_ROWBUFFER].m_bLowMemoryDiscard = true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get monitor portrait profile of system                                     */
-/*----------------------------------------------------------------------------*/
-void Engine::vMonitorProfile(s48K& sPortrait)
-{
-  
-  i8 iUpTime = AM::iElapsedSsec();
-  
-  s32 sRegionMag;
-  MagLib::vByteMag(AM::iRegionSize(),sRegionMag);
-
-  i8 iPercentFree = AM::pBufferPool()->iFreePercent();
-  Stz* aNodeName  = AM::pGrid()->pThisNode()->szNodeNm();
-  bool bStarted   = AM::pGrid()->bHasStarted();
-  bool bDdlLocked = AM::pDdlLock()->bIsWriteLocked();
-  
-  sPortrait.vSprint("Node %s region %s free %lld%% uptime %llds (%s)\n"
-                    "     cluster %s ddl %s \n"_Stz,
-
-                    aNodeName,
-                    sRegionMag.szStz(),
-                    iPercentFree,
-                    iUpTime,
-#ifdef WITH_DEBUG_VERSION
-                    "debug"_Stz,
-#else
-                    "release"_Stz,
-#endif
-
-                    bStarted   ? "started" : "not-started",
-                    bDdlLocked ? "locked"  : "not-locked"
-                    );
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1604,27 +1572,16 @@ void Engine::vStartSystem(void) {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grid and nodes
-
-  gpAttachMap->m_pGrid = new Grid("SEgrid"_Stz, 0);
-
-  Article *pGridArticle = gpAttachMap->m_pGrid->pArticle();
-
-  AM::pLexiconArticle()->vAppend(pGridArticle);
+  gpAttachMap->m_pGrid = new Grid("SEgrid"_Stz,0);
 
   if (AM::bVerboseProgress())
     vInfo("  Creating Grid and Node's\n"_Stz);
 
 
   vCreateGridOfNodes();
+  
+  Node* pThisNode = AM::pGrid()->pFindNode(gxCmdLineArgs.m_xSysArgs.m_sNodeName);
 
-  s32 szNodeName;
-  //if (gxCmdLineArgs.m_xSysArgs.m_nBootNodes > 1)
-    szNodeName = gxCmdLineArgs.m_xSysArgs.m_sNodeName;
-  //else
-    //szNodeName.vSprint("%s:%lld"_Stz, gxCmdLineArgs.m_xSysArgs.m_xBootNode[0].m_sIPAddress.azChar(),
-                     //gxCmdLineArgs.m_xSysArgs.m_xBootNode[0].m_iPortNo);
-
-  Node* pThisNode = AM::pGrid()->pFindNode(szNodeName); //gxCmdLineArgs.m_xSysArgs.m_sNodeName);
   if (! pThisNode)
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "Cannot find Node %s in the cluster"_Stz,
@@ -1794,7 +1751,6 @@ void Engine::vCreateGridOfNodes(void)
 
   s32 szNodeName;
   i8 iNodeNo =0 ;
-  Article* pGridArticle = gpAttachMap->m_pGrid->pArticle();
 
   for (i8 i_Node = 0; i_Node < gxCmdLineArgs.m_xSysArgs.m_nBootNodes; i_Node++) {
 
@@ -1823,10 +1779,6 @@ void Engine::vCreateGridOfNodes(void)
 
     AM::pGrid()->vIncBootNodes();
     AM::pGrid()->vIncDefinedNodes();
-
-    Article* pNodeArticle = pNode->pArticle();
-
-    pGridArticle->vAppend(pNodeArticle);
   }
 }
 

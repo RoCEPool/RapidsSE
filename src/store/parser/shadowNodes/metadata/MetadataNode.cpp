@@ -76,7 +76,7 @@ void MetadataNode::vAddCatalog(QueryNode* pMetadataNode, QueryNode* pCatalogDef)
   ASSERT(CatalogDef::bIsOfType(pCatalogDef));
 
   // Get the catalogs property
-  QueryNode* pCatalogsNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_CATALOGS_PROP, pMetadataNode));
+  QueryNode* pCatalogsNode = _pQueryNode(GraphNav::pFindProperty(C_CATALOGS_PROP, pMetadataNode));
   ASSERT(pCatalogsNode);
 
   pCatalogsNode->vAppendChild(pCatalogDef);
@@ -144,7 +144,7 @@ QueryNode* MetadataNode::pCatalogDef(QueryNode* pMetadataNode, Stz* szCatalogNam
   QueryNode* pCatalogDef = nullptr;
 
   // Get the catalogs property
-  QueryNode* pCatalogsNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_CATALOGS_PROP, pMetadataNode));
+  QueryNode* pCatalogsNode = _pQueryNode(GraphNav::pFindProperty(C_CATALOGS_PROP, pMetadataNode));
 
   if (!pCatalogsNode) {
     return pCatalogDef;
@@ -153,7 +153,7 @@ QueryNode* MetadataNode::pCatalogDef(QueryNode* pMetadataNode, Stz* szCatalogNam
   PlanNodeIter* pIter = pCatalogsNode->pNewChildrenIter();
 
   while (pIter->bHasNext()) {
-    QueryNode* pChild = static_cast<QueryNode*>(pIter->pNext());
+    QueryNode* pChild = _pQueryNode(pIter->pNext());
     ASSERT(CatalogDef::bIsOfType(pChild));
 
     if (CatalogDef::szCatalogName(pChild)->bSame(szCatalogName)) {
@@ -239,7 +239,7 @@ PlanNodeIter* MetadataNode::pCatalogDefIter(QueryNode* pMetadataNode)
   ASSERT(bIsOfType(pMetadataNode));
 
   // Get the catalogs property
-  QueryNode* pCatalogsNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_CATALOGS_PROP, pMetadataNode));
+  QueryNode* pCatalogsNode = _pQueryNode(GraphNav::pFindProperty(C_CATALOGS_PROP, pMetadataNode));
   ASSERT(pCatalogsNode);
 
   return pCatalogsNode->pNewChildrenIter();
@@ -316,12 +316,12 @@ PlanNodeIter* MetadataNode::pIndexDefIter(QueryNode* pMetadataNode, Stz* szCatal
 /*----------------------------------------------------------------------------*/
 /* Return a list of TableDef nodes in the metadata that match a columnRef     */
 /*----------------------------------------------------------------------------*/
-PlanNodeList* MetadataNode::pMatchColumnRef(QueryNode* pMetadataNode, QueryNode* pColumnRef)
+QueryNodeList* MetadataNode::pMatchColumnRef(QueryNode* pMetadataNode, QueryNode* pColumnRef)
 {
   ASSERT(pMetadataNode);
   ASSERT(pColumnRef);
 
-  PlanNodeList* pTableDefList = new PlanNodeList();
+  QueryNodeList* pTableDefList = new QueryNodeList();
   
   Stz* szCatalogName = ColumnRef::szCatalog(pColumnRef);
   Stz* szSchemaName  = ColumnRef::szSchema(pColumnRef);
@@ -331,13 +331,13 @@ PlanNodeList* MetadataNode::pMatchColumnRef(QueryNode* pMetadataNode, QueryNode*
   ASSERT(szColumnName);
   
   // First get the catalogs property
-  QueryNode* pCatalogsNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_CATALOGS_PROP, pMetadataNode));
+  QueryNode* pCatalogsNode = _pQueryNode(GraphNav::pFindProperty(C_CATALOGS_PROP, pMetadataNode));
   
   // Iterate every catalog
   PlanNodeIter* pCatalogIter = pCatalogsNode->pNewChildrenIter();
   
   while (pCatalogIter->bHasNext()) {
-    QueryNode* pCatalogDef = static_cast<QueryNode*>(pCatalogIter->pNext());
+    QueryNode* pCatalogDef = _pQueryNode(pCatalogIter->pNext());
     
     if (szCatalogName && !szCatalogName->bSame(CatalogDef::szCatalogName(pCatalogDef))) {
       continue;
@@ -347,7 +347,7 @@ PlanNodeList* MetadataNode::pMatchColumnRef(QueryNode* pMetadataNode, QueryNode*
     PlanNodeIter* pSchemaIter = CatalogDef::pSchemaDefIter(pCatalogDef);
     
     while (pSchemaIter->bHasNext()) {
-      QueryNode* pSchemaDef = static_cast<QueryNode*>(pSchemaIter->pNext());
+      QueryNode* pSchemaDef = _pQueryNode(pSchemaIter->pNext());
 
       if (szSchemaName && !szSchemaName->bSame(SchemaDef::szSchemaName(pSchemaDef))) {
         continue;
@@ -357,7 +357,7 @@ PlanNodeList* MetadataNode::pMatchColumnRef(QueryNode* pMetadataNode, QueryNode*
       PlanNodeIter* pTableIter = SchemaDef::pTableDefIter(pSchemaDef);
       
       while (pTableIter->bHasNext()) {
-        QueryNode* pTableDef = static_cast<QueryNode*>(pTableIter->pNext());
+        QueryNode* pTableDef = _pQueryNode(pTableIter->pNext());
 
         if (szTableName && !szTableName->bSame(TableDef::szTableName(pTableDef))) {
           continue;

@@ -93,10 +93,7 @@ namespace BASE
     void vDumpSleepingQueue(void);
     void vDumpWaitingSet(void);
     void vGrabThreadIdleQueue(void);
-  
-    void vMonitorPortrait(s48K& sPortrait);
-    void vMonitorThread(s48K& sPortrait);
-  
+    
     i8   nTasksBiding(void);
     i8   nTasksExecuting(void);
     i8   nTasksReady(void);

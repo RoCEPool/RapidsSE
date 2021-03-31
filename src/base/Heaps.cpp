@@ -375,19 +375,6 @@ void Heaps::vInit(void)
     
 }
 
-/*----------------------------------------------------------------------------*/
-/* heap memory portrait                                                       */
-/*----------------------------------------------------------------------------*/
-void Heaps::vMonitorPortrait(s48K& sPortrait)
-{
-  s48K s;
-  
-  s = ""_Stz; Transient.m_pTiny->vMonitorPortrait(s);   sPortrait.vConcat(s);
-  s = ""_Stz; Transient.m_pSmall->vMonitorPortrait(s);  sPortrait.vConcat(s);
-  s = ""_Stz; Transient.m_pMedium->vMonitorPortrait(s); sPortrait.vConcat(s);
-  s = ""_Stz; Transient.m_pLarge->vMonitorPortrait(s);  sPortrait.vConcat(s);
-}
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

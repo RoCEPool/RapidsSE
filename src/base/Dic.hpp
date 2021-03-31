@@ -29,7 +29,7 @@ namespace BASE
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
     void  vAddWord(Word* pWord);
-    Article* pArticle(void);
+    Article* pArticleDic(void);
     Word* pDicKind(void);
     Stz*  szDicKind(void);
     void  vDicKind(Word* pDicKind);

@@ -30,7 +30,6 @@ namespace STORE
     void  operator delete(void*);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    static void vMonitorPortrait(s48K& sPortrait);
     static void vPostRecv(void* aIndex);
 
     Index(Stz* szIndexNm);

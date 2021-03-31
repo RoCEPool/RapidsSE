@@ -28,7 +28,6 @@ namespace STORE
     static void vAddSteps_Api(void);
     static void vAddSteps_Args(void);
     static void vAddSteps_Arrange(void);
-    static void vAddSteps_Article(void);
     static void vAddSteps_Assert(void);
     static void vAddSteps_Astack(void);
     static void vAddSteps_AttachMap(void);
