@@ -41,7 +41,6 @@ namespace BASE
    ~Socket(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    static void vMonitorPortrait(s48K& sPortrait);
     static void vStatistics(void);
 
     void vAddrInit(sockaddr_in* aAddr, int iPort);

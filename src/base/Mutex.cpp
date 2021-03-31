@@ -133,27 +133,6 @@ Mutex::~Mutex(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get monotor portrait of semaphore activity                                 */
-/*----------------------------------------------------------------------------*/
-void Mutex::vMonitorPortrait(s48K& sPortrait)
-{
-  Statistics* pStats = AM::pStatistics();
-  
-  sPortrait.vSprint("Mutex: broadcast %lld destroys %lld inits %lld "
-                    "signals %lld waits %lld timedwaits %lld "
-                    "unblocks %lld timeouts %lld\n"_Stz,
-                    pStats->Mutex.m_nBroadcasts,
-                    pStats->Mutex.m_nDestroys,
-                    pStats->Mutex.m_nInits,
-                    pStats->Mutex.m_nSignals,
-                    pStats->Mutex.m_nWaits,
-                    pStats->Mutex.m_nTimedWaits,
-                    pStats->Mutex.m_nUnblocks,
-                    pStats->Mutex.m_nTimeOuts
-                    );
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

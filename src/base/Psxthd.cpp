@@ -217,30 +217,6 @@ void PsxThd::vMarkNonSeThread(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set standard scheduling policy for thread                                  */
-/*----------------------------------------------------------------------------*/
-void PsxThd::vMonitorPortrait(s48K& sPortrait)
-{
-  s32 sUnitMag;
-  s32 sTimeMag;
-
-  Statistics* pStats = AM::pStatistics();
-  
-  sPortrait.vSprint("PsxThd: sleeps %lld"_Stz,
-                    pStats->Thread.m_nSleeps);
-  
-  for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
-    if (pStats->Thread.m_iaSleeps[i_Class]) {
-      MagLib::vUnitMag(pStats->Thread.m_iaSleeps[i_Class],   sUnitMag);
-      MagLib::vTimeMag(pStats->Thread.m_iaDuration[i_Class], sTimeMag);
-      sPortrait.vSprintCat(" %s %s/%s"_Stz,
-             aCN[i_Class],sUnitMag.szStz(),sTimeMag.szStz());
-    }
-  }
-  sPortrait.vSprintCat("\n"_Stz);
-
-}
-/*----------------------------------------------------------------------------*/
 /* sleeper statistics                                                         */
 /*----------------------------------------------------------------------------*/
 void PsxThd::vSleepers(void)

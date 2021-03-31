@@ -44,7 +44,6 @@ namespace BASE
     i8      nFreeChunks(void);
     void    vFreeObject(Object* pObject);
     void    vGrabLock(void);
-    void    vMonitorPortrait(s48K& sPortrait);
     HeapBuffer* pNextBuffer(HeapBuffer* pBuffer);
     i8      nObjectSize(void);
     void    vObjectValidate(void);
