@@ -1572,11 +1572,7 @@ void Engine::vStartSystem(void)
   // grid and nodes
   
   gpAttachMap->m_pGrid = new Grid("SEgrid"_Stz,0);
-  
-  Article* pGridArticle = gpAttachMap->m_pGrid->pArticle();
-  
-  AM::pLexiconArticle()->vAppend(pGridArticle);
-
+    
   if (AM::bVerboseProgress())
     vInfo("  Creating Grid and Node's\n"_Stz);
 

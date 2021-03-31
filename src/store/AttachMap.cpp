@@ -107,24 +107,7 @@ AttachMap::AttachMap(void)
   _checkInitialised_(CN_ATTACHMAP);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-//  Lexicon* pSubLex;
-//  
-//  pSubLex = new Lexicon("__ddlLock"_Stz);
-//  m_pLexiconArticle->vAppend(pSubLex->pArticle());
-//
-//  pSubLex = new Lexicon("__grid"_Stz);
-//  m_pLexiconArticle->vAppend(pSubLex->pArticle());
-//  
-//  pSubLex = new Lexicon("__queues"_Stz);
-//  m_pLexiconArticle->vAppend(pSubLex->pArticle());
-//  
-//  pSubLex = new Lexicon("__tennants"_Stz);
-//  m_pLexiconArticle->vAppend(pSubLex->pArticle());
-//
-//  pSubLex = new Lexicon("__threads"_Stz);
-//  m_pLexiconArticle->vAppend(pSubLex->pArticle());
-  
+    
   m_pBucketMap = nullptr;
   m_pPtnMap    = nullptr;
 
