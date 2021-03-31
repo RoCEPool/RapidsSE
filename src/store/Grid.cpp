@@ -57,9 +57,7 @@ Grid::Grid(Stz* szGridNm, i8 iConnectCode)
   
   m_sGridNm = szGridNm; //"SEgrid"_Stz;
   m_iConnectCode = iConnectCode;
-  
-  m_pArticle = new Article(m_sGridNm,this,nullptr);
-  
+    
   m_iThisNode       = C_UNKNOWN;
   m_pThisNode       = nullptr;
   
@@ -111,16 +109,6 @@ void Grid::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get article                                                                */
-/*----------------------------------------------------------------------------*/
-Article* Grid::pArticle(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-
-  return m_pArticle;
-}
 
 /*----------------------------------------------------------------------------*/
 /* get number of defined nodes in the grid                                    */

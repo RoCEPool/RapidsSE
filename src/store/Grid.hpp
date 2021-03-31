@@ -12,8 +12,6 @@ namespace STORE
   {
   private:
   
-    Article* m_pArticle;
-  
     s32    m_sGridNm;          // name of this grid
     i8     m_iConnectCode;     // connect code for this grid (not yet used)
     
@@ -47,7 +45,6 @@ namespace STORE
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
-    Article* pArticle(void);
     i8   nBootNodes(void);
     i8   nDefinedNodes(void);
     i8   nConnectedNodes(void);
