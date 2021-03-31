@@ -902,40 +902,6 @@ void Engine::vLowMemoryDiscard(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get monitor portrait profile of system                                     */
-/*----------------------------------------------------------------------------*/
-void Engine::vMonitorProfile(s48K& sPortrait)
-{
-  
-  i8 iUpTime = AM::iElapsedSsec();
-  
-  s32 sRegionMag;
-  MagLib::vByteMag(AM::iRegionSize(),sRegionMag);
-
-  i8 iPercentFree = AM::pBufferPool()->iFreePercent();
-  Stz* aNodeName  = AM::pGrid()->pThisNode()->szNodeNm();
-  bool bStarted   = AM::pGrid()->bHasStarted();
-  bool bDdlLocked = AM::pDdlLock()->bIsWriteLocked();
-  
-  sPortrait.vSprint("Node %s region %s free %lld%% uptime %llds (%s)\n"
-                    "     cluster %s ddl %s \n"_Stz,
-
-                    aNodeName,
-                    sRegionMag.szStz(),
-                    iPercentFree,
-                    iUpTime,
-#ifdef WITH_DEBUG_VERSION
-                    "debug"_Stz,
-#else
-                    "release"_Stz,
-#endif
-
-                    bStarted   ? "started" : "not-started",
-                    bDdlLocked ? "locked"  : "not-locked"
-                    );
-}
-
-/*----------------------------------------------------------------------------*/
 /* munge check                                                                */
 /*----------------------------------------------------------------------------*/
 void Engine::vMungeCheck(void)
