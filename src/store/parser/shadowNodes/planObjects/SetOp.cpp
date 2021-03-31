@@ -163,10 +163,10 @@ void SetOp::vRemoveCorrespondingByList(QueryNode* pNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Return a list of ProjectedColumns that represent the column expressions      */
+/* Return a list of ProjectedColumns that represent the column expressions    */
 /* that this PlanObject will return. All nodes and the list must be freed.    */
 /*----------------------------------------------------------------------------*/
-PlanNodeList* SetOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
+QueryNodeList* SetOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));

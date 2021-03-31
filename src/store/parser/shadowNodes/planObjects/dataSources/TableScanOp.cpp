@@ -206,7 +206,7 @@ PlanNodeList* TableScanOp::pColumnDefs(QueryNode* pNode, PlanNode* pRootNode)
 /* Return a list of ProjectedColumns that represent the column expressions      */
 /* that this PlanObject will return. All nodes and the list must be freed.    */
 /*----------------------------------------------------------------------------*/
-PlanNodeList* TableScanOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
+QueryNodeList* TableScanOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -216,7 +216,7 @@ PlanNodeList* TableScanOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
   ASSERT(pMetadataNode);
 
   // Create a list for the columnRefs to be returned  (note: columnREFS not columnDEFS)
-  PlanNodeList* pColumnRefList = new PlanNodeList();
+  QueryNodeList* pColumnRefList = new QueryNodeList();
 
   // Iterate the columns in the metadata and add them to the above list
   PlanNodeIter* pIter = MetadataNode::pColumnDefIter(pMetadataNode,

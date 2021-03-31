@@ -173,8 +173,8 @@ void SetOpValidator::vValidateSetOp(QueryNode* pStatementMarker, PlanNode *pRoot
   QueryNode* pChild1 = static_cast<QueryNode*>(pSetOp->pFirstChild());
   QueryNode* pChild2 = static_cast<QueryNode*>(pSetOp->pSecondChild());
 
-  PlanNodeList* pProjectedColumns1 = PlanObject::pColumnExprs(pChild1, pRootNode);
-  PlanNodeList* pProjectedColumns2 = PlanObject::pColumnExprs(pChild2, pRootNode);
+  QueryNodeList* pProjectedColumns1 = PlanObject::pColumnExprs(pChild1, pRootNode);
+  QueryNodeList* pProjectedColumns2 = PlanObject::pColumnExprs(pChild2, pRootNode);
 
   i8 iCount1 = pProjectedColumns1->nItems();
   i8 iCount2 = pProjectedColumns2->nItems();
@@ -194,15 +194,15 @@ void SetOpValidator::vValidateSetOp(QueryNode* pStatementMarker, PlanNode *pRoot
 
   //  - Check that the columns expression list of each child of a set operator
   //    has a matching type signature.
-  PlanNodeIter* pIter1 = pProjectedColumns1->pNewIter();
-  PlanNodeIter* pIter2 = pProjectedColumns2->pNewIter();
+  QueryNodeIter* pIter1 = pProjectedColumns1->pNewIter();
+  QueryNodeIter* pIter2 = pProjectedColumns2->pNewIter();
 
   i8 iOrdinal = 0;
   while (pIter1->bHasNext() && pIter2->bHasNext()) {
     ++iOrdinal;
 
-    QueryNode* pProjectedColumn1 = static_cast<QueryNode*>(pIter1->pNext());
-    QueryNode* pProjectedColumn2 = static_cast<QueryNode*>(pIter2->pNext());
+    QueryNode* pProjectedColumn1 = pIter1->pNext();
+    QueryNode* pProjectedColumn2 = pIter2->pNext();
 
     ASSERT(ProjectedColumn::bIsOfType(pProjectedColumn1));
     ASSERT(ProjectedColumn::bIsOfType(pProjectedColumn2));
@@ -345,14 +345,14 @@ void SetOpValidator::vDetermineCommonColumns(QueryNode* pSetOp, PlanNode* pRootN
   ASSERT(pCorrByList);
   ASSERT(pCorrByList->nChildren() == 0);
 
-  PlanNodeList* pProjColumnList1 = PlanObject::pColumnExprs(pChild1, pRootNode);
-  PlanNodeList* pProjColumnList2 = PlanObject::pColumnExprs(pChild2, pRootNode);
+  QueryNodeList* pProjColumnList1 = PlanObject::pColumnExprs(pChild1, pRootNode);
+  QueryNodeList* pProjColumnList2 = PlanObject::pColumnExprs(pChild2, pRootNode);
 
-  PlanNodeIter* pIter1 = pProjColumnList1->pNewIter();
-  PlanNodeIter* pIter2 = pProjColumnList2->pNewIter();
+  QueryNodeIter* pIter1 = pProjColumnList1->pNewIter();
+  QueryNodeIter* pIter2 = pProjColumnList2->pNewIter();
 
   while (pIter1->bHasNext()) {
-    QueryNode* pProjColumn1 = static_cast<QueryNode*>(pIter1->pNext());
+    QueryNode* pProjColumn1 = pIter1->pNext();
     ASSERT(ProjectedColumn::bIsOfType(pProjColumn1));
 
     Stz* szName1 = ProjectedColumn::szAliasName(pProjColumn1);
@@ -372,7 +372,7 @@ void SetOpValidator::vDetermineCommonColumns(QueryNode* pSetOp, PlanNode* pRootN
     // Check szName1 against all columns of child2
     pIter2->vBeforeFirst();
     while (pIter2->bHasNext()) {
-      QueryNode* pProjColumn2 = static_cast<QueryNode*>(pIter2->pNext());
+      QueryNode* pProjColumn2 = pIter2->pNext();
       ASSERT(ProjectedColumn::bIsOfType(pProjColumn2));
 
       Stz* szName2 = ProjectedColumn::szAliasName(pProjColumn2);
@@ -429,11 +429,11 @@ void SetOpValidator::vConvertCorrByToProjectOp(QueryNode* pSetOp, PlanNode* pRoo
   QueryNode* pChild1 = static_cast<QueryNode*>(pSetOp->pFirstChild());
   QueryNode* pChild2 = static_cast<QueryNode*>(pSetOp->pSecondChild());
 
-  PlanNodeList* pProjColumnList1 = PlanObject::pColumnExprs(pChild1, pRootNode);
-  PlanNodeList* pProjColumnList2 = PlanObject::pColumnExprs(pChild2, pRootNode);
+  QueryNodeList* pProjColumnList1 = PlanObject::pColumnExprs(pChild1, pRootNode);
+  QueryNodeList* pProjColumnList2 = PlanObject::pColumnExprs(pChild2, pRootNode);
 
-  PlanNodeIter* pProjColumnIter1 = pProjColumnList1->pNewIter();
-  PlanNodeIter* pProjColumnIter2 = pProjColumnList2->pNewIter();
+  QueryNodeIter* pProjColumnIter1 = pProjColumnList1->pNewIter();
+  QueryNodeIter* pProjColumnIter2 = pProjColumnList2->pNewIter();
 
   QueryNodeList* pNewProjectedColumnList1 = new QueryNodeList();
   QueryNodeList* pNewProjectedColumnList2 = new QueryNodeList();
@@ -549,12 +549,12 @@ void SetOpValidator::vConvertCorrByToProjectOp(QueryNode* pSetOp, PlanNode* pRoo
 /* ProjectedColumn that matches a given column name. If the column is not     */
 /* found then a nullptr is returned.                                          */
 /*----------------------------------------------------------------------------*/
-QueryNode* SetOpValidator::pFindProjectedColumn(PlanNodeIter* pProjColumnIter, Stz* szColumnName)
+QueryNode* SetOpValidator::pFindProjectedColumn(QueryNodeIter* pProjColumnIter, Stz* szColumnName)
 {
   pProjColumnIter->vBeforeFirst();
 
   while (pProjColumnIter->bHasNext()) {
-    QueryNode* pProjColumn = static_cast<QueryNode*>(pProjColumnIter->pNext());
+    QueryNode* pProjColumn = pProjColumnIter->pNext();
     ASSERT(ProjectedColumn::bIsOfType(pProjColumn));
 
     // Can we match the alias?

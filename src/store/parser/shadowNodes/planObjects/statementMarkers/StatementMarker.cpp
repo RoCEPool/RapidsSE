@@ -131,7 +131,7 @@ b1 StatementMarker::bIsExactType(PlanNode *pNode)
 /* Return a list of ProjectedColumns that represent the column expressions      */
 /* that this PlanObject will return. All nodes and the list must be freed.    */
 /*----------------------------------------------------------------------------*/
-PlanNodeList* StatementMarker::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
+QueryNodeList* StatementMarker::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));

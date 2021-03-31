@@ -5,6 +5,7 @@
 
 #include "ShadowNode.hpp"
 #include "PlanNode.hpp"
+#include "QueryNodeList.hpp"
 
 namespace Parser
 {
@@ -57,9 +58,9 @@ namespace Parser
     //   return the ordinal expression: SUM($3 + 1)
     // The returned QueryNode must be freed.
     // Column ordinals are 1-based.
-    static QueryNode* pSymbolicToOrdinal(QueryNode*    pSymbolicExpr,
-                                         PlanNodeList* pColumnExprList,
-                                         PlanNode*     pRootNode);
+    static QueryNode* pSymbolicToOrdinal(QueryNode*     pSymbolicExpr,
+                                         QueryNodeList* pColumnExprList,
+                                         PlanNode*      pRootNode);
 
     // Compare two expression trees and return true if they are equal with
     // respect to the operations and symbols used.

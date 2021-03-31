@@ -5,6 +5,7 @@
 
 #include "DataSource.hpp"
 #include "PlanNode.hpp"
+#include "QueryNodeList.hpp"
 
 namespace Parser
 {
@@ -39,7 +40,7 @@ namespace Parser
 
     // Return a list of ProjectedColumns that represent the column expressions
     // that this PlanObject will return. All nodes and the list must be freed.
-    static PlanNodeList* pColumnExprs(QueryNode* pNode, PlanNode* pRootNode);
+    static QueryNodeList* pColumnExprs(QueryNode* pNode, PlanNode* pRootNode);
 
   protected:
 

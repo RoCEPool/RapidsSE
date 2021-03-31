@@ -263,9 +263,9 @@ void Expr::vValidateResultType(QueryNode* pExprNode, PlanNode* pRootNode)
 /* column ordinals for a given list of column expressions.                    */
 /* The returned QueryNode must be freed. Column ordinals are 1-based.         */
 /*----------------------------------------------------------------------------*/
-QueryNode* Expr::pSymbolicToOrdinal(QueryNode*    pSymbolicExpr,
-                                    PlanNodeList* pColumnExprList,
-                                    PlanNode*     pRootNode)
+QueryNode* Expr::pSymbolicToOrdinal(QueryNode*     pSymbolicExpr,
+                                    QueryNodeList* pColumnExprList,
+                                    PlanNode*      pRootNode)
 {
   ASSERT(bIsOfType(pSymbolicExpr));
 
@@ -285,11 +285,11 @@ QueryNode* Expr::pSymbolicToOrdinal(QueryNode*    pSymbolicExpr,
 
   // First we need to check if any of the columns in the columnExprList
   // exactly match our symbolic expression.
-  PlanNodeIter* pIter = pColumnExprList->pNewIter();
+  QueryNodeIter* pIter = pColumnExprList->pNewIter();
   i8 iOrdinal = 1;
 
   while (pIter->bHasNext()) {
-    QueryNode* pProjectedColumn = static_cast<QueryNode*>(pIter->pNext());
+    QueryNode* pProjectedColumn = pIter->pNext();
     QueryNode* pColExpr = ProjectedColumn::pExprNode(pProjectedColumn);
 
 //    s2K sBuf1;
@@ -329,17 +329,17 @@ QueryNode* Expr::pSymbolicToOrdinal(QueryNode*    pSymbolicExpr,
   PlanNodeList* pOrdinalChildren = new PlanNodeList();
 
   // Iterate the children of the symbolic expression
-  pIter = pSymbolicExpr->pNewChildrenIter();
+  PlanNodeIter* pChildIter = pSymbolicExpr->pNewChildrenIter();
 
-  while (pIter->bHasNext()) {
-    QueryNode* pChildSymbolicExpr = static_cast<QueryNode*>(pIter->pNext());
+  while (pChildIter->bHasNext()) {
+    QueryNode* pChildSymbolicExpr = static_cast<QueryNode*>(pChildIter->pNext());
 
     // Convert the child from symbolic to ordinal. If not, this will
     // duplicate the child expression anyway. Add it to a list of such children.
     QueryNode* pChildOrdinalExpr  = pSymbolicToOrdinal(pChildSymbolicExpr, pColumnExprList, pRootNode);
     pOrdinalChildren->vAppend(pChildOrdinalExpr);
   }
-  delete pIter;
+  delete pChildIter;
 
   // Now we can deep copy the current symbolic expression but give it new children
   pOrdinalExpr = pSymbolicExpr->pDeepCopy(pOrdinalChildren);

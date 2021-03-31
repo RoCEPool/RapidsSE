@@ -81,7 +81,7 @@ void ProjectedColumn::vDescribe(PlanNode* pNode, s2K& sBuf)
 /*----------------------------------------------------------------------------*/
 /* Appends a description of the graph node into a buffer                      */
 /*----------------------------------------------------------------------------*/
-void ProjectedColumn::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNodeList* pColumnExprList, PlanNode* pRootNode)
+void ProjectedColumn::vDescribe(PlanNode* pNode, s2K& sBuf, QueryNodeList* pColumnExprList, PlanNode* pRootNode)
 {
   _static_
 
@@ -158,9 +158,9 @@ QueryNode* ProjectedColumn::pExprNode(QueryNode* pNode)
 /* Returns a new copy of this projected expression rewritten relative to      */
 /* column ordinals. Must be freed after use.                                  */
 /*----------------------------------------------------------------------------*/
-QueryNode* ProjectedColumn::pSymbolicToOrdinal(QueryNode* pNode,
-                                               PlanNodeList* pColExprList,
-                                               PlanNode* pRootNode)
+QueryNode* ProjectedColumn::pSymbolicToOrdinal(QueryNode*     pNode,
+                                               QueryNodeList* pColExprList,
+                                               PlanNode*      pRootNode)
 {
   // Get the expression out of this ProjectedColumn and convert it
   // from symbolic to ordinal representation.

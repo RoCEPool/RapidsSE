@@ -5,6 +5,7 @@
 
 #include "BASE.h"
 #include "PlanObject.hpp"
+#include "QueryNodeList.hpp"
 
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
@@ -96,7 +97,7 @@ b1 PlanObject::bIsExactType(PlanNode *pNode)
 /* Return a list of ProjectedColumns that represent the column expressions    */
 /* that this PlanObject will return. All nodes and the list must be freed.    */
 /*----------------------------------------------------------------------------*/
-PlanNodeList* PlanObject::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
+QueryNodeList* PlanObject::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));

@@ -5,6 +5,7 @@
 
 #include "ShadowNode.hpp"
 #include "PlanNode.hpp"
+#include "QueryNodeList.hpp"
 
 namespace Parser
 {
@@ -21,7 +22,7 @@ namespace Parser
     static Stz*       szAliasName(QueryNode* pQueryNode);
     static QueryNode* pCreate(QueryNode* pExprNode, Text* pAlias);
     static void       vDescribe(PlanNode* pNode, s2K& sBuf);
-    static void       vDescribe(PlanNode* pNode, s2K& sBuf, PlanNodeList* pColumnExprList, PlanNode* pRootNode);
+    static void       vDescribe(PlanNode* pNode, s2K& sBuf, QueryNodeList* pColumnExprList, PlanNode* pRootNode);
 
     // Returns true if a given node is a given type ** or is derived from that type **
     static b1 bIsOfType(PlanNode* pNode);
@@ -37,9 +38,9 @@ namespace Parser
 
     // Returns a new copy of this projected expression rewritten relative to column ordinals.
     // Must be freed after use.
-    static QueryNode* pSymbolicToOrdinal(QueryNode* pQueryNode,
-                                         PlanNodeList* pColExprList,
-                                         PlanNode* pRootNode);
+    static QueryNode* pSymbolicToOrdinal(QueryNode*     pQueryNode,
+                                         QueryNodeList* pColExprList,
+                                         PlanNode*      pRootNode);
 
     // Changes the alias for this projected column
     static void vSetAlias(QueryNode* pNode, Text* pNewAlias);

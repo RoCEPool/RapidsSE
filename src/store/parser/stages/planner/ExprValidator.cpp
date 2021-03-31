@@ -249,7 +249,7 @@ void ExprValidator::vValidateProjectExprs(PlanNode *pRootNode, QueryNode* pStart
   // This is the list of expression symbols that represent each column of
   // each row that this sql operator will receive.
   ASSERT(pProjectOp->nChildren() == 1);
-  PlanNodeList* pColExprList = PlanObject::pColumnExprs(static_cast<QueryNode*>(pProjectOp->pFirstChild()), pRootNode);
+  QueryNodeList* pColExprList = PlanObject::pColumnExprs(static_cast<QueryNode*>(pProjectOp->pFirstChild()), pRootNode);
   ASSERT(pColExprList);
   ASSERT(pColExprList->nItems() > 0);
 
