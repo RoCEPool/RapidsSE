@@ -63,7 +63,7 @@ void StatementMarker::vDescribe(PlanNode* pNode, s2K& buf)
   _static_
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pStmt = static_cast<QueryNode*>(pNode);
+  QueryNode* pStmt = _pQueryNode(pNode);
 
   buf.vConcat(GraphNav::szLeafType(pNode->szType()));
 }
@@ -131,14 +131,14 @@ b1 StatementMarker::bIsExactType(PlanNode *pNode)
 /* Return a list of ProjectedColumns that represent the column expressions      */
 /* that this PlanObject will return. All nodes and the list must be freed.    */
 /*----------------------------------------------------------------------------*/
-PlanNodeList* StatementMarker::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
+QueryNodeList* StatementMarker::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
 
   // Statements don't change the columns being returned. So ask its descendant.
   ASSERT(pNode->iNumChildren() == 1);
-  return PlanObject::pColumnExprs(static_cast<QueryNode*>(pNode->pFirstChild()), pRootNode);
+  return PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pRootNode);
 }
 
 /*----------------------------------------------------------------------------*/

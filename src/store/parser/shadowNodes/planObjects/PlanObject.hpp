@@ -6,11 +6,10 @@
 
 #include "ShadowNode.hpp"
 #include "PlanNode.hpp"
-
+#include "QueryNodeList.hpp"
 
 namespace Parser
 {
-  class PlanNode;
   class QueryNode;
 
   class PlanObject : public ShadowNode
@@ -32,7 +31,7 @@ namespace Parser
 
     // Return a list of ProjectedColumns that represent the column expressions
     // that this PlanObject will return. All nodes and the list must be freed.
-    static PlanNodeList* pColumnExprs(QueryNode* pNode, PlanNode* pRootNode);
+    static QueryNodeList* pColumnExprs(QueryNode* pNode, PlanNode* pRootNode);
 
   protected:
     // Indent format

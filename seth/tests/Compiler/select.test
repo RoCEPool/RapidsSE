@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* SELECT syntax tests                                                        */
+/* SELECT syntax & semantics tests                                            */
 /*----------------------------------------------------------------------------*/
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -126,11 +126,10 @@ failure contains: 'Column wildcard does not resolve to any tables in the query: 
 //  Table & column name case insensitivity
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-// select…from SELECTSYNTAX1
+// table name case insensitivity
 SELECT * FROM SELECTSYNTAX1;
 rows: 0
 
-// select…from selectsyntax1
 SELECT * FROM selectsyntax1;
 rows: 0
 
@@ -139,7 +138,7 @@ SELECT * FROM SelectSyntax1;
 rows: 0
 
 
-// select COLUMN…
+// column name case insensitivity
 SELECT COL1, col2 FROM selectsyntax1;
 rows:
 ['col1', 'col2']
@@ -154,6 +153,10 @@ SELECT CoL1, col2 FROM selectsyntax1;
 rows:
 ['col1', 'col2']
 
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Cleanup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 CLEANUP {
   drop table selectsyntax1;

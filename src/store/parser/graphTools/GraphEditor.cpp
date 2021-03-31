@@ -92,7 +92,7 @@ PlanNode* GraphEditor::pNewFromTemplate(const PlanNode* pTemplateRoot)
 /* Deletes the pReplaceChild. Does not delete pReplacementList.               */
 /*----------------------------------------------------------------------------*/
 void GraphEditor::vReplaceChild(QueryNode* pParentNode, QueryNode* pReplaceChild,
-                                PlanNodeList* pReplacementList)
+                                QueryNodeList* pReplacementList)
 {
   ASSERT(pParentNode);
   ASSERT(pParentNode->m_pChildren);

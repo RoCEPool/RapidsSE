@@ -75,11 +75,11 @@ void IndexDefn::vDescribe(PlanNode* pNode, s2K& buf)
 
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pIndexRef = static_cast<QueryNode*>(pNode);
+  QueryNode* pIndexRef = _pQueryNode(pNode);
 
-  QueryNode* pName     = static_cast<QueryNode*>(GraphNav::pFindProperty(C_INDEXNAME_PROP, pIndexRef));
-  QueryNode* pColumns  = static_cast<QueryNode*>(GraphNav::pFindProperty(C_COLUMNS_PROP, pIndexRef));
-  QueryNode* pIsUnique = static_cast<QueryNode*>(GraphNav::pFindProperty(C_ISUNIQUE_PROP, pIndexRef));
+  QueryNode* pName     = _pQueryNode(GraphNav::pFindProperty(C_INDEXNAME_PROP, pIndexRef));
+  QueryNode* pColumns  = _pQueryNode(GraphNav::pFindProperty(C_COLUMNS_PROP, pIndexRef));
+  QueryNode* pIsUnique = _pQueryNode(GraphNav::pFindProperty(C_ISUNIQUE_PROP, pIndexRef));
 
   ASSERT(pName);
   ASSERT(pColumns);
@@ -125,7 +125,7 @@ Stz* IndexDefn::szIndexName(QueryNode* pNode)
 {
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pIndexNameNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_INDEXNAME_PROP, pNode));
+  QueryNode* pIndexNameNode = _pQueryNode(GraphNav::pFindProperty(C_INDEXNAME_PROP, pNode));
   ASSERT(pIndexNameNode);
 
   Stz* szIndexName = pIndexNameNode->szValue();
@@ -140,7 +140,7 @@ i8 IndexDefn::iNumColumns(QueryNode* pNode)
 {
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pColumnListNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_COLUMNS_PROP, pNode));
+  QueryNode* pColumnListNode = _pQueryNode(GraphNav::pFindProperty(C_COLUMNS_PROP, pNode));
   ASSERT(pColumnListNode);
 
   return pColumnListNode->iNumChildren();
@@ -153,7 +153,7 @@ PlanNodeIter* IndexDefn::pColumnIter(QueryNode* pNode)
 {
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pColumnListNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_COLUMNS_PROP, pNode));
+  QueryNode* pColumnListNode = _pQueryNode(GraphNav::pFindProperty(C_COLUMNS_PROP, pNode));
   ASSERT(pColumnListNode);
 
   return pColumnListNode->pNewChildrenIter();
@@ -166,7 +166,7 @@ b1 IndexDefn::bIsUnique(QueryNode* pNode)
 {
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pIsUniqueNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_ISUNIQUE_PROP, pNode));
+  QueryNode* pIsUniqueNode = _pQueryNode(GraphNav::pFindProperty(C_ISUNIQUE_PROP, pNode));
 
   ASSERT(pIsUniqueNode);
   return pIsUniqueNode->bValue();

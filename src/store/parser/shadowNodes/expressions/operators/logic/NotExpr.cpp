@@ -61,7 +61,7 @@ void NotExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
   _static_
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pChild1 = NotExpr::pChild1(static_cast<QueryNode*>(pNode));
+  QueryNode* pChild1 = NotExpr::pChild1(_pQueryNode(pNode));
 
   sBuf.vConcat("NOT "_Stz);
 
@@ -84,7 +84,7 @@ QueryNode* NotExpr::pChild1(QueryNode *pNode)
   ASSERT(bIsOfType(pNode));
   ASSERT(pNode->nChildren() == 1);
 
-  return static_cast<QueryNode*>(pNode->pFirstChild());
+  return _pQueryNode(pNode->pFirstChild());
 }
 
 /*----------------------------------------------------------------------------*/

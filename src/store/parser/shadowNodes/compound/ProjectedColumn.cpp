@@ -33,7 +33,7 @@ static Stz* C_ALIAS_PROP = "alias"_Stz;
 Stz* ProjectedColumn::szAliasName(QueryNode* pNode)
 {
   QueryNode *pAliasNode =
-      static_cast<QueryNode*>(GraphNav::pFindProperty(const_cast<Stz *>(C_ALIAS_PROP), pNode));
+      _pQueryNode(GraphNav::pFindProperty(const_cast<Stz *>(C_ALIAS_PROP), pNode));
 
   return pAliasNode->szValue();;
 }
@@ -81,16 +81,16 @@ void ProjectedColumn::vDescribe(PlanNode* pNode, s2K& sBuf)
 /*----------------------------------------------------------------------------*/
 /* Appends a description of the graph node into a buffer                      */
 /*----------------------------------------------------------------------------*/
-void ProjectedColumn::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNodeList* pColumnExprList, PlanNode* pRootNode)
+void ProjectedColumn::vDescribe(PlanNode* pNode, s2K& sBuf, QueryNodeList* pColumnExprList, PlanNode* pRootNode)
 {
   _static_
 
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pProjectedColumn = static_cast<QueryNode*>(pNode);
+  QueryNode* pProjectedColumn = _pQueryNode(pNode);
 
-  QueryNode* pExprNode = static_cast<QueryNode*>(GraphNav::pFindProperty(C_EXPR_PROP, pProjectedColumn));
-  QueryNode* pAliasNode  = static_cast<QueryNode*>(GraphNav::pFindProperty(C_ALIAS_PROP, pProjectedColumn));
+  QueryNode* pExprNode = _pQueryNode(GraphNav::pFindProperty(C_EXPR_PROP, pProjectedColumn));
+  QueryNode* pAliasNode  = _pQueryNode(GraphNav::pFindProperty(C_ALIAS_PROP, pProjectedColumn));
 
   ASSERT(pExprNode);
   ASSERT(pAliasNode);
@@ -149,7 +149,7 @@ b1 ProjectedColumn::bContainsAnAggregate(QueryNode* pNode)
 QueryNode* ProjectedColumn::pExprNode(QueryNode* pNode)
 {
   QueryNode *pExprNode =
-      static_cast<QueryNode*>(GraphNav::pFindProperty(const_cast<Stz *>(C_EXPR_PROP), pNode));
+      _pQueryNode(GraphNav::pFindProperty(const_cast<Stz *>(C_EXPR_PROP), pNode));
 
   return pExprNode;
 }
@@ -158,9 +158,9 @@ QueryNode* ProjectedColumn::pExprNode(QueryNode* pNode)
 /* Returns a new copy of this projected expression rewritten relative to      */
 /* column ordinals. Must be freed after use.                                  */
 /*----------------------------------------------------------------------------*/
-QueryNode* ProjectedColumn::pSymbolicToOrdinal(QueryNode* pNode,
-                                               PlanNodeList* pColExprList,
-                                               PlanNode* pRootNode)
+QueryNode* ProjectedColumn::pSymbolicToOrdinal(QueryNode*     pNode,
+                                               QueryNodeList* pColExprList,
+                                               PlanNode*      pRootNode)
 {
   // Get the expression out of this ProjectedColumn and convert it
   // from symbolic to ordinal representation.
@@ -192,7 +192,7 @@ QueryNode* ProjectedColumn::pSymbolicToOrdinal(QueryNode* pNode,
 void ProjectedColumn::vSetAlias(QueryNode* pNode, Text *pNewAlias)
 {
   QueryNode *pAliasNode =
-      static_cast<QueryNode*>(GraphNav::pFindProperty(const_cast<Stz *>(C_ALIAS_PROP), pNode));
+      _pQueryNode(GraphNav::pFindProperty(const_cast<Stz *>(C_ALIAS_PROP), pNode));
 
   Value xVal(pNewAlias);
   pAliasNode->vSetValue(static_cast<Value&&>(xVal));

@@ -4,6 +4,7 @@
 #pragma once
 
 #include "PlanNode.hpp"
+#include "QueryNodeList.hpp"
 
 namespace Parser
 {
@@ -27,7 +28,7 @@ namespace Parser
     // Remove and replace pReplaceChild in parent node pParentNode with the
     // nodes in pReplacementList.
     static void vReplaceChild(QueryNode* pParentNode, QueryNode* pReplaceChild,
-                              PlanNodeList* pReplacementList);
+                              QueryNodeList* pReplacementList);
 
     // TODO: Add extra methods here for manipulating plan graphs.
     //       e.g. snipping nodes, reordering, etc.

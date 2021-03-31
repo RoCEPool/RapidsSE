@@ -31,7 +31,7 @@ void DataSource::vDescribe(PlanNode* pNode, s2K& sBuf)
   _static_
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pExpr = static_cast<QueryNode*>(pNode);
+  QueryNode* pExpr = _pQueryNode(pNode);
 
   // TODO: manual polymorphism here
 
@@ -141,7 +141,7 @@ Stz* DataSource::szTableName(QueryNode* pNode)
 /* Get the list of column definitions for this data source                    */
 /* Returned list must be freed, but not its contents                          */
 /*----------------------------------------------------------------------------*/
-PlanNodeList* DataSource::pColumnDefs(QueryNode* pNode, PlanNode* pRootNode)
+QueryNodeList* DataSource::pColumnDefs(QueryNode* pNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -155,10 +155,10 @@ PlanNodeList* DataSource::pColumnDefs(QueryNode* pNode, PlanNode* pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Return a list of ProjectedColumns that represent the column expressions      */
+/* Return a list of ProjectedColumns that represent the column expressions    */
 /* that this PlanObject will return. All nodes and the list must be freed.    */
 /*----------------------------------------------------------------------------*/
-PlanNodeList* DataSource::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
+QueryNodeList* DataSource::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));

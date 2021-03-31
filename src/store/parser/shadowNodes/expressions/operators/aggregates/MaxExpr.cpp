@@ -106,7 +106,7 @@ QueryNode* MaxExpr::pChild1(QueryNode *pNode)
   ASSERT(bIsOfType(pNode));
   ASSERT(pNode->nChildren() == 1);
 
-  return static_cast<QueryNode*>(pNode->pFirstChild());
+  return _pQueryNode(pNode->pFirstChild());
 }
 
 /*----------------------------------------------------------------------------*/
