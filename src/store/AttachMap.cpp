@@ -77,9 +77,7 @@ AttachMap::AttachMap(void)
   m_pObjects = new Objects;
   
   m_pDicRoot = new Dic("__dicRoot"_Stz);
-  
-  m_pArcticleRoot = m_pDicRoot->pArticleDic();
-    
+      
   Step::vAddStep("word"_Stz,&Step::vWord);
   AM::vRootWord(m_pDicRoot->pFindWord("word"_Stz));
 

@@ -35,8 +35,6 @@ namespace STORE
     s256  m_sLogCsvFile;
     s256  m_sLogTxtFile;
   
-        
-    Article*      m_pArcticleRoot;
     bool          m_bBootError;
     BucketMap*    m_pBucketMap;
     BufferMap*    m_pBufferMap;
