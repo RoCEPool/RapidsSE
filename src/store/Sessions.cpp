@@ -282,50 +282,6 @@ Session* Sessions::pGetSession(i8 i_Session)
   return pSession;
 }
 
-/*----------------------------------------------------------------------------*/
-/* get a portrait of the Sessions vector                                      */
-/*----------------------------------------------------------------------------*/
-void Sessions::vMonitorPortrait(s48K& sPortrait)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONS);
-  
-  s48K sTasksPortrait;
-  
-  sPortrait = ""_Stz;
-  sPortrait.vConcat("Sessions:\n"_Stz);
-  
-  m_okLock.vGrabRead();
-  
-  for (i8 i_Session = 0; i_Session < C_MAX_SESSIONS; i_Session++) {
-    
-    Session* pSession = m_paSession[i_Session];
-    if (! pSession)
-      continue;
-    
-    if (pSession->m_bRunning)
-      pSession->m_oTimer.vUpdate();
-    
-    sPortrait.vCatSprint("  [%2lld] #calls %lld job %s call %s (%s); "
-                         "loc %lld seq %lld pos %lld\n"_Stz,
-                         
-                         i_Session,
-                         
-                         pSession->m_nApiCalls,
-                         aCN[pSession->m_eJobClass],
-                         aAC[pSession->m_eApiFun],
-                         pSession->m_bRunning ? "running" : "completed",
-                         
-                         pSession->m_iApiLoc,
-                         pSession->m_iJobLoc,
-                         pSession->m_iSenLoc
-                         
-                         );
-  }
-  
-  m_okLock.vDropRead();
-  
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
