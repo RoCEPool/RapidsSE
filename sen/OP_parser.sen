@@ -21,19 +21,56 @@
   op__cmdErrInfoSet
 
   <sqlStatement> sqlCompiler::parser to Operand[]
+
   Operand[].isNull if
     InfoSet[].pipeOut
     Pipein[].delete
     Operand[].newErrorMarker
     Operand[].pipeOut
     true
-  else
-    InfoSet[].delete
-    ZK_DATAPULSE_handler
-    Operand[].pipeOut
-    Operand[].newEosMarker
-    Operand[].pipeOut
+    exit
   then
+
+  // no error, delete the infoset
+  InfoSet[].delete
+
+  // find the __explain tabledef
+  <streamDef> op__tableDef_streamSet assert
+
+  // create a new streamDef
+  streamSetTable[] StreamDef[].new
+
+  // create an StreamSet operand
+  streamSetTable[] StreamSet[].new
+
+  Operand[] "parser" sqlCompiler::explain if
+
+    // pipeout streamDef of explain
+    StreamDef[].pipeout
+
+    // pipeout explain
+    StreamSet[].pipeout
+
+    LogicUnit[].compilerToExit if
+      Pipein[].delete
+      Operand[].delete
+      Operand[].newExitEarlyMarker
+      Operand[].pipeout
+      true
+      exit
+    then
+  else
+     // pipeout streamDef of explain
+         StreamDef[].pipeout
+
+     // pipeout explain
+     StreamSet[].pipeout
+  then
+
+  ZK_DATAPULSE_handler
+  Operand[].pipeOut
+  Operand[].newEosMarker
+  Operand[].pipeOut
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -94,6 +131,7 @@ cmdSyntax: parser :: parser <sqlStatement> ;
 
   tags{
     <cmdDesc>    = "--desc for op--"
+    <streamDef>   = __explain
   }
 
 ;

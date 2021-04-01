@@ -1460,6 +1460,7 @@ public:
 
 
   // sql compiler
+  void vSqlCompilerExplain(void);
   void vSqlCompilerExprValidate(void);
   void vSqlCompilerNameValidate(void);
   void vSqlCompilerParser(void);
@@ -1568,6 +1569,7 @@ public:
   void vStreamSetFirstRow(void);
   void vStreamSetGet(void);
   void vStreamSetInfoRows(void);
+  void vStreamSetIsNull(void);
   void vStreamSetName(void);
   void vStreamSetNew(void);
   void vStreamSetNextRow(void);

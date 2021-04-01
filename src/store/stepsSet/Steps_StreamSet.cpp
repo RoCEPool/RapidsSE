@@ -60,6 +60,7 @@ void Step::vAddSteps_StreamSet(void)
   vAddStep("StreamSet[].firstRow"_Stz,       &Step::vStreamSetFirstRow);
   vAddStep("StreamSet[].get"_Stz,            &Step::vStreamSetGet);
   vAddStep("StreamSet[].infoRows"_Stz,       &Step::vStreamSetInfoRows);
+  vAddStep("StreamSet[].isNull"_Stz,         &Step::vStreamSetIsNull);
   vAddStep("StreamSet[].name"_Stz,           &Step::vStreamSetName);
   vAddStep("StreamSet[].new"_Stz,            &Step::vStreamSetNew);
   vAddStep("StreamSet[].nextRow"_Stz,        &Step::vStreamSetNextRow);
@@ -810,6 +811,18 @@ void Step::vStreamSetInfoRows(void)
   
   m_pDataStack->vPushInt(pStreamSet->nRows());
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamSet[].isNull -- is streamSet null ?                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamSetIsNull(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushInt(( m_pJob->pLogicUnit_job() )->m_xpStreamSet.bIsNull() ? 1 : 0);
+
   EXIT();
 }
 

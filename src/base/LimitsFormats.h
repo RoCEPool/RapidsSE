@@ -105,6 +105,7 @@ static Stz* C_TDEF_COUNT            = "__count"_Stz;
 static Stz* C_TDEF_COUNTINFO        = "__countInfo"_Stz;
 static Stz* C_TDEF_EVENTS           = "__events"_Stz;
 static Stz* C_TDEF_EXECERRORS       = "__execErrors"_Stz;
+static Stz* C_TDEF_EXPLAIN          = "__explain"_Stz;
 static Stz* C_TDEF_GRIDSANITY       = "__gridSanity"_Stz;
 static Stz* C_TDEF_LISTCOLUMNS      = "__listColumns"_Stz;
 static Stz* C_TDEF_LISTCONTENTS     = "__listContents"_Stz;
