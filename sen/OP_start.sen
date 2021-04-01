@@ -63,6 +63,21 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_EARLYEXITEDMARKER ...                                       */
+/*----------------------------------------------------------------------------*/
+: start_ExitedEarlyMarker \handler
+
+  //"Operand:- ZK_EXITEDEARLYMARKER" .verbose
+  PipeIn[].delete
+
+  // now pipeout a cancel marker
+  Operand[].newCancelMarker
+  Operand[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_PULSEDMARKER ...                                            */
 /*----------------------------------------------------------------------------*/
 : start_PulsedMarker \handler
@@ -73,15 +88,20 @@
   // check if start has already been cancelled
   Job_Pipeline::isCancelled not if
 
-    // check if start has already been exited
+    // check if start has already been exited (error)
     Job_Pipeline::isErrored not if
 
-      // mark pipeline as being pulsed
-      true Job_Pipeline::pulsed
+      // check if start has already been exited (early exit)
+      Job_Pipeline::earlyExit@ not if
 
-      // now pipeout an exit marker
-      Operand[].newExitMarker
-      Operand[].pipeOut
+        // mark pipeline as being pulsed
+        true Job_Pipeline::pulsed
+
+        // now pipeout an exit marker
+        Operand[].newExitMarker
+        Operand[].pipeOut
+
+      then
 
     then
 
@@ -112,12 +132,13 @@
 
   op__topology
 
-  find: start_CancelMarker      ZK_CANCELMARKER    op[].handler!
-  find: start_CancelledMarker   ZK_CANCELLEDMARKER op[].handler!
-  find: start_ErroredMarker     ZK_ERROREDMARKER   op[].handler!
-  find: start_ExitedMarker      ZK_EXITEDMARKER    op[].handler!
-  find: start_PulsedMarker      ZK_PULSEDMARKER    op[].handler!
-  find: start_StartedMarker     ZK_STARTEDMARKER   op[].handler!
+  find: start_CancelMarker      ZK_CANCELMARKER      op[].handler!
+  find: start_CancelledMarker   ZK_CANCELLEDMARKER   op[].handler!
+  find: start_ErroredMarker     ZK_ERROREDMARKER     op[].handler!
+  find: start_ExitedMarker      ZK_EXITEDMARKER      op[].handler!
+  find: start_ExitedEarlyMarker ZK_EXITEDEARLYMARKER op[].handler!
+  find: start_PulsedMarker      ZK_PULSEDMARKER      op[].handler!
+  find: start_StartedMarker     ZK_STARTEDMARKER     op[].handler!
 
   find: INVALID_OPERAND_handler ZK_CRWBUFFER       op[].handler!
   find: INVALID_OPERAND_handler ZK_CSVBUFFER       op[].handler!

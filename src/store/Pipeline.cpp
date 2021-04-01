@@ -36,7 +36,8 @@ Pipeline::Pipeline(Job* pPipelineJob, PipelineSpec* pPipelineSpec, i8 i_Origin)
   m_pPipelineJob  = pPipelineJob;
   m_pPipelineSpec = pPipelineSpec;
   m_i_Origin      = i_Origin;
-  
+
+  m_bEarlyExit    = false;
   m_bErrored      = false;
   m_bPulsed       = false;
   m_bPulsedLimit  = false;
@@ -155,6 +156,26 @@ void Pipeline::vDump(void)
   }
   
   vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set early exit                                                             */
+/*----------------------------------------------------------------------------*/
+void Pipeline::vEarlyExit(bool bEarlyExit)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+
+  m_bEarlyExit = bEarlyExit;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get early exit                                                             */
+/*----------------------------------------------------------------------------*/
+bool Pipeline::bEarlyExit(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+
+  return m_bEarlyExit;
 }
 
 /*----------------------------------------------------------------------------*/

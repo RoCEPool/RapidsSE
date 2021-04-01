@@ -31,6 +31,8 @@ void Step::vAddSteps_JobPipeline(void)
   vAddStep("Job_Pipeline::cancelled"_Stz,    &Step::vJob_PipelineCancelled);
   vAddStep("Job_Pipeline::compile"_Stz,      &Step::vJob_PipelineCompile);
   vAddStep("Job_Pipeline::deleteDynamo"_Stz, &Step::vJob_PipelineDeleteDynamo);
+  vAddStep("Job_Pipeline::earlyExit@"_Stz,   &Step::vJob_PipelineEarlyExitFetch);
+  vAddStep("Job_Pipeline::earlyExit!"_Stz,   &Step::vJob_PipelineEarlyExitStore);
   vAddStep("Job_Pipeline::errored"_Stz,      &Step::vJob_PipelineErrored);
   vAddStep("Job_Pipeline.execute"_Stz,       &Step::vJob_PipelineExecute);
   vAddStep("Job_Pipeline::isCancelled"_Stz,  &Step::vJob_PipelineIsCancelled);
@@ -151,6 +153,39 @@ void Step::vJob_PipelineDeleteDynamo(void)
   delete *( m_pJob->pLogicUnit_job() )->m_xpDynamo;
   ( m_pJob->pLogicUnit_job() )->m_xpDynamo = nullptr;
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Job_Pipeline::earlyExit! -- set earlyExit                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_PipelineEarlyExitStore(void)
+{
+  ENTRY();
+
+  Op* pOp = m_pJob->m_pOp;
+
+  Pipeline* pPipeline = pOp->pPipeline();
+
+  pPipeline->vEarlyExit(m_pDataStack->iPopInt(__func__));
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Job_Pipeline::earlyExit@ -- has the pipeline been early exited             */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_PipelineEarlyExitFetch(void)
+{
+  ENTRY();
+
+  Op* pOp = m_pJob->m_pOp;
+
+  Pipeline* pPipeline = pOp->pPipeline();
+
+  // return if pipeline has been errored
+  m_pDataStack->vPushInt(pPipeline->bEarlyExit());
+
   EXIT();
 }
 

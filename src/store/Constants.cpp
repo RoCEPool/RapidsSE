@@ -707,7 +707,9 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_ERROREDMARKER"_Stz,   ZK_ERROREDMARKER);
   /*  0 */ vAddConstant("ZK_EXECERRORS"_Stz,      ZK_EXECERRORS);
   /*  0 */ vAddConstant("ZK_EXITMARKER"_Stz,      ZK_EXITMARKER);
+  /*  0 */ vAddConstant("ZK_EXITEARLYMARKER"_Stz, ZK_EXITEARLYMARKER);
   /*  0 */ vAddConstant("ZK_EXITEDMARKER"_Stz,    ZK_EXITEDMARKER);
+  /*  0 */ vAddConstant("ZK_EXITEDEARLYMARKER"_Stz,ZK_EXITEDEARLYMARKER);
   /*  0 */ vAddConstant("ZK_INDEX"_Stz,           ZK_INDEX);
   /*  0 */ vAddConstant("ZK_INDEXDEF"_Stz,        ZK_INDEXDEF);
   /*  0 */ vAddConstant("ZK_LOADRESULT"_Stz,      ZK_LOADRESULT);

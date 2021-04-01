@@ -66,7 +66,9 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].newErrorMarker"_Stz, &Step::vOperandNewErrorMarker);
   vAddStep("Operand[].newErroredMarker"_Stz,&Step::vOperandNewErroredMarker);
   vAddStep("Operand[].newExitMarker"_Stz,  &Step::vOperandNewExitMarker);
+  vAddStep("Operand[].newExitEarlyMarker"_Stz,&Step::vOperandNewExitEarlyMarker);
   vAddStep("Operand[].newExitedMarker"_Stz,&Step::vOperandNewExitedMarker);
+  vAddStep("Operand[].newExitedEarlyMarker"_Stz,&Step::vOperandNewExitedEarlyMarker);
   vAddStep("Operand[].newPulsedMarker"_Stz,&Step::vOperandNewPulsedMarker);
   vAddStep("Operand[].newStartMarker"_Stz, &Step::vOperandNewStartMarker);
   vAddStep("Operand[].newStartedMarker"_Stz, &Step::vOperandNewStartedMarker);
@@ -582,6 +584,20 @@ void Step::vOperandNewExitMarker(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Operand[].newExitEarlyMarker -- new an exit early marker                   */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandNewExitEarlyMarker(void)
+{
+  ENTRY();
+
+  ASSERT (( m_pJob->pLogicUnit_job() )->m_xpOperandA.bIsNull());
+
+  ( m_pJob->pLogicUnit_job() )->m_xpOperandA = new Marker(OM_EXITEARLYMARKER);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Operand[].newExitedMarker -- new an exited marker                          */
 /*----------------------------------------------------------------------------*/
 void Step::vOperandNewExitedMarker(void)
@@ -592,6 +608,20 @@ void Step::vOperandNewExitedMarker(void)
   
   ( m_pJob->pLogicUnit_job() )->m_xpOperandA = new Marker(OM_EXITEDMARKER);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].newExitedEarlyMarker -- new an exited early marker               */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandNewExitedEarlyMarker(void)
+{
+  ENTRY();
+
+  ASSERT (( m_pJob->pLogicUnit_job() )->m_xpOperandA.bIsNull());
+
+  ( m_pJob->pLogicUnit_job() )->m_xpOperandA = new Marker(OM_EXITEDEARLYMARKER);
+
   EXIT();
 }
 
