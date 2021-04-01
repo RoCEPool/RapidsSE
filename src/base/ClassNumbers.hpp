@@ -20,7 +20,6 @@ enum eCN : u2 // Class Number
   /* */ CN_AGGTIMER,
   /* */ CN_ARG,
   /* */ CN_ARRANGE,
-  /* */ CN_ARTICLE,
   /* */ CN_ATOMIC,
   /* */ CN_ATTACHMAP,
   
@@ -358,7 +357,6 @@ static Stz* aCN[]
   /* */ "AGGTIMER"_Stz,             // CN_AGGTIMER
   /* */ "ARG"_Stz,                  // CN_ARG
   /* */ "ARRANGE"_Stz,              // CN_ARRANGE
-  /* */ "ARTICLE"_Stz,              // CN_ARTICLE
   /* */ "ATOMIC"_Stz,               // CN_ATOMIC
   /* */ "ATTACHMAP"_Stz,            // CN_ATTACHMAP
    

@@ -71,7 +71,6 @@ enum eEG // enum groups
   EG_MT,
 
   EG_NE,
-  EG_NK,
   EG_NS,
 
   EG_OA,

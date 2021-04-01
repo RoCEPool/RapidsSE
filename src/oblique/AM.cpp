@@ -2431,7 +2431,7 @@ static Stz* aEG[]
   "EG_MT"_Stz,
 
   "EG_NE"_Stz,
-  "EG_NK"_Stz,
+
   "EG_NS"_Stz,
   
   "EG_OA"_Stz,
@@ -2564,7 +2564,6 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_MT: return aMT[i_Enum];
 
     case EG_NE: return aNE[i_Enum];
-    case EG_NK: return aNK[i_Enum];
     case EG_NS: return aNS[i_Enum];
       
     case EG_OA: return aOA[i_Enum];
