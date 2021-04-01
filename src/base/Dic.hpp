@@ -17,6 +17,8 @@ namespace BASE
   
     SkipListNL* m_pWordSkipList; // skip list of words (ordered by wordNm)
 
+    Atomic   m_ixRefCount; // reference count
+
     // must be last
     Footer m_xFooter;
     

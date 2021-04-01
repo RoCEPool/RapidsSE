@@ -444,7 +444,7 @@ void Dic::vRefDec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
 
-  m_pArticle->vRefDec();
+  -- m_ixRefCount;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -454,8 +454,7 @@ void Dic::vRefInc(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  if (m_pArticle)
-    m_pArticle->vRefInc();
+  ++ m_ixRefCount;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -465,9 +464,9 @@ bool Dic::bRefOut(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  bool bIsRefed = m_pArticle->bRefOut();
+  u8 iRef = * m_ixRefCount;
   
-  return bIsRefed;
+  return iRef ? true : false;
 }
 
 /*----------------------------------------------------------------------------*/
