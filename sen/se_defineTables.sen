@@ -81,6 +81,17 @@
   api::executeRequest
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_EXPLAIN
+  STD_PATH
+  "
+    define table __explain (
+      stage       VARCHAR NOT NULL ,
+      explain     VARCHAR NOT NULL
+    ) < infoSet > = 1 ;
+  "
+  api::executeRequest
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_GRIDSANITY
   STD_PATH
   "

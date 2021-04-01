@@ -219,6 +219,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_TDEF_COUNTINFO"_Stz,     C_TDEF_COUNTINFO);
   vAddConstant("C_TDEF_GRIDSANITY"_Stz,    C_TDEF_GRIDSANITY);
   vAddConstant("C_TDEF_EXECERRORS"_Stz,    C_TDEF_EXECERRORS);
+  vAddConstant("C_TDEF_EXPLAIN"_Stz,       C_TDEF_EXPLAIN);
   vAddConstant("C_TDEF_LISTCOLUMNS"_Stz,   C_TDEF_LISTCOLUMNS);
   vAddConstant("C_TDEF_LISTCONTENTS"_Stz,  C_TDEF_LISTCONTENTS);
   vAddConstant("C_TDEF_LISTFOLDER"_Stz,    C_TDEF_LISTFOLDER);

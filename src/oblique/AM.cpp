@@ -103,7 +103,7 @@
 
 #include "Op.hpp"
 
-
+#include "PlanOperand.hpp"
 #include "EnumGroups.h"
 
 #include "Step.hpp"
@@ -483,7 +483,12 @@ void AM::vDeleteOperand(Operand* pOperand)
       delete pMarker;
       break;
     }
-      
+
+    case CN_PLANOPERAND: {
+      PlanOperand* pPlanOperand = _pPlanOperand(pOperand);
+      delete pPlanOperand;
+      break;
+    }
     case CN_PROFILE: {
       Profile* pProfile = _pProfile(pOperand);
       delete pProfile;
