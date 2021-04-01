@@ -96,8 +96,8 @@ void TaskQueue::vAssertItems(i8 nItems)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
   ASSERT(m_okLock.bIsLocked());
-  
-  //ASSERT(nItems == m_pTaskSkipList->nObjects());
+
+  ASSERT(nItems == m_pTaskSkipList->nItem());
   
   ASSERT(nItems == m_pTaskSkipList->nRecount());
   UNUSED(nItems);
