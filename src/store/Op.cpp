@@ -627,7 +627,22 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
         return false;
       }
       break;
-      
+
+    case ZK_EXITEARLYMARKER:
+      // should have received a ZK_STARTMARKER
+      if ( ! m_iOperandCount[ZK_STARTMARKER]) {
+        vTrace("%s: %s arrived without a prior ZK_STARTMARKER\n"_Stz,
+               szOpNm(), aZK[i_OperandKind]);
+        return false;
+      }
+
+      // should not have received a ZK_EXITMARKER already
+      if (m_iOperandCount[i_OperandKind]) {
+        vTrace("%s: multiple ZK_EXITMARKER arrived\n"_Stz, szOpNm());
+        return false;
+      }
+      break;
+
     case   ZK_EXITEDMARKER:
       // Only StartOP receives an ZK_EXITEDMARKER
       if ( ! m_sOpNm.bSame("start"_Stz) ) {
@@ -641,7 +656,21 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
         return false;
       }
       break;
- 
+
+    case   ZK_EXITEDEARLYMARKER:
+      // Only StartOP receives an ZK_EXITEDEARLYMARKER
+      if ( ! m_sOpNm.bSame("start"_Stz) ) {
+        vTrace("%s: incorrectly received a %s\n"_Stz,
+               szOpNm(), aZK[i_OperandKind]);
+        return false;
+      }
+      // should not have received an ZK_EXITEDMARKER already
+      if (m_iOperandCount[i_OperandKind]) {
+        vTrace("%s: multiple ZK_EXITEDMARKER arrived\n"_Stz, szOpNm());
+        return false;
+      }
+      break;
+
     case ZK_PULSEDMARKER:
       // should have received a ZK_STARTMARKER
       if ( ! m_iOperandCount[ZK_STARTMARKER]) {

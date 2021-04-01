@@ -225,6 +225,33 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* default handler for ZK_EXITEARLYMARKER operand                             */
+/*----------------------------------------------------------------------------*/
+: ZK_EXITEARLYMARKER_handler \handler
+
+  //"ZK_EXITEARLYMARKER_handler" .verbose
+
+   PipeIn[].pipeOut
+
+   true // calling op_loop continues
+;
+
+/*----------------------------------------------------------------------------*/
+/* default handler for ZK_EXITEDEARLYMARKER operand                           */
+/*----------------------------------------------------------------------------*/
+: ZK_EXITEDEARLYMARKER_handler \handler
+
+  //"ZK_EXITEARLYMARKER_handler" .verbose
+
+  PipeIn[].delete
+
+  // an error if any other operator receives it
+  EC_PIPELINE_PROTOCOL_ERROR op__execErr
+
+  true // calling op_loop continues
+;
+
+/*----------------------------------------------------------------------------*/
 /* default handler for ZK_EXITEDMARKER operand                                */
 /*----------------------------------------------------------------------------*/
 : ZK_EXITEDMARKER_handler \handler

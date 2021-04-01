@@ -740,6 +740,8 @@ public:
   void vJob_PipelineCancelled(void);
   void vJob_PipelineCompile(void);
   void vJob_PipelineDeleteDynamo(void);
+  void vJob_PipelineEarlyExitFetch(void);
+  void vJob_PipelineEarlyExitStore(void);
   void vJob_PipelineErrored(void);
   void vJob_PipelineExecute(void);
   void vJob_PipelineIsCancelled(void);
@@ -1024,7 +1026,9 @@ public:
   void vOperandNewErrorMarker(void);
   void vOperandNewErroredMarker(void);
   void vOperandNewExitMarker(void);
+  void vOperandNewExitEarlyMarker(void);
   void vOperandNewExitedMarker(void);
+  void vOperandNewExitedEarlyMarker(void);
   void vOperandNewPulsedMarker(void);
   void vOperandNewStartMarker(void);
   void vOperandNewStartedMarker(void);

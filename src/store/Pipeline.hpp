@@ -18,6 +18,7 @@ namespace STORE
     Job* m_pPipelineJob; // job this pipeline belongs to
   
     bool m_bPulsed;
+    bool m_bEarlyExit;
     bool m_bErrored;
     
     bool m_bPulsedLimit;
@@ -38,6 +39,8 @@ namespace STORE
     bool     bCancel(Task* pTriggeringTask);
     void     vCancelled(bool bCancelled);
     bool     bCancelled(void);
+    bool     bEarlyExit(void);
+    void     vEarlyExit(bool bEarlyExit);
     bool     bErrored(void);
     void     vErrored(bool bErrored);
     i8       i_Origin(void);

@@ -377,8 +377,8 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
       switch (eOpMarker) {
           
         case OM_CANCELMARKER: {
-          vTrace("Query cancelled!!! (rows fetched so far %lld)\n"_Stz,
-                 *m_ixRowsProcessed);
+          //vTrace("Query cancelled!!! (rows fetched so far %lld)\n"_Stz,
+          //       *m_ixRowsProcessed);
           AM::vDeleteOperand(pOperand);
           m_bExitMarker = true;
           m_bCmdErr = false;
