@@ -23,8 +23,6 @@ Dic::Dic(Stz* szDicNm)
 , m_okLock(this,C_DONT_LOG)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
-
-  m_pArticle = new Article(C_NO_NAME,this,nullptr);
   
   m_sDicNm   = szDicNm;
   m_pDicKind = nullptr;
@@ -42,8 +40,6 @@ Dic::Dic(Stz* szDicNm)
 Dic::~Dic(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
-
-  delete m_pArticle;
   
   delete m_pWordSkipList;
 }

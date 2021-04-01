@@ -10,8 +10,6 @@ namespace BASE
   private:
     Lock      m_okLock;
   
-    Article*  m_pArticle;  // the dictionary article
-  
     s32       m_sDicNm;    // name of this dictionary
     Word*     m_pDicKind;  // kind of dictionary
   
