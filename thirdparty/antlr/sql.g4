@@ -11,8 +11,14 @@ statement         : (ANTLR ':')? statementChoice ';' ;
 statementChoice   :  queryStatement | explainStatement | statisticsStatement ;
 
 queryStatement    : query ;
-explainStatement  : (queryHint)* EXPLAIN (all = ALL)? statementChoice ;
-statisticsStatement : (queryHint)* (STATS | STATISTICS) (all = ALL)? statementChoice ;
+explainStatement  : (queryHint)* EXPLAIN  explainOptions* statementChoice ;
+explainOptions    : explainStageList |
+                    explainFormat ;
+explainStageList  : STAGE explainRange (',' explainRange)* ;
+explainRange      : explainMarker ( (TO | '-') explainMarker )? ;
+explainMarker     : all=('*' | ALL) | num=INTEGER_LITERAL | id=identifier ;
+explainFormat     : FORMAT (PRETTY | ROW);
+statisticsStatement : (queryHint)* (STATS | STATISTICS) statementChoice ;
 
 query             : (queryHint)*
                     ( selectQuery
@@ -425,21 +431,30 @@ sql92TimeInterval :
 // lexer ------------------------------------------------------
 
 nonReservedWord   :
-                    ANTLR | ASC | BIT | BITS | BLOCK | BLOOM | BOTH | BTREE | BY | BYTE | BYTES
+                    ANTLR | ASC
+                    | BIT | BITS | BLOCK | BLOOM | BOTH | BTREE | BY | BYTE | BYTES
                   | CATALOG | CHARS | COALESCE | CONCAT | CORRESPONDING | COUNT | CREATE
                   | CURRENT_CATALOG | CURRENT_SCHEMA | CURRENT_TIMESTAMP | CURRENT_USER
-                  | DATA | DATE | DAY | DAYS | DECODE | DELETE | DESC | DETAIL
-                  | DIGITS | DROP
-                  | ESCAPE | EXCEPT | EXPLAIN | EXTRACT | FEDERATION
-                  | HASH | HOUR | HOURS | IFNULL | INDEX | INSERT | INTO | IS
-                  | JOIN | KEY | LEFT | LOOP | MINUTE | MINUTES | MONOTONIC | MONTH | MONTHS
-                  | NO | NODE | NULLIF | OFFSET | OUTER | OVERLAY
-                  | PARTITION | POSITION | QUARTER| QUARTERS | REFERENCE | RIGHT
-                  | SCHEMA | SECOND | SECONDS | SET | SKIPLIST | SUBSTR | SUBSTRING
-                  | TABLE | TIME | TREE | TYPE | UNION | UNIQUE | UPDATE | USING | VALUE | VALUES | VARYING
-                  | TABLE | TIME | TREE | TYPE | UNION | UNIQUE | UPDATE | USING | VALUE | VALUES | VARYING
+                  | DATA | DATE | DAY | DAYS | DECODE | DELETE | DESC | DETAIL | DIGITS | DROP
+                  | ESCAPE | EXCEPT | EXPLAIN | EXTRACT
+                  | FEDERATION | FORMAT
+                  | HASH | HOUR | HOURS
+                  | IFNULL | INDEX | INSERT | INTO | IS
+                  | JOIN
+                  | KEY
+                  | LEFT | LOOP
+                  | MINUTE | MINUTES | MONOTONIC | MONTH | MONTHS
+                  | NO | NODE | NULLIF
+                  | OFFSET | OUTER | OVERLAY
+                  | PARTITION | POSITION | PRETTY
+                  | QUARTER| QUARTERS
+                  | REFERENCE | RIGHT
+                  | SCHEMA | SECOND | SECONDS | SET | SKIPLIST | STAGE | STATS
+                  | STATISTICS |SUBSTR | SUBSTRING
+                  | TABLE | TIME | TREE | TYPE
+                  | UNION | UNIQUE | UPDATE | USING
+                  | VALUE | VALUES | VARYING
                   | WEEK | WEEKS | YEAR | YEARS
-                  | STATS | STATISTICS
                   | INTEGER | DECIMAL | FLOAT | TIMESTAMP | CHARACTER | CHAR | CHARS
                   | BOOLEAN | BINARY | VARBINARY
                   ;
@@ -476,6 +491,7 @@ EXPLAIN               : E X P L A I N;
 SQL_FALSE             : F A L S E;
 FEDERATION            : F E D E R A T I O N;
 FOR                   : F O R;
+FORMAT                : F O R M A T;
 FULL                  : F U L L;
 FROM                  : F R O M;
 GROUP                 : G R O U P;
@@ -510,12 +526,15 @@ OVER                  : O V E R;
 OVERLAY               : O V E R L A Y;
 PARTITION             : P A R T I T I O N;
 PLACING               : P L A C I N G;
+PRETTY                : P R E T T Y;
 PRIMARY               : P R I M A R Y;
 REFERENCE             : R E F E R E N C E;
 RIGHT                 : R I G H T;
+ROW                   : R O W;
 SCHEMA                : S C H E M A;
 SELECT                : S E L E C T;
 SET                   : S E T;
+STAGE                 : S T A G E;
 STATS                 : S T A T S;
 STATISTICS            : S T A T I S T I C S;
 SUM                   : S U M;

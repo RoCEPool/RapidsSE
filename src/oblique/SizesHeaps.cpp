@@ -194,7 +194,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(AggTimer),           HT_T_TINY    ,0 }, // CN_AGGTIMER
   { sizeof(Arg),                HT_T_TINY    ,0 }, // CN_ARG
   { sizeof(Arrange),            HT_T_TINY    ,0 }, // CN_ARRANGE
-  { sizeof(Article),            HT_T_TINY    ,0 }, // CN_ARTICLE
   { sizeof(Atomic),             HT_INVALID   ,0 }, // CN_ATOMIC
   { sizeof(AttachMap),          HT_INVALID   ,0 }, // CN_ATTACHMAP
 

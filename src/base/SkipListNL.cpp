@@ -68,7 +68,7 @@ SkipListNL::SkipListNL(bool bUniqueKey,
   m_fpCompare  = fpCompare;
   m_fpPrint    = fpPrint;
 
-  m_nObjects   = 0;
+  m_nItems   = 0;
   m_iHeight    = 0;
   m_pHead      = new(C_SKIPLIST_LEVELS,m_pSlabAllocator) SkipNode(nullptr);
 
@@ -93,7 +93,7 @@ SkipListNL::~SkipListNL(void) noexcept(false)
   if (! m_pSlabAllocator)
     delete m_pHead;
   
-  ASSERT(m_pSlabAllocator || ! m_nObjects ); // logic check
+  ASSERT(m_pSlabAllocator || ! m_nItems ); // logic check
 
   if (m_pSlabAllocator)
     delete m_pSlabAllocator;
@@ -267,7 +267,7 @@ bool SkipListNL::bInsert(void* aObjectInsert, bool bTrace)
 	} while (--iNodeLevel >= 0);
   
   // one more object in the list
-  m_nObjects++;
+  m_nItems++;
   
   
 #ifdef _VALIDATE_SKIPLIST
@@ -280,6 +280,16 @@ bool SkipListNL::bInsert(void* aObjectInsert, bool bTrace)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get numbr of objects in list                                               */
+/*----------------------------------------------------------------------------*/
+i8 SkipListNL::nItems(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+
+  return m_nItems;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get most recently new'd skip node                                          */
 /*----------------------------------------------------------------------------*/
 SkipNode* SkipListNL::pNewly(void)
@@ -287,16 +297,6 @@ SkipNode* SkipListNL::pNewly(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
   
   return m_pNewly;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get numbr of objects in list                                               */
-/*----------------------------------------------------------------------------*/
-i8 SkipListNL::nObjects(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
-
-  return m_nObjects;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -319,7 +319,7 @@ void* SkipListNL::pPop(void)
     pObject = pPopNode->m_pObject;
     delete pPopNode;
     
-    m_nObjects--;
+    m_nItems--;
   }
   
   return pObject;
@@ -339,7 +339,7 @@ i8 SkipListNL::nRecount(void)
        pNode = pNode->m_pRight[0])
     nCount++;
   
-  ASSERT(nCount == m_nObjects);
+  ASSERT(nCount == m_nItems);
   return nCount;
 }
 
@@ -386,7 +386,7 @@ bool SkipListNL::bRemove(void* pObjectRemove)
     m_iHeight--;
   
   // one less object in the list
-  m_nObjects--;
+  m_nItems--;
 
   // delete the node
   delete pNodeRemove;
@@ -523,7 +523,7 @@ void SkipListNL::vValidate(void)
   for (SkipNode* pNode = pFirst(0); pNode; pNode = pNext(pNode,0))
     nItems++;
   
-  ASSERT(nItems == m_nObjects);
+  ASSERT(nItems == m_nItems);
 
   
   for (SkipNode* pNode = pFirst(0); pNode; pNode = pNext(pNode,0)) {

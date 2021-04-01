@@ -496,7 +496,6 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("EG_MM"_Stz,   EG_MM);
   vAddConstant("EG_MT"_Stz,   EG_MT);
   vAddConstant("EG_NE"_Stz,   EG_NE);
-  vAddConstant("EG_NK"_Stz,   EG_NK);
   vAddConstant("EG_NS"_Stz,   EG_NS);
   vAddConstant("EG_OA"_Stz,   EG_OA);
   vAddConstant("EG_OC"_Stz,   EG_OC);

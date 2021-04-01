@@ -8,12 +8,14 @@ namespace BASE
   class Dic : public Object
   {
   private:
-    Article*  m_pArticle;  // the dictionary article
+    Lock      m_okLock;
   
     s32       m_sDicNm;    // name of this dictionary
     Word*     m_pDicKind;  // kind of dictionary
   
     SkipListNL* m_pWordSkipList; // skip list of words (ordered by wordNm)
+
+    Atomic   m_ixRefCount; // reference count
 
     // must be last
     Footer m_xFooter;
@@ -29,16 +31,19 @@ namespace BASE
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
     void  vAddWord(Word* pWord);
-    Article* pArticleDic(void);
     Word* pDicKind(void);
     Stz*  szDicKind(void);
     void  vDicKind(Word* pDicKind);
     Stz*  szDicNm(void);
+    void  vDropRead(void);
+    void  vDropWrite(void);
     Word* pEachWord(Word* pPrior);
     Word* pEachWord(Word* pPrior, Word* pCategory);
     Word* pFindWord(Stz* szWordNm);
     Word* pFindStep(fpSTEPFN fpStepFn);
     Word* pFirstWord(void);
+    void  vGrabRead(void);
+    void  vGrabWrite(void);
     bool  bHasWords(void);
     bool  bIsCatalog(void);
     bool  bIsName(Stz* szDicNm);
