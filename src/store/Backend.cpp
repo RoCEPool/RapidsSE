@@ -24,6 +24,7 @@
 #include "StatementMarker.hpp"
 #include "PlanConstants.hpp"
 #include "GraphNav.hpp"
+#include "LimitOp.hpp"
 #include "PlanOperand.hpp"
 #include "TableScanOp.hpp"
 #include "QueryNode.hpp"
@@ -116,7 +117,7 @@ bool Backend::bTransliterate(String* sPipeline) {
   m_sPipeline = sPipeline;
 
 //#ifdef WITH_TRACE_Backend
-  //vPrintPlanGraph(m_pPlanRoot);
+  vPrintPlanGraph(m_pPlanRoot);
 //#endif
 
   char cStageStart   = 'A';
@@ -359,6 +360,29 @@ void Backend::vAppendFilterOp(Backend* pBackend, QueryNode* pNode)
   delete pOrdinalFilterExpr;
 
   sPipeline->vCatSprint(" \" \n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append limit Op to the pipeline                                            */
+/*----------------------------------------------------------------------------*/
+void Backend::vAppendLimitOp(Backend* pBackend, QueryNode* pNode)
+{
+  _static_
+
+  String* sPipeline = pBackend->m_sPipeline;
+
+  sPipeline->vCatSprint(
+      "    | limit 0 %lld"
+      ""_Stz,
+      LimitOp::iLimit(pNode));
+
+  i8 iOffset = LimitOp::iOffset(pNode);
+
+  if (iOffset != C_UNKNOWN) {
+    sPipeline->vCatSprint("offset %lld"_Stz, iOffset);
+  }
+
+  sPipeline->vCatSprint(" \n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -619,6 +643,13 @@ GraphNav::eWalkCtrl Backend::vVisitorPlan(PlanNode* pRootNode, s256& sPath, i8 i
 
     else if (FilterOp::bIsOfType(pQueryNode)) {
       vAppendFilterOp(pBackend, pQueryNode);
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // LimitOp
+
+    else if (LimitOp::bIsOfType(pQueryNode)) {
+      vAppendLimitOp(pBackend, pQueryNode);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
