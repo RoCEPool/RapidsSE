@@ -44,25 +44,31 @@ namespace Parser
   
     Footer* aFooter(void);
     
-    antlrcpp::Any visitStatement(sqlParser::StatementContext *pCtx)              override;
-    antlrcpp::Any visitQuery(sqlParser::QueryContext *pCtx)                      override;
-    antlrcpp::Any visitSelectQuery(sqlParser::SelectQueryContext *pCtx)          override;
-    antlrcpp::Any visitSetQuery(sqlParser::SetQueryContext *pCtx)                override;
-    antlrcpp::Any visitSelectExpr(sqlParser::SelectExprContext *pCtx)            override;
-    antlrcpp::Any visitSetExpr(sqlParser::SetExprContext *pCtx)                  override;
-    antlrcpp::Any visitFetch(sqlParser::FetchContext *pCtx)                      override;
-    antlrcpp::Any visitTableReference(sqlParser::TableReferenceContext *pCtx)    override;
-    antlrcpp::Any visitSelectList(sqlParser::SelectListContext *pCtx)            override;
-    antlrcpp::Any visitSelectListItem(sqlParser::SelectListItemContext* pCtx)    override;
-    antlrcpp::Any visitColumnRef(sqlParser::ColumnRefContext* pCtx)              override;
-    antlrcpp::Any visitColumnWildcard(sqlParser::ColumnWildcardContext* pCtx)    override;
-    antlrcpp::Any visitLiteral(sqlParser::LiteralContext* pCtx)                  override;
-    antlrcpp::Any visitUnaryOp(sqlParser::UnaryOpContext *pCtx)                  override;
-    antlrcpp::Any visitBinaryOp(sqlParser::BinaryOpContext *pCtx)                override;
-    antlrcpp::Any visitLogicOp(sqlParser::LogicOpContext *pCtx)                  override;
-    antlrcpp::Any visitIsNullOp(sqlParser::IsNullOpContext *pCtx)                override;
-    antlrcpp::Any visitCountAll(sqlParser::CountAllContext *pCtx)                override;
-    antlrcpp::Any visitAggFunc(sqlParser::AggFuncContext *pCtx)                  override;
+    antlrcpp::Any visitStatement(sqlParser::StatementContext *pCtx)               override;
+    antlrcpp::Any visitExplainStatement(sqlParser::ExplainStatementContext *pCtx) override;
+    antlrcpp::Any visitExplainFormat(sqlParser::ExplainFormatContext *pCtx)       override;
+    antlrcpp::Any visitExplainStageList(sqlParser::ExplainStageListContext *pCtx) override;
+    antlrcpp::Any visitExplainRange(sqlParser::ExplainRangeContext *pCtx)         override;
+    antlrcpp::Any visitExplainRangeChoice(sqlParser::ExplainRangeChoiceContext *pCtx) override;
+
+    antlrcpp::Any visitQuery(sqlParser::QueryContext *pCtx)                       override;
+    antlrcpp::Any visitSelectQuery(sqlParser::SelectQueryContext *pCtx)           override;
+    antlrcpp::Any visitSetQuery(sqlParser::SetQueryContext *pCtx)                 override;
+    antlrcpp::Any visitSelectExpr(sqlParser::SelectExprContext *pCtx)             override;
+    antlrcpp::Any visitSetExpr(sqlParser::SetExprContext *pCtx)                   override;
+    antlrcpp::Any visitFetch(sqlParser::FetchContext *pCtx)                       override;
+    antlrcpp::Any visitTableReference(sqlParser::TableReferenceContext *pCtx)     override;
+    antlrcpp::Any visitSelectList(sqlParser::SelectListContext *pCtx)             override;
+    antlrcpp::Any visitSelectListItem(sqlParser::SelectListItemContext* pCtx)     override;
+    antlrcpp::Any visitColumnRef(sqlParser::ColumnRefContext* pCtx)               override;
+    antlrcpp::Any visitColumnWildcard(sqlParser::ColumnWildcardContext* pCtx)     override;
+    antlrcpp::Any visitLiteral(sqlParser::LiteralContext* pCtx)                   override;
+    antlrcpp::Any visitUnaryOp(sqlParser::UnaryOpContext *pCtx)                   override;
+    antlrcpp::Any visitBinaryOp(sqlParser::BinaryOpContext *pCtx)                 override;
+    antlrcpp::Any visitLogicOp(sqlParser::LogicOpContext *pCtx)                   override;
+    antlrcpp::Any visitIsNullOp(sqlParser::IsNullOpContext *pCtx)                 override;
+    antlrcpp::Any visitCountAll(sqlParser::CountAllContext *pCtx)                 override;
+    antlrcpp::Any visitAggFunc(sqlParser::AggFuncContext *pCtx)                   override;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -70,7 +76,6 @@ namespace Parser
     // For usability purposes we will return a syntax error indicating such.
 
     // Statement types not implemented
-    antlrcpp::Any visitExplainStatement(sqlParser::ExplainStatementContext *pCtx)       override { __NOT_IMPL("EXPLAIN")}
     antlrcpp::Any visitStatisticsStatement(sqlParser::StatisticsStatementContext *pCtx) override { __NOT_IMPL("STATISTICS")}
     antlrcpp::Any visitQueryHint(sqlParser::QueryHintContext *pCtx)                     override { __NOT_IMPL("query hints")}
 

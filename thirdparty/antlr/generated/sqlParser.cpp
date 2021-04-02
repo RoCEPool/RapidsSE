@@ -444,12 +444,12 @@ sqlParser::ExplainRangeContext::ExplainRangeContext(ParserRuleContext *parent, s
   : ParserRuleContext(parent, invokingState) {
 }
 
-std::vector<sqlParser::ExplainMarkerContext *> sqlParser::ExplainRangeContext::explainMarker() {
-  return getRuleContexts<sqlParser::ExplainMarkerContext>();
+std::vector<sqlParser::ExplainRangeChoiceContext *> sqlParser::ExplainRangeContext::explainRangeChoice() {
+  return getRuleContexts<sqlParser::ExplainRangeChoiceContext>();
 }
 
-sqlParser::ExplainMarkerContext* sqlParser::ExplainRangeContext::explainMarker(size_t i) {
-  return getRuleContext<sqlParser::ExplainMarkerContext>(i);
+sqlParser::ExplainRangeChoiceContext* sqlParser::ExplainRangeContext::explainRangeChoice(size_t i) {
+  return getRuleContext<sqlParser::ExplainRangeChoiceContext>(i);
 }
 
 tree::TerminalNode* sqlParser::ExplainRangeContext::TO() {
@@ -480,7 +480,7 @@ sqlParser::ExplainRangeContext* sqlParser::explainRange() {
   try {
     enterOuterAlt(_localctx, 1);
     setState(238);
-    explainMarker();
+    dynamic_cast<ExplainRangeContext *>(_localctx)->begin = explainRangeChoice();
     setState(241);
     _errHandler->sync(this);
 
@@ -496,7 +496,7 @@ sqlParser::ExplainRangeContext* sqlParser::explainRange() {
         consume();
       }
       setState(240);
-      explainMarker();
+      dynamic_cast<ExplainRangeContext *>(_localctx)->end = explainRangeChoice();
     }
    
   }
@@ -509,40 +509,40 @@ sqlParser::ExplainRangeContext* sqlParser::explainRange() {
   return _localctx;
 }
 
-//----------------- ExplainMarkerContext ------------------------------------------------------------------
+//----------------- ExplainRangeChoiceContext ------------------------------------------------------------------
 
-sqlParser::ExplainMarkerContext::ExplainMarkerContext(ParserRuleContext *parent, size_t invokingState)
+sqlParser::ExplainRangeChoiceContext::ExplainRangeChoiceContext(ParserRuleContext *parent, size_t invokingState)
   : ParserRuleContext(parent, invokingState) {
 }
 
-tree::TerminalNode* sqlParser::ExplainMarkerContext::ALL() {
+tree::TerminalNode* sqlParser::ExplainRangeChoiceContext::ALL() {
   return getToken(sqlParser::ALL, 0);
 }
 
-tree::TerminalNode* sqlParser::ExplainMarkerContext::INTEGER_LITERAL() {
+tree::TerminalNode* sqlParser::ExplainRangeChoiceContext::INTEGER_LITERAL() {
   return getToken(sqlParser::INTEGER_LITERAL, 0);
 }
 
-sqlParser::IdentifierContext* sqlParser::ExplainMarkerContext::identifier() {
+sqlParser::IdentifierContext* sqlParser::ExplainRangeChoiceContext::identifier() {
   return getRuleContext<sqlParser::IdentifierContext>(0);
 }
 
 
-size_t sqlParser::ExplainMarkerContext::getRuleIndex() const {
-  return sqlParser::RuleExplainMarker;
+size_t sqlParser::ExplainRangeChoiceContext::getRuleIndex() const {
+  return sqlParser::RuleExplainRangeChoice;
 }
 
 
-antlrcpp::Any sqlParser::ExplainMarkerContext::accept(tree::ParseTreeVisitor *visitor) {
+antlrcpp::Any sqlParser::ExplainRangeChoiceContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<sqlVisitor*>(visitor))
-    return parserVisitor->visitExplainMarker(this);
+    return parserVisitor->visitExplainRangeChoice(this);
   else
     return visitor->visitChildren(this);
 }
 
-sqlParser::ExplainMarkerContext* sqlParser::explainMarker() {
-  ExplainMarkerContext *_localctx = _tracker.createInstance<ExplainMarkerContext>(_ctx, getState());
-  enterRule(_localctx, 14, sqlParser::RuleExplainMarker);
+sqlParser::ExplainRangeChoiceContext* sqlParser::explainRangeChoice() {
+  ExplainRangeChoiceContext *_localctx = _tracker.createInstance<ExplainRangeChoiceContext>(_ctx, getState());
+  enterRule(_localctx, 14, sqlParser::RuleExplainRangeChoice);
   size_t _la = 0;
 
   auto onExit = finally([=] {
@@ -556,12 +556,12 @@ sqlParser::ExplainMarkerContext* sqlParser::explainMarker() {
       case sqlParser::ALL: {
         enterOuterAlt(_localctx, 1);
         setState(243);
-        dynamic_cast<ExplainMarkerContext *>(_localctx)->all = _input->LT(1);
+        dynamic_cast<ExplainRangeChoiceContext *>(_localctx)->all = _input->LT(1);
         _la = _input->LA(1);
         if (!(_la == sqlParser::T__4
 
         || _la == sqlParser::ALL)) {
-          dynamic_cast<ExplainMarkerContext *>(_localctx)->all = _errHandler->recoverInline(this);
+          dynamic_cast<ExplainRangeChoiceContext *>(_localctx)->all = _errHandler->recoverInline(this);
         }
         else {
           _errHandler->reportMatch(this);
@@ -573,7 +573,7 @@ sqlParser::ExplainMarkerContext* sqlParser::explainMarker() {
       case sqlParser::INTEGER_LITERAL: {
         enterOuterAlt(_localctx, 2);
         setState(244);
-        dynamic_cast<ExplainMarkerContext *>(_localctx)->num = match(sqlParser::INTEGER_LITERAL);
+        dynamic_cast<ExplainRangeChoiceContext *>(_localctx)->num = match(sqlParser::INTEGER_LITERAL);
         break;
       }
 
@@ -682,7 +682,7 @@ sqlParser::ExplainMarkerContext* sqlParser::explainMarker() {
       case sqlParser::IDENTIFIER: {
         enterOuterAlt(_localctx, 3);
         setState(245);
-        dynamic_cast<ExplainMarkerContext *>(_localctx)->id = identifier();
+        dynamic_cast<ExplainRangeChoiceContext *>(_localctx)->id = identifier();
         break;
       }
 
@@ -14172,7 +14172,7 @@ std::vector<uint16_t> sqlParser::_serializedATN;
 
 std::vector<std::string> sqlParser::_ruleNames = {
   "statement", "statementChoice", "queryStatement", "explainStatement", 
-  "explainOptions", "explainStageList", "explainRange", "explainMarker", 
+  "explainOptions", "explainStageList", "explainRange", "explainRangeChoice", 
   "explainFormat", "statisticsStatement", "query", "queryHint", "hint", 
   "selectQuery", "selectExpr", "setQuery", "setExpr", "corrClause", "withQuery", 
   "tableExpr", "tableReference", "joinType", "joinHint", "valuesExpr", "insertQuery", 
