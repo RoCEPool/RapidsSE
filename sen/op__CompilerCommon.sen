@@ -45,23 +45,23 @@
   // no error, delete the infoset
   InfoSet[].delete
 
-  // do we need to generate explain ?
-  Operand[] sOperatorName sqlCompiler::explain if
+  // does the sql have an explain ?
+  Operand[] sqlCompiler::hasExplain if
 
-     // pipeout explain
-     StreamSet[].pipeout
+    // execute explain for this operator
+    Operand[] sOperatorName sqlCompiler::explain
 
-     LogicUnit[].compilerToExit if
-       Operand[].delete
-       Operand[].newExitEarlyMarker
-       Operand[].pipeout
-       true
-       exit
-     then
-
-  else
     // pipeout explain
     StreamSet[].pipeout
+
+    LogicUnit[].compilerToExit if
+      Operand[].delete
+      Operand[].newExitEarlyMarker
+      Operand[].pipeout
+      true
+      exit
+    then
+
   then
 
   Operand[].pipeOut

@@ -52,6 +52,7 @@ void Step::vAddSteps_SqlCompiler(void)
   vAddStep("sqlCompiler::explain"_Stz,        &Step::vSqlCompilerExplain);
   vAddStep("sqlCompiler::exprValidate"_Stz,   &Step::vSqlCompilerExprValidate);
   vAddStep("sqlCompiler::nameValidate"_Stz,   &Step::vSqlCompilerNameValidate);
+  vAddStep("sqlCompiler::hasExplain"_Stz,     &Step::vSqlCompilerHasExplain);
   vAddStep("sqlCompiler::parser"_Stz,         &Step::vSqlCompilerParser);
   vAddStep("sqlCompiler::setOpValidate"_Stz,  &Step::vSqlCompilerSetOpValidate);
   vAddStep("sqlCompiler::transliterate"_Stz,  &Step::vSqlCompilerTransliterate);
@@ -73,7 +74,6 @@ void Step::vSqlCompilerExplain(void) {
   // get the streamSet for explain
   InfoSet *pInfoSet = _pInfoSet(*(m_pJob->pLogicUnit_job())->m_xpStreamSet);
 
-  bool bExplain = false;
 /*
   if (sCompilerStage.bEqual("parser"_Stz)) {
 
@@ -81,16 +81,25 @@ void Step::vSqlCompilerExplain(void) {
                                     "Explain ... "_Stz,
                                     sCompilerStage.szStz(),
                                     C_VARGS_END);
-    bExplain = true;
     UNUSED(pRow);
   }
+
+
+  else if (sCompilerStage.bEqual("nameValidate"_Stz)) {
+
+    Row *pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+                                    "Explain ... "_Stz,
+                                    sCompilerStage.szStz(),
+                                    C_VARGS_END);
+    UNUSED(pRow);
+  }
+
   else if (sCompilerStage.bEqual("exprValidate"_Stz)) {
 
     Row *pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
                                     "Explain ... "_Stz,
                                     sCompilerStage.szStz(),
                                     C_VARGS_END);
-    bExplain = true;
     UNUSED(pRow);
   }
 
@@ -102,11 +111,9 @@ void Step::vSqlCompilerExplain(void) {
                                     "Explain ... "_Stz,
                                     sCompilerStage.szStz(),
                                     C_VARGS_END);
-    bExplain = true;
     UNUSED(pRow);
   }
 */
-  m_pDataStack->vPushInt(bExplain);
 
   L_Exit:
   EXIT();
@@ -173,6 +180,22 @@ void Step::vSqlCompilerExprValidate(void)
   m_pDataStack->vPushPtr(pPlanOperand);
 
   L_Exit:
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* sqlCompiler::hasExplain -- does sql have an explain ?                      */
+/*----------------------------------------------------------------------------*/
+void Step::vSqlCompilerHasExplain(void) {
+  ENTRY();
+
+  bool bExplain = false;
+
+  // Get the plan operand
+  PlanOperand *pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
+
+  m_pDataStack->vPushInt(bExplain);
+
   EXIT();
 }
 

@@ -34,16 +34,20 @@
   // no error, delete the infoset
   InfoSet[].delete
 
-  // find the __explain tabledef
-  C_TDEF_EXPLAIN op__tableDef_streamSet assert
+  // does the sql have an explain ?
+  Operand[] sqlCompiler::hasExplain if
 
-  // create a new streamDef
-  streamSetTable[] StreamDef[].new
+    // find the __explain tabledef
+    C_TDEF_EXPLAIN op__tableDef_streamSet assert
 
-  // create an StreamSet operand
-  streamSetTable[] StreamSet[].new
+    // create a new streamDef
+    streamSetTable[] StreamDef[].new
 
-  Operand[] "parser" sqlCompiler::explain if
+    // create an StreamSet operand
+    streamSetTable[] StreamSet[].new
+
+    // execute explain for this operator
+    Operand[] "parser" sqlCompiler::explain
 
     // pipeout streamDef of explain
     StreamDef[].pipeout
@@ -60,13 +64,6 @@
       exit
     then
 
-  else
-
-     // pipeout streamDef of explain
-     StreamDef[].pipeout
-
-     // pipeout explain
-     StreamSet[].pipeout
   then
 
   ZK_DATAPULSE_handler
