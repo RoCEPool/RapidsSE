@@ -45,7 +45,7 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitExplainMarker(sqlParser::ExplainMarkerContext *ctx) override {
+  virtual antlrcpp::Any visitExplainRangeChoice(sqlParser::ExplainRangeChoiceContext *ctx) override {
     return visitChildren(ctx);
   }
 

@@ -21,16 +21,21 @@
 
 #include "ShadowNode.hpp"
 #include "store/parser/shadowNodes/planObjects/statementMarkers/SelectMarker.hpp"
+#include "store/parser/shadowNodes/planObjects/statementMarkers/ExplainMarker.hpp"
 #include "store/parser/shadowNodes/planObjects/FilterOp.hpp"
 #include "store/parser/shadowNodes/planObjects/LimitOp.hpp"
 #include "store/parser/shadowNodes/planObjects/ProjectOp.hpp"
 #include "store/parser/shadowNodes/planObjects/AggregateOp.hpp"
 #include "store/parser/shadowNodes/planObjects/dataSources/TableScanOp.hpp"
 #include "store/parser/shadowNodes/planObjects/UnionOp.hpp"
+#include "store/parser/shadowNodes/planObjects/ExplainOp.hpp"
 
 #include "store/parser/shadowNodes/compound/TableRef.hpp"
-#include "store/parser/shadowNodes/compound/StringObject.hpp"
+#include "store/parser/shadowNodes/valueObjects/StringObject.hpp"
+#include "store/parser/shadowNodes/valueObjects/IntegerObject.hpp"
 #include "store/parser/shadowNodes/lists/StringList.hpp"
+#include "store/parser/shadowNodes/lists/StageRangeList.hpp"
+#include "store/parser/shadowNodes/compound/StageRange.hpp"
 
 // Expressions
 #include "ColumnRef.hpp"
@@ -220,6 +225,155 @@ antlrcpp::Any SqlPlanner::visitStatement(sqlParser::StatementContext *pCtx)
   m_sQueryStr.vCopy((Stz*) queryStlStr.c_str());
 
   return visitChildren(pCtx);
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Explain node                                                               */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitExplainStatement(sqlParser::ExplainStatementContext *pCtx)
+{
+  // N.B. Manual visitation of children used at this level.
+
+  // Get the statement string for this part of the query
+  antlr4::misc::Interval interval(pCtx->start->getStartIndex(), pCtx->stop->getStopIndex());
+  std::string queryStlStr = pCtx->start->getInputStream()->getText(interval);
+
+  // Create an explain StatementMarker and add it to the statement stack
+  QueryNode* pExplainMarker = ExplainMarker::pCreate((Stz*)(queryStlStr.c_str()));
+  m_pStatementStack->vPush(pExplainMarker);
+
+  Text* pFormat = nullptr;
+  QueryNode* pStageList = nullptr;
+
+  for (sqlParser::ExplainOptionsContext* pOptionsCtx : pCtx->explainOptions()) {
+    if (pOptionsCtx->explainFormat()) {
+
+      if (pFormat) {
+        delete pFormat;
+        pFormat = nullptr;
+      }
+
+      pFormat = pOptionsCtx->explainFormat()->accept(this).as<Text*>();
+
+    } else if (pOptionsCtx->explainStageList()) {
+
+      if (pStageList) {
+        delete pStageList;
+        pStageList = nullptr;
+      }
+
+      pStageList = pOptionsCtx->explainStageList()->accept(this).as<QueryNode*>();
+      ASSERT(StageRangeList::bIsOfType(pStageList));
+
+    } else {
+      NEVER_REACH
+    }
+  }
+
+  if (!pStageList) {
+    // Create an empty state list
+    pStageList = StageRangeList::pCreate();
+  }
+
+  // Create an ExplainOp and add it as a child of the ExplainMarker
+  QueryNode* pExplainOp = ExplainOp::pCreate(pStageList, pFormat == nullptr ? nullptr : pFormat->szGet());
+  pExplainMarker->vAppendChild(pExplainOp);
+  delete pFormat;
+
+  // Visit the statement choice node. This will add a new statementMarker to the statement list.
+  // We can then pop it off and add it as a child of the ExplainOp.
+  pCtx->statementChoice()->accept(this);
+
+  ASSERT(m_pStatementStack->nItems() >= 2);
+  QueryNode* pExplainableStatement = m_pStatementStack->pPop();
+  ASSERT(m_pStatementStack->pTop() == pExplainMarker);
+  pExplainOp->vAppendChild(pExplainableStatement);
+
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Explain Format                                                             */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitExplainFormat(sqlParser::ExplainFormatContext *pCtx)
+{
+  if (pCtx->PRETTY()) {
+    return new Text("PRETTY"_Stz);
+
+  } else if (pCtx->ROW()) {
+    return new Text("ROW"_Stz);
+  } else {
+    NEVER_REACH
+  }
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Explain StageRangeList                                                     */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitExplainStageList(sqlParser::ExplainStageListContext *pCtx)
+{
+  // N.B. Manual visitation of children used at this level.
+
+  QueryNode* pStageList = StageRangeList::pCreate();
+
+  for (sqlParser::ExplainRangeContext* pRangeCtx : pCtx->explainRange()) {
+    // Visit each explain range and add it to the list
+    QueryNode* pRange = pRangeCtx->accept(this).as<QueryNode*>();
+    ASSERT(StageRange::bIsOfType(pRange));
+
+    pStageList->vAppendChild(pRange);
+  }
+
+  return pStageList;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Explain Stage Range                                                        */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitExplainRange(sqlParser::ExplainRangeContext *pCtx)
+{
+  // N.B. Manual visitation of children used at this level.
+
+  QueryNode* pBegin;
+  QueryNode* pEnd = nullptr;
+
+  pBegin = pCtx->begin->accept(this).as<QueryNode*>();
+  ASSERT(ValueObject::bIsOfType(pBegin));
+
+  if (pCtx->end) {
+    pEnd = pCtx->end->accept(this).as<QueryNode*>();
+    ASSERT(ValueObject::bIsOfType(pEnd));
+  }
+
+  QueryNode* pRange = StageRange::pCreate(pBegin, pEnd);
+  return pRange;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Explain Marker                                                             */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitExplainRangeChoice(sqlParser::ExplainRangeChoiceContext *pCtx)
+{
+  // N.B. Manual visitation of children used at this level.
+
+  QueryNode* pMarker;
+
+  if (pCtx->all) {
+    pMarker = StringObject::pCreate(new Text('*'));
+
+  } else if (pCtx->id) {
+    Text* pText = pCleanId(pCtx->id);
+    pMarker = StringObject::pCreate(pText);
+
+  } else if (pCtx->num) {
+    i8 iVal = iCleanInt(pCtx->num);
+    pMarker = IntegerObject::pCreate(iVal);
+
+  } else {
+    NEVER_REACH
+  }
+
+  return pMarker;
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/

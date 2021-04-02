@@ -402,7 +402,7 @@ explainStatement
 explainOptions
 explainStageList
 explainRange
-explainMarker
+explainRangeChoice
 explainFormat
 statisticsStatement
 query

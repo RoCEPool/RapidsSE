@@ -1,0 +1,193 @@
+/*============================================================================*/
+/* ExplainOp.hpp - operator that explains the underlying plan                 */
+/*============================================================================*/
+
+#include "BASE.h"
+#include "ExplainOp.hpp"
+
+#include "PlanNode.hpp"
+#include "QueryNode.hpp"
+#include "StageRangeList.hpp"
+#include "StageRange.hpp"
+#include "StringObject.hpp"
+
+#include "GraphNav.hpp"
+#include "SqlException.hpp"
+
+using namespace Parser;
+
+/*----------------------------------------------------------------------------*/
+/*-- Constants ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+static Stz* C_EXPLAINOP_DEFN = "/__root__/definitions/object/planObject/sqlOperator/explainOp"_Stz;
+
+static Stz* C_STAGERANGELIST_PROP = "stageRangeList"_Stz;
+static Stz* C_STAGERANGELIST_DEFN = "/__root__/definitions/object/list/stageRangeList"_Stz;
+
+static Stz* C_FORMAT_PROP = "format"_Stz;
+static Stz* C_FORMAT_DEFN = "/__root__/definitions/object/valueObject/stringObject"_Stz;
+
+static Stz* C_STAGECOUNT_PROP = "stageCount"_Stz;
+static Stz* C_STAGECOUNT_DEFN = "/__root__/definitions/object/valueObject/integerObject"_Stz;
+
+static Stz* C_STAGESPAST_PROP = "stagesPast"_Stz;
+static Stz* C_STAGESPAST_DEFN = "/__root__/definitions/object/list/stringList"_Stz;
+
+static Stz* C_FORMAT_PRETTY = "PRETTY"_Stz;
+static Stz* C_FORMAT_ROW    = "ROW"_Stz;
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* Helper function to create ExplainOp nodes.                                 */
+/*----------------------------------------------------------------------------*/
+QueryNode* ExplainOp::pCreate(QueryNode* pStageRangeList, Stz* szFormat)
+{
+  ASSERT(pStageRangeList);
+
+  // Create a unique name for this ExplainOp object
+  s256 sName;
+  ShadowNode::vObjName(GraphNav::szLeafType(C_EXPLAINOP_DEFN), sName);
+
+  // Create the explain object
+  QueryNode* pExplainOp = new QueryNode(sName, C_EXPLAINOP_DEFN);
+
+  // Add the stageRangeList property
+  pStageRangeList->vSetName(C_STAGERANGELIST_PROP);
+  pExplainOp->vAppendProperty(pStageRangeList);
+
+  // Create and add the format property
+  Value xFmtVal;
+  if (szFormat) {
+    if (szFormat->bSame(C_FORMAT_PRETTY)) {
+      xFmtVal.vSet(new Text(C_FORMAT_PRETTY));
+
+    } else if (szFormat->bSame(C_FORMAT_ROW)) {
+      xFmtVal.vSet(new Text(C_FORMAT_ROW));
+
+    } else {
+      SemanticException::vThrow(EC_EXPLAIN_INVALID_FORMAT, ": %s"_Stz, szFormat);
+    }
+  } else {
+    // Use the pretty format as default
+    xFmtVal.vSet(new Text(C_FORMAT_PRETTY));
+  }
+
+  QueryNode* pFormat = new QueryNode(C_FORMAT_PROP, C_FORMAT_DEFN, static_cast<Value&&>(xFmtVal));
+  pExplainOp->vAppendProperty(pFormat);
+
+  // Create and add the stageCount property
+  Value xStageCountVal((i8) 0);
+  QueryNode* pStageCount = new QueryNode(C_STAGECOUNT_PROP, C_STAGECOUNT_DEFN, static_cast<Value&&>(xStageCountVal));
+  pExplainOp->vAppendProperty(pStageCount);
+
+  // Create and add the stagesPast property
+  QueryNode* pStagesPast = new QueryNode(C_STAGESPAST_PROP, C_STAGESPAST_DEFN);
+  pExplainOp->vAppendProperty(pStagesPast);
+
+  return pExplainOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Appends a basic, single line description of the object into a buffer       */
+/*----------------------------------------------------------------------------*/
+void ExplainOp::vDescribe(PlanNode* pNode, s2K& sBuf)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pExplainOp = _pQueryNode(pNode);
+
+  sBuf.vConcat("ExplainOp :\n  "_Stz);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Recurses down the query plan and writes the explain of the stmt to the buf */
+/*----------------------------------------------------------------------------*/
+void ExplainOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iIndent)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  sBuf.vConcat("\n\n"_Stz);
+  vAppendIndent(sBuf, iIndent, eIndentFormat::IF_ARROW);
+  sBuf.vConcat(GraphNav::szLeafType(pNode->szType()));
+
+  // Get the stageRangeList
+  PlanNode* pStageRangeList = GraphNav::pFindProperty(const_cast<Stz*>(C_STAGERANGELIST_PROP), pNode);
+  ASSERT(pStageRangeList);
+
+  if (pStageRangeList->nChildren() != 0) {
+    s2K sStageBuf;
+    StageRangeList::vDescribe(pStageRangeList, sStageBuf);
+    sBuf.vConcat("\n"_Stz);
+    vAppendIndent(sBuf, iIndent, IF_PLAIN);
+    sBuf.vCatSprint("stageRangeList: %s"_Stz, sStageBuf.szStz());
+  }
+
+  // Print the format
+  sBuf.vConcat("\n"_Stz);
+  vAppendIndent(sBuf, iIndent, IF_PLAIN);
+  PlanNode* pFormat = GraphNav::pFindProperty(const_cast<Stz*>(C_FORMAT_PROP), pNode);
+  ASSERT(StringObject::bIsOfType(pFormat));
+  sBuf.vCatSprint("format: %s"_Stz, pFormat->szValue());
+
+  // Recurse any children of pNode
+  if (pNode->bHasChildren()) {
+    PlanNodeIter* pIter = pNode->pNewChildrenIter();
+
+    while (pIter->bHasNext()) {
+      PlanNode* pChild = pIter->pNext();
+      ASSERT(PlanObject::bIsOfType(pChild));
+
+      PlanObject::vExplain(pChild, pRootNode, sBuf, iIndent + 1);
+    }
+    delete pIter;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if the given node is derived from the statement definition    */
+/*----------------------------------------------------------------------------*/
+b1 ExplainOp::bIsOfType(PlanNode *pNode)
+{
+  _static_
+  return ShadowNode::bIsOfType(pNode, C_EXPLAINOP_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely the same as its definition     */
+/*----------------------------------------------------------------------------*/
+b1 ExplainOp::bIsExactType(PlanNode *pNode)
+{
+  return ShadowNode::bIsExactType(pNode, C_EXPLAINOP_DEFN);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Return a list of ProjectedColumns that represent the column expressions    */
+/* that this PlanObject will return. All nodes and the list must be freed.    */
+/*----------------------------------------------------------------------------*/
+QueryNodeList* ExplainOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
+{
+  // There should never be a need to call this function on an ExplainOp,
+  // even if we were explaining an explained query.
+  NEVER_REACH
+
+//  _static_
+//  ASSERT(bIsOfType(pNode));
+//  ASSERT(pRootNode);
+//
+//  // The ExplainOp doesn't change the projected expressions, so ask its child.
+//  QueryNode* pChild = _pQueryNode(pNode->pFirstChild());
+//  ASSERT(pChild);
+//
+//  return PlanObject::pColumnExprs(pChild, pRootNode);
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

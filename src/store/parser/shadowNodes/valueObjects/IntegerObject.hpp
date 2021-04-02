@@ -1,23 +1,26 @@
 /*============================================================================*/
-/* StringObject.hpp - a simple object that contains a string value            */
+/* IntegerObject.hpp - a simple object that contains an integer value         */
 /*============================================================================*/
 #pragma once
 
-#include "ShadowNode.hpp"
+#include "ValueObject.hpp"
 #include "PlanNode.hpp"
 
 namespace Parser
 {
   class QueryNode;
 
-  class StringObject : public ShadowNode
+  class IntegerObject : public ValueObject
   {
   private:
     // Shalt never be instantiated. Static functions only.
-    StringObject();
+    IntegerObject();
 
   public:
-    static QueryNode* pCreate(Text* pText);
+    static QueryNode* pCreate(i8 iVal);
+
+    // Describe the object and write it into the buffer
+    static void vDescribe(PlanNode* pNode, s2K& sBuf);
 
     // Returns true if a given node is a given type ** or is derived from that type **
     static b1 bIsOfType(PlanNode* pNode);
