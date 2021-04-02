@@ -66,7 +66,7 @@ void SqlOperator::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 
   else if (  ProjectOp::bIsExactType(pNode)) {   ProjectOp::vExplain(pNode, pRootNode, sBuf, iIndent); }
   else if ( DataSource::bIsOfType(pNode))    {  DataSource::vExplain(pNode, pRootNode, sBuf, iIndent); }
   else if (   FilterOp::bIsExactType(pNode)) {    FilterOp::vExplain(pNode, pRootNode, sBuf, iIndent); }
-  else if (    LimitOp::bIsExactType(pNode)) {     LimitOp::vExplain(pNode, pRootNode, sBuf, iIndent); }
+  else if (    LimitOp::bIsOfType(pNode))    {     LimitOp::vExplain(pNode, pRootNode, sBuf, iIndent); }
   else if (    UnionOp::bIsExactType(pNode)) {     UnionOp::vExplain(pNode, pRootNode, sBuf, iIndent); }
   else if (  ExplainOp::bIsExactType(pNode)) {   ExplainOp::vExplain(pNode, pRootNode, sBuf, iIndent); }
   else {
