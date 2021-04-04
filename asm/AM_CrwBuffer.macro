@@ -99,27 +99,29 @@ macro AM_HANDLER_CRWBUFFER_LIMIT
   EO_PUSH_DEVIXT_SRC
   EO_DEVIXT_CRWBUF_BEGIN
 
-  // push limit on stack
-  EO_INTEGER <limitRows>     // C_TAG_LIMIT_ROWS
-  EO_DUMP
-
   // NEXT_CRW_SRC
   Label NEXT_CRW_SRC
 
-  // check if limit reached
-  EO_DUP
+  // push limit on stack
+  EO_INTEGER <limitRows>     // C_TAG_LIMIT_ROWS
+  //EO_DUMP
+
+  // push the counter
   EO_CTR_0_PUSH
-  EO_DUMP
+  //EO_DUMP
+
+  // check if limit reached
   EO_LESSEQUAL
   EO_JMP_TRUE QUERY_DONE
-
-  // increment rows processed
-  EO_CTR_0_INC
 
   EO_PUSH_DEVIXT_SRC
   EO_DEVIXT_CRWBUF_NEXT
 
   EO_JMP_FALSE QUERY_DONE
+
+  // increment rows processed
+  EO_CTR_0_INC
+
   EO_CALL <crwProcessRoutine>   // C_TAG_CRW_PROCESS_ROUTINE
   EO_JMP NEXT_CRW_SRC
   EO_JMP QUERY_DONE

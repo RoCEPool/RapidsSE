@@ -17,6 +17,9 @@ filterRows.test
 filterRows$_I.test
 filterRows$.test
 
+limitRows.test
+limitRows_I.test
+
 projectColumns_I.test
 projectColumns.test
 
