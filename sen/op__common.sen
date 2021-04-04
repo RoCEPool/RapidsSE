@@ -399,6 +399,8 @@
 
   begin
 
+    assert::stack_0
+    
     // attempt to get an Out-of_Order Operand
     OperandOoO[].next if
 
@@ -416,7 +418,9 @@
       then
 
       PipeIn[].isNull assert
-
+      
+      not if exit then
+      
     else
  
       // test for call again
@@ -433,6 +437,9 @@
           iOperandKind op[].IncOperandCount
           iOperandKind LogicUnit[].handler@ op__handle
         //then
+        
+        not if exit then
+
       else
  
         iOperandYield 1 + to iOperandYield
@@ -465,11 +472,13 @@
         // assert Operand is null
         PipeIn[].isNull assert
 
+        not if exit then
+
       then
   
     then
 
-  while assert::stack_0 repeat
+  again
 ;
 
 /*----------------------------------------------------------------------------*/
