@@ -471,8 +471,8 @@
       iOperandKind op[].IncOperandCount
 
       iOperandKind dup op[].handler@
-          dup LogicUnit[].handler!
-        op__handle
+          LogicUnit[].handler!
+      LogicUnit[].handler@ op__handle
     then
 
     // assert Operand is null
