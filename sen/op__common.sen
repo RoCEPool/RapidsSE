@@ -458,7 +458,8 @@
     PipeIn[].bide
 
     // pop next operand from queue into PipeIn[]
-    PipeIn[].next
+    PipeIn[].bideNext
+    
     PipeIn[].kind to iOperandKind
 
     //debug::flag@ if "(Revised) Calling handler for NEXT operand" . then

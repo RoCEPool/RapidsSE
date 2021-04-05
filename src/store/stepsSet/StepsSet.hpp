@@ -1270,6 +1270,7 @@ public:
 
   // reg Pipein
   void vPipeinBide(void);
+  void vPipeinBideNext(void);
   void vPipeinDelete(void);
   void vPipeinGet(void);
   void vPipeinGetAndClear(void);

@@ -24,6 +24,7 @@ void Step::vAddSteps_Pipein(void)
   vAddStep("PipeIn[]"_Stz,                &Step::vPipeinGet);
   vAddStep("PipeIn[]\\clear"_Stz,         &Step::vPipeinGetAndClear);
   vAddStep("PipeIn[].bide"_Stz,           &Step::vPipeinBide);
+  vAddStep("PipeIn[].bideNext"_Stz,       &Step::vPipeinBideNext);
   vAddStep("PipeIn[].delete"_Stz,         &Step::vPipeinDelete);
   vAddStep("PipeIn[].isNull"_Stz,         &Step::vPipeinIsNull);
   vAddStep("PipeIn[].kind"_Stz,           &Step::vPipeinKind);
@@ -47,6 +48,30 @@ void Step::vPipeinBide(void)
   if (( m_pJob->pLogicUnit_job() )->m_xpPipein.bIsNull()) {
     vScheduleBide();
   }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* PipeIn[].bideNext -- get next operand (after biding)                       */
+/*----------------------------------------------------------------------------*/
+void Step::vPipeinBideNext(void)
+{
+  ENTRY();
+  
+  //RASSERT(! *( m_pJob->pLogicUnit_job() )->m_xpPipein);
+  
+  if (( m_pJob->pLogicUnit_job() )->m_xpPipein.bIsNull()) {
+    
+    Operand* pOperand = m_pJob->m_pOp->pPopQueue();
+    ( m_pJob->pLogicUnit_job() )->m_xpPipein = pOperand;
+    
+    eZK eOperand = (eZK)AM::iOperandZkKind(pOperand);
+    m_pJob->pLogicUnit_job()->m_eOperand = eOperand;
+    m_pJob->pLogicUnit_job()->m_ePipeInOperand = eOperand;
+  }
+  
+  RASSERT(*( m_pJob->pLogicUnit_job() )->m_xpPipein);
   
   EXIT();
 }
