@@ -152,29 +152,30 @@ b1 StageRange::bInRange(QueryNode* pNode, i8 iStageNum, Stz* szStageName, QueryN
   Stz* szBeginVal;
   Stz* szEndVal;
 
-  // Match the beginning range
-  if (IntegerObject::bIsExactType(pBegin)) {
-    iBeginVal = pBegin->iValue();
-
-    if (iStageNum < iBeginVal) {
-      return false;
-    }
-
-  } else if (StringObject::bIsExactType(pBegin)) {
-    szBeginVal = pBegin->szValue();
-
-    if (!szStageName->bSame(szBeginVal) &&
-        !szBeginVal->bEqual(C_RANGE_ALL) &&
-        !StringList::bContains(pStageNameList, false, szBeginVal)) {
-      return false;
-    }
-    
-  } else {
-    NEVER_REACH
-  }
-
-  // Match the ending range
   if (pEnd) {
+    // We have a range
+    // Range begin
+    if (IntegerObject::bIsExactType(pBegin)) {
+      iBeginVal = pBegin->iValue();
+
+      if (iStageNum < iBeginVal) {
+        return false;
+      }
+
+    } else if (StringObject::bIsExactType(pBegin)) {
+      szBeginVal = pBegin->szValue();
+
+      if (!szStageName->bSame(szBeginVal) &&
+          !szBeginVal->bEqual(C_RANGE_ALL) &&
+          !StringList::bContains(pStageNameList, false, szBeginVal)) {
+        return false;
+      }
+
+    } else {
+      NEVER_REACH
+    }
+
+    // range end
     if (IntegerObject::bIsExactType(pEnd)) {
       iEndVal = pEnd->iValue();
 
@@ -190,13 +191,30 @@ b1 StageRange::bInRange(QueryNode* pNode, i8 iStageNum, Stz* szStageName, QueryN
           StringList::bContains(pStageNameList, false, szEndVal)) {
         return false;
       }
-      
+
+    } else {
+      NEVER_REACH
+    }
+
+    return true;
+
+  } else {
+    // We don't have a range. Instead we have a specific value
+    if (IntegerObject::bIsExactType(pBegin)) {
+      iBeginVal = pBegin->iValue();
+
+      return (iStageNum == iBeginVal);
+
+    } else if (StringObject::bIsExactType(pBegin)) {
+      szBeginVal = pBegin->szValue();
+
+      return (szStageName->bSame(szBeginVal) || szBeginVal->bEqual(C_RANGE_ALL));
+
     } else {
       NEVER_REACH
     }
   }
 
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/
