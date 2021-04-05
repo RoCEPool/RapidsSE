@@ -37,7 +37,7 @@ aggregRows lineitem " l_discount * 2";
 failure contains: "invalid command"
 
 //------------------------------------------------------------------------------
-aggregRows lineitem "l_discount sum";
+aggregRows lineitem "type decimal as l_discount l_discount sum";
 rows: 0
 
 // load data

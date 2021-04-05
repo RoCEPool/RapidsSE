@@ -6,7 +6,7 @@ trackMemory;
 success;
 
 //------------------------------------------------------------------------------
-projectColumns$ lineitem "$7";
+projectColumns$ lineitem "type decimal $7";
 failure contains: "Table does not exist"
 
 //------------------------------------------------------------------------------

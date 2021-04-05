@@ -42,7 +42,7 @@ PipeIn[]\clear to Operand[]
 
   // common compiler handlers
   find: compiler_ExitEarlyMarker  ZK_EXITEARLYMARKER op[].handler!
-  find: compiler_StreamSet    ZK_STREAMSET    op[].handler!
+  find: compiler_StreamSet        ZK_STREAMSET       op[].handler!
 
   // specific handlers
   find: exprValidate_CancelMarker ZK_CANCELMARKER op[].handler!

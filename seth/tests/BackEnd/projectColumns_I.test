@@ -6,7 +6,7 @@ trackMemory;
 success;
 
 //------------------------------------------------------------------------------
-projectColumns_I lineitem "l_discount";
+projectColumns_I lineitem "type decimal l_discount";
 failure contains: "Table does not exist"
 
 //------------------------------------------------------------------------------
@@ -33,7 +33,7 @@ create table LineItem
 success
 
 //------------------------------------------------------------------------------
-projectColumns_I lineitem "l_discount";
+projectColumns_I lineitem "type decimal l_discount";
 rows: 0
 
 // load data
@@ -41,11 +41,11 @@ load lineitem "../DATA/TPCH/lineitem10.csv";
 success
 
 //------------------------------------------------------------------------------
-projectColumns lineitem " sum ( l_discount ) ";
+projectColumns lineitem " type decimal sum ( l_discount ) ";
 failure contains: "invalid command"
 
 //------------------------------------------------------------------------------
-projectColumns_I lineitem "l_partkey";
+projectColumns_I lineitem "type integer l_partkey";
 rows:
   (1551894)
   (673091)
@@ -59,7 +59,7 @@ rows:
   (1284483)
 
 //------------------------------------------------------------------------------
-projectColumns_I lineitem "l_discount";
+projectColumns_I lineitem "type decimal l_discount";
 rows:
   (0.04)
   (0.09)
@@ -73,7 +73,7 @@ rows:
   (0.06)
 
 //------------------------------------------------------------------------------
-projectColumns_I lineitem "l_returnflag";
+projectColumns_I lineitem "type varchar l_returnflag";
 rows:
   ('N')
   ('N')
@@ -87,7 +87,7 @@ rows:
   ('A')
 
 //------------------------------------------------------------------------------
-projectColumns_I lineitem "l_shipdate";
+projectColumns_I lineitem "type date l_shipdate";
 rows:
  (DATE '1993-11-09')
  (DATE '1994-02-02')
@@ -101,7 +101,7 @@ rows:
  (DATE '1997-01-28')
 
 //------------------------------------------------------------------------------
-projectColumns_I lineitem "l_comment";
+projectColumns_I lineitem "type varchar l_comment";
 rows:
   ('egular courts above the')
   ('ly final dependencies: slyly bold ')
@@ -115,7 +115,7 @@ rows:
   ('nal foxes wake. ')
 
 //------------------------------------------------------------------------------
-projectColumns_I lineitem as a 2 , as b l_shipdate ;
+projectColumns_I lineitem type integer as a 2 , type date as b l_shipdate ;
 rows:
   (2, DATE '1993-11-09')
   (2, DATE '1994-02-02')
@@ -129,7 +129,7 @@ rows:
   (2, DATE '1997-01-28')
 
 //------------------------------------------------------------------------------
-projectColumns_I lineitem l_shipdate, l_extendedPrice 2.0 *, l_extendedPrice;
+projectColumns_I lineitem type date l_shipdate, type decimal l_extendedPrice 2.0 *, type decimal l_extendedPrice;
 rows:
  (DATE '1993-11-09',141644.30,70822.15)
  (DATE '1994-02-02',172167.30,86083.65)
@@ -143,7 +143,7 @@ rows:
  (DATE '1997-01-28',126132.64,63066.32)
 
 //------------------------------------------------------------------------------
-projectColumns_I lineitem l_extendedPrice, l_discount, l_extendedPrice l_discount *;
+projectColumns_I lineitem type decimal l_extendedPrice, type decimal l_discount, type decimal l_extendedPrice l_discount *;
 rows:
  (33078.94,0.04,1323.15)
  (38306.16,0.09,3447.55)
@@ -157,7 +157,7 @@ rows:
  (39620.34,0.06,2377.22)
 
  //------------------------------------------------------------------------------
- projectColumns_I lineitem l_orderkey, l_comment, l_shipdate, l_discount, l_orderkey;
+ projectColumns_I lineitem type integer l_orderkey, type integer l_comment, type date l_shipdate, type decimal l_discount, type integer l_orderkey;
  rows:
   (3,' unusual accounts. eve',DATE '1993-11-09',0.10,3)
   (3,'ongside of the furiously brave acco',DATE '1994-02-02',0.06,3)
@@ -171,7 +171,7 @@ rows:
   (2,'ven requests. deposits breach a',DATE '1997-01-28',0.00,2)
 
 //------------------------------------------------------------------------------
- projectColumns lineitem 1, 2, null;
+ projectColumns lineitem type integer 1, type integer 2, type null null;
  rows:
   (1,2,null)
   (1,2,null)

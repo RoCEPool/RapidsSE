@@ -6,6 +6,7 @@
 #include "RootNode.hpp"
 #include "GraphNav.hpp"
 #include "QueryNode.hpp"
+#include "QueryNodeList.hpp"
 
 using namespace Parser;
 
@@ -15,8 +16,9 @@ namespace STORE
   {
   private:
 
-    PlanNode* m_pPlanRoot;
-    String*   m_sPipeline;
+    PlanNode*      m_pPlanRoot;
+    QueryNodeList* m_pColExprList;
+    String*        m_sPipeline;
 
     // must be last
     Footer m_xFooter;
