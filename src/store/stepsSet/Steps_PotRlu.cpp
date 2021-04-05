@@ -104,7 +104,7 @@ void Step::vPotRluDelete(void)
   ENTRY();
 
   Pot* pPot = _pPot(m_pJob->pLogicUnit_job()->m_xRluCommon.m_pPot);
-  ( m_pJob->pLogicUnit_job() )->m_xRluCommon.m_pPot = nullptr;
+  m_pJob->pLogicUnit_job()->m_xRluCommon.m_pPot = nullptr;
   
   delete pPot;
   
@@ -134,7 +134,7 @@ void Step::vPotRluNew(void)
     
   Pot* pPot = new Pot;
       
-  ( m_pJob->pLogicUnit_job() )->m_xRluCommon.m_pPot = pPot;
+  m_pJob->pLogicUnit_job()->m_xRluCommon.m_pPot = pPot;
 
   EXIT();
 }
@@ -165,10 +165,10 @@ void Step::vPotRluRowPixStore(void)
   StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
   i8 iAddPtnHsh = m_pDataStack->iPopInt(__func__);
 
-  pStreamDef->vToRowPix(&( m_pJob->pLogicUnit_job() )->m_oRowPix,(bool)iAddPtnHsh);
+  pStreamDef->vToRowPix(&m_pJob->pLogicUnit_job()->m_oRowPix,(bool)iAddPtnHsh);
 
   Pot* pPot = _pPot(m_pJob->pLogicUnit_job()->m_xRluCommon.m_pPot);
-  pPot->vRowPix(&( m_pJob->pLogicUnit_job() )->m_oRowPix);
+  pPot->vRowPix(&m_pJob->pLogicUnit_job()->m_oRowPix);
 
   EXIT();
 }

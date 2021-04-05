@@ -65,7 +65,7 @@ void Step::vIndexDefRluDelete(void)
 
   IndexDef* pIndexDef = _pIndexDef(m_pJob->pLogicUnit_job()->m_xRluCommon.m_pIndexDef);
   
-  ( m_pJob->pLogicUnit_job() )->m_xpIndexDef = nullptr;
+  m_pJob->pLogicUnit_job()->m_xpIndexDef = nullptr;
   
   delete pIndexDef;
   
