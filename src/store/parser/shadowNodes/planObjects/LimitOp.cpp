@@ -18,10 +18,10 @@ using namespace Parser;
 /*----------------------------------------------------------------------------*/
 static Stz* C_LIMITOP_DEFN = "/__root__/definitions/object/planObject/sqlOperator/limitOp"_Stz;
 
-static Stz* C_LIMIT_PROP = "limit"_Stz;
-static Stz* C_LIMIT_DEFN = "/__root__/definitions/object/valueObject/integerObject"_Stz;
-static Stz* C_OFFSET_PROP = "offset"_Stz;
-static Stz* C_OFFSET_DEFN = "/__root__/definitions/object/valueObject/integerObject"_Stz;
+static Stz* C_LIMITPROP_NAME = "limit"_Stz;
+static Stz* C_LIMITPROP_DEFN = "/__root__/definitions/object/valueObject/integerObject"_Stz;
+static Stz* C_OFFSETPROP_NAME = "offset"_Stz;
+static Stz* C_OFFSETPROP_DEFN = "/__root__/definitions/object/valueObject/integerObject"_Stz;
 
 
 
@@ -46,13 +46,13 @@ QueryNode* LimitOp::pCreate(i8 iLimit, i8 iOffset)
   QueryNode* pLimitOp = new QueryNode(sName, C_LIMITOP_DEFN);
 
   Value xLimitVal(iLimit);
-  QueryNode* pLimitProp = new QueryNode(C_LIMIT_PROP, C_LIMIT_DEFN, static_cast<Value&&>(xLimitVal));
+  QueryNode* pLimitProp = new QueryNode(C_LIMITPROP_NAME, C_LIMITPROP_DEFN, static_cast<Value&&>(xLimitVal));
 
   Value xOffsetVal;
   if (iOffset == -1)  xOffsetVal.vSetNull(Value::VT_INT);
   else                xOffsetVal.vSet(iOffset);
 
-  QueryNode* pOffsetProp = new QueryNode(C_OFFSET_PROP, C_OFFSET_DEFN, static_cast<Value&&>(xOffsetVal));
+  QueryNode* pOffsetProp = new QueryNode(C_OFFSETPROP_NAME, C_OFFSETPROP_DEFN, static_cast<Value&&>(xOffsetVal));
 
   pLimitOp->vAppendProperty(pLimitProp);
   pLimitOp->vAppendProperty(pOffsetProp);
@@ -70,8 +70,8 @@ void LimitOp::vDescribe(PlanNode* pNode, s2K& sBuf)
 
   QueryNode* pLimitOp = _pQueryNode(pNode);
 
-  QueryNode* pLimitProp = _pQueryNode(GraphNav::pFindProperty(C_LIMIT_PROP, pLimitOp));
-  QueryNode* pOffsetProp = _pQueryNode(GraphNav::pFindProperty(C_OFFSET_PROP, pLimitOp));
+  QueryNode* pLimitProp = _pQueryNode(GraphNav::pFindProperty(C_LIMITPROP_NAME, pLimitOp));
+  QueryNode* pOffsetProp = _pQueryNode(GraphNav::pFindProperty(C_OFFSETPROP_NAME, pLimitOp));
   ASSERT(pLimitOp);
   ASSERT(pOffsetProp);
 
@@ -96,10 +96,10 @@ void LimitOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iInd
   sBuf.vConcat(GraphNav::szLeafType(pNode->szType()));
 
   // Get the limit and offset properties
-  PlanNode* pLimitProp = GraphNav::pFindProperty(const_cast<Stz*>(C_LIMIT_PROP), pNode);
+  PlanNode* pLimitProp = GraphNav::pFindProperty(const_cast<Stz*>(C_LIMITPROP_NAME), pNode);
   ASSERT(pLimitProp);
 
-  PlanNode* pOffsetProp = GraphNav::pFindProperty(const_cast<Stz*>(C_OFFSET_PROP), pNode);
+  PlanNode* pOffsetProp = GraphNav::pFindProperty(const_cast<Stz*>(C_OFFSETPROP_NAME), pNode);
   ASSERT(pOffsetProp);
 
   sBuf.vConcat("\n"_Stz);
@@ -139,7 +139,7 @@ b1 LimitOp::bIsOfType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 b1 LimitOp::bIsExactType(PlanNode *pNode)
 {
-  return ShadowNode::bIsExactType(pNode, C_LIMIT_DEFN);
+  return ShadowNode::bIsExactType(pNode, C_LIMITOP_DEFN);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -151,7 +151,7 @@ i8 LimitOp::iLimit(QueryNode* pNode)
   ASSERT(bIsOfType(pNode));
 
   QueryNode *pLimitNode =
-      _pQueryNode(GraphNav::pFindProperty(const_cast<Stz *>(C_LIMIT_PROP), pNode));
+      _pQueryNode(GraphNav::pFindProperty(const_cast<Stz *>(C_LIMITPROP_NAME), pNode));
 
   ASSERT(pLimitNode);
   return pLimitNode->iValue();
@@ -166,7 +166,7 @@ i8 LimitOp::iOffset(QueryNode* pNode)
   ASSERT(bIsOfType(pNode));
 
   QueryNode *pOffsetNode =
-      _pQueryNode(GraphNav::pFindProperty(const_cast<Stz *>(C_OFFSET_PROP), pNode));
+      _pQueryNode(GraphNav::pFindProperty(const_cast<Stz *>(C_OFFSETPROP_NAME), pNode));
 
   ASSERT(pOffsetNode);
 
