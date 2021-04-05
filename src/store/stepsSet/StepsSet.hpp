@@ -1066,7 +1066,7 @@ public:
   void vOperandOoOGet(void);
   void vOperandOoOGetAndClear(void);
   void vOperandOoOIsNull(void);
-  void vOperandNextOoO(void);
+  void vOperandOoONext(void);
   void vOperandOoOPipeOut(void);
   void vOperandOoOPipeToOutput(void);
   void vOperandOoOSet(void);

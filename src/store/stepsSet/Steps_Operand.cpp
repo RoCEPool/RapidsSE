@@ -432,11 +432,13 @@ void Step::vOperandKind(void)
 {
   ENTRY();
   
-  Operand* pOperand = *m_pJob->pLogicUnit_job()->m_xpOperandA;
-
-  eZK eOperand = (eZK)AM::iOperandZkKind(pOperand);
+//  Operand* pOperand = *m_pJob->pLogicUnit_job()->m_xpOperandA;
+//
+//  eZK eOperand = (eZK)AM::iOperandZkKind(pOperand);
   
-  m_pDataStack->vPushInt(eOperand);
+  eZK ePipeInOperand = m_pJob->pLogicUnit_job()->m_ePipeInOperand;
+
+  m_pDataStack->vPushInt(ePipeInOperand);
   
   EXIT();
 }
