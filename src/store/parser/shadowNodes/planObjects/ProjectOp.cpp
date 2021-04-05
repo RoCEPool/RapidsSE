@@ -10,6 +10,7 @@
 #include "QueryNode.hpp"
 #include "store/parser/shadowNodes/compound/ProjectedColumn.hpp"
 #include "Expr.hpp"
+#include "ShadowRoot.hpp"
 
 #include "GraphNav.hpp"
 
@@ -106,7 +107,18 @@ void ProjectOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iI
 
   ASSERT(pNode->nChildren() == 1);
   ASSERT(PlanObject::bIsOfType(pNode->pFirstChild()));
-  QueryNodeList* pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pRootNode);
+  QueryNodeList* pColExprList = nullptr;
+
+  // Explaining very early plans are difficult because we cannot resolve the column expressions.
+  // We don't want to call PlanObject::pColumnExprs() below before we have been able
+  // to resolve all table/column names in the system.
+  // When we resolve names we also add metadata into plan. So if the metadata node has
+  // no children then we probably haven't resolved any names yet (except for the case of
+  // the plan only containing literals).
+
+  if (ShadowRoot::pMetadataNode(pRootNode)->nChildren() > 0) {
+    pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pRootNode);
+  }
 
   // Iterate each projected expression
   if (pProjColumns->bHasChildren()) {
@@ -128,8 +140,10 @@ void ProjectOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iI
     delete pIter;
   }
 
-  pColExprList->vDeleteAll();
-  delete pColExprList;
+  if (pColExprList) {
+    pColExprList->vDeleteAll();
+    delete pColExprList;
+  }
 
   // Recurse any children of pNode
   if (pNode->bHasChildren()) {

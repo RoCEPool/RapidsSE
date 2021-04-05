@@ -85,7 +85,8 @@
   STD_PATH
   "
     define table __explain (
-      stage       VARCHAR NOT NULL ,
+      stageNum    INTEGER NOT NULL ,
+      stageName   VARCHAR NOT NULL ,
       explain     VARCHAR NOT NULL
     ) < infoSet > = 1 ;
   "

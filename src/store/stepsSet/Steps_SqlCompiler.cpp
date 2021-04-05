@@ -34,6 +34,7 @@
 #include "SqlPlanner.hpp"
 #include "ShadowNode.hpp"
 #include "ShadowRoot.hpp"
+#include "ShadowPlan.hpp"
 #include "PlanConstants.hpp"
 #include "GraphNav.hpp"
 #include "PlanOperand.hpp"
@@ -41,6 +42,8 @@
 #include "NameValidator.hpp"
 #include "ExprValidator.hpp"
 #include "SetOpValidator.hpp"
+#include "ExplainMarker.hpp"
+#include "ExplainOp.hpp"
 
 #include "SqlException.hpp"
 
@@ -67,53 +70,53 @@ void Step::vSqlCompilerExplain(void) {
   // Get the compiler stage
   s256 sCompilerStage;
   m_pDataStack->vPopStr(sCompilerStage, __func__);
+  ASSERT(sCompilerStage.nLength() > 0);
 
   // Get the plan operand
   PlanOperand *pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
+  Parser::RootNode* pRootNode = Parser::_pRootNode(pPlanOperand->pPlanNode());
+  UNUSED(pRootNode);
+  ASSERT(ShadowRoot::bIsExactType(pRootNode));
 
   // get the streamSet for explain
   InfoSet *pInfoSet = _pInfoSet(*(m_pJob->pLogicUnit_job())->m_xpStreamSet);
 
-/*
-  if (sCompilerStage.bEqual("parser"_Stz)) {
+  // Find the explainOp
+  QueryNode* pPlanNode = ShadowRoot::pPlanNode(pRootNode);
+  ASSERT(pPlanNode);
+  ASSERT(ShadowPlan::bIsExactType(pPlanNode));
+
+  QueryNode* pExplainMarker = _pQueryNode(pPlanNode->pFirstChild());
+  ASSERT(pExplainMarker);
+  ASSERT(ExplainMarker::bIsExactType(pExplainMarker));
+
+  QueryNode* pExplainOp = _pQueryNode(pExplainMarker->pFirstChild());
+  ASSERT(pExplainOp);
+  ASSERT(ExplainOp::bIsExactType(pExplainOp));
+
+  // Determine if this stage needs to be explained. The stage range list
+  // may indicate otherwise.
+  if (ExplainOp::bExplainStage(pExplainOp)) {
+    // This stage does need explaining!
+    // Don't explain the explain node, but start from the first child under it.
+    s48K sExplainBuf;
+    Parser::PlanObject::vExplain(pExplainOp->pFirstChild(), pRootNode, sExplainBuf, 0);
+
+    i8 iStageNum = ExplainOp::iStageCount(pExplainOp);
 
     Row *pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
-                                    "Explain ... "_Stz,
+                                    iStageNum,
                                     sCompilerStage.szStz(),
+                                    sExplainBuf.szStz(),
                                     C_VARGS_END);
     UNUSED(pRow);
   }
 
-
-  else if (sCompilerStage.bEqual("nameValidate"_Stz)) {
-
-    Row *pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
-                                    "Explain ... "_Stz,
-                                    sCompilerStage.szStz(),
-                                    C_VARGS_END);
-    UNUSED(pRow);
-  }
-
-  else if (sCompilerStage.bEqual("exprValidate"_Stz)) {
-
-    Row *pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
-                                    "Explain ... "_Stz,
-                                    sCompilerStage.szStz(),
-                                    C_VARGS_END);
-    UNUSED(pRow);
-  }
-
-  else if (sCompilerStage.bEqual("setOpValidate"_Stz)) {
-
+  // Do we need to exit after this stage?
+  if (ExplainOp::bExitEarly(pExplainOp)) {
     m_pJob->pLogicUnit_job()->m_bCompilerToExit = true;
-
-    Row *pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
-                                    "Explain ... "_Stz,
-                                    sCompilerStage.szStz(),
-                                    C_VARGS_END);
-    UNUSED(pRow);
+    delete pRootNode;
   }
-*/
 
   L_Exit:
   EXIT();
@@ -151,6 +154,7 @@ void Step::vSqlCompilerExprValidate(void)
   PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
   Parser::RootNode* pPlanRoot = Parser::_pRootNode(pPlanOperand->pPlanNode());
   UNUSED(pPlanRoot);
+  ASSERT(ShadowRoot::bIsExactType(pPlanRoot));
 
 
   try {
@@ -184,15 +188,44 @@ void Step::vSqlCompilerExprValidate(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* sqlCompiler::hasExplain -- does sql have an explain ?                      */
+/* sqlCompiler::hasExplain -- does sql have to do an explain?                 */
 /*----------------------------------------------------------------------------*/
 void Step::vSqlCompilerHasExplain(void) {
   ENTRY();
 
   bool bExplain = false;
 
+  // Get the compiler stage
+  s256 sCompilerStage;
+  m_pDataStack->vPopStr(sCompilerStage, __func__);
+  ASSERT(sCompilerStage.nLength() > 0);
+
   // Get the plan operand
   PlanOperand *pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
+
+  Parser::RootNode* pRootNode = Parser::_pRootNode(pPlanOperand->pPlanNode());
+  UNUSED(pRootNode);
+  ASSERT(ShadowRoot::bIsExactType(pRootNode));
+
+  // Determine if there is an ExplainOp in this plan.
+  QueryNode* pPlanNode = ShadowRoot::pPlanNode(pRootNode);
+
+  // pPlanNode should have one child being an ExplainMarker.
+  // The ExplainMarker should have one child being the ExplainOp
+  QueryNode* pMarker = _pQueryNode(pPlanNode->pFirstChild());
+  if (pMarker && ExplainMarker::bIsExactType(pMarker)) {
+
+    QueryNode* pExplainOp = _pQueryNode(pMarker->pFirstChild());
+    if (pExplainOp && ExplainOp::bIsExactType(pExplainOp)) {
+      bExplain = true;
+
+      // Increment the number of compiler stages encountered
+      ExplainOp::vIncStageCount(pExplainOp);
+
+      // Record the names of the compiler stages encountered
+      ExplainOp::vAddCompilerStageName(pExplainOp, sCompilerStage.szStz());
+    }
+  }
 
   m_pDataStack->vPushInt(bExplain);
 
@@ -224,6 +257,8 @@ void Step::vSqlCompilerNameValidate(void)
   PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
   Parser::RootNode* pPlanRoot = Parser::_pRootNode(pPlanOperand->pPlanNode());
   UNUSED(pPlanRoot);
+  ASSERT(ShadowRoot::bIsExactType(pPlanRoot));
+
 
   // Walk the graph and validate that each name can be resolved uniquely.
   // i.e. each table is known and unambiguous, each column refers to tables
@@ -401,6 +436,8 @@ void Step::vSqlCompilerSetOpValidate(void)
   PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
   Parser::RootNode* pPlanRoot = Parser::_pRootNode(pPlanOperand->pPlanNode());
   UNUSED(pPlanRoot);
+  ASSERT(ShadowRoot::bIsExactType(pPlanRoot));
+
 
 
   try {
@@ -449,6 +486,8 @@ void Step::vSqlCompilerTransliterate(void)
 
   PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
   Parser::RootNode* pPlanRoot = Parser::_pRootNode(pPlanOperand->pPlanNode());
+  ASSERT(ShadowRoot::bIsExactType(pPlanRoot));
+
 
   // Walk the graph and produce a pipeline statement.
   //bool bTransliterate = Dynamo::bPlanToPipeline(sPipelineStmt,pPlanRoot);

@@ -1678,7 +1678,8 @@
                   name: "stageRangeList",
                   value: "A list of stageRange objects",
                   properties: [
-                    // We add a constraint that all children must be of type /definitions/object/compound/stageRange
+                    // We add constraints that all children must be of type /definitions/object/compound/stageRange
+                    // and that there must always be children (never an empty list).
                     { name: "__constraints", type: "/__root__/primitives/constraints", children: [
                       {
                         name: "childType",
@@ -1688,6 +1689,11 @@
                           type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject",
                           value: "/__root__/definitions/object/compound/stageRange"
                         } ]
+                      },
+                      {
+                        // Constraint that this node must always have children
+                        name: "alwaysChildren",
+                        type: "/__root__/primitives/constraints/alwaysChildren"
                       }
                     ]} // end __constraints container
                   ], // end properties

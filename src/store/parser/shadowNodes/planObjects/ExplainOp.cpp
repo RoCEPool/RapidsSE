@@ -36,6 +36,8 @@ static Stz* C_STAGESPAST_DEFN = "/__root__/definitions/object/list/stringList"_S
 static Stz* C_FORMAT_PRETTY = "PRETTY"_Stz;
 static Stz* C_FORMAT_ROW    = "ROW"_Stz;
 
+static Stz* C_LAST_EXPLAINABLE_STAGE = "setOpValidate"_Stz;
+
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -186,6 +188,195 @@ QueryNodeList* ExplainOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
 //  ASSERT(pChild);
 //
 //  return PlanObject::pColumnExprs(pChild, pRootNode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Increments the number of stages (operators in the pipeline) encountered    */
+/*----------------------------------------------------------------------------*/
+void ExplainOp::vIncStageCount(QueryNode* pNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  // Get the stageCount property
+  QueryNode* pStageCountNode = _pQueryNode(GraphNav::pFindProperty(const_cast<Stz*>(C_STAGECOUNT_PROP), pNode));
+  ASSERT(pStageCountNode);
+  ASSERT(ShadowNode::bIsExactType(pStageCountNode, C_STAGECOUNT_DEFN));
+
+  i8 iCount = pStageCountNode->iValue();
+  ++iCount;
+  Value xValue(iCount);
+  pStageCountNode->vSetValue(static_cast<Value&&>(xValue));
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get the current stage count                                                */
+/*----------------------------------------------------------------------------*/
+i8 ExplainOp::iStageCount(QueryNode* pNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  // Get the stageCount property
+  QueryNode* pStageCountNode = _pQueryNode(GraphNav::pFindProperty(const_cast<Stz*>(C_STAGECOUNT_PROP), pNode));
+  ASSERT(pStageCountNode);
+  ASSERT(ShadowNode::bIsExactType(pStageCountNode, C_STAGECOUNT_DEFN));
+
+  i8 iCount = pStageCountNode->iValue();
+  return iCount;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Record the name of a compiler stage encountered by appending the stage name*/
+/* to the stagesPast list.                                                    */
+/*----------------------------------------------------------------------------*/
+void ExplainOp::vAddCompilerStageName(QueryNode* pNode, Stz* szStageName)
+{
+  ASSERT(bIsOfType(pNode));
+  ASSERT(szStageName->nLength() > 0);
+
+  // Get the stagesPast property
+  QueryNode* pStagesPastNode = _pQueryNode(GraphNav::pFindProperty(const_cast<Stz*>(C_STAGESPAST_PROP), pNode));
+  ASSERT(pStagesPastNode);
+  ASSERT(ShadowNode::bIsExactType(pStagesPastNode, C_STAGESPAST_DEFN));
+
+  // Create a new StringObject to add to this list
+  QueryNode* pChild = StringObject::pCreate(new Text(szStageName));
+  pStagesPastNode->vAppendChild(pChild);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get the last compiler stage name encountered                               */
+/*----------------------------------------------------------------------------*/
+Stz* ExplainOp::szLastStageName(QueryNode* pNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  // Get the stagesPast property
+  QueryNode* pStagesPastNode = _pQueryNode(GraphNav::pFindProperty(const_cast<Stz*>(C_STAGESPAST_PROP), pNode));
+  ASSERT(pStagesPastNode);
+  ASSERT(ShadowNode::bIsExactType(pStagesPastNode, C_STAGESPAST_DEFN));
+
+  QueryNode* pLastChild = _pQueryNode(pStagesPastNode->pLastChild());
+
+  if (!pLastChild) {
+    return nullptr;
+  }
+
+  ASSERT(StringObject::bIsOfType(pLastChild));
+  return pLastChild->szValue();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if the current stage needs to be explained.                   */
+/* Uses the # stages encountered and the list of stage names past to          */
+/* determine this.                                                            */
+/*----------------------------------------------------------------------------*/
+b1 ExplainOp::bExplainStage(QueryNode* pNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  b1 bInRange = false;
+
+  // Get the current stage number and name
+  i8 iStageNum;
+  Stz* szStageName;
+
+  QueryNode* pStageCountNode = _pQueryNode(GraphNav::pFindProperty(const_cast<Stz*>(C_STAGECOUNT_PROP), pNode));
+  ASSERT(pStageCountNode);
+  ASSERT(ShadowNode::bIsExactType(pStageCountNode, C_STAGECOUNT_DEFN));
+
+  iStageNum = pStageCountNode->iValue();
+  ASSERT(iStageNum > 0);
+
+  // Get the stagesPast property
+  QueryNode* pStagesPastNode = _pQueryNode(GraphNav::pFindProperty(const_cast<Stz*>(C_STAGESPAST_PROP), pNode));
+  ASSERT(pStagesPastNode);
+  ASSERT(ShadowNode::bIsExactType(pStagesPastNode, C_STAGESPAST_DEFN));
+
+  QueryNode* pLastStagesPastChild = _pQueryNode(pStagesPastNode->pLastChild());
+  ASSERT(pLastStagesPastChild);
+  ASSERT(StringObject::bIsExactType(pLastStagesPastChild));
+
+  szStageName = pLastStagesPastChild->szValue();
+  ASSERT(szStageName);
+
+  // Now use the stage number and name to determine if it fits in any of the stage ranges
+
+  // Get the stageRangeList property and iterate the ranges
+  QueryNode* pStageRangeList = _pQueryNode(GraphNav::pFindProperty(const_cast<Stz*>(C_STAGERANGELIST_PROP), pNode));
+  ASSERT(pStageRangeList);
+  ASSERT(StageRangeList::bIsExactType(pStageRangeList));
+  ASSERT(pStageRangeList->nChildren() > 0);
+
+  PlanNodeIter* pIter = pStageRangeList->pNewChildrenIter();
+  while (pIter->bHasNext()) {
+    QueryNode* pStageRange = _pQueryNode(pIter->pNext());
+
+    if (StageRange::bInRange(pStageRange, iStageNum, szStageName, pStagesPastNode)) {
+      bInRange = true;
+      break;
+    }
+  }
+
+  delete pIter;
+  return bInRange;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if we have reached the last stage to be explained             */
+/*----------------------------------------------------------------------------*/
+b1 ExplainOp::bExitEarly(QueryNode* pNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  // Get the name of the last stage encountered and compare it to the last
+  // explainable stage.
+  Stz* szLastStageName = ExplainOp::szLastStageName(pNode);
+  if (szLastStageName->bSame(C_LAST_EXPLAINABLE_STAGE)) {
+    return true;
+  }
+
+  // Get the stage count
+  QueryNode* pStageCountNode = _pQueryNode(GraphNav::pFindProperty(const_cast<Stz*>(C_STAGECOUNT_PROP), pNode));
+  ASSERT(pStageCountNode);
+  ASSERT(ShadowNode::bIsExactType(pStageCountNode, C_STAGECOUNT_DEFN));
+
+  i8 iStageNum = pStageCountNode->iValue();
+  ASSERT(iStageNum > 0);
+
+  // Get the stagesPast property
+  QueryNode* pStagesPastNode = _pQueryNode(GraphNav::pFindProperty(const_cast<Stz*>(C_STAGESPAST_PROP), pNode));
+  ASSERT(pStagesPastNode);
+  ASSERT(ShadowNode::bIsExactType(pStagesPastNode, C_STAGESPAST_DEFN));
+
+  // Get the stageRangeList property and iterate the ranges
+  QueryNode* pStageRangeList = _pQueryNode(GraphNav::pFindProperty(const_cast<Stz*>(C_STAGERANGELIST_PROP), pNode));
+  ASSERT(pStageRangeList);
+  ASSERT(StageRangeList::bIsExactType(pStageRangeList));
+  ASSERT(pStageRangeList->nChildren() > 0);
+
+  b1 bEarlyExit = true;
+
+  PlanNodeIter* pIter = pStageRangeList->pNewChildrenIter();
+  while (pIter->bHasNext()) {
+    QueryNode* pStageRange = _pQueryNode(pIter->pNext());
+
+    // We can only exit early if we are at or beyond all end ranges
+    if (!StageRange::bAtOrBeyondEnd(pStageRange, iStageNum, pStagesPastNode)) {
+      bEarlyExit = false;
+      break;
+    }
+  }
+
+  delete pIter;
+  return bEarlyExit;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return the name of the last explainable stage before transliteration       */
+/*----------------------------------------------------------------------------*/
+Stz* ExplainOp::szLastExplainableStage()
+{
+  return C_LAST_EXPLAINABLE_STAGE;
 }
 
 /*============================================================================*/

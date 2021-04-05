@@ -46,7 +46,7 @@
   InfoSet[].delete
 
   // does the sql have an explain ?
-  Operand[] sqlCompiler::hasExplain if
+  Operand[] sOperatorName sqlCompiler::hasExplain if
 
     // execute explain for this operator
     Operand[] sOperatorName sqlCompiler::explain

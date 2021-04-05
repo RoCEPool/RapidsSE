@@ -7,7 +7,7 @@
 
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
-#include "PlanConstants.hpp"
+#include "StringObject.hpp"
 
 #include "GraphNav.hpp"
 
@@ -82,6 +82,46 @@ b1 StringList::bIsOfType(PlanNode *pNode)
 b1 StringList::bIsExactType(PlanNode *pNode)
 {
   return ShadowNode::bIsExactType(pNode, C_STRINGLIST_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if this string list contains a given string value             */
+/*----------------------------------------------------------------------------*/
+b1 StringList::bContains(QueryNode* pNode, b1 bCaseSensitive, Stz* szVal)
+{
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+  ASSERT(szVal);
+
+  if (pNode->nChildren() == 0) {
+    return false;
+  }
+
+  b1 bFound = false;
+
+  PlanNodeIter* pIter = pNode->pNewChildrenIter();
+
+  while (pIter->bHasNext()) {
+    PlanNode* pChild = pIter->pNext();
+    ASSERT(StringObject::bIsOfType(pChild));
+
+    if (bCaseSensitive) {
+      if (szVal->bEqual(pChild->szValue())) {
+        bFound = true;
+        break;
+      }
+
+    } else {
+      // Case insensitive
+      if (szVal->bSame(pChild->szValue())) {
+        bFound = true;
+        break;
+      }
+    }
+  }
+
+  delete pIter;
+  return bFound;
 }
 
 /*============================================================================*/
