@@ -138,7 +138,8 @@
 
   assert::stack_0
 
-  // pop next operand from queue into PipeIn[]
+  // pop operand from queue into PipeIn[]
+  PipeIn[].peek assert
   PipeIn[].next
 
   // execute the operator's handler for the operand
