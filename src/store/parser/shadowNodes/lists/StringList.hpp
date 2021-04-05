@@ -27,6 +27,8 @@ namespace Parser
     // Returns true if a given node is this exact given type.
     static b1 bIsExactType(PlanNode* pNode);
 
+    // Returns true if this string list contains a given string value
+    static b1 bContains(QueryNode* pNode, b1 bCaseSensitive, Stz* szVal);
   };
 
 }

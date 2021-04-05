@@ -35,7 +35,7 @@
   InfoSet[].delete
 
   // does the sql have an explain ?
-  Operand[] sqlCompiler::hasExplain if
+  Operand[] "parser" sqlCompiler::hasExplain if
 
     // find the __explain tabledef
     C_TDEF_EXPLAIN op__tableDef_streamSet assert

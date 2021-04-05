@@ -271,8 +271,11 @@ antlrcpp::Any SqlPlanner::visitExplainStatement(sqlParser::ExplainStatementConte
   }
 
   if (!pStageList) {
-    // Create an empty state list
+    // Create a state list with the stage range 'last'
     pStageList = StageRangeList::pCreate();
+
+    QueryNode* pRange = StageRange::pCreateLastOnly();
+    pStageList->vAppendChild(pRange);
   }
 
   // Create an ExplainOp and add it as a child of the ExplainMarker
@@ -359,7 +362,7 @@ antlrcpp::Any SqlPlanner::visitExplainRangeChoice(sqlParser::ExplainRangeChoiceC
   QueryNode* pMarker;
 
   if (pCtx->all) {
-    pMarker = StringObject::pCreate(new Text('*'));
+    pMarker = StringObject::pCreate(new Text(StageRange::C_RANGE_ALL));
 
   } else if (pCtx->id) {
     Text* pText = pCleanId(pCtx->id);
