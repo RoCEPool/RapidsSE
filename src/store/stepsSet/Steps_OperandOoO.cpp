@@ -23,11 +23,12 @@
 void Step::vAddSteps_OperandOoO(void)
 {
   vAddStep("OperandOoO[]"_Stz,             &Step::vOperandOoOGet);
+  vAddStep("OperandOoO[]\\clear"_Stz,      &Step::vOperandOoOGetAndClear);
   vAddStep("OperandOoO[].delete"_Stz,      &Step::vOperandOoODelete);
   vAddStep("OperandOoO[].isNull"_Stz,      &Step::vOperandOoOIsNull);
   vAddStep("OperandOoO[].next"_Stz,        &Step::vOperandNextOoO);
   vAddStep("OperandOoO[].pipeOut"_Stz,     &Step::vOperandOoOPipeOut);
-  vAddStep("OperandOoO[].pipeToOutput"_Stz,   &Step::vOperandOoOPipeToOutput);
+  vAddStep("OperandOoO[].pipeToOutput"_Stz,&Step::vOperandOoOPipeToOutput);
   vAddStep("OperandOoO[].set"_Stz,         &Step::vOperandOoOSet);
 }
 
@@ -53,6 +54,20 @@ void Step::vOperandOoOGet(void)
   ENTRY();
   
   m_pDataStack->vPushPtr(*( m_pJob->pLogicUnit_job() )->m_xpOperandOoO);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* OperandOoO[]\clear -- fetch operand and set to nullptr                     */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandOoOGetAndClear(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushPtr(*( m_pJob->pLogicUnit_job() )->m_xpOperandOoO);
+  
+  ( m_pJob->pLogicUnit_job() )->m_xpOperandOoO = nullptr;
   
   EXIT();
 }

@@ -1067,6 +1067,7 @@ public:
   // OperandOoO
   void vOperandOoODelete(void);
   void vOperandOoOGet(void);
+  void vOperandOoOGetAndClear(void);
   void vOperandOoOIsNull(void);
   void vOperandNextOoO(void);
   void vOperandOoOPipeOut(void);
