@@ -32,7 +32,7 @@ void Step::vExprEvalGet(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*( m_pJob->pLogicUnit_job() )->m_xpExprEval);
+  m_pDataStack->vPushPtr(*m_pJob->pLogicUnit_job()->m_xpExprEval);
 
   EXIT();
 }
@@ -44,8 +44,8 @@ void Step::vExprEvalDelete(void)
 {
   ENTRY();
 
-  ExprEval* pExprEval = *( m_pJob->pLogicUnit_job() )->m_xpExprEval;
-  ( m_pJob->pLogicUnit_job() )->m_xpExprEval = nullptr;
+  ExprEval* pExprEval = *m_pJob->pLogicUnit_job()->m_xpExprEval;
+  m_pJob->pLogicUnit_job()->m_xpExprEval = nullptr;
   delete pExprEval;
   
   EXIT();
@@ -58,7 +58,7 @@ void Step::vExprEvalEvaluateColumns(void)
 {
   ENTRY();
 
-  ExprEval* pExprEval = *( m_pJob->pLogicUnit_job() )->m_xpExprEval;
+  ExprEval* pExprEval = *m_pJob->pLogicUnit_job()->m_xpExprEval;
 
   StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
   StreamDef* pStreamDefIn = _pStreamDef(m_pDataStack->pPopPtr(__func__));
@@ -80,7 +80,7 @@ void Step::vExprEvalEvaluateOrdinals(void)
 {
   ENTRY();
 
-  ExprEval* pExprEval = *( m_pJob->pLogicUnit_job() )->m_xpExprEval;
+  ExprEval* pExprEval = *m_pJob->pLogicUnit_job()->m_xpExprEval;
 
   StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
   StreamDef* pStreamDefIn = _pStreamDef(m_pDataStack->pPopPtr(__func__));
@@ -102,7 +102,7 @@ void Step::vExprEvalNew(void)
 {
   ENTRY();
 
-  ( m_pJob->pLogicUnit_job() )->m_xpExprEval = new ExprEval;
+  m_pJob->pLogicUnit_job()->m_xpExprEval = new ExprEval;
 
   EXIT();
 }
@@ -114,7 +114,7 @@ void Step::vExprEvalSet(void)
 {
   ENTRY();
 
-  ( m_pJob->pLogicUnit_job() )->m_xpExprEval = _pExprEval(m_pDataStack->pPopPtr(__func__));
+  m_pJob->pLogicUnit_job()->m_xpExprEval = _pExprEval(m_pDataStack->pPopPtr(__func__));
 
   EXIT();
 }

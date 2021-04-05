@@ -158,7 +158,7 @@ void Step::vSqlCompilerExprValidate(void)
 
   } catch (Parser::SqlException& e) {
     Grid* pGrid = AM::pGrid();
-    InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
+    InfoSet* pInfoSet = _pInfoSet(*m_pJob->pLogicUnit_job()->m_xpInfoSet);
     Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
                                     pGrid->pThisNode()->szNodeNm(),
                                     EC_SEMANTIC_ERROR,
@@ -235,7 +235,7 @@ void Step::vSqlCompilerNameValidate(void)
 
   } catch (Parser::SqlException& e) {
     Grid* pGrid = AM::pGrid();
-    InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
+    InfoSet* pInfoSet = _pInfoSet(*m_pJob->pLogicUnit_job()->m_xpInfoSet);
     Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
                                     pGrid->pThisNode()->szNodeNm(),
                                     EC_SEMANTIC_ERROR,
@@ -338,7 +338,7 @@ void Step::vSqlCompilerParser(void)
 
   } catch (Parser::SyntaxException& e) {
     //vTrace("SyntaxException at %lld:%lld : %s\n"_Stz, e.iLine(), e.iColumn(), e.szError());
-    InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
+    InfoSet* pInfoSet = _pInfoSet(*m_pJob->pLogicUnit_job()->m_xpInfoSet);
     Grid* pGrid = AM::pGrid();
     Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
                                     pGrid->pThisNode()->szNodeNm(),
@@ -355,7 +355,7 @@ void Step::vSqlCompilerParser(void)
   } catch (Parser::SemanticException& e) {
     //vTrace("SemanticException: %s\n"_Stz, e.szError());
     Grid* pGrid = AM::pGrid();
-    InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
+    InfoSet* pInfoSet = _pInfoSet(*m_pJob->pLogicUnit_job()->m_xpInfoSet);
     Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
                                     pGrid->pThisNode()->szNodeNm(),
                                     EC_SEMANTIC_ERROR,
@@ -411,7 +411,7 @@ void Step::vSqlCompilerSetOpValidate(void)
 
   } catch (Parser::SqlException& e) {
     Grid* pGrid = AM::pGrid();
-    InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
+    InfoSet* pInfoSet = _pInfoSet(*m_pJob->pLogicUnit_job()->m_xpInfoSet);
     Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
                                     pGrid->pThisNode()->szNodeNm(),
                                     EC_SEMANTIC_ERROR,

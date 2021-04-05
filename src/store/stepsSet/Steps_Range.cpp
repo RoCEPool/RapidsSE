@@ -32,7 +32,7 @@ void Step::vRangeGet(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*( m_pJob->pLogicUnit_job() )->m_xpRange);
+  m_pDataStack->vPushPtr(*m_pJob->pLogicUnit_job()->m_xpRange);
 
   EXIT();
 }
@@ -44,7 +44,7 @@ void Step::vRangeNew(void)
 {
   ENTRY();
 
-  ( m_pJob->pLogicUnit_job() )->m_xpRange = new Range;
+  m_pJob->pLogicUnit_job()->m_xpRange = new Range;
   
   EXIT();
 }
@@ -56,7 +56,7 @@ void Step::vRangeBounds(void)
 {
   ENTRY();
 
-  Range* pRange = *( m_pJob->pLogicUnit_job() )->m_xpRange;
+  Range* pRange = *m_pJob->pLogicUnit_job()->m_xpRange;
 
   Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
 
@@ -76,7 +76,7 @@ void Step::vRangeSet(void)
 {
   ENTRY();
 
-  ( m_pJob->pLogicUnit_job() )->m_xpRange = _pRange(m_pDataStack->pPopPtr(__func__));
+  m_pJob->pLogicUnit_job()->m_xpRange = _pRange(m_pDataStack->pPopPtr(__func__));
 
   EXIT();
 }
