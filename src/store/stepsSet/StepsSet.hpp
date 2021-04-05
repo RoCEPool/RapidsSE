@@ -581,8 +581,6 @@ public:
   void vJobAssertParticipant(void);
   void vJobAssertReceived(void);
 
-  void vJobBideOperand(void);
-
   void vJobClass(void);
   void vJobCompleted(void);
 
@@ -609,7 +607,6 @@ public:
   void vJobKindFetch(void);
 
   void vJobNameFetch(void);
-  void vJobNextOperand(void);
   void vJobNoWaitFetch(void);
 
   void vJobOriginatingIdFetch(void);
