@@ -111,11 +111,14 @@ void Step::vPipeinKind(void)
   ENTRY();
   
   Operand* pOperand = *( m_pJob->pLogicUnit_job() )->m_xpPipein;
-  
+
   eZK eOperand = (eZK)AM::iOperandZkKind(pOperand);
-    
+
   m_pDataStack->vPushInt(eOperand);
   
+//  eZK ePipeInOperand = m_pJob->pLogicUnit_job()->m_ePipeInOperand;
+//  m_pDataStack->vPushInt(ePipeInOperand);
+
   EXIT();
 }
 
@@ -126,6 +129,8 @@ void Step::vPipeinNext(void)
 {
   ENTRY();
   
+  //RASSERT(! *( m_pJob->pLogicUnit_job() )->m_xpPipein);
+  
   if (( m_pJob->pLogicUnit_job() )->m_xpPipein.bIsNull()) {
     
     Operand* pOperand = m_pJob->m_pOp->pPopQueue();
@@ -133,9 +138,10 @@ void Step::vPipeinNext(void)
     
     eZK eOperand = (eZK)AM::iOperandZkKind(pOperand);
     m_pJob->pLogicUnit_job()->m_eOperand = eOperand;
+    m_pJob->pLogicUnit_job()->m_ePipeInOperand = eOperand;
   }
   
-  ASSERT(*( m_pJob->pLogicUnit_job() )->m_xpPipein);
+  RASSERT(*( m_pJob->pLogicUnit_job() )->m_xpPipein);
   
   EXIT();
 }
@@ -203,6 +209,16 @@ void Step::vPipeinSet(void)
 
   
   ( m_pJob->pLogicUnit_job() )->m_xpPipein = _pOperand(pOperand);
+  
+  if (( m_pJob->pLogicUnit_job() )->m_xpPipein.bIsNull()) {
+    m_pJob->pLogicUnit_job()->m_eOperand = ZK_NONE;
+    m_pJob->pLogicUnit_job()->m_ePipeInOperand = ZK_NONE;
+  }
+  else {
+    eZK eOperand = (eZK)AM::iOperandZkKind(pOperand);
+    m_pJob->pLogicUnit_job()->m_eOperand = eOperand;
+    m_pJob->pLogicUnit_job()->m_ePipeInOperand = eOperand;
+  }
   
   EXIT();
 }
