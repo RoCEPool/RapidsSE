@@ -383,7 +383,9 @@
 : op__handle params| iOperandKind |
 
   0 iOperandKind EG_ZK LogicUnit[].diaryNote
+  
   LogicUnit[].handler@ execute
+  
   1 iOperandKind EG_ZK LogicUnit[].diaryNote
 ;
 
@@ -407,21 +409,18 @@
     OperandOoO[].next if
 
       OperandOoO[]\clear to PipeIn[]
-
       PipeIn[].kind to iOperandKind
 
       // debug::flag@ if "(Revised) Calling handler for OoO operand" . then
 
       iOperandKind op[].isOperandValid not if
-        find: INVALID_OPERAND_handler op__handle
-      else
-        iOperandKind op[].IncOperandCount
-        iOperandKind op[].handler@ LogicUnit[].handler!
-        iOperandKind op__handle
+        find: INVALID_OPERAND_handler op__handle not if exit then
+        continue_if
       then
 
-      not if exit then
-      
+      iOperandKind op[].IncOperandCount
+      iOperandKind op[].handler@ LogicUnit[].handler!
+      iOperandKind op__handle not if exit then
       continue_if
       
     then
@@ -436,11 +435,7 @@
       false LogicUnit[].callAgain!
       true LogicUnit[].calledAgain!
 
-      iOperandKind op[].IncOperandCount
-      iOperandKind op__handle
-      
-      not if exit then
-      
+      iOperandKind op__handle not if exit then
       continue_if
 
     then
@@ -469,17 +464,13 @@
     //debug::flag@ if "(Revised) Calling handler for NEXT operand" . then
 
     iOperandKind op[].isOperandValid not if
-      iOperandKind
-        find: INVALID_OPERAND_handler op__handle
-      not if exit then
+      find: INVALID_OPERAND_handler op__handle not if exit then
       continue_if
     then
     
     iOperandKind op[].IncOperandCount
-
     iOperandKind op[].handler@ LogicUnit[].handler!
-    iOperandKind op__handle
-    not if exit then
+    iOperandKind op__handle not if exit then
 
   again
 ;
