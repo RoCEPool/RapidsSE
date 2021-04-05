@@ -362,10 +362,10 @@
 /*----------------------------------------------------------------------------*/
 /* call handler for operand                                                   */
 /*----------------------------------------------------------------------------*/
-: op__handle params| pHandler iOperandKind |
+: op__handle params| iOperandKind |
 
   0 iOperandKind EG_ZK LogicUnit[].diaryNote
-  pHandler execute
+  LogicUnit[].handler@ execute
   1 iOperandKind EG_ZK LogicUnit[].diaryNote
 ;
 
@@ -401,24 +401,26 @@
 
     assert::stack_0
     
-    // attempt to get an Out-of_Order Operand
+    PipeIn[].isNull assert
+
+    // test for Out-of_Order Operand
     OperandOoO[].next if
 
       OperandOoO[] to PipeIn[]
       nullptr to OperandOoO[]
 
-      debug::flag@ if "(Revised) Calling handler for OoO operand" . then
       PipeIn[].kind to iOperandKind
+
+      // debug::flag@ if "(Revised) Calling handler for OoO operand" . then
 
       iOperandKind op[].isOperandValid not if
         find: INVALID_OPERAND_handler op__handle
       else
         iOperandKind op[].IncOperandCount
-        iOperandKind dup op[].handler@ op__handle
+      iOperandKind op[].handler@ LogicUnit[].handler!
+      iOperandKind op__handle
       then
 
-      PipeIn[].isNull assert
-      
       not if exit then
       
       continue_if
@@ -429,17 +431,13 @@
     // test for call again
     LogicUnit[].callAgain@ if
 
-      debug::flag@ if "(Revised) Calling handler AGAIN operand" . then
+      // debug::flag@ if "(Revised) Calling handler AGAIN operand" . then
 
       false LogicUnit[].callAgain!
       true LogicUnit[].calledAgain!
 
-      //iOperandKind op[].isOperandValid not if
-      //  find: INVALID_OPERAND_handler op__handle
-      //else
-        iOperandKind op[].IncOperandCount
-        iOperandKind LogicUnit[].handler@ op__handle
-      //then
+      iOperandKind op[].IncOperandCount
+      iOperandKind op__handle
       
       not if exit then
       
@@ -459,10 +457,9 @@
 
     // pop next operand from queue into PipeIn[]
     PipeIn[].next
-
-    // execute the operator's handler for the operand
-    debug::flag@ if "(Revised) Calling handler for NEXT operand" . then
     PipeIn[].kind to iOperandKind
+
+    //debug::flag@ if "(Revised) Calling handler for NEXT operand" . then
 
     iOperandKind op[].isOperandValid not if
       iOperandKind
@@ -471,11 +468,8 @@
       iOperandKind op[].IncOperandCount
 
       iOperandKind op[].handler@ LogicUnit[].handler!
-      iOperandKind LogicUnit[].handler@ op__handle
+      iOperandKind op__handle
     then
-
-    // assert Operand is null
-    PipeIn[].isNull assert
 
     not if exit then
       
