@@ -53,6 +53,7 @@
 void Step::vAddSteps_SqlCompiler(void)
 {
   vAddStep("sqlCompiler::explain"_Stz,        &Step::vSqlCompilerExplain);
+  vAddStep("sqlCompiler::explainPlan"_Stz,    &Step::vSqlCompilerExplainPlan);
   vAddStep("sqlCompiler::exprValidate"_Stz,   &Step::vSqlCompilerExprValidate);
   vAddStep("sqlCompiler::nameValidate"_Stz,   &Step::vSqlCompilerNameValidate);
   vAddStep("sqlCompiler::hasExplain"_Stz,     &Step::vSqlCompilerHasExplain);
@@ -119,6 +120,32 @@ void Step::vSqlCompilerExplain(void) {
   }
 
   L_Exit:
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* sqlCompiler::explainPlan -- explain plan stage                             */
+/*----------------------------------------------------------------------------*/
+void Step::vSqlCompilerExplainPlan(void)
+{
+  ENTRY();
+
+  /**
+   * The purpose of this stage in the pipeline is to be a marker for the last
+   * point in the SQL compilation pipeline before the plan graph is
+   * transliterated into a pipeline statement. If an query is being explained
+   * then this is the point that it happens.
+   *
+   * However the explain does not actually occur here. Because we can ask for
+   * an explain of many or all stages from the parser to this stage the
+   * SQL compilation pipeline calls the above vSqlCompilerExplain() step after
+   * running the step for each stage of the pipeline. So we don't need to do
+   * anything specific here. Instead this empty stage is basically a name
+   * marker for the last step prior to transliteration.
+   *
+   * The plan is not modified in this stage.
+   */
+
   EXIT();
 }
 

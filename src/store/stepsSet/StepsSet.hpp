@@ -1459,6 +1459,7 @@ public:
 
   // sql compiler
   void vSqlCompilerExplain(void);
+  void vSqlCompilerExplainPlan(void);
   void vSqlCompilerExprValidate(void);
   void vSqlCompilerHasExplain(void);
   void vSqlCompilerNameValidate(void);
