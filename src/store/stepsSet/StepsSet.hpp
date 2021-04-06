@@ -1458,7 +1458,7 @@ public:
   void vSocketSet(void);
 
   // sql compiler
-  void vSqlCompilerExplain(void);
+  void vSqlCompilerDoExplain(void);
   void vSqlCompilerExplainPlan(void);
   void vSqlCompilerExprValidate(void);
   void vSqlCompilerHasExplain(void);

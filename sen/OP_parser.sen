@@ -47,7 +47,7 @@
     streamSetTable[] StreamSet[].new
 
     // execute explain for this operator
-    Operand[] "parser" sqlCompiler::explain
+    Operand[] "parser" sqlCompiler::doExplain
 
     // pipeout streamDef of explain
     StreamDef[].pipeout

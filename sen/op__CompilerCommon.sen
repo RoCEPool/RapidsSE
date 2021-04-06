@@ -49,7 +49,7 @@
   Operand[] sOperatorName sqlCompiler::hasExplain if
 
     // execute explain for this operator
-    Operand[] sOperatorName sqlCompiler::explain
+    Operand[] sOperatorName sqlCompiler::doExplain
 
     // pipeout explain
     StreamSet[].pipeout
