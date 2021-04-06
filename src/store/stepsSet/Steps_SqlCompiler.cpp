@@ -52,7 +52,8 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_SqlCompiler(void)
 {
-  vAddStep("sqlCompiler::explain"_Stz,        &Step::vSqlCompilerExplain);
+  vAddStep("sqlCompiler::doExplain"_Stz,        &Step::vSqlCompilerDoExplain);
+  vAddStep("sqlCompiler::explainPlan"_Stz,    &Step::vSqlCompilerExplainPlan);
   vAddStep("sqlCompiler::exprValidate"_Stz,   &Step::vSqlCompilerExprValidate);
   vAddStep("sqlCompiler::nameValidate"_Stz,   &Step::vSqlCompilerNameValidate);
   vAddStep("sqlCompiler::hasExplain"_Stz,     &Step::vSqlCompilerHasExplain);
@@ -62,10 +63,29 @@ void Step::vAddSteps_SqlCompiler(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* sqlCompiler::explain -- sql explain                                        */
+/* sqlCompiler::doExplain -- (potentially) create the explain of the plan     */
 /*----------------------------------------------------------------------------*/
-void Step::vSqlCompilerExplain(void) {
+void Step::vSqlCompilerDoExplain(void) {
   ENTRY();
+
+  /**
+   * This is not a strict stage in the sql compiler pipeline. Instead this
+   * function is called after every stage is invoked if vSqlCompilerHasExplain()
+   * returns true.
+   *
+   * vSqlCompilerHasExplain() will return true if the plan is topped by an ExplainOp.
+   * But not every stage in the plan needs to be explained. So this function first
+   * determines if the current stage needs to be explained and if so it creates
+   * the rows that describe the plan at this time. Multiple stages can be explained.
+   *
+   * Finally, if we are explaining the plan then we also need to stop the plan from
+   * being executed, so this function also determines when that is. We can't
+   * terminate the pipeline early if we haven't explained a stage that the user
+   * has requested.
+   *
+   * This function takes two parameters off the data stack - the name of the
+   * current stage that was just processed, and the plan itself.
+   */
 
   // Get the compiler stage
   s256 sCompilerStage;
@@ -119,6 +139,32 @@ void Step::vSqlCompilerExplain(void) {
   }
 
   L_Exit:
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* sqlCompiler::explainPlan -- explain plan stage                             */
+/*----------------------------------------------------------------------------*/
+void Step::vSqlCompilerExplainPlan(void)
+{
+  ENTRY();
+
+  /**
+   * The purpose of this stage in the pipeline is to be a marker for the last
+   * point in the SQL compilation pipeline before the plan graph is
+   * transliterated into a pipeline statement. If an query is being explained
+   * then this is the point that it happens.
+   *
+   * However the explain does not actually occur here. Because we can ask for
+   * an explain of many or all stages from the parser to this stage the
+   * SQL compilation pipeline calls the above vSqlCompilerDoExplain() step after
+   * running the step for each stage of the pipeline. So we don't need to do
+   * anything specific here. Instead this empty stage is basically a name
+   * marker for the last step prior to transliteration.
+   *
+   * The plan is not modified in this stage.
+   */
+
   EXIT();
 }
 

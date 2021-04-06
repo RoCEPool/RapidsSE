@@ -36,7 +36,9 @@ static Stz* C_STAGESPAST_DEFN = "/__root__/definitions/object/list/stringList"_S
 static Stz* C_FORMAT_PRETTY = "PRETTY"_Stz;
 static Stz* C_FORMAT_ROW    = "ROW"_Stz;
 
-static Stz* C_LAST_EXPLAINABLE_STAGE = "setOpValidate"_Stz;
+// Name of the last stage prior to transliteration and conversion to
+// a physical pipeline statement
+static Stz* C_LAST_EXPLAINABLE_STAGE = "explainPlan"_Stz;
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
