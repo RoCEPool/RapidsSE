@@ -52,8 +52,9 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_SqlCompiler(void)
 {
-  vAddStep("sqlCompiler::doExplain"_Stz,        &Step::vSqlCompilerDoExplain);
+  vAddStep("sqlCompiler::doExplain"_Stz,      &Step::vSqlCompilerDoExplain);
   vAddStep("sqlCompiler::explainPlan"_Stz,    &Step::vSqlCompilerExplainPlan);
+  vAddStep("sqlCompiler::explainFormat"_Stz,  &Step::vSqlCompilerExplainFormat);
   vAddStep("sqlCompiler::exprValidate"_Stz,   &Step::vSqlCompilerExprValidate);
   vAddStep("sqlCompiler::nameValidate"_Stz,   &Step::vSqlCompilerNameValidate);
   vAddStep("sqlCompiler::hasExplain"_Stz,     &Step::vSqlCompilerHasExplain);
@@ -137,6 +138,51 @@ void Step::vSqlCompilerDoExplain(void) {
     m_pJob->pLogicUnit_job()->m_bCompilerToExit = true;
     delete pRootNode;
   }
+
+  L_Exit:
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* sqlCompiler::explainFormat -- Return the tabledef for the explain format   */
+/*----------------------------------------------------------------------------*/
+void Step::vSqlCompilerExplainFormat(void) {
+  ENTRY();
+
+  /**
+   * Given that vSqlCompilerHasExplain() has returned true, this function returns
+   * the string constant that is looked up to get the table definition for the
+   * rows that are returned from an EXPLAIN query.
+   *
+   * This function looks up the format property of the ExplainOp and returns
+   * the appropriate tabledef type. All returned string constants must come
+   * from C_TDEF_*.
+   */
+
+  // Get the plan operand
+  PlanOperand *pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
+  Parser::RootNode* pRootNode = Parser::_pRootNode(pPlanOperand->pPlanNode());
+  UNUSED(pRootNode);
+  ASSERT(ShadowRoot::bIsExactType(pRootNode));
+
+  // Find the explainOp
+  QueryNode* pPlanNode = ShadowRoot::pPlanNode(pRootNode);
+  ASSERT(pPlanNode);
+  ASSERT(ShadowPlan::bIsExactType(pPlanNode));
+
+  QueryNode* pExplainMarker = _pQueryNode(pPlanNode->pFirstChild());
+  ASSERT(pExplainMarker);
+  ASSERT(ExplainMarker::bIsExactType(pExplainMarker));
+
+  QueryNode* pExplainOp = _pQueryNode(pExplainMarker->pFirstChild());
+  ASSERT(pExplainOp);
+  ASSERT(ExplainOp::bIsExactType(pExplainOp));
+
+  // Get the tabledef string for the current explain format
+  Stz* szTableDef = ExplainOp::szTableDef(pExplainOp);
+  ASSERT(szTableDef);
+
+  m_pDataStack->vPushStz(szTableDef);
 
   L_Exit:
   EXIT();

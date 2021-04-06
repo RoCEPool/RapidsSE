@@ -37,8 +37,11 @@
   // does the sql have an explain ?
   Operand[] "parser" sqlCompiler::hasExplain if
 
-    // find the __explain tabledef
-    C_TDEF_EXPLAIN op__tableDef_streamSet assert
+    // Get the tabledef for the explain format
+    Operand[] sqlCompiler::explainFormat to stringA[]
+
+    // find the explain tabledef
+    stringA[] op__tableDef_streamSet assert
 
     // create a new streamDef
     streamSetTable[] StreamDef[].new
