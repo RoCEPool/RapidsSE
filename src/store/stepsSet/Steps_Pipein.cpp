@@ -45,8 +45,16 @@ void Step::vPipeinBide(void)
   
   m_pJob->pLogicUnit_job()->m_xpPipein = m_pJob->m_pOp->pPopQueue();
   
-  if (m_pJob->pLogicUnit_job()->m_xpPipein.bIsNull())
+  if (m_pJob->pLogicUnit_job()->m_xpPipein.bIsNull()) {
     vScheduleBide();
+  }
+  else {
+    Operand* pOperand = * m_pJob->pLogicUnit_job()->m_xpPipein;
+    
+    eZK eOperand = (eZK)AM::iOperandZkKind(pOperand);
+    m_pJob->pLogicUnit_job()->m_eOperand = eOperand;
+    m_pJob->pLogicUnit_job()->m_ePipeInOperand = eOperand;
+  }
   
   EXIT();
 }
@@ -132,14 +140,14 @@ void Step::vPipeinKind(void)
 {
   ENTRY();
   
-  Operand* pOperand = *m_pJob->pLogicUnit_job()->m_xpPipein;
-
-  eZK eOperand = (eZK)AM::iOperandZkKind(pOperand);
-
-  m_pDataStack->vPushInt(eOperand);
+//  Operand* pOperand = *m_pJob->pLogicUnit_job()->m_xpPipein;
+//
+//  eZK eOperand = (eZK)AM::iOperandZkKind(pOperand);
+//
+//  m_pDataStack->vPushInt(eOperand);
   
-//  eZK ePipeInOperand = m_pJob->pLogicUnit_job()->m_ePipeInOperand;
-//  m_pDataStack->vPushInt(ePipeInOperand);
+  eZK ePipeInOperand = m_pJob->pLogicUnit_job()->m_ePipeInOperand;
+  m_pDataStack->vPushInt(ePipeInOperand);
 
   EXIT();
 }
