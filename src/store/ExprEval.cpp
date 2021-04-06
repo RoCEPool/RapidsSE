@@ -726,7 +726,7 @@ eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
       // discovered a comma, add the column to the streamDefOut
       if (pStreamDefOut) {
         eError = eHandleOutColumn(pStreamDefOut, pColumn ? pColumn : pColumnExpr,
-                                  sAliasName, i_DstColumn, bSum);
+                                  i_DstColumn, bSum);
         if (eError == EC_INVALID_COMMAND)
           goto L_RETURN;
         bSum = false;
@@ -766,7 +766,7 @@ eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
       }
 
       // extract column name
-      sAliasName = pTkn->szChars();
+      pColumnExpr->vColumnNm(pTkn->szChars());
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -873,7 +873,7 @@ eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
       // discovered a comma, add the column to the streamDefOut
       if (pStreamDefOut)
         eError = eHandleOutColumn(pStreamDefOut, pColumn ? pColumn : pColumnExpr,
-                                  sAliasName, i_DstColumn, bSum);
+                                  i_DstColumn, bSum);
       if ( eError == EC_INVALID_COMMAND)
         goto L_RETURN;
 
@@ -947,7 +947,7 @@ eEC ExprEval::eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
     // add the last column to the streamDefOut
     if (pStreamDefOut)
       eError = eHandleOutColumn(pStreamDefOut, pColumnExpr,
-                                sAliasName, i_DstColumn, bSum);
+                                i_DstColumn, bSum);
   }
 
   L_RETURN:
@@ -965,7 +965,6 @@ eEC ExprEval::eExprEvalOrdinal(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut
   
   eEC eError = EC_NONE;
 
-  Stz *sAliasName = ""_Stz;
   i8 i_DstColumn = C_UNKNOWN;
   i8 i_GbyColumn = C_UNKNOWN;
   Column *pColumn = nullptr;
@@ -974,10 +973,16 @@ eEC ExprEval::eExprEvalOrdinal(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut
   TagSet oTagSet;
   bool bSum = false;
   bool bGroupBy = false;
+  s32 sColumnNm;
+  i8 iColumn = 0;
+
+  sColumnNm.vSprint("col%lld"_Stz, i_DstColumn+1);
+  pColumnExpr->vColumnNm(sColumnNm);
 
   Token* pTkn = pTknVec->pCurrToken();
 
   while ( pTkn ) {
+
 
     if (pTkn->bSame(","_Stz)) {
 
@@ -987,11 +992,14 @@ eEC ExprEval::eExprEvalOrdinal(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut
       if (pStreamDefOut) {
         eError = eHandleOutColumn(pStreamDefOut,
                                   pColumnExpr,
-                                  sAliasName, i_DstColumn, bSum);
+                                  i_DstColumn, bSum);
         if (eError == EC_INVALID_COMMAND)
           goto L_RETURN;
         bSum = false;
       }
+
+      sColumnNm.vSprint("col%lld"_Stz, i_DstColumn+1);
+      pColumnExpr->vColumnNm(sColumnNm);
 
       pColumn = nullptr;
       pTkn = pTknVec->pNextToken();
@@ -1027,7 +1035,7 @@ eEC ExprEval::eExprEvalOrdinal(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut
       }
 
       // extract column name
-      sAliasName = pTkn->szChars();
+      pColumnExpr->vColumnNm(pTkn->szChars());
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -1135,7 +1143,7 @@ eEC ExprEval::eExprEvalOrdinal(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut
       if (pStreamDefOut)
         eError = eHandleOutColumn(pStreamDefOut,
                                   pColumnExpr,
-                                  sAliasName, i_DstColumn, bSum);
+                                  i_DstColumn, bSum);
         if ( eError == EC_INVALID_COMMAND)
           goto L_RETURN;
 
@@ -1207,7 +1215,7 @@ eEC ExprEval::eExprEvalOrdinal(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut
     if (pStreamDefOut)
       eError = eHandleOutColumn(pStreamDefOut,
                                 pColumnExpr,
-                                sAliasName, i_DstColumn, bSum);
+                                i_DstColumn, bSum);
   }
 
   L_RETURN:
@@ -1234,13 +1242,13 @@ eEC ExprEval::eHandleGbyColumn(Column* pColumn, i8 iGby) {
 /*----------------------------------------------------------------------------*/
 /* handle an out column                                                       */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval::eHandleOutColumn(StreamDef* pStreamDefOut, Column* pColumn, Stz* sAliasName, i8 i_DstColumn, bool bSum) {
+eEC ExprEval::eHandleOutColumn(StreamDef* pStreamDefOut, Column* pColumn, i8 i_DstColumn, bool bSum) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
   eEC eError = EC_NONE;
 
-  vUpdateStreamDefOut(pStreamDefOut, pColumn, sAliasName);
+  vUpdateStreamDefOut(pStreamDefOut, pColumn);
 
   if (m_bHasGby) {
     if (bSum) {
@@ -1289,8 +1297,8 @@ bool ExprEval::bHasGroupBy(void) {
 /*----------------------------------------------------------------------------*/
 /* update the streamDefOut                                                    */
 /*----------------------------------------------------------------------------*/
-void ExprEval::vUpdateStreamDefOut(StreamDef* pStreamDefOut, Column* pColumn, Stz* sAliasName) {
-    pStreamDefOut->vAddColumn(sAliasName->bSame(""_Stz) ? pColumn->szColNm() : sAliasName,
+void ExprEval::vUpdateStreamDefOut(StreamDef* pStreamDefOut, Column* pColumn) {
+    pStreamDefOut->vAddColumn(pColumn->szColNm(),
                               pColumn->eColumnType(),
                               pColumn->iColumnLength(),
                               pColumn->iColumnScale());
