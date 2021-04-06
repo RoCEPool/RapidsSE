@@ -15,8 +15,8 @@ explainStatement  : (queryHint)* EXPLAIN  explainOptions* statementChoice ;
 explainOptions    : explainStageList |
                     explainFormat ;
 explainStageList  : STAGE explainRange (',' explainRange)* ;
-explainRange      : explainMarker ( (TO | '-') explainMarker )? ;
-explainMarker     : all=('*' | ALL) | num=INTEGER_LITERAL | id=identifier ;
+explainRange      : begin=explainRangeChoice ( (TO | '-') end=explainRangeChoice )? ;
+explainRangeChoice: all=('*' | ALL) | num=INTEGER_LITERAL | id=identifier ;
 explainFormat     : FORMAT (PRETTY | ROW);
 statisticsStatement : (queryHint)* (STATS | STATISTICS) statementChoice ;
 

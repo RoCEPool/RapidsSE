@@ -15,7 +15,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
-: parser_DataMarker \handler
+: parser_DataPulse \handler
 
   // create the command error info set
   op__cmdErrInfoSet
@@ -34,16 +34,23 @@
   // no error, delete the infoset
   InfoSet[].delete
 
-  // find the __explain tabledef
-  <streamDef> op__tableDef_streamSet assert
+  // does the sql have an explain ?
+  Operand[] "parser" sqlCompiler::hasExplain if
 
-  // create a new streamDef
-  streamSetTable[] StreamDef[].new
+    // Get the tabledef for the explain format
+    Operand[] sqlCompiler::explainFormat to stringA[]
 
-  // create an StreamSet operand
-  streamSetTable[] StreamSet[].new
+    // find the explain tabledef
+    stringA[] op__tableDef_streamSet assert
 
-  Operand[] "parser" sqlCompiler::explain if
+    // create a new streamDef
+    streamSetTable[] StreamDef[].new
+
+    // create an StreamSet operand
+    streamSetTable[] StreamSet[].new
+
+    // execute explain for this operator
+    Operand[] "parser" sqlCompiler::doExplain
 
     // pipeout streamDef of explain
     StreamDef[].pipeout
@@ -59,42 +66,13 @@
       true
       exit
     then
-  else
-     // pipeout streamDef of explain
-         StreamDef[].pipeout
 
-     // pipeout explain
-     StreamSet[].pipeout
   then
 
   ZK_DATAPULSE_handler
   Operand[].pipeOut
   Operand[].newEosMarker
   Operand[].pipeOut
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for ZK_EOSMARKER ...                                               */
-/*----------------------------------------------------------------------------*/
-: parser_EosMarker \handler
- 
-  ZK_EOSMARKER_handler
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for ZK_PLANOPERAND ...                                                */
-/*----------------------------------------------------------------------------*/
-: parser_PlanNode \handler
- 
-  ZK_EOSMARKER_handler
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for ZK_STARTMARKER ...                                             */
-/*----------------------------------------------------------------------------*/
-: parser_StartMarker \handler
-
-  ZK_STARTMARKER_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -110,10 +88,7 @@
   op__topology
 
   find: parser_CancelMarker ZK_CANCELMARKER op[].handler!
-  find: parser_DataMarker   ZK_DATAPULSE    op[].handler!
-  find: parser_EosMarker    ZK_EOSMARKER    op[].handler!
-  find: parser_PlanNode     ZK_PLANOPERAND     op[].handler!
-  find: parser_StartMarker  ZK_STARTMARKER  op[].handler!
+  find: parser_DataPulse    ZK_DATAPULSE    op[].handler!
 
   op__loop
 
@@ -131,7 +106,6 @@ cmdSyntax: parser :: parser <sqlStatement> ;
 
   tags{
     <cmdDesc>    = "--desc for op--"
-    <streamDef>   = __explain
   }
 
 ;

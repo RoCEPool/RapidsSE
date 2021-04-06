@@ -65,8 +65,8 @@ namespace STORE
     eEC eExprEvalOrdinal(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);
     eEC eHandleGbyColumn(Column* pColumn, i8 iGby);
     eEC eHandleOutColumn(StreamDef* pStreamDefOut, Column* pColumn,
-                         Stz* sAliasName, i8 i_DstColumn, bool bSum);
-    void vUpdateStreamDefOut(StreamDef* pStreamDefOut, Column* pColumn, Stz* sAliasName);
+                         i8 i_DstColumn, bool bSum);
+    void vUpdateStreamDefOut(StreamDef* pStreamDefOut, Column* pColumn);
     Footer* aFooter(void);
   };
   

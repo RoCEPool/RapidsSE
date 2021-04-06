@@ -581,8 +581,6 @@ public:
   void vJobAssertParticipant(void);
   void vJobAssertReceived(void);
 
-  void vJobBideOperand(void);
-
   void vJobClass(void);
   void vJobCompleted(void);
 
@@ -609,7 +607,6 @@ public:
   void vJobKindFetch(void);
 
   void vJobNameFetch(void);
-  void vJobNextOperand(void);
   void vJobNoWaitFetch(void);
 
   void vJobOriginatingIdFetch(void);
@@ -1067,8 +1064,9 @@ public:
   // OperandOoO
   void vOperandOoODelete(void);
   void vOperandOoOGet(void);
+  void vOperandOoOGetAndClear(void);
   void vOperandOoOIsNull(void);
-  void vOperandNextOoO(void);
+  void vOperandOoONext(void);
   void vOperandOoOPipeOut(void);
   void vOperandOoOPipeToOutput(void);
   void vOperandOoOSet(void);
@@ -1272,6 +1270,7 @@ public:
 
   // reg Pipein
   void vPipeinBide(void);
+  void vPipeinBideNext(void);
   void vPipeinDelete(void);
   void vPipeinGet(void);
   void vPipeinGetAndClear(void);
@@ -1460,8 +1459,11 @@ public:
 
 
   // sql compiler
-  void vSqlCompilerExplain(void);
+  void vSqlCompilerDoExplain(void);
+  void vSqlCompilerExplainFormat(void);
+  void vSqlCompilerExplainPlan(void);
   void vSqlCompilerExprValidate(void);
+  void vSqlCompilerHasExplain(void);
   void vSqlCompilerNameValidate(void);
   void vSqlCompilerParser(void);
   void vSqlCompilerSetOpValidate(void);

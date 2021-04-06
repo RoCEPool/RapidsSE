@@ -80,7 +80,7 @@ void Step::vInfoSetAddCommandError(void)
   // get the streamDef from the table
   StreamDef* pStreamDef = pStreamTable->pStreamDef();
 
-  InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
+  InfoSet* pInfoSet = _pInfoSet(*m_pJob->pLogicUnit_job()->m_xpInfoSet);
   pInfoSet->vOpInfoSet(OI_COMMANDERRORS);
 
   // get the error information
@@ -122,7 +122,7 @@ void Step::vInfoSetAddExecError(void)
   // get the streamDef from the table
   StreamDef* pStreamDef = pStreamTable->pStreamDef();
 
-  InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
+  InfoSet* pInfoSet = _pInfoSet(*m_pJob->pLogicUnit_job()->m_xpInfoSet);
   pInfoSet->vOpInfoSet(OI_EXECERRORS);
 
   // get the error information
@@ -158,7 +158,7 @@ void Step::vInfoSetAddLockStats(void)
   // get the streamDef from the table
   StreamDef* pStreamDef = pStreamTable->pStreamDef();
   
-  InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
+  InfoSet* pInfoSet = _pInfoSet(*m_pJob->pLogicUnit_job()->m_xpInfoSet);
   pInfoSet->vOpInfoSet(OI_LOCKSTATS);
   
   Row* pRow = LockMetrics::pSample(pStreamDef, pInfoSet);
@@ -183,7 +183,7 @@ void Step::vInfoSetAddNodeInfo(void)
   // get the streamDef from the table
   StreamDef* pStreamDef = pTable->pStreamDef();
   
-  InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
+  InfoSet* pInfoSet = _pInfoSet(*m_pJob->pLogicUnit_job()->m_xpInfoSet);
   pInfoSet->vOpInfoSet(OI_NODEINFO);
   
   Grid* pGrid = AM::pGrid();
@@ -219,7 +219,7 @@ void Step::vInfoSetAddProgressUnits(void)
   StreamDef* pStreamDef = pTable->pStreamDef();
   
   // get the infoSet
-  InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
+  InfoSet* pInfoSet = _pInfoSet(*m_pJob->pLogicUnit_job()->m_xpInfoSet);
   pInfoSet->vOpInfoSet(OI_PROGRESSUNITS);
   
   Row* pRow = pInfoSet->pAllotRow(pStreamDef,
@@ -255,7 +255,7 @@ void Step::vInfoSetAddRowCount(void)
   tPN tPtnNo = pJob->m_pOp->tPtnNo();
   i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnNo);
   
-  InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
+  InfoSet* pInfoSet = _pInfoSet(*m_pJob->pLogicUnit_job()->m_xpInfoSet);
   pInfoSet->vOpInfoSet(OI_COUNTINFO);
   
   i8 nBuffers = 0;
@@ -282,12 +282,12 @@ void Step::vInfoSetAddRowVargs(void)
 {
   ENTRY();
   
-  Table* pTable = _pTable(*( m_pJob->pLogicUnit_job() )->m_xpInfoSetTable);
+  Table* pTable = _pTable(*m_pJob->pLogicUnit_job()->m_xpInfoSetTable);
   StreamDef* pStreamDef = pTable->pStreamDef();
   i8 nCols = pStreamDef->nColumns();
   i8 nArgs = m_pDataStack->iPopInt(__func__);
   
-  InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
+  InfoSet* pInfoSet = _pInfoSet(*m_pJob->pLogicUnit_job()->m_xpInfoSet);
   
   Row* aRow = pInfoSet->RowBuffer::pAllotRow();
   Stz* szTail;
@@ -349,7 +349,7 @@ void Step::vInfoSetAddTotalUnits(void)
   // get the streamDef from the table
   StreamDef* pStreamDef = pTable->pStreamDef();
   
-  InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
+  InfoSet* pInfoSet = _pInfoSet(*m_pJob->pLogicUnit_job()->m_xpInfoSet);
   pInfoSet->vOpInfoSet(OI_TOTALUNITS);
   
   Row* pRow = pInfoSet->pAllotRow(pStreamDef,
@@ -372,23 +372,23 @@ void Step::vInfoSetChunkFile(void)
 {
   ENTRY();
 
-  ( m_pJob->pLogicUnit_job() )->m_iCounter2++;
+  m_pJob->pLogicUnit_job()->m_iCounter2++;
 
   i8 nRows = 0;
   Row* pRow;
   
   // get the seekOffsets
-  InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
+  InfoSet* pInfoSet = _pInfoSet(*m_pJob->pLogicUnit_job()->m_xpInfoSet);
   pInfoSet->vOpInfoSet(OI_SEEKOFFSETS);
   
   // get the file we are chunking
-  File* pFile = _pFile(*( m_pJob->pLogicUnit_job() )->m_xpFile0);
+  File* pFile = _pFile(*m_pJob->pLogicUnit_job()->m_xpFile0);
   
   // get the last chunk location
-  i8 i_ChunkLoc = ( m_pJob->pLogicUnit_job() )->m_iCounter0;
+  i8 i_ChunkLoc = m_pJob->pLogicUnit_job()->m_iCounter0;
   
   // get the Eof location
-  i8 i_EofLoc = ( m_pJob->pLogicUnit_job() )->m_iCounter1;
+  i8 i_EofLoc = m_pJob->pLogicUnit_job()->m_iCounter1;
   
   char* pReadBlock = (char*)MemLib::aMallocBlock(C_CHUNKBLOCK);
   
@@ -428,14 +428,14 @@ void Step::vInfoSetChunkFile(void)
              pFile->sFilePath().szStz(),
              sFileSize.szStz(),
              
-             ( m_pJob->pLogicUnit_job() )->m_iCounter2,
+             m_pJob->pLogicUnit_job()->m_iCounter2,
              C_MAX_SEEKOFFSETS,
              
              AM::nBootNodes(),
              AM::nPtnsInGrid());
       
       // set the chunk location
-      ( m_pJob->pLogicUnit_job() )->m_iCounter0 = i_ChunkLoc + nChunkBytes;
+      m_pJob->pLogicUnit_job()->m_iCounter0 = i_ChunkLoc + nChunkBytes;
       
       //vTrace("*****SeekOfset has %lld rows\n"_Stz, nRows);
       
@@ -482,7 +482,7 @@ void Step::vInfoSetChunkFile(void)
     else {
       
       // save the current chunk location
-      ( m_pJob->pLogicUnit_job() )->m_iCounter0 = i_ChunkLoc;
+      m_pJob->pLogicUnit_job()->m_iCounter0 = i_ChunkLoc;
       
       //vTrace("*****SeekOfset has %lld rows\n"_Stz, nRows);
       // dump
@@ -505,7 +505,7 @@ void Step::vInfoSetColValFetch(void)
 {
   ENTRY();
     
-  Table* pTable = _pTable(*( m_pJob->pLogicUnit_job() )->m_xpInfoSetTable);
+  Table* pTable = _pTable(*m_pJob->pLogicUnit_job()->m_xpInfoSetTable);
   StreamDef* pStreamDef = pTable->pStreamDef();
   i8 nCols = pStreamDef->nColumns();
   UNUSED(nCols);
@@ -515,7 +515,7 @@ void Step::vInfoSetColValFetch(void)
   Column* pColumn = pStreamDef->pGetColumn(i_Col);
   eDM eDatum = pColumn->eDatum();
 
-  Row* aRow = *( m_pJob->pLogicUnit_job() )->m_xpRow;
+  Row* aRow = *m_pJob->pLogicUnit_job()->m_xpRow;
   
   i8 iInt;
   s256 sStr;
@@ -548,9 +548,9 @@ void Step::vInfoSetDelete(void)
 {
   ENTRY();
   
-  AM::vDeleteOperand(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
+  AM::vDeleteOperand(*m_pJob->pLogicUnit_job()->m_xpInfoSet);
   
-  ( m_pJob->pLogicUnit_job() )->m_xpInfoSet = nullptr;
+  m_pJob->pLogicUnit_job()->m_xpInfoSet = nullptr;
   
   EXIT();
 }
@@ -562,7 +562,7 @@ void Step::vInfoSetFirstRow(void)
 {
   ENTRY();
   
-  InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
+  InfoSet* pInfoSet = _pInfoSet(*m_pJob->pLogicUnit_job()->m_xpInfoSet);
   
   m_pDataStack->vPushPtr(pInfoSet->pFirstRow());
 }
@@ -574,7 +574,7 @@ void Step::vInfoSetGet(void)
 {
   ENTRY();
   
-  InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
+  InfoSet* pInfoSet = _pInfoSet(*m_pJob->pLogicUnit_job()->m_xpInfoSet);
 
   m_pDataStack->vPushPtr(pInfoSet);
 
@@ -588,9 +588,9 @@ void Step::vInfoSetInfoRows(void)
 {
   ENTRY();
   
-  ASSERT ( ! ( m_pJob->pLogicUnit_job() )->m_xpInfoSet.bIsNull() );
+  ASSERT ( ! m_pJob->pLogicUnit_job()->m_xpInfoSet.bIsNull() );
   
-  InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
+  InfoSet* pInfoSet = _pInfoSet(*m_pJob->pLogicUnit_job()->m_xpInfoSet);
   
   m_pDataStack->vPushInt(pInfoSet->nRows());
   
@@ -604,9 +604,9 @@ void Step::vInfoSetIsProgress(void)
 {
   ENTRY();
   
-  ASSERT ( ! ( m_pJob->pLogicUnit_job() )->m_xpInfoSet.bIsNull() );
+  ASSERT ( ! m_pJob->pLogicUnit_job()->m_xpInfoSet.bIsNull() );
   
-  InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
+  InfoSet* pInfoSet = _pInfoSet(*m_pJob->pLogicUnit_job()->m_xpInfoSet);
   
   bool bIsProgress = pInfoSet->eOpInfoSet() == OI_PROGRESSUNITS ||
                      pInfoSet->eOpInfoSet() == OI_TOTALUNITS;
@@ -622,9 +622,9 @@ void Step::vInfoSetIsTotalUnits(void)
 {
   ENTRY();
   
-  ASSERT ( ! ( m_pJob->pLogicUnit_job() )->m_xpInfoSet.bIsNull() );
+  ASSERT ( ! m_pJob->pLogicUnit_job()->m_xpInfoSet.bIsNull() );
   
-  InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
+  InfoSet* pInfoSet = _pInfoSet(*m_pJob->pLogicUnit_job()->m_xpInfoSet);
   
   m_pDataStack->vPushInt(pInfoSet->eOpInfoSet() == OI_TOTALUNITS ? true : false);
   
@@ -638,7 +638,7 @@ void Step::vInfoSetName(void)
 {
   ENTRY();
   
-  InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
+  InfoSet* pInfoSet = _pInfoSet(*m_pJob->pLogicUnit_job()->m_xpInfoSet);
 
   Stz* szBufferNm = pInfoSet->szBufferNm();
   
@@ -654,13 +654,13 @@ void Step::vInfoSetNew(void)
 {
   ENTRY();
   
-  ASSERT(( m_pJob->pLogicUnit_job() )->m_xpInfoSet.bIsNull());
+  ASSERT(m_pJob->pLogicUnit_job()->m_xpInfoSet.bIsNull());
   
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
   StreamDef* pStreamDef = pTable->pStreamDef();
   
-  ( m_pJob->pLogicUnit_job() )->m_xpInfoSet = new InfoSet(pStreamDef);
+  m_pJob->pLogicUnit_job()->m_xpInfoSet = new InfoSet(pStreamDef);
   
   EXIT();
 }
@@ -672,8 +672,8 @@ void Step::vInfoSetNextRow(void)
 {
   ENTRY();
   
-  InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
-  Row* pRow = _pRow(*( m_pJob->pLogicUnit_job() )->m_xpRow);
+  InfoSet* pInfoSet = _pInfoSet(*m_pJob->pLogicUnit_job()->m_xpInfoSet);
+  Row* pRow = _pRow(*m_pJob->pLogicUnit_job()->m_xpRow);
   
   ASSERT(pRow);
   
@@ -687,9 +687,9 @@ void Step::vInfoSetOpInfosetFetch(void)
 {
   ENTRY();
   
-  ASSERT(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
+  ASSERT(*m_pJob->pLogicUnit_job()->m_xpInfoSet);
   
-  eOI eOpInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet)->eOpInfoSet();
+  eOI eOpInfoSet = _pInfoSet(*m_pJob->pLogicUnit_job()->m_xpInfoSet)->eOpInfoSet();
   
   m_pDataStack->vPushInt(eOpInfoSet);
   
@@ -703,11 +703,11 @@ void Step::vInfoSetOpInfosetStore(void)
 {
   ENTRY();
   
-  ASSERT(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
+  ASSERT(*m_pJob->pLogicUnit_job()->m_xpInfoSet);
   
   eOI eOpInfoSet = (eOI)m_pDataStack->iPopInt(__func__);
   
-  _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet)->vOpInfoSet(eOpInfoSet);
+  _pInfoSet(*m_pJob->pLogicUnit_job()->m_xpInfoSet)->vOpInfoSet(eOpInfoSet);
     
   EXIT();
 }
@@ -719,13 +719,13 @@ void Step::vInfoSetPipeOut(void)
 {
   ENTRY();
   
-  ASSERT(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
+  ASSERT(*m_pJob->pLogicUnit_job()->m_xpInfoSet);
   
   Op* pOp = m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
   
-  pOp->vPipeOut_nextOp(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet,this);
+  pOp->vPipeOut_nextOp(*m_pJob->pLogicUnit_job()->m_xpInfoSet,this);
   
-  ( m_pJob->pLogicUnit_job() )->m_xpInfoSet = nullptr;
+  m_pJob->pLogicUnit_job()->m_xpInfoSet = nullptr;
   
   EXIT();
 }
@@ -737,12 +737,12 @@ void Step::vInfoSetRdCsvChunk(void)
 {
   ENTRY();
   
-  ASSERT(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
+  ASSERT(*m_pJob->pLogicUnit_job()->m_xpInfoSet);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get file and info arguments
   
-  File* pCsvFile = _pFile(*( m_pJob->pLogicUnit_job() )->m_xpFile0);
+  File* pCsvFile = _pFile(*m_pJob->pLogicUnit_job()->m_xpFile0);
   Stz* szFilePath = pCsvFile->sFilePath();
   
   Row* pInfoRow = _pRow(m_pDataStack->pPopPtr(__func__));
@@ -794,8 +794,8 @@ void Step::vInfoSetSet(void)
   ENTRY();
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
-  ASSERT(! pOperand || ( m_pJob->pLogicUnit_job() )->m_xpInfoSet.bIsNull());
-  ( m_pJob->pLogicUnit_job() )->m_xpInfoSet = _pInfoSet(pOperand);
+  ASSERT(! pOperand || m_pJob->pLogicUnit_job()->m_xpInfoSet.bIsNull());
+  m_pJob->pLogicUnit_job()->m_xpInfoSet = _pInfoSet(pOperand);
   
   EXIT();
 }
@@ -807,15 +807,15 @@ void Step::vInfoSetWriteCsv(void)
 {
   ENTRY();
   
-  ASSERT(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
+  ASSERT(*m_pJob->pLogicUnit_job()->m_xpInfoSet);
   
   Table* pInfoSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
-  InfoSet* pInfoSet = _pInfoSet(*( m_pJob->pLogicUnit_job() )->m_xpInfoSet);
+  InfoSet* pInfoSet = _pInfoSet(*m_pJob->pLogicUnit_job()->m_xpInfoSet);
   
   StreamDef* pStreamDef = pInfoSetTable->pStreamDef();
 
-  File* pFile = _pFile(*( m_pJob->pLogicUnit_job() )->m_xpFile0);
+  File* pFile = _pFile(*m_pJob->pLogicUnit_job()->m_xpFile0);
 
   MetricsHelper::vWriteCsv(pInfoSet,pStreamDef,pFile);
   

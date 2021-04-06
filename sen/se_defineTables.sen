@@ -85,7 +85,8 @@
   STD_PATH
   "
     define table __explain (
-      stage       VARCHAR NOT NULL ,
+      stageNum    INTEGER NOT NULL ,
+      stageName   VARCHAR NOT NULL ,
       explain     VARCHAR NOT NULL
     ) < infoSet > = 1 ;
   "
@@ -513,6 +514,18 @@
   ) < internal > = 1 ;
   "
   api::executeRequest
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_OPERANDLOG
+  STD_PATH
+  "
+  define table se__operandLog (
+    event  INTEGER NOT NULL ,
+    note   VARCHAR NOT NULL
+  ) < internal > = 1 ;
+  "
+  api::executeRequest
+
 ;
 
 /*============================================================================*/

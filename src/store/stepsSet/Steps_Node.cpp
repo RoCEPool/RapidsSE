@@ -113,7 +113,7 @@ void Step::vNodeGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*( m_pJob->pLogicUnit_job() )->m_xpNode);
+  m_pDataStack->vPushPtr(*m_pJob->pLogicUnit_job()->m_xpNode);
 
   EXIT();
 }
@@ -286,9 +286,9 @@ void Step::vNodeSet(void)
   
   Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
   
-  ASSERT(! pNode || ( m_pJob->pLogicUnit_job() )->m_xpNode.bIsNull());
+  ASSERT(! pNode || m_pJob->pLogicUnit_job()->m_xpNode.bIsNull());
   
-  ( m_pJob->pLogicUnit_job() )->m_xpNode = pNode;
+  m_pJob->pLogicUnit_job()->m_xpNode = pNode;
 
   EXIT();
 }

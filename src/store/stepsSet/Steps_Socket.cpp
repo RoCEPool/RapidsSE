@@ -192,7 +192,7 @@ void Step::vSocketGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*( m_pJob->pLogicUnit_job() )->m_xpSocket);
+  m_pDataStack->vPushPtr(*m_pJob->pLogicUnit_job()->m_xpSocket);
 
   EXIT();
 }
@@ -218,7 +218,7 @@ void Step::vSocketIsNotNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(( m_pJob->pLogicUnit_job() )->m_xpSocket.bIsNull() ? 0 : 1);
+  m_pDataStack->vPushInt(m_pJob->pLogicUnit_job()->m_xpSocket.bIsNull() ? 0 : 1);
   
   EXIT();
 }
@@ -230,7 +230,7 @@ void Step::vSocketIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(( m_pJob->pLogicUnit_job() )->m_xpSocket.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(m_pJob->pLogicUnit_job()->m_xpSocket.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -821,8 +821,8 @@ void Step::vSocketSendObject(void)
               "Object %s %lldB to node %s"_Stz, //!format-LogRes
               aCN[eClass],
               nObjectSize,
-              ( m_pJob->pLogicUnit_job() )->m_xpSendNode.bIsNotNull() ?
-                ( m_pJob->pLogicUnit_job() )->m_xpSendNode->szNodeNm() : "<unknown>"_Stz,
+              m_pJob->pLogicUnit_job()->m_xpSendNode.bIsNotNull() ?
+                m_pJob->pLogicUnit_job()->m_xpSendNode->szNodeNm() : "<unknown>"_Stz,
               C_VARGS_END);
 
   SysCall oSysCall;
@@ -857,8 +857,8 @@ void Step::vSocketSet(void)
   ENTRY();
   
   Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
-  ASSERT(! pSocket || ( m_pJob->pLogicUnit_job() )->m_xpSocket.bIsNull());
-  ( m_pJob->pLogicUnit_job() )->m_xpSocket = _pSocket(pSocket);
+  ASSERT(! pSocket || m_pJob->pLogicUnit_job()->m_xpSocket.bIsNull());
+  m_pJob->pLogicUnit_job()->m_xpSocket = _pSocket(pSocket);
   
   EXIT();
 }

@@ -54,7 +54,7 @@ public:
   enum {
     RuleStatement = 0, RuleStatementChoice = 1, RuleQueryStatement = 2, 
     RuleExplainStatement = 3, RuleExplainOptions = 4, RuleExplainStageList = 5, 
-    RuleExplainRange = 6, RuleExplainMarker = 7, RuleExplainFormat = 8, 
+    RuleExplainRange = 6, RuleExplainRangeChoice = 7, RuleExplainFormat = 8, 
     RuleStatisticsStatement = 9, RuleQuery = 10, RuleQueryHint = 11, RuleHint = 12, 
     RuleSelectQuery = 13, RuleSelectExpr = 14, RuleSetQuery = 15, RuleSetExpr = 16, 
     RuleCorrClause = 17, RuleWithQuery = 18, RuleTableExpr = 19, RuleTableReference = 20, 
@@ -99,7 +99,7 @@ public:
   class ExplainOptionsContext;
   class ExplainStageListContext;
   class ExplainRangeContext;
-  class ExplainMarkerContext;
+  class ExplainRangeChoiceContext;
   class ExplainFormatContext;
   class StatisticsStatementContext;
   class QueryContext;
@@ -282,10 +282,12 @@ public:
 
   class  ExplainRangeContext : public antlr4::ParserRuleContext {
   public:
+    sqlParser::ExplainRangeChoiceContext *begin = nullptr;;
+    sqlParser::ExplainRangeChoiceContext *end = nullptr;;
     ExplainRangeContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    std::vector<ExplainMarkerContext *> explainMarker();
-    ExplainMarkerContext* explainMarker(size_t i);
+    std::vector<ExplainRangeChoiceContext *> explainRangeChoice();
+    ExplainRangeChoiceContext* explainRangeChoice(size_t i);
     antlr4::tree::TerminalNode *TO();
 
 
@@ -295,12 +297,12 @@ public:
 
   ExplainRangeContext* explainRange();
 
-  class  ExplainMarkerContext : public antlr4::ParserRuleContext {
+  class  ExplainRangeChoiceContext : public antlr4::ParserRuleContext {
   public:
     antlr4::Token *all = nullptr;;
     antlr4::Token *num = nullptr;;
     sqlParser::IdentifierContext *id = nullptr;;
-    ExplainMarkerContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    ExplainRangeChoiceContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *ALL();
     antlr4::tree::TerminalNode *INTEGER_LITERAL();
@@ -311,7 +313,7 @@ public:
    
   };
 
-  ExplainMarkerContext* explainMarker();
+  ExplainRangeChoiceContext* explainRangeChoice();
 
   class  ExplainFormatContext : public antlr4::ParserRuleContext {
   public:

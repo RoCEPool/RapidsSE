@@ -6,7 +6,7 @@ trackMemory;
 success;
 
 //------------------------------------------------------------------------------
-aggregRows lineitem "l_discount sum groupby l_orderkey";
+aggregRows lineitem "type decimal l_discount sum groupby type integer l_orderkey";
 failure contains: "Table does not exist"
 
 //------------------------------------------------------------------------------

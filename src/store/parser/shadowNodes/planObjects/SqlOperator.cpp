@@ -14,6 +14,7 @@
 #include "store/parser/shadowNodes/planObjects/dataSources/DataSource.hpp"
 #include "store/parser/shadowNodes/planObjects/FilterOp.hpp"
 #include "store/parser/shadowNodes/planObjects/LimitOp.hpp"
+#include "store/parser/shadowNodes/planObjects/ExplainOp.hpp"
 #include "UnionOp.hpp"
 
 using namespace Parser;
@@ -45,6 +46,7 @@ void SqlOperator::vDescribe(PlanNode* pNode, s2K& sBuf)
   else if (   FilterOp::bIsExactType(pNode))   {    FilterOp::vDescribe(pNode, sBuf); }
   else if (    LimitOp::bIsExactType(pNode))   {     LimitOp::vDescribe(pNode, sBuf); }
   else if (    UnionOp::bIsExactType(pNode))   {     UnionOp::vDescribe(pNode, sBuf); }
+  else if (  ExplainOp::bIsExactType(pNode))   {   ExplainOp::vDescribe(pNode, sBuf); }
   else {
     // Need to add in manual polymorphism here
     NEVER_REACH
@@ -66,6 +68,7 @@ void SqlOperator::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 
   else if (   FilterOp::bIsExactType(pNode)) {    FilterOp::vExplain(pNode, pRootNode, sBuf, iIndent); }
   else if (    LimitOp::bIsExactType(pNode)) {     LimitOp::vExplain(pNode, pRootNode, sBuf, iIndent); }
   else if (    UnionOp::bIsExactType(pNode)) {     UnionOp::vExplain(pNode, pRootNode, sBuf, iIndent); }
+  else if (  ExplainOp::bIsExactType(pNode)) {   ExplainOp::vExplain(pNode, pRootNode, sBuf, iIndent); }
   else {
     // Need to add in manual polymorphism here
     NEVER_REACH
@@ -106,6 +109,7 @@ QueryNodeList* SqlOperator::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
   else if (   FilterOp::bIsOfType(pNode)) { return    FilterOp::pColumnExprs(pNode, pRootNode); }
   else if (    LimitOp::bIsOfType(pNode)) { return     LimitOp::pColumnExprs(pNode, pRootNode); }
   else if (    UnionOp::bIsOfType(pNode)) { return     UnionOp::pColumnExprs(pNode, pRootNode); }
+  else if (  ExplainOp::bIsOfType(pNode)) { return   ExplainOp::pColumnExprs(pNode, pRootNode); }
   else {
     // Need to add in manual polymorphism here
     NEVER_REACH

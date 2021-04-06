@@ -115,6 +115,7 @@ pipeline unionAll
 end ;
 rows: 0
 
+//------------------------------------------------------------------------------
 // load data
 load lineitem "../DATA/TPCH/lineitem10.csv";
 success

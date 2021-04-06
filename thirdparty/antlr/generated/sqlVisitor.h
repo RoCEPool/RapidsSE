@@ -34,7 +34,7 @@ public:
 
     virtual antlrcpp::Any visitExplainRange(sqlParser::ExplainRangeContext *context) = 0;
 
-    virtual antlrcpp::Any visitExplainMarker(sqlParser::ExplainMarkerContext *context) = 0;
+    virtual antlrcpp::Any visitExplainRangeChoice(sqlParser::ExplainRangeChoiceContext *context) = 0;
 
     virtual antlrcpp::Any visitExplainFormat(sqlParser::ExplainFormatContext *context) = 0;
 

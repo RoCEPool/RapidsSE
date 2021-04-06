@@ -1,0 +1,74 @@
+/*============================================================================*/
+/* op__Compilercommon.sen -- SqlCompiler operator common words                */
+/*============================================================================*/
+
+" op__Compilercommon.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_EXITEARLYMARKER ...                                         */
+/*----------------------------------------------------------------------------*/
+: compiler_ExitEarlyMarker \handler
+
+  // save the pipein in streamSet[]
+  StreamSet[].isNull not assert
+  StreamSet[].pipeout
+
+  ZK_EXITEARLYMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_STREAMSET ...                                               */
+/*----------------------------------------------------------------------------*/
+: compiler_StreamSet \handler
+
+  // save the pipein in streamSet[]
+  Pipein[]\clear to StreamSet[]
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* common code for handling plan operand ...                                  */
+/*----------------------------------------------------------------------------*/
+: compiler_PlanOperand ( sOperatorName )
+
+  params| sOperatorName |
+
+  Operand[].isNull if
+    InfoSet[].pipeOut
+    Operand[].newErrorMarker
+    Operand[].pipeOut
+    true
+    exit
+  then
+
+  // no error, delete the infoset
+  InfoSet[].delete
+
+  // does the sql have an explain ?
+  Operand[] sOperatorName sqlCompiler::hasExplain if
+
+    // execute explain for this operator
+    Operand[] sOperatorName sqlCompiler::doExplain
+
+    // pipeout explain
+    StreamSet[].pipeout
+
+    LogicUnit[].compilerToExit if
+      Operand[].delete
+      Operand[].newExitEarlyMarker
+      Operand[].pipeout
+      true
+      exit
+    then
+
+  then
+
+  Operand[].pipeOut
+
+  true
+ ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

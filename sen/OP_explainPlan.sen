@@ -1,0 +1,72 @@
+/*============================================================================*/
+/* OP_explainPlan.sen -- Explain Plan Op (SQL Compiler)                       */
+/*============================================================================*/
+
+" OP_explainPlan.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_CANCELMARKER ...                                            */
+/*----------------------------------------------------------------------------*/
+: explainPlan_CancelMarker \handler
+
+  ZK_CANCELMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_PLANOPERAND ...                                             */
+/*----------------------------------------------------------------------------*/
+: explainPlan_PlanOperand \handler
+
+  PipeIn[]\clear to Operand[]
+
+  // create the command error info set
+  op__cmdErrInfoSet
+
+  Operand[] nullptr to Operand[] sqlCompiler::explainPlan to Operand[]
+
+   "explainPlan" compiler_planOperand
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* compiler op request                                (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: explainPlan_req \operator
+
+  LogReqEntry SEED_REQ
+
+  op__topology
+
+  // common compiler handlers
+  find: compiler_ExitEarlyMarker  ZK_EXITEARLYMARKER op[].handler!
+  find: compiler_StreamSet        ZK_STREAMSET       op[].handler!
+
+  // specific handlers
+  find: explainPlan_CancelMarker ZK_CANCELMARKER op[].handler!
+  find: explainPlan_PlanOperand  ZK_PLANOPERAND  op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: explainPlan :: explainPlan ;
+
+: explainPlan_cmdTags _cmdTags tagCopy: op_tags
+
+  tags{
+    <cmdDesc>    = "--desc for op--"
+  }
+
+;
+  
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

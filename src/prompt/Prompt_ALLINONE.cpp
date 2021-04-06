@@ -4151,7 +4151,7 @@ bool PROMPT::bPrompt_scan(SePrompt* pPrompt)
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/* Prompt_select.cpp -- select statement                                      */
+/* Prompt_select.cpp -- select & explain statements                           */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 PromptFun __Prompt_select (
@@ -4166,6 +4166,20 @@ PromptFun __Prompt_select (
   false,                // visible
   "select"_Stz,         // help
   ""_Stz                // description
+);
+
+PromptFun __Prompt_explain (
+    PF_SCAN,           // prompt function
+    "Prompt_explain"_Stz,  // name of the prompt function
+    "comment"_Stz,        // comment about the function
+    "explain"_Stz,        // the prompt command
+    nullptr,              // the second word
+    bPrompt_select,       // prompt function
+    true,                 // enabled
+
+    false,                // visible
+    "select"_Stz,         // help
+    ""_Stz                // description
 );
 
 /*----------------------------------------------------------------------------*/

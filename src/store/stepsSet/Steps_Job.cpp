@@ -43,8 +43,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.assertParticipant"_Stz,&Step::vJobAssertParticipant);
   vAddStep("job.assertReceived"_Stz,   &Step::vJobAssertReceived);
 
-  vAddStep("job.bideOperand"_Stz,      &Step::vJobBideOperand);
-
   vAddStep("job.class"_Stz,            &Step::vJobClass);
   
   vAddStep("job.dec2pcAcksRmg"_Stz,    &Step::vJobDec2pcAcksRmg);
@@ -70,7 +68,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.kind@"_Stz,            &Step::vJobKindFetch);
   
   vAddStep("job.name@"_Stz,            &Step::vJobNameFetch);
-  vAddStep("job.nextOperand"_Stz,      &Step::vJobNextOperand);
   vAddStep("job.noWait@"_Stz,          &Step::vJobNoWaitFetch);
   
   vAddStep("job.originatingId@"_Stz,   &Step::vJobOriginatingIdFetch);
@@ -435,24 +432,6 @@ void Step::vJobAssertReceived(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.bideOperand -- get next operand                                        */
-/*----------------------------------------------------------------------------*/
-void Step::vJobBideOperand(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  ( m_pJob->pLogicUnit_job() )->m_xpOperandA = pJob->m_pOp->pPopQueue();
-  
-  if (( m_pJob->pLogicUnit_job() )->m_xpOperandA.bIsNull()) {
-    vScheduleBide();
-  }
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* job.class -- get the class of the job                                      */
 /*----------------------------------------------------------------------------*/
 void Step::vJobClass(void)
@@ -595,7 +574,7 @@ void Step::vJobFindOriginator(void)
   
   
   //! borrow the job ref [ this needs to be done under lock ]
-  pJobFound->vBorrowRefBy(&( m_pJob->pLogicUnit_job() )->m_xpJobRef);
+  pJobFound->vBorrowRefBy(&m_pJob->pLogicUnit_job()->m_xpJobRef);
   
   
   m_pDataStack->vPushPtr(pJobFound);
@@ -617,7 +596,7 @@ void Step::vJobFindParticipant(void)
   
   
   //! borrow the job ref [ this needs to be done under lock ]
-  pJobFound->vBorrowRefBy(&( m_pJob->pLogicUnit_job() )->m_xpJobRef);
+  pJobFound->vBorrowRefBy(&m_pJob->pLogicUnit_job()->m_xpJobRef);
   
   
   m_pDataStack->vPushPtr(pJobFound);
@@ -759,26 +738,6 @@ void Step::vJobNameFetch(void)
   
   s32 szName = pJob->szJobNm();
   m_pDataStack->vPushStr(szName);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.nextOperand -- get next operand                                        */
-/*----------------------------------------------------------------------------*/
-void Step::vJobNextOperand(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  Op* pOp = pJob->m_pOp;
-  
-  if (( m_pJob->pLogicUnit_job() )->m_xpOperandA.bIsNull())
-    ( m_pJob->pLogicUnit_job() )->m_xpOperandA = pOp->pPopQueue();
-  ASSERT(*( m_pJob->pLogicUnit_job() )->m_xpOperandA);
   
   EXIT();
 }

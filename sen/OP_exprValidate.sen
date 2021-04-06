@@ -13,98 +13,20 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_DATAPULSE ...                                               */
-/*----------------------------------------------------------------------------*/
-: exprValidate_DataMarker \handler
- 
-  ZK_DATAPULSE_handler
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for ZK_EOSMARKER ...                                               */
-/*----------------------------------------------------------------------------*/
-: exprValidate_EosMarker \handler
- 
-  ZK_EOSMARKER_handler
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for ZK_EXITEARLYMARKER ...                                         */
-/*----------------------------------------------------------------------------*/
-: exprValidate_ExitEarlyMarker \handler
-
-  // save the pipein in streamSet[]
-  StreamSet[].isNull not assert
-  StreamSet[].pipeout
-
-  ZK_EXITEARLYMARKER_handler
-;
-
-/*----------------------------------------------------------------------------*/
 /* handler for ZK_PLANOPERAND ...                                             */
 /*----------------------------------------------------------------------------*/
 : exprValidate_PlanOperand \handler
- 
-  PipeIn[]\clear to Operand[]
+
+PipeIn[]\clear to Operand[]
 
   // create the command error info set
   op__cmdErrInfoSet
 
   Operand[] nullptr to Operand[] sqlCompiler::exprValidate to Operand[]
 
-  Operand[].isNull if
-    InfoSet[].pipeOut
-    Pipein[].delete
-    Operand[].newErrorMarker
-    Operand[].pipeOut
-    true
-    exit
-  then
-
-  // no error, delete the infoset
-  InfoSet[].delete
-
-  // do we need to generate explain ?
-  Operand[] "exprValidate" sqlCompiler::explain if
-
-     // pipeout explain
-     StreamSet[].pipeout
-
-     LogicUnit[].compilerToExit if
-       Operand[].delete
-       Operand[].newExitEarlyMarker
-       Operand[].pipeout
-       true
-       exit
-     then
-
-  else
-    // pipeout explain
-    StreamSet[].pipeout
-  then
-
-  Operand[].pipeOut
-  true
+  "exprValidate" compiler_planOperand
 ;
 
-/*----------------------------------------------------------------------------*/
-/* handler for ZK_STARTMARKER ...                                             */
-/*----------------------------------------------------------------------------*/
-: exprValidate_StartMarker \handler
-
-  ZK_STARTMARKER_handler
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for ZK_STREAMSET ...                                               */
-/*----------------------------------------------------------------------------*/
-: exprValidate_StreamSet \handler
-
-  // save the pipein in streamSet[]
-  Pipein[]\clear to StreamSet[]
-
-  true
-;
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -118,13 +40,13 @@
 
   op__topology
 
+  // common compiler handlers
+  find: compiler_ExitEarlyMarker  ZK_EXITEARLYMARKER op[].handler!
+  find: compiler_StreamSet        ZK_STREAMSET       op[].handler!
+
+  // specific handlers
   find: exprValidate_CancelMarker ZK_CANCELMARKER op[].handler!
-  find: exprValidate_DataMarker   ZK_DATAPULSE    op[].handler!
-  find: exprValidate_EosMarker    ZK_EOSMARKER    op[].handler!
-  find: exprValidate_ExitEarlyMarker ZK_EXITEARLYMARKER op[].handler!
   find: exprValidate_PlanOperand  ZK_PLANOPERAND  op[].handler!
-  find: exprValidate_StartMarker  ZK_STARTMARKER  op[].handler!
-  find: exprValidate_StreamSet    ZK_STREAMSET    op[].handler!
 
   op__loop
 

@@ -84,7 +84,7 @@ static const char D_FIELD_DELIMITER      = ',';
 static const char D_RECORD_TERMINATOR    = '\0';
 
 static Stz* C_NO_ARG  = "-- NO_ARG --"_Stz;
-static Stz* C_NO_NAME = "-- NO_NAME --"_Stz;
+static Stz* C_NO_NAME = "--NO_NAME--"_Stz;
 static Stz* C_NO_NOTE = "-- no note --"_Stz;
 static Stz* C_NO_WORD = "-- NO_WORD --"_Stz;
 static Stz* C_NULL    = "null"_Stz;
@@ -119,6 +119,7 @@ static Stz* C_TDEF_LOOKUPCATALOG    = "__lookupCatalog"_Stz;
 static Stz* C_TDEF_LOOKUPSCHEMA     = "__lookupSchema"_Stz;
 static Stz* C_TDEF_LOOKUPTABLE      = "__lookupTable"_Stz;
 static Stz* C_TDEF_NODEINFO         = "__nodeInfo"_Stz;
+static Stz* C_TDEF_OPERANDLOG       = "SE__operandLog"_Stz;
 static Stz* C_TDEF_PATHINFO         = "__pathInfo"_Stz;
 static Stz* C_TDEF_PINGINFO         = "__pingInfo"_Stz;
 static Stz* C_TDEF_PROGRESSUNITS    = "__progressUnits"_Stz;

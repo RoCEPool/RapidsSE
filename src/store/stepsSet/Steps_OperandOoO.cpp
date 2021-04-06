@@ -23,11 +23,12 @@
 void Step::vAddSteps_OperandOoO(void)
 {
   vAddStep("OperandOoO[]"_Stz,             &Step::vOperandOoOGet);
+  vAddStep("OperandOoO[]\\clear"_Stz,      &Step::vOperandOoOGetAndClear);
   vAddStep("OperandOoO[].delete"_Stz,      &Step::vOperandOoODelete);
   vAddStep("OperandOoO[].isNull"_Stz,      &Step::vOperandOoOIsNull);
-  vAddStep("OperandOoO[].next"_Stz,        &Step::vOperandNextOoO);
+  vAddStep("OperandOoO[].next"_Stz,        &Step::vOperandOoONext);
   vAddStep("OperandOoO[].pipeOut"_Stz,     &Step::vOperandOoOPipeOut);
-  vAddStep("OperandOoO[].pipeToOutput"_Stz,   &Step::vOperandOoOPipeToOutput);
+  vAddStep("OperandOoO[].pipeToOutput"_Stz,&Step::vOperandOoOPipeToOutput);
   vAddStep("OperandOoO[].set"_Stz,         &Step::vOperandOoOSet);
 }
 
@@ -38,9 +39,9 @@ void Step::vOperandOoODelete(void)
 {
   ENTRY();
   
-  AM::vDeleteOperand(*( m_pJob->pLogicUnit_job() )->m_xpOperandOoO);
+  AM::vDeleteOperand(*m_pJob->pLogicUnit_job()->m_xpOperandOoO);
   
-  ( m_pJob->pLogicUnit_job() )->m_xpOperandOoO = nullptr;
+  m_pJob->pLogicUnit_job()->m_xpOperandOoO = nullptr;
   
   EXIT();
 }
@@ -52,7 +53,21 @@ void Step::vOperandOoOGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*( m_pJob->pLogicUnit_job() )->m_xpOperandOoO);
+  m_pDataStack->vPushPtr(*m_pJob->pLogicUnit_job()->m_xpOperandOoO);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* OperandOoO[]\clear -- fetch operand and set to nullptr                     */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandOoOGetAndClear(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushPtr(*m_pJob->pLogicUnit_job()->m_xpOperandOoO);
+  
+  m_pJob->pLogicUnit_job()->m_xpOperandOoO = nullptr;
   
   EXIT();
 }
@@ -64,7 +79,7 @@ void Step::vOperandOoOIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(( m_pJob->pLogicUnit_job() )->m_xpOperandOoO.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(m_pJob->pLogicUnit_job()->m_xpOperandOoO.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -72,15 +87,15 @@ void Step::vOperandOoOIsNull(void)
 /*----------------------------------------------------------------------------*/
 /* OperandOoO[].Next -- get next OoO operand                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandNextOoO(void)
+void Step::vOperandOoONext(void)
 {
   ENTRY();
   
-  ASSERT(( m_pJob->pLogicUnit_job() )->m_xpOperandOoO.bIsNull());
+  ASSERT(m_pJob->pLogicUnit_job()->m_xpOperandOoO.bIsNull());
   
-  ( m_pJob->pLogicUnit_job() )->m_xpOperandOoO = m_pJob->m_pOp->pPopQueueOoO();
+  m_pJob->pLogicUnit_job()->m_xpOperandOoO = m_pJob->m_pOp->pPopQueueOoO();
   
-  if (( m_pJob->pLogicUnit_job() )->m_xpOperandOoO.bIsNull())
+  if (m_pJob->pLogicUnit_job()->m_xpOperandOoO.bIsNull())
     m_pDataStack->vPushInt(false);
   else
     m_pDataStack->vPushInt(true);
@@ -94,13 +109,13 @@ void Step::vOperandOoOPipeOut(void)
 {
   ENTRY();
   
-  ASSERT(*( m_pJob->pLogicUnit_job() )->m_xpOperandOoO);
+  ASSERT(*m_pJob->pLogicUnit_job()->m_xpOperandOoO);
   
   Op* pOp = m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
 
-  pOp->vPipeOut_nextOp(*( m_pJob->pLogicUnit_job() )->m_xpOperandOoO,this);
+  pOp->vPipeOut_nextOp(*m_pJob->pLogicUnit_job()->m_xpOperandOoO,this);
   
-  ( m_pJob->pLogicUnit_job() )->m_xpOperandOoO = nullptr;
+  m_pJob->pLogicUnit_job()->m_xpOperandOoO = nullptr;
   
   EXIT();
 }
@@ -112,13 +127,13 @@ void Step::vOperandOoOPipeToOutput(void)
 {
   ENTRY();
   
-  ASSERT(*( m_pJob->pLogicUnit_job() )->m_xpOperandOoO);
+  ASSERT(*m_pJob->pLogicUnit_job()->m_xpOperandOoO);
   
   Op* pOp = m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
   
-  pOp->vPipeToOutput(*( m_pJob->pLogicUnit_job() )->m_xpOperandOoO);
+  pOp->vPipeToOutput(*m_pJob->pLogicUnit_job()->m_xpOperandOoO);
   
-  ( m_pJob->pLogicUnit_job() )->m_xpOperandOoO = nullptr;
+  m_pJob->pLogicUnit_job()->m_xpOperandOoO = nullptr;
   
   EXIT();
 }
@@ -131,8 +146,8 @@ void Step::vOperandOoOSet(void)
   ENTRY();
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
-  ASSERT(! pOperand || ( m_pJob->pLogicUnit_job() )->m_xpOperandOoO.bIsNull());
-  ( m_pJob->pLogicUnit_job() )->m_xpOperandOoO = _pOperand(pOperand);
+  ASSERT(! pOperand || m_pJob->pLogicUnit_job()->m_xpOperandOoO.bIsNull());
+  m_pJob->pLogicUnit_job()->m_xpOperandOoO = _pOperand(pOperand);
   
   EXIT();
 }

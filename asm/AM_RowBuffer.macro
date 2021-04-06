@@ -98,32 +98,38 @@ macro AM_HANDLER_ROWBUFFER_LIMIT
   Label HANDLER_ROWBUFFER
   EO_PRINTF "**HANDLER_ROWBUFFER**\n"
   EO_POP
+
+  EO_POP
+
   //EO_ROW_SRC_BEGIN
   EO_PUSH_DEVROW_SRC
   EO_DEVROW_ROWBUF_BEGIN
 
-  // push limit on stack
-  EO_INTEGER <limitRows>  // C_TAG_LIMIT_ROWS
-  EO_DUMP
+  //EO_DUMP
 
   // NEXT_ROW_SRC
   Label NEXT_ROW_SRC
 
-  // check if limit reached
-  EO_DUP
+  // push limit on stack
+  EO_INTEGER <limitRows>  // C_TAG_LIMIT_ROWS
+
+  // push the counter
   EO_CTR_0_PUSH
-  EO_DUMP
+  //EO_DUMP
+
+  // check if limit reached
   EO_LESSEQUAL
   EO_JMP_TRUE QUERY_DONE
-
-  // increment rows processed
-  EO_CTR_0_INC
 
   //EO_ROW_SRC_NEXT
   EO_PUSH_DEVROW_SRC
   EO_DEVROW_ROWBUF_NEXT
 
   EO_JMP_FALSE QUERY_DONE
+
+  // increment rows processed
+  EO_CTR_0_INC
+
   EO_CALL <rowProcessRoutine>  // C_TAG_ROW_PROCESS_ROUTINE
   EO_JMP NEXT_ROW_SRC
   EO_JMP QUERY_DONE

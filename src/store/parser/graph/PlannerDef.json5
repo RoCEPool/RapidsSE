@@ -352,7 +352,12 @@
                       name: "dml",
                       value: "A container of all DML statementMarker objects",
                       children: [
-// TODO Path: /__root__/definitions/object/planObject/statementMarker/dml/explain
+// Path: /__root__/definitions/object/planObject/statementMarker/dml/explain
+                        {
+                          name: "explain",
+                          value: "A marker for an EXPLAIN statement",
+                          children: []
+                        },
 // Path: /__root__/definitions/object/planObject/statementMarker/dml/select
                         {
                           name: "select",
@@ -400,6 +405,33 @@
                   ],
                   children: [
 
+// Path: /__root__/definitions/object/planObject/sqlOperator/explainOp
+                    {
+                      name: "explainOp",
+                      value: "An operator that outputs a description of the plan underneath",
+                      properties: [
+                        {
+                          name: "format",
+                          value: "How the explain output should be rendered",
+                          type: "/__root__/definitions/object/valueObject/stringObject",
+                        },
+                        {
+                          name: "stageRangeList",
+                          value: "For which stages should an explain output be generated?",
+                          type: "/__root__/definitions/object/list/stageRangeList"
+                        },
+                        {
+                          name: "stageCount",
+                          value: "A count of how many stages have been encountered",
+                          type: "/__root__/definitions/object/valueObject/integerObject",
+                        },
+                        {
+                          name: "stagesPast",
+                          value: "A list of the names of stages that have been encountered",
+                          type: "/__root__/definitions/object/list/stringList",
+                        },
+                      ]
+                    }, // EndPath: /__root__/definitions/object/planObject/sqlOperator/explainOp
 // Path: /__root__/definitions/object/planObject/sqlOperator/projectOp
                     {
                       name: "projectOp",
@@ -1640,7 +1672,34 @@
                   ], // end properties
                   children: []
                 }, // EndPath: /__root__/definitions/object/list/columnRefs
-                
+
+// Path: /__root__/definitions/object/list/stageRangeList
+                {
+                  name: "stageRangeList",
+                  value: "A list of stageRange objects",
+                  properties: [
+                    // We add constraints that all children must be of type /definitions/object/compound/stageRange
+                    // and that there must always be children (never an empty list).
+                    { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                      {
+                        name: "childType",
+                        type:  "/__root__/primitives/constraints/childType",
+                        children: [ {
+                          name: "childTypeParam",
+                          type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject",
+                          value: "/__root__/definitions/object/compound/stageRange"
+                        } ]
+                      },
+                      {
+                        // Constraint that this node must always have children
+                        name: "alwaysChildren",
+                        type: "/__root__/primitives/constraints/alwaysChildren"
+                      }
+                    ]} // end __constraints container
+                  ], // end properties
+                  children: []
+                }, // EndPath: /__root__/definitions/object/list/stageRangeList
+
               ]
             }, // EndPath: /__root__/definitions/object/list
 
@@ -1840,6 +1899,28 @@
                     // TODO: is primary key?
                   ]
                 }, // EndPath: /__root__/definitions/object/compound/indexDef
+// Path: /__root__/definitions/object/compound/stageRange
+                {
+                  name: "stageRange",
+                  value: "An object that identifies a SQL compilation stage or a range of stages. Used for EXPLAINing queries",
+                  properties: [
+                    {
+                      name: "begin",
+                      value: "The starting stage name (string), number (integer), or '*'. Begin range is inclusive.",
+                      type: "/__root__/definitions/object/valueObject"
+                    },
+                    {
+                      name: "end",
+                      value: "The ending stage name (string), number (integer), or '*'. Property may be null. End range is inclusive.",
+                      type: "/__root__/definitions/object/valueObject",
+                      properties: [
+                        { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                          { name: "optional", type:  "/__root__/primitives/constraints/optional"},
+                        ]}
+                      ]
+                    }
+                  ]
+                },
 
               ]
             }, // EndPath: /__root__/definitions/object/compound

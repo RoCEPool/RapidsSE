@@ -6,6 +6,7 @@
 #include "RootNode.hpp"
 #include "GraphNav.hpp"
 #include "QueryNode.hpp"
+#include "QueryNodeList.hpp"
 
 using namespace Parser;
 
@@ -15,8 +16,9 @@ namespace STORE
   {
   private:
 
-    PlanNode* m_pPlanRoot;
-    String*   m_sPipeline;
+    PlanNode*      m_pPlanRoot;
+    QueryNodeList* m_pColExprList;
+    String*        m_sPipeline;
 
     // must be last
     Footer m_xFooter;
@@ -38,6 +40,7 @@ namespace STORE
     static void vAppendAggregateOp(Backend* pBackend, QueryNode* pNode);
     static void vAppendExpr(Backend* pBackend, QueryNode* pNode);
     static void vAppendFilterOp(Backend* pBackend, QueryNode* pNode);
+    static void vAppendLimitOp(Backend* pBackend, QueryNode* pNode);
     static void vAppendProjectOp(Backend* pBackend,  QueryNode* pNode);
     static void vAppendScanOp(Backend* pBackend,  QueryNode* pNode);
 
@@ -46,6 +49,8 @@ namespace STORE
     static Parser::GraphNav::eWalkCtrl vVisitorExpr(PlanNode* pNode,
                                                     s256& sPath, i8 iDepth, void* pvArg);
     static Parser::GraphNav::eWalkCtrl vVisitorPlan(PlanNode* pNode,
+                                                    s256& sPath, i8 iDepth, void* pvArg);
+    static Parser::GraphNav::eWalkCtrl vVisitorStatement(PlanNode* pNode,
                                                     s256& sPath, i8 iDepth, void* pvArg);
 
     Footer* aFooter(void);

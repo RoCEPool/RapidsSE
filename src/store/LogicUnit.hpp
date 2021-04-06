@@ -173,7 +173,8 @@ namespace STORE
     eEC                 m_eErrorCode;      // error code
     
     eZK                 m_eOperand;
-    
+    eZK                 m_ePipeInOperand;
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // inner loop
   

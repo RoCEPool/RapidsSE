@@ -130,7 +130,14 @@
 
   // generate the asm for limit
   StreamDef[].duplicate to StreamDefOut[]
-  StreamDefOut[] <rows> >int LogicUnit[].genLimit
+  StreamDefOut[] <rows> >int LogicUnit[].genLimit to eError
+
+  // check for error
+  eError EC_NONE == not if
+    eError op__asmGenExecErr
+    true
+    exit
+  then
 
   // set the streamDef in the devSrcRow
   StreamDef[]\clear DevSrcRow.streamDef!
