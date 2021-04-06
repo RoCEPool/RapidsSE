@@ -119,6 +119,7 @@ static Stz* C_TDEF_LOOKUPCATALOG    = "__lookupCatalog"_Stz;
 static Stz* C_TDEF_LOOKUPSCHEMA     = "__lookupSchema"_Stz;
 static Stz* C_TDEF_LOOKUPTABLE      = "__lookupTable"_Stz;
 static Stz* C_TDEF_NODEINFO         = "__nodeInfo"_Stz;
+static Stz* C_TDEF_OPERANDLOG       = "SE__operandLog"_Stz;
 static Stz* C_TDEF_PATHINFO         = "__pathInfo"_Stz;
 static Stz* C_TDEF_PINGINFO         = "__pingInfo"_Stz;
 static Stz* C_TDEF_PROGRESSUNITS    = "__progressUnits"_Stz;

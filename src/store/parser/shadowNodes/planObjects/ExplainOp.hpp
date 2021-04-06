@@ -54,6 +54,10 @@ namespace Parser
     // Return the name of the last explainable stage before transliteration
     static Stz* szLastExplainableStage();
 
+    // Return the tabledef name for the definition of the explain table
+    // for the current format. Must return one of the C_TDEF_* constants.
+    static Stz* szTableDef(QueryNode* pNode);
+
   protected:
 
   };

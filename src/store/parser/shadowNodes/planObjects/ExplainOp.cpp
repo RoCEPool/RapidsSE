@@ -381,6 +381,35 @@ Stz* ExplainOp::szLastExplainableStage()
   return C_LAST_EXPLAINABLE_STAGE;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Return the tabledef name for the definition of the explain table           */
+/* for the current format. Must return one of the C_TDEF_* constants.         */
+/*----------------------------------------------------------------------------*/
+Stz* ExplainOp::szTableDef(QueryNode* pNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  // Get the format property, if it exists
+  QueryNode* pFormatNode = _pQueryNode(GraphNav::pFindProperty(const_cast<Stz*>(C_FORMAT_PROP), pNode));
+  ASSERT(!pFormatNode || ShadowNode::bIsExactType(pFormatNode, C_FORMAT_DEFN));
+
+  if (!pFormatNode) {
+    return C_TDEF_EXPLAIN;
+  }
+
+  Stz* szFormat = pFormatNode->szValue();
+
+  if (szFormat->bSame(C_FORMAT_PRETTY)) {
+    return C_TDEF_EXPLAIN;
+
+  } else if (szFormat->bSame(C_FORMAT_ROW)) {
+    NOT_IMPLEMENTED_YET
+
+  } else {
+    NEVER_REACH
+  }
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

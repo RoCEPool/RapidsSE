@@ -19,3 +19,6 @@ based on the existing "nameValidate" stage.
 10. Open the file store/stepsSet/StepsSet.hpp.
 11. Add a line for the declaration of the new function vSqlCompilerExprValidate().
 12. Compile and be merry.
+
+Notes:
+* Common sen code for each operator in the pipeline can be found in the file: sen/op__CompilerCommon.sen
