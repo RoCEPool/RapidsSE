@@ -248,7 +248,7 @@ eZK MY::eOperand(void)
   LogicUnit* pLogicUnit = MY::pLogicUnit();
 
   if (pLogicUnit)
-    return pLogicUnit->m_eOperand;
+    return pLogicUnit->m_ePipeInOperand;
   else
     return ZK_NONE;
 }
