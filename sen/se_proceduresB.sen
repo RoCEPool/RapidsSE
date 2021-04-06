@@ -1105,6 +1105,7 @@
       | nameValidate
       | exprValidate
       | setOpValidate
+      | explainPlan
       | transliterate
       | output
       | sink
