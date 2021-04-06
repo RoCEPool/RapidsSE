@@ -50,6 +50,8 @@ namespace STORE
                                                     s256& sPath, i8 iDepth, void* pvArg);
     static Parser::GraphNav::eWalkCtrl vVisitorPlan(PlanNode* pNode,
                                                     s256& sPath, i8 iDepth, void* pvArg);
+    static Parser::GraphNav::eWalkCtrl vVisitorStatement(PlanNode* pNode,
+                                                    s256& sPath, i8 iDepth, void* pvArg);
 
     Footer* aFooter(void);
   };

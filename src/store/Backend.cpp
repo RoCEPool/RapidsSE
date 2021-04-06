@@ -83,7 +83,9 @@ Backend::Backend(RootNode* pPlanRoot)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BACKEND,_FOOTER_);
 
+  // Find the /plan node
   m_pPlanRoot = pPlanRoot;
+
   m_pColExprList = nullptr;
   m_sPipeline = nullptr;
 
@@ -137,7 +139,8 @@ bool Backend::bTransliterate(String* sPipeline) {
       "    | periodic once\n"
       "    | stageB\n"
       ""_Stz,
-      cStageStart);
+      cStageStart,
+      cStageCurrent+1);
 
   ++ cStageCurrent;
 
@@ -147,13 +150,18 @@ bool Backend::bTransliterate(String* sPipeline) {
       cStageCurrent);
 
 
-  // Walk the plan graph from the root, skipping the properties but descending
-  // the children. We don't have to walk from the root, but if we don't then
-  // the path string that is passed into our visitor function will be a relative
-  // path and not an absolute one.
-  // Let's also pass in the root node as an argument as it can be useful within
-  // the visitor function.
-  GraphNav::bGlobalWalkBottomUp(m_pPlanRoot, false, true, vVisitorPlan, (void *) this);
+  // get the plan node of the plan
+  PlanNode* pPlanNode = ShadowRoot::pPlanNode(m_pPlanRoot);
+  ASSERT(pPlanNode);
+
+  // The plan node should have one child which is a StatementMarker node
+  ASSERT(pPlanNode->nChildren() == 1);
+  ASSERT(StatementMarker::bIsOfType(pPlanNode->pFirstChild()));
+  QueryNode* pStatementMarker = _pQueryNode(pPlanNode->pFirstChild());
+
+  // We want to iterate over each logical subgraph, bounded by StatementMarkers,
+  // and generate the pipeline for each statement
+  GraphNav::bGlobalWalk(pStatementMarker, false, true, vVisitorPlan, (void *) this);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -679,17 +687,17 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
 /*----------------------------------------------------------------------------*/
 /* visitor function for the plan graph walk                                   */
 /*----------------------------------------------------------------------------*/
-GraphNav::eWalkCtrl Backend::vVisitorPlan(PlanNode* pRootNode, s256& sPath, i8 iDepth, void* pvArg)
+GraphNav::eWalkCtrl Backend::vVisitorStatement(PlanNode* pRootNode, s256& sPath, i8 iDepth, void* pvArg)
 {
   _static_
 
   QueryNode* pQueryNode = static_cast<QueryNode *>(pRootNode);
 
   // We are only interested in the /__root__/plan subtree. Skip the others.
-  if (iDepth > 0 && !sPath.bBeginsWith(const_cast<Stz*>(C_PLAN_PATH))) {
-    //return GraphNav::WALK_SKIP_CHILDREN;
-    return GraphNav::WALK_CONTINUE;
-  }
+//  if (iDepth > 0 && !sPath.bBeginsWith(const_cast<Stz*>(C_PLAN_PATH))) {
+//    //return GraphNav::WALK_SKIP_CHILDREN;
+//    return GraphNav::WALK_CONTINUE;
+//  }
 
   // The root node can be useful for various graph navigation and manipulation.
   // e.g. finding other nodes.
@@ -747,6 +755,34 @@ GraphNav::eWalkCtrl Backend::vVisitorPlan(PlanNode* pRootNode, s256& sPath, i8 i
     }
 
   }
+
+  // Keep walking
+  return GraphNav::WALK_CONTINUE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* visitor function for the plan graph walk                                   */
+/*----------------------------------------------------------------------------*/
+GraphNav::eWalkCtrl Backend::vVisitorPlan(PlanNode* pRootNode, s256& sPath, i8 iDepth, void* pvArg)
+{
+  _static_
+
+  if (!StatementMarker::bIsOfType(pRootNode)) {
+    return GraphNav::WALK_CONTINUE;   // Keep walking
+  }
+
+  QueryNode* pStatementMarker = _pQueryNode(pRootNode);
+
+  Backend* pBackend = (Backend*)pvArg;
+
+  // Walk the current node and (potenitially) its properties and children,
+  // calling the visitor function for each node encountered. This is a
+  // bottom-up, depth-first traversal.
+  // The bounded walk will stop when it hits a StatementMarker node as this
+  // represents the start of another logical sub-graph.
+  // Starting on a StatementMarker will walk until the subsequent StatementMarker
+  // node is encountered.
+  GraphNav::bBoundedWalkBottomUp(pStatementMarker, false, true, vVisitorStatement, (void *) pBackend);
 
   // Keep walking
   return GraphNav::WALK_CONTINUE;
