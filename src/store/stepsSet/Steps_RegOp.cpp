@@ -127,7 +127,7 @@ void Step::vRegOpIsOperandValid(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* op[].IncOperandCount -- inc operand count                                  */
+/* op[].incOperandCount -- inc operand count                                  */
 /*----------------------------------------------------------------------------*/
 void Step::vRegOpIncOperandCount(void)
 {
