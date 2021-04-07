@@ -5,7 +5,7 @@
 
 #include "Resources.hpp" //?
 
-namespace STORE { class Jobs; class Objects; }
+namespace STORE { class InternalTables; class Jobs; class Objects; }
 
 namespace STORE
 {
@@ -46,6 +46,7 @@ namespace STORE
     Format        m_oFormat;
     Grid*         m_pGrid;
     Heaps         m_xHeaps;
+    InternalTables* m_pInternalTables;
     Jobs*         m_pJobs;
     Locks         m_oLocks;
     Objects*      m_pObjects;
@@ -73,7 +74,7 @@ namespace STORE
     void  operator delete(void*);
     
     AttachMap(void);
-    ~AttachMap(void) noexcept(false);
+   ~AttachMap(void) noexcept(false);
     
     static void vSubSystem(TokenVec* pTokenVec);
 

@@ -14,6 +14,7 @@
 #include "AttachMap.hpp"
 #include "Objects.hpp"
 #include "Jobs.hpp"
+#include "InternalTables.hpp"
 
 #include "Session.hpp"
 #include "Step.hpp"
@@ -72,6 +73,8 @@ AttachMap::AttachMap(void)
   // create the transient heaps
   m_xHeaps.vInit();
 
+  m_pInternalTables = new InternalTables;
+  
   m_pJobs = new Jobs;
 
   m_pObjects = new Objects;
