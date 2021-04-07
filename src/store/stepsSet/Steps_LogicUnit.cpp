@@ -531,14 +531,15 @@ void Step::vLogicUnitLogOperand(void)
   
   i8 nQueueLength = pRLU->m_xpOp->nQueueLength();
   
-  vLogTI(TI_OPERANDLOG,
+  vLogTI((i8)TI_OPERANDLOG,
            m_pJob->szJobNm(),
            m_pJob->i_TablePtn(),
            (i8)pRLU->m_ePipeInOperand,
            iPoint,
            nNanoSeconds,
            nQueueLength,
-           ""
+           "none",
+           C_VARGS_END
          )
  
   EXIT();

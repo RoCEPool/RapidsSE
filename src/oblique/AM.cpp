@@ -724,6 +724,9 @@ Table* AM::pTableFind(Stz* szTableNm)
 StreamDef* AM::pStreamDefFind(Stz* szTableNm) {
   
   Table* pTable = AM::pTableFind(szTableNm);
+  if (! pTable)
+    return nullptr;
+  
   StreamDef* pStreamDef = pTable->pStreamDef();
 
   return pStreamDef;

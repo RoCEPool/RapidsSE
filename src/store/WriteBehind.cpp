@@ -29,11 +29,11 @@ WriteBehind::WriteBehind(void)
   
   m_pStreamDef_events = AM::pStreamDefFind(C_TDEF_EVENTS);
   
-  m_pNamedBuffer_events = nullptr;
-    
   for (i8 i_Table = 0; i_Table < TI_ENUMS; i_Table++)
     m_apNamedBuffer[i_Table] = nullptr;
 
+  m_pNamedBuffer_events = nullptr;
+    
   _checkInitialised_(CN_WRITEBEHIND);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_WRITEBEHIND,_FOOTER_);
@@ -50,6 +50,59 @@ WriteBehind::~WriteBehind(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* allot a row in given table buffer                                          */
+/*----------------------------------------------------------------------------*/
+Row* WriteBehind::pAllotRow(eTI eTable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEBEHIND,_FOOTER_);
+  
+  if (! m_apNamedBuffer[eTable]) {
+    StreamDef* pStreamDef = AM::pInternalTables()->pStreamDef(eTable);
+    m_apNamedBuffer[eTable] = new NamedBuffer(pStreamDef,C_DONT_LOG);
+  }
+  
+  Row* pRow = m_apNamedBuffer[eTable]->pAllotRow();
+  
+  if (! pRow) {
+    
+    AM::DEMON::vPipeTo(C_EVENT_DEMON,m_apNamedBuffer[eTable]);
+    
+    m_apNamedBuffer[eTable] = nullptr;
+    StreamDef* pStreamDef = AM::pInternalTables()->pStreamDef(eTable);
+    m_apNamedBuffer[eTable] = new NamedBuffer(pStreamDef,C_DONT_LOG);
+    
+    pRow = m_apNamedBuffer[eTable]->pAllotRow();
+  }
+  
+  RASSERT(pRow);
+  return pRow;
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab write lock                                                            */
+/*----------------------------------------------------------------------------*/
+void WriteBehind::vGrabLock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEBEHIND,_FOOTER_);
+  
+  m_okLock.vGrabWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop write lock                                                            */
+/*----------------------------------------------------------------------------*/
+void WriteBehind::vDropLock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEBEHIND,_FOOTER_);
+  
+  m_okLock.vDropWrite();
+}
+
+
+
+
 
 /*----------------------------------------------------------------------------*/
 /* deposit var-arg list of column values into an __events row                 */
@@ -73,6 +126,7 @@ void WriteBehind::vDepositEvent(i8 iVargsBegin, ...)
   
   //m_okLock.vDropWrite();
 }
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
@@ -107,35 +161,6 @@ Row* WriteBehind::pAllotEventRow(void)
     RASSERT(pRow);
   }
   
-  return pRow;
-}
-
-/*----------------------------------------------------------------------------*/
-/* allot a row in given table buffer                                          */
-/*----------------------------------------------------------------------------*/
-Row* WriteBehind::pAllotRow(eTI eTable)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEBEHIND,_FOOTER_);
-  
-  if (! m_apNamedBuffer[eTable]) {
-    StreamDef* pStreamDef = AM::pInternalTables()->pStreamDef(eTable);
-    m_apNamedBuffer[eTable] = new NamedBuffer(pStreamDef,C_DONT_LOG);
-  }
-  
-  Row* pRow = m_apNamedBuffer[eTable]->pAllotRow();
-  
-  if (! pRow) {
-    
-    AM::DEMON::vPipeTo(C_EVENT_DEMON,m_apNamedBuffer[eTable]);
-    
-    m_apNamedBuffer[eTable] = nullptr;
-    StreamDef* pStreamDef = AM::pInternalTables()->pStreamDef(eTable);
-    m_apNamedBuffer[eTable] = new NamedBuffer(pStreamDef,C_DONT_LOG);
-    
-    pRow = m_apNamedBuffer[eTable]->pAllotRow();
-  }
-  
-  RASSERT(pRow);
   return pRow;
 }
 
