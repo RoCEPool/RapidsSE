@@ -7,6 +7,7 @@
 #include "NamedBuffer.hpp"
 
 #include "WriteBehind.hpp"
+#include "InternalTables.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -103,6 +104,35 @@ Row* WriteBehind::pAllotEventRow(void)
     
     m_pNamedBuffer_events = new NamedBuffer(m_pStreamDef_events,C_DONT_LOG);
     pRow = m_pNamedBuffer_events->pAllotRow();
+    RASSERT(pRow);
+  }
+  
+  return pRow;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allot a row in given table buffer                                          */
+/*----------------------------------------------------------------------------*/
+Row* WriteBehind::pAllotRow(eTI eTable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEBEHIND,_FOOTER_);
+  
+  if (! m_apNamedBuffer[eTable]) {
+    StreamDef* pStreamDef = AM::pInternalTables()->pStreamDef(eTable);
+    m_apNamedBuffer[eTable] = new NamedBuffer(pStreamDef,C_DONT_LOG);
+  }
+  
+  Row* pRow = m_apNamedBuffer[eTable]->pAllotRow();
+  
+  if (! pRow) {
+    
+    AM::DEMON::vPipeTo("__eventDemon"_Stz,m_apNamedBuffer[eTable]);
+    
+    m_apNamedBuffer[eTable] = nullptr;
+    
+    StreamDef* pStreamDef = AM::pInternalTables()->pStreamDef(eTable);
+    m_apNamedBuffer[eTable] = new NamedBuffer(pStreamDef,C_DONT_LOG);
+    pRow = m_apNamedBuffer[eTable]->pAllotRow();
     RASSERT(pRow);
   }
   

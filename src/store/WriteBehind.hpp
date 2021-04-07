@@ -36,6 +36,7 @@ namespace STORE
   
   private:
     Row* pAllotEventRow(void);
+    Row* pAllotRow(eTI eTable);
     Footer* aFooter(void);
   };
 
