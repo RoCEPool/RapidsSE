@@ -4,6 +4,7 @@
 #pragma once
 
 #include "eEV.h"
+#include "eTI.h"
 
 namespace BASE
 {
@@ -28,8 +29,9 @@ namespace BASE
    ~Loggable(void) noexcept(false);
   
     void vLog(eEV eEvent, Stz* szFormat, ...);
-  
-  
+
+    void vLogTI(i8 iTable, ...);
+
     eEV  eEvent(void);
     void vEvent(eEV eEvent);
 

@@ -530,6 +530,16 @@ void Step::vLogicUnitLogOperand(void)
   i8 nNanoSeconds = pRLU->m_oSince.iNanoseconds();
   
   i8 nQueueLength = pRLU->m_xpOp->nQueueLength();
+  
+  vLogTI(TI_OPERANDLOG,
+           m_pJob->szJobNm(),
+           m_pJob->i_TablePtn(),
+           (i8)pRLU->m_ePipeInOperand,
+           iPoint,
+           nNanoSeconds,
+           nQueueLength,
+           ""
+         )
  
   EXIT();
 }

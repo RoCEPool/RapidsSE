@@ -2094,6 +2094,10 @@ bool AM::bInBufferPool(Object* pObject) {
   return gpBufferPool->bInBufferPool(pObject);
 }
 
+InternalTables* AM::pInternalTables(void) {
+  return gpAttachMap->m_pInternalTables;
+}
+
 Stz* AM::szJobName(Job* pJob)    { return pJob->szJobNm();                      }
 i8   AM::iJobUniqueId(Job* pJob) { return pJob->m_iObjectId;                     }
 

@@ -7,6 +7,7 @@
 #include "CmdLineArgs.hpp"
 #include "Row.hpp"
 #include "WriteBehind.hpp"
+#include "InternalTables.hpp"
 
 extern CmdLineArgs gxCmdLineArgs;
 
@@ -89,6 +90,28 @@ void Loggable::vLog(eEV eEvent, Stz* szFormat, ...)
   va_end(xVarArgs);
   
   vAddRow(eEvent,sNote);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* log entry                                                                  */
+/*----------------------------------------------------------------------------*/
+void Loggable::vLogTI(i8 iTable, ...)
+{
+  _precondition_(_MAGIC_);
+  
+  
+  StreamDef* pStreamDef = AM::pInternalTables()->pStreamDef((eTI)iTable);
+  
+  if (! pStreamDef)
+    return;
+  
+  va_list xVarArgs;
+  
+  va_start(xVarArgs,iTable);
+  
+  
+  va_end(xVarArgs);
 }
 
 /*----------------------------------------------------------------------------*/

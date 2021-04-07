@@ -154,6 +154,7 @@ namespace STORE {
   class Index;
   class IndexTree;
   class InfoSetBase;
+  class InternalTables;
 
   class Job;
   class JobList;
@@ -423,7 +424,8 @@ namespace OBLIQUE
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static bool bInBufferPool(Object* pObject);
-  
+    static InternalTables* pInternalTables(void);
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vLog(TokenVec* pTknVec);
     static void vLogAll(void);
