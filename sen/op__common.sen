@@ -382,11 +382,11 @@
 /*----------------------------------------------------------------------------*/
 : op__handle
 
-  //0 PipeIn[].kind EG_ZK LogicUnit[].diaryNote
+  0 LogicUnit[].logOperand
   
   LogicUnit[].handler@ execute
   
-  //1 PipeIn[].kind EG_ZK LogicUnit[].diaryNote
+  1 LogicUnit[].logOperand
 ;
 
 /*----------------------------------------------------------------------------*/

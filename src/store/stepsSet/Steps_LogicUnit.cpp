@@ -25,6 +25,11 @@ void Step::vAddSteps_LogicUnit(void)
   vAddStep("LogicUnit[].altIndex@"_Stz,     &Step::vLogicUnitAltIndexFetch);
   vAddStep("LogicUnit[].altTable@"_Stz,     &Step::vLogicUnitAltTableFetch);
 
+  vAddStep("LogicUnit[].callAgain@"_Stz,    &Step::vLogicUnitCallAgainFetch);
+  vAddStep("LogicUnit[].callAgain!"_Stz,    &Step::vLogicUnitCallAgainStore);
+  vAddStep("LogicUnit[].calledAgain@"_Stz,  &Step::vLogicUnitCalledAgainFetch);
+  vAddStep("LogicUnit[].calledAgain!"_Stz,  &Step::vLogicUnitCalledAgainStore);
+  
   vAddStep("LogicUnit[].compilerToExit"_Stz,&Step::vLogicUnitCompilerToExit);
 
   vAddStep("LogicUnit[].diaryAction"_Stz,   &Step::vLogicUnitDiaryAction);
@@ -44,16 +49,13 @@ void Step::vAddSteps_LogicUnit(void)
   vAddStep("LogicUnit[].genProjection"_Stz, &Step::vLogicUnitGenProjection);
   vAddStep("LogicUnit[].genRange"_Stz,      &Step::vLogicUnitGenRange);
     
-  vAddStep("LogicUnit[].callAgain@"_Stz,    &Step::vLogicUnitCallAgainFetch);
-  vAddStep("LogicUnit[].callAgain!"_Stz,    &Step::vLogicUnitCallAgainStore);
-  vAddStep("LogicUnit[].calledAgain@"_Stz,  &Step::vLogicUnitCalledAgainFetch);
-  vAddStep("LogicUnit[].calledAgain!"_Stz,  &Step::vLogicUnitCalledAgainStore);
-  
   vAddStep("LogicUnit[].handler@"_Stz,      &Step::vLogicUnitHandlerFetch);
   vAddStep("LogicUnit[].handler!"_Stz,      &Step::vLogicUnitHandlerStore);
   
   vAddStep("LogicUnit[].init"_Stz,          &Step::vLogicUnitInit);
-  
+
+  vAddStep("LogicUnit[].logOperand"_Stz,    &Step::vLogicUnitLogOperand);
+
   vAddStep("LogicUnit[].srcIndex@"_Stz,     &Step::vLogicUnitSrcIndexFetch);
   vAddStep("LogicUnit[].srcTable@"_Stz,     &Step::vLogicUnitSrcTableFetch);
   
@@ -85,6 +87,58 @@ void Step::vLogicUnitAltTableFetch(void)
   DevROW* pDevRow = _pDevROW(m_pJob->pLogicUnit_job()->m_xRluCommon.m_pDevAltRow);
   
   m_pDataStack->vPushStr(pDevRow->m_sTableNm);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].callAgain@ --                                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitCallAgainFetch(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushInt(m_pJob->pLogicUnit_job()->m_xRluCommon.m_bCallAgain);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].callAgain! --                                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitCallAgainStore(void)
+{
+  ENTRY();
+
+  i8 iCallAgain = m_pDataStack->iPopInt(__func__);
+  
+  m_pJob->pLogicUnit_job()->m_xRluCommon.m_bCallAgain = iCallAgain;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].calledAgain@ --                                                */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitCalledAgainFetch(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushInt(m_pJob->pLogicUnit_job()->m_xRluCommon.m_bCalledAgain);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].calledAgain! --                                                */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitCalledAgainStore(void)
+{
+  ENTRY();
+
+  i8 iCallAgain = m_pDataStack->iPopInt(__func__);
+  
+  m_pJob->pLogicUnit_job()->m_xRluCommon.m_bCalledAgain = iCallAgain;
   
   EXIT();
 }
@@ -420,58 +474,6 @@ void Step::vLogicUnitGenRange(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* LogicUnit[].callAgain@ --                                                  */
-/*----------------------------------------------------------------------------*/
-void Step::vLogicUnitCallAgainFetch(void)
-{
-  ENTRY();
-  
-  m_pDataStack->vPushInt(m_pJob->pLogicUnit_job()->m_xRluCommon.m_bCallAgain);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* LogicUnit[].callAgain! --                                                  */
-/*----------------------------------------------------------------------------*/
-void Step::vLogicUnitCallAgainStore(void)
-{
-  ENTRY();
-
-  i8 iCallAgain = m_pDataStack->iPopInt(__func__);
-  
-  m_pJob->pLogicUnit_job()->m_xRluCommon.m_bCallAgain = iCallAgain;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* LogicUnit[].calledAgain@ --                                                */
-/*----------------------------------------------------------------------------*/
-void Step::vLogicUnitCalledAgainFetch(void)
-{
-  ENTRY();
-  
-  m_pDataStack->vPushInt(m_pJob->pLogicUnit_job()->m_xRluCommon.m_bCalledAgain);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* LogicUnit[].calledAgain! --                                                */
-/*----------------------------------------------------------------------------*/
-void Step::vLogicUnitCalledAgainStore(void)
-{
-  ENTRY();
-
-  i8 iCallAgain = m_pDataStack->iPopInt(__func__);
-  
-  m_pJob->pLogicUnit_job()->m_xRluCommon.m_bCalledAgain = iCallAgain;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* LogicUnit[].handler@ --                                                    */
 /*----------------------------------------------------------------------------*/
 void Step::vLogicUnitHandlerFetch(void)
@@ -505,6 +507,23 @@ void Step::vLogicUnitInit(void)
   ENTRY();
   
   m_pJob->pLogicUnit_job()->vInit();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].logOperand -- log operand                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitLogOperand(void)
+{
+  ENTRY();
+  
+  i8 iPoint = m_pDataStack->iPopInt(__func__);
+  
+//  if ( ! AM::bRLUDiary() ) {
+//    EXIT();
+//    return;
+//  }
   
   EXIT();
 }
