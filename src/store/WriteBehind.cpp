@@ -30,6 +30,9 @@ WriteBehind::WriteBehind(void)
   
   m_pNamedBuffer_events = nullptr;
     
+  for (i8 i_Table = 0; i_Table < TI_ENUMS; i_Table++)
+    m_apNamedBuffer[i_Table] = nullptr;
+
   _checkInitialised_(CN_WRITEBEHIND);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_WRITEBEHIND,_FOOTER_);

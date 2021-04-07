@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "eTI.h"
+
 namespace STORE { class NamedBuffer; }
 
 namespace STORE
@@ -15,6 +17,9 @@ namespace STORE
     // events
     StreamDef*   m_pStreamDef_events;
     NamedBuffer* m_pNamedBuffer_events;
+  
+    NamedBuffer* m_apNamedBuffer[TI_ENUMS];
+
 
     // must be last
     Footer m_xFooter;

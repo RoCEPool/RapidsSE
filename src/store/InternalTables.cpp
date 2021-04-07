@@ -23,8 +23,8 @@ InternalTables::InternalTables(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INTERNALTABLES,_FOOTER_);
   
-  for (i8 i_StreamDef = 0; i_StreamDef < TI_ENUMS; i_StreamDef++)
-    m_apStreamDef[i_StreamDef] = nullptr;
+  for (i8 i_Table = 0; i_Table < TI_ENUMS; i_Table++)
+    m_apStreamDef[i_Table] = nullptr;
     
   _checkInitialised_(CN_INTERNALTABLES);
   
