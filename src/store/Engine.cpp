@@ -49,6 +49,8 @@
 #include "eBO.h"
 #include "TagConstants.h"
 
+#include "InternalTables.hpp"
+
 #include "STORE.h"
 
 CmdLineArgs  gxCmdLineArgs;
@@ -831,6 +833,20 @@ void Engine::vGetWelcome(s256& sWelcome)
                    Process::iGetPid(),
                    gsBuildGitHash
                   );
+}
+
+/*----------------------------------------------------------------------------*/
+/* find and set stream def for internal tables                                */
+/*----------------------------------------------------------------------------*/
+void Engine::vInternalTables(void)
+{
+  StreamDef* pStreamDef;
+  
+  pStreamDef = AM::pStreamDefFind(C_TDEF_EVENTS);
+  gpAttachMap->m_pInternalTables->vStreamDef(TI_EVENTS,pStreamDef);
+  
+  pStreamDef = AM::pStreamDefFind(C_TDEF_OPERANDLOG);
+  gpAttachMap->m_pInternalTables->vStreamDef(TI_OPERANDLOG,pStreamDef);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1674,7 +1690,7 @@ void Engine::vStartSystem(void)
               "running boot job"_Stz); //!format-LogSys
   vCallBoot();
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // threading
   
   if (AM::bVerboseProgress())
@@ -1693,6 +1709,13 @@ void Engine::vStartSystem(void)
   vCallStart();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // internal tables
+  
+  if (AM::bVerboseProgress())
+    vInfo("  Internal Tables\n"_Stz);
+  vInternalTables();
+
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_BOOT,
               "instance %s started"_Stz,
