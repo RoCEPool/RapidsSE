@@ -29,7 +29,6 @@ void Step::vAddSteps_LogicUnit(void)
   vAddStep("LogicUnit[].callAgain!"_Stz,    &Step::vLogicUnitCallAgainStore);
   vAddStep("LogicUnit[].calledAgain@"_Stz,  &Step::vLogicUnitCalledAgainFetch);
   vAddStep("LogicUnit[].calledAgain!"_Stz,  &Step::vLogicUnitCalledAgainStore);
-  
   vAddStep("LogicUnit[].compilerToExit"_Stz,&Step::vLogicUnitCompilerToExit);
 
   vAddStep("LogicUnit[].diaryAction"_Stz,   &Step::vLogicUnitDiaryAction);
@@ -39,9 +38,9 @@ void Step::vAddSteps_LogicUnit(void)
   vAddStep("LogicUnit[].diaryName"_Stz,     &Step::vLogicUnitDiaryName);
   vAddStep("LogicUnit[].diaryNote"_Stz,     &Step::vLogicUnitDiaryNote);
   vAddStep("LogicUnit[].diaryTitle"_Stz,    &Step::vLogicUnitDiaryTitle);
-
   vAddStep("LogicUnit[].dynFun"_Stz,        &Step::vLogicUnitDynFun);
   vAddStep("LogicUnit[].dynFunArgs"_Stz,    &Step::vLogicUnitDynFunArgs);
+  
   vAddStep("LogicUnit[].genAggregate"_Stz,  &Step::vLogicUnitGenAggregate);
   vAddStep("LogicUnit[].genAsm"_Stz,        &Step::vLogicUnitGenAsm);
   vAddStep("LogicUnit[].genFilter"_Stz,     &Step::vLogicUnitGenFilter);
@@ -525,6 +524,13 @@ void Step::vLogicUnitLogOperand(void)
 //    return;
 //  }
   
+  LogicUnit* pRLU = m_pJob->pLogicUnit_job();
+  
+  pRLU->m_oSince.vUpdate();
+  i8 nNanoSeconds = pRLU->m_oSince.iNanoseconds();
+  
+  i8 nQueueLength = pRLU->m_xpOp->nQueueLength();
+ 
   EXIT();
 }
 

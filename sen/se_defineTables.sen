@@ -520,8 +520,14 @@
   STD_PATH
   "
   define table se__operandLog (
-    event  INTEGER NOT NULL ,
-    note   VARCHAR NOT NULL
+    sJobNm       VARCHAR NOT NULL ,
+    iPtn         INTEGER NOT NULL ,
+    eZK          INTEGER NOT NULL ,
+    iPoint       INTEGER NOT NULL ,
+    nNanoSeconds INTEGER NOT NULL ,
+    nQueueLength INTEGER NOT NULL ,
+    
+    sNote        VARCHAR NOT NULL
   ) < internal > = 1 ;
   "
   api::executeRequest
