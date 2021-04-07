@@ -16713,7 +16713,7 @@ void Task::vAddMunged(Task* )
   gszaMungedText[122] =
     "\" munged se_demons.sen \" .verbose \n"
     "/*============================================================================*/\n"
-    "/* se_demon.sen -- support words for demons                                   */\n"
+    "/* se_demons.sen -- support words for demons                                  */\n"
     "/*============================================================================*/\n"
     "\n"
     "\" se_demon.sen\" .verbose\n"

@@ -98,7 +98,7 @@ Row* WriteBehind::pAllotEventRow(void)
     //delete m_pNamedBuffer_events;
     //NEVER_REACH;
     
-    AM::DEMON::vPipeTo("__eventDemon"_Stz,m_pNamedBuffer_events);
+    AM::DEMON::vPipeTo(C_EVENT_DEMON,m_pNamedBuffer_events);
     
     m_pNamedBuffer_events = nullptr;
     
@@ -126,16 +126,16 @@ Row* WriteBehind::pAllotRow(eTI eTable)
   
   if (! pRow) {
     
-    AM::DEMON::vPipeTo("__eventDemon"_Stz,m_apNamedBuffer[eTable]);
+    AM::DEMON::vPipeTo(C_EVENT_DEMON,m_apNamedBuffer[eTable]);
     
     m_apNamedBuffer[eTable] = nullptr;
-    
     StreamDef* pStreamDef = AM::pInternalTables()->pStreamDef(eTable);
     m_apNamedBuffer[eTable] = new NamedBuffer(pStreamDef,C_DONT_LOG);
+    
     pRow = m_apNamedBuffer[eTable]->pAllotRow();
-    RASSERT(pRow);
   }
   
+  RASSERT(pRow);
   return pRow;
 }
 
