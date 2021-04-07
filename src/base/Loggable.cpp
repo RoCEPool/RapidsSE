@@ -47,7 +47,7 @@ Loggable::~Loggable(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* log next event                                                             */
 /*----------------------------------------------------------------------------*/
-void Loggable::vLog(eEV eEvent, Stz* szFormat, ...)
+void Loggable::vLog_TBR(eEV eEvent, Stz* szFormat, ...)
 {
   _precondition_(_MAGIC_);
   UNUSED(eEvent);
@@ -109,15 +109,15 @@ void Loggable::vLogTI(i8 iTable, ...)
     return;
   
 //  pWriteBehind->vGrabLock();
-//  
+//
 //  va_list xVarArgs;
 //  va_start(xVarArgs,iTable);
-//  
+//
 //  Row* pRow = pWriteBehind->pAllotRow((eTI)iTable);
 //  pRow->vDeposit(xVarArgs);
 //
 //  va_end(xVarArgs);
-//  
+//
 //  pWriteBehind->vDropLock();
 }
 

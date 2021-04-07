@@ -111,7 +111,7 @@ Session::Session(void)
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
-  vLog(EV_CONSTRUCT,"Session constructor"_Stz);
+  vLog_TBR(EV_CONSTRUCT,"Session constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -127,7 +127,7 @@ Session::~Session(void) noexcept(false)
           
   -- gixSession;
   
-  vLog(EV_DESTRUCT,"Session destructor"_Stz);
+  vLog_TBR(EV_DESTRUCT,"Session destructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
