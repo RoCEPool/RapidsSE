@@ -1930,6 +1930,9 @@ public:
   void vWordSee(void);
   void vWordXcheckInxPtr(void);
 
+  // write behind
+  void vWriteBehindFlush(void);
+
   // XmitOperand
   void vXmitOperandOperandStore(void);
   void vXmitOperandPipeOut(void);
