@@ -91,8 +91,9 @@ void Api::vDeleteJob(Session* pSession)
   
   
   
-  pSession->m_pOutput->m_bExitMarker   = false;
-  pSession->m_pOutput->m_bCancelMarker = false;
+  pSession->m_pOutput->m_bExitMarker      = false;
+  pSession->m_pOutput->m_bExitEarlyMarker = false;
+  pSession->m_pOutput->m_bCancelMarker    = false;
 
 }
 

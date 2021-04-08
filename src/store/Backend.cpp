@@ -42,6 +42,7 @@
 #include "Literal.hpp"
 #include "ProjectedColumn.hpp"
 #include "ProjectOp.hpp"
+#include "UnionOp.hpp"
 
 #include "ComparisonExpr.hpp"
 #include "EqExpr.hpp"
@@ -89,6 +90,9 @@ Backend::Backend(RootNode* pPlanRoot)
   m_pColExprList = nullptr;
   m_sPipeline = nullptr;
 
+  m_cStageCurrent = 'A';
+  m_cStageLast    = 'A';
+
   _checkInitialised_(CN_BACKEND);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_BACKEND,_FOOTER_);
@@ -123,8 +127,7 @@ bool Backend::bTransliterate(String* sPipeline) {
   vPrintPlanGraph(m_pPlanRoot);
 //#endif
 
-  char cStageStart   = 'A';
-  char cStageCurrent = 'A';
+  char cStageStart   = m_cStageCurrent;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -140,14 +143,10 @@ bool Backend::bTransliterate(String* sPipeline) {
       "    | stageB\n"
       ""_Stz,
       cStageStart,
-      cStageCurrent+1);
+      m_cStageCurrent+1);
 
-  ++ cStageCurrent;
-
-  m_sPipeline->vCatSprint(
-      "  stage stage%c on all partitions :\n"
-      ""_Stz,
-      cStageCurrent);
+  ++ m_cStageCurrent;
+  m_cStageLast = m_cStageCurrent + 1;
 
 
   // get the plan node of the plan
@@ -165,36 +164,19 @@ bool Backend::bTransliterate(String* sPipeline) {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_sPipeline->vCatSprint(
-      "    | stage%c\n"
-      ""_Stz,
-      cStageCurrent + 1);
+  //++ m_cStageCurrent;
 
-  ++ cStageCurrent;
+//  m_sPipeline->vCatSprint(
+//      "    | stage%c\n"
+//      ""_Stz,
+//      m_cStageLast);
 
-  // check if any aggregation in previous stage
-//  char* sAggreg = m_sPipeline->azStr();
-
-//  if (StrLib::bFind(&sAggreg, "aggreg")) {
-//
-//   // now append the aggreg as the super aggregate in the last stage (on origin)
-//   s4K sAgg;
-//   StrLib::vCopyTill(sAgg.azChar(), sAggreg, '|');
-//
-//    m_sPipeline->vCatSprint(
-//        "  stage stage%c on origin :\n"
-//        "    %s"
-//        "    | output\n"
-//        ""_Stz,
-//        cStageCurrent, sAgg.azChar());
-//  }
-//  else {
     m_sPipeline->vCatSprint(
         "  stage stage%c on origin :\n"
         "    output\n"
         ""_Stz,
-        cStageCurrent);
-  //}
+        m_cStageLast);
+
   m_sPipeline->vCatSprint(
       "    | sink\n"
       "    | stage%c\n"
@@ -204,8 +186,6 @@ bool Backend::bTransliterate(String* sPipeline) {
   m_sPipeline->vConcat(
       "end ;\n"
       ""_Stz);
-
-  //vTrace("Pipeline: \n %s\n"_Stz, pAsPipelineStmt->azStr());
 
   return true;
 }
@@ -519,6 +499,11 @@ void Backend::vAppendScanOp(Backend* pBackend, QueryNode* pNode)
   Stz *szTableName = TableRef::szTable(pTableRef);
 
   sPipeline->vCatSprint(
+      "  stage stage%c on all partitions :\n"
+      ""_Stz,
+      pBackend->m_cStageCurrent);
+
+  sPipeline->vCatSprint(
       "    scan %s\n"
       ""_Stz,
       szTableName);
@@ -693,16 +678,6 @@ GraphNav::eWalkCtrl Backend::vVisitorStatement(PlanNode* pRootNode, s256& sPath,
 
   QueryNode* pQueryNode = static_cast<QueryNode *>(pRootNode);
 
-  // We are only interested in the /__root__/plan subtree. Skip the others.
-//  if (iDepth > 0 && !sPath.bBeginsWith(const_cast<Stz*>(C_PLAN_PATH))) {
-//    //return GraphNav::WALK_SKIP_CHILDREN;
-//    return GraphNav::WALK_CONTINUE;
-//  }
-
-  // The root node can be useful for various graph navigation and manipulation.
-  // e.g. finding other nodes.
-  //RootNode* pPlanRoot = _pRootNode(pvArg);
-
   Backend* pBackend = (Backend*)pvArg;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -749,6 +724,13 @@ GraphNav::eWalkCtrl Backend::vVisitorStatement(PlanNode* pRootNode, s256& sPath,
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // UnionOp
+
+    else if (UnionOp::bIsOfType(pQueryNode)) {
+      RASSERT(0);
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // other Op's
     else {
       RASSERT(0);
@@ -767,22 +749,69 @@ GraphNav::eWalkCtrl Backend::vVisitorPlan(PlanNode* pRootNode, s256& sPath, i8 i
 {
   _static_
 
+  // Continue walking till a StatementMarker is hit
   if (!StatementMarker::bIsOfType(pRootNode)) {
-    return GraphNav::WALK_CONTINUE;   // Keep walking
+    return GraphNav::WALK_CONTINUE;
   }
 
+  // get the statementMarker
   QueryNode* pStatementMarker = _pQueryNode(pRootNode);
 
+  // get the backend
   Backend* pBackend = (Backend*)pvArg;
 
-  // Walk the current node and (potenitially) its properties and children,
+  // check for a unionOp
+  auto fHasUnionOp = [](PlanNode* pNode, void* pvArg) -> b1 {
+    return UnionOp::bIsExactType(pNode);
+  };
+
+  // check for a unionOp
+  PlanNode *pUnionOp = GraphNav::pBoundedSearch(pStatementMarker, false, true, fHasUnionOp, nullptr);
+
+  // we have a unionOp
+  if (pUnionOp) {
+
+    pBackend->m_sPipeline->vCatSprint(
+        "    | stage%c\n"
+        ""_Stz,
+        pBackend->m_cStageCurrent + 1);
+
+    // set lastStage
+    pBackend->m_cStageLast = pBackend->m_cStageCurrent + 2;
+
+    // this node should have two children
+    ASSERT(pUnionOp->nChildren() == 2);
+
+    // get a plan node iterator
+    PlanNodeIter *pIter = pUnionOp->pNewChildrenIter();
+
+    // bounded walk of each of its children
+    while (pIter->bHasNext()) {
+      // get the next StatementMarker from the iterator
+      QueryNode *pChildStatementMarker = static_cast<QueryNode *>(pIter->pNext());
+      GraphNav::bBoundedWalkBottomUp(pChildStatementMarker, false, true, vVisitorStatement, (void *) pBackend);
+      pBackend->m_cStageCurrent++;
+
+      pBackend->m_sPipeline->vCatSprint(
+          "    | stage%c\n"
+          ""_Stz,
+          pBackend->m_cStageLast);
+
+    }
+    return GraphNav::WALK_SKIP_CHILDREN;
+  }
+
+  // Walk the current node and its children,
   // calling the visitor function for each node encountered. This is a
   // bottom-up, depth-first traversal.
-  // The bounded walk will stop when it hits a StatementMarker node as this
-  // represents the start of another logical sub-graph.
   // Starting on a StatementMarker will walk until the subsequent StatementMarker
   // node is encountered.
-  GraphNav::bBoundedWalkBottomUp(pStatementMarker, false, true, vVisitorStatement, (void *) pBackend);
+  GraphNav::bBoundedWalkBottomUp(pRootNode, false, true, vVisitorStatement, (void *) pBackend);
+
+  pBackend->m_sPipeline->vCatSprint(
+      "    | stage%c\n"
+      ""_Stz,
+      pBackend->m_cStageLast);
 
   // Keep walking
   return GraphNav::WALK_CONTINUE;

@@ -1,7 +1,5 @@
 // SQL compiler tests
 select.test
-
-// The following tests are commented until we can break out of the pipeline early and short circuit the EE
-//aggregates.test
+aggregates.test
+explain.test
 //union.test
-//explain.test

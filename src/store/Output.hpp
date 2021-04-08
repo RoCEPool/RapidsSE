@@ -19,6 +19,7 @@ namespace STORE
 
     StreamDef* m_pStreamDef_result;
     bool       m_bExitMarker;
+    bool       m_bExitEarlyMarker;
     bool       m_bCancelMarker;
 
     bool       m_bCmdErr;

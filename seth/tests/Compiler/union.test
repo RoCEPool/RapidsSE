@@ -112,19 +112,19 @@ failure contains: 'Column in CORRESPONDING BY list is not found in select list: 
 //  Empty CORRESPONDING BY clause with matching column types
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-EXPLAIN SELECT * FROM unionTbl1 UNION ALL CORRESPONDING SELECT * FROM unionTbl2;
+SELECT * FROM unionTbl1 UNION ALL CORRESPONDING SELECT * FROM unionTbl2;
 rows:
   ['col1', 'col2', 'col3']
 
-EXPLAIN SELECT * FROM unionTbl4 UNION ALL CORRESPONDING SELECT * FROM unionTbl5;
+SELECT * FROM unionTbl4 UNION ALL CORRESPONDING SELECT * FROM unionTbl5;
 rows:
   ['alpha', 'bravo', 'charlie']
 
-EXPLAIN SELECT * FROM unionTbl6 UNION ALL CORRESPONDING SELECT * FROM unionTbl1;
+SELECT * FROM unionTbl6 UNION ALL CORRESPONDING SELECT * FROM unionTbl1;
 rows:
   ['col3', 'col1']
 
-EXPLAIN SELECT * FROM unionTbl6 UNION ALL CORRESPONDING SELECT * FROM unionTbl4;
+SELECT * FROM unionTbl6 UNION ALL CORRESPONDING SELECT * FROM unionTbl4;
 rows:
   ['bRaVo']
 
@@ -143,6 +143,40 @@ failure contains: 'Column in CORRESPONDING BY list has mismatched types in child
 
 EXPLAIN SELECT * FROM unionTbl1 UNION ALL CORRESPONDING SELECT * FROM unionTbl4;
 failure contains: 'No common column names of the subqueries could be found for the CORRESPONDING list'
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Multiple nested UNIONS
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+EXPLAIN
+  SELECT * FROM unionTbl1
+UNION ALL
+  SELECT * FROM unionTbl2
+UNION ALL
+  SELECT * FROM unionTbl1
+;
+success
+
+
+EXPLAIN
+  SELECT col4 FROM unionTbl1
+UNION ALL (
+  SELECT * FROM unionTbl4
+UNION ALL CORRESPONDING
+  SELECT * FROM unionTbl6 )
+;
+success
+
+
+EXPLAIN
+  SELECT * FROM unionTbl4
+UNION ALL CORRESPONDING
+  SELECT * FROM unionTbl6
+UNION ALL
+  SELECT col4 FROM unionTbl1
+;
+success
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
