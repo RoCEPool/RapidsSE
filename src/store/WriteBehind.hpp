@@ -34,6 +34,7 @@ namespace STORE
   public:
     Row* pAllotRow(eTI eTable);
     void vDropLock(void);
+    void vFlush(void);
     void vGrabLock(void);
   
   
