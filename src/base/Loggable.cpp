@@ -8,6 +8,9 @@
 #include "Row.hpp"
 #include "WriteBehind.hpp"
 #include "InternalTables.hpp"
+#include "MY.hpp"
+#include "Job.hpp"
+#include "TagConstants.h"
 
 extern CmdLineArgs gxCmdLineArgs;
 
@@ -100,6 +103,12 @@ void Loggable::vLogTI(i8 iTable, ...)
 {
   _precondition_(_MAGIC_);
   
+  Job* pJob = MY::pJob();
+  if (! pJob->bHasTag(C_TAG_OPERANDLOG))
+    return;
+  
+  NEVER_REACH;
+  
   WriteBehind* pWriteBehind = AM::THREAD::pWriteBehind();
   if (! pWriteBehind)
     return;
@@ -108,17 +117,17 @@ void Loggable::vLogTI(i8 iTable, ...)
   if (! pStreamDef)
     return;
   
-//  pWriteBehind->vGrabLock();
-//
-//  va_list xVarArgs;
-//  va_start(xVarArgs,iTable);
-//
-//  Row* pRow = pWriteBehind->pAllotRow((eTI)iTable);
-//  pRow->vDeposit(xVarArgs);
-//
-//  va_end(xVarArgs);
-//
-//  pWriteBehind->vDropLock();
+  pWriteBehind->vGrabLock();
+
+  va_list xVarArgs;
+  va_start(xVarArgs,iTable);
+
+  Row* pRow = pWriteBehind->pAllotRow((eTI)iTable);
+  pRow->vDeposit(xVarArgs);
+
+  va_end(xVarArgs);
+
+  pWriteBehind->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
