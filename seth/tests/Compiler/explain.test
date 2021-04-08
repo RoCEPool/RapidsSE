@@ -6,7 +6,12 @@
 //  Setup
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-_nation;
+create table nation (
+	 N_NATIONKEY       INTEGER NOT NULL,
+	 N_NAME            CHAR(25) NOT NULL,
+	 N_REGIONKEY       INTEGER NOT NULL,
+	 N_COMMENT         VARCHAR(152)
+);
 success
 
 
@@ -18,13 +23,13 @@ EXPLAIN SELECT n_nationkey FROM nation;
 rows:
   (*, 'explainPlan',
 'StatementMarker: select
-  » queryText: "SELECT n_nationkey FROM nation"
+» queryText: "SELECT n_nationkey FROM nation"
 
-  -> projectOp
-     » column: (Expr = rapidsse.public.nation.n_nationkey)
+-> projectOp
+   » column: (Expr = rapidsse.public.nation.n_nationkey)
 
-  -> -> tableScanOp
-        » table: (rapidsse.public.nation)' )
+-> -> tableScanOp
+      » table: (rapidsse.public.nation)' )
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Explain with errors
@@ -314,12 +319,14 @@ rows:
 
 
 EXPLAIN stage 1-3 EXPLAIN SELECT n_nationkey FROM nation;
+rows:
   ( 1, 'parser',        * )
   ( 2, 'nameValidate',  * )
   ( 3, 'exprValidate',  * )
 
 
 EXPLAIN stage 1-3 EXPLAIN STAGE 2-4 SELECT n_nationkey FROM nation;
+rows:
   ( 1, 'parser',        * )
   ( 2, 'nameValidate',  * )
   ( 3, 'exprValidate',  * )
