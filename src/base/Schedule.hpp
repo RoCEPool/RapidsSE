@@ -82,6 +82,7 @@ namespace BASE
     void vRemoveDedicatedThread(Thread* pThread);
     void vRemoveGeneralThread(Thread* pThread);
   
+  public:
     ThreadVec* pDedicatedThreadVec(void);
     ThreadVec* pGeneralThreadVec(void);
 

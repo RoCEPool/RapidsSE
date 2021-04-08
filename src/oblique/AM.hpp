@@ -95,6 +95,7 @@ namespace BASE {
   class TagSet;
   class Task;
   class Thread;
+  class ThreadVec;
   class Token;
   class TokenVec;
   class Tx;
@@ -230,10 +231,13 @@ namespace OBLIQUE
     class THREAD
     {
     public:
+      static ThreadVec* pDedicatedThreadVec(void);
       static void vDeleteThread(Thread* pThread);
+      static ThreadVec* pGeneralThreadVec(void);
       static Thread* pNewThread(void);
       static WriteBehind* pWriteBehind(void);
       static WriteBehind* pWriteBehind(Thread* pThread);
+    
     };
   
     class WORD
@@ -539,7 +543,7 @@ namespace OBLIQUE
     static i8   iTaskQueue(Task* pTask);
     static LogicUnit* pTaskLogicUnit(Task* pTask);
     static i8   iTaskState(Task* pTask);
-
+ 
      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
     static HeapBuffer* pToHeapBuffer(i8 iBufferNo);

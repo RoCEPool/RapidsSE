@@ -185,6 +185,18 @@ DicStack* AM::TASK::pDicStack(void)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
+/* dedicated thread vector                                                    */
+/*----------------------------------------------------------------------------*/
+ThreadVec* AM::THREAD::pDedicatedThreadVec(void)
+{
+  _static_
+  
+  ThreadVec* pThreadVec = AM::pSchedule()->pDedicatedThreadVec();
+  
+  return pThreadVec;
+}
+
+/*----------------------------------------------------------------------------*/
 /* delete thread                                                              */
 /*----------------------------------------------------------------------------*/
 void AM::THREAD::vDeleteThread(Thread* pThread)
@@ -197,6 +209,18 @@ void AM::THREAD::vDeleteThread(Thread* pThread)
   delete pWriteBehind;
   
   delete pThread;
+}
+
+/*----------------------------------------------------------------------------*/
+/* general thread vector                                                      */
+/*----------------------------------------------------------------------------*/
+ThreadVec* AM::THREAD::pGeneralThreadVec(void)
+{
+  _static_
+  
+  ThreadVec* pThreadVec = AM::pSchedule()->pGeneralThreadVec();
+  
+  return pThreadVec;
 }
 
 /*----------------------------------------------------------------------------*/
