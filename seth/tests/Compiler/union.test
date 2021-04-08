@@ -146,6 +146,38 @@ failure contains: 'No common column names of the subqueries could be found for t
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Multiple nested UNIONS
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+EXPLAIN
+  SELECT * FROM unionTbl1
+UNION ALL
+  SELECT * FROM unionTbl2
+UNION ALL
+  SELECT * FROM unionTbl1;
+success
+
+
+EXPLAIN
+  SELECT col4 FROM unionTbl1
+UNION ALL (
+  SELECT * FROM unionTbl4
+UNION ALL CORRESPONDING
+  SELECT * FROM unionTbl6 );
+success
+
+
+EXPLAIN
+  SELECT * FROM unionTbl4
+UNION ALL CORRESPONDING
+  SELECT * FROM unionTbl6
+UNION ALL
+  SELECT col4 FROM unionTbl1
+;
+success
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Cleanup
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
