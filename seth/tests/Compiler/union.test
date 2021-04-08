@@ -154,7 +154,8 @@ EXPLAIN
 UNION ALL
   SELECT * FROM unionTbl2
 UNION ALL
-  SELECT * FROM unionTbl1;
+  SELECT * FROM unionTbl1
+;
 success
 
 
@@ -163,7 +164,8 @@ EXPLAIN
 UNION ALL (
   SELECT * FROM unionTbl4
 UNION ALL CORRESPONDING
-  SELECT * FROM unionTbl6 );
+  SELECT * FROM unionTbl6 )
+;
 success
 
 
