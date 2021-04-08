@@ -106,9 +106,7 @@ void Loggable::vLogTI(i8 iTable, ...)
   Job* pJob = MY::pJob();
   if (! pJob->bHasTag(C_TAG_OPERANDLOG))
     return;
-  
-  NEVER_REACH;
-  
+    
   WriteBehind* pWriteBehind = AM::THREAD::pWriteBehind();
   if (! pWriteBehind)
     return;
