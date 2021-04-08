@@ -520,7 +520,8 @@
   STD_PATH
   "
   define table se__operandLog (
-    sJobNm       VARCHAR NOT NULL ,
+    sPipelineNm  VARCHAR NOT NULL ,
+    sOpNm        VARCHAR NOT NULL ,
     iPtn         INTEGER NOT NULL ,
     eZK          INTEGER NOT NULL ,
     iPoint       INTEGER NOT NULL ,

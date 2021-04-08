@@ -10,6 +10,21 @@
 #include "LogicUnit.hpp"
 #include "Op.hpp"
 #include "Grid.hpp"
+#include "Pipeline.hpp"
+
+/*----------------------------------------------------------------------------*/
+/* get current partition number                                               */
+/*----------------------------------------------------------------------------*/
+i8 MY::iPtn(void)
+{
+  _static_
+  
+  Op* pOp = MY::pOp();
+  
+  i8 iPtn = pOp ? pOp->tPtnNo() : -1;
+  
+  return iPtn;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get current catalog name                                                   */
@@ -48,6 +63,40 @@ Stz* MY::szJobNm(void)
   Job* pJob = AM::pThisTLSJob();
   
   return aCN[pJob->eGetClassNo()];
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current operator name                                                  */
+/*----------------------------------------------------------------------------*/
+Stz* MY::szOpNm(void)
+{
+  _static_
+  
+  Op* pOp = MY::pOp();
+  
+  if (! pOp)
+    return ""_Stz;
+  
+  Stz* szOpNm = pOp->szOpNm();
+  
+  return szOpNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current pipeline name                                                  */
+/*----------------------------------------------------------------------------*/
+Stz* MY::szPipelineNm(void)
+{
+  _static_
+  
+  Pipeline* pPipeline = MY::pPipeline();
+  
+  if (! pPipeline)
+    return ""_Stz;
+  
+  Stz* szPipelineNm = pPipeline->szPipelineNm();
+  
+  return szPipelineNm;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -262,10 +311,10 @@ Pipeline* MY::pPipeline(void)
 
   Op* pOp = MY::pOp();
 
-  if (pOp)
-    return pOp->pPipeline();
-  else
+  if (! pOp)
     return nullptr;
+  
+  return pOp->pPipeline();
 }
 
 /*----------------------------------------------------------------------------*/

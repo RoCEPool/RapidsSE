@@ -15,6 +15,8 @@
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
 
+#include "MY.hpp"
+
 extern EnvFlags gxEnvFlags;;
 
 /*----------------------------------------------------------------------------*/
@@ -531,9 +533,13 @@ void Step::vLogicUnitLogOperand(void)
   
   i8 nQueueLength = pRLU->m_xpOp->nQueueLength();
   
+  Op* pOp = MY::pOp();
+  i8 iPtn = pOp ? pOp->tPtnNo() : -1;
+  
   vLogTI((i8)TI_OPERANDLOG,
-           m_pJob->szJobNm(),
-           m_pJob->i_TablePtn(),
+           MY::szPipelineNm(),
+           MY::szOpNm(),
+           MY::iPtn(),
            (i8)pRLU->m_ePipeInOperand,
            iPoint,
            nNanoSeconds,
