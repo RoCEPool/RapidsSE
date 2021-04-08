@@ -19,6 +19,8 @@ namespace STORE
     PlanNode*      m_pPlanRoot;
     QueryNodeList* m_pColExprList;
     String*        m_sPipeline;
+    char           m_cStageCurrent;
+    char           m_cStageLast;
 
     // must be last
     Footer m_xFooter;
