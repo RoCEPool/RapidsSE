@@ -525,9 +525,8 @@
     eZK          INTEGER NOT NULL ,
     iPoint       INTEGER NOT NULL ,
     nNanoSeconds INTEGER NOT NULL ,
-    nQueueLength INTEGER NOT NULL ,
+    nQueueLength INTEGER NOT NULL
     
-    sNote        VARCHAR NOT NULL
   ) < internal > = 1 ;
   "
   api::executeRequest

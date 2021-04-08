@@ -538,7 +538,6 @@ void Step::vLogicUnitLogOperand(void)
            iPoint,
            nNanoSeconds,
            nQueueLength,
-           "none",
            C_VARGS_END
          )
  
