@@ -99,7 +99,16 @@ void WriteBehind::vFlush(void)
   
   vGrabLock();
   
-  // tbc ...
+  for (i8 i_Table = 1; i_Table < TI_ENUMS; i_Table++) {
+  
+    NamedBuffer* pNamedBuffer = m_apNamedBuffer[i_Table];
+    if (! pNamedBuffer)
+      continue;
+
+    m_apNamedBuffer[i_Table] = nullptr;
+    
+    AM::DEMON::vPipeTo(C_EVENT_DEMON,pNamedBuffer);
+  }
   
   vDropLock();
 }
