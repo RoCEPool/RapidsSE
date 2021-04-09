@@ -6,7 +6,7 @@ trackMemory;
 success;
 
 //------------------------------------------------------------------------------
-projectColumns$_I lineitem "$7";
+projectColumns$_I lineitem "type decimal $7";
 failure contains: "Table does not exist"
 
 //------------------------------------------------------------------------------
@@ -33,7 +33,7 @@ create table LineItem
 success
 
 //------------------------------------------------------------------------------
-projectColumns$_I lineitem "$7";
+projectColumns$_I lineitem "type decimal $7";
 rows: 0
 
 // load data
@@ -41,11 +41,11 @@ load lineitem "../DATA/TPCH/lineitem10.csv";
 success
 
 //------------------------------------------------------------------------------
-projectColumns lineitem " sum ( $7 ) ";
+projectColumns lineitem " type decimal sum ( $7 ) ";
 failure contains: "invalid command"
 
 //------------------------------------------------------------------------------
-projectColumns$_I lineitem "$2";
+projectColumns$_I lineitem "type integer $2";
 rows:
   (1551894)
   (673091)
@@ -59,7 +59,7 @@ rows:
   (1284483)
 
 //------------------------------------------------------------------------------
-projectColumns$_I lineitem "$7";
+projectColumns$_I lineitem "type decimal $7";
 rows:
   (0.04)
   (0.09)
@@ -73,7 +73,7 @@ rows:
   (0.06)
 
 //------------------------------------------------------------------------------
-projectColumns$_I lineitem "$9";
+projectColumns$_I lineitem "type varchar $9";
 rows:
   ('N')
   ('N')
@@ -87,7 +87,7 @@ rows:
   ('A')
 
 //------------------------------------------------------------------------------
-projectColumns$_I lineitem "$11";
+projectColumns$_I lineitem "type date $11";
 rows:
  (DATE '1993-11-09')
  (DATE '1994-02-02')
@@ -101,7 +101,7 @@ rows:
  (DATE '1997-01-28')
 
 //------------------------------------------------------------------------------
-projectColumns$_I lineitem "$16";
+projectColumns$_I lineitem "type varchar $16";
 rows:
   ('egular courts above the')
   ('ly final dependencies: slyly bold ')
@@ -115,7 +115,7 @@ rows:
   ('nal foxes wake. ')
 
 //------------------------------------------------------------------------------
-projectColumns$_I lineitem as a 2 , as b $11 ;
+projectColumns$_I lineitem "type integer as a 2 , type date as b $11" ;
 rows:
   (2, DATE '1993-11-09')
   (2, DATE '1994-02-02')
@@ -129,7 +129,7 @@ rows:
   (2, DATE '1997-01-28')
 
 //------------------------------------------------------------------------------
-projectColumns$_I lineitem $11, $6 2.0 *, $6;
+projectColumns$_I lineitem type date $11, type decimal $6 2.0 *, type decimal $6;
 rows:
  (DATE '1993-11-09',141644.30,70822.15)
  (DATE '1994-02-02',172167.30,86083.65)
@@ -143,7 +143,7 @@ rows:
  (DATE '1997-01-28',126132.64,63066.32)
 
 //------------------------------------------------------------------------------
-projectColumns$_I lineitem $6, $7, $6 $7 *;
+projectColumns$_I lineitem type decimal $6, type decimal $7, type decimal $6 $7 *;
 rows:
  (33078.94,0.04,1323.15)
  (38306.16,0.09,3447.55)
@@ -157,7 +157,7 @@ rows:
  (39620.34,0.06,2377.22)
 
  //------------------------------------------------------------------------------
- projectColumns$_I lineitem $1, $16, $11, $7, $1;
+ projectColumns$_I lineitem type integer $1, type varchar $16, type date $11, type decimal $7, type integer $1;
  rows:
   (3,' unusual accounts. eve',DATE '1993-11-09',0.10,3)
   (3,'ongside of the furiously brave acco',DATE '1994-02-02',0.06,3)
@@ -171,7 +171,7 @@ rows:
   (2,'ven requests. deposits breach a',DATE '1997-01-28',0.00,2)
 
 //------------------------------------------------------------------------------
- projectColumns lineitem 1, 2, null;
+ projectColumns lineitem type integer 1, type integer 2, type null null;
  rows:
   (1,2,null)
   (1,2,null)
