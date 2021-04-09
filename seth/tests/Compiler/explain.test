@@ -182,7 +182,7 @@ rows:
   ( 1, 'parser',        * )
   ( 2, 'nameValidate',  * )
   ( 4, 'setOpValidate', * )
-  ( 5, 'explainPlan',   * )
+  ( 5, 'postProject',   * )
 
 
 // Explain multiple stage ranges (names)
@@ -192,7 +192,9 @@ rows:
   ( 1, 'parser',        * )
   ( 2, 'nameValidate',  * )
   ( 4, 'setOpValidate', * )
-  ( 5, 'explainPlan',   * )
+  ( 5, 'postProject',   * )
+  ( 6, 'exprPushdown',  * )
+  ( 7, 'explainPlan',   * )
 
 
 // Explain multiple stage ranges (mixed)
@@ -202,7 +204,7 @@ rows:
   ( 1, 'parser',        * )
   ( 2, 'nameValidate',  * )
   ( 4, 'setOpValidate', * )
-  ( 5, 'explainPlan',   * )
+  ( 5, 'postProject',   * )
 
 
 // Explain multiple overlapping stage ranges
@@ -232,7 +234,9 @@ rows:
   ( 2, 'nameValidate',  * )
   ( 3, 'exprValidate',  * )
   ( 4, 'setOpValidate', * )
-  ( 5, 'explainPlan',   * )
+  ( 5, 'postProject',   * )
+  ( 6, 'exprPushdown',  * )
+  ( 7, 'explainPlan',   * )
 
 EXPLAIN STAGE ALL SELECT n_nationkey FROM nation;
 rows:
@@ -240,7 +244,9 @@ rows:
   ( 2, 'nameValidate',  * )
   ( 3, 'exprValidate',  * )
   ( 4, 'setOpValidate', * )
-  ( 5, 'explainPlan',   * )
+  ( 5, 'postProject',   * )
+  ( 6, 'exprPushdown',  * )
+  ( 7, 'explainPlan',   * )
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -272,7 +278,7 @@ EXPLAIN STAGE 3-1 SELECT n_nationkey FROM nation;
 rows: 0
 
 EXPLAIN STAGE 1-1000 SELECT n_nationkey FROM nation;
-rows: 5
+rows: 7
 
 
 // Explain invalid stage range (names)
@@ -280,7 +286,7 @@ EXPLAIN STAGE exprValidate-parser SELECT n_nationkey FROM nation;
 rows: 0
 
 EXPLAIN STAGE parser-badStageName SELECT n_nationkey FROM nation;
-rows: 5
+rows: 7
 
 EXPLAIN STAGE badStageName-explainPlan SELECT n_nationkey FROM nation;
 rows: 0
@@ -300,7 +306,7 @@ rows: 0
 
 EXPLAIN EXPLAIN SELECT n_nationkey FROM nation;
 rows:
-( 5, 'explainPlan',
+( 7, 'explainPlan',
 'StatementMarker: explain
 » queryText: "EXPLAIN SELECT n_nationkey FROM nation"
 
