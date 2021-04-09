@@ -20,7 +20,7 @@ pipeline unionAll_I
 
   stage stageC on all partitions :
     scan orders
-    | project ordinal 0 "as orderkey $1"
+    | project ordinal 0 "type integer as orderkey $1"
     | stageD
 
   stage stageD on origin :
@@ -66,12 +66,12 @@ pipeline unionAll_I
 
   stage stageB on all partitions :
     scan lineitem
-    | project ordinal 0 "as orderkey $1"
+    | project ordinal 0 "type integer as orderkey $1"
     | stageD
 
   stage stageC on all partitions :
     scan orders
-    | project ordinal 0 "as orderkey $1"
+    | project ordinal 0 "type integer as orderkey $1"
     | stageD
 
   stage stageD on origin :
@@ -104,12 +104,12 @@ pipeline unionAll_I
 
   stage stageB on all partitions :
     scan lineitem
-    | project ordinal 0 "as orderkey $1"
+    | project ordinal 0 "type integer as orderkey $1"
     | stageD
 
   stage stageC on all partitions :
     scan orders
-    | project ordinal 0 "as orderkey $1"
+    | project ordinal 0 "type integer as orderkey $1"
     | stageD
 
   stage stageD on origin :
@@ -132,12 +132,12 @@ pipeline unionAll_I
 
   stage stageB on all partitions :
     scan lineitem
-    | project ordinal 0 "as orderkey $1"
+    | project ordinal 0 "type integer as orderkey $1"
     | stageD
 
   stage stageC on all partitions :
     scan orders
-    | project ordinal 0 "as orderkey $1"
+    | project ordinal 0 "type integer as orderkey $1"
     | stageD
 
   stage stageD on origin :
@@ -174,12 +174,12 @@ pipeline unionAll_I
 
   stage stageB on all partitions :
     scan lineitem
-    | project ordinal 0 "as orderkey $1"
+    | project ordinal 0 "type integer as orderkey $1"
     | stageD
 
   stage stageC on all partitions :
     scan orders
-    | project ordinal 0 "as orderkey $1"
+    | project ordinal 0 "type integer as orderkey $1"
     | stageD
 
   stage stageD on origin :
@@ -211,12 +211,12 @@ pipeline unionAll_I
 
   stage stageB on all partitions :
     scan lineitem
-    | project ordinal 0 "as orderkey $1"
+    | project ordinal 0 "type integer as orderkey $1"
     | stageD
 
   stage stageC on all partitions :
     scan orders
-    | project ordinal 0 "as orderkey $1"
+    | project ordinal 0 "type integer as orderkey $1"
     | stageD
 
   stage stageD on origin :

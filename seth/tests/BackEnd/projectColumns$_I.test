@@ -171,7 +171,7 @@ rows:
   (2,'ven requests. deposits breach a',DATE '1997-01-28',0.00,2)
 
 //------------------------------------------------------------------------------
- projectColumns lineitem type integer 1, type integer 2, type null null;
+ projectColumns$ lineitem type integer 1, type integer 2, type null null;
  rows:
   (1,2,null)
   (1,2,null)
