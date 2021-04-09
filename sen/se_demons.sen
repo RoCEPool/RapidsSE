@@ -78,6 +78,29 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* metadata demon pipeline command                                            */
+/*----------------------------------------------------------------------------*/
+: metaDemonPipeline
+
+  "
+    pipelineLocal metaDemon
+      tag \"<pre_execute>\" = \"demon::install\" endTag
+    begin
+
+      stage stageA on origin :
+        start | metaGet | stageB
+
+      stage Sr::stageB on all nodes :
+        metaSend | stageC
+
+      stage stageC on origin :
+        metaRecv | stageA
+
+    end ;
+  "
+;
+
+/*----------------------------------------------------------------------------*/
 /* monitor demon pipeline command                                             */
 /*----------------------------------------------------------------------------*/
 : monDemonPipeline
