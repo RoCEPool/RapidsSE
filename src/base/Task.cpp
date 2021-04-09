@@ -85,6 +85,7 @@ Task::Task(Job* pJob)
   m_oAcksRmg.vCheckInit();
   // m_oWakeup
   
+  m_bLogMemory = false;
 
   m_iTraceMask   = C_TRACE_NONE;
  
@@ -687,6 +688,26 @@ void Task::vLocalsPush(void)
   pLocalsframe->vNext(m_pLocalsFrame);
   
   m_pLocalsFrame = pLocalsframe;
+}
+
+/*----------------------------------------------------------------------------*/
+/* log memory?                                                                */
+/*----------------------------------------------------------------------------*/
+bool Task::bLogMemory(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+    
+  return m_bLogMemory;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set log memory                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vLogMemory(bool bLogMemory)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+    
+  m_bLogMemory = bLogMemory;
 }
 
 /*----------------------------------------------------------------------------*/

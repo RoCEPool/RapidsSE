@@ -41,7 +41,8 @@ namespace BASE
     Decider      m_oAcksRmg;     // number of acks still waiting for
     Sleep        m_oWakeup;      // wakeup time from sleeping
 
-  
+    bool         m_bLogMemory;   // log memory usage?
+
     i8           m_iTraceMask;   // tracing mask
   
     i8           m_nOperandYield;  //
@@ -121,6 +122,8 @@ namespace BASE
     Stz* szJobName(void);
     void vLocalsPop(void);
     void vLocalsPush(void);
+    bool bLogMemory(void);
+    void vLogMemory(bool bLogMemory);
     void vMutexLock(void);
     void vMutexSignal(void);
     void vMutexUnlock(void);
