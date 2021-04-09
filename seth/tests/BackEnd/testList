@@ -14,8 +14,8 @@
 //filterRows_I.test
 //filterRows.test
 
-//filterRows$_I.test
-//filterRows$.test
+filterRows$_I.test
+filterRows$.test
 
 //limitRows.test
 //limitRows_I.test
