@@ -1105,6 +1105,8 @@
       | nameValidate
       | exprValidate
       | setOpValidate
+      | postProject
+      | exprPushdown
       | explainPlan
       | transliterate
       | output

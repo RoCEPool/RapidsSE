@@ -1462,10 +1462,12 @@ public:
   void vSqlCompilerDoExplain(void);
   void vSqlCompilerExplainFormat(void);
   void vSqlCompilerExplainPlan(void);
+  void vSqlCompilerExprPushdown(void);
   void vSqlCompilerExprValidate(void);
   void vSqlCompilerHasExplain(void);
   void vSqlCompilerNameValidate(void);
   void vSqlCompilerParser(void);
+  void vSqlCompilerPostProject(void);
   void vSqlCompilerSetOpValidate(void);
   void vSqlCompilerTransliterate(void);
 
