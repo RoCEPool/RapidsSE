@@ -455,6 +455,8 @@ namespace OBLIQUE
     static void vLogTsk(eSL, Task*      pTsk, eTA eTskAct, Stz* szFormat, ...);
     static void vLogTxn(eSL, Tx*        pTxn, eXA eTxnAct, Stz* szFormat, ...);
   
+    static void vLogTI(i8 iTable, ...);
+
     static void vLogOpenByApi(void);
     static void vLogOpenBySE(bool bStarting);
     static void vLogWriteCsv(bool bShortForm);

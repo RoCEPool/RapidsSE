@@ -113,6 +113,7 @@
 
 #include "TraceLock.hpp"
 #include "WriteBehind.hpp"
+#include "InternalTables.hpp"
 
 #include "Version.h"
 
@@ -1609,6 +1610,34 @@ void AM::vLogTxn(eSL , Tx* , eXA , Stz* , ...)
 //  
 //  pTxn->m_i_Log = i_Entry;
 #endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* log entry into internal table                                              */
+/*----------------------------------------------------------------------------*/
+void AM::vLogTI(i8 iTable, ...)
+{
+  _static_
+      
+  WriteBehind* pWriteBehind = AM::THREAD::pWriteBehind();
+  if (! pWriteBehind)
+    return;
+
+  StreamDef* pStreamDef = AM::pInternalTables()->pStreamDef((eTI)iTable);
+  if (! pStreamDef)
+    return;
+  
+  pWriteBehind->vGrabLock();
+
+  va_list xVarArgs;
+  va_start(xVarArgs,iTable);
+
+  Row* pRow = pWriteBehind->pAllotRow((eTI)iTable);
+  pRow->vDeposit(xVarArgs);
+
+  va_end(xVarArgs);
+
+  pWriteBehind->vDropLock();
 }
 
 
