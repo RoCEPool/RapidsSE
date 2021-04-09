@@ -13,13 +13,13 @@ begin
 
   stage stageB on all partitions :
     scan lineitem
-    | filter 0 "$11 DATE '1994-01-01' >=  <> $11 DATE '1995-01-01' < <> "
-    | filter 0 "$7 0.06 0.01 - >= <> $7 0.06 0.01 +  <= <>"
-    | aggreg 0 " type decimal as revenue_p $6 $7 * sum "
+    | filter ordinals 0 "$11 DATE '1994-01-01' >=  <> $11 DATE '1995-01-01' < <> "
+    | filter ordinals 0 "$7 0.06 0.01 - >= <> $7 0.06 0.01 +  <= <>"
+    | aggreg ordinals 0 " type decimal as revenue_p $6 $7 * sum "
     | stageC
 
   stage stageC on origin :
-    aggreg 0 " as revenue revenue_p "
+    aggreg 0 " type decimal as revenue $1 "
     | output | sink | stageA
 end;
 failure contains: "Table does not exist"

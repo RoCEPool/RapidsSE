@@ -11,9 +11,6 @@ filterRows$.test
 //limitRows.test
 //limitRows_I.test
 
-//projectColumns_I.test
-//projectColumns.test
-
 projectColumns$_I.test
 projectColumns$.test
 
@@ -21,4 +18,4 @@ unionAll$_I.test
 unionAll$.test
 
 query6_I.test
-//query6.test
+query6.test
