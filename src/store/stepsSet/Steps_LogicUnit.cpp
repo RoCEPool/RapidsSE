@@ -16,6 +16,8 @@
 #include "LogicUnit.hpp"
 
 #include "MY.hpp"
+#include "TagConstants.h"
+
 
 extern EnvFlags gxEnvFlags;;
 
@@ -521,11 +523,10 @@ void Step::vLogicUnitLogOperand(void)
   
   i8 iPoint = m_pDataStack->iPopInt(__func__);
   
-//  if ( ! AM::bRLUDiary() ) {
-//    EXIT();
-//    return;
-//  }
-  
+  Job* pJob = MY::pJob();
+  if (! pJob->bHasTag(C_TAG_OPERANDLOG))
+    return;
+
   LogicUnit* pRLU = m_pJob->pLogicUnit_job();
   
   pRLU->m_oSince.vUpdate();
@@ -540,7 +541,7 @@ void Step::vLogicUnitLogOperand(void)
            MY::szPipelineNm(),
            MY::szOpNm(),
            MY::iPtn(),
-           (i8)pRLU->m_ePipeInOperand,
+           aZK[pRLU->m_ePipeInOperand],
            iPoint,
            nNanoSeconds,
            nQueueLength,

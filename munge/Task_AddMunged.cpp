@@ -8399,7 +8399,7 @@ void Task::vAddMunged(Task* )
     "    sPipelineNm  VARCHAR NOT NULL ,\n"
     "    sOpNm        VARCHAR NOT NULL ,\n"
     "    iPtn         INTEGER NOT NULL ,\n"
-    "    eZK          INTEGER NOT NULL ,\n"
+    "    szOperand    VARCHAR NOT NULL ,\n"
     "    iPoint       INTEGER NOT NULL ,\n"
     "    nNanoSeconds INTEGER NOT NULL ,\n"
     "    nQueueLength INTEGER NOT NULL\n"

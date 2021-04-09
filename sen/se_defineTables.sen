@@ -523,7 +523,7 @@
     sPipelineNm  VARCHAR NOT NULL ,
     sOpNm        VARCHAR NOT NULL ,
     iPtn         INTEGER NOT NULL ,
-    eZK          INTEGER NOT NULL ,
+    szOperand    VARCHAR NOT NULL ,
     iPoint       INTEGER NOT NULL ,
     nNanoSeconds INTEGER NOT NULL ,
     nQueueLength INTEGER NOT NULL

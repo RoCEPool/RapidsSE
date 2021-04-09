@@ -10,7 +10,6 @@
 #include "InternalTables.hpp"
 #include "MY.hpp"
 #include "Job.hpp"
-#include "TagConstants.h"
 
 extern CmdLineArgs gxCmdLineArgs;
 
@@ -102,11 +101,7 @@ void Loggable::vLog_TBR(eEV eEvent, Stz* szFormat, ...)
 void Loggable::vLogTI(i8 iTable, ...)
 {
   _precondition_(_MAGIC_);
-  
-  Job* pJob = MY::pJob();
-  if (! pJob->bHasTag(C_TAG_OPERANDLOG))
-    return;
-    
+      
   WriteBehind* pWriteBehind = AM::THREAD::pWriteBehind();
   if (! pWriteBehind)
     return;
