@@ -6,7 +6,7 @@ aggregGby$.test
 aggregGby$_I.test
 
 filterRows$_I.test
-filterRows$.test
+filterRows.test
 
 limitRows.test
 limitRows_I.test

@@ -328,7 +328,7 @@ void Backend::vAppendFilterOp(Backend* pBackend, QueryNode* pNode)
   ASSERT(pOrdinalFilterExpr);
 
   sPipeline->vCatSprint(
-      "    | filter ordinal 0 \""
+      "    | filter 0 \""
       ""_Stz);
 
   // Walk the expr node plan graph
@@ -417,7 +417,7 @@ void Backend::vAppendProjectOp(Backend* pBackend, QueryNode* pNode)
   if (pProjectedColumns->bHasChildren()) {
 
     sPipeline->vCatSprint(
-        "    | project ordinal 0 \""
+        "    | project 0 \""
         ""_Stz);
 
     // get a plan node iterator

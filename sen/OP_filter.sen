@@ -133,11 +133,7 @@
   ExprEval[].new
   StreamDef[].duplicate to StreamDefOut[]
 
-  "<ordinal>" job[] job.tagSet@ tagSet.hasName if
-    <etc> StreamDef[] nullptr ExprEval[].evaluateOrdinals to eError
-  else
-    <etc> StreamDef[] nullptr ExprEval[].evaluateColumns to eError
-  then
+  <etc> StreamDef[] nullptr ExprEval[].evaluateOrdinals to eError
 
   // check for error
   eError EC_NONE == not if
@@ -212,7 +208,6 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 cmdSyntax: filter :: filter <compiled> <etc> ;
-cmdSyntax: filter :: filter <ordinal> <compiled> <etc> ;
 
 : filter_cmdTags _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
 

@@ -19,7 +19,6 @@ void Step::vAddSteps_ExprEval(void)
 {
   vAddStep("exprEval[]"_Stz,                 &Step::vExprEvalGet);
   vAddStep("exprEval[].delete"_Stz,          &Step::vExprEvalDelete);
-  vAddStep("exprEval[].evaluateColumns"_Stz, &Step::vExprEvalEvaluateColumns);
   vAddStep("exprEval[].evaluateOrdinals"_Stz,&Step::vExprEvalEvaluateOrdinals);
   vAddStep("exprEval[].new"_Stz,             &Step::vExprEvalNew);
   vAddStep("exprEval[].set"_Stz,             &Step::vExprEvalSet);
@@ -48,28 +47,6 @@ void Step::vExprEvalDelete(void)
   m_pJob->pLogicUnit_job()->m_xpExprEval = nullptr;
   delete pExprEval;
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* exprEval[].evaluateColumns -- evaluate expression with column refs         */
-/*----------------------------------------------------------------------------*/
-void Step::vExprEvalEvaluateColumns(void)
-{
-  ENTRY();
-
-  ExprEval* pExprEval = *m_pJob->pLogicUnit_job()->m_xpExprEval;
-
-  StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
-  StreamDef* pStreamDefIn = _pStreamDef(m_pDataStack->pPopPtr(__func__));
-
-  s4K sProjectColumns;
-  m_pDataStack->vPopStr(sProjectColumns, __func__);
-
-  eEC eError = pExprEval->eEvaluateColumns(pStreamDefIn, pStreamDefOut, sProjectColumns);
-
-  m_pDataStack->vPushInt(eError);
-
   EXIT();
 }
 
