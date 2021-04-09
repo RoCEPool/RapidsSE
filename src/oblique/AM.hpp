@@ -222,6 +222,12 @@ namespace OBLIQUE
       static void vPipeTo(Stz* szDemonNm, RowBuffer* pRowBuffer);
     };
   
+    class JOB
+    {
+    public:
+      static bool bHasTag(Job* pJob, Stz* szTagNm);
+    };
+
     class TASK
     {
     public:

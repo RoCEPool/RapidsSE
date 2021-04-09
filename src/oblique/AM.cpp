@@ -138,6 +138,7 @@ extern SizeHeap      gxaSizeHeap[];
 /*----------------------------------------------------------------------------*/
 void AM::DEMON::vPipeTo(Stz* szDemonNm, RowBuffer* pRowBuffer)
 {
+  _static_
 
   // for reference: sen code from : OP_toStatDemon_Profile \handler
   
@@ -163,6 +164,27 @@ void AM::DEMON::vPipeTo(Stz* szDemonNm, RowBuffer* pRowBuffer)
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                   Job                                      */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* has job got given tag?                                                     */
+/*----------------------------------------------------------------------------*/
+bool AM::JOB::bHasTag(Job* pJob, Stz* szTagNm)
+{
+  _static_
+  
+  TagSet* pJobTags = pJob->pJobTags();
+  if (! pJobTags)
+    return false;
+  
+  if (! pJobTags->bHasName(szTagNm))
+    return false;
+  
+  return true;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                    Task                                    */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
@@ -171,6 +193,8 @@ void AM::DEMON::vPipeTo(Stz* szDemonNm, RowBuffer* pRowBuffer)
 /*----------------------------------------------------------------------------*/
 DicStack* AM::TASK::pDicStack(void)
 {
+  _static_
+  
   Task* pTask = pThisTLSTask();
   if (! pTask)
     return nullptr;
@@ -283,6 +307,8 @@ WriteBehind* AM::THREAD::pWriteBehind(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 Word* AM::WORD::pFind(Stz* szWordNm)
 {
+  _static_
+  
   Dic* pRootDic = AM::pDicRoot();
   
   Word* pWord = pRootDic->pFindWord(szWordNm);

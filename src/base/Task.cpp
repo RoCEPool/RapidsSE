@@ -69,6 +69,8 @@ Task::Task(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
+  RASSERT(pJob);
+  
   m_pProfile     = nullptr;
 
   m_pJob         = pJob;
