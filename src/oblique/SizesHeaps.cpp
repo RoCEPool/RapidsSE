@@ -102,10 +102,14 @@
 #include "RelOp.hpp"
 #include "Predicate.hpp"
 #include "PredicateVec.hpp"
+
 #include "AccessPath.hpp"
 #include "AttachMap.hpp"
 
 #include "Exemplar.hpp"
+
+#include "InternalTables.hpp"
+
 #include "Job.hpp"
 #include "Job__Find.hpp"
 #include "JobList.hpp"
@@ -280,6 +284,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(InfoSet),            HT_T_LARGE   ,0 }, // CN_INFOSET
   { sizeof(IngestChunk),        HT_T_LARGE   ,0 }, // CN_INGESTCHUNK
   { sizeof(Input),              HT_T_TINY    ,0 }, // CN_INPUT
+  { sizeof(InternalTables),     HT_T_SMALL   ,0 }, // CN_INTERNALTABLES
   { sizeof(IntSet),             HT_T_TINY    ,0 }, // CN_INTSET
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_INTVAL
   { sizeof(IoChunk),            HT_T_LARGE   ,0 }, // CN_IOCHUNK

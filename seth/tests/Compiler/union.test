@@ -1,5 +1,8 @@
 /*----------------------------------------------------------------------------*/
 /* UNION syntax & semantic tests                                              */
+/*                                                                            */
+/* We use EXPLAIN before the queries to avoid actually running these through  */
+/* the execution engine.                                                      */
 /*----------------------------------------------------------------------------*/
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -33,16 +36,16 @@ CREATE TABLE unionTbl6 (bRaVo BOOLEAN, col3 DATE, col1 INTEGER);
 //  Basic union all statements
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-SELECT col1 FROM uniontbl1 UNION ALL SELECT col1 FROM uniontbl2;
+EXPLAIN SELECT col1 FROM uniontbl1 UNION ALL SELECT col1 FROM uniontbl2;
 success
 
-SELECT * FROM unionTbl1 UNION ALL SELECT * FROM unionTbl2;
+EXPLAIN SELECT * FROM unionTbl1 UNION ALL SELECT * FROM unionTbl2;
 success
 
-SELECT col2, col4, col3 FROM UNIONTBL1 UNION ALL SELECT col2, col4, col3 FROM unionTbl2;
+EXPLAIN SELECT col2, col4, col3 FROM UNIONTBL1 UNION ALL SELECT col2, col4, col3 FROM unionTbl2;
 success
 
-SELECT col1, col2 from uniontbl1 union all select col4, col1 FROM unionTbl3;
+EXPLAIN SELECT col1, col2 from uniontbl1 union all select col4, col1 FROM unionTbl3;
 success
 
 
@@ -50,10 +53,10 @@ success
 //  Union distinct not yet implemented
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-SELECT * FROM unionTbl1 UNION DISTINCT SELECT * FROM unionTbl2;
+EXPLAIN SELECT * FROM unionTbl1 UNION DISTINCT SELECT * FROM unionTbl2;
 failure contains: 'Feature not yet implemented: UNION DISTINCT'
 
-SELECT * FROM unionTbl1 UNION SELECT * FROM unionTbl2;
+EXPLAIN SELECT * FROM unionTbl1 UNION SELECT * FROM unionTbl2;
 failure contains: 'Feature not yet implemented: UNION DISTINCT'
 
 
@@ -61,10 +64,10 @@ failure contains: 'Feature not yet implemented: UNION DISTINCT'
 //  Union all number of columns not matching
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-SELECT * FROM unionTbl3 UNION ALL SELECT * FROM unionTbl4;
+EXPLAIN SELECT * FROM unionTbl3 UNION ALL SELECT * FROM unionTbl4;
 failure contains: 'The number of columns of each subquery do not match: 4 vs 3, UNION operator'
 
-select col1, col2 from unionTbl1 union all select col1 from unionTbl2;
+EXPLAIN select col1, col2 from unionTbl1 union all select col1 from unionTbl2;
 failure contains: 'The number of columns of each subquery do not match: 2 vs 1, UNION operator'
 
 
@@ -72,10 +75,10 @@ failure contains: 'The number of columns of each subquery do not match: 2 vs 1, 
 //  Union all types not matching
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-SELECT * FROM unionTbl1 UNION ALL SELECT * FROM unionTbl3;
+EXPLAIN SELECT * FROM unionTbl1 UNION ALL SELECT * FROM unionTbl3;
 failure contains: 'The number of columns of each subquery do not match: INTEGER vs VARCHAR, column ordinal 1, UNION operator'
 
-SELECT col1, col2 FROM unionTbl1 UNION ALL SELECT col1, col2 FROM unionTbl3;
+EXPLAIN SELECT col1, col2 FROM unionTbl1 UNION ALL SELECT col1, col2 FROM unionTbl3;
 failure contains: 'The number of columns of each subquery do not match: INTEGER vs VARCHAR, column ordinal 1, UNION operator'
 
 
@@ -83,14 +86,14 @@ failure contains: 'The number of columns of each subquery do not match: INTEGER 
 //  Non-empty CORRESPONDING BY clause with valid columns
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-SELECT * FROM unionTbl1 UNION ALL CORRESPONDING BY (col1, col3) SELECT * FROM unionTbl2;
+EXPLAIN SELECT * FROM unionTbl1 UNION ALL CORRESPONDING BY (col1, col3) SELECT * FROM unionTbl2;
 success
 
 // case insensitive tests
-SELECT * FROM unionTbl4 UNION ALL CORRESPONDING BY (alpha, bravo) SELECT * FROM unionTbl5;
+EXPLAIN SELECT * FROM unionTbl4 UNION ALL CORRESPONDING BY (alpha, bravo) SELECT * FROM unionTbl5;
 success
 
-SELECT * FROM unionTbl4 UNION ALL CORRESPONDING BY (BRAVO, CHARLIE) SELECT * FROM unionTbl5;
+EXPLAIN SELECT * FROM unionTbl4 UNION ALL CORRESPONDING BY (BRAVO, CHARLIE) SELECT * FROM unionTbl5;
 success
 
 
@@ -98,10 +101,10 @@ success
 //  Non-empty CORRESPONDING BY clause with invalid columns
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-SELECT * FROM unionTbl1 UNION ALL CORRESPONDING BY (col1, badColumn) SELECT * FROM unionTbl2;
+EXPLAIN SELECT * FROM unionTbl1 UNION ALL CORRESPONDING BY (col1, badColumn) SELECT * FROM unionTbl2;
 failure contains: 'Column in CORRESPONDING BY list is not found in select list: badColumn'
 
-SELECT * FROM unionTbl1 UNION ALL CORRESPONDING BY (badColumn, col1) SELECT * FROM unionTbl2;
+EXPLAIN SELECT * FROM unionTbl1 UNION ALL CORRESPONDING BY (badColumn, col1) SELECT * FROM unionTbl2;
 failure contains: 'Column in CORRESPONDING BY list is not found in select list: badColumn'
 
 
@@ -130,7 +133,7 @@ rows:
 //  Empty CORRESPONDING BY clause with non-matching column types
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-SELECT * FROM unionTbl1 UNION ALL CORRESPONDING SELECT * FROM unionTbl3;
+EXPLAIN SELECT * FROM unionTbl1 UNION ALL CORRESPONDING SELECT * FROM unionTbl3;
 failure contains: 'Column in CORRESPONDING BY list has mismatched types in child queries: col1'
 
 
@@ -138,8 +141,42 @@ failure contains: 'Column in CORRESPONDING BY list has mismatched types in child
 //  Empty CORRESPONDING BY clause with no common column names
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-SELECT * FROM unionTbl1 UNION ALL CORRESPONDING SELECT * FROM unionTbl4;
+EXPLAIN SELECT * FROM unionTbl1 UNION ALL CORRESPONDING SELECT * FROM unionTbl4;
 failure contains: 'No common column names of the subqueries could be found for the CORRESPONDING list'
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Multiple nested UNIONS
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+EXPLAIN
+  SELECT * FROM unionTbl1
+UNION ALL
+  SELECT * FROM unionTbl2
+UNION ALL
+  SELECT * FROM unionTbl1
+;
+success
+
+
+EXPLAIN
+  SELECT col4 FROM unionTbl1
+UNION ALL (
+  SELECT * FROM unionTbl4
+UNION ALL CORRESPONDING
+  SELECT * FROM unionTbl6 )
+;
+success
+
+
+EXPLAIN
+  SELECT * FROM unionTbl4
+UNION ALL CORRESPONDING
+  SELECT * FROM unionTbl6
+UNION ALL
+  SELECT col4 FROM unionTbl1
+;
+success
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -

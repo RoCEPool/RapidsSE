@@ -87,7 +87,7 @@ SePrompt::SePrompt(bool bOneCommand)
   
   _checkInitialised_(CN_SEPROMPT);
   
-  vLog(EV_CONSTRUCT,"SePrompt constructor"_Stz);
+  vLog_TBR(EV_CONSTRUCT,"SePrompt constructor"_Stz);
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -141,7 +141,7 @@ SePrompt::~SePrompt(void) noexcept(false)
   
   AM::THREAD::vDeleteThread(m_pThread);
 
-  vLog(EV_DESTRUCT,"SePrompt destructor"_Stz);
+  vLog_TBR(EV_DESTRUCT,"SePrompt destructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -599,6 +599,27 @@ void Schedule::vRemoveGeneralThread(Thread* pThread)
   m_pGeneralThreadVec->vDropLock();
 }
 
+/*----------------------------------------------------------------------------*/
+/* return dedicated thread vector                                             */
+/*----------------------------------------------------------------------------*/
+ThreadVec* Schedule::pDedicatedThreadVec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULE,_FOOTER_);
+  
+  return m_pDedicatedThreadVec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return general thread vector                                               */
+/*----------------------------------------------------------------------------*/
+ThreadVec* Schedule::pGeneralThreadVec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULE,_FOOTER_);
+  
+  return m_pGeneralThreadVec;
+}
+
+
 
 ////////////////////////////////////////////////////////////////////////////////
 //                                 misc                                       //

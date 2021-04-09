@@ -23,10 +23,14 @@ namespace OBLIQUE
   class MY
   {
   public:
+    static i8 iPtn(void);
+  
     static Stz* szCatalogNm(void);
     static Stz* szGridNm(void);
     static Stz* szHostNm(void);
     static Stz* szJobNm(void);
+    static Stz* szOpNm(void);
+    static Stz* szPipelineNm(void);
     static Stz* szSchemaNm(void);
     static Stz* szTableNm(void);
     static Stz* szTenantNm(void);

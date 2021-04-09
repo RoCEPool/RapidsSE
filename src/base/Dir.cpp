@@ -51,7 +51,7 @@ Dir::Dir(Loggable* pIsFor)
   
   _postcondition_(_MAGIC_,CN_DIR,_FOOTER_);
   
-  vLog(EV_CONSTRUCT,"Dir constructor"_Stz);
+  vLog_TBR(EV_CONSTRUCT,"Dir constructor"_Stz);
 };
 
 /*----------------------------------------------------------------------------*/
@@ -73,7 +73,7 @@ Dir::~Dir(void) noexcept(false)
   
   -- gixDir;
   
-  vLog(EV_DESTRUCT,"Dir destructor"_Stz);
+  vLog_TBR(EV_DESTRUCT,"Dir destructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -206,7 +206,7 @@ void Dir::vClose(void)
 
   m_aDir = nullptr;
   
-  vLog(EV_CLOSE,"Dir closed: path=%s"_Stz,m_sDirPath.szStz());
+  vLog_TBR(EV_CLOSE,"Dir closed: path=%s"_Stz,m_sDirPath.szStz());
 
   ASSERT(bIsClosed());
 }
@@ -299,7 +299,7 @@ bool Dir::bOpen(Stz* szDirPath)
               "Dir opened : %s"_Stz, //!format-LogRes
               szDirPath);
 
-  vLog(EV_OPEN,"Dir opened: path=%s"_Stz,m_sDirPath.szStz());
+  vLog_TBR(EV_OPEN,"Dir opened: path=%s"_Stz,m_sDirPath.szStz());
 
   ASSERT(bIsOpen());
   return true;

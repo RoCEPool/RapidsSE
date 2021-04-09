@@ -56,9 +56,11 @@ void Step::vAddSteps_SqlCompiler(void)
   vAddStep("sqlCompiler::explainPlan"_Stz,    &Step::vSqlCompilerExplainPlan);
   vAddStep("sqlCompiler::explainFormat"_Stz,  &Step::vSqlCompilerExplainFormat);
   vAddStep("sqlCompiler::exprValidate"_Stz,   &Step::vSqlCompilerExprValidate);
+  vAddStep("sqlCompiler::exprPushdown"_Stz,   &Step::vSqlCompilerExprPushdown);
   vAddStep("sqlCompiler::nameValidate"_Stz,   &Step::vSqlCompilerNameValidate);
   vAddStep("sqlCompiler::hasExplain"_Stz,     &Step::vSqlCompilerHasExplain);
   vAddStep("sqlCompiler::parser"_Stz,         &Step::vSqlCompilerParser);
+  vAddStep("sqlCompiler::postProject"_Stz,    &Step::vSqlCompilerPostProject);
   vAddStep("sqlCompiler::setOpValidate"_Stz,  &Step::vSqlCompilerSetOpValidate);
   vAddStep("sqlCompiler::transliterate"_Stz,  &Step::vSqlCompilerTransliterate);
 }
@@ -211,6 +213,58 @@ void Step::vSqlCompilerExplainPlan(void)
    * The plan is not modified in this stage.
    */
 
+  EXIT();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* sqlCompiler::exprPushdown -- Push expressions down as far as possible      */
+/*----------------------------------------------------------------------------*/
+void Step::vSqlCompilerExprPushdown(void)
+{
+  ENTRY();
+
+  /**
+   *
+   *
+   * The plan IS modified in this stage.
+   */
+
+  s48K sExplainBuf;
+
+  PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
+  Parser::RootNode* pPlanRoot = Parser::_pRootNode(pPlanOperand->pPlanNode());
+  UNUSED(pPlanRoot);
+  ASSERT(ShadowRoot::bIsExactType(pPlanRoot));
+
+
+  try {
+    // TODO
+
+  } catch (Parser::SqlException& e) {
+    Grid* pGrid = AM::pGrid();
+    InfoSet* pInfoSet = _pInfoSet(*m_pJob->pLogicUnit_job()->m_xpInfoSet);
+    Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+                                    pGrid->pThisNode()->szNodeNm(),
+                                    EC_SEMANTIC_ERROR,
+                                    0,
+                                    0,
+                                    e.szError(),
+                                    C_VARGS_END);
+    UNUSED(pRow);
+    delete pPlanRoot;
+    delete pPlanOperand;
+    m_pDataStack->vPushPtr(nullptr);
+    goto L_Exit;
+  }
+
+
+  // TODO: eventually we want the received plan graph to be immutable,
+  //       so we would send a different version. But for now we will just
+  //       manipulate and send the same plan graph
+  m_pDataStack->vPushPtr(pPlanOperand);
+
+  L_Exit:
   EXIT();
 }
 
@@ -505,6 +559,64 @@ void Step::vSqlCompilerParser(void)
 
 L_Exit:
   delete pPlanner;
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* sqlCompiler::PostProject -- Ensure only selected cols are being returned   */
+/*----------------------------------------------------------------------------*/
+void Step::vSqlCompilerPostProject(void)
+{
+  ENTRY();
+
+  /**
+   * This stage solves the issue of there being an expression in an ORDER BY
+   * or HAVING clause that is not in the select list.
+   *   e.g. SELECT col1 FROM t ORDER BY col2;
+   *
+   * In the above example we need to ensure that col2 is being generated
+   * (refer to the exprPushdown stage for that) but that only col1 is being
+   * returned. We do that by adding another ProjectOp on top of the plan,
+   * if required.
+   *
+   * The plan may be modified in this stage.
+   */
+
+  s48K sExplainBuf;
+
+  PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
+  Parser::RootNode* pPlanRoot = Parser::_pRootNode(pPlanOperand->pPlanNode());
+  UNUSED(pPlanRoot);
+  ASSERT(ShadowRoot::bIsExactType(pPlanRoot));
+
+
+  try {
+    // TODO
+
+  } catch (Parser::SqlException& e) {
+    Grid* pGrid = AM::pGrid();
+    InfoSet* pInfoSet = _pInfoSet(*m_pJob->pLogicUnit_job()->m_xpInfoSet);
+    Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+                                    pGrid->pThisNode()->szNodeNm(),
+                                    EC_SEMANTIC_ERROR,
+                                    0,
+                                    0,
+                                    e.szError(),
+                                    C_VARGS_END);
+    UNUSED(pRow);
+    delete pPlanRoot;
+    delete pPlanOperand;
+    m_pDataStack->vPushPtr(nullptr);
+    goto L_Exit;
+  }
+
+
+  // TODO: eventually we want the received plan graph to be immutable,
+  //       so we would send a different version. But for now we will just
+  //       manipulate and send the same plan graph
+  m_pDataStack->vPushPtr(pPlanOperand);
+
+  L_Exit:
   EXIT();
 }
 

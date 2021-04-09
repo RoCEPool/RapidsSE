@@ -319,7 +319,6 @@ public:
   void vExprEvalGet(void);
   void vExprEvalDelete(void);
   void vExprEvalNew(void);
-  void vExprEvalEvaluateColumns(void);
   void vExprEvalEvaluateOrdinals(void);
   void vExprEvalSet(void);
 
@@ -895,6 +894,7 @@ public:
   void vLogicUnitHandlerFetch(void);
   void vLogicUnitHandlerStore(void);
   void vLogicUnitInit(void);
+  void vLogicUnitLogOperand(void);
   void vLogicUnitSrcIndexFetch(void);
   void vLogicUnitSrcTableFetch(void);
   void vLogicUnitTransform(void);
@@ -1462,10 +1462,12 @@ public:
   void vSqlCompilerDoExplain(void);
   void vSqlCompilerExplainFormat(void);
   void vSqlCompilerExplainPlan(void);
+  void vSqlCompilerExprPushdown(void);
   void vSqlCompilerExprValidate(void);
   void vSqlCompilerHasExplain(void);
   void vSqlCompilerNameValidate(void);
   void vSqlCompilerParser(void);
+  void vSqlCompilerPostProject(void);
   void vSqlCompilerSetOpValidate(void);
   void vSqlCompilerTransliterate(void);
 
@@ -1929,6 +1931,9 @@ public:
   void vWordResetRoutine(void);
   void vWordSee(void);
   void vWordXcheckInxPtr(void);
+
+  // write behind
+  void vWriteBehindFlush(void);
 
   // XmitOperand
   void vXmitOperandOperandStore(void);

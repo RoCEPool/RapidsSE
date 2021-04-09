@@ -26,7 +26,7 @@ OperandQueue::OperandQueue(void)
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
   
-  vLog(EV_CONSTRUCT,"OperandQueue constructor"_Stz);
+  vLog_TBR(EV_CONSTRUCT,"OperandQueue constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -36,7 +36,7 @@ OperandQueue::~OperandQueue(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
   
-  vLog(EV_DESTRUCT,"OperandQueue destructor"_Stz);
+  vLog_TBR(EV_DESTRUCT,"OperandQueue destructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

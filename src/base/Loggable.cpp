@@ -7,6 +7,9 @@
 #include "CmdLineArgs.hpp"
 #include "Row.hpp"
 #include "WriteBehind.hpp"
+#include "InternalTables.hpp"
+#include "MY.hpp"
+#include "Job.hpp"
 
 extern CmdLineArgs gxCmdLineArgs;
 
@@ -46,7 +49,7 @@ Loggable::~Loggable(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* log next event                                                             */
 /*----------------------------------------------------------------------------*/
-void Loggable::vLog(eEV eEvent, Stz* szFormat, ...)
+void Loggable::vLog_TBR(eEV eEvent, Stz* szFormat, ...)
 {
   _precondition_(_MAGIC_);
   UNUSED(eEvent);
@@ -89,6 +92,35 @@ void Loggable::vLog(eEV eEvent, Stz* szFormat, ...)
   va_end(xVarArgs);
   
   vAddRow(eEvent,sNote);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* log entry into internal table                                              */
+/*----------------------------------------------------------------------------*/
+void Loggable::vLogTI(i8 iTable, ...)
+{
+  _precondition_(_MAGIC_);
+      
+  WriteBehind* pWriteBehind = AM::THREAD::pWriteBehind();
+  if (! pWriteBehind)
+    return;
+
+  StreamDef* pStreamDef = AM::pInternalTables()->pStreamDef((eTI)iTable);
+  if (! pStreamDef)
+    return;
+  
+  pWriteBehind->vGrabLock();
+
+  va_list xVarArgs;
+  va_start(xVarArgs,iTable);
+
+  Row* pRow = pWriteBehind->pAllotRow((eTI)iTable);
+  pRow->vDeposit(xVarArgs);
+
+  va_end(xVarArgs);
+
+  pWriteBehind->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/

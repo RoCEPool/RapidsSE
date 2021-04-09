@@ -62,6 +62,7 @@ assert::stack_0
   "OP_etcTest.sen"              include
   "OP_exemplar.sen"             include
   "OP_explainPlan.sen"          include
+  "OP_exprPushdown.sen"         include
   "OP_exprValidate.sen"         include
 
 "f" .verbose
@@ -104,8 +105,11 @@ assert::stack_0
 
 "m" .verbose
 
+  "OP_metaGet.sen"              include
+  "OP_metaRecv.sen"             include
   "OP_metaScan.sen"             include
-  "OP_monitor.sen"             include
+  "OP_metaSend.sen"             include
+  "OP_monitor.sen"              include
         
 "n" .verbose
 
@@ -125,6 +129,7 @@ assert::stack_0
   "OP_periodic.sen"             include
   "OP_ping.sen"                 include
   "OP_populateIndex.sen"        include
+  "OP_postProject.sen"          include
   "OP_print.sen"                include
   "OP_progress.sen"             include
   "OP_project.sen"              include

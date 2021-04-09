@@ -1178,8 +1178,8 @@ eEC ExprEval::eExprEvalOrdinal(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut
     if ( ! bGroupBy ) {
 
       if (m_bHasGby) {
-        if (pColumn->eColumnType() == CT_VARCHAR ||
-            pColumn->eColumnType() == CT_CHAR) {
+        if (pColumnExpr->eColumnType() == CT_VARCHAR ||
+            pColumnExpr->eColumnType() == CT_CHAR) {
           StrLib::vSprintCat(m_sAsmText, "  EO_PUSH_LOCALS %lld\n"_Stz, iLocal);
           StrLib::vSprintCat(m_sPayLoadStore, "  EO_PUSH_LOCALS %lld\n"_Stz, iLocal);
           //StrLib::vSprintCat(m_sPayLoadToBuffer, "  EO_PAY_FETCH_COLS %lld\n"_Stz, iLocal);
@@ -1190,15 +1190,15 @@ eEC ExprEval::eExprEvalOrdinal(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut
         }
 
       } else {
-        if (pColumn->eColumnType() == CT_VARCHAR ||
-            pColumn->eColumnType() == CT_CHAR)
+        if (pColumnExpr->eColumnType() == CT_VARCHAR ||
+            pColumnExpr->eColumnType() == CT_CHAR)
           StrLib::vSprintCat(m_sAsmText, "  EO_PUSH_LOCALS %lld\n"_Stz, iLocal);
         else
           StrLib::vSprintCat(m_sAsmText, "  EO_PUSH_LOCALI %lld\n"_Stz, iLocal);
       }
     }
     else {
-      eError = eHandleGbyColumn(pColumn, i_GbyColumn);
+      eError = eHandleGbyColumn(pColumnExpr, i_GbyColumn);
       if (eError == EC_INVALID_COMMAND)
         goto L_RETURN;
     }

@@ -99,6 +99,17 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_EXITEARLYMARKER ...                                         */
+/*----------------------------------------------------------------------------*/
+: output_ExitEarlyMarker \handler
+
+  //"Operand:- ZK_EXITEARLYMARKER" .verbose
+  PipeIn[].pipeToOutput
+
+true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_LOADRESULT ...                                              */
 /*----------------------------------------------------------------------------*/
 : output_LoadResult \handler
@@ -183,6 +194,7 @@ true
   find: output_EosMarker     ZK_EOSMARKER   op[].handler!
   find: output_ErrorMarker   ZK_ERRORMARKER op[].handler!
   find: output_ExecErrors    ZK_EXECERRORS  op[].handler!
+  find: output_ExitEarlyMarker ZK_EXITEARLYMARKER op[].handler!
   find: output_LoadResult    ZK_LOADRESULT  op[].handler!
   find: output_RowBuffer     ZK_ROWBUFFER   op[].handler!
   find: output_SrtBuffer     ZK_SRTBUFFER   op[].handler!

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* se_demon.sen -- support words for demons                                   */
+/* se_demons.sen -- support words for demons                                  */
 /*============================================================================*/
 
 " se_demon.sen" .verbose
@@ -72,6 +72,29 @@
 
       stage stageA on origin :
         start | namedInsert | eatAll | stageA
+
+    end ;
+  "
+;
+
+/*----------------------------------------------------------------------------*/
+/* metadata demon pipeline command                                            */
+/*----------------------------------------------------------------------------*/
+: metaDemonPipeline
+
+  "
+    pipelineLocal metaDemon
+      tag \"<pre_execute>\" = \"demon::install\" endTag
+    begin
+
+      stage stageA on origin :
+        start | metaGet | stageB
+
+      stage stageB on all nodes :
+        metaSend | stageC
+
+      stage stageC on origin :
+        metaRecv | stageA
 
     end ;
   "

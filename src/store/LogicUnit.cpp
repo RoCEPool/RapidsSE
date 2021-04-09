@@ -102,7 +102,6 @@ LogicUnit::LogicUnit(Task* pTask)
   m_aUpperEntry = nullptr;
   m_pEntBufferOuter = nullptr;
 
-  m_eOperand = ZK_NONE;
   m_ePipeInOperand = ZK_NONE;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

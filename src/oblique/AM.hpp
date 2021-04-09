@@ -95,6 +95,7 @@ namespace BASE {
   class TagSet;
   class Task;
   class Thread;
+  class ThreadVec;
   class Token;
   class TokenVec;
   class Tx;
@@ -154,6 +155,7 @@ namespace STORE {
   class Index;
   class IndexTree;
   class InfoSetBase;
+  class InternalTables;
 
   class Job;
   class JobList;
@@ -229,10 +231,13 @@ namespace OBLIQUE
     class THREAD
     {
     public:
+      static ThreadVec* pDedicatedThreadVec(void);
       static void vDeleteThread(Thread* pThread);
+      static ThreadVec* pGeneralThreadVec(void);
       static Thread* pNewThread(void);
       static WriteBehind* pWriteBehind(void);
       static WriteBehind* pWriteBehind(Thread* pThread);
+    
     };
   
     class WORD
@@ -430,7 +435,8 @@ namespace OBLIQUE
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static bool bInBufferPool(Object* pObject);
-  
+    static InternalTables* pInternalTables(void);
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vLog(TokenVec* pTknVec);
     static void vLogAll(void);
@@ -456,6 +462,8 @@ namespace OBLIQUE
     static void vLogTsk(eSL, Task*      pTsk, eTA eTskAct, Stz* szFormat, ...);
     static void vLogTxn(eSL, Tx*        pTxn, eXA eTxnAct, Stz* szFormat, ...);
   
+    static void vLogTI(i8 iTable, ...);
+
     static void vLogOpenByApi(void);
     static void vLogOpenBySE(bool bStarting);
     static void vLogWriteCsv(bool bShortForm);
@@ -544,7 +552,7 @@ namespace OBLIQUE
     static i8   iTaskQueue(Task* pTask);
     static LogicUnit* pTaskLogicUnit(Task* pTask);
     static i8   iTaskState(Task* pTask);
-
+ 
      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
     static HeapBuffer* pToHeapBuffer(i8 iBufferNo);

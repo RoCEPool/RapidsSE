@@ -113,6 +113,7 @@
 
 #include "TraceLock.hpp"
 #include "WriteBehind.hpp"
+#include "InternalTables.hpp"
 
 #include "Version.h"
 
@@ -185,6 +186,18 @@ DicStack* AM::TASK::pDicStack(void)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
+/* dedicated thread vector                                                    */
+/*----------------------------------------------------------------------------*/
+ThreadVec* AM::THREAD::pDedicatedThreadVec(void)
+{
+  _static_
+  
+  ThreadVec* pThreadVec = AM::pSchedule()->pDedicatedThreadVec();
+  
+  return pThreadVec;
+}
+
+/*----------------------------------------------------------------------------*/
 /* delete thread                                                              */
 /*----------------------------------------------------------------------------*/
 void AM::THREAD::vDeleteThread(Thread* pThread)
@@ -197,6 +210,18 @@ void AM::THREAD::vDeleteThread(Thread* pThread)
   delete pWriteBehind;
   
   delete pThread;
+}
+
+/*----------------------------------------------------------------------------*/
+/* general thread vector                                                      */
+/*----------------------------------------------------------------------------*/
+ThreadVec* AM::THREAD::pGeneralThreadVec(void)
+{
+  _static_
+  
+  ThreadVec* pThreadVec = AM::pSchedule()->pGeneralThreadVec();
+  
+  return pThreadVec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -732,6 +757,9 @@ Table* AM::pTableFind(Stz* szTableNm)
 StreamDef* AM::pStreamDefFind(Stz* szTableNm) {
   
   Table* pTable = AM::pTableFind(szTableNm);
+  if (! pTable)
+    return nullptr;
+  
   StreamDef* pStreamDef = pTable->pStreamDef();
 
   return pStreamDef;
@@ -1592,6 +1620,34 @@ void AM::vLogTxn(eSL , Tx* , eXA , Stz* , ...)
 #endif
 }
 
+/*----------------------------------------------------------------------------*/
+/* log entry into internal table                                              */
+/*----------------------------------------------------------------------------*/
+void AM::vLogTI(i8 iTable, ...)
+{
+  _static_
+      
+  WriteBehind* pWriteBehind = AM::THREAD::pWriteBehind();
+  if (! pWriteBehind)
+    return;
+
+  StreamDef* pStreamDef = AM::pInternalTables()->pStreamDef((eTI)iTable);
+  if (! pStreamDef)
+    return;
+  
+  pWriteBehind->vGrabLock();
+
+  va_list xVarArgs;
+  va_start(xVarArgs,iTable);
+
+  Row* pRow = pWriteBehind->pAllotRow((eTI)iTable);
+  pRow->vDeposit(xVarArgs);
+
+  va_end(xVarArgs);
+
+  pWriteBehind->vDropLock();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -2100,6 +2156,10 @@ bool AM::bIsOperandOoO(Operand* pOperand)   {
 
 bool AM::bInBufferPool(Object* pObject) {
   return gpBufferPool->bInBufferPool(pObject);
+}
+
+InternalTables* AM::pInternalTables(void) {
+  return gpAttachMap->m_pInternalTables;
 }
 
 Stz* AM::szJobName(Job* pJob)    { return pJob->szJobNm();                      }

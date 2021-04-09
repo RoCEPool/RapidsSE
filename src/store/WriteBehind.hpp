@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "eTI.h"
+
 namespace STORE { class NamedBuffer; }
 
 namespace STORE
@@ -12,9 +14,12 @@ namespace STORE
   private:
     Lock m_okLock;
   
+    NamedBuffer* m_apNamedBuffer[TI_ENUMS];
+
     // events
     StreamDef*   m_pStreamDef_events;
     NamedBuffer* m_pNamedBuffer_events;
+  
 
     // must be last
     Footer m_xFooter;
@@ -27,8 +32,14 @@ namespace STORE
    ~WriteBehind(void) noexcept(false);
   
   public:
-    void vDepositEvent(i8 iVargsBegin, ...);
+    Row* pAllotRow(eTI eTable);
+    void vDropLock(void);
+    void vFlush(void);
+    void vGrabLock(void);
   
+  
+    void vDepositEvent(i8 iVargsBegin, ...);
+
   private:
     Row* pAllotEventRow(void);
     Footer* aFooter(void);

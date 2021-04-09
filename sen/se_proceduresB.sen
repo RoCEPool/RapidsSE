@@ -583,8 +583,7 @@
       | stageC
 
     stage stageC on origin :
-      aggreg 0 $etc
-      | output | sink | stageA
+      output | sink | stageA
 
   end ;
   "
@@ -608,8 +607,7 @@
       | stageC
 
     stage stageC on origin :
-      aggreg 1 $etc
-     | output | sink | stageA
+     output | sink | stageA
 
   end ;
   "
@@ -806,254 +804,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* Planner experiment related procedures                                      */
-/*----------------------------------------------------------------------------*/
-
-"  start::defProc_Planner$" .verbose
-
-: start::defProc_Planner$
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //
-
-  STD_PATH
-  "
-  procedure aggregRows$_I
-    parameters $table $etc
-    begin
-
-    stage stageA on origin :
-      start | periodic once | stageB
-
-    stage stageB on all partitions :
-      scan $table
-      | aggreg ordinal 0 $etc
-      | stageC
-
-    stage stageC on origin :
-      output | sink | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //
-
-  STD_PATH
-  "
-  procedure aggregRows$
-    parameters $table $etc
-    begin
-
-    stage stageA on origin :
-      start | periodic once | stageB
-
-    stage stageB on all partitions :
-      scan $table
-      | aggreg ordinal 1 $etc
-      | stageC
-
-    stage stageC on origin :
-     output | sink | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //
-
-  STD_PATH
-  "
-  procedure filterRows$_I
-    parameters $table $etc
-    begin
-
-    stage stageA on origin :
-      start | periodic once | stageB
-
-    stage stageB on all partitions :
-      scan $table
-      | filter ordinal 0 $etc
-      | stageC
-
-    stage stageC on origin :
-      output | sink | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //
-
-  STD_PATH
-  "
-  procedure filterRows$
-    parameters $table $etc
-    begin
-
-    stage stageA on origin :
-      start | periodic once | stageB
-
-    stage stageB on all partitions :
-      scan $table
-      | filter ordinal 1 $etc
-      | stageC
-
-    stage stageC on origin :
-      output | sink | stageA
-
-  end ;
-  "
-  api::addProcedure
-/*
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //
-  STD_PATH
-  "
-  procedure limitRows_I
-    parameters $table $rows
-    begin
-
-    stage stageA on origin :
-      start | periodic once | stageB
-
-    stage stageB on all partitions :
-      scan $table
-      | limit 0 $rows
-      | stageC
-
-    stage stageC on origin :
-      limit 0 $rows
-      | output | sink | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //
-  STD_PATH
-  "
-  procedure limitRows
-    parameters $table $rows
-    begin
-
-    stage stageA on origin :
-      start | periodic once | stageB
-
-    stage stageB on all partitions :
-      scan $table
-      | limit 1 $rows
-      | stageC
-
-    stage stageC on origin :
-      limit 1 $rows
-      | output | sink | stageA
-
-  end ;
-  "
-  api::addProcedure
-*/
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //
-  STD_PATH
-  "
-  procedure projectColumns$_I
-    parameters $table $etc
-    begin
-
-    stage stageA on origin :
-      start | periodic once | stageB
-
-    stage stageB on all partitions :
-      scan $table
-      | project ordinal 0 $etc
-      | stageC
-
-    stage stageC on origin :
-      output | sink | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //
-
-  STD_PATH
-  "
-  procedure projectColumns$
-    parameters $table $etc
-    begin
-
-    stage stageA on origin :
-      start | periodic once | stageB
-
-    stage stageB on all partitions :
-      scan $table
-      | project ordinal 1 $etc
-      | stageC
-
-    stage stageC on origin :
-      output | sink | stageA
-
-  end ;
-  "
-  api::addProcedure
-/*
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //
-
-  STD_PATH
-  "
-  procedure indexScan_I
-    parameters $table $index $etc
-    begin
-
-    stage stageA on origin :
-      start | periodic once | stageB
-
-    stage stageB on all partitions :
-      range 0 $table by $index $etc
-      | stageC
-
-    stage stageC on origin :
-      output | sink | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //
-
-  STD_PATH
-  "
-  procedure indexScan
-    parameters $table $index $etc
-    begin
-
-    stage stageA on origin :
-      start | periodic once | stageB
-
-    stage stageB on all partitions :
-      range 1 $table by $index $etc
-      | stageC
-
-    stage stageC on origin :
-      output | sink | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  */
-;
-
-/*----------------------------------------------------------------------------*/
 /* meta table related procedures                                              */
 /*----------------------------------------------------------------------------*/
 
@@ -1105,6 +855,8 @@
       | nameValidate
       | exprValidate
       | setOpValidate
+      | postProject
+      | exprPushdown
       | explainPlan
       | transliterate
       | output

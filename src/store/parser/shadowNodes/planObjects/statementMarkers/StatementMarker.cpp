@@ -90,6 +90,9 @@ void StatementMarker::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf,
   Stz* szQueryText = pQueryTextProp->szValue();
   ASSERT(szQueryText);
 
+  // Remove new lines from the query text as it messes with the EXPLAIN output
+  while (StrLib::bReplace(szQueryText->azChar(), "\n", " "));
+
   // Add the queryText property
   sBuf.vConcat("\n"_Stz);
   vAppendIndent(sBuf, iIndent, eIndentFormat::IF_PLAIN);

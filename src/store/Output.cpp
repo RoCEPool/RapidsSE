@@ -47,6 +47,7 @@ Output::Output(void)
   m_pOutputQueue      = nullptr;
   m_pStreamDef_result = nullptr;
   m_bExitMarker       = false;
+  m_bExitEarlyMarker  = false;
   m_bCancelMarker     = false;
   m_bCmdErr           = false;
   m_bExecErr          = false;
@@ -249,7 +250,7 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
   UNUSED(pSession);
   
   bool bContinue = true;
-  
+
   //SP_DataBuffer spDataBuffer;
     
   eCN eOperandClass = pOperand->eGetClassNo();
@@ -424,12 +425,20 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
           m_bExitMarker = true;
           ASSERT( !m_bCmdErr );
           ASSERT( !m_bExecErr );
-          vPrintResult();
+          if ( ! m_bExitEarlyMarker )
+            vPrintResult();
           bContinue = false;
           goto L_EXIT;
           break;
         }
-          
+
+        case OM_EXITEARLYMARKER: {
+          AM::vDeleteOperand(pOperand);
+          m_bExitEarlyMarker = true;
+          vPrintResult();
+          break;
+        }
+
         case OM_PULSEDMARKER: {
           //vTrace("Pipeline Job: PULSEDMARKER\n"_Stz);
           AM::vDeleteOperand(pOperand);

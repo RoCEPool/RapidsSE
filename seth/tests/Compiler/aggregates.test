@@ -3,6 +3,9 @@
 /*                                                                            */
 /* Tests the SQL parser/planner for legitimate SQL statements concerning      */
 /* aggregations, grouping, HAVING, etc.                                       */
+/*                                                                            */
+/* We use EXPLAIN before the queries to avoid actually running these through  */
+/* the execution engine.                                                      */
 /*----------------------------------------------------------------------------*/
 
 
@@ -10,7 +13,12 @@
 //  Setup
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-_nation;
+create table nation (
+	 N_NATIONKEY       INTEGER NOT NULL,
+	 N_NAME            CHAR(25) NOT NULL,
+	 N_REGIONKEY       INTEGER NOT NULL,
+	 N_COMMENT         VARCHAR(152)
+);
 success
 
 // Loads empty table with the following columns
@@ -25,24 +33,24 @@ success
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 -- basic select of columnRef 
-SELECT n_name FROM nation;
-success
+EXPLAIN SELECT n_name FROM nation;
+rows: 1
 
 -- basic select of aggregation
-SELECT SUM(n_regionkey) FROM nation;
-success
+EXPLAIN SELECT SUM(n_regionkey) FROM nation;
+rows: 1
 
 -- basic select of grouped columnRef and aggregation
-SELECT n_name, SUM(n_regionkey) FROM nation GROUP BY n_name;
-success
+EXPLAIN SELECT n_name, SUM(n_regionkey) FROM nation GROUP BY n_name;
+rows: 1
 
 -- basic select of two columnRefs with one in GROUP BY but no aggregation
-SELECT n_name, n_nationkey FROM nation GROUP BY n_name;
-failure contains: 'Expression is not present in the GROUP BY list : rapidsse.public.nation.n_nationkey'
+EXPLAIN SELECT n_name, n_nationkey FROM nation GROUP BY n_name;
+failure contains: 'Expression is not present in the GROUP BY list: rapidsse.public.nation.n_nationkey'
 
 -- basic select of two columnRefs with both in GROUP BY. No aggregation
-SELECT n_name, n_nationkey FROM nation GROUP BY n_name, n_nationkey;
-success
+EXPLAIN SELECT n_name, n_nationkey FROM nation GROUP BY n_name, n_nationkey;
+rows: 1
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -50,28 +58,28 @@ success
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 -- projected ColumnRef is superset of GROUP BY expr
-SELECT 2*(n_nationkey + 1), SUM(n_regionkey) FROM nation GROUP BY n_nationkey;
-success
+EXPLAIN SELECT 2*(n_nationkey + 1), SUM(n_regionkey) FROM nation GROUP BY n_nationkey;
+rows: 1
 
 -- projected ColumnRef is equal to GROUP BY expr
-SELECT 2*(n_nationkey + 1), SUM(n_regionkey) FROM nation GROUP BY 2*(n_nationkey + 1);
-success
+EXPLAIN SELECT 2*(n_nationkey + 1), SUM(n_regionkey) FROM nation GROUP BY 2*(n_nationkey + 1);
+rows: 1
 
 -- incorrect select of columnRef and aggregation without GROUP BY
-SELECT n_name, SUM(n_regionkey) FROM nation;
+EXPLAIN SELECT n_name, SUM(n_regionkey) FROM nation;
 failure contains: 'Cannot select both aggregate and non-aggregate expressions without a GROUP BY clause'
 
 -- incorrect select of columnRef not in GROUP BY list
-SELECT n_nationkey, SUM(n_regionkey) FROM nation GROUP BY n_name;
-failure contains: 'Expression is not present in the GROUP BY list : rapidsse.public.nation.n_nationkey'
+EXPLAIN SELECT n_nationkey, SUM(n_regionkey) FROM nation GROUP BY n_name;
+failure contains: 'Expression is not present in the GROUP BY list: rapidsse.public.nation.n_nationkey'
 
 -- incorrect select expr is not a superset of group by expr
-SELECT n_nationkey, SUM(n_regionkey) FROM nation GROUP BY n_nationkey + n_regionkey;
-failure contains: 'Expression is not present in the GROUP BY list : rapidsse.public.nation.n_nationkey'
+EXPLAIN SELECT n_nationkey, SUM(n_regionkey) FROM nation GROUP BY n_nationkey + n_regionkey;
+failure contains: 'Expression is not present in the GROUP BY list: rapidsse.public.nation.n_nationkey'
 
 -- select expr is a superset of group by expr
-SELECT n_nationkey + n_regionkey + 1, SUM(n_regionkey) FROM nation GROUP BY n_nationkey + n_regionkey;
-success
+EXPLAIN SELECT n_nationkey + n_regionkey + 1, SUM(n_regionkey) FROM nation GROUP BY n_nationkey + n_regionkey;
+rows: 1
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -79,38 +87,39 @@ success
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 -- Basic HAVING clause
-SELECT n_name, SUM(n_nationkey) FROM nation GROUP BY n_name HAVING SUM(n_nationkey) > 0;
+EXPLAIN SELECT n_name, SUM(n_nationkey) FROM nation GROUP BY n_name HAVING SUM(n_nationkey) > 0;
+rows: 1
 
 -- Basic HAVING clause but missing GROUP BY
-SELECT n_name, SUM(n_nationkey) FROM nation HAVING SUM(n_nationkey) > 0;
+EXPLAIN SELECT n_name, SUM(n_nationkey) FROM nation HAVING SUM(n_nationkey) > 0;
 failure contains: 'Cannot select both aggregate and non-aggregate expressions without a GROUP BY clause'
 
 -- HAVING aggregate but no aggregates in select list
-SELECT n_name, n_nationkey FROM nation GROUP BY n_name HAVING SUM(n_nationkey) > 0;
-failure contains: 'Expression is not present in the GROUP BY list : rapidsse.public.nation.n_nationkey'
+EXPLAIN SELECT n_name, n_nationkey FROM nation GROUP BY n_name HAVING SUM(n_nationkey) > 0;
+failure contains: 'Expression is not present in the GROUP BY list: rapidsse.public.nation.n_nationkey'
 
 -- HAVING clause with columnRef but no GROUP BY clause
-SELECT n_name, n_nationkey FROM nation HAVING n_nationkey > 0;
+EXPLAIN SELECT n_name, n_nationkey FROM nation HAVING n_nationkey > 0;
 failure contains: 'The HAVING expression is not an aggregate or not in the GROUP BY list'
 
 -- HAVING clause with columnRef but columnRef not in GROUP BY
-SELECT n_name, n_nationkey FROM nation GROUP BY n_name HAVING n_nationkey > 0;
-failure contains: 'Expression is not present in the GROUP BY list : rapidsse.public.nation.n_nationkey'
+EXPLAIN SELECT n_name, n_nationkey FROM nation GROUP BY n_name HAVING n_nationkey > 0;
+failure contains: 'Expression is not present in the GROUP BY list: rapidsse.public.nation.n_nationkey'
 
 -- HAVING clause with aggregate not in select list
-SELECT n_name FROM nation GROUP BY n_name HAVING sum(n_nationkey) > 0;
-success
+EXPLAIN SELECT n_name FROM nation GROUP BY n_name HAVING sum(n_nationkey) > 0;
+rows: 1
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Literals in the select list
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-SELECT 1 FROM nation HAVING SUM(n_nationkey) > 0;
-success
+EXPLAIN SELECT 1 FROM nation HAVING SUM(n_nationkey) > 0;
+rows: 1
 
-SELECT SUM(n_nationkey) from nation HAVING SUM(n_nationkey) > 0;
-success
+EXPLAIN SELECT SUM(n_nationkey) from nation HAVING SUM(n_nationkey) > 0;
+rows: 1
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -

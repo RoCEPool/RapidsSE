@@ -440,14 +440,24 @@ antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *pCtx)
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any SqlPlanner::visitSetQuery(sqlParser::SetQueryContext *pCtx)
 {
-  // Get the statement string for this part of the query
-  antlr4::misc::Interval interval(pCtx->start->getStartIndex(), pCtx->stop->getStopIndex());
-  std::string queryStlStr = pCtx->start->getInputStream()->getText(interval);
-
-  QueryNode *pStatement = SelectMarker::pCreate((Stz *) (queryStlStr.c_str()));
-  m_pStatementStack->vPush(pStatement);
-
   visitChildren(pCtx);
+
+  ASSERT(SelectMarker::bIsOfType(m_pStatementStack->pTop()));
+  ASSERT(m_pStatementStack->nItems() >= 1);
+
+  if (pCtx->ORDER() || pCtx->LIMIT()) {
+    // We need to stick another statementOp on top of the one currently on the stack
+    QueryNode* pSubStatement = m_pStatementStack->pPop();
+    ASSERT(pSubStatement);
+
+    // Get the statement string for this part of the query
+    antlr4::misc::Interval interval(pCtx->start->getStartIndex(), pCtx->stop->getStopIndex());
+    std::string queryStlStr = pCtx->start->getInputStream()->getText(interval);
+
+    QueryNode *pStatement = SelectMarker::pCreate((Stz *) (queryStlStr.c_str()));
+    pStatement->vAppendChild(pSubStatement);
+    m_pStatementStack->vPush(pStatement);
+  }
 
   if (pCtx->ORDER()) {
     // TODO
@@ -524,8 +534,6 @@ antlrcpp::Any SqlPlanner::visitTableReference(sqlParser::TableReferenceContext *
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any SqlPlanner::visitSetExpr(sqlParser::SetExprContext* pCtx)
 {
-  ASSERT(m_pStatementStack->nItems() > 0);
-  ASSERT(SelectMarker::bIsOfType(m_pStatementStack->pTop()));
   ASSERT(!m_pSelectItems);
 
   if (pCtx->selectExpr()) {
@@ -601,17 +609,21 @@ antlrcpp::Any SqlPlanner::visitSetExpr(sqlParser::SetExprContext* pCtx)
   }
 
   // Add the children. They should have been added to the statement list
-  ASSERT(m_pStatementStack->nItems() >= 3);
+  ASSERT(m_pStatementStack->nItems() >= 2);
   QueryNode* pChild2 = m_pStatementStack->pPop();
   QueryNode* pChild1 = m_pStatementStack->pPop();
 
   pSetOp->vAppendChild(pChild1);
   pSetOp->vAppendChild(pChild2);
 
-  // Add this set operator to the existing statement on the stack
-  QueryNode* pStatementMarker = m_pStatementStack->pTop();
-  ASSERT(SelectMarker::bIsOfType(pStatementMarker));
-  pStatementMarker->vAppendChild(pSetOp);
+  // Create a SelectMarker and add this set operator to it
+  // Get the statement string for this part of the query
+  antlr4::misc::Interval interval(pCtx->start->getStartIndex(), pCtx->stop->getStopIndex());
+  std::string queryStlStr = pCtx->start->getInputStream()->getText(interval);
+
+  QueryNode *pStatement = SelectMarker::pCreate((Stz *) (queryStlStr.c_str()));
+  pStatement->vAppendChild(pSetOp);
+  m_pStatementStack->vPush(pStatement);
 
   return nullptr;
 }

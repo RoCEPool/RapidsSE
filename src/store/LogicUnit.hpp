@@ -172,7 +172,6 @@ namespace STORE
     Atomic              m_ixRowsSkipped;   // rows skipped
     eEC                 m_eErrorCode;      // error code
     
-    eZK                 m_eOperand;
     eZK                 m_ePipeInOperand;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

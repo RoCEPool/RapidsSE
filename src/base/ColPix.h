@@ -7,7 +7,7 @@ namespace BASE
 {
   // the ColPix structure is 64b / u8
 
-  union ColPix  // condensed column def 
+  union ColPix // condensed column def 
   {
     struct {
       u8 m_uNumber    :  8; // number
@@ -20,10 +20,8 @@ namespace BASE
       u8 m_bNullable  :  1; // is allowed to be null?
       u8 m_bPtnKey    :  1; // is a partitioning column?
       u8 m_uSpare     :  6; // round up to 64b
-      
-
     //                 ---
-    //                 64b // so... 256 columns is 256 * 8B = 2KB
+    //                 64b  // so... 256 columns is 256 * 8B = 2KB
     //                 ===
     };
     

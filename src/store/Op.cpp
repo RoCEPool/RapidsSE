@@ -113,7 +113,7 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  vLog(EV_CONSTRUCT,"Op constructor"_Stz);
+  vLog_TBR(EV_CONSTRUCT,"Op constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -148,7 +148,7 @@ Op::~Op(void) noexcept(false)
   
   -- gixOp;
   
-  vLog(EV_DESTRUCT,"Op destructor"_Stz);
+  vLog_TBR(EV_DESTRUCT,"Op destructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
