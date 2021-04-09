@@ -90,8 +90,9 @@ Backend::Backend(RootNode* pPlanRoot)
   m_pColExprList = nullptr;
   m_sPipeline = nullptr;
 
-  m_cStageCurrent = 'A';
-  m_cStageLast    = 'A';
+  m_cStageStart   = 'A';
+  m_cStageNext    = m_cStageStart + 1;
+  m_cStageLast    = m_cStageNext;
 
   _checkInitialised_(CN_BACKEND);
   
@@ -127,27 +128,9 @@ bool Backend::bTransliterate(String* sPipeline) {
   vPrintPlanGraph(m_pPlanRoot);
 //#endif
 
-  char cStageStart   = m_cStageCurrent;
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_sPipeline->vCopy(
-      "pipeline unnamed\n"
-      "begin\n"
-      ""_Stz);
-
-  m_sPipeline->vCatSprint(
-      "  stage stage%c on origin :\n"
-      "    start\n"
-      "    | periodic once\n"
-      "    | stageB\n"
-      ""_Stz,
-      cStageStart,
-      m_cStageCurrent+1);
-
-  ++ m_cStageCurrent;
-  m_cStageLast = m_cStageCurrent + 1;
-
+  vAppendStartStage();
 
   // get the plan node of the plan
   PlanNode* pPlanNode = ShadowRoot::pPlanNode(m_pPlanRoot);
@@ -164,28 +147,7 @@ bool Backend::bTransliterate(String* sPipeline) {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  //++ m_cStageCurrent;
-
-//  m_sPipeline->vCatSprint(
-//      "    | stage%c\n"
-//      ""_Stz,
-//      m_cStageLast);
-
-    m_sPipeline->vCatSprint(
-        "  stage stage%c on origin :\n"
-        "    output\n"
-        ""_Stz,
-        m_cStageLast);
-
-  m_sPipeline->vCatSprint(
-      "    | sink\n"
-      "    | stage%c\n"
-      ""_Stz,
-      cStageStart);
-
-  m_sPipeline->vConcat(
-      "end ;\n"
-      ""_Stz);
+  vAppendLastStage();
 
   return true;
 }
@@ -499,11 +461,6 @@ void Backend::vAppendScanOp(Backend* pBackend, QueryNode* pNode)
   Stz *szTableName = TableRef::szTable(pTableRef);
 
   sPipeline->vCatSprint(
-      "  stage stage%c on all partitions :\n"
-      ""_Stz,
-      pBackend->m_cStageCurrent);
-
-  sPipeline->vCatSprint(
       "    scan %s\n"
       ""_Stz,
       szTableName);
@@ -771,13 +728,11 @@ GraphNav::eWalkCtrl Backend::vVisitorPlan(PlanNode* pRootNode, s256& sPath, i8 i
   // we have a unionOp
   if (pUnionOp) {
 
+    // previos stage to pipe to union stage
     pBackend->m_sPipeline->vCatSprint(
         "    | stage%c\n"
         ""_Stz,
-        pBackend->m_cStageCurrent + 1);
-
-    // set lastStage
-    pBackend->m_cStageLast = pBackend->m_cStageCurrent + 2;
+        pBackend->m_cStageNext+1);
 
     // this node should have two children
     ASSERT(pUnionOp->nChildren() == 2);
@@ -785,21 +740,50 @@ GraphNav::eWalkCtrl Backend::vVisitorPlan(PlanNode* pRootNode, s256& sPath, i8 i
     // get a plan node iterator
     PlanNodeIter *pIter = pUnionOp->pNewChildrenIter();
 
+    // get the first child
+    QueryNode *pChildStatementMarker = static_cast<QueryNode *>(pIter->pFirst());
+
+    pBackend->vAppendNextStage();
+
+    // bounded walk of each of first children
+    GraphNav::bBoundedWalkBottomUp(pChildStatementMarker, false, true, vVisitorStatement, (void *) pBackend);
+
+    pBackend->m_sPipeline->vCatSprint(
+      "    | stage%c\n"
+      ""_Stz,
+      pBackend->m_cStageNext+1);
+
+    // get the next child
+    pChildStatementMarker = static_cast<QueryNode *>(pIter->pNext());
+
+    pBackend->vAppendNextStage();
+
+    // bounded walk of each of first children
+    GraphNav::bBoundedWalkBottomUp(pChildStatementMarker, false, true, vVisitorStatement, (void *) pBackend);
+
+    pBackend->m_sPipeline->vCatSprint(
+      "    | stage%c\n"
+      ""_Stz,
+      pBackend->m_cStageNext);
+
     // bounded walk of each of its children
-    while (pIter->bHasNext()) {
-      // get the next StatementMarker from the iterator
-      QueryNode *pChildStatementMarker = static_cast<QueryNode *>(pIter->pNext());
-      GraphNav::bBoundedWalkBottomUp(pChildStatementMarker, false, true, vVisitorStatement, (void *) pBackend);
-      pBackend->m_cStageCurrent++;
+//    while (pIter->bHasNext()) {
+//      // get the next StatementMarker from the iterator
+//      QueryNode *pChildStatementMarker = static_cast<QueryNode *>(pIter->pNext());
+//      GraphNav::bBoundedWalkBottomUp(pChildStatementMarker, false, true, vVisitorStatement, (void *) pBackend);
+//      pBackend->m_cStageCurrent++;
+//
+//      pBackend->m_sPipeline->vCatSprint(
+//          "    | stage%c\n"
+//          ""_Stz,
+//          pBackend->m_cStageNext);
+//
+//    }
 
-      pBackend->m_sPipeline->vCatSprint(
-          "    | stage%c\n"
-          ""_Stz,
-          pBackend->m_cStageLast);
-
-    }
     return GraphNav::WALK_SKIP_CHILDREN;
   }
+
+  pBackend->vAppendNextStage();
 
   // Walk the current node and its children,
   // calling the visitor function for each node encountered. This is a
@@ -811,10 +795,74 @@ GraphNav::eWalkCtrl Backend::vVisitorPlan(PlanNode* pRootNode, s256& sPath, i8 i
   pBackend->m_sPipeline->vCatSprint(
       "    | stage%c\n"
       ""_Stz,
-      pBackend->m_cStageLast);
+      pBackend->m_cStageNext);
 
   // Keep walking
   return GraphNav::WALK_CONTINUE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* append last stage to the pipeline                                          */
+/*----------------------------------------------------------------------------*/
+void Backend::vAppendLastStage(void) {
+  //ASSERT(m_cStageLast == m_cStageNext);
+
+  m_sPipeline->vCatSprint(
+      "  stage stage%c on origin :\n"
+      "    output\n"
+      ""_Stz,
+      m_cStageLast);
+
+  m_sPipeline->vCatSprint(
+      "    | sink\n"
+      "    | stage%c\n"
+      ""_Stz,
+      m_cStageStart);
+
+  m_sPipeline->vConcat(
+      "end ;\n"
+      ""_Stz);
+  vTrace("%s\n"_Stz, m_sPipeline->azStr());
+}
+
+/*----------------------------------------------------------------------------*/
+/* append next stage to the pipeline                                          */
+/*----------------------------------------------------------------------------*/
+void Backend::vAppendNextStage(void) {
+
+  m_sPipeline->vCatSprint(
+      "  stage stage%c on all partitions :\n"
+      ""_Stz,
+      m_cStageNext);
+
+  ++m_cStageNext;
+  m_cStageLast = m_cStageNext;
+  vTrace("%s\n"_Stz, m_sPipeline->azStr());
+}
+
+/*----------------------------------------------------------------------------*/
+/* append the start stage to the pipeline                                     */
+/*----------------------------------------------------------------------------*/
+void Backend::vAppendStartStage(void) {
+
+  m_sPipeline->vCopy(
+      "pipeline unnamed\n"
+      "begin\n"
+      ""_Stz);
+
+  m_sPipeline->vCatSprint(
+      "  stage stage%c on origin :\n"
+      "    start\n"
+      "    | periodic once\n"
+      "    | stage%c\n"
+      ""_Stz,
+      m_cStageStart,
+      m_cStageNext);
+
+  //++m_cStageNext;
+  //m_cStageLast = m_cStageNext;
+
+  vTrace("%s\n"_Stz, m_sPipeline->azStr());
 }
 
 /*============================================================================*/

@@ -19,7 +19,8 @@ namespace STORE
     PlanNode*      m_pPlanRoot;
     QueryNodeList* m_pColExprList;
     String*        m_sPipeline;
-    char           m_cStageCurrent;
+    char           m_cStageStart;
+    char           m_cStageNext;
     char           m_cStageLast;
 
     // must be last
@@ -48,12 +49,22 @@ namespace STORE
 
     static void vPrintPlanGraph(Parser::PlanNode* pPlanRoot);
 
+    //
+    // visitor functions
+    //
     static Parser::GraphNav::eWalkCtrl vVisitorExpr(PlanNode* pNode,
                                                     s256& sPath, i8 iDepth, void* pvArg);
     static Parser::GraphNav::eWalkCtrl vVisitorPlan(PlanNode* pNode,
                                                     s256& sPath, i8 iDepth, void* pvArg);
     static Parser::GraphNav::eWalkCtrl vVisitorStatement(PlanNode* pNode,
                                                     s256& sPath, i8 iDepth, void* pvArg);
+
+    //
+    // pipeline stages
+    //
+    void vAppendLastStage(void);
+    void vAppendNextStage(void);
+    void vAppendStartStage(void);
 
     Footer* aFooter(void);
   };
