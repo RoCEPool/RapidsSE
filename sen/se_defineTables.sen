@@ -516,6 +516,20 @@
   api::executeRequest
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_MEMORYLOG
+  STD_PATH
+  "
+  define table se__memoryLog (
+    sPipelineNm  VARCHAR NOT NULL ,
+    sOpNm        VARCHAR NOT NULL ,
+    iPtn         INTEGER NOT NULL ,
+    szOperand    VARCHAR NOT NULL ,
+    iPoint       INTEGER NOT NULL
+  ) < internal > = 1 ;
+  "
+  api::executeRequest
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_OPERANDLOG
   STD_PATH
   "
@@ -527,7 +541,6 @@
     iPoint       INTEGER NOT NULL ,
     nNanoSeconds INTEGER NOT NULL ,
     nQueueLength INTEGER NOT NULL
-    
   ) < internal > = 1 ;
   "
   api::executeRequest
