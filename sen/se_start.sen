@@ -93,6 +93,11 @@
     "Error Code %v" .printf
   then
   
+  // spawn metadata demon
+//  "" false metaDemonPipeline api::spawnDemon not if
+//    "Error Code %v" .printf
+//  then
+  
   "end start_run" .verbose
 
   // delete task instead of returning to nowhere

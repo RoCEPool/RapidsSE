@@ -90,7 +90,7 @@
       stage stageA on origin :
         start | metaGet | stageB
 
-      stage Sr::stageB on all nodes :
+      stage stageB on all nodes :
         metaSend | stageC
 
       stage stageC on origin :
