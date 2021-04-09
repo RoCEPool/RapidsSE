@@ -8,8 +8,8 @@ aggregGby$_I.test
 filterRows$_I.test
 filterRows$.test
 
-//limitRows.test
-//limitRows_I.test
+limitRows.test
+limitRows_I.test
 
 projectColumns$_I.test
 projectColumns$.test
