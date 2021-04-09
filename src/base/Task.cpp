@@ -5,6 +5,7 @@
 #include "BASE.h"
 
 #include "PsxThd.hpp" //?
+#include "TagConstants.h" //?
 
 Atomic gixTask;
 
@@ -87,7 +88,7 @@ Task::Task(Job* pJob)
   m_oAcksRmg.vCheckInit();
   // m_oWakeup
   
-  m_bLogMemory = false;
+  m_bLogMemory   = AM::JOB::bHasTag(m_pJob,C_TAG_MEMORYLOG);
 
   m_iTraceMask   = C_TRACE_NONE;
  
@@ -113,7 +114,6 @@ Task::Task(Job* pJob)
   m_pSenCompiler = new SenCompiler;
   m_pInput       = nullptr;
 
-  
   _checkInitialised_(CN_TASK);
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
