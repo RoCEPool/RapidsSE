@@ -227,6 +227,13 @@ namespace OBLIQUE
     public:
       static bool bHasTag(Job* pJob, Stz* szTagNm);
     };
+  
+    class LOG
+    {
+    public:
+      static void vMemoryAllocation(Object* pObject);
+      static void vMemoryFree(Object* pObject);
+    };
 
     class SYSTEM
     {

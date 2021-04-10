@@ -147,9 +147,6 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   //vVerify();
   
   
-//  if (! MY::pTask())
-//    printf("]]] No task for : %s\n",aCN[eAllocClass]);
-  
   m_okLock.vGrabWrite();
 
   // check for free chunks in the heap and extend if none
@@ -173,6 +170,9 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   
   m_okLock.vDropWrite();
   
+  if (AM::TASK::bLogMemory())
+    AM::LOG::vMemoryAllocation(pObject);
+
   //vVerify();
   
   //eLastClass = eAllocClass;
@@ -271,6 +271,9 @@ i8 Heap::nFreeChunks(void)
 void Heap::vFreeObject(Object* pObject)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  if (AM::TASK::bLogMemory())
+    AM::LOG::vMemoryFree(pObject);
 
   if (CN_LARGETRANSIENT == eGetClassNo()) {
     
