@@ -4,6 +4,8 @@
 
 #include "BASE.h"
 
+#include "AM.hpp"
+
 extern BufferPool* gpBufferPool;
 
 extern SizeHeap  gxaSizeHeap[];
@@ -143,6 +145,10 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   //static eCN eLastClass = CN_ENUMS;
   
   //vVerify();
+  
+  
+//  if (! MY::pTask())
+//    printf("]]] No task for : %s\n",aCN[eAllocClass]);
   
   m_okLock.vGrabWrite();
 

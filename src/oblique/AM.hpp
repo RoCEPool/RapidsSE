@@ -238,6 +238,7 @@ namespace OBLIQUE
     {
     public:
       static DicStack* pDicStack(void);
+      static bool bLogMemory(void);
     };
   
     class THREAD

@@ -222,6 +222,22 @@ DicStack* AM::TASK::pDicStack(void)
   return pDicStack;
 }
 
+/*----------------------------------------------------------------------------*/
+/* is current task logging memory?                                            */
+/*----------------------------------------------------------------------------*/
+bool AM::TASK::bLogMemory(void)
+{
+  _static_
+  
+  Task* pTask = pThisTLSTask();
+  if (! pTask)
+    return false;
+  
+  bool bLogging = pTask->bLogMemory();
+  
+  return bLogging;
+}
+
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                   Thread                                   */

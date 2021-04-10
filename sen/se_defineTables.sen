@@ -524,7 +524,9 @@
     sOpNm        VARCHAR NOT NULL ,
     iPtn         INTEGER NOT NULL ,
     szOperand    VARCHAR NOT NULL ,
-    iPoint       INTEGER NOT NULL
+    eClassNo     INTEGER NOT NULL ,
+    nNanoSeconds INTEGER NOT NULL ,
+    iThreadNo    INTEGER NOT NULL
   ) < internal > = 1 ;
   "
   api::executeRequest
