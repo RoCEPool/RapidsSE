@@ -228,6 +228,12 @@ namespace OBLIQUE
       static bool bHasTag(Job* pJob, Stz* szTagNm);
     };
 
+    class SYSTEM
+    {
+    public:
+      static i8 iElapsedTns(void);
+    };
+
     class TASK
     {
     public:
