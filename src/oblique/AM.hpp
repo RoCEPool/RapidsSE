@@ -233,6 +233,7 @@ namespace OBLIQUE
     public:
       static void vMemoryAllocation(Object* pObject);
       static void vMemoryFree(Object* pObject);
+      static void vResourceUse(Object* pObject, i8 iAction, i8 nBytes);
     };
 
     class SYSTEM
