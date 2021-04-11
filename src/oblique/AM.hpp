@@ -231,8 +231,10 @@ namespace OBLIQUE
     class LOG
     {
     public:
+      static void vLogInternal(i8 iTable, ...);
       static void vMemoryAllocation(Object* pObject);
       static void vMemoryFree(Object* pObject);
+      static void vOperand(i8 iPoint);
       static void vResourceUse(Object* pObject, i8 iAction, i8 nBytes);
     };
 

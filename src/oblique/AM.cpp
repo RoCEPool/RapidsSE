@@ -117,6 +117,8 @@
 
 #include "Version.h"
 
+#include "MY.hpp"
+
 extern CmdLineArgs   gxCmdLineArgs;
 
 extern AttachMap*    gpAttachMap;
@@ -189,6 +191,34 @@ bool AM::JOB::bHasTag(Job* pJob, Stz* szTagNm)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
+/* log entry into internal table                                              */
+/*----------------------------------------------------------------------------*/
+void AM::LOG::vLogInternal(i8 iTable, ...)
+{
+  _static_
+
+  WriteBehind* pWriteBehind = AM::THREAD::pWriteBehind();
+  if (! pWriteBehind)
+    return;
+
+  StreamDef* pStreamDef = AM::pInternalTables()->pStreamDef((eTI)iTable);
+  if (! pStreamDef)
+    return;
+  
+  pWriteBehind->vGrabLock();
+
+  va_list xVarArgs;
+  va_start(xVarArgs,iTable);
+
+  Row* pRow = pWriteBehind->pAllotRow((eTI)iTable);
+  pRow->vDeposit(xVarArgs);
+
+  va_end(xVarArgs);
+
+  pWriteBehind->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
 /* log memory allocation                                                      */
 /*----------------------------------------------------------------------------*/
 void AM::LOG::vMemoryAllocation(Object* pObject)
@@ -204,6 +234,37 @@ void AM::LOG::vMemoryFree(Object* pObject)
 {
   _static_
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* log operand                                                                */
+/*----------------------------------------------------------------------------*/
+void AM::LOG::vOperand(i8 iPoint)
+{
+  _static_
+  
+  Job* pJob = MY::pJob();
+  LogicUnit* pRLU = pJob->pLogicUnit_job();
+
+  pRLU->m_oSince.vUpdate();
+  i8 nNanoSeconds = pRLU->m_oSince.iNanoseconds();
+
+  i8 nQueueLength = pRLU->m_xpOp->nQueueLength();
+
+  Op* pOp = MY::pOp();
+  i8 iPtn = pOp ? pOp->tPtnNo() : -1;
+  
+  AM::LOG::vLogInternal((i8)TI_OPERANDLOG,
+                        MY::szPipelineNm(),
+                        MY::szOpNm(),
+                        MY::iPtn(),
+                        aZK[pRLU->m_ePipeInOperand],
+                        iPoint,
+                        nNanoSeconds,
+                        nQueueLength,
+                        C_VARGS_END);
+
+
 }
 
 /*----------------------------------------------------------------------------*/
