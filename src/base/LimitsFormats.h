@@ -126,6 +126,7 @@ static Stz* C_TDEF_PINGINFO         = "__pingInfo"_Stz;
 static Stz* C_TDEF_PROGRESSUNITS    = "__progressUnits"_Stz;
 static Stz* C_TDEF_PROMPTOUT        = "__promptOut"_Stz;
 static Stz* C_TDEF_PWF              = "__pwf"_Stz;
+static Stz* C_TDEF_RESOURCELOG      = "SE__resourceLog"_Stz;
 static Stz* C_TDEF_RETURNPIPELINE   = "__returnPipeline"_Stz;
 static Stz* C_TDEF_SEEKOFFSETS      = "__seekOffsets"_Stz;
 static Stz* C_TDEF_SHOWCLUSTER      = "__showCluster"_Stz;

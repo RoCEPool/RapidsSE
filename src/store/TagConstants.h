@@ -44,6 +44,7 @@ static Stz* C_TAG_REPLICATED = "<replicated>"_Stz;
 static Stz* C_TAG_REQUEST    = "<request>"_Stz;
 static Stz* C_TAG_REQNO      = "<reqNo>"_Stz;
 static Stz* C_TAG_REQOF      = "<reqOf>"_Stz;
+static Stz* C_TAG_RESOURCELOG = "<resourceLog>"_Stz;
 static Stz* C_TAG_NOWAIT     = "<noWait>"_Stz;
 static Stz* C_TAG_PLPROTOCOL = "<plProtocol>"_Stz;
 static Stz* C_TAG_SECTION    = "<section>"_Stz;

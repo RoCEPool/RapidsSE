@@ -547,6 +547,22 @@
   "
   api::executeRequest
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_RESOURCELOG
+  STD_PATH
+  "
+  define table se__resourceLog (
+    sPipelineNm  VARCHAR NOT NULL ,
+    sOpNm        VARCHAR NOT NULL ,
+    iPtn         INTEGER NOT NULL ,
+    szOperand    VARCHAR NOT NULL ,
+    eClassNo     INTEGER NOT NULL ,
+    iAction      INTEGER NOT NULL ,
+    nBytes       INTEGER NOT NULL ,
+    iThreadNo    INTEGER NOT NULL
+  ) < internal > = 1 ;
+  "
+  api::executeRequest
 ;
 
 /*============================================================================*/
