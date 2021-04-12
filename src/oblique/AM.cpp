@@ -225,6 +225,32 @@ void AM::LOG::vMemoryAllocation(Object* pObject)
 {
   _static_
   
+  Job* pJob = MY::pJob();
+  if (! pJob)
+    return;
+  
+  LogicUnit* pRLU = pJob->pLogicUnit_job();
+  if (! pRLU || pRLU->m_xpOp.bIsNull())
+    return;
+
+  pRLU->m_oSince.vUpdate();
+  i8 nNanoSeconds = pRLU->m_oSince.iNanoseconds();
+
+  i8 nQueueLength = pRLU->m_xpOp->nQueueLength();
+
+  Op* pOp = MY::pOp();
+  i8 iPtn = pOp ? pOp->tPtnNo() : -1;
+  
+  AM::LOG::vLogInternal((i8)TI_MEMORYLOG,
+                        MY::szPipelineNm(),
+                        MY::szOpNm(),
+                        MY::iPtn(),
+                        aZK[pRLU->m_ePipeInOperand],
+                        pObject->szClassNm(),
+                        0,
+                        nNanoSeconds,
+                        nQueueLength,
+                        C_VARGS_END);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -234,6 +260,32 @@ void AM::LOG::vMemoryFree(Object* pObject)
 {
   _static_
   
+  Job* pJob = MY::pJob();
+  if (! pJob)
+    return;
+  
+  LogicUnit* pRLU = pJob->pLogicUnit_job();
+  if (! pRLU || pRLU->m_xpOp.bIsNull())
+    return;
+
+  pRLU->m_oSince.vUpdate();
+  i8 nNanoSeconds = pRLU->m_oSince.iNanoseconds();
+
+  i8 nQueueLength = pRLU->m_xpOp->nQueueLength();
+
+  Op* pOp = MY::pOp();
+  i8 iPtn = pOp ? pOp->tPtnNo() : -1;
+  
+  AM::LOG::vLogInternal((i8)TI_MEMORYLOG,
+                        MY::szPipelineNm(),
+                        MY::szOpNm(),
+                        MY::iPtn(),
+                        aZK[pRLU->m_ePipeInOperand],
+                        pObject->szClassNm(),
+                        1,
+                        nNanoSeconds,
+                        nQueueLength,
+                        C_VARGS_END);
 }
 
 /*----------------------------------------------------------------------------*/
