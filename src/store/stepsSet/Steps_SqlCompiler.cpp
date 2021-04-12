@@ -15,7 +15,6 @@
 #include "SkipRoots.hpp"
 #include "EntBuffer.hpp"
 #include "IndexTree.hpp"
-#include "CrvBuffer.hpp"
 #include "TablePtn.hpp"
 #include "Table.hpp"
 
@@ -32,16 +31,15 @@
 #include "RootNode.hpp"
 #include "PlanDefinitionParser.hpp"
 #include "SqlPlanner.hpp"
-#include "ShadowNode.hpp"
 #include "ShadowRoot.hpp"
 #include "ShadowPlan.hpp"
-#include "PlanConstants.hpp"
-#include "GraphNav.hpp"
 #include "PlanOperand.hpp"
 
 #include "NameValidator.hpp"
 #include "ExprValidator.hpp"
 #include "SetOpValidator.hpp"
+#include "PostProject.hpp"
+
 #include "ExplainMarker.hpp"
 #include "ExplainOp.hpp"
 
@@ -225,9 +223,19 @@ void Step::vSqlCompilerExprPushdown(void)
   ENTRY();
 
   /**
+   * The purpose of this stage is to ensure that all expressions in sql operators
+   * above a ProjectOp or AggregateOp (so a HAVING clause's FilterOp or a
+   * ORDER BY's OrderOp) are pushed down into a ProjectOp or AggregateOp to be
+   * calculated, if required.
    *
+   * e.g. consider this statement:
+   *   SELECT col1, SUM(col2) FROM t GROUP BY col1 HAVING AVG(col3) > 0;
+   * In this statement neither AVG(col3) or col3 is available or can be calculated
+   * because the AggregateOp below it in the plan only projects [col1, SUM(col2)].
+   * So we need it to also project [AVG(col3) > 0] as well so the FilterOp that implements
+   * the HAVING clause can test it.
    *
-   * The plan IS modified in this stage.
+   * The plan may be modified in this stage.
    */
 
   s48K sExplainBuf;
@@ -580,18 +588,22 @@ void Step::vSqlCompilerPostProject(void)
    * if required.
    *
    * The plan may be modified in this stage.
+   * At the end of this stage we may have multiple ProjectOps in the same
+   * statement section of the plan. Prior to this stage there was only ever
+   * one ProjectOp or AggregateOp (which is derived from ProjectOp anyway).
    */
 
   s48K sExplainBuf;
 
   PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
-  Parser::RootNode* pPlanRoot = Parser::_pRootNode(pPlanOperand->pPlanNode());
-  UNUSED(pPlanRoot);
-  ASSERT(ShadowRoot::bIsExactType(pPlanRoot));
+  Parser::RootNode* pRootNode = Parser::_pRootNode(pPlanOperand->pPlanNode());
+  UNUSED(pRootNode);
+  ASSERT(ShadowRoot::bIsExactType(pRootNode));
 
 
   try {
-    // TODO
+    // Add the post projection, if required
+    PostProject::vCheckPostProject(pRootNode);
 
   } catch (Parser::SqlException& e) {
     Grid* pGrid = AM::pGrid();
@@ -604,7 +616,7 @@ void Step::vSqlCompilerPostProject(void)
                                     e.szError(),
                                     C_VARGS_END);
     UNUSED(pRow);
-    delete pPlanRoot;
+    delete pRootNode;
     delete pPlanOperand;
     m_pDataStack->vPushPtr(nullptr);
     goto L_Exit;

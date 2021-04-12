@@ -322,11 +322,36 @@ b1 ColumnRef::bIsSymbolicallyEqual(QueryNode* pColRef1, QueryNode* pColRef2)
   if (pColRef1->nProperties() != pColRef2->nProperties()) return false;
   ASSERT(pColRef1->nProperties() == 4);
 
-  if (!ColumnRef::szCatalog(pColRef1)->bSame(ColumnRef::szCatalog(pColRef2))) return false;
-  if (!ColumnRef::szSchema(pColRef1)->bSame( ColumnRef::szSchema(pColRef2)))  return false;
-  if (!ColumnRef::szTable(pColRef1)->bSame(  ColumnRef::szTable(pColRef2)))   return false;
-  if (!ColumnRef::szColumn(pColRef1)->bSame( ColumnRef::szColumn(pColRef2)))  return false;
+  Stz* szStr1;
+  Stz* szStr2;
 
+  szStr1 = ColumnRef::szCatalog(pColRef1);
+  szStr2 = ColumnRef::szCatalog(pColRef2);
+  if (szStr1 || szStr2) {
+    if (!szStr1 || !szStr2)  return false;
+    if (!szStr1->bSame(szStr2))   return false;
+  }
+
+  szStr1 = ColumnRef::szSchema(pColRef1);
+  szStr2 = ColumnRef::szSchema(pColRef2);
+  if (szStr1 || szStr2) {
+    if (!szStr1 || !szStr2)  return false;
+    if (!szStr1->bSame(szStr2))   return false;
+  }
+
+  szStr1 = ColumnRef::szTable(pColRef1);
+  szStr2 = ColumnRef::szTable(pColRef2);
+  if (szStr1 || szStr2) {
+    if (!szStr1 || !szStr2)  return false;
+    if (!szStr1->bSame(szStr2))   return false;
+  }
+
+  szStr1 = ColumnRef::szColumn(pColRef1);
+  szStr2 = ColumnRef::szColumn(pColRef2);
+  if (szStr1 || szStr2) {
+    if (!szStr1 || !szStr2)  return false;
+    if (!szStr1->bSame(szStr2))   return false;
+  }
 
   // All children must match and must be in the same order.
   if (pColRef1->nChildren() != pColRef2->nChildren()) return false;

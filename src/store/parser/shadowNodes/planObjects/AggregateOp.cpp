@@ -10,6 +10,8 @@
 #include "QueryNode.hpp"
 #include "ProjectedColumn.hpp"
 #include "Expr.hpp"
+#include "ShadowRoot.hpp"
+#include "MetadataNode.hpp"
 
 #include "GraphNav.hpp"
 
@@ -143,7 +145,18 @@ void AggregateOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 
 
   ASSERT(pNode->nChildren() == 1);
   ASSERT(PlanObject::bIsOfType(pNode->pFirstChild()));
-  QueryNodeList* pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pRootNode);
+  QueryNodeList* pColExprList = nullptr;
+
+  // Explaining very early plans are difficult because we cannot resolve the column expressions.
+  // We don't want to call PlanObject::pColumnExprs() below before we have been able
+  // to resolve all table/column names in the system.
+  // When we resolve names we also add metadata into plan. So if the metadata node has
+  // no children then we probably haven't resolved any names yet (except for the case of
+  // the plan only containing literals).
+
+  if (ShadowRoot::pMetadataNode(pRootNode)->nChildren() > 0) {
+    pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pRootNode);
+  }
 
   // Iterate each Projected expression
   if (pProjColumns->bHasChildren()) {
@@ -165,8 +178,10 @@ void AggregateOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 
     delete pIter;
   }
 
-  pColExprList->vDeleteAll();
-  delete pColExprList;
+  if (pColExprList) {
+    pColExprList->vDeleteAll();
+    delete pColExprList;
+  }
 
 
   // Get the list of symbolic groupby expressions
@@ -193,29 +208,33 @@ void AggregateOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 
     delete pIter;
   }
 
-  // Get the list of *ordinal* groupby expressions
-  PlanNode* pOrdinalGroupByExprs = pOrdinalGroupByList(_pQueryNode(pNode), pRootNode);
-  ASSERT(pOrdinalGroupByExprs);
+  // Get the list of *ordinal* groupby expressions.
+  // Again this is skipped if the plan is very early in the compilation pipeline
+  // and not all names have been qualified.
+  if (ShadowRoot::pMetadataNode(pRootNode)->nChildren() > 0) {
+    PlanNode *pOrdinalGroupByExprs = pOrdinalGroupByList(_pQueryNode(pNode), pRootNode);
+    ASSERT(pOrdinalGroupByExprs);
 
-  // Iterate each ordinal groupby expression
-  if (pOrdinalGroupByExprs->bHasChildren()) {
-    PlanNodeIter* pIter = pOrdinalGroupByExprs->pNewChildrenIter();
+    // Iterate each ordinal groupby expression
+    if (pOrdinalGroupByExprs->bHasChildren()) {
+      PlanNodeIter *pIter = pOrdinalGroupByExprs->pNewChildrenIter();
 
-    while (pIter->bHasNext()) {
-      QueryNode* pOrdGroupByExpr = _pQueryNode(pIter->pNext());
-      ASSERT(pOrdGroupByExpr);
-      ASSERT(Expr::bIsOfType(pOrdGroupByExpr));
+      while (pIter->bHasNext()) {
+        QueryNode *pOrdGroupByExpr = _pQueryNode(pIter->pNext());
+        ASSERT(pOrdGroupByExpr);
+        ASSERT(Expr::bIsOfType(pOrdGroupByExpr));
 
-      // Get the description of the group by expression
-      s2K sExprBuf;
-      Expr::vDescribe(pOrdGroupByExpr, sExprBuf);
-      sBuf.vCatSprint(" ; Ordinal Exprs = (%s)"_Stz, sExprBuf.szStz());
+        // Get the description of the group by expression
+        s2K sExprBuf;
+        Expr::vDescribe(pOrdGroupByExpr, sExprBuf);
+        sBuf.vCatSprint(" ; Ordinal Exprs = (%s)"_Stz, sExprBuf.szStz());
+      }
+
+      delete pIter;
     }
 
-    delete pIter;
+    delete pOrdinalGroupByExprs;
   }
-
-  delete pOrdinalGroupByExprs;
 
 
   // Recurse any children of pNode

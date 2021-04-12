@@ -3,3 +3,4 @@ select.test
 aggregates.test
 explain.test
 //union.test
+postProject.test
