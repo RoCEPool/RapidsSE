@@ -882,6 +882,8 @@ void File::vSeek(i8 iOffset)
   gpAttachMap->m_oStatistics.File.m_nSeeks++;
 #endif
   
+  AM::LOG::vResourceUse(this,AR_SEEK,iOffset);
+
   i8 iResult = fseeko(m_aFile,iOffset,SEEK_SET);
   
   if (iResult) {
