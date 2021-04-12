@@ -21,9 +21,7 @@ namespace BASE
 {
   class Dir : public Resource
   {
-  private:
-    //s256    m_sDirPath;   // the path of the directory
-   
+  private:   
     DIR*    m_aDir;       // dir pointer/descriptor
   
     s256    m_sEntryNm;   // name of entry just read
@@ -55,7 +53,6 @@ namespace BASE
     bool bIsClosed(void);
     bool bIsOpen(void);
     bool bOpen(Stz* aDirPath);
-    Stz* szPath(void);
     bool bRead(void);
     void vRewind(void);
     void vSeek(i8 iPosition);

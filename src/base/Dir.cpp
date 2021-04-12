@@ -35,8 +35,6 @@ Dir::Dir(Loggable* pIsFor)
 {
   _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
   
-  m_sPath      = C_NO_NAME;
-  
   m_aDir       = nullptr;
   m_sEntryNm   = C_NO_NAME;
   m_iEntryType = 0;
@@ -303,16 +301,6 @@ bool Dir::bOpen(Stz* szDirPath)
 
   ASSERT(bIsOpen());
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get directory path                                                         */
-/*----------------------------------------------------------------------------*/
-Stz* Dir::szPath(void)
-{
-  _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
-  
-  return m_sPath;
 }
 
 /*----------------------------------------------------------------------------*/
