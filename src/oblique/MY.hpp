@@ -23,6 +23,7 @@ namespace OBLIQUE
   class MY
   {
   public:
+    static i8 nNanoseconds(void);
     static i8 iPtn(void);
   
     static Stz* szCatalogNm(void);

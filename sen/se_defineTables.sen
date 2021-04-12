@@ -562,7 +562,9 @@
     szPath       VARCHAR NOT NULL ,
     szAction     VARCHAR NOT NULL ,
     nBytes       INTEGER NOT NULL ,
-    iThreadNo    INTEGER NOT NULL
+    iThreadNo    INTEGER NOT NULL ,
+    nNanoSeconds INTEGER NOT NULL
+    
   ) < internal > = 1 ;
   "
   api::executeRequest

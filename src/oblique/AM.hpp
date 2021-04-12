@@ -241,7 +241,7 @@ namespace OBLIQUE
     class SYSTEM
     {
     public:
-      static i8 iElapsedTns(void);
+      static i8 nNanoseconds(void);
     };
 
     class TASK

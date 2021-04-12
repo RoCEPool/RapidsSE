@@ -365,6 +365,7 @@ void AM::LOG::vResourceUse(Resource* pResource, i8 iAction, i8 nBytes)
                         aAR[iAction],
                         nBytes,
                         MY::pThread()->iThreadNo(),
+                        AM::SYSTEM::nNanoseconds(),
                         C_VARGS_END);
 }
 
@@ -373,17 +374,17 @@ void AM::LOG::vResourceUse(Resource* pResource, i8 iAction, i8 nBytes)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
-/* time (in nanoseconds) since boot                                           */
+/* elapsed time (in nanoseconds) since boot                                   */
 /*----------------------------------------------------------------------------*/
-i8 AM::SYSTEM::iElapsedTns(void)
+i8 AM::SYSTEM::nNanoseconds(void)
 {
   _static_
   
   gpAttachMap->m_oSince.vUpdate();
   
-  i8 iElapsed = gpAttachMap->m_oSince.iNanoseconds();
+  i8 nElapsed = gpAttachMap->m_oSince.iNanoseconds();
     
-  return iElapsed;
+  return nElapsed;
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
