@@ -364,7 +364,7 @@ void AM::LOG::vResourceUse(Resource* pResource, i8 iAction, i8 nBytes)
                         pResource->szPath(),
                         aAR[iAction],
                         nBytes,
-                        (i8)-1,
+                        MY::pThread()->iThreadNo(),
                         C_VARGS_END);
 }
 
