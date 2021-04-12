@@ -361,6 +361,7 @@ void AM::LOG::vResourceUse(Resource* pResource, i8 iAction, i8 nBytes)
                         aZK[pRLU->m_ePipeInOperand],
                         
                         pResource->szClassNm(),
+                        pResource->szClassNm(),
                         aAR[iAction],
                         nBytes,
                         (i8)-1,

@@ -89,7 +89,7 @@ Task::Task(Job* pJob)
   // m_oWakeup
   
   m_bLogMemory   = AM::JOB::bHasTag(m_pJob,C_TAG_MEMORYLOG);
-  m_bLogMemory   = AM::JOB::bHasTag(m_pJob,C_TAG_RESOURCELOG);
+  m_bLogResource = AM::JOB::bHasTag(m_pJob,C_TAG_RESOURCELOG);
 
   m_iTraceMask   = C_TRACE_NONE;
  
