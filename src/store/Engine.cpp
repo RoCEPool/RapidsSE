@@ -982,6 +982,14 @@ void Engine::vMungeCheck(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set object classes which are not to be logged                              */
+/*----------------------------------------------------------------------------*/
+void Engine::vNoMemoryLogging(void)
+{
+  gxaSizeHeap[CN_WRITEBEHIND].m_bDontMemLog = true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* operand queue report                                                       */
 /*----------------------------------------------------------------------------*/
 void Engine::vOperandQueueReport(bool bStdOut)
@@ -1678,6 +1686,9 @@ void Engine::vStartSystem(void)
     vInfo("  Adding LowMemory Discard\n"_Stz);
   vLowMemoryDiscard();
   
+  if (AM::bVerboseProgress())
+    vInfo("  Adding No Memory Logging\n"_Stz);
+  vNoMemoryLogging();
 
   if (AM::bVerboseProgress())
     vInfo("  Adding Constants\n"_Stz);
@@ -1732,7 +1743,7 @@ void Engine::vStartSystem(void)
     if (AM::bVerboseProgress())
       vInfo("  Adding Dispatch Words\n"_Stz);
     vDispatchWords();
-    
+      
 
   s32 sResident_magn;
   MagLib::vByteMag(Process::iResidentSize(),3,sResident_magn);

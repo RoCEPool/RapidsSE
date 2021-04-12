@@ -45,6 +45,7 @@ namespace STORE
     static void vKillPrev(void);
     static void vLowMemoryDiscard(void);
     static void vMungeCheck(void);
+    static void vNoMemoryLogging(void);
     static void vOperandQueueReport(bool bStdOut);
     static void vOpenLog(void);
     static void vOpenPool(void);
