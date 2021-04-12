@@ -557,7 +557,8 @@
     sOpNm        VARCHAR NOT NULL ,
     iPtn         INTEGER NOT NULL ,
     szOperand    VARCHAR NOT NULL ,
-    eClassNo     INTEGER NOT NULL ,
+    
+    szClass      VARCHAR NOT NULL ,
     iAction      INTEGER NOT NULL ,
     nBytes       INTEGER NOT NULL ,
     iThreadNo    INTEGER NOT NULL

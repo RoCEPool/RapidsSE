@@ -288,6 +288,7 @@ void AM::LOG::vMemoryFree(Object* pObject)
                         MY::szOpNm(),
                         MY::iPtn(),
                         aZK[pRLU->m_ePipeInOperand],
+                        
                         pObject->szClassNm(),
                         (i8)1,
                         nNanoSeconds,
@@ -322,8 +323,6 @@ void AM::LOG::vOperand(i8 iPoint)
                         nNanoSeconds,
                         nQueueLength,
                         C_VARGS_END);
-
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -333,6 +332,28 @@ void AM::LOG::vResourceUse(Object* pObject, i8 iAction, i8 nBytes)
 {
   _static_
   
+  Job* pJob = MY::pJob();
+  LogicUnit* pRLU = pJob->pLogicUnit_job();
+
+  pRLU->m_oSince.vUpdate();
+  i8 nNanoSeconds = pRLU->m_oSince.iNanoseconds();
+
+  i8 nQueueLength = pRLU->m_xpOp->nQueueLength();
+
+  Op* pOp = MY::pOp();
+  i8 iPtn = pOp ? pOp->tPtnNo() : -1;
+  
+  AM::LOG::vLogInternal((i8)TI_RESOURCELOG,
+                        MY::szPipelineNm(),
+                        MY::szOpNm(),
+                        MY::iPtn(),
+                        aZK[pRLU->m_ePipeInOperand],
+                        
+                        pObject->szClassNm(),
+                        iAction,
+                        nBytes,
+                        (i8)-1,
+                        C_VARGS_END);
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
