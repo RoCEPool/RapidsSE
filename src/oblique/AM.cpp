@@ -382,6 +382,20 @@ bool AM::TASK::bLogMemory(void)
   return bLogging;
 }
 
+/*----------------------------------------------------------------------------*/
+/* set current task logging memory?                                           */
+/*----------------------------------------------------------------------------*/
+void AM::TASK::vLogMemory(bool bLogMemory)
+{
+  _static_
+  
+  Task* pTask = pThisTLSTask();
+  if (! pTask)
+    return;
+  
+  pTask->vLogMemory(bLogMemory);
+}
+
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                   Thread                                   */

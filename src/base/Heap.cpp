@@ -170,8 +170,16 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   
   m_okLock.vDropWrite();
   
-  if (AM::TASK::bLogMemory())
-    AM::LOG::vMemoryAllocation(pObject);
+  bool bSetLogMemory = false;
+  
+//  if (AM::TASK::bLogMemory() {
+//    if (CN_WRITEBEHIND == eAllocClass) {
+//      bSetLogMemory = true;
+//    }
+//
+//  }
+//  if (AM::TASK::bLogMemory() && ! gxaSizeHeap[eAllocClass].m_bDontMemLog)
+//    AM::LOG::vMemoryAllocation(pObject);
 
   //vVerify();
   

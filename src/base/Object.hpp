@@ -18,6 +18,7 @@ namespace BASE
     Stz* szClassNm(void);
     bool bInspectObject(void);
     void vMemoryDump(void);
+    bool bMemoryLog(void);
     i8   nSizeOfObject(void);
     eEC  eValidObject(void);
     i8   iWhenAllocated(void);
