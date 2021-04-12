@@ -197,6 +197,12 @@ void AM::LOG::vLogInternal(i8 iTable, ...)
 {
   _static_
 
+  bool bSetLogMemory = false;
+  if (AM::TASK::bLogMemory()) {
+    bSetLogMemory = true;
+    AM::TASK::vLogMemory(false);
+  }
+  
   WriteBehind* pWriteBehind = AM::THREAD::pWriteBehind();
   if (! pWriteBehind)
     return;
@@ -207,6 +213,7 @@ void AM::LOG::vLogInternal(i8 iTable, ...)
   
   pWriteBehind->vGrabLock();
 
+
   va_list xVarArgs;
   va_start(xVarArgs,iTable);
 
@@ -215,7 +222,11 @@ void AM::LOG::vLogInternal(i8 iTable, ...)
 
   va_end(xVarArgs);
 
+
   pWriteBehind->vDropLock();
+  
+  if (bSetLogMemory)
+    AM::TASK::vLogMemory(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -236,8 +247,6 @@ void AM::LOG::vMemoryAllocation(Object* pObject)
   pRLU->m_oSince.vUpdate();
   i8 nNanoSeconds = pRLU->m_oSince.iNanoseconds();
 
-  i8 nQueueLength = pRLU->m_xpOp->nQueueLength();
-
   Op* pOp = MY::pOp();
   i8 iPtn = pOp ? pOp->tPtnNo() : -1;
   
@@ -247,9 +256,9 @@ void AM::LOG::vMemoryAllocation(Object* pObject)
                         MY::iPtn(),
                         aZK[pRLU->m_ePipeInOperand],
                         pObject->szClassNm(),
-                        0,
+                        (i8)0,
                         nNanoSeconds,
-                        nQueueLength,
+                        (i8)-1,
                         C_VARGS_END);
 }
 
@@ -271,8 +280,6 @@ void AM::LOG::vMemoryFree(Object* pObject)
   pRLU->m_oSince.vUpdate();
   i8 nNanoSeconds = pRLU->m_oSince.iNanoseconds();
 
-  i8 nQueueLength = pRLU->m_xpOp->nQueueLength();
-
   Op* pOp = MY::pOp();
   i8 iPtn = pOp ? pOp->tPtnNo() : -1;
   
@@ -282,9 +289,9 @@ void AM::LOG::vMemoryFree(Object* pObject)
                         MY::iPtn(),
                         aZK[pRLU->m_ePipeInOperand],
                         pObject->szClassNm(),
-                        1,
+                        (i8)1,
                         nNanoSeconds,
-                        nQueueLength,
+                        (i8)-1,
                         C_VARGS_END);
 }
 

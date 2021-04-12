@@ -178,8 +178,8 @@ Object* Heap::pAllocObject(eCN eAllocClass)
 //    }
 //
 //  }
-//  if (AM::TASK::bLogMemory() && ! gxaSizeHeap[eAllocClass].m_bDontMemLog)
-//    AM::LOG::vMemoryAllocation(pObject);
+  if (AM::TASK::bLogMemory() && ! gxaSizeHeap[eAllocClass].m_bDontMemLog)
+    AM::LOG::vMemoryAllocation(pObject);
 
   //vVerify();
   
@@ -280,7 +280,9 @@ void Heap::vFreeObject(Object* pObject)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
-  if (AM::TASK::bLogMemory())
+  eCN eFreeClass = pObject->eGetClassNo();
+  
+  if (AM::TASK::bLogMemory() && ! gxaSizeHeap[eFreeClass].m_bDontMemLog)
     AM::LOG::vMemoryFree(pObject);
 
   if (CN_LARGETRANSIENT == eGetClassNo()) {
