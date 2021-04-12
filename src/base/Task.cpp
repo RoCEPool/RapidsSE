@@ -89,6 +89,7 @@ Task::Task(Job* pJob)
   // m_oWakeup
   
   m_bLogMemory   = AM::JOB::bHasTag(m_pJob,C_TAG_MEMORYLOG);
+  m_bLogMemory   = AM::JOB::bHasTag(m_pJob,C_TAG_RESOURCELOG);
 
   m_iTraceMask   = C_TRACE_NONE;
  
@@ -710,6 +711,16 @@ void Task::vLogMemory(bool bLogMemory)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
     
   m_bLogMemory = bLogMemory;
+}
+
+/*----------------------------------------------------------------------------*/
+/* log resource usage?                                                        */
+/*----------------------------------------------------------------------------*/
+bool Task::bLogResource(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+    
+  return m_bLogResource;
 }
 
 /*----------------------------------------------------------------------------*/

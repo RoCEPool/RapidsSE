@@ -9,6 +9,7 @@
 #include "MY.hpp"
 #include "EVLOG.hpp"
 
+#include "eAR.h"
 #include "eEV.h"
 
 Atomic gixFile;
@@ -317,6 +318,8 @@ void File::vClose(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  
+  AM::LOG::vResourceUse(this,AR_CLOSE,(i8)-1);
+
   i8 iResult = fclose(m_aFile);
   m_aFile = nullptr;
 
@@ -677,6 +680,8 @@ bool File::bOpenMode(Stz* szFilePath, Stz* szOpenMode)
   vLog_TBR(EV_OPEN,"File opened: path=%s; mode=%s"_Stz,
        m_sFilePath.szStz(),m_sOpenMode.szStz());
 
+  AM::LOG::vResourceUse(this,AR_OPEN,(i8)-1);
+  
   return true;
 }
 
@@ -787,6 +792,7 @@ i8 File::nReadBytes(void* aDst, i8 nBytes)
   
   vLog_TBR(EV_READ,"File read: path=%s; bytes=%lld"_Stz,m_sFilePath.szStz(),nBytesRead);
 
+  AM::LOG::vResourceUse(this,AR_READ,nBytesRead);
 
   return nBytesRead;
 }

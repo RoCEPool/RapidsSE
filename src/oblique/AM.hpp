@@ -235,7 +235,7 @@ namespace OBLIQUE
       static void vMemoryAllocation(Object* pObject);
       static void vMemoryFree(Object* pObject);
       static void vOperand(i8 iPoint);
-      static void vResourceUse(Object* pObject, i8 iAction, i8 nBytes);
+      static void vResourceUse(Resource* pResource, i8 iAction, i8 nBytes);
     };
 
     class SYSTEM
@@ -250,6 +250,7 @@ namespace OBLIQUE
       static DicStack* pDicStack(void);
       static bool bLogMemory(void);
       static void vLogMemory(bool bLogMemory);
+      static bool bLogResource(void);
     };
   
     class THREAD

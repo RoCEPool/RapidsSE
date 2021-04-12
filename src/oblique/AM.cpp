@@ -305,7 +305,12 @@ void AM::LOG::vOperand(i8 iPoint)
   _static_
   
   Job* pJob = MY::pJob();
+  if (! pJob)
+    return;
+  
   LogicUnit* pRLU = pJob->pLogicUnit_job();
+  if (! pRLU || pRLU->m_xpOp.bIsNull())
+    return;
 
   pRLU->m_oSince.vUpdate();
   i8 nNanoSeconds = pRLU->m_oSince.iNanoseconds();
@@ -329,12 +334,17 @@ void AM::LOG::vOperand(i8 iPoint)
 /*----------------------------------------------------------------------------*/
 /* log resource usage                                                         */
 /*----------------------------------------------------------------------------*/
-void AM::LOG::vResourceUse(Object* pObject, i8 iAction, i8 nBytes)
+void AM::LOG::vResourceUse(Resource* pResource, i8 iAction, i8 nBytes)
 {
   _static_
   
   Job* pJob = MY::pJob();
+  if (! pJob)
+    return;
+  
   LogicUnit* pRLU = pJob->pLogicUnit_job();
+  if (! pRLU || pRLU->m_xpOp.bIsNull())
+    return;
 
   pRLU->m_oSince.vUpdate();
   i8 nNanoSeconds = pRLU->m_oSince.iNanoseconds();
@@ -350,7 +360,7 @@ void AM::LOG::vResourceUse(Object* pObject, i8 iAction, i8 nBytes)
                         MY::iPtn(),
                         aZK[pRLU->m_ePipeInOperand],
                         
-                        pObject->szClassNm(),
+                        pResource->szClassNm(),
                         aAR[iAction],
                         nBytes,
                         (i8)-1,
@@ -424,6 +434,23 @@ void AM::TASK::vLogMemory(bool bLogMemory)
   
   pTask->vLogMemory(bLogMemory);
 }
+
+/*----------------------------------------------------------------------------*/
+/* is current task logging resource usage?                                    */
+/*----------------------------------------------------------------------------*/
+bool AM::TASK::bLogResource(void)
+{
+  _static_
+  
+  Task* pTask = pThisTLSTask();
+  if (! pTask)
+    return false;
+  
+  bool bLogging = pTask->bLogResource();
+  
+  return bLogging;
+}
+
 
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
