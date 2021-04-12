@@ -559,7 +559,7 @@
     szOperand    VARCHAR NOT NULL ,
     
     szClass      VARCHAR NOT NULL ,
-    iAction      INTEGER NOT NULL ,
+    szAction     VARCHAR NOT NULL ,
     nBytes       INTEGER NOT NULL ,
     iThreadNo    INTEGER NOT NULL
   ) < internal > = 1 ;

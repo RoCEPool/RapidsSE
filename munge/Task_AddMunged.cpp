@@ -8490,7 +8490,7 @@ void Task::vAddMunged(Task* )
     "    szOperand    VARCHAR NOT NULL ,\n"
     "    \n"
     "    szClass      VARCHAR NOT NULL ,\n"
-    "    iAction      INTEGER NOT NULL ,\n"
+    "    szAction     VARCHAR NOT NULL ,\n"
     "    nBytes       INTEGER NOT NULL ,\n"
     "    iThreadNo    INTEGER NOT NULL\n"
     "  ) < internal > = 1 ;\n"

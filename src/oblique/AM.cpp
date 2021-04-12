@@ -6,6 +6,7 @@
 
 
 #include "eAK.h"
+#include "eAR.h"
 #include "eBO.h"
 #include "eCC.h"
 #include "eCK.h"
@@ -350,7 +351,7 @@ void AM::LOG::vResourceUse(Object* pObject, i8 iAction, i8 nBytes)
                         aZK[pRLU->m_ePipeInOperand],
                         
                         pObject->szClassNm(),
-                        iAction,
+                        aAR[iAction],
                         nBytes,
                         (i8)-1,
                         C_VARGS_END);

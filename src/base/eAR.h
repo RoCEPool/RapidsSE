@@ -18,7 +18,7 @@ enum eAR // resource actions
   /*    */ AR_ENUMS,
 };
 
-static Stz* aEV[]
+static Stz* aAR[]
 {
   /*  0 */ "AR_NONE"_Stz,
 
