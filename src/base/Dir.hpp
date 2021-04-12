@@ -22,7 +22,7 @@ namespace BASE
   class Dir : public Resource
   {
   private:
-    s256    m_sDirPath;   // the path of the directory
+    //s256    m_sDirPath;   // the path of the directory
    
     DIR*    m_aDir;       // dir pointer/descriptor
   

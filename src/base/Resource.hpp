@@ -10,11 +10,15 @@ namespace BASE
   protected:
     Object* m_pIsFor;
   
+    s256    m_sPath;  // the path of the resource (relative or absolute)
+
   public:
     Resource(eCN eClass, Object* pIsFor, i8 iLogCtl=C_LOG);
    ~Resource(void) noexcept(false);
   
     void vOutline(s4K& sOutline);
+    Stz* szPath(void);
+
     i8   iResId(void);
   };
   
