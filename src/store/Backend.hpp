@@ -46,6 +46,7 @@ namespace STORE
     static void vAppendLimitOp(Backend* pBackend, QueryNode* pNode);
     static void vAppendProjectOp(Backend* pBackend,  QueryNode* pNode);
     static void vAppendScanOp(Backend* pBackend,  QueryNode* pNode);
+    static void vAppendUnionOp(Backend* pBackend,  QueryNode* pNode);
 
     static void vPrintPlanGraph(Parser::PlanNode* pPlanRoot);
 
