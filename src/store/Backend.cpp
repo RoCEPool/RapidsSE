@@ -467,6 +467,53 @@ void Backend::vAppendScanOp(Backend* pBackend, QueryNode* pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append union Op to the pipeline                                            */
+/*----------------------------------------------------------------------------*/
+void Backend::vAppendUnionOp(Backend* pBackend, QueryNode* pUnionNode)
+{
+  _static_
+
+  // previos stage to pipe to union stage
+  pBackend->m_sPipeline->vCatSprint(
+  "    | stage%c\n"
+  ""_Stz,
+  pBackend->m_cStageNext+1);
+
+  // this node should have two children
+  ASSERT(pUnionNode->nChildren() == 2);
+
+  // get a plan node iterator
+  PlanNodeIter *pIter = pUnionNode->pNewChildrenIter();
+
+  // get the first child
+  QueryNode *pChildStatementMarker = static_cast<QueryNode *>(pIter->pFirst());
+
+  pBackend->vAppendNextStage();
+
+  // bounded walk of each of first children
+  GraphNav::bBoundedWalkBottomUp(pChildStatementMarker, false, true, vVisitorStatement, (void *) pBackend);
+
+  pBackend->m_sPipeline->vCatSprint(
+  "    | stage%c\n"
+  ""_Stz,
+  pBackend->m_cStageNext+1);
+
+  // get the next child
+  pChildStatementMarker = static_cast<QueryNode *>(pIter->pNext());
+
+  pBackend->vAppendNextStage();
+
+  // bounded walk of each of first children
+  GraphNav::bBoundedWalkBottomUp(pChildStatementMarker, false, true, vVisitorStatement, (void *) pBackend);
+
+  pBackend->m_sPipeline->vCatSprint(
+  "    | stage%c\n"
+  ""_Stz,
+  pBackend->m_cStageNext);
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* visitor function for the plan graph walk                                   */
 /*----------------------------------------------------------------------------*/
 GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 iDepth, void* pvArg)
@@ -684,6 +731,7 @@ GraphNav::eWalkCtrl Backend::vVisitorStatement(PlanNode* pRootNode, s256& sPath,
     // UnionOp
 
     else if (UnionOp::bIsOfType(pQueryNode)) {
+      //return eAppendUnionOp(pBackend, pQueryNode);
       RASSERT(0);
     }
 
@@ -723,63 +771,12 @@ GraphNav::eWalkCtrl Backend::vVisitorPlan(PlanNode* pRootNode, s256& sPath, i8 i
   };
 
   // check for a unionOp
-  PlanNode *pUnionOp = GraphNav::pBoundedSearch(pStatementMarker, false, true, fHasUnionOp, nullptr);
+  PlanNode *pHasUnionOp = GraphNav::pBoundedSearch(pStatementMarker, false, true, fHasUnionOp, nullptr);
 
   // we have a unionOp
-  if (pUnionOp) {
-
-    // previos stage to pipe to union stage
-    pBackend->m_sPipeline->vCatSprint(
-        "    | stage%c\n"
-        ""_Stz,
-        pBackend->m_cStageNext+1);
-
-    // this node should have two children
-    ASSERT(pUnionOp->nChildren() == 2);
-
-    // get a plan node iterator
-    PlanNodeIter *pIter = pUnionOp->pNewChildrenIter();
-
-    // get the first child
-    QueryNode *pChildStatementMarker = static_cast<QueryNode *>(pIter->pFirst());
-
-    pBackend->vAppendNextStage();
-
-    // bounded walk of each of first children
-    GraphNav::bBoundedWalkBottomUp(pChildStatementMarker, false, true, vVisitorStatement, (void *) pBackend);
-
-    pBackend->m_sPipeline->vCatSprint(
-      "    | stage%c\n"
-      ""_Stz,
-      pBackend->m_cStageNext+1);
-
-    // get the next child
-    pChildStatementMarker = static_cast<QueryNode *>(pIter->pNext());
-
-    pBackend->vAppendNextStage();
-
-    // bounded walk of each of first children
-    GraphNav::bBoundedWalkBottomUp(pChildStatementMarker, false, true, vVisitorStatement, (void *) pBackend);
-
-    pBackend->m_sPipeline->vCatSprint(
-      "    | stage%c\n"
-      ""_Stz,
-      pBackend->m_cStageNext);
-
-    // bounded walk of each of its children
-//    while (pIter->bHasNext()) {
-//      // get the next StatementMarker from the iterator
-//      QueryNode *pChildStatementMarker = static_cast<QueryNode *>(pIter->pNext());
-//      GraphNav::bBoundedWalkBottomUp(pChildStatementMarker, false, true, vVisitorStatement, (void *) pBackend);
-//      pBackend->m_cStageCurrent++;
-//
-//      pBackend->m_sPipeline->vCatSprint(
-//          "    | stage%c\n"
-//          ""_Stz,
-//          pBackend->m_cStageNext);
-//
-//    }
-
+  if (pHasUnionOp) {
+    QueryNode *pUnionOp = static_cast<QueryNode *>(pHasUnionOp);
+    vAppendUnionOp(pBackend, pUnionOp);
     return GraphNav::WALK_SKIP_CHILDREN;
   }
 
