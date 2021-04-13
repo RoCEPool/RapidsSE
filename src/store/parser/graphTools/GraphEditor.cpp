@@ -134,6 +134,29 @@ void GraphEditor::vReplaceChild(QueryNode* pParentNode, QueryNode* pReplaceChild
   pParentNode->m_pChildren = pNewChildList;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Remove a child from its parent and optionally transplant that child's      */
+/* children in its place. Returns the snipped child.                          */
+/*----------------------------------------------------------------------------*/
+QueryNode* GraphEditor::pSnipChild(QueryNode* pParent, QueryNode* pChild, b1 bTransplant)
+{
+  ASSERT(pParent);
+  ASSERT(pParent->m_pChildren);
+  ASSERT(pChild);
+  ASSERT(pChild->m_pChildren);
+
+  if (bTransplant) {
+    // We need to move the children of pChild to be children of pParent.
+    // We also want to put them where pChild is.
+    pParent->vInsertChildrenBefore(pChild->m_pChildren, pChild);
+    pChild->m_pChildren->vRemoveAll();
+  }
+
+  // Now we can remove pChild from being a child of pParent
+  pParent->vRemoveChild(pChild);
+  return pChild;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

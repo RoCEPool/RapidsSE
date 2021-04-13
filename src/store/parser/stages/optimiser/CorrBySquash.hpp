@@ -27,9 +27,12 @@ namespace Parser
     // Searches for any CORRESPONDING BY ProjectOps and squashes them if possible
     static void vSearchAndSquash(PlanNode* pRootNode);
 
-
   private:
+    // Searches for any CORRESPONDING BY ProjectOps in a statement marker section
+    static void vSearchStatementSection(QueryNode* pStatementMarker, PlanNode* pRootNode);
 
+    // Pushes down and squashes a ProjectOp down a given subtree
+    static void vSquashProjectOp(QueryNode* pProjectOp, QueryNode* pStartingNode);
   };
 }
 

@@ -97,6 +97,10 @@ void Step::vSqlCompilerCorrBySquash(void) {
    *   The ProjectOp marked with [*] is the effect of the CORRESPONDING clause.
    *   This stage will look for this condition and eliminate any redundant ProjectOps
    *   immediately below the CORRESPONDING BY ProjectOp.
+   *
+   *   Also refer to this document for implementation details, challenges and constraints
+   *   via some use cases:
+   *     Design/Design Discussions/Optimiser-SquashingCorrBy.key
    */
 
 
