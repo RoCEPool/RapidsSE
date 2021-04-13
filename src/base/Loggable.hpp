@@ -28,25 +28,12 @@ namespace BASE
     Loggable(eCN eClassNo, i8 iLogCtl=C_LOG);
    ~Loggable(void) noexcept(false);
   
-    eEV  eEvent(void);
-    void vEvent(eEV eEvent);
-
-    i8   iEventNo(void);
-
-    i8   iEventTick(void);
-    void vEventTickSet(void);
-
     i8   iObjectId(void);
     void vObjectId(i8 iObjectId);
 
     Stz* sObjectNm(void);
     void vObjectNm(Stz* szObjectNm);
-
-    void vNextEvent(eEV m_eEvent);
   
-  private:
-    void vAddRow(eEV eEvent, Stz* szNote);
-
   };
 }
 
