@@ -194,7 +194,7 @@ bool AM::JOB::bHasTag(Job* pJob, Stz* szTagNm)
 /*----------------------------------------------------------------------------*/
 /* log events                                                                 */
 /*----------------------------------------------------------------------------*/
-void AM::LOG::vEvent(eEV eEvent, Stz* szNote, ...)
+void AM::LOG::vEvent(eEV eEvent, Stz* szFormat, ...)
 {
   _static_
   
@@ -212,6 +212,18 @@ void AM::LOG::vEvent(eEV eEvent, Stz* szNote, ...)
   if (! pRLU || pRLU->m_xpOp.bIsNull())
     return;
 
+  
+  s4K sNote;
+  
+  va_list xVarArgs;
+  
+  va_start(xVarArgs,szFormat);
+  
+  sNote.vSprintVA(szFormat,xVarArgs);
+  
+  va_end(xVarArgs);
+
+  
   i8 nQueueLength = pRLU->m_xpOp->nQueueLength();
   
   AM::LOG::vLogInternal((i8)TI_EVENTLOG,
@@ -222,7 +234,7 @@ void AM::LOG::vEvent(eEV eEvent, Stz* szNote, ...)
                         aZK[pRLU->m_ePipeInOperand],
                         
                         (i8)eEvent,
-                        szNote->azChar(),
+                        sNote.azChar(),
 
                         MY::pThread()->iThreadNo(),
                         AM::SYSTEM::nNanoseconds(),
