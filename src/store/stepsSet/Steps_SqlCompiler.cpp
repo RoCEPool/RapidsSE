@@ -39,6 +39,7 @@
 #include "ExprValidator.hpp"
 #include "SetOpValidator.hpp"
 #include "PostProject.hpp"
+#include "CorrBySquash.hpp"
 
 #include "ExplainMarker.hpp"
 #include "ExplainOp.hpp"
@@ -107,7 +108,7 @@ void Step::vSqlCompilerCorrBySquash(void) {
 
 
   try {
-    // TODO
+    CorrBySquash::vSearchAndSquash(pPlanRoot);
 
   } catch (Parser::SqlException& e) {
     Grid* pGrid = AM::pGrid();
