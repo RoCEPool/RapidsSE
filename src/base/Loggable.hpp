@@ -28,10 +28,6 @@ namespace BASE
     Loggable(eCN eClassNo, i8 iLogCtl=C_LOG);
    ~Loggable(void) noexcept(false);
   
-    void vLog_TBR(eEV eEvent, Stz* szFormat, ...);
-
-    void vLogTI(i8 iTable, ...);
-
     eEV  eEvent(void);
     void vEvent(eEV eEvent);
 
