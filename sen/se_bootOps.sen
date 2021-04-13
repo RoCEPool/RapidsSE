@@ -31,6 +31,7 @@ assert::stack_0
   "OP_compilerOpEg.sen"         include
   "OP_connector.sen"            include
   "OP_consume.sen"              include
+  "OP_corrBySquash.sen"         include
   "OP_createCatalog.sen"        include
   "OP_createIndex.sen"          include
   "OP_createSchema.sen"         include

@@ -36,7 +36,7 @@ success
 EXPLAIN SELECT n_name FROM nation GROUP BY n_name HAVING SUM(n_nationkey) > 0;
 rows:
 (
-7,
+*,
 'explainPlan',
 'StatementMarker: select
 » queryText: "SELECT n_name FROM nation GROUP BY n_name HAVING SUM(n_nationkey) > 0"
@@ -64,7 +64,7 @@ rows:
 EXPLAIN SELECT n_name FROM nation GROUP BY n_name HAVING n_name = 'KENYA';
 rows:
 (
-7,
+*,
 'explainPlan',
 'StatementMarker: select
 » queryText: "SELECT n_name FROM nation GROUP BY n_name HAVING n_name = ''KENYA''"
@@ -89,7 +89,8 @@ rows:
 
 EXPLAIN SELECT n_nationkey, SUM(n_regionkey) FROM nation GROUP BY n_nationkey HAVING SUM(n_nationkey) > 0;
 rows:
-(7,
+(
+*,
 'explainPlan',
 'StatementMarker: select
 » queryText: "SELECT n_nationkey, SUM(n_regionkey) FROM nation GROUP BY n_nationkey HAVING SUM(n_nationkey) > 0"
@@ -118,7 +119,8 @@ rows:
 
 EXPLAIN SELECT n_nationkey, SUM(n_regionkey) FROM nation GROUP BY n_nationkey HAVING n_nationkey * 2 > 0;
 rows:
-(7,
+(
+*,
 'explainPlan',
 'StatementMarker: select
 » queryText: "SELECT n_nationkey, SUM(n_regionkey) FROM nation GROUP BY n_nationkey HAVING n_nationkey * 2 > 0"

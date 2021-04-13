@@ -50,18 +50,92 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_SqlCompiler(void)
 {
+  // Ancilliary steps used in the compilation pipeline
   vAddStep("sqlCompiler::doExplain"_Stz,      &Step::vSqlCompilerDoExplain);
-  vAddStep("sqlCompiler::explainPlan"_Stz,    &Step::vSqlCompilerExplainPlan);
   vAddStep("sqlCompiler::explainFormat"_Stz,  &Step::vSqlCompilerExplainFormat);
+  vAddStep("sqlCompiler::hasExplain"_Stz,     &Step::vSqlCompilerHasExplain);
+
+  // Stages in the compilation pipeline
+  vAddStep("sqlCompiler::corrBySquash"_Stz,   &Step::vSqlCompilerCorrBySquash);
+  vAddStep("sqlCompiler::explainPlan"_Stz,    &Step::vSqlCompilerExplainPlan);
   vAddStep("sqlCompiler::exprValidate"_Stz,   &Step::vSqlCompilerExprValidate);
   vAddStep("sqlCompiler::exprPushdown"_Stz,   &Step::vSqlCompilerExprPushdown);
   vAddStep("sqlCompiler::nameValidate"_Stz,   &Step::vSqlCompilerNameValidate);
-  vAddStep("sqlCompiler::hasExplain"_Stz,     &Step::vSqlCompilerHasExplain);
   vAddStep("sqlCompiler::parser"_Stz,         &Step::vSqlCompilerParser);
   vAddStep("sqlCompiler::postProject"_Stz,    &Step::vSqlCompilerPostProject);
   vAddStep("sqlCompiler::setOpValidate"_Stz,  &Step::vSqlCompilerSetOpValidate);
   vAddStep("sqlCompiler::transliterate"_Stz,  &Step::vSqlCompilerTransliterate);
 }
+
+/*----------------------------------------------------------------------------*/
+/* sqlCompiler::corrBySquash -- Squash ProjectOps for CORRESPONDING BY clauses*/
+/*----------------------------------------------------------------------------*/
+void Step::vSqlCompilerCorrBySquash(void) {
+  ENTRY();
+
+  /**
+   *  This stage is relevant if the query has a SetOp (UNION, INTERSECT, EXCEPT)
+   *  and the SetOp has a CORRESPONDING BY clause. In that case the children of
+   *  the SetOp will be ProjectOps. This stage will push these ProjectOps down
+   *  as far as possible into the children. This will simplify the transliteration
+   *  and also any possible double projections from occurring.
+   *
+   *  e.g. given the query:
+   *    SELECT * FROM nation UNION ALL CORRESPONDING SELECT n_nationkey FROM nation;
+   *  Then the first child query (SELECT * FROM nation) is projecting all 4 columns
+   *  when the union only needs the n_nationkey column. So the CORRESPONDING clause
+   *  will cause a ProjectOp to be placed as a child of the union, above the first
+   *  child query. This first child query will have a query plan looking like this:
+   *
+   *           UnionOp
+   *           /      \
+   *   ProjectOp[*]   ProjectOp
+   *   ProjectOp      TableScanOp
+   *   TableScanOp
+   *
+   *   The ProjectOp marked with [*] is the effect of the CORRESPONDING clause.
+   *   This stage will look for this condition and eliminate any redundant ProjectOps
+   *   immediately below the CORRESPONDING BY ProjectOp.
+   */
+
+
+  PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
+  Parser::RootNode* pPlanRoot = Parser::_pRootNode(pPlanOperand->pPlanNode());
+  UNUSED(pPlanRoot);
+  ASSERT(ShadowRoot::bIsExactType(pPlanRoot));
+
+
+
+  try {
+    // TODO
+
+  } catch (Parser::SqlException& e) {
+    Grid* pGrid = AM::pGrid();
+    InfoSet* pInfoSet = _pInfoSet(*m_pJob->pLogicUnit_job()->m_xpInfoSet);
+    Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+                                    pGrid->pThisNode()->szNodeNm(),
+                                    EC_SEMANTIC_ERROR,
+                                    0,
+                                    0,
+                                    e.szError(),
+                                    C_VARGS_END);
+    UNUSED(pRow);
+    delete pPlanRoot;
+    delete pPlanOperand;
+    m_pDataStack->vPushPtr(nullptr);
+    goto L_Exit;
+  }
+
+
+  // TODO: eventually we want the received plan graph to be immutable,
+  //       so we would send a different version. But for now we will just
+  //       manipulate and send the same plan graph
+  m_pDataStack->vPushPtr(pPlanOperand);
+
+  L_Exit:
+  EXIT();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* sqlCompiler::doExplain -- (potentially) create the explain of the plan     */
@@ -238,8 +312,6 @@ void Step::vSqlCompilerExprPushdown(void)
    * The plan may be modified in this stage.
    */
 
-  s48K sExplainBuf;
-
   PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
   Parser::RootNode* pPlanRoot = Parser::_pRootNode(pPlanOperand->pPlanNode());
   UNUSED(pPlanRoot);
@@ -302,8 +374,6 @@ void Step::vSqlCompilerExprValidate(void)
    *
    * The plan is not modified in this stage.
    */
-
-  s48K sExplainBuf;
 
   PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
   Parser::RootNode* pPlanRoot = Parser::_pRootNode(pPlanOperand->pPlanNode());
@@ -593,8 +663,6 @@ void Step::vSqlCompilerPostProject(void)
    * one ProjectOp or AggregateOp (which is derived from ProjectOp anyway).
    */
 
-  s48K sExplainBuf;
-
   PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
   Parser::RootNode* pRootNode = Parser::_pRootNode(pPlanOperand->pPlanNode());
   UNUSED(pRootNode);
@@ -647,8 +715,6 @@ void Step::vSqlCompilerSetOpValidate(void)
    * by StatementMarkers.
    */
 
-  s48K sExplainBuf;
-
   PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
   Parser::RootNode* pPlanRoot = Parser::_pRootNode(pPlanOperand->pPlanNode());
   UNUSED(pPlanRoot);
@@ -678,9 +744,6 @@ void Step::vSqlCompilerSetOpValidate(void)
     m_pDataStack->vPushPtr(nullptr);
     goto L_Exit;
   }
-
-  Parser::ShadowRoot::vExplain(pPlanRoot, sExplainBuf, 0);
-  vTrace("\n%s\n\n"_Stz, sExplainBuf.szStz());
 
   // TODO: eventually we want the received plan graph to be immutable,
   //       so we would send a different version. But for now we will just
