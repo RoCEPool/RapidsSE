@@ -19,9 +19,6 @@ namespace STORE
     PlanNode*      m_pPlanRoot;
     QueryNodeList* m_pColExprList;
     String*        m_sPipeline;
-    char           m_cStageStart;
-    char           m_cStageNext;
-    char           m_cStageLast;
 
     // must be last
     Footer m_xFooter;
@@ -64,8 +61,10 @@ namespace STORE
     // pipeline stages
     //
     void vAppendLastStage(void);
-    void vAppendNextStage(void);
+    void vAppendNextStage(Stz* szStage);
     void vAppendStartStage(void);
+    void vAppendPipeTo(Stz* szStage);
+    void vAppendNextOp(Stz* szStage);
 
     Footer* aFooter(void);
   };
