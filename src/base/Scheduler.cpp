@@ -144,7 +144,6 @@ void Scheduler::vTaskSelf_BideForOperand(Task* pSelfTask, Thread* pThread)
   RASSERT(QK_NONE == pSelfTask->eQueue());
   UNUSED(pThread);
   
-  pSelfTask->vEventNoInc();
   AM::vLogTsk(SL_INF,pSelfTask,TA_TSK_BIDE,
               "Transition task to TS_BIDING; add to BidingSet"_Stz); //!format-LogTsk
 
@@ -184,7 +183,6 @@ void Scheduler::vTaskSelf_DeleteThisTask(Task* pSelfTask, Thread* pThread)
 
   // add assert on entry point
 
-  pSelfTask->vEventNoInc();
   AM::vLogTsk(SL_INF,pSelfTask,TA_TSK_EXIT,
               "Task to TS_COMPLETED state; and deleted"_Stz); //!format-LogTsk
     
@@ -214,7 +212,6 @@ void Scheduler::vTaskSelf_SleepSomeTime(Task* pSelfTask, Thread* pThread)
   RASSERT(TS_DESISTED == pSelfTask->eState());
   RASSERT(QK_NONE == pSelfTask->eQueue());
 
-  pSelfTask->vEventNoInc();
   AM::vLogTsk(SL_INF,pSelfTask,TA_TSK_SLEEP,
               "Add desisted task to SleepingQueue"_Stz); //!format-LogTsk
   
@@ -265,7 +262,6 @@ void Scheduler::vTaskSelf_WaitForResume(Task* pSelfTask, Thread* pThread)
   RASSERT(QK_NONE == pSelfTask->eQueue());
   UNUSED(pThread);
 
-  pSelfTask->vEventNoInc();
   AM::vLogTsk(SL_INF,pSelfTask,TA_TSK_WAIT,
               "Task moved to WaitingSet"_Stz); //!format-LogTsk
   
@@ -295,7 +291,6 @@ void Scheduler::vTaskSelf_YieldForOthers(Task* pSelfTask, Thread* pThread)
   RASSERT(TS_DESISTED == pSelfTask->eState());
   RASSERT(QK_NONE == pSelfTask->eQueue());
 
-  pSelfTask->vEventNoInc();
   AM::vLogTsk(SL_INF,pSelfTask,TA_TSK_YIELD,
               "Yield desisted task; continue executing or schedule it"_Stz); //!format-LogTsk
 
@@ -491,7 +486,6 @@ void Scheduler::vTaskApi_AddDedicated(Task* pNewTask)
   pNewTask->vEntryPoint(EP_DEDICATED);
   pNewTask->vState(TS_DESISTED);
   
-  pNewTask->vEventNoInc();
   AM::vLogTsk(SL_INF,pNewTask,TA_TSK_SPAWN_DEDICATED,
               "Thread spawned for dedicated task"_Stz); //!format-LogTsk
   
@@ -635,7 +629,6 @@ void Scheduler::vTaskApi_BeginExecutingDedicated(Thread* pThread)
   //
   // called from Thread::vLoop_dedicated()
   //
-  pThread->vEventNoInc();
   AM::vLogThd(SL_INF,pThread,HA_THD_EXECUTE_DEDICATED, //!format-LogThd
               "Thread executes dedicated task"_Stz);
   
@@ -674,7 +667,6 @@ void Scheduler::vThread_AddDedicatedThread(Thread* pThread)
   
   RASSERT(CN_NONE != pThread->eDedicated());
   
-  pThread->vEventNoInc();
   AM::vLogThd(SL_INF,pThread,HA_THD_ADD_DEDICATED,
               "Thread added to DedicatedThreadVec"_Stz); //!format-LogThd
   
@@ -693,7 +685,6 @@ void Scheduler::vThread_AddGeneralThread(Thread* pThread)
   
   RASSERT(CN_NONE == pThread->eDedicated());
   
-  pThread->vEventNoInc();
   AM::vLogThd(SL_INF,pThread,HA_THD_ADD_GENERAL,
               "Thread added to GeneralThreadVec"_Stz); //!format-LogThd
   
@@ -712,7 +703,6 @@ void Scheduler::vThread_BeginThreadLoop(Thread* pThread)
   
   RASSERT(HS_IDLE == pThread->eThreadState());
   
-  pThread->vEventNoInc();
   AM::vLogThd(SL_INF,pThread,HA_THD_BEGIN_LOOP,
               "Thread is at beginning of it's thread loop"_Stz); //!format-LogThd
   
@@ -733,7 +723,6 @@ void Scheduler::vThread_EndThreadLoop(Thread* pThread)
 {
   _static_
   
-  pThread->vEventNoInc();
   AM::vLogThd(SL_INF,pThread,HA_THD_END_LOOP,
               "Thread has ended it's thread loop"_Stz); //!format-LogThd
   
@@ -776,7 +765,6 @@ void Scheduler::vThread_RemoveDedicatedThread(Thread* pThread)
 {
   _static_
   
-  pThread->vEventNoInc();
   AM::vLogThd(SL_INF,pThread,HA_THD_REMOVE_DEDICATED,
               "Thread removed from DedicatedThreadVec"_Stz); //!format-LogThd
     
@@ -792,7 +780,6 @@ void Scheduler::vThread_RemoveGeneralThread(Thread* pThread)
 {
   _static_
   
-  pThread->vEventNoInc();
   AM::vLogThd(SL_INF,pThread,HA_THD_REMOVE_GENERAL,
               "Thread from from GeneralThreadVec"_Stz); //!format-LogThd
   
@@ -844,7 +831,6 @@ bool Scheduler::bThread_AssignIdle(Task* pKnownTask)
 {
   _static_
   
-  pKnownTask->vEventNoInc();
   AM::vLogTsk(SL_INF,pKnownTask,TA_TSK_ASSIGN_THREAD,
               "Task attempts to assign an idle thread to itself"_Stz); //!format-LogTsk
   
@@ -886,7 +872,6 @@ void Scheduler::vThread_WaitAssignment(Thread* pThread)
 {
   _static_
   
-  pThread->vEventNoInc();
   AM::vLogThd(SL_INF,pThread,HA_THD_GET_TASK,
               "Thread attempts task assignment"_Stz); //!format-LogThd
   
@@ -950,7 +935,6 @@ void Scheduler::vScheduleTask(Task* pKnownTask)
 {
   _static_
   
-  pKnownTask->vEventNoInc();
   AM::vLogTsk(SL_INF,pKnownTask,TA_TSK_SCHEDULE,
               "Task is being scheduled"_Stz); //!format-LogTsk
   

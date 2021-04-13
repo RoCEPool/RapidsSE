@@ -157,9 +157,7 @@ Job::Job(ReqTuple* aReqTuple)
   m_pTaskJ     = nullptr;
 
   // -- -- -- -- -- --
-    
-  vEventNoInc();
-  
+      
   ++ gixJob;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB);
@@ -217,9 +215,7 @@ Job::Job(eCN eClassNo)
   // -- -- -- -- -- --
   
   SP_Gid spId;
-  
-  vEventNoInc();
-  
+    
   ++ gixJob;
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
@@ -243,7 +239,6 @@ Job::~Job(void) noexcept(false)
 //    //m_oJobTags.vPrint();
 //  }
   
-  vEventNoInc();
   if (m_bWasReceived) {
     // do not decrement gixJob
     AM::vLogJob(SL_INF,this,JA_JOB_DESTRUCT,

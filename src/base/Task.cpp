@@ -119,9 +119,6 @@ Task::Task(Job* pJob)
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  
-  vEventNoInc();
-  
   ++ gixTask;
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
@@ -173,7 +170,6 @@ Task::~Task(void) noexcept(false)
   m_pProfile = nullptr;
   
   -- gixTask;
-  vEventNoInc();
 
   AM::LOG::vEvent(EV_DESTRUCT,"Task destructor"_Stz);
 }

@@ -375,7 +375,6 @@ void Lock::vGrabRead(void)
       continue;
     
     bReported = true;
-    vEventNoInc();
     AM::vLogLck(SL_INF,this,LA_LCK_READ_UNABLE,
                 "Unable to grab read lock %p %s %p"_Stz, //!format-LogLck
                 this,
@@ -387,7 +386,6 @@ void Lock::vGrabRead(void)
   // read lock has been acquired
 
   if (bReported) {
-    vEventNoInc();
     AM::vLogLck(SL_INF,this,LA_LCK_READ_ABLE,
                "Able to grab read lock %p %s %p"_Stz, //!format-LogLck
                 this,
@@ -527,7 +525,6 @@ void Lock::vGrabWrite(void)
       continue;
     
     bReported = true;
-    vEventNoInc();
     AM::vLogLck(SL_INF,this,LA_LCK_WRITE_UNABLE,
                 "Unable to grab write lock %p %s %p"_Stz, //!format-LogLck
                 this,
@@ -539,7 +536,6 @@ void Lock::vGrabWrite(void)
   // write lock has been acquired
 
   if (bReported) {
-    vEventNoInc();
     AM::vLogLck(SL_INF,this,LA_LCK_WRITE_ABLE,
                "Able to grab write lock %p %s %p"_Stz, //!format-LogLck
                        this,

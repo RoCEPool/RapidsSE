@@ -36,7 +36,6 @@ namespace BASE
     void vEvent(eEV eEvent);
 
     i8   iEventNo(void);
-    void vEventNoInc(void);
 
     i8   iEventTick(void);
     void vEventTickSet(void);
