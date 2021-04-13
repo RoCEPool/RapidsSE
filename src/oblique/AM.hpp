@@ -11,6 +11,7 @@
 #include "eAA.h"
 #include "eDA.h"
 #include "eEC.h"
+#include "eEV.h"
 #include "eGA.h"
 #include "eHA.h"
 #include "eJA.h"
@@ -231,6 +232,7 @@ namespace OBLIQUE
     class LOG
     {
     public:
+      static void vEvent(eEV eEvent, Stz* szNote);
       static void vLogInternal(i8 iTable, ...);
       static void vMemoryAllocation(Object* pObject);
       static void vMemoryFree(Object* pObject);

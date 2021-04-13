@@ -192,6 +192,39 @@ bool AM::JOB::bHasTag(Job* pJob, Stz* szTagNm)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
+/* log events                                                                 */
+/*----------------------------------------------------------------------------*/
+void AM::LOG::vEvent(eEV eEvent, Stz* szNote)
+{
+  _static_
+  
+  Job* pJob = MY::pJob();
+  if (! pJob)
+    return;
+  
+  LogicUnit* pRLU = pJob->pLogicUnit_job();
+  if (! pRLU || pRLU->m_xpOp.bIsNull())
+    return;
+
+  i8 nQueueLength = pRLU->m_xpOp->nQueueLength();
+  
+  AM::LOG::vLogInternal((i8)TI_EVENTLOG,
+                        
+                        MY::szPipelineNm(),
+                        MY::szOpNm(),
+                        MY::iPtn(),
+                        aZK[pRLU->m_ePipeInOperand],
+                        
+                        (i8)eEvent,
+                        szNote->azChar(),
+
+                        MY::pThread()->iThreadNo(),
+                        AM::SYSTEM::nNanoseconds(),
+                        
+                        C_VARGS_END);
+}
+
+/*----------------------------------------------------------------------------*/
 /* log entry into internal table                                              */
 /*----------------------------------------------------------------------------*/
 void AM::LOG::vLogInternal(i8 iTable, ...)
@@ -246,6 +279,7 @@ void AM::LOG::vMemoryAllocation(Object* pObject)
     return;
   
   AM::LOG::vLogInternal((i8)TI_MEMORYLOG,
+                        
                         MY::szPipelineNm(),
                         MY::szOpNm(),
                         MY::iPtn(),
@@ -256,6 +290,7 @@ void AM::LOG::vMemoryAllocation(Object* pObject)
                         
                         MY::pThread()->iThreadNo(),
                         AM::SYSTEM::nNanoseconds(),
+                        
                         C_VARGS_END);
 }
 
@@ -275,6 +310,7 @@ void AM::LOG::vMemoryFree(Object* pObject)
     return;
   
   AM::LOG::vLogInternal((i8)TI_MEMORYLOG,
+                        
                         MY::szPipelineNm(),
                         MY::szOpNm(),
                         MY::iPtn(),
@@ -285,6 +321,7 @@ void AM::LOG::vMemoryFree(Object* pObject)
                         
                         MY::pThread()->iThreadNo(),
                         AM::SYSTEM::nNanoseconds(),
+                        
                         C_VARGS_END);
 }
 
@@ -306,6 +343,7 @@ void AM::LOG::vOperand(i8 iPoint)
   i8 nQueueLength = pRLU->m_xpOp->nQueueLength();
   
   AM::LOG::vLogInternal((i8)TI_OPERANDLOG,
+                        
                         MY::szPipelineNm(),
                         MY::szOpNm(),
                         MY::iPtn(),
@@ -316,6 +354,7 @@ void AM::LOG::vOperand(i8 iPoint)
 
                         MY::pThread()->iThreadNo(),
                         AM::SYSTEM::nNanoseconds(),
+                        
                         C_VARGS_END);
 }
 
@@ -337,6 +376,7 @@ void AM::LOG::vResourceUse(Resource* pResource, i8 iAction, i8 nBytes)
   i8 nQueueLength = pRLU->m_xpOp->nQueueLength();
   
   AM::LOG::vLogInternal((i8)TI_RESOURCELOG,
+                        
                         MY::szPipelineNm(),
                         MY::szOpNm(),
                         MY::iPtn(),
@@ -349,6 +389,7 @@ void AM::LOG::vResourceUse(Resource* pResource, i8 iAction, i8 nBytes)
                         
                         MY::pThread()->iThreadNo(),
                         AM::SYSTEM::nNanoseconds(),
+                        
                         C_VARGS_END);
 }
 
