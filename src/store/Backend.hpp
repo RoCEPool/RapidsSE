@@ -62,9 +62,9 @@ namespace STORE
     //
     void vAppendLastStage(void);
     void vAppendNextStage(Stz* szStage);
-    void vAppendStartStage(void);
-    void vAppendPipeTo(Stz* szStage);
     void vAppendNextOp(Stz* szStage);
+    void vAppendPipe(void);
+    void vAppendStartStage(void);
 
     Footer* aFooter(void);
   };

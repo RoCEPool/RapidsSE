@@ -139,7 +139,8 @@ bool Backend::bTransliterate(String* sPipeline) {
 
   // We want to iterate over each logical subgraph, bounded by StatementMarkers,
   // and generate the pipeline for each statement
-  vAppendPipeTo(pStatementMarker->szName());
+  vAppendPipe();
+  vAppendNextOp(pStatementMarker->szName());
   GraphNav::bGlobalWalk(pStatementMarker, false, true, vVisitorPlan, (void *) this);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -435,8 +436,8 @@ void Backend::vAppendUnionOp(Backend* pBackend, QueryNode* pUnionNode)
   QueryNode *pChildStatementMarker2 = static_cast<QueryNode *>(pIter->pNext());
 
   pBackend->vAppendNextOp(pChildStatementMarker1->szName());
-  pBackend->vAppendPipeTo(pChildStatementMarker2->szName());
-
+  pBackend->vAppendPipe();
+  pBackend->vAppendNextOp(pChildStatementMarker2->szName());
   // bounded walk of each of first children
   GraphNav::bGlobalWalk(pChildStatementMarker1, false, true, vVisitorPlan, (void *) pBackend);
 
@@ -615,8 +616,10 @@ GraphNav::eWalkCtrl Backend::vVisitorStatement(PlanNode* pRootNode, s256& sPath,
 
   Backend* pBackend = (Backend*)pvArg;
 
-  if (iDepth == 0)
-    pBackend->vAppendPipeTo("stageLast"_Stz);
+  if (iDepth == 0) {
+    pBackend->vAppendPipe();
+    pBackend->vAppendNextOp("stageLast"_Stz);
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // SqlOperator
@@ -768,12 +771,10 @@ void Backend::vAppendNextStage(Stz* szStage) {
 /*----------------------------------------------------------------------------*/
 /* append extra pipe pipeline                                                 */
 /*----------------------------------------------------------------------------*/
-void Backend::vAppendPipeTo(Stz* szNextStage) {
+void Backend::vAppendPipe(void) {
 
   m_sPipeline->vCatSprint(
-      "    | %s\n"
-      ""_Stz,
-      szNextStage);
+      "    | "_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
