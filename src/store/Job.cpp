@@ -164,7 +164,7 @@ Job::Job(ReqTuple* aReqTuple)
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB);
   
-  vLog_TBR(EV_CONSTRUCT,"Job constructor"_Stz);
+  AM::LOG::vEvent(EV_CONSTRUCT,"Job constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -225,7 +225,7 @@ Job::Job(eCN eClassNo)
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
   
-  vLog_TBR(EV_CONSTRUCT,"Job constructor"_Stz);
+  AM::LOG::vEvent(EV_CONSTRUCT,"Job constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -276,7 +276,7 @@ Job::~Job(void) noexcept(false)
   
   //AM::vTaskDelete(m_pTaskJ);
   
-  vLog_TBR(EV_DESTRUCT,"Job destructor"_Stz);
+  AM::LOG::vEvent(EV_DESTRUCT,"Job destructor"_Stz);
 
 }
 

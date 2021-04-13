@@ -30,7 +30,7 @@ Tx::Tx(void)
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
   
-  vLog_TBR(EV_CONSTRUCT,"Tx constructor"_Stz);
+  AM::LOG::vEvent(EV_CONSTRUCT,"Tx constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -40,7 +40,7 @@ Tx::~Tx(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
   
-  vLog_TBR(EV_DESTRUCT,"Tx destructor"_Stz);
+  AM::LOG::vEvent(EV_DESTRUCT,"Tx destructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

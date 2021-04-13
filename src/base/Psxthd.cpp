@@ -87,7 +87,7 @@ PsxThd::PsxThd(Object* pIsFor)
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PSXTHD,_FOOTER_);
   
-  vLog_TBR(EV_CONSTRUCT,"PsxThd constructor"_Stz);
+  AM::LOG::vEvent(EV_CONSTRUCT,"PsxThd constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -99,7 +99,7 @@ PsxThd::~PsxThd(void) noexcept(false)
   
   -- gixPsxThd;
   
-  vLog_TBR(EV_DESTRUCT,"PsxThd destructor"_Stz);
+  AM::LOG::vEvent(EV_DESTRUCT,"PsxThd destructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

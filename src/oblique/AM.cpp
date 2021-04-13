@@ -198,6 +198,12 @@ void AM::LOG::vEvent(eEV eEvent, Stz* szNote, ...)
 {
   _static_
   
+  if (! gxCmdLineArgs.m_xSysArgs.m_bEvents)
+    return;
+
+  if (! AM::bHasStarted())
+    return;
+
   Job* pJob = MY::pJob();
   if (! pJob)
     return;
