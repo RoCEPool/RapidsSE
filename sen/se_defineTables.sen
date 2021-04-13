@@ -524,10 +524,13 @@
     sOpNm        VARCHAR NOT NULL ,
     iPtn         INTEGER NOT NULL ,
     szOperand    VARCHAR NOT NULL ,
+    
     szClass      VARCHAR NOT NULL ,
     iAction      INTEGER NOT NULL ,
-    nNanoSeconds INTEGER NOT NULL ,
-    iThreadNo    INTEGER NOT NULL
+    
+    iThreadNo    INTEGER NOT NULL ,
+    nNanoSeconds INTEGER NOT NULL
+    
   ) < internal > = 1 ;
   "
   api::executeRequest
@@ -541,9 +544,13 @@
     sOpNm        VARCHAR NOT NULL ,
     iPtn         INTEGER NOT NULL ,
     szOperand    VARCHAR NOT NULL ,
+    
     iAction      INTEGER NOT NULL ,
-    nNanoSeconds INTEGER NOT NULL ,
-    nQueueLength INTEGER NOT NULL
+    nQueueLength INTEGER NOT NULL ,
+    
+    iThreadNo    INTEGER NOT NULL ,
+    nNanoSeconds INTEGER NOT NULL
+    
   ) < internal > = 1 ;
   "
   api::executeRequest
@@ -562,6 +569,7 @@
     szPath       VARCHAR NOT NULL ,
     szAction     VARCHAR NOT NULL ,
     nBytes       INTEGER NOT NULL ,
+    
     iThreadNo    INTEGER NOT NULL ,
     nNanoSeconds INTEGER NOT NULL
     

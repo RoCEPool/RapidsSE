@@ -8,8 +8,8 @@ _lineitem
 
 load lineitem "/Users/Shared/tpch/SF0/lineitem_10k.csv";
 
-// /resourceLog /memoryLog /operandLog tableScan lineitem;
-/resourceLog tableScan lineitem;
+/resourceLog /memoryLog /operandLog tableScan lineitem;
+// /resourceLog tableScan lineitem;
 
 wbFlush ;
 

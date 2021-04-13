@@ -244,22 +244,18 @@ void AM::LOG::vMemoryAllocation(Object* pObject)
   LogicUnit* pRLU = pJob->pLogicUnit_job();
   if (! pRLU || pRLU->m_xpOp.bIsNull())
     return;
-
-  pRLU->m_oSince.vUpdate();
-  i8 nNanoSeconds = pRLU->m_oSince.iNanoseconds();
-
-  Op* pOp = MY::pOp();
-  i8 iPtn = pOp ? pOp->tPtnNo() : -1;
   
   AM::LOG::vLogInternal((i8)TI_MEMORYLOG,
                         MY::szPipelineNm(),
                         MY::szOpNm(),
                         MY::iPtn(),
                         aZK[pRLU->m_ePipeInOperand],
+                        
                         pObject->szClassNm(),
                         (i8)0,
-                        nNanoSeconds,
-                        (i8)-1,
+                        
+                        MY::pThread()->iThreadNo(),
+                        AM::SYSTEM::nNanoseconds(),
                         C_VARGS_END);
 }
 
@@ -277,12 +273,6 @@ void AM::LOG::vMemoryFree(Object* pObject)
   LogicUnit* pRLU = pJob->pLogicUnit_job();
   if (! pRLU || pRLU->m_xpOp.bIsNull())
     return;
-
-  pRLU->m_oSince.vUpdate();
-  i8 nNanoSeconds = pRLU->m_oSince.iNanoseconds();
-
-  Op* pOp = MY::pOp();
-  i8 iPtn = pOp ? pOp->tPtnNo() : -1;
   
   AM::LOG::vLogInternal((i8)TI_MEMORYLOG,
                         MY::szPipelineNm(),
@@ -292,8 +282,9 @@ void AM::LOG::vMemoryFree(Object* pObject)
                         
                         pObject->szClassNm(),
                         (i8)1,
-                        nNanoSeconds,
-                        (i8)-1,
+                        
+                        MY::pThread()->iThreadNo(),
+                        AM::SYSTEM::nNanoseconds(),
                         C_VARGS_END);
 }
 
@@ -312,22 +303,19 @@ void AM::LOG::vOperand(i8 iPoint)
   if (! pRLU || pRLU->m_xpOp.bIsNull())
     return;
 
-  pRLU->m_oSince.vUpdate();
-  i8 nNanoSeconds = pRLU->m_oSince.iNanoseconds();
-
   i8 nQueueLength = pRLU->m_xpOp->nQueueLength();
-
-  Op* pOp = MY::pOp();
-  i8 iPtn = pOp ? pOp->tPtnNo() : -1;
   
   AM::LOG::vLogInternal((i8)TI_OPERANDLOG,
                         MY::szPipelineNm(),
                         MY::szOpNm(),
                         MY::iPtn(),
                         aZK[pRLU->m_ePipeInOperand],
+                        
                         iPoint,
-                        nNanoSeconds,
                         nQueueLength,
+
+                        MY::pThread()->iThreadNo(),
+                        AM::SYSTEM::nNanoseconds(),
                         C_VARGS_END);
 }
 
@@ -346,13 +334,7 @@ void AM::LOG::vResourceUse(Resource* pResource, i8 iAction, i8 nBytes)
   if (! pRLU || pRLU->m_xpOp.bIsNull())
     return;
 
-  pRLU->m_oSince.vUpdate();
-  i8 nNanoSeconds = pRLU->m_oSince.iNanoseconds();
-
   i8 nQueueLength = pRLU->m_xpOp->nQueueLength();
-
-  Op* pOp = MY::pOp();
-  i8 iPtn = pOp ? pOp->tPtnNo() : -1;
   
   AM::LOG::vLogInternal((i8)TI_RESOURCELOG,
                         MY::szPipelineNm(),
@@ -364,6 +346,7 @@ void AM::LOG::vResourceUse(Resource* pResource, i8 iAction, i8 nBytes)
                         pResource->szPath(),
                         aAR[iAction],
                         nBytes,
+                        
                         MY::pThread()->iThreadNo(),
                         AM::SYSTEM::nNanoseconds(),
                         C_VARGS_END);
