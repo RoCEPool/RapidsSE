@@ -232,7 +232,7 @@ namespace OBLIQUE
     class LOG
     {
     public:
-      static void vEvent(eEV eEvent, Stz* szNote);
+      static void vEvent(eEV eEvent, Stz* szNote, ...);
       static void vLogInternal(i8 iTable, ...);
       static void vMemoryAllocation(Object* pObject);
       static void vMemoryFree(Object* pObject);

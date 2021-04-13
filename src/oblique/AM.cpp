@@ -194,7 +194,7 @@ bool AM::JOB::bHasTag(Job* pJob, Stz* szTagNm)
 /*----------------------------------------------------------------------------*/
 /* log events                                                                 */
 /*----------------------------------------------------------------------------*/
-void AM::LOG::vEvent(eEV eEvent, Stz* szNote)
+void AM::LOG::vEvent(eEV eEvent, Stz* szNote, ...)
 {
   _static_
   
