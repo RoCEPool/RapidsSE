@@ -87,7 +87,7 @@ template <class ITEM>
 MiniHeap_t<ITEM>::MiniHeap_t(void)
 {
   ASSERT(CacheLine::bMultipleCacheLines(C_WSP_MINIHEAP));
-  //ASSERT(CacheLine::bOnCacheLineBoundary(this));
+  ASSERT(CacheLine::bOnCacheLineBoundary(this));
   
   
   m_nItems = 0;

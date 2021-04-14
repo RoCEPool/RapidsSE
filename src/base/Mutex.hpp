@@ -5,7 +5,7 @@
 
 namespace BASE
 {
-  class Mutex : public Object
+  class Mutex : public Loggable
   {
   public:
     Object*    m_pIsFor;
