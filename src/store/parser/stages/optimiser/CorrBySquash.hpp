@@ -32,7 +32,7 @@ namespace Parser
     static void vSearchStatementSection(QueryNode* pStatementMarker, PlanNode* pRootNode);
 
     // Pushes down and squashes a ProjectOp down a given subtree
-    static void vSquashProjectOp(QueryNode* pProjectOp, QueryNode* pStartingNode);
+    static void vPushDownProjectOp(QueryNode* pProjectOp, QueryNode* pStartingNode, PlanNode* pParent);
   };
 }
 

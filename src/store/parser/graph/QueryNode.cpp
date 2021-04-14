@@ -310,6 +310,22 @@ void QueryNode::vInsertAsParentOfChild2(QueryNode* pInsNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Inserts pInsNode as a child and makes pCurChild a child of pInsNode        */
+/*----------------------------------------------------------------------------*/
+void QueryNode::vInsertAsParentOfChild(QueryNode* pCurChild, QueryNode* pInsNode)
+{
+  ASSERT(m_pChildren);
+  ASSERT(m_pChildren->nItems() > 1);
+  ASSERT(pCurChild);
+  ASSERT(bHasChild(pCurChild));
+  ASSERT(pInsNode);
+
+  vInsertChildAfter(pInsNode, pCurChild);
+  vRemoveChild(pCurChild);
+  pInsNode->vAppendChild(pCurChild);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Removes a given child from the list. The removed node retains all of       */
 /* its children.                                                              */
 /*----------------------------------------------------------------------------*/

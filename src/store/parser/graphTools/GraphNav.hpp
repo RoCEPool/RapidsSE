@@ -162,6 +162,10 @@ namespace Parser
     // Returns the parent node of a given primitive node
     static PlanNode* pGetParent(PrimitiveNode* pDefnNode, PlanNode* pRootNode);
 
+    // Given a relative/absolute path and an initial starting node, return
+    // the node that represents the parent of this path, or nullptr if not found.
+    static PlanNode* pGetParentOfPath(Stz* szPath, PlanNode* pInitialNode);
+
     // Walks the plan graph to find the given query node. Saves the path and depth
     static void vGetPathAndDepth(QueryNode* pPlanNode, PlanNode* pRootNode, s256& sPathBuf, i8& iDepth);
 

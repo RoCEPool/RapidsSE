@@ -67,6 +67,9 @@ namespace Parser
     // makes that second child a child of the node being inserted.
     void vInsertAsParentOfChild2(QueryNode* pInsNode);
 
+    // Inserts pInsNode as a child and makes pCurChild a child of pInsNode
+    void vInsertAsParentOfChild(QueryNode* pCurChild, QueryNode* pInsNode);
+
     // Removes a given child from the list. The removed node retains all of its children.
     void vRemoveChild(QueryNode* pNode);
 
