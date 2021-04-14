@@ -17,7 +17,7 @@ __aFooterFunction(Tx)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Tx::Tx(void)
-: Object(CN_TX)
+: Loggable(CN_TX)
 , m_okLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
