@@ -25,7 +25,7 @@ namespace BASE
     i8  m__spare1;    //
 
   public:
-    Loggable(eCN eClassNo, i8 iLogCtl=C_LOG);
+    Loggable(eCN eClassNo);
    ~Loggable(void) noexcept(false);
   
   };

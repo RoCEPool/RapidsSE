@@ -49,7 +49,7 @@ void Lock::operator delete(void*)
 /* constructor (for non-focal case)                                           */
 /*----------------------------------------------------------------------------*/
 Lock::Lock(Object* pObjectLocked, i8 iLogCtl)
-: Loggable(CN_LOCK,iLogCtl)
+: Loggable(CN_LOCK)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
     

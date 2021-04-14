@@ -16,7 +16,7 @@ extern CmdLineArgs gxCmdLineArgs;
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Loggable::Loggable(eCN eClassNo, i8 iLogCtl)
+Loggable::Loggable(eCN eClassNo)
 : Object(eClassNo)
 {
    m_iObjectId = AM::iNextObjectNo(eClassNo);
@@ -29,7 +29,7 @@ Loggable::Loggable(eCN eClassNo, i8 iLogCtl)
   
   m_eEvent     = EV_NONE;
   m_iDuration  = C_UNKNOWN;
-  m_iLogCtl    = iLogCtl;
+  m_iLogCtl    = -1;
 
   m__spare0    = C_UNKNOWN;
   m__spare1    = C_UNKNOWN;
