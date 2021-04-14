@@ -49,7 +49,7 @@ void Lock::operator delete(void*)
 /* constructor (for non-focal case)                                           */
 /*----------------------------------------------------------------------------*/
 Lock::Lock(Object* pObjectLocked)
-: Loggable(CN_LOCK)
+: Object(CN_LOCK)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
     
@@ -239,16 +239,6 @@ bool Lock::bIsLocked(void)
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
   return Lock::iLockIsLocked(&m_uLockWord);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get lock id                                                                */
-/*----------------------------------------------------------------------------*/
-i8 Lock::iLockId(void)
-{
-  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
-  
-  return m_iObjectId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -589,10 +579,7 @@ void Lock::vLockTrace(eLS eLockStyle)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   UNUSED(eLockStyle);
-  
-  if (C_DONT_LOG == m_iLogCtl)
-    return;
-  
+    
 //  if (MY::pOp())
 //    printf("%s %s OP\n",
 //           aLK[m_eLockKind]->azChar(),
