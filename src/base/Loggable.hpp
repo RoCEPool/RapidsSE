@@ -28,7 +28,6 @@ namespace BASE
     Loggable(eCN eClassNo, i8 iLogCtl=C_LOG);
    ~Loggable(void) noexcept(false);
   
-    i8   iObjectId(void);  
   };
 }
 
