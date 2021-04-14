@@ -41,7 +41,6 @@ namespace BASE
   {
   private:
     i8      m_iViaMalloc;  // is this object in malloc heap (or small heap)?
-    s256    m_sFilePath;   // the path of the file (relative or absolute)
     s32     m_sOpenMode;   // open mode
     FILE*   m_aFile;       // the os/lib file pointer
   

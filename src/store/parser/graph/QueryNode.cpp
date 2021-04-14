@@ -211,6 +211,46 @@ void QueryNode::vInsertChildBefore(QueryNode* pInsNode, QueryNode* pRefNode)
   m_pChildren->vInsertBefore(pInsNode, pRefNode);
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* Insert a child after a given reference child                               */
+/*----------------------------------------------------------------------------*/
+void QueryNode::vInsertChildrenAfter(PlanNodeList* pChildren, QueryNode* pRefNode)
+{
+  ASSERT(m_pChildren);
+  ASSERT(pRefNode);
+
+  // We need to maintain the same order, so we need to remember the last
+  // inserted item.
+  QueryNode* pLastInsItem = pRefNode;
+
+  PlanNodeIter* pIter = pChildren->pNewIter();
+
+  while (pIter->bHasNext()) {
+    QueryNode* pChild = _pQueryNode(pIter->pNext());
+    m_pChildren->vInsertAfter(pChild, pLastInsItem);
+    pLastInsItem = pChild;
+  }
+  delete pIter;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Insert a child before a given reference child                              */
+/*----------------------------------------------------------------------------*/
+void QueryNode::vInsertChildrenBefore(PlanNodeList* pChildren, QueryNode* pRefNode)
+{
+  ASSERT(m_pChildren);
+  ASSERT(pRefNode);
+
+  PlanNodeIter* pIter = pChildren->pNewIter();
+
+  while (pIter->bHasNext()) {
+    QueryNode* pChild = _pQueryNode(pIter->pNext());
+    m_pChildren->vInsertAfter(pChild, pRefNode);
+  }
+  delete pIter;
+}
+
 /*----------------------------------------------------------------------------*/
 /* Insert a child in the current node and make it the parent of any existing  */
 /* children. e.g. if node A has children B, C, and we are inserting node D    */

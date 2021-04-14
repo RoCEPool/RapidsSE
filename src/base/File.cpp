@@ -9,6 +9,7 @@
 #include "MY.hpp"
 #include "EVLOG.hpp"
 
+#include "eAR.h"
 #include "eEV.h"
 
 Atomic gixFile;
@@ -92,7 +93,7 @@ File::File(Object* pIsFor, i8 iLogCtl)
   if ( ! (0 == m_iViaMalloc || 1 == m_iViaMalloc) )
     m_iViaMalloc = 0;
   
-  //m_sFilePath
+  //m_sPath
   //m_sOpenMode
   m_aFile = nullptr;
   
@@ -119,12 +120,12 @@ File::~File(void) noexcept(false)
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
   
   if (m_aFile) {
-    vWarn("File::~File file not closed: %s %s\n"_Stz,m_sFilePath.azChar(),m_sOpenMode.azChar());
+    vWarn("File::~File file not closed: %s %s\n"_Stz,m_sPath.azChar(),m_sOpenMode.azChar());
 
     vClose();
     
     if (m_oSysCall.bHadError())
-      vWarn("File::~File: file could not be closed: %s"_Stz,m_sFilePath.azChar());
+      vWarn("File::~File: file could not be closed: %s"_Stz,m_sPath.azChar());
   }
   
   -- gixFile;
@@ -311,19 +312,21 @@ void File::vClose(void)
   
   if (! m_aFile) {
     m_oSysCall.vFailure(0);
-    vWarn("File::vClose: file not open: %s"_Stz,m_sFilePath.azChar());
+    vWarn("File::vClose: file not open: %s"_Stz,m_sPath.azChar());
     return;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  
+  AM::LOG::vResourceUse(this,AR_CLOSE,(i8)-1);
+
   i8 iResult = fclose(m_aFile);
   m_aFile = nullptr;
 
   if ((char)EOF == iResult) {
     m_oSysCall.vError(errno);
     vWarn("File::vClose: fclose(%p) error; errno=%d : %s %s"_Stz,
-          m_aFile,errno,m_sFilePath.azChar(),m_sOpenMode.azChar());
+          m_aFile,errno,m_sPath.azChar(),m_sOpenMode.azChar());
     return;
   }
   
@@ -331,7 +334,7 @@ void File::vClose(void)
   
   if (! m_iViaMalloc && AM::bAttached()) AM::pResources()->vDecFileOpen();
   
-  vLog_TBR(EV_CLOSE,"File closed: path=%s"_Stz,m_sFilePath.szStz());
+  vLog_TBR(EV_CLOSE,"File closed: path=%s"_Stz,m_sPath.szStz());
 
   vReset();
   
@@ -345,7 +348,7 @@ void File::vFileDump(void)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
-  vTrace("%sFile:\n"_Stz, m_sFilePath.azChar());
+  vTrace("%sFile:\n"_Stz, m_sPath.azChar());
   vTrace("%s  Open Mode %s\n"_Stz, m_sOpenMode.azChar());
   vTrace("%s  File Pointer 0x%p\n"_Stz, m_aFile);
 }
@@ -357,7 +360,7 @@ s256& File::sFilePath(void)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
   
-  return m_sFilePath;
+  return m_sPath;
 }
 
 /*---------------------------------------------------------------------------*/
@@ -381,7 +384,7 @@ void File::vFlush(void)
     return;
   }
   
-  vLog_TBR(EV_FLUSH,"File flushed: path=%s"_Stz,m_sFilePath.szStz());
+  vLog_TBR(EV_FLUSH,"File flushed: path=%s"_Stz,m_sPath.szStz());
 
   m_oSysCall.vSuccess();
 }
@@ -647,7 +650,7 @@ bool File::bOpenMode(Stz* szFilePath, Stz* szOpenMode)
 //  }
   
   if (m_aFile) {
-    vWarn("File::bOpen: previous file not closed: %s\n"_Stz,m_sFilePath.azChar());
+    vWarn("File::bOpen: previous file not closed: %s\n"_Stz,m_sPath.azChar());
     vClose();
   }
   
@@ -655,18 +658,18 @@ bool File::bOpenMode(Stz* szFilePath, Stz* szOpenMode)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_sFilePath   = szFilePath;
+  m_sPath   = szFilePath;
   m_sOpenMode   = szOpenMode;
   
-  //printf("File Open : %s : %s\n",m_sFilePath.azChar(),szOpenMode->azChar());
+  //printf("File Open : %s : %s\n",m_sPath.azChar(),szOpenMode->azChar());
 
-  m_aFile = fopen(m_sFilePath.azChar(),m_sOpenMode.azChar());
+  m_aFile = fopen(m_sPath.azChar(),m_sOpenMode.azChar());
   
   if (! m_aFile) {
     m_oSysCall.vError(errno);
     fprintf(stderr, "OpenMode failed\n");
     vTrace("File::bOpen: fopen(%s,%s) error; errno=%d\n"_Stz,
-          m_sFilePath.azChar(),m_sOpenMode.azChar(),errno);
+          m_sPath.azChar(),m_sOpenMode.azChar(),errno);
     return false;
   }
   
@@ -675,8 +678,10 @@ bool File::bOpenMode(Stz* szFilePath, Stz* szOpenMode)
   if (! m_iViaMalloc && AM::bAttached()) AM::pResources()->vIncFileOpen();
     
   vLog_TBR(EV_OPEN,"File opened: path=%s; mode=%s"_Stz,
-       m_sFilePath.szStz(),m_sOpenMode.szStz());
+       m_sPath.szStz(),m_sOpenMode.szStz());
 
+  AM::LOG::vResourceUse(this,AR_OPEN,(i8)-1);
+  
   return true;
 }
 
@@ -785,8 +790,9 @@ i8 File::nReadBytes(void* aDst, i8 nBytes)
   gpAttachMap->m_oStatistics.File.m_nReadBytes += nBytesRead;
 #endif
   
-  vLog_TBR(EV_READ,"File read: path=%s; bytes=%lld"_Stz,m_sFilePath.szStz(),nBytesRead);
+  vLog_TBR(EV_READ,"File read: path=%s; bytes=%lld"_Stz,m_sPath.szStz(),nBytesRead);
 
+  AM::LOG::vResourceUse(this,AR_READ,nBytesRead);
 
   return nBytesRead;
 }
@@ -854,11 +860,11 @@ void File::vReset(void)
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
   //if (m_aFile && ! bIsStdin() && ! bIsStdout())
-  //  vWarn("File::vReset: previous file not closed: %s\n"_Stz,m_sFilePath.azChar());
+  //  vWarn("File::vReset: previous file not closed: %s\n"_Stz,m_sPath.azChar());
 
   m_oSysCall.vClear();
   
-  m_sFilePath   = ""_Stz;
+  m_sPath   = ""_Stz;
   m_sOpenMode   = ""_Stz;
   m_aFile       = nullptr;
 }
@@ -876,6 +882,8 @@ void File::vSeek(i8 iOffset)
   gpAttachMap->m_oStatistics.File.m_nSeeks++;
 #endif
   
+  AM::LOG::vResourceUse(this,AR_SEEK,iOffset);
+
   i8 iResult = fseeko(m_aFile,iOffset,SEEK_SET);
   
   if (iResult) {
@@ -977,7 +985,7 @@ void File::vSetBuffering(i8 nBytes)
     iResult = setvbuf(m_aFile,NULL,_IOFBF,(int)nBytes);
   
   if (iResult)
-    vWarn("File::vBuffer: setvbuf failed: %s"_Stz,m_sFilePath.azChar());
+    vWarn("File::vBuffer: setvbuf failed: %s"_Stz,m_sPath.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -987,7 +995,7 @@ i8 File::iSize(void)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
   
-  i8 iSizeBytes = this->nSize(m_sFilePath);
+  i8 iSizeBytes = this->nSize(m_sPath);
   
   return iSizeBytes;
 }
@@ -1045,7 +1053,7 @@ void File::vUngetChar(char cChar)
   i8 iResult = ungetc(cChar,m_aFile);
   
   if ((char)EOF == iResult)
-    vWarn("File::vUngetChar: unget failed: '%c' %s\n"_Stz,cChar,m_sFilePath.azChar());
+    vWarn("File::vUngetChar: unget failed: '%c' %s\n"_Stz,cChar,m_sPath.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1056,13 +1064,13 @@ void File::vUseStdin(void)
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
   
   if (m_aFile) {
-    vWarn("File::vUseStdin: previous file not closed: %s\n"_Stz,m_sFilePath.azChar());
+    vWarn("File::vUseStdin: previous file not closed: %s\n"_Stz,m_sPath.azChar());
     vClose();
   }
   
   m_oSysCall.vClear();
   
-  m_sFilePath   = "stdin"_Stz;
+  m_sPath   = "stdin"_Stz;
   m_sOpenMode   = C_OPEN_READ;
   m_aFile       = stdin;
 }
@@ -1075,13 +1083,13 @@ void File::vUseStdout(void)
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
   
   if (m_aFile) {
-    vWarn("File::vUseStdin: previous file not closed: %s\n"_Stz,m_sFilePath.azChar());
+    vWarn("File::vUseStdin: previous file not closed: %s\n"_Stz,m_sPath.azChar());
     vClose();
   }
   
   m_oSysCall.vClear();
   
-  m_sFilePath   = "stdout"_Stz;
+  m_sPath   = "stdout"_Stz;
   m_sOpenMode   = C_OPEN_WRITE;
   m_aFile       = stdout;
 }
@@ -1107,7 +1115,7 @@ bool File::bWriteBytes(void* pBuffer, i8 nBytes)
 
   if (nBytesWritten != nBytes) {
     vWarn("File::vWriteBytes: fwrite(%s) error; errno=%d\n"_Stz,
-          m_sFilePath.azChar(),errno);
+          m_sPath.azChar(),errno);
     m_oSysCall.vError(errno);
     return false;
   }

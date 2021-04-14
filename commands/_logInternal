@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _operandLog : testing of operand logging 9 Apr 2021                        */
+/* _logInternal : testing of internal logging 9 Apr 2021                      */
 /*============================================================================*/
 
 bc;
@@ -8,11 +8,16 @@ _lineitem
 
 load lineitem "/Users/Shared/tpch/SF0/lineitem_10k.csv";
 
-/operandLog tableScan lineitem;
+/resourceLog /memoryLog /operandLog tableScan lineitem;
+// /resourceLog tableScan lineitem;
 
 wbFlush ;
 
 tableScan se__operandLog;
+
+tableScan se__memoryLog;
+
+tableScan se__resourceLog;
 
 /*============================================================================*/
 /* end                                                                        */

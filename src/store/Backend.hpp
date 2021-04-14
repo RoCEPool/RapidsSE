@@ -19,9 +19,6 @@ namespace STORE
     PlanNode*      m_pPlanRoot;
     QueryNodeList* m_pColExprList;
     String*        m_sPipeline;
-    char           m_cStageStart;
-    char           m_cStageNext;
-    char           m_cStageLast;
 
     // must be last
     Footer m_xFooter;
@@ -46,6 +43,7 @@ namespace STORE
     static void vAppendLimitOp(Backend* pBackend, QueryNode* pNode);
     static void vAppendProjectOp(Backend* pBackend,  QueryNode* pNode);
     static void vAppendScanOp(Backend* pBackend,  QueryNode* pNode);
+    static void vAppendUnionOp(Backend* pBackend,  QueryNode* pNode);
 
     static void vPrintPlanGraph(Parser::PlanNode* pPlanRoot);
 
@@ -63,7 +61,9 @@ namespace STORE
     // pipeline stages
     //
     void vAppendLastStage(void);
-    void vAppendNextStage(void);
+    void vAppendNextStage(Stz* szStage);
+    void vAppendNextOp(Stz* szStage);
+    void vAppendPipe(void);
     void vAppendStartStage(void);
 
     Footer* aFooter(void);

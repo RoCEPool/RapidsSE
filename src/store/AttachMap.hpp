@@ -30,6 +30,8 @@ namespace STORE
     Now   m_oNow;
     i8    m_iTimePoint;
     
+    Timer m_oSince;
+
     s256  m_sTraceFile;
     s256  m_sLogRegion;
     s256  m_sLogCsvFile;

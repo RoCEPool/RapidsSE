@@ -20,7 +20,8 @@ struct SizeHeap {
   fpPOSTFN* m_fpPostRecvFn; // post receive function
   
   Word* m_pDispatchWord;    // dispatch word on receive
-
+  
+  b8  m_bDontMemLog;        // don't memory log?
 };
 
 /*============================================================================*/

@@ -10,7 +10,6 @@ namespace BASE
   class Fifo : public Resource
   {
   private:
-    s256    m_sFifoPath;   // the path of the file (relative or absolute)
     SysCall m_oSysCall;
 
     // must be last

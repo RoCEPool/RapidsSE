@@ -522,32 +522,12 @@ void Step::vLogicUnitLogOperand(void)
   ENTRY();
   
   i8 iPoint = m_pDataStack->iPopInt(__func__);
-  
-  Job* pJob = MY::pJob();
-  if (! pJob->bHasTag(C_TAG_OPERANDLOG))
-    return;
 
-  LogicUnit* pRLU = m_pJob->pLogicUnit_job();
-  
-  pRLU->m_oSince.vUpdate();
-  i8 nNanoSeconds = pRLU->m_oSince.iNanoseconds();
-  
-  i8 nQueueLength = pRLU->m_xpOp->nQueueLength();
-  
-  Op* pOp = MY::pOp();
-  i8 iPtn = pOp ? pOp->tPtnNo() : -1;
-  
-  vLogTI((i8)TI_OPERANDLOG,
-           MY::szPipelineNm(),
-           MY::szOpNm(),
-           MY::iPtn(),
-           aZK[pRLU->m_ePipeInOperand],
-           iPoint,
-           nNanoSeconds,
-           nQueueLength,
-           C_VARGS_END
-         )
+  if (! m_pJob->bHasTag(C_TAG_OPERANDLOG))
+    return;
  
+  AM::LOG::vOperand(iPoint);
+  
   EXIT();
 }
 

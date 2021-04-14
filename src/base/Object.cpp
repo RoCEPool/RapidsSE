@@ -94,6 +94,18 @@ void Object::vMemoryDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is object to be memory logged?                                             */
+/*----------------------------------------------------------------------------*/
+bool Object::bMemoryLog(void)
+{
+  eCN eClass = this->eGetClassNo();
+
+  i8 bDontMemLog = gxaSizeHeap[eClass].m_bDontMemLog;
+
+  return ! bDontMemLog;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get size of object                                                         */
 /*----------------------------------------------------------------------------*/
 i8 Object::nSizeOfObject(void)

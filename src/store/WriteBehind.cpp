@@ -27,7 +27,7 @@ WriteBehind::WriteBehind(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEBEHIND,_FOOTER_);
   
-  m_pStreamDef_events = AM::pStreamDefFind(C_TDEF_EVENTS);
+  m_pStreamDef_events = AM::pStreamDefFind(C_TDEF_EVENTLOG);
   
   for (i8 i_Table = 0; i_Table < TI_ENUMS; i_Table++)
     m_apNamedBuffer[i_Table] = nullptr;

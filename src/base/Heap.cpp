@@ -4,6 +4,8 @@
 
 #include "BASE.h"
 
+#include "AM.hpp"
+
 extern BufferPool* gpBufferPool;
 
 extern SizeHeap  gxaSizeHeap[];
@@ -144,6 +146,7 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   
   //vVerify();
   
+  
   m_okLock.vGrabWrite();
 
   // check for free chunks in the heap and extend if none
@@ -167,6 +170,17 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   
   m_okLock.vDropWrite();
   
+  bool bSetLogMemory = false;
+  
+//  if (AM::TASK::bLogMemory() {
+//    if (CN_WRITEBEHIND == eAllocClass) {
+//      bSetLogMemory = true;
+//    }
+//
+//  }
+  if (AM::TASK::bLogMemory() && ! gxaSizeHeap[eAllocClass].m_bDontMemLog)
+    AM::LOG::vMemoryAllocation(pObject);
+
   //vVerify();
   
   //eLastClass = eAllocClass;
@@ -265,6 +279,11 @@ i8 Heap::nFreeChunks(void)
 void Heap::vFreeObject(Object* pObject)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  eCN eFreeClass = pObject->eGetClassNo();
+  
+  if (AM::TASK::bLogMemory() && ! gxaSizeHeap[eFreeClass].m_bDontMemLog)
+    AM::LOG::vMemoryFree(pObject);
 
   if (CN_LARGETRANSIENT == eGetClassNo()) {
     

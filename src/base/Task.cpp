@@ -5,6 +5,7 @@
 #include "BASE.h"
 
 #include "PsxThd.hpp" //?
+#include "TagConstants.h" //?
 
 Atomic gixTask;
 
@@ -69,6 +70,8 @@ Task::Task(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
+  RASSERT(pJob);
+  
   m_pProfile     = nullptr;
 
   m_pJob         = pJob;
@@ -85,6 +88,8 @@ Task::Task(Job* pJob)
   m_oAcksRmg.vCheckInit();
   // m_oWakeup
   
+  m_bLogMemory   = AM::JOB::bHasTag(m_pJob,C_TAG_MEMORYLOG);
+  m_bLogResource = AM::JOB::bHasTag(m_pJob,C_TAG_RESOURCELOG);
 
   m_iTraceMask   = C_TRACE_NONE;
  
@@ -110,7 +115,6 @@ Task::Task(Job* pJob)
   m_pSenCompiler = new SenCompiler;
   m_pInput       = nullptr;
 
-  
   _checkInitialised_(CN_TASK);
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -687,6 +691,36 @@ void Task::vLocalsPush(void)
   pLocalsframe->vNext(m_pLocalsFrame);
   
   m_pLocalsFrame = pLocalsframe;
+}
+
+/*----------------------------------------------------------------------------*/
+/* log memory?                                                                */
+/*----------------------------------------------------------------------------*/
+bool Task::bLogMemory(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+    
+  return m_bLogMemory;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set log memory                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vLogMemory(bool bLogMemory)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+    
+  m_bLogMemory = bLogMemory;
+}
+
+/*----------------------------------------------------------------------------*/
+/* log resource usage?                                                        */
+/*----------------------------------------------------------------------------*/
+bool Task::bLogResource(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+    
+  return m_bLogResource;
 }
 
 /*----------------------------------------------------------------------------*/

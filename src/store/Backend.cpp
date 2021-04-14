@@ -90,10 +90,6 @@ Backend::Backend(RootNode* pPlanRoot)
   m_pColExprList = nullptr;
   m_sPipeline = nullptr;
 
-  m_cStageStart   = 'A';
-  m_cStageNext    = m_cStageStart + 1;
-  m_cStageLast    = m_cStageNext;
-
   _checkInitialised_(CN_BACKEND);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_BACKEND,_FOOTER_);
@@ -125,12 +121,10 @@ bool Backend::bTransliterate(String* sPipeline) {
   m_sPipeline = sPipeline;
 
 //#ifdef WITH_TRACE_Backend
-  vPrintPlanGraph(m_pPlanRoot);
+  //vPrintPlanGraph(m_pPlanRoot);
 //#endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  vAppendStartStage();
 
   // get the plan node of the plan
   PlanNode* pPlanNode = ShadowRoot::pPlanNode(m_pPlanRoot);
@@ -141,12 +135,15 @@ bool Backend::bTransliterate(String* sPipeline) {
   ASSERT(StatementMarker::bIsOfType(pPlanNode->pFirstChild()));
   QueryNode* pStatementMarker = _pQueryNode(pPlanNode->pFirstChild());
 
+  vAppendStartStage();
+
   // We want to iterate over each logical subgraph, bounded by StatementMarkers,
   // and generate the pipeline for each statement
+  vAppendPipe();
+  vAppendNextOp(pStatementMarker->szName());
   GraphNav::bGlobalWalk(pStatementMarker, false, true, vVisitorPlan, (void *) this);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   vAppendLastStage();
 
   return true;
@@ -292,16 +289,6 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // columnRef
-
-        // TODO: Alka, please note that the pGroupByExpr may not necessarily
-        //       be a columnRef. It could be any arbitrary expression.
-        //       e.g. "GROUP BY (2 * colA / 3) % 18..."
-//        ASSERT(ColumnRef::bIsOfType(pGroupByExpr));
-//        QueryNode *pColumnRef = static_cast<QueryNode *>(pGroupByExpr);
-//        sPipeline->vCatSprint(
-//            " %s"
-//            ""_Stz,
-//            ColumnRef::szColumn(pColumnRef));
         vAppendExpr(pBackend, pGroupByExpr);
       }
       delete pGroupByIter;
@@ -322,7 +309,6 @@ void Backend::vAppendFilterOp(Backend* pBackend, QueryNode* pNode)
   String* sPipeline = pBackend->m_sPipeline;
 
   // Get the list of projected expressions from ProjectOp
-  //QueryNode *pFilterExpr = FilterOp::pFilterExpr(pNode);
   QueryNode *pOrdinalFilterExpr = FilterOp::pOrdinalFilterExpr(pNode, pBackend->m_pPlanRoot);
 
   ASSERT(pOrdinalFilterExpr);
@@ -379,41 +365,7 @@ void Backend::vAppendProjectOp(Backend* pBackend, QueryNode* pNode)
   ASSERT(PlanObject::bIsOfType(pNode->pFirstChild()));
   pBackend->m_pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pBackend->m_pPlanRoot);
 
-/*
-  QueryNode *pOrdinalProjectedColumns = ProjectOp::pOrdinalProjectedColumns(pNode, pBackend->m_pPlanRoot);
-  ASSERT(pOrdinalProjectedColumns);
-
   // Iterate each projected expression
-  if (pOrdinalProjectedColumns->bHasChildren()) {
-
-    sPipeline->vCatSprint(
-        "    | project ordinal 0 \""
-        ""_Stz);
-
-    // get a plan node iterator
-    PlanNodeIter *pIter = pOrdinalProjectedColumns->pNewChildrenIter();
-
-    while (pIter->bHasNext()) {
-
-      // append comma
-      if (bFirstExpr)
-        sPipeline->vCatSprint(" ,"_Stz);
-      else
-        bFirstExpr = true;
-
-      // get the next projectedColumn from the iterator
-      QueryNode *pProjectedColumn = static_cast<QueryNode *>(pIter->pNext());
-      ASSERT(pProjectedColumn);
-      ASSERT(ProjectedColumn::bIsOfType(pProjectedColumn));
-
-      vAppendExpr(pBackend, pProjectedColumn);
-    }
-    delete pIter;
-
-  }
-  */
-
-// Iterate each projected expression
   if (pProjectedColumns->bHasChildren()) {
 
     sPipeline->vCatSprint(
@@ -464,6 +416,33 @@ void Backend::vAppendScanOp(Backend* pBackend, QueryNode* pNode)
       "    scan %s\n"
       ""_Stz,
       szTableName);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append union Op to the pipeline                                            */
+/*----------------------------------------------------------------------------*/
+void Backend::vAppendUnionOp(Backend* pBackend, QueryNode* pUnionNode)
+{
+  _static_
+
+  // this node should have two children
+  ASSERT(pUnionNode->nChildren() == 2);
+
+  // get a plan node iterator
+  PlanNodeIter *pIter = pUnionNode->pNewChildrenIter();
+
+  // get the child markers
+  QueryNode *pChildStatementMarker1 = static_cast<QueryNode *>(pIter->pFirst());
+  QueryNode *pChildStatementMarker2 = static_cast<QueryNode *>(pIter->pNext());
+
+  pBackend->vAppendNextOp(pChildStatementMarker1->szName());
+  pBackend->vAppendPipe();
+  pBackend->vAppendNextOp(pChildStatementMarker2->szName());
+  // bounded walk of each of first children
+  GraphNav::bGlobalWalk(pChildStatementMarker1, false, true, vVisitorPlan, (void *) pBackend);
+
+  // bounded walk of each of first children
+  GraphNav::bGlobalWalk(pChildStatementMarker2, false, true, vVisitorPlan, (void *) pBackend);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -637,6 +616,11 @@ GraphNav::eWalkCtrl Backend::vVisitorStatement(PlanNode* pRootNode, s256& sPath,
 
   Backend* pBackend = (Backend*)pvArg;
 
+  if (iDepth == 0) {
+    pBackend->vAppendPipe();
+    pBackend->vAppendNextOp("stageLast"_Stz);
+  }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // SqlOperator
 
@@ -723,79 +707,29 @@ GraphNav::eWalkCtrl Backend::vVisitorPlan(PlanNode* pRootNode, s256& sPath, i8 i
   };
 
   // check for a unionOp
-  PlanNode *pUnionOp = GraphNav::pBoundedSearch(pStatementMarker, false, true, fHasUnionOp, nullptr);
+  PlanNode *pHasUnionOp = GraphNav::pBoundedSearch(pStatementMarker, false, true, fHasUnionOp, nullptr);
 
   // we have a unionOp
-  if (pUnionOp) {
+  if (pHasUnionOp) {
+    pBackend->vAppendNextStage(pStatementMarker->szName());
+
+    QueryNode *pUnionOp = static_cast<QueryNode *>(pHasUnionOp);
+    pBackend->vAppendNextOp(pUnionOp->szName());
 
     // previos stage to pipe to union stage
-    pBackend->m_sPipeline->vCatSprint(
-        "    | stage%c\n"
-        ""_Stz,
-        pBackend->m_cStageNext+1);
-
-    // this node should have two children
-    ASSERT(pUnionOp->nChildren() == 2);
-
-    // get a plan node iterator
-    PlanNodeIter *pIter = pUnionOp->pNewChildrenIter();
-
-    // get the first child
-    QueryNode *pChildStatementMarker = static_cast<QueryNode *>(pIter->pFirst());
-
-    pBackend->vAppendNextStage();
-
-    // bounded walk of each of first children
-    GraphNav::bBoundedWalkBottomUp(pChildStatementMarker, false, true, vVisitorStatement, (void *) pBackend);
-
-    pBackend->m_sPipeline->vCatSprint(
-      "    | stage%c\n"
-      ""_Stz,
-      pBackend->m_cStageNext+1);
-
-    // get the next child
-    pChildStatementMarker = static_cast<QueryNode *>(pIter->pNext());
-
-    pBackend->vAppendNextStage();
-
-    // bounded walk of each of first children
-    GraphNav::bBoundedWalkBottomUp(pChildStatementMarker, false, true, vVisitorStatement, (void *) pBackend);
-
-    pBackend->m_sPipeline->vCatSprint(
-      "    | stage%c\n"
-      ""_Stz,
-      pBackend->m_cStageNext);
-
-    // bounded walk of each of its children
-//    while (pIter->bHasNext()) {
-//      // get the next StatementMarker from the iterator
-//      QueryNode *pChildStatementMarker = static_cast<QueryNode *>(pIter->pNext());
-//      GraphNav::bBoundedWalkBottomUp(pChildStatementMarker, false, true, vVisitorStatement, (void *) pBackend);
-//      pBackend->m_cStageCurrent++;
-//
-//      pBackend->m_sPipeline->vCatSprint(
-//          "    | stage%c\n"
-//          ""_Stz,
-//          pBackend->m_cStageNext);
-//
-//    }
-
+    pBackend->vAppendNextStage(pUnionOp->szName());
+    vAppendUnionOp(pBackend, pUnionOp);
     return GraphNav::WALK_SKIP_CHILDREN;
   }
 
-  pBackend->vAppendNextStage();
+  pBackend->vAppendNextStage(pStatementMarker->szName());
 
   // Walk the current node and its children,
   // calling the visitor function for each node encountered. This is a
   // bottom-up, depth-first traversal.
   // Starting on a StatementMarker will walk until the subsequent StatementMarker
   // node is encountered.
-  GraphNav::bBoundedWalkBottomUp(pRootNode, false, true, vVisitorStatement, (void *) pBackend);
-
-  pBackend->m_sPipeline->vCatSprint(
-      "    | stage%c\n"
-      ""_Stz,
-      pBackend->m_cStageNext);
+  GraphNav::bBoundedWalkBottomUp(pStatementMarker, false, true, vVisitorStatement, (void *) pBackend);
 
   // Keep walking
   return GraphNav::WALK_CONTINUE;
@@ -805,39 +739,53 @@ GraphNav::eWalkCtrl Backend::vVisitorPlan(PlanNode* pRootNode, s256& sPath, i8 i
 /* append last stage to the pipeline                                          */
 /*----------------------------------------------------------------------------*/
 void Backend::vAppendLastStage(void) {
-  //ASSERT(m_cStageLast == m_cStageNext);
 
   m_sPipeline->vCatSprint(
-      "  stage stage%c on origin :\n"
+      "  stage stageLast on origin :\n"
       "    output\n"
-      ""_Stz,
-      m_cStageLast);
+      ""_Stz);
 
   m_sPipeline->vCatSprint(
       "    | sink\n"
-      "    | stage%c\n"
-      ""_Stz,
-      m_cStageStart);
+      "    | startStage\n"
+      ""_Stz);
 
   m_sPipeline->vConcat(
       "end ;\n"
       ""_Stz);
+
   vTrace("%s\n"_Stz, m_sPipeline->azStr());
 }
 
 /*----------------------------------------------------------------------------*/
 /* append next stage to the pipeline                                          */
 /*----------------------------------------------------------------------------*/
-void Backend::vAppendNextStage(void) {
+void Backend::vAppendNextStage(Stz* szStage) {
 
   m_sPipeline->vCatSprint(
-      "  stage stage%c on all partitions :\n"
+      "  stage %s on all partitions :\n"
       ""_Stz,
-      m_cStageNext);
+      szStage);
+}
 
-  ++m_cStageNext;
-  m_cStageLast = m_cStageNext;
-  vTrace("%s\n"_Stz, m_sPipeline->azStr());
+/*----------------------------------------------------------------------------*/
+/* append extra pipe pipeline                                                 */
+/*----------------------------------------------------------------------------*/
+void Backend::vAppendPipe(void) {
+
+  m_sPipeline->vCatSprint(
+      "    | "_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append extra pipe pipeline                                                 */
+/*----------------------------------------------------------------------------*/
+void Backend::vAppendNextOp(Stz* szNextStage) {
+
+  m_sPipeline->vCatSprint(
+      "    %s\n"
+      ""_Stz,
+      szNextStage);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -851,18 +799,11 @@ void Backend::vAppendStartStage(void) {
       ""_Stz);
 
   m_sPipeline->vCatSprint(
-      "  stage stage%c on origin :\n"
+      "  stage startStage on origin :\n"
       "    start\n"
       "    | periodic once\n"
-      "    | stage%c\n"
-      ""_Stz,
-      m_cStageStart,
-      m_cStageNext);
-
-  //++m_cStageNext;
-  //m_cStageLast = m_cStageNext;
-
-  vTrace("%s\n"_Stz, m_sPipeline->azStr());
+      ""_Stz
+      );
 }
 
 /*============================================================================*/

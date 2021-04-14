@@ -1,0 +1,149 @@
+/*----------------------------------------------------------------------------*/
+/* Post projection semantic tests                                             */
+/*----------------------------------------------------------------------------*/
+
+// This tests whether a ProjectOp is required to trim away any intermediate
+// or working columns before the columns are returned to the user.
+//
+// This tends to happen if a HAVING or ORDER BY clause contain an expression
+// that cannot be calculated from the columns in the select list.
+//
+// That is, if the expression in the HAVING/ORDER BY is equal to or a superset
+// of the columns in the select list then a post projection is not required.
+// However, the catch is that if the expression in the HAVING/ORDER BY is an
+// aggregate expression and the matching column in the project list is not
+// an aggregate then this a post projection IS required (because that aggregate
+// expression will be pushed down in the exprPushdown compilation stage).
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Setup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+create table nation (
+	 N_NATIONKEY       INTEGER NOT NULL,
+	 N_NAME            CHAR(25) NOT NULL,
+	 N_REGIONKEY       INTEGER NOT NULL,
+	 N_COMMENT         VARCHAR(152)
+);
+success
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Post projection required because SUM(n_nationkey) is not being projected
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+EXPLAIN SELECT n_name FROM nation GROUP BY n_name HAVING SUM(n_nationkey) > 0;
+rows:
+(
+*,
+'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT n_name FROM nation GROUP BY n_name HAVING SUM(n_nationkey) > 0"
+
+-> projectOp
+   » column: (Expr = rapidsse.public.nation.n_name)
+
+-> -> filterOp
+      » expr: ((SUM(rapidsse.public.nation.n_nationkey)) > 0)
+      » ordinal expr: ((SUM(rapidsse.public.nation.n_nationkey)) > 0)
+
+-> -> -> aggregateOp
+         » column: (Expr = rapidsse.public.nation.n_name)
+         » group by: (rapidsse.public.nation.n_name)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)'
+)
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Post projection not required because n_name is already projected
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+EXPLAIN SELECT n_name FROM nation GROUP BY n_name HAVING n_name = 'KENYA';
+rows:
+(
+*,
+'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT n_name FROM nation GROUP BY n_name HAVING n_name = ''KENYA''"
+
+-> filterOp
+   » expr: (rapidsse.public.nation.n_name = ''KENYA'')
+   » ordinal expr: ($1 = ''KENYA'')
+
+-> -> aggregateOp
+      » column: (Expr = rapidsse.public.nation.n_name)
+      » group by: (rapidsse.public.nation.n_name)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)'
+)
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Aggregated expression as superset of non-aggregated columnRef.
+// Post projection required because SUM(n_nationkey) is not being projected
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+EXPLAIN SELECT n_nationkey, SUM(n_regionkey) FROM nation GROUP BY n_nationkey HAVING SUM(n_nationkey) > 0;
+rows:
+(
+*,
+'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT n_nationkey, SUM(n_regionkey) FROM nation GROUP BY n_nationkey HAVING SUM(n_nationkey) > 0"
+
+-> projectOp
+   » column: (Expr = rapidsse.public.nation.n_nationkey)
+   » column: (Expr = SUM(rapidsse.public.nation.n_regionkey))
+
+-> -> filterOp
+      » expr: ((SUM(rapidsse.public.nation.n_nationkey)) > 0)
+      » ordinal expr: ((SUM($1)) > 0)
+
+-> -> -> aggregateOp
+         » column: (Expr = rapidsse.public.nation.n_nationkey)
+         » column: (Expr = SUM(rapidsse.public.nation.n_regionkey))
+         » group by: (rapidsse.public.nation.n_nationkey)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)'
+)
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Post projection not required because (n_nationkey * 2 > 0) is a superset of projected column (n_nationkey)
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+EXPLAIN SELECT n_nationkey, SUM(n_regionkey) FROM nation GROUP BY n_nationkey HAVING n_nationkey * 2 > 0;
+rows:
+(
+*,
+'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT n_nationkey, SUM(n_regionkey) FROM nation GROUP BY n_nationkey HAVING n_nationkey * 2 > 0"
+
+-> filterOp
+   » expr: ((rapidsse.public.nation.n_nationkey * 2) > 0)
+   » ordinal expr: (($1 * 2) > 0)
+
+-> -> aggregateOp
+      » column: (Expr = rapidsse.public.nation.n_nationkey)
+      » column: (Expr = SUM(rapidsse.public.nation.n_regionkey))
+      » group by: (rapidsse.public.nation.n_nationkey)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)'
+)
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Cleanup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CLEANUP {
+  drop table nation ;
+  mute
+}

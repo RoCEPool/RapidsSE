@@ -69,6 +69,8 @@ AttachMap::AttachMap(void)
   //ASSERT(nPoolBufferNo() == 1_bn);
   
   m_iTimePoint = AM::iRdTickingDevice();
+  
+  m_oSince.vStart();
     
   // create the transient heaps
   m_xHeaps.vInit();

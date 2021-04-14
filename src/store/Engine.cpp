@@ -842,14 +842,17 @@ void Engine::vInternalTables(void)
 {
   StreamDef* pStreamDef;
   
-  pStreamDef = AM::pStreamDefFind(C_TDEF_EVENTS);
-  gpAttachMap->m_pInternalTables->vStreamDef(TI_EVENTS,pStreamDef);
+  pStreamDef = AM::pStreamDefFind(C_TDEF_EVENTLOG);
+  gpAttachMap->m_pInternalTables->vStreamDef(TI_EVENTLOG,pStreamDef);
   
   pStreamDef = AM::pStreamDefFind(C_TDEF_MEMORYLOG);
   gpAttachMap->m_pInternalTables->vStreamDef(TI_MEMORYLOG,pStreamDef);
 
   pStreamDef = AM::pStreamDefFind(C_TDEF_OPERANDLOG);
   gpAttachMap->m_pInternalTables->vStreamDef(TI_OPERANDLOG,pStreamDef);
+
+  pStreamDef = AM::pStreamDefFind(C_TDEF_RESOURCELOG);
+  gpAttachMap->m_pInternalTables->vStreamDef(TI_RESOURCELOG,pStreamDef);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -979,6 +982,14 @@ void Engine::vMungeCheck(void)
     gxCmdLineArgs.m_xSysArgs.m_sCommand = "docol munge"_Stz;
     gxCmdLineArgs.m_xSysArgs.m_bCommand = true;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* set object classes which are not to be logged                              */
+/*----------------------------------------------------------------------------*/
+void Engine::vNoMemoryLogging(void)
+{
+  gxaSizeHeap[CN_WRITEBEHIND].m_bDontMemLog = true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1666,6 +1677,10 @@ void Engine::vStartSystem(void) {
   vLowMemoryDiscard();
 
   if (AM::bVerboseProgress())
+    vInfo("  Adding No Memory Logging\n"_Stz);
+  vNoMemoryLogging();
+
+  if (AM::bVerboseProgress())
     vInfo("  Adding Constants\n"_Stz);
   AM::vLogSys(SL_INF, gpAttachMap, YA_SYS_BOOT,
               "adding constants"_Stz); //!format-LogSys
@@ -1719,7 +1734,6 @@ void Engine::vStartSystem(void) {
   if (AM::bVerboseProgress())
       vInfo("  Adding Dispatch Words\n"_Stz);
     vDispatchWords();
-
 
   s32 sResident_magn;
   MagLib::vByteMag(Process::iResidentSize(), 3, sResident_magn);

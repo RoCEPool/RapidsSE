@@ -49,6 +49,12 @@ namespace Parser
     // Insert a child in the current node before a given reference child
     void vInsertChildBefore(QueryNode* pInsNode, QueryNode* pRefNode);
 
+    // Inserts a list of children in the current node after a given reference child
+    void vInsertChildrenAfter(PlanNodeList* pChildren, QueryNode* pRefNode);
+
+    // Inserts a list of children in the current node before a given reference child
+    void vInsertChildrenBefore(PlanNodeList* pChildren, QueryNode* pRefNode);
+
     // Insert a child in the current node and make it the parent of any existing children.
     // See implementation for more details.
     void vInsertAsParentOfChildren(QueryNode* pInsNode);

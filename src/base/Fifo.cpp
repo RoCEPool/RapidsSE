@@ -30,7 +30,7 @@ Fifo::Fifo(void)
 {
   _precondition_(_MAGIC_,CN_FIFO,_FOOTER_);
   
-  m_sFifoPath = C_NO_NAME;
+  m_sPath = C_NO_NAME;
   //m_oSysCall;
   
   _checkInitialised_(CN_FIFO);
@@ -50,7 +50,7 @@ Fifo::Fifo(Stz* sFifoPath)
 {
   _precondition_(_MAGIC_,CN_FIFO,_FOOTER_);
   
-  m_sFifoPath = sFifoPath;
+  m_sPath = sFifoPath;
   //m_oSysCall;
 
   ++ gixFifo;

@@ -6,6 +6,7 @@
 
 
 #include "eAK.h"
+#include "eAR.h"
 #include "eBO.h"
 #include "eCC.h"
 #include "eCK.h"
@@ -117,6 +118,8 @@
 
 #include "Version.h"
 
+#include "MY.hpp"
+
 extern CmdLineArgs   gxCmdLineArgs;
 
 extern AttachMap*    gpAttachMap;
@@ -138,6 +141,7 @@ extern SizeHeap      gxaSizeHeap[];
 /*----------------------------------------------------------------------------*/
 void AM::DEMON::vPipeTo(Stz* szDemonNm, RowBuffer* pRowBuffer)
 {
+  _static_
 
   // for reference: sen code from : OP_toStatDemon_Profile \handler
   
@@ -163,6 +167,251 @@ void AM::DEMON::vPipeTo(Stz* szDemonNm, RowBuffer* pRowBuffer)
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                   Job                                      */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* has job got given tag?                                                     */
+/*----------------------------------------------------------------------------*/
+bool AM::JOB::bHasTag(Job* pJob, Stz* szTagNm)
+{
+  _static_
+  
+  TagSet* pJobTags = pJob->pJobTags();
+  if (! pJobTags)
+    return false;
+  
+  if (! pJobTags->bHasName(szTagNm))
+    return false;
+  
+  return true;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                   Log                                      */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* log events                                                                 */
+/*----------------------------------------------------------------------------*/
+void AM::LOG::vEvent(eEV eEvent, Stz* szNote)
+{
+  _static_
+  
+  Job* pJob = MY::pJob();
+  if (! pJob)
+    return;
+  
+  LogicUnit* pRLU = pJob->pLogicUnit_job();
+  if (! pRLU || pRLU->m_xpOp.bIsNull())
+    return;
+
+  i8 nQueueLength = pRLU->m_xpOp->nQueueLength();
+  
+  AM::LOG::vLogInternal((i8)TI_EVENTLOG,
+                        
+                        MY::szPipelineNm(),
+                        MY::szOpNm(),
+                        MY::iPtn(),
+                        aZK[pRLU->m_ePipeInOperand],
+                        
+                        (i8)eEvent,
+                        szNote->azChar(),
+
+                        MY::pThread()->iThreadNo(),
+                        AM::SYSTEM::nNanoseconds(),
+                        
+                        C_VARGS_END);
+}
+
+/*----------------------------------------------------------------------------*/
+/* log entry into internal table                                              */
+/*----------------------------------------------------------------------------*/
+void AM::LOG::vLogInternal(i8 iTable, ...)
+{
+  _static_
+
+  bool bSetLogMemory = false;
+  if (AM::TASK::bLogMemory()) {
+    bSetLogMemory = true;
+    AM::TASK::vLogMemory(false);
+  }
+  
+  WriteBehind* pWriteBehind = AM::THREAD::pWriteBehind();
+  if (! pWriteBehind)
+    return;
+
+  StreamDef* pStreamDef = AM::pInternalTables()->pStreamDef((eTI)iTable);
+  if (! pStreamDef)
+    return;
+  
+  pWriteBehind->vGrabLock();
+
+
+  va_list xVarArgs;
+  va_start(xVarArgs,iTable);
+
+  Row* pRow = pWriteBehind->pAllotRow((eTI)iTable);
+  pRow->vDeposit(xVarArgs);
+
+  va_end(xVarArgs);
+
+
+  pWriteBehind->vDropLock();
+  
+  if (bSetLogMemory)
+    AM::TASK::vLogMemory(true);
+}
+
+/*----------------------------------------------------------------------------*/
+/* log memory allocation                                                      */
+/*----------------------------------------------------------------------------*/
+void AM::LOG::vMemoryAllocation(Object* pObject)
+{
+  _static_
+  
+  Job* pJob = MY::pJob();
+  if (! pJob)
+    return;
+  
+  LogicUnit* pRLU = pJob->pLogicUnit_job();
+  if (! pRLU || pRLU->m_xpOp.bIsNull())
+    return;
+  
+  AM::LOG::vLogInternal((i8)TI_MEMORYLOG,
+                        
+                        MY::szPipelineNm(),
+                        MY::szOpNm(),
+                        MY::iPtn(),
+                        aZK[pRLU->m_ePipeInOperand],
+                        
+                        pObject->szClassNm(),
+                        (i8)0,
+                        
+                        MY::pThread()->iThreadNo(),
+                        AM::SYSTEM::nNanoseconds(),
+                        
+                        C_VARGS_END);
+}
+
+/*----------------------------------------------------------------------------*/
+/* log memory free                                                            */
+/*----------------------------------------------------------------------------*/
+void AM::LOG::vMemoryFree(Object* pObject)
+{
+  _static_
+  
+  Job* pJob = MY::pJob();
+  if (! pJob)
+    return;
+  
+  LogicUnit* pRLU = pJob->pLogicUnit_job();
+  if (! pRLU || pRLU->m_xpOp.bIsNull())
+    return;
+  
+  AM::LOG::vLogInternal((i8)TI_MEMORYLOG,
+                        
+                        MY::szPipelineNm(),
+                        MY::szOpNm(),
+                        MY::iPtn(),
+                        aZK[pRLU->m_ePipeInOperand],
+                        
+                        pObject->szClassNm(),
+                        (i8)1,
+                        
+                        MY::pThread()->iThreadNo(),
+                        AM::SYSTEM::nNanoseconds(),
+                        
+                        C_VARGS_END);
+}
+
+/*----------------------------------------------------------------------------*/
+/* log operand                                                                */
+/*----------------------------------------------------------------------------*/
+void AM::LOG::vOperand(i8 iPoint)
+{
+  _static_
+  
+  Job* pJob = MY::pJob();
+  if (! pJob)
+    return;
+  
+  LogicUnit* pRLU = pJob->pLogicUnit_job();
+  if (! pRLU || pRLU->m_xpOp.bIsNull())
+    return;
+
+  i8 nQueueLength = pRLU->m_xpOp->nQueueLength();
+  
+  AM::LOG::vLogInternal((i8)TI_OPERANDLOG,
+                        
+                        MY::szPipelineNm(),
+                        MY::szOpNm(),
+                        MY::iPtn(),
+                        aZK[pRLU->m_ePipeInOperand],
+                        
+                        iPoint,
+                        nQueueLength,
+
+                        MY::pThread()->iThreadNo(),
+                        AM::SYSTEM::nNanoseconds(),
+                        
+                        C_VARGS_END);
+}
+
+/*----------------------------------------------------------------------------*/
+/* log resource usage                                                         */
+/*----------------------------------------------------------------------------*/
+void AM::LOG::vResourceUse(Resource* pResource, i8 iAction, i8 nBytes)
+{
+  _static_
+  
+  Job* pJob = MY::pJob();
+  if (! pJob)
+    return;
+  
+  LogicUnit* pRLU = pJob->pLogicUnit_job();
+  if (! pRLU || pRLU->m_xpOp.bIsNull())
+    return;
+
+  i8 nQueueLength = pRLU->m_xpOp->nQueueLength();
+  
+  AM::LOG::vLogInternal((i8)TI_RESOURCELOG,
+                        
+                        MY::szPipelineNm(),
+                        MY::szOpNm(),
+                        MY::iPtn(),
+                        aZK[pRLU->m_ePipeInOperand],
+                        
+                        pResource->szClassNm(),
+                        pResource->szPath(),
+                        aAR[iAction],
+                        nBytes,
+                        
+                        MY::pThread()->iThreadNo(),
+                        AM::SYSTEM::nNanoseconds(),
+                        
+                        C_VARGS_END);
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                   System                                   */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* elapsed time (in nanoseconds) since boot                                   */
+/*----------------------------------------------------------------------------*/
+i8 AM::SYSTEM::nNanoseconds(void)
+{
+  _static_
+  
+  gpAttachMap->m_oSince.vUpdate();
+  
+  i8 nElapsed = gpAttachMap->m_oSince.iNanoseconds();
+    
+  return nElapsed;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                    Task                                    */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
@@ -171,6 +420,8 @@ void AM::DEMON::vPipeTo(Stz* szDemonNm, RowBuffer* pRowBuffer)
 /*----------------------------------------------------------------------------*/
 DicStack* AM::TASK::pDicStack(void)
 {
+  _static_
+  
   Task* pTask = pThisTLSTask();
   if (! pTask)
     return nullptr;
@@ -179,6 +430,53 @@ DicStack* AM::TASK::pDicStack(void)
   
   return pDicStack;
 }
+
+/*----------------------------------------------------------------------------*/
+/* is current task logging memory?                                            */
+/*----------------------------------------------------------------------------*/
+bool AM::TASK::bLogMemory(void)
+{
+  _static_
+  
+  Task* pTask = pThisTLSTask();
+  if (! pTask)
+    return false;
+  
+  bool bLogging = pTask->bLogMemory();
+  
+  return bLogging;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set current task logging memory?                                           */
+/*----------------------------------------------------------------------------*/
+void AM::TASK::vLogMemory(bool bLogMemory)
+{
+  _static_
+  
+  Task* pTask = pThisTLSTask();
+  if (! pTask)
+    return;
+  
+  pTask->vLogMemory(bLogMemory);
+}
+
+/*----------------------------------------------------------------------------*/
+/* is current task logging resource usage?                                    */
+/*----------------------------------------------------------------------------*/
+bool AM::TASK::bLogResource(void)
+{
+  _static_
+  
+  Task* pTask = pThisTLSTask();
+  if (! pTask)
+    return false;
+  
+  bool bLogging = pTask->bLogResource();
+  
+  return bLogging;
+}
+
 
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -283,6 +581,8 @@ WriteBehind* AM::THREAD::pWriteBehind(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 Word* AM::WORD::pFind(Stz* szWordNm)
 {
+  _static_
+  
   Dic* pRootDic = AM::pDicRoot();
   
   Word* pWord = pRootDic->pFindWord(szWordNm);

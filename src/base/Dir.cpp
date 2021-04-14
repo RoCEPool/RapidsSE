@@ -35,8 +35,6 @@ Dir::Dir(Loggable* pIsFor)
 {
   _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
   
-  m_sDirPath   = C_NO_NAME;
-  
   m_aDir       = nullptr;
   m_sEntryNm   = C_NO_NAME;
   m_iEntryType = 0;
@@ -62,12 +60,12 @@ Dir::~Dir(void) noexcept(false)
   _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
   
   if (m_aDir) {
-    vWarn("Dir::~Dir dir not closed: %s\n"_Stz,m_sDirPath.azChar());
+    vWarn("Dir::~Dir dir not closed: %s\n"_Stz,m_sPath.azChar());
 
     vClose();
     
     if (m_oSysCall.bHadError())
-      vWarn("Dir::~Dir: dir could not be closed: %s"_Stz,m_sDirPath.azChar());
+      vWarn("Dir::~Dir: dir could not be closed: %s"_Stz,m_sPath.azChar());
   }
 
   
@@ -202,11 +200,11 @@ void Dir::vClose(void)
   
   AM::vLogRes(SL_INF,this,RA_DIR_CLOSED,
               "Dir closed : %s"_Stz, //!format-LogRes
-              m_sDirPath.szStz());
+              m_sPath.szStz());
 
   m_aDir = nullptr;
   
-  vLog_TBR(EV_CLOSE,"Dir closed: path=%s"_Stz,m_sDirPath.szStz());
+  vLog_TBR(EV_CLOSE,"Dir closed: path=%s"_Stz,m_sPath.szStz());
 
   ASSERT(bIsClosed());
 }
@@ -280,9 +278,9 @@ bool Dir::bOpen(Stz* szDirPath)
 
   ASSERT(bIsClosed());
   
-  m_sDirPath = szDirPath;
+  m_sPath = szDirPath;
   
-  char* wPath = m_sDirPath.azChar();
+  char* wPath = m_sPath.azChar();
  
   m_aDir = opendir(wPath);
   if (! m_aDir) {
@@ -299,20 +297,10 @@ bool Dir::bOpen(Stz* szDirPath)
               "Dir opened : %s"_Stz, //!format-LogRes
               szDirPath);
 
-  vLog_TBR(EV_OPEN,"Dir opened: path=%s"_Stz,m_sDirPath.szStz());
+  vLog_TBR(EV_OPEN,"Dir opened: path=%s"_Stz,m_sPath.szStz());
 
   ASSERT(bIsOpen());
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get directory path                                                         */
-/*----------------------------------------------------------------------------*/
-Stz* Dir::szPath(void)
-{
-  _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
-  
-  return m_sDirPath;
 }
 
 /*----------------------------------------------------------------------------*/

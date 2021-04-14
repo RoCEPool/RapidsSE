@@ -30,6 +30,10 @@ namespace Parser
     static void vReplaceChild(QueryNode* pParentNode, QueryNode* pReplaceChild,
                               QueryNodeList* pReplacementList);
 
+    // Remove a child from its parent and optionally transplant that child's
+    // children in its place. Returns the snipped child.
+    static QueryNode* pSnipChild(QueryNode* pParent, QueryNode* pChild, b1 bTransplant);
+
     // TODO: Add extra methods here for manipulating plan graphs.
     //       e.g. snipping nodes, reordering, etc.
 

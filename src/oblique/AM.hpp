@@ -11,6 +11,7 @@
 #include "eAA.h"
 #include "eDA.h"
 #include "eEC.h"
+#include "eEV.h"
 #include "eGA.h"
 #include "eHA.h"
 #include "eJA.h"
@@ -222,10 +223,36 @@ namespace OBLIQUE
       static void vPipeTo(Stz* szDemonNm, RowBuffer* pRowBuffer);
     };
   
+    class JOB
+    {
+    public:
+      static bool bHasTag(Job* pJob, Stz* szTagNm);
+    };
+  
+    class LOG
+    {
+    public:
+      static void vEvent(eEV eEvent, Stz* szNote);
+      static void vLogInternal(i8 iTable, ...);
+      static void vMemoryAllocation(Object* pObject);
+      static void vMemoryFree(Object* pObject);
+      static void vOperand(i8 iPoint);
+      static void vResourceUse(Resource* pResource, i8 iAction, i8 nBytes);
+    };
+
+    class SYSTEM
+    {
+    public:
+      static i8 nNanoseconds(void);
+    };
+
     class TASK
     {
     public:
       static DicStack* pDicStack(void);
+      static bool bLogMemory(void);
+      static void vLogMemory(bool bLogMemory);
+      static bool bLogResource(void);
     };
   
     class THREAD
