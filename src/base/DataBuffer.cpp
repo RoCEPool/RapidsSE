@@ -30,7 +30,7 @@ DataBuffer* BASE::_pDataBuffer(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent, i8 iLogCtl)
+DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
 : LinkedBuffer(eClassNo)
 , m_okLock(this)
 {

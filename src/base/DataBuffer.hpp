@@ -23,7 +23,7 @@ namespace BASE
     PadWord m__PadToCacheLine[3];
 
   public:
-    DataBuffer(eCN eClass, bool bIsPermanent, i8 iLogCtl=C_LOG);
+    DataBuffer(eCN eClass, bool bIsPermanent);
    ~DataBuffer(void) noexcept(false);
 
     static DataBuffer* pRefdDataBuffer(Rrf& xRef);
