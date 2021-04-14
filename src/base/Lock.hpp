@@ -9,7 +9,7 @@ namespace BASE
 {
   const u8 C_WRITELOCK = 0x8000000000000000;
     
-  class Lock : public Object
+  class Lock : public Loggable
   {
   private:
     u8       m_uLockWord;         // lock word
@@ -46,6 +46,7 @@ namespace BASE
     void vOutline(s4K& sOutline);
   
     bool bIsLocked(void);
+    i8   iLockId(void);
     eCN  eClassLocked(void);
     u8   uLockWord(void);
   
