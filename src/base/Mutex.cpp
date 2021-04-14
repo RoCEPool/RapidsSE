@@ -29,7 +29,7 @@ Mutex* BASE::_pMutex(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Mutex::Mutex(Object* pIsFor)
-: Loggable(CN_MUTEX)
+: Object(CN_MUTEX)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
