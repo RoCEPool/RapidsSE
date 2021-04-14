@@ -32,7 +32,7 @@ namespace BASE
     void* operator new(size_t, Lock* pLock);
     void  operator delete(void* pLockAddress);
     
-    Lock(Object* pObjectLocked, i8 iLogCtl=C_LOG);
+    Lock(Object* pObjectLocked);
    ~Lock(void) noexcept(false);
   
   private:

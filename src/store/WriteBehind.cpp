@@ -23,7 +23,7 @@ __aFooterFunction(WriteBehind)
 /*----------------------------------------------------------------------------*/
 WriteBehind::WriteBehind(void)
 : Object(CN_WRITEBEHIND)
-, m_okLock(this,C_DONT_LOG)
+, m_okLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEBEHIND,_FOOTER_);
   
