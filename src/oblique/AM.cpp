@@ -194,10 +194,16 @@ bool AM::JOB::bHasTag(Job* pJob, Stz* szTagNm)
 /*----------------------------------------------------------------------------*/
 /* log events                                                                 */
 /*----------------------------------------------------------------------------*/
-void AM::LOG::vEvent(eEV eEvent, Stz* szNote)
+void AM::LOG::vEvent(eEV eEvent, Stz* szFormat, ...)
 {
   _static_
   
+  if (! gxCmdLineArgs.m_xSysArgs.m_bEvents)
+    return;
+
+  if (! AM::bHasStarted())
+    return;
+
   Job* pJob = MY::pJob();
   if (! pJob)
     return;
@@ -206,6 +212,18 @@ void AM::LOG::vEvent(eEV eEvent, Stz* szNote)
   if (! pRLU || pRLU->m_xpOp.bIsNull())
     return;
 
+  
+  s4K sNote;
+  
+  va_list xVarArgs;
+  
+  va_start(xVarArgs,szFormat);
+  
+  sNote.vSprintVA(szFormat,xVarArgs);
+  
+  va_end(xVarArgs);
+
+  
   i8 nQueueLength = pRLU->m_xpOp->nQueueLength();
   
   AM::LOG::vLogInternal((i8)TI_EVENTLOG,
@@ -216,7 +234,7 @@ void AM::LOG::vEvent(eEV eEvent, Stz* szNote)
                         aZK[pRLU->m_ePipeInOperand],
                         
                         (i8)eEvent,
-                        szNote->azChar(),
+                        sNote.azChar(),
 
                         MY::pThread()->iThreadNo(),
                         AM::SYSTEM::nNanoseconds(),
@@ -1920,34 +1938,6 @@ void AM::vLogTxn(eSL , Tx* , eXA , Stz* , ...)
 #endif
 }
 
-/*----------------------------------------------------------------------------*/
-/* log entry into internal table                                              */
-/*----------------------------------------------------------------------------*/
-void AM::vLogTI(i8 iTable, ...)
-{
-  _static_
-      
-  WriteBehind* pWriteBehind = AM::THREAD::pWriteBehind();
-  if (! pWriteBehind)
-    return;
-
-  StreamDef* pStreamDef = AM::pInternalTables()->pStreamDef((eTI)iTable);
-  if (! pStreamDef)
-    return;
-  
-  pWriteBehind->vGrabLock();
-
-  va_list xVarArgs;
-  va_start(xVarArgs,iTable);
-
-  Row* pRow = pWriteBehind->pAllotRow((eTI)iTable);
-  pRow->vDeposit(xVarArgs);
-
-  va_end(xVarArgs);
-
-  pWriteBehind->vDropLock();
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -3163,7 +3153,6 @@ void AM::vJob_AddDemon(Job* pJob)
   AM::pDemonJobs()->vAddJob(pJob);
   AM::pDemonJobs()->vDropLock();
   
-  pJob->vEventNoInc();
   AM::vLogJob(SL_INF,pJob,JA_JOB_ADD_DEMON,
               "Job added to DemonJobs"_Stz); //!format-LogJob
 }
@@ -3177,7 +3166,6 @@ void AM::vJob_AddLocal(Job* pJob)
   AM::pLocalJobs()->vAddJob(pJob);
   AM::pLocalJobs()->vDropLock();
   
-  pJob->vEventNoInc();
   AM::vLogJob(SL_INF,pJob,JA_JOB_ADD_LOCAL,
               "Job added to LocalJobs"_Stz); //!format-LogJob
 }
@@ -3191,7 +3179,6 @@ void AM::vJob_AddOriginating(Job* pJob)
   AM::pOriginatingJobs()->vAddJob(pJob);
   AM::pOriginatingJobs()->vDropLock();
   
-  pJob->vEventNoInc();
   AM::vLogJob(SL_INF,pJob,JA_JOB_ADD_ORIGIN,
               "Job added to OriginatingJobs"_Stz); //!format-LogJob
 }
@@ -3205,7 +3192,6 @@ void AM::vJob_AddParticipating(Job* pJob)
   AM::pParticipatingJobs()->vAddJob(pJob);
   AM::pParticipatingJobs()->vDropLock();
   
-  pJob->vEventNoInc();
   AM::vLogJob(SL_INF,pJob,JA_JOB_ADD_PARTG,
               "Job added to ParticipatingJobs"_Stz); //!format-LogJob
   
@@ -3335,7 +3321,6 @@ bool AM::bJob_RemoveLocal(Job* pJob, bool bDump)
   
   AM::pLocalJobs()->vDropLock();
   
-  pJob->vEventNoInc();
   AM::vLogJob(SL_INF,pJob,JA_JOB_REMOVE_LOCAL,
               "Job removed from LocalJobs"_Stz); //!format-LogJob
   
@@ -3356,7 +3341,6 @@ bool AM::bJob_RemoveOriginating(Job* pJob, bool bDump)
   
   AM::pOriginatingJobs()->vDropLock();
   
-  pJob->vEventNoInc();
   AM::vLogJob(SL_INF,pJob,JA_JOB_REMOVE_ORIGIN,
               "Job removed from OriginatingJobs"_Stz); //!format-LogJob
   
@@ -3377,7 +3361,6 @@ bool AM::bJob_RemoveParticipating(Job* pJob, bool bDump)
   
   AM::pParticipatingJobs()->vDropLock();
   
-  pJob->vEventNoInc();
   AM::vLogJob(SL_INF,pJob,JA_JOB_REMOVE_PARTG,
               "Job fremoved from ParticipatingJobs"_Stz); //!format-LogJob
   

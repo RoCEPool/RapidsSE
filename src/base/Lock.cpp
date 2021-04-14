@@ -48,8 +48,8 @@ void Lock::operator delete(void*)
 /*----------------------------------------------------------------------------*/
 /* constructor (for non-focal case)                                           */
 /*----------------------------------------------------------------------------*/
-Lock::Lock(Object* pObjectLocked, i8 iLogCtl)
-: Loggable(CN_LOCK,iLogCtl)
+Lock::Lock(Object* pObjectLocked)
+: Loggable(CN_LOCK)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
     
@@ -67,7 +67,7 @@ Lock::Lock(Object* pObjectLocked, i8 iLogCtl)
   
   _postcondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
-  vLog_TBR(EV_CONSTRUCT,"Lock constructor"_Stz);
+  AM::LOG::vEvent(EV_CONSTRUCT,"Lock constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -79,7 +79,7 @@ Lock::~Lock(void) noexcept(false)
    
   RASSERT(! m_uLockWord);
   
-  vLog_TBR(EV_DESTRUCT,"Lock destructor"_Stz);
+  AM::LOG::vEvent(EV_DESTRUCT,"Lock destructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -375,7 +375,6 @@ void Lock::vGrabRead(void)
       continue;
     
     bReported = true;
-    vEventNoInc();
     AM::vLogLck(SL_INF,this,LA_LCK_READ_UNABLE,
                 "Unable to grab read lock %p %s %p"_Stz, //!format-LogLck
                 this,
@@ -387,7 +386,6 @@ void Lock::vGrabRead(void)
   // read lock has been acquired
 
   if (bReported) {
-    vEventNoInc();
     AM::vLogLck(SL_INF,this,LA_LCK_READ_ABLE,
                "Able to grab read lock %p %s %p"_Stz, //!format-LogLck
                 this,
@@ -527,7 +525,6 @@ void Lock::vGrabWrite(void)
       continue;
     
     bReported = true;
-    vEventNoInc();
     AM::vLogLck(SL_INF,this,LA_LCK_WRITE_UNABLE,
                 "Unable to grab write lock %p %s %p"_Stz, //!format-LogLck
                 this,
@@ -539,7 +536,6 @@ void Lock::vGrabWrite(void)
   // write lock has been acquired
 
   if (bReported) {
-    vEventNoInc();
     AM::vLogLck(SL_INF,this,LA_LCK_WRITE_ABLE,
                "Able to grab write lock %p %s %p"_Stz, //!format-LogLck
                        this,

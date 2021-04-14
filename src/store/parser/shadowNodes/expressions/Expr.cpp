@@ -284,13 +284,14 @@ QueryNode* Expr::pSymbolicToOrdinal(QueryNode*     pSymbolicExpr,
   QueryNode* pOrdinalExpr;
 
   // First we need to check if any of the columns in the columnExprList
-  // exactly match our symbolic expression.
+  // exactly match our symbolic expression or aliases.
   QueryNodeIter* pIter = pColumnExprList->pNewIter();
   i8 iOrdinal = 1;
 
   while (pIter->bHasNext()) {
     QueryNode* pProjectedColumn = pIter->pNext();
     QueryNode* pColExpr = ProjectedColumn::pExprNode(pProjectedColumn);
+    Stz*       szAlias  = ProjectedColumn::szAliasName(pProjectedColumn);
 
 //    s2K sBuf1;
 //    s2K sBuf2;

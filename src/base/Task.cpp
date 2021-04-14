@@ -119,14 +119,11 @@ Task::Task(Job* pJob)
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  
-  vEventNoInc();
-  
   ++ gixTask;
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  vLog_TBR(EV_CONSTRUCT,"Task constructor"_Stz);
+  AM::LOG::vEvent(EV_CONSTRUCT,"Task constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -173,9 +170,8 @@ Task::~Task(void) noexcept(false)
   m_pProfile = nullptr;
   
   -- gixTask;
-  vEventNoInc();
 
-  vLog_TBR(EV_DESTRUCT,"Task destructor"_Stz);
+  AM::LOG::vEvent(EV_DESTRUCT,"Task destructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -23,7 +23,7 @@ __aFooterFunction(WriteBehind)
 /*----------------------------------------------------------------------------*/
 WriteBehind::WriteBehind(void)
 : Object(CN_WRITEBEHIND)
-, m_okLock(this,C_DONT_LOG)
+, m_okLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEBEHIND,_FOOTER_);
   
@@ -60,7 +60,7 @@ Row* WriteBehind::pAllotRow(eTI eTable)
   
   if (! m_apNamedBuffer[eTable]) {
     StreamDef* pStreamDef = AM::pInternalTables()->pStreamDef(eTable);
-    m_apNamedBuffer[eTable] = new NamedBuffer(pStreamDef,C_DONT_LOG);
+    m_apNamedBuffer[eTable] = new NamedBuffer(pStreamDef);
   }
   
   Row* pRow = m_apNamedBuffer[eTable]->pAllotRow();
@@ -71,7 +71,7 @@ Row* WriteBehind::pAllotRow(eTI eTable)
     
     m_apNamedBuffer[eTable] = nullptr;
     StreamDef* pStreamDef = AM::pInternalTables()->pStreamDef(eTable);
-    m_apNamedBuffer[eTable] = new NamedBuffer(pStreamDef,C_DONT_LOG);
+    m_apNamedBuffer[eTable] = new NamedBuffer(pStreamDef);
     
     pRow = m_apNamedBuffer[eTable]->pAllotRow();
   }
@@ -163,7 +163,7 @@ Row* WriteBehind::pAllotEventRow(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEBEHIND,_FOOTER_);
   
   if (! m_pNamedBuffer_events) {
-    m_pNamedBuffer_events = new NamedBuffer(m_pStreamDef_events,C_DONT_LOG);
+    m_pNamedBuffer_events = new NamedBuffer(m_pStreamDef_events);
   }
   
   Row* pRow = m_pNamedBuffer_events->pAllotRow();
@@ -179,7 +179,7 @@ Row* WriteBehind::pAllotEventRow(void)
     
     m_pNamedBuffer_events = nullptr;
     
-    m_pNamedBuffer_events = new NamedBuffer(m_pStreamDef_events,C_DONT_LOG);
+    m_pNamedBuffer_events = new NamedBuffer(m_pStreamDef_events);
     pRow = m_pNamedBuffer_events->pAllotRow();
     RASSERT(pRow);
   }

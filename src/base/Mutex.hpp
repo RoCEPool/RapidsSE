@@ -5,12 +5,12 @@
 
 namespace BASE
 {
-  class Mutex : public Loggable
+  class Mutex : public Object
   {
   public:
     Object*    m_pIsFor;
-    Loggable*  m_pLockedBy; // by whom is the mutex locked?
-    Loggable*  m_pWaitedBy; // for whom is the mutex being waited on?
+    Object*  m_pLockedBy; // by whom is the mutex locked?
+    Object*  m_pWaitedBy; // for whom is the mutex being waited on?
 
     pthread_mutex_t     m_xMutex;     // posix mutex variable
     pthread_mutexattr_t m_xMutexAttr; // posix mutex attribute
@@ -37,13 +37,13 @@ namespace BASE
   
     void vBroadcast(void);
     bool bIsLocked(void);
-    bool bIsLockedByCaller(Loggable* pLockedBy);
-    bool bLock(Loggable* pLockFor);
-    void vLock(Loggable* pLockedBy);
-    void vPause(Loggable* pLockFor, i8 iMicroSeconds);
-    void vSignal(Loggable* pLockedBy);
-    void vUnlock(Loggable* pLockedBy);
-    void vWait(Loggable* pLockedBy);
+    bool bIsLockedByCaller(Object* pLockedBy);
+    bool bLock(Object* pLockFor);
+    void vLock(Object* pLockedBy);
+    void vPause(Object* pLockFor, i8 iMicroSeconds);
+    void vSignal(Object* pLockedBy);
+    void vUnlock(Object* pLockedBy);
+    void vWait(Object* pLockedBy);
   
     void vOutline(s4K& sOutline);
   
