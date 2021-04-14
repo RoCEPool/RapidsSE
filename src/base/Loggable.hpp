@@ -30,9 +30,6 @@ namespace BASE
   
     i8   iObjectId(void);
     void vObjectId(i8 iObjectId);
-
-    Stz* sObjectNm(void);
-    void vObjectNm(Stz* szObjectNm);
   
   };
 }
