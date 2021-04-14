@@ -37,7 +37,7 @@ __aFooterFunction(Op);
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Op::Op(OpSpec* pOpSpec, Stream* pStream)
-: Loggable(CN_OP)
+: Object(CN_OP)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
