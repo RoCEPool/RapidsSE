@@ -5,7 +5,7 @@
 
 namespace STORE
 {
-  class Xmits : public Object
+  class Xmits : public Loggable
   {
   private:
     i8             m_iXmits;   // consume xmits

@@ -45,7 +45,8 @@ void Xmits::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Xmits::Xmits(i8 iXmits)
-: Object(CN_XMITS)
+: Loggable(CN_XMITS)
+
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_XMITS,_FOOTER_);
 
