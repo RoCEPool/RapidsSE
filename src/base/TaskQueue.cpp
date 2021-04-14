@@ -49,7 +49,7 @@ void TaskQueue::operator delete(void* pTaskQueueAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 TaskQueue::TaskQueue(eQK eKind, bool bUniqueKey, CompareFp fpCompare)
-: Loggable(CN_TASKQUEUE)
+: Object(CN_TASKQUEUE)
 , m_okLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
