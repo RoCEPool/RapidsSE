@@ -1164,7 +1164,7 @@ void Engine::vOpenTrace(void)
   //if (AM::bVerboseProgress())
   //  vInfo("\n*\n* Opening Trace File\n*\n"_Stz);
   
-  gpTraceFile = new(C_VIA_MALLOC) File(nullptr,C_DONT_LOG);
+  gpTraceFile = new(C_VIA_MALLOC) File(nullptr);
   
   bool bOpened;
 
