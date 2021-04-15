@@ -50,7 +50,6 @@
 : operator_tags
   tags{
     <jobKind>  = JK_LOCAL
-    //<rspKind>  = RS_PARTICIPANT_RESPONSE
     <ddlLock>  = DL_GRAB_READ
   }
 ;
@@ -91,7 +90,6 @@
     <serviceOp> = 1
     
     <jobKind>  = JK_LOCAL
-    //<rspKind>  = RS_PARTICIPANT_RESPONSE
   }
 ;
 

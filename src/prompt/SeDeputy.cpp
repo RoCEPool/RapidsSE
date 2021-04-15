@@ -170,9 +170,6 @@ void SeDeputy::vExecuteJob(void)
   RASSERT(! m_pSession->m_pOutput->m_bExecErr );
   RASSERT(! m_pSession->m_pOutput->m_bCmdErr );
 
-  //eRS eResponse = (eRS)m_pSession->m_pSsnJob->pJobTags()->iValue("<rspKind>"_Stz);
-  //m_pSession->m_pSsnJob->vPrintResult(m_pSession,eResponse);
-
   if (m_pSession->m_pSsnJob->bJobHasError()) {
     vTrace("error: (node%lld) %s\n"_Stz, AM::iThisNodeNo(),
            aEC[m_pSession->m_pSsnJob->eJobError()]);

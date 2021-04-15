@@ -95,10 +95,7 @@ cmdSyntax: pipeline :: pipeline <pipelineNm> etc ;
 : pipeline_cmdTags _cmdTags tagCopy: distJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
-
-    <rspKind>  = RS_DIS2PC_RESPONSE
     <ddlLock>  = DL_GRAB_READ
-
     <preCheck> = bClusterStarted
   }
 ;
