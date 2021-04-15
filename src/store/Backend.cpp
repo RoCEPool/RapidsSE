@@ -410,12 +410,14 @@ void Backend::vAppendScanOp(Backend* pBackend, QueryNode* pNode)
   String* sPipeline = pBackend->m_sPipeline;
 
   QueryNode *pTableRef = TableScanOp::pTableRef(pNode);
-  Stz *szTableName = TableRef::szTable(pTableRef);
+  Stz *szCatalogName   = TableRef::szCatalog(pTableRef);
+  Stz *szSchemaName    = TableRef::szSchema(pTableRef);
+  Stz *szTableName     = TableRef::szTable(pTableRef);
 
   sPipeline->vCatSprint(
-      "    scan %s\n"
+      "    scan %s %s %s\n"
       ""_Stz,
-      szTableName);
+      szCatalogName, szSchemaName, szTableName);
 }
 
 /*----------------------------------------------------------------------------*/
