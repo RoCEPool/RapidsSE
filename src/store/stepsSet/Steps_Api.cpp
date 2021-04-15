@@ -150,12 +150,7 @@ void Step::vApiExecuteNested(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-//  eRS eResponse = (eRS)pJob->pJobTags()->iValue("<rspKind>"_Stz);
-//  pJob->vPrintResult(eResponse);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-//  Api::vDeleteJob(&pJob);
+  //  Api::vDeleteJob(&pJob);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -260,8 +255,6 @@ void Step::vApiExecuteRequest(void)
   Api::vExecuteJob(pSession);
   
   RASSERT(! pJob->bJobHasError() );
-  //eRS eResponse = (eRS)pJob->pJobTags()->iValue("<rspKind>"_Stz);
-  //pJob->vPrintResult(pSession,eResponse);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete job and free session
