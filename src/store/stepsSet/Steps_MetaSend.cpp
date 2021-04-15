@@ -26,6 +26,16 @@ void Step::vMetaSendGetParts(void)
   
   // ... code which gets all the parts of a meta-object and pipes them out ...
 
+  // get arguments
+  // pTable = ...;
+  
+  // call get parts code
+  // pTable->vPrepareObjParts();
+  // aParts = pTable->aObjParts();
+  
+  // put results
+  // foreach part, push part
+  
   EXIT();
 }
 

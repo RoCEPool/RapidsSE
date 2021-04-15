@@ -14772,6 +14772,8 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": metaGet_table \\handler\n"
     "\n"
+    "  MetaSend::getParts\n"
+    "    \n"
     "  true\n"
     " ;\n"
     "\n"

@@ -14,6 +14,8 @@ namespace BASE
   private:
     u8       m_uLockWord;         // lock word
   
+    //ObjId<CN_LOCK> m_xLockId;
+  
     Object*  m_pObjectLocked;
     Task*    m_pWriteLockingTask;
 

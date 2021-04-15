@@ -27,6 +27,12 @@ void Step::vMetaRecvPutParts(void)
   // ... code which pipesi in all the parts of a meta-object and
   //     gets the meta-object to reassemble itself ...
 
+  // get arguments
+
+  // call reassemble parts code
+  
+  // put results ??
+
   EXIT();
 }
 
