@@ -11762,6 +11762,7 @@ void Task::vAddMunged(Task* )
     "  // this word puts the folder path on the stack into task dictionary stack\n"
     "  // ( ... \"<subFolderC>\"  \"<subFolderB>\"  \"<subFolderA>\" \"main\" 4 )\n"
     "\n"
+    "\n"
     "  Path[].popAllFolders\n"
     "\n"
     "  dup not if discard exit_rt then\n"
