@@ -509,6 +509,7 @@ b1 Expr::bIsEqualOrSupersetOf(QueryNode* pSuperExpr, QueryNode* pSubExpr)
     // Recurse this function
     if (bIsEqualOrSupersetOf(pChildExpr, pSubExpr)) {
       // We got a match, no need to keep checking
+      delete pIter;
       return true;
     }
 
