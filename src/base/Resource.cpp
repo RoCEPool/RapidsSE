@@ -25,6 +25,7 @@ Resource* BASE::_pResource(void* aAddress)
 /*----------------------------------------------------------------------------*/
 Resource::Resource(eCN eClassNo, Object* pIsFor)
 : Loggable(eClassNo)
+, m_xResourceId(eClassNo)
 {
   _precondition_(_MAGIC_,eClassNo);
   
