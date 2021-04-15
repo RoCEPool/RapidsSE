@@ -26,6 +26,8 @@ namespace BASE
 
   private:
     Lock         m_okLock;       // lock for this task
+  
+    ObjId<CN_TASK> m_xObjectId;    // object id
 
     SMA<Job>     m_pJob;         // the job for this task
     SMA<Thread>  m_pThread;      // current thread

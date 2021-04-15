@@ -216,6 +216,7 @@ extern d8 C_D8_MID;
 #include "HV.hpp"
 #include "MemTest.hpp"
 #include "Now.hpp"
+#include "ObjId_t.hpp"
 #include "Rand.hpp"
 #include "SeeMe.hpp"
 #include "Sleep.hpp"
