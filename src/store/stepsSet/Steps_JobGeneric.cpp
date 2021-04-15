@@ -36,7 +36,7 @@ void Step::vJob__BegunNew(void)
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
   Job* pJobBegun = new Job(&pDistJob->m_xReqTuple);
-  pJobBegun->m_iObjectId = pDistJob->m_iObjectId;
+  pJobBegun->m_xJobId = pDistJob->iJobId();
   pJobBegun->vParticipantNode(AM::pGrid()->iThisNode());
   pJobBegun->vNormalSides(false);
   pJobBegun->vJobKind(JK_GENERIC);
@@ -44,7 +44,7 @@ void Step::vJob__BegunNew(void)
   pJobBegun->vJobNm("_begun"_Stz);
   pJobBegun->pJobTags()->vInsert(C_TAG_JOBNM,"_begun"_Stz);
   pJobBegun->pJobTags()->vInsert(C_TAG_PATH,"/"_Stz);
-  pJobBegun->pJobTags()->vInsert(C_TAG_DISTID,pDistJob->m_iObjectId);
+  pJobBegun->pJobTags()->vInsert(C_TAG_DISTID,pDistJob->iJobId());
   pJobBegun->pJobTags()->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNode());
   pJobBegun->pJobTags()->vInsert(C_TAG_SEEDRUN,"_begun_run"_Stz);
 
@@ -68,14 +68,14 @@ void Step::vJob__CancelNew(void)
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   Job* pJobCancel = new Job(&pDistJob->m_xReqTuple);
-  pJobCancel->m_iObjectId = pDistJob->m_iObjectId;
+  pJobCancel->m_xJobId = pDistJob->iJobId();
   pJobCancel->vParticipantNode(AM::pGrid()->iThisNode());
   pJobCancel->vJobKind(JK_GENERIC);
 
   pJobCancel->vJobNm("_cancel"_Stz);
   pJobCancel->pJobTags()->vInsert(C_TAG_JOBNM,"_cancel"_Stz);
   pJobCancel->pJobTags()->vInsert(C_TAG_PATH,"/"_Stz);
-  pJobCancel->pJobTags()->vInsert(C_TAG_DISTID,pDistJob->m_iObjectId);
+  pJobCancel->pJobTags()->vInsert(C_TAG_DISTID,pDistJob->iJobId());
   pJobCancel->pJobTags()->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNode());
   pJobCancel->pJobTags()->vInsert(C_TAG_SEEDRUN,"_cancel_run"_Stz);
 
@@ -99,7 +99,7 @@ void Step::vJob__CancelledNew(void)
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
   Job* pJobCancelled = new Job(&pDistJob->m_xReqTuple);
-  pJobCancelled->m_iObjectId = pDistJob->m_iObjectId;
+  pJobCancelled->m_xJobId = pDistJob->iJobId();
   pJobCancelled->vParticipantNode(AM::pGrid()->iThisNode());
   pJobCancelled->vNormalSides(false);
   pJobCancelled->vJobKind(JK_GENERIC);
@@ -109,7 +109,7 @@ void Step::vJob__CancelledNew(void)
   pJobCancelled->vJobNm("_cancelled"_Stz);
   pJobCancelled->pJobTags()->vInsert(C_TAG_JOBNM,"_cancelled"_Stz);
   pJobCancelled->pJobTags()->vInsert(C_TAG_PATH,"/"_Stz);
-  pJobCancelled->pJobTags()->vInsert(C_TAG_DISTID,pDistJob->m_iObjectId);
+  pJobCancelled->pJobTags()->vInsert(C_TAG_DISTID,pDistJob->iJobId());
   pJobCancelled->pJobTags()->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNode());
   pJobCancelled->pJobTags()->vInsert(C_TAG_SEEDRUN,"_cancelled_run"_Stz);
 
@@ -131,7 +131,7 @@ void Step::vJob__EndNew(void)
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   Job* pJobEnd = new Job(&pDistJob->m_xReqTuple); // new Job__End(pDistJob);
-  pJobEnd->m_iObjectId = pDistJob->m_iObjectId;
+  pJobEnd->m_xJobId = pDistJob->iJobId();
   pJobEnd->vParticipantNode(AM::pGrid()->iThisNode());
   pJobEnd->vJobKind(JK_GENERIC);
   
@@ -140,7 +140,7 @@ void Step::vJob__EndNew(void)
   pJobEnd->vJobNm("_end"_Stz);
   pJobEnd->pJobTags()->vInsert(C_TAG_JOBNM,"_end"_Stz);
   pJobEnd->pJobTags()->vInsert(C_TAG_PATH,"/"_Stz);
-  pJobEnd->pJobTags()->vInsert(C_TAG_DISTID,pDistJob->m_iObjectId);
+  pJobEnd->pJobTags()->vInsert(C_TAG_DISTID,pDistJob->iJobId());
   pJobEnd->pJobTags()->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNode());
   pJobEnd->pJobTags()->vInsert(C_TAG_SEEDRUN,"_end_run"_Stz);
 
@@ -162,7 +162,7 @@ void Step::vJob__EndedNew(void)
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   Job* pJobEnded = new Job(&pDistJob->m_xReqTuple);
-  pJobEnded->m_iObjectId = pDistJob->m_iObjectId;
+  pJobEnded->m_xJobId = pDistJob->iJobId();
   pJobEnded->vParticipantNode(AM::pGrid()->iThisNode());
   pJobEnded->vNormalSides(false);
   pJobEnded->vJobKind(JK_GENERIC);
@@ -170,7 +170,7 @@ void Step::vJob__EndedNew(void)
   pJobEnded->vJobNm("_ended"_Stz);
   pJobEnded->pJobTags()->vInsert(C_TAG_JOBNM,"_ended"_Stz);
   pJobEnded->pJobTags()->vInsert(C_TAG_PATH,"/"_Stz);
-  pJobEnded->pJobTags()->vInsert(C_TAG_DISTID,pDistJob->m_iObjectId);
+  pJobEnded->pJobTags()->vInsert(C_TAG_DISTID,pDistJob->iJobId());
   pJobEnded->pJobTags()->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNode());
   pJobEnded->pJobTags()->vInsert(C_TAG_SEEDRUN,"_ended_run"_Stz);
 
@@ -194,7 +194,7 @@ void Step::vJob__ExecuteNew(void)
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   Job* pJobExecute = new Job(&pDistJob->m_xReqTuple);
-  pJobExecute->m_iObjectId = pDistJob->m_iObjectId;
+  pJobExecute->m_xJobId = pDistJob->iJobId();
   pJobExecute->vParticipantNode(AM::pGrid()->iThisNode());
   pJobExecute->vJobKind(JK_GENERIC);
   
@@ -203,7 +203,7 @@ void Step::vJob__ExecuteNew(void)
   pJobExecute->vJobNm("_execute"_Stz);
   pJobExecute->pJobTags()->vInsert(C_TAG_JOBNM,"_execute"_Stz);
   pJobExecute->pJobTags()->vInsert(C_TAG_PATH,"/"_Stz);
-  pJobExecute->pJobTags()->vInsert(C_TAG_DISTID,pDistJob->m_iObjectId);
+  pJobExecute->pJobTags()->vInsert(C_TAG_DISTID,pDistJob->iJobId());
   pJobExecute->pJobTags()->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNode());
   pJobExecute->pJobTags()->vInsert(C_TAG_SEEDRUN,"_execute_run"_Stz);
 
@@ -225,7 +225,7 @@ void Step::vJob__ExecutedNew(void)
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   Job* pJobExecuted = new Job(&pDistJob->m_xReqTuple); 
-  pJobExecuted->m_iObjectId = pDistJob->m_iObjectId;
+  pJobExecuted->m_xJobId = pDistJob->iJobId();
   pJobExecuted->vParticipantNode(AM::pGrid()->iThisNode());
   pJobExecuted->vNormalSides(false);
   pJobExecuted->vJobKind(JK_GENERIC);
@@ -233,7 +233,7 @@ void Step::vJob__ExecutedNew(void)
   pJobExecuted->vJobNm("_executed"_Stz);
   pJobExecuted->pJobTags()->vInsert(C_TAG_JOBNM,"_executed"_Stz);
   pJobExecuted->pJobTags()->vInsert(C_TAG_PATH,"/"_Stz);
-  pJobExecuted->pJobTags()->vInsert(C_TAG_DISTID,pDistJob->m_iObjectId);
+  pJobExecuted->pJobTags()->vInsert(C_TAG_DISTID,pDistJob->iJobId());
   pJobExecuted->pJobTags()->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNode());
   pJobExecuted->pJobTags()->vInsert(C_TAG_SEEDRUN,"_executed_run"_Stz);
 
