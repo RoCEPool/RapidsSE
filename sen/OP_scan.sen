@@ -180,6 +180,12 @@
 
   LogReqEntry SEED_REQ
 
+  "<catalogNm>"  job[] job.tagSet@ tagSet.hasName if
+    <schemaNm> <catalogNm>
+    "/tenants/boray/catalogs/%v/schemas/%v/tables" str.format
+    str.toStrVec Path[].set
+  then
+
   op__topology
 
   find: scan_CancelMarker ZK_CANCELMARKER op[].handler!
