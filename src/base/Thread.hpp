@@ -7,11 +7,14 @@
 
 namespace BASE
 {
-  class Thread : public Loggable,
+  class Thread : public Object,
                  public ListItem_t<Thread>
   {
   private:
     Mutex    m_oMutex;        // this threads mutex
+  
+    ObjId<CN_THREAD> m_xThreadId; // threads object id
+
     eCN      m_eDedicated;    // thread is dedicated to one specific job?
     eHS      m_eThreadState;  // thread state
   
