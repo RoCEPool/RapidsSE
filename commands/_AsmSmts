@@ -9,9 +9,44 @@ print "Cluster started" ;
 
 //trackMemory;
 
+create table customer (
+   C_CUSTKEY       INTEGER       NOT NULL,  // 0)
+   C_NAME          VARCHAR(25)   NOT NULL,  // 1)
+   C_ADDRESS       VARCHAR(40)   NOT NULL,  // 2)
+   C_NATIONKEY     INTEGER       NOT NULL,  // 3)
+   C_PHONE         CHAR(15)      NOT NULL,  // 4)
+   C_ACCTBAL       DECIMAL(15,2) NOT NULL,  // 5)
+   C_MKTSEGMENT    CHAR(10)      NOT NULL,  // 6)
+   C_COMMENT       VARCHAR(117)  NOT NULL   // 7)
+);
+create index Customer_Idx1 ON Customer(C_CUSTKEY);
+
+print "loading Customer...";
+ /time load Customer "../DATA/TPCH/customer10.csv";
+///time load Customer "/Users/Shared/tpch/SF0/customer_10k.csv";
+
+compactIdx Customer Customer_Idx1;
+
+create table customer2 (
+   C_CUSTKEY       INTEGER       NOT NULL,  // 0)
+   C_NAME          VARCHAR(25)   NOT NULL,  // 1)
+   C_ADDRESS       VARCHAR(40)   NOT NULL,  // 2)
+   C_NATIONKEY     INTEGER       NOT NULL,  // 3)
+   C_PHONE         CHAR(15)      NOT NULL,  // 4)
+   C_ACCTBAL       DECIMAL(15,2) NOT NULL,  // 5)
+   C_MKTSEGMENT    CHAR(10)      NOT NULL,  // 6)
+   C_COMMENT       VARCHAR(117)  NOT NULL   // 7)
+);
+
+print "loading Customer...";
+ /time load Customer2 "../DATA/TPCH/customer10.csv";
+///time load Customer "/Users/Shared/tpch/SF0/customer_10k.csv";
+
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-print "creating Customer...";
+print "creating lineitem...";
+
 
 create table LineItem
 (
@@ -61,14 +96,145 @@ create index Orders_Idx2 ON Orders(O_ORDERKEY);
 print "loading Orders...";
  /time load Orders "../DATA/TPCH/orders10.csv";
 
-projectColumns_I lineitem "1";
+//projectColumns_I lineitem "1";
 //projectColumns_I lineitem "l_discount , 1";
 
 //filterRows lineitem "l_orderkey 1 == <>";
 
 //filterRows lineitem "1 1 == <>";
 
+
+//select l_orderkey from rapidsse.public.lineitem;
+
+//select L_ORDERKEY + 1 , sum(L_QUANTITY) from lineitem group by l_orderkey + 1;
+
+//explain SELECT l_orderkey FROM lineitem UNION ALL SELECT o_orderkey FROM orders;
+
+//SELECT l_orderkey FROM lineitem UNION ALL SELECT o_orderkey FROM orders;
+
+//explain SELECT * FROM lineitem UNION ALL CORRESPONDING BY (o_orderkey) SELECT * FROM orders;
+
+select * from lineitem;
+
+projectColumns_I lineitem type integer 1 $1 +;
+projectColumns lineitem type integer 1 $1 +;
 /*
+
+SELECT l_orderkey FROM lineitem UNION ALL SELECT o_orderkey FROM orders;
+
+pipeline x
+begin
+  stage stageA on origin :
+    start
+    | periodic once
+    | stageB
+
+  stage stageB on all partitions :
+       stageC | stageD
+
+  stage stageC on all partitions :
+    scan LineItem
+    | project
+    | stageE
+
+  stage stageD on all partitions :
+    scan orders
+    | project
+    | stageE
+
+  stage stageE on origin :
+    output
+    | sink
+    | stageA
+end ;
+
+
+  SELECT l_orderkey FROM lineitem
+UNION ALL
+  SELECT o_orderkey FROM orders
+UNION ALL
+  SELECT c_custkey FROM customer
+UNION ALL
+   SELECT c_custkey FROM customer2
+;
+
+
+pipeline x
+begin
+  stage stageA on origin :
+    start
+    | periodic once
+    | stageB
+
+  stage stageB on all partitions :
+    stageC | stageF
+
+  stage stageC on all partitions :
+    stageD | stageE
+
+  stage stageD on all partitions :
+    scan LineItem
+    | project 0 "type integer as orderkey $1"
+    | stageG
+
+  stage stageE on all partitions :
+    scan orders
+    | project 0 "type integer as orderkey $1"
+    | stageG
+
+  stage stageF on all partitions :
+    scan customer
+    | project 0 "type integer as orderkey $1"
+    | stageG
+
+  stage stageG on origin :
+    output
+    | sink
+    | stageA
+end ;
+
+
+pipeline x
+begin
+  stage stageA on origin :
+    start
+    | periodic once
+    | stageB
+
+  stage stageB on all partitions :
+    stageC | stageG
+
+  stage stageC on all partitions :
+    stageD
+
+  stage stageD on all partitions :
+    stageE | stageF
+
+  stage stageE on all partitions :
+    scan LineItem
+    | project 0 "type integer as orderkey $1"
+    | stageH
+
+  stage stageF on all partitions :
+    scan orders
+    | project 0 "type integer as orderkey $1"
+    | stageH
+
+  stage stageG on all partitions :
+    scan customer
+    | project 0 "type integer as orderkey $1"
+    | stageH
+
+  stage stageH on origin :
+    output
+    | sink
+    | stageA
+end ;
+
+
+
+
+
 
 //select L_ORDERKEY, L_QUANTITY from lineitem where  L_ORDERKEY = 1;
 

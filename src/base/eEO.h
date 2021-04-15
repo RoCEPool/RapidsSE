@@ -270,9 +270,11 @@ enum eEO : u1 // expression operators
   /*     */ EO_DEVROW_ROWBUF_RESET,  // reset rowslab in row dev
   /*     */ EO_DEVROW_ROWBUF_TEST,   // test if buffer in row dev
 
-  // row device column operators
-  /*    */ EO_DEVROW_POPCOLI,  // pop and deposit top into column
+  // row device column pop operators
+  /*    */ EO_DEVROW_POPCOLI,  // pop and deposit top integer into column
   /*    */ EO_DEVROW_POPCOLS,  // pop and deposit top string into column
+
+  // row device column push operators
   /*    */ EO_DEVROW_PUSHCOLI, // push column
   /*    */ EO_DEVROW_PUSHCOLS, // push column string
 
