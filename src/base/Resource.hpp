@@ -5,7 +5,7 @@
 
 namespace BASE
 {
-  class Resource : public Loggable
+  class Resource : public Object
   {
   protected:
   
