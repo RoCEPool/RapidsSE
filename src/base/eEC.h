@@ -12,6 +12,7 @@ enum eEC // error code
   // - - - - - - - - - - - - - - - - - - -
   /* _A_ */
   EC_AGG_EXPR_IN_WHERE_CLAUSE,      // SQL Compiler Subsystem
+  EC_AMBIGUOUS_ALIAS,               // SQL Compiler Subsystem
   EC_AMBIGUOUS_COLUMN,              // SQL Compiler Subsystem
   EC_AMBIGUOUS_TABLE,               // SQL Compiler Subsystem
   EC_ASSERT,
@@ -227,6 +228,7 @@ static Stz* aEC[]
 
   /* _A_ */
   /* EC_AGG_EXPR_IN_WHERE_CLAUSE      */ "EC_AGG_EXPR_IN_WHERE_CLAUSE"_Stz, // SQL Compiler Subsystem
+  /* EC_AMBIGUOUS_ALIAS               */ "EC_AMBIGUOUS_ALIAS"_Stz,          // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_COLUMN              */ "EC_AMBIGUOUS_COLUMN"_Stz,         // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_TABLE               */ "EC_AMBIGUOUS_TABLE"_Stz,          // SQL Compiler Subsystem
   /* EC_ASSERT                        */ "assert"_Stz,
@@ -442,6 +444,7 @@ static Stz* aEC2[] // error code
 
   /* _A_ */
   /* EC_AGG_EXPR_IN_WHERE_CLAUSE      */ "EC_AGG_EXPR_IN_WHERE_CLAUSE"_Stz,       // SQL Compiler Subsystem
+  /* EC_AMBIGUOUS_ALIAS               */ "EC_AMBIGUOUS_ALIAS"_Stz,                // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_COLUMN              */ "EC_AMBIGUOUS_COLUMN"_Stz,               // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_TABLE               */ "EC_AMBIGUOUS_TABLE"_Stz,                // SQL Compiler Subsystem
   /* EC_ASSERT                        */ "EC_ASSERT"_Stz,
@@ -669,6 +672,7 @@ static Stz* aErrorMsg[]
   // - - - - - - - - - - - - - - - - - - -
   /* _A_ */
   /* EC_AGG_EXPR_IN_WHERE_CLAUSE      */ "Cannot specify an aggregate expression in a WHERE clause"_Stz, // SQL Compiler Subsystem
+  /* EC_AMBIGUOUS_ALIAS               */ "Ambiguous alias name"_Stz,      // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_COLUMN              */ "Ambiguous column name"_Stz,     // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_TABLE               */ "Ambiguous table name"_Stz,      // SQL Compiler Subsystem
   /* EC_ASSERT                        */ "assert"_Stz,

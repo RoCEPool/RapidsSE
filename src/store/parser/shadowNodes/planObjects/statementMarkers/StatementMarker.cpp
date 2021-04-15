@@ -65,7 +65,7 @@ void StatementMarker::vDescribe(PlanNode* pNode, s2K& buf)
 
   QueryNode* pStmt = _pQueryNode(pNode);
 
-  buf.vConcat(GraphNav::szLeafType(pNode->szType()));
+  buf.vConcat(GraphNav::szLeafType(pStmt->szType()));
 }
 
 

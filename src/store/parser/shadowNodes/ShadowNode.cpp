@@ -39,6 +39,7 @@ b1 ShadowNode::bValidate(QueryNode* pQueryNode, PlanNode* pPlanRoot,
 {
   ASSERT(pQueryNode);
   ASSERT(pPlanRoot);
+  UNUSED(pPlanRoot);
 
   // Validate that this node is of the expected type
   fTypeValidator(pQueryNode);

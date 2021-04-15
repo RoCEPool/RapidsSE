@@ -44,6 +44,7 @@ b1 SetOpValidator::bHasSetOps(PlanNode *pRootNode)
 
   // A condition to test for any set operators
   auto fCondition = [](PlanNode* pNode, void* pvArg) -> b1 {
+    UNUSED(pvArg);
     return (SetOp::bIsOfType(pNode));
   };
 
@@ -74,6 +75,10 @@ void SetOpValidator::vSimplifySetOps(PlanNode *pRootNode)
   // Iterate each logical subgraph, bounded by StatementMarkers
   auto fVisitor = [pRootNode]
       (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(pvArg);
 
     if (!StatementMarker::bIsOfType(pNode)) {
       return GraphNav::WALK_CONTINUE;
@@ -118,6 +123,10 @@ void SetOpValidator::vValidateSetOps(PlanNode *pRootNode)
   auto fVisitor = [pRootNode]
       (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(pvArg);
+
     if (!StatementMarker::bIsOfType(pNode)) {
       return GraphNav::WALK_CONTINUE;
     }
@@ -149,6 +158,7 @@ void SetOpValidator::vValidateSetOp(QueryNode* pStatementMarker, PlanNode *pRoot
   // Firstly, do we have a set operator in this statement section (bounded by StatementMarkers)?
   // Do a search for them within this statement section only.
   auto fCondition = [](PlanNode* pNode, void* pvArg) -> b1 {
+    UNUSED(pvArg);
     return (SetOp::bIsOfType(pNode));
   };
 

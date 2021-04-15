@@ -84,6 +84,8 @@ eCT ColumnOrdinal::eType(QueryNode* pNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
+  UNUSED(pNode);
+  UNUSED(pRootNode);
 
   // This should never be called because an column ordinal knows nothing of
   // the expression nodes it is representing. Instead, the symbolic expression

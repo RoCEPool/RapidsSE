@@ -45,6 +45,7 @@ void SqlIntervalYM::vDescribe(PlanNode* pNode, s2K& sBuf)
 {
   _static_
   ASSERT(bIsOfType(pNode));
+  UNUSED(pNode);
 
   sBuf.vConcat("INTERVAL YEAR TO MONTH"_Stz);
 }

@@ -605,6 +605,24 @@
                   ]
                 }, // EndPath: /__root__/definitions/object/expr/columnRef
 
+// Path: /__root__/definitions/object/expr/aliasRef
+                {
+                  name: "aliasRef",
+                  value: "A reference to an alias name",
+                  properties: [
+                    {
+                      name: "aliasName",
+                      value: "The name of the alias",
+                      type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject"
+                    },
+                    {
+                      name: "aliasExpr",
+                      value: "The expression tree that is being aliased",
+                      type: "/__root__/definitions/object/expr"
+                    }
+                  ]
+                }, // EndPath: /__root__/definitions/object/expr/aliasRef
+
 // Path: /__root__/definitions/object/expr/columnWildcard
                 {
                   name: "columnWildcard",

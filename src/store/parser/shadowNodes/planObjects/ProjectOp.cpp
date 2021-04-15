@@ -269,6 +269,8 @@ QueryNodeList* ProjectOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
   ASSERT(bIsOfType(pNode));
   ASSERT(pRootNode);
 
+  UNUSED(pRootNode);
+
   // Create a list for the columnRefs to be returned
   QueryNodeList* pColumnRefList = new QueryNodeList();
 

@@ -53,6 +53,7 @@ void UnionOp::vDescribe(PlanNode* pNode, s2K& sBuf)
   ASSERT(bIsOfType(pNode));
 
   QueryNode* pUnionOp = _pQueryNode(pNode);
+  UNUSED(pUnionOp);
 
   sBuf.vConcat("UnionOp :\n  "_Stz);
 

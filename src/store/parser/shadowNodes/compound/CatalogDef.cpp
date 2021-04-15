@@ -69,7 +69,6 @@ void CatalogDef::vDescribe(PlanNode* pNode, s2K& sBuf)
   QueryNode* pCatalogDef = _pQueryNode(pNode);
 
   QueryNode* pCatalogName = _pQueryNode(GraphNav::pFindProperty(C_CATALOGNAME_PROP, pCatalogDef));
-  QueryNode* pSchemas     = _pQueryNode(GraphNav::pFindProperty(C_SCHEMAS_PROP, pCatalogDef));
 
   ASSERT(pCatalogName);
   ASSERT(pCatalogName->szValue());

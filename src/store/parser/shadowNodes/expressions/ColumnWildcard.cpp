@@ -124,6 +124,8 @@ eCT ColumnWildcard::eType(QueryNode* pNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
+  UNUSED(pNode);
+  UNUSED(pRootNode);
 
   // This should never be called. The ColumnWildcard should instead be replaced
   // with specific ColumnRefs once the tables in the plan have been resolved.

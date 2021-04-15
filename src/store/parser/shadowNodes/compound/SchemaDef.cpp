@@ -83,7 +83,6 @@ void SchemaDef::vDescribe(PlanNode* pNode, s2K& sBuf)
 
   QueryNode* pCatalogName = _pQueryNode(GraphNav::pFindProperty(C_CATALOGNAME_PROP, pSchemaDef));
   QueryNode* pSchemaName  = _pQueryNode(GraphNav::pFindProperty(C_SCHEMANAME_PROP, pSchemaDef));
-  QueryNode* pTables     = _pQueryNode(GraphNav::pFindProperty(C_TABLES_PROP, pSchemaDef));
 
   ASSERT(pCatalogName);
   ASSERT(pSchemaName);

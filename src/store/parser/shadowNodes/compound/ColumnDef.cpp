@@ -69,6 +69,10 @@ QueryNode* ColumnDef::pCreate(Stz* szCatalogName, Stz* szSchemaName, Stz* szTabl
   ASSERT(iPrecision >= -1);
   ASSERT(iScale >= -1);
 
+  UNUSED(iOrdinal);
+  UNUSED(iPrecision);
+  UNUSED(iScale);
+
   // Create the columnDef object
   QueryNode* pColumnDef = new QueryNode(szColumnName, C_COLUMNDEF_DEFN);
 

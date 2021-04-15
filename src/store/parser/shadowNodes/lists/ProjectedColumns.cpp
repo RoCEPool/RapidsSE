@@ -51,7 +51,7 @@ void ProjectedColumns::vDescribe(PlanNode* pNode, s2K& sBuf)
 
   QueryNode* pProjectedColumns = _pQueryNode(pNode);
 
-  PlanNodeIter* pIter = pNode->pNewChildrenIter();
+  PlanNodeIter* pIter = pProjectedColumns->pNewChildrenIter();
   b1 bFirst = true;
 
   while (pIter->bHasNext()) {

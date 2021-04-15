@@ -56,6 +56,13 @@ namespace Parser
                                                 PlanNode*  pRootNode,
                                                 QueryNode* pMetadataNode);
 
+    // Return a list of ProjectedColumn nodes that are reachable from a given sql operator
+    // and that contain a given alias name.
+    static QueryNodeList* pMatchingExprAliasesFor(Stz* szAlias,
+                                                  QueryNode* pSqlOp,
+                                                  PlanNode* pRootNode);
+
+
     // Assert that all tables and columns are fully resolved and that there are
     // no columnWildcards left in the plan
     static void vAssertNamesResolved(PlanNode* pRootNode, QueryNode* pPlanNode);

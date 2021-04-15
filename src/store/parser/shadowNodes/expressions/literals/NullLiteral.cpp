@@ -47,6 +47,7 @@ void NullLiteral::vDescribe(PlanNode* pNode, s2K& sBuf)
   _static_
   ASSERT(bIsOfType(pNode));
   ASSERT(pNode->eValueType() == Value::VT_UNKNOWN);
+  UNUSED(pNode);
 
   sBuf.vConcat("NULL"_Stz);
 }
@@ -74,6 +75,8 @@ eCT NullLiteral::eType(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pExprNode));
+  UNUSED(pExprNode);
+  UNUSED(pRootNode);
 
   return CT_UNKNOWN;
 }

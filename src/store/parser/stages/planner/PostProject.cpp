@@ -64,6 +64,9 @@ void PostProject::vCheckPostProject(PlanNode *pRootNode)
 /*----------------------------------------------------------------------------*/
 GraphNav::eWalkCtrl PostProject::eStmtMarkerVisitor(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
 {
+  UNUSED(sPath);
+  UNUSED(iDepth);
+
   if (!StatementMarker::bIsOfType(pNode)) {
     return GraphNav::WALK_CONTINUE;
   }
@@ -78,6 +81,7 @@ GraphNav::eWalkCtrl PostProject::eStmtMarkerVisitor(PlanNode* pNode, s256& sPath
 
   // If there is a SetOp in this section then ignore it completely
   auto fHasSetOp = [](PlanNode* pNode, void* pvArg) -> b1 {
+    UNUSED(pvArg);
     return SetOp::bIsOfType(pNode);
   };
 
@@ -122,6 +126,9 @@ GraphNav::eWalkCtrl PostProject::eStmtMarkerVisitor(PlanNode* pNode, s256& sPath
 /*----------------------------------------------------------------------------*/
 GraphNav::eWalkCtrl PostProject::eStmtSectionVisitor(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
 {
+  UNUSED(sPath);
+  UNUSED(iDepth);
+
   OpContainer* pContainer = static_cast<OpContainer*>(pvArg);
   ASSERT(pContainer);
 

@@ -130,6 +130,8 @@ eCT CountExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pExprNode));
+  UNUSED(pExprNode);
+  UNUSED(pRootNode);
 
   // Reference:
   // SQL standard 2008 (draft): Part 2 (Foundation), page 537, section 10.9, point (6)
