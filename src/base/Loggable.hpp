@@ -25,33 +25,9 @@ namespace BASE
     i8  m__spare1;    //
 
   public:
-    Loggable(eCN eClassNo, i8 iLogCtl=C_LOG);
+    Loggable(eCN eClassNo);
    ~Loggable(void) noexcept(false);
   
-    void vLog_TBR(eEV eEvent, Stz* szFormat, ...);
-
-    void vLogTI(i8 iTable, ...);
-
-    eEV  eEvent(void);
-    void vEvent(eEV eEvent);
-
-    i8   iEventNo(void);
-    void vEventNoInc(void);
-
-    i8   iEventTick(void);
-    void vEventTickSet(void);
-
-    i8   iObjectId(void);
-    void vObjectId(i8 iObjectId);
-
-    Stz* sObjectNm(void);
-    void vObjectNm(Stz* szObjectNm);
-
-    void vNextEvent(eEV m_eEvent);
-  
-  private:
-    void vAddRow(eEV eEvent, Stz* szNote);
-
   };
 }
 

@@ -5,7 +5,7 @@
 
 namespace BASE
 {
-  class TaskQueue : public Loggable
+  class TaskQueue : public Object
   {
   private:
     eQK         m_eKind;

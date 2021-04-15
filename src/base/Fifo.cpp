@@ -39,7 +39,7 @@ Fifo::Fifo(void)
   
   _postcondition_(_MAGIC_,CN_FIFO,_FOOTER_);
   
-  vLog_TBR(EV_CONSTRUCT,"Fifo constructor"_Stz);
+  AM::LOG::vEvent(EV_CONSTRUCT,"Fifo constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -59,7 +59,7 @@ Fifo::Fifo(Stz* sFifoPath)
   
   _postcondition_(_MAGIC_,CN_FIFO,_FOOTER_);
   
-  vLog_TBR(EV_CONSTRUCT,"Fifo constructor"_Stz);
+  AM::LOG::vEvent(EV_CONSTRUCT,"Fifo constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -71,7 +71,7 @@ Fifo::~Fifo(void) noexcept(false)
   
   -- gixFifo;
 
-  vLog_TBR(EV_DESTRUCT,"Fifo destructor"_Stz);
+  AM::LOG::vEvent(EV_DESTRUCT,"Fifo destructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -6,7 +6,7 @@
 namespace BASE
 {
   template <class ITEM> 
-  class ListNL_t : public Loggable,
+  class ListNL_t : public Object,
                    public ListNL_t__<ITEM>
   {
   protected:
@@ -60,7 +60,7 @@ void ListNL_t<ITEM>::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
 ListNL_t<ITEM>::ListNL_t(eCN eClassNo)
-: Loggable(eClassNo)
+: Object(eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
     

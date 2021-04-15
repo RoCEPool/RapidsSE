@@ -49,6 +49,9 @@ namespace Parser
     // function is implemented by all PlanObjects.
     static QueryNodeList* pColumnExprs(QueryNode* pNode, PlanNode* pRootNode);
 
+    // Merges the ProjectOp, pOtherOp, into this ProjectOp
+    static void vSquash(QueryNode* pNode, QueryNode* pOtherOp, PlanNode* pRootNode);
+
   protected:
 
   };

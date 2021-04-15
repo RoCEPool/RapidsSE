@@ -23,19 +23,8 @@ NamedBuffer* STORE::_pNamedBuffer(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-//NamedBuffer::NamedBuffer(void)
-//: RowBuffer(CN_NAMEDBUFFER)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_NAMEDBUFFER);
-//
-//  _postcondition_(_ADDRESS_,_MAGIC_,CN_NAMEDBUFFER);
-//}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-NamedBuffer::NamedBuffer(StreamDef* pStreamDef, i8 iLogCtl)
-: RowBuffer(CN_NAMEDBUFFER,pStreamDef,iLogCtl)
+NamedBuffer::NamedBuffer(StreamDef* pStreamDef)
+: RowBuffer(CN_NAMEDBUFFER,pStreamDef)
 {
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_NAMEDBUFFER);
 

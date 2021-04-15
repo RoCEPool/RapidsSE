@@ -10,8 +10,7 @@ namespace STORE
   class NamedBuffer : public RowBuffer
   {
   public:
-    //NamedBuffer(void);
-    NamedBuffer(StreamDef* pStreamDef, i8 iLogCtl=C_LOG);
+    NamedBuffer(StreamDef* pStreamDef);
    ~NamedBuffer(void) noexcept(false);
   };
 

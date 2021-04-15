@@ -5,7 +5,7 @@
 
 namespace BASE
 {
-  class Schedule : public Loggable
+  class Schedule : public Object
   {
   friend Scheduler;
   

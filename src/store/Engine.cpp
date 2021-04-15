@@ -842,8 +842,8 @@ void Engine::vInternalTables(void)
 {
   StreamDef* pStreamDef;
   
-  pStreamDef = AM::pStreamDefFind(C_TDEF_EVENTS);
-  gpAttachMap->m_pInternalTables->vStreamDef(TI_EVENTS,pStreamDef);
+  pStreamDef = AM::pStreamDefFind(C_TDEF_EVENTLOG);
+  gpAttachMap->m_pInternalTables->vStreamDef(TI_EVENTLOG,pStreamDef);
   
   pStreamDef = AM::pStreamDefFind(C_TDEF_MEMORYLOG);
   gpAttachMap->m_pInternalTables->vStreamDef(TI_MEMORYLOG,pStreamDef);
@@ -1164,7 +1164,7 @@ void Engine::vOpenTrace(void)
   //if (AM::bVerboseProgress())
   //  vInfo("\n*\n* Opening Trace File\n*\n"_Stz);
   
-  gpTraceFile = new(C_VIA_MALLOC) File(nullptr,C_DONT_LOG);
+  gpTraceFile = new(C_VIA_MALLOC) File(nullptr);
   
   bool bOpened;
 

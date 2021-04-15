@@ -29,7 +29,7 @@ Mutex* BASE::_pMutex(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Mutex::Mutex(Object* pIsFor)
-: Loggable(CN_MUTEX)
+: Object(CN_MUTEX)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
@@ -91,7 +91,7 @@ Mutex::Mutex(Object* pIsFor)
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
-  vLog_TBR(EV_CONSTRUCT,"Mutex constructor"_Stz);
+  AM::LOG::vEvent(EV_CONSTRUCT,"Mutex constructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -125,7 +125,7 @@ Mutex::~Mutex(void) noexcept(false)
   
   -- gixMutex;
   
-  vLog_TBR(EV_DESTRUCT,"Mutex destructor"_Stz);
+  AM::LOG::vEvent(EV_DESTRUCT,"Mutex destructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -199,7 +199,7 @@ bool Mutex::bIsLocked(void)
 /*----------------------------------------------------------------------------*/
 /* test if a mutex is locked                                                  */
 /*----------------------------------------------------------------------------*/
-bool Mutex::bIsLockedByCaller(Loggable* pLockedby)
+bool Mutex::bIsLockedByCaller(Object* pLockedby)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
@@ -215,7 +215,7 @@ bool Mutex::bIsLockedByCaller(Loggable* pLockedby)
 /*----------------------------------------------------------------------------*/
 /* attempt to lock this mutex by calling thread                               */
 /*----------------------------------------------------------------------------*/
-bool Mutex::bLock(Loggable* pLockFor)
+bool Mutex::bLock(Object* pLockFor)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
@@ -260,7 +260,7 @@ bool Mutex::bLock(Loggable* pLockFor)
 /*----------------------------------------------------------------------------*/
 /* lock this mutex for given focal object                          (blocking) */
 /*----------------------------------------------------------------------------*/
-void Mutex::vLock(Loggable* pLockFor)
+void Mutex::vLock(Object* pLockFor)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
@@ -300,7 +300,7 @@ void Mutex::vLock(Loggable* pLockFor)
 /*----------------------------------------------------------------------------*/
 /* calling thread pauses for limited time to be signalled     (blocking call) */
 /*----------------------------------------------------------------------------*/
-void Mutex::vPause(Loggable* pLockedBy, i8 iMicroSeconds)
+void Mutex::vPause(Object* pLockedBy, i8 iMicroSeconds)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
@@ -384,7 +384,7 @@ void Mutex::vPause(Loggable* pLockedBy, i8 iMicroSeconds)
 /*----------------------------------------------------------------------------*/
 /* signal the condition variable of this mutex                                */
 /*----------------------------------------------------------------------------*/
-void Mutex::vSignal(Loggable* pLockedBy)
+void Mutex::vSignal(Object* pLockedBy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
@@ -430,7 +430,7 @@ void Mutex::vSignal(Loggable* pLockedBy)
 /*----------------------------------------------------------------------------*/
 /* unlock this mutex currently locked by given focal object                   */
 /*----------------------------------------------------------------------------*/
-void Mutex::vUnlock(Loggable* pLockedBy)
+void Mutex::vUnlock(Object* pLockedBy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
@@ -467,7 +467,7 @@ void Mutex::vUnlock(Loggable* pLockedBy)
 /*----------------------------------------------------------------------------*/
 /* calling thread waits indefinitely to be signaled           (blocking call) */
 /*----------------------------------------------------------------------------*/
-void Mutex::vWait(Loggable* pLockedBy)
+void Mutex::vWait(Object* pLockedBy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   

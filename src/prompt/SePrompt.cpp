@@ -51,7 +51,7 @@ __aFooterFunction(SePrompt)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SePrompt::SePrompt(bool bOneCommand)
-: Loggable(CN_SEPROMPT)
+: Object(CN_SEPROMPT)
 , m_oMutex(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
@@ -87,7 +87,7 @@ SePrompt::SePrompt(bool bOneCommand)
   
   _checkInitialised_(CN_SEPROMPT);
   
-  vLog_TBR(EV_CONSTRUCT,"SePrompt constructor"_Stz);
+  AM::LOG::vEvent(EV_CONSTRUCT,"SePrompt constructor"_Stz);
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -141,7 +141,7 @@ SePrompt::~SePrompt(void) noexcept(false)
   
   AM::THREAD::vDeleteThread(m_pThread);
 
-  vLog_TBR(EV_DESTRUCT,"SePrompt destructor"_Stz);
+  AM::LOG::vEvent(EV_DESTRUCT,"SePrompt destructor"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -811,7 +811,6 @@ void SePrompt::vLogCommand(void)
   m_pInpTknVec->vVecToString(sCommand,0,true);
   sCommand.vSizeMax(C_MAX_LOG_NOTE / 2);
   
-  vEventNoInc();
 //  AM::vLogPrm(SL_INF,this,PA_PRM_COMMAND,
 //              "%lld %s"_Stz, //!format-LogPrm
 //              m_xReqTuple.m_iReqNo,sCommand.szStz());
@@ -830,7 +829,6 @@ void SePrompt::vLogFreeSpace(void)
   s32 sFreeSpaceMag;
   MagLib::vByteMag(iFreeSpace + iFreeSpaceInPool,1,sFreeSpaceMag);
   
-  vEventNoInc();
   AM::vLogPrm(SL_INF,this,PA_PRM_FREE_SPACE,
               "%s on node %s"_Stz, //!format-LogPrm
               sFreeSpaceMag.szStz(),

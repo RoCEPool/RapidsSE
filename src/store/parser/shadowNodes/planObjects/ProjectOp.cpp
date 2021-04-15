@@ -291,6 +291,36 @@ QueryNodeList* ProjectOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
   return pColumnRefList;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Merges the ProjectOp, pOtherOp, into this ProjectOp                        */
+/*----------------------------------------------------------------------------*/
+void ProjectOp::vSquash(QueryNode* pNode, QueryNode* pOtherOp, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pOtherOp);
+  ASSERT(bIsOfType(pOtherOp));
+  ASSERT(pRootNode);
+
+  // if the expr of pOtherOp references the alias of a projected column
+  // then we need to keep that projected column and alias
+
+  // For every projected column in pOtherOp, pOtherCol:
+  //  test pOtherCol->expr against the alias and expr of each projected col in pNode
+
+  // The squashed projection must retain any aliases in pOtherOp.
+  // If there is an alias in pNode then the expr in pOtherOp could reference
+  // that alias or it could reference the pNode->expr.
+  // If there is no alias in pNode then the pOtherOp->expr MUST reference the
+  // pNode->expr
+
+  // We can easily get the ordinal exprs of pOtherOp. This will tell us the relationship
+  // between an expr in pOtherOp and pNode. e.g. if the ordinal expr was (SUM($2) + 1)
+  // and the $2 ordinal in pNode was (2*col1) then we can reassemble the squashed symbolic
+  // expression as (SUM(2*col1) + 1).
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

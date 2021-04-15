@@ -7,7 +7,7 @@
 
 namespace BASE
 {    
-  class Tx : public Loggable
+  class Tx : public Object
   {
   private:
     Lock m_okLock;       // lock

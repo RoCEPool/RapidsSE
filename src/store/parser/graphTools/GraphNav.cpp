@@ -941,6 +941,24 @@ PlanNode* GraphNav::pGetParent(PrimitiveNode* pPrimNode, PlanNode* pRootNode)
   return pParentNode;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Given a relative/absolute path and an initial starting node, return        */
+/* the node that represents the parent of this path, or nullptr if not found. */
+/*----------------------------------------------------------------------------*/
+PlanNode* GraphNav::pGetParentOfPath(Stz* szPath, PlanNode* pInitialNode)
+{
+  ASSERT(szPath);
+  ASSERT(pInitialNode);
+
+  // Get the parent path
+  s2K sParentPath;
+  if(!bParentPath(szPath, sParentPath)) {
+    return nullptr;
+  }
+
+  PlanNode* pNode = pFind(sParentPath, pInitialNode);
+  return pNode;
+}
 
 /*----------------------------------------------------------------------------*/
 /* Given a path, write the parent path to sParentBuf. Return false if there   */

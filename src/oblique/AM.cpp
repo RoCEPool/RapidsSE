@@ -192,6 +192,57 @@ bool AM::JOB::bHasTag(Job* pJob, Stz* szTagNm)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
+/* log events                                                                 */
+/*----------------------------------------------------------------------------*/
+void AM::LOG::vEvent(eEV eEvent, Stz* szFormat, ...)
+{
+  _static_
+  
+  if (! gxCmdLineArgs.m_xSysArgs.m_bEvents)
+    return;
+
+  if (! AM::bHasStarted())
+    return;
+
+  Job* pJob = MY::pJob();
+  if (! pJob)
+    return;
+  
+  LogicUnit* pRLU = pJob->pLogicUnit_job();
+  if (! pRLU || pRLU->m_xpOp.bIsNull())
+    return;
+
+  
+  s4K sNote;
+  
+  va_list xVarArgs;
+  
+  va_start(xVarArgs,szFormat);
+  
+  sNote.vSprintVA(szFormat,xVarArgs);
+  
+  va_end(xVarArgs);
+
+  
+  i8 nQueueLength = pRLU->m_xpOp->nQueueLength();
+  
+  AM::LOG::vLogInternal((i8)TI_EVENTLOG,
+                        
+                        MY::szPipelineNm(),
+                        MY::szOpNm(),
+                        MY::iPtn(),
+                        aZK[pRLU->m_ePipeInOperand],
+                        
+                        (i8)eEvent,
+                        sNote.azChar(),
+
+                        MY::pThread()->iThreadNo(),
+                        AM::SYSTEM::nNanoseconds(),
+                        
+                        C_VARGS_END);
+}
+
+/*----------------------------------------------------------------------------*/
 /* log entry into internal table                                              */
 /*----------------------------------------------------------------------------*/
 void AM::LOG::vLogInternal(i8 iTable, ...)
@@ -244,22 +295,20 @@ void AM::LOG::vMemoryAllocation(Object* pObject)
   LogicUnit* pRLU = pJob->pLogicUnit_job();
   if (! pRLU || pRLU->m_xpOp.bIsNull())
     return;
-
-  pRLU->m_oSince.vUpdate();
-  i8 nNanoSeconds = pRLU->m_oSince.iNanoseconds();
-
-  Op* pOp = MY::pOp();
-  i8 iPtn = pOp ? pOp->tPtnNo() : -1;
   
   AM::LOG::vLogInternal((i8)TI_MEMORYLOG,
+                        
                         MY::szPipelineNm(),
                         MY::szOpNm(),
                         MY::iPtn(),
                         aZK[pRLU->m_ePipeInOperand],
+                        
                         pObject->szClassNm(),
                         (i8)0,
-                        nNanoSeconds,
-                        (i8)-1,
+                        
+                        MY::pThread()->iThreadNo(),
+                        AM::SYSTEM::nNanoseconds(),
+                        
                         C_VARGS_END);
 }
 
@@ -277,14 +326,9 @@ void AM::LOG::vMemoryFree(Object* pObject)
   LogicUnit* pRLU = pJob->pLogicUnit_job();
   if (! pRLU || pRLU->m_xpOp.bIsNull())
     return;
-
-  pRLU->m_oSince.vUpdate();
-  i8 nNanoSeconds = pRLU->m_oSince.iNanoseconds();
-
-  Op* pOp = MY::pOp();
-  i8 iPtn = pOp ? pOp->tPtnNo() : -1;
   
   AM::LOG::vLogInternal((i8)TI_MEMORYLOG,
+                        
                         MY::szPipelineNm(),
                         MY::szOpNm(),
                         MY::iPtn(),
@@ -292,8 +336,10 @@ void AM::LOG::vMemoryFree(Object* pObject)
                         
                         pObject->szClassNm(),
                         (i8)1,
-                        nNanoSeconds,
-                        (i8)-1,
+                        
+                        MY::pThread()->iThreadNo(),
+                        AM::SYSTEM::nNanoseconds(),
+                        
                         C_VARGS_END);
 }
 
@@ -312,22 +358,21 @@ void AM::LOG::vOperand(i8 iPoint)
   if (! pRLU || pRLU->m_xpOp.bIsNull())
     return;
 
-  pRLU->m_oSince.vUpdate();
-  i8 nNanoSeconds = pRLU->m_oSince.iNanoseconds();
-
   i8 nQueueLength = pRLU->m_xpOp->nQueueLength();
-
-  Op* pOp = MY::pOp();
-  i8 iPtn = pOp ? pOp->tPtnNo() : -1;
   
   AM::LOG::vLogInternal((i8)TI_OPERANDLOG,
+                        
                         MY::szPipelineNm(),
                         MY::szOpNm(),
                         MY::iPtn(),
                         aZK[pRLU->m_ePipeInOperand],
+                        
                         iPoint,
-                        nNanoSeconds,
                         nQueueLength,
+
+                        MY::pThread()->iThreadNo(),
+                        AM::SYSTEM::nNanoseconds(),
+                        
                         C_VARGS_END);
 }
 
@@ -346,15 +391,10 @@ void AM::LOG::vResourceUse(Resource* pResource, i8 iAction, i8 nBytes)
   if (! pRLU || pRLU->m_xpOp.bIsNull())
     return;
 
-  pRLU->m_oSince.vUpdate();
-  i8 nNanoSeconds = pRLU->m_oSince.iNanoseconds();
-
   i8 nQueueLength = pRLU->m_xpOp->nQueueLength();
-
-  Op* pOp = MY::pOp();
-  i8 iPtn = pOp ? pOp->tPtnNo() : -1;
   
   AM::LOG::vLogInternal((i8)TI_RESOURCELOG,
+                        
                         MY::szPipelineNm(),
                         MY::szOpNm(),
                         MY::iPtn(),
@@ -364,8 +404,10 @@ void AM::LOG::vResourceUse(Resource* pResource, i8 iAction, i8 nBytes)
                         pResource->szPath(),
                         aAR[iAction],
                         nBytes,
+                        
                         MY::pThread()->iThreadNo(),
                         AM::SYSTEM::nNanoseconds(),
+                        
                         C_VARGS_END);
 }
 
@@ -1888,34 +1930,6 @@ void AM::vLogTxn(eSL , Tx* , eXA , Stz* , ...)
 #endif
 }
 
-/*----------------------------------------------------------------------------*/
-/* log entry into internal table                                              */
-/*----------------------------------------------------------------------------*/
-void AM::vLogTI(i8 iTable, ...)
-{
-  _static_
-      
-  WriteBehind* pWriteBehind = AM::THREAD::pWriteBehind();
-  if (! pWriteBehind)
-    return;
-
-  StreamDef* pStreamDef = AM::pInternalTables()->pStreamDef((eTI)iTable);
-  if (! pStreamDef)
-    return;
-  
-  pWriteBehind->vGrabLock();
-
-  va_list xVarArgs;
-  va_start(xVarArgs,iTable);
-
-  Row* pRow = pWriteBehind->pAllotRow((eTI)iTable);
-  pRow->vDeposit(xVarArgs);
-
-  va_end(xVarArgs);
-
-  pWriteBehind->vDropLock();
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -3131,7 +3145,6 @@ void AM::vJob_AddDemon(Job* pJob)
   AM::pDemonJobs()->vAddJob(pJob);
   AM::pDemonJobs()->vDropLock();
   
-  pJob->vEventNoInc();
   AM::vLogJob(SL_INF,pJob,JA_JOB_ADD_DEMON,
               "Job added to DemonJobs"_Stz); //!format-LogJob
 }
@@ -3145,7 +3158,6 @@ void AM::vJob_AddLocal(Job* pJob)
   AM::pLocalJobs()->vAddJob(pJob);
   AM::pLocalJobs()->vDropLock();
   
-  pJob->vEventNoInc();
   AM::vLogJob(SL_INF,pJob,JA_JOB_ADD_LOCAL,
               "Job added to LocalJobs"_Stz); //!format-LogJob
 }
@@ -3159,7 +3171,6 @@ void AM::vJob_AddOriginating(Job* pJob)
   AM::pOriginatingJobs()->vAddJob(pJob);
   AM::pOriginatingJobs()->vDropLock();
   
-  pJob->vEventNoInc();
   AM::vLogJob(SL_INF,pJob,JA_JOB_ADD_ORIGIN,
               "Job added to OriginatingJobs"_Stz); //!format-LogJob
 }
@@ -3173,7 +3184,6 @@ void AM::vJob_AddParticipating(Job* pJob)
   AM::pParticipatingJobs()->vAddJob(pJob);
   AM::pParticipatingJobs()->vDropLock();
   
-  pJob->vEventNoInc();
   AM::vLogJob(SL_INF,pJob,JA_JOB_ADD_PARTG,
               "Job added to ParticipatingJobs"_Stz); //!format-LogJob
   
@@ -3303,7 +3313,6 @@ bool AM::bJob_RemoveLocal(Job* pJob, bool bDump)
   
   AM::pLocalJobs()->vDropLock();
   
-  pJob->vEventNoInc();
   AM::vLogJob(SL_INF,pJob,JA_JOB_REMOVE_LOCAL,
               "Job removed from LocalJobs"_Stz); //!format-LogJob
   
@@ -3324,7 +3333,6 @@ bool AM::bJob_RemoveOriginating(Job* pJob, bool bDump)
   
   AM::pOriginatingJobs()->vDropLock();
   
-  pJob->vEventNoInc();
   AM::vLogJob(SL_INF,pJob,JA_JOB_REMOVE_ORIGIN,
               "Job removed from OriginatingJobs"_Stz); //!format-LogJob
   
@@ -3345,7 +3353,6 @@ bool AM::bJob_RemoveParticipating(Job* pJob, bool bDump)
   
   AM::pParticipatingJobs()->vDropLock();
   
-  pJob->vEventNoInc();
   AM::vLogJob(SL_INF,pJob,JA_JOB_REMOVE_PARTG,
               "Job fremoved from ParticipatingJobs"_Stz); //!format-LogJob
   

@@ -31,7 +31,7 @@ void ShmLog::operator delete(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ShmLog::ShmLog(eCN eClassNo)
-: Loggable(eClassNo)
+: Object(eClassNo)
 , m_okLock(this)
 {
   _precondition_(_MAGIC_,eClassNo);
