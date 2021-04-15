@@ -36,7 +36,7 @@ namespace BASE
     void* operator new(size_t);
     void operator delete(void* pDirAddress);
     
-    Dir(Loggable* pIsFor);
+    Dir(Object* pIsFor);
    ~Dir(void) noexcept(false);
 
     static bool bAccess(Stz* szDirPath, i8 iPermission);
