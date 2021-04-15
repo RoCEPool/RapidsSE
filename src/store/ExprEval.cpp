@@ -156,7 +156,7 @@ void ExprEval::vAddArithmetic(Token* pTkn, Column* pColumn) {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
 
   if (pTkn->bSame("+"_Stz)) {
-    StrLib::vSprintCat(m_sAsmText, "  EO_ADD\n"_Stz);
+    StrLib::vSprintCat(m_sAsmText, "  EO_ADD_II\n"_Stz);
   }
   else if (pTkn->bSame("/"_Stz)) {
     StrLib::vSprintCat(m_sAsmText, "  EO_DIVIDE\n"_Stz);
@@ -440,7 +440,7 @@ eEC ExprEval::eAddSum(eCT eColumnType, i8 iColumn)
     case CT_FLOAT:
       StrLib::vSprintCat(m_sAsmText, "  EO_PUSH_DEVROW_DST\n"_Stz);
       StrLib::vSprintCat(m_sAsmText, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, iColumn);
-      StrLib::vSprintCat(m_sAsmText, "  EO_ADD\n"_Stz);
+      StrLib::vSprintCat(m_sAsmText, "  EO_ADD_II\n"_Stz);
       StrLib::vSprintCat(m_sAsmText, "  EO_PUSH_DEVROW_DST\n"_Stz);
       StrLib::vSprintCat(m_sAsmText, "  EO_DEVROW_POPCOLI %lld\n"_Stz, iColumn);
       return EC_NONE;
@@ -476,7 +476,7 @@ eEC ExprEval::eAddSumGby(eCT eColumnType, i8 iColumn)
     case CT_DECIMAL:
     case CT_FLOAT:
       StrLib::vSprintCat(m_sAsmText, "  EO_PAY_FETCH_COLI %lld\n"_Stz, iColumn);
-      StrLib::vSprintCat(m_sAsmText, "  EO_ADD\n"_Stz);
+      StrLib::vSprintCat(m_sAsmText, "  EO_ADD_II\n"_Stz);
       StrLib::vSprintCat(m_sAsmText, "  EO_PAY_STORE_COLI %lld\n"_Stz, iColumn);
       return EC_NONE;
 

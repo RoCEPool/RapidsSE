@@ -121,7 +121,7 @@ bool Backend::bTransliterate(String* sPipeline) {
   m_sPipeline = sPipeline;
 
 //#ifdef WITH_TRACE_Backend
-  //vPrintPlanGraph(m_pPlanRoot);
+  vPrintPlanGraph(m_pPlanRoot);
 //#endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -438,6 +438,7 @@ void Backend::vAppendUnionOp(Backend* pBackend, QueryNode* pUnionNode)
   pBackend->vAppendNextOp(pChildStatementMarker1->szName());
   pBackend->vAppendPipe();
   pBackend->vAppendNextOp(pChildStatementMarker2->szName());
+
   // bounded walk of each of first children
   GraphNav::bGlobalWalk(pChildStatementMarker1, false, true, vVisitorPlan, (void *) pBackend);
 
