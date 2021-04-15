@@ -12,7 +12,7 @@
 
 namespace STORE
 {
-  class Job : public Loggable,
+  class Job : public Object,
               public CRM<Job>
   {
   
@@ -24,6 +24,8 @@ namespace STORE
    */
   
   public:
+  
+    ObjId<CN_JOB> m_xJobId; // this job's id
   
     // -- a -------------------
     ReqTuple m_xReqTuple;    // the request tuple

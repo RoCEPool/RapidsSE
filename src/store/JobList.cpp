@@ -111,7 +111,7 @@ Job* JobList::pFindJob(i8 iJobId)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
   
   Job__Find* pJob__Find = new Job__Find;
-  pJob__Find->m_iObjectId = iJobId;
+  pJob__Find->m_xJobId = iJobId;
   
   vGrabLock();
   Job* pJobFound = pFindJob(pJob__Find);
@@ -235,7 +235,7 @@ void JobList::vLogJobs(void)
                
                  aCN[pJob->eGetClassNo()],
                  pJob,
-                 pJob->m_iObjectId,
+                 pJob->iJobId(),
                  pJob->iParentId(),
                  pJob->i_TablePtn(),
                 
@@ -302,7 +302,7 @@ void JobList::vContentDump(void)
            pJob,
            pJob->szJobNm(),
            aCN[pJob->eGetClassNo()],
-           pJob->m_iObjectId,
+           pJob->iJobId(),
            pJob->iParticipantNode(),
            pNode->m_nRight);
     
@@ -343,7 +343,7 @@ void JobList::vDump(eCN eClass, Object* pObject, Stz* aTab)
              pJob,
              pJob->szJobNm(),
              aCN[pJob->eGetClassNo()],
-             pJob->m_iObjectId,
+             pJob->iJobId(),
              pJob->iParticipantNode(),
              pNode->m_nRight);
       

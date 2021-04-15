@@ -2058,7 +2058,7 @@ XmitOperand* AM::pNewXmitOperand(Job* pParentJob, Operand* pOperand,
                                  i8 i_Node, i8 tPtnNo)
 {
   XmitOperand* pXmitOperand =
-    XmitOperand::pNewXmitOperand(pOperand,pParentJob->m_iObjectId,
+    XmitOperand::pNewXmitOperand(pOperand,pParentJob->iJobId(),
                                  eCrossTopo,iNextStage,iNextOp,i_Node,tPtnNo);
   
   return pXmitOperand;
@@ -2445,7 +2445,7 @@ InternalTables* AM::pInternalTables(void) {
 }
 
 Stz* AM::szJobName(Job* pJob)    { return pJob->szJobNm();                      }
-i8   AM::iJobUniqueId(Job* pJob) { return pJob->m_iObjectId;                     }
+i8   AM::iJobUniqueId(Job* pJob) { return pJob->iJobId();                     }
 
 void AM::vPrintGlobals(void)
 {

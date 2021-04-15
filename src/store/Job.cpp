@@ -110,7 +110,7 @@ void Job::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job::Job(ReqTuple* aReqTuple)
-: Loggable(CN_JOB)
+: Object(CN_JOB)
 , CRM<Job>(this)
 , m_xReqTuple(aReqTuple)
 {
@@ -169,7 +169,7 @@ Job::Job(ReqTuple* aReqTuple)
 /* constructor (for job__find)                                  TO BE REMOVED */
 /*----------------------------------------------------------------------------*/
 Job::Job(eCN eClassNo)
-: Loggable(eClassNo)
+: Object(eClassNo)
 , CRM<Job>(this)
 , m_xReqTuple(nullptr)
 {
@@ -640,7 +640,7 @@ i8 Job::iJobId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_iObjectId;
+  return * m_xJobId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -785,7 +785,7 @@ void Job::vMarkJob(void)
   s48K sJobMark;
   
   sJobMark.vSprintCat("Job %03lld %s session %lld tablePtn %lld\n"_Stz,
-                      m_iObjectId,
+                      iJobId(),
                       aCN[eGetClassNo()],
                       m_xReqTuple.m_i_Session,
                       m_i_TablePtn);
@@ -799,7 +799,7 @@ void Job::vMarkJob(void)
 
   sJobMark.vConcat("\n"_Stz);
 
-  AM::vLogText(m_iObjectId,sJobMark);
+  AM::vLogText(iJobId(),sJobMark);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -930,7 +930,7 @@ i8 Job::iOriginatorNode(void)
   
   i8 iMaskOffLower48Bits = 0xFFFF000000000000;
   
-  i8 iOriginatorNode = m_iObjectId & iMaskOffLower48Bits;
+  i8 iOriginatorNode = iJobId() & iMaskOffLower48Bits;
   iOriginatorNode >>= 48;
   
   return iOriginatorNode;
@@ -1025,7 +1025,7 @@ eEC Job::ePopulateJob(TagSet* pTagSet)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add the distid
-  pJobTags()->vInsert(C_TAG_DISTID,m_iObjectId);
+  pJobTags()->vInsert(C_TAG_DISTID,iJobId());
   
   // copy the tagset into the job tag set
   pJobTags()->vCopy(pTagSet);
@@ -1101,7 +1101,7 @@ void Job::vReport(void)
   
   vTrace("Job %llx id %lls ackRemaining %lld\n"_Stz,
          this,
-         m_iObjectId,
+         iJobId(),
          m_oAcksRmg_2pc.iPrintOnlyValue());
 }
 

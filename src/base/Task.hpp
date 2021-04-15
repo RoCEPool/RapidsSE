@@ -19,13 +19,15 @@ namespace BASE
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  class Task : public Loggable,
+  class Task : public Object,
                public ListItem_t<Task>
   {
   friend class STORE::Step;
 
   private:
     Lock         m_okLock;       // lock for this task
+  
+    ObjId<CN_TASK> m_xTaskId;    // tasks object id
 
     SMA<Job>     m_pJob;         // the job for this task
     SMA<Thread>  m_pThread;      // current thread
