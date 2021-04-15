@@ -326,9 +326,9 @@ static Stz* aEO[]
   
   // arithmetic operators
   // add
-  /*    */ "EO_ADD_II"_Stz,
   /*    */ "EO_ADD_ID"_Stz,
   /*    */ "EO_ADD_IF"_Stz,
+  /*    */ "EO_ADD_II"_Stz,
   /*    */ "EO_ADD_IU"_Stz,
 
   /*    */ "EO_DIVIDE"_Stz,

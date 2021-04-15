@@ -46,6 +46,8 @@
 
 #include "SN_Dte.hpp"
 
+#include "MathLib.hpp"
+
 extern EoArg EoArgs[];
 Atomic gixQueryNo;
 
@@ -1292,13 +1294,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // arithmetic operators
 
       // add top two numbers and push result
-      case EO_ADD_II: ArgNil(); // integer + integer
-        iTopB = *(aiDstk--);
-        iTopA = *(aiDstk--);
-        iRes  = iTopA + iTopB;
-        dLU3(EO_ADD_II,iTopA,iTopB,iRes);
-        *(++aiDstk) = iRes;
-        break;//+endCase
 
       case EO_ADD_ID: ArgNil(); // integer + decimal
         iTopB = *(aiDstk--);
@@ -1313,6 +1308,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         iTopA = *(aiDstk--);
         iRes  = iTopA + iTopB;
         dLU3(EO_ADD_IF,iTopA,iTopB,iRes);
+        *(++aiDstk) = iRes;
+        break;//+endCase
+
+      case EO_ADD_II: ArgNil(); // integer + integer
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = MathLib::iAddII(iTopA, iTopB);
+        dLU3(EO_ADD_II,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
 
