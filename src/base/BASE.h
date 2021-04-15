@@ -162,6 +162,7 @@ extern d8 C_D8_MID;
 #include "Process.hpp"
 #include "Shell.hpp"
 
+#include "ObjId_t.hpp"
 #include "Lock.hpp"
 #include "MasterLock.hpp"
 #include "DdlLock.hpp"
@@ -216,7 +217,6 @@ extern d8 C_D8_MID;
 #include "HV.hpp"
 #include "MemTest.hpp"
 #include "Now.hpp"
-#include "ObjId_t.hpp"
 #include "Rand.hpp"
 #include "SeeMe.hpp"
 #include "Sleep.hpp"
@@ -306,6 +306,7 @@ extern d8 C_D8_MID;
 #include "Thing.hpp"
 #include "Arrange.hpp"
 #include "IntSet.hpp"
+#include "IntStack.hpp"
 
 #include "Format.hpp"
 
