@@ -7,7 +7,6 @@
 #include <sys/stat.h>
 
 #include "MY.hpp"
-#include "EVLOG.hpp"
 
 #include "eAR.h"
 #include "eEV.h"
