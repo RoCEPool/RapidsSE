@@ -1977,7 +1977,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
       
       // xmitNode is this node
       m_iXmitNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
-      RASSERT(m_iXmitNode == AM::pGrid()->iThisNodeNo());
+      RASSERT(m_iXmitNode == AM::pGrid()->iThisNode());
       
       ASSERT( ! bSet );
       //printf("XK_LOCALROBIN vSendToAllPartitions(  %lld\n", m_iXmitNode);

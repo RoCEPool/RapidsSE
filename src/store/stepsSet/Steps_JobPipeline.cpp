@@ -49,7 +49,7 @@ void Step::vJob_PipelineBegin(void)
   ENTRY();
   
   Job* pJob_Pipeline = _pJob(m_pDataStack->pPopPtr(__func__));
-  i8 iThisNodeNo = AM::pGrid()->iThisNodeNo();
+  i8 iThisNode = AM::pGrid()->iThisNode();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a pipeline
@@ -63,7 +63,7 @@ void Step::vJob_PipelineBegin(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the pipeline
   if (AM::bVerbose()) {
-    if (iThisNodeNo == 0)
+    if (iThisNode == 0)
        pPipeline->vDump();
   }
   
@@ -73,9 +73,9 @@ void Step::vJob_PipelineBegin(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn operators for this node
   if (AM::bVerbose())
-    vTrace("Spawning operator jobs for node %lld\n"_Stz, AM::pGrid()->iThisNodeNo());
+    vTrace("Spawning operator jobs for node %lld\n"_Stz, AM::pGrid()->iThisNode());
   
-  pPipeline->vSpawnOperatorJobs(pJob_Pipeline->m_xReqTuple.m_i_Session, iThisNodeNo);
+  pPipeline->vSpawnOperatorJobs(pJob_Pipeline->m_xReqTuple.m_i_Session, iThisNode);
   
   EXIT();
 }
@@ -215,11 +215,11 @@ void Step::vJob_PipelineExecute(void)
   Job* pJob_Pipeline = _pJob(m_pDataStack->pPopPtr(__func__));
   
   Pipeline* pPipeline = pJob_Pipeline->m_pPipeline;
-  i8 iThisNodeNo = AM::pGrid()->iThisNodeNo();
+  i8 iThisNode = AM::pGrid()->iThisNode();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get no of operators to be executed on this node
-  i8 nOps = pPipeline->nOpsOnNode(iThisNodeNo);
+  i8 nOps = pPipeline->nOpsOnNode(iThisNode);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set acks remaining equal to no of operators to be executed on this node

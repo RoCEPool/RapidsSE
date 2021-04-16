@@ -715,6 +715,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_INDEXDEF"_Stz,        ZK_INDEXDEF);
   /*  0 */ vAddConstant("ZK_LOADRESULT"_Stz,      ZK_LOADRESULT);
   /*  0 */ vAddConstant("ZK_LOCKSTATS"_Stz,       ZK_LOCKSTATS);
+  /*  0 */ vAddConstant("ZK_METAGET"_Stz,         ZK_METAGET);
   /*  0 */ vAddConstant("ZK_NAMEDBUFFER"_Stz,     ZK_NAMEDBUFFER);
   /*  0 */ vAddConstant("ZK_NODEINFO"_Stz,        ZK_NODEINFO);
   /*  0 */ vAddConstant("ZK_OTHEROPERAND"_Stz,    ZK_OTHEROPERAND);

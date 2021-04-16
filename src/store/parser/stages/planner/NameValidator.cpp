@@ -20,6 +20,7 @@
 
 #include "TableRef.hpp"
 #include "ColumnRef.hpp"
+#include "AliasRef.hpp"
 #include "ColumnWildcard.hpp"
 #include "TableDef.hpp"
 #include "ColumnDefs.hpp"
@@ -30,6 +31,7 @@
 #include "ProjectedColumn.hpp"
 #include "DataSource.hpp"
 #include "StatementMarker.hpp"
+#include "SqlOperator.hpp"
 
 
 using namespace Parser;
@@ -73,6 +75,10 @@ void NameValidator::vValidateNames(PlanNode *pRootNode)
 
   auto fVisitor = [pRootNode, pMetadataNode, pSeApi]
       (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(pvArg);
 
     if (!StatementMarker::bIsOfType(pNode)) {
       return GraphNav::WALK_CONTINUE;
@@ -122,7 +128,11 @@ void NameValidator::vValidateTables(PlanNode *pRootNode, QueryNode* pStartNode, 
   // Walk the graph looking for TableRefs
   auto fVisitor = [&pMetadataNode, &pSeApi](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
+    UNUSED(sPath);
+    UNUSED(iDepth);
+
     PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
+    UNUSED(pRootNode);
 
     if (!TableRef::bIsOfType(pNode)) {
       return GraphNav::WALK_CONTINUE;   // Keep walking
@@ -237,6 +247,9 @@ void NameValidator::vResolveColumnWildcards(PlanNode *pRootNode, QueryNode* pSta
   // Walk the graph looking for ColumnWildcards
   auto fVisitor = [&pMetadataNode](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
+    UNUSED(sPath);
+    UNUSED(iDepth);
+
     PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
 
     if (!ProjectOp::bIsOfType(pNode)) {
@@ -347,6 +360,9 @@ QueryNodeList* NameValidator::pLookupWildcardColumns(QueryNode* pStartNode, Plan
   auto fVisitor =
       [&pProjectedColumnList, &szCatalog, &szSchema, &szTable](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
+    UNUSED(sPath);
+    UNUSED(iDepth);
+
     PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
 
     if (!DataSource::bIsOfType(pNode)) {
@@ -439,8 +455,11 @@ void NameValidator::vValidateColumns(PlanNode *pRootNode, QueryNode* pStartNode,
       }
     }
 
-    // We need to find this partially-qualified column in the plan graph metadata.
-    // First we need to work which table it might be from by looking for TableRefs
+    // We either need to match this partially-qualified column against the plan
+    // graph metadata or against an alias for a projected expression.
+    //
+    // Let's first consider matching it against a column from a table.
+    // First we need to work out which table it might be from by looking for TableRefs
     // underneath the sql operator that contains this columnRef.
 
     // Get the Sql operator by using the current path and the starting node
@@ -453,28 +472,93 @@ void NameValidator::vValidateColumns(PlanNode *pRootNode, QueryNode* pStartNode,
 
     QueryNodeList* pTableDefList = pMatchingTableDefsFor(pColumnRef, pSqlOp, pRootNode, pMetadataNode);
 
-    // Be careful, it might match against multiple tables.
-    if (pTableDefList->nItems() == 0) {
-      delete pTableDefList;
-      NameValidationException::vThrowUnknownColumn(szCatalogName, szSchemaName, szTableName, szColumnName);
-
-    } else if (pTableDefList->nItems() > 1) {
-      delete pTableDefList;
+    // We can check for an ambiguous column name
+    if (pTableDefList->nItems() > 1) {
+      // pTableDefList will be deleted in vThrowAmbiguousColumn() below
       NameValidationException::vThrowAmbiguousColumn(szCatalogName, szSchemaName, szTableName, szColumnName, pTableDefList);
     }
 
-    ASSERT(pTableDefList->nItems() == 1);
+    if (szCatalogName || szSchemaName || szTableName) {
+      // It must be a columnRef. Can't be an aliasRef
 
-    // Qualify the ColumnRef
-    QueryNode* pTableDef = _pQueryNode(pTableDefList->pPop());
-    szCatalogName = TableDef::szCatalogName(pTableDef);
-    szSchemaName  = TableDef::szSchemaName(pTableDef);
-    szTableName   = TableDef::szTableName(pTableDef);
+      if (pTableDefList->nItems() == 0) {
+        delete pTableDefList;
+        NameValidationException::vThrowUnknownColumn(szCatalogName, szSchemaName, szTableName, szColumnName);
+      }
 
-    ColumnRef::vQualify(_pQueryNode(pNode), szCatalogName, szSchemaName,
-                        szTableName, szColumnName);
+      ASSERT(pTableDefList->nItems() == 1);
+
+      // Qualify the ColumnRef
+      QueryNode* pTableDef = _pQueryNode(pTableDefList->pPop());
+      szCatalogName = TableDef::szCatalogName(pTableDef);
+      szSchemaName  = TableDef::szSchemaName(pTableDef);
+      szTableName   = TableDef::szTableName(pTableDef);
+
+      ColumnRef::vQualify(_pQueryNode(pNode), szCatalogName, szSchemaName,
+                          szTableName, szColumnName);
+
+      delete pTableDefList;
+      return GraphNav::WALK_CONTINUE;   // Keep walking, looking for more ColumnRefs
+    }
+
+    // We've potentially got a list of matching table defs above, but we still need to check
+    // for aliased expressions because there might be an ambiguity in alias/column names.
+    QueryNodeList* pProjectedColList = pMatchingExprAliasesFor(szColumnName, pSqlOp, pRootNode);
+
+    if (pProjectedColList->nItems() == 0) {
+      // No aliased expressions. Could we match the columnRef against the table metadata?
+      if (pTableDefList->nItems() == 0) {
+        delete pTableDefList;
+        delete pProjectedColList;
+        NameValidationException::vThrowUnknownColumn(szCatalogName, szSchemaName, szTableName, szColumnName);
+      }
+
+      ASSERT(pTableDefList->nItems() == 1);
+
+      // Qualify the ColumnRef
+      QueryNode* pTableDef = _pQueryNode(pTableDefList->pPop());
+      szCatalogName = TableDef::szCatalogName(pTableDef);
+      szSchemaName  = TableDef::szSchemaName(pTableDef);
+      szTableName   = TableDef::szTableName(pTableDef);
+
+      ColumnRef::vQualify(_pQueryNode(pNode), szCatalogName, szSchemaName,
+                          szTableName, szColumnName);
+
+    } else if (pProjectedColList->nItems() == 1){
+      // We matched against an aliased (projected) expression
+
+      if (pTableDefList->nItems() == 1) {
+        // pTableDefList will be deleted in vThrowAmbiguousColumn() below
+        // pProjectedColList will be deleted in vThrowAmbiguousColumn() below
+        NameValidationException::vThrowAmbiguousColumn(szColumnName, pTableDefList, pProjectedColList);
+      }
+
+      ASSERT(pTableDefList->nItems() == 0);
+
+      // We've got a single unambiguous aliased expression.
+      // We need to change the ColumnRef to an AliasRef in this spot in the graph.
+      // But we are also currently walking the graph and removing the node
+      // would mess things up. So we need to transmogrify the node
+      // in place instead.
+      //
+      // Create the AliasRef that we wish to transmogrify it to
+      QueryNode* pProjectedCol = pProjectedColList->pPop();
+      Text* pAliasName = new Text(ProjectedColumn::szAliasName(pProjectedCol));
+      QueryNode* pAliasExpr = ProjectedColumn::pExprNode(pProjectedCol)->pDeepCopy();
+
+      QueryNode* pAliasRef = AliasRef::pCreate(pAliasName, pAliasExpr);
+      pColumnRef->vTransmogrifyTo(pAliasRef);
+      delete pAliasRef;
+
+    } else {
+      ASSERT(pProjectedColList->nItems() > 1);
+      delete pTableDefList;
+      // pProjectedColList will be deleted in vThrowAmbiguousColumn() below
+      NameValidationException::vThrowAmbiguousAlias(szColumnName, pProjectedColList);
+    }
 
     delete pTableDefList;
+    delete pProjectedColList;
     return GraphNav::WALK_CONTINUE;   // Keep walking, looking for more ColumnRefs
   };
 
@@ -540,6 +624,49 @@ QueryNodeList* NameValidator::pMatchingTableDefsFor(QueryNode* pColumnRef,
   GraphNav::bBoundedWalk(pSqlOp, true, true, fVisitor, pRootNode);
 
   return pTableDefList;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return a list of ProjectedColumn nodes that are reachable from a given sql */
+/* operator and that contain a given alias name.                              */
+/*----------------------------------------------------------------------------*/
+QueryNodeList* NameValidator::pMatchingExprAliasesFor(Stz* szAlias, QueryNode* pSqlOp, PlanNode* pRootNode)
+{
+  ASSERT(szAlias);
+  ASSERT(pSqlOp);
+  ASSERT(SqlOperator::bIsOfType(pSqlOp));
+  ASSERT(pRootNode);
+  ASSERT(ShadowRoot::bIsOfType(pRootNode));
+
+  // List of matching ProjectedColumns to be returned
+  QueryNodeList* pProjectedColumnList = new QueryNodeList();
+
+  // Lambda called for each node under SqlOp, to look for ProjectedColumn nodes.
+  auto fVisitor = [szAlias, &pProjectedColumnList]
+      (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    if (!ProjectedColumn::bIsOfType(pNode)) {
+      return GraphNav::WALK_CONTINUE;
+    }
+
+    QueryNode* pProjectedColumn = _pQueryNode(pNode);
+
+    QueryNode* pColExpr   = ProjectedColumn::pExprNode(pProjectedColumn);
+    Stz*       szColAlias = ProjectedColumn::szAliasName(pProjectedColumn);
+
+    if (szColAlias && szAlias->bSame(szColAlias)) {
+      pProjectedColumnList->vAppend(pProjectedColumn);
+    }
+
+    // Keep looking, even if we found a matching TableRef - it might be an
+    // ambiguous column.
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  // Walk the graph from pSqlOp looking for TableRefs
+  GraphNav::bBoundedWalk(pSqlOp, true, true, fVisitor, pRootNode);
+
+  return pProjectedColumnList;
 }
 
 /*----------------------------------------------------------------------------*/

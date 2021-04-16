@@ -103,6 +103,7 @@ void ExplainOp::vDescribe(PlanNode* pNode, s2K& sBuf)
   ASSERT(bIsOfType(pNode));
 
   QueryNode* pExplainOp = _pQueryNode(pNode);
+  UNUSED(pExplainOp);
 
   sBuf.vConcat("ExplainOp :\n  "_Stz);
 }
@@ -177,6 +178,9 @@ b1 ExplainOp::bIsExactType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 QueryNodeList* ExplainOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
 {
+  UNUSED(pNode);
+  UNUSED(pRootNode);
+
   // There should never be a need to call this function on an ExplainOp,
   // even if we were explaining an explained query.
   NEVER_REACH

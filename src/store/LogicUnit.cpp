@@ -40,11 +40,14 @@
 
 #include "LIB_interface.h"
 #include "DEV_interface.h"
+#include "MathLib.h"
 
 #include "SP_Dte.hpp"
 #include "SP_Ent.hpp"
 
 #include "SN_Dte.hpp"
+
+
 
 extern EoArg EoArgs[];
 Atomic gixQueryNo;
@@ -1290,14 +1293,41 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // arithmetic operators
-      case EO_ADD: ArgNil(); // add top two int's push result
+
+      // add top two numbers and push result
+
+      case EO_ADD_ID: ArgNil(); // integer + decimal
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
-        iRes  = iTopA + iTopB;
-        dLU3(EO_ADD,iTopA,iTopB,iRes);
+        iRes  = iMathLib_AddID(iTopA, iTopB);
+        dLU3(EO_ADD_ID,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
-        
+
+      case EO_ADD_IF: ArgNil(); // integer + float
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iMathLib_AddIF(iTopA, iTopB);
+        dLU3(EO_ADD_IF,iTopA,iTopB,iRes);
+        *(++aiDstk) = iRes;
+        break;//+endCase
+
+      case EO_ADD_II: ArgNil(); // integer + integer
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iMathLib_AddII(iTopA, iTopB);
+        dLU3(EO_ADD_II,iTopA,iTopB,iRes);
+        *(++aiDstk) = iRes;
+        break;//+endCase
+
+      case EO_ADD_IU: ArgNil(); // integer + unknown
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iMathLib_AddIU(iTopA, iTopB);
+        dLU3(EO_ADD_IU,iTopA,iTopB,iRes);
+        *(++aiDstk) = iRes;
+        break;//+endCase
+
       case EO_DIVIDE: ArgNil(); // divide top int by second push result
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);

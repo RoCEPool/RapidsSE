@@ -327,6 +327,18 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* default handler for ZK_METAGET operand                                     */
+/*----------------------------------------------------------------------------*/
+: ZK_METAGET_handler \handler
+
+  //"ZK_METAGET" .verbose
+  
+  PipeIn[].pipeOut
+  
+  true // calling op_loop continues
+;
+
+/*----------------------------------------------------------------------------*/
 /* default handler for ZK_NODEINFO operand                                    */
 /*----------------------------------------------------------------------------*/
 : ZK_NODEINFO_handler \handler

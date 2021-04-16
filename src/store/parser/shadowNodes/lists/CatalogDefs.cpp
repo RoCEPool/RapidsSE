@@ -63,7 +63,7 @@ void CatalogDefs::vDescribe(PlanNode* pNode, s2K& sBuf)
 
   QueryNode* pCatalogDefs = _pQueryNode(pNode);
 
-  PlanNodeIter* pIter = pNode->pNewChildrenIter();
+  PlanNodeIter* pIter = pCatalogDefs->pNewChildrenIter();
   b1 bFirst = true;
 
   while (pIter->bHasNext()) {

@@ -17,7 +17,13 @@ enum eEO : u1 // expression operators
   // simple eo
 
   // arithmetic operators
-  /*  S  */ EO_ADD,              // add top two int's push result
+
+  // add top two numbers and push result
+  /*  S  */ EO_ADD_ID,           // integer + decimal
+  /*  S  */ EO_ADD_IF,           // integer + float
+  /*  S  */ EO_ADD_II,           // integer + int
+  /*  S  */ EO_ADD_IU,           // integer + unknown
+
   /*  S  */ EO_DIVIDE,           // divide top int by second push result
   /*  S  */ EO_MODULO,           // modulo top int be second push result
   /*  S  */ EO_MULTIPLY,         // multiply top two int's push result
@@ -264,9 +270,11 @@ enum eEO : u1 // expression operators
   /*     */ EO_DEVROW_ROWBUF_RESET,  // reset rowslab in row dev
   /*     */ EO_DEVROW_ROWBUF_TEST,   // test if buffer in row dev
 
-  // row device column operators
-  /*    */ EO_DEVROW_POPCOLI,  // pop and deposit top into column
+  // row device column pop operators
+  /*    */ EO_DEVROW_POPCOLI,  // pop and deposit top integer into column
   /*    */ EO_DEVROW_POPCOLS,  // pop and deposit top string into column
+
+  // row device column push operators
   /*    */ EO_DEVROW_PUSHCOLI, // push column
   /*    */ EO_DEVROW_PUSHCOLS, // push column string
 
@@ -319,7 +327,12 @@ static Stz* aEO[]
   /*  0 */ "NONE"_Stz,
   
   // arithmetic operators
-  /*    */ "EO_ADD"_Stz,
+  // add
+  /*    */ "EO_ADD_ID"_Stz,
+  /*    */ "EO_ADD_IF"_Stz,
+  /*    */ "EO_ADD_II"_Stz,
+  /*    */ "EO_ADD_IU"_Stz,
+
   /*    */ "EO_DIVIDE"_Stz,
   /*    */ "EO_MODULO"_Stz,
   /*    */ "EO_MULTIPLY"_Stz,
@@ -627,7 +640,12 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_NONE
   
   // arithmetic operators
-  { EA_NONE,    0 },  // EO_ADD
+  // add
+  { EA_NONE,    0 },  // EO_ADD_ID
+  { EA_NONE,    0 },  // EO_ADD_IF
+  { EA_NONE,    0 },  // EO_ADD_II
+  { EA_NONE,    0 },  // EO_ADD_IU
+
   { EA_NONE,    0 },  // EO_DIVIDE
   { EA_NONE,    0 },  // EO_MODULO
   { EA_NONE,    0 },  // EO_MULTIPLY

@@ -15,7 +15,7 @@ namespace STORE
     s32    m_sGridNm;          // name of this grid
     i8     m_iConnectCode;     // connect code for this grid (not yet used)
     
-    i8     m_iThisNodeNo;      // this node number
+    i8     m_iThisNode;        // this node number
     Node*  m_pThisNode;        // this node pointer
   
     bool   m_bHasStarted;      // has the cluster started ?
@@ -73,7 +73,7 @@ namespace STORE
     void vRemoveNode(Node* pNode);
     void vStartNodeNo(i8 iStartNodeNo);
     i8   iStartNodeNo(void);
-    i8   iThisNodeNo(void);
+    i8   iThisNode(void);
     Node* pThisNode(void);
     void vThisNodeNo(i8 iNode);
     void vSetThisNode (Node* pNode); // newcode

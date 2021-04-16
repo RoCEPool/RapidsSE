@@ -286,6 +286,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Input),              HT_T_TINY    ,0 }, // CN_INPUT
   { sizeof(InternalTables),     HT_T_SMALL   ,0 }, // CN_INTERNALTABLES
   { sizeof(IntSet),             HT_T_TINY    ,0 }, // CN_INTSET
+  { sizeof(IntStack),           HT_T_TINY    ,0 }, // CN_INTSTACK
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 }, // CN_INTVAL
   { sizeof(IoChunk),            HT_T_LARGE   ,0 }, // CN_IOCHUNK
   { sizeof(IoCopy),             HT_T_TINY    ,0 }, // CN_IOCOPY
@@ -520,7 +521,7 @@ SizeHeap gxaSizeHeap[]
 
   { 'Z' - ('A' - 1),            HT_INVALID   ,0 }, // CN__Z__
 
-  { C_VARGS_END,                HT_INVALID   ,0 }, // CN_ENUMS
+  { C_VARGS_END,                HT_INVALID   ,0 } // CN_ENUMS
 };
 
 /*============================================================================*/

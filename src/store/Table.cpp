@@ -2,6 +2,7 @@
 /* Table.cpp -- Table                                                         */
 /*============================================================================*/
 
+#include <array>
 #include "BASE.h"
 
 #include "BucketMap.hpp"
@@ -120,6 +121,13 @@ Table::~Table(void) noexcept(false)
   
   // delete the partition vector
   delete m_pTablePtnVec;
+
+
+  // delete the m_aObjParts
+  for (i8 i_Obj = 0; i_Obj < (i8)m_aObjParts.size(); i_Obj++) {
+    delete m_aObjParts[i_Obj];
+  }
+  m_aObjParts.clear();
 }
 
 
@@ -848,6 +856,127 @@ void Table::vCompactIndex(Index* pIndex)
     IndexTree *pIndexTree = pTablePtn(i_TablePtn)->pIndexTree(pIndex->iIndexNo());
     pIndexTree->vCompact();
   }
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* returns number of object parts includes the main                           */
+/* copy each object part and put in an array                                  */
+/*----------------------------------------------------------------------------*/
+i8 Table::iPrepareObjParts(void) {
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TABLE, _FOOTER_);
+
+  // Do we need to copy??? Let's make this prototype code to test out
+
+  // Main part of CN_TABLE
+  eCN aType = CN_TABLE;
+  char *pBuffer = (char *) MemLib::aMallocBlock(sizeof(m_sTableNm) + sizeof(m_eKind)+ sizeof(eCN));
+  MemLib::vCopy(pBuffer, (char *) &aType, sizeof(eCN), CN_TABLE);
+  MemLib::vCopy(pBuffer + sizeof(eCN), (char *) &m_sTableNm, sizeof(m_sTableNm), CN_STZVAL);
+  MemLib::vCopy(pBuffer + sizeof(eCN)+sizeof(m_sTableNm), (char *) &m_eKind, sizeof(m_eKind), CN_STZVAL);
+  m_aObjParts.push_back(pBuffer);
+
+  aType = CN_LOCATION;
+  pBuffer = (char *) MemLib::aMallocBlock(sizeof(Location) + sizeof(eCN));
+  MemLib::vCopy(pBuffer, (char *) &aType, sizeof(eCN), CN_LOCATION);
+  MemLib::vCopy(pBuffer + sizeof(eCN), (char *) &m_oLocation, sizeof(Location), CN_LOCATION);
+  m_aObjParts.push_back(pBuffer);
+
+  if (m_pStreamDef) {
+    aType = CN_STREAMDEF;
+    pBuffer = (char *) MemLib::aMallocBlock(sizeof(StreamDef) + sizeof(eCN));
+    MemLib::vCopy(pBuffer, (char *) &aType, sizeof(eCN), CN_STREAMDEF);
+    MemLib::vCopy(pBuffer + sizeof(eCN), (char *) m_pStreamDef, sizeof(StreamDef), CN_STREAMDEF);
+    m_aObjParts.push_back(pBuffer);
+  }
+
+  aType = CN_SHARDDEF;
+  pBuffer = (char*)MemLib::aMallocBlock(sizeof(ShardDef)+sizeof(eCN));
+  MemLib::vCopy(pBuffer, (char*)&aType, sizeof(eCN), CN_SHARDDEF);
+  MemLib::vCopy(pBuffer+sizeof(eCN), (char*)m_pShardDef, sizeof(ShardDef), CN_SHARDDEF);
+  m_aObjParts.push_back(pBuffer);
+
+  aType = CN_BUCKETMAP;
+  pBuffer = (char*)MemLib::aMallocBlock(sizeof(BucketMap)+sizeof(eCN));
+  MemLib::vCopy(pBuffer, (char*)&aType, sizeof(eCN), CN_BUCKETMAP);
+  MemLib::vCopy(pBuffer+sizeof(eCN), (char*)m_pBucketMap, sizeof(BucketMap), CN_BUCKETMAP);
+  m_aObjParts.push_back(pBuffer);
+
+  aType = CN_IDXVEC;
+  pBuffer = (char*)MemLib::aMallocBlock(sizeof(IdxVec)+sizeof(eCN));
+  MemLib::vCopy(pBuffer, (char*)&aType, sizeof(eCN), CN_IDXVEC);
+  MemLib::vCopy(pBuffer+sizeof(eCN), (char*)m_pIdxVec, sizeof(IdxVec), CN_IDXVEC);
+  m_aObjParts.push_back(pBuffer);
+
+  aType = CN_TABLEPTNVEC;
+  pBuffer = (char*)MemLib::aMallocBlock(sizeof(TablePtnVec)+sizeof(eCN));
+  MemLib::vCopy(pBuffer, (char*)&aType, sizeof(eCN), CN_TABLEPTNVEC);
+  MemLib::vCopy(pBuffer+sizeof(eCN), (char*)m_pTablePtnVec, sizeof(TablePtnVec), CN_TABLEPTNVEC);
+  m_aObjParts.push_back(pBuffer);
+
+  return m_aObjParts.size();
+}
+
+/*----------------------------------------------------------------------------*/
+/* returns number of object parts includes the main                           */
+/* copy each object part and put in an array                                  */
+/*----------------------------------------------------------------------------*/
+i8 Table::iBuildArrayObjParts(char* pObj)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+
+  // Let's make this prototype code to test out
+
+  m_aObjParts.push_back(pObj);
+
+  return m_aObjParts.size();
+}
+
+/*----------------------------------------------------------------------------*/
+/* reassemble object parts                                                    */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+i8  Table::iReassembleObj(void)
+{
+  Location* pLoc= nullptr;
+  for (auto it = m_aObjParts.begin();  it != m_aObjParts.end(); ++it) {
+    char* pBuffer =  *it;
+    eCN uCn;
+    memcpy((char*)&uCn, pBuffer, sizeof(eCN));
+    switch (uCn) {
+      case CN_TABLE:
+
+        break;
+      case CN_LOCATION:
+        //pLoc = (Location*)(pBuffer+sizeof(eCN));
+        MemLib::vCopy(&m_oLocation, pBuffer+sizeof(eCN), sizeof(Location),CN_LOCATION);
+        break;
+      case CN_STREAMDEF:
+        MemLib::vCopy((char*)m_pStreamDef,pBuffer+sizeof(eCN), sizeof(StreamDef), CN_STREAMDEF);
+        //m_pStreamDef    = (StreamDef*)(pBuffer+sizeof(eCN));
+        break;
+      case CN_SHARDDEF:
+        MemLib::vCopy((char*)m_pShardDef,pBuffer+sizeof(eCN), sizeof(ShardDef), CN_SHARDDEF);
+        //m_pShardDef    = (ShardDef*)(pBuffer+sizeof(eCN));
+        break;
+      case CN_BUCKETMAP:
+        MemLib::vCopy((char*)m_pBucketMap,pBuffer+sizeof(eCN), sizeof(BucketMap), CN_BUCKETMAP);
+        //m_pBucketMap = (BucketMap*)(pBuffer+sizeof(eCN));
+        break;
+      case CN_IDXVEC:
+        MemLib::vCopy((char*)m_pIdxVec,pBuffer+sizeof(eCN), sizeof(IdxVec), CN_IDXVEC);
+        //m_pIdxVec = (IdxVec*)(pBuffer+sizeof(eCN));
+        break;
+      case CN_TABLEPTNVEC:
+        MemLib::vCopy((char*)m_pTablePtnVec,pBuffer+sizeof(eCN), sizeof(TablePtnVec), CN_TABLEPTNVEC);
+        //m_pTablePtnVec = (TablePtnVec*)(pBuffer+sizeof(eCN));
+        break;
+      default:
+        vTrace("Error\n"_Stz);
+    }
+  }
+
+  return 0;
 }
 
 /*============================================================================*/

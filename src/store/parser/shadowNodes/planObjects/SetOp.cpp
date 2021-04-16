@@ -69,8 +69,6 @@ void SetOp::vDescribe(PlanNode* pNode, s2K& sBuf)
   _static_
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pExpr = _pQueryNode(pNode);
-
   // TODO: manual polymorphism here
 
   if      (    UnionOp::bIsOfType(pNode)) {     UnionOp::vDescribe(pNode, sBuf);  }
@@ -91,8 +89,6 @@ void SetOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iInden
 {
   _static_
   ASSERT(bIsOfType(pNode));
-
-  QueryNode* pExpr = _pQueryNode(pNode);
 
   // TODO: manual polymorphism here
 

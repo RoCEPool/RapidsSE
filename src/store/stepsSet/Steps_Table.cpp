@@ -515,7 +515,38 @@ void Step::vTableNew(void)
     eTableKind = TT_REPLICATED;
 
   Table* pTable = new Table(sTableNm,eTableKind);
-  
+
+  // TESTING //////////////////////////////////////////////////////////////////////
+  i8 iNumObjs = pTable->iPrepareObjParts();
+  std::vector<char*>aParts = pTable->aObjParts();
+
+  s32 sTableName;
+  eTT eKind = TT_NORMAL;
+
+  for (auto it = aParts.begin();  it != aParts.end(); ++it) {
+    char *pBuffer = *it;
+    eCN uCn;
+    memcpy((char *) &uCn, pBuffer, sizeof(eCN));
+
+    if (uCn == CN_TABLE) {
+        // Main part of CN_TABLE
+        MemLib::vCopy(&sTableName, pBuffer + sizeof(eCN), sizeof(sTableName), CN_STZVAL);
+        MemLib::vCopy(&eKind, pBuffer + sizeof(eCN)+sizeof(sTableName), sizeof(eKind), CN_STZVAL);
+        break;
+    }
+  }
+
+  Table* pTable1 = new Table(sTableName,eKind);
+
+  // foreach part, push part
+  for (auto it = aParts.begin();  it != aParts.end(); ++it) {
+    char* pChar = *it;
+    pTable1->iBuildArrayObjParts(pChar);
+  }
+  i8 iN = pTable1->iReassembleObj();
+
+  // END TESTING ////////////////////////////////////////////////////////////
+
   m_pDataStack->vPushPtr(pTable);
   
   EXIT();

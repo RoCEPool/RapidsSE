@@ -63,7 +63,7 @@ void SchemaDefs::vDescribe(PlanNode* pNode, s2K& sBuf)
 
   QueryNode* pSchemaDefs = _pQueryNode(pNode);
 
-  PlanNodeIter* pIter = pNode->pNewChildrenIter();
+  PlanNodeIter* pIter = pSchemaDefs->pNewChildrenIter();
   b1 bFirst = true;
 
   while (pIter->bHasNext()) {

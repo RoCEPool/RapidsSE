@@ -24,7 +24,7 @@ __aFooterFunction(Thread)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Thread::Thread(void)
-: Loggable(CN_THREAD)
+: Object(CN_THREAD)
 , m_oMutex(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
@@ -612,7 +612,7 @@ i8 Thread::iThreadNo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
  
-  return BitLib::uMaskOffUpper16(m_iObjectId);
+  return BitLib::uMaskOffUpper16(* m_xThreadId);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1670,7 +1670,7 @@ void vTest31(void)
   s4K sTok;
   while (pFile->bNextLiteTok(sTok)) {
     
-    if (sTok.bSame("EO_ADD:"_Stz)) {
+    if (sTok.bSame("EO_ADD_II:"_Stz)) {
       
       do {
         vTrace(">>%s<<\n"_Stz,sTok.szStz());

@@ -1022,10 +1022,10 @@ void Engine::vOperandQueueReport(bool bStdOut)
 void Engine::vOpenLog(void)
 {
   bool bStarting = false;
-  if (AM::bFirstNode(AM::pGrid()->iThisNodeNo()) && gxCmdLineArgs.m_xSysArgs.m_bStart)
+  if (AM::bFirstNode(AM::pGrid()->iThisNode()) && gxCmdLineArgs.m_xSysArgs.m_bStart)
     bStarting = true;
 
-  //if (0 == AM::pGrid()->iThisNodeNo() && gxCmdLineArgs.m_xSysArgs.m_bStart)
+  //if (0 == AM::pGrid()->iThisNode() && gxCmdLineArgs.m_xSysArgs.m_bStart)
   //  bStarting = true;
   
   AM::vLogOpenBySE(bStarting);
@@ -1617,22 +1617,22 @@ void Engine::vStartSystem(void) {
            "Cannot find Node %s in the cluster"_Stz,
            gxCmdLineArgs.m_xSysArgs.m_sNodeName.azChar());
 
-  i8 iThisNodeNo = pThisNode->iNodeNo();
-  AM::pGrid()->vThisNodeNo(iThisNodeNo);
+  i8 iThisNode = pThisNode->iNodeNo();
+  AM::pGrid()->vThisNodeNo(iThisNode);
 
   AM::pGrid()->vSetThisNode(pThisNode); // newcode
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // initialize the next id generators
-  //gpAttachMap->m_inNextJobId.vNodeNo(iThisNodeNo);
-//  gpAttachMap->m_inNextOpId.vNodeNo(iThisNodeNo);
-//  gpAttachMap->m_inNextPlanId.vNodeNo(iThisNodeNo);
-//  gpAttachMap->m_inNextResourceId.vNodeNo(iThisNodeNo);
-//  gpAttachMap->m_inNextStreamId.vNodeNo(iThisNodeNo);
-//  gpAttachMap->m_inNextTaskId.vNodeNo(iThisNodeNo);
-//  gpAttachMap->m_inNextThreadId.vNodeNo(iThisNodeNo);
+  //gpAttachMap->m_inNextJobId.vNodeNo(iThisNode);
+//  gpAttachMap->m_inNextOpId.vNodeNo(iThisNode);
+//  gpAttachMap->m_inNextPlanId.vNodeNo(iThisNode);
+//  gpAttachMap->m_inNextResourceId.vNodeNo(iThisNode);
+//  gpAttachMap->m_inNextStreamId.vNodeNo(iThisNode);
+//  gpAttachMap->m_inNextTaskId.vNodeNo(iThisNode);
+//  gpAttachMap->m_inNextThreadId.vNodeNo(iThisNode);
 
-  gpAttachMap->m_pObjects->vNodeNo(iThisNodeNo);
+  gpAttachMap->m_pObjects->vNodeNo(iThisNode);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

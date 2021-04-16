@@ -10,6 +10,7 @@
 #include "store/parser/shadowNodes/expressions/literals/LiteralExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/aggregates/AggregateExpr.hpp"
 #include "ColumnRef.hpp"
+#include "AliasRef.hpp"
 #include "ColumnWildcard.hpp"
 #include "ColumnOrdinal.hpp"
 #include "OperatorExpr.hpp"
@@ -58,6 +59,7 @@ void Expr::vDescribe(PlanNode* pNode, s2K& sBuf)
 
   if      (   LiteralExpr::bIsOfType(pNode))  {    LiteralExpr::vDescribe(pNode, sBuf); }
   else if (     ColumnRef::bIsOfType(pNode))  {      ColumnRef::vDescribe(pNode, sBuf); }
+  else if (      AliasRef::bIsOfType(pNode))  {       AliasRef::vDescribe(pNode, sBuf); }
   else if (ColumnWildcard::bIsOfType(pNode))  { ColumnWildcard::vDescribe(pNode, sBuf); }
   else if ( ColumnOrdinal::bIsOfType(pNode))  {  ColumnOrdinal::vDescribe(pNode, sBuf); }
   else if (  OperatorExpr::bIsOfType(pNode))  {   OperatorExpr::vDescribe(pNode, sBuf); }
@@ -96,6 +98,7 @@ eCT Expr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
 
   if      (    LiteralExpr::bIsOfType(pExprNode))  { return    LiteralExpr::eType(pExprNode, pRootNode); }
   else if (      ColumnRef::bIsOfType(pExprNode))  { return      ColumnRef::eType(pExprNode, pRootNode); }
+  else if (       AliasRef::bIsOfType(pExprNode))  { return       AliasRef::eType(pExprNode, pRootNode); }
   else if ( ColumnWildcard::bIsOfType(pExprNode))  { return ColumnWildcard::eType(pExprNode, pRootNode); }
   else if (   OperatorExpr::bIsOfType(pExprNode))  { return   OperatorExpr::eType(pExprNode, pRootNode); }
   else {
@@ -118,6 +121,10 @@ b1 Expr::bContainsAnAggregate(PlanNode *pNode)
   // Walk the graph, looking at the children only and return if any of them
   // are aggregate expressions.
   auto fVisitor = [&bIsAgg](PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(pvArg);
+
     if (AggregateExpr::bIsOfType(pNode)) {
       bIsAgg = true;
       return GraphNav::WALK_ABORT;
@@ -126,7 +133,7 @@ b1 Expr::bContainsAnAggregate(PlanNode *pNode)
     return GraphNav::WALK_CONTINUE;
   };
 
-  GraphNav::bBoundedWalk(pNode, false, true, fVisitor, nullptr);
+  GraphNav::bBoundedWalk(pNode, true, true, fVisitor, nullptr);
 
   return bIsAgg;
 }
@@ -149,6 +156,10 @@ b1 Expr::bContainsNonaggregatedColumnRefs(PlanNode *pNode)
   // are aggregate expressions.
   auto fVisitor = [&bHasNonAggColumnRef](PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
 
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(pvArg);
+
     if (AggregateExpr::bIsOfType(pNode)) {
       return GraphNav::WALK_SKIP_SUBTREE;
     }
@@ -161,7 +172,7 @@ b1 Expr::bContainsNonaggregatedColumnRefs(PlanNode *pNode)
     return GraphNav::WALK_CONTINUE;
   };
 
-  GraphNav::bBoundedWalk(pNode, false, true, fVisitor, nullptr);
+  GraphNav::bBoundedWalk(pNode, true, true, fVisitor, nullptr);
 
   return bHasNonAggColumnRef;
 }
@@ -180,6 +191,10 @@ b1 Expr::bIsLiteral(PlanNode *pNode)
   // are ColumnRefs or ColumnOrdinals expressions.
   auto fVisitor = [&bIsLit](PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
 
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(pvArg);
+
     if (    ColumnRef::bIsOfType(pNode) ||
         ColumnOrdinal::bIsOfType(pNode)) {
       bIsLit = false;
@@ -192,7 +207,7 @@ b1 Expr::bIsLiteral(PlanNode *pNode)
     return GraphNav::WALK_CONTINUE;
   };
 
-  GraphNav::bBoundedWalk(pNode, false, true, fVisitor, nullptr);
+  GraphNav::bBoundedWalk(pNode, true, true, fVisitor, nullptr);
 
   return bIsLit;
 }
@@ -284,14 +299,13 @@ QueryNode* Expr::pSymbolicToOrdinal(QueryNode*     pSymbolicExpr,
   QueryNode* pOrdinalExpr;
 
   // First we need to check if any of the columns in the columnExprList
-  // exactly match our symbolic expression or aliases.
+  // exactly match our symbolic expression.
   QueryNodeIter* pIter = pColumnExprList->pNewIter();
   i8 iOrdinal = 1;
 
   while (pIter->bHasNext()) {
     QueryNode* pProjectedColumn = pIter->pNext();
     QueryNode* pColExpr = ProjectedColumn::pExprNode(pProjectedColumn);
-    Stz*       szAlias  = ProjectedColumn::szAliasName(pProjectedColumn);
 
 //    s2K sBuf1;
 //    s2K sBuf2;
@@ -354,7 +368,7 @@ QueryNode* Expr::pSymbolicToOrdinal(QueryNode*     pSymbolicExpr,
 /*----------------------------------------------------------------------------*/
 b1 Expr::bIsSymbolicallyEqual(QueryNode* pExpr1, QueryNode* pExpr2)
 {
-  // Are we comparising the same actual objects?
+  // Are we comparing the same actual objects?
   if (pExpr1 == pExpr2) return true;
 
   // Is one of them not null and the other null?
@@ -366,15 +380,35 @@ b1 Expr::bIsSymbolicallyEqual(QueryNode* pExpr1, QueryNode* pExpr2)
 
   // The type of the expressions must must match
   if (!pExpr1->szType()->bEqual(pExpr2->szType())) {
-    // if the types are not equal, then are the at least comparable?
+    // If the types are not equal, then are the at least comparable?
+
+    // Is one or both of them an alias?
+    if (AliasRef::bIsOfType(pExpr1)) {
+      // pExpr1 is an alias but we know pExpr2 is not because they have different types.
+      // Get the aliased expression from pExpr1 and compare this aliased expression to pExpr2.
+      QueryNode* pAliasedExpr1 = AliasRef::pAliasedExpr(pExpr1);
+      return bIsSymbolicallyEqual(pAliasedExpr1, pExpr2);
+    }
+
+    if (AliasRef::bIsOfType(pExpr2)) {
+      // pExpr2 is an alias but we know pExpr1 is not because they have different types.
+      // Get the aliased expression from pExpr2 and compare this aliased expression to pExpr1.
+      QueryNode* pAliasedExpr2 = AliasRef::pAliasedExpr(pExpr2);
+      return bIsSymbolicallyEqual(pExpr1, pAliasedExpr2);
+    }
+
+    // Are the mathematically comparable?
     //  e.g. A<B is symbolically equal to B>A
     return bIsMathematicallyEqual(pExpr1, pExpr2);
   }
 
-  // Special case: the property values for ColumnRef nodes need to
-  // be compared in a case insensitive way.
+  // Special case: the property values for ColumnRef and AliasRef
+  // nodes need to be compared in a case insensitive way.
   if (ColumnRef::bIsOfType(pExpr1)) {
     return ColumnRef::bIsSymbolicallyEqual(pExpr1, pExpr2);
+
+  } else if (AliasRef::bIsOfType(pExpr1)) {
+    return AliasRef::bIsSymbolicallyEqual(pExpr1, pExpr2);
   }
 
   // Values must match. Note that this does a case sensitive comparison.
@@ -475,6 +509,7 @@ b1 Expr::bIsEqualOrSupersetOf(QueryNode* pSuperExpr, QueryNode* pSubExpr)
     // Recurse this function
     if (bIsEqualOrSupersetOf(pChildExpr, pSubExpr)) {
       // We got a match, no need to keep checking
+      delete pIter;
       return true;
     }
 
@@ -498,6 +533,10 @@ b1 Expr::bIsOrdinal(QueryNode* pExpr)
   // Walk the expression graph (children only), looking for ColumnRef.
   // Lambda to execute on each node:
   auto fVisitor = [&bIsOrdinal](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(pvArg);
 
     if (ColumnRef::bIsOfType(pNode)) {
       bIsOrdinal = false;

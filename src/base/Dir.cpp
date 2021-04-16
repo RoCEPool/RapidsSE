@@ -30,7 +30,7 @@ __aFooterFunction(Dir)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Dir::Dir(Loggable* pIsFor)
+Dir::Dir(Object* pIsFor)
 : Resource(CN_DIR,pIsFor)
 {
   _precondition_(_MAGIC_,CN_DIR,_FOOTER_);

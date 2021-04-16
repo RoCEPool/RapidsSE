@@ -67,6 +67,7 @@ void SqlTimestamp::vDescribe(PlanNode* pNode, s2K& sBuf)
 {
   _static_
   ASSERT(bIsOfType(pNode));
+  UNUSED(pNode);
 
   sBuf.vConcat("TIMESTAMP"_Stz);
 }

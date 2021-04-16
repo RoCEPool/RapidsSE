@@ -472,6 +472,51 @@ QueryNode* QueryNode::pDeepCopy(PlanNodeList* pNewChildren)
   return pNewNode;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Change the current node in place to reflect pTemplate.                     */
+/* This is an alternative to removing the current node and inserting a new    */
+/* node. Changing it in place allows it to avoid affecting top-down walks of  */
+/* the graph.                                                                 */
+/*----------------------------------------------------------------------------*/
+void QueryNode::vTransmogrifyTo(QueryNode* pTemplate)
+{
+  ASSERT(pTemplate);
+
+  this->vSetName(pTemplate->szName());
+  this->vSetType(pTemplate->szType());
+  this->vSetValue(pTemplate->xValue().xDup());
+
+  if (m_pProperties) {
+    m_pProperties->vDeleteAll();
+  }
+
+  if (pTemplate->m_pProperties) {
+    if (!m_pProperties) {
+      m_pProperties = new PlanNodeList();
+    }
+
+    PlanNode* pProperty;
+    while ( (pProperty = pTemplate->m_pProperties->pPop()) != nullptr ) {
+      m_pProperties->vAppend(pProperty);
+    }
+  }
+
+  if (m_pChildren) {
+    m_pChildren->vDeleteAll();
+  }
+
+  if (pTemplate->m_pChildren) {
+    if (!m_pChildren) {
+      m_pChildren = new PlanNodeList();
+    }
+
+    PlanNode* pChild;
+    while ((pChild = pTemplate->m_pChildren->pPop()) != nullptr ) {
+      m_pChildren->vAppend(pChild);
+    }
+  }
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

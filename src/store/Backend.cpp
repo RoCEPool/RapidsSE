@@ -121,7 +121,7 @@ bool Backend::bTransliterate(String* sPipeline) {
   m_sPipeline = sPipeline;
 
 //#ifdef WITH_TRACE_Backend
-  //vPrintPlanGraph(m_pPlanRoot);
+  vPrintPlanGraph(m_pPlanRoot);
 //#endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -410,12 +410,14 @@ void Backend::vAppendScanOp(Backend* pBackend, QueryNode* pNode)
   String* sPipeline = pBackend->m_sPipeline;
 
   QueryNode *pTableRef = TableScanOp::pTableRef(pNode);
-  Stz *szTableName = TableRef::szTable(pTableRef);
+  Stz *szCatalogName   = TableRef::szCatalog(pTableRef);
+  Stz *szSchemaName    = TableRef::szSchema(pTableRef);
+  Stz *szTableName     = TableRef::szTable(pTableRef);
 
   sPipeline->vCatSprint(
-      "    scan %s\n"
+      "    scan %s %s %s\n"
       ""_Stz,
-      szTableName);
+      szCatalogName, szSchemaName, szTableName);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -438,6 +440,7 @@ void Backend::vAppendUnionOp(Backend* pBackend, QueryNode* pUnionNode)
   pBackend->vAppendNextOp(pChildStatementMarker1->szName());
   pBackend->vAppendPipe();
   pBackend->vAppendNextOp(pChildStatementMarker2->szName());
+
   // bounded walk of each of first children
   GraphNav::bGlobalWalk(pChildStatementMarker1, false, true, vVisitorPlan, (void *) pBackend);
 

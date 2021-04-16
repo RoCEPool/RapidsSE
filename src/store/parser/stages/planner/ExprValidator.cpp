@@ -56,6 +56,10 @@ void ExprValidator::vValidateExprs(PlanNode *pRootNode)
   auto fVisitor = [pRootNode]
       (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(pvArg);
+
     if (!StatementMarker::bIsOfType(pNode)) {
       return GraphNav::WALK_CONTINUE;
     }
@@ -105,6 +109,9 @@ void ExprValidator::vValidateExprResultType(PlanNode *pRootNode, QueryNode* pSta
   // Walk the graph looking for all expressions
   auto fVisitor = [](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
+    UNUSED(sPath);
+    UNUSED(iDepth);
+
     PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
 
     if (!Expr::bIsOfType(pNode)) {
@@ -136,6 +143,9 @@ void ExprValidator::vValidatePredicatesAreBoolean(PlanNode *pRootNode, QueryNode
 
   // Walk the graph looking for all filterOps
   auto fVisitor = [](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(sPath);
+    UNUSED(iDepth);
 
     PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
 
@@ -180,6 +190,7 @@ void ExprValidator::vValidateGroupByExprs(PlanNode *pRootNode, QueryNode* pStart
   // If there is group by list then an AggregateOp will be generated
   // rather than an ProjectOp for an early plan.
   auto fCondition = [](PlanNode* pNode, void* pvArg) -> b1 {
+    UNUSED(pvArg);
     return AggregateOp::bIsExactType(pNode);
   };
 
@@ -192,6 +203,7 @@ void ExprValidator::vValidateGroupByExprs(PlanNode *pRootNode, QueryNode* pStart
 
   // Get the list of projected expressions
   QueryNode* pProjectExprs = AggregateOp::pProjectedColumns(pAggregateOp);
+  UNUSED(pProjectExprs);
 
   // Get the group by list
   QueryNode* pGroupByList = AggregateOp::pGroupByList(pAggregateOp);

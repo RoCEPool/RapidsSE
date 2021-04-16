@@ -92,6 +92,11 @@ namespace Parser
     // Return a deep copy of the current node and it's properties but use the supplied children
     // NB: May need to make the name unique if using this copy as a sibling of its original.
     QueryNode* pDeepCopy(PlanNodeList* pNewChildren);
+
+    // Change the current node in place to reflect pTemplate.
+    // This is an alternative to removing the current node and inserting a new node.
+    // Changing it in place allows it to avoid affecting top-down walks of the graph.
+    void vTransmogrifyTo(QueryNode* pTemplate);
   };
   
   QueryNode* _pQueryNode(void* aAddr);

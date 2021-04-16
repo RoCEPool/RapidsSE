@@ -50,7 +50,7 @@ void StringList::vDescribe(PlanNode* pNode, s2K& sBuf)
 
   QueryNode* pStringList = _pQueryNode(pNode);
 
-  PlanNodeIter* pIter = pNode->pNewChildrenIter();
+  PlanNodeIter* pIter = pStringList->pNewChildrenIter();
   b1 bFirst = true;
 
   while (pIter->bHasNext()) {

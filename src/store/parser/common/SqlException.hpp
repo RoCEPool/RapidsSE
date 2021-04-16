@@ -12,6 +12,7 @@
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
 #include "QueryNodeList.hpp"
+#include "ProjectedColumn.hpp"
 #include "eEC.h"
 
 namespace Parser
@@ -245,6 +246,76 @@ namespace Parser
       delete pTableDefList;   // yes, delete the list we were passed
 
       throw NameValidationException(EC_AMBIGUOUS_COLUMN, sErrMsg.szStz());
+    }
+
+    static void vThrowAmbiguousColumn(Stz* szColumnName, QueryNodeList* pTableDefList, QueryNodeList* pProjectedColumnList)
+    {
+      ASSERT(szColumnName);
+      ASSERT(pTableDefList);
+      ASSERT(pTableDefList->nItems() > 1);
+      ASSERT(pProjectedColumnList);
+      ASSERT(pProjectedColumnList->nItems() > 1);
+
+      s2K sErrMsg(aErrorMsg[EC_AMBIGUOUS_COLUMN]);
+
+      sErrMsg.vCatSprint(": %s. Could be one of:"_Stz, szColumnName);
+
+      QueryNodeIter* pTableDefIter = pTableDefList->pNewIter();
+      while (pTableDefIter->bHasNext()) {
+        QueryNode* pNode = pTableDefIter->pNext();
+
+        sErrMsg.vCatSprint("\n  %s.%s.%s.%s"_Stz,
+                           TableDef::szCatalogName(pNode),
+                           TableDef::szSchemaName(pNode),
+                           TableDef::szTableName(pNode),
+                           szColumnName);
+      }
+
+      delete pTableDefIter;
+      pTableDefList->vRemoveAll();
+      delete pTableDefList;   // yes, delete the list we were passed
+
+
+      QueryNodeIter* pProjectedColIter = pProjectedColumnList->pNewIter();
+      while (pProjectedColIter->bHasNext()) {
+        QueryNode* pNode = pProjectedColIter->pNext();
+        ASSERT(ProjectedColumn::bIsOfType(pNode));
+
+        sErrMsg.vConcat("\n  "_Stz);
+        ProjectedColumn::vDescribe(pNode, sErrMsg);
+      }
+
+      delete pProjectedColIter;
+      pProjectedColumnList->vRemoveAll();
+      delete pProjectedColumnList;   // yes, delete the list we were passed
+
+      throw NameValidationException(EC_AMBIGUOUS_COLUMN, sErrMsg.szStz());
+    }
+
+    static void vThrowAmbiguousAlias(Stz* szAliasName, QueryNodeList* pProjectedColumnList)
+    {
+      ASSERT(szAliasName);
+      ASSERT(pProjectedColumnList);
+      ASSERT(pProjectedColumnList->nItems() > 1);
+
+      s2K sErrMsg(aErrorMsg[EC_AMBIGUOUS_ALIAS]);
+
+      sErrMsg.vCatSprint(": %s. Could be one of:"_Stz, szAliasName);
+
+      QueryNodeIter* pIter = pProjectedColumnList->pNewIter();
+      while (pIter->bHasNext()) {
+        QueryNode* pNode = pIter->pNext();
+        ASSERT(ProjectedColumn::bIsOfType(pNode));
+
+        sErrMsg.vConcat("\n  "_Stz);
+        ProjectedColumn::vDescribe(pNode, sErrMsg);
+      }
+
+      delete pIter;
+      pProjectedColumnList->vRemoveAll();
+      delete pProjectedColumnList;   // yes, delete the list we were passed
+
+      throw NameValidationException(EC_AMBIGUOUS_ALIAS, sErrMsg.szStz());
     }
 
     static void vThrowUnresolvableColumnWildcard(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName) {

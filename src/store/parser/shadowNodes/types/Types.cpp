@@ -32,8 +32,6 @@ void Types::vDescribe(PlanNode* pNode, s2K& sBuf)
   _static_
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pExpr = _pQueryNode(pNode);
-
   // TODO: manual polymorphism here
 
   // Statement

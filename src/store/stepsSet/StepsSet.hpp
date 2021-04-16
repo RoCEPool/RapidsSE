@@ -918,6 +918,15 @@ public:
   void vMemoryStatistics(void);
   void vMemoryWordDump(void);
 
+  // metaGet
+  void vMetaGetGetMetadata(void);
+
+  // metaRecv
+  void vMetaRecvPutParts(void);
+
+  // metaSend
+  void vMetaSendGetParts(void);
+
   // metaTable
   void vMetaTableListTables(void);
 

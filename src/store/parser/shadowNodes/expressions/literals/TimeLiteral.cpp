@@ -97,6 +97,8 @@ eCT TimeLiteral::eType(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pExprNode));
+  UNUSED(pExprNode);
+  UNUSED(pRootNode);
 
   return CT_TIME;
 }

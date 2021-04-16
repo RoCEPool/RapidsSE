@@ -24,7 +24,8 @@ Resource* BASE::_pResource(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Resource::Resource(eCN eClassNo, Object* pIsFor)
-: Loggable(eClassNo)
+: Object(eClassNo)
+, m_xResourceId(eClassNo)
 {
   _precondition_(_MAGIC_,eClassNo);
   
@@ -67,7 +68,7 @@ i8 Resource::iResId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_iObjectId;
+  return * m_xResourceId;
 }
 
 /*============================================================================*/

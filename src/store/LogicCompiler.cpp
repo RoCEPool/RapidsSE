@@ -42,7 +42,7 @@ char gszaAmMacroFiles[C_MACRO_FILES][128] = {
 #include "DEV_interface.h"
 #include "LIB_interface.h"
 #include "RLU_interface.h"
-
+#include "MathLib.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -926,6 +926,7 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n  #include \"../src/store/DEV_interface.h\""
   "\n  #include \"../src/store/RLU_interface.h\""
   "\n  #include \"../src/store/RluCommon.h\""
+  "\n  #include \"../src/base/MathLib.h\""
   "\n  #include \"../src/base/eEO.h\""
   "\n"
   "\n  #define ArgNil() "

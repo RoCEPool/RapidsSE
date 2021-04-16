@@ -63,7 +63,7 @@ void IndexDefs::vDescribe(PlanNode* pNode, s2K& sBuf)
 
   QueryNode* pIndexDefs = _pQueryNode(pNode);
 
-  PlanNodeIter* pIter = pNode->pNewChildrenIter();
+  PlanNodeIter* pIter = pIndexDefs->pNewChildrenIter();
   b1 bFirst = true;
 
   while (pIter->bHasNext()) {

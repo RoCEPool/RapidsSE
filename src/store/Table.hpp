@@ -3,6 +3,7 @@
 /*============================================================================*/
 #pragma once
 
+#include <vector>
 #include "Index.hpp"
 #include "eTT.h"
 
@@ -23,7 +24,9 @@ namespace STORE
     IdxVec*    m_pIdxVec;     // index vector
     
     TablePtnVec*  m_pTablePtnVec; // table partition vector
-        
+
+    std::vector<char*> m_aObjParts;
+
     // must be last
     Footer m_xFooter;
     
@@ -81,6 +84,14 @@ namespace STORE
     bool bVerifyTable(void);
     bool bVerifyIndexes(void);
     bool bVerifyIndex(Index* pIndex);
+
+
+    i8   iPrepareObjParts(void);
+    std::vector<char*> aObjParts(void) { return m_aObjParts;};
+    i8   iObjParts(void) { return m_aObjParts.size();};
+
+    i8   iBuildArrayObjParts(char* pObj);
+    i8   iReassembleObj(void);
    
   private:
     Footer* aFooter(void);

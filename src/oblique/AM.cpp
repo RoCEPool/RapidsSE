@@ -742,7 +742,7 @@ Steps* AM::pSteps(void)   { return gpAttachMap->m_pSteps;      }
 
 MasterLock* AM::pTccLock(void)      { return & gpAttachMap->m_oLocks.m_oTccMasterLock;            }
 Word* AM::pTenants(void)      { return gpAttachMap->m_pTenants;               }
-i8   AM::iThisNodeNo(void)    { return gpAttachMap->m_pGrid->iThisNodeNo();     }
+i8   AM::iThisNodeNo(void)    { return gpAttachMap->m_pGrid->iThisNode();     }
 bool AM::bFirstNode(i8 iNodeNo) { return gpAttachMap->m_pGrid->bFirstNode(iNodeNo);     }
 i8   AM::iGetNodeNo(i8 i_Node)    { return gpAttachMap->m_pGrid->iGetNodeNo(i_Node);     }
 void AM::vThreadBegins(void)  { ++ gpAttachMap->m_pSchedule->m_ixThreads; }
@@ -2066,7 +2066,7 @@ XmitOperand* AM::pNewXmitOperand(Job* pParentJob, Operand* pOperand,
                                  i8 i_Node, i8 tPtnNo)
 {
   XmitOperand* pXmitOperand =
-    XmitOperand::pNewXmitOperand(pOperand,pParentJob->m_iObjectId,
+    XmitOperand::pNewXmitOperand(pOperand,pParentJob->iJobId(),
                                  eCrossTopo,iNextStage,iNextOp,i_Node,tPtnNo);
   
   return pXmitOperand;
@@ -2453,7 +2453,7 @@ InternalTables* AM::pInternalTables(void) {
 }
 
 Stz* AM::szJobName(Job* pJob)    { return pJob->szJobNm();                      }
-i8   AM::iJobUniqueId(Job* pJob) { return pJob->m_iObjectId;                     }
+i8   AM::iJobUniqueId(Job* pJob) { return pJob->iJobId();                     }
 
 void AM::vPrintGlobals(void)
 {

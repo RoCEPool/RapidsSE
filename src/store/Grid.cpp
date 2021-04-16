@@ -57,9 +57,9 @@ Grid::Grid(Stz* szGridNm, i8 iConnectCode)
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
   m_sGridNm = szGridNm; //"SEgrid"_Stz;
-  m_iConnectCode = iConnectCode;
+  m_iConnectCode    = iConnectCode;
   
-  m_iThisNodeNo     = C_UNKNOWN;
+  m_iThisNode       = C_UNKNOWN;
 
   m_pThisNode       = nullptr;
   
@@ -166,7 +166,7 @@ void Grid::vDsv(void)
          m_iConnectCode);
   
   vTrace("  this node %lld %s\n"_Stz,
-         m_iThisNodeNo,
+         m_iThisNode,
          m_pThisNode ? m_pThisNode->szNodeNm() : "no m_pNode"_Stz);
 
   vTrace("  %s started; start node %lld\n"_Stz,
@@ -551,7 +551,7 @@ void Grid::vThisNodeNo(i8 iNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   // iNode is no longer an index
-  m_iThisNodeNo = iNode;
+  m_iThisNode = iNode;
   //m_pThisNode = pGetNode(iNode); oldcode
 }
 
@@ -568,11 +568,11 @@ void Grid::vSetThisNode(Node* pNode)
 /*----------------------------------------------------------------------------*/
 /* get this node number                                                       */
 /*----------------------------------------------------------------------------*/
-i8 Grid::iThisNodeNo(void)
+i8 Grid::iThisNode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  return m_iThisNodeNo;
+  return m_iThisNode;
 }
 
 /*----------------------------------------------------------------------------*/

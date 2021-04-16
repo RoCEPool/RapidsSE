@@ -63,7 +63,7 @@ void ColumnRefs::vDescribe(PlanNode* pNode, s2K& sBuf)
 
   QueryNode* pColumnRefs = _pQueryNode(pNode);
 
-  PlanNodeIter* pIter = pNode->pNewChildrenIter();
+  PlanNodeIter* pIter = pColumnRefs->pNewChildrenIter();
   b1 bFirst = true;
 
   while (pIter->bHasNext()) {

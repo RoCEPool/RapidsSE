@@ -45,6 +45,7 @@ void SqlBoolean::vDescribe(PlanNode* pNode, s2K& sBuf)
 {
   _static_
   ASSERT(bIsOfType(pNode));
+  UNUSED(pNode);
 
   sBuf.vConcat("BOOLEAN"_Stz);
 }

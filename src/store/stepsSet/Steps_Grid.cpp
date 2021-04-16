@@ -235,7 +235,7 @@ void Step::vGridThisNodeFetch(void)
 {
   ENTRY();
     
-  i8 iNodeNo = AM::pGrid()->iThisNodeNo();
+  i8 iNodeNo = AM::pGrid()->iThisNode();
   
   m_pDataStack->vPushInt(iNodeNo);
   

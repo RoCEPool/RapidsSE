@@ -180,6 +180,12 @@
 
   LogReqEntry SEED_REQ
 
+  "<catalogNm>"  job[] job.tagSet@ tagSet.hasName if
+    <schemaNm> <catalogNm>
+    "/tenants/boray/catalogs/%v/schemas/%v/tables" str.format
+    str.toStrVec Path[].set
+  then
+
   op__topology
 
   find: scan_CancelMarker ZK_CANCELMARKER op[].handler!
@@ -199,7 +205,9 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 cmdSyntax: scan :: scan <tableNm> ;
+cmdSyntax: scan :: scan <catalogNm> <schemaNm> <tableNm> ;
 cmdSyntax: scan :: scan <tableNm> <rateSecs> ;
+cmdSyntax: scan :: scan <catalogNm> <schemaNm> <tableNm> <rateSecs> ;
 
 : scan_cmdTags _cmdTags tagCopy: op_tags
   tags{ <cmdDesc> = "--desc for op--" }

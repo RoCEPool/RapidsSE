@@ -5,11 +5,14 @@
 
 namespace BASE
 {
-  class Resource : public Loggable
+  class Resource : public Object
   {
   protected:
-    Object* m_pIsFor;
   
+    ObjId<CN_NONE> m_xResourceId;
+  
+    Object* m_pIsFor;
+    
     s256    m_sPath;  // the path of the resource (relative or absolute)
 
   public:

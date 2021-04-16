@@ -86,6 +86,7 @@ eCT LiteralExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pExprNode));
+  UNUSED(pRootNode);
 
   if      (      StringLiteral::bIsOfType(pExprNode))  { return CT_VARCHAR;     }
   else if (     BooleanLiteral::bIsOfType(pExprNode))  { return CT_BOOLEAN;     }
