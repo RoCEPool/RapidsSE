@@ -210,7 +210,7 @@ void vHeartInit(void) {
         // We failed to update the node with heartbeat,
         // meaning we don't have this node in the cluster/grid yet.
         // Then we need to add this node into the cluster/grid.
-        if (xHeartbeat.m_u2Version >= 0) {// will add the correct global version number
+        if (xHeartbeat.m_u2Version >= AM::iVersionNumber()) {// will add the correct global version number
           AM::vAddNewNode(xHeartbeat.m_iNodeNo, (Stz *) xHeartbeat.m_acNodeName, (Stz *) xHeartbeat.m_acAddr,
                           xHeartbeat.m_iPort);
           vTrace("Node %s has been added\n"_Stz, xHeartbeat.m_acNodeName);

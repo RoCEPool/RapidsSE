@@ -869,50 +869,97 @@ i8 Table::iPrepareObjParts(void) {
   // Do we need to copy??? Let's make this prototype code to test out
 
   // Main part of CN_TABLE
+  char* pSave;
+  i8 nSize = 0;
   eCN aType = CN_TABLE;
-  char *pBuffer = (char *) MemLib::aMallocBlock(sizeof(m_sTableNm) + sizeof(m_eKind)+ sizeof(eCN));
+  char *pBuffer = (char *) MemLib::aMallocBlock(sizeof(m_sTableNm) + sizeof(m_eKind) + sizeof(eCN));
   MemLib::vCopy(pBuffer, (char *) &aType, sizeof(eCN), CN_TABLE);
   MemLib::vCopy(pBuffer + sizeof(eCN), (char *) &m_sTableNm, sizeof(m_sTableNm), CN_STZVAL);
-  MemLib::vCopy(pBuffer + sizeof(eCN)+sizeof(m_sTableNm), (char *) &m_eKind, sizeof(m_eKind), CN_STZVAL);
+  MemLib::vCopy(pBuffer + sizeof(eCN) + sizeof(m_sTableNm), (char *) &m_eKind, sizeof(m_eKind), CN_STZVAL);
   m_aObjParts.push_back(pBuffer);
 
+  // SHOULD MAKE THIS a MEMBER FUNCTION OF CLASS LOCATION
   aType = CN_LOCATION;
-  pBuffer = (char *) MemLib::aMallocBlock(sizeof(Location) + sizeof(eCN));
-  MemLib::vCopy(pBuffer, (char *) &aType, sizeof(eCN), CN_LOCATION);
-  MemLib::vCopy(pBuffer + sizeof(eCN), (char *) &m_oLocation, sizeof(Location), CN_LOCATION);
-  m_aObjParts.push_back(pBuffer);
+  pSave = pBuffer = (char *) MemLib::aMallocBlock(sizeof(eCN)
+                                          + sizeof(nSize) + m_oLocation.szTenant()->nSize()
+                                          + sizeof(nSize) + m_oLocation.szCatalog()->nSize()
+                                          + sizeof(nSize) + m_oLocation.szSchema()->nSize()
+                                          + sizeof(nSize) + m_oLocation.szTable()->nSize());
 
+  MemLib::vCopy(pBuffer, (char *) &aType, sizeof(eCN), CN_INTVAL);
+
+  pBuffer += sizeof(eCN);
+  nSize = m_oLocation.szTenant()->nSize();
+  MemLib::vCopy(pBuffer, (char *) &nSize, sizeof(nSize), CN_INTVAL);
+  pBuffer += sizeof(nSize);
+  MemLib::vCopy(pBuffer, (char *) m_oLocation.szTenant()->azChar(), nSize, CN_STZVAL);
+
+  pBuffer += nSize; //m_oLocation.szTenant()->nSize();
+  nSize = m_oLocation.szCatalog()->nSize();
+  MemLib::vCopy(pBuffer, (char *) &nSize, sizeof(nSize), CN_INTVAL);
+  pBuffer += sizeof(nSize);
+  MemLib::vCopy(pBuffer, (char *) m_oLocation.szCatalog()->azChar(), nSize, CN_STZVAL);
+
+  pBuffer += nSize;
+  nSize = m_oLocation.szSchema()->nSize();
+  MemLib::vCopy(pBuffer, (char *) &nSize, sizeof(nSize), CN_INTVAL);
+  pBuffer += sizeof(nSize);
+  MemLib::vCopy(pBuffer, (char *) m_oLocation.szSchema()->azChar(), nSize, CN_STZVAL);
+
+  pBuffer += nSize;
+  nSize = m_oLocation.szTable()->nSize();
+  MemLib::vCopy(pBuffer, (char *) &nSize, sizeof(nSize), CN_INTVAL);
+  pBuffer += sizeof(nSize);
+  MemLib::vCopy(pBuffer, (char *) m_oLocation.szTable()->azChar(), nSize, CN_STZVAL);
+
+  m_aObjParts.push_back(pSave);
+
+
+  // SHOULD MAKE THIS a MEMBER FUNCTION OF CLASS CN_STREAMDEF
   if (m_pStreamDef) {
     aType = CN_STREAMDEF;
-    pBuffer = (char *) MemLib::aMallocBlock(sizeof(StreamDef) + sizeof(eCN));
-    MemLib::vCopy(pBuffer, (char *) &aType, sizeof(eCN), CN_STREAMDEF);
-    MemLib::vCopy(pBuffer + sizeof(eCN), (char *) m_pStreamDef, sizeof(StreamDef), CN_STREAMDEF);
-    m_aObjParts.push_back(pBuffer);
+
+    pSave = pBuffer = (char *) MemLib::aMallocBlock(sizeof(eCN)
+                                                    + sizeof(nSize) + m_pStreamDef->szStreamDefNm()->nSize()                               );
+
+    MemLib::vCopy(pBuffer, (char *) &aType, sizeof(eCN), CN_INTVAL);
+    pBuffer += sizeof(eCN);
+    nSize = m_pStreamDef->szStreamDefNm()->nSize();
+    MemLib::vCopy(pBuffer, (char *) &nSize, sizeof(nSize), CN_INTVAL);
+    pBuffer += sizeof(nSize);
+    MemLib::vCopy(pBuffer, (char *) m_pStreamDef->szStreamDefNm()->azChar(), nSize, CN_STZVAL);
+
+    m_aObjParts.push_back(pSave);
   }
 
+  // SHOULD MAKE THIS a MEMBER FUNCTION OF CLASS CN_SHARDDEF
   aType = CN_SHARDDEF;
-  pBuffer = (char*)MemLib::aMallocBlock(sizeof(ShardDef)+sizeof(eCN));
-  MemLib::vCopy(pBuffer, (char*)&aType, sizeof(eCN), CN_SHARDDEF);
-  MemLib::vCopy(pBuffer+sizeof(eCN), (char*)m_pShardDef, sizeof(ShardDef), CN_SHARDDEF);
-  m_aObjParts.push_back(pBuffer);
+  pSave = pBuffer = (char *) MemLib::aMallocBlock(sizeof(eCN)
+                                                  + sizeof(nSize) + m_pShardDef->szShardDefNm()->nSize()  );
 
+  MemLib::vCopy(pBuffer, (char *) &aType, sizeof(eCN), CN_INTVAL);
+  pBuffer += sizeof(eCN);
+  nSize = m_pShardDef->szShardDefNm()->nSize();
+  MemLib::vCopy(pBuffer, (char *) &nSize, sizeof(nSize), CN_INTVAL);
+  pBuffer += sizeof(nSize);
+  MemLib::vCopy(pBuffer, (char *) m_pShardDef->szShardDefNm()->azChar(), nSize, CN_STZVAL);
+
+  m_aObjParts.push_back(pSave);
+
+
+  /*
+  // SHOULD MAKE THIS a MEMBER FUNCTION OF CLASS CN_BUCKETMAP
   aType = CN_BUCKETMAP;
-  pBuffer = (char*)MemLib::aMallocBlock(sizeof(BucketMap)+sizeof(eCN));
-  MemLib::vCopy(pBuffer, (char*)&aType, sizeof(eCN), CN_BUCKETMAP);
-  MemLib::vCopy(pBuffer+sizeof(eCN), (char*)m_pBucketMap, sizeof(BucketMap), CN_BUCKETMAP);
-  m_aObjParts.push_back(pBuffer);
 
+
+  // SHOULD MAKE THIS a MEMBER FUNCTION OF CLASS CN_IDXVEC
   aType = CN_IDXVEC;
-  pBuffer = (char*)MemLib::aMallocBlock(sizeof(IdxVec)+sizeof(eCN));
-  MemLib::vCopy(pBuffer, (char*)&aType, sizeof(eCN), CN_IDXVEC);
-  MemLib::vCopy(pBuffer+sizeof(eCN), (char*)m_pIdxVec, sizeof(IdxVec), CN_IDXVEC);
-  m_aObjParts.push_back(pBuffer);
 
+
+  // SHOULD MAKE THIS a MEMBER FUNCTION OF CLASS CN_TABLEPTNVEC
   aType = CN_TABLEPTNVEC;
-  pBuffer = (char*)MemLib::aMallocBlock(sizeof(TablePtnVec)+sizeof(eCN));
-  MemLib::vCopy(pBuffer, (char*)&aType, sizeof(eCN), CN_TABLEPTNVEC);
-  MemLib::vCopy(pBuffer+sizeof(eCN), (char*)m_pTablePtnVec, sizeof(TablePtnVec), CN_TABLEPTNVEC);
-  m_aObjParts.push_back(pBuffer);
+
+  */
 
   return m_aObjParts.size();
 }
@@ -938,41 +985,82 @@ i8 Table::iBuildArrayObjParts(char* pObj)
 /*----------------------------------------------------------------------------*/
 i8  Table::iReassembleObj(void)
 {
-  Location* pLoc= nullptr;
+  i8 nSize = 0;
+  char aBuf[1024];
+
   for (auto it = m_aObjParts.begin();  it != m_aObjParts.end(); ++it) {
     char* pBuffer =  *it;
     eCN uCn;
     memcpy((char*)&uCn, pBuffer, sizeof(eCN));
+    pBuffer += sizeof(eCN);
+
     switch (uCn) {
       case CN_TABLE:
-
+        // do nothing for now
         break;
       case CN_LOCATION:
-        //pLoc = (Location*)(pBuffer+sizeof(eCN));
-        MemLib::vCopy(&m_oLocation, pBuffer+sizeof(eCN), sizeof(Location),CN_LOCATION);
+
+        MemLib::vCopy((char *) &nSize, pBuffer, sizeof(nSize), CN_INTVAL);
+        pBuffer += sizeof(nSize);
+
+        memset(aBuf, 0, sizeof(aBuf));
+        MemLib::vCopy(aBuf, pBuffer, nSize, CN_STZVAL);
+        m_oLocation.vTenant((Stz *) aBuf);
+
+        pBuffer += nSize;
+        MemLib::vCopy((char *) &nSize, pBuffer, sizeof(nSize), CN_INTVAL);
+        pBuffer += sizeof(nSize);
+        memset(aBuf, 0, sizeof(aBuf));
+        MemLib::vCopy(aBuf, pBuffer, nSize, CN_STZVAL);
+        m_oLocation.vCatalog((Stz *) aBuf);
+
+        pBuffer += nSize;
+        MemLib::vCopy((char *) &nSize, pBuffer, sizeof(nSize), CN_INTVAL);
+        pBuffer += sizeof(nSize);
+        memset(aBuf, 0, sizeof(aBuf));
+        MemLib::vCopy(aBuf, pBuffer, nSize, CN_STZVAL);
+        m_oLocation.vSchema((Stz *) aBuf);
+
+        pBuffer += nSize;
+        MemLib::vCopy((char *) &nSize, pBuffer, sizeof(nSize), CN_INTVAL);
+        pBuffer += sizeof(nSize);
+        memset(aBuf, 0, sizeof(aBuf));
+        MemLib::vCopy(aBuf, pBuffer, nSize, CN_STZVAL);
+        m_oLocation.vTable((Stz *) aBuf);
+
         break;
       case CN_STREAMDEF:
-        MemLib::vCopy((char*)m_pStreamDef,pBuffer+sizeof(eCN), sizeof(StreamDef), CN_STREAMDEF);
-        //m_pStreamDef    = (StreamDef*)(pBuffer+sizeof(eCN));
+
+        MemLib::vCopy((char*)&nSize, pBuffer, sizeof(nSize),CN_INTVAL);
+        pBuffer += sizeof(nSize);
+
+        memset(aBuf,0,sizeof (aBuf));
+        MemLib::vCopy(aBuf, pBuffer, nSize,CN_STZVAL);
+        m_pStreamDef->vStreamDefNm((Stz*)aBuf);
+
         break;
-      case CN_SHARDDEF:
-        MemLib::vCopy((char*)m_pShardDef,pBuffer+sizeof(eCN), sizeof(ShardDef), CN_SHARDDEF);
-        //m_pShardDef    = (ShardDef*)(pBuffer+sizeof(eCN));
+      case CN_SHARDDEF: {
+
+        MemLib::vCopy((char*)&nSize, pBuffer, sizeof(nSize),CN_INTVAL);
+        pBuffer += sizeof(nSize);
+
+        memset(aBuf,0,sizeof (aBuf));
+        MemLib::vCopy(aBuf, pBuffer, nSize,CN_STZVAL);
+        m_pShardDef->vShardDefNm((Stz*)aBuf);
+
+      }
         break;
       case CN_BUCKETMAP:
-        MemLib::vCopy((char*)m_pBucketMap,pBuffer+sizeof(eCN), sizeof(BucketMap), CN_BUCKETMAP);
-        //m_pBucketMap = (BucketMap*)(pBuffer+sizeof(eCN));
+
         break;
       case CN_IDXVEC:
-        MemLib::vCopy((char*)m_pIdxVec,pBuffer+sizeof(eCN), sizeof(IdxVec), CN_IDXVEC);
-        //m_pIdxVec = (IdxVec*)(pBuffer+sizeof(eCN));
+
         break;
       case CN_TABLEPTNVEC:
-        MemLib::vCopy((char*)m_pTablePtnVec,pBuffer+sizeof(eCN), sizeof(TablePtnVec), CN_TABLEPTNVEC);
-        //m_pTablePtnVec = (TablePtnVec*)(pBuffer+sizeof(eCN));
+
         break;
       default:
-        vTrace("Error\n"_Stz);
+        vTrace("iReassembleObj %ld Error\n"_Stz,uCn);
     }
   }
 

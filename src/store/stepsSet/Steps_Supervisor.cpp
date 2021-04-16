@@ -60,7 +60,7 @@ void Step::vSupervisorCollectInfo(void)
 
   MemLib::vZero(&xHeartbeat,sizeof(xHeartbeat),CN_NODE);
 
-  xHeartbeat.m_u2Version = 1; // hardcode here but it should be defined somewhere
+  xHeartbeat.m_u2Version = AM::iVersionNumber();
   xHeartbeat.m_iSeqNo = ++iSeq;
   xHeartbeat.m_iSincePosixEpoch = time(0);
   strncpy(xHeartbeat.m_acBuildGitHash, (char *) gsBuildGitHash, sizeof(xHeartbeat.m_acBuildGitHash));

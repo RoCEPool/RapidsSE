@@ -545,6 +545,8 @@ void Step::vTableNew(void)
   }
   i8 iN = pTable1->iReassembleObj();
 
+  // Testing the concept, passing the minimum-reassemble table works
+  //m_pDataStack->vPushPtr(pTable1);
   // END TESTING ////////////////////////////////////////////////////////////
 
   m_pDataStack->vPushPtr(pTable);
