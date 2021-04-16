@@ -466,8 +466,6 @@ namespace OBLIQUE
     static void vLogSsn(eSL, Session*   pSsn, eAA eApiAct, Stz* szFormat, ...);
     static void vLogSys(eSL, AttachMap* pSys, eYA eSysAct, Stz* szFormat, ...);
     static void vLogThd(eSL, Thread*    pThd, eHA eThdAct, Stz* szFormat, ...);
-    static void vLogTsk(eSL, Task*      pTsk, eTA eTskAct, Stz* szFormat, ...);
-    static void vLogTxn(eSL, Tx*        pTxn, eXA eTxnAct, Stz* szFormat, ...);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vNapMsec(i8 nMilliSeconds, eCN eCallingClass);

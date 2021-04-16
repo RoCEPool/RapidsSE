@@ -144,9 +144,6 @@ void Scheduler::vTaskSelf_BideForOperand(Task* pSelfTask, Thread* pThread)
   RASSERT(QK_NONE == pSelfTask->eQueue());
   UNUSED(pThread);
   
-  AM::vLogTsk(SL_INF,pSelfTask,TA_TSK_BIDE,
-              "Transition task to TS_BIDING; add to BidingSet"_Stz); //!format-LogTsk
-
   Schedule* pSchedule = AM::pSchedule();
   
   pSelfTask->vTranstionRequestClear();
@@ -183,9 +180,6 @@ void Scheduler::vTaskSelf_DeleteThisTask(Task* pSelfTask, Thread* pThread)
 
   // add assert on entry point
 
-  AM::vLogTsk(SL_INF,pSelfTask,TA_TSK_EXIT,
-              "Task to TS_COMPLETED state; and deleted"_Stz); //!format-LogTsk
-    
   pSelfTask->vTranstionRequestClear();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -211,9 +205,6 @@ void Scheduler::vTaskSelf_SleepSomeTime(Task* pSelfTask, Thread* pThread)
   RASSERT(TR_SLEEP_SOME_TIME == pSelfTask->eTranstionRequest());
   RASSERT(TS_DESISTED == pSelfTask->eState());
   RASSERT(QK_NONE == pSelfTask->eQueue());
-
-  AM::vLogTsk(SL_INF,pSelfTask,TA_TSK_SLEEP,
-              "Add desisted task to SleepingQueue"_Stz); //!format-LogTsk
   
   Schedule* pSchedule = AM::pSchedule();
 
@@ -261,9 +252,6 @@ void Scheduler::vTaskSelf_WaitForResume(Task* pSelfTask, Thread* pThread)
   RASSERT(TS_DESISTED == pSelfTask->eState());
   RASSERT(QK_NONE == pSelfTask->eQueue());
   UNUSED(pThread);
-
-  AM::vLogTsk(SL_INF,pSelfTask,TA_TSK_WAIT,
-              "Task moved to WaitingSet"_Stz); //!format-LogTsk
   
   Schedule* pSchedule = AM::pSchedule();
   
@@ -290,9 +278,6 @@ void Scheduler::vTaskSelf_YieldForOthers(Task* pSelfTask, Thread* pThread)
   RASSERT(TR_YIELD_FOR_OTHERS == pSelfTask->eTranstionRequest());
   RASSERT(TS_DESISTED == pSelfTask->eState());
   RASSERT(QK_NONE == pSelfTask->eQueue());
-
-  AM::vLogTsk(SL_INF,pSelfTask,TA_TSK_YIELD,
-              "Yield desisted task; continue executing or schedule it"_Stz); //!format-LogTsk
 
   Schedule* pSchedule = AM::pSchedule();
 
@@ -485,10 +470,7 @@ void Scheduler::vTaskApi_AddDedicated(Task* pNewTask)
   
   pNewTask->vEntryPoint(EP_DEDICATED);
   pNewTask->vState(TS_DESISTED);
-  
-  AM::vLogTsk(SL_INF,pNewTask,TA_TSK_SPAWN_DEDICATED,
-              "Thread spawned for dedicated task"_Stz); //!format-LogTsk
-  
+    
   RASSERT(TS_DESISTED == pNewTask->eState());
   
   Thread* pThread = AM::THREAD::pNewThread();
@@ -830,10 +812,7 @@ void Scheduler::vThread_WaitForTaskAssignment(Thread* pThread)
 bool Scheduler::bThread_AssignIdle(Task* pKnownTask)
 {
   _static_
-  
-  AM::vLogTsk(SL_INF,pKnownTask,TA_TSK_ASSIGN_THREAD,
-              "Task attempts to assign an idle thread to itself"_Stz); //!format-LogTsk
-  
+    
   RASSERT(TS_DESISTED == pKnownTask->eState());
   
   Schedule* pSchedule = AM::pSchedule();
@@ -849,12 +828,6 @@ bool Scheduler::bThread_AssignIdle(Task* pKnownTask)
 
   pThread->vTask(pKnownTask);
     
-  AM::vLogTsk(SL_INF,pKnownTask,TA_TSK_ASSIGNED_THREAD,
-              "Task has popped and assigned an idle thread to itself"_Stz); //!format-LogTsk
-  
-  AM::vLogTsk(SL_INF,pKnownTask,TA_TSK_SIGNAL_THREAD,
-              "Task signals its assigned thread"_Stz); //!format-LogTsk
-  
   pThread->pMutex()->vLock(pKnownTask);
   pThread->pMutex()->vSignal(pKnownTask);
   pThread->pMutex()->vUnlock(pKnownTask);
@@ -934,9 +907,6 @@ void Scheduler::vThread_WaitAssignment(Thread* pThread)
 void Scheduler::vScheduleTask(Task* pKnownTask)
 {
   _static_
-  
-  AM::vLogTsk(SL_INF,pKnownTask,TA_TSK_SCHEDULE,
-              "Task is being scheduled"_Stz); //!format-LogTsk
   
   eTS eTaskState = pKnownTask->eState();
   eQK eQueue = pKnownTask->eQueue();

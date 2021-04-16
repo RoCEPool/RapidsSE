@@ -1729,55 +1729,6 @@ void AM::vLogThd(eSL , Thread* , eHA , Stz* , ...)
 #endif
 }
 
-/*----------------------------------------------------------------------------*/
-/* add a rask log entry                                                       */
-/*----------------------------------------------------------------------------*/
-void AM::vLogTsk(eSL , Task* , eTA , Stz* , ...)
-{
-#ifdef WITH_SHARED_LOG
-//  if (! AM::bLogging())
-//    return;
-//
-//  if (! gpLog->bIsLoggable(pTask))
-//    return;
-//
-//  va_list xVarArgs;
-//
-//  va_start(xVarArgs,szFormat);
-//
-//  i8 i_Entry = gpLog->iEntryTsk(eSeverity,pTask,eTskAct,
-//                                szFormat,xVarArgs);
-//
-//  va_end(xVarArgs);
-//
-//  pTask->m_i_Log = i_Entry;
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* add a transaction log entry                                                */
-/*----------------------------------------------------------------------------*/
-void AM::vLogTxn(eSL , Tx* , eXA , Stz* , ...)
-{
-#ifdef WITH_SHARED_LOG
-//  if (! AM::bLogging())
-//    return;
-//  
-//  if (! gpLog->bIsLoggable(pTxn))
-//    return;
-//
-//  va_list xVarArgs;
-//  
-//  va_start(xVarArgs,szFormat);
-//  
-//  i8 i_Entry = gpLog->iEntryTxn(eSeverity,pTxn,eTxnAct,
-//                                szFormat,xVarArgs);
-//
-//  va_end(xVarArgs);
-//  
-//  pTxn->m_i_Log = i_Entry;
-#endif
-}
 
 
 /*----------------------------------------------------------------------------*/
