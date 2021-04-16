@@ -35,8 +35,6 @@ void Step::vLogDump(void)
 {
   ENTRY();
   
-  AM::vLogWriteCsv(false);
-  
   EXIT();
 }
 

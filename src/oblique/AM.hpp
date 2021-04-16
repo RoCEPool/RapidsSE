@@ -456,13 +456,7 @@ namespace OBLIQUE
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vLog(TokenVec* pTknVec);
-    static void vLogAll(void);
-    static void vLogArguments(void);
-    static void vLogHow(i8 iRequestId, i8 iDetail);
-  
-    static void vLogText(i8 iId, Stz* szText);
-  
-    static void vLogLck(eSL, Lock*      pLck, eLA eLckAct, Stz* szFormat, ...);
+    
     static void vLogOpr(eSL, Op*        pOpr, eOA eOpAct,  Stz* szFormat, ...);
     static void vLogMgt(eSL, Job*       pJob, eMA eMgtAct, Stz* szFormat, ...);
     static void vLogPrm(eSL, SePrompt*  pPrm, ePA ePrmAct, Stz* szFormat, ...);
@@ -474,14 +468,7 @@ namespace OBLIQUE
     static void vLogThd(eSL, Thread*    pThd, eHA eThdAct, Stz* szFormat, ...);
     static void vLogTsk(eSL, Task*      pTsk, eTA eTskAct, Stz* szFormat, ...);
     static void vLogTxn(eSL, Tx*        pTxn, eXA eTxnAct, Stz* szFormat, ...);
-  
-    static void vLogOpenByApi(void);
-    static void vLogOpenBySE(bool bStarting);
-    static void vLogWriteCsv(bool bShortForm);
-    static bool bLogEntryExists(i8 i_Entry);
-    static i8   iLogEntryPrev(i8 i_Entry);
-    static void vLogEntrySprint(s4K& sString, i8 i_Entry);
-  
+    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vNapMsec(i8 nMilliSeconds, eCN eCallingClass);
     static void vNapUsec(i8 nMicroSeconds, eCN eCallingClass);

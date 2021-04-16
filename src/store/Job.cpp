@@ -786,7 +786,6 @@ void Job::vMarkJob(void)
 
   sJobMark.vConcat("\n"_Stz);
 
-  AM::vLogText(iJobId(),sJobMark);
 }
 
 /*----------------------------------------------------------------------------*/

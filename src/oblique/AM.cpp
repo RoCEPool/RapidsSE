@@ -964,9 +964,6 @@ bool AM::bJobIsForeign(i8 iJobId) {
   bool bForeign = Job::bIsForeign(iJobId);
   return bForeign;
 }
-void AM::vLogArguments(void) {
-  gxCmdLineArgs.vLog();
-}
 
 i8 AM::nLvlLevels(void) {
   return gpAttachMap->m_xSysArgs.m_nLvlLevels;
@@ -1505,57 +1502,6 @@ void AM::vWriteTrace_vargs(File* pFile, eYA eSysAct, Stz* aFormat, va_list xArgs
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* add a info log entry                                                       */
-/*----------------------------------------------------------------------------*/
-void AM::vLogAll(void)
-{
-#ifdef WITH_SHARED_LOG
-//  if (! AM::bLogging())
-//    return;
-//
-//  gpLog->vMarkAll(true);
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* show how a request was run                                                 */
-/*----------------------------------------------------------------------------*/
-void AM::vLogHow(i8 , i8 )
-{
-#ifdef WITH_SHARED_LOG
-//  if (! AM::bLogging())
-//    return;
-//
-//  gpLog->vHow(iRequestId,iDetail);
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* add a lock log entry                                                       */
-/*----------------------------------------------------------------------------*/
-void AM::vLogLck(eSL , Lock* , eLA , Stz* , ...)
-{
-#ifdef WITH_SHARED_LOG
-//  if (! AM::bLogging())
-//    return;
-//
-//  if (! gpLog->bIsLoggable(pLock))
-//    return;
-//
-//  va_list xVarArgs;
-//
-//  va_start(xVarArgs,szFormat);
-//
-//  i8 i_Entry = gpLog->iEntryLck(eSeverity,pLock,eLckAct,
-//                                szFormat,xVarArgs);
-//
-//  va_end(xVarArgs);
-//
-//  pLock->m_i_Log = i_Entry;
-#endif
-}
 
 /*----------------------------------------------------------------------------*/
 /* add a management log entry                                                 */
@@ -2285,17 +2231,6 @@ Stz* AM::szBuild(void)
   NEVER_REACH
 }
   
-  
-void AM::vLogOpenByApi(void)           {           }
-void AM::vLogOpenBySE(bool bStarting)  {   }
-void AM::vLogWriteCsv(bool bShortForm) {  }
-void AM::vLogText(i8 , Stz* ) {;}
-bool AM::bLogEntryExists(i8 i_Entry) {  return false; }
-i8   AM::iLogEntryPrev(i8 i_Entry)   {  return -1; }
-void AM::vLogEntrySprint(s4K& sString, i8 i_Entry) {
-  
-}
-
 void AM::vFilePrint(File* pFile, Stz* szFormat,...) {
   
   va_list xArgs;
@@ -2304,8 +2239,6 @@ void AM::vFilePrint(File* pFile, Stz* szFormat,...) {
   va_end(xArgs);
   
 }
-
-void AM::vLog(TokenVec *pTknVec) {                         }
 
 
 /*----------------------------------------------------------------------------*/

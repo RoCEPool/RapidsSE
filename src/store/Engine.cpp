@@ -1023,8 +1023,6 @@ void Engine::vOpenLog(void)
   bool bStarting = false;
   if (0 == AM::pGrid()->iThisNode() && gxCmdLineArgs.m_xSysArgs.m_bStart)
     bStarting = true;
-  
-  AM::vLogOpenBySE(bStarting);
 }
 
 /*----------------------------------------------------------------------------*/
