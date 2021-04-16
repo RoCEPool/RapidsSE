@@ -238,20 +238,7 @@ Job::~Job(void) noexcept(false)
 //    vPrint("Job Delete: %s\n"_Stz,spTagSet.sz(&m_oJobTags));
 //    //m_oJobTags.vPrint();
 //  }
-  
-  if (m_bWasReceived) {
-    // do not decrement gixJob
-    AM::vLogJob(SL_INF,this,JA_JOB_DESTRUCT,
-                "|gixJob=%lld|"_Stz, //!format-LogJob
-                * gixJob);
-  }
-  else {
-    -- gixJob;
-    AM::vLogJob(SL_INF,this,JA_JOB_DESTRUCT,
-                "|gixJob=%lld|"_Stz, //!format-LogJob
-                * gixJob);
-  }
-  
+    
   // -- -- -- -- -- --
   
   //! this assert may fail if a job completes before its references

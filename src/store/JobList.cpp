@@ -218,32 +218,13 @@ void JobList::vLogJobs(void)
   
   if (0 == m_pJobsSkipList->nItems()) {
     vDropLock();
-    AM::vLogFyi("%s List is empty"_Stz, //!format-LogFyi
-                aJL[m_eJobsList]);
     return;
   }
   
   SkipNode* pNode = m_pJobsSkipList->pFirst(iLevel);
   
-  AM::vLogFyi("Contents of %s List:"_Stz, //!format-LogFyi
-              aJL[m_eJobsList]);
-  
   while (pNode) {
     Job* pJob = _pJob(pNode->m_pObject);
-    AM::vLogFyi("  %s %p %03lld parent %03lld tablePtn[%lld] "  //!format-LogFyi
-                "phase %s state %s acksRmg %lld/%lld partNode %lld"_Stz,
-               
-                 aCN[pJob->eGetClassNo()],
-                 pJob,
-                 pJob->iJobId(),
-                 pJob->iParentId(),
-                 pJob->i_TablePtn(),
-                
-                 aJP[pJob->eJobPhase()],
-                 aJS[pJob->eJobState()],
-                 pJob->iAcksRmg_printOnlyValue(),
-                 pJob->iAcksOriginal(),
-                 pJob->iParticipantNode());
     
     pNode = m_pJobsSkipList->pNext(pNode, iLevel);
   }

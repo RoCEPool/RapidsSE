@@ -85,15 +85,7 @@ Table::Table(Stz* szTableNm, eTT eKind)
   _checkInitialised_(CN_TABLE);
   
   ++ gixTable;
-  
-  Job* pJob = AM::pThisTLSJob();
-  
-  AM::vLogDdl(SL_INF,pJob,DA_DDL_CREATE_TABLE,
-              "%s |gixTable=%lld|"_Stz, //!format-LogOpr
-              m_sTableNm.szStz(),* gixTable);
-
-  //m_oLocation.vPrint();
-  
+    
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 }
 

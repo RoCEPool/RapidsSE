@@ -1533,75 +1533,6 @@ void AM::vLogHow(i8 , i8 )
 }
 
 /*----------------------------------------------------------------------------*/
-/* add a info log entry                                                       */
-/*----------------------------------------------------------------------------*/
-void AM::vLogFyi(Stz* , ...)
-{
-#ifdef WITH_SHARED_LOG
-//  if (! AM::bLogging())
-//    return;
-//
-//  va_list xArgs;
-//
-//  va_start(xArgs,szFormat);
-//
-//  i8 i_Entry = gpLog->iEntryFyi(CN_NONE,szFormat,xArgs);
-//
-//  va_end(xArgs);
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* add a ddl log entry                                                        */
-/*----------------------------------------------------------------------------*/
-void AM::vLogDdl(eSL , Job* , eDA , Stz* , ...)
-{
-#ifdef WITH_SHARED_LOG
-//  if (! AM::bLogging())
-//    return;
-//
-//  if (! gpLog->bIsLoggable(pJob))
-//    return;
-//
-//  va_list xVarArgs;
-//
-//  va_start(xVarArgs,szFormat);
-//
-//  i8 i_Entry = gpLog->iEntryDdl(eSeverity,pJob,eDdlAct,
-//                                szFormat,xVarArgs);
-//
-//  va_end(xVarArgs);
-//
-//  pJob->m_i_Log = i_Entry;
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* add a job log entry                                                        */
-/*----------------------------------------------------------------------------*/
-void AM::vLogJob(eSL , Job* , eJA , Stz* , ...)
-{
-#ifdef WITH_SHARED_LOG
-//  if (! AM::bLogging())
-//    return;
-//
-//  if (! gpLog->bIsLoggable(pJob))
-//    return;
-//
-//  va_list xVarArgs;
-//
-//  va_start(xVarArgs,szFormat);
-//
-//  i8 i_Entry = gpLog->iEntryJob(eSeverity,pJob,eJobAct,
-//                                szFormat,xVarArgs);
-//
-//  va_end(xVarArgs);
-//
-//  pJob->m_i_Log = i_Entry;
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
 /* add a lock log entry                                                       */
 /*----------------------------------------------------------------------------*/
 void AM::vLogLck(eSL , Lock* , eLA , Stz* , ...)
@@ -1929,18 +1860,12 @@ void AM::vNapMsec(i8 nMilliSeconds, eCN eCallingClass)
   pStats->Thread.m_iaSleeps[eCallingClass]++;
   pStats->Thread.m_iaDuration[eCallingClass] += nMilliSeconds * C_1K;
 #endif
-  
-  AM::vLogFyi("%s naps for %lldms"_Stz, //!format-LogFyi
-              aCN[eCallingClass],nMilliSeconds);
-  
+    
   i8 rCode = nanosleep(&xReq,&xRem);
   
   if (rCode && errno != EINTR) {
     vWarn("AM::vNap error; errno=%lld\n"_Stz,errno);
   }
-  
-  AM::vLogFyi("%s woken from nap"_Stz, //!format-LogFyi
-              aCN[eCallingClass]);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1966,18 +1891,12 @@ void AM::vNapUsec(i8 nMicroSeconds, eCN eCallingClass)
   pStats->Thread.m_iaSleeps[eCallingClass]++;
   pStats->Thread.m_iaDuration[eCallingClass] += nMilliSeconds * C_1K;
 #endif
-  
-  AM::vLogFyi("%s naps for %lldus"_Stz, //!format-LogFyi
-              aCN[eCallingClass],nMicroSeconds);
-  
+    
   i8 rCode = nanosleep(&xReq,&xRem);
   
   if (rCode && errno != EINTR) {
     vWarn("AM::vNap error; errno=%lld\n"_Stz,errno);
   }
-  
-  AM::vLogFyi("%s woken from nap"_Stz, //!format-LogFyi
-              aCN[eCallingClass]);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3115,9 +3034,6 @@ void AM::vJob_AddDemon(Job* pJob)
   AM::pDemonJobs()->vGrabLock();
   AM::pDemonJobs()->vAddJob(pJob);
   AM::pDemonJobs()->vDropLock();
-  
-  AM::vLogJob(SL_INF,pJob,JA_JOB_ADD_DEMON,
-              "Job added to DemonJobs"_Stz); //!format-LogJob
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3128,9 +3044,6 @@ void AM::vJob_AddLocal(Job* pJob)
   AM::pLocalJobs()->vGrabLock();
   AM::pLocalJobs()->vAddJob(pJob);
   AM::pLocalJobs()->vDropLock();
-  
-  AM::vLogJob(SL_INF,pJob,JA_JOB_ADD_LOCAL,
-              "Job added to LocalJobs"_Stz); //!format-LogJob
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3141,9 +3054,6 @@ void AM::vJob_AddOriginating(Job* pJob)
   AM::pOriginatingJobs()->vGrabLock();
   AM::pOriginatingJobs()->vAddJob(pJob);
   AM::pOriginatingJobs()->vDropLock();
-  
-  AM::vLogJob(SL_INF,pJob,JA_JOB_ADD_ORIGIN,
-              "Job added to OriginatingJobs"_Stz); //!format-LogJob
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3154,10 +3064,6 @@ void AM::vJob_AddParticipating(Job* pJob)
   AM::pParticipatingJobs()->vGrabLock();
   AM::pParticipatingJobs()->vAddJob(pJob);
   AM::pParticipatingJobs()->vDropLock();
-  
-  AM::vLogJob(SL_INF,pJob,JA_JOB_ADD_PARTG,
-              "Job added to ParticipatingJobs"_Stz); //!format-LogJob
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3284,9 +3190,6 @@ bool AM::bJob_RemoveLocal(Job* pJob, bool bDump)
   
   AM::pLocalJobs()->vDropLock();
   
-  AM::vLogJob(SL_INF,pJob,JA_JOB_REMOVE_LOCAL,
-              "Job removed from LocalJobs"_Stz); //!format-LogJob
-  
   return bRemoved;
 }
 
@@ -3303,10 +3206,7 @@ bool AM::bJob_RemoveOriginating(Job* pJob, bool bDump)
   bool bRemoved = AM::pOriginatingJobs()->bRemoveJob(pJob);
   
   AM::pOriginatingJobs()->vDropLock();
-  
-  AM::vLogJob(SL_INF,pJob,JA_JOB_REMOVE_ORIGIN,
-              "Job removed from OriginatingJobs"_Stz); //!format-LogJob
-  
+    
   return bRemoved;
 }
 
@@ -3323,10 +3223,7 @@ bool AM::bJob_RemoveParticipating(Job* pJob, bool bDump)
   bool bRemoved = AM::pParticipatingJobs()->bRemoveJob(pJob);
   
   AM::pParticipatingJobs()->vDropLock();
-  
-  AM::vLogJob(SL_INF,pJob,JA_JOB_REMOVE_PARTG,
-              "Job fremoved from ParticipatingJobs"_Stz); //!format-LogJob
-  
+    
   return bRemoved;
 }
 
@@ -3340,9 +3237,6 @@ void AM::vPutHeartbeat(i8 iNode, const Heartbeat& xHeartbeat)
 
   if (pThisNode) {
     pThisNode->vPutHeartbeat(xHeartbeat);
-  } else {
-    AM::vLogFyi("Cannot find Node %lld in the cluster"_Stz, //!format-LogFyi
-                iNode);
   }
 }
 
@@ -3355,10 +3249,7 @@ void AM::vPutHeartbeat(Stz* pszName, const Heartbeat& xHeartbeat )
 
   if (pThisNode) {
     pThisNode->vPutHeartbeat(xHeartbeat);
-  } else {
-    AM::vLogFyi("Cannot find Node %s in the cluster"_Stz, //!format-LogFyi
-                pszName);
-  }
+  } 
 }
 
 /*----------------------------------------------------------------------------*/

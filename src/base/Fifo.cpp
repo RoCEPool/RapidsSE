@@ -86,9 +86,6 @@ bool Fifo::bMake(Stz* sFifoPath)
     return false;
   }
   
-  AM::vLogFyi("Fifo made : %s"_Stz, //!format-LogFyi
-              sFifoPath->azChar());
-
   return true;
 }
 
@@ -103,10 +100,7 @@ bool Fifo::bRemove(Stz* sFifoPath)
     vWarn("Fifo::bRemove: remove() error; errno=%d\n"_Stz,errno);
     return false;
   }
-  
-  AM::vLogFyi("Fifo removed : %s"_Stz, //!format-LogFyi
-              sFifoPath->azChar());
-  
+    
   return true;
 }
 
