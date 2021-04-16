@@ -367,7 +367,7 @@ void Lock::vGrabRead(void)
   bool bReported = false;
   while (! Lock::iLockGrabRead(&m_uLockWord) ) {
 
-    if (! m_pObjectLocked || CN_LOG == m_pObjectLocked->eGetClassNo())
+    if (! m_pObjectLocked)
       continue;
     
     oTimer.vUpdate();
@@ -517,7 +517,7 @@ void Lock::vGrabWrite(void)
   bool bReported = false;
   while (! Lock::iLockGrabWrite(&m_uLockWord)) {
 
-    if (! m_pObjectLocked || CN_LOG == m_pObjectLocked->eGetClassNo())
+    if (! m_pObjectLocked )
       continue;
     
     oTimer.vUpdate();

@@ -19,7 +19,7 @@ void Step::vAddSteps_ExprEval(void)
 {
   vAddStep("exprEval[]"_Stz,                 &Step::vExprEvalGet);
   vAddStep("exprEval[].delete"_Stz,          &Step::vExprEvalDelete);
-  vAddStep("exprEval[].evaluateOrdinals"_Stz,&Step::vExprEvalEvaluateOrdinals);
+  vAddStep("exprEval[].evaluate"_Stz,        &Step::vExprEvalEvaluate);
   vAddStep("exprEval[].new"_Stz,             &Step::vExprEvalNew);
   vAddStep("exprEval[].set"_Stz,             &Step::vExprEvalSet);
 }
@@ -51,9 +51,9 @@ void Step::vExprEvalDelete(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* exprEval[].evaluateOrdinals -- evaluate expression with column ordinals    */
+/* exprEval[].evaluate -- evaluate expression with column ordinals            */
 /*----------------------------------------------------------------------------*/
-void Step::vExprEvalEvaluateOrdinals(void)
+void Step::vExprEvalEvaluate(void)
 {
   ENTRY();
 
@@ -65,7 +65,7 @@ void Step::vExprEvalEvaluateOrdinals(void)
   s4K sProjectColumns;
   m_pDataStack->vPopStr(sProjectColumns, __func__);
 
-  eEC eError = pExprEval->eEvaluateOrdinals(pStreamDefIn, pStreamDefOut, sProjectColumns);
+  eEC eError = pExprEval->eEvaluate(pStreamDefIn, pStreamDefOut, sProjectColumns);
 
   m_pDataStack->vPushInt(eError);
 

@@ -319,7 +319,7 @@ public:
   void vExprEvalGet(void);
   void vExprEvalDelete(void);
   void vExprEvalNew(void);
-  void vExprEvalEvaluateOrdinals(void);
+  void vExprEvalEvaluate(void);
   void vExprEvalSet(void);
 
   // fact

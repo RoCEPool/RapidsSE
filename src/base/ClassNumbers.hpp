@@ -138,8 +138,6 @@ enum eCN : u2 // Class Number
   /* */ CN_LOCALFILE,
   /* */ CN_LOCATION,
   /* */ CN_LOCK,
-  /* */ CN_LOG,
-  /* */ CN_LOGENTRY,
   /* */ CN_LOGICCOMPILER,
   /* */ CN_LOGICTIMER,
   /* */ CN_LOGICUNIT,
@@ -476,8 +474,6 @@ static Stz* aCN[]
   /* */ "LOCALFILE"_Stz,            // CN_LOCALFILE
   /* */ "LOCATION"_Stz,             // CN_LOCATION
   /* */ "LOCK"_Stz,                 // CN_LOCK
-  /* */ "LOG"_Stz,                  // CN_LOG
-  /* */ "LOGENTRY"_Stz,             // CN_LOGENTRY
   /* */ "LOGICCOMPILER"_Stz,        // CN_LOGICCOMPILER
   /* */ "LOGICTIMER"_Stz,           // CN_LOGICTIMER
   /* */ "LOGICUNIT"_Stz,            // CN_LOGICUNIT

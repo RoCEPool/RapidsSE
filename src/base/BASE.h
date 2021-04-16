@@ -376,8 +376,6 @@ extern d8 C_D8_MID;
 
 #include "CmdHelper.hpp"
 
-#include "LogEntry.hpp"
-#include "Log.hpp"
 
 #include "ClassPlaceHolder.hpp"
 

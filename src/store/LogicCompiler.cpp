@@ -928,6 +928,7 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n  #include \"../src/store/RluCommon.h\""
   "\n  #include \"../src/base/MathLib.h\""
   "\n  #include \"../src/base/eEO.h\""
+  "\n  #include \"../src/base/eDM.h\""
   "\n"
   "\n  #define ArgNil() "
   "\n  #define ArgGet(x) "

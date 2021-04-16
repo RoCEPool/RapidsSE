@@ -96,8 +96,6 @@
 #include "TagConstants.h"
 
 
-#include "LogEntry.hpp"
-#include "Log.hpp"
 #include "LogicUnit.hpp"
 
 #include "Pipeline.hpp"
@@ -1273,7 +1271,7 @@ Crv* AM::aCrv(DataBuffer* pDataBuffer, i8 iItem) {
 }
 
 void AM::vWriteLog(void) {
-  Log::vWriteCsv(false);
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2395,14 +2393,14 @@ Stz* AM::szBuild(void)
 }
   
   
-void AM::vLogOpenByApi(void)           { Log::vOpenByApi();          }
-void AM::vLogOpenBySE(bool bStarting)  { Log::vOpenBySE(bStarting);  }
-void AM::vLogWriteCsv(bool bShortForm) { Log::vWriteCsv(bShortForm); }
+void AM::vLogOpenByApi(void)           {           }
+void AM::vLogOpenBySE(bool bStarting)  {   }
+void AM::vLogWriteCsv(bool bShortForm) {  }
 void AM::vLogText(i8 , Stz* ) {;}
-bool AM::bLogEntryExists(i8 i_Entry) {  return Log::bEntryExists(i_Entry); }
-i8   AM::iLogEntryPrev(i8 i_Entry)   {  return Log::iEntryPrev(i_Entry); }
+bool AM::bLogEntryExists(i8 i_Entry) {  return false; }
+i8   AM::iLogEntryPrev(i8 i_Entry)   {  return -1; }
 void AM::vLogEntrySprint(s4K& sString, i8 i_Entry) {
-  Log::vEntrySprint(sString,i_Entry);
+  
 }
 
 void AM::vFilePrint(File* pFile, Stz* szFormat,...) {
@@ -2414,7 +2412,7 @@ void AM::vFilePrint(File* pFile, Stz* szFormat,...) {
   
 }
 
-void AM::vLog(TokenVec *pTknVec) { gpLog->vLog(pTknVec);                        }
+void AM::vLog(TokenVec *pTknVec) {                         }
 
 
 /*----------------------------------------------------------------------------*/
