@@ -125,7 +125,6 @@ extern BufferPool*   gpBufferPool;
 extern File*         gpTraceFile;
 extern Header*       gaSeShmRegion;
 extern Index*        gpReadApiIndex;
-extern Log*          gpLog;
 
 extern SizeHeap      gxaSizeHeap[];
 
@@ -697,7 +696,7 @@ i8   AM::nIndexEntries(void)  { return gpAttachMap->m_xSysArgs.m_nIndexEntries; 
 JobList* AM::pLocalJobs(void) {
   return gpAttachMap->m_pJobs->m_pLocalJobs;                                }
 Locks* AM::pLocks(void) { return & gpAttachMap->m_oLocks;   }
-bool AM::bLogging(void)       { return gpLog ? true : false;                  }
+bool AM::bLogging(void)       { return false;                  }
 i8   AM::iNextEpoch(void)     { return ++ gpAttachMap->m_iEpoch;              }
 Stz* AM::szNodeNm(void)       {
   return gpAttachMap->m_pGrid->pThisNode()->szNodeNm();  }
@@ -1628,31 +1627,6 @@ void AM::vLogLck(eSL , Lock* , eLA , Stz* , ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add a log log entry                                                        */
-/*----------------------------------------------------------------------------*/
-void AM::vLogLog(eSL , Log* , eGA , Stz* , ...)
-{
-#ifdef WITH_SHARED_LOG
-//  if (! AM::bLogging())
-//    return;
-//
-//  if (! gpLog->bIsLoggable(pLog))
-//    return;
-//
-//  va_list xVarArgs;
-//
-//  va_start(xVarArgs,szFormat);
-//
-//  i8 i_Entry = gpLog->iEntryLog(eSeverity,pLog,eLogAct,
-//                                szFormat,xVarArgs);
-//
-//  va_end(xVarArgs);
-//
-//  pLog->m_i_Log = i_Entry;
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
 /* add a management log entry                                                 */
 /*----------------------------------------------------------------------------*/
 void AM::vLogMgt(eSL , Job* , eMA , Stz* , ...)
@@ -2452,7 +2426,6 @@ void AM::vPrintGlobals(void)
 
   printf("gpAttachMap     @%p : %p\n",&gpAttachMap,  gpAttachMap);
   printf("gpBufferPool    @%p : %p\n",&gpBufferPool, gpBufferPool);
-  printf("gpLog           @%p : %p\n",&gpLog,        gpLog);
   printf("gaSeShmRegion   @%p : %p\n",&gaSeShmRegion,gaSeShmRegion);
   printf("gpTraceFile     @%p : %p\n",&gpTraceFile,  gpTraceFile);
 }

@@ -61,7 +61,6 @@ AttachMap*   gpAttachMap;
 BufferPool*  gpBufferPool;
 Header*      gaSeShmRegion;
 File*        gpTraceFile;
-Log*         gpLog;
 
 Stz* gsBuildGitHash;
 Stz* gsBuildDate;

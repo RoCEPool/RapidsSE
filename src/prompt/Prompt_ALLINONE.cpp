@@ -2556,8 +2556,6 @@ PromptFun __Prompt_logSection (
   ""_Stz                   // description
 );
 
-extern Log* gpLog;
-
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
@@ -2582,10 +2580,6 @@ bool PROMPT::bPrompt_logSection(SePrompt* pPrompt)
   StrLib::vConcat(caSection,' ');
   StrLib::vConcat(caSection,'#');
   StrLib::vConcat(caSection,'#');
-
-  AM::vLogLog(SL_INF,gpLog,GA_LOG_SECTION,
-              "%s"_Stz, //!format-LogLog
-              (Stz*)caSection);
   
   return true;
 }

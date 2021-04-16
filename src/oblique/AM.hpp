@@ -66,9 +66,6 @@ namespace BASE {
 
   class Lock;
   class Locks;
-  class Log;
-  class LogEntry;
-  class Loggable;
 
   class MasterLock;
   class Mutex;
@@ -469,7 +466,6 @@ namespace OBLIQUE
     static void vLogDdl(eSL, Job*       pJob, eDA eDdlAct, Stz* szFormat, ...);
     static void vLogJob(eSL, Job*       pJob, eJA eJobAct, Stz* szFormat, ...);
     static void vLogLck(eSL, Lock*      pLck, eLA eLckAct, Stz* szFormat, ...);
-    static void vLogLog(eSL, Log*       pLog, eGA eLogAct, Stz* szFormat, ...);
     static void vLogOpr(eSL, Op*        pOpr, eOA eOpAct,  Stz* szFormat, ...);
     static void vLogMgt(eSL, Job*       pJob, eMA eMgtAct, Stz* szFormat, ...);
     static void vLogPrm(eSL, SePrompt*  pPrm, ePA ePrmAct, Stz* szFormat, ...);
