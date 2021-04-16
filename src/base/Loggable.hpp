@@ -21,9 +21,6 @@ namespace BASE
     i8  m_iDuration;  // last event no
     i8  m_iLogCtl;    // log/don't log this object
   
-    i8  m__spare0;    //
-    i8  m__spare1;    //
-
   public:
     Loggable(eCN eClassNo);
    ~Loggable(void) noexcept(false);

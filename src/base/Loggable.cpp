@@ -30,9 +30,6 @@ Loggable::Loggable(eCN eClassNo)
   m_eEvent     = EV_NONE;
   m_iDuration  = C_UNKNOWN;
   m_iLogCtl    = 0;
-
-  m__spare0    = C_UNKNOWN;
-  m__spare1    = C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/

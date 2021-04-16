@@ -10,7 +10,7 @@ namespace STORE
 
   static const i8 C_CRW_HEADBYTES = 32;
 
-  static const i8 C_CRW_FIRSTHEAD  = 656;
+  static const i8 C_CRW_FIRSTHEAD  = 640;
 
   class Crw : public HeadLine
   {

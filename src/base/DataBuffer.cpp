@@ -36,7 +36,7 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
-  ASSERT(CacheLine::bMultipleCacheLines(sizeof(DataBuffer)));
+  //LOGGABLE ASSERT(CacheLine::bMultipleCacheLines(sizeof(DataBuffer)));
 
   m_iBufferNo     = iBufferNo();
   m_tPtnNo        = C_UNKNOWN;
