@@ -9,6 +9,8 @@ namespace BASE
 
   void vDebugPoint(void);
   void vThreadCallStackDump(void);
+  void vThreadCallStackDump_Mangled(void);
+  void vThreadCallStackDump_Demangled(void);
 
 
   // the [[ noreturn ]] attribute is the C++11 standard for indicating a
