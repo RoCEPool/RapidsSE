@@ -76,6 +76,7 @@ i8 IntStack::iPop()
   _precondition_(_ADDRESS_,_MAGIC_,CN_INTSTACK,_FOOTER_);
   
   i8 nItems = m_pIntAry->nItems();
+  ASSERT(nItems > 0);
 
   i8 iInt = m_pIntAry->xGet(nItems - 1);
   

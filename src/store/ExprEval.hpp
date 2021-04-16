@@ -1,9 +1,10 @@
 /*============================================================================*/
-/* ExprEval.hpp -- ExprEval columns                                             */
+/* ExprEval.hpp -- ExprEval columns                                           */
 /*============================================================================*/
 #pragma once
 
 #include "Definition.hpp"
+#include "IntStack.hpp"
 
 namespace STORE
 {
@@ -13,20 +14,22 @@ namespace STORE
   {
   public:
 
-    u8      m_uExprEvalColumns;
-    i8      m_nPayLoadBytes;
-    i8      m_iStreamInColumns;
+    u8       m_uExprEvalColumns;
+    i8       m_nPayLoadBytes;
+    i8       m_iStreamInColumns;
 
-    bool    m_bHasAgg;
-    bool    m_bHasGby;
+    bool     m_bHasAgg;
+    bool     m_bHasGby;
 
-    s4K     m_sAsmText;
-    s4K     m_sAsmGbyIdx;
-    s4K     m_sPayLoadKey;
-    s4K     m_sPayLoadStore;
-    s4K     m_sPayLoadToBuffer;
+    IntStack m_xTypeStack;
 
-    Column* m_pStreamInCol[C_MAX_COLUMNS];
+    s4K      m_sAsmText;
+    s4K      m_sAsmGbyIdx;
+    s4K      m_sPayLoadKey;
+    s4K      m_sPayLoadStore;
+    s4K      m_sPayLoadToBuffer;
+
+    Column*  m_pStreamInCol[C_MAX_COLUMNS];
 
     // must be last
     Footer m_xFooter;
@@ -38,8 +41,7 @@ namespace STORE
     ExprEval(void);
    ~ExprEval(void) noexcept(false);
 
-    eEC eEvaluateColumns(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Stz* sExprEvalColumns);
-    eEC eEvaluateOrdinals(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Stz* sExprEvalColumns);
+    eEC eEvaluate(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Stz* sExprEvalColumns);
 
     bool bHasAggregate(void);
     bool bHasGroupBy(void);
@@ -60,9 +62,7 @@ namespace STORE
     void vAddUnknown(Token*  pTkn, Column* pColumnExpr);
 
     eEC eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec);
-    eEC eCollectSourceOrdinals(StreamDef* pStreamDefIn, TokenVec* pTknVec);
-    eEC eExprEvalColumn(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);
-    eEC eExprEvalOrdinal(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);
+    eEC eExprEval(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);
     eEC eHandleGbyColumn(Column* pColumn, i8 iGby);
     eEC eHandleOutColumn(StreamDef* pStreamDefOut, Column* pColumn,
                          i8 i_DstColumn, bool bSum);

@@ -26,7 +26,12 @@ enum eEO : u1 // expression operators
 
   /*  S  */ EO_DIVIDE,           // divide top int by second push result
   /*  S  */ EO_MODULO,           // modulo top int be second push result
-  /*  S  */ EO_MULTIPLY,         // multiply top two int's push result
+
+  /*  S  */ EO_MUL_ID,           // integer * decimal
+  /*  S  */ EO_MUL_IF,           // integer * float
+  /*  S  */ EO_MUL_II,           // integer * int
+  /*  S  */ EO_MUL_IU,           // integer * unknown
+
   /*  S  */ EO_NEGATE,           // negate the top value
   /*  S  */ EO_SUBTRACT,         // subtract second int from top push result
 
@@ -335,7 +340,12 @@ static Stz* aEO[]
 
   /*    */ "EO_DIVIDE"_Stz,
   /*    */ "EO_MODULO"_Stz,
-  /*    */ "EO_MULTIPLY"_Stz,
+
+  /*    */ "EO_MUL_ID"_Stz,
+  /*    */ "EO_MUL_IF"_Stz,
+  /*    */ "EO_MUL_II"_Stz,
+  /*    */ "EO_MUL_IU"_Stz,
+
   /*    */ "EO_NEGATE"_Stz,
   /*    */ "EO_SUBTRACT"_Stz,
 
@@ -648,7 +658,12 @@ static EoArg EoArgs[]
 
   { EA_NONE,    0 },  // EO_DIVIDE
   { EA_NONE,    0 },  // EO_MODULO
-  { EA_NONE,    0 },  // EO_MULTIPLY
+
+  { EA_NONE,    0 },  // EO_MUL_ID
+  { EA_NONE,    0 },  // EO_MUL_IF
+  { EA_NONE,    0 },  // EO_MUL_II
+  { EA_NONE,    0 },  // EO_MUL_IU
+
   { EA_NONE,    0 },  // EO_NEGATE
   { EA_NONE,    0 },  // EO_SUBTRACT
 

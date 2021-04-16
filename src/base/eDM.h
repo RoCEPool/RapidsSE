@@ -2,8 +2,11 @@
 /* eDM.h -- Dtm Kind                                                          */
 /*============================================================================*/
 #pragma once
-
+#ifdef __TINYC__
+enum eDM // expression operators
+#else
 enum eDM : u1 // Dtm Kind
+#endif
 {
   /*  0 */ DM_NONE=0,
   
@@ -21,6 +24,8 @@ enum eDM : u1 // Dtm Kind
 
   /* 12 */ DM_ENUMS
 };
+
+#ifndef __TINYC__
 
 static Stz* aDM[]
 {
@@ -40,6 +45,7 @@ static Stz* aDM[]
 
   /* 12 */ "ENUMS"_Stz,
 };
+#endif
 
 /*============================================================================*/
 /* end                                                                        */

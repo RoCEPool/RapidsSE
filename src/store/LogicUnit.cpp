@@ -1344,14 +1344,38 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         *(++aiDstk) = iRes;
         break;//+endCase
         
-      case EO_MULTIPLY: ArgNil(); // multiply top two int's push result
+      case EO_MUL_ID: ArgNil(); // integer * decimal
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA * iTopB;
-        dLU3(EO_MULTIPLY,iTopA,iTopB,iRes);
+        dLU3(EO_MUL_II,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
-        
+
+      case EO_MUL_IF: ArgNil(); // integer * float
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA * iTopB;
+        dLU3(EO_MUL_II,iTopA,iTopB,iRes);
+        *(++aiDstk) = iRes;
+        break;//+endCase
+
+      case EO_MUL_II: ArgNil(); // integer * integer
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA * iTopB;
+        dLU3(EO_MUL_II,iTopA,iTopB,iRes);
+        *(++aiDstk) = iRes;
+        break;//+endCase
+
+      case EO_MUL_IU: ArgNil(); // // integer * unknown
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA * iTopB;
+        dLU3(EO_MUL_II,iTopA,iTopB,iRes);
+        *(++aiDstk) = iRes;
+        break;//+endCase
+
       case EO_NEGATE: ArgNil(); // negate the top value
         iTopA = *(aiDstk--);
         iRes  = - iTopA;
