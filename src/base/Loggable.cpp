@@ -25,11 +25,11 @@ Loggable::Loggable(eCN eClassNo)
 //    printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ m_iObjectId %lld\n",m_iObjectId);
 
   m_iEventNo   = C_UNKNOWN;
-  m_iEventTick = AM::iRdTickingDevice();
+  //m_iEventTick = AM::iRdTickingDevice();
   
-  m_eEvent     = EV_NONE;
-  m_iDuration  = C_UNKNOWN;
-  m_iLogCtl    = 0;
+  //m_eEvent     = EV_NONE;
+  //m_iDuration  = C_UNKNOWN;
+  //m_iLogCtl    = 0;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -16,10 +16,10 @@ namespace BASE
 
   protected:
     i8  m_iEventNo;   // last step sequence number
-    eEV m_eEvent;     // last event
-    i8  m_iEventTick; // time point that occurred
-    i8  m_iDuration;  // last event no
-    i8  m_iLogCtl;    // log/don't log this object
+//    eEV m_eEvent;     // last event
+//    i8  m_iEventTick; // time point that occurred
+//    i8  m_iDuration;  // last event no
+//    i8  m_iLogCtl;    // log/don't log this object
   
   public:
     Loggable(eCN eClassNo);

@@ -589,10 +589,7 @@ void Lock::vLockTrace(eLS eLockStyle)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   UNUSED(eLockStyle);
-  
-  if (C_DONT_LOG == m_iLogCtl)
-    return;
-  
+    
 //  if (MY::pOp())
 //    printf("%s %s OP\n",
 //           aLK[m_eLockKind]->azChar(),
