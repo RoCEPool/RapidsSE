@@ -210,7 +210,7 @@ void LogEntry::vInit(eSL eSeverity, Loggable *pFocal, Stz* szText)
   
   m_bLine = false;
   m_cPrefix = '?';
-  m_iObjectId = pFocal->m_iObjectId;
+  m_iObjectId = 0;
   m_iForId = C_UNKNOWN;
   
   m_iIndicator = C_UNKNOWN;

@@ -20,7 +20,7 @@ namespace BASE
 
     tXN m_tTxnNo; // transaction number
 
-    PadWord m__PadToCacheLine[7];
+    PadWord m__PadToCacheLine[19];
 
   public:
     DataBuffer(eCN eClass, bool bIsPermanent);

@@ -19,12 +19,12 @@ extern CmdLineArgs gxCmdLineArgs;
 Loggable::Loggable(eCN eClassNo)
 : Object(eClassNo)
 {
-   m_iObjectId = AM::iNextObjectNo(eClassNo);
+ //  m_iObjectId = AM::iNextObjectNo(eClassNo);
   
 //  if (CN_JOB == eClassNo)
 //    printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ m_iObjectId %lld\n",m_iObjectId);
 
-  m_iEventNo   = C_UNKNOWN;
+  //m_iEventNo   = C_UNKNOWN;
   //m_iEventTick = AM::iRdTickingDevice();
   
   //m_eEvent     = EV_NONE;
