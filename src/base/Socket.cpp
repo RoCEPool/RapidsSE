@@ -76,9 +76,6 @@ Socket::Socket(Object* pIsFor)
   _checkInitialised_(CN_SOCKET);
   
   ++ gixSocket;
-  AM::vLogRes(SL_INF,this,RA_SKT_CONSTRUCT,
-              "Socket construct |gixSocket=%lld|"_Stz, //!format-LogRes
-              * gixSocket);
 
   AM::LOG::vEvent(EV_CONSTRUCT,"Socket constructor"_Stz);
 
@@ -273,9 +270,6 @@ bool Socket::bAcceptClient(int& iSocketId, SysCall& SysCall)
   
   if (AM::bAttached()) AM::pResources()->vIncSocketOpen();
   
-  AM::vLogRes(SL_INF,this,RA_SKT_ACCEPTED,
-              "this server has accepted new client"_Stz); //!format-LogRes
-
   SysCall.vSuccess();
   return true;
 }
@@ -310,9 +304,6 @@ bool Socket::bClose(SysCall& SysCall)
   
   if (AM::bAttached()) AM::pResources()->vDecSocketOpen();
   
-  AM::vLogRes(SL_INF,this,RA_SKT_CLOSED,
-              "Socket closed : "_Stz); //!format-LogRes
-
   SysCall.vSuccess();
   return true;
 }
@@ -371,11 +362,7 @@ bool Socket::bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall)
 #ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.Socket.m_nConnects++;
 #endif
-  
-  AM::vLogRes(SL_INF,this,RA_SKT_CONNECT,
-              "this client attempting connection to server %s %d"_Stz, //!format-LogRes
-              sAddr,iPort);
-  
+    
   iResult = connect(m_iSocketFd,(struct sockaddr*)pAddrInfo->ai_addr,sizeof(struct sockaddr));
   
   if (iResult != 0) {
@@ -387,10 +374,6 @@ bool Socket::bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall)
   
   if (AM::bAttached()) AM::pResources()->vIncSocketOpen();
   
-  AM::vLogRes(SL_INF,this,RA_SKT_CONNECTED,
-              "this client now connected to server %s %d"_Stz, //!format-LogRes
-              sAddr,iPort);
-
   SysCall.vSuccess();
   return true;
 }
@@ -500,10 +483,6 @@ bool Socket::bCreateServer(int iPortNo, SysCall& SysCall)
   
   if (AM::bAttached()) AM::pResources()->vIncSocketOpen();
   
-  AM::vLogRes(SL_INF,this,RA_SKT_LISTENER,
-              "listening socket created port=%d"_Stz, //!format-LogRes
-              iPortNo);
-
   SysCall.vSuccess();
   return true;
 }
@@ -514,14 +493,8 @@ bool Socket::bCreateServer(int iPortNo, SysCall& SysCall)
 void Socket::vGrabWrite(void)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
-  
-  AM::vLogRes(SL_INF,this,RA_SKT_GRAB,
-              "attempt"_Stz); //!format-LogRes
- 
+   
   m_okLock.vGrabWrite();
-  
-  AM::vLogRes(SL_INF,this,RA_SKT_GRABBED,
-              "successful"_Stz); //!format-LogRes
 }
 
 /*----------------------------------------------------------------------------*/
@@ -532,9 +505,6 @@ void Socket::vDropWrite(void)
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
   m_okLock.vDropWrite();
-  
-  AM::vLogRes(SL_INF,this,RA_SKT_DROPPED,
-              "successful"_Stz); //!format-LogRes
 }
 
 /*----------------------------------------------------------------------------*/
@@ -585,10 +555,6 @@ bool Socket::bRecvBytes(void* aBytes, i8 nBytes, SysCall& SysCall)
     gpAttachMap->m_oStatistics.Socket.m_nRecvBytes += nRecvBytes;
 #endif
     
-    AM::vLogRes(SL_INF,this,RA_SKT_RECEIVED,
-                "Socket received %lldB"_Stz, //!format-LogRes
-                nRecvBytes);
-
   AM::LOG::vEvent(EV_RECV,"Socket recv: %lld bytes"_Stz,nRecvBytes);
 
     //vTrace("Bytes received: (%lld) %lld\n"_Stz, nBytes, nSoFar);

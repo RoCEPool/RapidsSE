@@ -808,37 +808,11 @@ void Step::vSocketSendObject(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-//  if (eClass == CN_CRWBUFFER) {
-//    CrwBuffer* pCrwBuffer = _pCrwBuffer(pObject);
-//    pCrwBuffer->vShow();
-//    vDebugPoint();
-//  }
-  AM::vLogRes(SL_INF,pSocket,RA_SKT_SEND,
-              "Object %s %lldB to node %s"_Stz, //!format-LogRes
-              aCN[eClass],
-              nObjectSize,
-              m_pJob->pLogicUnit_job()->m_xpSendNode.bIsNotNull() ?
-                m_pJob->pLogicUnit_job()->m_xpSendNode->szNodeNm() : "<unknown>"_Stz,
-              C_VARGS_END);
-
     
   SysCall oSysCall;
   
   bool bResult = pSocket->bSendTo(pObject, nObjectSize, oSysCall);
   
-  if (bResult)
-    AM::vLogRes(SL_INF,pSocket,RA_SKT_SENT,
-                "Object %s %lldB"_Stz, //!format-LogRes
-                aCN[eClass],
-                nObjectSize,
-                C_VARGS_END);
-  else
-    AM::vLogRes(SL_INF,pSocket,RA_SKT_ERROR,
-                "Error while sending object %s %lldB"_Stz, //!format-LogRes
-                aCN[eClass],
-                nObjectSize,
-                C_VARGS_END);
-
   m_pDataStack->vPushInt(bResult);
 
   EXIT();
