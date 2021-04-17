@@ -1449,12 +1449,7 @@ void AM::vWriteTrace_vargs(eYA eSysAct, Stz* aFormat, va_list xArgs)
   }
   
   StrLib::vStrip(caFormatted,'\n');
-  
-  if (gpAttachMap)
-    AM::vLogSys(SL_INF,gpAttachMap,eSysAct,
-                "%s"_Stz, //!format-LogSys
-                caFormatted);
-  
+    
   if (bUseLock)
     oTraceLock.vDropWrite();
 }
@@ -1490,12 +1485,7 @@ void AM::vWriteTrace_vargs(File* pFile, eYA eSysAct, Stz* aFormat, va_list xArgs
   }
   
   StrLib::vStrip(caFormatted,'\n');
-  
-  if (gpAttachMap)
-    AM::vLogSys(SL_INF,gpAttachMap,eSysAct,
-                "%s"_Stz, //!format-LogSys
-                caFormatted);
-  
+    
   if (bUseLock)
     oTraceLock.vDropWrite();
 }
@@ -1527,58 +1517,6 @@ void AM::vLogRes(eSL , Resource* , eRA , Stz* , ...)
 //  pRes->m_i_Log = i_Entry;
 #endif
 }
-
-/*----------------------------------------------------------------------------*/
-/* add a system log entry                                                     */
-/*----------------------------------------------------------------------------*/
-void AM::vLogSys(eSL , AttachMap* , eYA , Stz* , ...)
-{
-#ifdef WITH_SHARED_LOG
-//  if (! AM::bLogging())
-//    return;
-//
-//  if (! gpLog->bIsLoggable(gpAttachMap))
-//    return;
-//
-//  va_list xVarArgs;
-//
-//  va_start(xVarArgs,szFormat);
-//
-//  i8 i_Entry = gpLog->iEntrySys(eSeverity,gpAttachMap,eSysAct,
-//                                szFormat,xVarArgs);
-//
-//  va_end(xVarArgs);
-//
-//  gpAttachMap->m_i_Log = i_Entry;
-//
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* add a thread log entry                                                     */
-/*----------------------------------------------------------------------------*/
-void AM::vLogThd(eSL , Thread* , eHA , Stz* , ...)
-{
-#ifdef WITH_SHARED_LOG
-//  if (! AM::bLogging())
-//    return;
-//
-//  if (! gpLog->bIsLoggable(pThread))
-//    return;
-//
-//  va_list xVarArgs;
-//
-//  va_start(xVarArgs,szFormat);
-//
-//  i8 i_Entry = gpLog->iEntryThd(eSeverity,pThread,eThdAct,
-//                                szFormat,xVarArgs);
-//
-//  va_end(xVarArgs);
-//
-//  pThread->m_i_Log = i_Entry;
-#endif
-}
-
 
 
 /*----------------------------------------------------------------------------*/

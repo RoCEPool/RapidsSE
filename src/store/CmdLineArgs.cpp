@@ -163,33 +163,6 @@ i8 CmdLineArgs::nBurstArgs(s256 saArgv[], Stz* szArgStr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* log the command line arguments                                             */
-/*----------------------------------------------------------------------------*/
-void CmdLineArgs::vLog(void)
-{
-  _static_
-  
-  AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_ARGS,
-              "Command line args:"_Stz); //!format-LogSys
-  
-  s256 sArg;
-  
-  for (i8 i_Arg = 0; i_Arg < gi_argc; ) {
-    
-    sArg = (Stz*)(gi_szaArgv[i_Arg ++].szStz());
-    
-    while (i_Arg < gi_argc && '-' != *gi_szaArgv[i_Arg].azChar()) {
-      StrLib::vConcat(sArg.azChar(),' ');
-      StrLib::vConcat(sArg.azChar(),gi_szaArgv[i_Arg ++].azChar());
-    }
-    
-    AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_ARGS,
-                "  %s"_Stz //!format-LogSys
-                ,sArg.azChar());
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* check for environment variables                                            */
 /*----------------------------------------------------------------------------*/
 void CmdLineArgs::vEnvironmentVariables(void)

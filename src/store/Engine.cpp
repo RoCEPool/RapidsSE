@@ -1674,8 +1674,6 @@ void Engine::vStartSystem(void)
   
   if (AM::bVerboseProgress())
     vInfo("  Adding Expressions\n"_Stz);
-  AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_BOOT,
-              "adding steps"_Stz); //!format-LogSys
   Step::vAddSteps();
   
   if (AM::bVerboseProgress())
@@ -1692,16 +1690,12 @@ void Engine::vStartSystem(void)
 
   if (AM::bVerboseProgress())
     vInfo("  Adding Constants\n"_Stz);
-  AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_BOOT,
-              "adding constants"_Stz); //!format-LogSys
   Constants::vAddConstantsArgs();
   Constants::vAddConstantsCpp();
 
   
   if (AM::bVerboseProgress())
     vInfo("  Running Boot Job\n"_Stz);
-  AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_BOOT,
-              "running boot job"_Stz); //!format-LogSys
   vCallBoot();
   
  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1709,8 +1703,6 @@ void Engine::vStartSystem(void)
   
   if (AM::bVerboseProgress())
     vInfo("  Spawning Threads\n"_Stz);
-  AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_BOOT,
-              "spawning threads"_Stz); //!format-LogSys
   
   Scheduler::vScheduler_Boot();
   
@@ -1718,8 +1710,6 @@ void Engine::vStartSystem(void)
 
   if (AM::bVerboseProgress())
     vInfo("  Running Start\n"_Stz);
-  AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_BOOT,
-              "running Start job"_Stz); //!format-LogSys
   vCallStart();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1730,11 +1720,7 @@ void Engine::vStartSystem(void)
   vInternalTables();
 
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_BOOT,
-              "instance %s started"_Stz,
-              gxCmdLineArgs.m_xSysArgs.m_sRegionName.azChar()); //!format-LogSys
-  
+    
   if (AM::bVerboseProgress()) {
     vInfo("Engine Instance %s started\n"_Stz,gxCmdLineArgs.m_xSysArgs.m_sRegionName.azChar());
     gpAttachMap->m_pPtnMap->vDumpDataBuffers();

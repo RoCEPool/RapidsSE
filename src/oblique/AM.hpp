@@ -458,8 +458,6 @@ namespace OBLIQUE
     static void vLog(TokenVec* pTknVec);
     
     static void vLogRes(eSL, Resource*  pRes, eRA eResAct, Stz* szFormat, ...);
-    static void vLogSys(eSL, AttachMap* pSys, eYA eSysAct, Stz* szFormat, ...);
-    static void vLogThd(eSL, Thread*    pThd, eHA eThdAct, Stz* szFormat, ...);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vNapMsec(i8 nMilliSeconds, eCN eCallingClass);

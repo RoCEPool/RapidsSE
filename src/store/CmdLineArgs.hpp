@@ -34,8 +34,6 @@ namespace STORE
    ~CmdLineArgs(void) noexcept(false);
     
     static i8 nBurstArgs(s256 saArgv[], Stz* szArgStr);
-
-    static void vLog(void);
   
     void vEnvironmentVariables(void);
     bool bParse(i8 argc, s256 szaArgv[]);
