@@ -1114,13 +1114,7 @@ void Step::vJobSeedStore(void)
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   i8 i_Seed = m_pDataStack->iPopInt(__func__);
-  
-  AM::vLogSvc(SL_INF,m_pJob,VA_SVC_SPAWN_JOB,
-              "%s spawned by %s"_Stz, //!format-LogSvc
-              aCN[pJob->eGetClassNo()],
-              aCN[m_pJob->eGetClassNo()],
-              C_VARGS_END);
-  
+    
   pJob->vSeed((eSS)i_Seed);
   
   EXIT();
@@ -1245,12 +1239,6 @@ void Step::vJobScheduleNextPhase(void)
 
   Job* pJobParticipant = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  AM::vLogSvc(SL_INF,m_pJob,VA_SVC_SPAWN_JOB,
-              "%s spawned by %s"_Stz, //!format-LogSvc
-              aCN[pJobParticipant->eGetClassNo()],
-              aCN[m_pJob->eGetClassNo()],
-              C_VARGS_END);
-
   Task* pTaskParticipant = pJobParticipant->pTask();
   RASSERT(! pTaskParticipant);
   
@@ -1268,12 +1256,6 @@ void Step::vJobSpawn(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  AM::vLogSvc(SL_INF,m_pJob,VA_SVC_SPAWN_JOB,
-              "%s spawned by %s"_Stz, //!format-LogSvc
-              aCN[pJob->eGetClassNo()],
-              aCN[m_pJob->eGetClassNo()],
-              C_VARGS_END);
-
   Task* pTask = pJob->pTask();
   RASSERT(! pTask);
 //  if ( pTask) {

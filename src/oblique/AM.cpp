@@ -1528,30 +1528,6 @@ void AM::vLogMgt(eSL , Job* , eMA , Stz* , ...)
 #endif
 }
 
-/*----------------------------------------------------------------------------*/
-/* add a operator log entry                                                   */
-/*----------------------------------------------------------------------------*/
-void AM::vLogOpr(eSL , Op* , eOA , Stz* , ...)
-{
-#ifdef WITH_SHARED_LOG
-//  if (! AM::bLogging())
-//    return;
-//
-//  if (! gpLog->bIsLoggable(pOpr))
-//    return;
-//
-//  va_list xVarArgs;
-//
-//  va_start(xVarArgs,szFormat);
-//
-//  i8 i_Entry = gpLog->iEntryOpr(eSeverity,pOpr,eOprAct,
-//                                szFormat,xVarArgs);
-//
-//  va_end(xVarArgs);
-//
-//  pOpr->m_i_Log = i_Entry;
-#endif
-}
 
 /*----------------------------------------------------------------------------*/
 /* add a prompt log entry                                                     */
@@ -1650,31 +1626,6 @@ void AM::vLogSsn(eSL , Session* , eAA , Stz* , ...)
 //  va_end(xVarArgs);
 //
 //  pSsn->m_i_Log = i_Entry;
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* add a service log entry                                                    */
-/*----------------------------------------------------------------------------*/
-void AM::vLogSvc(eSL , Job* , eVA , Stz* , ...)
-{
-#ifdef WITH_SHARED_LOG
-//  if (! AM::bLogging())
-//    return;
-//
-//  if (! gpLog->bIsLoggable(pJob))
-//    return;
-//
-//  va_list xVarArgs;
-//
-//  va_start(xVarArgs,szFormat);
-//
-//  i8 i_Entry = gpLog->iEntrySvc(eSeverity,pJob,eSvcAct,
-//                                szFormat,xVarArgs);
-//
-//  va_end(xVarArgs);
-//
-//  pJob->m_i_Log = i_Entry;
 #endif
 }
 

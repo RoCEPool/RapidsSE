@@ -457,12 +457,10 @@ namespace OBLIQUE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vLog(TokenVec* pTknVec);
     
-    static void vLogOpr(eSL, Op*        pOpr, eOA eOpAct,  Stz* szFormat, ...);
     static void vLogMgt(eSL, Job*       pJob, eMA eMgtAct, Stz* szFormat, ...);
     static void vLogPrm(eSL, SePrompt*  pPrm, ePA ePrmAct, Stz* szFormat, ...);
     static void vLogQue(eSL, Schedule*    pQue, eQA eQueAct, Stz* szFormat, ...);
     static void vLogRes(eSL, Resource*  pRes, eRA eResAct, Stz* szFormat, ...);
-    static void vLogSvc(eSL, Job*       pJob, eVA eSvcAct, Stz* szFormat, ...);
     static void vLogSsn(eSL, Session*   pSsn, eAA eApiAct, Stz* szFormat, ...);
     static void vLogSys(eSL, AttachMap* pSys, eYA eSysAct, Stz* szFormat, ...);
     static void vLogThd(eSL, Thread*    pThd, eHA eThdAct, Stz* szFormat, ...);
