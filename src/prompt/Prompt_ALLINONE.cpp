@@ -2526,11 +2526,6 @@ bool PROMPT::bPrompt_logNote(SePrompt* pPrompt)
 
   ASSERT(pInpTknVec->pGet(0)->bSame("logNote"_Stz));
   
-  if (pInpTknVec->nTokens() > 1)
-    AM::vLogPrm(SL_INF,pPrompt,PA_PRM_LOG_NOTE,
-                "%s"_Stz, //!format-LogPrm
-                pInpTknVec->pGet(1)->szChars());
-
   return true;
 }
 

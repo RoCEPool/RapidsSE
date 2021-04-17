@@ -1504,82 +1504,6 @@ void AM::vWriteTrace_vargs(File* pFile, eYA eSysAct, Stz* aFormat, va_list xArgs
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add a management log entry                                                 */
-/*----------------------------------------------------------------------------*/
-void AM::vLogMgt(eSL , Job* , eMA , Stz* , ...)
-{
-#ifdef WITH_SHARED_LOG
-//  if (! AM::bLogging())
-//    return;
-//
-//  if (! gpLog->bIsLoggable(pJob))
-//    return;
-//
-//  va_list xVarArgs;
-//
-//  va_start(xVarArgs,szFormat);
-//
-//  i8 i_Entry = gpLog->iEntryMgt(eSeverity,pJob,eMgtAct,
-//                                szFormat,xVarArgs);
-//
-//  va_end(xVarArgs);
-//
-//  pJob->m_i_Log = i_Entry;
-#endif
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* add a prompt log entry                                                     */
-/*----------------------------------------------------------------------------*/
-void AM::vLogPrm(eSL , SePrompt* , ePA , Stz* , ...)
-{
-//#ifdef WITH_SHARED_LOG
-//  if (! AM::bLogging())
-//    return;
-//  
-//  if (! gpLog->bIsLoggable(pPrm))
-//    return;
-//  
-//  va_list xVarArgs;
-//  
-//  va_start(xVarArgs,szFormat);
-//  
-//  i8 i_Entry = gpLog->iEntryPrm(eSeverity,pPrm,ePrmAct,
-//                                szFormat,xVarArgs);
-//  
-//  va_end(xVarArgs);
-//  
-//  pPrm->m_i_Log = i_Entry;
-//#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* add a operator log entry                                                   */
-/*----------------------------------------------------------------------------*/
-void AM::vLogQue(eSL , Schedule* , eQA , Stz* , ...)
-{
-#ifdef WITH_SHARED_LOG
-//  if (! AM::bLogging())
-//    return;
-//
-//  if (! gpLog->bIsLoggable(pQue))
-//    return;
-//
-//  va_list xVarArgs;
-//
-//  va_start(xVarArgs,szFormat);
-//
-//  i8 i_Entry = gpLog->iEntryQue(eSeverity,pQue,eQueAct,
-//                                szFormat,xVarArgs);
-//
-//  va_end(xVarArgs);
-//
-//  pQue->m_i_Log = i_Entry;
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
 /* add a resource log entry                                                   */
 /*----------------------------------------------------------------------------*/
 void AM::vLogRes(eSL , Resource* , eRA , Stz* , ...)
@@ -1601,31 +1525,6 @@ void AM::vLogRes(eSL , Resource* , eRA , Stz* , ...)
 //  va_end(xVarArgs);
 //
 //  pRes->m_i_Log = i_Entry;
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* add a session log entry                                                    */
-/*----------------------------------------------------------------------------*/
-void AM::vLogSsn(eSL , Session* , eAA , Stz* , ...)
-{
-#ifdef WITH_SHARED_LOG
-//  if (! AM::bLogging())
-//    return;
-//
-//  if (! gpLog->bIsLoggable(pSsn))
-//    return;
-//
-//  va_list xVarArgs;
-//
-//  va_start(xVarArgs,szFormat);
-//
-//  i8 i_Entry = gpLog->iEntrySsn(eSeverity,pSsn,eApiAct,
-//                                szFormat,xVarArgs);
-//
-//  va_end(xVarArgs);
-//
-//  pSsn->m_i_Log = i_Entry;
 #endif
 }
 
@@ -2907,10 +2806,7 @@ void AM::vJob_AddParticipating(Job* pJob)
 void AM::vJob_DumpDemon(void)
 {
   Schedule* pSchedule = AM::pSchedule();
-  
-  AM::vLogQue(SL_INF,pSchedule,QA_QUE_ORIGINATORS,
-              "DemonJobs list:"_Stz); //!format-LogQue
-  
+    
   AM::pDemonJobs()->vGrabLock();
   AM::pDemonJobs()->vContentDump();
   AM::pDemonJobs()->vDropLock();
@@ -2922,10 +2818,7 @@ void AM::vJob_DumpDemon(void)
 void AM::vJob_DumpLocal(void)
 {
   Schedule* pSchedule = AM::pSchedule();
-  
-  AM::vLogQue(SL_INF,pSchedule,QA_QUE_ORIGINATORS,
-              "LocalJobs list:"_Stz); //!format-LogQue
-  
+    
   AM::pLocalJobs()->vGrabLock();
   AM::pLocalJobs()->vContentDump();
   AM::pLocalJobs()->vDropLock();
@@ -2938,9 +2831,6 @@ void AM::vJob_DumpOriginating(void)
 {
   Schedule* pSchedule = AM::pSchedule();
   
-  AM::vLogQue(SL_INF,pSchedule,QA_QUE_ORIGINATORS,
-              "OriginatingJobs list:"_Stz); //!format-LogQue
-
   AM::pOriginatingJobs()->vGrabLock();
   AM::pOriginatingJobs()->vContentDump();
   AM::pOriginatingJobs()->vDropLock();
@@ -2952,10 +2842,7 @@ void AM::vJob_DumpOriginating(void)
 void AM::vJob_DumpParticipating(void)
 {
   Schedule* pSchedule = AM::pSchedule();
-  
-  AM::vLogQue(SL_INF,pSchedule,QA_QUE_PARTICPANTS,
-              "ParticipatingJobs list:"_Stz); //!format-LogQue
-  
+    
   AM::pParticipatingJobs()->vGrabLock();
   AM::pParticipatingJobs()->vContentDump();
   AM::pParticipatingJobs()->vDropLock();
@@ -2968,21 +2855,8 @@ Job* AM::pJob_FindOriginating(i8 iJobId)
 {
   Schedule* pSchedule = AM::pSchedule();
   
-  AM::vLogQue(SL_INF,pSchedule,QA_QUE_FIND_ORIG,
-              "Find job %lld in OriginatingJobs"_Stz, //!format-LogQue
-              iJobId);
-  
   Job* pJob = AM::pOriginatingJobs()->pFindJob(iJobId);
-  
-  if (pJob)
-    AM::vLogQue(SL_INF,pSchedule,QA_QUE_FOUND_ORIG,
-                "found job %lld in OriginatingJobs"_Stz, //!format-LogQue
-                iJobId);
-  else
-    AM::vLogQue(SL_INF,pSchedule,QA_QUE_NOT_ORIG,
-                "did not find job %lld in OriginatingJobs"_Stz, //!format-LogQue
-                iJobId);
-  
+    
   return pJob;
 }
 
@@ -2992,22 +2866,9 @@ Job* AM::pJob_FindOriginating(i8 iJobId)
 Job* AM::pJob_FindParticipating(i8 iJobId)
 {
   Schedule* pSchedule = AM::pSchedule();
-
-  AM::vLogQue(SL_INF,pSchedule,QA_QUE_FIND_PARTG,
-              "find job %lld in ParticipatingJobs"_Stz, //!format-LogQue
-              iJobId);
   
   Job* pJob = AM::pParticipatingJobs()->pFindJob(iJobId);
   
-  if (pJob)
-    AM::vLogQue(SL_INF,pSchedule,QA_QUE_FOUND_PARTG,
-                "found job %lld in ParticipatingJobs"_Stz, //!format-LogQue
-                iJobId);
-  else
-    AM::vLogQue(SL_INF,pSchedule,QA_QUE_NOT_PARTG,
-                "did not find job %lld in ParticipatingJobs"_Stz, //!format-LogQue
-                iJobId);
-
   return pJob;
 }
 
