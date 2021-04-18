@@ -555,8 +555,6 @@ void Step::vJobErrorStore(void)
   //pJob->m_xNode[iNode].m_eErrorCode = (eEC)iJobError;
   pJob->vJobError((eEC)iJobError);
   
-  //ActLog::vAdd(pJob,AN_ERROR_CODE,iJobError);
-  
   EXIT();
 }
 
@@ -902,8 +900,6 @@ void Step::vJobPhaseStore(void)
   
   pJob->vJobPhase((eJP)iJobPhase);
   
-  //ActLog::vAdd(pJob,AN_JOB_PHASE,iJobPhase,_EG_JP);
-  
   EXIT();
 }
 
@@ -928,8 +924,6 @@ void Step::vJobPostRecv(void)
     pJob->vMarkJob();
   }
   
-  //ActLog::vAdd(pJob,AN_POST_RECV,pJob());
-
   EXIT();
 }
 
@@ -942,7 +936,6 @@ void Step::vJobPreSend(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  //ActLog::vAdd(pJob,AN_PRE_SEND,pJob());
   STORE::vJob_preSend(pJob);
   
   if (pJob->m_xReqTuple.m_iDetail)

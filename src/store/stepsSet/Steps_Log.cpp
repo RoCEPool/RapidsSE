@@ -109,9 +109,7 @@ void Step::vLogMarkSeed(void)
 
   s32 sWordNm;
   m_pDataStack->vPopStr(sWordNm,__func__);
-  
-  //ActLog::vAdd(m_pJob,(eAN)iSeed,sWordNm.szStz());
-  
+    
   EXIT();
 }
 
@@ -127,9 +125,7 @@ void Step::vLogMarkWord(void)
 
   s32 sWordNm;
   m_pDataStack->vPopStr(sWordNm,__func__);
-  
-  //ActLog::vAdd(m_pJob,(eAN)iAN,sWordNm.szStz());
-  
+    
   EXIT();
 }
 

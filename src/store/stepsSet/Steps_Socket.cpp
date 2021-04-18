@@ -521,10 +521,7 @@ void Step::vSocketRecvObject_LowMem(void)
     
     //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
     //       pJob,eClass,aCN[eClass],nObjectSize);
-    
-    //ActLog::vAdd(pJob,AN_RECV_JOB,pJob(),nObjectSize);
-    //ActLog::vAdd(pJob,AN_RECV_JOB_LOW_MEMORY);
-    
+        
     m_pDataStack->vPushPtr(pJob);
     m_pDataStack->vPushInt(true);
     EXIT();
@@ -799,8 +796,6 @@ void Step::vSocketSendObject(void)
 //           pSocket,
 //           spJob.sz_detail(pJob));
 
-    
-    //ActLog::vAdd(pJob,AN_SEND_JOB,pJob(),nObjectSize);
   }
 
   RASSERT(_bIsValidJob(eClass) ||
