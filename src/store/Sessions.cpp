@@ -144,14 +144,6 @@ void Sessions::vMarkIncExecuted(Session* pSession)
 }
 
 /*----------------------------------------------------------------------------*/
-/* mark job location of an api                                                */
-/*----------------------------------------------------------------------------*/
-void Sessions::vMarkJobLoc(Session* pSession, i8 iJobLoc)
-{
-  AM::pSessions()->vJobLoc(pSession,iJobLoc);
-}
-
-/*----------------------------------------------------------------------------*/
 /* mark return of an api                                                      */
 /*----------------------------------------------------------------------------*/
 void Sessions::vMarkReturn(Session* pSession)

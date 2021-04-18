@@ -35,7 +35,6 @@ namespace STORE
     static void vMarkIncCancelled(Session* pSession);
     static void vMarkIncEnded(Session* pSession);
     static void vMarkIncExecuted(Session* pSession);
-    static void vMarkJobLoc(Session* pSession, i8 iJobLoc);
     static void vMarkReturn(Session* pSession);
     static void vMarkSenLoc(Session* pSession, i8 iSenLoc);
     static void vMarkSignalled(Session* pSession);
