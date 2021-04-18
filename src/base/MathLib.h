@@ -4,38 +4,11 @@
 #pragma once
 
 /*----------------------------------------------------------------------------*/
-/* iAddID: integer + decimal                                                  */
-/*----------------------------------------------------------------------------*/
-inline i8 iMathLib_AddID(i8 iValue1, i8 iValue2)
-{
-  i8 iResult = iValue1 + iValue2;
-  return iResult;
-}
-
-/*----------------------------------------------------------------------------*/
-/* iAddID: integer + float                                                    */
-/*----------------------------------------------------------------------------*/
-inline i8 iMathLib_AddIF(i8 iValue1, i8 iValue2)
-{
-  i8 iResult = iValue1 + iValue2;
-  return iResult;
-}
-
-/*----------------------------------------------------------------------------*/
 /* iAddII: integer + integer                                                  */
 /*----------------------------------------------------------------------------*/
-inline i8 iMathLib_AddII(i8 iValue1, i8 iValue2)
+inline i8 iMathLib_Add_INTINT(i8 iValue1, i8 iValue2)
 {
   i8 iResult = iValue1 + iValue2;
-  return iResult;
-}
-
-/*----------------------------------------------------------------------------*/
-/* iAddII: integer + unknown                                                  */
-/*----------------------------------------------------------------------------*/
-inline i8 iMathLib_AddIU(i8 iValue1, i8 iValue2)
-{
-  i8 iResult = iValue2;
   return iResult;
 }
 

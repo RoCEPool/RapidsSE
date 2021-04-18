@@ -130,7 +130,7 @@ LogicUnit::LogicUnit(Task* pTask)
   // m_oEntWrk
 
   m_i_Code = 0;
-  
+
   m_pDevDstRow = new DevROW;
   m_pDevSrcRow = new DevROW;
   m_pDevAltRow = new DevROW;
@@ -304,7 +304,7 @@ eEO LogicUnit::eCode(i8 i_Code)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
-  eEO eCode = m_eaCode[i_Code];
+  eEO eCode = *(eEO*)&m_eaCode[i_Code];
 
   return eCode;
 }
@@ -322,11 +322,11 @@ i8 LogicUnit::nCodes(void)
 /*----------------------------------------------------------------------------*/
 /* get iArg at given i_Code                                                   */
 /*----------------------------------------------------------------------------*/
-eEO* LogicUnit::aCodeArg(i8 i_Code)
+char* LogicUnit::aCodeArg(i8 i_Code)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  eEO* aArg = &m_eaCode[i_Code];
+
+  char* aArg = &m_eaCode[i_Code];
 
   return aArg;
 }
@@ -675,8 +675,9 @@ void LogicUnit::vAddCode(eEO eCode)
     m_iNextCond = C_UNKNOWN;
     return;
   }
-  
-  m_eaCode[m_i_Code++] = eCode;
+
+  *(eEO*)&m_eaCode[m_i_Code] = eCode;
+  m_i_Code += 2;
 
   m_iNextCond = C_UNKNOWN;
 }
@@ -698,11 +699,13 @@ void LogicUnit::vAddCodeArg(eEO eCode, i8 iArg)
     return;
   }
   
-  m_eaCode[m_i_Code++] = eCode;
+  //m_eaCode[m_i_Code++] = eCode;
+  *(eEO*)&m_eaCode[m_i_Code] = eCode;
+  m_i_Code += 2;
 
   i8* piArg = (i8*) & m_eaCode[m_i_Code];
   * piArg = iArg;
-  
+
   m_i_Code += sizeof(i8);
   
   m_iNextCond = C_UNKNOWN;
@@ -776,7 +779,7 @@ void LogicUnit::vAddCodeLabel(eEO eCode, Stz* szLabelNm)
   
   if (C_UNKNOWN == i_Label) {
     i_Label = iAddLabel(szLabelNm,false);
-    m_xaJumpLabel[i_Label].m_i_Chain = m_i_Code + 1;
+    m_xaJumpLabel[i_Label].m_i_Chain = m_i_Code + 2;
     vAddCodeArg(eCode,C_UNKNOWN);
   }
   else
@@ -785,7 +788,7 @@ void LogicUnit::vAddCodeLabel(eEO eCode, Stz* szLabelNm)
   }
   else {
     i8 i_Chain = m_xaJumpLabel[i_Label].m_i_Chain;
-    m_xaJumpLabel[i_Label].m_i_Chain = m_i_Code + 1;
+    m_xaJumpLabel[i_Label].m_i_Chain = m_i_Code + 2;
     vAddCodeArg(eCode,i_Chain);
   }
   
@@ -836,7 +839,9 @@ void LogicUnit::vAddCodeString(eEO eCode, Stz* szString)
     return;
   }
   
-  m_eaCode[m_i_Code++] = eCode;
+  //m_eaCode[m_i_Code++] = eCode;
+  *(eEO*)&m_eaCode[m_i_Code] = eCode;
+  m_i_Code += 2;
 
   for (char* acChr = szString->azChar(); *acChr; acChr++)
     m_eaCode[m_i_Code++] = (eEO)*acChr;
@@ -1000,7 +1005,7 @@ void LogicUnit::vPrintLabels(void)
 void LogicUnit::vDumpCode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
- 
+
 //#ifdef WITH_TRACE_LOGICUNIT
 
   return;
@@ -1011,7 +1016,7 @@ void LogicUnit::vDumpCode(void)
   
   for (i8 i_Code = 0; i_Code < m_i_Code; ) {
         
-    eEO eCode = m_eaCode[i_Code];
+    eEO eCode = *(eEO*)&m_eaCode[i_Code];
         
     Stz* szLabel = szFindCode(i_Code);
     vTrace("%12s "_Stz,szLabel ? szLabel : ""_Stz);
@@ -1022,20 +1027,20 @@ void LogicUnit::vDumpCode(void)
     }
     
     if (-1 == EoArgs[eCode].m_nArgBytes) {
-      char* azArg = (char*) & m_eaCode[i_Code+1];
+      char* azArg = (char*) & m_eaCode[i_Code+2];
       vTrace("%04lld: %20s (%lls)\n"_Stz,i_Code,aEO[eCode],azArg);
-      i_Code += 1 + StrLib::nSize(azArg);
+      i_Code += 2 + StrLib::nSize(azArg);
     }
     else
     if (EA_DATE == EoArgs[eCode].m_eArgument) {
-      i8* piArg = (i8*) & m_eaCode[i_Code+1];
+      i8* piArg = (i8*) & m_eaCode[i_Code+2];
       i8 iArg = * piArg;
       vTrace("%04lld: %20s (%lls)\n"_Stz,i_Code,aEO[eCode],spDate.sz(iArg));
-      i_Code += 1 + sizeof(i8);
+      i_Code += 2 + sizeof(i8);
     }
     else
     if (EA_LABEL == EoArgs[eCode].m_eArgument) {
-      i8* piArg = (i8*) & m_eaCode[i_Code+1];
+      i8* piArg = (i8*) & m_eaCode[i_Code+2];
       i8 iArg = * piArg;
       Stz* szLabel = szFindCode(iArg);
       vTrace("%04lld: %20s => %s @%lld\n"_Stz,
@@ -1044,25 +1049,25 @@ void LogicUnit::vDumpCode(void)
              szLabel ? szLabel : "<unknown>"_Stz,
              iArg
              );
-      i_Code += 1 + sizeof(i8);
+      i_Code += 2 + sizeof(i8);
     }
     else
     if (EA_SUBSCR == EoArgs[eCode].m_eArgument) {
-      i8* piArg = (i8*) & m_eaCode[i_Code+1];
+      i8* piArg = (i8*) & m_eaCode[i_Code+2];
       i8 iArg = * piArg;
       vTrace("%04lld: %20s [%lld]\n"_Stz,i_Code,aEO[eCode],iArg);
-      i_Code += 1 + sizeof(i8);
+      i_Code += 2 + sizeof(i8);
     }
     else
     if (EoArgs[eCode].m_nArgBytes) {
-      i8* piArg = (i8*) & m_eaCode[i_Code+1];
+      i8* piArg = (i8*) & m_eaCode[i_Code+2];
       i8 iArg = * piArg;
       vTrace("%04lld: %20s (%lld)\n"_Stz,i_Code,aEO[eCode],iArg);
-      i_Code += 1 + sizeof(i8);
+      i_Code += 2 + sizeof(i8);
     }
     else {
       vTrace("%04lld: %20s\n"_Stz,i_Code,aEO[eCode]);
-      i_Code++;
+      i_Code += 2;
     }
     
     if (EO_RETURN == eCode)
@@ -1264,7 +1269,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   
   eEO*  eaReturnStack[C_LOGIC_STACK];
   eEO** aeaRstk = &eaReturnStack[0];
-  eEO*  aeCode  = & m_eaCode[0];
+  char*  aeCode  = (char*)& m_eaCode[0];
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//
   //                    interpretative inner loop proper                      //
@@ -1284,7 +1289,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       vTrace("WARNING: LogicUnit stack use %lld%%\n"_Stz,iStkPct);
 #endif
     
-    eEO eCode = *aeCode++;
+    eEO eCode = *(eEO*)aeCode;
+    aeCode += 2;
+
 #ifdef WITH_TRACE_LOGICUNIT
     vTrace("%s %lld\n"_Stz, aEO[eCode], nStkUse);
 #endif
@@ -1296,44 +1303,88 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       // add top two numbers and push result
 
-      case EO_ADD_ID: ArgNil(); // integer + decimal
+      case EO_ADD_BCDBCD: ArgNil(); // bcd + bcd
+        break;//+endCase
+      case EO_ADD_BCDFLT: ArgNil(); // bcd + int
+        break;//+endCase
+      case EO_ADD_BCDINT: ArgNil(); // bcd + int
+        break;//+endCase
+      case EO_ADD_DTEIVL: ArgNil(); // dte + ivl
+        break;//+endCase
+      case EO_ADD_FLTBCD: ArgNil(); // flt + bcd
+        break;//+endCase
+      case EO_ADD_FLTINT: ArgNil(); // flt + int
+        break;//+endCase
+      case EO_ADD_FLTFLT: ArgNil(); // flt + flt
+        break;//+endCase
+      case EO_ADD_INTBCD: ArgNil(); // int + bcd
+        break;//+endCase
+      case EO_ADD_INTFLT: ArgNil(); // int + flt
+        break;//+endCase
+      case EO_ADD_INTINT: ArgNil(); // int + int
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
-        iRes  = iMathLib_AddID(iTopA, iTopB);
-        dLU3(EO_ADD_ID,iTopA,iTopB,iRes);
+        iRes  = iMathLib_Add_INTINT(iTopB, iTopA);
+        dLU3(EO_ADD_INTBCD,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
-
-      case EO_ADD_IF: ArgNil(); // integer + float
-        iTopB = *(aiDstk--);
-        iTopA = *(aiDstk--);
-        iRes  = iMathLib_AddIF(iTopA, iTopB);
-        dLU3(EO_ADD_IF,iTopA,iTopB,iRes);
-        *(++aiDstk) = iRes;
+      case EO_ADD_IVLDTE: ArgNil(); // ivl + dte
+        break;//+endCase
+      case EO_ADD_IVLIVL: ArgNil(); // ivl + ivl
+        break;//+endCase
+      case EO_ADD_IVLTME: ArgNil(); // ivl + tme
+        break;//+endCase
+      case EO_ADD_IVLTSP: ArgNil(); // ivl + tsp
+        break;//+endCase
+      case EO_ADD_TMEIVL: ArgNil(); // tme + ivl
+        break;//+endCase
+      case EO_ADD_TSPIVL: ArgNil(); // tsp + ivl
+        break;//+endCase
+      case EO_ADD_UNKXYZ: ArgNil(); // unk + xyz
+        break;//+endCase
+      case EO_ADD_XYZUNK: ArgNil(); // xyz + unk
         break;//+endCase
 
-      case EO_ADD_II: ArgNil(); // integer + integer
-        iTopB = *(aiDstk--);
-        iTopA = *(aiDstk--);
-        iRes  = iMathLib_AddII(iTopA, iTopB);
-        dLU3(EO_ADD_II,iTopA,iTopB,iRes);
-        *(++aiDstk) = iRes;
+      case EO_DIV_BCDBCD: ArgNil(); // bcd / bcd
         break;//+endCase
-
-      case EO_ADD_IU: ArgNil(); // integer + unknown
-        iTopB = *(aiDstk--);
-        iTopA = *(aiDstk--);
-        iRes  = iMathLib_AddIU(iTopA, iTopB);
-        dLU3(EO_ADD_IU,iTopA,iTopB,iRes);
-        *(++aiDstk) = iRes;
+      case EO_DIV_BCDFLT: ArgNil(); // bcd + int
         break;//+endCase
-
-      case EO_DIVIDE: ArgNil(); // divide top int by second push result
+      case EO_DIV_BCDINT: ArgNil(); // bcd + int
+        break;//+endCase
+      case EO_DIV_DTEIVL: ArgNil(); // dte + ivl
+        break;//+endCase
+      case EO_DIV_FLTBCD: ArgNil(); // flt + bcd
+        break;//+endCase
+      case EO_DIV_FLTINT: ArgNil(); // flt + int
+        break;//+endCase
+      case EO_DIV_FLTFLT: ArgNil(); // flt + flt
+        break;//+endCase
+      case EO_DIV_INTBCD: ArgNil(); // int + bcd
+        break;//+endCase
+      case EO_DIV_INTFLT: ArgNil(); // int + flt
+        break;//+endCase
+      case EO_DIV_INTINT: ArgNil(); // int + int
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA / iTopB;
-        dLU3(EO_DIVIDE,iTopA,iTopB,iRes);
+        dLU3(EO_DIV_INTINT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        break;//+endCase
+      case EO_DIV_IVLDTE: ArgNil(); // ivl + dte
+        break;//+endCase
+      case EO_DIV_IVLIVL: ArgNil(); // ivl + ivl
+        break;//+endCase
+      case EO_DIV_IVLTME: ArgNil(); // ivl + tme
+        break;//+endCase
+      case EO_DIV_IVLTSP: ArgNil(); // ivl + tsp
+        break;//+endCase
+      case EO_DIV_TMEIVL: ArgNil(); // tme + ivl
+        break;//+endCase
+      case EO_DIV_TSPIVL: ArgNil(); // tsp + ivl
+        break;//+endCase
+      case EO_DIV_UNKXYZ: ArgNil(); // unk + xyz
+        break;//+endCase
+      case EO_DIV_XYZUNK: ArgNil(); // xyz + unk
         break;//+endCase
         
       case EO_MODULO: ArgNil(); // modulo top int be second push result
@@ -1343,54 +1394,105 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU3(EO_MODULO,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
-        
-      case EO_MUL_ID: ArgNil(); // integer * decimal
+
+      case EO_MUL_BCDBCD: ArgNil(); // bcd / bcd
+        break;//+endCase
+      case EO_MUL_BCDFLT: ArgNil(); // bcd + int
+        break;//+endCase
+      case EO_MUL_BCDINT: ArgNil(); // bcd + int
+        break;//+endCase
+      case EO_MUL_DTEIVL: ArgNil(); // dte + ivl
+        break;//+endCase
+      case EO_MUL_FLTBCD: ArgNil(); // flt + bcd
+        break;//+endCase
+      case EO_MUL_FLTINT: ArgNil(); // flt + int
+        break;//+endCase
+      case EO_MUL_FLTFLT: ArgNil(); // flt + flt
+        break;//+endCase
+      case EO_MUL_INTBCD: ArgNil(); // int + bcd
+        break;//+endCase
+      case EO_MUL_INTFLT: ArgNil(); // int + flt
+        break;//+endCase
+      case EO_MUL_INTINT: ArgNil(); // int + int
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA * iTopB;
-        dLU3(EO_MUL_II,iTopA,iTopB,iRes);
+        dLU3(EO_MUL_INTINT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
-
-      case EO_MUL_IF: ArgNil(); // integer * float
-        iTopB = *(aiDstk--);
-        iTopA = *(aiDstk--);
-        iRes  = iTopA * iTopB;
-        dLU3(EO_MUL_II,iTopA,iTopB,iRes);
-        *(++aiDstk) = iRes;
+      case EO_MUL_IVLDTE: ArgNil(); // ivl + dte
+        break;//+endCase
+      case EO_MUL_IVLIVL: ArgNil(); // ivl + ivl
+        break;//+endCase
+      case EO_MUL_IVLTME: ArgNil(); // ivl + tme
+        break;//+endCase
+      case EO_MUL_IVLTSP: ArgNil(); // ivl + tsp
+        break;//+endCase
+      case EO_MUL_TMEIVL: ArgNil(); // tme + ivl
+        break;//+endCase
+      case EO_MUL_TSPIVL: ArgNil(); // tsp + ivl
+        break;//+endCase
+      case EO_MUL_UNKXYZ: ArgNil(); // unk + xyz
+        break;//+endCase
+      case EO_MUL_XYZUNK: ArgNil(); // xyz + unk
         break;//+endCase
 
-      case EO_MUL_II: ArgNil(); // integer * integer
-        iTopB = *(aiDstk--);
-        iTopA = *(aiDstk--);
-        iRes  = iTopA * iTopB;
-        dLU3(EO_MUL_II,iTopA,iTopB,iRes);
-        *(++aiDstk) = iRes;
+      case EO_NEG_BCD: ArgNil(); // bcd / bcd
         break;//+endCase
-
-      case EO_MUL_IU: ArgNil(); // // integer * unknown
-        iTopB = *(aiDstk--);
-        iTopA = *(aiDstk--);
-        iRes  = iTopA * iTopB;
-        dLU3(EO_MUL_II,iTopA,iTopB,iRes);
-        *(++aiDstk) = iRes;
+      case EO_NEG_FLT: ArgNil(); // bcd / bcd
         break;//+endCase
-
-      case EO_NEGATE: ArgNil(); // negate the top value
+      case EO_NEG_INT: ArgNil(); // negate the top value
         iTopA = *(aiDstk--);
         iRes  = - iTopA;
-        dLU2(EO_NEGATE,iTopA,iRes);
+        dLU2(EO_NEG_INT,iTopA,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
-        
-      case EO_SUBTRACT: ArgNil(); // subtract second int from top push result
+      case EO_NEG_IVL: ArgNil(); // bcd / bcd
+        break;//+endCase
+
+      // subtract second int from top push result
+      case EO_SUB_BCDBCD: ArgNil(); // bcd / bcd
+        break;//+endCase
+      case EO_SUB_BCDFLT: ArgNil(); // bcd + int
+        break;//+endCase
+      case EO_SUB_BCDINT: ArgNil(); // bcd + int
+        break;//+endCase
+      case EO_SUB_DTEIVL: ArgNil(); // dte + ivl
+        break;//+endCase
+      case EO_SUB_FLTBCD: ArgNil(); // flt + bcd
+        break;//+endCase
+      case EO_SUB_FLTINT: ArgNil(); // flt + int
+        break;//+endCase
+      case EO_SUB_FLTFLT: ArgNil(); // flt + flt
+        break;//+endCase
+      case EO_SUB_INTBCD: ArgNil(); // int + bcd
+        break;//+endCase
+      case EO_SUB_INTFLT: ArgNil(); // int + flt
+        break;//+endCase
+      case EO_SUB_INTINT: ArgNil(); // int + int
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA - iTopB;
-        dLU3(EO_SUBTRACT,iTopA,iTopB,iRes);
+        dLU3(EO_SUB_INTINT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
-
+      case EO_SUB_IVLDTE: ArgNil(); // ivl + dte
+        break;//+endCase
+      case EO_SUB_IVLIVL: ArgNil(); // ivl + ivl
+        break;//+endCase
+      case EO_SUB_IVLTME: ArgNil(); // ivl + tme
+        break;//+endCase
+      case EO_SUB_IVLTSP: ArgNil(); // ivl + tsp
+        break;//+endCase
+      case EO_SUB_TMEIVL: ArgNil(); // tme + ivl
+        break;//+endCase
+      case EO_SUB_TSPIVL: ArgNil(); // tsp + ivl
+        break;//+endCase
+      case EO_SUB_UNKXYZ: ArgNil(); // unk + xyz
+        break;//+endCase
+      case EO_SUB_XYZUNK: ArgNil(); // xyz + unk
+        break;//+endCase
+        
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // counter
       case EO_CTR_0_DEC: ArgNil(); // dec counter 0
@@ -1858,7 +1960,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU1(EO_CALL,iArg);
 #ifdef __TINYC__
 #else
-        * (aeaRstk++) = aeCode;
+        * (aeaRstk++) = (eEO*)aeCode;
         aeCode = & m_eaCode[iArg];
 #endif
         break;//+endCase
@@ -1875,7 +1977,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 #endif
           return iRes;
         }
-        aeCode = * (--aeaRstk);
+        aeCode = (char*)(* (--aeaRstk));
 #endif
         break;//+endCase
 
@@ -1893,7 +1995,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 #endif
             return iRes;
           }
-          aeCode = * (--aeaRstk);
+          aeCode = (char*)(* (--aeaRstk));
         }
 
 #endif

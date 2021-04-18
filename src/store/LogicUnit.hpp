@@ -91,7 +91,7 @@ namespace STORE
   aiDstk -= nWordRoundedStrBytes(nSize)/8;
 
 #define JumpTo(__iArg,__EO) \
-  aeCode = & m_eaCode[__iArg];
+  aeCode = &m_eaCode[__iArg];
 
   //----------------------------------------------------------------------------
 
@@ -203,7 +203,7 @@ namespace STORE
     LogicTimer* m_pLogicTimer;
 
     i8     m_i_Code;
-    eEO    m_eaCode[C_LOGIC_CODE];    // { EO_code [<bytes>] }
+    char    m_eaCode[C_LOGIC_CODE];    // { EO_code [<bytes>] }
 
     i8        m_nLabels;
     JumpLabel m_xaJumpLabel[C_LOGIC_LABEL];
@@ -232,7 +232,7 @@ namespace STORE
     void vCC(i8 i_Cond);
     eEO  eCode(i8 i_Code);
     i8   nCodes(void);
-    eEO* aCodeArg(i8 i_Code);
+    char* aCodeArg(i8 i_Code);
     i8   iCodeArg(i8 i_Code);
     RluDiary* pDiary(void);
     void vDiaryJobNote(Stz* szJobNote);

@@ -33,7 +33,7 @@ create table LineItem
 success
 
 //------------------------------------------------------------------------------
-aggregRows lineitem " type decimal $7 * 2";
+aggregRows lineitem " type decimal $7 2 *";
 failure contains: "invalid command"
 
 //------------------------------------------------------------------------------
