@@ -125,8 +125,6 @@ namespace STORE
     LogicUnit* pLogicUnit_job(void);
     void vLogicUnit_job(LogicUnit** ppLogicUnit);
     void vLockJobMutex(void);
-    void vMarkJob(void);
-    void vMarkJob(Stz* szFormat, ...);
     void vOperandQueueReport(File* pFile, bool bStdOut);
     eEC ePopulateJob(TagSet* pTagSet);
     void vResetForReuse(Session* pSession);

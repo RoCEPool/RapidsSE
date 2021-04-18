@@ -764,51 +764,6 @@ void Job::vLogicUnit_job(LogicUnit** ppLogicUnit)
 }
 
 /*----------------------------------------------------------------------------*/
-/* write an activity map string about this job                                */
-/*----------------------------------------------------------------------------*/
-void Job::vMarkJob(void)
-{
-  s48K sJobMark;
-  
-  sJobMark.vSprintCat("Job %03lld %s session %lld tablePtn %lld\n"_Stz,
-                      iJobId(),
-                      aCN[eGetClassNo()],
-                      m_xReqTuple.m_i_Session,
-                      m_i_TablePtn);
-  sJobMark.vSprintCat("  phase %s state %s list %s"_Stz,
-                      aJP[m_eJobPhase],
-                      aJS[m_eJobState],
-                      aJL[m_eJobList]);
-  if (m_bWasReceived)
-    sJobMark.vSprintCat(" (recv from %s)"_Stz,
-                        szNodeNm());
-
-  sJobMark.vConcat("\n"_Stz);
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* write a mark about this job                                                */
-/*----------------------------------------------------------------------------*/
-void Job::vMarkJob(Stz* szFormat, ...)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  UNUSED(szFormat);
-
-#ifdef WITH_SHARED_LOG
-  if (! AM::bLogging())
-    return;
-  
-  va_list xArgs;
-  
-  va_start(xArgs,szFormat);
-    
-  va_end(xArgs);
-#endif
-  
-}
-
-/*----------------------------------------------------------------------------*/
 /* get name of node this came from                                            */
 /*----------------------------------------------------------------------------*/
 Stz* Job::szNodeNm(void)

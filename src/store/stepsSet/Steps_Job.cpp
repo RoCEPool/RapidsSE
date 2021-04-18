@@ -902,11 +902,7 @@ void Step::vJobPostRecv(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // run the post recv function
   STORE::vJob_postRecv(pJob);
-  
-  if (pJob->m_xReqTuple.m_iDetail) {
-    pJob->vMarkJob();
-  }
-  
+    
   EXIT();
 }
 

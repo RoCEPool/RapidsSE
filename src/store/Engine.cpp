@@ -241,7 +241,6 @@ void Engine::vRunCommandLine(void)
         while (gpAttachMap->uAttachMapState() != C_READY) {
           AM::vNapMsec(1,CN_NONE);
         }
-        vOpenLog();
         vCallPrompt();
         break;
         
@@ -1016,16 +1015,6 @@ void Engine::vOperandQueueReport(bool bStdOut)
 }
 
 /*----------------------------------------------------------------------------*/
-/* create or open the Log                                                     */
-/*----------------------------------------------------------------------------*/
-void Engine::vOpenLog(void)
-{
-  bool bStarting = false;
-  if (0 == AM::pGrid()->iThisNode() && gxCmdLineArgs.m_xSysArgs.m_bStart)
-    bStarting = true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* attach or create the shm region                                            */
 /*----------------------------------------------------------------------------*/
 void Engine::vOpenPool(void)
@@ -1665,12 +1654,7 @@ void Engine::vStartSystem(void)
     new PtnMap(gpAttachMap->m_pGrid->nBootNodes(),
                gpAttachMap->m_xSysArgs.m_nDegOfPar);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  if (AM::bVerboseProgress())
-    vInfo("  Opening Shared Log\n"_Stz);
-  vOpenLog();
-  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
   
   if (AM::bVerboseProgress())
     vInfo("  Adding Expressions\n"_Stz);
