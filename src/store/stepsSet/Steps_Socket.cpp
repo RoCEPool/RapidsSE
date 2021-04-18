@@ -25,7 +25,6 @@
 #include "CrwBuffer.hpp"
 #include "Node.hpp"
 #include "Job.hpp"
-#include "JobLog.hpp"
 #include "Socket.hpp"
 #include "XmitOperand.hpp"
 #include "Node_I.hpp"
@@ -782,13 +781,7 @@ void Step::vSocketSendObject(void)
   
   if (_bIsValidJob(eClass)) {
     Job* pJob = _pJob(pObject);
-    
-    if (pJob->m_xReqTuple.m_iDetail)
-      JobLog::vNote(pJob,"Send: %s %p socket %llx"_Stz,
-                         aCN[eClass],
-                         pJob,
-                         pSocket);
-    
+        
     SP_Job spJob;
 
 //    vTrace("%lld %p: vSocketSendObject: Job %s\n"_Stz,

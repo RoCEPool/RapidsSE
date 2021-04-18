@@ -13,7 +13,6 @@
 
 #include "Job.hpp"
 #include "JobList.hpp"
-#include "JobLog.hpp"
 #include "LogicUnit.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -85,11 +84,7 @@ void Step::vTaskAcksStore(void)
   Job* pJob = m_pJob;
   
   if (pJob && pJob->m_xReqTuple.m_iDetail) {
-    JobLog::vNote(pJob,"Setting acks: %s %p to %lld"_Stz,
-                       aCN[pJob->eGetClassNo()],
-                       pJob,
-                       nAcksRequired);
-    AM::pOriginatingJobs()->vLogJobs();
+     AM::pOriginatingJobs()->vLogJobs();
   }
   
   vAcksRmg(nAcksRequired);
@@ -188,14 +183,7 @@ void Step::vTaskIsAckSet(void)
   Task* pTaskBeingAcked = _pTask(m_pDataStack->pPopPtr(__func__));
   
   i8 iIsAckSet = pTaskBeingAcked->m_oAcksRmg.bIsSet();
-  Job* pJob = pTaskBeingAcked->m_pJob;
-  
-  if (pJob && pJob->m_xReqTuple.m_iDetail) {
-    JobLog::vNote(pJob,"Task %p: IsAckSet %lld"_Stz,
-                       pTaskBeingAcked,
-                       iIsAckSet);
-  }
-  
+    
   m_pDataStack->vPushInt(iIsAckSet);
 
   EXIT();

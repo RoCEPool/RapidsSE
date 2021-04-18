@@ -15,7 +15,6 @@
 
 #include "Job.hpp"
 #include "File.hpp"
-#include "JobLog.hpp"
 #include "LogicUnit.hpp"
 #include "StageSpec.hpp"
 
@@ -803,9 +802,7 @@ void Job::vMarkJob(Stz* szFormat, ...)
   va_list xArgs;
   
   va_start(xArgs,szFormat);
-  
-  JobLog::vNote(this,szFormat,xArgs);
-  
+    
   va_end(xArgs);
 #endif
   
