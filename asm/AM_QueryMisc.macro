@@ -14,31 +14,31 @@ macro AM_QUERY_INIT
   // check for ZK_DATAPULSE
   EO_DUP                        
   EO_INTEGER ZK_DATAPULSE       
-  EO_EQUAL                      
+  EO_EQ_INTINT
   EO_JMP_TRUE HANDLER_DATAPULSE
 
   // check for ZK_STREAMDEF
   EO_DUP                        
   EO_INTEGER  ZK_STREAMDEF      
-  EO_EQUAL                      
+  EO_EQ_INTINT
   EO_JMP_TRUE HANDLER_STREAMDEF
 
   // check for ZK_CRWBUFFER
   EO_DUP                        
   EO_INTEGER ZK_CRWBUFFER       
-  EO_EQUAL                      
+  EO_EQ_INTINT
   EO_JMP_TRUE HANDLER_CRWBUFFER
 
   // check for ZK_ROWBUFFER
   EO_DUP
   EO_INTEGER ZK_ROWBUFFER
-  EO_EQUAL
+  EO_EQ_INTINT
   EO_JMP_TRUE HANDLER_ROWBUFFER
 
   // check for ZK_EOSMARKER
   EO_DUP                        
   EO_INTEGER  ZK_EOSMARKER      
-  EO_EQUAL                      
+  EO_EQ_INTINT
   EO_JMP_TRUE HANDLER_EOSMARKER
 
   // Never reach

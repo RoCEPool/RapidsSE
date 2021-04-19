@@ -1737,14 +1737,51 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU3(EO_LESSEQUAL,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
-        
-      case EO_EQUAL: ArgNil(); // test top == 2nd, push result
+
+      case EO_EQ_BCDBCD: ArgNil(); // bcd == bcd
+        break;//+endCase
+      case EO_EQ_BCDFLT: ArgNil(); // bcd == bcd
+        break;//+endCase
+      case EO_EQ_BCDINT: ArgNil(); // bcd == int
+        break;//+endCase
+      case EO_EQ_BOLBOL: ArgNil(); // bol == bol
+        break;//+endCase
+      case EO_EQ_DTEDTE: ArgNil(); // dte == dte
+        break;//+endCase
+      case EO_EQ_DTETSP: ArgNil(); // dte == tsp
+        break;//+endCase
+      case EO_EQ_FLTBCD: ArgNil(); // flt == bcd
+        break;//+endCase
+      case EO_EQ_FLTFLT: ArgNil(); // flt == flt
+        break;//+endCase
+      case EO_EQ_FLTINT: ArgNil(); // flt == int
+        break;//+endCase
+      case EO_EQ_INTBCD: ArgNil(); // int == bcd
+        break;//+endCase
+      case EO_EQ_INTFLT: ArgNil(); // int == flt
+        break;//+endCase
+      case EO_EQ_INTINT: ArgNil(); // int == int
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA == iTopB;
-        dLU3(EO_EQUAL,iTopA,iTopB,iRes);
+        dLU3(EO_EQ_INTINT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
+      case EO_EQ_IVLIVL: ArgNil(); // ivl == ivl
+        break;//+endCase
+      case EO_EQ_TMETME: ArgNil(); // tme == tme
+        break;//+endCase
+      case EO_EQ_TSPDTE: ArgNil(); // tsp == dte
+        break;//+endCase
+      case EO_EQ_TSPTSP: ArgNil(); // tsp == tsp
+        break;//+endCase
+      case EO_EQ_VCHVCH: ArgNil(); // vch == vch
+        break;//+endCase
+      case EO_EQ_UNKXYZ: ArgNil(); // unk == xyz
+        break;//+endCase
+      case EO_EQ_XYZUNK: ArgNil(); // xyz == unk
+        break;//+endCase
+
         
       case EO_NOTEQUAL: ArgNil(); // test top != 2nd, push result
         iTopB = *(aiDstk--);

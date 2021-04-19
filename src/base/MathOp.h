@@ -4,6 +4,43 @@
 #pragma once
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// COMPARISON OPERATORS
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// AND
+
+static eDM eMathOp_CmpResult[DM_ENUMS][DM_ENUMS] = {
+           //   NONE     BCD       BOL       DTE           FLT         INT           IVL         TME          TSP            VCH      UNK
+/*  0 NONE */ { DM_NONE, DM_NONE,  DM_NONE,  DM_NONE,      DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_NONE    },
+/*  1 BCD  */ { DM_NONE, DM_BOL,   DM_BOL,   DM_NONE,      DM_BOL,     DM_BOL,       DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_BOL    },
+/*  2 BOL  */ { DM_NONE, DM_NONE,  DM_NONE,  DM_NONE,      DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_BOL     },
+/*  3 DTE  */ { DM_NONE, DM_NONE,  DM_NONE,  DM_BOL,       DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE,      DM_BOL,     DM_NONE, DM_BOL    },
+/*  4 FLT  */ { DM_NONE, DM_BOL,   DM_NONE,  DM_NONE,      DM_BOL,     DM_BOL,       DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_BOL    },
+/*  5 INT  */ { DM_NONE, DM_BOL,   DM_NONE,  DM_NONE,      DM_BOL,     DM_BOL,       DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_BOL    },
+/*  6 IVL  */ { DM_NONE, DM_NONE,  DM_NONE,  DM_NONE,      DM_NONE,    DM_NONE,      DM_BOL,     DM_NONE,      DM_NONE,    DM_NONE, DM_BOL    },
+/*  7 TME  */ { DM_NONE, DM_NONE,  DM_NONE,  DM_NONE,      DM_NONE,    DM_NONE,      DM_NONE,    DM_BOL,       DM_NONE,    DM_NONE, DM_BOL    },
+/*  8 TSP  */ { DM_NONE, DM_NONE,  DM_NONE,  DM_BOL,       DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE,      DM_BOL,     DM_NONE, DM_BOL    },
+/*  9 VCH  */ { DM_NONE, DM_NONE,  DM_NONE,  DM_NONE,      DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE,      DM_NONE,    DM_BOL, DM_BOL    },
+/* 10 UNK  */ { DM_NONE, DM_BOL,   DM_BOL,   DM_BOL,       DM_BOL,     DM_BOL,       DM_BOL,     DM_BOL,       DM_BOL,     DM_BOL, DM_BOL    }
+};
+
+static eEO eMathOp_EqCode[DM_ENUMS][DM_ENUMS] = {
+           //   NONE     BCD            BOL           DTE           FLT            INT            IVL           TME           TSP           VCH           UNK
+/*  0 NONE */ { EO_NONE, EO_NONE,       EO_NONE,      EO_NONE,      EO_NONE,       EO_NONE,       EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE,      EO_EQ_XYZUNK    },
+/*  1 BCD  */ { EO_NONE, EO_EQ_BCDBCD,  EO_NONE,      EO_NONE,      EO_EQ_BCDFLT,  EO_EQ_BCDINT,  EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE,      EO_EQ_XYZUNK    },
+/*  2 BOL  */ { EO_NONE, EO_NONE,       EO_EQ_BOLBOL, EO_NONE,      EO_NONE,       EO_NONE,       EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE,      EO_EQ_XYZUNK    },
+/*  3 DTE  */ { EO_NONE, EO_NONE,       EO_NONE,      EO_EQ_DTEDTE, EO_NONE,       EO_NONE,       EO_NONE,      EO_NONE,      EO_EQ_DTETSP, EO_NONE,      EO_EQ_XYZUNK    },
+/*  4 FLT  */ { EO_NONE, EO_EQ_FLTBCD,  EO_NONE,      EO_NONE,      EO_EQ_FLTFLT,  EO_EQ_FLTINT,  EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE,      EO_EQ_XYZUNK    },
+/*  5 INT  */ { EO_NONE, EO_EQ_INTBCD,  EO_NONE,      EO_NONE,      EO_EQ_INTFLT,  EO_EQ_INTINT,  EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE,      EO_EQ_XYZUNK    },
+/*  6 IVL  */ { EO_NONE, EO_NONE,       EO_NONE,      EO_NONE,      EO_NONE,       EO_NONE,       EO_EQ_IVLIVL, EO_NONE,      EO_NONE,      EO_NONE,      EO_EQ_XYZUNK    },
+/*  7 TME  */ { EO_NONE, EO_NONE,       EO_NONE,      EO_NONE,      EO_NONE,       EO_NONE,       EO_NONE,      EO_EQ_TMETME, EO_NONE,      EO_NONE,      EO_EQ_XYZUNK    },
+/*  8 TSP  */ { EO_NONE, EO_NONE,       EO_NONE,      EO_EQ_TSPDTE, EO_NONE,       EO_NONE,       EO_NONE,      EO_NONE,      EO_EQ_TSPTSP, EO_NONE,      EO_EQ_XYZUNK    },
+/*  9 VCH  */ { EO_NONE, EO_NONE,       EO_NONE,      EO_NONE,      EO_NONE,       EO_NONE,       EO_NONE,      EO_NONE,      EO_NONE,      EO_EQ_VCHVCH, EO_EQ_XYZUNK    },
+/* 10 UNK  */ { EO_NONE, EO_EQ_UNKXYZ,  EO_EQ_UNKXYZ, EO_EQ_UNKXYZ, EO_EQ_UNKXYZ,  EO_EQ_UNKXYZ,  EO_EQ_UNKXYZ, EO_EQ_UNKXYZ, EO_EQ_UNKXYZ, EO_EQ_UNKXYZ, EO_EQ_UNKXYZ    }
+};
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // MATHEMATICAL OPERATORS
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

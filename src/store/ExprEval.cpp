@@ -372,7 +372,7 @@ void ExprEval::vAddRelational(Token* pTkn)
   }
   else {
     ASSERT(pTkn->bSame("=="_Stz));
-      StrLib::vSprintCat(m_sAsmText, "  EO_EQUAL\n"_Stz);
+      StrLib::vSprintCat(m_sAsmText, "  EO_EQ_INTINT\n"_Stz);
   }
 }
 

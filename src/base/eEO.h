@@ -169,10 +169,29 @@ enum eEO : u2 // expression operators
   // relational operators
   /*  S  */ EO_LESSTHAN,         // test top < 2nd, push result
   /*  S  */ EO_LESSEQUAL,        // test top <= 2nd, push result
-  /*  S  */ EO_EQUAL,            // test top == 2nd, push result
   /*  S  */ EO_NOTEQUAL,         // test top != 2nd, push result
   /*  S  */ EO_GREATEREQUAL,     // test top >= 2nd, push result
   /*  S  */ EO_GREATERTHAN,      // test top > 2nd, push result
+
+  /*  S  */ EO_EQ_BCDBCD,        // bcd == bcd
+  /*  S  */ EO_EQ_BCDFLT,        // bcd == flt
+  /*  S  */ EO_EQ_BCDINT,        // bcd == int
+  /*  S  */ EO_EQ_BOLBOL,        // bol == bol
+  /*  S  */ EO_EQ_DTEDTE,        // dte == bcd
+  /*  S  */ EO_EQ_DTETSP,        // dte == tsp
+  /*  S  */ EO_EQ_FLTBCD,        // flt == bcd
+  /*  S  */ EO_EQ_FLTFLT,        // flt == flt
+  /*  S  */ EO_EQ_FLTINT,        // flt == int
+  /*  S  */ EO_EQ_INTBCD,        // int == bcd
+  /*  S  */ EO_EQ_INTFLT,        // int == flt
+  /*  S  */ EO_EQ_INTINT,        // int == int
+  /*  S  */ EO_EQ_IVLIVL,        // ivl == ivl
+  /*  S  */ EO_EQ_TMETME,        // tme == tme
+  /*  S  */ EO_EQ_TSPDTE,        // tsp == dte
+  /*  S  */ EO_EQ_TSPTSP,        // tsp == tsp
+  /*  S  */ EO_EQ_VCHVCH,        // vch == vch
+  /*  S  */ EO_EQ_UNKXYZ,        // unk == xyz
+  /*  S  */ EO_EQ_XYZUNK,        // xyz == unk
 
   // column pushes
   /*  S  */ EO_PUSH_COLUMN_LENGTH, // push column length
@@ -575,10 +594,29 @@ static Stz* aEO[]
   // relational operators
   /*    */ "EO_LESSTHAN"_Stz,
   /*    */ "EO_LESSEQUAL"_Stz,
-  /*    */ "EO_EQUAL"_Stz,
   /*    */ "EO_NOTEQUAL"_Stz,
   /*    */ "EO_GREATEREQUAL"_Stz,
   /*    */ "EO_GREATERTHAN"_Stz,
+
+  /*    */ "EO_EQ_BCDBCD"_Stz,
+  /*    */ "EO_EQ_BCDBOL"_Stz,
+  /*    */ "EO_EQ_BCDFLT"_Stz,
+  /*    */ "EO_EQ_BCDINT"_Stz,
+  /*    */ "EO_EQ_DTEDTE"_Stz,
+  /*    */ "EO_EQ_DTETSP"_Stz,
+  /*    */ "EO_EQ_FLTBCD"_Stz,
+  /*    */ "EO_EQ_FLTFLT"_Stz,
+  /*    */ "EO_EQ_FLTINT"_Stz,
+  /*    */ "EO_EQ_INTBCD"_Stz,
+  /*    */ "EO_EQ_INTFLT"_Stz,
+  /*    */ "EO_EQ_INTINT"_Stz,
+  /*    */ "EO_EQ_IVLIVL"_Stz,
+  /*    */ "EO_EQ_TMETME"_Stz,
+  /*    */ "EO_EQ_TSPDTE"_Stz,
+  /*    */ "EO_EQ_TSPTSP"_Stz,
+  /*    */ "EO_EQ_VCHVCH"_Stz,
+  /*    */ "EO_EQ_UNKXYZ"_Stz,
+  /*    */ "EO_EQ_XYZUNK"_Stz,
 
   // column pushes
   /*    */ "EO_PUSH_COLUMN_LENGTH"_Stz,
@@ -984,10 +1022,29 @@ static EoArg EoArgs[]
   // relational operators
   { EA_NONE,    0 },  // EO_LESSTHAN
   { EA_NONE,    0 },  // EO_LESSEQUAL
-  { EA_NONE,    0 },  // EO_EQUAL
   { EA_NONE,    0 },  // EO_NOTEQUAL
   { EA_NONE,    0 },  // EO_GREATEREQUAL
   { EA_NONE,    0 },  // EO_GREATERTHAN
+
+  { EA_NONE,    0 },  // EO_EQ_BCDBCD
+  { EA_NONE,    0 },  // EO_EQ_BCDBOL,
+  { EA_NONE,    0 },  // EO_EQ_BCDFLT
+  { EA_NONE,    0 },  // EO_EQ_BCDINT
+  { EA_NONE,    0 },  // EO_EQ_DTEDTE
+  { EA_NONE,    0 },  // EO_EQ_DTETSP
+  { EA_NONE,    0 },  // EO_EQ_FLTBCD
+  { EA_NONE,    0 },  // EO_EQ_FLTFLT
+  { EA_NONE,    0 },  // EO_EQ_FLTINT
+  { EA_NONE,    0 },  // EO_EQ_INTBCD
+  { EA_NONE,    0 },  // EO_EQ_INTFLT
+  { EA_NONE,    0 },  // EO_EQ_INTINT
+  { EA_NONE,    0 },  // EO_EQ_IVLIVL
+  { EA_NONE,    0 },  // EO_EQ_TMETME
+  { EA_NONE,    0 },  // EO_EQ_TSPDTE
+  { EA_NONE,    0 },  // EO_EQ_TSPTSP
+  { EA_NONE,    0 },  // EO_EQ_VCHVCH
+  { EA_NONE,    0 },  // EO_EQ_UNKXYZ
+  { EA_NONE,    0 },  // EO_EQ_XYZUNK
 
   // column pushes
   { EA_INT,     8 },  // EO_PUSH_COLUMN_LENGTH
