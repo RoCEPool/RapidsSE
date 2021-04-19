@@ -1387,12 +1387,16 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_DIV_XYZUNK: ArgNil(); // xyz + unk
         break;//+endCase
         
-      case EO_MODULO: ArgNil(); // modulo top int be second push result
+      case EO_MOD_INTINT: ArgNil(); // int % int
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA % iTopB;
-        dLU3(EO_MODULO,iTopA,iTopB,iRes);
+        dLU3(EO_MOD_INTINT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
+        break;//+endCase
+      case EO_MOD_UNKXYZ: ArgNil(); // unk % xyz
+        break;//+endCase
+      case EO_MOD_XYZUNK: ArgNil(); // xyz % unk
         break;//+endCase
 
       case EO_MUL_BCDBCD: ArgNil(); // bcd / bcd
