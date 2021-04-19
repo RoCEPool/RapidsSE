@@ -837,13 +837,7 @@ void Constants::vAddConstantsCpp(void)
   #else
   vAddConstant("WITH_RELEASE_VERSION"_Stz,(i8)false);
   #endif
-            
-  #ifdef WITH_SHARED_LOG
-  vAddConstant("WITH_SHARED_LOG"_Stz,(i8)true);
-  #else
-  vAddConstant("WITH_SHARED_LOG"_Stz,(i8)false);
-  #endif
-    
+                
   #ifdef WITH_SHOCO_DUPLICATES
   vAddConstant("WITH_SHOCO_DUPLICATES"_Stz,(i8)true);
   #else
