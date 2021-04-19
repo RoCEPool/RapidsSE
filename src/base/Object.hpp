@@ -19,6 +19,7 @@ namespace BASE
     bool bInspectObject(void);
     void vMemoryDump(void);
     bool bMemoryLog(void);
+    void vRunPostRecv(void);
     i8   nSizeOfObject(void);
     eEC  eValidObject(void);
     i8   iWhenAllocated(void);
