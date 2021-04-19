@@ -256,7 +256,6 @@ void AttachMap::vRecordArguments(CmdLineArgs* pCmdLineArgs)
   m_xSysArgs.m_nDummySleep      = pCmdLineArgs->m_xSysArgs.m_nDummySleep;
   m_xSysArgs.m_nDummyThreads    = pCmdLineArgs->m_xSysArgs.m_nDummyThreads;
   m_xSysArgs.m_nIndexEntries    = pCmdLineArgs->m_xSysArgs.m_nEntries;
-  m_xSysArgs.m_bLog             = pCmdLineArgs->m_xSysArgs.m_bLog;
   m_xSysArgs.m_nLvlLevels       = pCmdLineArgs->m_xSysArgs.m_nLvlLevels;
   m_xSysArgs.m_iLvlRatio        = pCmdLineArgs->m_xSysArgs.m_iLvlRatio;
   m_xSysArgs.m_nMaxLoadErrors   = pCmdLineArgs->m_xSysArgs.m_nMaxLoadErrors;

@@ -209,12 +209,7 @@ bool BASE::bTraceWith(Stz* szWith)
   if (szWith->bSame("WITH_RELEASE_VERSION"_Stz))
     return true;
 #endif
-  
-#ifdef WITH_SHARED_LOG
-  if (szWith->bSame("WITH_SHARED_LOG"_Stz))
-    return true;
-#endif
-  
+    
 #ifdef WITH_SHOCO_DUPLICATES
   if (szWith->bSame("WITH_SHOCO_DUPLICATES"_Stz))
     return true;
@@ -318,10 +313,6 @@ void BASE::vTraceWith(void)
   vTrace("  WITH_RELEASE_VERSION\n"_Stz);
 #endif
     
-#ifdef WITH_SHARED_LOG
-  vTrace("  WITH_SHARED_LOG\n"_Stz);
-#endif
-  
 #ifdef WITH_SHOCO_DUPLICATES
   vTrace("  WITH_SHOCO_DUPLICATES\n"_Stz);
 #endif
@@ -434,11 +425,6 @@ bool BASE::bTraceWithout(Stz* szWith)
     return true;
 #endif
     
-#ifndef WITH_SHARED_LOG
-  if (szWith->bSame("WITH_SHARED_LOG"_Stz))
-    return true;
-#endif
-  
 #ifndef WITH_SHOCO_DUPLICATES
   if (szWith->bSame("WITH_SHOCO_DUPLICATES"_Stz))
     return true;
@@ -540,10 +526,6 @@ void BASE::vTraceWithout(void)
   
 #ifndef WITH_RELEASE_VERSION
   vTrace("  WITH_RELEASE_VERSION\n"_Stz);
-#endif
-  
-#ifndef WITH_SHARED_LOG
-  vTrace("  WITH_SHARED_LOG\n"_Stz);
 #endif
   
 #ifndef WITH_SHOCO_DUPLICATES
