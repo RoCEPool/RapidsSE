@@ -90,7 +90,6 @@ CmdLineArgs::CmdLineArgs(void)
   m_xSysArgs.m_bJot             = false;
   m_xSysArgs.m_bKillPrev        = false;
   m_xSysArgs.m_bLock            = false;
-  m_xSysArgs.m_bLog             = false;
   m_xSysArgs.m_nLvlLevels       = C_DEF_LVL_LEVELS;
   m_xSysArgs.m_iLvlRatio        = C_DEF_LVL_RATIO;
   m_xSysArgs.m_bNoMunge         = false;
@@ -402,20 +401,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       m_xSysArgs.m_bLock = true;
       continue;
     }
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#ifdef WITH_SHARED_LOG
-    if (szArg->bSame("--log"_Stz)) {
-      m_xSysArgs.m_bLog = true;
-      continue;
-    }
-#else
-    if (szArg->bSame("--log"_Stz)) {
-      vWarn("arg --log ignored; not compiled WITH_SHARED_LOG\n"_Stz);
-      continue;
-    }
-#endif
-    
+        
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--lvlLevels"_Stz)) {
       m_xSysArgs.m_nLvlLevels = argv[++i_Arg].iToI8();
@@ -496,13 +482,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       }
       continue;
     }
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (szArg->bSame("--noLog"_Stz)) {
-      m_xSysArgs.m_bLog = false;
-      continue;
-    }
-    
+        
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--NoMunge"_Stz)) {
       m_xSysArgs.m_bNoMunge = true;

@@ -641,7 +641,6 @@ bool AM::bDeveloper(void)     { return gpAttachMap->m_xSysArgs.m_bDeveloper;    
 i8   AM::nDummyLoop(void)     { return gpAttachMap->m_xSysArgs.m_nDummyLoop;         }
 i8   AM::nDummySleep(void)    { return gpAttachMap->m_xSysArgs.m_nDummySleep;        }
 i8   AM::nDummyThreads(void)  { return gpAttachMap->m_xSysArgs.m_nDummyThreads;      }
-bool AM::bLog(void)           { return gpAttachMap->m_xSysArgs.m_bLog;               }
 i8   AM::nMaxLoadErrors(void) { return gpAttachMap->m_xSysArgs.m_nMaxLoadErrors;     }
 i8   AM::nMaxReadyLP(void)    { return gpAttachMap->m_xSysArgs.m_nMaxReadyLP;        }
 bool AM::bMunged(void)        { return gpAttachMap->m_xSysArgs.m_bMunged;            }

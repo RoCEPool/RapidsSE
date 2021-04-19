@@ -288,7 +288,6 @@ namespace OBLIQUE
     static i8   nDummySleep(void);
     static i8   nDummyThreads(void);
     static Stz* szInitial(void);
-    static bool bLog(void);
     static i8   nMaxLoadErrors(void);
     static i8   nMaxReadyLP(void);
     static bool bMunged(void);
