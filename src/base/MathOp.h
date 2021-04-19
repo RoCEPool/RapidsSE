@@ -222,6 +222,17 @@ static eEO eMathOp_AndCode[DM_ENUMS][DM_ENUMS] = {
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// ISNULL
+
+static eDM eMathOp_IsNullResult[DM_ENUMS] =
+    // NONE    BOL     BCD      DTE       FLT      INT      IVL      TME      TSP       VCH      UNK
+    { DM_NONE, DM_BOL, DM_BOL,  DM_BOL,   DM_BOL,  DM_BOL,  DM_BOL,  DM_BOL,  DM_BOL,   DM_BOL,  DM_BOL };
+
+static eEO eMathOp_IsNullCode[DM_ENUMS][DM_ENUMS] =
+    // NONE     BOL        BCD         DTE         FLT         INT         IVL        TME        TSP         VCH        UNK
+    { EO_NONE,  EO_ISNULL, EO_ISNULL,  EO_ISNULL,  EO_ISNULL,  EO_ISNULL,  EO_ISNULL, EO_ISNULL, EO_ISNULL,  EO_ISNULL, EO_ISNULL    };
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // NOT
 
 static eDM eMathOp_NotResult[DM_ENUMS] =
