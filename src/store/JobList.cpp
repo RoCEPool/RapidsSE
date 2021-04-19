@@ -207,31 +207,6 @@ bool JobList::bIsLocked(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* log the job list                                                           */
-/*----------------------------------------------------------------------------*/
-void JobList::vLogJobs(void)
-{
-  
-  i8 iLevel = 0;
-  
-  vGrabLock();
-  
-  if (0 == m_pJobsSkipList->nItems()) {
-    vDropLock();
-    return;
-  }
-  
-  SkipNode* pNode = m_pJobsSkipList->pFirst(iLevel);
-  
-  while (pNode) {
-    Job* pJob = _pJob(pNode->m_pObject);
-    
-    pNode = m_pJobsSkipList->pNext(pNode, iLevel);
-  }
-  vDropLock();
-}
-
-/*----------------------------------------------------------------------------*/
 /* remove a job from jobs skip list                                           */
 /*----------------------------------------------------------------------------*/
 bool JobList::bRemoveJob(Job* pJob)

@@ -81,12 +81,6 @@ void Step::vTaskAcksStore(void)
 
   RASSERT(bIsLocked());
   
-  Job* pJob = m_pJob;
-  
-  if (pJob && pJob->m_xReqTuple.m_iDetail) {
-     AM::pOriginatingJobs()->vLogJobs();
-  }
-  
   vAcksRmg(nAcksRequired);
   
   EXIT();

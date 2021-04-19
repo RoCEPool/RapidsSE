@@ -140,11 +140,7 @@ void Step::vJobAddDemon(void)
   AM::vJob_AddDemon(pJob);
   
   //vTrace("%p ID %lld added to originator\n"_Stz, pJob, pJob->iJobId());
-  
-  if (pJob->m_xReqTuple.m_iDetail) {
-    AM::pDemonJobs()->vLogJobs();
-  }
-  
+    
   EXIT();
 }
 
@@ -160,11 +156,7 @@ void Step::vJobAddLocal(void)
   AM::vJob_AddLocal(pJob);
   
   //vTrace("%p ID %lld added to originator\n"_Stz, pJob, pJob->iJobId());
-  
-  if (pJob->m_xReqTuple.m_iDetail) {
-    AM::pLocalJobs()->vLogJobs();
-  }
-  
+    
   EXIT();
 }
 
@@ -186,11 +178,7 @@ void Step::vJobAddOriginator(void)
   AM::vJob_AddOriginating(pJob);
 
   //vTrace("%p ID %lld added to originator\n"_Stz, pJob, pJob->iJobId());
-  
-  if (pJob->m_xReqTuple.m_iDetail) {
-    AM::pOriginatingJobs()->vLogJobs();
-  }
-    
+      
   EXIT();
 }
 
@@ -210,11 +198,7 @@ void Step::vJobAddParticipant(void)
   AM::vJob_AddParticipating(pJob);
 
   //vTrace("%p ID %lld added to participant\n"_Stz, pJob, pJob->iJobId());
-  
-  if (pJob->m_xReqTuple.m_iDetail) {
-    AM::pParticipatingJobs()->vLogJobs();
-  }
-  
+    
   EXIT();
 }
 
@@ -956,11 +940,7 @@ void Step::vJobRemoveLocal(void)
     
     bRemove = AM::bJob_RemoveLocal(pJob,true);
   }
-  
-  if (pJob->m_xReqTuple.m_iDetail) {
-    AM::pLocalJobs()->vLogJobs();
-  }
-  
+    
   EXIT();
 }
 
@@ -982,10 +962,6 @@ void Step::vJobRemoveOriginator(void)
     vTrace("------------------------------------\n"_Stz);
     
     bRemove = AM::bJob_RemoveOriginating(pJob,true);
-  }
-  
-  if (pJob->m_xReqTuple.m_iDetail) {
-    AM::pOriginatingJobs()->vLogJobs();
   }
   
   EXIT();
@@ -1010,12 +986,7 @@ void Step::vJobRemoveParticipant(void)
     
     bRemove = AM::bJob_RemoveParticipating(pJob,true);
   }
-  
-  if (pJob->m_xReqTuple.m_iDetail) {
-
-    AM::pParticipatingJobs()->vLogJobs();
-  }
-    
+     
   EXIT();
 }
 
