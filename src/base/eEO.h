@@ -58,7 +58,9 @@ enum eEO : u2 // expression operators
   /*  S  */ EO_DIV_XYZUNK,           // xyz / unk
   
   // modulo
-  /*  S  */ EO_MODULO,               // modulo top int be second push result
+  /*  S  */ EO_MOD_INTINT,          // int % int
+  /*  S  */ EO_MOD_UNKXYZ,          // unk % xyz
+  /*  S  */ EO_MOD_XYZUNK,          // xyz % unk
 
   // multiply
   /*  S  */ EO_MUL_BCDBCD,           // bcd * bcd
@@ -442,9 +444,11 @@ static Stz* aEO[]
   /*    */ "EO_DIV_TSPIVL"_Stz,
   /*    */ "EO_DIV_UNKXYZ"_Stz,
   /*    */ "EO_DIV_XYZUNK"_Stz,
-    
+
   // modulo
-  /*    */ "EO_MODULO"_Stz,
+  /*    */ "EO_MOD_INTINT"_Stz,
+  /*    */ "EO_MOD_UNKXYZ"_Stz,
+  /*    */ "EO_MOD_XYZUNK"_Stz,
 
   // multiply
   /*    */ "EO_MUL_BCDBCD"_Stz,
@@ -831,9 +835,11 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_DIV_TSPIVL
   { EA_NONE,    0 },  // EO_DIV_UNKXYZ
   { EA_NONE,    0 },  // EO_DIV_XYZUNK
-  
+
   // modulo
-  { EA_NONE,    0 },  // EO_MODULO
+  { EA_NONE,    0 },  // EO_MOD_INTINT
+  { EA_NONE,    0 },  // EO_MOD_UNKXYZ
+  { EA_NONE,    0 },  // EO_MOD_XYZUNK
 
   // multiply
   { EA_NONE,    0 },  // EO_MUL_BCDBCD
