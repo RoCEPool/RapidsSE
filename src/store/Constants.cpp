@@ -101,7 +101,6 @@ void Constants::vAddConstantsArgs(void)
   Constants::vAddConstant("args.hugePages"_Stz,         gxCmdLineArgs.m_xSysArgs.m_bHugePages);
   Constants::vAddConstant("args.killPrev"_Stz,          gxCmdLineArgs.m_xSysArgs.m_bKillPrev);
   Constants::vAddConstant("args.lock"_Stz,              gxCmdLineArgs.m_xSysArgs.m_bLock);
-  Constants::vAddConstant("args.log"_Stz,               gxCmdLineArgs.m_xSysArgs.m_bLog);
   Constants::vAddConstant("args.maxLoadErrors"_Stz,     gxCmdLineArgs.m_xSysArgs.m_nMaxLoadErrors);
   Constants::vAddConstant("args.maxReadyLP"_Stz,        gxCmdLineArgs.m_xSysArgs.m_nMaxReadyLP);
   Constants::vAddConstant("args.metadata"_Stz,          gxCmdLineArgs.m_xSysArgs.m_bMetadata);
