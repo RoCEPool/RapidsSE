@@ -176,14 +176,14 @@ void Backend::vPrintPlanGraph(PlanNode* pPlanRoot) {
 /*----------------------------------------------------------------------------*/
 /* append project Op to the pipeline                                          */
 /*----------------------------------------------------------------------------*/
-void Backend::vAppendExpr(Backend* pBackend, QueryNode* pNode) {
+void Backend::vAppendExpr(Backend* pBackend, QueryNode* pExprNode, Stz* szAliasName) {
   _static_
 
   String* sPipeline = pBackend->m_sPipeline;
 
   // get the expr node
-  QueryNode *pExprNode = static_cast<QueryNode *>(GraphNav::pFindProperty("expr"_Stz, pNode));
-  ASSERT(pExprNode);
+  //QueryNode *pExprNode = static_cast<QueryNode *>(GraphNav::pFindProperty("expr"_Stz, pNode));
+  //ASSERT(pExprNode);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // type
@@ -193,28 +193,31 @@ void Backend::vAppendExpr(Backend* pBackend, QueryNode* pNode) {
       ""_Stz,
       aCT[eType]);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // alias
-  Stz *szAliasName = ProjectedColumn::szAliasName(pNode);
-
   if (szAliasName) {
     sPipeline->vCatSprint(
         " as %s"
         ""_Stz,
         szAliasName);
   }
-  else if (ColumnRef::bIsOfType(pExprNode)) {
 
-    QueryNode *pColumnRef = static_cast<QueryNode *>(pExprNode);
-    s256 sColumnName;
-    sColumnName = ColumnRef::szColumn(pColumnRef);
-    StrLib::vToLower(sColumnName.azChar());
-
-    sPipeline->vCatSprint(
-        " as %s"
-        ""_Stz,
-        sColumnName.szStz());
-  }
+//  if (szAliasName) {
+//    sPipeline->vCatSprint(
+//        " as %s"
+//        ""_Stz,
+//        szAliasName);
+//  }
+//  else if (ColumnRef::bIsOfType(pExprNode)) {
+//
+//    QueryNode *pColumnRef = static_cast<QueryNode *>(pExprNode);
+//    s256 sColumnName;
+//    sColumnName = ColumnRef::szColumn(pColumnRef);
+//    StrLib::vToLower(sColumnName.azChar());
+//
+//    sPipeline->vCatSprint(
+//        " as %s"
+//        ""_Stz,
+//        sColumnName.szStz());
+//  }
 
   // Walk the expr node plan graph
   GraphNav::bGlobalWalkBottomUp(pExprNode, false, true, vVisitorExpr, (void *) pBackend);
@@ -262,7 +265,24 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
       ASSERT(pProjectedColumn);
       ASSERT(ProjectedColumn::bIsOfType(pProjectedColumn));
 
-      vAppendExpr(pBackend, pProjectedColumn);
+      // get the expr node
+      QueryNode *pExprNode = static_cast<QueryNode *>(GraphNav::pFindProperty("expr"_Stz, pProjectedColumn));
+      ASSERT(pExprNode);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // alias
+      Stz *szAliasName = ""_Stz;
+      szAliasName = ProjectedColumn::szAliasName(pProjectedColumn);
+
+      if ( ! szAliasName) {
+        if (ColumnRef::bIsOfType(pExprNode)) {
+          QueryNode *pColumnRef = static_cast<QueryNode *>(pExprNode);
+          szAliasName = ColumnRef::szColumn(pColumnRef);
+          StrLib::vToLower(szAliasName->azChar());
+        }
+      }
+
+      vAppendExpr(pBackend, pExprNode, szAliasName);
     }
     delete pIter;
 
@@ -289,7 +309,7 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // columnRef
-        vAppendExpr(pBackend, pGroupByExpr);
+        vAppendExpr(pBackend, pGroupByExpr, nullptr);
       }
       delete pGroupByIter;
     }
@@ -388,7 +408,22 @@ void Backend::vAppendProjectOp(Backend* pBackend, QueryNode* pNode)
       ASSERT(pProjectedColumn);
       ASSERT(ProjectedColumn::bIsOfType(pProjectedColumn));
 
-      vAppendExpr(pBackend, pProjectedColumn);
+      // get the expr node
+      QueryNode *pExprNode = static_cast<QueryNode *>(GraphNav::pFindProperty("expr"_Stz, pProjectedColumn));
+      ASSERT(pExprNode);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // alias
+      Stz *szAliasName = ProjectedColumn::szAliasName(pProjectedColumn);
+      if ( ! szAliasName) {
+        if (ColumnRef::bIsOfType(pExprNode)) {
+          QueryNode *pColumnRef = static_cast<QueryNode *>(pExprNode);
+          szAliasName = ColumnRef::szColumn(pColumnRef);
+          StrLib::vToLower(szAliasName->azChar());
+        }
+      }
+
+      vAppendExpr(pBackend, pExprNode, szAliasName);
     }
     delete pIter;
 
