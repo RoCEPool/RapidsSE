@@ -5,6 +5,13 @@
 #include "BASE.h"
 
 #include <execinfo.h> // backtrace etc
+#include <cxxabi.h>
+
+#ifdef WITH_LINUX
+  #include <unistd.h>
+  #include <sys/types.h>
+  #include <sys/wait.h>
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* debug point                                                                */
@@ -19,16 +26,102 @@ void BASE::vDebugPoint(void)
 /*----------------------------------------------------------------------------*/
 void BASE::vThreadCallStackDump(void)
 {
+//  vThreadCallStackDump_Mangled();
+  vThreadCallStackDump_Demangled();
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump current thread's call stack. Preserve the mangling                    */
+/*----------------------------------------------------------------------------*/
+void BASE::vThreadCallStackDump_Mangled(void)
+{
   // get void*'s for all frames on the stack
   void* aaFramePtr[C_STACK_BACKTRACE];
   int nPtrs = backtrace(aaFramePtr,C_STACK_BACKTRACE);
-  
+
   vTrace("\n"_Stz);
   vTrace("Call TypedStack Backtrace\n"_Stz);
   vTrace("--------------------\n"_Stz);
 
   // print out all the frames to stderr
   backtrace_symbols_fd(aaFramePtr,nPtrs,STDERR_FILENO);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump current thread's call stack and demangle it                           */
+/*----------------------------------------------------------------------------*/
+void BASE::vThreadCallStackDump_Demangled(void)
+{
+  // get void*'s for all frames on the stack
+  void* aaFramePtr[C_STACK_BACKTRACE];
+  int nPtrs = backtrace(aaFramePtr,C_STACK_BACKTRACE);
+
+  vTrace("\n"_Stz);
+  vTrace("Call TypedStack Backtrace\n"_Stz);
+  vTrace("--------------------\n"_Stz);
+
+  char** acSymbolList = backtrace_symbols(aaFramePtr,nPtrs);
+
+  for (i8 i=0; i<nPtrs; i++) {
+
+    char* p = acSymbolList[i];
+    //vTrace("\nLine: %s\n"_Stz, p);
+
+    i8    iFrame;
+    s256  sModule;
+    void* pAddr;
+    s256  sSymbol;
+    i8    iOffset;
+
+#ifdef WITH_APPLE
+    i8 iConv = sscanf(p, "%lld %s %p %s + %lld", &iFrame, sModule.azChar(), &pAddr, sSymbol.azChar(), &iOffset);
+
+    if (iConv == 5) {
+#endif
+#ifdef WITH_LINUX
+    iFrame=i;
+    s256 sSymbolAndOffset;
+
+    // Sometimes there is no symbol printed, so we need to handle that separately.
+    i8 iConv = sscanf(p, "%[^(](%[^)]) [%p]", sModule.azChar(), sSymbolAndOffset.azChar(), &pAddr);
+
+    if (iConv == 3) {
+
+      iConv = sscanf(sSymbolAndOffset.azChar(), "%[^+]+%llx", sSymbol.azChar(), &iOffset);
+      if (iConv != 2) {
+
+        sSymbol = "????????"_Stz;
+        // try to extract out the offset only
+        iConv = sscanf(sSymbolAndOffset.azChar(), "+%llx", &iOffset);
+
+        if (iConv != 1) {
+          vTrace("Frame %2lld:  %s\n"_Stz, i, acSymbolList[i]);
+          continue;
+        }
+      }
+
+#endif
+
+      int status = 0;
+      s256 sDemangledSymbol;
+      size_t iSymbolSize = sDemangledSymbol.nSpace();
+      char* ret = abi::__cxa_demangle(sSymbol.azChar(), sDemangledSymbol.azChar(), &iSymbolSize, &status);
+
+      if (status == 0) {
+        sDemangledSymbol.vCopy((Stz*)ret); // use possibly realloc()-ed string
+        vTrace("Frame %2lld:  %-26s  %018p  %s  (+%lld)\n"_Stz, iFrame, sModule.azChar(), pAddr, sDemangledSymbol.azChar(), iOffset);
+      }
+      else {
+        // Demangling failed.
+        vTrace("Frame %2lld:  %-26s  %018p  %s  (+%lld)\n"_Stz, iFrame, sModule.azChar(), pAddr, sSymbol.azChar(), iOffset);
+      }
+
+    } else {
+      vTrace( "Frame %2lld:  %s\n"_Stz, i, acSymbolList[i]);
+    }
+  }
+
+  free(acSymbolList);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -130,7 +130,6 @@ extern d8 C_D8_MID;
 #include "Atomic.hpp"
 #include "NextGid.hpp"
 #include "Objects.hpp"
-#include "Loggable.hpp"
 
 #include "SP.hpp"
 #include "SPmedium.hpp"
@@ -377,8 +376,6 @@ extern d8 C_D8_MID;
 
 #include "CmdHelper.hpp"
 
-#include "LogEntry.hpp"
-#include "Log.hpp"
 
 #include "ClassPlaceHolder.hpp"
 

@@ -25,7 +25,7 @@ namespace STORE
     
     TablePtnVec*  m_pTablePtnVec; // table partition vector
 
-    std::vector<char*> m_aObjParts;
+    std::vector<Object*> m_aObjParts;
 
     // must be last
     Footer m_xFooter;
@@ -87,10 +87,10 @@ namespace STORE
 
 
     i8   iPrepareObjParts(void);
-    std::vector<char*> aObjParts(void) { return m_aObjParts;};
+    std::vector<Object*> aObjParts(void) { return m_aObjParts;};
     i8   iObjParts(void) { return m_aObjParts.size();};
 
-    i8   iBuildArrayObjParts(char* pObj);
+    i8   iBuildArrayObjParts(Object* pObj);
     i8   iReassembleObj(void);
    
   private:

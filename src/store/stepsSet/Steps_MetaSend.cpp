@@ -40,18 +40,20 @@ void Step::vMetaSendGetParts(void)
 
   // call get parts code
   pTable->iPrepareObjParts();
-  std::vector<char*>aParts = pTable->aObjParts();
+  std::vector<Object*>aParts = pTable->aObjParts();
 
   // put results
-  // push number of parts
-  m_pDataStack->vPushInt(pTable->aObjParts().size());
+
 
   // foreach part, push part
   for (auto it = aParts.begin();  it != aParts.end(); ++it) {
-    char* pChar = *it;
-    m_pDataStack->vPushPtr((Object*)pChar);
+    Object* pObject = *it;
+    m_pDataStack->vPushPtr((Object*)pObject);
   }
 
+  // push number of object parts
+  m_pDataStack->vPushInt(pTable->aObjParts().size());
+  
   EXIT();
 }
 

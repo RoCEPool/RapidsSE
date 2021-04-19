@@ -66,9 +66,6 @@ namespace BASE {
 
   class Lock;
   class Locks;
-  class Log;
-  class LogEntry;
-  class Loggable;
 
   class MasterLock;
   class Mutex;
@@ -466,17 +463,7 @@ namespace OBLIQUE
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vLog(TokenVec* pTknVec);
-    static void vLogAll(void);
-    static void vLogArguments(void);
-    static void vLogHow(i8 iRequestId, i8 iDetail);
-  
-    static void vLogFyi(Stz* szFormat, ...);
-    static void vLogText(i8 iId, Stz* szText);
-  
-    static void vLogDdl(eSL, Job*       pJob, eDA eDdlAct, Stz* szFormat, ...);
-    static void vLogJob(eSL, Job*       pJob, eJA eJobAct, Stz* szFormat, ...);
-    static void vLogLck(eSL, Lock*      pLck, eLA eLckAct, Stz* szFormat, ...);
-    static void vLogLog(eSL, Log*       pLog, eGA eLogAct, Stz* szFormat, ...);
+    
     static void vLogOpr(eSL, Op*        pOpr, eOA eOpAct,  Stz* szFormat, ...);
     static void vLogMgt(eSL, Job*       pJob, eMA eMgtAct, Stz* szFormat, ...);
     static void vLogPrm(eSL, SePrompt*  pPrm, ePA ePrmAct, Stz* szFormat, ...);
@@ -486,16 +473,7 @@ namespace OBLIQUE
     static void vLogSsn(eSL, Session*   pSsn, eAA eApiAct, Stz* szFormat, ...);
     static void vLogSys(eSL, AttachMap* pSys, eYA eSysAct, Stz* szFormat, ...);
     static void vLogThd(eSL, Thread*    pThd, eHA eThdAct, Stz* szFormat, ...);
-    static void vLogTsk(eSL, Task*      pTsk, eTA eTskAct, Stz* szFormat, ...);
-    static void vLogTxn(eSL, Tx*        pTxn, eXA eTxnAct, Stz* szFormat, ...);
-  
-    static void vLogOpenByApi(void);
-    static void vLogOpenBySE(bool bStarting);
-    static void vLogWriteCsv(bool bShortForm);
-    static bool bLogEntryExists(i8 i_Entry);
-    static i8   iLogEntryPrev(i8 i_Entry);
-    static void vLogEntrySprint(s4K& sString, i8 i_Entry);
-  
+    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vNapMsec(i8 nMilliSeconds, eCN eCallingClass);
     static void vNapUsec(i8 nMicroSeconds, eCN eCallingClass);

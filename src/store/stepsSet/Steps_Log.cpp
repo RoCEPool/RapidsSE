@@ -35,8 +35,6 @@ void Step::vLogDump(void)
 {
   ENTRY();
   
-  AM::vLogWriteCsv(false);
-  
   EXIT();
 }
 
@@ -68,11 +66,6 @@ void Step::vLogMarkEntry(void)
   
   m_pDataStack->vPopStr(sWordNm,__func__);
   
-  Job* pJob = m_pJob;
-  AM::vLogJob(SL_INF,pJob,JA_JOB_ENTER,
-              "%s"_Stz, //!format-LogJob
-              sWordNm.szStz());
-
   EXIT();
 }
 
@@ -87,12 +80,6 @@ void Step::vLogMarkExit(void)
   
   m_pDataStack->vPopStr(sWordNm,__func__);
   
-  Job* pJob = m_pJob;
-
-  AM::vLogJob(SL_INF,pJob,JA_JOB_EXIT,
-              "%s"_Stz, //!format-LogJob
-              sWordNm.szStz());
-
   EXIT();
 }
 
@@ -104,13 +91,7 @@ void Step::vLogMarkPhase(void)
   ENTRY();
   
   i8 i_Phase = m_pDataStack->iPopInt(__func__);
-  
-  Job* pJob = m_pJob;
-  
-  AM::vLogJob(SL_INF,pJob,JA_JOB_PHASE,
-              "%s"_Stz,
-              aJP[i_Phase]);
-  
+    
   EXIT();
 }
 
@@ -161,11 +142,6 @@ void Step::vLogJobSeed(void)
   
   i8 i_Seed = m_pDataStack->iPopInt(__func__);
   
-  Job* pJob = m_pJob;
-  AM::vLogJob(SL_INF,pJob,JA_JOB_SEED,
-              "%s"_Stz, //!format-LogJob
-              aSS[i_Seed]);
-
   EXIT();
 }
 

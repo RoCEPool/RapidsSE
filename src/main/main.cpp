@@ -52,8 +52,11 @@ int main(int argc, char* argv[])
 //  printf("sizeof(StreamDef) %lld\n",(i8)sizeof(StreamDef));
 //  printf("sizeof(IndexDef) %lld\n",(i8)sizeof(IndexDef));
 //  printf("sizeof(BucketMap) %lld\n",(i8)sizeof(BucketMap));
-  printf("sizeof(DataBuffer) %lld\n",(i8)sizeof(DataBuffer));
-  printf("sizeof(Lock) %lld\n",(i8)sizeof(Lock));
+//  printf("sizeof(Object) %lld\n",(i8)sizeof(Object));
+//  printf("sizeof(s32) %lld\n",(i8)sizeof(s32));
+//  printf("sizeof(DataBuffer) %lld\n",(i8)sizeof(DataBuffer));
+//  printf("sizeof(Lock) %lld\n",(i8)sizeof(Lock));
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   TlsKeys::vInit();

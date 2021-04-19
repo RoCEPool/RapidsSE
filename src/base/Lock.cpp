@@ -49,7 +49,7 @@ void Lock::operator delete(void*)
 /* constructor (for non-focal case)                                           */
 /*----------------------------------------------------------------------------*/
 Lock::Lock(Object* pObjectLocked)
-: Loggable(CN_LOCK)
+: Object(CN_LOCK)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
     
@@ -248,7 +248,7 @@ i8 Lock::iLockId(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
-  return m_iObjectId;
+  return 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -364,34 +364,20 @@ void Lock::vGrabRead(void)
   Timer oTimer;
   oTimer.vStart();
   
-  bool bReported = false;
   while (! Lock::iLockGrabRead(&m_uLockWord) ) {
 
-    if (! m_pObjectLocked || CN_LOG == m_pObjectLocked->eGetClassNo())
+    if (! m_pObjectLocked)
       continue;
     
     oTimer.vUpdate();
-    if (oTimer.iMilliseconds() < 100 || bReported)
+    if (oTimer.iMilliseconds() < 100 )
       continue;
     
-    bReported = true;
-    AM::vLogLck(SL_INF,this,LA_LCK_READ_UNABLE,
-                "Unable to grab read lock %p %s %p"_Stz, //!format-LogLck
-                this,
-                aCN[eClassLocked()],
-                 m_uLockWord);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // read lock has been acquired
 
-  if (bReported) {
-    AM::vLogLck(SL_INF,this,LA_LCK_READ_ABLE,
-               "Able to grab read lock %p %s %p"_Stz, //!format-LogLck
-                this,
-                aCN[eClassLocked()],
-                m_uLockWord);
-  }
   
   vAssertRead();
 }
@@ -514,34 +500,19 @@ void Lock::vGrabWrite(void)
   Timer oTimer;
   oTimer.vStart();
   
-  bool bReported = false;
   while (! Lock::iLockGrabWrite(&m_uLockWord)) {
 
-    if (! m_pObjectLocked || CN_LOG == m_pObjectLocked->eGetClassNo())
+    if (! m_pObjectLocked )
       continue;
     
     oTimer.vUpdate();
-    if (oTimer.iMilliseconds() < 100 || bReported)
+    if (oTimer.iMilliseconds() < 100)
       continue;
     
-    bReported = true;
-    AM::vLogLck(SL_INF,this,LA_LCK_WRITE_UNABLE,
-                "Unable to grab write lock %p %s %p"_Stz, //!format-LogLck
-                this,
-                aCN[eClassLocked()],
-                m_uLockWord);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // write lock has been acquired
-
-  if (bReported) {
-    AM::vLogLck(SL_INF,this,LA_LCK_WRITE_ABLE,
-               "Able to grab write lock %p %s %p"_Stz, //!format-LogLck
-                       this,
-                       aCN[eClassLocked()],
-                       m_uLockWord);
-  }
 
   vAssertWrite();
 }
@@ -589,10 +560,7 @@ void Lock::vLockTrace(eLS eLockStyle)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   UNUSED(eLockStyle);
-  
-  if (C_DONT_LOG == m_iLogCtl)
-    return;
-  
+    
 //  if (MY::pOp())
 //    printf("%s %s OP\n",
 //           aLK[m_eLockKind]->azChar(),

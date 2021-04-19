@@ -96,8 +96,6 @@
 #include "TagConstants.h"
 
 
-#include "LogEntry.hpp"
-#include "Log.hpp"
 #include "LogicUnit.hpp"
 
 #include "Pipeline.hpp"
@@ -127,7 +125,6 @@ extern BufferPool*   gpBufferPool;
 extern File*         gpTraceFile;
 extern Header*       gaSeShmRegion;
 extern Index*        gpReadApiIndex;
-extern Log*          gpLog;
 
 extern SizeHeap      gxaSizeHeap[];
 
@@ -699,7 +696,7 @@ i8   AM::nIndexEntries(void)  { return gpAttachMap->m_xSysArgs.m_nIndexEntries; 
 JobList* AM::pLocalJobs(void) {
   return gpAttachMap->m_pJobs->m_pLocalJobs;                                }
 Locks* AM::pLocks(void) { return & gpAttachMap->m_oLocks;   }
-bool AM::bLogging(void)       { return gpLog ? true : false;                  }
+bool AM::bLogging(void)       { return false;                  }
 i8   AM::iNextEpoch(void)     { return ++ gpAttachMap->m_iEpoch;              }
 Stz* AM::szNodeNm(void)       {
   return gpAttachMap->m_pGrid->pThisNode()->szNodeNm();  }
@@ -974,9 +971,6 @@ Task* AM::pExecutingTask(Job* pJob) {
 bool AM::bJobIsForeign(i8 iJobId) {
   bool bForeign = Job::bIsForeign(iJobId);
   return bForeign;
-}
-void AM::vLogArguments(void) {
-  gxCmdLineArgs.vLog();
 }
 
 i8 AM::nLvlLevels(void) {
@@ -1281,7 +1275,7 @@ Crv* AM::aCrv(DataBuffer* pDataBuffer, i8 iItem) {
 }
 
 void AM::vWriteLog(void) {
-  Log::vWriteCsv(false);
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1518,151 +1512,6 @@ void AM::vWriteTrace_vargs(File* pFile, eYA eSysAct, Stz* aFormat, va_list xArgs
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add a info log entry                                                       */
-/*----------------------------------------------------------------------------*/
-void AM::vLogAll(void)
-{
-#ifdef WITH_SHARED_LOG
-//  if (! AM::bLogging())
-//    return;
-//
-//  gpLog->vMarkAll(true);
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* show how a request was run                                                 */
-/*----------------------------------------------------------------------------*/
-void AM::vLogHow(i8 , i8 )
-{
-#ifdef WITH_SHARED_LOG
-//  if (! AM::bLogging())
-//    return;
-//
-//  gpLog->vHow(iRequestId,iDetail);
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* add a info log entry                                                       */
-/*----------------------------------------------------------------------------*/
-void AM::vLogFyi(Stz* , ...)
-{
-#ifdef WITH_SHARED_LOG
-//  if (! AM::bLogging())
-//    return;
-//
-//  va_list xArgs;
-//
-//  va_start(xArgs,szFormat);
-//
-//  i8 i_Entry = gpLog->iEntryFyi(CN_NONE,szFormat,xArgs);
-//
-//  va_end(xArgs);
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* add a ddl log entry                                                        */
-/*----------------------------------------------------------------------------*/
-void AM::vLogDdl(eSL , Job* , eDA , Stz* , ...)
-{
-#ifdef WITH_SHARED_LOG
-//  if (! AM::bLogging())
-//    return;
-//
-//  if (! gpLog->bIsLoggable(pJob))
-//    return;
-//
-//  va_list xVarArgs;
-//
-//  va_start(xVarArgs,szFormat);
-//
-//  i8 i_Entry = gpLog->iEntryDdl(eSeverity,pJob,eDdlAct,
-//                                szFormat,xVarArgs);
-//
-//  va_end(xVarArgs);
-//
-//  pJob->m_i_Log = i_Entry;
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* add a job log entry                                                        */
-/*----------------------------------------------------------------------------*/
-void AM::vLogJob(eSL , Job* , eJA , Stz* , ...)
-{
-#ifdef WITH_SHARED_LOG
-//  if (! AM::bLogging())
-//    return;
-//
-//  if (! gpLog->bIsLoggable(pJob))
-//    return;
-//
-//  va_list xVarArgs;
-//
-//  va_start(xVarArgs,szFormat);
-//
-//  i8 i_Entry = gpLog->iEntryJob(eSeverity,pJob,eJobAct,
-//                                szFormat,xVarArgs);
-//
-//  va_end(xVarArgs);
-//
-//  pJob->m_i_Log = i_Entry;
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* add a lock log entry                                                       */
-/*----------------------------------------------------------------------------*/
-void AM::vLogLck(eSL , Lock* , eLA , Stz* , ...)
-{
-#ifdef WITH_SHARED_LOG
-//  if (! AM::bLogging())
-//    return;
-//
-//  if (! gpLog->bIsLoggable(pLock))
-//    return;
-//
-//  va_list xVarArgs;
-//
-//  va_start(xVarArgs,szFormat);
-//
-//  i8 i_Entry = gpLog->iEntryLck(eSeverity,pLock,eLckAct,
-//                                szFormat,xVarArgs);
-//
-//  va_end(xVarArgs);
-//
-//  pLock->m_i_Log = i_Entry;
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* add a log log entry                                                        */
-/*----------------------------------------------------------------------------*/
-void AM::vLogLog(eSL , Log* , eGA , Stz* , ...)
-{
-#ifdef WITH_SHARED_LOG
-//  if (! AM::bLogging())
-//    return;
-//
-//  if (! gpLog->bIsLoggable(pLog))
-//    return;
-//
-//  va_list xVarArgs;
-//
-//  va_start(xVarArgs,szFormat);
-//
-//  i8 i_Entry = gpLog->iEntryLog(eSeverity,pLog,eLogAct,
-//                                szFormat,xVarArgs);
-//
-//  va_end(xVarArgs);
-//
-//  pLog->m_i_Log = i_Entry;
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
 /* add a management log entry                                                 */
 /*----------------------------------------------------------------------------*/
 void AM::vLogMgt(eSL , Job* , eMA , Stz* , ...)
@@ -1888,55 +1737,6 @@ void AM::vLogThd(eSL , Thread* , eHA , Stz* , ...)
 #endif
 }
 
-/*----------------------------------------------------------------------------*/
-/* add a rask log entry                                                       */
-/*----------------------------------------------------------------------------*/
-void AM::vLogTsk(eSL , Task* , eTA , Stz* , ...)
-{
-#ifdef WITH_SHARED_LOG
-//  if (! AM::bLogging())
-//    return;
-//
-//  if (! gpLog->bIsLoggable(pTask))
-//    return;
-//
-//  va_list xVarArgs;
-//
-//  va_start(xVarArgs,szFormat);
-//
-//  i8 i_Entry = gpLog->iEntryTsk(eSeverity,pTask,eTskAct,
-//                                szFormat,xVarArgs);
-//
-//  va_end(xVarArgs);
-//
-//  pTask->m_i_Log = i_Entry;
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* add a transaction log entry                                                */
-/*----------------------------------------------------------------------------*/
-void AM::vLogTxn(eSL , Tx* , eXA , Stz* , ...)
-{
-#ifdef WITH_SHARED_LOG
-//  if (! AM::bLogging())
-//    return;
-//  
-//  if (! gpLog->bIsLoggable(pTxn))
-//    return;
-//
-//  va_list xVarArgs;
-//  
-//  va_start(xVarArgs,szFormat);
-//  
-//  i8 i_Entry = gpLog->iEntryTxn(eSeverity,pTxn,eTxnAct,
-//                                szFormat,xVarArgs);
-//
-//  va_end(xVarArgs);
-//  
-//  pTxn->m_i_Log = i_Entry;
-#endif
-}
 
 
 /*----------------------------------------------------------------------------*/
@@ -1965,18 +1765,12 @@ void AM::vNapMsec(i8 nMilliSeconds, eCN eCallingClass)
   pStats->Thread.m_iaSleeps[eCallingClass]++;
   pStats->Thread.m_iaDuration[eCallingClass] += nMilliSeconds * C_1K;
 #endif
-  
-  AM::vLogFyi("%s naps for %lldms"_Stz, //!format-LogFyi
-              aCN[eCallingClass],nMilliSeconds);
-  
+    
   i8 rCode = nanosleep(&xReq,&xRem);
   
   if (rCode && errno != EINTR) {
     vWarn("AM::vNap error; errno=%lld\n"_Stz,errno);
   }
-  
-  AM::vLogFyi("%s woken from nap"_Stz, //!format-LogFyi
-              aCN[eCallingClass]);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2002,18 +1796,12 @@ void AM::vNapUsec(i8 nMicroSeconds, eCN eCallingClass)
   pStats->Thread.m_iaSleeps[eCallingClass]++;
   pStats->Thread.m_iaDuration[eCallingClass] += nMilliSeconds * C_1K;
 #endif
-  
-  AM::vLogFyi("%s naps for %lldus"_Stz, //!format-LogFyi
-              aCN[eCallingClass],nMicroSeconds);
-  
+    
   i8 rCode = nanosleep(&xReq,&xRem);
   
   if (rCode && errno != EINTR) {
     vWarn("AM::vNap error; errno=%lld\n"_Stz,errno);
   }
-  
-  AM::vLogFyi("%s woken from nap"_Stz, //!format-LogFyi
-              aCN[eCallingClass]);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2402,17 +2190,6 @@ Stz* AM::szBuild(void)
   NEVER_REACH
 }
   
-  
-void AM::vLogOpenByApi(void)           { Log::vOpenByApi();          }
-void AM::vLogOpenBySE(bool bStarting)  { Log::vOpenBySE(bStarting);  }
-void AM::vLogWriteCsv(bool bShortForm) { Log::vWriteCsv(bShortForm); }
-void AM::vLogText(i8 , Stz* ) {;}
-bool AM::bLogEntryExists(i8 i_Entry) {  return Log::bEntryExists(i_Entry); }
-i8   AM::iLogEntryPrev(i8 i_Entry)   {  return Log::iEntryPrev(i_Entry); }
-void AM::vLogEntrySprint(s4K& sString, i8 i_Entry) {
-  Log::vEntrySprint(sString,i_Entry);
-}
-
 void AM::vFilePrint(File* pFile, Stz* szFormat,...) {
   
   va_list xArgs;
@@ -2421,8 +2198,6 @@ void AM::vFilePrint(File* pFile, Stz* szFormat,...) {
   va_end(xArgs);
   
 }
-
-void AM::vLog(TokenVec *pTknVec) { gpLog->vLog(pTknVec);                        }
 
 
 /*----------------------------------------------------------------------------*/
@@ -2462,7 +2237,6 @@ void AM::vPrintGlobals(void)
 
   printf("gpAttachMap     @%p : %p\n",&gpAttachMap,  gpAttachMap);
   printf("gpBufferPool    @%p : %p\n",&gpBufferPool, gpBufferPool);
-  printf("gpLog           @%p : %p\n",&gpLog,        gpLog);
   printf("gaSeShmRegion   @%p : %p\n",&gaSeShmRegion,gaSeShmRegion);
   printf("gpTraceFile     @%p : %p\n",&gpTraceFile,  gpTraceFile);
 }
@@ -3152,9 +2926,6 @@ void AM::vJob_AddDemon(Job* pJob)
   AM::pDemonJobs()->vGrabLock();
   AM::pDemonJobs()->vAddJob(pJob);
   AM::pDemonJobs()->vDropLock();
-  
-  AM::vLogJob(SL_INF,pJob,JA_JOB_ADD_DEMON,
-              "Job added to DemonJobs"_Stz); //!format-LogJob
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3165,9 +2936,6 @@ void AM::vJob_AddLocal(Job* pJob)
   AM::pLocalJobs()->vGrabLock();
   AM::pLocalJobs()->vAddJob(pJob);
   AM::pLocalJobs()->vDropLock();
-  
-  AM::vLogJob(SL_INF,pJob,JA_JOB_ADD_LOCAL,
-              "Job added to LocalJobs"_Stz); //!format-LogJob
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3178,9 +2946,6 @@ void AM::vJob_AddOriginating(Job* pJob)
   AM::pOriginatingJobs()->vGrabLock();
   AM::pOriginatingJobs()->vAddJob(pJob);
   AM::pOriginatingJobs()->vDropLock();
-  
-  AM::vLogJob(SL_INF,pJob,JA_JOB_ADD_ORIGIN,
-              "Job added to OriginatingJobs"_Stz); //!format-LogJob
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3191,10 +2956,6 @@ void AM::vJob_AddParticipating(Job* pJob)
   AM::pParticipatingJobs()->vGrabLock();
   AM::pParticipatingJobs()->vAddJob(pJob);
   AM::pParticipatingJobs()->vDropLock();
-  
-  AM::vLogJob(SL_INF,pJob,JA_JOB_ADD_PARTG,
-              "Job added to ParticipatingJobs"_Stz); //!format-LogJob
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3321,9 +3082,6 @@ bool AM::bJob_RemoveLocal(Job* pJob, bool bDump)
   
   AM::pLocalJobs()->vDropLock();
   
-  AM::vLogJob(SL_INF,pJob,JA_JOB_REMOVE_LOCAL,
-              "Job removed from LocalJobs"_Stz); //!format-LogJob
-  
   return bRemoved;
 }
 
@@ -3340,10 +3098,7 @@ bool AM::bJob_RemoveOriginating(Job* pJob, bool bDump)
   bool bRemoved = AM::pOriginatingJobs()->bRemoveJob(pJob);
   
   AM::pOriginatingJobs()->vDropLock();
-  
-  AM::vLogJob(SL_INF,pJob,JA_JOB_REMOVE_ORIGIN,
-              "Job removed from OriginatingJobs"_Stz); //!format-LogJob
-  
+    
   return bRemoved;
 }
 
@@ -3360,10 +3115,7 @@ bool AM::bJob_RemoveParticipating(Job* pJob, bool bDump)
   bool bRemoved = AM::pParticipatingJobs()->bRemoveJob(pJob);
   
   AM::pParticipatingJobs()->vDropLock();
-  
-  AM::vLogJob(SL_INF,pJob,JA_JOB_REMOVE_PARTG,
-              "Job fremoved from ParticipatingJobs"_Stz); //!format-LogJob
-  
+    
   return bRemoved;
 }
 
@@ -3377,9 +3129,6 @@ void AM::vPutHeartbeat(i8 iNode, const Heartbeat& xHeartbeat)
 
   if (pThisNode) {
     pThisNode->vPutHeartbeat(xHeartbeat);
-  } else {
-    AM::vLogFyi("Cannot find Node %lld in the cluster"_Stz, //!format-LogFyi
-                iNode);
   }
 }
 
@@ -3392,12 +3141,9 @@ bool AM::bPutHeartbeat(Stz* pszName, const Heartbeat& xHeartbeat )
 
   if (pThisNode) {
     pThisNode->vPutHeartbeat(xHeartbeat);
-  } else {
-    AM::vLogFyi("Cannot find Node %s in the cluster"_Stz, //!format-LogFyi
-                pszName->azChar());
-    return false;
+    return true;
   }
-  return true;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

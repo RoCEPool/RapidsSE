@@ -2206,9 +2206,7 @@ bool PROMPT::bPrompt_how(SePrompt* pPrompt)
          //iReqId,
          
          C_VARGS_END);
-  
-  AM::vLogHow(-1,iDetail);
-  
+    
   return true;
 }
 
@@ -2495,9 +2493,7 @@ bool PROMPT::bPrompt_log(SePrompt* pPrompt)
   RASSERT(pPrompt);
 
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
-  
-  AM::vLog(pInpTknVec);
-  
+    
   return true;
 }
 
@@ -2556,8 +2552,6 @@ PromptFun __Prompt_logSection (
   ""_Stz                   // description
 );
 
-extern Log* gpLog;
-
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
@@ -2582,10 +2576,6 @@ bool PROMPT::bPrompt_logSection(SePrompt* pPrompt)
   StrLib::vConcat(caSection,' ');
   StrLib::vConcat(caSection,'#');
   StrLib::vConcat(caSection,'#');
-
-  AM::vLogLog(SL_INF,gpLog,GA_LOG_SECTION,
-              "%s"_Stz, //!format-LogLog
-              (Stz*)caSection);
   
   return true;
 }
@@ -2613,19 +2603,6 @@ PromptFun __Prompt_logWrite (
 /*----------------------------------------------------------------------------*/
 bool PROMPT::bPrompt_logWrite(SePrompt* pPrompt)
 {
-  RASSERT(pPrompt);
-
-  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
-  i8 iNumTokens = pInpTknVec->nItems();
-  
-  if (iNumTokens > 1 && pInpTknVec->pGet(1)->eToken() == TN_NAME) {
-    if (pInpTknVec->pGet(1)->bSame("short"_Stz))
-      AM::vLogWriteCsv(true);
-    else
-      AM::vLogWriteCsv(false);
-  }
-  else
-    AM::vLogWriteCsv(false);
 
   return true;
 }

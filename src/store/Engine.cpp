@@ -61,7 +61,6 @@ AttachMap*   gpAttachMap;
 BufferPool*  gpBufferPool;
 Header*      gaSeShmRegion;
 File*        gpTraceFile;
-Log*         gpLog;
 
 Stz* gsBuildGitHash;
 Stz* gsBuildDate;
@@ -1024,11 +1023,6 @@ void Engine::vOpenLog(void)
   bool bStarting = false;
   if (AM::bFirstNode(AM::pGrid()->iThisNode()) && gxCmdLineArgs.m_xSysArgs.m_bStart)
     bStarting = true;
-
-  //if (0 == AM::pGrid()->iThisNode() && gxCmdLineArgs.m_xSysArgs.m_bStart)
-  //  bStarting = true;
-  
-  AM::vLogOpenBySE(bStarting);
 }
 
 /*----------------------------------------------------------------------------*/

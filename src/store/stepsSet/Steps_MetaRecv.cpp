@@ -34,35 +34,26 @@ void Step::vMetaRecvPutParts(void)
   
   // ... code which pipesi in all the parts of a meta-object and
   //     gets the meta-object to reassemble itself ...
-  // get arguments
 
-  s32 sTableName;
-  eCN uCn;
-  eTT eKind;
+  // get arguments
   // get number of parts
-  i8 nParts = m_pDataStack->nValues();
+  i8 nObjParts = m_pDataStack->nValues();
 
   // Loop to get parts ?
-  //m_pDataStack->vPopStr(pBuffer,__func__);
+  for (i8 i_Obj = 0; i_Obj < nObjParts; i_Obj++) {
+    //Object* pObject = m_pDataStack->pPopPtr(...)
 
-  /*
-   memcpy((char *) &uCn, pBuffer, sizeof(eCN));
-
-  if (uCn == CN_TABLE) {
-    // Main part of CN_TABLE
-    MemLib::vCopy(&sTableName, pBuffer + sizeof(eCN), sizeof(sTableName), CN_STZVAL);
-    MemLib::vCopy(&eKind, pBuffer + sizeof(eCN)+sizeof(sTableName), sizeof(eKind), CN_STZVAL);
+    // if (Object class is TABLE, create new table
+    //Table* pTable1 = new
+    // if object is not TABLE, build table parts array
+    //pTable1->iBuildArrayObjParts(pObject);
 
   }
-  Table* pTable1 = new Table(sTableName,eKind);
-  pTable1->iBuildArrayObjParts(pChar);
 
   // call reassemble parts code
-  pTable1->iReassembleObj();
+  //pTable1->iReassembleObj();
   // put results ??
-  m_pDataStack->vPushPtr(pTable1);
-
-   */
+  //m_pDataStack->vPushPtr(pTable1);
 
   EXIT();
 }

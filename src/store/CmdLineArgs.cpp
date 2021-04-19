@@ -8,7 +8,6 @@
 
 extern CmdLineArgs       gxCmdLineArgs;
 extern AttachMap*  gpAttachMap;
-extern Log*        gpLog;
 
 i8     gi_argc;
 s256   gi_szaArgv[128];

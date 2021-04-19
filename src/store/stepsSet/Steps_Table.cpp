@@ -30,6 +30,8 @@
 #include "MY.hpp"
 #include "TagConstants.h"
 
+#include <new>
+
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
@@ -490,65 +492,69 @@ void Step::vTableNameFetch(void)
   
   EXIT();
 }
+extern SizeHeap  gxaSizeHeap[];
 
 /*----------------------------------------------------------------------------*/
 /* table::new -- create a new instance of table                               */
 /*----------------------------------------------------------------------------*/
-void Step::vTableNew(void)
-{
+void Step::vTableNew(void) {
   ENTRY();
 
   s32 sTableNm;
-  m_pDataStack->vPopStr(sTableNm,__func__);
-  
-  Job* pJob = MY::pJob();
-  TagSet* pJobTags = pJob->pJobTags();
+  m_pDataStack->vPopStr(sTableNm, __func__);
+
+  Job *pJob = MY::pJob();
+  TagSet *pJobTags = pJob->pJobTags();
 
   eTT eTableKind = TT_NORMAL;
   if (pJobTags && pJobTags->bHasName(C_TAG_INFOSET))
     eTableKind = TT_INFOSET;
-  else
-  if (pJobTags && pJobTags->bHasName(C_TAG_INTERNAL))
+  else if (pJobTags && pJobTags->bHasName(C_TAG_INTERNAL))
     eTableKind = TT_INTERNAL;
-  else
-  if (pJobTags && pJobTags->bHasName(C_TAG_REPLICATED))
+  else if (pJobTags && pJobTags->bHasName(C_TAG_REPLICATED))
     eTableKind = TT_REPLICATED;
 
-  Table* pTable = new Table(sTableNm,eTableKind);
+  Table *pTable = new Table(sTableNm, eTableKind);
 
-  // TESTING //////////////////////////////////////////////////////////////////////
-  i8 iNumObjs = pTable->iPrepareObjParts();
-  std::vector<char*>aParts = pTable->aObjParts();
 
-  s32 sTableName;
-  eTT eKind = TT_NORMAL;
+  // SAME NODE TESTING ////////////////////// SAME NODE TESTING //////////////////////////////
+  if (sTableNm.bSame("bolTbl"_Stz)) {
+    i8 iNumObjs = pTable->iPrepareObjParts();
+    std::vector<Object *> aParts = pTable->aObjParts();
 
-  for (auto it = aParts.begin();  it != aParts.end(); ++it) {
-    char *pBuffer = *it;
+    s32 sTableName;
+    eTT eKind = TT_NORMAL;
+    Table *pTbl = nullptr;
+    Table *pTable1 = nullptr;
     eCN uCn;
-    memcpy((char *) &uCn, pBuffer, sizeof(eCN));
 
-    if (uCn == CN_TABLE) {
+    for (auto it = aParts.begin(); it != aParts.end(); ++it) {
+      Object *pObject = *it;
+      uCn = pObject->eGetClassNo();
+      if (uCn == CN_TABLE) {
         // Main part of CN_TABLE
-        MemLib::vCopy(&sTableName, pBuffer + sizeof(eCN), sizeof(sTableName), CN_STZVAL);
-        MemLib::vCopy(&eKind, pBuffer + sizeof(eCN)+sizeof(sTableName), sizeof(eKind), CN_STZVAL);
+        pTbl = (Table *) pObject;
+        sTableName = pTbl->szTableNm();
+        eKind = pTbl->eKind();
+        pTable1 = (Table *) ::operator new(gxaSizeHeap[uCn].m_nClassSize, pTbl);
         break;
+      }
     }
+
+    // foreach part, push part
+    if (pTable1) {
+      for (auto it = aParts.begin(); it != aParts.end(); ++it) {
+        Object *pChar = *it;
+        pTable1->iBuildArrayObjParts(pChar);
+      }
+      i8 iN = pTable1->iReassembleObj();
+    }
+
+    // Testing the concept, passing the minimum-reassemble table works
+    m_pDataStack->vPushPtr(pTable1);
   }
-
-  Table* pTable1 = new Table(sTableName,eKind);
-
-  // foreach part, push part
-  for (auto it = aParts.begin();  it != aParts.end(); ++it) {
-    char* pChar = *it;
-    pTable1->iBuildArrayObjParts(pChar);
-  }
-  i8 iN = pTable1->iReassembleObj();
-
-  // Testing the concept, passing the minimum-reassemble table works
-  //m_pDataStack->vPushPtr(pTable1);
-  // END TESTING ////////////////////////////////////////////////////////////
-
+  // END SAME NODE TESTING  //////////////////  END SAME NODE TESTING  /////////////////////////
+else
   m_pDataStack->vPushPtr(pTable);
   
   EXIT();

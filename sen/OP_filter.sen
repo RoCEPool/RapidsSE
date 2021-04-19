@@ -133,7 +133,7 @@
   ExprEval[].new
   StreamDef[].duplicate to StreamDefOut[]
 
-  <etc> StreamDef[] nullptr ExprEval[].evaluateOrdinals to eError
+  <etc> StreamDef[] nullptr ExprEval[].evaluate to eError
 
   // check for error
   eError EC_NONE == not if
