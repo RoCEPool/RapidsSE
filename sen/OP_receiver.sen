@@ -42,7 +42,7 @@
     true exit
   then
 
-  Register0[] object.postRecv
+  // Register0[] object.postRecv
     
   Register0[] object.recvArgs@ 0 == if
     true exit
@@ -58,7 +58,7 @@
     true exit
   then
 
-  Register1[] object.postRecv
+  // Register1[] object.postRecv
   
   true
 ;

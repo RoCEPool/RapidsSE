@@ -324,6 +324,9 @@ void Step::vSocketRecvObject(void)
   Header* aHeader = (Header*) & caObjectHeader[0];
   Object* pObject = reinterpret_cast<Object*>(&caObjectHeader);
   
+  pObject->vSetWasReceived(true);
+  pObject->vSetPostRecvRun(false);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receive the header of the next object
 
@@ -362,8 +365,9 @@ void Step::vSocketRecvObject(void)
      return;
     }
 
-    pReceivedObject->vSetWasReceived(true);
-    pReceivedObject->vSetPostRecvRun(false);
+    //pReceivedObject->vSetPostRecvRun(false);
+    
+    pReceivedObject->vRunPostRecv();
 
     m_pDataStack->vPushPtr(pReceivedObject);
     m_pDataStack->vPushInt(true);
