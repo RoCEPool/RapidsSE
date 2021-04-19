@@ -2576,33 +2576,6 @@ bool PROMPT::bPrompt_logSection(SePrompt* pPrompt)
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/* Prompt_logWrite.cpp -- Write Log to csv file                               */
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-PromptFun __Prompt_logWrite (
-  PF_LOGWRITE,              // prompt function
-  "Prompt_logWrite"_Stz,    // name of the prompt function
-  "comment"_Stz,            // comment about the function
-  "logWrite"_Stz,           // the prompt command
-  nullptr,                  // the second word
-  bPrompt_logWrite,         // prompt function
-  true,                     // enabled
-
-  true,                     // visible
-  "logWrite"_Stz,           // help
-  ""_Stz                    // description
-);
-
-/*----------------------------------------------------------------------------*/
-/* prompt function                                                            */
-/*----------------------------------------------------------------------------*/
-bool PROMPT::bPrompt_logWrite(SePrompt* pPrompt)
-{
-
-  return true;
-}
-
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /* Prompt_ls.cpp -- list directory contents                                   */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 

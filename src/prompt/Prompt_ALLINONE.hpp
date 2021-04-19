@@ -84,7 +84,6 @@ namespace PROMPT
   bool bPrompt_log(SePrompt* pPrompt);
   bool bPrompt_logNote(SePrompt* pPrompt);
   bool bPrompt_logSection(SePrompt* pPrompt);
-  bool bPrompt_logWrite(SePrompt* pPrompt);
   bool bPrompt_ls(SePrompt* pPrompt);
   bool bPrompt_lvl(SePrompt* pPrompt);
   bool bPrompt_masks(SePrompt* pPrompt);
