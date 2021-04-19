@@ -1345,46 +1345,53 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_ADD_XYZUNK: ArgNil(); // xyz + unk
         break;//+endCase
 
+      case EO_AND_BOLBOL: ArgNil(); // bol and bol
+        break;//+endCase
+      case EO_AND_BOLUNK: ArgNil(); // bol and unk
+        break;//+endCase
+      case EO_AND_UNKBOL: ArgNil(); // unk and bol
+        break;//+endCase
+
       case EO_DIV_BCDBCD: ArgNil(); // bcd / bcd
         break;//+endCase
-      case EO_DIV_BCDFLT: ArgNil(); // bcd + int
+      case EO_DIV_BCDFLT: ArgNil(); // bcd / int
         break;//+endCase
-      case EO_DIV_BCDINT: ArgNil(); // bcd + int
+      case EO_DIV_BCDINT: ArgNil(); // bcd / int
         break;//+endCase
-      case EO_DIV_DTEIVL: ArgNil(); // dte + ivl
+      case EO_DIV_DTEIVL: ArgNil(); // dte / ivl
         break;//+endCase
-      case EO_DIV_FLTBCD: ArgNil(); // flt + bcd
+      case EO_DIV_FLTBCD: ArgNil(); // flt / bcd
         break;//+endCase
-      case EO_DIV_FLTINT: ArgNil(); // flt + int
+      case EO_DIV_FLTINT: ArgNil(); // flt / int
         break;//+endCase
-      case EO_DIV_FLTFLT: ArgNil(); // flt + flt
+      case EO_DIV_FLTFLT: ArgNil(); // flt / flt
         break;//+endCase
-      case EO_DIV_INTBCD: ArgNil(); // int + bcd
+      case EO_DIV_INTBCD: ArgNil(); // int / bcd
         break;//+endCase
-      case EO_DIV_INTFLT: ArgNil(); // int + flt
+      case EO_DIV_INTFLT: ArgNil(); // int / flt
         break;//+endCase
-      case EO_DIV_INTINT: ArgNil(); // int + int
+      case EO_DIV_INTINT: ArgNil(); // int / int
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA / iTopB;
         dLU3(EO_DIV_INTINT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
-      case EO_DIV_IVLDTE: ArgNil(); // ivl + dte
+      case EO_DIV_IVLDTE: ArgNil(); // ivl / dte
         break;//+endCase
-      case EO_DIV_IVLIVL: ArgNil(); // ivl + ivl
+      case EO_DIV_IVLIVL: ArgNil(); // ivl / ivl
         break;//+endCase
-      case EO_DIV_IVLTME: ArgNil(); // ivl + tme
+      case EO_DIV_IVLTME: ArgNil(); // ivl / tme
         break;//+endCase
-      case EO_DIV_IVLTSP: ArgNil(); // ivl + tsp
+      case EO_DIV_IVLTSP: ArgNil(); // ivl / tsp
         break;//+endCase
-      case EO_DIV_TMEIVL: ArgNil(); // tme + ivl
+      case EO_DIV_TMEIVL: ArgNil(); // tme / ivl
         break;//+endCase
-      case EO_DIV_TSPIVL: ArgNil(); // tsp + ivl
+      case EO_DIV_TSPIVL: ArgNil(); // tsp / ivl
         break;//+endCase
-      case EO_DIV_UNKXYZ: ArgNil(); // unk + xyz
+      case EO_DIV_UNKXYZ: ArgNil(); // unk / xyz
         break;//+endCase
-      case EO_DIV_XYZUNK: ArgNil(); // xyz + unk
+      case EO_DIV_XYZUNK: ArgNil(); // xyz / unk
         break;//+endCase
         
       case EO_MOD_INTINT: ArgNil(); // int % int
@@ -1441,17 +1448,29 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_MUL_XYZUNK: ArgNil(); // xyz + unk
         break;//+endCase
 
-      case EO_NEG_BCD: ArgNil(); // bcd / bcd
+      case EO_NEG_BCD: ArgNil(); // neg bcd
         break;//+endCase
-      case EO_NEG_FLT: ArgNil(); // bcd / bcd
+      case EO_NEG_FLT: ArgNil(); // neg flt
         break;//+endCase
-      case EO_NEG_INT: ArgNil(); // negate the top value
+      case EO_NEG_INT: ArgNil(); // neg int
         iTopA = *(aiDstk--);
         iRes  = - iTopA;
         dLU2(EO_NEG_INT,iTopA,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
-      case EO_NEG_IVL: ArgNil(); // bcd / bcd
+      case EO_NEG_IVL: ArgNil(); // neg ivl
+        break;//+endCase
+
+      case EO_NOT_BOL: ArgNil(); // not bol
+        break;//+endCase
+      case EO_NOT_UNK: ArgNil(); // not unk
+        break;//+endCase
+
+      case EO_OR_BOLBOL: ArgNil(); // bol or bol
+        break;//+endCase
+      case EO_OR_BOLUNK: ArgNil(); // bol or unk
+        break;//+endCase
+      case EO_OR_UNKBOL: ArgNil(); // bol or unk
         break;//+endCase
 
       // subtract second int from top push result
@@ -1496,7 +1515,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
       case EO_SUB_XYZUNK: ArgNil(); // xyz + unk
         break;//+endCase
-        
+
+      case EO_XOR_BOLBOL: ArgNil(); // bol xor bol
+        break;//+endCase
+      case EO_XOR_BOLUNK: ArgNil(); // bol xor unk
+        break;//+endCase
+      case EO_XOR_UNKBOL: ArgNil(); // bol xor unk
+        break;//+endCase
+
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // counter
       case EO_CTR_0_DEC: ArgNil(); // dec counter 0

@@ -38,6 +38,10 @@ enum eEO : u2 // expression operators
   /*  S  */ EO_ADD_UNKXYZ,           // unk + xyz
   /*  S  */ EO_ADD_XYZUNK,           // xyz + unk
 
+  /*  S  */ EO_AND_BOLBOL,           // bol && bol
+  /*  S  */ EO_AND_BOLUNK,           // bol && unk
+  /*  S  */ EO_AND_UNKBOL,           // unk && bol
+
   /*  S  */ EO_DIV_BCDBCD,           // bcd / bcd
   /*  S  */ EO_DIV_BCDFLT,           // bcd / int
   /*  S  */ EO_DIV_BCDINT,           // bcd / int
@@ -88,6 +92,13 @@ enum eEO : u2 // expression operators
   /*  S  */ EO_NEG_INT,             // -int
   /*  S  */ EO_NEG_IVL,             // -ivl
 
+  /*  S  */ EO_NOT_BOL,            // ! bol
+  /*  S  */ EO_NOT_UNK,            // ! unk
+
+  /*  S  */ EO_OR_BOLBOL,           // bol || bol
+  /*  S  */ EO_OR_BOLUNK,           // bol || unk
+  /*  S  */ EO_OR_UNKBOL,           // unk || bol
+
   // subtract
   /*  S  */ EO_SUB_BCDBCD,           // bcd * bcd
   /*  S  */ EO_SUB_BCDFLT,           // bcd * int
@@ -107,6 +118,11 @@ enum eEO : u2 // expression operators
   /*  S  */ EO_SUB_TSPIVL,           // tsp * ivl
   /*  S  */ EO_SUB_UNKXYZ,           // unk * xyz
   /*  S  */ EO_SUB_XYZUNK,           // xyz * unk
+
+  // xor
+  /*  S  */ EO_XOR_BOLBOL,           // bol xor bol
+  /*  S  */ EO_XOR_BOLUNK,           // bol xor unk
+  /*  S  */ EO_XOR_UNKBOL,           // unk xor bol
 
   // counter
   /*  R  */ EO_CTR_0_DEC,        // dec counter 0
@@ -425,6 +441,11 @@ static Stz* aEO[]
   /*    */ "EO_ADD_UNKXYZ"_Stz,
   /*    */ "EO_ADD_XYZUNK"_Stz,
 
+  // and
+  /*    */ "EO_AND_BOLBOL"_Stz,
+  /*    */ "EO_AND_BOLUNK"_Stz,
+  /*    */ "EO_AND_UNKBOL"_Stz,
+
   // divide
   /*    */ "EO_DIV_BCDBCD"_Stz,
   /*    */ "EO_DIV_BCDFLT"_Stz,
@@ -475,6 +496,15 @@ static Stz* aEO[]
   /*    */ "EO_NEG_INT"_Stz,
   /*    */ "EO_NEG_IVL"_Stz,
 
+  // not
+  /*    */ "EO_NOT_BOL"_Stz,
+  /*    */ "EO_NOT_UNK"_Stz,
+
+  // or
+  /*    */ "EO_OR_BOLBOL"_Stz,
+  /*    */ "EO_OR_BOLUNK"_Stz,
+  /*    */ "EO_OR_UNKBOL"_Stz,
+
   // subtract
   /*    */ "EO_SUB_BCDBCD"_Stz,
   /*    */ "EO_SUB_BCDFLT"_Stz,
@@ -494,6 +524,11 @@ static Stz* aEO[]
   /*    */ "EO_SUB_TSPIVL"_Stz,
   /*    */ "EO_SUB_UNKXYZ"_Stz,
   /*    */ "EO_SUB_XYZUNK"_Stz,
+
+  // xor
+  /*    */ "EO_XOR_BOLBOL"_Stz,
+  /*    */ "EO_XOR_BOLUNK"_Stz,
+  /*    */ "EO_XOR_UNKBOL"_Stz,
 
   // counter
   /*    */ "EO_CTR_0_DEC"_Stz,
@@ -776,8 +811,7 @@ static Stz* aEO[]
   // super fragments
   /*    */ "EO_SUPER_Q100"_Stz,
 
-
-    /*    */ "ENUMS"_Stz
+  /*    */ "ENUMS"_Stz
 };
 
 //----------------------------------------------------------------------------
@@ -815,6 +849,11 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_ADD_TSPIVL
   { EA_NONE,    0 },  // EO_ADD_UNKXYZ
   { EA_NONE,    0 },  // EO_ADD_XYZUNK
+
+  // and
+  { EA_NONE,    0 },  // EO_AND_BOLBOL
+  { EA_NONE,    0 },  // EO_AND_BOLUNK
+  { EA_NONE,    0 },  // EO_AND_UNKBOL
 
   // divide
   { EA_NONE,    0 },  // EO_DIV_BCDBCD
@@ -866,7 +905,16 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_NEG_INT
   { EA_NONE,    0 },  // EO_NEG_IVL
 
-    // subtract
+  // not
+  { EA_NONE,    0 },  // EO_NOT_BOL
+  { EA_NONE,    0 },  // EO_NOT_UNK
+
+  // or
+  { EA_NONE,    0 },  // EO_OR_BOLBOL
+  { EA_NONE,    0 },  // EO_OR_BOLUNK
+  { EA_NONE,    0 },  // EO_OR_UNKBOL
+
+  // subtract
   { EA_NONE,    0 },  // EO_SUB_BCDBCD
   { EA_NONE,    0 },  // EO_SUB_BCDFLT
   { EA_NONE,    0 },  // EO_SUB_BCDINT
@@ -886,8 +934,12 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_SUB_UNKXYZ
   { EA_NONE,    0 },  // EO_SUB_XYZUNK
 
+   // xor
+  { EA_NONE,    0 },  // EO_XOR_BOLBOL
+  { EA_NONE,    0 },  // EO_XOR_BOLUNK
+  { EA_NONE,    0 },  // EO_XOR_UNKBOL
 
-    // counter
+   // counter
   { EA_NONE,    0 },  // EO_CTR_0_DEC
   { EA_NONE,    0 },  // EO_CTR_0_INC
   { EA_NONE,    0 },  // EO_CTR_0_POP
@@ -1130,6 +1182,7 @@ static EoArg EoArgs[]
   //  row device column operators
   { EA_SUBSCR,  8 },  // EO_DEVROW_POPCOLI
   { EA_SUBSCR,  8 },  // EO_DEVROW_POPCOLS
+
   { EA_SUBSCR,  8 },  // EO_DEVROW_PUSHCOLI
   { EA_SUBSCR,  8 },  // EO_DEVROW_PUSHCOLS
 
@@ -1169,7 +1222,7 @@ static EoArg EoArgs[]
   // super
   { EA_NONE,    0 },  // super fragment Q100
 
-    // -- end --
+  // -- end --
   { EA_NONE,    0 },  // EO_ENUMS
 };
 #endif
