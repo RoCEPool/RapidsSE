@@ -102,7 +102,6 @@ void Constants::vAddConstantsArgs(void)
   Constants::vAddConstant("args.heartbeat"_Stz,         gxCmdLineArgs.m_xSysArgs.m_nHeartbeatNodes);
   Constants::vAddConstant("args.killPrev"_Stz,          gxCmdLineArgs.m_xSysArgs.m_bKillPrev);
   Constants::vAddConstant("args.lock"_Stz,              gxCmdLineArgs.m_xSysArgs.m_bLock);
-  Constants::vAddConstant("args.log"_Stz,               gxCmdLineArgs.m_xSysArgs.m_bLog);
   Constants::vAddConstant("args.maxLoadErrors"_Stz,     gxCmdLineArgs.m_xSysArgs.m_nMaxLoadErrors);
   Constants::vAddConstant("args.maxReadyLP"_Stz,        gxCmdLineArgs.m_xSysArgs.m_nMaxReadyLP);
   Constants::vAddConstant("args.metadata"_Stz,          gxCmdLineArgs.m_xSysArgs.m_bMetadata);
@@ -839,13 +838,7 @@ void Constants::vAddConstantsCpp(void)
   #else
   vAddConstant("WITH_RELEASE_VERSION"_Stz,(i8)false);
   #endif
-            
-  #ifdef WITH_SHARED_LOG
-  vAddConstant("WITH_SHARED_LOG"_Stz,(i8)true);
-  #else
-  vAddConstant("WITH_SHARED_LOG"_Stz,(i8)false);
-  #endif
-    
+                
   #ifdef WITH_SHOCO_DUPLICATES
   vAddConstant("WITH_SHOCO_DUPLICATES"_Stz,(i8)true);
   #else

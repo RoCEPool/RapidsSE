@@ -613,7 +613,7 @@ void LogicCompiler::vAddFragment(i8 i_CodeFrom, i8 i_CodeTill)
   
   s4K sPrint;
 
-  for (i8 i_Code = i_CodeFrom; i_Code <= i_CodeTill; i_Code++) {
+  for (i8 i_Code = i_CodeFrom; i_Code <= i_CodeTill; i_Code = i_Code + 2) {
 
     eEO eCode = m_pLogicUnit->eCode(i_Code);
 
@@ -644,7 +644,7 @@ void LogicCompiler::vAddFragment(i8 i_CodeFrom, i8 i_CodeTill)
     
     if (EO_CALL == eCode) {
       
-      iArg = m_pLogicUnit->iCodeArg(i_Code+1);
+      iArg = m_pLogicUnit->iCodeArg(i_Code+2);
       i_Label = m_pLogicUnit->iFindLabel(iArg);
 
       v_CallSbr(i_Label);
@@ -667,7 +667,7 @@ void LogicCompiler::vAddFragment(i8 i_CodeFrom, i8 i_CodeTill)
         EA_INT    == EoArgs[eCode].m_eArgument ||
         EA_LABEL  == EoArgs[eCode].m_eArgument ||
         EA_SUBSCR == EoArgs[eCode].m_eArgument   ) {
-      i8 iArg = m_pLogicUnit->iCodeArg(i_Code+1);
+      i8 iArg = m_pLogicUnit->iCodeArg(i_Code+2);
       StrLib::bReplace(sReplaced.azChar(),azFrag,
                        "iArg",StrLib::wToString(iArg,caInt));
       StrLib::vAppendString(&m_azSrcCrs,sReplaced.azChar());
@@ -675,7 +675,7 @@ void LogicCompiler::vAddFragment(i8 i_CodeFrom, i8 i_CodeTill)
     }
     else
     if (EA_STRING == EoArgs[eCode].m_eArgument) {
-      char* azStr = (char*)m_pLogicUnit->aCodeArg(i_Code+1);
+      char* azStr = (char*)m_pLogicUnit->aCodeArg(i_Code+2);
       i8 nSize = StrLib::nSize(azStr);
 
       sString.vSprint("\"%s\""_Stz,azStr);

@@ -198,10 +198,6 @@ void Dir::vClose(void)
   
   if (AM::bAttached()) AM::pResources()->vDecDirOpen();
   
-  AM::vLogRes(SL_INF,this,RA_DIR_CLOSED,
-              "Dir closed : %s"_Stz, //!format-LogRes
-              m_sPath.szStz());
-
   m_aDir = nullptr;
   
   AM::LOG::vEvent(EV_CLOSE,"Dir closed: path=%s"_Stz,m_sPath.szStz());
@@ -293,10 +289,6 @@ bool Dir::bOpen(Stz* szDirPath)
 
   if (AM::bAttached()) AM::pResources()->vIncDirOpen();
   
-  AM::vLogRes(SL_INF,this,RA_DIR_OPENED,
-              "Dir opened : %s"_Stz, //!format-LogRes
-              szDirPath);
-
   AM::LOG::vEvent(EV_OPEN,"Dir opened: path=%s"_Stz,m_sPath.szStz());
 
   ASSERT(bIsOpen());

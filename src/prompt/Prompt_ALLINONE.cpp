@@ -2526,11 +2526,6 @@ bool PROMPT::bPrompt_logNote(SePrompt* pPrompt)
 
   ASSERT(pInpTknVec->pGet(0)->bSame("logNote"_Stz));
   
-  if (pInpTknVec->nTokens() > 1)
-    AM::vLogPrm(SL_INF,pPrompt,PA_PRM_LOG_NOTE,
-                "%s"_Stz, //!format-LogPrm
-                pInpTknVec->pGet(1)->szChars());
-
   return true;
 }
 
@@ -2577,33 +2572,6 @@ bool PROMPT::bPrompt_logSection(SePrompt* pPrompt)
   StrLib::vConcat(caSection,'#');
   StrLib::vConcat(caSection,'#');
   
-  return true;
-}
-
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/* Prompt_logWrite.cpp -- Write Log to csv file                               */
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-PromptFun __Prompt_logWrite (
-  PF_LOGWRITE,              // prompt function
-  "Prompt_logWrite"_Stz,    // name of the prompt function
-  "comment"_Stz,            // comment about the function
-  "logWrite"_Stz,           // the prompt command
-  nullptr,                  // the second word
-  bPrompt_logWrite,         // prompt function
-  true,                     // enabled
-
-  true,                     // visible
-  "logWrite"_Stz,           // help
-  ""_Stz                    // description
-);
-
-/*----------------------------------------------------------------------------*/
-/* prompt function                                                            */
-/*----------------------------------------------------------------------------*/
-bool PROMPT::bPrompt_logWrite(SePrompt* pPrompt)
-{
-
   return true;
 }
 

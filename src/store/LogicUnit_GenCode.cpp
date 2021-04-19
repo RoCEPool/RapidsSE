@@ -63,7 +63,11 @@ void LogicUnit::vCollectOpcode(void)
   }
   
   TagSet* pJobTags = AM::pPipelineJob()->pJobTags();
-  
+
+//  for (i8 i_OpCode = 0; i_OpCode < EO_ENUMS; i_OpCode++) {
+//    vTrace("%lld: %s %s\n"_Stz, i_OpCode, aEO[i_OpCode], aEA[EoArgs[i_OpCode].m_eArgument]);
+//  }
+
   for (i8 i_OpCode = 0; i_OpCode < EO_ENUMS; i_OpCode++) {
 
     //vTrace("Opcode: %s; Arg: %s\n"_Stz, aEO[i_OpCode], aEA[EoArgs[i_OpCode].m_eArgument]);

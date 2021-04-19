@@ -90,7 +90,6 @@ CmdLineArgs::CmdLineArgs(void)
   m_xSysArgs.m_bJot             = false;
   m_xSysArgs.m_bKillPrev        = false;
   m_xSysArgs.m_bLock            = false;
-  m_xSysArgs.m_bLog             = false;
   m_xSysArgs.m_nLvlLevels       = C_DEF_LVL_LEVELS;
   m_xSysArgs.m_iLvlRatio        = C_DEF_LVL_RATIO;
   m_xSysArgs.m_bNoMunge         = false;
@@ -160,33 +159,6 @@ i8 CmdLineArgs::nBurstArgs(s256 saArgv[], Stz* szArgStr)
   }
   
   return i_Arg;
-}
-
-/*----------------------------------------------------------------------------*/
-/* log the command line arguments                                             */
-/*----------------------------------------------------------------------------*/
-void CmdLineArgs::vLog(void)
-{
-  _static_
-  
-  AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_ARGS,
-              "Command line args:"_Stz); //!format-LogSys
-  
-  s256 sArg;
-  
-  for (i8 i_Arg = 0; i_Arg < gi_argc; ) {
-    
-    sArg = (Stz*)(gi_szaArgv[i_Arg ++].szStz());
-    
-    while (i_Arg < gi_argc && '-' != *gi_szaArgv[i_Arg].azChar()) {
-      StrLib::vConcat(sArg.azChar(),' ');
-      StrLib::vConcat(sArg.azChar(),gi_szaArgv[i_Arg ++].azChar());
-    }
-    
-    AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_ARGS,
-                "  %s"_Stz //!format-LogSys
-                ,sArg.azChar());
-  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -428,20 +400,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       m_xSysArgs.m_bLock = true;
       continue;
     }
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#ifdef WITH_SHARED_LOG
-    if (szArg->bSame("--log"_Stz)) {
-      m_xSysArgs.m_bLog = true;
-      continue;
-    }
-#else
-    if (szArg->bSame("--log"_Stz)) {
-      vWarn("arg --log ignored; not compiled WITH_SHARED_LOG\n"_Stz);
-      continue;
-    }
-#endif
-    
+        
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--lvlLevels"_Stz)) {
       m_xSysArgs.m_nLvlLevels = argv[++i_Arg].iToI8();
@@ -522,13 +481,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       }
       continue;
     }
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (szArg->bSame("--noLog"_Stz)) {
-      m_xSysArgs.m_bLog = false;
-      continue;
-    }
-    
+        
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--NoMunge"_Stz)) {
       m_xSysArgs.m_bNoMunge = true;

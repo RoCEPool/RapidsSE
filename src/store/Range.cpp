@@ -164,7 +164,7 @@ eEC Range::eRangeValues(Index* pIndex, Stz* sRangeColumns)
         eError = EC_INVALID_COMMAND;
         break;
       }
-      eLower = EO_EQUAL;
+      eLower = EO_EQ_INTINT;
       iLowerValue = iValue;
       sLowerValue = sValue;
     }
@@ -212,7 +212,7 @@ eEC Range::eRangeValues(Index* pIndex, Stz* sRangeColumns)
     pTkn = pTknVec->pNextToken();
   }
 
-  if (eLower == EO_EQUAL) {
+  if (eLower == EO_EQ_INTINT) {
     if (eUpper != EO_NONE) {
       eError = EC_INVALID_COMMAND;
       goto L_RETURN;
@@ -223,7 +223,7 @@ eEC Range::eRangeValues(Index* pIndex, Stz* sRangeColumns)
   // find the macro for the range
 
   // equal ?
-  if (eLower == EO_EQUAL) {
+  if (eLower == EO_EQ_INTINT) {
     vInsertLowerBound(eColumnType, sValue, iValue);
 
     m_eMacro = AM_INDEX_EQ;

@@ -31,7 +31,6 @@
 //#define WITH_IT_COMPACT_TRACE EndDefine    // compaction progress
 //#define WITH_LOCK_TRACKING EndDefine       // code for tracking lock activity
 //#define WITH_PYTHON_SUPPORT EndDefine      // code for python support
-//#define WITH_SHARED_LOG EndDefine          // code for shared log
 //#define WITH_STATISTICS_COUNTERS EndDefine // code for statistics
 //#define WITH_STEP_TIMING EndDefine         // code for timing steps
 //#define WITH_TRACE_API EndDefine           // trace api's
@@ -55,7 +54,6 @@
 //#define WITH_IT_COMPACT_TRACE EndDefine    // compaction progress
 //#define WITH_LOCK_TRACKING EndDefine       // code for tracking lock activity
 //#define WITH_PYTHON_SUPPORT EndDefine      // code for python support
-//#define WITH_SHARED_LOG EndDefine          // code for shared log
 //#define WITH_STATISTICS_COUNTERS EndDefine // code for statistics
 //#define WITH_STEP_TIMING EndDefine         // code for timing steps
 //#define WITH_TRACE_API EndDefine           // code for tracing api's compiled in

@@ -66,7 +66,6 @@ namespace STORE
     eTT     eKind(void);
     void    vKind(eTT eKind);
     void    vListContents(i8 i_Depth);
-    void    vMarkTable(void);
     bool    bPopulateIndex(i8 iIndexNo);
     void    vRemoveIndex(Index* pIndex);
     void    vResetPointers(void);

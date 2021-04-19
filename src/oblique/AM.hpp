@@ -288,7 +288,6 @@ namespace OBLIQUE
     static i8   nDummySleep(void);
     static i8   nDummyThreads(void);
     static Stz* szInitial(void);
-    static bool bLog(void);
     static i8   nMaxLoadErrors(void);
     static i8   nMaxReadyLP(void);
     static bool bMunged(void);
@@ -460,20 +459,7 @@ namespace OBLIQUE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static bool bInBufferPool(Object* pObject);
     static InternalTables* pInternalTables(void);
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    static void vLog(TokenVec* pTknVec);
-    
-    static void vLogOpr(eSL, Op*        pOpr, eOA eOpAct,  Stz* szFormat, ...);
-    static void vLogMgt(eSL, Job*       pJob, eMA eMgtAct, Stz* szFormat, ...);
-    static void vLogPrm(eSL, SePrompt*  pPrm, ePA ePrmAct, Stz* szFormat, ...);
-    static void vLogQue(eSL, Schedule*    pQue, eQA eQueAct, Stz* szFormat, ...);
-    static void vLogRes(eSL, Resource*  pRes, eRA eResAct, Stz* szFormat, ...);
-    static void vLogSvc(eSL, Job*       pJob, eVA eSvcAct, Stz* szFormat, ...);
-    static void vLogSsn(eSL, Session*   pSsn, eAA eApiAct, Stz* szFormat, ...);
-    static void vLogSys(eSL, AttachMap* pSys, eYA eSysAct, Stz* szFormat, ...);
-    static void vLogThd(eSL, Thread*    pThd, eHA eThdAct, Stz* szFormat, ...);
-    
+        
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vNapMsec(i8 nMilliSeconds, eCN eCallingClass);
     static void vNapUsec(i8 nMicroSeconds, eCN eCallingClass);

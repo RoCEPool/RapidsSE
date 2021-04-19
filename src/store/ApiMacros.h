@@ -57,7 +57,6 @@ EndDefine
   \
   Sessions::vMarkError(pSession,eErrorCode); \
   Sessions::vMarkApiLoc(pSession,888); \
-  AM::vLogSsn(SL_INF,pSession,AA_API_ERROR,"Api %s Error %lld"_Stz,eApiCall,eErrorCode); \
   \
   TRACE_API_ERROR("catch"_Stz,eErrorCode); \
   \
@@ -88,8 +87,6 @@ EndDefine
   \
   eAC  eApiCall = _eApiCall; \
   \
-  AM::vLogSsn(SL_INF,pSession,AA_API_ENTRY,\
-              "Api %s entry"_Stz,aAC[eApiCall]); \
   Api::vIncStatistics(eApiCall);\
   \
   if (pSession) { \
@@ -113,8 +110,6 @@ EndDefine
     Sessions::vMarkReturn(pSession); \
     Sessions::vMarkApiLoc(pSession,990); \
   } \
-  \
-  AM::vLogSsn(SL_INF,pSession,AA_API_EXIT,"Api %s exit"_Stz,eApiCall); \
   \
   TRACE_API("exiting"_Stz); \
 } \
@@ -168,8 +163,6 @@ EndDefine
     Sessions::vMarkApiLoc(pSession,999); \
   } \
   \
-  AM::vLogSsn(SL_INF,pSession,AA_API_EXIT,"Api %s exit"_Stz,eApiCall); \
-  \
   TRACE_API("return"_Stz); \
   \
   return EC_NONE; \
@@ -183,7 +176,6 @@ EndDefine
 { \
   Sessions::vMarkError(pSession,eErrorCode); \
   Sessions::vMarkApiLoc(pSession,880); \
-  AM::vLogSsn(SL_INF,pSession,AA_API_ERROR,"Api %s Error %lld"_Stz,eApiCall,eErrorCode); \
   \
   TRACE_API_ERROR("return error"_Stz,eErrorCode); \
   \

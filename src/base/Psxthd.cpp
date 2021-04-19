@@ -643,8 +643,6 @@ void PsxThd::vSetOSThreadId(void)
 /*----------------------------------------------------------------------------*/
 void PsxThd::vSleepInfinite(void)
 {
-  AM::vLogRes(SL_INF,this,RA_THD_SLEEP_INDEF,
-              "Thead sleeps indefinitely"_Stz); //!format-LogRes
   for (;;)
     sleep(C_1B);
 }
@@ -675,18 +673,11 @@ void PsxThd::vSleepMsec(i8 nMilliSeconds, eCN eCallingClass)
   pStats->Thread.m_iaDuration[eCallingClass] += nMilliSeconds * C_1M;
 #endif
   
-  AM::vLogRes(SL_INF,this,RA_THD_SLEEP,
-              "PsxThd sleeps for %lldms via nanosleep()"_Stz, //!format-LogRes
-              nMilliSeconds);
-  
   i8 rCode = nanosleep(&xReq,&xRem);
   
   if (rCode && errno != EINTR) {
     vWarn("PsxThd::vSleepMsec error; errno=%lld\n"_Stz,errno);
   }
-  
-  AM::vLogRes(SL_INF,this,RA_THD_AWAKE,
-              "PsxThd is awake"_Stz); //!format-LogRes
 }
 
 /*----------------------------------------------------------------------------*/
@@ -714,18 +705,12 @@ void PsxThd::vSleepNsec(i8 nNanoSeconds, eCN eCallingClass)
   pStats->Thread.m_iaSleeps[eCallingClass]++;
   pStats->Thread.m_iaDuration[eCallingClass] += nNanoSeconds;
 #endif
-  
-  AM::vLogRes(SL_INF,this,RA_THD_SLEEP,
-              "PsxThd sleeps for %lldns via nanosleep()"_Stz, //!format-LogRes
-              nNanoSeconds);
-  
+    
   i8 rCode = nanosleep(&xReq,&xRem);
   
   if (rCode && errno != EINTR) {
     vWarn("PsxThd::vSleepNsec error; errno=%lld\n"_Stz,errno);
   }
-  AM::vLogRes(SL_INF,this,RA_THD_AWAKE,
-              "PsxThd is awake"_Stz); //!format-LogRes
 }
 
 /*----------------------------------------------------------------------------*/
@@ -741,15 +726,8 @@ void PsxThd::vSleepSsec(i8 nSeconds, eCN eCallingClass)
   pStats->Thread.m_iaSleeps[eCallingClass]++;
   pStats->Thread.m_iaDuration[eCallingClass] += nSeconds * C_1G;
 #endif
-  
-  AM::vLogRes(SL_INF,this,RA_THD_SLEEP,
-              "Pthead sleeps for %llds via sleep()"_Stz, //!format-LogRes
-              nSeconds);
-  
+   
   sleep((unsigned)nSeconds);
-  
-  AM::vLogRes(SL_INF,this,RA_THD_AWAKE,
-              "PsxThd is awake"_Stz); //!format-LogRes
 }
 
 /*----------------------------------------------------------------------------*/
@@ -778,21 +756,12 @@ void PsxThd::vSleepUsec(i8 nMicroSeconds, eCN eCallingClass)
   pStats->Thread.m_iaDuration[eCallingClass] += nMicroSeconds * C_1K;
 #endif
   
-  AM::vLogRes(SL_INF,this,RA_THD_SLEEP,
-              "PsxThd sleeps for %lldus via nanosleep()"_Stz, //!format-LogRes
-              nMicroSeconds);
-  
   i8 rCode = nanosleep(&xReq,&xRem);
   
   if (rCode && errno != EINTR) {
     vWarn("PsxThd::vSleepMicro error; errno=%lld\n"_Stz,errno);
   }
-  
-  AM::vLogRes(SL_INF,this,RA_THD_AWAKE,
-              "PsxThd is awake"_Stz); //!format-LogRes
 }
-
-
   
 /*----------------------------------------------------------------------------*/
 /* create thread, passing it function to execute                              */
@@ -817,10 +786,6 @@ bool PsxThd::bSpawnThread(void* pFun(void*), void* pArg)
   
   if (AM::bAttached()) AM::pResources()->vIncThreadOpen();
   
-  AM::vLogRes(SL_INF,this,RA_THD_SPAWNED,
-              "Thread spawned : %lld"_Stz, //!format-LogRes
-              m_iPsxThdId);
-
   // this is important otherwise resources are not released
   pthread_detach(m_iPsxThdId);
   

@@ -241,7 +241,6 @@ void Engine::vRunCommandLine(void)
         while (gpAttachMap->uAttachMapState() != C_READY) {
           AM::vNapMsec(1,CN_NONE);
         }
-        vOpenLog();
         vCallPrompt();
         break;
         
@@ -1016,16 +1015,6 @@ void Engine::vOperandQueueReport(bool bStdOut)
 }
 
 /*----------------------------------------------------------------------------*/
-/* create or open the Log                                                     */
-/*----------------------------------------------------------------------------*/
-void Engine::vOpenLog(void)
-{
-  bool bStarting = false;
-  if (AM::bFirstNode(AM::pGrid()->iThisNode()) && gxCmdLineArgs.m_xSysArgs.m_bStart)
-    bStarting = true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* attach or create the shm region                                            */
 /*----------------------------------------------------------------------------*/
 void Engine::vOpenPool(void)
@@ -1650,16 +1639,10 @@ void Engine::vStartSystem(void) {
                  gpAttachMap->m_xSysArgs.m_nDegOfPar);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  if (AM::bVerboseProgress())
-    vInfo("  Opening Shared Log\n"_Stz);
-  vOpenLog();
-
-
+  
   if (AM::bVerboseProgress())
     vInfo("  Adding Expressions\n"_Stz);
-  AM::vLogSys(SL_INF, gpAttachMap, YA_SYS_BOOT,
-              "adding steps"_Stz); //!format-LogSys
+
   Step::vAddSteps();
   
   if (AM::bVerboseProgress())
@@ -1676,24 +1659,18 @@ void Engine::vStartSystem(void) {
 
   if (AM::bVerboseProgress())
     vInfo("  Adding Constants\n"_Stz);
-  AM::vLogSys(SL_INF, gpAttachMap, YA_SYS_BOOT,
-              "adding constants"_Stz); //!format-LogSys
   Constants::vAddConstantsArgs();
   Constants::vAddConstantsCpp();
 
 
   if (AM::bVerboseProgress())
     vInfo("  Running Boot Job\n"_Stz);
-  AM::vLogSys(SL_INF, gpAttachMap, YA_SYS_BOOT,
-              "running boot job"_Stz); //!format-LogSys
   vCallBoot();
  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // threading
 
   if (AM::bVerboseProgress())
     vInfo("  Spawning Threads\n"_Stz);
-  AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_BOOT,
-              "spawning threads"_Stz); //!format-LogSys
   
   Scheduler::vScheduler_Boot();
   
@@ -1702,8 +1679,6 @@ void Engine::vStartSystem(void) {
 
   if (AM::bVerboseProgress())
     vInfo("  Running Start\n"_Stz);
-  AM::vLogSys(SL_INF, gpAttachMap, YA_SYS_BOOT,
-              "running Start job"_Stz); //!format-LogSys
   vCallStart();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1714,11 +1689,6 @@ void Engine::vStartSystem(void) {
   vInternalTables();
 
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_BOOT,
-
-              "instance %s started"_Stz,
-              gxCmdLineArgs.m_xSysArgs.m_sRegionName.azChar()); //!format-LogSys
 
   if (AM::bVerboseProgress()) {
     vInfo("Engine Instance %s started\n"_Stz, gxCmdLineArgs.m_xSysArgs.m_sRegionName.azChar());

@@ -8,7 +8,7 @@
 #ifdef __TINYC__
 enum eEO // expression operators
 #else
-enum eEO : u1 // expression operators
+enum eEO : u2 // expression operators
 #endif
 {
   /*  0 */ EO_NONE=0,
@@ -19,21 +19,110 @@ enum eEO : u1 // expression operators
   // arithmetic operators
 
   // add top two numbers and push result
-  /*  S  */ EO_ADD_ID,           // integer + decimal
-  /*  S  */ EO_ADD_IF,           // integer + float
-  /*  S  */ EO_ADD_II,           // integer + int
-  /*  S  */ EO_ADD_IU,           // integer + unknown
+  /*  S  */ EO_ADD_BCDBCD,           // bcd + bcd
+  /*  S  */ EO_ADD_BCDFLT,           // bcd + int
+  /*  S  */ EO_ADD_BCDINT,           // bcd + int
+  /*  S  */ EO_ADD_DTEIVL,           // dte + ivl
+  /*  S  */ EO_ADD_FLTBCD,           // flt + bcd
+  /*  S  */ EO_ADD_FLTINT,           // flt + int
+  /*  S  */ EO_ADD_FLTFLT,           // flt + flt
+  /*  S  */ EO_ADD_INTBCD,           // int + bcd
+  /*  S  */ EO_ADD_INTFLT,           // int + flt
+  /*  S  */ EO_ADD_INTINT,           // int + int
+  /*  S  */ EO_ADD_IVLDTE,           // ivl + dte
+  /*  S  */ EO_ADD_IVLIVL,           // ivl + ivl
+  /*  S  */ EO_ADD_IVLTME,           // ivl + tme
+  /*  S  */ EO_ADD_IVLTSP,           // ivl + tsp
+  /*  S  */ EO_ADD_TMEIVL,           // tme + ivl
+  /*  S  */ EO_ADD_TSPIVL,           // tsp + ivl
+  /*  S  */ EO_ADD_UNKXYZ,           // unk + xyz
+  /*  S  */ EO_ADD_XYZUNK,           // xyz + unk
 
-  /*  S  */ EO_DIVIDE,           // divide top int by second push result
-  /*  S  */ EO_MODULO,           // modulo top int be second push result
+  /*  S  */ EO_AND_BOLBOL,           // bol && bol
+  /*  S  */ EO_AND_BOLUNK,           // bol && unk
+  /*  S  */ EO_AND_UNKBOL,           // unk && bol
 
-  /*  S  */ EO_MUL_ID,           // integer * decimal
-  /*  S  */ EO_MUL_IF,           // integer * float
-  /*  S  */ EO_MUL_II,           // integer * int
-  /*  S  */ EO_MUL_IU,           // integer * unknown
+  /*  S  */ EO_DIV_BCDBCD,           // bcd / bcd
+  /*  S  */ EO_DIV_BCDFLT,           // bcd / int
+  /*  S  */ EO_DIV_BCDINT,           // bcd / int
+  /*  S  */ EO_DIV_DTEIVL,           // dte / ivl
+  /*  S  */ EO_DIV_FLTBCD,           // flt / bcd
+  /*  S  */ EO_DIV_FLTINT,           // flt / int
+  /*  S  */ EO_DIV_FLTFLT,           // flt / flt
+  /*  S  */ EO_DIV_INTBCD,           // int / bcd
+  /*  S  */ EO_DIV_INTFLT,           // int / flt
+  /*  S  */ EO_DIV_INTINT,           // int / int
+  /*  S  */ EO_DIV_IVLDTE,           // ivl / dte
+  /*  S  */ EO_DIV_IVLIVL,           // ivl / ivl
+  /*  S  */ EO_DIV_IVLTME,           // ivl / tme
+  /*  S  */ EO_DIV_IVLTSP,           // ivl / tsp
+  /*  S  */ EO_DIV_TMEIVL,           // tme / ivl
+  /*  S  */ EO_DIV_TSPIVL,           // tsp / ivl
+  /*  S  */ EO_DIV_UNKXYZ,           // unk / xyz
+  /*  S  */ EO_DIV_XYZUNK,           // xyz / unk
+  
+  // modulo
+  /*  S  */ EO_MOD_INTINT,          // int % int
+  /*  S  */ EO_MOD_UNKXYZ,          // unk % xyz
+  /*  S  */ EO_MOD_XYZUNK,          // xyz % unk
 
-  /*  S  */ EO_NEGATE,           // negate the top value
-  /*  S  */ EO_SUBTRACT,         // subtract second int from top push result
+  // multiply
+  /*  S  */ EO_MUL_BCDBCD,           // bcd * bcd
+  /*  S  */ EO_MUL_BCDFLT,           // bcd * int
+  /*  S  */ EO_MUL_BCDINT,           // bcd * int
+  /*  S  */ EO_MUL_DTEIVL,           // dte * ivl
+  /*  S  */ EO_MUL_FLTBCD,           // flt * bcd
+  /*  S  */ EO_MUL_FLTINT,           // flt * int
+  /*  S  */ EO_MUL_FLTFLT,           // flt * flt
+  /*  S  */ EO_MUL_INTBCD,           // int * bcd
+  /*  S  */ EO_MUL_INTFLT,           // int * flt
+  /*  S  */ EO_MUL_INTINT,           // int * int
+  /*  S  */ EO_MUL_IVLDTE,           // ivl * dte
+  /*  S  */ EO_MUL_IVLIVL,           // ivl * ivl
+  /*  S  */ EO_MUL_IVLTME,           // ivl * tme
+  /*  S  */ EO_MUL_IVLTSP,           // ivl * tsp
+  /*  S  */ EO_MUL_TMEIVL,           // tme * ivl
+  /*  S  */ EO_MUL_TSPIVL,           // tsp * ivl
+  /*  S  */ EO_MUL_UNKXYZ,           // unk * xyz
+  /*  S  */ EO_MUL_XYZUNK,           // xyz * unk
+
+  // negate
+  /*  S  */ EO_NEG_BCD,             // -bcd
+  /*  S  */ EO_NEG_FLT,             // -flt
+  /*  S  */ EO_NEG_INT,             // -int
+  /*  S  */ EO_NEG_IVL,             // -ivl
+
+  /*  S  */ EO_NOT_BOL,            // ! bol
+  /*  S  */ EO_NOT_UNK,            // ! unk
+
+  /*  S  */ EO_OR_BOLBOL,           // bol || bol
+  /*  S  */ EO_OR_BOLUNK,           // bol || unk
+  /*  S  */ EO_OR_UNKBOL,           // unk || bol
+
+  // subtract
+  /*  S  */ EO_SUB_BCDBCD,           // bcd * bcd
+  /*  S  */ EO_SUB_BCDFLT,           // bcd * int
+  /*  S  */ EO_SUB_BCDINT,           // bcd * int
+  /*  S  */ EO_SUB_DTEIVL,           // dte * ivl
+  /*  S  */ EO_SUB_FLTBCD,           // flt * bcd
+  /*  S  */ EO_SUB_FLTINT,           // flt * int
+  /*  S  */ EO_SUB_FLTFLT,           // flt * flt
+  /*  S  */ EO_SUB_INTBCD,           // int * bcd
+  /*  S  */ EO_SUB_INTFLT,           // int * flt
+  /*  S  */ EO_SUB_INTINT,           // int * int
+  /*  S  */ EO_SUB_IVLDTE,           // ivl * dte
+  /*  S  */ EO_SUB_IVLIVL,           // ivl * ivl
+  /*  S  */ EO_SUB_IVLTME,           // ivl * tme
+  /*  S  */ EO_SUB_IVLTSP,           // ivl * tsp
+  /*  S  */ EO_SUB_TMEIVL,           // tme * ivl
+  /*  S  */ EO_SUB_TSPIVL,           // tsp * ivl
+  /*  S  */ EO_SUB_UNKXYZ,           // unk * xyz
+  /*  S  */ EO_SUB_XYZUNK,           // xyz * unk
+
+  // xor
+  /*  S  */ EO_XOR_BOLBOL,           // bol xor bol
+  /*  S  */ EO_XOR_BOLUNK,           // bol xor unk
+  /*  S  */ EO_XOR_UNKBOL,           // unk xor bol
 
   // counter
   /*  R  */ EO_CTR_0_DEC,        // dec counter 0
@@ -80,10 +169,29 @@ enum eEO : u1 // expression operators
   // relational operators
   /*  S  */ EO_LESSTHAN,         // test top < 2nd, push result
   /*  S  */ EO_LESSEQUAL,        // test top <= 2nd, push result
-  /*  S  */ EO_EQUAL,            // test top == 2nd, push result
   /*  S  */ EO_NOTEQUAL,         // test top != 2nd, push result
   /*  S  */ EO_GREATEREQUAL,     // test top >= 2nd, push result
   /*  S  */ EO_GREATERTHAN,      // test top > 2nd, push result
+
+  /*  S  */ EO_EQ_BCDBCD,        // bcd == bcd
+  /*  S  */ EO_EQ_BCDFLT,        // bcd == flt
+  /*  S  */ EO_EQ_BCDINT,        // bcd == int
+  /*  S  */ EO_EQ_BOLBOL,        // bol == bol
+  /*  S  */ EO_EQ_DTEDTE,        // dte == bcd
+  /*  S  */ EO_EQ_DTETSP,        // dte == tsp
+  /*  S  */ EO_EQ_FLTBCD,        // flt == bcd
+  /*  S  */ EO_EQ_FLTFLT,        // flt == flt
+  /*  S  */ EO_EQ_FLTINT,        // flt == int
+  /*  S  */ EO_EQ_INTBCD,        // int == bcd
+  /*  S  */ EO_EQ_INTFLT,        // int == flt
+  /*  S  */ EO_EQ_INTINT,        // int == int
+  /*  S  */ EO_EQ_IVLIVL,        // ivl == ivl
+  /*  S  */ EO_EQ_TMETME,        // tme == tme
+  /*  S  */ EO_EQ_TSPDTE,        // tsp == dte
+  /*  S  */ EO_EQ_TSPTSP,        // tsp == tsp
+  /*  S  */ EO_EQ_VCHVCH,        // vch == vch
+  /*  S  */ EO_EQ_UNKXYZ,        // unk == xyz
+  /*  S  */ EO_EQ_XYZUNK,        // xyz == unk
 
   // column pushes
   /*  S  */ EO_PUSH_COLUMN_LENGTH, // push column length
@@ -333,21 +441,113 @@ static Stz* aEO[]
   
   // arithmetic operators
   // add
-  /*    */ "EO_ADD_ID"_Stz,
-  /*    */ "EO_ADD_IF"_Stz,
-  /*    */ "EO_ADD_II"_Stz,
-  /*    */ "EO_ADD_IU"_Stz,
+  /*    */ "EO_ADD_BCDBCD"_Stz,
+  /*    */ "EO_ADD_BCDFLT"_Stz,
+  /*    */ "EO_ADD_BCDINT"_Stz,
+  /*    */ "EO_ADD_DTEIVL"_Stz,
+  /*    */ "EO_ADD_FLTBCD"_Stz,
+  /*    */ "EO_ADD_FLTINT"_Stz,
+  /*    */ "EO_ADD_FLTFLT"_Stz,
+  /*    */ "EO_ADD_INTBCD"_Stz,
+  /*    */ "EO_ADD_INTFLT"_Stz,
+  /*    */ "EO_ADD_INTINT"_Stz,
+  /*    */ "EO_ADD_IVLDTE"_Stz,
+  /*    */ "EO_ADD_IVLIVL"_Stz,
+  /*    */ "EO_ADD_IVLTME"_Stz,
+  /*    */ "EO_ADD_IVLTSP"_Stz,
+  /*    */ "EO_ADD_TMEIVL"_Stz,
+  /*    */ "EO_ADD_TSPIVL"_Stz,
+  /*    */ "EO_ADD_UNKXYZ"_Stz,
+  /*    */ "EO_ADD_XYZUNK"_Stz,
 
-  /*    */ "EO_DIVIDE"_Stz,
-  /*    */ "EO_MODULO"_Stz,
+  // and
+  /*    */ "EO_AND_BOLBOL"_Stz,
+  /*    */ "EO_AND_BOLUNK"_Stz,
+  /*    */ "EO_AND_UNKBOL"_Stz,
 
-  /*    */ "EO_MUL_ID"_Stz,
-  /*    */ "EO_MUL_IF"_Stz,
-  /*    */ "EO_MUL_II"_Stz,
-  /*    */ "EO_MUL_IU"_Stz,
+  // divide
+  /*    */ "EO_DIV_BCDBCD"_Stz,
+  /*    */ "EO_DIV_BCDFLT"_Stz,
+  /*    */ "EO_DIV_BCDINT"_Stz,
+  /*    */ "EO_DIV_DTEIVL"_Stz,
+  /*    */ "EO_DIV_FLTBCD"_Stz,
+  /*    */ "EO_DIV_FLTINT"_Stz,
+  /*    */ "EO_DIV_FLTFLT"_Stz,
+  /*    */ "EO_DIV_INTBCD"_Stz,
+  /*    */ "EO_DIV_INTFLT"_Stz,
+  /*    */ "EO_DIV_INTINT"_Stz,
+  /*    */ "EO_DIV_IVLDTE"_Stz,
+  /*    */ "EO_DIV_IVLIVL"_Stz,
+  /*    */ "EO_DIV_IVLTME"_Stz,
+  /*    */ "EO_DIV_IVLTSP"_Stz,
+  /*    */ "EO_DIV_TMEIVL"_Stz,
+  /*    */ "EO_DIV_TSPIVL"_Stz,
+  /*    */ "EO_DIV_UNKXYZ"_Stz,
+  /*    */ "EO_DIV_XYZUNK"_Stz,
 
-  /*    */ "EO_NEGATE"_Stz,
-  /*    */ "EO_SUBTRACT"_Stz,
+  // modulo
+  /*    */ "EO_MOD_INTINT"_Stz,
+  /*    */ "EO_MOD_UNKXYZ"_Stz,
+  /*    */ "EO_MOD_XYZUNK"_Stz,
+
+  // multiply
+  /*    */ "EO_MUL_BCDBCD"_Stz,
+  /*    */ "EO_MUL_BCDFLT"_Stz,
+  /*    */ "EO_MUL_BCDINT"_Stz,
+  /*    */ "EO_MUL_DTEIVL"_Stz,
+  /*    */ "EO_MUL_FLTBCD"_Stz,
+  /*    */ "EO_MUL_FLTINT"_Stz,
+  /*    */ "EO_MUL_FLTFLT"_Stz,
+  /*    */ "EO_MUL_INTBCD"_Stz,
+  /*    */ "EO_MUL_INTFLT"_Stz,
+  /*    */ "EO_MUL_INTINT"_Stz,
+  /*    */ "EO_MUL_IVLDTE"_Stz,
+  /*    */ "EO_MUL_IVLIVL"_Stz,
+  /*    */ "EO_MUL_IVLTME"_Stz,
+  /*    */ "EO_MUL_IVLTSP"_Stz,
+  /*    */ "EO_MUL_TMEIVL"_Stz,
+  /*    */ "EO_MUL_TSPIVL"_Stz,
+  /*    */ "EO_MUL_UNKXYZ"_Stz,
+  /*    */ "EO_MUL_XYZUNK"_Stz,
+
+  /*    */ "EO_NEG_BCD"_Stz,
+  /*    */ "EO_NEG_FLT"_Stz,
+  /*    */ "EO_NEG_INT"_Stz,
+  /*    */ "EO_NEG_IVL"_Stz,
+
+  // not
+  /*    */ "EO_NOT_BOL"_Stz,
+  /*    */ "EO_NOT_UNK"_Stz,
+
+  // or
+  /*    */ "EO_OR_BOLBOL"_Stz,
+  /*    */ "EO_OR_BOLUNK"_Stz,
+  /*    */ "EO_OR_UNKBOL"_Stz,
+
+  // subtract
+  /*    */ "EO_SUB_BCDBCD"_Stz,
+  /*    */ "EO_SUB_BCDFLT"_Stz,
+  /*    */ "EO_SUB_BCDINT"_Stz,
+  /*    */ "EO_SUB_DTEIVL"_Stz,
+  /*    */ "EO_SUB_FLTBCD"_Stz,
+  /*    */ "EO_SUB_FLTINT"_Stz,
+  /*    */ "EO_SUB_FLTFLT"_Stz,
+  /*    */ "EO_SUB_INTBCD"_Stz,
+  /*    */ "EO_SUB_INTFLT"_Stz,
+  /*    */ "EO_SUB_INTINT"_Stz,
+  /*    */ "EO_SUB_IVLDTE"_Stz,
+  /*    */ "EO_SUB_IVLIVL"_Stz,
+  /*    */ "EO_SUB_IVLTME"_Stz,
+  /*    */ "EO_SUB_IVLTSP"_Stz,
+  /*    */ "EO_SUB_TMEIVL"_Stz,
+  /*    */ "EO_SUB_TSPIVL"_Stz,
+  /*    */ "EO_SUB_UNKXYZ"_Stz,
+  /*    */ "EO_SUB_XYZUNK"_Stz,
+
+  // xor
+  /*    */ "EO_XOR_BOLBOL"_Stz,
+  /*    */ "EO_XOR_BOLUNK"_Stz,
+  /*    */ "EO_XOR_UNKBOL"_Stz,
 
   // counter
   /*    */ "EO_CTR_0_DEC"_Stz,
@@ -394,10 +594,29 @@ static Stz* aEO[]
   // relational operators
   /*    */ "EO_LESSTHAN"_Stz,
   /*    */ "EO_LESSEQUAL"_Stz,
-  /*    */ "EO_EQUAL"_Stz,
   /*    */ "EO_NOTEQUAL"_Stz,
   /*    */ "EO_GREATEREQUAL"_Stz,
   /*    */ "EO_GREATERTHAN"_Stz,
+
+  /*    */ "EO_EQ_BCDBCD"_Stz,
+  /*    */ "EO_EQ_BCDBOL"_Stz,
+  /*    */ "EO_EQ_BCDFLT"_Stz,
+  /*    */ "EO_EQ_BCDINT"_Stz,
+  /*    */ "EO_EQ_DTEDTE"_Stz,
+  /*    */ "EO_EQ_DTETSP"_Stz,
+  /*    */ "EO_EQ_FLTBCD"_Stz,
+  /*    */ "EO_EQ_FLTFLT"_Stz,
+  /*    */ "EO_EQ_FLTINT"_Stz,
+  /*    */ "EO_EQ_INTBCD"_Stz,
+  /*    */ "EO_EQ_INTFLT"_Stz,
+  /*    */ "EO_EQ_INTINT"_Stz,
+  /*    */ "EO_EQ_IVLIVL"_Stz,
+  /*    */ "EO_EQ_TMETME"_Stz,
+  /*    */ "EO_EQ_TSPDTE"_Stz,
+  /*    */ "EO_EQ_TSPTSP"_Stz,
+  /*    */ "EO_EQ_VCHVCH"_Stz,
+  /*    */ "EO_EQ_UNKXYZ"_Stz,
+  /*    */ "EO_EQ_XYZUNK"_Stz,
 
   // column pushes
   /*    */ "EO_PUSH_COLUMN_LENGTH"_Stz,
@@ -630,8 +849,7 @@ static Stz* aEO[]
   // super fragments
   /*    */ "EO_SUPER_Q100"_Stz,
 
-
-    /*    */ "ENUMS"_Stz
+  /*    */ "ENUMS"_Stz
 };
 
 //----------------------------------------------------------------------------
@@ -651,23 +869,115 @@ static EoArg EoArgs[]
   
   // arithmetic operators
   // add
-  { EA_NONE,    0 },  // EO_ADD_ID
-  { EA_NONE,    0 },  // EO_ADD_IF
-  { EA_NONE,    0 },  // EO_ADD_II
-  { EA_NONE,    0 },  // EO_ADD_IU
+  { EA_NONE,    0 },  // EO_ADD_BCDBCD
+  { EA_NONE,    0 },  // EO_ADD_BCDFLT
+  { EA_NONE,    0 },  // EO_ADD_BCDINT
+  { EA_NONE,    0 },  // EO_ADD_DTEIVL
+  { EA_NONE,    0 },  // EO_ADD_FLTBCD
+  { EA_NONE,    0 },  // EO_ADD_FLTINT
+  { EA_NONE,    0 },  // EO_ADD_FLTFLT
+  { EA_NONE,    0 },  // EO_ADD_INTBCD
+  { EA_NONE,    0 },  // EO_ADD_INTFLT
+  { EA_NONE,    0 },  // EO_ADD_INTINT
+  { EA_NONE,    0 },  // EO_ADD_IVLDTE
+  { EA_NONE,    0 },  // EO_ADD_IVLIVL
+  { EA_NONE,    0 },  // EO_ADD_IVLTME
+  { EA_NONE,    0 },  // EO_ADD_IVLTSP
+  { EA_NONE,    0 },  // EO_ADD_TMEIVL
+  { EA_NONE,    0 },  // EO_ADD_TSPIVL
+  { EA_NONE,    0 },  // EO_ADD_UNKXYZ
+  { EA_NONE,    0 },  // EO_ADD_XYZUNK
 
-  { EA_NONE,    0 },  // EO_DIVIDE
-  { EA_NONE,    0 },  // EO_MODULO
+  // and
+  { EA_NONE,    0 },  // EO_AND_BOLBOL
+  { EA_NONE,    0 },  // EO_AND_BOLUNK
+  { EA_NONE,    0 },  // EO_AND_UNKBOL
 
-  { EA_NONE,    0 },  // EO_MUL_ID
-  { EA_NONE,    0 },  // EO_MUL_IF
-  { EA_NONE,    0 },  // EO_MUL_II
-  { EA_NONE,    0 },  // EO_MUL_IU
+  // divide
+  { EA_NONE,    0 },  // EO_DIV_BCDBCD
+  { EA_NONE,    0 },  // EO_DIV_BCDFLT
+  { EA_NONE,    0 },  // EO_DIV_BCDINT
+  { EA_NONE,    0 },  // EO_DIV_DTEIVL
+  { EA_NONE,    0 },  // EO_DIV_FLTBCD
+  { EA_NONE,    0 },  // EO_DIV_FLTINT
+  { EA_NONE,    0 },  // EO_DIV_FLTFLT
+  { EA_NONE,    0 },  // EO_DIV_INTBCD
+  { EA_NONE,    0 },  // EO_DIV_INTFLT
+  { EA_NONE,    0 },  // EO_DIV_INTINT
+  { EA_NONE,    0 },  // EO_DIV_IVLDTE
+  { EA_NONE,    0 },  // EO_DIV_IVLIVL
+  { EA_NONE,    0 },  // EO_DIV_IVLTME
+  { EA_NONE,    0 },  // EO_DIV_IVLTSP
+  { EA_NONE,    0 },  // EO_DIV_TMEIVL
+  { EA_NONE,    0 },  // EO_DIV_TSPIVL
+  { EA_NONE,    0 },  // EO_DIV_UNKXYZ
+  { EA_NONE,    0 },  // EO_DIV_XYZUNK
 
-  { EA_NONE,    0 },  // EO_NEGATE
-  { EA_NONE,    0 },  // EO_SUBTRACT
+  // modulo
+  { EA_NONE,    0 },  // EO_MOD_INTINT
+  { EA_NONE,    0 },  // EO_MOD_UNKXYZ
+  { EA_NONE,    0 },  // EO_MOD_XYZUNK
 
-  // counter
+  // multiply
+  { EA_NONE,    0 },  // EO_MUL_BCDBCD
+  { EA_NONE,    0 },  // EO_MUL_BCDFLT
+  { EA_NONE,    0 },  // EO_MUL_BCDINT
+  { EA_NONE,    0 },  // EO_MUL_DTEIVL
+  { EA_NONE,    0 },  // EO_MUL_FLTBCD
+  { EA_NONE,    0 },  // EO_MUL_FLTINT
+  { EA_NONE,    0 },  // EO_MUL_FLTFLT
+  { EA_NONE,    0 },  // EO_MUL_INTBCD
+  { EA_NONE,    0 },  // EO_MUL_INTFLT
+  { EA_NONE,    0 },  // EO_MUL_INTINT
+  { EA_NONE,    0 },  // EO_MUL_IVLDTE
+  { EA_NONE,    0 },  // EO_MUL_IVLIVL
+  { EA_NONE,    0 },  // EO_MUL_IVLTME
+  { EA_NONE,    0 },  // EO_MUL_IVLTSP
+  { EA_NONE,    0 },  // EO_MUL_TMEIVL
+  { EA_NONE,    0 },  // EO_MUL_TSPIVL
+  { EA_NONE,    0 },  // EO_MUL_UNKXYZ
+  { EA_NONE,    0 },  // EO_MUL_XYZUNK
+
+  { EA_NONE,    0 },  // EO_NEG_BCD
+  { EA_NONE,    0 },  // EO_NEG_FLT
+  { EA_NONE,    0 },  // EO_NEG_INT
+  { EA_NONE,    0 },  // EO_NEG_IVL
+
+  // not
+  { EA_NONE,    0 },  // EO_NOT_BOL
+  { EA_NONE,    0 },  // EO_NOT_UNK
+
+  // or
+  { EA_NONE,    0 },  // EO_OR_BOLBOL
+  { EA_NONE,    0 },  // EO_OR_BOLUNK
+  { EA_NONE,    0 },  // EO_OR_UNKBOL
+
+  // subtract
+  { EA_NONE,    0 },  // EO_SUB_BCDBCD
+  { EA_NONE,    0 },  // EO_SUB_BCDFLT
+  { EA_NONE,    0 },  // EO_SUB_BCDINT
+  { EA_NONE,    0 },  // EO_SUB_DTEIVL
+  { EA_NONE,    0 },  // EO_SUB_FLTBCD
+  { EA_NONE,    0 },  // EO_SUB_FLTINT
+  { EA_NONE,    0 },  // EO_SUB_FLTFLT
+  { EA_NONE,    0 },  // EO_SUB_INTBCD
+  { EA_NONE,    0 },  // EO_SUB_INTFLT
+  { EA_NONE,    0 },  // EO_SUB_INTINT
+  { EA_NONE,    0 },  // EO_SUB_IVLDTE
+  { EA_NONE,    0 },  // EO_SUB_IVLIVL
+  { EA_NONE,    0 },  // EO_SUB_IVLTME
+  { EA_NONE,    0 },  // EO_SUB_IVLTSP
+  { EA_NONE,    0 },  // EO_SUB_TMEIVL
+  { EA_NONE,    0 },  // EO_SUB_TSPIVL
+  { EA_NONE,    0 },  // EO_SUB_UNKXYZ
+  { EA_NONE,    0 },  // EO_SUB_XYZUNK
+
+   // xor
+  { EA_NONE,    0 },  // EO_XOR_BOLBOL
+  { EA_NONE,    0 },  // EO_XOR_BOLUNK
+  { EA_NONE,    0 },  // EO_XOR_UNKBOL
+
+   // counter
   { EA_NONE,    0 },  // EO_CTR_0_DEC
   { EA_NONE,    0 },  // EO_CTR_0_INC
   { EA_NONE,    0 },  // EO_CTR_0_POP
@@ -712,10 +1022,29 @@ static EoArg EoArgs[]
   // relational operators
   { EA_NONE,    0 },  // EO_LESSTHAN
   { EA_NONE,    0 },  // EO_LESSEQUAL
-  { EA_NONE,    0 },  // EO_EQUAL
   { EA_NONE,    0 },  // EO_NOTEQUAL
   { EA_NONE,    0 },  // EO_GREATEREQUAL
   { EA_NONE,    0 },  // EO_GREATERTHAN
+
+  { EA_NONE,    0 },  // EO_EQ_BCDBCD
+  { EA_NONE,    0 },  // EO_EQ_BCDBOL,
+  { EA_NONE,    0 },  // EO_EQ_BCDFLT
+  { EA_NONE,    0 },  // EO_EQ_BCDINT
+  { EA_NONE,    0 },  // EO_EQ_DTEDTE
+  { EA_NONE,    0 },  // EO_EQ_DTETSP
+  { EA_NONE,    0 },  // EO_EQ_FLTBCD
+  { EA_NONE,    0 },  // EO_EQ_FLTFLT
+  { EA_NONE,    0 },  // EO_EQ_FLTINT
+  { EA_NONE,    0 },  // EO_EQ_INTBCD
+  { EA_NONE,    0 },  // EO_EQ_INTFLT
+  { EA_NONE,    0 },  // EO_EQ_INTINT
+  { EA_NONE,    0 },  // EO_EQ_IVLIVL
+  { EA_NONE,    0 },  // EO_EQ_TMETME
+  { EA_NONE,    0 },  // EO_EQ_TSPDTE
+  { EA_NONE,    0 },  // EO_EQ_TSPTSP
+  { EA_NONE,    0 },  // EO_EQ_VCHVCH
+  { EA_NONE,    0 },  // EO_EQ_UNKXYZ
+  { EA_NONE,    0 },  // EO_EQ_XYZUNK
 
   // column pushes
   { EA_INT,     8 },  // EO_PUSH_COLUMN_LENGTH
@@ -910,6 +1239,7 @@ static EoArg EoArgs[]
   //  row device column operators
   { EA_SUBSCR,  8 },  // EO_DEVROW_POPCOLI
   { EA_SUBSCR,  8 },  // EO_DEVROW_POPCOLS
+
   { EA_SUBSCR,  8 },  // EO_DEVROW_PUSHCOLI
   { EA_SUBSCR,  8 },  // EO_DEVROW_PUSHCOLS
 
@@ -949,7 +1279,7 @@ static EoArg EoArgs[]
   // super
   { EA_NONE,    0 },  // super fragment Q100
 
-    // -- end --
+  // -- end --
   { EA_NONE,    0 },  // EO_ENUMS
 };
 #endif

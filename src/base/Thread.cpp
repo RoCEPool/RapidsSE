@@ -43,9 +43,6 @@ Thread::Thread(void)
   _checkInitialised_(CN_THREAD);
   
   ++ gixThread;
-  AM::vLogThd(SL_INF,this,HA_THD_CONSTRUCT,
-              "Thread construct : %p (%lld threads exist)"_Stz, //!format-LogThd
-              this,* gixThread);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
 }
@@ -63,9 +60,6 @@ Thread::~Thread(void) noexcept(false)
   delete m_pPsxThd;
   
   -- gixThread;
-  AM::vLogThd(SL_INF,this,HA_THD_DESTRUCT,
-              "Thread destruct : %p (%lld threads exist)"_Stz, //!format-LogThd
-              this,* gixThread);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -91,10 +85,6 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
       vTrace("Thread::aEntryPoint_dedicated %p %lld\n"_Stz,
              pThread,pThread->iThreadNo());
     
-    AM::vLogRes(SL_INF,pThread->m_pPsxThd,RA_THD_ENTRY,
-                "dedicated thead entry: %p"_Stz, //!format-LogRes
-                pThread);
-
     //pThread->vBindCore();
     
     // -- -- -- -- -- -- -- -- -- --
@@ -106,11 +96,7 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
     if (AM::bVerbose())
       vTrace("Thread::aEntryPoint %p %lld exiting\n"_Stz,
              pThread,pThread->iThreadNo());
-    
-    AM::vLogRes(SL_INF,pThread->m_pPsxThd,RA_THD_EXIT,
-                "Thead exit (dedicated) : %p"_Stz, //!format-LogRes
-                pThread);
-    
+        
     Scheduler::vThread_RemoveDedicatedThread(pThread);
     
     pThread->m_pPsxThd->vThreadExit();
@@ -153,11 +139,7 @@ void* Thread::aEntryPoint_general(void* pArg)
     if (AM::bVerbose())
       vTrace("    Thread::aEntryPoint_general %p %lld\n"_Stz,
              pThread,pThread->iThreadNo());
-    
-    AM::vLogRes(SL_INF,pThread->m_pPsxThd,RA_THD_ENTRY,
-                "general thead entry: %p"_Stz, //!format-LogRes
-                pThread);
-    
+        
     //pThread->vBindCore();
     
     // -- -- -- -- -- -- -- -- -- --
@@ -169,11 +151,7 @@ void* Thread::aEntryPoint_general(void* pArg)
     if (AM::bVerbose())
       vTrace("Thread::aEntryPoint %p %lld exiting\n"_Stz,
              pThread,pThread->iThreadNo());
-    
-    AM::vLogRes(SL_INF,pThread->m_pPsxThd,RA_THD_EXIT,
-                "Thead exit (general) : %p"_Stz, //!format-LogRes
-                pThread);
-    
+        
     Scheduler::vThread_RemoveGeneralThread(pThread);
     
     pThread->m_pPsxThd->vThreadExit();

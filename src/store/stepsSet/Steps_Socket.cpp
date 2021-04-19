@@ -25,7 +25,6 @@
 #include "CrwBuffer.hpp"
 #include "Node.hpp"
 #include "Job.hpp"
-#include "JobLog.hpp"
 #include "Socket.hpp"
 #include "XmitOperand.hpp"
 #include "Node_I.hpp"
@@ -525,10 +524,7 @@ void Step::vSocketRecvObject_LowMem(void)
     
     //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
     //       pJob,eClass,aCN[eClass],nObjectSize);
-    
-    //ActLog::vAdd(pJob,AN_RECV_JOB,pJob(),nObjectSize);
-    //ActLog::vAdd(pJob,AN_RECV_JOB_LOW_MEMORY);
-    
+        
     m_pDataStack->vPushPtr(pJob);
     m_pDataStack->vPushInt(true);
     EXIT();
@@ -789,13 +785,7 @@ void Step::vSocketSendObject(void)
   
   if (_bIsValidJob(eClass)) {
     Job* pJob = _pJob(pObject);
-    
-    if (pJob->m_xReqTuple.m_iDetail)
-      JobLog::vNote(pJob,"Send: %s %p socket %llx"_Stz,
-                         aCN[eClass],
-                         pJob,
-                         pSocket);
-    
+        
     SP_Job spJob;
 
 //    vTrace("%lld %p: vSocketSendObject: Job %s\n"_Stz,
@@ -803,45 +793,16 @@ void Step::vSocketSendObject(void)
 //           pSocket,
 //           spJob.sz_detail(pJob));
 
-    
-    //ActLog::vAdd(pJob,AN_SEND_JOB,pJob(),nObjectSize);
   }
 
   RASSERT(_bIsValidJob(eClass) ||
           _bIsValidOperand(eClass));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-//  if (eClass == CN_CRWBUFFER) {
-//    CrwBuffer* pCrwBuffer = _pCrwBuffer(pObject);
-//    pCrwBuffer->vShow();
-//    vDebugPoint();
-//  }
-  AM::vLogRes(SL_INF,pSocket,RA_SKT_SEND,
-              "Object %s %lldB to node %s"_Stz, //!format-LogRes
-              aCN[eClass],
-              nObjectSize,
-              m_pJob->pLogicUnit_job()->m_xpSendNode.bIsNotNull() ?
-                m_pJob->pLogicUnit_job()->m_xpSendNode->szNodeNm() : "<unknown>"_Stz,
-              C_VARGS_END);
 
   SysCall oSysCall;
   
   bool bResult = pSocket->bSendTo(pObject, nObjectSize, oSysCall);
-  
-  if (bResult)
-    AM::vLogRes(SL_INF,pSocket,RA_SKT_SENT,
-                "Object %s %lldB"_Stz, //!format-LogRes
-                aCN[eClass],
-                nObjectSize,
-                C_VARGS_END);
-  else {
-    AM::vLogRes(SL_INF, pSocket, RA_SKT_ERROR,
-                "Error while sending object %s %lldB"_Stz, //!format-LogRes
-                aCN[eClass],
-                nObjectSize,
-                C_VARGS_END);
-  }
 
   m_pDataStack->vPushInt(bResult);
 

@@ -15019,7 +15019,6 @@ void Task::vAddMunged(Task* )
     "  args.dontFree    if \" --dontFree\"    str.cat then\n"
     "  args.freeCB      if \" --freeCB\"      str.cat then\n"
     "  args.metadata    if \" --metadata\"    str.cat then\n"
-    "  args.log         if \" --log\"         str.cat then\n"
     "  args.munged      if \" --munged\"      str.cat then\n"
     "  args.heartbeat   if \" --heartbeat BROADCAST 8888\" str.cat then\n"
     "\n"

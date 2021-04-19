@@ -57,7 +57,6 @@
   args.dontFree    if " --dontFree"    str.cat then
   args.freeCB      if " --freeCB"      str.cat then
   args.metadata    if " --metadata"    str.cat then
-  args.log         if " --log"         str.cat then
   args.munged      if " --munged"      str.cat then
   args.heartbeat   if " --heartbeat BROADCAST 8888" str.cat then
 

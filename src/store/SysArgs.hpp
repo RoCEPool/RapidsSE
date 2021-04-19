@@ -81,7 +81,6 @@ namespace STORE
     bool m_bJot;             // jotting
     bool m_bKillPrev;        // kill previous se's (temporary)
     bool m_bLock;            // lock shared memory pages in memory
-    bool m_bLog;             // use shared log
     i8   m_nLvlLevels;       // maximum number of levels
     i8   m_iLvlRatio;        // level ratio
     bool m_bNoMunge;         // prompt not to munge

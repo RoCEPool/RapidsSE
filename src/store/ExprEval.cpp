@@ -141,7 +141,7 @@ void ExprEval::vAddArithmetic(Token* pTkn, Column* pColumn) {
     m_xTypeStack.vPush((i8)eResultType);
   }
   else if (pTkn->bSame("/"_Stz)) {
-    StrLib::vSprintCat(m_sAsmText, "  EO_DIVIDE\n"_Stz);
+    StrLib::vSprintCat(m_sAsmText, "  EO_DIV_INTINT\n"_Stz);
   }
   else if (pTkn->bSame("%"_Stz)) {
     StrLib::vSprintCat(m_sAsmText, "  EO_MODULO\n"_Stz);
@@ -155,12 +155,12 @@ void ExprEval::vAddArithmetic(Token* pTkn, Column* pColumn) {
 
     if (pColumn && pColumn->eColumnType() == CT_DECIMAL) {
       StrLib::vSprintCat(m_sAsmText, "  EO_INTEGER 100\n"_Stz);
-      StrLib::vSprintCat(m_sAsmText, "  EO_DIVIDE\n"_Stz);
+      StrLib::vSprintCat(m_sAsmText, "  EO_DIV_INTINT\n"_Stz);
     }
   }
   else {
     ASSERT(pTkn->bSame("-"_Stz));
-    StrLib::vSprintCat(m_sAsmText, "  EO_SUBTRACT\n"_Stz);
+    StrLib::vSprintCat(m_sAsmText, "  EO_SUB_INTINT\n"_Stz);
   }
 }
 
@@ -372,7 +372,7 @@ void ExprEval::vAddRelational(Token* pTkn)
   }
   else {
     ASSERT(pTkn->bSame("=="_Stz));
-      StrLib::vSprintCat(m_sAsmText, "  EO_EQUAL\n"_Stz);
+      StrLib::vSprintCat(m_sAsmText, "  EO_EQ_INTINT\n"_Stz);
   }
 }
 
@@ -436,7 +436,7 @@ eEC ExprEval::eAddSum(eCT eColumnType, i8 iColumn)
     case CT_FLOAT:
       StrLib::vSprintCat(m_sAsmText, "  EO_PUSH_DEVROW_DST\n"_Stz);
       StrLib::vSprintCat(m_sAsmText, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, iColumn);
-      StrLib::vSprintCat(m_sAsmText, "  EO_ADD_II\n"_Stz);
+      StrLib::vSprintCat(m_sAsmText, "  EO_ADD_INTINT\n"_Stz);
       StrLib::vSprintCat(m_sAsmText, "  EO_PUSH_DEVROW_DST\n"_Stz);
       StrLib::vSprintCat(m_sAsmText, "  EO_DEVROW_POPCOLI %lld\n"_Stz, iColumn);
       return EC_NONE;
@@ -472,7 +472,7 @@ eEC ExprEval::eAddSumGby(eCT eColumnType, i8 iColumn)
     case CT_DECIMAL:
     case CT_FLOAT:
       StrLib::vSprintCat(m_sAsmText, "  EO_PAY_FETCH_COLI %lld\n"_Stz, iColumn);
-      StrLib::vSprintCat(m_sAsmText, "  EO_ADD_II\n"_Stz);
+      StrLib::vSprintCat(m_sAsmText, "  EO_ADD_INTINT\n"_Stz);
       StrLib::vSprintCat(m_sAsmText, "  EO_PAY_STORE_COLI %lld\n"_Stz, iColumn);
       return EC_NONE;
 

@@ -559,39 +559,6 @@ void Table::vListContents(i8 i_Depth)
 }
 
 /*----------------------------------------------------------------------------*/
-/* mark table to activity map                                                 */
-/*----------------------------------------------------------------------------*/
-void Table::vMarkTable(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
- 
-  s48K sTableMark;
-  
-  sTableMark.vSprintCat("Table %s\n"_Stz,
-                        m_sTableNm.szStz());
-  
-  i8 nCols = m_pStreamDef->nColumns();
-  
-  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
-    
-    Column* pColumn = m_pStreamDef->pGetColumn(i_Col);
-    sTableMark.vSprintCat("  Col %02lld %s %s(%lld,%lld) %s\n"_Stz,
-                          i_Col,
-                          pColumn->szColNm(),
-                          
-                          aCT[pColumn->eColumnType()],
-                          pColumn->iColumnLength(),
-                          pColumn->iColumnScale(),
-                          
-                          pColumn->bIsNullable() ? "nullable" : "not-null",
-                          pColumn->bIsPtnKey() ? "ptn-key" : ""
-                          );
-
-  }
-    
-}
-
-/*----------------------------------------------------------------------------*/
 /* get a partition                                                            */
 /*----------------------------------------------------------------------------*/
 TablePtn* Table::pTablePtn(i8 i_TablePtn)

@@ -9,7 +9,6 @@
 #include "Steps.hpp"
 
 #include "Job.hpp"
-#include "JobLog.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -48,9 +47,6 @@ void Step::vLogMark(void)
   s256 sMark;
 
   m_pDataStack->vPopStr(sMark,__func__);
-
-  //i8 iJobId = m_pJob->m_iObjectId;
-  JobLog::vNote(m_pJob,sMark);
   
   EXIT();
 }
@@ -109,9 +105,7 @@ void Step::vLogMarkSeed(void)
 
   s32 sWordNm;
   m_pDataStack->vPopStr(sWordNm,__func__);
-  
-  //ActLog::vAdd(m_pJob,(eAN)iSeed,sWordNm.szStz());
-  
+    
   EXIT();
 }
 
@@ -127,9 +121,7 @@ void Step::vLogMarkWord(void)
 
   s32 sWordNm;
   m_pDataStack->vPopStr(sWordNm,__func__);
-  
-  //ActLog::vAdd(m_pJob,(eAN)iAN,sWordNm.szStz());
-  
+    
   EXIT();
 }
 

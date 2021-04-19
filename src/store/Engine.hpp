@@ -47,7 +47,6 @@ namespace STORE
     static void vMungeCheck(void);
     static void vNoMemoryLogging(void);
     static void vOperandQueueReport(bool bStdOut);
-    static void vOpenLog(void);
     static void vOpenPool(void);
     static bool bOpenPool(s32& sPoolName);
     static void vOpenTrace(void);

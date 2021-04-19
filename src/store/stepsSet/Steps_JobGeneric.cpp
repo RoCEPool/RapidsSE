@@ -51,8 +51,6 @@ void Step::vJob__BegunNew(void)
   if (pDistJob->bHasTag(C_TAG_FLOW))
     pJobBegun->pJobTags()->vInsert(C_TAG_FLOW,1);
 
-  //ActLog::vAdd(pJob(),AN_NEW_JOB,pJobBegun);
-  
   m_pDataStack->vPushPtr(pJobBegun);
   
   EXIT();
@@ -81,9 +79,7 @@ void Step::vJob__CancelNew(void)
 
   if (pDistJob->bHasTag(C_TAG_FLOW))
     pJobCancel->pJobTags()->vInsert(C_TAG_FLOW,1);
-  
-  //ActLog::vAdd(pJob(),AN_NEW_JOB,pJobCancel);
-  
+    
   m_pDataStack->vPushPtr(pJobCancel);
   
   EXIT();
@@ -103,8 +99,6 @@ void Step::vJob__CancelledNew(void)
   pJobCancelled->vParticipantNode(AM::pGrid()->iThisNode());
   pJobCancelled->vNormalSides(false);
   pJobCancelled->vJobKind(JK_GENERIC);
-  
-  //ActLog::vAdd(pJob(),AN_NEW_JOB,pJobCancelled);
   
   pJobCancelled->vJobNm("_cancelled"_Stz);
   pJobCancelled->pJobTags()->vInsert(C_TAG_JOBNM,"_cancelled"_Stz);
@@ -134,9 +128,7 @@ void Step::vJob__EndNew(void)
   pJobEnd->m_xJobId = pDistJob->iJobId();
   pJobEnd->vParticipantNode(AM::pGrid()->iThisNode());
   pJobEnd->vJobKind(JK_GENERIC);
-  
-  //ActLog::vAdd(pJob(),AN_NEW_JOB,pJobEnd);
-  
+    
   pJobEnd->vJobNm("_end"_Stz);
   pJobEnd->pJobTags()->vInsert(C_TAG_JOBNM,"_end"_Stz);
   pJobEnd->pJobTags()->vInsert(C_TAG_PATH,"/"_Stz);
@@ -176,9 +168,7 @@ void Step::vJob__EndedNew(void)
 
   if (pDistJob->bHasTag(C_TAG_FLOW))
     pJobEnded->pJobTags()->vInsert(C_TAG_FLOW,1);
-  
-  //ActLog::vAdd(pJob(),AN_NEW_JOB,pJobEnded);
-  
+    
   m_pDataStack->vPushPtr(pJobEnded);
   
   EXIT();
@@ -197,9 +187,7 @@ void Step::vJob__ExecuteNew(void)
   pJobExecute->m_xJobId = pDistJob->iJobId();
   pJobExecute->vParticipantNode(AM::pGrid()->iThisNode());
   pJobExecute->vJobKind(JK_GENERIC);
-  
-  //ActLog::vAdd(pJob(),AN_NEW_JOB,pJobExecute);
-  
+    
   pJobExecute->vJobNm("_execute"_Stz);
   pJobExecute->pJobTags()->vInsert(C_TAG_JOBNM,"_execute"_Stz);
   pJobExecute->pJobTags()->vInsert(C_TAG_PATH,"/"_Stz);
@@ -236,8 +224,6 @@ void Step::vJob__ExecutedNew(void)
   pJobExecuted->pJobTags()->vInsert(C_TAG_DISTID,pDistJob->iJobId());
   pJobExecuted->pJobTags()->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNode());
   pJobExecuted->pJobTags()->vInsert(C_TAG_SEEDRUN,"_executed_run"_Stz);
-
-  //ActLog::vAdd(pJob(),AN_NEW_JOB,pJobExecuted);
   
   if (pDistJob->bHasTag(C_TAG_FLOW))
     pJobExecuted->pJobTags()->vInsert(C_TAG_FLOW,1);
