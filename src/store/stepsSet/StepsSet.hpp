@@ -1462,7 +1462,6 @@ public:
   void vSocketListen(void);
   void vSocketOpen(void);
   void vSocketRecvObject(void);
-  void vSocketRecvObject_LowMem(void);
   void vSocketSendObject(void);
   void vSocketSet(void);
 
