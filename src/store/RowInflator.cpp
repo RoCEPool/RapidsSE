@@ -134,6 +134,9 @@ void RowInflator::vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
         ayDataByte = (byte*)aOverLine + C_U_1B + C_M_1B;
         goto L_Overflowed;
       }
+      else if (uHigh == MC_NULL) {
+        ayDataByte += C_BYTES_PER_WORD;
+      }
       else {
         RASSERT(0);
       }
