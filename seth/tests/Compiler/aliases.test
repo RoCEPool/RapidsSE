@@ -14,6 +14,9 @@ create table nation (
 );
 success
 
+-- trackmemory;
+-- success
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Simple aliases
@@ -86,16 +89,16 @@ success
 --   ['region', 'nationcount']
 
 -- UNION clause
-EXPLAIN SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount FROM nation
+EXPLAIN SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount FROM nation GROUP BY n_regionkey
 UNION ALL
-SELECT n_regionkey, COUNT(n_nationkey) FROM nation
+SELECT n_regionkey, COUNT(n_nationkey) FROM nation GROUP BY n_regionkey;
 success
 -- rows:
 --   ['region', 'nationcount']
 
-EXPLAIN SELECT n_regionkey, COUNT(n_nationkey) FROM nation
+EXPLAIN SELECT n_regionkey, COUNT(n_nationkey) FROM nation GROUP BY n_regionkey
 UNION ALL
-SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount FROM nation
+SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount FROM nation GROUP BY n_regionkey;
 success
 -- rows:
 --     ['n_regionkey', *]
@@ -117,6 +120,13 @@ FROM nation
 GROUP BY region
 HAVING (nationcount + 1) > 1;
 success
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Check for memory leaks
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- memoryleaks;
+-- rows: 0
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Cleanup

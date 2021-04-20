@@ -2,6 +2,9 @@
 /* SELECT syntax & semantics tests                                            */
 /*----------------------------------------------------------------------------*/
 
+-- trackmemory;
+-- success
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Resolving table names
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -153,6 +156,12 @@ SELECT CoL1, col2 FROM selectsyntax1;
 rows:
 ['col1', 'col2']
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Check for memory leaks
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- memoryleaks;
+-- rows: 0
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Cleanup
