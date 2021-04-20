@@ -1,0 +1,138 @@
+/*----------------------------------------------------------------------------*/
+/* Alias syntax & semantic tests                                              */
+/*----------------------------------------------------------------------------*/
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Setup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+create table nation (
+	 N_NATIONKEY       INTEGER NOT NULL,
+	 N_NAME            CHAR(25) NOT NULL,
+	 N_REGIONKEY       INTEGER NOT NULL,
+	 N_COMMENT         VARCHAR(152)
+);
+success
+
+-- trackmemory;
+-- success
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Simple aliases
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- Columns are named appropriately
+-- With the AS keyword
+SELECT n_nationkey AS nationkey, n_name AS name FROM nation;
+rows:
+  ['nationkey', 'name']
+
+-- Without the AS keyword
+SELECT n_nationkey nationkey, n_name name FROM nation;
+rows:
+  ['nationkey', 'name']
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Aliases cannot be used below where they are defined in the plan
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- Aliases cannot be used in a WHERE clause
+SELECT n_nationkey AS nationkey, n_name AS name FROM nation WHERE name = 'KENYA';
+failure contains: 'No such column: name'
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Aliases can be used above where they are defined in the plan
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- GROUP BY clause
+EXPLAIN SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount
+FROM nation
+GROUP BY region;
+success
+-- rows:
+--   ['region', 'nationcount']
+
+-- HAVING clause
+EXPLAIN SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount
+FROM nation
+GROUP BY region
+HAVING nationcount > 1;
+success
+-- rows:
+--   ['region', 'nationcount']
+
+EXPLAIN SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount
+FROM nation
+GROUP BY region
+HAVING region > 1;
+success
+-- rows:
+--   ['region', 'nationcount']
+
+-- ORDER BY clause
+-- Commented out until ORDER BY is supported
+-- SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount
+-- FROM nation
+-- GROUP BY region
+-- ORDER BY region
+-- rows:
+--   ['region', 'nationcount']
+--
+-- SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount
+-- FROM nation
+-- GROUP BY region
+-- ORDER BY nationcount
+--     rows:
+--   ['region', 'nationcount']
+
+-- UNION clause
+EXPLAIN SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount FROM nation GROUP BY n_regionkey
+UNION ALL
+SELECT n_regionkey, COUNT(n_nationkey) FROM nation GROUP BY n_regionkey;
+success
+-- rows:
+--   ['region', 'nationcount']
+
+EXPLAIN SELECT n_regionkey, COUNT(n_nationkey) FROM nation GROUP BY n_regionkey
+UNION ALL
+SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount FROM nation GROUP BY n_regionkey;
+success
+-- rows:
+--     ['n_regionkey', *]
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Aliases can be used in expressions too
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- An alias can be a subset of an expression
+EXPLAIN SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount
+FROM nation
+GROUP BY region
+HAVING (2*nationcount) > 1;
+success
+
+EXPLAIN SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount
+FROM nation
+GROUP BY region
+HAVING (nationcount + 1) > 1;
+success
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Check for memory leaks
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- memoryleaks;
+-- rows: 0
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Cleanup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CLEANUP {
+  DROP TABLE nation;
+  mute
+}

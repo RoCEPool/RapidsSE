@@ -202,7 +202,7 @@ void PostProject::vAddPostProject(void* pvContainer, QueryNode* pStatementMarker
 
     while (pColumnIter->bHasNext()) {
       QueryNode* pProjectedColumn = _pQueryNode(pColumnIter->pNext());
-      QueryNode* pColumnCopy = pProjectedColumn->pDeepCopy();
+      QueryNode* pColumnCopy = pProjectedColumn->pDeepCopy(true);
       pSelectList->vAppend(pColumnCopy);
     }
 
@@ -210,6 +210,8 @@ void PostProject::vAddPostProject(void* pvContainer, QueryNode* pStatementMarker
 
     // Create the new post project
     QueryNode* pPostProject = ProjectOp::pCreate(pSelectList);
+    ASSERT(pSelectList->nItems() == 0);
+    delete pSelectList;
 
     // Add in the post project
     pStatementMarker->vInsertAsParentOfChildren(pPostProject);

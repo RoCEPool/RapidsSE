@@ -10,6 +10,7 @@
 #include "QueryNode.hpp"
 #include "ProjectedColumn.hpp"
 #include "Expr.hpp"
+#include "AliasRef.hpp"
 #include "ShadowRoot.hpp"
 #include "MetadataNode.hpp"
 
@@ -315,7 +316,7 @@ QueryNode* AggregateOp::pOrdinalGroupByList(QueryNode* pNode, PlanNode* pRootNod
   ASSERT(pColExprList->nItems() > 0);
 
   // Create a container node to hold the ordinal expressions, but without any children
-  QueryNode* pOrdinalExprs = pSymbolicExprs->pDeepCopy(new PlanNodeList());
+  QueryNode* pOrdinalExprs = pSymbolicExprs->pDeepCopy(true, new PlanNodeList());
 
   // Iterate over each of the expression children of pSymbolicExprs
   PlanNodeIter* pIter = pSymbolicExprs->pNewChildrenIter();
@@ -335,6 +336,92 @@ QueryNode* AggregateOp::pOrdinalGroupByList(QueryNode* pNode, PlanNode* pRootNod
   delete pColExprList;
 
   return pOrdinalExprs;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Merges a ProjectOp, pOtherOp, down into this AggregateOp                   */
+/*----------------------------------------------------------------------------*/
+void AggregateOp::vSquash(QueryNode* pNode, QueryNode* pOtherOp, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pOtherOp);
+  ASSERT(ProjectOp::bIsExactType(pOtherOp));
+  ASSERT(pOtherOp->nChildren() == 0);
+  ASSERT(pRootNode);
+
+  // Squash the project list
+  ProjectOp::vSquash(pNode, pOtherOp, pRootNode);
+
+  // Now we need to consider the GROUP BY list.
+  // Expressions in the group by list may contain aliasRefs whose alias is now no
+  // longer defined in the project list (because they got squashed out). In that
+  // case we need to expand these aliasRefs in the group by list so that it all
+  // still makes sense.
+
+  QueryNode* pGroupByList = AggregateOp::pGroupByList(pNode);
+  ASSERT(pGroupByList);
+  ASSERT(pGroupByList->nChildren() > 0);
+
+  QueryNode* pProjectedColumns = ProjectOp::pProjectedColumns(pNode);
+  ASSERT(pProjectedColumns);
+  ASSERT(pProjectedColumns->nChildren() > 0);
+
+  // Iterate the group by list and look for any AliasRefs
+  PlanNodeIter* pGroupByIter = pGroupByList->pNewChildrenIter();
+  PlanNodeIter* pProjectedColsIter = pProjectedColumns->pNewChildrenIter();
+
+  while (pGroupByIter->bHasNext()) {
+    QueryNode* pGroupByExpr = _pQueryNode(pGroupByIter->pNext());
+
+    ASSERT(Expr::bIsOfType(pGroupByExpr));
+
+    // Normally a select list expr is equal to or a superset of a group by expr.
+    // i.e. a group by expr is equal to or a subset of a select list expr.
+    // But here we are only interested if a group by expr was using an alias
+    // from the select list that now no longer exists. If that was the case then
+    // the group by column could not have been a subset of a select list expr, it
+    // must have been equal. So we can ultimately check if the group by expr
+    // is an AliasRef, as opposed to checking if the group by expr *contains*
+    // an AliasRef.
+
+    if (!AliasRef::bIsOfType(pGroupByExpr)) {
+      continue;
+    }
+
+    Stz* szGroupByAlias = AliasRef::szAlias(pGroupByExpr);
+
+    // Does this aliased expr still exist in the new project list?
+    // (Remember we updated this at the top of the function)
+    pProjectedColsIter->vBeforeFirst();
+    b1 bFoundAlias = false;
+
+    while (pProjectedColsIter->bHasNext()) {
+      QueryNode* pProjectedCol = _pQueryNode(pProjectedColsIter->pNext());
+      QueryNode* pProjectedExpr = ProjectedColumn::pExprNode(pProjectedCol);
+      Stz* szProjectedAlias = ProjectedColumn::szAliasName(pProjectedCol);  // may be null
+
+      // We can keep the group by alias if the group by expression is in the new
+      // project list, the projected column still has an alias and the alias
+      // name matches the alias of the group by expression.
+      if (Expr::bIsSymbolicallyEqual(pProjectedExpr, pGroupByExpr) &&
+          szProjectedAlias &&
+          szProjectedAlias->bSame(szGroupByAlias)) {
+        bFoundAlias = true;
+        break;
+      }
+    }
+
+    if (!bFoundAlias) {
+      // We need to change the AliasRef to its expanded form
+      AliasRef::vExpandAlias(pGroupByExpr);
+    }
+
+  }
+  delete pGroupByIter;
+  delete pProjectedColsIter;
 }
 
 /*============================================================================*/

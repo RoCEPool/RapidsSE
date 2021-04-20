@@ -70,7 +70,7 @@ void BASE::vThreadCallStackDump_Demangled(void)
     i8    iFrame;
     s256  sModule;
     void* pAddr;
-    s256  sSymbol;
+    s2K   sSymbol;
     i8    iOffset;
 
 #ifdef WITH_APPLE
@@ -80,7 +80,7 @@ void BASE::vThreadCallStackDump_Demangled(void)
 #endif
 #ifdef WITH_LINUX
     iFrame=i;
-    s256 sSymbolAndOffset;
+    s2K sSymbolAndOffset;
 
     // Sometimes there is no symbol printed, so we need to handle that separately.
     i8 iConv = sscanf(p, "%[^(](%[^)]) [%p]", sModule.azChar(), sSymbolAndOffset.azChar(), &pAddr);
@@ -103,7 +103,7 @@ void BASE::vThreadCallStackDump_Demangled(void)
 #endif
 
       int status = 0;
-      s256 sDemangledSymbol;
+      s2K sDemangledSymbol;
       size_t iSymbolSize = sDemangledSymbol.nSpace();
       char* ret = abi::__cxa_demangle(sSymbol.azChar(), sDemangledSymbol.azChar(), &iSymbolSize, &status);
 

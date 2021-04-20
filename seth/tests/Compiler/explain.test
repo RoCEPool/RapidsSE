@@ -14,6 +14,8 @@ create table nation (
 );
 success
 
+-- trackmemory;
+-- success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Simple explain
@@ -340,6 +342,13 @@ rows:
   ( 2, 'nameValidate',  * )
   ( 3, 'exprValidate',  * )
 
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Check for memory leaks
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- memoryleaks;
+-- rows: 0
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Cleanup

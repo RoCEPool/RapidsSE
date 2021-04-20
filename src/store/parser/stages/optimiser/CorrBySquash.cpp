@@ -18,6 +18,8 @@
 #include "ProjectOp.hpp"
 #include "Expr.hpp"
 #include "ColumnRef.hpp"
+#include "ProjectOp.hpp"
+#include "AggregateOp.hpp"
 
 #include "SetOp.hpp"
 
@@ -60,7 +62,7 @@ void CorrBySquash::vSearchAndSquash(PlanNode *pRootNode)
     return GraphNav::WALK_CONTINUE;
   };
 
-  GraphNav::bGlobalWalkBottomUp(pPlanNode->pFirstChild(), false, true, fVisitor, pRootNode);
+  GraphNav::bGlobalWalk(pPlanNode->pFirstChild(), false, true, fVisitor, pRootNode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -110,12 +112,14 @@ void CorrBySquash::vSearchStatementSection(QueryNode* pStatementMarker, PlanNode
     GraphEditor::pSnipChild(pSetOp, pChild1, true);
     ASSERT(StatementMarker::bIsOfType(pSetOp->pFirstChild()));
     vPushDownProjectOp(pChild1, _pQueryNode(pSetOp->pFirstChild()), pRootNode);
+    delete pChild1;
   }
 
   if (ProjectOp::bIsExactType(pChild2)) {
     GraphEditor::pSnipChild(pSetOp, pChild2, true);
     ASSERT(StatementMarker::bIsOfType(pSetOp->pSecondChild()));
     vPushDownProjectOp(pChild2, _pQueryNode(pSetOp->pSecondChild()), pRootNode);
+    delete pChild2;
   }
 }
 
@@ -156,8 +160,16 @@ void CorrBySquash::vPushDownProjectOp(QueryNode* pProjectOp, QueryNode* pStartin
     }
 
     //  - If we encounter a ProjectOp or AggregateOp then squash it.
-    if (ProjectOp::bIsOfType(pNode)) {
+    // We separate out the handling of Project vs Aggregate because the
+    // AggregateOp also has to consider aliases in the group by list.
+    if (ProjectOp::bIsExactType(pNode)) {
       ProjectOp::vSquash(_pQueryNode(pNode), pProjectOp, pRootNode);
+      bSquashed = true;
+      return GraphNav::WALK_SKIP_SUBTREE;
+    }
+
+    if (AggregateOp::bIsExactType(pNode)) {
+      AggregateOp::vSquash(_pQueryNode(pNode), pProjectOp, pRootNode);
       bSquashed = true;
       return GraphNav::WALK_SKIP_SUBTREE;
     }
@@ -182,7 +194,7 @@ void CorrBySquash::vPushDownProjectOp(QueryNode* pProjectOp, QueryNode* pStartin
         //  - ...and that SetOp does NOT have ProjectOps as children then
         //    insert pProjectOp as a child of the SetOp. The recursive
         //    walk down of this algorithm will keep squashing this down.
-        pSetOp->vInsertAsParentOfChild1(pProjectOp);
+        pSetOp->vInsertAsParentOfChild1(pProjectOp->pDeepCopy(true));
       }
 
       // Deal with child2
@@ -195,7 +207,7 @@ void CorrBySquash::vPushDownProjectOp(QueryNode* pProjectOp, QueryNode* pStartin
         //  - ...and that SetOp does NOT have ProjectOps as children then
         //    insert pProjectOp as a child of the SetOp. The recursive
         //    walk down of this algorithm will keep squashing this down.
-        pSetOp->vInsertAsParentOfChild2(pProjectOp);
+        pSetOp->vInsertAsParentOfChild2(pProjectOp->pDeepCopy(true));
       }
 
       bSquashed = true;
@@ -206,7 +218,7 @@ void CorrBySquash::vPushDownProjectOp(QueryNode* pProjectOp, QueryNode* pStartin
     QueryNode* pParent = _pQueryNode(GraphNav::pGetParentOfPath(sPath, pStartingNode));
     ASSERT(pParent);
 
-    pParent->vInsertAsParentOfChild(_pQueryNode(pNode), pProjectOp);
+    pParent->vInsertAsParentOfChild(_pQueryNode(pNode), pProjectOp->pDeepCopy(true));
     bSquashed = true;
     return GraphNav::WALK_SKIP_SUBTREE;
   };

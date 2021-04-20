@@ -17,8 +17,6 @@
   // where:  On the originator node.
   //
 
-  JP_CANCELING log::markPhase
-
   0 locals| pJob__Cancel |
 
   // create a temporary Job__Cancel

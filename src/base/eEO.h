@@ -167,12 +167,6 @@ enum eEO : u2 // expression operators
   /*  S  */ EO_STRING,           // push string
 
   // relational operators
-  /*  S  */ EO_LESSTHAN,         // test top < 2nd, push result
-  /*  S  */ EO_LESSEQUAL,        // test top <= 2nd, push result
-  /*  S  */ EO_NOTEQUAL,         // test top != 2nd, push result
-  /*  S  */ EO_GREATEREQUAL,     // test top >= 2nd, push result
-  /*  S  */ EO_GREATERTHAN,      // test top > 2nd, push result
-
   /*  S  */ EO_EQ_BCDBCD,        // bcd == bcd
   /*  S  */ EO_EQ_BCDFLT,        // bcd == flt
   /*  S  */ EO_EQ_BCDINT,        // bcd == int
@@ -193,6 +187,106 @@ enum eEO : u2 // expression operators
   /*  S  */ EO_EQ_UNKXYZ,        // unk == xyz
   /*  S  */ EO_EQ_XYZUNK,        // xyz == unk
 
+  /*  S  */ EO_GE_BCDBCD,        // bcd >= bcd
+  /*  S  */ EO_GE_BCDFLT,        // bcd >= flt
+  /*  S  */ EO_GE_BCDINT,        // bcd >= int
+  /*  S  */ EO_GE_BOLBOL,        // bol >= bol
+  /*  S  */ EO_GE_DTEDTE,        // dte >= bcd
+  /*  S  */ EO_GE_DTETSP,        // dte >= tsp
+  /*  S  */ EO_GE_FLTBCD,        // flt >= bcd
+  /*  S  */ EO_GE_FLTFLT,        // flt >= flt
+  /*  S  */ EO_GE_FLTINT,        // flt >= int
+  /*  S  */ EO_GE_INTBCD,        // int >= bcd
+  /*  S  */ EO_GE_INTFLT,        // int >= flt
+  /*  S  */ EO_GE_INTINT,        // int >= int
+  /*  S  */ EO_GE_IVLIVL,        // ivl >= ivl
+  /*  S  */ EO_GE_TMETME,        // tme >= tme
+  /*  S  */ EO_GE_TSPDTE,        // tsp >= dte
+  /*  S  */ EO_GE_TSPTSP,        // tsp >= tsp
+  /*  S  */ EO_GE_VCHVCH,        // vch >= vch
+  /*  S  */ EO_GE_UNKXYZ,        // unk >= xyz
+  /*  S  */ EO_GE_XYZUNK,        // xyz >= unk
+
+  /*  S  */ EO_GT_BCDBCD,        // bcd > bcd
+  /*  S  */ EO_GT_BCDFLT,        // bcd > flt
+  /*  S  */ EO_GT_BCDINT,        // bcd > int
+  /*  S  */ EO_GT_BOLBOL,        // bol > bol
+  /*  S  */ EO_GT_DTEDTE,        // dte > bcd
+  /*  S  */ EO_GT_DTETSP,        // dte > tsp
+  /*  S  */ EO_GT_FLTBCD,        // flt > bcd
+  /*  S  */ EO_GT_FLTFLT,        // flt > flt
+  /*  S  */ EO_GT_FLTINT,        // flt > int
+  /*  S  */ EO_GT_INTBCD,        // int > bcd
+  /*  S  */ EO_GT_INTFLT,        // int > flt
+  /*  S  */ EO_GT_INTINT,        // int > int
+  /*  S  */ EO_GT_IVLIVL,        // ivl > ivl
+  /*  S  */ EO_GT_TMETME,        // tme > tme
+  /*  S  */ EO_GT_TSPDTE,        // tsp > dte
+  /*  S  */ EO_GT_TSPTSP,        // tsp > tsp
+  /*  S  */ EO_GT_VCHVCH,        // vch > vch
+  /*  S  */ EO_GT_UNKXYZ,        // unk > xyz
+  /*  S  */ EO_GT_XYZUNK,        // xyz > unk
+
+  /*  S  */ EO_LE_BCDBCD,        // bcd <= bcd
+  /*  S  */ EO_LE_BCDFLT,        // bcd <= flt
+  /*  S  */ EO_LE_BCDINT,        // bcd <= int
+  /*  S  */ EO_LE_BOLBOL,        // bol <= bol
+  /*  S  */ EO_LE_DTEDTE,        // dte <= bcd
+  /*  S  */ EO_LE_DTETSP,        // dte <= tsp
+  /*  S  */ EO_LE_FLTBCD,        // flt <= bcd
+  /*  S  */ EO_LE_FLTFLT,        // flt <= flt
+  /*  S  */ EO_LE_FLTINT,        // flt <= int
+  /*  S  */ EO_LE_INTBCD,        // int <= bcd
+  /*  S  */ EO_LE_INTFLT,        // int <= flt
+  /*  S  */ EO_LE_INTINT,        // int <= int
+  /*  S  */ EO_LE_IVLIVL,        // ivl <= ivl
+  /*  S  */ EO_LE_TMETME,        // tme <= tme
+  /*  S  */ EO_LE_TSPDTE,        // tsp <= dte
+  /*  S  */ EO_LE_TSPTSP,        // tsp <= tsp
+  /*  S  */ EO_LE_VCHVCH,        // vch <= vch
+  /*  S  */ EO_LE_UNKXYZ,        // unk <= xyz
+  /*  S  */ EO_LE_XYZUNK,        // xyz <= unk
+
+  /*  S  */ EO_LT_BCDBCD,        // bcd < bcd
+  /*  S  */ EO_LT_BCDFLT,        // bcd < flt
+  /*  S  */ EO_LT_BCDINT,        // bcd < int
+  /*  S  */ EO_LT_BOLBOL,        // bol < bol
+  /*  S  */ EO_LT_DTEDTE,        // dte < bcd
+  /*  S  */ EO_LT_DTETSP,        // dte < tsp
+  /*  S  */ EO_LT_FLTBCD,        // flt < bcd
+  /*  S  */ EO_LT_FLTFLT,        // flt < flt
+  /*  S  */ EO_LT_FLTINT,        // flt < int
+  /*  S  */ EO_LT_INTBCD,        // int < bcd
+  /*  S  */ EO_LT_INTFLT,        // int < flt
+  /*  S  */ EO_LT_INTINT,        // int < int
+  /*  S  */ EO_LT_IVLIVL,        // ivl < ivl
+  /*  S  */ EO_LT_TMETME,        // tme < tme
+  /*  S  */ EO_LT_TSPDTE,        // tsp < dte
+  /*  S  */ EO_LT_TSPTSP,        // tsp < tsp
+  /*  S  */ EO_LT_VCHVCH,        // vch < vch
+  /*  S  */ EO_LT_UNKXYZ,        // unk < xyz
+  /*  S  */ EO_LT_XYZUNK,        // xyz < unk
+
+  /*  S  */ EO_NE_BCDBCD,        // bcd != bcd
+  /*  S  */ EO_NE_BCDFLT,        // bcd != flt
+  /*  S  */ EO_NE_BCDINT,        // bcd != int
+  /*  S  */ EO_NE_BOLBOL,        // bol != bol
+  /*  S  */ EO_NE_DTEDTE,        // dte != bcd
+  /*  S  */ EO_NE_DTETSP,        // dte != tsp
+  /*  S  */ EO_NE_FLTBCD,        // flt != bcd
+  /*  S  */ EO_NE_FLTFLT,        // flt != flt
+  /*  S  */ EO_NE_FLTINT,        // flt != int
+  /*  S  */ EO_NE_INTBCD,        // int != bcd
+  /*  S  */ EO_NE_INTFLT,        // int != flt
+  /*  S  */ EO_NE_INTINT,        // int != int
+  /*  S  */ EO_NE_IVLIVL,        // ivl != ivl
+  /*  S  */ EO_NE_TMETME,        // tme != tme
+  /*  S  */ EO_NE_TSPDTE,        // tsp != dte
+  /*  S  */ EO_NE_TSPTSP,        // tsp != tsp
+  /*  S  */ EO_NE_VCHVCH,        // vch != vch
+  /*  S  */ EO_NE_UNKXYZ,        // unk != xyz
+  /*  S  */ EO_NE_XYZUNK,        // xyz != unk
+  
   // column pushes
   /*  S  */ EO_PUSH_COLUMN_LENGTH, // push column length
   /*  S  */ EO_PUSH_COLUMN_SCALE,  // push column scale
@@ -592,12 +686,6 @@ static Stz* aEO[]
   /*    */ "EO_STRING"_Stz,
   
   // relational operators
-  /*    */ "EO_LESSTHAN"_Stz,
-  /*    */ "EO_LESSEQUAL"_Stz,
-  /*    */ "EO_NOTEQUAL"_Stz,
-  /*    */ "EO_GREATEREQUAL"_Stz,
-  /*    */ "EO_GREATERTHAN"_Stz,
-
   /*    */ "EO_EQ_BCDBCD"_Stz,
   /*    */ "EO_EQ_BCDBOL"_Stz,
   /*    */ "EO_EQ_BCDFLT"_Stz,
@@ -618,6 +706,106 @@ static Stz* aEO[]
   /*    */ "EO_EQ_UNKXYZ"_Stz,
   /*    */ "EO_EQ_XYZUNK"_Stz,
 
+  /*    */ "EO_GE_BCDBCD"_Stz,
+  /*    */ "EO_GE_BCDBOL"_Stz,
+  /*    */ "EO_GE_BCDFLT"_Stz,
+  /*    */ "EO_GE_BCDINT"_Stz,
+  /*    */ "EO_GE_DTEDTE"_Stz,
+  /*    */ "EO_GE_DTETSP"_Stz,
+  /*    */ "EO_GE_FLTBCD"_Stz,
+  /*    */ "EO_GE_FLTFLT"_Stz,
+  /*    */ "EO_GE_FLTINT"_Stz,
+  /*    */ "EO_GE_INTBCD"_Stz,
+  /*    */ "EO_GE_INTFLT"_Stz,
+  /*    */ "EO_GE_INTINT"_Stz,
+  /*    */ "EO_GE_IVLIVL"_Stz,
+  /*    */ "EO_GE_TMETME"_Stz,
+  /*    */ "EO_GE_TSPDTE"_Stz,
+  /*    */ "EO_GE_TSPTSP"_Stz,
+  /*    */ "EO_GE_VCHVCH"_Stz,
+  /*    */ "EO_GE_UNKXYZ"_Stz,
+  /*    */ "EO_GE_XYZUNK"_Stz,
+
+  /*    */ "EO_GT_BCDBCD"_Stz,
+  /*    */ "EO_GT_BCDBOL"_Stz,
+  /*    */ "EO_GT_BCDFLT"_Stz,
+  /*    */ "EO_GT_BCDINT"_Stz,
+  /*    */ "EO_GT_DTEDTE"_Stz,
+  /*    */ "EO_GT_DTETSP"_Stz,
+  /*    */ "EO_GT_FLTBCD"_Stz,
+  /*    */ "EO_GT_FLTFLT"_Stz,
+  /*    */ "EO_GT_FLTINT"_Stz,
+  /*    */ "EO_GT_INTBCD"_Stz,
+  /*    */ "EO_GT_INTFLT"_Stz,
+  /*    */ "EO_GT_INTINT"_Stz,
+  /*    */ "EO_GT_IVLIVL"_Stz,
+  /*    */ "EO_GT_TMETME"_Stz,
+  /*    */ "EO_GT_TSPDTE"_Stz,
+  /*    */ "EO_GT_TSPTSP"_Stz,
+  /*    */ "EO_GT_VCHVCH"_Stz,
+  /*    */ "EO_GT_UNKXYZ"_Stz,
+  /*    */ "EO_GT_XYZUNK"_Stz,
+
+  /*    */ "EO_LE_BCDBCD"_Stz,
+  /*    */ "EO_LE_BCDBOL"_Stz,
+  /*    */ "EO_LE_BCDFLT"_Stz,
+  /*    */ "EO_LE_BCDINT"_Stz,
+  /*    */ "EO_LE_DTEDTE"_Stz,
+  /*    */ "EO_LE_DTETSP"_Stz,
+  /*    */ "EO_LE_FLTBCD"_Stz,
+  /*    */ "EO_LE_FLTFLT"_Stz,
+  /*    */ "EO_LE_FLTINT"_Stz,
+  /*    */ "EO_LE_INTBCD"_Stz,
+  /*    */ "EO_LE_INTFLT"_Stz,
+  /*    */ "EO_LE_INTINT"_Stz,
+  /*    */ "EO_LE_IVLIVL"_Stz,
+  /*    */ "EO_LE_TMETME"_Stz,
+  /*    */ "EO_LE_TSPDTE"_Stz,
+  /*    */ "EO_LE_TSPTSP"_Stz,
+  /*    */ "EO_LE_VCHVCH"_Stz,
+  /*    */ "EO_LE_UNKXYZ"_Stz,
+  /*    */ "EO_LE_XYZUNK"_Stz,
+
+  /*    */ "EO_LT_BCDBCD"_Stz,
+  /*    */ "EO_LT_BCDBOL"_Stz,
+  /*    */ "EO_LT_BCDFLT"_Stz,
+  /*    */ "EO_LT_BCDINT"_Stz,
+  /*    */ "EO_LT_DTEDTE"_Stz,
+  /*    */ "EO_LT_DTETSP"_Stz,
+  /*    */ "EO_LT_FLTBCD"_Stz,
+  /*    */ "EO_LT_FLTFLT"_Stz,
+  /*    */ "EO_LT_FLTINT"_Stz,
+  /*    */ "EO_LT_INTBCD"_Stz,
+  /*    */ "EO_LT_INTFLT"_Stz,
+  /*    */ "EO_LT_INTINT"_Stz,
+  /*    */ "EO_LT_IVLIVL"_Stz,
+  /*    */ "EO_LT_TMETME"_Stz,
+  /*    */ "EO_LT_TSPDTE"_Stz,
+  /*    */ "EO_LT_TSPTSP"_Stz,
+  /*    */ "EO_LT_VCHVCH"_Stz,
+  /*    */ "EO_LT_UNKXYZ"_Stz,
+  /*    */ "EO_LT_XYZUNK"_Stz,
+
+  /*    */ "EO_NE_BCDBCD"_Stz,
+  /*    */ "EO_NE_BCDBOL"_Stz,
+  /*    */ "EO_NE_BCDFLT"_Stz,
+  /*    */ "EO_NE_BCDINT"_Stz,
+  /*    */ "EO_NE_DTEDTE"_Stz,
+  /*    */ "EO_NE_DTETSP"_Stz,
+  /*    */ "EO_NE_FLTBCD"_Stz,
+  /*    */ "EO_NE_FLTFLT"_Stz,
+  /*    */ "EO_NE_FLTINT"_Stz,
+  /*    */ "EO_NE_INTBCD"_Stz,
+  /*    */ "EO_NE_INTFLT"_Stz,
+  /*    */ "EO_NE_INTINT"_Stz,
+  /*    */ "EO_NE_IVLIVL"_Stz,
+  /*    */ "EO_NE_TMETME"_Stz,
+  /*    */ "EO_NE_TSPDTE"_Stz,
+  /*    */ "EO_NE_TSPTSP"_Stz,
+  /*    */ "EO_NE_VCHVCH"_Stz,
+  /*    */ "EO_NE_UNKXYZ"_Stz,
+  /*    */ "EO_NE_XYZUNK"_Stz,
+  
   // column pushes
   /*    */ "EO_PUSH_COLUMN_LENGTH"_Stz,
   /*    */ "EO_PUSH_COLUMN_SCALE"_Stz,
@@ -1020,12 +1208,6 @@ static EoArg EoArgs[]
   { EA_STRING,  -1},  // EO_STRING
 
   // relational operators
-  { EA_NONE,    0 },  // EO_LESSTHAN
-  { EA_NONE,    0 },  // EO_LESSEQUAL
-  { EA_NONE,    0 },  // EO_NOTEQUAL
-  { EA_NONE,    0 },  // EO_GREATEREQUAL
-  { EA_NONE,    0 },  // EO_GREATERTHAN
-
   { EA_NONE,    0 },  // EO_EQ_BCDBCD
   { EA_NONE,    0 },  // EO_EQ_BCDBOL,
   { EA_NONE,    0 },  // EO_EQ_BCDFLT
@@ -1046,7 +1228,107 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_EQ_UNKXYZ
   { EA_NONE,    0 },  // EO_EQ_XYZUNK
 
-  // column pushes
+  { EA_NONE,    0 },  // EO_GE_BCDBCD
+  { EA_NONE,    0 },  // EO_GE_BCDBOL,
+  { EA_NONE,    0 },  // EO_GE_BCDFLT
+  { EA_NONE,    0 },  // EO_GE_BCDINT
+  { EA_NONE,    0 },  // EO_GE_DTEDTE
+  { EA_NONE,    0 },  // EO_GE_DTETSP
+  { EA_NONE,    0 },  // EO_GE_FLTBCD
+  { EA_NONE,    0 },  // EO_GE_FLTFLT
+  { EA_NONE,    0 },  // EO_GE_FLTINT
+  { EA_NONE,    0 },  // EO_GE_INTBCD
+  { EA_NONE,    0 },  // EO_GE_INTFLT
+  { EA_NONE,    0 },  // EO_GE_INTINT
+  { EA_NONE,    0 },  // EO_GE_IVLIVL
+  { EA_NONE,    0 },  // EO_GE_TMETME
+  { EA_NONE,    0 },  // EO_GE_TSPDTE
+  { EA_NONE,    0 },  // EO_GE_TSPTSP
+  { EA_NONE,    0 },  // EO_GE_VCHVCH
+  { EA_NONE,    0 },  // EO_GE_UNKXYZ
+  { EA_NONE,    0 },  // EO_GE_XYZUNK
+
+  { EA_NONE,    0 },  // EO_GT_BCDBCD
+  { EA_NONE,    0 },  // EO_GT_BCDBOL,
+  { EA_NONE,    0 },  // EO_GT_BCDFLT
+  { EA_NONE,    0 },  // EO_GT_BCDINT
+  { EA_NONE,    0 },  // EO_GT_DTEDTE
+  { EA_NONE,    0 },  // EO_GT_DTETSP
+  { EA_NONE,    0 },  // EO_GT_FLTBCD
+  { EA_NONE,    0 },  // EO_GT_FLTFLT
+  { EA_NONE,    0 },  // EO_GT_FLTINT
+  { EA_NONE,    0 },  // EO_GT_INTBCD
+  { EA_NONE,    0 },  // EO_GT_INTFLT
+  { EA_NONE,    0 },  // EO_GT_INTINT
+  { EA_NONE,    0 },  // EO_GT_IVLIVL
+  { EA_NONE,    0 },  // EO_GT_TMETME
+  { EA_NONE,    0 },  // EO_GT_TSPDTE
+  { EA_NONE,    0 },  // EO_GT_TSPTSP
+  { EA_NONE,    0 },  // EO_GT_VCHVCH
+  { EA_NONE,    0 },  // EO_GT_UNKXYZ
+  { EA_NONE,    0 },  // EO_GT_XYZUNK
+
+  { EA_NONE,    0 },  // EO_LE_BCDBCD
+  { EA_NONE,    0 },  // EO_LE_BCDBOL,
+  { EA_NONE,    0 },  // EO_LE_BCDFLT
+  { EA_NONE,    0 },  // EO_LE_BCDINT
+  { EA_NONE,    0 },  // EO_LE_DTEDTE
+  { EA_NONE,    0 },  // EO_LE_DTETSP
+  { EA_NONE,    0 },  // EO_LE_FLTBCD
+  { EA_NONE,    0 },  // EO_LE_FLTFLT
+  { EA_NONE,    0 },  // EO_LE_FLTINT
+  { EA_NONE,    0 },  // EO_LE_INTBCD
+  { EA_NONE,    0 },  // EO_LE_INTFLT
+  { EA_NONE,    0 },  // EO_LE_INTINT
+  { EA_NONE,    0 },  // EO_LE_IVLIVL
+  { EA_NONE,    0 },  // EO_LE_TMETME
+  { EA_NONE,    0 },  // EO_LE_TSPDTE
+  { EA_NONE,    0 },  // EO_LE_TSPTSP
+  { EA_NONE,    0 },  // EO_LE_VCHVCH
+  { EA_NONE,    0 },  // EO_LE_UNKXYZ
+  { EA_NONE,    0 },  // EO_LE_XYZUNK
+
+  { EA_NONE,    0 },  // EO_LT_BCDBCD
+  { EA_NONE,    0 },  // EO_LT_BCDBOL,
+  { EA_NONE,    0 },  // EO_LT_BCDFLT
+  { EA_NONE,    0 },  // EO_LT_BCDINT
+  { EA_NONE,    0 },  // EO_LT_DTEDTE
+  { EA_NONE,    0 },  // EO_LT_DTETSP
+  { EA_NONE,    0 },  // EO_LT_FLTBCD
+  { EA_NONE,    0 },  // EO_LT_FLTFLT
+  { EA_NONE,    0 },  // EO_LT_FLTINT
+  { EA_NONE,    0 },  // EO_LT_INTBCD
+  { EA_NONE,    0 },  // EO_LT_INTFLT
+  { EA_NONE,    0 },  // EO_LT_INTINT
+  { EA_NONE,    0 },  // EO_LT_IVLIVL
+  { EA_NONE,    0 },  // EO_LT_TMETME
+  { EA_NONE,    0 },  // EO_LT_TSPDTE
+  { EA_NONE,    0 },  // EO_LT_TSPTSP
+  { EA_NONE,    0 },  // EO_LT_VCHVCH
+  { EA_NONE,    0 },  // EO_LT_UNKXYZ
+  { EA_NONE,    0 },  // EO_LT_XYZUNK
+
+  { EA_NONE,    0 },  // EO_NE_BCDBCD
+  { EA_NONE,    0 },  // EO_NE_BCDBOL,
+  { EA_NONE,    0 },  // EO_NE_BCDFLT
+  { EA_NONE,    0 },  // EO_NE_BCDINT
+  { EA_NONE,    0 },  // EO_NE_DTEDTE
+  { EA_NONE,    0 },  // EO_NE_DTETSP
+  { EA_NONE,    0 },  // EO_NE_FLTBCD
+  { EA_NONE,    0 },  // EO_NE_FLTFLT
+  { EA_NONE,    0 },  // EO_NE_FLTINT
+  { EA_NONE,    0 },  // EO_NE_INTBCD
+  { EA_NONE,    0 },  // EO_NE_INTFLT
+  { EA_NONE,    0 },  // EO_NE_INTINT
+  { EA_NONE,    0 },  // EO_NE_IVLIVL
+  { EA_NONE,    0 },  // EO_NE_TMETME
+  { EA_NONE,    0 },  // EO_NE_TSPDTE
+  { EA_NONE,    0 },  // EO_NE_TSPTSP
+  { EA_NONE,    0 },  // EO_NE_VCHVCH
+  { EA_NONE,    0 },  // EO_NE_UNKXYZ
+  { EA_NONE,    0 },  // EO_NE_XYZUNK
+
+    // column pushes
   { EA_INT,     8 },  // EO_PUSH_COLUMN_LENGTH
   { EA_INT,     8 },  // EO_PUSH_COLUMN_SCALE
   { EA_INT,     8 },  // EO_PUSH_COLUMN_TYPE

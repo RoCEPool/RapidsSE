@@ -114,10 +114,11 @@ print "loading Orders...";
 
 //explain SELECT * FROM lineitem UNION ALL CORRESPONDING BY (o_orderkey) SELECT * FROM orders;
 
-select * from lineitem;
+select l_orderkey, sum(l_partkey) from lineitem group by l_orderkey having sum(l_partkey) + 1 > 1500000;
 
-projectColumns_I lineitem type integer 1 $1 +;
-projectColumns lineitem type integer 1 $1 +;
+
+//projectColumns_I lineitem type integer 1 $1 +;
+//projectColumns lineitem type integer 1 $1 +;
 /*
 
 SELECT l_orderkey FROM lineitem UNION ALL SELECT o_orderkey FROM orders;
@@ -154,8 +155,6 @@ UNION ALL
   SELECT o_orderkey FROM orders
 UNION ALL
   SELECT c_custkey FROM customer
-UNION ALL
-   SELECT c_custkey FROM customer2
 ;
 
 

@@ -378,10 +378,10 @@ void Backend::vAppendProjectOp(Backend* pBackend, QueryNode* pNode)
   String* sPipeline = pBackend->m_sPipeline;
 
   // Get the list of projected expressions from ProjectOp
+  ASSERT(pNode->nChildren() == 1);
   QueryNode *pProjectedColumns = ProjectOp::pProjectedColumns(pNode);
   ASSERT(pProjectedColumns);
 
-  ASSERT(pNode->nChildren() == 1);
   ASSERT(PlanObject::bIsOfType(pNode->pFirstChild()));
   pBackend->m_pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pBackend->m_pPlanRoot);
 
@@ -630,7 +630,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
     }
 
     if (NegationExpr::bIsOfType(pOrdinalExpr)) {
-      sPipeline->vCatSprint(" - "_Stz);
+      sPipeline->vCatSprint(" negate "_Stz);
     }
 
     if (SubtractionExpr::bIsOfType(pOrdinalExpr)) {

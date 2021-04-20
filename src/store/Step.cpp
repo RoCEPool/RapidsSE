@@ -104,7 +104,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Locals();
   Step::vAddSteps_Lock();
   Step::vAddSteps_Locks();
-  Step::vAddSteps_Log();
   Step::vAddSteps_Logic();
   Step::vAddSteps_LogicCompiler();
   Step::vAddSteps_LogicUnit();

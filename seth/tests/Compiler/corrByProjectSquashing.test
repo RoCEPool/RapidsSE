@@ -1,0 +1,831 @@
+/*----------------------------------------------------------------------------*/
+/* ProjectOp Squashing                                                        */
+/*                                                                            */
+/* This deals with the case of pushing down and squashing ProjectOps that     */
+/* are created as children of UnionOps when a CORRESPONDING BY clause is      */
+/* specified.                                                                 */
+/*----------------------------------------------------------------------------*/
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Setup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE t1 (col1 INTEGER, col2 FLOAT, col3 DECIMAL, col4 VARCHAR, col5 BOOLEAN, col6 DATE, col7 TIME, col8 TIMESTAMP);
+success
+
+// same signature as tbl1 but with an extra column
+CREATE TABLE t2 (col1 INTEGER, col2 FLOAT, col3 DECIMAL, col4 VARCHAR, col5 BOOLEAN, col6 DATE, col7 TIME, col8 TIMESTAMP, col9 INTEGER);
+success
+
+// same column names as t1 but different column types
+CREATE TABLE t3 (col1 VARCHAR, col2 BOOLEAN, col3 DATE, col4 TIME, col5 TIMESTAMP, col6 INTEGER, col7 FLOAT, col8 DECIMAL);
+success
+
+// same column types as t1 but different column names
+CREATE TABLE t4 (alpha INTEGER, bravo FLOAT, charlie DECIMAL, delta VARCHAR, echo BOOLEAN, foxtrot DATE, golf TIME, hotel TIMESTAMP);
+success
+
+
+trackmemory;
+success
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Basic union all statements with CORRESPONDING BY clause
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+EXPLAIN
+SELECT * FROM t1
+UNION ALL CORRESPONDING BY (col2, col4, col6)
+SELECT * FROM t2;
+rows:
+(*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT * FROM t1 UNION ALL CORRESPONDING BY (col2, col4, col6) SELECT * FROM t2"
+
+-> unionOp
+   » isDistinct: (false)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT * FROM t1"
+
+-> -> -> projectOp
+         » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2)
+         » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4)
+         » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.t1)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT * FROM t2"
+
+-> -> -> projectOp
+         » column: (Alias = col2 ; Expr = rapidsse.public.t2.col2)
+         » column: (Alias = col4 ; Expr = rapidsse.public.t2.col4)
+         » column: (Alias = col6 ; Expr = rapidsse.public.t2.col6)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.t2)'
+)
+
+-- alias in first query
+EXPLAIN
+SELECT alpha as col1, bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4
+UNION ALL CORRESPONDING BY (col2, col4, col6)
+SELECT * FROM t1;
+rows:
+(*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT alpha as col1, bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4 UNION ALL CORRESPONDING BY (col2, col4, col6) SELECT * FROM t1"
+
+-> unionOp
+   » isDistinct: (false)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT alpha as col1, bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4"
+
+-> -> -> projectOp
+         » column: (Alias = col2 ; Expr = rapidsse.public.t4.bravo)
+         » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta)
+         » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.t4)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT * FROM t1"
+
+-> -> -> projectOp
+         » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2)
+         » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4)
+         » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.t1)'
+)
+
+-- alias in second query
+EXPLAIN
+SELECT * FROM t1
+UNION ALL CORRESPONDING BY (col2, col4, col6)
+SELECT alpha as col1, bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4;
+rows:
+(*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT * FROM t1 UNION ALL CORRESPONDING BY (col2, col4, col6) SELECT alpha as col1, bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4"
+
+-> unionOp
+   » isDistinct: (false)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT * FROM t1"
+
+-> -> -> projectOp
+         » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2)
+         » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4)
+         » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.t1)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT alpha as col1, bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4"
+
+-> -> -> projectOp
+         » column: (Alias = col2 ; Expr = rapidsse.public.t4.bravo)
+         » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta)
+         » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.t4)'
+)
+
+
+-- alias in both queries
+EXPLAIN
+SELECT col1 as c1, col2 as c2, col3 as c3, col4 as c4, col5 as c5, col6 as c6, col7 as c7, col8 as c8 FROM t1
+UNION ALL CORRESPONDING BY (c2, c4, c6)
+SELECT alpha as c1, bravo as c2, charlie as c3, delta as c4, echo as c5, foxtrot as c6, golf as c7, hotel as c8 FROM t4;
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT col1 as c1, col2 as c2, col3 as c3, col4 as c4, col5 as c5, col6 as c6, col7 as c7, col8 as c8 FROM t1 UNION ALL CORRESPONDING BY (c2, c4, c6) SELECT alpha as c1, bravo as c2, charlie as c3, delta as c4, echo as c5, foxtrot as c6, golf as c7, hotel as c8 FROM t4"
+
+-> unionOp
+   » isDistinct: (false)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT col1 as c1, col2 as c2, col3 as c3, col4 as c4, col5 as c5, col6 as c6, col7 as c7, col8 as c8 FROM t1"
+
+-> -> -> projectOp
+         » column: (Alias = c2 ; Expr = rapidsse.public.t1.col2)
+         » column: (Alias = c4 ; Expr = rapidsse.public.t1.col4)
+         » column: (Alias = c6 ; Expr = rapidsse.public.t1.col6)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.t1)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT alpha as c1, bravo as c2, charlie as c3, delta as c4, echo as c5, foxtrot as c6, golf as c7, hotel as c8 FROM t4"
+
+-> -> -> projectOp
+         » column: (Alias = c2 ; Expr = rapidsse.public.t4.bravo)
+         » column: (Alias = c4 ; Expr = rapidsse.public.t4.delta)
+         » column: (Alias = c6 ; Expr = rapidsse.public.t4.foxtrot)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.t4)'
+)
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Basic union all statements with just CORRESPONDING clause
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- Test these aliases without the BY column list (just the CORRESPONDING clause)
+EXPLAIN
+SELECT * FROM t1
+UNION ALL CORRESPONDING
+SELECT * FROM t2;
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT * FROM t1 UNION ALL CORRESPONDING SELECT * FROM t2"
+
+-> unionOp
+   » isDistinct: (false)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT * FROM t1"
+
+-> -> -> projectOp
+         » column: (Alias = col1 ; Expr = rapidsse.public.t1.col1)
+         » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2)
+         » column: (Alias = col3 ; Expr = rapidsse.public.t1.col3)
+         » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4)
+         » column: (Alias = col5 ; Expr = rapidsse.public.t1.col5)
+         » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6)
+         » column: (Alias = col7 ; Expr = rapidsse.public.t1.col7)
+         » column: (Alias = col8 ; Expr = rapidsse.public.t1.col8)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.t1)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT * FROM t2"
+
+-> -> -> projectOp
+         » column: (Alias = col1 ; Expr = rapidsse.public.t2.col1)
+         » column: (Alias = col2 ; Expr = rapidsse.public.t2.col2)
+         » column: (Alias = col3 ; Expr = rapidsse.public.t2.col3)
+         » column: (Alias = col4 ; Expr = rapidsse.public.t2.col4)
+         » column: (Alias = col5 ; Expr = rapidsse.public.t2.col5)
+         » column: (Alias = col6 ; Expr = rapidsse.public.t2.col6)
+         » column: (Alias = col7 ; Expr = rapidsse.public.t2.col7)
+         » column: (Alias = col8 ; Expr = rapidsse.public.t2.col8)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.t2)'
+)
+
+-- some aliases in first query
+EXPLAIN
+SELECT alpha, bravo as col2, charlie, delta as col4, echo, foxtrot as col6, golf, hotel FROM t4
+UNION ALL CORRESPONDING
+SELECT * FROM t1;
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT alpha, bravo as col2, charlie, delta as col4, echo, foxtrot as col6, golf, hotel FROM t4 UNION ALL CORRESPONDING SELECT * FROM t1"
+
+-> unionOp
+   » isDistinct: (false)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT alpha, bravo as col2, charlie, delta as col4, echo, foxtrot as col6, golf, hotel FROM t4"
+
+-> -> -> projectOp
+         » column: (Alias = col2 ; Expr = rapidsse.public.t4.bravo)
+         » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta)
+         » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.t4)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT * FROM t1"
+
+-> -> -> projectOp
+         » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2)
+         » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4)
+         » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.t1)'
+)
+
+-- aliases in second query
+EXPLAIN
+SELECT * FROM t1
+UNION ALL CORRESPONDING
+SELECT alpha, bravo as col2, charlie, delta as col4, echo, foxtrot as col6, golf, hotel FROM t4;
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT * FROM t1 UNION ALL CORRESPONDING SELECT alpha, bravo as col2, charlie, delta as col4, echo, foxtrot as col6, golf, hotel FROM t4"
+
+-> unionOp
+   » isDistinct: (false)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT * FROM t1"
+
+-> -> -> projectOp
+         » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2)
+         » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4)
+         » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.t1)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT alpha, bravo as col2, charlie, delta as col4, echo, foxtrot as col6, golf, hotel FROM t4"
+
+-> -> -> projectOp
+         » column: (Alias = col2 ; Expr = rapidsse.public.t4.bravo)
+         » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta)
+         » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.t4)'
+)
+
+-- aliases in both queries
+EXPLAIN
+SELECT col1, col2 as c2, col3, col4 as c4, col5, col6 as c6, col7, col8 FROM t1
+UNION ALL CORRESPONDING
+SELECT alpha as c1, bravo as c2, charlie as c3, delta as c4, echo as c5, foxtrot as c6, golf as c7, hotel as c8 FROM t4;
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT col1, col2 as c2, col3, col4 as c4, col5, col6 as c6, col7, col8 FROM t1 UNION ALL CORRESPONDING SELECT alpha as c1, bravo as c2, charlie as c3, delta as c4, echo as c5, foxtrot as c6, golf as c7, hotel as c8 FROM t4"
+
+-> unionOp
+   » isDistinct: (false)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT col1, col2 as c2, col3, col4 as c4, col5, col6 as c6, col7, col8 FROM t1"
+
+-> -> -> projectOp
+         » column: (Alias = c2 ; Expr = rapidsse.public.t1.col2)
+         » column: (Alias = c4 ; Expr = rapidsse.public.t1.col4)
+         » column: (Alias = c6 ; Expr = rapidsse.public.t1.col6)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.t1)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT alpha as c1, bravo as c2, charlie as c3, delta as c4, echo as c5, foxtrot as c6, golf as c7, hotel as c8 FROM t4"
+
+-> -> -> projectOp
+         » column: (Alias = c2 ; Expr = rapidsse.public.t4.bravo)
+         » column: (Alias = c4 ; Expr = rapidsse.public.t4.delta)
+         » column: (Alias = c6 ; Expr = rapidsse.public.t4.foxtrot)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.t4)')
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Project squashing into AggregateOps
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- Basic group by. Note that the aggregation exprs gets factored
+-- out because they don't have a common name because the columnRefs
+-- are not symbolically equal. Need to give them an alias for the
+-- aggregation exprs to be included (see below).
+EXPLAIN
+SELECT col1, SUM(col2), COUNT(col3) FROM t1 GROUP BY col1
+UNION ALL CORRESPONDING
+SELECT col1, SUM(col2), COUNT(col3) FROM t2 GROUP BY col1;
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT col1, SUM(col2), COUNT(col3) FROM t1 GROUP BY col1 UNION ALL CORRESPONDING SELECT col1, SUM(col2), COUNT(col3) FROM t2 GROUP BY col1"
+
+-> unionOp
+   » isDistinct: (false)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT col1, SUM(col2), COUNT(col3) FROM t1 GROUP BY col1"
+
+-> -> -> aggregateOp
+         » column: (Alias = col1 ; Expr = rapidsse.public.t1.col1)
+         » group by: (rapidsse.public.t1.col1)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.t1)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT col1, SUM(col2), COUNT(col3) FROM t2 GROUP BY col1"
+
+-> -> -> aggregateOp
+         » column: (Alias = col1 ; Expr = rapidsse.public.t2.col1)
+         » group by: (rapidsse.public.t2.col1)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.t2)')
+
+EXPLAIN
+SELECT col1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY col1
+UNION ALL CORRESPONDING
+SELECT col1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1;
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT col1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY col1 UNION ALL CORRESPONDING SELECT col1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1"
+
+-> unionOp
+   » isDistinct: (false)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT col1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY col1"
+
+-> -> -> aggregateOp
+         » column: (Alias = col1 ; Expr = rapidsse.public.t1.col1)
+         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2))
+         » group by: (rapidsse.public.t1.col1)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.t1)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT col1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1"
+
+-> -> -> aggregateOp
+         » column: (Alias = col1 ; Expr = rapidsse.public.t2.col1)
+         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2))
+         » group by: (rapidsse.public.t2.col1)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.t2)'
+)
+
+
+-- AggregateOp with alias in the group by list in the first child query.
+-- Here we need to ensure that the alias in the group by list is expanded
+-- since the alias is not being projected any more.
+EXPLAIN
+SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1
+UNION ALL CORRESPONDING
+SELECT col1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1;
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1 UNION ALL CORRESPONDING SELECT col1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1"
+
+-> unionOp
+   » isDistinct: (false)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1"
+
+-> -> -> aggregateOp
+         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2))
+         » group by: (rapidsse.public.t1.col1)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.t1)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT col1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1"
+
+-> -> -> aggregateOp
+         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2))
+         » group by: (rapidsse.public.t2.col1)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.t2)'
+)
+
+-- AggregateOp with alias in the group by list in the first child query.
+-- Compared the last example, here we will be projected the group by column
+-- (and alias) so the alias in the group by list of the first child query
+-- can be left as is.
+EXPLAIN
+SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1
+UNION ALL CORRESPONDING
+SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1;
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1 UNION ALL CORRESPONDING SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1"
+
+-> unionOp
+   » isDistinct: (false)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1"
+
+-> -> -> aggregateOp
+         » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1)
+         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2))
+         » group by: (c1)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.t1)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1"
+
+-> -> -> aggregateOp
+         » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1)
+         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2))
+         » group by: (rapidsse.public.t2.col1)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.t2)'
+)
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Project squashing above a non-ProjectOp
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- squashing above a filterOp in the first child query
+EXPLAIN
+SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1 HAVING s2 > 0
+UNION ALL CORRESPONDING
+SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1;
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1 HAVING s2 > 0 UNION ALL CORRESPONDING SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1"
+
+-> unionOp
+   » isDistinct: (false)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1 HAVING s2 > 0"
+
+-> -> -> projectOp
+         » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1)
+         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2))
+
+-> -> -> -> filterOp
+            » expr: (s2 > 0)
+            » ordinal expr: ($2 > 0)
+
+-> -> -> -> -> aggregateOp
+               » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1)
+               » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2))
+               » column: (Expr = COUNT(rapidsse.public.t1.col3))
+               » group by: (c1)
+
+-> -> -> -> -> -> tableScanOp
+                  » table: (rapidsse.public.t1)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1"
+
+-> -> -> aggregateOp
+         » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1)
+         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2))
+         » group by: (rapidsse.public.t2.col1)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.t2)'
+)
+
+-- squashing above a filterOp in the first second child query
+EXPLAIN
+SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1
+UNION ALL CORRESPONDING
+SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1 HAVING s2 > 0;
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1 UNION ALL CORRESPONDING SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1 HAVING s2 > 0"
+
+-> unionOp
+   » isDistinct: (false)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1"
+
+-> -> -> aggregateOp
+         » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1)
+         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2))
+         » group by: (c1)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.t1)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1 HAVING s2 > 0"
+
+-> -> -> projectOp
+         » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1)
+         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2))
+
+-> -> -> -> filterOp
+            » expr: (s2 > 0)
+            » ordinal expr: ($2 > 0)
+
+-> -> -> -> -> aggregateOp
+               » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1)
+               » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2))
+               » column: (Expr = COUNT(rapidsse.public.t2.col3))
+               » group by: (rapidsse.public.t2.col1)
+
+-> -> -> -> -> -> tableScanOp
+                  » table: (rapidsse.public.t2)'
+)
+
+
+-- squashing above a filterOp in both child queries
+EXPLAIN
+SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1 HAVING s2 > 0
+UNION ALL CORRESPONDING
+SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1 HAVING s2 > 0;
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1 HAVING s2 > 0 UNION ALL CORRESPONDING SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1 HAVING s2 > 0"
+
+-> unionOp
+   » isDistinct: (false)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1 HAVING s2 > 0"
+
+-> -> -> projectOp
+         » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1)
+         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2))
+
+-> -> -> -> filterOp
+            » expr: (s2 > 0)
+            » ordinal expr: ($2 > 0)
+
+-> -> -> -> -> aggregateOp
+               » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1)
+               » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2))
+               » column: (Expr = COUNT(rapidsse.public.t1.col3))
+               » group by: (c1)
+
+-> -> -> -> -> -> tableScanOp
+                  » table: (rapidsse.public.t1)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1 HAVING s2 > 0"
+
+-> -> -> projectOp
+         » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1)
+         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2))
+
+-> -> -> -> filterOp
+            » expr: (s2 > 0)
+            » ordinal expr: ($2 > 0)
+
+-> -> -> -> -> aggregateOp
+               » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1)
+               » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2))
+               » column: (Expr = COUNT(rapidsse.public.t2.col3))
+               » group by: (rapidsse.public.t2.col1)
+
+-> -> -> -> -> -> tableScanOp
+                  » table: (rapidsse.public.t2)'
+)
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Project squashing into a post-ProjectOp
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- Here each child query is not selecting the expression in the HAVING clause
+-- so each child query will generate a post-ProjectOp to filter out that
+-- transient column. However the ProjectOp from the CORRESPONDING clause
+-- will be pushed down and squashed into this post-ProjectOp.
+
+EXPLAIN
+SELECT col1 as c1, COUNT(col3) FROM t1 GROUP BY c1 HAVING SUM(col2) > 0
+UNION ALL CORRESPONDING
+SELECT col1 as c1, COUNT(col3) FROM t2 GROUP BY col1 HAVING SUM(col2) > 0;
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT col1 as c1, COUNT(col3) FROM t1 GROUP BY c1 HAVING SUM(col2) > 0 UNION ALL CORRESPONDING SELECT col1 as c1, COUNT(col3) FROM t2 GROUP BY col1 HAVING SUM(col2) > 0"
+
+-> unionOp
+   » isDistinct: (false)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT col1 as c1, COUNT(col3) FROM t1 GROUP BY c1 HAVING SUM(col2) > 0"
+
+-> -> -> projectOp
+         » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1)
+
+-> -> -> -> filterOp
+            » expr: ((SUM(rapidsse.public.t1.col2)) > 0)
+            » ordinal expr: ((SUM(rapidsse.public.t1.col2)) > 0)
+
+-> -> -> -> -> aggregateOp
+               » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1)
+               » column: (Expr = COUNT(rapidsse.public.t1.col3))
+               » group by: (c1)
+
+-> -> -> -> -> -> tableScanOp
+                  » table: (rapidsse.public.t1)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT col1 as c1, COUNT(col3) FROM t2 GROUP BY col1 HAVING SUM(col2) > 0"
+
+-> -> -> projectOp
+         » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1)
+
+-> -> -> -> filterOp
+            » expr: ((SUM(rapidsse.public.t2.col2)) > 0)
+            » ordinal expr: ((SUM(rapidsse.public.t2.col2)) > 0)
+
+-> -> -> -> -> aggregateOp
+               » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1)
+               » column: (Expr = COUNT(rapidsse.public.t2.col3))
+               » group by: (rapidsse.public.t2.col1)
+
+-> -> -> -> -> -> tableScanOp
+                  » table: (rapidsse.public.t2)'
+)
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Nested union all statements
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- Here we have a nested union where each individual SELECT statement is selecting
+-- more columns than is required. The outer UNION only requires columns 2, 4 and 6.
+-- The nested inner union requires columns 2, 4, 6, and 8. Pushing down the
+-- CORRESPONDING BY ProjectOps will force inner union to only require columns
+-- 2, 4 and 6 (dropping col8) and ultimately each SELECT statement will only
+-- select the neccessary columns.
+EXPLAIN
+SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1
+UNION ALL CORRESPONDING BY (col2, col4, col6)
+(
+  SELECT bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4
+  UNION ALL CORRESPONDING BY (col2, col4, col6, col8)
+  SELECT * FROM t2
+);
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1 UNION ALL CORRESPONDING BY (col2, col4, col6) (   SELECT bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4   UNION ALL CORRESPONDING BY (col2, col4, col6, col8)   SELECT * FROM t2 )"
+
+-> unionOp
+   » isDistinct: (false)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1"
+
+-> -> -> projectOp
+         » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2)
+         » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4)
+         » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.t1)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4   UNION ALL CORRESPONDING BY (col2, col4, col6, col8)   SELECT * FROM t2"
+
+-> -> -> unionOp
+         » isDistinct: (false)
+
+-> -> -> -> StatementMarker: select
+            » queryText: "SELECT bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4"
+
+-> -> -> -> -> projectOp
+               » column: (Alias = col2 ; Expr = rapidsse.public.t4.bravo)
+               » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta)
+               » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot)
+
+-> -> -> -> -> -> tableScanOp
+                  » table: (rapidsse.public.t4)
+
+-> -> -> -> StatementMarker: select
+            » queryText: "SELECT * FROM t2"
+
+-> -> -> -> -> projectOp
+               » column: (Alias = col2 ; Expr = rapidsse.public.t4.bravo)
+               » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta)
+               » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot)
+
+-> -> -> -> -> -> tableScanOp
+                  » table: (rapidsse.public.t2)'
+)
+
+
+-- Same as the previous example, but without the parentheses, so
+-- the first two tables are unioned first (t1 and t4) and the output
+-- of this is then unioned with t2.
+EXPLAIN
+SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1
+UNION ALL CORRESPONDING BY (col2, col4, col6, col8)
+SELECT bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4
+UNION ALL CORRESPONDING BY (col2, col4, col6)
+SELECT * FROM t2
+;
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1 UNION ALL CORRESPONDING BY (col2, col4, col6, col8) SELECT bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4 UNION ALL CORRESPONDING BY (col2, col4, col6) SELECT * FROM t2"
+
+-> unionOp
+   » isDistinct: (false)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1 UNION ALL CORRESPONDING BY (col2, col4, col6, col8) SELECT bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4"
+
+-> -> -> unionOp
+         » isDistinct: (false)
+
+-> -> -> -> StatementMarker: select
+            » queryText: "SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1"
+
+-> -> -> -> -> projectOp
+               » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2)
+               » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4)
+               » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6)
+
+-> -> -> -> -> -> tableScanOp
+                  » table: (rapidsse.public.t1)
+
+-> -> -> -> StatementMarker: select
+            » queryText: "SELECT bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4"
+
+-> -> -> -> -> projectOp
+               » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2)
+               » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4)
+               » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6)
+
+-> -> -> -> -> -> tableScanOp
+                  » table: (rapidsse.public.t4)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT * FROM t2"
+
+-> -> -> projectOp
+         » column: (Alias = col2 ; Expr = rapidsse.public.t2.col2)
+         » column: (Alias = col4 ; Expr = rapidsse.public.t2.col4)
+         » column: (Alias = col6 ; Expr = rapidsse.public.t2.col6)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.t2)'
+)
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Check for memory leaks
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+memoryleaks;
+rows: 0
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Cleanup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CLEANUP {
+  DROP TABLE t1;
+  mute
+
+  DROP TABLE t2;
+  mute
+
+  DROP TABLE t3;
+  mute
+
+  DROP TABLE t4;
+  mute
+}

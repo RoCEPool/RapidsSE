@@ -544,7 +544,7 @@ void NameValidator::vValidateColumns(PlanNode *pRootNode, QueryNode* pStartNode,
       // Create the AliasRef that we wish to transmogrify it to
       QueryNode* pProjectedCol = pProjectedColList->pPop();
       Text* pAliasName = new Text(ProjectedColumn::szAliasName(pProjectedCol));
-      QueryNode* pAliasExpr = ProjectedColumn::pExprNode(pProjectedCol)->pDeepCopy();
+      QueryNode* pAliasExpr = ProjectedColumn::pExprNode(pProjectedCol)->pDeepCopy(true);
 
       QueryNode* pAliasRef = AliasRef::pCreate(pAliasName, pAliasExpr);
       pColumnRef->vTransmogrifyTo(pAliasRef);

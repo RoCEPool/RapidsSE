@@ -333,7 +333,7 @@ QueryNode* Expr::pSymbolicToOrdinal(QueryNode*     pSymbolicExpr,
 
   if (pSymbolicExpr->nChildren() == 0) {
     // Duplicate this expression and return it
-    pOrdinalExpr = pSymbolicExpr->pDeepCopy();
+    pOrdinalExpr = pSymbolicExpr->pDeepCopy(true);
     return pOrdinalExpr;
   }
 
@@ -357,7 +357,7 @@ QueryNode* Expr::pSymbolicToOrdinal(QueryNode*     pSymbolicExpr,
   delete pChildIter;
 
   // Now we can deep copy the current symbolic expression but give it new children
-  pOrdinalExpr = pSymbolicExpr->pDeepCopy(pOrdinalChildren);
+  pOrdinalExpr = pSymbolicExpr->pDeepCopy(true, pOrdinalChildren);
 
   return pOrdinalExpr;
 }
@@ -368,6 +368,10 @@ QueryNode* Expr::pSymbolicToOrdinal(QueryNode*     pSymbolicExpr,
 /*----------------------------------------------------------------------------*/
 b1 Expr::bIsSymbolicallyEqual(QueryNode* pExpr1, QueryNode* pExpr2)
 {
+  // We cannot assert that pExpr1 and pExpr2 are expressions here because
+  // lower down we actually recursively call this function to compare any
+  // properties of the expression (e.g. the isDistinct property of an aggregation expr).
+
   // Are we comparing the same actual objects?
   if (pExpr1 == pExpr2) return true;
 

@@ -843,18 +843,6 @@ public:
   void vLocksList(void);
   void vLocksReset(void);
 
-  // log
-  void vLogDump(void);
-  void vLogMark(void);
-  void vLogMarkEntry(void);
-  void vLogMarkExit(void);
-  void vLogMarkPhase(void);
-
-  void vLogMarkWord(void);
-  void vLogMarkSeed(void);
-
-  void vLogJobSeed(void);
-
   // logic
   void vLogicAnd(void);
   void vLogicNot(void);
@@ -978,7 +966,6 @@ public:
   void vObjectDispatchWordFetch(void);
   void vObjectFetch(void);
   void vObjectMagicMark(void);
-  void vObjectPostRecv(void);
   void vObjectRecvArgsFetch(void);
   void vObjectStore(void);
 

@@ -184,8 +184,6 @@
 /*----------------------------------------------------------------------------*/
 : SEED_BEG
 
-  SS_SEED_BEG log::jobSeed
-
   JP_BEGINNING job[] job.phase!
 
   <path> str.toStrVec Path[].set
@@ -200,8 +198,6 @@
 /*----------------------------------------------------------------------------*/
 : SEED_CAN
 
-  SS_SEED_CAN log::jobSeed
-
   JP_CANCELING job[] job.phase!
 
   Seed_Initially
@@ -214,8 +210,6 @@
 /*----------------------------------------------------------------------------*/
 : SEED_END
 
-  SS_SEED_END log::jobSeed
-
   JP_ENDING job[] job.phase!
 
   Seed_Initially
@@ -227,8 +221,6 @@
 /* seed execute                                                               */
 /*----------------------------------------------------------------------------*/
 : SEED_EXE
-
-  SS_SEED_EXE log::jobSeed
 
   JP_EXECUTING job[] job.phase!
 
@@ -248,8 +240,6 @@
 /*----------------------------------------------------------------------------*/
 : SEED_RCV
 
-  SS_SEED_RCV log::jobSeed
-
   Seed_Initially
 
   job::</seeFlow/>
@@ -259,8 +249,6 @@
 /* seed request                                                               */
 /*----------------------------------------------------------------------------*/
 : SEED_REQ
-
-  SS_SEED_REQ log::jobSeed
 
   // use the <path> from <ename-set>
   <path> str.toStrVec Path[].set
@@ -274,8 +262,6 @@
 /* seed run                                                                   */
 /*----------------------------------------------------------------------------*/
 : SEED_RUN
-
-  SS_SEED_RUN log::jobSeed
 
   <path> str.toStrVec Path[].set
 
