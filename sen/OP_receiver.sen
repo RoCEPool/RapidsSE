@@ -58,6 +58,39 @@
   
   true
 ;
+/*----------------------------------------------------------------------------*/
+: receiver_recvNext_2
+
+  nullptr to Register0[]
+  nullptr to Register1[]
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get first object
+  
+  Socket[] socket.recvObject not if false exit then
+    to Register0[]
+
+  Register0[] not if
+    true exit
+  then
+    
+  Register0[] object.recvArgs@ 0 == if
+    true exit
+  then
+      
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get argument object
+
+  Socket[] socket.recvObject not if false exit then
+    to Register1[]
+    
+  Register0[] not if
+    true exit
+  then
+  
+  true
+;
+
 
 /*----------------------------------------------------------------------------*/
 /* receiver loop: receive a job (possibly with operand), dispatch it          */
@@ -70,6 +103,42 @@
 
     // receive next object(s)
     receiver_recvNext
+    
+    // check an object was received
+    not if
+      exit
+    then
+        
+    // null object (low memory)
+    Register0[] not if
+      continue_if
+    then
+    
+    // object with no arguments (probably job)
+    Register0[] object.recvArgs@ 0 == if
+      Register0[] Register0[] object.dispatchWord@ execute
+      continue_if
+    then
+    
+    // object with one argument (probably xmitoperand)
+    Register0[] object.recvArgs@ 1 == if
+      Register1[] Register0[] Register0[] object.dispatchWord@ execute
+      continue_if
+    then
+    
+    HAZARD
+
+  again
+;
+/*----------------------------------------------------------------------------*/
+: receiver_loop_2 ( -- )
+
+  begin
+
+    trap::stackDepthZero
+
+    // receive next object(s)
+    receiver_recvNext_2
     
     // check an object was received
     not if
@@ -110,7 +179,7 @@
   receiver_init
 
   // loop, receiving and executing jobs
-  receiver_loop
+  receiver_loop_2
 
   job::completed
 
