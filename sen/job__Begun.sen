@@ -88,10 +88,6 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // all job__begun's have been received, so this job is the decider
 
-  JP_BEGUN log::markPhase
-
-  JP_EXECUTING log::markPhase
-
   // distribute Job__Execute to all participants
   JobRef[] Job__Execute::distribute
   JobRef[].return

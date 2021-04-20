@@ -84,8 +84,6 @@
   // delete the infoset
   infoSet[].delete
 
-  //pAnsweredNode node.name "Answered node %v" str.format .logNote
-
   // return the answered node
   pAnsweredNode
 ;

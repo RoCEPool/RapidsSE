@@ -16,10 +16,6 @@
 
   // "req_entryHook" .
 
-  r@ locate log::markEntry
-
-  SS_SEED_REQ log::jobSeed
-
   job::assertCorrectness
 
   Seed_Initially
@@ -31,10 +27,6 @@
 : beg_entryHook
 
   // "beg_entryHook" .
-
-  r@ locate log::markEntry
-
-  SS_SEED_BEG log::jobSeed
 
   job::assertCorrectness
 
@@ -48,10 +40,6 @@
 
   // "exe_entryHook" .
 
-  r@ locate log::markEntry
-
-  SS_SEED_EXE log::jobSeed
-
   job::assertCorrectness
 
   Seed_Initially
@@ -63,10 +51,6 @@
 : end_entryHook
 
   // "end_entryHook" .
-
-  r@ locate log::markEntry
-
-  SS_SEED_END log::jobSeed
 
   job::assertCorrectness
 
@@ -80,10 +64,6 @@
 
   // "can_entryHook" .
 
-  r@ locate log::markEntry
-
-  SS_SEED_CAN log::jobSeed
-
   job::assertCorrectness
 
   Seed_Initially
@@ -96,10 +76,6 @@
 
   //"run_entryHook" .
 
-  r@ locate log::markEntry
-
-  SS_SEED_RUN log::jobSeed
-
   job::assertCorrectness
 
   Seed_Initially
@@ -111,8 +87,6 @@
 : std_entryHook
 
   // "std_entryHook" .
-
-  r@ locate log::markEntry
 
   job::assertCorrectness
 
@@ -131,8 +105,6 @@
 
   // "req_exitHook" .
 
-  r@ locate log::markExit
-
   DdlLock[].testDrop
 
   Done_Finally
@@ -144,8 +116,6 @@
 : beg_exitHook
 
   // "beg_exitHook" .
-
-  r@ locate log::markExit
 
   DdlLock[].testDrop
 
@@ -161,8 +131,6 @@
 
   // "exe_exitHook" .
 
-  r@ locate log::markExit
-
   DdlLock[].testDrop
 
   task::scheduledelete
@@ -176,8 +144,6 @@
 : end_exitHook
 
   // "end_exitHook" .
-
-  r@ locate log::markExit
 
   DdlLock[].testDrop
 
@@ -195,8 +161,6 @@
 
   // "can_exitHook" .
 
-  r@ locate log::markExit
-
   Done_Finally
 
  job::completed
@@ -210,8 +174,6 @@
 : run_exitHook
 
   //"run_exitHook" .
-
-  r@ locate log::markExit
 
   DdlLock[].testDrop
 
@@ -229,8 +191,6 @@
 : std_exitHook
 
   //"std_exitHook" .
-
-  r@ locate log::markExit
 ;
 
 /*----------------------------------------------------------------------------*/

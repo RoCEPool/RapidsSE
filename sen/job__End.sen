@@ -17,8 +17,6 @@
   // where:  On the originator node.
   //
 
-  JP_ENDING log::markPhase
-
   0 locals| pJob__End |
 
   // new a temporary Job__End

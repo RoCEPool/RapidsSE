@@ -9,11 +9,6 @@
 /*----------------------------------------------------------------------------*/
 : actLog::seed_can immediate
 
-  senCompiler::current@ word.name@ encode::push
-
-  POSTPONE AN_SEED_CAN
-
-  POSTPONE Log::markSeed
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -21,11 +16,6 @@
 /*----------------------------------------------------------------------------*/
 : actLog::seed_end immediate
 
-  senCompiler::current@ word.name@ encode::push
-
-  POSTPONE AN_SEED_END
-
-  POSTPONE Log::markSeed
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -33,11 +23,6 @@
 /*----------------------------------------------------------------------------*/
 : actLog::seed_exe immediate
 
-  senCompiler::current@ word.name@ encode::push
-
-  POSTPONE AN_SEED_EXE
-
-  POSTPONE Log::markSeed
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -45,11 +30,6 @@
 /*----------------------------------------------------------------------------*/
 : actLog::seed_rcv immediate
 
-  senCompiler::current@ word.name@ encode::push
-
-  POSTPONE AN_SEED_RCV
-
-  POSTPONE Log::markSeed
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -57,11 +37,6 @@
 /*----------------------------------------------------------------------------*/
 : actLog::seed_req immediate
 
-  senCompiler::current@ word.name@ encode::push
-
-  AN_SEED_REQ encode::push
-
-  POSTPONE Log::markSeed
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -69,11 +44,6 @@
 /*----------------------------------------------------------------------------*/
 : actLog::seed_run immediate
 
-  senCompiler::current@ word.name@ encode::push
-
-  AN_SEED_RCV encode::push
-
-  POSTPONE Log::markSeed
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -81,11 +51,6 @@
 /*----------------------------------------------------------------------------*/
 : actLog::resources_checked immediate
 
-  senCompiler::current@ word.name@ encode::push
-
-  AN_RESOURCES_CHECKED encode::push
-
-  POSTPONE Log::markWord
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -93,11 +58,6 @@
 /*----------------------------------------------------------------------------*/
 : actLog::resources_released immediate
 
-  senCompiler::current@ word.name@ encode::push
-
-  AN_RESOURCES_RELEASED encode::push
-
-  POSTPONE Log::markWord
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -107,42 +67,13 @@
 /*----------------------------------------------------------------------------*/
 : LogEntry immediate
 
-  // format the string to be printed
-  senCompiler::current@ word.name@ ">>%v" str.format
-
-  // encode push of that string
-  encode::push
-
-  // encode call to markEntry
-  POSTPONE Log::markEntry
 ;
-/*----------------------------------------------------------------------------*/
-//: LogEntry immediate
-//
-//  POSTPONE job[]
-//  POSTPONE job.class
-//  POSTPONE class::name
-//  ">>%v %v" encode::push
-//
-//  POSTPONE str.format
-//
-//  // encode call to markEntry
-//  POSTPONE Log::markEntry
-//;
 
 /*----------------------------------------------------------------------------*/
 /* log word exit                                                              */
 /*----------------------------------------------------------------------------*/
 : LogExit immediate
 
-  // format the string to be printed
-  senCompiler::current@ word.name@ "<<%v" str.format
-
-  // encode push of that string
-  encode::push
-
-  // encode call to markExit
-  POSTPONE Log::markExit
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -150,23 +81,6 @@
 /*----------------------------------------------------------------------------*/
 : !!logError immediate
 
-  // format the string to be printed
-  senCompiler::current@ word.name@ "!!%v" str.format
-
-  // encode push of that string
-  encode::push
-
-  // encode call to markExit
-  POSTPONE Log::markExit
-;
-
-/*----------------------------------------------------------------------------*/
-/* log general note                                                           */
-/*----------------------------------------------------------------------------*/
-: .logNote immediate
-
-  // encode call to markEntry
-  POSTPONE Log::mark
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -201,14 +115,6 @@
 /*----------------------------------------------------------------------------*/
 : LogReqEntry immediate
 
-  // format the string to be printed
-  senCompiler::current@ word.name@ ">>%v" str.format
-
-  // encode push of that string
-  encode::push
-
-  // encode call to markEntry
-  POSTPONE Log::markEntry
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -216,14 +122,6 @@
 /*----------------------------------------------------------------------------*/
 : LogReqExit immediate
 
-  // format the string to be printed
-  senCompiler::current@ word.name@ "<<%v" str.format
-
-  // encode push of that string
-  encode::push
-
-  // encode call to markExit
-  POSTPONE Log::markExit
 ;
 
 /*============================================================================*/
