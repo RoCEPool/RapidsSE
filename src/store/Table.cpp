@@ -245,7 +245,8 @@ tPN Table::tTablePtnToPtnNo(i8 i_TablePtn)
 void Table::vPostRecv(void* aTable)
 {
   _static_
-  
+  vTrace("table PostRecv\n"_Stz); //debug only
+
   Table* pTable = _pTable(aTable);
   
   pTable->vResetPointers();
@@ -884,32 +885,33 @@ i8  Table::iReassembleObj(void)
       case CN_LOCATION: {
         Location *pLoc = (Location *) pObject;
 
-        m_oLocation.vTenant(pLoc->szTenant());
-        m_oLocation.vCatalog(pLoc->szCatalog());
-        m_oLocation.vSchema(pLoc->szSchema());
-        m_oLocation.vTable(pLoc->szTable());
+        //m_oLocation.vTenant(pLoc->szTenant());
+        //m_oLocation.vCatalog(pLoc->szCatalog());
+        //m_oLocation.vSchema(pLoc->szSchema());
+        //m_oLocation.vTable(pLoc->szTable());
 
+        m_oLocation = *pLoc;
         break;
       }
       case CN_STREAMDEF:
-        m_pStreamDef = (StreamDef*) ::operator new(gxaSizeHeap[eClass].m_nClassSize, pObject);
-        //MemLib::vCopy(m_pStreamDef, pObject, gxaSizeHeap[eClass].m_nClassSize,eClass);
+        m_pStreamDef = (StreamDef*) pObject;
+        //m_pStreamDef = (StreamDef*) ::operator new(gxaSizeHeap[eClass].m_nClassSize, pObject);
         break;
       case CN_SHARDDEF:
-        m_pShardDef = (ShardDef*) ::operator new(gxaSizeHeap[eClass].m_nClassSize, (ShardDef*)pObject);
-        //MemLib::vCopy(m_pShardDef, pObject, gxaSizeHeap[eClass].m_nClassSize,eClass);
+        m_pShardDef = (ShardDef*) pObject;
+        //m_pShardDef = (ShardDef*) ::operator new(gxaSizeHeap[eClass].m_nClassSize, (ShardDef*)pObject);
         break;
       case CN_BUCKETMAP:
-        m_pBucketMap = (BucketMap*)::operator new(gxaSizeHeap[eClass].m_nClassSize, pObject);
-        //MemLib::vCopy(m_pBucketMap, pObject, gxaSizeHeap[eClass].m_nClassSize,eClass);
+        m_pBucketMap = (BucketMap*) pObject;
+        //m_pBucketMap = (BucketMap*)::operator new(gxaSizeHeap[eClass].m_nClassSize, pObject);
         break;
       case CN_IDXVEC:
-        m_pIdxVec = (IdxVec*)::operator new(gxaSizeHeap[eClass].m_nClassSize, pObject);
-        //MemLib::vCopy(m_pIdxVec, pObject, gxaSizeHeap[eClass].m_nClassSize,eClass);
+        m_pIdxVec = (IdxVec*) pObject;
+        //m_pIdxVec = (IdxVec*)::operator new(gxaSizeHeap[eClass].m_nClassSize, pObject);
         break;
       case CN_TABLEPTNVEC:
-        m_pTablePtnVec = (TablePtnVec*)::operator new(gxaSizeHeap[eClass].m_nClassSize, pObject);
-        //MemLib::vCopy(m_pTablePtnVec, pObject, gxaSizeHeap[eClass].m_nClassSize,eClass);
+        m_pTablePtnVec = (TablePtnVec*) pObject;
+        //m_pTablePtnVec = (TablePtnVec*)::operator new(gxaSizeHeap[eClass].m_nClassSize, pObject);
         break;
       default:
         vTrace("iReassembleObj %ld Error\n"_Stz,eClass);

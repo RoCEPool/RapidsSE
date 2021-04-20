@@ -106,6 +106,27 @@ bool Object::bMemoryLog(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* run post-recv() function                                                   */
+/*----------------------------------------------------------------------------*/
+void Object::vRunPostRecv(void)
+{
+  eCN eClassNo = eGetClassNo();
+  
+//  if (eClassNo != CN_JOB && eClassNo != CN_XMITOPERAND)
+//    vDebugPoint();
+  
+  fpPOSTFN* fpPostRecvFn = gxaSizeHeap[eClassNo].m_fpPostRecvFn;
+  
+  if (! fpPostRecvFn) {
+    vSetPostRecvRun(true);
+    return;
+  }
+  
+  vSetPostRecvRun(true);
+  fpPostRecvFn(this);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get size of object                                                         */
 /*----------------------------------------------------------------------------*/
 i8 Object::nSizeOfObject(void)

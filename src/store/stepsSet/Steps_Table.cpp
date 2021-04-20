@@ -518,6 +518,7 @@ void Step::vTableNew(void) {
 
 
   // SAME NODE TESTING ////////////////////// SAME NODE TESTING //////////////////////////////
+#ifndef JUNK
   if (sTableNm.bSame("bolTbl"_Stz)) {
     i8 iNumObjs = pTable->iPrepareObjParts();
     std::vector<Object *> aParts = pTable->aObjParts();
@@ -552,9 +553,9 @@ void Step::vTableNew(void) {
 
     // Testing the concept, passing the minimum-reassemble table works
     m_pDataStack->vPushPtr(pTable1);
-  }
+  } else
   // END SAME NODE TESTING  //////////////////  END SAME NODE TESTING  /////////////////////////
-else
+#endif
   m_pDataStack->vPushPtr(pTable);
   
   EXIT();

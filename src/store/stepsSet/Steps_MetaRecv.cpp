@@ -35,25 +35,30 @@ void Step::vMetaRecvPutParts(void)
   // ... code which pipesi in all the parts of a meta-object and
   //     gets the meta-object to reassemble itself ...
 
+  ///// FOR NOW THIS CODE IS SPECIFIC to TABLE
   // get arguments
   // get number of parts
   i8 nObjParts = m_pDataStack->nValues();
 
+  Table* pTable = nullptr;
   // Loop to get parts ?
   for (i8 i_Obj = 0; i_Obj < nObjParts; i_Obj++) {
-    //Object* pObject = m_pDataStack->pPopPtr(...)
-
-    // if (Object class is TABLE, create new table
-    //Table* pTable1 = new
-    // if object is not TABLE, build table parts array
-    //pTable1->iBuildArrayObjParts(pObject);
-
+    Object* pObject = m_pDataStack->pPopPtr(__func__);
+    if (pObject->eGetClassNo() == CN_TABLE) {
+      pTable = (Table*)pObject;
+    } else {
+      // get all the parts
+      if (pTable)
+        pTable->iBuildArrayObjParts(pObject);
+    }
   }
 
   // call reassemble parts code
-  //pTable1->iReassembleObj();
-  // put results ??
-  //m_pDataStack->vPushPtr(pTable1);
+  if (pTable) {
+    pTable->iReassembleObj();
+    // put results ??
+    m_pDataStack->vPushPtr(pTable);
+  }
 
   EXIT();
 }
