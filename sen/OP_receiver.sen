@@ -68,22 +68,26 @@
 
     trap::stackDepthZero
 
-    receiver_recvNext not if
+    // receive next object(s)
+    receiver_recvNext
+    
+    // check an object was received
+    not if
       exit
     then
         
-    // null object
+    // null object (low memory)
     Register0[] not if
       continue_if
     then
     
-    // probably job, no argument object
+    // object with no arguments (probably job)
     Register0[] object.recvArgs@ 0 == if
       Register0[] Register0[] object.dispatchWord@ execute
       continue_if
     then
     
-    // probably xmitoperand, with one argument
+    // object with one argument (probably xmitoperand)
     Register0[] object.recvArgs@ 1 == if
       Register1[] Register0[] Register0[] object.dispatchWord@ execute
       continue_if
@@ -93,6 +97,9 @@
 
   again
 ;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_STARTMARKER ...                                             */
