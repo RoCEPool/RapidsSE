@@ -27,6 +27,8 @@ success
 //	 N_REGIONKEY       INTEGER NOT NULL,
 //	 N_COMMENT         VARCHAR(152)
 
+-- trackmemory;
+-- success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Basic aggregations and group bys
@@ -121,6 +123,13 @@ rows: 1
 EXPLAIN SELECT SUM(n_nationkey) from nation HAVING SUM(n_nationkey) > 0;
 rows: 1
 
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Check for memory leaks
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- memoryleaks;
+-- rows: 0
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Cleanup

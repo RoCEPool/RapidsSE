@@ -368,6 +368,10 @@ QueryNode* Expr::pSymbolicToOrdinal(QueryNode*     pSymbolicExpr,
 /*----------------------------------------------------------------------------*/
 b1 Expr::bIsSymbolicallyEqual(QueryNode* pExpr1, QueryNode* pExpr2)
 {
+  // We cannot assert that pExpr1 and pExpr2 are expressions here because
+  // lower down we actually recursively call this function to compare any
+  // properties of the expression (e.g. the isDistinct property of an aggregation expr).
+
   // Are we comparing the same actual objects?
   if (pExpr1 == pExpr2) return true;
 

@@ -316,7 +316,7 @@ void QueryNode::vInsertAsParentOfChild2(QueryNode* pInsNode)
 void QueryNode::vInsertAsParentOfChild(QueryNode* pCurChild, QueryNode* pInsNode)
 {
   ASSERT(m_pChildren);
-  ASSERT(m_pChildren->nItems() > 1);
+  ASSERT(m_pChildren->nItems() >= 1);
   ASSERT(pCurChild);
   ASSERT(bHasChild(pCurChild));
   ASSERT(pInsNode);
