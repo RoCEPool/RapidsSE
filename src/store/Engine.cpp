@@ -753,6 +753,16 @@ void Engine::vDispatchWords(void)
   RASSERT(pWord);
   gxaSizeHeap[CN_XMITOPERAND].m_pDispatchWord = pWord;
   gxaSizeHeap[CN_XMITOPERAND].m_nRecvArgs = 1;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  pWord = AM::WORD::pFind("job.dispatch"_Stz);
+  RASSERT(pWord);
+  gxaSizeHeap[CN_JOB].m_pReceivedWord = pWord;
+  
+  pWord = AM::WORD::pFind("XmitOperand.dispatch"_Stz);
+  RASSERT(pWord);
+  gxaSizeHeap[CN_JOB].m_pReceivedWord = pWord;
 }
 
 /*----------------------------------------------------------------------------*/

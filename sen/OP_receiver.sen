@@ -179,7 +179,7 @@
   receiver_init
 
   // loop, receiving and executing jobs
-  receiver_loop_2
+  receiver_loop
 
   job::completed
 
