@@ -48,7 +48,7 @@ void RowInflator::vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
-  
+
   char* acStrArea = nullptr;
   
   i8* aiDstk_lcl = *aaCellArray;
@@ -135,7 +135,7 @@ void RowInflator::vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
         goto L_Overflowed;
       }
       else if (uHigh == MC_NULL) {
-        ayDataByte += C_BYTES_PER_WORD;
+        // nothing
       }
       else {
         RASSERT(0);

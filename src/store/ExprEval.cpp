@@ -171,23 +171,21 @@ void ExprEval::vAddArithmetic(Token* pTkn, Column* pColumn) {
       StrLib::vSprintCat(m_sAsmText, "  EO_DIV_INTINT\n"_Stz);
     }
   }
+  else if (pTkn->bSame("-"_Stz)) {
+    eParamType1 = (eDM) m_xTypeStack.iPop();
+    eParamType2 = (eDM) m_xTypeStack.iPop();
+    eEO eSubCode = eMathOp_SubCode[eParamType1][eParamType2];
+    StrLib::vSprintCat(m_sAsmText, "  %s\n"_Stz, aEO[eSubCode]);
+    eResultType = eMathOp_SubResult[eParamType1][eParamType2];
+    m_xTypeStack.vPush((i8) eResultType);
+  }
   else {
-    ASSERT(pTkn->bSame("-"_Stz));
-    if (m_xTypeStack.nItems() == 1) {
-      eParamType1 = (eDM) m_xTypeStack.iPop();
-      eEO eNegCode = eMathOp_NegCode[eParamType1];
-      StrLib::vSprintCat(m_sAsmText, "  %s\n"_Stz, aEO[eNegCode]);
-      eResultType = eMathOp_NegResult[eParamType1];
-      m_xTypeStack.vPush((i8) eResultType);
-    }
-    else {
-      eParamType1 = (eDM) m_xTypeStack.iPop();
-      eParamType2 = (eDM) m_xTypeStack.iPop();
-      eEO eSubCode = eMathOp_SubCode[eParamType1][eParamType2];
-      StrLib::vSprintCat(m_sAsmText, "  %s\n"_Stz, aEO[eSubCode]);
-      eResultType = eMathOp_SubResult[eParamType1][eParamType2];
-      m_xTypeStack.vPush((i8) eResultType);
-    }
+    ASSERT(pTkn->bSame("negate"_Stz));
+    eParamType1 = (eDM) m_xTypeStack.iPop();
+    eEO eNegCode = eMathOp_NegCode[eParamType1];
+    StrLib::vSprintCat(m_sAsmText, "  %s\n"_Stz, aEO[eNegCode]);
+    eResultType = eMathOp_NegResult[eParamType1];
+    m_xTypeStack.vPush((i8) eResultType);
   }
 }
 
@@ -349,9 +347,13 @@ void ExprEval::vAddPopCol(eCT eColumnType, i8 iColumn)
 
   // switch on column type
   switch (eColumnType) {
+    case CT_BOOLEAN:
     case CT_INTEGER:
     case CT_DECIMAL:
     case CT_DATE:
+    case CT_FLOAT:
+    case CT_TIME:
+    case CT_TIMESTAMP:
       StrLib::vSprintCat(m_sAsmText, "  EO_PUSH_DEVROW_DST\n"_Stz);
       StrLib::vSprintCat(m_sAsmText, "  EO_DEVROW_POPCOLI %lld\n"_Stz, iColumn);
       m_xTypeStack.iPop();
@@ -728,6 +730,12 @@ eEC ExprEval::eExprEval(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Token
 //      eError = EC_INVALID_COMMAND;
 //      goto L_RETURN;
 //    }
+
+    if (pTkn->bSame("negate"_Stz) ) {
+      vAddArithmetic(pTkn, pColumnExpr);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
 
     if (pTkn->bSame("null"_Stz) ) {
       vAddUnknown(pTkn, pColumnExpr);
