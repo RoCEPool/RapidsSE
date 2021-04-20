@@ -843,12 +843,6 @@ public:
   void vLocksList(void);
   void vLocksReset(void);
 
-  // log
-  void vLogMarkEntry(void);
-  void vLogMarkExit(void);
-  void vLogMarkWord(void);
-  void vLogMarkSeed(void);
-
   // logic
   void vLogicAnd(void);
   void vLogicNot(void);
