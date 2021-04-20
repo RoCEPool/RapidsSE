@@ -210,6 +210,8 @@ void PostProject::vAddPostProject(void* pvContainer, QueryNode* pStatementMarker
 
     // Create the new post project
     QueryNode* pPostProject = ProjectOp::pCreate(pSelectList);
+    ASSERT(pSelectList->nItems() == 0);
+    delete pSelectList;
 
     // Add in the post project
     pStatementMarker->vInsertAsParentOfChildren(pPostProject);

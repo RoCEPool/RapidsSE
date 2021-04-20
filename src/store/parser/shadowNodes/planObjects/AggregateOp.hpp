@@ -39,7 +39,8 @@ namespace Parser
     // Must be freed after use.
     static QueryNode* pOrdinalGroupByList(QueryNode* pNode, PlanNode* pRootNode);
 
-
+    // Merges a ProjectOp, pOtherOp, into this AggregateOp
+    static void vSquash(QueryNode* pNode, QueryNode* pOtherOp, PlanNode* pRootNode);
 
   protected:
 

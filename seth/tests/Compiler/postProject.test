@@ -28,6 +28,8 @@ create table nation (
 );
 success
 
+trackmemory;
+success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Post projection required because SUM(n_nationkey) is not being projected
@@ -138,6 +140,13 @@ rows:
          » table: (rapidsse.public.nation)'
 )
 
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Check for memory leaks
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+memoryleaks;
+rows: 0
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Cleanup

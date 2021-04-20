@@ -18,6 +18,8 @@
 #include "ProjectOp.hpp"
 #include "Expr.hpp"
 #include "ColumnRef.hpp"
+#include "ProjectOp.hpp"
+#include "AggregateOp.hpp"
 
 #include "SetOp.hpp"
 
@@ -60,7 +62,7 @@ void CorrBySquash::vSearchAndSquash(PlanNode *pRootNode)
     return GraphNav::WALK_CONTINUE;
   };
 
-  GraphNav::bGlobalWalkBottomUp(pPlanNode->pFirstChild(), false, true, fVisitor, pRootNode);
+  GraphNav::bGlobalWalk(pPlanNode->pFirstChild(), false, true, fVisitor, pRootNode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -158,8 +160,16 @@ void CorrBySquash::vPushDownProjectOp(QueryNode* pProjectOp, QueryNode* pStartin
     }
 
     //  - If we encounter a ProjectOp or AggregateOp then squash it.
-    if (ProjectOp::bIsOfType(pNode)) {
+    // We separate out the handling of Project vs Aggregate because the
+    // AggregateOp also has to consider aliases in the group by list.
+    if (ProjectOp::bIsExactType(pNode)) {
       ProjectOp::vSquash(_pQueryNode(pNode), pProjectOp, pRootNode);
+      bSquashed = true;
+      return GraphNav::WALK_SKIP_SUBTREE;
+    }
+
+    if (AggregateOp::bIsExactType(pNode)) {
+      AggregateOp::vSquash(_pQueryNode(pNode), pProjectOp, pRootNode);
       bSquashed = true;
       return GraphNav::WALK_SKIP_SUBTREE;
     }
