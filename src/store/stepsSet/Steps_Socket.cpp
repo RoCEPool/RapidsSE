@@ -50,6 +50,7 @@ void Step::vAddSteps_Socket(void)
   vAddStep("Socket[].isNotNull"_Stz, &Step::vSocketIsNotNull);
   vAddStep("Socket[].isNull"_Stz,    &Step::vSocketIsNull);
   vAddStep("Socket[].recvObject"_Stz,&Step::vSocketRecvObject);
+  vAddStep("Socket[].sendObject"_Stz,&Step::vSocketSendObject);
   vAddStep("Socket[].set"_Stz,       &Step::vSocketSet);
 
   vAddStep("socket.accept"_Stz,     &Step::vSocketAccept);
@@ -57,7 +58,6 @@ void Step::vAddSteps_Socket(void)
   vAddStep("socket.connect"_Stz,    &Step::vSocketConnect);
   vAddStep("socket.dropWrite"_Stz,  &Step::vSocketDropWrite);
   vAddStep("socket.grabWrite"_Stz,  &Step::vSocketGrabWrite);
-  vAddStep("socket.sendObject"_Stz, &Step::vSocketSendObject);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -312,7 +312,7 @@ void Step::vSocketOpen(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* socket.recvObject: recv object from a socket                               */
+/* Socket[].recvObject: recv object from a socket                             */
 /*----------------------------------------------------------------------------*/
 void Step::vSocketRecvObject(void)
 {
@@ -396,13 +396,11 @@ void Step::vSocketRecvObject(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* socket.sendObject: send object via a socket                                */
+/* Socket[].sendObject: send object via a socket                              */
 /*----------------------------------------------------------------------------*/
 void Step::vSocketSendObject(void)
 {
   ENTRY();
-  
-  Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
   
   Object* pObject = m_pDataStack->pPopPtr(__func__);
   
@@ -436,6 +434,8 @@ void Step::vSocketSendObject(void)
     
   SysCall oSysCall;
   
+  Socket* pSocket = *m_pJob->pLogicUnit_job()->m_xpSocket;
+
   bool bResult = pSocket->bSendTo(pObject, nObjectSize, oSysCall);
   
   m_pDataStack->vPushInt(bResult);

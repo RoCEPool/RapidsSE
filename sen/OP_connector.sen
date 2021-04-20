@@ -21,7 +21,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // send node info job to the other node
   Socket[] socket.grabWrite
-  InfoSet[] Socket[] socket.sendObject assert
+  InfoSet[] Socket[].sendObject assert
   Socket[] socket.dropWrite
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
