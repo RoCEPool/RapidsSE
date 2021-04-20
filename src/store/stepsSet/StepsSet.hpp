@@ -848,7 +848,6 @@ public:
   void vLogMark(void);
   void vLogMarkEntry(void);
   void vLogMarkExit(void);
-  void vLogMarkPhase(void);
 
   void vLogMarkWord(void);
   void vLogMarkSeed(void);

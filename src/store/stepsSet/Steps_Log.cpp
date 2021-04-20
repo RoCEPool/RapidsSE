@@ -19,7 +19,6 @@ void Step::vAddSteps_Log(void)
   vAddStep("log::mark"_Stz,       &Step::vLogMark);
   vAddStep("log::markEntry"_Stz,  &Step::vLogMarkEntry);
   vAddStep("log::markExit"_Stz,   &Step::vLogMarkExit);
-  vAddStep("log::markPhase"_Stz,  &Step::vLogMarkPhase);
 
   vAddStep("Log::markSeed"_Stz,   &Step::vLogMarkSeed);
   vAddStep("Log::markWord"_Stz,   &Step::vLogMarkWord);
@@ -78,20 +77,6 @@ void Step::vLogMarkExit(void)
   
   EXIT();
 }
-
-/*----------------------------------------------------------------------------*/
-/* log::mark -- write an log entry for word exit                              */
-/*----------------------------------------------------------------------------*/
-void Step::vLogMarkPhase(void)
-{
-  ENTRY();
-  
-  i8 i_Phase = m_pDataStack->iPopInt(__func__);
-    
-  EXIT();
-}
-
-////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
 /* log::markSeed -- write a seed mark into the action sequence                */

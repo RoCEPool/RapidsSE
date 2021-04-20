@@ -83,8 +83,6 @@
   // remove the originating job from the originator jobs
   JobRef[] job.removeOriginator
 
-  JP_ENDED log::markPhase
-
   // notify the originating task
   //JobRef[] job.originatingTask@ task.ack
   JobRef[] job.task@ task.ack
