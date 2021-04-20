@@ -4,3 +4,5 @@ aggregates.test
 explain.test
 //union.test
 postProject.test
+//aliases.test
+//projectSquashing.test

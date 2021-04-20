@@ -20,7 +20,6 @@ void Step::vAddSteps_Object(void)
   vAddStep("object.dispatchWord@"_Stz,&Step::vObjectDispatchWordFetch);
   vAddStep("object@"_Stz,             &Step::vObjectFetch);
   vAddStep("object.magic!"_Stz,       &Step::vObjectMagicMark);
-  vAddStep("object.postRecv"_Stz,     &Step::vObjectPostRecv);
   vAddStep("object.recvArgs@"_Stz,    &Step::vObjectRecvArgsFetch);
   vAddStep("object!"_Stz,             &Step::vObjectStore);
 }
@@ -103,36 +102,6 @@ void Step::vObjectMagicMark(void)
   Object* pObject = m_pDataStack->pPopPtr(__func__);
   
   pObject->vSetMagic();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* object.postRecv -- run post-receive function of object                     */
-/*----------------------------------------------------------------------------*/
-void Step::vObjectPostRecv(void)
-{
-  ENTRY();
-  
-  Object* pObject = m_pDataStack->pPopPtr(__func__);
-  RASSERT(pObject->bGetWasReceived());
-  RASSERT(!pObject->bGetPostRecvRun());
-  
-  eCN eClassNo = pObject->eGetClassNo();
-  
-  if (eClassNo != CN_JOB && eClassNo != CN_XMITOPERAND)
-    vDebugPoint();
-  
-  fpPOSTFN* fpPostRecvFn = gxaSizeHeap[eClassNo].m_fpPostRecvFn;
-  
-  if (! fpPostRecvFn) {
-    pObject->vSetPostRecvRun(true);
-    return;
-  }
-  
-  pObject->vSetPostRecvRun(true);
-  fpPostRecvFn(pObject);
-
   
   EXIT();
 }

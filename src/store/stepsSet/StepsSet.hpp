@@ -978,7 +978,6 @@ public:
   void vObjectDispatchWordFetch(void);
   void vObjectFetch(void);
   void vObjectMagicMark(void);
-  void vObjectPostRecv(void);
   void vObjectRecvArgsFetch(void);
   void vObjectStore(void);
 
@@ -1462,7 +1461,6 @@ public:
   void vSocketListen(void);
   void vSocketOpen(void);
   void vSocketRecvObject(void);
-  void vSocketRecvObject_LowMem(void);
   void vSocketSendObject(void);
   void vSocketSet(void);
 

@@ -110,12 +110,14 @@ void CorrBySquash::vSearchStatementSection(QueryNode* pStatementMarker, PlanNode
     GraphEditor::pSnipChild(pSetOp, pChild1, true);
     ASSERT(StatementMarker::bIsOfType(pSetOp->pFirstChild()));
     vPushDownProjectOp(pChild1, _pQueryNode(pSetOp->pFirstChild()), pRootNode);
+    delete pChild1;
   }
 
   if (ProjectOp::bIsExactType(pChild2)) {
     GraphEditor::pSnipChild(pSetOp, pChild2, true);
     ASSERT(StatementMarker::bIsOfType(pSetOp->pSecondChild()));
     vPushDownProjectOp(pChild2, _pQueryNode(pSetOp->pSecondChild()), pRootNode);
+    delete pChild2;
   }
 }
 
@@ -182,7 +184,7 @@ void CorrBySquash::vPushDownProjectOp(QueryNode* pProjectOp, QueryNode* pStartin
         //  - ...and that SetOp does NOT have ProjectOps as children then
         //    insert pProjectOp as a child of the SetOp. The recursive
         //    walk down of this algorithm will keep squashing this down.
-        pSetOp->vInsertAsParentOfChild1(pProjectOp);
+        pSetOp->vInsertAsParentOfChild1(pProjectOp->pDeepCopy(true));
       }
 
       // Deal with child2
@@ -195,7 +197,7 @@ void CorrBySquash::vPushDownProjectOp(QueryNode* pProjectOp, QueryNode* pStartin
         //  - ...and that SetOp does NOT have ProjectOps as children then
         //    insert pProjectOp as a child of the SetOp. The recursive
         //    walk down of this algorithm will keep squashing this down.
-        pSetOp->vInsertAsParentOfChild2(pProjectOp);
+        pSetOp->vInsertAsParentOfChild2(pProjectOp->pDeepCopy(true));
       }
 
       bSquashed = true;
@@ -206,7 +208,7 @@ void CorrBySquash::vPushDownProjectOp(QueryNode* pProjectOp, QueryNode* pStartin
     QueryNode* pParent = _pQueryNode(GraphNav::pGetParentOfPath(sPath, pStartingNode));
     ASSERT(pParent);
 
-    pParent->vInsertAsParentOfChild(_pQueryNode(pNode), pProjectOp);
+    pParent->vInsertAsParentOfChild(_pQueryNode(pNode), pProjectOp->pDeepCopy(true));
     bSquashed = true;
     return GraphNav::WALK_SKIP_SUBTREE;
   };

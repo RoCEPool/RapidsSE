@@ -40,6 +40,9 @@ namespace Parser
     // respect to the operations and symbols used.
     // This is overloaded from Expr to provide case insensitive property comparisons
     static b1 bIsSymbolicallyEqual(QueryNode* pAliasRef1, QueryNode* pAliasRef2);
+
+    // Replace the current AliasRef node with its expanded expression, in place.
+    static void vExpandAlias(QueryNode* pNode);
   };
 
 }

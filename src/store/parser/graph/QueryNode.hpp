@@ -87,11 +87,11 @@ namespace Parser
 
     // Return a deep copy of the current node, it's properties and all children.
     // NB: May need to make the name unique if using this copy as a sibling of its original.
-    QueryNode* pDeepCopy();
+    QueryNode* pDeepCopy(b1 bNewName);
 
     // Return a deep copy of the current node and it's properties but use the supplied children
     // NB: May need to make the name unique if using this copy as a sibling of its original.
-    QueryNode* pDeepCopy(PlanNodeList* pNewChildren);
+    QueryNode* pDeepCopy(b1 bNewName, PlanNodeList* pNewChildren);
 
     // Change the current node in place to reflect pTemplate.
     // This is an alternative to removing the current node and inserting a new node.
