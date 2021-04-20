@@ -118,7 +118,7 @@ macro AM_HANDLER_ROWBUFFER_LIMIT
   //EO_DUMP
 
   // check if limit reached
-  EO_LESSEQUAL
+  EO_LE_INTINT
   EO_JMP_TRUE QUERY_DONE
 
   //EO_ROW_SRC_NEXT
