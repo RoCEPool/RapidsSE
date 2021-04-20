@@ -271,7 +271,7 @@ Label CRWBUFFER_HANDLER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   EO_PUSH_LOCALI 6
   EO_DATE <param0> //"1998-09-01"
-  EO_GREATERTHAN
+  EO_GT_INTINT
   EO_JMP_TRUE PROCESSROW_DONE
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -464,7 +464,7 @@ Label CRWBUFFER_HANDLER
 
   EO_PUSH_LOCALI 6
   EO_DATE "1998-09-01"
-  EO_GREATERTHAN
+  EO_GT_INTINT
   EO_JMP_TRUE RETURN_FALSE
 
   // return true

@@ -173,7 +173,7 @@ eEC Range::eRangeValues(Index* pIndex, Stz* sRangeColumns)
         eError = EC_INVALID_COMMAND;
         break;
       }
-      eLower = EO_GREATEREQUAL;
+      eLower = EO_GE_INTINT;
       iLowerValue = iValue;
       sLowerValue = sValue;
     }
@@ -182,7 +182,7 @@ eEC Range::eRangeValues(Index* pIndex, Stz* sRangeColumns)
         eError = EC_INVALID_COMMAND;
         break;
       }
-      eLower = EO_GREATERTHAN;
+      eLower = EO_GT_INTINT;
       iLowerValue = iValue;
       sLowerValue = sValue;
     }
@@ -191,7 +191,7 @@ eEC Range::eRangeValues(Index* pIndex, Stz* sRangeColumns)
         eError = EC_INVALID_COMMAND;
         break;
       }
-      eUpper = EO_LESSTHAN;
+      eUpper = EO_LT_INTINT;
       iUpperValue = iValue;
       sUpperValue = sValue;
     }
@@ -200,7 +200,7 @@ eEC Range::eRangeValues(Index* pIndex, Stz* sRangeColumns)
         eError = EC_INVALID_COMMAND;
         break;
       }
-      eUpper = EO_LESSEQUAL;
+      eUpper = EO_LE_INTINT;
       iUpperValue = iValue;
       sUpperValue = sValue;
     }
@@ -237,7 +237,7 @@ eEC Range::eRangeValues(Index* pIndex, Stz* sRangeColumns)
     vInsertUpperBound(eColumnType, sUpperValue, iUpperValue);
 
     m_oTagSet.vInsert(C_TAG_RELATIONAL_UPPER, eUpper);
-    if (eLower == EO_GREATERTHAN) {
+    if (eLower == EO_GT_INTINT) {
       m_eMacro = AM_INDEX_RANGE_LOWER_GT;
     }
     else {
@@ -247,12 +247,12 @@ eEC Range::eRangeValues(Index* pIndex, Stz* sRangeColumns)
   }
 
   // lower bound ?
-  if (eLower == EO_GREATERTHAN ||
-      eLower == EO_GREATEREQUAL) {
+  if (eLower == EO_GT_INTINT ||
+      eLower == EO_GE_INTINT) {
 
     vInsertLowerBound(eColumnType, sLowerValue, iLowerValue);
 
-    if (eLower == EO_GREATERTHAN)
+    if (eLower == EO_GT_INTINT)
       m_eMacro = AM_INDEX_LOWER_BOUND_GT;
     else
       m_eMacro = AM_INDEX_LOWER_BOUND_GE;

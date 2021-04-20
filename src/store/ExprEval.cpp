@@ -356,19 +356,19 @@ void ExprEval::vAddRelational(Token* pTkn)
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
 
   if (pTkn->bSame(">"_Stz)) {
-    StrLib::vSprintCat(m_sAsmText, "  EO_GREATERTHAN\n"_Stz);
+    StrLib::vSprintCat(m_sAsmText, "  EO_GT_INTINT\n"_Stz);
   }
   else if (pTkn->bSame(">="_Stz)) {
-    StrLib::vSprintCat(m_sAsmText, "  EO_GREATEREQUAL\n"_Stz);
+    StrLib::vSprintCat(m_sAsmText, "  EO_GE_INTINT\n"_Stz);
   }
   else if (pTkn->bSame("<"_Stz)) {
-    StrLib::vSprintCat(m_sAsmText, "  EO_LESSTHAN\n"_Stz);
+    StrLib::vSprintCat(m_sAsmText, "  EO_LT_INTINT\n"_Stz);
   }
   else if (pTkn->bSame("<="_Stz)) {
-    StrLib::vSprintCat(m_sAsmText, "  EO_LESSEQUAL\n"_Stz);
+    StrLib::vSprintCat(m_sAsmText, "  EO_LE_INTINT\n"_Stz);
   }
   else if (pTkn->bSame("!="_Stz)) {
-    StrLib::vSprintCat(m_sAsmText, "  EO_NOTEQUAL\n"_Stz);
+    StrLib::vSprintCat(m_sAsmText, "  EO_NE_INTINT\n"_Stz);
   }
   else {
     ASSERT(pTkn->bSame("=="_Stz));
