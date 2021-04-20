@@ -514,11 +514,11 @@ void SetOpValidator::vConvertCorrByToProjectOp(QueryNode* pSetOp, PlanNode* pRoo
     // Add it to the project list for each child.
     // We must add it using the symbolic expr that it is know by, so that
     // the ordinal conversion will still match it correctly.
-    QueryNode* pNewProjectedColumn1 = pProjectedColumn1->pDeepCopy();
+    QueryNode* pNewProjectedColumn1 = pProjectedColumn1->pDeepCopy(true);
     ProjectedColumn::vSetAlias(pNewProjectedColumn1, new Text(szColumnName));
     pNewProjectedColumnList1->vAppend(pNewProjectedColumn1);
 
-    QueryNode* pNewProjectedColumn2 = pProjectedColumn2->pDeepCopy();
+    QueryNode* pNewProjectedColumn2 = pProjectedColumn2->pDeepCopy(true);
     ProjectedColumn::vSetAlias(pNewProjectedColumn2, new Text(szColumnName));
     pNewProjectedColumnList2->vAppend(pNewProjectedColumn2);
 

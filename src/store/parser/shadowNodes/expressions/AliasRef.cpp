@@ -180,6 +180,25 @@ b1 AliasRef::bIsSymbolicallyEqual(QueryNode* pAliasRef1, QueryNode* pAliasRef2)
   return true;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Replace the current AliasRef node with its expanded expression, in place   */
+/*----------------------------------------------------------------------------*/
+void AliasRef::vExpandAlias(QueryNode* pNode)
+{
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+
+  // Remove the aliased expression
+  QueryNode* pExpr = pNode->pRemoveProperty(C_ALIASEXPR_PROP);
+  ASSERT(pExpr);
+
+  // Replace pNode with pExpr
+  pNode->vTransmogrifyTo(pExpr);
+
+  // Delete what is left of pExpr
+  delete pExpr;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

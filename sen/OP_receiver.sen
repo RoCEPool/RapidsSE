@@ -41,8 +41,6 @@
   Register0[] not if
     true exit
   then
-
-  // Register0[] object.postRecv
     
   Register0[] object.recvArgs@ 0 == if
     true exit
@@ -57,8 +55,6 @@
   Register0[] not if
     true exit
   then
-
-  // Register1[] object.postRecv
   
   true
 ;

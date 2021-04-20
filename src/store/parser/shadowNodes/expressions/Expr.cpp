@@ -333,7 +333,7 @@ QueryNode* Expr::pSymbolicToOrdinal(QueryNode*     pSymbolicExpr,
 
   if (pSymbolicExpr->nChildren() == 0) {
     // Duplicate this expression and return it
-    pOrdinalExpr = pSymbolicExpr->pDeepCopy();
+    pOrdinalExpr = pSymbolicExpr->pDeepCopy(true);
     return pOrdinalExpr;
   }
 
@@ -357,7 +357,7 @@ QueryNode* Expr::pSymbolicToOrdinal(QueryNode*     pSymbolicExpr,
   delete pChildIter;
 
   // Now we can deep copy the current symbolic expression but give it new children
-  pOrdinalExpr = pSymbolicExpr->pDeepCopy(pOrdinalChildren);
+  pOrdinalExpr = pSymbolicExpr->pDeepCopy(true, pOrdinalChildren);
 
   return pOrdinalExpr;
 }

@@ -10,6 +10,7 @@
 #include "QueryNode.hpp"
 #include "store/parser/shadowNodes/compound/ProjectedColumn.hpp"
 #include "Expr.hpp"
+#include "AliasRef.hpp"
 #include "ShadowRoot.hpp"
 
 #include "GraphNav.hpp"
@@ -237,7 +238,7 @@ QueryNode* ProjectOp::pOrdinalProjectedColumns(QueryNode* pNode, PlanNode* pRoot
   QueryNode* pProjectedColumns = ProjectOp::pProjectedColumns(pNode);
 
   // Create a container node, but without any children
-  QueryNode* pOrdinalProjectedColumns = ProjectOp::pProjectedColumns(pNode)->pDeepCopy(new PlanNodeList());
+  QueryNode* pOrdinalProjectedColumns = ProjectOp::pProjectedColumns(pNode)->pDeepCopy(true, new PlanNodeList());
 
   // Iterate over each of the ProjectedColumn children of pNode
   PlanNodeIter* pIter = pProjectedColumns->pNewChildrenIter();
@@ -285,7 +286,7 @@ QueryNodeList* ProjectOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
     QueryNode* pProjColumn = _pQueryNode(pIter->pNext());
     ASSERT(ProjectedColumn::bIsOfType(pProjColumn));
 
-    QueryNode* pDup = pProjColumn->pDeepCopy();
+    QueryNode* pDup = pProjColumn->pDeepCopy(true);
     pColumnRefList->vAppend(pDup);
   }
 
@@ -294,7 +295,7 @@ QueryNodeList* ProjectOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Merges the ProjectOp, pOtherOp, into this ProjectOp                        */
+/* Merges the ProjectOp, pOtherOp, down into this ProjectOp                   */
 /*----------------------------------------------------------------------------*/
 void ProjectOp::vSquash(QueryNode* pNode, QueryNode* pOtherOp, PlanNode* pRootNode)
 {
@@ -303,24 +304,63 @@ void ProjectOp::vSquash(QueryNode* pNode, QueryNode* pOtherOp, PlanNode* pRootNo
   ASSERT(bIsOfType(pNode));
   ASSERT(pOtherOp);
   ASSERT(bIsOfType(pOtherOp));
+  ASSERT(pOtherOp->nChildren() == 0);
   ASSERT(pRootNode);
 
-  // if the expr of pOtherOp references the alias of a projected column
-  // then we need to keep that projected column and alias
+  // We have two ProjectOps on top of each other. pOtherOp is on top of pNode.
+  // We need to combine them.
+  //
+  // We are going to walk the expressions of each projected column of pOtherOp.
+  // If we encounter an AliasRef then we are going to replace it with its expanded
+  // expression. The reason for this is that an alias in a projected column of
+  // pOtherOp can only be referring to an alias that is defined in pNode.
+  // Since we are squashing the pNode ProjectOp then this lower alias definition
+  // will disappear.
 
-  // For every projected column in pOtherOp, pOtherCol:
-  //  test pOtherCol->expr against the alias and expr of each projected col in pNode
+  // Replace all AliasRefs in pOtherOp with their expanded form.
+  // We don't want to modify pOtherOp (in case it is pushed down into other
+  // parts of the graph), so first make a copy of its projected columns.
+  QueryNode* pNewProjCols = ProjectOp::pProjectedColumns(pOtherOp)->pDeepCopy(false);
+  ASSERT(pNewProjCols);
 
-  // The squashed projection must retain any aliases in pOtherOp.
-  // If there is an alias in pNode then the expr in pOtherOp could reference
-  // that alias or it could reference the pNode->expr.
-  // If there is no alias in pNode then the pOtherOp->expr MUST reference the
-  // pNode->expr
+  PlanNodeIter* pIter = pNewProjCols->pNewChildrenIter();
+  while (pIter->bHasNext()) {
+    QueryNode* pNewProjCol = _pQueryNode(pIter->pNext());
+    ASSERT(ProjectedColumn::bIsOfType(pNewProjCol));
 
-  // We can easily get the ordinal exprs of pOtherOp. This will tell us the relationship
-  // between an expr in pOtherOp and pNode. e.g. if the ordinal expr was (SUM($2) + 1)
-  // and the $2 ordinal in pNode was (2*col1) then we can reassemble the squashed symbolic
-  // expression as (SUM(2*col1) + 1).
+    QueryNode* pNewExpr = ProjectedColumn::pExprNode(pNewProjCol);
+
+    auto fVisitor = []
+        (PlanNode *pExpr, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+      UNUSED(pvArg);
+
+      if (!AliasRef::bIsOfType(pExpr)) {
+        return GraphNav::WALK_CONTINUE;
+      }
+
+      QueryNode* pAliasNode = _pQueryNode(pExpr);
+      AliasRef::vExpandAlias(pAliasNode);
+
+      // It should no longer be an alias
+      ASSERT(!AliasRef::bIsOfType(pAliasNode));
+      ASSERT(Expr::bIsOfType(pAliasNode));
+
+      return GraphNav::WALK_CONTINUE;
+    };
+
+    GraphNav::bBoundedWalk(pNewExpr, fVisitor, pRootNode);
+  }
+  delete pIter;
+
+  // Transplant the projected columns and aliases of pOtherOp into pNode.
+  // We will do this by swapping the projected columns of pOtherOp and pNode.
+  // Then we can delete pOtherOp and everything should be cleaned up.
+  QueryNode* pOldProjCols = pNode->pRemoveProperty(C_PROJECTEDCOLUMNS_PROP);
+  ASSERT(pOldProjCols);
+  pNode->vAppendProperty(pNewProjCols);
+
+  delete pOldProjCols;
 }
 
 /*============================================================================*/

@@ -315,7 +315,7 @@ QueryNode* AggregateOp::pOrdinalGroupByList(QueryNode* pNode, PlanNode* pRootNod
   ASSERT(pColExprList->nItems() > 0);
 
   // Create a container node to hold the ordinal expressions, but without any children
-  QueryNode* pOrdinalExprs = pSymbolicExprs->pDeepCopy(new PlanNodeList());
+  QueryNode* pOrdinalExprs = pSymbolicExprs->pDeepCopy(true, new PlanNodeList());
 
   // Iterate over each of the expression children of pSymbolicExprs
   PlanNodeIter* pIter = pSymbolicExprs->pNewChildrenIter();
