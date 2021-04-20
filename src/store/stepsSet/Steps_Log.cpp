@@ -15,26 +15,11 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Log(void)
 {
-  vAddStep("log::mark"_Stz,       &Step::vLogMark);
   vAddStep("log::markEntry"_Stz,  &Step::vLogMarkEntry);
   vAddStep("log::markExit"_Stz,   &Step::vLogMarkExit);
 
   vAddStep("Log::markSeed"_Stz,   &Step::vLogMarkSeed);
   vAddStep("Log::markWord"_Stz,   &Step::vLogMarkWord);
-}
-
-/*----------------------------------------------------------------------------*/
-/* log::mark -- write a log entry into the log                                */
-/*----------------------------------------------------------------------------*/
-void Step::vLogMark(void)
-{
-  ENTRY();
-  
-  s256 sMark;
-
-  m_pDataStack->vPopStr(sMark,__func__);
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -52,7 +37,7 @@ void Step::vLogMarkEntry(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* log::mark -- write an log entry for word exit                              */
+/* log::markExit -- write an log entry for word exit                          */
 /*----------------------------------------------------------------------------*/
 void Step::vLogMarkExit(void)
 {
