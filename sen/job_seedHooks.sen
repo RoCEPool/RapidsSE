@@ -18,8 +18,6 @@
 
   r@ locate log::markEntry
 
-  SS_SEED_REQ log::jobSeed
-
   job::assertCorrectness
 
   Seed_Initially
@@ -33,8 +31,6 @@
   // "beg_entryHook" .
 
   r@ locate log::markEntry
-
-  SS_SEED_BEG log::jobSeed
 
   job::assertCorrectness
 
@@ -50,8 +46,6 @@
 
   r@ locate log::markEntry
 
-  SS_SEED_EXE log::jobSeed
-
   job::assertCorrectness
 
   Seed_Initially
@@ -65,8 +59,6 @@
   // "end_entryHook" .
 
   r@ locate log::markEntry
-
-  SS_SEED_END log::jobSeed
 
   job::assertCorrectness
 
@@ -82,8 +74,6 @@
 
   r@ locate log::markEntry
 
-  SS_SEED_CAN log::jobSeed
-
   job::assertCorrectness
 
   Seed_Initially
@@ -97,8 +87,6 @@
   //"run_entryHook" .
 
   r@ locate log::markEntry
-
-  SS_SEED_RUN log::jobSeed
 
   job::assertCorrectness
 

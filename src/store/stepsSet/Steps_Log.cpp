@@ -22,8 +22,6 @@ void Step::vAddSteps_Log(void)
 
   vAddStep("Log::markSeed"_Stz,   &Step::vLogMarkSeed);
   vAddStep("Log::markWord"_Stz,   &Step::vLogMarkWord);
-  
-  vAddStep("Log::jobSeed"_Stz,    &Step::vLogJobSeed);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -107,18 +105,6 @@ void Step::vLogMarkWord(void)
   s32 sWordNm;
   m_pDataStack->vPopStr(sWordNm,__func__);
     
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* log::jobSeed -- add a job seed entry into log                              */
-/*----------------------------------------------------------------------------*/
-void Step::vLogJobSeed(void)
-{
-  ENTRY();
-  
-  i8 i_Seed = m_pDataStack->iPopInt(__func__);
-  
   EXIT();
 }
 
