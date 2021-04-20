@@ -202,7 +202,7 @@ void PostProject::vAddPostProject(void* pvContainer, QueryNode* pStatementMarker
 
     while (pColumnIter->bHasNext()) {
       QueryNode* pProjectedColumn = _pQueryNode(pColumnIter->pNext());
-      QueryNode* pColumnCopy = pProjectedColumn->pDeepCopy();
+      QueryNode* pColumnCopy = pProjectedColumn->pDeepCopy(true);
       pSelectList->vAppend(pColumnCopy);
     }
 

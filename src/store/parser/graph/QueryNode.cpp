@@ -4,6 +4,7 @@
 
 #include "BASE.h"
 #include "QueryNode.hpp"
+#include "NodeNamer.hpp"
 
 using namespace Parser;
 
@@ -405,14 +406,23 @@ QueryNode* QueryNode::pRemoveProperty(Stz* szPropName)
 /*----------------------------------------------------------------------------*/
 /* Return a deep copy of the current node, it's properties and all children   */
 /*----------------------------------------------------------------------------*/
-QueryNode* QueryNode::pDeepCopy()
+QueryNode* QueryNode::pDeepCopy(b1 bNewName)
 {
   // Deep copy the value
   Value xValue = this->m_xValue.xDup();
 
+  // Create a new unique name
+  Stz* szName = this->szName();
+  s256 sNewName;
+
+  if (bNewName) {
+    NodeNamer::vGenerateName(this, sNewName);
+    szName = sNewName.szStz();
+  }
+
   // Create the new node. This will copy in the name and type and take ownership
   // of the value and any pointers it has.
-  QueryNode* pNewNode = new QueryNode(this->szName(),
+  QueryNode* pNewNode = new QueryNode(szName,
                                       this->szType(),
                                       static_cast<Value&&>(xValue));
 
@@ -421,7 +431,7 @@ QueryNode* QueryNode::pDeepCopy()
     PlanNodeIter* pPropIter = m_pProperties->pNewIter();
     while (pPropIter->bHasNext()) {
       QueryNode* pProp = _pQueryNode(pPropIter->pNext());
-      QueryNode* pDupProp = pProp->pDeepCopy();
+      QueryNode* pDupProp = pProp->pDeepCopy(false);
       pNewNode->vAppendProperty(pDupProp);
     }
     delete pPropIter;
@@ -432,7 +442,7 @@ QueryNode* QueryNode::pDeepCopy()
     PlanNodeIter* pChildIter = m_pChildren->pNewIter();
     while (pChildIter->bHasNext()) {
       QueryNode* pChild = _pQueryNode(pChildIter->pNext());
-      QueryNode* pDupChild = pChild->pDeepCopy();
+      QueryNode* pDupChild = pChild->pDeepCopy(false);
       pNewNode->vAppendChild(pDupChild);
     }
     delete pChildIter;
@@ -445,14 +455,23 @@ QueryNode* QueryNode::pDeepCopy()
 /* Return a deep copy of the current node and it's properties but use the     */
 /* supplied children                                                          */
 /*----------------------------------------------------------------------------*/
-QueryNode* QueryNode::pDeepCopy(PlanNodeList* pNewChildren)
+QueryNode* QueryNode::pDeepCopy(b1 bNewName, PlanNodeList* pNewChildren)
 {
   // Deep copy the value
   Value xValue = this->m_xValue.xDup();
 
+  // Create a new unique name
+  Stz* szName = this->szName();
+  s256 sNewName;
+
+  if (bNewName) {
+    NodeNamer::vGenerateName(this, sNewName);
+    szName = sNewName.szStz();
+  }
+
   // Create the new node. This will copy in the name and type and take ownership
   // of the value and any pointers it has.
-  QueryNode* pNewNode = new QueryNode(this->szName(),
+  QueryNode* pNewNode = new QueryNode(szName,
                                       this->szType(),
                                       static_cast<Value&&>(xValue),
                                       new PlanNodeList(),
@@ -463,7 +482,7 @@ QueryNode* QueryNode::pDeepCopy(PlanNodeList* pNewChildren)
     PlanNodeIter* pPropIter = m_pProperties->pNewIter();
     while (pPropIter->bHasNext()) {
       QueryNode* pProp = _pQueryNode(pPropIter->pNext());
-      QueryNode* pDupProp = pProp->pDeepCopy();
+      QueryNode* pDupProp = pProp->pDeepCopy(false);
       pNewNode->vAppendProperty(pDupProp);
     }
     delete pPropIter;
