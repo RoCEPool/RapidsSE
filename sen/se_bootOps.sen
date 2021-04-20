@@ -217,6 +217,8 @@ assert::stack_0
 
 "y" .verbose
 
+  "XmitOperand.sen"             include
+
 "z\n" .verbose
 
 /*============================================================================*/

@@ -21,6 +21,8 @@ struct SizeHeap {
   
   Word* m_pDispatchWord;    // dispatch word on receive
   
+  Word* m_pReceivedWord;    // word to execute upon recv()
+  
   b8  m_bDontMemLog;        // don't memory log?
 };
 
