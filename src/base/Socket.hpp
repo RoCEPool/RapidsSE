@@ -14,14 +14,13 @@ namespace BASE
   class Socket : public Resource
   {
   public:
-  
+    Lock    m_okLock;
+
     Object* m_pIsFor;
   
     int     m_iSocketFd;
-    bool    m_bBlocking;
-    Lock    m_okLock;
-  
-    void*   m_aLowBuff; // low memory read area
+    bool    m_bBlocking; // is a blocking sockey
+    void*   m_aLowBuff;  // low memory read area
 
     union {
       struct sockaddr_in m_xServAddr;
@@ -33,7 +32,6 @@ namespace BASE
         
   public:
     void* operator new(size_t);
-    void* operator new(size_t, Socket* pSocket);
     void  operator delete(void*);
     
     Socket(Object* pIsFor);
