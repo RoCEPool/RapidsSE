@@ -844,15 +844,12 @@ public:
   void vLocksReset(void);
 
   // log
-  void vLogDump(void);
   void vLogMark(void);
   void vLogMarkEntry(void);
   void vLogMarkExit(void);
 
   void vLogMarkWord(void);
   void vLogMarkSeed(void);
-
-  void vLogJobSeed(void);
 
   // logic
   void vLogicAnd(void);

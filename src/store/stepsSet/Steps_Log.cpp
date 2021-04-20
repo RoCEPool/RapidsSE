@@ -15,23 +15,12 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Log(void)
 {
-  vAddStep("log::dump"_Stz,       &Step::vLogDump);
   vAddStep("log::mark"_Stz,       &Step::vLogMark);
   vAddStep("log::markEntry"_Stz,  &Step::vLogMarkEntry);
   vAddStep("log::markExit"_Stz,   &Step::vLogMarkExit);
 
   vAddStep("Log::markSeed"_Stz,   &Step::vLogMarkSeed);
   vAddStep("Log::markWord"_Stz,   &Step::vLogMarkWord);
-}
-
-/*----------------------------------------------------------------------------*/
-/* log::dump -- dump the log                                                  */
-/*----------------------------------------------------------------------------*/
-void Step::vLogDump(void)
-{
-  ENTRY();
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
