@@ -1304,6 +1304,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // add top two numbers and push result
 
       case EO_ADD_BCDBCD: ArgNil(); // bcd + bcd
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iMathLib_Add_INTINT(iTopB, iTopA);
+        dLU3(EO_ADD_INTBCD,iTopA,iTopB,iRes);
+        *(++aiDstk) = iRes;
         break;//+endCase
       case EO_ADD_BCDFLT: ArgNil(); // bcd + int
         break;//+endCase
@@ -1353,6 +1358,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       case EO_DIV_BCDBCD: ArgNil(); // bcd / bcd
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA / iTopB;
+        dLU3(EO_DIV_INTINT,iTopA,iTopB,iRes);
+        *(++aiDstk) = iRes;
         break;//+endCase
       case EO_DIV_BCDFLT: ArgNil(); // bcd / int
         break;//+endCase
@@ -1411,6 +1421,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_MUL_BCDFLT: ArgNil(); // bcd + int
         break;//+endCase
       case EO_MUL_BCDINT: ArgNil(); // bcd + int
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA * iTopB;
+        dLU3(EO_MUL_INTINT,iTopA,iTopB,iRes);
+        *(++aiDstk) = iRes;
+        break;//+endCase
         break;//+endCase
       case EO_MUL_DTEIVL: ArgNil(); // dte + ivl
         break;//+endCase
@@ -1475,6 +1491,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       // subtract second int from top push result
       case EO_SUB_BCDBCD: ArgNil(); // bcd / bcd
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA - iTopB;
+        dLU3(EO_SUB_INTINT,iTopA,iTopB,iRes);
+        *(++aiDstk) = iRes;
         break;//+endCase
       case EO_SUB_BCDFLT: ArgNil(); // bcd + int
         break;//+endCase

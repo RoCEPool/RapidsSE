@@ -130,24 +130,37 @@ void ExprEval::vAddArithmetic(Token* pTkn, Column* pColumn) {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
 
   eEO eCode;
-  eDM eParamType1 = (eDM)m_xTypeStack.iPop();
-  eDM eParamType2 = (eDM)m_xTypeStack.iPop();
+  eDM eParamType1;
+  eDM eParamType2;
   eDM eResultType;
 
   if (pTkn->bSame("+"_Stz)) {
+    eParamType1 = (eDM)m_xTypeStack.iPop();
+    eParamType2 = (eDM)m_xTypeStack.iPop();
     eEO eAddCode = eMathOp_AddCode[eParamType1][eParamType2];
     StrLib::vSprintCat(m_sAsmText, "  %s\n"_Stz, aEO[eAddCode]);
     eResultType = eMathOp_AddResult[eParamType1][eParamType2];
     m_xTypeStack.vPush((i8)eResultType);
   }
   else if (pTkn->bSame("/"_Stz)) {
-    StrLib::vSprintCat(m_sAsmText, "  EO_DIV_INTINT\n"_Stz);
+    eParamType1 = (eDM)m_xTypeStack.iPop();
+    eParamType2 = (eDM)m_xTypeStack.iPop();
+    eEO eDivCode = eMathOp_DivCode[eParamType1][eParamType2];
+    StrLib::vSprintCat(m_sAsmText, "  %s\n"_Stz, aEO[eDivCode]);
+    eResultType = eMathOp_DivResult[eParamType1][eParamType2];
+    m_xTypeStack.vPush((i8)eResultType);
   }
   else if (pTkn->bSame("%"_Stz)) {
-    StrLib::vSprintCat(m_sAsmText, "  EO_MODULO\n"_Stz);
+    eParamType1 = (eDM)m_xTypeStack.iPop();
+    eParamType2 = (eDM)m_xTypeStack.iPop();
+    eEO eModCode = eMathOp_ModCode[eParamType1][eParamType2];
+    StrLib::vSprintCat(m_sAsmText, "  %s\n"_Stz, aEO[eModCode]);
+    eResultType = eMathOp_ModResult[eParamType1][eParamType2];
+    m_xTypeStack.vPush((i8)eResultType);
   }
   else if (pTkn->bSame("*"_Stz)) {
-
+    eParamType1 = (eDM)m_xTypeStack.iPop();
+    eParamType2 = (eDM)m_xTypeStack.iPop();
     eEO eMulCode = eMathOp_MulCode[eParamType1][eParamType2];
     StrLib::vSprintCat(m_sAsmText, "  %s\n"_Stz, aEO[eMulCode]);
     eResultType = eMathOp_MulResult[eParamType1][eParamType2];
@@ -160,7 +173,21 @@ void ExprEval::vAddArithmetic(Token* pTkn, Column* pColumn) {
   }
   else {
     ASSERT(pTkn->bSame("-"_Stz));
-    StrLib::vSprintCat(m_sAsmText, "  EO_SUB_INTINT\n"_Stz);
+    if (m_xTypeStack.nItems() == 1) {
+      eParamType1 = (eDM) m_xTypeStack.iPop();
+      eEO eNegCode = eMathOp_NegCode[eParamType1];
+      StrLib::vSprintCat(m_sAsmText, "  %s\n"_Stz, aEO[eNegCode]);
+      eResultType = eMathOp_NegResult[eParamType1];
+      m_xTypeStack.vPush((i8) eResultType);
+    }
+    else {
+      eParamType1 = (eDM) m_xTypeStack.iPop();
+      eParamType2 = (eDM) m_xTypeStack.iPop();
+      eEO eSubCode = eMathOp_SubCode[eParamType1][eParamType2];
+      StrLib::vSprintCat(m_sAsmText, "  %s\n"_Stz, aEO[eSubCode]);
+      eResultType = eMathOp_SubResult[eParamType1][eParamType2];
+      m_xTypeStack.vPush((i8) eResultType);
+    }
   }
 }
 
@@ -207,7 +234,7 @@ eEC ExprEval::eAddDecimal(Token* pTkn, Column* pColumnExpr)
     eError = EC_INVALID_COMMAND;
   }
   else {
-    m_xTypeStack.vPush(DM_INT);
+    m_xTypeStack.vPush(DM_BCD);
     StrLib::vSprintCat(m_sAsmText, "  EO_INTEGER %lld\n"_Stz, iDecimal);
     //pColumnExpr->vSet("NONE"_Stz, CT_DECIMAL, 19, 2);
   }
