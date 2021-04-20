@@ -58,10 +58,10 @@
   0 locals| sNodeName |
 
   // receive the node info set
-  Socket[] socket.recvObject discard to infoSet[]
+  Socket[].recvObject discard to InfoSet[]
 
   // get the first row from the infoset
-  infoSet[].firstRow to row[]
+  InfoSet[].firstRow to row[]
 
   // get the 0th column from the row
   0 row[].getVchColumn to sNodeName
@@ -82,7 +82,7 @@
   then
 
   // delete the infoset
-  infoSet[].delete
+  InfoSet[].delete
 
   // return the answered node
   pAnsweredNode

@@ -13,7 +13,7 @@
  
   "toDfload_PathInfo" .
 
-  PipeIn[] to Infoset[]
+  PipeIn[] to InfoSet[]
   nullptr to Pipein[]
 
   // find the __path table def
@@ -35,10 +35,10 @@
   C_TDEF_CALLPIPELINE op__tableDef_infoSet assert
 
   // create an infoSet operand
-  infoSetTable[] infoSet[].new
-    OI_CALLPIPELINE infoSet[].opInfoset!
+  infoSetTable[] InfoSet[].new
+    OI_CALLPIPELINE InfoSet[].opInfoset!
 
-  iPathOf iPathNo sRequest 3 infoSet[].addRowVargs
+  iPathOf iPathNo sRequest 3 InfoSet[].addRowVargs
     
   InfoSet[].pipeOut
 

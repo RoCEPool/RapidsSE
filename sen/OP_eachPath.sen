@@ -25,15 +25,15 @@
   nPaths 0
   do
     // create each infoSet operand
-    infoSetTable[] infoSet[].new
-      OI_PATHINFO infoSet[].opInfoset!
+    infoSetTable[] InfoSet[].new
+      OI_PATHINFO InfoSet[].opInfoset!
 
     nPaths
      I
      "<path" I >str str.cat ">" str.cat
        job[] job.tagSet@ tagSet.getStr
      3
-     infoSet[].addRowVargs
+     InfoSet[].addRowVargs
         
     InfoSet[].pipeOut
   loop

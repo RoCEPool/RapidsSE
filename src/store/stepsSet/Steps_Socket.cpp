@@ -42,21 +42,21 @@ extern SizeHeap  gxaSizeHeap[];
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Socket(void)
 {
-  vAddStep("socket::open"_Stz,      &Step::vSocketOpen);
-  vAddStep("socket::listen"_Stz,    &Step::vSocketListen);
+  vAddStep("socket::open"_Stz,       &Step::vSocketOpen);
+  vAddStep("socket::listen"_Stz,     &Step::vSocketListen);
   
-  vAddStep("Socket[]"_Stz,          &Step::vSocketGet);
-  vAddStep("Socket[].get"_Stz,      &Step::vSocketGet);
-  vAddStep("Socket[].isNotNull"_Stz,&Step::vSocketIsNotNull);
-  vAddStep("Socket[].isNull"_Stz,   &Step::vSocketIsNull);
-  vAddStep("Socket[].set"_Stz,      &Step::vSocketSet);
+  vAddStep("Socket[]"_Stz,           &Step::vSocketGet);
+  vAddStep("Socket[].get"_Stz,       &Step::vSocketGet);
+  vAddStep("Socket[].isNotNull"_Stz, &Step::vSocketIsNotNull);
+  vAddStep("Socket[].isNull"_Stz,    &Step::vSocketIsNull);
+  vAddStep("Socket[].recvObject"_Stz,&Step::vSocketRecvObject);
+  vAddStep("Socket[].set"_Stz,       &Step::vSocketSet);
 
   vAddStep("socket.accept"_Stz,     &Step::vSocketAccept);
   vAddStep("socket.close"_Stz,      &Step::vSocketClose);
   vAddStep("socket.connect"_Stz,    &Step::vSocketConnect);
   vAddStep("socket.dropWrite"_Stz,  &Step::vSocketDropWrite);
   vAddStep("socket.grabWrite"_Stz,  &Step::vSocketGrabWrite);
-  vAddStep("socket.recvObject"_Stz, &Step::vSocketRecvObject);
   vAddStep("socket.sendObject"_Stz, &Step::vSocketSendObject);
 }
 
@@ -330,8 +330,8 @@ void Step::vSocketRecvObject(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receive the header of the next object
 
-  Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
-  
+  Socket* pSocket = *m_pJob->pLogicUnit_job()->m_xpSocket;
+
   SysCall oSysCall;
   bool bResult = pSocket->bRecvBytes(aHeader,sizeof(Object),oSysCall);
   if (! bResult) {

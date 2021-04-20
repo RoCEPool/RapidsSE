@@ -31,7 +31,7 @@
   nullptr to PipeIn[]
 
   // get first row of InfoSet[]
-  Infoset[].firstRow to row[]
+  InfoSet[].firstRow to row[]
 
   // get 0th Column (ProgressUnits) add to Counter
   0 row[].getIntColumn Counter1[] + to Counter1[]
@@ -72,8 +72,8 @@
   PipeIn[] to InfoSet[]
   nullptr to PipeIn[]
 
-  // get first row of infoSet[]
-  Infoset[].firstRow to row[]
+  // get first row of InfoSet[]
+  InfoSet[].firstRow to row[]
 
   // get 0th Column (fileName)
   0 row[].getVchColumn to StringA[]

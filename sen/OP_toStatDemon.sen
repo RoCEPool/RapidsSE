@@ -11,21 +11,21 @@
 
   "OP_toStatD_LockStats +++ +++ +++" .
 
-  PipeIn[] to infoset[]
+  PipeIn[] to InfoSet[]
   nullptr to PipeIn[]
 
-  infoset[].name .
+  InfoSet[].name .
 
-  //infoset[].delete
+  //InfoSet[].delete
 
-  infoset[]
+  InfoSet[]
     "__statDemon" find dup if
       word.object@
       pipeline.pipeout
-      nullptr to infoSet[]
+      nullptr to InfoSet[]
     else
       discard discard
-      infoset[].delete
+      InfoSet[].delete
     then
 
   true

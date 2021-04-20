@@ -11,11 +11,11 @@
 
   //"Operand:- ZK_NODEINFO" .verbose
 
-  PipeIn[] to infoSet[]
+  PipeIn[] to InfoSet[]
   nullptr to PipeIn[]
 
   // get the first row of the infoSet (nodeInfo)
-  infoSet[].firstRow to row[]
+  InfoSet[].firstRow to row[]
 
   // find the __nodeInfo table
   //C_TDEF_gridSanity op__tableDef_streamSet assert
@@ -36,7 +36,7 @@
   streamSet[].pipeOut
 
   // delete the infoset
-  infoSet[].delete
+  InfoSet[].delete
 
   true
 ;

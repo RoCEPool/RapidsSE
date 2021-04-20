@@ -29,7 +29,7 @@
 /*----------------------------------------------------------------------------*/
 : receiver_recvOperand
 
-  Socket[] socket.recvObject
+  Socket[].recvObject
   not if
     false
     exit
@@ -43,7 +43,7 @@
 /*----------------------------------------------------------------------------*/
 : receiver_recvArgument
 
-  Socket[] socket.recvObject
+  Socket[].recvObject
   not if
     false
     exit
@@ -63,7 +63,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get first object
   
-  Socket[] socket.recvObject not if false exit then
+  Socket[].recvObject not if false exit then
     to Register0[]
 
   Register0[] not if
@@ -77,7 +77,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get argument object
 
-  Socket[] socket.recvObject not if false exit then
+  Socket[].recvObject not if false exit then
     to Register1[]
     
   Register0[] not if
@@ -95,7 +95,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get first object
   
-  Socket[] socket.recvObject not if false exit then
+  Socket[].recvObject not if false exit then
     to Register0[]
 
   Register0[] not if
@@ -109,7 +109,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get argument object
 
-  Socket[] socket.recvObject not if false exit then
+  Socket[].recvObject not if false exit then
     to Register1[]
     
   Register0[] not if
