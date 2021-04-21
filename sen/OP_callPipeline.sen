@@ -24,7 +24,7 @@
 
   "callPipeline_CallPipeline" .
 
-  PipeIn[] to Infoset[]
+  PipeIn[] to InfoSet[]
   nullptr to Pipein[]
 
   // find the __path table def

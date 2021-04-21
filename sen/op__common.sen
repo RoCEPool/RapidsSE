@@ -368,8 +368,8 @@
   // find the __returnPipeline table def
   C_TDEF_RETURNPIPELINE op__tableDef_infoSet assert
 
-  infoSetTable[] infoSet[].new
-    OI_RETURNPIPELINE infoSet[].opInfoset!
+  infoSetTable[] InfoSet[].new
+    OI_RETURNPIPELINE InfoSet[].opInfoset!
 
   0 <reqOf> <reqNo> 3 InfoSet[].addRowVargs
 

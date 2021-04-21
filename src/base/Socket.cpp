@@ -18,41 +18,13 @@ Atomic gixSocket;
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
+/*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-Socket* BASE::_pSocket(void* aAddr)
-{
-  Socket* pSocket = reinterpret_cast<Socket*>(aAddr);
-  
-  RASSERT_TYPE(pSocket,CN_SOCKET);
-  
-  return pSocket;
-}
 
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* Socket::operator new(size_t)
-{
-  void* pSocket = Heaps::pAllocate(CN_SOCKET);
-  
-  return pSocket;
-}
-
-/*----------------------------------------------------------------------------*/
-/* new operator                                                               */
-/*----------------------------------------------------------------------------*/
-void* Socket::operator new(size_t, Socket* pSocket)
-{
-  return pSocket;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-void Socket::operator delete(void*)
-{
-}
+__pCastFunction(BASE,Socket,CN_SOCKET)
+__aNewFunction(Socket,CN_SOCKET)
+__vDeleteFunction(Socket,CN_SOCKET)
+__aFooterFunction(Socket)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -72,6 +44,9 @@ Socket::Socket(Object* pIsFor)
   MemLib::vZero(m__Padding,sizeof(m__Padding),CN_SOCKET);
   
   vAddrInit(&m_xServAddr,nullptr,0);
+  
+  m_bSuccess = false;
+  m_pRecvObject = nullptr;
   
   _checkInitialised_(CN_SOCKET);
   
@@ -101,6 +76,9 @@ Socket::Socket(Object* pIsFor, int iSocketId)
   
   vAddrInit(&m_xServAddr,nullptr,0);
   
+  m_bSuccess = false;
+  m_pRecvObject = nullptr;
+
   _checkInitialised_(CN_SOCKET);
   
   ++ gixSocket;
@@ -217,6 +195,46 @@ void Socket::vCopy(Socket* pSource)
   
   m_iSocketFd = pSource->m_iSocketFd;
   m_bBlocking = pSource->m_bBlocking;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get success flag                                                           */
+/*----------------------------------------------------------------------------*/
+bool Socket::bSuccess(void)
+{
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
+  return m_bSuccess;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set success flag                                                           */
+/*----------------------------------------------------------------------------*/
+void Socket::vSuccess(bool bSuccess)
+{
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
+  m_bSuccess = bSuccess;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get received object                                                        */
+/*----------------------------------------------------------------------------*/
+Object* Socket::pRecvObject(void)
+{
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
+  return m_pRecvObject;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set received object                                                        */
+/*----------------------------------------------------------------------------*/
+void Socket::vRecvObject(Object* pRecvObject)
+{
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
+  m_pRecvObject = pRecvObject;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -991,11 +1009,6 @@ bool Socket::bRecvFrom(void* pBuffer, i8 nBytes, i8* pRecv, SysCall& SysCall)
   SysCall.vSuccess();
   return true;
 }
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-__aFooterFunction(Socket)
 
 /*============================================================================*/
 /* end                                                                        */

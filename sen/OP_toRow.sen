@@ -80,11 +80,11 @@
   // pipeout load results
   
   infoSetTable[] InfoSet[].new
-  OI_LOADRESULT infoSet[].opInfoset!
+  OI_LOADRESULT InfoSet[].opInfoset!
   
   ToRow[].rowCounters@@ 3 InfoSet[].addRowVargs
 
-  infoSet[].pipeOut
+  InfoSet[].pipeOut
 
 
   // -- -- -- -- -- --

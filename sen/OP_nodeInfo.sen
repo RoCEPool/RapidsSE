@@ -13,13 +13,13 @@
   <streamDef> op__tableDef_infoSet assert
 
   // create an infoSet operand
-  infoSetTable[] infoSet[].new
+  infoSetTable[] InfoSet[].new
 
   // add nodeInfo to the infoSet
-  infoSetTable[] infoSet[].addnodeInfo assert
+  infoSetTable[] InfoSet[].addnodeInfo assert
 
   // pipeout the infoset
-  infoSet[].pipeOut
+  InfoSet[].pipeOut
 
   true
 ;

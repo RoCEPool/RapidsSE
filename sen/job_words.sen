@@ -129,7 +129,7 @@
 
   Socket[] socket.grabWrite
 
-  pJob Socket[] socket.sendObject discard
+  pJob Socket[].sendObject discard
 
   Socket[] socket.dropWrite
   

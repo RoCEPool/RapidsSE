@@ -13,20 +13,20 @@
   C_TDEF_NODEINFO op__tableDef_infoSet assert
 
   // create an infoSet operand
-  infoSetTable[] infoSet[].new
+  infoSetTable[] InfoSet[].new
 
   // add nodeInfo to the infoSet
-  infoSetTable[] infoSet[].addnodeInfo assert
+  infoSetTable[] InfoSet[].addnodeInfo assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // send node info job to the other node
   Socket[] socket.grabWrite
-  infoSet[] Socket[] socket.sendObject assert
+  InfoSet[] Socket[].sendObject assert
   Socket[] socket.dropWrite
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete infoset
-  infoSet[].delete
+  InfoSet[].delete
 ;
 
 /*----------------------------------------------------------------------------*/

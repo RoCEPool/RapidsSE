@@ -29,11 +29,11 @@
 /*----------------------------------------------------------------------------*/
 : totalCount_CountInfo \handler
 
-  PipeIn[] to infoset[]
+  PipeIn[] to InfoSet[]
   nullptr to PipeIn[]
 
   // get first row of InfoSet[]
-  Infoset[].firstRow to row[]
+  InfoSet[].firstRow to row[]
 
   // get 0th Column (rowCount) add to Counter
   0 row[].getIntColumn Counter0[] + to Counter0[]

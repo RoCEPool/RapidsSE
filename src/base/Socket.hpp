@@ -14,26 +14,27 @@ namespace BASE
   class Socket : public Resource
   {
   public:
-  
+    Lock    m_okLock;
+
     Object* m_pIsFor;
   
-    int     m_iSocketFd;
-    bool    m_bBlocking;
-    Lock    m_okLock;
-  
-    void*   m_aLowBuff; // low memory read area
+    int     m_iSocketFd; // the o/s socket
+    bool    m_bBlocking; // is a blocking socket
+    void*   m_aLowBuff;  // low memory read area
 
     union {
       struct sockaddr_in m_xServAddr;
       i8 m__Padding[16];
     };
   
+    bool    m_bSuccess;    // success?
+    Object* m_pRecvObject; // object which was received
+
     // must be last
     Footer m_xFooter;
         
   public:
     void* operator new(size_t);
-    void* operator new(size_t, Socket* pSocket);
     void  operator delete(void*);
     
     Socket(Object* pIsFor);
@@ -48,6 +49,12 @@ namespace BASE
     
     void vCopy(Socket* pSource);
     bool bIsOpen();
+
+    Object* pRecvObject(void);
+    void vRecvObject(Object* pRecvObject);
+  
+    bool bSuccess(void);
+    void vSuccess(bool bSuccess);
 
     bool bAcceptClient(int& pSocketId, SysCall& SysCall);
     bool bClose(SysCall& SysCall);

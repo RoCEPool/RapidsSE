@@ -16,13 +16,13 @@
   C_TDEF_COUNTINFO op__tableDef_infoSet assert
 
   // create a new streamDef
-  infoSetTable[] infoSet[].new
+  infoSetTable[] InfoSet[].new
 
   // create an infoSet operand
-  Table[] infoSetTable[] infoSet[].addRowCount assert
+  Table[] infoSetTable[] InfoSet[].addRowCount assert
 
   // pipeout the infoset
-  infoSet[].pipeOut
+  InfoSet[].pipeOut
 
   Operand[].newEosMarker
   Operand[].pipeOut

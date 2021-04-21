@@ -52,16 +52,18 @@
 /*----------------------------------------------------------------------------*/
 : recvNodeInfo ( pSocket -- pAnsweredNode )
 
-  params| pSocket |
+  to Socket[]
 
   0 locals| pAnsweredNode |
   0 locals| sNodeName |
 
   // receive the node info set
-  pSocket socket.recvObject discard to infoSet[]
+  Socket[].recvObject
+  
+  Socket[].object@\clear to InfoSet[]
 
   // get the first row from the infoset
-  infoSet[].firstRow to row[]
+  InfoSet[].firstRow to row[]
 
   // get the 0th column from the row
   0 row[].getVchColumn to sNodeName
@@ -72,23 +74,21 @@
   // set the receive socket in the answered node
 
   ////////// Watch out, if node is not in the grid yet |||||
-  sNodeName .
-  " OP answer" .
+  //sNodeName .
+  //" OP answer" .
+  //begin
+  //    pAnsweredNode not
+  //  while
+  //    50 thread::sleepMsec
+   //     sNodeName grid::findNode to pAnsweredNode
+  //  repeat
+  //pAnsweredNode not if
+  //">>>>>pAnsweredNode is null<<<<<" .
+  //then
+  //pSocket pAnsweredNode node.recvSocket!
 
-  begin
+  Socket[] pAnsweredNode node.recvSocket!
 
-      pAnsweredNode not
-    while
-      50 thread::sleepMsec
-        sNodeName grid::findNode to pAnsweredNode
-
-    repeat
-
-  pAnsweredNode not if
-  ">>>>>pAnsweredNode is null<<<<<" .
-  then
-
-  pSocket pAnsweredNode node.recvSocket!
 
   // node is active
   NS_ACTIVE pAnsweredNode node.state!
@@ -100,7 +100,7 @@
   then
 
   // delete the infoset
-  infoSet[].delete
+  InfoSet[].delete
 
   // return the answered node
   pAnsweredNode

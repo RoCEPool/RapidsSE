@@ -28,12 +28,12 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  operand[] to infoset[]
+  operand[] to InfoSet[]
   nullptr to operand[]
 
   InfoSet[].writeCsv
 
-  infoset[].delete
+  InfoSet[].delete
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -44,14 +44,14 @@
   // open the file for writing
   "/tmp/SE_Stats.csv" OPEN_APPEND op__file if
 
-    PipeIn[] to infoset[]
+    PipeIn[] to InfoSet[]
     nullptr to PipeIn[]
 
     C_TDEF_LOCKSTATS op__tableDef_infoSet assert
 
     infoSetTable[] InfoSet[].writeCsv
 
-    infoset[].delete
+    InfoSet[].delete
 
     File0[].get file.close
     File0[].get file.delete

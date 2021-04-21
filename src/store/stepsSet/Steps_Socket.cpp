@@ -45,22 +45,26 @@ extern SizeHeap  gxaSizeHeap[];
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Socket(void)
 {
-  vAddStep("socket::open"_Stz,      &Step::vSocketOpen);
-  vAddStep("socket::listen"_Stz,    &Step::vSocketListen);
+  vAddStep("socket::open"_Stz,       &Step::vSocketOpen);
+  vAddStep("socket::listen"_Stz,     &Step::vSocketListen);
   
-  vAddStep("Socket[]"_Stz,          &Step::vSocketGet);
-  vAddStep("Socket[].get"_Stz,      &Step::vSocketGet);
-  vAddStep("Socket[].isNotNull"_Stz,&Step::vSocketIsNotNull);
-  vAddStep("Socket[].isNull"_Stz,   &Step::vSocketIsNull);
-  vAddStep("Socket[].set"_Stz,      &Step::vSocketSet);
+  vAddStep("Socket[]"_Stz,           &Step::vSocketGet);
+  vAddStep("Socket[].get"_Stz,       &Step::vSocketGet);
+  vAddStep("Socket[].isNotNull"_Stz, &Step::vSocketIsNotNull);
+  vAddStep("Socket[].isNull"_Stz,    &Step::vSocketIsNull);
+  vAddStep("Socket[].object@"_Stz,   &Step::vSocketObjectFetch);
+  vAddStep("Socket[].object@\\clear"_Stz, &Step::vSocketObjectFetchClear);
+  vAddStep("Socket[].recvObject"_Stz,&Step::vSocketRecvObject);
+  vAddStep("Socket[].sendObject"_Stz,&Step::vSocketSendObject);
+  vAddStep("Socket[].set"_Stz,       &Step::vSocketSet);
+  vAddStep("Socket[].success@"_Stz,  &Step::vSocketSuccessFetch);
+  vAddStep("Socket[].success!"_Stz,  &Step::vSocketSuccessStore);
 
   vAddStep("socket.accept"_Stz,     &Step::vSocketAccept);
   vAddStep("socket.close"_Stz,      &Step::vSocketClose);
   vAddStep("socket.connect"_Stz,    &Step::vSocketConnect);
   vAddStep("socket.dropWrite"_Stz,  &Step::vSocketDropWrite);
   vAddStep("socket.grabWrite"_Stz,  &Step::vSocketGrabWrite);
-  vAddStep("socket.recvObject"_Stz, &Step::vSocketRecvObject);
-  vAddStep("socket.sendObject"_Stz, &Step::vSocketSendObject);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -290,6 +294,39 @@ void Step::vSocketListen(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Socket[].object@: fetch object                                             */
+/*----------------------------------------------------------------------------*/
+void Step::vSocketObjectFetch(void)
+{
+  ENTRY();
+  
+  Socket* pSocket = *m_pJob->pLogicUnit_job()->m_xpSocket;
+
+  Object* pObject = pSocket->pRecvObject();
+
+  m_pDataStack->vPushPtr(pObject);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Socket[].object@\clear: fetch object (and clear)                           */
+/*----------------------------------------------------------------------------*/
+void Step::vSocketObjectFetchClear(void)
+{
+  ENTRY();
+  
+  Socket* pSocket = *m_pJob->pLogicUnit_job()->m_xpSocket;
+
+  Object* pObject = pSocket->pRecvObject();
+  pSocket->vRecvObject(nullptr);
+  
+  m_pDataStack->vPushPtr(pObject);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* socket::open: open a socket                                                */
 /*----------------------------------------------------------------------------*/
 void Step::vSocketOpen(void)
@@ -315,11 +352,15 @@ void Step::vSocketOpen(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* socket.recvObject: recv object from a socket                               */
+/* Socket[].recvObject: recv object from a socket                             */
 /*----------------------------------------------------------------------------*/
 void Step::vSocketRecvObject(void)
 {
   ENTRY();
+  
+  Socket* pSocket = *m_pJob->pLogicUnit_job()->m_xpSocket;
+  
+  RASSERT(! pSocket->pRecvObject());
   
   bool bLowMem = gpBufferPool->bLowMemory();
 
@@ -333,12 +374,13 @@ void Step::vSocketRecvObject(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receive the header of the next object
 
-  Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
-  
+
   SysCall oSysCall;
   bool bResult = pSocket->bRecvBytes(aHeader,sizeof(Object),oSysCall);
   if (! bResult) {
-    m_pDataStack->vPushInt(false);
+    //m_pDataStack->vPushInt(false);
+    pSocket->vRecvObject(nullptr);
+    pSocket->vSuccess(false);
     EXIT();
     return;
   }
@@ -363,7 +405,9 @@ void Step::vSocketRecvObject(void)
 
     bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
     if (! bResult) {
-     m_pDataStack->vPushInt(false);
+     //m_pDataStack->vPushInt(false);
+     pSocket->vRecvObject(nullptr);
+     pSocket->vSuccess(false);
      EXIT();
      return;
     }
@@ -372,8 +416,10 @@ void Step::vSocketRecvObject(void)
     
     pReceivedObject->vRunPostRecv();
 
-    m_pDataStack->vPushPtr(pReceivedObject);
-    m_pDataStack->vPushInt(true);
+    //m_pDataStack->vPushPtr(pReceivedObject);
+    //m_pDataStack->vPushInt(true);
+    pSocket->vRecvObject(pReceivedObject);
+    pSocket->vSuccess(true);
     EXIT();
     return;
   }
@@ -393,19 +439,19 @@ void Step::vSocketRecvObject(void)
   bResult = pSocket->bRecvBytes(aLowBody,nRemainingBytes,oSysCall);
   
   // whether able to recv or not, return false
-  m_pDataStack->vPushPtr(nullptr);
-  m_pDataStack->vPushInt(true);
+  //m_pDataStack->vPushPtr(nullptr);
+  //m_pDataStack->vPushInt(true);
+  pSocket->vRecvObject(nullptr);
+  pSocket->vSuccess(true);
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* socket.sendObject: send object via a socket                                */
+/* Socket[].sendObject: send object via a socket                              */
 /*----------------------------------------------------------------------------*/
 void Step::vSocketSendObject(void)
 {
   ENTRY();
-  
-  Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
   
   Object* pObject = m_pDataStack->pPopPtr(__func__);
   
@@ -438,6 +484,8 @@ void Step::vSocketSendObject(void)
 
   SysCall oSysCall;
   
+  Socket* pSocket = *m_pJob->pLogicUnit_job()->m_xpSocket;
+
   bool bResult = pSocket->bSendTo(pObject, nObjectSize, oSysCall);
 
   m_pDataStack->vPushInt(bResult);
@@ -457,6 +505,38 @@ void Step::vSocketSet(void)
   ASSERT(! pSocket || m_pJob->pLogicUnit_job()->m_xpSocket.bIsNull());
   m_pJob->pLogicUnit_job()->m_xpSocket = _pSocket(pSocket);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Socket[].success@ -- fetch success flag                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vSocketSuccessFetch(void)
+{
+  ENTRY();
+  
+  Socket* pSocket = *m_pJob->pLogicUnit_job()->m_xpSocket;
+
+  bool bSuccess = pSocket->bSuccess();
+
+  m_pDataStack->vPushInt(bSuccess);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Socket[].success! -- store success flag                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vSocketSuccessStore(void)
+{
+  ENTRY();
+  
+  bool bSuccess = (bool)m_pDataStack->iPopInt(__func__);
+
+  Socket* pSocket = *m_pJob->pLogicUnit_job()->m_xpSocket;
+
+  pSocket->vSuccess(bSuccess);
+
   EXIT();
 }
 

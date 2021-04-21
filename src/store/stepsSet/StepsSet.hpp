@@ -1447,10 +1447,14 @@ public:
   void vSocketIsNotNull(void);
   void vSocketIsNull(void);
   void vSocketListen(void);
+  void vSocketObjectFetch(void);
+  void vSocketObjectFetchClear(void);
   void vSocketOpen(void);
   void vSocketRecvObject(void);
   void vSocketSendObject(void);
   void vSocketSet(void);
+  void vSocketSuccessFetch(void);
+  void vSocketSuccessStore(void);
 
 
   // sql compiler
