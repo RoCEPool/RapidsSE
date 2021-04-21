@@ -119,6 +119,7 @@
 
 #include "Metadata.hpp"
 
+#include "Parcel.hpp"
 #include "Objects.hpp"
 #include "Output.hpp"
 #include "Op.hpp"
@@ -348,6 +349,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(OtherOperand),       HT_T_TINY    ,0 }, // CN_OTHEROPERAND
 
   { 'P' - ('A' - 1),              HT_INVALID   ,0 }, // CN__P__
+  { sizeof(Parcel),               HT_T_MEDIUM  ,0 }, // CN_PARCEL
   { sizeof(PathIdentifier),       HT_T_MEDIUM  ,0 }, // CN_PATHIDENTIFIER
   { sizeof(PathVec),              HT_T_MEDIUM  ,0 }, // CN_PATHVEC
   { sizeof(Peruse),               HT_T_MEDIUM  ,0 }, // CN_PERUSE

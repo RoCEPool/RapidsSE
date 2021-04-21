@@ -33,26 +33,30 @@ void Step::vMetaSendGetParts(void)
   // ... code which gets all the parts of a meta-object and pipes them out ...
   // get arguments
   //m_pDataStack->vPopStr(sTableName,__func__);
-  // pTable = ...;
+
 
   // Don't know what to get from the in-pipe yet, but for now... create a dummy table
-  Table* pTable = new Table("BolTbl"_Stz,TT_NORMAL);
+  Table* pTable = new Table("BolTbl1"_Stz,TT_NORMAL);
 
   // call get parts code
-  pTable->iPrepareObjParts();
-  std::vector<Object*>aParts = pTable->aObjParts();
+  pTable->iPrepareParcelObjs();
+  Parcel oParcel = pTable->oParcel();
 
   // put results
-
+  // we should be able to put the whole parcel
+  m_pDataStack->vPushPtr(&oParcel);
 
   // foreach part, push part
-  for (auto it = aParts.begin();  it != aParts.end(); ++it) {
-    Object* pObject = *it;
+  /*
+  for (i8 i_Obj=0; i_Obj< pTable->nParcelObjects(); i_Obj++) {
+
+    Object* pObject = pTable->pGetParcelObject(i_Obj);
     m_pDataStack->vPushPtr((Object*)pObject);
   }
 
   // push number of object parts
   m_pDataStack->vPushInt(pTable->aObjParts().size());
+  */
   
   EXIT();
 }

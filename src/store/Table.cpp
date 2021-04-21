@@ -116,10 +116,10 @@ Table::~Table(void) noexcept(false)
 
 
   // delete the m_aObjParts
-  for (i8 i_Obj = 0; i_Obj < (i8)m_aObjParts.size(); i_Obj++) {
-    delete m_aObjParts[i_Obj];
-  }
-  m_aObjParts.clear();
+  //for (i8 i_Obj = 0; i_Obj < (i8)m_aObjParts.size(); i_Obj++) {
+  //  delete m_aObjParts[i_Obj];
+  //}
+  //m_aObjParts.clear();
 }
 
 
@@ -818,52 +818,47 @@ void Table::vCompactIndex(Index* pIndex)
 
 /*----------------------------------------------------------------------------*/
 /* returns number of object parts includes the main                           */
-/* copy each object part and put in an array                                  */
+/* put each object part in a parcel                                           */
 /*----------------------------------------------------------------------------*/
-i8 Table::iPrepareObjParts(void) {
+i8 Table::iPrepareParcelObjs(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLE, _FOOTER_);
 
-  Object *pObject = (Object *)this;
-  m_aObjParts.push_back(pObject);
+  m_oParcel.vAddObject((Object *)this);
 
-  pObject = (Object *)&m_oLocation;
-  m_aObjParts.push_back(pObject);
+  m_oParcel.vAddObject((Object *)&m_oLocation);
 
   if ( m_pStreamDef) {
-    pObject = (Object *) m_pStreamDef;
-    m_aObjParts.push_back(pObject);
+    m_oParcel.vAddObject((Object *)m_pStreamDef);
   }
+  m_oParcel.vAddObject((Object *)m_pShardDef);
 
-  pObject = (Object *) m_pShardDef;
-  m_aObjParts.push_back(pObject);
+  m_oParcel.vAddObject((Object *)m_pBucketMap);
 
-  pObject = (Object *) m_pBucketMap;
-  m_aObjParts.push_back(pObject);
+  m_oParcel.vAddObject((Object *)m_pIdxVec);
 
-  pObject = (Object *) m_pIdxVec;
-  m_aObjParts.push_back(pObject);
+  m_oParcel.vAddObject((Object *)m_pTablePtnVec);
 
-  pObject = (Object *) m_pTablePtnVec;
-  m_aObjParts.push_back(pObject);
-
-  return m_aObjParts.size();
+  return m_oParcel.nObjects();
 }
 
-
+Object* Table::pGetParcelObject(i8 iIdx)
+{
+  return m_oParcel.pGetObject(iIdx);
+}
 
 /*----------------------------------------------------------------------------*/
 /* returns number of object parts includes the main                           */
 /* copy each object part and put in an array                                  */
 /*----------------------------------------------------------------------------*/
-i8 Table::iBuildArrayObjParts(Object* pObj)
+i8 Table::iBuildParcelObjs(Object* pObj)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 
   // Let's make this prototype code to test out
 
-  m_aObjParts.push_back(pObj);
+  m_oParcel.vAddObject(pObj);
 
-  return m_aObjParts.size();
+  return m_oParcel.nObjects();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -872,10 +867,10 @@ i8 Table::iBuildArrayObjParts(Object* pObj)
 /*----------------------------------------------------------------------------*/
 i8  Table::iReassembleObj(void)
 {
-  i8 nSize = 0;
+  i8 nSize = m_oParcel.nObjects();
 
-  for (auto it = m_aObjParts.begin();  it != m_aObjParts.end(); ++it) {
-    Object* pObject =  *it;
+  for (i8 i_Obj=0; i_Obj< nSize; i_Obj++) {
+    Object* pObject =  m_oParcel.pGetObject(i_Obj);
     eCN eClass = pObject->eGetClassNo();
 
     switch (eClass) {
@@ -884,11 +879,6 @@ i8  Table::iReassembleObj(void)
         break;
       case CN_LOCATION: {
         Location *pLoc = (Location *) pObject;
-
-        //m_oLocation.vTenant(pLoc->szTenant());
-        //m_oLocation.vCatalog(pLoc->szCatalog());
-        //m_oLocation.vSchema(pLoc->szSchema());
-        //m_oLocation.vTable(pLoc->szTable());
 
         m_oLocation = *pLoc;
         break;

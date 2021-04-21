@@ -15,6 +15,7 @@
 #include "IndexTree.hpp"
 #include "TablePtn.hpp"
 #include "Table.hpp"
+#include "Parcel.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -37,20 +38,20 @@ void Step::vMetaRecvPutParts(void)
 
   ///// FOR NOW THIS CODE IS SPECIFIC to TABLE
   // get arguments
-  // get number of parts
-  i8 nObjParts = m_pDataStack->nValues();
-
   Table* pTable = nullptr;
-  // Loop to get parts ?
+  Parcel* pParcel = (Parcel*)m_pDataStack->pPopPtr(__func__);
+  // get number of parts
+  i8 nObjParts = pParcel->nObjects();
+
   for (i8 i_Obj = 0; i_Obj < nObjParts; i_Obj++) {
-    Object* pObject = m_pDataStack->pPopPtr(__func__);
+    Object* pObject = pParcel->pGetObject(i_Obj);
     if (pObject->eGetClassNo() == CN_TABLE) {
       pTable = (Table*)pObject;
-    } else {
-      // get all the parts
-      if (pTable)
-        pTable->iBuildArrayObjParts(pObject);
     }
+    // get all the parts, includes itself
+    if (pTable)
+      pTable->iBuildParcelObjs(pObject);
+
   }
 
   // call reassemble parts code
@@ -59,6 +60,7 @@ void Step::vMetaRecvPutParts(void)
     // put results ??
     m_pDataStack->vPushPtr(pTable);
   }
+
 
   EXIT();
 }

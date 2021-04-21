@@ -520,39 +520,38 @@ void Step::vTableNew(void) {
   // SAME NODE TESTING ////////////////////// SAME NODE TESTING //////////////////////////////
 #ifndef JUNK
   if (sTableNm.bSame("bolTbl"_Stz)) {
-    i8 iNumObjs = pTable->iPrepareObjParts();
-    std::vector<Object *> aParts = pTable->aObjParts();
+    i8 iNumObjs = pTable->iPrepareParcelObjs();
 
     s32 sTableName;
     eTT eKind = TT_NORMAL;
     Table *pTbl = nullptr;
-    Table *pTable1 = nullptr;
+    Table *pNewTable = nullptr;
     eCN uCn;
 
-    for (auto it = aParts.begin(); it != aParts.end(); ++it) {
-      Object *pObject = *it;
+    for (i8 i_Obj=0; i_Obj< pTable->nParcelObjects(); i_Obj++) {
+      Object *pObject = pTable->pGetParcelObject(i_Obj);
       uCn = pObject->eGetClassNo();
       if (uCn == CN_TABLE) {
         // Main part of CN_TABLE
         pTbl = (Table *) pObject;
-        sTableName = pTbl->szTableNm();
-        eKind = pTbl->eKind();
-        pTable1 = (Table *) ::operator new(gxaSizeHeap[uCn].m_nClassSize, pTbl);
+        sTableName = pTbl->szTableNm(); // debug
+        eKind = pTbl->eKind();          // debug
+        pNewTable = (Table *) ::operator new(gxaSizeHeap[uCn].m_nClassSize, pTbl);
         break;
       }
     }
 
-    // foreach part, push part
-    if (pTable1) {
-      for (auto it = aParts.begin(); it != aParts.end(); ++it) {
-        Object *pChar = *it;
-        pTable1->iBuildArrayObjParts(pChar);
+    // foreach part, rebuild
+    if (pNewTable) {
+      for (i8 i_Obj=0; i_Obj< pTable->nParcelObjects(); i_Obj++) {
+        Object *pObject = pTable->pGetParcelObject(i_Obj);
+        pNewTable->iBuildParcelObjs(pObject);
       }
-      i8 iN = pTable1->iReassembleObj();
+      i8 iN = pNewTable->iReassembleObj();
     }
 
     // Testing the concept, passing the minimum-reassemble table works
-    m_pDataStack->vPushPtr(pTable1);
+    m_pDataStack->vPushPtr(pNewTable);
   } else
   // END SAME NODE TESTING  //////////////////  END SAME NODE TESTING  /////////////////////////
 #endif
