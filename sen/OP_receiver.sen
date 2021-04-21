@@ -127,21 +127,7 @@
     exit
   then
     
-
-  // object with no arguments (probably job)
-  Register0[] object.recvArgs@ 0 == if
-    Register0[] Register0[] object.dispatchWord@ execute
-    exit
-  then
-  
-  
-  // object with one argument (probably xmitoperand)
-  Register0[] object.recvArgs@ 1 == if
-    Register1[] Register0[] Register0[] object.dispatchWord@ execute
-    exit
-  then
-  
-  HAZARD
+  Register0[] Register0[] object.dispatchWord@ execute
 ;
 /*----------------------------------------------------------------------------*/
 : receiver_dispatch ( -- )
