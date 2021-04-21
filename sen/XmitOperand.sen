@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* dispatch received xmitOperand                                              */
 /*----------------------------------------------------------------------------*/
-: XmitOperand.dispatch
+: XmitOperand.dispatch_1
 
   xmitOperand.pipeOut
 ;
@@ -15,9 +15,9 @@
 /*----------------------------------------------------------------------------*/
 /* dispatch received xmitOperand                                              */
 /*----------------------------------------------------------------------------*/
-: XmitOperand.dispatch_2 params| pXmitOperand |
+: XmitOperand.dispatch params| pXmitOperand |
 
-  Socket[].recvObject
+  Socket[].recvObject Socket[].object@\clear
   
     pXmitOperand xmitOperand.pipeOut
 ;

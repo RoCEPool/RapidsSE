@@ -89,7 +89,7 @@
 /*----------------------------------------------------------------------------*/
 : receiver_recvNext_2
 
-  receiver_recvOperand
+  receiver_recvOperand_2
 
   Socket[].success@
 ;
@@ -127,7 +127,7 @@
     exit
   then
     
-  Register0[] Register0[] object.dispatchWord@ execute
+  Register0[] Register0[] object.receivedWord@ execute
 ;
 /*----------------------------------------------------------------------------*/
 : receiver_dispatch ( -- )
@@ -164,12 +164,12 @@
     trap::stackDepthZero
 
     // receive next object(s)
-    receiver_recvNext
+    receiver_recvNext_2
     not if
       exit
     then
         
-    receiver_dispatch
+    receiver_dispatch_2
 
   again
 ;
@@ -203,7 +203,7 @@
   receiver_init
 
   // loop, receiving and executing jobs
-  receiver_loop
+  receiver_loop_2
 
   job::completed
 
