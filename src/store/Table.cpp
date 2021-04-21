@@ -848,7 +848,7 @@ Object* Table::pGetParcelObject(i8 iIdx)
 
 /*----------------------------------------------------------------------------*/
 /* returns number of object parts includes the main                           */
-/* copy each object part and put in an array                                  */
+/* Insert each object part and put in an array                                */
 /*----------------------------------------------------------------------------*/
 i8 Table::iBuildParcelObjs(Object* pObj)
 {
@@ -857,6 +857,23 @@ i8 Table::iBuildParcelObjs(Object* pObj)
   // Let's make this prototype code to test out
 
   m_oParcel.vAddObject(pObj);
+
+  return m_oParcel.nObjects();
+}
+
+/*----------------------------------------------------------------------------*/
+/* returns number of object parts includes the main                           */
+/* Insert each object part and put in an array                                */
+/*----------------------------------------------------------------------------*/
+i8 Table::iBuildParcel(Parcel* pParcel)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+
+  // Let's make this prototype code to test out
+
+  i8 nObjects = pParcel->nObjects();
+  for (i8 i_Obj=0; i_Obj < nObjects; i_Obj++)
+    m_oParcel.vAddObject(pParcel->pGetObject(i_Obj));
 
   return m_oParcel.nObjects();
 }

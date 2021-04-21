@@ -40,19 +40,31 @@ void Step::vMetaRecvPutParts(void)
   // get arguments
   Table* pTable = nullptr;
   Parcel* pParcel = (Parcel*)m_pDataStack->pPopPtr(__func__);
-  // get number of parts
+
   i8 nObjParts = pParcel->nObjects();
 
-  for (i8 i_Obj = 0; i_Obj < nObjParts; i_Obj++) {
-    Object* pObject = pParcel->pGetObject(i_Obj);
+  if (nObjParts > 0) {
+    Object *pObject = pParcel->pGetObject(0);
     if (pObject->eGetClassNo() == CN_TABLE) {
-      pTable = (Table*)pObject;
+      pTable = (Table *) pObject;
+      pTable->iBuildParcel(pParcel);
+    }
+  }
+
+  /*
+  // get number of parts
+  for (i8 i_Obj = 0; i_Obj < nObjParts; i_Obj++) {
+    Object *pObject = pParcel->pGetObject(i_Obj);
+    if (pObject->eGetClassNo() == CN_TABLE) {
+      pTable = (Table *) pObject;
     }
     // get all the parts, includes itself
-    if (pTable)
-      pTable->iBuildParcelObjs(pObject);
 
+    if (pTable) {
+      pTable->iBuildParcelObjs(pObject);
+    }
   }
+  */
 
   // call reassemble parts code
   if (pTable) {

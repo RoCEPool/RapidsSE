@@ -88,6 +88,7 @@ namespace STORE
 
     i8   iPrepareParcelObjs(void);
     Parcel oParcel(void) { return m_oParcel;}
+    Parcel* pParcel(void) { return &m_oParcel;}
     i8   nParcelObjects(void) {return m_oParcel.nObjects();}
     Object* pGetParcelObject(i8 iIdx);
 
@@ -95,6 +96,7 @@ namespace STORE
     //i8   iObjParts(void) { return m_aObjParts.size();};
 
     i8   iBuildParcelObjs(Object* pObj);
+    i8   iBuildParcel(Parcel* pParcel);
     i8   iReassembleObj(void);
    
   private:
