@@ -8,6 +8,7 @@
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
 #include "PlanConstants.hpp"
+#include "NodeNamer.hpp"
 
 #include "ShadowRoot.hpp"
 #include "MetadataNode.hpp"
@@ -19,7 +20,7 @@ using namespace Parser;
 /*----------------------------------------------------------------------------*/
 /*-- Constants ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-static Stz* C_COLUMN_ORDINAL_DEFN = "/__root__/definitions/object/expr/ColumnOrdinal"_Stz;
+static Stz* C_COLUMN_ORDINAL_DEFN = "/__root__/definitions/object/expr/columnOrdinal"_Stz;
 
 static Stz* C_COLUMNORDINAL_NAME_PREFIX = "ExprColOrdinal"_Stz;
 
@@ -39,7 +40,7 @@ QueryNode* ColumnOrdinal::pCreate(i8 iOrdinal)
 
   // Create a unique name for this object
   s256 sName;
-  ShadowNode::vObjName(C_COLUMNORDINAL_NAME_PREFIX, sName);
+  NodeNamer::vGenerateName(C_COLUMN_ORDINAL_DEFN, sName);
 
   Value xValue(iOrdinal);
 

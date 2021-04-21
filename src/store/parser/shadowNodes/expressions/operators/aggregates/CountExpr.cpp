@@ -8,6 +8,8 @@
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
 #include "GraphNav.hpp"
+#include "NodeNamer.hpp"
+
 
 using namespace Parser;
 
@@ -54,7 +56,7 @@ QueryNode* CountExpr::pCreate(b1 bIsCountAll, b1 bIsDistinct, QueryNode* pChildE
 
   // Finally, create this object
   s256 sName;
-  ShadowNode::vObjName(C_COUNT_EXPR_NAME_PREFIX, sName);
+  NodeNamer::vGenerateName(C_COUNT_EXPR_DEFN, sName);
 
   Value xVal;
   QueryNode* pCountExpr = new QueryNode(sName, C_COUNT_EXPR_DEFN, static_cast<Value&&>(xVal), pProperties, pChildren);

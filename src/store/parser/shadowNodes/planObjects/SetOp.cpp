@@ -11,6 +11,7 @@
 #include "UnionOp.hpp"
 
 #include "GraphNav.hpp"
+#include "NodeNamer.hpp"
 
 using namespace Parser;
 
@@ -45,7 +46,7 @@ QueryNode* SetOp::pCreate(b1 bIsDistinct, QueryNode* pCorrelatedByList)
 
   // Create a unique name for this SetOp object
   s256 sName;
-  ShadowNode::vObjName(GraphNav::szLeafType(C_SETOP_DEFN), sName);
+  NodeNamer::vGenerateName(C_SETOP_DEFN, sName);
 
   // Create the object and add its properties
   QueryNode* pSetOp = new QueryNode(sName, C_SETOP_DEFN);

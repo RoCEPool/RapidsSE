@@ -7,6 +7,8 @@
 
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
+#include "NodeNamer.hpp"
+
 
 using namespace Parser;
 
@@ -29,7 +31,7 @@ QueryNode* TimestampLiteral::pCreate(Tsp xTsp)
 
   // Create a unique name for this object
   s256 sName;
-  ShadowNode::vObjName(C_TIMESTAMP_LITERAL_NAME_PREFIX, sName);
+  NodeNamer::vGenerateName(C_TIMESTAMP_LITERAL_DEFN, sName);
 
   Value xVal(xTsp);
 

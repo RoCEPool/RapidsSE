@@ -7,6 +7,7 @@
 
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
+#include "NodeNamer.hpp"
 
 using namespace Parser;
 
@@ -44,7 +45,7 @@ QueryNode* NegationExpr::pCreate(QueryNode* pExpr1)
 
   // Create a unique name for this object
   s256 sName;
-  ShadowNode::vObjName(C_NEGATION_NAME_PREFIX, sName);
+  NodeNamer::vGenerateName(C_NEGATION_DEFN, sName);
 
   QueryNode* pExpr = new QueryNode(sName, C_NEGATION_DEFN);
   pExpr->vAppendChild(pExpr1);

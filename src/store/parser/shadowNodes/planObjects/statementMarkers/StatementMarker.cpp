@@ -14,6 +14,7 @@
 #include "QueryNode.hpp"
 
 #include "GraphNav.hpp"
+#include "NodeNamer.hpp"
 
 using namespace Parser;
 
@@ -44,7 +45,7 @@ QueryNode* StatementMarker::pCreate(eST eStmtType, Stz* szDefn, Stz* szQueryText
 
   // Create a unique name for this object
   s256 sName;
-  ShadowNode::vObjName(GraphNav::szLeafType(szDefn), sName);
+  NodeNamer::vGenerateName(szDefn, sName);
 
   // Create the object with its queryText property
   QueryNode* pStmt = new QueryNode(sName, szDefn, static_cast<Value&&>(xValue));

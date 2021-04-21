@@ -12,6 +12,7 @@
 #include "StringList.hpp"
 
 #include "GraphNav.hpp"
+#include "NodeNamer.hpp"
 
 using namespace Parser;
 
@@ -36,7 +37,7 @@ QueryNode* UnionOp::pCreate(b1 bIsDistinct, QueryNode* pCorrelatedByList)
 
   // Now change its name and type
   s256 sName;
-  ShadowNode::vObjName(GraphNav::szLeafType(C_UNIONOP_DEFN), sName);
+  NodeNamer::vGenerateName(C_UNIONOP_DEFN, sName);
 
   pUnionOp->vSetName(sName.szStz());
   pUnionOp->vSetType(C_UNIONOP_DEFN);

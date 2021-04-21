@@ -15,6 +15,7 @@
 #include "MetadataNode.hpp"
 
 #include "GraphNav.hpp"
+#include "NodeNamer.hpp"
 
 using namespace Parser;
 
@@ -42,7 +43,7 @@ QueryNode* AggregateOp::pCreate(QueryNodeList* pSelectExprs, QueryNodeList* pGro
 
   // Create a unique name for this AggregateOp object
   s256 sName;
-  ShadowNode::vObjName(GraphNav::szLeafType(C_AGGREGATEOP_DEFN), sName);
+  NodeNamer::vGenerateName(C_AGGREGATEOP_DEFN, sName);
   pAggregateOp->vSetName(sName.szStz());
 
   pAggregateOp->vSetType(C_AGGREGATEOP_DEFN);

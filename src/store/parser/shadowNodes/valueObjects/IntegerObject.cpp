@@ -9,6 +9,7 @@
 #include "QueryNode.hpp"
 
 #include "GraphNav.hpp"
+#include "NodeNamer.hpp"
 
 using namespace Parser;
 
@@ -30,7 +31,7 @@ QueryNode* IntegerObject::pCreate(i8 iVal)
   _static_
 
   s256 sName;
-  ShadowNode::vObjName(GraphNav::szLeafType(C_INTEGEROBJECT_DEFN), sName);
+  NodeNamer::vGenerateName(C_INTEGEROBJECT_DEFN, sName);
 
   Value xVal(iVal);
   QueryNode* pIntegerObject = new QueryNode(sName.szStz(), C_INTEGEROBJECT_DEFN, static_cast<Value&&>(xVal));

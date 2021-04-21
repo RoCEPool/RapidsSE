@@ -8,6 +8,7 @@
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
 #include "PlanConstants.hpp"
+#include "NodeNamer.hpp"
 #include "Expr.hpp"
 
 #include "GraphNav.hpp"
@@ -51,7 +52,7 @@ QueryNode* ProjectedColumn::pCreate(QueryNode* pExprNode, Text* pAlias)
   Value xAliasValue(pAlias);
 
   s256 sName;
-  ShadowNode::vObjName(C_PROJECTEDCOLUMN_NAME, sName);
+  NodeNamer::vGenerateName(C_PROJECTEDCOLUMN_DEFN, sName);
 
   // Create the ProjectedColumn object
   QueryNode* pProjectedColumn = new QueryNode(sName.szStz(), const_cast<Stz*>(C_PROJECTEDCOLUMN_DEFN));

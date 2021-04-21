@@ -29,9 +29,6 @@ namespace Parser
     static b1 bValidate(QueryNode* pQueryNode, PlanNode* pPlanRoot,
                         std::function<b1(PlanNode*)> fTypeValidator);
 
-    // Creates a unique ID for an object name
-    static void vObjName(Stz* szPrefix, s256& sBuf);
-
     // Returns true if a given node is a given type or is derived from that type.
     static b1 bIsOfType(PlanNode* pNode, Stz* szTypePath);
 

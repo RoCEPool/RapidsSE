@@ -7,6 +7,7 @@
 
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
+#include "NodeNamer.hpp"
 
 using namespace Parser;
 
@@ -43,7 +44,7 @@ QueryNode* IsNullExpr::pCreate(QueryNode* pExpr1)
 
   // Create a unique name for this object
   s256 sName;
-  ShadowNode::vObjName(C_ISNULL_NAME_PREFIX, sName);
+  NodeNamer::vGenerateName(C_ISNULL_DEFN, sName);
 
   QueryNode* pExpr = new QueryNode(sName, C_ISNULL_DEFN);
   pExpr->vAppendChild(pExpr1);

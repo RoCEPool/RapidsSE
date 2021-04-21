@@ -10,6 +10,7 @@
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
 #include "PlanConstants.hpp"
+#include "NodeNamer.hpp"
 
 #include "ShadowRoot.hpp"
 #include "MetadataNode.hpp"
@@ -44,7 +45,7 @@ QueryNode* ColumnWildcard::pCreate(Text* pCatalogName, Text* pSchemaName, Text* 
 
   // Create a unique name for this object
   s256 sName;
-  ShadowNode::vObjName(C_COLUMNWILDCARD_NAME_PREFIX, sName);
+  NodeNamer::vGenerateName(C_COLWILDCARD_DEFN, sName);
 
   // These Value instances will take ownership of the Text*s.
   Value xCatalogName(pCatalogName);

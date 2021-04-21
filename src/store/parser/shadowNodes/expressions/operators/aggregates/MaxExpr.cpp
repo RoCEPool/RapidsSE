@@ -8,6 +8,7 @@
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
 #include "GraphNav.hpp"
+#include "NodeNamer.hpp"
 
 using namespace Parser;
 
@@ -62,7 +63,7 @@ QueryNode* MaxExpr::pCreate(b1 bIsDistinct, QueryNode* pChildExpr)
 
   // Finally, create this object
   s256 sName;
-  ShadowNode::vObjName(C_MAX_EXPR_NAME_PREFIX, sName);
+  NodeNamer::vGenerateName(C_MAX_EXPR_DEFN, sName);
 
   Value xVal;
   QueryNode* pMaxExpr = new QueryNode(sName, C_MAX_EXPR_DEFN, static_cast<Value&&>(xVal), pProperties, pChildren);
