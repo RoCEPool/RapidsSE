@@ -417,6 +417,7 @@ void ExprEval::vAddStoreCol(eCT eColumnType, i8 iColumn)
     case CT_INTEGER:
     case CT_DECIMAL:
     case CT_DATE:
+    case CT_FLOAT:
       StrLib::vSprintCat(m_sPayLoadStore, "  EO_PAY_STORE_COLI %lld\n"_Stz, iColumn);
       StrLib::vSprintCat(m_sPayLoadToBuffer,"  EO_PAY_FETCH_COLI %lld\n"_Stz, iColumn);
       StrLib::vSprintCat(m_sPayLoadToBuffer,"  EO_PUSH_DEVROW_DST\n"_Stz);
