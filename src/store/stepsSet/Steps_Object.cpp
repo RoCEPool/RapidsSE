@@ -20,6 +20,7 @@ void Step::vAddSteps_Object(void)
   vAddStep("object.dispatchWord@"_Stz,&Step::vObjectDispatchWordFetch);
   vAddStep("object@"_Stz,             &Step::vObjectFetch);
   vAddStep("object.magic!"_Stz,       &Step::vObjectMagicMark);
+  vAddStep("object.receivedWord@"_Stz,&Step::vObjectReceivedWordFetch);
   vAddStep("object.recvArgs@"_Stz,    &Step::vObjectRecvArgsFetch);
   vAddStep("object!"_Stz,             &Step::vObjectStore);
 }
@@ -102,6 +103,24 @@ void Step::vObjectMagicMark(void)
   Object* pObject = m_pDataStack->pPopPtr(__func__);
   
   pObject->vSetMagic();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* object.receivedWord@ -- fetch received word for class of object            */
+/*----------------------------------------------------------------------------*/
+void Step::vObjectReceivedWordFetch(void)
+{
+  ENTRY();
+  
+  Object* pObject = m_pDataStack->pPopPtr(__func__);
+  
+  eCN eClassNo = pObject->eGetClassNo();
+  
+  Word* pWord = gxaSizeHeap[eClassNo].m_pReceivedWord;
+  
+  m_pDataStack->vPushPtr(pWord);
   
   EXIT();
 }
