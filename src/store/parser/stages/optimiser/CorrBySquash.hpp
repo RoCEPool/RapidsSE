@@ -33,6 +33,14 @@ namespace Parser
 
     // Pushes down and squashes a ProjectOp down a given subtree
     static void vPushDownProjectOp(QueryNode* pProjectOp, QueryNode* pStartingNode, PlanNode* pParent);
+
+    // Creates a copy of pProjectOp, updated for the columns returned by pChild.
+    // Necessary when pushing a ProjectOp through a SetOp and into the second child subtree.
+    static QueryNode* pUpdateExprsFor(QueryNode* pProjectOp, QueryNode* pChild, PlanNode* pRootNode);
+
+    // Creates and returns a ProjectOp for pushing down as the second child of a SetOp
+    // where the SetOp does not have a CORRESPONDING BY clause.
+    static QueryNode* pCreateProjectUsingOrdinals(QueryNode* pChild1, QueryNode* pChild2, PlanNode* pRootNode);
   };
 }
 
