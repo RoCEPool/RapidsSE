@@ -8,6 +8,7 @@
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
 #include "GraphNav.hpp"
+#include "NodeNamer.hpp"
 
 using namespace Parser;
 
@@ -68,7 +69,7 @@ QueryNode* AvgExpr::pCreate(b1 bIsDistinct, QueryNode* pChildExpr)
 
   // Finally, create this object
   s256 sName;
-  ShadowNode::vObjName(C_AVG_EXPR_NAME_PREFIX, sName);
+  NodeNamer::vGenerateName(C_AVG_EXPR_DEFN, sName);
 
   Value xVal;
   QueryNode* pAvgExpr = new QueryNode(sName, C_AVG_EXPR_DEFN, static_cast<Value&&>(xVal), pProperties, pChildren);

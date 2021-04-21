@@ -9,6 +9,7 @@
 #include "QueryNode.hpp"
 
 #include "GraphNav.hpp"
+#include "NodeNamer.hpp"
 
 using namespace Parser;
 
@@ -30,7 +31,7 @@ QueryNode* BooleanObject::pCreate(b1 bVal)
   _static_
 
   s256 sName;
-  ShadowNode::vObjName(GraphNav::szLeafType(C_BOOLEANOBJECT_DEFN), sName);
+  NodeNamer::vGenerateName(C_BOOLEANOBJECT_DEFN, sName);
 
   Value xVal(bVal);
   QueryNode* pBooleanObject = new QueryNode(sName.szStz(), C_BOOLEANOBJECT_DEFN, static_cast<Value&&>(xVal));

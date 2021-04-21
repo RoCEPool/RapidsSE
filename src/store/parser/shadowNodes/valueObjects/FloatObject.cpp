@@ -9,6 +9,7 @@
 #include "QueryNode.hpp"
 
 #include "GraphNav.hpp"
+#include "NodeNamer.hpp"
 
 using namespace Parser;
 
@@ -30,7 +31,7 @@ QueryNode* FloatObject::pCreate(d8 dVal)
   _static_
 
   s256 sName;
-  ShadowNode::vObjName(GraphNav::szLeafType(C_FLOATOBJECT_DEFN), sName);
+  NodeNamer::vGenerateName(C_FLOATOBJECT_DEFN, sName);
 
   Value xVal(dVal);
   QueryNode* pFloatObject = new QueryNode(sName.szStz(), C_FLOATOBJECT_DEFN, static_cast<Value&&>(xVal));

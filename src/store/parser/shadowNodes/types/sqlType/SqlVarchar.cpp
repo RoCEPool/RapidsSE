@@ -9,6 +9,7 @@
 #include "QueryNode.hpp"
 
 #include "GraphNav.hpp"
+#include "NodeNamer.hpp"
 
 using namespace Parser;
 
@@ -42,7 +43,7 @@ PlanNode* SqlVarchar::pCreate(i8 iLength)
 
   // Create a unique name for this object
   s256 sName;
-  ShadowNode::vObjName(GraphNav::szLeafType(C_SQLVARCHAR_DEFN), sName);
+  NodeNamer::vGenerateName(C_SQLVARCHAR_DEFN, sName);
   Value xTypeValue((i8) CT_VARCHAR);
   QueryNode* pNode = new QueryNode(sName, C_SQLVARCHAR_DEFN, static_cast<Value&&>(xTypeValue));
 

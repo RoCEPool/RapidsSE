@@ -52,17 +52,6 @@ b1 ShadowNode::bValidate(QueryNode* pQueryNode, PlanNode* pPlanRoot,
 }
 
 /*----------------------------------------------------------------------------*/
-/* Creates a unique ID for an object name so that the names of siblings       */
-/* do not conflict and are unique.                                            */
-/*----------------------------------------------------------------------------*/
-void ShadowNode::vObjName(Stz *szPrefix, s256 &sBuf)
-{
-  ASSERT(szPrefix);
-
-  sBuf.vSprint("%s%04lld"_Stz, szPrefix, ms_pObjId->iInc());
-}
-
-/*----------------------------------------------------------------------------*/
 /* Describe the object and write it into the buffer                           */
 /*----------------------------------------------------------------------------*/
 void ShadowNode::vDescribe(PlanNode* pNode, s2K& sBuf)

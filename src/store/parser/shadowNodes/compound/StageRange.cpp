@@ -14,6 +14,7 @@
 #include "StringList.hpp"
 
 #include "GraphNav.hpp"
+#include "NodeNamer.hpp"
 
 using namespace Parser;
 
@@ -48,7 +49,7 @@ QueryNode* StageRange::pCreate(QueryNode* pBegin, QueryNode* pEnd)
   ASSERT(!pEnd || StringObject::bIsOfType(pEnd) || IntegerObject::bIsOfType(pEnd));
 
   s256 sName;
-  ShadowNode::vObjName(C_STAGERANGE_NAME, sName);
+  NodeNamer::vGenerateName(C_STAGERANGE_DEFN, sName);
 
   // Create the stageRange object
   QueryNode* pStageRange = new QueryNode(sName.szStz(), C_STAGERANGE_DEFN);
@@ -73,7 +74,7 @@ QueryNode* StageRange::pCreateLastOnly()
   _static_
 
   s256 sName;
-  ShadowNode::vObjName(C_STAGERANGE_NAME, sName);
+  NodeNamer::vGenerateName(C_STAGERANGE_DEFN, sName);
 
   // Create the stageRange object
   QueryNode* pStageRange = new QueryNode(sName.szStz(), C_STAGERANGE_DEFN);

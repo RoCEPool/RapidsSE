@@ -8,6 +8,7 @@
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
 #include "PlanConstants.hpp"
+#include "NodeNamer.hpp"
 
 #include "ShadowRoot.hpp"
 #include "MetadataNode.hpp"
@@ -44,7 +45,7 @@ QueryNode* AliasRef::pCreate(Text* pAliasName, QueryNode* pAliasExpr)
 
   // Create a unique name for this object
   s256 sName;
-  ShadowNode::vObjName(C_ALIASREF_NAME_PREFIX, sName);
+  NodeNamer::vGenerateName(C_ALIASREF_DEFN, sName);
 
   // Create the aliasRef
   QueryNode* pAliasRef = new QueryNode(sName, C_ALIASREF_DEFN);

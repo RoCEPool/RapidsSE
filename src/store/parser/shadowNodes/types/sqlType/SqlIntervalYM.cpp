@@ -9,6 +9,7 @@
 #include "QueryNode.hpp"
 
 #include "GraphNav.hpp"
+#include "NodeNamer.hpp"
 
 using namespace Parser;
 
@@ -31,7 +32,7 @@ PlanNode* SqlIntervalYM::pCreate()
 
   // Create a unique name for this object
   s256 sName;
-  ShadowNode::vObjName(GraphNav::szLeafType(C_SQLINTERVAL_DEFN), sName);
+  NodeNamer::vGenerateName(C_SQLINTERVAL_DEFN, sName);
   Value xTypeValue((i8) CT_INTERVAL_YM);
   PlanNode* pNode = new QueryNode(sName, C_SQLINTERVAL_DEFN, static_cast<Value&&>(xTypeValue));
 

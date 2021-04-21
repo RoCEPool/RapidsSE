@@ -14,6 +14,7 @@
 #include "ShadowRoot.hpp"
 
 #include "GraphNav.hpp"
+#include "NodeNamer.hpp"
 
 using namespace Parser;
 
@@ -50,7 +51,7 @@ QueryNode* ProjectOp::pCreate(QueryNodeList* pSelectItems)
 
   // Create a unique name for this ProjectOp object
   s256 sName;
-  ShadowNode::vObjName(GraphNav::szLeafType(C_PROJECTOP_DEFN), sName);
+  NodeNamer::vGenerateName(C_PROJECTOP_DEFN, sName);
 
   // Create the object and add  its projectedColumns property
   QueryNode* pProjectOp = new QueryNode(sName, C_PROJECTOP_DEFN);

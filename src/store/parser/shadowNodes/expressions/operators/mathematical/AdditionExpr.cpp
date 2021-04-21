@@ -8,6 +8,7 @@
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
 #include "eCT.h"
+#include "NodeNamer.hpp"
 
 using namespace Parser;
 
@@ -81,7 +82,7 @@ QueryNode* AdditionExpr::pCreate(QueryNode* pExpr1, QueryNode* pExpr2)
 
   // Create a unique name for this object
   s256 sName;
-  ShadowNode::vObjName(C_ADDITION_NAME_PREFIX, sName);
+  NodeNamer::vGenerateName(C_ADDITION_DEFN, sName);
 
   QueryNode* pExpr = new QueryNode(sName, C_ADDITION_DEFN);
   pExpr->vAppendChild(pExpr1);

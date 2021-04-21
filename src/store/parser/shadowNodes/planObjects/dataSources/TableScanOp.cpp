@@ -17,6 +17,7 @@
 #include "ColumnRef.hpp"
 #include "ColumnDef.hpp"
 #include "ProjectedColumn.hpp"
+#include "NodeNamer.hpp"
 
 using namespace Parser;
 
@@ -44,7 +45,7 @@ QueryNode* TableScanOp::pCreate(QueryNode* pTableRef)
 
   // Create a unique name for this ProjectOp object
   s256 sName;
-  ShadowNode::vObjName(GraphNav::szLeafType(C_TABLESCAN_DEFN), sName);
+  NodeNamer::vGenerateName(C_TABLESCAN_DEFN, sName);
 
   // Create the object and add the tableRef property. We will need to rename it first.
   QueryNode* pTableScanOp = new QueryNode(sName, C_TABLESCAN_DEFN);

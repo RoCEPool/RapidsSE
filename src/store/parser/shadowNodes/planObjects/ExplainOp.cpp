@@ -13,6 +13,7 @@
 
 #include "GraphNav.hpp"
 #include "SqlException.hpp"
+#include "NodeNamer.hpp"
 
 using namespace Parser;
 
@@ -53,7 +54,7 @@ QueryNode* ExplainOp::pCreate(QueryNode* pStageRangeList, Stz* szFormat)
 
   // Create a unique name for this ExplainOp object
   s256 sName;
-  ShadowNode::vObjName(GraphNav::szLeafType(C_EXPLAINOP_DEFN), sName);
+  NodeNamer::vGenerateName(C_EXPLAINOP_DEFN, sName);
 
   // Create the explain object
   QueryNode* pExplainOp = new QueryNode(sName, C_EXPLAINOP_DEFN);

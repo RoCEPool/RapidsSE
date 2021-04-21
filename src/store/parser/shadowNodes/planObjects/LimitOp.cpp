@@ -10,6 +10,7 @@
 #include "QueryNode.hpp"
 
 #include "GraphNav.hpp"
+#include "NodeNamer.hpp"
 
 using namespace Parser;
 
@@ -40,7 +41,7 @@ QueryNode* LimitOp::pCreate(i8 iLimit, i8 iOffset)
 
   // Create a unique name for this LimitOp object
   s256 sName;
-  ShadowNode::vObjName(GraphNav::szLeafType(C_LIMITOP_DEFN), sName);
+  NodeNamer::vGenerateName(C_LIMITOP_DEFN, sName);
 
   // Create the object and add its limit and offset properties
   QueryNode* pLimitOp = new QueryNode(sName, C_LIMITOP_DEFN);

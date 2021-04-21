@@ -8,6 +8,8 @@
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
 #include "GraphNav.hpp"
+#include "NodeNamer.hpp"
+
 
 using namespace Parser;
 
@@ -68,7 +70,7 @@ QueryNode* SumExpr::pCreate(b1 bIsDistinct, QueryNode* pChildExpr)
 
   // Finally, create this object
   s256 sName;
-  ShadowNode::vObjName(C_SUM_EXPR_NAME_PREFIX, sName);
+  NodeNamer::vGenerateName(C_SUM_EXPR_DEFN, sName);
 
   Value xVal;
   QueryNode* pSumExpr = new QueryNode(sName, C_SUM_EXPR_DEFN, static_cast<Value&&>(xVal), pProperties, pChildren);

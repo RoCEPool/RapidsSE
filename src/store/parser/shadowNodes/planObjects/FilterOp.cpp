@@ -11,6 +11,7 @@
 #include "store/parser/shadowNodes/expressions/Expr.hpp"
 
 #include "GraphNav.hpp"
+#include "NodeNamer.hpp"
 
 using namespace Parser;
 
@@ -37,7 +38,7 @@ QueryNode* FilterOp::pCreate(QueryNode* pFilterExpr)
 
   // Create a unique name for this FilterOp object
   s256 sName;
-  ShadowNode::vObjName(GraphNav::szLeafType(C_FILTEROP_DEFN), sName);
+  NodeNamer::vGenerateName(C_FILTEROP_DEFN, sName);
 
   // Create the object and add its filterExpr property
   QueryNode* pFilterOp = new QueryNode(sName, C_FILTEROP_DEFN);
