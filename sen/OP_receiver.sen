@@ -29,10 +29,11 @@
 /*----------------------------------------------------------------------------*/
 : receiver_recvOperand
 
+  nullptr to Register0[]
+
   Socket[].recvObject
   
   Socket[].success@ not if
-    false
     exit
   then
   
@@ -43,6 +44,8 @@
 /* receive next argument object                                               */
 /*----------------------------------------------------------------------------*/
 : receiver_recvArgument
+
+  nullptr to Register1[]
 
   Socket[].recvObject
   
@@ -97,39 +100,24 @@
 /*----------------------------------------------------------------------------*/
 : receiver_recvNext_2
 
-  nullptr to Register0[]
-  nullptr to Register1[]
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get first object
+  // get operand
   
-  Socket[].recvObject
-  
-  Socket[].success@ not if false exit then
+  receiver_recvOperand
 
-  Socket[].object@\clear to Register0[]
-
-  Register0[] not if
-    true exit
+  Socket[].success@ not if
+    false exit
   then
     
+      
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get argument
+
   Register0[] object.recvArgs@ 0 == if
     true exit
   then
+  
+  receiver_recvArgument
       
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get argument object
-
-  Socket[].recvObject
-  
-  Socket[].success@ not if false exit then
-
-  Socket[].object@\clear to Register1[]
-    
-  Register1[] not if
-    true exit
-  then
-  
   true
 ;
 
@@ -144,9 +132,7 @@
     trap::stackDepthZero
 
     // receive next object(s)
-    receiver_recvNext
-    
-    // check an object was received
+    receiver_recvNext_2
     not if
       exit
     then
