@@ -52,6 +52,8 @@ void Step::vAddSteps_Socket(void)
   vAddStep("Socket[].recvObject"_Stz,&Step::vSocketRecvObject);
   vAddStep("Socket[].sendObject"_Stz,&Step::vSocketSendObject);
   vAddStep("Socket[].set"_Stz,       &Step::vSocketSet);
+  vAddStep("Socket[].success@"_Stz,  &Step::vSocketSuccessFetch);
+  vAddStep("Socket[].success!"_Stz,  &Step::vSocketSuccessStore);
 
   vAddStep("socket.accept"_Stz,     &Step::vSocketAccept);
   vAddStep("socket.close"_Stz,      &Step::vSocketClose);
@@ -454,6 +456,38 @@ void Step::vSocketSet(void)
   ASSERT(! pSocket || m_pJob->pLogicUnit_job()->m_xpSocket.bIsNull());
   m_pJob->pLogicUnit_job()->m_xpSocket = _pSocket(pSocket);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Socket[].success@ -- fetch success flag                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vSocketSuccessFetch(void)
+{
+  ENTRY();
+  
+  Socket* pSocket = *m_pJob->pLogicUnit_job()->m_xpSocket;
+
+  bool bSuccess = pSocket->bSuccess();
+
+  m_pDataStack->vPushInt(bSuccess);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Socket[].success! -- store success flag                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vSocketSuccessStore(void)
+{
+  ENTRY();
+  
+  bool bSuccess = (bool)m_pDataStack->iPopInt(__func__);
+
+  Socket* pSocket = *m_pJob->pLogicUnit_job()->m_xpSocket;
+
+  pSocket->vSuccess(bSuccess);
+
   EXIT();
 }
 

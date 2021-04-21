@@ -1451,6 +1451,8 @@ public:
   void vSocketRecvObject(void);
   void vSocketSendObject(void);
   void vSocketSet(void);
+  void vSocketSuccessFetch(void);
+  void vSocketSuccessStore(void);
 
   // sql compiler
   void vSqlCompilerCorrBySquash(void);
