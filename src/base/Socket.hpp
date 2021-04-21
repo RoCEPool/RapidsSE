@@ -27,9 +27,8 @@ namespace BASE
       i8 m__Padding[16];
     };
   
-    bool    m_bSuccess;
-  
-    Object* m_pRecvObject;
+    bool    m_bSuccess;    // success?
+    Object* m_pRecvObject; // object which was received
 
     // must be last
     Footer m_xFooter;

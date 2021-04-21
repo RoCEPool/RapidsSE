@@ -49,6 +49,8 @@ void Step::vAddSteps_Socket(void)
   vAddStep("Socket[].get"_Stz,       &Step::vSocketGet);
   vAddStep("Socket[].isNotNull"_Stz, &Step::vSocketIsNotNull);
   vAddStep("Socket[].isNull"_Stz,    &Step::vSocketIsNull);
+  vAddStep("Socket[].object@"_Stz,   &Step::vSocketObjectFetch);
+  vAddStep("Socket[].object@\\clear"_Stz, &Step::vSocketObjectFetchClear);
   vAddStep("Socket[].recvObject"_Stz,&Step::vSocketRecvObject);
   vAddStep("Socket[].sendObject"_Stz,&Step::vSocketSendObject);
   vAddStep("Socket[].set"_Stz,       &Step::vSocketSet);
@@ -285,6 +287,39 @@ void Step::vSocketListen(void)
   Object* pPtrSocket = pSocket;
   m_pDataStack->vPushPtr(pPtrSocket);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Socket[].object@: fetch object                                             */
+/*----------------------------------------------------------------------------*/
+void Step::vSocketObjectFetch(void)
+{
+  ENTRY();
+  
+  Socket* pSocket = *m_pJob->pLogicUnit_job()->m_xpSocket;
+
+  Object* pObject = pSocket->pRecvObject();
+
+  m_pDataStack->vPushPtr(pObject);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Socket[].object@\clear: fetch object (and clear)                           */
+/*----------------------------------------------------------------------------*/
+void Step::vSocketObjectFetchClear(void)
+{
+  ENTRY();
+  
+  Socket* pSocket = *m_pJob->pLogicUnit_job()->m_xpSocket;
+
+  Object* pObject = pSocket->pRecvObject();
+  pSocket->vRecvObject(nullptr);
+  
+  m_pDataStack->vPushPtr(pObject);
+
   EXIT();
 }
 
