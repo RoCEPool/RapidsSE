@@ -30,6 +30,7 @@
 #include "QueryNode.hpp"
 
 #include "TableRef.hpp"
+#include "AliasRef.hpp"
 
 #include "AggregateOp.hpp"
 #include "SumExpr.hpp"
@@ -501,10 +502,20 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
 
   QueryNode* pOrdinalExpr;
 
-  if (ColumnRef::bIsOfType(pQueryNode))
-    pOrdinalExpr = Expr::pSymbolicToOrdinal(pQueryNode, pBackend->m_pColExprList, pBackend->m_pPlanRoot);
-  else
-    pOrdinalExpr = pQueryNode;
+  QueryNode* pAliasedNode;
+  if (AliasRef::bIsOfType(pQueryNode)) {
+    pAliasedNode = AliasRef::pAliasedExpr(pQueryNode);
+    if (ColumnRef::bIsOfType(pAliasedNode))
+      pOrdinalExpr = Expr::pSymbolicToOrdinal(pAliasedNode, pBackend->m_pColExprList, pBackend->m_pPlanRoot);
+    else
+      pOrdinalExpr = pAliasedNode;
+  }
+  else {
+    if (ColumnRef::bIsOfType(pQueryNode))
+      pOrdinalExpr = Expr::pSymbolicToOrdinal(pQueryNode, pBackend->m_pColExprList, pBackend->m_pPlanRoot);
+    else
+      pOrdinalExpr = pQueryNode;
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // aggregate
