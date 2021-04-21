@@ -46,7 +46,8 @@ Socket::Socket(Object* pIsFor)
   vAddrInit(&m_xServAddr,nullptr,0);
   
   m_bSuccess = false;
-
+  m_pRecvObject = nullptr;
+  
   _checkInitialised_(CN_SOCKET);
   
   ++ gixSocket;
@@ -76,6 +77,7 @@ Socket::Socket(Object* pIsFor, int iSocketId)
   vAddrInit(&m_xServAddr,nullptr,0);
   
   m_bSuccess = false;
+  m_pRecvObject = nullptr;
 
   _checkInitialised_(CN_SOCKET);
   
@@ -213,6 +215,26 @@ void Socket::vSuccess(bool bSuccess)
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
   m_bSuccess = bSuccess;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get received object                                                        */
+/*----------------------------------------------------------------------------*/
+Object* Socket::pRecvObject(void)
+{
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
+  return m_pRecvObject;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set received object                                                        */
+/*----------------------------------------------------------------------------*/
+void Socket::vRecvObject(Object* pRecvObject)
+{
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
+  m_pRecvObject = pRecvObject;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -88,7 +88,7 @@
     
   to Register1[]
     
-  Register0[] not if
+  Register1[] not if
     true exit
   then
   
@@ -126,7 +126,7 @@
 
   to Register1[]
     
-  Register0[] not if
+  Register1[] not if
     true exit
   then
   

@@ -19,7 +19,7 @@ namespace BASE
     Object* m_pIsFor;
   
     int     m_iSocketFd; // the o/s socket
-    bool    m_bBlocking; // is a blocking sockey
+    bool    m_bBlocking; // is a blocking socket
     void*   m_aLowBuff;  // low memory read area
 
     union {
@@ -29,6 +29,8 @@ namespace BASE
   
     bool    m_bSuccess;
   
+    Object* m_pRecvObject;
+
     // must be last
     Footer m_xFooter;
         
@@ -49,6 +51,9 @@ namespace BASE
     void vCopy(Socket* pSource);
     bool bIsOpen();
 
+    Object* pRecvObject(void);
+    void vRecvObject(Object* pRecvObject);
+  
     bool bSuccess(void);
     void vSuccess(bool bSuccess);
 
