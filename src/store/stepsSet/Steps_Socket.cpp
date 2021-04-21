@@ -337,7 +337,7 @@ void Step::vSocketRecvObject(void)
   SysCall oSysCall;
   bool bResult = pSocket->bRecvBytes(aHeader,sizeof(Object),oSysCall);
   if (! bResult) {
-    m_pDataStack->vPushInt(false);
+    //m_pDataStack->vPushInt(false);
     pSocket->vSuccess(false);
     EXIT();
     return;
@@ -363,7 +363,7 @@ void Step::vSocketRecvObject(void)
 
     bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
     if (! bResult) {
-     m_pDataStack->vPushInt(false);
+     //m_pDataStack->vPushInt(false);
      pSocket->vSuccess(false);
      EXIT();
      return;
@@ -374,7 +374,7 @@ void Step::vSocketRecvObject(void)
     pReceivedObject->vRunPostRecv();
 
     m_pDataStack->vPushPtr(pReceivedObject);
-    m_pDataStack->vPushInt(true);
+    //m_pDataStack->vPushInt(true);
     pSocket->vSuccess(true);
     EXIT();
     return;
@@ -396,7 +396,7 @@ void Step::vSocketRecvObject(void)
   
   // whether able to recv or not, return false
   m_pDataStack->vPushPtr(nullptr);
-  m_pDataStack->vPushInt(true);
+  //m_pDataStack->vPushInt(true);
   pSocket->vSuccess(true);
   EXIT();
 }

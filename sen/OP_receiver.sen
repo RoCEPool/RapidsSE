@@ -30,7 +30,8 @@
 : receiver_recvOperand
 
   Socket[].recvObject
-  not if
+  
+  Socket[].success@ not if
     false
     exit
   then
@@ -44,7 +45,8 @@
 : receiver_recvArgument
 
   Socket[].recvObject
-  not if
+  
+  Socket[].success@ not if
     false
     exit
   then
@@ -63,8 +65,11 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get first object
   
-  Socket[].recvObject not if false exit then
-    to Register0[]
+  Socket[].recvObject
+  
+  Socket[].success@ not if false exit then
+
+  to Register0[]
 
   Register0[] not if
     true exit
@@ -77,8 +82,11 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get argument object
 
-  Socket[].recvObject not if false exit then
-    to Register1[]
+  Socket[].recvObject
+  
+  Socket[].success@ not if false exit then
+    
+  to Register1[]
     
   Register0[] not if
     true exit
@@ -95,8 +103,11 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get first object
   
-  Socket[].recvObject not if false exit then
-    to Register0[]
+  Socket[].recvObject
+  
+  Socket[].success@ not if false exit then
+
+  to Register0[]
 
   Register0[] not if
     true exit
@@ -109,8 +120,11 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get argument object
 
-  Socket[].recvObject not if false exit then
-    to Register1[]
+  Socket[].recvObject
+  
+  Socket[].success@ not if false exit then
+
+  to Register1[]
     
   Register0[] not if
     true exit
