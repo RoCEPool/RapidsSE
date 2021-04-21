@@ -58,7 +58,9 @@
   0 locals| sNodeName |
 
   // receive the node info set
-  Socket[].recvObject to InfoSet[]
+  Socket[].recvObject
+  
+  Socket[].object@\clear to InfoSet[]
 
   // get the first row from the infoset
   InfoSet[].firstRow to row[]

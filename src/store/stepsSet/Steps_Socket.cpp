@@ -357,7 +357,7 @@ void Step::vSocketRecvObject(void)
   
   Socket* pSocket = *m_pJob->pLogicUnit_job()->m_xpSocket;
   
-  //RASSERT(! pSocket->pRecvObject());
+  RASSERT(! pSocket->pRecvObject());
   
   bool bLowMem = gpBufferPool->bLowMemory();
   
@@ -413,7 +413,7 @@ void Step::vSocketRecvObject(void)
     
     pReceivedObject->vRunPostRecv();
 
-    m_pDataStack->vPushPtr(pReceivedObject);
+    //m_pDataStack->vPushPtr(pReceivedObject);
     //m_pDataStack->vPushInt(true);
     pSocket->vRecvObject(pReceivedObject);
     pSocket->vSuccess(true);
@@ -436,7 +436,7 @@ void Step::vSocketRecvObject(void)
   bResult = pSocket->bRecvBytes(aLowBody,nRemainingBytes,oSysCall);
   
   // whether able to recv or not, return false
-  m_pDataStack->vPushPtr(nullptr);
+  //m_pDataStack->vPushPtr(nullptr);
   //m_pDataStack->vPushInt(true);
   pSocket->vRecvObject(nullptr);
   pSocket->vSuccess(true);
