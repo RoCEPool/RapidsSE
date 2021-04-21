@@ -83,6 +83,32 @@
   true
 ;
 
+/*----------------------------------------------------------------------------*/
+/* receiver loop: receive a job (possibly with operand), dispatch it          */
+/*----------------------------------------------------------------------------*/
+: receiver_dispatch ( -- )
+
+  // null object (low memory)
+  Register0[] not if
+    exit
+  then
+    
+
+  // object with no arguments (probably job)
+  Register0[] object.recvArgs@ 0 == if
+    Register0[] Register0[] object.dispatchWord@ execute
+    exit
+  then
+  
+  
+  // object with one argument (probably xmitoperand)
+  Register0[] object.recvArgs@ 1 == if
+    Register1[] Register0[] Register0[] object.dispatchWord@ execute
+    exit
+  then
+  
+  HAZARD
+;
 
 /*----------------------------------------------------------------------------*/
 /* receiver loop: receive a job (possibly with operand), dispatch it          */
@@ -99,24 +125,7 @@
       exit
     then
         
-    // null object (low memory)
-    Register0[] not if
-      continue_if
-    then
-    
-    // object with no arguments (probably job)
-    Register0[] object.recvArgs@ 0 == if
-      Register0[] Register0[] object.dispatchWord@ execute
-      continue_if
-    then
-    
-    // object with one argument (probably xmitoperand)
-    Register0[] object.recvArgs@ 1 == if
-      Register1[] Register0[] Register0[] object.dispatchWord@ execute
-      continue_if
-    then
-    
-    HAZARD
+    receiver_dispatch
 
   again
 ;
