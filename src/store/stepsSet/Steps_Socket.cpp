@@ -355,6 +355,10 @@ void Step::vSocketRecvObject(void)
 {
   ENTRY();
   
+  Socket* pSocket = *m_pJob->pLogicUnit_job()->m_xpSocket;
+  
+  //RASSERT(! pSocket->pRecvObject());
+  
   bool bLowMem = gpBufferPool->bLowMemory();
   
   char caObjectHeader[sizeof(Object) + C_1K];
@@ -367,12 +371,12 @@ void Step::vSocketRecvObject(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receive the header of the next object
 
-  Socket* pSocket = *m_pJob->pLogicUnit_job()->m_xpSocket;
 
   SysCall oSysCall;
   bool bResult = pSocket->bRecvBytes(aHeader,sizeof(Object),oSysCall);
   if (! bResult) {
     //m_pDataStack->vPushInt(false);
+    pSocket->vRecvObject(nullptr);
     pSocket->vSuccess(false);
     EXIT();
     return;
@@ -399,6 +403,7 @@ void Step::vSocketRecvObject(void)
     bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
     if (! bResult) {
      //m_pDataStack->vPushInt(false);
+     pSocket->vRecvObject(nullptr);
      pSocket->vSuccess(false);
      EXIT();
      return;
@@ -410,6 +415,7 @@ void Step::vSocketRecvObject(void)
 
     m_pDataStack->vPushPtr(pReceivedObject);
     //m_pDataStack->vPushInt(true);
+    pSocket->vRecvObject(pReceivedObject);
     pSocket->vSuccess(true);
     EXIT();
     return;
@@ -432,6 +438,7 @@ void Step::vSocketRecvObject(void)
   // whether able to recv or not, return false
   m_pDataStack->vPushPtr(nullptr);
   //m_pDataStack->vPushInt(true);
+  pSocket->vRecvObject(nullptr);
   pSocket->vSuccess(true);
   EXIT();
 }
