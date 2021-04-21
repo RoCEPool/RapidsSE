@@ -45,6 +45,8 @@ Socket::Socket(Object* pIsFor)
   
   vAddrInit(&m_xServAddr,nullptr,0);
   
+  m_bSuccess = false;
+
   _checkInitialised_(CN_SOCKET);
   
   ++ gixSocket;
@@ -73,6 +75,8 @@ Socket::Socket(Object* pIsFor, int iSocketId)
   
   vAddrInit(&m_xServAddr,nullptr,0);
   
+  m_bSuccess = false;
+
   _checkInitialised_(CN_SOCKET);
   
   ++ gixSocket;
@@ -189,6 +193,26 @@ void Socket::vCopy(Socket* pSource)
   
   m_iSocketFd = pSource->m_iSocketFd;
   m_bBlocking = pSource->m_bBlocking;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get success flag                                                           */
+/*----------------------------------------------------------------------------*/
+bool Socket::bSuccess(void)
+{
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
+  return m_bSuccess;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set success flag                                                           */
+/*----------------------------------------------------------------------------*/
+void Socket::vSuccess(bool bSuccess)
+{
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
+  m_bSuccess = bSuccess;
 }
 
 /*----------------------------------------------------------------------------*/

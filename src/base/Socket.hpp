@@ -18,7 +18,7 @@ namespace BASE
 
     Object* m_pIsFor;
   
-    int     m_iSocketFd;
+    int     m_iSocketFd; // the o/s socket
     bool    m_bBlocking; // is a blocking sockey
     void*   m_aLowBuff;  // low memory read area
 
@@ -26,6 +26,8 @@ namespace BASE
       struct sockaddr_in m_xServAddr;
       i8 m__Padding[16];
     };
+  
+    bool    m_bSuccess;
   
     // must be last
     Footer m_xFooter;
@@ -46,6 +48,9 @@ namespace BASE
     
     void vCopy(Socket* pSource);
     bool bIsOpen();
+
+    bool bSuccess(void);
+    void vSuccess(bool bSuccess);
 
     bool bAcceptClient(int& pSocketId, SysCall& SysCall);
     bool bClose(SysCall& SysCall);
