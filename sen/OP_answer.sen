@@ -74,17 +74,17 @@
   // set the receive socket in the answered node
 
   ////////// Watch out, if node is not in the grid yet |||||
-  //sNodeName .
-  //" OP answer" .
-  //begin
-  //    pAnsweredNode not
-  //  while
-  //    50 thread::sleepMsec
-   //     sNodeName grid::findNode to pAnsweredNode
-  //  repeat
-  //pAnsweredNode not if
-  //">>>>>pAnsweredNode is null<<<<<" .
-  //then
+  sNodeName .
+  " OP answer" .
+  begin
+      pAnsweredNode not
+    while
+      50 thread::sleepMsec
+        sNodeName grid::findNode to pAnsweredNode
+    repeat
+  pAnsweredNode not if
+  ">>>>>pAnsweredNode is null<<<<<" .
+  then
   //pSocket pAnsweredNode node.recvSocket!
 
   Socket[] pAnsweredNode node.recvSocket!
