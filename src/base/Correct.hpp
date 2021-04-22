@@ -11,6 +11,14 @@ namespace BASE
   void vThreadCallStackDump(void);
   void vThreadCallStackDump_Mangled(void);
   void vThreadCallStackDump_Demangled(void);
+  b1   bAddrToLine(void* pvAddr, s256& sFileName, s2K& sFuncName, i8& iLine);
+  b1   bAddrsToLines(void** pvAddrs,
+                     i8     iArrSize,
+                     s256*  psModules,
+                     s256*  psFileNames,
+                     s2K*   psFuncNames,
+                     i8*    piLines,
+                     i8*    piOffsets);
 
 
   // the [[ noreturn ]] attribute is the C++11 standard for indicating a

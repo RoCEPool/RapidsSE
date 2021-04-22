@@ -60,6 +60,44 @@ void BASE::vThreadCallStackDump_Demangled(void)
   vTrace("Call TypedStack Backtrace\n"_Stz);
   vTrace("--------------------\n"_Stz);
 
+  // First try to extract out file and line numbers and print that.
+  // If this fails then we will fall back to a secondary approach.
+  s256 asModules[C_STACK_BACKTRACE];
+  s256 asFileNames[C_STACK_BACKTRACE];
+  s2K  asFuncNames[C_STACK_BACKTRACE];
+  i8   aiLines[C_STACK_BACKTRACE];
+  i8   aiOffsets[C_STACK_BACKTRACE];
+
+  if (bAddrsToLines(aaFramePtr, nPtrs, asModules, asFileNames, asFuncNames, aiLines, aiOffsets)) {
+    for (i8 iFrame = 0; iFrame < nPtrs; iFrame++) {
+
+      if (asFileNames[iFrame].nLength() > 0) {
+        vTrace("Frame %2lld:  %-26s  %018p  %s  (%s:%lld)\n"_Stz,
+               iFrame,
+               asModules[iFrame].azChar(),
+               aaFramePtr[iFrame],
+               asFuncNames[iFrame].azChar(),
+               asFileNames[iFrame].azChar(),
+               aiLines[iFrame]);
+      } else {
+        // Filename and line numbers not available. Print the offset instead.
+        vTrace("Frame %2lld:  %-26s  %018p  %s  (+%lld)\n"_Stz,
+               iFrame,
+               asModules[iFrame].azChar(),
+               aaFramePtr[iFrame],
+               asFuncNames[iFrame].azChar(),
+               aiOffsets[iFrame]);
+      }
+    }
+    return;
+  }
+
+
+  // Secondary approach - Get the manged symbols, parse them and try to demangle the functions.
+  // We won't have file and line numbers, but we should be able to get offsets into the functions.
+  // Worst case is we just print the mangled function names and offsets.
+
+  // The string format of this symbol list is different on Mac vs Linux, so we need to parse them differently
   char** acSymbolList = backtrace_symbols(aaFramePtr,nPtrs);
 
   for (i8 i=0; i<nPtrs; i++) {
@@ -74,11 +112,14 @@ void BASE::vThreadCallStackDump_Demangled(void)
     i8    iOffset;
 
 #ifdef WITH_APPLE
+    // Line format: <frameNum> <space> <binaryName> <space> <hexAddress> <space> <symbolName> '+' <offset>
     i8 iConv = sscanf(p, "%lld %s %p %s + %lld", &iFrame, sModule.azChar(), &pAddr, sSymbol.azChar(), &iOffset);
 
     if (iConv == 5) {
 #endif
 #ifdef WITH_LINUX
+    // Line format: <binaryName> <space> '(' [<symbol>] '+' <hexOffset> ')' '[' <hexAddress> ']'
+
     iFrame=i;
     s2K sSymbolAndOffset;
 
@@ -99,7 +140,6 @@ void BASE::vThreadCallStackDump_Demangled(void)
           continue;
         }
       }
-
 #endif
 
       int status = 0;
@@ -117,11 +157,211 @@ void BASE::vThreadCallStackDump_Demangled(void)
       }
 
     } else {
+      // Could extract out the parameters, so just print the whole line with mangled function names
       vTrace( "Frame %2lld:  %s\n"_Stz, i, acSymbolList[i]);
     }
   }
 
   free(acSymbolList);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Try to convert an instruction address to a line in a file                  */
+/*----------------------------------------------------------------------------*/
+b1 BASE::bAddrToLine(void *pvAddr, s256& sFileName, s2K& sFuncName, i8& iLine)
+{
+  s256 sModule;
+
+#ifdef WITH_APPLE
+  // Is atos available? Work this out once and save the result.
+  static i8 iAtosAvailable = -1;  // some 3-state value
+
+  if (iAtosAvailable == -1) {
+    int iResult = system("which atos &>/dev/null");
+    if (iResult != 0) {
+      iAtosAvailable = 0;
+      return false;
+    }
+
+    iAtosAvailable = 1;
+  }
+
+  if (iAtosAvailable == 0) {
+    return false;
+  }
+
+  static pid_t iPid = getpid();
+
+  s256 sCmd;
+  sCmd.vSprint("atos -p %d %p"_Stz, iPid, pvAddr);
+
+  FILE* pF = popen(sCmd.azChar(), "r");
+
+  if (!pF) {
+    return false;
+  }
+
+  // Read a line
+  s2K sBuf;
+  if (!fgets(sBuf.azChar(), sBuf.nSpace(), pF)) {
+    pclose(pF);
+    return false;
+  }
+
+  // We should have a line that looks like this:
+  // BASE::vThreadCallStackDump_Demangled(params...) (in libRapidsSE.dylib) (Correct.cpp:57)\n
+
+  // Because the parameters have spaces, we need to manually parse out the function name.
+  // Look for "(in"
+  char* p = sBuf.azChar();
+  char* pEnd = p + sBuf.nSize();
+  while (*p &&
+         p < (pEnd - 4) &&
+         !(
+           *p     == '(' &&
+           *(p+1) == 'i' &&
+           *(p+2) == 'n' &&
+           *(p+3) == ' ' )
+         ) {
+    ++p;
+  }
+
+  // Copy out the function name
+  sFuncName.vCopy(sBuf.szStz(), p - sBuf.azChar());
+
+  // Now we can use sscanf to get the rest of the information as they are all single tokens
+  i8 iConv = sscanf(p, "(in %[^)]) (%[^:]:%lld)", sModule.azChar(), sFileName.azChar(), &iLine);
+  if (iConv != 3) {
+    pclose(pF);
+    return false;
+  }
+
+  while (fread(sBuf.azChar(), 1, sBuf.nSpace(), pF) == sBuf.nSpace());
+
+  pclose(pF);
+  return true;
+#endif
+
+#ifdef WITH_LINUX
+  sFnName = "????????"_Stz;
+  sFuncName = "????????"_Stz;
+  iLine = -1;
+  return;
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* Try to convert an array of instruction addresses to lines in files         */
+/*----------------------------------------------------------------------------*/
+b1 BASE::bAddrsToLines(void** pvAddrs,
+                       i8 iArrSize,
+                       s256*  psModules,
+                       s256*  psFileNames,
+                       s2K*   psFuncNames,
+                       i8*    piLines,
+                       i8*    piOffsets)
+{
+  s256 sModule;
+
+#ifdef WITH_APPLE
+  // Is atos available? Work this out once and save the result.
+  static i8 iAtosAvailable = -1;  // some 3-state value
+
+  if (iAtosAvailable == -1) {
+    int iResult = system("which atos &>/dev/null");
+    if (iResult != 0) {
+      iAtosAvailable = 0;
+      return false;
+    }
+
+    iAtosAvailable = 1;
+  }
+
+  if (iAtosAvailable == 0) {
+    return false;
+  }
+
+  static pid_t iPid = getpid();
+
+  s2K sCmd;
+  sCmd.vSprint("atos -p %d"_Stz, iPid);
+  for (i8 i = 0; i < iArrSize; i++) {
+    sCmd.vCatSprint(" %p"_Stz, pvAddrs[i]);
+  }
+
+
+  FILE* pF = popen(sCmd.azChar(), "r");
+
+  if (!pF) {
+    return false;
+  }
+
+  // Read a line
+  s2K sBuf;
+  i8 iLinesRead = 0;
+  while (iLinesRead < iArrSize && fgets(sBuf.azChar(), sBuf.nSpace(), pF)) {
+
+    // We should have a line that looks like this:
+    // BASE::vThreadCallStackDump_Demangled(params...) (in libRapidsSE.dylib) (Correct.cpp:57)\n
+
+    // Because the parameters have spaces, we need to manually parse out the function name.
+    // Look for "(in"
+    char *p = sBuf.azChar();
+    char *pEnd = p + sBuf.nSize();
+    while (*p &&
+           p < (pEnd - 4) &&
+           !(
+               *p == '(' &&
+               *(p + 1) == 'i' &&
+               *(p + 2) == 'n' &&
+               *(p + 3) == ' ')
+        ) {
+      ++p;
+    }
+
+    if (p >= pEnd - 4) {
+      // Couldn't extract out the function name
+      pclose(pF);
+      return false;
+    }
+
+    // Copy out the function name
+    psFuncNames[iLinesRead].vCopy(sBuf.szStz(), p - sBuf.azChar());
+
+    // Now we can use sscanf to get the rest of the information as they are all single tokens
+    i8 iConv = sscanf(p, "(in %[^)]) (%[^:]:%lld)", psModules[iLinesRead].azChar(), psFileNames[iLinesRead].azChar(), &(piLines[iLinesRead]));
+
+    if (iConv == 1) {
+      // We got the module but no filename and line. Try to extract out an offset
+      psFileNames[iLinesRead].vReset();
+      iConv = sscanf(p, "(in %[^)]) + %lld", psModules[iLinesRead].azChar(), &(piOffsets[iLinesRead]));
+
+      if (iConv != 2) {
+        pclose(pF);
+        return false;
+      }
+
+    } else if (iConv != 3) {
+      pclose(pF);
+      return false;
+    }
+
+    ++iLinesRead;
+  }
+
+  // Should be nothing else left to read, but clear the pipe anyway
+  while (fread(sBuf.azChar(), 1, sBuf.nSpace(), pF) == sBuf.nSpace());
+
+  pclose(pF);
+  return true;
+#endif
+
+#ifdef WITH_LINUX
+  sFnName = "????????"_Stz;
+  sFuncName = "????????"_Stz;
+  iLine = -1;
+  return;
+#endif
 }
 
 ////////////////////////////////////////////////////////////////////////////////
