@@ -5,11 +5,21 @@
 " XmitOperand.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* dispatch received xmitOperand                                              */
 /*----------------------------------------------------------------------------*/
-: XmitOperand.dispatch
+: XmitOperand.dispatch_1
 
   xmitOperand.pipeOut
+;
+
+/*----------------------------------------------------------------------------*/
+/* dispatch received xmitOperand                                              */
+/*----------------------------------------------------------------------------*/
+: XmitOperand.dispatch params| pXmitOperand |
+
+  Socket[].recvObject Socket[].object@\clear
+  
+    pXmitOperand xmitOperand.pipeOut
 ;
 
 /*============================================================================*/

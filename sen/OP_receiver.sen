@@ -27,19 +27,6 @@
 /*----------------------------------------------------------------------------*/
 /* receive next operand object                                                */
 /*----------------------------------------------------------------------------*/
-: receiver_recvOperand_2
-
-  nullptr to Register0[]
-
-  Socket[].recvObject
-  
-  Socket[].success@ not if
-    exit
-  then
-  
-  Socket[].object@\clear to Register0[]
-;
-/*----------------------------------------------------------------------------*/
 : receiver_recvOperand
 
   nullptr to Register0[]
@@ -54,95 +41,17 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* receive next argument object                                               */
-/*----------------------------------------------------------------------------*/
-: receiver_recvArgument_2
-
-  nullptr to Register1[]
-
-  Socket[].recvObject
-  
-  Socket[].success@ not if
-    false
-    exit
-  then
-  
-  Socket[].object@\clear to Register1[]
-;
-/*----------------------------------------------------------------------------*/
-: receiver_recvArgument
-
-  nullptr to Register1[]
-
-  Socket[].recvObject
-  
-  Socket[].success@ not if
-    false
-    exit
-  then
-  
-  Socket[].object@\clear to Register1[]
-;
-
-/*----------------------------------------------------------------------------*/
 /* receive next object(s)                                                     */
 /*----------------------------------------------------------------------------*/
-: receiver_recvNext_2
+: receiver_recvNext
 
   receiver_recvOperand
 
   Socket[].success@
 ;
-/*----------------------------------------------------------------------------*/
-: receiver_recvNext
-
-  // get operand
-  
-  receiver_recvOperand
-
-  Socket[].success@ not if
-    false exit
-  then
-    
-      
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get argument
-
-  Register0[] object.recvArgs@ 0 == if
-    true exit
-  then
-  
-  receiver_recvArgument
-      
-  true
-;
 
 /*----------------------------------------------------------------------------*/
 /* receiver loop: receive a job (possibly with operand), dispatch it          */
-/*----------------------------------------------------------------------------*/
-: receiver_dispatch_2 ( -- )
-
-  // null object (low memory)
-  Register0[] not if
-    exit
-  then
-    
-
-  // object with no arguments (probably job)
-  Register0[] object.recvArgs@ 0 == if
-    Register0[] Register0[] object.dispatchWord@ execute
-    exit
-  then
-  
-  
-  // object with one argument (probably xmitoperand)
-  Register0[] object.recvArgs@ 1 == if
-    Register1[] Register0[] Register0[] object.dispatchWord@ execute
-    exit
-  then
-  
-  HAZARD
-;
 /*----------------------------------------------------------------------------*/
 : receiver_dispatch ( -- )
 
@@ -151,42 +60,11 @@
     exit
   then
     
-
-  // object with no arguments (probably job)
-  Register0[] object.recvArgs@ 0 == if
-    Register0[] Register0[] object.dispatchWord@ execute
-    exit
-  then
-  
-  
-  // object with one argument (probably xmitoperand)
-  Register0[] object.recvArgs@ 1 == if
-    Register1[] Register0[] Register0[] object.dispatchWord@ execute
-    exit
-  then
-  
-  HAZARD
+  Register0[] Register0[] object.receivedWord@ execute
 ;
 
 /*----------------------------------------------------------------------------*/
 /* receiver loop: receive a job (possibly with operand), dispatch it          */
-/*----------------------------------------------------------------------------*/
-: receiver_loop_2 ( -- )
-
-  begin
-
-    trap::stackDepthZero
-
-    // receive next object(s)
-    receiver_recvNext
-    not if
-      exit
-    then
-        
-    receiver_dispatch
-
-  again
-;
 /*----------------------------------------------------------------------------*/
 : receiver_loop ( -- )
 
