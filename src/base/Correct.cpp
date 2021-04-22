@@ -243,10 +243,10 @@ b1 BASE::bAddrToLine(void *pvAddr, s256& sFileName, s2K& sFuncName, i8& iLine)
 #endif
 
 #ifdef WITH_LINUX
-  sFnName = "????????"_Stz;
-  sFuncName = "????????"_Stz;
-  iLine = -1;
-  return;
+//  sFnName = "????????"_Stz;
+//  sFuncName = "????????"_Stz;
+//  iLine = -1;
+  return false;
 #endif
 }
 
@@ -261,8 +261,6 @@ b1 BASE::bAddrsToLines(void** pvAddrs,
                        i8*    piLines,
                        i8*    piOffsets)
 {
-  s256 sModule;
-
 #ifdef WITH_APPLE
   // Is atos available? Work this out once and save the result.
   static i8 iAtosAvailable = -1;  // some 3-state value
@@ -357,10 +355,10 @@ b1 BASE::bAddrsToLines(void** pvAddrs,
 #endif
 
 #ifdef WITH_LINUX
-  sFnName = "????????"_Stz;
-  sFuncName = "????????"_Stz;
-  iLine = -1;
-  return;
+//  sFnName = "????????"_Stz;
+//  sFuncName = "????????"_Stz;
+//  iLine = -1;
+  return false;
 #endif
 }
 
