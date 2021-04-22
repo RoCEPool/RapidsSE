@@ -34,6 +34,7 @@
 
 #include "AggregateOp.hpp"
 #include "SumExpr.hpp"
+#include "CountExpr.hpp"
 
 #include "ColumnOrdinal.hpp"
 #include "ColumnRef.hpp"
@@ -539,6 +540,26 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
       bHasAgg = true;
 
     }
+
+    if (CountExpr::bIsOfType(pOrdinalExpr)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // isDistinct
+      bool bIsDistinct = AggregateExpr::bIsDistinct(pOrdinalExpr);
+
+      sPipeline->vCatSprint(
+          " count "_Stz);
+
+      // ALKA: to do in exprEval
+      if (bIsDistinct) {
+        sPipeline->vCatSprint(
+            " distinct "_Stz);
+      }
+
+      bHasAgg = true;
+
+    }
+
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

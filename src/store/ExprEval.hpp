@@ -48,6 +48,7 @@ namespace STORE
 
   private:
     void vAddArithmetic(Token*  pTkn, Column* pColumn);
+    eEC  eAddCount(eCT eColumnType, i8 iColumn);
     eEC  eAddDate(Token*  pTkn, Column* pColumnExpr);
     eEC  eAddDecimal(Token*  pTkn, Column* pColumnExpr);
     eEC  eAddGby(Column* pColumn, i8 iGby);
@@ -65,7 +66,7 @@ namespace STORE
     eEC eExprEval(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);
     eEC eHandleGbyColumn(Column* pColumn, i8 iGby);
     eEC eHandleOutColumn(StreamDef* pStreamDefOut, Column* pColumn,
-                         i8 i_DstColumn, bool bSum);
+                         i8 i_DstColumn, bool bSum, bool bCount);
     void vUpdateStreamDefOut(StreamDef* pStreamDefOut, Column* pColumn);
     Footer* aFooter(void);
   };
