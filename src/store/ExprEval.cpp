@@ -190,6 +190,48 @@ void ExprEval::vAddArithmetic(Token* pTkn, Column* pColumn) {
 }
 
 /*----------------------------------------------------------------------------*/
+/* add EO code for count                                                      */
+/*----------------------------------------------------------------------------*/
+eEC ExprEval::eAddCount(eCT eColumnType, i8 iColumn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
+
+  // switch on column type
+  switch (eColumnType) {
+    case CT_INTEGER:
+    case CT_DECIMAL:
+    case CT_FLOAT:
+      StrLib::vSprintCat(m_sAsmText, "  EO_ISNULL\n"_Stz);
+      //StrLib::vSprintCat(m_sAsmText, "  EO_JMP_TRUE COUNT_DONE\n"_Stz);
+      StrLib::vSprintCat(m_sAsmText, "  EO_RETURN_TRUE\n"_Stz);
+      StrLib::vSprintCat(m_sAsmText, "  EO_PUSH_DEVROW_DST\n"_Stz);
+      StrLib::vSprintCat(m_sAsmText, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, iColumn);
+      StrLib::vSprintCat(m_sAsmText, "  EO_INTEGER 1\n"_Stz);
+      StrLib::vSprintCat(m_sAsmText, "  EO_ADD_INTINT\n"_Stz);
+      StrLib::vSprintCat(m_sAsmText, "  EO_PUSH_DEVROW_DST\n"_Stz);
+      StrLib::vSprintCat(m_sAsmText, "  EO_DEVROW_POPCOLI %lld\n"_Stz, iColumn);
+      //StrLib::vSprintCat(m_sAsmText, "  Label COUNT_DONE\n"_Stz);
+      return EC_NONE;
+
+    case CT_BOOLEAN:
+    case CT_CHAR:
+    case CT_DATE:
+    case CT_INTERVAL_DT:
+    case CT_INTERVAL_YM:
+    case CT_TIME:
+    case CT_TIMESTAMP:
+    case CT_VARCHAR:
+    case CT_UNKNOWN:
+      return EC_INVALID_COMMAND;
+
+    default:
+      RASSERT(0);
+  }
+
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
 /* add EO code for dates                                                      */
 /*----------------------------------------------------------------------------*/
 eEC ExprEval::eAddDate(Token* pTkn, Column* pColumnExpr) {
@@ -324,6 +366,102 @@ void ExprEval::vAddLogical(Token* pTkn)
     ASSERT(pTkn->bSame("xor"_Stz));
     StrLib::vSprintCat(m_sAsmText, "  EO_LGL_XOR\n"_Stz);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* add EO code for min                                                        */
+/*----------------------------------------------------------------------------*/
+eEC ExprEval::eAddMin(eCT eColumnType, i8 iColumn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
+
+  // switch on column type
+  switch (eColumnType) {
+    case CT_INTEGER:
+    case CT_DECIMAL:
+    case CT_FLOAT:
+      StrLib::vSprintCat(m_sAsmText, "  EO_DUP\n"_Stz);
+      StrLib::vSprintCat(m_sAsmText, "  EO_ISNULL\n"_Stz);
+      //StrLib::vSprintCat(m_sAsmText, "  EO_JMP_FALSE CONTINUE_MAX\n"_Stz);
+      //StrLib::vSprintCat(m_sAsmText, "  EO_POP\n"_Stz);
+      //StrLib::vSprintCat(m_sAsmText, "  JMP MIN_DONE\n"_Stz);
+      //StrLib::vSprintCat(m_sAsmText, "  Label CONTINUE_MAX\n"_Stz);
+      StrLib::vSprintCat(m_sAsmText, "  EO_RETURN_TRUE\n"_Stz);
+      StrLib::vSprintCat(m_sAsmText, "  EO_DUP\n"_Stz);
+      StrLib::vSprintCat(m_sAsmText, "  EO_PUSH_DEVROW_DST\n"_Stz);
+      StrLib::vSprintCat(m_sAsmText, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, iColumn);
+      StrLib::vSprintCat(m_sAsmText, "  EO_LT_INTINT\n"_Stz);
+      StrLib::vSprintCat(m_sAsmText, "  EO_RETURN_FALSE\n"_Stz);
+      StrLib::vSprintCat(m_sAsmText, "  EO_PUSH_DEVROW_DST\n"_Stz);
+      StrLib::vSprintCat(m_sAsmText, "  EO_DEVROW_POPCOLI %lld\n"_Stz, iColumn);
+      //StrLib::vSprintCat(m_sAsmText, "  Label MIN_DONE\n"_Stz);
+
+      return EC_NONE;
+
+    case CT_BOOLEAN:
+    case CT_CHAR:
+    case CT_DATE:
+    case CT_INTERVAL_DT:
+    case CT_INTERVAL_YM:
+    case CT_TIME:
+    case CT_TIMESTAMP:
+    case CT_VARCHAR:
+    case CT_UNKNOWN:
+      return EC_INVALID_COMMAND;
+
+    default:
+      RASSERT(0);
+  }
+
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add EO code for min                                                        */
+/*----------------------------------------------------------------------------*/
+eEC ExprEval::eAddMax(eCT eColumnType, i8 iColumn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
+
+  // switch on column type
+  switch (eColumnType) {
+    case CT_INTEGER:
+    case CT_DECIMAL:
+    case CT_FLOAT:
+      StrLib::vSprintCat(m_sAsmText, "  EO_DUP\n"_Stz);
+      StrLib::vSprintCat(m_sAsmText, "  EO_ISNULL\n"_Stz);
+      //StrLib::vSprintCat(m_sAsmText, "  EO_JMP_FALSE CONTINUE_MAX\n"_Stz);
+      //StrLib::vSprintCat(m_sAsmText, "  EO_POP\n"_Stz);
+      //StrLib::vSprintCat(m_sAsmText, "  JMP MIN_DONE\n"_Stz);
+      //StrLib::vSprintCat(m_sAsmText, "  Label CONTINUE_MAX\n"_Stz);
+      StrLib::vSprintCat(m_sAsmText, "  EO_RETURN_TRUE\n"_Stz);
+      StrLib::vSprintCat(m_sAsmText, "  EO_DUP\n"_Stz);
+      StrLib::vSprintCat(m_sAsmText, "  EO_PUSH_DEVROW_DST\n"_Stz);
+      StrLib::vSprintCat(m_sAsmText, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, iColumn);
+      StrLib::vSprintCat(m_sAsmText, "  EO_GE_INTINT\n"_Stz);
+      StrLib::vSprintCat(m_sAsmText, "  EO_RETURN_FALSE\n"_Stz);
+      StrLib::vSprintCat(m_sAsmText, "  EO_PUSH_DEVROW_DST\n"_Stz);
+      StrLib::vSprintCat(m_sAsmText, "  EO_DEVROW_POPCOLI %lld\n"_Stz, iColumn);
+      //StrLib::vSprintCat(m_sAsmText, "  Label MIN_DONE\n"_Stz);
+
+      return EC_NONE;
+
+    case CT_BOOLEAN:
+    case CT_CHAR:
+    case CT_DATE:
+    case CT_INTERVAL_DT:
+    case CT_INTERVAL_YM:
+    case CT_TIME:
+    case CT_TIMESTAMP:
+    case CT_VARCHAR:
+    case CT_UNKNOWN:
+      return EC_INVALID_COMMAND;
+
+    default:
+      RASSERT(0);
+  }
+
+  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -550,6 +688,26 @@ eEC ExprEval::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec)
 
     pTkn = pTknVec->pGet(i_Tkn);
 
+    if (pTkn->bIsName() && pTkn->bSame("AVG"_Stz)) {
+      m_bHasAgg = true;
+      continue;
+    }
+
+    if (pTkn->bIsName() && pTkn->bSame("COUNT"_Stz)) {
+      m_bHasAgg = true;
+      continue;
+    }
+
+    if (pTkn->bIsName() && pTkn->bSame("MIN"_Stz)) {
+      m_bHasAgg = true;
+      continue;
+    }
+
+    if (pTkn->bIsName() && pTkn->bSame("MAX"_Stz)) {
+      m_bHasAgg = true;
+      continue;
+    }
+
     if (pTkn->bIsName() && pTkn->bSame("SUM"_Stz)) {
       m_bHasAgg = true;
       continue;
@@ -602,7 +760,8 @@ eEC ExprEval::eExprEval(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Token
   Column *pColumnExpr =  new Column;
   eCT eExprType;
   TagSet oTagSet;
-  bool bSum = false;
+  eAG eAggType = AG_NONE;
+
   bool bGroupBy = false;
   s32 sColumnNm;
   i8 iColumn = 0;
@@ -623,10 +782,11 @@ eEC ExprEval::eExprEval(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Token
       if (pStreamDefOut) {
         eError = eHandleOutColumn(pStreamDefOut,
                                   pColumnExpr,
-                                  i_DstColumn, bSum);
+                                  i_DstColumn,
+                                  eAggType);
         if (eError == EC_INVALID_COMMAND)
           goto L_RETURN;
-        bSum = false;
+        eAggType = AG_NONE;
       }
 
       sColumnNm.vSprint("col%lld"_Stz, i_DstColumn+1);
@@ -760,7 +920,34 @@ eEC ExprEval::eExprEval(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Token
 
     if (pTkn->bSame("SUM"_Stz) ) {
 
-      bSum = true;
+      eAggType = AG_SUM;
+      ASSERT(m_bHasAgg);
+
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("COUNT"_Stz) ) {
+
+      eAggType = AG_CNT;
+      ASSERT(m_bHasAgg);
+
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("MIN"_Stz) ) {
+
+      eAggType = AG_MIN;
+      ASSERT(m_bHasAgg);
+
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("MAX"_Stz) ) {
+
+      eAggType = AG_MAX;
       ASSERT(m_bHasAgg);
 
       pTkn = pTknVec->pNextToken();
@@ -780,7 +967,8 @@ eEC ExprEval::eExprEval(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Token
       if (pStreamDefOut)
         eError = eHandleOutColumn(pStreamDefOut,
                                   pColumnExpr,
-                                  i_DstColumn, bSum);
+                                  i_DstColumn,
+                                  eAggType);
         if ( eError == EC_INVALID_COMMAND)
           goto L_RETURN;
 
@@ -858,7 +1046,8 @@ eEC ExprEval::eExprEval(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Token
     if (pStreamDefOut)
       eError = eHandleOutColumn(pStreamDefOut,
                                 pColumnExpr,
-                                i_DstColumn, bSum);
+                                i_DstColumn,
+                                eAggType);
   }
 
   L_RETURN:
@@ -886,7 +1075,8 @@ eEC ExprEval::eHandleGbyColumn(Column* pColumn, i8 iGby) {
 /*----------------------------------------------------------------------------*/
 /* handle an out column                                                       */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval::eHandleOutColumn(StreamDef* pStreamDefOut, Column* pColumn, i8 i_DstColumn, bool bSum) {
+eEC ExprEval::eHandleOutColumn(StreamDef* pStreamDefOut, Column* pColumn, i8 i_DstColumn,
+                               eAG eAggType) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
@@ -895,26 +1085,46 @@ eEC ExprEval::eHandleOutColumn(StreamDef* pStreamDefOut, Column* pColumn, i8 i_D
   vUpdateStreamDefOut(pStreamDefOut, pColumn);
 
   if (m_bHasGby) {
-    if (bSum) {
-      eError = eAddSumGby(pColumn->eColumnType(), i_DstColumn);
-      if (eError == EC_INVALID_COMMAND)
-        return eError;
+    switch (eAggType) {
+      case AG_CNT:
+        RASSERT(0);
+      case AG_MIN:
+        RASSERT(0);
+      case AG_MAX:
+        RASSERT(0);
+      case AG_SUM:
+        eError = eAddSumGby(pColumn->eColumnType(), i_DstColumn);
+        break;
+      default:
+        break;
     }
+    if (eError == EC_INVALID_COMMAND)
+      return eError;
+
     vAddStoreCol(pColumn->eColumnType(), i_DstColumn);
-
     m_nPayLoadBytes += 8;
-  }
-  else {
-    if (bSum) {
-      eError = eAddSum(pColumn->eColumnType(), i_DstColumn);
-      if (eError == EC_INVALID_COMMAND)
-        return eError;
-    }
-    else {
-      vAddPopCol(pColumn->eColumnType(), i_DstColumn);
-    }
-  }
 
+  } else {
+    switch (eAggType) {
+      case AG_CNT:
+        eError = eAddCount(pColumn->eColumnType(), i_DstColumn);
+        break;
+      case AG_MIN:
+        eError = eAddMin(pColumn->eColumnType(), i_DstColumn);
+        break;
+      case AG_MAX:
+        eError = eAddMax(pColumn->eColumnType(), i_DstColumn);
+        break;
+      case AG_SUM:
+        eError = eAddSum(pColumn->eColumnType(), i_DstColumn);
+        break;
+      default:
+        vAddPopCol(pColumn->eColumnType(), i_DstColumn);
+        break;
+    }
+    if (eError == EC_INVALID_COMMAND)
+      return eError;
+  }
   return EC_NONE;
 }
 

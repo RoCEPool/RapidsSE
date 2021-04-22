@@ -339,6 +339,7 @@ enum eEO : u2 // expression operators
   /*  S  */ EO_CALL,             // call subroutine at location
   /*  S  */ EO_RETURN,           // return from subroutine and
   /*  S  */ EO_RETURN_FALSE,     // return from subroutine on false
+  /*  S  */ EO_RETURN_TRUE,      // return from subroutine on true
 
   // misc
   /*  S  */ EO_ASSERT,           // pop top and assert
@@ -858,6 +859,7 @@ static Stz* aEO[]
   /*    */ "EO_CALL"_Stz,
   /*    */ "EO_RETURN"_Stz,
   /*    */ "EO_RETURN_FALSE"_Stz,
+  /*    */ "EO_RETURN_TRUE"_Stz,
 
   // misc
   /*    */ "EO_ASSERT"_Stz,
@@ -1380,6 +1382,7 @@ static EoArg EoArgs[]
   { EA_LABEL,   8 },  // EO_CALL
   { EA_NONE,    0 },  // EO_RETURN
   { EA_NONE,    0 },  // EO_RETURN_FALSE
+  { EA_NONE,    0 },  // EO_RETURN_TRUE
 
   // misc
   { EA_NONE,    0 },  // EO_ASSERT

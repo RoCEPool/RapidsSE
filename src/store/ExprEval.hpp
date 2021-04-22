@@ -10,6 +10,18 @@ namespace STORE
 {
   class StreamDef;
 
+  enum eAG {
+    /* 0 */ AG_NONE=0,
+    /* 1 */ AG_AVG,
+    /* 2 */ AG_CNT,
+    /* 3 */ AG_MIN,
+    /* 4 */ AG_MAX,
+    /* 5 */ AG_STD,
+    /* 6 */ AG_SUM,
+    /* 7 */ AG_VAR,
+    /* 8 */ AG_ENUMS
+  };
+
   class ExprEval : public Definition
   {
   public:
@@ -48,10 +60,13 @@ namespace STORE
 
   private:
     void vAddArithmetic(Token*  pTkn, Column* pColumn);
+    eEC  eAddCount(eCT eColumnType, i8 iColumn);
     eEC  eAddDate(Token*  pTkn, Column* pColumnExpr);
     eEC  eAddDecimal(Token*  pTkn, Column* pColumnExpr);
     eEC  eAddGby(Column* pColumn, i8 iGby);
     void vAddLogical(Token*  pTkn);
+    eEC  eAddMin(eCT eColumnType, i8 iColumn);
+    eEC  eAddMax(eCT eColumnType, i8 iColumn);
     void vAddNumeric(Token*  pTkn, Column* pColumnExpr);
     void vAddPopCol(eCT eColumnType, i8 iColumn);
     void vAddRelational(Token*  pTkn);
@@ -65,7 +80,7 @@ namespace STORE
     eEC eExprEval(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);
     eEC eHandleGbyColumn(Column* pColumn, i8 iGby);
     eEC eHandleOutColumn(StreamDef* pStreamDefOut, Column* pColumn,
-                         i8 i_DstColumn, bool bSum);
+                         i8 i_DstColumn, eAG eAGgType);
     void vUpdateStreamDefOut(StreamDef* pStreamDefOut, Column* pColumn);
     Footer* aFooter(void);
   };

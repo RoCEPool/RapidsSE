@@ -33,6 +33,10 @@
 #include "AliasRef.hpp"
 
 #include "AggregateOp.hpp"
+#include "AvgExpr.hpp"
+#include "CountExpr.hpp"
+#include "MinExpr.hpp"
+#include "MaxExpr.hpp"
 #include "SumExpr.hpp"
 
 #include "ColumnOrdinal.hpp"
@@ -521,7 +525,71 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
   // aggregate
   if (AggregateExpr::bIsOfType(pOrdinalExpr)) {
 
-    if (SumExpr::bIsOfType(pOrdinalExpr)) {
+    if (AvgExpr::bIsOfType(pOrdinalExpr)) {
+
+      RASSERT(0);
+      bHasAgg = true;
+
+    }
+
+    else if (CountExpr::bIsOfType(pOrdinalExpr)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // isDistinct
+      bool bIsDistinct = AggregateExpr::bIsDistinct(pOrdinalExpr);
+
+      sPipeline->vCatSprint(
+          " count "_Stz);
+
+      // ALKA: to do in exprEval
+      if (bIsDistinct) {
+        sPipeline->vCatSprint(
+            " distinct "_Stz);
+      }
+
+      bHasAgg = true;
+
+    }
+
+    else if (MinExpr::bIsOfType(pOrdinalExpr)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // isDistinct
+      bool bIsDistinct = AggregateExpr::bIsDistinct(pOrdinalExpr);
+
+      sPipeline->vCatSprint(
+          " min "_Stz);
+
+      // ALKA: to do in exprEval
+      if (bIsDistinct) {
+        sPipeline->vCatSprint(
+            " distinct "_Stz);
+      }
+
+      bHasAgg = true;
+
+    }
+
+    else if (MaxExpr::bIsOfType(pOrdinalExpr)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // isDistinct
+      bool bIsDistinct = AggregateExpr::bIsDistinct(pOrdinalExpr);
+
+      sPipeline->vCatSprint(
+          " max "_Stz);
+
+      // ALKA: to do in exprEval
+      if (bIsDistinct) {
+        sPipeline->vCatSprint(
+            " distinct "_Stz);
+      }
+
+      bHasAgg = true;
+
+    }
+
+    else if (SumExpr::bIsOfType(pOrdinalExpr)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // isDistinct
@@ -539,6 +607,12 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
       bHasAgg = true;
 
     }
+
+    else {
+      NEVER_REACH;
+    }
+
+    return GraphNav::WALK_CONTINUE;
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -562,28 +636,30 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
       sPipeline->vCatSprint(" == "_Stz);
     }
 
-    if (GeExpr::bIsOfType(pOrdinalExpr)) {
+    else if (GeExpr::bIsOfType(pOrdinalExpr)) {
       sPipeline->vCatSprint(" >= "_Stz);
     }
 
-    if (GtExpr::bIsOfType(pOrdinalExpr)) {
+    else if (GtExpr::bIsOfType(pOrdinalExpr)) {
       sPipeline->vCatSprint(" > "_Stz);
     }
 
-    if (LeExpr::bIsOfType(pOrdinalExpr)) {
+    else if (LeExpr::bIsOfType(pOrdinalExpr)) {
       sPipeline->vCatSprint(" <= "_Stz);
     }
 
-    if (LtExpr::bIsOfType(pOrdinalExpr)) {
+    else if (LtExpr::bIsOfType(pOrdinalExpr)) {
       sPipeline->vCatSprint(" < "_Stz);
     }
 
-    if (NeExpr::bIsOfType(pOrdinalExpr)) {
+    else if (NeExpr::bIsOfType(pOrdinalExpr)) {
       sPipeline->vCatSprint(" != "_Stz);
     }
-
+    else {
+      NEVER_REACH;
+    }
     sPipeline->vCatSprint(" <> "_Stz);
-
+    return GraphNav::WALK_CONTINUE;
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -594,6 +670,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
     if (IntegerLiteral::bIsOfType(pOrdinalExpr)) {
       sPipeline->vCatSprint(" %lld "_Stz, IntegerLiteral::iValue(pOrdinalExpr));
     }
+    return GraphNav::WALK_CONTINUE;
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -605,18 +682,21 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
       sPipeline->vCatSprint(" and "_Stz);
     }
 
-    if (IsNullExpr::bIsOfType(pOrdinalExpr)) {
+    else if (IsNullExpr::bIsOfType(pOrdinalExpr)) {
       sPipeline->vCatSprint(" isNull "_Stz);
     }
 
-    if (OrExpr::bIsOfType(pOrdinalExpr)) {
+    else if (OrExpr::bIsOfType(pOrdinalExpr)) {
       sPipeline->vCatSprint(" or "_Stz);
     }
 
-    if (XorExpr::bIsOfType(pOrdinalExpr)) {
+    else if (XorExpr::bIsOfType(pOrdinalExpr)) {
       sPipeline->vCatSprint(" xor "_Stz);
     }
-
+    else {
+      NEVER_REACH;
+    }
+    return GraphNav::WALK_CONTINUE;
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -628,26 +708,30 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
       sPipeline->vCatSprint(" + "_Stz);
     }
 
-    if (DivisionExpr::bIsOfType(pOrdinalExpr)) {
+    else if (DivisionExpr::bIsOfType(pOrdinalExpr)) {
       sPipeline->vCatSprint(" / "_Stz);
     }
 
-    if (ModulusExpr::bIsOfType(pOrdinalExpr)) {
+    else if (ModulusExpr::bIsOfType(pOrdinalExpr)) {
       sPipeline->vCatSprint(" % "_Stz);
     }
 
-    if (MultiplicationExpr::bIsOfType(pOrdinalExpr)) {
+    else if (MultiplicationExpr::bIsOfType(pOrdinalExpr)) {
       sPipeline->vCatSprint(" * "_Stz);
     }
 
-    if (NegationExpr::bIsOfType(pOrdinalExpr)) {
+    else if (NegationExpr::bIsOfType(pOrdinalExpr)) {
       sPipeline->vCatSprint(" negate "_Stz);
     }
 
-    if (SubtractionExpr::bIsOfType(pOrdinalExpr)) {
+    else if (SubtractionExpr::bIsOfType(pOrdinalExpr)) {
       sPipeline->vCatSprint(" - "_Stz);
     }
+    else {
+      NEVER_REACH;
+    }
 
+    return GraphNav::WALK_CONTINUE;
   }
 
   // Keep walking
