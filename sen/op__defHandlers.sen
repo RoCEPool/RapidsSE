@@ -5,13 +5,13 @@
 " op__defHandlers.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for eating operand                                                 */
+/* perform a simple pipeout on behalf of a standard handler                   */
 /*----------------------------------------------------------------------------*/
-: EATOPERAND_handler \handler
+: STANDARD_PIPEOUT
 
-  // delete operand
-  PipeIn[].delete
-
+  PipeIn[].pipeOut
+  
+  // calling op_loop continues
   true
 ;
 
@@ -98,9 +98,11 @@
 
   //"ZK_DATAPULSE_handler" .verbose
   
-  PipeIn[].pipeOut
+  //PipeIn[].pipeOut
   
-  true // calling op_loop continues
+  //true // calling op_loop continues
+  
+  STANDARD_PIPEOUT
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -443,6 +445,17 @@
 /*----------------------------------------------------------------------------*/
 /*                        NON-STANDARD HANDLERS                               */
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* handler for eating operand                                                 */
+/*----------------------------------------------------------------------------*/
+: EATOPERAND_handler \handler
+
+  // delete operand
+  PipeIn[].delete
+
+  true
+;
 
 /*----------------------------------------------------------------------------*/
 /* default handler for ZK_CANCELMARKER operand                                */
