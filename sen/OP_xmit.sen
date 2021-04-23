@@ -5,6 +5,18 @@
 " OP_xmit.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* perform a simple pipeout on behalf of a standard handler                   */
+/*----------------------------------------------------------------------------*/
+: STANDARD_SEND
+
+  PipeIn[]\clear op::pipeout
+  
+  // calling op_loop continues
+  true
+;
+
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_EOSMARKER ...                                               */
 /*----------------------------------------------------------------------------*/
 : xmit_EosMarker \handler

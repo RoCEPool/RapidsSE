@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : STANDARD_PIPEOUT
 
-  PipeIn[].pipeOut
+  PipeIn[]\clear op::pipeout
   
   // calling op_loop continues
   true
