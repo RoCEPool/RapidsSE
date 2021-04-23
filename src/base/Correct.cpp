@@ -9,8 +9,7 @@
 
 #ifdef WITH_LINUX
   #include <unistd.h>
-  #include <sys/types.h>
-  #include <sys/wait.h>
+  #include <dlfcn.h>
 #endif
 
 /*----------------------------------------------------------------------------*/
@@ -68,7 +67,9 @@ void BASE::vThreadCallStackDump_Demangled(void)
   i8   aiLines[C_STACK_BACKTRACE];
   i8   aiOffsets[C_STACK_BACKTRACE];
 
-  if (bAddrsToLines(aaFramePtr, nPtrs, asModules, asFileNames, asFuncNames, aiLines, aiOffsets)) {
+  b1 bGotLines = bAddrsToLines(aaFramePtr, nPtrs, asModules, asFileNames, asFuncNames, aiLines, aiOffsets);
+
+  if (bGotLines) {
     for (i8 iFrame = 0; iFrame < nPtrs; iFrame++) {
 
       if (asFileNames[iFrame].nLength() > 0) {
@@ -102,62 +103,17 @@ void BASE::vThreadCallStackDump_Demangled(void)
 
   for (i8 i=0; i<nPtrs; i++) {
 
-    char* p = acSymbolList[i];
-    //vTrace("\nLine: %s\n"_Stz, p);
-
-    i8    iFrame;
     s256  sModule;
-    void* pAddr;
+    void* pvAddr = aaFramePtr[i];
     s2K   sSymbol;
     i8    iOffset;
 
-#ifdef WITH_APPLE
-    // Line format: <frameNum> <space> <binaryName> <space> <hexAddress> <space> <symbolName> '+' <offset>
-    i8 iConv = sscanf(p, "%lld %s %p %s + %lld", &iFrame, sModule.azChar(), &pAddr, sSymbol.azChar(), &iOffset);
+    b1 bParsed = bParseBacktraceSymbol(acSymbolList[i], sModule, sSymbol, iOffset);
 
-    if (iConv == 5) {
-#endif
-#ifdef WITH_LINUX
-    // Line format: <binaryName> <space> '(' [<symbol>] '+' <hexOffset> ')' '[' <hexAddress> ']'
-
-    iFrame=i;
-    s2K sSymbolAndOffset;
-
-    // Sometimes there is no symbol printed, so we need to handle that separately.
-    i8 iConv = sscanf(p, "%[^(](%[^)]) [%p]", sModule.azChar(), sSymbolAndOffset.azChar(), &pAddr);
-
-    if (iConv == 3) {
-
-      iConv = sscanf(sSymbolAndOffset.azChar(), "%[^+]+%llx", sSymbol.azChar(), &iOffset);
-      if (iConv != 2) {
-
-        sSymbol = "????????"_Stz;
-        // try to extract out the offset only
-        iConv = sscanf(sSymbolAndOffset.azChar(), "+%llx", &iOffset);
-
-        if (iConv != 1) {
-          vTrace("Frame %2lld:  %s\n"_Stz, i, acSymbolList[i]);
-          continue;
-        }
-      }
-#endif
-
-      int status = 0;
-      s2K sDemangledSymbol;
-      size_t iSymbolSize = sDemangledSymbol.nSpace();
-      char* ret = abi::__cxa_demangle(sSymbol.azChar(), sDemangledSymbol.azChar(), &iSymbolSize, &status);
-
-      if (status == 0) {
-        sDemangledSymbol.vCopy((Stz*)ret); // use possibly realloc()-ed string
-        vTrace("Frame %2lld:  %-26s  %018p  %s  (+%lld)\n"_Stz, iFrame, sModule.azChar(), pAddr, sDemangledSymbol.azChar(), iOffset);
-      }
-      else {
-        // Demangling failed.
-        vTrace("Frame %2lld:  %-26s  %018p  %s  (+%lld)\n"_Stz, iFrame, sModule.azChar(), pAddr, sSymbol.azChar(), iOffset);
-      }
+    if (bParsed || (sModule.nLength() > 0 && sSymbol.nLength() > 0 && iOffset > 0)) {
+      vTrace("Frame %2lld:  %-26s  %018p  %s  (+%lld)\n"_Stz, i, sModule.azChar(), pvAddr, sSymbol.azChar(), iOffset);
 
     } else {
-      // Could extract out the parameters, so just print the whole line with mangled function names
       vTrace( "Frame %2lld:  %s\n"_Stz, i, acSymbolList[i]);
     }
   }
@@ -166,95 +122,10 @@ void BASE::vThreadCallStackDump_Demangled(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Try to convert an instruction address to a line in a file                  */
-/*----------------------------------------------------------------------------*/
-b1 BASE::bAddrToLine(void *pvAddr, s256& sFileName, s2K& sFuncName, i8& iLine)
-{
-  s256 sModule;
-
-#ifdef WITH_APPLE
-  // Is atos available? Work this out once and save the result.
-  static i8 iAtosAvailable = -1;  // some 3-state value
-
-  if (iAtosAvailable == -1) {
-    int iResult = system("which atos &>/dev/null");
-    if (iResult != 0) {
-      iAtosAvailable = 0;
-      return false;
-    }
-
-    iAtosAvailable = 1;
-  }
-
-  if (iAtosAvailable == 0) {
-    return false;
-  }
-
-  static pid_t iPid = getpid();
-
-  s256 sCmd;
-  sCmd.vSprint("atos -p %d %p"_Stz, iPid, pvAddr);
-
-  FILE* pF = popen(sCmd.azChar(), "r");
-
-  if (!pF) {
-    return false;
-  }
-
-  // Read a line
-  s2K sBuf;
-  if (!fgets(sBuf.azChar(), sBuf.nSpace(), pF)) {
-    pclose(pF);
-    return false;
-  }
-
-  // We should have a line that looks like this:
-  // BASE::vThreadCallStackDump_Demangled(params...) (in libRapidsSE.dylib) (Correct.cpp:57)\n
-
-  // Because the parameters have spaces, we need to manually parse out the function name.
-  // Look for "(in"
-  char* p = sBuf.azChar();
-  char* pEnd = p + sBuf.nSize();
-  while (*p &&
-         p < (pEnd - 4) &&
-         !(
-           *p     == '(' &&
-           *(p+1) == 'i' &&
-           *(p+2) == 'n' &&
-           *(p+3) == ' ' )
-         ) {
-    ++p;
-  }
-
-  // Copy out the function name
-  sFuncName.vCopy(sBuf.szStz(), p - sBuf.azChar());
-
-  // Now we can use sscanf to get the rest of the information as they are all single tokens
-  i8 iConv = sscanf(p, "(in %[^)]) (%[^:]:%lld)", sModule.azChar(), sFileName.azChar(), &iLine);
-  if (iConv != 3) {
-    pclose(pF);
-    return false;
-  }
-
-  while (fread(sBuf.azChar(), 1, sBuf.nSpace(), pF) == sBuf.nSpace());
-
-  pclose(pF);
-  return true;
-#endif
-
-#ifdef WITH_LINUX
-//  sFnName = "????????"_Stz;
-//  sFuncName = "????????"_Stz;
-//  iLine = -1;
-  return false;
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
 /* Try to convert an array of instruction addresses to lines in files         */
 /*----------------------------------------------------------------------------*/
 b1 BASE::bAddrsToLines(void** pvAddrs,
-                       i8 iArrSize,
+                       i8     iArrSize,
                        s256*  psModules,
                        s256*  psFileNames,
                        s2K*   psFuncNames,
@@ -296,8 +167,8 @@ b1 BASE::bAddrsToLines(void** pvAddrs,
 
   // Read a line
   s2K sBuf;
-  i8 iLinesRead = 0;
-  while (iLinesRead < iArrSize && fgets(sBuf.azChar(), sBuf.nSpace(), pF)) {
+  i8 iFrame = 0;
+  while (iFrame < iArrSize && fgets(sBuf.azChar(), sBuf.nSpace(), pF)) {
 
     // We should have a line that looks like this:
     // BASE::vThreadCallStackDump_Demangled(params...) (in libRapidsSE.dylib) (Correct.cpp:57)\n
@@ -324,15 +195,15 @@ b1 BASE::bAddrsToLines(void** pvAddrs,
     }
 
     // Copy out the function name
-    psFuncNames[iLinesRead].vCopy(sBuf.szStz(), p - sBuf.azChar());
+    psFuncNames[iFrame].vCopy(sBuf.szStz(), p - sBuf.azChar());
 
     // Now we can use sscanf to get the rest of the information as they are all single tokens
-    i8 iConv = sscanf(p, "(in %[^)]) (%[^:]:%lld)", psModules[iLinesRead].azChar(), psFileNames[iLinesRead].azChar(), &(piLines[iLinesRead]));
+    i8 iConv = sscanf(p, "(in %[^)]) (%[^:]:%lld)", psModules[iFrame].azChar(), psFileNames[iFrame].azChar(), &(piLines[iFrame]));
 
     if (iConv == 1) {
       // We got the module but no filename and line. Try to extract out an offset
-      psFileNames[iLinesRead].vReset();
-      iConv = sscanf(p, "(in %[^)]) + %lld", psModules[iLinesRead].azChar(), &(piOffsets[iLinesRead]));
+      psFileNames[iFrame].vReset();
+      iConv = sscanf(p, "(in %[^)]) + %lld", psModules[iFrame].azChar(), &(piOffsets[iFrame]));
 
       if (iConv != 2) {
         pclose(pF);
@@ -344,7 +215,7 @@ b1 BASE::bAddrsToLines(void** pvAddrs,
       return false;
     }
 
-    ++iLinesRead;
+    ++iFrame;
   }
 
   // Should be nothing else left to read, but clear the pipe anyway
@@ -355,12 +226,212 @@ b1 BASE::bAddrsToLines(void** pvAddrs,
 #endif
 
 #ifdef WITH_LINUX
-//  sFnName = "????????"_Stz;
-//  sFuncName = "????????"_Stz;
-//  iLine = -1;
-  return false;
+
+  // The Linux approach is a little different from Mac. We use
+  // the utility addr2line, but in order to look up some instruction
+  // pointer we need to tell addr2line not only which binary (exe
+  // or .so) to look it up in, but we also need to convert the
+  // instruction pointer to a relative address that is relative to
+  // the base address in memory where the .so was loaded into the
+  // process. Due to address space layout randomisation this is
+  // different each time we run a process.
+  //
+  // So we will first use dladdr() to tell us which .so a given
+  // instruction pointer comes from and its base address. Then we
+  // can invoke addr2line and parse its output.
+
+  // Is addr2line available?
+  if (system("which addr2line &>/dev/null") != 0) {
+    vTrace("addr2line not available. Cannot calculate backtrace file names and line numbers.\n"_Stz);
+    return false;
+  }
+
+  // These backtrace symbols may be useful to fill in missing bits of information
+  char** acSymbolList = backtrace_symbols(pvAddrs,iArrSize);
+
+  for (i8 i=0; i<iArrSize; i++) {
+
+    // Get information about the library that corresponds to this instruction pointer address.
+    Dl_info xDlInfo;
+    int iResult = dladdr(pvAddrs[i], &xDlInfo);
+
+    if (iResult == 0) {
+      vTrace("Frame $lld could not get dladdr()\n"_Stz, i);
+      free(acSymbolList);
+      return false;
+    }
+
+    psModules[i].vCopy((Stz*)xDlInfo.dli_fname);
+
+    if (!xDlInfo.dli_sname || !xDlInfo.dli_saddr) {
+//      vTrace("Frame %lld address %p was matched to shared object but not to a symbol: %s\n"_Stz, i, xDlInfo.dli_fname);
+      piOffsets[i] = (i8)pvAddrs[i] - (i8)xDlInfo.dli_fbase;  // This is offset from the base library
+      psFuncNames[i].vCopy("????????"_Stz);
+
+      // Try to extract out the function name and offset from the backtrace_symbols()
+      s256 sModule;
+      s2K sFuncName;
+      i8 iOffset;
+
+      bParseBacktraceSymbol(acSymbolList[i], sModule, sFuncName, iOffset);
+
+      if (sFuncName.nLength() > 0) {
+        psFuncNames[i].vCopy(sFuncName);
+      }
+
+      if (iOffset > 0) {
+        piOffsets[i] = iOffset;
+      }
+
+      continue;
+    }
+
+    psFuncNames[i].vCopy((Stz*)xDlInfo.dli_sname);
+
+    // We can calculate the address of the instruction pointer relative
+    // to where this .so was loaded into memory. Then we can use that
+    // with addr2line to find debugging information.
+    void* pvOffsetAddr = (void*)( (u8)pvAddrs[i] - (u8)xDlInfo.dli_fbase );
+
+    // Invoke addr2line for this relative address. It will print out two
+    // lines. The first is the name of the function (demangled) and the
+    // second is the name of the file:line (without full paths).
+    // We just need to parse this information out.
+
+    s2K sCmd;
+    sCmd.vSprint("addr2line -e %s --functions --demangle --basename %p"_Stz, xDlInfo.dli_fname, pvOffsetAddr);
+    //vTrace("Cmd: %s\n"_Stz, sCmd.azChar());
+
+    FILE* pF = popen(sCmd.azChar(), "r");
+
+    if (!pF) {
+      free(acSymbolList);
+      return false;
+    }
+
+    s2K sBuf;
+
+    // Get the first line, the function name.
+    if (!fgets(sBuf.azChar(), sBuf.nSpace(), pF)) {
+      free(acSymbolList);
+      pclose(pF);
+      return false;
+    }
+
+    // Remove the trailing newline and save the function name
+    //vTrace("Line: %s"_Stz, sBuf.azChar());
+    StrLib::vStrip(sBuf.azChar(), '\n');
+    psFuncNames[i].vCopy(sBuf);
+
+    // Get the second line - the file name and line number
+    if (!fgets(sBuf.azChar(), sBuf.nSpace(), pF)) {
+      free(acSymbolList);
+      pclose(pF);
+      return false;
+    }
+
+    //vTrace("Line: %s"_Stz, sBuf.azChar());
+
+    // Extract out the file and line number
+    i8 iConv = sscanf(sBuf.azChar(), "%[^:]:%lld", psFileNames[i].azChar(), &(piLines[i]));
+
+    if (iConv != 2) {
+      // File and line number not available
+      psFileNames[i].vReset();
+      piOffsets[i] = (i8)pvAddrs[i] - (i8)xDlInfo.dli_saddr;  // Offset from symbol
+      continue;
+    }
+
+    pclose(pF);
+  }
+
+  free(acSymbolList);
+  return true;
 #endif
 }
+
+/*----------------------------------------------------------------------------*/
+/* Parses one line from the output of backtrace_symbols() and extracts out    */
+/* the various fields. Returns true if all fields were extracted or false if  */
+/* one or more failed.                                                        */
+/*----------------------------------------------------------------------------*/
+b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncName, i8& iOffset)
+{
+  sModule.vReset();
+  sFuncName.vReset();
+  iOffset = -1;
+  void* pvAddr;
+
+  // The output of backtrace_symbols() is different on Linux compared to Mac.
+#ifdef WITH_APPLE
+  // Line format: <frameNum> <space> <binaryName> <space> <hexAddress> <space> <symbolName> '+' <offset>
+
+  b1  bAllParsed = false;
+  i8 iFrame;
+  i8 iConv = sscanf(pBtLine, "%lld %s %p %s + %lld", &iFrame, sModule.azChar(), &pvAddr, sFuncName.azChar(), &iOffset);
+
+  if (iConv == 5) {
+    bAllParsed = true;
+  }
+
+  if (sFuncName.nLength() > 0) {
+    // Try to demangle the name
+    int status = 0;
+    s2K sDemangledSymbol;
+    size_t iSymbolSize = sDemangledSymbol.nSpace();
+    abi::__cxa_demangle(sFuncName.azChar(), sDemangledSymbol.azChar(), &iSymbolSize, &status);
+
+    if (status == 0) {
+      sFuncName.vCopy(sDemangledSymbol.szStz());
+    }
+  }
+
+  return bAllParsed;
+#endif
+
+#ifdef WITH_LINUX
+  // Line format: <binaryName> <space> '(' [<symbol>] '+' <hexOffset> ')' '[' <hexAddress> ']'
+  // e.g.:
+  // ../bin/libRapidsSE.so(_ZN4BASE30vThreadCallStackDump_DemangledEv+0x28) [0x7fce26e86f63]
+
+  s2K sSymbolAndOffset;
+  b1  bAllParsed = false;
+
+  // Sometimes there is no symbol printed, so we need to handle that separately.
+  i8 iConv = sscanf(pBtLine, "%[^(](%[^)]) [%p]", sModule.azChar(), sSymbolAndOffset.azChar(), &pvAddr);
+
+  if (iConv == 3) {
+    bAllParsed = true;
+  }
+
+  if (iConv >= 2) {
+    // Extract out the function name and offset
+    iConv = sscanf(sSymbolAndOffset.azChar(), "%[^+]+%llx", sFuncName.azChar(), &iOffset);
+
+    if (iConv != 2) {
+      bAllParsed = false;
+      sFuncName.vCopy("????????"_Stz);
+
+      // try to extract out the offset only
+      sscanf(sSymbolAndOffset.azChar(), "+%llx", &iOffset);
+
+    } else {
+      // Try to demangle the function name
+      int status = 0;
+      s2K sDemangledSymbol;
+      size_t iSymbolSize = sDemangledSymbol.nSpace();
+      abi::__cxa_demangle(sFuncName.azChar(), sDemangledSymbol.azChar(), &iSymbolSize, &status);
+
+      if (status == 0) {
+        sFuncName.vCopy(sDemangledSymbol.szStz());
+      }
+    }
+  }
+
+  return bAllParsed;
+#endif
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////
 
