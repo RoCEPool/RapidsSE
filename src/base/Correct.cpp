@@ -201,13 +201,14 @@ b1 BASE::bAddrsToLines(void** pvAddrs,
     i8 iConv = sscanf(p, "(in %[^)]) (%[^:]:%lld)", psModules[iFrame].azChar(), psFileNames[iFrame].azChar(), &(piLines[iFrame]));
 
     if (iConv == 1) {
-      // We got the module but no filename and line. Try to extract out an offset
+      // We got the module but no filename and line. Try to extract out an offset only
       psFileNames[iFrame].vReset();
       iConv = sscanf(p, "(in %[^)]) + %lld", psModules[iFrame].azChar(), &(piOffsets[iFrame]));
 
       if (iConv != 2) {
-        pclose(pF);
-        return false;
+        // Couldn't get filename and offset. Make do without.
+        piOffsets[iFrame] = 0;
+        continue;
       }
 
     } else if (iConv != 3) {
