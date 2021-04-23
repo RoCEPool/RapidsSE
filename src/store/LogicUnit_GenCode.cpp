@@ -62,6 +62,13 @@ void LogicUnit::vCollectOpcode(void)
     return;
   }
   
+  if (m_pTkn->bSame("DeleteLabel"_Stz)) {
+    vAcceptToken();
+    vDeleteLabel(m_pTkn->szChars());
+    return;
+  }
+
+  
   TagSet* pJobTags = AM::pPipelineJob()->pJobTags();
 
 //  for (i8 i_OpCode = 0; i_OpCode < EO_ENUMS; i_OpCode++) {

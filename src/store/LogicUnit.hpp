@@ -41,7 +41,7 @@ namespace STORE
   static const i8 C_LOGIC_DEV   = 16;
   static const i8 C_LOGIC_CODE  = C_4KB;
   static const i8 C_LOGIC_COND  = 8;
-  static const i8 C_LOGIC_LABEL = 64;
+  static const i8 C_LOGIC_LABEL = 128;
 
   struct JumpLabel
   {
@@ -294,6 +294,7 @@ namespace STORE
     void vCorrectLabel(i8 i_Label);
     i8   iDecodeLabel(Stz* szLabelNm);
     void vDefineLabel(Stz* szLabelNm);
+    void vDeleteLabel(Stz* szLabelNm);
     void vDiaryReport(void);
     void vPrintLabels(void);
     Stz* szFindCode(i8 i_Code);

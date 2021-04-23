@@ -56,7 +56,7 @@ int main(int argc, char* argv[])
 //  printf("sizeof(s32) %lld\n",(i8)sizeof(s32));
 //  printf("sizeof(DataBuffer) %lld\n",(i8)sizeof(DataBuffer));
 //  printf("sizeof(Lock) %lld\n",(i8)sizeof(Lock));
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   TlsKeys::vInit();
