@@ -16,6 +16,10 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/*                          STANDARD HANDLERS                                 */
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* default handler for ZK_BUCKETMAP operand                                   */
 /*----------------------------------------------------------------------------*/
 : ZK_BUCKETMAP_handler \handler
@@ -47,43 +51,6 @@
   //"ZK_COMMANDERRORS_handler" .verbose
 
   PipeIn[].pipeOut
-
-  true // calling op_loop continues
-;
-
-/*----------------------------------------------------------------------------*/
-/* default handler for ZK_CANCELMARKER operand                                */
-/*----------------------------------------------------------------------------*/
-: ZK_CANCELMARKER_handler \handler
-
-  //"ZK_CANCELMARKER_handler" .verbose
-
-  PipeIn[].pipeOut
-
-  // drain the operand queue
-  begin
-    Pipein[].peek
-  while
-    PipeIn[].next
-    Pipein[].delete
-  repeat
-
-  Op.ackPipelineJob
-  
-  false // calling op_loop exits
-;
-
-/*----------------------------------------------------------------------------*/
-/* default handler for ZK_CANCELLEDMARKER operand                             */
-/*----------------------------------------------------------------------------*/
-: ZK_CANCELLEDMARKER_handler \handler
-
-  //"ZK_CANCELLEDMARKER_handler" .verbose
-  
-  Pipein[].delete
-
-  // an error if any other operator receives it
-  EC_PIPELINE_PROTOCOL_ERROR op__execErr
 
   true // calling op_loop continues
 ;
@@ -185,21 +152,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* default handler for ZK_ERROREDMARKER operand                               */
-/*----------------------------------------------------------------------------*/
-: ZK_ERROREDMARKER_handler \handler
-
-  //"ZK_ERROREDMARKER_handler" .verbose
-  
-  PipeIn[].delete
-
-  // an error if any other operator receives it
-  EC_PIPELINE_PROTOCOL_ERROR op__execErr
-
-  true // calling op_loop continues
-;
-
-/*----------------------------------------------------------------------------*/
 /* default handler for ZK_EXECERRORS operand                                  */
 /*----------------------------------------------------------------------------*/
 : ZK_EXECERRORS_handler \handler
@@ -212,19 +164,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* default handler for ZK_EXITMARKER operand                                  */
-/*----------------------------------------------------------------------------*/
-: ZK_EXITMARKER_handler \handler
-
-  //"ZK_EXITMARKER_handler" .verbose
-  
-  PipeIn[].pipeOut
-  Op.ackPipelineJob
-  
-  false // calling op_loop exits
-;
-
-/*----------------------------------------------------------------------------*/
 /* default handler for ZK_EXITEARLYMARKER operand                             */
 /*----------------------------------------------------------------------------*/
 : ZK_EXITEARLYMARKER_handler \handler
@@ -234,36 +173,6 @@
    PipeIn[].pipeOut
 
    true // calling op_loop continues
-;
-
-/*----------------------------------------------------------------------------*/
-/* default handler for ZK_EXITEDEARLYMARKER operand                           */
-/*----------------------------------------------------------------------------*/
-: ZK_EXITEDEARLYMARKER_handler \handler
-
-  //"ZK_EXITEARLYMARKER_handler" .verbose
-
-  PipeIn[].delete
-
-  // an error if any other operator receives it
-  EC_PIPELINE_PROTOCOL_ERROR op__execErr
-
-  true // calling op_loop continues
-;
-
-/*----------------------------------------------------------------------------*/
-/* default handler for ZK_EXITEDMARKER operand                                */
-/*----------------------------------------------------------------------------*/
-: ZK_EXITEDMARKER_handler \handler
-
-  //"ZK_EXITEDMARKER_handler" .verbose
-  
-  PipeIn[].delete
-
-  // an error if any other operator receives it
-  EC_PIPELINE_PROTOCOL_ERROR op__execErr
-
-  true // calling op_loop continues
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -483,22 +392,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* default handler for ZK_STARTEDMARKER operand                               */
-/*----------------------------------------------------------------------------*/
-: ZK_STARTEDMARKER_handler \handler
-
-  "ZK_STARTEDMARKER_handler" .verbose
-
-  // Only OP_Start can get a STARTEDMARKER
-  PipeIn[].delete
-
-  // an error if any other operator receives it
-  EC_PIPELINE_PROTOCOL_ERROR op__execErr
-
-  true // calling op_loop continues
-;
-
-/*----------------------------------------------------------------------------*/
 /* default handler for ZK_STREAMDEF operand                                   */
 /*----------------------------------------------------------------------------*/
 : ZK_STREAMDEF_handler \handler
@@ -543,6 +436,122 @@
   
   PipeIn[].pipeOut
   
+  true // calling op_loop continues
+;
+
+
+/*----------------------------------------------------------------------------*/
+/*                        NON-STANDARD HANDLERS                               */
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* default handler for ZK_CANCELMARKER operand                                */
+/*----------------------------------------------------------------------------*/
+: ZK_CANCELMARKER_handler \handler
+
+  //"ZK_CANCELMARKER_handler" .verbose
+
+  PipeIn[].pipeOut
+
+  // drain the operand queue
+  begin
+    Pipein[].peek
+  while
+    PipeIn[].next
+    Pipein[].delete
+  repeat
+
+  Op.ackPipelineJob
+  
+  false // calling op_loop exits
+;
+
+/*----------------------------------------------------------------------------*/
+/* default handler for ZK_CANCELLEDMARKER operand                             */
+/*----------------------------------------------------------------------------*/
+: ZK_CANCELLEDMARKER_handler \handler
+
+  //"ZK_CANCELLEDMARKER_handler" .verbose
+  
+  Pipein[].delete
+
+  // an error if any other operator receives it
+  EC_PIPELINE_PROTOCOL_ERROR op__execErr
+
+  true // calling op_loop continues
+;
+
+/*----------------------------------------------------------------------------*/
+/* default handler for ZK_ERROREDMARKER operand                               */
+/*----------------------------------------------------------------------------*/
+: ZK_ERROREDMARKER_handler \handler
+
+  //"ZK_ERROREDMARKER_handler" .verbose
+  
+  PipeIn[].delete
+
+  // an error if any other operator receives it
+  EC_PIPELINE_PROTOCOL_ERROR op__execErr
+
+  true // calling op_loop continues
+;
+
+/*----------------------------------------------------------------------------*/
+/* default handler for ZK_EXITMARKER operand                                  */
+/*----------------------------------------------------------------------------*/
+: ZK_EXITMARKER_handler \handler
+
+  //"ZK_EXITMARKER_handler" .verbose
+  
+  PipeIn[].pipeOut
+  Op.ackPipelineJob
+  
+  false // calling op_loop exits
+;
+
+/*----------------------------------------------------------------------------*/
+/* default handler for ZK_EXITEDEARLYMARKER operand                           */
+/*----------------------------------------------------------------------------*/
+: ZK_EXITEDEARLYMARKER_handler \handler
+
+  //"ZK_EXITEARLYMARKER_handler" .verbose
+
+  PipeIn[].delete
+
+  // an error if any other operator receives it
+  EC_PIPELINE_PROTOCOL_ERROR op__execErr
+
+  true // calling op_loop continues
+;
+
+/*----------------------------------------------------------------------------*/
+/* default handler for ZK_EXITEDMARKER operand                                */
+/*----------------------------------------------------------------------------*/
+: ZK_EXITEDMARKER_handler \handler
+
+  //"ZK_EXITEDMARKER_handler" .verbose
+  
+  PipeIn[].delete
+
+  // an error if any other operator receives it
+  EC_PIPELINE_PROTOCOL_ERROR op__execErr
+
+  true // calling op_loop continues
+;
+
+/*----------------------------------------------------------------------------*/
+/* default handler for ZK_STARTEDMARKER operand                               */
+/*----------------------------------------------------------------------------*/
+: ZK_STARTEDMARKER_handler \handler
+
+  "ZK_STARTEDMARKER_handler" .verbose
+
+  // Only OP_Start can get a STARTEDMARKER
+  PipeIn[].delete
+
+  // an error if any other operator receives it
+  EC_PIPELINE_PROTOCOL_ERROR op__execErr
+
   true // calling op_loop continues
 ;
 
