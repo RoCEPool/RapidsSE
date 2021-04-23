@@ -124,6 +124,7 @@
 #include "Output.hpp"
 #include "Op.hpp"
 #include "OpSpec.hpp"
+#include "Parcel.hpp"
 
 #include "PathIdentifier.hpp"
 #include "PipelineSpec.hpp"

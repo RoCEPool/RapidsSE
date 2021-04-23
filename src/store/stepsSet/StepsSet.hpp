@@ -968,6 +968,7 @@ public:
   void vObjectMagicMark(void);
   void vObjectReceivedWordFetch(void);
   void vObjectRecvArgsFetch(void);
+  void vObjectSendWordFetch(void);
   void vObjectStore(void);
 
   // olist (originator list)

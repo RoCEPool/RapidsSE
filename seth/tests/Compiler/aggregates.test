@@ -54,6 +54,10 @@ failure contains: 'Expression is not present in the GROUP BY list: rapidsse.publ
 EXPLAIN SELECT n_name, n_nationkey FROM nation GROUP BY n_name, n_nationkey;
 rows: 1
 
+-- aggregate in group by list
+EXPLAIN SELECT n_nationkey, SUM(n_regionkey) FROM nation GROUP BY n_nationkey, SUM(n_regionkey);
+failure contains: 'Cannot have an aggregate expression in the GROUP BY list'
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Projected superset of group by

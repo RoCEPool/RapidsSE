@@ -76,15 +76,17 @@ assert::stack_0
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 "se_boot 4" .verbose
+
+        "se_pipeline.sen"             include
+        
         "op__errors.sen"              include
         "op__defHandlers.sen"         include
         "op__EOCommon.sen"            include
         "op__CompilerCommon.sen"      include
         "op__common.sen"              include
         "reg__common.sen"             include
-        
-        "se_bootOps.sen"              include
 
+        "se_bootOps.sen"              include
 
 "se_boot 3" .verbose
         "OP_EOAsm.sen"                include
