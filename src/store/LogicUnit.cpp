@@ -1433,52 +1433,56 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_MOD_XYZUNK: ArgNil(); // xyz % unk
         break;//+endCase
 
-      case EO_MUL_BCDBCD: ArgNil(); // bcd / bcd
+      case EO_MUL_BCDBCD: ArgNil(); // bcd * bcd
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA * iTopB / 100;
+        dLU3(EO_MUL_BCDBCD,iTopA,iTopB,iRes);
+        *(++aiDstk) = iRes;
         break;//+endCase
-      case EO_MUL_BCDFLT: ArgNil(); // bcd + int
+      case EO_MUL_BCDFLT: ArgNil(); // bcd * flt
         break;//+endCase
-      case EO_MUL_BCDINT: ArgNil(); // bcd + int
+      case EO_MUL_BCDINT: ArgNil(); // bcd * int
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA * iTopB;
         dLU3(EO_MUL_INTINT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
+      case EO_MUL_DTEIVL: ArgNil(); // dte * ivl
         break;//+endCase
-      case EO_MUL_DTEIVL: ArgNil(); // dte + ivl
+      case EO_MUL_FLTBCD: ArgNil(); // flt * bcd
         break;//+endCase
-      case EO_MUL_FLTBCD: ArgNil(); // flt + bcd
+      case EO_MUL_FLTINT: ArgNil(); // flt * int
         break;//+endCase
-      case EO_MUL_FLTINT: ArgNil(); // flt + int
+      case EO_MUL_FLTFLT: ArgNil(); // flt * flt
         break;//+endCase
-      case EO_MUL_FLTFLT: ArgNil(); // flt + flt
+      case EO_MUL_INTBCD: ArgNil(); // int * bcd
         break;//+endCase
-      case EO_MUL_INTBCD: ArgNil(); // int + bcd
+      case EO_MUL_INTFLT: ArgNil(); // int * flt
         break;//+endCase
-      case EO_MUL_INTFLT: ArgNil(); // int + flt
-        break;//+endCase
-      case EO_MUL_INTINT: ArgNil(); // int + int
+      case EO_MUL_INTINT: ArgNil(); // int * int
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA * iTopB;
         dLU3(EO_MUL_INTINT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
-      case EO_MUL_IVLDTE: ArgNil(); // ivl + dte
+      case EO_MUL_IVLDTE: ArgNil(); // ivl * dte
         break;//+endCase
-      case EO_MUL_IVLIVL: ArgNil(); // ivl + ivl
+      case EO_MUL_IVLIVL: ArgNil(); // ivl * ivl
         break;//+endCase
-      case EO_MUL_IVLTME: ArgNil(); // ivl + tme
+      case EO_MUL_IVLTME: ArgNil(); // ivl * tme
         break;//+endCase
-      case EO_MUL_IVLTSP: ArgNil(); // ivl + tsp
+      case EO_MUL_IVLTSP: ArgNil(); // ivl * tsp
         break;//+endCase
-      case EO_MUL_TMEIVL: ArgNil(); // tme + ivl
+      case EO_MUL_TMEIVL: ArgNil(); // tme * ivl
         break;//+endCase
-      case EO_MUL_TSPIVL: ArgNil(); // tsp + ivl
+      case EO_MUL_TSPIVL: ArgNil(); // tsp * ivl
         break;//+endCase
-      case EO_MUL_UNKXYZ: ArgNil(); // unk + xyz
+      case EO_MUL_UNKXYZ: ArgNil(); // unk * xyz
         break;//+endCase
-      case EO_MUL_XYZUNK: ArgNil(); // xyz + unk
+      case EO_MUL_XYZUNK: ArgNil(); // xyz * unk
         break;//+endCase
 
       case EO_NEG_BCD: ArgNil(); // neg bcd

@@ -35,11 +35,15 @@ namespace STORE
 
     IntStack m_xTypeStack;
 
-    s4K      m_sAsmText;
+    s4K      m_sProjectAsm;
+    s4K      m_sFilterAsm;
+
     s4K      m_sAsmGbyIdx;
     s4K      m_sPayLoadKey;
     s4K      m_sPayLoadStore;
     s4K      m_sPayLoadToBuffer;
+
+    i8       m_iDstColumn;
 
     Column*  m_pStreamInCol[C_MAX_COLUMNS];
 
@@ -59,28 +63,23 @@ namespace STORE
     bool bHasGroupBy(void);
 
   private:
-    void vAddArithmetic(Token*  pTkn, Column* pColumn);
+    void vAddArithmetic(Stz* szAsmBuffer, Token*  pTkn, Column* pColumn);
     eEC  eAddCount(eCT eColumnType, i8 iColumn);
-    eEC  eAddDate(Token*  pTkn, Column* pColumnExpr);
-    eEC  eAddDecimal(Token*  pTkn, Column* pColumnExpr);
-    eEC  eAddGby(Column* pColumn, i8 iGby);
-    void vAddLogical(Token*  pTkn);
-    eEC  eAddMin(eCT eColumnType, i8 iColumn);
-    eEC  eAddMax(eCT eColumnType, i8 iColumn);
-    void vAddNumeric(Token*  pTkn, Column* pColumnExpr);
-    void vAddPopCol(eCT eColumnType, i8 iColumn);
-    void vAddRelational(Token*  pTkn);
-    void vAddStoreCol(eCT eColumnType, i8 iColumn);
-    void vAddString(Token*  pTkn, Column* pColumnExpr);
-    eEC  eAddSum(eCT eColumnType, i8 iColumn);
-    eEC  eAddSumGby(eCT eColumnType, i8 iColumn);
-    void vAddUnknown(Token*  pTkn, Column* pColumnExpr);
+    eEC  eAddDate(Stz* szAsmBuffer, Token*  pTkn, Column* pColumnExpr);
+    eEC  eAddDecimal(Stz* szAsmBuffer, Token*  pTkn, Column* pColumnExpr);
+    void vAddLogical(Stz* szAsmBuffer, Token*  pTkn);
+    void vAddNumeric(Stz* szAsmBuffer, Token*  pTkn, Column* pColumnExpr);
+    void vAddPopCol(Stz* szAsmBuffer, eCT eColumnType, i8 iColumn);
+    void vAddPushCol(Stz* szAsmBuffer, StreamDef* pStreamDefIn, i8 iColumn);
+    void vAddRelational(Stz* szAsmBuffer, Token*  pTkn);
+    void vAddStoreCol(Stz* szAsmBuffer, eCT eColumnType, i8 iColumn);
+    void vAddString(Stz* szAsmBuffer, Token*  pTkn, Column* pColumnExpr);
+    void vAddUnknown(Stz* szAsmBuffer, Token*  pTkn, Column* pColumnExpr);
 
     eEC eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec);
     eEC eExprEval(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);
-    eEC eHandleGbyColumn(Column* pColumn, i8 iGby);
-    eEC eHandleOutColumn(StreamDef* pStreamDefOut, Column* pColumn,
-                         i8 i_DstColumn, eAG eAGgType);
+
+    void vGenerateColumnCode(Stz* szAsmBuffer, StreamDef* pStreamDefOut, Column* pColumn);
     void vUpdateStreamDefOut(StreamDef* pStreamDefOut, Column* pColumn);
     Footer* aFooter(void);
   };
