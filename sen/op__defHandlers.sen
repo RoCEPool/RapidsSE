@@ -60,18 +60,7 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* handler for eating operand                                                 */
-/*----------------------------------------------------------------------------*/
-: EATOPERAND_handler \handler
-
-  // delete operand
-  PipeIn[].delete
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* default handler for ZK_CANCELMARKER operand                                */
+/* default handler for ZK_CANCELMARKER operand                    (pipes out) */
 /*----------------------------------------------------------------------------*/
 : ZK_CANCELMARKER_handler \handler
 
@@ -93,7 +82,32 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* default handler for ZK_CANCELLEDMARKER operand                             */
+/* default handler for ZK_EXITMARKER operand                      (pipes out) */
+/*----------------------------------------------------------------------------*/
+: ZK_EXITMARKER_handler \handler
+
+  //"ZK_EXITMARKER_handler" .verbose
+  
+  PipeIn[].pipeOut
+  Op.ackPipelineJob
+  
+  false // calling op_loop exits
+;
+
+
+/*----------------------------------------------------------------------------*/
+/* handler for eating operand                        (deletes pipein operand) */
+/*----------------------------------------------------------------------------*/
+: EATOPERAND_handler \handler
+
+  // delete operand
+  PipeIn[].delete
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* default handler for ZK_CANCELLEDMARKER operand    (deletes pipein operand) */
 /*----------------------------------------------------------------------------*/
 : ZK_CANCELLEDMARKER_handler \handler
 
@@ -108,7 +122,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* default handler for ZK_ERROREDMARKER operand                               */
+/* default handler for ZK_ERROREDMARKER operand      (deletes pipein operand) */
 /*----------------------------------------------------------------------------*/
 : ZK_ERROREDMARKER_handler \handler
 
@@ -123,20 +137,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* default handler for ZK_EXITMARKER operand                                  */
-/*----------------------------------------------------------------------------*/
-: ZK_EXITMARKER_handler \handler
-
-  //"ZK_EXITMARKER_handler" .verbose
-  
-  PipeIn[].pipeOut
-  Op.ackPipelineJob
-  
-  false // calling op_loop exits
-;
-
-/*----------------------------------------------------------------------------*/
-/* default handler for ZK_EXITEDEARLYMARKER operand                           */
+/* default handler for ZK_EXITEDEARLYMARKER operand  (deletes pipein operand) */
 /*----------------------------------------------------------------------------*/
 : ZK_EXITEDEARLYMARKER_handler \handler
 
@@ -151,7 +152,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* default handler for ZK_EXITEDMARKER operand                                */
+/* default handler for ZK_EXITEDMARKER operand       (deletes pipein operand) */
 /*----------------------------------------------------------------------------*/
 : ZK_EXITEDMARKER_handler \handler
 
@@ -166,7 +167,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* default handler for ZK_STARTEDMARKER operand                               */
+/* default handler for ZK_STARTEDMARKER operand      (deletes pipein operand) */
 /*----------------------------------------------------------------------------*/
 : ZK_STARTEDMARKER_handler \handler
 
@@ -182,7 +183,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* default handler for unexpected operand operand                             */
+/* default handler for unexpected operand operand    (deletes pipein operand) */
 /*----------------------------------------------------------------------------*/
 : INVALID_OPERAND_handler \handler
 
