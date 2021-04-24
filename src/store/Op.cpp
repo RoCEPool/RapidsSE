@@ -1065,7 +1065,8 @@ void Op::vPipeOut_nextOp(Operand* pOperand, Task* pTriggeringTask, bool bSet)
            pOperand);
   
   if (AM::szJobName(m_pOpJob)->bSame("xmit"_Stz)) {
-    vSendXmitOperand(pOperand, pTriggeringTask, bSet);
+    //vSendXmitOperand(pOperand, pTriggeringTask, bSet);
+    NEVER_REACH;
   }
   else {
     

@@ -5,49 +5,42 @@
 " OP_xmit.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_EOSMARKER ...                                               */
+/* perform a simple pipe in send                                              */
 /*----------------------------------------------------------------------------*/
-: xmit_EosMarker \handler
+: PipeIn[].sendTo
 
-  ZK_EOSMARKER_handler
-
-  // get the profile from the task
-  //task[] task.profile@ to Operand[]
-  //nullptr task[] task.profile!
-  //Operand[].pipeOut
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for ZK_DESTROYMARKER ...                                           */
-/*----------------------------------------------------------------------------*/
-: xmit_DestroyMarker \handler
-
-  //"ZK_DESTROYMARKER" .verbose
-  PipeIn[].pipeOut
-
+  PipeIn[]\clear op::sendTo
+  
+  // calling op_loop continues
   true
 ;
 
-/*----------------------------------------------------------------------------*/
-/* handler for ZK_STARTMARKER ...                                             */
-/*----------------------------------------------------------------------------*/
-: xmit_StartMarker \handler
 
-  ZK_STARTMARKER_handler
-  op.stageName@ "xmit %v" str.format profile.name!
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_CANCELMARKER operand                                        */
+/*----------------------------------------------------------------------------*/
+: xmit_CANCELMARKER \handler
+
+  PipeIn[].sendTo
+
+  PipeIn[].drain
+
+  Op.ackPipelineJob
+  
+  false // calling op_loop exits
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_ROWBUFFER ...                                               */
+/* handler for ZK_EXITMARKER operand                                          */
 /*----------------------------------------------------------------------------*/
-: xmit_RowBuffer \handler
+: xmit_EXITMARKER \handler
 
-  //"ZK_ROWBUFFER_handler" .verbose
-  //Pipein[] profile.start
-  PipeIn[].pipeOut
-  //profile.end
+  PipeIn[].sendTo
 
-  true
+  Op.ackPipelineJob
+  
+  false // calling op_loop exits
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -64,10 +57,10 @@
 
   op__topology
 
-  find: xmit_DestroyMarker ZK_DESTROYMARKER op[].handler!
-  find: xmit_EosMarker     ZK_EOSMARKER     op[].handler!
-  find: xmit_RowBuffer     ZK_ROWBUFFER     op[].handler!
-  find: xmit_StartMarker   ZK_STARTMARKER   op[].handler!
+  find: PipeIn[].sendTo op[].handlerAll!
+
+  find: xmit_CANCELMARKER  ZK_CANCELMARKER  op[].handler!
+  find: xmit_EXITMARKER    ZK_EXITMARKER    op[].handler!
 
   op__loop
 

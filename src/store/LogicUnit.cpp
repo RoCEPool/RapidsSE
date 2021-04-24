@@ -933,6 +933,23 @@ void LogicUnit::vDefineLabel(Stz* szLabelNm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* delete label                                                               */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vDeleteLabel(Stz* szLabelNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  // has this label been used yet?
+  i8 i_Label = iFindLabel(szLabelNm);
+  
+  if (C_UNKNOWN == i_Label)
+    return;
+  
+  // for the moment lets just scrub it out.  needs to be fixed
+  m_xaJumpLabel[i_Label].m_sLabelNm = " *deleted* "_Stz;
+}
+
+/*----------------------------------------------------------------------------*/
 /* diary report                                                               */
 /*----------------------------------------------------------------------------*/
 void LogicUnit::vDiaryReport(void)

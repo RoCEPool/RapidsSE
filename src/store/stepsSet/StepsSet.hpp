@@ -968,6 +968,7 @@ public:
   void vObjectMagicMark(void);
   void vObjectReceivedWordFetch(void);
   void vObjectRecvArgsFetch(void);
+  void vObjectSendWordFetch(void);
   void vObjectStore(void);
 
   // olist (originator list)
@@ -988,6 +989,7 @@ public:
   void vOpOutboundOperandFetch(void);
   void vOpOutboundOperandStore(void);
   void vOpQueueLength(void);
+  void vOpSendTo(void);
   void vOpStageNameFetch(void);
   void vOpTopologyStore(void);
   void vOpXmitKindStore(void);

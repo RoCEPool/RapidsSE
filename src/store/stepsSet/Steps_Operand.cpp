@@ -75,7 +75,7 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].newStreamDef"_Stz,   &Step::vOperandNewStreamDef);
   vAddStep("Operand[].next"_Stz,           &Step::vOperandNext);
   vAddStep("Operand[].pipeIn"_Stz,         &Step::vOperandPipeIn);
-  vAddStep("Operand[].pipeOut"_Stz,        &Step::vOperandPipeOut);
+  vAddStep(" Operand[].pipeOut"_Stz,        &Step::vOperandPipeOut);
   vAddStep("Operand[].pipeOutSet"_Stz,     &Step::vOperandPipeOutSet);
   vAddStep("Operand[].pipeToOutput"_Stz,   &Step::vOperandPipeToOutput);
   vAddStep("Operand[].report"_Stz,         &Step::vOperandReport);
