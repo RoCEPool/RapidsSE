@@ -34,7 +34,7 @@ void Step::vAddSteps_OperandB(void)
   vAddStep("OperandB[].get"_Stz,            &Step::vOperandBGet);
   vAddStep("OperandB[].isNotNull"_Stz,      &Step::vOperandBIsNotNull);
   vAddStep("OperandB[].isNull"_Stz,         &Step::vOperandBIsNull);
-  vAddStep("OperandB[].pipeOut"_Stz,        &Step::vOperandBPipeOut);
+  vAddStep("x OperandB[].pipeOut"_Stz,        &Step::vOperandBPipeOut);
   vAddStep("OperandB[].set"_Stz,            &Step::vOperandBSet);
 }
 

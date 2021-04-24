@@ -28,7 +28,7 @@ void Step::vAddSteps_StreamDefOut(void)
   vAddStep("StreamDefOut[].name@"_Stz,      &Step::vStreamDefOutNameFetch);
   vAddStep("StreamDefOut[].name!"_Stz,      &Step::vStreamDefOutNameStore);
   vAddStep("StreamDefOut[].new"_Stz,        &Step::vStreamDefOutNew);
-  vAddStep("StreamDefOut[].pipeout"_Stz,    &Step::vStreamDefOutPipeout);
+  vAddStep("x StreamDefOut[].pipeout"_Stz,    &Step::vStreamDefOutPipeout);
   vAddStep("StreamDefOut[].print"_Stz,      &Step::vStreamDefOutPrint);
   vAddStep("StreamDefOut[].set"_Stz,        &Step::vStreamDefOutSet);
 }

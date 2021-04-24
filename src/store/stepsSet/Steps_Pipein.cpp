@@ -30,7 +30,7 @@ void Step::vAddSteps_Pipein(void)
   vAddStep("PipeIn[].kind"_Stz,           &Step::vPipeinKind);
   vAddStep("PipeIn[].next"_Stz,           &Step::vPipeinNext);
   vAddStep("PipeIn[].peek"_Stz,           &Step::vPipeinPeek);
-  vAddStep("PipeIn[].pipeOut"_Stz,        &Step::vPipeinPipeOut);
+  vAddStep("x PipeIn[].pipeOut"_Stz,        &Step::vPipeinPipeOut);
   vAddStep("PipeIn[].pipeToOutput"_Stz,   &Step::vPipeinPipeToOutput);
   vAddStep("PipeIn[].set"_Stz,            &Step::vPipeinSet);
   vAddStep("PipeIn[].writeProfile"_Stz,   &Step::vPipeinWriteProfile);

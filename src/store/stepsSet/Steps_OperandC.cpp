@@ -24,7 +24,7 @@ void Step::vAddSteps_OperandC(void)
   vAddStep("OperandC[]\\clear"_Stz,      &Step::vOperandCGetAndClear);
   vAddStep("OperandC[].collect"_Stz,     &Step::vOperandCCollect);
   vAddStep("OperandC[].get"_Stz,         &Step::vOperandCGet);
-  vAddStep("OperandC[].pipeOut"_Stz,     &Step::vOperandCPipeOut);
+  vAddStep("x OperandC[].pipeOut"_Stz,     &Step::vOperandCPipeOut);
   vAddStep("OperandC[].pipeOutSet"_Stz,  &Step::vOperandCPipeOutSet);
   vAddStep("OperandC[].set"_Stz,         &Step::vOperandCSet);
   vAddStep("OperandC[].setFirst"_Stz,    &Step::vOperandCSetFirst);

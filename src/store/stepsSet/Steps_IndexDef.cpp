@@ -37,7 +37,7 @@ void Step::vAddSteps_IndexDef(void)
   vAddStep("indexDef::parse"_Stz,     &Step::vIndexDefParse);
   vAddStep("indexDef::parseOLD"_Stz,  &Step::vIndexDefParseOLD);
   vAddStep("indexDef::parseTableName"_Stz, &Step::vIndexDefParseTableName);
-  vAddStep("indexDef[].pipeOut"_Stz,  &Step::vIndexDefPipeOut);
+  vAddStep("x indexDef[].pipeOut"_Stz,  &Step::vIndexDefPipeOut);
   vAddStep("indexDef[].set"_Stz,      &Step::vIndexDefSet);
   vAddStep("indexDef::syntax"_Stz,    &Step::vIndexDefSyntax);
   vAddStep("indexDef[].tableName@"_Stz, &Step::vIndexDefTableNameFetch);
