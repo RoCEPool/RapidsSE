@@ -5,9 +5,9 @@
 " OP_xmit.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* perform a simple pipeout on behalf of a standard handler                   */
+/* perform a simple pipe in send                                              */
 /*----------------------------------------------------------------------------*/
-: STANDARD_SEND
+: PipeIn[].send
 
   PipeIn[]\clear op::pipeout
   
@@ -18,21 +18,13 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* default handler for ZK_CANCELMARKER operand                                */
+/* handler for ZK_CANCELMARKER operand                                        */
 /*----------------------------------------------------------------------------*/
 : xmit_CANCELMARKER \handler
 
-  //"ZK_CANCELMARKER_handler" .verbose
+  PipeIn[].send
 
-  PipeIn[].pipeOut
-
-  // drain the operand queue
-  begin
-    Pipein[].peek
-  while
-    PipeIn[].next
-    Pipein[].delete
-  repeat
+  PipeIn[].drain
 
   Op.ackPipelineJob
   
@@ -40,13 +32,12 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* default handler for ZK_EXITMARKER operand                                  */
+/* handler for ZK_EXITMARKER operand                                          */
 /*----------------------------------------------------------------------------*/
 : xmit_EXITMARKER \handler
 
-  //"ZK_EXITMARKER_handler" .verbose
-  
-  PipeIn[].pipeOut
+  PipeIn[].send
+
   Op.ackPipelineJob
   
   false // calling op_loop exits
@@ -66,7 +57,7 @@
 
   op__topology
 
-  find: STANDARD_SEND op[].handlerAll!
+  find: PipeIn[].send op[].handlerAll!
 
   find: xmit_CANCELMARKER  ZK_CANCELMARKER  op[].handler!
   find: xmit_EXITMARKER    ZK_EXITMARKER    op[].handler!

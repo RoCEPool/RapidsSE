@@ -68,13 +68,7 @@
 
   PipeIn[].pipeOut
 
-  // drain the operand queue
-  begin
-    Pipein[].peek
-  while
-    PipeIn[].next
-    Pipein[].delete
-  repeat
+  PipeIn[].drain
 
   Op.ackPipelineJob
   
@@ -89,6 +83,7 @@
   //"ZK_EXITMARKER_handler" .verbose
   
   PipeIn[].pipeOut
+  
   Op.ackPipelineJob
   
   false // calling op_loop exits
