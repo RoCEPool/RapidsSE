@@ -22,7 +22,8 @@
 void Step::vAddSteps_Op(void)
 {
   vAddStep("Op::pipeout"_Stz,         &Step::vOpPipeOut);
-  
+  vAddStep("Op::sendTo"_Stz,          &Step::vOpSendTo);
+
   vAddStep("Op.ackPipelineJob"_Stz,   &Step::vOpAckPipelineJob);
   vAddStep("Op.downstreamOp!"_Stz,    &Step::vOpDownstreamOpStore);
   vAddStep("Op.findOp"_Stz,           &Step::vOpFindOp);
@@ -242,6 +243,22 @@ void Step::vOpQueueLength(void)
   i8 nLength = pOp->nQueueLength();
 
   m_pDataStack->vPushInt(nLength);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Op::sendTo -- send operand to next operator in pipeline                    */
+/*----------------------------------------------------------------------------*/
+void Step::vOpSendTo(void)
+{
+  ENTRY();
+  
+  Op* pOp = m_pJob->m_pOp;
+  
+  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+
+  pOp->vPipeOut_nextOp(pOperand,this);
 
   EXIT();
 }

@@ -7,9 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* perform a simple pipe in send                                              */
 /*----------------------------------------------------------------------------*/
-: PipeIn[].send
+: PipeIn[].sendTo
 
-  PipeIn[]\clear op::pipeout
+  PipeIn[]\clear op::sendTo
   
   // calling op_loop continues
   true
@@ -22,7 +22,7 @@
 /*----------------------------------------------------------------------------*/
 : xmit_CANCELMARKER \handler
 
-  PipeIn[].send
+  PipeIn[].sendTo
 
   PipeIn[].drain
 
@@ -36,7 +36,7 @@
 /*----------------------------------------------------------------------------*/
 : xmit_EXITMARKER \handler
 
-  PipeIn[].send
+  PipeIn[].sendTo
 
   Op.ackPipelineJob
   
@@ -57,7 +57,7 @@
 
   op__topology
 
-  find: PipeIn[].send op[].handlerAll!
+  find: PipeIn[].sendTo op[].handlerAll!
 
   find: xmit_CANCELMARKER  ZK_CANCELMARKER  op[].handler!
   find: xmit_EXITMARKER    ZK_EXITMARKER    op[].handler!
