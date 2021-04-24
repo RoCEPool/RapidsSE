@@ -193,12 +193,12 @@
   find: STANDARD_SEND op[].handlerAll!
 
   find: xmit_CANCELMARKER       ZK_CANCELMARKER       op[].handler!
-  find: xmit_CANCELLEDMARKER    ZK_CANCELLEDMARKER    op[].handler!
-  find: xmit_ERROREDMARKER      ZK_ERROREDMARKER      op[].handler!
+  // find: xmit_CANCELLEDMARKER    ZK_CANCELLEDMARKER    op[].handler!
+  // find: xmit_ERROREDMARKER      ZK_ERROREDMARKER      op[].handler!
   find: xmit_EXITMARKER         ZK_EXITMARKER         op[].handler!
-  find: xmit_EXITEDEARLYMARKER  ZK_EXITEDEARLYMARKER  op[].handler!
-  find: xmit_EXITEDMARKER       ZK_EXITEDMARKER       op[].handler!
-  find: xmit_STARTEDMARKER      ZK_STARTEDMARKER      op[].handler!
+  // find: xmit_EXITEDEARLYMARKER  ZK_EXITEDEARLYMARKER  op[].handler!
+  // find: xmit_EXITEDMARKER       ZK_EXITEDMARKER       op[].handler!
+  // find: xmit_STARTEDMARKER      ZK_STARTEDMARKER      op[].handler!
 
   find: xmit_DestroyMarker ZK_DESTROYMARKER op[].handler!
   find: xmit_EosMarker     ZK_EOSMARKER     op[].handler!
