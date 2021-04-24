@@ -309,12 +309,28 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
           bFirstExpr = true;
 
         // get the next groupByExpr from the iterator
-        QueryNode *pGroupByExpr = static_cast<QueryNode *>(pIter->pNext());
+        QueryNode *pGroupByExpr = static_cast<QueryNode *>(pGroupByIter->pNext());
         ASSERT(pGroupByExpr);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // columnRef
-        vAppendExpr(pBackend, pGroupByExpr, nullptr);
+        // alias
+        Stz *szAliasName = ""_Stz;
+        //szAliasName = ProjectedColumn::szAliasName(pGroupByExpr);
+
+        if (ColumnRef::bIsOfType(pGroupByExpr)) {
+          QueryNode *pColumnRef = static_cast<QueryNode *>(pGroupByExpr);
+          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+          // columnRef
+          vAppendExpr(pBackend, pColumnRef, nullptr);
+        }
+        else if (AliasRef::bIsOfType(pGroupByExpr)) {
+          QueryNode *pAliasRef = static_cast<QueryNode *>(pGroupByExpr);
+          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+          // columnRef
+          vAppendExpr(pBackend, pAliasRef, nullptr);
+        }
+        else
+          RASSERT(0);
       }
       delete pGroupByIter;
     }
