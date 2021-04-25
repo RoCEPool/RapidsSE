@@ -12,14 +12,15 @@ namespace STORE
 
   enum eAG {
     /* 0 */ AG_NONE=0,
-    /* 1 */ AG_AVG,
-    /* 2 */ AG_CNT,
-    /* 3 */ AG_MIN,
-    /* 4 */ AG_MAX,
-    /* 5 */ AG_STD,
-    /* 6 */ AG_SUM,
-    /* 7 */ AG_VAR,
-    /* 8 */ AG_ENUMS
+    /* 1 */ AG_ALL,
+    /* 2 */ AG_AVG,
+    /* 3 */ AG_CNT,
+    /* 4 */ AG_MIN,
+    /* 5 */ AG_MAX,
+    /* 6 */ AG_STD,
+    /* 7 */ AG_SUM,
+    /* 8 */ AG_VAR,
+    /* 9 */ AG_ENUMS
   };
 
   class ExprEval : public Definition
@@ -64,12 +65,11 @@ namespace STORE
 
   private:
     void vAddArithmetic(Stz* szAsmBuffer, Token*  pTkn, Column* pColumn);
-    eEC  eAddCount(eCT eColumnType, i8 iColumn);
     eEC  eAddDate(Stz* szAsmBuffer, Token*  pTkn, Column* pColumnExpr);
     eEC  eAddDecimal(Stz* szAsmBuffer, Token*  pTkn, Column* pColumnExpr);
     void vAddLogical(Stz* szAsmBuffer, Token*  pTkn);
     void vAddNumeric(Stz* szAsmBuffer, Token*  pTkn, Column* pColumnExpr);
-    void vAddPopCol(Stz* szAsmBuffer, eCT eColumnType, i8 iColumn);
+    void vAddPopCol(Stz* szAsmBuffer, eCT eColumnType);
     void vAddPushCol(Stz* szAsmBuffer, StreamDef* pStreamDefIn, i8 iColumn);
     void vAddRelational(Stz* szAsmBuffer, Token*  pTkn);
     void vAddStoreCol(Stz* szAsmBuffer, eCT eColumnType, i8 iColumn);
@@ -79,7 +79,12 @@ namespace STORE
     eEC eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec);
     eEC eExprEval(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);
 
-    void vGenerateColumnCode(Stz* szAsmBuffer, StreamDef* pStreamDefOut, Column* pColumn);
+    eEC eGenerateColumnCode(Stz* szAsmBuffer, StreamDef* pStreamDefOut, Column* pColumn, eAG eAggType);
+
+    eEC  eGenerateSum(Stz* sAsmBuffer);
+    eEC  eGenerateCount(Stz* szAsmBuffer);
+    eEC  eGenerateCountAll(Stz* szAsmBuffer);
+
     void vUpdateStreamDefOut(StreamDef* pStreamDefOut, Column* pColumn);
     Footer* aFooter(void);
   };

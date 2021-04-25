@@ -4,8 +4,35 @@
 #pragma once
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// AGGREGATE OPERATORS
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // COMPARISON OPERATORS
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+static eDM eMathOp_AvgResult[DM_ENUMS] =
+ //   NONE     BCD     BOL      DTE      FLT     INT     IVL           TME           TSP      VCH      UNK
+    { DM_NONE, DM_BCD, DM_NONE, DM_NONE, DM_FLT, DM_BCD, DM_NONE/*X*/, DM_NONE/*X*/, DM_NONE, DM_NONE, DM_NONE };
+
+
+static eDM eMathOp_MaxResult[DM_ENUMS] =
+  //  NONE     BCD     BOL      DTE     FLT     INT     IVL           TME     TSP     VCH     UNK
+    { DM_NONE, DM_BCD, DM_NONE, DM_DTE, DM_FLT, DM_INT, DM_NONE/*X*/, DM_TME, DM_TSP, DM_VCH, DM_NONE };
+
+
+static eDM eMathOp_MinResult[DM_ENUMS] =
+  //  NONE     BCD     BOL           DTE      FLT    INT     IVL           TME     TSP     VCH     UNK
+    { DM_NONE, DM_BCD, DM_NONE/*X*/, DM_DTE, DM_FLT, DM_INT, DM_NONE/*X*/, DM_TME, DM_TSP, DM_VCH, DM_NONE/*X*/ };
+
+
+static eDM eMathOp_SumResult[DM_ENUMS] =
+    //   NONE     BCD     BOL      DTE      FLT     INT     IVL           TME      TSP      VCH      UNK
+       { DM_NONE, DM_BCD, DM_NONE, DM_NONE, DM_FLT, DM_INT, DM_NONE/*X*/, DM_NONE, DM_NONE, DM_NONE, DM_NONE};
+
+static eEO eMathOp_SumCode[DM_ENUMS] =
+    //   NONE     BCD            BOL      DTE      FLT            INT            IVL           TME      TSP      VCH      UNK
+    {    EO_NONE, EO_ADD_BCDBCD, EO_NONE, EO_NONE, EO_ADD_FLTFLT, EO_ADD_INTINT, EO_NONE/*X*/, EO_NONE, EO_NONE, EO_NONE, EO_NONE};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // AND

@@ -89,6 +89,20 @@ aggregRows lineitem "type varchar $14 sum";
 failure contains: "invalid command"
 
 //------------------------------------------------------------------------------
+aggregRows lineitem "type integer $1 count";
+rows:
+ (6)
+ (3)
+ (1)
+
+//------------------------------------------------------------------------------
+aggregRows lineitem "type integer countAll";
+rows:
+ (6)
+ (3)
+ (1)
+
+//------------------------------------------------------------------------------
 // drop the table
 drop table lineitem;
 success;
