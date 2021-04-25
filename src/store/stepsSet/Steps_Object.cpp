@@ -155,7 +155,7 @@ void Step::vObjectPreSendWordFetch(void)
   
   eCN eClassNo = pObject->eGetClassNo();
   
-  Word* pWord = gxaSizeHeap[eClassNo].m_pSendWord;
+  Word* pWord = gxaSizeHeap[eClassNo].m_pPreSendWord;
   
   m_pDataStack->vPushPtr(pWord);
   

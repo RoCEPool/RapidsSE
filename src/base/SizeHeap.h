@@ -23,7 +23,7 @@ struct SizeHeap {
   
   Word* m_pReceivedWord;    // word to execute upon recv()
   
-  Word* m_pSendWord;        // word to execute as to send he object
+  Word* m_pPreSendWord;     // word to execute prior to sending the object
 
   b8  m_bDontMemLog;        // don't memory log?
 };
