@@ -41,7 +41,7 @@ failure contains: "invalid command"
 //failure contains: "invalid command"
 
 //------------------------------------------------------------------------------
-aggregRows_I lineitem "type integer $1 , type decimal $7 sum groupby type integer $1";
+aggregRows_I lineitem "type integer $1 , type decimal $7 sum";
 rows: 0
 
 // load data

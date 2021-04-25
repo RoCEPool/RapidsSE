@@ -1492,6 +1492,10 @@ void vDev_ROW_COLS_TO_LOCALS(i8** aaiDstk)
         *ayDst = pDevRow->m_aRow->iColVal_int(iaColSet[i_ColSet]);
         ayDst++;
         break;
+      case CT_FLOAT:
+        *ayDst = pDevRow->m_aRow->dColVal_flt(iaColSet[i_ColSet]);
+        ayDst++;
+        break;
       case CT_CHAR:
       case CT_VARCHAR:
         *ayDst = (i8)pDevRow->m_aRow->szColVal_ofs(iaColSet[i_ColSet]);

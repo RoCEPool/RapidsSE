@@ -69,17 +69,18 @@ namespace STORE
     eEC  eAddDecimal(Stz* szAsmBuffer, Token*  pTkn, Column* pColumnExpr);
     void vAddLogical(Stz* szAsmBuffer, Token*  pTkn);
     void vAddNumeric(Stz* szAsmBuffer, Token*  pTkn, Column* pColumnExpr);
-    void vAddPopCol(Stz* szAsmBuffer, eCT eColumnType, i8 iColumn);
+    void vAddPopCol(Stz* szAsmBuffer, eCT eColumnType);
     void vAddPushCol(Stz* szAsmBuffer, StreamDef* pStreamDefIn, i8 iColumn);
     void vAddRelational(Stz* szAsmBuffer, Token*  pTkn);
     void vAddStoreCol(Stz* szAsmBuffer, eCT eColumnType, i8 iColumn);
     void vAddString(Stz* szAsmBuffer, Token*  pTkn, Column* pColumnExpr);
+    eEC  eAddSum(Stz* sAsmBuffer, eCT eColumnType);
     void vAddUnknown(Stz* szAsmBuffer, Token*  pTkn, Column* pColumnExpr);
 
     eEC eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec);
     eEC eExprEval(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);
 
-    void vGenerateColumnCode(Stz* szAsmBuffer, StreamDef* pStreamDefOut, Column* pColumn);
+    eEC eGenerateColumnCode(Stz* szAsmBuffer, StreamDef* pStreamDefOut, Column* pColumn, eAG eAggType);
     void vUpdateStreamDefOut(StreamDef* pStreamDefOut, Column* pColumn);
     Footer* aFooter(void);
   };

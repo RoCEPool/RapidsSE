@@ -1323,13 +1323,21 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_ADD_BCDBCD: ArgNil(); // bcd + bcd
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
+        // NOTE: assumes a DECIMAL(19,2)
+        iRes  = iMathLib_Add_INTINT(iTopB, iTopA);
+        dLU3(EO_ADD_BCDBCD,iTopA,iTopB,iRes);
+        *(++aiDstk) = iRes;
+        break;//+endCase
+
+      case EO_ADD_BCDFLT: ArgNil(); // bcd + int
+        break;//+endCase
+
+      case EO_ADD_BCDINT: ArgNil(); // bcd + int
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
         iRes  = iMathLib_Add_INTINT(iTopB, iTopA);
         dLU3(EO_ADD_INTBCD,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
-        break;//+endCase
-      case EO_ADD_BCDFLT: ArgNil(); // bcd + int
-        break;//+endCase
-      case EO_ADD_BCDINT: ArgNil(); // bcd + int
         break;//+endCase
       case EO_ADD_DTEIVL: ArgNil(); // dte + ivl
         break;//+endCase
@@ -1338,6 +1346,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_ADD_FLTINT: ArgNil(); // flt + int
         break;//+endCase
       case EO_ADD_FLTFLT: ArgNil(); // flt + flt
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iMathLib_Add_FLTFLT(iTopB, iTopB);
+        dLU3(EO_ADD_FLTFLT, iTopA, iTopB, iRes);
+        *(++aiDstk) = iRes;
         break;//+endCase
       case EO_ADD_INTBCD: ArgNil(); // int + bcd
         break;//+endCase
@@ -2188,10 +2201,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         S_PopStr(sLib_GET_LOCALS(pLU, iArg));
         break;//+endCase
         
-      case EO_PUSH_LOCALI: ArgGet(iArg); // push a local reg
+      case EO_PUSH_LOCALI: { ArgGet(iArg); // push a local reg
         dLU1(EO_PUSH_LOCALI, iArg);
         //ASSERT(iArg < C_LOGIC_LOCALS);
+        d8 x = (d8) aRluCommon->m_iaLocals[iArg];
         *(++aiDstk) = aRluCommon->m_iaLocals[iArg]; //iLib_GET_LOCAL(pLU, iArg);
+      }
         break;//+endCase
         
       case EO_PUSH_LOCALS: ArgGet(iArg); // push a local reg
