@@ -59,7 +59,6 @@ void Step::vAddSteps_InfoSet(void)
   vAddStep("InfoSet[].nextRow"_Stz,          &Step::vInfoSetNextRow);
   vAddStep("InfoSet[].opInfoset@"_Stz,       &Step::vInfoSetOpInfosetFetch);
   vAddStep("InfoSet[].opInfoset!"_Stz,       &Step::vInfoSetOpInfosetStore);
-  vAddStep("x InfoSet[].pipeOut"_Stz,          &Step::vInfoSetPipeOut);
   vAddStep("InfoSet[].rdCsvChunk"_Stz,       &Step::vInfoSetRdCsvChunk);
   vAddStep("InfoSet[].set"_Stz,              &Step::vInfoSetSet);
   vAddStep("InfoSet[].writeCsv"_Stz,         &Step::vInfoSetWriteCsv);
@@ -709,24 +708,6 @@ void Step::vInfoSetOpInfosetStore(void)
   
   _pInfoSet(*m_pJob->pLogicUnit_job()->m_xpInfoSet)->vOpInfoSet(eOpInfoSet);
     
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* InfoSet[].pipeOut -- pipeout infoset                                       */
-/*----------------------------------------------------------------------------*/
-void Step::vInfoSetPipeOut(void)
-{
-  ENTRY();
-  
-  ASSERT(*m_pJob->pLogicUnit_job()->m_xpInfoSet);
-  
-  Op* pOp = m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
-  
-  pOp->vPipeOut_nextOp(*m_pJob->pLogicUnit_job()->m_xpInfoSet,this);
-  
-  m_pJob->pLogicUnit_job()->m_xpInfoSet = nullptr;
-  
   EXIT();
 }
 

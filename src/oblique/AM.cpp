@@ -160,7 +160,7 @@ void AM::DEMON::vPipeTo(Stz* szDemonNm, RowBuffer* pRowBuffer)
 
   Task* pThisTask = AM::pThisTLSTask();
   
-  pOp0->vPipeOut_thisOp(pRowBuffer,pThisTask);
+  pOp0->vAppend(pRowBuffer,pThisTask);
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/

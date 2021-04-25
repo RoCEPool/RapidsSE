@@ -37,7 +37,6 @@ void Step::vAddSteps_IndexDef(void)
   vAddStep("indexDef::parse"_Stz,     &Step::vIndexDefParse);
   vAddStep("indexDef::parseOLD"_Stz,  &Step::vIndexDefParseOLD);
   vAddStep("indexDef::parseTableName"_Stz, &Step::vIndexDefParseTableName);
-  vAddStep("x indexDef[].pipeOut"_Stz,  &Step::vIndexDefPipeOut);
   vAddStep("indexDef[].set"_Stz,      &Step::vIndexDefSet);
   vAddStep("indexDef::syntax"_Stz,    &Step::vIndexDefSyntax);
   vAddStep("indexDef[].tableName@"_Stz, &Step::vIndexDefTableNameFetch);
@@ -266,24 +265,6 @@ void Step::vIndexDefParseTableName(void)
   }
   
   m_pDataStack->vPushStr(sTableNm);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* indexDef[].pipeOut -- append indexDef onto next operator in pipeline       */
-/*----------------------------------------------------------------------------*/
-void Step::vIndexDefPipeOut(void)
-{
-  ENTRY();
-  
-  ASSERT(*m_pJob->pLogicUnit_job()->m_xpIndexDef);
-  
-  Op* pOp = m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
-  
-  pOp->vPipeOut_nextOp(*m_pJob->pLogicUnit_job()->m_xpIndexDef,this);
-  
-  m_pJob->pLogicUnit_job()->m_xpIndexDef = nullptr;
   
   EXIT();
 }

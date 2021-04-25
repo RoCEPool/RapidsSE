@@ -75,7 +75,6 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].newStreamDef"_Stz,   &Step::vOperandNewStreamDef);
   vAddStep("Operand[].next"_Stz,           &Step::vOperandNext);
   vAddStep("Operand[].pipeIn"_Stz,         &Step::vOperandPipeIn);
-  vAddStep("x Operand[].pipeOut"_Stz,        &Step::vOperandPipeOut);
   vAddStep("Operand[].pipeOutSet"_Stz,     &Step::vOperandPipeOutSet);
   vAddStep("Operand[].pipeToOutput"_Stz,   &Step::vOperandPipeToOutput);
   vAddStep("Operand[].report"_Stz,         &Step::vOperandReport);
@@ -703,24 +702,6 @@ void Step::vOperandPipeIn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].pipeOut -- append operand onto next operator in pipeline         */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandPipeOut(void)
-{
-  ENTRY();
-  
-  ASSERT(*m_pJob->pLogicUnit_job()->m_xpOperandA);
-  
-  Op* pOp = m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
-
-  pOp->vPipeOut_nextOp(*m_pJob->pLogicUnit_job()->m_xpOperandA,this);
-  
-  m_pJob->pLogicUnit_job()->m_xpOperandA = nullptr;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* Operand[].pipeOutSet -- append operand set onto next operator in pipeline  */
 /*----------------------------------------------------------------------------*/
 void Step::vOperandPipeOutSet(void)
@@ -731,7 +712,7 @@ void Step::vOperandPipeOutSet(void)
   
   Op* pOp = m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
   
-  pOp->vPipeOut_nextOp(*m_pJob->pLogicUnit_job()->m_xpOperandA,this,true);
+  pOp->vPipeToNextOp(*m_pJob->pLogicUnit_job()->m_xpOperandA,this,true);
   
   m_pJob->pLogicUnit_job()->m_xpOperandA = nullptr;
   

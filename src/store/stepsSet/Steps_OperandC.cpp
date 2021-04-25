@@ -24,7 +24,6 @@ void Step::vAddSteps_OperandC(void)
   vAddStep("OperandC[]\\clear"_Stz,      &Step::vOperandCGetAndClear);
   vAddStep("OperandC[].collect"_Stz,     &Step::vOperandCCollect);
   vAddStep("OperandC[].get"_Stz,         &Step::vOperandCGet);
-  vAddStep("x OperandC[].pipeOut"_Stz,     &Step::vOperandCPipeOut);
   vAddStep("OperandC[].pipeOutSet"_Stz,  &Step::vOperandCPipeOutSet);
   vAddStep("OperandC[].set"_Stz,         &Step::vOperandCSet);
   vAddStep("OperandC[].setFirst"_Stz,    &Step::vOperandCSetFirst);
@@ -91,24 +90,6 @@ void Step::vOperandCGetAndClear(void)
 /*----------------------------------------------------------------------------*/
 /* OperandC[].pipeOut -- append operand onto next operator in pipeline        */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandCPipeOut(void)
-{
-  ENTRY();
-  
-  ASSERT(*m_pJob->pLogicUnit_job()->m_xpOperandC);
-  
-  Op* pOp = m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
-
-  pOp->vPipeOut_nextOp(*m_pJob->pLogicUnit_job()->m_xpOperandC,this);
-  
-  m_pJob->pLogicUnit_job()->m_xpOperandA = nullptr;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* OperandC[].pipeOut -- append operand onto next operator in pipeline        */
-/*----------------------------------------------------------------------------*/
 void Step::vOperandCPipeOutSet(void)
 {
   ENTRY();
@@ -118,7 +99,7 @@ void Step::vOperandCPipeOutSet(void)
     
   Op* pOp = m_pJob->m_pOp;
   
-  pOp->vPipeOut_nextOp(*m_pJob->pLogicUnit_job()->m_xpOperandC,this,true);
+  pOp->vPipeToNextOp(*m_pJob->pLogicUnit_job()->m_xpOperandC,this,true);
   
   m_pJob->pLogicUnit_job()->m_xpOperandC = nullptr;
   

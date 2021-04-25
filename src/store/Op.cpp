@@ -228,6 +228,27 @@ void Op::vAddWorkDone(i8 iWorkDone)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append operand to specific operand                                         */
+/*----------------------------------------------------------------------------*/
+void Op::vAppend(Operand* pOperand, Task* pTriggeringTask, bool bSet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  if (m_bTraceOp)
+    vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
+           m_sOpNm.szStz(),
+           m_pStage->szStageNm(),
+           m_i_Node,
+           m_tPtnNo,
+           m_pPipelineJob,
+           "vPipeOut :"_Stz,
+           AM::pOperandName(pOperand),
+           pOperand);
+  
+  vAppendLeft(pOperand,pTriggeringTask,bSet);
+}
+
+/*----------------------------------------------------------------------------*/
 /* append operand to this op's operand queue                                  */
 /*----------------------------------------------------------------------------*/
 void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask, bool bSet)
@@ -1049,7 +1070,7 @@ Job* Op::pPipelineJob(void)
 /*----------------------------------------------------------------------------*/
 /* append operand to next op's operand queue                                  */
 /*----------------------------------------------------------------------------*/
-void Op::vPipeOut_nextOp(Operand* pOperand, Task* pTriggeringTask, bool bSet)
+void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask, bool bSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -1081,27 +1102,6 @@ void Op::vPipeOut_nextOp(Operand* pOperand, Task* pTriggeringTask, bool bSet)
     pOp->vAppendRight(pOperand,pTriggeringTask,bSet);
   else
     pOp->vAppendLeft(pOperand,pTriggeringTask,bSet);
-}
-
-/*----------------------------------------------------------------------------*/
-/* append operand to specific operand                                         */
-/*----------------------------------------------------------------------------*/
-void Op::vPipeOut_thisOp(Operand* pOperand, Task* pTriggeringTask, bool bSet)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  if (m_bTraceOp)
-    vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
-           m_sOpNm.szStz(),
-           m_pStage->szStageNm(),
-           m_i_Node,
-           m_tPtnNo,
-           m_pPipelineJob,
-           "vPipeOut :"_Stz,
-           AM::pOperandName(pOperand),
-           pOperand);
-  
-  vAppendLeft(pOperand,pTriggeringTask,bSet);
 }
 
 /*----------------------------------------------------------------------------*/

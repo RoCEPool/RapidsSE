@@ -34,7 +34,6 @@ void Step::vAddSteps_OperandB(void)
   vAddStep("OperandB[].get"_Stz,            &Step::vOperandBGet);
   vAddStep("OperandB[].isNotNull"_Stz,      &Step::vOperandBIsNotNull);
   vAddStep("OperandB[].isNull"_Stz,         &Step::vOperandBIsNull);
-  vAddStep("x OperandB[].pipeOut"_Stz,        &Step::vOperandBPipeOut);
   vAddStep("OperandB[].set"_Stz,            &Step::vOperandBSet);
 }
 
@@ -111,24 +110,6 @@ void Step::vOperandBIsNull(void)
   ENTRY();
   
   m_pDataStack->vPushInt(m_pJob->pLogicUnit_job()->m_xpOperandB.bIsNull() ? 1 : 0);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* OperandB[].pipeOut -- append operand onto next operator in pipeline         */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandBPipeOut(void)
-{
-  ENTRY();
-  
-  ASSERT(*m_pJob->pLogicUnit_job()->m_xpOperandB);
-  
-  Op* pOp = m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
-  
-  pOp->vPipeOut_nextOp(*m_pJob->pLogicUnit_job()->m_xpOperandB,this);
-  
-  m_pJob->pLogicUnit_job()->m_xpOperandB = nullptr;
   
   EXIT();
 }

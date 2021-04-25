@@ -196,7 +196,7 @@ void Step::vOpPipeOut(void)
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
 
-  pOp->vPipeOut_nextOp(pOperand,this);
+  pOp->vPipeToNextOp(pOperand,this);
 
   EXIT();
 }

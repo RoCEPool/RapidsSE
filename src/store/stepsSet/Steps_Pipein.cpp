@@ -30,7 +30,6 @@ void Step::vAddSteps_Pipein(void)
   vAddStep("PipeIn[].kind"_Stz,           &Step::vPipeinKind);
   vAddStep("PipeIn[].next"_Stz,           &Step::vPipeinNext);
   vAddStep("PipeIn[].peek"_Stz,           &Step::vPipeinPeek);
-  vAddStep("x PipeIn[].pipeOut"_Stz,        &Step::vPipeinPipeOut);
   vAddStep("PipeIn[].pipeToOutput"_Stz,   &Step::vPipeinPipeToOutput);
   vAddStep("PipeIn[].set"_Stz,            &Step::vPipeinSet);
   vAddStep("PipeIn[].writeProfile"_Stz,   &Step::vPipeinWriteProfile);
@@ -172,24 +171,6 @@ void Step::vPipeinPeek(void)
   ENTRY();
   
   m_pDataStack->vPushInt(m_pJob->m_pOp->bPeekQueue() ? true : false);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* PipeIn[].pipeOut -- append operand onto next operator in pipeline          */
-/*----------------------------------------------------------------------------*/
-void Step::vPipeinPipeOut(void)
-{
-  ENTRY();
-  
-  ASSERT(*m_pJob->pLogicUnit_job()->m_xpPipein);
-  
-  Op* pOp = m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
-
-  pOp->vPipeOut_nextOp(*m_pJob->pLogicUnit_job()->m_xpPipein,this);
-  
-  m_pJob->pLogicUnit_job()->m_xpPipein = nullptr;
   
   EXIT();
 }
