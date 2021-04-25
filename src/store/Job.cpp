@@ -575,8 +575,8 @@ bool Job::bIsPipeline(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  if (AM::szJobName(this)->bSame("pipeline"_Stz) ||
-      AM::szJobName(this)->bSame("pipelineLocal"_Stz))
+  if (AM::JOB::szJobNm(this)->bSame("pipeline"_Stz) ||
+      AM::JOB::szJobNm(this)->bSame("pipelineLocal"_Stz))
     return true;
   else
     return false;

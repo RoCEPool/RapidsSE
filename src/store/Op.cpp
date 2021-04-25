@@ -209,7 +209,7 @@ void Op::vAckJob(void)
     
   if (m_bTraceOp)
     vTrace("Op %s (%s (N%lld) (P%02lld)): acking pipeline job\n"_Stz,
-           AM::szJobName(m_pOpJob),
+           AM::JOB::szJobNm(m_pOpJob),
            m_pStage->szStageNm(),
            m_i_Node,
            m_tPtnNo);
@@ -1064,27 +1064,23 @@ void Op::vPipeOut_nextOp(Operand* pOperand, Task* pTriggeringTask, bool bSet)
            AM::pOperandName(pOperand),
            pOperand);
   
-  if (AM::szJobName(m_pOpJob)->bSame("xmit"_Stz)) {
-    //vSendXmitOperand(pOperand, pTriggeringTask, bSet);
-    NEVER_REACH;
-  }
-  else {
+  RASSERT((AM::JOB::szJobNm(m_pOpJob)->bSame(szOpNm())));
+  
+  RASSERT(! szOpNm()->bSame("xmit"_Stz));
+  
     
-    // get the next stage the xmit is supposed to xmit to
-    Stage* pStage = m_pPipeline->pGet(m_iNextStage);
-  
-    // get the op to forward to depending on the cross topology
-    Op* pOp = pStage->pPipeOutOp(m_eCrossTopo,
-                                 m_i_Node,
-                                 m_tPtnNo,
-                                 m_iNextOp);
-    if (m_bAppendRight)
-      pOp->vAppendRight(pOperand,pTriggeringTask,bSet);
-    else
-      pOp->vAppendLeft(pOperand,pTriggeringTask,bSet);
-   
-   }
-  
+  // get the next stage the xmit is supposed to xmit to
+  Stage* pStage = m_pPipeline->pGet(m_iNextStage);
+
+  // get the op to forward to depending on the cross topology
+  Op* pOp = pStage->pPipeOutOp(m_eCrossTopo,
+                               m_i_Node,
+                               m_tPtnNo,
+                               m_iNextOp);
+  if (m_bAppendRight)
+    pOp->vAppendRight(pOperand,pTriggeringTask,bSet);
+  else
+    pOp->vAppendLeft(pOperand,pTriggeringTask,bSet);
 }
 
 /*----------------------------------------------------------------------------*/

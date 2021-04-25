@@ -549,7 +549,7 @@ void Task::vInitExeContext(void)
   
   Stz* szProfileNm = AM::szJobOpNm(m_pJob);
   if (!szProfileNm)
-    szProfileNm = AM::szJobNm(m_pJob);
+    szProfileNm = AM::JOB::szJobNm(m_pJob);
   
   m_pProfile = new Profile(szProfileNm);
 }

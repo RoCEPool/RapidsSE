@@ -326,7 +326,7 @@ void Pipeline::vSetupJob(void)
     for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
       Op* pOp = pStream->pGet(i_Op);
       
-      if (AM::szJobName(pOp->pOpJob())->bSame("limitOp"_Stz)) {
+      if (AM::JOB::szJobNm(pOp->pOpJob())->bSame("limitOp"_Stz)) {
         m_bPulsedLimit = true;
         break;
       }
@@ -342,7 +342,7 @@ void Pipeline::vSetupJob(void)
     for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
       Op* pOp = pStream->pGet(i_Op);
 
-      if (AM::szJobName(pOp->pOpJob())->bSame("scan"_Stz)) {
+      if (AM::JOB::szJobNm(pOp->pOpJob())->bSame("scan"_Stz)) {
         m_pOpToPulse = pOp;
         pOp->vPulsedLimit(true);
         break;
