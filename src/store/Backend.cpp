@@ -551,16 +551,26 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
     else if (CountExpr::bIsOfType(pOrdinalExpr)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // isDistinct
-      bool bIsDistinct = AggregateExpr::bIsDistinct(pOrdinalExpr);
+      // isCountAll
+      bool bIsCountAll = CountExpr::bIsCountAll(pOrdinalExpr);
 
-      sPipeline->vCatSprint(
-          " count "_Stz);
-
-      // ALKA: to do in exprEval
-      if (bIsDistinct) {
+      if (bIsCountAll) {
         sPipeline->vCatSprint(
-            " distinct "_Stz);
+            " countAll "_Stz);
+      }
+      else {
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // isDistinct
+        bool bIsDistinct = AggregateExpr::bIsDistinct(pOrdinalExpr);
+
+        sPipeline->vCatSprint(
+            " count "_Stz);
+
+        // ALKA: to do in exprEval
+        if (bIsDistinct) {
+          sPipeline->vCatSprint(
+              " distinct "_Stz);
+        }
       }
 
       bHasAgg = true;

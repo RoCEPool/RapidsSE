@@ -176,48 +176,6 @@ void ExprEval::vAddArithmetic(Stz* szAsmBuffer, Token* pTkn, Column* pColumn) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* add EO code for count                                                      */
-/*----------------------------------------------------------------------------*/
-eEC ExprEval::eAddCount(eCT eColumnType, i8 iColumn)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
-
-  // switch on column type
-  switch (eColumnType) {
-    case CT_INTEGER:
-    case CT_DECIMAL:
-    case CT_FLOAT:
-      StrLib::vSprintCat(m_sProjectAsm, "  EO_ISNULL\n"_Stz);
-      //StrLib::vSprintCat(m_sProjectAsm, "  EO_JMP_TRUE COUNT_DONE\n"_Stz);
-      StrLib::vSprintCat(m_sProjectAsm, "  EO_RETURN_TRUE\n"_Stz);
-      StrLib::vSprintCat(m_sProjectAsm, "  EO_PUSH_DEVROW_DST\n"_Stz);
-      StrLib::vSprintCat(m_sProjectAsm, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, iColumn);
-      StrLib::vSprintCat(m_sProjectAsm, "  EO_INTEGER 1\n"_Stz);
-      StrLib::vSprintCat(m_sProjectAsm, "  EO_ADD_INTINT\n"_Stz);
-      StrLib::vSprintCat(m_sProjectAsm, "  EO_PUSH_DEVROW_DST\n"_Stz);
-      StrLib::vSprintCat(m_sProjectAsm, "  EO_DEVROW_POPCOLI %lld\n"_Stz, iColumn);
-      //StrLib::vSprintCat(m_sProjectAsm, "  Label COUNT_DONE\n"_Stz);
-      return EC_NONE;
-
-    case CT_BOOLEAN:
-    case CT_CHAR:
-    case CT_DATE:
-    case CT_INTERVAL_DT:
-    case CT_INTERVAL_YM:
-    case CT_TIME:
-    case CT_TIMESTAMP:
-    case CT_VARCHAR:
-    case CT_UNKNOWN:
-      return EC_INVALID_COMMAND;
-
-    default:
-      RASSERT(0);
-  }
-
-  return EC_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
 /* add EO code for dates                                                      */
 /*----------------------------------------------------------------------------*/
 eEC ExprEval::eAddDate(Stz* szAsmBuffer, Token* pTkn, Column* pColumnExpr) {
@@ -453,13 +411,62 @@ void ExprEval::vAddRelational(Stz* szAsmBuffer, Token* pTkn)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add EO code for sum                                                        */
+/* add EO code for count                                                      */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval::eAddSum(Stz* sAsmBuffer, eCT eColumnType)
+eEC ExprEval::eGenerateCount(Stz* szAsmBuffer)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
-  // pop two param types
+  // pop the param type
+  eDM eParamType = (eDM)m_xTypeStack.iPop();
+
+  // push result type
+  m_xTypeStack.vPush(DM_INT);
+
+  // generate code
+  StrLib::vSprintCat(szAsmBuffer, "  EO_ISNULL\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_JMP_TRUE COUNT_DONE\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_INTEGER 1\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_ADD_INTINT\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_POPCOLI %lld\n"_Stz, m_iDstColumn);
+  StrLib::vSprintCat(szAsmBuffer, "  Label COUNT_DONE\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  DeleteLabel COUNT_DONE\n"_Stz);
+
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add EO code for count(*)                                                   */
+/*----------------------------------------------------------------------------*/
+eEC ExprEval::eGenerateCountAll(Stz* szAsmBuffer)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
+
+  // push result type
+  m_xTypeStack.vPush(DM_INT);
+
+  // generate code for count(*)
+  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_INTEGER 1\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_ADD_INTINT\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_POPCOLI %lld\n"_Stz, m_iDstColumn);
+
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate EO code for sum                                                   */
+/*----------------------------------------------------------------------------*/
+eEC ExprEval::eGenerateSum(Stz* sAsmBuffer)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
+
+  // pop the param type
   eDM eParamType = (eDM)m_xTypeStack.iPop();
   eDM eResultType = eMathOp_SumResult[eParamType];
   eEO eCode = eMathOp_SumCode[eParamType];
@@ -523,6 +530,7 @@ eEC ExprEval::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec)
     if ( pTkn->bIsName() &&
          (pTkn->bSame("AVG"_Stz)   |
           pTkn->bSame("COUNT"_Stz) ||
+          pTkn->bSame("COUNTALL"_Stz) ||
           pTkn->bSame("MIN"_Stz)   ||
           pTkn->bSame("MAX"_Stz)   ||
           pTkn->bSame("SUM"_Stz))
@@ -761,6 +769,15 @@ eEC ExprEval::eExprEval(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Token
       continue;
     }
 
+    if (pTkn->bSame("COUNTALL"_Stz) ) {
+
+      eAggType = AG_ALL;
+      ASSERT(m_bHasAgg);
+
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
     if (pTkn->bSame("MIN"_Stz) ) {
 
       eAggType = AG_MIN;
@@ -850,17 +867,14 @@ eEC ExprEval::eGenerateColumnCode(Stz* szAsmBuffer, StreamDef* pStreamDefOut, Co
   eEC eError = EC_NONE;
 
   switch (eAggType) {
-//    case AG_CNT:
-//      eError = eAddCount(pColumn->eColumnType());
-//      break;
-//    case AG_MIN:
-//      eError = eAddMin(pColumn->eColumnType());
-//      break;
-//    case AG_MAX:
-//      eError = eAddMax(pColumn->eColumnType());
-//      break;
+    case AG_ALL:
+      eError = eGenerateCountAll(szAsmBuffer);
+      break;
+    case AG_CNT:
+      eError = eGenerateCount(szAsmBuffer);
+      break;
     case AG_SUM:
-      eError = eAddSum(szAsmBuffer, pColumn->eColumnType());
+      eError = eGenerateSum(szAsmBuffer);
       break;
     default:
       vAddPopCol(szAsmBuffer, pColumn->eColumnType());
