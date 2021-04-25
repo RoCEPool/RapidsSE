@@ -21,7 +21,7 @@ struct SizeHeap {
   
   Word* m_pDispatchWord;    // dispatch word on receive
   
-  Word* m_pReceivedWord;    // word to execute upon recv()
+  Word* m_pPostRecvWord;    // word to execute after receiving the object
   
   Word* m_pPreSendWord;     // word to execute prior to sending the object
 

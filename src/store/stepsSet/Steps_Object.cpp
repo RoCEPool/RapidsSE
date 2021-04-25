@@ -119,7 +119,7 @@ void Step::vObjectPostRecvWordFetch(void)
   
   eCN eClassNo = pObject->eGetClassNo();
   
-  Word* pWord = gxaSizeHeap[eClassNo].m_pReceivedWord;
+  Word* pWord = gxaSizeHeap[eClassNo].m_pPostRecvWord;
   
   m_pDataStack->vPushPtr(pWord);
   
