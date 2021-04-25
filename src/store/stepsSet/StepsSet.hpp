@@ -964,9 +964,9 @@ public:
   void vObjectDispatchWordFetch(void);
   void vObjectFetch(void);
   void vObjectMagicMark(void);
-  void vObjectReceivedWordFetch(void);
+  void vObjectPostRecvWordFetch(void);
   void vObjectRecvArgsFetch(void);
-  void vObjectSendWordFetch(void);
+  void vObjectPreSendWordFetch(void);
   void vObjectStore(void);
 
   // olist (originator list)

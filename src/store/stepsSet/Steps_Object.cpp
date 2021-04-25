@@ -20,9 +20,9 @@ void Step::vAddSteps_Object(void)
   vAddStep("object.dispatchWord@"_Stz,&Step::vObjectDispatchWordFetch);
   vAddStep("object@"_Stz,             &Step::vObjectFetch);
   vAddStep("object.magic!"_Stz,       &Step::vObjectMagicMark);
-  vAddStep("object.receivedWord@"_Stz,&Step::vObjectReceivedWordFetch);
+  vAddStep("Object.postRecvWord@"_Stz,&Step::vObjectPostRecvWordFetch);
+  vAddStep("object.preSendWord@"_Stz, &Step::vObjectPreSendWordFetch);
   vAddStep("object.recvArgs@"_Stz,    &Step::vObjectRecvArgsFetch);
-  vAddStep("object.sendWord@"_Stz,    &Step::vObjectSendWordFetch);
   vAddStep("object!"_Stz,             &Step::vObjectStore);
 }
 
@@ -109,9 +109,9 @@ void Step::vObjectMagicMark(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* object.receivedWord@ -- fetch received word for class of object            */
+/* Object.postRecvWord@ -- fetch received word for class of object            */
 /*----------------------------------------------------------------------------*/
-void Step::vObjectReceivedWordFetch(void)
+void Step::vObjectPostRecvWordFetch(void)
 {
   ENTRY();
   
@@ -145,9 +145,9 @@ void Step::vObjectRecvArgsFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* object.sendWord@ -- fetch send word for class of object                    */
+/* object.preSendWord@ -- fetch send word for class of object                    */
 /*----------------------------------------------------------------------------*/
-void Step::vObjectSendWordFetch(void)
+void Step::vObjectPreSendWordFetch(void)
 {
   ENTRY();
   

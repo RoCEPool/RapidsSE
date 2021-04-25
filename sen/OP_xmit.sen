@@ -9,7 +9,13 @@
 /*----------------------------------------------------------------------------*/
 : PipeIn[].sendTo
 
-  PipeIn[]\clear op::sendTo
+  PipeIn[]\clear locals| pObject |
+  
+  pObject object.preSendWord@ if
+    pObject object.preSendWord@ execute
+  then
+  
+  pObject Op::sendTo
   
   // calling op_loop continues
   true
