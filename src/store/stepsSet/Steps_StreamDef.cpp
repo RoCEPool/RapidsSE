@@ -42,7 +42,7 @@ void Step::vAddSteps_StreamDef(void)
   vAddStep("StreamDef[].newToCsvStream"_Stz,  &Step::vStreamDefNewToCsv);
   vAddStep("StreamDef::parse"_Stz,            &Step::vStreamDefParse);
   vAddStep("StreamDef[].pipeIn"_Stz,          &Step::vStreamDefPipeIn);
-  vAddStep("StreamDef[].pipeOut"_Stz,         &Step::vStreamDefPipeOut);
+  vAddStep("x StreamDef[].pipeOut"_Stz,         &Step::vStreamDefPipeOut);
   vAddStep("StreamDef[].print"_Stz,           &Step::vStreamDefPrint);
   vAddStep("StreamDef[].rowSize"_Stz,         &Step::vStreamDefRowSize);
   vAddStep("StreamDef[].set"_Stz,             &Step::vStreamDefSet);

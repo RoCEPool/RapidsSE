@@ -59,7 +59,7 @@ void Step::vAddSteps_InfoSet(void)
   vAddStep("InfoSet[].nextRow"_Stz,          &Step::vInfoSetNextRow);
   vAddStep("InfoSet[].opInfoset@"_Stz,       &Step::vInfoSetOpInfosetFetch);
   vAddStep("InfoSet[].opInfoset!"_Stz,       &Step::vInfoSetOpInfosetStore);
-  vAddStep("InfoSet[].pipeOut"_Stz,          &Step::vInfoSetPipeOut);
+  vAddStep("x InfoSet[].pipeOut"_Stz,          &Step::vInfoSetPipeOut);
   vAddStep("InfoSet[].rdCsvChunk"_Stz,       &Step::vInfoSetRdCsvChunk);
   vAddStep("InfoSet[].set"_Stz,              &Step::vInfoSetSet);
   vAddStep("InfoSet[].writeCsv"_Stz,         &Step::vInfoSetWriteCsv);

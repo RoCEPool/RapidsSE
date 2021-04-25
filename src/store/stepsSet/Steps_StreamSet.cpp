@@ -64,7 +64,7 @@ void Step::vAddSteps_StreamSet(void)
   vAddStep("StreamSet[].name"_Stz,           &Step::vStreamSetName);
   vAddStep("StreamSet[].new"_Stz,            &Step::vStreamSetNew);
   vAddStep("StreamSet[].nextRow"_Stz,        &Step::vStreamSetNextRow);
-  vAddStep("StreamSet[].pipeOut"_Stz,        &Step::vStreamSetPipeOut);
+  vAddStep("x StreamSet[].pipeOut"_Stz,        &Step::vStreamSetPipeOut);
   vAddStep("StreamSet[].set"_Stz,            &Step::vStreamSetSet);
 }
 

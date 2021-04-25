@@ -27,7 +27,7 @@ void Step::vAddSteps_OperandOoO(void)
   vAddStep("OperandOoO[].delete"_Stz,      &Step::vOperandOoODelete);
   vAddStep("OperandOoO[].isNull"_Stz,      &Step::vOperandOoOIsNull);
   vAddStep("OperandOoO[].next"_Stz,        &Step::vOperandOoONext);
-  vAddStep("OperandOoO[].pipeOut"_Stz,     &Step::vOperandOoOPipeOut);
+  vAddStep("x OperandOoO[].pipeOut"_Stz,     &Step::vOperandOoOPipeOut);
   vAddStep("OperandOoO[].pipeToOutput"_Stz,&Step::vOperandOoOPipeToOutput);
   vAddStep("OperandOoO[].set"_Stz,         &Step::vOperandOoOSet);
 }
