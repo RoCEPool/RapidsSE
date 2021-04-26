@@ -1955,6 +1955,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       case EO_LT_BCDBCD: ArgNil(); // bcd == bcd
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA <= iTopB;
+        dLU3(EO_LE_INTINT,iTopA,iTopB,iRes);
+        *(++aiDstk) = iRes;
         break;//+endCase
       case EO_LT_BCDFLT: ArgNil(); // bcd == bcd
         break;//+endCase
@@ -1969,6 +1974,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_LT_FLTBCD: ArgNil(); // flt == bcd
         break;//+endCase
       case EO_LT_FLTFLT: ArgNil(); // flt == flt
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA <= iTopB;
+        dLU3(EO_LE_INTINT,iTopA,iTopB,iRes);
+        *(++aiDstk) = iRes;
         break;//+endCase
       case EO_LT_FLTINT: ArgNil(); // flt == int
         break;//+endCase

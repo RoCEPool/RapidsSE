@@ -38,6 +38,7 @@ namespace STORE
 
     s4K      m_sProjectAsm;
     s4K      m_sFilterAsm;
+    s4K      m_sAggInitAsm;
 
     s4K      m_sAsmGbyIdx;
     s4K      m_sPayLoadKey;
@@ -81,9 +82,11 @@ namespace STORE
 
     eEC eGenerateColumnCode(Stz* szAsmBuffer, StreamDef* pStreamDefOut, Column* pColumn, eAG eAggType);
 
-    eEC  eGenerateSum(Stz* sAsmBuffer);
     eEC  eGenerateCount(Stz* szAsmBuffer);
     eEC  eGenerateCountAll(Stz* szAsmBuffer);
+    eEC  eGenerateMin(Stz* sAsmBuffer, Stz* sAggInit);
+    eEC  eGenerateMax(Stz* sAsmBuffer, Stz* sAggInit);
+    eEC  eGenerateSum(Stz* sAsmBuffer, Stz* sAggInit);
 
     void vUpdateStreamDefOut(StreamDef* pStreamDefOut, Column* pColumn);
     Footer* aFooter(void);

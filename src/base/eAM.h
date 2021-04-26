@@ -60,6 +60,9 @@ enum eAM // ASM Macros
   /*    */ AM_ROW_FILTER_END,
   /*    */ AM_ROW_FILTER_ROWS,
 
+  /*    */ AM_ROWBUFFER_AGGINIT,
+  /*    */ AM_ROWBUFFER_AGGINIT_END,
+
   /*    */ AM_ROW_PROJECT_COLUMNS,
   /*    */ AM_ROW_PROJECT_COLUMNS_AGG,
   /*    */ AM_ROW_PROJECT_END,
@@ -127,6 +130,9 @@ static Stz* aAM[]
 
     /*    */ "ROW_FILTER_END"_Stz,
     /*    */ "ROW_FILTER_ROWS"_Stz,
+
+    /*    */ "ROWBUFFER_AGGINIT"_Stz,
+    /*    */ "ROWBUFFER_AGGINIT_END"_Stz,
 
     /*    */ "ROW_PROJECT_COLUMNS"_Stz,
     /*    */ "ROW_PROJECT_COLUMNS_AGG"_Stz,
