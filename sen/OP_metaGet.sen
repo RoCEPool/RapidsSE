@@ -5,6 +5,22 @@
 " OP_metaGet.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_METAGET ...                                                 */
+/*----------------------------------------------------------------------------*/
+: metaGet_getTable \handler
+
+  <tableNm> .
+  
+  // create an instance of class MetaGet : public Operand
+  
+  // set the table name in MetaGet instance
+  
+  // pipeout the MetaGet instance
+  
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* execute for metaGet request                        (on node where spawned) */
 /*----------------------------------------------------------------------------*/
 : metaGet_req \operator
@@ -12,6 +28,8 @@
   LogReqEntry SEED_REQ
 
   op__topology
+
+  find: metaGet_getTable   ZK_METAGET   op[].handler!
 
   op__loop
 
@@ -23,7 +41,7 @@
 /*----------------------------------------------------------------------------*/
 /*                            - Definition -                                  */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: metaGet :: metaGet ;
+cmdSyntax: metaGet :: metaGet <tableNm> ;
 
 : metaGet_cmdTags _cmdTags tagCopy: op_tags
   tags{ <cmdDesc> = "--desc for op--" }
