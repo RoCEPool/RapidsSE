@@ -541,7 +541,7 @@ eEC LogicUnit::eGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut)
   oFile.vPrint(LogicCompiler::szGetMacro(AM_HANDLER_STREAMDEF_GBY, &oTagSet, sMacro));
 
   oFile.vPrint("  // *** begin generated code: m_sAsmGbyIdx *** //\n"_Stz);
-  oFile.vPrint("%s"_Stz, pExprEval->m_sAsmGbyIdx.azChar());
+  //oFile.vPrint("%s"_Stz, pExprEval->m_sAsmGbyIdx.azChar());
   oFile.vPrint("  // *** end generated code: m_sAsmGbyIdx *** //\n"_Stz);
 
   oFile.vPrint(LogicCompiler::szGetMacro(AM_HANDLER_STREAMDEF_GBY_END, &oTagSet, sMacro));

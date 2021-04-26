@@ -40,7 +40,7 @@ namespace STORE
     s4K      m_sFilterAsm;
     s4K      m_sAggInitAsm;
 
-    s4K      m_sAsmGbyIdx;
+    s4K      m_sGbyIdxAsm;
     s4K      m_sPayLoadKey;
     s4K      m_sPayLoadStore;
     s4K      m_sPayLoadToBuffer;

@@ -63,8 +63,8 @@ ExprEval::ExprEval(void)
   
   //m_sProjectAsm;
   //m_sFilterAsm
+  //m_sGbyIdxAsm;
 
-  //m_sAsmGbyIdx;
   //m_sAsmGbyKey;
   //m_sPayLoadKey;
   //m_sPayLoadStore;
@@ -423,7 +423,7 @@ eEC ExprEval::eGenerateCount(Stz* szAsmBuffer, Stz* sAggInit)
   // push result type
   m_xTypeStack.vPush(DM_INT);
 
-  / generate code for agg initialization
+  // generate code for agg initialization
   StrLib::vSprintCat(sAggInit, "  EO_INTEGER %lld\n"_Stz, 0);
   StrLib::vSprintCat(sAggInit, "  EO_PUSH_DEVROW_DST\n"_Stz);
   StrLib::vSprintCat(sAggInit, "  EO_DEVROW_POPCOLI %lld\n"_Stz, m_iDstColumn);
@@ -710,6 +710,7 @@ eEC ExprEval::eExprEval(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Token
   sColumnNm.vSprint("col%lld"_Stz, m_iDstColumn+1);
   pColumnExpr->vColumnNm(sColumnNm);
   bool bProject = false;
+  bool bGroupBy = false;
 
   Stz* szAsmBuffer;
 
@@ -926,7 +927,9 @@ eEC ExprEval::eExprEval(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Token
 
     // is it a GROUPBY ?
     if (pTkn->bSame("GROUPBY"_Stz) ) {
-       RASSERT(0);
+      bGroupBy = true;
+
+      ASSERT(m_bHasGby);
 
       pTkn = pTknVec->pNextToken();
       continue;
