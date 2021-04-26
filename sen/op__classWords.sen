@@ -4,9 +4,9 @@
 
 " op__classWords.sen" .verbose
 
-  find: job.dispatch CN_JOB object.postRecvWord!
+  find: job.dispatch CN_JOB class::postRecvWord!
 
-  find: xmitOperand.dispatch CN_XMITOPERAND object.postRecvWord!
+  find: xmitOperand.dispatch CN_XMITOPERAND class::postRecvWord!
 
 /*============================================================================*/
 /* end                                                                        */

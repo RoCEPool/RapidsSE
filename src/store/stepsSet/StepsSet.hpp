@@ -136,6 +136,8 @@ public:
 
   // class
   void vClassName(void);
+  void vClassPostRecvWordStore(void);
+  void vClassPreSendWordStore(void);
 
   // column
   void vColumnIsNullableFetch(void);
@@ -964,9 +966,7 @@ public:
   void vObjectFetch(void);
   void vObjectMagicMark(void);
   void vObjectPostRecvWordFetch(void);
-  void vObjectPostRecvWordStore(void);
   void vObjectPreSendWordFetch(void);
-  void vObjectPreSendWordStore(void);
   void vObjectStore(void);
 
   // olist (originator list)
