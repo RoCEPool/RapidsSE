@@ -31,7 +31,7 @@ static eDM eMathOp_MaxResult[DM_ENUMS] =
 
 static eEO eMathOp_MaxCode[DM_ENUMS] =
     //  NONE     BCD           BOL           DTE           FLT           INT           IVL           IVY       TME           TSP           VCH           UNK
-    { EO_NONE, EO_LT_BCDBCD, EO_NONE/*X*/, EO_GT_DTEDTE, EO_GT_FLTFLT, EO_GT_INTINT, EO_NONE/*X*/, EO_NONE/*X*/,EO_GT_TMETME, EO_GT_TSPTSP, EO_GT_VCHVCH, EO_NONE/*X*/ };
+    { EO_NONE, EO_GT_BCDBCD, EO_NONE/*X*/, EO_GT_DTEDTE, EO_GT_FLTFLT, EO_GT_INTINT, EO_NONE/*X*/, EO_NONE/*X*/,EO_GT_TMETME, EO_GT_TSPTSP, EO_GT_VCHVCH, EO_NONE/*X*/ };
 
 static eDM eMathOp_MinResult[DM_ENUMS] =
   //  NONE     BCD     BOL           DTE      FLT    INT     IVL           IVY          TME     TSP     VCH     UNK

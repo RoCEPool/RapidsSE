@@ -81,7 +81,7 @@ void LogicUnit::vCollectOpcode(void)
 
     if (m_pTkn->bSame(aEO[i_OpCode])) {
 
-      vTrace("Tkn: %s\n"_Stz, m_pTkn->azChars());
+      //vTrace("Tkn: %s\n"_Stz, m_pTkn->azChars());
 
       // debug
       char* azEname;

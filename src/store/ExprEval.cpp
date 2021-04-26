@@ -460,6 +460,58 @@ eEC ExprEval::eGenerateCountAll(Stz* szAsmBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add EO code for max                                                        */
+/*----------------------------------------------------------------------------*/
+eEC ExprEval::eGenerateMax(Stz* szAsmBuffer, Stz* sAggInit)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
+
+  // pop the param type
+  eDM eParamType = (eDM)m_xTypeStack.iPop();
+  eEO eCode = eMathOp_MaxCode[eParamType];
+
+  // get the min value
+  i8 iMinValue = iMathOp_MinValue[eParamType];
+
+  // push result type
+  m_xTypeStack.vPush(eMathOp_MaxResult[eParamType]);
+
+  // generate code for agg initialization
+  StrLib::vSprintCat(sAggInit, "  EO_INTEGER %lld\n"_Stz, iMinValue);
+  StrLib::vSprintCat(sAggInit, "  EO_PUSH_DEVROW_DST\n"_Stz);
+  StrLib::vSprintCat(sAggInit, "  EO_DEVROW_POPCOLI %lld\n"_Stz, m_iDstColumn);
+
+  // generate code for agg max
+  StrLib::vSprintCat(szAsmBuffer, "  EO_DUP\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_ISNULL\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_JMP_FALSE CONTINUE_MAX\n"_Stz);
+
+  StrLib::vSprintCat(szAsmBuffer, "  EO_POP\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_JMP MAX_DONE\n"_Stz);
+
+  StrLib::vSprintCat(szAsmBuffer, "  Label CONTINUE_MAX\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  DeleteLabel CONTINUE_MAX\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_DUP\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
+  StrLib::vSprintCat(szAsmBuffer, "  %s\n"_Stz, aEO[eCode]);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_JMP_TRUE NEW_MAX\n"_Stz);
+
+  StrLib::vSprintCat(szAsmBuffer, "  EO_POP\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_JMP MAX_DONE\n"_Stz);
+
+  StrLib::vSprintCat(szAsmBuffer, "  Label NEW_MAX\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  DeleteLabel NEW_MAX\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_POPCOLI %lld\n"_Stz, m_iDstColumn);
+
+  StrLib::vSprintCat(szAsmBuffer, "  Label MAX_DONE\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  DeleteLabel MAX_DONE\n"_Stz);
+
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
 /* add EO code for min                                                        */
 /*----------------------------------------------------------------------------*/
 eEC ExprEval::eGenerateMin(Stz* szAsmBuffer, Stz* sAggInit)
@@ -474,7 +526,7 @@ eEC ExprEval::eGenerateMin(Stz* szAsmBuffer, Stz* sAggInit)
   i8 iMaxValue = iMathOp_MaxValue[eParamType];
 
   // push result type
-  m_xTypeStack.vPush(DM_INT);
+  m_xTypeStack.vPush(eMathOp_MinResult[eParamType]);
 
   // generate code for agg initialization
   StrLib::vSprintCat(sAggInit, "  EO_INTEGER %lld\n"_Stz, iMaxValue);
@@ -932,6 +984,9 @@ eEC ExprEval::eGenerateColumnCode(Stz* szAsmBuffer, StreamDef* pStreamDefOut, Co
       break;
     case AG_MIN:
       eError = eGenerateMin(szAsmBuffer,m_sAggInitAsm);
+      break;
+    case AG_MAX:
+      eError = eGenerateMax(szAsmBuffer,m_sAggInitAsm);
       break;
     case AG_SUM:
       eError = eGenerateSum(szAsmBuffer, m_sAggInitAsm);
