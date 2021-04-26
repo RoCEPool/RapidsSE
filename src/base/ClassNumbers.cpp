@@ -23,7 +23,7 @@ eCN BASE::_eClassNo(i8 iClassNo)
 {
   eCN eClassNo = (eCN)iClassNo;
   
-  ASSERT(eClassNo >= CN_NONE && ClassNo <= CN_ENUMS);
+  ASSERT(eClassNo >= CN_NONE && eClassNo <= CN_ENUMS);
   
   return eClassNo;
 }
