@@ -4,11 +4,24 @@
 #pragma once
 
 /*----------------------------------------------------------------------------*/
-/* iAddII: integer + integer                                                  */
+/* iMathLib_Add_INTINT: integer + integer                                     */
 /*----------------------------------------------------------------------------*/
 inline i8 iMathLib_Add_INTINT(i8 iValue1, i8 iValue2)
 {
   i8 iResult = iValue1 + iValue2;
+  return iResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* iMathLib_Add_FLTFLT: float + float                                         */
+/*----------------------------------------------------------------------------*/
+inline i8 iMathLib_Add_FLTFLT(i8 iValue1, i8 iValue2)
+{
+  d8 dValue1 = *(d8*)&iValue1;
+  d8 dValue2 = *(d8*)&iValue2;
+  d8 dResult = dValue1 + dValue2;
+  i8 iResult = *(d8*)&dResult;
+
   return iResult;
 }
 

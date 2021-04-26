@@ -224,6 +224,7 @@ namespace OBLIQUE
     {
     public:
       static bool bHasTag(Job* pJob, Stz* szTagNm);
+      static Stz* szJobNm(Job* pJob);
     };
   
     class LOG
@@ -471,8 +472,6 @@ namespace OBLIQUE
                                         i8 iNde, tPN tPtnNo);
     
     static Job* pNewJobOp(Op* pOp, ReqTuple* pReqTuple);
-    
-    static Stz* szJobName(Job* pJob);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static Stz* pOperandName(Operand* pOperand);

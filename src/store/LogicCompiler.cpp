@@ -892,6 +892,7 @@ void LogicCompiler::v_DynPreliminary(void)
   "\n  typedef char i1;"
   "\n  typedef unsigned short u2;"
   "\n  typedef long long i8;"
+  "\n  typedef double d8;"
   "\n  typedef unsigned long long m8;"
   "\n  typedef unsigned long long u8;"
   "\n  typedef char Stz;"

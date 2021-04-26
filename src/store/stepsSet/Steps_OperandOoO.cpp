@@ -27,7 +27,6 @@ void Step::vAddSteps_OperandOoO(void)
   vAddStep("OperandOoO[].delete"_Stz,      &Step::vOperandOoODelete);
   vAddStep("OperandOoO[].isNull"_Stz,      &Step::vOperandOoOIsNull);
   vAddStep("OperandOoO[].next"_Stz,        &Step::vOperandOoONext);
-  vAddStep("OperandOoO[].pipeOut"_Stz,     &Step::vOperandOoOPipeOut);
   vAddStep("OperandOoO[].pipeToOutput"_Stz,&Step::vOperandOoOPipeToOutput);
   vAddStep("OperandOoO[].set"_Stz,         &Step::vOperandOoOSet);
 }
@@ -99,24 +98,6 @@ void Step::vOperandOoONext(void)
     m_pDataStack->vPushInt(false);
   else
     m_pDataStack->vPushInt(true);
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* OperandOoO[].pipeOut -- append operand onto next operator in pipeline      */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandOoOPipeOut(void)
-{
-  ENTRY();
-  
-  ASSERT(*m_pJob->pLogicUnit_job()->m_xpOperandOoO);
-  
-  Op* pOp = m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
-
-  pOp->vPipeOut_nextOp(*m_pJob->pLogicUnit_job()->m_xpOperandOoO,this);
-  
-  m_pJob->pLogicUnit_job()->m_xpOperandOoO = nullptr;
-  
   EXIT();
 }
 

@@ -64,7 +64,6 @@ void Step::vAddSteps_StreamSet(void)
   vAddStep("StreamSet[].name"_Stz,           &Step::vStreamSetName);
   vAddStep("StreamSet[].new"_Stz,            &Step::vStreamSetNew);
   vAddStep("StreamSet[].nextRow"_Stz,        &Step::vStreamSetNextRow);
-  vAddStep("StreamSet[].pipeOut"_Stz,        &Step::vStreamSetPipeOut);
   vAddStep("StreamSet[].set"_Stz,            &Step::vStreamSetSet);
 }
 
@@ -873,24 +872,6 @@ void Step::vStreamSetNextRow(void)
   ASSERT(pRow);
   
   m_pDataStack->vPushPtr(pStreamSet->pNextRow(pRow));
-}
-
-/*----------------------------------------------------------------------------*/
-/* StreamSet[].pipeOut -- pipeout infoset                                     */
-/*----------------------------------------------------------------------------*/
-void Step::vStreamSetPipeOut(void)
-{
-  ENTRY();
-  
-  ASSERT(*m_pJob->pLogicUnit_job()->m_xpStreamSet);
-  
-  Op* pOp = m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
-  
-  pOp->vPipeOut_nextOp(*m_pJob->pLogicUnit_job()->m_xpStreamSet,this);
-  
-  m_pJob->pLogicUnit_job()->m_xpStreamSet = nullptr;
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

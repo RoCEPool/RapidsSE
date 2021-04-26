@@ -160,7 +160,7 @@ void AM::DEMON::vPipeTo(Stz* szDemonNm, RowBuffer* pRowBuffer)
 
   Task* pThisTask = AM::pThisTLSTask();
   
-  pOp0->vPipeOut_thisOp(pRowBuffer,pThisTask);
+  pOp0->vAppend(pRowBuffer,pThisTask);
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -182,6 +182,14 @@ bool AM::JOB::bHasTag(Job* pJob, Stz* szTagNm)
     return false;
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get job name                                                               */
+/*----------------------------------------------------------------------------*/
+Stz* AM::JOB::szJobNm(Job* pJob)
+{
+  return pJob->szJobNm();
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -915,11 +923,6 @@ void AM::vAppendJobTags(Job* pJob, TagSet* pTagSet)
 eCN AM::eJobClass(Job* pJob)
 {
   return pJob->eGetClassNo();
-}
-
-Stz* AM::szJobNm(Job* pJob)
-{
-  return pJob->szJobNm();
 }
 
 Stz* AM::szJobOpNm(Job* pJob)
@@ -1989,7 +1992,6 @@ InternalTables* AM::pInternalTables(void) {
   return gpAttachMap->m_pInternalTables;
 }
 
-Stz* AM::szJobName(Job* pJob)    { return pJob->szJobNm();                      }
 i8   AM::iJobUniqueId(Job* pJob) { return pJob->iJobId();                     }
 
 void AM::vPrintGlobals(void)

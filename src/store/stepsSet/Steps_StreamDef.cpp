@@ -42,7 +42,6 @@ void Step::vAddSteps_StreamDef(void)
   vAddStep("StreamDef[].newToCsvStream"_Stz,  &Step::vStreamDefNewToCsv);
   vAddStep("StreamDef::parse"_Stz,            &Step::vStreamDefParse);
   vAddStep("StreamDef[].pipeIn"_Stz,          &Step::vStreamDefPipeIn);
-  vAddStep("StreamDef[].pipeOut"_Stz,         &Step::vStreamDefPipeOut);
   vAddStep("StreamDef[].print"_Stz,           &Step::vStreamDefPrint);
   vAddStep("StreamDef[].rowSize"_Stz,         &Step::vStreamDefRowSize);
   vAddStep("StreamDef[].set"_Stz,             &Step::vStreamDefSet);
@@ -283,24 +282,6 @@ void Step::vStreamDefPipeIn(void)
   m_pJob->pLogicUnit_job()->m_xpPipein = nullptr;
     
   m_pJob->pLogicUnit_job()->m_xpStreamDef = _pStreamDef(pOperand);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* StreamDef[].pipeOut -- append streamDef onto next operator in pipeline     */
-/*----------------------------------------------------------------------------*/
-void Step::vStreamDefPipeOut(void)
-{
-  ENTRY();
-  
-  ASSERT(*m_pJob->pLogicUnit_job()->m_xpStreamDef);
-  
-  Op* pOp = m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
-  
-  pOp->vPipeOut_nextOp(*m_pJob->pLogicUnit_job()->m_xpStreamDef,this);
-  
-  m_pJob->pLogicUnit_job()->m_xpStreamDef = nullptr;
   
   EXIT();
 }

@@ -739,33 +739,6 @@ void Engine::vDeleteSession(Session* pSession)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set dispatch words for receiver                                            */
-/*----------------------------------------------------------------------------*/
-void Engine::vDispatchWords(void)
-{
-  Word* pWord;
-  
-  pWord = AM::WORD::pFind("job.spawn_received"_Stz);
-  RASSERT(pWord);
-  gxaSizeHeap[CN_JOB].m_pDispatchWord = pWord;
-
-  pWord = AM::WORD::pFind("xmitOperand.pipeOut"_Stz);
-  RASSERT(pWord);
-  gxaSizeHeap[CN_XMITOPERAND].m_pDispatchWord = pWord;
-  gxaSizeHeap[CN_XMITOPERAND].m_nRecvArgs = 1;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  pWord = AM::WORD::pFind("job.dispatch"_Stz);
-  RASSERT(pWord);
-  gxaSizeHeap[CN_JOB].m_pReceivedWord = pWord;
-  
-  pWord = AM::WORD::pFind("XmitOperand.dispatch"_Stz);
-  RASSERT(pWord);
-  gxaSizeHeap[CN_XMITOPERAND].m_pReceivedWord = pWord;
-}
-
-/*----------------------------------------------------------------------------*/
 /* translate debug flag env variables                                         */
 /*----------------------------------------------------------------------------*/
 void Engine::vEnvFlags(void)
@@ -1705,9 +1678,6 @@ void Engine::vStartSystem(void) {
     gpAttachMap->m_pPtnMap->vDumpDataBuffers();
   }
 
-  if (AM::bVerboseProgress())
-      vInfo("  Adding Dispatch Words\n"_Stz);
-    vDispatchWords();
 
   s32 sResident_magn;
   MagLib::vByteMag(Process::iResidentSize(), 3, sResident_magn);

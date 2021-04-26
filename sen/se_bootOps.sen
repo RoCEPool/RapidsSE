@@ -218,6 +218,7 @@ assert::stack_0
 "y" .verbose
 
   "XmitOperand.sen"             include
+  "op__classWords.sen"          include
 
 "z\n" .verbose
 

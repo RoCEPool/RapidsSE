@@ -2,8 +2,8 @@
 aggregRows$_I.test
 aggregRows$.test
 
-aggregGby$.test
-aggregGby$_I.test
+//aggregGby$.test
+//aggregGby$_I.test
 
 filterRows$_I.test
 filterRows.test
@@ -17,5 +17,5 @@ projectColumns$.test
 unionAll$_I.test
 unionAll$.test
 
-query6_I.test
-query6.test
+//query6_I.test
+//query6.test

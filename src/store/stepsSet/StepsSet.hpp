@@ -136,6 +136,8 @@ public:
 
   // class
   void vClassName(void);
+  void vClassPostRecvWordStore(void);
+  void vClassPreSendWordStore(void);
 
   // column
   void vColumnIsNullableFetch(void);
@@ -442,7 +444,6 @@ public:
   void vIndexDefSet(void);
   void vIndexDefSyntax(void);
   void vIndexDefParseTableName(void);
-  void vIndexDefPipeOut(void);
   void vIndexDefTableNameFetch(void);
   void vIndexDefTableNameStore(void);
 
@@ -516,7 +517,6 @@ public:
   void vInfoSetNextRow(void);
   void vInfoSetOpInfosetFetch(void);
   void vInfoSetOpInfosetStore(void);
-  void vInfoSetPipeOut(void);
   void vInfoSetRdCsvChunk(void);
   void vInfoSetSet(void);
   void vInfoSetWriteCsv(void);
@@ -963,12 +963,10 @@ public:
   // object
   void vObjectClassFetch(void);
   void vObjectClassStore(void);
-  void vObjectDispatchWordFetch(void);
   void vObjectFetch(void);
   void vObjectMagicMark(void);
-  void vObjectReceivedWordFetch(void);
-  void vObjectRecvArgsFetch(void);
-  void vObjectSendWordFetch(void);
+  void vObjectPostRecvWordFetch(void);
+  void vObjectPreSendWordFetch(void);
   void vObjectStore(void);
 
   // olist (originator list)
@@ -989,6 +987,7 @@ public:
   void vOpOutboundOperandFetch(void);
   void vOpOutboundOperandStore(void);
   void vOpQueueLength(void);
+  void vOpSendTo(void);
   void vOpStageNameFetch(void);
   void vOpTopologyStore(void);
   void vOpXmitKindStore(void);
@@ -1030,7 +1029,6 @@ public:
   void vOperandNewStreamDef(void);
   void vOperandNext(void);
   void vOperandPipeIn(void);
-  void vOperandPipeOut(void);
   void vOperandPipeOutSet(void);
   void vOperandPipeToOutput(void);
   void vOperandReport(void);
@@ -1047,14 +1045,12 @@ public:
   void vOperandBGetAndClear(void);
   void vOperandBIsNotNull(void);
   void vOperandBIsNull(void);
-  void vOperandBPipeOut(void);
   void vOperandBSet(void);
 
   // operandC
   void vOperandCCollect(void);
   void vOperandCGet(void);
   void vOperandCGetAndClear(void);
-  void vOperandCPipeOut(void);
   void vOperandCPipeOutSet(void);
   void vOperandCSet(void);
   void vOperandCSetFirst(void);
@@ -1065,7 +1061,6 @@ public:
   void vOperandOoOGetAndClear(void);
   void vOperandOoOIsNull(void);
   void vOperandOoONext(void);
-  void vOperandOoOPipeOut(void);
   void vOperandOoOPipeToOutput(void);
   void vOperandOoOSet(void);
 
@@ -1276,7 +1271,6 @@ public:
   void vPipeinKind(void);
   void vPipeinNext(void);
   void vPipeinPeek(void);
-  void vPipeinPipeOut(void);
   void vPipeinPipeToOutput(void);
   void vPipeinSet(void);
   void vPipeinWriteProfile(void);
@@ -1532,7 +1526,6 @@ public:
   void vStreamDefNewToCsv(void);
   void vStreamDefParse(void);
   void vStreamDefPipeIn(void);
-  void vStreamDefPipeOut(void);
   void vStreamDefPrint(void);
   void vStreamDefRowSize(void);
   void vStreamDefSet(void);
@@ -1546,7 +1539,6 @@ public:
   void vStreamDefOutNameFetch(void);
   void vStreamDefOutNameStore(void);
   void vStreamDefOutNew(void);
-  void vStreamDefOutPipeout(void);
   void vStreamDefOutPrint(void);
   void vStreamDefOutSet(void);
 
@@ -1579,7 +1571,6 @@ public:
   void vStreamSetName(void);
   void vStreamSetNew(void);
   void vStreamSetNextRow(void);
-  void vStreamSetPipeOut(void);
   void vStreamSetReadChunk(void);
   void vStreamSetSet(void);
 

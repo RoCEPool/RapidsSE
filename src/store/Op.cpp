@@ -210,7 +210,7 @@ void Op::vAckJob(void)
     
   if (m_bTraceOp)
     vTrace("Op %s (%s (N%lld) (P%02lld)): acking pipeline job\n"_Stz,
-           AM::szJobName(m_pOpJob),
+           AM::JOB::szJobNm(m_pOpJob),
            m_pStage->szStageNm(),
            m_i_Node,
            m_tPtnNo);
@@ -226,6 +226,27 @@ void Op::vAddWorkDone(i8 iWorkDone)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   m_iWorkDone += iWorkDone;
+}
+
+/*----------------------------------------------------------------------------*/
+/* append operand to specific operand                                         */
+/*----------------------------------------------------------------------------*/
+void Op::vAppend(Operand* pOperand, Task* pTriggeringTask, bool bSet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  if (m_bTraceOp)
+    vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
+           m_sOpNm.szStz(),
+           m_pStage->szStageNm(),
+           m_i_Node,
+           m_tPtnNo,
+           m_pPipelineJob,
+           "vPipeOut :"_Stz,
+           AM::pOperandName(pOperand),
+           pOperand);
+  
+  vAppendLeft(pOperand,pTriggeringTask,bSet);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1051,7 +1072,7 @@ Job* Op::pPipelineJob(void)
 /*----------------------------------------------------------------------------*/
 /* append operand to next op's operand queue                                  */
 /*----------------------------------------------------------------------------*/
-void Op::vPipeOut_nextOp(Operand* pOperand, Task* pTriggeringTask, bool bSet)
+void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask, bool bSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -1066,47 +1087,23 @@ void Op::vPipeOut_nextOp(Operand* pOperand, Task* pTriggeringTask, bool bSet)
            AM::pOperandName(pOperand),
            pOperand);
   
-  if (AM::szJobName(m_pOpJob)->bSame("xmit"_Stz)) {
-    vSendXmitOperand(pOperand, pTriggeringTask, bSet);
-  }
-  else {
+  RASSERT((AM::JOB::szJobNm(m_pOpJob)->bSame(szOpNm())));
+  
+  RASSERT(! szOpNm()->bSame("xmit"_Stz));
+  
     
-    // get the next stage the xmit is supposed to xmit to
-    Stage* pStage = m_pPipeline->pGet(m_iNextStage);
-  
-    // get the op to forward to depending on the cross topology
-    Op* pOp = pStage->pPipeOutOp(m_eCrossTopo,
-                                 m_i_Node,
-                                 m_tPtnNo,
-                                 m_iNextOp);
-    if (m_bAppendRight)
-      pOp->vAppendRight(pOperand,pTriggeringTask,bSet);
-    else
-      pOp->vAppendLeft(pOperand,pTriggeringTask,bSet);
-   
-   }
-  
-}
+  // get the next stage the xmit is supposed to xmit to
+  Stage* pStage = m_pPipeline->pGet(m_iNextStage);
 
-/*----------------------------------------------------------------------------*/
-/* append operand to specific operand                                         */
-/*----------------------------------------------------------------------------*/
-void Op::vPipeOut_thisOp(Operand* pOperand, Task* pTriggeringTask, bool bSet)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  if (m_bTraceOp)
-    vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
-           m_sOpNm.szStz(),
-           m_pStage->szStageNm(),
-           m_i_Node,
-           m_tPtnNo,
-           m_pPipelineJob,
-           "vPipeOut :"_Stz,
-           AM::pOperandName(pOperand),
-           pOperand);
-  
-  vAppendLeft(pOperand,pTriggeringTask,bSet);
+  // get the op to forward to depending on the cross topology
+  Op* pOp = pStage->pPipeOutOp(m_eCrossTopo,
+                               m_i_Node,
+                               m_tPtnNo,
+                               m_iNextOp);
+  if (m_bAppendRight)
+    pOp->vAppendRight(pOperand,pTriggeringTask,bSet);
+  else
+    pOp->vAppendLeft(pOperand,pTriggeringTask,bSet);
 }
 
 /*----------------------------------------------------------------------------*/

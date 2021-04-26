@@ -47,6 +47,7 @@ macro AM_HANDLER_ROWBUFFER_AGG
   EO_PUSH_RLU_POT
   EO_PUSH_RLU_PTN
   EO_DEVROW_ROW_NEW
+  EO_CALL ROWBUFFER_AGGINIT
 
   Label HANDLER_ROWBUFFER_AGG_BEGIN
   //EO_ROW_SRC_BEGIN
@@ -64,6 +65,24 @@ macro AM_HANDLER_ROWBUFFER_AGG
   EO_JMP NEXT_ROW_SRC
   EO_JMP QUERY_DONE
  endMacro
+
+macro AM_ROWBUFFER_AGGINIT
+//----------------------------------------------------------------------------//
+// macro AM_ROWBUFFER_AGGINIT                                                //
+//----------------------------------------------------------------------------//
+  // ROWBUFFER_AGGINIT
+  Label ROWBUFFER_AGGINIT
+
+endMacro
+
+macro AM_ROWBUFFER_AGGINIT_END
+//----------------------------------------------------------------------------//
+// macro AM_ROWBUFFER_AGGINIT_END                                             //
+//----------------------------------------------------------------------------//
+  // ROWBUFFER_AGGINIT_END
+  //EO_ROW_DST_PRINT
+  EO_RETURN
+endMacro
 
 macro AM_HANDLER_ROWBUFFER_AGG_GBY
 //----------------------------------------------------------------------------//

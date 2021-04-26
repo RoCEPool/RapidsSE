@@ -60,7 +60,7 @@
     exit
   then
     
-  Register0[] Register0[] object.receivedWord@ execute
+  Register0[] Register0[] Object.postRecvWord@ execute
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -17,12 +17,10 @@ void Step::vAddSteps_Object(void)
 {
   vAddStep("object.class@"_Stz,       &Step::vObjectClassFetch);
   vAddStep("object.class!"_Stz,       &Step::vObjectClassStore);
-  vAddStep("object.dispatchWord@"_Stz,&Step::vObjectDispatchWordFetch);
   vAddStep("object@"_Stz,             &Step::vObjectFetch);
   vAddStep("object.magic!"_Stz,       &Step::vObjectMagicMark);
-  vAddStep("object.receivedWord@"_Stz,&Step::vObjectReceivedWordFetch);
-  vAddStep("object.recvArgs@"_Stz,    &Step::vObjectRecvArgsFetch);
-  vAddStep("object.sendWord@"_Stz,    &Step::vObjectSendWordFetch);
+  vAddStep("object.postRecvWord@"_Stz,&Step::vObjectPostRecvWordFetch);
+  vAddStep("object.preSendWord@"_Stz, &Step::vObjectPreSendWordFetch);
   vAddStep("object!"_Stz,             &Step::vObjectStore);
 }
 
@@ -54,24 +52,6 @@ void Step::vObjectClassStore(void)
   i8 iClassNo = m_pDataStack->iPopInt(__func__);
 
   pObject->vSetClassNo((eCN)iClassNo);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* object.dispatchWord@ -- fetch dispatch word for class of object            */
-/*----------------------------------------------------------------------------*/
-void Step::vObjectDispatchWordFetch(void)
-{
-  ENTRY();
-  
-  Object* pObject = m_pDataStack->pPopPtr(__func__);
-  
-  eCN eClassNo = pObject->eGetClassNo();
-  
-  Word* pWord = gxaSizeHeap[eClassNo].m_pDispatchWord;
-  
-  m_pDataStack->vPushPtr(pWord);
   
   EXIT();
 }
@@ -109,9 +89,9 @@ void Step::vObjectMagicMark(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* object.receivedWord@ -- fetch received word for class of object            */
+/* Object.postRecvWord@ -- fetch received word for class of object            */
 /*----------------------------------------------------------------------------*/
-void Step::vObjectReceivedWordFetch(void)
+void Step::vObjectPostRecvWordFetch(void)
 {
   ENTRY();
   
@@ -119,7 +99,7 @@ void Step::vObjectReceivedWordFetch(void)
   
   eCN eClassNo = pObject->eGetClassNo();
   
-  Word* pWord = gxaSizeHeap[eClassNo].m_pReceivedWord;
+  Word* pWord = gxaSizeHeap[eClassNo].m_pPostRecvWord;
   
   m_pDataStack->vPushPtr(pWord);
   
@@ -127,9 +107,9 @@ void Step::vObjectReceivedWordFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* object.recvArgs@ -- fetch number of receive arguments                      */
+/* object.preSendWord@ -- fetch send word for class of object                 */
 /*----------------------------------------------------------------------------*/
-void Step::vObjectRecvArgsFetch(void)
+void Step::vObjectPreSendWordFetch(void)
 {
   ENTRY();
   
@@ -137,25 +117,7 @@ void Step::vObjectRecvArgsFetch(void)
   
   eCN eClassNo = pObject->eGetClassNo();
   
-  i8 nRecvArgs = gxaSizeHeap[eClassNo].m_nRecvArgs;
-  
-  m_pDataStack->vPushInt(nRecvArgs);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* object.sendWord@ -- fetch send word for class of object                    */
-/*----------------------------------------------------------------------------*/
-void Step::vObjectSendWordFetch(void)
-{
-  ENTRY();
-  
-  Object* pObject = m_pDataStack->pPopPtr(__func__);
-  
-  eCN eClassNo = pObject->eGetClassNo();
-  
-  Word* pWord = gxaSizeHeap[eClassNo].m_pSendWord;
+  Word* pWord = gxaSizeHeap[eClassNo].m_pPreSendWord;
   
   m_pDataStack->vPushPtr(pWord);
   
