@@ -689,6 +689,8 @@ static Stz* aCN[]
     static eCN eFind(Stz* szszClassNm);
 
   };
+
+  eCN _eClassNo(i8 iClassNo);
 }
 
 /*============================================================================*/

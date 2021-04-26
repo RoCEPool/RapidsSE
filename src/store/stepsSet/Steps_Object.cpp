@@ -85,7 +85,7 @@ void Step::vObjectDispatchWordStore(void)
 {
   ENTRY();
     
-  eCN eClassNo = (eCN)m_pDataStack->iPopInt(__func__);
+  eCN eClassNo = _eClassNo(m_pDataStack->iPopInt(__func__));
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
     
@@ -151,7 +151,7 @@ void Step::vObjectPostRecvWordStore(void)
 {
   ENTRY();
   
-  eCN eClassNo = (eCN)m_pDataStack->iPopInt(__func__);
+  eCN eClassNo = _eClassNo(m_pDataStack->iPopInt(__func__));
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
     
@@ -161,7 +161,7 @@ void Step::vObjectPostRecvWordStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* object.preSendWord@ -- fetch send word for class of object                    */
+/* object.preSendWord@ -- fetch send word for class of object                 */
 /*----------------------------------------------------------------------------*/
 void Step::vObjectPreSendWordFetch(void)
 {
@@ -185,7 +185,7 @@ void Step::vObjectPreSendWordStore(void)
 {
   ENTRY();
   
-  eCN eClassNo = (eCN)m_pDataStack->iPopInt(__func__);
+  eCN eClassNo = _eClassNo(m_pDataStack->iPopInt(__func__));
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
     
