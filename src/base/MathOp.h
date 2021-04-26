@@ -4,14 +4,22 @@
 #pragma once
 
 #include <float.h>
+#include <limits.h>
+#include <math.h>
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // AGGREGATE OPERATORS
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+i8 C_D8_MIN_VALUE = DBL_MIN + DBL_EPSILON;
+
 static i8 iMathOp_MaxValue[DM_ENUMS] =
   //  NONE       BCD           BOL             DTE         FLT           INT                    IVL           IVY,          TME      TSP      VCH      UNK
     { C_UNKNOWN, (i8)DBL_MAX, C_UNKNOWN/*X*/, C_UNKNOWN,  (i8)DBL_MAX, LLONG_MAX, C_UNKNOWN/*X*/, C_UNKNOWN/*X*/, C_UNKNOWN, C_UNKNOWN, C_UNKNOWN, C_UNKNOWN/*X*/ };
+
+static i8 iMathOp_MinValue[DM_ENUMS] =
+    //  NONE     BCD                 BOL             DTE         FLT          INT                    IVL           IVY,          TME      TSP      VCH      UNK
+    { C_UNKNOWN, (i8)C_D8_MIN_VALUE, C_UNKNOWN/*X*/, C_UNKNOWN,  (i8)DBL_MAX, LLONG_MIN, C_UNKNOWN/*X*/, C_UNKNOWN/*X*/, C_UNKNOWN, C_UNKNOWN, C_UNKNOWN, C_UNKNOWN/*X*/ };
 
 static eDM eMathOp_AvgResult[DM_ENUMS] =
  //   NONE     BCD     BOL      DTE      FLT     INT     IVL           IVY           TME           TSP      VCH      UNK
@@ -21,6 +29,9 @@ static eDM eMathOp_MaxResult[DM_ENUMS] =
   //  NONE     BCD     BOL      DTE     FLT     INT     IVL           IVY       TME     TSP     VCH     UNK
     { DM_NONE, DM_BCD, DM_NONE, DM_DTE, DM_FLT, DM_INT, DM_NONE/*X*/, DM_NONE/*X*/, DM_TME, DM_TSP, DM_VCH, DM_NONE };
 
+static eEO eMathOp_MaxCode[DM_ENUMS] =
+    //  NONE     BCD           BOL           DTE           FLT           INT           IVL           IVY       TME           TSP           VCH           UNK
+    { EO_NONE, EO_LT_BCDBCD, EO_NONE/*X*/, EO_GT_DTEDTE, EO_GT_FLTFLT, EO_GT_INTINT, EO_NONE/*X*/, EO_NONE/*X*/,EO_GT_TMETME, EO_GT_TSPTSP, EO_GT_VCHVCH, EO_NONE/*X*/ };
 
 static eDM eMathOp_MinResult[DM_ENUMS] =
   //  NONE     BCD     BOL           DTE      FLT    INT     IVL           IVY          TME     TSP     VCH     UNK
