@@ -413,7 +413,7 @@ void ExprEval::vAddRelational(Stz* szAsmBuffer, Token* pTkn)
 /*----------------------------------------------------------------------------*/
 /* add EO code for count                                                      */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval::eGenerateCount(Stz* szAsmBuffer)
+eEC ExprEval::eGenerateCount(Stz* szAsmBuffer, Stz* sAggInit)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
@@ -422,6 +422,11 @@ eEC ExprEval::eGenerateCount(Stz* szAsmBuffer)
 
   // push result type
   m_xTypeStack.vPush(DM_INT);
+
+  / generate code for agg initialization
+  StrLib::vSprintCat(sAggInit, "  EO_INTEGER %lld\n"_Stz, 0);
+  StrLib::vSprintCat(sAggInit, "  EO_PUSH_DEVROW_DST\n"_Stz);
+  StrLib::vSprintCat(sAggInit, "  EO_DEVROW_POPCOLI %lld\n"_Stz, m_iDstColumn);
 
   // generate code
   StrLib::vSprintCat(szAsmBuffer, "  EO_ISNULL\n"_Stz);
@@ -441,12 +446,17 @@ eEC ExprEval::eGenerateCount(Stz* szAsmBuffer)
 /*----------------------------------------------------------------------------*/
 /* add EO code for count(*)                                                   */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval::eGenerateCountAll(Stz* szAsmBuffer)
+eEC ExprEval::eGenerateCountAll(Stz* szAsmBuffer, Stz* sAggInit)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
   // push result type
   m_xTypeStack.vPush(DM_INT);
+
+  // generate code for agg initialization
+  StrLib::vSprintCat(sAggInit, "  EO_INTEGER %lld\n"_Stz, 0);
+  StrLib::vSprintCat(sAggInit, "  EO_PUSH_DEVROW_DST\n"_Stz);
+  StrLib::vSprintCat(sAggInit, "  EO_DEVROW_POPCOLI %lld\n"_Stz, m_iDstColumn);
 
   // generate code for count(*)
   StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
@@ -977,10 +987,10 @@ eEC ExprEval::eGenerateColumnCode(Stz* szAsmBuffer, StreamDef* pStreamDefOut, Co
 
   switch (eAggType) {
     case AG_ALL:
-      eError = eGenerateCountAll(szAsmBuffer);
+      eError = eGenerateCountAll(szAsmBuffer, m_sAggInitAsm);
       break;
     case AG_CNT:
-      eError = eGenerateCount(szAsmBuffer);
+      eError = eGenerateCount(szAsmBuffer, m_sAggInitAsm);
       break;
     case AG_MIN:
       eError = eGenerateMin(szAsmBuffer,m_sAggInitAsm);
