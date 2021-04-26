@@ -16,14 +16,12 @@ struct SizeHeap {
   b8  m_bDontMemLog;        // don't memory log?
   
   b8  m_bLowMemoryDiscard;  // discard received object when low memory?
-  
-  fpPOSTFN* m_fpPostRecvFn; // post receive cpp function
-  
+    
   Word* m_pPreSendWord;     // word to execute prior to sending the object
   
+  fpPOSTFN* m_fpPostRecvFn; // post receive cpp function
+
   Word* m_pPostRecvWord;    // word to execute after receiving the object
-  
-  Word* m_pDispatchWord;    // dispatch word on receive
 };
 
 /*============================================================================*/
