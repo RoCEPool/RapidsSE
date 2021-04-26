@@ -965,7 +965,6 @@ public:
   void vObjectFetch(void);
   void vObjectMagicMark(void);
   void vObjectPostRecvWordFetch(void);
-  void vObjectRecvArgsFetch(void);
   void vObjectPreSendWordFetch(void);
   void vObjectStore(void);
 

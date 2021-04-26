@@ -22,7 +22,6 @@ void Step::vAddSteps_Object(void)
   vAddStep("object.magic!"_Stz,       &Step::vObjectMagicMark);
   vAddStep("Object.postRecvWord@"_Stz,&Step::vObjectPostRecvWordFetch);
   vAddStep("object.preSendWord@"_Stz, &Step::vObjectPreSendWordFetch);
-  vAddStep("object.recvArgs@"_Stz,    &Step::vObjectRecvArgsFetch);
   vAddStep("object!"_Stz,             &Step::vObjectStore);
 }
 
@@ -122,24 +121,6 @@ void Step::vObjectPostRecvWordFetch(void)
   Word* pWord = gxaSizeHeap[eClassNo].m_pPostRecvWord;
   
   m_pDataStack->vPushPtr(pWord);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* object.recvArgs@ -- fetch number of receive arguments                      */
-/*----------------------------------------------------------------------------*/
-void Step::vObjectRecvArgsFetch(void)
-{
-  ENTRY();
-  
-  Object* pObject = m_pDataStack->pPopPtr(__func__);
-  
-  eCN eClassNo = pObject->eGetClassNo();
-  
-  i8 nRecvArgs = gxaSizeHeap[eClassNo].m_nRecvArgs;
-  
-  m_pDataStack->vPushInt(nRecvArgs);
   
   EXIT();
 }

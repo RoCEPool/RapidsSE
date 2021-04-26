@@ -752,7 +752,6 @@ void Engine::vDispatchWords(void)
   pWord = AM::WORD::pFind("xmitOperand.pipeOut"_Stz);
   RASSERT(pWord);
   gxaSizeHeap[CN_XMITOPERAND].m_pDispatchWord = pWord;
-  gxaSizeHeap[CN_XMITOPERAND].m_nRecvArgs = 1;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
