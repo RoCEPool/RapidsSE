@@ -962,10 +962,13 @@ public:
   void vObjectClassFetch(void);
   void vObjectClassStore(void);
   void vObjectDispatchWordFetch(void);
+  void vObjectDispatchWordStore(void);
   void vObjectFetch(void);
   void vObjectMagicMark(void);
   void vObjectPostRecvWordFetch(void);
+  void vObjectPostRecvWordStore(void);
   void vObjectPreSendWordFetch(void);
+  void vObjectPreSendWordStore(void);
   void vObjectStore(void);
 
   // olist (originator list)
