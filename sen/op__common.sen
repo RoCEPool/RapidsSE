@@ -92,14 +92,13 @@
   // restore path
   Path[].restore
   true
-  ;
+;
 
 /*----------------------------------------------------------------------------*/
-/* verify and set folder to <tableNm>                                         */
+/* find table by given table name and set Table[]                             */
 /*----------------------------------------------------------------------------*/
-: op__table ( tableNm -- )
+: op__table params| sTableNm |
 
-  params| sTableNm |
   0 locals| errorCode |
 
   // check in tables folder
