@@ -745,23 +745,23 @@ void Engine::vDispatchWords(void)
 {
   Word* pWord;
   
-  pWord = AM::WORD::pFind("job.spawn_received"_Stz);
-  RASSERT(pWord);
-  gxaSizeHeap[CN_JOB].m_pDispatchWord = pWord;
-
-  pWord = AM::WORD::pFind("xmitOperand.pipeOut"_Stz);
-  RASSERT(pWord);
-  gxaSizeHeap[CN_XMITOPERAND].m_pDispatchWord = pWord;
+//  pWord = AM::WORD::pFind("job.spawn_received"_Stz);
+//  RASSERT(pWord);
+//  gxaSizeHeap[CN_JOB].m_pDispatchWord = pWord;
+//
+//  pWord = AM::WORD::pFind("xmitOperand.pipeOut"_Stz);
+//  RASSERT(pWord);
+//  gxaSizeHeap[CN_XMITOPERAND].m_pDispatchWord = pWord;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pWord = AM::WORD::pFind("job.dispatch"_Stz);
-  RASSERT(pWord);
-  gxaSizeHeap[CN_JOB].m_pPostRecvWord = pWord;
+//  pWord = AM::WORD::pFind("job.dispatch"_Stz);
+//  RASSERT(pWord);
+//  gxaSizeHeap[CN_JOB].m_pPostRecvWord = pWord;
   
-  pWord = AM::WORD::pFind("XmitOperand.dispatch"_Stz);
-  RASSERT(pWord);
-  gxaSizeHeap[CN_XMITOPERAND].m_pPostRecvWord = pWord;
+//  pWord = AM::WORD::pFind("XmitOperand.dispatch"_Stz);
+//  RASSERT(pWord);
+//  gxaSizeHeap[CN_XMITOPERAND].m_pPostRecvWord = pWord;
 }
 
 /*----------------------------------------------------------------------------*/

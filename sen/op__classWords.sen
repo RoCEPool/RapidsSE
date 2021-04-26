@@ -1,0 +1,18 @@
+/*============================================================================*/
+/* op__classWords.sen -- class word set                                       */
+/*============================================================================*/
+
+" op__classWords.sen" .verbose
+
+  find: job.spawn_received CN_JOB object.dispatchWord!
+  
+  find: xmitOperand.pipeOut CN_XMITOPERAND object.dispatchWord!
+
+
+  find: job.dispatch CN_JOB object.postRecvWord!
+
+  find: xmitOperand.dispatch CN_XMITOPERAND object.postRecvWord!
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
