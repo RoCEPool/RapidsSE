@@ -41,9 +41,10 @@ namespace STORE
     s4K      m_sAggInitAsm;
 
     s4K      m_sGbyIdxAsm;
-    s4K      m_sPayLoadKey;
-    s4K      m_sPayLoadStore;
-    s4K      m_sPayLoadToBuffer;
+    s4K      m_sPayLoadAggAsm;
+    s4K      m_sPayLoadKeyAsm;
+    s4K      m_sPayLoadStoreAsm;
+    s4K      m_sPayLoadToBufferAsm;
 
     i8       m_iDstColumn;
 
@@ -68,19 +69,26 @@ namespace STORE
     void vAddArithmetic(Stz* szAsmBuffer, Token*  pTkn, Column* pColumn);
     eEC  eAddDate(Stz* szAsmBuffer, Token*  pTkn, Column* pColumnExpr);
     eEC  eAddDecimal(Stz* szAsmBuffer, Token*  pTkn, Column* pColumnExpr);
+    eEC  eAddGbyIdxCol(Stz* szAsmBuffer, StreamDef* pStreamDefIn, i8 i_ColumnOrdinal);
     void vAddLogical(Stz* szAsmBuffer, Token*  pTkn);
     void vAddNumeric(Stz* szAsmBuffer, Token*  pTkn, Column* pColumnExpr);
+    eEC  eAddPayLoadKey(Stz* szAsmBuffer, StreamDef* pStreamDefIn, i8 i_ColumnOrdinal);
     void vAddPopCol(Stz* szAsmBuffer, eCT eColumnType);
     void vAddPushCol(Stz* szAsmBuffer, StreamDef* pStreamDefIn, i8 iColumn);
     void vAddRelational(Stz* szAsmBuffer, Token*  pTkn);
-    void vAddStoreCol(Stz* szAsmBuffer, eCT eColumnType, i8 iColumn);
+    void vAddStoreCol(Stz* szAsmBuffer, Column* pColumnExpr);
     void vAddString(Stz* szAsmBuffer, Token*  pTkn, Column* pColumnExpr);
     void vAddUnknown(Stz* szAsmBuffer, Token*  pTkn, Column* pColumnExpr);
 
+    void vAddToBufferCol(Stz* szAsmBuffer, Column* pColumn);
+
+
     eEC eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec);
     eEC eExprEval(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);
+    eEC eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);
 
     eEC eGenerateColumnCode(Stz* szAsmBuffer, StreamDef* pStreamDefOut, Column* pColumn, eAG eAggType);
+    eEC eGenerateColumnCodeGby(StreamDef* pStreamDefOut, Column* pColumn, eAG eAggType);
 
     eEC  eGenerateCount(Stz* szAsmBuffer, Stz* sAggInit);
     eEC  eGenerateCountAll(Stz* szAsmBuffer, Stz* sAggInit);

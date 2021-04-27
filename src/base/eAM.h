@@ -46,7 +46,7 @@ enum eAM // ASM Macros
   /*    */ AM_INDEX_TRAVERSAL,
   /*    */ AM_INDEX_UPPER_BOUND,
 
-  /*    */ AM_PAYLOAD_ADD,
+  /*    */ AM_PAYLOAD_AGG,
   /*    */ AM_PAYLOAD_END,
   /*    */ AM_PAYLOAD_GBY,
   /*    */ AM_PAYLOAD_KEY,
@@ -117,7 +117,7 @@ static Stz* aAM[]
     /*    */ "INDEX_TRAVERSAL"_Stz,
     /*    */ "INDEX_UPPER_BOUND"_Stz,
 
-    /*    */ "PAYLOAD_ADD"_Stz,
+    /*    */ "PAYLOAD_AGG"_Stz,
     /*    */ "PAYLOAD_END"_Stz,
     /*    */ "PAYLOAD_GBY"_Stz,
     /*    */ "PAYLOAD_KEY"_Stz,
