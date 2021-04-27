@@ -7,16 +7,24 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_METAGET ...                                                 */
 /*----------------------------------------------------------------------------*/
-: metaGet_getTable \handler
+: metaGet_getTable  \handler
+
+  "metaGet_getTable" .
 
   <tableNm> .
   
   // create an instance of class MetaGet : public Operand
+
+  <tableNm> metaGet::getMetaData locals| pMetaGet |
   
   // set the table name in MetaGet instance
   
   // pipeout the MetaGet instance
-  
+
+  // pipeout an EOSMARKER
+  Operand[].newEosMarker
+  Operand[].pipeOut // would this pipeout the pMetaGet ??
+  //PipeIn[].pipeOut
   true
 ;
 

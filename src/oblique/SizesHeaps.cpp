@@ -118,6 +118,7 @@
 #include "LogicUnit.hpp"
 
 #include "Metadata.hpp"
+#include <MetaGet.hpp>
 
 #include "Parcel.hpp"
 #include "Objects.hpp"
@@ -327,6 +328,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Heap), /*correct*/   HT_INVALID   ,0 }, // CN_MEDIUMTVIRTUAL
   { sizeof(MemTest),            HT_T_TINY    ,0 }, // CN_MEMTEST
   { sizeof(Metadata),           HT_T_TINY    ,0 }, // CN_METADATA
+  { sizeof(MetaGet),           HT_T_TINY    ,0 }, // CN_METAGET
   { sizeof(Mutex),              HT_T_TINY    ,0 }, // CN_MUTEX
 
   { 'N' - ('A' - 1),            HT_INVALID   ,0 }, // CN__N__

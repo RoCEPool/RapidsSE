@@ -520,10 +520,10 @@ void Step::vTableNew(void) {
   // SAME NODE TESTING ////////////////////// SAME NODE TESTING //////////////////////////////
 #ifndef JUNK
   if (sTableNm.bSame("bolTbl"_Stz)) {
-    i8 iNumObjs = pTable->iPrepareParcelObjs();
+    pTable->iPrepareParcelObjs();
 
     s32 sTableName;
-    eTT eKind = TT_NORMAL;
+
     Table *pTbl = nullptr;
     Table *pNewTable = nullptr;
 
@@ -536,36 +536,12 @@ void Step::vTableNew(void) {
         pTbl = (Table *) pObject;
         pNewTable = (Table *) ::operator new(gxaSizeHeap[pObject->eGetClassNo()].m_nClassSize, pTbl);
         pNewTable->iBuildParcel(pTable->pParcel());
-        i8 iN = pNewTable->iReassembleObj();
+        pNewTable->iReassembleObj();
         vTrace(">>>>>>>>>>>> (New) Table:%s\n"_Stz, sTableName.azChar());
       }
     }
 
-    /*
-    for (i8 i_Obj=0; i_Obj< pTable->nParcelObjects(); i_Obj++) {
-      Object *pObject = pTable->pGetParcelObject(i_Obj);
 
-      if (pObject->eGetClassNo() == CN_TABLE) {
-        // Main part of CN_TABLE
-        pTbl = (Table *) pObject;
-        sTableName = pTbl->szTableNm(); // debug
-        eKind = pTbl->eKind();          // debug
-        pNewTable = (Table *) ::operator new(gxaSizeHeap[pObject->eGetClassNo()].m_nClassSize, pTbl);
-        break;
-      }
-    }
-
-    // foreach part, rebuild
-    if (pNewTable) {
-      vTrace(">>>>>>>>>>>> (New) Table:%s\n"_Stz, sTableName.azChar());
-      //for (i8 i_Obj=0; i_Obj< pTable->nParcelObjects(); i_Obj++) {
-      //  Object *pObject = pTable->pGetParcelObject(i_Obj);
-      //  pNewTable->iBuildParcelObjs(pObject);
-      //}
-
-      pNewTable->iBuildParcel(pTable->pParcel());
-      i8 iN = pNewTable->iReassembleObj();
-    } */
 
     // Testing the concept, passing the minimum-reassemble table works
     m_pDataStack->vPushPtr(pNewTable);

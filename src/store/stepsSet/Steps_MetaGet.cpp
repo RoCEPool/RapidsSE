@@ -2,11 +2,13 @@
 /* Steps_MetaGet.cpp -- metaGet step group                                    */
 /*============================================================================*/
 
+
 #include "BASE.h"
 #include "Step.hpp"
 #include "EnterExit.h"
 #include "StepAccum.hpp"
 #include "Steps.hpp"
+#include <MetaGet.hpp>
 
 
 /*----------------------------------------------------------------------------*/
@@ -25,6 +27,13 @@ void Step::vMetaGetGetMetadata(void)
   ENTRY();
   
   // ... code which initiates the metadata transfer ...
+  s32 sTableNm;
+  m_pDataStack->vPopStr(sTableNm, __func__);
+
+  MetaGet *pMetaGet = new MetaGet(sTableNm);
+
+
+  m_pDataStack->vPushPtr(pMetaGet);
 
   EXIT();
 }

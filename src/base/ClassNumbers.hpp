@@ -149,6 +149,7 @@ enum eCN : u2 // Class Number
   /* */ CN_MEDIUMVIRTUAL,
   /* */ CN_MEMTEST,
   /* */ CN_METADATA,
+  /* */ CN_METAGET,
   /* */ CN_MUTEX,
 
   /* */ CN__N__,
@@ -486,6 +487,7 @@ static Stz* aCN[]
   /* */ "MEDIUMVIRTUAL"_Stz,        // CN_MEDIUMVIRTUAL
   /* */ "MEMTEST"_Stz,              // CN_MEMTEST
   /* */ "METADATA"_Stz,             // CN_METADATA
+  /* */ "METAGET"_Stz,             // CN_METAGET
   /* */ "MUTEX"_Stz,                // CN_MUTEX
  
   /* */ "_N__"_Stz,                 // CN__N__
