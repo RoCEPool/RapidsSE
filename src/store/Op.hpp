@@ -51,7 +51,7 @@ namespace STORE
     i8             m_iNextOp;        // next Op in the next stage
     i8             m_iOtherStage;    // other stage in the cross topology
     i8             m_iOtherOp;       // next Op in the other stage
-    i8             m_iXmitNode;      // send node (for send)
+    i8             m_iSendNode;      // send node (for send)
     eXK            m_eXmitKind;      // send kind
     i8             m_iRobin;         // send Round Robin partition/node/thread
     i8             m_iLocalRobin;    // send Round Robin local ptn/node/thread
@@ -145,8 +145,8 @@ namespace STORE
     void vWorkQuanta(i8 iWorkQuanta);
     eXK  eXmitKind(void);
     void vXmitKind(eXK eXmitKind);
-    i8   iXmitNode(void);
-    void vXmitNode(i8 iNde);
+    i8   iSendNode(void);
+    void vSendNode(i8 iNde);
     
     Footer* aFooter(void);
     

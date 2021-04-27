@@ -372,7 +372,7 @@ namespace OBLIQUE
     static i8   nThreadsBegun(void);
     static bool bTracepoint(void);
     static TxSet* pTxSet(void);
-    static void vXmitNode(Op* pOp, i8 i_XmitNde);
+    static void vSendNode(Op* pOp, i8 i_SendNode);
     static bool bVerbose(void);
     static bool bVerboseProgress(void);
 

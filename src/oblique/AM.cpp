@@ -746,8 +746,8 @@ i8   AM::nThreadsBegun(void)  { return * gpAttachMap->m_pSchedule->m_ixThreads; 
 bool AM::bTracepoint(void)    { return gpAttachMap->m_xSysArgs.m_bTracepoint;        }
 TxSet* AM::pTxSet(void)       { return gpAttachMap->m_pTxSet;                 }
 
-void AM::vXmitNode(Op* pOp, i8 i_XmitNde) {
-  pOp->vXmitNode(i_XmitNde);
+void AM::vSendNode(Op* pOp, i8 i_SendNode) {
+  pOp->vSendNode(i_SendNode);
 }
 bool AM::bVerbose(void)       { return gpAttachMap->m_xSysArgs.m_bVerbose;           }
 bool AM::bVerboseProgress(void)  {
