@@ -40,7 +40,7 @@ macro AM_PAYLOAD_GBY
 
   // FOUND:
   Label FOUND
-  EO_CALL PAYLOAD_ADD
+  EO_CALL PAYLOAD_AGG
 
   EO_RETURN
 endMacro
@@ -72,11 +72,11 @@ macro AM_PAYLOAD_STORE
 
 endMacro
 
-macro AM_PAYLOAD_ADD
+macro AM_PAYLOAD_AGG
 //----------------------------------------------------------------------------//
-// macro AM_PAYLOAD_ADD                                                       //
+// macro AM_PAYLOAD_AGG                                                       //
 //----------------------------------------------------------------------------//
-  Label PAYLOAD_ADD
+  Label PAYLOAD_AGG
   EO_PUSH_DEVIXT_TMP
   EO_PAY_ADDRESS
   //EO_SUPER_Q100 ???? OPTIMIZATION (ALKA: COME BACK TO THIS)

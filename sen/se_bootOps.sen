@@ -213,7 +213,6 @@ assert::stack_0
 
 "x" .verbose
 
-  "OP_xmit.sen"                 include
 
 "y" .verbose
 

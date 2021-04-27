@@ -1,57 +1,72 @@
 /*============================================================================*/
-/* OP_send.sen -- socket send of operands                                     */
+/* OP_send.sen -- Operator xmit                                               */
 /*============================================================================*/
 
 " OP_send.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_STARTMARKER ...                                                 INIT */
+/* perform a simple pipe in send                                              */
 /*----------------------------------------------------------------------------*/
-: send_StartMarker \handler
+: PipeIn[].sendTo
 
-  ZK_STARTMARKER_handler
+  PipeIn[]\clear locals| pObject |
+  
+  pObject object.preSendWord@ if
+    pObject object.preSendWord@ execute
+  then
+  
+  pObject Op::sendTo
+  
+  // calling op_loop continues
+  true
+;
+
+
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_CANCELMARKER operand                                        */
+/*----------------------------------------------------------------------------*/
+: send_CANCELMARKER \handler
+
+  PipeIn[].sendTo
+
+  PipeIn[].drain
+
+  Op.ackPipelineJob
+  
+  false // calling op_loop exits
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_DATAPULSE ...                                                  BEGIN */
+/* handler for ZK_EXITMARKER operand                                          */
 /*----------------------------------------------------------------------------*/
-: send_DataMarker \handler
+: send_EXITMARKER \handler
 
-  ZK_PULSEDMARKER_handler
+  PipeIn[].sendTo
+
+  Op.ackPipelineJob
+  
+  false // calling op_loop exits
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_CSVBUFFER ...                                                   EACH */
+/* execute for xmit request                           (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: send_CsvBuffer \handler
-
-  ZK_CSVBUFFER_handler
-;
-
-/*----------------------------------------------------------------------------*/
-/* on ZK_EOSMARKER ...                                                    END */
-/*----------------------------------------------------------------------------*/
-: send_EosMarker \handler
-
-  ZK_EOSMARKER_handler
-;
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* send request                                                        SPAWN */
-/*----------------------------------------------------------------------------*/
-: send_req \operator
+ : xmit_req \operator
 
   LogReqEntry SEED_REQ
 
+  // set the send kind
+  <sendKind> >int op.xmitKind!
+
+  999999999999 task::operandYield!
+
   op__topology
 
-  find: send_CsvBuffer   ZK_CSVBUFFER   op[].handler!
-  find: send_EosMarker   ZK_EOSMARKER   op[].handler!
-  find: send_DataMarker ZK_DATAPULSE op[].handler!
-  find: send_StartMarker ZK_STARTMARKER op[].handler!
+  find: PipeIn[].sendTo op[].handlerAll!
+
+  find: send_CANCELMARKER  ZK_CANCELMARKER  op[].handler!
+  find: send_EXITMARKER    ZK_EXITMARKER    op[].handler!
 
   op__loop
 
@@ -63,9 +78,11 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: send :: send <ipAddress> <portNo> ;
+cmdSyntax: xmit :: xmit <sendKind> ;
 
-: send_cmdTags _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+: xmit_cmdTags _cmdTags tagCopy: op_tags
+  tags{ <cmdDesc> = "--desc for op--" }
+;
 
 /*============================================================================*/
 /* end                                                                        */
