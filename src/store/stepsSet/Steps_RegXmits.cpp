@@ -8,7 +8,7 @@
 #include "StepAccum.hpp"
 #include "Steps.hpp"
 
-#include "Xmits.hpp"
+#include "Sends.hpp"
 #include "Job.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"

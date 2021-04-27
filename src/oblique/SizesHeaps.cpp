@@ -167,7 +167,7 @@
 #include "WriteBehind.hpp"
 
 #include "XmitOperand.hpp"
-#include "Xmits.hpp"
+#include "Sends.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
