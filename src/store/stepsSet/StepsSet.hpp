@@ -990,7 +990,7 @@ public:
   void vOpSendTo(void);
   void vOpStageNameFetch(void);
   void vOpTopologyStore(void);
-  void vOpXmitKindStore(void);
+  void vOpSendKindStore(void);
 
   // operand[]
   void vOperandAsSrcCrwBuffer(void);

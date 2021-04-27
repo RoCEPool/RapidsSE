@@ -11577,7 +11577,7 @@ void Task::vAddMunged(Task* )
     "  LogReqEntry SEED_REQ\n"
     "\n"
     "  // set the send kind\n"
-    "  <sendKind> >int op.xmitKind!\n"
+    "  <sendKind> >int op.SendKind!\n"
     "\n"
     "  999999999999 task::operandYield!\n"
     "\n"

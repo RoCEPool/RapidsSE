@@ -57,7 +57,7 @@
   LogReqEntry SEED_REQ
 
   // set the send kind
-  <sendKind> >int op.xmitKind!
+  <sendKind> >int op.SendKind!
 
   999999999999 task::operandYield!
 

@@ -1333,15 +1333,15 @@ void Op::vSendXmitOperand(Operand* pOperand, Task* pTriggeringTask, bool bSet)
   RASSERT(pNextStage);
   
   // figure out the send kind
-  eXK eXmitKind = m_eXmitKind;
+  eXK eSendKind = m_eSendKind;
   
   // is the operand is a marker or a streamDef ?
   if (pOperand->bIsMarker() || pOperand->bIsStreamDef())
-    eXmitKind = XK_NORMAL;
+    eSendKind = XK_NORMAL;
   
   // is the operand an InfoSet ?
   if (pOperand->bIsInfoSet() || pOperand->bIsProfile())
-    eXmitKind = XK_ROBIN;
+    eSendKind = XK_ROBIN;
   
   switch(m_eCrossTopo) {
       
@@ -1350,7 +1350,7 @@ void Op::vSendXmitOperand(Operand* pOperand, Task* pTriggeringTask, bool bSet)
     case PX_ALL_PARTITIONS_TO_ORIGIN:
     case PX_ORIGIN_TO_ORIGIN:
     case PX_SPECIFIC_PARTITION_TO_ORIGIN: {
-      vSendToOrigin(pOperand, pTriggeringTask, bSet, eXmitKind);
+      vSendToOrigin(pOperand, pTriggeringTask, bSet, eSendKind);
       break;
     }
       
@@ -1358,13 +1358,13 @@ void Op::vSendXmitOperand(Operand* pOperand, Task* pTriggeringTask, bool bSet)
     case PX_ORIGIN_TO_ALL_PARTITIONS:
     case PX_ALL_NODES_TO_ALL_PARTITIONS:
     case PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS: {
-      vSendToAllPartitions(pOperand, pTriggeringTask, bSet, eXmitKind);
+      vSendToAllPartitions(pOperand, pTriggeringTask, bSet, eSendKind);
       break;
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN: {
-      vSendToAllOriginPartitions(pOperand, pTriggeringTask, bSet, eXmitKind);
+      vSendToAllOriginPartitions(pOperand, pTriggeringTask, bSet, eSendKind);
       break;
     }
      
@@ -1372,31 +1372,31 @@ void Op::vSendXmitOperand(Operand* pOperand, Task* pTriggeringTask, bool bSet)
     case PX_ORIGIN_TO_SPECIFIC_PARTITION: {
       Stream* pStream = pNextStage->pGetPartitionStream(m_tPtnNo);
       tPN tPtnNo = pStream->tPtnNo();
-      vSendToPartition(pOperand, pTriggeringTask,bSet, eXmitKind, tPtnNo);
+      vSendToPartition(pOperand, pTriggeringTask,bSet, eSendKind, tPtnNo);
       break;
     }
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ALL_PARTITIONS_TO_ALL_NODES: {
       i8 i_Node = AM::pPtnMap()->i_WhichNode(m_tPtnNo);
-      vSendToNode(pOperand, pTriggeringTask, bSet, eXmitKind,i_Node);
+      vSendToNode(pOperand, pTriggeringTask, bSet, eSendKind,i_Node);
       break;
     }
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS: {
       if (pOperand->bIsBuffer()) {
-        vSendToPartition(pOperand, pTriggeringTask, bSet, eXmitKind, m_tPtnNo);
+        vSendToPartition(pOperand, pTriggeringTask, bSet, eSendKind, m_tPtnNo);
       }
       else {
-        vSendToAllPartitions(pOperand, pTriggeringTask, bSet, eXmitKind);
+        vSendToAllPartitions(pOperand, pTriggeringTask, bSet, eSendKind);
       }
       break;
     }
      
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ORIGIN_TO_ALL_NODES: {
-      vSendToAllNodes(pOperand, pTriggeringTask, bSet, eXmitKind);
+      vSendToAllNodes(pOperand, pTriggeringTask, bSet, eSendKind);
       break;
     }
       
@@ -1562,21 +1562,21 @@ void Op::vWorkQuanta(i8 iWorkQuanta)
 /*----------------------------------------------------------------------------*/
 /* get send kind                                                              */
 /*----------------------------------------------------------------------------*/
-eXK Op::eXmitKind(void)
+eXK Op::eSendKind(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_eXmitKind;
+  return m_eSendKind;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set send kind                                                              */
 /*----------------------------------------------------------------------------*/
-void Op::vXmitKind(eXK eXmitKind)
+void Op::vSendKind(eXK eSendKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  m_eXmitKind = eXmitKind;
+  m_eSendKind = eSendKind;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1662,13 +1662,13 @@ void Op::vSend(Operand* pOperand, XmitOperand* pXmitOperand, bool bSet)
 /*----------------------------------------------------------------------------*/
 /* send the operand                                                           */
 /*----------------------------------------------------------------------------*/
-void Op::vSendToAllNodes(Operand* pOperand, Task* pTriggeringTask, bool bSet, eXK eXmitKind)
+void Op::vSendToAllNodes(Operand* pOperand, Task* pTriggeringTask, bool bSet, eXK eSendKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   UNUSED(pTriggeringTask);
-  UNUSED(eXmitKind);
+  UNUSED(eSendKind);
 
-  ASSERT(eXmitKind == XK_NORMAL || eXmitKind == XK_ROBIN);
+  ASSERT(eSendKind == XK_NORMAL || eSendKind == XK_ROBIN);
   
   // get the next stage
   Stage* pNextStage = m_pPipeline->pGet(m_iNextStage);
@@ -1687,7 +1687,7 @@ void Op::vSendToAllNodes(Operand* pOperand, Task* pTriggeringTask, bool bSet, eX
 /*----------------------------------------------------------------------------*/
 /* send the operand                                                           */
 /*----------------------------------------------------------------------------*/
-void Op::vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSet, eXK eXmitKind)
+void Op::vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSet, eXK eSendKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   UNUSED(pTriggeringTask);
@@ -1704,8 +1704,8 @@ void Op::vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask, bo
   i8 i_ThisNode = AM::pGrid()->iThisNode();
 #endif
   
-  // check the XmitKind
-  switch (eXmitKind) {
+  // check the SendKind
+  switch (eSendKind) {
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_ROBIN : {
@@ -1809,7 +1809,7 @@ void Op::vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask, bo
 /*----------------------------------------------------------------------------*/
 /* send the operand                                                           */
 /*----------------------------------------------------------------------------*/
-void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSet, eXK eXmitKind)
+void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSet, eXK eSendKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   UNUSED(pTriggeringTask);
@@ -1826,7 +1826,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
   i8 i_ThisNode = AM::pGrid()->iThisNode();
 #endif
   
-  switch (eXmitKind) {
+  switch (eSendKind) {
       
       //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_HASHED : {
@@ -1944,13 +1944,13 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
 /*----------------------------------------------------------------------------*/
 /* send the operand to a specific node                                        */
 /*----------------------------------------------------------------------------*/
-void Op::vSendToNode(Operand* pOperand, Task* pTriggeringTask, bool bSet, eXK eXmitKind,i8 i_Node)
+void Op::vSendToNode(Operand* pOperand, Task* pTriggeringTask, bool bSet, eXK eSendKind,i8 i_Node)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   UNUSED(pTriggeringTask);
-  UNUSED(eXmitKind);
+  UNUSED(eSendKind);
 
-  ASSERT(eXmitKind == XK_NORMAL || eXmitKind == XK_ROBIN);
+  ASSERT(eSendKind == XK_NORMAL || eSendKind == XK_ROBIN);
   
   // get the next stage
   Stage* pNextStage = m_pPipeline->pGet(m_iNextStage);
@@ -1967,13 +1967,13 @@ void Op::vSendToNode(Operand* pOperand, Task* pTriggeringTask, bool bSet, eXK eX
 /*----------------------------------------------------------------------------*/
 /* send the operand to the origin                                             */
 /*----------------------------------------------------------------------------*/
-void Op::vSendToOrigin(Operand* pOperand, Task* pTriggeringTask, bool bSet, eXK eXmitKind)
+void Op::vSendToOrigin(Operand* pOperand, Task* pTriggeringTask, bool bSet, eXK eSendKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   UNUSED(pTriggeringTask);
-  UNUSED(eXmitKind);
+  UNUSED(eSendKind);
 
-  ASSERT(eXmitKind == XK_NORMAL || eXmitKind == XK_ROBIN);
+  ASSERT(eSendKind == XK_NORMAL || eSendKind == XK_ROBIN);
   m_iSendNode = m_pPipeline->i_Origin();
   vSend(pOperand, bSet, m_iSendNode, C_UNKNOWN);
   
@@ -1985,18 +1985,18 @@ void Op::vSendToOrigin(Operand* pOperand, Task* pTriggeringTask, bool bSet, eXK 
 /* send the operand to a partition                                            */
 /*----------------------------------------------------------------------------*/
 void Op::vSendToPartition(Operand* pOperand, Task* pTriggeringTask, bool bSet,
-                          eXK eXmitKind, tPN tPtnNo)
+                          eXK eSendKind, tPN tPtnNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   UNUSED(pTriggeringTask);
 
   tPN tSendPtn = C_UNKNOWN;
   
-  ASSERT(eXmitKind == XK_NORMAL ||
-         eXmitKind == XK_ROBIN  ||
-         eXmitKind == XK_HASHED);   // ray added XK_HASHED 26 jul 2020 re q301
+  ASSERT(eSendKind == XK_NORMAL ||
+         eSendKind == XK_ROBIN  ||
+         eSendKind == XK_HASHED);   // ray added XK_HASHED 26 jul 2020 re q301
   
-  switch (eXmitKind) {
+  switch (eSendKind) {
       
     case XK_HASHED : {
       DataBuffer* pDataBuffer = _pDataBuffer(pOperand);

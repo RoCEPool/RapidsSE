@@ -684,15 +684,15 @@ bool Dynamo::bCollectOp(void)
   vAcceptToken();
   
   if (m_pTkn->bSame("Robin"_Stz)) {
-    pOpSpec->vXmitKind(XK_ROBIN);
+    pOpSpec->vSendKind(XK_ROBIN);
     vAcceptToken();
   }
   else if (m_pTkn->bSame("localRobin"_Stz)) {
-    pOpSpec->vXmitKind(XK_LOCALROBIN);
+    pOpSpec->vSendKind(XK_LOCALROBIN);
     vAcceptToken();
   }
   else if (m_pTkn->bSame("Hashed"_Stz)) {
-    pOpSpec->vXmitKind(XK_HASHED);
+    pOpSpec->vSendKind(XK_HASHED);
     vAcceptToken();
   }
   
@@ -1032,7 +1032,7 @@ bool Dynamo::bPhase2_staging(void)
             pStageSpec->vRemove(pOpSpec);
             delete pOpSpec;
           } else {
-            pOpSpec->vAddEnamePair(C_TAG_XMITKIND, (i8) pOpSpec->eXmitKind(), TN_INTEGER);
+            pOpSpec->vAddEnamePair(C_TAG_SendKind, (i8) pOpSpec->eSendKind(), TN_INTEGER);
             vReplaceWithXmit(pOpSpec, eCrossTopo, i_FoundStage);
 
             // is there a consumeOp already in the stage ?

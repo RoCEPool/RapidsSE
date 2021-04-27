@@ -52,7 +52,7 @@ namespace STORE
     i8             m_iOtherStage;    // other stage in the cross topology
     i8             m_iOtherOp;       // next Op in the other stage
     i8             m_iSendNode;      // send node (for send)
-    eXK            m_eXmitKind;      // send kind
+    eXK            m_eSendKind;      // send kind
     i8             m_iRobin;         // send Round Robin partition/node/thread
     i8             m_iLocalRobin;    // send Round Robin local ptn/node/thread
   
@@ -143,8 +143,8 @@ namespace STORE
     void vToCmdStr(Stz* szCmdStr);
     TagSet* pTopologyTagSet(void);
     void vWorkQuanta(i8 iWorkQuanta);
-    eXK  eXmitKind(void);
-    void vXmitKind(eXK eXmitKind);
+    eXK  eSendKind(void);
+    void vSendKind(eXK eSendKind);
     i8   iSendNode(void);
     void vSendNode(i8 iNde);
     
@@ -153,13 +153,13 @@ namespace STORE
   private:
     void vSend(Operand* pOperand, bool bSet, i8 i_Node, tPN tPtnNo);
     void vSend(Operand* pOperand, XmitOperand* pXmitOperand, bool bSet);
-    void vSendToAllNodes(Operand* pOperand, Task* pTriggeringTask,bool bSet, eXK eXmitKind);
-    void vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask,bool bSet, eXK eXmitKind);
-    void vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask,bool bSet, eXK eXmitKind);
-    void vSendToNode(Operand* pOperand, Task* pTriggeringTask,bool bSet, eXK eXmitKind,i8 i_Node);
-    void vSendToOrigin(Operand* pOperand, Task* pTriggeringTask,bool bSet, eXK eXmitKind);
+    void vSendToAllNodes(Operand* pOperand, Task* pTriggeringTask,bool bSet, eXK eSendKind);
+    void vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask,bool bSet, eXK eSendKind);
+    void vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask,bool bSet, eXK eSendKind);
+    void vSendToNode(Operand* pOperand, Task* pTriggeringTask,bool bSet, eXK eSendKind,i8 i_Node);
+    void vSendToOrigin(Operand* pOperand, Task* pTriggeringTask,bool bSet, eXK eSendKind);
     void vSendToPartition(Operand* pOperand, Task* pTriggeringTask, bool bSet,
-                          eXK eXmitKind, tPN tPtnNo);
+                          eXK eSendKind, tPN tPtnNo);
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
