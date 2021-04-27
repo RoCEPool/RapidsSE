@@ -182,8 +182,8 @@ void Op::vDump(i8 i_Op)
   // get the left EOS markers for consume op
   //! ALKA: right EOS markers ???
   TagSet* pOpTags = this->pOpTagSet();
-  i8 iXmits =  pOpTags->iValue(C_TAG_XMITS);
-  i8 iLeftMarkers = iXmits ? iXmits : 1;
+  i8 iSends =  pOpTags->iValue(C_TAG_Sends);
+  i8 iLeftMarkers = iSends ? iSends : 1;
   
   vTrace("    [%03lld] (N%lld,P%02lld) Op %12s%-20s { Markers(L%lld R0) :%-10s %s %s }\n"_Stz,
          i_Op,
@@ -1699,7 +1699,7 @@ void Op::vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask, bo
   Stage* pNextStage = m_pPipeline->pGet(m_iNextStage);
   RASSERT(pNextStage);
   
-#ifdef WITH_NO_XMIT_OPT
+#ifdef WITH_NO_SEND_OPT
   // get the current node
   i8 i_ThisNode = AM::pGrid()->iThisNode();
 #endif
@@ -1720,7 +1720,7 @@ void Op::vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask, bo
       if ( m_iSendNode == m_pPipeline->i_Origin()) {
         ASSERT( ! bSet );
         
-#ifdef WITH_NO_XMIT_OPT
+#ifdef WITH_NO_SEND_OPT
         if ( m_iSendNode == i_ThisNode) {
 
           // get the next stage the send is supposed to send to
@@ -1764,7 +1764,7 @@ void Op::vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask, bo
     
         m_iSendNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
         if ( m_iSendNode == m_pPipeline->i_Origin()) {
- #ifdef WITH_NO_XMIT_OPT
+ #ifdef WITH_NO_SEND_OPT
           if ( (pOperand->bIsMarker()  || pOperand->bIsStreamDef() ) &&
                 m_iSendNode == i_ThisNode) {
             
@@ -1821,7 +1821,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
   Stage* pNextStage = m_pPipeline->pGet(m_iNextStage);
   RASSERT(pNextStage);
   
-#ifdef WITH_NO_XMIT_OPT
+#ifdef WITH_NO_SEND_OPT
   // get the current node
   i8 i_ThisNode = AM::pGrid()->iThisNode();
 #endif
@@ -1836,7 +1836,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
       // sendNode is the partition node
       m_iSendNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
       
-#ifdef WITH_NO_XMIT_OPT
+#ifdef WITH_NO_SEND_OPT
       if ( m_iSendNode == i_ThisNode) {
         
         // get the next stage the send is supposed to send to
@@ -1889,7 +1889,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
         // sendNode is the partition node
         m_iSendNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
         ASSERT( ! bSet );
-#ifdef WITH_NO_XMIT_OPT
+#ifdef WITH_NO_SEND_OPT
         if ( (pOperand->bIsMarker()  || pOperand->bIsStreamDef() ) &&
             m_iSendNode == i_ThisNode) {
           

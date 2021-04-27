@@ -511,8 +511,8 @@ SizeHeap gxaSizeHeap[]
   { 0,                          HT_INVALID   ,0 }, // CN_WSPCONVERGENT_t
 
   { 'X' - ('A' - 1),            HT_INVALID   ,0 }, // CN__X__
-  { sizeof(XmitOperand),        HT_T_TINY    ,0 }, // CN_XMITIOPERAND
-  { sizeof(Xmits),              HT_T_TINY    ,0 }, // CN_XMITS
+  { sizeof(XmitOperand),        HT_T_TINY    ,0 }, // CN_XMITOPERAND
+  { sizeof(Sends),              HT_T_TINY    ,0 }, // CN_SENDS
 
   { 'Y' - ('A' - 1),            HT_INVALID   ,0 }, // CN__Y__
 

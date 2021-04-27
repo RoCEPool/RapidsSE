@@ -336,7 +336,7 @@ enum eCN : u2 // Class Number
 
   /* */ CN__X__,
   /* */ CN_XMITOPERAND,
-  /* */ CN_XMITS,
+  /* */ CN_SENDS,
   
   /* */ CN__Y__,
   
@@ -673,7 +673,7 @@ static Stz* aCN[]
  
   /* */ "_X__"_Stz,                 // CN__X__
   /* */ "XmitOperand"_Stz,          // CN_XMITOPERAND
-  /* */ "Xmits"_Stz,                // CN_XMITS
+  /* */ "Sends"_Stz,                // CN_SENDS
    
   /* */ "_Y__"_Stz,                 // CN__Y__
    

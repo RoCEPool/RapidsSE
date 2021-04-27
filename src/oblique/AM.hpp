@@ -191,7 +191,7 @@ namespace STORE {
   class WriteBehind;
   class XmitOperand;
   
-  class Xmits;
+  class Sends;
 
   class SP_Encoding;
 }

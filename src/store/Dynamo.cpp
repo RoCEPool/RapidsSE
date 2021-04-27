@@ -1083,35 +1083,35 @@ void Dynamo::vAddTopologyParams(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage, i8 
 }
 
 /*----------------------------------------------------------------------------*/
-/* add the Xmits parameter                                                    */
+/* add the Sends parameter                                                    */
 /*----------------------------------------------------------------------------*/
 void Dynamo::vAddConsumeParams(OpSpec* pOpSpec, ePX eCrossTopo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  i8 iXmits = C_UNKNOWN;
+  i8 iSends = C_UNKNOWN;
   
   // add argument to the consumeOp depending on the topology
   switch (eCrossTopo) {
     case PX_ALL_NODES_TO_ORIGIN:
-      iXmits = AM::pGrid()->nConnectedNodes();
+      iSends = AM::pGrid()->nConnectedNodes();
       break;
       
     case PX_ALL_NODES_TO_ALL_PARTITIONS:
-      iXmits = AM::pGrid()->nConnectedNodes();
+      iSends = AM::pGrid()->nConnectedNodes();
       break;
       
     case PX_ALL_PARTITIONS_TO_ALL_NODES:
-      iXmits = AM::nPtnsPerTable();
+      iSends = AM::nPtnsPerTable();
       break;
       
     case PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
-      iXmits = AM::nPtnsPerTable();
+      iSends = AM::nPtnsPerTable();
       break;
      
     case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
     case PX_ALL_PARTITIONS_TO_ORIGIN:
-      iXmits = AM::nPtnsInGrid();
+      iSends = AM::nPtnsInGrid();
       break;
       
     case PX_ORIGIN_TO_ORIGIN:
@@ -1120,7 +1120,7 @@ void Dynamo::vAddConsumeParams(OpSpec* pOpSpec, ePX eCrossTopo)
     case PX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
     case PX_ORIGIN_TO_SPECIFIC_PARTITION:
     case PX_SPECIFIC_PARTITION_TO_ORIGIN:
-      iXmits = 1;
+      iSends = 1;
       break;
       
     default:
@@ -1128,7 +1128,7 @@ void Dynamo::vAddConsumeParams(OpSpec* pOpSpec, ePX eCrossTopo)
   }
   
   // arg-0 is the cross topology of the send op
-  pOpSpec->vAddEnamePair(C_TAG_XMITS,iXmits,TN_INTEGER);
+  pOpSpec->vAddEnamePair(C_TAG_Sends,iSends,TN_INTEGER);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1138,29 +1138,29 @@ void Dynamo::vAddToConsumeParams(OpSpec* pOpSpec, ePX eCrossTopo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
 
-  i8 iXmits = C_UNKNOWN;
+  i8 iSends = C_UNKNOWN;
 
   // add argument to the consumeOp depending on the topology
   switch (eCrossTopo) {
     case PX_ALL_NODES_TO_ORIGIN:
-      iXmits = AM::pGrid()->nConnectedNodes();
+      iSends = AM::pGrid()->nConnectedNodes();
       break;
 
     case PX_ALL_NODES_TO_ALL_PARTITIONS:
-      iXmits = AM::pGrid()->nConnectedNodes();
+      iSends = AM::pGrid()->nConnectedNodes();
       break;
 
     case PX_ALL_PARTITIONS_TO_ALL_NODES:
-      iXmits = AM::nPtnsPerTable();
+      iSends = AM::nPtnsPerTable();
       break;
 
     case PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
-      iXmits = AM::nPtnsPerTable();
+      iSends = AM::nPtnsPerTable();
       break;
 
     case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
     case PX_ALL_PARTITIONS_TO_ORIGIN:
-      iXmits = AM::nPtnsInGrid();
+      iSends = AM::nPtnsInGrid();
       break;
 
     case PX_ORIGIN_TO_ORIGIN:
@@ -1169,7 +1169,7 @@ void Dynamo::vAddToConsumeParams(OpSpec* pOpSpec, ePX eCrossTopo)
     case PX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
     case PX_ORIGIN_TO_SPECIFIC_PARTITION:
     case PX_SPECIFIC_PARTITION_TO_ORIGIN:
-      iXmits = 1;
+      iSends = 1;
       break;
 
     default:
@@ -1177,10 +1177,10 @@ void Dynamo::vAddToConsumeParams(OpSpec* pOpSpec, ePX eCrossTopo)
   }
 
   TagSet* pTagSet = pOpSpec->pOpSpecTagSet();
-  i8 iOldXmits = pTagSet->iValue(C_TAG_XMITS);
+  i8 iOldSends = pTagSet->iValue(C_TAG_Sends);
 
   // arg-0 is the cross topology of the send op
-  pTagSet->vReplace(C_TAG_XMITS,iOldXmits+iXmits);
+  pTagSet->vReplace(C_TAG_Sends,iOldSends+iSends);
 }
 
 /*----------------------------------------------------------------------------*/

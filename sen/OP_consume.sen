@@ -10,7 +10,7 @@
 : consumeOp_CancelMarker \handler
 
   //"Operand:- ZK_CANCELMARKER" .verbose
-  xmits[].handleCancel if
+  Sends[].handleCancel if
     ZK_CANCELMARKER_handler
   else
     PipeIn[].delete
@@ -24,7 +24,7 @@
 : consumeOp_EosMarker \handler
 
   //"Operand:- ZK_EOSMARKER" .verbose
-  xmits[].handleEos if
+  Sends[].handleEos if
     PipeIn[].pipeOut
   else
     PipeIn[].delete
@@ -38,7 +38,7 @@
 : consumeOp_ErrorMarker \handler
 
   //"Operand:- ZK_ERRORMARKER" .verbose
-  xmits[].handleError if
+  Sends[].handleError if
     PipeIn[].pipeOut
   else
     PipeIn[].delete
@@ -53,7 +53,7 @@
 : consumeOp_DataPulse \handler
 
   //"Operand:- ZK_DATAPULSE" .verbose
-  xmits[].handleDataPulse if
+  Sends[].handleDataPulse if
     PipeIn[].pipeOut
   else
     PipeIn[].delete
@@ -67,7 +67,7 @@
 : consumeOp_DESTROYMARKER \handler
 
   //"Operand:- ZK_DESTROYMARKER" .verbose
-  xmits[].handleDestroy if
+  Sends[].handleDestroy if
     PipeIn[].pipeOut
   else
     PipeIn[].delete
@@ -81,7 +81,7 @@
 : consumeOp_ExitMarker \handler
 
   //"Operand:- ZK_EXITMARKER" .verbose
-  xmits[].handleExit if
+  Sends[].handleExit if
     PipeIn[].pipeOut
     Op.ackPipelineJob
     false
@@ -97,7 +97,7 @@
 : consumeOp_PulsedMarker \handler
 
   //"Operand:- ZK_PULSEDMARKER" .verbose
-  xmits[].handlePulsed if
+  Sends[].handlePulsed if
     PipeIn[].pipeOut
   else
     PipeIn[].delete
@@ -111,7 +111,7 @@
 : consumeOp_StartMarker \handler
 
   //"Operand:- ZK_STARTMARKER" .verbose
-  xmits[].handleStart if
+  Sends[].handleStart if
     PipeIn[].pipeOut
   else
     PipeIn[].delete
@@ -125,7 +125,7 @@
 : consumeOp_StreamDef \handler
 
   //"Operand:- ZK_STREAMDEF" .verbose
-  xmits[].handleStreamDef if
+  Sends[].handleStreamDef if
     PipeIn[].pipeOut
   else
     PipeIn[].delete
@@ -140,7 +140,7 @@
 
   LogReqEntry SEED_REQ
 
-  <Xmits> >int Xmits[].new
+  <Sends> >int Sends[].new
 
   // set topology, next stage and op
   op__topology
@@ -157,7 +157,7 @@
 
   op__loop
 
-  Xmits[].delete
+  Sends[].delete
 
   LogReqExit
   job::deleteThis
@@ -167,7 +167,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: consumeOp :: consumeOp <Xmits> ;
+cmdSyntax: consumeOp :: consumeOp <Sends> ;
 
 : consumeOp_cmdTags _cmdTags tagCopy: op_tags
   tags{ <cmdDesc> = "--desc for op--" }
