@@ -8094,7 +8094,6 @@ void Task::vAddMunged(Task* )
     "\"s\" .verbose\n"
     "\n"
     "  \"OP_scan.sen\"                 include\n"
-    "  \"OP_send.sen\"                 include\n"
     "  \"OP_setOpValidate.sen\"        include\n"
     "  \"OP_showCluster.sen\"          include\n"
     "  \"OP_sink.sen\"                 include\n"
