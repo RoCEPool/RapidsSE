@@ -29,7 +29,7 @@ public:
   i8   m_iHeader;            //
 
   u2   m_u2Version;          // version of the packet
-  i8   m_iSeqNo;             //
+  i8   m_iSeqNo;             // Do we need this ? Why?
   u2   m_u2DataLen;          // length of data  includes size of itself
   char m_acNodeName[64];     // cluster-wide unique name (IP+port)
   i8   m_iNodeNo;            // this node number
@@ -38,13 +38,13 @@ public:
 
   i8   m_iSincePosixEpoch;   //
   char m_acBuildGitHash[32]; //
-  i8   m_iPid;               //
+  i8   m_iPid;               // Do we need this ? Why?
+  bool m_bHasMetadata;       // This node has or doesn't have metadata
+  bool m_bHasData;           // This node has data or doesn't have data
 
   // data (STORE, BASE, ...)
-
   STORE_hb xStoreHeartbeat; // 40
   BASE_hb xBaseHeartbeat;   // 16
-
 
   i8   m_iChecksum;          //   8
 

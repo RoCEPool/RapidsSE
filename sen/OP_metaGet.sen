@@ -34,7 +34,7 @@
 : metaGet_req \operator
 
   LogReqEntry SEED_REQ
-
+  <tableNm> .
   op__topology
 
   find: metaGet_getTable   ZK_METAGET   op[].handler!

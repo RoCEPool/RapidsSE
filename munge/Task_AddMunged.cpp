@@ -14328,7 +14328,7 @@ void Task::vAddMunged(Task* )
     ": metaGet_req \\operator\n"
     "\n"
     "  LogReqEntry SEED_REQ\n"
-    "\n"
+    "  <tableNm> .\n"
     "  op__topology\n"
     "\n"
     "  find: metaGet_getTable   ZK_METAGET   op[].handler!\n"
