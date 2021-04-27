@@ -8,8 +8,8 @@
 
 _nation;
 
-trackmemory;
-success
+-- trackmemory;
+-- success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Basic ORDER BY examples
@@ -341,8 +341,8 @@ rows: (*,'explainPlan',
 //  Check for memory leaks
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-memoryleaks;
-rows: 0
+-- memoryleaks;
+-- rows: 0
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Cleanup

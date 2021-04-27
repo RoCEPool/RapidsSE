@@ -2,7 +2,8 @@
 select.test
 aggregates.test
 explain.test
-//union.test
+union.test
 postProject.test
 aliases.test
 corrByProjectSquashing.test
+orderBy.test

@@ -32,6 +32,9 @@ success
 CREATE TABLE unionTbl6 (bRaVo BOOLEAN, col3 DATE, col1 INTEGER);
 
 
+-- trackmemory;
+-- success
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Basic union all statements
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -114,7 +117,7 @@ failure contains: 'Column in CORRESPONDING BY list is not found in select list: 
 
 SELECT * FROM unionTbl1 UNION ALL CORRESPONDING SELECT * FROM unionTbl2;
 rows:
-  ['col1', 'col2', 'col3']
+  ['col1', 'col2', 'col3', 'col4']
 
 SELECT * FROM unionTbl4 UNION ALL CORRESPONDING SELECT * FROM unionTbl5;
 rows:
@@ -178,6 +181,13 @@ UNION ALL
 ;
 success
 
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Check for memory leaks
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- memoryleaks;
+-- rows: 0
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Cleanup
