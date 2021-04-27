@@ -24,7 +24,7 @@
 #include "eNE.h"
 #include "eOC.h"
 #include "eOK.h"
-#include "eOP.h"
+
 #include "eOR.h"
 #include "ePF.h"
 #include "ePP.h"
@@ -2334,7 +2334,6 @@ static Stz* aEG[]
   "EG_OI"_Stz,
   "EG_OK"_Stz,
   "EG_OM"_Stz,
-  "EG_OP"_Stz,
   "EG_OR"_Stz,
 
   "EG_PA"_Stz,
@@ -2466,7 +2465,6 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_OI: return aOI[i_Enum];
     case EG_OK: return aOK[i_Enum];
     case EG_OM: return aOM[i_Enum];
-    case EG_OP: return aOP[i_Enum];
     case EG_OR: return aOR[i_Enum];
 
     case EG_PA: return aPA[i_Enum];
