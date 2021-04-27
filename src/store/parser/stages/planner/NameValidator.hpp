@@ -57,7 +57,7 @@ namespace Parser
                                                 QueryNode* pMetadataNode);
 
     // Return a list of ProjectedColumn nodes that are reachable from a given sql operator
-    // and that contain a given alias name.
+    // and that contain a given alias name. Need to free the list and nodes returned.
     static QueryNodeList* pMatchingExprAliasesFor(Stz* szAlias,
                                                   QueryNode* pSqlOp,
                                                   PlanNode* pRootNode);

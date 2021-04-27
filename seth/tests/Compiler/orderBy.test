@@ -1,0 +1,358 @@
+/*----------------------------------------------------------------------------*/
+/* ORDER BY syntax & semantics tests                                          */
+/*----------------------------------------------------------------------------*/
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Setup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+_nation;
+
+-- trackmemory;
+-- success
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Basic ORDER BY examples
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- one order expression
+EXPLAIN SELECT * FROM nation ORDER BY n_name;
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT * FROM nation ORDER BY n_name"
+
+-> orderOp
+   » order expr: ((rapidsse.public.nation.n_name) ASC)
+   » ordinal order expr: (($2) ASC)
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.N_NATIONKEY)
+      » column: (Expr = rapidsse.public.nation.N_NAME)
+      » column: (Expr = rapidsse.public.nation.N_REGIONKEY)
+      » column: (Expr = rapidsse.public.nation.N_COMMENT)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)'
+)
+
+-- two order expressions
+EXPLAIN SELECT * FROM nation ORDER BY n_name, n_nationkey;
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT * FROM nation ORDER BY n_name, n_nationkey"
+
+-> orderOp
+   » order expr: ((rapidsse.public.nation.n_name) ASC, (rapidsse.public.nation.n_nationkey) ASC)
+   » ordinal order expr: (($2) ASC, ($1) ASC)
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.N_NATIONKEY)
+      » column: (Expr = rapidsse.public.nation.N_NAME)
+      » column: (Expr = rapidsse.public.nation.N_REGIONKEY)
+      » column: (Expr = rapidsse.public.nation.N_COMMENT)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)'
+)
+
+-- different ordering directions for different ordering expressions
+EXPLAIN SELECT * FROM nation ORDER BY n_name asc, n_nationkey desc;
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT * FROM nation ORDER BY n_name asc, n_nationkey desc"
+
+-> orderOp
+   » order expr: ((rapidsse.public.nation.n_name) ASC, (rapidsse.public.nation.n_nationkey) DESC)
+   » ordinal order expr: (($2) ASC, ($1) DESC)
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.N_NATIONKEY)
+      » column: (Expr = rapidsse.public.nation.N_NAME)
+      » column: (Expr = rapidsse.public.nation.N_REGIONKEY)
+      » column: (Expr = rapidsse.public.nation.N_COMMENT)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)'
+)
+
+-- The default ordering direction is ascending unless otherwise stated
+EXPLAIN SELECT * FROM nation ORDER BY n_name desc, n_nationkey;
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT * FROM nation ORDER BY n_name desc, n_nationkey"
+
+-> orderOp
+   » order expr: ((rapidsse.public.nation.n_name) DESC, (rapidsse.public.nation.n_nationkey) ASC)
+   » ordinal order expr: (($2) DESC, ($1) ASC)
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.N_NATIONKEY)
+      » column: (Expr = rapidsse.public.nation.N_NAME)
+      » column: (Expr = rapidsse.public.nation.N_REGIONKEY)
+      » column: (Expr = rapidsse.public.nation.N_COMMENT)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)'
+)
+
+-- Ordering expressions are not just column references but arbitrary expressions
+EXPLAIN SELECT * FROM nation ORDER BY n_nationkey + 1 desc;
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT * FROM nation ORDER BY n_nationkey + 1 desc"
+
+-> orderOp
+   » order expr: ((rapidsse.public.nation.n_nationkey + 1) DESC)
+   » ordinal order expr: (($1 + 1) DESC)
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.N_NATIONKEY)
+      » column: (Expr = rapidsse.public.nation.N_NAME)
+      » column: (Expr = rapidsse.public.nation.N_REGIONKEY)
+      » column: (Expr = rapidsse.public.nation.N_COMMENT)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)'
+)
+
+-- Ordering expressions are not just column references but arbitrary expressions (multiple)
+EXPLAIN SELECT * FROM nation ORDER BY n_name desc, n_nationkey + n_regionkey;
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT * FROM nation ORDER BY n_name desc, n_nationkey + n_regionkey"
+
+-> orderOp
+   » order expr: ((rapidsse.public.nation.n_name) DESC, (rapidsse.public.nation.n_nationkey + rapidsse.public.nation.n_regionkey) ASC)
+   » ordinal order expr: (($2) DESC, ($1 + $3) ASC)
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.N_NATIONKEY)
+      » column: (Expr = rapidsse.public.nation.N_NAME)
+      » column: (Expr = rapidsse.public.nation.N_REGIONKEY)
+      » column: (Expr = rapidsse.public.nation.N_COMMENT)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)'
+)
+
+-- ORDER BY must appear after HAVING and before LIMIT
+EXPLAIN SELECT n_name, sum(n_nationkey) as s
+FROM nation
+GROUP BY n_name
+HAVING n_name = 'KENYA'
+ORDER BY n_name desc, sum(n_nationkey);
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT n_name, sum(n_nationkey) as s FROM nation GROUP BY n_name HAVING n_name = ''KENYA'' ORDER BY n_name desc, sum(n_nationkey)"
+
+-> orderOp
+   » order expr: ((rapidsse.public.nation.n_name) DESC, (SUM(rapidsse.public.nation.n_nationkey)) ASC)
+   » ordinal order expr: (($1) DESC, ($2) ASC)
+
+-> -> filterOp
+      » expr: (rapidsse.public.nation.n_name = ''KENYA'')
+      » ordinal expr: ($1 = ''KENYA'')
+
+-> -> -> aggregateOp
+         » column: (Expr = rapidsse.public.nation.n_name)
+         » column: (Alias = s ; Expr = SUM(rapidsse.public.nation.n_nationkey))
+         » group by: (rapidsse.public.nation.n_name)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)'
+)
+
+EXPLAIN SELECT n_name, sum(n_nationkey) as s
+FROM nation
+GROUP BY n_name
+HAVING n_name = 'KENYA'
+ORDER BY n_name desc, sum(n_nationkey)
+LIMIT 10;
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT n_name, sum(n_nationkey) as s FROM nation GROUP BY n_name HAVING n_name = ''KENYA'' ORDER BY n_name desc, sum(n_nationkey) LIMIT 10"
+
+-> limitOp
+   » limit: (10)
+
+-> -> orderOp
+      » order expr: ((rapidsse.public.nation.n_name) DESC, (SUM(rapidsse.public.nation.n_nationkey)) ASC)
+      » ordinal order expr: (($1) DESC, ($2) ASC)
+
+-> -> -> filterOp
+         » expr: (rapidsse.public.nation.n_name = ''KENYA'')
+         » ordinal expr: ($1 = ''KENYA'')
+
+-> -> -> -> aggregateOp
+            » column: (Expr = rapidsse.public.nation.n_name)
+            » column: (Alias = s ; Expr = SUM(rapidsse.public.nation.n_nationkey))
+            » group by: (rapidsse.public.nation.n_name)
+
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.nation)'
+)
+
+
+-- ORDER BY can be used in set queries but it must use aliases only.
+-- This is because we cannot push an ordering expression down through a Set operator
+-- so we can only use the projected columns that the set operator gives us.
+-- This is a non-trivial issue to fix...
+--
+-- If we allow resolution down the unionOp's first child then we run the risk of
+-- allowing an order by a column that is not being unioned. That column shouldn't
+-- be visible.
+-- If we try to resolve a column name against qualified columnRefs in the projected
+-- columns then we also permit ordering expressions to be specified that aren't equal
+-- to or supersets of the projected columns. e.g. projecting (col1 + 1), ordering
+-- by (col1 * 2). We would need some additional check to ensure that in the case where
+-- an orderOp was above a setOp then the ordering expressions must be equal to
+-- or supersets of the projected expressions.
+-- Alternatively, we only allow ordering by aliases.
+EXPLAIN
+SELECT n_nationkey, n_name FROM nation
+UNION ALL
+SELECT n_regionkey, n_name FROM nation
+ORDER BY n_nationkey;
+failure contains: 'No such column: n_nationkey'
+
+-- TODO: Enable when supported
+-- EXPLAIN
+-- SELECT n_nationkey + 1, n_name FROM nation
+-- UNION ALL
+-- SELECT n_regionkey, n_name FROM nation
+-- ORDER BY n_nationkey;
+-- failure contains: 'Ordering expression is not projected by the UnionOp'
+--
+-- EXPLAIN
+-- SELECT n_nationkey + 1, n_name FROM nation
+-- UNION ALL
+-- SELECT n_regionkey, n_name FROM nation
+-- ORDER BY n_nationkey + 1;
+-- success
+--
+-- -- Ordering expression can be a superset of the unionOps first child
+-- EXPLAIN
+-- SELECT n_nationkey, n_name FROM nation
+-- UNION ALL
+-- SELECT n_regionkey, n_name FROM nation
+-- ORDER BY n_nationkey * 2;
+-- success
+
+-- ORDER BY above a SetOp cannot resolve columnRefs unless they are aliases
+-- being projected by the SetOp.
+-- This shouldn't work because n_regionkey is not being projected by the UnionOp
+EXPLAIN
+SELECT n_nationkey as nkey, n_name FROM nation
+UNION ALL
+SELECT n_regionkey, n_name FROM nation
+ORDER BY n_regionkey;
+failure contains: 'No such column: n_regionkey'
+
+
+-- This shouldn't work because there is no alias for n_nationkey + 1
+-- and the name n_nationkey cannot be resolved through a union as
+-- a columnRef (only an alias).
+EXPLAIN
+SELECT n_nationkey + 1, n_name FROM nation
+UNION ALL
+SELECT n_regionkey, n_name FROM nation
+ORDER BY n_nationkey + 1;
+failure contains: 'No such column: n_nationkey'
+
+
+-- ORDER BY expressions can use aliases
+EXPLAIN SELECT n_name as name FROM nation ORDER BY name;
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT n_name as name FROM nation ORDER BY name"
+
+-> orderOp
+   » order expr: ((name) ASC)
+   » ordinal order expr: (($1) ASC)
+
+-> -> projectOp
+      » column: (Alias = name ; Expr = rapidsse.public.nation.n_name)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)'
+)
+
+-- ORDER BY expressions doesn't have to always refer to the alias
+EXPLAIN SELECT n_nationkey + 1 as nkey FROM nation ORDER BY n_nationkey + 1;
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT n_nationkey + 1 as nkey FROM nation ORDER BY n_nationkey + 1"
+
+-> orderOp
+   » order expr: ((rapidsse.public.nation.n_nationkey + 1) ASC)
+   » ordinal order expr: (($1) ASC)
+
+-> -> projectOp
+      » column: (Alias = nkey ; Expr = rapidsse.public.nation.n_nationkey + 1)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)'
+)
+
+-- ORDER BY expressions can use aliases (reaching through a SetOp to the first branch)
+EXPLAIN
+SELECT n_nationkey as nkey, n_name FROM nation
+UNION ALL
+SELECT n_regionkey, n_name FROM nation
+ORDER BY nkey;
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT n_nationkey as nkey, n_name FROM nation UNION ALL SELECT n_regionkey, n_name FROM nation ORDER BY nkey"
+
+-> orderOp
+   » order expr: ((nkey) ASC)
+   » ordinal order expr: (($1) ASC)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT n_nationkey as nkey, n_name FROM nation UNION ALL SELECT n_regionkey, n_name FROM nation"
+
+-> -> -> unionOp
+         » isDistinct: (false)
+
+-> -> -> -> StatementMarker: select
+            » queryText: "SELECT n_nationkey as nkey, n_name FROM nation"
+
+-> -> -> -> -> projectOp
+               » column: (Alias = nkey ; Expr = rapidsse.public.nation.n_nationkey)
+               » column: (Expr = rapidsse.public.nation.n_name)
+
+-> -> -> -> -> -> tableScanOp
+                  » table: (rapidsse.public.nation)
+
+-> -> -> -> StatementMarker: select
+            » queryText: "SELECT n_regionkey, n_name FROM nation"
+
+-> -> -> -> -> projectOp
+               » column: (Expr = rapidsse.public.nation.n_regionkey)
+               » column: (Expr = rapidsse.public.nation.n_name)
+
+-> -> -> -> -> -> tableScanOp
+                  » table: (rapidsse.public.nation)'
+)
+
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Check for memory leaks
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- memoryleaks;
+-- rows: 0
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Cleanup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CLEANUP {
+  DROP TABLE nation;
+  mute
+
+  bye;
+  mute
+}
+

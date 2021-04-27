@@ -269,7 +269,7 @@ void Expr::vValidateResultType(QueryNode* pExprNode, PlanNode* pRootNode)
   Expr::vDescribe(pExprNode, sBuf);
 
   SemanticException::vThrow(EC_EXPR_INVALID_COMBINATION,
-                            ": "_Stz,
+                            ": %s"_Stz,
                             sBuf.szStz() );
 }
 

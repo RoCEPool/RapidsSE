@@ -252,9 +252,9 @@ namespace Parser
     {
       ASSERT(szColumnName);
       ASSERT(pTableDefList);
-      ASSERT(pTableDefList->nItems() > 1);
+      ASSERT(pTableDefList->nItems() >= 1);
       ASSERT(pProjectedColumnList);
-      ASSERT(pProjectedColumnList->nItems() > 1);
+      ASSERT(pProjectedColumnList->nItems() >= 1);
 
       s2K sErrMsg(aErrorMsg[EC_AMBIGUOUS_COLUMN]);
 
@@ -286,7 +286,7 @@ namespace Parser
       }
 
       delete pProjectedColIter;
-      pProjectedColumnList->vRemoveAll();
+      pProjectedColumnList->vDeleteAll();
       delete pProjectedColumnList;   // yes, delete the list we were passed
 
       throw NameValidationException(EC_AMBIGUOUS_COLUMN, sErrMsg.szStz());

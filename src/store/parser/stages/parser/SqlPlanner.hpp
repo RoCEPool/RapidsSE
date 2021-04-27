@@ -29,6 +29,7 @@ namespace Parser
     QueryNodeStack* m_pTableRefStack;
     QueryNodeList* m_pExprList;
     QueryNodeList* m_pSelectItems;
+    QueryNodeList* m_pOrderExprs;
     Footer m_xFooter;
     
    public:
@@ -69,6 +70,8 @@ namespace Parser
     antlrcpp::Any visitIsNullOp(sqlParser::IsNullOpContext *pCtx)                 override;
     antlrcpp::Any visitCountAll(sqlParser::CountAllContext *pCtx)                 override;
     antlrcpp::Any visitAggFunc(sqlParser::AggFuncContext *pCtx)                   override;
+    antlrcpp::Any visitOrderByList(sqlParser::OrderByListContext *pCtx)           override;
+    antlrcpp::Any visitOrderByListItem(sqlParser::OrderByListItemContext *pCtx)   override;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -90,7 +93,6 @@ namespace Parser
 
     // SelectQuery clauses not implemented
     antlrcpp::Any visitWithQuery(sqlParser::WithQueryContext *pCtx)                override { __NOT_IMPL("WITH")}
-    antlrcpp::Any visitOrderByList(sqlParser::OrderByListContext *pCtx)            override { __NOT_IMPL("ORDER BY")}
     // distinct is handled in visitSelectExpr
 
     // tableExprs not implemented

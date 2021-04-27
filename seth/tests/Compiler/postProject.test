@@ -32,7 +32,7 @@ trackmemory;
 success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  Post projection required because SUM(n_nationkey) is not being projected
+//  Post projection required because SUM(n_nationkey) is not being projected (HAVING clause)
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 EXPLAIN SELECT n_name FROM nation GROUP BY n_name HAVING SUM(n_nationkey) > 0;
@@ -58,9 +58,52 @@ rows:
             » table: (rapidsse.public.nation)'
 )
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Post projection required because SUM(n_nationkey) is not being projected (ORDER BY clause)
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+EXPLAIN SELECT n_name FROM nation GROUP BY n_name ORDER BY SUM(n_nationkey) > 0;
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT n_name FROM nation GROUP BY n_name ORDER BY SUM(n_nationkey) > 0"
+
+-> projectOp
+   » column: (Expr = rapidsse.public.nation.n_name)
+
+-> -> orderOp
+      » order expr: (((SUM(rapidsse.public.nation.n_nationkey)) > 0) ASC)
+      » ordinal order expr: (((SUM(rapidsse.public.nation.n_nationkey)) > 0) ASC)
+
+-> -> -> aggregateOp
+         » column: (Expr = rapidsse.public.nation.n_name)
+         » group by: (rapidsse.public.nation.n_name)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)'
+)
+
+EXPLAIN SELECT n_name FROM nation GROUP BY n_name ORDER BY n_name, SUM(n_nationkey) > 0;
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT n_name FROM nation GROUP BY n_name ORDER BY n_name, SUM(n_nationkey) > 0"
+
+-> projectOp
+   » column: (Expr = rapidsse.public.nation.n_name)
+
+-> -> orderOp
+      » order expr: ((rapidsse.public.nation.n_name) ASC, ((SUM(rapidsse.public.nation.n_nationkey)) > 0) ASC)
+      » ordinal order expr: (($1) ASC, ((SUM(rapidsse.public.nation.n_nationkey)) > 0) ASC)
+
+-> -> -> aggregateOp
+         » column: (Expr = rapidsse.public.nation.n_name)
+         » group by: (rapidsse.public.nation.n_name)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)'
+)
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// Post projection not required because n_name is already projected
+// Post projection not required because n_name is already projected (HAVING clause)
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 EXPLAIN SELECT n_name FROM nation GROUP BY n_name HAVING n_name = 'KENYA';
@@ -83,6 +126,63 @@ rows:
          » table: (rapidsse.public.nation)'
 )
 
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Post projection not required because n_name is already projected (ORDER BY clause)
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+EXPLAIN SELECT n_name FROM nation GROUP BY n_name ORDER BY n_name;
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT n_name FROM nation GROUP BY n_name ORDER BY n_name"
+
+-> orderOp
+   » order expr: ((rapidsse.public.nation.n_name) ASC)
+   » ordinal order expr: (($1) ASC)
+
+-> -> aggregateOp
+      » column: (Expr = rapidsse.public.nation.n_name)
+      » group by: (rapidsse.public.nation.n_name)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)'
+)
+
+EXPLAIN SELECT n_name, SUM(n_nationkey) FROM nation GROUP BY n_name ORDER BY SUM(n_nationkey);
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT n_name, SUM(n_nationkey) FROM nation GROUP BY n_name ORDER BY SUM(n_nationkey)"
+
+-> orderOp
+   » order expr: ((SUM(rapidsse.public.nation.n_nationkey)) ASC)
+   » ordinal order expr: (($2) ASC)
+
+-> -> aggregateOp
+      » column: (Expr = rapidsse.public.nation.n_name)
+      » column: (Expr = SUM(rapidsse.public.nation.n_nationkey))
+      » group by: (rapidsse.public.nation.n_name)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)'
+)
+
+EXPLAIN SELECT n_name, SUM(n_nationkey) as s FROM nation GROUP BY n_name ORDER BY s;
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT n_name, SUM(n_nationkey) as s FROM nation GROUP BY n_name ORDER BY s"
+
+-> orderOp
+   » order expr: ((s) ASC)
+   » ordinal order expr: (($2) ASC)
+
+-> -> aggregateOp
+      » column: (Expr = rapidsse.public.nation.n_name)
+      » column: (Alias = s ; Expr = SUM(rapidsse.public.nation.n_nationkey))
+      » group by: (rapidsse.public.nation.n_name)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)'
+)
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Aggregated expression as superset of non-aggregated columnRef.

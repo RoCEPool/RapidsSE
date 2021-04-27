@@ -1077,6 +1077,28 @@
   end ;
   "
   api::addProcedure
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get meta objet
+  
+  STD_PATH
+  "
+  procedure getMeta
+    parameters $TableNm
+  begin
+
+    stage stageA on origin :
+      start | metaGet $TableNm | stageB hashed
+
+    stage stageB on all nodes :
+      metaSend | stageC
+
+    stage stageC on origin :
+      metaRecv | stageA
+
+  end ;
+  "
+  api::addProcedure
 ;
 
 /*----------------------------------------------------------------------------*/
