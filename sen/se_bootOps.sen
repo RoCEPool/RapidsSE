@@ -158,6 +158,7 @@ assert::stack_0
 "s" .verbose
 
   "OP_scan.sen"                 include
+  "OP_send.sen"                 include
   "OP_setOpValidate.sen"        include
   "OP_showCluster.sen"          include
   "OP_sink.sen"                 include
@@ -212,7 +213,6 @@ assert::stack_0
 
 "x" .verbose
 
-  "OP_xmit.sen"                 include
 
 "y" .verbose
 
