@@ -24,7 +24,7 @@ namespace STORE
     StageSpec*    m_pStageSpec;    // which stage spec
 
     bool   m_bAppendRight; // append to right queue of next operator
-    eXK    m_eXmitKind;    // {normal, hashed, robin, local robin} if xmit op
+    eXK    m_eXmitKind;    // {normal, hashed, robin, local robin} if send op
     
     TagSet m_oOpSpecTagSet;
     TagSet m_oTopologyTagSet;

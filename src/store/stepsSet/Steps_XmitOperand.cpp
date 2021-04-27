@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_JobXmit.cpp - job xmit                                               */
+/* Steps_JobXmit.cpp - job send                                               */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -28,7 +28,7 @@ void Step::vAddSteps_XmitOperand(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* XmitOperand.operand! -- store operand in the xmitOperand                   */
+/* XmitOperand.operand! -- store operand in the sendOperand                   */
 /*----------------------------------------------------------------------------*/
 void Step::vXmitOperandOperandStore(void)
 {
@@ -58,7 +58,7 @@ void Step::vXmitOperandPipeOut(void)
   i8 iPipelineJob = pXmitOperand->m_iPipelineJobId;
   Job* pPipelineJob = AM::pJob_FindParticipating(iPipelineJob);
 
-  // get the next stage the xmit is supposed to xmit to
+  // get the next stage the send is supposed to send to
   Stage* pStage = pPipelineJob->m_pPipeline->pGet(pXmitOperand->m_iNextStage);
   
   // get the op to forward to depending on the cross topology

@@ -51,10 +51,10 @@ namespace STORE
     i8             m_iNextOp;        // next Op in the next stage
     i8             m_iOtherStage;    // other stage in the cross topology
     i8             m_iOtherOp;       // next Op in the other stage
-    i8             m_iXmitNode;      // xmit node (for xmit)
-    eXK            m_eXmitKind;      // xmit kind
-    i8             m_iRobin;         // xmit Round Robin partition/node/thread
-    i8             m_iLocalRobin;    // xmit Round Robin local ptn/node/thread
+    i8             m_iXmitNode;      // send node (for send)
+    eXK            m_eXmitKind;      // send kind
+    i8             m_iRobin;         // send Round Robin partition/node/thread
+    i8             m_iLocalRobin;    // send Round Robin local ptn/node/thread
   
     Op*            m_pDownstreamOp;  // downstream op
     Operand*       m_pOutboundOperand;  // operand to be piped out

@@ -1087,10 +1087,10 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask, bool bSet)
   
   RASSERT((AM::JOB::szJobNm(m_pOpJob)->bSame(szOpNm())));
   
-  RASSERT(! szOpNm()->bSame("xmit"_Stz));
+  RASSERT(! szOpNm()->bSame("send"_Stz));
   
     
-  // get the next stage the xmit is supposed to xmit to
+  // get the next stage the send is supposed to send to
   Stage* pStage = m_pPipeline->pGet(m_iNextStage);
 
   // get the op to forward to depending on the cross topology
@@ -1316,7 +1316,7 @@ OperandQueue* Op::pQueueRight(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set xmit operand                                                           */
+/* set send operand                                                           */
 /*----------------------------------------------------------------------------*/
 void Op::vSendXmitOperand(Operand* pOperand, Task* pTriggeringTask, bool bSet)
 {
@@ -1332,7 +1332,7 @@ void Op::vSendXmitOperand(Operand* pOperand, Task* pTriggeringTask, bool bSet)
   Stage* pNextStage = m_pPipeline->pGet(m_iNextStage);
   RASSERT(pNextStage);
   
-  // figure out the xmit kind
+  // figure out the send kind
   eXK eXmitKind = m_eXmitKind;
   
   // is the operand is a marker or a streamDef ?
@@ -1560,7 +1560,7 @@ void Op::vWorkQuanta(i8 iWorkQuanta)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get xmit kind                                                              */
+/* get send kind                                                              */
 /*----------------------------------------------------------------------------*/
 eXK Op::eXmitKind(void)
 {
@@ -1570,7 +1570,7 @@ eXK Op::eXmitKind(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set xmit kind                                                              */
+/* set send kind                                                              */
 /*----------------------------------------------------------------------------*/
 void Op::vXmitKind(eXK eXmitKind)
 {
@@ -1580,7 +1580,7 @@ void Op::vXmitKind(eXK eXmitKind)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get xmit node                                                              */
+/* get send node                                                              */
 /*----------------------------------------------------------------------------*/
 i8 Op::iXmitNode(void)
 {
@@ -1590,7 +1590,7 @@ i8 Op::iXmitNode(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set xmit node                                                              */
+/* set send node                                                              */
 /*----------------------------------------------------------------------------*/
 void Op::vXmitNode(i8 iXmitNode)
 {
@@ -1612,14 +1612,14 @@ void Op::vSend(Operand* pOperand, bool bSet, i8 i_Node, tPN tPtnNo)
   
   XmitOperand* pXmitOperand;
   
-  // new an xmit operand
+  // new an send operand
   pXmitOperand = AM::pNewXmitOperand(m_pPipelineJob, pOperand, m_eCrossTopo, m_iNextStage, m_iNextOp, i_Node, tPtnNo);
 
   vSend(pOperand, pXmitOperand, bSet);
 
   if (m_iOtherStage != C_UNKNOWN) {
 
-    // new an xmit operand
+    // new an send operand
     pXmitOperand = AM::pNewXmitOperand(m_pPipelineJob, pOperand, m_eCrossTopo, m_iOtherStage, m_iOtherOp, i_Node, tPtnNo);
 
     vSend(pOperand, pXmitOperand, bSet);
@@ -1655,7 +1655,7 @@ void Op::vSend(Operand* pOperand, XmitOperand* pXmitOperand, bool bSet)
     AM::vSend(AM::pExecutingTask(m_pOpJob), pSendNode, pXmitOperand);
   }
 
-  // delete the xmitOperand
+  // delete the sendOperand
   AM::vDeleteXmitOperand(pXmitOperand);
 }
 
@@ -1713,7 +1713,7 @@ void Op::vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask, bo
       i_TablePtn = m_iRobin % AM::nPtnsPerTable();
       tPtnNo = PtnMap::tStreamToLglPtnNo(i_TablePtn);
       
-      // xmitNode is the partition node
+      // sendNode is the partition node
       m_iXmitNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
       ASSERT(m_iXmitNode == m_pPipeline->i_Origin());
    
@@ -1723,7 +1723,7 @@ void Op::vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask, bo
 #ifdef WITH_NO_XMIT_OPT
         if ( m_iXmitNode == i_ThisNode) {
 
-          // get the next stage the xmit is supposed to xmit to
+          // get the next stage the send is supposed to send to
           Stage* pStage = m_pPipeline->pGet(m_iNextStage);
 
           // get the op to forward to depending on the cross topology
@@ -1760,7 +1760,7 @@ void Op::vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask, bo
         Stream* pStream = pNextStage->pGet(i_Stream);
         tPtnNo = pStream->tPtnNo();
         
-        // xmitNode is the partition node
+        // sendNode is the partition node
     
         m_iXmitNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
         if ( m_iXmitNode == m_pPipeline->i_Origin()) {
@@ -1768,7 +1768,7 @@ void Op::vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask, bo
           if ( (pOperand->bIsMarker()  || pOperand->bIsStreamDef() ) &&
                 m_iXmitNode == i_ThisNode) {
             
-            // get the next stage the xmit is supposed to xmit to
+            // get the next stage the send is supposed to send to
             Stage* pStage = m_pPipeline->pGet(m_iNextStage);
             
             // get the op to forward to depending on the cross topology
@@ -1833,13 +1833,13 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
       DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
       tPtnNo = pDataBuffer->tPtnNo();
       
-      // xmitNode is the partition node
+      // sendNode is the partition node
       m_iXmitNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
       
 #ifdef WITH_NO_XMIT_OPT
       if ( m_iXmitNode == i_ThisNode) {
         
-        // get the next stage the xmit is supposed to xmit to
+        // get the next stage the send is supposed to send to
         Stage* pStage = m_pPipeline->pGet(m_iNextStage);
         
         // get the op to forward to depending on the cross topology
@@ -1870,7 +1870,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
       i_TablePtn = m_iLocalRobin % AM::nPtnsPerTable();
       tPtnNo = PtnMap::tStreamToLglPtnNo(i_TablePtn);
       
-      // xmitNode is this node
+      // sendNode is this node
       m_iXmitNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
       RASSERT(m_iXmitNode == AM::pGrid()->iThisNode());
       
@@ -1886,14 +1886,14 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
       ASSERT(pNextStage->nItems() == AM::nPtnsInGrid());
       for (tPtnNo = 0; tPtnNo < pNextStage->nItems(); tPtnNo++) {
         
-        // xmitNode is the partition node
+        // sendNode is the partition node
         m_iXmitNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
         ASSERT( ! bSet );
 #ifdef WITH_NO_XMIT_OPT
         if ( (pOperand->bIsMarker()  || pOperand->bIsStreamDef() ) &&
             m_iXmitNode == i_ThisNode) {
           
-          // get the next stage the xmit is supposed to xmit to
+          // get the next stage the send is supposed to send to
           Stage* pStage = m_pPipeline->pGet(m_iNextStage);
           
           // get the op to forward to depending on the cross topology
@@ -1927,7 +1927,7 @@ void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSe
       m_iRobin++;
       tPtnNo = m_iRobin % AM::nPtnsInGrid();
       
-      // xmitNode is the partition node
+      // sendNode is the partition node
       m_iXmitNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
       
       ASSERT( ! bSet );
