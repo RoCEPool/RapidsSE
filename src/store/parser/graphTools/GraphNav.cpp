@@ -60,6 +60,28 @@ void GraphNav::vParentType(Stz* szTypePath, s256& buf)
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/* Walks the graph from a given node and prints information to the console    */
+/*----------------------------------------------------------------------------*/
+void GraphNav::vPrint(PlanNode* pNode)
+{
+  ASSERT(pNode);
+
+  auto fVisitor = [](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+    if (PlanObject::bIsOfType(pNode)) {
+      s2K sBuf;
+      PlanObject::vDescribe(pNode, sBuf);
+      vTrace("%-40s %s\n"_Stz, sPath.szStz(), sBuf.szStz());
+
+    } else {
+      vTrace("%s\n"_Stz, sPath.szStz());
+    }
+
+    return WALK_CONTINUE;
+  };
+
+  bGlobalWalk(pNode, fVisitor, nullptr);
+}
 
 /*----------------------------------------------------------------------------*/
 /* Walks a node graph (including all properties and children) and calls a
@@ -566,32 +588,9 @@ b1 GraphNav::bWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren
 
   b1 bRetVal;
 
-  // Any properties to walk down?
-  if (bWalkProperties && pNode->bHasProperties()) {
-
-    PlanNodeIter* pIter = pNode->pNewPropertyIter();
-    try {
-      while (pIter->bHasNext()) {
-        PlanNode *pProp = pIter->pNext();
-
-        // Don't forget to clip the path and add the appropriate separator before each node
-        sPath.vClip(nLen);
-        sPath.vConcat(StrLib::szCharToStr(C_PROPERTY_SEPARATOR));
-
-        bRetVal = bWalkBottomUp(pProp, bWalkProperties, bWalkChildren, fVisitor, pvArg, sPath, iDepth + 1, bBoundedWalk);
-
-        if (!bRetVal) {
-          delete pIter;
-          return false;
-        }
-      }
-      delete pIter;
-
-    } catch (std::runtime_error& e) {
-      delete pIter;
-      throw;
-    }
-  }
+  // In a bottom-up walk, walk the children before walking any properties.
+  // It makes more sense to process any children before processing properties
+  // of the current node.
 
   // Any children to walk down?
   if (bWalkChildren && pNode->bHasChildren()) {
@@ -606,6 +605,33 @@ b1 GraphNav::bWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren
         sPath.vConcat(StrLib::szCharToStr(C_CHILD_SEPARATOR));
 
         bRetVal = bWalkBottomUp(pChild, bWalkProperties, bWalkChildren, fVisitor, pvArg, sPath, iDepth + 1, bBoundedWalk);
+
+        if (!bRetVal) {
+          delete pIter;
+          return false;
+        }
+      }
+      delete pIter;
+
+    } catch (std::runtime_error& e) {
+      delete pIter;
+      throw;
+    }
+  }
+
+  // Any properties to walk down?
+  if (bWalkProperties && pNode->bHasProperties()) {
+
+    PlanNodeIter* pIter = pNode->pNewPropertyIter();
+    try {
+      while (pIter->bHasNext()) {
+        PlanNode *pProp = pIter->pNext();
+
+        // Don't forget to clip the path and add the appropriate separator before each node
+        sPath.vClip(nLen);
+        sPath.vConcat(StrLib::szCharToStr(C_PROPERTY_SEPARATOR));
+
+        bRetVal = bWalkBottomUp(pProp, bWalkProperties, bWalkChildren, fVisitor, pvArg, sPath, iDepth + 1, bBoundedWalk);
 
         if (!bRetVal) {
           delete pIter;

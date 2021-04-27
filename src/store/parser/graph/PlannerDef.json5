@@ -475,10 +475,23 @@
                       children: []
                     },
 // TODO Path: /__root__/definitions/object/planObject/sqlOperator/join
-// TODO Path: /__root__/definitions/object/planObject/sqlOperator/join/sortMergeJoinOp
+// TODO Path: /__root__/definitions/object/planObject/sqlOperator/join/nestedLoopJoinOp
 // TODO Path: /__root__/definitions/object/planObject/sqlOperator/join/hashJoinOp
-// TODO Path: /__root__/definitions/object/planObject/sqlOperator/join/loopJoinOp
-// TODO Path: /__root__/definitions/object/planObject/sqlOperator/orderOp
+// TODO Path: /__root__/definitions/object/planObject/sqlOperator/join/sortMergeJoinOp
+// Path: /__root__/definitions/object/planObject/sqlOperator/orderOp
+                    {
+                      name: "orderOp",
+                      value: "An operator that orders the rows being returned according to a list of expressions",
+                      properties: [
+                        {
+                          name: "orderExprList",
+                          value: "A list of orderExpr objects",
+                          type: "/__root__/definitions/object/list/orderExprList"
+                        },
+                      ],
+                      children: []
+                    },
+
 // Path: /__root__/definitions/object/planObject/sqlOperator/limitOp
                     {
                       name: "limitOp",
@@ -1718,6 +1731,34 @@
                   children: []
                 }, // EndPath: /__root__/definitions/object/list/stageRangeList
 
+
+// Path: /__root__/definitions/object/list/orderExprList
+                {
+                  name: "orderExprList",
+                  value: "A list of orderExpr objects",
+                  properties: [
+                    // We add constraints that all children must be of type /definitions/object/compound/orderExpr
+                    // and that there must always be children (never an empty list).
+                    { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                      {
+                        name: "childType",
+                        type:  "/__root__/primitives/constraints/childType",
+                        children: [ {
+                          name: "childTypeParam",
+                          type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject",
+                          value: "/__root__/definitions/object/compound/orderExpr"
+                        } ]
+                      },
+                      {
+                        // Constraint that this node must always have children
+                        name: "alwaysChildren",
+                        type: "/__root__/primitives/constraints/alwaysChildren"
+                      }
+                    ]} // end __constraints container
+                  ], // end properties
+                  children: []
+                }, // EndPath: /__root__/definitions/object/list/orderExprList
+
               ]
             }, // EndPath: /__root__/definitions/object/list
 
@@ -1938,7 +1979,24 @@
                       ]
                     }
                   ]
-                },
+                }, // EndPath: /__root__/definitions/object/compound/stageRange
+// Path: /__root__/definitions/object/compound/orderExpr
+                {
+                  name: "orderExpr",
+                  value: "An object that contains an expression for ordering rows and a direction (ascending/descending)",
+                  properties: [
+                    {
+                      name: "expr",
+                      value: "The expression by which to order rows",
+                      type: "/__root__/definitions/object/expr"
+                    },
+                    {
+                      name: "isAscending",
+                      value: "Contains a value true if ordering in ascending directory, or false for descending",
+                      type: "/__root__/definitions/object/valueObject/booleanObject"
+                    }
+                  ]
+                }, // EndPath: /__root__/definitions/object/compound/stageRange
 
               ]
             }, // EndPath: /__root__/definitions/object/compound

@@ -15,6 +15,9 @@
 #include "ProjectOp.hpp"
 #include "FilterOp.hpp"
 #include "SetOp.hpp"
+#include "OrderOp.hpp"
+#include "OrderExpr.hpp"
+#include "Expr.hpp"
 #include "ProjectedColumns.hpp"
 
 
@@ -136,11 +139,9 @@ GraphNav::eWalkCtrl PostProject::eStmtSectionVisitor(PlanNode* pNode, s256& sPat
     ASSERT(!pContainer->m_pFilterOp);
     pContainer->m_pFilterOp = _pQueryNode(pNode);
 
-    // TODO
-//  } else if (OrderOp::bIsOfType(pNode)) {
-//    ASSERT(!pContainer->m_pOrderOp);
-//    pContainer->m_pOrderOp = _pQueryNode(pNode);
-//    NOT_IMPLEMENTED_YET
+  } else if (OrderOp::bIsOfType(pNode)) {
+    ASSERT(!pContainer->m_pOrderOp);
+    pContainer->m_pOrderOp = _pQueryNode(pNode);
 
   } else if (ProjectOp::bIsOfType(pNode)) {
     ASSERT(!pContainer->m_pProjectOp);
@@ -189,11 +190,25 @@ void PostProject::vAddPostProject(void* pvContainer, QueryNode* pStatementMarker
     }
   }
 
-//  if (!bPostProjectRequired && pContainer->m_pOrderOp) {
-//    // TODO: Get the expr
-//
-//    // TODO: Check if the expr is in the project list
-//  }
+  if (!bPostProjectRequired && pContainer->m_pOrderOp) {
+    // Iterate the ordering expressions
+    QueryNode* pOrderExprList = OrderOp::pOrderExprList(pContainer->m_pOrderOp);
+    PlanNodeIter* pIter = pOrderExprList->pNewChildrenIter();
+
+    while (pIter->bHasNext()) {
+      QueryNode* pOrderExpr = _pQueryNode(pIter->pNext());
+      ASSERT(OrderExpr::bIsOfType(pOrderExpr));
+
+      QueryNode* pExpr = OrderExpr::pExprNode(pOrderExpr);
+      ASSERT(Expr::bIsOfType(pExpr));
+
+      if (!ProjectedColumns::bHasExprEqualOrSuperset(pProjectedColumns, pExpr, false)) {
+        bPostProjectRequired = true;
+      }
+    }
+
+    delete pIter;
+  }
 
   if (bPostProjectRequired) {
     // Copy the select list

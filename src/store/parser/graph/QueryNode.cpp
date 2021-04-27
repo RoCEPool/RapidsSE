@@ -499,9 +499,24 @@ QueryNode* QueryNode::pDeepCopy(b1 bNewName, PlanNodeList* pNewChildren)
 /*----------------------------------------------------------------------------*/
 void QueryNode::vTransmogrifyTo(QueryNode* pTemplate)
 {
+  vTransmogrifyTo(pTemplate, false);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Change the current node in place to reflect pTemplate.                     */
+/* This is an alternative to removing the current node and inserting a new    */
+/* node. Changing it in place allows it to avoid affecting top-down walks of  */
+/* the graph.                                                                 */
+/* If bKeepName is true then the existing name of the current node is kept.   */
+/*----------------------------------------------------------------------------*/
+void QueryNode::vTransmogrifyTo(QueryNode* pTemplate, b1 bKeepName)
+{
   ASSERT(pTemplate);
 
-  this->vSetName(pTemplate->szName());
+  if (!bKeepName) {
+    this->vSetName(pTemplate->szName());
+  }
+
   this->vSetType(pTemplate->szType());
   this->vSetValue(pTemplate->xValue().xDup());
 

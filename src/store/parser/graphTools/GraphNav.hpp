@@ -55,6 +55,9 @@ namespace Parser
     // Returns the parent of the type definition path given.
     static void vParentType(Stz* szTypePath, s256& buf);
 
+    // Print a graph structure to the console, starting from some node
+    static void vPrint(PlanNode* pNode);
+
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
     // ---------------------------------
     // Methods for walking a plan graph.

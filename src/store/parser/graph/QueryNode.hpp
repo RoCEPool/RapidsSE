@@ -97,6 +97,7 @@ namespace Parser
     // This is an alternative to removing the current node and inserting a new node.
     // Changing it in place allows it to avoid affecting top-down walks of the graph.
     void vTransmogrifyTo(QueryNode* pTemplate);
+    void vTransmogrifyTo(QueryNode* pTemplate, b1 bKeepName);
   };
   
   QueryNode* _pQueryNode(void* aAddr);
