@@ -173,7 +173,7 @@ void XmitOperand::vSetOperand(Operand *pOperand)
 /*----------------------------------------------------------------------------*/
 Footer* XmitOperand::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_XMITOPERAND,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_XMITOPERAND);
   
   return &m_xFooter;
 }
