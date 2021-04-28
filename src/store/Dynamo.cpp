@@ -1033,7 +1033,7 @@ bool Dynamo::bPhase2_staging(void)
             delete pOpSpec;
           } else {
             pOpSpec->vAddEnamePair(C_TAG_SendKind, (i8) pOpSpec->eSendKind(), TN_INTEGER);
-            vReplaceWithXmit(pOpSpec, eCrossTopo, i_FoundStage);
+            vReplaceWithSend(pOpSpec, eCrossTopo, i_FoundStage);
 
             // is there a consumeOp already in the stage ?
             OpSpec* pConsumeOpSpec = pStageSpecFound->pFindOpSpec("consumeOp"_Stz);
@@ -1204,7 +1204,7 @@ void Dynamo::vReplaceTopologyParams(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage,
 /*----------------------------------------------------------------------------*/
 /* replace the <stageNm> with send <nodeNo>                                   */
 /*----------------------------------------------------------------------------*/
-void Dynamo::vReplaceWithXmit(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage)
+void Dynamo::vReplaceWithSend(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
