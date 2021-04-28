@@ -1290,7 +1290,7 @@ void AM::vSend(Task* pTask, Node* pSendNode, XmitOperand* pXmitOperand)
   i8 nObjectSize = gxaSizeHeap[pXmitOperand->eGetClassNo()].m_nClassSize;
   bool bResult = pSocket->bSendTo(pXmitOperand, nObjectSize, oSysCall);
   
-  Operand* pOperand = pXmitOperand->m_pOperand;
+  Operand* pOperand = pXmitOperand->pGetOperand();
   
   nObjectSize = gxaSizeHeap[pOperand->eGetClassNo()].m_nClassSize;
   bResult = pSocket->bSendTo(pOperand, nObjectSize, oSysCall);
@@ -1622,7 +1622,7 @@ XmitOperand* AM::pNewXmitOperand(Job* pParentJob, Operand* pOperand,
 /*----------------------------------------------------------------------------*/
 void AM::vSetOperand(XmitOperand* pXmitOperand, Operand* pOperand)
 {
-  pXmitOperand->m_pOperand = pOperand;
+  pXmitOperand->vSetOperand(pOperand);
 }
 
 /*----------------------------------------------------------------------------*/

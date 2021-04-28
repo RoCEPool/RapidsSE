@@ -10,9 +10,11 @@ namespace STORE
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class XmitOperand : public Object
   {
-  public:
+  private:
+  //public:
     Operand*   m_pOperand;        // operand
     
+  public:
     i8         m_iPipelineJobId;  // pipeline job id
     i8         m_i_Node;          // node id
     tPN        m_tPtnNo;          // partition (in grid)
@@ -34,16 +36,23 @@ namespace STORE
     XmitOperand(void);
     ~XmitOperand(void) noexcept(false);
     
-    static XmitOperand* pNewXmitOperand(Operand* pOperand, i8 iParentJobId,
-                                        ePX eCrossTopo, i8 iNextStage, i8 iNextOp,
-                                        i8 i_Node, tPN tPtnNo);
+    static XmitOperand* pNewXmitOperand(Operand* pOperand,
+                                        i8 iParentJobId,
+                                        ePX eCrossTopo,
+                                        i8 iNextStage,
+                                        i8 iNextOp,
+                                        i8 i_Node,
+                                        tPN tPtnNo);
     
   public:
     void vShow(void);
-    
+
+
     void vAddObject(Object *pObj);
     i8 nObjects(void) { return m_nObjects;};
     Object* pGetObject(i8 iIdx);
+    Operand* pGetOperand(void);
+    void vSetOperand(Operand *pOperand);
 
   public:
     Footer* aFooter(void);

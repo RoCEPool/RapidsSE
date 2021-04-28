@@ -144,6 +144,26 @@ Object* XmitOperand::pGetObject(i8 i_Object)
   return nullptr;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Get Operand                                                                */
+/*----------------------------------------------------------------------------*/
+Operand* XmitOperand::pGetOperand(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_XMITOPERAND,_FOOTER_);
+
+  return m_pOperand;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Set Operand                                                                */
+/*----------------------------------------------------------------------------*/
+void XmitOperand::vSetOperand(Operand *pOperand)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_XMITOPERAND,_FOOTER_);
+
+  m_pOperand = pOperand;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

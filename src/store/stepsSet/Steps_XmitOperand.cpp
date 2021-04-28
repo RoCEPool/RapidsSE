@@ -38,7 +38,7 @@ void Step::vXmitOperandOperandStore(void)
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
   
-  pXmitOperand->m_pOperand = pOperand;
+  pXmitOperand->vSetOperand(pOperand);
   
   EXIT();
 }
@@ -69,7 +69,7 @@ void Step::vXmitOperandPipeOut(void)
   
   //! ALKA come back to this. May need a m_bAppendLeft in pXmitOperand
   // append to left queue
-  if (pXmitOperand->m_pOperand)
+  if (pXmitOperand->pGetOperand())
     pOp->vAppendLeft(pOperand,this);
   
   // now delete the pXmitOperand
