@@ -5,23 +5,24 @@
 " OP_send.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* perform a simple pipe in send                                              */
+/* Send the operand in the PipeIn[] register                                  */
 /*----------------------------------------------------------------------------*/
 : PipeIn[].sendTo
 
-  PipeIn[]\clear locals| pObject |
+  PipeIn[]\clear locals| pOperand |
   
-  pObject object.preSendWord@ if
-    pObject object.preSendWord@ execute
+  pOperand object.preSendWord@ if
+    pOperand object.preSendWord@ execute
   then
   
-  pObject Op::sendTo
+  pOperand Op::sendTo
   
   // calling op_loop continues
   true
 ;
 
-
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_CANCELMARKER operand                                        */
