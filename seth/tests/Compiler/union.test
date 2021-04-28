@@ -12,23 +12,23 @@
 CREATE TABLE unionTbl1 (col1 INTEGER, col2 VARCHAR, col3 DATE, col4 BOOLEAN);
 success
 
-// same signature as tbl1
+-- same signature as tbl1
 CREATE TABLE unionTbl2 (col1 INTEGER, col2 VARCHAR, col3 DATE, col4 BOOLEAN);
 success
 
-// same column names as tbl1 but different column types
+-- same column names as tbl1 but different column types
 CREATE TABLE unionTbl3 (col1 VARCHAR, col2 BOOLEAN, col3 DATE, col4 INTEGER);
 success
 
-// different number of columns as tbl3 and different names
+-- different number of columns as tbl3 and different names
 CREATE TABLE unionTbl4 (alpha VARCHAR, bravo BOOLEAN, charlie DATE);
 success
 
-// same signature as tbl4 but different column name case
+-- same signature as tbl4 but different column name case
 CREATE TABLE unionTbl5 (ALPHA VARCHAR, bRaVo BOOLEAN, CHARlie DATE);
 success
 
-// Mixed column names and types to partially match tbl1 and tbl4
+-- Mixed column names and types to partially match tbl1 and tbl4
 CREATE TABLE unionTbl6 (bRaVo BOOLEAN, col3 DATE, col1 INTEGER);
 
 
@@ -92,7 +92,7 @@ failure contains: 'The number of columns of each subquery do not match: INTEGER 
 EXPLAIN SELECT * FROM unionTbl1 UNION ALL CORRESPONDING BY (col1, col3) SELECT * FROM unionTbl2;
 success
 
-// case insensitive tests
+-- case insensitive tests
 EXPLAIN SELECT * FROM unionTbl4 UNION ALL CORRESPONDING BY (alpha, bravo) SELECT * FROM unionTbl5;
 success
 

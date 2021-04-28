@@ -18,6 +18,9 @@
 #include "ProjectedColumn.hpp"
 #include "FilterOp.hpp"
 #include "AggregateOp.hpp"
+#include "OrderOp.hpp"
+#include "OrderExpr.hpp"
+#include "OrderExprList.hpp"
 #include "StatementMarker.hpp"
 
 
@@ -496,12 +499,31 @@ void ExprValidator::vValidateSqlOpExprsAgainstGroupBy(PlanNode* pRootNode, Query
       }
 
       delete pProjectedColumnIter;
-    }
 
-//    } else if (OrderByOp::bIsOfType(pPlanOp)) {
-//      QueryNode* pExpr = OrderByOp::pOrderExpr(pPlanOp);
-//      vCheckNonAggExprIsInGroupBy(pExpr, pGroupByList);
-//    }
+    } else if (OrderOp::bIsOfType(pPlanOp)) {
+      // Iterate the order expressions in the order by operator
+
+      QueryNode* pOrderExprList = OrderOp::pOrderExprList(pPlanOp);
+      ASSERT(OrderExprList::bIsOfType(pOrderExprList));
+
+      PlanNodeIter* pIter = pOrderExprList->pNewChildrenIter();
+      while (pIter->bHasNext()) {
+        QueryNode *pOrderExpr = _pQueryNode(pIter->pNext());
+        ASSERT(OrderExpr::bIsOfType(pOrderExpr));
+
+        QueryNode *pExpr = OrderExpr::pExprNode(pOrderExpr);
+
+        try {
+          vCheckNonAggExprIsInGroupBy(pExpr, pGroupByList);
+
+        } catch (SqlException& e) {
+          delete pIter;
+          throw;
+        }
+      }
+
+      delete pIter;
+    }
 
     if (bExit) {
       return GraphNav::WALK_ABORT;
@@ -602,27 +624,41 @@ void ExprValidator::vValidateSqlOpExprsAgainstProjectOp(PlanNode* pRootNode, Que
                                   " : %s"_Stz,
                                   sBuf.szStz());
       }
-    }
 
-//    } else if (OrderByOp::bIsOfType(pPlanOp)) {
-//      QueryNode* pExpr = OrderByOp::pOrderExpr(pPlanOp);
-//      b1 bHasAgg = Expr::bContainsAnAggregate(pExpr);
-//      if (!bAggregationAllowed && bHasAgg) {
-//        // Throw an error that the first non-aggregated columnRef is not in the group by list
-//          s2K sBuf;
-//          Expr::vDescribe(pNonAggColRef, sBuf);
-//          SemanticException::vThrow(EC_EXPR_NOT_IN_GROUPBY_LIST,
-//                                    " : %s"_Stz,
-//                                    sBuf.szStz());
-//      } else if (bAggregationAllowed && !bHasAgg) {
-//        // Throw an error that the expression is not in the group by list
-//          s2K sBuf;
-//          Expr::vDescribe(pExpr, sBuf);
-//          SemanticException::vThrow(EC_EXPR_NOT_IN_GROUPBY_LIST,
-//                                    " : %s"_Stz,
-//                                    sBuf.szStz());
-//      }
-//    }
+    } else if (OrderOp::bIsOfType(pPlanOp)) {
+      QueryNode* pOrderExprList = OrderOp::pOrderExprList(pPlanOp);
+      ASSERT(OrderExprList::bIsOfType(pOrderExprList));
+
+      PlanNodeIter* pIter = pOrderExprList->pNewChildrenIter();
+      while (pIter->bHasNext()) {
+        QueryNode* pOrderExpr = _pQueryNode(pIter->pNext());
+        ASSERT(OrderExpr::bIsOfType(pOrderExpr));
+
+        QueryNode* pExpr = OrderExpr::pExprNode(pOrderExpr);
+
+        b1 bHasAgg = Expr::bContainsAnAggregate(pExpr);
+
+        if (!bAggregationAllowed && bHasAgg) {
+          // Throw an error that the first non-aggregated columnRef is not in the group by list
+          s2K sBuf;
+          Expr::vDescribe(pNonAggColRef, sBuf);
+          delete pIter;
+          SemanticException::vThrow(EC_EXPR_NOT_IN_GROUPBY_LIST,
+                                    " : %s"_Stz,
+                                    sBuf.szStz());
+
+        } else if (bAggregationAllowed && !bHasAgg) {
+          // Throw an error that the expression is not in the group by list
+          s2K sBuf;
+          Expr::vDescribe(pExpr, sBuf);
+          delete pIter;
+          SemanticException::vThrow(EC_EXPR_NOT_IN_GROUPBY_LIST,
+                                    " : %s"_Stz,
+                                    sBuf.szStz());
+        }
+      }
+      delete pIter;
+    }
 
     return GraphNav::WALK_CONTINUE;
   };

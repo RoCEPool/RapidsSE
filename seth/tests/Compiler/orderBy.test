@@ -260,6 +260,17 @@ ORDER BY n_nationkey + 1;
 failure contains: 'No such column: n_nationkey'
 
 
+-- Order expr is a superset of projected expression but contains
+-- a columnRef that is not being projected.
+EXPLAIN
+SELECT n_nationkey, n_name FROM nation
+UNION ALL
+SELECT n_regionkey, n_name FROM nation
+ORDER BY n_nationkey + n_regionkey;
+failure contains: 'No such column: n_nationkey'
+--failure contains: 'No such column: n_regionkey'
+
+
 -- ORDER BY expressions can use aliases
 EXPLAIN SELECT n_name as name FROM nation ORDER BY name;
 rows: (*,'explainPlan',
