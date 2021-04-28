@@ -68,8 +68,12 @@ XmitOperand::XmitOperand(void)
   m_tPtnNo         = C_UNKNOWN;
   
   m_eCrossTopo     = PX_NONE;
-  m_iNextStage    = C_UNKNOWN;
-  m_iNextOp       = C_UNKNOWN;
+  m_iNextStage     = C_UNKNOWN;
+  m_iNextOp        = C_UNKNOWN;
+  
+  m_nObjects = 0;
+  for (i8 i_Obj = 0; i_Obj < C_MAX_XMIT_OBJ; i_Obj++)
+    m_pObjects[i_Obj] = nullptr;
   
   _checkInitialised_(CN_XMITOPERAND);
   

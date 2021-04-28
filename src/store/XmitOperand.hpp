@@ -5,6 +5,8 @@
 
 namespace STORE
 {
+  static const i8 C_MAX_XMIT_OBJ = 16;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class XmitOperand : public Object
   {
@@ -18,6 +20,9 @@ namespace STORE
     i8         m_iNextStage;      // next stage
     i8         m_iNextOp;         // nextOp in the nextStage
     
+    i8 m_nObjects;                        // number of objects in the parcel
+    Object* m_pObjects[C_MAX_XMIT_OBJ];  // let's for now, a fixed size array of
+  
     // must be last
     Footer m_xFooter;
   
