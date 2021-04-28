@@ -11535,7 +11535,7 @@ void Task::vAddMunged(Task* )
     "    pOperand object.preSendWord@ execute\n"
     "  then\n"
     "  \n"
-    "  pOperand Op::sendTo\n"
+    "  pOperand parcel::sendTo\n"
     "  \n"
     "  // calling op_loop continues\n"
     "  true\n"

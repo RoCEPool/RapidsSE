@@ -15,7 +15,7 @@
     pOperand object.preSendWord@ execute
   then
   
-  pOperand Op::sendTo
+  pOperand parcel::sendTo
   
   // calling op_loop continues
   true

@@ -1261,6 +1261,11 @@ public:
   void vRegPathSave(void);
   void vRegPathRestore(void);
 
+  // Parcel
+  void vParcelOperandStore(void);
+  void vParcelPipeOut(void);
+  void vParcelSendTo(void);
+
   // reg Pipein
   void vPipeinBide(void);
   void vPipeinBideNext(void);
@@ -1926,10 +1931,6 @@ public:
 
   // write behind
   void vWriteBehindFlush(void);
-
-  // Parcel
-  void vParcelOperandStore(void);
-  void vParcelPipeOut(void);
 
   // zero
   void vZeroLess(void);
