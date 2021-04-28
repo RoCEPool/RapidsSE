@@ -415,6 +415,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(SeDeputy),           HT_T_TINY    ,0 }, // CN_SEDEPUTY
   { sizeof(SeeMe),              HT_INVALID   ,0 }, // CN_SEEME
   { sizeof(SenCompiler),        HT_T_TINY    ,0 }, // CN_SENCOMPILER
+  { sizeof(Sends),              HT_T_TINY    ,0 }, // CN_SENDS
   { sizeof(SePrompt),           HT_T_LARGE   ,0 }, // CN_SEPROMPT
   { sizeof(Session),            HT_T_LARGE   ,0 }, // CN_SESSION
   { sizeof(Sessions),           HT_T_TINY    ,0 }, // CN_SESSIONS
@@ -512,7 +513,6 @@ SizeHeap gxaSizeHeap[]
 
   { 'X' - ('A' - 1),            HT_INVALID   ,0 }, // CN__X__
   { sizeof(XmitOperand),        HT_T_TINY    ,0 }, // CN_XMITOPERAND
-  { sizeof(Sends),              HT_T_TINY    ,0 }, // CN_SENDS
 
   { 'Y' - ('A' - 1),            HT_INVALID   ,0 }, // CN__Y__
 
