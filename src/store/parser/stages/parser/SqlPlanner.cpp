@@ -37,8 +37,8 @@
 #include "store/parser/shadowNodes/lists/StringList.hpp"
 #include "store/parser/shadowNodes/lists/StageRangeList.hpp"
 #include "store/parser/shadowNodes/compound/StageRange.hpp"
-#include "store/parser/shadowNodes/compound/OrderExpr.hpp"
-#include "store/parser/shadowNodes/lists/OrderExprList.hpp"
+#include "store/parser/shadowNodes/compound/OrderItem.hpp"
+#include "store/parser/shadowNodes/lists/OrderItemList.hpp"
 
 // Expressions
 #include "ColumnRef.hpp"
@@ -98,7 +98,7 @@ SqlPlanner::SqlPlanner(void)
   m_pTableRefStack(new QueryNodeStack()),
   m_pExprList(nullptr),
   m_pSelectItems(nullptr),
-  m_pOrderExprs(nullptr)
+  m_pOrderItems(nullptr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SQLPLANNER,_FOOTER_);
   
@@ -151,13 +151,13 @@ SqlPlanner::~SqlPlanner(void) noexcept
     m_pSelectItems = nullptr;
   }
 
-  if (m_pOrderExprs) {
-    while (m_pOrderExprs->nItems() > 0) {
-      QueryNode* pItem = m_pOrderExprs->pPop();
+  if (m_pOrderItems) {
+    while (m_pOrderItems->nItems() > 0) {
+      QueryNode* pItem = m_pOrderItems->pPop();
       delete pItem;
     }
-    delete m_pOrderExprs;
-    m_pOrderExprs = nullptr;
+    delete m_pOrderItems;
+    m_pOrderItems = nullptr;
   }
 }
 
@@ -414,34 +414,34 @@ antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *pCtx)
   m_pStatementStack->vPush(pStmt);
 
   if (pCtx->ORDER()) {
-    ASSERT(!m_pOrderExprs);
-    m_pOrderExprs = new QueryNodeList();
+    ASSERT(!m_pOrderItems);
+    m_pOrderItems = new QueryNodeList();
   }
 
   visitChildren(pCtx);
 
   if (pCtx->ORDER()) {
-    ASSERT(m_pOrderExprs);
-    ASSERT(m_pOrderExprs->nItems() > 0);
+    ASSERT(m_pOrderItems);
+    ASSERT(m_pOrderItems->nItems() > 0);
 
-    // Convert the QueryNodeList to a OrderExprList
-    QueryNode* pOrderExprList = OrderExprList::pCreate();
-    QueryNode* pOrderExpr;
-    while ((pOrderExpr = m_pOrderExprs->pPop()) != nullptr) {
-      pOrderExprList->vAppendChild(pOrderExpr);
+    // Convert the QueryNodeList to a OrderItemList
+    QueryNode* pOrderItemList = OrderItemList::pCreate();
+    QueryNode* pOrderItem;
+    while ((pOrderItem = m_pOrderItems->pPop()) != nullptr) {
+      pOrderItemList->vAppendChild(pOrderItem);
     }
 
     // Create the OrderOp
-    QueryNode* pOrderOp = OrderOp::pCreate(pOrderExprList);
+    QueryNode* pOrderOp = OrderOp::pCreate(pOrderItemList);
 
     // Insert the orderOp as the top-most child underneath the statement.
     // Need to make any current children of statement now children of orderOp.
     QueryNode* pStatement = m_pStatementStack->pTop();
     pStatement->vInsertAsParentOfChildren(pOrderOp);
 
-    ASSERT(m_pOrderExprs->nItems() == 0);
-    delete m_pOrderExprs;
-    m_pOrderExprs = nullptr;
+    ASSERT(m_pOrderItems->nItems() == 0);
+    delete m_pOrderItems;
+    m_pOrderItems = nullptr;
   }
 
   if (pCtx->LIMIT()) {
@@ -478,8 +478,8 @@ antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *pCtx)
 antlrcpp::Any SqlPlanner::visitSetQuery(sqlParser::SetQueryContext *pCtx)
 {
   if (pCtx->ORDER()) {
-    ASSERT(!m_pOrderExprs);
-    m_pOrderExprs = new QueryNodeList();
+    ASSERT(!m_pOrderItems);
+    m_pOrderItems = new QueryNodeList();
   }
 
   visitChildren(pCtx);
@@ -502,27 +502,27 @@ antlrcpp::Any SqlPlanner::visitSetQuery(sqlParser::SetQueryContext *pCtx)
   }
 
   if (pCtx->ORDER()) {
-    ASSERT(m_pOrderExprs);
-    ASSERT(m_pOrderExprs->nItems() > 0);
+    ASSERT(m_pOrderItems);
+    ASSERT(m_pOrderItems->nItems() > 0);
 
-    // Convert the QueryNodeList to a OrderExprList
-    QueryNode* pOrderExprList = OrderExprList::pCreate();
-    QueryNode* pOrderExpr;
-    while ((pOrderExpr = m_pOrderExprs->pPop()) != nullptr) {
-      pOrderExprList->vAppendChild(pOrderExpr);
+    // Convert the QueryNodeList to a OrderItemList
+    QueryNode* pOrderItemList = OrderItemList::pCreate();
+    QueryNode* pOrderItem;
+    while ((pOrderItem = m_pOrderItems->pPop()) != nullptr) {
+      pOrderItemList->vAppendChild(pOrderItem);
     }
 
     // Create the OrderOp
-    QueryNode* pOrderOp = OrderOp::pCreate(pOrderExprList);
+    QueryNode* pOrderOp = OrderOp::pCreate(pOrderItemList);
 
     // Insert the orderOp as the top-most child underneath the statement.
     // Need to make any current children of statement now children of orderOp.
     QueryNode* pStatement = m_pStatementStack->pTop();
     pStatement->vInsertAsParentOfChildren(pOrderOp);
 
-    ASSERT(m_pOrderExprs->nItems() == 0);
-    delete m_pOrderExprs;
-    m_pOrderExprs = nullptr;
+    ASSERT(m_pOrderItems->nItems() == 0);
+    delete m_pOrderItems;
+    m_pOrderItems = nullptr;
   }
 
   if (pCtx->LIMIT()) {
@@ -1300,7 +1300,7 @@ antlrcpp::Any SqlPlanner::visitOrderByList(sqlParser::OrderByListContext *pCtx)
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any SqlPlanner::visitOrderByListItem(sqlParser::OrderByListItemContext *pCtx)
 {
-  ASSERT(m_pOrderExprs);
+  ASSERT(m_pOrderItems);
   ASSERT(m_pExprList);
 
   visitChildren(pCtx);
@@ -1310,8 +1310,8 @@ antlrcpp::Any SqlPlanner::visitOrderByListItem(sqlParser::OrderByListItemContext
 
   b1 bIsAscending = pCtx->DESC() == nullptr;
 
-  QueryNode* pOrderExpr = OrderExpr::pCreate(pExpr, bIsAscending);
-  m_pOrderExprs->vAppend(pOrderExpr);
+  QueryNode* pOrderItem = OrderItem::pCreate(pExpr, bIsAscending);
+  m_pOrderItems->vAppend(pOrderItem);
 
   return nullptr;
 }

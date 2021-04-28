@@ -8,8 +8,8 @@
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
 #include "store/parser/shadowNodes/expressions/Expr.hpp"
-#include "OrderExprList.hpp"
-#include "OrderExpr.hpp"
+#include "OrderItemList.hpp"
+#include "OrderItem.hpp"
 
 #include "GraphNav.hpp"
 #include "NodeNamer.hpp"
@@ -21,8 +21,8 @@ using namespace Parser;
 /*----------------------------------------------------------------------------*/
 static Stz* C_ORDEROP_DEFN = "/__root__/definitions/object/planObject/sqlOperator/orderOp"_Stz;
 
-static Stz* C_ORDEREXPRLIST_PROP = "orderExprList"_Stz;
-static Stz* C_ORDEREXPRLIST_DEFN = "/__root__/definitions/object/list/orderExprList"_Stz;
+static Stz* C_ORDERITEMLIST_PROP = "orderItemList"_Stz;
+static Stz* C_ORDERITEMLIST_DEFN = "/__root__/definitions/object/list/orderItemList"_Stz;
 
 
 
@@ -33,20 +33,20 @@ static Stz* C_ORDEREXPRLIST_DEFN = "/__root__/definitions/object/list/orderExprL
 /*----------------------------------------------------------------------------*/
 /* Helper function to create OrderOp nodes.                                 */
 /*----------------------------------------------------------------------------*/
-QueryNode* OrderOp::pCreate(QueryNode* pOrderExprList)
+QueryNode* OrderOp::pCreate(QueryNode* pOrderItemList)
 {
-  ASSERT(pOrderExprList);
-  ASSERT(OrderExprList::bIsOfType(pOrderExprList));
+  ASSERT(pOrderItemList);
+  ASSERT(OrderItemList::bIsOfType(pOrderItemList));
 
   // Create a unique name for this OrderOp object
   s256 sName;
   NodeNamer::vGenerateName(C_ORDEROP_DEFN, sName);
 
-  // Create the object and add its orderExprList property
+  // Create the object and add its orderItemList property
   QueryNode* pOrderOp = new QueryNode(sName, C_ORDEROP_DEFN);
 
-  pOrderExprList->vSetName(C_ORDEREXPRLIST_PROP);
-  pOrderOp->vAppendProperty(pOrderExprList);
+  pOrderItemList->vSetName(C_ORDERITEMLIST_PROP);
+  pOrderOp->vAppendProperty(pOrderItemList);
 
   return pOrderOp;
 }
@@ -63,10 +63,10 @@ void OrderOp::vDescribe(PlanNode* pNode, s2K& sBuf)
 
   sBuf.vConcat("OrderOp :\n  "_Stz);
 
-  QueryNode* pOrderExprList = _pQueryNode(GraphNav::pFindProperty(C_ORDEREXPRLIST_PROP, pOrderOp));
-  ASSERT(pOrderExprList);
+  QueryNode* pOrderItemList = _pQueryNode(GraphNav::pFindProperty(C_ORDERITEMLIST_PROP, pOrderOp));
+  ASSERT(pOrderItemList);
 
-  Expr::vDescribe(pOrderExprList, sBuf);
+  Expr::vDescribe(pOrderItemList, sBuf);
 }
 
 
@@ -83,23 +83,23 @@ void OrderOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iInd
   sBuf.vConcat(GraphNav::szLeafType(pNode->szType()));
 
   // Get the list of ordering expressions expression
-  PlanNode* pOrderExprList = GraphNav::pFindProperty(const_cast<Stz*>(C_ORDEREXPRLIST_PROP), pNode);
-  ASSERT(pOrderExprList);
+  PlanNode* pOrderItemList = GraphNav::pFindProperty(const_cast<Stz*>(C_ORDERITEMLIST_PROP), pNode);
+  ASSERT(pOrderItemList);
 
   s2K sExprBuf;
-  OrderExprList::vDescribe(pOrderExprList, sExprBuf);
+  OrderItemList::vDescribe(pOrderItemList, sExprBuf);
 
   sBuf.vConcat("\n"_Stz);
   vAppendIndent(sBuf, iIndent, IF_PLAIN);
   sBuf.vCatSprint("order expr: (%s)"_Stz, sExprBuf.szStz());
 
-  QueryNode* pOrdOrderExprList = pOrdinalOrderExprList(_pQueryNode(pNode), pRootNode);
+  QueryNode* pOrdOrderItemList = pOrdinalOrderItemList(_pQueryNode(pNode), pRootNode);
   sExprBuf.vReset();
-  OrderExprList::vDescribe(pOrdOrderExprList, sExprBuf);
+  OrderItemList::vDescribe(pOrdOrderItemList, sExprBuf);
   sBuf.vConcat("\n"_Stz);
   vAppendIndent(sBuf, iIndent, IF_PLAIN);
   sBuf.vCatSprint("ordinal order expr: (%s)"_Stz, sExprBuf.szStz());
-  delete pOrdOrderExprList;
+  delete pOrdOrderItemList;
 
   // Recurse any children of pNode
   if (pNode->bHasChildren()) {
@@ -133,33 +133,33 @@ b1 OrderOp::bIsExactType(PlanNode *pNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Returns the orderExprList node of the OrderOp                              */
+/* Returns the orderItemList node of the OrderOp                              */
 /*----------------------------------------------------------------------------*/
-QueryNode* OrderOp::pOrderExprList(QueryNode* pNode)
+QueryNode* OrderOp::pOrderItemList(QueryNode* pNode)
 {
   _static_
-  QueryNode *pOrderExprListNode =
-      _pQueryNode(GraphNav::pFindProperty(const_cast<Stz *>(C_ORDEREXPRLIST_PROP), pNode));
+  QueryNode *pOrderItemListNode =
+      _pQueryNode(GraphNav::pFindProperty(const_cast<Stz *>(C_ORDERITEMLIST_PROP), pNode));
 
-  ASSERT(pOrderExprListNode);
-  return pOrderExprListNode;
+  ASSERT(pOrderItemListNode);
+  return pOrderItemListNode;
 }
 
 /*----------------------------------------------------------------------------*/
 /* Returns a new copy of the order expr list relative to column ordinals.     */
 /* Must be freed after use.                                                   */
 /*----------------------------------------------------------------------------*/
-QueryNode* OrderOp::pOrdinalOrderExprList(QueryNode* pNode, PlanNode* pRootNode)
+QueryNode* OrderOp::pOrdinalOrderItemList(QueryNode* pNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
 
   // Get the symbolic order expression list
-  QueryNode *pSymbolicList = pOrderExprList(pNode);
+  QueryNode *pSymbolicList = pOrderItemList(pNode);
   ASSERT(pSymbolicList);
 
-  // Create an empty list of ordinal orderExprs
-  QueryNode* pOrdinalList = OrderExprList::pCreate();
+  // Create an empty list of ordinal orderItems
+  QueryNode* pOrdinalList = OrderItemList::pCreate();
 
   // Get the list of column expressions being given to this plan from its child.
   // This is the list of expression symbols that represent each column of
@@ -173,14 +173,14 @@ QueryNode* OrderOp::pOrdinalOrderExprList(QueryNode* pNode, PlanNode* pRootNode)
   PlanNodeIter* pIter = pSymbolicList->pNewChildrenIter();
 
   while (pIter->bHasNext()) {
-    QueryNode* pSymOrderExpr = _pQueryNode(pIter->pNext());
-    ASSERT(OrderExpr::bIsOfType(pSymOrderExpr));
+    QueryNode* pSymOrderItem = _pQueryNode(pIter->pNext());
+    ASSERT(OrderItem::bIsOfType(pSymOrderItem));
 
-    // pSymOrderExpr is a compound object. Extract out the expr out of pSymOrderExpr
-    QueryNode* pSymExpr = OrderExpr::pExprNode(pSymOrderExpr);
+    // pSymOrderItem is a compound object. Extract out the expr out of pSymOrderItem
+    QueryNode* pSymExpr = OrderItem::pExprNode(pSymOrderItem);
     ASSERT(Expr::bIsOfType(pSymExpr));
 
-    b1 bIsAscending = OrderExpr::bIsAscending(pSymOrderExpr);
+    b1 bIsAscending = OrderItem::bIsAscending(pSymOrderItem);
 
     // Use the column expression list and the symbolic expression to
     // generate an ordinal  expression (one that is relative to column
@@ -188,10 +188,10 @@ QueryNode* OrderOp::pOrdinalOrderExprList(QueryNode* pNode, PlanNode* pRootNode)
     QueryNode* pOrdinalExpr = Expr::pSymbolicToOrdinal(pSymExpr, pColExprList, pRootNode);
     ASSERT(pOrdinalExpr);
 
-    // Now we need to create an ordinal version of the OrderExpr object and add
+    // Now we need to create an ordinal version of the OrderItem object and add
     // it to the pOrdinalList.
-    QueryNode* pOrdinalOrderExpr = OrderExpr::pCreate(pOrdinalExpr, bIsAscending);
-    pOrdinalList->vAppendChild(pOrdinalOrderExpr);
+    QueryNode* pOrdinalOrderItem = OrderItem::pCreate(pOrdinalExpr, bIsAscending);
+    pOrdinalList->vAppendChild(pOrdinalOrderItem);
   }
 
   pColExprList->vDeleteAll();

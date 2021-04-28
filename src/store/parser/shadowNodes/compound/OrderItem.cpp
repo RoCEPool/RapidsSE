@@ -1,9 +1,9 @@
 /*============================================================================*/
-/* OrderExpr.hpp - a expression and direction for ordering rows               */
+/* OrderItem.hpp - a expression and direction for ordering rows               */
 /*============================================================================*/
 
 #include "BASE.h"
-#include "OrderExpr.hpp"
+#include "OrderItem.hpp"
 
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
@@ -18,8 +18,8 @@ using namespace Parser;
 /*----------------------------------------------------------------------------*/
 /*-- Constants ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-static Stz* C_ORDEREXPR_DEFN   = "/__root__/definitions/object/compound/orderExpr"_Stz;
-static Stz* C_ORDEREXPR_NAME   = "OrderExpr"_Stz;
+static Stz* C_ORDERITEM_DEFN   = "/__root__/definitions/object/compound/orderItem"_Stz;
+static Stz* C_ORDERITEM_NAME   = "OrderItem"_Stz;
 
 static Stz* C_EXPR_PROP  = "expr"_Stz;
 static Stz* C_EXPR_DEFN  = "/__root__/definitions/object/expr"_Stz;
@@ -32,9 +32,9 @@ static Stz* C_DIRECTION_DEFN  = "/__root__/definitions/object/valueObject/boolea
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* Helper function to create OrderExpr nodes.                                 */
+/* Helper function to create OrderItem nodes.                                 */
 /*----------------------------------------------------------------------------*/
-QueryNode* OrderExpr::pCreate(QueryNode* pExprNode, b1 bAscendingDirection)
+QueryNode* OrderItem::pCreate(QueryNode* pExprNode, b1 bAscendingDirection)
 {
   _static_
 
@@ -48,31 +48,31 @@ QueryNode* OrderExpr::pCreate(QueryNode* pExprNode, b1 bAscendingDirection)
   // Rename the expr property
   pExprNode->vSetName(C_EXPR_PROP);
 
-  // Create the OrderExpr object
+  // Create the OrderItem object
   s256 sName;
-  NodeNamer::vGenerateName(C_ORDEREXPR_DEFN, sName);
-  QueryNode* pOrderExpr = new QueryNode(sName.szStz(), C_ORDEREXPR_DEFN);
+  NodeNamer::vGenerateName(C_ORDERITEM_DEFN, sName);
+  QueryNode* pOrderItem = new QueryNode(sName.szStz(), C_ORDERITEM_DEFN);
 
-  // Add the properties to the orderExpr node
-  pOrderExpr->vAppendProperty(pExprNode);
-  pOrderExpr->vAppendProperty(pDirectionNode);
+  // Add the properties to the orderItem node
+  pOrderItem->vAppendProperty(pExprNode);
+  pOrderItem->vAppendProperty(pDirectionNode);
 
-  return pOrderExpr;
+  return pOrderItem;
 }
 
 /*----------------------------------------------------------------------------*/
 /* Appends a description of the catalog reference into a buffer               */
 /*----------------------------------------------------------------------------*/
-void OrderExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
+void OrderItem::vDescribe(PlanNode* pNode, s2K& sBuf)
 {
   _static_
 
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pOrderExpr = _pQueryNode(pNode);
+  QueryNode* pOrderItem = _pQueryNode(pNode);
 
-  QueryNode* pExprNode = _pQueryNode(GraphNav::pFindProperty(C_EXPR_PROP, pOrderExpr));
-  QueryNode* pDirectionNode = _pQueryNode(GraphNav::pFindProperty(C_DIRECTION_PROP, pOrderExpr));
+  QueryNode* pExprNode = _pQueryNode(GraphNav::pFindProperty(C_EXPR_PROP, pOrderItem));
+  QueryNode* pDirectionNode = _pQueryNode(GraphNav::pFindProperty(C_DIRECTION_PROP, pOrderItem));
 
   ASSERT(pExprNode);
   ASSERT(Expr::bIsOfType(pExprNode));
@@ -86,25 +86,25 @@ void OrderExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Returns true if the given node is derived from the OrderExpr definition    */
+/* Returns true if the given node is derived from the OrderItem definition    */
 /*----------------------------------------------------------------------------*/
-b1 OrderExpr::bIsOfType(PlanNode *pNode)
+b1 OrderItem::bIsOfType(PlanNode *pNode)
 {
-  return ShadowNode::bIsOfType(pNode, C_ORDEREXPR_DEFN);
+  return ShadowNode::bIsOfType(pNode, C_ORDERITEM_DEFN);
 }
 
 /*----------------------------------------------------------------------------*/
 /* Returns true if the given node is precisely the same as its definition     */
 /*----------------------------------------------------------------------------*/
-b1 OrderExpr::bIsExactType(PlanNode *pNode)
+b1 OrderItem::bIsExactType(PlanNode *pNode)
 {
-  return ShadowNode::bIsExactType(pNode, C_ORDEREXPR_DEFN);
+  return ShadowNode::bIsExactType(pNode, C_ORDERITEM_DEFN);
 }
 
 /*----------------------------------------------------------------------------*/
 /* Returns the node that is an expression to order by                         */
 /*----------------------------------------------------------------------------*/
-QueryNode* OrderExpr::pExprNode(QueryNode* pNode)
+QueryNode* OrderItem::pExprNode(QueryNode* pNode)
 {
   ASSERT(pNode);
   ASSERT(bIsOfType(pNode));
@@ -120,7 +120,7 @@ QueryNode* OrderExpr::pExprNode(QueryNode* pNode)
 /*----------------------------------------------------------------------------*/
 /* Returns true if the ordering should be ascending or false for descending   */
 /*----------------------------------------------------------------------------*/
-b1 OrderExpr::bIsAscending(QueryNode* pNode)
+b1 OrderItem::bIsAscending(QueryNode* pNode)
 {
   ASSERT(pNode);
   ASSERT(bIsOfType(pNode));

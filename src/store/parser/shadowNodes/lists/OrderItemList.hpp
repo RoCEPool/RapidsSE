@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* OrderExpr.hpp - a expression and direction for ordering rows               */
+/* OrderItemList.hpp - a list of OrderItem objects                            */
 /*============================================================================*/
 #pragma once
 
@@ -10,15 +10,15 @@ namespace Parser
 {
   class QueryNode;
 
-  class OrderExpr : public ShadowNode
+  class OrderItemList : public ShadowNode
   {
 
   private:
     // Shalt never be instantiated. Static functions only.
-    OrderExpr();
+    OrderItemList();
 
   public:
-    static QueryNode* pCreate(QueryNode* pExpr, b1 bAscendingDirection);
+    static QueryNode* pCreate();
     static void       vDescribe(PlanNode* pNode, s2K& sBuf);
 
     // Returns true if a given node is a given type ** or is derived from that type **
@@ -27,11 +27,10 @@ namespace Parser
     // Returns true if a given node is this exact given type.
     static b1 bIsExactType(PlanNode* pNode);
 
-    // Returns the node that is an expression to order by
-    static QueryNode* pExprNode(QueryNode* pNode);
+    static i8 nExprs(QueryNode* pOrderItemList);
 
-    // Returns true if the ordering should be in ascending order or false for descending order
-    static b1 bIsAscending(QueryNode* pNode);
+    // An iterator of OrderItem objects
+    static PlanNodeIter* pOrderItemIter(QueryNode* pNode);
   };
 
 }

@@ -19,8 +19,8 @@
 #include "FilterOp.hpp"
 #include "AggregateOp.hpp"
 #include "OrderOp.hpp"
-#include "OrderExpr.hpp"
-#include "OrderExprList.hpp"
+#include "OrderItem.hpp"
+#include "OrderItemList.hpp"
 #include "StatementMarker.hpp"
 #include "SetOp.hpp"
 
@@ -508,15 +508,15 @@ void ExprValidator::vValidateSqlOpExprsAgainstGroupBy(PlanNode* pRootNode, Query
     } else if (OrderOp::bIsOfType(pPlanOp)) {
       // Iterate the order expressions in the order by operator
 
-      QueryNode* pOrderExprList = OrderOp::pOrderExprList(pPlanOp);
-      ASSERT(OrderExprList::bIsOfType(pOrderExprList));
+      QueryNode* pOrderItemList = OrderOp::pOrderItemList(pPlanOp);
+      ASSERT(OrderItemList::bIsOfType(pOrderItemList));
 
-      PlanNodeIter* pIter = pOrderExprList->pNewChildrenIter();
+      PlanNodeIter* pIter = pOrderItemList->pNewChildrenIter();
       while (pIter->bHasNext()) {
-        QueryNode *pOrderExpr = _pQueryNode(pIter->pNext());
-        ASSERT(OrderExpr::bIsOfType(pOrderExpr));
+        QueryNode *pOrderItem = _pQueryNode(pIter->pNext());
+        ASSERT(OrderItem::bIsOfType(pOrderItem));
 
-        QueryNode *pExpr = OrderExpr::pExprNode(pOrderExpr);
+        QueryNode *pExpr = OrderItem::pExprNode(pOrderItem);
 
         try {
           vCheckNonAggExprIsInGroupBy(pExpr, pGroupByList);
@@ -631,15 +631,15 @@ void ExprValidator::vValidateSqlOpExprsAgainstProjectOp(PlanNode* pRootNode, Que
       }
 
     } else if (OrderOp::bIsOfType(pPlanOp)) {
-      QueryNode* pOrderExprList = OrderOp::pOrderExprList(pPlanOp);
-      ASSERT(OrderExprList::bIsOfType(pOrderExprList));
+      QueryNode* pOrderItemList = OrderOp::pOrderItemList(pPlanOp);
+      ASSERT(OrderItemList::bIsOfType(pOrderItemList));
 
-      PlanNodeIter* pIter = pOrderExprList->pNewChildrenIter();
+      PlanNodeIter* pIter = pOrderItemList->pNewChildrenIter();
       while (pIter->bHasNext()) {
-        QueryNode* pOrderExpr = _pQueryNode(pIter->pNext());
-        ASSERT(OrderExpr::bIsOfType(pOrderExpr));
+        QueryNode* pOrderItem = _pQueryNode(pIter->pNext());
+        ASSERT(OrderItem::bIsOfType(pOrderItem));
 
-        QueryNode* pExpr = OrderExpr::pExprNode(pOrderExpr);
+        QueryNode* pExpr = OrderItem::pExprNode(pOrderItem);
 
         b1 bHasAgg = Expr::bContainsAnAggregate(pExpr);
 
@@ -708,15 +708,15 @@ void ExprValidator::vValidateOrderExprAboveSetOp(PlanNode* pRootNode, QueryNode*
     QueryNodeList* pColumnExprList = PlanObject::pColumnExprs(_pQueryNode(pOrderOp->pFirstChild()), pRootNode);
 
     // Iterate each ordering expression of the OrderOp
-    QueryNode* pOrderExprList = OrderOp::pOrderExprList(pOrderOp);
-    ASSERT(OrderExprList::bIsOfType(pOrderExprList));
+    QueryNode* pOrderItemList = OrderOp::pOrderItemList(pOrderOp);
+    ASSERT(OrderItemList::bIsOfType(pOrderItemList));
 
-    PlanNodeIter* pIter = pOrderExprList->pNewChildrenIter();
+    PlanNodeIter* pIter = pOrderItemList->pNewChildrenIter();
     while (pIter->bHasNext()) {
-      QueryNode* pOrderExpr = _pQueryNode(pIter->pNext());
-      ASSERT(OrderExpr::bIsOfType(pOrderExpr));
+      QueryNode* pOrderItem = _pQueryNode(pIter->pNext());
+      ASSERT(OrderItem::bIsOfType(pOrderItem));
 
-      QueryNode* pExpr = OrderExpr::pExprNode(pOrderExpr);
+      QueryNode* pExpr = OrderItem::pExprNode(pOrderItem);
       ASSERT(Expr::bIsOfType(pExpr));
 
       // Check if each ordering expression of the OrderOp is equal to or a superset

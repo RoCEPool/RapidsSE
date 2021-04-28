@@ -29,7 +29,7 @@ namespace Parser
     QueryNodeStack* m_pTableRefStack;
     QueryNodeList* m_pExprList;
     QueryNodeList* m_pSelectItems;
-    QueryNodeList* m_pOrderExprs;
+    QueryNodeList* m_pOrderItems;
     Footer m_xFooter;
     
    public:
