@@ -22,6 +22,7 @@
 #include "OrderExpr.hpp"
 #include "OrderExprList.hpp"
 #include "StatementMarker.hpp"
+#include "SetOp.hpp"
 
 
 using namespace Parser;
@@ -92,6 +93,10 @@ void ExprValidator::vValidateExprs(PlanNode *pRootNode)
     // Validate that ProjectOps cannot produce both aggregate & non-aggregate
     // expressions without a group-by clause
     vValidateProjectExprs(pRootNode, pStatementMarker);
+
+    // Validate that an OrderOp sitting directly on top of a Set operator can only
+    // order expressions that are projected by the set operator
+    vValidateOrderExprAboveSetOp(pRootNode, pStatementMarker);
 
     return GraphNav::WALK_CONTINUE;
   };
@@ -667,6 +672,95 @@ void ExprValidator::vValidateSqlOpExprsAgainstProjectOp(PlanNode* pRootNode, Que
   GraphNav::bBoundedWalk(pStartNode->pFirstChild(), false, true, fVisitor, nullptr);
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* If we have an ORDER BY clause above a SetOp (UNION, INTERSECT, etc) then it*/
+/* can only order based on expressions that are already being projected from  */
+/* the set operator. It cannot order on arbitrary exprs and have these pushed */
+/* down. Validate that the OrderOp is using a known projected expr.           */
+/*----------------------------------------------------------------------------*/
+void ExprValidator::vValidateOrderExprAboveSetOp(PlanNode* pRootNode, QueryNode* pStartNode)
+{
+  auto fVisitor = [pRootNode]
+      (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    // Find any OrderOps.
+    if (!OrderOp::bIsOfType(pNode)) {
+      return GraphNav::WALK_CONTINUE;
+    }
+
+    QueryNode* pOrderOp = _pQueryNode(pNode);
+    ASSERT(pOrderOp->nChildren() == 1);
+
+    // Check if they have a child of StatementMarker and then SetOp
+    b1 bOnTopOfSetOp = (
+        pOrderOp->pFirstChild() &&
+        StatementMarker::bIsOfType(pOrderOp->pFirstChild()) &&
+        pOrderOp->pFirstChild()->pFirstChild() &&
+        SetOp::bIsOfType(pOrderOp->pFirstChild()->pFirstChild())
+        );
+
+    if (!bOnTopOfSetOp) {
+      return GraphNav::WALK_CONTINUE;
+    }
+
+    // Get the list of columns being projected to the OrderOp
+    QueryNodeList* pColumnExprList = PlanObject::pColumnExprs(_pQueryNode(pOrderOp->pFirstChild()), pRootNode);
+
+    // Iterate each ordering expression of the OrderOp
+    QueryNode* pOrderExprList = OrderOp::pOrderExprList(pOrderOp);
+    ASSERT(OrderExprList::bIsOfType(pOrderExprList));
+
+    PlanNodeIter* pIter = pOrderExprList->pNewChildrenIter();
+    while (pIter->bHasNext()) {
+      QueryNode* pOrderExpr = _pQueryNode(pIter->pNext());
+      ASSERT(OrderExpr::bIsOfType(pOrderExpr));
+
+      QueryNode* pExpr = OrderExpr::pExprNode(pOrderExpr);
+      ASSERT(Expr::bIsOfType(pExpr));
+
+      // Check if each ordering expression of the OrderOp is equal to or a superset
+      // of the columns being projected. Also check that the OrderOp does not refer
+      // to any columnRefs that are not being projected by the SetOp.
+      // We can easily do this by converting the expression from symbolic to ordinal
+      // orientation. If the ordinal orientation has any ColumnRefs in it then
+      // this ordering expression is invalid.
+
+      QueryNode* pOrdExpr = Expr::pSymbolicToOrdinal(pExpr, pColumnExprList, pRootNode);
+
+      if (Expr::bIsOrdinal(pOrdExpr)) {
+        continue;
+      }
+
+      // Find the largest non-ordinal sub expression
+      QueryNode* pNonOrdExpr = Expr::pLargestNonOrdinalSubExpr(pOrdExpr);
+
+      if (pNonOrdExpr) {
+        // Throw an error
+        s2K sBuf;
+        Expr::vDescribe(pNonOrdExpr, sBuf);
+
+        delete pOrdExpr;
+        delete pIter;
+        pColumnExprList->vDeleteAll();
+        delete pColumnExprList;
+
+        SemanticException::vThrow(EC_EXPR_NOT_PROJECTED, ": %s ; ORDER BY clause"_Stz, sBuf.szStz());
+      }
+
+      delete pOrdExpr;
+    }
+
+    delete pIter;
+    pColumnExprList->vDeleteAll();
+    delete pColumnExprList;
+
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  // Walk the graph looking for OrderOps
+  GraphNav::bGlobalWalk(pStartNode, false, true, fVisitor, pRootNode);
+}
 
 /*============================================================================*/
 

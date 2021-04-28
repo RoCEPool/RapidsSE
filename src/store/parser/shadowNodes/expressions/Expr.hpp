@@ -74,6 +74,11 @@ namespace Parser
     // All expressions are relative column ordinals, operators or literals only.
     static b1 bIsOrdinal(QueryNode* pExpr);
 
+    // Given an expression already in ordinal form, find and return the largest
+    // non-ordinal subset of that expression. If the expression is wholly
+    // ordinal then nullptr is returned.
+    static QueryNode* pLargestNonOrdinalSubExpr(QueryNode* pOrdinalExpr);
+
   protected:
     // Returns true if the expression is commutative (e.g. A+B = B+A)
     // and the underlying expression children are also symbolically equal.

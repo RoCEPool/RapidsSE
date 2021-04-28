@@ -661,31 +661,30 @@ QueryNodeList* NameValidator::pMatchingTableDefsFor(QueryNode* pColumnRef,
 
 
     if (SetOp::bIsOfType(pNode)) {
-      // We don't walk down through a SetOp because it doesn't make sense to resolve
-      // tableDefs through this. It can lead to issues where an ORDER BY above a union
-      // could be trying to order the rows based on a column that is not being projected
-      // by the union.
-      //
-      // e.g. SELECT col1, col2 FROM t1
-      //      UNION ALL
-      //      SELECT c1, c2 FROM t2
-      //      ORDER BY col3;
-      //
-      // Note that the ORDER BY is applied AFTER the UNION
-      // Here col3 will never be projected through the union, so this is an invalid statement.
-      // col3 should be not resolvable in the OrderOp above the UnionOp.
-      //
-      // Alternative solution #2:
-      // If we try to resolve a column name against qualified columnRefs in the projected
-      // columns then we also permit ordering expressions to be specified that aren't equal
-      // to or supersets of the projected columns. e.g. we could be projecting (col1 + 1)
-      // but ordering by (col1 * 2). We would need some additional check to ensure that in
-      // the case where an orderOp was above a setOp then the ordering expressions must be
-      // equal to or supersets of the projected expressions.
-      //
-      // Therefore the safest thing to do is to only resolve aliases
-      // that the union presents (and these come from the first child of the union).
+      // We only walk down through the first child of a SetOp to resolve tableDefs.
+      // Normally this could lead to issues whereby an operator above the SetOp could
+      // refer to a column or alias that is not being projected. But at this point we
+      // are only interested in resolving names. Later on (in the project pushdown stage)
+      // we will check that each SQL operator has visibility of the expressions it is
+      // trying to manipulate.
 
+      // Recursively call the same function but only for the first child
+      // of the SetOp.
+      QueryNodeList* pSubList = pMatchingTableDefsFor(pColumnRef,
+                                                      _pQueryNode(pNode->pFirstChild()),
+                                                      pRootNode,
+                                                      pMetadataNode);
+
+      // Copy the results into the parent list
+      QueryNode* pItem;
+      while ( (pItem = pSubList->pPop()) != nullptr) {
+        pTableDefList->vAppend(pItem);
+      }
+
+      delete pSubList;
+
+      // We don't wish to descend this sub-tree because we manually descended
+      // the first child above.
       return GraphNav::WALK_SKIP_SUBTREE;
     }
 

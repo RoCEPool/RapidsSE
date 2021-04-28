@@ -559,6 +559,43 @@ b1 Expr::bIsOrdinal(QueryNode* pExpr)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Given an expression already in ordinal form, find and return the largest   */
+/* non-ordinal subset of that expression. If the expression is wholly         */
+/* ordinal then nullptr is returned.                                          */
+/*----------------------------------------------------------------------------*/
+QueryNode* Expr::pLargestNonOrdinalSubExpr(QueryNode* pOrdinalExpr)
+{
+  ASSERT(pOrdinalExpr);
+  ASSERT(Expr::bIsOfType(pOrdinalExpr));
+
+  // We want to walk down the expression graph and find the largest subset
+  // that contains ColumnRefs but no OrdinalRefs.
+
+  // First define some lambda conditions to search for ColumnRefs and OrdinalRefs
+  auto fColumnRefCondition  = [](PlanNode* pNode, void* pvArg) -> b1 { return     ColumnRef::bIsOfType(pNode); };
+  auto fOrdinalRefCondition = [](PlanNode* pNode, void* pvArg) -> b1 { return ColumnOrdinal::bIsOfType(pNode); };
+
+  QueryNode* pNonOrdExpr = nullptr;
+
+  auto fVisitor = [&pNonOrdExpr, fColumnRefCondition, fOrdinalRefCondition]
+      (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    PlanNode* pColumnRef  = GraphNav::pGlobalSearch(pNode, false, true, fColumnRefCondition,  nullptr);
+    PlanNode* pOrdinalRef = GraphNav::pGlobalSearch(pNode, false, true, fOrdinalRefCondition, nullptr);
+
+    if (pColumnRef && !pOrdinalRef) {
+      pNonOrdExpr = _pQueryNode(pNode);
+      return GraphNav::WALK_ABORT;
+    }
+
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  GraphNav::bGlobalWalk(pOrdinalExpr, false, true, fVisitor, nullptr);
+  return pNonOrdExpr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Compare two expression trees and return true if they are equal with        */
 /* respect to the operations and symbols used.                                */
 /*----------------------------------------------------------------------------*/
