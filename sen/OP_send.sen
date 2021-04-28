@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* OP_send.sen -- Operator xmit                                               */
+/* OP_send.sen -- Operator send                                               */
 /*============================================================================*/
 
 " OP_send.sen" .verbose
@@ -50,14 +50,14 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute for xmit request                           (on node where spawned) */
+/* execute for send request                           (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : xmit_req \operator
+ : send_req \operator
 
   LogReqEntry SEED_REQ
 
   // set the send kind
-  <sendKind> >int op.xmitKind!
+  <sendKind> >int op.SendKind!
 
   999999999999 task::operandYield!
 
@@ -78,9 +78,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: xmit :: xmit <sendKind> ;
+cmdSyntax: send :: send <sendKind> ;
 
-: xmit_cmdTags _cmdTags tagCopy: op_tags
+: send_cmdTags _cmdTags tagCopy: op_tags
   tags{ <cmdDesc> = "--desc for op--" }
 ;
 

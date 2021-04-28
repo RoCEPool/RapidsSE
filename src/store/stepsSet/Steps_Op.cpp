@@ -39,7 +39,7 @@ void Step::vAddSteps_Op(void)
   vAddStep("Op.queueLength@"_Stz,     &Step::vOpQueueLength);
   vAddStep("Op.stageName@"_Stz,       &Step::vOpStageNameFetch);
   vAddStep("Op.topology!"_Stz,        &Step::vOpTopologyStore);
-  vAddStep("Op.xmitKind!"_Stz,        &Step::vOpXmitKindStore);
+  vAddStep("Op.SendKind!"_Stz,        &Step::vOpSendKindStore);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -291,13 +291,13 @@ void Step::vOpTopologyStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Op.xmitKind! -- store xmitKind in the operator                             */
+/* Op.SendKind! -- store SendKind in the operator                             */
 /*----------------------------------------------------------------------------*/
-void Step::vOpXmitKindStore(void)
+void Step::vOpSendKindStore(void)
 {
   ENTRY();
   
-  m_pJob->m_pOp->vXmitKind((eXK)m_pDataStack->iPopInt(__func__));
+  m_pJob->m_pOp->vSendKind((eXK)m_pDataStack->iPopInt(__func__));
   
   EXIT();
 }

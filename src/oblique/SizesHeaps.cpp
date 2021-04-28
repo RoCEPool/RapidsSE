@@ -21,7 +21,6 @@
 #include "eNE.h"
 #include "eOC.h"
 #include "eOK.h"
-#include "eOP.h"
 #include "eOR.h"
 #include "ePF.h"
 #include "ePP.h"
@@ -168,7 +167,7 @@
 #include "WriteBehind.hpp"
 
 #include "XmitOperand.hpp"
-#include "Xmits.hpp"
+#include "Sends.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -512,8 +511,8 @@ SizeHeap gxaSizeHeap[]
   { 0,                          HT_INVALID   ,0 }, // CN_WSPCONVERGENT_t
 
   { 'X' - ('A' - 1),            HT_INVALID   ,0 }, // CN__X__
-  { sizeof(XmitOperand),        HT_T_TINY    ,0 }, // CN_XMITIOPERAND
-  { sizeof(Xmits),              HT_T_TINY    ,0 }, // CN_XMITS
+  { sizeof(XmitOperand),        HT_T_TINY    ,0 }, // CN_XMITOPERAND
+  { sizeof(Sends),              HT_T_TINY    ,0 }, // CN_SENDS
 
   { 'Y' - ('A' - 1),            HT_INVALID   ,0 }, // CN__Y__
 

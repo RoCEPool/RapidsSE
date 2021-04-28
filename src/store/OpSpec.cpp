@@ -50,7 +50,7 @@ OpSpec::OpSpec(Stz* szOpNm, i8 i_OpSpec, StageSpec* pStageSpec)
   m_pStageSpec    = pStageSpec;
 
   m_bAppendRight  = false;
-  m_eXmitKind     = XK_NORMAL;
+  m_eSendKind     = XK_NORMAL;
 
   //m_oOpSpecTagSet
   //m_oTopologyTagSet
@@ -201,21 +201,21 @@ TagSet* OpSpec::pTopologyTagSet(void)
 /*----------------------------------------------------------------------------*/
 /* get stage kind                                                             */
 /*----------------------------------------------------------------------------*/
-eXK OpSpec::eXmitKind(void)
+eXK OpSpec::eSendKind(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  return m_eXmitKind;
+  return m_eSendKind;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set stage kind                                                             */
 /*----------------------------------------------------------------------------*/
-void OpSpec::vXmitKind(eXK eXmitKind)
+void OpSpec::vSendKind(eXK eSendKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  m_eXmitKind = eXmitKind;
+  m_eSendKind = eSendKind;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -376,8 +376,8 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
-  else if (szTerm->bSame("Xmits[]"_Stz)) {
-    pCurrentWord->vEncodeCall("Xmits[].set"_Stz);
+  else if (szTerm->bSame("Sends[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Sends[].set"_Stz);
     EXIT();
     return;
   }

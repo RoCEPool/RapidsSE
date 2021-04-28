@@ -24,7 +24,7 @@
 #include "eNE.h"
 #include "eOC.h"
 #include "eOK.h"
-#include "eOP.h"
+
 #include "eOR.h"
 #include "ePF.h"
 #include "ePP.h"
@@ -746,8 +746,8 @@ i8   AM::nThreadsBegun(void)  { return * gpAttachMap->m_pSchedule->m_ixThreads; 
 bool AM::bTracepoint(void)    { return gpAttachMap->m_xSysArgs.m_bTracepoint;        }
 TxSet* AM::pTxSet(void)       { return gpAttachMap->m_pTxSet;                 }
 
-void AM::vXmitNode(Op* pOp, i8 i_XmitNde) {
-  pOp->vXmitNode(i_XmitNde);
+void AM::vSendNode(Op* pOp, i8 i_SendNode) {
+  pOp->vSendNode(i_SendNode);
 }
 bool AM::bVerbose(void)       { return gpAttachMap->m_xSysArgs.m_bVerbose;           }
 bool AM::bVerboseProgress(void)  {
@@ -2334,7 +2334,6 @@ static Stz* aEG[]
   "EG_OI"_Stz,
   "EG_OK"_Stz,
   "EG_OM"_Stz,
-  "EG_OP"_Stz,
   "EG_OR"_Stz,
 
   "EG_PA"_Stz,
@@ -2466,7 +2465,6 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_OI: return aOI[i_Enum];
     case EG_OK: return aOK[i_Enum];
     case EG_OM: return aOM[i_Enum];
-    case EG_OP: return aOP[i_Enum];
     case EG_OR: return aOR[i_Enum];
 
     case EG_PA: return aPA[i_Enum];

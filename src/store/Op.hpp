@@ -51,10 +51,10 @@ namespace STORE
     i8             m_iNextOp;        // next Op in the next stage
     i8             m_iOtherStage;    // other stage in the cross topology
     i8             m_iOtherOp;       // next Op in the other stage
-    i8             m_iXmitNode;      // xmit node (for xmit)
-    eXK            m_eXmitKind;      // xmit kind
-    i8             m_iRobin;         // xmit Round Robin partition/node/thread
-    i8             m_iLocalRobin;    // xmit Round Robin local ptn/node/thread
+    i8             m_iSendNode;      // send node (for send)
+    eXK            m_eSendKind;      // send kind
+    i8             m_iRobin;         // send Round Robin partition/node/thread
+    i8             m_iLocalRobin;    // send Round Robin local ptn/node/thread
   
     Op*            m_pDownstreamOp;  // downstream op
     Operand*       m_pOutboundOperand;  // operand to be piped out
@@ -143,23 +143,23 @@ namespace STORE
     void vToCmdStr(Stz* szCmdStr);
     TagSet* pTopologyTagSet(void);
     void vWorkQuanta(i8 iWorkQuanta);
-    eXK  eXmitKind(void);
-    void vXmitKind(eXK eXmitKind);
-    i8   iXmitNode(void);
-    void vXmitNode(i8 iNde);
+    eXK  eSendKind(void);
+    void vSendKind(eXK eSendKind);
+    i8   iSendNode(void);
+    void vSendNode(i8 iNde);
     
     Footer* aFooter(void);
     
   private:
     void vSend(Operand* pOperand, bool bSet, i8 i_Node, tPN tPtnNo);
     void vSend(Operand* pOperand, XmitOperand* pXmitOperand, bool bSet);
-    void vSendToAllNodes(Operand* pOperand, Task* pTriggeringTask,bool bSet, eXK eXmitKind);
-    void vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask,bool bSet, eXK eXmitKind);
-    void vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask,bool bSet, eXK eXmitKind);
-    void vSendToNode(Operand* pOperand, Task* pTriggeringTask,bool bSet, eXK eXmitKind,i8 i_Node);
-    void vSendToOrigin(Operand* pOperand, Task* pTriggeringTask,bool bSet, eXK eXmitKind);
+    void vSendToAllNodes(Operand* pOperand, Task* pTriggeringTask,bool bSet, eXK eSendKind);
+    void vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask,bool bSet, eXK eSendKind);
+    void vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask,bool bSet, eXK eSendKind);
+    void vSendToNode(Operand* pOperand, Task* pTriggeringTask,bool bSet, eXK eSendKind,i8 i_Node);
+    void vSendToOrigin(Operand* pOperand, Task* pTriggeringTask,bool bSet, eXK eSendKind);
     void vSendToPartition(Operand* pOperand, Task* pTriggeringTask, bool bSet,
-                          eXK eXmitKind, tPN tPtnNo);
+                          eXK eSendKind, tPN tPtnNo);
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -501,7 +501,6 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("EG_OI"_Stz,   EG_OI);
   vAddConstant("EG_OK"_Stz,   EG_OK);
   vAddConstant("EG_OM"_Stz,   EG_OM);
-  vAddConstant("EG_OP"_Stz,   EG_OP);
   vAddConstant("EG_OR"_Stz,   EG_OR);
   vAddConstant("EG_PA"_Stz,   EG_PA);
   vAddConstant("EG_PF"_Stz,   EG_PF);
