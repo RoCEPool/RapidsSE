@@ -878,6 +878,12 @@ void AM::vDeleteOperand(Operand* pOperand)
       delete pMetaGet;
       break;
     }
+
+    case CN_PARCEL: {
+      Parcel* pParcel = _pParcel(pOperand);
+      delete pParcel;
+      break;
+    }
       
     default: {
       RASSERT(0);
