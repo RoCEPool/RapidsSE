@@ -908,6 +908,7 @@ public:
 
   // metaGet
   void vMetaGetGetMetadata(void);
+  void vMetaGetGetTableName(void);
 
   // metaRecv
   void vMetaRecvPutParts(void);

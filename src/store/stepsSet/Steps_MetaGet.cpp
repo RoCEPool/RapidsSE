@@ -8,7 +8,7 @@
 #include "EnterExit.h"
 #include "StepAccum.hpp"
 #include "Steps.hpp"
-#include <MetaGet.hpp>
+#include "MetaGet.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -17,6 +17,7 @@
 void Step::vAddSteps_MetaGet(void)
 {
   vAddStep("MetaGet::getMetaData"_Stz,&Step::vMetaGetGetMetadata);
+  vAddStep("MetaGet.getTableName"_Stz,&Step::vMetaGetGetTableName);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -27,6 +28,7 @@ void Step::vMetaGetGetMetadata(void)
   ENTRY();
   
   // ... code which initiates the metadata transfer ...
+  vTrace("C++ gets called: vMetaGetGetMetadata\n"_Stz);
   s32 sTableNm;
   m_pDataStack->vPopStr(sTableNm, __func__);
 
@@ -34,6 +36,23 @@ void Step::vMetaGetGetMetadata(void)
 
 
   m_pDataStack->vPushPtr(pMetaGet);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* MetaGet.vMetaGetGetTableName -- get tableName from MetaGet object          */
+/*----------------------------------------------------------------------------*/
+void Step::vMetaGetGetTableName(void)
+{
+  ENTRY();
+  vTrace("C++ gets called: vMetaGetGetTableName\n"_Stz);
+
+  MetaGet* pMetaGet = _pMetaGet(m_pDataStack->pPopPtr(__func__));
+
+  s32 sTableNm = pMetaGet->sTableName();
+
+  m_pDataStack->vPushStz(sTableNm);
 
   EXIT();
 }

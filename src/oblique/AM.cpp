@@ -2,6 +2,7 @@
 /* AM.cpp -- AttachMap helper                                                 */
 /*============================================================================*/
 
+
 #include "BASE.h"
 
 
@@ -68,6 +69,7 @@
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"
 #include "Table.hpp"
+#include "MetaGet.hpp"
 
 #include "Node.hpp"
 #include "Node_I.hpp"
@@ -868,6 +870,12 @@ void AM::vDeleteOperand(Operand* pOperand)
     case CN_STREAMSET: {
       StreamSet* pStreamSet = _pStreamSet(pOperand);
       delete pStreamSet;
+      break;
+    }
+
+    case CN_METAGET: {
+      MetaGet* pMetaGet = _pMetaGet(pOperand);
+      delete pMetaGet;
       break;
     }
       
@@ -1783,8 +1791,10 @@ i8 AM::iOperandZkKind(Operand* pOperand)
     case CN_ROWBUFFER:    eOperand = ZK_ROWBUFFER;      break;
     case CN_STREAMDEF:    eOperand = ZK_STREAMDEF;      break;
     case CN_STREAMSET:    eOperand = ZK_STREAMSET;      break;
-      
+    case CN_METAGET:      eOperand = ZK_METAGET;        break;
+
     default:
+      vTrace("what class:%lld\n"_Stz,eClass_opd);
       RASSERT(0);
       break;
   }

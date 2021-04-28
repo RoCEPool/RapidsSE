@@ -17,6 +17,21 @@ __aFooterFunction(MetaGet)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
+MetaGet::MetaGet(void)
+    : Operand(CN_METAGET) {
+  _precondition_(_ADDRESS_, _MAGIC_, CN_METAGET, _FOOTER_);
+
+  m_sTableName = ""_Stz;
+
+
+  _checkInitialised_(CN_METAGET);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_METAGET,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
 MetaGet::MetaGet(s32 sTableNm)
     : Operand(CN_METAGET) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_METAGET, _FOOTER_);
@@ -28,8 +43,6 @@ MetaGet::MetaGet(s32 sTableNm)
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_METAGET,_FOOTER_);
 }
-
-
 
 
 

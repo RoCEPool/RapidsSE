@@ -7,8 +7,15 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_METAGET ...                                                          */
 /*----------------------------------------------------------------------------*/
-: metaGet_table \handler
+: metaSend_metaGet \handler
 
+ "metaSend_metaGet handler, to print out the table name" .
+
+  Operand[].pipein  // pop the pMetaGet and put in the Operand register
+  Operand[] MetaGet.getTableName
+
+  // print table name from the stack
+  .
   true
 ;
 
@@ -18,9 +25,12 @@
 : metaSend_req \operator
 
   LogReqEntry SEED_REQ
+  "metaSend_req" .
 
   op__topology
 
+  // Setup ZK_METAGET handler
+  find: metaSend_metaGet ZK_METAGET op[].handler!
   op__loop
 
   LogReqExit

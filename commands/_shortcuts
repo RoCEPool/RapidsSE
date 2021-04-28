@@ -49,6 +49,7 @@ shortcut r    _lineitemrjh;
 shortcut r2   _ray2;
 shortcut r3   _ray3;
 shortcut r4   _ray4;
+shortcut r9   _ray9;
 shortcut rs   "../FASTLOAD/commands/_rowSlabTest";
 shortcut s    _select;
 shortcut smt  _AsmSmts;

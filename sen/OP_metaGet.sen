@@ -10,21 +10,17 @@
 : metaGet_getTable  \handler
 
   "metaGet_getTable" .
-
-  <tableNm> .
   
   // create an instance of class MetaGet : public Operand
-
-  <tableNm> metaGet::getMetaData locals| pMetaGet |
-  
   // set the table name in MetaGet instance
-  
-  // pipeout the MetaGet instance
+  <tableNm> metaGet::getMetaData locals| pMetaGet |
+  //"created pMetaGet".
 
-  // pipeout an EOSMARKER
-  Operand[].newEosMarker
-  Operand[].pipeOut // would this pipeout the pMetaGet ??
-  //PipeIn[].pipeOut
+  // pipeout the MetaGet instance
+  pMetaGet Op::pipeout
+  //"pipeout pMetaGet".
+
+  // we return true here, but somewhere failed assert on false
   true
 ;
 
@@ -34,10 +30,10 @@
 : metaGet_req \operator
 
   LogReqEntry SEED_REQ
-  <tableNm> .
+  "metaGet_req" .
   op__topology
 
-  find: metaGet_getTable   ZK_METAGET   op[].handler!
+  find: metaGet_getTable   ZK_STARTMARKER   op[].handler!
 
   op__loop
 

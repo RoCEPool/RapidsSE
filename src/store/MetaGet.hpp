@@ -18,6 +18,7 @@ namespace STORE {
     void  operator delete(void*);
 
     MetaGet(s32 sTableNm);
+    MetaGet(void);
     ~MetaGet(void) noexcept(false);
 
     void vTableName(s32 sTblNm) { m_sTableName = sTblNm;}
