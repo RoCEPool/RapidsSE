@@ -189,7 +189,7 @@ namespace STORE {
   class TailLine;
   
   class WriteBehind;
-  class XmitOperand;
+  class Parcel;
   
   class Sends;
 
@@ -458,9 +458,9 @@ namespace OBLIQUE
     static void vNapMsec(i8 nMilliSeconds, eCN eCallingClass);
     static void vNapUsec(i8 nMicroSeconds, eCN eCallingClass);
     static i8   iNextObjectNo(eCN eClassNo);
-    static void vDeleteXmitOperand(XmitOperand* pXmitOperand);
+    static void vDeleteParcel(Parcel* pParcel);
     static Operand* pDuplicateOperand(Operand* pOperand);
-    static XmitOperand* pNewXmitOperand(Job* pParentJob, Operand* pOperand,
+    static Parcel* pNewParcel(Job* pParentJob, Operand* pOperand,
                                         ePX eCrossTopo, i8 iNextStage, i8 iNextOp,
                                         i8 iNde, tPN tPtnNo);
     
@@ -498,9 +498,9 @@ namespace OBLIQUE
     static void vFreeInc(RU_Memory* pRU_Memory, eCN eAllocClass);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    static void vSend(Task* pTask, Node* pSendNode, XmitOperand* pXmitOperand);
+    static void vSend(Task* pTask, Node* pSendNode, Parcel* pParcel);
     static Session* pSessionGet(ReqTuple* aReqTuple);
-    static void vSetOperand(XmitOperand* pXmitOperand, Operand* pOperand);
+    static void vSetOperand(Parcel* pParcel, Operand* pOperand);
     
     static bool bSpawnJob_connector(Job* pJob);
     static bool bSpawnJob_session(Job* pJob);

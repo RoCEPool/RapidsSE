@@ -172,6 +172,7 @@ enum eCN : u2 // Class Number
   /* */ CN_OTHEROPERAND,
 
   /* */ CN__P__,
+  /* */ CN_PARCEL,
   /* */ CN_PATHIDENTIFIER,
   /* */ CN_PATHVEC,
   /* */ CN_PERUSE,
@@ -335,7 +336,6 @@ enum eCN : u2 // Class Number
   /* */ CN_WSPCONVERGENT_t,
 
   /* */ CN__X__,
-  /* */ CN_XMITOPERAND,
   
   /* */ CN__Y__,
   
@@ -508,6 +508,7 @@ static Stz* aCN[]
   /* */ "OTHEROPERAND"_Stz,         // CN_OTHEROPERAND
 
   /* */ "_P__"_Stz,                 // CN__P__
+  /* */ "PARCEL"_Stz,               // CN_PARCEL
   /* */ "PATHIDENTIFIER"_Stz,       // CN_PATHIDENTIFIER
   /* */ "PATHVEC"_Stz,              // CN_PATHVEC
   /* */ "PERUSE"_Stz,               // CN_PERUSE
@@ -671,7 +672,6 @@ static Stz* aCN[]
   /* */ "WSPCONVERGENT_t"_Stz,      // CN_WSPCONVERGENT_t
  
   /* */ "_X__"_Stz,                 // CN__X__
-  /* */ "XmitOperand"_Stz,          // CN_XMITOPERAND
    
   /* */ "_Y__"_Stz,                 // CN__Y__
    

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XmitOperand.cpp -- xmit Operand                                            */
+/* Parcel.cpp -- Send Parcel                                                  */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -14,18 +14,18 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,XmitOperand,CN_XMITOPERAND)
-__aNewFunction(XmitOperand,CN_XMITOPERAND)
-__vDeleteFunction(XmitOperand,CN_XMITOPERAND)
-__aFooterFunction(XmitOperand)
+__pCastFunction(STORE,Parcel,CN_PARCEL)
+__aNewFunction(Parcel,CN_PARCEL)
+__vDeleteFunction(Parcel,CN_PARCEL)
+__aFooterFunction(Parcel)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XmitOperand::XmitOperand(void)
-: Object(CN_XMITOPERAND)
+Parcel::Parcel(void)
+: Object(CN_PARCEL)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_XMITOPERAND,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
   
   m_iPipelineJobId = C_UNKNOWN;
   m_i_Node         = C_UNKNOWN;
@@ -36,20 +36,20 @@ XmitOperand::XmitOperand(void)
   m_iNextOp        = C_UNKNOWN;
   
   m_nObjects = 0;
-  for (i8 i_Obj = 0; i_Obj < C_MAX_XMIT_OBJ; i_Obj++)
+  for (i8 i_Obj = 0; i_Obj < C_MAX_PARCEL_OBJ; i_Obj++)
     m_pObjects[i_Obj] = nullptr;
   
-  _checkInitialised_(CN_XMITOPERAND);
+  _checkInitialised_(CN_PARCEL);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_XMITOPERAND,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XmitOperand::~XmitOperand(void) noexcept(false)
+Parcel::~Parcel(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_XMITOPERAND,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
   
 }
 
@@ -60,23 +60,23 @@ XmitOperand::~XmitOperand(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* new an operand job                                                         */
 /*----------------------------------------------------------------------------*/
-XmitOperand* XmitOperand::pNewXmitOperand(Operand* pOperand,
+Parcel* Parcel::pNewParcel(Operand* pOperand,
                                          i8 iPipelineJobId,
                                          ePX eCrossTopo, i8 iNextStage, i8 iNextOp,
                                          i8 i_Node, tPN tPtnNo)
 {
-  XmitOperand* pXmitOperand = new XmitOperand;
+  Parcel* pParcel = new Parcel;
   
-  pXmitOperand->m_iPipelineJobId = iPipelineJobId;
-  pXmitOperand->m_i_Node         = i_Node;
-  pXmitOperand->m_tPtnNo         = tPtnNo;
-  pXmitOperand->vSetOperand(pOperand);
+  pParcel->m_iPipelineJobId = iPipelineJobId;
+  pParcel->m_i_Node         = i_Node;
+  pParcel->m_tPtnNo         = tPtnNo;
+  pParcel->vSetOperand(pOperand);
   
-  pXmitOperand->m_eCrossTopo     = eCrossTopo;
-  pXmitOperand->m_iNextStage     = iNextStage;
-  pXmitOperand->m_iNextOp        = iNextOp;
+  pParcel->m_eCrossTopo     = eCrossTopo;
+  pParcel->m_iNextStage     = iNextStage;
+  pParcel->m_iNextOp        = iNextOp;
   
-  return pXmitOperand;
+  return pParcel;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -86,11 +86,11 @@ XmitOperand* XmitOperand::pNewXmitOperand(Operand* pOperand,
 /*----------------------------------------------------------------------------*/
 /* Add object to array                                                        */
 /*----------------------------------------------------------------------------*/
-void XmitOperand::vAddObject(Object *pObj)
+void Parcel::vAddObject(Object *pObj)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_XMITOPERAND,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
-  if (m_nObjects < C_MAX_XMIT_OBJ) {
+  if (m_nObjects < C_MAX_PARCEL_OBJ) {
     m_pObjects[m_nObjects++] = pObj;
   }
 }
@@ -98,11 +98,11 @@ void XmitOperand::vAddObject(Object *pObj)
 /*----------------------------------------------------------------------------*/
 /* Get an object from array                                                   */
 /*----------------------------------------------------------------------------*/
-Object* XmitOperand::pGetObject(i8 i_Object)
+Object* Parcel::pGetObject(i8 i_Object)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_XMITOPERAND,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
-  if (i_Object < C_MAX_XMIT_OBJ && i_Object < m_nObjects)
+  if (i_Object < C_MAX_PARCEL_OBJ && i_Object < m_nObjects)
     return m_pObjects[i_Object];
   
   return nullptr;
@@ -111,9 +111,9 @@ Object* XmitOperand::pGetObject(i8 i_Object)
 /*----------------------------------------------------------------------------*/
 /* Get Operand                                                                */
 /*----------------------------------------------------------------------------*/
-Operand* XmitOperand::pGetOperand(void)
+Operand* Parcel::pGetOperand(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_XMITOPERAND,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
   return (Operand*) m_pObjects[0];
 }
@@ -121,9 +121,9 @@ Operand* XmitOperand::pGetOperand(void)
 /*----------------------------------------------------------------------------*/
 /* Set Operand                                                                */
 /*----------------------------------------------------------------------------*/
-void XmitOperand::vSetOperand(Operand *pOperand)
+void Parcel::vSetOperand(Operand *pOperand)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_XMITOPERAND,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
   m_pObjects[0] = pOperand;
 }

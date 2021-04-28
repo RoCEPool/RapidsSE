@@ -1927,9 +1927,9 @@ public:
   // write behind
   void vWriteBehindFlush(void);
 
-  // XmitOperand
-  void vXmitOperandOperandStore(void);
-  void vXmitOperandPipeOut(void);
+  // Parcel
+  void vParcelOperandStore(void);
+  void vParcelPipeOut(void);
 
   // zero
   void vZeroLess(void);

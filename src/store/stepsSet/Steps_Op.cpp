@@ -258,7 +258,7 @@ void Step::vOpSendTo(void)
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
 
-  pOp->vSendXmitOperand(pOperand,this,false);
+  pOp->vSendParcel(pOperand,this,false);
 
   EXIT();
 }

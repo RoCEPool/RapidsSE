@@ -1,14 +1,14 @@
 /*============================================================================*/
-/* XmitInfo.hpp -- XmitInfo                                                   */
+/* Parcel.hpp -- Send Parcel                                                  */
 /*============================================================================*/
 #pragma once
 
 namespace STORE
 {
-  static const i8 C_MAX_XMIT_OBJ = 16;
+  static const i8 C_MAX_PARCEL_OBJ = 16;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class XmitOperand : public Object
+  class Parcel : public Object
   {
     
   public:
@@ -21,7 +21,7 @@ namespace STORE
     
   private:
     i8 m_nObjects;                        // number of objects in the parcel
-    Object* m_pObjects[C_MAX_XMIT_OBJ];  // let's for now, a fixed size array of
+    Object* m_pObjects[C_MAX_PARCEL_OBJ];  // let's for now, a fixed size array of
   
     // must be last
     Footer m_xFooter;
@@ -30,10 +30,10 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XmitOperand(void);
-    ~XmitOperand(void) noexcept(false);
+    Parcel(void);
+    ~Parcel(void) noexcept(false);
     
-    static XmitOperand* pNewXmitOperand(Operand* pOperand,
+    static Parcel* pNewParcel(Operand* pOperand,
                                         i8 iParentJobId,
                                         ePX eCrossTopo,
                                         i8 iNextStage,
@@ -57,7 +57,7 @@ namespace STORE
   };
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  XmitOperand* _pXmitOperand(void* aAddr);
+  Parcel* _pParcel(void* aAddr);
 }
 
 /*============================================================================*/

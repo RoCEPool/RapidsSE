@@ -192,7 +192,7 @@ namespace STORE
     static void vAddSteps_Word(void);
     static void vAddSteps_WriteBehind(void);
 
-    static void vAddSteps_XmitOperand(void);
+    static void vAddSteps_Parcel(void);
     
     static void vAddSteps_Zero(void);
   

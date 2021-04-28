@@ -347,6 +347,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(OtherOperand),       HT_T_TINY    ,0 }, // CN_OTHEROPERAND
 
   { 'P' - ('A' - 1),              HT_INVALID   ,0 }, // CN__P__
+  { sizeof(Parcel),               HT_T_TINY    ,0 }, // CN_PARCEL
   { sizeof(PathIdentifier),       HT_T_MEDIUM  ,0 }, // CN_PATHIDENTIFIER
   { sizeof(PathVec),              HT_T_MEDIUM  ,0 }, // CN_PATHVEC
   { sizeof(Peruse),               HT_T_MEDIUM  ,0 }, // CN_PERUSE
@@ -510,7 +511,6 @@ SizeHeap gxaSizeHeap[]
   { 0,                          HT_INVALID   ,0 }, // CN_WSPCONVERGENT_t
 
   { 'X' - ('A' - 1),            HT_INVALID   ,0 }, // CN__X__
-  { sizeof(XmitOperand),        HT_T_TINY    ,0 }, // CN_XMITOPERAND
 
   { 'Y' - ('A' - 1),            HT_INVALID   ,0 }, // CN__Y__
 

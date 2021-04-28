@@ -1318,7 +1318,7 @@ OperandQueue* Op::pQueueRight(void)
 /*----------------------------------------------------------------------------*/
 /* set send operand                                                           */
 /*----------------------------------------------------------------------------*/
-void Op::vSendXmitOperand(Operand* pOperand, Task* pTriggeringTask, bool bSet)
+void Op::vSendParcel(Operand* pOperand, Task* pTriggeringTask, bool bSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -1610,19 +1610,19 @@ void Op::vSend(Operand* pOperand, bool bSet, i8 i_Node, tPN tPtnNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  XmitOperand* pXmitOperand;
+  Parcel* pParcel;
   
   // new an send operand
-  pXmitOperand = AM::pNewXmitOperand(m_pPipelineJob, pOperand, m_eCrossTopo, m_iNextStage, m_iNextOp, i_Node, tPtnNo);
+  pParcel = AM::pNewParcel(m_pPipelineJob, pOperand, m_eCrossTopo, m_iNextStage, m_iNextOp, i_Node, tPtnNo);
 
-  vSend(pOperand, pXmitOperand, bSet);
+  vSend(pOperand, pParcel, bSet);
 
   if (m_iOtherStage != C_UNKNOWN) {
 
     // new an send operand
-    pXmitOperand = AM::pNewXmitOperand(m_pPipelineJob, pOperand, m_eCrossTopo, m_iOtherStage, m_iOtherOp, i_Node, tPtnNo);
+    pParcel = AM::pNewParcel(m_pPipelineJob, pOperand, m_eCrossTopo, m_iOtherStage, m_iOtherOp, i_Node, tPtnNo);
 
-    vSend(pOperand, pXmitOperand, bSet);
+    vSend(pOperand, pParcel, bSet);
   }
 
 }
@@ -1630,33 +1630,33 @@ void Op::vSend(Operand* pOperand, bool bSet, i8 i_Node, tPN tPtnNo)
 /*----------------------------------------------------------------------------*/
 /* send the operand                                                           */
 /*----------------------------------------------------------------------------*/
-void Op::vSend(Operand* pOperand, XmitOperand* pXmitOperand, bool bSet)
+void Op::vSend(Operand* pOperand, Parcel* pParcel, bool bSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
   // get the send node in the task
-  Node* pSendNode = AM::pGrid()->pGetNode(pXmitOperand->m_i_Node);
+  Node* pSendNode = AM::pGrid()->pGetNode(pParcel->m_i_Node);
 
   if (bSet) {
 
     while (pOperand) {
 
       // set the operand in the job
-      AM::vSetOperand(pXmitOperand, pOperand);
+      AM::vSetOperand(pParcel, pOperand);
 
       // send the operand job across the sendNode
-      AM::vSend(AM::pExecutingTask(m_pOpJob), pSendNode, pXmitOperand);
+      AM::vSend(AM::pExecutingTask(m_pOpJob), pSendNode, pParcel);
       DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
       pOperand = pDataBuffer->pNextLinkedBuffer();
     }
   }
   else {
     // send the operand job across the sendNode
-    AM::vSend(AM::pExecutingTask(m_pOpJob), pSendNode, pXmitOperand);
+    AM::vSend(AM::pExecutingTask(m_pOpJob), pSendNode, pParcel);
   }
 
   // delete the sendOperand
-  AM::vDeleteXmitOperand(pXmitOperand);
+  AM::vDeleteParcel(pParcel);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1278,7 +1278,7 @@ void AM::vWriteLog(void) {
 /*----------------------------------------------------------------------------*/
 /* get pSession given i_Session                                               */
 /*----------------------------------------------------------------------------*/
-void AM::vSend(Task* pTask, Node* pSendNode, XmitOperand* pXmitOperand)
+void AM::vSend(Task* pTask, Node* pSendNode, Parcel* pParcel)
 {
   pTask->pJob()->pLogicUnit_job()->m_xpSendNode = pSendNode;
   
@@ -1287,10 +1287,10 @@ void AM::vSend(Task* pTask, Node* pSendNode, XmitOperand* pXmitOperand)
   pSocket->vGrabWrite();
   
   SysCall oSysCall;
-  i8 nObjectSize = gxaSizeHeap[pXmitOperand->eGetClassNo()].m_nClassSize;
-  bool bResult = pSocket->bSendTo(pXmitOperand, nObjectSize, oSysCall);
+  i8 nObjectSize = gxaSizeHeap[pParcel->eGetClassNo()].m_nClassSize;
+  bool bResult = pSocket->bSendTo(pParcel, nObjectSize, oSysCall);
   
-  Operand* pOperand = pXmitOperand->pGetOperand();
+  Operand* pOperand = pParcel->pGetOperand();
   
   nObjectSize = gxaSizeHeap[pOperand->eGetClassNo()].m_nClassSize;
   bResult = pSocket->bSendTo(pOperand, nObjectSize, oSysCall);
@@ -1577,11 +1577,11 @@ i8 AM::iNextObjectNo(eCN eClassNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete the xmitOperand                                                     */
+/* delete the parcel                                                          */
 /*----------------------------------------------------------------------------*/
-void AM::vDeleteXmitOperand(XmitOperand* pXmitOperand)
+void AM::vDeleteParcel(Parcel* pParcel)
 {
-  delete pXmitOperand;
+  delete pParcel;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1606,23 +1606,23 @@ Operand* AM::pDuplicateOperand(Operand* pOperand)
 /*----------------------------------------------------------------------------*/
 /* new an operand job                                                         */
 /*----------------------------------------------------------------------------*/
-XmitOperand* AM::pNewXmitOperand(Job* pParentJob, Operand* pOperand,
+Parcel* AM::pNewParcel(Job* pParentJob, Operand* pOperand,
                                  ePX eCrossTopo, i8 iNextStage, i8 iNextOp,
                                  i8 i_Node, i8 tPtnNo)
 {
-  XmitOperand* pXmitOperand =
-    XmitOperand::pNewXmitOperand(pOperand,pParentJob->iJobId(),
+  Parcel* pParcel =
+    Parcel::pNewParcel(pOperand,pParentJob->iJobId(),
                                  eCrossTopo,iNextStage,iNextOp,i_Node,tPtnNo);
   
-  return pXmitOperand;
+  return pParcel;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set operand in operand job                                                 */
 /*----------------------------------------------------------------------------*/
-void AM::vSetOperand(XmitOperand* pXmitOperand, Operand* pOperand)
+void AM::vSetOperand(Parcel* pParcel, Operand* pOperand)
 {
-  pXmitOperand->vSetOperand(pOperand);
+  pParcel->vSetOperand(pOperand);
 }
 
 /*----------------------------------------------------------------------------*/

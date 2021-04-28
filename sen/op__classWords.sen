@@ -6,7 +6,7 @@
 
   find: job.dispatch CN_JOB class::postRecvWord!
 
-  find: xmitOperand.dispatch CN_XMITOPERAND class::postRecvWord!
+  find: parcel.dispatch CN_PARCEL class::postRecvWord!
 
 /*============================================================================*/
 /* end                                                                        */
