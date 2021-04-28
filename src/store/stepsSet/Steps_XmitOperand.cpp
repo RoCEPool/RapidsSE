@@ -10,7 +10,7 @@
 
 #include "ePX.h"
 
-#include "XmitOperand.hpp"
+#include "Parcel.hpp"
 
 #include "Op.hpp"
 #include "Stage.hpp"

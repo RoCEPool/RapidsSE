@@ -17,7 +17,7 @@
 #include "Pipeline.hpp"
 #include "StageSpec.hpp"
 #include "MY.hpp"
-#include "XmitOperand.hpp"
+#include "Parcel.hpp"
 
 #include "eTS.h"
 #include "TagConstants.h"

@@ -28,7 +28,6 @@ namespace STORE
   
   public:
     void* operator new(size_t);
-    void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
     XmitOperand(void);

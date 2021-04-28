@@ -8,51 +8,16 @@
 
 #include "Op.hpp"
 #include "OpSpec.hpp"
-#include "XmitOperand.hpp"
+#include "Parcel.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-XmitOperand* STORE::_pXmitOperand(void* aAddress)
-{
-  XmitOperand* pXmitOperand= reinterpret_cast<XmitOperand*>(aAddress);
-  
-  RASSERT_TYPE(pXmitOperand,CN_XMITOPERAND);
-  
-  return pXmitOperand;
-}
-
-/*----------------------------------------------------------------------------*/
-/* allocate a new entry buffer from heap                                      */
-/*----------------------------------------------------------------------------*/
-void* XmitOperand::operator new(size_t)
-{
-  XmitOperand* pXmitOperand =
-    static_cast<XmitOperand*>(Heaps::pAllocate(CN_XMITOPERAND));
-  
-  return pXmitOperand;
-}
-
-/*----------------------------------------------------------------------------*/
-/* perform new of entry buffer for given address                              */
-/*----------------------------------------------------------------------------*/
-void* XmitOperand::operator new(size_t, void* aAddress)
-{
-  return aAddress;
-}
-
-/*----------------------------------------------------------------------------*/
-/* free an entry buffer back to the heap                                      */
-/*----------------------------------------------------------------------------*/
-void XmitOperand::operator delete(void* aAddress)
-{
-  XmitOperand* pXmitOperand = static_cast<XmitOperand*>(aAddress);
-  Heaps::vFree(pXmitOperand);
-}
+__pCastFunction(STORE,XmitOperand,CN_XMITOPERAND)
+__aNewFunction(XmitOperand,CN_XMITOPERAND)
+__vDeleteFunction(XmitOperand,CN_XMITOPERAND)
+__aFooterFunction(XmitOperand)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -162,22 +127,6 @@ void XmitOperand::vSetOperand(Operand *pOperand)
 
   m_pObjects[0] = pOperand;
 }
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* XmitOperand::aFooter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_XMITOPERAND);
-  
-  return &m_xFooter;
-}
-
 
 /*============================================================================*/
 /* end                                                                        */
