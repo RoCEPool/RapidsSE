@@ -119,6 +119,31 @@ XmitOperand* XmitOperand::pNewXmitOperand(Operand* pOperand,
 /*-- Member Functions --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* Add object to array                                                        */
+/*----------------------------------------------------------------------------*/
+void XmitOperand::vAddObject(Object *pObj)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_XMITOPERAND,_FOOTER_);
+
+  if (m_nObjects < C_MAX_XMIT_OBJ) {
+    m_pObjects[m_nObjects++] = pObj;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get an object from array                                                   */
+/*----------------------------------------------------------------------------*/
+Object* XmitOperand::pGetObject(i8 i_Object)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_XMITOPERAND,_FOOTER_);
+
+  if (i_Object < C_MAX_XMIT_OBJ && i_Object < m_nObjects)
+    return m_pObjects[i_Object];
+  
+  return nullptr;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
@@ -129,14 +154,11 @@ XmitOperand* XmitOperand::pNewXmitOperand(Operand* pOperand,
 /*----------------------------------------------------------------------------*/
 Footer* XmitOperand::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_XMITOPERAND);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_XMITOPERAND,_FOOTER_);
   
   return &m_xFooter;
 }
 
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
 
 /*============================================================================*/
 /* end                                                                        */

@@ -41,6 +41,10 @@ namespace STORE
   public:
     void vShow(void);
     
+    void vAddObject(Object *pObj);
+    i8 nObjects(void) { return m_nObjects;};
+    Object* pGetObject(i8 iIdx);
+
   public:
     Footer* aFooter(void);
   
