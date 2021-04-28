@@ -18,7 +18,7 @@ namespace Parser
     OrderOp();
 
   public:
-    static QueryNode* pCreate(QueryNode* pOrderExprList);
+    static QueryNode* pCreate(QueryNode* pOrderItemList);
     static void       vDescribe(PlanNode* pNode, s2K& sBuf);
     static void vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iIndent);
 
@@ -28,13 +28,13 @@ namespace Parser
     // Returns true if a given node is this exact given type.
     static b1 bIsExactType(PlanNode* pNode);
 
-    // Returns the internal node that represents the list of symbolic OrderExpr nodes
-    // (an OrderExprList object)
-    static QueryNode* pOrderExprList(QueryNode* pNode);
+    // Returns the internal node that represents the list of symbolic OrderItem nodes
+    // (an OrderItemList object)
+    static QueryNode* pOrderItemList(QueryNode* pNode);
 
-    // Returns a new copy of the list of OrderExprs (OrderExprList) rewritten relative
+    // Returns a new copy of the list of OrderItems (OrderItemList) rewritten relative
     // to column ordinals. Must be freed after use.
-    static QueryNode* pOrdinalOrderExprList(QueryNode* pNode, PlanNode* pRootNode);
+    static QueryNode* pOrdinalOrderItemList(QueryNode* pNode, PlanNode* pRootNode);
 
     // Return a list of ProjectedColumns that represent the column expressions
     // that this PlanObject will return. All nodes and the list must be freed.

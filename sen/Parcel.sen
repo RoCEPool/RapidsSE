@@ -1,25 +1,25 @@
 /*============================================================================*/
-/* XmitOperand.sen -- XmitOperand words                                       */
+/* Parcel.sen -- Parcel words                                                 */
 /*============================================================================*/
 
-" XmitOperand.sen" .verbose
+" Parcel.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* dispatch received xmitOperand                                              */
+/* dispatch received parcel                                                   */
 /*----------------------------------------------------------------------------*/
-: XmitOperand.dispatch_1
+: Parcel.dispatch_1
 
-  xmitOperand.pipeOut
+    parcel.pipeOut
 ;
 
 /*----------------------------------------------------------------------------*/
-/* dispatch received xmitOperand                                              */
+/* dispatch received parcel                                                   */
 /*----------------------------------------------------------------------------*/
-: XmitOperand.dispatch params| pXmitOperand |
+: Parcel.dispatch params| pParcel |
 
   Socket[].recvObject Socket[].object@\clear
   
-    pXmitOperand xmitOperand.pipeOut
+    pParcel parcel.pipeOut
 ;
 
 /*============================================================================*/

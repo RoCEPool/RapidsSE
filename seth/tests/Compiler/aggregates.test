@@ -118,6 +118,30 @@ rows: 1
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  ORDER BY clause
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- Basic ORDER BY clause
+EXPLAIN SELECT n_name, SUM(n_nationkey) FROM nation GROUP BY n_name ORDER BY SUM(n_nationkey);
+rows: 1
+
+-- Basic ORDER BY clause but missing GROUP BY
+EXPLAIN SELECT n_name, SUM(n_nationkey) FROM nation ORDER BY SUM(n_nationkey);
+failure contains: 'Cannot select both aggregate and non-aggregate expressions without a GROUP BY clause'
+
+-- ORDER BY aggregate but no aggregates in select list
+EXPLAIN SELECT n_name, n_nationkey FROM nation GROUP BY n_name ORDER BY SUM(n_nationkey);
+failure contains: 'Expression is not present in the GROUP BY list: rapidsse.public.nation.n_nationkey'
+
+-- ORDER BY clause with columnRef but columnRef not in GROUP BY
+EXPLAIN SELECT n_name, n_nationkey FROM nation GROUP BY n_name ORDER BY n_nationkey;
+failure contains: 'Expression is not present in the GROUP BY list: rapidsse.public.nation.n_nationkey'
+
+-- ORDER BY clause with aggregate not in select list
+EXPLAIN SELECT n_name FROM nation GROUP BY n_name ORDER BY sum(n_nationkey);
+rows: 1
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Literals in the select list
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

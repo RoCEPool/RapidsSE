@@ -112,7 +112,7 @@ void Object::vRunPostRecv(void)
 {
   eCN eClassNo = eGetClassNo();
   
-//  if (eClassNo != CN_JOB && eClassNo != CN_XMITOPERAND)
+//  if (eClassNo != CN_JOB && eClassNo != CN_PARCEL)
 //    vDebugPoint();
   
   fpPOSTFN* fpPostRecvFn = gxaSizeHeap[eClassNo].m_fpPostRecvFn;

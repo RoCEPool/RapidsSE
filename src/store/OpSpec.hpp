@@ -24,7 +24,7 @@ namespace STORE
     StageSpec*    m_pStageSpec;    // which stage spec
 
     bool   m_bAppendRight; // append to right queue of next operator
-    eXK    m_eXmitKind;    // {normal, hashed, robin, local robin} if xmit op
+    eXK    m_eSendKind;    // {normal, hashed, robin, local robin} if send op
     
     TagSet m_oOpSpecTagSet;
     TagSet m_oTopologyTagSet;
@@ -51,8 +51,8 @@ namespace STORE
     void vReplaceTopologyEnamePair(Stz* szName, Stz* szValue, eTN eToken);
     void vReplaceTopologyEnamePair(Stz* sName, i8 iValue, eTN eToken);
     TagSet* pTopologyTagSet(void);
-    eXK  eXmitKind(void);
-    void vXmitKind(eXK eStageKind);
+    eXK  eSendKind(void);
+    void vSendKind(eXK eStageKind);
     StageSpec* pStageSpec(void);
 
     void vPrint(void);

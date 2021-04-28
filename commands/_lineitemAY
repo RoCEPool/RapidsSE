@@ -552,7 +552,7 @@ end
 
 //time dynamic predicateFetch orders orders_idx1 || predicateFetch lineitem LineItem_Idx1 | join | getKey O_CUSTKEY | sort | merge | superMerge 20 | limit 20 | output | zed;
 
-//time dynamic scan orders | xmit 0 | output;
+//time dynamic scan orders | send 0 | output;
 
 
 //time dynamic predicateFetch lineitem LineItem_Idx1 | filter L_PARTKEY 10 < | count | output;

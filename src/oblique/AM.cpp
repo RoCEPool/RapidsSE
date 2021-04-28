@@ -25,7 +25,7 @@
 #include "eNE.h"
 #include "eOC.h"
 #include "eOK.h"
-#include "eOP.h"
+
 #include "eOR.h"
 #include "ePF.h"
 #include "ePP.h"
@@ -91,7 +91,7 @@
 #include "Jobs.hpp"
 #include "Session.hpp"
 #include "Sessions.hpp"
-#include "XmitOperand.hpp"
+#include "Parcel.hpp"
 #include "Objects.hpp"
 #include "Output.hpp"
 
@@ -756,8 +756,8 @@ i8   AM::nThreadsBegun(void)  { return * gpAttachMap->m_pSchedule->m_ixThreads; 
 bool AM::bTracepoint(void)    { return gpAttachMap->m_xSysArgs.m_bTracepoint;        }
 TxSet* AM::pTxSet(void)       { return gpAttachMap->m_pTxSet;                 }
 
-void AM::vXmitNode(Op* pOp, i8 i_XmitNde) {
-  pOp->vXmitNode(i_XmitNde);
+void AM::vSendNode(Op* pOp, i8 i_SendNode) {
+  pOp->vSendNode(i_SendNode);
 }
 bool AM::bVerbose(void)       { return gpAttachMap->m_xSysArgs.m_bVerbose;           }
 bool AM::bVerboseProgress(void)  {
@@ -1294,7 +1294,7 @@ void AM::vWriteLog(void) {
 /*----------------------------------------------------------------------------*/
 /* get pSession given i_Session                                               */
 /*----------------------------------------------------------------------------*/
-void AM::vSend(Task* pTask, Node* pSendNode, XmitOperand* pXmitOperand)
+void AM::vSend(Task* pTask, Node* pSendNode, Parcel* pParcel)
 {
   pTask->pJob()->pLogicUnit_job()->m_xpSendNode = pSendNode;
   
@@ -1303,10 +1303,10 @@ void AM::vSend(Task* pTask, Node* pSendNode, XmitOperand* pXmitOperand)
   pSocket->vGrabWrite();
   
   SysCall oSysCall;
-  i8 nObjectSize = gxaSizeHeap[pXmitOperand->eGetClassNo()].m_nClassSize;
-  bool bResult = pSocket->bSendTo(pXmitOperand, nObjectSize, oSysCall);
+  i8 nObjectSize = gxaSizeHeap[pParcel->eGetClassNo()].m_nClassSize;
+  bool bResult = pSocket->bSendTo(pParcel, nObjectSize, oSysCall);
   
-  Operand* pOperand = pXmitOperand->m_pOperand;
+  Operand* pOperand = pParcel->pGetOperand();
   
   nObjectSize = gxaSizeHeap[pOperand->eGetClassNo()].m_nClassSize;
   bResult = pSocket->bSendTo(pOperand, nObjectSize, oSysCall);
@@ -1593,11 +1593,11 @@ i8 AM::iNextObjectNo(eCN eClassNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete the xmitOperand                                                     */
+/* delete the parcel                                                          */
 /*----------------------------------------------------------------------------*/
-void AM::vDeleteXmitOperand(XmitOperand* pXmitOperand)
+void AM::vDeleteParcel(Parcel* pParcel)
 {
-  delete pXmitOperand;
+  delete pParcel;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1622,23 +1622,23 @@ Operand* AM::pDuplicateOperand(Operand* pOperand)
 /*----------------------------------------------------------------------------*/
 /* new an operand job                                                         */
 /*----------------------------------------------------------------------------*/
-XmitOperand* AM::pNewXmitOperand(Job* pParentJob, Operand* pOperand,
+Parcel* AM::pNewParcel(Job* pParentJob, Operand* pOperand,
                                  ePX eCrossTopo, i8 iNextStage, i8 iNextOp,
                                  i8 i_Node, i8 tPtnNo)
 {
-  XmitOperand* pXmitOperand =
-    XmitOperand::pNewXmitOperand(pOperand,pParentJob->iJobId(),
+  Parcel* pParcel =
+    Parcel::pNewParcel(pOperand,pParentJob->iJobId(),
                                  eCrossTopo,iNextStage,iNextOp,i_Node,tPtnNo);
   
-  return pXmitOperand;
+  return pParcel;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set operand in operand job                                                 */
 /*----------------------------------------------------------------------------*/
-void AM::vSetOperand(XmitOperand* pXmitOperand, Operand* pOperand)
+void AM::vSetOperand(Parcel* pParcel, Operand* pOperand)
 {
-  pXmitOperand->m_pOperand = pOperand;
+  pParcel->vSetOperand(pOperand);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2352,7 +2352,6 @@ static Stz* aEG[]
   "EG_OI"_Stz,
   "EG_OK"_Stz,
   "EG_OM"_Stz,
-  "EG_OP"_Stz,
   "EG_OR"_Stz,
 
   "EG_PA"_Stz,
@@ -2484,7 +2483,6 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_OI: return aOI[i_Enum];
     case EG_OK: return aOK[i_Enum];
     case EG_OM: return aOM[i_Enum];
-    case EG_OP: return aOP[i_Enum];
     case EG_OR: return aOR[i_Enum];
 
     case EG_PA: return aPA[i_Enum];

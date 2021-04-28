@@ -1,40 +1,65 @@
-//
-// Created on 4/20/21.
-
+/*============================================================================*/
+/* Parcel.hpp -- Send Parcel                                                  */
+/*============================================================================*/
 #pragma once
 
-namespace STORE {
-
+namespace STORE
+{
   static const i8 C_MAX_PARCEL_OBJ = 16;
 
-  class Parcel : public Operand {
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  class Parcel : public Object
+  {
+    
+  public:
+    i8         m_iPipelineJobId;  // pipeline job id
+    i8         m_i_Node;          // node id
+    tPN        m_tPtnNo;          // partition (in grid)
+    ePX        m_eCrossTopo;      // cross topology
+    i8         m_iNextStage;      // next stage
+    i8         m_iNextOp;         // nextOp in the nextStage
+    
   private:
-
     i8 m_nObjects;                        // number of objects in the parcel
-    Object* m_pObjects[C_MAX_PARCEL_OBJ];  // let's for now, a fixed size array of C_MAX_PARCEL_OBJ
-
-    // I NEED TO PAD SOME BYTES OR ELSE the cache line will complain in debug mode
-
+    Object* m_pObjects[C_MAX_PARCEL_OBJ];  // let's for now, a fixed size array of
+  
     // must be last
     Footer m_xFooter;
-
+  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
-
+  
     Parcel(void);
-    Parcel(i8 nObs);
     ~Parcel(void) noexcept(false);
+    
+    static Parcel* pNewParcel(Operand* pOperand,
+                                        i8 iParentJobId,
+                                        ePX eCrossTopo,
+                                        i8 iNextStage,
+                                        i8 iNextOp,
+                                        i8 i_Node,
+                                        tPN tPtnNo);
+    
+  public:
+    void vShow(void);
+
 
     void vAddObject(Object *pObj);
     i8 nObjects(void) { return m_nObjects;};
     Object* pGetObject(i8 iIdx);
+    Operand* pGetOperand(void);
+    void vSetOperand(Operand *pOperand);
 
+  public:
     Footer* aFooter(void);
-
+  
   };
-
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  Parcel *_pParcel(void *aAddr);
+  Parcel* _pParcel(void* aAddr);
 }
 
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

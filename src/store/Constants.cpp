@@ -306,7 +306,7 @@ void Constants::vAddConstantsCpp(void)
   /*    */ vAddConstant("CN_JOB"_Stz,          CN_JOB);
   /*    */ vAddConstant("CN_ROWBUFFER"_Stz,    CN_ROWBUFFER);
   /*    */ vAddConstant("CN_STZVAL"_Stz,       CN_STZVAL);
-  /*    */ vAddConstant("CN_XMITOPERAND"_Stz,  CN_XMITOPERAND);
+  /*    */ vAddConstant("CN_PARCEL"_Stz,  CN_PARCEL);
 
   
   // CT_ : columne type
@@ -502,7 +502,6 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("EG_OI"_Stz,   EG_OI);
   vAddConstant("EG_OK"_Stz,   EG_OK);
   vAddConstant("EG_OM"_Stz,   EG_OM);
-  vAddConstant("EG_OP"_Stz,   EG_OP);
   vAddConstant("EG_OR"_Stz,   EG_OR);
   vAddConstant("EG_PA"_Stz,   EG_PA);
   vAddConstant("EG_PF"_Stz,   EG_PF);

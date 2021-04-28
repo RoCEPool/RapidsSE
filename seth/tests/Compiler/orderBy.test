@@ -213,30 +213,97 @@ SELECT n_nationkey, n_name FROM nation
 UNION ALL
 SELECT n_regionkey, n_name FROM nation
 ORDER BY n_nationkey;
-failure contains: 'No such column: n_nationkey'
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT n_nationkey, n_name FROM nation UNION ALL SELECT n_regionkey, n_name FROM nation ORDER BY n_nationkey"
+
+-> orderOp
+   » order expr: ((rapidsse.public.nation.n_nationkey) ASC)
+   » ordinal order expr: (($1) ASC)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT n_nationkey, n_name FROM nation UNION ALL SELECT n_regionkey, n_name FROM nation"
+
+-> -> -> unionOp
+         » isDistinct: (false)
+
+-> -> -> -> StatementMarker: select
+            » queryText: "SELECT n_nationkey, n_name FROM nation"
+
+-> -> -> -> -> projectOp
+               » column: (Expr = rapidsse.public.nation.n_nationkey)
+               » column: (Expr = rapidsse.public.nation.n_name)
+
+-> -> -> -> -> -> tableScanOp
+                  » table: (rapidsse.public.nation)
+
+-> -> -> -> StatementMarker: select
+            » queryText: "SELECT n_regionkey, n_name FROM nation"
+
+-> -> -> -> -> projectOp
+               » column: (Expr = rapidsse.public.nation.n_regionkey)
+               » column: (Expr = rapidsse.public.nation.n_name)
+
+-> -> -> -> -> -> tableScanOp
+                  » table: (rapidsse.public.nation)'
+)
+
 
 -- TODO: Enable when supported
--- EXPLAIN
--- SELECT n_nationkey + 1, n_name FROM nation
--- UNION ALL
--- SELECT n_regionkey, n_name FROM nation
--- ORDER BY n_nationkey;
--- failure contains: 'Ordering expression is not projected by the UnionOp'
---
--- EXPLAIN
--- SELECT n_nationkey + 1, n_name FROM nation
--- UNION ALL
--- SELECT n_regionkey, n_name FROM nation
--- ORDER BY n_nationkey + 1;
--- success
---
+EXPLAIN
+SELECT n_nationkey + 1, n_name FROM nation
+UNION ALL
+SELECT n_regionkey, n_name FROM nation
+ORDER BY n_nationkey;
+failure contains: 'Invalid expression because it is not being projected: rapidsse.public.nation.n_nationkey'
+
+EXPLAIN
+SELECT n_nationkey + 1, n_name FROM nation
+UNION ALL
+SELECT n_regionkey, n_name FROM nation
+ORDER BY n_nationkey + 1;
+success
+
 -- -- Ordering expression can be a superset of the unionOps first child
--- EXPLAIN
--- SELECT n_nationkey, n_name FROM nation
--- UNION ALL
--- SELECT n_regionkey, n_name FROM nation
--- ORDER BY n_nationkey * 2;
--- success
+EXPLAIN
+SELECT n_nationkey, n_name FROM nation
+UNION ALL
+SELECT n_regionkey, n_name FROM nation
+ORDER BY n_nationkey * 2;
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT n_nationkey, n_name FROM nation UNION ALL SELECT n_regionkey, n_name FROM nation ORDER BY n_nationkey * 2"
+
+-> orderOp
+   » order expr: ((rapidsse.public.nation.n_nationkey * 2) ASC)
+   » ordinal order expr: (($1 * 2) ASC)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT n_nationkey, n_name FROM nation UNION ALL SELECT n_regionkey, n_name FROM nation"
+
+-> -> -> unionOp
+         » isDistinct: (false)
+
+-> -> -> -> StatementMarker: select
+            » queryText: "SELECT n_nationkey, n_name FROM nation"
+
+-> -> -> -> -> projectOp
+               » column: (Expr = rapidsse.public.nation.n_nationkey)
+               » column: (Expr = rapidsse.public.nation.n_name)
+
+-> -> -> -> -> -> tableScanOp
+                  » table: (rapidsse.public.nation)
+
+-> -> -> -> StatementMarker: select
+            » queryText: "SELECT n_regionkey, n_name FROM nation"
+
+-> -> -> -> -> projectOp
+               » column: (Expr = rapidsse.public.nation.n_regionkey)
+               » column: (Expr = rapidsse.public.nation.n_name)
+
+-> -> -> -> -> -> tableScanOp
+                  » table: (rapidsse.public.nation)'
+)
 
 -- ORDER BY above a SetOp cannot resolve columnRefs unless they are aliases
 -- being projected by the SetOp.
@@ -246,18 +313,17 @@ SELECT n_nationkey as nkey, n_name FROM nation
 UNION ALL
 SELECT n_regionkey, n_name FROM nation
 ORDER BY n_regionkey;
-failure contains: 'No such column: n_regionkey'
+failure contains: 'Invalid expression because it is not being projected: rapidsse.public.nation.n_regionkey'
 
 
--- This shouldn't work because there is no alias for n_nationkey + 1
--- and the name n_nationkey cannot be resolved through a union as
--- a columnRef (only an alias).
+-- Order expr is a superset of projected expression but contains
+-- a columnRef that is not being projected.
 EXPLAIN
-SELECT n_nationkey + 1, n_name FROM nation
+SELECT n_nationkey, n_name FROM nation
 UNION ALL
 SELECT n_regionkey, n_name FROM nation
-ORDER BY n_nationkey + 1;
-failure contains: 'No such column: n_nationkey'
+ORDER BY n_nationkey + n_regionkey;
+failure contains: 'Invalid expression because it is not being projected: rapidsse.public.nation.n_regionkey'
 
 
 -- ORDER BY expressions can use aliases

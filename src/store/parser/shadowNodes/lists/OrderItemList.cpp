@@ -1,20 +1,20 @@
 /*============================================================================*/
-/* OrderExprList.hpp - a list of OrderExpr objects                            */
+/* OrderItemList.hpp - a list of OrderItem objects                            */
 /*============================================================================*/
 
 #include "BASE.h"
-#include "OrderExprList.hpp"
+#include "OrderItemList.hpp"
 
 #include "QueryNode.hpp"
-#include "OrderExpr.hpp"
+#include "OrderItem.hpp"
 
 using namespace Parser;
 
 /*----------------------------------------------------------------------------*/
 /*-- Constants ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-static Stz* C_ORDEREXPRLIST_DEFN = "/__root__/definitions/object/list/orderExprList"_Stz;
-static Stz* C_ORDEREXPRLIST_NAME = "OrderExprList"_Stz;
+static Stz* C_ORDERITEMLIST_DEFN = "/__root__/definitions/object/list/orderItemList"_Stz;
+static Stz* C_ORDERITEMLIST_NAME = "OrderItemList"_Stz;
 
 
 
@@ -26,33 +26,33 @@ static Stz* C_ORDEREXPRLIST_NAME = "OrderExprList"_Stz;
 /*----------------------------------------------------------------------------*/
 /* Helper function to create a list of catalogDef nodes.                       */
 /*----------------------------------------------------------------------------*/
-QueryNode* OrderExprList::pCreate()
+QueryNode* OrderItemList::pCreate()
 {
   _static_
 
-  // Create an empty OrderExprList object
-  QueryNode* pOrderExprList = new QueryNode(C_ORDEREXPRLIST_NAME, const_cast<Stz*>(C_ORDEREXPRLIST_DEFN));
+  // Create an empty OrderItemList object
+  QueryNode* pOrderItemList = new QueryNode(C_ORDERITEMLIST_NAME, const_cast<Stz*>(C_ORDERITEMLIST_DEFN));
 
-  return pOrderExprList;
+  return pOrderItemList;
 }
 
 /*----------------------------------------------------------------------------*/
 /* Appends a description of the order expression list into a buffer           */
 /*----------------------------------------------------------------------------*/
-void OrderExprList::vDescribe(PlanNode* pNode, s2K& sBuf)
+void OrderItemList::vDescribe(PlanNode* pNode, s2K& sBuf)
 {
   _static_
 
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pOrderExprList = _pQueryNode(pNode);
+  QueryNode* pOrderItemList = _pQueryNode(pNode);
 
-  PlanNodeIter* pIter = pOrderExprList->pNewChildrenIter();
+  PlanNodeIter* pIter = pOrderItemList->pNewChildrenIter();
   b1 bFirst = true;
 
   while (pIter->bHasNext()) {
     PlanNode* pChild = pIter->pNext();
-    ASSERT(OrderExpr::bIsOfType(pChild));
+    ASSERT(OrderItem::bIsOfType(pChild));
 
     if (bFirst) {
       bFirst = false;
@@ -60,42 +60,42 @@ void OrderExprList::vDescribe(PlanNode* pNode, s2K& sBuf)
       sBuf.vConcat(", "_Stz);
     }
 
-    OrderExpr::vDescribe(pChild, sBuf);
+    OrderItem::vDescribe(pChild, sBuf);
   }
 
   delete pIter;
 }
 
 /*----------------------------------------------------------------------------*/
-/* Returns true if the given node is derived from the OrderExprList definition*/
+/* Returns true if the given node is derived from the OrderItemList definition*/
 /*----------------------------------------------------------------------------*/
-b1 OrderExprList::bIsOfType(PlanNode *pNode)
+b1 OrderItemList::bIsOfType(PlanNode *pNode)
 {
-  return ShadowNode::bIsOfType(pNode, C_ORDEREXPRLIST_DEFN);
+  return ShadowNode::bIsOfType(pNode, C_ORDERITEMLIST_DEFN);
 }
 
 /*----------------------------------------------------------------------------*/
 /* Returns true if the given node is precisely the same as its definition     */
 /*----------------------------------------------------------------------------*/
-b1 OrderExprList::bIsExactType(PlanNode *pNode)
+b1 OrderItemList::bIsExactType(PlanNode *pNode)
 {
-  return ShadowNode::bIsExactType(pNode, C_ORDEREXPRLIST_DEFN);
+  return ShadowNode::bIsExactType(pNode, C_ORDERITEMLIST_DEFN);
 }
 
 /*----------------------------------------------------------------------------*/
 /* get the number of expressions in this list                                 */
 /*----------------------------------------------------------------------------*/
-i8 OrderExprList::nExprs(QueryNode* pOrderExprList)
+i8 OrderItemList::nExprs(QueryNode* pOrderItemList)
 {
-  ASSERT(bIsOfType(pOrderExprList));
+  ASSERT(bIsOfType(pOrderItemList));
 
-  return pOrderExprList->nChildren();
+  return pOrderItemList->nChildren();
 }
 
 /*----------------------------------------------------------------------------*/
-/* An iterator of OrderExpr objects                                           */
+/* An iterator of OrderItem objects                                           */
 /*----------------------------------------------------------------------------*/
-PlanNodeIter* OrderExprList::pOrderExprIter(QueryNode* pNode)
+PlanNodeIter* OrderItemList::pOrderItemIter(QueryNode* pNode)
 {
   ASSERT(pNode);
   ASSERT(bIsOfType(pNode));

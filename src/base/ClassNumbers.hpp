@@ -240,6 +240,7 @@ enum eCN : u2 // Class Number
   /* */ CN_SEDEPUTY,
   /* */ CN_SEEME,
   /* */ CN_SENCOMPILER,
+  /* */ CN_SENDS,
   /* */ CN_SEPROMPT,
   /* */ CN_SESSION,
   /* */ CN_SESSIONS,
@@ -336,8 +337,6 @@ enum eCN : u2 // Class Number
   /* */ CN_WSPCONVERGENT_t,
 
   /* */ CN__X__,
-  /* */ CN_XMITOPERAND,
-  /* */ CN_XMITS,
   
   /* */ CN__Y__,
   
@@ -578,6 +577,7 @@ static Stz* aCN[]
   /* */ "SEDEPUTY"_Stz,             // CN_SEDEPUTY
   /* */ "SEEME"_Stz,                // CN_SEEME
   /* */ "SENCOMPILER"_Stz,          // CN_SENCOMPILER
+  /* */ "SENDS"_Stz,                // CN_SENDS
   /* */ "SEPROMPT"_Stz,             // CN_SEPROMPT
   /* */ "SESSION"_Stz,              // CN_SESSION
   /* */ "SESSIONARRAY"_Stz,         // CN_SESSIONS
@@ -674,8 +674,6 @@ static Stz* aCN[]
   /* */ "WSPCONVERGENT_t"_Stz,      // CN_WSPCONVERGENT_t
  
   /* */ "_X__"_Stz,                 // CN__X__
-  /* */ "XmitOperand"_Stz,          // CN_XMITOPERAND
-  /* */ "Xmits"_Stz,                // CN_XMITS
    
   /* */ "_Y__"_Stz,                 // CN__Y__
    

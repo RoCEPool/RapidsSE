@@ -16,7 +16,7 @@
 #include "FilterOp.hpp"
 #include "SetOp.hpp"
 #include "OrderOp.hpp"
-#include "OrderExpr.hpp"
+#include "OrderItem.hpp"
 #include "Expr.hpp"
 #include "ProjectedColumns.hpp"
 
@@ -192,14 +192,14 @@ void PostProject::vAddPostProject(void* pvContainer, QueryNode* pStatementMarker
 
   if (!bPostProjectRequired && pContainer->m_pOrderOp) {
     // Iterate the ordering expressions
-    QueryNode* pOrderExprList = OrderOp::pOrderExprList(pContainer->m_pOrderOp);
-    PlanNodeIter* pIter = pOrderExprList->pNewChildrenIter();
+    QueryNode* pOrderItemList = OrderOp::pOrderItemList(pContainer->m_pOrderOp);
+    PlanNodeIter* pIter = pOrderItemList->pNewChildrenIter();
 
     while (pIter->bHasNext()) {
-      QueryNode* pOrderExpr = _pQueryNode(pIter->pNext());
-      ASSERT(OrderExpr::bIsOfType(pOrderExpr));
+      QueryNode* pOrderItem = _pQueryNode(pIter->pNext());
+      ASSERT(OrderItem::bIsOfType(pOrderItem));
 
-      QueryNode* pExpr = OrderExpr::pExprNode(pOrderExpr);
+      QueryNode* pExpr = OrderItem::pExprNode(pOrderItem);
       ASSERT(Expr::bIsOfType(pExpr));
 
       if (!ProjectedColumns::bHasExprEqualOrSuperset(pProjectedColumns, pExpr, false)) {

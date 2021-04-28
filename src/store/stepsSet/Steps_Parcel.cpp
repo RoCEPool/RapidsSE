@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_JobXmit.cpp - job xmit                                               */
+/* Steps_Parcel.cpp -- parcel steps                                           */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -10,7 +10,7 @@
 
 #include "ePX.h"
 
-#include "XmitOperand.hpp"
+#include "Parcel.hpp"
 
 #include "Op.hpp"
 #include "Stage.hpp"
@@ -21,60 +21,59 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_XmitOperand(void)
+void Step::vAddSteps_Parcel(void)
 {
-  vAddStep("XmitOperand.operand!"_Stz,   &Step::vXmitOperandOperandStore);
-  vAddStep("XmitOperand.pipeOut"_Stz,    &Step::vXmitOperandPipeOut);
+  vAddStep("parcel.operand!"_Stz,   &Step::vParcelOperandStore);
+  vAddStep("parcel.pipeOut"_Stz,    &Step::vParcelPipeOut);
 }
 
 /*----------------------------------------------------------------------------*/
-/* XmitOperand.operand! -- store operand in the xmitOperand                   */
+/* Parcel.operand! -- store operand in the sendOperand                   */
 /*----------------------------------------------------------------------------*/
-void Step::vXmitOperandOperandStore(void)
+void Step::vParcelOperandStore(void)
 {
   ENTRY();
   
-  XmitOperand* pXmitOperand = _pXmitOperand(m_pDataStack->pPopPtr(__func__));
+  Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
   
-  pXmitOperand->m_pOperand = pOperand;
+  pParcel->vSetOperand(pOperand);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* XmitOperand.pipeOut -- pipe out the operand                                */
+/* Parcel.pipeOut -- pipe out the operand                                */
 /*----------------------------------------------------------------------------*/
-void Step::vXmitOperandPipeOut(void)
+void Step::vParcelPipeOut(void)
 {
   ENTRY();
   
-  XmitOperand* pXmitOperand = _pXmitOperand(m_pDataStack->pPopPtr(__func__));
+  Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
   
   // find the pipeline participant job
-  i8 iPipelineJob = pXmitOperand->m_iPipelineJobId;
+  i8 iPipelineJob = pParcel->m_iPipelineJobId;
   Job* pPipelineJob = AM::pJob_FindParticipating(iPipelineJob);
 
-  // get the next stage the xmit is supposed to xmit to
-  Stage* pStage = pPipelineJob->m_pPipeline->pGet(pXmitOperand->m_iNextStage);
+  // get the next stage the send is supposed to send to
+  Stage* pStage = pPipelineJob->m_pPipeline->pGet(pParcel->m_iNextStage);
   
   // get the op to forward to depending on the cross topology
-  Op* pOp = pStage->pPipeOutOp(pXmitOperand->m_eCrossTopo,
-                               pXmitOperand->m_i_Node,
-                               pXmitOperand->m_tPtnNo,
-                               pXmitOperand->m_iNextOp);
+  Op* pOp = pStage->pPipeOutOp(pParcel->m_eCrossTopo,
+                               pParcel->m_i_Node,
+                               pParcel->m_tPtnNo,
+                               pParcel->m_iNextOp);
   
-  //! ALKA come back to this. May need a m_bAppendLeft in pXmitOperand
-  //vTrace("Step::vXmitOperandPipeOut pXmitOperand->m_i_Node:%lld   pXmitOperand->m_tPtnNo:%lld\n"_Stz, pXmitOperand->m_i_Node, pXmitOperand->m_tPtnNo);
+  //! ALKA come back to this. May need a m_bAppendLeft in pParcel
   // append to left queue
-  if (pXmitOperand->m_pOperand)
+  if (pParcel->pGetOperand())
     pOp->vAppendLeft(pOperand,this);
   
-  // now delete the pXmitOperand
-  delete pXmitOperand;
+  // now delete the pParcel
+  delete pParcel;
   
   EXIT();
 }

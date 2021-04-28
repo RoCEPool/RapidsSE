@@ -140,7 +140,7 @@ namespace STORE
     static void vAddSteps_Pipein(void);
     static void vAddSteps_RegTask(void);
     static void vAddSteps_RegTimer(void);
-    static void vAddSteps_RegXmits(void);
+    static void vAddSteps_RegSends(void);
     static void vAddSteps_Row(void);
     static void vAddSteps_RowOnce(void);
     static void vAddSteps_RowBuffer(void);
@@ -192,7 +192,7 @@ namespace STORE
     static void vAddSteps_Word(void);
     static void vAddSteps_WriteBehind(void);
 
-    static void vAddSteps_XmitOperand(void);
+    static void vAddSteps_Parcel(void);
     
     static void vAddSteps_Zero(void);
   

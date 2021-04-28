@@ -1,14 +1,14 @@
 /*============================================================================*/
-/* Xmits.hpp -- consume xmit counters                                  */
+/* Sends.hpp -- consume send counters                                         */
 /*============================================================================*/
 #pragma once
 
 namespace STORE
 {
-  class Xmits : public Object
+  class Sends : public Object
   {
   private:
-    i8             m_iXmits;   // consume xmits
+    i8             m_iSends;   // consume Sends
     
     i8             m_iCancelMarkers;  // cancel markers received by consumeOp
     i8             m_iDestroyMarkers; // destroy markers received by consumeOp
@@ -26,8 +26,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Xmits(i8 iXmits);
-    ~Xmits(void) noexcept(false);
+    Sends(i8 iSends);
+    ~Sends(void) noexcept(false);
     
     bool bCancelDone(void);
     bool bDataPulseDone(void);
@@ -55,7 +55,7 @@ namespace STORE
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Xmits* _pXmits(void* aAddr);
+  Sends* _pSends(void* aAddr);
 }
 
 /*============================================================================*/

@@ -991,7 +991,7 @@ public:
   void vOpSendTo(void);
   void vOpStageNameFetch(void);
   void vOpTopologyStore(void);
-  void vOpXmitKindStore(void);
+  void vOpSendKindStore(void);
 
   // operand[]
   void vOperandAsSrcCrwBuffer(void);
@@ -1210,19 +1210,19 @@ public:
   void vRegAggTimerSet(void);
 
   // Consume
-  void vRegXmitsDelete(void);
-  void vRegXmitsGet(void);
-  void vRegXmitsHandleCancel(void);
-  void vRegXmitsHandleDestroy(void);
-  void vRegXmitsHandleEos(void);
-  void vRegXmitsHandleError(void);
-  void vRegXmitsHandleExit(void);
-  void vRegXmitsHandleDataPulse(void);
-  void vRegXmitsHandlePulsed(void);
-  void vRegXmitsHandleStart(void);
-  void vRegXmitsHandleStreamDef(void);
-  void vRegXmitsIsNull(void);
-  void vRegXmitsNew(void);
+  void vRegSendsDelete(void);
+  void vRegSendsGet(void);
+  void vRegSendsHandleCancel(void);
+  void vRegSendsHandleDestroy(void);
+  void vRegSendsHandleEos(void);
+  void vRegSendsHandleError(void);
+  void vRegSendsHandleExit(void);
+  void vRegSendsHandleDataPulse(void);
+  void vRegSendsHandlePulsed(void);
+  void vRegSendsHandleStart(void);
+  void vRegSendsHandleStreamDef(void);
+  void vRegSendsIsNull(void);
+  void vRegSendsNew(void);
 
   // reg counter
   void vRegCounter0Get(void);
@@ -1929,9 +1929,9 @@ public:
   // write behind
   void vWriteBehindFlush(void);
 
-  // XmitOperand
-  void vXmitOperandOperandStore(void);
-  void vXmitOperandPipeOut(void);
+  // Parcel
+  void vParcelOperandStore(void);
+  void vParcelPipeOut(void);
 
   // zero
   void vZeroLess(void);

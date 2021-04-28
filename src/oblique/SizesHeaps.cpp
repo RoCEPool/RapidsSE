@@ -21,7 +21,6 @@
 #include "eNE.h"
 #include "eOC.h"
 #include "eOK.h"
-#include "eOP.h"
 #include "eOR.h"
 #include "ePF.h"
 #include "ePP.h"
@@ -125,7 +124,6 @@
 #include "Output.hpp"
 #include "Op.hpp"
 #include "OpSpec.hpp"
-#include "Parcel.hpp"
 
 #include "PathIdentifier.hpp"
 #include "PipelineSpec.hpp"
@@ -169,8 +167,8 @@
 
 #include "WriteBehind.hpp"
 
-#include "XmitOperand.hpp"
-#include "Xmits.hpp"
+#include "Parcel.hpp"
+#include "Sends.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -352,7 +350,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(OtherOperand),       HT_T_TINY    ,0 }, // CN_OTHEROPERAND
 
   { 'P' - ('A' - 1),              HT_INVALID   ,0 }, // CN__P__
-  { sizeof(Parcel),               HT_T_MEDIUM  ,0 }, // CN_PARCEL
+  { sizeof(Parcel),               HT_T_TINY    ,0 }, // CN_PARCEL
   { sizeof(PathIdentifier),       HT_T_MEDIUM  ,0 }, // CN_PATHIDENTIFIER
   { sizeof(PathVec),              HT_T_MEDIUM  ,0 }, // CN_PATHVEC
   { sizeof(Peruse),               HT_T_MEDIUM  ,0 }, // CN_PERUSE
@@ -419,6 +417,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(SeDeputy),           HT_T_TINY    ,0 }, // CN_SEDEPUTY
   { sizeof(SeeMe),              HT_INVALID   ,0 }, // CN_SEEME
   { sizeof(SenCompiler),        HT_T_TINY    ,0 }, // CN_SENCOMPILER
+  { sizeof(Sends),              HT_T_TINY    ,0 }, // CN_SENDS
   { sizeof(SePrompt),           HT_T_LARGE   ,0 }, // CN_SEPROMPT
   { sizeof(Session),            HT_T_LARGE   ,0 }, // CN_SESSION
   { sizeof(Sessions),           HT_T_TINY    ,0 }, // CN_SESSIONS
@@ -515,8 +514,6 @@ SizeHeap gxaSizeHeap[]
   { 0,                          HT_INVALID   ,0 }, // CN_WSPCONVERGENT_t
 
   { 'X' - ('A' - 1),            HT_INVALID   ,0 }, // CN__X__
-  { sizeof(XmitOperand),        HT_T_TINY    ,0 }, // CN_XMITIOPERAND
-  { sizeof(Xmits),              HT_T_TINY    ,0 }, // CN_XMITS
 
   { 'Y' - ('A' - 1),            HT_INVALID   ,0 }, // CN__Y__
 

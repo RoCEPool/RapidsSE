@@ -155,7 +155,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_RegPath();
   Step::vAddSteps_RegTask();
   Step::vAddSteps_RegTimer();
-  Step::vAddSteps_RegXmits();
+  Step::vAddSteps_RegSends();
   Step::vAddSteps_Row();
   Step::vAddSteps_RowOnce();
   Step::vAddSteps_RowBuffer();
@@ -208,7 +208,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Word();
   Step::vAddSteps_WriteBehind();
 
-  Step::vAddSteps_XmitOperand();
+  Step::vAddSteps_Parcel();
   
   Step::vAddSteps_Zero();
 }

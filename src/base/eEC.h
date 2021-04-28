@@ -75,6 +75,7 @@ enum eEC // error code
   EC_EXPR_IS_LIT_IN_GROUPBY_LIST,   // SQL Compiler Subsystem
   EC_EXPR_MUST_BE_BOOLEAN,          // SQL Compiler Subsystem
   EC_EXPR_NOT_IN_GROUPBY_LIST,      // SQL Compiler Subsystem
+  EC_EXPR_NOT_PROJECTED,            // SQL Compiler Subsystem
 
   /* _F_ */
   EC_FOLDER_IN_USE,
@@ -291,6 +292,7 @@ static Stz* aEC[]
   /* EC_EXPR_IS_LIT_IN_GROUPBY_LIST   */ "EC_EXPR_IS_LIT_IN_GROUPBY_LIST"_Stz,  // SQL Compiler Subsystem
   /* EC_EXPR_MUST_BE_BOOLEAN          */ "EC_EXPR_MUST_BE_BOOLEAN"_Stz,         // SQL Compiler Subsystem
   /* EC_EXPR_NOT_IN_GROUPBY_LIST      */ "EC_EXPR_NOT_IN_GROUPBY_LIST"_Stz,     // SQL Compiler Subsystem
+  /* EC_EXPR_NOT_PROJECTED            */ "EC_EXPR_NOT_PROJECTED"_Stz,           // SQL Compiler Subsystem
 
   /* _F_ */
   /* EC_FOLDER_IN_USE                 */ "folder in use"_Stz,
@@ -508,6 +510,7 @@ static Stz* aEC2[] // error code
   /* EC_EXPR_IS_LIT_IN_GROUPBY_LIST   */ "EC_EXPR_IS_LIT_IN_GROUPBY_LIST"_Stz,    // SQL Compiler Subsystem
   /* EC_EXPR_MUST_BE_BOOLEAN          */ "EC_EXPR_MUST_BE_BOOLEAN"_Stz,           // SQL Compiler Subsystem
   /* EC_EXPR_NOT_IN_GROUPBY_LIST      */ "EC_EXPR_NOT_IN_GROUPBY_LIST"_Stz,       // SQL Compiler Subsystem
+  /* EC_EXPR_NOT_PROJECTED            */ "EC_EXPR_NOT_PROJECTED"_Stz,             // SQL Compiler Subsystem
 
   /* _F_ */
   /* EC_FOLDER_IN_USE                 */ "EC_FOLDER_IN_USE"_Stz,
@@ -736,6 +739,7 @@ static Stz* aErrorMsg[]
   /* EC_EXPR_IS_LIT_IN_GROUPBY_LIST   */ "Cannot have a literal expression in the GROUP BY list"_Stz,    // SQL Compiler Subsystem
   /* EC_EXPR_MUST_BE_BOOLEAN          */ "Predicate expression must have a boolean result"_Stz,          // SQL Compiler Subsystem
   /* EC_EXPR_NOT_IN_GROUPBY_LIST      */ "Expression is not present in the GROUP BY list"_Stz,           // SQL Compiler Subsystem
+  /* EC_EXPR_NOT_PROJECTED            */ "Invalid expression because it is not being projected"_Stz,     // SQL Compiler Subsystem
 
   /* _F_ */
   /* EC_FOLDER_IN_USE                 */ "folder in use"_Stz,

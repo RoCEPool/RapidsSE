@@ -153,7 +153,7 @@ namespace STORE
     REG<ToPtnRow>       m_xpToPtnRow;
     REG<ToRow>          m_xpToRow;
     REG<Tx>             m_xpTx;
-    REG<Xmits>          m_xpXmits;     // consume xmits
+    REG<Sends>          m_xpSends;     // consume Sends
 
     bool                m_bCompilerToExit;
 
