@@ -62,7 +62,6 @@ XmitOperand::XmitOperand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_XMITOPERAND,_FOOTER_);
   
-  m_pOperand       = nullptr;
   m_iPipelineJobId = C_UNKNOWN;
   m_i_Node         = C_UNKNOWN;
   m_tPtnNo         = C_UNKNOWN;
@@ -106,7 +105,7 @@ XmitOperand* XmitOperand::pNewXmitOperand(Operand* pOperand,
   pXmitOperand->m_iPipelineJobId = iPipelineJobId;
   pXmitOperand->m_i_Node         = i_Node;
   pXmitOperand->m_tPtnNo         = tPtnNo;
-  pXmitOperand->m_pOperand       = pOperand;
+  pXmitOperand->vSetOperand(pOperand);
   
   pXmitOperand->m_eCrossTopo     = eCrossTopo;
   pXmitOperand->m_iNextStage     = iNextStage;
@@ -151,7 +150,7 @@ Operand* XmitOperand::pGetOperand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_XMITOPERAND,_FOOTER_);
 
-  return m_pOperand;
+  return (Operand*) m_pObjects[0];
 }
 
 /*----------------------------------------------------------------------------*/
@@ -161,7 +160,7 @@ void XmitOperand::vSetOperand(Operand *pOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_XMITOPERAND,_FOOTER_);
 
-  m_pOperand = pOperand;
+  m_pObjects[0] = pOperand;
 }
 
 

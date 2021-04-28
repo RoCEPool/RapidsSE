@@ -10,9 +10,6 @@ namespace STORE
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class XmitOperand : public Object
   {
-  private:
-  //public:
-    Operand*   m_pOperand;        // operand
     
   public:
     i8         m_iPipelineJobId;  // pipeline job id
@@ -22,6 +19,7 @@ namespace STORE
     i8         m_iNextStage;      // next stage
     i8         m_iNextOp;         // nextOp in the nextStage
     
+  private:
     i8 m_nObjects;                        // number of objects in the parcel
     Object* m_pObjects[C_MAX_XMIT_OBJ];  // let's for now, a fixed size array of
   
