@@ -86,7 +86,7 @@ namespace STORE
     bool bVerifyIndex(Index* pIndex);
 
 
-    i8   iPrepareParcelObjs(void);
+    i8   iPrepareParcel(void);
     Parcel oParcel(void) { return m_oParcel;}
     Parcel* pParcel(void) { return &m_oParcel;}
     i8   nParcelObjects(void) {return m_oParcel.nObjects();}

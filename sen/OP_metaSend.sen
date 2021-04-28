@@ -9,13 +9,22 @@
 /*----------------------------------------------------------------------------*/
 : metaSend_metaGet \handler
 
- "metaSend_metaGet handler, to print out the table name" .
+ "metaSend_metaGet handler" .
 
   Operand[].pipein  // pop the pMetaGet and put in the Operand register
   Operand[] MetaGet.getTableName
 
   // print table name from the stack
   .
+
+  // pass the table name to op__table to get the table[] register
+  // then call C++ pTable->iPrepareParcel() and push the pParcel to the stack
+  // op::pipeout pipe the pParcel out
+
+  Operand[] MetaGet.getTableName op__table
+  table[] Table.prepareParcel
+  op::pipeout
+  
   true
 ;
 

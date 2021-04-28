@@ -9,8 +9,11 @@
 /*----------------------------------------------------------------------------*/
 : metaGet_getTable  \handler
 
+  // pipe out ZK_STARTMARKER
+  PipeIn[].pipeOut
   "metaGet_getTable" .
-  
+  //stk displays what in the stack
+
   // create an instance of class MetaGet : public Operand
   // set the table name in MetaGet instance
   <tableNm> metaGet::getMetaData locals| pMetaGet |
@@ -20,8 +23,9 @@
   pMetaGet Op::pipeout
   //"pipeout pMetaGet".
 
-  // we return true here, but somewhere failed assert on false
   true
+  //stk
+  //task::breakpoint set breakpoint back into C++ code, where the task loop is
 ;
 
 /*----------------------------------------------------------------------------*/

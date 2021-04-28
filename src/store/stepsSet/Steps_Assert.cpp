@@ -41,11 +41,9 @@ void Step::vAssert(void)
   ENTRY();
   
   i8 iTrue = m_pDataStack->iPopAsInt(__func__);
-  if (iTrue == 0) {
-    vTrace("iPopAsInt returns false? WHY???\n"_Stz);
-  }
-  //RASSERT(iTrue);
-  
+
+  RASSERT(iTrue);
+
   EXIT();
 }
 

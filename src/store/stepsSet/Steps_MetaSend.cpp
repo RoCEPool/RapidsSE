@@ -39,12 +39,12 @@ void Step::vMetaSendGetParts(void)
   Table* pTable = new Table("BolTbl1"_Stz,TT_NORMAL);
 
   // call get parts code
-  pTable->iPrepareParcelObjs();
-  Parcel oParcel = pTable->oParcel();
+  pTable->iPrepareParcel();
+  Parcel* pParcel = pTable->pParcel();
 
   // put results
   // we should be able to put the whole parcel
-  m_pDataStack->vPushPtr(&oParcel);
+  m_pDataStack->vPushPtr(pParcel);
 
   // foreach part, push part
   /*

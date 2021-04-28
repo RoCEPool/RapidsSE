@@ -820,7 +820,8 @@ void Table::vCompactIndex(Index* pIndex)
 /* returns number of object parts includes the main                           */
 /* put each object part in a parcel                                           */
 /*----------------------------------------------------------------------------*/
-i8 Table::iPrepareParcelObjs(void) {
+i8 Table::iPrepareParcel(void)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLE, _FOOTER_);
 
   m_oParcel.vAddObject((Object *)this);

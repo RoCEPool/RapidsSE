@@ -1626,6 +1626,7 @@ public:
   void vTableListPartition(void);
   void vTableNameFetch(void);
   void vTableNew(void);
+  void vTablePrepareParcel(void);
   void vTableShardDefFetch(void);
   void vTableSet(void);
   void vTableSize(void);
