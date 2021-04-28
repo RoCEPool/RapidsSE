@@ -41,6 +41,11 @@ namespace STORE
                                         i8 i_Node,
                                         tPN tPtnNo);
     
+    static void vSendParcel(Operand* pOperand,
+                            Op*      pOp,
+                            Task*    pTriggeringTask,
+                            bool     bSet);
+
   public:
     void vShow(void);
 

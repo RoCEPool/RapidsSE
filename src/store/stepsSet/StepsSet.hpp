@@ -988,7 +988,6 @@ public:
   void vOpOutboundOperandFetch(void);
   void vOpOutboundOperandStore(void);
   void vOpQueueLength(void);
-  void vOpSendTo(void);
   void vOpStageNameFetch(void);
   void vOpTopologyStore(void);
   void vOpSendKindStore(void);
