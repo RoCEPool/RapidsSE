@@ -336,7 +336,6 @@ void Parcel::vSendToAllOriginPartitions(Operand* pOperand, Op* pOp,
                                         Task* pTriggeringTask, bool bSet,
                                         eXK eSendKind)
 {
-#if 0
   UNUSED(pTriggeringTask);
 
   tPN tPtnNo;
@@ -360,15 +359,18 @@ void Parcel::vSendToAllOriginPartitions(Operand* pOperand, Op* pOp,
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_ROBIN : {
-      m_iRobin++;
-      i_TablePtn = m_iRobin % AM::nPtnsPerTable();
+      i8 i_Robin = pOp->iRobin();
+      i_Robin++;
+      pOp->vRobin(i_Robin);
+      i_TablePtn = i_Robin % AM::nPtnsPerTable();
       tPtnNo = PtnMap::tStreamToLglPtnNo(i_TablePtn);
       
       // sendNode is the partition node
-      m_iSendNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
-      ASSERT(m_iSendNode == m_pPipeline->i_Origin());
-   
-      if ( m_iSendNode == m_pPipeline->i_Origin()) {
+      i8 i_SendNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
+      ASSERT(i_SendNode == pPipeline->i_Origin());
+      pOp->vSendNode(i_SendNode);
+
+      if ( i_SendNode == pPipeline->i_Origin()) {
         ASSERT( ! bSet );
         
 #ifdef WITH_NO_SEND_OPT
@@ -393,7 +395,7 @@ void Parcel::vSendToAllOriginPartitions(Operand* pOperand, Op* pOp,
           AM::vDeleteOperand(pOperand);
         }
 #else
-        vSend(pOperand, bSet, m_iSendNode, tPtnNo);
+        vSend(pOperand, pOp, bSet, i_SendNode, tPtnNo);
         AM::vDeleteOperand(pOperand);
 #endif
         
@@ -413,20 +415,21 @@ void Parcel::vSendToAllOriginPartitions(Operand* pOperand, Op* pOp,
         
         // sendNode is the partition node
     
-        m_iSendNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
-        if ( m_iSendNode == m_pPipeline->i_Origin()) {
+        i8 i_SendNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
+        pOp->vSendNode(i_SendNode);
+        if ( i_SendNode == pPipeline->i_Origin()) {
  #ifdef WITH_NO_SEND_OPT
           if ( (pOperand->bIsMarker()  || pOperand->bIsStreamDef() ) &&
-                m_iSendNode == i_ThisNode) {
+              i_SendNode == i_ThisNode) {
             
             // get the next stage the send is supposed to send to
-            Stage* pStage = m_pPipeline->pGet(m_iNextStage);
+            Stage* pStage = pPipeline->pGet(m_iNextStage);
             
             // get the op to forward to depending on the cross topology
             Op* pOp = pStage->pPipeOutOp(m_eCrossTopo,
-                                         m_iSendNode,
+                                         i_SendNode,
                                          i_Ptn,
-                                         m_iNextOp);
+                                         i_NextOp);
             
             // duplicate the marker / streamDef
             Operand* pNewOperand = AM::pDuplicateOperand(pOperand);
@@ -442,7 +445,7 @@ void Parcel::vSendToAllOriginPartitions(Operand* pOperand, Op* pOp,
             vSend(pOperand, bSet, m_iSendNode, i_Ptn);
           }
 #else
-          vSend(pOperand, bSet, m_iSendNode, tPtnNo);
+          vSend(pOperand, pOp, bSet, i_SendNode, tPtnNo);
 #endif
         }
         
@@ -454,8 +457,6 @@ void Parcel::vSendToAllOriginPartitions(Operand* pOperand, Op* pOp,
     default:
       ASSERT(0);
   }
-  
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
