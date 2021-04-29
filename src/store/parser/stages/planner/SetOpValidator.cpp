@@ -472,6 +472,8 @@ void SetOpValidator::vConvertCorrByToProjectOp(QueryNode* pSetOp, PlanNode* pRoo
       delete pProjColumnList1;
       delete pProjColumnList2;
 
+      pNewProjectedColumnList1->vDeleteAll();
+      pNewProjectedColumnList2->vDeleteAll();
       delete pNewProjectedColumnList1;
       delete pNewProjectedColumnList2;
 

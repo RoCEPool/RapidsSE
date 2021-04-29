@@ -96,6 +96,8 @@ namespace STORE
     bool bIsLocked(void);
     bool bIsOperandValid(i8 i_OperandKind);
     void vJobPipeline(Job* pJob);
+    i8   iLocalRobin(void);
+    void vLocalRobin(i8 iLocalRobin);
     i8   iNextOp(void);
     Op*  pNextOp(void);
     void vNextOp(i8 iNextOp);
@@ -134,7 +136,8 @@ namespace STORE
     OperandQueue* pQueueLeft(void);
     i8   nQueueLength(void);
     OperandQueue* pQueueRight(void);
-    void vSendParcel(Operand* pOperand, Task* pTriggeringTask, bool bSet);
+    i8   iRobin(void);
+    void vRobin(i8 iRobin);
     void vSpawnOperatorJob(i8 iSessionId);
     Stage* pStage(void);
     Stz* szStageName(void);
@@ -148,18 +151,9 @@ namespace STORE
     i8   iSendNode(void);
     void vSendNode(i8 iNde);
     
+  private:
     Footer* aFooter(void);
     
-  private:
-    void vSend(Operand* pOperand, bool bSet, i8 i_Node, tPN tPtnNo);
-    void vSend(Operand* pOperand, Parcel* pParcel, bool bSet);
-    void vSendToAllNodes(Operand* pOperand, Task* pTriggeringTask,bool bSet, eXK eSendKind);
-    void vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask,bool bSet, eXK eSendKind);
-    void vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask,bool bSet, eXK eSendKind);
-    void vSendToNode(Operand* pOperand, Task* pTriggeringTask,bool bSet, eXK eSendKind,i8 i_Node);
-    void vSendToOrigin(Operand* pOperand, Task* pTriggeringTask,bool bSet, eXK eSendKind);
-    void vSendToPartition(Operand* pOperand, Task* pTriggeringTask, bool bSet,
-                          eXK eSendKind, tPN tPtnNo);
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

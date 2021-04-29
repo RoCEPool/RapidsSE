@@ -757,6 +757,26 @@ void Op::vJobPipeline(Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get local robin                                                            */
+/*----------------------------------------------------------------------------*/
+i8 Op::iLocalRobin(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  return m_iLocalRobin;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set local robin                                                            */
+/*----------------------------------------------------------------------------*/
+void Op::vLocalRobin(i8 iLocalRobin)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  m_iLocalRobin = iLocalRobin;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get next op                                                                */
 /*----------------------------------------------------------------------------*/
 i8 Op::iNextOp(void)
@@ -1316,100 +1336,6 @@ OperandQueue* Op::pQueueRight(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set send operand                                                           */
-/*----------------------------------------------------------------------------*/
-void Op::vSendParcel(Operand* pOperand, Task* pTriggeringTask, bool bSet)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  // there shold be a next Stage
-  ASSERT (m_iNextStage != C_UNKNOWN);
-  
-  // there should be a next Op
-  ASSERT(m_iNextOp != C_UNKNOWN);
-  
-  // get the next stage
-  Stage* pNextStage = m_pPipeline->pGet(m_iNextStage);
-  RASSERT(pNextStage);
-  
-  // figure out the send kind
-  eXK eSendKind = m_eSendKind;
-  
-  // is the operand is a marker or a streamDef ?
-  if (pOperand->bIsMarker() || pOperand->bIsStreamDef())
-    eSendKind = XK_NORMAL;
-  
-  // is the operand an InfoSet ?
-  if (pOperand->bIsInfoSet() || pOperand->bIsProfile())
-    eSendKind = XK_ROBIN;
-  
-  switch(m_eCrossTopo) {
-      
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case PX_ALL_NODES_TO_ORIGIN:
-    case PX_ALL_PARTITIONS_TO_ORIGIN:
-    case PX_ORIGIN_TO_ORIGIN:
-    case PX_SPECIFIC_PARTITION_TO_ORIGIN: {
-      vSendToOrigin(pOperand, pTriggeringTask, bSet, eSendKind);
-      break;
-    }
-      
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case PX_ORIGIN_TO_ALL_PARTITIONS:
-    case PX_ALL_NODES_TO_ALL_PARTITIONS:
-    case PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS: {
-      vSendToAllPartitions(pOperand, pTriggeringTask, bSet, eSendKind);
-      break;
-    }
-    
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case PX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN: {
-      vSendToAllOriginPartitions(pOperand, pTriggeringTask, bSet, eSendKind);
-      break;
-    }
-     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case PX_ORIGIN_TO_SPECIFIC_PARTITION: {
-      Stream* pStream = pNextStage->pGetPartitionStream(m_tPtnNo);
-      tPN tPtnNo = pStream->tPtnNo();
-      vSendToPartition(pOperand, pTriggeringTask,bSet, eSendKind, tPtnNo);
-      break;
-    }
-      
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case PX_ALL_PARTITIONS_TO_ALL_NODES: {
-      i8 i_Node = AM::pPtnMap()->i_WhichNode(m_tPtnNo);
-      vSendToNode(pOperand, pTriggeringTask, bSet, eSendKind,i_Node);
-      break;
-    }
-      
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS: {
-      if (pOperand->bIsBuffer()) {
-        vSendToPartition(pOperand, pTriggeringTask, bSet, eSendKind, m_tPtnNo);
-      }
-      else {
-        vSendToAllPartitions(pOperand, pTriggeringTask, bSet, eSendKind);
-      }
-      break;
-    }
-     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case PX_ORIGIN_TO_ALL_NODES: {
-      vSendToAllNodes(pOperand, pTriggeringTask, bSet, eSendKind);
-      break;
-    }
-      
-    default:
-      RASSERT(0);
-  }
-    
-  // delete the operand
-  //AM::vDeleteOperand(pOperand);
-
-}
-
-/*----------------------------------------------------------------------------*/
 /* spawn a job for this operator                                              */
 /*----------------------------------------------------------------------------*/
 void Op::vSpawnOperatorJob(i8 iSessionId)
@@ -1560,6 +1486,26 @@ void Op::vWorkQuanta(i8 iWorkQuanta)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get robin                                                                  */
+/*----------------------------------------------------------------------------*/
+i8 Op::iRobin(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  return m_iRobin;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set robin                                                                  */
+/*----------------------------------------------------------------------------*/
+void Op::vRobin(i8 iRobin)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  m_iRobin = iRobin;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get send kind                                                              */
 /*----------------------------------------------------------------------------*/
 eXK Op::eSendKind(void)
@@ -1597,431 +1543,6 @@ void Op::vSendNode(i8 iSendNode)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   m_iSendNode = iSendNode;
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* send the operand                                                           */
-/*----------------------------------------------------------------------------*/
-void Op::vSend(Operand* pOperand, bool bSet, i8 i_Node, tPN tPtnNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  Parcel* pParcel;
-  
-  // new an send operand
-  pParcel = AM::pNewParcel(m_pPipelineJob, pOperand, m_eCrossTopo, m_iNextStage, m_iNextOp, i_Node, tPtnNo);
-
-  vSend(pOperand, pParcel, bSet);
-
-  if (m_iOtherStage != C_UNKNOWN) {
-
-    // new an send operand
-    pParcel = AM::pNewParcel(m_pPipelineJob, pOperand, m_eCrossTopo, m_iOtherStage, m_iOtherOp, i_Node, tPtnNo);
-
-    vSend(pOperand, pParcel, bSet);
-  }
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* send the operand                                                           */
-/*----------------------------------------------------------------------------*/
-void Op::vSend(Operand* pOperand, Parcel* pParcel, bool bSet)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-
-  // get the send node in the task
-  Node* pSendNode = AM::pGrid()->pGetNode(pParcel->m_i_Node);
-
-  if (bSet) {
-
-    while (pOperand) {
-
-      // set the operand in the job
-      AM::vSetOperand(pParcel, pOperand);
-
-      // send the operand job across the sendNode
-      AM::vSend(AM::pExecutingTask(m_pOpJob), pSendNode, pParcel);
-      DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
-      pOperand = pDataBuffer->pNextLinkedBuffer();
-    }
-  }
-  else {
-    // send the operand job across the sendNode
-    AM::vSend(AM::pExecutingTask(m_pOpJob), pSendNode, pParcel);
-  }
-
-  // delete the sendOperand
-  AM::vDeleteParcel(pParcel);
-}
-
-/*----------------------------------------------------------------------------*/
-/* send the operand                                                           */
-/*----------------------------------------------------------------------------*/
-void Op::vSendToAllNodes(Operand* pOperand, Task* pTriggeringTask, bool bSet, eXK eSendKind)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  UNUSED(pTriggeringTask);
-  UNUSED(eSendKind);
-
-  ASSERT(eSendKind == XK_NORMAL || eSendKind == XK_ROBIN);
-  
-  // get the next stage
-  Stage* pNextStage = m_pPipeline->pGet(m_iNextStage);
-  RASSERT(pNextStage);
-  
-  //ASSERT(pNextStage->nItems() == AM::pGrid()->nBootNodes());
-  
-  for (i8 i_Node = 0; i_Node < pNextStage->nItems(); i_Node++) {
-    vSend(pOperand, bSet, i_Node, C_UNKNOWN);
-  }
-  
-  // delete the operand
-  AM::vDeleteOperand(pOperand);
-}
-
-/*----------------------------------------------------------------------------*/
-/* send the operand                                                           */
-/*----------------------------------------------------------------------------*/
-void Op::vSendToAllOriginPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSet, eXK eSendKind)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  UNUSED(pTriggeringTask);
-
-  tPN tPtnNo;
-  i8 i_TablePtn;
-  
-  // get the next stage
-  Stage* pNextStage = m_pPipeline->pGet(m_iNextStage);
-  RASSERT(pNextStage);
-  
-#ifdef WITH_NO_SEND_OPT
-  // get the current node
-  i8 i_ThisNode = AM::pGrid()->iThisNode();
-#endif
-  
-  // check the SendKind
-  switch (eSendKind) {
-      
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case XK_ROBIN : {
-      m_iRobin++;
-      i_TablePtn = m_iRobin % AM::nPtnsPerTable();
-      tPtnNo = PtnMap::tStreamToLglPtnNo(i_TablePtn);
-      
-      // sendNode is the partition node
-      m_iSendNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
-      ASSERT(m_iSendNode == m_pPipeline->i_Origin());
-   
-      if ( m_iSendNode == m_pPipeline->i_Origin()) {
-        ASSERT( ! bSet );
-        
-#ifdef WITH_NO_SEND_OPT
-        if ( m_iSendNode == i_ThisNode) {
-
-          // get the next stage the send is supposed to send to
-          Stage* pStage = m_pPipeline->pGet(m_iNextStage);
-
-          // get the op to forward to depending on the cross topology
-          Op* pOp = pStage->pPipeOutOp(m_eCrossTopo,
-                                       m_iSendNode,
-                                       i_Ptn,
-                                       m_iNextOp);
-          if (m_bAppendRight)
-            pOp->vAppendRight(pOperand,pTriggeringTask,bSet);
-          else
-            pOp->vAppendLeft(pOperand,pTriggeringTask,bSet);
-
-        }
-        else {
-          vSend(pOperand, bSet, m_iSendNode, i_Ptn);
-          AM::vDeleteOperand(pOperand);
-        }
-#else
-        vSend(pOperand, bSet, m_iSendNode, tPtnNo);
-        AM::vDeleteOperand(pOperand);
-#endif
-        
-      }
-      
-      break;
-    }
-      
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case XK_NORMAL: {
-      
-      ASSERT(pNextStage->nItems() == AM::nPtnsPerTable());
-      for (i8 i_Stream = 0; i_Stream < pNextStage->nItems(); i_Stream++) {
-        
-        Stream* pStream = pNextStage->pGet(i_Stream);
-        tPtnNo = pStream->tPtnNo();
-        
-        // sendNode is the partition node
-    
-        m_iSendNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
-        if ( m_iSendNode == m_pPipeline->i_Origin()) {
- #ifdef WITH_NO_SEND_OPT
-          if ( (pOperand->bIsMarker()  || pOperand->bIsStreamDef() ) &&
-                m_iSendNode == i_ThisNode) {
-            
-            // get the next stage the send is supposed to send to
-            Stage* pStage = m_pPipeline->pGet(m_iNextStage);
-            
-            // get the op to forward to depending on the cross topology
-            Op* pOp = pStage->pPipeOutOp(m_eCrossTopo,
-                                         m_iSendNode,
-                                         i_Ptn,
-                                         m_iNextOp);
-            
-            // duplicate the marker / streamDef
-            Operand* pNewOperand = AM::pDuplicateOperand(pOperand);
-            
-            if (m_bAppendRight)
-              pOp->vAppendRight(pNewOperand,pTriggeringTask,bSet);
-            else
-              pOp->vAppendLeft(pNewOperand,pTriggeringTask,bSet);
-               
-          }
-     
-          else {
-            vSend(pOperand, bSet, m_iSendNode, i_Ptn);
-          }
-#else
-          vSend(pOperand, bSet, m_iSendNode, tPtnNo);
-#endif
-        }
-        
-      }
-      AM::vDeleteOperand(pOperand);
-    }
-    break;
-      
-    default:
-      ASSERT(0);
-  }
-  
-}
-
-/*----------------------------------------------------------------------------*/
-/* send the operand                                                           */
-/*----------------------------------------------------------------------------*/
-void Op::vSendToAllPartitions(Operand* pOperand, Task* pTriggeringTask, bool bSet, eXK eSendKind)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  UNUSED(pTriggeringTask);
-
-  tPN tPtnNo;
-  i8 i_TablePtn;
-  
-  // get the next stage
-  Stage* pNextStage = m_pPipeline->pGet(m_iNextStage);
-  RASSERT(pNextStage);
-  
-#ifdef WITH_NO_SEND_OPT
-  // get the current node
-  i8 i_ThisNode = AM::pGrid()->iThisNode();
-#endif
-  
-  switch (eSendKind) {
-      
-      //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case XK_HASHED : {
-      DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
-      tPtnNo = pDataBuffer->tPtnNo();
-      
-      // sendNode is the partition node
-      m_iSendNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
-      
-#ifdef WITH_NO_SEND_OPT
-      if ( m_iSendNode == i_ThisNode) {
-        
-        // get the next stage the send is supposed to send to
-        Stage* pStage = m_pPipeline->pGet(m_iNextStage);
-        
-        // get the op to forward to depending on the cross topology
-        Op* pOp = pStage->pPipeOutOp(m_eCrossTopo,
-                                     m_iSendNode,
-                                     tPtnNo,
-                                     m_iNextOp);
-        if (m_bAppendRight)
-          pOp->vAppendRight(pOperand,pTriggeringTask,bSet);
-        else
-          pOp->vAppendLeft(pOperand,pTriggeringTask,bSet);
-        
-      }
-      else {
-        vSend(pOperand, bSet, m_iSendNode, tPtnNo);
-        AM::vDeleteOperand(pOperand);
-      }
-#else
-      vSend(pOperand, bSet, m_iSendNode, tPtnNo);
-      AM::vDeleteOperand(pOperand);
-#endif
-      break;
-    }
-      
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case XK_LOCALROBIN : {
-      m_iLocalRobin++;
-      i_TablePtn = m_iLocalRobin % AM::nPtnsPerTable();
-      tPtnNo = PtnMap::tStreamToLglPtnNo(i_TablePtn);
-      
-      // sendNode is this node
-      m_iSendNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
-      RASSERT(m_iSendNode == AM::pGrid()->iThisNode());
-      
-      ASSERT( ! bSet );
-      vSend(pOperand, bSet, m_iSendNode, tPtnNo);
-      AM::vDeleteOperand(pOperand);
-      break;
-    }
-      
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case XK_NORMAL: {
-      
-      ASSERT(pNextStage->nItems() == AM::nPtnsInGrid());
-      for (tPtnNo = 0; tPtnNo < pNextStage->nItems(); tPtnNo++) {
-        
-        // sendNode is the partition node
-        m_iSendNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
-        ASSERT( ! bSet );
-#ifdef WITH_NO_SEND_OPT
-        if ( (pOperand->bIsMarker()  || pOperand->bIsStreamDef() ) &&
-            m_iSendNode == i_ThisNode) {
-          
-          // get the next stage the send is supposed to send to
-          Stage* pStage = m_pPipeline->pGet(m_iNextStage);
-          
-          // get the op to forward to depending on the cross topology
-          Op* pOp = pStage->pPipeOutOp(m_eCrossTopo,
-                                       m_iSendNode,
-                                       tPtnNo,
-                                       m_iNextOp);
-          
-          // duplicate the marker / streamDef
-          Operand* pNewOperand = AM::pDuplicateOperand(pOperand);
-          
-          if (m_bAppendRight)
-            pOp->vAppendRight(pNewOperand,pTriggeringTask,bSet);
-          else
-            pOp->vAppendLeft(pNewOperand,pTriggeringTask,bSet);
-         
-        }
-        else {
-          vSend(pOperand, bSet, m_iSendNode, tPtnNo);
-        }
-#else
-        vSend(pOperand, bSet, m_iSendNode, tPtnNo);
-#endif
-      }
-      AM::vDeleteOperand(pOperand);
-      break;
-    }
-      
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case XK_ROBIN : {
-      m_iRobin++;
-      tPtnNo = m_iRobin % AM::nPtnsInGrid();
-      
-      // sendNode is the partition node
-      m_iSendNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
-      
-      ASSERT( ! bSet );
-      vSend(pOperand, bSet, m_iSendNode, tPtnNo);
-      AM::vDeleteOperand(pOperand);
-      break;
-    }
-      
-    default:
-      ASSERT(0);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* send the operand to a specific node                                        */
-/*----------------------------------------------------------------------------*/
-void Op::vSendToNode(Operand* pOperand, Task* pTriggeringTask, bool bSet, eXK eSendKind,i8 i_Node)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  UNUSED(pTriggeringTask);
-  UNUSED(eSendKind);
-
-  ASSERT(eSendKind == XK_NORMAL || eSendKind == XK_ROBIN);
-  
-  // get the next stage
-  Stage* pNextStage = m_pPipeline->pGet(m_iNextStage);
-  RASSERT(pNextStage);
-  
-  ASSERT(pNextStage->nItems() == AM::pGrid()->nConnectedNodes());
-  
-  vSend(pOperand, bSet, i_Node, C_UNKNOWN);
-  
-  // delete the operand
-  AM::vDeleteOperand(pOperand);
-}
-
-/*----------------------------------------------------------------------------*/
-/* send the operand to the origin                                             */
-/*----------------------------------------------------------------------------*/
-void Op::vSendToOrigin(Operand* pOperand, Task* pTriggeringTask, bool bSet, eXK eSendKind)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  UNUSED(pTriggeringTask);
-  UNUSED(eSendKind);
-
-  ASSERT(eSendKind == XK_NORMAL || eSendKind == XK_ROBIN);
-  m_iSendNode = m_pPipeline->i_Origin();
-  vSend(pOperand, bSet, m_iSendNode, C_UNKNOWN);
-  
-  // delete the operand
-  AM::vDeleteOperand(pOperand);
-}
-
-/*----------------------------------------------------------------------------*/
-/* send the operand to a partition                                            */
-/*----------------------------------------------------------------------------*/
-void Op::vSendToPartition(Operand* pOperand, Task* pTriggeringTask, bool bSet,
-                          eXK eSendKind, tPN tPtnNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  UNUSED(pTriggeringTask);
-
-  tPN tSendPtn = C_UNKNOWN;
-  
-  ASSERT(eSendKind == XK_NORMAL ||
-         eSendKind == XK_ROBIN  ||
-         eSendKind == XK_HASHED);   // ray added XK_HASHED 26 jul 2020 re q301
-  
-  switch (eSendKind) {
-      
-    case XK_HASHED : {
-      DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
-      tSendPtn = pDataBuffer->tPtnNo();
-      break;
-    }
-      
-    case XK_NORMAL:
-      tSendPtn = tPtnNo;
-      break;
-      
-    case XK_ROBIN:
-      m_iRobin++;
-      tSendPtn = m_iRobin % AM::nPtnsInGrid();
-      break;
-      
-    default:
-      ASSERT(0);
-  }
-  
-  m_iSendNode = AM::pPtnMap()->i_WhichNode(tSendPtn);
-  vSend(pOperand, bSet, m_iSendNode, tSendPtn);
-  
-  // delete the operand
-  AM::vDeleteOperand(pOperand);
 }
 
 /*============================================================================*/
