@@ -1079,7 +1079,7 @@
   api::addProcedure
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get meta objet
+  // get meta object
   
   STD_PATH
   "
@@ -1099,10 +1099,32 @@
   end ;
   "
   api::addProcedure
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get meta object 2
+  
+  STD_PATH
+  "
+  procedure getMeta2
+    parameters $TableNm
+  begin
+
+    stage stageA on origin :
+      start | metaGet $TableNm | stageB hashed
+
+    stage stageB on all nodes :
+      metaSend | metaRecv | stageC
+
+    stage stageC on origin :
+      noop | stageA
+
+  end ;
+  "
+  api::addProcedure
 ;
 
 /*----------------------------------------------------------------------------*/
-/* staedy state related procedures                                            */
+/* steady state related procedures                                            */
 /*----------------------------------------------------------------------------*/
 
 "  start::defProc_SteadyState" .verbose
