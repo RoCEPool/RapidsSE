@@ -88,7 +88,7 @@ namespace STORE
     eEC eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);
 
     eEC eGenerateColumnCode(Stz* szAsmBuffer, StreamDef* pStreamDefOut, Column* pColumn, eAG eAggType);
-    eEC eGenerateColumnCodeGby(StreamDef* pStreamDefOut, Column* pColumn, eAG eAggType);
+    eEC eGenerateColumnCodeGby(StreamDef* pStreamDefOut, Column* pColumn, eAG eAggType, bool bGroupBy);
 
     eEC  eGenerateCount(Stz* szAsmBuffer, Stz* sAggInit);
     eEC  eGenerateCountAll(Stz* szAsmBuffer, Stz* sAggInit);

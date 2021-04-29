@@ -937,7 +937,8 @@ void vDev_ENTWRK_SETINTELM(i8** aaiDstk)
   EntWrk *pEntWrk = (EntWrk*)P_PopPtr();
   i8 iTop = I_PopInt();
 
-  //pLogicUnit->m_oEntWrk.vAppendElementInt(pDevRow->m_aRow,iTop);
+  //pEntWrk->vAppendElementInt(nullptr,iTop);
+
   pEntWrk->aEnt()->vKind(KE_INT);
   *(i8*)pEntWrk->aEnt()->aKey() = iTop;
 
@@ -959,6 +960,7 @@ void vDev_ENTWRK_SETSTZELM(i8** aaiDstk)
   S_PopStr(azSrc);
 
   pEntWrk->vAppendElementStz(nullptr,(Stz*)azSrc);
+  pEntWrk->aEnt()->vKind(KE_GENERAL);
 
   *aaiDstk = aiDstk;
 }

@@ -4760,7 +4760,6 @@ void Task::vAddMunged(Task* )
     "    else\n"
     "\n"
     "      TablePtn[].dropRead\n"
-    "\n"
     "      // position and fetch first buffer for next phrase\n"
     "      Counter1[] fetchFirstBuffer\n"
     "    then\n"
