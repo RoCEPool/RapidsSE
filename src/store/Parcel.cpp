@@ -356,12 +356,7 @@ void Parcel::vSendToAllOriginPartitions(Operand* pOperand, Op* pOp,
   // get the next stage
   Stage* pNextStage = pPipeline->pGet(i_NextStage);
   RASSERT(pNextStage);
-  
-#ifdef WITH_NO_SEND_OPT
-  // get the current node
-  i8 i_ThisNode = AM::pGrid()->iThisNode();
-#endif
-  
+    
   // check the SendKind
   switch (eSendKind) {
       
@@ -381,31 +376,8 @@ void Parcel::vSendToAllOriginPartitions(Operand* pOperand, Op* pOp,
       if ( i_SendNode == pPipeline->i_Origin()) {
         ASSERT( ! bSet );
         
-#ifdef WITH_NO_SEND_OPT
-        if ( m_iSendNode == i_ThisNode) {
-
-          // get the next stage the send is supposed to send to
-          Stage* pStage = m_pPipeline->pGet(m_iNextStage);
-
-          // get the op to forward to depending on the cross topology
-          Op* pOp = pStage->pPipeOutOp(m_eCrossTopo,
-                                       m_iSendNode,
-                                       i_Ptn,
-                                       m_iNextOp);
-          if (m_bAppendRight)
-            pOp->vAppendRight(pOperand,pTriggeringTask,bSet);
-          else
-            pOp->vAppendLeft(pOperand,pTriggeringTask,bSet);
-
-        }
-        else {
-          vSend(pOperand, bSet, m_iSendNode, i_Ptn);
-          AM::vDeleteOperand(pOperand);
-        }
-#else
         vSend(pOperand, pOp, bSet, i_SendNode, tPtnNo);
         AM::vDeleteOperand(pOperand);
-#endif
         
       }
       
@@ -426,35 +398,7 @@ void Parcel::vSendToAllOriginPartitions(Operand* pOperand, Op* pOp,
         i8 i_SendNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
         pOp->vSendNode(i_SendNode);
         if ( i_SendNode == pPipeline->i_Origin()) {
- #ifdef WITH_NO_SEND_OPT
-          if ( (pOperand->bIsMarker()  || pOperand->bIsStreamDef() ) &&
-              i_SendNode == i_ThisNode) {
-            
-            // get the next stage the send is supposed to send to
-            Stage* pStage = pPipeline->pGet(m_iNextStage);
-            
-            // get the op to forward to depending on the cross topology
-            Op* pOp = pStage->pPipeOutOp(m_eCrossTopo,
-                                         i_SendNode,
-                                         i_Ptn,
-                                         i_NextOp);
-            
-            // duplicate the marker / streamDef
-            Operand* pNewOperand = AM::pDuplicateOperand(pOperand);
-            
-            if (m_bAppendRight)
-              pOp->vAppendRight(pNewOperand,pTriggeringTask,bSet);
-            else
-              pOp->vAppendLeft(pNewOperand,pTriggeringTask,bSet);
-               
-          }
-     
-          else {
-            vSend(pOperand, bSet, m_iSendNode, i_Ptn);
-          }
-#else
           vSend(pOperand, pOp, bSet, i_SendNode, tPtnNo);
-#endif
         }
         
       }
@@ -485,12 +429,7 @@ void Parcel::vSendToAllPartitions(Operand* pOperand,  Op* pOp,
   // get the next stage
   Stage* pNextStage = pPipeline->pGet(i_NextStage);
   RASSERT(pNextStage);
-  
-#ifdef WITH_NO_SEND_OPT
-  // get the current node
-  i8 i_ThisNode = AM::pGrid()->iThisNode();
-#endif
-  
+    
   switch (eSendKind) {
       
       //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -502,31 +441,9 @@ void Parcel::vSendToAllPartitions(Operand* pOperand,  Op* pOp,
       i8 i_SendNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
       pOp->vSendNode(i_SendNode);
 
-#ifdef WITH_NO_SEND_OPT
-      if ( m_iSendNode == i_ThisNode) {
-        
-        // get the next stage the send is supposed to send to
-        Stage* pStage = m_pPipeline->pGet(m_iNextStage);
-        
-        // get the op to forward to depending on the cross topology
-        Op* pOp = pStage->pPipeOutOp(m_eCrossTopo,
-                                     m_iSendNode,
-                                     tPtnNo,
-                                     m_iNextOp);
-        if (m_bAppendRight)
-          pOp->vAppendRight(pOperand,pTriggeringTask,bSet);
-        else
-          pOp->vAppendLeft(pOperand,pTriggeringTask,bSet);
-        
-      }
-      else {
-        vSend(pOperand, bSet, m_iSendNode, tPtnNo);
-        AM::vDeleteOperand(pOperand);
-      }
-#else
       vSend(pOperand, pOp, bSet, i_SendNode, tPtnNo);
       AM::vDeleteOperand(pOperand);
-#endif
+
       break;
     }
       
@@ -560,34 +477,7 @@ void Parcel::vSendToAllPartitions(Operand* pOperand,  Op* pOp,
         i8 i_SendNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
         pOp->vSendNode(i_SendNode);
         ASSERT( ! bSet );
-#ifdef WITH_NO_SEND_OPT
-        if ( (pOperand->bIsMarker()  || pOperand->bIsStreamDef() ) &&
-            m_iSendNode == i_ThisNode) {
-          
-          // get the next stage the send is supposed to send to
-          Stage* pStage = m_pPipeline->pGet(m_iNextStage);
-          
-          // get the op to forward to depending on the cross topology
-          Op* pOp = pStage->pPipeOutOp(m_eCrossTopo,
-                                       m_iSendNode,
-                                       tPtnNo,
-                                       m_iNextOp);
-          
-          // duplicate the marker / streamDef
-          Operand* pNewOperand = AM::pDuplicateOperand(pOperand);
-          
-          if (m_bAppendRight)
-            pOp->vAppendRight(pNewOperand,pTriggeringTask,bSet);
-          else
-            pOp->vAppendLeft(pNewOperand,pTriggeringTask,bSet);
-         
-        }
-        else {
-          vSend(pOperand, bSet, m_iSendNode, tPtnNo);
-        }
-#else
         vSend(pOperand, pOp, bSet, i_SendNode, tPtnNo);
-#endif
       }
       AM::vDeleteOperand(pOperand);
       break;
