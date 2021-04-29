@@ -654,7 +654,8 @@ void Parcel::vSendToPartition(Operand* pOperand, Op* pOp,
                               Task* pTriggeringTask, bool bSet,
                               eXK eSendKind, tPN tPtnNo)
 {
-#if 0
+  i8 i_Robin;
+  
   UNUSED(pTriggeringTask);
 
   tPN tSendPtn = C_UNKNOWN;
@@ -676,21 +677,23 @@ void Parcel::vSendToPartition(Operand* pOperand, Op* pOp,
       break;
       
     case XK_ROBIN:
-      m_iRobin++;
-      tSendPtn = m_iRobin % AM::nPtnsInGrid();
+      i_Robin = pOp->iRobin();
+      i_Robin++;
+      pOp->vRobin(i_Robin);
+      tSendPtn = i_Robin % AM::nPtnsInGrid();
       break;
       
     default:
       ASSERT(0);
   }
   
-  m_iSendNode = AM::pPtnMap()->i_WhichNode(tSendPtn);
-  vSend(pOperand, bSet, m_iSendNode, tSendPtn);
+  i8 i_SendNode = AM::pPtnMap()->i_WhichNode(tSendPtn);
+  pOp->vSendNode(i_SendNode);
+
+  vSend(pOperand,pOp,bSet,i_SendNode,tSendPtn);
   
   // delete the operand
   AM::vDeleteOperand(pOperand);
-  
-#endif
 }
 
 /*============================================================================*/
