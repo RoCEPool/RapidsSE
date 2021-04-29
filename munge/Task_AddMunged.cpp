@@ -27858,6 +27858,8 @@ void Task::vAddMunged(Task* )
     "  // set the receive socket in the answered node\n"
     "  Socket[] pAnsweredNode node.recvSocket!\n"
     "\n"
+    "  nullptr to Socket[]\n"
+    "  \n"
     "  // node is active\n"
     "  NS_ACTIVE pAnsweredNode node.state!\n"
     "\n"

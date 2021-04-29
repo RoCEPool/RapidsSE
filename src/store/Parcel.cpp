@@ -92,9 +92,6 @@ void Parcel::vSendParcel(Operand* pOperand,
                          Task*    pTriggeringTask,
                          bool     bSet)
 {
-  //pOp->vSendParcel(pOperand,pTriggeringTask,bSet);
-  
-  
   Pipeline* pPipeline = pOp->pPipeline();
   i8 i_NextStage = pOp->iNextStage();
 
@@ -123,7 +120,6 @@ void Parcel::vSendParcel(Operand* pOperand,
     case PX_ALL_PARTITIONS_TO_ORIGIN:
     case PX_ORIGIN_TO_ORIGIN:
     case PX_SPECIFIC_PARTITION_TO_ORIGIN: {
-      //pOp->vSendToOrigin(pOperand,pTriggeringTask,bSet,eSendKind);
       vSendToOrigin(pOperand,pOp,pTriggeringTask,bSet,eSendKind);
       break;
     }
@@ -132,14 +128,12 @@ void Parcel::vSendParcel(Operand* pOperand,
     case PX_ORIGIN_TO_ALL_PARTITIONS:
     case PX_ALL_NODES_TO_ALL_PARTITIONS:
     case PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS: {
-      //pOp->vSendToAllPartitions(pOperand,pTriggeringTask,bSet,eSendKind);
       vSendToAllPartitions(pOperand,pOp,pTriggeringTask,bSet,eSendKind);
       break;
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN: {
-      //pOp->vSendToAllOriginPartitions(pOperand,pTriggeringTask,bSet,eSendKind);
       vSendToAllOriginPartitions(pOperand,pOp,pTriggeringTask,bSet,eSendKind);
       break;
     }
@@ -148,7 +142,6 @@ void Parcel::vSendParcel(Operand* pOperand,
     case PX_ORIGIN_TO_SPECIFIC_PARTITION: {
       Stream* pStream = pNextStage->pGetPartitionStream(tPtn);
       tPN tPtnNo = pStream->tPtnNo();
-      //pOp->vSendToPartition(pOperand,pTriggeringTask,bSet,eSendKind,tPtnNo);
       vSendToPartition(pOperand,pOp,pTriggeringTask,bSet,eSendKind,tPtnNo);
       break;
     }
@@ -156,7 +149,6 @@ void Parcel::vSendParcel(Operand* pOperand,
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ALL_PARTITIONS_TO_ALL_NODES: {
       i8 i_Node = AM::pPtnMap()->i_WhichNode(tPtn);
-      //pOp->vSendToNode(pOperand,pTriggeringTask,bSet,eSendKind,i_Node);
       vSendToNode(pOperand,pOp,pTriggeringTask,bSet,eSendKind,i_Node);
       break;
     }
@@ -164,11 +156,9 @@ void Parcel::vSendParcel(Operand* pOperand,
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS: {
       if (pOperand->bIsBuffer()) {
-        //pOp->vSendToPartition(pOperand,pTriggeringTask,bSet,eSendKind,tPtn);
         vSendToPartition(pOperand,pOp,pTriggeringTask,bSet,eSendKind,tPtn);
       }
       else {
-        //pOp->vSendToAllPartitions(pOperand,pTriggeringTask,bSet,eSendKind);
         vSendToAllPartitions(pOperand,pOp,pTriggeringTask,bSet,eSendKind);
       }
       break;
@@ -176,7 +166,6 @@ void Parcel::vSendParcel(Operand* pOperand,
      
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ORIGIN_TO_ALL_NODES: {
-      //pOp->vSendToAllNodes(pOperand,pTriggeringTask,bSet,eSendKind);
       vSendToAllNodes(pOperand,pOp,pTriggeringTask,bSet,eSendKind);
       break;
     }

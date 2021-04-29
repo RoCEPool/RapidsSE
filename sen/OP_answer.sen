@@ -74,6 +74,8 @@
   // set the receive socket in the answered node
   Socket[] pAnsweredNode node.recvSocket!
 
+  nullptr to Socket[]
+  
   // node is active
   NS_ACTIVE pAnsweredNode node.state!
 
