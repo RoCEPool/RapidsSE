@@ -14,6 +14,7 @@ create table nation (
 );
 success
 
+-- Cannot enable memory tracking as there are memory leaks in the execution engine
 -- trackmemory;
 -- success
 
@@ -39,7 +40,7 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 -- Aliases cannot be used in a WHERE clause
-SELECT n_nationkey AS nationkey, n_name AS name FROM nation WHERE name = 'KENYA';
+EXPLAIN SELECT n_nationkey AS nationkey, n_name AS name FROM nation WHERE name = 'KENYA';
 failure contains: 'No such column: name'
 
 
@@ -64,16 +65,16 @@ success
 -- rows:
 --   ['region', 'nationcount']
 
-EXPLAIN SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount
+ SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount
 FROM nation
 GROUP BY region
 HAVING region > 1;
-success
--- rows:
---   ['region', 'nationcount']
+-- success
+rows:
+  ['region', 'nationcount']
 
 -- ORDER BY clause
--- Commented out until ORDER BY is supported
+-- Commented out until ORDER BY is supported in the execution engine
 -- SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount
 -- FROM nation
 -- GROUP BY region
@@ -89,7 +90,7 @@ success
 --   ['region', 'nationcount']
 
 -- UNION clause
-EXPLAIN SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount FROM nation GROUP BY n_regionkey
+SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount FROM nation GROUP BY n_regionkey
 UNION ALL
 SELECT n_regionkey, COUNT(n_nationkey) FROM nation GROUP BY n_regionkey;
 success
@@ -103,12 +104,12 @@ SELECT n_regionkey, COUNT(n_nationkey) FROM nation GROUP BY n_regionkey
 ORDER BY region;
 success
 
-EXPLAIN SELECT n_regionkey, COUNT(n_nationkey) FROM nation GROUP BY n_regionkey
+SELECT n_regionkey, COUNT(n_nationkey) FROM nation GROUP BY n_regionkey
 UNION ALL
 SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount FROM nation GROUP BY n_regionkey;
-success
--- rows:
---     ['n_regionkey', *]
+-- success
+rows:
+    ['n_regionkey', *]
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -

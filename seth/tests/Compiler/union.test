@@ -31,7 +31,7 @@ success
 -- Mixed column names and types to partially match tbl1 and tbl4
 CREATE TABLE unionTbl6 (bRaVo BOOLEAN, col3 DATE, col1 INTEGER);
 
-
+-- memory leak testing not enabled due to memory leaks in the transliteration / back end
 -- trackmemory;
 -- success
 

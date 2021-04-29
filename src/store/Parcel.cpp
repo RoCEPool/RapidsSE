@@ -13,6 +13,7 @@
 #include "Stage.hpp"
 #include "Stream.hpp"
 #include "PtnMap.hpp"
+#include "Grid.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -230,6 +231,74 @@ void Parcel::vSetOperand(Operand *pOperand)
 
 
 
+/*----------------------------------------------------------------------------*/
+/* send the operand                                                           */
+/*----------------------------------------------------------------------------*/
+void Parcel::vSend(Operand* pOperand, Op* pOp, bool bSet, i8 i_Node, tPN tPtnNo)
+{
+  Job* pPipelineJob = pOp->pPipelineJob();
+  ePX eCrossTopo = pOp->eCrossTopo();      // cross topology
+  i8 i_NextStage = pOp->iNextStage();
+  i8 i_NextOp = pOp->iNextOp();
+  i8 i_OtherStage = pOp->iOtherStage();
+  i8 i_OtherOp = pOp->iOtherOp();
+
+  Parcel* pParcel = AM::pNewParcel(pPipelineJob,
+                                   pOperand, eCrossTopo, i_NextStage,
+                                   i_NextOp, i_Node, tPtnNo);
+
+  vSend(pOperand,pOp,pParcel,bSet);
+
+  if (i_OtherStage != C_UNKNOWN) {
+
+    // new an send operand
+    pParcel = AM::pNewParcel(pPipelineJob,pOperand,eCrossTopo,
+                             i_OtherStage,i_OtherOp,i_Node,tPtnNo);
+
+    vSend(pOperand,pOp,pParcel,bSet);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* send the operand                                                           */
+/*----------------------------------------------------------------------------*/
+void Parcel::vSend(Operand* pOperand, Op* pOp, Parcel* pParcel, bool bSet)
+{
+  // get the send node in the task
+  Node* pSendNode = AM::pGrid()->pGetNode(pParcel->m_i_Node);
+  
+  Job* pOpJob = pOp->pOpJob();
+
+  if (bSet) {
+
+    while (pOperand) {
+
+      // set the operand in the job
+      AM::vSetOperand(pParcel, pOperand);
+
+      // send the operand job across the sendNode
+      AM::vSend(AM::pExecutingTask(pOpJob), pSendNode, pParcel);
+      DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
+      pOperand = pDataBuffer->pNextLinkedBuffer();
+    }
+  }
+  else {
+    // send the operand job across the sendNode
+    AM::vSend(AM::pExecutingTask(pOpJob), pSendNode, pParcel);
+  }
+
+  // delete the sendOperand
+  AM::vDeleteParcel(pParcel);
+}
+
+
+
+
+
+
+
+
+
 
 /*----------------------------------------------------------------------------*/
 /* send the operand                                                           */
@@ -238,25 +307,26 @@ void Parcel::vSendToAllNodes(Operand* pOperand, Op* pOp,
                              Task* pTriggeringTask, bool bSet,
                              eXK eSendKind)
 {
-#if 0
   UNUSED(pTriggeringTask);
   UNUSED(eSendKind);
 
   ASSERT(eSendKind == XK_NORMAL || eSendKind == XK_ROBIN);
   
+  Pipeline* pPipeline = pOp->pPipeline();
+  i8 i_NextStage = pOp->iNextStage();
+
   // get the next stage
-  Stage* pNextStage = m_pPipeline->pGet(m_iNextStage);
+  Stage* pNextStage = pPipeline->pGet(i_NextStage);
   RASSERT(pNextStage);
   
   //ASSERT(pNextStage->nItems() == AM::pGrid()->nBootNodes());
   
   for (i8 i_Node = 0; i_Node < pNextStage->nItems(); i_Node++) {
-    vSend(pOperand, bSet, i_Node, C_UNKNOWN);
+    vSend(pOperand,pOp,bSet,i_Node,C_UNKNOWN);
   }
   
   // delete the operand
   AM::vDeleteOperand(pOperand);
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -272,8 +342,12 @@ void Parcel::vSendToAllOriginPartitions(Operand* pOperand, Op* pOp,
   tPN tPtnNo;
   i8 i_TablePtn;
   
+  Pipeline* pPipeline = pOp->pPipeline();
+  i8 i_NextStage = pOp->iNextStage();
+
+  
   // get the next stage
-  Stage* pNextStage = m_pPipeline->pGet(m_iNextStage);
+  Stage* pNextStage = pPipeline->pGet(i_NextStage);
   RASSERT(pNextStage);
   
 #ifdef WITH_NO_SEND_OPT
@@ -530,24 +604,24 @@ void Parcel::vSendToNode(Operand* pOperand,  Op* pOp,
                          Task* pTriggeringTask, bool bSet,
                          eXK eSendKind, i8 i_Node)
 {
-#if 0
   UNUSED(pTriggeringTask);
   UNUSED(eSendKind);
 
   ASSERT(eSendKind == XK_NORMAL || eSendKind == XK_ROBIN);
   
+  Pipeline* pPipeline = pOp->pPipeline();
+  i8 i_NextStage = pOp->iNextStage();
+  
   // get the next stage
-  Stage* pNextStage = m_pPipeline->pGet(m_iNextStage);
+  Stage* pNextStage = pPipeline->pGet(i_NextStage);
   RASSERT(pNextStage);
   
   ASSERT(pNextStage->nItems() == AM::pGrid()->nConnectedNodes());
   
-  vSend(pOperand, bSet, i_Node, C_UNKNOWN);
+  vSend(pOperand,pOp,bSet,i_Node,C_UNKNOWN);
   
   // delete the operand
   AM::vDeleteOperand(pOperand);
-  
-#endif
 }
 
 /*----------------------------------------------------------------------------*/

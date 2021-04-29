@@ -35,6 +35,11 @@
   params| sOperatorName |
 
   Operand[].isNull if
+    // We got an error, but were we going to do an explain?
+    StreamSet[].isNull not if
+      StreamSet[].delete
+    then
+
     InfoSet[].pipeOut
     Operand[].newErrorMarker
     Operand[].pipeOut
