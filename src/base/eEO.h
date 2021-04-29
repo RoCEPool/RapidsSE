@@ -438,6 +438,7 @@ enum eEO : u2 // expression operators
   /*    */ EO_ENTWRK_PRINT,     // print m_oEntWrk
   /*    */ EO_ENTWRK_RESET,     // reset m_oEntWrk
   /*    */ EO_ENTWRK_SETINTELM, // set int only element value
+  /*    */ EO_ENTWRK_SETSTZELM, // set stz only element value
 
   // ixt device index operators
   /*  S  */ EO_DEVIXT_IDX_DEL,      // delete current m_aEnt from indexTree
@@ -957,6 +958,7 @@ static Stz* aEO[]
   /*    */ "EO_ENTWRK_PRINT"_Stz,
   /*    */ "EO_ENTWRK_RESET"_Stz,
   /*    */ "EO_ENTWRK_SETINTELM"_Stz,
+  /*    */ "EO_ENTWRK_SETSTZELM"_Stz,
 
   // ixt device index operators
   /*    */ "EO_DEVIXT_IDX_DEL"_Stz,
@@ -1481,6 +1483,7 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_ENTWRK_PRINT
   { EA_NONE,    0 },  // EO_ENTWRK_RESET
   { EA_NONE,    0 },  // EO_ENTWRK_SETINTELM
+  { EA_NONE,    0 },  // EO_ENTWRK_SETSTZELM
 
   // ixt device index operators
   { EA_NONE,    0 },  // EO_DEVIXT_IDX_DEL

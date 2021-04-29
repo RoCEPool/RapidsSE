@@ -126,7 +126,7 @@ bool Backend::bTransliterate(String* sPipeline) {
   m_sPipeline = sPipeline;
 
 //#ifdef WITH_TRACE_Backend
-  vPrintPlanGraph(m_pPlanRoot);
+  //vPrintPlanGraph(m_pPlanRoot);
 //#endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -2707,7 +2707,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         P_PushPtr(aRluCommon->m_aWrkEnt);
         vDev_IXT_ENT_FIND(&aiDstk);       // devixt / entry
         break;//+endCase
-        
+
       case EO_DEVIXT_ENT_NEXT: ArgNil(); // move to next m_pEnt
         dLU0(EO_DEVIXT_ENT_NEXT);
         vDev_IXT_ENT_NEXT(&aiDstk);      // devixt
@@ -2808,6 +2808,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_ENTWRK_SETINTELM: ArgNil(); // append next element value (int)
         dLU0(EO_ENTWRK_SETINTELM);
         vDev_ENTWRK_SETINTELM(&aiDstk);   // int /entry
+        break;//+endCase
+
+      case EO_ENTWRK_SETSTZELM: ArgNil(); // append next element value (stz)
+        dLU0(EO_ENTWRK_SETSTZELM);
+        vDev_ENTWRK_SETSTZELM(&aiDstk);   // stz /entry
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

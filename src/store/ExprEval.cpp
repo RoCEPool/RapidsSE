@@ -348,9 +348,13 @@ eEC ExprEval::eAddPayLoadKey(Stz* szAsmBuffer, StreamDef* pStreamDefIn, i8 i_Col
       StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
       StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_SETINTELM\n"_Stz);
       StrLib::vSprintCat(szAsmBuffer, "  EO_RETURN\n"_Stz);
+      break;
+    case CT_VARCHAR:
+      StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_SETSTZELM\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_RETURN\n"_Stz);
 
       break;
-
     default:
       return EC_INVALID_COMMAND;
   }
@@ -1193,14 +1197,14 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
   // should have pStreamDefOut
   RASSERT(pStreamDefOut);
 
-  //szAsmBuffer = m_sPayLoadAggAsm;
+  szAsmBuffer = m_sPayLoadStoreAsm;
 
   // get the current token
   Token* pTkn = pTknVec->pCurrToken();
 
   while ( pTkn ) {
 
-    //vTrace("TKN: %s\n"_Stz, pTkn->azChars());
+    vTrace("TKN: %s\n"_Stz, pTkn->azChars());
 
     if (pTkn->bSame(","_Stz)) {
 
