@@ -472,8 +472,11 @@ void Parcel::vSendToAllPartitions(Operand* pOperand,  Op* pOp,
   tPN tPtnNo;
   i8 i_TablePtn;
   
+  Pipeline* pPipeline = pOp->pPipeline();
+  i8 i_NextStage = pOp->iNextStage();
+  
   // get the next stage
-  Stage* pNextStage = m_pPipeline->pGet(m_iNextStage);
+  Stage* pNextStage = pPipeline->pGet(i_NextStage);
   RASSERT(pNextStage);
   
 #ifdef WITH_NO_SEND_OPT
@@ -489,8 +492,9 @@ void Parcel::vSendToAllPartitions(Operand* pOperand,  Op* pOp,
       tPtnNo = pDataBuffer->tPtnNo();
       
       // sendNode is the partition node
-      m_iSendNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
-      
+      i8 i_SendNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
+      pOp->vSendNode(i_SendNode);
+
 #ifdef WITH_NO_SEND_OPT
       if ( m_iSendNode == i_ThisNode) {
         
@@ -513,7 +517,7 @@ void Parcel::vSendToAllPartitions(Operand* pOperand,  Op* pOp,
         AM::vDeleteOperand(pOperand);
       }
 #else
-      vSend(pOperand, bSet, m_iSendNode, tPtnNo);
+      vSend(pOperand, pOp, bSet, i_SendNode, tPtnNo);
       AM::vDeleteOperand(pOperand);
 #endif
       break;
@@ -594,7 +598,6 @@ void Parcel::vSendToAllPartitions(Operand* pOperand,  Op* pOp,
     default:
       ASSERT(0);
   }
-  
 #endif
 }
 

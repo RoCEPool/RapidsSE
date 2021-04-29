@@ -96,6 +96,8 @@ namespace STORE
     bool bIsLocked(void);
     bool bIsOperandValid(i8 i_OperandKind);
     void vJobPipeline(Job* pJob);
+    i8   iLocalRobin(void);
+    void vLocalRobin(i8 iLocalRobin);
     i8   iNextOp(void);
     Op*  pNextOp(void);
     void vNextOp(i8 iNextOp);
