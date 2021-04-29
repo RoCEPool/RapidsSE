@@ -466,7 +466,6 @@ void Parcel::vSendToAllPartitions(Operand* pOperand,  Op* pOp,
                                   Task* pTriggeringTask, bool bSet,
                                   eXK eSendKind)
 {
-#if 0
   UNUSED(pTriggeringTask);
 
   tPN tPtnNo;
@@ -525,16 +524,20 @@ void Parcel::vSendToAllPartitions(Operand* pOperand,  Op* pOp,
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_LOCALROBIN : {
-      m_iLocalRobin++;
-      i_TablePtn = m_iLocalRobin % AM::nPtnsPerTable();
+      i8 i_LocalRobin = pOp->iLocalRobin();
+      i_LocalRobin++;
+      pOp->vLocalRobin(i_LocalRobin);
+
+      i_TablePtn = i_LocalRobin % AM::nPtnsPerTable();
       tPtnNo = PtnMap::tStreamToLglPtnNo(i_TablePtn);
       
       // sendNode is this node
-      m_iSendNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
-      RASSERT(m_iSendNode == AM::pGrid()->iThisNode());
+      i8 i_SendNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
+      pOp->vSendNode(i_SendNode);
+      RASSERT(i_SendNode == AM::pGrid()->iThisNode());
       
       ASSERT( ! bSet );
-      vSend(pOperand, bSet, m_iSendNode, tPtnNo);
+      vSend(pOperand, pOp, bSet, i_SendNode, tPtnNo);
       AM::vDeleteOperand(pOperand);
       break;
     }
@@ -546,7 +549,8 @@ void Parcel::vSendToAllPartitions(Operand* pOperand,  Op* pOp,
       for (tPtnNo = 0; tPtnNo < pNextStage->nItems(); tPtnNo++) {
         
         // sendNode is the partition node
-        m_iSendNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
+        i8 i_SendNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
+        pOp->vSendNode(i_SendNode);
         ASSERT( ! bSet );
 #ifdef WITH_NO_SEND_OPT
         if ( (pOperand->bIsMarker()  || pOperand->bIsStreamDef() ) &&
@@ -574,7 +578,7 @@ void Parcel::vSendToAllPartitions(Operand* pOperand,  Op* pOp,
           vSend(pOperand, bSet, m_iSendNode, tPtnNo);
         }
 #else
-        vSend(pOperand, bSet, m_iSendNode, tPtnNo);
+        vSend(pOperand, pOp, bSet, i_SendNode, tPtnNo);
 #endif
       }
       AM::vDeleteOperand(pOperand);
@@ -583,14 +587,18 @@ void Parcel::vSendToAllPartitions(Operand* pOperand,  Op* pOp,
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_ROBIN : {
-      m_iRobin++;
-      tPtnNo = m_iRobin % AM::nPtnsInGrid();
+      i8 i_Robin = pOp->iRobin();
+      i_Robin++;
+      pOp->vRobin(i_Robin);
+      
+      tPtnNo = i_Robin % AM::nPtnsInGrid();
       
       // sendNode is the partition node
-      m_iSendNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
-      
+      i8 i_SendNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
+      pOp->vSendNode(i_SendNode);
+
       ASSERT( ! bSet );
-      vSend(pOperand, bSet, m_iSendNode, tPtnNo);
+      vSend(pOperand, pOp, bSet, i_SendNode, tPtnNo);
       AM::vDeleteOperand(pOperand);
       break;
     }
@@ -598,7 +606,6 @@ void Parcel::vSendToAllPartitions(Operand* pOperand,  Op* pOp,
     default:
       ASSERT(0);
   }
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
