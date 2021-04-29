@@ -134,6 +134,8 @@ namespace STORE
     OperandQueue* pQueueLeft(void);
     i8   nQueueLength(void);
     OperandQueue* pQueueRight(void);
+    i8   iRobin(void);
+    void vRobin(i8 iRobin);
     void vSendParcel(Operand* pOperand, Task* pTriggeringTask, bool bSet);
     void vSpawnOperatorJob(i8 iSessionId);
     Stage* pStage(void);

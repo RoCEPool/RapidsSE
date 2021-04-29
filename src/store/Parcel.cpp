@@ -631,18 +631,20 @@ void Parcel::vSendToOrigin(Operand* pOperand, Op* pOp,
                            Task* pTriggeringTask, bool bSet,
                            eXK eSendKind)
 {
-#if 0
   UNUSED(pTriggeringTask);
   UNUSED(eSendKind);
 
   ASSERT(eSendKind == XK_NORMAL || eSendKind == XK_ROBIN);
-  m_iSendNode = m_pPipeline->i_Origin();
-  vSend(pOperand, bSet, m_iSendNode, C_UNKNOWN);
+  
+  Pipeline* pPipeline = pOp->pPipeline();
+
+  i8 i_SendNode = pPipeline->i_Origin();
+  pOp->vSendNode(i_SendNode);
+  
+  vSend(pOperand, pOp, bSet, i_SendNode, C_UNKNOWN);
   
   // delete the operand
   AM::vDeleteOperand(pOperand);
-  
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
