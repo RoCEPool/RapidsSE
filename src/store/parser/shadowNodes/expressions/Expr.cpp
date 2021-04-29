@@ -305,7 +305,10 @@ QueryNode* Expr::pSymbolicToOrdinal(QueryNode*     pSymbolicExpr,
 
   while (pIter->bHasNext()) {
     QueryNode* pProjectedColumn = pIter->pNext();
+    ASSERT(ProjectedColumn::bIsOfType(pProjectedColumn));
+
     QueryNode* pColExpr = ProjectedColumn::pExprNode(pProjectedColumn);
+    ASSERT(Expr::bIsOfType(pColExpr));
 
 //    s2K sBuf1;
 //    s2K sBuf2;

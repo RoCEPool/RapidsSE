@@ -173,7 +173,6 @@ QueryNode* ProjectedColumn::pSymbolicToOrdinal(QueryNode*     pNode,
   // ordinals only, not column names).
   QueryNode* pOrdinalExpr = Expr::pSymbolicToOrdinal(pSymbolicExpr, pColExprList, pRootNode);
   ASSERT(pOrdinalExpr);
-  ASSERT(Expr::bIsOrdinal(pOrdinalExpr));
 
   // Get the alias name of this column and (if applicable) duplicate it
   Text* pAlias = nullptr;

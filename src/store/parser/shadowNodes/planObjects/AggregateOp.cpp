@@ -156,7 +156,7 @@ void AggregateOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 
   // no children then we probably haven't resolved any names yet (except for the case of
   // the plan only containing literals).
 
-  if (ShadowRoot::pMetadataNode(pRootNode)->nChildren() > 0) {
+  if (MetadataNode::bHasMetadata(ShadowRoot::pMetadataNode(pRootNode))) {
     pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pRootNode);
   }
 
@@ -185,6 +185,30 @@ void AggregateOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 
     delete pColExprList;
   }
 
+//  // DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG
+//  // For printing the AggregateOp's projected column list in ordinal notation
+//  // relative to the group by list (NOT the projected columns from the sql
+//  // operator below).
+//
+//  QueryNode* pGroupByRelativeProjectedColumns = pOrdinalProjectedColumnsRelativeToGroupBy(_pQueryNode(pNode), pRootNode);
+//  PlanNodeIter* pIter = pGroupByRelativeProjectedColumns->pNewChildrenIter();
+//
+//  while (pIter->bHasNext()) {
+//    QueryNode* pProjColumn = _pQueryNode(pIter->pNext());
+//    ASSERT(pProjColumn);
+//    ASSERT(ProjectedColumn::bIsOfType(pProjColumn));
+//
+//    // Get the description of the Projected expression
+//    s2K sColBuf;
+//    ProjectedColumn::vDescribe(pProjColumn, sColBuf, nullptr, pRootNode);
+//    sBuf.vConcat("\n"_Stz);
+//    vAppendIndent(sBuf, iIndent, IF_PLAIN);
+//    sBuf.vCatSprint("column-relative-to-group-by: (%s)"_Stz, sColBuf.szStz());
+//  }
+//
+//  delete pIter;
+//  delete pGroupByRelativeProjectedColumns;
+//  // DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG
 
   // Get the list of symbolic groupby expressions
   PlanNode* pGroupByExprs = GraphNav::pFindProperty(const_cast<Stz*>(C_GROUPBY_PROP), pNode);
@@ -213,7 +237,7 @@ void AggregateOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 
   // Get the list of *ordinal* groupby expressions.
   // Again this is skipped if the plan is very early in the compilation pipeline
   // and not all names have been qualified.
-  if (ShadowRoot::pMetadataNode(pRootNode)->nChildren() > 0) {
+  if (MetadataNode::bHasMetadata(ShadowRoot::pMetadataNode(pRootNode))) {
     PlanNode *pOrdinalGroupByExprs = pOrdinalGroupByList(_pQueryNode(pNode), pRootNode);
     ASSERT(pOrdinalGroupByExprs);
 
@@ -339,6 +363,62 @@ QueryNode* AggregateOp::pOrdinalGroupByList(QueryNode* pNode, PlanNode* pRootNod
   return pOrdinalExprs;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns a new copy of the projected expressions rewritten in ordinal       */
+/* orientation (where possible) where the ordinals are relative to group by   */
+/* list. Not all columns will be expressed relative to the group by list and  */
+/* so they will retain use of ColumnRefs.                                     */
+/* Must be freed after use.                                                   */
+/*----------------------------------------------------------------------------*/
+QueryNode* AggregateOp::pOrdinalProjectedColumnsRelativeToGroupBy(QueryNode* pNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+
+  // Make a QueryNodeList that contains ProjectedColumns of the expressions
+  // in the group by clause.
+  QueryNodeList* pColExprList = new QueryNodeList();
+
+  QueryNode* pGroupByNode = pGroupByList(pNode);
+  PlanNodeIter* pGroupByIter = pGroupByNode->pNewChildrenIter();
+
+  while (pGroupByIter->bHasNext()) {
+    QueryNode* pExpr = _pQueryNode(pGroupByIter->pNext());
+    ASSERT(Expr::bIsOfType(pExpr));
+
+    QueryNode* pGroupByProjectedColumn = ProjectedColumn::pCreate(pExpr->pDeepCopy(false), nullptr);
+    pColExprList->vAppend(pGroupByProjectedColumn);
+  }
+  delete pGroupByIter;
+
+  ASSERT(pColExprList);
+  ASSERT(pColExprList->nItems() > 0);
+
+  QueryNode* pProjectedColumns = ProjectOp::pProjectedColumns(pNode);
+
+  // Create a container node, but without any children
+  QueryNode* pOrdinalProjectedColumns = ProjectOp::pProjectedColumns(pNode)->pDeepCopy(true, new PlanNodeList());
+
+  // Iterate over each of the ProjectedColumn children of pNode
+  PlanNodeIter* pIter = pProjectedColumns->pNewChildrenIter();
+
+  while (pIter->bHasNext()) {
+    QueryNode* pProjectedColumn = _pQueryNode(pIter->pNext());
+    ASSERT(ProjectedColumn::bIsOfType(pProjectedColumn));
+
+    // Convert the ProjectedColumn from a symbolic representation to an ordinal representation
+    QueryNode* pOrdinalProjectedColumn = ProjectedColumn::pSymbolicToOrdinal(pProjectedColumn, pColExprList, pRootNode);
+    pOrdinalProjectedColumns->vAppendChild(pOrdinalProjectedColumn);
+  }
+
+  delete pIter;
+
+  pColExprList->vDeleteAll();
+  delete pColExprList;
+
+  return pOrdinalProjectedColumns;
+}
 
 /*----------------------------------------------------------------------------*/
 /* Merges a ProjectOp, pOtherOp, down into this AggregateOp                   */

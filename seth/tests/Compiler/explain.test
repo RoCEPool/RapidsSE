@@ -28,7 +28,7 @@ rows:
 » queryText: "SELECT n_nationkey FROM nation"
 
 -> projectOp
-   » column: (Expr = rapidsse.public.nation.n_nationkey)
+   » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
 
 -> -> tableScanOp
       » table: (rapidsse.public.nation)' )
@@ -49,7 +49,7 @@ rows:
 » queryText: "SELECT n_nationkey FROM nation"
 
 -> projectOp
-   » column: (Expr = rapidsse.public.nation.n_nationkey)
+   » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
 
 -> -> tableScanOp
       » table: (rapidsse.public.nation)' )
@@ -323,7 +323,7 @@ rows:
       » queryText: "SELECT n_nationkey FROM nation"
 
 -> -> -> projectOp
-         » column: (Expr = rapidsse.public.nation.n_nationkey)
+         » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)' )

@@ -96,7 +96,7 @@ SqlPlanner::SqlPlanner(void)
 : Object(CN_SQLPLANNER),
   m_pStatementStack(new QueryNodeStack()),
   m_pTableRefStack(new QueryNodeStack()),
-  m_pExprList(nullptr),
+  m_pExprStack(nullptr),
   m_pSelectItems(nullptr),
   m_pOrderItems(nullptr)
 {
@@ -133,13 +133,13 @@ SqlPlanner::~SqlPlanner(void) noexcept
     m_pTableRefStack = nullptr;
   }
 
-  if (m_pExprList) {
-    while (m_pExprList->nItems() > 0) {
-      QueryNode* pItem = m_pExprList->pPop();
+  if (m_pExprStack) {
+    while (m_pExprStack->nItems() > 0) {
+      QueryNode* pItem = m_pExprStack->pPop();
       delete pItem;
     }
-    delete m_pExprList;
-    m_pExprList = nullptr;
+    delete m_pExprStack;
+    m_pExprStack = nullptr;
   }
 
   if (m_pSelectItems) {
@@ -759,24 +759,24 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
 
 
     // Now gather the group by clause list
-      ASSERT(!m_pExprList);
-      m_pExprList = new QueryNodeList;
+      ASSERT(!m_pExprStack);
+      m_pExprStack = new QueryNodeList;
 
       // Visit the children of the GROUP BY clause
       pCtx->groupBy->accept(this);
-      ASSERT(m_pExprList->nItems() > 0);
+      ASSERT(m_pExprStack->nItems() > 0);
 
     // Create the aggregate operator
-      pAggregateOp = AggregateOp::pCreate(m_pSelectItems, m_pExprList);
+      pAggregateOp = AggregateOp::pCreate(m_pSelectItems, m_pExprStack);
 
     // Clean up
       ASSERT(m_pSelectItems->nItems() == 0);
       delete m_pSelectItems;
       m_pSelectItems = nullptr;
 
-      ASSERT(m_pExprList->nItems() == 0);
-      delete m_pExprList;
-      m_pExprList = nullptr;
+      ASSERT(m_pExprStack->nItems() == 0);
+      delete m_pExprStack;
+      m_pExprStack = nullptr;
   }
 
   // -----------------------
@@ -785,19 +785,19 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
   QueryNode* pHavingFilterOp = nullptr;
   if (pCtx->having) {
 
-    ASSERT(!m_pExprList);
-    m_pExprList = new QueryNodeList();
+    ASSERT(!m_pExprStack);
+    m_pExprStack = new QueryNodeList();
 
     // Visit the children of the HAVING clause
     pCtx->having->accept(this);
-    ASSERT(m_pExprList->nItems() == 1);
+    ASSERT(m_pExprStack->nItems() == 1);
 
-    QueryNode* pExpr = m_pExprList->pPop();
+    QueryNode* pExpr = m_pExprStack->pPop();
     pHavingFilterOp = FilterOp::pCreate(pExpr);
 
-    ASSERT(m_pExprList->nItems() == 0);
-    delete m_pExprList;
-    m_pExprList = nullptr;
+    ASSERT(m_pExprStack->nItems() == 0);
+    delete m_pExprStack;
+    m_pExprStack = nullptr;
 
     // Check that the having clause is valid.
     // The expressions in a having clause must either be the grouping column
@@ -819,19 +819,19 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
   // -----------------------
   QueryNode* pWhereFilterOp = nullptr;
   if (pCtx->where) {
-    ASSERT(!m_pExprList);
-    m_pExprList = new QueryNodeList;
+    ASSERT(!m_pExprStack);
+    m_pExprStack = new QueryNodeList;
 
     // Visit the children of the WHERE clause
     pCtx->where->accept(this);
-    ASSERT(m_pExprList->nItems() == 1);
+    ASSERT(m_pExprStack->nItems() == 1);
 
-    QueryNode* pExpr = m_pExprList->pPop();
+    QueryNode* pExpr = m_pExprStack->pPop();
     pWhereFilterOp = FilterOp::pCreate(pExpr);
 
-    ASSERT(m_pExprList->nItems() == 0);
-    delete m_pExprList;
-    m_pExprList = nullptr;
+    ASSERT(m_pExprStack->nItems() == 0);
+    delete m_pExprStack;
+    m_pExprStack = nullptr;
 
     // Check if this expression is an aggregate
     if (Expr::bContainsAnAggregate(pExpr)) {
@@ -934,14 +934,14 @@ antlrcpp::Any SqlPlanner::visitSelectList(sqlParser::SelectListContext *pCtx)
 {
   ASSERT(m_pSelectItems);
   
-  ASSERT(!m_pExprList);
-  m_pExprList = new QueryNodeList;
+  ASSERT(!m_pExprStack);
+  m_pExprStack = new QueryNodeList;
   
   visitChildren(pCtx);
   
-  ASSERT(m_pExprList->nItems() == 0);
-  delete m_pExprList;
-  m_pExprList = nullptr;
+  ASSERT(m_pExprStack->nItems() == 0);
+  delete m_pExprStack;
+  m_pExprStack = nullptr;
   
   ASSERT(m_pSelectItems->nItems() > 0);
   
@@ -956,9 +956,9 @@ antlrcpp::Any SqlPlanner::visitSelectListItem(sqlParser::SelectListItemContext* 
   visitChildren(pCtx);
   
   // pop the expr stack and add it to the select list.
-  ASSERT(m_pExprList->nItems() == 1);
+  ASSERT(m_pExprStack->nItems() == 1);
   
-  QueryNode* pExprNode = m_pExprList->pPop();
+  QueryNode* pExprNode = m_pExprStack->pPop();
 
   // Is there an alias?
   Text* pAliasText = pCleanId(pCtx->as);
@@ -975,7 +975,7 @@ antlrcpp::Any SqlPlanner::visitSelectListItem(sqlParser::SelectListItemContext* 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any SqlPlanner::visitColumnRef(sqlParser::ColumnRefContext* pCtx)
 {
-  ASSERT(m_pExprList);
+  ASSERT(m_pExprStack);
 
   visitChildren(pCtx);
   
@@ -987,7 +987,7 @@ antlrcpp::Any SqlPlanner::visitColumnRef(sqlParser::ColumnRefContext* pCtx)
   QueryNode* pColumnRef = ColumnRef::pCreate(pCatalogName, pSchemaName,
                                              pTableName, pColumnName);
 
-  m_pExprList->vPush(pColumnRef);
+  m_pExprStack->vPush(pColumnRef);
   
   return nullptr;
 }
@@ -997,7 +997,7 @@ antlrcpp::Any SqlPlanner::visitColumnRef(sqlParser::ColumnRefContext* pCtx)
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any SqlPlanner::visitColumnWildcard(sqlParser::ColumnWildcardContext* pCtx)
 {
-  ASSERT(m_pExprList);
+  ASSERT(m_pExprStack);
 
   visitChildren(pCtx);
 
@@ -1007,7 +1007,7 @@ antlrcpp::Any SqlPlanner::visitColumnWildcard(sqlParser::ColumnWildcardContext* 
 
   QueryNode* pColumnWildcard = ColumnWildcard::pCreate(pCatalogName, pSchemaName, pTableName);
 
-  m_pExprList->vPush(pColumnWildcard);
+  m_pExprStack->vPush(pColumnWildcard);
 
   return nullptr;
 }
@@ -1017,7 +1017,7 @@ antlrcpp::Any SqlPlanner::visitColumnWildcard(sqlParser::ColumnWildcardContext* 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any SqlPlanner::visitLiteral(sqlParser::LiteralContext* pCtx)
 {
-  ASSERT(m_pExprList);
+  ASSERT(m_pExprStack);
 
   visitChildren(pCtx);
 
@@ -1064,7 +1064,7 @@ antlrcpp::Any SqlPlanner::visitLiteral(sqlParser::LiteralContext* pCtx)
     NEVER_REACH
   }
 
-  m_pExprList->vPush(pLiteral);
+  m_pExprStack->vPush(pLiteral);
   return nullptr;
 }
 
@@ -1076,7 +1076,7 @@ antlrcpp::Any SqlPlanner::visitUnaryOp(sqlParser::UnaryOpContext *pCtx)
   visitChildren(pCtx);
 
   QueryNode* pOpExpr = nullptr;
-  QueryNode* pExpr1 = m_pExprList->pPop();
+  QueryNode* pExpr1 = m_pExprStack->pPop();
 
   // Get the string of the operator
   s256 sOp;
@@ -1096,7 +1096,7 @@ antlrcpp::Any SqlPlanner::visitUnaryOp(sqlParser::UnaryOpContext *pCtx)
   }
 
   // Put the operator back onto the expression stack
-  m_pExprList->vPush(pOpExpr);
+  m_pExprStack->vPush(pOpExpr);
 
   return nullptr;
 }
@@ -1109,8 +1109,8 @@ antlrcpp::Any SqlPlanner::visitBinaryOp(sqlParser::BinaryOpContext *pCtx)
   visitChildren(pCtx);
 
   QueryNode* pOpExpr = nullptr;
-  QueryNode* pExpr2 = m_pExprList->pPop();
-  QueryNode* pExpr1 = m_pExprList->pPop();
+  QueryNode* pExpr2 = m_pExprStack->pPop();
+  QueryNode* pExpr1 = m_pExprStack->pPop();
 
   // Get the string of the operator
   s256 sOp;
@@ -1160,7 +1160,7 @@ antlrcpp::Any SqlPlanner::visitBinaryOp(sqlParser::BinaryOpContext *pCtx)
   }
 
   // Put the operator back onto the expression stack
-  m_pExprList->vPush(pOpExpr);
+  m_pExprStack->vPush(pOpExpr);
 
   return nullptr;
 }
@@ -1182,22 +1182,22 @@ antlrcpp::Any SqlPlanner::visitLogicOp(sqlParser::LogicOpContext *pCtx)
   sOp.vToUpper();
 
   if (sOp.bEqual("AND"_Stz)) {
-    pExpr2 = m_pExprList->pPop();
-    pExpr1 = m_pExprList->pPop();
+    pExpr2 = m_pExprStack->pPop();
+    pExpr1 = m_pExprStack->pPop();
     pOpExpr = AndExpr::pCreate(pExpr1, pExpr2);
 
   } else if (sOp.bEqual("OR"_Stz)) {
-    pExpr2 = m_pExprList->pPop();
-    pExpr1 = m_pExprList->pPop();
+    pExpr2 = m_pExprStack->pPop();
+    pExpr1 = m_pExprStack->pPop();
     pOpExpr = OrExpr::pCreate(pExpr1, pExpr2);
 
   } else if (sOp.bEqual("XOR"_Stz)) {
-    pExpr2 = m_pExprList->pPop();
-    pExpr1 = m_pExprList->pPop();
+    pExpr2 = m_pExprStack->pPop();
+    pExpr1 = m_pExprStack->pPop();
     pOpExpr = XorExpr::pCreate(pExpr1, pExpr2);
 
   } else if (sOp.bEqual("NOT"_Stz)) {
-    pExpr1 = m_pExprList->pPop();
+    pExpr1 = m_pExprStack->pPop();
     pOpExpr = NotExpr::pCreate(pExpr1);
 
   } else {
@@ -1205,7 +1205,7 @@ antlrcpp::Any SqlPlanner::visitLogicOp(sqlParser::LogicOpContext *pCtx)
   }
 
   // Put the operator back onto the expression stack
-  m_pExprList->vPush(pOpExpr);
+  m_pExprStack->vPush(pOpExpr);
 
   return nullptr;
 }
@@ -1218,7 +1218,7 @@ antlrcpp::Any SqlPlanner::visitIsNullOp(sqlParser::IsNullOpContext *pCtx)
   visitChildren(pCtx);
 
   QueryNode* pOpExpr = nullptr;
-  QueryNode* pExpr1 = m_pExprList->pPop();
+  QueryNode* pExpr1 = m_pExprStack->pPop();
 
   pOpExpr = IsNullExpr::pCreate(pExpr1);
 
@@ -1228,7 +1228,7 @@ antlrcpp::Any SqlPlanner::visitIsNullOp(sqlParser::IsNullOpContext *pCtx)
   }
 
   // Put the operator back onto the expression stack
-  m_pExprList->vPush(pOpExpr);
+  m_pExprStack->vPush(pOpExpr);
 
   return nullptr;
 }
@@ -1243,7 +1243,7 @@ antlrcpp::Any SqlPlanner::visitCountAll(sqlParser::CountAllContext *pCtx)
   QueryNode* pOpExpr = CountExpr::pCreate(true, false, nullptr);
 
   // Put the operator back onto the expression stack
-  m_pExprList->vPush(pOpExpr);
+  m_pExprStack->vPush(pOpExpr);
 
   return nullptr;
 }
@@ -1257,8 +1257,8 @@ antlrcpp::Any SqlPlanner::visitAggFunc(sqlParser::AggFuncContext *pCtx)
 
   b1 bIsDistinct = (pCtx->distinct != nullptr);
 
-  ASSERT(m_pExprList->nItems() > 0);
-  QueryNode* pChildExpr = m_pExprList->pPop();
+  ASSERT(m_pExprStack->nItems() > 0);
+  QueryNode* pChildExpr = m_pExprStack->pPop();
 
   s256 sFunc;
   vCleanString(pCtx->func, sFunc);
@@ -1288,7 +1288,7 @@ antlrcpp::Any SqlPlanner::visitAggFunc(sqlParser::AggFuncContext *pCtx)
   ASSERT(pAggExpr);
 
   // Put the operator back onto the expression stack
-  m_pExprList->vPush(pAggExpr);
+  m_pExprStack->vPush(pAggExpr);
 
   return nullptr;
 }
@@ -1298,15 +1298,15 @@ antlrcpp::Any SqlPlanner::visitAggFunc(sqlParser::AggFuncContext *pCtx)
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any SqlPlanner::visitOrderByList(sqlParser::OrderByListContext *pCtx)
 {
-  ASSERT(!m_pExprList);
+  ASSERT(!m_pExprStack);
 
-  m_pExprList = new QueryNodeList();
+  m_pExprStack = new QueryNodeList();
 
   visitChildren(pCtx);
 
-  ASSERT(m_pExprList->nItems() == 0);
-  delete m_pExprList;
-  m_pExprList = nullptr;
+  ASSERT(m_pExprStack->nItems() == 0);
+  delete m_pExprStack;
+  m_pExprStack = nullptr;
 
   return nullptr;
 }
@@ -1317,17 +1317,37 @@ antlrcpp::Any SqlPlanner::visitOrderByList(sqlParser::OrderByListContext *pCtx)
 antlrcpp::Any SqlPlanner::visitOrderByListItem(sqlParser::OrderByListItemContext *pCtx)
 {
   ASSERT(m_pOrderItems);
-  ASSERT(m_pExprList);
+  ASSERT(m_pExprStack);
 
   visitChildren(pCtx);
 
-  ASSERT(m_pExprList->nItems() > 0);
-  QueryNode* pExpr = m_pExprList->pPop();
+  ASSERT(m_pExprStack->nItems() > 0);
+  QueryNode* pExpr = m_pExprStack->pPop();
 
   b1 bIsAscending = pCtx->DESC() == nullptr;
 
   QueryNode* pOrderItem = OrderItem::pCreate(pExpr, bIsAscending);
   m_pOrderItems->vAppend(pOrderItem);
+
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Group by expression items                                                  */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitGroupByListItem(sqlParser::GroupByListItemContext *pCtx)
+{
+  ASSERT(m_pExprStack);
+
+  // We use the expression stack to collect the list of expressions,
+  // however it arranges them as a stack (last in first out). We will
+  // easily reverse it here for convenience.
+
+  visitChildren(pCtx);
+
+  ASSERT(m_pExprStack->nItems() > 0);
+  QueryNode* pExpr = m_pExprStack->pPop();
+  m_pExprStack->vAppend(pExpr);
 
   return nullptr;
 }

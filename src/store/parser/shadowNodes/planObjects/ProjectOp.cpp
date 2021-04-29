@@ -12,6 +12,7 @@
 #include "Expr.hpp"
 #include "AliasRef.hpp"
 #include "ShadowRoot.hpp"
+#include "MetadataNode.hpp"
 
 #include "GraphNav.hpp"
 #include "NodeNamer.hpp"
@@ -118,7 +119,7 @@ void ProjectOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iI
   // no children then we probably haven't resolved any names yet (except for the case of
   // the plan only containing literals).
 
-  if (ShadowRoot::pMetadataNode(pRootNode)->nChildren() > 0) {
+  if (MetadataNode::bHasMetadata(ShadowRoot::pMetadataNode(pRootNode))) {
     pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pRootNode);
   }
 
