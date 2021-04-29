@@ -2805,6 +2805,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_ENTWRK_RESET(&aiDstk);   // entry
         break;//+endCase
 
+      case EO_ENTWRK_SETENTKND: ArgNil(); // set the ent kind
+        dLU0(EO_ENTWRK_SETENTKND);
+        vDev_ENTWRK_SETENTKND(&aiDstk);   // int /entry
+        break;//+endCase
+
       case EO_ENTWRK_SETINTELM: ArgNil(); // append next element value (int)
         dLU0(EO_ENTWRK_SETINTELM);
         vDev_ENTWRK_SETINTELM(&aiDstk);   // int /entry
@@ -3032,6 +3037,13 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // -- TO GO --
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      // set int element
+      case EO_ENTWRK_SETINTELM_OLD: ArgNil(); // append next element value (int)
+        dLU0(EO_ENTWRK_SETINTELM_OLD);
+        vDev_ENTWRK_SETINTELM_OLD(&aiDstk);   // int /entry
+        break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // ixt device col operators

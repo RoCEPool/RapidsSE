@@ -437,6 +437,7 @@ enum eEO : u2 // expression operators
   // ixt device entwrk operators
   /*    */ EO_ENTWRK_PRINT,     // print m_oEntWrk
   /*    */ EO_ENTWRK_RESET,     // reset m_oEntWrk
+  /*    */ EO_ENTWRK_SETENTKND, // set entry kind
   /*    */ EO_ENTWRK_SETINTELM, // set int only element value
   /*    */ EO_ENTWRK_SETSTZELM, // set stz only element value
 
@@ -496,6 +497,7 @@ enum eEO : u2 // expression operators
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   // -- TO GO --
+  /*  S  */ EO_ENTWRK_SETINTELM_OLD,   // set int elm (assuming key kind is int)
 
   // dev col operators
   /*  S  */ EO_DEVIXT_COL_PUSHSET_ADR,   // push column value from dev ixt (str as ptr)
@@ -957,6 +959,7 @@ static Stz* aEO[]
   // ixt device entwrk operators
   /*    */ "EO_ENTWRK_PRINT"_Stz,
   /*    */ "EO_ENTWRK_RESET"_Stz,
+  /*    */ "EO_ENTWRK_SETENTKND"_Stz,
   /*    */ "EO_ENTWRK_SETINTELM"_Stz,
   /*    */ "EO_ENTWRK_SETSTZELM"_Stz,
 
@@ -1014,6 +1017,8 @@ static Stz* aEO[]
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   // -- TO GO --
+
+  /*    */ "EO_ENTWRK_SETINTELM_OLD"_Stz,
 
   // dev col
   /*    */ "EO_DEVIXT_COL_PUSHSET_ADR"_Stz,
@@ -1482,6 +1487,7 @@ static EoArg EoArgs[]
   // ixt device entwrk operators
   { EA_NONE,    0 },  // EO_ENTWRK_PRINT
   { EA_NONE,    0 },  // EO_ENTWRK_RESET
+  { EA_NONE,    0 },  // EO_ENTWRK_SETENTKND
   { EA_NONE,    0 },  // EO_ENTWRK_SETINTELM
   { EA_NONE,    0 },  // EO_ENTWRK_SETSTZELM
 
@@ -1540,6 +1546,9 @@ static EoArg EoArgs[]
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   // ---TO GO ---
+
+  // setintelm old
+  { EA_NONE,    0 },  // EO_ENTWRK_SETINTELM_OLD
 
   // dev column
   { EA_NONE,    0 },  // EO_DEVIXT_COL_PUSHSET_ADR
