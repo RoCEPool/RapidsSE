@@ -4,8 +4,6 @@
 
 bc;
 
-trackmemory;
-
 create table nation (
 	 N_NATIONKEY       INTEGER NOT NULL,
 	 N_NAME            CHAR(25) NOT NULL,
@@ -14,35 +12,10 @@ create table nation (
 );
 
 print "loading nation.csv..." ;
-load nation "../tpch/SF1/nation.csv" ;
+load nation "../TPCH/SF1/nation.tbl" ;
 
-select N_NATIONKEY,N_NAME from nation;
-
-// drop table nation ;
-
-// memoryLeaks;
-
-/*
-pipeline query
-begin
-
-  stage stageA on origin :
-    start
-    | periodic once
-    | stageB
-
-  stage StageB on all partitions:
-    scan Nation
-    | project 0 "as col1 N_NATIONKEY , as col2 N_REGIONKEY"
-    | stageC
-
-  stage stageC on origin :
-    output
-    | sink
-    | stageA
-
- end ;
-*/
+tablescan nation;
+//select * from nation;
 
 /*============================================================================*/
 /* end                                                                        */
