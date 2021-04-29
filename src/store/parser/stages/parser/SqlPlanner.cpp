@@ -805,6 +805,10 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
     // the grouping column.
     if (!Expr::bContainsAnAggregate(pExpr) && !pAggregateOp) {
       // There's no aggregate op, so the having clause must contain an aggregate
+
+      if (pProjectOp)       delete pProjectOp;
+      if (pAggregateOp)     delete pAggregateOp;
+      if (pHavingFilterOp)  delete pHavingFilterOp;
       SemanticException::vThrow(EC_HAVING_EXPR_NOT_AGG_OR_IN_GROUPBY);
     }
   }
@@ -831,6 +835,12 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
 
     // Check if this expression is an aggregate
     if (Expr::bContainsAnAggregate(pExpr)) {
+
+      if (pProjectOp)       delete pProjectOp;
+      if (pAggregateOp)     delete pAggregateOp;
+      if (pHavingFilterOp)  delete pHavingFilterOp;
+      if (pWhereFilterOp)   delete pWhereFilterOp;
+
       SemanticException::vThrow(EC_AGG_EXPR_IN_WHERE_CLAUSE);
     }
   }
@@ -850,6 +860,12 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
     pTableScanOp = TableScanOp::pCreate(m_pTableRefStack->pPop());
 
   } else {
+
+    if (pProjectOp)       delete pProjectOp;
+    if (pAggregateOp)     delete pAggregateOp;
+    if (pHavingFilterOp)  delete pHavingFilterOp;
+    if (pWhereFilterOp)   delete pWhereFilterOp;
+
     SyntaxException::vThrowNotImplemented(pCtx->start->getLine(),
                                           pCtx->start->getCharPositionInLine(),
                                           "No table source specified"_Stz);
