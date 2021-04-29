@@ -289,7 +289,7 @@ void vDev_IXT_ENT_POSPRIOR(i8** aaiDstk)
   Ent* pEntArray;
 
   // pop the wrk ent
-  Ent_int* aWrkEnt = (Ent_int*)P_PopPtr();
+  Ent* aWrkEnt = (Ent*)P_PopPtr();
 
   //pop the device
   DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
@@ -944,6 +944,24 @@ void vDev_ENTWRK_SETINTELM(i8** aaiDstk)
   *aaiDstk = aiDstk;
 }
 
+/*----------------------------------------------------------------------------*/
+/* set int only element                                                       */
+/*----------------------------------------------------------------------------*/
+void vDev_ENTWRK_SETSTZELM(i8** aaiDstk)
+{
+  _static_
+
+  i8 *aiDstk = *aaiDstk;
+  EntWrk *pEntWrk = (EntWrk*)P_PopPtr();
+
+  char* azSrc;
+  i8 nSize;
+  S_PopStr(azSrc);
+
+  pEntWrk->vAppendElementStz(nullptr,(Stz*)azSrc);
+
+  *aaiDstk = aiDstk;
+}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
