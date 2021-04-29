@@ -150,7 +150,7 @@ namespace STORE
     
     Footer* aFooter(void);
     
-  private:
+  //private:
     void vSend(Operand* pOperand, bool bSet, i8 i_Node, tPN tPtnNo);
     void vSend(Operand* pOperand, Parcel* pParcel, bool bSet);
     void vSendToAllNodes(Operand* pOperand, Task* pTriggeringTask,bool bSet, eXK eSendKind);

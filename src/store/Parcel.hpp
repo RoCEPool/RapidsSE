@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "eXK.h"
+
 namespace STORE
 {
   static const i8 C_MAX_PARCEL_OBJ = 16;
@@ -55,6 +57,28 @@ namespace STORE
     Object* pGetObject(i8 iIdx);
     Operand* pGetOperand(void);
     void vSetOperand(Operand *pOperand);
+  
+  
+  
+  //private:
+
+    static void vSendToAllNodes(Operand* pOperand, Op* pOp,
+                                Task* pTriggeringTask,bool bSet, eXK eSendKind);
+    static void vSendToAllOriginPartitions(Operand* pOperand,  Op* pOp,
+                                           Task* pTriggeringTask,bool bSet,
+                                           eXK eSendKind);
+    static void vSendToAllPartitions(Operand* pOperand,  Op* pOp,
+                                     Task* pTriggeringTask,bool bSet,
+                                     eXK eSendKind);
+    static void vSendToNode(Operand* pOperand,  Op* pOp,
+                            Task* pTriggeringTask,bool bSet,
+                            eXK eSendKind, i8 i_Node);
+    static void vSendToOrigin(Operand* pOperand,  Op* pOp,
+                              Task* pTriggeringTask,bool bSet, eXK eSendKind);
+    static void vSendToPartition(Operand* pOperand,  Op* pOp,
+                                 Task* pTriggeringTask, bool bSet,
+                                 eXK eSendKind, tPN tPtnNo);
+
 
   public:
     Footer* aFooter(void);
