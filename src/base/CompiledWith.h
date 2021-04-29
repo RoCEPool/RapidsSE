@@ -83,7 +83,6 @@
 // event-based task model
 
 //#define WITH_PULSING EndDefine             // code for pulsing compiled in
-//#define WITH_NO_SEND_OPT EndDefine         // code for no send optimization
 
 // temporary
 
