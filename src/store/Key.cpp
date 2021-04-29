@@ -247,7 +247,7 @@ void Key::vShow(IndexDef* pIndexDef)
   if (pIndexDef->szIndexNm()->bSame(S_READAPI_I))
     bReadApi = true;
   
-  i8 nBytes;
+  i8 nBytes = 0;
   
   Dtm* ayCursor = aElmSeq_dtm();
   
