@@ -8,8 +8,8 @@
 
 _nation;
 
--- trackmemory;
--- success
+trackmemory;
+success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Basic ORDER BY examples
@@ -248,8 +248,6 @@ rows: (*,'explainPlan',
                   » table: (rapidsse.public.nation)'
 )
 
-
--- TODO: Enable when supported
 EXPLAIN
 SELECT n_nationkey + 1, n_name FROM nation
 UNION ALL
@@ -262,7 +260,40 @@ SELECT n_nationkey + 1, n_name FROM nation
 UNION ALL
 SELECT n_regionkey, n_name FROM nation
 ORDER BY n_nationkey + 1;
-success
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT n_nationkey + 1, n_name FROM nation UNION ALL SELECT n_regionkey, n_name FROM nation ORDER BY n_nationkey + 1"
+
+-> orderOp
+   » order expr: ((rapidsse.public.nation.n_nationkey + 1) ASC)
+   » ordinal order expr: (($1) ASC)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT n_nationkey + 1, n_name FROM nation UNION ALL SELECT n_regionkey, n_name FROM nation"
+
+-> -> -> unionOp
+         » isDistinct: (false)
+
+-> -> -> -> StatementMarker: select
+            » queryText: "SELECT n_nationkey + 1, n_name FROM nation"
+
+-> -> -> -> -> projectOp
+               » column: (Expr = rapidsse.public.nation.n_nationkey + 1)
+               » column: (Expr = rapidsse.public.nation.n_name)
+
+-> -> -> -> -> -> tableScanOp
+                  » table: (rapidsse.public.nation)
+
+-> -> -> -> StatementMarker: select
+            » queryText: "SELECT n_regionkey, n_name FROM nation"
+
+-> -> -> -> -> projectOp
+               » column: (Expr = rapidsse.public.nation.n_regionkey)
+               » column: (Expr = rapidsse.public.nation.n_name)
+
+-> -> -> -> -> -> tableScanOp
+                  » table: (rapidsse.public.nation)'
+)
 
 -- -- Ordering expression can be a superset of the unionOps first child
 EXPLAIN
@@ -407,8 +438,8 @@ rows: (*,'explainPlan',
 //  Check for memory leaks
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
--- memoryleaks;
--- rows: 0
+memoryleaks;
+rows: 0
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Cleanup
