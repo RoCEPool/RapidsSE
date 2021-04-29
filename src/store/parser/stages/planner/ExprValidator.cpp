@@ -729,6 +729,7 @@ void ExprValidator::vValidateOrderExprAboveSetOp(PlanNode* pRootNode, QueryNode*
       QueryNode* pOrdExpr = Expr::pSymbolicToOrdinal(pExpr, pColumnExprList, pRootNode);
 
       if (Expr::bIsOrdinal(pOrdExpr)) {
+        delete pOrdExpr;
         continue;
       }
 
