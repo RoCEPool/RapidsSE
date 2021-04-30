@@ -314,6 +314,11 @@ void Step::vSqlCompilerExprPushdown(void)
    * So we need it to also project [AVG(col3) > 0] as well so the FilterOp that implements
    * the HAVING clause can test it.
    *
+   * After pushing down expressions we will then walk the graph and validate that
+   * for all Sql operators that contain expressions those expressions can be entirely
+   * represented in ordinal notation relative to the set of projected columns that
+   * operator will receive.
+   *
    * The plan may be modified in this stage.
    */
 
