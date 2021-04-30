@@ -5,41 +5,20 @@
 " OP_metaRecv.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_TABLE ...                                                            */
+/* on ZK_PARCEL ...                                                           */
 /*----------------------------------------------------------------------------*/
-: metaRecv_Table \handler
+: metaRecv_Parcel \handler
+  " metaRecv_Parcel"
 
-  true
-;
+  // pipe out ZK_STARTMARKER
+  //PipeIn[].pipeOut
 
-/*----------------------------------------------------------------------------*/
-/* on ZK_STREAMDEF ...                                                        */
-/*----------------------------------------------------------------------------*/
-: metaRecv_StreamDef \handler
+  Operand[].pipein  // pop the pParcel and put in the Operand register
 
-  true
-;
+  Operand[] MetaRecv::putParts
 
-/*----------------------------------------------------------------------------*/
-/* on ZK_INDEX ...                                                            */
-/*----------------------------------------------------------------------------*/
-: metaRecv_Index \handler
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* on ZK_INDEXDEF ...                                                         */
-/*----------------------------------------------------------------------------*/
-: metaRecv_IndexDef \handler
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* on ZK_BUCKETMAP ...                                                        */
-/*----------------------------------------------------------------------------*/
-: metaRecv_BucketMap \handler
+  // The result should be a table
+  op::pipeout
 
   true
 ;
@@ -50,8 +29,12 @@
 : metaRecv_req \operator
 
   LogReqEntry SEED_REQ
+  "metaRecv_req" .
 
   op__topology
+
+  // Setup ZK_PARCEL handler here
+  find: metaRecv_Parcel ZK_PARCEL op[].handler!
 
   op__loop
 

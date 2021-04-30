@@ -29,34 +29,21 @@ void Step::vAddSteps_MetaSend(void)
 void Step::vMetaSendGetParts(void)
 {
   ENTRY();
-  
-  // ... code which gets all the parts of a meta-object and pipes them out ...
-  // get arguments
-  //m_pDataStack->vPopStr(sTableName,__func__);
 
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
 
-  // Don't know what to get from the in-pipe yet, but for now... create a dummy table
-  Table* pTable = new Table("BolTbl1"_Stz,TT_NORMAL);
+  // it works!
+  vTrace("C++ gets called: vMetaSendGetParts For pTable->szTableNm()->azChar(): %s\n"_Stz,pTable->szTableNm()->azChar());
 
-  // call get parts code
   pTable->iPrepareParcel();
   Parcel* pParcel = pTable->pParcel();
 
-  // put results
-  // we should be able to put the whole parcel
   m_pDataStack->vPushPtr(pParcel);
 
-  // foreach part, push part
-  /*
-  for (i8 i_Obj=0; i_Obj< pTable->nParcelObjects(); i_Obj++) {
-
-    Object* pObject = pTable->pGetParcelObject(i_Obj);
-    m_pDataStack->vPushPtr((Object*)pObject);
+  if (pParcel) {
+    vTrace("C++ pParcel is good\n"_Stz);
   }
 
-  // push number of object parts
-  m_pDataStack->vPushInt(pTable->aObjParts().size());
-  */
   
   EXIT();
 }

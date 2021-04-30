@@ -717,6 +717,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_NAMEDBUFFER"_Stz,     ZK_NAMEDBUFFER);
   /*  0 */ vAddConstant("ZK_NODEINFO"_Stz,        ZK_NODEINFO);
   /*  0 */ vAddConstant("ZK_OTHEROPERAND"_Stz,    ZK_OTHEROPERAND);
+  /*  0 */ vAddConstant("ZK_PARCEL"_Stz,          ZK_PARCEL);
   /*  0 */ vAddConstant("ZK_PATHINFO"_Stz,        ZK_PATHINFO);
   /*  0 */ vAddConstant("ZK_PLANOPERAND"_Stz,     ZK_PLANOPERAND);
   /*  0 */ vAddConstant("ZK_PROFILE"_Stz,         ZK_PROFILE);

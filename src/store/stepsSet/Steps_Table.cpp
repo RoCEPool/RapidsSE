@@ -58,7 +58,6 @@ void Step::vAddSteps_Table(void)
   vAddStep("Table[].isUserCreated"_Stz,    &Step::vTableIsUserCreated);
   vAddStep("Table[].listPartition"_Stz,    &Step::vTableListPartition);
   vAddStep("Table[].name@"_Stz,            &Step::vTableNameFetch);
-  vAddStep("table.prepareParcel"_Stz,      &Step::vTablePrepareParcel);
   vAddStep("Table[].shardDef@"_Stz,        &Step::vTableShardDefFetch);
   vAddStep("Table[].size"_Stz,             &Step::vTableSize);
   vAddStep("Table[].streamDef@"_Stz,       &Step::vTableStreamDefFetch);
@@ -636,25 +635,6 @@ void Step::vTableVisualize(void)
   EXIT();
 }
 
-/*--------------------------------------------------------------------------------*/
-/* Table.prepareParcel -- creates a parcel that contains table and its components */
-/*--------------------------------------------------------------------------------*/
-void Step::vTablePrepareParcel(void)
-{
-  ENTRY();
-
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-
-  // it works!
-  vTrace("C++ gets called: vTablePrepareParcel For pTable->szTableNm()->azChar(): %s\n"_Stz,pTable->szTableNm()->azChar());
-
-  pTable->iPrepareParcel();
-  Parcel* pParcel = pTable->pParcel();
-
-  m_pDataStack->vPushPtr(pParcel);
-
-  EXIT();
-}
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

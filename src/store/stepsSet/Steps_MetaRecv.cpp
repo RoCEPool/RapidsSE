@@ -35,8 +35,8 @@ void Step::vMetaRecvPutParts(void)
   
   // ... code which pipesi in all the parts of a meta-object and
   //     gets the meta-object to reassemble itself ...
+  vTrace("C++ gets called: vMetaRecvPutParts\n"_Stz);
 
-  ///// FOR NOW THIS CODE IS SPECIFIC to TABLE
   // get arguments
   Table* pTable = nullptr;
   Parcel* pParcel = (Parcel*)m_pDataStack->pPopPtr(__func__);
@@ -47,6 +47,7 @@ void Step::vMetaRecvPutParts(void)
     Object *pObject = pParcel->pGetObject(0);
     if (pObject->eGetClassNo() == CN_TABLE) {
       pTable = (Table *) pObject;
+      vTrace("Table reassemble from parcel as %s\n"_Stz,pTable->szTableNm()->azChar());
       pTable->iBuildParcel(pParcel);
     }
   }
@@ -67,13 +68,12 @@ void Step::vMetaRecvPutParts(void)
   */
 
   // call reassemble parts code
-  if (pTable) {
-    pTable->iReassembleObj();
-    // put results ??
-    m_pDataStack->vPushPtr(pTable);
-  }
 
+  pTable->iReassembleObj();
 
+  // put results as a table
+  m_pDataStack->vPushPtr(pTable);
+  vTrace("Table is in the stack\n"_Stz);
   EXIT();
 }
 

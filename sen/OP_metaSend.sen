@@ -22,7 +22,8 @@
   // op::pipeout pipe the pParcel out
 
   Operand[] MetaGet.getTableName op__table
-  table[] Table.prepareParcel
+  //table[] Table.prepareParcel
+  table[] MetaSend::getParts
   op::pipeout
   
   true

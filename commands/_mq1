@@ -15,7 +15,7 @@ create table bolTbl3 (
   bol_col8   BOOLEAN
 );
 
-getmeta bolTbl3;
+getMeta2 bolTbl3;
 
 /*============================================================================*/
 /* end                                                                        */
