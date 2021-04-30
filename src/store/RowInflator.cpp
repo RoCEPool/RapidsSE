@@ -385,6 +385,7 @@ void RowInflator::vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
           *aacCellValue = (char*)ayDataByte;
           ayDstByte += 8;
           
+          //vTrace("MC_STRING_x1: [%lld] %s\n"_Stz,nStrSize,ayDataByte);
           ayDataByte += nStrSize;
         }
         else
@@ -441,13 +442,13 @@ void RowInflator::vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
       case MC_OVERFLOW: // overflow 2B
         
         // calculation to get overflow
-        //aOverLine = aHeadLine->aGetOver();
-        nSizeUnits = aHeadLine->w8_1B(C_HEADLINE_OFS_WORDS);
-        if (nSizeUnits >= 128) nSizeUnits -= 128;
-        nHeadBytes = nSizeUnits * C_BYTES_PER_WORD;
-        i_Over_rel = aHeadLine->w8_2B(nHeadBytes - C_2B);
-        
-        aOverLine = RowNub::aGetOver_rel(aHeadLine,i_Over_rel);
+        aOverLine = aHeadLine->aGetOver();
+//        nSizeUnits = aHeadLine->w8_1B(C_HEADLINE_OFS_WORDS);
+//        if (nSizeUnits >= 128) nSizeUnits -= 128;
+//        nHeadBytes = nSizeUnits * C_BYTES_PER_WORD;
+//        i_Over_rel = aHeadLine->w8_2B(nHeadBytes - C_2B);
+//
+//        aOverLine = RowNub::aGetOver_rel(aHeadLine,i_Over_rel);
         
         METACODE_SPLIT( (* aAdd<u1*>(aOverLine,C_U_1B) ), uHigh, uLow);
         ayDataByte = aAdd<byte*>(aOverLine,C_U_1B + C_M_1B);
@@ -518,10 +519,11 @@ void RowInflator::vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
         nStrSize = STRx4(uLow);
         
         if (SI_CELLARRAY_ADR == eStrInflateRule) {
-          aacCellValue = (char**)ayDataByte;
+          aacCellValue = (char**)ayDstByte;
           *aacCellValue = (char*)ayDataByte;
           ayDstByte += 8;
           
+          //vTrace("MC_STRING_x4: [%lld] %s\n"_Stz,nStrSize,ayDataByte);
           ayDataByte += nStrSize;
         }
         else

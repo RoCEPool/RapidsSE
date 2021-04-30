@@ -2239,7 +2239,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_PUSH_LOCALS: ArgGet(iArg); // push a local reg
         dLU1(EO_PUSH_LOCALS, iArg);
         //ASSERT(iArg < C_LOGIC_LOCALS);
-        S_PushStr(sLib_GET_LOCALS(pLU, iArg));
+        
+        azSrc = sLib_GET_LOCALS(pLU, iArg);
+        S_PushStr(azSrc);
         break;//+endCase
         
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

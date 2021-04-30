@@ -15,7 +15,7 @@ print "loading nation.csv..." ;
 load nation "../TPCH/SF1/nation.tbl" ;
 
 tablescan nation;
-//select * from nation;
+select * from nation;
 
 /*============================================================================*/
 /* end                                                                        */
