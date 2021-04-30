@@ -44,7 +44,7 @@ namespace Parser
 
     // Returns true if this expression tree only comprises literals and operators.
     // i.e., returns false if a ColumnRef or ColumnOrdinal is encountered.
-    static b1 bIsLiteral(PlanNode* pNode);
+    static b1 bIsFullyLiteral(PlanNode* pNode);
 
     // Checks the expression tree to determine that a supported result type
     // can be produced. Will throw a SqlException if it is an invalid expression.
@@ -72,7 +72,7 @@ namespace Parser
 
     // Returns true if the expression does not contain any column references.
     // All expressions are relative column ordinals, operators or literals only.
-    static b1 bIsOrdinal(QueryNode* pExpr);
+    static b1 bIsFullyOrdinal(QueryNode* pExpr);
 
     // Given an expression already in ordinal form, find and return the largest
     // non-ordinal subset of that expression. If the expression is wholly
