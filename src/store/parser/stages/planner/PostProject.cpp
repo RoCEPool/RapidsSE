@@ -187,7 +187,7 @@ void PostProject::vAddPostProject(void* pvContainer, QueryNode* pStatementMarker
     // Check if the expr is equal to or a superset of one of them in the project list.
     // We also need to consider if the filter expression is an aggregate where the
     // projected column is not.
-    if (!Expr::bIsOrdinal(pOrdExpr) || Expr::bContainsAnAggregate(pOrdExpr)) {
+    if (!Expr::bIsFullyOrdinal(pOrdExpr) || Expr::bContainsAnAggregate(pOrdExpr)) {
       bPostProjectRequired = true;
     }
 
@@ -211,7 +211,7 @@ void PostProject::vAddPostProject(void* pvContainer, QueryNode* pStatementMarker
       // Check if the expr is equal to or a superset of one of them in the project list.
       // We also need to consider if the filter expression is an aggregate where the
       // projected column is not.
-      if (!Expr::bIsOrdinal(pOrdExpr) || Expr::bContainsAnAggregate(pOrdExpr)) {
+      if (!Expr::bIsFullyOrdinal(pOrdExpr) || Expr::bContainsAnAggregate(pOrdExpr)) {
         bPostProjectRequired = true;
         delete pOrdExpr;
         break;
