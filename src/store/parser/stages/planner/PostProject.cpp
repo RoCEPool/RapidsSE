@@ -173,7 +173,7 @@ void PostProject::vAddPostProject(void* pvContainer, QueryNode* pStatementMarker
   b1 bPostProjectRequired = false;
 
   // Get the list of columns that should be projected
-  QueryNode* pProjectedColumns = ProjectOp::pProjectedColumns(pContainer->m_pProjectOp);
+  QueryNodeList* pProjectedColumnList = ProjectOp::pColumnExprs(pContainer->m_pProjectOp, pRootNode);
 
   // Check if there are any expressions in the filter or order ops that
   // are not equal to any of the expressions in the project list.
@@ -182,12 +182,16 @@ void PostProject::vAddPostProject(void* pvContainer, QueryNode* pStatementMarker
     QueryNode* pFilterExpr = FilterOp::pFilterExpr(pContainer->m_pFilterOp);
     ASSERT(pFilterExpr);
 
+    QueryNode* pOrdExpr = Expr::pSymbolicToOrdinal(pFilterExpr, pProjectedColumnList, pRootNode);
+
     // Check if the expr is equal to or a superset of one of them in the project list.
     // We also need to consider if the filter expression is an aggregate where the
     // projected column is not.
-    if (!ProjectedColumns::bHasExprEqualOrSuperset(pProjectedColumns, pFilterExpr, false)) {
+    if (!Expr::bIsOrdinal(pOrdExpr) || Expr::bContainsAnAggregate(pOrdExpr)) {
       bPostProjectRequired = true;
     }
+
+    delete pOrdExpr;
   }
 
   if (!bPostProjectRequired && pContainer->m_pOrderOp) {
@@ -202,9 +206,18 @@ void PostProject::vAddPostProject(void* pvContainer, QueryNode* pStatementMarker
       QueryNode* pExpr = OrderItem::pExprNode(pOrderItem);
       ASSERT(Expr::bIsOfType(pExpr));
 
-      if (!ProjectedColumns::bHasExprEqualOrSuperset(pProjectedColumns, pExpr, false)) {
+      QueryNode* pOrdExpr = Expr::pSymbolicToOrdinal(pExpr, pProjectedColumnList, pRootNode);
+
+      // Check if the expr is equal to or a superset of one of them in the project list.
+      // We also need to consider if the filter expression is an aggregate where the
+      // projected column is not.
+      if (!Expr::bIsOrdinal(pOrdExpr) || Expr::bContainsAnAggregate(pOrdExpr)) {
         bPostProjectRequired = true;
+        delete pOrdExpr;
+        break;
       }
+
+      delete pOrdExpr;
     }
 
     delete pIter;
@@ -213,10 +226,10 @@ void PostProject::vAddPostProject(void* pvContainer, QueryNode* pStatementMarker
   if (bPostProjectRequired) {
     // Copy the select list
     QueryNodeList* pSelectList = new QueryNodeList();
-    PlanNodeIter* pColumnIter = pProjectedColumns->pNewChildrenIter();
+    QueryNodeIter* pColumnIter = pProjectedColumnList->pNewIter();
 
     while (pColumnIter->bHasNext()) {
-      QueryNode* pProjectedColumn = _pQueryNode(pColumnIter->pNext());
+      QueryNode* pProjectedColumn = pColumnIter->pNext();
       QueryNode* pColumnCopy = pProjectedColumn->pDeepCopy(true);
       pSelectList->vAppend(pColumnCopy);
     }
@@ -232,6 +245,8 @@ void PostProject::vAddPostProject(void* pvContainer, QueryNode* pStatementMarker
     pStatementMarker->vInsertAsParentOfChildren(pPostProject);
   }
 
+  pProjectedColumnList->vDeleteAll();
+  delete pProjectedColumnList;
 }
 
 /*============================================================================*/
