@@ -42,8 +42,7 @@ namespace STORE
     ~Parcel(void) noexcept(false);
         
     static void vSendOut(Operand* pOperand,
-                         Op*      pOp,
-                         Task*    pTriggeringTask);
+                         Op*      pOp);
 
   public:
     void vShow(void);
@@ -59,25 +58,26 @@ namespace STORE
   
   private:
 
-    static void vSendOperand(Operand* pOperand, Op* pOp, i8 i_Node, tPN tPtnNo);
+    static void vSendAsParcel(Operand* pOperand,
+                              Op* pSrcOp, i8 iDstNode, tPN tPtnNo);
   
-    static void vSendToAllNodes(Operand* pOperand, Op* pOp,
-                                Task* pTriggeringTask, eXK eSendKind);
-    static void vSendToAllOriginPartitions(Operand* pOperand,  Op* pOp,
-                                           Task* pTriggeringTask,
-                                           eXK eSendKind);
-    static void vSendToAllPartitions(Operand* pOperand,  Op* pOp,
-                                     Task* pTriggeringTask,
-                                     eXK eSendKind);
-    static void vSendToNode(Operand* pOperand,  Op* pOp,
-                            Task* pTriggeringTask,
-                            eXK eSendKind, i8 i_Node);
-    static void vSendToOrigin(Operand* pOperand,  Op* pOp,
-                              Task* pTriggeringTask, eXK eSendKind);
-    static void vSendToPartition(Operand* pOperand,  Op* pOp,
-                                 Task* pTriggeringTask,
-                                 eXK eSendKind, tPN tPtnNo);
-
+    static void vSendToAllNodes(Operand* pOperand,
+                                Op* pSrcOp, eXK eSendKind);
+  
+    static void vSendToAllOriginPartitions(Operand* pOperand,
+                                           Op* pSrcOp, eXK eSendKind);
+  
+    static void vSendToAllPartitions(Operand* pOperand,
+                                     Op* pSrcOp, eXK eSendKind);
+  
+    static void vSendToNode(Operand* pOperand,
+                            Op* pSrcOp, eXK eSendKind, i8 iDstNode);
+  
+    static void vSendToOrigin(Operand* pOperand,
+                              Op* pSrcOp, eXK eSendKind);
+  
+    static void vSendToPartition(Operand* pOperand,
+                                 Op* pSrcOp, eXK eSendKind, tPN tPtnNo);
 
   public:
     Footer* aFooter(void);
