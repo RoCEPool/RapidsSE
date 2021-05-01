@@ -63,8 +63,6 @@ namespace STORE
 
     static void vSendOperand(Operand* pOperand, Op* pOp, i8 i_Node, tPN tPtnNo);
   
-    static void vSendParcel(Parcel* pParcel, Op* pOp);
-
     static void vSendToAllNodes(Operand* pOperand, Op* pOp,
                                 Task* pTriggeringTask, eXK eSendKind);
     static void vSendToAllOriginPartitions(Operand* pOperand,  Op* pOp,

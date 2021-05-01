@@ -1276,14 +1276,15 @@ void AM::vWriteLog(void) {
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* send parcet to given node                                                  */
+/* send parcel to given node                                                  */
 /*----------------------------------------------------------------------------*/
-void AM::vSendParcel(Parcel* pParcel, Node* pSendNode) //, Task* pTask)
+void AM::vSendParcel(Parcel* pParcel)
 {
   SysCall oSysCall;
-  
-  //pTask->pJob()->pLogicUnit_job()->m_xpSendNode = pSendNode;
-  
+    
+  // get the send node in the task
+  Node* pSendNode = AM::pGrid()->pGetNode(pParcel->m_i_Node);
+
   Socket* pSocket = pSendNode->pSendSocket();
 
   pSocket->vGrabWrite();
@@ -1295,7 +1296,6 @@ void AM::vSendParcel(Parcel* pParcel, Node* pSendNode) //, Task* pTask)
   nObjectSize = gxaSizeHeap[pOperand->eGetClassNo()].m_nClassSize;
   bResult = pSocket->bSendTo(pOperand, nObjectSize, oSysCall);
   
-  // drop the socket write lock
   pSocket->vDropWrite();
 }
 

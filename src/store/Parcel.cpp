@@ -243,7 +243,8 @@ void Parcel::vSendOperand(Operand* pOperand, Op* pOp, i8 i_Node, tPN tPtnNo)
                                    pOperand, eCrossTopo, i_NextStage,
                                    i_NextOp, i_Node, tPtnNo);
 
-  vSendParcel(pParcel,pOp);
+  AM::vSendParcel(pParcel);
+  AM::vDeleteParcel(pParcel);
 
   if (i_OtherStage != C_UNKNOWN) {
 
@@ -251,26 +252,11 @@ void Parcel::vSendOperand(Operand* pOperand, Op* pOp, i8 i_Node, tPN tPtnNo)
     pParcel = AM::pNewParcel(pPipelineJob,pOperand,eCrossTopo,
                              i_OtherStage,i_OtherOp,i_Node,tPtnNo);
 
-    vSendParcel(pParcel,pOp);
+    AM::vSendParcel(pParcel);
+    AM::vDeleteParcel(pParcel);
   }
 }
 
-/*----------------------------------------------------------------------------*/
-/* send the operand                                                           */
-/*----------------------------------------------------------------------------*/
-void Parcel::vSendParcel(Parcel* pParcel, Op* pOp)
-{
-  // get the send node in the task
-  Node* pSendNode = AM::pGrid()->pGetNode(pParcel->m_i_Node);
-  
-  Job* pOpJob = pOp->pOpJob();
-
-  // send the operand job across the sendNode
-  AM::vSendParcel(pParcel, pSendNode); // , AM::pExecutingTask(pOpJob));
-
-  // delete the sendOperand
-  AM::vDeleteParcel(pParcel);
-}
 
 
 
