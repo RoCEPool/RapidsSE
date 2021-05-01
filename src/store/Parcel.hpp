@@ -45,8 +45,7 @@ namespace STORE
     
     static void vSendParcel(Operand* pOperand,
                             Op*      pOp,
-                            Task*    pTriggeringTask,
-                            bool     bSet);
+                            Task*    pTriggeringTask);
 
   public:
     void vShow(void);
@@ -62,25 +61,25 @@ namespace STORE
   
   //private:
 
-    static void vSend(Operand* pOperand, Op* pOp, bool bSet, i8 i_Node, tPN tPtnNo);
+    static void vSend(Operand* pOperand, Op* pOp, i8 i_Node, tPN tPtnNo);
   
-    static void vSend(Operand* pOperand, Op* pOp, Parcel* pParcel, bool bSet);
+    static void vSend(Operand* pOperand, Op* pOp, Parcel* pParcel);
 
     static void vSendToAllNodes(Operand* pOperand, Op* pOp,
-                                Task* pTriggeringTask,bool bSet, eXK eSendKind);
+                                Task* pTriggeringTask, eXK eSendKind);
     static void vSendToAllOriginPartitions(Operand* pOperand,  Op* pOp,
-                                           Task* pTriggeringTask,bool bSet,
+                                           Task* pTriggeringTask,
                                            eXK eSendKind);
     static void vSendToAllPartitions(Operand* pOperand,  Op* pOp,
-                                     Task* pTriggeringTask,bool bSet,
+                                     Task* pTriggeringTask,
                                      eXK eSendKind);
     static void vSendToNode(Operand* pOperand,  Op* pOp,
-                            Task* pTriggeringTask,bool bSet,
+                            Task* pTriggeringTask,
                             eXK eSendKind, i8 i_Node);
     static void vSendToOrigin(Operand* pOperand,  Op* pOp,
-                              Task* pTriggeringTask,bool bSet, eXK eSendKind);
+                              Task* pTriggeringTask, eXK eSendKind);
     static void vSendToPartition(Operand* pOperand,  Op* pOp,
-                                 Task* pTriggeringTask, bool bSet,
+                                 Task* pTriggeringTask,
                                  eXK eSendKind, tPN tPtnNo);
 
 

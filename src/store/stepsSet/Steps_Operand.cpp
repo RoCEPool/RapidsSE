@@ -780,10 +780,8 @@ void Step::vOperandSendOut(void)
   Op* pOp = m_pJob->m_pOp;
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
-
-  //pOp->vSendParcel(pOperand,this,false);
   
-  Parcel::vSendParcel(pOperand,pOp,this,false);
+  Parcel::vSendParcel(pOperand,pOp,this);
 
   EXIT();
 }

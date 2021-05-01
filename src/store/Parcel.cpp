@@ -89,8 +89,7 @@ Parcel* Parcel::pNewParcel(Operand* pOperand,
 /*----------------------------------------------------------------------------*/
 void Parcel::vSendParcel(Operand* pOperand,
                          Op*      pOp,
-                         Task*    pTriggeringTask,
-                         bool     bSet)
+                         Task*    pTriggeringTask)
 {
   Pipeline* pPipeline = pOp->pPipeline();
   i8 i_NextStage = pOp->iNextStage();
@@ -120,7 +119,7 @@ void Parcel::vSendParcel(Operand* pOperand,
     case PX_ALL_PARTITIONS_TO_ORIGIN:
     case PX_ORIGIN_TO_ORIGIN:
     case PX_SPECIFIC_PARTITION_TO_ORIGIN: {
-      vSendToOrigin(pOperand,pOp,pTriggeringTask,bSet,eSendKind);
+      vSendToOrigin(pOperand,pOp,pTriggeringTask,eSendKind);
       break;
     }
       
@@ -128,13 +127,13 @@ void Parcel::vSendParcel(Operand* pOperand,
     case PX_ORIGIN_TO_ALL_PARTITIONS:
     case PX_ALL_NODES_TO_ALL_PARTITIONS:
     case PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS: {
-      vSendToAllPartitions(pOperand,pOp,pTriggeringTask,bSet,eSendKind);
+      vSendToAllPartitions(pOperand,pOp,pTriggeringTask,eSendKind);
       break;
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN: {
-      vSendToAllOriginPartitions(pOperand,pOp,pTriggeringTask,bSet,eSendKind);
+      vSendToAllOriginPartitions(pOperand,pOp,pTriggeringTask,eSendKind);
       break;
     }
      
@@ -142,31 +141,31 @@ void Parcel::vSendParcel(Operand* pOperand,
     case PX_ORIGIN_TO_SPECIFIC_PARTITION: {
       Stream* pStream = pNextStage->pGetPartitionStream(tPtn);
       tPN tPtnNo = pStream->tPtnNo();
-      vSendToPartition(pOperand,pOp,pTriggeringTask,bSet,eSendKind,tPtnNo);
+      vSendToPartition(pOperand,pOp,pTriggeringTask,eSendKind,tPtnNo);
       break;
     }
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ALL_PARTITIONS_TO_ALL_NODES: {
       i8 i_Node = AM::pPtnMap()->i_WhichNode(tPtn);
-      vSendToNode(pOperand,pOp,pTriggeringTask,bSet,eSendKind,i_Node);
+      vSendToNode(pOperand,pOp,pTriggeringTask,eSendKind,i_Node);
       break;
     }
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS: {
       if (pOperand->bIsBuffer()) {
-        vSendToPartition(pOperand,pOp,pTriggeringTask,bSet,eSendKind,tPtn);
+        vSendToPartition(pOperand,pOp,pTriggeringTask,eSendKind,tPtn);
       }
       else {
-        vSendToAllPartitions(pOperand,pOp,pTriggeringTask,bSet,eSendKind);
+        vSendToAllPartitions(pOperand,pOp,pTriggeringTask,eSendKind);
       }
       break;
     }
      
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ORIGIN_TO_ALL_NODES: {
-      vSendToAllNodes(pOperand,pOp,pTriggeringTask,bSet,eSendKind);
+      vSendToAllNodes(pOperand,pOp,pTriggeringTask,eSendKind);
       break;
     }
       
@@ -231,7 +230,7 @@ void Parcel::vSetOperand(Operand *pOperand)
 /*----------------------------------------------------------------------------*/
 /* send the operand                                                           */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSend(Operand* pOperand, Op* pOp, bool bSet, i8 i_Node, tPN tPtnNo)
+void Parcel::vSend(Operand* pOperand, Op* pOp, i8 i_Node, tPN tPtnNo)
 {
   Job* pPipelineJob = pOp->pPipelineJob();
   ePX eCrossTopo = pOp->eCrossTopo();      // cross topology
@@ -244,7 +243,7 @@ void Parcel::vSend(Operand* pOperand, Op* pOp, bool bSet, i8 i_Node, tPN tPtnNo)
                                    pOperand, eCrossTopo, i_NextStage,
                                    i_NextOp, i_Node, tPtnNo);
 
-  vSend(pOperand,pOp,pParcel,bSet);
+  vSend(pOperand,pOp,pParcel);
 
   if (i_OtherStage != C_UNKNOWN) {
 
@@ -252,39 +251,22 @@ void Parcel::vSend(Operand* pOperand, Op* pOp, bool bSet, i8 i_Node, tPN tPtnNo)
     pParcel = AM::pNewParcel(pPipelineJob,pOperand,eCrossTopo,
                              i_OtherStage,i_OtherOp,i_Node,tPtnNo);
 
-    vSend(pOperand,pOp,pParcel,bSet);
+    vSend(pOperand,pOp,pParcel);
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /* send the operand                                                           */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSend(Operand* pOperand, Op* pOp, Parcel* pParcel, bool bSet)
+void Parcel::vSend(Operand* pOperand, Op* pOp, Parcel* pParcel)
 {
   // get the send node in the task
   Node* pSendNode = AM::pGrid()->pGetNode(pParcel->m_i_Node);
   
   Job* pOpJob = pOp->pOpJob();
 
-  if (bSet) {
-
-    NEVER_REACH;
-    
-    while (pOperand) {
-
-      // set the operand in the job
-      AM::vSetOperand(pParcel, pOperand);
-
-      // send the operand job across the sendNode
-      AM::vSend(AM::pExecutingTask(pOpJob), pSendNode, pParcel);
-      DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
-      pOperand = pDataBuffer->pNextLinkedBuffer();
-    }
-  }
-  else {
-    // send the operand job across the sendNode
-    AM::vSend(AM::pExecutingTask(pOpJob), pSendNode, pParcel);
-  }
+  // send the operand job across the sendNode
+  AM::vSend(AM::pExecutingTask(pOpJob), pSendNode, pParcel);
 
   // delete the sendOperand
   AM::vDeleteParcel(pParcel);
@@ -303,7 +285,7 @@ void Parcel::vSend(Operand* pOperand, Op* pOp, Parcel* pParcel, bool bSet)
 /* send the operand                                                           */
 /*----------------------------------------------------------------------------*/
 void Parcel::vSendToAllNodes(Operand* pOperand, Op* pOp,
-                             Task* pTriggeringTask, bool bSet,
+                             Task* pTriggeringTask,
                              eXK eSendKind)
 {
   UNUSED(pTriggeringTask);
@@ -321,7 +303,7 @@ void Parcel::vSendToAllNodes(Operand* pOperand, Op* pOp,
   //ASSERT(pNextStage->nItems() == AM::pGrid()->nBootNodes());
   
   for (i8 i_Node = 0; i_Node < pNextStage->nItems(); i_Node++) {
-    vSend(pOperand,pOp,bSet,i_Node,C_UNKNOWN);
+    vSend(pOperand,pOp,i_Node,C_UNKNOWN);
   }
   
   // delete the operand
@@ -332,7 +314,7 @@ void Parcel::vSendToAllNodes(Operand* pOperand, Op* pOp,
 /* send the operand                                                           */
 /*----------------------------------------------------------------------------*/
 void Parcel::vSendToAllOriginPartitions(Operand* pOperand, Op* pOp,
-                                        Task* pTriggeringTask, bool bSet,
+                                        Task* pTriggeringTask,
                                         eXK eSendKind)
 {
   UNUSED(pTriggeringTask);
@@ -365,9 +347,8 @@ void Parcel::vSendToAllOriginPartitions(Operand* pOperand, Op* pOp,
       pOp->vSendNode(i_SendNode);
 
       if ( i_SendNode == pPipeline->i_Origin()) {
-        ASSERT( ! bSet );
         
-        vSend(pOperand, pOp, bSet, i_SendNode, tPtnNo);
+        vSend(pOperand, pOp, i_SendNode, tPtnNo);
         AM::vDeleteOperand(pOperand);
         
       }
@@ -389,7 +370,7 @@ void Parcel::vSendToAllOriginPartitions(Operand* pOperand, Op* pOp,
         i8 i_SendNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
         pOp->vSendNode(i_SendNode);
         if ( i_SendNode == pPipeline->i_Origin()) {
-          vSend(pOperand, pOp, bSet, i_SendNode, tPtnNo);
+          vSend(pOperand, pOp, i_SendNode, tPtnNo);
         }
         
       }
@@ -406,7 +387,7 @@ void Parcel::vSendToAllOriginPartitions(Operand* pOperand, Op* pOp,
 /* send the operand                                                           */
 /*----------------------------------------------------------------------------*/
 void Parcel::vSendToAllPartitions(Operand* pOperand,  Op* pOp,
-                                  Task* pTriggeringTask, bool bSet,
+                                  Task* pTriggeringTask,
                                   eXK eSendKind)
 {
   UNUSED(pTriggeringTask);
@@ -432,7 +413,7 @@ void Parcel::vSendToAllPartitions(Operand* pOperand,  Op* pOp,
       i8 i_SendNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
       pOp->vSendNode(i_SendNode);
 
-      vSend(pOperand, pOp, bSet, i_SendNode, tPtnNo);
+      vSend(pOperand, pOp, i_SendNode, tPtnNo);
       AM::vDeleteOperand(pOperand);
 
       break;
@@ -452,8 +433,7 @@ void Parcel::vSendToAllPartitions(Operand* pOperand,  Op* pOp,
       pOp->vSendNode(i_SendNode);
       RASSERT(i_SendNode == AM::pGrid()->iThisNode());
       
-      ASSERT( ! bSet );
-      vSend(pOperand, pOp, bSet, i_SendNode, tPtnNo);
+      vSend(pOperand, pOp, i_SendNode, tPtnNo);
       AM::vDeleteOperand(pOperand);
       break;
     }
@@ -467,8 +447,7 @@ void Parcel::vSendToAllPartitions(Operand* pOperand,  Op* pOp,
         // sendNode is the partition node
         i8 i_SendNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
         pOp->vSendNode(i_SendNode);
-        ASSERT( ! bSet );
-        vSend(pOperand, pOp, bSet, i_SendNode, tPtnNo);
+        vSend(pOperand, pOp, i_SendNode, tPtnNo);
       }
       AM::vDeleteOperand(pOperand);
       break;
@@ -486,8 +465,7 @@ void Parcel::vSendToAllPartitions(Operand* pOperand,  Op* pOp,
       i8 i_SendNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
       pOp->vSendNode(i_SendNode);
 
-      ASSERT( ! bSet );
-      vSend(pOperand, pOp, bSet, i_SendNode, tPtnNo);
+      vSend(pOperand, pOp, i_SendNode, tPtnNo);
       AM::vDeleteOperand(pOperand);
       break;
     }
@@ -501,7 +479,7 @@ void Parcel::vSendToAllPartitions(Operand* pOperand,  Op* pOp,
 /* send the operand to a specific node                                        */
 /*----------------------------------------------------------------------------*/
 void Parcel::vSendToNode(Operand* pOperand,  Op* pOp,
-                         Task* pTriggeringTask, bool bSet,
+                         Task* pTriggeringTask,
                          eXK eSendKind, i8 i_Node)
 {
   UNUSED(pTriggeringTask);
@@ -518,7 +496,7 @@ void Parcel::vSendToNode(Operand* pOperand,  Op* pOp,
   
   ASSERT(pNextStage->nItems() == AM::pGrid()->nConnectedNodes());
   
-  vSend(pOperand,pOp,bSet,i_Node,C_UNKNOWN);
+  vSend(pOperand,pOp,i_Node,C_UNKNOWN);
   
   // delete the operand
   AM::vDeleteOperand(pOperand);
@@ -528,7 +506,7 @@ void Parcel::vSendToNode(Operand* pOperand,  Op* pOp,
 /* send the operand to the origin                                             */
 /*----------------------------------------------------------------------------*/
 void Parcel::vSendToOrigin(Operand* pOperand, Op* pOp,
-                           Task* pTriggeringTask, bool bSet,
+                           Task* pTriggeringTask,
                            eXK eSendKind)
 {
   UNUSED(pTriggeringTask);
@@ -541,7 +519,7 @@ void Parcel::vSendToOrigin(Operand* pOperand, Op* pOp,
   i8 i_SendNode = pPipeline->i_Origin();
   pOp->vSendNode(i_SendNode);
   
-  vSend(pOperand, pOp, bSet, i_SendNode, C_UNKNOWN);
+  vSend(pOperand, pOp, i_SendNode, C_UNKNOWN);
   
   // delete the operand
   AM::vDeleteOperand(pOperand);
@@ -551,7 +529,7 @@ void Parcel::vSendToOrigin(Operand* pOperand, Op* pOp,
 /* send the operand to a partition                                            */
 /*----------------------------------------------------------------------------*/
 void Parcel::vSendToPartition(Operand* pOperand, Op* pOp,
-                              Task* pTriggeringTask, bool bSet,
+                              Task* pTriggeringTask,
                               eXK eSendKind, tPN tPtnNo)
 {
   i8 i_Robin;
@@ -590,7 +568,7 @@ void Parcel::vSendToPartition(Operand* pOperand, Op* pOp,
   i8 i_SendNode = AM::pPtnMap()->i_WhichNode(tSendPtn);
   pOp->vSendNode(i_SendNode);
 
-  vSend(pOperand,pOp,bSet,i_SendNode,tSendPtn);
+  vSend(pOperand,pOp,i_SendNode,tSendPtn);
   
   // delete the operand
   AM::vDeleteOperand(pOperand);
