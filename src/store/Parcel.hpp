@@ -33,6 +33,13 @@ namespace STORE
     void  operator delete(void*);
   
     Parcel(void);
+    Parcel(Operand* pOperand,
+           i8 iParentJobId,
+           ePX eCrossTopo,
+           i8 iNextStage,
+           i8 iNextOp,
+           i8 i_Node,
+           tPN tPtnNo);
     ~Parcel(void) noexcept(false);
     
     static Parcel* pNewParcel(Operand* pOperand,

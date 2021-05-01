@@ -51,6 +51,39 @@ Parcel::Parcel(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* new an operand job                                                         */
+/*----------------------------------------------------------------------------*/
+Parcel::Parcel(Operand* pOperand,
+               i8 iParentJobId,
+               ePX eCrossTopo,
+               i8 iNextStage,
+               i8 iNextOp,
+               i8 i_Node,
+               tPN tPtnNo)
+: Object(CN_PARCEL)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+  
+  m_iPipelineJobId = iParentJobId;
+  m_i_Node         = i_Node;
+  m_tPtnNo         = tPtnNo;
+  
+  m_eCrossTopo     = eCrossTopo;
+  m_iNextStage     = iNextStage;
+  m_iNextOp        = iNextOp;
+  
+  m_nObjects = 0;
+  for (i8 i_Obj = 0; i_Obj < C_MAX_PARCEL_OBJ; i_Obj++)
+    m_pObjects[i_Obj] = nullptr;
+  
+  vSetOperand(pOperand);
+
+  _checkInitialised_(CN_PARCEL);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Parcel::~Parcel(void) noexcept(false)
@@ -71,16 +104,22 @@ Parcel* Parcel::pNewParcel(Operand* pOperand,
                                          ePX eCrossTopo,i8 iNextStage,i8 iNextOp,
                                          i8 i_Node,tPN tPtnNo)
 {
-  Parcel* pParcel = new Parcel;
+  Parcel* pParcel = new Parcel(pOperand,
+                               iPipelineJobId,
+                               eCrossTopo,
+                               iNextStage,
+                               iNextOp,
+                               i_Node,
+                               tPtnNo);
   
-  pParcel->m_iPipelineJobId = iPipelineJobId;
-  pParcel->m_i_Node         = i_Node;
-  pParcel->m_tPtnNo         = tPtnNo;
-  pParcel->vSetOperand(pOperand);
-  
-  pParcel->m_eCrossTopo     = eCrossTopo;
-  pParcel->m_iNextStage     = iNextStage;
-  pParcel->m_iNextOp        = iNextOp;
+//  pParcel->m_iPipelineJobId = iPipelineJobId;
+//  pParcel->m_i_Node         = i_Node;
+//  pParcel->m_tPtnNo         = tPtnNo;
+//  pParcel->vSetOperand(pOperand);
+//
+//  pParcel->m_eCrossTopo     = eCrossTopo;
+//  pParcel->m_iNextStage     = iNextStage;
+//  pParcel->m_iNextOp        = iNextOp;
   
   return pParcel;
 }
