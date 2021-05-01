@@ -1278,7 +1278,7 @@ void AM::vWriteLog(void) {
 /*----------------------------------------------------------------------------*/
 /* get pSession given i_Session                                               */
 /*----------------------------------------------------------------------------*/
-void AM::vSend(Task* pTask, Node* pSendNode, Parcel* pParcel)
+void AM::vSendParcel(Parcel* pParcel, Node* pSendNode, Task* pTask)
 {
   pTask->pJob()->pLogicUnit_job()->m_xpSendNode = pSendNode;
   
