@@ -239,21 +239,19 @@ void Parcel::vSendOperand(Operand* pOperand, Op* pOp, i8 i_Node, tPN tPtnNo)
   i8 i_OtherStage = pOp->iOtherStage();
   i8 i_OtherOp = pOp->iOtherOp();
 
-  Parcel* pParcel = AM::pNewParcel(pPipelineJob,
-                                   pOperand, eCrossTopo, i_NextStage,
-                                   i_NextOp, i_Node, tPtnNo);
+  Parcel* pParcel = AM::pNewParcel(pPipelineJob,pOperand,eCrossTopo,
+                                   i_NextStage,i_NextOp,i_Node,tPtnNo);
 
   AM::vSendParcel(pParcel);
-  AM::vDeleteParcel(pParcel);
+  delete pParcel;
 
   if (i_OtherStage != C_UNKNOWN) {
 
-    // new an send operand
     pParcel = AM::pNewParcel(pPipelineJob,pOperand,eCrossTopo,
                              i_OtherStage,i_OtherOp,i_Node,tPtnNo);
 
     AM::vSendParcel(pParcel);
-    AM::vDeleteParcel(pParcel);
+    delete pParcel;
   }
 }
 

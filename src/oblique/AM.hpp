@@ -458,7 +458,6 @@ namespace OBLIQUE
     static void vNapMsec(i8 nMilliSeconds, eCN eCallingClass);
     static void vNapUsec(i8 nMicroSeconds, eCN eCallingClass);
     static i8   iNextObjectNo(eCN eClassNo);
-    static void vDeleteParcel(Parcel* pParcel);
     static Operand* pDuplicateOperand(Operand* pOperand);
     static Parcel* pNewParcel(Job* pParentJob, Operand* pOperand,
                                         ePX eCrossTopo, i8 iNextStage, i8 iNextOp,
