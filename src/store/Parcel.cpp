@@ -268,6 +268,8 @@ void Parcel::vSend(Operand* pOperand, Op* pOp, Parcel* pParcel, bool bSet)
 
   if (bSet) {
 
+    NEVER_REACH;
+    
     while (pOperand) {
 
       // set the operand in the job
