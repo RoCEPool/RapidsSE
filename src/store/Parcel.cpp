@@ -230,7 +230,7 @@ void Parcel::vSetOperand(Operand *pOperand)
 /*----------------------------------------------------------------------------*/
 /* send the operand                                                           */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSend(Operand* pOperand, Op* pOp, i8 i_Node, tPN tPtnNo)
+void Parcel::vSendOperand(Operand* pOperand, Op* pOp, i8 i_Node, tPN tPtnNo)
 {
   Job* pPipelineJob = pOp->pPipelineJob();
   ePX eCrossTopo = pOp->eCrossTopo();      // cross topology
@@ -243,7 +243,7 @@ void Parcel::vSend(Operand* pOperand, Op* pOp, i8 i_Node, tPN tPtnNo)
                                    pOperand, eCrossTopo, i_NextStage,
                                    i_NextOp, i_Node, tPtnNo);
 
-  vSend(pOperand,pOp,pParcel);
+  vSendParcel(pParcel,pOp);
 
   if (i_OtherStage != C_UNKNOWN) {
 
@@ -251,14 +251,14 @@ void Parcel::vSend(Operand* pOperand, Op* pOp, i8 i_Node, tPN tPtnNo)
     pParcel = AM::pNewParcel(pPipelineJob,pOperand,eCrossTopo,
                              i_OtherStage,i_OtherOp,i_Node,tPtnNo);
 
-    vSend(pOperand,pOp,pParcel);
+    vSendParcel(pParcel,pOp);
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /* send the operand                                                           */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSend(Operand* pOperand, Op* pOp, Parcel* pParcel)
+void Parcel::vSendParcel(Parcel* pParcel, Op* pOp)
 {
   // get the send node in the task
   Node* pSendNode = AM::pGrid()->pGetNode(pParcel->m_i_Node);
@@ -303,7 +303,7 @@ void Parcel::vSendToAllNodes(Operand* pOperand, Op* pOp,
   //ASSERT(pNextStage->nItems() == AM::pGrid()->nBootNodes());
   
   for (i8 i_Node = 0; i_Node < pNextStage->nItems(); i_Node++) {
-    vSend(pOperand,pOp,i_Node,C_UNKNOWN);
+    vSendOperand(pOperand,pOp,i_Node,C_UNKNOWN);
   }
   
   // delete the operand
@@ -348,7 +348,7 @@ void Parcel::vSendToAllOriginPartitions(Operand* pOperand, Op* pOp,
 
       if ( i_SendNode == pPipeline->i_Origin()) {
         
-        vSend(pOperand, pOp, i_SendNode, tPtnNo);
+        vSendOperand(pOperand, pOp, i_SendNode, tPtnNo);
         AM::vDeleteOperand(pOperand);
         
       }
@@ -370,7 +370,7 @@ void Parcel::vSendToAllOriginPartitions(Operand* pOperand, Op* pOp,
         i8 i_SendNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
         pOp->vSendNode(i_SendNode);
         if ( i_SendNode == pPipeline->i_Origin()) {
-          vSend(pOperand, pOp, i_SendNode, tPtnNo);
+          vSendOperand(pOperand, pOp, i_SendNode, tPtnNo);
         }
         
       }
@@ -413,7 +413,7 @@ void Parcel::vSendToAllPartitions(Operand* pOperand,  Op* pOp,
       i8 i_SendNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
       pOp->vSendNode(i_SendNode);
 
-      vSend(pOperand, pOp, i_SendNode, tPtnNo);
+      vSendOperand(pOperand, pOp, i_SendNode, tPtnNo);
       AM::vDeleteOperand(pOperand);
 
       break;
@@ -433,7 +433,7 @@ void Parcel::vSendToAllPartitions(Operand* pOperand,  Op* pOp,
       pOp->vSendNode(i_SendNode);
       RASSERT(i_SendNode == AM::pGrid()->iThisNode());
       
-      vSend(pOperand, pOp, i_SendNode, tPtnNo);
+      vSendOperand(pOperand, pOp, i_SendNode, tPtnNo);
       AM::vDeleteOperand(pOperand);
       break;
     }
@@ -447,7 +447,7 @@ void Parcel::vSendToAllPartitions(Operand* pOperand,  Op* pOp,
         // sendNode is the partition node
         i8 i_SendNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
         pOp->vSendNode(i_SendNode);
-        vSend(pOperand, pOp, i_SendNode, tPtnNo);
+        vSendOperand(pOperand, pOp, i_SendNode, tPtnNo);
       }
       AM::vDeleteOperand(pOperand);
       break;
@@ -465,7 +465,7 @@ void Parcel::vSendToAllPartitions(Operand* pOperand,  Op* pOp,
       i8 i_SendNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
       pOp->vSendNode(i_SendNode);
 
-      vSend(pOperand, pOp, i_SendNode, tPtnNo);
+      vSendOperand(pOperand, pOp, i_SendNode, tPtnNo);
       AM::vDeleteOperand(pOperand);
       break;
     }
@@ -496,7 +496,7 @@ void Parcel::vSendToNode(Operand* pOperand,  Op* pOp,
   
   ASSERT(pNextStage->nItems() == AM::pGrid()->nConnectedNodes());
   
-  vSend(pOperand,pOp,i_Node,C_UNKNOWN);
+  vSendOperand(pOperand,pOp,i_Node,C_UNKNOWN);
   
   // delete the operand
   AM::vDeleteOperand(pOperand);
@@ -519,7 +519,7 @@ void Parcel::vSendToOrigin(Operand* pOperand, Op* pOp,
   i8 i_SendNode = pPipeline->i_Origin();
   pOp->vSendNode(i_SendNode);
   
-  vSend(pOperand, pOp, i_SendNode, C_UNKNOWN);
+  vSendOperand(pOperand, pOp, i_SendNode, C_UNKNOWN);
   
   // delete the operand
   AM::vDeleteOperand(pOperand);
@@ -568,7 +568,7 @@ void Parcel::vSendToPartition(Operand* pOperand, Op* pOp,
   i8 i_SendNode = AM::pPtnMap()->i_WhichNode(tSendPtn);
   pOp->vSendNode(i_SendNode);
 
-  vSend(pOperand,pOp,i_SendNode,tSendPtn);
+  vSendOperand(pOperand,pOp,i_SendNode,tSendPtn);
   
   // delete the operand
   AM::vDeleteOperand(pOperand);
