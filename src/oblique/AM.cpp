@@ -1276,28 +1276,27 @@ void AM::vWriteLog(void) {
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get pSession given i_Session                                               */
+/* send parcet to given node                                                  */
 /*----------------------------------------------------------------------------*/
-void AM::vSendParcel(Parcel* pParcel, Node* pSendNode, Task* pTask)
+void AM::vSendParcel(Parcel* pParcel, Node* pSendNode) //, Task* pTask)
 {
-  pTask->pJob()->pLogicUnit_job()->m_xpSendNode = pSendNode;
+  SysCall oSysCall;
   
-  // grab socket wite lock
+  //pTask->pJob()->pLogicUnit_job()->m_xpSendNode = pSendNode;
+  
   Socket* pSocket = pSendNode->pSendSocket();
+
   pSocket->vGrabWrite();
   
-  SysCall oSysCall;
   i8 nObjectSize = gxaSizeHeap[pParcel->eGetClassNo()].m_nClassSize;
   bool bResult = pSocket->bSendTo(pParcel, nObjectSize, oSysCall);
   
   Operand* pOperand = pParcel->pGetOperand();
-  
   nObjectSize = gxaSizeHeap[pOperand->eGetClassNo()].m_nClassSize;
   bResult = pSocket->bSendTo(pOperand, nObjectSize, oSysCall);
   
   // drop the socket write lock
   pSocket->vDropWrite();
-  
 }
 
 /*----------------------------------------------------------------------------*/

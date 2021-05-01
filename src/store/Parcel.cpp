@@ -266,7 +266,7 @@ void Parcel::vSendParcel(Parcel* pParcel, Op* pOp)
   Job* pOpJob = pOp->pOpJob();
 
   // send the operand job across the sendNode
-  AM::vSendParcel(pParcel, pSendNode, AM::pExecutingTask(pOpJob));
+  AM::vSendParcel(pParcel, pSendNode); // , AM::pExecutingTask(pOpJob));
 
   // delete the sendOperand
   AM::vDeleteParcel(pParcel);
