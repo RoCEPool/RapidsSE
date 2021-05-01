@@ -6,6 +6,7 @@
 
 #include "ePX.h"
 
+#include "Job.hpp"
 #include "Op.hpp"
 #include "OpSpec.hpp"
 #include "Parcel.hpp"
@@ -239,17 +240,15 @@ void Parcel::vSendOperand(Operand* pOperand, Op* pOp, i8 i_Node, tPN tPtnNo)
   i8 i_OtherStage = pOp->iOtherStage();
   i8 i_OtherOp = pOp->iOtherOp();
 
-  Parcel* pParcel = AM::pNewParcel(pPipelineJob,pOperand,eCrossTopo,
-                                   i_NextStage,i_NextOp,i_Node,tPtnNo);
-
+  Parcel* pParcel = pNewParcel(pOperand,pPipelineJob->iJobId(),eCrossTopo,
+                               i_NextStage,i_NextOp,i_Node,tPtnNo);
   AM::vSendParcel(pParcel);
   delete pParcel;
 
   if (i_OtherStage != C_UNKNOWN) {
 
-    pParcel = AM::pNewParcel(pPipelineJob,pOperand,eCrossTopo,
-                             i_OtherStage,i_OtherOp,i_Node,tPtnNo);
-
+    pParcel = pNewParcel(pOperand,pPipelineJob->iJobId(),eCrossTopo,
+                         i_OtherStage,i_OtherOp,i_Node,tPtnNo);
     AM::vSendParcel(pParcel);
     delete pParcel;
   }
