@@ -249,6 +249,9 @@ void Parcel::vSendAsParcel(Operand* pOperand,
 }
 
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* send the operand                                                           */
 /*----------------------------------------------------------------------------*/
 void Parcel::vSendToAllNodes(Operand* pOperand,
@@ -313,9 +316,6 @@ void Parcel::vSendToAllOriginPartitions(Operand* pOperand,
         
         vSendAsParcel(pOperand, pSrcOp, iDstNode, tPtnNo);
       }
-
-      AM::vDeleteOperand(pOperand);
-
       break;
     }
       
@@ -337,13 +337,14 @@ void Parcel::vSendToAllOriginPartitions(Operand* pOperand,
         }
         
       }
-      AM::vDeleteOperand(pOperand);
     }
     break;
       
     default:
       ASSERT(0);
   }
+  
+  AM::vDeleteOperand(pOperand);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -377,8 +378,6 @@ void Parcel::vSendToAllPartitions(Operand* pOperand,
       pSrcOp->vSendNode(iDstNode);
 
       vSendAsParcel(pOperand, pSrcOp, iDstNode, tPtnNo);
-      AM::vDeleteOperand(pOperand);
-
       break;
     }
       
@@ -397,7 +396,6 @@ void Parcel::vSendToAllPartitions(Operand* pOperand,
       RASSERT(iDstNode == AM::pGrid()->iThisNode());
       
       vSendAsParcel(pOperand, pSrcOp, iDstNode, tPtnNo);
-      AM::vDeleteOperand(pOperand);
       break;
     }
       
@@ -412,7 +410,6 @@ void Parcel::vSendToAllPartitions(Operand* pOperand,
         pSrcOp->vSendNode(iDstNode);
         vSendAsParcel(pOperand, pSrcOp, iDstNode, tPtnNo);
       }
-      AM::vDeleteOperand(pOperand);
       break;
     }
       
@@ -429,13 +426,13 @@ void Parcel::vSendToAllPartitions(Operand* pOperand,
       pSrcOp->vSendNode(iDstNode);
 
       vSendAsParcel(pOperand, pSrcOp, iDstNode, tPtnNo);
-      AM::vDeleteOperand(pOperand);
       break;
     }
       
     default:
       ASSERT(0);
   }
+  AM::vDeleteOperand(pOperand);
 }
 
 /*----------------------------------------------------------------------------*/
