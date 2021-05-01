@@ -200,6 +200,8 @@ Op* Stage::pPipeOutOp(ePX eCrossTopo, i8 i_Node, tPN tPtnNo, i8 i_Op)
   Stream* pNdeStream = nullptr;
   Stream* pPtnStream = nullptr;
   
+  RASSERT(i_Node == AM::iThisNodeNo());
+  
   switch (eCrossTopo) {
       
     case PX_ALL_NODES_TO_ORIGIN:

@@ -234,6 +234,8 @@ void Op::vAppend(Operand* pOperand, Task* pTriggeringTask, bool bSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
+  RASSERT(! bSet);
+
   if (m_bTraceOp)
     vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
            m_sOpNm.szStz(),
@@ -259,6 +261,8 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask, bool bSet)
 //         m_sOpNm.szStz(),
 //         pOperand,
 //         aCN[pOperand->eGetClassNo()]);
+  
+  RASSERT(! bSet);
   
   vGrabTaskLock();
   if (bSet) {
@@ -297,6 +301,8 @@ void Op::vAppendRight(Operand* pOperand, Task* pTriggeringTask, bool bSet)
   //         m_sOpNm(),
   //         pOperand,
   //         aCN[pOperand->eGetClassNo()]);
+  
+  RASSERT(! bSet);
   
   vGrabTaskLock();
   
