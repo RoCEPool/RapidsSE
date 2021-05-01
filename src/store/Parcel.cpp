@@ -71,7 +71,6 @@ Parcel::~Parcel(void) noexcept(false)
 /*-- Static Functions --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-
 /*----------------------------------------------------------------------------*/
 /* send parcel                                                                */
 /*----------------------------------------------------------------------------*/
@@ -79,6 +78,8 @@ void Parcel::vSendParcel(Operand* pOperand,
                          Op*      pOp,
                          Task*    pTriggeringTask)
 {
+  _static_
+  
   Pipeline* pPipeline = pOp->pPipeline();
   i8 i_NextStage = pOp->iNextStage();
 
@@ -100,7 +101,7 @@ void Parcel::vSendParcel(Operand* pOperand,
   ePX eCrossTopo = pOp->eCrossTopo();      // cross topology
   tPN tPtn = pOp->tPtnNo();
   
-  switch(eCrossTopo) {
+  switch (eCrossTopo) {
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ALL_NODES_TO_ORIGIN:
@@ -216,10 +217,16 @@ void Parcel::vSetOperand(Operand *pOperand)
 
 
 /*----------------------------------------------------------------------------*/
+/*-- Private Static Functions ------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* send the operand                                                           */
 /*----------------------------------------------------------------------------*/
 void Parcel::vSendOperand(Operand* pOperand, Op* pOp, i8 i_Node, tPN tPtnNo)
 {
+  _static_
+  
   Job* pPipelineJob = pOp->pPipelineJob();
   ePX eCrossTopo = pOp->eCrossTopo();      // cross topology
   i8 i_NextStage = pOp->iNextStage();
@@ -241,23 +248,16 @@ void Parcel::vSendOperand(Operand* pOperand, Op* pOp, i8 i_Node, tPN tPtnNo)
   }
 }
 
-
-
-
-
-
-
-
-
-
-
 /*----------------------------------------------------------------------------*/
 /* send the operand                                                           */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendToAllNodes(Operand* pOperand, Op* pOp,
+void Parcel::vSendToAllNodes(Operand* pOperand,
+                             Op* pOp,
                              Task* pTriggeringTask,
                              eXK eSendKind)
 {
+  _static_
+  
   UNUSED(pTriggeringTask);
   UNUSED(eSendKind);
 
@@ -283,10 +283,13 @@ void Parcel::vSendToAllNodes(Operand* pOperand, Op* pOp,
 /*----------------------------------------------------------------------------*/
 /* send the operand                                                           */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendToAllOriginPartitions(Operand* pOperand, Op* pOp,
+void Parcel::vSendToAllOriginPartitions(Operand* pOperand,
+                                        Op* pOp,
                                         Task* pTriggeringTask,
                                         eXK eSendKind)
 {
+  _static_
+  
   UNUSED(pTriggeringTask);
 
   tPN tPtnNo;
@@ -356,10 +359,13 @@ void Parcel::vSendToAllOriginPartitions(Operand* pOperand, Op* pOp,
 /*----------------------------------------------------------------------------*/
 /* send the operand                                                           */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendToAllPartitions(Operand* pOperand,  Op* pOp,
+void Parcel::vSendToAllPartitions(Operand* pOperand,
+                                  Op* pOp,
                                   Task* pTriggeringTask,
                                   eXK eSendKind)
 {
+  _static_
+  
   UNUSED(pTriggeringTask);
 
   tPN tPtnNo;
@@ -448,10 +454,14 @@ void Parcel::vSendToAllPartitions(Operand* pOperand,  Op* pOp,
 /*----------------------------------------------------------------------------*/
 /* send the operand to a specific node                                        */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendToNode(Operand* pOperand,  Op* pOp,
+void Parcel::vSendToNode(Operand* pOperand,
+                         Op* pOp,
                          Task* pTriggeringTask,
-                         eXK eSendKind, i8 i_Node)
+                         eXK eSendKind,
+                         i8 i_Node)
 {
+  _static_
+  
   UNUSED(pTriggeringTask);
   UNUSED(eSendKind);
 
@@ -475,10 +485,13 @@ void Parcel::vSendToNode(Operand* pOperand,  Op* pOp,
 /*----------------------------------------------------------------------------*/
 /* send the operand to the origin                                             */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendToOrigin(Operand* pOperand, Op* pOp,
+void Parcel::vSendToOrigin(Operand* pOperand,
+                           Op* pOp,
                            Task* pTriggeringTask,
                            eXK eSendKind)
 {
+  _static_
+  
   UNUSED(pTriggeringTask);
   UNUSED(eSendKind);
 
@@ -498,10 +511,14 @@ void Parcel::vSendToOrigin(Operand* pOperand, Op* pOp,
 /*----------------------------------------------------------------------------*/
 /* send the operand to a partition                                            */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendToPartition(Operand* pOperand, Op* pOp,
+void Parcel::vSendToPartition(Operand* pOperand,
+                              Op* pOp,
                               Task* pTriggeringTask,
-                              eXK eSendKind, tPN tPtnNo)
+                              eXK eSendKind,
+                              tPN tPtnNo)
 {
+  _static_
+  
   i8 i_Robin;
   
   UNUSED(pTriggeringTask);

@@ -57,7 +57,7 @@ namespace STORE
   
   
   
-  //private:
+  private:
 
     static void vSendOperand(Operand* pOperand, Op* pOp, i8 i_Node, tPN tPtnNo);
   
