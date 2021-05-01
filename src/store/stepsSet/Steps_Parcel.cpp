@@ -64,7 +64,6 @@ void Step::vParcelPipeOut(void)
   
   // get the op to forward to depending on the cross topology
   Op* pOp = pStage->pPipeOutOp(pParcel->m_eCrossTopo,
-                               pParcel->m_i_Node,
                                pParcel->m_tPtnNo,
                                pParcel->m_iNextOp);
   

@@ -1101,7 +1101,6 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
 
   // get the op to forward to depending on the cross topology
   Op* pOp = pStage->pPipeOutOp(m_eCrossTopo,
-                               m_i_Node,
                                m_tPtnNo,
                                m_iNextOp);
   if (m_bAppendRight)

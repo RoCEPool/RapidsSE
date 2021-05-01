@@ -34,7 +34,7 @@ namespace STORE
     Stream* pGetNodeStream(i8 i_Node);
     i8      nOpsOnNode(i8 iNode);
     Pipeline* pPipeline(void);
-    Op*     pPipeOutOp(ePX eCrossTopo, i8 i_Node, tPN tPtnNo, i8 i_Op);
+    Op*     pPipeOutOp(ePX eCrossTopo, tPN tDstPtnNo, i8 i_DstOp);
     Stz*    szStageNm(void);
     StageSpec* pStageSpec(void);
     void    vStartPipeline(Task* pTriggeringTask);
