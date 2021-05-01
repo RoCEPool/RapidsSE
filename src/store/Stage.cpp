@@ -194,23 +194,23 @@ Pipeline* Stage::pPipeline(void)
 /*----------------------------------------------------------------------------*/
 /* get pipeOut operator from the stage depending on cross topology            */
 /*----------------------------------------------------------------------------*/
-Op* Stage::pPipeOutOp(ePX eCrossTopo, i8 i_Node, tPN tPtnNo, i8 i_Op)
+Op* Stage::pPipeOutOp(ePX eCrossTopo, i8 , tPN tPtnNo, i8 i_Op)
 {
   Op* pOp = nullptr;
   Stream* pNdeStream = nullptr;
   Stream* pPtnStream = nullptr;
   
-  RASSERT(i_Node == AM::iThisNodeNo());
+  i8 i_ThisNode = AM::iThisNodeNo();
   
   switch (eCrossTopo) {
       
     case PX_ALL_NODES_TO_ORIGIN:
     case PX_ALL_NODES_TO_ALL_NODES:
     case PX_ALL_PARTITIONS_TO_ORIGIN:
+    case PX_ORIGIN_TO_ALL_NODES:
     case PX_ORIGIN_TO_ORIGIN:
     case PX_SPECIFIC_PARTITION_TO_ORIGIN:
-    case PX_ORIGIN_TO_ALL_NODES:
-      pNdeStream = this->pGetNodeStream(i_Node);
+      pNdeStream = this->pGetNodeStream(i_ThisNode);
       pOp = pNdeStream->pGet(i_Op);
       break;
       
@@ -220,14 +220,14 @@ Op* Stage::pPipeOutOp(ePX eCrossTopo, i8 i_Node, tPN tPtnNo, i8 i_Op)
       break;
       
     case PX_ALL_NODES_TO_ALL_PARTITIONS:
-    case PX_ORIGIN_TO_SPECIFIC_PARTITION:
     case PX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
+    case PX_ORIGIN_TO_SPECIFIC_PARTITION:
       pPtnStream = pGetPartitionStream(tPtnNo);
       pOp = pPtnStream->pGet(i_Op);
       break;
       
     case PX_ALL_PARTITIONS_TO_ALL_NODES:
-      pNdeStream = this->pGetNodeStream(i_Node);
+      pNdeStream = this->pGetNodeStream(i_ThisNode);
       pOp = pNdeStream->pGet(i_Op);
       break;
       
