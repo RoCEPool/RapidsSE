@@ -1053,9 +1053,7 @@ public:
   void vOperandCCollect(void);
   void vOperandCGet(void);
   void vOperandCGetAndClear(void);
-  void vOperandCPipeOutSet(void);
   void vOperandCSet(void);
-  void vOperandCSetFirst(void);
 
   // OperandOoO
   void vOperandOoODelete(void);
