@@ -32,7 +32,6 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Parcel(void);
     Parcel(Operand* pOperand,
            i8 iParentJobId,
            ePX eCrossTopo,
@@ -41,15 +40,7 @@ namespace STORE
            i8 i_Node,
            tPN tPtnNo);
     ~Parcel(void) noexcept(false);
-    
-    static Parcel* pNewParcel(Operand* pOperand,
-                                        i8 iParentJobId,
-                                        ePX eCrossTopo,
-                                        i8 iNextStage,
-                                        i8 iNextOp,
-                                        i8 i_Node,
-                                        tPN tPtnNo);
-    
+        
     static void vSendParcel(Operand* pOperand,
                             Op*      pOp,
                             Task*    pTriggeringTask);
