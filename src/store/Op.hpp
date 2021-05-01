@@ -77,9 +77,9 @@ namespace STORE
     // - - - - - - - - - - - - - - - -
     void vAckJob(void);
     void vAddWorkDone(i8 iWorkDone);
-    void vAppend(Operand* pOperand, Task* pTriggeringTask, bool bSet = false);
-    void vAppendLeft(Operand* pOperand, Task* pTriggeringTask, bool bSet = false);
-    void vAppendRight(Operand* pOperand, Task* pTriggeringTask, bool bSet = false);
+    void vAppend(Operand* pOperand, Task* pTriggeringTask);
+    void vAppendLeft(Operand* pOperand, Task* pTriggeringTask);
+    void vAppendRight(Operand* pOperand, Task* pTriggeringTask);
     bool bAppendRight(void);
     void vAppendToJob(Operand* pOperand);
     Stz* szArgs(void);
@@ -125,7 +125,7 @@ namespace STORE
     bool bPeekQueueOoO(void);
     Pipeline* pPipeline(void);
     Job* pPipelineJob(void);
-    void vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask, bool bSet = false);
+    void vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask);
      void vPipeToOutput(Operand* pOperand);
     Operand* pPopQueue(void);
     Operand* pPopQueueOoO(void);

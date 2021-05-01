@@ -24089,7 +24089,7 @@ void Task::vAddMunged(Task* )
     "  \"OP_burst_EosMarker\" .\n"
     "\n"
     "  operandC[].setFirst\n"
-    "  operandC[].pipeOutSet\n"
+    "  //operandC[].pipeOutSet\n"
     "\n"
     "  ZK_EOSMARKER_handler\n"
     " ;\n"

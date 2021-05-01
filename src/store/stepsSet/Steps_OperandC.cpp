@@ -99,7 +99,7 @@ void Step::vOperandCPipeOutSet(void)
     
   Op* pOp = m_pJob->m_pOp;
   
-  pOp->vPipeToNextOp(*m_pJob->pLogicUnit_job()->m_xpOperandC,this,true);
+  pOp->vPipeToNextOp(*m_pJob->pLogicUnit_job()->m_xpOperandC,this);
   
   m_pJob->pLogicUnit_job()->m_xpOperandC = nullptr;
   
