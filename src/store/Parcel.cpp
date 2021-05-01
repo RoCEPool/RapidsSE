@@ -29,18 +29,18 @@ __aFooterFunction(Parcel)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Parcel::Parcel(Operand* pOperand,
-               i8 iParentJobId,
+               i8 iPipelineJobId,
+               i8 iDstNode,
                ePX eCrossTopo,
                i8 iNextStage,
                i8 iNextOp,
-               i8 i_Node,
                tPN tPtnNo)
 : Object(CN_PARCEL)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
   
-  m_iPipelineJobId = iParentJobId;
-  m_i_Node         = i_Node;
+  m_iPipelineJobId = iPipelineJobId;
+  m_iDstNode       = iDstNode;
   m_tPtnNo         = tPtnNo;
   
   m_eCrossTopo     = eCrossTopo;
@@ -136,8 +136,8 @@ void Parcel::vSendOut(Operand* pOperand,
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ALL_PARTITIONS_TO_ALL_NODES: {
-      i8 i_Node = AM::pPtnMap()->i_WhichNode(tPtn);
-      vSendToNode(pOperand,pSrcOp,pTriggeringTask,eSendKind,i_Node);
+      i8 iDstNode = AM::pPtnMap()->i_WhichNode(tPtn);
+      vSendToNode(pOperand,pSrcOp,pTriggeringTask,eSendKind,iDstNode);
       break;
     }
       
@@ -225,7 +225,7 @@ void Parcel::vSetOperand(Operand *pOperand)
 /*----------------------------------------------------------------------------*/
 void Parcel::vSendOperand(Operand* pOperand,
                           Op* pSrcOp,
-                          i8 i_Node,
+                          i8 iDstNode,
                           tPN tPtnNo)
 {
   _static_
@@ -237,15 +237,16 @@ void Parcel::vSendOperand(Operand* pOperand,
   i8 i_OtherStage = pSrcOp->iOtherStage();
   i8 i_OtherOp = pSrcOp->iOtherOp();
 
-  Parcel* pParcel = new Parcel(pOperand,pPipelineJob->iJobId(),eCrossTopo,
-                               i_NextStage,i_NextOp,i_Node,tPtnNo);
+  Parcel* pParcel = new Parcel(pOperand,
+                               pPipelineJob->iJobId(),iDstNode,eCrossTopo,
+                               i_NextStage,i_NextOp,tPtnNo);
   AM::vSendParcel(pParcel);
   delete pParcel;
 
   if (i_OtherStage != C_UNKNOWN) {
 
-    pParcel = new Parcel(pOperand,pPipelineJob->iJobId(),eCrossTopo,
-                         i_OtherStage,i_OtherOp,i_Node,tPtnNo);
+    pParcel = new Parcel(pOperand,pPipelineJob->iJobId(),iDstNode,eCrossTopo,
+                         i_OtherStage,i_OtherOp,tPtnNo);
     AM::vSendParcel(pParcel);
     delete pParcel;
   }
@@ -275,8 +276,8 @@ void Parcel::vSendToAllNodes(Operand* pOperand,
   
   //ASSERT(pNextStage->nItems() == AM::pGrid()->nBootNodes());
   
-  for (i8 i_Node = 0; i_Node < pNextStage->nItems(); i_Node++) {
-    vSendOperand(pOperand,pSrcOp,i_Node,C_UNKNOWN);
+  for (i8 iDstNode = 0; iDstNode < pNextStage->nItems(); iDstNode++) {
+    vSendOperand(pOperand,pSrcOp,iDstNode,C_UNKNOWN);
   }
   
   // delete the operand
@@ -318,13 +319,13 @@ void Parcel::vSendToAllOriginPartitions(Operand* pOperand,
       tPtnNo = PtnMap::tStreamToLglPtnNo(i_TablePtn);
       
       // sendNode is the partition node
-      i8 i_SendNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
-      ASSERT(i_SendNode == pPipeline->i_Origin());
-      pSrcOp->vSendNode(i_SendNode);
+      i8 iDstNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
+      ASSERT(iDstNode == pPipeline->i_Origin());
+      pSrcOp->vSendNode(iDstNode);
 
-      if ( i_SendNode == pPipeline->i_Origin()) {
+      if ( iDstNode == pPipeline->i_Origin()) {
         
-        vSendOperand(pOperand, pSrcOp, i_SendNode, tPtnNo);
+        vSendOperand(pOperand, pSrcOp, iDstNode, tPtnNo);
         AM::vDeleteOperand(pOperand);
         
       }
@@ -343,10 +344,10 @@ void Parcel::vSendToAllOriginPartitions(Operand* pOperand,
         
         // sendNode is the partition node
     
-        i8 i_SendNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
-        pSrcOp->vSendNode(i_SendNode);
-        if ( i_SendNode == pPipeline->i_Origin()) {
-          vSendOperand(pOperand, pSrcOp, i_SendNode, tPtnNo);
+        i8 iDstNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
+        pSrcOp->vSendNode(iDstNode);
+        if ( iDstNode == pPipeline->i_Origin()) {
+          vSendOperand(pOperand, pSrcOp, iDstNode, tPtnNo);
         }
         
       }
@@ -389,10 +390,10 @@ void Parcel::vSendToAllPartitions(Operand* pOperand,
       tPtnNo = pDataBuffer->tPtnNo();
       
       // sendNode is the partition node
-      i8 i_SendNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
-      pSrcOp->vSendNode(i_SendNode);
+      i8 iDstNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
+      pSrcOp->vSendNode(iDstNode);
 
-      vSendOperand(pOperand, pSrcOp, i_SendNode, tPtnNo);
+      vSendOperand(pOperand, pSrcOp, iDstNode, tPtnNo);
       AM::vDeleteOperand(pOperand);
 
       break;
@@ -408,11 +409,11 @@ void Parcel::vSendToAllPartitions(Operand* pOperand,
       tPtnNo = PtnMap::tStreamToLglPtnNo(i_TablePtn);
       
       // sendNode is this node
-      i8 i_SendNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
-      pSrcOp->vSendNode(i_SendNode);
-      RASSERT(i_SendNode == AM::pGrid()->iThisNode());
+      i8 iDstNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
+      pSrcOp->vSendNode(iDstNode);
+      RASSERT(iDstNode == AM::pGrid()->iThisNode());
       
-      vSendOperand(pOperand, pSrcOp, i_SendNode, tPtnNo);
+      vSendOperand(pOperand, pSrcOp, iDstNode, tPtnNo);
       AM::vDeleteOperand(pOperand);
       break;
     }
@@ -424,9 +425,9 @@ void Parcel::vSendToAllPartitions(Operand* pOperand,
       for (tPtnNo = 0; tPtnNo < pNextStage->nItems(); tPtnNo++) {
         
         // sendNode is the partition node
-        i8 i_SendNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
-        pSrcOp->vSendNode(i_SendNode);
-        vSendOperand(pOperand, pSrcOp, i_SendNode, tPtnNo);
+        i8 iDstNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
+        pSrcOp->vSendNode(iDstNode);
+        vSendOperand(pOperand, pSrcOp, iDstNode, tPtnNo);
       }
       AM::vDeleteOperand(pOperand);
       break;
@@ -441,10 +442,10 @@ void Parcel::vSendToAllPartitions(Operand* pOperand,
       tPtnNo = i_Robin % AM::nPtnsInGrid();
       
       // sendNode is the partition node
-      i8 i_SendNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
-      pSrcOp->vSendNode(i_SendNode);
+      i8 iDstNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
+      pSrcOp->vSendNode(iDstNode);
 
-      vSendOperand(pOperand, pSrcOp, i_SendNode, tPtnNo);
+      vSendOperand(pOperand, pSrcOp, iDstNode, tPtnNo);
       AM::vDeleteOperand(pOperand);
       break;
     }
@@ -461,7 +462,7 @@ void Parcel::vSendToNode(Operand* pOperand,
                          Op* pSrcOp,
                          Task* pTriggeringTask,
                          eXK eSendKind,
-                         i8 i_Node)
+                         i8 iDstNode)
 {
   _static_
   
@@ -479,7 +480,7 @@ void Parcel::vSendToNode(Operand* pOperand,
   
   ASSERT(pNextStage->nItems() == AM::pGrid()->nConnectedNodes());
   
-  vSendOperand(pOperand,pSrcOp,i_Node,C_UNKNOWN);
+  vSendOperand(pOperand,pSrcOp,iDstNode,C_UNKNOWN);
   
   // delete the operand
   AM::vDeleteOperand(pOperand);
@@ -502,10 +503,10 @@ void Parcel::vSendToOrigin(Operand* pOperand,
   
   Pipeline* pPipeline = pSrcOp->pPipeline();
 
-  i8 i_SendNode = pPipeline->i_Origin();
-  pSrcOp->vSendNode(i_SendNode);
+  i8 iDstNode = pPipeline->i_Origin();
+  pSrcOp->vSendNode(iDstNode);
   
-  vSendOperand(pOperand, pSrcOp, i_SendNode, C_UNKNOWN);
+  vSendOperand(pOperand, pSrcOp, iDstNode, C_UNKNOWN);
   
   // delete the operand
   AM::vDeleteOperand(pOperand);
@@ -555,10 +556,10 @@ void Parcel::vSendToPartition(Operand* pOperand,
       ASSERT(0);
   }
   
-  i8 i_SendNode = AM::pPtnMap()->i_WhichNode(tSendPtn);
-  pSrcOp->vSendNode(i_SendNode);
+  i8 iDstNode = AM::pPtnMap()->i_WhichNode(tSendPtn);
+  pSrcOp->vSendNode(iDstNode);
 
-  vSendOperand(pOperand,pSrcOp,i_SendNode,tSendPtn);
+  vSendOperand(pOperand,pSrcOp,iDstNode,tSendPtn);
   
   // delete the operand
   AM::vDeleteOperand(pOperand);

@@ -15,7 +15,7 @@ namespace STORE
     
   public:
     i8         m_iPipelineJobId;  // pipeline job id
-    i8         m_i_Node;          // node id
+    i8         m_iDstNode;        // destination node id
     tPN        m_tPtnNo;          // partition (in grid)
     ePX        m_eCrossTopo;      // cross topology
     i8         m_iNextStage;      // next stage
@@ -33,11 +33,11 @@ namespace STORE
     void  operator delete(void*);
   
     Parcel(Operand* pOperand,
-           i8 iParentJobId,
+           i8 iPipelineJobId,
+           i8 iDstNode,
            ePX eCrossTopo,
            i8 iNextStage,
            i8 iNextOp,
-           i8 i_Node,
            tPN tPtnNo);
     ~Parcel(void) noexcept(false);
         

@@ -1283,7 +1283,7 @@ void AM::vSendParcel(Parcel* pParcel)
   SysCall oSysCall;
     
   // get the send node in the task
-  Node* pSendNode = AM::pGrid()->pGetNode(pParcel->m_i_Node);
+  Node* pSendNode = AM::pGrid()->pGetNode(pParcel->m_iDstNode);
 
   Socket* pSocket = pSendNode->pSendSocket();
 
