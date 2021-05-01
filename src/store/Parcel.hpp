@@ -62,7 +62,7 @@ namespace STORE
                               Op* pSrcOp, i8 iDstNode, tPN tPtnNo);
   
     static void vSendToAllNodes(Operand* pOperand,
-                                Op* pSrcOp, eXK eSendKind);
+                                Op* pSrcOp);
   
     static void vSendToAllOriginPartitions(Operand* pOperand,
                                            Op* pSrcOp, eXK eSendKind);
@@ -71,10 +71,10 @@ namespace STORE
                                      Op* pSrcOp, eXK eSendKind);
   
     static void vSendToNode(Operand* pOperand,
-                            Op* pSrcOp, eXK eSendKind, i8 iDstNode);
+                            Op* pSrcOp, i8 iDstNode);
   
     static void vSendToOrigin(Operand* pOperand,
-                              Op* pSrcOp, eXK eSendKind);
+                              Op* pSrcOp);
   
     static void vSendToPartition(Operand* pOperand,
                                  Op* pSrcOp, eXK eSendKind, tPN tPtnNo);
