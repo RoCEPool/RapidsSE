@@ -41,9 +41,9 @@ namespace STORE
            tPN tPtnNo);
     ~Parcel(void) noexcept(false);
         
-    static void vSendParcel(Operand* pOperand,
-                            Op*      pOp,
-                            Task*    pTriggeringTask);
+    static void vSendOut(Operand* pOperand,
+                         Op*      pOp,
+                         Task*    pTriggeringTask);
 
   public:
     void vShow(void);

@@ -781,7 +781,7 @@ void Step::vOperandSendOut(void)
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
   
-  Parcel::vSendParcel(pOperand,pOp,this);
+  Parcel::vSendOut(pOperand,pOp,this);
 
   EXIT();
 }
