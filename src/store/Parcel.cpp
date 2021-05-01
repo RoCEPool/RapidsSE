@@ -312,10 +312,10 @@ void Parcel::vSendToAllOriginPartitions(Operand* pOperand,
       if ( iDstNode == pPipeline->i_Origin()) {
         
         vSendAsParcel(pOperand, pSrcOp, iDstNode, tPtnNo);
-        AM::vDeleteOperand(pOperand);
-        
       }
-      
+
+      AM::vDeleteOperand(pOperand);
+
       break;
     }
       
