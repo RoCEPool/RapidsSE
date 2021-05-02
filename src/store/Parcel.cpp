@@ -160,6 +160,9 @@ void Parcel::vSendOut(Operand* pOperand, Op* pSrcOp)
       RASSERT(0);
   }
 
+  
+  // delete the operand
+  AM::vDeleteOperand(pOperand);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -265,15 +268,9 @@ void Parcel::vSendToAllNodes(Operand* pOperand,
   // get the next stage
   Stage* pNextStage = pPipeline->pGet(i_NextStage);
   RASSERT(pNextStage);
-  
-  //ASSERT(pNextStage->nItems() == AM::pGrid()->nBootNodes());
-  
-  for (i8 iDstNode = 0; iDstNode < pNextStage->nItems(); iDstNode++) {
+    
+  for (i8 iDstNode = 0; iDstNode < pNextStage->nItems(); iDstNode++)
     vSendAsParcel(pOperand,pSrcOp,iDstNode,C_UNKNOWN);
-  }
-  
-  // delete the operand
-  AM::vDeleteOperand(pOperand);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -312,10 +309,9 @@ void Parcel::vSendToAllOriginPartitions(Operand* pOperand,
       ASSERT(iDstNode == pPipeline->i_Origin());
       pSrcOp->vSendNode(iDstNode);
 
-      if ( iDstNode == pPipeline->i_Origin()) {
-        
+      if (iDstNode == pPipeline->i_Origin())
         vSendAsParcel(pOperand, pSrcOp, iDstNode, tPtnNo);
-      }
+  
       break;
     }
       
@@ -332,10 +328,8 @@ void Parcel::vSendToAllOriginPartitions(Operand* pOperand,
     
         i8 iDstNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
         pSrcOp->vSendNode(iDstNode);
-        if ( iDstNode == pPipeline->i_Origin()) {
+        if ( iDstNode == pPipeline->i_Origin())
           vSendAsParcel(pOperand, pSrcOp, iDstNode, tPtnNo);
-        }
-        
       }
     }
     break;
@@ -343,8 +337,6 @@ void Parcel::vSendToAllOriginPartitions(Operand* pOperand,
     default:
       ASSERT(0);
   }
-  
-  AM::vDeleteOperand(pOperand);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -432,7 +424,6 @@ void Parcel::vSendToAllPartitions(Operand* pOperand,
     default:
       ASSERT(0);
   }
-  AM::vDeleteOperand(pOperand);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -454,9 +445,6 @@ void Parcel::vSendToNode(Operand* pOperand,
   ASSERT(pNextStage->nItems() == AM::pGrid()->nConnectedNodes());
   
   vSendAsParcel(pOperand,pSrcOp,iDstNode,C_UNKNOWN);
-  
-  // delete the operand
-  AM::vDeleteOperand(pOperand);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -473,9 +461,6 @@ void Parcel::vSendToOrigin(Operand* pOperand,
   pSrcOp->vSendNode(iDstNode);
   
   vSendAsParcel(pOperand, pSrcOp, iDstNode, C_UNKNOWN);
-  
-  // delete the operand
-  AM::vDeleteOperand(pOperand);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -492,14 +477,15 @@ void Parcel::vSendToPartition(Operand* pOperand,
   
   tPN tSendPtn = C_UNKNOWN;
     
+  DataBuffer* pDataBuffer = nullptr;
+  
   switch (eSendKind) {
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case XK_HASHED : {
-      DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
+    case XK_HASHED :
+      pDataBuffer = _pDataBuffer(pOperand);
       tSendPtn = pDataBuffer->tPtnNo();
       break;
-    }
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_NORMAL:
@@ -522,9 +508,6 @@ void Parcel::vSendToPartition(Operand* pOperand,
   pSrcOp->vSendNode(iDstNode);
 
   vSendAsParcel(pOperand,pSrcOp,iDstNode,tSendPtn);
-  
-  // delete the operand
-  AM::vDeleteOperand(pOperand);
 }
 
 /*============================================================================*/
