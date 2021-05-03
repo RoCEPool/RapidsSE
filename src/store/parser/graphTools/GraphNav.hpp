@@ -56,7 +56,9 @@ namespace Parser
     static void vParentType(Stz* szTypePath, s256& buf);
 
     // Print a graph structure to the console, starting from some node
-    static void vPrint(PlanNode* pNode);
+    static void vPrintPlan(PlanNode* pRootNode);
+
+    static void vPrintNode(PlanNode* pNode);
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
     // ---------------------------------

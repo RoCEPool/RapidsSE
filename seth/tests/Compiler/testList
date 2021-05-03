@@ -7,3 +7,4 @@ postProject.test
 aliases.test
 corrByProjectSquashing.test
 orderBy.test
+exprPushdown.test

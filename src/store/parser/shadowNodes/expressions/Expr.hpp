@@ -74,6 +74,10 @@ namespace Parser
     // All expressions are relative column ordinals, operators or literals only.
     static b1 bIsFullyOrdinal(QueryNode* pExpr);
 
+    // Returns true if the expression does not contain any ordinal column
+    // references. Can contain (symbolic) ColumnRefs and literals.
+    static b1 bIsNotOrdinal(QueryNode* pExpr);
+
     // Given an expression already in ordinal form, find and return the largest
     // non-ordinal subset of that expression. If the expression is wholly
     // ordinal then nullptr is returned.

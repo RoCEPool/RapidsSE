@@ -36,6 +36,13 @@ namespace Parser
 
 
   private:
+    // Pushes down any intermediate/working expressions that are not being
+    // output into a lower ProjectOp/AggregateOp, for the current statement section
+    static void vStatementSectionPushdownExprs(QueryNode* pStatementMarker, PlanNode* pRootNode);
+
+    // Pushes down a given expression (or part thereof) from a given SqlOp to
+    // the nearest ProjectOp.
+    static void vPushdownExpr(QueryNode* pExpr, QueryNode* pSqlOp, PlanNode* pRootNode);
 
   };
 }

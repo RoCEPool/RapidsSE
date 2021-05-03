@@ -10,6 +10,7 @@
 #include "PrimitiveNode.hpp"
 #include "PlanConstants.hpp"
 #include "StatementMarker.hpp"
+#include "ShadowRoot.hpp"
 
 using namespace Parser;
 
@@ -61,21 +62,33 @@ void GraphNav::vParentType(Stz* szTypePath, s256& buf)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Prints the plan graph                                                      */
+/*----------------------------------------------------------------------------*/
+void GraphNav::vPrintPlan(PlanNode* pRootNode)
+{
+  if (!ShadowRoot::bIsOfType(pRootNode)) {
+    vTrace("GraphNav::vPrintPlan() needs to be passed the root node of the plan"_Stz);
+    return;
+  }
+
+  QueryNode* pPlan = ShadowRoot::pPlanNode(pRootNode);
+  vPrintNode(pPlan->pFirstChild());
+}
+
+/*----------------------------------------------------------------------------*/
 /* Walks the graph from a given node and prints information to the console    */
 /*----------------------------------------------------------------------------*/
-void GraphNav::vPrint(PlanNode* pNode)
+void GraphNav::vPrintNode(PlanNode* pNode)
 {
   ASSERT(pNode);
 
-  auto fVisitor = [](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
-    if (PlanObject::bIsOfType(pNode)) {
-      s2K sBuf;
-      PlanObject::vDescribe(pNode, sBuf);
-      vTrace("%-40s %s\n"_Stz, sPath.szStz(), sBuf.szStz());
+  vTrace("\n\nPlan Graph:\n-----------\n\n"_Stz);
 
-    } else {
-      vTrace("%s\n"_Stz, sPath.szStz());
-    }
+  auto fVisitor = [](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    s2K sBuf;
+    pNode->xValue().vDescribe(sBuf);
+    vTrace("%p %s\n    %s\n    %s\n\n"_Stz, pNode, sPath.szStz(), pNode->szType(), sBuf.szStz());
 
     return WALK_CONTINUE;
   };
