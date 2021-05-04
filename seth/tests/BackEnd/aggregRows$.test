@@ -2,8 +2,8 @@
 -- aggregRows tests
 --------------------------------------------------------------------------------
 
-trackMemory;
-success;
+//trackMemory;
+//success;
 
 //------------------------------------------------------------------------------
 aggregRows lineitem "type decimal ) $7 sum";
@@ -96,19 +96,51 @@ rows:
  (1)
 
 //------------------------------------------------------------------------------
-aggregRows lineitem "type integer countAll";
+aggregRows lineitem "type integer ) countAll";
 rows:
  (6)
  (3)
  (1)
 
 //------------------------------------------------------------------------------
+// sum($1)
+aggregRows lineitem "type integer ) $1 sum";
+rows:
+ (6)
+ (2)
+ (9)
+
+//------------------------------------------------------------------------------
+// 1 + sum($1)
+aggregRows lineitem "type integer 1 ) $1 sum + ";
+rows:
+ (7)
+ (3)
+ (10)
+
+//------------------------------------------------------------------------------
+// sum($1) + 1
+aggregRows lineitem "type integer ) $1 sum 1 + ";
+rows:
+ (7)
+ (3)
+ (10)
+
+//------------------------------------------------------------------------------
+// sum(1+$1)
+aggregRows lineitem "type integer ) 1 $1 + sum ";
+rows:
+ (12)
+ (3)
+ (12)
+
+//------------------------------------------------------------------------------
 // drop the table
 drop table lineitem;
 success;
 
-MemoryLeaks;
-rows: 0
+//MemoryLeaks;
+//rows: 0
 
 CLEANUP {
   

@@ -2,8 +2,8 @@
 -- filter tests
 --------------------------------------------------------------------------------
 
-trackMemory;
-success;
+//trackMemory;
+//success;
 
 //------------------------------------------------------------------------------
 filterRows_I lineitem "$7 0.04 >= <>";
@@ -176,8 +176,8 @@ rows: 0
 drop table lineitem;
 success;
 
-MemoryLeaks;
-rows: 0
+//MemoryLeaks;
+//rows: 0
 
 CLEANUP {
   

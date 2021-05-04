@@ -40,6 +40,7 @@
 #include "SetOpValidator.hpp"
 #include "PostProject.hpp"
 #include "ExprPushdown.hpp"
+#include "ProjValidation.hpp"
 #include "CorrBySquash.hpp"
 
 #include "ExplainMarker.hpp"
@@ -53,20 +54,21 @@
 void Step::vAddSteps_SqlCompiler(void)
 {
   // Ancilliary steps used in the compilation pipeline
-  vAddStep("sqlCompiler::doExplain"_Stz,      &Step::vSqlCompilerDoExplain);
-  vAddStep("sqlCompiler::explainFormat"_Stz,  &Step::vSqlCompilerExplainFormat);
-  vAddStep("sqlCompiler::hasExplain"_Stz,     &Step::vSqlCompilerHasExplain);
+  vAddStep("sqlCompiler::doExplain"_Stz,          &Step::vSqlCompilerDoExplain);
+  vAddStep("sqlCompiler::explainFormat"_Stz,      &Step::vSqlCompilerExplainFormat);
+  vAddStep("sqlCompiler::hasExplain"_Stz,         &Step::vSqlCompilerHasExplain);
 
   // Stages in the compilation pipeline
-  vAddStep("sqlCompiler::corrBySquash"_Stz,   &Step::vSqlCompilerCorrBySquash);
-  vAddStep("sqlCompiler::explainPlan"_Stz,    &Step::vSqlCompilerExplainPlan);
-  vAddStep("sqlCompiler::exprValidate"_Stz,   &Step::vSqlCompilerExprValidate);
-  vAddStep("sqlCompiler::exprPushdown"_Stz,   &Step::vSqlCompilerExprPushdown);
-  vAddStep("sqlCompiler::nameValidate"_Stz,   &Step::vSqlCompilerNameValidate);
-  vAddStep("sqlCompiler::parser"_Stz,         &Step::vSqlCompilerParser);
-  vAddStep("sqlCompiler::postProject"_Stz,    &Step::vSqlCompilerPostProject);
-  vAddStep("sqlCompiler::setOpValidate"_Stz,  &Step::vSqlCompilerSetOpValidate);
-  vAddStep("sqlCompiler::transliterate"_Stz,  &Step::vSqlCompilerTransliterate);
+  vAddStep("sqlCompiler::corrBySquash"_Stz,       &Step::vSqlCompilerCorrBySquash);
+  vAddStep("sqlCompiler::explainPlan"_Stz,        &Step::vSqlCompilerExplainPlan);
+  vAddStep("sqlCompiler::exprValidate"_Stz,       &Step::vSqlCompilerExprValidate);
+  vAddStep("sqlCompiler::exprPushdown"_Stz,       &Step::vSqlCompilerExprPushdown);
+  vAddStep("sqlCompiler::nameValidate"_Stz,       &Step::vSqlCompilerNameValidate);
+  vAddStep("sqlCompiler::parser"_Stz,             &Step::vSqlCompilerParser);
+  vAddStep("sqlCompiler::postProject"_Stz,        &Step::vSqlCompilerPostProject);
+  vAddStep("sqlCompiler::projValidation"_Stz,     &Step::vSqlCompilerProjValidation);
+  vAddStep("sqlCompiler::setOpValidate"_Stz,      &Step::vSqlCompilerSetOpValidate);
+  vAddStep("sqlCompiler::transliterate"_Stz,      &Step::vSqlCompilerTransliterate);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -334,7 +336,6 @@ void Step::vSqlCompilerExprPushdown(void)
 
   try {
     ExprPushdown::vPushdownExprs(pPlanRoot);
-    ExprPushdown::vValidateExprVisibility(pPlanRoot);
 
   } catch (Parser::SqlException& e) {
     Grid* pGrid = AM::pGrid();
@@ -700,6 +701,61 @@ void Step::vSqlCompilerPostProject(void)
                                     C_VARGS_END);
     UNUSED(pRow);
     delete pRootNode;
+    delete pPlanOperand;
+    m_pDataStack->vPushPtr(nullptr);
+    goto L_Exit;
+  }
+
+
+  // TODO: eventually we want the received plan graph to be immutable,
+  //       so we would send a different version. But for now we will just
+  //       manipulate and send the same plan graph
+  m_pDataStack->vPushPtr(pPlanOperand);
+
+  L_Exit:
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* sqlCompiler::projValidation -- Check column projections are valid          */
+/*----------------------------------------------------------------------------*/
+void Step::vSqlCompilerProjValidation(void)
+{
+  ENTRY();
+
+  /**
+   * The purpose of this stage is to ensure that all expressions in SQL operators
+   * are supplied the right column definitions by the SQL operator below them.
+   *
+   * i.e., an expression in an arbitrary SQL operator can be converted into an
+   * ordinal representation and that ordinal expression is "fully ordinal" - it
+   * does not have any ColumnRefs at all. This means that the expression only
+   * uses the projected columns from operators below it.
+   *
+   * The plan is not modified in this stage.
+   */
+
+  PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
+  Parser::RootNode* pPlanRoot = Parser::_pRootNode(pPlanOperand->pPlanNode());
+  UNUSED(pPlanRoot);
+  ASSERT(ShadowRoot::bIsExactType(pPlanRoot));
+
+
+  try {
+    ProjValidation::vValidateExprVisibility(pPlanRoot);
+
+  } catch (Parser::SqlException& e) {
+    Grid* pGrid = AM::pGrid();
+    InfoSet* pInfoSet = _pInfoSet(*m_pJob->pLogicUnit_job()->m_xpInfoSet);
+    Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+                                    pGrid->pThisNode()->szNodeNm(),
+                                    EC_SEMANTIC_ERROR,
+                                    0,
+                                    0,
+                                    e.szError(),
+                                    C_VARGS_END);
+    UNUSED(pRow);
+    delete pPlanRoot;
     delete pPlanOperand;
     m_pDataStack->vPushPtr(nullptr);
     goto L_Exit;

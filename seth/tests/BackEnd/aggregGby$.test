@@ -2,8 +2,8 @@
 -- aggregGby_I tests
 --------------------------------------------------------------------------------
 
-trackMemory;
-success;
+//trackMemory;
+//success;
 
 //------------------------------------------------------------------------------
 aggregRows lineitem "type decimal ) $7 sum groupby type integer $1";
@@ -103,8 +103,8 @@ failure contains: "invalid command"
 drop table lineitem;
 success;
 
-MemoryLeaks;
-rows: 0
+//MemoryLeaks;
+//rows: 0
 
 CLEANUP {
   

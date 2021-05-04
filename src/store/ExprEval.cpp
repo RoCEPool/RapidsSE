@@ -65,6 +65,8 @@ ExprEval::ExprEval(void)
   //m_sFilterAsm;
   //m_sAggInitAsm;
 
+  //m_sAggAsm;
+
   //m_sGbyIdxAsm;
   //m_sPayLoadAggAsm;
   //m_sPayLoadKeyAsm;
@@ -117,10 +119,14 @@ eEC ExprEval::eEvaluate(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Stz* 
   pTkn = pTknVec->pNextToken();
 
   // now evaluate the expressions
-  if (m_bHasAgg)
-    eError = eExprEvalAgg(pStreamDefIn, pStreamDefOut, pTknVec);
-  else if (m_bHasGby)
+  if (m_bHasGby)
     eError = eExprEvalGby(pStreamDefIn, pStreamDefOut, pTknVec);
+  else if (m_bHasAgg) {
+    // Its a filter with agg (invalid)
+    if (!pStreamDefOut)
+      return EC_INVALID_COMMAND;
+    eError = eExprEvalAgg(pStreamDefIn, pStreamDefOut, pTknVec);
+  }
   else
     eError = eExprEval(pStreamDefIn, pStreamDefOut, pTknVec);
 
@@ -797,7 +803,7 @@ eEC ExprEval::eGenerateSum(Stz* sAsmBuffer, Stz* sAggInit)
   if (m_bHasGby) {
     // generate code for agg initialization
     //StrLib::vSprintCat(sAggInit, "  EO_INTEGER %lld\n"_Stz, 0);
-    StrLib::vSprintCat(sAggInit, "  EO_PAY_STORE_COLI %lld\n"_Stz, m_iDstColumn);
+   // StrLib::vSprintCat(sAggInit, "  EO_PAY_STORE_COLI %lld\n"_Stz, m_iDstColumn);
 
     // generate the code
     StrLib::vSprintCat(sAsmBuffer, "  EO_PAY_FETCH_COLI %lld\n"_Stz, m_iDstColumn);
@@ -861,7 +867,7 @@ eEC ExprEval::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec)
     pTkn = pTknVec->pGet(i_Tkn);
 
     if ( pTkn->bIsName() &&
-         (pTkn->bSame("AVG"_Stz)   |
+         (pTkn->bSame("AVG"_Stz)   ||
           pTkn->bSame("COUNT"_Stz) ||
           pTkn->bSame("COUNTALL"_Stz) ||
           pTkn->bSame("MIN"_Stz)   ||
@@ -920,9 +926,6 @@ eEC ExprEval::eExprEval(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Token
   // create a new columnExpr
   Column *pColumnExpr =  new Column;
 
-  // start with col1 as the first column
-  sColumnNm.vSprint("col%lld"_Stz, m_iDstColumn+1);
-  pColumnExpr->vColumnNm(sColumnNm);
   bool bProject = false;
 
   Stz* szAsmBuffer;
@@ -936,6 +939,11 @@ eEC ExprEval::eExprEval(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Token
     szAsmBuffer = m_sFilterAsm;
   }
 
+  // start with col1 as the first column
+  m_iDstColumn++;
+  sColumnNm.vSprint("col%lld"_Stz, m_iDstColumn);
+  pColumnExpr->vColumnNm(sColumnNm);
+
   // get the current token
   Token* pTkn = pTknVec->pCurrToken();
 
@@ -945,16 +953,16 @@ eEC ExprEval::eExprEval(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Token
 
     if (pTkn->bSame(","_Stz)) {
 
-      m_iDstColumn++;
-
       RASSERT(bProject);
 
       // discovered a comma, generate code for the column 
-      eError = eGenerateColumnCode(szAsmBuffer, pStreamDefOut, pColumnExpr, eAggType);
+      eError = eGenerateColumnCode(szAsmBuffer, pStreamDefOut, pColumnExpr);
       if (eError == EC_INVALID_COMMAND) {
         goto L_RETURN;
       }
-      sColumnNm.vSprint("col%lld"_Stz, m_iDstColumn+1);
+
+      m_iDstColumn++;
+      sColumnNm.vSprint("col%lld"_Stz, m_iDstColumn);
       pColumnExpr->vColumnNm(sColumnNm);
 
       pTkn = pTknVec->pNextToken();
@@ -1098,11 +1106,9 @@ eEC ExprEval::eExprEval(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Token
     pTkn = pTknVec->pNextToken();
   }
 
-  m_iDstColumn++;
-
   // add the last column to the streamDefOut
   if ( bProject )
-    eError = eGenerateColumnCode(szAsmBuffer, pStreamDefOut, pColumnExpr, eAggType);
+    eError = eGenerateColumnCode(szAsmBuffer, pStreamDefOut, pColumnExpr);
 
   L_RETURN:
     //RASSERT(m_xTypeStack.nItems() == 0);
@@ -1127,24 +1133,23 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
   // create a new columnExpr
   Column *pColumnExpr =  new Column;
 
-  // start with col1 as the first column
-  sColumnNm.vSprint("col%lld"_Stz, m_iDstColumn+1);
-  pColumnExpr->vColumnNm(sColumnNm);
-  bool bProject = false;
-
   Stz* szAsmBuffer;
 
-  // check pStreamDefOut
-  if (pStreamDefOut) {
-    bProject = true;
-    szAsmBuffer = m_sProjectAsm;
-  }
-  else {
-    szAsmBuffer = m_sFilterAsm;
-  }
+  // we should have a  pStreamDefOut
+  RASSERT(pStreamDefOut);
+
+  szAsmBuffer = m_sProjectAsm;
 
   // get the current token
   Token* pTkn = pTknVec->pCurrToken();
+
+  // start with col1 as the first column
+  m_iDstColumn++;
+  sColumnNm.vSprint("col%lld"_Stz, m_iDstColumn);
+  pColumnExpr->vColumnNm(sColumnNm);
+
+  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
 
   while ( pTkn ) {
 
@@ -1152,17 +1157,20 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
 
     if (pTkn->bSame(","_Stz)) {
 
-      m_iDstColumn++;
-
-      RASSERT(bProject);
-
       // discovered a comma, generate code for the column
-      eError = eGenerateColumnCode(szAsmBuffer, pStreamDefOut, pColumnExpr, eAggType);
+      eError = eGenerateColumnCode(szAsmBuffer, pStreamDefOut, pColumnExpr);
       if (eError == EC_INVALID_COMMAND) {
         goto L_RETURN;
       }
-      sColumnNm.vSprint("col%lld"_Stz, m_iDstColumn+1);
+
+      szAsmBuffer = m_sProjectAsm;
+
+      m_iDstColumn++;
+      sColumnNm.vSprint("col%lld"_Stz, m_iDstColumn);
       pColumnExpr->vColumnNm(sColumnNm);
+
+      StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
 
       pTkn = pTknVec->pNextToken();
       continue;
@@ -1291,10 +1299,25 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
         pTkn = pTknVec->pPrevToken();
     }
 
+    if (pTkn->bSame(")"_Stz) ) {
+
+      m_bHasAgg = true;
+      szAsmBuffer = m_sAggAsm;
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
     if (pTkn->bSame("AVG"_Stz) ) {
 
       eAggType = AG_AVG;
       ASSERT(m_bHasAgg);
+
+      eError = eGenerateAggregateCode(szAsmBuffer, pStreamDefOut, pColumnExpr, eAggType);
+      if (eError == EC_INVALID_COMMAND) {
+        goto L_RETURN;
+      }
+      eAggType = AG_NONE;
+      szAsmBuffer = m_sProjectAsm;
 
       pTkn = pTknVec->pNextToken();
       continue;
@@ -1305,6 +1328,13 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
       eAggType = AG_CNT;
       ASSERT(m_bHasAgg);
 
+      eError = eGenerateAggregateCode(szAsmBuffer, pStreamDefOut, pColumnExpr, eAggType);
+      if (eError == EC_INVALID_COMMAND) {
+        goto L_RETURN;
+      }
+      eAggType = AG_NONE;
+      szAsmBuffer = m_sProjectAsm;
+
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -1313,6 +1343,13 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
 
       eAggType = AG_ALL;
       ASSERT(m_bHasAgg);
+
+      eError = eGenerateAggregateCode(szAsmBuffer, pStreamDefOut, pColumnExpr, eAggType);
+      if (eError == EC_INVALID_COMMAND) {
+        goto L_RETURN;
+      }
+      eAggType = AG_NONE;
+      szAsmBuffer = m_sProjectAsm;
 
       pTkn = pTknVec->pNextToken();
       continue;
@@ -1323,6 +1360,13 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
       eAggType = AG_MIN;
       ASSERT(m_bHasAgg);
 
+      eError = eGenerateAggregateCode(szAsmBuffer, pStreamDefOut, pColumnExpr, eAggType);
+      if (eError == EC_INVALID_COMMAND) {
+        goto L_RETURN;
+      }
+      eAggType = AG_NONE;
+      szAsmBuffer = m_sProjectAsm;
+
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -1332,6 +1376,13 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
       eAggType = AG_MAX;
       ASSERT(m_bHasAgg);
 
+      eError = eGenerateAggregateCode(szAsmBuffer, pStreamDefOut, pColumnExpr, eAggType);
+      if (eError == EC_INVALID_COMMAND) {
+        goto L_RETURN;
+      }
+      eAggType = AG_NONE;
+      szAsmBuffer = m_sProjectAsm;
+
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -1340,6 +1391,13 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
 
       eAggType = AG_SUM;
       ASSERT(m_bHasAgg);
+
+      eError = eGenerateAggregateCode(szAsmBuffer, pStreamDefOut, pColumnExpr, eAggType);
+      if (eError == EC_INVALID_COMMAND) {
+        goto L_RETURN;
+      }
+      eAggType = AG_NONE;
+      szAsmBuffer = m_sProjectAsm;
 
       pTkn = pTknVec->pNextToken();
       continue;
@@ -1369,11 +1427,8 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
     pTkn = pTknVec->pNextToken();
   }
 
-  m_iDstColumn++;
-
   // add the last column to the streamDefOut
-  if ( bProject )
-    eError = eGenerateColumnCode(szAsmBuffer, pStreamDefOut, pColumnExpr, eAggType);
+  eError = eGenerateColumnCode(szAsmBuffer, pStreamDefOut, pColumnExpr);
 
   L_RETURN:
   //RASSERT(m_xTypeStack.nItems() == 0);
@@ -1394,13 +1449,10 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
   eEC eError    = EC_NONE;
 
   s32 sColumnNm;
+  i8 i_ColumnOrdinal = C_UNKNOWN;
 
   // create a new columnExpr
   Column *pColumnExpr =  new Column;
-
-  // start with col1 as the first column
-  sColumnNm.vSprint("col%lld"_Stz, m_iDstColumn+1);
-  pColumnExpr->vColumnNm(sColumnNm);
 
   bool bGroupBy = false;
 
@@ -1410,10 +1462,17 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
   // should have pStreamDefOut
   RASSERT(pStreamDefOut);
 
-  szAsmBuffer = m_sPayLoadStoreAsm;
+  szAsmBuffer = m_sPayLoadToBufferAsm;
+
+  m_bHasAgg = false;
 
   // get the current token
   Token* pTkn = pTknVec->pCurrToken();
+
+  // start with col1 as the first column
+  m_iDstColumn++;
+  sColumnNm.vSprint("col%lld"_Stz, m_iDstColumn);
+  pColumnExpr->vColumnNm(sColumnNm);
 
   while ( pTkn ) {
 
@@ -1421,17 +1480,22 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
 
     if (pTkn->bSame(","_Stz)) {
 
-      m_iDstColumn++;
-
       // discovered a comma, generate code for the column
-      eError = eGenerateGroupbyCode(pStreamDefOut, pColumnExpr, eAggType, bGroupBy);
+      eError = eGenerateColumnCodeGby(pStreamDefOut, pColumnExpr);
       eAggType = AG_NONE;
+      m_bHasAgg = false;
 
       if (eError == EC_INVALID_COMMAND) {
         goto L_RETURN;
       }
-      sColumnNm.vSprint("col%lld"_Stz, m_iDstColumn+1);
+
+      vAddToBufferCol(m_sPayLoadToBufferAsm, pColumnExpr);
+
+      m_iDstColumn++;
+      sColumnNm.vSprint("col%lld"_Stz, m_iDstColumn);
       pColumnExpr->vColumnNm(sColumnNm);
+
+      //StrLib::vSprintCat(m_sPayLoadToBufferAsm, "  EO_PAY_FETCH_COLI %lld\n"_Stz, m_iDstColumn);
 
       pTkn = pTknVec->pNextToken();
       continue;
@@ -1560,10 +1624,23 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
         pTkn = pTknVec->pPrevToken();
     }
 
+    if (pTkn->bSame(")"_Stz) ) {
+
+      m_bHasAgg = true;
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
     if (pTkn->bSame("AVG"_Stz) ) {
 
       eAggType = AG_AVG;
       ASSERT(m_bHasAgg);
+
+      eError = eGenerateGroupbyCode(pStreamDefOut, pColumnExpr, eAggType);
+      if (eError == EC_INVALID_COMMAND) {
+        goto L_RETURN;
+      }
+      eAggType = AG_NONE;
 
       pTkn = pTknVec->pNextToken();
       continue;
@@ -1574,6 +1651,12 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
       eAggType = AG_CNT;
       ASSERT(m_bHasAgg);
 
+      eError = eGenerateGroupbyCode(pStreamDefOut, pColumnExpr, eAggType);
+      if (eError == EC_INVALID_COMMAND) {
+        goto L_RETURN;
+      }
+      eAggType = AG_NONE;
+
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -1582,6 +1665,12 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
 
       eAggType = AG_ALL;
       ASSERT(m_bHasAgg);
+
+      eError = eGenerateGroupbyCode(pStreamDefOut, pColumnExpr, eAggType);
+      if (eError == EC_INVALID_COMMAND) {
+        goto L_RETURN;
+      }
+      eAggType = AG_NONE;
 
       pTkn = pTknVec->pNextToken();
       continue;
@@ -1592,6 +1681,12 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
       eAggType = AG_MIN;
       ASSERT(m_bHasAgg);
 
+      eError = eGenerateGroupbyCode(pStreamDefOut, pColumnExpr, eAggType);
+      if (eError == EC_INVALID_COMMAND) {
+        goto L_RETURN;
+      }
+      eAggType = AG_NONE;
+
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -1600,6 +1695,12 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
 
       eAggType = AG_MAX;
       ASSERT(m_bHasAgg);
+
+      eError = eGenerateGroupbyCode(pStreamDefOut, pColumnExpr, eAggType);
+      if (eError == EC_INVALID_COMMAND) {
+        goto L_RETURN;
+      }
+      eAggType = AG_NONE;
 
       pTkn = pTknVec->pNextToken();
       continue;
@@ -1610,6 +1711,12 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
       eAggType = AG_SUM;
       ASSERT(m_bHasAgg);
 
+      eError = eGenerateGroupbyCode(pStreamDefOut, pColumnExpr, eAggType);
+      if (eError == EC_INVALID_COMMAND) {
+        goto L_RETURN;
+      }
+      eAggType = AG_NONE;
+
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -1618,11 +1725,18 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
     if (pTkn->bSame("GROUPBY"_Stz) ) {
 
       ASSERT(m_bHasGby);
+      bGroupBy = true;
+
+      // discovered a column, generate code for the column
+      eError = eGenerateColumnCodeGby(pStreamDefOut, pColumnExpr);
+
+      vAddToBufferCol(m_sPayLoadToBufferAsm, pColumnExpr);
+
       m_iDstColumn++;
 
-      eError = eGenerateGroupbyCode(pStreamDefOut, pColumnExpr, eAggType, bGroupBy);
-      eAggType = AG_NONE;
-      bGroupBy = true;
+      //vAddPushCol(m_sPayLoadStoreAsm, pStreamDefIn, m_iDstColumn);
+      //vAddPushCol(m_sPayLoadStoreAsm, pStreamDefIn, m_iDstColumn);
+      //vAddPushCol(m_sPayLoadAggAsm, pStreamDefIn, m_iDstColumn);
 
       StrLib::vSprintCat(m_sPayLoadKeyAsm, "  EO_PUSH_DEVIXT_TMP\n"_Stz);
       StrLib::vSprintCat(m_sPayLoadKeyAsm, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
@@ -1639,7 +1753,7 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
     }
 
     Stz *sOrdinalColumn = pTkn->szChars() + 1;
-    i8 i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
+    i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
 
     if (bGroupBy) {
       eAddGbyIdxCol(m_sGbyIdxAsm, pStreamDefIn, i_ColumnOrdinal);
@@ -1647,8 +1761,10 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
       eAddPayLoadKey(m_sPayLoadKeyAsm, pStreamDefIn, i_ColumnOrdinal);
     }
     else {
+      if (m_bHasAgg)
+        vAddPushCol(m_sPayLoadAggAsm, pStreamDefIn, i_ColumnOrdinal);
+      StrLib::vSprintCat(m_sPayLoadToBufferAsm, "  EO_PAY_FETCH_COLI %lld\n"_Stz, m_iDstColumn);
       vAddPushCol(m_sPayLoadStoreAsm, pStreamDefIn, i_ColumnOrdinal);
-      vAddPushCol(m_sPayLoadAggAsm, pStreamDefIn, i_ColumnOrdinal);
     }
     pTkn = pTknVec->pNextToken();
   }
@@ -1703,14 +1819,9 @@ eEC ExprEval::eGenerateAggregateCode(Stz* szAsmBuffer, StreamDef* pStreamDefOut,
       eError = eGenerateSum(szAsmBuffer, m_sAggInitAsm);
       break;
     default:
-      vAddPopCol(szAsmBuffer, pColumn->eColumnType());
+      RASSERT(0);
       break;
   }
-
-  pStreamDefOut->vAddColumn(pColumn->szColNm(),
-                            pColumn->eColumnType(),
-                            pColumn->iColumnLength(),
-                            pColumn->iColumnScale());
 
   return eError;
 }
@@ -1718,10 +1829,9 @@ eEC ExprEval::eGenerateAggregateCode(Stz* szAsmBuffer, StreamDef* pStreamDefOut,
 /*----------------------------------------------------------------------------*/
 /* generate code for column                                                   */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval::eGenerateColumnCode(Stz* szAsmBuffer, StreamDef* pStreamDefOut, Column* pColumn, eAG eAggType) {
+eEC ExprEval::eGenerateColumnCode(Stz* szAsmBuffer, StreamDef* pStreamDefOut, Column* pColumn) {
 
   eEC eError = EC_NONE;
-  RASSERT(eAggType == AG_NONE);
   vAddPopCol(szAsmBuffer, pColumn->eColumnType());
 
   pStreamDefOut->vAddColumn(pColumn->szColNm(),
@@ -1735,7 +1845,27 @@ eEC ExprEval::eGenerateColumnCode(Stz* szAsmBuffer, StreamDef* pStreamDefOut, Co
 /*----------------------------------------------------------------------------*/
 /* generate code for column                                                   */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval::eGenerateGroupbyCode(StreamDef* pStreamDefOut, Column* pColumn, eAG eAggType, bool bGroupBy) {
+eEC ExprEval::eGenerateColumnCodeGby(StreamDef* pStreamDefOut, Column* pColumn) {
+
+  eEC eError = EC_NONE;
+
+  //vAddStoreCol(m_sPayLoadAggAsm, pColumn);
+  vAddStoreCol(m_sPayLoadStoreAsm, pColumn);
+
+  m_nPayLoadBytes += 8;
+
+  pStreamDefOut->vAddColumn(pColumn->szColNm(),
+                            pColumn->eColumnType(),
+                            pColumn->iColumnLength(),
+                            pColumn->iColumnScale());
+
+  return eError;
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate code for column                                                   */
+/*----------------------------------------------------------------------------*/
+eEC ExprEval::eGenerateGroupbyCode(StreamDef* pStreamDefOut, Column* pColumn, eAG eAggType) {
 
   eEC eError = EC_NONE;
 
@@ -1756,21 +1886,8 @@ eEC ExprEval::eGenerateGroupbyCode(StreamDef* pStreamDefOut, Column* pColumn, eA
       eError = eGenerateSum(m_sPayLoadAggAsm, m_sPayLoadStoreAsm);
       break;
     default:
-      if ( ! bGroupBy ) {
-        vAddStoreCol(m_sPayLoadAggAsm, pColumn);
-        vAddStoreCol(m_sPayLoadStoreAsm, pColumn);
-      }
+      RASSERT(0);
       break;
-  }
-
-  if ( ! bGroupBy ) {
-    vAddToBufferCol(m_sPayLoadToBufferAsm, pColumn);
-    m_nPayLoadBytes += 8;
-
-    pStreamDefOut->vAddColumn(pColumn->szColNm(),
-                              pColumn->eColumnType(),
-                              pColumn->iColumnLength(),
-                              pColumn->iColumnScale());
   }
 
   return eError;
@@ -1815,7 +1932,7 @@ void ExprEval::vAddToBufferCol(Stz* szAsmBuffer, Column* pColumn)
     case CT_DECIMAL:
     case CT_DATE:
     case CT_FLOAT:
-      StrLib::vSprintCat(szAsmBuffer,"  EO_PAY_FETCH_COLI %lld\n"_Stz, m_iDstColumn);
+      //StrLib::vSprintCat(szAsmBuffer,"  EO_PAY_FETCH_COLI %lld\n"_Stz, m_iDstColumn);
       StrLib::vSprintCat(szAsmBuffer,"  EO_PUSH_DEVROW_DST\n"_Stz);
       StrLib::vSprintCat(szAsmBuffer,"  EO_DEVROW_POPCOLI %lld\n"_Stz, m_iDstColumn);
 
@@ -1823,7 +1940,7 @@ void ExprEval::vAddToBufferCol(Stz* szAsmBuffer, Column* pColumn)
 
     case CT_CHAR:
     case CT_VARCHAR:
-      StrLib::vSprintCat(szAsmBuffer, "  EO_PAY_FETCH_COLS %lld\n"_Stz, m_iDstColumn);
+      //StrLib::vSprintCat(szAsmBuffer, "  EO_PAY_FETCH_COLS %lld\n"_Stz, m_iDstColumn);
       StrLib::vSprintCat(szAsmBuffer,"  EO_PUSH_DEVROW_DST\n"_Stz);
       StrLib::vSprintCat(szAsmBuffer,"  EO_DEVROW_POPCOLS %lld\n"_Stz, m_iDstColumn);
       break;

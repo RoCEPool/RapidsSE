@@ -79,23 +79,6 @@ void ExprPushdown::vPushdownExprs(PlanNode* pRootNode)
 
 
 /*----------------------------------------------------------------------------*/
-/* Validates that the right projected columns will be delivered to each       */
-/* SQL operator that has expressions that use or build on those projected     */
-/* columns. i.e. each expression in a SQL operator can be rewritten in        */
-/* an ordinal form relative to the input projected columns.                   */
-/*----------------------------------------------------------------------------*/
-void ExprPushdown::vValidateExprVisibility(PlanNode* pRootNode)
-{
-  // Walk every SQL operator in the graph.
-  // If the SQL operator has expressions then validate that each expression
-  // can be converted to an ordinal format and that it is fully ordinal.
-  // If not, throw and error about an expression not being visible.
-
-  // Copy ExprValidator::vValidateOrderExprAboveSetOp() and generalise it.
-}
-
-
-/*----------------------------------------------------------------------------*/
 /* Pushes down any intermediate/working expressions that are not being        */
 /* output into a lower ProjectOp/AggregateOp, for the current statement       */
 /* section.                                                                   */

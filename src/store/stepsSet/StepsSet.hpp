@@ -1469,6 +1469,7 @@ public:
   void vSqlCompilerNameValidate(void);
   void vSqlCompilerParser(void);
   void vSqlCompilerPostProject(void);
+  void vSqlCompilerProjValidation(void);
   void vSqlCompilerSetOpValidate(void);
   void vSqlCompilerTransliterate(void);
 

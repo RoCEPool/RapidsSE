@@ -39,6 +39,7 @@ namespace STORE
     s4K      m_sProjectAsm;
     s4K      m_sFilterAsm;
     s4K      m_sAggInitAsm;
+    s4K      m_sAggAsm;
 
     s4K      m_sGbyIdxAsm;
     s4K      m_sPayLoadAggAsm;
@@ -88,9 +89,10 @@ namespace STORE
     eEC eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);
     eEC eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);
 
-    eEC eGenerateColumnCode(Stz* szAsmBuffer, StreamDef* pStreamDefOut, Column* pColumn, eAG eAggType);
+    eEC eGenerateColumnCode(Stz* szAsmBuffer, StreamDef* pStreamDefOut, Column* pColumn);
+    eEC eGenerateColumnCodeGby(StreamDef* pStreamDefOut, Column* pColumn);
     eEC eGenerateAggregateCode(Stz* szAsmBuffer, StreamDef* pStreamDefOut, Column* pColumn, eAG eAggType);
-    eEC eGenerateGroupbyCode(StreamDef* pStreamDefOut, Column* pColumn, eAG eAggType, bool bGroupBy);
+    eEC eGenerateGroupbyCode(StreamDef* pStreamDefOut, Column* pColumn, eAG eAggType);
 
     eEC  eGenerateCount(Stz* szAsmBuffer, Stz* sAggInit);
     eEC  eGenerateCountAll(Stz* szAsmBuffer, Stz* sAggInit);
