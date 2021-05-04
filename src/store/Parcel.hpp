@@ -41,8 +41,9 @@ namespace STORE
            tPN tPtnNo);
     ~Parcel(void) noexcept(false);
         
-    static void vSendOut(Operand* pOperand,
-                         Op*      pOp);
+    static Parcel* pNewParcel(Operand* pOperand, Op*  pSrcOp);
+
+    static void vSendOut(Operand* pOperand, Op* pOp);
 
   public:
     void vShow(void);

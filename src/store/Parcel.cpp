@@ -72,6 +72,28 @@ Parcel::~Parcel(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* new an unlabelled parcel                                                   */
+/*----------------------------------------------------------------------------*/
+Parcel* Parcel::pNewParcel(Operand* pOperand, Op* pSrcOp)
+{
+  _static_
+  
+  Job* pPipelineJob = pSrcOp->pPipelineJob();
+  ePX eCrossTopo    = pSrcOp->eCrossTopo();
+
+  
+  Parcel* pParcel = new Parcel(pOperand,
+                               pPipelineJob->iJobId(),
+                               C_UNKNOWN,  //iDstNode,
+                               eCrossTopo,
+                               C_UNKNOWN,  //i_NextStage,
+                               C_UNKNOWN,  //i_NextOp,
+                               C_UNKNOWN   //tPtnNo
+                               );
+  
+  return pParcel;
+}
+/*----------------------------------------------------------------------------*/
 /* send out operand as parcel                                                 */
 /*----------------------------------------------------------------------------*/
 void Parcel::vSendOut(Operand* pOperand, Op* pSrcOp)
