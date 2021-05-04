@@ -65,6 +65,8 @@ ExprEval::ExprEval(void)
   //m_sFilterAsm;
   //m_sAggInitAsm;
 
+  //m_sAggAsm;
+
   //m_sGbyIdxAsm;
   //m_sPayLoadAggAsm;
   //m_sPayLoadKeyAsm;
@@ -117,8 +119,12 @@ eEC ExprEval::eEvaluate(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Stz* 
   pTkn = pTknVec->pNextToken();
 
   // now evaluate the expressions
-  if (m_bHasAgg)
+  if (m_bHasAgg) {
+    // Its a filter with agg (invalid)
+    if (!pStreamDefOut)
+      return EC_INVALID_COMMAND;
     eError = eExprEvalAgg(pStreamDefIn, pStreamDefOut, pTknVec);
+  }
   else if (m_bHasGby)
     eError = eExprEvalGby(pStreamDefIn, pStreamDefOut, pTknVec);
   else
@@ -861,7 +867,7 @@ eEC ExprEval::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec)
     pTkn = pTknVec->pGet(i_Tkn);
 
     if ( pTkn->bIsName() &&
-         (pTkn->bSame("AVG"_Stz)   |
+         (pTkn->bSame("AVG"_Stz)   ||
           pTkn->bSame("COUNT"_Stz) ||
           pTkn->bSame("COUNTALL"_Stz) ||
           pTkn->bSame("MIN"_Stz)   ||
@@ -920,9 +926,6 @@ eEC ExprEval::eExprEval(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Token
   // create a new columnExpr
   Column *pColumnExpr =  new Column;
 
-  // start with col1 as the first column
-  sColumnNm.vSprint("col%lld"_Stz, m_iDstColumn+1);
-  pColumnExpr->vColumnNm(sColumnNm);
   bool bProject = false;
 
   Stz* szAsmBuffer;
@@ -936,6 +939,11 @@ eEC ExprEval::eExprEval(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Token
     szAsmBuffer = m_sFilterAsm;
   }
 
+  // start with col1 as the first column
+  m_iDstColumn++;
+  sColumnNm.vSprint("col%lld"_Stz, m_iDstColumn);
+  pColumnExpr->vColumnNm(sColumnNm);
+
   // get the current token
   Token* pTkn = pTknVec->pCurrToken();
 
@@ -945,8 +953,6 @@ eEC ExprEval::eExprEval(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Token
 
     if (pTkn->bSame(","_Stz)) {
 
-      m_iDstColumn++;
-
       RASSERT(bProject);
 
       // discovered a comma, generate code for the column 
@@ -954,7 +960,9 @@ eEC ExprEval::eExprEval(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Token
       if (eError == EC_INVALID_COMMAND) {
         goto L_RETURN;
       }
-      sColumnNm.vSprint("col%lld"_Stz, m_iDstColumn+1);
+
+      m_iDstColumn++;
+      sColumnNm.vSprint("col%lld"_Stz, m_iDstColumn);
       pColumnExpr->vColumnNm(sColumnNm);
 
       pTkn = pTknVec->pNextToken();
@@ -1098,8 +1106,6 @@ eEC ExprEval::eExprEval(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Token
     pTkn = pTknVec->pNextToken();
   }
 
-  m_iDstColumn++;
-
   // add the last column to the streamDefOut
   if ( bProject )
     eError = eGenerateColumnCode(szAsmBuffer, pStreamDefOut, pColumnExpr, eAggType);
@@ -1127,24 +1133,23 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
   // create a new columnExpr
   Column *pColumnExpr =  new Column;
 
-  // start with col1 as the first column
-  sColumnNm.vSprint("col%lld"_Stz, m_iDstColumn+1);
-  pColumnExpr->vColumnNm(sColumnNm);
-  bool bProject = false;
-
   Stz* szAsmBuffer;
 
-  // check pStreamDefOut
-  if (pStreamDefOut) {
-    bProject = true;
-    szAsmBuffer = m_sProjectAsm;
-  }
-  else {
-    szAsmBuffer = m_sFilterAsm;
-  }
+  // we should have a  pStreamDefOut
+  RASSERT(pStreamDefOut);
+
+  szAsmBuffer = m_sProjectAsm;
 
   // get the current token
   Token* pTkn = pTknVec->pCurrToken();
+
+  // start with col1 as the first column
+  m_iDstColumn++;
+  sColumnNm.vSprint("col%lld"_Stz, m_iDstColumn);
+  pColumnExpr->vColumnNm(sColumnNm);
+
+  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
 
   while ( pTkn ) {
 
@@ -1152,17 +1157,20 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
 
     if (pTkn->bSame(","_Stz)) {
 
-      m_iDstColumn++;
-
-      RASSERT(bProject);
-
       // discovered a comma, generate code for the column
       eError = eGenerateColumnCode(szAsmBuffer, pStreamDefOut, pColumnExpr, eAggType);
       if (eError == EC_INVALID_COMMAND) {
         goto L_RETURN;
       }
-      sColumnNm.vSprint("col%lld"_Stz, m_iDstColumn+1);
+
+      szAsmBuffer = m_sProjectAsm;
+
+      m_iDstColumn++;
+      sColumnNm.vSprint("col%lld"_Stz, m_iDstColumn);
       pColumnExpr->vColumnNm(sColumnNm);
+
+      StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
 
       pTkn = pTknVec->pNextToken();
       continue;
@@ -1291,10 +1299,25 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
         pTkn = pTknVec->pPrevToken();
     }
 
+    if (pTkn->bSame(")"_Stz) ) {
+
+      m_bHasAgg = true;
+      szAsmBuffer = m_sAggAsm;
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
     if (pTkn->bSame("AVG"_Stz) ) {
 
       eAggType = AG_AVG;
       ASSERT(m_bHasAgg);
+
+      eError = eGenerateAggregateCode(szAsmBuffer, pStreamDefOut, pColumnExpr, eAggType);
+      if (eError == EC_INVALID_COMMAND) {
+        goto L_RETURN;
+      }
+      eAggType = AG_NONE;
+      szAsmBuffer = m_sProjectAsm;
 
       pTkn = pTknVec->pNextToken();
       continue;
@@ -1305,6 +1328,13 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
       eAggType = AG_CNT;
       ASSERT(m_bHasAgg);
 
+      eError = eGenerateAggregateCode(szAsmBuffer, pStreamDefOut, pColumnExpr, eAggType);
+      if (eError == EC_INVALID_COMMAND) {
+        goto L_RETURN;
+      }
+      eAggType = AG_NONE;
+      szAsmBuffer = m_sProjectAsm;
+
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -1313,6 +1343,13 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
 
       eAggType = AG_ALL;
       ASSERT(m_bHasAgg);
+
+      eError = eGenerateAggregateCode(szAsmBuffer, pStreamDefOut, pColumnExpr, eAggType);
+      if (eError == EC_INVALID_COMMAND) {
+        goto L_RETURN;
+      }
+      eAggType = AG_NONE;
+      szAsmBuffer = m_sProjectAsm;
 
       pTkn = pTknVec->pNextToken();
       continue;
@@ -1323,6 +1360,13 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
       eAggType = AG_MIN;
       ASSERT(m_bHasAgg);
 
+      eError = eGenerateAggregateCode(szAsmBuffer, pStreamDefOut, pColumnExpr, eAggType);
+      if (eError == EC_INVALID_COMMAND) {
+        goto L_RETURN;
+      }
+      eAggType = AG_NONE;
+      szAsmBuffer = m_sProjectAsm;
+
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -1332,6 +1376,13 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
       eAggType = AG_MAX;
       ASSERT(m_bHasAgg);
 
+      eError = eGenerateAggregateCode(szAsmBuffer, pStreamDefOut, pColumnExpr, eAggType);
+      if (eError == EC_INVALID_COMMAND) {
+        goto L_RETURN;
+      }
+      eAggType = AG_NONE;
+      szAsmBuffer = m_sProjectAsm;
+
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -1340,6 +1391,13 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
 
       eAggType = AG_SUM;
       ASSERT(m_bHasAgg);
+
+      eError = eGenerateAggregateCode(szAsmBuffer, pStreamDefOut, pColumnExpr, eAggType);
+      if (eError == EC_INVALID_COMMAND) {
+        goto L_RETURN;
+      }
+      eAggType = AG_NONE;
+      szAsmBuffer = m_sProjectAsm;
 
       pTkn = pTknVec->pNextToken();
       continue;
@@ -1369,11 +1427,8 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
     pTkn = pTknVec->pNextToken();
   }
 
-  m_iDstColumn++;
-
   // add the last column to the streamDefOut
-  if ( bProject )
-    eError = eGenerateColumnCode(szAsmBuffer, pStreamDefOut, pColumnExpr, eAggType);
+  eError = eGenerateColumnCode(szAsmBuffer, pStreamDefOut, pColumnExpr, eAggType);
 
   L_RETURN:
   //RASSERT(m_xTypeStack.nItems() == 0);
@@ -1706,11 +1761,6 @@ eEC ExprEval::eGenerateAggregateCode(Stz* szAsmBuffer, StreamDef* pStreamDefOut,
       vAddPopCol(szAsmBuffer, pColumn->eColumnType());
       break;
   }
-
-  pStreamDefOut->vAddColumn(pColumn->szColNm(),
-                            pColumn->eColumnType(),
-                            pColumn->iColumnLength(),
-                            pColumn->iColumnScale());
 
   return eError;
 }

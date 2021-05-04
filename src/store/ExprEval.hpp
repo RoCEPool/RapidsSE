@@ -39,6 +39,7 @@ namespace STORE
     s4K      m_sProjectAsm;
     s4K      m_sFilterAsm;
     s4K      m_sAggInitAsm;
+    s4K      m_sAggAsm;
 
     s4K      m_sGbyIdxAsm;
     s4K      m_sPayLoadAggAsm;

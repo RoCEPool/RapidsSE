@@ -100,7 +100,7 @@ rows:
  (1)
 
 //------------------------------------------------------------------------------
-aggregRows_I lineitem "type integer countAll";
+aggregRows_I lineitem "type integer ) countAll";
 rows:
  (6)
  (3)
