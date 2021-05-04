@@ -98,11 +98,19 @@
 //    "Error Code %v" .printf
 //  then
 
+
+//"
+//bootCluster
+//"
+//locals| sStmt |
+
+//"" sStmt api::executeRequest
+
+
   "end start_run" .verbose
 
   // delete task instead of returning to nowhere
   task::scheduleDelete
-
   HAZARD
 ;
 

@@ -290,7 +290,7 @@ void ExprValidator::vValidateProjectExprs(PlanNode *pRootNode, QueryNode* pStart
     if (Expr::bContainsAnAggregate(pOrdExpr)) {
       ++iNumAggCols;
 
-    } else if (Expr::bIsLiteral(pOrdExpr)) {
+    } else if (Expr::bIsFullyLiteral(pOrdExpr)) {
       ++iNumLitCols;
     }
 
@@ -421,7 +421,7 @@ void ExprValidator::vCheckGroupByExprsNotLiterals(QueryNode *pGroupByList)
   while (pIter->bHasNext()) {
     QueryNode* pExpr = _pQueryNode(pIter->pNext());
 
-    if (Expr::bIsLiteral(pExpr)) {
+    if (Expr::bIsFullyLiteral(pExpr)) {
       delete pIter;
 
       // Throw an error
@@ -728,7 +728,8 @@ void ExprValidator::vValidateOrderExprAboveSetOp(PlanNode* pRootNode, QueryNode*
 
       QueryNode* pOrdExpr = Expr::pSymbolicToOrdinal(pExpr, pColumnExprList, pRootNode);
 
-      if (Expr::bIsOrdinal(pOrdExpr)) {
+      if (Expr::bIsFullyOrdinal(pOrdExpr)) {
+        delete pOrdExpr;
         continue;
       }
 

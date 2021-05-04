@@ -1,0 +1,237 @@
+/*----------------------------------------------------------------------------*/
+/* Aggregation syntax & semantics tests                                       */
+/*                                                                            */
+/* Tests the SQL parser/planner for legitimate SQL statements concerning      */
+/* aggregations, grouping, HAVING, etc.                                       */
+/*                                                                            */
+/* We use EXPLAIN before the queries to avoid actually running these through  */
+/* the execution engine.                                                      */
+/*----------------------------------------------------------------------------*/
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Setup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+create table nation (
+	 N_NATIONKEY       INTEGER NOT NULL,
+	 N_NAME            CHAR(25) NOT NULL,
+	 N_REGIONKEY       INTEGER NOT NULL,
+	 N_COMMENT         VARCHAR(152)
+);
+success
+
+load nation "../DATA/Transliterate/nationAgg.tbl";
+success
+
+-- trackmemory;
+-- success
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Basic aggregations and group bys
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- basic select of columnRef 
+SELECT n_name FROM nation;
+rows: 
+  ('BRAZIL')
+  ('INDIA')
+  ('INDONESIA')
+  ('IRAN')
+  ('CHINA')
+  ('RUSSIA')
+  ('UNITED KINGDOM')
+  ('UNITED STATES')
+
+  ('ARGENTINA')
+  ('ETHIOPIA')
+  ('IRAQ')
+  ('JAPAN')
+  ('JORDAN')
+  ('MOZAMBIQUE')
+  ('PERU')
+  ('ROMANIA')
+  ('SAUDI ARABIA')
+  ('INDIA')
+
+  ('KENYA')
+  ('MOROCCO')
+  ('VIETNAM')
+
+  ('ALGERIA')
+  ('CANADA')
+  ('CANADA')
+  ('EGYPT')
+  ('FRANCE')
+  ('GERMANY')
+
+-- basic select of aggregation
+SELECT SUM(n_regionkey) FROM nation;
+rows: 
+  (2)
+  (20)
+  (12)
+  (19)
+
+-- basic select of grouped columnRef and aggregation
+-- we see INDIA twice because they are coming from different partitions (different nationKey)
+-- and we don't have a super aggregation in place
+-- and we see CANADA once as the 2 rows with CANADA have the same nationKey
+-- and are on the same partition.
+SELECT n_name, SUM(n_regionkey) FROM nation GROUP BY n_name;
+rows:
+  ('KENYA',0)
+  ('MOROCCO',0)
+  ('VIETNAM',2)
+ 
+  ('ALGERIA',0)
+  ('CANADA',2)
+  ('EGYPT',4)
+  ('FRANCE',3)
+  ('GERMANY',3)
+ 
+  ('BRAZIL',1)
+  ('CHINA',2)
+  ('INDIA',4)
+  ('INDONESI',2)
+  ('IRAN',4)
+  ('RUSSIA',3)
+  ('UNITED K',3)
+  ('UNITED S',1)
+ 
+  ('ARGENTIN',1)
+  ('ETHIOPIA',0)
+  ('IRAQ',4)
+  ('JAPAN',2)
+  ('JORDAN',4)
+  ('MOZAMBIQ',0)
+  ('PERU',1)
+  ('ROMANIA',3)
+  ('SAUDI AR',4)
+
+
+-- basic select of two columnRefs with both in GROUP BY. No aggregation
+SELECT n_name, n_nationkey FROM nation GROUP BY n_name, n_nationkey;
+rows:
+ ('KENYA',14)
+ ('MOROCCO',15)
+ ('VIETNAM',21)
+
+ ('ALGERIA',0)
+ ('CANADA',3)
+ ('EGYPT',4)
+ ('FRANCE',6)
+ ('GERMANY',7)
+
+ ('ARGENTIN',1)
+ ('ETHIOPIA',5)
+ ('IRAQ',11)
+ ('JAPAN',12)
+ ('JORDAN',13)
+ ('MOZAMBIQ',16)
+ ('PERU',17)
+ ('ROMANIA',19)
+ ('SAUDI AR',20)
+
+ ('BRAZIL',2)
+ ('CHINA',18)
+ ('INDIA',8)
+ ('INDIA',26)
+ ('INDONESI	',9)
+ ('IRAN',10)
+ ('RUSSIA',22)
+ ('UNITED K',23)
+ ('UNITED S',24)
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Projected superset of group by
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- projected ColumnRef is superset of GROUP BY expr
+SELECT 2*(n_nationkey + 1), SUM(n_regionkey) FROM nation GROUP BY n_nationkey;
+rows:
+ (30,0)
+ (32,0)
+ (44,2)
+
+ (2,0)
+ (3,2)
+ (10,4)
+ (14,3)
+ (16,3)
+
+ (6,1)
+ (18,2)
+ (20,2)
+ (22,4)
+ (38,2)
+ (46,3)
+ (48,3)
+ (50,1)
+ (54,2)
+
+ (4,1)
+ (12,0)
+ (24,4)
+ (26,2)
+ (28,4)
+ (34,0)
+ (36,1)
+ (40,3)
+ (42,4)
+
+/*
+-- projected ColumnRef is equal to GROUP BY expr
+SELECT 2*(n_nationkey + 1), SUM(n_regionkey) FROM nation GROUP BY 2*(n_nationkey + 1);
+rows:
+
+-- select expr is a superset of group by expr
+SELECT n_nationkey + n_regionkey + 1, SUM(n_regionkey) FROM nation GROUP BY n_nationkey + n_regionkey;
+rows:
+
+
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  HAVING clause
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- Basic HAVING clause
+SELECT n_name, SUM(n_nationkey) FROM nation GROUP BY n_name HAVING SUM(n_nationkey) > 0;
+rows:
+
+-- HAVING clause with aggregate not in select list
+SELECT n_name FROM nation GROUP BY n_name HAVING sum(n_nationkey) > 0;
+rows:
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Literals in the select list
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT 1 FROM nation HAVING SUM(n_nationkey) > 0;
+rows:
+*/
+
+SELECT SUM(n_nationkey) from nation HAVING SUM(n_nationkey) > 0;
+rows:
+ (23)
+ (114)
+ (142)
+ (50)
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Check for memory leaks
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- memoryleaks;
+-- rows: 0
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Cleanup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CLEANUP {
+  DROP TABLE nation;
+  mute
+}

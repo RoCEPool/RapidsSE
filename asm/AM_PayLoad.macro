@@ -15,9 +15,8 @@ macro AM_PAYLOAD_GBY
 
   EO_CALL <payLoadKey>  // C_TAG_PAYLOAD_KEY
 
-  EO_PUSH_DEVIXT_TMP
-  EO_DEVIXT_ENT_FINDI
-  EO_JMP_TRUE FOUND
+  //EO_DEVIXT_ENT_FINDI
+  //EO_JMP_TRUE FOUND
 
   // find the key in the indexTree
   EO_PUSH_DEVIXT_TMP
@@ -52,6 +51,15 @@ macro AM_PAYLOAD_KEY
   // AM_PAYLOAD_KEY
   Label PAYLOAD_KEY
 
+endMacro
+
+macro AM_PAYLOAD_KEY_END
+//----------------------------------------------------------------------------//
+// macro AM_PAYLOAD_KEY_END                                                   //
+//----------------------------------------------------------------------------//
+  // AM_PAYLOAD_KEY_END
+  Label PAYLOAD_KEY_END
+  EO_RETURN
 endMacro
 
 macro AM_PAYLOAD_STORE
@@ -122,8 +130,8 @@ macro AM_PAYLOAD_TO_BUFFER_END
 //----------------------------------------------------------------------------//
  // AM_PAYLOAD_TO_BUFFER_END
  Label PAYLOAD_TO_BUFFER_END
- //EO_PUSH_DEVROW_DST
- //EO_DEVROW_ROW_PRINT
+ EO_PUSH_DEVROW_DST
+ EO_DEVROW_ROW_PRINT
  EO_RETURN
 endMacro
 

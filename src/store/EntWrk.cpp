@@ -73,9 +73,9 @@ byte* EntWrk::ayEachElm(Column* pColumn, i8& nBytes, byte** aayCursor)
   UNUSED(pColumn);
 
   //byte* ayElm = pColumn->ayValue(nBytes,aayCursor);
-  
-  nBytes = sizeof(i8);
+
   byte* ayElm = aAdd<byte*>(*aayCursor,nBytes);
+  nBytes = sizeof(i8);
 
   return ayElm;
 }

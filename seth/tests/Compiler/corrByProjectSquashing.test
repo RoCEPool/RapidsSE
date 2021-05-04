@@ -52,9 +52,9 @@ rows:
       » queryText: "SELECT * FROM t1"
 
 -> -> -> projectOp
-         » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2)
-         » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4)
-         » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6)
+         » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2 ; Ordinal Expr = $2)
+         » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
+         » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.t1)
@@ -63,9 +63,9 @@ rows:
       » queryText: "SELECT * FROM t2"
 
 -> -> -> projectOp
-         » column: (Alias = col2 ; Expr = rapidsse.public.t2.col2)
-         » column: (Alias = col4 ; Expr = rapidsse.public.t2.col4)
-         » column: (Alias = col6 ; Expr = rapidsse.public.t2.col6)
+         » column: (Alias = col2 ; Expr = rapidsse.public.t2.col2 ; Ordinal Expr = $2)
+         » column: (Alias = col4 ; Expr = rapidsse.public.t2.col4 ; Ordinal Expr = $4)
+         » column: (Alias = col6 ; Expr = rapidsse.public.t2.col6 ; Ordinal Expr = $6)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.t2)'
@@ -88,9 +88,9 @@ rows:
       » queryText: "SELECT alpha as col1, bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4"
 
 -> -> -> projectOp
-         » column: (Alias = col2 ; Expr = rapidsse.public.t4.bravo)
-         » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta)
-         » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot)
+         » column: (Alias = col2 ; Expr = rapidsse.public.t4.bravo ; Ordinal Expr = $2)
+         » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta ; Ordinal Expr = $4)
+         » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot ; Ordinal Expr = $6)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.t4)
@@ -99,9 +99,9 @@ rows:
       » queryText: "SELECT * FROM t1"
 
 -> -> -> projectOp
-         » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2)
-         » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4)
-         » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6)
+         » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2 ; Ordinal Expr = $2)
+         » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
+         » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.t1)'
@@ -124,9 +124,9 @@ rows:
       » queryText: "SELECT * FROM t1"
 
 -> -> -> projectOp
-         » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2)
-         » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4)
-         » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6)
+         » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2 ; Ordinal Expr = $2)
+         » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
+         » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.t1)
@@ -135,9 +135,9 @@ rows:
       » queryText: "SELECT alpha as col1, bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4"
 
 -> -> -> projectOp
-         » column: (Alias = col2 ; Expr = rapidsse.public.t4.bravo)
-         » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta)
-         » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot)
+         » column: (Alias = col2 ; Expr = rapidsse.public.t4.bravo ; Ordinal Expr = $2)
+         » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta ; Ordinal Expr = $4)
+         » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot ; Ordinal Expr = $6)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.t4)'
@@ -160,9 +160,9 @@ rows: (*,'explainPlan',
       » queryText: "SELECT col1 as c1, col2 as c2, col3 as c3, col4 as c4, col5 as c5, col6 as c6, col7 as c7, col8 as c8 FROM t1"
 
 -> -> -> projectOp
-         » column: (Alias = c2 ; Expr = rapidsse.public.t1.col2)
-         » column: (Alias = c4 ; Expr = rapidsse.public.t1.col4)
-         » column: (Alias = c6 ; Expr = rapidsse.public.t1.col6)
+         » column: (Alias = c2 ; Expr = rapidsse.public.t1.col2 ; Ordinal Expr = $2)
+         » column: (Alias = c4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
+         » column: (Alias = c6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.t1)
@@ -171,9 +171,9 @@ rows: (*,'explainPlan',
       » queryText: "SELECT alpha as c1, bravo as c2, charlie as c3, delta as c4, echo as c5, foxtrot as c6, golf as c7, hotel as c8 FROM t4"
 
 -> -> -> projectOp
-         » column: (Alias = c2 ; Expr = rapidsse.public.t4.bravo)
-         » column: (Alias = c4 ; Expr = rapidsse.public.t4.delta)
-         » column: (Alias = c6 ; Expr = rapidsse.public.t4.foxtrot)
+         » column: (Alias = c2 ; Expr = rapidsse.public.t4.bravo ; Ordinal Expr = $2)
+         » column: (Alias = c4 ; Expr = rapidsse.public.t4.delta ; Ordinal Expr = $4)
+         » column: (Alias = c6 ; Expr = rapidsse.public.t4.foxtrot ; Ordinal Expr = $6)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.t4)'
@@ -199,14 +199,14 @@ rows: (*,'explainPlan',
       » queryText: "SELECT * FROM t1"
 
 -> -> -> projectOp
-         » column: (Alias = col1 ; Expr = rapidsse.public.t1.col1)
-         » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2)
-         » column: (Alias = col3 ; Expr = rapidsse.public.t1.col3)
-         » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4)
-         » column: (Alias = col5 ; Expr = rapidsse.public.t1.col5)
-         » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6)
-         » column: (Alias = col7 ; Expr = rapidsse.public.t1.col7)
-         » column: (Alias = col8 ; Expr = rapidsse.public.t1.col8)
+         » column: (Alias = col1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
+         » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2 ; Ordinal Expr = $2)
+         » column: (Alias = col3 ; Expr = rapidsse.public.t1.col3 ; Ordinal Expr = $3)
+         » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
+         » column: (Alias = col5 ; Expr = rapidsse.public.t1.col5 ; Ordinal Expr = $5)
+         » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
+         » column: (Alias = col7 ; Expr = rapidsse.public.t1.col7 ; Ordinal Expr = $7)
+         » column: (Alias = col8 ; Expr = rapidsse.public.t1.col8 ; Ordinal Expr = $8)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.t1)
@@ -215,14 +215,14 @@ rows: (*,'explainPlan',
       » queryText: "SELECT * FROM t2"
 
 -> -> -> projectOp
-         » column: (Alias = col1 ; Expr = rapidsse.public.t2.col1)
-         » column: (Alias = col2 ; Expr = rapidsse.public.t2.col2)
-         » column: (Alias = col3 ; Expr = rapidsse.public.t2.col3)
-         » column: (Alias = col4 ; Expr = rapidsse.public.t2.col4)
-         » column: (Alias = col5 ; Expr = rapidsse.public.t2.col5)
-         » column: (Alias = col6 ; Expr = rapidsse.public.t2.col6)
-         » column: (Alias = col7 ; Expr = rapidsse.public.t2.col7)
-         » column: (Alias = col8 ; Expr = rapidsse.public.t2.col8)
+         » column: (Alias = col1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
+         » column: (Alias = col2 ; Expr = rapidsse.public.t2.col2 ; Ordinal Expr = $2)
+         » column: (Alias = col3 ; Expr = rapidsse.public.t2.col3 ; Ordinal Expr = $3)
+         » column: (Alias = col4 ; Expr = rapidsse.public.t2.col4 ; Ordinal Expr = $4)
+         » column: (Alias = col5 ; Expr = rapidsse.public.t2.col5 ; Ordinal Expr = $5)
+         » column: (Alias = col6 ; Expr = rapidsse.public.t2.col6 ; Ordinal Expr = $6)
+         » column: (Alias = col7 ; Expr = rapidsse.public.t2.col7 ; Ordinal Expr = $7)
+         » column: (Alias = col8 ; Expr = rapidsse.public.t2.col8 ; Ordinal Expr = $8)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.t2)'
@@ -244,9 +244,9 @@ rows: (*,'explainPlan',
       » queryText: "SELECT alpha, bravo as col2, charlie, delta as col4, echo, foxtrot as col6, golf, hotel FROM t4"
 
 -> -> -> projectOp
-         » column: (Alias = col2 ; Expr = rapidsse.public.t4.bravo)
-         » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta)
-         » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot)
+         » column: (Alias = col2 ; Expr = rapidsse.public.t4.bravo ; Ordinal Expr = $2)
+         » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta ; Ordinal Expr = $4)
+         » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot ; Ordinal Expr = $6)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.t4)
@@ -255,9 +255,9 @@ rows: (*,'explainPlan',
       » queryText: "SELECT * FROM t1"
 
 -> -> -> projectOp
-         » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2)
-         » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4)
-         » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6)
+         » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2 ; Ordinal Expr = $2)
+         » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
+         » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.t1)'
@@ -279,9 +279,9 @@ rows: (*,'explainPlan',
       » queryText: "SELECT * FROM t1"
 
 -> -> -> projectOp
-         » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2)
-         » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4)
-         » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6)
+         » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2 ; Ordinal Expr = $2)
+         » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
+         » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.t1)
@@ -290,9 +290,9 @@ rows: (*,'explainPlan',
       » queryText: "SELECT alpha, bravo as col2, charlie, delta as col4, echo, foxtrot as col6, golf, hotel FROM t4"
 
 -> -> -> projectOp
-         » column: (Alias = col2 ; Expr = rapidsse.public.t4.bravo)
-         » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta)
-         » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot)
+         » column: (Alias = col2 ; Expr = rapidsse.public.t4.bravo ; Ordinal Expr = $2)
+         » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta ; Ordinal Expr = $4)
+         » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot ; Ordinal Expr = $6)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.t4)'
@@ -314,9 +314,9 @@ rows: (*,'explainPlan',
       » queryText: "SELECT col1, col2 as c2, col3, col4 as c4, col5, col6 as c6, col7, col8 FROM t1"
 
 -> -> -> projectOp
-         » column: (Alias = c2 ; Expr = rapidsse.public.t1.col2)
-         » column: (Alias = c4 ; Expr = rapidsse.public.t1.col4)
-         » column: (Alias = c6 ; Expr = rapidsse.public.t1.col6)
+         » column: (Alias = c2 ; Expr = rapidsse.public.t1.col2 ; Ordinal Expr = $2)
+         » column: (Alias = c4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
+         » column: (Alias = c6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.t1)
@@ -325,9 +325,9 @@ rows: (*,'explainPlan',
       » queryText: "SELECT alpha as c1, bravo as c2, charlie as c3, delta as c4, echo as c5, foxtrot as c6, golf as c7, hotel as c8 FROM t4"
 
 -> -> -> projectOp
-         » column: (Alias = c2 ; Expr = rapidsse.public.t4.bravo)
-         » column: (Alias = c4 ; Expr = rapidsse.public.t4.delta)
-         » column: (Alias = c6 ; Expr = rapidsse.public.t4.foxtrot)
+         » column: (Alias = c2 ; Expr = rapidsse.public.t4.bravo ; Ordinal Expr = $2)
+         » column: (Alias = c4 ; Expr = rapidsse.public.t4.delta ; Ordinal Expr = $4)
+         » column: (Alias = c6 ; Expr = rapidsse.public.t4.foxtrot ; Ordinal Expr = $6)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.t4)')
@@ -356,8 +356,8 @@ rows: (*,'explainPlan',
       » queryText: "SELECT col1, SUM(col2), COUNT(col3) FROM t1 GROUP BY col1"
 
 -> -> -> aggregateOp
-         » column: (Alias = col1 ; Expr = rapidsse.public.t1.col1)
-         » group by: (rapidsse.public.t1.col1)
+         » column: (Alias = col1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
+         » group by: (rapidsse.public.t1.col1) ; Ordinal Exprs = ($1)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.t1)
@@ -366,8 +366,8 @@ rows: (*,'explainPlan',
       » queryText: "SELECT col1, SUM(col2), COUNT(col3) FROM t2 GROUP BY col1"
 
 -> -> -> aggregateOp
-         » column: (Alias = col1 ; Expr = rapidsse.public.t2.col1)
-         » group by: (rapidsse.public.t2.col1)
+         » column: (Alias = col1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
+         » group by: (rapidsse.public.t2.col1) ; Ordinal Exprs = ($1)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.t2)')
@@ -387,9 +387,9 @@ rows: (*,'explainPlan',
       » queryText: "SELECT col1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY col1"
 
 -> -> -> aggregateOp
-         » column: (Alias = col1 ; Expr = rapidsse.public.t1.col1)
-         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2))
-         » group by: (rapidsse.public.t1.col1)
+         » column: (Alias = col1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
+         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2) ; Ordinal Expr = SUM($2))
+         » group by: (rapidsse.public.t1.col1) ; Ordinal Exprs = ($1)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.t1)
@@ -398,9 +398,9 @@ rows: (*,'explainPlan',
       » queryText: "SELECT col1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1"
 
 -> -> -> aggregateOp
-         » column: (Alias = col1 ; Expr = rapidsse.public.t2.col1)
-         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2))
-         » group by: (rapidsse.public.t2.col1)
+         » column: (Alias = col1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
+         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2) ; Ordinal Expr = SUM($2))
+         » group by: (rapidsse.public.t2.col1) ; Ordinal Exprs = ($1)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.t2)'
@@ -425,8 +425,8 @@ rows: (*,'explainPlan',
       » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1"
 
 -> -> -> aggregateOp
-         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2))
-         » group by: (rapidsse.public.t1.col1)
+         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2) ; Ordinal Expr = SUM($2))
+         » group by: (rapidsse.public.t1.col1) ; Ordinal Exprs = ($1)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.t1)
@@ -435,8 +435,8 @@ rows: (*,'explainPlan',
       » queryText: "SELECT col1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1"
 
 -> -> -> aggregateOp
-         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2))
-         » group by: (rapidsse.public.t2.col1)
+         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2) ; Ordinal Expr = SUM($2))
+         » group by: (rapidsse.public.t2.col1) ; Ordinal Exprs = ($1)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.t2)'
@@ -461,9 +461,9 @@ rows: (*,'explainPlan',
       » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1"
 
 -> -> -> aggregateOp
-         » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1)
-         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2))
-         » group by: (c1)
+         » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
+         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2) ; Ordinal Expr = SUM($2))
+         » group by: (c1) ; Ordinal Exprs = ($1)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.t1)
@@ -472,9 +472,9 @@ rows: (*,'explainPlan',
       » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1"
 
 -> -> -> aggregateOp
-         » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1)
-         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2))
-         » group by: (rapidsse.public.t2.col1)
+         » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
+         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2) ; Ordinal Expr = SUM($2))
+         » group by: (rapidsse.public.t2.col1) ; Ordinal Exprs = ($1)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.t2)'
@@ -501,18 +501,18 @@ rows: (*,'explainPlan',
       » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1 HAVING s2 > 0"
 
 -> -> -> projectOp
-         » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1)
-         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2))
+         » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
+         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2) ; Ordinal Expr = $2)
 
 -> -> -> -> filterOp
             » expr: (s2 > 0)
             » ordinal expr: ($2 > 0)
 
 -> -> -> -> -> aggregateOp
-               » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1)
-               » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2))
-               » column: (Expr = COUNT(rapidsse.public.t1.col3))
-               » group by: (c1)
+               » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
+               » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2) ; Ordinal Expr = SUM($2))
+               » column: (Expr = COUNT(rapidsse.public.t1.col3) ; Ordinal Expr = COUNT($3))
+               » group by: (c1) ; Ordinal Exprs = ($1)
 
 -> -> -> -> -> -> tableScanOp
                   » table: (rapidsse.public.t1)
@@ -521,9 +521,9 @@ rows: (*,'explainPlan',
       » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1"
 
 -> -> -> aggregateOp
-         » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1)
-         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2))
-         » group by: (rapidsse.public.t2.col1)
+         » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
+         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2) ; Ordinal Expr = SUM($2))
+         » group by: (rapidsse.public.t2.col1) ; Ordinal Exprs = ($1)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.t2)'
@@ -545,9 +545,9 @@ rows: (*,'explainPlan',
       » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1"
 
 -> -> -> aggregateOp
-         » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1)
-         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2))
-         » group by: (c1)
+         » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
+         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2) ; Ordinal Expr = SUM($2))
+         » group by: (c1) ; Ordinal Exprs = ($1)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.t1)
@@ -556,18 +556,18 @@ rows: (*,'explainPlan',
       » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1 HAVING s2 > 0"
 
 -> -> -> projectOp
-         » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1)
-         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2))
+         » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
+         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2) ; Ordinal Expr = $2)
 
 -> -> -> -> filterOp
             » expr: (s2 > 0)
             » ordinal expr: ($2 > 0)
 
 -> -> -> -> -> aggregateOp
-               » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1)
-               » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2))
-               » column: (Expr = COUNT(rapidsse.public.t2.col3))
-               » group by: (rapidsse.public.t2.col1)
+               » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
+               » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2) ; Ordinal Expr = SUM($2))
+               » column: (Expr = COUNT(rapidsse.public.t2.col3) ; Ordinal Expr = COUNT($3))
+               » group by: (rapidsse.public.t2.col1) ; Ordinal Exprs = ($1)
 
 -> -> -> -> -> -> tableScanOp
                   » table: (rapidsse.public.t2)'
@@ -590,18 +590,18 @@ rows: (*,'explainPlan',
       » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1 HAVING s2 > 0"
 
 -> -> -> projectOp
-         » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1)
-         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2))
+         » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
+         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2) ; Ordinal Expr = $2)
 
 -> -> -> -> filterOp
             » expr: (s2 > 0)
             » ordinal expr: ($2 > 0)
 
 -> -> -> -> -> aggregateOp
-               » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1)
-               » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2))
-               » column: (Expr = COUNT(rapidsse.public.t1.col3))
-               » group by: (c1)
+               » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
+               » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2) ; Ordinal Expr = SUM($2))
+               » column: (Expr = COUNT(rapidsse.public.t1.col3) ; Ordinal Expr = COUNT($3))
+               » group by: (c1) ; Ordinal Exprs = ($1)
 
 -> -> -> -> -> -> tableScanOp
                   » table: (rapidsse.public.t1)
@@ -610,18 +610,18 @@ rows: (*,'explainPlan',
       » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1 HAVING s2 > 0"
 
 -> -> -> projectOp
-         » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1)
-         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2))
+         » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
+         » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2) ; Ordinal Expr = $2)
 
 -> -> -> -> filterOp
             » expr: (s2 > 0)
             » ordinal expr: ($2 > 0)
 
 -> -> -> -> -> aggregateOp
-               » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1)
-               » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2))
-               » column: (Expr = COUNT(rapidsse.public.t2.col3))
-               » group by: (rapidsse.public.t2.col1)
+               » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
+               » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2) ; Ordinal Expr = SUM($2))
+               » column: (Expr = COUNT(rapidsse.public.t2.col3) ; Ordinal Expr = COUNT($3))
+               » group by: (rapidsse.public.t2.col1) ; Ordinal Exprs = ($1)
 
 -> -> -> -> -> -> tableScanOp
                   » table: (rapidsse.public.t2)'
@@ -651,16 +651,16 @@ rows: (*,'explainPlan',
       » queryText: "SELECT col1 as c1, COUNT(col3) FROM t1 GROUP BY c1 HAVING SUM(col2) > 0"
 
 -> -> -> projectOp
-         » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1)
+         » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
 
 -> -> -> -> filterOp
             » expr: ((SUM(rapidsse.public.t1.col2)) > 0)
             » ordinal expr: ((SUM(rapidsse.public.t1.col2)) > 0)
 
 -> -> -> -> -> aggregateOp
-               » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1)
-               » column: (Expr = COUNT(rapidsse.public.t1.col3))
-               » group by: (c1)
+               » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
+               » column: (Expr = COUNT(rapidsse.public.t1.col3) ; Ordinal Expr = COUNT($3))
+               » group by: (c1) ; Ordinal Exprs = ($1)
 
 -> -> -> -> -> -> tableScanOp
                   » table: (rapidsse.public.t1)
@@ -669,16 +669,16 @@ rows: (*,'explainPlan',
       » queryText: "SELECT col1 as c1, COUNT(col3) FROM t2 GROUP BY col1 HAVING SUM(col2) > 0"
 
 -> -> -> projectOp
-         » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1)
+         » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
 
 -> -> -> -> filterOp
             » expr: ((SUM(rapidsse.public.t2.col2)) > 0)
             » ordinal expr: ((SUM(rapidsse.public.t2.col2)) > 0)
 
 -> -> -> -> -> aggregateOp
-               » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1)
-               » column: (Expr = COUNT(rapidsse.public.t2.col3))
-               » group by: (rapidsse.public.t2.col1)
+               » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
+               » column: (Expr = COUNT(rapidsse.public.t2.col3) ; Ordinal Expr = COUNT($3))
+               » group by: (rapidsse.public.t2.col1) ; Ordinal Exprs = ($1)
 
 -> -> -> -> -> -> tableScanOp
                   » table: (rapidsse.public.t2)'
@@ -714,9 +714,9 @@ rows: (*,'explainPlan',
       » queryText: "SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1"
 
 -> -> -> projectOp
-         » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2)
-         » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4)
-         » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6)
+         » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2 ; Ordinal Expr = $2)
+         » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
+         » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.t1)
@@ -731,9 +731,9 @@ rows: (*,'explainPlan',
             » queryText: "SELECT bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4"
 
 -> -> -> -> -> projectOp
-               » column: (Alias = col2 ; Expr = rapidsse.public.t4.bravo)
-               » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta)
-               » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot)
+               » column: (Alias = col2 ; Expr = rapidsse.public.t4.bravo ; Ordinal Expr = $2)
+               » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta ; Ordinal Expr = $4)
+               » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot ; Ordinal Expr = $6)
 
 -> -> -> -> -> -> tableScanOp
                   » table: (rapidsse.public.t4)
@@ -742,9 +742,9 @@ rows: (*,'explainPlan',
             » queryText: "SELECT * FROM t2"
 
 -> -> -> -> -> projectOp
-               » column: (Alias = col2 ; Expr = rapidsse.public.t2.col2)
-               » column: (Alias = col4 ; Expr = rapidsse.public.t2.col4)
-               » column: (Alias = col6 ; Expr = rapidsse.public.t2.col6)
+               » column: (Alias = col2 ; Expr = rapidsse.public.t2.col2 ; Ordinal Expr = $2)
+               » column: (Alias = col4 ; Expr = rapidsse.public.t2.col4 ; Ordinal Expr = $4)
+               » column: (Alias = col6 ; Expr = rapidsse.public.t2.col6 ; Ordinal Expr = $6)
 
 -> -> -> -> -> -> tableScanOp
                   » table: (rapidsse.public.t2)'
@@ -778,9 +778,9 @@ rows: (*,'explainPlan',
             » queryText: "SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1"
 
 -> -> -> -> -> projectOp
-               » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2)
-               » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4)
-               » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6)
+               » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2 ; Ordinal Expr = $2)
+               » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
+               » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
 
 -> -> -> -> -> -> tableScanOp
                   » table: (rapidsse.public.t1)
@@ -789,9 +789,9 @@ rows: (*,'explainPlan',
             » queryText: "SELECT bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4"
 
 -> -> -> -> -> projectOp
-               » column: (Alias = col2 ; Expr = rapidsse.public.t4.bravo)
-               » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta)
-               » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot)
+               » column: (Alias = col2 ; Expr = rapidsse.public.t4.bravo ; Ordinal Expr = $2)
+               » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta ; Ordinal Expr = $4)
+               » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot ; Ordinal Expr = $6)
 
 -> -> -> -> -> -> tableScanOp
                   » table: (rapidsse.public.t4)
@@ -800,9 +800,9 @@ rows: (*,'explainPlan',
       » queryText: "SELECT * FROM t2"
 
 -> -> -> projectOp
-         » column: (Alias = col2 ; Expr = rapidsse.public.t2.col2)
-         » column: (Alias = col4 ; Expr = rapidsse.public.t2.col4)
-         » column: (Alias = col6 ; Expr = rapidsse.public.t2.col6)
+         » column: (Alias = col2 ; Expr = rapidsse.public.t2.col2 ; Ordinal Expr = $2)
+         » column: (Alias = col4 ; Expr = rapidsse.public.t2.col4 ; Ordinal Expr = $4)
+         » column: (Alias = col6 ; Expr = rapidsse.public.t2.col6 ; Ordinal Expr = $6)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.t2)'
@@ -838,9 +838,9 @@ rows: (*,'explainPlan',
             » queryText: "SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1"
 
 -> -> -> -> -> projectOp
-               » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2)
-               » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4)
-               » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6)
+               » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2 ; Ordinal Expr = $2)
+               » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
+               » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
 
 -> -> -> -> -> -> tableScanOp
                   » table: (rapidsse.public.t1)
@@ -849,9 +849,9 @@ rows: (*,'explainPlan',
             » queryText: "SELECT bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4"
 
 -> -> -> -> -> projectOp
-               » column: (Alias = col2 ; Expr = rapidsse.public.t4.bravo)
-               » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta)
-               » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot)
+               » column: (Alias = col2 ; Expr = rapidsse.public.t4.bravo ; Ordinal Expr = $2)
+               » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta ; Ordinal Expr = $4)
+               » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot ; Ordinal Expr = $6)
 
 -> -> -> -> -> -> tableScanOp
                   » table: (rapidsse.public.t4)
@@ -860,9 +860,9 @@ rows: (*,'explainPlan',
       » queryText: "SELECT colB, colD, colF FROM t5"
 
 -> -> -> projectOp
-         » column: (Expr = rapidsse.public.t5.colB)
-         » column: (Expr = rapidsse.public.t5.colD)
-         » column: (Expr = rapidsse.public.t5.colF)
+         » column: (Expr = rapidsse.public.t5.colB ; Ordinal Expr = $2)
+         » column: (Expr = rapidsse.public.t5.colD ; Ordinal Expr = $4)
+         » column: (Expr = rapidsse.public.t5.colF ; Ordinal Expr = $6)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.t5)'
@@ -893,9 +893,9 @@ rows: (*,'explainPlan',
       » queryText: "SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1"
 
 -> -> -> projectOp
-         » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2)
-         » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4)
-         » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6)
+         » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2 ; Ordinal Expr = $2)
+         » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
+         » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.t1)
@@ -910,9 +910,9 @@ rows: (*,'explainPlan',
             » queryText: "SELECT bravo AS col2, delta AS col4, foxtrot AS col6, hotel as col8   FROM t4"
 
 -> -> -> -> -> projectOp
-               » column: (Alias = col2 ; Expr = rapidsse.public.t4.bravo)
-               » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta)
-               » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot)
+               » column: (Alias = col2 ; Expr = rapidsse.public.t4.bravo ; Ordinal Expr = $2)
+               » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta ; Ordinal Expr = $4)
+               » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot ; Ordinal Expr = $6)
 
 -> -> -> -> -> -> tableScanOp
                   » table: (rapidsse.public.t4)
@@ -921,9 +921,9 @@ rows: (*,'explainPlan',
             » queryText: "SELECT colB, colD, colF, colH   FROM t5"
 
 -> -> -> -> -> projectOp
-               » column: (Expr = rapidsse.public.t5.colB)
-               » column: (Expr = rapidsse.public.t5.colD)
-               » column: (Expr = rapidsse.public.t5.colF)
+               » column: (Expr = rapidsse.public.t5.colB ; Ordinal Expr = $2)
+               » column: (Expr = rapidsse.public.t5.colD ; Ordinal Expr = $4)
+               » column: (Expr = rapidsse.public.t5.colF ; Ordinal Expr = $6)
 
 -> -> -> -> -> -> tableScanOp
                   » table: (rapidsse.public.t5)'
@@ -955,9 +955,9 @@ rows: (*,'explainPlan',
       » queryText: "SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1"
 
 -> -> -> projectOp
-         » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2)
-         » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4)
-         » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6)
+         » column: (Alias = col2 ; Expr = rapidsse.public.t1.col2 ; Ordinal Expr = $2)
+         » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
+         » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.t1)
@@ -972,9 +972,9 @@ rows: (*,'explainPlan',
             » queryText: "SELECT bravo AS col2, charlie as col3, delta AS col4, foxtrot AS col6   FROM t4"
 
 -> -> -> -> -> projectOp
-               » column: (Alias = col2 ; Expr = rapidsse.public.t4.bravo)
-               » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta)
-               » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot)
+               » column: (Alias = col2 ; Expr = rapidsse.public.t4.bravo ; Ordinal Expr = $2)
+               » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta ; Ordinal Expr = $4)
+               » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot ; Ordinal Expr = $6)
 
 -> -> -> -> -> -> tableScanOp
                   » table: (rapidsse.public.t4)
@@ -983,9 +983,9 @@ rows: (*,'explainPlan',
             » queryText: "SELECT colB, colC, colD, colF   FROM t5"
 
 -> -> -> -> -> projectOp
-               » column: (Expr = rapidsse.public.t5.colB)
-               » column: (Expr = rapidsse.public.t5.colD)
-               » column: (Expr = rapidsse.public.t5.colF)
+               » column: (Expr = rapidsse.public.t5.colB ; Ordinal Expr = $2)
+               » column: (Expr = rapidsse.public.t5.colD ; Ordinal Expr = $4)
+               » column: (Expr = rapidsse.public.t5.colF ; Ordinal Expr = $6)
 
 -> -> -> -> -> -> tableScanOp
                   » table: (rapidsse.public.t5)'

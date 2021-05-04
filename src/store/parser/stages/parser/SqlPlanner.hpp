@@ -27,7 +27,7 @@ namespace Parser
     s48K m_sQueryStr;
     QueryNodeStack* m_pStatementStack;
     QueryNodeStack* m_pTableRefStack;
-    QueryNodeList* m_pExprList;
+    QueryNodeList* m_pExprStack;
     QueryNodeList* m_pSelectItems;
     QueryNodeList* m_pOrderItems;
     Footer m_xFooter;
@@ -72,6 +72,7 @@ namespace Parser
     antlrcpp::Any visitAggFunc(sqlParser::AggFuncContext *pCtx)                   override;
     antlrcpp::Any visitOrderByList(sqlParser::OrderByListContext *pCtx)           override;
     antlrcpp::Any visitOrderByListItem(sqlParser::OrderByListItemContext *pCtx)   override;
+    antlrcpp::Any visitGroupByListItem(sqlParser::GroupByListItemContext *pCtx)   override;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

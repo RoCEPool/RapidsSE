@@ -14,8 +14,8 @@ create table nation (
 );
 success
 
--- trackmemory;
--- success
+trackmemory;
+success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Simple explain
@@ -28,7 +28,7 @@ rows:
 » queryText: "SELECT n_nationkey FROM nation"
 
 -> projectOp
-   » column: (Expr = rapidsse.public.nation.n_nationkey)
+   » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
 
 -> -> tableScanOp
       » table: (rapidsse.public.nation)' )
@@ -49,7 +49,7 @@ rows:
 » queryText: "SELECT n_nationkey FROM nation"
 
 -> projectOp
-   » column: (Expr = rapidsse.public.nation.n_nationkey)
+   » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
 
 -> -> tableScanOp
       » table: (rapidsse.public.nation)' )
@@ -58,21 +58,21 @@ rows:
 // Explain single stage
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-// Explain single stage (nums)
+-- Explain single stage (nums)
 
 EXPLAIN STAGE 2 SELECT n_nationkey FROM nation;
 rows:
   ( 2, 'nameValidate',  * )
 
 
-// Explain single stage (names)
+-- Explain single stage (names)
 
 EXPLAIN STAGE nameValidate SELECT n_nationkey FROM nation;
 rows:
   ( 2, 'nameValidate',  * )
 
 
-// Explain single stage (names, case insensitive)
+-- Explain single stage (names, case insensitive)
 
 EXPLAIN STAGE NAMEVALIDATE SELECT n_nationkey FROM nation;
 rows:
@@ -83,7 +83,7 @@ rows:
 // Explain multiple single stages
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-// Explain multiple single stages (num)
+-- Explain multiple single stages (num)
 
 EXPLAIN STAGE 1,3 SELECT n_nationkey FROM nation;
 rows:
@@ -91,7 +91,7 @@ rows:
   ( 3, 'exprValidate',  * )
 
 
-// (mixed order)
+-- (mixed order)
 
 EXPLAIN STAGE 3,1 SELECT n_nationkey FROM nation;
 rows:
@@ -99,7 +99,7 @@ rows:
   ( 3, 'exprValidate',  * )
 
 
-// Explain multiple single stages (names)
+-- Explain multiple single stages (names)
 
 EXPLAIN STAGE parser, exprValidate SELECT n_nationkey FROM nation;
 rows:
@@ -107,7 +107,7 @@ rows:
   ( 3, 'exprValidate',  * )
 
 
-// (mixed order)
+-- (mixed order)
 
 EXPLAIN STAGE exprValidate, parser SELECT n_nationkey FROM nation;
 rows:
@@ -115,7 +115,7 @@ rows:
   ( 3, 'exprValidate',  * )
 
 
-// Explain multiple single stages (mixed)
+-- Explain multiple single stages (mixed)
 
 EXPLAIN STAGE 1, exprValidate SELECT n_nationkey FROM nation;
 rows:
@@ -127,7 +127,7 @@ rows:
 // Explain stage range
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-// Explain stage range (nums)
+-- Explain stage range (nums)
 
 EXPLAIN STAGE 1-3 SELECT n_nationkey FROM nation;
 rows:
@@ -142,7 +142,7 @@ rows:
   ( 3, 'exprValidate',  * )
 
 
-// Explain stage range (names)
+-- Explain stage range (names)
 
 EXPLAIN STAGE parser-exprValidate SELECT n_nationkey FROM nation;
 rows:
@@ -157,7 +157,7 @@ rows:
   ( 3, 'exprValidate',  * )
 
 
-// Explain stage range (mixed)
+-- Explain stage range (mixed)
 
 EXPLAIN STAGE 1-exprValidate SELECT n_nationkey FROM nation;
 rows:
@@ -177,7 +177,7 @@ rows:
 // Explain multiple stage ranges
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-// Explain multiple stage ranges (nums)
+-- Explain multiple stage ranges (nums)
 
 EXPLAIN STAGE 1-2, 4-5 SELECT n_nationkey FROM nation;
 rows:
@@ -187,7 +187,7 @@ rows:
   ( 5, 'postProject',   * )
 
 
-// Explain multiple stage ranges (names)
+-- Explain multiple stage ranges (names)
 
 EXPLAIN STAGE parser-nameValidate, setOpValidate-explainPlan SELECT n_nationkey FROM nation;
 rows:
@@ -200,7 +200,7 @@ rows:
   ( 8, 'explainPlan',   * )
 
 
-// Explain multiple stage ranges (mixed)
+-- Explain multiple stage ranges (mixed)
 
 EXPLAIN STAGE 1-nameValidate, setOpValidate-5 SELECT n_nationkey FROM nation;
 rows:
@@ -210,7 +210,7 @@ rows:
   ( 5, 'postProject',   * )
 
 
-// Explain multiple overlapping stage ranges
+-- Explain multiple overlapping stage ranges
 
 EXPLAIN STAGE 1-3, 2-4 SELECT n_nationkey FROM nation;
 rows:
@@ -258,7 +258,7 @@ rows:
 // Explain invalid stage
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-// Explain invalid stage (nums)
+-- Explain invalid stage (nums)
 
 EXPLAIN STAGE -1 SELECT n_nationkey FROM nation;
 failure contains: "EC_SYNTAX_ERROR; Line: 1; Column: 14; extraneous input '-'"
@@ -267,7 +267,7 @@ EXPLAIN STAGE 1000 SELECT n_nationkey FROM nation;
 rows: 0
 
 
-// Explain invalid stage (names)
+-- Explain invalid stage (names)
 
 EXPLAIN STAGE badStageName SELECT n_nationkey FROM nation;
 rows: 0
@@ -277,7 +277,7 @@ rows: 0
 // Explain invalid stage range
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-// Explain invalid stage range (nums)
+-- Explain invalid stage range (nums)
 
 EXPLAIN STAGE 3-1 SELECT n_nationkey FROM nation;
 rows: 0
@@ -286,7 +286,7 @@ EXPLAIN STAGE 1-1000 SELECT n_nationkey FROM nation;
 rows: 8
 
 
-// Explain invalid stage range (names)
+-- Explain invalid stage range (names)
 EXPLAIN STAGE exprValidate-parser SELECT n_nationkey FROM nation;
 rows: 0
 
@@ -296,7 +296,7 @@ rows: 8
 EXPLAIN STAGE badStageName-explainPlan SELECT n_nationkey FROM nation;
 rows: 0
 
-// Explain invalid stage range (mixed)
+-- Explain invalid stage range (mixed)
 
 EXPLAIN STAGE badStageName-5 SELECT n_nationkey FROM nation;
 rows: 0
@@ -323,7 +323,7 @@ rows:
       » queryText: "SELECT n_nationkey FROM nation"
 
 -> -> -> projectOp
-         » column: (Expr = rapidsse.public.nation.n_nationkey)
+         » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)' )
@@ -347,8 +347,8 @@ rows:
 //  Check for memory leaks
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
--- memoryleaks;
--- rows: 0
+memoryleaks;
+rows: 0
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Cleanup

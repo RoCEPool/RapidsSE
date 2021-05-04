@@ -1298,28 +1298,26 @@ void AM::vWriteLog(void) {
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get pSession given i_Session                                               */
+/* send parcel to given node                                                  */
 /*----------------------------------------------------------------------------*/
-void AM::vSend(Task* pTask, Node* pSendNode, Parcel* pParcel)
+void AM::vSendParcel(Parcel* pParcel)
 {
-  pTask->pJob()->pLogicUnit_job()->m_xpSendNode = pSendNode;
-  
-  // grab socket write lock
+  SysCall oSysCall;
+    
+  // get the send node in the task
+  Node* pSendNode = AM::pGrid()->pGetNode(pParcel->m_iDstNode);
   Socket* pSocket = pSendNode->pSendSocket();
+
   pSocket->vGrabWrite();
   
-  SysCall oSysCall;
   i8 nObjectSize = gxaSizeHeap[pParcel->eGetClassNo()].m_nClassSize;
   bool bResult = pSocket->bSendTo(pParcel, nObjectSize, oSysCall);
   
   Operand* pOperand = pParcel->pGetOperand();
-  
   nObjectSize = gxaSizeHeap[pOperand->eGetClassNo()].m_nClassSize;
   bResult = pSocket->bSendTo(pOperand, nObjectSize, oSysCall);
   
-  // drop the socket write lock
   pSocket->vDropWrite();
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1599,14 +1597,6 @@ i8 AM::iNextObjectNo(eCN eClassNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete the parcel                                                          */
-/*----------------------------------------------------------------------------*/
-void AM::vDeleteParcel(Parcel* pParcel)
-{
-  delete pParcel;
-}
-
-/*----------------------------------------------------------------------------*/
 /* duplicate the operand ( marker / streamDef )                               */
 /*----------------------------------------------------------------------------*/
 Operand* AM::pDuplicateOperand(Operand* pOperand)
@@ -1623,20 +1613,6 @@ Operand* AM::pDuplicateOperand(Operand* pOperand)
     return pNewStreamDef;
   }
   
-}
-
-/*----------------------------------------------------------------------------*/
-/* new an operand job                                                         */
-/*----------------------------------------------------------------------------*/
-Parcel* AM::pNewParcel(Job* pParentJob, Operand* pOperand,
-                                 ePX eCrossTopo, i8 iNextStage, i8 iNextOp,
-                                 i8 i_Node, i8 tPtnNo)
-{
-  Parcel* pParcel =
-    Parcel::pNewParcel(pOperand,pParentJob->iJobId(),
-                                 eCrossTopo,iNextStage,iNextOp,i_Node,tPtnNo);
-  
-  return pParcel;
 }
 
 /*----------------------------------------------------------------------------*/

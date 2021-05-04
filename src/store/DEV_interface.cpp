@@ -289,7 +289,7 @@ void vDev_IXT_ENT_POSPRIOR(i8** aaiDstk)
   Ent* pEntArray;
 
   // pop the wrk ent
-  Ent_int* aWrkEnt = (Ent_int*)P_PopPtr();
+  Ent* aWrkEnt = (Ent*)P_PopPtr();
 
   //pop the device
   DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
@@ -927,6 +927,41 @@ void vDev_ENTWRK_RESET(i8** aaiDstk)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set entry kind                                                             */
+/*----------------------------------------------------------------------------*/
+void vDev_ENTWRK_SETENTKND(i8** aaiDstk)
+{
+  _static_
+
+  i8 *aiDstk = *aaiDstk;
+  EntWrk *pEntWrk = (EntWrk*)P_PopPtr();
+
+  //pop the device
+  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
+  IndexTree* pIndexTree = _pIndexTree(pDevIxt->m_pIdxTree);
+  pEntWrk->aEnt()->vKind(pIndexTree->eKeyKind());
+
+  *aaiDstk = aiDstk;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set int only element                                                       */
+/*----------------------------------------------------------------------------*/
+void vDev_ENTWRK_SETINTELM_OLD(i8** aaiDstk)
+{
+  _static_
+
+  i8 *aiDstk = *aaiDstk;
+  EntWrk *pEntWrk = (EntWrk*)P_PopPtr();
+  i8 iTop = I_PopInt();
+
+  pEntWrk->aEnt()->vKind(KE_INT);
+  *(i8*)pEntWrk->aEnt()->aKey() = iTop;
+
+  *aaiDstk = aiDstk;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set int only element                                                       */
 /*----------------------------------------------------------------------------*/
 void vDev_ENTWRK_SETINTELM(i8** aaiDstk)
@@ -937,13 +972,36 @@ void vDev_ENTWRK_SETINTELM(i8** aaiDstk)
   EntWrk *pEntWrk = (EntWrk*)P_PopPtr();
   i8 iTop = I_PopInt();
 
-  //pLogicUnit->m_oEntWrk.vAppendElementInt(pDevRow->m_aRow,iTop);
-  pEntWrk->aEnt()->vKind(KE_INT);
-  *(i8*)pEntWrk->aEnt()->aKey() = iTop;
+  if (pEntWrk->aEnt()->eKind() == KE_INT) {
+    *(i8*)pEntWrk->aEnt()->aKey() = iTop;
+  }
+  else {
+    pEntWrk->vAppendElementInt(nullptr,iTop);
+  }
 
   *aaiDstk = aiDstk;
 }
 
+/*----------------------------------------------------------------------------*/
+/* set int only element                                                       */
+/*----------------------------------------------------------------------------*/
+void vDev_ENTWRK_SETSTZELM(i8** aaiDstk)
+{
+  _static_
+
+  i8 *aiDstk = *aaiDstk;
+  EntWrk *pEntWrk = (EntWrk*)P_PopPtr();
+
+  char* azSrc;
+  i8 nSize;
+  S_PopStr(azSrc);
+
+  RASSERT(pEntWrk->aEnt()->eKind() == KE_GENERAL);
+
+  pEntWrk->vAppendElementStz(nullptr,(Stz*)azSrc);
+
+  *aaiDstk = aiDstk;
+}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

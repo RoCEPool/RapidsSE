@@ -8,8 +8,8 @@
 
 _nation;
 
--- trackmemory;
--- success
+trackmemory;
+success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Basic ORDER BY examples
@@ -26,10 +26,10 @@ rows: (*,'explainPlan',
    » ordinal order expr: (($2) ASC)
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.nation.N_NATIONKEY)
-      » column: (Expr = rapidsse.public.nation.N_NAME)
-      » column: (Expr = rapidsse.public.nation.N_REGIONKEY)
-      » column: (Expr = rapidsse.public.nation.N_COMMENT)
+      » column: (Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+      » column: (Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.nation)'
@@ -46,10 +46,10 @@ rows: (*,'explainPlan',
    » ordinal order expr: (($2) ASC, ($1) ASC)
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.nation.N_NATIONKEY)
-      » column: (Expr = rapidsse.public.nation.N_NAME)
-      » column: (Expr = rapidsse.public.nation.N_REGIONKEY)
-      » column: (Expr = rapidsse.public.nation.N_COMMENT)
+      » column: (Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+      » column: (Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.nation)'
@@ -66,10 +66,10 @@ rows: (*,'explainPlan',
    » ordinal order expr: (($2) ASC, ($1) DESC)
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.nation.N_NATIONKEY)
-      » column: (Expr = rapidsse.public.nation.N_NAME)
-      » column: (Expr = rapidsse.public.nation.N_REGIONKEY)
-      » column: (Expr = rapidsse.public.nation.N_COMMENT)
+      » column: (Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+      » column: (Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.nation)'
@@ -86,10 +86,10 @@ rows: (*,'explainPlan',
    » ordinal order expr: (($2) DESC, ($1) ASC)
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.nation.N_NATIONKEY)
-      » column: (Expr = rapidsse.public.nation.N_NAME)
-      » column: (Expr = rapidsse.public.nation.N_REGIONKEY)
-      » column: (Expr = rapidsse.public.nation.N_COMMENT)
+      » column: (Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+      » column: (Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.nation)'
@@ -106,10 +106,10 @@ rows: (*,'explainPlan',
    » ordinal order expr: (($1 + 1) DESC)
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.nation.N_NATIONKEY)
-      » column: (Expr = rapidsse.public.nation.N_NAME)
-      » column: (Expr = rapidsse.public.nation.N_REGIONKEY)
-      » column: (Expr = rapidsse.public.nation.N_COMMENT)
+      » column: (Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+      » column: (Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.nation)'
@@ -126,10 +126,10 @@ rows: (*,'explainPlan',
    » ordinal order expr: (($2) DESC, ($1 + $3) ASC)
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.nation.N_NATIONKEY)
-      » column: (Expr = rapidsse.public.nation.N_NAME)
-      » column: (Expr = rapidsse.public.nation.N_REGIONKEY)
-      » column: (Expr = rapidsse.public.nation.N_COMMENT)
+      » column: (Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+      » column: (Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.nation)'
@@ -154,9 +154,9 @@ rows: (*,'explainPlan',
       » ordinal expr: ($1 = ''KENYA'')
 
 -> -> -> aggregateOp
-         » column: (Expr = rapidsse.public.nation.n_name)
-         » column: (Alias = s ; Expr = SUM(rapidsse.public.nation.n_nationkey))
-         » group by: (rapidsse.public.nation.n_name)
+         » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+         » column: (Alias = s ; Expr = SUM(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = SUM($1))
+         » group by: (rapidsse.public.nation.n_name) ; Ordinal Exprs = ($2)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)'
@@ -184,9 +184,9 @@ rows: (*,'explainPlan',
          » ordinal expr: ($1 = ''KENYA'')
 
 -> -> -> -> aggregateOp
-            » column: (Expr = rapidsse.public.nation.n_name)
-            » column: (Alias = s ; Expr = SUM(rapidsse.public.nation.n_nationkey))
-            » group by: (rapidsse.public.nation.n_name)
+            » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+            » column: (Alias = s ; Expr = SUM(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = SUM($1))
+            » group by: (rapidsse.public.nation.n_name) ; Ordinal Exprs = ($2)
 
 -> -> -> -> -> tableScanOp
                » table: (rapidsse.public.nation)'
@@ -231,8 +231,8 @@ rows: (*,'explainPlan',
             » queryText: "SELECT n_nationkey, n_name FROM nation"
 
 -> -> -> -> -> projectOp
-               » column: (Expr = rapidsse.public.nation.n_nationkey)
-               » column: (Expr = rapidsse.public.nation.n_name)
+               » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+               » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> -> -> -> tableScanOp
                   » table: (rapidsse.public.nation)
@@ -241,15 +241,13 @@ rows: (*,'explainPlan',
             » queryText: "SELECT n_regionkey, n_name FROM nation"
 
 -> -> -> -> -> projectOp
-               » column: (Expr = rapidsse.public.nation.n_regionkey)
-               » column: (Expr = rapidsse.public.nation.n_name)
+               » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
+               » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> -> -> -> tableScanOp
                   » table: (rapidsse.public.nation)'
 )
 
-
--- TODO: Enable when supported
 EXPLAIN
 SELECT n_nationkey + 1, n_name FROM nation
 UNION ALL
@@ -262,7 +260,40 @@ SELECT n_nationkey + 1, n_name FROM nation
 UNION ALL
 SELECT n_regionkey, n_name FROM nation
 ORDER BY n_nationkey + 1;
-success
+rows: (*,'explainPlan',
+'StatementMarker: select
+» queryText: "SELECT n_nationkey + 1, n_name FROM nation UNION ALL SELECT n_regionkey, n_name FROM nation ORDER BY n_nationkey + 1"
+
+-> orderOp
+   » order expr: ((rapidsse.public.nation.n_nationkey + 1) ASC)
+   » ordinal order expr: (($1) ASC)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT n_nationkey + 1, n_name FROM nation UNION ALL SELECT n_regionkey, n_name FROM nation"
+
+-> -> -> unionOp
+         » isDistinct: (false)
+
+-> -> -> -> StatementMarker: select
+            » queryText: "SELECT n_nationkey + 1, n_name FROM nation"
+
+-> -> -> -> -> projectOp
+               » column: (Expr = rapidsse.public.nation.n_nationkey + 1 ; Ordinal Expr = $1 + 1)
+               » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> -> -> -> tableScanOp
+                  » table: (rapidsse.public.nation)
+
+-> -> -> -> StatementMarker: select
+            » queryText: "SELECT n_regionkey, n_name FROM nation"
+
+-> -> -> -> -> projectOp
+               » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
+               » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> -> -> -> tableScanOp
+                  » table: (rapidsse.public.nation)'
+)
 
 -- -- Ordering expression can be a superset of the unionOps first child
 EXPLAIN
@@ -288,8 +319,8 @@ rows: (*,'explainPlan',
             » queryText: "SELECT n_nationkey, n_name FROM nation"
 
 -> -> -> -> -> projectOp
-               » column: (Expr = rapidsse.public.nation.n_nationkey)
-               » column: (Expr = rapidsse.public.nation.n_name)
+               » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+               » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> -> -> -> tableScanOp
                   » table: (rapidsse.public.nation)
@@ -298,8 +329,8 @@ rows: (*,'explainPlan',
             » queryText: "SELECT n_regionkey, n_name FROM nation"
 
 -> -> -> -> -> projectOp
-               » column: (Expr = rapidsse.public.nation.n_regionkey)
-               » column: (Expr = rapidsse.public.nation.n_name)
+               » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
+               » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> -> -> -> tableScanOp
                   » table: (rapidsse.public.nation)'
@@ -337,7 +368,7 @@ rows: (*,'explainPlan',
    » ordinal order expr: (($1) ASC)
 
 -> -> projectOp
-      » column: (Alias = name ; Expr = rapidsse.public.nation.n_name)
+      » column: (Alias = name ; Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.nation)'
@@ -354,7 +385,7 @@ rows: (*,'explainPlan',
    » ordinal order expr: (($1) ASC)
 
 -> -> projectOp
-      » column: (Alias = nkey ; Expr = rapidsse.public.nation.n_nationkey + 1)
+      » column: (Alias = nkey ; Expr = rapidsse.public.nation.n_nationkey + 1 ; Ordinal Expr = $1 + 1)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.nation)'
@@ -384,8 +415,8 @@ rows: (*,'explainPlan',
             » queryText: "SELECT n_nationkey as nkey, n_name FROM nation"
 
 -> -> -> -> -> projectOp
-               » column: (Alias = nkey ; Expr = rapidsse.public.nation.n_nationkey)
-               » column: (Expr = rapidsse.public.nation.n_name)
+               » column: (Alias = nkey ; Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+               » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> -> -> -> tableScanOp
                   » table: (rapidsse.public.nation)
@@ -394,8 +425,8 @@ rows: (*,'explainPlan',
             » queryText: "SELECT n_regionkey, n_name FROM nation"
 
 -> -> -> -> -> projectOp
-               » column: (Expr = rapidsse.public.nation.n_regionkey)
-               » column: (Expr = rapidsse.public.nation.n_name)
+               » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
+               » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> -> -> -> tableScanOp
                   » table: (rapidsse.public.nation)'
@@ -407,8 +438,8 @@ rows: (*,'explainPlan',
 //  Check for memory leaks
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
--- memoryleaks;
--- rows: 0
+memoryleaks;
+rows: 0
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Cleanup

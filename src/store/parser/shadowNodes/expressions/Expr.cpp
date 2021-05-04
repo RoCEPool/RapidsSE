@@ -181,7 +181,7 @@ b1 Expr::bContainsNonaggregatedColumnRefs(PlanNode *pNode)
 /* Returns true if this expression tree only comprises literals and operators.*/
 /* i.e., returns false if a ColumnRef or ColumnOrdinal is encountered.        */
 /*----------------------------------------------------------------------------*/
-b1 Expr::bIsLiteral(PlanNode *pNode)
+b1 Expr::bIsFullyLiteral(PlanNode *pNode)
 {
   ASSERT(bIsOfType(pNode));
 
@@ -305,7 +305,10 @@ QueryNode* Expr::pSymbolicToOrdinal(QueryNode*     pSymbolicExpr,
 
   while (pIter->bHasNext()) {
     QueryNode* pProjectedColumn = pIter->pNext();
+    ASSERT(ProjectedColumn::bIsOfType(pProjectedColumn));
+
     QueryNode* pColExpr = ProjectedColumn::pExprNode(pProjectedColumn);
+    ASSERT(Expr::bIsOfType(pColExpr));
 
 //    s2K sBuf1;
 //    s2K sBuf2;
@@ -530,7 +533,7 @@ b1 Expr::bIsEqualOrSupersetOf(QueryNode* pSuperExpr, QueryNode* pSubExpr)
 /* Returns true if the expression does not contain any column references.     */
 /* All expressions are relative column ordinals, operators or literals only.  */
 /*----------------------------------------------------------------------------*/
-b1 Expr::bIsOrdinal(QueryNode* pExpr)
+b1 Expr::bIsFullyOrdinal(QueryNode* pExpr)
 {
   b1 bIsOrdinal = true;
 

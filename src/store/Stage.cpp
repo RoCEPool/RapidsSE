@@ -194,55 +194,57 @@ Pipeline* Stage::pPipeline(void)
 /*----------------------------------------------------------------------------*/
 /* get pipeOut operator from the stage depending on cross topology            */
 /*----------------------------------------------------------------------------*/
-Op* Stage::pPipeOutOp(ePX eCrossTopo, i8 i_Node, tPN tPtnNo, i8 i_Op)
+Op* Stage::pPipeOutOp(ePX eCrossTopo, tPN tDstPtnNo, i8 i_DstOp)
 {
   Op* pOp = nullptr;
   Stream* pNdeStream = nullptr;
   Stream* pPtnStream = nullptr;
+  
+  i8 i_ThisNode = AM::iThisNodeNo();
   
   switch (eCrossTopo) {
       
     case PX_ALL_NODES_TO_ORIGIN:
     case PX_ALL_NODES_TO_ALL_NODES:
     case PX_ALL_PARTITIONS_TO_ORIGIN:
+    case PX_ORIGIN_TO_ALL_NODES:
     case PX_ORIGIN_TO_ORIGIN:
     case PX_SPECIFIC_PARTITION_TO_ORIGIN:
-    case PX_ORIGIN_TO_ALL_NODES:
-      pNdeStream = this->pGetNodeStream(i_Node);
-      pOp = pNdeStream->pGet(i_Op);
+      pNdeStream = this->pGetNodeStream(i_ThisNode);
+      pOp = pNdeStream->pGet(i_DstOp);
       break;
       
     case PX_ORIGIN_TO_ALL_PARTITIONS:
-      pPtnStream = pGet(tPtnNo);
-      pOp = pPtnStream->pGet(i_Op);
+      pPtnStream = pGet(tDstPtnNo);
+      pOp = pPtnStream->pGet(i_DstOp);
       break;
       
     case PX_ALL_NODES_TO_ALL_PARTITIONS:
-    case PX_ORIGIN_TO_SPECIFIC_PARTITION:
     case PX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
-      pPtnStream = pGetPartitionStream(tPtnNo);
-      pOp = pPtnStream->pGet(i_Op);
+    case PX_ORIGIN_TO_SPECIFIC_PARTITION:
+      pPtnStream = pGetPartitionStream(tDstPtnNo);
+      pOp = pPtnStream->pGet(i_DstOp);
       break;
       
     case PX_ALL_PARTITIONS_TO_ALL_NODES:
-      pNdeStream = this->pGetNodeStream(i_Node);
-      pOp = pNdeStream->pGet(i_Op);
+      pNdeStream = this->pGetNodeStream(i_ThisNode);
+      pOp = pNdeStream->pGet(i_DstOp);
       break;
       
     case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
-      pPtnStream = pGetPartitionStream(tPtnNo);
-      pOp = pPtnStream->pGet(i_Op);
+      pPtnStream = pGetPartitionStream(tDstPtnNo);
+      pOp = pPtnStream->pGet(i_DstOp);
       break;
       
     case PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
-      pPtnStream = pGetPartitionStream(tPtnNo);
-      pOp = pPtnStream->pGet(i_Op);
+      pPtnStream = pGetPartitionStream(tDstPtnNo);
+      pOp = pPtnStream->pGet(i_DstOp);
       break;
       
     case PX_SPECIFIC_PARTITION_TO_SPECIFIC_PARTITION:
       pPtnStream = pGet(0);
-      ASSERT(pPtnStream->tPtnNo() == tPtnNo);
-      pOp = pPtnStream->pGet(i_Op);
+      ASSERT(pPtnStream->tPtnNo() == tDstPtnNo);
+      pOp = pPtnStream->pGet(i_DstOp);
       break;
       
     default:

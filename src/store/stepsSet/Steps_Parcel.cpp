@@ -26,7 +26,6 @@ void Step::vAddSteps_Parcel(void)
   vAddStep("parcel.operand!"_Stz,   &Step::vParcelOperandStore);
   vAddStep("parcel.pipeOut"_Stz,    &Step::vParcelPipeOut);
   
-  vAddStep("parcel::sendTo"_Stz,    &Step::vParcelSendTo);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -65,7 +64,6 @@ void Step::vParcelPipeOut(void)
   
   // get the op to forward to depending on the cross topology
   Op* pOp = pStage->pPipeOutOp(pParcel->m_eCrossTopo,
-                               pParcel->m_i_Node,
                                pParcel->m_tPtnNo,
                                pParcel->m_iNextOp);
   
@@ -77,24 +75,6 @@ void Step::vParcelPipeOut(void)
   // now delete the pParcel
   delete pParcel;
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* parcel.sendTo -- send operand to next operator in pipeline                 */
-/*----------------------------------------------------------------------------*/
-void Step::vParcelSendTo(void)
-{
-  ENTRY();
-  
-  Op* pOp = m_pJob->m_pOp;
-  
-  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
-
-  //pOp->vSendParcel(pOperand,this,false);
-  
-  Parcel::vSendParcel(pOperand,pOp,this,false);
-
   EXIT();
 }
 

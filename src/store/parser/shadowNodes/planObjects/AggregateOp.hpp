@@ -39,6 +39,13 @@ namespace Parser
     // Must be freed after use.
     static QueryNode* pOrdinalGroupByList(QueryNode* pNode, PlanNode* pRootNode);
 
+    // Returns a new copy of the projected expressions rewritten in ordinal
+    // orientation (where possible) where the ordinals are relative to group by
+    // list. Not all columns will be expressed relative to the group by list and
+    // so they will retain use of ColumnRefs.
+    // Must be freed after use.
+    static QueryNode* pOrdinalProjectedColumnsRelativeToGroupBy(QueryNode* pNode, PlanNode* pRootNode);
+
     // Merges a ProjectOp, pOtherOp, into this AggregateOp
     static void vSquash(QueryNode* pNode, QueryNode* pOtherOp, PlanNode* pRootNode);
 

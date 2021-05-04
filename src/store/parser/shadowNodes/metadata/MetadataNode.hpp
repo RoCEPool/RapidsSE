@@ -27,6 +27,9 @@ namespace Parser
     // Returns true if a given node is this exact given type.
     static b1 bIsExactType(PlanNode* pNode);
 
+    // Returns true if metadata has previously been added
+    static b1 bHasMetadata(PlanNode* pNode);
+
     static void vAddCatalog(QueryNode* pMetadataNode, QueryNode* pCatalogDef);
     static void vAddSchema(QueryNode* pMetadataNode, QueryNode* pSchemaDef);
     static void vAddTable(QueryNode* pMetadataNode, QueryNode* pTableDef);

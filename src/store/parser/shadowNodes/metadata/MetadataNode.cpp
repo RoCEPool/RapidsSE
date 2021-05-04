@@ -67,6 +67,21 @@ b1 MetadataNode::bIsExactType(PlanNode *pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns true if metadata has previously been added                         */
+/*----------------------------------------------------------------------------*/
+b1 MetadataNode::bHasMetadata(PlanNode *pNode)
+{
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+
+  // Get the catalogs property
+  QueryNode* pCatalogsNode = _pQueryNode(GraphNav::pFindProperty(C_CATALOGS_PROP, pNode));
+  ASSERT(pCatalogsNode);
+
+  return pCatalogsNode->nChildren() > 0;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Add a catalog definition to the metadata                                   */
 /*----------------------------------------------------------------------------*/
 void MetadataNode::vAddCatalog(QueryNode* pMetadataNode, QueryNode* pCatalogDef)

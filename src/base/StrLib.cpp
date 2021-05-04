@@ -3652,8 +3652,8 @@ i8 StrLib::iWordFlipBack(char* aDst, char* aSrc)
     MemLib::vWordFlip(aWrd++);
   
   
-  //vTrace("AFTER BACK : %s\n"_Stz, aDst);
-  //MemLib::vDumpWords(aDst, iDstSize);
+  //vTrace("\nAFTER BACK : %s\n"_Stz, aDst);
+  //MemLib::vDumpWords(aSrc, iDstSize);
   
   return iDstSize;
 }

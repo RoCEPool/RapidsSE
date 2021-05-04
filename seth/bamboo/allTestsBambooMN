@@ -2,7 +2,7 @@
 # All test files included in here will be run in the continuous integration environment.
 # This is a recursive testList file.
 
-../tests/Transliterate/testList
+../testsMN/Transliterate/testList
 ../tests/BackEnd/testList
 ../tests/Compiler/testList
 ../tests/Demo/testList
