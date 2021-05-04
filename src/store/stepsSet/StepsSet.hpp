@@ -994,6 +994,7 @@ public:
 
   // operand
   void vOperandSendOut(void);
+  void vOperandToParcel(void);
 
   // operand[]
   void vOperandAsSrcCrwBuffer(void);
@@ -1265,6 +1266,7 @@ public:
   // Parcel
   void vParcelOperandStore(void);
   void vParcelPipeOut(void);
+  void vParcelSendOut(void);
 
   // reg Pipein
   void vPipeinBide(void);

@@ -5,17 +5,33 @@
 " OP_send.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* Send the operand in the PipeIn[] register                                  */
+/* send the operand in the PipeIn[] register                                  */
 /*----------------------------------------------------------------------------*/
-: PipeIn[].sendTo
+: PipeIn[].sendTo \handler
+
+  0 locals| pParcel |
 
   PipeIn[]\clear locals| pOperand |
   
-  pOperand object.preSendWord@ if
-    pOperand object.preSendWord@ execute
+  
+  // we do not expect to see a job
+  pOperand object.class@ CN_JOB != ASSERT
+
+
+  //pOperand object.preSendWord@ if
+  //  pOperand object.preSendWord@ execute
+  //then
+  
+
+  pOperand object.class@ CN_PARCEL != if
+    //"Convert to parcel" .
+    pOperand operand.toParcel to pParcel
+  else
+    "Operand is parcel" .
+    pOperand to pParcel
   then
   
-  pOperand operand.sendOut
+  pParcel parcel.sendOut
   
   // calling op_loop continues
   true
@@ -29,7 +45,7 @@
 /*----------------------------------------------------------------------------*/
 : send_CANCELMARKER \handler
 
-  PipeIn[].sendTo
+  PipeIn[].sendTo discard
 
   PipeIn[].drain
 
@@ -43,7 +59,7 @@
 /*----------------------------------------------------------------------------*/
 : send_EXITMARKER \handler
 
-  PipeIn[].sendTo
+  PipeIn[].sendTo discard
 
   Op.ackPipelineJob
   

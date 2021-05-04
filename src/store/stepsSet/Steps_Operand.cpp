@@ -43,6 +43,7 @@
 void Step::vAddSteps_Operand(void)
 {
   vAddStep("operand.sendOut"_Stz,          &Step::vOperandSendOut);
+  vAddStep("operand.toParcel"_Stz,         &Step::vOperandToParcel);
 
   vAddStep("Operand[]"_Stz,                &Step::vOperandGet);
   vAddStep("Operand[]\\clear"_Stz,         &Step::vOperandGetAndClear);
@@ -798,6 +799,16 @@ void Step::vOperandSet(void)
   ASSERT(! pOperand || m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull());
   
   m_pJob->pLogicUnit_job()->m_xpOperandA = _pOperand(pOperand);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* operand.toParcel -- convert operand to parcel                              */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandToParcel(void)
+{
+  ENTRY();
   
   EXIT();
 }
