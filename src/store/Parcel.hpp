@@ -43,7 +43,7 @@ namespace STORE
         
     static Parcel* pNewParcel(Operand* pOperand, Op*  pSrcOp);
 
-    static void vSendOut(Operand* pOperand, Op* pOp);
+    static void vSendOut(Parcel* pParcel, Operand* pOperand, Op* pOp);
 
   public:
     void vShow(void);
@@ -61,7 +61,7 @@ namespace STORE
 
     static void vSendAsParcel(Parcel* pParcel, Op* pSrcOp);
   
-    static void vSendAsParcel(Operand* pOperand,
+    static void vSendAsParcel(Parcel* pParcel, Operand* pOperand,
                               Op* pSrcOp, i8 iDstNode, tPN tPtnNo);
 
 

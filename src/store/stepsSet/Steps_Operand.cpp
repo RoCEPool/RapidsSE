@@ -42,7 +42,6 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Operand(void)
 {
-  vAddStep("operand.sendOut"_Stz,          &Step::vOperandSendOut);
   vAddStep("operand.toParcel"_Stz,         &Step::vOperandToParcel);
 
   vAddStep("Operand[]"_Stz,                &Step::vOperandGet);
@@ -768,22 +767,6 @@ void Step::vOperandRowCountFetch(void)
   
   m_pDataStack->vPushInt(pCrwBuffer->nRows());
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* operand.sendOut -- send operand out to next operator in pipeline           */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandSendOut(void)
-{
-  ENTRY();
-  
-  Op* pOp = m_pJob->m_pOp;
-  
-  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
-  
-  Parcel::vSendOut(pOperand,pOp);
-
   EXIT();
 }
 

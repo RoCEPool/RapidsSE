@@ -87,9 +87,11 @@ void Step::vParcelSendOut(void)
   
   Op* pOp = m_pJob->m_pOp;
   
-  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+  Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
   
-  Parcel::vSendOut(pOperand,pOp);
+  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+
+  Parcel::vSendOut(pParcel,pOperand,pOp);
 
   EXIT();
 }
