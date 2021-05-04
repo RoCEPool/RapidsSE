@@ -52,21 +52,6 @@ void Step::vMetaRecvPutParts(void)
     }
   }
 
-  /*
-  // get number of parts
-  for (i8 i_Obj = 0; i_Obj < nObjParts; i_Obj++) {
-    Object *pObject = pParcel->pGetObject(i_Obj);
-    if (pObject->eGetClassNo() == CN_TABLE) {
-      pTable = (Table *) pObject;
-    }
-    // get all the parts, includes itself
-
-    if (pTable) {
-      pTable->iBuildParcelObjs(pObject);
-    }
-  }
-  */
-
   // call reassemble parts code
 
   pTable->iReassembleObj();

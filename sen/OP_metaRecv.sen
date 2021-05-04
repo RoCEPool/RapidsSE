@@ -8,7 +8,7 @@
 /* on ZK_PARCEL ...                                                           */
 /*----------------------------------------------------------------------------*/
 : metaRecv_Parcel \handler
-  " metaRecv_Parcel"
+  " metaRecv_Parcel" .
 
   // pipe out ZK_STARTMARKER
   //PipeIn[].pipeOut
@@ -29,7 +29,7 @@
 : metaRecv_req \operator
 
   LogReqEntry SEED_REQ
-  "metaRecv_req" .
+  //"metaRecv_req" .
 
   op__topology
 
