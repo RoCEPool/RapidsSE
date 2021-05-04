@@ -76,6 +76,14 @@ namespace Parser
       WALK_NENUMS
     };
 
+    // An enum passed to the callback for the event-based walk implementation
+    enum eWalkEvent {
+      EVENT_NONE = 0,
+      EVENT_ENTER,    // Entering a node before processing its properties/children
+      EVENT_EXIT,     // Leaving a node after processing its properties/children
+      EVENT_NENUMS
+    };
+
     // The following functions require a visitor function with the definition:
     //   eWalkCtrl func(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
     // Params:
@@ -89,20 +97,64 @@ namespace Parser
 
     // Walk the current node and (potenitially) its properties and children,
     // calling the visitor function for each node encountered. This is a
-    // top-down, depth-first traversal.
+    // top-down, depth-first traversal. Visitor implementation (fVisitor is
+    // called only once for each node visited in the graph).
     // Returns false if the walk was aborted or true if it completed normally.
     // A global walk traverses all nodes in the graph.
-    static b1 bGlobalWalk(PlanNode* pNode, std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor, void* pvArg);
-    static b1 bGlobalWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
-                          std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor, void* pvArg);
+    static b1 bGlobalWalk(PlanNode* pNode,
+                          std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor,
+                          void* pvArg);
+    static b1 bGlobalWalk(PlanNode* pNode,
+                          b1 bWalkProperties,
+                          b1 bWalkChildren,
+                          std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor,
+                          void* pvArg);
+
+    // Event-based implementation of bGlobalWalk. For each node in the graph
+    // we call fEnterEvent before processing any properties/children and then
+    // call fExitEvent after processing any properties/children.
+    // Note that the callback definition is slightly different to the visitor-
+    // implementation above.
+    static b1 bGlobalWalk(PlanNode* pNode,
+                          std::function<eWalkCtrl(PlanNode*, s256&, i8, eWalkEvent, void*)> fEnterEvent,
+                          std::function<eWalkCtrl(PlanNode*, s256&, i8, eWalkEvent, void*)> fExitEvent,
+                          void* pvArg);
+    static b1 bGlobalWalk(PlanNode* pNode,
+                          b1 bWalkProperties,
+                          b1 bWalkChildren,
+                          std::function<eWalkCtrl(PlanNode*, s256&, i8, eWalkEvent, void*)> fEnterEvent,
+                          std::function<eWalkCtrl(PlanNode*, s256&, i8, eWalkEvent, void*)> fExitEvent,
+                          void* pvArg);
+
 
     // As per bGlobalWalk() above except a bounded walk will stop when it hits a
     // StatementMarker node as this represents the start of another logical sub-graph.
     // Starting on a StatementMarker will walk until the subsequent StatementMarker
     // node is encountered.
-    static b1 bBoundedWalk(PlanNode* pNode, std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor, void* pvArg);
-    static b1 bBoundedWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
-                           std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor, void* pvArg);
+    static b1 bBoundedWalk(PlanNode* pNode,
+                           std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor,
+                           void* pvArg);
+    static b1 bBoundedWalk(PlanNode* pNode,
+                           b1 bWalkProperties,
+                           b1 bWalkChildren,
+                           std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor,
+                           void* pvArg);
+
+    // Event-based implementation of bBoundedWalk. For each node in the graph
+    // we call fEnterEvent before processing any properties/children and then
+    // call fExitEvent after processing any properties/children.
+    // Note that the callback definition is slightly different to the visitor-
+    // implementation above.
+    static b1 bBoundedWalk(PlanNode* pNode,
+                          std::function<eWalkCtrl(PlanNode*, s256&, i8, eWalkEvent, void*)> fEnterEvent,
+                          std::function<eWalkCtrl(PlanNode*, s256&, i8, eWalkEvent, void*)> fExitEvent,
+                          void* pvArg);
+    static b1 bBoundedWalk(PlanNode* pNode,
+                          b1 bWalkProperties,
+                          b1 bWalkChildren,
+                          std::function<eWalkCtrl(PlanNode*, s256&, i8, eWalkEvent, void*)> fEnterEvent,
+                          std::function<eWalkCtrl(PlanNode*, s256&, i8, eWalkEvent, void*)> fExitEvent,
+                          void* pvArg);
 
     // Walk the current node and (potenitially) its properties and children,
     // calling the visitor function for each node encountered. This is a
@@ -175,12 +227,19 @@ namespace Parser
     static void vGetPathAndDepth(QueryNode* pPlanNode, PlanNode* pRootNode, s256& sPathBuf, i8& iDepth);
 
   private:
+    // Visitor walk implementation
     static b1 bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
                     std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor,
                     void* pvArg, s256& sPath, i8 iDepth, b1 bBoundedWalk);
     static b1 bWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
                             std::function<eWalkCtrl(PlanNode*, s256&, i8, void*)> fVisitor,
                             void* pvArg, s256& sPath, i8 iDepth, b1 bBoundedWalk);
+
+    // Event walk implementation
+    static b1 bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
+                    std::function<eWalkCtrl(PlanNode*, s256&, i8, eWalkEvent, void*)> fEnterEvent,
+                    std::function<eWalkCtrl(PlanNode*, s256&, i8, eWalkEvent, void*)> fExitEvent,
+                    void* pvArg, s256& sPath, i8 iDepth, b1 bBoundedWalk);
 
     static i8 iNextSeparator(Stz* szPath);
 
