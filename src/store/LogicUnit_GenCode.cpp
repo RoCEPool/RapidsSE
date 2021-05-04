@@ -81,7 +81,7 @@ void LogicUnit::vCollectOpcode(void)
 
     if (m_pTkn->bSame(aEO[i_OpCode])) {
 
-      vTrace("Tkn: %s %s\n"_Stz, m_pTkn->azChars(), aEO[i_OpCode]);
+      //vTrace("Tkn: %s %s\n"_Stz, m_pTkn->azChars(), aEO[i_OpCode]);
 
       // debug
       char* azEname;
@@ -680,7 +680,7 @@ eEC LogicUnit::eGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut)
   oFile.vPrint(LogicCompiler::szGetMacro(AM_PAYLOAD_AGG, &oTagSet, sMacro));
   oFile.vPrint("  // *** begin generated code: m_sPayLoadAggAsm *** //\n"_Stz);
   oFile.vPrint("%s"_Stz, pExprEval->m_sPayLoadAggAsm.azChar());
-  oFile.vPrint("  // *** end generated code: m_sProjectAsmm_sPayLoadAggAsm *** //\n"_Stz);
+  oFile.vPrint("  // *** end generated code: m_sPayLoadAggAsm *** //\n"_Stz);
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
