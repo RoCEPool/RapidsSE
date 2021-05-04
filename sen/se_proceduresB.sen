@@ -857,6 +857,7 @@
       | setOpValidate
       | postProject
       | exprPushdown
+      | projValidation
       | corrBySquash
       | explainPlan
       | transliterate
