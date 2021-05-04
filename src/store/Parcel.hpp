@@ -65,22 +65,22 @@ namespace STORE
                               Op* pSrcOp, i8 iDstNode, tPN tPtnNo);
 
 
-    static void vSendToAllNodes(Operand* pOperand,
+    static void vSendToAllNodes(Parcel* pParcel, Operand* pOperand,
                                 Op* pSrcOp);
   
-    static void vSendToAllOriginPartitions(Operand* pOperand,
+    static void vSendToAllOriginPartitions(Parcel* pParcel, Operand* pOperand,
                                            Op* pSrcOp, eXK eSendKind);
   
-    static void vSendToAllPartitions(Operand* pOperand,
+    static void vSendToAllPartitions(Parcel* pParcel, Operand* pOperand,
                                      Op* pSrcOp, eXK eSendKind);
   
-    static void vSendToNode(Operand* pOperand,
+    static void vSendToNode(Parcel* pParcel, Operand* pOperand,
                             Op* pSrcOp, i8 iDstNode);
   
-    static void vSendToOrigin(Operand* pOperand,
+    static void vSendToOrigin(Parcel* pParcel, Operand* pOperand,
                               Op* pSrcOp);
   
-    static void vSendToPartition(Operand* pOperand,
+    static void vSendToPartition(Parcel* pParcel, Operand* pOperand,
                                  Op* pSrcOp, eXK eSendKind, tPN tPtnNo);
 
   public:

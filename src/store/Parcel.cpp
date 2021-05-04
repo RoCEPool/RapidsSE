@@ -128,7 +128,7 @@ void Parcel::vSendOut(Operand* pOperand, Op* pSrcOp)
     case PX_ALL_PARTITIONS_TO_ORIGIN:
     case PX_ORIGIN_TO_ORIGIN:
     case PX_SPECIFIC_PARTITION_TO_ORIGIN: {
-      vSendToOrigin(pOperand,pSrcOp);
+      vSendToOrigin(nullptr,pOperand,pSrcOp);
       break;
     }
       
@@ -136,13 +136,13 @@ void Parcel::vSendOut(Operand* pOperand, Op* pSrcOp)
     case PX_ORIGIN_TO_ALL_PARTITIONS:
     case PX_ALL_NODES_TO_ALL_PARTITIONS:
     case PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS: {
-      vSendToAllPartitions(pOperand,pSrcOp,eSendKind);
+      vSendToAllPartitions(nullptr,pOperand,pSrcOp,eSendKind);
       break;
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN: {
-      vSendToAllOriginPartitions(pOperand,pSrcOp,eSendKind);
+      vSendToAllOriginPartitions(nullptr,pOperand,pSrcOp,eSendKind);
       break;
     }
      
@@ -150,31 +150,31 @@ void Parcel::vSendOut(Operand* pOperand, Op* pSrcOp)
     case PX_ORIGIN_TO_SPECIFIC_PARTITION: {
       Stream* pStream = pNextStage->pGetPartitionStream(tPtn);
       tPN tPtnNo = pStream->tPtnNo();
-      vSendToPartition(pOperand,pSrcOp,eSendKind,tPtnNo);
+      vSendToPartition(nullptr,pOperand,pSrcOp,eSendKind,tPtnNo);
       break;
     }
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ALL_PARTITIONS_TO_ALL_NODES: {
       i8 iDstNode = AM::pPtnMap()->i_WhichNode(tPtn);
-      vSendToNode(pOperand,pSrcOp,iDstNode);
+      vSendToNode(nullptr,pOperand,pSrcOp,iDstNode);
       break;
     }
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS: {
       if (pOperand->bIsBuffer()) {
-        vSendToPartition(pOperand,pSrcOp,eSendKind,tPtn);
+        vSendToPartition(nullptr,pOperand,pSrcOp,eSendKind,tPtn);
       }
       else {
-        vSendToAllPartitions(pOperand,pSrcOp,eSendKind);
+        vSendToAllPartitions(nullptr,pOperand,pSrcOp,eSendKind);
       }
       break;
     }
      
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ORIGIN_TO_ALL_NODES: {
-      vSendToAllNodes(pOperand,pSrcOp);
+      vSendToAllNodes(nullptr,pOperand,pSrcOp);
       break;
     }
       
@@ -366,7 +366,8 @@ void Parcel::vSendAsParcel(Operand* pOperand,
 /*----------------------------------------------------------------------------*/
 /* send the operand                                                           */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendToAllNodes(Operand* pOperand,
+void Parcel::vSendToAllNodes(Parcel* pParcel,
+                             Operand* pOperand,
                              Op*      pSrcOp)
 {
   _static_
@@ -385,7 +386,8 @@ void Parcel::vSendToAllNodes(Operand* pOperand,
 /*----------------------------------------------------------------------------*/
 /* send the operand                                                           */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendToAllOriginPartitions(Operand* pOperand,
+void Parcel::vSendToAllOriginPartitions(Parcel* pParcel,
+                                        Operand* pOperand,
                                         Op*      pSrcOp,
                                         eXK      eSendKind)
 {
@@ -451,7 +453,8 @@ void Parcel::vSendToAllOriginPartitions(Operand* pOperand,
 /*----------------------------------------------------------------------------*/
 /* send the operand                                                           */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendToAllPartitions(Operand* pOperand,
+void Parcel::vSendToAllPartitions(Parcel* pParcel,
+                                  Operand* pOperand,
                                   Op*      pSrcOp,
                                   eXK      eSendKind)
 {
@@ -538,7 +541,8 @@ void Parcel::vSendToAllPartitions(Operand* pOperand,
 /*----------------------------------------------------------------------------*/
 /* send the operand to a specific node                                        */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendToNode(Operand* pOperand,
+void Parcel::vSendToNode(Parcel* pParcel,
+                         Operand* pOperand,
                          Op*      pSrcOp,
                          i8       iDstNode)
 {
@@ -559,7 +563,8 @@ void Parcel::vSendToNode(Operand* pOperand,
 /*----------------------------------------------------------------------------*/
 /* send the operand to the origin                                             */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendToOrigin(Operand* pOperand,
+void Parcel::vSendToOrigin(Parcel* pParcel,
+                           Operand* pOperand,
                            Op*      pSrcOp)
 {
   _static_
@@ -575,7 +580,8 @@ void Parcel::vSendToOrigin(Operand* pOperand,
 /*----------------------------------------------------------------------------*/
 /* send the operand to a partition                                            */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendToPartition(Operand* pOperand,
+void Parcel::vSendToPartition(Parcel* pParcel,
+                              Operand* pOperand,
                               Op*      pSrcOp,
                               eXK      eSendKind,
                               tPN      tPtnNo)
