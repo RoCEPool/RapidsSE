@@ -30,6 +30,9 @@
 #include "Job.hpp"
 #include "LogicUnit.hpp"
 
+#include "Parcel.hpp"
+
+
 #ifdef WITH_PYTHON_SUPPORT
   #include "/usr/include/python2.7/Python.h"
 #endif
@@ -39,6 +42,8 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Operand(void)
 {
+  vAddStep("operand.sendOut"_Stz,          &Step::vOperandSendOut);
+
   vAddStep("Operand[]"_Stz,                &Step::vOperandGet);
   vAddStep("Operand[]\\clear"_Stz,         &Step::vOperandGetAndClear);
   vAddStep("Operand[].asSrcCrwBuffer"_Stz, &Step::vOperandAsSrcCrwBuffer);
@@ -712,7 +717,7 @@ void Step::vOperandPipeOutSet(void)
   
   Op* pOp = m_pJob->m_pOp; //  pJob_Distributed->m_pOp;
   
-  pOp->vPipeToNextOp(*m_pJob->pLogicUnit_job()->m_xpOperandA,this,true);
+  pOp->vPipeToNextOp(*m_pJob->pLogicUnit_job()->m_xpOperandA,this);
   
   m_pJob->pLogicUnit_job()->m_xpOperandA = nullptr;
   
@@ -762,6 +767,22 @@ void Step::vOperandRowCountFetch(void)
   
   m_pDataStack->vPushInt(pCrwBuffer->nRows());
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* operand.sendOut -- send operand out to next operator in pipeline           */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandSendOut(void)
+{
+  ENTRY();
+  
+  Op* pOp = m_pJob->m_pOp;
+  
+  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+  
+  Parcel::vSendOut(pOperand,pOp);
+
   EXIT();
 }
 

@@ -52,6 +52,9 @@ namespace Parser
     // Merges the ProjectOp, pOtherOp, into this ProjectOp
     static void vSquash(QueryNode* pNode, QueryNode* pOtherOp, PlanNode* pRootNode);
 
+    // Adds an expression to be projected, with an optional alias
+    static void vPushdownExpr(QueryNode* pNode, QueryNode* pExpr, Text* pAlias);
+
   protected:
 
   };

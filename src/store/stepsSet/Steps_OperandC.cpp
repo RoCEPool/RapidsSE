@@ -24,9 +24,7 @@ void Step::vAddSteps_OperandC(void)
   vAddStep("OperandC[]\\clear"_Stz,      &Step::vOperandCGetAndClear);
   vAddStep("OperandC[].collect"_Stz,     &Step::vOperandCCollect);
   vAddStep("OperandC[].get"_Stz,         &Step::vOperandCGet);
-  vAddStep("OperandC[].pipeOutSet"_Stz,  &Step::vOperandCPipeOutSet);
   vAddStep("OperandC[].set"_Stz,         &Step::vOperandCSet);
-  vAddStep("OperandC[].setFirst"_Stz,    &Step::vOperandCSetFirst);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -88,25 +86,6 @@ void Step::vOperandCGetAndClear(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* OperandC[].pipeOut -- append operand onto next operator in pipeline        */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandCPipeOutSet(void)
-{
-  ENTRY();
-  
-  if (m_pJob->pLogicUnit_job()->m_xpOperandC.bIsNull())
-    return;
-    
-  Op* pOp = m_pJob->m_pOp;
-  
-  pOp->vPipeToNextOp(*m_pJob->pLogicUnit_job()->m_xpOperandC,this,true);
-  
-  m_pJob->pLogicUnit_job()->m_xpOperandC = nullptr;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* OperandC[].set -- set operand                                              */
 /*----------------------------------------------------------------------------*/
 void Step::vOperandCSet(void)
@@ -119,30 +98,6 @@ void Step::vOperandCSet(void)
   
   m_pJob->pLogicUnit_job()->m_xpOperandC = _pOperand(pOperand);
 
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* OperandC[].setFirst -- set to first buffer                                 */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandCSetFirst(void)
-{
-  ENTRY();
-  
-  if (m_pJob->pLogicUnit_job()->m_xpOperandC.bIsNull())
-    return;
-
-  Operand* pCollect = *m_pJob->pLogicUnit_job()->m_xpOperandC;
-  
-  // move to first buffer
-  DataBuffer* pCollect_dataBuffer = _pDataBuffer(pCollect);
-  while (pCollect_dataBuffer->pPrevLinkedBuffer())
-    pCollect_dataBuffer = _pDataBuffer(pCollect_dataBuffer->pPrevLinkedBuffer());
-  
-  Operand* pCollect_first = _pOperand(pCollect_dataBuffer);
-
-  m_pJob->pLogicUnit_job()->m_xpOperandC = pCollect_first;
-  
   EXIT();
 }
 

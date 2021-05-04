@@ -230,7 +230,7 @@ void Op::vAddWorkDone(i8 iWorkDone)
 /*----------------------------------------------------------------------------*/
 /* append operand to specific operand                                         */
 /*----------------------------------------------------------------------------*/
-void Op::vAppend(Operand* pOperand, Task* pTriggeringTask, bool bSet)
+void Op::vAppend(Operand* pOperand, Task* pTriggeringTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -245,13 +245,13 @@ void Op::vAppend(Operand* pOperand, Task* pTriggeringTask, bool bSet)
            AM::pOperandName(pOperand),
            pOperand);
   
-  vAppendLeft(pOperand,pTriggeringTask,bSet);
+  vAppendLeft(pOperand,pTriggeringTask);
 }
 
 /*----------------------------------------------------------------------------*/
 /* append operand to this op's operand queue                                  */
 /*----------------------------------------------------------------------------*/
-void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask, bool bSet)
+void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -259,17 +259,10 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask, bool bSet)
 //         m_sOpNm.szStz(),
 //         pOperand,
 //         aCN[pOperand->eGetClassNo()]);
-  
+    
   vGrabTaskLock();
-  if (bSet) {
-    while (pOperand) {
-      pQueueLeft()->vAppendOperand(pOperand);
-      DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
-      pOperand = pDataBuffer->pNextLinkedBuffer();
-    }
-  }
-  else
-    pQueueLeft()->vAppendOperand(pOperand);
+
+  pQueueLeft()->vAppendOperand(pOperand);
 
   AM::vOperandsInc();
 
@@ -289,7 +282,7 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask, bool bSet)
 /*----------------------------------------------------------------------------*/
 /* append operand to this op's operand queue                                  */
 /*----------------------------------------------------------------------------*/
-void Op::vAppendRight(Operand* pOperand, Task* pTriggeringTask, bool bSet)
+void Op::vAppendRight(Operand* pOperand, Task* pTriggeringTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
     
@@ -297,16 +290,9 @@ void Op::vAppendRight(Operand* pOperand, Task* pTriggeringTask, bool bSet)
   //         m_sOpNm(),
   //         pOperand,
   //         aCN[pOperand->eGetClassNo()]);
-  
+    
   vGrabTaskLock();
   
-  if (bSet) {
-    while (pOperand) {
-      pQueueRight()->vAppendOperand(pOperand);
-      DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
-      pOperand = pDataBuffer->pNextLinkedBuffer();
-    }
-  }
   pQueueRight()->vAppendOperand(pOperand);
   
   AM::vOperandsInc();
@@ -1090,7 +1076,7 @@ Job* Op::pPipelineJob(void)
 /*----------------------------------------------------------------------------*/
 /* append operand to next op's operand queue                                  */
 /*----------------------------------------------------------------------------*/
-void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask, bool bSet)
+void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -1115,13 +1101,12 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask, bool bSet)
 
   // get the op to forward to depending on the cross topology
   Op* pOp = pStage->pPipeOutOp(m_eCrossTopo,
-                               m_i_Node,
                                m_tPtnNo,
                                m_iNextOp);
   if (m_bAppendRight)
-    pOp->vAppendRight(pOperand,pTriggeringTask,bSet);
+    pOp->vAppendRight(pOperand,pTriggeringTask);
   else
-    pOp->vAppendLeft(pOperand,pTriggeringTask,bSet);
+    pOp->vAppendLeft(pOperand,pTriggeringTask);
 }
 
 /*----------------------------------------------------------------------------*/

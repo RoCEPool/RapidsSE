@@ -535,6 +535,9 @@ b1 Expr::bIsEqualOrSupersetOf(QueryNode* pSuperExpr, QueryNode* pSubExpr)
 /*----------------------------------------------------------------------------*/
 b1 Expr::bIsFullyOrdinal(QueryNode* pExpr)
 {
+  ASSERT(pExpr);
+  ASSERT(bIsOfType(pExpr));
+
   b1 bIsOrdinal = true;
 
   // Walk the expression graph (children only), looking for ColumnRef.
@@ -559,6 +562,41 @@ b1 Expr::bIsFullyOrdinal(QueryNode* pExpr)
   GraphNav::bBoundedWalk(pExpr, fVisitor, nullptr);
 
   return bIsOrdinal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if the expression does not contain any ordinal column         */
+/* references. Can contain (symbolic) ColumnRefs and literals.                */
+/*----------------------------------------------------------------------------*/
+b1 Expr::bIsNotOrdinal(QueryNode* pExpr)
+{
+  ASSERT(pExpr);
+  ASSERT(bIsOfType(pExpr));
+
+  b1 bIsOrdinal = false;
+
+  // Walk the expression graph (children only), looking for OrdinalRef.
+  // Lambda to execute on each node:
+  auto fVisitor = [&bIsOrdinal](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(pvArg);
+
+    if (ColumnOrdinal::bIsOfType(pNode)) {
+      bIsOrdinal = true;
+      return GraphNav::WALK_ABORT;
+    }
+
+    // Column wildcards should have been replaced by now
+    ASSERT(!ColumnWildcard::bIsOfType(pNode));
+
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  GraphNav::bBoundedWalk(pExpr, fVisitor, nullptr);
+
+  return !bIsOrdinal;
 }
 
 /*----------------------------------------------------------------------------*/

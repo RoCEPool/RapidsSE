@@ -991,6 +991,9 @@ public:
   void vOpTopologyStore(void);
   void vOpSendKindStore(void);
 
+  // operand
+  void vOperandSendOut(void);
+
   // operand[]
   void vOperandAsSrcCrwBuffer(void);
   void vOperandAsSrcRowBuffer(void);
@@ -1050,9 +1053,7 @@ public:
   void vOperandCCollect(void);
   void vOperandCGet(void);
   void vOperandCGetAndClear(void);
-  void vOperandCPipeOutSet(void);
   void vOperandCSet(void);
-  void vOperandCSetFirst(void);
 
   // OperandOoO
   void vOperandOoODelete(void);
@@ -1263,7 +1264,6 @@ public:
   // Parcel
   void vParcelOperandStore(void);
   void vParcelPipeOut(void);
-  void vParcelSendTo(void);
 
   // reg Pipein
   void vPipeinBide(void);

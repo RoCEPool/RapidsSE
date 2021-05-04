@@ -15,7 +15,7 @@ namespace STORE
     
   public:
     i8         m_iPipelineJobId;  // pipeline job id
-    i8         m_i_Node;          // node id
+    i8         m_iDstNode;        // destination node id
     tPN        m_tPtnNo;          // partition (in grid)
     ePX        m_eCrossTopo;      // cross topology
     i8         m_iNextStage;      // next stage
@@ -32,21 +32,17 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Parcel(void);
+    Parcel(Operand* pOperand,
+           i8 iPipelineJobId,
+           i8 iDstNode,
+           ePX eCrossTopo,
+           i8 iNextStage,
+           i8 iNextOp,
+           tPN tPtnNo);
     ~Parcel(void) noexcept(false);
-    
-    static Parcel* pNewParcel(Operand* pOperand,
-                                        i8 iParentJobId,
-                                        ePX eCrossTopo,
-                                        i8 iNextStage,
-                                        i8 iNextOp,
-                                        i8 i_Node,
-                                        tPN tPtnNo);
-    
-    static void vSendParcel(Operand* pOperand,
-                            Op*      pOp,
-                            Task*    pTriggeringTask,
-                            bool     bSet);
+        
+    static void vSendOut(Operand* pOperand,
+                         Op*      pOp);
 
   public:
     void vShow(void);
@@ -60,29 +56,28 @@ namespace STORE
   
   
   
-  //private:
+  private:
 
-    static void vSend(Operand* pOperand, Op* pOp, bool bSet, i8 i_Node, tPN tPtnNo);
+    static void vSendAsParcel(Operand* pOperand,
+                              Op* pSrcOp, i8 iDstNode, tPN tPtnNo);
   
-    static void vSend(Operand* pOperand, Op* pOp, Parcel* pParcel, bool bSet);
-
-    static void vSendToAllNodes(Operand* pOperand, Op* pOp,
-                                Task* pTriggeringTask,bool bSet, eXK eSendKind);
-    static void vSendToAllOriginPartitions(Operand* pOperand,  Op* pOp,
-                                           Task* pTriggeringTask,bool bSet,
-                                           eXK eSendKind);
-    static void vSendToAllPartitions(Operand* pOperand,  Op* pOp,
-                                     Task* pTriggeringTask,bool bSet,
-                                     eXK eSendKind);
-    static void vSendToNode(Operand* pOperand,  Op* pOp,
-                            Task* pTriggeringTask,bool bSet,
-                            eXK eSendKind, i8 i_Node);
-    static void vSendToOrigin(Operand* pOperand,  Op* pOp,
-                              Task* pTriggeringTask,bool bSet, eXK eSendKind);
-    static void vSendToPartition(Operand* pOperand,  Op* pOp,
-                                 Task* pTriggeringTask, bool bSet,
-                                 eXK eSendKind, tPN tPtnNo);
-
+    static void vSendToAllNodes(Operand* pOperand,
+                                Op* pSrcOp);
+  
+    static void vSendToAllOriginPartitions(Operand* pOperand,
+                                           Op* pSrcOp, eXK eSendKind);
+  
+    static void vSendToAllPartitions(Operand* pOperand,
+                                     Op* pSrcOp, eXK eSendKind);
+  
+    static void vSendToNode(Operand* pOperand,
+                            Op* pSrcOp, i8 iDstNode);
+  
+    static void vSendToOrigin(Operand* pOperand,
+                              Op* pSrcOp);
+  
+    static void vSendToPartition(Operand* pOperand,
+                                 Op* pSrcOp, eXK eSendKind, tPN tPtnNo);
 
   public:
     Footer* aFooter(void);

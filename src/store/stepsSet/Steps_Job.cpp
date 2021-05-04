@@ -916,7 +916,7 @@ void Step::vJobQueueReturn(void)
   Op* pOuterOp = m_pJob->m_pOuterOp;
   Op* pDownstreamOp = pOuterOp->pDownstreamOp();
   
-  pDownstreamOp->vAppendLeft(pOperand,this,false);
+  pDownstreamOp->vAppendLeft(pOperand,this);
   
   EXIT();
 }

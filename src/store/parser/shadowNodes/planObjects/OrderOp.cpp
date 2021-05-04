@@ -165,7 +165,7 @@ QueryNode* OrderOp::pOrdinalOrderItemList(QueryNode* pNode, PlanNode* pRootNode)
   // This is the list of expression symbols that represent each column of
   // each row that this sql operator will receive.
   ASSERT(pNode->nChildren() == 1);
-  QueryNodeList* pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pRootNode);
+  QueryNodeList* pColExprList = pColumnExprs(_pQueryNode(pNode), pRootNode);
   ASSERT(pColExprList);
   ASSERT(pColExprList->nItems() > 0);
 
