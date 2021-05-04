@@ -82,13 +82,15 @@ namespace STORE
 
     void vAddToBufferCol(Stz* szAsmBuffer, Column* pColumn);
 
-
     eEC eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec);
+
     eEC eExprEval(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);
+    eEC eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);
     eEC eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);
 
     eEC eGenerateColumnCode(Stz* szAsmBuffer, StreamDef* pStreamDefOut, Column* pColumn, eAG eAggType);
-    eEC eGenerateColumnCodeGby(StreamDef* pStreamDefOut, Column* pColumn, eAG eAggType, bool bGroupBy);
+    eEC eGenerateAggregateCode(Stz* szAsmBuffer, StreamDef* pStreamDefOut, Column* pColumn, eAG eAggType);
+    eEC eGenerateGroupbyCode(StreamDef* pStreamDefOut, Column* pColumn, eAG eAggType, bool bGroupBy);
 
     eEC  eGenerateCount(Stz* szAsmBuffer, Stz* sAggInit);
     eEC  eGenerateCountAll(Stz* szAsmBuffer, Stz* sAggInit);

@@ -58,11 +58,15 @@ enum eAM // ASM Macros
   /*    */ AM_QUERY_DONE,
   /*    */ AM_QUERY_INIT,
 
-  /*    */ AM_ROW_FILTER_END,
+  /*    */ AM_ROW_EXPR_AGG,
+  /*    */ AM_ROW_EXPR_AGG_END,
+
   /*    */ AM_ROW_FILTER_ROWS,
+  /*    */ AM_ROW_FILTER_END,
 
   /*    */ AM_ROWBUFFER_AGGINIT,
   /*    */ AM_ROWBUFFER_AGGINIT_END,
+  /*    */ AM_ROWBUFFER_TRAVERSAL,
 
   /*    */ AM_ROW_PROJECT_COLUMNS,
   /*    */ AM_ROW_PROJECT_COLUMNS_AGG,
@@ -130,11 +134,15 @@ static Stz* aAM[]
     /*    */ "QUERY_DONE"_Stz,
     /*    */ "QUERY_INIT"_Stz,
 
-    /*    */ "ROW_FILTER_END"_Stz,
+    /*    */ "ROW_EXPR_AGG"_Stz,
+    /*    */ "ROW_EXPR_AGG_END"_Stz,
+
     /*    */ "ROW_FILTER_ROWS"_Stz,
+    /*    */ "ROW_FILTER_END"_Stz,
 
     /*    */ "ROWBUFFER_AGGINIT"_Stz,
     /*    */ "ROWBUFFER_AGGINIT_END"_Stz,
+    /*    */ "ROWBUFFER_TRAVERSAL"_Stz,
 
     /*    */ "ROW_PROJECT_COLUMNS"_Stz,
     /*    */ "ROW_PROJECT_COLUMNS_AGG"_Stz,

@@ -473,6 +473,62 @@ namespace Parser
       m_bIsNull = true;
       m_iInt = 0;
     }
+
+    // Describes the value by printing it into a buffer
+    void vDescribe(s2K& sBuf)
+    {
+      if (m_bIsNull) {
+        sBuf.vCopy("(null)"_Stz);
+        return;
+      }
+
+      switch (m_eType) {
+
+        case VT_UNKNOWN:
+          sBuf.vCopy("(unknown)"_Stz);
+          break;
+
+        case VT_BOOLEAN:
+          sBuf.vSprint("%s"_Stz, m_bBoolean ? "true"_Stz : "false"_Stz);
+          break;
+
+        case VT_INT:
+          sBuf.vSprint("%lld"_Stz, m_iInt);
+          break;
+
+        case VT_UINT:
+          sBuf.vSprint("%lld"_Stz, m_uInt);
+          break;
+
+        case VT_FLOAT:
+          sBuf.vSprint("%g"_Stz, m_dFloat);
+          break;
+
+        case VT_STRING:
+          sBuf.vCopy(m_pText->szGet());
+          break;
+
+        case VT_DATE:
+          sBuf.vSprint("%lld-%lld-%lld"_Stz, m_xDate.iYear(), m_xDate.iMonth(), m_xDate.iDay());
+          break;
+
+        case VT_TIME:
+          sBuf.vSprint("%lld:%lld:%lld"_Stz, m_xTime.iHour(), m_xTime.iMin(), m_xTime.iSec());
+          break;
+
+        case VT_TIMESTAMP:
+          sBuf.vSprint("%lld-%lld-%lldT%lld:%lld:%lld.%lld"_Stz,
+                       m_xTsp.iYear(), m_xTsp.iMonth(), m_xTsp.iDay(),
+                       m_xTsp.iHour(), m_xTsp.iMin(), m_xTsp.iSec(), m_xTsp.iMicro());
+          break;
+
+        case VT_INTERVAL:
+          NOT_IMPLEMENTED_YET
+
+        default:
+          NEVER_REACH
+      }
+    }
   };
 
   /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */

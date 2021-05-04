@@ -39,6 +39,7 @@
 #include "ExprValidator.hpp"
 #include "SetOpValidator.hpp"
 #include "PostProject.hpp"
+#include "ExprPushdown.hpp"
 #include "CorrBySquash.hpp"
 
 #include "ExplainMarker.hpp"
@@ -319,6 +320,9 @@ void Step::vSqlCompilerExprPushdown(void)
    * represented in ordinal notation relative to the set of projected columns that
    * operator will receive.
    *
+   * Note that in this stage there may be multiple ProjectOps in a given StatementMarker
+   * section due to the PostProject stage running beforehand.
+   *
    * The plan may be modified in this stage.
    */
 
@@ -329,7 +333,8 @@ void Step::vSqlCompilerExprPushdown(void)
 
 
   try {
-    // TODO
+    ExprPushdown::vPushdownExprs(pPlanRoot);
+    ExprPushdown::vValidateExprVisibility(pPlanRoot);
 
   } catch (Parser::SqlException& e) {
     Grid* pGrid = AM::pGrid();

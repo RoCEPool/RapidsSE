@@ -254,6 +254,48 @@ macro AM_ROW_FILTER_END
   EO_RETURN
 endMacro
 
+macro AM_ROWBUFFER_TRAVERSAL
+//----------------------------------------------------------------------------//
+// macro AM_ROWBUFFER_TRAVERSAL                                               //
+//----------------------------------------------------------------------------//
+  // ROWBUFFER_TRAVERSAL
+  Label ROWBUFFER_TRAVERSAL
+  EO_PRINTF "**ROWBUFFER_TRAVERSAL**\n"
+  EO_POP
+  //EO_ROW_DST_BEGIN
+  EO_PUSH_DEVROW_DST
+  EO_DEVROW_ROWBUF_BEGIN
+
+  // NEXT_ROW_DST
+  Label NEXT_ROW_DST
+  //EO_ROW_DST_NEXT
+  EO_PUSH_DEVROW_DST
+  EO_DEVROW_ROWBUF_NEXT
+
+  EO_JMP_FALSE QUERY_DONE
+  EO_CALL <rowProcessRoutine>  // C_TAG_ROW_PROCESS_ROUTINE
+  EO_JMP NEXT_ROW_DST
+  EO_JMP QUERY_DONE
+ endMacro
+
+macro AM_ROW_EXPR_AGG
+//----------------------------------------------------------------------------//
+// macro AM_ROW_EXPR_AGG                                                      //
+//----------------------------------------------------------------------------//
+  // ROW_EXPR_AGG
+  Label ROW_EXPR_AGG
+  EO_PRINTF "**ROW_EXPR_AGG**\n"
+endMacro
+
+macro AM_ROW_EXPR_AGG_END
+//----------------------------------------------------------------------------//
+// macro AM_ROW_EXP_AGG_END                                                   //
+//----------------------------------------------------------------------------//
+  // AM_ROW_EXPR_AGG_END
+
+  EO_RETURN
+endMacro
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

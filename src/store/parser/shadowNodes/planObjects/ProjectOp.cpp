@@ -5,11 +5,10 @@
 #include "BASE.h"
 #include "ProjectOp.hpp"
 
-#include "PlanConstants.hpp"
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
 #include "store/parser/shadowNodes/compound/ProjectedColumn.hpp"
-#include "Expr.hpp"
+#include "ProjectedColumns.hpp"
 #include "AliasRef.hpp"
 #include "ShadowRoot.hpp"
 #include "MetadataNode.hpp"
@@ -105,7 +104,7 @@ void ProjectOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iI
   sBuf.vConcat(GraphNav::szLeafType(pNode->szType()));
 
   // Get the list of projected expressions
-  PlanNode* pProjColumns = GraphNav::pFindProperty(const_cast<Stz*>(C_PROJECTEDCOLUMNS_PROP), pNode);
+  PlanNode* pProjColumns = pProjectedColumns(_pQueryNode(pNode));
   ASSERT(pProjColumns);
 
   ASSERT(pNode->nChildren() == 1);
@@ -363,6 +362,28 @@ void ProjectOp::vSquash(QueryNode* pNode, QueryNode* pOtherOp, PlanNode* pRootNo
   pNode->vAppendProperty(pNewProjCols);
 
   delete pOldProjCols;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Adds an expression to be projected, with an optional alias                 */
+/*----------------------------------------------------------------------------*/
+void ProjectOp::vPushdownExpr(QueryNode* pNode, QueryNode* pExpr, Text* pAlias)
+{
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pExpr);
+  ASSERT(Expr::bIsOfType(pExpr));
+  ASSERT(Expr::bIsNotOrdinal(pExpr));
+
+
+  // Create a projected column
+  QueryNode* pProjectedColumn = ProjectedColumn::pCreate(pExpr, pAlias);
+
+  // Add it to the projected columns list
+  QueryNode* pProjectedColumns = ProjectOp::pProjectedColumns(pNode);
+  ASSERT(ProjectedColumns::bIsOfType(pProjectedColumns));
+
+  pProjectedColumns->vAppendChild(pProjectedColumn);
 }
 
 /*============================================================================*/

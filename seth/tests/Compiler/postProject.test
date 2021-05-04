@@ -48,10 +48,11 @@ rows:
 
 -> -> filterOp
       » expr: ((SUM(rapidsse.public.nation.n_nationkey)) > 0)
-      » ordinal expr: ((SUM(rapidsse.public.nation.n_nationkey)) > 0)
+      » ordinal expr: ($2)
 
 -> -> -> aggregateOp
          » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+         » column: (Expr = (SUM(rapidsse.public.nation.n_nationkey)) > 0 ; Ordinal Expr = (SUM($1)) > 0)
          » group by: (rapidsse.public.nation.n_name) ; Ordinal Exprs = ($2)
 
 -> -> -> -> tableScanOp
@@ -72,10 +73,11 @@ rows: (*,'explainPlan',
 
 -> -> orderOp
       » order expr: (((SUM(rapidsse.public.nation.n_nationkey)) > 0) ASC)
-      » ordinal order expr: (((SUM(rapidsse.public.nation.n_nationkey)) > 0) ASC)
+      » ordinal order expr: (($2) ASC)
 
 -> -> -> aggregateOp
          » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+         » column: (Expr = (SUM(rapidsse.public.nation.n_nationkey)) > 0 ; Ordinal Expr = (SUM($1)) > 0)
          » group by: (rapidsse.public.nation.n_name) ; Ordinal Exprs = ($2)
 
 -> -> -> -> tableScanOp
@@ -92,10 +94,11 @@ rows: (*,'explainPlan',
 
 -> -> orderOp
       » order expr: ((rapidsse.public.nation.n_name) ASC, ((SUM(rapidsse.public.nation.n_nationkey)) > 0) ASC)
-      » ordinal order expr: (($1) ASC, ((SUM(rapidsse.public.nation.n_nationkey)) > 0) ASC)
+      » ordinal order expr: (($1) ASC, ($2) ASC)
 
 -> -> -> aggregateOp
          » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+         » column: (Expr = (SUM(rapidsse.public.nation.n_nationkey)) > 0 ; Ordinal Expr = (SUM($1)) > 0)
          » group by: (rapidsse.public.nation.n_name) ; Ordinal Exprs = ($2)
 
 -> -> -> -> tableScanOp
@@ -258,10 +261,11 @@ rows:
 
 -> -> orderOp
       » order expr: ((rapidsse.public.nation.n_nationkey + rapidsse.public.nation.n_regionkey) ASC)
-      » ordinal order expr: (($1 + rapidsse.public.nation.n_regionkey) ASC)
+      » ordinal order expr: (($1 + $2) ASC)
 
 -> -> -> projectOp
          » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+         » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)'
