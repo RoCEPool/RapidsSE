@@ -32,6 +32,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
+    Parcel(Operand* pOperand, Op* pSrcOp);
+  
     Parcel(Operand* pOperand,
            i8 iPipelineJobId,
            i8 iDstNode,

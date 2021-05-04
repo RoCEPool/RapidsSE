@@ -28,6 +28,31 @@ __aFooterFunction(Parcel)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
+Parcel::Parcel(Operand* pOperand, Op* pSrcOp)
+: Object(CN_PARCEL)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+
+  m_nObjects = 0;
+  for (i8 i_Obj = 0; i_Obj < C_MAX_PARCEL_OBJ; i_Obj++)
+    m_pObjects[i_Obj] = nullptr;
+
+  vSetOperand(pOperand);
+  m_iPipelineJobId = pSrcOp->pPipelineJob()->iJobId();
+  m_iDstNode       = C_UNKNOWN;
+  m_tPtnNo         = C_UNKNOWN;
+  m_eCrossTopo     = pSrcOp->eCrossTopo();
+  m_iNextStage     = C_UNKNOWN;
+  m_iNextOp        = C_UNKNOWN;
+  
+  _checkInitialised_(CN_PARCEL);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
 Parcel::Parcel(Operand* pOperand,
                i8 iPipelineJobId,
                i8 iDstNode,
@@ -78,18 +103,20 @@ Parcel* Parcel::pNewParcel(Operand* pOperand, Op* pSrcOp)
 {
   _static_
   
-  Job* pPipelineJob = pSrcOp->pPipelineJob();
-  ePX eCrossTopo    = pSrcOp->eCrossTopo();
+//  Job* pPipelineJob = pSrcOp->pPipelineJob();
+//  ePX eCrossTopo    = pSrcOp->eCrossTopo();
 
   
-  Parcel* pParcel = new Parcel(pOperand,
-                               pPipelineJob->iJobId(),
-                               C_UNKNOWN,  //iDstNode,
-                               eCrossTopo,
-                               C_UNKNOWN,  //i_NextStage,
-                               C_UNKNOWN,  //i_NextOp,
-                               C_UNKNOWN   //tPtnNo
-                               );
+//  Parcel* pParcel = new Parcel(pOperand,
+//                               pPipelineJob->iJobId(),
+//                               C_UNKNOWN,  //iDstNode,
+//                               eCrossTopo,
+//                               C_UNKNOWN,  //i_NextStage,
+//                               C_UNKNOWN,  //i_NextOp,
+//                               C_UNKNOWN   //tPtnNo
+//                               );
+  
+  Parcel* pParcel = new Parcel(pOperand,pSrcOp);
   
   return pParcel;
 }
