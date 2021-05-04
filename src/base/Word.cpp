@@ -13,17 +13,10 @@ extern fpSTEPFN gfpDoColon;
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-Word* BASE::_pWord(void* aAddr)
-{
-  Word* pWord = reinterpret_cast<Word*>(aAddr);
-  
-  RASSERT_TYPE(pWord,CN_WORD);
+__pCastFunction(BASE,Word,CN_WORD)
+__vDeleteFunction(Word,CN_WORD)
+__aFooterFunction(Word)
 
-  return pWord;
-}
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
@@ -53,15 +46,6 @@ void* Word::operator new(size_t, Dic* pDic, bool bPersistent)
   return pWord;
 }
 
-/*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-void Word::operator delete(void* pWordAddress)
-{
-  Word* pWord = reinterpret_cast<Word*>(pWordAddress);
- 
-  Heaps::vFree(pWord,pWord->m_bPersistent);
-}
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -712,10 +696,6 @@ char* Word::aWspArea(void)
 }
 
 
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-__aFooterFunction(Word)
 
 
 
