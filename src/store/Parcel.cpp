@@ -39,9 +39,10 @@ Parcel::Parcel(Operand* pOperand, Op* pSrcOp)
 
   vSetOperand(pOperand);
   m_iPipelineJobId = pSrcOp->pPipelineJob()->iJobId();
+  m_eCrossTopo     = pSrcOp->eCrossTopo();
+  
   m_iDstNode       = C_UNKNOWN;
   m_tPtnNo         = C_UNKNOWN;
-  m_eCrossTopo     = pSrcOp->eCrossTopo();
   m_iNextStage     = C_UNKNOWN;
   m_iNextOp        = C_UNKNOWN;
   
@@ -275,8 +276,17 @@ void Parcel::vSendAsParcel(Parcel* pParcel, Op* pSrcOp)
 {
   _static_
 
+  
+//  pParcel->m_iDstNode       = C_UNKNOWN;
+//  pParcel->m_tPtnNo         = C_UNKNOWN;
+//  pParcel->m_eCrossTopo     = pSrcOp->eCrossTopo();
+//  pParcel->m_iNextStage     = C_UNKNOWN;
+//  pParcel->m_iNextOp        = C_UNKNOWN;
+
   // - - - - - - - - - - - - - - - -
 
+  pParcel->m_iNextStage = pSrcOp->iNextStage();
+  pParcel->m_iNextOp    = pSrcOp->iNextOp();
   AM::vSendParcel(pParcel);
 
   // - - - - - - - - - - - - - - - -
@@ -308,16 +318,21 @@ void Parcel::vSendAsParcel(Parcel* ,
 {
   _static_
   
-  Job* pPipelineJob = pSrcOp->pPipelineJob();
-  ePX eCrossTopo    = pSrcOp->eCrossTopo();
-  i8 i_NextStage    = pSrcOp->iNextStage();
-  i8 i_NextOp       = pSrcOp->iNextOp();
+  Parcel* pParcel = new Parcel(pOperand,pSrcOp);
+
+  pParcel->m_iDstNode = iDstNode;
+  pParcel->m_tPtnNo   = tPtnNo;
+
+//  Job* pPipelineJob = pSrcOp->pPipelineJob();
+//  ePX eCrossTopo    = pSrcOp->eCrossTopo();
+//  i8 i_NextStage    = pSrcOp->iNextStage();
+//  i8 i_NextOp       = pSrcOp->iNextOp();
 
   // - - - - - - - - - - - - - - - -
   
-  Parcel* pParcel = new Parcel(pOperand,
-                               pPipelineJob->iJobId(),iDstNode,eCrossTopo,
-                               i_NextStage,i_NextOp,tPtnNo);
+//  Parcel* pParcel = new Parcel(pOperand,
+//                               pPipelineJob->iJobId(),iDstNode,eCrossTopo,
+//                               i_NextStage,i_NextOp,tPtnNo);
   
   Parcel::vSendAsParcel(pParcel,pSrcOp);
 
