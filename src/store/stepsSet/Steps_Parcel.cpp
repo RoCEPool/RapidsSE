@@ -25,7 +25,7 @@ void Step::vAddSteps_Parcel(void)
 {
   vAddStep("parcel.operand!"_Stz,   &Step::vParcelOperandStore);
   vAddStep("parcel.pipeOut"_Stz,    &Step::vParcelPipeOut);
-  
+  vAddStep("parcel.sendOut"_Stz,    &Step::vParcelSendOut);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -75,6 +75,22 @@ void Step::vParcelPipeOut(void)
   // now delete the pParcel
   delete pParcel;
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Parcel.sendOut -- send parcel out to next operator in pipeline             */
+/*----------------------------------------------------------------------------*/
+void Step::vParcelSendOut(void)
+{
+  ENTRY();
+  
+  Op* pOp = m_pJob->m_pOp;
+  
+  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+  
+  Parcel::vSendOut(pOperand,pOp);
+
   EXIT();
 }
 
