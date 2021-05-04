@@ -11574,7 +11574,7 @@ void Task::vAddMunged(Task* )
     "    //\"Convert to parcel\" .\n"
     "    pOperand operand.toParcel to pParcel\n"
     "  else\n"
-    "    //\"Operand is parcel\" .\n"
+    "    \"Operand is parcel\" .\n"
     "    pOperand to pParcel\n"
     "  then\n"
     "  \n"
