@@ -1,4 +1,4 @@
-aggregates.test
+//aggregates.test
 selectTypes.test
 filterInteger.test
 //filterDecimal.test
