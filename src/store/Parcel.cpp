@@ -28,7 +28,10 @@ __aFooterFunction(Parcel)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Parcel::Parcel(Operand* pOperand, Op* pSrcOp)
+Parcel::Parcel(Operand* pOperand,
+               Op*      pSrcOp,
+               i8       iDstNode,
+               tPN      tPtnNo)
 : Object(CN_PARCEL)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
@@ -41,8 +44,8 @@ Parcel::Parcel(Operand* pOperand, Op* pSrcOp)
   m_iPipelineJobId = pSrcOp->pPipelineJob()->iJobId();
   m_eCrossTopo     = pSrcOp->eCrossTopo();
   
-  m_iDstNode       = C_UNKNOWN;
-  m_tPtnNo         = C_UNKNOWN;
+  m_iDstNode       = iDstNode;
+  m_tPtnNo         = tPtnNo;
   m_iNextStage     = C_UNKNOWN;
   m_iNextOp        = C_UNKNOWN;
   
@@ -97,30 +100,6 @@ Parcel::~Parcel(void) noexcept(false)
 /*-- Static Functions --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* new an unlabelled parcel                                                   */
-/*----------------------------------------------------------------------------*/
-Parcel* Parcel::pNewParcel(Operand* pOperand, Op* pSrcOp)
-{
-  _static_
-  
-//  Job* pPipelineJob = pSrcOp->pPipelineJob();
-//  ePX eCrossTopo    = pSrcOp->eCrossTopo();
-
-  
-//  Parcel* pParcel = new Parcel(pOperand,
-//                               pPipelineJob->iJobId(),
-//                               C_UNKNOWN,  //iDstNode,
-//                               eCrossTopo,
-//                               C_UNKNOWN,  //i_NextStage,
-//                               C_UNKNOWN,  //i_NextOp,
-//                               C_UNKNOWN   //tPtnNo
-//                               );
-  
-  Parcel* pParcel = new Parcel(pOperand,pSrcOp);
-  
-  return pParcel;
-}
 /*----------------------------------------------------------------------------*/
 /* send out operand as parcel                                                 */
 /*----------------------------------------------------------------------------*/
@@ -318,7 +297,7 @@ void Parcel::vSendAsParcel(Parcel* ,
 {
   _static_
   
-  Parcel* pParcel = new Parcel(pOperand,pSrcOp);
+  Parcel* pParcel = new Parcel(pOperand,pSrcOp,iDstNode,tPtnNo);
 
   pParcel->m_iDstNode = iDstNode;
   pParcel->m_tPtnNo   = tPtnNo;

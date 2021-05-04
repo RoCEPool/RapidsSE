@@ -32,7 +32,10 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Parcel(Operand* pOperand, Op* pSrcOp);
+    Parcel(Operand* pOperand,
+           Op*      pSrcOp,
+           i8       iDstNode,
+           tPN      tPtnNo);
   
     Parcel(Operand* pOperand,
            i8 iPipelineJobId,
@@ -43,8 +46,6 @@ namespace STORE
            tPN tPtnNo);
     ~Parcel(void) noexcept(false);
         
-    static Parcel* pNewParcel(Operand* pOperand, Op*  pSrcOp);
-
     static void vSendOut(Parcel* pParcel, Operand* pOperand, Op* pOp);
 
   public:
