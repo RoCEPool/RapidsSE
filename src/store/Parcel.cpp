@@ -161,8 +161,8 @@ void Parcel::vSendOut(Op* pSrcOp)
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ORIGIN_TO_SPECIFIC_PARTITION: {
       Stream* pStream = pNextStage->pGetPartitionStream(tPtn);
-      tPN tPtnNo = pStream->tPtnNo();
-      vSendToPartition(pSrcOp,tPtnNo);
+      tPN tDstPtnNo = pStream->tPtnNo();
+      vSendToPartition(pSrcOp,tDstPtnNo);
       break;
     }
       
@@ -456,9 +456,7 @@ void Parcel::vSendToPartition(Op* pSrcOp, tPN tDstPtn)
   Operand* pOperand = pGetOperand();
 
   i8 i_Robin;
-  
-  tPN tSendPtn = C_UNKNOWN;
-    
+      
   DataBuffer* pDataBuffer = nullptr;
   
   switch (m_eSendKind) {
@@ -466,12 +464,11 @@ void Parcel::vSendToPartition(Op* pSrcOp, tPN tDstPtn)
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_HASHED :
       pDataBuffer = _pDataBuffer(pOperand);
-      tSendPtn = pDataBuffer->tPtnNo();
+      tDstPtn = pDataBuffer->tPtnNo();
       break;
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_NORMAL:
-      tSendPtn = tDstPtn;
       break;
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -479,17 +476,17 @@ void Parcel::vSendToPartition(Op* pSrcOp, tPN tDstPtn)
       i_Robin = pSrcOp->iRobin();
       i_Robin++;
       pSrcOp->vRobin(i_Robin);
-      tSendPtn = i_Robin % AM::nPtnsInGrid();
+      tDstPtn = i_Robin % AM::nPtnsInGrid();
       break;
       
     default:
       ASSERT(0);
   }
   
-  i8 iDstNode = AM::pPtnMap()->i_WhichNode(tSendPtn);
+  i8 iDstNode = AM::pPtnMap()->i_WhichNode(tDstPtn);
   pSrcOp->vSendNode(iDstNode);
 
-  vSendParcel(pSrcOp,iDstNode,tSendPtn);
+  vSendParcel(pSrcOp,iDstNode,tDstPtn);
 }
 
 /*============================================================================*/
