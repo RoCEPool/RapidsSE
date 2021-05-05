@@ -60,23 +60,17 @@ namespace STORE
     void vSendAsParcel(Op* pSrcOp, i8 iDstNode, tPN tPtnNo);
 
 
-    void vSendToAllNodes(Operand* pOperand,
-                                Op* pSrcOp);
+    void vSendToAllNodes(Op* pSrcOp);
   
-    void vSendToAllOriginPartitions(Operand* pOperand,
-                                           Op* pSrcOp, eXK eSendKind);
+    void vSendToAllOriginPartitions(Op* pSrcOp, eXK eSendKind);
   
-    void vSendToAllPartitions(Operand* pOperand,
-                                     Op* pSrcOp, eXK eSendKind);
+    void vSendToAllPartitions(Op* pSrcOp, eXK eSendKind);
   
-    void vSendToNode(Operand* pOperand,
-                            Op* pSrcOp, i8 iDstNode);
+    void vSendToNode(Op* pSrcOp, i8 iDstNode);
   
-    void vSendToOrigin(Operand* pOperand,
-                              Op* pSrcOp);
+    void vSendToOrigin(Op* pSrcOp);
   
-    void vSendToPartition(Operand* pOperand,
-                                 Op* pSrcOp, eXK eSendKind, tPN tPtnNo);
+    void vSendToPartition(Op* pSrcOp, eXK eSendKind, tPN tPtnNo);
 
   public:
     Footer* aFooter(void);
