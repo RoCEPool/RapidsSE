@@ -41,7 +41,6 @@ namespace STORE
   
    ~Parcel(void) noexcept(false);
         
-    static void vSendOut(Parcel* pParcel, Operand* pOperand, Op* pOp);
 
   public:
     void vShow(void);
@@ -51,6 +50,7 @@ namespace STORE
     i8 nObjects(void) { return m_nObjects;};
     Object* pGetObject(i8 iIdx);
     Operand* pGetOperand(void);
+    void vSendOut(Operand* pOperand, Op* pSrcOp);
     void vSetOperand(Operand *pOperand);
   
   
