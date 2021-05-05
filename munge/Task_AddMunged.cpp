@@ -11578,7 +11578,7 @@ void Task::vAddMunged(Task* )
     "    pOperand to pParcel\n"
     "  then\n"
     "  \n"
-    "  pParcel nullptr parcel.sendOut\n"
+    "  pParcel parcel.sendOut\n"
     "  \n"
     "  // calling op_loop continues\n"
     "  true\n"

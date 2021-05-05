@@ -793,6 +793,18 @@ void Step::vOperandToParcel(void)
 {
   ENTRY();
   
+  Op* pSrcOp = m_pJob->m_pOp;
+
+  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+
+  Parcel* pParcel = new Parcel(pOperand,
+                               pSrcOp->pPipelineJob()->iJobId(),
+                               C_UNKNOWN,
+                               C_UNKNOWN,
+                               pSrcOp->eCrossTopo());
+
+  m_pDataStack->vPushPtr(pParcel);
+  
   EXIT();
 }
 
