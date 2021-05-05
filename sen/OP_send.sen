@@ -24,10 +24,8 @@
   
 
   pOperand object.class@ CN_PARCEL != if
-    //"Convert to parcel" .
     pOperand operand.toParcel to pParcel
   else
-    "Operand is parcel" .
     pOperand to pParcel
   then
   

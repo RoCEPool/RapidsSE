@@ -494,7 +494,6 @@ namespace OBLIQUE
     static void vFreeInc(RU_Memory* pRU_Memory, eCN eAllocClass);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  static void vSendParcel(Parcel* pParcel);
     static Session* pSessionGet(ReqTuple* aReqTuple);
     static void vSetOperand(Parcel* pParcel, Operand* pOperand);
     
