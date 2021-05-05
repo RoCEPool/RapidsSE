@@ -23,13 +23,28 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Parcel(void)
 {
+  vAddStep("parcel::delete"_Stz,    &Step::vParcelDelete);
+  
   vAddStep("parcel.operand!"_Stz,   &Step::vParcelOperandStore);
   vAddStep("parcel.pipeOut"_Stz,    &Step::vParcelPipeOut);
   vAddStep("parcel.sendOut"_Stz,    &Step::vParcelSendOut);
 }
 
 /*----------------------------------------------------------------------------*/
-/* Parcel.operand! -- store operand in the sendOperand                        */
+/* parcel::delete -- delete parcel                                            */
+/*----------------------------------------------------------------------------*/
+void Step::vParcelDelete(void)
+{
+  ENTRY();
+    
+  Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
+  
+  delete pParcel;
+
+  EXIT();
+}
+/*----------------------------------------------------------------------------*/
+/* parcel.operand! -- store operand in the sendOperand                        */
 /*----------------------------------------------------------------------------*/
 void Step::vParcelOperandStore(void)
 {
@@ -45,7 +60,7 @@ void Step::vParcelOperandStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Parcel.pipeOut -- pipe out the operand                                     */
+/* parcel.pipeOut -- pipe out the operand                                     */
 /*----------------------------------------------------------------------------*/
 void Step::vParcelPipeOut(void)
 {
@@ -79,7 +94,7 @@ void Step::vParcelPipeOut(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Parcel.sendOut -- send parcel out to next operator in pipeline             */
+/* parcel.sendOut -- send parcel out to next operator in pipeline             */
 /*----------------------------------------------------------------------------*/
 void Step::vParcelSendOut(void)
 {
@@ -90,8 +105,6 @@ void Step::vParcelSendOut(void)
   Op* pSrcOp = m_pJob->m_pOp;
 
   pParcel->vSendOut(pSrcOp);
-
-  delete pParcel;
 
   EXIT();
 }

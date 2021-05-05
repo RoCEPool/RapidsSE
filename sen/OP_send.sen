@@ -33,6 +33,8 @@
   
   pParcel parcel.sendOut
   
+  pParcel parcel::delete
+  
   // calling op_loop continues
   true
 ;

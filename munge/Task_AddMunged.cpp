@@ -11580,6 +11580,8 @@ void Task::vAddMunged(Task* )
     "  \n"
     "  pParcel parcel.sendOut\n"
     "  \n"
+    "  pParcel parcel::delete\n"
+    "  \n"
     "  // calling op_loop continues\n"
     "  true\n"
     " ;\n"
