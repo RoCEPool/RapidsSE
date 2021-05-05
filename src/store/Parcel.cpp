@@ -44,6 +44,7 @@ Parcel::Parcel(Operand* pOperand,
   vSetOperand(pOperand);
   m_iPipelineJobId = iPipelineJobId;
   m_eCrossTopo     = eCrossTopo;
+  m_eSendKind      = XK_NONE;
   m_iDstNode       = iDstNode;
   m_tPtnNo         = tPtnNo;
   
@@ -113,22 +114,21 @@ void Parcel::vSendOut(Op* pSrcOp)
   Pipeline* pPipeline = pSrcOp->pPipeline();
   i8 i_NextStage = pSrcOp->iNextStage();
 
-  // get the next stage
+  // get operand and next stage
+  Operand* pOperand = pGetOperand();
   Stage* pNextStage = pPipeline->pGet(i_NextStage);
   RASSERT(pNextStage);
   
   // figure out the send kind
-  eXK eSendKind = pSrcOp->eSendKind();
-  
-  Operand* pOperand = pGetOperand();
-  
+  m_eSendKind = pSrcOp->eSendKind();
+    
   // is the operand is a marker or a streamDef ?
   if (pOperand->bIsMarker() || pOperand->bIsStreamDef())
-    eSendKind = XK_NORMAL;
+    m_eSendKind = XK_NORMAL;
   
   // is the operand an InfoSet ?
   if (pOperand->bIsInfoSet() || pOperand->bIsProfile())
-    eSendKind = XK_ROBIN;
+    m_eSendKind = XK_ROBIN;
   
   ePX eCrossTopo = pSrcOp->eCrossTopo();      // cross topology
   tPN tPtn = pSrcOp->tPtnNo();
@@ -148,13 +148,13 @@ void Parcel::vSendOut(Op* pSrcOp)
     case PX_ORIGIN_TO_ALL_PARTITIONS:
     case PX_ALL_NODES_TO_ALL_PARTITIONS:
     case PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS: {
-      vSendToAllPartitions(pSrcOp,eSendKind);
+      vSendToAllPartitions(pSrcOp);
       break;
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN: {
-      vSendToAllOriginPartitions(pSrcOp,eSendKind);
+      vSendToAllOriginPartitions(pSrcOp);
       break;
     }
      
@@ -162,7 +162,7 @@ void Parcel::vSendOut(Op* pSrcOp)
     case PX_ORIGIN_TO_SPECIFIC_PARTITION: {
       Stream* pStream = pNextStage->pGetPartitionStream(tPtn);
       tPN tPtnNo = pStream->tPtnNo();
-      vSendToPartition(pSrcOp,eSendKind,tPtnNo);
+      vSendToPartition(pSrcOp,tPtnNo);
       break;
     }
       
@@ -176,9 +176,9 @@ void Parcel::vSendOut(Op* pSrcOp)
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS: {
       if (pGetOperand()->bIsBuffer())
-        vSendToPartition(pSrcOp,eSendKind,tPtn);
+        vSendToPartition(pSrcOp,tPtn);
       else
-        vSendToAllPartitions(pSrcOp,eSendKind);
+        vSendToAllPartitions(pSrcOp);
       break;
     }
      
@@ -264,7 +264,7 @@ void Parcel::vSendToAllNodes(Op* pSrcOp)
 /*----------------------------------------------------------------------------*/
 /* send parcel to all partitions on origin                                    */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendToAllOriginPartitions(Op* pSrcOp, eXK eSendKind)
+void Parcel::vSendToAllOriginPartitions(Op* pSrcOp)
 {
   _static_
   
@@ -280,7 +280,7 @@ void Parcel::vSendToAllOriginPartitions(Op* pSrcOp, eXK eSendKind)
   RASSERT(pNextStage);
     
   // check the SendKind
-  switch (eSendKind) {
+  switch (m_eSendKind) {
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_ROBIN : {
@@ -328,7 +328,7 @@ void Parcel::vSendToAllOriginPartitions(Op* pSrcOp, eXK eSendKind)
 /*----------------------------------------------------------------------------*/
 /* send parcel to all partitions                                              */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendToAllPartitions(Op* pSrcOp, eXK eSendKind)
+void Parcel::vSendToAllPartitions(Op* pSrcOp)
 {
   _static_
   
@@ -344,7 +344,7 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp, eXK eSendKind)
   Stage* pNextStage = pPipeline->pGet(i_NextStage);
   RASSERT(pNextStage);
     
-  switch (eSendKind) {
+  switch (m_eSendKind) {
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_HASHED : {
@@ -449,7 +449,7 @@ void Parcel::vSendToOrigin(Op* pSrcOp)
 /*----------------------------------------------------------------------------*/
 /* send partition to given partition                                          */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendToPartition(Op* pSrcOp, eXK eSendKind, tPN tPtnNo)
+void Parcel::vSendToPartition(Op* pSrcOp, tPN tPtnNo)
 {
   _static_
   
@@ -461,7 +461,7 @@ void Parcel::vSendToPartition(Op* pSrcOp, eXK eSendKind, tPN tPtnNo)
     
   DataBuffer* pDataBuffer = nullptr;
   
-  switch (eSendKind) {
+  switch (m_eSendKind) {
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_HASHED :

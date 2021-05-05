@@ -14,12 +14,13 @@ namespace STORE
   {
     
   public:
-    i8         m_iPipelineJobId;  // pipeline job id
-    i8         m_iDstNode;        // destination node id
-    tPN        m_tPtnNo;          // partition (in grid)
-    ePX        m_eCrossTopo;      // cross topology
-    i8         m_iNextStage;      // next stage
-    i8         m_iNextOp;         // nextOp in the nextStage
+    i8  m_iPipelineJobId;  // pipeline job id
+    i8  m_iDstNode;        // destination node id
+    tPN m_tPtnNo;          // partition (in grid)
+    ePX m_eCrossTopo;      // cross topology
+    eXK m_eSendKind;       // hashed, localRobin, normal, robin
+    i8  m_iNextStage;      // next stage
+    i8  m_iNextOp;         // nextOp in the nextStage
     
   private:
     i8 m_nObjects;                        // number of objects in the parcel
@@ -62,15 +63,15 @@ namespace STORE
 
     void vSendToAllNodes(Op* pSrcOp);
   
-    void vSendToAllOriginPartitions(Op* pSrcOp, eXK eSendKind);
+    void vSendToAllOriginPartitions(Op* pSrcOp);
   
-    void vSendToAllPartitions(Op* pSrcOp, eXK eSendKind);
+    void vSendToAllPartitions(Op* pSrcOp);
   
     void vSendToNode(Op* pSrcOp, i8 iDstNode);
   
     void vSendToOrigin(Op* pSrcOp);
   
-    void vSendToPartition(Op* pSrcOp, eXK eSendKind, tPN tPtnNo);
+    void vSendToPartition(Op* pSrcOp, tPN tPtnNo);
 
   public:
     Footer* aFooter(void);
