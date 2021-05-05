@@ -58,7 +58,7 @@ namespace STORE
   
   private:
   
-    void vSendParcel(Op* pSrcOp, i8 iDstNode, tPN tPtnNo);
+    void vSendParcel(Op* pSrcOp, i8 iDstNode, tPN tDstPtn);
 
 
     void vSendToAllNodes(Op* pSrcOp);
@@ -71,7 +71,7 @@ namespace STORE
   
     void vSendToOrigin(Op* pSrcOp);
   
-    void vSendToPartition(Op* pSrcOp, tPN tPtnNo);
+    void vSendToPartition(Op* pSrcOp, tPN tDstPtn);
 
   public:
     Footer* aFooter(void);

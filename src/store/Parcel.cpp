@@ -215,12 +215,12 @@ void Parcel::vSetOperand(Operand *pOperand)
 /*----------------------------------------------------------------------------*/
 /* send parcel                                                                */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendParcel(Op* pSrcOp, i8  iDstNode, tPN tPtnNo)
+void Parcel::vSendParcel(Op* pSrcOp, i8  iDstNode, tPN tDstPtn)
 {
   _static_
     
   m_iDstNode   = iDstNode;
-  m_tPtnNo     = tPtnNo;
+  m_tPtnNo     = tDstPtn;
   
   m_iNextStage = pSrcOp->iNextStage();
   m_iNextOp    = pSrcOp->iNextOp();
@@ -449,7 +449,7 @@ void Parcel::vSendToOrigin(Op* pSrcOp)
 /*----------------------------------------------------------------------------*/
 /* send partition to given partition                                          */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendToPartition(Op* pSrcOp, tPN tPtnNo)
+void Parcel::vSendToPartition(Op* pSrcOp, tPN tDstPtn)
 {
   _static_
   
@@ -471,7 +471,7 @@ void Parcel::vSendToPartition(Op* pSrcOp, tPN tPtnNo)
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_NORMAL:
-      tSendPtn = tPtnNo;
+      tSendPtn = tDstPtn;
       break;
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
