@@ -225,8 +225,8 @@ void Backend::vAppendExpr(Backend* pBackend, QueryNode* pExprNode, Stz* szAliasN
 //  }
 
   // Walk the expr node plan graph
-  GraphNav::bGlobalWalkBottomUp(pExprNode, false, true, vVisitorExpr, (void *) pBackend);
-
+  //GraphNav::bGlobalWalkBottomUp(pExprNode, false, true, vVisitorExpr, (void *) pBackend);
+  GraphNav::bGlobalWalk(pExprNode, false, true,vVisitorExpr, vVisitorExpr, (void *) pBackend);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -330,7 +330,7 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
           vAppendExpr(pBackend, pAliasRef, nullptr);
         }
         else
-          RASSERT(0);
+          vAppendExpr(pBackend, pGroupByExpr, nullptr);
       }
       delete pGroupByIter;
     }
@@ -359,7 +359,8 @@ void Backend::vAppendFilterOp(Backend* pBackend, QueryNode* pNode)
       ""_Stz);
 
   // Walk the expr node plan graph
-  GraphNav::bGlobalWalkBottomUp(pOrdinalFilterExpr, false, true, vVisitorExpr, (void *) pBackend);
+  //GraphNav::bGlobalWalkBottomUp(pOrdinalFilterExpr, false, true, vVisitorExpr, (void *) pBackend);
+  GraphNav::bGlobalWalk(pOrdinalFilterExpr, false, true,vVisitorExpr, vVisitorExpr, (void *) pBackend);
   delete pOrdinalFilterExpr;
 
   sPipeline->vCatSprint(" \" \n"_Stz);
@@ -507,7 +508,7 @@ void Backend::vAppendUnionOp(Backend* pBackend, QueryNode* pUnionNode)
 /*----------------------------------------------------------------------------*/
 /* visitor function for the plan graph walk                                   */
 /*----------------------------------------------------------------------------*/
-GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 iDepth, void* pvArg)
+GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 iDepth, GraphNav::eWalkEvent eEventType, void* pvArg)
 {
   _static_
   UNUSED(sPath);
@@ -519,6 +520,18 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
 
   Backend* pBackend = (Backend*)pvArg;
   String* sPipeline = pBackend->m_sPipeline;
+
+  vTrace("Got %s event for node path: %s\n"_Stz,
+           eEventType == Parser::GraphNav::EVENT_ENTER ? "ENTER" : "EXIT",
+           sPath.szStz());
+
+  if (eEventType == Parser::GraphNav::EVENT_ENTER) {
+
+    if (AggregateExpr::bIsOfType(pQueryNode))
+      sPipeline->vCatSprint(" ) "_Stz);
+
+    return GraphNav::WALK_CONTINUE;
+  }
 
   QueryNode* pOrdinalExpr;
 
