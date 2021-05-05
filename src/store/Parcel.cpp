@@ -229,8 +229,8 @@ void Parcel::vSendOverSocket(void)
   Parcel* pParcel;
   
   // get preliminary information
-  Node* pSendNode = AM::pGrid()->pGetNode(m_iDstNode);
-  Socket* pSocket = pSendNode->pSendSocket();
+  Node* pDstNode = AM::pGrid()->pGetNode(m_iDstNode);
+  Socket* pSocket = pDstNode->pSendSocket();
   i8 nObjects = this->nObjects();
   
   pSocket->vGrabWrite();
@@ -240,7 +240,7 @@ void Parcel::vSendOverSocket(void)
   nObjectSize = gxaSizeHeap[pParcel->eGetClassNo()].m_nClassSize;
   bResult = pSocket->bSendTo(pParcel, nObjectSize, oSysCall);
   
-  // send all the object within the parcel instance
+  // send all the objects within the parcel instance
   for (i8 i_Object = 0; i_Object < nObjects; i_Object++) {
     pObject = pParcel->pGetObject(i_Object);
     nObjectSize = gxaSizeHeap[pObject->eGetClassNo()].m_nClassSize;
