@@ -57,7 +57,7 @@ namespace STORE
   
   private:
   
-    void vSendAsParcel(Op* pSrcOp, i8 iDstNode, tPN tPtnNo);
+    void vSendParcel(Op* pSrcOp, i8 iDstNode, tPN tPtnNo);
 
 
     void vSendToAllNodes(Op* pSrcOp);
