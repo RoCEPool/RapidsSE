@@ -264,10 +264,14 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Literals in the select list
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+*/
 
 SELECT 1 FROM nation HAVING SUM(n_nationkey) > 0;
 rows:
-*/
+ (1)
+ (1)
+ (1)
+ (1)
 
 SELECT SUM(n_nationkey) from nation HAVING SUM(n_nationkey) > 0;
 rows:

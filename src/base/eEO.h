@@ -165,6 +165,8 @@ enum eEO : u2 // expression operators
   /*  S  */ EO_PUSH_1,           // push integer 1
   /*  S  */ EO_RANDOM,           // push random number 0..arg-1
   /*  S  */ EO_STRING,           // push string
+  /*  S  */ EO_TIME,             // push time
+  /*  S  */ EO_TIMESTAMP,        // push timestamp
 
   // relational operators
   /*  S  */ EO_EQ_BCDBCD,        // bcd == bcd
@@ -688,6 +690,8 @@ static Stz* aEO[]
   /*    */ "EO_PUSH_1"_Stz,
   /*    */ "EO_RANDOM"_Stz,
   /*    */ "EO_STRING"_Stz,
+  /*    */ "EO_TIME"_Stz,
+  /*    */ "EO_TIMESTAMP"_Stz,
   
   // relational operators
   /*    */ "EO_EQ_BCDBCD"_Stz,
@@ -1215,6 +1219,8 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_PUSH_1
   { EA_INT,     8 },  // EO_RANDOM
   { EA_STRING,  -1},  // EO_STRING
+  { EA_TIME,    8 },  // EO_TIME
+  { EA_TIMESTAMP,8 }, // EO_TIMESTAMP
 
   // relational operators
   { EA_NONE,    0 },  // EO_EQ_BCDBCD

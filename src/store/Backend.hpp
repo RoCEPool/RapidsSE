@@ -19,6 +19,7 @@ namespace STORE
     PlanNode*      m_pPlanRoot;
     QueryNodeList* m_pColExprList;
     String*        m_sPipeline;
+    s32            m_sFilterEnd;
 
     // must be last
     Footer m_xFooter;

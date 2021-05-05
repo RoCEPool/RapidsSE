@@ -100,10 +100,10 @@ void LogicUnit::vCollectOpcode(void)
               THROW_USER("vCollectOpcode"_Stz);
             }
             Stz* szParam = pJobTags->szValue(i_Ename);
-            vAddCodeArg((eEO)i_OpCode, szParam);
+            vAddCodeDte((eEO)i_OpCode, szParam);
           }
           else
-            vAddCodeArg((eEO)i_OpCode, m_pTkn->szChars());
+            vAddCodeDte((eEO)i_OpCode, m_pTkn->szChars());
           return;
           
         case EA_INT: {
@@ -172,9 +172,44 @@ void LogicUnit::vCollectOpcode(void)
         case EA_SUBSCR:
           vAcceptToken();
           vAddCodeArg((eEO)i_OpCode, m_pTkn->iToI8());
-
           return;
-          
+
+        case EA_TIME:
+          vAcceptToken();
+          azEname = m_pTkn->azChars();
+          if (0 == StrLib::iCompare(m_pTkn->azChars(),"<param", 6,  C_CASE)) {
+            i8 i_Ename = pJobTags->i_Find(m_pTkn->szChars());
+            ASSERT(i_Ename != C_UNKNOWN);
+            if (pJobTags->eToken(i_Ename) != TN_STRING) {
+              pJobTags->vDumpSet(true);
+              vTrace("azEname : %s \n"_Stz,azEname);
+              THROW_USER("vCollectOpcode"_Stz);
+            }
+            Stz* szParam = pJobTags->szValue(i_Ename);
+            vAddCodeTme((eEO)i_OpCode, szParam);
+          }
+          else
+            vAddCodeTme((eEO)i_OpCode, m_pTkn->szChars());
+          return;
+
+        case EA_TIMESTAMP:
+          vAcceptToken();
+          azEname = m_pTkn->azChars();
+          if (0 == StrLib::iCompare(m_pTkn->azChars(),"<param", 6,  C_CASE)) {
+            i8 i_Ename = pJobTags->i_Find(m_pTkn->szChars());
+            ASSERT(i_Ename != C_UNKNOWN);
+            if (pJobTags->eToken(i_Ename) != TN_STRING) {
+              pJobTags->vDumpSet(true);
+              vTrace("azEname : %s \n"_Stz,azEname);
+              THROW_USER("vCollectOpcode"_Stz);
+            }
+            Stz* szParam = pJobTags->szValue(i_Ename);
+            vAddCodeTsp((eEO)i_OpCode, szParam);
+          }
+          else
+            vAddCodeTsp((eEO)i_OpCode, m_pTkn->szChars());
+          return;
+
        case EO_NONE:
          vAddCode((eEO)i_OpCode);
          return;

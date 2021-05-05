@@ -1543,6 +1543,7 @@ void vDev_ROW_COLS_TO_LOCALS(i8** aaiDstk)
   for (i8 i_ColSet = 0; iaColSet[i_ColSet] != -1; i_ColSet++) {
     Column* pColumn = pDevRow->m_pStreamDef->pGetColumn(iaColSet[i_ColSet]);
     switch (pColumn->eColumnType()) {
+      case CT_BOOLEAN:
       case CT_INTEGER:
       case CT_DATE:
       case CT_TIMESTAMP:
@@ -1589,6 +1590,7 @@ void vDev_ROW_COLS_TO_ROW(i8** aaiDstk)
   for (i8 i_Col = 0; i_Col < pDevRow->m_pStreamDef->nColumns(); i_Col++) {
     Column* pColumn = pDevRow->m_pStreamDef->pGetColumn(i_Col);
     switch (pColumn->eColumnType()) {
+      case CT_BOOLEAN:
       case CT_INTEGER:
       case CT_DATE:
       case CT_TIMESTAMP:
