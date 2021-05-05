@@ -14,12 +14,14 @@ namespace STORE
   {
     
   public:
-    i8         m_iPipelineJobId;  // pipeline job id
-    i8         m_iDstNode;        // destination node id
-    tPN        m_tPtnNo;          // partition (in grid)
-    ePX        m_eCrossTopo;      // cross topology
-    i8         m_iNextStage;      // next stage
-    i8         m_iNextOp;         // nextOp in the nextStage
+    i8  m_iPipelineJobId;  // pipeline job id
+    ePX m_eCrossTopo;      // cross topology
+    eXK m_eSendKind;       // hashed, localRobin, normal, robin
+  
+    i8  m_iDstNode;        // destination node id
+    tPN m_tDstPtn;         // destination partition (in grid)
+    i8  m_iDstStage;       // destination stage
+    i8  m_iDstOp;          // destination op in the destination stage
     
   private:
     i8 m_nObjects;                        // number of objects in the parcel
@@ -41,7 +43,6 @@ namespace STORE
   
    ~Parcel(void) noexcept(false);
         
-    static void vSendOut(Parcel* pParcel, Operand* pOperand, Op* pOp);
 
   public:
     void vShow(void);
@@ -51,33 +52,27 @@ namespace STORE
     i8 nObjects(void) { return m_nObjects;};
     Object* pGetObject(i8 iIdx);
     Operand* pGetOperand(void);
+    void vSendOut(Op* pSrcOp);
     void vSetOperand(Operand *pOperand);
   
   
   
   private:
   
-    static void vSendAsParcel(Parcel* pParcel, Operand* pOperand,
-                              Op* pSrcOp, i8 iDstNode, tPN tPtnNo);
+    void vSendParcel(Op* pSrcOp, i8 iDstNode, tPN tDstPtn);
 
 
-    static void vSendToAllNodes(Parcel* pParcel, Operand* pOperand,
-                                Op* pSrcOp);
+    void vSendToAllNodes(Op* pSrcOp);
   
-    static void vSendToAllOriginPartitions(Parcel* pParcel, Operand* pOperand,
-                                           Op* pSrcOp, eXK eSendKind);
+    void vSendToAllOriginPartitions(Op* pSrcOp);
   
-    static void vSendToAllPartitions(Parcel* pParcel, Operand* pOperand,
-                                     Op* pSrcOp, eXK eSendKind);
+    void vSendToAllPartitions(Op* pSrcOp);
   
-    static void vSendToNode(Parcel* pParcel, Operand* pOperand,
-                            Op* pSrcOp, i8 iDstNode);
+    void vSendToNode(Op* pSrcOp, i8 iDstNode);
   
-    static void vSendToOrigin(Parcel* pParcel, Operand* pOperand,
-                              Op* pSrcOp);
+    void vSendToOrigin(Op* pSrcOp);
   
-    static void vSendToPartition(Parcel* pParcel, Operand* pOperand,
-                                 Op* pSrcOp, eXK eSendKind, tPN tPtnNo);
+    void vSendToPartition(Op* pSrcOp, tPN tDstPtn);
 
   public:
     Footer* aFooter(void);

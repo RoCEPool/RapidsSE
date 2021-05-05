@@ -8,3 +8,4 @@ aliases.test
 corrByProjectSquashing.test
 orderBy.test
 exprPushdown.test
+projValidation.test
