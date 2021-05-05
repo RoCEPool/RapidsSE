@@ -25,7 +25,6 @@ void Step::vAddSteps_Parcel(void)
 {
   vAddStep("parcel::delete"_Stz,    &Step::vParcelDelete);
   
-  vAddStep("parcel.operand!"_Stz,   &Step::vParcelOperandStore);
   vAddStep("parcel.pipeOut"_Stz,    &Step::vParcelPipeOut);
   vAddStep("parcel.sendOut"_Stz,    &Step::vParcelSendOut);
 }
@@ -41,21 +40,6 @@ void Step::vParcelDelete(void)
   
   delete pParcel;
 
-  EXIT();
-}
-/*----------------------------------------------------------------------------*/
-/* parcel.operand! -- store operand in the sendOperand                        */
-/*----------------------------------------------------------------------------*/
-void Step::vParcelOperandStore(void)
-{
-  ENTRY();
-  
-  Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
-  
-  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
-  
-  pParcel->vAddObject(pOperand);
-  
   EXIT();
 }
 

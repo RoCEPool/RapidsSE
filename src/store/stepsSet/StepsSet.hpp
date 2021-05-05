@@ -1263,7 +1263,6 @@ public:
 
   // Parcel
   void vParcelDelete(void);
-  void vParcelOperandStore(void);
   void vParcelPipeOut(void);
   void vParcelSendOut(void);
 
