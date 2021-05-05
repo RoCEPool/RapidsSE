@@ -29,9 +29,10 @@ __aFooterFunction(Parcel)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Parcel::Parcel(Operand* pOperand,
-               Op*      pSrcOp,
+               i8       iPipelineJobId,
                i8       iDstNode,
-               tPN      tPtnNo)
+               tPN      tPtnNo,
+               ePX      eCrossTopo)
 : Object(CN_PARCEL)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
@@ -41,47 +42,14 @@ Parcel::Parcel(Operand* pOperand,
     m_pObjects[i_Obj] = nullptr;
 
   vSetOperand(pOperand);
-  m_iPipelineJobId = pSrcOp->pPipelineJob()->iJobId();
-  m_eCrossTopo     = pSrcOp->eCrossTopo();
-  
+  m_iPipelineJobId = iPipelineJobId;
+  m_eCrossTopo     = eCrossTopo;
   m_iDstNode       = iDstNode;
   m_tPtnNo         = tPtnNo;
+  
   m_iNextStage     = C_UNKNOWN;
   m_iNextOp        = C_UNKNOWN;
   
-  _checkInitialised_(CN_PARCEL);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Parcel::Parcel(Operand* pOperand,
-               i8 iPipelineJobId,
-               i8 iDstNode,
-               ePX eCrossTopo,
-               i8 iNextStage,
-               i8 iNextOp,
-               tPN tPtnNo)
-: Object(CN_PARCEL)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
-  
-  m_iPipelineJobId = iPipelineJobId;
-  m_iDstNode       = iDstNode;
-  m_tPtnNo         = tPtnNo;
-  
-  m_eCrossTopo     = eCrossTopo;
-  m_iNextStage     = iNextStage;
-  m_iNextOp        = iNextOp;
-  
-  m_nObjects = 0;
-  for (i8 i_Obj = 0; i_Obj < C_MAX_PARCEL_OBJ; i_Obj++)
-    m_pObjects[i_Obj] = nullptr;
-  
-  vSetOperand(pOperand);
-
   _checkInitialised_(CN_PARCEL);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
@@ -249,21 +217,22 @@ void Parcel::vSetOperand(Operand *pOperand)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* send the parcel                                                            */
+/* send the operand as a parcel                                               */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendAsParcel(Parcel* pParcel, Op* pSrcOp)
+void Parcel::vSendAsParcel(Parcel* ,
+                           Operand* pOperand,
+                           Op*      pSrcOp,
+                           i8       iDstNode,
+                           tPN      tPtnNo)
 {
   _static_
-
   
-//  pParcel->m_iDstNode       = C_UNKNOWN;
-//  pParcel->m_tPtnNo         = C_UNKNOWN;
-//  pParcel->m_eCrossTopo     = pSrcOp->eCrossTopo();
-//  pParcel->m_iNextStage     = C_UNKNOWN;
-//  pParcel->m_iNextOp        = C_UNKNOWN;
-
-  // - - - - - - - - - - - - - - - -
-
+  Parcel* pParcel = new Parcel(pOperand,
+                               pSrcOp->pPipelineJob()->iJobId(),
+                               iDstNode,
+                               tPtnNo,
+                               pSrcOp->eCrossTopo());
+  
   pParcel->m_iNextStage = pSrcOp->iNextStage();
   pParcel->m_iNextOp    = pSrcOp->iNextOp();
   AM::vSendParcel(pParcel);
@@ -285,102 +254,6 @@ void Parcel::vSendAsParcel(Parcel* pParcel, Op* pSrcOp)
 
   delete pParcel;
 }
-
-/*----------------------------------------------------------------------------*/
-/* send the operand as a parcel                                               */
-/*----------------------------------------------------------------------------*/
-void Parcel::vSendAsParcel(Parcel* ,
-                           Operand* pOperand,
-                           Op*      pSrcOp,
-                           i8       iDstNode,
-                           tPN      tPtnNo)
-{
-  _static_
-  
-  Parcel* pParcel = new Parcel(pOperand,pSrcOp,iDstNode,tPtnNo);
-
-  pParcel->m_iDstNode = iDstNode;
-  pParcel->m_tPtnNo   = tPtnNo;
-
-//  Job* pPipelineJob = pSrcOp->pPipelineJob();
-//  ePX eCrossTopo    = pSrcOp->eCrossTopo();
-//  i8 i_NextStage    = pSrcOp->iNextStage();
-//  i8 i_NextOp       = pSrcOp->iNextOp();
-
-  // - - - - - - - - - - - - - - - -
-  
-//  Parcel* pParcel = new Parcel(pOperand,
-//                               pPipelineJob->iJobId(),iDstNode,eCrossTopo,
-//                               i_NextStage,i_NextOp,tPtnNo);
-  
-  Parcel::vSendAsParcel(pParcel,pSrcOp);
-
-}
-/*----------------------------------------------------------------------------*/
-//void Parcel::vSendAsParcel(Operand* pOperand,
-//                           Op*      pSrcOp,
-//                           i8       iDstNode,
-//                           tPN      tPtnNo)
-//{
-//  _static_
-//
-//  Job* pPipelineJob = pSrcOp->pPipelineJob();
-//  ePX eCrossTopo    = pSrcOp->eCrossTopo();
-//  i8 i_NextStage    = pSrcOp->iNextStage();
-//  i8 i_NextOp       = pSrcOp->iNextOp();
-//  i8 i_OtherStage   = pSrcOp->iOtherStage();
-//  i8 i_OtherOp      = pSrcOp->iOtherOp();
-//
-//  // - - - - - - - - - - - - - - - -
-//
-//  Parcel* pParcel = new Parcel(pOperand,
-//                               pPipelineJob->iJobId(),iDstNode,eCrossTopo,
-//                               i_NextStage,i_NextOp,tPtnNo);
-//  AM::vSendParcel(pParcel);
-//
-//  // - - - - - - - - - - - - - - - -
-//
-//  if (C_UNKNOWN != i_OtherStage) {
-//
-//    pParcel->m_iNextStage = i_OtherStage;
-//    pParcel->m_iNextOp    = i_OtherOp;
-//
-//    AM::vSendParcel(pParcel);
-//  }
-//
-//  // - - - - - - - - - - - - - - - -
-//
-//  delete pParcel;
-//}
-/*----------------------------------------------------------------------------*/
-//void Parcel::vSendAsParcel(Operand* pOperand,
-//                           Op*      pSrcOp,
-//                           i8       iDstNode,
-//                           tPN      tPtnNo)
-//{
-//  _static_
-//
-//  Job* pPipelineJob = pSrcOp->pPipelineJob();
-//  ePX eCrossTopo    = pSrcOp->eCrossTopo();
-//  i8 i_NextStage    = pSrcOp->iNextStage();
-//  i8 i_NextOp       = pSrcOp->iNextOp();
-//  i8 i_OtherStage   = pSrcOp->iOtherStage();
-//  i8 i_OtherOp      = pSrcOp->iOtherOp();
-//
-//  Parcel* pParcel = new Parcel(pOperand,
-//                               pPipelineJob->iJobId(),iDstNode,eCrossTopo,
-//                               i_NextStage,i_NextOp,tPtnNo);
-//  AM::vSendParcel(pParcel);
-//  delete pParcel;
-//
-//  if (C_UNKNOWN != i_OtherStage) {
-//
-//    pParcel = new Parcel(pOperand,pPipelineJob->iJobId(),iDstNode,eCrossTopo,
-//                         i_OtherStage,i_OtherOp,tPtnNo);
-//    AM::vSendParcel(pParcel);
-//    delete pParcel;
-//  }
-//}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
