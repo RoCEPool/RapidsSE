@@ -1,0 +1,70 @@
+/*----------------------------------------------------------------------------*/
+/* Projection Validation tests                                                */
+/*----------------------------------------------------------------------------*/
+
+-- This tests all SQL operators that contain expressions, that their expressions
+-- only refer to aliases/ColumnRefs that are resolvable. i.e. a SQL operator
+-- below it must supply it with the desired expression or expression pre-requisite.
+--
+-- An easy way to check for this is that to ensure that all expressions can be
+-- turned into their ordinal form and they don't contain any aliases or ColumnRefs.
+-- (i.e., they are a superset of the project columns supplied to them).
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Setup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+create table nation (
+	 N_NATIONKEY       INTEGER NOT NULL,
+	 N_NAME            CHAR(25) NOT NULL,
+	 N_REGIONKEY       INTEGER NOT NULL,
+	 N_COMMENT         VARCHAR(152)
+);
+success
+
+trackmemory;
+success
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  ORDER BY above a Set operator
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- ORDER BY above a SetOp cannot resolve columnRefs unless they are aliases
+-- being projected by the SetOp.
+-- This shouldn't work because n_regionkey is not being projected by the UnionOp
+EXPLAIN
+SELECT n_nationkey as nkey, n_name FROM nation
+UNION ALL
+SELECT n_regionkey, n_name FROM nation
+ORDER BY n_regionkey;
+failure contains: 'Invalid expression because it is not being projected: rapidsse.public.nation.n_regionkey'
+
+
+-- Order expr is a superset of projected expression but contains
+-- a columnRef that is not being projected.
+EXPLAIN
+SELECT n_nationkey, n_name FROM nation
+UNION ALL
+SELECT n_regionkey, n_name FROM nation
+ORDER BY n_nationkey + n_regionkey;
+failure contains: 'Invalid expression because it is not being projected: rapidsse.public.nation.n_regionkey'
+
+
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Check for memory leaks
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+memoryleaks;
+rows: 0
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Cleanup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CLEANUP {
+  drop table nation ;
+  mute
+}

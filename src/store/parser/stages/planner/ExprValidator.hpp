@@ -59,12 +59,6 @@ namespace Parser
     // that sit above the ProjectOp. Aggregate exprs may or may not be allowed
     // depending on the expressions in the ProjectOp.
     static void vValidateSqlOpExprsAgainstProjectOp(PlanNode* pRootNode, QueryNode* pStartNode);
-
-    // If we have an ORDER BY clause above a SetOp (UNION, INTERSECT, etc) then it
-    // can only order based on expressions that are already being projected from
-    // the set operator. It cannot order on arbitrary exprs and have these pushed down.
-    // Validate that the OrderOp is using a known projected expr.
-    static void vValidateOrderExprAboveSetOp(PlanNode* pRootNode, QueryNode* pStartNode);
   };
 }
 
