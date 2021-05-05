@@ -31,7 +31,7 @@ __aFooterFunction(Parcel)
 Parcel::Parcel(Operand* pOperand,
                i8       iPipelineJobId,
                i8       iDstNode,
-               tPN      tPtnNo,
+               tPN      tDstPtn,
                ePX      eCrossTopo)
 : Object(CN_PARCEL)
 {
@@ -45,11 +45,11 @@ Parcel::Parcel(Operand* pOperand,
   m_iPipelineJobId = iPipelineJobId;
   m_eCrossTopo     = eCrossTopo;
   m_eSendKind      = XK_NONE;
-  m_iDstNode       = iDstNode;
-  m_tPtnNo         = tPtnNo;
   
-  m_iNextStage     = C_UNKNOWN;
-  m_iNextOp        = C_UNKNOWN;
+  m_iDstNode       = iDstNode;
+  m_tDstPtn        = tDstPtn; 
+  m_iDstStage      = C_UNKNOWN;
+  m_iDstOp         = C_UNKNOWN;
   
   _checkInitialised_(CN_PARCEL);
   
@@ -113,6 +113,9 @@ void Parcel::vSendOut(Op* pSrcOp)
   
   Pipeline* pPipeline = pSrcOp->pPipeline();
   i8 i_NextStage = pSrcOp->iNextStage();
+  ePX eCrossTopo = pSrcOp->eCrossTopo();
+  RASSERT(eCrossTopo == m_eCrossTopo);
+  tPN tDstPtn = pSrcOp->tPtnNo();
 
   // get operand and next stage
   Operand* pOperand = pGetOperand();
@@ -130,8 +133,6 @@ void Parcel::vSendOut(Op* pSrcOp)
   if (pOperand->bIsInfoSet() || pOperand->bIsProfile())
     m_eSendKind = XK_ROBIN;
   
-  ePX eCrossTopo = pSrcOp->eCrossTopo();      // cross topology
-  tPN tPtn = pSrcOp->tPtnNo();
   
   switch (eCrossTopo) {
       
@@ -160,15 +161,15 @@ void Parcel::vSendOut(Op* pSrcOp)
      
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ORIGIN_TO_SPECIFIC_PARTITION: {
-      Stream* pStream = pNextStage->pGetPartitionStream(tPtn);
-      tPN tDstPtnNo = pStream->tPtnNo();
-      vSendToPartition(pSrcOp,tDstPtnNo);
+      Stream* pStream = pNextStage->pGetPartitionStream(tDstPtn);
+      tPN tDstPtnNo_stream = pStream->tPtnNo();
+      vSendToPartition(pSrcOp,tDstPtnNo_stream);
       break;
     }
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ALL_PARTITIONS_TO_ALL_NODES: {
-      i8 iDstNode = AM::pPtnMap()->i_WhichNode(tPtn);
+      i8 iDstNode = AM::pPtnMap()->i_WhichNode(tDstPtn);
       vSendToNode(pSrcOp,iDstNode);
       break;
     }
@@ -176,7 +177,7 @@ void Parcel::vSendOut(Op* pSrcOp)
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS: {
       if (pGetOperand()->bIsBuffer())
-        vSendToPartition(pSrcOp,tPtn);
+        vSendToPartition(pSrcOp,tDstPtn);
       else
         vSendToAllPartitions(pSrcOp);
       break;
@@ -219,11 +220,12 @@ void Parcel::vSendParcel(Op* pSrcOp, i8  iDstNode, tPN tDstPtn)
 {
   _static_
     
-  m_iDstNode   = iDstNode;
-  m_tPtnNo     = tDstPtn;
+  m_iDstNode = iDstNode;
+  m_tDstPtn   = tDstPtn;
   
-  m_iNextStage = pSrcOp->iNextStage();
-  m_iNextOp    = pSrcOp->iNextOp();
+  m_iDstStage = pSrcOp->iNextStage();
+  m_iDstOp    = pSrcOp->iNextOp();
+  
   AM::vSendParcel(this);
 
   // - - - - - - - - - - - - - - - -
@@ -233,8 +235,8 @@ void Parcel::vSendParcel(Op* pSrcOp, i8  iDstNode, tPN tDstPtn)
   
   if (C_UNKNOWN != i_OtherStage) {
 
-    m_iNextStage = i_OtherStage;
-    m_iNextOp    = i_OtherOp;
+    m_iDstStage = i_OtherStage;
+    m_iDstOp    = i_OtherOp;
 
     AM::vSendParcel(this);
   }
@@ -320,6 +322,7 @@ void Parcel::vSendToAllOriginPartitions(Op* pSrcOp)
     }
     break;
       
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     default:
       ASSERT(0);
   }
@@ -407,6 +410,7 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
       break;
     }
       
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     default:
       ASSERT(0);
   }
@@ -479,6 +483,7 @@ void Parcel::vSendToPartition(Op* pSrcOp, tPN tDstPtn)
       tDstPtn = i_Robin % AM::nPtnsInGrid();
       break;
       
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     default:
       ASSERT(0);
   }

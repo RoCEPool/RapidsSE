@@ -15,12 +15,13 @@ namespace STORE
     
   public:
     i8  m_iPipelineJobId;  // pipeline job id
-    i8  m_iDstNode;        // destination node id
-    tPN m_tPtnNo;          // partition (in grid)
     ePX m_eCrossTopo;      // cross topology
     eXK m_eSendKind;       // hashed, localRobin, normal, robin
-    i8  m_iNextStage;      // next stage
-    i8  m_iNextOp;         // nextOp in the nextStage
+  
+    i8  m_iDstNode;        // destination node id
+    tPN m_tDstPtn;         // destination partition (in grid)
+    i8  m_iDstStage;       // destination stage
+    i8  m_iDstOp;          // destination op in the destination stage
     
   private:
     i8 m_nObjects;                        // number of objects in the parcel
