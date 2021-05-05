@@ -29,63 +29,34 @@ __aFooterFunction(Parcel)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Parcel::Parcel(Operand* pOperand,
-               i8 iPipelineJobId,
-               i8 iDstNode,
-               ePX eCrossTopo,
-               i8 iNextStage,
-               i8 iNextOp,
-               tPN tPtnNo)
+               i8       iPipelineJobId,
+               i8       iDstNode,
+               tPN      tDstPtn,
+               ePX      eCrossTopo)
 : Object(CN_PARCEL)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
-  
-  m_iPipelineJobId = iPipelineJobId;
-  m_iDstNode       = iDstNode;
-  m_tPtnNo         = tPtnNo;
-  
-  m_eCrossTopo     = eCrossTopo;
-  m_iNextStage     = iNextStage;
-  m_iNextOp        = iNextOp;
-  
+
   m_nObjects = 0;
   for (i8 i_Obj = 0; i_Obj < C_MAX_PARCEL_OBJ; i_Obj++)
     m_pObjects[i_Obj] = nullptr;
-  
+
   vSetOperand(pOperand);
-
+  m_iPipelineJobId = iPipelineJobId;
+  m_eCrossTopo     = eCrossTopo;
+  m_eSendKind      = XK_NONE;
+  
+  m_iDstNode       = iDstNode;
+  m_tDstPtn        = tDstPtn; 
+  m_iDstStage      = C_UNKNOWN;
+  m_iDstOp         = C_UNKNOWN;
+  
   _checkInitialised_(CN_PARCEL);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 }
 
 
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Parcel::Parcel(void)
-    : Object(CN_PARCEL)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
-
-  m_iPipelineJobId = 0;
-  m_iDstNode       = 0;
-  m_tPtnNo         = 0;
-
-  m_eCrossTopo     = PX_NONE;
-  m_iNextStage     = 0;
-  m_iNextOp        = 0;
-
-  m_nObjects = 0;
-  for (i8 i_Obj = 0; i_Obj < C_MAX_PARCEL_OBJ; i_Obj++)
-    m_pObjects[i_Obj] = nullptr;
-
-  vSetOperand(nullptr);
-
-  _checkInitialised_(CN_PARCEL);
-
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
-}
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
@@ -93,126 +64,6 @@ Parcel::~Parcel(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
   
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Static Functions --------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* new an unlabelled parcel                                                   */
-/*----------------------------------------------------------------------------*/
-Parcel* Parcel::pNewParcel(Operand* pOperand, Op* pSrcOp)
-{
-  _static_
-  
-  Job* pPipelineJob = pSrcOp->pPipelineJob();
-  ePX eCrossTopo    = pSrcOp->eCrossTopo();
-
-  
-  Parcel* pParcel = new Parcel(pOperand,
-                               pPipelineJob->iJobId(),
-                               C_UNKNOWN,  //iDstNode,
-                               eCrossTopo,
-                               C_UNKNOWN,  //i_NextStage,
-                               C_UNKNOWN,  //i_NextOp,
-                               C_UNKNOWN   //tPtnNo
-                               );
-  
-  return pParcel;
-}
-/*----------------------------------------------------------------------------*/
-/* send out operand as parcel                                                 */
-/*----------------------------------------------------------------------------*/
-void Parcel::vSendOut(Operand* pOperand, Op* pSrcOp)
-{
-  _static_
-  
-  Pipeline* pPipeline = pSrcOp->pPipeline();
-  i8 i_NextStage = pSrcOp->iNextStage();
-
-  // get the next stage
-  Stage* pNextStage = pPipeline->pGet(i_NextStage);
-  RASSERT(pNextStage);
-  
-  // figure out the send kind
-  eXK eSendKind = pSrcOp->eSendKind();
-  
-  // is the operand is a marker or a streamDef ?
-  if (pOperand->bIsMarker() || pOperand->bIsStreamDef())
-    eSendKind = XK_NORMAL;
-  
-  // is the operand an InfoSet ?
-  if (pOperand->bIsInfoSet() || pOperand->bIsProfile())
-    eSendKind = XK_ROBIN;
-  
-  ePX eCrossTopo = pSrcOp->eCrossTopo();      // cross topology
-  tPN tPtn = pSrcOp->tPtnNo();
-  
-  switch (eCrossTopo) {
-      
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case PX_ALL_NODES_TO_ORIGIN:
-    case PX_ALL_PARTITIONS_TO_ORIGIN:
-    case PX_ORIGIN_TO_ORIGIN:
-    case PX_SPECIFIC_PARTITION_TO_ORIGIN: {
-      vSendToOrigin(pOperand,pSrcOp);
-      break;
-    }
-      
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case PX_ORIGIN_TO_ALL_PARTITIONS:
-    case PX_ALL_NODES_TO_ALL_PARTITIONS:
-    case PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS: {
-      vSendToAllPartitions(pOperand,pSrcOp,eSendKind);
-      break;
-    }
-    
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case PX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN: {
-      vSendToAllOriginPartitions(pOperand,pSrcOp,eSendKind);
-      break;
-    }
-     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case PX_ORIGIN_TO_SPECIFIC_PARTITION: {
-      Stream* pStream = pNextStage->pGetPartitionStream(tPtn);
-      tPN tPtnNo = pStream->tPtnNo();
-      vSendToPartition(pOperand,pSrcOp,eSendKind,tPtnNo);
-      break;
-    }
-      
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case PX_ALL_PARTITIONS_TO_ALL_NODES: {
-      i8 iDstNode = AM::pPtnMap()->i_WhichNode(tPtn);
-      vSendToNode(pOperand,pSrcOp,iDstNode);
-      break;
-    }
-      
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS: {
-      if (pOperand->bIsBuffer()) {
-        vSendToPartition(pOperand,pSrcOp,eSendKind,tPtn);
-      }
-      else {
-        vSendToAllPartitions(pOperand,pSrcOp,eSendKind);
-      }
-      break;
-    }
-     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case PX_ORIGIN_TO_ALL_NODES: {
-      vSendToAllNodes(pOperand,pSrcOp);
-      break;
-    }
-      
-    default:
-      RASSERT(0);
-  }
-
-  
-  // delete the operand
-  AM::vDeleteOperand(pOperand);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -255,6 +106,100 @@ Operand* Parcel::pGetOperand(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* send out operand as parcel                                                 */
+/*----------------------------------------------------------------------------*/
+void Parcel::vSendOut(Op* pSrcOp)
+{
+  _static_
+  
+  Pipeline* pPipeline = pSrcOp->pPipeline();
+  i8 i_NextStage = pSrcOp->iNextStage();
+  ePX eCrossTopo = pSrcOp->eCrossTopo();
+  RASSERT(eCrossTopo == m_eCrossTopo);
+  tPN tDstPtn = pSrcOp->tPtnNo();
+
+  // get operand and next stage
+  Operand* pOperand = pGetOperand();
+  Stage* pNextStage = pPipeline->pGet(i_NextStage);
+  RASSERT(pNextStage);
+  
+  // figure out the send kind
+  m_eSendKind = pSrcOp->eSendKind();
+    
+  // is the operand is a marker or a streamDef ?
+  if (pOperand->bIsMarker() || pOperand->bIsStreamDef())
+    m_eSendKind = XK_NORMAL;
+  
+  // is the operand an InfoSet ?
+  if (pOperand->bIsInfoSet() || pOperand->bIsProfile())
+    m_eSendKind = XK_ROBIN;
+  
+  
+  switch (eCrossTopo) {
+      
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    case PX_ALL_NODES_TO_ORIGIN:
+    case PX_ALL_PARTITIONS_TO_ORIGIN:
+    case PX_ORIGIN_TO_ORIGIN:
+    case PX_SPECIFIC_PARTITION_TO_ORIGIN: {
+      vSendToOrigin(pSrcOp);
+      break;
+    }
+      
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    case PX_ORIGIN_TO_ALL_PARTITIONS:
+    case PX_ALL_NODES_TO_ALL_PARTITIONS:
+    case PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS: {
+      vSendToAllPartitions(pSrcOp);
+      break;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    case PX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN: {
+      vSendToAllOriginPartitions(pSrcOp);
+      break;
+    }
+     
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    case PX_ORIGIN_TO_SPECIFIC_PARTITION: {
+      Stream* pStream = pNextStage->pGetPartitionStream(tDstPtn);
+      tPN tDstPtnNo_stream = pStream->tPtnNo();
+      vSendToPartition(pSrcOp,tDstPtnNo_stream);
+      break;
+    }
+      
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    case PX_ALL_PARTITIONS_TO_ALL_NODES: {
+      i8 iDstNode = AM::pPtnMap()->i_WhichNode(tDstPtn);
+      vSendToNode(pSrcOp,iDstNode);
+      break;
+    }
+      
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS: {
+      if (pGetOperand()->bIsBuffer())
+        vSendToPartition(pSrcOp,tDstPtn);
+      else
+        vSendToAllPartitions(pSrcOp);
+      break;
+    }
+     
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    case PX_ORIGIN_TO_ALL_NODES: {
+      vSendToAllNodes(pSrcOp);
+      break;
+    }
+      
+    default:
+      RASSERT(0);
+  }
+
+  
+  // delete the operand
+  AM::vDeleteOperand(pOperand);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Set Operand                                                                */
 /*----------------------------------------------------------------------------*/
 void Parcel::vSetOperand(Operand *pOperand)
@@ -270,15 +215,19 @@ void Parcel::vSetOperand(Operand *pOperand)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* send the parcel                                                            */
+/* send parcel                                                                */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendAsParcel(Parcel* pParcel, Op* pSrcOp)
+void Parcel::vSendParcel(Op* pSrcOp, i8  iDstNode, tPN tDstPtn)
 {
   _static_
-
-  // - - - - - - - - - - - - - - - -
-
-  AM::vSendParcel(pParcel);
+    
+  m_iDstNode = iDstNode;
+  m_tDstPtn   = tDstPtn;
+  
+  m_iDstStage = pSrcOp->iNextStage();
+  m_iDstOp    = pSrcOp->iNextOp();
+  
+  AM::vSendParcel(this);
 
   // - - - - - - - - - - - - - - - -
   
@@ -287,115 +236,20 @@ void Parcel::vSendAsParcel(Parcel* pParcel, Op* pSrcOp)
   
   if (C_UNKNOWN != i_OtherStage) {
 
-    pParcel->m_iNextStage = i_OtherStage;
-    pParcel->m_iNextOp    = i_OtherOp;
+    m_iDstStage = i_OtherStage;
+    m_iDstOp    = i_OtherOp;
 
-    AM::vSendParcel(pParcel);
+    AM::vSendParcel(this);
   }
-  
-  // - - - - - - - - - - - - - - - -
-
-  delete pParcel;
 }
 
 /*----------------------------------------------------------------------------*/
-/* send the operand as a parcel                                               */
-/*----------------------------------------------------------------------------*/
-void Parcel::vSendAsParcel(Operand* pOperand,
-                           Op*      pSrcOp,
-                           i8       iDstNode,
-                           tPN      tPtnNo)
-{
-  _static_
-  
-  Job* pPipelineJob = pSrcOp->pPipelineJob();
-  ePX eCrossTopo    = pSrcOp->eCrossTopo();
-  i8 i_NextStage    = pSrcOp->iNextStage();
-  i8 i_NextOp       = pSrcOp->iNextOp();
-
-  // - - - - - - - - - - - - - - - -
-  
-  Parcel* pParcel = new Parcel(pOperand,
-                               pPipelineJob->iJobId(),iDstNode,eCrossTopo,
-                               i_NextStage,i_NextOp,tPtnNo);
-  
-  Parcel::vSendAsParcel(pParcel,pSrcOp);
-
-}
-/*----------------------------------------------------------------------------*/
-//void Parcel::vSendAsParcel(Operand* pOperand,
-//                           Op*      pSrcOp,
-//                           i8       iDstNode,
-//                           tPN      tPtnNo)
-//{
-//  _static_
-//
-//  Job* pPipelineJob = pSrcOp->pPipelineJob();
-//  ePX eCrossTopo    = pSrcOp->eCrossTopo();
-//  i8 i_NextStage    = pSrcOp->iNextStage();
-//  i8 i_NextOp       = pSrcOp->iNextOp();
-//  i8 i_OtherStage   = pSrcOp->iOtherStage();
-//  i8 i_OtherOp      = pSrcOp->iOtherOp();
-//
-//  // - - - - - - - - - - - - - - - -
-//
-//  Parcel* pParcel = new Parcel(pOperand,
-//                               pPipelineJob->iJobId(),iDstNode,eCrossTopo,
-//                               i_NextStage,i_NextOp,tPtnNo);
-//  AM::vSendParcel(pParcel);
-//
-//  // - - - - - - - - - - - - - - - -
-//
-//  if (C_UNKNOWN != i_OtherStage) {
-//
-//    pParcel->m_iNextStage = i_OtherStage;
-//    pParcel->m_iNextOp    = i_OtherOp;
-//
-//    AM::vSendParcel(pParcel);
-//  }
-//
-//  // - - - - - - - - - - - - - - - -
-//
-//  delete pParcel;
-//}
-/*----------------------------------------------------------------------------*/
-//void Parcel::vSendAsParcel(Operand* pOperand,
-//                           Op*      pSrcOp,
-//                           i8       iDstNode,
-//                           tPN      tPtnNo)
-//{
-//  _static_
-//
-//  Job* pPipelineJob = pSrcOp->pPipelineJob();
-//  ePX eCrossTopo    = pSrcOp->eCrossTopo();
-//  i8 i_NextStage    = pSrcOp->iNextStage();
-//  i8 i_NextOp       = pSrcOp->iNextOp();
-//  i8 i_OtherStage   = pSrcOp->iOtherStage();
-//  i8 i_OtherOp      = pSrcOp->iOtherOp();
-//
-//  Parcel* pParcel = new Parcel(pOperand,
-//                               pPipelineJob->iJobId(),iDstNode,eCrossTopo,
-//                               i_NextStage,i_NextOp,tPtnNo);
-//  AM::vSendParcel(pParcel);
-//  delete pParcel;
-//
-//  if (C_UNKNOWN != i_OtherStage) {
-//
-//    pParcel = new Parcel(pOperand,pPipelineJob->iJobId(),iDstNode,eCrossTopo,
-//                         i_OtherStage,i_OtherOp,tPtnNo);
-//    AM::vSendParcel(pParcel);
-//    delete pParcel;
-//  }
-//}
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* send the operand                                                           */
+/* send parcel to all nodes                                                   */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendToAllNodes(Operand* pOperand,
-                             Op*      pSrcOp)
+void Parcel::vSendToAllNodes(Op* pSrcOp)
 {
   _static_
   
@@ -406,26 +260,19 @@ void Parcel::vSendToAllNodes(Operand* pOperand,
   Stage* pNextStage = pPipeline->pGet(i_NextStage);
   RASSERT(pNextStage);
 
-  /* we can't use zero-based anymore
-  for (i8 iDstNode = 0; iDstNode < pNextStage->nItems(); iDstNode++)
-    vSendAsParcel(pOperand,pSrcOp,iDstNode,C_UNKNOWN);
-   */
 
-  i8 iNodeNo = 0;
-  for (i8 iDstNode = 0; iDstNode < pNextStage->nItems(); iDstNode++) {
-    iNodeNo = AM::iGetNodeNo(iDstNode);
-    vSendAsParcel(pOperand,pSrcOp,iNodeNo,C_UNKNOWN);
+  i8 iDstNode = 0;
+  for (i8 iNodeNo  = 0; iDstNode < pNextStage->nItems(); iDstNode++) {
+    iDstNode = AM::iGetNodeNo(iNodeNo);
+    vSendParcel(pSrcOp,iDstNode,C_UNKNOWN);
   }
-
 
 }
 
 /*----------------------------------------------------------------------------*/
-/* send the operand                                                           */
+/* send parcel to all partitions on origin                                    */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendToAllOriginPartitions(Operand* pOperand,
-                                        Op*      pSrcOp,
-                                        eXK      eSendKind)
+void Parcel::vSendToAllOriginPartitions(Op* pSrcOp)
 {
   _static_
   
@@ -441,7 +288,7 @@ void Parcel::vSendToAllOriginPartitions(Operand* pOperand,
   RASSERT(pNextStage);
     
   // check the SendKind
-  switch (eSendKind) {
+  switch (m_eSendKind) {
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_ROBIN : {
@@ -457,7 +304,7 @@ void Parcel::vSendToAllOriginPartitions(Operand* pOperand,
       pSrcOp->vSendNode(iDstNode);
 
       if (iDstNode == pPipeline->i_Origin())
-        vSendAsParcel(pOperand, pSrcOp, iDstNode, tPtnNo);
+        vSendParcel(pSrcOp,iDstNode,tPtnNo);
   
       break;
     }
@@ -476,27 +323,28 @@ void Parcel::vSendToAllOriginPartitions(Operand* pOperand,
         i8 iDstNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
         pSrcOp->vSendNode(iDstNode);
         if ( iDstNode == pPipeline->i_Origin())
-          vSendAsParcel(pOperand, pSrcOp, iDstNode, tPtnNo);
+          vSendParcel(pSrcOp,iDstNode,tPtnNo);
       }
     }
     break;
       
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     default:
       ASSERT(0);
   }
 }
 
 /*----------------------------------------------------------------------------*/
-/* send the operand                                                           */
+/* send parcel to all partitions                                              */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendToAllPartitions(Operand* pOperand,
-                                  Op*      pSrcOp,
-                                  eXK      eSendKind)
+void Parcel::vSendToAllPartitions(Op* pSrcOp)
 {
   _static_
   
   tPN tPtnNo;
   i8 i_TablePtn;
+  
+  Operand* pOperand = pGetOperand();
   
   Pipeline* pPipeline = pSrcOp->pPipeline();
   i8 i_NextStage = pSrcOp->iNextStage();
@@ -505,7 +353,7 @@ void Parcel::vSendToAllPartitions(Operand* pOperand,
   Stage* pNextStage = pPipeline->pGet(i_NextStage);
   RASSERT(pNextStage);
     
-  switch (eSendKind) {
+  switch (m_eSendKind) {
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_HASHED : {
@@ -516,7 +364,7 @@ void Parcel::vSendToAllPartitions(Operand* pOperand,
       i8 iDstNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
       pSrcOp->vSendNode(iDstNode);
 
-      vSendAsParcel(pOperand, pSrcOp, iDstNode, tPtnNo);
+      vSendParcel(pSrcOp,iDstNode,tPtnNo);
       break;
     }
       
@@ -534,7 +382,7 @@ void Parcel::vSendToAllPartitions(Operand* pOperand,
       pSrcOp->vSendNode(iDstNode);
       RASSERT(iDstNode == AM::pGrid()->iThisNode());
       
-      vSendAsParcel(pOperand, pSrcOp, iDstNode, tPtnNo);
+      vSendParcel(pSrcOp,iDstNode,tPtnNo);
       break;
     }
       
@@ -547,7 +395,7 @@ void Parcel::vSendToAllPartitions(Operand* pOperand,
         // sendNode is the partition node
         i8 iDstNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
         pSrcOp->vSendNode(iDstNode);
-        vSendAsParcel(pOperand, pSrcOp, iDstNode, tPtnNo);
+        vSendParcel(pSrcOp,iDstNode,tPtnNo);
       }
       break;
     }
@@ -564,21 +412,20 @@ void Parcel::vSendToAllPartitions(Operand* pOperand,
       i8 iDstNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
       pSrcOp->vSendNode(iDstNode);
 
-      vSendAsParcel(pOperand, pSrcOp, iDstNode, tPtnNo);
+      vSendParcel(pSrcOp,iDstNode,tPtnNo);
       break;
     }
       
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     default:
       ASSERT(0);
   }
 }
 
 /*----------------------------------------------------------------------------*/
-/* send the operand to a specific node                                        */
+/* send parcel to given destination node                                      */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendToNode(Operand* pOperand,
-                         Op*      pSrcOp,
-                         i8       iDstNode)
+void Parcel::vSendToNode(Op* pSrcOp, i8 iDstNode)
 {
   _static_
     
@@ -591,14 +438,13 @@ void Parcel::vSendToNode(Operand* pOperand,
   
   ASSERT(pNextStage->nItems() == AM::pGrid()->nConnectedNodes());
   
-  vSendAsParcel(pOperand,pSrcOp,iDstNode,C_UNKNOWN);
+  vSendParcel(pSrcOp,iDstNode,C_UNKNOWN);
 }
 
 /*----------------------------------------------------------------------------*/
-/* send the operand to the origin                                             */
+/* send parcel to origin                                                      */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendToOrigin(Operand* pOperand,
-                           Op*      pSrcOp)
+void Parcel::vSendToOrigin(Op* pSrcOp)
 {
   _static_
  
@@ -607,36 +453,32 @@ void Parcel::vSendToOrigin(Operand* pOperand,
   i8 iDstNode = pPipeline->i_Origin();
   pSrcOp->vSendNode(iDstNode);
   
-  vSendAsParcel(pOperand, pSrcOp, iDstNode, C_UNKNOWN);
+  vSendParcel(pSrcOp,iDstNode,C_UNKNOWN);
 }
 
 /*----------------------------------------------------------------------------*/
-/* send the operand to a partition                                            */
+/* send partition to given partition                                          */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendToPartition(Operand* pOperand,
-                              Op*      pSrcOp,
-                              eXK      eSendKind,
-                              tPN      tPtnNo)
+void Parcel::vSendToPartition(Op* pSrcOp, tPN tDstPtn)
 {
   _static_
   
+  Operand* pOperand = pGetOperand();
+
   i8 i_Robin;
-  
-  tPN tSendPtn = C_UNKNOWN;
-    
+      
   DataBuffer* pDataBuffer = nullptr;
   
-  switch (eSendKind) {
+  switch (m_eSendKind) {
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_HASHED :
       pDataBuffer = _pDataBuffer(pOperand);
-      tSendPtn = pDataBuffer->tPtnNo();
+      tDstPtn = pDataBuffer->tPtnNo();
       break;
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_NORMAL:
-      tSendPtn = tPtnNo;
       break;
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -644,17 +486,18 @@ void Parcel::vSendToPartition(Operand* pOperand,
       i_Robin = pSrcOp->iRobin();
       i_Robin++;
       pSrcOp->vRobin(i_Robin);
-      tSendPtn = i_Robin % AM::nPtnsInGrid();
+      tDstPtn = i_Robin % AM::nPtnsInGrid();
       break;
       
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     default:
       ASSERT(0);
   }
   
-  i8 iDstNode = AM::pPtnMap()->i_WhichNode(tSendPtn);
+  i8 iDstNode = AM::pPtnMap()->i_WhichNode(tDstPtn);
   pSrcOp->vSendNode(iDstNode);
 
-  vSendAsParcel(pOperand,pSrcOp,iDstNode,tSendPtn);
+  vSendParcel(pSrcOp,iDstNode,tDstPtn);
 }
 
 /*============================================================================*/

@@ -68,7 +68,7 @@ rows:
  (3,6)
 
 //------------------------------------------------------------------------------
-aggregRows_I lineitem "type integer $4 , type decimal ) $7 sum , type integer $4 sum groupby type integer $4";
+aggregRows_I lineitem "type integer $4 , type decimal ) $7 sum , type integer ) $4 sum groupby type integer $4";
 rows:
  (1,0.00,1)
 

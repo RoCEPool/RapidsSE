@@ -60,12 +60,12 @@ void Step::vParcelPipeOut(void)
   Job* pPipelineJob = AM::pJob_FindParticipating(iPipelineJob);
 
   // get the next stage the send is supposed to send to
-  Stage* pStage = pPipelineJob->m_pPipeline->pGet(pParcel->m_iNextStage);
+  Stage* pStage = pPipelineJob->m_pPipeline->pGet(pParcel->m_iDstStage);
   
   // get the op to forward to depending on the cross topology
   Op* pOp = pStage->pPipeOutOp(pParcel->m_eCrossTopo,
-                               pParcel->m_tPtnNo,
-                               pParcel->m_iNextOp);
+                               pParcel->m_tDstPtn,
+                               pParcel->m_iDstOp);
   
   //! ALKA come back to this. May need a m_bAppendLeft in pParcel
   // append to left queue
@@ -85,11 +85,23 @@ void Step::vParcelSendOut(void)
 {
   ENTRY();
   
-  Op* pOp = m_pJob->m_pOp;
+  Op* pSrcOp = m_pJob->m_pOp;
+  
+  Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
+  RASSERT(! pParcel);
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
   
-  Parcel::vSendOut(pOperand,pOp);
+  pParcel = new Parcel(pOperand,
+                               pSrcOp->pPipelineJob()->iJobId(),
+                               C_UNKNOWN,
+                               C_UNKNOWN,
+                               pSrcOp->eCrossTopo());
+
+
+  pParcel->vSendOut(pSrcOp);
+
+  delete pParcel;
 
   EXIT();
 }

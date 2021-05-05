@@ -19,6 +19,7 @@ namespace STORE
     PlanNode*      m_pPlanRoot;
     QueryNodeList* m_pColExprList;
     String*        m_sPipeline;
+    s32            m_sFilterEnd;
 
     // must be last
     Footer m_xFooter;
@@ -51,7 +52,8 @@ namespace STORE
     // visitor functions
     //
     static Parser::GraphNav::eWalkCtrl vVisitorExpr(PlanNode* pNode,
-                                                    s256& sPath, i8 iDepth, void* pvArg);
+                                                    s256& sPath, i8 iDepth,
+                                                    GraphNav::eWalkEvent eEventType, void* pvArg);
     static Parser::GraphNav::eWalkCtrl vVisitorPlan(PlanNode* pNode,
                                                     s256& sPath, i8 iDepth, void* pvArg);
     static Parser::GraphNav::eWalkCtrl vVisitorStatement(PlanNode* pNode,

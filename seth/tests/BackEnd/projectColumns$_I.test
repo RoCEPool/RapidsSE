@@ -41,7 +41,7 @@ load lineitem "../DATA/TPCH/lineitem10.csv";
 success
 
 //------------------------------------------------------------------------------
-projectColumns lineitem " type decimal sum ( $7 ) ";
+projectColumns lineitem " type decimal ) $7 sum ";
 failure contains: "invalid command"
 
 //------------------------------------------------------------------------------

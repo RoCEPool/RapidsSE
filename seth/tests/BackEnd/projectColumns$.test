@@ -97,7 +97,7 @@ rows:
  (DATE '1997-01-28')
 
 //------------------------------------------------------------------------------
-projectColumns lineitem " type decimal sum ( $7 ) ";
+projectColumns lineitem " type decimal ) $7 sum ";
 failure contains: "invalid command"
 
 //------------------------------------------------------------------------------

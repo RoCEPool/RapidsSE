@@ -993,7 +993,6 @@ public:
   void vOpSendKindStore(void);
 
   // operand
-  void vOperandSendOut(void);
   void vOperandToParcel(void);
 
   // operand[]

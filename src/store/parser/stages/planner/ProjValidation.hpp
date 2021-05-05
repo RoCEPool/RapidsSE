@@ -33,7 +33,9 @@ namespace Parser
 
 
   private:
-
+    static void vValidateFilterOp(QueryNode* pNode, PlanNode* pRootNode);
+    static void vValidateOrderOp(QueryNode* pNode, PlanNode* pRootNode);
+    static void vValidateProjectOp(QueryNode* pNode, PlanNode* pRootNode);
   };
 }
 
