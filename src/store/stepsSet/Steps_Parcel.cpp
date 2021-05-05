@@ -44,7 +44,7 @@ void Step::vParcelDelete(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parcel.pipeOut -- pipe out the operand                                     */
+/* parcel.pipeOut -- pipe out parcel out to next operator in pipeline         */
 /*----------------------------------------------------------------------------*/
 void Step::vParcelPipeOut(void)
 {

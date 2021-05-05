@@ -222,22 +222,30 @@ void Parcel::vSendOut(Op* pSrcOp)
 /*----------------------------------------------------------------------------*/
 void Parcel::vSendOverSocket(void)
 {
+  bool bResult;
+  i8 nObjectSize;
   SysCall oSysCall;
-    
+  Object* pObject;
+  Parcel* pParcel;
+  
+  // get preliminary information
   Node* pSendNode = AM::pGrid()->pGetNode(m_iDstNode);
   Socket* pSocket = pSendNode->pSendSocket();
-
-  RASSERT(1 == nObjects());
+  i8 nObjects = this->nObjects();
   
   pSocket->vGrabWrite();
   
-  Parcel* pParcel = this;
-  i8 nObjectSize = gxaSizeHeap[pParcel->eGetClassNo()].m_nClassSize;
-  bool bResult = pSocket->bSendTo(pParcel, nObjectSize, oSysCall);
+  // send the parcel instance
+  pParcel = this;
+  nObjectSize = gxaSizeHeap[pParcel->eGetClassNo()].m_nClassSize;
+  bResult = pSocket->bSendTo(pParcel, nObjectSize, oSysCall);
   
-  Operand* pOperand = pParcel->pGetOperand();
-  nObjectSize = gxaSizeHeap[pOperand->eGetClassNo()].m_nClassSize;
-  bResult = pSocket->bSendTo(pOperand, nObjectSize, oSysCall);
+  // send all the object within the parcel instance
+  for (i8 i_Object = 0; i_Object < nObjects; i_Object++) {
+    pObject = pParcel->pGetObject(i_Object);
+    nObjectSize = gxaSizeHeap[pObject->eGetClassNo()].m_nClassSize;
+    bResult = pSocket->bSendTo(pObject, nObjectSize, oSysCall);
+  }
   
   pSocket->vDropWrite();
 }

@@ -45,7 +45,7 @@ namespace STORE
         
   public:
     void vAddObject(Object *pObj);
-    Object* pGetObject(i8 iIdx);
+    Object* pGetObject(i8 i_Object);
     i8 nObjects(void);
     Operand* pGetOperand(void);
     void vSendOut(Op* pSrcOp);
