@@ -60,7 +60,8 @@ Table::Table(Stz* szTableNm, eTT eKind)
   m_pBucketMap   = new BucketMap(AM::nPtnsInGrid());
   m_pIdxVec      = new IdxVec;
   m_pTablePtnVec = new TablePtnVec;
-  
+
+  m_pParcel      = nullptr;
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the table partitions
   
@@ -114,12 +115,7 @@ Table::~Table(void) noexcept(false)
   // delete the partition vector
   delete m_pTablePtnVec;
 
-
-  // delete the m_aObjParts
-  //for (i8 i_Obj = 0; i_Obj < (i8)m_aObjParts.size(); i_Obj++) {
-  //  delete m_aObjParts[i_Obj];
-  //}
-  //m_aObjParts.clear();
+  if (m_pParcel) delete m_pParcel;
 }
 
 
@@ -824,27 +820,31 @@ i8 Table::iPrepareParcel(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLE, _FOOTER_);
 
-  m_oParcel.vAddObject((Object *)this);
+  if (!m_pParcel) return 0;
 
-  m_oParcel.vAddObject((Object *)&m_oLocation);
+  m_pParcel->vAddObject((Object *)this);
+
+  m_pParcel->vAddObject((Object *)&m_oLocation);
 
   if ( m_pStreamDef) {
-    m_oParcel.vAddObject((Object *)m_pStreamDef);
+    m_pParcel->vAddObject((Object *)m_pStreamDef);
   }
-  m_oParcel.vAddObject((Object *)m_pShardDef);
+  m_pParcel->vAddObject((Object *)m_pShardDef);
 
-  m_oParcel.vAddObject((Object *)m_pBucketMap);
+  m_pParcel->vAddObject((Object *)m_pBucketMap);
 
-  m_oParcel.vAddObject((Object *)m_pIdxVec);
+  m_pParcel->vAddObject((Object *)m_pIdxVec);
 
-  m_oParcel.vAddObject((Object *)m_pTablePtnVec);
+  m_pParcel->vAddObject((Object *)m_pTablePtnVec);
 
-  return m_oParcel.nObjects();
+  return m_pParcel->nObjects();
 }
 
 Object* Table::pGetParcelObject(i8 iIdx)
 {
-  return m_oParcel.pGetObject(iIdx);
+  if (!m_pParcel) return nullptr;
+
+  return m_pParcel->pGetObject(iIdx);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -856,10 +856,11 @@ i8 Table::iBuildParcelObjs(Object* pObj)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 
   // Let's make this prototype code to test out
+  if (!m_pParcel) return 0;
 
-  m_oParcel.vAddObject(pObj);
+  m_pParcel->vAddObject(pObj);
 
-  return m_oParcel.nObjects();
+  return m_pParcel->nObjects();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -872,11 +873,13 @@ i8 Table::iBuildParcel(Parcel* pParcel)
 
   // Let's make this prototype code to test out
 
+  if (!m_pParcel) return 0;
+
   i8 nObjects = pParcel->nObjects();
   for (i8 i_Obj=0; i_Obj < nObjects; i_Obj++)
-    m_oParcel.vAddObject(pParcel->pGetObject(i_Obj));
+    m_pParcel->vAddObject(pParcel->pGetObject(i_Obj));
 
-  return m_oParcel.nObjects();
+  return m_pParcel->nObjects();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -885,10 +888,11 @@ i8 Table::iBuildParcel(Parcel* pParcel)
 /*----------------------------------------------------------------------------*/
 i8  Table::iReassembleObj(void)
 {
-  i8 nSize = m_oParcel.nObjects();
+  if (!m_pParcel) return 0;
+  i8 nSize = m_pParcel->nObjects();
 
   for (i8 i_Obj=0; i_Obj< nSize; i_Obj++) {
-    Object* pObject =  m_oParcel.pGetObject(i_Obj);
+    Object* pObject =  m_pParcel->pGetObject(i_Obj);
     eCN eClass = pObject->eGetClassNo();
 
     switch (eClass) {
@@ -926,7 +930,7 @@ i8  Table::iReassembleObj(void)
     }
   }
 
-  return 0;
+  return nSize;
 }
 
 

@@ -405,9 +405,19 @@ void Parcel::vSendToAllNodes(Operand* pOperand,
   // get the next stage
   Stage* pNextStage = pPipeline->pGet(i_NextStage);
   RASSERT(pNextStage);
-    
+
+  /* we can't use zero-based anymore
   for (i8 iDstNode = 0; iDstNode < pNextStage->nItems(); iDstNode++)
     vSendAsParcel(pOperand,pSrcOp,iDstNode,C_UNKNOWN);
+   */
+
+  i8 iNodeNo = 0;
+  for (i8 iDstNode = 0; iDstNode < pNextStage->nItems(); iDstNode++) {
+    iNodeNo = AM::iGetNodeNo(iDstNode);
+    vSendAsParcel(pOperand,pSrcOp,iNodeNo,C_UNKNOWN);
+  }
+
+
 }
 
 /*----------------------------------------------------------------------------*/

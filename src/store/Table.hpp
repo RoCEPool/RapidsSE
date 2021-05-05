@@ -26,7 +26,7 @@ namespace STORE
     
     TablePtnVec*  m_pTablePtnVec; // table partition vector
 
-    Parcel m_oParcel;
+    Parcel* m_pParcel;
 
     // must be last
     Footer m_xFooter;
@@ -87,9 +87,9 @@ namespace STORE
 
 
     i8   iPrepareParcel(void);
-    Parcel oParcel(void) { return m_oParcel;}
-    Parcel* pParcel(void) { return &m_oParcel;}
-    i8   nParcelObjects(void) {return m_oParcel.nObjects();}
+
+    Parcel* pParcel(void) { return m_pParcel;}
+    i8   nParcelObjects(void) {return m_pParcel ? m_pParcel->nObjects() : 0;}
     Object* pGetParcelObject(i8 iIdx);
 
     //std::vector<Object*> aObjParts(void) { return m_aObjParts;};

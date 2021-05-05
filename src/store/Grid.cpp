@@ -362,7 +362,7 @@ void Grid::vIncConnectedNodes(void)
 
   //pPtnMap->vDumpDataBuffers(); // debug dump
   pPtnMap->vAdjustDataBuffers(AM::nConnectedNodes(),AM::nDegOfPar());
-  //pPtnMap->vDumpDataBuffers();
+  pPtnMap->vDumpDataBuffers();
 
 }
 

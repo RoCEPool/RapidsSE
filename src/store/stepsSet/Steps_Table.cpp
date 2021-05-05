@@ -519,7 +519,7 @@ void Step::vTableNew(void) {
 
   // SAME NODE TESTING ////////////////////// SAME NODE TESTING //////////////////////////////
 #ifndef JUNK
-  if (sTableNm.bSame("bolTbl"_Stz)) {
+  if (sTableNm.bSame("bolTbl123"_Stz)) {
     pTable->iPrepareParcel();
 
     s32 sTableName;

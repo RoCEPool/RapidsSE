@@ -214,6 +214,8 @@ void vHeartInit(void) {
           AM::vAddNewNode(xHeartbeat.m_iNodeNo, (Stz *) xHeartbeat.m_acNodeName, (Stz *) xHeartbeat.m_acAddr,
                           xHeartbeat.m_iPort);
           vTrace("Node %s has been added\n"_Stz, xHeartbeat.m_acNodeName);
+        } else {
+          vTrace("Heartbeat message came from an older version of SE %ld"_Stz, xHeartbeat.m_u2Version);
         }
       }
     }
