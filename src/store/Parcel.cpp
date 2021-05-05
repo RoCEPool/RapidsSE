@@ -55,39 +55,6 @@ Parcel::Parcel(Operand* pOperand,
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Parcel::Parcel(Operand* pOperand,
-               i8 iPipelineJobId,
-               i8 iDstNode,
-               ePX eCrossTopo,
-               i8 iNextStage,
-               i8 iNextOp,
-               tPN tPtnNo)
-: Object(CN_PARCEL)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
-  
-  m_iPipelineJobId = iPipelineJobId;
-  m_iDstNode       = iDstNode;
-  m_tPtnNo         = tPtnNo;
-  
-  m_eCrossTopo     = eCrossTopo;
-  m_iNextStage     = iNextStage;
-  m_iNextOp        = iNextOp;
-  
-  m_nObjects = 0;
-  for (i8 i_Obj = 0; i_Obj < C_MAX_PARCEL_OBJ; i_Obj++)
-    m_pObjects[i_Obj] = nullptr;
-  
-  vSetOperand(pOperand);
-
-  _checkInitialised_(CN_PARCEL);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Parcel::~Parcel(void) noexcept(false)

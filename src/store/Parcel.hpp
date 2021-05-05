@@ -37,14 +37,7 @@ namespace STORE
            i8       iDstNode,
            tPN      tPtnNo);
   
-    Parcel(Operand* pOperand,
-           i8 iPipelineJobId,
-           i8 iDstNode,
-           ePX eCrossTopo,
-           i8 iNextStage,
-           i8 iNextOp,
-           tPN tPtnNo);
-    ~Parcel(void) noexcept(false);
+   ~Parcel(void) noexcept(false);
         
     static void vSendOut(Parcel* pParcel, Operand* pOperand, Op* pOp);
 
