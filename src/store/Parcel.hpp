@@ -57,17 +57,17 @@ namespace STORE
   
   private:
   
-    static void vSendAsParcel(Parcel* pParcel, Operand* pOperand,
-                              Op* pSrcOp, i8 iDstNode, tPN tPtnNo);
+    void vSendAsParcel(Operand* pOperand,
+                       Op* pSrcOp, i8 iDstNode, tPN tPtnNo);
 
 
-    static void vSendToAllNodes(Parcel* pParcel, Operand* pOperand,
+    void vSendToAllNodes(Operand* pOperand,
                                 Op* pSrcOp);
   
-    static void vSendToAllOriginPartitions(Parcel* pParcel, Operand* pOperand,
+    void vSendToAllOriginPartitions(Operand* pOperand,
                                            Op* pSrcOp, eXK eSendKind);
   
-    static void vSendToAllPartitions(Parcel* pParcel, Operand* pOperand,
+    void vSendToAllPartitions(Operand* pOperand,
                                      Op* pSrcOp, eXK eSendKind);
   
     static void vSendToNode(Parcel* pParcel, Operand* pOperand,
