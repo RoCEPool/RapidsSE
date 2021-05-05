@@ -208,7 +208,6 @@ eEC ExprEval::eAddDate(Stz* szAsmBuffer, Token* pTkn, Column* pColumnExpr) {
 
   m_xTypeStack.vPush(DM_DTE);
   StrLib::vSprintCat(szAsmBuffer, "  EO_DATE \"%s\"\n"_Stz, pTkn->szChars());
-  //pColumnExpr->vSet("NONE"_Stz, CT_DATE, 0, 0);
 
   return EC_NONE;
 }
@@ -835,9 +834,27 @@ void ExprEval::vAddString(Stz* szAsmBuffer, Token* pTkn, Column* pColumnExpr) {
 
   char* szToken = (char*)pTkn->szChars();
 
-  m_xTypeStack.vPush((i8)DM_VCH);
-  StrLib::vSprintCat(szAsmBuffer, "  EO_STR_LITERAL %s\n"_Stz, szToken);
-  //pColumnExpr->vSet("NONE"_Stz, CT_VARCHAR, 128, 0);    // ALKA: come back to this
+  switch (pColumnExpr->eColumnType()) {
+    case CT_DATE:
+      m_xTypeStack.vPush((i8)DM_DTE);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DATE \"%s\"\n"_Stz, szToken);
+      break;
+    case CT_TIME:
+      m_xTypeStack.vPush((i8)DM_TME);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_TIME \"%s\"\n"_Stz, szToken);
+      break;
+    case CT_TIMESTAMP:
+      m_xTypeStack.vPush((i8)DM_TSP);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_TIMESTAMP \"%s\"\n"_Stz, szToken);
+      break;
+    case CT_VARCHAR:
+      m_xTypeStack.vPush((i8)DM_VCH);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_STRING \"%s\"\n"_Stz, szToken);
+      break;
+    default:
+      NEVER_REACH;
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/

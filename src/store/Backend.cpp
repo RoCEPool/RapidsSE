@@ -43,8 +43,16 @@
 #include "ColumnRef.hpp"
 #include "Expr.hpp"
 #include "FilterOp.hpp"
+
 #include "BooleanLiteral.hpp"
+#include "DateLiteral.hpp"
+#include "FloatLiteral.hpp"
 #include "IntegerLiteral.hpp"
+#include "NullLiteral.hpp"
+#include "StringLiteral.hpp"
+#include "TimeLiteral.hpp"
+#include "TimestampLiteral.hpp"
+
 #include "Literal.hpp"
 #include "ProjectedColumn.hpp"
 #include "ProjectOp.hpp"
@@ -72,6 +80,10 @@
 #include "MultiplicationExpr.hpp"
 #include "NegationExpr.hpp"
 #include "SubtractionExpr.hpp"
+
+#include "SP_Dte.hpp"
+#include "SP_Tme.hpp"
+#include "SP_Tsp.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -729,13 +741,41 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
 
   if (LiteralExpr::bIsOfType(pOrdinalExpr)) {
 
+    if (BooleanLiteral::bIsOfType(pOrdinalExpr)) {
+      sPipeline->vCatSprint(" %lld "_Stz, BooleanLiteral::bValue(pOrdinalExpr));
+    }
+
+    if (DateLiteral::bIsOfType(pOrdinalExpr)) {
+      SP_Dte spDte;
+      sPipeline->vCatSprint(" '%s' "_Stz, (char*)spDte.sz(DateLiteral::xValue(pOrdinalExpr)));
+    }
+
+    if (FloatLiteral::bIsOfType(pOrdinalExpr)) {
+      sPipeline->vCatSprint(" %g "_Stz, FloatLiteral::dValue(pOrdinalExpr));
+    }
+
     if (IntegerLiteral::bIsOfType(pOrdinalExpr)) {
       sPipeline->vCatSprint(" %lld "_Stz, IntegerLiteral::iValue(pOrdinalExpr));
     }
 
-    if (BooleanLiteral::bIsOfType(pOrdinalExpr)) {
-      sPipeline->vCatSprint(" %lld "_Stz, BooleanLiteral::bValue(pOrdinalExpr));
+    if (NullLiteral::bIsOfType(pOrdinalExpr)) {
+      sPipeline->vCatSprint(" null "_Stz);
     }
+
+    if (StringLiteral::bIsOfType(pOrdinalExpr)) {
+      sPipeline->vCatSprint(" '%s' "_Stz, StringLiteral::szValue(pOrdinalExpr));
+    }
+
+    if (TimeLiteral::bIsOfType(pOrdinalExpr)) {
+      SP_Tme spTme;
+      sPipeline->vCatSprint(" '%s' "_Stz, (char*)spTme.sz(TimeLiteral::xValue(pOrdinalExpr)));
+    }
+
+    if (TimestampLiteral::bIsOfType(pOrdinalExpr)) {
+      SP_Tsp spTsp;
+      sPipeline->vCatSprint(" '%s' "_Stz, (char*)spTsp.sz(TimestampLiteral::xValue(pOrdinalExpr)));
+    }
+
     return GraphNav::WALK_CONTINUE;
   }
 

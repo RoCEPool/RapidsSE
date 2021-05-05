@@ -12,6 +12,8 @@ enum eEA // expression argument
   /*    */ EA_LABEL,
   /*    */ EA_STRING,
   /*    */ EA_SUBSCR,
+  /*    */ EA_TIME,
+  /*    */ EA_TIMESTAMP,
 
   /*    */ EA_ENUMS
 };
@@ -27,6 +29,8 @@ static Stz* aEA[]
   /*  0 */ "EA_LABEL"_Stz,
   /*  0 */ "EA_STRING"_Stz,
   /*  0 */ "EA_SUBSCR"_Stz,
+  /*  0 */ "EA_TIME"_Stz,
+  /*  0 */ "EA_TIMESTAMP"_Stz,
 
   /*    */ "EA_ENUMS"_Stz
 };
