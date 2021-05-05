@@ -33,9 +33,11 @@ namespace STORE
     void  operator delete(void*);
   
     Parcel(Operand* pOperand,
-           Op*      pSrcOp,
+           i8       iPipelineJobId,
            i8       iDstNode,
-           tPN      tPtnNo);
+           tPN      tPtnNo,
+           ePX      eCrossTopo
+           );
   
    ~Parcel(void) noexcept(false);
         
@@ -54,8 +56,6 @@ namespace STORE
   
   
   private:
-
-    static void vSendAsParcel(Parcel* pParcel, Op* pSrcOp);
   
     static void vSendAsParcel(Parcel* pParcel, Operand* pOperand,
                               Op* pSrcOp, i8 iDstNode, tPN tPtnNo);
