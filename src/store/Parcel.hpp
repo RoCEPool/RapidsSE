@@ -50,7 +50,7 @@ namespace STORE
     i8 nObjects(void) { return m_nObjects;};
     Object* pGetObject(i8 iIdx);
     Operand* pGetOperand(void);
-    void vSendOut(Operand* pOperand, Op* pSrcOp);
+    void vSendOut(Op* pSrcOp);
     void vSetOperand(Operand *pOperand);
   
   

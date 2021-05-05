@@ -106,7 +106,7 @@ Operand* Parcel::pGetOperand(void)
 /*----------------------------------------------------------------------------*/
 /* send out operand as parcel                                                 */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendOut(Operand* pOperand, Op* pSrcOp)
+void Parcel::vSendOut(Op* pSrcOp)
 {
   _static_
   
@@ -119,6 +119,8 @@ void Parcel::vSendOut(Operand* pOperand, Op* pSrcOp)
   
   // figure out the send kind
   eXK eSendKind = pSrcOp->eSendKind();
+  
+  Operand* pOperand = pGetOperand();
   
   // is the operand is a marker or a streamDef ?
   if (pOperand->bIsMarker() || pOperand->bIsStreamDef())
@@ -173,7 +175,7 @@ void Parcel::vSendOut(Operand* pOperand, Op* pSrcOp)
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS: {
-      if (pOperand->bIsBuffer())
+      if (pGetOperand()->bIsBuffer())
         vSendToPartition(pSrcOp,eSendKind,tPtn);
       else
         vSendToAllPartitions(pSrcOp,eSendKind);

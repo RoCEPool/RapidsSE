@@ -99,7 +99,7 @@ void Step::vParcelSendOut(void)
                                pSrcOp->eCrossTopo());
 
 
-  pParcel->vSendOut(pOperand,pSrcOp);
+  pParcel->vSendOut(pSrcOp);
 
   delete pParcel;
 
