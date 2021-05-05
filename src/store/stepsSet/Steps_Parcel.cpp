@@ -54,7 +54,7 @@ void Step::vParcelOperandStore(void)
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
   
-  pParcel->vSetOperand(pOperand);
+  pParcel->vAddObject(pOperand);
   
   EXIT();
 }

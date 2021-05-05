@@ -45,7 +45,7 @@ Parcel::Parcel(Operand* pOperand,
   for (i8 i_Obj = 0; i_Obj < C_MAX_PARCEL_OBJ; i_Obj++)
     m_pObjects[i_Obj] = nullptr;
 
-  vSetOperand(pOperand);
+  vAddObject(pOperand);
   m_iPipelineJobId = iPipelineJobId;
   m_eCrossTopo     = eCrossTopo;
   m_eSendKind      = XK_NONE;
@@ -99,13 +99,23 @@ Object* Parcel::pGetObject(i8 i_Object)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Get Operand                                                                */
+/* get Operand                                                                */
 /*----------------------------------------------------------------------------*/
 Operand* Parcel::pGetOperand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
   return (Operand*) m_pObjects[0];
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of objects in the parcel                                        */
+/*----------------------------------------------------------------------------*/
+i8 Parcel::nObjects(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+
+  return m_nObjects;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -202,16 +212,6 @@ void Parcel::vSendOut(Op* pSrcOp)
   AM::vDeleteOperand(pOperand);
 }
 
-/*----------------------------------------------------------------------------*/
-/* Set Operand                                                                */
-/*----------------------------------------------------------------------------*/
-void Parcel::vSetOperand(Operand *pOperand)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
-
-  m_pObjects[0] = pOperand;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Private Functions -------------------------------------------------------*/
@@ -227,6 +227,8 @@ void Parcel::vSendOverSocket(void)
   Node* pSendNode = AM::pGrid()->pGetNode(m_iDstNode);
   Socket* pSocket = pSendNode->pSendSocket();
 
+  RASSERT(1 == nObjects());
+  
   pSocket->vGrabWrite();
   
   Parcel* pParcel = this;

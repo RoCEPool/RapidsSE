@@ -1571,14 +1571,6 @@ Operand* AM::pDuplicateOperand(Operand* pOperand)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set operand in operand job                                                 */
-/*----------------------------------------------------------------------------*/
-void AM::vSetOperand(Parcel* pParcel, Operand* pOperand)
-{
-  pParcel->vSetOperand(pOperand);
-}
-
-/*----------------------------------------------------------------------------*/
 /* new a universal job for op                                                 */
 /*----------------------------------------------------------------------------*/
 Job* AM::pNewJobOp(Op* pOp, ReqTuple* pReqTuple)

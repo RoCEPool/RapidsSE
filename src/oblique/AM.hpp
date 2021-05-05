@@ -495,7 +495,6 @@ namespace OBLIQUE
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static Session* pSessionGet(ReqTuple* aReqTuple);
-    static void vSetOperand(Parcel* pParcel, Operand* pOperand);
     
     static bool bSpawnJob_connector(Job* pJob);
     static bool bSpawnJob_session(Job* pJob);

@@ -43,41 +43,23 @@ namespace STORE
   
    ~Parcel(void) noexcept(false);
         
-
   public:
-    void vShow(void);
-
-
     void vAddObject(Object *pObj);
-    i8 nObjects(void) { return m_nObjects;};
     Object* pGetObject(i8 iIdx);
+    i8 nObjects(void);
     Operand* pGetOperand(void);
     void vSendOut(Op* pSrcOp);
-    void vSetOperand(Operand *pOperand);
-  
-  
   
   private:
-  
     void vSendOverSocket(void);
-  
     void vSendParcel(Op* pSrcOp, i8 iDstNode, tPN tDstPtn);
-
-
     void vSendToAllNodes(Op* pSrcOp);
-  
     void vSendToAllOriginPartitions(Op* pSrcOp);
-  
     void vSendToAllPartitions(Op* pSrcOp);
-  
     void vSendToNode(Op* pSrcOp, i8 iDstNode);
-  
     void vSendToOrigin(Op* pSrcOp);
-  
     void vSendToPartition(Op* pSrcOp, tPN tDstPtn);
   
-
-
   public:
     Footer* aFooter(void);
   
