@@ -70,13 +70,13 @@ namespace STORE
     void vSendToAllPartitions(Operand* pOperand,
                                      Op* pSrcOp, eXK eSendKind);
   
-    static void vSendToNode(Parcel* pParcel, Operand* pOperand,
+    void vSendToNode(Operand* pOperand,
                             Op* pSrcOp, i8 iDstNode);
   
-    static void vSendToOrigin(Parcel* pParcel, Operand* pOperand,
+    void vSendToOrigin(Operand* pOperand,
                               Op* pSrcOp);
   
-    static void vSendToPartition(Parcel* pParcel, Operand* pOperand,
+    void vSendToPartition(Operand* pOperand,
                                  Op* pSrcOp, eXK eSendKind, tPN tPtnNo);
 
   public:
