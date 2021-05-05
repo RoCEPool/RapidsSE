@@ -1298,29 +1298,6 @@ void AM::vWriteLog(void) {
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* send parcel to given node                                                  */
-/*----------------------------------------------------------------------------*/
-void AM::vSendParcel(Parcel* pParcel)
-{
-  SysCall oSysCall;
-    
-  // get the send node in the task
-  Node* pSendNode = AM::pGrid()->pGetNode(pParcel->m_iDstNode);
-  Socket* pSocket = pSendNode->pSendSocket();
-
-  pSocket->vGrabWrite();
-  
-  i8 nObjectSize = gxaSizeHeap[pParcel->eGetClassNo()].m_nClassSize;
-  bool bResult = pSocket->bSendTo(pParcel, nObjectSize, oSysCall);
-  
-  Operand* pOperand = pParcel->pGetOperand();
-  nObjectSize = gxaSizeHeap[pOperand->eGetClassNo()].m_nClassSize;
-  bResult = pSocket->bSendTo(pOperand, nObjectSize, oSysCall);
-  
-  pSocket->vDropWrite();
-}
-
-/*----------------------------------------------------------------------------*/
 /* get pSession given i_Session                                               */
 /*----------------------------------------------------------------------------*/
 Session* AM::pSessionGet(ReqTuple* aReqTuple)
@@ -1613,14 +1590,6 @@ Operand* AM::pDuplicateOperand(Operand* pOperand)
     return pNewStreamDef;
   }
   
-}
-
-/*----------------------------------------------------------------------------*/
-/* set operand in operand job                                                 */
-/*----------------------------------------------------------------------------*/
-void AM::vSetOperand(Parcel* pParcel, Operand* pOperand)
-{
-  pParcel->vSetOperand(pOperand);
 }
 
 /*----------------------------------------------------------------------------*/

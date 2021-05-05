@@ -13,25 +13,30 @@
 
 i8 C_D8_MIN_VALUE = DBL_MIN + DBL_EPSILON;
 
-static i8 iMathOp_MaxValue[DM_ENUMS] =
-  //  NONE       BCD           BOL             DTE         FLT           INT                    IVL           IVY,          TME      TSP      VCH      UNK
-    { C_UNKNOWN, (i8)DBL_MAX, C_UNKNOWN/*X*/, C_UNKNOWN,  (i8)DBL_MAX, LLONG_MAX, C_UNKNOWN/*X*/, C_UNKNOWN/*X*/, C_UNKNOWN, C_UNKNOWN, C_UNKNOWN, C_UNKNOWN/*X*/ };
-
-static i8 iMathOp_MinValue[DM_ENUMS] =
-    //  NONE     BCD                 BOL             DTE         FLT          INT                    IVL           IVY,          TME      TSP      VCH      UNK
-    { C_UNKNOWN, (i8)C_D8_MIN_VALUE, C_UNKNOWN/*X*/, C_UNKNOWN,  (i8)DBL_MAX, LLONG_MIN, C_UNKNOWN/*X*/, C_UNKNOWN/*X*/, C_UNKNOWN, C_UNKNOWN, C_UNKNOWN, C_UNKNOWN/*X*/ };
-
 static eDM eMathOp_AvgResult[DM_ENUMS] =
- //   NONE     BCD     BOL      DTE      FLT     INT     IVL           IVY           TME           TSP      VCH      UNK
+    //   NONE     BCD     BOL      DTE      FLT     INT     IVL           IVY           TME           TSP      VCH      UNK
     { DM_NONE, DM_BCD, DM_NONE, DM_NONE, DM_FLT, DM_BCD, DM_NONE/*X*/, DM_NONE/*X*/, DM_NONE/*X*/, DM_NONE, DM_NONE, DM_NONE };
 
+
+
+
+static i8 iMathOp_MaxValue[DM_ENUMS] =
+  //  NONE       BCD           BOL            DTE         FLT          INT        IVL             IVY,            TME        TSP        VCH        UNK
+    { C_UNKNOWN, (i8)DBL_MAX, C_UNKNOWN/*X*/, C_UNKNOWN,  (i8)DBL_MAX, LLONG_MAX, C_UNKNOWN/*X*/, C_UNKNOWN/*X*/, C_UNKNOWN, C_UNKNOWN, C_UNKNOWN, C_UNKNOWN/*X*/ };
+
 static eDM eMathOp_MaxResult[DM_ENUMS] =
-  //  NONE     BCD     BOL      DTE     FLT     INT     IVL           IVY       TME     TSP     VCH     UNK
+    //  NONE     BCD     BOL      DTE     FLT     INT     IVL           IVY       TME     TSP     VCH     UNK
     { DM_NONE, DM_BCD, DM_NONE, DM_DTE, DM_FLT, DM_INT, DM_NONE/*X*/, DM_NONE/*X*/, DM_TME, DM_TSP, DM_VCH, DM_NONE };
 
 static eEO eMathOp_MaxCode[DM_ENUMS] =
     //  NONE     BCD           BOL           DTE           FLT           INT           IVL           IVY       TME           TSP           VCH           UNK
     { EO_NONE, EO_GT_BCDBCD, EO_NONE/*X*/, EO_GT_DTEDTE, EO_GT_FLTFLT, EO_GT_INTINT, EO_NONE/*X*/, EO_NONE/*X*/,EO_GT_TMETME, EO_GT_TSPTSP, EO_GT_VCHVCH, EO_NONE/*X*/ };
+
+
+
+static i8 iMathOp_MinValue[DM_ENUMS] =
+    //  NONE     BCD                 BOL             DTE         FLT          INT        IVL             IVY,            TME        TSP        VCH        UNK
+    { C_UNKNOWN, (i8)C_D8_MIN_VALUE, C_UNKNOWN/*X*/, C_UNKNOWN,  (i8)DBL_MAX, LLONG_MIN, C_UNKNOWN/*X*/, C_UNKNOWN/*X*/, C_UNKNOWN, C_UNKNOWN, C_UNKNOWN, C_UNKNOWN/*X*/ };
 
 static eDM eMathOp_MinResult[DM_ENUMS] =
   //  NONE     BCD     BOL           DTE      FLT    INT     IVL           IVY          TME     TSP     VCH     UNK
@@ -40,6 +45,9 @@ static eDM eMathOp_MinResult[DM_ENUMS] =
 static eEO eMathOp_MinCode[DM_ENUMS] =
   //  NONE     BCD           BOL           DTE           FLT           INT           IVL           IVY       TME           TSP           VCH           UNK
     { EO_NONE, EO_LT_BCDBCD, EO_NONE/*X*/, EO_LT_DTEDTE, EO_LT_FLTFLT, EO_LT_INTINT, EO_NONE/*X*/, EO_NONE/*X*/,EO_LT_TMETME, EO_LT_TSPTSP, EO_LT_VCHVCH, EO_NONE/*X*/ };
+
+
+
 
 static eDM eMathOp_SumResult[DM_ENUMS] =
     //   NONE     BCD     BOL      DTE      FLT     INT     IVL           IVY          TME      TSP      VCH      UNK
@@ -55,7 +63,7 @@ static eEO eMathOp_SumCode[DM_ENUMS] =
 static eDM eMathOp_CmpResult[DM_ENUMS][DM_ENUMS] = {
            //   NONE     BCD       BOL       DTE           FLT         INT           IVL         IVY,      TME          TSP            VCH      UNK
 /*  0 NONE */ { DM_NONE, DM_NONE,  DM_NONE,  DM_NONE,      DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE,  DM_NONE,      DM_NONE,    DM_NONE, DM_NONE    },
-/*  1 BCD  */ { DM_NONE, DM_BOL,   DM_BOL,   DM_NONE,      DM_BOL,     DM_BOL,       DM_NONE,    DM_NONE,  DM_NONE,      DM_NONE,    DM_NONE, DM_BOL    },
+/*  1 BCD  */ { DM_NONE, DM_BOL,   DM_NONE,  DM_NONE,      DM_BOL,     DM_BOL,       DM_NONE,    DM_NONE,  DM_NONE,      DM_NONE,    DM_NONE, DM_BOL    },
 /*  2 BOL  */ { DM_NONE, DM_NONE,  DM_NONE,  DM_NONE,      DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE,  DM_NONE,      DM_NONE,    DM_NONE, DM_BOL     },
 /*  3 DTE  */ { DM_NONE, DM_NONE,  DM_NONE,  DM_BOL,       DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE,  DM_NONE,      DM_BOL,     DM_NONE, DM_BOL    },
 /*  4 FLT  */ { DM_NONE, DM_BOL,   DM_NONE,  DM_NONE,      DM_BOL,     DM_BOL,       DM_NONE,    DM_NONE,  DM_NONE,      DM_NONE,    DM_NONE, DM_BOL    },
@@ -184,7 +192,7 @@ static eDM eMathOp_AddResult[DM_ENUMS][DM_ENUMS] = {
 /*  7 TME  */ { DM_NONE, DM_NONE,  DM_NONE,  DM_NONE/*?*/, DM_NONE,    DM_NONE/*?*/, DM_TME,     DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_NONE    },
 /*  8 TSP  */ { DM_NONE, DM_NONE,  DM_NONE,  DM_NONE,      DM_NONE,    DM_NONE,      DM_TSP,     DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_NONE    },
 /*  9 VCH  */ { DM_NONE, DM_NONE,  DM_NONE,  DM_NONE,      DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_NONE    },
-/* 10 UNK  */ { DM_NONE, DM_NONE,  DM_UNK,   DM_NONE,      DM_UNK,     DM_UNK,       DM_UNK,     DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_NONE    }
+/* 10 UNK  */ { DM_NONE, DM_UNK,   DM_UNK,   DM_NONE,      DM_UNK,     DM_UNK,       DM_UNK,     DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_NONE    }
 };
 
 static eEO eMathOp_AddCode[DM_ENUMS][DM_ENUMS] = {
@@ -422,7 +430,7 @@ static eDM eMathOp_OrResult[DM_ENUMS][DM_ENUMS] = {
            //   NONE     BCD       BOL       DTE           FLT         INT           IVL         IVY           TME          TSP            VCH      UNK
 /*  0 NONE */ { DM_NONE, DM_NONE,  DM_NONE,  DM_NONE,      DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_NONE    },
 /*  1 BCD  */ { DM_NONE, DM_NONE,  DM_NONE,  DM_NONE,      DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_NONE    },
-/*  2 BOL  */ { DM_NONE, DM_BOL,   DM_NONE,  DM_NONE,      DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_BOL     },
+/*  2 BOL  */ { DM_NONE, DM_NONE,  DM_BOL,   DM_NONE,      DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_BOL     },
 /*  3 DTE  */ { DM_NONE, DM_NONE,  DM_NONE,  DM_NONE,      DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_NONE    },
 /*  4 FLT  */ { DM_NONE, DM_NONE,  DM_NONE,  DM_NONE,      DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_NONE    },
 /*  5 INT  */ { DM_NONE, DM_NONE,  DM_NONE,  DM_NONE,      DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_NONE    },
@@ -455,10 +463,10 @@ static eEO eMathOp_OrCode[DM_ENUMS][DM_ENUMS] = {
 // XOR
 
 static eDM eMathOp_XorResult[DM_ENUMS][DM_ENUMS] = {
-           //   NONE     BCD       BOL       DTE           FLT         INT           IVL         IVY         ME           TSP         VCH      UNK
+           //   NONE     BCD       BOL       DTE           FLT         INT           IVL         IVY         TME           TSP         VCH      UNK
 /*  0 NONE */ { DM_NONE, DM_NONE,  DM_NONE,  DM_NONE,      DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_NONE    },
 /*  1 BCD  */ { DM_NONE, DM_NONE,  DM_NONE,  DM_NONE,      DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_NONE    },
-/*  2 BOL  */ { DM_NONE, DM_BOL,   DM_NONE,  DM_NONE,      DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_BOL     },
+/*  2 BOL  */ { DM_NONE, DM_NONE,  DM_BOL,   DM_NONE,      DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_BOL     },
 /*  3 DTE  */ { DM_NONE, DM_NONE,  DM_NONE,  DM_NONE,      DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_NONE    },
 /*  4 FLT  */ { DM_NONE, DM_NONE,  DM_NONE,  DM_NONE,      DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_NONE    },
 /*  5 INT  */ { DM_NONE, DM_NONE,  DM_NONE,  DM_NONE,      DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_NONE    },

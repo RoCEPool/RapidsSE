@@ -23,29 +23,28 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Parcel(void)
 {
-  vAddStep("parcel.operand!"_Stz,   &Step::vParcelOperandStore);
+  vAddStep("parcel::delete"_Stz,    &Step::vParcelDelete);
+  
   vAddStep("parcel.pipeOut"_Stz,    &Step::vParcelPipeOut);
   vAddStep("parcel.sendOut"_Stz,    &Step::vParcelSendOut);
 }
 
 /*----------------------------------------------------------------------------*/
-/* Parcel.operand! -- store operand in the sendOperand                        */
+/* parcel::delete -- delete parcel                                            */
 /*----------------------------------------------------------------------------*/
-void Step::vParcelOperandStore(void)
+void Step::vParcelDelete(void)
 {
   ENTRY();
-  
+    
   Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
   
-  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
-  
-  pParcel->vSetOperand(pOperand);
-  
+  delete pParcel;
+
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Parcel.pipeOut -- pipe out the operand                                     */
+/* parcel.pipeOut -- pipe out parcel out to next operator in pipeline         */
 /*----------------------------------------------------------------------------*/
 void Step::vParcelPipeOut(void)
 {
@@ -79,29 +78,17 @@ void Step::vParcelPipeOut(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Parcel.sendOut -- send parcel out to next operator in pipeline             */
+/* parcel.sendOut -- send parcel out to next operator in pipeline             */
 /*----------------------------------------------------------------------------*/
 void Step::vParcelSendOut(void)
 {
   ENTRY();
+    
+  Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
   
   Op* pSrcOp = m_pJob->m_pOp;
-  
-  Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
-  RASSERT(! pParcel);
-  
-  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
-  
-  pParcel = new Parcel(pOperand,
-                               pSrcOp->pPipelineJob()->iJobId(),
-                               C_UNKNOWN,
-                               C_UNKNOWN,
-                               pSrcOp->eCrossTopo());
-
 
   pParcel->vSendOut(pSrcOp);
-
-  delete pParcel;
 
   EXIT();
 }

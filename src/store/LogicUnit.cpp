@@ -46,7 +46,8 @@
 #include "SP_Ent.hpp"
 
 #include "SN_Dte.hpp"
-
+#include "SN_Tme.hpp"
+#include "SN_Tsp.hpp"
 
 
 extern EoArg EoArgs[];
@@ -736,7 +737,7 @@ void LogicUnit::vAddCodeArg(eEO eCode,Token* pTkn)
 /*----------------------------------------------------------------------------*/
 /* add code with date argument                                                */
 /*----------------------------------------------------------------------------*/
-void LogicUnit::vAddCodeArg(eEO eCode, Stz* szLiteral)
+void LogicUnit::vAddCodeDte(eEO eCode, Stz* szLiteral)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
@@ -847,6 +848,60 @@ void LogicUnit::vAddCodeString(eEO eCode, Stz* szString)
     m_eaCode[m_i_Code++] = (eEO)*acChr;
   m_eaCode[m_i_Code++] = (eEO)0;
   
+  m_iNextCond = C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add code with time argument                                                */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vAddCodeTme(eEO eCode, Stz* szLiteral)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+
+  ASSERT(EA_TIME == EoArgs[eCode].m_eArgument);
+
+  if (m_bSuperFrag)
+    return;
+
+  if (0 == m_iNextCond) {
+    m_iNextCond = C_UNKNOWN;
+    return;
+  }
+
+  char* acCrs = szLiteral->azChar();
+
+  SN_Tme snTme;
+  i8 iTme = snTme.i(&acCrs,AM::pFmt());
+
+  vAddCodeArg(eCode,iTme);
+
+  m_iNextCond = C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add code with timestamp argument                                           */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vAddCodeTsp(eEO eCode, Stz* szLiteral)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+
+  ASSERT(EA_TIMESTAMP == EoArgs[eCode].m_eArgument);
+
+  if (m_bSuperFrag)
+    return;
+
+  if (0 == m_iNextCond) {
+    m_iNextCond = C_UNKNOWN;
+    return;
+  }
+
+  char* acCrs = szLiteral->azChar();
+
+  SN_Tsp snTsp;
+  i8 iTsp = snTsp.i(&acCrs,AM::pFmt());
+
+  vAddCodeArg(eCode,iTsp);
+
   m_iNextCond = C_UNKNOWN;
 }
 
@@ -1049,7 +1104,8 @@ void LogicUnit::vDumpCode(void)
       i_Code += 2 + StrLib::nSize(azArg);
     }
     else
-    if (EA_DATE == EoArgs[eCode].m_eArgument) {
+    if (
+        EA_DATE == EoArgs[eCode].m_eArgument) {
       i8* piArg = (i8*) & m_eaCode[i_Code+2];
       i8 iArg = * piArg;
       vTrace("%04lld: %20s (%lls)\n"_Stz,i_Code,aEO[eCode],spDate.sz(iArg));
@@ -1779,6 +1835,16 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vRlu_DUMP(pLU,aiDstk);
         break;//+endCase
 
+      case EO_TIME: ArgGet(iArg); // push time
+        dLU1(EO_TIME,iArg);
+        *(++aiDstk) = iArg;
+        break;//+endCase
+
+      case EO_TIMESTAMP: ArgGet(iArg); // push timestamp
+        dLU1(EO_TIMESTAMP,iArg);
+        *(++aiDstk) = iArg;
+        break;//+endCase
+
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // relational operators
 
@@ -2285,9 +2351,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         aiDstk -= (iTopA/8) + 2;
         break;//+endCase
         
-      case EO_STR_LITERAL: GetStr(iArg); // push address of string literal
-        dLU1(EO_STR_LITERAL,iArg);
-        *(++aiDstk) = (i8)iArg;
+      case EO_STR_LITERAL: { GetStr(iArg); // push address of string literal
+        dLU1(EO_STR_LITERAL, iArg);
+        Stz *sZ = (Stz *) iArg;
+        *(++aiDstk) = (i8) iArg;
+      }
         break;//+endCase
       
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

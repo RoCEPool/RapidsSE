@@ -1263,7 +1263,7 @@ public:
   void vRegPathRestore(void);
 
   // Parcel
-  void vParcelOperandStore(void);
+  void vParcelDelete(void);
   void vParcelPipeOut(void);
   void vParcelSendOut(void);
 

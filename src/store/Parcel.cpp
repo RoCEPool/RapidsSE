@@ -14,7 +14,11 @@
 #include "Stage.hpp"
 #include "Stream.hpp"
 #include "PtnMap.hpp"
+#include "Node.hpp"
 #include "Grid.hpp"
+#include "Socket.hpp"
+
+extern SizeHeap      gxaSizeHeap[];
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -41,7 +45,7 @@ Parcel::Parcel(Operand* pOperand,
   for (i8 i_Obj = 0; i_Obj < C_MAX_PARCEL_OBJ; i_Obj++)
     m_pObjects[i_Obj] = nullptr;
 
-  vSetOperand(pOperand);
+  vAddObject(pOperand);
   m_iPipelineJobId = iPipelineJobId;
   m_eCrossTopo     = eCrossTopo;
   m_eSendKind      = XK_NONE;
@@ -96,13 +100,23 @@ Object* Parcel::pGetObject(i8 i_Object)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Get Operand                                                                */
+/* get Operand                                                                */
 /*----------------------------------------------------------------------------*/
 Operand* Parcel::pGetOperand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
   return (Operand*) m_pObjects[0];
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of objects in the parcel                                        */
+/*----------------------------------------------------------------------------*/
+i8 Parcel::nObjects(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+
+  return m_nObjects;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -199,23 +213,46 @@ void Parcel::vSendOut(Op* pSrcOp)
   AM::vDeleteOperand(pOperand);
 }
 
-/*----------------------------------------------------------------------------*/
-/* Set Operand                                                                */
-/*----------------------------------------------------------------------------*/
-void Parcel::vSetOperand(Operand *pOperand)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
-  m_pObjects[0] = pOperand;
+/*----------------------------------------------------------------------------*/
+/*-- Private Functions -------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* send parcel (and its contents) out over socket                             */
+/*----------------------------------------------------------------------------*/
+void Parcel::vSendOverSocket(void)
+{
+  bool bResult;
+  i8 nObjectSize;
+  SysCall oSysCall;
+  Object* pObject;
+  Parcel* pParcel;
+  
+  // get preliminary information
+  Node* pDstNode = AM::pGrid()->pGetNode(m_iDstNode);
+  Socket* pSocket = pDstNode->pSendSocket();
+  i8 nObjects = this->nObjects();
+  
+  pSocket->vGrabWrite();
+  
+  // send the parcel instance
+  pParcel = this;
+  nObjectSize = gxaSizeHeap[pParcel->eGetClassNo()].m_nClassSize;
+  bResult = pSocket->bSendTo(pParcel, nObjectSize, oSysCall);
+  
+  // send all the objects within the parcel instance
+  for (i8 i_Object = 0; i_Object < nObjects; i_Object++) {
+    pObject = pParcel->pGetObject(i_Object);
+    nObjectSize = gxaSizeHeap[pObject->eGetClassNo()].m_nClassSize;
+    bResult = pSocket->bSendTo(pObject, nObjectSize, oSysCall);
+  }
+  
+  pSocket->vDropWrite();
 }
 
-
 /*----------------------------------------------------------------------------*/
-/*-- Private Static Functions ------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* send parcel                                                                */
+/* send parcel to given node,partition                                        */
 /*----------------------------------------------------------------------------*/
 void Parcel::vSendParcel(Op* pSrcOp, i8  iDstNode, tPN tDstPtn)
 {
@@ -227,7 +264,7 @@ void Parcel::vSendParcel(Op* pSrcOp, i8  iDstNode, tPN tDstPtn)
   m_iDstStage = pSrcOp->iNextStage();
   m_iDstOp    = pSrcOp->iNextOp();
   
-  AM::vSendParcel(this);
+  vSendOverSocket();
 
   // - - - - - - - - - - - - - - - -
   
@@ -239,7 +276,7 @@ void Parcel::vSendParcel(Op* pSrcOp, i8  iDstNode, tPN tDstPtn)
     m_iDstStage = i_OtherStage;
     m_iDstOp    = i_OtherOp;
 
-    AM::vSendParcel(this);
+    vSendOverSocket();
   }
 }
 
