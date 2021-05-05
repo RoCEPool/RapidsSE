@@ -85,13 +85,23 @@ void Step::vParcelSendOut(void)
 {
   ENTRY();
   
-  Op* pOp = m_pJob->m_pOp;
+  Op* pSrcOp = m_pJob->m_pOp;
   
   Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
+  RASSERT(! pParcel);
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+  
+  pParcel = new Parcel(pOperand,
+                               pSrcOp->pPipelineJob()->iJobId(),
+                               C_UNKNOWN,
+                               C_UNKNOWN,
+                               pSrcOp->eCrossTopo());
 
-  Parcel::vSendOut(pParcel,pOperand,pOp);
+
+  Parcel::vSendOut(pParcel,pOperand,pSrcOp);
+
+  delete pParcel;
 
   EXIT();
 }

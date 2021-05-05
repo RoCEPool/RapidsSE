@@ -219,7 +219,7 @@ void Parcel::vSetOperand(Operand *pOperand)
 /*----------------------------------------------------------------------------*/
 /* send the operand as a parcel                                               */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendAsParcel(Parcel* ,
+void Parcel::vSendAsParcel(Parcel*  pParcel,
                            Operand* pOperand,
                            Op*      pSrcOp,
                            i8       iDstNode,
@@ -227,11 +227,14 @@ void Parcel::vSendAsParcel(Parcel* ,
 {
   _static_
   
-  Parcel* pParcel = new Parcel(pOperand,
-                               pSrcOp->pPipelineJob()->iJobId(),
-                               iDstNode,
-                               tPtnNo,
-                               pSrcOp->eCrossTopo());
+//  Parcel* pParcel = new Parcel(pOperand,
+//                               pSrcOp->pPipelineJob()->iJobId(),
+//                               iDstNode,
+//                               tPtnNo,
+//                               pSrcOp->eCrossTopo());
+  
+  pParcel->m_iDstNode   = iDstNode;
+  pParcel->m_tPtnNo     = tPtnNo;
   
   pParcel->m_iNextStage = pSrcOp->iNextStage();
   pParcel->m_iNextOp    = pSrcOp->iNextOp();
@@ -252,7 +255,7 @@ void Parcel::vSendAsParcel(Parcel* ,
   
   // - - - - - - - - - - - - - - - -
 
-  delete pParcel;
+  //delete pParcel;
 }
 
 /*----------------------------------------------------------------------------*/
