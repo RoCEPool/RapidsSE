@@ -32,7 +32,10 @@ public:
     i8 m_iBcd;
     i8 m_iAsI8;
   };
-  
+
+  static i8 iMinValue(void)            { return C_I8_MIN; }
+  static i8 iMaxValue(void)             { return C_I8_MAX; }
+
   operator i8(void)                    { return m_iAsI8; }  // auto conversion
   
   void operator = (i8 iArg)            { m_iAsI8 = iArg; }  // assign from i8
@@ -55,7 +58,10 @@ public:
     i8 m_iBol;
     i8 m_iAsI8;
   };
-  
+
+  static i8 iMinValue(void)            { return false; }
+  static i8 iMaxValue(void)            { return true; }
+
   operator i8(void)                    { return m_iAsI8; }  // auto conversion
   
   void operator = (i8 iArg)            { m_iAsI8 = iArg; }  // assign from i8
@@ -63,7 +69,7 @@ public:
   void vSetMax(void)                    { m_iBol = true; }  // set max value
   void vSetMid(void)                    { m_iBol = true; }  // set mid value
   void vSetMin(void)                   { m_iBol = false; }  // set min value
-  void vSetNull(void)          { m_iAsI8 = C_DATUM_NULL; }  // set to be null
+  void vSetNull(void)                  { m_iAsI8 = C_DATUM_NULL; }  // set to be null
   void vSetUsual(void)                  { m_iBol = true; }  // set usual value
 
   bool bIsNull(void) { return (C_DATUM_NULL == m_iAsI8); }  // test for null
@@ -87,6 +93,9 @@ public:
     };
     i8 m_iAsI8;
   };
+
+  static i8 iMinValue(void)            { Dte dte; dte.vSetMin(); return dte.m_iAsI8; }
+  static i8 iMaxValue(void)            { Dte dte; dte.vSetMax(); return dte.m_iAsI8; }
 
   operator i8(void)                    { return m_iAsI8; }  // auto conversion
   
@@ -168,8 +177,10 @@ public:
     d8 m_dFlt;
     i8 m_iAsI8;
   };
-  
-  
+
+  static i8 iMinValue(void)            { Dte dte; dte.vSetMin(); return dte.m_iAsI8; }
+  static i8 iMaxValue(void)            { Dte dte; dte.vSetMax(); return dte.m_iAsI8; }
+
   operator d8(void)                    { return m_dFlt;  }  // auto conversion
   operator i8(void)                    { return m_iAsI8; }  // auto conversion
   
@@ -194,7 +205,10 @@ public:
     i8 m_iInt;
     i8 m_iAsI8;
   };
-  
+
+  static i8 iMinValue(void)            { return C_I8_MIN; }
+  static i8 iMaxValue(void)            { return C_I8_MAX; }
+
   operator i8(void)                    { return m_iAsI8; }  // auto conversion
   
   void operator = (i8 iArg)            { m_iAsI8 = iArg; }  // assign from i8
@@ -223,7 +237,10 @@ public:
     };
     i8 m_iAsI8;
   };
-  
+
+  static i8 iMinValue(void)            { Dte dte; dte.vSetMin(); return dte.m_iAsI8; }
+  static i8 iMaxValue(void)            { Dte dte; dte.vSetMax(); return dte.m_iAsI8; }
+
   operator i8(void)                    { return m_iAsI8; }  // auto conversion
   
   void operator = (i8 iArg)            { m_iAsI8 = iArg; }  // assign from i8
@@ -259,7 +276,10 @@ public:
     };
     i8 m_iAsI8;
   };
-  
+
+  static i8 iMinValue(void)            { Tme tme; tme.vSetMin(); return tme.m_iAsI8; }
+  static i8 iMaxValue(void)            { Tme tme; tme.vSetMax(); return tme.m_iAsI8; }
+
   operator i8(void)                    { return m_iAsI8; }  // auto conversion
   
   void operator = (i8 iArg)            { m_iAsI8 = iArg; }  // assign from i8
@@ -324,7 +344,10 @@ public:
     };
     i8 m_iAsI8;
   };
-  
+
+  static i8 iMinValue(void)            { Tsp tsp; tsp.vSetMin(); return tsp.m_iAsI8; }
+  static i8 iMaxValue(void)            { Tsp tsp; tsp.vSetMax(); return tsp.m_iAsI8; }
+
   operator i8(void)                    { return m_iAsI8; }  // auto conversion
   
   void operator = (i8 iArg)            { m_iAsI8 = iArg; }  // assign from i8
@@ -391,7 +414,10 @@ public:
     i8 m_iInt;
     i8 m_iAsI8;
   };
-  
+
+  static i8 iMinValue(void)            { return C_I8_MAX; }
+  static i8 iMaxValue(void)            { return C_I8_MIN; }
+
   operator i8(void)                    { return m_iAsI8; }  // auto conversion
   
   void operator = (i8 iArg)            { m_iAsI8 = iArg; }  // assign from i8

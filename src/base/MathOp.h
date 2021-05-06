@@ -18,12 +18,6 @@ static eDM eMathOp_AvgResult[DM_ENUMS] =
     { DM_NONE, DM_BCD, DM_NONE, DM_NONE, DM_FLT, DM_BCD, DM_NONE/*X*/, DM_NONE/*X*/, DM_NONE/*X*/, DM_NONE, DM_NONE, DM_NONE };
 
 
-
-
-static i8 iMathOp_MaxValue[DM_ENUMS] =
-  //  NONE       BCD           BOL            DTE         FLT          INT        IVL             IVY,            TME        TSP        VCH        UNK
-    { C_UNKNOWN, (i8)DBL_MAX, C_UNKNOWN/*X*/, C_UNKNOWN,  (i8)DBL_MAX, LLONG_MAX, C_UNKNOWN/*X*/, C_UNKNOWN/*X*/, C_UNKNOWN, C_UNKNOWN, C_UNKNOWN, C_UNKNOWN/*X*/ };
-
 static eDM eMathOp_MaxResult[DM_ENUMS] =
     //  NONE     BCD     BOL      DTE     FLT     INT     IVL           IVY       TME     TSP     VCH     UNK
     { DM_NONE, DM_BCD, DM_NONE, DM_DTE, DM_FLT, DM_INT, DM_NONE/*X*/, DM_NONE/*X*/, DM_TME, DM_TSP, DM_VCH, DM_NONE };
@@ -32,11 +26,6 @@ static eEO eMathOp_MaxCode[DM_ENUMS] =
     //  NONE     BCD           BOL           DTE           FLT           INT           IVL           IVY       TME           TSP           VCH           UNK
     { EO_NONE, EO_GT_BCDBCD, EO_NONE/*X*/, EO_GT_DTEDTE, EO_GT_FLTFLT, EO_GT_INTINT, EO_NONE/*X*/, EO_NONE/*X*/,EO_GT_TMETME, EO_GT_TSPTSP, EO_GT_VCHVCH, EO_NONE/*X*/ };
 
-
-
-static i8 iMathOp_MinValue[DM_ENUMS] =
-    //  NONE     BCD                 BOL             DTE         FLT          INT        IVL             IVY,            TME        TSP        VCH        UNK
-    { C_UNKNOWN, (i8)C_D8_MIN_VALUE, C_UNKNOWN/*X*/, C_UNKNOWN,  (i8)DBL_MAX, LLONG_MIN, C_UNKNOWN/*X*/, C_UNKNOWN/*X*/, C_UNKNOWN, C_UNKNOWN, C_UNKNOWN, C_UNKNOWN/*X*/ };
 
 static eDM eMathOp_MinResult[DM_ENUMS] =
   //  NONE     BCD     BOL           DTE      FLT    INT     IVL           IVY          TME     TSP     VCH     UNK
@@ -494,6 +483,62 @@ static eEO eMathOp_XorCode[DM_ENUMS][DM_ENUMS] = {
 /*  9 VCH  */ { EO_NONE, EO_NONE,       EO_NONE,      EO_NONE,      EO_NONE,       EO_NONE,       EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE, EO_NONE    },
 /* 10 UNK  */ { EO_NONE, EO_NONE,       EO_XOR_UNKBOL,EO_NONE,      EO_NONE,       EO_NONE,       EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE, EO_NONE    }
 };
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// MIN VALUE
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+i8 iMathOp_MinValue(eDM eDatum) {
+
+  i8 iMinValue;
+
+  switch(eDatum) {
+    case DM_BCD: iMinValue = Bcd::iMinValue(); break;
+    case DM_BOL: iMinValue = Bol::iMinValue(); break;
+    case DM_DTE: iMinValue = Dte::iMinValue(); break;
+    case DM_FLT: iMinValue = Flt::iMinValue(); break;
+    case DM_INT: iMinValue = Int::iMinValue(); break;
+    case DM_IVL: iMinValue = Ivl::iMinValue(); break;
+    case DM_IVY: iMinValue = Ivl::iMinValue(); break;
+    case DM_TME: iMinValue = Tme::iMinValue(); break;
+    case DM_TSP: iMinValue = Tsp::iMinValue(); break;
+    case DM_VCH: RASSERT(0); break;
+    case DM_UNK: iMinValue = Unk::iMinValue(); break;
+      break;
+    default:
+      NEVER_REACH;
+
+  }
+
+  return iMinValue;
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// MAX VALUE
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+i8 iMathOp_MaxValue(eDM eDatum) {
+
+  i8 iMaxValue;
+
+  switch(eDatum) {
+    case DM_BCD: iMaxValue = Bcd::iMaxValue(); break;
+    case DM_BOL: iMaxValue = Bol::iMaxValue(); break;
+    case DM_DTE: iMaxValue = Dte::iMaxValue(); break;
+    case DM_FLT: iMaxValue = Flt::iMaxValue(); break;
+    case DM_INT: iMaxValue = Int::iMaxValue(); break;
+    case DM_IVL: iMaxValue = Ivl::iMaxValue(); break;
+    case DM_IVY: iMaxValue = Ivl::iMaxValue(); break;
+    case DM_TME: iMaxValue = Tme::iMaxValue(); break;
+    case DM_TSP: iMaxValue = Tsp::iMaxValue(); break;
+    case DM_VCH: RASSERT(0); break;
+    case DM_UNK: iMaxValue = Unk::iMaxValue(); break;
+      break;
+    default:
+      NEVER_REACH;
+
+  }
+
+  return iMaxValue;
+}
 
 /*============================================================================*/
 /* end                                                                        */

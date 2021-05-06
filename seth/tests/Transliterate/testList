@@ -1,4 +1,5 @@
 aggregates.test
+minmax.test
 selectTypes.test
 filterInteger.test
 //filterDecimal.test

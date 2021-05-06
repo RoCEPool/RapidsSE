@@ -290,7 +290,7 @@ void ExprEval::vAddLogical(Stz* szAsmBuffer, Token* pTkn)
     StrLib::vSprintCat(szAsmBuffer, "  EO_LGL_NOT\n"_Stz);
   }
   else if (pTkn->bSame("or"_Stz)) {
-    ASSERT(pTkn->bSame("not"_Stz));
+    ASSERT(pTkn->bSame("or"_Stz));
     StrLib::vSprintCat(szAsmBuffer, "  EO_LGL_OR\n"_Stz);
   }
   else {
@@ -612,7 +612,11 @@ eEC ExprEval::eGenerateMax(Stz* szAsmBuffer, Stz* sAggInit)
   eEO eCode = eMathOp_MaxCode[eParamType];
 
   // get the min value
-  i8 iMinValue = iMathOp_MinValue[eParamType];
+  i8 iMinValue = iMathOp_MinValue(eParamType);
+
+  Dte dte;
+  dte.vSetMin();
+  i8 iMin = dte;
 
   // push result type
   m_xTypeStack.vPush(eMathOp_MaxResult[eParamType]);
@@ -696,7 +700,7 @@ eEC ExprEval::eGenerateMin(Stz* szAsmBuffer, Stz* sAggInit)
   eEO eCode = eMathOp_MinCode[eParamType];
 
   // get the max value
-  i8 iMaxValue = iMathOp_MaxValue[eParamType];
+  i8 iMaxValue = iMathOp_MaxValue(eParamType);
 
   // push result type
   m_xTypeStack.vPush(eMathOp_MinResult[eParamType]);
