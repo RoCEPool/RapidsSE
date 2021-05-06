@@ -422,7 +422,7 @@ void Step::vSocketRecvObject(void)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // receive and discard the body of the obect (low memory condition)
+  // receive and discard the body of the object (low memory condition)
 
   void* aLowBuff = pSocket->m_aLowBuff;
 
