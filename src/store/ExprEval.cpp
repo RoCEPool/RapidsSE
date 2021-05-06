@@ -287,6 +287,7 @@ void ExprEval::vAddPayLoadKey(Stz* szAsmBuffer, eCT eColumnType, i8 i_Local) {
       StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_SETINTELM\n"_Stz);
       break;
 
+    case CT_CHAR:
     case CT_VARCHAR:
       StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
       StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_SETSTZELM\n"_Stz);
@@ -1838,7 +1839,7 @@ void ExprEval::vGenerateColumnCode(Stz* szAsmBuffer, StreamDef* pStreamDefOut, C
 /*----------------------------------------------------------------------------*/
 void ExprEval::vGenerateColumnCodeGby(StreamDef* pStreamDefOut, Column* pColumn) {
 
-  vAddStoreCol(m_sPayLoadStoreAsm, pColumn);
+  vAddStoreCol(m_sPayLoadStoreAsm, pColumn->eColumnType());
 
   m_nPayLoadBytes += 8;
 
@@ -1882,16 +1883,20 @@ eEC ExprEval::eGenerateGroupbyCode(StreamDef* pStreamDefOut, Column* pColumn, eA
 /*----------------------------------------------------------------------------*/
 /* add EO code for store column                                               */
 /*----------------------------------------------------------------------------*/
-void ExprEval::vAddStoreCol(Stz* szAsmBuffer, Column* pColumn)
+void ExprEval::vAddStoreCol(Stz* szAsmBuffer, eCT eColumnType)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
 
   // switch on column type
-  switch (pColumn->eColumnType()) {
-    case CT_INTEGER:
+  switch (eColumnType) {
+    case CT_BOOLEAN:
     case CT_DECIMAL:
     case CT_DATE:
     case CT_FLOAT:
+    case CT_INTEGER:
+    case CT_TIME:
+    case CT_TIMESTAMP:
+    case CT_UNKNOWN:
       StrLib::vSprintCat(szAsmBuffer, "  EO_PAY_STORE_COLI %lld\n"_Stz, m_iDstColumn);
       break;
 
@@ -1900,8 +1905,10 @@ void ExprEval::vAddStoreCol(Stz* szAsmBuffer, Column* pColumn)
       StrLib::vSprintCat(szAsmBuffer, "  EO_PAY_STORE_COLS %lld\n"_Stz, m_iDstColumn);
       break;
 
+    case CT_INTERVAL_DT:
+    case CT_INTERVAL_YM:
     default:
-      RASSERT(0);
+      NEVER_REACH;
   }
 }
 

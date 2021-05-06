@@ -77,7 +77,7 @@ namespace STORE
     void vAddPopCol(Stz* szAsmBuffer, eCT eColumnType);
     void vAddPushCol(Stz* szAsmBuffer, eCT eColumnType, i8 i_Local);
     void vAddRelational(Stz* szAsmBuffer, Token*  pTkn);
-    void vAddStoreCol(Stz* szAsmBuffer, Column* pColumnExpr);
+    void vAddStoreCol(Stz* szAsmBuffer, eCT eColumnType);
     void vAddString(Stz* szAsmBuffer, Token*  pTkn);
     void vAddTime(Stz* szAsmBuffer, Token*  pTkn);
     void vAddTimestamp(Stz* szAsmBuffer, Token*  pTkn);
