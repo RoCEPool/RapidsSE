@@ -127,11 +127,11 @@
 
   job::</seeXfer/>
 
-  Socket[] socket.grabWrite
+  Socket[].grabWrite
 
   pJob Socket[].sendObject discard
 
-  Socket[] socket.dropWrite
+  Socket[].dropWrite
   
   nullptr to Socket[]
 ;

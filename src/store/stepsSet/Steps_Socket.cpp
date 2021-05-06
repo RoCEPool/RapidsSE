@@ -46,7 +46,9 @@ void Step::vAddSteps_Socket(void)
   vAddStep("socket::listen"_Stz,     &Step::vSocketListen);
   
   vAddStep("Socket[]"_Stz,           &Step::vSocketGet);
+  vAddStep("Socket[].dropWrite"_Stz, &Step::vSocketDropWrite);
   vAddStep("Socket[].get"_Stz,       &Step::vSocketGet);
+  vAddStep("Socket[].grabWrite"_Stz, &Step::vSocketGrabWrite);
   vAddStep("Socket[].isNotNull"_Stz, &Step::vSocketIsNotNull);
   vAddStep("Socket[].isNull"_Stz,    &Step::vSocketIsNull);
   vAddStep("Socket[].object@"_Stz,   &Step::vSocketObjectFetch);
@@ -57,11 +59,9 @@ void Step::vAddSteps_Socket(void)
   vAddStep("Socket[].success@"_Stz,  &Step::vSocketSuccessFetch);
   vAddStep("Socket[].success!"_Stz,  &Step::vSocketSuccessStore);
 
-  vAddStep("socket.accept"_Stz,     &Step::vSocketAccept);
-  vAddStep("socket.close"_Stz,      &Step::vSocketClose);
-  vAddStep("socket.connect"_Stz,    &Step::vSocketConnect);
-  vAddStep("socket.dropWrite"_Stz,  &Step::vSocketDropWrite);
-  vAddStep("socket.grabWrite"_Stz,  &Step::vSocketGrabWrite);
+  vAddStep("socket.accept"_Stz,      &Step::vSocketAccept);
+  vAddStep("socket.close"_Stz,       &Step::vSocketClose);
+  vAddStep("socket.connect"_Stz,     &Step::vSocketConnect);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -178,8 +178,8 @@ void Step::vSocketDropWrite(void)
 {
   ENTRY();
   
-  Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
-  
+  Socket* pSocket = *m_pJob->pLogicUnit_job()->m_xpSocket;
+
   pSocket->vDropWrite();
   
   EXIT();
@@ -204,8 +204,8 @@ void Step::vSocketGrabWrite(void)
 {
   ENTRY();
   
-  Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
-  
+  Socket* pSocket = *m_pJob->pLogicUnit_job()->m_xpSocket;
+
   pSocket->vGrabWrite();
   
   EXIT();

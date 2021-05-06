@@ -20,9 +20,9 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // send node info job to the other node
-  Socket[] socket.grabWrite
+  Socket[].grabWrite
   InfoSet[] Socket[].sendObject assert
-  Socket[] socket.dropWrite
+  Socket[].dropWrite
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete infoset
