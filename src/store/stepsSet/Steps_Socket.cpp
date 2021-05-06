@@ -360,7 +360,10 @@ void Step::vSocketRecvObject(void)
   RASSERT(! pSocket->pReceivedObject());
 
   Object* pReceivedObject = pSocket->pRecvObject();
-
+  
+  if (CN_PARCEL == pReceivedObject->eGetClassNo())
+    AM::PARCEL::vRecvContents((Parcel*)pReceivedObject,pSocket);
+  
   EXIT();
 }
 
