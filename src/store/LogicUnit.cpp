@@ -1304,6 +1304,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   d8 dTopA;
   d8 dTopB;
   i8 iRes;
+  d8 dRes;
   Stz* szRes;
 
   i8 iCmp;
@@ -1444,16 +1445,15 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_AND_UNKBOL: ArgNil(); // unk and bol
         break;//+endCase
 
-      case EO_DIV_BCDBCD: { ArgNil(); // bcd / bcd
+      case EO_DIV_BCDBCD: ArgNil(); // bcd / bcd
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
-        d8 dTopA = *(d8 *)&iTopA;
-        d8 dTopB = *(d8 *)&iTopB;
-        d8 dRes = dTopA / dTopB;
+        dTopA = *(d8 *)&iTopA;
+        dTopB = *(d8 *)&iTopB;
+        dRes = dTopA / dTopB;
         iRes = dRes * 100;
         dLU3(EO_DIV_INTINT, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
-      }
         break;//+endCase
       case EO_DIV_BCDFLT: ArgNil(); // bcd / int
         break;//+endCase
@@ -1852,9 +1852,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_EQ_BCDBCD: ArgNil(); // bcd == bcd
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
-        dTopA = *(d8 *) &iTopA;
-        dTopB = *(d8 *) &iTopB;
-        iRes =  dTopA == dTopB;
+        iRes =  iTopA == iTopB;
         dLU3(EO_EQ_BCDBCD, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
         break;
@@ -1928,9 +1926,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_GE_BCDBCD: ArgNil(); // bcd >= bcd
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
-        dTopA = *(d8 *) &iTopA;
-        dTopB = *(d8 *) &iTopB;
-        iRes =  dTopA >= dTopB;
+        iRes =  iTopA >= iTopB;
         dLU3(EO_GE_BCDBCD, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
         break;
@@ -2004,9 +2000,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_GT_BCDBCD: ArgNil(); // bcd > bcd
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
-        dTopA = *(d8 *) &iTopA;
-        dTopB = *(d8 *) &iTopB;
-        iRes =  dTopA > dTopB;
+        iRes =  iTopA > iTopB;
         dLU3(EO_GT_BCDBCD, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
@@ -2080,9 +2074,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_LE_BCDBCD: ArgNil(); // bcd <= bcd
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
-        dTopA = *(d8 *) &iTopA;
-        dTopB = *(d8 *) &iTopB;
-        iRes =  dTopA <= dTopB;
+        iRes =  iTopA <= iTopB;
         dLU3(EO_LE_BCDBCD, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
         break;
@@ -2156,9 +2148,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_LT_BCDBCD: ArgNil(); // bcd < bcd
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
-        dTopA = *(d8 *) &iTopA;
-        dTopB = *(d8 *) &iTopB;
-        iRes =  dTopA < dTopB;
+        iRes =  iTopA < iTopB;
         dLU3(EO_LT_BCDBCD, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
         break;
@@ -2230,9 +2220,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_NE_BCDBCD: ArgNil(); // bcd != bcd
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
-        dTopA = *(d8 *) &iTopA;
-        dTopB = *(d8 *) &iTopB;
-        iRes =  dTopA != dTopB;
+        iRes =  iTopA != iTopB;
         dLU3(EO_NE_BCDBCD, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
         break;

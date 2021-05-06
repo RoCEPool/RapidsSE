@@ -34,7 +34,7 @@ public:
   };
 
   static i8 iMinValue(void)            { return C_I8_MIN; }
-  static i8 iMaxValue(void)             { return C_I8_MAX; }
+  static i8 iMaxValue(void)            { return C_I8_MAX; }
 
   operator i8(void)                    { return m_iAsI8; }  // auto conversion
   
@@ -178,8 +178,8 @@ public:
     i8 m_iAsI8;
   };
 
-  static i8 iMinValue(void)            { Dte dte; dte.vSetMin(); return dte.m_iAsI8; }
-  static i8 iMaxValue(void)            { Dte dte; dte.vSetMax(); return dte.m_iAsI8; }
+  static i8 iMinValue(void)            { Flt flt; flt.vSetMin(); return flt.m_iAsI8; }
+  static i8 iMaxValue(void)            { Flt flt; flt.vSetMax(); return flt.m_iAsI8; }
 
   operator d8(void)                    { return m_dFlt;  }  // auto conversion
   operator i8(void)                    { return m_iAsI8; }  // auto conversion
