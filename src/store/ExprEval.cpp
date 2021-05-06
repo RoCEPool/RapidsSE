@@ -268,44 +268,36 @@ void ExprEval::vAddInteger(Stz* szAsmBuffer, Token* pTkn)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add EO code for push column                                                 */
+/* add EO code for push column                                                */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval::eAddPayLoadKey(Stz* szAsmBuffer, StreamDef* pStreamDefIn, i8 i_ColumnOrdinal) {
+void ExprEval::vAddPayLoadKey(Stz* szAsmBuffer, eCT eColumnType, i8 i_Local) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
-  // check how many bits are on till this i_StreamInCol bit
-  i8 iLocal = 0;
-  i8 iBit = -1;
-  for (i8 i = 0; i < i_ColumnOrdinal; i++) {
-    if (BitLib::bEachBit(m_uExprEvalColumns, iBit)) {
-      if (iBit < i_ColumnOrdinal) {
-        iLocal++;
-      } else {
-        break;
-      }
-    }
-  }
-
-  Column* pColumn = pStreamDefIn->pGetColumn(i_ColumnOrdinal);
-
   // switch on column type
-  switch (pColumn->eColumnType()) {
+  switch (eColumnType) {
+    case CT_BOOLEAN:
     case CT_DECIMAL:
+    case CT_DATE:
     case CT_FLOAT:
     case CT_INTEGER:
+    case CT_TIME:
+    case CT_TIMESTAMP:
       StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
       StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_SETINTELM\n"_Stz);
       break;
+
     case CT_VARCHAR:
       StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
       StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_SETSTZELM\n"_Stz);
       break;
-    default:
-      return EC_INVALID_COMMAND;
-  }
 
-  return EC_NONE;
+    case CT_INTERVAL_DT:
+    case CT_INTERVAL_YM:
+    case CT_UNKNOWN:
+    default:
+      NEVER_REACH;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1773,7 +1765,7 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
     if (bGroupBy) {
       vAddGbyIdxCol(m_sGbyIdxAsm, pColumn->eColumnType(), i_Local);
       vAddPushCol(m_sPayLoadKeyAsm, pStreamDefIn, i_ColumnOrdinal);
-      eAddPayLoadKey(m_sPayLoadKeyAsm, pStreamDefIn, i_ColumnOrdinal);
+      vAddPayLoadKey(m_sPayLoadKeyAsm, pColumn->eColumnType(), i_Local);
     }
     else {
       if (m_bHasAgg)

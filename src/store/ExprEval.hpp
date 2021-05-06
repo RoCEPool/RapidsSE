@@ -73,7 +73,7 @@ namespace STORE
     void vAddGbyIdxCol(Stz* szAsmBuffer, eCT eColumnType, i8 i_Local);
     void vAddLogical(Stz* szAsmBuffer, Token*  pTkn);
     void vAddInteger(Stz* szAsmBuffer, Token*  pTkn);
-    eEC  eAddPayLoadKey(Stz* szAsmBuffer, StreamDef* pStreamDefIn, i8 i_ColumnOrdinal);
+    void vAddPayLoadKey(Stz* szAsmBuffer, eCT eColumnType, i8 i_Local);
     void vAddPopCol(Stz* szAsmBuffer, eCT eColumnType);
     void vAddPushCol(Stz* szAsmBuffer, StreamDef* pStreamDefIn, i8 iColumn);
     void vAddRelational(Stz* szAsmBuffer, Token*  pTkn);
