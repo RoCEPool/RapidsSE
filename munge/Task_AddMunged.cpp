@@ -22503,7 +22503,7 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": Parcel.dispatch params| pParcel |\n"
     "\n"
-    "  Socket[].recvObject Socket[].object@\\clear\n"
+    "  //Socket[].recvObject Socket[].object@\\clear\n"
     "  \n"
     "    pParcel parcel.pipeOut\n"
     " ;\n"

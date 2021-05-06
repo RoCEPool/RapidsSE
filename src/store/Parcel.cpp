@@ -125,11 +125,11 @@ void Parcel::vRecvContents(Socket* pSocket)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
   
-  //vTrace("Parcel::vRecvContents %lld +++++++++++++++++++++++++++++++++++\n"_Stz,
-  //       m_nObjects);
+//  vTrace("Parcel::vRecvContents %lld +++++++++++++++++++++++++++++++++++\n"_Stz,
+//         m_nObjects);
   
-  //Object* pItem = pSocket->pRecvObject();
-  //m_pObjects[0] = pItem;
+  Object* pItem = pSocket->pRecvObject();
+  m_pObjects[0] = pItem;
   
   //pSocket->vReceivedObject(nullptr);
 }

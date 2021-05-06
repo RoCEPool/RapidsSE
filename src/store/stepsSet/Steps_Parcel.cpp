@@ -52,8 +52,8 @@ void Step::vParcelPipeOut(void)
   
   Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
   
-  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
-  //Operand* pOperand = pParcel->pGetOperand();
+  //Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+  Operand* pOperand = pParcel->pGetOperand();
 
   // find the pipeline participant job
   i8 iPipelineJob = pParcel->m_iPipelineJobId;
