@@ -884,8 +884,15 @@ void AM::vDeleteOperand(Operand* pOperand)
       delete pParcel;
       break;
     }
+
+    case CN_TABLE: {
+      Table* pTable = _pTable(pOperand);
+      delete pTable;
+      break;
+    }
       
     default: {
+      vTrace("vDeleteOperand %ld Error: %s\n"_Stz,eClass, aCN[eClass]->azChar());
       RASSERT(0);
     }
   }

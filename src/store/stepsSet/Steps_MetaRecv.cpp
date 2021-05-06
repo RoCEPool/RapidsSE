@@ -43,12 +43,13 @@ void Step::vMetaRecvPutParts(void)
 
   i8 nObjParts = pParcel->nObjects();
 
-  if (nObjParts > 0) {
-    Object *pObject = pParcel->pGetObject(0);
-    if (pObject->eGetClassNo() == CN_TABLE) {
+  for (i8 i_Obj = 0; i_Obj < nObjParts; i_Obj++) {
+    Object *pObject = pParcel->pGetObject(i_Obj);
+    if (pObject && (pObject->eGetClassNo() == CN_TABLE)) {
       pTable = (Table *) pObject;
       vTrace("Table reassemble from parcel as %s\n"_Stz,pTable->szTableNm()->azChar());
       pTable->iBuildParcel(pParcel);
+      break;
     }
   }
 

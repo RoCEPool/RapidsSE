@@ -820,7 +820,9 @@ i8 Table::iPrepareParcel(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLE, _FOOTER_);
 
-  if (!m_pParcel) return 0;
+  if (!m_pParcel) {
+    m_pParcel = new Parcel(nullptr,0,0,0,PX_NONE);
+  }
 
   m_pParcel->vAddObject((Object *)this);
 
@@ -855,7 +857,6 @@ i8 Table::iBuildParcelObjs(Object* pObj)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 
-  // Let's make this prototype code to test out
   if (!m_pParcel) return 0;
 
   m_pParcel->vAddObject(pObj);
@@ -893,7 +894,7 @@ i8  Table::iReassembleObj(void)
 
   for (i8 i_Obj=0; i_Obj< nSize; i_Obj++) {
     Object* pObject =  m_pParcel->pGetObject(i_Obj);
-    eCN eClass = pObject->eGetClassNo();
+    eCN eClass = pObject ? pObject->eGetClassNo() : CN_NONE;
 
     switch (eClass) {
       case CN_TABLE:
