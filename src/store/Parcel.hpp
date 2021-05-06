@@ -43,6 +43,8 @@ namespace STORE
   
    ~Parcel(void) noexcept(false);
         
+  static void vPostRecv(void* aParcel);
+
   public:
     void vAddObject(Object* pObject);
     Object* pGetObject(i8 i_Object);

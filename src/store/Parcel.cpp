@@ -43,7 +43,7 @@ Parcel::Parcel(Operand* pOperand,
 
   m_nObjects = 0;
   for (i8 i_Obj = 0; i_Obj < C_MAX_PARCEL_OBJ; i_Obj++)
-    m_pObjects[i_Obj] = nullptr;
+    vSetObject(i_Obj,nullptr);
 
   vAddObject(pOperand);
   m_iPipelineJobId = iPipelineJobId;
@@ -68,6 +68,24 @@ Parcel::~Parcel(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
   
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Static Functions --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* post recv function                                                         */
+/*----------------------------------------------------------------------------*/
+void Parcel::vPostRecv(void* aParcel)
+{
+  _static_
+  
+  Parcel* pParcel = _pParcel(aParcel);
+  
+  for (i8 i_Obj = 0; i_Obj < C_MAX_PARCEL_OBJ; i_Obj++)
+    pParcel->vSetObject(i_Obj,nullptr);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Member Functions --------------------------------------------------------*/
