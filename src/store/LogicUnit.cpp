@@ -1301,8 +1301,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
   char* azTopB;
   Stz* szTopA;
   Stz* szTopB;
-
+  d8 dTopA;
+  d8 dTopB;
   i8 iRes;
+  d8 dRes;
   Stz* szRes;
 
   i8 iCmp;
@@ -1443,16 +1445,15 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_AND_UNKBOL: ArgNil(); // unk and bol
         break;//+endCase
 
-      case EO_DIV_BCDBCD: { ArgNil(); // bcd / bcd
+      case EO_DIV_BCDBCD: ArgNil(); // bcd / bcd
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
-        d8 dTopA = *(d8 *)&iTopA;
-        d8 dTopB = *(d8 *)&iTopB;
-        d8 dRes = dTopA / dTopB;
+        dTopA = *(d8 *)&iTopA;
+        dTopB = *(d8 *)&iTopB;
+        dRes = dTopA / dTopB;
         iRes = dRes * 100;
         dLU3(EO_DIV_INTINT, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
-      }
         break;//+endCase
       case EO_DIV_BCDFLT: ArgNil(); // bcd / int
         break;//+endCase
@@ -1849,20 +1850,40 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       // relational operators
 
       case EO_EQ_BCDBCD: ArgNil(); // bcd == bcd
-        break;//+endCase
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes =  iTopA == iTopB;
+        dLU3(EO_EQ_BCDBCD, iTopA, iTopB, iRes);
+        *(++aiDstk) = iRes;
+        break;
       case EO_EQ_BCDFLT: ArgNil(); // bcd == bcd
         break;//+endCase
       case EO_EQ_BCDINT: ArgNil(); // bcd == int
         break;//+endCase
       case EO_EQ_BOLBOL: ArgNil(); // bol == bol
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA == iTopB;
+        dLU3(EO_EQ_BOLBOL,iTopA,iTopB,iRes);
+        *(++aiDstk) = iRes;
         break;//+endCase
       case EO_EQ_DTEDTE: ArgNil(); // dte == dte
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA == iTopB;
+        dLU3(EO_EQ_INTINT,iTopA,iTopB,iRes);
+        *(++aiDstk) = iRes;
         break;//+endCase
       case EO_EQ_DTETSP: ArgNil(); // dte == tsp
         break;//+endCase
       case EO_EQ_FLTBCD: ArgNil(); // flt == bcd
         break;//+endCase
       case EO_EQ_FLTFLT: ArgNil(); // flt == flt
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA == iTopB;
+        dLU3(EO_EQ_FLTFLT,iTopA,iTopB,iRes);
+        *(++aiDstk) = iRes;
         break;//+endCase
       case EO_EQ_FLTINT: ArgNil(); // flt == int
         break;//+endCase
@@ -1880,10 +1901,20 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_EQ_IVLIVL: ArgNil(); // ivl == ivl
         break;//+endCase
       case EO_EQ_TMETME: ArgNil(); // tme == tme
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA == iTopB;
+        dLU3(EO_EQ_TMETME,iTopA,iTopB,iRes);
+        *(++aiDstk) = iRes;
         break;//+endCase
       case EO_EQ_TSPDTE: ArgNil(); // tsp == dte
         break;//+endCase
       case EO_EQ_TSPTSP: ArgNil(); // tsp == tsp
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA == iTopB;
+        dLU3(EO_EQ_TSPTSP,iTopA,iTopB,iRes);
+        *(++aiDstk) = iRes;
         break;//+endCase
       case EO_EQ_VCHVCH: ArgNil(); // vch == vch
         break;//+endCase
@@ -1892,247 +1923,372 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_EQ_XYZUNK: ArgNil(); // xyz == unk
         break;//+endCase
         
-      case EO_GE_BCDBCD: ArgNil(); // bcd == bcd
+      case EO_GE_BCDBCD: ArgNil(); // bcd >= bcd
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes =  iTopA >= iTopB;
+        dLU3(EO_GE_BCDBCD, iTopA, iTopB, iRes);
+        *(++aiDstk) = iRes;
+        break;
+      case EO_GE_BCDFLT: ArgNil(); // bcd >= bcd
         break;//+endCase
-      case EO_GE_BCDFLT: ArgNil(); // bcd == bcd
+      case EO_GE_BCDINT: ArgNil(); // bcd >= int
         break;//+endCase
-      case EO_GE_BCDINT: ArgNil(); // bcd == int
+      case EO_GE_BOLBOL: ArgNil(); // bol >= bol
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA >= iTopB;
+        dLU3(EO_GE_BOLBOL,iTopA,iTopB,iRes);
+        *(++aiDstk) = iRes;
         break;//+endCase
-      case EO_GE_BOLBOL: ArgNil(); // bol == bol
-        break;//+endCase
-      case EO_GE_DTEDTE: ArgNil(); // dte == dte
-        break;//+endCase
-      case EO_GE_DTETSP: ArgNil(); // dte == tsp
-        break;//+endCase
-      case EO_GE_FLTBCD: ArgNil(); // flt == bcd
-        break;//+endCase
-      case EO_GE_FLTFLT: ArgNil(); // flt == flt
-        break;//+endCase
-      case EO_GE_FLTINT: ArgNil(); // flt == int
-        break;//+endCase
-      case EO_GE_INTBCD: ArgNil(); // int == bcd
-        break;//+endCase
-      case EO_GE_INTFLT: ArgNil(); // int == flt
-        break;//+endCase
-      case EO_GE_INTINT: ArgNil(); // int == int
+      case EO_GE_DTEDTE: ArgNil(); // dte >= dte
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA >= iTopB;
         dLU3(EO_GE_INTINT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
-      case EO_GE_IVLIVL: ArgNil(); // ivl == ivl
+      case EO_GE_DTETSP: ArgNil(); // dte >= tsp
         break;//+endCase
-      case EO_GE_TMETME: ArgNil(); // tme == tme
+      case EO_GE_FLTBCD: ArgNil(); // flt >= bcd
         break;//+endCase
-      case EO_GE_TSPDTE: ArgNil(); // tsp == dte
-        break;//+endCase
-      case EO_GE_TSPTSP: ArgNil(); // tsp == tsp
-        break;//+endCase
-      case EO_GE_VCHVCH: ArgNil(); // vch == vch
-        break;//+endCase
-      case EO_GE_UNKXYZ: ArgNil(); // unk == xyz
-        break;//+endCase
-      case EO_GE_XYZUNK: ArgNil(); // xyz == unk
-        break;//+endCase
-
-      case EO_GT_BCDBCD: { ArgNil(); // bcd == bcd
+      case EO_GE_FLTFLT: ArgNil(); // flt >= flt
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
-        d8 dTopA = *(d8 *) &iTopA;
-        d8 dTopB = *(d8 *) &iTopB;
-        iRes =  dTopA > dTopB;
+        iRes  = iTopA >= iTopB;
+        dLU3(EO_GE_INTINT,iTopA,iTopB,iRes);
+        *(++aiDstk) = iRes;
+        break;//+endCase
+      case EO_GE_FLTINT: ArgNil(); // flt >= int
+        break;//+endCase
+      case EO_GE_INTBCD: ArgNil(); // int >= bcd
+        break;//+endCase
+      case EO_GE_INTFLT: ArgNil(); // int >= flt
+        break;//+endCase
+      case EO_GE_INTINT: ArgNil(); // int >= int
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA >= iTopB;
+        dLU3(EO_GE_INTINT,iTopA,iTopB,iRes);
+        *(++aiDstk) = iRes;
+        break;//+endCase
+      case EO_GE_IVLIVL: ArgNil(); // ivl >= ivl
+        break;//+endCase
+      case EO_GE_TMETME: ArgNil(); // tme >= tme
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA >= iTopB;
+        dLU3(EO_GE_TMETME,iTopA,iTopB,iRes);
+        *(++aiDstk) = iRes;
+        break;//+endCase
+      case EO_GE_TSPDTE: ArgNil(); // tsp >= dte
+        break;//+endCase
+      case EO_GE_TSPTSP: ArgNil(); // tsp >= tsp
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA >= iTopB;
+        dLU3(EO_GE_TSPTSP,iTopA,iTopB,iRes);
+        *(++aiDstk) = iRes;
+        break;//+endCase
+      case EO_GE_VCHVCH: ArgNil(); // vch >= vch
+        break;//+endCase
+      case EO_GE_UNKXYZ: ArgNil(); // unk >= xyz
+        break;//+endCase
+      case EO_GE_XYZUNK: ArgNil(); // xyz >= unk
+        break;//+endCase
+
+      case EO_GT_BCDBCD: ArgNil(); // bcd > bcd
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes =  iTopA > iTopB;
         dLU3(EO_GT_BCDBCD, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
-      }
         break;//+endCase
-      case EO_GT_BCDFLT: ArgNil(); // bcd == bcd
+      case EO_GT_BCDFLT: ArgNil(); // bcd > bcd
         break;//+endCase
-      case EO_GT_BCDINT: ArgNil(); // bcd == int
+      case EO_GT_BCDINT: ArgNil(); // bcd > int
         break;//+endCase
-      case EO_GT_BOLBOL: ArgNil(); // bol == bol
+      case EO_GT_BOLBOL: ArgNil(); // bol > bol
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA > iTopB;
+        dLU3(EO_GT_BOLBOL,iTopA,iTopB,iRes);
+        *(++aiDstk) = iRes;
         break;//+endCase
-      case EO_GT_DTEDTE: ArgNil(); // dte == dte
-        break;//+endCase
-      case EO_GT_DTETSP: ArgNil(); // dte == tsp
-        break;//+endCase
-      case EO_GT_FLTBCD: ArgNil(); // flt == bcd
-        break;//+endCase
-      case EO_GT_FLTFLT: ArgNil(); // flt == flt
+      case EO_GT_DTEDTE: ArgNil(); // dte > dte
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA > iTopB;
         dLU3(EO_GT_FLTFLT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
-      case EO_GT_FLTINT: ArgNil(); // flt == int
+      case EO_GT_DTETSP: ArgNil(); // dte > tsp
         break;//+endCase
-      case EO_GT_INTBCD: ArgNil(); // int == bcd
+      case EO_GT_FLTBCD: ArgNil(); // flt > bcd
         break;//+endCase
-      case EO_GT_INTFLT: ArgNil(); // int == flt
+      case EO_GT_FLTFLT: ArgNil(); // flt > flt
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA > iTopB;
+        dLU3(EO_GT_FLTFLT,iTopA,iTopB,iRes);
+        *(++aiDstk) = iRes;
         break;//+endCase
-      case EO_GT_INTINT: ArgNil(); // int == int
+      case EO_GT_FLTINT: ArgNil(); // flt > int
+        break;//+endCase
+      case EO_GT_INTBCD: ArgNil(); // int > bcd
+        break;//+endCase
+      case EO_GT_INTFLT: ArgNil(); // int > flt
+        break;//+endCase
+      case EO_GT_INTINT: ArgNil(); // int > int
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA > iTopB;
         dLU3(EO_GE_INTINT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
-      case EO_GT_IVLIVL: ArgNil(); // ivl == ivl
+      case EO_GT_IVLIVL: ArgNil(); // ivl > ivl
         break;//+endCase
-      case EO_GT_TMETME: ArgNil(); // tme == tme
+      case EO_GT_TMETME: ArgNil(); // tme > tme
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA > iTopB;
+        dLU3(EO_GT_TMETME,iTopA,iTopB,iRes);
+        *(++aiDstk) = iRes;
         break;//+endCase
-      case EO_GT_TSPDTE: ArgNil(); // tsp == dte
+      case EO_GT_TSPDTE: ArgNil(); // tsp > dte
         break;//+endCase
-      case EO_GT_TSPTSP: ArgNil(); // tsp == tsp
+      case EO_GT_TSPTSP: ArgNil(); // tsp > tsp
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA > iTopB;
+        dLU3(EO_GT_TSPTSP,iTopA,iTopB,iRes);
+        *(++aiDstk) = iRes;
         break;//+endCase
-      case EO_GT_VCHVCH: ArgNil(); // vch == vch
+      case EO_GT_VCHVCH: ArgNil(); // vch > vch
         break;//+endCase
-      case EO_GT_UNKXYZ: ArgNil(); // unk == xyz
+      case EO_GT_UNKXYZ: ArgNil(); // unk > xyz
         break;//+endCase
-      case EO_GT_XYZUNK: ArgNil(); // xyz == unk
+      case EO_GT_XYZUNK: ArgNil(); // xyz > unk
         break;//+endCase
 
-      case EO_LE_BCDBCD: ArgNil(); // bcd == bcd
+      case EO_LE_BCDBCD: ArgNil(); // bcd <= bcd
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes =  iTopA <= iTopB;
+        dLU3(EO_LE_BCDBCD, iTopA, iTopB, iRes);
+        *(++aiDstk) = iRes;
+        break;
+      case EO_LE_BCDFLT: ArgNil(); // bcd <= bcd
         break;//+endCase
-      case EO_LE_BCDFLT: ArgNil(); // bcd == bcd
+      case EO_LE_BCDINT: ArgNil(); // bcd <= int
         break;//+endCase
-      case EO_LE_BCDINT: ArgNil(); // bcd == int
+      case EO_LE_BOLBOL: ArgNil(); // bol <= bol
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA <= iTopB;
+        dLU3(EO_LE_BOLBOL,iTopA,iTopB,iRes);
+        *(++aiDstk) = iRes;
         break;//+endCase
-      case EO_LE_BOLBOL: ArgNil(); // bol == bol
-        break;//+endCase
-      case EO_LE_DTEDTE: ArgNil(); // dte == dte
-        break;//+endCase
-      case EO_LE_DTETSP: ArgNil(); // dte == tsp
-        break;//+endCase
-      case EO_LE_FLTBCD: ArgNil(); // flt == bcd
-        break;//+endCase
-      case EO_LE_FLTFLT: ArgNil(); // flt == flt
-        break;//+endCase
-      case EO_LE_FLTINT: ArgNil(); // flt == int
-        break;//+endCase
-      case EO_LE_INTBCD: ArgNil(); // int == bcd
-        break;//+endCase
-      case EO_LE_INTFLT: ArgNil(); // int == flt
-        break;//+endCase
-      case EO_LE_INTINT: ArgNil(); // int == int
+      case EO_LE_DTEDTE: ArgNil(); // dte <= dte
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA <= iTopB;
         dLU3(EO_LE_INTINT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
-      case EO_LE_IVLIVL: ArgNil(); // ivl == ivl
+      case EO_LE_DTETSP: ArgNil(); // dte <= tsp
         break;//+endCase
-      case EO_LE_TMETME: ArgNil(); // tme == tme
+      case EO_LE_FLTBCD: ArgNil(); // flt <= bcd
         break;//+endCase
-      case EO_LE_TSPDTE: ArgNil(); // tsp == dte
-        break;//+endCase
-      case EO_LE_TSPTSP: ArgNil(); // tsp == tsp
-        break;//+endCase
-      case EO_LE_VCHVCH: ArgNil(); // vch == vch
-        break;//+endCase
-      case EO_LE_UNKXYZ: ArgNil(); // unk == xyz
-        break;//+endCase
-      case EO_LE_XYZUNK: ArgNil(); // xyz == unk
-        break;//+endCase
-
-      case EO_LT_BCDBCD: ArgNil(); // bcd == bcd
+      case EO_LE_FLTFLT: ArgNil(); // flt <= flt
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
-        iRes  = iTopA < iTopB;
-        dLU3(EO_LT_BCDBCD,iTopA,iTopB,iRes);
+        iRes  = iTopA <= iTopB;
+        dLU3(EO_LE_FLTFLT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
-      case EO_LT_BCDFLT: ArgNil(); // bcd == bcd
+      case EO_LE_FLTINT: ArgNil(); // flt <= int
         break;//+endCase
-      case EO_LT_BCDINT: ArgNil(); // bcd == int
+      case EO_LE_INTBCD: ArgNil(); // int <= bcd
         break;//+endCase
-      case EO_LT_BOLBOL: ArgNil(); // bol == bol
+      case EO_LE_INTFLT: ArgNil(); // int <= flt
         break;//+endCase
-      case EO_LT_DTEDTE: ArgNil(); // dte == dte
-        break;//+endCase
-      case EO_LT_DTETSP: ArgNil(); // dte == tsp
-        break;//+endCase
-      case EO_LT_FLTBCD: ArgNil(); // flt == bcd
-        break;//+endCase
-      case EO_LT_FLTFLT: ArgNil(); // flt == flt
+      case EO_LE_INTINT: ArgNil(); // int <= int
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
-        iRes  = iTopA < iTopB;
+        iRes  = iTopA <= iTopB;
         dLU3(EO_LE_INTINT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
-      case EO_LT_FLTINT: ArgNil(); // flt == int
+      case EO_LE_IVLIVL: ArgNil(); // ivl <= ivl
         break;//+endCase
-      case EO_LT_INTBCD: ArgNil(); // int == bcd
+      case EO_LE_TMETME: ArgNil(); // tme <= tme
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA <= iTopB;
+        dLU3(EO_LE_TMETME,iTopA,iTopB,iRes);
+        *(++aiDstk) = iRes;
         break;//+endCase
-      case EO_LT_INTFLT: ArgNil(); // int == flt
+      case EO_LE_TSPDTE: ArgNil(); // tsp <= dte
         break;//+endCase
-      case EO_LT_INTINT: ArgNil(); // int == int
+      case EO_LE_TSPTSP: ArgNil(); // tsp <= tsp
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA <= iTopB;
+        dLU3(EO_LE_TSPTSP,iTopA,iTopB,iRes);
+        *(++aiDstk) = iRes;
+        break;//+endCase
+      case EO_LE_VCHVCH: ArgNil(); // vch <= vch
+        break;//+endCase
+      case EO_LE_UNKXYZ: ArgNil(); // unk <= xyz
+        break;//+endCase
+      case EO_LE_XYZUNK: ArgNil(); // xyz <= unk
+        break;//+endCase
+
+      case EO_LT_BCDBCD: ArgNil(); // bcd < bcd
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes =  iTopA < iTopB;
+        dLU3(EO_LT_BCDBCD, iTopA, iTopB, iRes);
+        *(++aiDstk) = iRes;
+        break;
+      case EO_LT_BCDFLT: ArgNil(); // bcd < bcd
+        break;//+endCase
+      case EO_LT_BCDINT: ArgNil(); // bcd < int
+        break;//+endCase
+      case EO_LT_BOLBOL: ArgNil(); // bol < bol
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA < iTopB;
+        dLU3(EO_LT_BOLBOL,iTopA,iTopB,iRes);
+        *(++aiDstk) = iRes;
+        break;//+endCase
+      case EO_LT_DTEDTE: ArgNil(); // dte < dte
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA < iTopB;
+        dLU3(EO_LT_DTEDTE,iTopA,iTopB,iRes);
+        *(++aiDstk) = iRes;
+        break;//+endCase
+      case EO_LT_DTETSP: ArgNil(); // dte < tsp
+        break;//+endCase
+      case EO_LT_FLTBCD: ArgNil(); // flt < bcd
+        break;//+endCase
+      case EO_LT_FLTFLT: ArgNil(); // flt < flt
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA < iTopB;
+        dLU3(EO_LT_FLTFLT,iTopA,iTopB,iRes);
+        *(++aiDstk) = iRes;
+        break;//+endCase
+      case EO_LT_FLTINT: ArgNil(); // flt < int
+        break;//+endCase
+      case EO_LT_INTBCD: ArgNil(); // int < bcd
+        break;//+endCase
+      case EO_LT_INTFLT: ArgNil(); // int < flt
+        break;//+endCase
+      case EO_LT_INTINT: ArgNil(); // int < int
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA < iTopB;
         dLU3(EO_LT_INTINT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
-      case EO_LT_IVLIVL: ArgNil(); // ivl == ivl
+      case EO_LT_IVLIVL: ArgNil(); // ivl < ivl
         break;//+endCase
-      case EO_LT_TMETME: ArgNil(); // tme == tme
+      case EO_LT_TMETME: ArgNil(); // tme < tme
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA < iTopB;
+        dLU3(EO_LT_TMETME,iTopA,iTopB,iRes);
+        *(++aiDstk) = iRes;
+      case EO_LT_TSPDTE: ArgNil(); // tsp < dte
         break;//+endCase
-      case EO_LT_TSPDTE: ArgNil(); // tsp == dte
+      case EO_LT_TSPTSP: ArgNil(); // tsp < tsp
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA < iTopB;
+        dLU3(EO_LT_TSPTSP,iTopA,iTopB,iRes);
+        *(++aiDstk) = iRes;
+      case EO_LT_VCHVCH: ArgNil(); // vch < vch
         break;//+endCase
-      case EO_LT_TSPTSP: ArgNil(); // tsp == tsp
+      case EO_LT_UNKXYZ: ArgNil(); // unk < xyz
         break;//+endCase
-      case EO_LT_VCHVCH: ArgNil(); // vch == vch
-        break;//+endCase
-      case EO_LT_UNKXYZ: ArgNil(); // unk == xyz
-        break;//+endCase
-      case EO_LT_XYZUNK: ArgNil(); // xyz == unk
+      case EO_LT_XYZUNK: ArgNil(); // xyz < unk
         break;//+endCase
 
-      case EO_NE_BCDBCD: ArgNil(); // bcd == bcd
+      case EO_NE_BCDBCD: ArgNil(); // bcd != bcd
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes =  iTopA != iTopB;
+        dLU3(EO_NE_BCDBCD, iTopA, iTopB, iRes);
+        *(++aiDstk) = iRes;
+        break;
+      case EO_NE_BCDFLT: ArgNil(); // bcd != bcd
         break;//+endCase
-      case EO_NE_BCDFLT: ArgNil(); // bcd == bcd
+      case EO_NE_BCDINT: ArgNil(); // bcd != int
         break;//+endCase
-      case EO_NE_BCDINT: ArgNil(); // bcd == int
+      case EO_NE_BOLBOL: ArgNil(); // bol != bol
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA != iTopB;
+        dLU3(EO_NE_BOLBOL,iTopA,iTopB,iRes);
+        *(++aiDstk) = iRes;
         break;//+endCase
-      case EO_NE_BOLBOL: ArgNil(); // bol == bol
-        break;//+endCase
-      case EO_NE_DTEDTE: ArgNil(); // dte == dte
-        break;//+endCase
-      case EO_NE_DTETSP: ArgNil(); // dte == tsp
-        break;//+endCase
-      case EO_NE_FLTBCD: ArgNil(); // flt == bcd
-        break;//+endCase
-      case EO_NE_FLTFLT: ArgNil(); // flt == flt
-        break;//+endCase
-      case EO_NE_FLTINT: ArgNil(); // flt == int
-        break;//+endCase
-      case EO_NE_INTBCD: ArgNil(); // int == bcd
-        break;//+endCase
-      case EO_NE_INTFLT: ArgNil(); // int == flt
-        break;//+endCase
-      case EO_NE_INTINT: ArgNil(); // int == int
+      case EO_NE_DTEDTE: ArgNil(); // dte != dte
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         iRes  = iTopA != iTopB;
         dLU3(EO_NE_INTINT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
-      case EO_NE_IVLIVL: ArgNil(); // ivl == ivl
+      case EO_NE_DTETSP: ArgNil(); // dte != tsp
         break;//+endCase
-      case EO_NE_TMETME: ArgNil(); // tme == tme
+      case EO_NE_FLTBCD: ArgNil(); // flt != bcd
         break;//+endCase
-      case EO_NE_TSPDTE: ArgNil(); // tsp == dte
+      case EO_NE_FLTFLT: ArgNil(); // flt != flt
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA != iTopB;
+        dLU3(EO_NE_FLTFLT,iTopA,iTopB,iRes);
+        *(++aiDstk) = iRes;
         break;//+endCase
-      case EO_NE_TSPTSP: ArgNil(); // tsp == tsp
+      case EO_NE_FLTINT: ArgNil(); // flt != int
         break;//+endCase
-      case EO_NE_VCHVCH: ArgNil(); // vch == vch
+      case EO_NE_INTBCD: ArgNil(); // int != bcd
         break;//+endCase
-      case EO_NE_UNKXYZ: ArgNil(); // unk == xyz
+      case EO_NE_INTFLT: ArgNil(); // int != flt
         break;//+endCase
-      case EO_NE_XYZUNK: ArgNil(); // xyz == unk
+      case EO_NE_INTINT: ArgNil(); // int != int
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA != iTopB;
+        dLU3(EO_NE_INTINT,iTopA,iTopB,iRes);
+        *(++aiDstk) = iRes;
+        break;//+endCase
+      case EO_NE_IVLIVL: ArgNil(); // ivl != ivl
+        break;//+endCase
+      case EO_NE_TMETME: ArgNil(); // tme != tme
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA != iTopB;
+        dLU3(EO_NE_TMETME,iTopA,iTopB,iRes);
+        *(++aiDstk) = iRes;
+        break;//+endCase
+      case EO_NE_TSPDTE: ArgNil(); // tsp != dte
+        break;//+endCase
+      case EO_NE_TSPTSP: ArgNil(); // tsp != tsp
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        iRes  = iTopA != iTopB;
+        dLU3(EO_NE_TSPTSP,iTopA,iTopB,iRes);
+        *(++aiDstk) = iRes;
+        break;//+endCase
+      case EO_NE_VCHVCH: ArgNil(); // vch != vch
+        break;//+endCase
+      case EO_NE_UNKXYZ: ArgNil(); // unk != xyz
+        break;//+endCase
+      case EO_NE_XYZUNK: ArgNil(); // xyz != unk
         break;//+endCase
 
         // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

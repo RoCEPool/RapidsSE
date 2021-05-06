@@ -23,10 +23,10 @@
   //then
   
 
-  pOperand object.class@ CN_PARCEL != if
-    pOperand operand.toParcel to pParcel
-  else
+  pOperand object.class@ CN_PARCEL == if
     pOperand to pParcel
+  else
+    pOperand operand.toParcel to pParcel
   then
   
   pParcel parcel.sendOut
