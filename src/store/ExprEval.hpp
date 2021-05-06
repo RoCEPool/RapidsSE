@@ -67,21 +67,21 @@ namespace STORE
     bool bHasGroupBy(void);
 
   private:
-    void vAddArithmetic(Stz* szAsmBuffer, Token*  pTkn, Column* pColumn);
+    void vAddArithmetic(Stz* szAsmBuffer, Token*  pTkn, Column* pColumnExpr);
     void vAddDate(Stz* szAsmBuffer, Token*  pTkn);
-    eEC  eAddDecimal(Stz* szAsmBuffer, Token*  pTkn, Column* pColumnExpr);
-    eEC  eAddGbyIdxCol(Stz* szAsmBuffer, StreamDef* pStreamDefIn, i8 i_ColumnOrdinal);
+    void vAddDecimal(Stz* szAsmBuffer, Token*  pTkn);
+    void vAddGbyIdxCol(Stz* szAsmBuffer, eCT eColumnType, i8 i_Local);
     void vAddLogical(Stz* szAsmBuffer, Token*  pTkn);
-    void vAddNumeric(Stz* szAsmBuffer, Token*  pTkn, Column* pColumnExpr);
+    void vAddInteger(Stz* szAsmBuffer, Token*  pTkn);
     eEC  eAddPayLoadKey(Stz* szAsmBuffer, StreamDef* pStreamDefIn, i8 i_ColumnOrdinal);
     void vAddPopCol(Stz* szAsmBuffer, eCT eColumnType);
     void vAddPushCol(Stz* szAsmBuffer, StreamDef* pStreamDefIn, i8 iColumn);
     void vAddRelational(Stz* szAsmBuffer, Token*  pTkn);
     void vAddStoreCol(Stz* szAsmBuffer, Column* pColumnExpr);
-    void vAddString(Stz* szAsmBuffer, Token*  pTkn, Column* pColumnExpr);
+    void vAddString(Stz* szAsmBuffer, Token*  pTkn);
     void vAddTime(Stz* szAsmBuffer, Token*  pTkn);
     void vAddTimestamp(Stz* szAsmBuffer, Token*  pTkn);
-    void vAddUnknown(Stz* szAsmBuffer, Token*  pTkn, Column* pColumnExpr);
+    void vAddUnknown(Stz* szAsmBuffer, Token*  pTkn);
 
     void vAddToBufferCol(Stz* szAsmBuffer, Column* pColumn);
 
@@ -96,11 +96,13 @@ namespace STORE
     eEC eGenerateAggregateCode(Stz* szAsmBuffer, StreamDef* pStreamDefOut, Column* pColumn, eAG eAggType);
     eEC eGenerateGroupbyCode(StreamDef* pStreamDefOut, Column* pColumn, eAG eAggType);
 
-    eEC  eGenerateCount(Stz* szAsmBuffer, Stz* sAggInit);
-    eEC  eGenerateCountAll(Stz* szAsmBuffer, Stz* sAggInit);
-    eEC  eGenerateMin(Stz* sAsmBuffer, Stz* sAggInit);
-    eEC  eGenerateMax(Stz* sAsmBuffer, Stz* sAggInit);
-    eEC  eGenerateSum(Stz* sAsmBuffer, Stz* sAggInit);
+    eEC eGenerateCount(Stz* szAsmBuffer, Stz* sAggInit);
+    eEC eGenerateCountAll(Stz* szAsmBuffer, Stz* sAggInit);
+    eEC eGenerateMin(Stz* sAsmBuffer, Stz* sAggInit);
+    eEC eGenerateMax(Stz* sAsmBuffer, Stz* sAggInit);
+    eEC eGenerateSum(Stz* sAsmBuffer, Stz* sAggInit);
+
+    i8 iOrdinalToLocal(i8 i_ColumnOrdinal);
 
     void vUpdateStreamDefOut(StreamDef* pStreamDefOut, Column* pColumn);
     Footer* aFooter(void);
