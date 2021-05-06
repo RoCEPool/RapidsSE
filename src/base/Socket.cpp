@@ -13,9 +13,7 @@
 
 Atomic gixSocket;
 
-/*----------------------------------------------------------------------------*/
-/*-- LifeCycle ---------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
+extern SizeHeap  gxaSizeHeap[];
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -215,6 +213,99 @@ void Socket::vSuccess(bool bSuccess)
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
   m_bSuccess = bSuccess;
+}
+
+/*----------------------------------------------------------------------------*/
+/* recv object from this socket                                               */
+/*----------------------------------------------------------------------------*/
+Object* Socket::pRecvObject(void)
+{
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
+  Socket* pSocket = this;
+
+  RASSERT(! pSocket->pReceivedObject());
+
+  bool bLowMem = gpBufferPool->bLowMemory();
+
+  char caObjectHeader[sizeof(Object) + C_1K];
+  Header* aHeader = (Header*) & caObjectHeader[0];
+  Object* pObject = reinterpret_cast<Object*>(&caObjectHeader);
+
+  pObject->vSetWasReceived(true);
+  pObject->vSetPostRecvRun(false);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // receive the header of the next object
+
+
+  SysCall oSysCall;
+  bool bResult = pSocket->bRecvBytes(aHeader,sizeof(Object),oSysCall);
+  if (! bResult) {
+    //m_pDataStack->vPushInt(false);
+    pSocket->vReceivedObject(nullptr);
+    pSocket->vSuccess(false);
+    return m_pReceivedObject;
+  }
+
+//  SP_Header spHeader;
+//  vTrace("%lld: vSocketRecvObject: Header %s\n"_Stz,
+//         AM::iThisNodeNo(),
+//         spHeader.sz(aHeader));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // receive the body of the obect (enough memory condition)
+
+  eCN eClass = pObject->eGetClassNo();
+
+  if (! bLowMem || ! gxaSizeHeap[eClass].m_bLowMemoryDiscard) {
+
+    Object* pReceivedObject = Heaps::pAllocate(eClass);
+    MemLib::vCopy(pReceivedObject,pObject,sizeof(Object),eClass);
+
+    void* aBody = aAdd<void*>(pReceivedObject,sizeof(Object));
+    i8 nRemainingBytes = gxaSizeHeap[eClass].m_nClassSize - sizeof(Object);
+
+    bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
+    if (! bResult) {
+     //m_pDataStack->vPushInt(false);
+     pSocket->vReceivedObject(nullptr);
+     pSocket->vSuccess(false);
+     return m_pReceivedObject;
+    }
+
+    //pReceivedObject->vSetPostRecvRun(false);
+
+    pReceivedObject->vRunPostRecv();
+
+    //m_pDataStack->vPushPtr(pReceivedObject);
+    //m_pDataStack->vPushInt(true);
+    pSocket->vReceivedObject(pReceivedObject);
+    pSocket->vSuccess(true);
+    return m_pReceivedObject;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // receive and discard the body of the object (low memory condition)
+
+  void* aLowBuff = pSocket->m_aLowBuff;
+
+  // copy the object header into the LowBuffer
+  MemLib::vCopy(aLowBuff,pObject,sizeof(Object),eClass);
+
+  // recv rest of the buffer into LowBuffer
+  void* aLowBody = aAdd<void*>(aLowBuff,sizeof(Object));
+  i8 nRemainingBytes = gxaSizeHeap[eClass].m_nClassSize - sizeof(Object);
+
+  bResult = pSocket->bRecvBytes(aLowBody,nRemainingBytes,oSysCall);
+
+  // whether able to recv or not, return false
+  //m_pDataStack->vPushPtr(nullptr);
+  //m_pDataStack->vPushInt(true);
+  pSocket->vReceivedObject(nullptr);
+  pSocket->vSuccess(true);
+  
+  return m_pReceivedObject;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -50,6 +50,8 @@ namespace BASE
     void vCopy(Socket* pSource);
     bool bIsOpen();
 
+    Object* pRecvObject(void);
+  
     Object* pReceivedObject(void);
     void vReceivedObject(Object* pReceivedObject);
   
