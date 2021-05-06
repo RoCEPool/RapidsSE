@@ -48,6 +48,7 @@ namespace STORE
     Object* pGetObject(i8 i_Object);
     i8 nObjects(void);
     Operand* pGetOperand(void);
+    void vRecvContents(Socket* pSocket);
     void vSendOut(Op* pSrcOp);
   
   private:

@@ -120,12 +120,22 @@ i8 Parcel::nObjects(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* recv contents of parcel from given socket                                  */
+/*----------------------------------------------------------------------------*/
+void Parcel::vRecvContents(Socket* pSocket)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+  
+  //vTrace("Parcel::vRecvContents +++++++++++++++++++++++++++++++++++\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* send out operand as parcel                                                 */
 /*----------------------------------------------------------------------------*/
 void Parcel::vSendOut(Op* pSrcOp)
 {
-  _static_
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+
   Pipeline* pPipeline = pSrcOp->pPipeline();
   i8 i_NextStage = pSrcOp->iNextStage();
   ePX eCrossTopo = pSrcOp->eCrossTopo();
@@ -223,6 +233,8 @@ void Parcel::vSendOut(Op* pSrcOp)
 /*----------------------------------------------------------------------------*/
 void Parcel::vSendOverSocket(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+  
   bool bResult;
   i8 nObjectSize;
   SysCall oSysCall;
@@ -256,8 +268,8 @@ void Parcel::vSendOverSocket(void)
 /*----------------------------------------------------------------------------*/
 void Parcel::vSendParcel(Op* pSrcOp, i8  iDstNode, tPN tDstPtn)
 {
-  _static_
-    
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+
   m_iDstNode = iDstNode;
   m_tDstPtn   = tDstPtn;
   
@@ -288,8 +300,8 @@ void Parcel::vSendParcel(Op* pSrcOp, i8  iDstNode, tPN tDstPtn)
 /*----------------------------------------------------------------------------*/
 void Parcel::vSendToAllNodes(Op* pSrcOp)
 {
-  _static_
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+
   Pipeline* pPipeline = pSrcOp->pPipeline();
   i8 i_NextStage = pSrcOp->iNextStage();
 
@@ -311,8 +323,8 @@ void Parcel::vSendToAllNodes(Op* pSrcOp)
 /*----------------------------------------------------------------------------*/
 void Parcel::vSendToAllOriginPartitions(Op* pSrcOp)
 {
-  _static_
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+
   tPN tPtnNo;
   i8 i_TablePtn;
   
@@ -376,8 +388,8 @@ void Parcel::vSendToAllOriginPartitions(Op* pSrcOp)
 /*----------------------------------------------------------------------------*/
 void Parcel::vSendToAllPartitions(Op* pSrcOp)
 {
-  _static_
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+
   tPN tPtnNo;
   i8 i_TablePtn;
   
@@ -464,8 +476,8 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
 /*----------------------------------------------------------------------------*/
 void Parcel::vSendToNode(Op* pSrcOp, i8 iDstNode)
 {
-  _static_
-    
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+
   Pipeline* pPipeline = pSrcOp->pPipeline();
   i8 i_NextStage = pSrcOp->iNextStage();
   
@@ -483,8 +495,8 @@ void Parcel::vSendToNode(Op* pSrcOp, i8 iDstNode)
 /*----------------------------------------------------------------------------*/
 void Parcel::vSendToOrigin(Op* pSrcOp)
 {
-  _static_
- 
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+
   Pipeline* pPipeline = pSrcOp->pPipeline();
 
   i8 iDstNode = pPipeline->i_Origin();
@@ -498,8 +510,8 @@ void Parcel::vSendToOrigin(Op* pSrcOp)
 /*----------------------------------------------------------------------------*/
 void Parcel::vSendToPartition(Op* pSrcOp, tPN tDstPtn)
 {
-  _static_
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+
   Operand* pOperand = pGetOperand();
 
   i8 i_Robin;

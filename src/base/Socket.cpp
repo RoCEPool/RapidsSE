@@ -13,9 +13,7 @@
 
 Atomic gixSocket;
 
-/*----------------------------------------------------------------------------*/
-/*-- LifeCycle ---------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
+extern SizeHeap  gxaSizeHeap[];
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -46,7 +44,7 @@ Socket::Socket(Object* pIsFor)
   vAddrInit(&m_xServAddr,nullptr,0);
   
   m_bSuccess = false;
-  m_pRecvObject = nullptr;
+  m_pReceivedObject = nullptr;
   
   _checkInitialised_(CN_SOCKET);
   
@@ -77,7 +75,7 @@ Socket::Socket(Object* pIsFor, int iSocketId)
   vAddrInit(&m_xServAddr,nullptr,0);
   
   m_bSuccess = false;
-  m_pRecvObject = nullptr;
+  m_pReceivedObject = nullptr;
 
   _checkInitialised_(CN_SOCKET);
   
@@ -218,23 +216,105 @@ void Socket::vSuccess(bool bSuccess)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get received object                                                        */
+/* recv next object from this socket                                          */
 /*----------------------------------------------------------------------------*/
 Object* Socket::pRecvObject(void)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
-  return m_pRecvObject;
+  RASSERT(! pReceivedObject());
+
+  bool bLowMem = gpBufferPool->bLowMemory();
+
+  char caObjectHeader[sizeof(Object) + C_1K];
+  Header* aHeader = (Header*) & caObjectHeader[0];
+  Object* pObject = reinterpret_cast<Object*>(&caObjectHeader);
+
+  pObject->vSetWasReceived(true);
+  pObject->vSetPostRecvRun(false);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // receive the header of the next object
+
+  SysCall oSysCall;
+  bool bResult = bRecvBytes(aHeader,sizeof(Object),oSysCall);
+  if (! bResult) {
+    //m_pDataStack->vPushInt(false);
+    vReceivedObject(nullptr);
+    vSuccess(false);
+    return m_pReceivedObject;
+  }
+
+//  SP_Header spHeader;
+//  vTrace("%lld: vSocketRecvObject: Header %s\n"_Stz,
+//         AM::iThisNodeNo(),
+//         spHeader.sz(aHeader));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // receive the body of the obect (enough memory condition)
+
+  eCN eClass = pObject->eGetClassNo();
+  if (! bLowMem || ! gxaSizeHeap[eClass].m_bLowMemoryDiscard) {
+
+    Object* pReceivedObject = Heaps::pAllocate(eClass);
+    MemLib::vCopy(pReceivedObject,pObject,sizeof(Object),eClass);
+
+    void* aBody = aAdd<void*>(pReceivedObject,sizeof(Object));
+    i8 nRemainingBytes = gxaSizeHeap[eClass].m_nClassSize - sizeof(Object);
+
+    bResult = bRecvBytes(aBody,nRemainingBytes,oSysCall);
+    if (! bResult) {
+     //m_pDataStack->vPushInt(false);
+     vReceivedObject(nullptr);
+     vSuccess(false);
+     return m_pReceivedObject;
+    }
+
+    pReceivedObject->vRunPostRecv();
+
+    vReceivedObject(pReceivedObject);
+    vSuccess(true);
+    return m_pReceivedObject;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // receive and discard the body of the object (low memory condition)
+
+  void* aLowBuff = m_aLowBuff;
+
+  // copy the object header into the LowBuffer
+  MemLib::vCopy(aLowBuff,pObject,sizeof(Object),eClass);
+
+  // recv rest of the buffer into LowBuffer
+  void* aLowBody = aAdd<void*>(aLowBuff,sizeof(Object));
+  i8 nRemainingBytes = gxaSizeHeap[eClass].m_nClassSize - sizeof(Object);
+
+  bResult = bRecvBytes(aLowBody,nRemainingBytes,oSysCall);
+
+  vReceivedObject(nullptr);
+  vSuccess(true);
+  
+  return m_pReceivedObject;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get received object                                                        */
+/*----------------------------------------------------------------------------*/
+Object* Socket::pReceivedObject(void)
+{
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
+  return m_pReceivedObject;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set received object                                                        */
 /*----------------------------------------------------------------------------*/
-void Socket::vRecvObject(Object* pRecvObject)
+void Socket::vReceivedObject(Object* pReceivedObject)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
-  m_pRecvObject = pRecvObject;
+  m_pReceivedObject = pReceivedObject;
 }
 
 /*----------------------------------------------------------------------------*/

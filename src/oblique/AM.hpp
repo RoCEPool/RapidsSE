@@ -88,6 +88,7 @@ namespace BASE {
 
   class Schedule;
   class Scheduler;
+  class Socket;
   class Statistics;
 
   class TagSet;
@@ -238,6 +239,12 @@ namespace OBLIQUE
       static void vResourceUse(Resource* pResource, i8 iAction, i8 nBytes);
     };
 
+    class PARCEL
+    {
+    public:
+      static void vRecvContents(Parcel* pParcel, Socket* pSocket);
+    };
+  
     class SYSTEM
     {
     public:

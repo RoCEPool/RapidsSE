@@ -25,10 +25,10 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* receive next operand object                                                */
+/* receive next object(s)                                                     */
 /*----------------------------------------------------------------------------*/
-: receiver_recvOperand
-
+: receiver_recvNext
+  
   nullptr to Register0[]
 
   Socket[].recvObject
@@ -38,14 +38,6 @@
   then
   
   Socket[].object@\clear to Register0[]
-;
-
-/*----------------------------------------------------------------------------*/
-/* receive next object(s)                                                     */
-/*----------------------------------------------------------------------------*/
-: receiver_recvNext
-
-  receiver_recvOperand
 
   Socket[].success@
 ;
