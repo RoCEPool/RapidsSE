@@ -68,7 +68,7 @@ namespace STORE
 
   private:
     void vAddArithmetic(Stz* szAsmBuffer, Token*  pTkn, Column* pColumn);
-    eEC  eAddDate(Stz* szAsmBuffer, Token*  pTkn, Column* pColumnExpr);
+    void vAddDate(Stz* szAsmBuffer, Token*  pTkn);
     eEC  eAddDecimal(Stz* szAsmBuffer, Token*  pTkn, Column* pColumnExpr);
     eEC  eAddGbyIdxCol(Stz* szAsmBuffer, StreamDef* pStreamDefIn, i8 i_ColumnOrdinal);
     void vAddLogical(Stz* szAsmBuffer, Token*  pTkn);
@@ -79,6 +79,8 @@ namespace STORE
     void vAddRelational(Stz* szAsmBuffer, Token*  pTkn);
     void vAddStoreCol(Stz* szAsmBuffer, Column* pColumnExpr);
     void vAddString(Stz* szAsmBuffer, Token*  pTkn, Column* pColumnExpr);
+    void vAddTime(Stz* szAsmBuffer, Token*  pTkn);
+    void vAddTimestamp(Stz* szAsmBuffer, Token*  pTkn);
     void vAddUnknown(Stz* szAsmBuffer, Token*  pTkn, Column* pColumnExpr);
 
     void vAddToBufferCol(Stz* szAsmBuffer, Column* pColumn);

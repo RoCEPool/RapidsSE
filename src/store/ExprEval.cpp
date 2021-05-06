@@ -190,26 +190,12 @@ void ExprEval::vAddArithmetic(Stz* szAsmBuffer, Token* pTkn, Column* pColumn) {
 /*----------------------------------------------------------------------------*/
 /* add EO code for dates                                                      */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval::eAddDate(Stz* szAsmBuffer, Token* pTkn, Column* pColumnExpr) {
+void ExprEval::vAddDate(Stz* szAsmBuffer, Token* pTkn) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
-  i8 iDate;
-  char* szToken = (char*)pTkn->szChars();
-
-  SN_Dte snDate;
-
-  // validate the date
-  try {
-    iDate = snDate.i(&szToken, AM::pFmt());
-  } catch (...) {
-    return EC_INVALID_COMMAND;
-  }
-
   m_xTypeStack.vPush(DM_DTE);
   StrLib::vSprintCat(szAsmBuffer, "  EO_DATE \"%s\"\n"_Stz, pTkn->szChars());
-
-  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -834,27 +820,30 @@ void ExprEval::vAddString(Stz* szAsmBuffer, Token* pTkn, Column* pColumnExpr) {
 
   char* szToken = (char*)pTkn->szChars();
 
-  switch (pColumnExpr->eColumnType()) {
-    case CT_DATE:
-      m_xTypeStack.vPush((i8)DM_DTE);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_DATE \"%s\"\n"_Stz, szToken);
-      break;
-    case CT_TIME:
-      m_xTypeStack.vPush((i8)DM_TME);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_TIME \"%s\"\n"_Stz, szToken);
-      break;
-    case CT_TIMESTAMP:
-      m_xTypeStack.vPush((i8)DM_TSP);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_TIMESTAMP \"%s\"\n"_Stz, szToken);
-      break;
-    case CT_VARCHAR:
-      m_xTypeStack.vPush((i8)DM_VCH);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_STRING \"%s\"\n"_Stz, szToken);
-      break;
-    default:
-      NEVER_REACH;
-  }
+  m_xTypeStack.vPush((i8)DM_VCH);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_STRING \"%s\"\n"_Stz, szToken);
+}
 
+/*----------------------------------------------------------------------------*/
+/* add EO code for time                                                       */
+/*----------------------------------------------------------------------------*/
+void ExprEval::vAddTime(Stz* szAsmBuffer, Token* pTkn) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
+
+  m_xTypeStack.vPush(DM_TME);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_TIME \"%s\"\n"_Stz, pTkn->szChars());
+}
+
+/*----------------------------------------------------------------------------*/
+/* add EO code for timestamp                                                  */
+/*----------------------------------------------------------------------------*/
+void ExprEval::vAddTimestamp(Stz* szAsmBuffer, Token* pTkn) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
+
+  m_xTypeStack.vPush(DM_TSP);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_TIMESTAMP \"%s\"\n"_Stz, pTkn->szChars());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1098,10 +1087,31 @@ eEC ExprEval::eExprEval(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Token
     if (pTkn->bSame("DATE"_Stz) ) {
       pTkn = pTknVec->pNextToken();
       if (pTkn->bIsString()) {
-        eError = eAddDate(szAsmBuffer, pTkn, pColumnExpr);
-        if (eError == EC_INVALID_COMMAND) {
-          goto L_RETURN;
-        }
+        vAddDate(szAsmBuffer, pTkn);
+        pTkn = pTknVec->pNextToken();
+        continue;
+      }
+      else
+        pTkn = pTknVec->pPrevToken();
+    }
+
+    // is it a time ?
+    if (pTkn->bSame("TIME"_Stz) ) {
+      pTkn = pTknVec->pNextToken();
+      if (pTkn->bIsString()) {
+        vAddTime(szAsmBuffer, pTkn);
+        pTkn = pTknVec->pNextToken();
+        continue;
+      }
+      else
+        pTkn = pTknVec->pPrevToken();
+    }
+
+    // is it a timestamp ?
+    if (pTkn->bSame("TIMESTAMP"_Stz) ) {
+      pTkn = pTknVec->pNextToken();
+      if (pTkn->bIsString()) {
+        vAddTimestamp(szAsmBuffer, pTkn);
         pTkn = pTknVec->pNextToken();
         continue;
       }
@@ -1305,10 +1315,31 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
     if (pTkn->bSame("DATE"_Stz) ) {
       pTkn = pTknVec->pNextToken();
       if (pTkn->bIsString()) {
-        eError = eAddDate(szAsmBuffer, pTkn, pColumnExpr);
-        if (eError == EC_INVALID_COMMAND) {
-          goto L_RETURN;
-        }
+        vAddDate(szAsmBuffer, pTkn);
+        pTkn = pTknVec->pNextToken();
+        continue;
+      }
+      else
+        pTkn = pTknVec->pPrevToken();
+    }
+
+    // is it a time ?
+    if (pTkn->bSame("TIME"_Stz) ) {
+      pTkn = pTknVec->pNextToken();
+      if (pTkn->bIsString()) {
+        vAddTime(szAsmBuffer, pTkn);
+        pTkn = pTknVec->pNextToken();
+        continue;
+      }
+      else
+        pTkn = pTknVec->pPrevToken();
+    }
+
+    // is it a timestamp ?
+    if (pTkn->bSame("TIMESTAMP"_Stz) ) {
+      pTkn = pTknVec->pNextToken();
+      if (pTkn->bIsString()) {
+        vAddTimestamp(szAsmBuffer, pTkn);
         pTkn = pTknVec->pNextToken();
         continue;
       }
@@ -1630,10 +1661,31 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
     if (pTkn->bSame("DATE"_Stz) ) {
       pTkn = pTknVec->pNextToken();
       if (pTkn->bIsString()) {
-        eError = eAddDate(szAsmBuffer, pTkn, pColumnExpr);
-        if (eError == EC_INVALID_COMMAND) {
-          goto L_RETURN;
-        }
+        vAddDate(szAsmBuffer, pTkn);
+        pTkn = pTknVec->pNextToken();
+        continue;
+      }
+      else
+        pTkn = pTknVec->pPrevToken();
+    }
+
+    // is it a time ?
+    if (pTkn->bSame("TIME"_Stz) ) {
+      pTkn = pTknVec->pNextToken();
+      if (pTkn->bIsString()) {
+        vAddTime(szAsmBuffer, pTkn);
+        pTkn = pTknVec->pNextToken();
+        continue;
+      }
+      else
+        pTkn = pTknVec->pPrevToken();
+    }
+
+    // is it a timestamp ?
+    if (pTkn->bSame("TIMESTAMP"_Stz) ) {
+      pTkn = pTknVec->pNextToken();
+      if (pTkn->bIsString()) {
+        vAddTimestamp(szAsmBuffer, pTkn);
         pTkn = pTknVec->pNextToken();
         continue;
       }
