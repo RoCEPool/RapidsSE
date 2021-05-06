@@ -27,8 +27,8 @@ namespace BASE
       i8 m__Padding[16];
     };
   
-    bool    m_bSuccess;    // success?
-    Object* m_pRecvObject; // object which was received
+    bool    m_bSuccess;  // success?
+    Object* m_pReceivedObject; // object which was received
 
     // must be last
     Footer m_xFooter;
@@ -50,8 +50,8 @@ namespace BASE
     void vCopy(Socket* pSource);
     bool bIsOpen();
 
-    Object* pRecvObject(void);
-    void vRecvObject(Object* pRecvObject);
+    Object* pReceivedObject(void);
+    void vReceivedObject(Object* pReceivedObject);
   
     bool bSuccess(void);
     void vSuccess(bool bSuccess);

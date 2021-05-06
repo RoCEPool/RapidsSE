@@ -299,7 +299,7 @@ void Step::vSocketObjectFetch(void)
   
   Socket* pSocket = *m_pJob->pLogicUnit_job()->m_xpSocket;
 
-  Object* pObject = pSocket->pRecvObject();
+  Object* pObject = pSocket->pReceivedObject();
 
   m_pDataStack->vPushPtr(pObject);
 
@@ -315,8 +315,8 @@ void Step::vSocketObjectFetchClear(void)
   
   Socket* pSocket = *m_pJob->pLogicUnit_job()->m_xpSocket;
 
-  Object* pObject = pSocket->pRecvObject();
-  pSocket->vRecvObject(nullptr);
+  Object* pObject = pSocket->pReceivedObject();
+  pSocket->vReceivedObject(nullptr);
   
   m_pDataStack->vPushPtr(pObject);
 
@@ -357,7 +357,7 @@ void Step::vSocketRecvObject(void)
   
   Socket* pSocket = *m_pJob->pLogicUnit_job()->m_xpSocket;
   
-  RASSERT(! pSocket->pRecvObject());
+  RASSERT(! pSocket->pReceivedObject());
   
   bool bLowMem = gpBufferPool->bLowMemory();
   
@@ -376,7 +376,7 @@ void Step::vSocketRecvObject(void)
   bool bResult = pSocket->bRecvBytes(aHeader,sizeof(Object),oSysCall);
   if (! bResult) {
     //m_pDataStack->vPushInt(false);
-    pSocket->vRecvObject(nullptr);
+    pSocket->vReceivedObject(nullptr);
     pSocket->vSuccess(false);
     EXIT();
     return;
@@ -403,7 +403,7 @@ void Step::vSocketRecvObject(void)
     bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
     if (! bResult) {
      //m_pDataStack->vPushInt(false);
-     pSocket->vRecvObject(nullptr);
+     pSocket->vReceivedObject(nullptr);
      pSocket->vSuccess(false);
      EXIT();
      return;
@@ -415,7 +415,7 @@ void Step::vSocketRecvObject(void)
 
     //m_pDataStack->vPushPtr(pReceivedObject);
     //m_pDataStack->vPushInt(true);
-    pSocket->vRecvObject(pReceivedObject);
+    pSocket->vReceivedObject(pReceivedObject);
     pSocket->vSuccess(true);
     EXIT();
     return;
@@ -438,7 +438,7 @@ void Step::vSocketRecvObject(void)
   // whether able to recv or not, return false
   //m_pDataStack->vPushPtr(nullptr);
   //m_pDataStack->vPushInt(true);
-  pSocket->vRecvObject(nullptr);
+  pSocket->vReceivedObject(nullptr);
   pSocket->vSuccess(true);
   EXIT();
 }

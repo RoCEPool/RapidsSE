@@ -46,7 +46,7 @@ Socket::Socket(Object* pIsFor)
   vAddrInit(&m_xServAddr,nullptr,0);
   
   m_bSuccess = false;
-  m_pRecvObject = nullptr;
+  m_pReceivedObject = nullptr;
   
   _checkInitialised_(CN_SOCKET);
   
@@ -77,7 +77,7 @@ Socket::Socket(Object* pIsFor, int iSocketId)
   vAddrInit(&m_xServAddr,nullptr,0);
   
   m_bSuccess = false;
-  m_pRecvObject = nullptr;
+  m_pReceivedObject = nullptr;
 
   _checkInitialised_(CN_SOCKET);
   
@@ -220,21 +220,21 @@ void Socket::vSuccess(bool bSuccess)
 /*----------------------------------------------------------------------------*/
 /* get received object                                                        */
 /*----------------------------------------------------------------------------*/
-Object* Socket::pRecvObject(void)
+Object* Socket::pReceivedObject(void)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
-  return m_pRecvObject;
+  return m_pReceivedObject;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set received object                                                        */
 /*----------------------------------------------------------------------------*/
-void Socket::vRecvObject(Object* pRecvObject)
+void Socket::vReceivedObject(Object* pReceivedObject)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
-  m_pRecvObject = pRecvObject;
+  m_pReceivedObject = pReceivedObject;
 }
 
 /*----------------------------------------------------------------------------*/
