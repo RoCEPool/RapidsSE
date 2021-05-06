@@ -98,7 +98,7 @@ eCT LiteralExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
   else if (   TimestampLiteral::bIsOfType(pExprNode))  { return CT_TIMESTAMP;   }
 //  else if (IntervalYMLiteral::bIsOfType(pExprNode))  { return CT_INTERVAL_YM; }
 //  else if (IntervalDTLiteral::bIsOfType(pExprNode))  { return CT_INTERVAL_DT; }
-//  else if (      NullLiteral::bIsOfType(pExprNode))  { return CT_UNKNOWN;     }
+  else if (      NullLiteral::bIsOfType(pExprNode))    { return CT_UNKNOWN;     }
   else NEVER_REACH
 }
 
