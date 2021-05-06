@@ -44,13 +44,14 @@ namespace STORE
    ~Parcel(void) noexcept(false);
         
   public:
-    void vAddObject(Object *pObj);
+    void vAddObject(Object* pObject);
     Object* pGetObject(i8 i_Object);
     i8 nObjects(void);
     Operand* pGetOperand(void);
     void vRecvContents(Socket* pSocket);
     void vSendOut(Op* pSrcOp);
-  
+    void vSetObject(i8 i_Object, Object* pObject);
+
   private:
     void vSendOverSocket(void);
     void vSendParcel(Op* pSrcOp, i8 iDstNode, tPN tDstPtn);

@@ -76,12 +76,12 @@ Parcel::~Parcel(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* Add object to array                                                        */
 /*----------------------------------------------------------------------------*/
-void Parcel::vAddObject(Object *pObj)
+void Parcel::vAddObject(Object* pObject)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
   if (m_nObjects < C_MAX_PARCEL_OBJ) {
-    m_pObjects[m_nObjects++] = pObj;
+    m_pObjects[m_nObjects++] = pObject;
   }
 }
 
@@ -124,14 +124,11 @@ i8 Parcel::nObjects(void)
 void Parcel::vRecvContents(Socket* pSocket)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
-  
-//  vTrace("Parcel::vRecvContents %lld +++++++++++++++++++++++++++++++++++\n"_Stz,
-//         m_nObjects);
-  
-  Object* pItem = pSocket->pRecvObject();
-  m_pObjects[0] = pItem;
-  
-  //pSocket->vReceivedObject(nullptr);
+    
+  for (i8 i_Object = 0; i_Object < m_nObjects; i_Object++) {
+    Object* pObject = pSocket->pRecvObject();
+    vSetObject(i_Object,pObject);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -226,6 +223,16 @@ void Parcel::vSendOut(Op* pSrcOp)
   
   // delete the operand
   AM::vDeleteOperand(pOperand);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set object in array                                                        */
+/*----------------------------------------------------------------------------*/
+void Parcel::vSetObject(i8 i_Object, Object* pObject)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+
+  m_pObjects[i_Object] = pObject;
 }
 
 
