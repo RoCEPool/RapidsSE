@@ -46,7 +46,7 @@
   // get the nodes port and IP address
   Node[] node.port ( port )
   Node[] node.IP   ( port IP )
-      Socket[] socket.connect to Socket[]
+      Socket[] socket.connect //to Socket[]
 
   Socket[].isNull if
     Node[] node.no grid::thisNode@ "Node %v unable to connect to node %v" .printf

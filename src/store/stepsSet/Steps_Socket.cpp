@@ -146,7 +146,7 @@ void Step::vSocketConnect(void)
 
   if (bResult) {
     // return the socket object
-    m_pDataStack->vPushPtr(pSocket);
+    //m_pDataStack->vPushPtr(pSocket);
     EXIT();
     return;
   }
@@ -166,8 +166,9 @@ void Step::vSocketConnect(void)
            iError, strerror((int)iError));
   }
   
-  m_pDataStack->vPushPtr(nullptr);
-  
+  //m_pDataStack->vPushPtr(nullptr);
+  m_pJob->pLogicUnit_job()->m_xpSocket = nullptr;
+
   EXIT();
 }
 
