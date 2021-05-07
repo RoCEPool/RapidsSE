@@ -518,8 +518,8 @@ void Step::vTableNew(void) {
 
 
   // SAME NODE TESTING ////////////////////// SAME NODE TESTING //////////////////////////////
-#ifndef JUNK
-  if (sTableNm.bSame("bolTbl123"_Stz)) {
+#ifdef JUNK
+  if (sTableNm.bSame("bolTbl"_Stz)) {
     pTable->iPrepareParcel();
 
     s32 sTableName;
@@ -530,18 +530,18 @@ void Step::vTableNew(void) {
     Parcel* pParcel = pTable->pParcel();
     i8 nObjParts = pParcel->nObjects();
 
-    if (nObjParts > 0) {
-      Object *pObject = pParcel->pGetObject(0);
+    for (i8 i_Obj = 0; i_Obj < nObjParts; i_Obj++) {
+      Object *pObject = pParcel->pGetObject(i_Obj);
       if (pObject->eGetClassNo() == CN_TABLE) {
         pTbl = (Table *) pObject;
-        pNewTable = (Table *) ::operator new(gxaSizeHeap[pObject->eGetClassNo()].m_nClassSize, pTbl);
+        //pNewTable = (Table *) ::operator new(gxaSizeHeap[pObject->eGetClassNo()].m_nClassSize, pTbl);
+        pNewTable = pTbl;
         pNewTable->iBuildParcel(pTable->pParcel());
         pNewTable->iReassembleObj();
         vTrace(">>>>>>>>>>>> (New) Table:%s\n"_Stz, sTableName.azChar());
+        break;
       }
     }
-
-
 
     // Testing the concept, passing the minimum-reassemble table works
     m_pDataStack->vPushPtr(pNewTable);

@@ -842,6 +842,10 @@ i8 Table::iPrepareParcel(void)
   return m_pParcel->nObjects();
 }
 
+/*----------------------------------------------------------------------------*/
+/* returns object parts includes the main by index                            */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Object* Table::pGetParcelObject(i8 iIdx)
 {
   if (!m_pParcel) return nullptr;

@@ -45,7 +45,9 @@ Parcel::Parcel(Operand* pOperand,
   for (i8 i_Obj = 0; i_Obj < C_MAX_PARCEL_OBJ; i_Obj++)
     m_pObjects[i_Obj] = nullptr;
 
-  vAddObject(pOperand);
+  if (pOperand)
+    vAddObject(pOperand);
+
   m_iPipelineJobId = iPipelineJobId;
   m_eCrossTopo     = eCrossTopo;
   m_eSendKind      = XK_NONE;
@@ -477,7 +479,7 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
 void Parcel::vSendToNode(Op* pSrcOp, i8 iDstNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
-
+  vTrace("vSendToNode iDstNode:%lld\n"_Stz, iDstNode);
   Pipeline* pPipeline = pSrcOp->pPipeline();
   i8 i_NextStage = pSrcOp->iNextStage();
   
@@ -501,7 +503,7 @@ void Parcel::vSendToOrigin(Op* pSrcOp)
 
   i8 iDstNode = pPipeline->i_Origin();
   pSrcOp->vSendNode(iDstNode);
-  
+  vTrace("vSendToOrigin iDstNode:%lld\n"_Stz, iDstNode);
   vSendParcel(pSrcOp,iDstNode,C_UNKNOWN);
 }
 
@@ -545,7 +547,7 @@ void Parcel::vSendToPartition(Op* pSrcOp, tPN tDstPtn)
   
   i8 iDstNode = AM::pPtnMap()->i_WhichNode(tDstPtn);
   pSrcOp->vSendNode(iDstNode);
-
+  vTrace("vSendToPartition iDstNode:%lld\n"_Stz, iDstNode);
   vSendParcel(pSrcOp,iDstNode,tDstPtn);
 }
 
