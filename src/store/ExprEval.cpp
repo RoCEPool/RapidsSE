@@ -431,7 +431,7 @@ void ExprEval::vAddRelational(Stz* szAsmBuffer, Token* pTkn)
 /*----------------------------------------------------------------------------*/
 /* add EO code for count                                                      */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval::eGenerateCount(Stz* szAsmBuffer, Stz* sAggInit)
+void ExprEval::vGenerateCount(Stz* szAsmBuffer, Stz* sAggInit)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
@@ -485,17 +485,13 @@ eEC ExprEval::eGenerateCount(Stz* szAsmBuffer, Stz* sAggInit)
     StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_POPCOLI %lld\n"_Stz, m_iDstColumn);
     StrLib::vSprintCat(szAsmBuffer, "  Label COUNT_DONE\n"_Stz);
     StrLib::vSprintCat(szAsmBuffer, "  DeleteLabel COUNT_DONE\n"_Stz);
-
   }
-
-
-  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
 /* add EO code for count(*)                                                   */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval::eGenerateCountAll(Stz* szAsmBuffer, Stz* sAggInit)
+void ExprEval::vGenerateCountAll(Stz* szAsmBuffer, Stz* sAggInit)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
@@ -527,14 +523,12 @@ eEC ExprEval::eGenerateCountAll(Stz* szAsmBuffer, Stz* sAggInit)
     StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
     StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_POPCOLI %lld\n"_Stz, m_iDstColumn);
   }
-
-  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
 /* add EO code for max                                                        */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval::eGenerateMax(Stz* szAsmBuffer, Stz* sAggInit)
+void ExprEval::vGenerateMax(Stz* szAsmBuffer, Stz* sAggInit)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
@@ -615,14 +609,12 @@ eEC ExprEval::eGenerateMax(Stz* szAsmBuffer, Stz* sAggInit)
     StrLib::vSprintCat(szAsmBuffer, "  Label MAX_DONE\n"_Stz);
     StrLib::vSprintCat(szAsmBuffer, "  DeleteLabel MAX_DONE\n"_Stz);
   }
-
-  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
 /* add EO code for min                                                        */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval::eGenerateMin(Stz* szAsmBuffer, Stz* sAggInit)
+void ExprEval::vGenerateMin(Stz* szAsmBuffer, Stz* sAggInit)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
@@ -699,13 +691,12 @@ eEC ExprEval::eGenerateMin(Stz* szAsmBuffer, Stz* sAggInit)
     StrLib::vSprintCat(szAsmBuffer, "  Label MIN_DONE\n"_Stz);
     StrLib::vSprintCat(szAsmBuffer, "  DeleteLabel MIN_DONE\n"_Stz);
   }
-  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
 /* generate EO code for sum                                                   */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval::eGenerateSum(Stz* sAsmBuffer, Stz* sAggInit)
+void ExprEval::vGenerateSum(Stz* sAsmBuffer, Stz* sAggInit)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
@@ -713,9 +704,6 @@ eEC ExprEval::eGenerateSum(Stz* sAsmBuffer, Stz* sAggInit)
   eDM eParamType = (eDM)m_xTypeStack.iPop();
   eDM eResultType = eMathOp_SumResult[eParamType];
   eEO eCode = eMathOp_SumCode[eParamType];
-
-  if (DM_NONE == eResultType)
-    return EC_INVALID_COMMAND;
 
   // push result type
   m_xTypeStack.vPush(eResultType);
@@ -743,7 +731,6 @@ eEC ExprEval::eGenerateSum(Stz* sAsmBuffer, Stz* sAggInit)
     StrLib::vSprintCat(sAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
     StrLib::vSprintCat(sAsmBuffer, "  EO_DEVROW_POPCOLI %lld\n"_Stz, m_iDstColumn);
   }
-  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1464,7 +1451,7 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
         goto L_RETURN;
       }
 
-      vAddToBufferCol(m_sPayLoadToBufferAsm, pColumnExpr);
+      vAddToBufferCol(m_sPayLoadToBufferAsm, pColumnExpr->eColumnType());
 
       m_iDstColumn++;
       sColumnNm.vSprint("col%lld"_Stz, m_iDstColumn);
@@ -1723,7 +1710,7 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
       // discovered a column, generate code for the column
       vGenerateColumnCodeGby(pStreamDefOut, pColumnExpr);
 
-      vAddToBufferCol(m_sPayLoadToBufferAsm, pColumnExpr);
+      vAddToBufferCol(m_sPayLoadToBufferAsm, pColumnExpr->eColumnType());
 
       m_iDstColumn++;
 
@@ -1799,19 +1786,19 @@ eEC ExprEval::eGenerateAggregateCode(Stz* szAsmBuffer, StreamDef* pStreamDefOut,
 
   switch (eAggType) {
     case AG_ALL:
-      eError = eGenerateCountAll(szAsmBuffer, m_sAggInitAsm);
+      vGenerateCountAll(szAsmBuffer, m_sAggInitAsm);
       break;
     case AG_CNT:
-      eError = eGenerateCount(szAsmBuffer, m_sAggInitAsm);
+      vGenerateCount(szAsmBuffer, m_sAggInitAsm);
       break;
     case AG_MIN:
-      eError = eGenerateMin(szAsmBuffer,m_sAggInitAsm);
+      vGenerateMin(szAsmBuffer,m_sAggInitAsm);
       break;
     case AG_MAX:
-      eError = eGenerateMax(szAsmBuffer,m_sAggInitAsm);
+      vGenerateMax(szAsmBuffer,m_sAggInitAsm);
       break;
     case AG_SUM:
-      eError = eGenerateSum(szAsmBuffer, m_sAggInitAsm);
+      vGenerateSum(szAsmBuffer, m_sAggInitAsm);
       break;
     default:
       RASSERT(0);
@@ -1858,19 +1845,19 @@ eEC ExprEval::eGenerateGroupbyCode(StreamDef* pStreamDefOut, Column* pColumn, eA
 
   switch (eAggType) {
     case AG_ALL:
-      eError = eGenerateCountAll(m_sPayLoadAggAsm, m_sPayLoadStoreAsm);
+      vGenerateCountAll(m_sPayLoadAggAsm, m_sPayLoadStoreAsm);
       break;
     case AG_CNT:
-      eError = eGenerateCount(m_sPayLoadAggAsm, m_sPayLoadStoreAsm);
+      vGenerateCount(m_sPayLoadAggAsm, m_sPayLoadStoreAsm);
       break;
     case AG_MIN:
-      eError = eGenerateMin(m_sPayLoadAggAsm,m_sPayLoadStoreAsm);
+      vGenerateMin(m_sPayLoadAggAsm,m_sPayLoadStoreAsm);
       break;
     case AG_MAX:
-      eError = eGenerateMax(m_sPayLoadAggAsm,m_sPayLoadStoreAsm);
+      vGenerateMax(m_sPayLoadAggAsm,m_sPayLoadStoreAsm);
       break;
     case AG_SUM:
-      eError = eGenerateSum(m_sPayLoadAggAsm, m_sPayLoadStoreAsm);
+      vGenerateSum(m_sPayLoadAggAsm, m_sPayLoadStoreAsm);
       break;
     default:
       RASSERT(0);
@@ -1915,20 +1902,22 @@ void ExprEval::vAddStoreCol(Stz* szAsmBuffer, eCT eColumnType)
 /*----------------------------------------------------------------------------*/
 /* add EO code for store column                                               */
 /*----------------------------------------------------------------------------*/
-void ExprEval::vAddToBufferCol(Stz* szAsmBuffer, Column* pColumn)
+void ExprEval::vAddToBufferCol(Stz* szAsmBuffer, eCT eColumnType)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
 
   // switch on column type
-  switch (pColumn->eColumnType()) {
-    case CT_INTEGER:
+  switch (eColumnType) {
+    case CT_BOOLEAN:
     case CT_DECIMAL:
     case CT_DATE:
     case CT_FLOAT:
+    case CT_INTEGER:
+    case CT_TIME:
+    case CT_TIMESTAMP:
       //StrLib::vSprintCat(szAsmBuffer,"  EO_PAY_FETCH_COLI %lld\n"_Stz, m_iDstColumn);
       StrLib::vSprintCat(szAsmBuffer,"  EO_PUSH_DEVROW_DST\n"_Stz);
       StrLib::vSprintCat(szAsmBuffer,"  EO_DEVROW_POPCOLI %lld\n"_Stz, m_iDstColumn);
-
       break;
 
     case CT_CHAR:
@@ -1938,8 +1927,11 @@ void ExprEval::vAddToBufferCol(Stz* szAsmBuffer, Column* pColumn)
       StrLib::vSprintCat(szAsmBuffer,"  EO_DEVROW_POPCOLS %lld\n"_Stz, m_iDstColumn);
       break;
 
+    case CT_INTERVAL_DT:
+    case CT_INTERVAL_YM:
+    case CT_UNKNOWN:
     default:
-      RASSERT(0);
+      NEVER_REACH;
   }
 }
 

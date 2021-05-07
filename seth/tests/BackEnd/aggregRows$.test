@@ -52,10 +52,6 @@ rows:
   (0.49)
 
 //------------------------------------------------------------------------------
-aggregRows lineitem "type varchar ) $16 sum";
-failure contains: "invalid command"
-
-//------------------------------------------------------------------------------
 aggregRows lineitem "type integer ) $1 sum";
 rows:
   (6)
@@ -75,18 +71,6 @@ rows:
  (21,6)
  (6,9)
  (1,2)
-
-//------------------------------------------------------------------------------
-aggregRows lineitem "type varchar ) $9 sum";
-failure contains: "invalid command"
-
-//------------------------------------------------------------------------------
-aggregRows lineitem "type date ) $12 sum";
-failure contains: "invalid command"
-
-//------------------------------------------------------------------------------
-aggregRows lineitem "type varchar ) $14 sum";
-failure contains: "invalid command"
 
 //------------------------------------------------------------------------------
 aggregRows lineitem "type integer ) $1 count";

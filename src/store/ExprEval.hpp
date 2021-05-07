@@ -83,7 +83,7 @@ namespace STORE
     void vAddTimestamp(Stz* szAsmBuffer, Token*  pTkn);
     void vAddUnknown(Stz* szAsmBuffer, Token*  pTkn);
 
-    void vAddToBufferCol(Stz* szAsmBuffer, Column* pColumn);
+    void vAddToBufferCol(Stz* szAsmBuffer, eCT eColumnType);
 
     eEC eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec);
 
@@ -96,11 +96,11 @@ namespace STORE
     eEC eGenerateAggregateCode(Stz* szAsmBuffer, StreamDef* pStreamDefOut, Column* pColumn, eAG eAggType);
     eEC eGenerateGroupbyCode(StreamDef* pStreamDefOut, Column* pColumn, eAG eAggType);
 
-    eEC eGenerateCount(Stz* szAsmBuffer, Stz* sAggInit);
-    eEC eGenerateCountAll(Stz* szAsmBuffer, Stz* sAggInit);
-    eEC eGenerateMin(Stz* sAsmBuffer, Stz* sAggInit);
-    eEC eGenerateMax(Stz* sAsmBuffer, Stz* sAggInit);
-    eEC eGenerateSum(Stz* sAsmBuffer, Stz* sAggInit);
+    void vGenerateCount(Stz* szAsmBuffer, Stz* sAggInit);
+    void vGenerateCountAll(Stz* szAsmBuffer, Stz* sAggInit);
+    void vGenerateMin(Stz* sAsmBuffer, Stz* sAggInit);
+    void vGenerateMax(Stz* sAsmBuffer, Stz* sAggInit);
+    void vGenerateSum(Stz* sAsmBuffer, Stz* sAggInit);
 
     i8 iOrdinalToLocal(i8 i_ColumnOrdinal);
 
