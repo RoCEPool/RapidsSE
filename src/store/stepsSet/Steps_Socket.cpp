@@ -45,7 +45,7 @@ void Step::vAddSteps_Socket(void)
   vAddStep("listen::open"_Stz,       &Step::vSocketListen);
   vAddStep("listen.accept"_Stz,      &Step::vSocketAccept);
 
-  vAddStep("socket::open"_Stz,       &Step::vSocketOpen);
+  vAddStep("socket::new"_Stz,        &Step::vSocketNew);
   
   vAddStep("Socket[]"_Stz,           &Step::vSocketGet);
   vAddStep("Socket[].close"_Stz,     &Step::vSocketClose);
@@ -287,6 +287,30 @@ void Step::vSocketListen(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* socket::new: open a socket                                                */
+/*----------------------------------------------------------------------------*/
+void Step::vSocketNew(void)
+{
+  ENTRY();
+  
+  SysCall oSysCall;
+  Socket* pSocket;
+  
+  Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
+
+  pSocket = new Socket(pNode);
+  bool bResult = pSocket->bSocket(oSysCall);
+  
+  if ( ! bResult )
+    vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
+           "Unable to create socket: Errno %d"_Stz, oSysCall.iError());
+  
+  m_pDataStack->vPushPtr(pSocket);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Socket[].object@: fetch object                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vSocketObjectFetch(void)
@@ -316,30 +340,6 @@ void Step::vSocketObjectFetchClear(void)
   
   m_pDataStack->vPushPtr(pObject);
 
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* socket::open: open a socket                                                */
-/*----------------------------------------------------------------------------*/
-void Step::vSocketOpen(void)
-{
-  ENTRY();
-  
-  SysCall oSysCall;
-  Socket* pSocket;
-  
-  Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
-
-  pSocket = new Socket(pNode);
-  bool bResult = pSocket->bSocket(oSysCall);
-  
-  if ( ! bResult )
-    vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
-           "Unable to create socket: Errno %d"_Stz, oSysCall.iError());
-  
-  m_pDataStack->vPushPtr(pSocket);
-  
   EXIT();
 }
 

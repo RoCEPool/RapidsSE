@@ -1450,7 +1450,7 @@ public:
   void vSocketListen(void);
   void vSocketObjectFetch(void);
   void vSocketObjectFetchClear(void);
-  void vSocketOpen(void);
+  void vSocketNew(void);
   void vSocketRecvObject(void);
   void vSocketSendObject(void);
   void vSocketSet(void);
