@@ -38,12 +38,15 @@
     Node[] node.no grid::thisNode@ "Node %v connecting to node %v" .printf
   then
 
+
+  // attempt connect to that node
+  Node[] socket::open to Socket[]
+  
+  
   // get the nodes port and IP address
   Node[] node.port ( port )
   Node[] node.IP   ( port IP )
-
-  // attempt connect to that node
-  Node[] socket::open socket.connect to Socket[]
+      Socket[] socket.connect to Socket[]
 
   Socket[].isNull if
     Node[] node.no grid::thisNode@ "Node %v unable to connect to node %v" .printf
