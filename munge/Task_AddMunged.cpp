@@ -8008,8 +8008,8 @@ void Task::vAddMunged(Task* )
     "  \"OP_rdCrwFile.sen\"            include\n"
     "  \"OP_rdCsvChunk.sen\"           include\n"
     "  \"OP_rdCsvCyclic.sen\"          include\n"
-    "  \"OP_receiver.sen\"             include\n"
     "  \"OP_recurring.sen\"            include\n"
+    "  \"OP_recv.sen\"                 include\n"
     "  \"OP_reload.sen\"               include\n"
     "  \"OP_removeNode.sen\"           include\n"
     "  \"OP_report.sen\"               include\n"
@@ -27504,9 +27504,164 @@ void Task::vAddMunged(Task* )
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [209] OP_dropCatalog.sen
+  // munge of [209] OP_recv.sen
 
   gszaMungedText[209] =
+    "\" munged OP_recv.sen \" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* OP_recv.sen -- Operator recv                                               */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\" OP_recv.sen\" .verbose\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* receiver init                                                              */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": receiver_init ( -- )\n"
+    "\n"
+    "  CN_JOB task[] task.thread thread.dedicated!\n"
+    "\n"
+    "  NS_ACTIVE grid::thisNode@ grid::node node.state!\n"
+    "\n"
+    "  args.verbose if\n"
+    "    grid::thisNode@ \"receiver running on node %v\" .printf\n"
+    "  then\n"
+    "  \n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "\n"
+    "  \"<ansNode>\" job[] job.tagSet@ tagSet.hasName assert\n"
+    "\n"
+    "  <ansNode> >int >ptr node.recvSocket@ to Socket[]\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* receive next object(s)                                                     */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": receiver_recvNext\n"
+    "  \n"
+    "  nullptr to Register0[]\n"
+    "\n"
+    "  Socket[].recvObject\n"
+    "  \n"
+    "  Socket[].success@ not if\n"
+    "    exit\n"
+    "  then\n"
+    "  \n"
+    "  Socket[].object@\\clear to Register0[]\n"
+    "\n"
+    "  Socket[].success@\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* receiver loop: receive a job (possibly with operand), dispatch it          */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": receiver_dispatch ( -- )\n"
+    "\n"
+    "  // null object (low memory)\n"
+    "  Register0[] not if\n"
+    "    exit\n"
+    "  then\n"
+    "    \n"
+    "  Register0[] Register0[] Object.postRecvWord@ execute\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* receiver loop: receive a job (possibly with operand), dispatch it          */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": receiver_loop ( -- )\n"
+    "\n"
+    "  begin\n"
+    "\n"
+    "    trap::stackDepthZero\n"
+    "\n"
+    "    // receive next object(s)\n"
+    "    receiver_recvNext\n"
+    "    not if\n"
+    "      exit\n"
+    "    then\n"
+    "        \n"
+    "    receiver_dispatch\n"
+    "\n"
+    "  again\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* handler for ZK_STARTMARKER ...                                             */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": receiver_StartMarker \\handler\n"
+    "\n"
+    "  // initialise\n"
+    "  receiver_init\n"
+    "\n"
+    "  // loop, receiving and executing jobs\n"
+    "  receiver_loop\n"
+    "\n"
+    "  job::completed\n"
+    "\n"
+    "  HAZARD\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* execute for receiver req                           (on node where spawned) */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    " : receiver_req \\operator\n"
+    " \n"
+    "  LogReqEntry SEED_REQ\n"
+    "\n"
+    "  op__topology\n"
+    "\n"
+    "  find: receiver_StartMarker ZK_STARTMARKER op[].handler!\n"
+    "\n"
+    "  // get the pipeline job of the operator\n"
+    "  Op.pipelineJob@ locals| pPipelineJob |\n"
+    "\n"
+    "  // peek to see if any operand\n"
+    "  begin\n"
+    "    Pipein[].peek\n"
+    "  not while\n"
+    "    \"receiver waiting for STARTMARKER...\" .verbose\n"
+    "    2 thread::sleepMsec\n"
+    "  repeat\n"
+    "\n"
+    "  assert::stack_0\n"
+    "\n"
+    "  // pop operand from queue into PipeIn[]\n"
+    "  PipeIn[].peek assert\n"
+    "  PipeIn[].next\n"
+    "\n"
+    "  // execute the operator's handler for the operand\n"
+    "  PipeIn[].kind op[].handler@ execute\n"
+    "\n"
+    "  LogReqExit\n"
+    "  job::deleteThis\n"
+    "  DONE_REQ_OP\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/*                                                                            */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "cmdSyntax: receiver :: receiver ;\n"
+    "\n"
+    ": receiver_cmdTags _cmdTags tagCopy: serviceOp_tags\n"
+    " ;\n"
+    "\n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    ""_Stz
+  ;
+
+  szSubScriptDef = " 209 CONSTANT OP_recv.sen "_Stz;
+  vCompileMungedColon(szSubScriptDef);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // munge of [210] OP_dropCatalog.sen
+
+  gszaMungedText[210] =
     "\" munged OP_dropCatalog.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_dropCatalog.sen -- Operator drop catalog                                */\n"
@@ -27575,13 +27730,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 209 CONSTANT OP_dropCatalog.sen "_Stz;
+  szSubScriptDef = " 210 CONSTANT OP_dropCatalog.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [210] OP_limit.sen
+  // munge of [211] OP_limit.sen
 
-  gszaMungedText[210] =
+  gszaMungedText[211] =
     "\" munged OP_limit.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_limit.sen -- Operator limit rows                                        */\n"
@@ -27789,13 +27944,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 210 CONSTANT OP_limit.sen "_Stz;
+  szSubScriptDef = " 211 CONSTANT OP_limit.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [211] OP_answer.sen
+  // munge of [212] OP_answer.sen
 
-  gszaMungedText[211] =
+  gszaMungedText[212] =
     "\" munged OP_answer.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_answer.sen -- Operator answer                                           */\n"
@@ -27995,13 +28150,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 211 CONSTANT OP_answer.sen "_Stz;
+  szSubScriptDef = " 212 CONSTANT OP_answer.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [212] job_seedMarkers.sen
+  // munge of [213] job_seedMarkers.sen
 
-  gszaMungedText[212] =
+  gszaMungedText[213] =
     "\" munged job_seedMarkers.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* job_seedMarkers.sen -- Job Seed Marker words                               */\n"
@@ -28326,13 +28481,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 212 CONSTANT job_seedMarkers.sen "_Stz;
+  szSubScriptDef = " 213 CONSTANT job_seedMarkers.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [213] job_words.sen
+  // munge of [214] job_words.sen
 
-  gszaMungedText[213] =
+  gszaMungedText[214] =
     "\" munged job_words.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* job_words.sen -- Job related words                                         */\n"
@@ -28606,13 +28761,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 213 CONSTANT job_words.sen "_Stz;
+  szSubScriptDef = " 214 CONSTANT job_words.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [214] OP_adjustPartitions.sen
+  // munge of [215] OP_adjustPartitions.sen
 
-  gszaMungedText[214] =
+  gszaMungedText[215] =
     "\" munged OP_adjustPartitions.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_adjustPartitions.sen -- Operator Adjust Partitions                      */\n"
@@ -28666,13 +28821,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 214 CONSTANT OP_adjustPartitions.sen "_Stz;
+  szSubScriptDef = " 215 CONSTANT OP_adjustPartitions.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [215] se_word.sen
+  // munge of [216] se_word.sen
 
-  gszaMungedText[215] =
+  gszaMungedText[216] =
     "\" munged se_word.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_word.sen -- additional word related words                               */\n"
@@ -28848,13 +29003,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 215 CONSTANT se_word.sen "_Stz;
+  szSubScriptDef = " 216 CONSTANT se_word.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [216] se_core.sen
+  // munge of [217] se_core.sen
 
-  gszaMungedText[216] =
+  gszaMungedText[217] =
     "\" munged se_core.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_core.sen -- core words                                                  */\n"
@@ -29412,162 +29567,7 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 216 CONSTANT se_core.sen "_Stz;
-  vCompileMungedColon(szSubScriptDef);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [217] OP_receiver.sen
-
-  gszaMungedText[217] =
-    "\" munged OP_receiver.sen \" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* OP_receiver.sen -- Operator receiver                                       */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\" OP_receiver.sen\" .verbose\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* receiver init                                                              */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": receiver_init ( -- )\n"
-    "\n"
-    "  CN_JOB task[] task.thread thread.dedicated!\n"
-    "\n"
-    "  NS_ACTIVE grid::thisNode@ grid::node node.state!\n"
-    "\n"
-    "  args.verbose if\n"
-    "    grid::thisNode@ \"receiver running on node %v\" .printf\n"
-    "  then\n"
-    "  \n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "\n"
-    "  \"<ansNode>\" job[] job.tagSet@ tagSet.hasName assert\n"
-    "\n"
-    "  <ansNode> >int >ptr node.recvSocket@ to Socket[]\n"
-    " ;\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* receive next object(s)                                                     */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": receiver_recvNext\n"
-    "  \n"
-    "  nullptr to Register0[]\n"
-    "\n"
-    "  Socket[].recvObject\n"
-    "  \n"
-    "  Socket[].success@ not if\n"
-    "    exit\n"
-    "  then\n"
-    "  \n"
-    "  Socket[].object@\\clear to Register0[]\n"
-    "\n"
-    "  Socket[].success@\n"
-    " ;\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* receiver loop: receive a job (possibly with operand), dispatch it          */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": receiver_dispatch ( -- )\n"
-    "\n"
-    "  // null object (low memory)\n"
-    "  Register0[] not if\n"
-    "    exit\n"
-    "  then\n"
-    "    \n"
-    "  Register0[] Register0[] Object.postRecvWord@ execute\n"
-    " ;\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* receiver loop: receive a job (possibly with operand), dispatch it          */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": receiver_loop ( -- )\n"
-    "\n"
-    "  begin\n"
-    "\n"
-    "    trap::stackDepthZero\n"
-    "\n"
-    "    // receive next object(s)\n"
-    "    receiver_recvNext\n"
-    "    not if\n"
-    "      exit\n"
-    "    then\n"
-    "        \n"
-    "    receiver_dispatch\n"
-    "\n"
-    "  again\n"
-    " ;\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* handler for ZK_STARTMARKER ...                                             */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": receiver_StartMarker \\handler\n"
-    "\n"
-    "  // initialise\n"
-    "  receiver_init\n"
-    "\n"
-    "  // loop, receiving and executing jobs\n"
-    "  receiver_loop\n"
-    "\n"
-    "  job::completed\n"
-    "\n"
-    "  HAZARD\n"
-    " ;\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* execute for receiver req                           (on node where spawned) */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    " : receiver_req \\operator\n"
-    " \n"
-    "  LogReqEntry SEED_REQ\n"
-    "\n"
-    "  op__topology\n"
-    "\n"
-    "  find: receiver_StartMarker ZK_STARTMARKER op[].handler!\n"
-    "\n"
-    "  // get the pipeline job of the operator\n"
-    "  Op.pipelineJob@ locals| pPipelineJob |\n"
-    "\n"
-    "  // peek to see if any operand\n"
-    "  begin\n"
-    "    Pipein[].peek\n"
-    "  not while\n"
-    "    \"receiver waiting for STARTMARKER...\" .verbose\n"
-    "    2 thread::sleepMsec\n"
-    "  repeat\n"
-    "\n"
-    "  assert::stack_0\n"
-    "\n"
-    "  // pop operand from queue into PipeIn[]\n"
-    "  PipeIn[].peek assert\n"
-    "  PipeIn[].next\n"
-    "\n"
-    "  // execute the operator's handler for the operand\n"
-    "  PipeIn[].kind op[].handler@ execute\n"
-    "\n"
-    "  LogReqExit\n"
-    "  job::deleteThis\n"
-    "  DONE_REQ_OP\n"
-    " ;\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/*                                                                            */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "cmdSyntax: receiver :: receiver ;\n"
-    "\n"
-    ": receiver_cmdTags _cmdTags tagCopy: serviceOp_tags\n"
-    " ;\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    ""_Stz
-  ;
-
-  szSubScriptDef = " 217 CONSTANT OP_receiver.sen "_Stz;
+  szSubScriptDef = " 217 CONSTANT se_core.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
