@@ -68,27 +68,42 @@ namespace STORE
 
 #define S_PushStr(__azStr) \
   /*MemLib::vDumpWords(iaDataStack,nDifference(iaDataStack,aiDstk)+8);*/ \
-  nSize = StrLib::nSize((char*)__azStr); \
-  azDst = (char*)(++aiDstk); \
-  StrLib::vCopy(azDst,(char*)__azStr); \
-  aiDstk += nWordRoundedStrBytes(nSize)/8 - 1; \
-  *(++aiDstk) = nSize;     \
+  if (((i8)(__azStr)) == C_DATUM_NULL) {  \
+    *(++aiDstk) = C_DATUM_NULL; \
+  } \
+  else { \
+    nSize = StrLib::nSize((char*)__azStr); \
+    azDst = (char*)(++aiDstk); \
+    StrLib::vCopy(azDst,(char*)__azStr); \
+    aiDstk += nWordRoundedStrBytes(nSize)/8 - 1; \
+    *(++aiDstk) = nSize;   \
+  }
   /*MemLib::vDumpWords(iaDataStack,nDifference(iaDataStack,aiDstk)+8); */
 
 #define S_PopStr(__azDst) \
   /*MemLib::vDumpWords(iaDataStack,nDifference(iaDataStack,aiDstk)+8);*/ \
-  nSize = *(aiDstk--); \
-  azSrc = (char*)(aiDstk - (nWordRoundedStrBytes(nSize)/8 - 1)); \
-  StrLib::vCopy(__azDst,azSrc); \
-  aiDstk -= nWordRoundedStrBytes(nSize)/8;                               \
+  if ((i8)aiDstk == C_DATUM_NULL)    {                                   \
+    *(i8*)__azDst = C_DATUM_NULL;  \
+  } \
+  else { \
+    nSize = *(aiDstk--); \
+    azSrc = (char*)(aiDstk - (nWordRoundedStrBytes(nSize)/8 - 1)); \
+    StrLib::vCopy(__azDst,azSrc); \
+    aiDstk -= nWordRoundedStrBytes(nSize)/8;                        \
+  }                       \
   /*MemLib::vDumpWords(iaDataStack,nDifference(iaDataStack,aiDstk)+8);*/
 
 #define S_StrAdr() \
   ( (char*)(aiDstk) - nWordRoundedStrBytes(*aiDstk))
 
 #define S_StrDrp() \
-  nSize = *(aiDstk--); \
-  aiDstk -= nWordRoundedStrBytes(nSize)/8;
+  if ((i8)aiDstk == C_DATUM_NULL)    {                              \
+    aiDstk--;  \
+  } \
+  else {                 \
+    nSize = *(aiDstk--); \
+    aiDstk -= nWordRoundedStrBytes(nSize)/8;    \
+  }
 
 #define JumpTo(__iArg,__EO) \
   aeCode = &m_eaCode[__iArg];
