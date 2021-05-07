@@ -16,7 +16,7 @@
     begin
 
       stage stageA on origin :
-        start | receiver | eatAll | stageA
+        start | recv | eatAll | stageA
 
     end ;
   "

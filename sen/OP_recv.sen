@@ -5,9 +5,9 @@
 " OP_recv.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* receiver init                                                              */
+/* recv init                                                                  */
 /*----------------------------------------------------------------------------*/
-: receiver_init ( -- )
+: recv_init ( -- )
 
   CN_JOB task[] task.thread thread.dedicated!
 
@@ -25,9 +25,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* receive next object(s)                                                     */
+/* recv next object(s)                                                        */
 /*----------------------------------------------------------------------------*/
-: receiver_recvNext
+: recv_recvNext
   
   nullptr to Register0[]
 
@@ -43,9 +43,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* receiver loop: receive a job (possibly with operand), dispatch it          */
+/* recv loop: receive a job (possibly with operand), dispatch it              */
 /*----------------------------------------------------------------------------*/
-: receiver_dispatch ( -- )
+: recv_dispatch ( -- )
 
   // null object (low memory)
   Register0[] not if
@@ -58,19 +58,19 @@
 /*----------------------------------------------------------------------------*/
 /* receiver loop: receive a job (possibly with operand), dispatch it          */
 /*----------------------------------------------------------------------------*/
-: receiver_loop ( -- )
+: recv_loop ( -- )
 
   begin
 
     trap::stackDepthZero
 
     // receive next object(s)
-    receiver_recvNext
+    recv_recvNext
     not if
       exit
     then
         
-    receiver_dispatch
+    recv_dispatch
 
   again
 ;
@@ -81,13 +81,13 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_STARTMARKER ...                                             */
 /*----------------------------------------------------------------------------*/
-: receiver_StartMarker \handler
+: recv_StartMarker \handler
 
   // initialise
-  receiver_init
+  recv_init
 
   // loop, receiving and executing jobs
-  receiver_loop
+  recv_loop
 
   job::completed
 
@@ -97,13 +97,13 @@
 /*----------------------------------------------------------------------------*/
 /* execute for receiver req                           (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : receiver_req \operator
+ : recv_req \operator
  
   LogReqEntry SEED_REQ
 
   op__topology
 
-  find: receiver_StartMarker ZK_STARTMARKER op[].handler!
+  find: recv_StartMarker ZK_STARTMARKER op[].handler!
 
   // get the pipeline job of the operator
   Op.pipelineJob@ locals| pPipelineJob |
@@ -133,9 +133,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: receiver :: receiver ;
+cmdSyntax: recv :: recv ;
 
-: receiver_cmdTags _cmdTags tagCopy: serviceOp_tags
+: recv_cmdTags _cmdTags tagCopy: serviceOp_tags
 ;
 
 /*============================================================================*/

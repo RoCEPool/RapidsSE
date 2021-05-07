@@ -1382,7 +1382,7 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
   pTknVec->vSetAllTokens();
   delete pTknVec;
   
-  if (StrLib::bSame(m_sOpNm.azChar(), "receiver"))
+  if (StrLib::bSame(m_sOpNm.azChar(), "recv"))
     AM::vSpawnJob_dedicated(m_pOpJob);
   else
     AM::vSpawnJob_op(m_pOpJob);
