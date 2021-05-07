@@ -42,10 +42,13 @@ extern SizeHeap  gxaSizeHeap[];
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Socket(void)
 {
+  vAddStep("listen::open"_Stz,       &Step::vSocketListen);
+  vAddStep("listen.accept"_Stz,      &Step::vSocketAccept);
+
   vAddStep("socket::open"_Stz,       &Step::vSocketOpen);
-  vAddStep("socket::listen"_Stz,     &Step::vSocketListen);
   
   vAddStep("Socket[]"_Stz,           &Step::vSocketGet);
+  vAddStep("Socket[].close"_Stz,     &Step::vSocketClose);
   vAddStep("Socket[].dropWrite"_Stz, &Step::vSocketDropWrite);
   vAddStep("Socket[].get"_Stz,       &Step::vSocketGet);
   vAddStep("Socket[].grabWrite"_Stz, &Step::vSocketGrabWrite);
@@ -59,13 +62,11 @@ void Step::vAddSteps_Socket(void)
   vAddStep("Socket[].success@"_Stz,  &Step::vSocketSuccessFetch);
   vAddStep("Socket[].success!"_Stz,  &Step::vSocketSuccessStore);
 
-  vAddStep("socket.accept"_Stz,      &Step::vSocketAccept);
-  vAddStep("socket.close"_Stz,       &Step::vSocketClose);
   vAddStep("socket.connect"_Stz,     &Step::vSocketConnect);
 }
 
 /*----------------------------------------------------------------------------*/
-/* socket.accept: accept a socket connection                                  */
+/* listen.accept: accept a socket connection                                  */
 /*----------------------------------------------------------------------------*/
 void Step::vSocketAccept(void)
 {
@@ -73,11 +74,11 @@ void Step::vSocketAccept(void)
   
   SysCall oSysCall;
   
-  Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
+  Socket* pListeningSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
   
   // accept a connection
   int iSocketId;
-  bool bResult = pSocket->bAcceptClient(iSocketId, oSysCall);
+  bool bResult = pListeningSocket->bAcceptClient(iSocketId, oSysCall);
   
   if ( ! bResult )
     vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
@@ -92,7 +93,7 @@ void Step::vSocketAccept(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* open a socket                                                              */
+/* socket.close : close a socket                                              */
 /*----------------------------------------------------------------------------*/
 void Step::vSocketClose(void)
 {
@@ -100,7 +101,7 @@ void Step::vSocketClose(void)
   
   SysCall oSysCall;
 
-  Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
+  Socket* pSocket = *m_pJob->pLogicUnit_job()->m_xpSocket;
 
   // close the socket
   bool bResult = pSocket->bClose(oSysCall);
@@ -236,7 +237,7 @@ void Step::vSocketIsNull(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* socket::listen: listen in for socket connections                           */
+/* listen::open: listen in for socket connections                           */
 /*----------------------------------------------------------------------------*/
 void Step::vSocketListen(void)
 {
