@@ -39,7 +39,10 @@ static Stz* C_FORMAT_ROW    = "ROW"_Stz;
 
 // Name of the last stage prior to transliteration and conversion to
 // a physical pipeline statement
-static Stz* C_LAST_EXPLAINABLE_STAGE = "explainPlan"_Stz;
+static Stz* C_LAST_REGULAR_EXPLAIN_STAGE = "explainPlan"_Stz;
+
+// Name of the last stage that can be explained
+static Stz* C_LAST_EXPLAINABLE_STAGE = "transliterate"_Stz;
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -379,11 +382,11 @@ b1 ExplainOp::bExitEarly(QueryNode* pNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Return the name of the last explainable stage before transliteration       */
+/* Return the name of the last stage before transliteration stages            */
 /*----------------------------------------------------------------------------*/
-Stz* ExplainOp::szLastExplainableStage()
+Stz* ExplainOp::szLastRegularExplainStage()
 {
-  return C_LAST_EXPLAINABLE_STAGE;
+  return C_LAST_REGULAR_EXPLAIN_STAGE;
 }
 
 /*----------------------------------------------------------------------------*/

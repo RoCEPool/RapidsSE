@@ -1459,7 +1459,9 @@ public:
 
   // sql compiler
   void vSqlCompilerCorrBySquash(void);
+  void vSqlCompilerDeletePlan(void);
   void vSqlCompilerDoExplain(void);
+  void vSqlCompilerDoExplainTliterate(void);
   void vSqlCompilerExplainFormat(void);
   void vSqlCompilerExplainPlan(void);
   void vSqlCompilerExprPushdown(void);
