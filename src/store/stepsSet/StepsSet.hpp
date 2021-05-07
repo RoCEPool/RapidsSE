@@ -1472,6 +1472,7 @@ public:
   void vSqlCompilerPostProject(void);
   void vSqlCompilerProjValidation(void);
   void vSqlCompilerSetOpValidate(void);
+  void vSqlCompilerStageMarkers(void);
   void vSqlCompilerTransliterate(void);
 
   // ssn
