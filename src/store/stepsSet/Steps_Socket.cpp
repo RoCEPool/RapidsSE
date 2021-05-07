@@ -146,8 +146,7 @@ void Step::vSocketConnect(void)
 
   if (bResult) {
     // return the socket object
-    Object* pPtrSocket = pSocket;
-    m_pDataStack->vPushPtr(pPtrSocket);
+    m_pDataStack->vPushPtr(pSocket);
     EXIT();
     return;
   }
@@ -285,8 +284,7 @@ void Step::vSocketListen(void)
 //  }
 
   // return socket
-  Object* pPtrSocket = pSocket;
-  m_pDataStack->vPushPtr(pPtrSocket);
+  m_pDataStack->vPushPtr(pSocket);
   
   EXIT();
 }
@@ -343,8 +341,7 @@ void Step::vSocketOpen(void)
     vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
            "Unable to create socket: Errno %d"_Stz, oSysCall.iError());
   
-  Object* pPtrSocket = pSocket;
-  m_pDataStack->vPushPtr(pPtrSocket);
+  m_pDataStack->vPushPtr(pSocket);
   
   EXIT();
 }
