@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "PlanObject.hpp"
+#include "PlanMarker.hpp"
 #include "PlanNode.hpp"
 #include "QueryNodeList.hpp"
 
@@ -11,7 +11,7 @@ namespace Parser
 {
   class QueryNode;
 
-  class StatementMarker : public PlanObject
+  class StatementMarker : public PlanMarker
   {
   public:
     // Statement types
@@ -47,10 +47,6 @@ namespace Parser
 
     // Returns true if a given node is this exact given type.
     static b1 bIsExactType(PlanNode* pNode);
-
-    // Return a list of ProjectedColumns that represent the column expressions
-    // that this PlanObject will return. All nodes and the list must be freed.
-    static QueryNodeList* pColumnExprs(QueryNode* pNode, PlanNode* pRootNode);
 
   protected:
     static eST eStatementType(PlanNode* pNode);

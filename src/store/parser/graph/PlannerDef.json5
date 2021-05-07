@@ -306,81 +306,96 @@
               name: "planObject",
               value: "The root of all objects that appear in the main data path of the plan graph",
               children: [
-// Path: /__root__/definitions/object/planObject/statementMarker
+// Path: /__root__/definitions/object/planObject/planMarker
                 {
-                  name: "statementMarker",
-                  value: "The root of all top-level objects that represent user-input queries",
-                  properties: [
-                    {
-                      name: "queryText",
-                      value: "The string that the user entered",
-                      type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject"
-                    },
-                    {
-                      // Add a constraint that children of statementMarker objects must be planObjects
-                      name: "__constraints", type: "/__root__/primitives/constraints", children: [
-                        {
-                          name: "childType",
-                          type: "/__root__/primitives/constraints/childType",
-                          children: [
-                            {
-                              name: "childTypeParam",
-                              type: "/__root__/definitions/object/valueObject/stringObject",
-                              value: "/__root__/definitions/object/planObject"
-                            }
-                          ]
-                        }
-                    ]}
-                  ],
+                  name: "planMarker",
+                  value: "An inert object in the graph that separates logical concepts",
                   children: [
 
-// Path: /__root__/definitions/object/planObject/statementMarker/ddl
+// Path: /__root__/definitions/object/planObject/planMarker/stageMarker
                     {
-                      name: "ddl",
-                      value: "A container of all DDL statement objects",
-                      children: [
-// TODO Path: /__root__/definitions/object/planObject/statementMarker/ddl/createTable
-// TODO Path: /__root__/definitions/object/planObject/statementMarker/ddl/dropTable
-// TODO Path: /__root__/definitions/object/planObject/statementMarker/ddl/createIndex
-// TODO Path: /__root__/definitions/object/planObject/statementMarker/ddl/dropIndex
-// TODO Path: /__root__/definitions/object/planObject/statementMarker/ddl/createTableAsSelect
-                      ]
-                    }, // EndPath: /__root__/definitions/object/planObject/statementMarker/ddl
+                      name: "stageMarker",
+                      value: "An inert marker used in the transliteration process to indicate a new pipeline stage is required"
+                    },
 
-// Path: /__root__/definitions/object/planObject/statementMarker/dml
+// Path: /__root__/definitions/object/planObject/planMarker/statementMarker
                     {
-                      name: "dml",
-                      value: "A container of all DML statementMarker objects",
+                      name: "statementMarker",
+                      value: "Marks the start of a logical query or subquery. It identifies the type of query.",
+                      properties: [
+                        {
+                          name: "queryText",
+                          value: "The string that the user entered",
+                          type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject"
+                        },
+                        {
+                          // Add a constraint that children of statementMarker objects must be planObjects
+                          name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                          {
+                            name: "childType",
+                            type: "/__root__/primitives/constraints/childType",
+                            children: [
+                              {
+                                name: "childTypeParam",
+                                type: "/__root__/definitions/object/valueObject/stringObject",
+                                value: "/__root__/definitions/object/planObject"
+                              }
+                            ]
+                          }
+                        ]}
+                      ],
                       children: [
-// Path: /__root__/definitions/object/planObject/statementMarker/dml/explain
-                        {
-                          name: "explain",
-                          value: "A marker for an EXPLAIN statement",
-                          children: []
-                        },
-// Path: /__root__/definitions/object/planObject/statementMarker/dml/select
-                        {
-                          name: "select",
-                          value: "A marker for a SELECT statement",
-                          children: []
-                        },
-// TODO Path: /__root__/definitions/object/planObject/statementMarker/dml/insert
-// TODO Path: /__root__/definitions/object/planObject/statementMarker/dml/update
-// TODO Path: /__root__/definitions/object/planObject/statementMarker/dml/delete
-// TODO Path: /__root__/definitions/object/planObject/statementMarker/dml/insertSelect
-                      ]
-                    }, // EndPath: /__root__/definitions/object/planObject/statementMarker/dml
 
-// Path: /__root__/definitions/object/planObject/statementMarker/dcl
-                    {
-                      name: "dcl",
-                      value: "A container of all DCL statementMarker objects",
-                      children: [
-// TODO Path: /__root__/definitions/object/planObject/statementMarker/dcl/xxxx
+// Path: /__root__/definitions/object/planObject/planMarker/statementMarker/ddl
+                        {
+                          name: "ddl",
+                          value: "A container of all DDL statement objects",
+                          children: [
+// TODO Path: /__root__/definitions/object/planObject/planMarker/statementMarker/ddl/createTable
+// TODO Path: /__root__/definitions/object/planObject/planMarker/statementMarker/ddl/dropTable
+// TODO Path: /__root__/definitions/object/planObject/planMarker/statementMarker/ddl/createIndex
+// TODO Path: /__root__/definitions/object/planObject/planMarker/statementMarker/ddl/dropIndex
+// TODO Path: /__root__/definitions/object/planObject/planMarker/statementMarker/ddl/createTableAsSelect
+                          ]
+                        }, // EndPath: /__root__/definitions/object/planObject/planMarker/statementMarker/ddl
+
+// Path: /__root__/definitions/object/planObject/planMarker/statementMarker/dml
+                        {
+                          name: "dml",
+                          value: "A container of all DML statementMarker objects",
+                          children: [
+// Path: /__root__/definitions/object/planObject/planMarker/statementMarker/dml/explain
+                            {
+                              name: "explain",
+                              value: "A marker for an EXPLAIN statement",
+                              children: []
+                            },
+// Path: /__root__/definitions/object/planObject/planMarker/statementMarker/dml/select
+                            {
+                              name: "select",
+                              value: "A marker for a SELECT statement",
+                              children: []
+                            },
+// TODO Path: /__root__/definitions/object/planObject/planMarker/statementMarker/dml/insert
+// TODO Path: /__root__/definitions/object/planObject/planMarker/statementMarker/dml/update
+// TODO Path: /__root__/definitions/object/planObject/planMarker/statementMarker/dml/delete
+// TODO Path: /__root__/definitions/object/planObject/planMarker/statementMarker/dml/insertSelect
+                          ]
+                        }, // EndPath: /__root__/definitions/object/planObject/planMarker/statementMarker/dml
+
+// Path: /__root__/definitions/object/planObject/planMarker/statementMarker/dcl
+                        {
+                          name: "dcl",
+                          value: "A container of all DCL statementMarker objects",
+                          children: [
+// TODO Path: /__root__/definitions/object/planObject/planMarker/statementMarker/dcl/xxxx
+                          ]
+                        } // EndPath: /__root__/definitions/object/planObject/planMarker/statementMarker/dcl
                       ]
-                    } // EndPath: /__root__/definitions/object/planObject/statementMarker/dcl
+                    }, // EndPath: /__root__/definitions/object/planObject/planMarker/statementMarker
+
                   ]
-                }, // EndPath: /__root__/definitions/object/planObject/statementMarker
+                }, // EndPath: /__root__/definitions/object/planObject/planMarker
 
 // Path: /__root__/definitions/object/planObject/sqlOperator
                 {
@@ -2009,7 +2024,7 @@
                 // Add a constraint that the children of a plan node must be a single statementMarker node
                 { name: "__constraints", type: "/__root__/primitives/constraints", children: [
                   { name: "childType", type:  "/__root__/primitives/constraints/childType", children: [
-                    { name: "childTypeParam", type: "/__root__/definitions/object/valueObject/stringObject", value: "/__root__/definitions/object/planObject/statementMarker" }
+                    { name: "childTypeParam", type: "/__root__/definitions/object/valueObject/stringObject", value: "/__root__/definitions/object/planObject/planMarker/statementMarker" }
                   ]},
                   { name: "childCount", type:  "/__root__/primitives/constraints/childCount", children: [
                     { name: "childCountParam", type: "/__root__/definitions/object/valueObject/integerObject", value: 1 }
