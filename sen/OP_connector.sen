@@ -32,7 +32,7 @@
 /*----------------------------------------------------------------------------*/
 /* attempt connect to given node                                              */
 /*----------------------------------------------------------------------------*/
-: connector_attemptConnect ( Node[] -- )
+: connector_attemptConnect ( -- )
 
   args.verbose if
     Node[] node.no grid::thisNode@ "Node %v connecting to node %v" .printf
@@ -46,7 +46,7 @@
   // get the nodes port and IP address
   Node[] node.port ( port )
   Node[] node.IP   ( port IP )
-      Socket[] socket.connect //to Socket[]
+    Socket[].connect
 
   Socket[].isNull if
     Node[] node.no grid::thisNode@ "Node %v unable to connect to node %v" .printf

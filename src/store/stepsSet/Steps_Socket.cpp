@@ -49,6 +49,7 @@ void Step::vAddSteps_Socket(void)
   
   vAddStep("Socket[]"_Stz,           &Step::vSocketGet);
   vAddStep("Socket[].close"_Stz,     &Step::vSocketClose);
+  vAddStep("Socket[].connect"_Stz,   &Step::vSocketConnect);
   vAddStep("Socket[].dropWrite"_Stz, &Step::vSocketDropWrite);
   vAddStep("Socket[].get"_Stz,       &Step::vSocketGet);
   vAddStep("Socket[].grabWrite"_Stz, &Step::vSocketGrabWrite);
@@ -62,7 +63,6 @@ void Step::vAddSteps_Socket(void)
   vAddStep("Socket[].success@"_Stz,  &Step::vSocketSuccessFetch);
   vAddStep("Socket[].success!"_Stz,  &Step::vSocketSuccessStore);
 
-  vAddStep("socket.connect"_Stz,     &Step::vSocketConnect);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -121,13 +121,9 @@ void Step::vSocketConnect(void)
   ENTRY();
   
   SysCall oSysCall;
-  Socket* pSocket;
   CellSingle xNodeVar;
   
-  
-  Object* pObject = m_pDataStack->pPopPtr(__func__);
-  // get pSocket
-  pSocket = reinterpret_cast<Socket*>(pObject);
+  Socket* pSocket = *m_pJob->pLogicUnit_job()->m_xpSocket;
 
   m_pDataStack->vPopItem(xNodeVar,__func__);
   
