@@ -41,7 +41,7 @@
 
   // common compiler handlers
   find: compiler_ExitEarlyMarker  ZK_EXITEARLYMARKER op[].handler!
-  find: compiler_StreamSet         ZK_STREAMSET      op[].handler!
+  find: compiler_StreamSet        ZK_STREAMSET       op[].handler!
 
   // specific handlers
   find: exprPushdown_CancelMarker ZK_CANCELMARKER op[].handler!

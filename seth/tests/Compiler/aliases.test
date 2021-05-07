@@ -15,8 +15,8 @@ create table nation (
 success
 
 -- Cannot enable memory tracking as there are memory leaks in the execution engine
--- trackmemory;
--- success
+trackmemory;
+success
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -133,8 +133,8 @@ success
 //  Check for memory leaks
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
--- memoryleaks;
--- rows: 0
+memoryleaks;
+rows: 0
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Cleanup

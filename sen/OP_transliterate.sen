@@ -60,12 +60,36 @@
 /*----------------------------------------------------------------------------*/
 : transliterate_PlanOperand \handler
 
- 0 locals| sPipeline |
+ 0 0 locals| sPipeline sOperatorName |
 
   PipeIn[] to Operand[]
     nullptr to PipeIn[]
 
-  Operand[] nullptr to Operand[] sqlCompiler::transliterate to sPipeline
+  Operand[] sqlCompiler::transliterate to sPipeline
+
+  "transliterate" to sOperatorName
+  Operand[] sOperatorName sqlCompiler::hasExplain if
+
+    // execute special explain for this operator
+    Operand[] sPipeline sOperatorName sqlCompiler::doExplainTliterate
+
+    // pipeout explain
+    StreamSet[].isNull not assert
+    StreamSet[].pipeout
+
+    // Always exit at this point
+    Operand[].delete
+    Operand[].newExitEarlyMarker
+    Operand[].pipeout
+    true
+    exit
+  then
+
+  // We couldn't delete the plan in sqlCompiler::transliterate because
+  // it might have needed to have been explained
+  Operand[] sqlCompiler::deletePlan
+  Operand[].delete
+
   sPipeline .
 
   sPipeline session::cascade!
@@ -81,6 +105,29 @@
 : transliterate_StartMarker \handler
 
   ZK_STARTMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_EXITEARLYMARKER ...                                         */
+/*----------------------------------------------------------------------------*/
+: transliterate_ExitEarlyMarker \handler
+
+  // save the pipein in streamSet[]
+  StreamSet[].isNull not assert
+  StreamSet[].pipeout
+
+  ZK_EXITEARLYMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_STREAMSET ...                                               */
+/*----------------------------------------------------------------------------*/
+: transliterate_StreamSet \handler
+
+  // save the pipein in streamSet[]
+  Pipein[]\clear to StreamSet[]
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -100,6 +147,9 @@
   find: transliterate_EosMarker    ZK_EOSMARKER    op[].handler!
   find: transliterate_PlanOperand  ZK_PLANOPERAND  op[].handler!
   find: transliterate_StartMarker  ZK_STARTMARKER  op[].handler!
+
+  find: transliterate_StreamSet    ZK_STREAMSET    op[].handler!
+  find: transliterate_ExitEarlyMarker ZK_EXITEARLYMARKER op[].handler!
 
   op__loop
 

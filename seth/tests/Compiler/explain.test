@@ -234,27 +234,29 @@ rows:
 
 EXPLAIN STAGE * SELECT n_nationkey FROM nation;
 rows:
-  ( 1, 'parser',         * )
-  ( 2, 'nameValidate',   * )
-  ( 3, 'exprValidate',   * )
-  ( 4, 'setOpValidate',  * )
-  ( 5, 'postProject',    * )
-  ( 6, 'exprPushdown',   * )
-  ( 7, 'projValidation', * )
-  ( 8, 'corrBySquash',   * )
-  ( 9, 'explainPlan',    * )
+  (  1, 'parser',         * )
+  (  2, 'nameValidate',   * )
+  (  3, 'exprValidate',   * )
+  (  4, 'setOpValidate',  * )
+  (  5, 'postProject',    * )
+  (  6, 'exprPushdown',   * )
+  (  7, 'projValidation', * )
+  (  8, 'corrBySquash',   * )
+  (  9, 'explainPlan',    * )
+  ( 10, 'transliterate',  * )
 
 EXPLAIN STAGE ALL SELECT n_nationkey FROM nation;
 rows:
-  ( 1, 'parser',         * )
-  ( 2, 'nameValidate',   * )
-  ( 3, 'exprValidate',   * )
-  ( 4, 'setOpValidate',  * )
-  ( 5, 'postProject',    * )
-  ( 6, 'exprPushdown',   * )
-  ( 7, 'projValidation', * )
-  ( 8, 'corrBySquash',   * )
-  ( 9, 'explainPlan',    * )
+  (  1, 'parser',         * )
+  (  2, 'nameValidate',   * )
+  (  3, 'exprValidate',   * )
+  (  4, 'setOpValidate',  * )
+  (  5, 'postProject',    * )
+  (  6, 'exprPushdown',   * )
+  (  7, 'projValidation', * )
+  (  8, 'corrBySquash',   * )
+  (  9, 'explainPlan',    * )
+  ( 10, 'transliterate',  * )
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -286,7 +288,7 @@ EXPLAIN STAGE 3-1 SELECT n_nationkey FROM nation;
 rows: 0
 
 EXPLAIN STAGE 1-1000 SELECT n_nationkey FROM nation;
-rows: 9
+rows: 10
 
 
 -- Explain invalid stage range (names)
@@ -294,7 +296,7 @@ EXPLAIN STAGE exprValidate-parser SELECT n_nationkey FROM nation;
 rows: 0
 
 EXPLAIN STAGE parser-badStageName SELECT n_nationkey FROM nation;
-rows: 9
+rows: 10
 
 EXPLAIN STAGE badStageName-explainPlan SELECT n_nationkey FROM nation;
 rows: 0

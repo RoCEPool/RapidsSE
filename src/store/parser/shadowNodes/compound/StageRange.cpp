@@ -80,7 +80,7 @@ QueryNode* StageRange::pCreateLastOnly()
   QueryNode* pStageRange = new QueryNode(sName.szStz(), C_STAGERANGE_DEFN);
 
   // Add the begin property
-  QueryNode* pBegin = StringObject::pCreate(new Text(ExplainOp::szLastExplainableStage()));
+  QueryNode* pBegin = StringObject::pCreate(new Text(ExplainOp::szLastRegularExplainStage()));
   pBegin->vSetName(C_BEGIN_PROP);
   pStageRange->vAppendProperty(pBegin);
 
