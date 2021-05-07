@@ -10,7 +10,7 @@
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
 
-#include "StatementMarker.hpp"
+#include "PlanMarker.hpp"
 #include "SqlOperator.hpp"
 
 using namespace Parser;
@@ -44,8 +44,8 @@ void PlanObject::vDescribe(PlanNode* pNode, s2K& sBuf)
 
   // TODO: manual polymorphism here
 
-  if      (StatementMarker::bIsOfType(pNode))   { StatementMarker::vDescribe(pNode, sBuf);  }
-  else if (    SqlOperator::bIsOfType(pNode))   {     SqlOperator::vDescribe(pNode, sBuf);  }
+  if      ( PlanMarker::bIsOfType(pNode))   {  PlanMarker::vDescribe(pNode, sBuf);    }
+  else if (SqlOperator::bIsOfType(pNode))   { SqlOperator::vDescribe(pNode, sBuf); }
 
   else {
     // Need to add in manual polymorphism here
@@ -63,8 +63,8 @@ void PlanObject::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 i
 
   // Manual polymorphism here
 
-  if      (StatementMarker::bIsOfType(pNode))   { StatementMarker::vExplain(pNode, pRootNode, sBuf, iIndent);  }
-  else if (    SqlOperator::bIsOfType(pNode))   {     SqlOperator::vExplain(pNode, pRootNode, sBuf, iIndent);  }
+  if      ( PlanMarker::bIsOfType(pNode))   {  PlanMarker::vExplain(pNode, pRootNode, sBuf, iIndent);    }
+  else if (SqlOperator::bIsOfType(pNode))   { SqlOperator::vExplain(pNode, pRootNode, sBuf, iIndent); }
 
   else {
     // Need to add in manual polymorphism here
@@ -100,8 +100,8 @@ QueryNodeList* PlanObject::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
 
   // Manual polymorphism here
 
-  if      (StatementMarker::bIsOfType(pNode))   { return StatementMarker::pColumnExprs(pNode, pRootNode);  }
-  else if (    SqlOperator::bIsOfType(pNode))   { return     SqlOperator::pColumnExprs(pNode, pRootNode);  }
+  if      ( PlanMarker::bIsOfType(pNode))   { return  PlanMarker::pColumnExprs(pNode, pRootNode);  }
+  else if (SqlOperator::bIsOfType(pNode))   { return SqlOperator::pColumnExprs(pNode, pRootNode);  }
 
   else {
     // Need to add in manual polymorphism here

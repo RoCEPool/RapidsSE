@@ -52,7 +52,7 @@ namespace Parser
     static b1 bExitEarly(QueryNode* pNode);
 
     // Return the name of the last explainable stage before transliteration
-    static Stz* szLastExplainableStage();
+    static Stz* szLastRegularExplainStage();
 
     // Return the tabledef name for the definition of the explain table
     // for the current format. Must return one of the C_TDEF_* constants.

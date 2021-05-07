@@ -45,11 +45,17 @@ extern SizeHeap  gxaSizeHeap[];
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Socket(void)
 {
-  vAddStep("socket::open"_Stz,       &Step::vSocketOpen);
-  vAddStep("socket::listen"_Stz,     &Step::vSocketListen);
+  vAddStep("listen::open"_Stz,       &Step::vSocketListen);
+  vAddStep("listen.accept"_Stz,      &Step::vSocketAccept);
+
+  vAddStep("socket::new"_Stz,        &Step::vSocketNew);
   
   vAddStep("Socket[]"_Stz,           &Step::vSocketGet);
+  vAddStep("Socket[].close"_Stz,     &Step::vSocketClose);
+  vAddStep("Socket[].connect"_Stz,   &Step::vSocketConnect);
+  vAddStep("Socket[].dropWrite"_Stz, &Step::vSocketDropWrite);
   vAddStep("Socket[].get"_Stz,       &Step::vSocketGet);
+  vAddStep("Socket[].grabWrite"_Stz, &Step::vSocketGrabWrite);
   vAddStep("Socket[].isNotNull"_Stz, &Step::vSocketIsNotNull);
   vAddStep("Socket[].isNull"_Stz,    &Step::vSocketIsNull);
   vAddStep("Socket[].object@"_Stz,   &Step::vSocketObjectFetch);
@@ -60,15 +66,10 @@ void Step::vAddSteps_Socket(void)
   vAddStep("Socket[].success@"_Stz,  &Step::vSocketSuccessFetch);
   vAddStep("Socket[].success!"_Stz,  &Step::vSocketSuccessStore);
 
-  vAddStep("socket.accept"_Stz,     &Step::vSocketAccept);
-  vAddStep("socket.close"_Stz,      &Step::vSocketClose);
-  vAddStep("socket.connect"_Stz,    &Step::vSocketConnect);
-  vAddStep("socket.dropWrite"_Stz,  &Step::vSocketDropWrite);
-  vAddStep("socket.grabWrite"_Stz,  &Step::vSocketGrabWrite);
 }
 
 /*----------------------------------------------------------------------------*/
-/* socket.accept: accept a socket connection                                  */
+/* listen.accept: accept a socket connection                                  */
 /*----------------------------------------------------------------------------*/
 void Step::vSocketAccept(void)
 {
@@ -76,11 +77,11 @@ void Step::vSocketAccept(void)
   
   SysCall oSysCall;
   
-  Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
+  Socket* pListeningSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
   
   // accept a connection
   int iSocketId;
-  bool bResult = pSocket->bAcceptClient(iSocketId, oSysCall);
+  bool bResult = pListeningSocket->bAcceptClient(iSocketId, oSysCall);
   
   if ( ! bResult )
     vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
@@ -95,7 +96,7 @@ void Step::vSocketAccept(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* close a socket                                                             */
+/* socket.close : close a socket                                              */
 /*----------------------------------------------------------------------------*/
 void Step::vSocketClose(void)
 {
@@ -103,7 +104,7 @@ void Step::vSocketClose(void)
   
   SysCall oSysCall;
 
-  Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
+  Socket* pSocket = *m_pJob->pLogicUnit_job()->m_xpSocket;
 
   // close the socket
   bool bResult = pSocket->bClose(oSysCall);
@@ -123,13 +124,9 @@ void Step::vSocketConnect(void)
   ENTRY();
   
   SysCall oSysCall;
-  Socket* pSocket;
   CellSingle xNodeVar;
   
-  
-  Object* pObject = m_pDataStack->pPopPtr(__func__);
-  // get pSocket
-  pSocket = reinterpret_cast<Socket*>(pObject);
+  Socket* pSocket = *m_pJob->pLogicUnit_job()->m_xpSocket;
 
   m_pDataStack->vPopItem(xNodeVar,__func__);
   
@@ -148,8 +145,7 @@ void Step::vSocketConnect(void)
 
   if (bResult) {
     // return the socket object
-    Object* pPtrSocket = pSocket;
-    m_pDataStack->vPushPtr(pPtrSocket);
+    //m_pDataStack->vPushPtr(pSocket);
     EXIT();
     return;
   }
@@ -169,8 +165,9 @@ void Step::vSocketConnect(void)
            iError, strerror((int)iError));
   }
   
-  m_pDataStack->vPushPtr(nullptr);
-  
+  //m_pDataStack->vPushPtr(nullptr);
+  m_pJob->pLogicUnit_job()->m_xpSocket = nullptr;
+
   EXIT();
 }
 
@@ -181,8 +178,8 @@ void Step::vSocketDropWrite(void)
 {
   ENTRY();
   
-  Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
-  
+  Socket* pSocket = *m_pJob->pLogicUnit_job()->m_xpSocket;
+
   pSocket->vDropWrite();
   
   EXIT();
@@ -207,8 +204,8 @@ void Step::vSocketGrabWrite(void)
 {
   ENTRY();
   
-  Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
-  
+  Socket* pSocket = *m_pJob->pLogicUnit_job()->m_xpSocket;
+
   pSocket->vGrabWrite();
   
   EXIT();
@@ -239,7 +236,7 @@ void Step::vSocketIsNull(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* socket::listen: listen in for socket connections                           */
+/* listen::open: listen in for socket connections                           */
 /*----------------------------------------------------------------------------*/
 void Step::vSocketListen(void)
 {
@@ -287,8 +284,31 @@ void Step::vSocketListen(void)
 //  }
 
   // return socket
-  Object* pPtrSocket = pSocket;
-  m_pDataStack->vPushPtr(pPtrSocket);
+  m_pDataStack->vPushPtr(pSocket);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* socket::new: open a socket                                                */
+/*----------------------------------------------------------------------------*/
+void Step::vSocketNew(void)
+{
+  ENTRY();
+  
+  SysCall oSysCall;
+  Socket* pSocket;
+  
+  Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
+
+  pSocket = new Socket(pNode);
+  bool bResult = pSocket->bSocket(oSysCall);
+  
+  if ( ! bResult )
+    vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
+           "Unable to create socket: Errno %d"_Stz, oSysCall.iError());
+  
+  m_pDataStack->vPushPtr(pSocket);
   
   EXIT();
 }
@@ -327,31 +347,6 @@ void Step::vSocketObjectFetchClear(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* socket::open: open a socket                                                */
-/*----------------------------------------------------------------------------*/
-void Step::vSocketOpen(void)
-{
-  ENTRY();
-  
-  SysCall oSysCall;
-  Socket* pSocket;
-  
-  Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
-
-  pSocket = new Socket(pNode);
-  bool bResult = pSocket->bSocket(oSysCall);
-  
-  if ( ! bResult )
-    vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
-           "Unable to create socket: Errno %d"_Stz, oSysCall.iError());
-
-  Object* pPtrSocket = pSocket;
-  m_pDataStack->vPushPtr(pPtrSocket);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* Socket[].recvObject: recv object from a socket                             */
 /*----------------------------------------------------------------------------*/
 void Step::vSocketRecvObject(void)
@@ -364,8 +359,10 @@ void Step::vSocketRecvObject(void)
 
   Object* pReceivedObject = pSocket->pRecvObject();
   
-  if (CN_PARCEL == pReceivedObject->eGetClassNo())
+  if (pReceivedObject && CN_PARCEL == pReceivedObject->eGetClassNo())
     AM::PARCEL::vRecvContents((Parcel*)pReceivedObject,pSocket);
+  
+  pSocket->vReceivedObject(pReceivedObject);
   
   EXIT();
 }

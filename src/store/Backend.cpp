@@ -22,6 +22,8 @@
 #include "ShadowNode.hpp"
 #include "ShadowRoot.hpp"
 #include "StatementMarker.hpp"
+#include "ExplainMarker.hpp"
+#include "ExplainOp.hpp"
 #include "PlanConstants.hpp"
 #include "GraphNav.hpp"
 #include "LimitOp.hpp"
@@ -107,7 +109,7 @@ Backend::Backend(RootNode* pPlanRoot)
 
   m_pColExprList = nullptr;
   m_sPipeline = nullptr;
-  m_sFilterEnd = "<>"_Stz;
+  //m_sFilterEnd = "<>"_Stz;
 
   _checkInitialised_(CN_BACKEND);
   
@@ -120,7 +122,10 @@ Backend::Backend(RootNode* pPlanRoot)
 Backend::~Backend(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BACKEND,_FOOTER_);
-  
+  if (m_pColExprList) {
+    m_pColExprList->vDeleteAll();
+    delete m_pColExprList;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -149,10 +154,18 @@ bool Backend::bTransliterate(String* sPipeline) {
   PlanNode* pPlanNode = ShadowRoot::pPlanNode(m_pPlanRoot);
   ASSERT(pPlanNode);
 
+  QueryNode* pStartingNode = _pQueryNode(pPlanNode->pFirstChild());
+
+  // Skip over any explain markers and ExplainOps at the top
+  while (ExplainMarker::bIsOfType(pStartingNode) || ExplainOp::bIsOfType(pStartingNode)) {
+    ASSERT(pStartingNode);
+    pStartingNode = _pQueryNode(pStartingNode->pFirstChild());
+  }
+
   // The plan node should have one child which is a StatementMarker node
   ASSERT(pPlanNode->nChildren() == 1);
-  ASSERT(StatementMarker::bIsOfType(pPlanNode->pFirstChild()));
-  QueryNode* pStatementMarker = _pQueryNode(pPlanNode->pFirstChild());
+  ASSERT(StatementMarker::bIsOfType(pStartingNode));
+  QueryNode* pStatementMarker = _pQueryNode(pStartingNode);
 
   vAppendStartStage();
 
@@ -259,6 +272,10 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
 
   ASSERT(pNode->nChildren() == 1);
   ASSERT(PlanObject::bIsOfType(pNode->pFirstChild()));
+  if (pBackend->m_pColExprList) {
+    pBackend->m_pColExprList->vDeleteAll();
+    delete pBackend->m_pColExprList;
+  }
   pBackend->m_pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pBackend->m_pPlanRoot);
 
   // Iterate each projected expression
@@ -377,16 +394,18 @@ void Backend::vAppendFilterOp(Backend* pBackend, QueryNode* pNode)
   GraphNav::bGlobalWalk(pOrdinalFilterExpr, false, true,vVisitorExpr, vVisitorExpr, (void *) pBackend);
   delete pOrdinalFilterExpr;
 
-  if ( ( StrLib::bEnds((char*)sPipeline->azStr(), (char*)"<> "_Stz)  ||
-         StrLib::bEnds((char*)sPipeline->azStr(), (char*)"and "_Stz) ||
-         StrLib::bEnds((char*)sPipeline->azStr(), (char*)"or "_Stz)  ||
-         StrLib::bEnds((char*)sPipeline->azStr(), (char*)"not "_Stz) ||
-         StrLib::bEnds((char*)sPipeline->azStr(), (char*)"xor "_Stz) ||
-         StrLib::bEnds((char*)sPipeline->azStr(), (char*)"isNull "_Stz))
-     )
-    sPipeline->vCatSprint(" \" \n"_Stz);
-  else
-    sPipeline->vCatSprint(" %s \" \n"_Stz, pBackend->m_sFilterEnd.azChar());
+//  if ( ( StrLib::bEnds((char*)sPipeline->azStr(), (char*)"<> "_Stz)  ||
+//         StrLib::bEnds((char*)sPipeline->azStr(), (char*)"and "_Stz) ||
+//         StrLib::bEnds((char*)sPipeline->azStr(), (char*)"or "_Stz)  ||
+//         StrLib::bEnds((char*)sPipeline->azStr(), (char*)"not "_Stz) ||
+//         StrLib::bEnds((char*)sPipeline->azStr(), (char*)"xor "_Stz) ||
+//         StrLib::bEnds((char*)sPipeline->azStr(), (char*)"isNull "_Stz))
+//     )
+//    sPipeline->vCatSprint(" \" \n"_Stz);
+//  else
+//    sPipeline->vCatSprint(" %s \" \n"_Stz, pBackend->m_sFilterEnd.azChar());
+
+  sPipeline->vCatSprint(" \" \n"_Stz);
 
 }
 
@@ -429,6 +448,10 @@ void Backend::vAppendProjectOp(Backend* pBackend, QueryNode* pNode)
   ASSERT(pProjectedColumns);
 
   ASSERT(PlanObject::bIsOfType(pNode->pFirstChild()));
+  if (pBackend->m_pColExprList) {
+    pBackend->m_pColExprList->vDeleteAll();
+    delete pBackend->m_pColExprList;
+  }
   pBackend->m_pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pBackend->m_pPlanRoot);
 
   // Iterate each projected expression
@@ -511,12 +534,9 @@ void Backend::vAppendUnionOp(Backend* pBackend, QueryNode* pUnionNode)
   // this node should have two children
   ASSERT(pUnionNode->nChildren() == 2);
 
-  // get a plan node iterator
-  PlanNodeIter *pIter = pUnionNode->pNewChildrenIter();
-
   // get the child markers
-  QueryNode *pChildStatementMarker1 = static_cast<QueryNode *>(pIter->pFirst());
-  QueryNode *pChildStatementMarker2 = static_cast<QueryNode *>(pIter->pNext());
+  QueryNode *pChildStatementMarker1 = _pQueryNode(pUnionNode->pFirstChild());
+  QueryNode *pChildStatementMarker2 = _pQueryNode(pUnionNode->pSecondChild());
 
   pBackend->vAppendNextOp(pChildStatementMarker1->szName());
   pBackend->vAppendPipe();
@@ -553,7 +573,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
 
     if (AggregateExpr::bIsOfType(pQueryNode)) {
       sPipeline->vCatSprint(" ) "_Stz);
-      pBackend->m_sFilterEnd = ""_Stz;
+      //pBackend->m_sFilterEnd = ""_Stz;
     }
     return GraphNav::WALK_CONTINUE;
   }
@@ -562,24 +582,27 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
 
     if (AggregateExpr::bIsOfType(pQueryNode)) {
       sPipeline->vCatSprint(" ) "_Stz);
-      pBackend->m_sFilterEnd = ""_Stz;
+      //pBackend->m_sFilterEnd = ""_Stz;
     }
   }
 
   QueryNode* pOrdinalExpr;
+  b1 bDeleteOrdExpr = false;
 
   QueryNode* pAliasedNode;
   if (AliasRef::bIsOfType(pQueryNode)) {
     pAliasedNode = AliasRef::pAliasedExpr(pQueryNode);
-    if (ColumnRef::bIsOfType(pAliasedNode))
+    if (ColumnRef::bIsOfType(pAliasedNode)) {
       pOrdinalExpr = Expr::pSymbolicToOrdinal(pAliasedNode, pBackend->m_pColExprList, pBackend->m_pPlanRoot);
-    else
+      bDeleteOrdExpr = true;
+    } else
       pOrdinalExpr = pAliasedNode;
   }
   else {
-    if (ColumnRef::bIsOfType(pQueryNode))
+    if (ColumnRef::bIsOfType(pQueryNode)) {
       pOrdinalExpr = Expr::pSymbolicToOrdinal(pQueryNode, pBackend->m_pColExprList, pBackend->m_pPlanRoot);
-    else
+      bDeleteOrdExpr = true;
+    } else
       pOrdinalExpr = pQueryNode;
   }
 
@@ -684,6 +707,8 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
       NEVER_REACH;
     }
 
+    if (bDeleteOrdExpr)
+      delete pOrdinalExpr;
     return GraphNav::WALK_CONTINUE;
   }
 
@@ -731,8 +756,10 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
       NEVER_REACH;
     }
 
-    sPipeline->vCatSprint("%s "_Stz, pBackend->m_sFilterEnd.azChar());
+    //sPipeline->vCatSprint("%s "_Stz, pBackend->m_sFilterEnd.azChar());
 
+    if (bDeleteOrdExpr)
+      delete pOrdinalExpr;
     return GraphNav::WALK_CONTINUE;
   }
 
@@ -776,6 +803,8 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
       sPipeline->vCatSprint(" TIMESTAMP '%s' "_Stz, (char*)spTsp.sz(TimestampLiteral::xValue(pOrdinalExpr)));
     }
 
+    if (bDeleteOrdExpr)
+      delete pOrdinalExpr;
     return GraphNav::WALK_CONTINUE;
   }
 
@@ -802,6 +831,9 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
     else {
       NEVER_REACH;
     }
+
+    if (bDeleteOrdExpr)
+      delete pOrdinalExpr;
     return GraphNav::WALK_CONTINUE;
   }
 
@@ -837,10 +869,14 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
       NEVER_REACH;
     }
 
+    if (bDeleteOrdExpr)
+      delete pOrdinalExpr;
     return GraphNav::WALK_CONTINUE;
   }
 
   // Keep walking
+  if (bDeleteOrdExpr)
+    delete pOrdinalExpr;
   return GraphNav::WALK_CONTINUE;
 }
 

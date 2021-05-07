@@ -240,9 +240,9 @@ Object* Socket::pRecvObject(void)
   bool bResult = bRecvBytes(aHeader,sizeof(Object),oSysCall);
   if (! bResult) {
     //m_pDataStack->vPushInt(false);
-    vReceivedObject(nullptr);
+    //vReceivedObject(nullptr);
     vSuccess(false);
-    return m_pReceivedObject;
+    return nullptr;
   }
 
 //  SP_Header spHeader;
@@ -265,16 +265,16 @@ Object* Socket::pRecvObject(void)
     bResult = bRecvBytes(aBody,nRemainingBytes,oSysCall);
     if (! bResult) {
      //m_pDataStack->vPushInt(false);
-     vReceivedObject(nullptr);
+     //vReceivedObject(nullptr);
      vSuccess(false);
-     return m_pReceivedObject;
+     return nullptr;
     }
 
     pReceivedObject->vRunPostRecv();
 
-    vReceivedObject(pReceivedObject);
+    //vReceivedObject(pReceivedObject);
     vSuccess(true);
-    return m_pReceivedObject;
+    return pReceivedObject;
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -291,10 +291,10 @@ Object* Socket::pRecvObject(void)
 
   bResult = bRecvBytes(aLowBody,nRemainingBytes,oSysCall);
 
-  vReceivedObject(nullptr);
+  //vReceivedObject(nullptr);
   vSuccess(true);
   
-  return m_pReceivedObject;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

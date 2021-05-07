@@ -22,7 +22,7 @@ using namespace Parser;
 /*-- Constants ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 static Stz* C_QUERYTEXT_PROP = "queryText"_Stz;
-static Stz* C_STATEMENT_DEFN = "/__root__/definitions/object/planObject/statementMarker"_Stz;
+static Stz* C_STATEMENT_DEFN = "/__root__/definitions/object/planObject/planMarker/statementMarker"_Stz;
 
 
 /*----------------------------------------------------------------------------*/
@@ -128,21 +128,6 @@ b1 StatementMarker::bIsOfType(PlanNode *pNode)
 b1 StatementMarker::bIsExactType(PlanNode *pNode)
 {
   return ShadowNode::bIsExactType(pNode, C_STATEMENT_DEFN);
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* Return a list of ProjectedColumns that represent the column expressions      */
-/* that this PlanObject will return. All nodes and the list must be freed.    */
-/*----------------------------------------------------------------------------*/
-QueryNodeList* StatementMarker::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
-{
-  _static_
-  ASSERT(bIsOfType(pNode));
-
-  // Statements don't change the columns being returned. So ask its descendant.
-  ASSERT(pNode->iNumChildren() == 1);
-  return PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pRootNode);
 }
 
 /*----------------------------------------------------------------------------*/

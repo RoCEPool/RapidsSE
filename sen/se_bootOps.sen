@@ -146,9 +146,8 @@ assert::stack_0
   "OP_rdCrwFile.sen"            include
   "OP_rdCsvChunk.sen"           include
   "OP_rdCsvCyclic.sen"          include
-  "OP_receiver.sen"             include
-  "OP_recv.sen"                 include
   "OP_recurring.sen"            include
+  "OP_recv.sen"                 include
   "OP_reload.sen"               include
   "OP_removeNode.sen"           include
   "OP_report.sen"               include
@@ -167,6 +166,7 @@ assert::stack_0
   "OP_space.sen"                include
   "OP_spawnNode.sen"            include
   "OP_sqlInit.sen"              include
+  "OP_stageMarkers.sen"         include
   "OP_start.sen"                include
   "OP_stats.sen"                include
   "OP_status.sen"               include

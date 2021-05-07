@@ -17,7 +17,7 @@ using namespace Parser;
 /*----------------------------------------------------------------------------*/
 /*-- Constants ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-static Stz* C_DEFN = "/__root__/definitions/object/planObject/statementMarker/dml/select"_Stz;
+static Stz* C_DEFN = "/__root__/definitions/object/planObject/planMarker/statementMarker/dml/select"_Stz;
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/

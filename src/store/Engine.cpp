@@ -50,6 +50,7 @@
 #include "TagConstants.h"
 
 #include "InternalTables.hpp"
+#include "Parcel.hpp"
 
 #include "STORE.h"
 
@@ -1162,6 +1163,7 @@ void Engine::vPostRecvFns(void)
   gxaSizeHeap[CN_INFOSET].m_fpPostRecvFn   = (fpPOSTFN*)InfoSet::vPostRecv;
   gxaSizeHeap[CN_JOB].m_fpPostRecvFn       = (fpPOSTFN*)Job::vPostRecv;
   gxaSizeHeap[CN_MARKER].m_fpPostRecvFn    = (fpPOSTFN*)Marker::vPostRecv;
+  gxaSizeHeap[CN_PARCEL].m_fpPostRecvFn    = (fpPOSTFN*)Parcel::vPostRecv;
   gxaSizeHeap[CN_PROFILE].m_fpPostRecvFn   = (fpPOSTFN*)Profile::vPostRecv;
   gxaSizeHeap[CN_ROWBUFFER].m_fpPostRecvFn = (fpPOSTFN*)RowBuffer::vPostRecv;
   gxaSizeHeap[CN_STREAMDEF].m_fpPostRecvFn = (fpPOSTFN*)StreamDef::vPostRecv;

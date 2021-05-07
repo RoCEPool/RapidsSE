@@ -20,9 +20,9 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // send node info job to the other node
-  Socket[] socket.grabWrite
+  Socket[].grabWrite
   InfoSet[] Socket[].sendObject assert
-  Socket[] socket.dropWrite
+  Socket[].dropWrite
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete infoset
@@ -32,18 +32,21 @@
 /*----------------------------------------------------------------------------*/
 /* attempt connect to given node                                              */
 /*----------------------------------------------------------------------------*/
-: connector_attemptConnect ( Node[] -- )
+: connector_attemptConnect ( -- )
 
   args.verbose if
     Node[] node.no grid::thisNode@ "Node %v connecting to node %v" .printf
   then
 
-  // get the nodes port and IP address
+
+  // create a new socket for node
+  Node[] socket::new to Socket[]
+  
+  
+  // attempt to connect the socket using nodes port and IP address
   Node[] node.port ( port )
   Node[] node.IP   ( port IP )
-
-  // attempt connect to that node
-  Node[] socket::open socket.connect to Socket[]
+    Socket[].connect
 
   Socket[].isNull if
     Node[] node.no grid::thisNode@ "Node %v unable to connect to node %v" .printf

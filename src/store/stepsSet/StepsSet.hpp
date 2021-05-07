@@ -1451,7 +1451,7 @@ public:
   void vSocketListen(void);
   void vSocketObjectFetch(void);
   void vSocketObjectFetchClear(void);
-  void vSocketOpen(void);
+  void vSocketNew(void);
   void vSocketRecvObject(void);
   void vSocketSendObject(void);
   void vSocketSet(void);
@@ -1461,7 +1461,9 @@ public:
 
   // sql compiler
   void vSqlCompilerCorrBySquash(void);
+  void vSqlCompilerDeletePlan(void);
   void vSqlCompilerDoExplain(void);
+  void vSqlCompilerDoExplainTliterate(void);
   void vSqlCompilerExplainFormat(void);
   void vSqlCompilerExplainPlan(void);
   void vSqlCompilerExprPushdown(void);
@@ -1472,6 +1474,7 @@ public:
   void vSqlCompilerPostProject(void);
   void vSqlCompilerProjValidation(void);
   void vSqlCompilerSetOpValidate(void);
+  void vSqlCompilerStageMarkers(void);
   void vSqlCompilerTransliterate(void);
 
   // ssn

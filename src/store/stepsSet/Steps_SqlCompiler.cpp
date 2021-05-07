@@ -54,11 +54,13 @@
 void Step::vAddSteps_SqlCompiler(void)
 {
   // Ancilliary steps used in the compilation pipeline
+  vAddStep("sqlCompiler::deletePlan"_Stz,         &Step::vSqlCompilerDeletePlan);
   vAddStep("sqlCompiler::doExplain"_Stz,          &Step::vSqlCompilerDoExplain);
+  vAddStep("sqlCompiler::doExplainTliterate"_Stz, &Step::vSqlCompilerDoExplainTliterate);
   vAddStep("sqlCompiler::explainFormat"_Stz,      &Step::vSqlCompilerExplainFormat);
   vAddStep("sqlCompiler::hasExplain"_Stz,         &Step::vSqlCompilerHasExplain);
 
-  // Stages in the compilation pipeline
+  // Stages in the compilation pipeline (in alphabetical order)
   vAddStep("sqlCompiler::corrBySquash"_Stz,       &Step::vSqlCompilerCorrBySquash);
   vAddStep("sqlCompiler::explainPlan"_Stz,        &Step::vSqlCompilerExplainPlan);
   vAddStep("sqlCompiler::exprValidate"_Stz,       &Step::vSqlCompilerExprValidate);
@@ -68,6 +70,7 @@ void Step::vAddSteps_SqlCompiler(void)
   vAddStep("sqlCompiler::postProject"_Stz,        &Step::vSqlCompilerPostProject);
   vAddStep("sqlCompiler::projValidation"_Stz,     &Step::vSqlCompilerProjValidation);
   vAddStep("sqlCompiler::setOpValidate"_Stz,      &Step::vSqlCompilerSetOpValidate);
+  vAddStep("sqlCompiler::stageMarkers"_Stz,       &Step::vSqlCompilerStageMarkers);
   vAddStep("sqlCompiler::transliterate"_Stz,      &Step::vSqlCompilerTransliterate);
 }
 
@@ -144,6 +147,26 @@ void Step::vSqlCompilerCorrBySquash(void) {
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* sqlCompiler::deletePlan -- Simply delete the plan in the operand           */
+/*----------------------------------------------------------------------------*/
+void Step::vSqlCompilerDeletePlan(void) {
+  ENTRY();
+
+  /**
+   * Simply delete the plan in the operand.
+   * Used to help cleanup after transliterate.
+   * Necessary because of the ability to explain the transliterate step.
+   */
+
+  // Get the plan operand
+  PlanOperand *pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
+  Parser::RootNode* pRootNode = Parser::_pRootNode(pPlanOperand->pPlanNode());
+  ASSERT(ShadowRoot::bIsExactType(pRootNode));
+  delete pRootNode;
+
+  EXIT();
+}
 
 /*----------------------------------------------------------------------------*/
 /* sqlCompiler::doExplain -- (potentially) create the explain of the plan     */
@@ -220,6 +243,72 @@ void Step::vSqlCompilerDoExplain(void) {
     m_pJob->pLogicUnit_job()->m_bCompilerToExit = true;
     delete pRootNode;
   }
+
+  L_Exit:
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* sqlCompiler::doExplainTliterate -- (potentially) create the explain of the plan     */
+/*----------------------------------------------------------------------------*/
+void Step::vSqlCompilerDoExplainTliterate(void) {
+  ENTRY();
+
+  /**
+   * This function is called if we have transliterated a plan and that plan
+   * has an explain operator. We simply want to put the transliterated pipeline
+   * command in the row set.
+   */
+
+  // Get the compiler stage
+  s256 sCompilerStage;
+  m_pDataStack->vPopStr(sCompilerStage, __func__);
+  ASSERT(sCompilerStage.nLength() > 0);
+
+  // Get the pipeline command
+  s48K sPipelineCmd;
+  m_pDataStack->vPopStr(sPipelineCmd, __func__);
+  ASSERT(sPipelineCmd.nLength() > 0);
+
+  // Get the plan operand
+  PlanOperand *pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
+  Parser::RootNode* pRootNode = Parser::_pRootNode(pPlanOperand->pPlanNode());
+  UNUSED(pRootNode);
+  ASSERT(ShadowRoot::bIsExactType(pRootNode));
+
+  // get the streamSet for explain
+  InfoSet *pInfoSet = _pInfoSet(*(m_pJob->pLogicUnit_job())->m_xpStreamSet);
+
+  // Find the explainOp
+  QueryNode* pPlanNode = ShadowRoot::pPlanNode(pRootNode);
+  ASSERT(pPlanNode);
+  ASSERT(ShadowPlan::bIsExactType(pPlanNode));
+
+  QueryNode* pExplainMarker = _pQueryNode(pPlanNode->pFirstChild());
+  ASSERT(pExplainMarker);
+  ASSERT(ExplainMarker::bIsExactType(pExplainMarker));
+
+  QueryNode* pExplainOp = _pQueryNode(pExplainMarker->pFirstChild());
+  ASSERT(pExplainOp);
+  ASSERT(ExplainOp::bIsExactType(pExplainOp));
+
+  // Determine if this stage needs to be explained. The stage range list
+  // may indicate otherwise.
+  if (ExplainOp::bExplainStage(pExplainOp)) {
+    // This stage does need explaining!
+
+    i8 iStageNum = ExplainOp::iStageCount(pExplainOp);
+
+    Row *pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+                                    iStageNum,
+                                    sCompilerStage.szStz(),
+                                    sPipelineCmd.szStz(),
+                                    C_VARGS_END);
+    UNUSED(pRow);
+  }
+
+  // We always delete the plan's root node at this point
+  delete pRootNode;
 
   L_Exit:
   EXIT();
@@ -826,6 +915,56 @@ void Step::vSqlCompilerSetOpValidate(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* sqlCompiler::stageMarkers -- Convert StatementMarkers to StageMarkers      */
+/*----------------------------------------------------------------------------*/
+void Step::vSqlCompilerStageMarkers(void)
+{
+  ENTRY();
+
+  /**
+   * This stage of the plan is about removing StatementMarkers (used by the compiler)
+   * and inserting StageMarkers (used by the transliteration). StageMarkers tell
+   * the transliterator when to create a new stage in the pipeline statement.
+   */
+
+  PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
+  Parser::RootNode* pPlanRoot = Parser::_pRootNode(pPlanOperand->pPlanNode());
+  UNUSED(pPlanRoot);
+  ASSERT(ShadowRoot::bIsExactType(pPlanRoot));
+
+
+
+  try {
+    // TODO
+
+  } catch (Parser::SqlException& e) {
+    Grid* pGrid = AM::pGrid();
+    InfoSet* pInfoSet = _pInfoSet(*m_pJob->pLogicUnit_job()->m_xpInfoSet);
+    Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+                                    pGrid->pThisNode()->szNodeNm(),
+                                    EC_SEMANTIC_ERROR,
+                                    0,
+                                    0,
+                                    e.szError(),
+                                    C_VARGS_END);
+    UNUSED(pRow);
+    delete pPlanRoot;
+    delete pPlanOperand;
+    m_pDataStack->vPushPtr(nullptr);
+    goto L_Exit;
+  }
+
+  // TODO: eventually we want the received plan graph to be immutable,
+  //       so we would send a different version. But for now we will just
+  //       manipulate and send the same plan graph
+  m_pDataStack->vPushPtr(pPlanOperand);
+
+  L_Exit:
+  EXIT();
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* sqlCompiler::transliterate -- plan to pipeline transliterate               */
 /*----------------------------------------------------------------------------*/
 void Step::vSqlCompilerTransliterate(void)
@@ -853,9 +992,6 @@ void Step::vSqlCompilerTransliterate(void)
 
   // return the pipeline
   m_pDataStack->vPushStr(sPipelineStmt);
-
-  delete pPlanOperand;
-  delete pPlanRoot;
 
   EXIT();
 }

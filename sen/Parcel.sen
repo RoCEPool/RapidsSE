@@ -17,7 +17,7 @@
 /*----------------------------------------------------------------------------*/
 : Parcel.dispatch params| pParcel |
 
-  Socket[].recvObject Socket[].object@\clear
+  //Socket[].recvObject Socket[].object@\clear
   
     pParcel parcel.pipeOut
 ;
