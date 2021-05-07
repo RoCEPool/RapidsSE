@@ -109,7 +109,7 @@ Backend::Backend(RootNode* pPlanRoot)
 
   m_pColExprList = nullptr;
   m_sPipeline = nullptr;
-  m_sFilterEnd = "<>"_Stz;
+  //m_sFilterEnd = "<>"_Stz;
 
   _checkInitialised_(CN_BACKEND);
   
@@ -394,16 +394,18 @@ void Backend::vAppendFilterOp(Backend* pBackend, QueryNode* pNode)
   GraphNav::bGlobalWalk(pOrdinalFilterExpr, false, true,vVisitorExpr, vVisitorExpr, (void *) pBackend);
   delete pOrdinalFilterExpr;
 
-  if ( ( StrLib::bEnds((char*)sPipeline->azStr(), (char*)"<> "_Stz)  ||
-         StrLib::bEnds((char*)sPipeline->azStr(), (char*)"and "_Stz) ||
-         StrLib::bEnds((char*)sPipeline->azStr(), (char*)"or "_Stz)  ||
-         StrLib::bEnds((char*)sPipeline->azStr(), (char*)"not "_Stz) ||
-         StrLib::bEnds((char*)sPipeline->azStr(), (char*)"xor "_Stz) ||
-         StrLib::bEnds((char*)sPipeline->azStr(), (char*)"isNull "_Stz))
-     )
-    sPipeline->vCatSprint(" \" \n"_Stz);
-  else
-    sPipeline->vCatSprint(" %s \" \n"_Stz, pBackend->m_sFilterEnd.azChar());
+//  if ( ( StrLib::bEnds((char*)sPipeline->azStr(), (char*)"<> "_Stz)  ||
+//         StrLib::bEnds((char*)sPipeline->azStr(), (char*)"and "_Stz) ||
+//         StrLib::bEnds((char*)sPipeline->azStr(), (char*)"or "_Stz)  ||
+//         StrLib::bEnds((char*)sPipeline->azStr(), (char*)"not "_Stz) ||
+//         StrLib::bEnds((char*)sPipeline->azStr(), (char*)"xor "_Stz) ||
+//         StrLib::bEnds((char*)sPipeline->azStr(), (char*)"isNull "_Stz))
+//     )
+//    sPipeline->vCatSprint(" \" \n"_Stz);
+//  else
+//    sPipeline->vCatSprint(" %s \" \n"_Stz, pBackend->m_sFilterEnd.azChar());
+
+  sPipeline->vCatSprint(" \" \n"_Stz);
 
 }
 
@@ -571,7 +573,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
 
     if (AggregateExpr::bIsOfType(pQueryNode)) {
       sPipeline->vCatSprint(" ) "_Stz);
-      pBackend->m_sFilterEnd = ""_Stz;
+      //pBackend->m_sFilterEnd = ""_Stz;
     }
     return GraphNav::WALK_CONTINUE;
   }
@@ -580,7 +582,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
 
     if (AggregateExpr::bIsOfType(pQueryNode)) {
       sPipeline->vCatSprint(" ) "_Stz);
-      pBackend->m_sFilterEnd = ""_Stz;
+      //pBackend->m_sFilterEnd = ""_Stz;
     }
   }
 
@@ -754,7 +756,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
       NEVER_REACH;
     }
 
-    sPipeline->vCatSprint("%s "_Stz, pBackend->m_sFilterEnd.azChar());
+    //sPipeline->vCatSprint("%s "_Stz, pBackend->m_sFilterEnd.azChar());
 
     if (bDeleteOrdExpr)
       delete pOrdinalExpr;
@@ -812,7 +814,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
   if (LogicExpr::bIsOfType(pOrdinalExpr)) {
 
     if (AndExpr::bIsOfType(pOrdinalExpr)) {
-      //sPipeline->vCatSprint(" and "_Stz);
+      sPipeline->vCatSprint(" and "_Stz);
     }
 
     else if (IsNullExpr::bIsOfType(pOrdinalExpr)) {
