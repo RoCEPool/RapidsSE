@@ -84,18 +84,6 @@ rows:
  (3,0.06,3)
 
 //------------------------------------------------------------------------------
-aggregRows_I lineitem "type integer $1 , type varchar ) $9 sum groupby type integer $1";
-failure contains: "invalid command"
-
-//------------------------------------------------------------------------------
-aggregRows_I lineitem "type integer $1 , type date ) $12 sum groupby type integer $1";
-failure contains: "invalid command"
-
-//------------------------------------------------------------------------------
-aggregRows_I lineitem "type integer $1 , type varchar ) $14 sum groupby type integer $1";
-failure contains: "invalid command"
-
-//------------------------------------------------------------------------------
 // drop the table
 drop table lineitem;
 success;
