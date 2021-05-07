@@ -860,6 +860,7 @@
       | projValidation
       | corrBySquash
       | explainPlan
+      | stageMarkers
       | transliterate
       | output
       | sink

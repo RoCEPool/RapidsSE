@@ -70,6 +70,7 @@ void Step::vAddSteps_SqlCompiler(void)
   vAddStep("sqlCompiler::postProject"_Stz,        &Step::vSqlCompilerPostProject);
   vAddStep("sqlCompiler::projValidation"_Stz,     &Step::vSqlCompilerProjValidation);
   vAddStep("sqlCompiler::setOpValidate"_Stz,      &Step::vSqlCompilerSetOpValidate);
+  vAddStep("sqlCompiler::stageMarkers"_Stz,       &Step::vSqlCompilerStageMarkers);
   vAddStep("sqlCompiler::transliterate"_Stz,      &Step::vSqlCompilerTransliterate);
 }
 
@@ -912,6 +913,56 @@ void Step::vSqlCompilerSetOpValidate(void)
   L_Exit:
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* sqlCompiler::stageMarkers -- Convert StatementMarkers to StageMarkers      */
+/*----------------------------------------------------------------------------*/
+void Step::vSqlCompilerStageMarkers(void)
+{
+  ENTRY();
+
+  /**
+   * This stage of the plan is about removing StatementMarkers (used by the compiler)
+   * and inserting StageMarkers (used by the transliteration). StageMarkers tell
+   * the transliterator when to create a new stage in the pipeline statement.
+   */
+
+  PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
+  Parser::RootNode* pPlanRoot = Parser::_pRootNode(pPlanOperand->pPlanNode());
+  UNUSED(pPlanRoot);
+  ASSERT(ShadowRoot::bIsExactType(pPlanRoot));
+
+
+
+  try {
+    // TODO
+
+  } catch (Parser::SqlException& e) {
+    Grid* pGrid = AM::pGrid();
+    InfoSet* pInfoSet = _pInfoSet(*m_pJob->pLogicUnit_job()->m_xpInfoSet);
+    Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+                                    pGrid->pThisNode()->szNodeNm(),
+                                    EC_SEMANTIC_ERROR,
+                                    0,
+                                    0,
+                                    e.szError(),
+                                    C_VARGS_END);
+    UNUSED(pRow);
+    delete pPlanRoot;
+    delete pPlanOperand;
+    m_pDataStack->vPushPtr(nullptr);
+    goto L_Exit;
+  }
+
+  // TODO: eventually we want the received plan graph to be immutable,
+  //       so we would send a different version. But for now we will just
+  //       manipulate and send the same plan graph
+  m_pDataStack->vPushPtr(pPlanOperand);
+
+  L_Exit:
+  EXIT();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* sqlCompiler::transliterate -- plan to pipeline transliterate               */
