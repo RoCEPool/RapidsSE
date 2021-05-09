@@ -1136,14 +1136,21 @@ void vDev_ROW_POPCOLS(i8** aaiDstk)
   Stz* szStr = (Stz*)S_StrAdr();
 
   pDevRow->m_pRowBuffer->vPositionOnCell(iColumn);
-  
-  char* azDst = pDevRow->m_pRowBuffer->azDepositString_begin();
-  
-  StrLib::vCopy(azDst,(char*)szStr);
-  i8 nSize = StrLib::nSize(azDst);
 
-  pDevRow->m_pRowBuffer->vDepositString_end(nSize);
-  S_StrDrp();
+  // check for nulls
+  if (*(i8*)(aiDstk) == C_DATUM_NULL) {
+    pDevRow->m_pRowBuffer->vDepositColVal(C_DATUM_NULL);
+  }
+  else {
+
+    char *azDst = pDevRow->m_pRowBuffer->azDepositString_begin();
+
+    StrLib::vCopy(azDst, (char *) szStr);
+    i8 nSize = StrLib::nSize(azDst);
+
+    pDevRow->m_pRowBuffer->vDepositString_end(nSize);
+    S_StrDrp();
+  }
 
   *aaiDstk = aiDstk;
 }

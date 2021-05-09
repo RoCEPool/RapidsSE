@@ -13,8 +13,8 @@ begin
 
   stage stageB on all partitions :
     scan lineitem
-    | filter  1 "$11 DATE '1994-01-01' >=  <> $11 DATE '1995-01-01' < <> "
-    | filter  1 "$7 0.06 0.01 - >= <> $7 0.06 0.01 +  <= <>"
+    | filter  1 "$11 DATE '1994-01-01' >=  $11 DATE '1995-01-01' < and "
+    | filter  1 "$7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and"
     | aggreg  1 " type decimal as revenue_p ) $6 $7 * sum "
     | stageC
 
@@ -126,7 +126,7 @@ rows:
   ('nal foxes wake. ')
 
 //------------------------------------------------------------------------------
-filterRows lineitem "$7 0.04 >= <> $7 0.06 <= <> $5 24.0 < <>";
+filterRows lineitem "$7 0.04 >=  $7 0.06 <=  $5 24.0 < and and";
 rows:
   (3,1284483,34508,3,22.00,39620.34,0.06,*,*,*,*,*,*,*,*,*)
   (1,1551894,76910,1,17.00,33078.94,0.04,*,*,*,*,*,*,*,*,*)
@@ -195,8 +195,8 @@ begin
 
   stage stageB on all partitions :
     scan lineitem
-    | filter  1 "$11 DATE '1994-01-01' >=  <> $11 DATE '1995-01-01' < <> "
-    | filter  1 "$7 0.06 0.01 - >= <> $7 0.06 0.01 +  <= <> $5 26.0 < <> "
+    | filter  1 "$11 DATE '1994-01-01' >=   $11 DATE '1995-01-01' < and "
+    | filter  1 "$7 0.06 0.01 - >=  $7 0.06 0.01 +  <=  $5 26.0 < and and "
     | aggreg  1 " type decimal as revenue_p ) $6 $7 * sum "
     | stageC
 
@@ -215,7 +215,7 @@ begin
 
   stage stageB on all partitions :
     scan lineitem
-    | filter  1 "$11 DATE '1994-01-01' >=  <> $11 DATE '1995-01-01' < <>  $7 0.06 0.01 - >= <> $7 0.06 0.01 +  <= <> $5 26.0 < <> "
+    | filter  1 "$11 DATE '1994-01-01' >=   $11 DATE '1995-01-01' <   $7 0.06 0.01 - >=  $7 0.06 0.01 +  <=  $5 26.0 < and and and and"
     | aggreg  1 " type decimal as revenue_p ) $6 $7 * sum "
     | stageC
 

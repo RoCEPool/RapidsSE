@@ -1738,7 +1738,7 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
     Column* pColumn = pStreamDefIn->pGetColumn(i_ColumnOrdinal);
 
     if (bGroupBy) {
-      (m_sGbyIdxAsm, pColumn->eColumnType(), i_Local);
+      vAddGbyIdxCol(m_sGbyIdxAsm, pColumn->eColumnType(), i_Local);
       vAddPushCol(m_sPayLoadKeyAsm, pColumn->eColumnType(), i_Local);
       vAddPayLoadKey(m_sPayLoadKeyAsm, pColumn->eColumnType(), i_Local);
     }
