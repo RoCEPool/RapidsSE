@@ -711,7 +711,7 @@ void ExprEval::vGenerateSum(Stz* sAsmBuffer, Stz* sAggInit)
   if (m_bHasGby) {
     // generate code for agg initialization
     //StrLib::vSprintCat(sAggInit, "  EO_INTEGER %lld\n"_Stz, 0);
-   // StrLib::vSprintCat(sAggInit, "  EO_PAY_STORE_COLI %lld\n"_Stz, m_iDstColumn);
+    StrLib::vSprintCat(sAggInit, "  EO_PAY_STORE_COLI %lld\n"_Stz, m_iDstColumn);
 
     // generate the code
     StrLib::vSprintCat(sAsmBuffer, "  EO_PAY_FETCH_COLI %lld\n"_Stz, m_iDstColumn);
@@ -1826,7 +1826,8 @@ void ExprEval::vGenerateColumnCode(Stz* szAsmBuffer, StreamDef* pStreamDefOut, C
 /*----------------------------------------------------------------------------*/
 void ExprEval::vGenerateColumnCodeGby(StreamDef* pStreamDefOut, Column* pColumn) {
 
-  vAddStoreCol(m_sPayLoadStoreAsm, pColumn->eColumnType());
+  if ( ! m_bHasAgg )
+    vAddStoreCol(m_sPayLoadStoreAsm, pColumn->eColumnType());
 
   m_nPayLoadBytes += 8;
 
