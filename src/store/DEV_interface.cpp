@@ -1553,6 +1553,7 @@ void vDev_ROW_COLS_TO_LOCALS(i8** aaiDstk)
       case CT_BOOLEAN:
       case CT_INTEGER:
       case CT_DATE:
+      case CT_TIME:
       case CT_TIMESTAMP:
       case CT_DECIMAL:
         *ayDst = pDevRow->m_aRow->iColVal_int(iaColSet[i_ColSet]);
