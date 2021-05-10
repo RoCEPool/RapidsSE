@@ -159,6 +159,195 @@ inline i8 iMathLib_Div_BCDBCD(i8 iValue1, i8 iValue2)
 }
 
 /*----------------------------------------------------------------------------*/
+/* iMathLib_Div_BCDFLT:                                                       */
+/*----------------------------------------------------------------------------*/
+inline i8 iMathLib_Div_BCDFLT(i8 iBcdValue, i8 iFloatValue)
+{
+  i8 iResult = C_DATUM_NULL;;
+
+  return iResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* iMathLib_Div_BCDINT:                                                       */
+/*----------------------------------------------------------------------------*/
+inline i8 iMathLib_Div_BCDINT(i8 iBcdValue, i8 iFloatValue)
+{
+  i8 iResult = C_DATUM_NULL;;
+
+  return iResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* iMathLib_Div_DTEIVL:                                                       */
+/*----------------------------------------------------------------------------*/
+inline i8 iMathLib_Div_DTEIVL(i8 iFloatValue, i8 iBcdValue)
+{
+  i8 iResult = C_DATUM_NULL;
+
+  return iResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* iMathLib_Div_FLTBCD:                                                       */
+/*----------------------------------------------------------------------------*/
+inline i8 iMathLib_Div_FLTBCD(i8 iFloatValue, i8 iBcdValue)
+{
+  i8 iResult = C_DATUM_NULL;;
+
+  return iResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* iMathLib_Div_FLTFLT:                                                       */
+/*----------------------------------------------------------------------------*/
+inline i8 iMathLib_Div_FLTFLT(i8 iValue1, i8 iValue2)
+{
+  i8 iResult;
+  d8 fValue1;
+  d8 fValue2;
+
+  fValue1 = *(d8*)&iValue1;
+  fValue2 = *(d8*)&iValue2;
+
+  if (fValue1==  C_DATUM_NULL || fValue2 == C_DATUM_NULL)
+    iResult = C_DATUM_NULL;
+  else {
+    d8 dResult = fValue1 / fValue2;
+    iResult = *(d8 *) &dResult;
+  }
+
+  return iResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* iMathLib_Div_FLTFLT:                                                       */
+/*----------------------------------------------------------------------------*/
+inline i8 iMathLib_Div_FLTINT(i8 iValue1, i8 iValue2)
+{
+  i8 iResult;
+  d8 fValue1;
+  d8 fValue2;
+
+  if (fValue1 == C_DATUM_NULL || fValue2 == C_DATUM_NULL)
+    return C_DATUM_NULL;
+
+  fValue1 = *(d8*)&iValue1;
+  fValue2 = iValue2;
+
+  d8 dResult = fValue1 / fValue2;
+  iResult = *(d8 *) &dResult;
+
+  return iResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* iMathLib_Div_INTBCD:                                                       */
+/*----------------------------------------------------------------------------*/
+inline i8 iMathLib_Div_INTBCD(i8 iFloatValue, i8 iBcdValue)
+{
+  i8 iResult = C_DATUM_NULL;
+
+  return iResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* iMathLib_Div_INTFLT:                                                       */
+/*----------------------------------------------------------------------------*/
+inline i8 iMathLib_Div_INTFLT(i8 iValue1, i8 iValue2)
+{
+  i8 iResult;
+  d8 fValue1;
+  d8 fValue2;
+
+  if (fValue1 == C_DATUM_NULL || fValue2 == C_DATUM_NULL)
+    return C_DATUM_NULL;
+
+  fValue1 = iValue1;
+  fValue2 = *(d8*)&iValue2;
+
+  d8 dResult = fValue1 / fValue2;
+  iResult = *(d8 *) &dResult;
+
+  return iResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* iMathLib_Div_INTINT:                                                       */
+/*----------------------------------------------------------------------------*/
+inline i8 iMathLib_Div_INTINT(i8 iValue1, i8 iValue2)
+{
+  i8 iResult;
+
+  if (iValue1 == C_DATUM_NULL || iValue2 == C_DATUM_NULL)
+    iResult = C_DATUM_NULL;
+  else
+    iResult = iValue1 / iValue2;
+
+  return iResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* iMathLib_Div_IVLDTE:                                                       */
+/*----------------------------------------------------------------------------*/
+inline i8 iMathLib_Div_IVLDTE(i8 iIvlValue, i8 iDteValue)
+{
+  i8 iResult = C_DATUM_NULL;
+
+  return iResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* iMathLib_Div_IVLIVL:                                                       */
+/*----------------------------------------------------------------------------*/
+inline i8 iMathLib_Div_IVLIVL(i8 iIvlValue1, i8 iIvlValue2)
+{
+  i8 iResult = C_DATUM_NULL;
+
+  return iResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* iMathLib_v_IVLTME:                                                         */
+/*----------------------------------------------------------------------------*/
+inline i8 iMathLib_Div_IVLTME(i8 iIvlValue, i8 TmeValue)
+{
+  i8 iResult = C_DATUM_NULL;
+
+  return iResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* iMathLib_Div_IVLTSP:                                                       */
+/*----------------------------------------------------------------------------*/
+inline i8 iMathLib_Div_IVLTSP(i8 iIvlValue, i8 iTspValue)
+{
+  i8 iResult = C_DATUM_NULL;
+
+  return iResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* iMathLib_v_TMEIVL:                                                         */
+/*----------------------------------------------------------------------------*/
+inline i8 iMathLib_Div_TMEIVL(i8 TmeValue, i8 iIvlValue)
+{
+  i8 iResult = C_DATUM_NULL;
+
+  return iResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* iMathLib_v_TSPIVL:                                                         */
+/*----------------------------------------------------------------------------*/
+inline i8 iMathLib_Div_TSPIVL(i8 TspValue, i8 iIvlValue)
+{
+  i8 iResult = C_DATUM_NULL;
+
+  return iResult;
+}
+
+/*----------------------------------------------------------------------------*/
 /* iMathLib_Mul_BCDBCD:                                                       */
 /*----------------------------------------------------------------------------*/
 inline i8 iMathLib_Mul_BCDBCD(i8 iValue1, i8 iValue2)
