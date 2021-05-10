@@ -798,6 +798,10 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
       sPipeline->vCatSprint(" isNull "_Stz);
     }
 
+    else if (NotExpr::bIsOfType(pOrdinalExpr)) {
+      sPipeline->vCatSprint(" not "_Stz);
+    }
+
     else if (OrExpr::bIsOfType(pOrdinalExpr)) {
       sPipeline->vCatSprint(" or "_Stz);
     }

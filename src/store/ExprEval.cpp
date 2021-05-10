@@ -236,6 +236,8 @@ void ExprEval::vAddLogical(Stz* szAsmBuffer, Token* pTkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
 
+  m_xTypeStack.vPush((i8)DM_BOL);
+
   if (pTkn->bSame("and"_Stz)) {
     StrLib::vSprintCat(szAsmBuffer, "  EO_LGL_AND\n"_Stz);
   }

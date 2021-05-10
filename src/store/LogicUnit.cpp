@@ -1510,6 +1510,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
         RASSERT(iTopA == C_DATUM_NULL);
+        dLU3(EO_ADD_UNKXYZ,iTopA,iTopB,iRes);
         *(++aiDstk) = C_DATUM_NULL;
         break;//+endCase
 
@@ -1518,13 +1519,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         iTopA = *(aiDstk--);
         RASSERT(iTopB == C_DATUM_NULL);
         *(++aiDstk) = C_DATUM_NULL;
-        break;//+endCase
-
-      case EO_AND_BOLBOL: ArgNil(); // bol and bol
-        break;//+endCase
-      case EO_AND_BOLUNK: ArgNil(); // bol and unk
-        break;//+endCase
-      case EO_AND_UNKBOL: ArgNil(); // unk and bol
         break;//+endCase
 
       case EO_DIV_BCDBCD: ArgNil(); // bcd / bcd
@@ -1551,6 +1545,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
       case EO_DIV_INTFLT: ArgNil(); // int / flt
         break;//+endCase
+
       case EO_DIV_INTINT: ArgNil(); // int / int
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
@@ -1558,6 +1553,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU3(EO_DIV_INTINT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
+
       case EO_DIV_IVLDTE: ArgNil(); // ivl / dte
         break;//+endCase
       case EO_DIV_IVLIVL: ArgNil(); // ivl / ivl
@@ -1570,8 +1566,15 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
       case EO_DIV_TSPIVL: ArgNil(); // tsp / ivl
         break;//+endCase
+
       case EO_DIV_UNKXYZ: ArgNil(); // unk / xyz
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        RASSERT(iTopA == C_DATUM_NULL);
+        dLU3(EO_DIV_UNKXYZ,iTopA,iTopB,iRes);
+        *(++aiDstk) = C_DATUM_NULL;
         break;//+endCase
+
       case EO_DIV_XYZUNK: ArgNil(); // xyz / unk
         break;//+endCase
         
@@ -1582,8 +1585,15 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU3(EO_MOD_INTINT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
+
       case EO_MOD_UNKXYZ: ArgNil(); // unk % xyz
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        RASSERT(iTopA == C_DATUM_NULL);
+        dLU3(EO_MOD_UNKXYZ,iTopA,iTopB,iRes);
+        *(++aiDstk) = C_DATUM_NULL;
         break;//+endCase
+
       case EO_MOD_XYZUNK: ArgNil(); // xyz % unk
         break;//+endCase
 
@@ -1616,6 +1626,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
       case EO_MUL_INTFLT: ArgNil(); // int * flt
         break;//+endCase
+
       case EO_MUL_INTINT: ArgNil(); // int * int
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
@@ -1623,6 +1634,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         dLU3(EO_MUL_INTINT,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
+
       case EO_MUL_IVLDTE: ArgNil(); // ivl * dte
         break;//+endCase
       case EO_MUL_IVLIVL: ArgNil(); // ivl * ivl
@@ -1635,8 +1647,15 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
       case EO_MUL_TSPIVL: ArgNil(); // tsp * ivl
         break;//+endCase
+
       case EO_MUL_UNKXYZ: ArgNil(); // unk * xyz
+        iTopB = *(aiDstk--);
+        iTopA = *(aiDstk--);
+        RASSERT(iTopA == C_DATUM_NULL);
+        dLU3(EO_MUL_UNKXYZ,iTopA,iTopB,iRes);
+        *(++aiDstk) = C_DATUM_NULL;
         break;//+endCase
+
       case EO_MUL_XYZUNK: ArgNil(); // xyz * unk
         break;//+endCase
 
@@ -1667,18 +1686,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         iRes  = - iTopA;
         dLU2(EO_NEG_INT,iTopA,iRes);
         *(++aiDstk) = C_DATUM_NULL;
-        break;//+endCase
-
-      case EO_NOT_BOL: ArgNil(); // not bol
-        break;//+endCase
-      case EO_NOT_UNK: ArgNil(); // not unk
-        break;//+endCase
-
-      case EO_OR_BOLBOL: ArgNil(); // bol or bol
-        break;//+endCase
-      case EO_OR_BOLUNK: ArgNil(); // bol or unk
-        break;//+endCase
-      case EO_OR_UNKBOL: ArgNil(); // bol or unk
         break;//+endCase
 
       // subtract second int from top push result
@@ -1727,13 +1734,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_SUB_UNKXYZ: ArgNil(); // unk + xyz
         break;//+endCase
       case EO_SUB_XYZUNK: ArgNil(); // xyz + unk
-        break;//+endCase
-
-      case EO_XOR_BOLBOL: ArgNil(); // bol xor bol
-        break;//+endCase
-      case EO_XOR_BOLUNK: ArgNil(); // bol xor unk
-        break;//+endCase
-      case EO_XOR_UNKBOL: ArgNil(); // bol xor unk
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -1819,7 +1819,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_LGL_AND: ArgNil(); // logical and top two int's, push result
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
-        iRes  = (iTopA && iTopB) ? 1 : 0;
+        if (iTopA == C_DATUM_NULL || iTopB == C_DATUM_NULL )
+          iRes = 0;
+        else
+          iRes  = (iTopA && iTopB) ? 1 : 0;
         dLU3(EO_LGL_AND,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
@@ -1834,7 +1837,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_LGL_NOT: ArgNil(); // logical not top int, push result
         iTopA = *(aiDstk--);
-        iRes  = (! iTopA) ? 1 : 0;
+        if (iTopA == C_DATUM_NULL)
+          iRes = C_DATUM_NULL;
+        else
+          iRes  = (! iTopA) ? 1 : 0;
         dLU2(EO_LGL_NOT,iTopA,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
@@ -1842,7 +1848,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_LGL_XOR: ArgNil(); // logical xor top two int's, push result
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
-        iRes  =  (!iTopA && iTopB) || (iTopA && !iTopB) ? 1 : 0;
+        if (iTopA == C_DATUM_NULL || iTopB == C_DATUM_NULL)
+          iRes = false;
+        else
+          iRes  =  (!iTopA && iTopB) || (iTopA && !iTopB) ? 1 : 0;
         dLU3(EO_LGL_XOR,iTopA,iTopB,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
