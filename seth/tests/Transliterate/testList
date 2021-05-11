@@ -1,4 +1,5 @@
 aggregates.test
+boolean.test
 date.test
 decimal.test
 time.test
