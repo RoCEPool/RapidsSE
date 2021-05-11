@@ -161,8 +161,8 @@ void ExprEval::vAddArithmetic(Stz* szAsmBuffer, Token* pTkn, Column* pColumn) {
   else {
 
     // pop two param types
-    eParamType1 = (eDM) m_xTypeStack.iPop();
     eParamType2 = (eDM) m_xTypeStack.iPop();
+    eParamType1 = (eDM) m_xTypeStack.iPop();
 
     if (pTkn->bSame("+"_Stz)) {
       eCode = eMathOp_AddCode[eParamType1][eParamType2];
