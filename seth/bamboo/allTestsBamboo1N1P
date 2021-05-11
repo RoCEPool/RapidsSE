@@ -1,0 +1,5 @@
+# This is the testList file for Bamboo with one-node one-partitionSE.
+# All test files included in here will be run in the continuous integration environment.
+# This is a recursive testList file.
+
+../tests1N1P/Transliterate/testList
