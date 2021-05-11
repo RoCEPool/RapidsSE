@@ -24,6 +24,7 @@ namespace STORE
     i8  m_iDstOp;          // destination op in the destination stage
     
   private:
+    bool m_bOriginalParcel;
     i8 m_nObjects;                        // number of objects in the parcel
     Object* m_pObjects[C_MAX_PARCEL_OBJ];  // let's for now, a fixed size array of
   
@@ -53,6 +54,9 @@ namespace STORE
     void vRecvContents(Socket* pSocket);
     void vSendOut(Op* pSrcOp);
     void vSetObject(i8 i_Object, Object* pObject);
+
+    bool bIsOriginal(void);
+    void vSetOriginState(bool bState);
 
   private:
     void vSendOverSocket(void);

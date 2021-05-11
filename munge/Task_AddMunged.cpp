@@ -11648,6 +11648,7 @@ void Task::vAddMunged(Task* )
     "  \n"
     "\n"
     "  pOperand object.class@ CN_PARCEL == if\n"
+    "    \"Send parcel \" .\n"
     "    pOperand to pParcel\n"
     "  else\n"
     "    pOperand operand.toParcel to pParcel\n"

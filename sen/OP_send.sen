@@ -24,6 +24,7 @@
   
 
   pOperand object.class@ CN_PARCEL == if
+    "Send parcel " .
     pOperand to pParcel
   else
     pOperand operand.toParcel to pParcel

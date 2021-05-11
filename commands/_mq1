@@ -5,17 +5,14 @@
 bc;
 
 create table bolTbl3 (
-  bol_col1   BOOLEAN     NOT NULL,
-  vch_col2   VARCHAR(32) NOT NULL,
-  int_col3   INTEGER     NOT NULL,
-  int_col4   INTEGER     NOT NULL,
-  dec_col5   DECIMAL(10,2) NOT NULL,
-  flt_col6   FLOAT       NOT NULL,
-  tsp_col7   TIMESTAMP   NOT NULL,
-  bol_col8   BOOLEAN
+  bol_col1   BOOLEAN     NOT NULL
 );
 
-getMeta2 bolTbl3;
+// cross machines
+getMeta bolTbl3;
+
+// 2 is same machine
+//getMeta2 bolTbl3;
 
 /*============================================================================*/
 /* end                                                                        */

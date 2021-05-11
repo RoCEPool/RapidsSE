@@ -69,11 +69,18 @@ void Step::vParcelPipeOut(void)
   
   //! ALKA come back to this. May need a m_bAppendLeft in pParcel
   // append to left queue
-  if (pParcel->pGetOperand())
-    pOp->vAppendLeft(pOperand,this);
-  
-  // now delete the pParcel
-  delete pParcel;
+
+  if (pParcel->bIsOriginal()) {
+    vTrace(">>>>>> It is original parcel\n"_Stz);
+    pOp->vAppendLeft((Operand*)pParcel,this);
+  } else {
+    vTrace("<<<<<< It is NOT original parcel\n"_Stz);
+    if (pParcel->pGetOperand())  // original line 72 thru "delete"
+      pOp->vAppendLeft(pOperand, this);
+
+    // now delete the pParcel
+    delete pParcel;
+  }
   
   EXIT();
 }

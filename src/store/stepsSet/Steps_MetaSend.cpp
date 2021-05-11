@@ -40,8 +40,8 @@ void Step::vMetaSendGetParts(void)
 
   m_pDataStack->vPushPtr(pParcel);
 
-  if (pParcel) {
-    vTrace("C++ pParcel is good\n"_Stz);
+  if (pParcel && pParcel->bIsOriginal()) {
+    vTrace("C++ pParcel is good and is originally created by Table\n"_Stz);
   }
 
   

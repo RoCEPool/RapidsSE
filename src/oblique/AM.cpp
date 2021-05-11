@@ -895,6 +895,7 @@ void AM::vDeleteOperand(Operand* pOperand)
 
     case CN_PARCEL: {
       Parcel* pParcel = _pParcel(pOperand);
+      vTrace("vDeleteOperand delete pParcel\n"_Stz);
       delete pParcel;
       break;
     }

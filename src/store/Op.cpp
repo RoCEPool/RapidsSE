@@ -256,10 +256,10 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-//  vTrace("%s::vAppendLeft : %p %s\n"_Stz,
-//         m_sOpNm.szStz(),
-//         pOperand,
-//         aCN[pOperand->eGetClassNo()]);
+  //vTrace("%s::vAppendLeft : %p %s\n"_Stz,
+  //       m_sOpNm.szStz(),
+  //       pOperand,
+  //       aCN[pOperand->eGetClassNo()]);
     
   vGrabTaskLock();
   pQueueLeft()->vAppendOperand(pOperand);

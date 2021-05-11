@@ -41,6 +41,8 @@ Parcel::Parcel(Operand* pOperand,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
+  m_bOriginalParcel = false;
+
   m_nObjects = 0;
   for (i8 i_Obj = 0; i_Obj < C_MAX_PARCEL_OBJ; i_Obj++)
     vSetObject(i_Obj,nullptr);
@@ -162,13 +164,13 @@ void Parcel::vSendOut(Op* pSrcOp)
   Pipeline* pPipeline = pSrcOp->pPipeline();
   i8 i_NextStage = pSrcOp->iNextStage();
   ePX eCrossTopo = pSrcOp->eCrossTopo();
-  RASSERT(eCrossTopo == m_eCrossTopo);
+  //RASSERT(eCrossTopo == m_eCrossTopo);
   tPN tDstPtn = pSrcOp->tPtnNo();
 
   // get operand and next stage
   Operand* pOperand = pGetOperand();
   Stage* pNextStage = pPipeline->pGet(i_NextStage);
-  RASSERT(pNextStage);
+  //RASSERT(pNextStage);
   
   // figure out the send kind
   m_eSendKind = pSrcOp->eSendKind();
@@ -580,6 +582,25 @@ void Parcel::vSendToPartition(Op* pSrcOp, tPN tDstPtn)
   pSrcOp->vSendNode(iDstNode);
   vTrace("vSendToPartition iDstNode:%lld\n"_Stz, iDstNode);
   vSendParcel(pSrcOp,iDstNode,tDstPtn);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the state of origin (T or F)                                           */
+/*----------------------------------------------------------------------------*/
+bool Parcel::bIsOriginal(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+  return m_bOriginalParcel;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* set the state of origin (T or F)                                           */
+/*----------------------------------------------------------------------------*/
+void Parcel::vSetOriginState(bool bState)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+  m_bOriginalParcel = bState;
 }
 
 /*============================================================================*/
