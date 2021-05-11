@@ -1,6 +1,9 @@
 aggregates.test
-minmax.test
-selectTypes.test
+date.test
+decimal.test
+time.test
 filterInteger.test
 //filterDecimal.test
+minmax.test
 project.test
+selectTypes.test

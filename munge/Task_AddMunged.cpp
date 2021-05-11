@@ -1111,7 +1111,7 @@ void Task::vAddMunged(Task* )
     "      metaSend | stageC\n"
     "\n"
     "    stage stageC on origin :\n"
-    "      metaRecv | stageA\n"
+    "      metaRecv | sink | stageA\n"
     "\n"
     "  end ;\n"
     "  \"\n"

@@ -1094,7 +1094,7 @@
       metaSend | stageC
 
     stage stageC on origin :
-      metaRecv | stageA
+      metaRecv | sink | stageA
 
   end ;
   "

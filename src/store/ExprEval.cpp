@@ -161,8 +161,8 @@ void ExprEval::vAddArithmetic(Stz* szAsmBuffer, Token* pTkn, Column* pColumn) {
   else {
 
     // pop two param types
-    eParamType1 = (eDM) m_xTypeStack.iPop();
     eParamType2 = (eDM) m_xTypeStack.iPop();
+    eParamType1 = (eDM) m_xTypeStack.iPop();
 
     if (pTkn->bSame("+"_Stz)) {
       eCode = eMathOp_AddCode[eParamType1][eParamType2];
@@ -235,6 +235,8 @@ void ExprEval::vAddGbyIdxCol(Stz* szAsmBuffer, eCT eColumnType, i8 i_Local) {
 void ExprEval::vAddLogical(Stz* szAsmBuffer, Token* pTkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
+
+  m_xTypeStack.vPush((i8)DM_BOL);
 
   if (pTkn->bSame("and"_Stz)) {
     StrLib::vSprintCat(szAsmBuffer, "  EO_LGL_AND\n"_Stz);
@@ -711,7 +713,7 @@ void ExprEval::vGenerateSum(Stz* sAsmBuffer, Stz* sAggInit)
   if (m_bHasGby) {
     // generate code for agg initialization
     //StrLib::vSprintCat(sAggInit, "  EO_INTEGER %lld\n"_Stz, 0);
-   // StrLib::vSprintCat(sAggInit, "  EO_PAY_STORE_COLI %lld\n"_Stz, m_iDstColumn);
+    StrLib::vSprintCat(sAggInit, "  EO_PAY_STORE_COLI %lld\n"_Stz, m_iDstColumn);
 
     // generate the code
     StrLib::vSprintCat(sAsmBuffer, "  EO_PAY_FETCH_COLI %lld\n"_Stz, m_iDstColumn);
@@ -1826,7 +1828,8 @@ void ExprEval::vGenerateColumnCode(Stz* szAsmBuffer, StreamDef* pStreamDefOut, C
 /*----------------------------------------------------------------------------*/
 void ExprEval::vGenerateColumnCodeGby(StreamDef* pStreamDefOut, Column* pColumn) {
 
-  vAddStoreCol(m_sPayLoadStoreAsm, pColumn->eColumnType());
+  if ( ! m_bHasAgg )
+    vAddStoreCol(m_sPayLoadStoreAsm, pColumn->eColumnType());
 
   m_nPayLoadBytes += 8;
 
