@@ -831,7 +831,13 @@ i8 Table::iPrepareParcel(void)
 
   m_pParcel->vAddObject((Object *)this);
 
-  m_pParcel->vAddObject((Object *)&m_oLocation);
+  Location *pLoc = new Location();
+  pLoc->vTenant(m_oLocation.szTenant());
+  pLoc->vCatalog(m_oLocation.szCatalog());
+  pLoc->vSchema(m_oLocation.szSchema());
+  pLoc->vTable(m_oLocation.szTable());
+  m_pParcel->vAddObject((Object *)pLoc);
+  //m_pParcel->vAddObject((Object *)&m_oLocation);
 
   if ( m_pStreamDef) {
     m_pParcel->vAddObject((Object *)m_pStreamDef);
@@ -884,6 +890,7 @@ i8 Table::iBuildParcel(Parcel* pParcel)
   // Let's make this prototype code to test out
 
   if (!m_pParcel) {
+    vTrace("iBuildParcel: create new parcel\n"_Stz);
     m_pParcel = new Parcel(nullptr,0,0,0,PX_NONE);
     m_pParcel->vLabel(pParcel->m_iPipelineJobId, pParcel->m_iDstNode, pParcel->m_tDstPtn, pParcel->m_eCrossTopo);
     // Set the state that this is created as a parcel
