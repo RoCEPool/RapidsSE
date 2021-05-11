@@ -1116,7 +1116,7 @@
       metaSend | metaRecv | stageC
 
     stage stageC on origin :
-      noop | stageA
+      noop | sink | stageA
 
   end ;
   "

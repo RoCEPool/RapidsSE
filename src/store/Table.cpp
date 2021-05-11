@@ -241,7 +241,7 @@ tPN Table::tTablePtnToPtnNo(i8 i_TablePtn)
 void Table::vPostRecv(void* aTable)
 {
   _static_
-  vTrace("table PostRecv\n"_Stz); //debug only
+  vTrace("Table::PostRecv\n"_Stz); //debug only
 
   Table* pTable = _pTable(aTable);
   
@@ -609,6 +609,8 @@ void Table::vResetPointers(void)
   m_pShardDef  = nullptr;
   m_pBucketMap = nullptr;
   m_pIdxVec    = nullptr;
+
+  m_pParcel    = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -881,7 +883,12 @@ i8 Table::iBuildParcel(Parcel* pParcel)
 
   // Let's make this prototype code to test out
 
-  if (!m_pParcel) return 0;
+  if (!m_pParcel) {
+    m_pParcel = new Parcel(nullptr,0,0,0,PX_NONE);
+    m_pParcel->vLabel(pParcel->m_iPipelineJobId, pParcel->m_iDstNode, pParcel->m_tDstPtn, pParcel->m_eCrossTopo);
+    // Set the state that this is created as a parcel
+    m_pParcel->vSetOriginState(true);
+  }
 
   i8 nObjects = pParcel->nObjects();
   for (i8 i_Obj=0; i_Obj < nObjects; i_Obj++)

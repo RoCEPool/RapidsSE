@@ -1264,6 +1264,7 @@ public:
 
   // Parcel
   void vParcelDelete(void);
+  void vParcelLabel(void);
   void vParcelPipeOut(void);
   void vParcelSendOut(void);
 

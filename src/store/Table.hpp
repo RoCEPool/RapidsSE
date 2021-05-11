@@ -92,9 +92,6 @@ namespace STORE
     i8   nParcelObjects(void) {return m_pParcel ? m_pParcel->nObjects() : 0;}
     Object* pGetParcelObject(i8 iIdx);
 
-    //std::vector<Object*> aObjParts(void) { return m_aObjParts;};
-    //i8   iObjParts(void) { return m_aObjParts.size();};
-
     i8   iBuildParcelObjs(Object* pObj);
     i8   iBuildParcel(Parcel* pParcel);
     i8   iReassembleObj(void);

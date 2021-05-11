@@ -24,7 +24,7 @@
 void Step::vAddSteps_Parcel(void)
 {
   vAddStep("parcel::delete"_Stz,    &Step::vParcelDelete);
-  
+  vAddStep("parcel.label"_Stz,      &Step::vParcelLabel);
   vAddStep("parcel.pipeOut"_Stz,    &Step::vParcelPipeOut);
   vAddStep("parcel.sendOut"_Stz,    &Step::vParcelSendOut);
 }
@@ -35,11 +35,32 @@ void Step::vAddSteps_Parcel(void)
 void Step::vParcelDelete(void)
 {
   ENTRY();
-    
+
   Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
   
   delete pParcel;
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* parcel::label -- label parcel                                              */
+/*----------------------------------------------------------------------------*/
+void Step::vParcelLabel(void)
+{
+  ENTRY();
+
+
+  Op* pSrcOp = m_pJob->m_pOp;
+
+  Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
+
+  pParcel->vLabel(pSrcOp->pPipelineJob()->iJobId(),
+                  C_UNKNOWN,
+                  C_UNKNOWN,
+                  pSrcOp->eCrossTopo());
+
+  m_pDataStack->vPushPtr(pParcel);
   EXIT();
 }
 

@@ -251,11 +251,11 @@ Object* Socket::pRecvObject(void)
 //         spHeader.sz(aHeader));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // receive the body of the obect (enough memory condition)
+  // receive the body of the object (enough memory condition)
 
   eCN eClass = pObject->eGetClassNo();
   if (! bLowMem || ! gxaSizeHeap[eClass].m_bLowMemoryDiscard) {
-
+    vTrace("class:%s\n"_Stz, aCN[eClass]);
     Object* pReceivedObject = Heaps::pAllocate(eClass);
     MemLib::vCopy(pReceivedObject,pObject,sizeof(Object),eClass);
 

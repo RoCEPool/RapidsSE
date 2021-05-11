@@ -58,6 +58,11 @@ namespace STORE
     bool bIsOriginal(void);
     void vSetOriginState(bool bState);
 
+    void vLabel(i8       iPipelineJobId,
+                i8       iDstNode,
+                tPN      tPtnNo,
+                ePX      eCrossTopo);
+
   private:
     void vSendOverSocket(void);
     void vSendParcel(Op* pSrcOp, i8 iDstNode, tPN tDstPtn);
