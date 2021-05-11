@@ -289,7 +289,7 @@ void AM::LOG::vLogInternal(i8 iTable, ...)
 /*----------------------------------------------------------------------------*/
 /* log memory allocation                                                      */
 /*----------------------------------------------------------------------------*/
-void AM::LOG::vMemoryAllocation(Object* pObject)
+void AM::LOG::vMemoryAllocation(Object* pObject, eCN eClassNo)
 {
   _static_
   
@@ -308,7 +308,7 @@ void AM::LOG::vMemoryAllocation(Object* pObject)
                         MY::iPtn(),
                         aZK[pRLU->m_ePipeInOperand],
                         
-                        pObject->szClassNm(),
+                        aCN[eClassNo],
                         (i8)0,
                         
                         MY::pThread()->iThreadNo(),
@@ -331,6 +331,8 @@ void AM::LOG::vMemoryFree(Object* pObject)
   LogicUnit* pRLU = pJob->pLogicUnit_job();
   if (! pRLU || pRLU->m_xpOp.bIsNull())
     return;
+  
+  RASSERT(CN_FREECHUNK != pObject->eGetClassNo());
   
   AM::LOG::vLogInternal((i8)TI_MEMORYLOG,
                         
