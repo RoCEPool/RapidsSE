@@ -230,7 +230,7 @@ function testSE1N1P() {
   echo ""
 
   startSE1N1P "${target}"
-  runSeth "1N1P-${target}"
+  runSeth1N1P "1N1P-${target}"
   stopSE1Node "${target}"
 }
 
