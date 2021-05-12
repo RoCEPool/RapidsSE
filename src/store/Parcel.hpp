@@ -50,6 +50,7 @@ namespace STORE
     void vAddObject(Object* pObject);
     Object* pGetObject(i8 i_Object);
     i8 nObjects(void);
+    void vReset(void);
     Operand* pGetOperand(void);
     void vRecvContents(Socket* pSocket);
     void vSendOut(Op* pSrcOp);

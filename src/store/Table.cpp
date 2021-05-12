@@ -108,10 +108,10 @@ Table::~Table(void) noexcept(false)
   
   // delete the TablePtn's
   for (i8 i_TablePtn = 0; i_TablePtn < AM::nPtnsPerTable(); i_TablePtn++) {
-    delete m_pTablePtnVec->pGet(i_TablePtn);
+      delete m_pTablePtnVec->pGet(i_TablePtn);
   }
   m_pTablePtnVec->vClear();
-  
+
   // delete the partition vector
   delete m_pTablePtnVec;
 
@@ -610,6 +610,10 @@ void Table::vResetPointers(void)
   m_pBucketMap = nullptr;
   m_pIdxVec    = nullptr;
 
+  // Question for Ray: Why we don't null the m_pTablePtnVec
+
+  Operand::ListItem_t::vResetPointers();
+
   m_pParcel    = nullptr;
 }
 
@@ -831,13 +835,7 @@ i8 Table::iPrepareParcel(void)
 
   m_pParcel->vAddObject((Object *)this);
 
-  Location *pLoc = new Location();
-  pLoc->vTenant(m_oLocation.szTenant());
-  pLoc->vCatalog(m_oLocation.szCatalog());
-  pLoc->vSchema(m_oLocation.szSchema());
-  pLoc->vTable(m_oLocation.szTable());
-  m_pParcel->vAddObject((Object *)pLoc);
-  //m_pParcel->vAddObject((Object *)&m_oLocation);
+  m_pParcel->vAddObject((Object *)&m_oLocation);
 
   if ( m_pStreamDef) {
     m_pParcel->vAddObject((Object *)m_pStreamDef);
@@ -887,7 +885,7 @@ i8 Table::iBuildParcel(Parcel* pParcel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 
-  // Let's make this prototype code to test out
+  i8 nObjects = pParcel->nObjects();
 
   if (!m_pParcel) {
     vTrace("iBuildParcel: create new parcel\n"_Stz);
@@ -895,9 +893,10 @@ i8 Table::iBuildParcel(Parcel* pParcel)
     m_pParcel->vLabel(pParcel->m_iPipelineJobId, pParcel->m_iDstNode, pParcel->m_tDstPtn, pParcel->m_eCrossTopo);
     // Set the state that this is created as a parcel
     m_pParcel->vSetOriginState(true);
+  } else {
+    m_pParcel->vReset();
   }
 
-  i8 nObjects = pParcel->nObjects();
   for (i8 i_Obj=0; i_Obj < nObjects; i_Obj++)
     m_pParcel->vAddObject(pParcel->pGetObject(i_Obj));
 

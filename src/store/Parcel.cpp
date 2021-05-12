@@ -105,11 +105,22 @@ void Parcel::vLabel(i8      iPipelineJobId,
                    tPN      tDstPtn,
                    ePX      eCrossTopo)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
   m_iPipelineJobId = iPipelineJobId;
   m_eCrossTopo     = eCrossTopo;
 
   m_iDstNode       = iDstNode;
   m_tDstPtn        = tDstPtn;
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset item count                                                           */
+/*----------------------------------------------------------------------------*/
+void Parcel::vReset(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+
+  m_nObjects = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -180,13 +191,13 @@ void Parcel::vSendOut(Op* pSrcOp)
   Pipeline* pPipeline = pSrcOp->pPipeline();
   i8 i_NextStage = pSrcOp->iNextStage();
   ePX eCrossTopo = pSrcOp->eCrossTopo();
-  //RASSERT(eCrossTopo == m_eCrossTopo);
+  RASSERT(eCrossTopo == m_eCrossTopo);
   tPN tDstPtn = pSrcOp->tPtnNo();
 
   // get operand and next stage
   Operand* pOperand = pGetOperand();
   Stage* pNextStage = pPipeline->pGet(i_NextStage);
-  //RASSERT(pNextStage);
+  RASSERT(pNextStage);
   
   // figure out the send kind
   m_eSendKind = pSrcOp->eSendKind();

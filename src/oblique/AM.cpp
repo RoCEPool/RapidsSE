@@ -902,7 +902,7 @@ void AM::vDeleteOperand(Operand* pOperand)
 
     case CN_TABLE: {
       Table* pTable = _pTable(pOperand);
-      delete pTable;
+      //delete pTable; // Question for Ray: do we need to delete ?
       break;
     }
       

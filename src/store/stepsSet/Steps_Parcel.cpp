@@ -93,9 +93,8 @@ void Step::vParcelPipeOut(void)
 
   if (pParcel->bIsOriginal()) {
     vTrace(">>>>>> It is original parcel\n"_Stz);
-    pOp->vAppendLeft((Operand*)pParcel,this);
+    pOp->vAppendLeft((Operand*)pParcel,this);   // still crashed here! Question for Ray:
   } else {
-    vTrace("<<<<<< It is NOT original parcel\n"_Stz);
     if (pParcel->pGetOperand())  // original line 72 thru "delete"
       pOp->vAppendLeft(pOperand, this);
 
