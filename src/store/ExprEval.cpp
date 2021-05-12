@@ -409,25 +409,37 @@ void ExprEval::vAddRelational(Stz* szAsmBuffer, Token* pTkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
 
+  eEO eCode;
+
+  // pop two param types
+  eDM eParamType2 = (eDM) m_xTypeStack.iPop();
+  eDM  eParamType1 = (eDM) m_xTypeStack.iPop();
+
+  // get result type
+  eDM eResultType = eMathOp_CmpResult[eParamType1][eParamType2];
+
   if (pTkn->bSame(">"_Stz)) {
-    StrLib::vSprintCat(szAsmBuffer, "  EO_GT_INTINT\n"_Stz);
+    eCode = eMathOp_GtCode[eParamType1][eParamType2];
   }
   else if (pTkn->bSame(">="_Stz)) {
-    StrLib::vSprintCat(szAsmBuffer, "  EO_GE_INTINT\n"_Stz);
+    eCode = eMathOp_GeCode[eParamType1][eParamType2];
   }
   else if (pTkn->bSame("<"_Stz)) {
-    StrLib::vSprintCat(szAsmBuffer, "  EO_LT_INTINT\n"_Stz);
+    eCode = eMathOp_LtCode[eParamType1][eParamType2];
   }
   else if (pTkn->bSame("<="_Stz)) {
-    StrLib::vSprintCat(szAsmBuffer, "  EO_LE_INTINT\n"_Stz);
+    eCode = eMathOp_LeCode[eParamType1][eParamType2];
   }
   else if (pTkn->bSame("!="_Stz)) {
-    StrLib::vSprintCat(szAsmBuffer, "  EO_NE_INTINT\n"_Stz);
+    eCode = eMathOp_NeCode[eParamType1][eParamType2];
   }
   else {
     ASSERT(pTkn->bSame("=="_Stz));
-      StrLib::vSprintCat(szAsmBuffer, "  EO_EQ_INTINT\n"_Stz);
+    eCode = eMathOp_EqCode[eParamType1][eParamType2];
   }
+
+  StrLib::vSprintCat(szAsmBuffer, "  %s\n"_Stz, aEO[eCode]);
+  m_xTypeStack.vPush((i8) eResultType);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1440,9 +1452,14 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
 
   while ( pTkn ) {
 
-    //vTrace("TKN: %s\n"_Stz, pTkn->azChars());
+    vTrace("TKN: %s\n"_Stz, pTkn->azChars());
 
     if (pTkn->bSame(","_Stz)) {
+
+      if (bGroupBy) {
+        pTkn = pTknVec->pNextToken();
+        continue;
+      }
 
       // discovered a comma, generate code for the column
       vGenerateColumnCodeGby(pStreamDefOut, pColumnExpr);
@@ -1711,7 +1728,6 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
 
       // discovered a column, generate code for the column
       vGenerateColumnCodeGby(pStreamDefOut, pColumnExpr);
-
       vAddToBufferCol(m_sPayLoadToBufferAsm, pColumnExpr->eColumnType());
 
       m_iDstColumn++;
@@ -1747,7 +1763,10 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
     else {
       if (m_bHasAgg)
         vAddPushCol(m_sPayLoadAggAsm, pColumn->eColumnType(), i_Local);
-      StrLib::vSprintCat(m_sPayLoadToBufferAsm, "  EO_PAY_FETCH_COLI %lld\n"_Stz, m_iDstColumn);
+      if (pColumnExpr->eColumnType() == CT_VARCHAR)
+        StrLib::vSprintCat(m_sPayLoadToBufferAsm, "  EO_PAY_FETCH_COLS %lld\n"_Stz, m_iDstColumn);
+      else
+        StrLib::vSprintCat(m_sPayLoadToBufferAsm, "  EO_PAY_FETCH_COLI %lld\n"_Stz, m_iDstColumn);
       vAddPushCol(m_sPayLoadStoreAsm, pColumn->eColumnType(), i_Local);
     }
     pTkn = pTknVec->pNextToken();
@@ -1918,14 +1937,12 @@ void ExprEval::vAddToBufferCol(Stz* szAsmBuffer, eCT eColumnType)
     case CT_INTEGER:
     case CT_TIME:
     case CT_TIMESTAMP:
-      //StrLib::vSprintCat(szAsmBuffer,"  EO_PAY_FETCH_COLI %lld\n"_Stz, m_iDstColumn);
       StrLib::vSprintCat(szAsmBuffer,"  EO_PUSH_DEVROW_DST\n"_Stz);
       StrLib::vSprintCat(szAsmBuffer,"  EO_DEVROW_POPCOLI %lld\n"_Stz, m_iDstColumn);
       break;
 
     case CT_CHAR:
     case CT_VARCHAR:
-      //StrLib::vSprintCat(szAsmBuffer, "  EO_PAY_FETCH_COLS %lld\n"_Stz, m_iDstColumn);
       StrLib::vSprintCat(szAsmBuffer,"  EO_PUSH_DEVROW_DST\n"_Stz);
       StrLib::vSprintCat(szAsmBuffer,"  EO_DEVROW_POPCOLS %lld\n"_Stz, m_iDstColumn);
       break;
@@ -1959,6 +1976,16 @@ i8 ExprEval::iOrdinalToLocal(i8 i_ColumnOrdinal) {
   }
   return iLocal;
 }
+
+/*----------------------------------------------------------------------------*/
+/* convert ordinal to local                                                   */
+/*----------------------------------------------------------------------------*/
+//Stz* ExprEval::szPopCol(eDM eDatum) {
+//  switch(eDatum) {
+//    case DM_BOL:
+//
+//  }
+//}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
