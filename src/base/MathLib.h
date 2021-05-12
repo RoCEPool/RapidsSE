@@ -3,6 +3,41 @@
 /*============================================================================*/
 #pragma once
 
+union MathLib_Dte {
+  struct {
+    u8 m_uDay: 5; // 0..31       same as _Tsp.dte
+    u8 m_uMonth: 4; // 0..15
+    u8 m_uYearDelta: 8; // 0..255  17b (1900+8b == 2155)
+
+    u8 m_uSpare: 47; //         47b
+    //               ---
+    //                64
+    //               ===
+  };
+  i8 m_iAsI8;
+};
+
+union MathLib_Tsp {
+  struct {
+    u8 m_uLocal     :  1 ; //        1b
+
+    u8 m_uMicro     : 20 ; // 0..1M
+    u8 m_uSecond    :  6 ; // 0..63
+    u8 m_uMinute    :  6 ; // 0..63
+    u8 m_uHour      :  5 ; // 0..31   37b
+
+    u8 m_uDay       :  5 ; // 0..31
+    u8 m_uMonth     :  4 ; // 0..15
+    u8 m_uYearDelta :  8 ; // 0..255  17b  (1900+8b == 2155)
+
+    u8 m_uSpare     :  9 ; //        9b
+    //               ---
+    //                64
+    //               ===
+  };
+  i8 m_iAsI8;
+};
+
 /*----------------------------------------------------------------------------*/
 /* iMathLib_Add_BCDBCD:                                                       */
 /*----------------------------------------------------------------------------*/
@@ -887,16 +922,30 @@ inline i8 iMathLib_Eq_DTEDTE(i8 iDteValue1, i8 iDteValue2)
 }
 
 /*----------------------------------------------------------------------------*/
-/* iMathLib_Eq_DTEDTE:                                                       */
+/* iMathLib_Eq_DTETSP:                                                       */
 /*----------------------------------------------------------------------------*/
 inline i8 iMathLib_Eq_DTETSP(i8 iDteValue, i8 iTspValue)
 {
   if (iDteValue == C_DATUM_NULL || iTspValue == C_DATUM_NULL)
     return 0;
 
-  i8 iResult  = iDteValue == iTspValue;
+  union MathLib_Dte xDte;
+  xDte.m_iAsI8 = iDteValue;
 
-  return iResult;
+  union MathLib_Tsp xTsp;
+  xTsp.m_iAsI8 = iTspValue;
+
+  union MathLib_Tsp xDteTsp;
+  xDteTsp.m_iAsI8 = 0;
+
+  xDteTsp.m_uDay       = xDte.m_uDay;
+  xDteTsp.m_uMonth     = xDte.m_uMonth;
+  xDteTsp.m_uYearDelta = xDte.m_uYearDelta;
+
+  if (xDteTsp.m_iAsI8 == xTsp.m_iAsI8)
+    return 1;
+  else
+    return 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1004,9 +1053,23 @@ inline i8 iMathLib_Eq_TSPDTE(i8 iTspValue, i8 iDteValue)
   if (iTspValue == C_DATUM_NULL || iDteValue == C_DATUM_NULL)
     return 0;
 
-  i8 iResult = 0;
+  union MathLib_Tsp xTsp;
+  xTsp.m_iAsI8 = iTspValue;
 
-  return iResult;
+  union MathLib_Dte xDte;
+  xDte.m_iAsI8 = iDteValue;
+
+  union MathLib_Tsp xDteTsp;
+  xDteTsp.m_iAsI8 = 0;
+
+  xDteTsp.m_uDay       = xDte.m_uDay;
+  xDteTsp.m_uMonth     = xDte.m_uMonth;
+  xDteTsp.m_uYearDelta = xDte.m_uYearDelta;
+
+  if (xTsp.m_iAsI8 == xDteTsp.m_iAsI8)
+    return 1;
+  else
+    return 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1109,14 +1172,28 @@ inline i8 iMathLib_Ge_DTEDTE(i8 iDteValue1, i8 iDteValue2)
 /*----------------------------------------------------------------------------*/
 /* iMathLib_Ge_DTEDTE:                                                       */
 /*----------------------------------------------------------------------------*/
-inline i8 iMathLib_Ge_DTETSP(i8 iDteValue1, i8 iTspValue2)
+inline i8 iMathLib_Ge_DTETSP(i8 iDteValue, i8 iTspValue)
 {
-  if (iDteValue1 == C_DATUM_NULL || iTspValue2 == C_DATUM_NULL)
+  if (iDteValue == C_DATUM_NULL || iTspValue == C_DATUM_NULL)
     return 0;
 
-  i8 iResult  = 0;
+  union MathLib_Dte xDte;
+  xDte.m_iAsI8 = iDteValue;
 
-  return iResult;
+  union MathLib_Tsp xTsp;
+  xTsp.m_iAsI8 = iTspValue;
+
+  union MathLib_Tsp xDteTsp;
+  xDteTsp.m_iAsI8 = 0;
+
+  xDteTsp.m_uDay       = xDte.m_uDay;
+  xDteTsp.m_uMonth     = xDte.m_uMonth;
+  xDteTsp.m_uYearDelta = xDte.m_uYearDelta;
+
+  if (xDteTsp.m_iAsI8 >= xTsp.m_iAsI8)
+    return 1;
+  else
+    return 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1235,14 +1312,28 @@ inline i8 iMathLib_Ge_TMETME(i8 iTmeValue1, i8 iTmeValue2)
 /*----------------------------------------------------------------------------*/
 /* iMathLib_Ge_TSPDTE:                                                        */
 /*----------------------------------------------------------------------------*/
-inline i8 iMathLib_Ge_TSPDTE(i8 iTspValue1, i8 iDteValue2)
+inline i8 iMathLib_Ge_TSPDTE(i8 iTspValue, i8 iDteValue)
 {
-  if (iTspValue1 == C_DATUM_NULL || iDteValue2 == C_DATUM_NULL)
+  if (iTspValue == C_DATUM_NULL || iDteValue == C_DATUM_NULL)
     return 0;
 
-  i8 iResult = 0;
+  union MathLib_Tsp xTsp;
+  xTsp.m_iAsI8 = iTspValue;
 
-  return iResult;
+  union MathLib_Dte xDte;
+  xDte.m_iAsI8 = iDteValue;
+
+  union MathLib_Tsp xDteTsp;
+  xDteTsp.m_iAsI8 = 0;
+
+  xDteTsp.m_uDay       = xDte.m_uDay;
+  xDteTsp.m_uMonth     = xDte.m_uMonth;
+  xDteTsp.m_uYearDelta = xDte.m_uYearDelta;
+
+  if (xTsp.m_iAsI8 >= xDteTsp.m_iAsI8)
+    return 1;
+  else
+    return 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1345,14 +1436,28 @@ inline i8 iMathLib_Gt_DTEDTE(i8 iDteValue1, i8 iDteValue2)
 /*----------------------------------------------------------------------------*/
 /* iMathLib_Gt_DTEDTE:                                                       */
 /*----------------------------------------------------------------------------*/
-inline i8 iMathLib_Gt_DTETSP(i8 iDteValue1, i8 iTspValue2)
+inline i8 iMathLib_Gt_DTETSP(i8 iDteValue, i8 iTspValue)
 {
-  if (iDteValue1 == C_DATUM_NULL || iTspValue2 == C_DATUM_NULL)
+  if (iDteValue == C_DATUM_NULL || iTspValue == C_DATUM_NULL)
     return 0;
 
-  i8 iResult  = 0;
+  union MathLib_Dte xDte;
+  xDte.m_iAsI8 = iDteValue;
 
-  return iResult;
+  union MathLib_Tsp xTsp;
+  xTsp.m_iAsI8 = iTspValue;
+
+  union MathLib_Tsp xDteTsp;
+  xDteTsp.m_iAsI8 = 0;
+
+  xDteTsp.m_uDay       = xDte.m_uDay;
+  xDteTsp.m_uMonth     = xDte.m_uMonth;
+  xDteTsp.m_uYearDelta = xDte.m_uYearDelta;
+
+  if (xDteTsp.m_iAsI8 > xTsp.m_iAsI8)
+    return 1;
+  else
+    return 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1471,14 +1576,28 @@ inline i8 iMathLib_Gt_TMETME(i8 iTmeValue1, i8 iTmeValue2)
 /*----------------------------------------------------------------------------*/
 /* iMathLib_Gt_TSPDTE:                                                        */
 /*----------------------------------------------------------------------------*/
-inline i8 iMathLib_Gt_TSPDTE(i8 iTspValue1, i8 iDteValue2)
+inline i8 iMathLib_Gt_TSPDTE(i8 iTspValue, i8 iDteValue)
 {
-  if (iTspValue1 == C_DATUM_NULL || iDteValue2 == C_DATUM_NULL)
+  if (iTspValue == C_DATUM_NULL || iDteValue == C_DATUM_NULL)
     return 0;
 
-  i8 iResult = 0;
+  union MathLib_Tsp xTsp;
+  xTsp.m_iAsI8 = iTspValue;
 
-  return iResult;
+  union MathLib_Dte xDte;
+  xDte.m_iAsI8 = iDteValue;
+
+  union MathLib_Tsp xDteTsp;
+  xDteTsp.m_iAsI8 = 0;
+
+  xDteTsp.m_uDay       = xDte.m_uDay;
+  xDteTsp.m_uMonth     = xDte.m_uMonth;
+  xDteTsp.m_uYearDelta = xDte.m_uYearDelta;
+
+  if (xTsp.m_iAsI8 > xDteTsp.m_iAsI8)
+    return 1;
+  else
+    return 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1581,14 +1700,28 @@ inline i8 iMathLib_Le_DTEDTE(i8 iDteValue1, i8 iDteValue2)
 /*----------------------------------------------------------------------------*/
 /* iMathLib_Le_DTEDTE:                                                       */
 /*----------------------------------------------------------------------------*/
-inline i8 iMathLib_Le_DTETSP(i8 iDteValue1, i8 iTspValue2)
+inline i8 iMathLib_Le_DTETSP(i8 iDteValue, i8 iTspValue)
 {
-  if (iDteValue1 == C_DATUM_NULL || iTspValue2 == C_DATUM_NULL)
+  if (iDteValue == C_DATUM_NULL || iTspValue == C_DATUM_NULL)
     return 0;
 
-  i8 iResult  = 0;
+  union MathLib_Dte xDte;
+  xDte.m_iAsI8 = iDteValue;
 
-  return iResult;
+  union MathLib_Tsp xTsp;
+  xTsp.m_iAsI8 = iTspValue;
+
+  union MathLib_Tsp xDteTsp;
+  xDteTsp.m_iAsI8 = 0;
+
+  xDteTsp.m_uDay       = xDte.m_uDay;
+  xDteTsp.m_uMonth     = xDte.m_uMonth;
+  xDteTsp.m_uYearDelta = xDte.m_uYearDelta;
+
+  if (xDteTsp.m_iAsI8 <= xTsp.m_iAsI8)
+    return 1;
+  else
+    return 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1712,9 +1845,23 @@ inline i8 iMathLib_Le_TSPDTE(i8 iTspValue, i8 iDteValue)
   if (iTspValue == C_DATUM_NULL || iDteValue == C_DATUM_NULL)
     return 0;
 
-  i8 iResult = 0;
+  union MathLib_Tsp xTsp;
+  xTsp.m_iAsI8 = iTspValue;
 
-  return iResult;
+  union MathLib_Dte xDte;
+  xDte.m_iAsI8 = iDteValue;
+
+  union MathLib_Tsp xDteTsp;
+  xDteTsp.m_iAsI8 = 0;
+
+  xDteTsp.m_uDay       = xDte.m_uDay;
+  xDteTsp.m_uMonth     = xDte.m_uMonth;
+  xDteTsp.m_uYearDelta = xDte.m_uYearDelta;
+
+  if (xTsp.m_iAsI8 <= xDteTsp.m_iAsI8)
+    return 1;
+  else
+    return 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1817,14 +1964,28 @@ inline i8 iMathLib_Lt_DTEDTE(i8 iDteValue1, i8 iDteValue2)
 /*----------------------------------------------------------------------------*/
 /* iMathLib_Lt_DTEDTE:                                                       */
 /*----------------------------------------------------------------------------*/
-inline i8 iMathLib_Lt_DTETSP(i8 iDteValue1, i8 iTspValue2)
+inline i8 iMathLib_Lt_DTETSP(i8 iDteValue, i8 iTspValue)
 {
-  if (iDteValue1 == C_DATUM_NULL || iTspValue2 == C_DATUM_NULL)
+  if (iDteValue == C_DATUM_NULL || iTspValue == C_DATUM_NULL)
     return 0;
 
-  i8 iResult  = 0;
+  union MathLib_Dte xDte;
+  xDte.m_iAsI8 = iDteValue;
 
-  return iResult;
+  union MathLib_Tsp xTsp;
+  xTsp.m_iAsI8 = iTspValue;
+
+  union MathLib_Tsp xDteTsp;
+  xDteTsp.m_iAsI8 = 0;
+
+  xDteTsp.m_uDay       = xDte.m_uDay;
+  xDteTsp.m_uMonth     = xDte.m_uMonth;
+  xDteTsp.m_uYearDelta = xDte.m_uYearDelta;
+
+  if (xDteTsp.m_iAsI8 < xTsp.m_iAsI8)
+    return 1;
+  else
+    return 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1943,14 +2104,28 @@ inline i8 iMathLib_Lt_TMETME(i8 iTmeValue1, i8 iTmeValue2)
 /*----------------------------------------------------------------------------*/
 /* iMathLib_Lt_TSPDTE:                                                        */
 /*----------------------------------------------------------------------------*/
-inline i8 iMathLib_Lt_TSPDTE(i8 iTspValue1, i8 iDteValue2)
+inline i8 iMathLib_Lt_TSPDTE(i8 iTspValue, i8 iDteValue)
 {
-  if (iTspValue1 == C_DATUM_NULL || iDteValue2 == C_DATUM_NULL)
+  if (iTspValue == C_DATUM_NULL || iDteValue == C_DATUM_NULL)
     return 0;
 
-  i8 iResult = 0;
+  union MathLib_Tsp xTsp;
+  xTsp.m_iAsI8 = iTspValue;
 
-  return iResult;
+  union MathLib_Dte xDte;
+  xDte.m_iAsI8 = iDteValue;
+
+  union MathLib_Tsp xDteTsp;
+  xDteTsp.m_iAsI8 = 0;
+
+  xDteTsp.m_uDay       = xDte.m_uDay;
+  xDteTsp.m_uMonth     = xDte.m_uMonth;
+  xDteTsp.m_uYearDelta = xDte.m_uYearDelta;
+
+  if (xTsp.m_iAsI8 < xDteTsp.m_iAsI8)
+    return 1;
+  else
+    return 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2053,14 +2228,28 @@ inline i8 iMathLib_Ne_DTEDTE(i8 iDteValue1, i8 iDteValue2)
 /*----------------------------------------------------------------------------*/
 /* iMathLib_Ne_DTEDTE:                                                       */
 /*----------------------------------------------------------------------------*/
-inline i8 iMathLib_Ne_DTETSP(i8 iDteValue1, i8 iTspValue2)
+inline i8 iMathLib_Ne_DTETSP(i8 iDteValue, i8 iTspValue)
 {
-  if (iDteValue1 == C_DATUM_NULL || iTspValue2 == C_DATUM_NULL)
+  if (iDteValue == C_DATUM_NULL || iTspValue == C_DATUM_NULL)
     return 0;
 
-  i8 iResult  = 0;
+  union MathLib_Dte xDte;
+  xDte.m_iAsI8 = iDteValue;
 
-  return iResult;
+  union MathLib_Tsp xTsp;
+  xTsp.m_iAsI8 = iTspValue;
+
+  union MathLib_Tsp xDteTsp;
+  xDteTsp.m_iAsI8 = 0;
+
+  xDteTsp.m_uDay       = xDte.m_uDay;
+  xDteTsp.m_uMonth     = xDte.m_uMonth;
+  xDteTsp.m_uYearDelta = xDte.m_uYearDelta;
+
+  if (xDteTsp.m_iAsI8 != xTsp.m_iAsI8)
+    return 1;
+  else
+    return 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2178,14 +2367,28 @@ inline i8 iMathLib_Ne_TMETME(i8 iTmeValue1, i8 iTmeValue2)
 /*----------------------------------------------------------------------------*/
 /* iMathLib_Ne_TSPDTE:                                                        */
 /*----------------------------------------------------------------------------*/
-inline i8 iMathLib_Ne_TSPDTE(i8 iTspValue1, i8 iDteValue2)
+inline i8 iMathLib_Ne_TSPDTE(i8 iTspValue, i8 iDteValue)
 {
-  if (iTspValue1 == C_DATUM_NULL || iDteValue2 == C_DATUM_NULL)
+  if (iTspValue == C_DATUM_NULL || iDteValue == C_DATUM_NULL)
     return 0;
 
-  i8 iResult = 0;
+  union MathLib_Tsp xTsp;
+  xTsp.m_iAsI8 = iTspValue;
 
-  return iResult;
+  union MathLib_Dte xDte;
+  xDte.m_iAsI8 = iDteValue;
+
+  union MathLib_Tsp xDteTsp;
+  xDteTsp.m_iAsI8 = 0;
+
+  xDteTsp.m_uDay       = xDte.m_uDay;
+  xDteTsp.m_uMonth     = xDte.m_uMonth;
+  xDteTsp.m_uYearDelta = xDte.m_uYearDelta;
+
+  if (xTsp.m_iAsI8 != xDteTsp.m_iAsI8)
+    return 1;
+  else
+    return 0;
 }
 
 /*----------------------------------------------------------------------------*/
