@@ -1,0 +1,437 @@
+
+//------------------------------------------------------------------------------
+// create table
+create table datums (
+int_col0   INTEGER,
+int_col1  INTEGER,
+bol_col2   BOOLEAN,
+bol_col3   BOOLEAN,
+dte_col4   DATE,
+dte_col5   DATE,
+dec_col6   DECIMAL(19,2),
+dec_col7   DECIMAL(19,2),
+flt_col8   FLOAT,
+flt_col9  FLOAT,
+tme_col10  TIME,
+tme_col11  TIME,
+tsp_col12  TIMESTAMP,
+tsp_col13  TIMESTAMP,
+vch_col14  VARCHAR(32),
+vch_col15  VARCHAR(32)
+);
+success
+
+load datums "../DATA/Transliterate/timestamp.csv" ;
+success
+
+//------------------------------------------------------------------------------
+select tsp_col12 from datums where tsp_col12 > TIMESTAMP '1972-01-01 12:00:02';
+rows:
+(TIMESTAMP '1972-01-01 12:00:59')
+
+//------------------------------------------------------------------------------
+select tsp_col12,tsp_col13 from datums where tsp_col12 > TIMESTAMP '1972-01-01 12:00:02' AND tsp_col13 > TIMESTAMP '1978-01-01 10:45:50';
+rows:
+0
+
+//------------------------------------------------------------------------------
+select tsp_col12,tsp_col13 from datums where tsp_col12 > TIMESTAMP '1972-01-01 12:00:02' AND tsp_col13 > TIMESTAMP '1940-01-01 10:45:50';
+rows:
+(TIMESTAMP '1972-01-01 12:00:59',TIMESTAMP '1978-01-01 10:45:10')
+
+//------------------------------------------------------------------------------
+select tsp_col12,tsp_col13 from datums where tsp_col12 > TIMESTAMP '1972-01-01 12:00:02' OR tsp_col13 > TIMESTAMP '1940-01-01 10:45:50';
+rows:
+(TIMESTAMP '1941-01-01 00:00:05',TIMESTAMP '1972-01-01 10:30:02')
+(TIMESTAMP '1972-01-01 12:00:01',TIMESTAMP '1978-01-01 10:45:50')
+(TIMESTAMP '1972-01-01 12:00:02',TIMESTAMP '1978-01-01 10:45:50')
+(null,TIMESTAMP '1972-01-01 10:30:25')
+(TIMESTAMP '1972-01-01 12:00:59',TIMESTAMP '1978-01-01 10:45:10')
+(TIMESTAMP '1943-01-01 00:00:10',TIMESTAMP '1943-01-01 00:00:10')
+(TIMESTAMP '1972-01-01 10:30:10',TIMESTAMP '1972-01-01 10:30:10')
+(TIMESTAMP '1944-01-01 12:00:50',TIMESTAMP '1978-01-01 10:45:01')
+(TIMESTAMP '1944-01-01 12:00:55',TIMESTAMP '1978-01-01 10:45:02')
+
+//------------------------------------------------------------------------------
+select tsp_col12,tsp_col13 from datums where tsp_col12 > TIMESTAMP '1944-01-01 12:00:50' OR tsp_col13 > TIMESTAMP '1978-01-01 10:45:10';
+rows:
+(TIMESTAMP '1972-01-01 12:00:01',TIMESTAMP '1978-01-01 10:45:50')
+(TIMESTAMP '1972-01-01 12:00:02',TIMESTAMP '1978-01-01 10:45:50')
+(TIMESTAMP '1972-01-01 12:00:59',TIMESTAMP '1978-01-01 10:45:10')
+(TIMESTAMP '1972-01-01 10:30:10',TIMESTAMP '1972-01-01 10:30:10')
+(TIMESTAMP '1944-01-01 12:00:55',TIMESTAMP '1978-01-01 10:45:02')
+
+//------------------------------------------------------------------------------
+select tsp_col12 from datums where tsp_col12 >= TIMESTAMP '1972-01-01 10:30:10';
+rows:
+(TIMESTAMP '1972-01-01 12:00:01')
+(TIMESTAMP '1972-01-01 12:00:02')
+(TIMESTAMP '1972-01-01 12:00:59')
+(TIMESTAMP '1972-01-01 10:30:10')
+
+//------------------------------------------------------------------------------
+select tsp_col12,tsp_col13 from datums where tsp_col12 >= TIMESTAMP '1972-01-01 12:00:02' AND tsp_col13 >= TIMESTAMP '1940-01-01 10:45:50';
+rows:
+(TIMESTAMP '1972-01-01 12:00:02',TIMESTAMP '1978-01-01 10:45:50')
+(TIMESTAMP '1972-01-01 12:00:59',TIMESTAMP '1978-01-01 10:45:10')
+
+//------------------------------------------------------------------------------
+select tsp_col12,tsp_col13 from datums where tsp_col12 >= TIMESTAMP '1972-01-01 12:00:02' OR tsp_col13 >= TIMESTAMP '1940-01-01 10:45:50';
+rows:
+(TIMESTAMP '1941-01-01 00:00:05',TIMESTAMP '1972-01-01 10:30:02')
+(TIMESTAMP '1972-01-01 12:00:01',TIMESTAMP '1978-01-01 10:45:50')
+(TIMESTAMP '1972-01-01 12:00:02',TIMESTAMP '1978-01-01 10:45:50')
+(null,TIMESTAMP '1972-01-01 10:30:25')
+(TIMESTAMP '1972-01-01 12:00:59',TIMESTAMP '1978-01-01 10:45:10')
+(TIMESTAMP '1943-01-01 00:00:10',TIMESTAMP '1943-01-01 00:00:10')
+(TIMESTAMP '1972-01-01 10:30:10',TIMESTAMP '1972-01-01 10:30:10')
+(TIMESTAMP '1944-01-01 12:00:50',TIMESTAMP '1978-01-01 10:45:01')
+(TIMESTAMP '1944-01-01 12:00:55',TIMESTAMP '1978-01-01 10:45:02')
+
+//------------------------------------------------------------------------------
+select tsp_col12 from datums where tsp_col12 <= TIMESTAMP '1972-01-01 12:00:02';
+rows:
+(TIMESTAMP '1941-01-01 00:00:05')
+(TIMESTAMP '1972-01-01 12:00:01')
+(TIMESTAMP '1941-01-01 00:00:00')
+(TIMESTAMP '1972-01-01 12:00:02')
+(TIMESTAMP '1943-01-01 00:00:10')
+(TIMESTAMP '1972-01-01 10:30:10')
+(TIMESTAMP '1944-01-01 12:00:50')
+(TIMESTAMP '1944-01-01 12:00:55')
+
+//------------------------------------------------------------------------------
+select tsp_col12,tsp_col13 from datums where tsp_col12 <= TIMESTAMP '1972-01-01 12:00:02' AND tsp_col13 <= TIMESTAMP '1940-01-01 10:45:50';
+rows:
+0
+
+//------------------------------------------------------------------------------
+select tsp_col12,tsp_col13 from datums where tsp_col12 <= TIMESTAMP '1972-01-01 12:00:02' AND tsp_col13 <= TIMESTAMP '1978-01-01 10:45:10';
+rows:
+(TIMESTAMP '1941-01-01 00:00:05',TIMESTAMP '1972-01-01 10:30:02')
+(TIMESTAMP '1943-01-01 00:00:10',TIMESTAMP '1943-01-01 00:00:10')
+(TIMESTAMP '1972-01-01 10:30:10',TIMESTAMP '1972-01-01 10:30:10')
+(TIMESTAMP '1944-01-01 12:00:50',TIMESTAMP '1978-01-01 10:45:01')
+(TIMESTAMP '1944-01-01 12:00:55',TIMESTAMP '1978-01-01 10:45:02')
+
+//------------------------------------------------------------------------------
+select tsp_col12,tsp_col13 from datums where tsp_col12 <= TIMESTAMP '1972-01-01 12:00:02' OR tsp_col13 <= TIMESTAMP '1978-01-01 10:45:10';
+rows:
+(TIMESTAMP '1941-01-01 00:00:05',TIMESTAMP '1972-01-01 10:30:02')
+(TIMESTAMP '1972-01-01 12:00:01',TIMESTAMP '1978-01-01 10:45:50')
+(TIMESTAMP '1941-01-01 00:00:00', null)
+(TIMESTAMP '1972-01-01 12:00:02',TIMESTAMP '1978-01-01 10:45:50')
+(null,TIMESTAMP '1972-01-01 10:30:25')
+(TIMESTAMP '1972-01-01 12:00:59',TIMESTAMP '1978-01-01 10:45:10')
+(TIMESTAMP '1943-01-01 00:00:10',TIMESTAMP '1943-01-01 00:00:10')
+(TIMESTAMP '1972-01-01 10:30:10',TIMESTAMP '1972-01-01 10:30:10')
+(TIMESTAMP '1944-01-01 12:00:50',TIMESTAMP '1978-01-01 10:45:01')
+(TIMESTAMP '1944-01-01 12:00:55',TIMESTAMP '1978-01-01 10:45:02')
+
+//------------------------------------------------------------------------------
+select tsp_col12 from datums where tsp_col12 != TIMESTAMP '1972-01-01 12:00:01';
+rows:
+(TIMESTAMP '1941-01-01 00:00:05')
+(TIMESTAMP '1941-01-01 00:00:00')
+(TIMESTAMP '1972-01-01 12:00:02')
+(TIMESTAMP '1972-01-01 12:00:59')
+(TIMESTAMP '1943-01-01 00:00:10')
+(TIMESTAMP '1972-01-01 10:30:10')
+(TIMESTAMP '1944-01-01 12:00:50')
+(TIMESTAMP '1944-01-01 12:00:55')
+
+//------------------------------------------------------------------------------
+select tsp_col12,tsp_col13 from datums where tsp_col12 != TIMESTAMP '1972-01-01 12:00:02' AND tsp_col13 != TIMESTAMP '1978-01-01 10:45:10';
+rows:
+(TIMESTAMP '1941-01-01 00:00:05',TIMESTAMP '1972-01-01 10:30:02')
+(TIMESTAMP '1972-01-01 12:00:01',TIMESTAMP '1978-01-01 10:45:50')
+(TIMESTAMP '1943-01-01 00:00:10',TIMESTAMP '1943-01-01 00:00:10')
+(TIMESTAMP '1972-01-01 10:30:10',TIMESTAMP '1972-01-01 10:30:10')
+(TIMESTAMP '1944-01-01 12:00:50',TIMESTAMP '1978-01-01 10:45:01')
+(TIMESTAMP '1944-01-01 12:00:55',TIMESTAMP '1978-01-01 10:45:02')
+
+//------------------------------------------------------------------------------
+select tsp_col12,tsp_col13 from datums where tsp_col12 != TIMESTAMP '1972-01-01 12:00:02' OR tsp_col13 != TIMESTAMP '1978-01-01 10:45:10';
+rows:
+(TIMESTAMP '1941-01-01 00:00:05',TIMESTAMP '1972-01-01 10:30:02')
+(TIMESTAMP '1972-01-01 12:00:01',TIMESTAMP '1978-01-01 10:45:50')
+(TIMESTAMP '1941-01-01 00:00:00', null)
+(TIMESTAMP '1972-01-01 12:00:02',TIMESTAMP '1978-01-01 10:45:50')
+(null,TIMESTAMP '1972-01-01 10:30:25')
+(TIMESTAMP '1972-01-01 12:00:59',TIMESTAMP '1978-01-01 10:45:10')
+(TIMESTAMP '1943-01-01 00:00:10',TIMESTAMP '1943-01-01 00:00:10')
+(TIMESTAMP '1972-01-01 10:30:10',TIMESTAMP '1972-01-01 10:30:10')
+(TIMESTAMP '1944-01-01 12:00:50',TIMESTAMP '1978-01-01 10:45:01')
+(TIMESTAMP '1944-01-01 12:00:55',TIMESTAMP '1978-01-01 10:45:02')
+
+//------------------------------------------------------------------------------
+select tsp_col12,tsp_col13 from datums where tsp_col12 = TIMESTAMP '1972-01-01 12:00:02' OR tsp_col13 = TIMESTAMP '1978-01-01 10:45:10';
+rows:
+(TIMESTAMP '1972-01-01 12:00:02',TIMESTAMP '1978-01-01 10:45:50')
+(TIMESTAMP '1972-01-01 12:00:59',TIMESTAMP '1978-01-01 10:45:10')
+
+//------------------------------------------------------------------------------
+select tsp_col12,tsp_col13 from datums where tsp_col12 = TIMESTAMP '1972-01-01 12:00:02' AND tsp_col13 = TIMESTAMP '1978-01-01 10:45:10';
+rows:
+0
+
+//------------------------------------------------------------------------------
+select tsp_col12,tsp_col13 from datums where tsp_col12 = tsp_col13;
+rows:
+(TIMESTAMP '1943-01-01 00:00:10',TIMESTAMP '1943-01-01 00:00:10')
+(TIMESTAMP '1972-01-01 10:30:10',TIMESTAMP '1972-01-01 10:30:10')
+
+//------------------------------------------------------------------------------
+select tsp_col12,tsp_col13 from datums where tsp_col12 > tsp_col13;
+rows:
+0
+
+/*
+//------------------------------------------------------------------------------
+select tsp_col12,tsp_col13 from datums where tsp_col12 < tsp_col13;
+rows:
+(TIMESTAMP '1941-01-01 00:00:05',TIMESTAMP '1972-01-01 10:30:02')
+(TIMESTAMP '1972-01-01 12:00:01',TIMESTAMP '1978-01-01 10:45:50')
+(TIMESTAMP '1972-01-01 12:00:02',TIMESTAMP '1978-01-01 10:45:50')
+(TIMESTAMP '1972-01-01 12:00:59',TIMESTAMP '1978-01-01 10:45:10')
+(TIMESTAMP '1944-01-01 12:00:50',TIMESTAMP '1978-01-01 10:45:01')
+(TIMESTAMP '1944-01-01 12:00:55',TIMESTAMP '1978-01-01 10:45:02')
+*/
+
+//------------------------------------------------------------------------------
+select tsp_col12,tsp_col13 from datums where tsp_col12 >= tsp_col13;
+rows:
+(TIMESTAMP '1943-01-01 00:00:10',TIMESTAMP '1943-01-01 00:00:10')
+(TIMESTAMP '1972-01-01 10:30:10',TIMESTAMP '1972-01-01 10:30:10')
+
+//------------------------------------------------------------------------------
+select tsp_col12,tsp_col13 from datums where tsp_col12 <= tsp_col13;
+rows:
+(TIMESTAMP '1941-01-01 00:00:05',TIMESTAMP '1972-01-01 10:30:02')
+(TIMESTAMP '1972-01-01 12:00:01',TIMESTAMP '1978-01-01 10:45:50')
+(TIMESTAMP '1972-01-01 12:00:02',TIMESTAMP '1978-01-01 10:45:50')
+(TIMESTAMP '1972-01-01 12:00:59',TIMESTAMP '1978-01-01 10:45:10')
+(TIMESTAMP '1943-01-01 00:00:10',TIMESTAMP '1943-01-01 00:00:10')
+(TIMESTAMP '1972-01-01 10:30:10',TIMESTAMP '1972-01-01 10:30:10')
+(TIMESTAMP '1944-01-01 12:00:50',TIMESTAMP '1978-01-01 10:45:01')
+(TIMESTAMP '1944-01-01 12:00:55',TIMESTAMP '1978-01-01 10:45:02')
+
+//------------------------------------------------------------------------------
+select tsp_col12,tsp_col13 from datums where tsp_col12 != tsp_col13;
+rows:
+(TIMESTAMP '1941-01-01 00:00:05',TIMESTAMP '1972-01-01 10:30:02')
+(TIMESTAMP '1972-01-01 12:00:01',TIMESTAMP '1978-01-01 10:45:50')
+(TIMESTAMP '1972-01-01 12:00:02',TIMESTAMP '1978-01-01 10:45:50')
+(TIMESTAMP '1972-01-01 12:00:59',TIMESTAMP '1978-01-01 10:45:10')
+(TIMESTAMP '1944-01-01 12:00:50',TIMESTAMP '1978-01-01 10:45:01')
+(TIMESTAMP '1944-01-01 12:00:55',TIMESTAMP '1978-01-01 10:45:02')
+
+//------------------------------------------------------------------------------
+select tsp_col12 from datums where tsp_col12 > tsp_col13 AND tsp_col12 = tsp_col13;
+rows:
+0
+
+/*
+//------------------------------------------------------------------------------
+select tsp_col12 from datums where tsp_col12 < tsp_col13 AND tsp_col12 != tsp_col13;
+rows:
+(TIMESTAMP '1941-01-01 00:00:05')
+(TIMESTAMP '1972-01-01 12:00:01')
+(TIMESTAMP '1972-01-01 12:00:02')
+(TIMESTAMP '1972-01-01 12:00:59')
+(TIMESTAMP '1944-01-01 12:00:50')
+(TIMESTAMP '1944-01-01 12:00:55')
+*/
+
+//------------------------------------------------------------------------------
+select tsp_col12 from datums where tsp_col12 = tsp_col13 OR tsp_col12 <= tsp_col13;
+rows:
+(TIMESTAMP '1941-01-01 00:00:05')
+(TIMESTAMP '1972-01-01 12:00:01')
+(TIMESTAMP '1972-01-01 12:00:02')
+(TIMESTAMP '1972-01-01 12:00:59')
+(TIMESTAMP '1943-01-01 00:00:10')
+(TIMESTAMP '1972-01-01 10:30:10')
+(TIMESTAMP '1944-01-01 12:00:50')
+(TIMESTAMP '1944-01-01 12:00:55')
+
+//------------------------------------------------------------------------------
+select tsp_col12 from datums where tsp_col12 = tsp_col13 OR tsp_col12 >= tsp_col13;
+rows:
+(TIMESTAMP '1943-01-01 00:00:10')
+(TIMESTAMP '1972-01-01 10:30:10')
+
+//------------------------------------------------------------------------------
+select min(tsp_col12) from datums;
+rows:
+(TIMESTAMP '1941-01-01 00:00:00')
+
+//------------------------------------------------------------------------------
+select max(tsp_col12) from datums;
+rows:
+(TIMESTAMP '1972-01-01 12:00:59')
+
+//------------------------------------------------------------------------------
+select count(tsp_col12) from datums;
+rows:
+(9)
+
+/*
+//------------------------------------------------------------------------------
+select vch_col15 , min(tsp_col12) from datums group by vch_col15;
+rows:
+(null,null)
+(TIMESTAMP 'yellow',TIMESTAMP '1944-01-01 12:00:50')
+(TIMESTAMP 'green',TIMESTAMP '1972-01-01 12:00:01')
+(TIMESTAMP 'blue',TIMESTAMP '1972-01-01 12:00:02')
+(TIMESTAMP 'red',TIMESTAMP '1941-01-01 00:00:00')
+(TIMESTAMP 'orange',TIMESTAMP '1943-01-01 00:00:10')
+
+
+//------------------------------------------------------------------------------
+select vch_col15 , max(tsp_col12) from datums group by vch_col15;
+rows:
+(null,null)
+(TIMESTAMP 'yellow',TIMESTAMP '1944-01-01 12:00:50')
+(TIMESTAMP 'green',TIMESTAMP '1972-01-01 12:00:59')
+(TIMESTAMP 'blue',TIMESTAMP '1972-01-01 12:00:02')
+(TIMESTAMP 'red',TIMESTAMP '1941-01-01 00:00:05')
+(TIMESTAMP 'orange',TIMESTAMP '1972-01-01 10:30:10')
+
+//------------------------------------------------------------------------------
+select vch_col15 , count(tsp_col12) from datums group by vch_col15;
+rows:
+(null,0)
+(TIMESTAMP 'yellow',1)
+(TIMESTAMP 'green',2)
+(TIMESTAMP 'blue',1)
+(TIMESTAMP 'red',2)
+(TIMESTAMP 'orange',3)
+*/
+
+////////////////////----------Less than < Tests ---------------------///////////////////////////////////////////
+/*
+//------------------------------------------------------------------------------
+select tsp_col12 from datums where tsp_col12 < TIMESTAMP '1972-01-01 12:00:02';
+rows:
+(TIMESTAMP '1941-01-01 00:00:05')
+(TIMESTAMP '1972-01-01 12:00:01')
+(TIMESTAMP '1941-01-01 00:00:00')
+(TIMESTAMP '1943-01-01 00:00:10')
+(TIMESTAMP '1972-01-01 10:30:10')
+(TIMESTAMP '1944-01-01 12:00:50')
+(TIMESTAMP '1944-01-01 12:00:55')
+
+//------------------------------------------------------------------------------
+select tsp_col12 from datums where tsp_col12 < TIMESTAMP '1972-01-01 12:00:02' AND tsp_col13 < TIMESTAMP '1978-01-01 10:45:50';
+rows:
+(TIMESTAMP '1941-01-01 00:00:05')
+(TIMESTAMP '1943-01-01 00:00:10')
+(TIMESTAMP '1972-01-01 10:30:10')
+(TIMESTAMP '1944-01-01 12:00:50')
+(TIMESTAMP '1944-01-01 12:00:55')
+
+//------------------------------------------------------------------------------
+select tsp_col12 from datums where tsp_col12 < tsp_col13;
+rows:
+(TIMESTAMP '1941-01-01 00:00:05')
+(TIMESTAMP '1972-01-01 12:00:01')
+(TIMESTAMP '1972-01-01 12:00:02')
+(TIMESTAMP '1972-01-01 12:00:59')
+(TIMESTAMP '1944-01-01 12:00:50')
+(TIMESTAMP '1944-01-01 12:00:55')
+
+// TO BE RUN UNDER 1 NODE - 1 PARTITION
+//------------------------------------------------------------------------------
+select tsp_col12 , min(tsp_col13) from datums group by tsp_col12;
+rows:
+(null,TIMESTAMP '1972-01-01 10:30:25')
+(TIMESTAMP '1941-01-01 00:00:05',TIMESTAMP '1972-01-01 10:30:02')
+(TIMESTAMP '1972-01-01 12:00:59',TIMESTAMP '1978-01-01 10:45:10')
+(TIMESTAMP '1943-01-01 00:00:10',TIMESTAMP '1943-01-01 00:00:10')
+(TIMESTAMP '1944-01-01 12:00:55',TIMESTAMP '1978-01-01 10:45:02')
+(TIMESTAMP '1972-01-01 12:00:02',TIMESTAMP '1978-01-01 10:45:50')
+(TIMESTAMP '1944-01-01 12:00:50',TIMESTAMP '1978-01-01 10:45:01')
+(TIMESTAMP '1941-01-01 00:00:00',null)
+(TIMESTAMP '1972-01-01 10:30:10',TIMESTAMP '1972-01-01 10:30:10')
+(TIMESTAMP '1972-01-01 12:00:01',TIMESTAMP '1978-01-01 10:45:50')
+ 
+//------------------------------------------------------------------------------
+select tsp_col12 , max(tsp_col13) from datums group by tsp_col12;
+rows:
+(null,TIMESTAMP '1972-01-01 10:30:25')
+(TIMESTAMP '1941-01-01 00:00:05',TIMESTAMP '1972-01-01 10:30:02')
+(TIMESTAMP '1972-01-01 12:00:59',TIMESTAMP '1978-01-01 10:45:10')
+(TIMESTAMP '1943-01-01 00:00:10',TIMESTAMP '1943-01-01 00:00:10')
+(TIMESTAMP '1944-01-01 12:00:55',TIMESTAMP '1978-01-01 10:45:02')
+(TIMESTAMP '1972-01-01 12:00:02',TIMESTAMP '1978-01-01 10:45:50')
+(TIMESTAMP '1944-01-01 12:00:50',TIMESTAMP '1978-01-01 10:45:01')
+(TIMESTAMP '1941-01-01 00:00:00', null)
+(TIMESTAMP '1972-01-01 10:30:10',TIMESTAMP '1972-01-01 10:30:10')
+(TIMESTAMP '1972-01-01 12:00:01',TIMESTAMP '1978-01-01 10:45:50')
+
+//------------------------------------------------------------------------------
+select tsp_col12 , count(tsp_col13) from datums group by tsp_col12;
+rows:
+(null,1)
+(TIMESTAMP '1941-01-01 00:00:05',1)
+(TIMESTAMP '1972-01-01 12:00:59',1)
+(TIMESTAMP '1943-01-01 00:00:10',1)
+(TIMESTAMP '1944-01-01 12:00:55',1)
+(TIMESTAMP '1972-01-01 12:00:02',1)
+(TIMESTAMP '1944-01-01 12:00:50',1)
+(TIMESTAMP '1941-01-01 00:00:00',0)
+(TIMESTAMP '1972-01-01 10:30:10',1)
+(TIMESTAMP '1972-01-01 12:00:01',1)
+
+*/
+
+//------------------------------------------------------------------------------
+// drop the table
+drop table datums;
+success;
+
+CLEANUP {
+
+  drop table datums;
+  mute
+
+  bye;
+  mute
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
