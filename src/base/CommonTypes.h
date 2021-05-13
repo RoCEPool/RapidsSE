@@ -363,14 +363,14 @@ public:
   void vSet(i8 iYear, i8 iMonth,  i8 iDay,
             i8 iHour, i8 iMinute, i8 iSecond, i8 iMicro) {
                      m_uYearDelta = iYear - C_YEAR_BASE;
-                                  m_uMonth     = iMonth;
-                                    m_uDay       = iDay;
-                                   m_uHour      = iHour;
+                                  m_uMonth    = iMonth;
+                                    m_uDay    = iDay;
+                                   m_uHour    = iHour;
                                  m_uMinute    = iMinute;
                                  m_uSecond    = iSecond;
-                                  m_uMicro     = iMicro;
-                             m_uLocal     = C_TSP_LOCAL;
-                                       m_uSpare     = 0; }
+                                  m_uMicro    = iMicro;
+                                  m_uLocal    = C_TSP_UTC;
+                                  m_uSpare    = 0; }
   void vSetMax(void)                      { m_iAsI8 = 0;
                             m_uYearDelta = C_YEAR_RANGE;
                                           m_uMonth = 12;
