@@ -108,7 +108,8 @@ Table::~Table(void) noexcept(false)
   
   // delete the TablePtn's
   for (i8 i_TablePtn = 0; i_TablePtn < AM::nPtnsPerTable(); i_TablePtn++) {
-      delete m_pTablePtnVec->pGet(i_TablePtn);
+    TablePtn* pTablePtn = m_pTablePtnVec->pGet(i_TablePtn);
+    //delete m_pTablePtnVec->pGet(i_TablePtn); // Warning: these pointers might not be valid when delete as the metadata
   }
   m_pTablePtnVec->vClear();
 
@@ -609,8 +610,7 @@ void Table::vResetPointers(void)
   m_pShardDef  = nullptr;
   m_pBucketMap = nullptr;
   m_pIdxVec    = nullptr;
-
-  // Question for Ray: Why we don't null the m_pTablePtnVec
+  m_pTablePtnVec = nullptr;
 
   Operand::ListItem_t::vResetPointers();
 
@@ -848,6 +848,9 @@ i8 Table::iPrepareParcel(void)
 
   m_pParcel->vAddObject((Object *)m_pTablePtnVec);
 
+  //vTrace("This parcel contains table:%p m_oLocation:%p m_pStreamDef:%p m_pShardDef:%p m_pBucketMap:%p m_pIdxVec:%p m_pTablePtnVec:%p)\n"_Stz,
+  //       this, &m_oLocation,m_pStreamDef,m_pShardDef,m_pBucketMap,m_pIdxVec, m_pTablePtnVec);
+
   return m_pParcel->nObjects();
 }
 
@@ -888,11 +891,11 @@ i8 Table::iBuildParcel(Parcel* pParcel)
   i8 nObjects = pParcel->nObjects();
 
   if (!m_pParcel) {
-    vTrace("iBuildParcel: create new parcel\n"_Stz);
     m_pParcel = new Parcel(nullptr,0,0,0,PX_NONE);
     m_pParcel->vLabel(pParcel->m_iPipelineJobId, pParcel->m_iDstNode, pParcel->m_tDstPtn, pParcel->m_eCrossTopo);
     // Set the state that this is created as a parcel
     m_pParcel->vSetOriginState(true);
+    vTrace("iBuildParcel: create new parcel:%p\n"_Stz, m_pParcel);
   } else {
     m_pParcel->vReset();
   }
@@ -950,7 +953,8 @@ i8  Table::iReassembleObj(void)
         vTrace("iReassembleObj %ld Error\n"_Stz,eClass);
     }
   }
-
+  //vTrace("This new parcel contains table:%p m_oLocation:%p m_pStreamDef:%p m_pShardDef:%p m_pBucketMap:%p m_pIdxVec:%p m_pTablePtnVec:%p)\n"_Stz,
+  //       this, &m_oLocation,m_pStreamDef,m_pShardDef,m_pBucketMap,m_pIdxVec, m_pTablePtnVec);
   return nSize;
 }
 

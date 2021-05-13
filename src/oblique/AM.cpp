@@ -893,15 +893,16 @@ void AM::vDeleteOperand(Operand* pOperand)
       break;
     }
 
-    case CN_PARCEL: {
-      Parcel* pParcel = _pParcel(pOperand);
-      vTrace("vDeleteOperand delete pParcel\n"_Stz);
-      delete pParcel;
-      break;
-    }
+    //case CN_PARCEL: {
+    //  Parcel* pParcel = _pParcel(pOperand);
+    //  vTrace(">>>>vDeleteOperand delete pParcel, called by Step::vPipeinDelete as PipeIn[].delete\n"_Stz);
+    //  delete pParcel;
+    //  break;
+    //}
 
     case CN_TABLE: {
       Table* pTable = _pTable(pOperand);
+      vTrace(">>>>vDeleteOperand delete pTable:%p, called by Step::vPipeinDelete as PipeIn[].delete\n"_Stz, pTable);
       //delete pTable; // Question for Ray: do we need to delete ?
       break;
     }

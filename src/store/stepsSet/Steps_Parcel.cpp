@@ -92,10 +92,9 @@ void Step::vParcelPipeOut(void)
   // append to left queue
 
   if (pParcel->bIsOriginal()) {
-    vTrace(">>>>>> It is original parcel\n"_Stz);
-    pOp->vAppendLeft((Operand*)pParcel,this);   // still crashed here! Question for Ray:
+      pOp->vAppendLeft(pParcel,this);
   } else {
-    if (pParcel->pGetOperand())  // original line 72 thru "delete"
+    if (pParcel->pGetOperand())
       pOp->vAppendLeft(pOperand, this);
 
     // now delete the pParcel

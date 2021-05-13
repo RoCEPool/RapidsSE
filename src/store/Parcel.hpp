@@ -10,7 +10,7 @@ namespace STORE
   static const i8 C_MAX_PARCEL_OBJ = 16;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class Parcel : public Object
+  class Parcel : public Operand
   {
     
   public:
