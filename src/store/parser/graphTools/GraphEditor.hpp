@@ -3,6 +3,7 @@
 /*============================================================================*/
 #pragma once
 
+#include <functional> // for std::function
 #include "PlanNode.hpp"
 #include "QueryNodeList.hpp"
 
