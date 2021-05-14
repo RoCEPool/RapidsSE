@@ -77,7 +77,7 @@ void Step::vTableDelete(void)
   ENTRY();
   
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-
+  vTrace(">>>>>>>>>>>>Step::vTableDelete\n"_Stz);
   delete pTable;
     
   EXIT();
@@ -534,11 +534,10 @@ void Step::vTableNew(void) {
       Object *pObject = pParcel->pGetObject(i_Obj);
       if (pObject->eGetClassNo() == CN_TABLE) {
         pTbl = (Table *) pObject;
-        //pNewTable = (Table *) ::operator new(gxaSizeHeap[pObject->eGetClassNo()].m_nClassSize, pTbl);
-        pNewTable = pTbl;
-        pNewTable->iBuildParcel(pTable->pParcel());
-        pNewTable->iReassembleObj();
-        vTrace(">>>>>>>>>>>> (New) Table:%s\n"_Stz, sTableName.azChar());
+        pNewTable = (Table *) ::operator new(gxaSizeHeap[pObject->eGetClassNo()].m_nClassSize, pTbl);
+
+        pNewTable->iReassembleFromParcel(pTable->pParcel());
+        vTrace(">>>>>>>>>>>> (New) Table:%s with %lld parts\n"_Stz, sTableName.azChar(), nObjParts);
         break;
       }
     }

@@ -12,18 +12,18 @@
  "metaSend_metaGet handler" .
 
   Operand[].pipein  // pop the pMetaGet and put in the Operand register
-  Operand[] MetaGet.getTableName
+  //Operand[] MetaGet.getTableName
 
   // print table name from the stack
-  .
+  //.
 
   // pass the table name to op__table to get the table[] register
-  // then call C++ pTable->iPrepareParcel() and push the pParcel to the stack
+  // then call C++ getParts to build the parcel and push the pParcel to the stack
   // op::pipeout pipe the pParcel out
 
   Operand[] MetaGet.getTableName op__table
-  //table[] Table.prepareParcel
   table[] MetaSend::getParts
+
   op::pipeout
   
   true

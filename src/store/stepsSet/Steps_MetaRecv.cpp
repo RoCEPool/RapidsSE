@@ -50,14 +50,14 @@ void Step::vMetaRecvPutParts(void)
     if (pObject && (pObject->eGetClassNo() == CN_TABLE)) {
       pTable = (Table *) pObject;
       vTrace("Table:%p reassemble from parcel, tablename:%s\n"_Stz,pTable, pTable->szTableNm()->azChar());
-      pTable->iBuildParcel(pParcel);
+      //pTable->iBuildParcel(pParcel);
+      // call reassemble parts code
+      pTable->iReassembleFromParcel(pParcel);
       break;
     }
   }
 
-  // call reassemble parts code
-
-  pTable->iReassembleObj();
+  //pTable->iReassembleObj();
 
   // put results as a table
   m_pDataStack->vPushPtr(pTable);

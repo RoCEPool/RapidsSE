@@ -32,19 +32,18 @@ void Step::vMetaSendGetParts(void)
 
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
 
-  // it works!
-  vTrace("C++ gets called: vMetaSendGetParts For %p pTable->szTableNm()->azChar(): %s\n"_Stz,
+  vTrace("C++ gets called: vMetaSendGetParts for pTable:%p pTable->szTableNm()->azChar(): %s\n"_Stz,
          pTable,
          pTable->szTableNm()->azChar());
 
   pTable->iPrepareParcel();
   Parcel* pParcel = pTable->pParcel();
 
-  m_pDataStack->vPushPtr(pParcel);
-
   if (pParcel && pParcel->bIsOriginal()) {
-    vTrace("C++ prepare for sending pParcel %p and it is originally created by Table\n"_Stz, pParcel);
+    vTrace("C++ prepared pParcel:%p for sending, it is originally created by Table\n"_Stz, pParcel);
   }
+
+  m_pDataStack->vPushPtr(pParcel);
   
   EXIT();
 }
