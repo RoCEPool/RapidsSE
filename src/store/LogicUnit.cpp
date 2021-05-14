@@ -2352,16 +2352,16 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_EQ_VCHVCH: ArgNil(); // vch == vch
         // get topB string
         iTopB = *(aiDstk--);
-        azTopB = (char*)(aiDstk - (nWordRoundedStrBytes(iTopB)/8 - 1));
-        aiDstk -= nWordRoundedStrBytes(nSize)/8;
+        azTopB = (char *) (aiDstk - (nWordRoundedStrBytes(iTopB) / 8 - 1));
+        aiDstk -= nWordRoundedStrBytes(iTopB) / 8;
 
         // get topA string
         iTopA = *(aiDstk--);
-        azTopA = (char*)(aiDstk - (nWordRoundedStrBytes(iTopA)/8 - 1));
-        aiDstk -= nWordRoundedStrBytes(nSize)/8;
+        azTopA = (char *) (aiDstk - (nWordRoundedStrBytes(iTopA) / 8 - 1));
+        aiDstk -= nWordRoundedStrBytes(iTopA) / 8;
 
         // invoke function
-        iRes  = iMathLib_Eq_VCHVCH(azTopA, azTopB);
+        iRes = iMathLib_Eq_VCHVCH(azTopA, azTopB);
         dLU3(EO_EQ_VCHVCH, iTopA, azTopA, azTopB);
         *(++aiDstk) = iRes;
         break;//+endCase
@@ -2517,12 +2517,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         // get topB string
         iTopB = *(aiDstk--);
         azTopB = (char*)(aiDstk - (nWordRoundedStrBytes(iTopB)/8 - 1));
-        aiDstk -= nWordRoundedStrBytes(nSize)/8;
+        aiDstk -= nWordRoundedStrBytes(iTopB)/8;
 
         // get topA string
         iTopA = *(aiDstk--);
         azTopA = (char*)(aiDstk - (nWordRoundedStrBytes(iTopA)/8 - 1));
-        aiDstk -= nWordRoundedStrBytes(nSize)/8;
+        aiDstk -= nWordRoundedStrBytes(iTopA)/8;
 
         // invoke function
         iRes  = iMathLib_Ge_VCHVCH(azTopA, azTopB);
@@ -2682,12 +2682,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         //vRlu_DUMP(pLU,aiDstk);
         iTopB = *(aiDstk--);
         azTopB = (char*)(aiDstk - (nWordRoundedStrBytes(iTopB)/8 - 1));
-        aiDstk -= nWordRoundedStrBytes(nSize)/8;
+        aiDstk -= nWordRoundedStrBytes(iTopB)/8;
 
         // get topA string
         iTopA = *(aiDstk--);
         azTopA = (char*)(aiDstk - (nWordRoundedStrBytes(iTopA)/8 - 1));
-        aiDstk -= nWordRoundedStrBytes(nSize)/8;
+        aiDstk -= nWordRoundedStrBytes(iTopA)/8;
 
         // invoke function
         iRes  = iMathLib_Gt_VCHVCH(azTopA, azTopB);
@@ -2847,12 +2847,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         // get topB string
         iTopB = *(aiDstk--);
         azTopB = (char*)(aiDstk - (nWordRoundedStrBytes(iTopB)/8 - 1));
-        aiDstk -= nWordRoundedStrBytes(nSize)/8;
+        aiDstk -= nWordRoundedStrBytes(iTopB)/8;
 
         // get topA string
         iTopA = *(aiDstk--);
         azTopA = (char*)(aiDstk - (nWordRoundedStrBytes(iTopA)/8 - 1));
-        aiDstk -= nWordRoundedStrBytes(nSize)/8;
+        aiDstk -= nWordRoundedStrBytes(iTopA)/8;
 
         // invoke function
         iRes  = iMathLib_Le_VCHVCH(azTopA, azTopB);
@@ -3011,12 +3011,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         // get topB string
         iTopB = *(aiDstk--);
         azTopB = (char*)(aiDstk - (nWordRoundedStrBytes(iTopB)/8 - 1));
-        aiDstk -= nWordRoundedStrBytes(nSize)/8;
+        aiDstk -= nWordRoundedStrBytes(iTopB)/8;
 
         // get topA string
         iTopA = *(aiDstk--);
         azTopA = (char*)(aiDstk - (nWordRoundedStrBytes(iTopA)/8 - 1));
-        aiDstk -= nWordRoundedStrBytes(nSize)/8;
+        aiDstk -= nWordRoundedStrBytes(iTopA)/8;
 
         // invoke function
         iRes  = iMathLib_Lt_VCHVCH(azTopA, azTopB);
@@ -3175,12 +3175,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         // get topB string
         iTopB = *(aiDstk--);
         azTopB = (char*)(aiDstk - (nWordRoundedStrBytes(iTopB)/8 - 1));
-        aiDstk -= nWordRoundedStrBytes(nSize)/8;
+        aiDstk -= nWordRoundedStrBytes(iTopB)/8;
 
         // get topA string
         iTopA = *(aiDstk--);
         azTopA = (char*)(aiDstk - (nWordRoundedStrBytes(iTopA)/8 - 1));
-        aiDstk -= nWordRoundedStrBytes(nSize)/8;
+        aiDstk -= nWordRoundedStrBytes(iTopA)/8;
 
         // invoke function
         iRes  = iMathLib_Ne_VCHVCH(azTopA, azTopB);
@@ -3478,9 +3478,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         if (! *(aiDstk--))
           return aiDstk;
 #else
-        if (! *(aiDstk--)) {
+        iRes = *(aiDstk--);
+        if (! iRes) {
           if (aeaRstk == &eaReturnStack[0]) {
-            iRes = *(aiDstk--);
+
 #ifdef WITH_TRACE_LOGICUNIT
             vTrace("\nEnd Logic Unit :: sql %lld\n\n"_Stz,aRluCommon->m_iSql);
 #endif
@@ -3498,9 +3499,10 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         if ( *(aiDstk--))
           return aiDstk;
 #else
-        if ( *(aiDstk--)) {
+        iRes = *(aiDstk--);
+        if ( iRes) {
           if (aeaRstk == &eaReturnStack[0]) {
-            iRes = *(aiDstk--);
+
 #ifdef WITH_TRACE_LOGICUNIT
             vTrace("\nEnd Logic Unit :: sql %lld\n\n"_Stz,aRluCommon->m_iSql);
 #endif
