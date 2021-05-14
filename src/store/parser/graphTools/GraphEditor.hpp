@@ -3,6 +3,7 @@
 /*============================================================================*/
 #pragma once
 
+#include <functional> // for std::function
 #include "PlanNode.hpp"
 #include "QueryNodeList.hpp"
 
@@ -33,6 +34,17 @@ namespace Parser
     // Remove a child from its parent and optionally transplant that child's
     // children in its place. Returns the snipped child.
     static QueryNode* pSnipChild(QueryNode* pParent, QueryNode* pChild, b1 bTransplant);
+
+    // Remove child nodes from its parent if the child nodes meet some condition.
+    // Optionally transplant the child's children in its place.
+    // Returns nullptr if no children were replaced, otherwise a list of the
+    // replaced children is returned. List and children need to be deleted.
+    // The condition that is evaluated is passed the child node being tested
+    // and must return true if the child is to be snipped, or false it it
+    // is to be left alone.
+    static QueryNodeList* pSnipChild(QueryNode* pParent, std::function<b1(QueryNode*)> fCondition, b1 bTransplant);
+
+
 
     // TODO: Add extra methods here for manipulating plan graphs.
     //       e.g. snipping nodes, reordering, etc.
