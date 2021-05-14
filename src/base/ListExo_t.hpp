@@ -3,8 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-#include "eLC.h"
-
 namespace BASE
 {
   template <class ITEM>
@@ -211,6 +209,7 @@ namespace BASE
     //void  vReadUnlock(void);
     void  vRemove(ITEM* pItem);
     void  vRemoveAll(void);
+    void  vRemoveNode(ListExoNode_t<ITEM>* pNode);
     ITEM* pTail(void);
     ListExoNode_t<ITEM>* pTailNode(void);
 
@@ -636,6 +635,24 @@ void ListExo_t<CLASSNO,ITEM>::vRemoveAll(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* remove a node from list                                                    */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, class ITEM>
+void ListExo_t<CLASSNO,ITEM>::vRemoveNode(ListExoNode_t<ITEM>* pRemovingNode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
+
+  m_okLock.vGrabWrite();
+
+  vCutNode(pRemovingNode);
+
+  m_okLock.vDropWrite();
+  vValidateList();
+
+  delete pRemovingNode;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get tail item of list                                                      */
 /*----------------------------------------------------------------------------*/
 template <eCN CLASSNO, class ITEM>
@@ -914,10 +931,23 @@ private:
    
   ListExo_t<CN_NONE,ITEM>* m_pListExot;
 
-  eLC                      m_eCursorState;
-  ListExoNode_t<ITEM>*     m_pListNode_cursor;
-  
-  
+  b1                       m_bFwdDir; // true if the iter last moved towards the tail
+  b1                       m_bCanRemove; // true if it is safe to call vRemove()
+  ListExoNode_t<ITEM>*     m_pNextCursor;
+  ListExoNode_t<ITEM>*     m_pPrevCursor;
+
+  // Note: The iterator always points between items, but remembers the last item
+  // returned (via m_bFwdDir). This allows for consistent operation with forward
+  // traversals, backward traversals and removals. If the iterator simply points
+  // at the last item returned then we will get incorrect results for certain
+  // arbitrary traversals.
+  // e.g. consider the following sequence:
+  //    pIter->pNext()
+  //    pIter->pNext()
+  //    pIter->vRemove()
+  //    pIter->pPrev()
+  // We need the iterator to point between objects to do this properly.
+
   // must be last
   Footer m_xFooter;
 
@@ -928,10 +958,16 @@ public:
   ListExoIter_t<ITEM>(ListExo_t<CN_NONE,ITEM>* pListExo);
  ~ListExoIter_t(void) noexcept(false);
   
+  void  vAfterLast(void);
   void  vBeforeFirst(void);
   ITEM* pFirst(void);
+  bool  bIsAfterLast(void);
+  bool  bIsBeforeFirst(void);
   bool  bHasNext(void);
+  bool  bHasPrev(void);
   ITEM* pNext(void);
+  ITEM* pPrev(void);
+  void  vRemove(void);
   
 private:
   Footer* aFooter(void);
@@ -977,10 +1013,9 @@ ListExoIter_t<ITEM>::ListExoIter_t(ListExo_t<CN_NONE,ITEM>* pListExo)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LISTEXOITER_t,_FOOTER_);
 
   m_pListExot = pListExo;
-  
-  m_eCursorState = LC_NIL;
-  m_pListNode_cursor = nullptr;
-  
+
+  vBeforeFirst();
+
   _checkInitialised_(CN_LISTEXOITER_t);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_LISTEXOITER_t,_FOOTER_);
@@ -1003,88 +1038,85 @@ template <class ITEM>
 void ListExoIter_t<ITEM>::vBeforeFirst(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LISTEXOITER_t,_FOOTER_);
-  
-  m_eCursorState = LC_NIL;
-  m_pListNode_cursor = nullptr;
+
+  m_bFwdDir = true;
+  m_bCanRemove = false;
+  m_pNextCursor = m_pListExot->pHeadNode();
+  m_pPrevCursor = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get tail first item of list                                                */
+/* position after last item for a backwards traversal                         */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
+void ListExoIter_t<ITEM>::vAfterLast(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LISTEXOITER_t,_FOOTER_);
+
+  m_bFwdDir = false;
+  m_bCanRemove = false;
+  m_pNextCursor = nullptr;
+  m_pPrevCursor = m_pListExot->pTailNode();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get first item of list                                                     */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
 ITEM* ListExoIter_t<ITEM>::pFirst(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LISTEXOITER_t,_FOOTER_);
-  
-  ITEM* pItem;
 
-  switch (m_eCursorState) {
-      
-    case LC_NIL:
-      m_pListNode_cursor = m_pListExot->pHeadNode();
-    
-      if (m_pListNode_cursor) {
-        m_eCursorState = LC_ON_EXISTING_ITEM;
-        pItem = m_pListNode_cursor->pItem();
-        return pItem;
-      }
-      
-      ASSERT(LC_NIL == m_eCursorState);
-      return nullptr;
-
-    case LC_ON_EXISTING_ITEM:
-      m_pListNode_cursor = m_pListExot->pHeadNode();
-    
-      if (m_pListNode_cursor) {
-        m_eCursorState = LC_ON_EXISTING_ITEM;
-        pItem = m_pListNode_cursor->pItem();
-        return pItem;
-      }
-      
-      m_eCursorState = LC_NIL;
-      return nullptr;
-
-    case LC_ON_REMOVED_ITEM:
-      NOT_IMPLEMENTED_YET;
-
-    default:
-      NEVER_REACH;
-  }
+  vBeforeFirst();
+  return pNext();
 }
 
 /*----------------------------------------------------------------------------*/
-/* get tail first item of list                                                */
+/* return true if the iterator is after the last element in the list          */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
+bool ListExoIter_t<ITEM>::bIsAfterLast(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LISTEXOITER_t,_FOOTER_);
+
+  return !m_pNextCursor;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return true if the iterator is before the first element in the list        */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
+bool ListExoIter_t<ITEM>::bIsBeforeFirst(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LISTEXOITER_t,_FOOTER_);
+
+  return !m_pPrevCursor;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return true if there is another node after this one                        */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
 bool ListExoIter_t<ITEM>::bHasNext(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LISTEXOITER_t,_FOOTER_);
-  
-  switch (m_eCursorState) {
-      
-    case LC_NIL:
-      if (m_pListExot->pHeadNode())
-        return true;
-      else
-        return false;
 
-    case LC_ON_EXISTING_ITEM:
-      ASSERT(m_pListNode_cursor);
-      if (m_pListNode_cursor->pNextNode())
-        return true;
-      else
-        return false;
-      
-    case LC_ON_REMOVED_ITEM:
-      NOT_IMPLEMENTED_YET;
-
-    default:
-      NEVER_REACH;
-  }
+  return m_pNextCursor;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get tail first item of list                                                */
+/* Return true if there is another node before this one                       */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
+bool ListExoIter_t<ITEM>::bHasPrev(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LISTEXOITER_t,_FOOTER_);
+
+  return m_pPrevCursor;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next item in list moving towards the tail                              */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
 ITEM* ListExoIter_t<ITEM>::pNext(void)
@@ -1093,38 +1125,83 @@ ITEM* ListExoIter_t<ITEM>::pNext(void)
   
   ITEM* pItem;
 
-  switch (m_eCursorState) {
-      
-    case LC_NIL:
-      m_pListNode_cursor = m_pListExot->pHeadNode();
-    
-      if (m_pListNode_cursor) {
-        m_eCursorState = LC_ON_EXISTING_ITEM;
-        pItem = m_pListNode_cursor->pItem();
-        return pItem;
-      }
-      
-      ASSERT(LC_NIL == m_eCursorState);
-      return nullptr;
+  m_bFwdDir = true;
 
-    case LC_ON_EXISTING_ITEM:
-      ASSERT(m_pListNode_cursor);
-      if (! m_pListNode_cursor->pNextNode()) {
-        m_eCursorState = LC_NIL;
-        return nullptr;
-      }
-      
-      m_pListNode_cursor = m_pListNode_cursor->pNextNode();
-      pItem = m_pListNode_cursor->pItem();
-      ASSERT(LC_ON_EXISTING_ITEM == m_eCursorState);
-      return pItem;
-
-    case LC_ON_REMOVED_ITEM:
-      NOT_IMPLEMENTED_YET;
-
-    default:
-      NEVER_REACH;
+  if (bIsAfterLast()) {
+    m_bCanRemove = false;
+    return nullptr;
   }
+
+  ASSERT(m_pNextCursor);
+  pItem = m_pNextCursor->pItem();
+
+  m_pPrevCursor = m_pNextCursor;
+  m_pNextCursor = m_pNextCursor->pNextNode();
+
+  m_bCanRemove = true;
+
+  return pItem;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get previous item in list moving towards the head                          */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
+ITEM* ListExoIter_t<ITEM>::pPrev(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LISTEXOITER_t,_FOOTER_);
+
+  ITEM* pItem;
+
+  m_bFwdDir = false;
+
+  if (bIsBeforeFirst()) {
+    m_bCanRemove = false;
+    return nullptr;
+  }
+
+  ASSERT(m_pPrevCursor);
+  pItem = m_pPrevCursor->pItem();
+
+  m_pNextCursor = m_pPrevCursor;
+  m_pPrevCursor = m_pPrevCursor->pPrevNode();
+
+  m_bCanRemove = true;
+
+  return pItem;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Remove the last item that was returned (either by pNext() or pPrev().      */
+/* The item in the list is not freed, only removed from the list.             */
+/* Note that we don't expect to have multiple iterators of the list if it is  */
+/* being modified, nor do we expect the list to be directly modified either.  */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
+void ListExoIter_t<ITEM>::vRemove(void)
+{
+  ASSERT(m_bCanRemove);
+  ASSERT((!bIsBeforeFirst() && m_bFwdDir) || (!bIsAfterLast() && !m_bFwdDir));
+
+  if (m_bFwdDir) {
+    // The last item returned was m_pPrevCursor->pItem()
+    ASSERT(m_pPrevCursor);
+    ListExoNode_t<ITEM>* pOldNode = m_pPrevCursor;
+
+    m_pPrevCursor = m_pPrevCursor->pPrevNode();
+    m_pListExot->vRemoveNode(pOldNode);
+
+  } else {
+    // The last item returned was m_pNextCursor->pItem()
+    ASSERT(m_pNextCursor);
+    ListExoNode_t<ITEM>* pOldNode = m_pNextCursor;
+
+    m_pNextCursor = m_pNextCursor->pNextNode();
+    m_pListExot->vRemoveNode(pOldNode);
+  }
+
+  // Can't call vRemove() twice. Need to move the iterator.
+  m_bCanRemove = false;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -564,10 +564,8 @@ void NameValidator::vValidateColumns(PlanNode *pRootNode, QueryNode* pStartNode,
               ColumnRef::szSchema(pExpr)->bSame(TableDef::szSchemaName(pTableDef)) &&
               ColumnRef::szTable(pExpr)->bSame(TableDef::szTableName(pTableDef)) ) {
 
-            // Remove the projected column from the list. Because we are iterating the
-            // list we need to also reset the iterator.
-            pProjectedColIter->vBeforeFirst();
-            pProjectedColList->vRemove(pProjectedCol);
+            // Remove the projected column from the list.
+            pProjectedColIter->vRemove();
             delete pProjectedCol;
           }
         }
