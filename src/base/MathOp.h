@@ -382,7 +382,7 @@ i8 iMathOp_MinValue(eDM eDatum) {
     case DM_IVY: iMinValue = Ivl::iMinValue(); break;
     case DM_TME: iMinValue = Tme::iMinValue(); break;
     case DM_TSP: iMinValue = Tsp::iMinValue(); break;
-    case DM_VCH: RASSERT(0); break;
+    case DM_VCH: iMinValue = 0; break;
     case DM_UNK: iMinValue = Unk::iMinValue(); break;
       break;
     default:
@@ -391,6 +391,10 @@ i8 iMathOp_MinValue(eDM eDatum) {
   }
 
   return iMinValue;
+}
+
+void vMathOp_MinValue(Stz* sMinValue) {
+  sMinValue = ""_Stz;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -419,6 +423,10 @@ i8 iMathOp_MaxValue(eDM eDatum) {
   }
 
   return iMaxValue;
+}
+
+void vMathOp_MaxValue(Stz* sMaxValue) {
+  strcpy((char*)sMaxValue,"\255");
 }
 
 /*============================================================================*/

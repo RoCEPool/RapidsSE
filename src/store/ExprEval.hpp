@@ -76,6 +76,7 @@ namespace STORE
     void vAddPayLoadKey(Stz* szAsmBuffer, eCT eColumnType, i8 i_Local);
     void vAddPopCol(Stz* szAsmBuffer, eCT eColumnType);
     void vAddPushCol(Stz* szAsmBuffer, eCT eColumnType, i8 i_Local);
+    void vAddPushDstCol(Stz* szAsmBuffer);
     void vAddRelational(Stz* szAsmBuffer, Token*  pTkn);
     void vAddStoreCol(Stz* szAsmBuffer, eCT eColumnType);
     void vAddString(Stz* szAsmBuffer, Token*  pTkn);

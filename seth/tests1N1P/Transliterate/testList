@@ -1,5 +1,8 @@
 aggregates.test
+count.test
 date.test
 decimal.test
+minmax.test
+sum.test
 time.test
 timestamp.test
