@@ -1,0 +1,136 @@
+/*----------------------------------------------------------------------------*/
+/* StageMarker tests                                                          */
+/*                                                                            */
+/* Tests that StatementMarkers are removed from the plan and StageMarkers are */
+/* inserted appropriately.                                                    */
+/*----------------------------------------------------------------------------*/
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Setup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+create table nation (
+  N_NATIONKEY       INTEGER NOT NULL,
+  N_NAME            CHAR(25) NOT NULL,
+  N_REGIONKEY       INTEGER NOT NULL,
+  N_COMMENT         VARCHAR(152)
+);
+success
+
+-- memory leak testing not enabled due to memory leaks in the transliteration / back end
+trackmemory;
+success
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Basic tests
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- Test that a simple plan always starts with a StageMarker
+EXPLAIN STAGE stageMarkers SELECT * FROM nation;
+rows: (*,'stageMarkers',
+'StageMarker
+
+-> projectOp
+   » column: (Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+   » column: (Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+   » column: (Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+   » column: (Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> tableScanOp
+      » table: (rapidsse.public.nation)'
+)
+
+
+-- Test that the children of a union are always StageMarkers
+EXPLAIN STAGE stageMarkers
+SELECT n_nationkey, n_name FROM nation
+UNION ALL
+SELECT n_regionkey, n_name FROM nation;
+rows: (*,'stageMarkers',
+'StageMarker
+
+-> unionOp
+   » isDistinct: (false)
+
+-> -> StageMarker
+
+-> -> -> projectOp
+         » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+         » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)
+
+-> -> StageMarker
+
+-> -> -> projectOp
+         » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
+         » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)'
+)
+
+-- 3-way nested union statement
+EXPLAIN STAGE stageMarkers
+SELECT n_nationkey, n_name FROM nation
+UNION ALL
+SELECT n_regionkey, n_name FROM nation
+UNION ALL
+SELECT n_nationkey, n_comment FROM nation;
+
+rows: (*,'stageMarkers',
+'StageMarker
+
+-> unionOp
+   » isDistinct: (false)
+
+-> -> StageMarker
+
+-> -> -> unionOp
+         » isDistinct: (false)
+
+-> -> -> -> StageMarker
+
+-> -> -> -> -> projectOp
+               » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+               » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> -> -> -> tableScanOp
+                  » table: (rapidsse.public.nation)
+
+-> -> -> -> StageMarker
+
+-> -> -> -> -> projectOp
+               » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
+               » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> -> -> -> tableScanOp
+                  » table: (rapidsse.public.nation)
+
+-> -> StageMarker
+
+-> -> -> projectOp
+         » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+         » column: (Expr = rapidsse.public.nation.n_comment ; Ordinal Expr = $4)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)'
+)
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Check for memory leaks
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+memoryleaks;
+rows: 0
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Cleanup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CLEANUP {
+  DROP TABLE nation;
+  mute
+}

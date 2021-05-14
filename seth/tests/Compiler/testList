@@ -9,3 +9,4 @@ corrByProjectSquashing.test
 orderBy.test
 exprPushdown.test
 projValidation.test
+stageMarkers.test

@@ -21,7 +21,7 @@
 #include "SqlOperator.hpp"
 #include "ShadowNode.hpp"
 #include "ShadowRoot.hpp"
-#include "StatementMarker.hpp"
+#include "StageMarker.hpp"
 #include "ExplainMarker.hpp"
 #include "ExplainOp.hpp"
 #include "PlanConstants.hpp"
@@ -161,18 +161,18 @@ bool Backend::bTransliterate(String* sPipeline) {
     pStartingNode = _pQueryNode(pStartingNode->pFirstChild());
   }
 
-  // The plan node should have one child which is a StatementMarker node
+  // The plan node should have one child which is a StageMarker node
   ASSERT(pPlanNode->nChildren() == 1);
-  ASSERT(StatementMarker::bIsOfType(pStartingNode));
-  QueryNode* pStatementMarker = _pQueryNode(pStartingNode);
+  ASSERT(StageMarker::bIsOfType(pStartingNode));
+  QueryNode* pStageMarker = _pQueryNode(pStartingNode);
 
   vAppendStartStage();
 
-  // We want to iterate over each logical subgraph, bounded by StatementMarkers,
+  // We want to iterate over each logical subgraph, bounded by StageMarkers,
   // and generate the pipeline for each statement
   vAppendPipe();
-  vAppendNextOp(pStatementMarker->szName());
-  GraphNav::bGlobalWalk(pStatementMarker, false, true, vVisitorPlan, (void *) this);
+  vAppendNextOp(pStageMarker->szName());
+  GraphNav::bGlobalWalk(pStageMarker, false, true, vVisitorPlan, (void *) this);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vAppendLastStage();
@@ -523,18 +523,18 @@ void Backend::vAppendUnionOp(Backend* pBackend, QueryNode* pUnionNode)
   ASSERT(pUnionNode->nChildren() == 2);
 
   // get the child markers
-  QueryNode *pChildStatementMarker1 = _pQueryNode(pUnionNode->pFirstChild());
-  QueryNode *pChildStatementMarker2 = _pQueryNode(pUnionNode->pSecondChild());
+  QueryNode *pChildStageMarker1 = _pQueryNode(pUnionNode->pFirstChild());
+  QueryNode *pChildStageMarker2 = _pQueryNode(pUnionNode->pSecondChild());
 
-  pBackend->vAppendNextOp(pChildStatementMarker1->szName());
+  pBackend->vAppendNextOp(pChildStageMarker1->szName());
   pBackend->vAppendPipe();
-  pBackend->vAppendNextOp(pChildStatementMarker2->szName());
+  pBackend->vAppendNextOp(pChildStageMarker2->szName());
 
   // bounded walk of each of first children
-  GraphNav::bGlobalWalk(pChildStatementMarker1, false, true, vVisitorPlan, (void *) pBackend);
+  GraphNav::bGlobalWalk(pChildStageMarker1, false, true, vVisitorPlan, (void *) pBackend);
 
   // bounded walk of each of first children
-  GraphNav::bGlobalWalk(pChildStatementMarker2, false, true, vVisitorPlan, (void *) pBackend);
+  GraphNav::bGlobalWalk(pChildStageMarker2, false, true, vVisitorPlan, (void *) pBackend);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -553,9 +553,9 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
   Backend* pBackend = (Backend*)pvArg;
   String* sPipeline = pBackend->m_sPipeline;
 
-  vTrace("Got %s event for node path: %s\n"_Stz,
-           eEventType == Parser::GraphNav::EVENT_ENTER ? "ENTER" : "EXIT",
-           sPath.szStz());
+//  vTrace("Got %s event for node path: %s\n"_Stz,
+//           eEventType == Parser::GraphNav::EVENT_ENTER ? "ENTER" : "EXIT",
+//           sPath.szStz());
 
   if (eEventType == Parser::GraphNav::EVENT_ENTER) {
 
@@ -946,13 +946,13 @@ GraphNav::eWalkCtrl Backend::vVisitorPlan(PlanNode* pRootNode, s256& sPath, i8 i
 {
   _static_
 
-  // Continue walking till a StatementMarker is hit
-  if (!StatementMarker::bIsOfType(pRootNode)) {
+  // Continue walking till a StageMarker is hit
+  if (!StageMarker::bIsOfType(pRootNode)) {
     return GraphNav::WALK_CONTINUE;
   }
 
-  // get the statementMarker
-  QueryNode* pStatementMarker = _pQueryNode(pRootNode);
+  // get the stageMarker
+  QueryNode* pStageMarker = _pQueryNode(pRootNode);
 
   // get the backend
   Backend* pBackend = (Backend*)pvArg;
@@ -963,11 +963,11 @@ GraphNav::eWalkCtrl Backend::vVisitorPlan(PlanNode* pRootNode, s256& sPath, i8 i
   };
 
   // check for a unionOp
-  PlanNode *pHasUnionOp = GraphNav::pBoundedSearch(pStatementMarker, false, true, fHasUnionOp, nullptr);
+  PlanNode *pHasUnionOp = GraphNav::pBoundedSearch(pStageMarker, false, true, fHasUnionOp, nullptr);
 
   // we have a unionOp
   if (pHasUnionOp) {
-    pBackend->vAppendNextStage(pStatementMarker->szName());
+    pBackend->vAppendNextStage(pStageMarker->szName());
 
     QueryNode *pUnionOp = static_cast<QueryNode *>(pHasUnionOp);
     pBackend->vAppendNextOp(pUnionOp->szName());
@@ -978,14 +978,14 @@ GraphNav::eWalkCtrl Backend::vVisitorPlan(PlanNode* pRootNode, s256& sPath, i8 i
     return GraphNav::WALK_SKIP_CHILDREN;
   }
 
-  pBackend->vAppendNextStage(pStatementMarker->szName());
+  pBackend->vAppendNextStage(pStageMarker->szName());
 
   // Walk the current node and its children,
   // calling the visitor function for each node encountered. This is a
   // bottom-up, depth-first traversal.
-  // Starting on a StatementMarker will walk until the subsequent StatementMarker
+  // Starting on a StageMarker will walk until the subsequent StageMarker
   // node is encountered.
-  GraphNav::bBoundedWalkBottomUp(pStatementMarker, false, true, vVisitorStatement, (void *) pBackend);
+  GraphNav::bBoundedWalkBottomUp(pStageMarker, false, true, vVisitorStatement, (void *) pBackend);
 
   // Keep walking
   return GraphNav::WALK_CONTINUE;

@@ -67,7 +67,7 @@ void StageMarker::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 
   }
 
   vAppendIndent(sBuf, iIndent, eIndentFormat::IF_ARROW);
-  sBuf.vCatSprint("StageMarker: "_Stz);
+  sBuf.vCatSprint("StageMarker"_Stz);
 
   // Recurse any children
   if (pNode->bHasChildren()) {
