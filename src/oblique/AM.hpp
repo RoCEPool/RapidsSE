@@ -213,6 +213,13 @@ namespace OBLIQUE
   {
   public:
   
+    class DIC
+    {
+    public:
+      static void vListContents(Dic* pDic);
+      static void vListContents(Dic* pDic, i8 i_Depth);
+    };
+  
     class DEMON
     {
     public:
@@ -274,6 +281,7 @@ namespace OBLIQUE
     {
     public:
       static Word* pFind(Stz* szWordNm);
+      static void vListContents(Word* pWord, i8 i_Depth);
     };
 
 

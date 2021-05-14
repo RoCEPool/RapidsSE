@@ -19,6 +19,8 @@ namespace BASE
     Locator(void);
    ~Locator(void) noexcept(false);
   
+    static void vFlist(void);
+
     Footer* aFooter(void);
   };
 

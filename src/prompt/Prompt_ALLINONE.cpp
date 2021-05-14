@@ -44,6 +44,7 @@
 #include "SqlPlanner.hpp"
 
 #include "CmdLineArgs.hpp"
+#include "Locator.hpp"
 
 extern CmdLineArgs gxCmdLineArgs;
 
@@ -1839,6 +1840,37 @@ bool PROMPT::bPrompt_floats(SePrompt* pPrompt)
     dMntv *= 10.0;
     dDntv /= 10.0;
   }
+  return true;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* Prompt_flist.cpp -- prompt folders function                                */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+PromptFun __Prompt_flist (
+  PF_FOLDERS,          // prompt function
+  "Prompt_flist"_Stz,  // name of the prompt function
+  "comment"_Stz,       // comment about the function
+  "flist"_Stz,         // the prompt command
+  nullptr,             // the second word
+  bPrompt_flist,       // prompt function
+  true,                // enabled
+
+  true,                // visible
+  "flist"_Stz,         // help
+  ""_Stz               // description
+);
+
+
+/*----------------------------------------------------------------------------*/
+/* prompt flist                                                               */
+/*----------------------------------------------------------------------------*/
+bool PROMPT::bPrompt_flist(SePrompt* pPrompt)
+{
+  RASSERT(pPrompt);
+    
+  Locator::vFlist();
+
   return true;
 }
 
