@@ -37,8 +37,6 @@ using namespace OBLIQUE;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 namespace BASE {
-
-  class Article;
          
   class Birth;
   class BufferPool;
@@ -358,7 +356,6 @@ namespace OBLIQUE
     static i8   nPtnsInGrid(void);
     static Schedule* pSchedule(void);
     static Resources* pResources(void);
-    static Article* pArcticleRoot(void);
     static Word* pConstantRoot(void);
     static void vRootConstant(Word* pConstantRoot);
     static Dic* pDicRoot(void);

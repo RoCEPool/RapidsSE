@@ -114,6 +114,7 @@
 #include "JobList.hpp"
 #include "Jobs.hpp"
 
+#include "Locator.hpp"
 #include "LogicUnit.hpp"
 
 #include "Metadata.hpp"

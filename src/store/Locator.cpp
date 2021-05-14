@@ -26,8 +26,6 @@ Locator::Locator(void)
   _precondition_(_MAGIC_,CN_LOCATION,_FOOTER_);
     
   _checkInitialised_(CN_LOCATION);
-  
-  vSet();
 }
 
 /*----------------------------------------------------------------------------*/
