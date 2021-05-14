@@ -198,6 +198,20 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* make table folder (along with indexes sub-folder)                          */
+/*----------------------------------------------------------------------------*/
+: table::makeTableFolder params| sTableNm |
+
+ sTableNm table::makeNamedTableFolder
+
+ sTableNm Path[].pushNamedTableFolder
+
+ sTableNm "index::makeIndexesAssembly" find execute
+
+ Path[].popNamedTableFolder
+;
+
+/*----------------------------------------------------------------------------*/
 /* create a table using given table definition                                */
 /*----------------------------------------------------------------------------*/
 : table::createTable params| sTableNm pStreamDef | ( pTable )
