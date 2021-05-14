@@ -345,6 +345,63 @@ void ExprEval::vAddPopCol(Stz* szAsmBuffer, eCT eColumnType)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add EO code for push destination column                                    */
+/*----------------------------------------------------------------------------*/
+void ExprEval::vAddPushDstCol(Stz* szAsmBuffer) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
+
+  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
+
+  eDM eDatumType = (eDM)m_xTypeStack.iPop();
+
+  // switch on column type
+  switch (eDatumType) {
+    case DM_BOL:
+      m_xTypeStack.vPush((i8) DM_BOL);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
+      break;
+    case DM_INT:
+      m_xTypeStack.vPush((i8) DM_INT);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
+      break;
+    case DM_BCD:
+      m_xTypeStack.vPush((i8) DM_BCD);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
+      break;
+    case DM_DTE:
+      m_xTypeStack.vPush((i8) DM_DTE);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
+      break;
+    case DM_FLT:
+      m_xTypeStack.vPush((i8) DM_FLT);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
+      break;
+    case DM_TME:
+      m_xTypeStack.vPush((i8) DM_TME);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
+      break;
+    case DM_TSP:
+      m_xTypeStack.vPush((i8) DM_TSP);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
+      break;
+
+    case DM_VCH:
+      m_xTypeStack.vPush((i8) DM_VCH);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLS %lld\n"_Stz, m_iDstColumn);
+      break;
+
+    case DM_UNK:
+      m_xTypeStack.vPush((i8) DM_UNK);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
+      break;
+
+    default:
+      RASSERT(0);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* add EO code for push column                                                 */
 /*----------------------------------------------------------------------------*/
 void ExprEval::vAddPushCol(Stz* szAsmBuffer, eCT eColumnType, i8 i_Local) {
@@ -393,7 +450,6 @@ void ExprEval::vAddPushCol(Stz* szAsmBuffer, eCT eColumnType, i8 i_Local) {
     case CT_UNKNOWN:
       m_xTypeStack.vPush((i8) DM_UNK);
       StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_LOCALI %lld\n"_Stz, i_Local);
-      break;
       break;
 
     default:
@@ -489,8 +545,18 @@ void ExprEval::vGenerateCount(Stz* szAsmBuffer, Stz* sAggInit)
     StrLib::vSprintCat(sAggInit, "  EO_DEVROW_POPCOLI %lld\n"_Stz, m_iDstColumn);
 
     // generate code
-    StrLib::vSprintCat(szAsmBuffer, "  EO_ISNULL\n"_Stz);
-    StrLib::vSprintCat(szAsmBuffer, "  EO_JMP_TRUE COUNT_DONE\n"_Stz);
+    if (eParamType == DM_VCH)
+      StrLib::vSprintCat(szAsmBuffer, "  EO_ISNULL_STR\n"_Stz);
+    else
+      StrLib::vSprintCat(szAsmBuffer, "  EO_ISNULL\n"_Stz);
+    StrLib::vSprintCat(szAsmBuffer, "  EO_JMP_FALSE CONTINUE_COUNT\n"_Stz);
+
+    StrLib::vSprintCat(szAsmBuffer, "  EO_POP\n"_Stz);
+    StrLib::vSprintCat(szAsmBuffer, "  EO_JMP COUNT_DONE\n"_Stz);
+
+    StrLib::vSprintCat(szAsmBuffer, "  Label CONTINUE_COUNT\n"_Stz);
+    StrLib::vSprintCat(szAsmBuffer, "  DeleteLabel CONTINUE_COUNT\n"_Stz);
+
     StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
     StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
     StrLib::vSprintCat(szAsmBuffer, "  EO_INTEGER 1\n"_Stz);
@@ -550,23 +616,18 @@ void ExprEval::vGenerateMax(Stz* szAsmBuffer, Stz* sAggInit)
   eDM eParamType = (eDM)m_xTypeStack.iPop();
   eEO eCode = eMathOp_MaxCode[eParamType];
 
-  // get the min value
-  i8 iMinValue = iMathOp_MinValue(eParamType);
-
-  Dte dte;
-  dte.vSetMin();
-  i8 iMin = dte;
-
   // push result type
   m_xTypeStack.vPush(eMathOp_MaxResult[eParamType]);
 
   if (m_bHasGby) {
 
+    // get the min value
+    i8 iMinValue = iMathOp_MinValue(eParamType);
+
     // generate code for agg initialization
     StrLib::vSprintCat(sAggInit, "  EO_PAY_STORE_COLI %lld\n"_Stz, m_iDstColumn);
 
     // generate code for agg max
-    StrLib::vSprintCat(szAsmBuffer, "  EO_DUP\n"_Stz);
     StrLib::vSprintCat(szAsmBuffer, "  EO_ISNULL\n"_Stz);
     StrLib::vSprintCat(szAsmBuffer, "  EO_JMP_FALSE CONTINUE_MAX\n"_Stz);
 
@@ -591,37 +652,91 @@ void ExprEval::vGenerateMax(Stz* szAsmBuffer, Stz* sAggInit)
     StrLib::vSprintCat(szAsmBuffer, "  DeleteLabel MAX_DONE\n"_Stz);
   }
   else {
-    // generate code for agg initialization
-    StrLib::vSprintCat(sAggInit, "  EO_INTEGER %lld\n"_Stz, iMinValue);
-    StrLib::vSprintCat(sAggInit, "  EO_PUSH_DEVROW_DST\n"_Stz);
-    StrLib::vSprintCat(sAggInit, "  EO_DEVROW_POPCOLI %lld\n"_Stz, m_iDstColumn);
 
-    // generate code for agg max
-    StrLib::vSprintCat(szAsmBuffer, "  EO_DUP\n"_Stz);
-    StrLib::vSprintCat(szAsmBuffer, "  EO_ISNULL\n"_Stz);
-    StrLib::vSprintCat(szAsmBuffer, "  EO_JMP_FALSE CONTINUE_MAX\n"_Stz);
+    if (eParamType == DM_VCH) {
 
-    StrLib::vSprintCat(szAsmBuffer, "  EO_POP\n"_Stz);
-    StrLib::vSprintCat(szAsmBuffer, "  EO_JMP MAX_DONE\n"_Stz);
+      s32 sMinValue;
 
-    StrLib::vSprintCat(szAsmBuffer, "  Label CONTINUE_MAX\n"_Stz);
-    StrLib::vSprintCat(szAsmBuffer, "  DeleteLabel CONTINUE_MAX\n"_Stz);
-    StrLib::vSprintCat(szAsmBuffer, "  EO_DUP\n"_Stz);
-    StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
-    StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
-    StrLib::vSprintCat(szAsmBuffer, "  %s\n"_Stz, aEO[eCode]);
-    StrLib::vSprintCat(szAsmBuffer, "  EO_JMP_TRUE NEW_MAX\n"_Stz);
+      // get the min value
+      vMathOp_MinValue(sMinValue);
 
-    StrLib::vSprintCat(szAsmBuffer, "  EO_POP\n"_Stz);
-    StrLib::vSprintCat(szAsmBuffer, "  EO_JMP MAX_DONE\n"_Stz);
+      // generate code for agg initialization
+      StrLib::vSprintCat(sAggInit, "  EO_STRING \"%s\"\n"_Stz, sMinValue.azChar());
+      StrLib::vSprintCat(sAggInit, "  EO_PUSH_DEVROW_DST\n"_Stz);
+      StrLib::vSprintCat(sAggInit, "  EO_DEVROW_POPCOLS %lld\n"_Stz, m_iDstColumn);
 
-    StrLib::vSprintCat(szAsmBuffer, "  Label NEW_MAX\n"_Stz);
-    StrLib::vSprintCat(szAsmBuffer, "  DeleteLabel NEW_MAX\n"_Stz);
-    StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
-    StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_POPCOLI %lld\n"_Stz, m_iDstColumn);
+      // generate code for agg max
+      StrLib::vSprintCat(szAsmBuffer, "  EO_ISNULL_STR\n"_Stz);
 
-    StrLib::vSprintCat(szAsmBuffer, "  Label MAX_DONE\n"_Stz);
-    StrLib::vSprintCat(szAsmBuffer, "  DeleteLabel MAX_DONE\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_JMP_FALSE CONTINUE_MAX\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_POP\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_JMP MAX_DONE\n"_Stz);
+
+      StrLib::vSprintCat(szAsmBuffer, "  Label CONTINUE_MAX\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  DeleteLabel CONTINUE_MAX\n"_Stz);
+
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DUMP\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DUP_STR\n"_Stz);
+
+      StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLS %lld\n"_Stz, m_iDstColumn);
+
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DUMP\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  %s\n"_Stz, aEO[eCode]);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_JMP_TRUE NEW_MAX\n"_Stz);
+
+      StrLib::vSprintCat(szAsmBuffer, "  EO_POP_STR\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_JMP MAX_DONE\n"_Stz);
+
+      StrLib::vSprintCat(szAsmBuffer, "  Label NEW_MAX\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  DeleteLabel NEW_MAX\n"_Stz);
+
+      StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_POPCOLS %lld\n"_Stz, m_iDstColumn);
+
+      StrLib::vSprintCat(szAsmBuffer, "  Label MAX_DONE\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  DeleteLabel MAX_DONE\n"_Stz);
+    }
+    else {
+
+      // get the min value
+      i8 iMinValue = iMathOp_MinValue(eParamType);
+
+      // generate code for agg initialization
+      StrLib::vSprintCat(sAggInit, "  EO_INTEGER %lld\n"_Stz, iMinValue);
+      StrLib::vSprintCat(sAggInit, "  EO_PUSH_DEVROW_DST\n"_Stz);
+      StrLib::vSprintCat(sAggInit, "  EO_DEVROW_POPCOLI %lld\n"_Stz, m_iDstColumn);
+
+      // generate code for agg max
+      StrLib::vSprintCat(szAsmBuffer, "  EO_ISNULL\n"_Stz);
+
+      StrLib::vSprintCat(szAsmBuffer, "  EO_JMP_FALSE CONTINUE_MAX\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_POP\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_JMP MAX_DONE\n"_Stz);
+
+      StrLib::vSprintCat(szAsmBuffer, "  Label CONTINUE_MAX\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  DeleteLabel CONTINUE_MAX\n"_Stz);
+
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DUP\n"_Stz);
+
+      StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
+
+      StrLib::vSprintCat(szAsmBuffer, "  %s\n"_Stz, aEO[eCode]);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_JMP_TRUE NEW_MAX\n"_Stz);
+
+      StrLib::vSprintCat(szAsmBuffer, "  EO_POP\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_JMP MAX_DONE\n"_Stz);
+
+      StrLib::vSprintCat(szAsmBuffer, "  Label NEW_MAX\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  DeleteLabel NEW_MAX\n"_Stz);
+
+      StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_POPCOLI %lld\n"_Stz, m_iDstColumn);
+
+      StrLib::vSprintCat(szAsmBuffer, "  Label MAX_DONE\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  DeleteLabel MAX_DONE\n"_Stz);
+    }
   }
 }
 
@@ -636,19 +751,18 @@ void ExprEval::vGenerateMin(Stz* szAsmBuffer, Stz* sAggInit)
   eDM eParamType = (eDM)m_xTypeStack.iPop();
   eEO eCode = eMathOp_MinCode[eParamType];
 
-  // get the max value
-  i8 iMaxValue = iMathOp_MaxValue(eParamType);
-
   // push result type
   m_xTypeStack.vPush(eMathOp_MinResult[eParamType]);
 
   if (m_bHasGby) {
 
+    // get the max value
+    i8 iMaxValue = iMathOp_MaxValue(eParamType);
+
     // generate code for agg initialization
     StrLib::vSprintCat(sAggInit, "  EO_PAY_STORE_COLI %lld\n"_Stz, m_iDstColumn);
 
     // generate code for agg min
-    StrLib::vSprintCat(szAsmBuffer, "  EO_DUP\n"_Stz);
     StrLib::vSprintCat(szAsmBuffer, "  EO_ISNULL\n"_Stz);
     StrLib::vSprintCat(szAsmBuffer, "  EO_JMP_FALSE CONTINUE_MIN\n"_Stz);
 
@@ -673,37 +787,88 @@ void ExprEval::vGenerateMin(Stz* szAsmBuffer, Stz* sAggInit)
     StrLib::vSprintCat(szAsmBuffer, "  DeleteLabel MIN_DONE\n"_Stz);
   }
   else {
-    // generate code for agg initialization
-    StrLib::vSprintCat(sAggInit, "  EO_INTEGER %lld\n"_Stz, iMaxValue);
-    StrLib::vSprintCat(sAggInit, "  EO_PUSH_DEVROW_DST\n"_Stz);
-    StrLib::vSprintCat(sAggInit, "  EO_DEVROW_POPCOLI %lld\n"_Stz, m_iDstColumn);
 
-    // generate code for agg min
-    StrLib::vSprintCat(szAsmBuffer, "  EO_DUP\n"_Stz);
-    StrLib::vSprintCat(szAsmBuffer, "  EO_ISNULL\n"_Stz);
-    StrLib::vSprintCat(szAsmBuffer, "  EO_JMP_FALSE CONTINUE_MIN\n"_Stz);
+    if (eParamType == DM_VCH) {
 
-    StrLib::vSprintCat(szAsmBuffer, "  EO_POP\n"_Stz);
-    StrLib::vSprintCat(szAsmBuffer, "  EO_JMP MIN_DONE\n"_Stz);
+      s32 sMaxValue;
 
-    StrLib::vSprintCat(szAsmBuffer, "  Label CONTINUE_MIN\n"_Stz);
-    StrLib::vSprintCat(szAsmBuffer, "  DeleteLabel CONTINUE_MIN\n"_Stz);
-    StrLib::vSprintCat(szAsmBuffer, "  EO_DUP\n"_Stz);
-    StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
-    StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
-    StrLib::vSprintCat(szAsmBuffer, "  %s\n"_Stz, aEO[eCode]);
-    StrLib::vSprintCat(szAsmBuffer, "  EO_JMP_TRUE NEW_MIN\n"_Stz);
+      // get the min value
+      vMathOp_MaxValue(sMaxValue);
 
-    StrLib::vSprintCat(szAsmBuffer, "  EO_POP\n"_Stz);
-    StrLib::vSprintCat(szAsmBuffer, "  EO_JMP MIN_DONE\n"_Stz);
+      // generate code for agg initialization
+      StrLib::vSprintCat(sAggInit, "  EO_STRING \"%s\"\n"_Stz, sMaxValue.azChar());
+      StrLib::vSprintCat(sAggInit, "  EO_PUSH_DEVROW_DST\n"_Stz);
+      StrLib::vSprintCat(sAggInit, "  EO_DEVROW_POPCOLS %lld\n"_Stz, m_iDstColumn);
 
-    StrLib::vSprintCat(szAsmBuffer, "  Label NEW_MIN\n"_Stz);
-    StrLib::vSprintCat(szAsmBuffer, "  DeleteLabel NEW_MIN\n"_Stz);
-    StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
-    StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_POPCOLI %lld\n"_Stz, m_iDstColumn);
+      // generate code for agg max
+      StrLib::vSprintCat(szAsmBuffer, "  EO_ISNULL_STR\n"_Stz);
 
-    StrLib::vSprintCat(szAsmBuffer, "  Label MIN_DONE\n"_Stz);
-    StrLib::vSprintCat(szAsmBuffer, "  DeleteLabel MIN_DONE\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_JMP_FALSE CONTINUE_MAX\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_POP\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_JMP MAX_DONE\n"_Stz);
+
+      StrLib::vSprintCat(szAsmBuffer, "  Label CONTINUE_MAX\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  DeleteLabel CONTINUE_MAX\n"_Stz);
+
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DUMP\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DUP_STR\n"_Stz);
+
+      StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLS %lld\n"_Stz, m_iDstColumn);
+
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DUMP\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  %s\n"_Stz, aEO[eCode]);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_JMP_TRUE NEW_MAX\n"_Stz);
+
+      StrLib::vSprintCat(szAsmBuffer, "  EO_POP_STR\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_JMP MAX_DONE\n"_Stz);
+
+      StrLib::vSprintCat(szAsmBuffer, "  Label NEW_MAX\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  DeleteLabel NEW_MAX\n"_Stz);
+
+      StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_POPCOLS %lld\n"_Stz, m_iDstColumn);
+
+      StrLib::vSprintCat(szAsmBuffer, "  Label MAX_DONE\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  DeleteLabel MAX_DONE\n"_Stz);
+    } else {
+
+      // get the max value
+      i8 iMaxValue = iMathOp_MaxValue(eParamType);
+
+      // generate code for agg initialization
+      StrLib::vSprintCat(sAggInit, "  EO_INTEGER %lld\n"_Stz, iMaxValue);
+      StrLib::vSprintCat(sAggInit, "  EO_PUSH_DEVROW_DST\n"_Stz);
+      StrLib::vSprintCat(sAggInit, "  EO_DEVROW_POPCOLI %lld\n"_Stz, m_iDstColumn);
+
+      // generate code for agg min
+      StrLib::vSprintCat(szAsmBuffer, "  EO_ISNULL\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_JMP_FALSE CONTINUE_MIN\n"_Stz);
+
+      StrLib::vSprintCat(szAsmBuffer, "  EO_POP\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_JMP MIN_DONE\n"_Stz);
+
+      StrLib::vSprintCat(szAsmBuffer, "  Label CONTINUE_MIN\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  DeleteLabel CONTINUE_MIN\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DUP\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DUMP\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  %s\n"_Stz, aEO[eCode]);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DUMP\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_JMP_TRUE NEW_MIN\n"_Stz);
+
+      StrLib::vSprintCat(szAsmBuffer, "  EO_POP\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_JMP MIN_DONE\n"_Stz);
+
+      StrLib::vSprintCat(szAsmBuffer, "  Label NEW_MIN\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  DeleteLabel NEW_MIN\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_POPCOLI %lld\n"_Stz, m_iDstColumn);
+
+      StrLib::vSprintCat(szAsmBuffer, "  Label MIN_DONE\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  DeleteLabel MIN_DONE\n"_Stz);
+    }
   }
 }
 
@@ -739,11 +904,23 @@ void ExprEval::vGenerateSum(Stz* sAsmBuffer, Stz* sAggInit)
     StrLib::vSprintCat(sAggInit, "  EO_DEVROW_POPCOLI %lld\n"_Stz, m_iDstColumn);
 
     // generate the code
+    StrLib::vSprintCat(sAsmBuffer, "  EO_ISNULL\n"_Stz);
+    StrLib::vSprintCat(sAsmBuffer, "  EO_JMP_FALSE CONTINUE_SUM\n"_Stz);
+    StrLib::vSprintCat(sAsmBuffer, "  EO_POP\n"_Stz);
+    StrLib::vSprintCat(sAsmBuffer, "  EO_JMP SUM_DONE\n"_Stz);
+
+    StrLib::vSprintCat(sAsmBuffer, "  Label CONTINUE_SUM\n"_Stz);
+    StrLib::vSprintCat(sAsmBuffer, "  DeleteLabel CONTINUE_SUM\n"_Stz);
+
     StrLib::vSprintCat(sAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
     StrLib::vSprintCat(sAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
+
     StrLib::vSprintCat(sAsmBuffer, "  %s\n"_Stz, aEO[eCode]);
     StrLib::vSprintCat(sAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
     StrLib::vSprintCat(sAsmBuffer, "  EO_DEVROW_POPCOLI %lld\n"_Stz, m_iDstColumn);
+
+    StrLib::vSprintCat(sAsmBuffer, "  Label SUM_DONE\n"_Stz);
+    StrLib::vSprintCat(sAsmBuffer, "  DeleteLabel SUM_DONE\n"_Stz);
   }
 }
 
@@ -1106,8 +1283,8 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
   sColumnNm.vSprint("col%lld"_Stz, m_iDstColumn);
   pColumnExpr->vColumnNm(sColumnNm);
 
-  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
-  StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
+  //StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
+  //StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
 
   while ( pTkn ) {
 
@@ -1118,14 +1295,15 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
       // discovered a comma, generate code for the column
       vGenerateColumnCode(szAsmBuffer, pStreamDefOut, pColumnExpr);
 
+      if ( ! m_bHasAgg )
+        vAddPushDstCol(szAsmBuffer);
+      m_bHasAgg = false;
+
       szAsmBuffer = m_sProjectAsm;
 
       m_iDstColumn++;
       sColumnNm.vSprint("col%lld"_Stz, m_iDstColumn);
       pColumnExpr->vColumnNm(sColumnNm);
-
-      StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
 
       pTkn = pTknVec->pNextToken();
       continue;
@@ -1292,6 +1470,8 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
       eAggType = AG_NONE;
       szAsmBuffer = m_sProjectAsm;
 
+      vAddPushDstCol(szAsmBuffer);
+
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -1307,6 +1487,8 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
       }
       eAggType = AG_NONE;
       szAsmBuffer = m_sProjectAsm;
+
+      vAddPushDstCol(szAsmBuffer);
 
       pTkn = pTknVec->pNextToken();
       continue;
@@ -1324,6 +1506,8 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
       eAggType = AG_NONE;
       szAsmBuffer = m_sProjectAsm;
 
+      vAddPushDstCol(szAsmBuffer);
+
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -1339,6 +1523,8 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
       }
       eAggType = AG_NONE;
       szAsmBuffer = m_sProjectAsm;
+
+      vAddPushDstCol(szAsmBuffer);
 
       pTkn = pTknVec->pNextToken();
       continue;
@@ -1356,6 +1542,8 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
       eAggType = AG_NONE;
       szAsmBuffer = m_sProjectAsm;
 
+      vAddPushDstCol(szAsmBuffer);
+
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -1372,15 +1560,7 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
       eAggType = AG_NONE;
       szAsmBuffer = m_sProjectAsm;
 
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // is it a GROUPBY ?
-    if (pTkn->bSame("GROUPBY"_Stz) ) {
-
-      // Never Reach
-      RASSERT(0);
+      vAddPushDstCol(szAsmBuffer);
 
       pTkn = pTknVec->pNextToken();
       continue;
@@ -1519,7 +1699,7 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
 
     // arithmetic operator ?
     if (pTkn->bIsArithmetic()) {
-      vAddArithmetic(szAsmBuffer, pTkn, pColumnExpr);
+        vAddArithmetic(szAsmBuffer, pTkn, pColumnExpr);
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -1540,7 +1720,7 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
 
     // is it a numeric ?
     if (pTkn->bIsNumeric()) {
-      vAddInteger(szAsmBuffer, pTkn);
+        vAddInteger(szAsmBuffer, pTkn);
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -1548,7 +1728,6 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
     // is it a decimal no ?
     if (pTkn->bIsDecimalNo()) {
       vAddDecimal(szAsmBuffer, pTkn);
-
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -1685,6 +1864,7 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
         goto L_RETURN;
       }
       eAggType = AG_NONE;
+      //szAsmBuffer = m_sPayLoadToBufferAsm;
 
       pTkn = pTknVec->pNextToken();
       continue;
@@ -1763,6 +1943,7 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
     else {
       if (m_bHasAgg)
         vAddPushCol(m_sPayLoadAggAsm, pColumn->eColumnType(), i_Local);
+
       if (pColumnExpr->eColumnType() == CT_VARCHAR)
         StrLib::vSprintCat(m_sPayLoadToBufferAsm, "  EO_PAY_FETCH_COLS %lld\n"_Stz, m_iDstColumn);
       else

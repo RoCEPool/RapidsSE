@@ -109,7 +109,7 @@ inline i8 iMathLib_Add_FLTINT(i8 iFltValue1, i8 iIntValue2)
     return C_DATUM_NULL;
 
   fValue1 = *(d8*)&iFltValue1;
-  fValue2 = *(d8*)&iIntValue2;
+  fValue2 = (d8)iIntValue2;
 
   d8 dResult = fValue1 + fValue2;
   iResult = *(i8 *) &dResult;
@@ -122,7 +122,12 @@ inline i8 iMathLib_Add_FLTINT(i8 iFltValue1, i8 iIntValue2)
 /*----------------------------------------------------------------------------*/
 inline i8 iMathLib_Add_INTBCD(i8 iIntValue, i8 iBcdValue)
 {
-  i8 iResult = C_DATUM_NULL;
+  i8 iResult;
+
+  if (iIntValue == C_DATUM_NULL || iBcdValue == C_DATUM_NULL)
+    iResult = C_DATUM_NULL;
+  else
+    iResult = (iIntValue*100) + iBcdValue;
 
   return iResult;
 }
@@ -1402,7 +1407,7 @@ inline i8 iMathLib_Gt_BCDINT(i8 iBcdValue, i8 iIntValue)
   if (iBcdValue == C_DATUM_NULL || iIntValue == C_DATUM_NULL)
     return 0;
 
-  i8 iResult  = 0;
+  i8 iResult  = iBcdValue > iIntValue * 100;
 
   return iResult;
 }

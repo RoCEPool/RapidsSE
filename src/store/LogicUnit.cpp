@@ -2115,13 +2115,20 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // null test operators
-      case EO_ISNULL: ArgNil(); // test if top is null, push result
-        iTopA = *(aiDstk--);
+      case EO_ISNULL: ArgNil(); // test if top is null( NO POPPING) , push result
+        iTopA = *(aiDstk);
         iRes  = (C_DATUM_NULL == iTopA) ? 1 : 0;
         dLU2(EO_ISNULL,iTopA,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase
-        
+
+      case EO_ISNULL_STR: ArgNil(); // test if top is null string ( NO POPPING) , push result
+        // get topA string
+        iRes = ((i8)*aiDstk == C_DATUM_NULL) ? 1 : 0;
+        dLU2(EO_ISNULL_STR,iTopA,iRes);
+        *(++aiDstk) = iRes;
+        break;//+endCase
+
       case EO_ISNOTNULL: ArgNil(); // test if top is not null, push result
         iTopA = *(aiDstk--);
         iRes  = (C_DATUM_NULL != iTopA) ? 1 : 0;
@@ -2355,7 +2362,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
         // invoke function
         iRes  = iMathLib_Eq_VCHVCH(azTopA, azTopB);
-        *(++aiDstk) = iRes;
         dLU3(EO_EQ_VCHVCH, iTopA, azTopA, azTopB);
         *(++aiDstk) = iRes;
         break;//+endCase
@@ -2520,7 +2526,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
         // invoke function
         iRes  = iMathLib_Ge_VCHVCH(azTopA, azTopB);
-        *(++aiDstk) = iRes;
         dLU3(EO_GE_VCHVCH, iTopA, azTopA, azTopB);
         *(++aiDstk) = iRes;
         break;//+endCase
@@ -2674,6 +2679,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_GT_VCHVCH: ArgNil(); // vch > vch
         // get topB string
+        vRlu_DUMP(pLU,aiDstk);
         iTopB = *(aiDstk--);
         azTopB = (char*)(aiDstk - (nWordRoundedStrBytes(iTopB)/8 - 1));
         aiDstk -= nWordRoundedStrBytes(nSize)/8;
@@ -2685,9 +2691,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
         // invoke function
         iRes  = iMathLib_Gt_VCHVCH(azTopA, azTopB);
-        *(++aiDstk) = iRes;
         dLU3(EO_EQ_VCHVCH, iTopA, azTopA, azTopB);
         *(++aiDstk) = iRes;
+        vRlu_DUMP(pLU,aiDstk);
         break;//+endCase
 
       case EO_GT_UNKXYZ: ArgNil(); // unk > xyz
@@ -2850,7 +2856,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
         // invoke function
         iRes  = iMathLib_Le_VCHVCH(azTopA, azTopB);
-        *(++aiDstk) = iRes;
         dLU3(EO_LE_VCHVCH, iTopA, azTopA, azTopB);
         *(++aiDstk) = iRes;
         break;//+endCase
@@ -3015,7 +3020,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
         // invoke function
         iRes  = iMathLib_Lt_VCHVCH(azTopA, azTopB);
-        *(++aiDstk) = iRes;
         dLU3(EO_LT_VCHVCH, iTopA, azTopA, azTopB);
         *(++aiDstk) = iRes;
         break;//+endCase
@@ -3180,7 +3184,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
         // invoke function
         iRes  = iMathLib_Ne_VCHVCH(azTopA, azTopB);
-        *(++aiDstk) = iRes;
         dLU3(EO_NE_VCHVCH, iTopA, azTopA, azTopB);
         *(++aiDstk) = iRes;
         break;//+endCase
@@ -3341,11 +3344,18 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         *(++aiDstk) = iTopA;
         break;//+endCase
 
+      case EO_DUP_STR: ArgNil(); // duplicate top string
+        //vRlu_DUMP(pLU,aiDstk);
+        S_StrDup();
+        //vRlu_DUMP(pLU,aiDstk);
+        break;//+endCase
+
+
       case EO_POP: ArgNil(); // pop / discard top
         aiDstk--;
         dLU0(EO_POP);
         break;//+endCase
-        
+
       case EO_POP_LOCALI: ArgGet(iArg); // pop into a local reg
         dLU1(EO_POP_LOCALI, iArg);
         //ASSERT(iArg < C_LOGIC_LOCALS);
@@ -3359,7 +3369,12 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         //  vLib_ASSERT(pLU,0);
         S_PopStr(sLib_GET_LOCALS(pLU, iArg));
         break;//+endCase
-        
+
+      case EO_POP_STR: ArgNil(); // pop / discard top string
+        dLU0(EO_POP);
+        S_StrDrp();
+        break;//+endCase
+
       case EO_PUSH_LOCALI: { ArgGet(iArg); // push a local reg
         dLU1(EO_PUSH_LOCALI, iArg);
         //ASSERT(iArg < C_LOGIC_LOCALS);

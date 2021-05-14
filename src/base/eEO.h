@@ -134,6 +134,7 @@ enum eEO : u2 // expression operators
 
   // null test operators
   /*  S  */ EO_ISNULL,           // test if top is null, push result
+  /*  S  */ EO_ISNULL_STR,       // test if top string is null, push result
   /*  S  */ EO_ISNOTNULL,        // test if top is not null, push result
 
   // prints
@@ -308,9 +309,11 @@ enum eEO : u2 // expression operators
   /*  S  */ EO_INC,              // increment top, push result
   /*  S  */ EO_DEC,              // decrement top, push result
   /*  S  */ EO_DUP,              // duplicate top
+  /*  S  */ EO_DUP_STR,          // duplicate top
   /*  S  */ EO_POP,              // pop / discard top
   /*  S  */ EO_POP_LOCALI,       // pop integer into a local register
   /*  S  */ EO_POP_LOCALS,       // pop string into a local register
+  /*  S  */ EO_POP_STR,          // pop str / discard top str
   /*  S  */ EO_PUSH_LOCALI,      // push an integer from a local register
   /*  S  */ EO_PUSH_LOCALS,      // push an string from a local register
   
@@ -640,6 +643,7 @@ static Stz* aEO[]
 
   // null test operators
   /*    */ "EO_ISNULL"_Stz,
+  /*    */ "EO_ISNULL_STR"_Stz,
   /*    */ "EO_ISNOTNULL"_Stz,
 
   // prints
@@ -814,9 +818,11 @@ static Stz* aEO[]
   /*    */ "EO_INC"_Stz,
   /*    */ "EO_DEC"_Stz,
   /*    */ "EO_DUP"_Stz,
+  /*    */ "EO_DUP_STR"_Stz,
   /*    */ "EO_POP"_Stz,
   /*    */ "EO_POP_LOCALI"_Stz,
   /*    */ "EO_POP_LOCALS"_Stz,
+  /*    */ "EO_POP_STR"_Stz,
   /*    */ "EO_PUSH_LOCALI"_Stz,
   /*    */ "EO_PUSH_LOCALS"_Stz,
   
@@ -1150,6 +1156,7 @@ static EoArg EoArgs[]
 
   // null test operators
   { EA_NONE,    0 },  // EO_ISNULL
+  { EA_NONE,    0 },  // EO_ISNULL_STR
   { EA_NONE,    0 },  // EO_ISNOTNULL
 
   // prints
@@ -1325,9 +1332,11 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_INC
   { EA_NONE,    0 },  // EO_DEC
   { EA_NONE,    0 },  // EO_DUP
+  { EA_NONE,    0 },  // EO_DUP_STR
   { EA_NONE,    0 },  // EO_POP
   { EA_INT,     8 },  // EO_POP_LOCALI
   { EA_INT,     8 },  // EO_POP_LOCALS
+  { EA_NONE,    0 },  // EO_POP_STR
   { EA_INT,     8 },  // EO_PUSH_LOCALI
   { EA_INT,     8 },  // EO_PUSH_LOCALS
   
