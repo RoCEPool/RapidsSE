@@ -34,6 +34,7 @@
 #include "SP_TableMetadata.hpp"
 
 #include "TpchRatios.h"
+#include "Locator.hpp"
 
 #include "SP_Bits.hpp"
 #include "SP_Bytes.hpp"
@@ -1832,6 +1833,9 @@ void vTest32(void)
   pLocation->vSet();
   pLocation->vPrint();
   
+  Locator* pLocator = new Locator(pLocation);
+
+  delete pLocator;
   delete pLocation;
 }
 
