@@ -1827,6 +1827,12 @@ void vTest31(void)
 /*----------------------------------------------------------------------------*/
 void vTest32(void)
 {
+  Location* pLocation = new Location;
+  
+  pLocation->vSet();
+  pLocation->vPrint();
+  
+  delete pLocation;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -24,8 +24,33 @@ Locator::Locator(void)
 : Object(CN_LOCATION)
 {
   _precondition_(_MAGIC_,CN_LOCATION,_FOOTER_);
-    
+  
+  m_pTenant  = nullptr;
+  m_pCatalog = nullptr;
+  m_pSchema  = nullptr;
+  
   _checkInitialised_(CN_LOCATION);
+  
+  _postcondition_(_MAGIC_,CN_LOCATION,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Locator::Locator(Location* pLocation)
+: Object(CN_LOCATION)
+{
+  _precondition_(_MAGIC_,CN_LOCATION,_FOOTER_);
+  
+  m_pTenant  = nullptr;
+  m_pCatalog = nullptr;
+  m_pSchema  = nullptr;
+  
+  _checkInitialised_(CN_LOCATION);
+  
+  vLocate(pLocation);
+  
+  _postcondition_(_MAGIC_,CN_LOCATION,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -46,6 +71,8 @@ Locator::~Locator(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Locator::vFlist(void)
 {
+  _static_
+  
   vTrace("flist\n"_Stz);
 
   Word* pWord = AM::WORD::pFind("tenants"_Stz);
@@ -63,6 +90,48 @@ void Locator::vFlist(void)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* locate given location                                                      */
+/*----------------------------------------------------------------------------*/
+void Locator::vLocate(Location* pLocation)
+{
+  _precondition_(_MAGIC_,CN_LOCATION,_FOOTER_);
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get tenant                                                                 */
+/*----------------------------------------------------------------------------*/
+Dic* Locator::pTenant(void)
+{
+  _precondition_(_MAGIC_,CN_LOCATION,_FOOTER_);
+  
+  return m_pTenant;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get catalog                                                                */
+/*----------------------------------------------------------------------------*/
+Dic* Locator::pCatalog(void)
+{
+  _precondition_(_MAGIC_,CN_LOCATION,_FOOTER_);
+  
+  return m_pCatalog;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get schema                                                                 */
+/*----------------------------------------------------------------------------*/
+Dic* Locator::pSchema(void)
+{
+  _precondition_(_MAGIC_,CN_LOCATION,_FOOTER_);
+  
+  return m_pSchema;
+}
 
 /*============================================================================*/
 /* end                                                                        */

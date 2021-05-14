@@ -8,7 +8,11 @@ namespace BASE
   class Locator : public Object
   {
   private:
-    
+  
+    Dic* m_pTenant;
+    Dic* m_pCatalog;
+    Dic* m_pSchema;
+
     // must be last
     Footer m_xFooter;
     
@@ -17,9 +21,16 @@ namespace BASE
     void  operator delete(void*);
   
     Locator(void);
+    Locator(Location* pLocation);
    ~Locator(void) noexcept(false);
   
     static void vFlist(void);
+
+    void vLocate(Location* pLocation);
+
+    Dic* pTenant(void);
+    Dic* pCatalog(void);
+    Dic* pSchema(void);
 
     Footer* aFooter(void);
   };
