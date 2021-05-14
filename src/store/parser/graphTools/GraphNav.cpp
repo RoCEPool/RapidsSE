@@ -9,7 +9,7 @@
 #include "DefinitionNode.hpp"
 #include "PrimitiveNode.hpp"
 #include "PlanConstants.hpp"
-#include "StatementMarker.hpp"
+#include "PlanMarker.hpp"
 #include "ShadowRoot.hpp"
 
 using namespace Parser;
@@ -170,8 +170,8 @@ b1 GraphNav::bGlobalWalk(PlanNode* pNode,
  * This function returns a boolean where true indicates that it walked every
  * node and false indicates that it stopped walking nodes early (on request
  * of the function).
- * A bounded walk traverses all nodes until a StatementMarker node is encountered.
- * If the starting node is a StatementMarker then it is ignored.
+ * A bounded walk traverses all nodes until a PlanMarker node is encountered.
+ * If the starting node is a PlanMarker then it is ignored.
  *
  * Params:
  *   pNode    - The node of the graph to start with (may not be the root).
@@ -206,8 +206,8 @@ b1 GraphNav::bBoundedWalk(PlanNode* pNode,
  * This function returns a boolean where true indicates that it walked every
  * node and false indicates that it stopped walking nodes early (on request
  * of the function).
- * A bounded walk traverses all nodes until a StatementMarker node is encountered.
- * If the starting node is a StatementMarker then it is ignored.
+ * A bounded walk traverses all nodes until a PlanMarker node is encountered.
+ * If the starting node is a PlanMarker then it is ignored.
  *
  * Params:
  *   pNode    - The node of the graph to start with (may not be the root).
@@ -272,8 +272,8 @@ b1 GraphNav::bGlobalWalkBottomUp(PlanNode* pNode,
  * This function returns a boolean where true indicates that it walked every
  * node and false indicates that it stopped walking nodes early (on request
  * of the function).
- * A bounded walk traverses all nodes until a StatementMarker node is encountered.
- * If the starting node is a StatementMarker then it is ignored.
+ * A bounded walk traverses all nodes until a PlanMarker node is encountered.
+ * If the starting node is a PlanMarker then it is ignored.
  *
  * Params:
  *   pNode    - The node of the graph to start with (may not be the root).
@@ -410,8 +410,8 @@ b1 GraphNav::bGlobalWalk(PlanNode* pNode,
  * This function returns a boolean where true indicates that it walked every
  * node and false indicates that it stopped walking nodes early (on request
  * of the function).
- * A bounded walk traverses all nodes until a StatementMarker node is encountered.
- * If the starting node is a StatementMarker then it is ignored.
+ * A bounded walk traverses all nodes until a PlanMarker node is encountered.
+ * If the starting node is a PlanMarker then it is ignored.
  *
  * Params:
  *   pNode    - The node of the graph to start with (may not be the root).
@@ -462,8 +462,8 @@ b1 GraphNav::bBoundedWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
  * This function returns a boolean where true indicates that it walked every
  * node and false indicates that it stopped walking nodes early (on request
  * of the function).
- * A bounded walk traverses all nodes until a StatementMarker node is encountered.
- * If the starting node is a StatementMarker then it is ignored.
+ * A bounded walk traverses all nodes until a PlanMarker node is encountered.
+ * If the starting node is a PlanMarker then it is ignored.
  *
  * Params:
  *   pNode    - The node of the graph to start with (may not be the root).
@@ -566,8 +566,8 @@ b1 GraphNav::bGlobalWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkCh
  * This function returns a boolean where true indicates that it walked every
  * node and false indicates that it stopped walking nodes early (on request
  * of the function).
- * A bounded walk traverses all nodes until a StatementMarker node is encountered.
- * If the starting node is a StatementMarker then it is ignored.
+ * A bounded walk traverses all nodes until a PlanMarker node is encountered.
+ * If the starting node is a PlanMarker then it is ignored.
  *
  * Params:
  *   pNode    - The node of the graph to start with (may not be the root).
@@ -617,7 +617,7 @@ b1 GraphNav::bBoundedWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkC
  * node and false indicates that it stopped walking nodes early (on request
  * of the function).
  * A global walk traverses all nodes in the graph. A bounded walk will stop
- * when a StatementMarker node is encountered (see bBoundedWalk parameter)
+ * when a PlanMarker node is encountered (see bBoundedWalk parameter)
  *
  * Params:
  *   pNode    - The node of the graph to start with (may not be the root).
@@ -635,8 +635,8 @@ b1 GraphNav::bBoundedWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkC
  *           node should be appended to this and cleared before returning.
  *   iDepth - the depth of the current node, starting at 0 for the first node.
  *   bBoundedWalk - if true then the walk stops when it hits the first
- *                  StatementMarker node (ignoring the initial pNode if it happens
- *                  to be a StatementMarker node). If false then all nodes of
+ *                  PlanMarker node (ignoring the initial pNode if it happens
+ *                  to be a PlanMarker node). If false then all nodes of
  *                  the graph are walked.
  * Returns: false if the function aborted the walk prematurely otherwise true.
  *
@@ -653,8 +653,8 @@ b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
     return true;
   }
 
-  // Have we hit a StatementMarker node on a bounded walk?
-  if (bBoundedWalk && StatementMarker::bIsOfType(pNode) && iDepth > 0) {
+  // Have we hit a PlanMarker node on a bounded walk?
+  if (bBoundedWalk && PlanMarker::bIsOfType(pNode) && iDepth > 0) {
     return true;
   }
 
@@ -740,7 +740,7 @@ b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
  * node and false indicates that it stopped walking nodes early (on request
  * of the function).
  * A global walk traverses all nodes in the graph. A bounded walk will stop
- * when a StatementMarker node is encountered (see bBoundedWalk parameter)
+ * when a PlanMarker node is encountered (see bBoundedWalk parameter)
  *
  * Params:
  *   pNode    - The node of the graph to start with (may not be the root).
@@ -758,8 +758,8 @@ b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
  *           node should be appended to this and cleared before returning.
  *   iDepth - the depth of the current node, starting at 0 for the first node.
  *   bBoundedWalk - if true then the walk stops when it hits the first
- *                  StatementMarker node (ignoring the initial pNode if it happens
- *                  to be a StatementMarker node). If false then all nodes of
+ *                  PlanMarker node (ignoring the initial pNode if it happens
+ *                  to be a PlanMarker node). If false then all nodes of
  *                  the graph are walked.
  * Returns: false if the function aborted the walk prematurely otherwise true.
  *
@@ -776,8 +776,8 @@ b1 GraphNav::bWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren
     return true;
   }
 
-  // Have we hit a StatementMarker node on a bounded walk?
-  if (bBoundedWalk && StatementMarker::bIsOfType(pNode) && iDepth > 0) {
+  // Have we hit a PlanMarker node on a bounded walk?
+  if (bBoundedWalk && PlanMarker::bIsOfType(pNode) && iDepth > 0) {
     return true;
   }
 
@@ -874,7 +874,7 @@ b1 GraphNav::bWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren
  * node and false indicates that it stopped walking nodes early (on request
  * of the function).
  * A global walk traverses all nodes in the graph. A bounded walk will stop
- * when a StatementMarker node is encountered (see bBoundedWalk parameter)
+ * when a PlanMarker node is encountered (see bBoundedWalk parameter)
  *
  * Params:
  *   pNode    - The node of the graph to start with (may not be the root).
@@ -892,8 +892,8 @@ b1 GraphNav::bWalkBottomUp(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren
  *           node should be appended to this and cleared before returning.
  *   iDepth - the depth of the current node, starting at 0 for the first node.
  *   bBoundedWalk - if true then the walk stops when it hits the first
- *                  StatementMarker node (ignoring the initial pNode if it happens
- *                  to be a StatementMarker node). If false then all nodes of
+ *                  PlanMarker node (ignoring the initial pNode if it happens
+ *                  to be a PlanMarker node). If false then all nodes of
  *                  the graph are walked.
  * Returns: false if the function aborted the walk prematurely otherwise true.
  *
@@ -911,8 +911,8 @@ b1 GraphNav::bWalk(PlanNode* pNode, b1 bWalkProperties, b1 bWalkChildren,
     return true;
   }
 
-  // Have we hit a StatementMarker node on a bounded walk?
-  if (bBoundedWalk && StatementMarker::bIsOfType(pNode) && iDepth > 0) {
+  // Have we hit a PlanMarker node on a bounded walk?
+  if (bBoundedWalk && PlanMarker::bIsOfType(pNode) && iDepth > 0) {
     return true;
   }
 
@@ -1215,7 +1215,7 @@ PlanNode* GraphNav::pGlobalSearch(PlanNode* pStartNode, b1 bSearchProperties, b1
 
 /*----------------------------------------------------------------------------*/
 /* Search for a node that matches a given condition. If found then the node^  */
-/* is returned. Searches this plan segment only (until a StatementMarker      */
+/* is returned. Searches this plan segment only (until a PlanMarker           */
 /* is hit).                                                                   */
 /* The condition function is a lambda/function with the following definition: */
 /*   b1 bCondition(PlanNode* pNode, void* pvArg);                             */
