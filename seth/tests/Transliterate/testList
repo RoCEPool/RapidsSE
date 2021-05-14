@@ -5,6 +5,6 @@ decimal.test
 time.test
 filterInteger.test
 //filterDecimal.test
-minmax.test
+minMax.test
 project.test
 selectTypes.test

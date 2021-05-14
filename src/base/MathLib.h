@@ -212,7 +212,12 @@ inline i8 iMathLib_Div_BCDFLT(i8 iBcdValue, i8 iFloatValue)
 /*----------------------------------------------------------------------------*/
 inline i8 iMathLib_Div_BCDINT(i8 iBcdValue, i8 iIntValue)
 {
-  i8 iResult = C_DATUM_NULL;
+  i8 iResult;
+
+  if (iBcdValue == C_DATUM_NULL || iIntValue == C_DATUM_NULL)
+    iResult = C_DATUM_NULL;
+  else
+    iResult = (iIntValue*100) / iBcdValue;
 
   return iResult;
 }
@@ -284,7 +289,12 @@ inline i8 iMathLib_Div_FLTINT(i8 iFltValue1, i8 iIntValue2)
 /*----------------------------------------------------------------------------*/
 inline i8 iMathLib_Div_INTBCD(i8 iIntValue, i8 iBcdValue)
 {
-  i8 iResult = C_DATUM_NULL;
+  i8 iResult;
+
+  if (iIntValue == C_DATUM_NULL || iBcdValue == C_DATUM_NULL)
+    iResult = C_DATUM_NULL;
+  else
+    iResult = (iIntValue*100) / iBcdValue;
 
   return iResult;
 }
@@ -426,9 +436,13 @@ inline i8 iMathLib_Mul_BCDFLT(i8 iBcdValue1, i8 iFltValue2)
 /*----------------------------------------------------------------------------*/
 inline i8 iMathLib_Mul_BCDINT(i8 iBcdValue, i8 iIntValue)
 {
-
   // COME BACK TO THIS !!!
-  i8 iResult  = iBcdValue * iIntValue;
+  i8 iResult;
+
+  if (iBcdValue == C_DATUM_NULL || iIntValue == C_DATUM_NULL)
+    iResult = C_DATUM_NULL;
+  else
+    iResult = (iIntValue*100) * iBcdValue;
 
   return iResult;
 }
@@ -487,9 +501,14 @@ inline i8 iMathLib_Mul_FLTINT(i8 iFltValue, i8 iIntValue)
 /*----------------------------------------------------------------------------*/
 /* iMathLib_Mul_INTBCD:                                                       */
 /*----------------------------------------------------------------------------*/
-inline i8 iMathLib_Mul_INTBCD(i8 iInttValue, i8 iBcdValue)
+inline i8 iMathLib_Mul_INTBCD(i8 iIntValue, i8 iBcdValue)
 {
-  i8 iResult = C_DATUM_NULL;
+  i8 iResult;
+
+  if (iIntValue == C_DATUM_NULL || iBcdValue == C_DATUM_NULL)
+    iResult = C_DATUM_NULL;
+  else
+    iResult = (iIntValue*100) * iBcdValue;
 
   return iResult;
 }
@@ -622,7 +641,13 @@ inline i8 iMathLib_Sub_BCDFLT(i8 iBcdValue, i8 iFloatValue)
 /*----------------------------------------------------------------------------*/
 inline i8 iMathLib_Sub_BCDINT(i8 iBcdValue, i8 iIntValue)
 {
-  i8 iResult = C_DATUM_NULL;
+  // COME BACK TO THIS !!!
+  i8 iResult;
+
+  if (iBcdValue == C_DATUM_NULL || iIntValue == C_DATUM_NULL)
+    iResult = C_DATUM_NULL;
+  else
+    iResult = (iIntValue*100) - iBcdValue;
 
   return iResult;
 }
@@ -694,7 +719,12 @@ inline i8 iMathLib_Sub_FLTINT(i8 iFltValue1, i8 iIntValue2)
 /*----------------------------------------------------------------------------*/
 inline i8 iMathLib_Sub_INTBCD(i8 iIntValue, i8 iBcdValue)
 {
-  i8 iResult = C_DATUM_NULL;
+  i8 iResult;
+
+  if (iIntValue == C_DATUM_NULL || iBcdValue == C_DATUM_NULL)
+    iResult = C_DATUM_NULL;
+  else
+    iResult = (iIntValue*100) - iBcdValue;
 
   return iResult;
 }
@@ -1003,10 +1033,12 @@ inline i8 iMathLib_Eq_FLTINT(i8 iFltValue, i8 iIntValue)
 /*----------------------------------------------------------------------------*/
 inline i8 iMathLib_Eq_INTBCD(i8 iIntValue, i8 iBcdValue)
 {
+  // COME BACK TO THIS
+
   if (iIntValue == C_DATUM_NULL || iBcdValue == C_DATUM_NULL)
     return 0;
 
-  i8 iResult = 0;
+  i8 iResult  = iIntValue*100 == iBcdValue;
 
   return iResult;
 }
@@ -1143,7 +1175,7 @@ inline i8 iMathLib_Ge_BCDINT(i8 iBcdValue, i8 iIntValue)
   if (iBcdValue == C_DATUM_NULL || iIntValue == C_DATUM_NULL)
     return 0;
 
-  i8 iResult  = 0;
+  i8 iResult  = iBcdValue >= iIntValue*100;
 
   return iResult;
 }
@@ -1251,10 +1283,12 @@ inline i8 iMathLib_Ge_FLTINT(i8 iFltValue, i8 iIntValue)
 /*----------------------------------------------------------------------------*/
 inline i8 iMathLib_Ge_INTBCD(i8 iIntValue, i8 iBcdValue)
 {
+  // COME BACK TO THIS
+
   if (iIntValue == C_DATUM_NULL || iBcdValue == C_DATUM_NULL)
     return 0;
 
-  i8 iResult = C_DATUM_NULL;
+  i8 iResult  = iIntValue*100 >= iBcdValue;
 
   return iResult;
 }
@@ -1515,10 +1549,12 @@ inline i8 iMathLib_Gt_FLTINT(i8 iFltValue, i8 iIntValue)
 /*----------------------------------------------------------------------------*/
 inline i8 iMathLib_Gt_INTBCD(i8 iIntValue, i8 iBcdValue)
 {
+  // COME BACK TO THIS
+
   if (iIntValue == C_DATUM_NULL || iBcdValue == C_DATUM_NULL)
     return 0;
 
-  i8 iResult = 0;
+  i8 iResult  = iIntValue*100 > iBcdValue;
 
   return iResult;
 }
@@ -1671,7 +1707,7 @@ inline i8 iMathLib_Le_BCDINT(i8 iBcdValue, i8 iIntValue)
   if (iBcdValue == C_DATUM_NULL || iIntValue == C_DATUM_NULL)
     return 0;
 
-  i8 iResult  = 0;
+  i8 iResult  = iBcdValue <= iIntValue*100;
 
   return iResult;
 }
@@ -1779,10 +1815,12 @@ inline i8 iMathLib_Le_FLTINT(i8 iFltValue, i8 iIntValue)
 /*----------------------------------------------------------------------------*/
 inline i8 iMathLib_Le_INTBCD(i8 iIntValue, i8 iBcdValue)
 {
+  // COME BACK TO THIS
+
   if (iIntValue == C_DATUM_NULL || iBcdValue == C_DATUM_NULL)
     return 0;
 
-  i8 iResult = 0;
+  i8 iResult  = iIntValue*100 <= iBcdValue;
 
   return iResult;
 }
@@ -1935,7 +1973,7 @@ inline i8 iMathLib_Lt_BCDINT(i8 iBcdValue, i8 iIntValue)
   if (iBcdValue == C_DATUM_NULL || iIntValue == C_DATUM_NULL)
     return 0;
 
-  i8 iResult  = 0;
+  i8 iResult  = iBcdValue < iIntValue*100;
 
   return iResult;
 }
@@ -2043,10 +2081,12 @@ inline i8 iMathLib_Lt_FLTINT(i8 iFltValue1, i8 iIntValue2)
 /*----------------------------------------------------------------------------*/
 inline i8 iMathLib_Lt_INTBCD(i8 iIntValue, i8 iBcdValue)
 {
+  // COME BACK TO THIS
+
   if (iIntValue == C_DATUM_NULL || iBcdValue == C_DATUM_NULL)
     return 0;
 
-  i8 iResult = 0;
+  i8 iResult  = iIntValue*100 < iBcdValue;
 
   return iResult;
 }
@@ -2199,7 +2239,7 @@ inline i8 iMathLib_Ne_BCDINT(i8 iBcdValue, i8 iIntValue)
   if (iBcdValue == C_DATUM_NULL || iIntValue == C_DATUM_NULL)
     return 0;
 
-  i8 iResult  = 0;
+  i8 iResult  = iBcdValue != iIntValue*100;
 
   return iResult;
 }
@@ -2307,10 +2347,12 @@ inline i8 iMathLib_Ne_FLTINT(i8 iValue1, i8 iValue2)
 /*----------------------------------------------------------------------------*/
 inline i8 iMathLib_Ne_INTBCD(i8 iIntValue, i8 iBcdValue)
 {
+  // COME BACK TO THIS
+
   if (iIntValue == C_DATUM_NULL || iBcdValue == C_DATUM_NULL)
     return 0;
 
-  i8 iResult = 0;
+  i8 iResult  = iIntValue*100 != iBcdValue;
 
   return iResult;
 }

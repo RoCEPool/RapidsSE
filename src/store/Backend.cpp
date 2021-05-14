@@ -553,9 +553,9 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
   Backend* pBackend = (Backend*)pvArg;
   String* sPipeline = pBackend->m_sPipeline;
 
-  vTrace("Got %s event for node path: %s\n"_Stz,
-           eEventType == Parser::GraphNav::EVENT_ENTER ? "ENTER" : "EXIT",
-           sPath.szStz());
+//  vTrace("Got %s event for node path: %s\n"_Stz,
+//           eEventType == Parser::GraphNav::EVENT_ENTER ? "ENTER" : "EXIT",
+//           sPath.szStz());
 
   if (eEventType == Parser::GraphNav::EVENT_ENTER) {
 
