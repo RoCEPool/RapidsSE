@@ -675,13 +675,13 @@ void ExprEval::vGenerateMax(Stz* szAsmBuffer, Stz* sAggInit)
       StrLib::vSprintCat(szAsmBuffer, "  Label CONTINUE_MAX\n"_Stz);
       StrLib::vSprintCat(szAsmBuffer, "  DeleteLabel CONTINUE_MAX\n"_Stz);
 
-      StrLib::vSprintCat(szAsmBuffer, "  EO_DUMP\n"_Stz);
+      //StrLib::vSprintCat(szAsmBuffer, "  EO_DUMP\n"_Stz);
       StrLib::vSprintCat(szAsmBuffer, "  EO_DUP_STR\n"_Stz);
 
       StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
       StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLS %lld\n"_Stz, m_iDstColumn);
 
-      StrLib::vSprintCat(szAsmBuffer, "  EO_DUMP\n"_Stz);
+      //StrLib::vSprintCat(szAsmBuffer, "  EO_DUMP\n"_Stz);
       StrLib::vSprintCat(szAsmBuffer, "  %s\n"_Stz, aEO[eCode]);
       StrLib::vSprintCat(szAsmBuffer, "  EO_JMP_TRUE NEW_MAX\n"_Stz);
 
@@ -810,13 +810,13 @@ void ExprEval::vGenerateMin(Stz* szAsmBuffer, Stz* sAggInit)
       StrLib::vSprintCat(szAsmBuffer, "  Label CONTINUE_MAX\n"_Stz);
       StrLib::vSprintCat(szAsmBuffer, "  DeleteLabel CONTINUE_MAX\n"_Stz);
 
-      StrLib::vSprintCat(szAsmBuffer, "  EO_DUMP\n"_Stz);
+      //StrLib::vSprintCat(szAsmBuffer, "  EO_DUMP\n"_Stz);
       StrLib::vSprintCat(szAsmBuffer, "  EO_DUP_STR\n"_Stz);
 
       StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
       StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLS %lld\n"_Stz, m_iDstColumn);
 
-      StrLib::vSprintCat(szAsmBuffer, "  EO_DUMP\n"_Stz);
+      //StrLib::vSprintCat(szAsmBuffer, "  EO_DUMP\n"_Stz);
       StrLib::vSprintCat(szAsmBuffer, "  %s\n"_Stz, aEO[eCode]);
       StrLib::vSprintCat(szAsmBuffer, "  EO_JMP_TRUE NEW_MAX\n"_Stz);
 
@@ -853,9 +853,9 @@ void ExprEval::vGenerateMin(Stz* szAsmBuffer, Stz* sAggInit)
       StrLib::vSprintCat(szAsmBuffer, "  EO_DUP\n"_Stz);
       StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
       StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_DUMP\n"_Stz);
+      //StrLib::vSprintCat(szAsmBuffer, "  EO_DUMP\n"_Stz);
       StrLib::vSprintCat(szAsmBuffer, "  %s\n"_Stz, aEO[eCode]);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_DUMP\n"_Stz);
+      //StrLib::vSprintCat(szAsmBuffer, "  EO_DUMP\n"_Stz);
       StrLib::vSprintCat(szAsmBuffer, "  EO_JMP_TRUE NEW_MIN\n"_Stz);
 
       StrLib::vSprintCat(szAsmBuffer, "  EO_POP\n"_Stz);

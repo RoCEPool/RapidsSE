@@ -2203,7 +2203,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_STRING: GetStr(iArg); // push string
         dLU1(EO_STRING,iArg);
         S_PushStr(iArg);
-        vRlu_DUMP(pLU,aiDstk);
+        //vRlu_DUMP(pLU,aiDstk);
         break;//+endCase
 
       case EO_TIME: ArgGet(iArg); // push time
@@ -2679,7 +2679,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_GT_VCHVCH: ArgNil(); // vch > vch
         // get topB string
-        vRlu_DUMP(pLU,aiDstk);
+        //vRlu_DUMP(pLU,aiDstk);
         iTopB = *(aiDstk--);
         azTopB = (char*)(aiDstk - (nWordRoundedStrBytes(iTopB)/8 - 1));
         aiDstk -= nWordRoundedStrBytes(nSize)/8;
@@ -2693,7 +2693,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         iRes  = iMathLib_Gt_VCHVCH(azTopA, azTopB);
         dLU3(EO_EQ_VCHVCH, iTopA, azTopA, azTopB);
         *(++aiDstk) = iRes;
-        vRlu_DUMP(pLU,aiDstk);
+        //vRlu_DUMP(pLU,aiDstk);
         break;//+endCase
 
       case EO_GT_UNKXYZ: ArgNil(); // unk > xyz
@@ -3537,7 +3537,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         
       case EO_DUMP: ArgNil(); // stack dump
         dLU0(EO_DUMP);
-        vRlu_DUMP(pLU,aiDstk);
+        //vRlu_DUMP(pLU,aiDstk);
         break;//+endCase
               
       case EO_ENTER: ArgNil(); //  diarise routine enter
