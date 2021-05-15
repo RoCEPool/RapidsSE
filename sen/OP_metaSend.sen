@@ -13,7 +13,6 @@
 
   Operand[].pipein  // pop the pMetaGet and put in the Operand register
   //Operand[] MetaGet.getTableName
-
   // print table name from the stack
   //.
 
@@ -24,9 +23,11 @@
   Operand[] MetaGet.getTableName op__table
   table[] MetaSend::getParts
 
-  op::pipeout
-  
+  Op::pipeout
+
   true
+
+  task::breakpoint //set breakpoint back into C++ code, where the task loop is
 ;
 
 /*----------------------------------------------------------------------------*/

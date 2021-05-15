@@ -49,19 +49,16 @@ void Step::vMetaRecvPutParts(void)
     Object *pObject = pParcel->pGetObject(i_Obj);
     if (pObject && (pObject->eGetClassNo() == CN_TABLE)) {
       pTable = (Table *) pObject;
-      vTrace("Table:%p reassemble from parcel, tablename:%s\n"_Stz,pTable, pTable->szTableNm()->azChar());
-      //pTable->iBuildParcel(pParcel);
+      //vTrace("Table:%p reassemble from parcel, tablename:%s\n"_Stz,pTable, pTable->szTableNm()->azChar());
       // call reassemble parts code
       pTable->iReassembleFromParcel(pParcel);
       break;
     }
   }
 
-  //pTable->iReassembleObj();
+  // Here we have a table came from another node
+  if (pTable) pTable->vDumpLocation();
 
-  // put results as a table
-  m_pDataStack->vPushPtr(pTable);
-  vTrace("Table:%p is in the stack\n"_Stz, pTable);
   EXIT();
 }
 

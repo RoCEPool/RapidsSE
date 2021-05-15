@@ -892,17 +892,18 @@ void AM::vDeleteOperand(Operand* pOperand)
       delete pMetaGet;
       break;
     }
-
-    //case CN_PARCEL: {
-    //  Parcel* pParcel = _pParcel(pOperand);
-    //  vTrace(">>>>vDeleteOperand delete pParcel, called by Step::vPipeinDelete as PipeIn[].delete\n"_Stz);
-    //  delete pParcel;
-    //  break;
-    //}
-
+/*
+    case CN_PARCEL: {
+      Parcel* pParcel = _pParcel(pOperand);
+      vTrace(">>>>vDeleteOperand delete pParcel, called by Step::vPipeinDelete as PipeIn[].delete\n"_Stz);
+      delete pParcel;
+      break;
+    }
+*/
     case CN_TABLE: {
       Table* pTable = _pTable(pOperand);
-      vTrace(">>>>vDeleteOperand delete pTable:%p, called by Step::vPipeinDelete as PipeIn[].delete\n"_Stz, pTable);
+      //vTrace(">>>>vDeleteOperand delete pTable:%p, called by Step::vPipeinDelete as PipeIn[].delete\n"_Stz, pTable);
+      vTrace(">>>>vDeleteOperand delete pTable:%s, called by Step::vPipeinDelete as PipeIn[].delete ?\n"_Stz, pTable->szTableNm()->azChar());
       //delete pTable; // Question for Ray: do we need to delete ?
       break;
     }

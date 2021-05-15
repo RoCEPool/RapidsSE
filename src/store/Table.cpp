@@ -108,8 +108,6 @@ Table::~Table(void) noexcept(false)
   
   // delete the TablePtn's
   for (i8 i_TablePtn = 0; i_TablePtn < AM::nPtnsPerTable(); i_TablePtn++) {
-    TablePtn* pTablePtn = m_pTablePtnVec->pGet(i_TablePtn);
-    // Warning: these pointers might not be valid when delete as the metadata
     delete m_pTablePtnVec->pGet(i_TablePtn);
   }
   m_pTablePtnVec->vClear();
@@ -613,7 +611,7 @@ void Table::vResetPointers(void)
   m_pIdxVec    = nullptr;
   m_pTablePtnVec = nullptr;
 
-  Operand::ListItem_t::vResetPointers();
+  //Operand::ListItem_t::vResetPointers();
 
   m_pParcel    = nullptr;
 }
@@ -836,8 +834,6 @@ i8 Table::iPrepareParcel(void)
 
   m_pParcel->vAddObject((Object *)this);
 
-  m_pParcel->vAddObject((Object *)&m_oLocation);
-
   if ( m_pStreamDef) {
     m_pParcel->vAddObject((Object *)m_pStreamDef);
   }
@@ -853,6 +849,26 @@ i8 Table::iPrepareParcel(void)
   //       this, &m_oLocation,m_pStreamDef,m_pShardDef,m_pBucketMap,m_pIdxVec, m_pTablePtnVec);
 
   return m_pParcel->nObjects();
+}
+
+/*----------------------------------------------------------------------------*/
+/* returns pParcel                                                            */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Parcel* Table::pParcel(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  return m_pParcel;
+}
+
+/*----------------------------------------------------------------------------*/
+/* prints location info                                                       */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Table::vDumpLocation(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  m_oLocation.vPrint();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -883,92 +899,9 @@ i8 Table::iBuildParcelObjs(Object* pObj)
   return m_pParcel->nObjects();
 }
 
-/*----------------------------------------------------------------------------*/
-/* returns number of object parts includes the main                           */
-/* Insert each object part and put in an array                                */
-/*----------------------------------------------------------------------------*/
-i8 Table::iBuildParcel(Parcel* pParcel)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-
-  i8 nObjects = pParcel->nObjects();
-
-  if (!m_pParcel) {
-    m_pParcel = new Parcel(nullptr,0,0,0,PX_NONE);
-    // Label the new parcel from the received parcel
-    m_pParcel->vLabel(pParcel->m_iPipelineJobId, pParcel->m_iDstNode, pParcel->m_tDstPtn, pParcel->m_eCrossTopo);
-    // Set the state that this is created as a parcel
-    m_pParcel->vSetOriginState(true);
-    vTrace("iBuildParcel: create new parcel:%p\n"_Stz, m_pParcel);
-  } else {
-    m_pParcel->vReset();
-  }
-
-  for (i8 i_Obj=0; i_Obj < nObjects; i_Obj++)
-    m_pParcel->vAddObject(pParcel->pGetObject(i_Obj));
-
-  // We are done with the received parcel, let's delete the received parcel
-  delete pParcel;
-
-  return m_pParcel->nObjects();
-}
 
 /*----------------------------------------------------------------------------*/
-/* reassemble object parts                                                    */
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-i8  Table::iReassembleObj(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-
-  if (!m_pParcel) return 0;
-  i8 nSize = m_pParcel->nObjects();
-
-  for (i8 i_Obj=0; i_Obj< nSize; i_Obj++) {
-    Object* pObject =  m_pParcel->pGetObject(i_Obj);
-    eCN eClass = pObject ? pObject->eGetClassNo() : CN_NONE;
-
-    switch (eClass) {
-      case CN_TABLE:
-        // do nothing for now
-        break;
-      case CN_LOCATION: {
-        Location *pLoc = (Location *) pObject;
-
-        m_oLocation = *pLoc;
-        break;
-      }
-      case CN_STREAMDEF:
-        m_pStreamDef = (StreamDef*) pObject;
-        //m_pStreamDef = (StreamDef*) ::operator new(gxaSizeHeap[eClass].m_nClassSize, pObject);
-        break;
-      case CN_SHARDDEF:
-        m_pShardDef = (ShardDef*) pObject;
-        //m_pShardDef = (ShardDef*) ::operator new(gxaSizeHeap[eClass].m_nClassSize, (ShardDef*)pObject);
-        break;
-      case CN_BUCKETMAP:
-        m_pBucketMap = (BucketMap*) pObject;
-        //m_pBucketMap = (BucketMap*)::operator new(gxaSizeHeap[eClass].m_nClassSize, pObject);
-        break;
-      case CN_IDXVEC:
-        m_pIdxVec = (IdxVec*) pObject;
-        //m_pIdxVec = (IdxVec*)::operator new(gxaSizeHeap[eClass].m_nClassSize, pObject);
-        break;
-      case CN_TABLEPTNVEC:
-        m_pTablePtnVec = (TablePtnVec*) pObject;
-        //m_pTablePtnVec = (TablePtnVec*)::operator new(gxaSizeHeap[eClass].m_nClassSize, pObject);
-        break;
-      default:
-        vTrace("iReassembleObj %ld Error\n"_Stz,eClass);
-    }
-  }
-  //vTrace("This new parcel contains table:%p m_oLocation:%p m_pStreamDef:%p m_pShardDef:%p m_pBucketMap:%p m_pIdxVec:%p m_pTablePtnVec:%p)\n"_Stz,
-  //       this, &m_oLocation,m_pStreamDef,m_pShardDef,m_pBucketMap,m_pIdxVec, m_pTablePtnVec);
-  return nSize;
-}
-
-/*----------------------------------------------------------------------------*/
-/* reassemble object parts                                                    */
+/* reassemble object parts from the received parcel                           */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 i8  Table::iReassembleFromParcel(Parcel* pParcel)
@@ -988,12 +921,6 @@ i8  Table::iReassembleFromParcel(Parcel* pParcel)
       case CN_TABLE:
         // do nothing for now
         break;
-      case CN_LOCATION: {
-        Location *pLoc = (Location *) pObject;
-
-        m_oLocation = *pLoc;
-        break;
-      }
       case CN_STREAMDEF:
         m_pStreamDef = (StreamDef*) pObject;
         //m_pStreamDef = (StreamDef*) ::operator new(gxaSizeHeap[eClass].m_nClassSize, pObject);
@@ -1023,7 +950,7 @@ i8  Table::iReassembleFromParcel(Parcel* pParcel)
 
   // We are done with the received parcel, let's delete the received parcel
   delete pParcel;
-
+  // Null the parcel pointer for this table
   m_pParcel = nullptr;
 
   return nSize;

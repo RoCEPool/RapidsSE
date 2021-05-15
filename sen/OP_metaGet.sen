@@ -17,11 +17,9 @@
   // create an instance of class MetaGet : public Operand
   // set the table name in MetaGet instance
   <tableNm> metaGet::getMetaData locals| pMetaGet |
-  //"created pMetaGet".
 
   // pipeout the MetaGet instance
   pMetaGet Op::pipeout
-  //"pipeout pMetaGet".
 
   true
   //stk

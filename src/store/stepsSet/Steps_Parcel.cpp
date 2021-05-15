@@ -60,7 +60,7 @@ void Step::vParcelLabel(void)
                   C_UNKNOWN,
                   pSrcOp->eCrossTopo());
 
-  m_pDataStack->vPushPtr(pParcel);
+  //m_pDataStack->vPushPtr(pParcel);
   EXIT();
 }
 

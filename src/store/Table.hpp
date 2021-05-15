@@ -88,7 +88,9 @@ namespace STORE
 
     i8   iPrepareParcel(void);
 
-    Parcel* pParcel(void) { return m_pParcel;}
+    Parcel* pParcel(void);
+    void vDumpLocation(void);
+
     i8   nParcelObjects(void);
     Object* pGetParcelObject(i8 iIdx);
 

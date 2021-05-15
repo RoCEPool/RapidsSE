@@ -270,6 +270,8 @@ void Parcel::vSendOut(Op* pSrcOp)
       RASSERT(0);
   }
 
+  //>>>>>>>>>>>  Need to ask Ray, after sent the Parcel, we get the operand which is the table and try to delete
+  //>>>>>>>>>>>  If we don't get the operand then we will delete the parcel
   
   // delete the operand
   AM::vDeleteOperand(pOperand);

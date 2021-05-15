@@ -15,10 +15,10 @@
 
   Operand[].pipein  // pop the pParcel and put in the Operand register
 
-  Operand[] MetaRecv::putParts
+  Operand[]\clear MetaRecv::putParts
 
   // The result should be a table
-  op::pipeout
+  //op::pipeout
 
   true
 ;
