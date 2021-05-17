@@ -407,6 +407,28 @@ bool Dic::bIsTenant(void)
 /*----------------------------------------------------------------------------*/
 /* list all words in this dic                                                 */
 /*----------------------------------------------------------------------------*/
+void Dic::vListContents(i8 i_Depth)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+  
+  m_okLock.vGrabRead();
+  
+  
+  for (Word* pWord = pFirstWord(); pWord; pWord = pWord->pNextWord()) {
+    
+    Object* pObject = pWord->pObject();
+    if (!pObject)
+      continue;
+    
+    AM::WORD::vListContents(pWord,i_Depth);
+  }
+  
+  m_okLock.vDropRead();
+}
+
+/*----------------------------------------------------------------------------*/
+/* list all words in this dic                                                 */
+/*----------------------------------------------------------------------------*/
 void Dic::vListWords(i8 i_Depth, bool bListContents)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);

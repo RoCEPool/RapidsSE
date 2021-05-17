@@ -43,6 +43,7 @@ enum ePF // prompt function
   /*    */ PF_FILERAND,
   /*    */ PF_FILESTATS,
   /*    */ PF_FLOATS,
+  /*    */ PF_FOLDERS,
   /*    */ PF_FUNS,
   
   /*    */ PF_GIVEMEM,
@@ -197,6 +198,7 @@ static Stz* aPF[]
   /*    */ "PF_FILERAND"_Stz,
   /*    */ "PF_FILESTATS"_Stz,
   /*    */ "PF_FLOATS"_Stz,
+  /*    */ "PF_FOLDERS"_Stz,
   /*    */ "PF_FUNS"_Stz,
   
   /*    */ "PF_GIVEMEM"_Stz,
