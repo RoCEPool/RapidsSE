@@ -1,4 +1,5 @@
 aggregates.test
+aggregatesGby.test
 count.test
 date.test
 decimal.test
