@@ -112,9 +112,9 @@ rows:
 (10)
 
 //------------------------------BOOLEAN TESTS------------------------------------
-select COUNT(bol_col3) from datums;
+select COUNT(bol_col3) , COUNT(vch_col14), COUNT(vch_col15) from datums;
 rows:
-(11)
+(11, 10, 11)
 
 //------------------------------------------------------------------------------
 // drop the table

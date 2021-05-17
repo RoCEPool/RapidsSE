@@ -141,7 +141,7 @@ eEC ExprEval::eEvaluate(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Stz* 
 /*----------------------------------------------------------------------------*/
 /* add EO code for arithmetic operators                                       */
 /*----------------------------------------------------------------------------*/
-void ExprEval::vAddArithmetic(Stz* szAsmBuffer, Token* pTkn, Column* pColumn) {
+void ExprEval::vAddArithmetic(Stz* szAsmBuffer, Token* pTkn) {
 
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
 
@@ -190,7 +190,7 @@ void ExprEval::vAddArithmetic(Stz* szAsmBuffer, Token* pTkn, Column* pColumn) {
 /*----------------------------------------------------------------------------*/
 /* add EO code for dates                                                      */
 /*----------------------------------------------------------------------------*/
-void ExprEval::vAddDate(Stz* szAsmBuffer, Token* pTkn) {
+void ExprEval::vPushDate(Stz* szAsmBuffer, Token* pTkn) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
@@ -201,7 +201,7 @@ void ExprEval::vAddDate(Stz* szAsmBuffer, Token* pTkn) {
 /*----------------------------------------------------------------------------*/
 /* add EO code for decimals                                                   */
 /*----------------------------------------------------------------------------*/
-void ExprEval::vAddDecimal(Stz* szAsmBuffer, Token* pTkn)
+void ExprEval::vPushDecimal(Stz* szAsmBuffer, Token* pTkn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
@@ -216,9 +216,9 @@ void ExprEval::vAddDecimal(Stz* szAsmBuffer, Token* pTkn)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add EO code for gby idx col                                                */
+/* add EO code for creating the gby idx col                                   */
 /*----------------------------------------------------------------------------*/
-void ExprEval::vAddGbyIdxCol(Stz* szAsmBuffer, eCT eColumnType, i8 i_Local) {
+void ExprEval::vCreateGbyIdxCol(Stz* szAsmBuffer, eCT eColumnType, i8 i_Local) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
@@ -261,7 +261,7 @@ void ExprEval::vAddLogical(Stz* szAsmBuffer, Token* pTkn)
 /*----------------------------------------------------------------------------*/
 /* add EO code for numerics                                                   */
 /*----------------------------------------------------------------------------*/
-void ExprEval::vAddInteger(Stz* szAsmBuffer, Token* pTkn)
+void ExprEval::vPushInteger(Stz* szAsmBuffer, Token* pTkn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
@@ -270,9 +270,9 @@ void ExprEval::vAddInteger(Stz* szAsmBuffer, Token* pTkn)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add EO code for push column                                                */
+/* add EO code for creating the pay load key                                  */
 /*----------------------------------------------------------------------------*/
-void ExprEval::vAddPayLoadKey(Stz* szAsmBuffer, eCT eColumnType, i8 i_Local) {
+void ExprEval::vCreatePayLoadKey(Stz* szAsmBuffer, eCT eColumnType, i8 i_Local) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
@@ -306,48 +306,42 @@ void ExprEval::vAddPayLoadKey(Stz* szAsmBuffer, eCT eColumnType, i8 i_Local) {
 /*----------------------------------------------------------------------------*/
 /* add EO code for pop column                                                 */
 /*----------------------------------------------------------------------------*/
-void ExprEval::vAddPopCol(Stz* szAsmBuffer, eCT eColumnType)
+void ExprEval::vPopDstCol(Stz* szAsmBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
 
+  eDM eDatum = (eDM)m_xTypeStack.iPop();
   // switch on column type
-  switch (eColumnType) {
-    case CT_BOOLEAN:
-    case CT_INTEGER:
-    case CT_DECIMAL:
-    case CT_DATE:
-    case CT_FLOAT:
-    case CT_TIME:
-    case CT_TIMESTAMP:
-      StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_POPCOLI %lld\n"_Stz, m_iDstColumn);
-      m_xTypeStack.iPop();
+  switch (eDatum) {
+    case DM_BOL:
+    case DM_BCD:
+    case DM_DTE:
+    case DM_FLT:
+    case DM_INT:
+    case DM_TME:
+    case DM_TSP:
+    case DM_UNK:
+      StrLib::vSprintCat(szAsmBuffer,"  EO_PUSH_DEVROW_DST\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer,"  EO_DEVROW_POPCOLI %lld\n"_Stz, m_iDstColumn);
       break;
 
-    case CT_CHAR:
-    case CT_VARCHAR:
-      StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_POPCOLS %lld\n"_Stz, m_iDstColumn);
-      m_xTypeStack.iPop();
+    case DM_VCH:
+      StrLib::vSprintCat(szAsmBuffer,"  EO_PUSH_DEVROW_DST\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer,"  EO_DEVROW_POPCOLS %lld\n"_Stz, m_iDstColumn);
       break;
 
-    case CT_UNKNOWN:
-      StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_POPCOLI %lld\n"_Stz, m_iDstColumn);
-      m_xTypeStack.iPop();
-      break;
-
-    case CT_INTERVAL_DT:
-    case CT_INTERVAL_YM:
+    case DM_IVL:
+    case DM_IVY:
     default:
-      RASSERT(0);
+      NEVER_REACH;
   }
+
 }
 
 /*----------------------------------------------------------------------------*/
 /* add EO code for push destination column                                    */
 /*----------------------------------------------------------------------------*/
-void ExprEval::vAddPushDstCol(Stz* szAsmBuffer) {
+void ExprEval::vPushDstCol(Stz* szAsmBuffer) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
@@ -404,11 +398,9 @@ void ExprEval::vAddPushDstCol(Stz* szAsmBuffer) {
 /*----------------------------------------------------------------------------*/
 /* add EO code for push column                                                 */
 /*----------------------------------------------------------------------------*/
-void ExprEval::vAddPushCol(Stz* szAsmBuffer, eCT eColumnType, i8 i_Local) {
+void ExprEval:: vPushLclCol(Stz* szAsmBuffer, eCT eColumnType, i8 i_Local) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
-
-
 
   // switch on column type
   switch (eColumnType) {
@@ -469,7 +461,7 @@ void ExprEval::vAddRelational(Stz* szAsmBuffer, Token* pTkn)
 
   // pop two param types
   eDM eParamType2 = (eDM) m_xTypeStack.iPop();
-  eDM  eParamType1 = (eDM) m_xTypeStack.iPop();
+  eDM eParamType1 = (eDM) m_xTypeStack.iPop();
 
   // get result type
   eDM eResultType = eMathOp_CmpResult[eParamType1][eParamType2];
@@ -514,48 +506,69 @@ void ExprEval::vGenerateCount(Stz* szAsmBuffer, Stz* sAggInit)
   // generate code for agg initialization
   if (m_bHasGby) {
 
-    // generate code
-    StrLib::vSprintCat(sAggInit, "  EO_ISNULL\n"_Stz);
-    StrLib::vSprintCat(sAggInit, "  EO_JMP_TRUE COUNT_NULL\n"_Stz);
+    // generate initialization code
+    if (eParamType == DM_VCH)
+      StrLib::vSprintCat(sAggInit, "  EO_ISNULL_STR\n"_Stz);
+    else
+      StrLib::vSprintCat(sAggInit, "  EO_ISNULL\n"_Stz);
+    StrLib::vSprintCat(sAggInit, "  EO_JMP_FALSE COUNT_CONTINUE\n"_Stz);
+
+    StrLib::vSprintCat(sAggInit, "  EO_POP\n"_Stz);
+    StrLib::vSprintCat(sAggInit, "  EO_INTEGER 0\n"_Stz);
+    StrLib::vSprintCat(sAggInit, "  EO_PAY_STORE_COLI %lld\n"_Stz, m_iDstColumn);
+    StrLib::vSprintCat(sAggInit, "  EO_JMP COUNT_DONE\n"_Stz);
+
+    StrLib::vSprintCat(sAggInit, "  Label COUNT_CONTINUE\n"_Stz);
+    StrLib::vSprintCat(sAggInit, "  DeleteLabel COUNT_CONTINUE\n"_Stz);
+
     StrLib::vSprintCat(sAggInit, "  EO_PAY_FETCH_COLI %lld\n"_Stz, m_iDstColumn);
     StrLib::vSprintCat(sAggInit, "  EO_INTEGER 1\n"_Stz);
     StrLib::vSprintCat(sAggInit, "  EO_PAY_STORE_COLI %lld\n"_Stz, m_iDstColumn);
-    StrLib::vSprintCat(sAggInit, "  EO_JMP COUNT_DONE\n"_Stz);
-    StrLib::vSprintCat(sAggInit, "  Label COUNT_NULL\n"_Stz);
-    StrLib::vSprintCat(sAggInit, "  DeleteLabel COUNT_NULL\n"_Stz);
-    StrLib::vSprintCat(sAggInit, "  EO_INTEGER 0\n"_Stz);
-    StrLib::vSprintCat(sAggInit, "  EO_PAY_STORE_COLI %lld\n"_Stz, m_iDstColumn);
+
     StrLib::vSprintCat(sAggInit, "  Label COUNT_DONE\n"_Stz);
     StrLib::vSprintCat(sAggInit, "  DeleteLabel COUNT_DONE\n"_Stz);
 
-    // generate code
-    StrLib::vSprintCat(szAsmBuffer, "  EO_ISNULL\n"_Stz);
-    StrLib::vSprintCat(szAsmBuffer, "  EO_JMP_TRUE COUNT_DONE\n"_Stz);
+    // generate aggregation code
+    if (eParamType == DM_VCH)
+      StrLib::vSprintCat(szAsmBuffer, "  EO_ISNULL_STR\n"_Stz);
+    else
+      StrLib::vSprintCat(szAsmBuffer, "  EO_ISNULL\n"_Stz);
+    StrLib::vSprintCat(szAsmBuffer, "  EO_JMP_FALSE COUNT_CONTINUE\n"_Stz);
+
+    StrLib::vSprintCat(szAsmBuffer, "  EO_POP\n"_Stz);
+    StrLib::vSprintCat(szAsmBuffer, "  EO_JMP COUNT_DONE\n"_Stz);
+
+    StrLib::vSprintCat(szAsmBuffer, "  Label COUNT_CONTINUE\n"_Stz);
+    StrLib::vSprintCat(szAsmBuffer, "  DeleteLabel COUNT_CONTINUE\n"_Stz);
+
     StrLib::vSprintCat(szAsmBuffer, "  EO_PAY_FETCH_COLI %lld\n"_Stz, m_iDstColumn);
     StrLib::vSprintCat(szAsmBuffer, "  EO_INTEGER 1\n"_Stz);
     StrLib::vSprintCat(szAsmBuffer, "  EO_ADD_INTINT\n"_Stz);
     StrLib::vSprintCat(szAsmBuffer, "  EO_PAY_STORE_COLI %lld\n"_Stz, m_iDstColumn);
+
     StrLib::vSprintCat(szAsmBuffer, "  Label COUNT_DONE\n"_Stz);
     StrLib::vSprintCat(szAsmBuffer, "  DeleteLabel COUNT_DONE\n"_Stz);
 
   }
   else {
+
+    // generate initialization code
     StrLib::vSprintCat(sAggInit, "  EO_INTEGER %lld\n"_Stz, 0);
     StrLib::vSprintCat(sAggInit, "  EO_PUSH_DEVROW_DST\n"_Stz);
     StrLib::vSprintCat(sAggInit, "  EO_DEVROW_POPCOLI %lld\n"_Stz, m_iDstColumn);
 
-    // generate code
+    // generate aggregation code
     if (eParamType == DM_VCH)
       StrLib::vSprintCat(szAsmBuffer, "  EO_ISNULL_STR\n"_Stz);
     else
       StrLib::vSprintCat(szAsmBuffer, "  EO_ISNULL\n"_Stz);
-    StrLib::vSprintCat(szAsmBuffer, "  EO_JMP_FALSE CONTINUE_COUNT\n"_Stz);
+    StrLib::vSprintCat(szAsmBuffer, "  EO_JMP_FALSE COUNT_CONTINUE\n"_Stz);
 
     StrLib::vSprintCat(szAsmBuffer, "  EO_POP\n"_Stz);
     StrLib::vSprintCat(szAsmBuffer, "  EO_JMP COUNT_DONE\n"_Stz);
 
-    StrLib::vSprintCat(szAsmBuffer, "  Label CONTINUE_COUNT\n"_Stz);
-    StrLib::vSprintCat(szAsmBuffer, "  DeleteLabel CONTINUE_COUNT\n"_Stz);
+    StrLib::vSprintCat(szAsmBuffer, "  Label COUNT_CONTINUE\n"_Stz);
+    StrLib::vSprintCat(szAsmBuffer, "  DeleteLabel COUNT_CONTINUE\n"_Stz);
 
     StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
     StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
@@ -563,6 +576,7 @@ void ExprEval::vGenerateCount(Stz* szAsmBuffer, Stz* sAggInit)
     StrLib::vSprintCat(szAsmBuffer, "  EO_ADD_INTINT\n"_Stz);
     StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
     StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_POPCOLI %lld\n"_Stz, m_iDstColumn);
+
     StrLib::vSprintCat(szAsmBuffer, "  Label COUNT_DONE\n"_Stz);
     StrLib::vSprintCat(szAsmBuffer, "  DeleteLabel COUNT_DONE\n"_Stz);
   }
@@ -927,7 +941,7 @@ void ExprEval::vGenerateSum(Stz* sAsmBuffer, Stz* sAggInit)
 /*----------------------------------------------------------------------------*/
 /* add EO code for strings                                                    */
 /*----------------------------------------------------------------------------*/
-void ExprEval::vAddString(Stz* szAsmBuffer, Token* pTkn) {
+void ExprEval:: vPushString(Stz* szAsmBuffer, Token* pTkn) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
@@ -940,7 +954,7 @@ void ExprEval::vAddString(Stz* szAsmBuffer, Token* pTkn) {
 /*----------------------------------------------------------------------------*/
 /* add EO code for time                                                       */
 /*----------------------------------------------------------------------------*/
-void ExprEval::vAddTime(Stz* szAsmBuffer, Token* pTkn) {
+void ExprEval:: vPushTime(Stz* szAsmBuffer, Token* pTkn) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
@@ -951,7 +965,7 @@ void ExprEval::vAddTime(Stz* szAsmBuffer, Token* pTkn) {
 /*----------------------------------------------------------------------------*/
 /* add EO code for timestamp                                                  */
 /*----------------------------------------------------------------------------*/
-void ExprEval::vAddTimestamp(Stz* szAsmBuffer, Token* pTkn) {
+void ExprEval:: vPushTimestamp(Stz* szAsmBuffer, Token* pTkn) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
@@ -962,7 +976,7 @@ void ExprEval::vAddTimestamp(Stz* szAsmBuffer, Token* pTkn) {
 /*----------------------------------------------------------------------------*/
 /* add EO code for unknown                                                    */
 /*----------------------------------------------------------------------------*/
-void ExprEval::vAddUnknown(Stz* szAsmBuffer, Token* pTkn)
+void ExprEval:: vPushUnknown(Stz* szAsmBuffer, Token* pTkn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
@@ -1074,7 +1088,9 @@ eEC ExprEval::eExprEval(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Token
       RASSERT(bProject);
 
       // discovered a comma, generate code for the column 
-      vGenerateColumnCode(szAsmBuffer, pStreamDefOut, pColumnExpr);
+      //vGenerateColumnCode(szAsmBuffer, pStreamDefOut, pColumnExpr);
+      vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
+      vPopDstCol(szAsmBuffer);
 
       m_iDstColumn++;
       sColumnNm.vSprint("col%lld"_Stz, m_iDstColumn);
@@ -1121,7 +1137,7 @@ eEC ExprEval::eExprEval(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Token
 
     // arithmetic operator ?
     if (pTkn->bIsArithmetic()) {
-      vAddArithmetic(szAsmBuffer, pTkn, pColumnExpr);
+      vAddArithmetic(szAsmBuffer, pTkn);
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -1142,14 +1158,14 @@ eEC ExprEval::eExprEval(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Token
 
     // is it a numeric ?
     if (pTkn->bIsNumeric()) {
-      vAddInteger(szAsmBuffer, pTkn);
+      vPushInteger(szAsmBuffer, pTkn);
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     // is it a decimal no ?
     if (pTkn->bIsDecimalNo()) {
-      vAddDecimal(szAsmBuffer, pTkn);
+      vPushDecimal(szAsmBuffer, pTkn);
 
       pTkn = pTknVec->pNextToken();
       continue;
@@ -1157,7 +1173,7 @@ eEC ExprEval::eExprEval(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Token
 
     // is it a string ?
     if (pTkn->bIsString()) {
-      vAddString(szAsmBuffer, pTkn);
+       vPushString(szAsmBuffer, pTkn);
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -1177,14 +1193,14 @@ eEC ExprEval::eExprEval(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Token
 
     // is it a negate op ?
     if (pTkn->bSame("negate"_Stz) ) {
-      vAddArithmetic(szAsmBuffer, pTkn, pColumnExpr);
+      vAddArithmetic(szAsmBuffer, pTkn);
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     // it is a null value ?
     if (pTkn->bSame("null"_Stz) ) {
-      vAddUnknown(szAsmBuffer, pTkn);
+       vPushUnknown(szAsmBuffer, pTkn);
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -1193,7 +1209,7 @@ eEC ExprEval::eExprEval(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Token
     if (pTkn->bSame("DATE"_Stz) ) {
       pTkn = pTknVec->pNextToken();
       if (pTkn->bIsString()) {
-        vAddDate(szAsmBuffer, pTkn);
+        vPushDate(szAsmBuffer, pTkn);
         pTkn = pTknVec->pNextToken();
         continue;
       }
@@ -1205,7 +1221,7 @@ eEC ExprEval::eExprEval(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Token
     if (pTkn->bSame("TIME"_Stz) ) {
       pTkn = pTknVec->pNextToken();
       if (pTkn->bIsString()) {
-        vAddTime(szAsmBuffer, pTkn);
+         vPushTime(szAsmBuffer, pTkn);
         pTkn = pTknVec->pNextToken();
         continue;
       }
@@ -1217,7 +1233,7 @@ eEC ExprEval::eExprEval(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Token
     if (pTkn->bSame("TIMESTAMP"_Stz) ) {
       pTkn = pTknVec->pNextToken();
       if (pTkn->bIsString()) {
-        vAddTimestamp(szAsmBuffer, pTkn);
+         vPushTimestamp(szAsmBuffer, pTkn);
         pTkn = pTknVec->pNextToken();
         continue;
       }
@@ -1236,14 +1252,17 @@ eEC ExprEval::eExprEval(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Token
     i8 i_Local = iOrdinalToLocal(i_ColumnOrdinal);
     Column* pColumn = pStreamDefIn->pGetColumn(i_ColumnOrdinal);
 
-    vAddPushCol(szAsmBuffer, pColumn->eColumnType(), i_Local);
+     vPushLclCol(szAsmBuffer, pColumn->eColumnType(), i_Local);
 
     pTkn = pTknVec->pNextToken();
   }
 
   // add the last column to the streamDefOut
-  if ( bProject )
-    vGenerateColumnCode(szAsmBuffer, pStreamDefOut, pColumnExpr);
+  if ( bProject ) {
+    //vGenerateColumnCode(szAsmBuffer, pStreamDefOut, pColumnExpr);
+    vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
+    vPopDstCol(szAsmBuffer);
+  }
 
   L_RETURN:
     //RASSERT(m_xTypeStack.nItems() == 0);
@@ -1269,6 +1288,7 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
   Column *pColumnExpr =  new Column;
 
   Stz* szAsmBuffer;
+  //m_bHasAgg = false;
 
   // we should have a  pStreamDefOut
   RASSERT(pStreamDefOut);
@@ -1293,12 +1313,12 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
     if (pTkn->bSame(","_Stz)) {
 
       // discovered a comma, generate code for the column
-      vGenerateColumnCode(szAsmBuffer, pStreamDefOut, pColumnExpr);
+      //vGenerateColumnCode(szAsmBuffer, pStreamDefOut, pColumnExpr);
+      vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
+      vPopDstCol(szAsmBuffer);
 
-      if ( ! m_bHasAgg )
-        vAddPushDstCol(szAsmBuffer);
+
       m_bHasAgg = false;
-
       szAsmBuffer = m_sProjectAsm;
 
       m_iDstColumn++;
@@ -1346,7 +1366,7 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
 
     // arithmetic operator ?
     if (pTkn->bIsArithmetic()) {
-      vAddArithmetic(szAsmBuffer, pTkn, pColumnExpr);
+      vAddArithmetic(szAsmBuffer, pTkn);
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -1367,14 +1387,14 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
 
     // is it a numeric ?
     if (pTkn->bIsNumeric()) {
-      vAddInteger(szAsmBuffer, pTkn);
+      vPushInteger(szAsmBuffer, pTkn);
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     // is it a decimal no ?
     if (pTkn->bIsDecimalNo()) {
-      vAddDecimal(szAsmBuffer, pTkn);
+      vPushDecimal(szAsmBuffer, pTkn);
 
       pTkn = pTknVec->pNextToken();
       continue;
@@ -1382,7 +1402,7 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
 
     // is it a string ?
     if (pTkn->bIsString()) {
-      vAddString(szAsmBuffer, pTkn);
+       vPushString(szAsmBuffer, pTkn);
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -1402,14 +1422,14 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
 
     // is it a negate op ?
     if (pTkn->bSame("negate"_Stz) ) {
-      vAddArithmetic(szAsmBuffer, pTkn, pColumnExpr);
+      vAddArithmetic(szAsmBuffer, pTkn);
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     // it is a null value ?
     if (pTkn->bSame("null"_Stz) ) {
-      vAddUnknown(szAsmBuffer, pTkn);
+       vPushUnknown(szAsmBuffer, pTkn);
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -1418,7 +1438,7 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
     if (pTkn->bSame("DATE"_Stz) ) {
       pTkn = pTknVec->pNextToken();
       if (pTkn->bIsString()) {
-        vAddDate(szAsmBuffer, pTkn);
+        vPushDate(szAsmBuffer, pTkn);
         pTkn = pTknVec->pNextToken();
         continue;
       }
@@ -1430,7 +1450,7 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
     if (pTkn->bSame("TIME"_Stz) ) {
       pTkn = pTknVec->pNextToken();
       if (pTkn->bIsString()) {
-        vAddTime(szAsmBuffer, pTkn);
+         vPushTime(szAsmBuffer, pTkn);
         pTkn = pTknVec->pNextToken();
         continue;
       }
@@ -1442,7 +1462,7 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
     if (pTkn->bSame("TIMESTAMP"_Stz) ) {
       pTkn = pTknVec->pNextToken();
       if (pTkn->bIsString()) {
-        vAddTimestamp(szAsmBuffer, pTkn);
+         vPushTimestamp(szAsmBuffer, pTkn);
         pTkn = pTknVec->pNextToken();
         continue;
       }
@@ -1463,14 +1483,11 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
       eAggType = AG_AVG;
       ASSERT(m_bHasAgg);
 
-      eError = eGenerateAggregateCode(szAsmBuffer, pStreamDefOut, pColumnExpr, eAggType);
-      if (eError == EC_INVALID_COMMAND) {
-        goto L_RETURN;
-      }
+      vGenerateAggregateCode(eAggType, szAsmBuffer, m_sAggInitAsm);
       eAggType = AG_NONE;
       szAsmBuffer = m_sProjectAsm;
 
-      vAddPushDstCol(szAsmBuffer);
+      vPushDstCol(szAsmBuffer);
 
       pTkn = pTknVec->pNextToken();
       continue;
@@ -1481,14 +1498,11 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
       eAggType = AG_CNT;
       ASSERT(m_bHasAgg);
 
-      eError = eGenerateAggregateCode(szAsmBuffer, pStreamDefOut, pColumnExpr, eAggType);
-      if (eError == EC_INVALID_COMMAND) {
-        goto L_RETURN;
-      }
+      vGenerateAggregateCode(eAggType, szAsmBuffer, m_sAggInitAsm);
       eAggType = AG_NONE;
       szAsmBuffer = m_sProjectAsm;
 
-      vAddPushDstCol(szAsmBuffer);
+      vPushDstCol(szAsmBuffer);
 
       pTkn = pTknVec->pNextToken();
       continue;
@@ -1499,14 +1513,11 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
       eAggType = AG_ALL;
       ASSERT(m_bHasAgg);
 
-      eError = eGenerateAggregateCode(szAsmBuffer, pStreamDefOut, pColumnExpr, eAggType);
-      if (eError == EC_INVALID_COMMAND) {
-        goto L_RETURN;
-      }
+      vGenerateAggregateCode(eAggType, szAsmBuffer, m_sAggInitAsm);
       eAggType = AG_NONE;
       szAsmBuffer = m_sProjectAsm;
 
-      vAddPushDstCol(szAsmBuffer);
+      vPushDstCol(szAsmBuffer);
 
       pTkn = pTknVec->pNextToken();
       continue;
@@ -1517,14 +1528,11 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
       eAggType = AG_MIN;
       ASSERT(m_bHasAgg);
 
-      eError = eGenerateAggregateCode(szAsmBuffer, pStreamDefOut, pColumnExpr, eAggType);
-      if (eError == EC_INVALID_COMMAND) {
-        goto L_RETURN;
-      }
+      vGenerateAggregateCode(eAggType, szAsmBuffer, m_sAggInitAsm);
       eAggType = AG_NONE;
       szAsmBuffer = m_sProjectAsm;
 
-      vAddPushDstCol(szAsmBuffer);
+      vPushDstCol(szAsmBuffer);
 
       pTkn = pTknVec->pNextToken();
       continue;
@@ -1535,14 +1543,11 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
       eAggType = AG_MAX;
       ASSERT(m_bHasAgg);
 
-      eError = eGenerateAggregateCode(szAsmBuffer, pStreamDefOut, pColumnExpr, eAggType);
-      if (eError == EC_INVALID_COMMAND) {
-        goto L_RETURN;
-      }
+      vGenerateAggregateCode(eAggType, szAsmBuffer, m_sAggInitAsm);
       eAggType = AG_NONE;
       szAsmBuffer = m_sProjectAsm;
 
-      vAddPushDstCol(szAsmBuffer);
+      vPushDstCol(szAsmBuffer);
 
       pTkn = pTknVec->pNextToken();
       continue;
@@ -1553,14 +1558,11 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
       eAggType = AG_SUM;
       ASSERT(m_bHasAgg);
 
-      eError = eGenerateAggregateCode(szAsmBuffer, pStreamDefOut, pColumnExpr, eAggType);
-      if (eError == EC_INVALID_COMMAND) {
-        goto L_RETURN;
-      }
+      vGenerateAggregateCode(eAggType, szAsmBuffer, m_sAggInitAsm);
       eAggType = AG_NONE;
       szAsmBuffer = m_sProjectAsm;
 
-      vAddPushDstCol(szAsmBuffer);
+      vPushDstCol(szAsmBuffer);
 
       pTkn = pTknVec->pNextToken();
       continue;
@@ -1577,13 +1579,15 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
     i8 i_Local = iOrdinalToLocal(i_ColumnOrdinal);
     Column* pColumn = pStreamDefIn->pGetColumn(i_ColumnOrdinal);
 
-    vAddPushCol(szAsmBuffer, pColumn->eColumnType(), i_Local);
+     vPushLclCol(szAsmBuffer, pColumn->eColumnType(), i_Local);
 
     pTkn = pTknVec->pNextToken();
   }
 
   // add the last column to the streamDefOut
-  vGenerateColumnCode(szAsmBuffer, pStreamDefOut, pColumnExpr);
+  //vGenerateColumnCode(szAsmBuffer, pStreamDefOut, pColumnExpr);
+  vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
+  vPopDstCol(szAsmBuffer);
 
   L_RETURN:
   //RASSERT(m_xTypeStack.nItems() == 0);
@@ -1632,7 +1636,7 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
 
   while ( pTkn ) {
 
-    vTrace("TKN: %s\n"_Stz, pTkn->azChars());
+    //vTrace("TKN: %s\n"_Stz, pTkn->azChars());
 
     if (pTkn->bSame(","_Stz)) {
 
@@ -1645,18 +1649,11 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
       vGenerateColumnCodeGby(pStreamDefOut, pColumnExpr);
       eAggType = AG_NONE;
       m_bHasAgg = false;
-
-      if (eError == EC_INVALID_COMMAND) {
-        goto L_RETURN;
-      }
-
-      vAddToBufferCol(m_sPayLoadToBufferAsm, pColumnExpr->eColumnType());
+      szAsmBuffer = m_sPayLoadToBufferAsm;
 
       m_iDstColumn++;
       sColumnNm.vSprint("col%lld"_Stz, m_iDstColumn);
       pColumnExpr->vColumnNm(sColumnNm);
-
-      //StrLib::vSprintCat(m_sPayLoadToBufferAsm, "  EO_PAY_FETCH_COLI %lld\n"_Stz, m_iDstColumn);
 
       pTkn = pTknVec->pNextToken();
       continue;
@@ -1699,7 +1696,9 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
 
     // arithmetic operator ?
     if (pTkn->bIsArithmetic()) {
-        vAddArithmetic(szAsmBuffer, pTkn, pColumnExpr);
+      vAddArithmetic(szAsmBuffer, pTkn);
+      if (m_bHasAgg)
+        vAddArithmetic(m_sPayLoadStoreAsm, pTkn);
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -1707,6 +1706,8 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
     // logical operator ?
     if (pTkn->bIsLogical() || pTkn->bSame("isNull"_Stz)) {
       vAddLogical(szAsmBuffer, pTkn);
+      if (m_bHasAgg)
+        vAddLogical(m_sPayLoadStoreAsm, pTkn);
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -1714,27 +1715,35 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
     // relational operator ?
     if (pTkn->bIsRelational()) {
       vAddRelational(szAsmBuffer, pTkn);
+      if (m_bHasAgg)
+        vAddRelational(m_sPayLoadStoreAsm, pTkn);
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     // is it a numeric ?
     if (pTkn->bIsNumeric()) {
-        vAddInteger(szAsmBuffer, pTkn);
+      vPushInteger(szAsmBuffer, pTkn);
+      if (m_bHasAgg)
+        vPushInteger(m_sPayLoadStoreAsm, pTkn);
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     // is it a decimal no ?
     if (pTkn->bIsDecimalNo()) {
-      vAddDecimal(szAsmBuffer, pTkn);
+      vPushDecimal(szAsmBuffer, pTkn);
+      if (m_bHasAgg)
+        vPushDecimal(m_sPayLoadStoreAsm, pTkn);
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     // is it a string ?
     if (pTkn->bIsString()) {
-      vAddString(szAsmBuffer, pTkn);
+       vPushString(szAsmBuffer, pTkn);
+      if (m_bHasAgg)
+         vPushString(m_sPayLoadStoreAsm, pTkn);
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -1754,14 +1763,18 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
 
     // is it a negate op ?
     if (pTkn->bSame("negate"_Stz) ) {
-      vAddArithmetic(szAsmBuffer, pTkn, pColumnExpr);
+      vAddArithmetic(szAsmBuffer, pTkn);
+      if (m_bHasAgg)
+        vAddArithmetic(m_sPayLoadStoreAsm, pTkn);
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     // it is a null value ?
     if (pTkn->bSame("null"_Stz) ) {
-      vAddUnknown(szAsmBuffer, pTkn);
+       vPushUnknown(szAsmBuffer, pTkn);
+      if (m_bHasAgg)
+         vPushUnknown(m_sPayLoadStoreAsm, pTkn);
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -1770,7 +1783,9 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
     if (pTkn->bSame("DATE"_Stz) ) {
       pTkn = pTknVec->pNextToken();
       if (pTkn->bIsString()) {
-        vAddDate(szAsmBuffer, pTkn);
+        vPushDate(szAsmBuffer, pTkn);
+        if (m_bHasAgg)
+          vPushDate(m_sPayLoadStoreAsm, pTkn);
         pTkn = pTknVec->pNextToken();
         continue;
       }
@@ -1782,7 +1797,9 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
     if (pTkn->bSame("TIME"_Stz) ) {
       pTkn = pTknVec->pNextToken();
       if (pTkn->bIsString()) {
-        vAddTime(szAsmBuffer, pTkn);
+         vPushTime(szAsmBuffer, pTkn);
+        if (m_bHasAgg)
+           vPushTime(m_sPayLoadStoreAsm, pTkn);
         pTkn = pTknVec->pNextToken();
         continue;
       }
@@ -1794,7 +1811,9 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
     if (pTkn->bSame("TIMESTAMP"_Stz) ) {
       pTkn = pTknVec->pNextToken();
       if (pTkn->bIsString()) {
-        vAddTimestamp(szAsmBuffer, pTkn);
+         vPushTimestamp(szAsmBuffer, pTkn);
+        if (m_bHasAgg)
+           vPushTimestamp(m_sPayLoadStoreAsm, pTkn);
         pTkn = pTknVec->pNextToken();
         continue;
       }
@@ -1805,6 +1824,7 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
     if (pTkn->bSame(")"_Stz) ) {
 
       m_bHasAgg = true;
+      szAsmBuffer = m_sPayLoadAggAsm;
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -1814,11 +1834,9 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
       eAggType = AG_AVG;
       ASSERT(m_bHasAgg);
 
-      eError = eGenerateGroupbyCode(pStreamDefOut, pColumnExpr, eAggType);
-      if (eError == EC_INVALID_COMMAND) {
-        goto L_RETURN;
-      }
+      vGenerateAggregateCode(eAggType, m_sPayLoadAggAsm, m_sPayLoadStoreAsm);
       eAggType = AG_NONE;
+      szAsmBuffer = m_sPayLoadToBufferAsm;
 
       pTkn = pTknVec->pNextToken();
       continue;
@@ -1829,11 +1847,9 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
       eAggType = AG_CNT;
       ASSERT(m_bHasAgg);
 
-      eError = eGenerateGroupbyCode(pStreamDefOut, pColumnExpr, eAggType);
-      if (eError == EC_INVALID_COMMAND) {
-        goto L_RETURN;
-      }
+      vGenerateAggregateCode(eAggType, m_sPayLoadAggAsm, m_sPayLoadStoreAsm);
       eAggType = AG_NONE;
+      szAsmBuffer = m_sPayLoadToBufferAsm;
 
       pTkn = pTknVec->pNextToken();
       continue;
@@ -1844,11 +1860,9 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
       eAggType = AG_ALL;
       ASSERT(m_bHasAgg);
 
-      eError = eGenerateGroupbyCode(pStreamDefOut, pColumnExpr, eAggType);
-      if (eError == EC_INVALID_COMMAND) {
-        goto L_RETURN;
-      }
+      vGenerateAggregateCode(eAggType, m_sPayLoadAggAsm, m_sPayLoadStoreAsm);
       eAggType = AG_NONE;
+      szAsmBuffer = m_sPayLoadToBufferAsm;
 
       pTkn = pTknVec->pNextToken();
       continue;
@@ -1859,12 +1873,9 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
       eAggType = AG_MIN;
       ASSERT(m_bHasAgg);
 
-      eError = eGenerateGroupbyCode(pStreamDefOut, pColumnExpr, eAggType);
-      if (eError == EC_INVALID_COMMAND) {
-        goto L_RETURN;
-      }
+      vGenerateAggregateCode(eAggType, m_sPayLoadAggAsm, m_sPayLoadStoreAsm);
       eAggType = AG_NONE;
-      //szAsmBuffer = m_sPayLoadToBufferAsm;
+      szAsmBuffer = m_sPayLoadToBufferAsm;
 
       pTkn = pTknVec->pNextToken();
       continue;
@@ -1875,11 +1886,9 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
       eAggType = AG_MAX;
       ASSERT(m_bHasAgg);
 
-      eError = eGenerateGroupbyCode(pStreamDefOut, pColumnExpr, eAggType);
-      if (eError == EC_INVALID_COMMAND) {
-        goto L_RETURN;
-      }
+      vGenerateAggregateCode(eAggType, m_sPayLoadAggAsm, m_sPayLoadStoreAsm);
       eAggType = AG_NONE;
+      szAsmBuffer = m_sPayLoadToBufferAsm;
 
       pTkn = pTknVec->pNextToken();
       continue;
@@ -1890,11 +1899,9 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
       eAggType = AG_SUM;
       ASSERT(m_bHasAgg);
 
-      eError = eGenerateGroupbyCode(pStreamDefOut, pColumnExpr, eAggType);
-      if (eError == EC_INVALID_COMMAND) {
-        goto L_RETURN;
-      }
+      vGenerateAggregateCode(eAggType, m_sPayLoadAggAsm, m_sPayLoadStoreAsm);
       eAggType = AG_NONE;
+      szAsmBuffer = m_sPayLoadToBufferAsm;
 
       pTkn = pTknVec->pNextToken();
       continue;
@@ -1908,13 +1915,8 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
 
       // discovered a column, generate code for the column
       vGenerateColumnCodeGby(pStreamDefOut, pColumnExpr);
-      vAddToBufferCol(m_sPayLoadToBufferAsm, pColumnExpr->eColumnType());
 
       m_iDstColumn++;
-
-      //vAddPushCol(m_sPayLoadStoreAsm, pStreamDefIn, m_iDstColumn);
-      //vAddPushCol(m_sPayLoadStoreAsm, pStreamDefIn, m_iDstColumn);
-      //vAddPushCol(m_sPayLoadAggAsm, pStreamDefIn, m_iDstColumn);
 
       StrLib::vSprintCat(m_sPayLoadKeyAsm, "  EO_PUSH_DEVIXT_TMP\n"_Stz);
       StrLib::vSprintCat(m_sPayLoadKeyAsm, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
@@ -1936,19 +1938,19 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
     Column* pColumn = pStreamDefIn->pGetColumn(i_ColumnOrdinal);
 
     if (bGroupBy) {
-      vAddGbyIdxCol(m_sGbyIdxAsm, pColumn->eColumnType(), i_Local);
-      vAddPushCol(m_sPayLoadKeyAsm, pColumn->eColumnType(), i_Local);
-      vAddPayLoadKey(m_sPayLoadKeyAsm, pColumn->eColumnType(), i_Local);
+      vCreateGbyIdxCol(m_sGbyIdxAsm, pColumn->eColumnType(), i_Local);
+       vPushLclCol(m_sPayLoadKeyAsm, pColumn->eColumnType(), i_Local);
+      vCreatePayLoadKey(m_sPayLoadKeyAsm, pColumn->eColumnType(), i_Local);
     }
     else {
       if (m_bHasAgg)
-        vAddPushCol(m_sPayLoadAggAsm, pColumn->eColumnType(), i_Local);
+         vPushLclCol(m_sPayLoadAggAsm, pColumn->eColumnType(), i_Local);
 
       if (pColumnExpr->eColumnType() == CT_VARCHAR)
         StrLib::vSprintCat(m_sPayLoadToBufferAsm, "  EO_PAY_FETCH_COLS %lld\n"_Stz, m_iDstColumn);
       else
         StrLib::vSprintCat(m_sPayLoadToBufferAsm, "  EO_PAY_FETCH_COLI %lld\n"_Stz, m_iDstColumn);
-      vAddPushCol(m_sPayLoadStoreAsm, pColumn->eColumnType(), i_Local);
+       vPushLclCol(m_sPayLoadStoreAsm, pColumn->eColumnType(), i_Local);
     }
     pTkn = pTknVec->pNextToken();
   }
@@ -1982,40 +1984,34 @@ bool ExprEval::bHasGroupBy(void) {
 /*----------------------------------------------------------------------------*/
 /* generate code for column                                                   */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval::eGenerateAggregateCode(Stz* szAsmBuffer, StreamDef* pStreamDefOut, Column* pColumn, eAG eAggType) {
-
-  eEC eError = EC_NONE;
+void ExprEval::vGenerateAggregateCode(eAG eAggType, Stz* szAsmBuffer, Stz* szAsmInitBuffer) {
 
   switch (eAggType) {
     case AG_ALL:
-      vGenerateCountAll(szAsmBuffer, m_sAggInitAsm);
+      vGenerateCountAll(szAsmBuffer, szAsmInitBuffer);
       break;
     case AG_CNT:
-      vGenerateCount(szAsmBuffer, m_sAggInitAsm);
+      vGenerateCount(szAsmBuffer, szAsmInitBuffer);
       break;
     case AG_MIN:
-      vGenerateMin(szAsmBuffer,m_sAggInitAsm);
+      vGenerateMin(szAsmBuffer,szAsmInitBuffer);
       break;
     case AG_MAX:
-      vGenerateMax(szAsmBuffer,m_sAggInitAsm);
+      vGenerateMax(szAsmBuffer,szAsmInitBuffer);
       break;
     case AG_SUM:
-      vGenerateSum(szAsmBuffer, m_sAggInitAsm);
+      vGenerateSum(szAsmBuffer, szAsmInitBuffer);
       break;
     default:
       RASSERT(0);
       break;
   }
-
-  return eError;
 }
 
 /*----------------------------------------------------------------------------*/
-/* generate code for column                                                   */
+/* add column to streamDefOut                                                 */
 /*----------------------------------------------------------------------------*/
-void ExprEval::vGenerateColumnCode(Stz* szAsmBuffer, StreamDef* pStreamDefOut, Column* pColumn) {
-
-  vAddPopCol(szAsmBuffer, pColumn->eColumnType());
+void ExprEval::vAppendColumnToStreamDef(StreamDef* pStreamDefOut, Column* pColumn) {
 
   pStreamDefOut->vAddColumn(pColumn->szColNm(),
                             pColumn->eColumnType(),
@@ -2028,52 +2024,18 @@ void ExprEval::vGenerateColumnCode(Stz* szAsmBuffer, StreamDef* pStreamDefOut, C
 /*----------------------------------------------------------------------------*/
 void ExprEval::vGenerateColumnCodeGby(StreamDef* pStreamDefOut, Column* pColumn) {
 
+  vAppendColumnToStreamDef(pStreamDefOut, pColumn);
+  vPopDstCol(m_sPayLoadToBufferAsm);
+
   if ( ! m_bHasAgg )
-    vAddStoreCol(m_sPayLoadStoreAsm, pColumn->eColumnType());
-
+    vPayStoreCol(m_sPayLoadStoreAsm, pColumn->eColumnType());
   m_nPayLoadBytes += 8;
-
-  pStreamDefOut->vAddColumn(pColumn->szColNm(),
-                            pColumn->eColumnType(),
-                            pColumn->iColumnLength(),
-                            pColumn->iColumnScale());
 }
 
 /*----------------------------------------------------------------------------*/
-/* generate code for column                                                   */
+/* add EO code for store column in payload                                    */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval::eGenerateGroupbyCode(StreamDef* pStreamDefOut, Column* pColumn, eAG eAggType) {
-
-  eEC eError = EC_NONE;
-
-  switch (eAggType) {
-    case AG_ALL:
-      vGenerateCountAll(m_sPayLoadAggAsm, m_sPayLoadStoreAsm);
-      break;
-    case AG_CNT:
-      vGenerateCount(m_sPayLoadAggAsm, m_sPayLoadStoreAsm);
-      break;
-    case AG_MIN:
-      vGenerateMin(m_sPayLoadAggAsm,m_sPayLoadStoreAsm);
-      break;
-    case AG_MAX:
-      vGenerateMax(m_sPayLoadAggAsm,m_sPayLoadStoreAsm);
-      break;
-    case AG_SUM:
-      vGenerateSum(m_sPayLoadAggAsm, m_sPayLoadStoreAsm);
-      break;
-    default:
-      RASSERT(0);
-      break;
-  }
-
-  return eError;
-}
-
-/*----------------------------------------------------------------------------*/
-/* add EO code for store column                                               */
-/*----------------------------------------------------------------------------*/
-void ExprEval::vAddStoreCol(Stz* szAsmBuffer, eCT eColumnType)
+void ExprEval::vPayStoreCol(Stz* szAsmBuffer, eCT eColumnType)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
 
@@ -2103,40 +2065,6 @@ void ExprEval::vAddStoreCol(Stz* szAsmBuffer, eCT eColumnType)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add EO code for store column                                               */
-/*----------------------------------------------------------------------------*/
-void ExprEval::vAddToBufferCol(Stz* szAsmBuffer, eCT eColumnType)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
-
-  // switch on column type
-  switch (eColumnType) {
-    case CT_BOOLEAN:
-    case CT_DECIMAL:
-    case CT_DATE:
-    case CT_FLOAT:
-    case CT_INTEGER:
-    case CT_TIME:
-    case CT_TIMESTAMP:
-      StrLib::vSprintCat(szAsmBuffer,"  EO_PUSH_DEVROW_DST\n"_Stz);
-      StrLib::vSprintCat(szAsmBuffer,"  EO_DEVROW_POPCOLI %lld\n"_Stz, m_iDstColumn);
-      break;
-
-    case CT_CHAR:
-    case CT_VARCHAR:
-      StrLib::vSprintCat(szAsmBuffer,"  EO_PUSH_DEVROW_DST\n"_Stz);
-      StrLib::vSprintCat(szAsmBuffer,"  EO_DEVROW_POPCOLS %lld\n"_Stz, m_iDstColumn);
-      break;
-
-    case CT_INTERVAL_DT:
-    case CT_INTERVAL_YM:
-    case CT_UNKNOWN:
-    default:
-      NEVER_REACH;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* convert ordinal to local                                                   */
 /*----------------------------------------------------------------------------*/
 i8 ExprEval::iOrdinalToLocal(i8 i_ColumnOrdinal) {
@@ -2157,16 +2085,6 @@ i8 ExprEval::iOrdinalToLocal(i8 i_ColumnOrdinal) {
   }
   return iLocal;
 }
-
-/*----------------------------------------------------------------------------*/
-/* convert ordinal to local                                                   */
-/*----------------------------------------------------------------------------*/
-//Stz* ExprEval::szPopCol(eDM eDatum) {
-//  switch(eDatum) {
-//    case DM_BOL:
-//
-//  }
-//}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
