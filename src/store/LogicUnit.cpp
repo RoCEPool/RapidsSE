@@ -4174,11 +4174,16 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         break;//+endCase
 
       case EO_PAY_FETCH_COLS: ArgGet(iArg); // fetch a column from entry payload
-        azSrc = (char*)&aiPayload[iArg];
-        nSize = strlen(azSrc) + 1;
-        //ASSERT(nSize < 8);
-        dLU2(EO_PAY_FETCH_COLS,iArg,(i8)azSrc);
-        S_PushStr(azSrc);
+        if (aiPayload[iArg] == C_DATUM_NULL) {
+          *(++aiDstk) = C_DATUM_NULL;
+        }
+        else {
+          azSrc = (char *) &aiPayload[iArg];
+          nSize = strlen(azSrc) + 1;
+          //ASSERT(nSize < 8);
+          dLU2(EO_PAY_FETCH_COLS, iArg, (i8) azSrc);
+          S_PushStr(azSrc);
+        }
         break;//+endCase
 
       case EO_PAY_STORE_COLI: ArgGet(iArg); // store a column into entry payload

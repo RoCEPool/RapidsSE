@@ -82,7 +82,7 @@ namespace STORE
 
 #define S_PopStr(__azDst) \
   /*MemLib::vDumpWords(iaDataStack,nDifference(iaDataStack,aiDstk)+8);*/ \
-  if ((i8)*aiDstk == C_DATUM_NULL)    {                                   \
+  if (*aiDstk == C_DATUM_NULL)    {                                   \
     *(i8*)__azDst = C_DATUM_NULL;  \
   } \
   else { \
@@ -97,7 +97,7 @@ namespace STORE
   ( (char*)(aiDstk) - nWordRoundedStrBytes(*aiDstk))
 
 #define S_StrDrp() \
-  if ((i8)aiDstk == C_DATUM_NULL)    {                              \
+  if (*aiDstk == C_DATUM_NULL)    {                              \
     aiDstk--;  \
   } \
   else {                 \
