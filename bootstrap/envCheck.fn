@@ -254,11 +254,13 @@ function validateHostsReachableBySsh() {
   do
 
     host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
-    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "-o" "PasswordAuthentication no" "-o" "ConnectTimeout 10" "${host}" "exit" "0")
+    #sshArgs=("-q" "-o" "StrictHostKeyChecking no" "-o" "PasswordAuthentication no" "-o" "ConnectTimeout 10" "${host}" "exit" "0")
+    sshArgs=("-o" "PasswordAuthentication no" "-o" "ConnectTimeout 10" "${host}" "exit" "0")
 
     # Run it, in parallel
     (
-      if ! ssh "${sshArgs[@]}"; then
+      if ! output="$(ssh "${sshArgs[@]}" 2>&1)" ; then
+        >&2 echo "${output}"
         errorExit "Node ${nodeName} [host: ${host}] cannot be reached by password-less SSH."
       fi
   
