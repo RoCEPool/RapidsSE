@@ -994,11 +994,16 @@ void vDev_ENTWRK_SETSTZELM(i8** aaiDstk)
 
   char* azSrc;
   i8 nSize;
-  S_PopStr(azSrc);
 
-  RASSERT(pEntWrk->aEnt()->eKind() == KE_GENERAL);
-
-  pEntWrk->vAppendElementStz(nullptr,(Stz*)azSrc);
+  if (*aiDstk == C_DATUM_NULL)    {
+    pEntWrk->vAppendNull();
+  }
+  else {
+    azSrc =  S_StrAdr();
+    RASSERT(pEntWrk->aEnt()->eKind() == KE_GENERAL);
+    pEntWrk->vAppendElementStz(nullptr, (Stz *) azSrc);
+  }
+  S_StrDrp();
 
   *aaiDstk = aiDstk;
 }
@@ -1125,6 +1130,7 @@ void vDev_ROW_POPCOLS(i8** aaiDstk)
   _static_
 
   i8 *aiDstk = *aaiDstk;
+  i8 nSize;
 
   // pop the column
   i8 iColumn = *(aiDstk--);
@@ -1132,25 +1138,25 @@ void vDev_ROW_POPCOLS(i8** aaiDstk)
   // pop the row dev
   DevROW* pDevRow = _pDevROW(P_PopPtr());
 
-  // get the str address
-  Stz* szStr = (Stz*)S_StrAdr();
-
   pDevRow->m_pRowBuffer->vPositionOnCell(iColumn);
 
   // check for nulls
-  if (*(i8*)(aiDstk) == C_DATUM_NULL) {
+  if (*(aiDstk) == C_DATUM_NULL) {
     pDevRow->m_pRowBuffer->vDepositColVal(C_DATUM_NULL);
   }
   else {
 
+    // get the str address
+    Stz* szStr = (Stz*)S_StrAdr();
+
     char *azDst = pDevRow->m_pRowBuffer->azDepositString_begin();
 
     StrLib::vCopy(azDst, (char *) szStr);
-    i8 nSize = StrLib::nSize(azDst);
+    nSize = StrLib::nSize(azDst);
 
     pDevRow->m_pRowBuffer->vDepositString_end(nSize);
-    S_StrDrp();
   }
+  S_StrDrp();
 
   *aaiDstk = aiDstk;
 }
