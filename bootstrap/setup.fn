@@ -1383,7 +1383,7 @@ function cleanupNodeInstall() {
 # Params: None
 
 function collectHostSizeInfo() {
-  
+ 
   local nodeName
   local tempFile
 
@@ -1578,6 +1578,11 @@ function updateDefaults() {
     if [ "${NODE_CFG_DEFAULT_PARTITIONS}" -gt "${MAXIMUM_NUM_PARTITIONS}" ]; then
       NODE_CFG_DEFAULT_PARTITIONS="${MAXIMUM_NUM_PARTITIONS}"
     fi
+
+    # ************************************************
+    # DROP 2 (SE v0.7) ONLY - Limit to one partition
+    NODE_CFG_DEFAULT_PARTITIONS=1
+    # ************************************************
 
     # Start the threads at partitions + 6
     NODE_CFG_DEFAULT_THREADS=$((NODE_CFG_DEFAULT_PARTITIONS + 6))

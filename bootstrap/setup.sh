@@ -21,7 +21,9 @@
 #                the last one).
 #  -u          : treat unset variables as an error and exit immediately.
 #  -x          : print each command before executing it (for debugging).
-set -Eeou pipefail
+# Note: We don't set pipefail globally because we can expect some piped
+#       commands to fail (e.g. if you enter an invalid hostname).
+set -Eeu 
 
 #shellcheck disable=2034
 readonly DIR=$(dirname "$0")
@@ -34,7 +36,7 @@ readonly NODE_NAME_FILE="node.name"
 readonly NODE_CFG_DEFAULT_NAME_PREFIX="NODE"
 readonly NODE_CFG_DEFAULT_PORT="5541"
 readonly NODE_CFG_DEFAULT_DIR="/opt/rapidsse"
-         NODE_CFG_DEFAULT_PARTITIONS="8"  # per node. Non-const.
+         NODE_CFG_DEFAULT_PARTITIONS="8"  # per node. Non-const. 
          NODE_CFG_DEFAULT_THREADS="16"    # per node. Non-const.
          NODE_CFG_DEFAULT_MEM="60"        # in GB, per node. Non-const.
 readonly NODE_CFG_DEFAULT_PARAMS=""
