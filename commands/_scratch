@@ -1,6 +1,14 @@
 bc;
 
-load lineitem "../DATA/TPCH/lineitem10.csv";
+create table nation (
+	 N_NATIONKEY       INTEGER NOT NULL,
+	 N_NAME            CHAR(25) NOT NULL,
+	 N_REGIONKEY       INTEGER NOT NULL,
+	 N_COMMENT         VARCHAR(152)
+);
 
-create table x (c char);
-load lineitem "../x.csv";
+load nation "../DATA/Transliterate/nationAggGby.tbl";
+
+//SELECT 1 FROM nation HAVING SUM(n_nationkey) > 0;
+
+SELECT n_nationkey, SUM(n_regionkey + 3) FROM nation group by n_nationkey;
