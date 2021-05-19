@@ -3,6 +3,7 @@ aggregatesGby.test
 count.test
 date.test
 decimal.test
+groupBy_Count.test
 minmax.test
 sum.test
 time.test

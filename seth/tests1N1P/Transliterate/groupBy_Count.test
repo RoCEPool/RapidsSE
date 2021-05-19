@@ -1,0 +1,345 @@
+
+//------------------------------------------------------------------------------
+// create table
+create table datums (
+int_col0   INTEGER,
+int_col1   INTEGER,
+bol_col2   BOOLEAN,
+bol_col3   BOOLEAN,
+dte_col4   DATE,
+dte_col5   DATE,
+dec_col6   DECIMAL(19,2),
+dec_col7   DECIMAL(19,2),
+flt_col8   FLOAT,
+flt_col9   FLOAT,
+tme_col10  TIME,
+tme_col11  TIME,
+tsp_col12  TIMESTAMP,
+tsp_col13  TIMESTAMP,
+vch_col14  VARCHAR(32),
+vch_col15  VARCHAR(32)
+);
+success
+
+load datums "../DATA/Transliterate/groupBy.csv" ;
+failure contains: '10 invalid'
+
+
+//------------------------------------------------------------------------------------
+select COUNT(int_col1) from datums GROUP BY int_col1;
+rows:
+(0)
+(1)
+(1)
+(1)
+(2)
+(2)
+(3)
+
+//------------------------------------------------------------------------------------
+select int_col0, COUNT(int_col1) from datums GROUP BY int_col0;
+rows:
+(11,1)
+(9,1)
+(3,0)
+(5,1)
+(4,1)
+(10,1)
+(6,1)
+(2,1)
+(7,1)
+(1,1)
+(8,1)
+
+//------------------------------------------------------------------------------------
+select COUNT(int_col1), int_col0 from datums GROUP BY int_col0;
+rows:
+(1,11)
+(1,9)
+(0,3)
+(1,5)
+(1,4)
+(1,10)
+(1,6)
+(1,2)
+(1,7)
+(1,1)
+(1,8)
+
+//------------------------------------------------------------------------------------
+select COUNT(int_col1) + 3, int_col0 from datums GROUP BY int_col0;
+rows:
+(4,11)
+(4,9)
+(3,3)
+(4,5)
+(4,4)
+(4,10)
+(4,6)
+(4,2)
+(4,7)
+(4,1)
+(4,8)
+
+//------------------------------------------------------------------------------------
+select COUNT(int_col1 + 3), int_col0 from datums GROUP BY int_col0;
+rows:
+(1,11)
+(1,9)
+(0,3)
+(1,5)
+(1,4)
+(1,10)
+(1,6)
+(1,2)
+(1,7)
+(1,1)
+(1,8)
+
+//------------------------------------------------------------------------------------
+select int_col0, COUNT(int_col1) + 5 / 60 from datums GROUP BY int_col0;
+rows:
+(11,1)
+(9,1)
+(3,0)
+(5,1)
+(4,1)
+(10,1)
+(6,1)
+(2,1)
+(7,1)
+(1,1)
+(8,1)
+
+//------------------------------------------------------------------------------------
+select COUNT(int_col1), dte_col4 from datums GROUP BY dte_col4;
+rows:
+(0,null)
+(1,DATE'1941-01-10')
+(1,DATE'1942-01-01')
+(2,DATE'1942-11-01')
+(4,DATE'1941-01-01')
+(1,DATE'1942-01-19')
+(1,DATE'1998-11-02')
+
+//------------------------------------------------------------------------------------
+select flt_col8 , COUNT(int_col1) from datums GROUP BY flt_col8;
+rows:
+(null,1)
+(10.22,3)
+(0.23,1)
+(0.21,1)
+(0.22,4)
+
+//------------------------------------------------------------------------------------
+select vch_col15 , COUNT(int_col1) from datums GROUP BY vch_col15;
+rows:
+(null,1)
+('yellow',1)
+('green',2)
+('blue',1)
+('red',2)
+('orange',3)
+
+//------------------------------------------------------------------------------------
+select dte_col4 , COUNT(dec_col7) from datums GROUP BY dte_col4;
+rows:
+(null,1)
+(DATE '1941-01-10',1)
+(DATE '1942-01-01',1)
+(DATE '1942-11-01',2)
+(DATE '1941-01-01',4)
+(DATE '1942-01-19',1)
+(DATE '1998-11-02',1)
+
+
+//------------------------------------------------------------------------------------
+select dte_col4 , COUNT(dec_col7) + 3 from datums GROUP BY dte_col4;
+rows:
+(null,4)
+(DATE'1941-01-10',4)
+(DATE'1942-01-01',4)
+(DATE'1942-11-01',5)
+(DATE'1941-01-01',7)
+(DATE'1942-01-19',4)
+(DATE'1998-11-02',4)
+
+//------------------------------------------------------------------------------------
+select  COUNT(bol_col2) + 3 , dte_col4 from datums GROUP BY dte_col4;
+rows:
+(4,null)
+(4,DATE'1941-01-10')
+(3,DATE'1942-01-01')
+(5,DATE'1942-11-01')
+(7,DATE'1941-01-01')
+(4,DATE'1942-01-19')
+(4,DATE'1998-11-02')
+
+//------------------------------------------------------------------------------------
+select tme_col10 , COUNT(tme_col11) from datums GROUP BY tme_col10;
+rows:
+(null,1)
+(TIME'12:23:31',2)
+(TIME'10:23:31',4)
+(TIME'11:23:31',4)
+
+//------------------------------------------------------------------------------------
+select tme_col10 , COUNT(tme_col11) / 2 from datums GROUP BY tme_col10;
+rows:
+(null,0)
+(TIME'12:23:31',1)
+(TIME'10:23:31',2)
+(TIME'11:23:31',2)
+
+//------------------------------------------------------------------------------------
+select dec_col6 , COUNT(tsp_col13) from datums GROUP BY dec_col6;
+rows:
+(null,2)
+(477.04,2)
+(47.04,1)
+(41.04,3)
+(23.04,0)
+(4001.04,1)
+
+//------------------------------------------------------------------------------------
+select vch_col14 , COUNT(vch_col15) from datums GROUP BY vch_col14;
+rows:
+(null,1)
+('124',0)
+('hello',2)
+('life',2)
+('blue',1)
+('red',2)
+('x',2)
+
+//------------------------------------------------------------------------------------
+select vch_col14 , COUNT(vch_col15) + 66 from datums GROUP BY vch_col14;
+rows:
+(null,67)
+('124',66)
+('hello',68)
+('life',68)
+('blue',67)
+('red',68)
+('x',68)
+
+
+//------------------------------------------------------------------------------------
+select bol_col3 , COUNT(int_col1) from datums GROUP BY bol_col3;
+rows:
+(false,10)
+
+//------------------------------------------------------------------------------------
+select bol_col3 , (COUNT(int_col1) + 33) /4 from datums GROUP BY bol_col3;
+rows:
+(false,10)
+
+//------------------------------------------------------------------------------------
+select tsp_col12 , COUNT(tsp_col13) from datums GROUP BY tsp_col12;
+rows:
+(null,1)
+(TIMESTAMP '1943-01-01 00:00:10',1)
+(TIMESTAMP '1944-01-01 12:00:55',1)
+(TIMESTAMP '1972-01-01 12:00:02',1)
+(TIMESTAMP '1941-01-01 00:00:00',2)
+(TIMESTAMP '1972-01-01 10:30:10',2)
+(TIMESTAMP '1972-01-01 12:00:01',1)
+
+//------------------------------------------------------------------------------------
+select dec_col6 , COUNT(flt_col9) from datums GROUP BY dec_col6;
+rows:
+(null,2)
+(477.04,2)
+(47.04,1)
+(41.04,4)
+(23.04,1)
+(4001.04,1)
+
+//------------------------------------------------------------------------------------
+select dec_col6 , bol_col2,  COUNT(flt_col9) from datums GROUP BY dec_col6, bol_col2;
+rows:
+(4001.04,false,1)
+(47.04,NULL,1)
+(41.04,true,3)
+(477.04,true,2)
+(NULL,false,2)
+(41.04,false,1)
+(23.04,false,1)
+
+//------------------------------------------------------------------------------------
+select tme_col10 , int_col1,  COUNT(tsp_col12) from datums GROUP BY tme_col10, int_col1;
+rows:
+(TIME '10:23:31',NULL,1)
+(NULL,7000,1)
+(TIME '10:23:31',5000,1)
+(TIME '12:23:31',4000,1)
+(TIME '11:23:31',0,2)
+(TIME '10:23:31',8000,1)
+(TIME '11:23:31',8000,0)
+(TIME '11:23:31',2000,1)
+(TIME '12:23:31',5000,1)
+
+//------------------------------------------------------------------------------------
+select dte_col4 , vch_col14,  COUNT(flt_col8) -1 from datums GROUP BY dte_col4, vch_col14;
+rows:
+(DATE '1942-11-01','hello',0)
+(DATE '1941-01-01','hello',0)
+(DATE '1941-01-10',null,0)
+(DATE '1941-01-01','red',0)
+(DATE '1942-01-19','x',0)
+(DATE '1942-01-01','life',0)
+(NULL,'x',0)
+(DATE '1998-11-02','124',-1)
+(DATE '1941-01-01','life',0)
+(DATE '1942-11-01','red',0)
+(DATE '1941-01-01','blue',0)
+
+//------------------------------------------------------------------------------
+// drop the table
+drop table datums;
+success;
+
+CLEANUP {
+
+  drop table datums;
+  mute
+
+  bye;
+  mute
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
