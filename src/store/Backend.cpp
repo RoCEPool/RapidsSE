@@ -557,14 +557,6 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
 //           eEventType == Parser::GraphNav::EVENT_ENTER ? "ENTER" : "EXIT",
 //           sPath.szStz());
 
-  if (eEventType == Parser::GraphNav::EVENT_ENTER) {
-
-    if (AggregateExpr::bIsOfType(pQueryNode)) {
-      sPipeline->vCatSprint(" ) "_Stz);
-    }
-    return GraphNav::WALK_CONTINUE;
-  }
-
   QueryNode* pOrdinalExpr;
   b1 bDeleteOrdExpr = false;
 
@@ -578,11 +570,42 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
       pOrdinalExpr = pAliasedNode;
   }
   else {
-    if (ColumnRef::bIsOfType(pQueryNode)) {
+//    if (ColumnRef::bIsOfType(pQueryNode)) {
+//      pOrdinalExpr = Expr::pSymbolicToOrdinal(pQueryNode, pBackend->m_pColExprList, pBackend->m_pPlanRoot);
+//      bDeleteOrdExpr = true;
+//    } else
+//      pOrdinalExpr = pQueryNode;
+
+    if (pBackend->m_pColExprList) {
       pOrdinalExpr = Expr::pSymbolicToOrdinal(pQueryNode, pBackend->m_pColExprList, pBackend->m_pPlanRoot);
       bDeleteOrdExpr = true;
-    } else
+    }
+    if ( ! pOrdinalExpr )
       pOrdinalExpr = pQueryNode;
+  }
+
+  if (eEventType == Parser::GraphNav::EVENT_ENTER) {
+
+    if (AggregateExpr::bIsOfType(pOrdinalExpr)) {
+      sPipeline->vCatSprint(" ) "_Stz);
+    }
+
+    if (bDeleteOrdExpr)
+      delete pOrdinalExpr;
+
+    return GraphNav::WALK_CONTINUE;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // columnRef
+
+  if (ColumnOrdinal::bIsOfType(pOrdinalExpr)) {
+    QueryNode* pColumnOrdinal = _pQueryNode(pOrdinalExpr);
+
+    sPipeline->vCatSprint(
+        " $%lld"
+        ""_Stz,
+        ColumnOrdinal::iOrdinal(pColumnOrdinal));
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -689,18 +712,6 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
     if (bDeleteOrdExpr)
       delete pOrdinalExpr;
     return GraphNav::WALK_CONTINUE;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // columnRef
-
-  if (ColumnOrdinal::bIsOfType(pOrdinalExpr)) {
-    QueryNode* pColumnOrdinal = _pQueryNode(pOrdinalExpr);
-
-      sPipeline->vCatSprint(
-        " $%lld"
-        ""_Stz,
-        ColumnOrdinal::iOrdinal(pColumnOrdinal));
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
