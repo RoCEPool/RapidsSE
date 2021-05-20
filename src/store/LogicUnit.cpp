@@ -1416,7 +1416,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         iRes  = iMathLib_Add_FLTBCD(iTopA, iTopB);
         dLU3(EO_ADD_FLTBCD, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
-        break;
+        break;//+endCase
 
       case EO_ADD_FLTINT: ArgNil(); // flt + int
         iTopB = *(aiDstk--);
@@ -1424,7 +1424,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         iRes  = iMathLib_Add_FLTINT(iTopA, iTopB);
         dLU3(EO_ADD_FLTINT, iTopA, iTopB, iRes);
         *(++aiDstk) = iRes;
-        break;
+        break;//+endCase
 
       case EO_ADD_FLTFLT: ArgNil(); // flt + flt
         iTopB = *(aiDstk--);
@@ -1509,7 +1509,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_ADD_UNKXYZ: ArgNil(); // unk + xyz
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
-        RASSERT(iTopA == C_DATUM_NULL);
+        //RASSERT(iTopA == C_DATUM_NULL);
         dLU3(EO_ADD_UNKXYZ,iTopA,iTopB,iRes);
         *(++aiDstk) = C_DATUM_NULL;
         break;//+endCase
@@ -1517,7 +1517,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_ADD_XYZUNK: ArgNil(); // xyz + unk
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
-        RASSERT(iTopB == C_DATUM_NULL);
+        //RASSERT(iTopB == C_DATUM_NULL);
         *(++aiDstk) = C_DATUM_NULL;
         break;//+endCase
 
@@ -1652,7 +1652,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_DIV_UNKXYZ: ArgNil(); // unk / xyz
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
-        RASSERT(iTopA == C_DATUM_NULL);
+        //RASSERT(iTopA == C_DATUM_NULL);
         dLU3(EO_DIV_UNKXYZ,iTopA,iTopB,iRes);
         *(++aiDstk) = C_DATUM_NULL;
         break;//+endCase
@@ -1660,7 +1660,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_DIV_XYZUNK: ArgNil(); // xyz / unk
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
-        RASSERT(iTopB == C_DATUM_NULL);
+        //RASSERT(iTopB == C_DATUM_NULL);
         dLU3(EO_DIV_XYZUNK,iTopA,iTopB,iRes);
         *(++aiDstk) = C_DATUM_NULL;
         break;//+endCase
@@ -1676,7 +1676,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_MOD_UNKXYZ: ArgNil(); // unk % xyz
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
-        RASSERT(iTopA == C_DATUM_NULL);
+        //RASSERT(iTopA == C_DATUM_NULL);
         dLU3(EO_MOD_UNKXYZ,iTopA,iTopB,iRes);
         *(++aiDstk) = C_DATUM_NULL;
         break;//+endCase
@@ -1684,7 +1684,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_MOD_XYZUNK: ArgNil(); // xyz % unk
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
-        RASSERT(iTopB == C_DATUM_NULL);
+        //RASSERT(iTopB == C_DATUM_NULL);
         dLU3(EO_MOD_XYZUNK,iTopA,iTopB,iRes);
         *(++aiDstk) = C_DATUM_NULL;
         break;//+endCase
@@ -1820,7 +1820,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_MUL_UNKXYZ: ArgNil(); // unk * xyz
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
-        RASSERT(iTopA == C_DATUM_NULL);
+        //RASSERT(iTopA == C_DATUM_NULL);
         dLU3(EO_MUL_UNKXYZ,iTopA,iTopB,iRes);
         *(++aiDstk) = C_DATUM_NULL;
         break;//+endCase
@@ -1828,7 +1828,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_MUL_XYZUNK: ArgNil(); // xyz * unk
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
-        RASSERT(iTopB == C_DATUM_NULL);
+        //RASSERT(iTopB == C_DATUM_NULL);
         dLU3(EO_MUL_XYZUNK,iTopA,iTopB,iRes);
         *(++aiDstk) = C_DATUM_NULL;
         break;//+endCase
@@ -1989,7 +1989,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_SUB_UNKXYZ: ArgNil(); // unk - xyz
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
-        RASSERT(iTopA == C_DATUM_NULL);
+        //RASSERT(iTopA == C_DATUM_NULL);
         dLU3(EO_SUB_UNKXYZ,iTopA,iTopB,iRes);
         *(++aiDstk) = C_DATUM_NULL;
         break;//+endCase
@@ -1997,7 +1997,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_SUB_XYZUNK: ArgNil(); // xyz - unk
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
-        RASSERT(iTopB == C_DATUM_NULL);
+        //RASSERT(iTopB == C_DATUM_NULL);
         dLU3(EO_SUB_XYZUNK,iTopA,iTopB,iRes);
         *(++aiDstk) = C_DATUM_NULL;
         break;//+endCase
@@ -2369,7 +2369,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_EQ_UNKXYZ: ArgNil(); // unk == xyz
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
-        RASSERT(iTopA == C_DATUM_NULL);
+        //RASSERT(iTopA == C_DATUM_NULL);
         dLU3(EO_SUB_UNKXYZ,iTopA,iTopB,iRes);
         *(++aiDstk) = 0;
         break;//+endCase
@@ -2377,7 +2377,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_EQ_XYZUNK: ArgNil(); // xyz == unk
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
-        RASSERT(iTopB == C_DATUM_NULL);
+        //RASSERT(iTopB == C_DATUM_NULL);
         dLU3(EO_SUB_UNKXYZ,iTopA,iTopB,iRes);
         *(++aiDstk) = 0;
         break;//+endCase
@@ -2533,7 +2533,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_GE_UNKXYZ: ArgNil(); // unk >= xyz
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
-        RASSERT(iTopA == C_DATUM_NULL);
+        //RASSERT(iTopA == C_DATUM_NULL);
         dLU3(EO_GE_UNKXYZ,iTopA,iTopB,iRes);
         *(++aiDstk) = 0;
         break;//+endCase
@@ -2541,7 +2541,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_GE_XYZUNK: ArgNil(); // xyz >= unk
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
-        RASSERT(iTopB == C_DATUM_NULL);
+        //RASSERT(iTopB == C_DATUM_NULL);
         dLU3(EO_GE_XYZUNK,iTopA,iTopB,iRes);
         *(++aiDstk) = 0;
         break;//+endCase
@@ -2699,7 +2699,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_GT_UNKXYZ: ArgNil(); // unk > xyz
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
-        RASSERT(iTopA == C_DATUM_NULL);
+        //RASSERT(iTopA == C_DATUM_NULL);
         dLU3(EO_GT_UNKXYZ,iTopA,iTopB,iRes);
         *(++aiDstk) = 0;
         break;//+endCase
@@ -2707,7 +2707,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_GT_XYZUNK: ArgNil(); // xyz > unk
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
-        RASSERT(iTopB == C_DATUM_NULL);
+        //RASSERT(iTopB == C_DATUM_NULL);
         dLU3(EO_GT_XYZUNK,iTopA,iTopB,iRes);
         *(++aiDstk) = 0;
         break;//+endCase
@@ -2863,7 +2863,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_LE_UNKXYZ: ArgNil(); // unk <= xyz
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
-        RASSERT(iTopA == C_DATUM_NULL);
+        //RASSERT(iTopA == C_DATUM_NULL);
         dLU3(EO_LE_UNKXYZ,iTopA,iTopB,iRes);
         *(++aiDstk) = 0;
         break;//+endCase
@@ -2871,7 +2871,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_LE_XYZUNK: ArgNil(); // xyz <= unk
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
-        RASSERT(iTopB == C_DATUM_NULL);
+        //RASSERT(iTopB == C_DATUM_NULL);
         dLU3(EO_LE_XYZUNK,iTopA,iTopB,iRes);
         *(++aiDstk) = 0;
         break;//+endCase
@@ -3027,7 +3027,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_LT_UNKXYZ: ArgNil(); // unk < xyz
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
-        RASSERT(iTopA == C_DATUM_NULL);
+        //RASSERT(iTopA == C_DATUM_NULL);
         dLU3(EO_LT_UNKXYZ,iTopA,iTopB,iRes);
         *(++aiDstk) = 0;
         break;//+endCase
@@ -3035,7 +3035,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_LT_XYZUNK: ArgNil(); // xyz < unk
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
-        RASSERT(iTopB == C_DATUM_NULL);
+        //RASSERT(iTopB == C_DATUM_NULL);
         dLU3(EO_LT_XYZUNK,iTopA,iTopB,iRes);
         *(++aiDstk) = 0;
         break;//+endCase
@@ -3191,7 +3191,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_NE_UNKXYZ: ArgNil(); // unk != xyz
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
-        RASSERT(iTopA == C_DATUM_NULL);
+        //RASSERT(iTopA == C_DATUM_NULL);
         dLU3(EO_NE_UNKXYZ,iTopA,iTopB,iRes);
         *(++aiDstk) = 0;
         break;//+endCase
@@ -3199,7 +3199,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_NE_XYZUNK: ArgNil(); // xyz != unk
         iTopB = *(aiDstk--);
         iTopA = *(aiDstk--);
-        RASSERT(iTopB == C_DATUM_NULL);
+        //RASSERT(iTopB == C_DATUM_NULL);
         dLU3(EO_NE_XYZUNK,iTopA,iTopB,iRes);
         *(++aiDstk) = 0;
         break;//+endCase
@@ -4256,7 +4256,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 //        dLU0(EO_REG_INDEXDEF_ADDCOLUMN);
 //        iTopA = *(aiDstk--);
 //        vDev_REG_INDEXDEF_ADDCOLUMN(pLU, (Stz*)iArg, iTopA);
-        RASSERT(0);
+        //RASSERT(0);
         break;//+endCase
 
       case EO_REG_PTNSTREAM_CLOSE: ArgNil(); // close ptnStream[]

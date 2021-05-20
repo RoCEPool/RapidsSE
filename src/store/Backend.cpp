@@ -385,7 +385,7 @@ void Backend::vAppendFilterOp(Backend* pBackend, QueryNode* pNode)
   ASSERT(pOrdinalFilterExpr);
 
   sPipeline->vCatSprint(
-      "    | filter 0 \""
+      "    | filter 1 \""
       ""_Stz);
 
   // Walk the expr node plan graph
@@ -407,7 +407,7 @@ void Backend::vAppendLimitOp(Backend* pBackend, QueryNode* pNode)
   String* sPipeline = pBackend->m_sPipeline;
 
   sPipeline->vCatSprint(
-      "    | limit 0 %lld"
+      "    | limit 1 %lld"
       ""_Stz,
       LimitOp::iLimit(pNode));
 
@@ -446,7 +446,7 @@ void Backend::vAppendProjectOp(Backend* pBackend, QueryNode* pNode)
   if (pProjectedColumns->bHasChildren()) {
 
     sPipeline->vCatSprint(
-        "    | project 0 \""
+        "    | project 1 \""
         ""_Stz);
 
     // get a plan node iterator
@@ -557,7 +557,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
 //           eEventType == Parser::GraphNav::EVENT_ENTER ? "ENTER" : "EXIT",
 //           sPath.szStz());
 
-  QueryNode* pOrdinalExpr;
+  QueryNode* pOrdinalExpr = nullptr;
   b1 bDeleteOrdExpr = false;
 
   QueryNode* pAliasedNode;

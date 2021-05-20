@@ -276,7 +276,7 @@ inline i8 iMathLib_Div_FLTINT(i8 iFltValue1, i8 iIntValue2)
     return C_DATUM_NULL;
 
   fValue1 = *(d8*)&iFltValue1;
-  fValue2 = *(d8*)&iIntValue2;
+  fValue2 = (d8)iIntValue2;
 
   d8 dResult = fValue1 / fValue2;
   iResult = *(i8 *) &dResult;
