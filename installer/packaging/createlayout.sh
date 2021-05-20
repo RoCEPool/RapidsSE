@@ -34,6 +34,7 @@ cp "${ROOT_DIR}/dbgen/dists.dss"            "${LAYOUT_DIR}/dbgen"
 cp "${ROOT_DIR}/bootstrap/generateData.sh"  "${LAYOUT_DIR}/dbgen"
 
 # Source
+# Refer to #includes in LogicCompiler::v_DynPreliminary()
 mkdir -p "${LAYOUT_DIR}/src"
 mkdir -p "${LAYOUT_DIR}/src/store"
 mkdir -p "${LAYOUT_DIR}/src/base"
@@ -41,6 +42,8 @@ cp "${ROOT_DIR}/src/store/LogicUnit.cpp"    "${LAYOUT_DIR}/src/store"
 cp "${ROOT_DIR}/src/base/EnumGroups.h"      "${LAYOUT_DIR}/src/base"
 cp "${ROOT_DIR}/src/base/eEO.h"             "${LAYOUT_DIR}/src/base"
 cp "${ROOT_DIR}/src/base/eEA.h"             "${LAYOUT_DIR}/src/base"
+cp "${ROOT_DIR}/src/base/eDM.h"             "${LAYOUT_DIR}/src/base"
+cp "${ROOT_DIR}/src/base/MathLib.h"         "${LAYOUT_DIR}/src/base"
 cp "${ROOT_DIR}/src/store/Ent_int.h"        "${LAYOUT_DIR}/src/store"
 cp "${ROOT_DIR}/src/store/InflateSet.h"     "${LAYOUT_DIR}/src/store"
 cp "${ROOT_DIR}/src/store/LIB_interface.h"  "${LAYOUT_DIR}/src/store"
