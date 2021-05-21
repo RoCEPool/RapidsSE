@@ -1844,7 +1844,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_NEG_FLT: ArgNil(); // neg flt
         iTopA = *(aiDstk--);
         iRes  = - iTopA;
-        iRes  = iMathLib_Neg_INT(iTopA);
+        iRes  = iMathLib_Neg_FLT(iTopA);
         dLU2(EO_NEG_FLT,iTopA,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase

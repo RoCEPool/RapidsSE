@@ -311,7 +311,7 @@ inline i8 iMathLib_Div_INTFLT(i8 iIntValue1, i8 iFltValue2)
   if (iIntValue1 == C_DATUM_NULL || iFltValue2 == C_DATUM_NULL)
     return C_DATUM_NULL;
 
-  fValue1 = *(d8*)&iIntValue1;
+  fValue1 = (d8)iIntValue1;
   fValue2 = *(d8*)&iFltValue2;
 
   d8 dResult = fValue1 / fValue2;
@@ -491,8 +491,9 @@ inline i8 iMathLib_Mul_FLTINT(i8 iFltValue, i8 iIntValue)
     return C_DATUM_NULL;
 
   fValue1 = *(d8*)&iFltValue;
+  fValue2 = (d8)iIntValue;
 
-  d8 dResult = fValue1 * iIntValue;
+  d8 dResult = fValue1 * fValue2;
   iResult = *(i8 *) &dResult;
 
   return iResult;
@@ -587,7 +588,12 @@ inline i8 iMathLib_Neg_FLT(i8 iFltValue)
   if (iFltValue == C_DATUM_NULL)
     return C_DATUM_NULL;
 
-  return -iFltValue;
+  d8 fValue1 = *(d8*)&iFltValue;
+
+  d8 dResult = - fValue1;
+  i8 iResult = *(i8 *) &dResult;
+
+  return iResult;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -706,7 +712,7 @@ inline i8 iMathLib_Sub_FLTINT(i8 iFltValue1, i8 iIntValue2)
     return C_DATUM_NULL;
 
   fValue1 = *(d8*)&iFltValue1;
-  fValue2 = iIntValue2;
+  fValue2 = (d8)iIntValue2;
 
   d8 dResult = fValue1 - fValue2;
   iResult = *(i8 *) &dResult;
@@ -741,7 +747,7 @@ inline i8 iMathLib_Sub_INTFLT(i8 iIntValue1, i8 iFltValue2)
   if (iIntValue1 == C_DATUM_NULL || iFltValue2 == C_DATUM_NULL)
     return C_DATUM_NULL;
 
-  fValue1 = iIntValue1;
+  fValue1 = (d8)iIntValue1;
   fValue2 = *(d8*)&iFltValue2;
 
   d8 dResult = fValue1 - fValue2;
@@ -1020,8 +1026,8 @@ inline i8 iMathLib_Eq_FLTINT(i8 iFltValue, i8 iIntValue)
   if (iFltValue == C_DATUM_NULL || iIntValue == C_DATUM_NULL)
     return 0;
 
-  d8 fValue1 = iFltValue;
-  d8 fValue2 = *(d8*)&iIntValue;
+  d8 fValue1 = *(d8*)&iFltValue;
+  d8 fValue2 = (d8)iIntValue;
 
   i8 iResult  = fValue1 == fValue2;
 
@@ -1270,8 +1276,8 @@ inline i8 iMathLib_Ge_FLTINT(i8 iFltValue, i8 iIntValue)
   if (iFltValue == C_DATUM_NULL || iIntValue == C_DATUM_NULL)
     return 0;
 
-  d8 fValue1 = iFltValue;
-  d8 fValue2 = *(d8*)&iIntValue;
+  d8 fValue1 = *(d8*)&iFltValue;
+  d8 fValue2 = (d8)iIntValue;
 
   i8 iResult  = fValue1 >= fValue2;
 
@@ -1301,8 +1307,8 @@ inline i8 iMathLib_Ge_INTFLT(i8 iIntValue, i8 iFltValue)
   if (iIntValue == C_DATUM_NULL || iFltValue == C_DATUM_NULL)
     return 0;
 
-  d8 fValue1 = *(d8*)&iIntValue;
-  d8 fValue2 = iFltValue;
+  d8 fValue1 = (d8)iIntValue;
+  d8 fValue2 = *(d8*)&iFltValue;
 
   i8 iResult  = fValue1 >= fValue2;
 
@@ -1536,8 +1542,8 @@ inline i8 iMathLib_Gt_FLTINT(i8 iFltValue, i8 iIntValue)
   if (iFltValue == C_DATUM_NULL || iIntValue == C_DATUM_NULL)
     return 0;
 
-  d8 fValue1 = iFltValue;
-  d8 fValue2 = *(d8*)&iIntValue;
+  d8 fValue1 = *(d8*)&iFltValue;
+  d8 fValue2 = (d8)iIntValue;
 
   i8 iResult  = fValue1 >= fValue2;
 
@@ -1567,8 +1573,8 @@ inline i8 iMathLib_Gt_INTFLT(i8 iIntValue, i8 iFltValue)
   if (iIntValue == C_DATUM_NULL || iFltValue == C_DATUM_NULL)
     return 0;
 
-  d8 fValue1 = *(d8*)&iIntValue;
-  d8 fValue2 = iFltValue;
+  d8 fValue1 = (d8)iIntValue;
+  d8 fValue2 = *(d8*)&iFltValue;
 
   i8 iResult  = fValue1 > fValue2;
 
@@ -1802,8 +1808,8 @@ inline i8 iMathLib_Le_FLTINT(i8 iFltValue, i8 iIntValue)
   if (iFltValue == C_DATUM_NULL || iIntValue == C_DATUM_NULL)
     return 0;
 
-  d8 fValue1 = iFltValue;
-  d8 fValue2 = *(d8*)&iIntValue;
+  d8 fValue1 = *(d8*)&iFltValue;
+  d8 fValue2 = (d8)iIntValue;
 
   i8 iResult  = fValue1 <= fValue2;
 
@@ -1833,8 +1839,8 @@ inline i8 iMathLib_Le_INTFLT(i8 iIntValue, i8 iFltValue)
   if (iIntValue == C_DATUM_NULL || iFltValue == C_DATUM_NULL)
     return 0;
 
-  d8 fValue1 = *(d8*)&iIntValue;
-  d8 fValue2 = iFltValue;
+  d8 fValue1 = (d8)iIntValue;
+  d8 fValue2 = *(d8*)&iFltValue;
 
   i8 iResult  = fValue1 <= fValue2;
 
@@ -2068,8 +2074,8 @@ inline i8 iMathLib_Lt_FLTINT(i8 iFltValue1, i8 iIntValue2)
   if (iFltValue1 == C_DATUM_NULL || iIntValue2 == C_DATUM_NULL)
     return 0;
 
-  d8 fValue1 = iFltValue1;
-  d8 fValue2 = *(d8*)&iIntValue2;
+  d8 fValue1 = *(d8*)&iFltValue1;
+  d8 fValue2 = (d8)iIntValue2;
 
   i8 iResult  = fValue1 < fValue2;
 
@@ -2099,8 +2105,8 @@ inline i8 iMathLib_Lt_INTFLT(i8 iIntValue, i8 iFltValue)
   if (iIntValue == C_DATUM_NULL || iFltValue == C_DATUM_NULL)
     return 0;
 
-  d8 fValue1 = *(d8*)&iIntValue;
-  d8 fValue2 = iFltValue;
+  d8 fValue1 = (d8)iIntValue;
+  d8 fValue2 = *(d8*)&iFltValue;
 
   i8 iResult  = fValue1 < fValue2;
 
@@ -2334,8 +2340,8 @@ inline i8 iMathLib_Ne_FLTINT(i8 iValue1, i8 iValue2)
   if (iValue1 == C_DATUM_NULL || iValue2 == C_DATUM_NULL)
     return 0;
 
-  d8 fValue1 = iValue1;
-  d8 fValue2 = *(d8*)&iValue2;
+  d8 fValue1 = *(d8*)&iValue1;
+  d8 fValue2 = (d8)iValue2;
 
   i8 iResult  = fValue1 != fValue2;
 
@@ -2365,8 +2371,8 @@ inline i8 iMathLib_Ne_INTFLT(i8 iIntValue, i8 iFltValue)
   if (iIntValue == C_DATUM_NULL || iFltValue == C_DATUM_NULL)
     return 0;
 
-  d8 fValue1 = *(d8*)&iIntValue;
-  d8 fValue2 = iFltValue;
+  d8 fValue1 = (d8)iIntValue;
+  d8 fValue2 = *(d8*)&iFltValue;
 
   i8 iResult  = fValue1 != fValue2;
 
