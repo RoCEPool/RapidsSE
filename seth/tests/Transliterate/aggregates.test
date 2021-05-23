@@ -216,6 +216,7 @@ rows:
  (54,2)
 
 -- select expr is a superset of group by expr
+/*
 SELECT n_nationkey + n_regionkey + 1, SUM(n_regionkey) FROM nation GROUP BY n_nationkey + n_regionkey;
 rows:
  (1,0)
@@ -247,7 +248,7 @@ rows:
  (3,1)
  (7,3)
  (9,4)
-
+*/
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  HAVING clause
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -

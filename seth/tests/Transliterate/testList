@@ -1,4 +1,5 @@
 aggregates.test
+arithmetic_int.test
 arithmetic_float.test
 boolean.test
 date.test

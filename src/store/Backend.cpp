@@ -446,7 +446,7 @@ void Backend::vAppendProjectOp(Backend* pBackend, QueryNode* pNode)
   if (pProjectedColumns->bHasChildren()) {
 
     sPipeline->vCatSprint(
-        "    | project 1 \""
+        "    | project 0 \""
         ""_Stz);
 
     // get a plan node iterator
@@ -843,7 +843,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
     }
 
     else if (ModulusExpr::bIsOfType(pOrdinalExpr)) {
-      sPipeline->vCatSprint(" % "_Stz);
+      sPipeline->vCatSprint(" %% "_Stz);
     }
 
     else if (MultiplicationExpr::bIsOfType(pOrdinalExpr)) {

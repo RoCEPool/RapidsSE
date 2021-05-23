@@ -1,0 +1,178 @@
+
+//------------------------------------------------------------------------------
+// create table
+create table datums (
+int_col0   INTEGER,
+int_col1   INTEGER,
+bol_col2   BOOLEAN,
+bol_col3   BOOLEAN,
+dte_col4   DATE,
+dte_col5   DATE,
+dec_col6   DECIMAL(19,2),
+dec_col7   DECIMAL(19,2),
+flt_col8   FLOAT,
+flt_col9  FLOAT,
+tme_col10  TIME,
+tme_col11  TIME,
+tsp_col12  TIMESTAMP,
+tsp_col13  TIMESTAMP,
+vch_col14  VARCHAR(32),
+vch_col15  VARCHAR(32)
+);
+success
+
+load datums "../DATA/Transliterate/datums.csv" ;
+success
+
+//------------------------------------------------------------------------------
+select int_col0 from datums;
+rows:
+(1)
+(2)
+(3)
+(4)
+(5)
+(6)
+(7)
+(8)
+(9)
+(10)
+(11)
+(12)
+(13)
+
+//------------------------------------------------------------------------------
+select int_col1 + 1 from datums where int_col0 = 11;
+rows:
+(-9223372036854775805)
+
+//------------------------------------------------------------------------------
+//select int_col1 - 1 from datums where int_col0 = 11;
+//rows:
+//ERROR: Overflow
+
+//------------------------------------------------------------------------------
+//select int_col1 + 1 from datums where int_col0 = 12;
+//rows:
+//ERROR: Overflow
+
+//------------------------------------------------------------------------------
+select int_col1 - 1 from datums where int_col0 = 12;
+rows:
+(9223372036854775805)
+
+//------------------------------------------------------------------------------
+//select int_col1 * 16 from datums;
+//rows:
+//ERROR:  Overflow
+
+//------------------------------------------------------------------------------
+//select int_col1 * 16 from datums where int_col0 =! 12;
+//rows:
+//ERROR:  Overflow
+
+//------------------------------------------------------------------------------
+select int_col1 * 16 from datums where int_col0 != 12 and int_col0 != 11;
+rows:
+(16000)
+(32000)
+(null)
+(64000)
+(80000)
+(96000)
+(112000)
+(128000)
+(144000)
+(160000)
+(0)
+
+//------------------------------------------------------------------------------
+//select int_col1 * 16 from datums where int_col0 = 12;
+//rows:
+//ERROR:  Overflow
+
+//------------------------------------------------------------------------------
+//select int_col1 * 16 from datums where int_col0 = 11;
+//rows:
+//ERROR:  Overflow
+
+//------------------------------------------------------------------------------
+select int_col1 * 16 from datums where int_col0 =13;
+rows:
+(0)
+
+//------------------------------------------------------------------------------
+select int_col1 / 16 from datums where int_col0 != 12 and int_col0 != 11;
+rows:
+(62)
+(125)
+(null)
+(250)
+(312)
+(375)
+(437)
+(500)
+(562)
+(625)
+(0)
+
+//------------------------------------------------------------------------------
+//select int_col1 / 16 from datums where int_col0 = 12;
+//rows:
+//ERROR:  Overflow
+
+//------------------------------------------------------------------------------
+//select int_col1 / 16 from datums where int_col0 = 11;
+//rows:
+//ERROR:  Overflow
+
+//------------------------------------------------------------------------------
+select int_col1 / 16 from datums where int_col0 =13;
+rows:
+(0)
+
+//------------------------------------------------------------------------------
+select int_col1 % 11 from datums where int_col0 != 12 and int_col0 != 11;
+rows:
+(10)
+(9)
+(null)
+(7)
+(6)
+(5)
+(4)
+(3)
+(2)
+(1)
+(0)
+
+//------------------------------------------------------------------------------
+select int_col1 % 16 from datums where int_col0 = 12;
+rows:
+(14)   // 15
+
+//------------------------------------------------------------------------------
+select int_col1 % 16 from datums where int_col0 = 11;
+rows:
+(-14)   //0
+
+//------------------------------------------------------------------------------
+select int_col1 % 16 from datums where int_col0 =13;
+rows:
+(0)
+
+//------------------------------------------------------------------------------
+// drop the table
+drop table datums;
+success;
+
+CLEANUP {
+
+  drop table datums;
+  mute
+
+  bye;
+  mute
+}
+
+

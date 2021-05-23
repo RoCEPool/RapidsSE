@@ -1607,6 +1607,7 @@ void vDev_ROW_COLS_TO_ROW(i8** aaiDstk)
       case CT_BOOLEAN:
       case CT_INTEGER:
       case CT_DATE:
+      case CT_TIME:
       case CT_TIMESTAMP:
       case CT_DECIMAL:
         pDevRowDst->m_aRow->vColVal_int(i_Col, pDevRow->m_aRow->iColVal_int(i_Col));
