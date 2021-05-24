@@ -812,10 +812,12 @@ eEC StreamDef::eParseColumnInterval(TokenVec* pTknVec, Column* pCol)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
   UNUSED(pTknVec);
 
-  pCol->vColumnType(CT_INTERVAL_DT);
-  pCol->vDatum(DM_IVL);
+  return EC_INTERVAL_NOT_SUPPORTED;
+
+  //pCol->vColumnType(CT_INTERVAL_DT);
+  //pCol->vDatum(DM_IVL);
   
-  return EC_NONE;
+  //return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/

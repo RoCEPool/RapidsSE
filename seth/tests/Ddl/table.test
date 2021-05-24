@@ -67,7 +67,7 @@ create table T1 (
   c3  decimal     NOT NULL, 
   c4  float       NOT NULL, 
   c5  integer     NOT NULL, 
-  c6  interval    NOT NULL, 
+  c6  integer     NOT NULL,  //c6  interval    NOT NULL,
   c7  time        NOT NULL, 
   c8  timestamp   NOT NULL, 
   c9  varchar(32) NOT NULL
