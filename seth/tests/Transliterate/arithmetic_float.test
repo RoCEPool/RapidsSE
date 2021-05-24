@@ -22,7 +22,7 @@ vch_col15  VARCHAR(32)
 success
 
 load datums "../DATA/Transliterate/float.csv" ;
-failure contains: '9 invalid'
+success
 
 //------------------------------------------------------------------------------
 select flt_col8 from datums;
