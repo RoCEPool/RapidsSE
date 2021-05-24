@@ -847,7 +847,7 @@ static Stz* aErrorMsg[]
   /* EC_OBJECT_CLASSNO_INVALID        */ "EC_OBJECT_CLASSNO_INVALID"_Stz,
   /* EC_OBJECT_FOOTER_INVALID         */ "EC_OBJECT_FOOTER_INVALID"_Stz,
   /* EC_OBJECT_MAGIC_INVALID          */ "EC_OBJECT_MAGIC_INVALID"_Stz,
-  /* EC_ORDERBY_NOT_SUPPORTED         */ "EC_ORDERBY_NOT_SUPPORTED"_Stz,
+  /* EC_ORDERBY_NOT_SUPPORTED         */ "order by currently not supported"_Stz,
   /* _P_ */
   /* EC_PIPELINE_PROTOCOL_ERROR       */ "pipeline protocol error"_Stz,
 

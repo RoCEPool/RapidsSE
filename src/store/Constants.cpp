@@ -422,7 +422,7 @@ void Constants::vAddConstantsCpp(void)
   /* 48 */ vAddConstant("EC_NULL_INTERFACE"_Stz,     EC_NULL_INTERFACE);
   /* 49 */ vAddConstant("EC_NULLPTR"_Stz,            EC_NULLPTR);
 
-  /*  6 */ vAddConstant("EC_OREDERBY_NOT_SUPPORTED"_Stz,EC_ORDERBY_NOT_SUPPORTED);
+  /*    */ vAddConstant("EC_ORDERBY_NOT_SUPPORTED"_Stz,EC_ORDERBY_NOT_SUPPORTED);
 
   /*    */ vAddConstant("EC_PIPELINE_PROTOCOL_ERROR"_Stz,EC_PIPELINE_PROTOCOL_ERROR);
   
