@@ -169,6 +169,7 @@ LogicUnit::LogicUnit(Task* pTask)
   
   m_nLabels = 0;
   for (i8 i_Label = 0; i_Label < C_LOGIC_LABEL; i_Label++) {
+    m_xaJumpLabel[i_Label].m_sLabelNm = ""_Stz;
     m_xaJumpLabel[i_Label].m_bDefined = false;
     m_xaJumpLabel[i_Label].m_bSubroutine = false;
     m_xaJumpLabel[i_Label].m_bDestination = false;
