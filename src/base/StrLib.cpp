@@ -566,15 +566,9 @@ void StrLib::vCopyLen(char* psDst, const char* psSrc, i8 nBytes)
   const char *s = psSrc;
   
   i8 n = nBytes;
-  try {
-    while (*s && n--)
-      *d++ = *s++;
-  }
-  catch (...) {
-    vTrace("nBytes: %lld\n"_Stz, nBytes);
-    vTrace("psSrc: %s\n"_Stz, psSrc);
-    vTrace("psDst: %s\n"_Stz, psDst);
-  }
+  while (*s && n--)
+    *d++ = *s++;
+
   *d = '\0';
 }
 

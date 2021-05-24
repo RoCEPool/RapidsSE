@@ -169,7 +169,11 @@ LogicUnit::LogicUnit(Task* pTask)
   
   m_nLabels = 0;
   for (i8 i_Label = 0; i_Label < C_LOGIC_LABEL; i_Label++) {
-    m_xaJumpLabel[i_Label].m_sLabelNm = ""_Stz;
+
+    // forced execution of constructor of s32 needed because s32 is a member of a struct
+    // for tinyc and struct doesn't invoke the constructor!!!
+    new (&m_xaJumpLabel[i_Label].m_sLabelNm) s32();
+
     m_xaJumpLabel[i_Label].m_bDefined = false;
     m_xaJumpLabel[i_Label].m_bSubroutine = false;
     m_xaJumpLabel[i_Label].m_bDestination = false;
