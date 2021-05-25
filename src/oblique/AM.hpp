@@ -491,7 +491,9 @@ namespace OBLIQUE
     static eEC ePopulateJob(Job* pJob, TagSet* pTagSet);
     static void vPrintGlobals(void);
     static PtnMap* pPtnMap(void);
-  
+
+    static i8 iQueryNoInc(void);
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static i8   iRdTickingDevice(void);
     static void vReadApiIndex(Index* pIndex);

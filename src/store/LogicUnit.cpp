@@ -51,7 +51,6 @@
 
 
 extern EoArg EoArgs[];
-Atomic gixQueryNo;
 
 extern void* C_ADR_REGION;
 
