@@ -15,7 +15,12 @@
 
   Operand[].pipein  // pop the pParcel and put in the Operand register
 
-  Operand[]\clear MetaRecv::putParts
+  // returns table ptr
+  Operand[]\clear MetaRecv::putParts  locals| pTable |
+  path[].tostr .
+
+  // get table name
+  // table::makeTableFolder
 
   // The result should be a table
   //op::pipeout

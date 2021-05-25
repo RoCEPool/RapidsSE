@@ -20,14 +20,12 @@
   // then call C++ getParts to build the parcel and push the pParcel to the stack
   // op::pipeout pipe the pParcel out
 
-  Operand[] MetaGet.getTableName op__table
-  table[] MetaSend::getParts
-
-  Op::pipeout
+  Operand[] MetaGet.getTableName op__table assert
+  table[] MetaSend::getParts Op::pipeout
 
   true
-
-  task::breakpoint //set breakpoint back into C++ code, where the task loop is
+  stk
+  //task::breakpoint //set breakpoint back into C++ code, where the task loop is
 ;
 
 /*----------------------------------------------------------------------------*/

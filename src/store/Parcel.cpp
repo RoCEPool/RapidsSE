@@ -272,7 +272,12 @@ void Parcel::vSendOut(Op* pSrcOp)
 
   //>>>>>>>>>>>  Need to ask Ray, after sent the Parcel, we get the operand which is the table and try to delete
   //>>>>>>>>>>>  If we don't get the operand then we will delete the parcel
-  
+
+  if (pOperand->eGetClassNo()==CN_TABLE)
+  {
+    vTrace(">>>>>> Parcel::vSendOut Tried to call vDeleteOperand() to delete this operand CN_TABLE\n"_Stz);
+  }
+
   // delete the operand
   AM::vDeleteOperand(pOperand);
 }

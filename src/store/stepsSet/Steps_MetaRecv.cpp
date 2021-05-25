@@ -59,6 +59,8 @@ void Step::vMetaRecvPutParts(void)
   // Here we have a table came from another node
   if (pTable) pTable->vDumpLocation();
 
+  m_pDataStack->vPushPtr(pTable);
+
   EXIT();
 }
 

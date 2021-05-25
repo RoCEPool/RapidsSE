@@ -541,7 +541,9 @@ namespace OBLIQUE
     static i8   iTaskQueue(Task* pTask);
     static LogicUnit* pTaskLogicUnit(Task* pTask);
     static i8   iTaskState(Task* pTask);
- 
+
+    static void vTraceDumpGrabLock(void);
+    static void vTraceDumpDropLock(void);
      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
     static HeapBuffer* pToHeapBuffer(i8 iBufferNo);

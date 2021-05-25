@@ -37,8 +37,10 @@ void Step::vParcelDelete(void)
   ENTRY();
 
   Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
-  vTrace(">>>>>>>>Step::vParcelDelete %p\n"_Stz, pParcel);
   delete pParcel;
+  //AM::vTraceDumpGrabLock();
+  //vTrace(">>>>>>>>Step::vParcelDelete %p\n"_Stz, pParcel);
+  //AM::vTraceDumpDropLock();
 
   EXIT();
 }

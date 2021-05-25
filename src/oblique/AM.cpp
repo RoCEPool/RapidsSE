@@ -902,9 +902,11 @@ void AM::vDeleteOperand(Operand* pOperand)
 */
     case CN_TABLE: {
       Table* pTable = _pTable(pOperand);
+      vTraceDumpGrabLock();
       //vTrace(">>>>vDeleteOperand delete pTable:%p, called by Step::vPipeinDelete as PipeIn[].delete\n"_Stz, pTable);
       vTrace(">>>>vDeleteOperand delete pTable:%s, called by Step::vPipeinDelete as PipeIn[].delete ?\n"_Stz, pTable->szTableNm()->azChar());
       //delete pTable; // Question for Ray: do we need to delete ?
+      vTraceDumpDropLock();
       break;
     }
       
@@ -1117,6 +1119,7 @@ StreamDef* AM::pStreamDefFind(Stz* szTableNm) {
   return pStreamDef;
 }
 
+static TraceLock oTraceDumpLock;
 
 i8 AM::iTaskAcksRmg_assert_only_(Task* pTask) { return pTask->iAcksRmg_assert_only_(); }
 void AM::vTaskDump(void) {
@@ -1159,12 +1162,21 @@ LogicUnit* AM::pTaskLogicUnit(Task* pTask) {
   return pJob->pLogicUnit_job();
 }
 
-
+void AM::vTraceDumpGrabLock(void)
+{
+  oTraceDumpLock.vGrabWrite();
+}
+void AM::vTraceDumpDropLock(void)
+{
+  oTraceDumpLock.vDropWrite();
+}
 
 void AM::vTaskOnExceptionTrace(Task* pTask)
 {
   Job* pJob = pTask->pJob();
-  
+
+  vTraceDumpGrabLock();
+
   vTrace("\n\n"_Stz);
   vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
   vTrace("Task::vCaught(xException) (Node:%s) for job %s\n"_Stz,
@@ -1194,6 +1206,8 @@ void AM::vTaskOnExceptionTrace(Task* pTask)
 
   vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vTraceDumpDropLock();
 }
 
 

@@ -7,6 +7,7 @@
 #include "eQK.h"
 #include "eTR.h"
 #include "eTS.h"
+#include "TraceLock.hpp"
 
 namespace BASE
 {  
@@ -51,8 +52,8 @@ namespace BASE
     i8           m_nOperandYield;  //
   
     Profile*     m_pProfile;     // runtime profile
-  
-  
+
+    TraceLock    m_oTraceLock;
   
     // -- from Forth --
     //LogicUnit*   m_pLogicUnit;      // associated register set
@@ -77,7 +78,6 @@ namespace BASE
 
     SenCompiler* m_pSenCompiler; // sen word compiler
     Input*       m_pInput;       // input stream
-
 
     // always last
     Footer m_xFooter;
@@ -178,6 +178,8 @@ namespace BASE
 
   
     Input* pInput(void);
+
+    TraceLock oTraceLock(void);
 
   private:
     Footer* aFooter(void);

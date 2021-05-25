@@ -641,7 +641,7 @@ bool Socket::bRecvBytes(void* aBytes, i8 nBytes, SysCall& SysCall)
     
     if (0 == nRecvBytes) {
       vTrace("Received 0 bytes; errno %lld\n"_Stz, errno);
-      SysCall.vError(errno);
+      SysCall.vError(errno); // don't die after this, node can come and goes
       //vTrace("ERROR2: %lld\n"_Stz, errno);
       return false;
     }
