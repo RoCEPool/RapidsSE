@@ -10,17 +10,15 @@
 : metaRecv_Parcel \handler
   " metaRecv_Parcel" .
 
-  // pipe out ZK_STARTMARKER
-  //PipeIn[].pipeOut
-
   Operand[].pipein  // pop the pParcel and put in the Operand register
 
   // returns table ptr
   Operand[]\clear MetaRecv::putParts  locals| pTable |
-  path[].tostr .
 
-  // get table name
-  // table::makeTableFolder
+  //path[].tostr .      // display the path
+
+  // get table name to create folder
+  pTable table.getName table::makeTableFolder
 
   // The result should be a table
   //op::pipeout

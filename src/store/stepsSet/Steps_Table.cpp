@@ -54,6 +54,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("Table[].findColumn"_Stz,       &Step::vTableFindColumn);
   vAddStep("table.indexCount"_Stz,         &Step::vTableIndexCount);
   vAddStep("table.isColumn"_Stz,           &Step::vTableIsColumn);
+  vAddStep("table.getName"_Stz,            &Step::vTableGetName);
   vAddStep("Table[].isInternallyDefined"_Stz, &Step::vTableIsInternallyDefined);
   vAddStep("Table[].isUserCreated"_Stz,    &Step::vTableIsUserCreated);
   vAddStep("Table[].listPartition"_Stz,    &Step::vTableListPartition);
@@ -473,6 +474,24 @@ void Step::vTableListPartition(void)
       break;
     }
   }
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.getName -- fetch table name                                          */
+/*----------------------------------------------------------------------------*/
+void Step::vTableGetName(void)
+{
+  ENTRY();
+
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+
+  Stz* szTableNm = pTable->szTableNm();
+
+  //vTrace("Table name = %s \n"_Stz, szTableNm->azChar());
+
+  m_pDataStack->vPushStz(szTableNm);
 
   EXIT();
 }

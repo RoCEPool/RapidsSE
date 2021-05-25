@@ -1624,6 +1624,7 @@ public:
   void vTableDump(void);
   void vTableFindColumn(void);
   void vTableGet(void);
+  void vTableGetName(void);
   void vTableIndexCount(void);
   void vTableIsColumn(void);
   void vTableIsInternallyDefined(void);

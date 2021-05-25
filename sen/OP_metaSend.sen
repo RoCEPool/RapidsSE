@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : metaSend_metaGet \handler
 
- "metaSend_metaGet handler" .
+ //"metaSend_metaGet handler" .
 
   Operand[].pipein  // pop the pMetaGet and put in the Operand register
   //Operand[] MetaGet.getTableName
@@ -24,7 +24,7 @@
   table[] MetaSend::getParts Op::pipeout
 
   true
-  stk
+
   //task::breakpoint //set breakpoint back into C++ code, where the task loop is
 ;
 
