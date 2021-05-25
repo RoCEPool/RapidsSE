@@ -483,7 +483,7 @@ void AM::SYSTEM::vSystemReady(void)
 
   i8 iPid = AM::iPid();
   s32 sPid;
-  sPid = iPid;
+  sPid.vSprint("%lld\n"_Stz, iPid);
 
   // Path is "../" because we have already changed the cwd
   // to the commands subdirectory
