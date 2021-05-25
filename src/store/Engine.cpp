@@ -232,6 +232,7 @@ void Engine::vRunCommandLine(void)
         
       case BO_ADD_NODE:
         vStartSystem();
+        AM::SYSTEM::vSystemReady(); // Process has completed the boot sequence
         vWaitStop();
         break;
         
@@ -257,11 +258,13 @@ void Engine::vRunCommandLine(void)
         
       case BO_START:
         vStartSystem();
+        AM::SYSTEM::vSystemReady(); // Process has completed the boot sequence
         vWaitStop();
         break;
         
       case BO_START_PROMPT:
         vStartSystem();
+        AM::SYSTEM::vSystemReady(); // Process has completed the boot sequence
 #ifdef WITH_APPLE
         if (! gxCmdLineArgs.m_xSysArgs.m_bNoMunge )
           vMungeCheck();

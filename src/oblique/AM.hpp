@@ -253,7 +253,8 @@ namespace OBLIQUE
     class SYSTEM
     {
     public:
-      static i8 nNanoseconds(void);
+      static i8   nNanoseconds(void);
+      static void vSystemReady(void);
     };
 
     class TASK
