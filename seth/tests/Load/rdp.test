@@ -12,8 +12,8 @@ rdp_comment  VARCHAR(64)   NOT NULL, // col 1
 rdp_bol_NN   BOOLEAN       NOT NULL, // col 2
 rdp_bol      BOOLEAN       ,         // col 3
 
-rdp_bcd_NN   DECIMAL(19,0) NOT NULL, // col 4
-rdp_bcd      DECIMAL(19,0) ,         // col 5
+rdp_bcd_NN   DECIMAL(19,2) NOT NULL, // col 4
+rdp_bcd      DECIMAL(19,2) ,         // col 5
 
 rdp_flt_NN   FLOAT         NOT NULL, // col 6
 rdp_flt      FLOAT         ,         // col 7
@@ -267,8 +267,8 @@ rdp_comment  VARCHAR(64)   NOT NULL, // col 1
 rdp_bol_NN   BOOLEAN       NOT NULL, // col 2
 rdp_bol      BOOLEAN       ,         // col 3
 
-rdp_bcd_NN   DECIMAL(19,0) NOT NULL, // col 4
-rdp_bcd      DECIMAL(19,0) ,         // col 5
+rdp_bcd_NN   DECIMAL(19,2) NOT NULL, // col 4
+rdp_bcd      DECIMAL(19,2) ,         // col 5
 
 rdp_flt_NN   FLOAT         NOT NULL, // col 6
 rdp_flt      FLOAT         ,         // col 7
@@ -518,8 +518,8 @@ rdp_comment  VARCHAR(64)   NOT NULL, // col 1
 rdp_bol_NN   BOOLEAN       NOT NULL, // col 2
 rdp_bol      BOOLEAN       ,         // col 3
 
-rdp_bcd_NN   DECIMAL(19,0) NOT NULL, // col 4
-rdp_bcd      DECIMAL(19,0) ,         // col 5
+rdp_bcd_NN   DECIMAL(19,2) NOT NULL, // col 4
+rdp_bcd      DECIMAL(19,2) ,         // col 5
 
 rdp_flt_NN   FLOAT         NOT NULL, // col 6
 rdp_flt      FLOAT         ,         // col 7

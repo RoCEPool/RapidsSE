@@ -1,0 +1,217 @@
+
+//------------------------------------------------------------------------------
+// create table
+create table datums (
+  int_col0   INTEGER,
+  int_col1  INTEGER,
+  bol_col2   BOOLEAN,
+  bol_col3   BOOLEAN,
+  dte_col4   DATE,
+  dte_col5   DATE,
+  dec_col6   DECIMAL(19,2),
+  dec_col7   DECIMAL(19,2),
+  flt_col8   FLOAT,
+  flt_col9  FLOAT,
+  tme_col10  TIME,
+  tme_col11  TIME,
+  tsp_col12  TIMESTAMP,
+  tsp_col13  TIMESTAMP,
+  vch_col14  VARCHAR(32),
+  vch_col15  VARCHAR(32)
+);
+success
+
+load datums "../DATA/Transliterate/groupBy.csv" ;
+failure contains: '10 invalid'
+
+
+//-------------------------------------MAX TESTS------------------------------------------
+select int_col1, MAX(int_col0) from datums GROUP BY int_col1;
+rows:
+  (null,3)
+  (4000,4)
+  (7000,7)
+  (2000,2)
+  (8000,9)
+  (0,11)
+  (5000,6)
+
+//---------------------------------------------------------------------------------------
+select int_col0, MAX(int_col0) from datums GROUP BY int_col0;
+rows:
+  (11,11)
+  (9,9)
+  (3,3)
+  (5,5)
+  (4,4)
+  (10,10)
+  (6,6)
+  (2,2)
+  (7,7)
+  (1,1)
+  (8,8)
+
+//---------------------------------------------------------------------------------------
+select bol_col3, MAX(int_col0) from datums GROUP BY bol_col3;
+rows:
+  (false,11)
+
+//---------------------------------------------------------------------------------------
+select bol_col3, MAX(int_col0) + 6 from datums GROUP BY bol_col3;
+rows:
+  (false,17)
+
+//---------------------------------------------------------------------------------------
+select dec_col6, MAX(int_col0 - 3)  from datums GROUP BY dec_col6;
+rows:
+  (null,3)
+  (477.04,8)
+  (47.04,-1)
+  (41.04,4)
+  (23.04,5)
+  (4001.04,6)
+
+//---------------------------------------------------------------------------------------
+select vch_col15, MAX(tsp_col12) from datums GROUP BY vch_col15;
+rows:
+  (null,null)
+  ('yellow',TIMESTAMP '1941-01-01 00:00:00')
+  ('green',TIMESTAMP '1972-01-01 12:00:01')
+  ('blue',TIMESTAMP '1972-01-01 12:00:02')
+  ('red',TIMESTAMP '1941-01-01 00:00:00')
+  ('orange',TIMESTAMP '1972-01-01 10:30:10')
+
+
+//---------------------------------------------------------------------------------------
+select tme_col10, MAX(tme_col11) from datums GROUP BY tme_col10;
+rows:
+  (null,TIME '11:22:35')
+  (TIME '12:23:31',TIME '09:22:38')
+  (TIME '10:23:31',TIME '11:22:35')
+  (TIME '11:23:31',TIME '09:22:35')
+
+//---------------------------------------------------------------------------------------
+select tme_col10, dec_col6, MAX(tme_col11) from datums GROUP BY tme_col10, dec_col6;
+rows:
+  (TIME '10:23:31',41.04,TIME '11:22:35')
+  (TIME '12:23:31',null,TIME '09:22:38')
+  (null,41.04,TIME '11:22:35')
+  (TIME '11:23:31',23.04,TIME '09:10:35')
+  (TIME '11:23:31',47.04,TIME '09:22:35')
+  (TIME '10:23:31',4001.04,TIME '11:22:35')
+  (TIME '11:23:31',477.04,TIME '09:22:35')
+
+//---------------------------------------------------------------------------------------
+select int_col1, dec_col6, MAX(vch_col14) from datums GROUP BY int_col1, dec_col6;
+rows:
+  (7000,41.04,'red')
+  (8000,4001.04,null)
+  (5000,null,'blue')
+  (null,41.04,'x')
+  (2000,47.04,'life')
+  (4000,null,'life')
+  (5000,41.04,'hello')
+  (8000,23.04,'red')
+  (0,477.04,'x')
+
+//-------------------------------------MIN TESTS------------------------------------------
+select int_col1, MIN(int_col0) from datums GROUP BY int_col1;
+rows:
+  (null,3)
+  (4000,4)
+  (7000,7)
+  (2000,2)
+  (8000,8)
+  (0,10)
+  (5000,1)
+
+//---------------------------------------------------------------------------------------
+select int_col0, MIN(int_col0) from datums GROUP BY int_col0;
+rows:
+  (11,11)
+  (9,9)
+  (3,3)
+  (5,5)
+  (4,4)
+  (10,10)
+  (6,6)
+  (2,2)
+  (7,7)
+  (1,1)
+  (8,8)
+
+//---------------------------------------------------------------------------------------
+select bol_col3, MIN(int_col0) from datums GROUP BY bol_col3;
+rows:
+  (false,1)
+
+//---------------------------------------------------------------------------------------
+select bol_col3, MIN(int_col0) + 6 from datums GROUP BY bol_col3;
+rows:
+  (false,7)
+
+//---------------------------------------------------------------------------------------
+select dec_col6, MIN(int_col0 - 3)  from datums GROUP BY dec_col6;
+rows:
+  (null,1)
+  (477.04,7)
+  (47.04,-1)
+  (41.04,-2)
+  (23.04,5)
+  (4001.04,6)
+
+//---------------------------------------------------------------------------------------
+select vch_col15, MIN(tsp_col12) from datums GROUP BY vch_col15;
+rows:
+  (null, null)
+  ('yellow', TIMESTAMP '1941-01-01 00:00:00')
+  ('green', TIMESTAMP '1972-01-01 10:30:10')
+  ('blue', TIMESTAMP '1972-01-01 12:00:02')
+  ('red', TIMESTAMP '1941-01-01 00:00:00')
+  ('orange', TIMESTAMP '1943-01-01 00:00:10')
+
+//---------------------------------------------------------------------------------------
+select tme_col10, MIN(tme_col11) from datums GROUP BY tme_col10;
+rows:
+  (null, TIME '11:22:35')
+  (TIME '12:23:31'  , TIME '09:22:35')
+  (TIME '10:23:31'  , TIME '10:22:35')
+  (TIME '11:23:31'  , TIME '09:10:35')
+
+//---------------------------------------------------------------------------------------
+select tme_col10, dec_col6, MIN(tme_col11) from datums GROUP BY tme_col10, dec_col6;
+rows:
+  (TIME '10:23:31',41.04,TIME '10:22:35')
+  (TIME '12:23:31',null,TIME '09:22:35')
+  (null,41.04,TIME '11:22:35')
+  (TIME '11:23:31',23.04,TIME '09:10:35')
+  (TIME '11:23:31',47.04,TIME '09:22:35')
+  (TIME '10:23:31',4001.04,TIME '11:22:35')
+  (TIME '11:23:31',477.04,TIME '09:22:35')
+
+//---------------------------------------------------------------------------------------
+select int_col1, dec_col6, MIN(vch_col14) from datums GROUP BY int_col1, dec_col6;
+rows:
+  (7000,41.04,'red')
+  (8000,4001.04,null)
+  (5000,null,'blue')
+  (null,41.04,'x')
+  (2000,47.04,'life')
+  (4000,null,'life')
+  (5000,41.04,'124')
+  (8000,23.04,'red')
+  (0,477.04,'hello')
+
+//------------------------------------------------------------------------------
+// drop the table
+drop table datums;
+success;
+
+CLEANUP {
+
+  //drop table datums;
+  //mute
+
+  bye;
+  mute
+}

@@ -65,6 +65,7 @@ namespace PROMPT
   bool bPrompt_fileCat(SePrompt* pPrompt);
   bool bPrompt_fileProc(SePrompt* pPrompt);
   bool bPrompt_fileRand(SePrompt* pPrompt);
+  bool bPrompt_flist(SePrompt* pPrompt);
   bool bPrompt_floats(SePrompt* pPrompt);
   bool bPrompt_funs(SePrompt* pPrompt);
   bool bPrompt_giveMem(SePrompt* pPrompt);

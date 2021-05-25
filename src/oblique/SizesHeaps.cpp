@@ -114,6 +114,7 @@
 #include "JobList.hpp"
 #include "Jobs.hpp"
 
+#include "Locator.hpp"
 #include "LogicUnit.hpp"
 
 #include "Metadata.hpp"
@@ -313,7 +314,8 @@ SizeHeap gxaSizeHeap[]
   { sizeof(LocalChain),         HT_T_LARGE   ,0 }, // CN_LOCALCHAIN
   { sizeof(LocalDir),           HT_INVALID   ,0 }, // CN_LOCALDIR
   { sizeof(LocalFile),          HT_INVALID   ,0 }, // CN_LOCALFILE
-  { sizeof(Location),           HT_INVALID   ,0 }, // CN_LOCATION
+  { sizeof(Location),           HT_T_TINY    ,0 }, // CN_LOCATION
+  { sizeof(Locator),            HT_T_TINY    ,0 }, // CN_LOCATOR
   { sizeof(Lock),               HT_INVALID   ,0 }, // CN_LOCK
   { sizeof(LogicCompiler),      HT_T_LARGE   ,0 }, // CN_LOGICCOMPILER
   { sizeof(LogicTimer),         HT_T_LARGE   ,0 }, // CN_LOGICTIMER

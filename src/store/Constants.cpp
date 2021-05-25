@@ -360,11 +360,15 @@ void Constants::vAddConstantsCpp(void)
   /*  4 */ vAddConstant("EC_CLUSTER_NOT_CONNECTED"_Stz,EC_CLUSTER_NOT_CONNECTED);
   /*  5 */ vAddConstant("EC_CLUSTER_PARTITIONS_MISMATCH"_Stz,EC_CLUSTER_PARTITIONS_MISMATCH);
   /*  6 */ vAddConstant("EC_CLUSTER_SIZE_MISMATCH"_Stz,      EC_CLUSTER_SIZE_MISMATCH);
+
+  /*  6 */ vAddConstant("EC_DECIMAL_NOT_SUPPORTED"_Stz,      EC_DECIMAL_NOT_SUPPORTED);
   /*  7 */ vAddConstant("EC_DUPLICATE_COLUMN"_Stz,   EC_DUPLICATE_COLUMN);
   /*  8 */ vAddConstant("EC_DUPLICATE_KEY"_Stz,      EC_DUPLICATE_KEY);
   /*  9 */ vAddConstant("EC_FOLDER_IN_USE"_Stz,      EC_FOLDER_IN_USE);
   /* 10 */ vAddConstant("EC_FOLDER_NOT_EMPTY"_Stz,   EC_FOLDER_NOT_EMPTY);
   /* 11 */ vAddConstant("EC_INDEX_EXISTS"_Stz,       EC_INDEX_EXISTS);
+  /* 11 */ vAddConstant("EC_INTERVAL_NOT_SUPPORTED"_Stz,          EC_INTERVAL_NOT_SUPPORTED);
+
   /* 12 */ vAddConstant("EC_INVALID_CLASS"_Stz,      EC_INVALID_CLASS);
   /* 13 */ vAddConstant("EC_INVALID_COLUMN"_Stz,     EC_INVALID_COLUMN);
   /* 14 */ vAddConstant("EC_INVALID_COLUMNS_UNIQUE_INDEX"_Stz,EC_INVALID_COLUMNS_UNIQUE_INDEX);
@@ -418,7 +422,9 @@ void Constants::vAddConstantsCpp(void)
   /* 47 */ vAddConstant("EC_NOT_IN_TENANTS"_Stz,     EC_NOT_IN_TENANTS);
   /* 48 */ vAddConstant("EC_NULL_INTERFACE"_Stz,     EC_NULL_INTERFACE);
   /* 49 */ vAddConstant("EC_NULLPTR"_Stz,            EC_NULLPTR);
-  
+
+  /*    */ vAddConstant("EC_ORDERBY_NOT_SUPPORTED"_Stz,EC_ORDERBY_NOT_SUPPORTED);
+
   /*    */ vAddConstant("EC_PIPELINE_PROTOCOL_ERROR"_Stz,EC_PIPELINE_PROTOCOL_ERROR);
   
   /* 50 */ vAddConstant("EC_RESPONSE_PENDING"_Stz,   EC_RESPONSE_PENDING);

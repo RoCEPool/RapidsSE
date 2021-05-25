@@ -179,7 +179,7 @@ Object* Heap::pAllocObject(eCN eAllocClass)
 //
 //  }
   if (AM::TASK::bLogMemory() && ! gxaSizeHeap[eAllocClass].m_bDontMemLog)
-    AM::LOG::vMemoryAllocation(pObject);
+    AM::LOG::vMemoryAllocation(pObject,eAllocClass);
 
   //vVerify();
   

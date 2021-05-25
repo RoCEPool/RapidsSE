@@ -207,6 +207,72 @@ function buildSE() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Starts SE in a 1 node 1 partition cluster and runs the SETH tests against it.
+## Params:
+##  $1 : the target being tested ("debug" or "release")
+function testSE1N1P() {
+
+  local target="$1"
+
+  if [[ "${target}" != "debug" && "${target}" != "release" ]]; then
+    errorExit "Invalid target for building RapidsSE. Must be \"debug\" or \"release\" : ${target}"
+  fi
+
+  if [ "${NO_SINGLE_NODE_TESTS:+x}" == x ]; then
+    echo "Skipping single node tests."
+    return
+  fi
+
+  echo ""
+  echo "********************************************************************************"
+  echo "*** Testing RapidsSE - Single Node Single Partition (${target})"
+  echo "********************************************************************************"
+  echo ""
+
+  startSE1N1P "${target}"
+  runSeth1N1P "1N1P-${target}"
+  stopSE1Node "${target}"
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Starts up a single node single partition instance of RapidsSE.
+## Params: 
+##  $1 : the target being tested ("debug" or "release")
+
+function startSE1N1P() {
+
+  local target="$1"
+
+  echo ""
+  echo "Running single node single partition RapidsSE for ${target}."
+  echo ""
+
+  "${DIR}"/startSE_1n1p.sh
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Runs SETH against a currently running cluster of SE.
+## Params:
+##  $1 : the target being tested ("debug" or "release")
+
+function runSeth1N1P() {
+  local target="$1"
+  
+  echo ""
+  echo "Running SETH tests again RapidsSE 1N1P for ${target}."
+  echo ""
+  
+  # Start from the project root directory so that SE can change to ./commands successfully.
+  ( 
+    cd "${PROJ_ROOT}"
+    ./"${RELATIVE_BAMBOO_DIR}"/seth1N1P.sh --resultname "results-${target}.xml" --testsuffix " (${target})"
+  )
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Starts SE in a 1 node cluster and runs the SETH tests against it.
 ## Params:
 ##  $1 : the target being tested ("debug" or "release")
@@ -225,7 +291,7 @@ function testSE1Node() {
 
   echo ""
   echo "********************************************************************************"
-  echo "*** Testing RapidsSE - Single Node (${target})"
+  echo "*** Testing RapidsSE - Single Node Multiple Partitions (${target})"
   echo "********************************************************************************"
   echo ""
 
@@ -437,7 +503,10 @@ do
   # Build RapidsSE for a given target type
   buildSE "${target}"
 
-  # Test SE (single node)
+  # Test SE (single node, single partition)
+  testSE1N1P "${target}"
+
+  # Test SE (single node, multiple partitions)
   testSE1Node "${target}"
 
   # Test SE (two nodes)

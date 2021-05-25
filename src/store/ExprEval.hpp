@@ -35,6 +35,9 @@ namespace STORE
     bool     m_bHasGby;
 
     IntStack m_xTypeStack;
+    IntStack m_xStoreStack;
+    IntStack m_xAggStack;
+    IntStack m_xKeyStack;
 
     s4K      m_sProjectAsm;
     s4K      m_sFilterAsm;
@@ -67,40 +70,43 @@ namespace STORE
     bool bHasGroupBy(void);
 
   private:
-    void vAddArithmetic(Stz* szAsmBuffer, Token*  pTkn, Column* pColumnExpr);
-    void vAddDate(Stz* szAsmBuffer, Token*  pTkn);
-    void vAddDecimal(Stz* szAsmBuffer, Token*  pTkn);
-    void vAddGbyIdxCol(Stz* szAsmBuffer, eCT eColumnType, i8 i_Local);
-    void vAddLogical(Stz* szAsmBuffer, Token*  pTkn);
-    void vAddInteger(Stz* szAsmBuffer, Token*  pTkn);
-    void vAddPayLoadKey(Stz* szAsmBuffer, eCT eColumnType, i8 i_Local);
-    void vAddPopCol(Stz* szAsmBuffer, eCT eColumnType);
-    void vAddPushCol(Stz* szAsmBuffer, eCT eColumnType, i8 i_Local);
-    void vAddRelational(Stz* szAsmBuffer, Token*  pTkn);
-    void vAddStoreCol(Stz* szAsmBuffer, eCT eColumnType);
-    void vAddString(Stz* szAsmBuffer, Token*  pTkn);
-    void vAddTime(Stz* szAsmBuffer, Token*  pTkn);
-    void vAddTimestamp(Stz* szAsmBuffer, Token*  pTkn);
-    void vAddUnknown(Stz* szAsmBuffer, Token*  pTkn);
+    void vAddArithmetic(Stz* szAsmBuffer, IntStack* pTypeStack, Token*  pTkn);
+    void vAddLogical(Stz* szAsmBuffer, IntStack* pTypeStack, Token*  pTkn);
+    void vAddRelational(Stz* szAsmBuffer, IntStack* pTypeStack, Token*  pTkn);
 
-    void vAddToBufferCol(Stz* szAsmBuffer, eCT eColumnType);
+    void vAppendColumnToStreamDef(StreamDef* pStreamDefOut, Column* pColumn);
 
+    void vCreateGbyIdxCol(Stz* szAsmBuffer, eCT eColumnType, i8 i_Local);
+    void vCreatePayLoadKey(Stz* szAsmBuffer, IntStack* pTypeStack, i8 i_Local);
     eEC eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec);
+
+    void vPayStoreCol(Stz* szAsmBuffer, eCT eColumnType);
+    void vPayFetchCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType) ;
+
+    void vPushDate(Stz* szAsmBuffer, IntStack* pTypeStack, Token*  pTkn);
+    void vPushDecimal(Stz* szAsmBuffer, IntStack* pTypeStack, Token*  pTkn);
+    void vPushInteger(Stz* szAsmBuffer, IntStack* pTypeStack, Token*  pTkn);
+    void vPushLclCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType, i8 i_Local);
+    void vPushDstCol(Stz* szAsmBuffer, IntStack* pTypeStack);
+    void vPushString(Stz* szAsmBuffer, IntStack* pTypeStack, Token*  pTkn);
+    void vPushTime(Stz* szAsmBuffer, IntStack* pTypeStack, Token*  pTkn);
+    void vPushTimestamp(Stz* szAsmBuffer, IntStack* pTypeStack, Token*  pTkn);
+    void vPushUnknown(Stz* szAsmBuffer, IntStack* pTypeStack, Token*  pTkn);
+
+    void vPopDstCol(Stz* szAsmBuffer, IntStack* pTypeStack);
 
     eEC eExprEval(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);
     eEC eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);
     eEC eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);
 
-    void vGenerateColumnCode(Stz* szAsmBuffer, StreamDef* pStreamDefOut, Column* pColumn);
-    void vGenerateColumnCodeGby(StreamDef* pStreamDefOut, Column* pColumn);
-    eEC eGenerateAggregateCode(Stz* szAsmBuffer, StreamDef* pStreamDefOut, Column* pColumn, eAG eAggType);
-    eEC eGenerateGroupbyCode(StreamDef* pStreamDefOut, Column* pColumn, eAG eAggType);
+    void vGenerateColumnCodeGby(StreamDef* pStreamDefOut, Column* pColumn, IntStack* pTypeStack);
+    void vGenerateAggregateCode(eAG eAggType, Stz* szAsmBuffer, Stz* szAsmInitBuffer, IntStack* pTypeStack);
 
-    void vGenerateCount(Stz* szAsmBuffer, Stz* sAggInit);
-    void vGenerateCountAll(Stz* szAsmBuffer, Stz* sAggInit);
-    void vGenerateMin(Stz* sAsmBuffer, Stz* sAggInit);
-    void vGenerateMax(Stz* sAsmBuffer, Stz* sAggInit);
-    void vGenerateSum(Stz* sAsmBuffer, Stz* sAggInit);
+    void vGenerateCount(Stz* szAsmBuffer, Stz* sAggInit, IntStack* pTypeStack);
+    void vGenerateCountAll(Stz* szAsmBuffer, Stz* sAggInit, IntStack* pTypeStack);
+    void vGenerateMin(Stz* sAsmBuffer, Stz* sAggInit, IntStack* pTypeStack);
+    void vGenerateMax(Stz* sAsmBuffer, Stz* sAggInit, IntStack* pTypeStack);
+    void vGenerateSum(Stz* sAsmBuffer, Stz* sAggInit, IntStack* pTypeStack);
 
     i8 iOrdinalToLocal(i8 i_ColumnOrdinal);
 

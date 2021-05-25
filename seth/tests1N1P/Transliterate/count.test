@@ -1,0 +1,167 @@
+
+//------------------------------------------------------------------------------
+// create table
+create table datums (
+int_col0   INTEGER,
+int_col1  INTEGER,
+bol_col2   BOOLEAN,
+bol_col3   BOOLEAN,
+dte_col4   DATE,
+dte_col5   DATE,
+dec_col6   DECIMAL(19,2),
+dec_col7   DECIMAL(19,2),
+flt_col8   FLOAT,
+flt_col9  FLOAT,
+tme_col10  TIME,
+tme_col11  TIME,
+tsp_col12  TIMESTAMP,
+tsp_col13  TIMESTAMP,
+vch_col14  VARCHAR(32),
+vch_col15  VARCHAR(32)
+);
+success
+
+load datums "../DATA/Transliterate/timestamp.csv" ;
+success
+
+//------------------------------INT TESTS------------------------------------
+select COUNT(*) from datums;
+rows:
+(11)
+
+//--------------------------------------------------------------------------
+select COUNT(int_col1) from datums;
+rows:
+(10)
+
+//--------------------------------------------------------------------------
+select COUNT(int_col1 + 3) from datums;
+rows:
+(10)
+
+//--------------------------------------------------------------------------
+select COUNT(int_col1) + 3 from datums;
+rows:
+(13)
+
+//--------------------------------------------------------------------------
+select COUNT(int_col1 * 3) + 3 - 66 from datums;
+rows:
+(-53)
+
+//------------------------------DECIMAL TESTS------------------------------------
+select COUNT(dec_col6) from datums;
+rows:
+(9)
+
+/*
+//--------------------------------------------------------------------------
+select COUNT(dec_col6 + 3) from datums;
+rows:
+(9)
+
+//--------------------------------------------------------------------------
+select COUNT(dec_col6) + 3 from datums;
+rows:
+(12)
+
+//--------------------------------------------------------------------------
+select COUNT(dec_col6 * 3) + 3 - 66 from datums;
+rows:
+(-54)
+*/
+
+//------------------------------FLOAT TESTS------------------------------------
+select COUNT(flt_col8) from datums;
+rows:
+(10)
+
+//--------------------------------------------------------------------------
+select COUNT(flt_col8 + 3) from datums;
+rows:
+(10)
+
+//--------------------------------------------------------------------------
+select COUNT(flt_col8) + 3 from datums;
+rows:
+(13)
+
+//--------------------------------------------------------------------------
+select COUNT(flt_col8 * 3) + 3 - 66 from datums;
+rows:
+(-53)
+
+//------------------------------TIME TESTS------------------------------------
+select COUNT(tme_col10) from datums;
+rows:
+(10)
+
+//------------------------------TIMESTAMP TESTS------------------------------------
+select COUNT(tsp_col12) from datums;
+rows:
+(9)
+
+//------------------------------DATE TESTS------------------------------------
+select COUNT(dte_col4) from datums;
+rows:
+(10)
+
+//------------------------------VARCHAR TESTS------------------------------------
+select COUNT(vch_col14) from datums;
+rows:
+(10)
+
+//------------------------------BOOLEAN TESTS------------------------------------
+select COUNT(bol_col3) , COUNT(vch_col14), COUNT(vch_col15) from datums;
+rows:
+(11, 10, 11)
+
+//------------------------------------------------------------------------------
+// drop the table
+drop table datums;
+success;
+
+CLEANUP {
+
+  drop table datums;
+  mute
+
+  bye;
+  mute
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

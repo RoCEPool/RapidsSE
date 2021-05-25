@@ -37,8 +37,6 @@ using namespace OBLIQUE;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 namespace BASE {
-
-  class Article;
          
   class Birth;
   class BufferPool;
@@ -215,6 +213,13 @@ namespace OBLIQUE
   {
   public:
   
+    class DIC
+    {
+    public:
+      static void vListContents(Dic* pDic);
+      static void vListContents(Dic* pDic, i8 i_Depth);
+    };
+  
     class DEMON
     {
     public:
@@ -233,7 +238,7 @@ namespace OBLIQUE
     public:
       static void vEvent(eEV eEvent, Stz* szFormat, ...);
       static void vLogInternal(i8 iTable, ...);
-      static void vMemoryAllocation(Object* pObject);
+      static void vMemoryAllocation(Object* pObject, eCN eClassNo);
       static void vMemoryFree(Object* pObject);
       static void vOperand(i8 iPoint);
       static void vResourceUse(Resource* pResource, i8 iAction, i8 nBytes);
@@ -276,6 +281,7 @@ namespace OBLIQUE
     {
     public:
       static Word* pFind(Stz* szWordNm);
+      static void vListContents(Word* pWord, i8 i_Depth);
     };
 
 
@@ -361,7 +367,6 @@ namespace OBLIQUE
     static i8   nPtnsInGrid(void);
     static Schedule* pSchedule(void);
     static Resources* pResources(void);
-    static Article* pArcticleRoot(void);
     static Word* pConstantRoot(void);
     static void vRootConstant(Word* pConstantRoot);
     static Dic* pDicRoot(void);

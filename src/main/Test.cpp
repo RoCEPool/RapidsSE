@@ -34,6 +34,7 @@
 #include "SP_TableMetadata.hpp"
 
 #include "TpchRatios.h"
+#include "Locator.hpp"
 
 #include "SP_Bits.hpp"
 #include "SP_Bytes.hpp"
@@ -498,7 +499,10 @@ void vTest8(void)
   Text* pText0 = new Text("A"_Stz);
   Text* pText1 = new Text("B"_Stz);
   Text* pText2 = new Text("C"_Stz);
-  
+  Text* pText3 = new Text("D"_Stz);
+  Text* pText4 = new Text("E"_Stz);
+  Text* pText5 = new Text("F"_Stz);
+
   ListExo_t<CN_CLASSPLACEHOLDER,Text>* pListExo;
   
   pListExo = new ListExo_t<CN_CLASSPLACEHOLDER,Text>;
@@ -506,17 +510,20 @@ void vTest8(void)
   pListExo->vAppend(pText0);
   pListExo->vAppend(pText1);
   pListExo->vAppend(pText2);
-  
-  vTrace("0: %s\n"_Stz,pListExo->pPeek(0)->szGet());
-  vTrace("1: %s\n"_Stz,pListExo->pPeek(1)->szGet());
-  vTrace("2: %s\n"_Stz,pListExo->pPeek(2)->szGet());
+  pListExo->vAppend(pText3);
+  pListExo->vAppend(pText4);
+  pListExo->vAppend(pText5);
+
+//  vTrace("0: %s\n"_Stz,pListExo->pPeek(0)->szGet());
+//  vTrace("1: %s\n"_Stz,pListExo->pPeek(1)->szGet());
+//  vTrace("2: %s\n"_Stz,pListExo->pPeek(2)->szGet());
 
   //ListExoIter_t<CN_CLASSPLACEHOLDER,Text>* pListExoIter = pListExo->pNewIter();
   ListExoIter_t<Text>* pListExoIter = pListExo->pNewIter();
 
   // - - - -
   
-  vTrace("\nSeq (a) : testing 3 items : pNewIter() ; while ( pNext() )\n"_Stz);
+  vTrace("\nSeq (a) : testing 6 items : pNewIter() ; while ( pNext() )\n"_Stz);
   
   while (pListExoIter->bHasNext()) {
     pText = pListExoIter->pNext();
@@ -526,7 +533,7 @@ void vTest8(void)
 
   // - - - -
 
-  vTrace("\nSeq (b) : testing 3 items : vBeforeFirst(); while ( pNext() )\n"_Stz);
+  vTrace("\nSeq (b) : testing 6 items : vBeforeFirst(); while ( pNext() )\n"_Stz);
   
   pListExoIter->vBeforeFirst();
   while ( (pText = pListExoIter->pNext()) ) {
@@ -536,7 +543,7 @@ void vTest8(void)
 
   // - - - -
 
-  vTrace("\nSeq (c) : testing 3 items : pFirst(), pNext(), pNext()\n"_Stz);
+  vTrace("\nSeq (c) : testing 6 items : pFirst(), pNext(), pNext()\n"_Stz);
 
   pText = pListExoIter->pFirst();
   vTrace("pFirst: %s\n"_Stz,pText->szGet());
@@ -551,12 +558,25 @@ void vTest8(void)
   vTrace("bHasNext: %s\n"_Stz,pListExoIter->bHasNext() ? "true" : "false");
 
   pText = pListExoIter->pNext();
+  vTrace("pNext: %s\n"_Stz,pText->szGet());
+  vTrace("bHasNext: %s\n"_Stz,pListExoIter->bHasNext() ? "true" : "false");
+
+  pText = pListExoIter->pNext();
+  vTrace("pNext: %s\n"_Stz,pText->szGet());
+  vTrace("bHasNext: %s\n"_Stz,pListExoIter->bHasNext() ? "true" : "false");
+
+  pText = pListExoIter->pNext();
+  vTrace("pNext: %s\n"_Stz,pText->szGet());
+  vTrace("bHasNext: %s\n"_Stz,pListExoIter->bHasNext() ? "true" : "false");
+
+  pText = pListExoIter->pNext();
   ASSERT(! pText);
   
   // - - - -
   
-  vTrace("\nSeq (c) : testing 3 items : pNext(), pNext(), pNext()\n"_Stz);
-  
+  vTrace("\nSeq (c) : testing 6 items : pNext(), pNext(), pNext()\n"_Stz);
+  pListExoIter->vBeforeFirst();
+
   pText = pListExoIter->pNext();
   vTrace("pNext: %s\n"_Stz,pText->szGet());
   vTrace("bHasNext: %s\n"_Stz,pListExoIter->bHasNext() ? "true" : "false");
@@ -568,14 +588,27 @@ void vTest8(void)
   pText = pListExoIter->pNext();
   vTrace("pNext: %s\n"_Stz,pText->szGet());
   vTrace("bHasNext: %s\n"_Stz,pListExoIter->bHasNext() ? "true" : "false");
-  
+
+  pText = pListExoIter->pNext();
+  vTrace("pNext: %s\n"_Stz,pText->szGet());
+  vTrace("bHasNext: %s\n"_Stz,pListExoIter->bHasNext() ? "true" : "false");
+
+  pText = pListExoIter->pNext();
+  vTrace("pNext: %s\n"_Stz,pText->szGet());
+  vTrace("bHasNext: %s\n"_Stz,pListExoIter->bHasNext() ? "true" : "false");
+
+  pText = pListExoIter->pNext();
+  vTrace("pNext: %s\n"_Stz,pText->szGet());
+  vTrace("bHasNext: %s\n"_Stz,pListExoIter->bHasNext() ? "true" : "false");
+
   pText = pListExoIter->pNext();
   ASSERT(! pText);
 
   // - - - -
 
   vTrace("\nSeq (d) : testing 3 items : while ( pNext() )\n"_Stz);
-  
+  pListExoIter->vBeforeFirst();
+
   while ( (pText = pListExoIter->pNext()) ) {
     vTrace("pNext: %s\n"_Stz,pText->szGet());
     vTrace("bHasNext: %s\n"_Stz,pListExoIter->bHasNext() ? "true" : "false");
@@ -586,17 +619,118 @@ void vTest8(void)
   pListExo->vRemoveAll();
 
   vTrace("\nSeq (e) : testing empty list : while ( pNext() )\n"_Stz);
-  
+  pListExoIter->vBeforeFirst();
+
   while ( (pText = pListExoIter->pNext()) ) {
     vTrace("pNext: %s\n"_Stz,pText->szGet());
     vTrace("bHasNext: %s\n"_Stz,pListExoIter->bHasNext() ? "true" : "false");
   }
-  
+
+  pListExo->vAppend(pText0);
+  pListExo->vAppend(pText1);
+  pListExo->vAppend(pText2);
+  pListExo->vAppend(pText3);
+  pListExo->vAppend(pText4);
+  pListExo->vAppend(pText5);
+
   // - - - -
+
+  vTrace("\nSeq (f) : testing bIsBeforeFirst(), bIsAfterLast()\n"_Stz);
+  pListExoIter->vBeforeFirst();
+  vTrace("bIsBeforeFirst = %s; bIsAfterLast = %s\n"_Stz,
+         pListExoIter->bIsBeforeFirst() ? "true"_Stz : "false"_Stz,
+         pListExoIter->bIsAfterLast() ? "true"_Stz : "false"_Stz);
+  pListExoIter->vAfterLast();
+  vTrace("bIsBeforeFirst = %s; bIsAfterLast = %s\n"_Stz,
+         pListExoIter->bIsBeforeFirst() ? "true"_Stz : "false"_Stz,
+         pListExoIter->bIsAfterLast() ? "true"_Stz : "false"_Stz);
+
+  // - - - -
+
+  vTrace("\nSeq (g) : testing reverse iteration : while ( bHasPrev() )\n"_Stz);
+  pListExoIter->vAfterLast();
+  while (pListExoIter->bHasPrev()) {
+    pText = pListExoIter->pPrev();
+    vTrace("pPrev: %s\n"_Stz,pText->szGet());
+    vTrace("bHasPrev: %s\n"_Stz,pListExoIter->bHasPrev() ? "true" : "false");
+  }
+
+  // - - - -
+
+  vTrace("\nSeq (h) : testing removal of head node\n"_Stz);
+  pListExoIter->vBeforeFirst();
+  pListExoIter->pNext();
+  pListExoIter->vRemove();
+
+  pListExoIter->vBeforeFirst();
+  while ( (pText = pListExoIter->pNext()) ) {
+    vTrace("pNext: %s\n"_Stz,pText->szGet());
+    vTrace("bHasNext: %s\n"_Stz,pListExoIter->bHasNext() ? "true" : "false");
+  }
+
+  pListExo->vPush(pText0);  // replace
+
+  // - - - -
+
+  vTrace("\nSeq (i) : testing removal of tail node\n"_Stz);
+
+  pListExoIter->vBeforeFirst();
+  while (pListExoIter->bHasNext()) {
+    pListExoIter->pNext();
+  }
+  pListExoIter->vRemove();
+
+  pListExoIter->vBeforeFirst();
+  while ( (pText = pListExoIter->pNext()) ) {
+    vTrace("pNext: %s\n"_Stz,pText->szGet());
+    vTrace("bHasNext: %s\n"_Stz,pListExoIter->bHasNext() ? "true" : "false");
+  }
+
+  pListExo->vAppend(pText5);  // replace
+
+  // - - - -
+
+  vTrace("\nSeq (j) : testing removal of middle node (C) moving forwards\n"_Stz);
+
+  pListExoIter->vBeforeFirst();
+  pListExoIter->pNext();
+  pListExoIter->pNext();
+  pListExoIter->pNext();
+  pListExoIter->vRemove();
+
+  pListExoIter->vBeforeFirst();
+  while ( (pText = pListExoIter->pNext()) ) {
+    vTrace("pNext: %s\n"_Stz,pText->szGet());
+    vTrace("bHasNext: %s\n"_Stz,pListExoIter->bHasNext() ? "true" : "false");
+  }
+
+  pListExo->vInsertAfter(pText2, pText1);
+
+  // - - - -
+
+  vTrace("\nSeq (k) : testing removal of middle node (D) moving backwards\n"_Stz);
+
+  pListExoIter->vAfterLast();
+  pListExoIter->pPrev();
+  pListExoIter->pPrev();
+  pListExoIter->pPrev();
+  pListExoIter->vRemove();
+
+  pListExoIter->vBeforeFirst();
+  while ( (pText = pListExoIter->pNext()) ) {
+    vTrace("pNext: %s\n"_Stz,pText->szGet());
+    vTrace("bHasNext: %s\n"_Stz,pListExoIter->bHasNext() ? "true" : "false");
+  }
+
+  pListExo->vInsertAfter(pText3, pText2);
+
 
   delete pListExoIter;
   
 
+  delete pText5;
+  delete pText4;
+  delete pText3;
   delete pText2;
   delete pText1;
   delete pText0;
@@ -1694,6 +1828,15 @@ void vTest31(void)
 /*----------------------------------------------------------------------------*/
 void vTest32(void)
 {
+  Location* pLocation = new Location;
+  
+  pLocation->vSet();
+  pLocation->vPrint();
+  
+  Locator* pLocator = new Locator(pLocation);
+
+  delete pLocator;
+  delete pLocation;
 }
 
 /*----------------------------------------------------------------------------*/

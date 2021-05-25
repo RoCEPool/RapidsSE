@@ -299,8 +299,36 @@ b1 BASE::bAddrsToLines(void** pvAddrs,
     // second is the name of the file:line (without full paths).
     // We just need to parse this information out.
 
+    // The path of the binary may be relative, and this can be different
+    // depending on whether we are running from the debugger or from
+    // the installer. So if we can't find the relative path then try
+    // prepending "../" before it and look again.
+    s256 sFilePath;
+    if (File::bExists((Stz*) xDlInfo.dli_fname, false)) {
+      sFilePath.vCopy((Stz*) xDlInfo.dli_fname);
+
+    } else {
+      // Cannot find the binary. If it is a relative file, let's try prepending "../"
+      if (xDlInfo.dli_fname[0] == 0 || xDlInfo.dli_fname[0] == '/') {
+        vTrace("Cannot find file to convert address to line numbers: %s\n"_Stz, xDlInfo.dli_fname);
+        free(acSymbolList);
+        return false;
+      }
+
+      sFilePath = "../"_Stz;
+      sFilePath.vConcat((Stz*) xDlInfo.dli_fname);
+
+      if (!File::bExists(sFilePath.szStz(), false)) {
+        vTrace("Cannot find file to convert address to line numbers: %s\n"_Stz, sFilePath.szStz());
+        free(acSymbolList);
+        return false;
+      }
+    }
+
+    ASSERT(sFilePath.nLength() > 0);
+
     s2K sCmd;
-    sCmd.vSprint("addr2line -e %s --functions --demangle --basename %p"_Stz, xDlInfo.dli_fname, pvOffsetAddr);
+    sCmd.vSprint("addr2line -e %s --functions --demangle --basename %p"_Stz, sFilePath.szStz(), pvOffsetAddr);
     //vTrace("Cmd: %s\n"_Stz, sCmd.azChar());
 
     FILE* pF = popen(sCmd.azChar(), "r");

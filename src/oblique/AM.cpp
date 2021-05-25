@@ -132,6 +132,30 @@ extern SizeHeap      gxaSizeHeap[];
 
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                   Dic                                      */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* list all words in this dic                                                 */
+/*----------------------------------------------------------------------------*/
+void AM::DIC::vListContents(Dic* pDic)
+{
+  pDic->vGrabRead();
+  
+  
+  for (Word* pWord = pDic->pFirstWord(); pWord; pWord = pWord->pNextWord()) {
+
+    Object* pObject = pWord->pObject();
+    if (! pObject)
+      continue;
+
+    AM::WORD::vListContents(pWord,0);
+  }
+  
+  pDic->vDropRead();
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                   Demon                                    */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
@@ -291,7 +315,7 @@ void AM::LOG::vLogInternal(i8 iTable, ...)
 /*----------------------------------------------------------------------------*/
 /* log memory allocation                                                      */
 /*----------------------------------------------------------------------------*/
-void AM::LOG::vMemoryAllocation(Object* pObject)
+void AM::LOG::vMemoryAllocation(Object* pObject, eCN eClassNo)
 {
   _static_
   
@@ -310,7 +334,7 @@ void AM::LOG::vMemoryAllocation(Object* pObject)
                         MY::iPtn(),
                         aZK[pRLU->m_ePipeInOperand],
                         
-                        pObject->szClassNm(),
+                        aCN[eClassNo],
                         (i8)0,
                         
                         MY::pThread()->iThreadNo(),
@@ -333,6 +357,8 @@ void AM::LOG::vMemoryFree(Object* pObject)
   LogicUnit* pRLU = pJob->pLogicUnit_job();
   if (! pRLU || pRLU->m_xpOp.bIsNull())
     return;
+  
+  RASSERT(CN_FREECHUNK != pObject->eGetClassNo());
   
   AM::LOG::vLogInternal((i8)TI_MEMORYLOG,
                         
@@ -627,6 +653,42 @@ Word* AM::WORD::pFind(Stz* szWordNm)
   Word* pWord = pRootDic->pFindWord(szWordNm);
   
   return pWord;
+}
+
+/*----------------------------------------------------------------------------*/
+/* list contents of word                                                      */
+/*----------------------------------------------------------------------------*/
+void AM::WORD::vListContents(Word* pWord, i8 i_Depth)
+{
+  _static_
+  
+  Word* pKind = nullptr;
+  
+  Object* pObject = pWord->pObject();
+  if (! pObject)
+    return;
+  
+  Word* pCategory = pWord->pCategory();
+
+  if (CN_DIC == pObject->eGetClassNo())
+    pKind = ((Dic*)pObject)->pDicKind();
+  
+  vTrace("%s%s %s %s\n"_Stz,
+         Stz::szTab(i_Depth),
+         pWord->szWordNm(),
+         pCategory ? pCategory->szWordNm() : "n/a"_Stz,
+         pKind ? pKind->szWordNm() : "n/a"_Stz
+         );
+
+  if (CN_DIC == pObject->eGetClassNo())
+    ((Dic*)pObject)->vListContents(i_Depth+1);
+  else
+  if (CN_TABLE == pObject->eGetClassNo())
+    ((Table*)pObject)->vListContents(i_Depth+1);
+  else
+  if (CN_INDEX == pObject->eGetClassNo())
+    ((Index*)pObject)->vListContents(i_Depth+1);
+
 }
 
 

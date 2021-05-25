@@ -681,7 +681,7 @@ eEC StreamDef::eParseColumnDecimal(TokenVec* pTknVec, Column* pCol)
   
   // set default precision and scale
   i8 iPrecision = C_MAX_BCD_PRECISION;
-  i8 iScale = 0;
+  i8 iScale = 2;
   
   // set column type in column
   pCol->vColumnType(CT_DECIMAL);
@@ -724,7 +724,10 @@ eEC StreamDef::eParseColumnDecimal(TokenVec* pTknVec, Column* pCol)
   pTkn = pTknVec->pNextToken(); dPT();
   if (! pTkn->bSame(")"_Stz))
     return EC_INVALID_COMMAND;
-  
+
+  if (iScale != 2)
+    return EC_DECIMAL_NOT_SUPPORTED;
+
   if (! Column::bValidBcd(iPrecision, iScale))
     return EC_INVALID_COMMAND;
   
@@ -809,10 +812,12 @@ eEC StreamDef::eParseColumnInterval(TokenVec* pTknVec, Column* pCol)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
   UNUSED(pTknVec);
 
-  pCol->vColumnType(CT_INTERVAL_DT);
-  pCol->vDatum(DM_IVL);
+  return EC_INTERVAL_NOT_SUPPORTED;
+
+  //pCol->vColumnType(CT_INTERVAL_DT);
+  //pCol->vDatum(DM_IVL);
   
-  return EC_NONE;
+  //return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -58,6 +58,7 @@ void LogicUnit::vCollectOpcode(void)
   
   if (m_pTkn->bSame("Label"_Stz)) {
     vAcceptToken();
+    //vTrace("Tkn: %s\n"_Stz, m_pTkn->azChars());
     vDefineLabel(m_pTkn->szChars());
     return;
   }

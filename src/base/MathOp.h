@@ -59,8 +59,8 @@ static eDM eMathOp_CmpResult[DM_ENUMS][DM_ENUMS] = {
 /*  5 INT  */ { DM_NONE, DM_BOL,   DM_NONE,  DM_NONE,      DM_BOL,     DM_BOL,       DM_NONE,    DM_NONE,  DM_NONE,      DM_NONE,    DM_NONE, DM_BOL    },
 /*  6 IVL  */ { DM_NONE, DM_NONE,  DM_NONE,  DM_NONE,      DM_NONE,    DM_NONE,      DM_BOL,     DM_BOL,   DM_NONE,      DM_NONE,    DM_NONE, DM_BOL    },
 /*  6 IVY  */ { DM_NONE, DM_NONE,  DM_NONE,  DM_NONE,      DM_NONE,    DM_NONE,      DM_BOL,     DM_BOL,   DM_NONE,      DM_NONE,    DM_NONE, DM_BOL    },
-/*  7 TME  */ { DM_NONE, DM_NONE,  DM_NONE,  DM_NONE,      DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE,  DM_BOL,       DM_NONE,    DM_NONE, DM_BOL    },
-/*  8 TSP  */ { DM_NONE, DM_NONE,  DM_NONE,  DM_BOL,       DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE,  DM_NONE,      DM_BOL,     DM_NONE, DM_BOL    },
+/*  7 TME  */ { DM_NONE, DM_NONE,  DM_NONE,  DM_NONE,      DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE,  DM_BOL,       DM_BOL,     DM_NONE, DM_BOL    },
+/*  8 TSP  */ { DM_NONE, DM_NONE,  DM_NONE,  DM_BOL,       DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE,  DM_BOL,       DM_BOL,     DM_NONE, DM_BOL    },
 /*  9 VCH  */ { DM_NONE, DM_NONE,  DM_NONE,  DM_NONE,      DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE,  DM_NONE,      DM_NONE,    DM_BOL,  DM_BOL    },
 /* 10 UNK  */ { DM_NONE, DM_BOL,   DM_BOL,   DM_BOL,       DM_BOL,     DM_BOL,       DM_BOL,     DM_BOL,   DM_BOL,       DM_BOL,     DM_BOL,  DM_BOL    }
 };
@@ -82,18 +82,18 @@ static eEO eMathOp_EqCode[DM_ENUMS][DM_ENUMS] = {
 };
 
 static eEO eMathOp_GeCode[DM_ENUMS][DM_ENUMS] = {
-           //   NONE     BCD            BOL           DTE           FLT            INT            IVL           IVY TME           TSP           VCH           UNK
-/*  0 NONE */ { EO_NONE, EO_NONE,       EO_NONE,      EO_NONE,      EO_NONE,       EO_NONE,       EO_NONE,      EO_NONE,EO_NONE,      EO_NONE,      EO_NONE,      EO_GE_XYZUNK    },
-/*  1 BCD  */ { EO_NONE, EO_GE_BCDBCD,  EO_NONE,      EO_NONE,      EO_GE_BCDFLT,  EO_GE_BCDINT,  EO_NONE,      EO_NONE,EO_NONE,      EO_NONE,      EO_NONE,      EO_GE_XYZUNK    },
-/*  2 BOL  */ { EO_NONE, EO_NONE,       EO_GE_BOLBOL, EO_NONE,      EO_NONE,       EO_NONE,       EO_NONE,      EO_NONE,EO_NONE,      EO_NONE,      EO_NONE,      EO_GE_XYZUNK    },
-/*  3 DTE  */ { EO_NONE, EO_NONE,       EO_NONE,      EO_GE_DTEDTE, EO_NONE,       EO_NONE,       EO_NONE,      EO_NONE,EO_NONE,      EO_GE_DTETSP, EO_NONE,      EO_GE_XYZUNK    },
-/*  4 FLT  */ { EO_NONE, EO_GE_FLTBCD,  EO_NONE,      EO_NONE,      EO_GE_FLTFLT,  EO_GE_FLTINT,  EO_NONE,      EO_NONE,EO_NONE,      EO_NONE,      EO_NONE,      EO_GE_XYZUNK    },
-/*  5 INT  */ { EO_NONE, EO_GE_INTBCD,  EO_NONE,      EO_NONE,      EO_GE_INTFLT,  EO_GE_INTINT,  EO_NONE,      EO_NONE,EO_NONE,      EO_NONE,      EO_NONE,      EO_GE_XYZUNK    },
-/*  6 IVL  */ { EO_NONE, EO_NONE,       EO_NONE,      EO_NONE,      EO_NONE,       EO_NONE,       EO_GE_IVLIVL, EO_GE_IVLIVL,EO_NONE,      EO_NONE,      EO_NONE,      EO_GE_XYZUNK    },
-/*  6 IVY  */ { EO_NONE, EO_NONE,       EO_NONE,      EO_NONE,      EO_NONE,       EO_NONE,       EO_GE_IVLIVL, EO_GE_IVLIVL,EO_NONE,      EO_NONE,      EO_NONE,      EO_GE_XYZUNK    },
-/*  7 TME  */ { EO_NONE, EO_NONE,       EO_NONE,      EO_NONE,      EO_NONE,       EO_NONE,       EO_NONE,      EO_NONE,EO_GE_TMETME, EO_NONE,      EO_NONE,      EO_GE_XYZUNK    },
-/*  8 TSP  */ { EO_NONE, EO_NONE,       EO_NONE,      EO_GE_TSPDTE, EO_NONE,       EO_NONE,       EO_NONE,      EO_NONE,EO_NONE,      EO_GE_TSPTSP, EO_NONE,      EO_GE_XYZUNK    },
-/*  9 VCH  */ { EO_NONE, EO_NONE,       EO_NONE,      EO_NONE,      EO_NONE,       EO_NONE,       EO_NONE,      EO_NONE,EO_NONE,      EO_NONE,      EO_GE_VCHVCH, EO_GE_XYZUNK    },
+           //   NONE     BCD            BOL           DTE           FLT            INT            IVL           IVY               TME           TSP           VCH           UNK
+/*  0 NONE */ { EO_NONE, EO_NONE,       EO_NONE,      EO_NONE,      EO_NONE,       EO_NONE,       EO_NONE,      EO_NONE,          EO_NONE,      EO_NONE,      EO_NONE,      EO_GE_XYZUNK    },
+/*  1 BCD  */ { EO_NONE, EO_GE_BCDBCD,  EO_NONE,      EO_NONE,      EO_GE_BCDFLT,  EO_GE_BCDINT,  EO_NONE,      EO_NONE,          EO_NONE,      EO_NONE,      EO_NONE,      EO_GE_XYZUNK    },
+/*  2 BOL  */ { EO_NONE, EO_NONE,       EO_GE_BOLBOL, EO_NONE,      EO_NONE,       EO_NONE,       EO_NONE,      EO_NONE,          EO_NONE,      EO_NONE,      EO_NONE,      EO_GE_XYZUNK    },
+/*  3 DTE  */ { EO_NONE, EO_NONE,       EO_NONE,      EO_GE_DTEDTE, EO_NONE,       EO_NONE,       EO_NONE,      EO_NONE,          EO_NONE,      EO_GE_DTETSP, EO_NONE,      EO_GE_XYZUNK    },
+/*  4 FLT  */ { EO_NONE, EO_GE_FLTBCD,  EO_NONE,      EO_NONE,      EO_GE_FLTFLT,  EO_GE_FLTINT,  EO_NONE,      EO_NONE,          EO_NONE,      EO_NONE,      EO_NONE,      EO_GE_XYZUNK    },
+/*  5 INT  */ { EO_NONE, EO_GE_INTBCD,  EO_NONE,      EO_NONE,      EO_GE_INTFLT,  EO_GE_INTINT,  EO_NONE,      EO_NONE,          EO_NONE,      EO_NONE,      EO_NONE,      EO_GE_XYZUNK    },
+/*  6 IVL  */ { EO_NONE, EO_NONE,       EO_NONE,      EO_NONE,      EO_NONE,       EO_NONE,       EO_GE_IVLIVL, EO_GE_IVLIVL,     EO_NONE,      EO_NONE,      EO_NONE,      EO_GE_XYZUNK    },
+/*  6 IVY  */ { EO_NONE, EO_NONE,       EO_NONE,      EO_NONE,      EO_NONE,       EO_NONE,       EO_GE_IVLIVL, EO_GE_IVLIVL,     EO_NONE,      EO_NONE,      EO_NONE,      EO_GE_XYZUNK    },
+/*  7 TME  */ { EO_NONE, EO_NONE,       EO_NONE,      EO_NONE,      EO_NONE,       EO_NONE,       EO_NONE,      EO_NONE,          EO_GE_TMETME, EO_NONE,      EO_NONE,      EO_GE_XYZUNK    },
+/*  8 TSP  */ { EO_NONE, EO_NONE,       EO_NONE,      EO_GE_TSPDTE, EO_NONE,       EO_NONE,       EO_NONE,      EO_NONE,          EO_NONE,      EO_GE_TSPTSP, EO_NONE,      EO_GE_XYZUNK    },
+/*  9 VCH  */ { EO_NONE, EO_NONE,       EO_NONE,      EO_NONE,      EO_NONE,       EO_NONE,       EO_NONE,      EO_NONE,          EO_NONE,      EO_NONE,      EO_GE_VCHVCH, EO_GE_XYZUNK    },
 /* 10 UNK  */ { EO_NONE, EO_GE_UNKXYZ,  EO_GE_UNKXYZ, EO_GE_UNKXYZ, EO_GE_UNKXYZ,  EO_GE_UNKXYZ,  EO_GE_UNKXYZ, EO_GE_UNKXYZ,EO_GE_UNKXYZ, EO_GE_UNKXYZ, EO_GE_UNKXYZ, EO_GE_UNKXYZ    }
 };
 
@@ -222,7 +222,7 @@ static eDM eMathOp_DivResult[DM_ENUMS][DM_ENUMS] = {
 static eEO eMathOp_DivCode[DM_ENUMS][DM_ENUMS] = {
            //   NONE     BCD            BOL      DTE           FLT            INT            IVL          IVY           TME           TSP           VCH      UNK
 /*  0 NONE */ { EO_NONE, EO_NONE,       EO_NONE, EO_NONE,      EO_NONE,       EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE, EO_NONE    },
-/*  1 BCD  */ { EO_NONE, EO_DIV_BCDBCD, EO_NONE, EO_NONE,      EO_DIV_FLTBCD, EO_DIV_INTBCD,EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE, EO_DIV_UNKXYZ  },
+/*  1 BCD  */ { EO_NONE, EO_DIV_BCDBCD, EO_NONE, EO_NONE,      EO_DIV_FLTBCD, EO_DIV_BCDINT,EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE, EO_DIV_UNKXYZ  },
 /*  2 BOL  */ { EO_NONE, EO_NONE,       EO_NONE, EO_NONE,      EO_NONE,       EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE, EO_NONE    },
 /*  3 DTE  */ { EO_NONE, EO_NONE,       EO_NONE, EO_NONE,      EO_NONE,       EO_NONE/*?*/, EO_DIV_DTEIVL,EO_NONE,      EO_NONE/*?*/, EO_NONE,      EO_NONE, EO_NONE    },
 /*  4 FLT  */ { EO_NONE, EO_DIV_FLTBCD, EO_NONE, EO_NONE,      EO_DIV_FLTFLT, EO_DIV_FLTINT,EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE, EO_DIV_UNKXYZ  },
@@ -293,7 +293,7 @@ static eDM eMathOp_MulResult[DM_ENUMS][DM_ENUMS] = {
 static eEO eMathOp_MulCode[DM_ENUMS][DM_ENUMS] = {
            //   NONE     BCD            BOL            DTE           FLT            INT           IVL           IVY           TME           TSP           VCH      UNK
 /*  0 NONE */ { EO_NONE, EO_NONE,       EO_NONE,       EO_NONE,      EO_NONE,       EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE, EO_NONE    },
-/*  1 BCD  */ { EO_NONE, EO_MUL_BCDBCD, EO_NONE,       EO_NONE,      EO_MUL_BCDFLT, EO_MUL_INTBCD,EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE, EO_MUL_XYZUNK  },
+/*  1 BCD  */ { EO_NONE, EO_MUL_BCDBCD, EO_NONE,       EO_NONE,      EO_MUL_BCDFLT, EO_MUL_BCDINT,EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE, EO_MUL_XYZUNK  },
 /*  2 BOL  */ { EO_NONE, EO_NONE,       EO_NONE,       EO_NONE,      EO_NONE,       EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE, EO_NONE    },
 /*  3 DTE  */ { EO_NONE, EO_NONE,       EO_NONE,       EO_NONE,      EO_NONE,       EO_NONE/*?*/, EO_MUL_DTEIVL,EO_NONE,      EO_NONE/*?*/, EO_NONE,      EO_NONE, EO_NONE    },
 /*  4 FLT  */ { EO_NONE, EO_MUL_FLTBCD, EO_NONE,       EO_NONE,      EO_MUL_FLTFLT, EO_MUL_FLTINT,EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE, EO_MUL_XYZUNK  },
@@ -382,7 +382,7 @@ i8 iMathOp_MinValue(eDM eDatum) {
     case DM_IVY: iMinValue = Ivl::iMinValue(); break;
     case DM_TME: iMinValue = Tme::iMinValue(); break;
     case DM_TSP: iMinValue = Tsp::iMinValue(); break;
-    case DM_VCH: RASSERT(0); break;
+    case DM_VCH: iMinValue = 0; break;
     case DM_UNK: iMinValue = Unk::iMinValue(); break;
       break;
     default:
@@ -391,6 +391,10 @@ i8 iMathOp_MinValue(eDM eDatum) {
   }
 
   return iMinValue;
+}
+
+void vMathOp_MinValue(Stz* sMinValue) {
+  sMinValue = ""_Stz;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -419,6 +423,10 @@ i8 iMathOp_MaxValue(eDM eDatum) {
   }
 
   return iMaxValue;
+}
+
+void vMathOp_MaxValue(Stz* sMaxValue) {
+  strcpy((char*)sMaxValue,"\255");
 }
 
 /*============================================================================*/

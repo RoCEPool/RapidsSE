@@ -64,6 +64,7 @@ enum eEC // error code
   EC_CSV_YEAR_TOO_LARGE,
 
   /* _D_ */
+  EC_DECIMAL_NOT_SUPPORTED,
   EC_DUPLICATE_COLUMN,
   EC_DUPLICATE_KEY,
 
@@ -98,6 +99,7 @@ enum eEC // error code
   EC_IDXVFY_SKIPLIST_ENTRY,
   EC_IDXVFY_SKIPLIST_LEVELS,
   EC_INDEX_EXISTS,
+  EC_INTERVAL_NOT_SUPPORTED,
   EC_INVALID_CLASS,
   EC_INVALID_COLUMN,
   EC_INVALID_COLUMNS_UNIQUE_INDEX,
@@ -163,6 +165,7 @@ enum eEC // error code
   EC_NOT_IN_TABLE,
   EC_NOT_IN_TABLES,
   EC_NOT_IN_TENANTS,
+
   EC_NULL_INTERFACE,
   EC_NULLPTR,
 
@@ -170,6 +173,7 @@ enum eEC // error code
   EC_OBJECT_CLASSNO_INVALID,
   EC_OBJECT_FOOTER_INVALID,
   EC_OBJECT_MAGIC_INVALID,
+  EC_ORDERBY_NOT_SUPPORTED,
 
   /* _P_ */
   EC_PIPELINE_PROTOCOL_ERROR,
@@ -281,6 +285,7 @@ static Stz* aEC[]
   /* EC_CSV_YEAR_TOO_LARGE            */ "EC_CSV_YEAR_TOO_LARGE"_Stz,
 
   /* _D_ */
+  /* EC_DECIMAL_NOT_SUPPORTED         */ "decimal only with scale 2 currently supported"_Stz,
   /* EC_DUPLICATE_COLUMN              */ "duplicate column"_Stz,
   /* EC_DUPLICATE_KEY                 */ "duplicate key"_Stz,
 
@@ -315,6 +320,7 @@ static Stz* aEC[]
   /* EC_IDXVFY_SKIPLIST_ENTRY         */ "EC_IDXVFY_SKIPLIST_ENTRY"_Stz,
   /* EC_IDXVFY_SKIPLIST_LEVELS        */ "EC_IDXVFY_SKIPLIST_LEVELS"_Stz,
   /* EC_INDEX_EXISTS                  */ "index exists"_Stz,
+  /* EC_INTERVAL_NOT_SUPPORTED        */ "interval currently not supported"_Stz,
   /* EC_INVALID_CLASS                 */ "invalid class"_Stz,
   /* EC_INVALID_COLUMN                */ "invalid column"_Stz,
   /* EC_INVALID_COLUMNS_UNIQUE_INDEX  */ "invalid columns for unique index (include all partitioning columns)"_Stz,
@@ -387,6 +393,7 @@ static Stz* aEC[]
   /* EC_OBJECT_CLASSNO_INVALID        */ "EC_OBJECT_CLASSNO_INVALID"_Stz,
   /* EC_OBJECT_FOOTER_INVALID         */ "EC_OBJECT_FOOTER_INVALID"_Stz,
   /* EC_OBJECT_MAGIC_INVALID          */ "EC_OBJECT_MAGIC_INVALID"_Stz,
+  /* EC_ORDERBY_NOT_SUPPORTED         */ "order by currently not supported"_Stz,
 
   /* _P_ */
   /* EC_PIPELINE_PROTOCOL_ERROR       */ "pipeline protocol error"_Stz,
@@ -499,6 +506,7 @@ static Stz* aEC2[] // error code
   /* EC_CSV_YEAR_TOO_LARGE            */ "EC_CSV_YEAR_TOO_LARGE"_Stz,
 
   /* _D_ */
+  /* EC_DECIMAL_NOT_SUPPORTED         */ "EC_DECIMAL_NOT_SUPPORTED"_Stz,
   /* EC_DUPLICATE_COLUMN              */ "EC_DUPLICATE_COLUMN"_Stz,
   /* EC_DUPLICATE_KEY                 */ "EC_DUPLICATE_KEY"_Stz,
 
@@ -534,6 +542,7 @@ static Stz* aEC2[] // error code
   /* EC_IDXVFY_SKIPLIST_LEVELS        */ "EC_IDXVFY_SKIPLIST_LEVELS"_Stz,
 
   /* EC_INDEX_EXISTS                  */ "EC_INDEX_EXISTS"_Stz,
+  /* EC_INTERVAL_NOT_SUPPORTED        */ "EC_INTERVAL_NOT_SUPPORTED"_Stz,
   /* EC_INVALID_CLASS                 */ "EC_INVALID_CLASS"_Stz,
   /* EC_INVALID_COLUMN                */ "EC_INVALID_COLUMN"_Stz,
   /* EC_INVALID_COLUMNS_UNIQUE_IND    */ "EC_INVALID_COLUMNS_UNIQUE_INDEX"_Stz,
@@ -606,6 +615,7 @@ static Stz* aEC2[] // error code
   /* EC_OBJECT_CLASSNO_INVALID        */ "EC_OBJECT_CLASSNO_INVALID"_Stz,
   /* EC_OBJECT_FOOTER_INVALID         */ "EC_OBJECT_FOOTER_INVALID"_Stz,
   /* EC_OBJECT_MAGIC_INVALID          */ "EC_OBJECT_MAGIC_INVALID"_Stz,
+  /* EC_ORDERBY_NOT_SUPPORTED         */ "EC_ORDERBY_NOT_SUPPORTED"_Stz,
 
   /* _P_ */
   /* EC_PIPELINE_PROTOCOL_ERROR       */ "EC_PIPELINE_PROTOCOL_ERROR"_Stz,
@@ -728,6 +738,7 @@ static Stz* aErrorMsg[]
   /* EC_CSV_YEAR_TOO_LARGE            */ "EC_CSV_YEAR_TOO_LARGE"_Stz,
 
   /* _D_ */
+  /* EC_DECIMAL_NOT_SUPPORTED         */ "decimal only with scale 2 currently supported"_Stz,
   /* EC_DUPLICATE_COLUMN              */ "duplicate column"_Stz,
   /* EC_DUPLICATE_KEY                 */ "duplicate key"_Stz,
 
@@ -763,6 +774,7 @@ static Stz* aErrorMsg[]
   /* EC_IDXVFY_SKIPLIST_LEVELS        */ "EC_IDXVFY_SKIPLIST_LEVELS"_Stz,
 
   /* EC_INDEX_EXISTS                  */ "index exists"_Stz,
+  /* EC_INTERVAL_NOT_SUPPORTED        */ "interval currently not supported"_Stz,
   /* EC_INVALID_CLASS                 */ "invalid class"_Stz,
   /* EC_INVALID_COLUMN                */ "invalid column"_Stz,
   /* EC_INVALID_COLUMNS_UNIQUE_IND    */ "invalid columns for unique index (include all partitioning columns)"_Stz,
@@ -835,7 +847,7 @@ static Stz* aErrorMsg[]
   /* EC_OBJECT_CLASSNO_INVALID        */ "EC_OBJECT_CLASSNO_INVALID"_Stz,
   /* EC_OBJECT_FOOTER_INVALID         */ "EC_OBJECT_FOOTER_INVALID"_Stz,
   /* EC_OBJECT_MAGIC_INVALID          */ "EC_OBJECT_MAGIC_INVALID"_Stz,
-
+  /* EC_ORDERBY_NOT_SUPPORTED         */ "order by currently not supported"_Stz,
   /* _P_ */
   /* EC_PIPELINE_PROTOCOL_ERROR       */ "pipeline protocol error"_Stz,
 

@@ -134,6 +134,7 @@ enum eEO : u2 // expression operators
 
   // null test operators
   /*  S  */ EO_ISNULL,           // test if top is null, push result
+  /*  S  */ EO_ISNULL_STR,       // test if top string is null, push result
   /*  S  */ EO_ISNOTNULL,        // test if top is not null, push result
 
   // prints
@@ -308,9 +309,11 @@ enum eEO : u2 // expression operators
   /*  S  */ EO_INC,              // increment top, push result
   /*  S  */ EO_DEC,              // decrement top, push result
   /*  S  */ EO_DUP,              // duplicate top
+  /*  S  */ EO_DUP_STR,          // duplicate top
   /*  S  */ EO_POP,              // pop / discard top
   /*  S  */ EO_POP_LOCALI,       // pop integer into a local register
   /*  S  */ EO_POP_LOCALS,       // pop string into a local register
+  /*  S  */ EO_POP_STR,          // pop str / discard top str
   /*  S  */ EO_PUSH_LOCALI,      // push an integer from a local register
   /*  S  */ EO_PUSH_LOCALS,      // push an string from a local register
   
@@ -640,6 +643,7 @@ static Stz* aEO[]
 
   // null test operators
   /*    */ "EO_ISNULL"_Stz,
+  /*    */ "EO_ISNULL_STR"_Stz,
   /*    */ "EO_ISNOTNULL"_Stz,
 
   // prints
@@ -660,9 +664,9 @@ static Stz* aEO[]
   
   // relational operators
   /*    */ "EO_EQ_BCDBCD"_Stz,
-  /*    */ "EO_EQ_BCDBOL"_Stz,
   /*    */ "EO_EQ_BCDFLT"_Stz,
   /*    */ "EO_EQ_BCDINT"_Stz,
+  /*    */ "EO_EQ_BOLBOL"_Stz,
   /*    */ "EO_EQ_DTEDTE"_Stz,
   /*    */ "EO_EQ_DTETSP"_Stz,
   /*    */ "EO_EQ_FLTBCD"_Stz,
@@ -680,9 +684,9 @@ static Stz* aEO[]
   /*    */ "EO_EQ_XYZUNK"_Stz,
 
   /*    */ "EO_GE_BCDBCD"_Stz,
-  /*    */ "EO_GE_BCDBOL"_Stz,
   /*    */ "EO_GE_BCDFLT"_Stz,
   /*    */ "EO_GE_BCDINT"_Stz,
+  /*    */ "EO_GE_BOLBOL"_Stz,
   /*    */ "EO_GE_DTEDTE"_Stz,
   /*    */ "EO_GE_DTETSP"_Stz,
   /*    */ "EO_GE_FLTBCD"_Stz,
@@ -700,9 +704,9 @@ static Stz* aEO[]
   /*    */ "EO_GE_XYZUNK"_Stz,
 
   /*    */ "EO_GT_BCDBCD"_Stz,
-  /*    */ "EO_GT_BCDBOL"_Stz,
   /*    */ "EO_GT_BCDFLT"_Stz,
   /*    */ "EO_GT_BCDINT"_Stz,
+  /*    */ "EO_GT_BOLBOL"_Stz,
   /*    */ "EO_GT_DTEDTE"_Stz,
   /*    */ "EO_GT_DTETSP"_Stz,
   /*    */ "EO_GT_FLTBCD"_Stz,
@@ -720,9 +724,9 @@ static Stz* aEO[]
   /*    */ "EO_GT_XYZUNK"_Stz,
 
   /*    */ "EO_LE_BCDBCD"_Stz,
-  /*    */ "EO_LE_BCDBOL"_Stz,
   /*    */ "EO_LE_BCDFLT"_Stz,
   /*    */ "EO_LE_BCDINT"_Stz,
+  /*    */ "EO_LE_BOLBOL"_Stz,
   /*    */ "EO_LE_DTEDTE"_Stz,
   /*    */ "EO_LE_DTETSP"_Stz,
   /*    */ "EO_LE_FLTBCD"_Stz,
@@ -740,9 +744,9 @@ static Stz* aEO[]
   /*    */ "EO_LE_XYZUNK"_Stz,
 
   /*    */ "EO_LT_BCDBCD"_Stz,
-  /*    */ "EO_LT_BCDBOL"_Stz,
   /*    */ "EO_LT_BCDFLT"_Stz,
   /*    */ "EO_LT_BCDINT"_Stz,
+  /*    */ "EO_LT_BOLBOL"_Stz,
   /*    */ "EO_LT_DTEDTE"_Stz,
   /*    */ "EO_LT_DTETSP"_Stz,
   /*    */ "EO_LT_FLTBCD"_Stz,
@@ -760,9 +764,9 @@ static Stz* aEO[]
   /*    */ "EO_LT_XYZUNK"_Stz,
 
   /*    */ "EO_NE_BCDBCD"_Stz,
-  /*    */ "EO_NE_BCDBOL"_Stz,
   /*    */ "EO_NE_BCDFLT"_Stz,
   /*    */ "EO_NE_BCDINT"_Stz,
+  /*    */ "EO_NE_BOLBOL"_Stz,
   /*    */ "EO_NE_DTEDTE"_Stz,
   /*    */ "EO_NE_DTETSP"_Stz,
   /*    */ "EO_NE_FLTBCD"_Stz,
@@ -814,9 +818,11 @@ static Stz* aEO[]
   /*    */ "EO_INC"_Stz,
   /*    */ "EO_DEC"_Stz,
   /*    */ "EO_DUP"_Stz,
+  /*    */ "EO_DUP_STR"_Stz,
   /*    */ "EO_POP"_Stz,
   /*    */ "EO_POP_LOCALI"_Stz,
   /*    */ "EO_POP_LOCALS"_Stz,
+  /*    */ "EO_POP_STR"_Stz,
   /*    */ "EO_PUSH_LOCALI"_Stz,
   /*    */ "EO_PUSH_LOCALS"_Stz,
   
@@ -1150,6 +1156,7 @@ static EoArg EoArgs[]
 
   // null test operators
   { EA_NONE,    0 },  // EO_ISNULL
+  { EA_NONE,    0 },  // EO_ISNULL_STR
   { EA_NONE,    0 },  // EO_ISNOTNULL
 
   // prints
@@ -1211,9 +1218,9 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_GE_XYZUNK
 
   { EA_NONE,    0 },  // EO_GT_BCDBCD
-  { EA_NONE,    0 },  // EO_GT_BCDBOL,
   { EA_NONE,    0 },  // EO_GT_BCDFLT
   { EA_NONE,    0 },  // EO_GT_BCDINT
+  { EA_NONE,    0 },  // EO_GT_BOLBOL
   { EA_NONE,    0 },  // EO_GT_DTEDTE
   { EA_NONE,    0 },  // EO_GT_DTETSP
   { EA_NONE,    0 },  // EO_GT_FLTBCD
@@ -1325,9 +1332,11 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_INC
   { EA_NONE,    0 },  // EO_DEC
   { EA_NONE,    0 },  // EO_DUP
+  { EA_NONE,    0 },  // EO_DUP_STR
   { EA_NONE,    0 },  // EO_POP
   { EA_INT,     8 },  // EO_POP_LOCALI
   { EA_INT,     8 },  // EO_POP_LOCALS
+  { EA_NONE,    0 },  // EO_POP_STR
   { EA_INT,     8 },  // EO_PUSH_LOCALI
   { EA_INT,     8 },  // EO_PUSH_LOCALS
   

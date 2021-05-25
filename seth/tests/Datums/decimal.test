@@ -8,7 +8,7 @@ success
 
 // (1) create a table
 create table decTbl (
-  dec_col1  DECIMAL(10,3) NOT NULL,
+  dec_col1  DECIMAL(10,2) NOT NULL,
   vch_col2  VARCHAR(32) NOT NULL,
   int_col3  INTEGER     NOT NULL,
   int_col4  INTEGER     NOT NULL,
@@ -35,12 +35,12 @@ rows:
 // check columns of index
 lsidxcol decTbl dec_idx1;
 rows:
-('dec_col1', 'DECIMAL', 10, 3, false, true)
+('dec_col1', 'DECIMAL', 10, 2, false, true)
 
 // check columns of index
 lsidxcol decTbl dec_idx2;
 rows:
-('dec_col6', 'DECIMAL',19, 0, true, false)
+('dec_col6', 'DECIMAL',19, 2, true, false)
 
 Load decTbl "../DATA/Datums/decimal.csv" ;
 failure contains: '15 invalid'

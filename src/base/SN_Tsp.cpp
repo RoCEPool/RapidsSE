@@ -58,7 +58,7 @@ i8 SN_Tsp::i(char** aacCrs, Format* pFmt)
   m_wDtm.m_wTsp.m_uMinute    = iMinute;
   m_wDtm.m_wTsp.m_uSecond    = iSecond;
   m_wDtm.m_wTsp.m_uMicro     = iMicro;
-  m_wDtm.m_wTsp.m_uLocal     = C_TSP_LOCAL;
+  m_wDtm.m_wTsp.m_uLocal     = C_TSP_UTC;
   m_wDtm.m_wTsp.m_uSpare     = 0;
   
   return m_wDtm;

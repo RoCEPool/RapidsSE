@@ -42,6 +42,7 @@
 #include "ExprPushdown.hpp"
 #include "ProjValidation.hpp"
 #include "CorrBySquash.hpp"
+#include "StageMarkers.hpp"
 
 #include "ExplainMarker.hpp"
 #include "ExplainOp.hpp"
@@ -244,7 +245,6 @@ void Step::vSqlCompilerDoExplain(void) {
     delete pRootNode;
   }
 
-  L_Exit:
   EXIT();
 }
 
@@ -310,7 +310,6 @@ void Step::vSqlCompilerDoExplainTliterate(void) {
   // We always delete the plan's root node at this point
   delete pRootNode;
 
-  L_Exit:
   EXIT();
 }
 
@@ -355,7 +354,6 @@ void Step::vSqlCompilerExplainFormat(void) {
 
   m_pDataStack->vPushStz(szTableDef);
 
-  L_Exit:
   EXIT();
 }
 
@@ -932,10 +930,9 @@ void Step::vSqlCompilerStageMarkers(void)
   UNUSED(pPlanRoot);
   ASSERT(ShadowRoot::bIsExactType(pPlanRoot));
 
-
-
   try {
-    // TODO
+    StageMarkers::vRemoveStatementMarkers(pPlanRoot);
+    StageMarkers::vAddStageMarkers(pPlanRoot);
 
   } catch (Parser::SqlException& e) {
     Grid* pGrid = AM::pGrid();

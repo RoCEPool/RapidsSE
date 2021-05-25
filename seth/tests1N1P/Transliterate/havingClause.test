@@ -1,0 +1,191 @@
+
+//------------------------------------------------------------------------------
+// create table
+create table datums (
+int_col0   INTEGER,
+int_col1  INTEGER,
+bol_col2   BOOLEAN,
+bol_col3   BOOLEAN,
+dte_col4   DATE,
+dte_col5   DATE,
+dec_col6   DECIMAL(19,2),
+dec_col7   DECIMAL(19,2),
+flt_col8   FLOAT,
+flt_col9  FLOAT,
+tme_col10  TIME,
+tme_col11  TIME,
+tsp_col12  TIMESTAMP,
+tsp_col13  TIMESTAMP,
+vch_col14  VARCHAR(32),
+vch_col15  VARCHAR(32)
+);
+success
+
+load datums "../DATA/Transliterate/groupBy.csv" ;
+failure contains: '10 invalid'
+
+
+//------------------------------------------------------------------------------------
+/*
+select int_col1, COUNT(bol_col2) from datums GROUP BY int_col1 HAVING SUM(int_col1) > 4000;
+rows:
+(7000,1)
+(8000,2)
+(5000,3)
+*/
+
+//------------------------------------------------------------------------------------
+select int_col0, SUM(dec_col6) from datums GROUP BY int_col0 HAVING SUM(dec_col6) > 10;
+rows:
+(11,477.04)
+(9,4001.04)
+(3,41.04)
+(5,41.04)
+(10,477.04)
+(2,47.04)
+(7,41.04)
+(1,41.04)
+(8,23.04)
+
+//------------------------------------------------------------------------------------
+/*
+select vch_col14, COUNT(bol_col2) from datums GROUP BY vch_col14 HAVING SUM(int_col1) > 4000;
+rows:
+(NULL,1)
+(124,1)
+(hello,2)
+(life,1)
+(blue,1)
+(red,2)
+*/
+
+//------------------------------------------------------------------------------------
+select tme_col10, MIN(int_col1) from datums GROUP BY tme_col10 HAVING MIN(int_col1) = 4000;
+rows:
+(TIME '12:23:31',4000)
+
+select tme_col10, COUNT(tsp_col13), COUNT(flt_col9), SUM(dec_col6) from datums GROUP BY tme_col10 HAVING COUNT(tsp_col13) = 3;
+rows:
+(TIME '10:23:31',3,4,4124.16)
+(TIME '11:23:31',3,4,1024.16)
+
+//------------------------------------------------------------------------------------
+/*
+select tme_col10, COUNT(flt_col9), SUM(dec_col6) from datums GROUP BY tme_col10 HAVING COUNT(tsp_col13) = 3;
+rows:
+(TIME '10:23:31',4,4124.16)
+(TIME '11:23:31',4,1024.16)
+
+//------------------------------------------------------------------------------------
+select bol_col2, COUNT(bol_col3) + 3, SUM(dec_col6 - 6) from datums GROUP BY bol_col2 HAVING COUNT(dte_col4) < 5;
+rows:
+(NULL,4,41.04)
+(t,8,1047.20)
+
+//------------------------------------------------------------------------------------
+select int_col1, COUNT(tsp_col12) + 3, MIN(dec_col6 - 6) from datums GROUP BY int_col1 HAVING MIN(dte_col4) < '1942-01-01';
+rows:
+(4000,4,NULL)
+(7000,4,35.04)
+(8000,4,17.04)
+(5000,5,35.04)
+*/
+
+//------------------------------------------------------------------------------------
+select int_col1, MIN(dte_col4), COUNT(tsp_col12), MAX(dec_col6 - 6) from datums GROUP BY int_col1 HAVING MIN(dte_col4) != DATE '1942-01-01';
+rows:
+(4000,DATE '1941-01-01',1,null)
+(7000,DATE '1941-01-01',1,35.04)
+(8000,DATE '1941-01-10',1,3995.04)
+(0,DATE '1942-01-19',2,471.04)
+(5000,DATE '1941-01-01',2,35.04)
+
+/*
+//------------------------------------------------------------------------------------
+select int_col1, COUNT(tsp_col12), MAX(dec_col6 - 6) from datums GROUP BY int_col1 HAVING MIN(dte_col4) != '1942-01-01';
+rows:
+(4000,1,)
+(7000,1,35.04)
+(8000,1,3995.04)
+(0,2,471.04)
+(5000,2,35.04)
+*/
+
+//------------------------------------------------------------------------------------
+select dte_col5, MIN(dte_col5), COUNT(bol_col2), MAX(dec_col6 - 6) from datums WHERE int_col0 = 2 GROUP BY dte_col5 HAVING MIN(dte_col5) != DATE '1941-11-01';
+rows:
+0
+
+/*
+//------------------------------------------------------------------------------------
+select dte_col5, COUNT(bol_col2), MAX(dec_col6 - 6) from datums WHERE int_col0 = 2 GROUP BY dte_col5 HAVING MIN(dte_col5) != DATE '1941-11-01';
+rows:
+0
+*/
+
+select dte_col5, MIN(dte_col5), COUNT(bol_col2), MAX(dec_col6 - 6) from datums WHERE int_col0 > 3 GROUP BY dte_col5 HAVING MIN(dte_col5) != DATE '1941-11-01';
+rows:
+(DATE '1910-11-01' ,DATE '1910-11-01', 2, 471.04)
+(DATE '1900-01-01' ,DATE '1900-01-01', 1, 3995.04)
+(DATE '1947-01-01' ,DATE '1947-01-01', 1, 35.04)
+(DATE '1941-01-01' ,DATE '1941-01-01', 1, 35.04)
+
+/*
+//------------------------------------------------------------------------------------
+select dte_col5, COUNT(bol_col2), MAX(dec_col6 - 6) from datums WHERE int_col0 > 3 GROUP BY dte_col5 HAVING MIN(dte_col5) != DATE '1941-11-01';
+rows:
+(DATE '1910-11-01' ,2,471.04)
+(DATE '1900-01-01' ,1,3995.04)
+(DATE '1947-01-01' ,1,35.04)
+(DATE '1941-01-01' ,1,35.04)
+*/
+
+//------------------------------------------------------------------------------
+// drop the table
+drop table datums;
+success;
+
+CLEANUP {
+
+  drop table datums;
+  mute
+
+  bye;
+  mute
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
