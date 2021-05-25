@@ -41,6 +41,7 @@ namespace STORE
     static void vAppendExpr(Backend* pBackend, QueryNode* pNode, Stz* szAliasName);
     static void vAppendFilterOp(Backend* pBackend, QueryNode* pNode);
     static void vAppendLimitOp(Backend* pBackend, QueryNode* pNode);
+    static void vAppendOrderByOp(Backend* pBackend,  QueryNode* pNode);
     static void vAppendProjectOp(Backend* pBackend,  QueryNode* pNode);
     static void vAppendScanOp(Backend* pBackend,  QueryNode* pNode);
     static void vAppendUnionOp(Backend* pBackend,  QueryNode* pNode);

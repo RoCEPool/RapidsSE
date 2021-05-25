@@ -664,9 +664,9 @@ static Stz* aEO[]
   
   // relational operators
   /*    */ "EO_EQ_BCDBCD"_Stz,
-  /*    */ "EO_EQ_BCDBOL"_Stz,
   /*    */ "EO_EQ_BCDFLT"_Stz,
   /*    */ "EO_EQ_BCDINT"_Stz,
+  /*    */ "EO_EQ_BOLBOL"_Stz,
   /*    */ "EO_EQ_DTEDTE"_Stz,
   /*    */ "EO_EQ_DTETSP"_Stz,
   /*    */ "EO_EQ_FLTBCD"_Stz,
@@ -684,9 +684,9 @@ static Stz* aEO[]
   /*    */ "EO_EQ_XYZUNK"_Stz,
 
   /*    */ "EO_GE_BCDBCD"_Stz,
-  /*    */ "EO_GE_BCDBOL"_Stz,
   /*    */ "EO_GE_BCDFLT"_Stz,
   /*    */ "EO_GE_BCDINT"_Stz,
+  /*    */ "EO_GE_BOLBOL"_Stz,
   /*    */ "EO_GE_DTEDTE"_Stz,
   /*    */ "EO_GE_DTETSP"_Stz,
   /*    */ "EO_GE_FLTBCD"_Stz,
@@ -704,9 +704,9 @@ static Stz* aEO[]
   /*    */ "EO_GE_XYZUNK"_Stz,
 
   /*    */ "EO_GT_BCDBCD"_Stz,
-  /*    */ "EO_GT_BCDBOL"_Stz,
   /*    */ "EO_GT_BCDFLT"_Stz,
   /*    */ "EO_GT_BCDINT"_Stz,
+  /*    */ "EO_GT_BOLBOL"_Stz,
   /*    */ "EO_GT_DTEDTE"_Stz,
   /*    */ "EO_GT_DTETSP"_Stz,
   /*    */ "EO_GT_FLTBCD"_Stz,
@@ -724,9 +724,9 @@ static Stz* aEO[]
   /*    */ "EO_GT_XYZUNK"_Stz,
 
   /*    */ "EO_LE_BCDBCD"_Stz,
-  /*    */ "EO_LE_BCDBOL"_Stz,
   /*    */ "EO_LE_BCDFLT"_Stz,
   /*    */ "EO_LE_BCDINT"_Stz,
+  /*    */ "EO_LE_BOLBOL"_Stz,
   /*    */ "EO_LE_DTEDTE"_Stz,
   /*    */ "EO_LE_DTETSP"_Stz,
   /*    */ "EO_LE_FLTBCD"_Stz,
@@ -744,9 +744,9 @@ static Stz* aEO[]
   /*    */ "EO_LE_XYZUNK"_Stz,
 
   /*    */ "EO_LT_BCDBCD"_Stz,
-  /*    */ "EO_LT_BCDBOL"_Stz,
   /*    */ "EO_LT_BCDFLT"_Stz,
   /*    */ "EO_LT_BCDINT"_Stz,
+  /*    */ "EO_LT_BOLBOL"_Stz,
   /*    */ "EO_LT_DTEDTE"_Stz,
   /*    */ "EO_LT_DTETSP"_Stz,
   /*    */ "EO_LT_FLTBCD"_Stz,
@@ -764,9 +764,9 @@ static Stz* aEO[]
   /*    */ "EO_LT_XYZUNK"_Stz,
 
   /*    */ "EO_NE_BCDBCD"_Stz,
-  /*    */ "EO_NE_BCDBOL"_Stz,
   /*    */ "EO_NE_BCDFLT"_Stz,
   /*    */ "EO_NE_BCDINT"_Stz,
+  /*    */ "EO_NE_BOLBOL"_Stz,
   /*    */ "EO_NE_DTEDTE"_Stz,
   /*    */ "EO_NE_DTETSP"_Stz,
   /*    */ "EO_NE_FLTBCD"_Stz,
@@ -1218,9 +1218,9 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_GE_XYZUNK
 
   { EA_NONE,    0 },  // EO_GT_BCDBCD
-  { EA_NONE,    0 },  // EO_GT_BCDBOL,
   { EA_NONE,    0 },  // EO_GT_BCDFLT
   { EA_NONE,    0 },  // EO_GT_BCDINT
+  { EA_NONE,    0 },  // EO_GT_BOLBOL
   { EA_NONE,    0 },  // EO_GT_DTEDTE
   { EA_NONE,    0 },  // EO_GT_DTETSP
   { EA_NONE,    0 },  // EO_GT_FLTBCD

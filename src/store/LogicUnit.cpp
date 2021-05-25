@@ -51,7 +51,6 @@
 
 
 extern EoArg EoArgs[];
-Atomic gixQueryNo;
 
 extern void* C_ADR_REGION;
 
@@ -169,6 +168,11 @@ LogicUnit::LogicUnit(Task* pTask)
   
   m_nLabels = 0;
   for (i8 i_Label = 0; i_Label < C_LOGIC_LABEL; i_Label++) {
+
+    // forced execution of constructor of s32 needed because s32 is a member of a struct
+    // for tinyc and struct doesn't invoke the constructor!!!
+    new (&m_xaJumpLabel[i_Label].m_sLabelNm) s32();
+
     m_xaJumpLabel[i_Label].m_bDefined = false;
     m_xaJumpLabel[i_Label].m_bSubroutine = false;
     m_xaJumpLabel[i_Label].m_bDestination = false;
@@ -913,7 +917,16 @@ i8 LogicUnit::iAddLabel(Stz* szLabelNm, bool bKnown)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
   i8 i_Label = m_nLabels;
-  
+
+  RASSERT(szLabelNm);
+  RASSERT(szLabelNm->nLength() > 0);
+  RASSERT(szLabelNm->nLength() < 32);
+  RASSERT(i_Label < C_LOGIC_LABEL);
+  RASSERT(m_xaJumpLabel[i_Label].m_sLabelNm.bIsMagicValid());
+  RASSERT(m_xaJumpLabel[i_Label].m_sLabelNm.bIsClassNo(CN_STRING_T));
+  RASSERT(m_xaJumpLabel[i_Label].m_sLabelNm.aFooter()->bValidFooter());
+  RASSERT(m_xaJumpLabel[i_Label].m_sLabelNm.nSpace() == 32);
+
   m_xaJumpLabel[i_Label].m_sLabelNm = szLabelNm;
   m_xaJumpLabel[i_Label].m_bDefined = bKnown;
   m_xaJumpLabel[i_Label].m_i_Chain = m_i_Code;
@@ -1844,7 +1857,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_NEG_FLT: ArgNil(); // neg flt
         iTopA = *(aiDstk--);
         iRes  = - iTopA;
-        iRes  = iMathLib_Neg_INT(iTopA);
+        iRes  = iMathLib_Neg_FLT(iTopA);
         dLU2(EO_NEG_FLT,iTopA,iRes);
         *(++aiDstk) = iRes;
         break;//+endCase

@@ -222,7 +222,7 @@ static eDM eMathOp_DivResult[DM_ENUMS][DM_ENUMS] = {
 static eEO eMathOp_DivCode[DM_ENUMS][DM_ENUMS] = {
            //   NONE     BCD            BOL      DTE           FLT            INT            IVL          IVY           TME           TSP           VCH      UNK
 /*  0 NONE */ { EO_NONE, EO_NONE,       EO_NONE, EO_NONE,      EO_NONE,       EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE, EO_NONE    },
-/*  1 BCD  */ { EO_NONE, EO_DIV_BCDBCD, EO_NONE, EO_NONE,      EO_DIV_FLTBCD, EO_DIV_INTBCD,EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE, EO_DIV_UNKXYZ  },
+/*  1 BCD  */ { EO_NONE, EO_DIV_BCDBCD, EO_NONE, EO_NONE,      EO_DIV_FLTBCD, EO_DIV_BCDINT,EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE, EO_DIV_UNKXYZ  },
 /*  2 BOL  */ { EO_NONE, EO_NONE,       EO_NONE, EO_NONE,      EO_NONE,       EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE, EO_NONE    },
 /*  3 DTE  */ { EO_NONE, EO_NONE,       EO_NONE, EO_NONE,      EO_NONE,       EO_NONE/*?*/, EO_DIV_DTEIVL,EO_NONE,      EO_NONE/*?*/, EO_NONE,      EO_NONE, EO_NONE    },
 /*  4 FLT  */ { EO_NONE, EO_DIV_FLTBCD, EO_NONE, EO_NONE,      EO_DIV_FLTFLT, EO_DIV_FLTINT,EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE, EO_DIV_UNKXYZ  },
@@ -293,7 +293,7 @@ static eDM eMathOp_MulResult[DM_ENUMS][DM_ENUMS] = {
 static eEO eMathOp_MulCode[DM_ENUMS][DM_ENUMS] = {
            //   NONE     BCD            BOL            DTE           FLT            INT           IVL           IVY           TME           TSP           VCH      UNK
 /*  0 NONE */ { EO_NONE, EO_NONE,       EO_NONE,       EO_NONE,      EO_NONE,       EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE, EO_NONE    },
-/*  1 BCD  */ { EO_NONE, EO_MUL_BCDBCD, EO_NONE,       EO_NONE,      EO_MUL_BCDFLT, EO_MUL_INTBCD,EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE, EO_MUL_XYZUNK  },
+/*  1 BCD  */ { EO_NONE, EO_MUL_BCDBCD, EO_NONE,       EO_NONE,      EO_MUL_BCDFLT, EO_MUL_BCDINT,EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE, EO_MUL_XYZUNK  },
 /*  2 BOL  */ { EO_NONE, EO_NONE,       EO_NONE,       EO_NONE,      EO_NONE,       EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE, EO_NONE    },
 /*  3 DTE  */ { EO_NONE, EO_NONE,       EO_NONE,       EO_NONE,      EO_NONE,       EO_NONE/*?*/, EO_MUL_DTEIVL,EO_NONE,      EO_NONE/*?*/, EO_NONE,      EO_NONE, EO_NONE    },
 /*  4 FLT  */ { EO_NONE, EO_MUL_FLTBCD, EO_NONE,       EO_NONE,      EO_MUL_FLTFLT, EO_MUL_FLTINT,EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE,      EO_NONE, EO_MUL_XYZUNK  },

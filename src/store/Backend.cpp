@@ -56,6 +56,8 @@
 #include "TimestampLiteral.hpp"
 
 #include "Literal.hpp"
+#include "OrderOp.hpp"
+#include "OrderItem.hpp"
 #include "ProjectedColumn.hpp"
 #include "ProjectOp.hpp"
 #include "UnionOp.hpp"
@@ -421,6 +423,67 @@ void Backend::vAppendLimitOp(Backend* pBackend, QueryNode* pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append orderBy Op to the pipeline                                          */
+/*----------------------------------------------------------------------------*/
+void Backend::vAppendOrderByOp(Backend* pBackend, QueryNode* pNode)
+{
+  _static_
+
+  bool bFirstExpr = false;
+  String* sPipeline = pBackend->m_sPipeline;
+
+  // Get the list of projected expressions from ProjectOp
+  ASSERT(pNode->nChildren() == 1);
+  QueryNode *pOrderItemList = OrderOp::pOrderItemList(pNode);
+  ASSERT(pOrderItemList);
+
+  ASSERT(PlanObject::bIsOfType(pNode->pFirstChild()));
+  if (pBackend->m_pColExprList) {
+    pBackend->m_pColExprList->vDeleteAll();
+    delete pBackend->m_pColExprList;
+  }
+  pBackend->m_pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pBackend->m_pPlanRoot);
+
+  // Iterate each projected expression
+  if (pOrderItemList->bHasChildren()) {
+
+    sPipeline->vCatSprint(
+        "    | orderBy 0 \""
+        ""_Stz);
+
+    // get a plan node iterator
+    PlanNodeIter *pIter = pOrderItemList->pNewChildrenIter();
+
+    while (pIter->bHasNext()) {
+
+      // append comma
+      if (bFirstExpr)
+        sPipeline->vCatSprint(" ,"_Stz);
+      else
+        bFirstExpr = true;
+
+      // get the next projectedColumn from the iterator
+      QueryNode *pOrderItem = static_cast<QueryNode *>(pIter->pNext());
+      ASSERT(pOrderItem);
+      ASSERT(OrderItem::bIsOfType(pOrderItem));
+
+      // get the expr node
+      QueryNode *pExprNode = static_cast<QueryNode *>(GraphNav::pFindProperty("expr"_Stz, pOrderItem));
+      ASSERT(pExprNode);
+
+      vAppendExpr(pBackend, pExprNode, ""_Stz);
+
+      sPipeline->vCatSprint(" %s "_Stz, OrderItem::bIsAscending(pOrderItem) ? "ASC" : "DESC");
+    }
+    delete pIter;
+
+  }
+
+  sPipeline->vCatSprint(" \" \n"_Stz);
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* append project Op to the pipeline                                          */
 /*----------------------------------------------------------------------------*/
 void Backend::vAppendProjectOp(Backend* pBackend, QueryNode* pNode)
@@ -446,7 +509,7 @@ void Backend::vAppendProjectOp(Backend* pBackend, QueryNode* pNode)
   if (pProjectedColumns->bHasChildren()) {
 
     sPipeline->vCatSprint(
-        "    | project 1 \""
+        "    | project 0 \""
         ""_Stz);
 
     // get a plan node iterator
@@ -843,7 +906,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 i
     }
 
     else if (ModulusExpr::bIsOfType(pOrdinalExpr)) {
-      sPipeline->vCatSprint(" % "_Stz);
+      sPipeline->vCatSprint(" %% "_Stz);
     }
 
     else if (MultiplicationExpr::bIsOfType(pOrdinalExpr)) {
@@ -941,7 +1004,7 @@ GraphNav::eWalkCtrl Backend::vVisitorStatement(PlanNode* pRootNode, s256& sPath,
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // other Op's
     else {
-      RASSERT(0);
+      vAppendOrderByOp(pBackend, pQueryNode);
     }
 
   }

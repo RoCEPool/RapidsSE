@@ -474,6 +474,39 @@ i8 AM::SYSTEM::nNanoseconds(void)
   return nElapsed;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Writes out a file that indicates that the system has booted and is ready   */
+/*----------------------------------------------------------------------------*/
+void AM::SYSTEM::vSystemReady(void)
+{
+  _static_
+
+  i8 iPid = AM::iPid();
+  s32 sPid;
+  sPid = iPid;
+
+  // Path is "../" because we have already changed the cwd
+  // to the commands subdirectory
+  const Stz* C_READY_FILE_PATH = "../se.ready"_Stz;
+
+  if (File::bExists(const_cast<Stz*>(C_READY_FILE_PATH), false)) {
+    File::bRemove(const_cast<Stz*>(C_READY_FILE_PATH));
+  }
+
+  File pReadyFile(gpAttachMap);
+  b1 bOpen = pReadyFile.bOpenWrite(const_cast<Stz*>(C_READY_FILE_PATH));
+
+  if (bOpen) {
+    // Write out the pid
+    pReadyFile.bWriteBytes(sPid.azChar(), sPid.nLength());
+
+  } else {
+    vTrace("Unable to open the ready file: %s\n"_Stz, C_READY_FILE_PATH);
+  }
+
+  pReadyFile.vClose();
+}
+
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                    Task                                    */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -1842,6 +1875,15 @@ bool AM::bPassesLowMem(Job* pJob)
 //  return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/* increment the query no and return                                          */
+/*----------------------------------------------------------------------------*/
+i8 AM::iQueryNoInc(void)
+{
+  ++ gpAttachMap->m_ixQueryNo;
+  i8 iQueryNo = * gpAttachMap->m_ixQueryNo;
+  return iQueryNo;
+}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

@@ -67,6 +67,7 @@ namespace STORE
     TempName      m_oTempName;
     TxSet*        m_pTxSet;
     Word*         m_pWordRoot;
+    Atomic        m_ixQueryNo;
 
     // must be last
     Footer m_xFooter;
