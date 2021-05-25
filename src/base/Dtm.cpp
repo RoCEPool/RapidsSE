@@ -90,7 +90,7 @@ i8 Dtm::iTsp(i8 iYear, i8 iMonth,  i8 iDay,
   xDtm.m_wTsp.m_uSecond    = iSecond;
   xDtm.m_wTsp.m_uMinute    = iMinute;
   xDtm.m_wTsp.m_uMicro     = iMicro;
-  xDtm.m_wTsp.m_uLocal     = C_TSP_LOCAL;
+  xDtm.m_wTsp.m_uLocal     = C_TSP_UTC;
   xDtm.m_wTsp.m_uSpare     = 0;
   
   return xDtm;

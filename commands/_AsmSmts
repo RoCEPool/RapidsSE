@@ -78,6 +78,35 @@ print "loading Lineitem...";
 ///time load lineitem "../TPCH/SF1/lineitem.tbl";
 
 
+create table LineItem2
+(
+  L_ORDERKEY      INTEGER       NOT NULL,  //0
+  L_PARTKEY       INTEGER       NOT NULL,  //1
+  L_SUPPKEY       INTEGER       NOT NULL,  //2
+  L_LINENUMBER    INTEGER       NOT NULL,  //3
+  L_QUANTITY      DECIMAL(15,2) NOT NULL,  //4
+  L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,  //5
+  L_DISCOUNT      DECIMAL(15,2) NOT NULL,  //6
+  L_TAX           DECIMAL(15,2) NOT NULL,  //7
+  L_RETURNFLAG    CHAR(1)       NOT NULL,  //8
+  L_LINESTATUS    CHAR(1)       NOT NULL,  //9
+  L_SHIPDATE      DATE NOT      NULL,      //10
+  L_COMMITDATE    DATE NOT      NULL,      //11
+  L_RECEIPTDATE   DATE NOT      NULL,      //12
+  L_SHIPINSTRUCT  CHAR(25)      NOT NULL,  //13
+  L_SHIPMODE      CHAR(10)      NOT NULL,  //14
+  L_COMMENT       VARCHAR(44)   NOT NULL   //15
+);
+
+
+create index lineitem_idx1 on lineitem2 (l_shipdate);
+create index lineitem_idx2 on lineitem2 (l_orderkey);
+
+
+print "loading Lineitem...";
+/time load lineitem2 "../DATA/TPCH/lineitem10.csv";
+
+
 create table orders (
    O_ORDERKEY        INTEGER       NOT NULL,  // 0)
    O_CUSTKEY         INTEGER       NOT NULL,  // 1)
@@ -95,6 +124,117 @@ create index Orders_Idx2 ON Orders(O_ORDERKEY);
 
 print "loading Orders...";
  /time load Orders "../DATA/TPCH/orders10.csv";
+
+
+// QUERY 1
+select
+    l_returnflag,
+    l_linestatus,
+    sum(l_QUANTITY) as sum_qty,
+    sum(l_extendedprice) as sum_base_price,
+    sum(l_extendedprice*l_discount) as sum_disc_price,
+    sum(l_extendedprice*l_discount*l_tax) as sum_charge,
+    count(*) as count_order
+from
+   lineitem
+where
+   l_shipdate <= DATE '1998-09-01'
+   group by l_returnflag, l_linestatus;
+
+
+// QUERY 4
+select
+  o_orderpriority,
+  count(*) as order_count
+from
+  orders
+where
+  o_orderdate >= DATE '1993-07-01'
+  and o_orderdate <= DATE '1996-01-30'
+group by
+  o_orderpriority;
+
+
+// QUERY 6
+select
+  sum(l_extendedprice*l_discount) as revenue
+from
+  lineitem
+where
+  l_shipdate >= DATE '1994-01-01'
+  and l_shipdate <= DATE '1996-01-30'
+  and l_quantity <= 4500;
+
+  select l_orderkey , sum (l_quantity) from lineitem group by l_orderkey having sum (l_quantity) > 0;
+
+
+
+//select (sum(nNanoSeconds)/(1000*1000*1000)) as seconds from se__memorylog where sPipelineNm = 'resource';
+
+  select
+       l_orderkey,
+       sum(l_QUANTITY) as sum_qty,
+       sum(l_extendedprice*l_discount) as sum_disc_price
+  from
+       lineitem
+  where
+       L_SHIPDATE > DATE '1993-01-01'
+  group by
+       l_orderkey
+  having
+       sum_qty > 100
+
+  union all corresponding
+
+  select
+         l_orderkey,
+         sum(l_QUANTITY) as sum_qty
+    from
+         lineitem2
+    where
+         L_SHIPDATE > DATE '1994-01-01'
+    group by
+         l_orderkey
+    having
+       sum_qty > 100;
+
+
+
+/*
+
+
+select
+    l_returnflag,
+    l_linestatus,
+    sum(l_QUANTITY) as sum_qty,
+    sum(l_extendedprice) as sum_base_price,
+    sum(l_extendedprice*l_discount) as sum_disc_price,
+    sum(l_extendedprice*l_discount*l_tax) as sum_charge,
+    count(*) as count_order
+  from
+   lineitem
+   group by l_returnflag,l_linestatus;
+
+
+select
+    l_returnflag,
+    l_linestatus,
+    sum(l_QUANTITY) as sum_qty,
+    sum(l_extendedprice) as sum_base_price, sum(l_extendedprice*l_discount) as sum_disc_price, sum(l_extendedprice*l_discount*l_tax) as sum_charge, avg(l_quantity) as avg_qty,
+    avg(l_extendedprice) as avg_price,
+    avg(l_discount) as avg_disc,
+    count(*) as count_order
+  from
+   lineitem
+  where
+    l_shipdate <= DATE '1998-09-01';
+    group by l_returnflag,
+    l_linestatus order by
+    l_returnflag, l_linestatus;
+
+//aggregRows lineitem "type integer $4 , type decimal ) $7 sum , type decimal ) $5 sum groupby type integer $4";
+
+//aggregRows lineitem "type integer $1 , type decimal ) $7 sum groupby type integer $1" ;
 
 //projectColumns_I lineitem "1";
 //projectColumns_I lineitem "l_discount , 1";
@@ -114,12 +254,12 @@ print "loading Orders...";
 
 //explain SELECT * FROM lineitem UNION ALL CORRESPONDING BY (o_orderkey) SELECT * FROM orders;
 
-select l_orderkey, sum(l_partkey) from lineitem group by l_orderkey having sum(l_partkey) + 1 > 1500000;
+//select l_orderkey, sum(l_partkey) from lineitem group by l_orderkey having sum(l_partkey) + 1 > 1500000;
 
 
 //projectColumns_I lineitem type integer 1 $1 +;
 //projectColumns lineitem type integer 1 $1 +;
-/*
+
 
 SELECT l_orderkey FROM lineitem UNION ALL SELECT o_orderkey FROM orders;
 
@@ -250,8 +390,8 @@ end ;
 
 //UnionAll_I lineitem orders l_orderkey;
 
-tableScan lineitem;
-tableScan orders;
+//tableScan lineitem;
+//tableScan orders;
 
 pipeline unionAll_I
    begin
@@ -468,7 +608,6 @@ begin
      output | sink | stageA
 end;
 
-*/
 //Smt0 lineitem l_extendedPrice, l_discount;
 //Smt0 lineitem as revenue l_extendedPrice 2 * ;
 //Smt0 lineitem l_extendedPrice, l_discount, l_extendedPrice 2 *;
@@ -499,75 +638,4 @@ end;
 //select l_orderkey, sum(l_extendedprice) from lineitem;
 //Smt8;
 
-/*
-   consumeOp (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :  STARTMARKER 0x204810361040
-   consumeOp (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :  STARTMARKER 0x20481038e040
-   consumeOp (    stageD) (N0) (P-1) (job:0x20481a550040)::  vPipeOut :  STARTMARKER 0x204810361040
-
-      output (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :  STARTMARKER 0x204810361040
-      output (    stageD) (N0) (P-1) (job:0x20481a550040)::vPipeToOutput :  STARTMARKER 0x204810361040
-      output (    stageD) (N0) (P-1) (job:0x20481a550040)::  vPipeOut :  STARTMARKER 0x20481037a040
-
-        sink (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :  STARTMARKER 0x20481037a040
-        sink (    stageD) (N0) (P-1) (job:0x20481a550040)::  vPipeOut : STARTEDMARKER 0x20481037a040
-
-   consumeOp (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :    DATAPULSE 0x204810393040
-   consumeOp (    stageD) (N0) (P-1) (job:0x20481a550040)::  vPipeOut :    DATAPULSE 0x204810393040
-   consumeOp (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :    DATAPULSE 0x20481038d840
-
-      output (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :    DATAPULSE 0x204810393040
-      output (    stageD) (N0) (P-1) (job:0x20481a550040)::  vPipeOut :    DATAPULSE 0x204810393040
-      output (    stageD) (N0) (P-1) (job:0x20481a550040)::vPipeToOutput :    DATAPULSE 0x204810357840
-
-        sink (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :    DATAPULSE 0x204810393040
-
-   consumeOp (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :    STREAMDEF 0x204818800040
-   consumeOp (    stageD) (N0) (P-1) (job:0x20481a550040)::  vPipeOut :    STREAMDEF 0x204818800040
-   consumeOp (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :    STREAMDEF 0x20481ed00040
-
-      output (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :    STREAMDEF 0x204818800040
-      output (    stageD) (N0) (P-1) (job:0x20481a550040)::vPipeToOutput :    STREAMDEF 0x204818800040
-
-   consumeOp (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :    ROWBUFFER 0x20481d700040
-   consumeOp (    stageD) (N0) (P-1) (job:0x20481a550040)::  vPipeOut :    ROWBUFFER 0x20481d700040
-
-      output (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :    ROWBUFFER 0x20481d700040
-      output (    stageD) (N0) (P-1) (job:0x20481a550040)::vPipeToOutput :    ROWBUFFER 0x20481d700040
-
-   consumeOp (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :    ROWBUFFER 0x20481dc00040
-      consumeOp (    stageD) (N0) (P-1) (job:0x20481a550040)::  vPipeOut :    ROWBUFFER 0x20481dc00040
-
-      output (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :    ROWBUFFER 0x20481dc00040
-      output (    stageD) (N0) (P-1) (job:0x20481a550040)::vPipeToOutput :    ROWBUFFER 0x20481dc00040
-
-   consumeOp (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :    EOSMARKER 0x204810387040
-   consumeOp (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :    EOSMARKER 0x204810387040
-   consumeOp (    stageD) (N0) (P-1) (job:0x20481a550040)::  vPipeOut :    EOSMARKER 0x204810387040
-
-      output (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :    EOSMARKER 0x204810387040
-      output (    stageD) (N0) (P-1) (job:0x20481a550040)::vPipeToOutput :    EOSMARKER 0x204810387040
-      output (    stageD) (N0) (P-1) (job:0x20481a550040)::  vPipeOut :    EOSMARKER 0x204810362440
-
-        sink (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :    EOSMARKER 0x204810362440
-
-   consumeOp (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue : PULSEDMARKER 0x204810387040
-   consumeOp (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue : PULSEDMARKER 0x20481038a840
-   consumeOp (    stageD) (N0) (P-1) (job:0x20481a550040)::  vPipeOut : PULSEDMARKER 0x20481038a840
-
-      output (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue : PULSEDMARKER 0x20481038a840
-      output (    stageD) (N0) (P-1) (job:0x20481a550040)::  vPipeOut : PULSEDMARKER 0x20481038a840
-
-        sink (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue : PULSEDMARKER 0x20481038a840
-        sink (    stageD) (N0) (P-1) (job:0x20481a550040)::  vPipeOut : PULSEDMARKER 0x20481038a840
-
-   consumeOp (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :   EXITMARKER 0x204810375440
-   consumeOp (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :   EXITMARKER 0x20481037a440
-   consumeOp (    stageD) (N0) (P-1) (job:0x20481a550040)::  vPipeOut :   EXITMARKER 0x20481037a440
-
-      output (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :   EXITMARKER 0x20481037a440
-      output (    stageD) (N0) (P-1) (job:0x20481a550040)::  vPipeOut :   EXITMARKER 0x20481037a440
-
-        sink (    stageD) (N0) (P-1) (job:0x20481a550040):: pPopQueue :   EXITMARKER 0x20481037a440
-        sink (    stageD) (N0) (P-1) (job:0x20481a550040)::vPipeToOutput :   EXITMARKER 0x20481037a440
-        sink (    stageD) (N0) (P-1) (job:0x20481a550040)::  vPipeOut : EXITEDMARKER 0x20481036f040
 */
