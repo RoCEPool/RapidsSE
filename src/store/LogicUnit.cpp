@@ -918,15 +918,6 @@ i8 LogicUnit::iAddLabel(Stz* szLabelNm, bool bKnown)
   
   i8 i_Label = m_nLabels;
 
-  RASSERT(szLabelNm);
-  RASSERT(szLabelNm->nLength() > 0);
-  RASSERT(szLabelNm->nLength() < 32);
-  RASSERT(i_Label < C_LOGIC_LABEL);
-  RASSERT(m_xaJumpLabel[i_Label].m_sLabelNm.bIsMagicValid());
-  RASSERT(m_xaJumpLabel[i_Label].m_sLabelNm.bIsClassNo(CN_STRING_T));
-  RASSERT(m_xaJumpLabel[i_Label].m_sLabelNm.aFooter()->bValidFooter());
-  RASSERT(m_xaJumpLabel[i_Label].m_sLabelNm.nSpace() == 32);
-
   m_xaJumpLabel[i_Label].m_sLabelNm = szLabelNm;
   m_xaJumpLabel[i_Label].m_bDefined = bKnown;
   m_xaJumpLabel[i_Label].m_i_Chain = m_i_Code;
