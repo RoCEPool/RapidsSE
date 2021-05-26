@@ -162,18 +162,9 @@
 
   find: \table locals| pwTableCatg |
 
-  //sTableNm table::new locals| pTable |
-  
-  //sTableNm word::new locals| pwTable |
   pTable to Table[] Table[].name@ word::new locals| pwTable |
 
   pwTableCatg pTable pwTable word.cppObject!
-
-  //pwTable word.see
-
-  //pwTable execute to pTable
-
-  //pTable
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -187,7 +178,6 @@
 
  sTableNm "index::makeIndexesAssembly" find execute
 
- //sTableNm table::newTable locals| pTable |
  sTableNm table::new locals| pTable |
 
  pStreamDef pTable table.streamDef!
