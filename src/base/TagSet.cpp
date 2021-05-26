@@ -192,13 +192,11 @@ void TagSet::vContentDump(void)
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
 
   if (m_nEnames) {
-    //AM::vTraceDumpGrabLock();
     vTrace("\n"_Stz);
     vTrace("Tag Set\n"_Stz);
     vTrace("-------\n"_Stz);
     
     vDumpSet();
-    //AM::vTraceDumpDropLock();
   }
 }
 

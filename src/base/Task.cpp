@@ -416,9 +416,6 @@ void Task::vContentDump(void)
 {
   _poolAddress_(this);
 
-
-  //m_oTraceLock.vGrabWrite();
-
   vTrace("\n"_Stz);
   vTrace("Task\n"_Stz);
   vTrace("----\n"_Stz);
@@ -434,7 +431,6 @@ void Task::vContentDump(void)
 
          C_VARGS_END
          );
-  //m_oTraceLock.vDropWrite();
 
 }
 
@@ -541,13 +537,6 @@ void Task::vGrabTaskLock(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   m_okLock.vGrabWrite();
-}
-
-TraceLock Task::oTraceLock(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-
-  return m_oTraceLock;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -19,12 +19,12 @@
 
   // get table name to create folder
   pTable table.getName table::makeTableFolder
+  pTable table.getName Path[].pushNamedTableFolder
 
   // put the table ptr to
-
-  // The result should be a table
-  //op::pipeout
-
+  pTable table::addtofolder
+  Path[].popNamedTableFolder
+    
   true
 ;
 

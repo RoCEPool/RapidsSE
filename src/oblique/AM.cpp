@@ -1876,8 +1876,8 @@ i8 AM::iOperandZkKind(Operand* pOperand)
     case CN_STREAMDEF:    eOperand = ZK_STREAMDEF;      break;
     case CN_STREAMSET:    eOperand = ZK_STREAMSET;      break;
     case CN_METAGET:      eOperand = ZK_METAGET;        break;
-    case CN_PARCEL:       eOperand = ZK_PARCEL;        break;
-    case CN_TABLE:        eOperand = ZK_TABLE;        break;
+    case CN_PARCEL:       eOperand = ZK_PARCEL;         break;
+    case CN_TABLE:        eOperand = ZK_TABLE;          break;
 
     default:
       vTrace("what class:%lld %s\n"_Stz,eClass_opd, aCN[eClass_opd]);

@@ -12,47 +12,29 @@
   0 locals| pParcel |
 
   PipeIn[]\clear locals| pOperand |
-
-   //"1 before assert" .
-   // assert::stack_0
   
   // we do not expect to see a job
   pOperand object.class@ CN_JOB != ASSERT
 
- //"2 before assert" .
- // assert::stack_0
-
   //pOperand object.preSendWord@ if
   //  pOperand object.preSendWord@ execute
   //then
-  
 
   pOperand object.class@ CN_PARCEL == if
     pOperand to pParcel
     pParcel parcel.label
-     "3a before assert" .
-      assert::stack_0
   else
     pOperand operand.toParcel to pParcel
-      "3b before assert" .
-          assert::stack_0
   then
   
   pParcel parcel.sendOut
-   "4 before assert" .
-    assert::stack_0
 
   pParcel parcel::delete
-  " 5 before assert" .
-  assert::stack_0
 
-  "after assert" .
   // calling op_loop continues
 
-
-
   true
-  stk
+  //stk
 ;
 
 /*----------------------------------------------------------------------------*/
