@@ -1077,6 +1077,28 @@
   end ;
   "
   api::addProcedure
+
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   // prototype get meta object
+
+    STD_PATH
+    "
+    procedure pgetMeta
+      parameters $TableNm
+    begin
+
+      stage stageA on origin :
+        start | periodic once | pmetaGet $TableNm | stageB hashed
+
+      stage stageB on all nodes :
+        pmetaSend | stageC
+
+      stage stageC on origin :
+        pmetaRecv | output | sink | stageA
+
+    end ;
+    "
+    api::addProcedure
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get meta object

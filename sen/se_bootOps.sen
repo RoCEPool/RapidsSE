@@ -139,6 +139,10 @@ assert::stack_0
   "OP_python.sen"               include
   "OP_pythonShell.sen"          include
 
+  "OP_pmetaGet.sen"             include
+  "OP_pmetaRecv.sen"            include
+  "OP_pmetaSend.sen"            include
+
 "q" .verbose
 
 "r" .verbose
