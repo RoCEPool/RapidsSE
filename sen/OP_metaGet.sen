@@ -35,7 +35,8 @@
   //"metaGet_req" .
   op__topology
 
-  find: metaGet_getTable   ZK_STARTMARKER   op[].handler!
+  //find: metaGet_getTable   ZK_STARTMARKER   op[].handler!
+  find: metaGet_getTable   ZK_DATAPULSE   op[].handler!
 
   op__loop
 

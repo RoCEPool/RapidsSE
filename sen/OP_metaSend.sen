@@ -23,6 +23,11 @@
   Operand[] MetaGet.getTableName op__table assert
   table[] MetaSend::getParts Op::pipeout
 
+// send EOSMARKER
+  nullptr to Operand[]
+  Operand[].newEosMarker
+  Operand[].pipeOut
+
   true
 
   //task::breakpoint //set breakpoint back into C++ code, where the task loop is

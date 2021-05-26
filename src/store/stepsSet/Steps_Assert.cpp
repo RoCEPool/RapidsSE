@@ -206,26 +206,13 @@ void Step::vAssertStack_0(void)
   i8 iStackValues = m_pDataStack->nValues();
   
   if ( ! (0 == iStackValues)  ) {
-    //vTrace("========> assert::stack_0 in word\n"_Stz);
     TypedCell* pTypedCell = m_pDataStack->aPeekItem(0);
-
     vTrace("\n========> assert::stack_0 Class:%s   value:%lld\n"_Stz, aCN[pTypedCell->eType()]->azChar(), pTypedCell->iInt());
-    // We got Class:INTVAL
 
-    //m_pDataStack->iPopInt(__func__);
-    //m_pDataStack->vDiscardTop();
-    //Object* pObj = m_pDataStack->pPopPtr(__func__);
-    //Operand* pOperand = _pOperand(pObj);
-    //eCN eClass = pOperand->eGetClassNo();
-
-    //vTrace("========> Class:%s\n"_Stz, aCN[eClass]->azChar());
-    
     vContentDump();
 
-
-
-    //vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
-    //       "assert::stack_0 in word"_Stz);
+    vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
+           "assert::stack_0 in word"_Stz);
   }
   
   EXIT();

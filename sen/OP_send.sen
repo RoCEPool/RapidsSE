@@ -48,6 +48,9 @@
 
   "after assert" .
   // calling op_loop continues
+
+
+
   true
   stk
 ;

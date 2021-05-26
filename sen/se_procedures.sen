@@ -1088,13 +1088,13 @@
   begin
 
     stage stageA on origin :
-      start | metaGet $TableNm | stageB hashed
+      start | periodic once | metaGet $TableNm | stageB hashed
 
     stage stageB on all nodes :
       metaSend | stageC
 
     stage stageC on origin :
-      metaRecv | sink | stageA
+      metaRecv | output | sink | stageA
 
   end ;
   "
