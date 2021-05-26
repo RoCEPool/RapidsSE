@@ -14,8 +14,6 @@
 #include "Grid.hpp"
 #include "Node.hpp"
 
-extern Atomic gixQueryNo;
-
 /*----------------------------------------------------------------------------*/
 /* accept token and advance to next token                                     */
 /*----------------------------------------------------------------------------*/
@@ -295,8 +293,8 @@ eEC LogicUnit::eGenerateAggregate(ExprEval* pExprEval, StreamDef* pStreamDefOut)
   s256 sFileName;
   s4K sMacro;
 
-  ++gixQueryNo;
-  sFileName.vSprint("../tmp/Query%lld_%s.txt"_Stz, *gixQueryNo,
+  i8 iQueryNo = AM::iQueryNoInc();
+  sFileName.vSprint("../tmp/Query%lld_%s.txt"_Stz, iQueryNo,
                     AM::pGrid()->pThisNode()->szNodeNm());
 
   bool b = oFile.bOpenWrite(sFileName);
@@ -307,7 +305,7 @@ eEC LogicUnit::eGenerateAggregate(ExprEval* pExprEval, StreamDef* pStreamDefOut)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // AM_QUERY_INIT
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  oTagSet.vAppend(C_TAG_QUERY_NO, (i8) * gixQueryNo);
+  oTagSet.vAppend(C_TAG_QUERY_NO, iQueryNo);
   oTagSet.vAppend(C_TAG_SUBQUERY_NO, (i8) 0);
   oFile.vPrint(LogicCompiler::szGetMacro(AM_QUERY_INIT, &oTagSet, sMacro));
   oTagSet.vReset();
@@ -451,8 +449,8 @@ eEC LogicUnit::eGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
   s256 sFileName;
   s4K  sMacro;
 
-  ++gixQueryNo;
-  sFileName.vSprint("../tmp/Query%lld_%s.txt"_Stz, *gixQueryNo,
+  i8 iQueryNo = AM::iQueryNoInc();
+  sFileName.vSprint("../tmp/Query%lld_%s.txt"_Stz, iQueryNo,
                     AM::pGrid()->pThisNode()->szNodeNm());
 
   bool b = oFile.bOpenWrite(sFileName);
@@ -463,7 +461,7 @@ eEC LogicUnit::eGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // AM_QUERY_INIT
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  oTagSet.vAppend(C_TAG_QUERY_NO, (i8) * gixQueryNo);
+  oTagSet.vAppend(C_TAG_QUERY_NO, iQueryNo);
   oTagSet.vAppend(C_TAG_SUBQUERY_NO, (i8) 0);
   oFile.vPrint(LogicCompiler::szGetMacro(AM_QUERY_INIT, &oTagSet, sMacro));
   oTagSet.vReset();
@@ -577,8 +575,8 @@ eEC LogicUnit::eGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut)
   s256 sFileName;
   s4K sMacro;
 
-  ++gixQueryNo;
-  sFileName.vSprint("../tmp/Query%lld_%s.txt"_Stz, *gixQueryNo,
+  i8 iQueryNo = AM::iQueryNoInc();
+  sFileName.vSprint("../tmp/Query%lld_%s.txt"_Stz, iQueryNo,
                     AM::pGrid()->pThisNode()->szNodeNm());
 
   bool b = oFile.bOpenWrite(sFileName);
@@ -589,7 +587,7 @@ eEC LogicUnit::eGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // AM_QUERY_INIT
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  oTagSet.vAppend(C_TAG_QUERY_NO, (i8) * gixQueryNo);
+  oTagSet.vAppend(C_TAG_QUERY_NO, iQueryNo);
   oTagSet.vAppend(C_TAG_SUBQUERY_NO, (i8) 0);
   oFile.vPrint(LogicCompiler::szGetMacro(AM_QUERY_INIT, &oTagSet, sMacro));
   oTagSet.vReset();
@@ -788,8 +786,8 @@ eEC LogicUnit::eGenerateLimit(i8 iLimitRows, StreamDef* pStreamDefOut) {
   s256 sFileName;
   s4K  sMacro;
 
-  ++gixQueryNo;
-  sFileName.vSprint("../tmp/Query%lld_%s.txt"_Stz, *gixQueryNo,
+  i8 iQueryNo = AM::iQueryNoInc();
+  sFileName.vSprint("../tmp/Query%lld_%s.txt"_Stz, iQueryNo,
                     AM::pGrid()->pThisNode()->szNodeNm());
 
   bool b = oFile.bOpenWrite(sFileName);
@@ -797,7 +795,7 @@ eEC LogicUnit::eGenerateLimit(i8 iLimitRows, StreamDef* pStreamDefOut) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // AM_QUERY_INIT
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  oTagSet.vAppend(C_TAG_QUERY_NO, (i8) * gixQueryNo);
+  oTagSet.vAppend(C_TAG_QUERY_NO, iQueryNo);
   oTagSet.vAppend(C_TAG_SUBQUERY_NO, (i8) 0);
   oFile.vPrint(LogicCompiler::szGetMacro(AM_QUERY_INIT, &oTagSet, sMacro));
   oTagSet.vReset();
@@ -884,8 +882,8 @@ eEC LogicUnit::eGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOut
   s256 sFileName;
   s4K sMacro;
 
-  ++gixQueryNo;
-  sFileName.vSprint("../tmp/Query%lld_%s.txt"_Stz, *gixQueryNo,
+  i8 iQueryNo = AM::iQueryNoInc();
+  sFileName.vSprint("../tmp/Query%lld_%s.txt"_Stz, iQueryNo,
                     AM::pGrid()->pThisNode()->szNodeNm());
 
   bool b = oFile.bOpenWrite(sFileName);
@@ -896,7 +894,7 @@ eEC LogicUnit::eGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOut
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // AM_QUERY_INIT
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  oTagSet.vAppend(C_TAG_QUERY_NO, (i8) * gixQueryNo);
+  oTagSet.vAppend(C_TAG_QUERY_NO, iQueryNo);
   oTagSet.vAppend(C_TAG_SUBQUERY_NO, (i8) 0);
   oFile.vPrint(LogicCompiler::szGetMacro(AM_QUERY_INIT, &oTagSet, sMacro));
   oTagSet.vReset();
@@ -1004,8 +1002,8 @@ eEC LogicUnit::eGenerateRange(Range* pRange, StreamDef* pStreamDefOut) {
   s256 sFileName;
   s4K sMacro;
 
-  ++gixQueryNo;
-  sFileName.vSprint("../tmp/Query%lld_%s.txt"_Stz, *gixQueryNo,
+  i8 iQueryNo = AM::iQueryNoInc();
+  sFileName.vSprint("../tmp/Query%lld_%s.txt"_Stz, iQueryNo,
                     AM::pGrid()->pThisNode()->szNodeNm());
 
   bool b = oFile.bOpenWrite(sFileName);
@@ -1013,7 +1011,7 @@ eEC LogicUnit::eGenerateRange(Range* pRange, StreamDef* pStreamDefOut) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // AM_QUERY_INIT
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  oTagSet.vAppend(C_TAG_QUERY_NO, (i8) * gixQueryNo);
+  oTagSet.vAppend(C_TAG_QUERY_NO, iQueryNo);
   oTagSet.vAppend(C_TAG_SUBQUERY_NO, (i8) 0);
   oFile.vPrint(LogicCompiler::szGetMacro(AM_QUERY_INIT, &oTagSet, sMacro));
   oTagSet.vReset();
