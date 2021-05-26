@@ -18,7 +18,8 @@ fi
 readonly VERSION_FILE="version"
 readonly CONFIG_DEFAULT_VERSION="1"
 
-readonly REMOTE_PID_FILENAME="se.pid"
+readonly PID_FILENAME="se.pid"
+readonly READY_FILENAME="se.ready"
 
 # Prefix of the name of the associative arrays for each node in the cluster.config
 readonly NODE_CFG_PREFIX="NODE_CFG_"
@@ -432,7 +433,7 @@ function getRemoteRunningPid() {
   host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
   dir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
 
-  remoteCmd="if [ ! -f \"${dir}/${REMOTE_PID_FILENAME}\" ]; then exit 1; fi; cat \"${dir}/${REMOTE_PID_FILENAME}\" | xargs ps -o pid -h -p "
+  remoteCmd="if [ ! -f \"${dir}/${PID_FILENAME}\" ]; then exit 1; fi; cat \"${dir}/${PID_FILENAME}\" | xargs ps -o pid -h -p "
 
   pid="$(ssh -q "${host}" "bash" "-c" "'${remoteCmd}'")"
 
@@ -445,6 +446,41 @@ function getRemoteRunningPid() {
   fi
 
   echo "${pid}"
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Checks whether a remote SE is loaded and ready. Returns a non-error exit
+## code if it is ready, or an error exit code if it is not.
+##
+## Params:
+##  $1 : The name of the node to enquire on.
+
+function isRemoteSeReady() {
+  local nodeName="$1"
+
+  local host
+  local dir
+  local pid
+  local remoteCmd
+
+  host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+  dir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
+
+  remoteCmd="diff -qNZ \"${dir}/${PID_FILENAME}\" \"${dir}/${READY_FILENAME}\" &>/dev/null"
+
+  ssh -q "${host}" "bash" "-c" "'${remoteCmd}'"
+  local nodeReady="$?"
+
+  if [ "${nodeReady}" -eq 0 ]; then
+    debugPrint "Node ${nodeName} is started and ready"
+    true
+    return
+  else 
+    debugPrint "Node ${nodeName} is not yet started or ready"
+    false
+    return
+  fi
 }
 
 
