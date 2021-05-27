@@ -14,7 +14,9 @@ struct SizeHeap {
   i8  m_nVtableAdjust;      // temp: explore support for vtable
   
   b8  m_bDontMemLog;        // don't memory log?
-  
+
+  b8  m_bIgnoreMemoryLeak;  // ignore during memory leak tracking ?
+
   b8  m_bLowMemoryDiscard;  // discard received object when low memory?
     
   Word* m_pPreSendWord;     // word to execute prior to sending the object
