@@ -657,6 +657,36 @@ void TokenVec::vIntegrityCheck(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return last token                                                          */
+/*----------------------------------------------------------------------------*/
+i8 TokenVec::iLastToken(void)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  i8 i_LastTkn = nTokens() - 1;
+  
+  return i_LastTkn;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return last token                                                          */
+/*----------------------------------------------------------------------------*/
+Token* TokenVec::pLastToken(void)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  m_iCurTkn = iLastToken();
+  
+  if (m_iCurTkn > 0) {
+    Token* pTkn = pGet(m_iCurTkn);
+    return pTkn;
+  }
+  
+  m_iCurTkn = C_UNKNOWN;
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* list tokens                                                                */
 /*----------------------------------------------------------------------------*/
 void TokenVec::vListTokens(void)

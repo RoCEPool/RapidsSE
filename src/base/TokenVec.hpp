@@ -53,6 +53,8 @@ namespace BASE
     void vIncTokens(void);
     void vInsertToken(i8 i_Tkn, Stz* szArgChars, eTN eToken);
     void vIntegrityCheck(void);
+    i8   iLastToken(void);
+    Token* pLastToken(void);
     void vListTokens(void);
     Token* pNextToken(void);
     void vNextToken(void);
