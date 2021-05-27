@@ -23,6 +23,14 @@ namespace STORE
     /* 9 */ AG_ENUMS
   };
 
+  enum ePK {
+    /* 0 */ PK_NONE=0,
+    /* 1 */ PK_AGG,
+    /* 2 */ PK_EXP,
+    /* 3 */ PK_GBY,
+    /* 4 */ PK_ENUMS
+  };
+
   class ExprEval : public Definition
   {
   public:
@@ -52,7 +60,10 @@ namespace STORE
 
     i8       m_iDstColumn;
 
+    i8       m_iProjections;
+
     Column*  m_pStreamInCol[C_MAX_COLUMNS];
+    ePK      m_eProjectKind[C_MAX_COLUMNS];
 
     // must be last
     Footer m_xFooter;
@@ -76,12 +87,12 @@ namespace STORE
 
     void vAppendColumnToStreamDef(StreamDef* pStreamDefOut, Column* pColumn);
 
-    void vCreateGbyIdxCol(Stz* szAsmBuffer, eCT eColumnType, i8 i_Local);
+    void vCreateGbyIdxCol(Stz* szAsmBuffer, eDM eDatum, i8 i_IdxCol);
     void vCreatePayLoadKey(Stz* szAsmBuffer, IntStack* pTypeStack, i8 i_Local);
     eEC eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec);
 
-    void vPayStoreCol(Stz* szAsmBuffer, eCT eColumnType);
-    void vPayFetchCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType) ;
+    void vPayStoreCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType);
+    void vPayFetchCol(Stz* szAsmBuffer, IntStack* pTypeStack, eDM eDatum) ;
 
     void vPushDate(Stz* szAsmBuffer, IntStack* pTypeStack, Token*  pTkn);
     void vPushDecimal(Stz* szAsmBuffer, IntStack* pTypeStack, Token*  pTkn);
@@ -99,7 +110,6 @@ namespace STORE
     eEC eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);
     eEC eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);
 
-    void vGenerateColumnCodeGby(StreamDef* pStreamDefOut, Column* pColumn, IntStack* pTypeStack);
     void vGenerateAggregateCode(eAG eAggType, Stz* szAsmBuffer, Stz* szAsmInitBuffer, IntStack* pTypeStack);
 
     void vGenerateCount(Stz* szAsmBuffer, Stz* sAggInit, IntStack* pTypeStack);

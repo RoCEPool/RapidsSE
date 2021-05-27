@@ -59,6 +59,8 @@ ExprEval::ExprEval(void)
   m_bHasAgg = false;
   m_bHasGby = false;
 
+  m_iProjections = 0;
+
   m_iDstColumn = C_UNKNOWN;
 
   //m_xTypeStack
@@ -222,11 +224,12 @@ void ExprEval::vPushDecimal(Stz* szAsmBuffer, IntStack* pTypeStack, Token* pTkn)
 /*----------------------------------------------------------------------------*/
 /* add EO code for creating the gby idx col                                   */
 /*----------------------------------------------------------------------------*/
-void ExprEval::vCreateGbyIdxCol(Stz* szAsmBuffer, eCT eColumnType, i8 i_Local) {
+void ExprEval::vCreateGbyIdxCol(Stz* szAsmBuffer, eDM eDatum, i8 i_IdxCol) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
-  StrLib::vSprintCat(szAsmBuffer, "  EO_STRING \"col_local%lld\"\n"_Stz, i_Local);
+  eCT eColumnType = Column::eColumnType(eDatum);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_STRING \"col_local%lld\"\n"_Stz, i_IdxCol);
   StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_COLUMN_TYPE %s\n"_Stz,
                      aCT_long[eColumnType]);
   StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_INDEXDEF\n"_Stz);
@@ -279,33 +282,6 @@ void ExprEval::vPushInteger(Stz* szAsmBuffer, IntStack* pTypeStack, Token* pTkn)
 void ExprEval::vCreatePayLoadKey(Stz* szAsmBuffer, IntStack* pTypeStack, i8 i_Local) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
-/*
-  // switch on column type
-  switch (eColumnType) {
-    case CT_BOOLEAN:
-    case CT_DECIMAL:
-    case CT_DATE:
-    case CT_FLOAT:
-    case CT_INTEGER:
-    case CT_TIME:
-    case CT_TIMESTAMP:
-      StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_SETINTELM\n"_Stz);
-      break;
-
-    case CT_CHAR:
-    case CT_VARCHAR:
-      StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_SETSTZELM\n"_Stz);
-      break;
-
-    case CT_INTERVAL_DT:
-    case CT_INTERVAL_YM:
-    case CT_UNKNOWN:
-    default:
-      NEVER_REACH;
-  }
-  */
 
   eDM eDatum = (eDM)pTypeStack->iPop();
 
@@ -335,15 +311,12 @@ void ExprEval::vCreatePayLoadKey(Stz* szAsmBuffer, IntStack* pTypeStack, i8 i_Lo
   }
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* add EO code for fetching column from payload                               */
 /*----------------------------------------------------------------------------*/
-void ExprEval::vPayFetchCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType)
+void ExprEval::vPayFetchCol(Stz* szAsmBuffer, IntStack* pTypeStack, eDM eDatum)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
-
-  eDM eDatum = Column::eDatum(eColumnType);
 
   switch (eDatum) {
     case DM_BOL:
@@ -354,11 +327,13 @@ void ExprEval::vPayFetchCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnT
     case DM_TME:
     case DM_TSP:
     case DM_UNK:
-      StrLib::vSprintCat(m_sPayLoadToBufferAsm, "  EO_PAY_FETCH_COLI %lld\n"_Stz, m_iDstColumn);
+      //StrLib::vSprintCat(m_sPayLoadToBufferAsm, "  EO_PAY_FETCH_COLI %lld\n"_Stz, m_iDstColumn);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_PAY_FETCH_COLI %lld\n"_Stz, m_iDstColumn);
       break;
 
     case DM_VCH:
-      StrLib::vSprintCat(m_sPayLoadToBufferAsm, "  EO_PAY_FETCH_COLS %lld\n"_Stz, m_iDstColumn);
+      //StrLib::vSprintCat(m_sPayLoadToBufferAsm, "  EO_PAY_FETCH_COLS %lld\n"_Stz, m_iDstColumn);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_PAY_FETCH_COLS %lld\n"_Stz, m_iDstColumn);
       break;
 
     case DM_IVL:
@@ -570,7 +545,7 @@ void ExprEval::vGenerateCount(Stz* szAsmBuffer, Stz* sAggInit, IntStack* pTypeSt
   eDM eParamType = (eDM)pTypeStack->iPop();
 
   // push result type
-  pTypeStack->vPush(DM_INT);
+  //pTypeStack->vPush(DM_INT);
 
   // generate code for agg initialization
   if (m_bHasGby) {
@@ -590,7 +565,7 @@ void ExprEval::vGenerateCount(Stz* szAsmBuffer, Stz* sAggInit, IntStack* pTypeSt
     StrLib::vSprintCat(sAggInit, "  Label COUNT_CONTINUE\n"_Stz);
     StrLib::vSprintCat(sAggInit, "  DeleteLabel COUNT_CONTINUE\n"_Stz);
 
-    StrLib::vSprintCat(sAggInit, "  EO_PAY_FETCH_COLI %lld\n"_Stz, m_iDstColumn);
+    //StrLib::vSprintCat(sAggInit, "  EO_PAY_FETCH_COLI %lld\n"_Stz, m_iDstColumn);
     StrLib::vSprintCat(sAggInit, "  EO_INTEGER 1\n"_Stz);
     StrLib::vSprintCat(sAggInit, "  EO_PAY_STORE_COLI %lld\n"_Stz, m_iDstColumn);
 
@@ -649,6 +624,9 @@ void ExprEval::vGenerateCount(Stz* szAsmBuffer, Stz* sAggInit, IntStack* pTypeSt
     StrLib::vSprintCat(szAsmBuffer, "  Label COUNT_DONE\n"_Stz);
     StrLib::vSprintCat(szAsmBuffer, "  DeleteLabel COUNT_DONE\n"_Stz);
   }
+
+  // push result type
+  m_xAggStack.vPush(DM_INT);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -659,13 +637,13 @@ void ExprEval::vGenerateCountAll(Stz* szAsmBuffer, Stz* sAggInit, IntStack* pTyp
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
   // push result type
-  pTypeStack->vPush(DM_INT);
+  //pTypeStack->vPush(DM_INT);
 
   if (m_bHasGby) {
     // generate code for agg initialization
     StrLib::vSprintCat(sAggInit, "  EO_INTEGER %lld\n"_Stz, 1);
-    StrLib::vSprintCat(sAggInit, "  EO_PAY_STORE_COLI %lld\n"_Stz, m_iDstColumn);
-    m_xStoreStack.iPop();
+    //StrLib::vSprintCat(sAggInit, "  EO_PAY_STORE_COLI %lld\n"_Stz, m_iDstColumn);
+    //m_xStoreStack.iPop();
 
     // generate code for count(*)
     StrLib::vSprintCat(szAsmBuffer, "  EO_PAY_FETCH_COLI %lld\n"_Stz, m_iDstColumn);
@@ -687,6 +665,9 @@ void ExprEval::vGenerateCountAll(Stz* szAsmBuffer, Stz* sAggInit, IntStack* pTyp
     StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
     StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_POPCOLI %lld\n"_Stz, m_iDstColumn);
   }
+
+  // push result type
+  m_xAggStack.vPush(DM_INT);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -701,14 +682,15 @@ void ExprEval::vGenerateMax(Stz* szAsmBuffer, Stz* sAggInit, IntStack* pTypeStac
   eEO eCode = eMathOp_MaxCode[eParamType];
 
   // push result type
-  pTypeStack->vPush(eMathOp_MaxResult[eParamType]);
+  eDM eResultType = eMathOp_MaxResult[eParamType];
+  //pTypeStack->vPush(eResultType);
 
   if (m_bHasGby) {
 
     if (eParamType == DM_VCH) {
       // generate code for agg initialization
-      StrLib::vSprintCat(sAggInit, "  EO_PAY_STORE_COLS %lld\n"_Stz, m_iDstColumn);
-      m_xStoreStack.iPop();
+      //StrLib::vSprintCat(sAggInit, "  EO_PAY_STORE_COLS %lld\n"_Stz, m_iDstColumn);
+      //m_xStoreStack.iPop();
 
       // generate code for agg max
       StrLib::vSprintCat(szAsmBuffer, "  EO_ISNULL_STR\n"_Stz);
@@ -737,12 +719,9 @@ void ExprEval::vGenerateMax(Stz* szAsmBuffer, Stz* sAggInit, IntStack* pTypeStac
     }
     else {
 
-      // get the min value
-      i8 iMinValue = iMathOp_MinValue(eParamType);
-
       // generate code for agg initialization
-      StrLib::vSprintCat(sAggInit, "  EO_PAY_STORE_COLI %lld\n"_Stz, m_iDstColumn);
-      m_xStoreStack.iPop();
+      //StrLib::vSprintCat(sAggInit, "  EO_PAY_STORE_COLI %lld\n"_Stz, m_iDstColumn);
+      //m_xStoreStack.iPop();
 
       // generate code for agg max
       StrLib::vSprintCat(szAsmBuffer, "  EO_ISNULL\n"_Stz);
@@ -856,6 +835,9 @@ void ExprEval::vGenerateMax(Stz* szAsmBuffer, Stz* sAggInit, IntStack* pTypeStac
       StrLib::vSprintCat(szAsmBuffer, "  DeleteLabel MAX_DONE\n"_Stz);
     }
   }
+
+  // push result type
+  m_xAggStack.vPush(eResultType);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -870,14 +852,15 @@ void ExprEval::vGenerateMin(Stz* szAsmBuffer, Stz* sAggInit, IntStack* pTypeStac
   eEO eCode = eMathOp_MinCode[eParamType];
 
   // push result type
-  pTypeStack->vPush(eMathOp_MinResult[eParamType]);
+  eDM eResultType = eMathOp_MinResult[eParamType];
+  //pTypeStack->vPush(eResultType);
 
   if (m_bHasGby) {
 
     if (eParamType == DM_VCH) {
       // generate code for agg initialization
-      StrLib::vSprintCat(sAggInit, "  EO_PAY_STORE_COLS %lld\n"_Stz, m_iDstColumn);
-      m_xStoreStack.iPop();
+      //StrLib::vSprintCat(sAggInit, "  EO_PAY_STORE_COLS %lld\n"_Stz, m_iDstColumn);
+      //m_xStoreStack.iPop();
 
       // generate code for agg min
       StrLib::vSprintCat(szAsmBuffer, "  EO_ISNULL_STR\n"_Stz);
@@ -909,8 +892,8 @@ void ExprEval::vGenerateMin(Stz* szAsmBuffer, Stz* sAggInit, IntStack* pTypeStac
       i8 iMaxValue = iMathOp_MaxValue(eParamType);
 
       // generate code for agg initialization
-      StrLib::vSprintCat(sAggInit, "  EO_PAY_STORE_COLI %lld\n"_Stz, m_iDstColumn);
-      m_xStoreStack.iPop();
+      //StrLib::vSprintCat(sAggInit, "  EO_PAY_STORE_COLI %lld\n"_Stz, m_iDstColumn);
+      //m_xStoreStack.iPop();
 
       // generate code for agg min
       StrLib::vSprintCat(szAsmBuffer, "  EO_ISNULL\n"_Stz);
@@ -1021,6 +1004,9 @@ void ExprEval::vGenerateMin(Stz* szAsmBuffer, Stz* sAggInit, IntStack* pTypeStac
       StrLib::vSprintCat(szAsmBuffer, "  DeleteLabel MIN_DONE\n"_Stz);
     }
   }
+
+  // push result type
+  m_xAggStack.vPush(eResultType);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1035,14 +1021,11 @@ void ExprEval::vGenerateSum(Stz* sAsmBuffer, Stz* sAggInit, IntStack* pTypeStack
   eDM eResultType = eMathOp_SumResult[eParamType];
   eEO eCode = eMathOp_SumCode[eParamType];
 
-  // push result type
-  pTypeStack->vPush(eResultType);
-
   if (m_bHasGby) {
     // generate code for agg initialization
     //StrLib::vSprintCat(sAggInit, "  EO_INTEGER %lld\n"_Stz, 0);
-    StrLib::vSprintCat(sAggInit, "  EO_PAY_STORE_COLI %lld\n"_Stz, m_iDstColumn);
-    m_xStoreStack.iPop();
+    //StrLib::vSprintCat(sAggInit, "  EO_PAY_STORE_COLI %lld\n"_Stz, m_iDstColumn);
+    //m_xStoreStack.iPop();
 
     // generate the code
     StrLib::vSprintCat(sAsmBuffer, "  EO_ISNULL\n"_Stz);
@@ -1085,6 +1068,10 @@ void ExprEval::vGenerateSum(Stz* sAsmBuffer, Stz* sAggInit, IntStack* pTypeStack
     StrLib::vSprintCat(sAsmBuffer, "  Label SUM_DONE\n"_Stz);
     StrLib::vSprintCat(sAsmBuffer, "  DeleteLabel SUM_DONE\n"_Stz);
   }
+
+  // push result type
+  m_xAggStack.vPush(eResultType);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1142,6 +1129,7 @@ eEC ExprEval::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec)
 
   eEC eError = EC_NONE;
   Token* pTkn;
+  bool bHasAgg = false;
 
   for (i8 i_Tkn = 0; i_Tkn < pTknVec->nItems(); i_Tkn++) {
 
@@ -1155,11 +1143,23 @@ eEC ExprEval::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec)
           pTkn->bSame("MAX"_Stz)   ||
           pTkn->bSame("SUM"_Stz))
         ) {
+      bHasAgg = true;
       m_bHasAgg = true;
       continue;
     }
 
+    if (pTkn->bIsName() && pTkn->bSame(","_Stz)) {
+      if (m_bHasGby) {
+        m_eProjectKind[m_iProjections++] = PK_GBY;
+      }
+      else {
+        m_eProjectKind[m_iProjections++] = bHasAgg ? PK_AGG : PK_EXP;
+      }
+      bHasAgg = false;
+    }
+
     if (pTkn->bIsName() && pTkn->bSame("GROUPBY"_Stz)) {
+      m_eProjectKind[m_iProjections++] = bHasAgg ? PK_AGG : PK_EXP;
       m_bHasGby = true;
       continue;
     }
@@ -1185,6 +1185,13 @@ eEC ExprEval::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec)
       }
     }
 
+  }
+
+  if (m_bHasGby) {
+    m_eProjectKind[m_iProjections++] = PK_GBY;
+  }
+  else {
+    m_eProjectKind[m_iProjections++] = bHasAgg ? PK_AGG : PK_EXP;
   }
 
   return eError;
@@ -1434,6 +1441,8 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
   eEC eError    = EC_NONE;
 
   s32 sColumnNm;
+  i8 iProjection = 0;
+  bool bInAgg = false;
 
   // create a new columnExpr
   Column *pColumnExpr =  new Column;
@@ -1461,15 +1470,13 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
     if (pTkn->bSame(","_Stz)) {
 
       // discovered a comma, generate code for the column
-      //vGenerateColumnCode(szAsmBuffer, pStreamDefOut, pColumnExpr);
       vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
       vPopDstCol(szAsmBuffer, &m_xTypeStack);
 
-
-      m_bHasAgg = false;
       szAsmBuffer = m_sProjectAsm;
 
       m_iDstColumn++;
+      iProjection++;
       sColumnNm.vSprint("col%lld"_Stz, m_iDstColumn);
       pColumnExpr->vColumnNm(sColumnNm);
 
@@ -1514,43 +1521,60 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
 
     // arithmetic operator ?
     if (pTkn->bIsArithmetic()) {
-      vAddArithmetic(szAsmBuffer, &m_xTypeStack, pTkn);
+      if (bInAgg)
+        vAddArithmetic(m_sAggAsm, &m_xAggStack, pTkn);
+      else
+        vAddArithmetic(m_sProjectAsm, &m_xTypeStack, pTkn);
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     // logical operator ?
     if (pTkn->bIsLogical() || pTkn->bSame("isNull"_Stz)) {
-      vAddLogical(szAsmBuffer, &m_xTypeStack, pTkn);
+      if (bInAgg)
+        vAddLogical(m_sAggAsm, &m_xAggStack, pTkn);
+      else
+        vAddLogical(m_sProjectAsm, &m_xTypeStack, pTkn);
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     // relational operator ?
     if (pTkn->bIsRelational()) {
-      vAddRelational(szAsmBuffer, &m_xTypeStack, pTkn);
+      if (bInAgg)
+        vAddRelational(m_sAggAsm, &m_xAggStack, pTkn);
+      else
+        vAddRelational(m_sProjectAsm, &m_xTypeStack, pTkn);
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     // is it a numeric ?
     if (pTkn->bIsNumeric()) {
-      vPushInteger(szAsmBuffer, &m_xTypeStack, pTkn);
+      if (bInAgg)
+        vPushInteger(m_sAggAsm, &m_xAggStack, pTkn);
+      else
+        vPushInteger(m_sProjectAsm, &m_xTypeStack, pTkn);
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     // is it a decimal no ?
     if (pTkn->bIsDecimalNo()) {
-      vPushDecimal(szAsmBuffer, &m_xTypeStack, pTkn);
-
+      if (bInAgg)
+        vPushDecimal(m_sAggAsm, &m_xAggStack, pTkn);
+      else
+        vPushDecimal(m_sProjectAsm, &m_xTypeStack, pTkn);
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     // is it a string ?
     if (pTkn->bIsString()) {
-       vPushString(szAsmBuffer, &m_xTypeStack, pTkn);
+      if (bInAgg)
+        vPushString(m_sAggAsm, &m_xAggStack, pTkn);
+      else
+        vPushString(m_sProjectAsm, &m_xTypeStack, pTkn);
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -1570,14 +1594,20 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
 
     // is it a negate op ?
     if (pTkn->bSame("negate"_Stz) ) {
-      vAddArithmetic(szAsmBuffer, &m_xTypeStack, pTkn);
+      if (bInAgg)
+        vAddArithmetic(m_sAggAsm, &m_xAggStack, pTkn);
+      else
+        vAddArithmetic(m_sProjectAsm, &m_xTypeStack, pTkn);
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     // it is a null value ?
     if (pTkn->bSame("null"_Stz) ) {
-       vPushUnknown(szAsmBuffer, &m_xTypeStack, pTkn);
+      if (bInAgg)
+        vPushUnknown(m_sAggAsm, &m_xAggStack, pTkn);
+      else
+        vPushUnknown(m_sProjectAsm, &m_xTypeStack, pTkn);
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -1586,7 +1616,10 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
     if (pTkn->bSame("DATE"_Stz) ) {
       pTkn = pTknVec->pNextToken();
       if (pTkn->bIsString()) {
-        vPushDate(szAsmBuffer, &m_xTypeStack, pTkn);
+        if (bInAgg)
+          vPushDate(m_sAggAsm, &m_xAggStack, pTkn);
+        else
+          vPushDate(m_sProjectAsm, &m_xTypeStack, pTkn);
         pTkn = pTknVec->pNextToken();
         continue;
       }
@@ -1598,7 +1631,10 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
     if (pTkn->bSame("TIME"_Stz) ) {
       pTkn = pTknVec->pNextToken();
       if (pTkn->bIsString()) {
-         vPushTime(szAsmBuffer, &m_xTypeStack, pTkn);
+        if (bInAgg)
+          vPushTime(m_sAggAsm, &m_xAggStack, pTkn);
+        else
+          vPushTime(m_sProjectAsm, &m_xTypeStack, pTkn);
         pTkn = pTknVec->pNextToken();
         continue;
       }
@@ -1610,7 +1646,10 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
     if (pTkn->bSame("TIMESTAMP"_Stz) ) {
       pTkn = pTknVec->pNextToken();
       if (pTkn->bIsString()) {
-         vPushTimestamp(szAsmBuffer, &m_xTypeStack, pTkn);
+        if (bInAgg)
+          vPushTimestamp(m_sAggAsm, &m_xAggStack, pTkn);
+        else
+          vPushTimestamp(m_sProjectAsm, &m_xTypeStack, pTkn);
         pTkn = pTknVec->pNextToken();
         continue;
       }
@@ -1619,9 +1658,7 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
     }
 
     if (pTkn->bSame(")"_Stz) ) {
-
-      m_bHasAgg = true;
-      szAsmBuffer = m_sAggAsm;
+      bInAgg = true;
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -1629,13 +1666,15 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
     if (pTkn->bSame("AVG"_Stz) ) {
 
       eAggType = AG_AVG;
-      ASSERT(m_bHasAgg);
+      bInAgg = false;
 
-      vGenerateAggregateCode(eAggType, szAsmBuffer, m_sAggInitAsm, &m_xTypeStack);
+      vGenerateAggregateCode(eAggType, m_sAggAsm, m_sAggInitAsm, &m_xAggStack);
       eAggType = AG_NONE;
-      szAsmBuffer = m_sProjectAsm;
 
-      vPushDstCol(szAsmBuffer, &m_xTypeStack);
+      eDM eAggDatum = (eDM)m_xAggStack.iPop();
+      m_xTypeStack.vPush(eAggDatum);
+
+      vPushDstCol(m_sProjectAsm, &m_xTypeStack);
 
       pTkn = pTknVec->pNextToken();
       continue;
@@ -1644,13 +1683,15 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
     if (pTkn->bSame("COUNT"_Stz) ) {
 
       eAggType = AG_CNT;
-      ASSERT(m_bHasAgg);
+      bInAgg = false;
 
-      vGenerateAggregateCode(eAggType, szAsmBuffer, m_sAggInitAsm, &m_xTypeStack);
+      vGenerateAggregateCode(eAggType, m_sAggAsm, m_sAggInitAsm, &m_xAggStack);
       eAggType = AG_NONE;
-      szAsmBuffer = m_sProjectAsm;
 
-      vPushDstCol(szAsmBuffer, &m_xTypeStack);
+      eDM eAggDatum = (eDM)m_xAggStack.iPop();
+      m_xTypeStack.vPush(eAggDatum);
+
+      vPushDstCol(m_sProjectAsm, &m_xTypeStack);
 
       pTkn = pTknVec->pNextToken();
       continue;
@@ -1659,13 +1700,15 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
     if (pTkn->bSame("COUNTALL"_Stz) ) {
 
       eAggType = AG_ALL;
-      ASSERT(m_bHasAgg);
+      bInAgg = false;
 
-      vGenerateAggregateCode(eAggType, szAsmBuffer, m_sAggInitAsm, &m_xTypeStack);
+      vGenerateAggregateCode(eAggType, m_sAggAsm, m_sAggInitAsm, &m_xAggStack);
       eAggType = AG_NONE;
-      szAsmBuffer = m_sProjectAsm;
 
-      vPushDstCol(szAsmBuffer, &m_xTypeStack);
+      eDM eAggDatum = (eDM)m_xAggStack.iPop();
+      m_xTypeStack.vPush(eAggDatum);
+
+      vPushDstCol(m_sProjectAsm, &m_xTypeStack);
 
       pTkn = pTknVec->pNextToken();
       continue;
@@ -1674,13 +1717,15 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
     if (pTkn->bSame("MIN"_Stz) ) {
 
       eAggType = AG_MIN;
-      ASSERT(m_bHasAgg);
+      bInAgg = false;
 
-      vGenerateAggregateCode(eAggType, szAsmBuffer, m_sAggInitAsm, &m_xTypeStack);
+      vGenerateAggregateCode(eAggType, m_sAggAsm, m_sAggInitAsm, &m_xAggStack);
       eAggType = AG_NONE;
-      szAsmBuffer = m_sProjectAsm;
 
-      vPushDstCol(szAsmBuffer, &m_xTypeStack);
+      eDM eAggDatum = (eDM)m_xAggStack.iPop();
+      m_xTypeStack.vPush(eAggDatum);
+
+      vPushDstCol(m_sProjectAsm, &m_xTypeStack);
 
       pTkn = pTknVec->pNextToken();
       continue;
@@ -1689,13 +1734,15 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
     if (pTkn->bSame("MAX"_Stz) ) {
 
       eAggType = AG_MAX;
-      ASSERT(m_bHasAgg);
+      bInAgg = false;
 
-      vGenerateAggregateCode(eAggType, szAsmBuffer, m_sAggInitAsm, &m_xTypeStack);
+      vGenerateAggregateCode(eAggType, m_sAggAsm, m_sAggInitAsm, &m_xAggStack);
       eAggType = AG_NONE;
-      szAsmBuffer = m_sProjectAsm;
 
-      vPushDstCol(szAsmBuffer, &m_xTypeStack);
+      eDM eAggDatum = (eDM)m_xAggStack.iPop();
+      m_xTypeStack.vPush(eAggDatum);
+
+      vPushDstCol(m_sProjectAsm, &m_xTypeStack);
 
       pTkn = pTknVec->pNextToken();
       continue;
@@ -1704,13 +1751,15 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
     if (pTkn->bSame("SUM"_Stz) ) {
 
       eAggType = AG_SUM;
-      ASSERT(m_bHasAgg);
+      bInAgg = false;
 
-      vGenerateAggregateCode(eAggType, szAsmBuffer, m_sAggInitAsm, &m_xTypeStack);
+      vGenerateAggregateCode(eAggType, m_sAggAsm, m_sAggInitAsm, &m_xAggStack);
       eAggType = AG_NONE;
-      szAsmBuffer = m_sProjectAsm;
 
-      vPushDstCol(szAsmBuffer, &m_xTypeStack);
+      eDM eAggDatum = (eDM)m_xAggStack.iPop();
+      m_xTypeStack.vPush(eAggDatum);
+
+      vPushDstCol(m_sProjectAsm, &m_xTypeStack);
 
       pTkn = pTknVec->pNextToken();
       continue;
@@ -1727,18 +1776,21 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
     i8 i_Local = iOrdinalToLocal(i_ColumnOrdinal);
     Column* pColumn = pStreamDefIn->pGetColumn(i_ColumnOrdinal);
 
-    vPushLclCol(szAsmBuffer, &m_xTypeStack, pColumn->eColumnType(), i_Local);
+    if (m_eProjectKind[iProjection] == PK_EXP)
+      vPushLclCol(m_sProjectAsm, &m_xTypeStack, pColumn->eColumnType(), i_Local);
+    else
+      vPushLclCol(m_sAggAsm, &m_xAggStack, pColumn->eColumnType(), i_Local);
 
     pTkn = pTknVec->pNextToken();
   }
 
   // add the last column to the streamDefOut
-  //vGenerateColumnCode(szAsmBuffer, pStreamDefOut, pColumnExpr);
   vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
-  vPopDstCol(szAsmBuffer, &m_xTypeStack);
+  vPopDstCol(m_sProjectAsm, &m_xTypeStack);
 
   L_RETURN:
   RASSERT(m_xTypeStack.nItems() == 0);
+  RASSERT(m_xAggStack.nItems() == 0);
   delete pColumnExpr;
   return eError;
 }
@@ -1758,21 +1810,13 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
   s32 sColumnNm;
   i8 i_ColumnOrdinal = C_UNKNOWN;
   i8 i_Local = C_UNKNOWN;
+  i8 iProjection = 0;
 
   // create a new columnExpr
   Column *pColumnExpr =  new Column;
 
-  bool bGroupBy = false;
-
-  Stz* szAggInitBuffer;
-
   // should have pStreamDefOut
   RASSERT(pStreamDefOut);
-
-  Stz* szAsmBuffer = m_sPayLoadToBufferAsm;
-  IntStack* pTypeStack = &m_xTypeStack;
-
-  m_bHasAgg = false;
 
   // get the current token
   Token* pTkn = pTknVec->pCurrToken();
@@ -1783,6 +1827,8 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
   pColumnExpr->vColumnNm(sColumnNm);
 
   bool bPushedLocal = false;
+  bool bInAgg = false;
+  eDM eKeyDatm;
 
   while ( pTkn ) {
 
@@ -1790,26 +1836,43 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
 
     if (pTkn->bSame(","_Stz)) {
 
-      if (bGroupBy) {
-        vCreatePayLoadKey(m_sPayLoadKeyAsm, &m_xKeyStack, i_Local);
-        pTkn = pTknVec->pNextToken();
-        continue;
+      switch (m_eProjectKind[iProjection]) {
+        case PK_AGG:
+          vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
+          vPopDstCol(m_sPayLoadToBufferAsm, &m_xTypeStack);
+          m_nPayLoadBytes += 8;
+          break;
+
+        case PK_EXP: {
+          vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
+          eDM eExprDatum = (eDM) m_xStoreStack.iPeek(m_xStoreStack.nItems() - 1);
+          vPayFetchCol(m_sPayLoadToBufferAsm, &m_xTypeStack, eExprDatum);
+          bPushedLocal = true;
+          vPopDstCol(m_sPayLoadToBufferAsm, &m_xTypeStack);
+          m_nPayLoadBytes += 8;
+        }
+          break;
+
+        case PK_GBY: {
+          eDM eKeyDatm = (eDM) m_xKeyStack.iPeek(m_xKeyStack.nItems() - 1);
+          vCreateGbyIdxCol(m_sGbyIdxAsm, eKeyDatm, iProjection);
+          vCreatePayLoadKey(m_sPayLoadKeyAsm, &m_xKeyStack, i_Local);
+        }
+          break;
+
+        default:
+          NEVER_REACH;
       }
 
-      // discovered a comma, generate code for the column
-      vGenerateColumnCodeGby(pStreamDefOut, pColumnExpr, pTypeStack);
       if (bPushedLocal) {
-        vPayStoreCol(m_sPayLoadStoreAsm, pColumnExpr->eColumnType());
+        vPayStoreCol(m_sPayLoadStoreAsm, &m_xStoreStack, pColumnExpr->eColumnType());
         bPushedLocal = false;
       }
 
       eAggType = AG_NONE;
-      ASSERT( ! m_bHasAgg );
-
-      //m_bHasAgg = false;
-      szAsmBuffer = m_sPayLoadToBufferAsm;
 
       m_iDstColumn++;
+      iProjection++;
       sColumnNm.vSprint("col%lld"_Stz, m_iDstColumn);
       pColumnExpr->vColumnNm(sColumnNm);
 
@@ -1854,61 +1917,168 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
 
     // arithmetic operator ?
     if (pTkn->bIsArithmetic()) {
-      vAddArithmetic(szAsmBuffer, pTypeStack, pTkn);
-      if (m_bHasAgg)
-        vAddArithmetic(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+
+      switch (m_eProjectKind[iProjection]) {
+        case PK_GBY:
+          vAddArithmetic(m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
+          break;
+        case PK_AGG:
+          if (bInAgg) {
+            vAddArithmetic(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+            vAddArithmetic(m_sPayLoadAggAsm, &m_xAggStack, pTkn);
+          }
+          else {
+            vAddArithmetic(m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
+          }
+          break;
+        case PK_EXP:
+          vAddArithmetic(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+          break;
+        default:
+            NEVER_REACH;
+        }
+
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     // logical operator ?
     if (pTkn->bIsLogical() || pTkn->bSame("isNull"_Stz)) {
-      vAddLogical(szAsmBuffer, pTypeStack, pTkn);
-      if (m_bHasAgg)
-        vAddLogical(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+
+      switch (m_eProjectKind[iProjection]) {
+        case PK_GBY:
+          vAddLogical(m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
+          break;
+        case PK_AGG:
+          if (bInAgg) {
+            vAddLogical(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+            vAddLogical(m_sPayLoadAggAsm, &m_xAggStack, pTkn);
+          }
+          else {
+            vAddLogical(m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
+          }
+          break;
+        case PK_EXP:
+          vAddLogical(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+          break;
+        default:
+          NEVER_REACH;
+      }
+
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     // relational operator ?
     if (pTkn->bIsRelational()) {
-      vAddRelational(szAsmBuffer, pTypeStack, pTkn);
-      if (m_bHasAgg)
-        vAddRelational(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+
+      switch (m_eProjectKind[iProjection]) {
+        case PK_GBY:
+          vAddRelational(m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
+          break;
+        case PK_AGG:
+          if (bInAgg) {
+            vAddRelational(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+            vAddRelational(m_sPayLoadAggAsm, &m_xAggStack, pTkn);
+          }
+          else {
+            vAddRelational(m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
+          }
+          break;
+        case PK_EXP:
+          vAddArithmetic(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+          break;
+        default:
+          NEVER_REACH;
+      }
+
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     // is it a numeric ?
     if (pTkn->bIsNumeric()) {
-      vPushInteger(szAsmBuffer, pTypeStack, pTkn);
-      if (m_bHasAgg)
-        vPushInteger(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+
+      switch (m_eProjectKind[iProjection]) {
+        case PK_GBY:
+          vPushInteger(m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
+          break;
+        case PK_AGG:
+          if (bInAgg) {
+            vPushInteger(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+            vPushInteger(m_sPayLoadAggAsm, &m_xAggStack, pTkn);
+          }
+          else {
+            vPushInteger(m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
+          }
+          break;
+        case PK_EXP:
+          vPushInteger(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+          break;
+        default:
+          NEVER_REACH;
+      }
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     // is it a decimal no ?
     if (pTkn->bIsDecimalNo()) {
-      vPushDecimal(szAsmBuffer, pTypeStack, pTkn);
-      if (m_bHasAgg)
-        vPushDecimal(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+
+      switch (m_eProjectKind[iProjection]) {
+        case PK_GBY:
+          vPushDecimal(m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
+          break;
+        case PK_AGG:
+          if (bInAgg) {
+            vPushDecimal(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+            vPushDecimal(m_sPayLoadAggAsm, &m_xAggStack, pTkn);
+          }
+          else {
+            vPushDecimal(m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
+          }
+          break;
+        case PK_EXP:
+          vPushDecimal(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+          break;
+        default:
+          NEVER_REACH;
+      }
+
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     // is it a string ?
     if (pTkn->bIsString()) {
-       vPushString(szAsmBuffer, pTypeStack, pTkn);
-      if (m_bHasAgg)
-         vPushString(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+
+      switch (m_eProjectKind[iProjection]) {
+        case PK_GBY:
+          vPushString(m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
+          break;
+        case PK_AGG:
+          if (bInAgg) {
+            vPushString(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+            vPushString(m_sPayLoadAggAsm, &m_xAggStack, pTkn);
+          }
+          else {
+            vPushString(m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
+          }
+          break;
+        case PK_EXP:
+          vPushString(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+          break;
+        default:
+          NEVER_REACH;
+      }
+
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     // is it a tag ?
     if (pTkn->eToken() == TN_TAG && pTkn->bSame("<>"_Stz)) {
-      StrLib::vSprintCat(szAsmBuffer, "  EO_RETURN_FALSE\n"_Stz);
+      StrLib::vSprintCat(m_sPayLoadStoreAsm, "  EO_RETURN_FALSE\n"_Stz);
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -1921,18 +2091,54 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
 
     // is it a negate op ?
     if (pTkn->bSame("negate"_Stz) ) {
-      vAddArithmetic(szAsmBuffer, pTypeStack, pTkn);
-      if (m_bHasAgg)
-        vAddArithmetic(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+
+      switch (m_eProjectKind[iProjection]) {
+        case PK_GBY:
+          vAddArithmetic(m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
+          break;
+        case PK_AGG:
+          if (bInAgg) {
+            vAddArithmetic(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+            vAddArithmetic(m_sPayLoadAggAsm, &m_xAggStack, pTkn);
+          }
+          else {
+            vAddArithmetic(m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
+          }
+          break;
+        case PK_EXP:
+          vAddArithmetic(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+          break;
+        default:
+          NEVER_REACH;
+      }
+
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     // it is a null value ?
     if (pTkn->bSame("null"_Stz) ) {
-       vPushUnknown(szAsmBuffer, pTypeStack, pTkn);
-      if (m_bHasAgg)
-         vPushUnknown(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+
+      switch (m_eProjectKind[iProjection]) {
+        case PK_GBY:
+          vPushUnknown(m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
+          break;
+        case PK_AGG:
+          if (bInAgg) {
+            vPushUnknown(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+            vPushUnknown(m_sPayLoadAggAsm, &m_xAggStack, pTkn);
+          }
+          else {
+            vPushUnknown(m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
+          }
+          break;
+        case PK_EXP:
+          vPushUnknown(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+          break;
+        default:
+          NEVER_REACH;
+      }
+
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -1941,9 +2147,27 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
     if (pTkn->bSame("DATE"_Stz) ) {
       pTkn = pTknVec->pNextToken();
       if (pTkn->bIsString()) {
-        vPushDate(szAsmBuffer, pTypeStack, pTkn);
-        if (m_bHasAgg)
-          vPushDate(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+
+        switch (m_eProjectKind[iProjection]) {
+          case PK_GBY:
+            vPushDate(m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
+            break;
+          case PK_AGG:
+            if (bInAgg) {
+              vPushDate(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+              vPushDate(m_sPayLoadAggAsm, &m_xAggStack, pTkn);
+            }
+            else {
+              vPushDate(m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
+            }
+            break;
+          case PK_EXP:
+            vPushDate(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+            break;
+          default:
+            NEVER_REACH;
+        }
+
         pTkn = pTknVec->pNextToken();
         continue;
       }
@@ -1955,9 +2179,27 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
     if (pTkn->bSame("TIME"_Stz) ) {
       pTkn = pTknVec->pNextToken();
       if (pTkn->bIsString()) {
-         vPushTime(szAsmBuffer, pTypeStack, pTkn);
-        if (m_bHasAgg)
-           vPushTime(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+
+        switch (m_eProjectKind[iProjection]) {
+          case PK_GBY:
+            vPushTime(m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
+            break;
+          case PK_AGG:
+            if (bInAgg) {
+              vPushTime(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+              vPushTime(m_sPayLoadAggAsm, &m_xAggStack, pTkn);
+            }
+            else {
+              vPushTime(m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
+            }
+            break;
+          case PK_EXP:
+            vPushTime(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+            break;
+          default:
+            NEVER_REACH;
+        }
+
         pTkn = pTknVec->pNextToken();
         continue;
       }
@@ -1969,9 +2211,27 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
     if (pTkn->bSame("TIMESTAMP"_Stz) ) {
       pTkn = pTknVec->pNextToken();
       if (pTkn->bIsString()) {
-         vPushTimestamp(szAsmBuffer, pTypeStack, pTkn);
-        if (m_bHasAgg)
-           vPushTimestamp(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+
+        switch (m_eProjectKind[iProjection]) {
+          case PK_GBY:
+            vPushTimestamp(m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
+            break;
+          case PK_AGG:
+            if (bInAgg) {
+              vPushTimestamp(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+              vPushTimestamp(m_sPayLoadAggAsm, &m_xAggStack, pTkn);
+            }
+            else {
+              vPushTimestamp(m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
+            }
+            break;
+          case PK_EXP:
+            vPushTimestamp(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+            break;
+          default:
+            NEVER_REACH;
+        }
+
         pTkn = pTknVec->pNextToken();
         continue;
       }
@@ -1980,90 +2240,77 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
     }
 
     if (pTkn->bSame(")"_Stz) ) {
-
-      m_bHasAgg = true;
-      szAsmBuffer = m_sPayLoadAggAsm;
-      pTypeStack = &m_xAggStack;
+      bInAgg = true;
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     if (pTkn->bSame("AVG"_Stz) ) {
-
       eAggType = AG_AVG;
       ASSERT(m_bHasAgg);
 
-      vPayFetchCol(m_sPayLoadToBufferAsm, &m_xTypeStack, pColumnExpr->eColumnType());
       vGenerateAggregateCode(eAggType, m_sPayLoadAggAsm, m_sPayLoadStoreAsm, &m_xAggStack);
       eAggType = AG_NONE;
-      szAsmBuffer = m_sPayLoadToBufferAsm;
-      pTypeStack = &m_xTypeStack;
-      m_bHasAgg = false;
-      bPushedLocal = false;
+      eDM eAggDatum = (eDM)m_xAggStack.iPop();
+      vPayFetchCol(m_sPayLoadToBufferAsm, &m_xTypeStack, eAggDatum);
+      bInAgg = false;
+      bPushedLocal = true;
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     if (pTkn->bSame("COUNT"_Stz) ) {
-
       eAggType = AG_CNT;
       ASSERT(m_bHasAgg);
 
-      vPayFetchCol(m_sPayLoadToBufferAsm, &m_xTypeStack, pColumnExpr->eColumnType());
       vGenerateAggregateCode(eAggType, m_sPayLoadAggAsm, m_sPayLoadStoreAsm, &m_xAggStack);
       eAggType = AG_NONE;
-      szAsmBuffer = m_sPayLoadToBufferAsm;
-      pTypeStack = &m_xTypeStack;
-      m_bHasAgg = false;
+      eDM eAggDatum = (eDM)m_xAggStack.iPop();
+      vPayFetchCol(m_sPayLoadToBufferAsm, &m_xTypeStack, eAggDatum);
+      bInAgg = false;
       bPushedLocal = false;
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     if (pTkn->bSame("COUNTALL"_Stz) ) {
-
       eAggType = AG_ALL;
       ASSERT(m_bHasAgg);
 
-      vPayFetchCol(m_sPayLoadToBufferAsm, &m_xTypeStack, pColumnExpr->eColumnType());
       vGenerateAggregateCode(eAggType, m_sPayLoadAggAsm, m_sPayLoadStoreAsm, &m_xAggStack);
       eAggType = AG_NONE;
-      szAsmBuffer = m_sPayLoadToBufferAsm;
-      pTypeStack = &m_xTypeStack;
-      m_bHasAgg = false;
+      eDM eAggDatum = (eDM)m_xAggStack.iPop();
+      vPayFetchCol(m_sPayLoadToBufferAsm, &m_xTypeStack, eAggDatum);
+      bInAgg = false;
       bPushedLocal = false;
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     if (pTkn->bSame("MIN"_Stz) ) {
-
       eAggType = AG_MIN;
       ASSERT(m_bHasAgg);
 
-      vPayFetchCol(m_sPayLoadToBufferAsm, &m_xTypeStack, pColumnExpr->eColumnType());
       vGenerateAggregateCode(eAggType, m_sPayLoadAggAsm, m_sPayLoadStoreAsm, &m_xAggStack);
       eAggType = AG_NONE;
-      szAsmBuffer = m_sPayLoadToBufferAsm;
-      pTypeStack = &m_xTypeStack;
-      m_bHasAgg = false;
-      bPushedLocal = false;
+      eDM eAggDatum = (eDM)m_xAggStack.iPop();
+      vPayFetchCol(m_sPayLoadToBufferAsm, &m_xTypeStack, eAggDatum);
+      bInAgg = false;
+      bPushedLocal = true;
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     if (pTkn->bSame("MAX"_Stz) ) {
-
       eAggType = AG_MAX;
       ASSERT(m_bHasAgg);
 
-      vPayFetchCol(m_sPayLoadToBufferAsm, &m_xTypeStack, pColumnExpr->eColumnType());
       vGenerateAggregateCode(eAggType, m_sPayLoadAggAsm, m_sPayLoadStoreAsm, &m_xAggStack);
       eAggType = AG_NONE;
-      szAsmBuffer = m_sPayLoadToBufferAsm;
-      pTypeStack = &m_xTypeStack;
-      m_bHasAgg = false;
-      bPushedLocal = false;
+      eDM eAggDatum = (eDM)m_xAggStack.iPop();
+      vPayFetchCol(m_sPayLoadToBufferAsm, &m_xTypeStack, eAggDatum);
+      bInAgg = false;
+      bPushedLocal = true;
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -2073,13 +2320,12 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
       eAggType = AG_SUM;
       ASSERT(m_bHasAgg);
 
-      vPayFetchCol(m_sPayLoadToBufferAsm, &m_xTypeStack, pColumnExpr->eColumnType());
       vGenerateAggregateCode(eAggType, m_sPayLoadAggAsm, m_sPayLoadStoreAsm, &m_xAggStack);
       eAggType = AG_NONE;
-      szAsmBuffer = m_sPayLoadToBufferAsm;
-      pTypeStack = &m_xTypeStack;
-      m_bHasAgg = false;
-      bPushedLocal = false;
+      eDM eAggDatum = (eDM)m_xAggStack.iPop();
+      vPayFetchCol(m_sPayLoadToBufferAsm, &m_xTypeStack, eAggDatum);
+      bInAgg = false;
+      bPushedLocal = true;
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -2088,19 +2334,40 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
     if (pTkn->bSame("GROUPBY"_Stz) ) {
 
       ASSERT(m_bHasGby);
-      bGroupBy = true;
 
-      // discovered a column, generate code for the column
-      vGenerateColumnCodeGby(pStreamDefOut, pColumnExpr, pTypeStack);
-      szAsmBuffer = m_sPayLoadKeyAsm;
-      pTypeStack = &m_xKeyStack;
+
+      switch (m_eProjectKind[iProjection]) {
+        case PK_AGG:
+          vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
+          vPopDstCol(m_sPayLoadToBufferAsm, &m_xTypeStack);
+          m_nPayLoadBytes += 8;
+          break;
+
+        case PK_EXP: {
+          vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
+          eDM eExprDatum = (eDM) m_xStoreStack.iPeek(m_xStoreStack.nItems() - 1);
+          vPayFetchCol(m_sPayLoadToBufferAsm, &m_xTypeStack, eExprDatum);
+          bPushedLocal = true;
+          vPopDstCol(m_sPayLoadToBufferAsm, &m_xTypeStack);
+          m_nPayLoadBytes += 8;
+        }
+          break;
+
+        case PK_GBY:
+          vCreatePayLoadKey(m_sPayLoadKeyAsm, &m_xKeyStack, i_Local);
+          break;
+
+        default:
+          NEVER_REACH;
+      }
 
       if (bPushedLocal) {
-        vPayStoreCol(m_sPayLoadStoreAsm, pColumnExpr->eColumnType());
+        vPayStoreCol(m_sPayLoadStoreAsm, &m_xStoreStack, pColumnExpr->eColumnType());
         bPushedLocal = false;
       }
 
       m_iDstColumn++;
+      iProjection++;
 
       StrLib::vSprintCat(m_sPayLoadKeyAsm, "  EO_PUSH_DEVIXT_TMP\n"_Stz);
       StrLib::vSprintCat(m_sPayLoadKeyAsm, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
@@ -2121,29 +2388,44 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
     i_Local = iOrdinalToLocal(i_ColumnOrdinal);
     Column* pColumn = pStreamDefIn->pGetColumn(i_ColumnOrdinal);
 
-    if (bGroupBy) {
-      vCreateGbyIdxCol(m_sGbyIdxAsm, pColumn->eColumnType(), i_Local);
-      vPushLclCol(m_sPayLoadKeyAsm, &m_xKeyStack, pColumn->eColumnType(), i_Local);
-      //vCreatePayLoadKey(m_sPayLoadKeyAsm, &m_xKeyStack, i_Local);
+    switch (m_eProjectKind[iProjection]) {
+      case PK_GBY: {
+        //eDM eKeyDatm = (eDM)m_xKeyStack.iPeek(m_xKeyStack.nItems()-1);
+        //vCreateGbyIdxCol(m_sGbyIdxAsm, eKeyDatm, iProjection);
+        vPushLclCol(m_sPayLoadKeyAsm, &m_xKeyStack, pColumn->eColumnType(), i_Local);
+        }
+        break;
+      case PK_AGG:
+        vPushLclCol(m_sPayLoadAggAsm, &m_xAggStack, pColumn->eColumnType(), i_Local);
+        vPushLclCol(m_sPayLoadStoreAsm, &m_xStoreStack, pColumn->eColumnType(), i_Local);
+        bPushedLocal = true;
+        break;
+      case PK_EXP: {
+        vPushLclCol(m_sPayLoadStoreAsm, &m_xStoreStack, pColumn->eColumnType(), i_Local);
+//        eDM eExprDatum = (eDM) m_xStoreStack.iPeek(m_xStoreStack.nItems()-1);
+//        vPayFetchCol(m_sPayLoadToBufferAsm, &m_xTypeStack, eExprDatum);
+//        bPushedLocal = true;
+      }
+        break;
+      default:
+        NEVER_REACH;
     }
-    else {
-      if (m_bHasAgg)
-         vPushLclCol(m_sPayLoadAggAsm, &m_xAggStack, pColumn->eColumnType(), i_Local);
 
-      if (!m_bHasAgg)
-        vPayFetchCol(m_sPayLoadToBufferAsm, &m_xTypeStack, pColumn->eColumnType());
-      vPushLclCol(m_sPayLoadStoreAsm, &m_xStoreStack, pColumn->eColumnType(), i_Local);
-      bPushedLocal = true;
-    }
     pTkn = pTknVec->pNextToken();
   }
 
+  eKeyDatm = (eDM)m_xKeyStack.iPeek(m_xKeyStack.nItems()-1);
+  vCreateGbyIdxCol(m_sGbyIdxAsm, eKeyDatm, iProjection);
   vCreatePayLoadKey(m_sPayLoadKeyAsm, &m_xKeyStack, i_Local);
 
   L_RETURN:
+  //RASSERT(m_xAggStack.nItems() == 0);
   //RASSERT(m_xTypeStack.nItems() == 0);
   //RASSERT(m_xStoreStack.nItems() == 0);
+  RASSERT(m_xKeyStack.nItems() == 0);
+
   delete pColumnExpr;
+
   return eError;
 }
 
@@ -2206,22 +2488,15 @@ void ExprEval::vAppendColumnToStreamDef(StreamDef* pStreamDefOut, Column* pColum
 }
 
 /*----------------------------------------------------------------------------*/
-/* generate code for column                                                   */
-/*----------------------------------------------------------------------------*/
-void ExprEval::vGenerateColumnCodeGby(StreamDef* pStreamDefOut, Column* pColumn, IntStack *pTypeStack) {
-
-  vAppendColumnToStreamDef(pStreamDefOut, pColumn);
-  vPopDstCol(m_sPayLoadToBufferAsm, pTypeStack);
-
-  m_nPayLoadBytes += 8;
-}
-
-/*----------------------------------------------------------------------------*/
 /* add EO code for store column in payload                                    */
 /*----------------------------------------------------------------------------*/
-void ExprEval::vPayStoreCol(Stz* szAsmBuffer, eCT eColumnType)
+void ExprEval::vPayStoreCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
+
+  eDM eDatum = (eDM)pTypeStack->iPop();
+
+  //RASSERT(Column::eDatum(eColumnType) == eDatum);
 
   // switch on column type
   switch (eColumnType) {
