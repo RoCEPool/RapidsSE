@@ -914,7 +914,7 @@ void Op::vOpTrace(Operand* pOperand, Stz* szFunActNm, Stz* szSupplemental)
     return;
   
   if (m_bTraceOp) {
-    vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p %s\n"_Stz,
+    vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p) %16s %12s %p %s\n"_Stz,
            m_sOpNm.szStz(),
            m_pStage->szStageNm(),
            m_i_Node,
