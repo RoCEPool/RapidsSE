@@ -235,16 +235,18 @@ void Op::vAppend(Operand* pOperand, Task* pTriggeringTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  if (m_bTraceOp)
-    vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
-           m_sOpNm.szStz(),
-           m_pStage->szStageNm(),
-           m_i_Node,
-           m_tPtnNo,
-           m_pPipelineJob,
-           "vPipeOut :"_Stz,
-           AM::pOperandName(pOperand),
-           pOperand);
+  if (m_bTraceOp) {
+//    vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
+//           m_sOpNm.szStz(),
+//           m_pStage->szStageNm(),
+//           m_i_Node,
+//           m_tPtnNo,
+//           m_pPipelineJob,
+//           "vPipeOut :"_Stz,
+//           AM::pOperandName(pOperand),
+//           pOperand);
+    vOpTrace(pOperand,"vPipeOut :"_Stz);
+  }
   
   vAppendLeft(pOperand,pTriggeringTask);
 }
@@ -902,6 +904,30 @@ TagSet* Op::pOpTagSet(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* trace operator action                                                      */
+/*----------------------------------------------------------------------------*/
+void Op::vOpTrace(Operand* pOperand, Stz* szFunActNm, Stz* szSupplemental)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+  if (! pOperand)
+    return;
+  
+  if (m_bTraceOp) {
+    vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p %s\n"_Stz,
+           m_sOpNm.szStz(),
+           m_pStage->szStageNm(),
+           m_i_Node,
+           m_tPtnNo,
+           m_pPipelineJob,
+           szFunActNm,
+           AM::pOperandName(pOperand),
+           pOperand,
+           szSupplemental);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get next op                                                                */
 /*----------------------------------------------------------------------------*/
 i8 Op::iOtherOp(void)
@@ -1080,16 +1106,18 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  if (m_bTraceOp)
-    vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
-           m_sOpNm.szStz(),
-           m_pStage->szStageNm(),
-           m_i_Node,
-           m_tPtnNo,
-           m_pPipelineJob,
-           "vPipeOut :"_Stz,
-           AM::pOperandName(pOperand),
-           pOperand);
+  if (m_bTraceOp) {
+//    vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
+//           m_sOpNm.szStz(),
+//           m_pStage->szStageNm(),
+//           m_i_Node,
+//           m_tPtnNo,
+//           m_pPipelineJob,
+//           "vPipeOut :"_Stz,
+//           AM::pOperandName(pOperand),
+//           pOperand);
+    vOpTrace(pOperand,"vPipeToNextOp :"_Stz);
+  }
   
   RASSERT((AM::JOB::szJobNm(m_pOpJob)->bSame(szOpNm())));
   
@@ -1120,17 +1148,19 @@ void Op::vPipeToOutput(Operand* pOperand)
 
   RASSERT(pOutputQueue);
   
-  if (m_bTraceOp)
-    vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
-           m_sOpNm.szStz(),
-           m_pStage->szStageNm(),
-           m_i_Node,
-           m_tPtnNo,
-           m_pPipelineJob,
-           "vPipeToOutput :"_Stz,
-           AM::pOperandName(pOperand),
-           pOperand);
-    
+  if (m_bTraceOp) {
+//    vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
+//           m_sOpNm.szStz(),
+//           m_pStage->szStageNm(),
+//           m_i_Node,
+//           m_tPtnNo,
+//           m_pPipelineJob,
+//           "vPipeToOutput :"_Stz,
+//           AM::pOperandName(pOperand),
+//           pOperand);
+    vOpTrace(pOperand,"vPipeToOutput :"_Stz);
+  }
+  
   pOutputQueue->vAppend(pOperand);
 }
 
@@ -1156,15 +1186,16 @@ Operand* Op::pPopQueue(void)
   AM::vOperandsDec();
   
   if (m_bTraceOp) {
-    vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
-           m_sOpNm.szStz(),
-           m_pStage->szStageNm(),
-           m_i_Node,
-           m_tPtnNo,
-           m_pPipelineJob,
-           "pPopQueue :"_Stz,
-           AM::pOperandName(pOperand),
-           pOperand);
+//    vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
+//           m_sOpNm.szStz(),
+//           m_pStage->szStageNm(),
+//           m_i_Node,
+//           m_tPtnNo,
+//           m_pPipelineJob,
+//           "pPopQueue :"_Stz,
+//           AM::pOperandName(pOperand),
+//           pOperand);
+    vOpTrace(pOperand,"pPopQueue :"_Stz);
   }
   
   return pOperand;
@@ -1191,15 +1222,16 @@ Operand* Op::pPopQueueOoO(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (m_bTraceOp && pOperand) {
-    vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
-           m_sOpNm.szStz(),
-           m_pStage->szStageNm(),
-           m_i_Node,
-           m_tPtnNo,
-           m_pPipelineJob,
-           "pPopQueue :"_Stz,
-           AM::pOperandName(pOperand),
-           pOperand);
+//    vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
+//           m_sOpNm.szStz(),
+//           m_pStage->szStageNm(),
+//           m_i_Node,
+//           m_tPtnNo,
+//           m_pPipelineJob,
+//           "pPopQueue :"_Stz,
+//           AM::pOperandName(pOperand),
+//           pOperand);
+    vOpTrace(pOperand,"pPopQueueOoO :"_Stz);
   }
   
   return pOperand;

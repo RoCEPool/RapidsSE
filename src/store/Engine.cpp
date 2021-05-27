@@ -429,7 +429,11 @@ void Engine::vCallPrompt(void)
     vInfo("\n>\n> %lld) Calling PROMPT\n>\n"_Stz,giProgressPoint++);
 
   //AM::vPromptCall();
-  
+
+  if (AM::bVerboseProgress())
+    vInfo("  Adding Ignore memory leaks\n"_Stz);
+  vIgnoreMemoryLeak();
+
   SePrompt* pSePrompt = new SePrompt(gxCmdLineArgs.m_xSysArgs.m_bCommand);
   
   pSePrompt->vPromptLoop();
@@ -818,6 +822,15 @@ void Engine::vGetWelcome(s256& sWelcome)
                    Process::iGetPid(),
                    gsBuildGitHash
                   );
+}
+
+/*----------------------------------------------------------------------------*/
+/* IgnoreMemoryLeak                                                           */
+/*----------------------------------------------------------------------------*/
+void Engine::vIgnoreMemoryLeak(void)
+{
+  gxaSizeHeap[CN_NAMEDBUFFER].m_bIgnoreMemoryLeak = true;
+  gxaSizeHeap[CN_WRITEBEHIND].m_bIgnoreMemoryLeak = true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1632,7 +1645,7 @@ void Engine::vStartSystem(void) {
     vInfo("  Adding Expressions\n"_Stz);
 
   Step::vAddSteps();
-  
+
   if (AM::bVerboseProgress())
     vInfo("  Adding PostRecv Functions\n"_Stz);
   vPostRecvFns();

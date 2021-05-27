@@ -27,11 +27,14 @@ readonly EXE_DIR="${ROOT_DIR}/bin"
 readonly EXE="${EXE_DIR}/rapidsse"
 
 readonly NOHUP_FILE="${ROOT_DIR}/se.log"
-readonly PIDFILE="${ROOT_DIR}/se.pid"
+readonly PIDFILE="${ROOT_DIR}/${PID_FILENAME}"
+readonly READYFILE="${ROOT_DIR}/${READY_FILENAME}"
 
 readonly START_SCRIPT="startSE.sh"
 readonly STOP_SCRIPT="stopSE.sh"
 #readonly STATUS_SCRIPT="status.sh"
+
+readonly DEFAULT_BOOT_TIMEOUT="60" # seconds
 
 ###############################################################################
 ### Functions                                                               ###
@@ -198,18 +201,43 @@ function startCluster() {
     wait
   fi
 
-  echo -n "Started all ${#NODE_LIST[@]} nodes in the cluster. Waiting for them to boot"
+  echo "Started all ${#NODE_LIST[@]} nodes in the cluster. Waiting for them to boot"
 
-  # Sleep for 10 seconds and print a "." every second
-  local sleepTime=10
-
-  if [[ -n "${CLUSTER_BOOT_DELAY}" && "${CLUSTER_BOOT_DELAY}" -ge 0 ]]; then
-    # This boot delay can be defined in startSE.sh to control how long to wait until
-    # the cluster initialisation command is given.
-    sleepTime="${CLUSTER_BOOT_DELAY}"
+  # Wait for all nodes to boot and become ready
+  if [ -z "${BOOT_TIMEOUT}" ]; then
+    BOOT_TIMEOUT="${DEFAULT_BOOT_TIMEOUT}"
   fi
 
-  sleepProgressPrint "${sleepTime}"
+  # We want to wait for the cluster to boot up, but timeout if it takes
+  # too long. We can't call the timeout command because it expects an 
+  # argument which is a command and not a bash function.
+  # So we will call waitForClusterBoot in the background and then create
+  # another background subshell task that sleeps for the desired timeout
+  # and tries to kill the waitForClusterBoot task. If the waitForClusterBoot
+  # task returns early then we kill the "killer" task instead.
+  # Inspiration from here:  https://stackoverflow.com/a/22384727
+  
+  waitForClusterBoot &
+  local bootWaitPid="$!"
+
+  # The timeout killer
+  ( 
+    sleep "${BOOT_TIMEOUT}"
+    echo "Cluster boot timed out" 
+    kill -0 "${bootWaitPid}" &>/dev/null && kill "${bootWaitPid}" &>/dev/null
+  ) &
+
+  local killerPid="$!"
+
+  wait "${bootWaitPid}" 2>/dev/null
+  kill -0 "${killerPid}" &>/dev/null && kill "${killerPid}" &>/dev/null
+  # We wait here and redirect stderr because it will print a message indicating that
+  # the subprocess was terminated. We want to suppress that.
+  # The actual kill command above simply sends a signal and does not wait for the
+  # process to exit.
+  wait "${killerPid}" 2>/dev/null
+  
+  echo ""
 
   if printClusterStatus; then
 
@@ -336,6 +364,46 @@ function startCurrentNode() {
   echo "${PID}" > "${PIDFILE}"
 
   echo "[Start script]: RapidsSE started as PID ${PID}." >> "${NOHUP_FILE}"
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Waits for all nodes in the cluster to boot and report that they are ready.
+## There is no timeout here. 
+## Prints a "." for every second it waits
+## Params: None
+
+function waitForClusterBoot() {
+
+  local dotPid
+
+  echo -n "Waiting for cluster to boot: "
+
+  # Print dots to indicate progress
+  ( 
+    while true; do
+      printf ". "
+      sleep 1
+    done
+  ) &
+
+  dotPid=$!
+
+  # If we run this function as a subshell and then kill it, we need to also
+  # ensure that we kill the dot printer above.
+  #shellcheck disable=SC2064
+  trap "kill -0 ${dotPid} &>/dev/null && kill ${dotPid} &>/dev/null && wait ${dotPid} 2>/dev/null" SIGINT SIGHUP SIGTERM EXIT
+
+  for nodeName in "${NODE_LIST[@]}"; do
+
+    while ! isRemoteSeReady "${nodeName}"; do
+      debugPrint "Node ${nodeName} is not ready"
+      sleep 1
+    done
+
+  done
+
+  kill "${dotPid}" &>/dev/null
 }
 
 
@@ -495,7 +563,15 @@ function printClusterStatus() {
     pid="$(getRemoteRunningPid "${nodeName}")"
 
     if [ -n "${pid}" ]  && [ "${pid}" -gt 0 ]; then
-      statusStr="running (pid ${pid})"
+
+      # Node is running, but is it ready?
+      if isRemoteSeReady "${nodeName}"; then
+        statusStr="running (pid ${pid})"
+      else
+        statusStr="started (pid ${pid}) but not ready"
+        errorCount=$((errorCount+1))
+      fi
+
     else
       statusStr="NOT RUNNING"
       errorCount=$((errorCount+1))
@@ -863,8 +939,8 @@ function stopCurrentNode() {
       kill -9 "${pid}" &>/dev/null
     fi
 
-    # Remove the pid file
-    rm -f "${PIDFILE}" &>/dev/null
+    # Remove the pid file and ready file
+    rm -f "${PIDFILE}" "${READYFILE}" &>/dev/null
 
   else 
     # The pidfile does not exist.
@@ -875,6 +951,9 @@ function stopCurrentNode() {
     export LANG=C
 
     pkill -u $UID -x "$(basename "${EXE}")" 2>/dev/null
+
+    # Remove the ready file
+    rm -f "${READYFILE}" &>/dev/null
   fi
 }
 

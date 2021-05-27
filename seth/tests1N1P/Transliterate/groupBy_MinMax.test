@@ -209,8 +209,8 @@ success;
 
 CLEANUP {
 
-  //drop table datums;
-  //mute
+  drop table datums;
+  mute
 
   bye;
   mute

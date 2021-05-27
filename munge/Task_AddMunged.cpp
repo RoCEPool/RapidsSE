@@ -1134,7 +1134,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "    stage stageC on origin :\n"
     "      metaRecv | output | sink | stageA\n"
-    "\n"
+    "      \n"
     "  end ;\n"
     "  \"\n"
     "  api::addProcedure\n"

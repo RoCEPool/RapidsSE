@@ -13,6 +13,9 @@
 //  Setup
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+trackmemory;
+success
+
 create table nation (
 	 N_NATIONKEY       INTEGER NOT NULL,
 	 N_NAME            CHAR(25) NOT NULL,
@@ -23,9 +26,6 @@ success
 
 load nation "../DATA/Transliterate/nationAgg.tbl";
 success
-
--- trackmemory;
--- success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Basic aggregations and group bys
@@ -281,12 +281,15 @@ rows:
  (142)
  (50)
 
+DROP TABLE nation;
+success
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Check for memory leaks
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
--- memoryleaks;
--- rows: 0
+memoryleaks;
+rows: 0
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Cleanup

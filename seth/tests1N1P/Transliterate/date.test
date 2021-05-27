@@ -22,7 +22,7 @@ vch_col15  VARCHAR(32)
 success
 
 load datums "../DATA/Transliterate/date.csv" ;
-success
+failure contains: "10 invalid rows"
 
 //------------------------------------------------------------------------------
 select int_col0 from datums where dte_col4 > DATE '2010-11-01';
@@ -537,8 +537,6 @@ rows:
 (10)
 (11)
 
-/*
-
 //------------------------------------------------------------------------------
 select min(dte_col4) from datums;
 rows:
@@ -568,65 +566,64 @@ rows:
 select vch_col15 , min(dte_col4) from datums group by vch_col15;
 rows:
 (null,DATE '1998-11-02')
-(yellow,DATE '2042-01-19')
-(green,DATE '2042-01-01')
-(blue,DATE '2041-10-01')
-(red,DATE '2041-01-01')
-(orange,DATE '2041-01-01')
+('yellow',DATE '2042-01-19')
+('green',DATE '2042-01-01')
+('blue',DATE '2041-10-01')
+('red',DATE '2041-01-01')
+('orange',DATE '2041-01-01')
 
 //------------------------------------------------------------------------------
 select vch_col15 , max(dte_col4) from datums group by vch_col15;
 rows:
 (null,DATE '1998-11-02')
-(yellow,DATE '2042-01-19')
-(green,DATE '2068-10-20')
-(blue,DATE '2041-10-01')
-(red,DATE '2042-11-01')
-(orange,DATE '2042-01-19')
+('yellow',DATE '2042-01-19')
+('green',DATE '2068-10-20')
+('blue',DATE '2041-10-01')
+('red',DATE '2042-11-01')
+('orange',DATE '2042-01-19')
 
 //------------------------------------------------------------------------------
 select vch_col15 , count(dte_col4) from datums group by vch_col15;
 rows:
 (null,1)
-(yellow,1)
-(green,2)
-(blue,1)
-(red,2)
-(orange,3)
+('yellow',1)
+('green',2)
+('blue',1)
+('red',2)
+('orange',3)
 
 //------------------------------------------------------------------------------
 select vch_col15 , min(dte_col5) from datums group by vch_col15;
 rows:
 (null,DATE '2047-01-01')
-(yellow,DATE '2010-11-01')
-(green,DATE '2041-11-01')
-(blue,DATE '2041-11-01')
-(red,DATE '2041-01-01')
-(orange,DATE '2000-01-01')
+('yellow',DATE '2010-11-01')
+('green',DATE '2041-11-01')
+('blue',DATE '2041-11-01')
+('red',DATE '2041-01-01')
+('orange',DATE '2000-01-01')
 
 //------------------------------------------------------------------------------
 select vch_col15 , max(dte_col5) from datums group by vch_col15;
 rows:
 (null,DATE '2047-01-01')
-(yellow,DATE '2010-11-01')
-(green,DATE '2041-11-01')
-(blue,DATE '2041-11-01')
-(red,DATE '2041-11-01')
-(orange,DATE '2041-01-01')
+('yellow',DATE '2010-11-01')
+('green',DATE '2041-11-01')
+('blue',DATE '2041-11-01')
+('red',DATE '2041-11-01')
+('orange',DATE '2041-01-01')
 
 //------------------------------------------------------------------------------
 select vch_col15 , count(dte_col5) from datums group by vch_col15;
 rows:
 (null,1)
-(yellow,1)
-(green,2)
-(blue,1)
-(red,3)
-(orange,3)
-*/
+('yellow',1)
+('green',2)
+('blue',1)
+('red',3)
+('orange',3)
 
 ////////////////////----------Less than < Tests ---------------------///////////////////////////////////////////
-/*
+
 //------------------------------------------------------------------------------
 select int_col0 from datums where dte_col4 < DATE '2010-11-01';
 rows:
@@ -664,7 +661,7 @@ rows:
 (11)
        
 //------------------------------------------------------------------------------
-select int_col0 from datums where dte_col4 < '2041-12-01' OR dte_col4 < DATE '1967-12-01';
+select int_col0 from datums where dte_col4 < DATE '2041-12-01' OR dte_col4 < DATE '1967-12-01';
 rows:
 (1)
 (4)
@@ -736,8 +733,6 @@ rows:
 (9)
 (10)
 (11)
-
-*/
 
 //------------------------------------------------------------------------------
 select dte_col5 , min(dte_col4) from datums group by dte_col5;
