@@ -96,8 +96,8 @@ rows:
 
 CLEANUP {
 
-  //drop table lineitem;
-  //mute
+  drop table lineitem;
+  mute
 
   bye;
   mute
