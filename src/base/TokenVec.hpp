@@ -48,6 +48,7 @@ namespace BASE
     i8   iFindToken(Stz* pLookFor, eTN eToken);
     Token* pFindToken(Stz* szArgChars, i8& i_Token);
     i8   iFirstTag(void);
+    i8   iFirstTag2(void);
     Token* pFirstToken(void);
     bool bHasSemicolon(void);
     void vIncTokens(void);

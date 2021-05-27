@@ -537,6 +537,29 @@ i8 TokenVec::iFirstTag(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find first tag                                                             */
+/*----------------------------------------------------------------------------*/
+i8 TokenVec::iFirstTag2(void)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+    
+  //vTrace("%s &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\n"_Stz,
+  //       pGet(iLastToken())->szChars());
+  
+  i8 i_TagBegin = iFindToken("<"_Stz,TN_OTHER);
+
+  if (C_UNKNOWN != i_TagBegin)
+    return i_TagBegin;
+  
+  i_TagBegin = iFindToken("<"_Stz,TN_TAG);
+  
+  if (C_UNKNOWN != i_TagBegin)
+    return i_TagBegin;
+
+  return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
 /* return first token                                                         */
 /*----------------------------------------------------------------------------*/
 Token* TokenVec::pFirstToken(void)
