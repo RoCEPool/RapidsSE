@@ -2905,7 +2905,11 @@ bool PROMPT::bPrompt_memoryLeaks(SePrompt* pPrompt)
       
       if (eClass == CN_FREEBUFFER || eClass == CN_HEAPBUFFER)
         continue;
-      
+
+      // check if this class to be ignored for memory leak detection
+      if (gxaSizeHeap[eClass].m_bIgnoreMemoryLeak)
+        continue;
+
       i8 nDelta = pPoolSnapshot_curr->m_nObjects[eClass] -
                     pPoolSnapshot_then->m_nObjects[eClass];
       
@@ -2943,6 +2947,10 @@ bool PROMPT::bPrompt_memoryLeaks(SePrompt* pPrompt)
     eCN eClass = (eCN)i_Class;
     
     if (eClass == CN_FREEBUFFER || eClass == CN_HEAPBUFFER)
+      continue;
+
+    // check if this class to be ignored for memory leak detection
+    if (gxaSizeHeap[eClass].m_bIgnoreMemoryLeak)
       continue;
     
     i8 nDelta = pPoolSnapshot_curr->m_nObjects[eClass] -

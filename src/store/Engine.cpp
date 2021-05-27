@@ -821,6 +821,15 @@ void Engine::vGetWelcome(s256& sWelcome)
 }
 
 /*----------------------------------------------------------------------------*/
+/* IgnoreMemoryLeak                                                           */
+/*----------------------------------------------------------------------------*/
+void Engine::vIgnoreMemoryLeak(void)
+{
+  gxaSizeHeap[CN_NAMEDBUFFER].m_bIgnoreMemoryLeak = true;
+  gxaSizeHeap[CN_WRITEBEHIND].m_bIgnoreMemoryLeak = true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* find and set stream def for internal tables                                */
 /*----------------------------------------------------------------------------*/
 void Engine::vInternalTables(void)
@@ -1647,7 +1656,11 @@ void Engine::vStartSystem(void)
   if (AM::bVerboseProgress())
     vInfo("  Adding Expressions\n"_Stz);
   Step::vAddSteps();
-  
+
+  if (AM::bVerboseProgress())
+    vInfo("  Adding Ignore memory leaks\n"_Stz);
+  vIgnoreMemoryLeak();
+
   if (AM::bVerboseProgress())
     vInfo("  Adding PostRecv Functions\n"_Stz);
   vPostRecvFns();
