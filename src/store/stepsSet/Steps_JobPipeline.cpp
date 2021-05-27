@@ -50,7 +50,7 @@ void Step::vJob_PipelineBegin(void)
   
   Job* pJob_Pipeline = _pJob(m_pDataStack->pPopPtr(__func__));
   i8 iThisNode = AM::pGrid()->iThisNode();
-  vTrace(">>>> vJob_PipelineBegin    This node %lld"_Stz, iThisNode);
+  vTrace(">>>> vJob_PipelineBegin    This node %lld\n"_Stz, iThisNode);
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a pipeline
   pJob_Pipeline->m_pPipeline =
@@ -63,7 +63,7 @@ void Step::vJob_PipelineBegin(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the pipeline
   if (AM::bVerbose()) {
-    if (iThisNode == 0 || iThisNode == 6079)
+    //if (iThisNode == 0 || iThisNode == 6079)
        pPipeline->vDump();
   }
   

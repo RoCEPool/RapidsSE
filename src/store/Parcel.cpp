@@ -17,6 +17,7 @@
 #include "Node.hpp"
 #include "Grid.hpp"
 #include "Socket.hpp"
+#include "Node_I.hpp"
 
 extern SizeHeap      gxaSizeHeap[];
 
@@ -174,10 +175,11 @@ i8 Parcel::nObjects(void)
 void Parcel::vRecvContents(Socket* pSocket)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
-    
+  //vTrace("vRecvContents:\n"_Stz);
   for (i8 i_Object = 0; i_Object < m_nObjects; i_Object++) {
     Object* pObject = pSocket->pRecvObject();
     vSetObject(i_Object,pObject);
+    //vTrace(" %s\n"_Stz, aCN[pObject->eGetClassNo()]);
   }
 }
 
@@ -312,16 +314,25 @@ void Parcel::vSendOverSocket(void)
   
   // get preliminary information
   Node* pDstNode = AM::pGrid()->pGetNode(m_iDstNode);
+  //vTrace("vSendOverSocket prepared to send to Node:%lld Port:%lld \n"_Stz,pDstNode->iNodeNo(), pDstNode->iPortNo());
   Socket* pSocket = pDstNode->pSendSocket();
   i8 nObjects = this->nObjects();
   
   pSocket->vGrabWrite();
-  
+
+  //vTrace("vSendOverSocket got a lock, prepared to send %lld Object(s)to Node:%lld Port:%lld \n"_Stz,nObjects, pDstNode->iNodeNo(), pDstNode->iPortNo());
+
   // send the parcel instance
   pParcel = this;
   nObjectSize = gxaSizeHeap[pParcel->eGetClassNo()].m_nClassSize;
   bResult = pSocket->bSendTo(pParcel, nObjectSize, oSysCall);
-  
+
+  //if (!bResult) {
+  //  vTrace("vSendOverSocket SENT FAILED\n"_Stz);
+  //} else {
+  //  vTrace("vSendOverSocket SENT %lld bytes Parcel:%s to Node:%lld Port:%lld \n"_Stz,nObjectSize, aCN[pParcel->pGetOperand()->eGetClassNo()], pDstNode->iNodeNo(), pDstNode->iPortNo());
+  //}
+
   // send all the objects within the parcel instance
   for (i8 i_Object = 0; i_Object < nObjects; i_Object++) {
     pObject = pParcel->pGetObject(i_Object);
@@ -378,11 +389,19 @@ void Parcel::vSendToAllNodes(Op* pSrcOp)
   Stage* pNextStage = pPipeline->pGet(i_NextStage);
   RASSERT(pNextStage);
 
+  //vTrace("Num of nodes:%lld\n"_Stz, pNextStage->nItems());
+
+  //for (i8 iDstNode = 0; iDstNode < pNextStage->nItems(); iDstNode++)
+    //vSendParcel(pSrcOp,iDstNode,C_UNKNOWN);
 
   i8 iDstNode = 0;
-  for (i8 iNodeNo  = 0; iDstNode < pNextStage->nItems(); iDstNode++) {
-    iDstNode = AM::iGetNodeNo(iNodeNo);
-    vSendParcel(pSrcOp,iDstNode,C_UNKNOWN);
+
+  for (Node_I oNode_I(0,C_ALL); oNode_I.bMore(); oNode_I.vNext()) {
+    Node* pNode = (*oNode_I);
+    iDstNode = pNode->iNodeNo();
+    vSendParcel(pSrcOp, iDstNode, C_UNKNOWN);
+    //vTrace("Node :%lld\n"_Stz, iDstNode);
+    //break; to simulate the previous bug.
   }
 
 }

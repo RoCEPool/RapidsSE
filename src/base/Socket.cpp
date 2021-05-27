@@ -255,7 +255,7 @@ Object* Socket::pRecvObject(void)
 
   eCN eClass = pObject->eGetClassNo();
   if (! bLowMem || ! gxaSizeHeap[eClass].m_bLowMemoryDiscard) {
-    vTrace("class:%s\n"_Stz, aCN[eClass]);
+    //vTrace("class:%s\n"_Stz, aCN[eClass]);
     Object* pReceivedObject = Heaps::pAllocate(eClass);
     MemLib::vCopy(pReceivedObject,pObject,sizeof(Object),eClass);
 

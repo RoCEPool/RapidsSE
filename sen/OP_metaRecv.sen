@@ -13,18 +13,34 @@
   Operand[].pipein  // pop the pParcel and put in the Operand register
 
   // returns table ptr
-  Operand[]\clear MetaRecv::putParts  locals| pTable |
-
-  //path[].tostr .      // display the path
+  Operand[]\clear MetaRecv::putParts locals| pTable |
 
   // get table name to create folder
-  pTable table.getName table::makeTableFolder
-  pTable table.getName Path[].pushNamedTableFolder
+  pTable table.getName locals| sTableNm |
+
+  // sTableNm .
+
+  path[].tostr .      // display the path
+
+
+  //sTableNm table::makeTableFolder
+  //sTableNm Path[].pushNamedTableFolder
+
+// check if tableNm is a word in tables folder
+//  sTableNm word::isKnown not if discard EC_NO_SUCH_TABLE false exit then
+
+// In this makeTableFolder, it has the following:
+  //sTableNm table::makeNamedTableFolder
+  //sTableNm Path[].pushNamedTableFolder
+  //sTableNm "index::makeIndexesAssembly" find execute
+
 
   // put the table ptr to
-  pTable table::addtofolder
-  Path[].popNamedTableFolder
-    
+  //pTable table::addToFolder
+  //Path[].popNamedTableFolder
+
+  //folder[].isTables assert
+  "exiting" .
   true
 ;
 

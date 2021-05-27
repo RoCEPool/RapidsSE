@@ -23,10 +23,10 @@
   Operand[] MetaGet.getTableName op__table assert
   table[] MetaSend::getParts Op::pipeout
 
-// send EOSMARKER
+  // send EOSMARKER
   nullptr to Operand[]
-  Operand[].newEosMarker
-  Operand[].pipeOut
+  //Operand[].newEosMarker
+  //Operand[].pipeOut
 
   true
 
