@@ -57,7 +57,29 @@ Column::~Column(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* is the bcd size valid ?                                                    */
+/* convert datum to column type                                               */
+/*----------------------------------------------------------------------------*/
+eCT Column::eColumnType(eDM eDatum)
+{
+  switch(eDatum) {
+    case DM_BOL     : return CT_BOOLEAN;
+    case DM_VCH     : return CT_VARCHAR;
+    case DM_DTE     : return CT_DATE;
+    case DM_BCD     : return CT_DECIMAL;
+    case DM_FLT     : return CT_FLOAT;
+    case DM_INT     : return CT_INTEGER;
+    case DM_IVL     : return CT_INTERVAL_DT;
+    case DM_IVY     : return CT_INTERVAL_YM;
+    case DM_TME     : return CT_TIME;
+    case DM_TSP     : return CT_TIMESTAMP;
+    case DM_UNK     : return CT_UNKNOWN;
+    default:
+      RASSERT(0);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert column type to datum                                                */
 /*----------------------------------------------------------------------------*/
 eDM Column::eDatum(eCT eColumnType)
 {

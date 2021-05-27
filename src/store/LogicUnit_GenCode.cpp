@@ -423,15 +423,15 @@ eEC LogicUnit::eGenerateAggregate(ExprEval* pExprEval, StreamDef* pStreamDefOut)
   i8 nSize = oFile.iSize();
   i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
   UNUSED(nBytes);
-  
+
+  oFile.vClose();
+
   // null terminate the read bytes
   char* sReadStr = sText.azChar();
   sReadStr[nSize] = '\0';
 
   bool bResult = bGenerateAsm(sText);
   UNUSED(bResult);
-
-  oFile.vClose();
 
   return EC_NONE;
 }
@@ -549,14 +549,14 @@ eEC LogicUnit::eGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
   i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
   UNUSED(nBytes);
 
+  oFile.vClose();
+
   // null terminate the read bytes
   char* sReadStr = sText.azChar();
   sReadStr[nSize] = '\0';
 
   bool bResult = bGenerateAsm(sText);
   UNUSED(bResult);
-
-  oFile.vClose();
 
   return EC_NONE;
 }
@@ -760,15 +760,15 @@ eEC LogicUnit::eGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut)
   i8 nSize = oFile.iSize();
   i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
   UNUSED(nBytes);
-  
+
+  oFile.vClose();
+
   // null terminate the read bytes
   char* sReadStr = sText.azChar();
   sReadStr[nSize] = '\0';
 
   bool bResult = bGenerateAsm(sText);
   UNUSED(bResult);
-
-  oFile.vClose();
 
   return EC_NONE;
 }
@@ -855,14 +855,14 @@ eEC LogicUnit::eGenerateLimit(i8 iLimitRows, StreamDef* pStreamDefOut) {
   i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
   UNUSED(nBytes);
 
+  oFile.vClose();
+
   // null terminate the read bytes
   char* sReadStr = sText.azChar();
   sReadStr[nSize] = '\0';
 
   bool bResult = bGenerateAsm(sText);
   UNUSED(bResult);
-
-  oFile.vClose();
 
   return EC_NONE;
 }
@@ -976,14 +976,14 @@ eEC LogicUnit::eGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOut
   i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
   UNUSED(nBytes);
 
+  oFile.vClose();
+
   // null terminate the read bytes
   char* sReadStr = sText.azChar();
   sReadStr[nSize] = '\0';
 
   bool bResult = bGenerateAsm(sText);
   UNUSED(bResult);
-
-  oFile.vClose();
 
   return EC_NONE;
 }
@@ -1061,15 +1061,15 @@ eEC LogicUnit::eGenerateRange(Range* pRange, StreamDef* pStreamDefOut) {
   i8 nSize = oFile.iSize();
   i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
   UNUSED(nBytes);
-  
+
+  oFile.vClose();
+
   // null terminate the read bytes
   char* sReadStr = sText.azChar();
   sReadStr[nSize] = '\0';
 
   bool bResult = bGenerateAsm(sText);
   UNUSED(bResult);
-
-  oFile.vClose();
 
   return EC_NONE;
 }
