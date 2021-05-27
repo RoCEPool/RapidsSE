@@ -549,24 +549,26 @@ i8 TokenVec::iFirstTag2(void)
   
   i8 i_Scan = iLastToken();
   Token* pScan = pGet(i_Scan);
-  if (pScan->bIsSemicolon())
+  if (pScan->bIsSemicolon() || pScan->szChars()->bSame(";"_Stz))
     pScan = pGet(--i_Scan);
   
   while (i_Scan >= 4) {
     
-    Token* pTkn_value = pGet(i_Scan--);   // _^ value
+    Token* pTkn_value = pGet(i_Scan--);   //            _^ value
 
-    Token* pTkn_assign = pGet(i_Scan--);  // _^ = value
+    Token* pTkn_assign = pGet(i_Scan--);  //          _^ = value
     if (! pTkn_assign->bIsAssign())
       break;
     
-    Token* pTkn_greater = pGet(i_Scan--); // _^ > = value
+    Token* pTkn_greater = pGet(i_Scan--); //        _^ > = value
     if (! pTkn_greater->bIsGreaterThan())
       break;
 
-    Token* pTkn_name = pGet(i_Scan--);    // _^ name > = value
+    Token* pTkn_name = pGet(i_Scan--);    //   _^ name > = value
     if (! pTkn_name->bIsName())
       break;
+    if (pTkn_name->szChars()->bSame("internal"_Stz))
+      vDebugPoint();
 
     Token* pTkn_lesser = pGet(i_Scan--);  // _^ < name > = value
     if (! pTkn_lesser->bIsLessThan())
