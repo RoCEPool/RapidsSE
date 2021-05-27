@@ -1,0 +1,16 @@
+--------------------------------------------------------------------------------
+-- dummy test
+--------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
+// dummy test to initiate the compiler and first time creation of its objects
+// After this we can test for memory leaks.
+
+select 1 from t;
+failure conatins: "no such table"
+
+CLEANUP {
+
+  bye;
+  mute
+}

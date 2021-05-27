@@ -429,7 +429,11 @@ void Engine::vCallPrompt(void)
     vInfo("\n>\n> %lld) Calling PROMPT\n>\n"_Stz,giProgressPoint++);
 
   //AM::vPromptCall();
-  
+
+  if (AM::bVerboseProgress())
+    vInfo("  Adding Ignore memory leaks\n"_Stz);
+  vIgnoreMemoryLeak();
+
   SePrompt* pSePrompt = new SePrompt(gxCmdLineArgs.m_xSysArgs.m_bCommand);
   
   pSePrompt->vPromptLoop();
@@ -1656,10 +1660,6 @@ void Engine::vStartSystem(void)
   if (AM::bVerboseProgress())
     vInfo("  Adding Expressions\n"_Stz);
   Step::vAddSteps();
-
-  if (AM::bVerboseProgress())
-    vInfo("  Adding Ignore memory leaks\n"_Stz);
-  vIgnoreMemoryLeak();
 
   if (AM::bVerboseProgress())
     vInfo("  Adding PostRecv Functions\n"_Stz);
