@@ -37,7 +37,7 @@ Parcel::Parcel(Operand* pOperand,
                i8       iDstNode,
                tPN      tDstPtn,
                ePX      eCrossTopo)
-: Object(CN_PARCEL)
+: Operand(CN_PARCEL)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
@@ -291,6 +291,8 @@ void Parcel::vSendOverSocket(Op* pSrcOp)
   }
   
   pSocket->vDropWrite();
+  
+  pSrcOp->vOpTrace(this,"vSendOverSocket :"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
