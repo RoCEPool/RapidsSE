@@ -820,13 +820,13 @@ rows:
 
 //------------------------------------------------------------------------------
 // drop the table
-//drop table datums;
-//success;
+drop table datums;
+success;
 
 CLEANUP {
 
-  //drop table datums;
-  //mute
+  drop table datums;
+  mute
 
   bye;
   mute

@@ -1,3 +1,5 @@
+trackmemory;
+success
 
 //------------------------------------------------------------------------------
 // create table
@@ -22,7 +24,7 @@ vch_col15  VARCHAR(32)
 success
 
 load datums "../DATA/Transliterate/date.csv" ;
-success
+failure contains: "invalid rows"
 
 //------------------------------------------------------------------------------
 select bol_col2 from datums;
@@ -269,6 +271,9 @@ rows:
 // drop the table
 drop table datums;
 success;
+
+memoryleaks;
+rows: 0
 
 CLEANUP {
 
