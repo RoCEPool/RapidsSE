@@ -537,26 +537,46 @@ i8 TokenVec::iFirstTag(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find first tag                                                             */
+/* find first tag (by going backwards through the tokens)                     */
 /*----------------------------------------------------------------------------*/
 i8 TokenVec::iFirstTag2(void)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
     
-  //vTrace("%s &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\n"_Stz,
-  //       pGet(iLastToken())->szChars());
+  //vDumpVec(0);
   
-  i8 i_TagBegin = iFindToken("<"_Stz,TN_OTHER);
+  i8 i_FirstTag = C_UNKNOWN;
+  
+  i8 i_Scan = iLastToken();
+  Token* pScan = pGet(i_Scan);
+  if (pScan->bIsSemicolon())
+    pScan = pGet(--i_Scan);
+  
+  while (i_Scan >= 4) {
+    
+    Token* pTkn_value = pGet(i_Scan--);   // _^ value
 
-  if (C_UNKNOWN != i_TagBegin)
-    return i_TagBegin;
-  
-  i_TagBegin = iFindToken("<"_Stz,TN_TAG);
-  
-  if (C_UNKNOWN != i_TagBegin)
-    return i_TagBegin;
+    Token* pTkn_assign = pGet(i_Scan--);  // _^ = value
+    if (! pTkn_assign->bIsAssign())
+      break;
+    
+    Token* pTkn_greater = pGet(i_Scan--); // _^ > = value
+    if (! pTkn_greater->bIsGreaterThan())
+      break;
 
-  return C_UNKNOWN;
+    Token* pTkn_name = pGet(i_Scan--);    // _^ name > = value
+    if (! pTkn_name->bIsName())
+      break;
+
+    Token* pTkn_lesser = pGet(i_Scan--);  // _^ < name > = value
+    if (! pTkn_lesser->bIsLessThan())
+      break;
+
+    // have seen the sequence: < name > = value
+    i_FirstTag = i_Scan + 1;
+  }
+   
+  return i_FirstTag;
 }
 
 /*----------------------------------------------------------------------------*/
