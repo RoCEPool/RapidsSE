@@ -87,13 +87,11 @@ namespace STORE
 
     void vAppendColumnToStreamDef(StreamDef* pStreamDefOut, Column* pColumn);
 
-    void vCreateGbyIdxCol(Stz* szAsmBuffer, eCT eColumnType, i8 i_IdxCol);
     void vCreateGbyIdxCol(Stz* szAsmBuffer, eDM eDatum, i8 i_IdxCol);
     void vCreatePayLoadKey(Stz* szAsmBuffer, IntStack* pTypeStack, i8 i_Local);
     eEC eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec);
 
     void vPayStoreCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType);
-    void vPayFetchCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType) ;
     void vPayFetchCol(Stz* szAsmBuffer, IntStack* pTypeStack, eDM eDatum) ;
 
     void vPushDate(Stz* szAsmBuffer, IntStack* pTypeStack, Token*  pTkn);
@@ -110,11 +108,8 @@ namespace STORE
 
     eEC eExprEval(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);
     eEC eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);
-    eEC eExprEvalAggOLD(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);
     eEC eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);
-    eEC eExprEvalGbyOLD(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);
 
-    void vGenerateColumnCodeGby(StreamDef* pStreamDefOut, Column* pColumn, IntStack* pTypeStack);
     void vGenerateAggregateCode(eAG eAggType, Stz* szAsmBuffer, Stz* szAsmInitBuffer, IntStack* pTypeStack);
 
     void vGenerateCount(Stz* szAsmBuffer, Stz* sAggInit, IntStack* pTypeStack);
