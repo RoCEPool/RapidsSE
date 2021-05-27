@@ -517,6 +517,26 @@ Token* TokenVec::pFindToken(Stz* szArgChars, i8& i_Token)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find first tag                                                             */
+/*----------------------------------------------------------------------------*/
+i8 TokenVec::iFirstTag(void)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  i8 i_TagBegin = iFindToken("<"_Stz,TN_OTHER);
+
+  if (C_UNKNOWN != i_TagBegin)
+    return i_TagBegin;
+  
+  i_TagBegin = iFindToken("<"_Stz,TN_TAG);
+  
+  if (C_UNKNOWN != i_TagBegin)
+    return i_TagBegin;
+
+  return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
 /* return first token                                                         */
 /*----------------------------------------------------------------------------*/
 Token* TokenVec::pFirstToken(void)
