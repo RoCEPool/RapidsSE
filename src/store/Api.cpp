@@ -225,11 +225,7 @@ bool Api::bExtractTags(Session* pSession)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // extract trailing job supplemtntal tags ( such as <field_delimiter> = | )
 
-  i8 i_TagBegin = pInpTknVec->iFindToken("<"_Stz,TN_OTHER);
-
-  if (C_UNKNOWN == i_TagBegin)
-    i_TagBegin = pInpTknVec->iFindToken("<"_Stz,TN_TAG);
-  
+  i8 i_TagBegin = pInpTknVec->iFirstTag2();
   if (C_UNKNOWN == i_TagBegin)
     return true;
 

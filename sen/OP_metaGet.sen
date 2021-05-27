@@ -29,7 +29,7 @@
 
   op__topology
 
-  find: metaGet_getTable   ZK_METAGET   op[].handler!
+  //find: metaGet_getTable   ZK_METAGET   op[].handler!
 
   op__loop
 

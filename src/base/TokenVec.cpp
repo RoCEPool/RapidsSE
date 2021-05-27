@@ -517,6 +517,49 @@ Token* TokenVec::pFindToken(Stz* szArgChars, i8& i_Token)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find first tag                                                             */
+/*----------------------------------------------------------------------------*/
+i8 TokenVec::iFirstTag(void)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  i8 i_TagBegin = iFindToken("<"_Stz,TN_OTHER);
+
+  if (C_UNKNOWN != i_TagBegin)
+    return i_TagBegin;
+  
+  i_TagBegin = iFindToken("<"_Stz,TN_TAG);
+  
+  if (C_UNKNOWN != i_TagBegin)
+    return i_TagBegin;
+
+  return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find first tag                                                             */
+/*----------------------------------------------------------------------------*/
+i8 TokenVec::iFirstTag2(void)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+    
+  //vTrace("%s &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\n"_Stz,
+  //       pGet(iLastToken())->szChars());
+  
+  i8 i_TagBegin = iFindToken("<"_Stz,TN_OTHER);
+
+  if (C_UNKNOWN != i_TagBegin)
+    return i_TagBegin;
+  
+  i_TagBegin = iFindToken("<"_Stz,TN_TAG);
+  
+  if (C_UNKNOWN != i_TagBegin)
+    return i_TagBegin;
+
+  return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
 /* return first token                                                         */
 /*----------------------------------------------------------------------------*/
 Token* TokenVec::pFirstToken(void)
@@ -634,6 +677,36 @@ void TokenVec::vIntegrityCheck(void)
     
     ASSERT(szCharsB == aAdd<Stz*>(szCharsA,nBytesA));
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* return last token                                                          */
+/*----------------------------------------------------------------------------*/
+i8 TokenVec::iLastToken(void)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  i8 i_LastTkn = nTokens() - 1;
+  
+  return i_LastTkn;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return last token                                                          */
+/*----------------------------------------------------------------------------*/
+Token* TokenVec::pLastToken(void)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  m_iCurTkn = iLastToken();
+  
+  if (m_iCurTkn > 0) {
+    Token* pTkn = pGet(m_iCurTkn);
+    return pTkn;
+  }
+  
+  m_iCurTkn = C_UNKNOWN;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
