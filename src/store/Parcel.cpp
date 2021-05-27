@@ -292,7 +292,7 @@ void Parcel::vSendOverSocket(Op* pSrcOp)
   
   pSocket->vDropWrite();
   
-  pSrcOp->vOpTrace(this,"vSendOverSocket :"_Stz);
+  pSrcOp->vOpTrace(this,"vSendOverSocket :"_Stz,pDstNode->szNodeNm());
 }
 
 /*----------------------------------------------------------------------------*/
