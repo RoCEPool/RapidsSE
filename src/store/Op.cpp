@@ -89,6 +89,7 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   m_iOtherStage = C_UNKNOWN;
   m_iOtherOp    = C_UNKNOWN;
   m_iSendNode   = C_UNKNOWN;
+  m_eSendKind   = XK_NONE;
   m_iRobin      = 0;
   m_iLocalRobin = 0;
   
@@ -185,7 +186,7 @@ void Op::vDump(i8 i_Op)
   i8 iSends =  pOpTags->iValue(C_TAG_Sends);
   i8 iLeftMarkers = iSends ? iSends : 1;
   
-  vTrace("    [%03lld] (N%lld,P%02lld) Op %12s%-20s { Markers(L%lld R0) :%-10s %s %s }\n"_Stz,
+  vTrace("    [%03lld] (N%lld,P%02lld) Op %12s%-20s { Markers(L%lld R0) :%-10s %s %s %s }\n"_Stz,
          i_Op,
          this->iNode(),
          this->tPtnNo(),
@@ -194,7 +195,8 @@ void Op::vDump(i8 i_Op)
          iLeftMarkers,
          pNextOp->szOpNm(),
          this->bAppendRight() ? "appendRight"_Stz : "appendLeft "_Stz,
-         aPX[eTopology]
+         aPX[eTopology],
+         aXK[m_eSendKind]
         );
 }
 

@@ -14,11 +14,11 @@ enum eXK // system call
 
 static Stz* aXK[]
 {
-  /* 0 */ "NONE"_Stz,
-  /* 1 */ "HASHED"_Stz,
-  /* 2 */ "LOCALROBIN"_Stz,
-  /* 3 */ "NORMAL"_Stz,
-  /* 4 */ "ROBIN"_Stz
+  /* 0 */ "XK_NONE"_Stz,
+  /* 1 */ "XK_HASHED"_Stz,
+  /* 2 */ "XK_LOCALROBIN"_Stz,
+  /* 3 */ "XK_NORMAL"_Stz,
+  /* 4 */ "XK_ROBIN"_Stz
 };
 
 /*============================================================================*/
