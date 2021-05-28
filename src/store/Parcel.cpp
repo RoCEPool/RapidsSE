@@ -37,7 +37,7 @@ Parcel::Parcel(Operand* pOperand,
                i8       iDstNode,
                tPN      tDstPtn,
                ePX      eCrossTopo)
-: Object(CN_PARCEL)
+: Operand(CN_PARCEL)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
@@ -177,7 +177,11 @@ void Parcel::vSendOut(Op* pSrcOp)
   // is the operand an InfoSet ?
   if (pOperand->bIsInfoSet() || pOperand->bIsProfile())
     m_eSendKind = XK_ROBIN;
-  
+ 
+//  if (CN_METAGET == pOperand->eGetClassNo()) {
+//    vSendToNode(pSrcOp,iDstNode);
+//  }
+//  else {
   
   switch (eCrossTopo) {
       
@@ -238,7 +242,8 @@ void Parcel::vSendOut(Op* pSrcOp)
       RASSERT(0);
   }
 
-  
+  // }
+
   // delete the operand
   AM::vDeleteOperand(pOperand);
 }
@@ -261,7 +266,7 @@ void Parcel::vSetObject(i8 i_Object, Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* send parcel (and its contents) out over socket                             */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendOverSocket(void)
+void Parcel::vSendOverSocket(Op* pSrcOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
   
@@ -291,6 +296,12 @@ void Parcel::vSendOverSocket(void)
   }
   
   pSocket->vDropWrite();
+  
+  s256 sSupplemental;
+  
+  sSupplemental.vSprint("%s %s"_Stz,pDstNode->szNodeNm(),aXK[m_eSendKind]);
+  
+  pSrcOp->vOpTrace(this,"vSendOverSocket :"_Stz,sSupplemental);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -306,7 +317,7 @@ void Parcel::vSendParcel(Op* pSrcOp, i8  iDstNode, tPN tDstPtn)
   m_iDstStage = pSrcOp->iNextStage();
   m_iDstOp    = pSrcOp->iNextOp();
   
-  vSendOverSocket();
+  vSendOverSocket(pSrcOp);
 
   // - - - - - - - - - - - - - - - -
   
@@ -318,7 +329,7 @@ void Parcel::vSendParcel(Op* pSrcOp, i8  iDstNode, tPN tDstPtn)
     m_iDstStage = i_OtherStage;
     m_iDstOp    = i_OtherOp;
 
-    vSendOverSocket();
+    vSendOverSocket(pSrcOp);
   }
 }
 

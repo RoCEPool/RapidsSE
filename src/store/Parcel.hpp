@@ -10,7 +10,7 @@ namespace STORE
   static const i8 C_MAX_PARCEL_OBJ = 16;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class Parcel : public Object
+  class Parcel : public Operand
   {
     
   public:
@@ -55,7 +55,7 @@ namespace STORE
     void vSetObject(i8 i_Object, Object* pObject);
 
   private:
-    void vSendOverSocket(void);
+    void vSendOverSocket(Op* pSrcOp);
     void vSendParcel(Op* pSrcOp, i8 iDstNode, tPN tDstPtn);
     void vSendToAllNodes(Op* pSrcOp);
     void vSendToAllOriginPartitions(Op* pSrcOp);

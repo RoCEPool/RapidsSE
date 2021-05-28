@@ -112,6 +112,8 @@ namespace STORE
     Job* pOpJob(void);
     Stz* szOpNm(void);
     TagSet* pOpTagSet(void);
+    void vOpTrace(Operand* pOperand, Stz* szFunActNm,
+                  Stz* szSupplemental=""_Stz);
     i8   iOtherOp(void);
     Op*  pOtherOp(void);
     void vOtherOp(i8 iNextOp);
@@ -126,7 +128,7 @@ namespace STORE
     Pipeline* pPipeline(void);
     Job* pPipelineJob(void);
     void vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask);
-     void vPipeToOutput(Operand* pOperand);
+    void vPipeToOutput(Operand* pOperand);
     Operand* pPopQueue(void);
     Operand* pPopQueueOoO(void);
     Operand* pPopQueueLeft(void);
