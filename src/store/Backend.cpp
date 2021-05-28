@@ -315,8 +315,10 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
         break;
       }
 
-      if (bDeleteOrdExpr)
+      if (bDeleteOrdExpr) {
         delete pOrdinalExpr;
+        bDeleteOrdExpr = false;
+      }
 
     }
     delete pIter;
