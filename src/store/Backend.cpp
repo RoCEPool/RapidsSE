@@ -1084,7 +1084,7 @@ void Backend::vAppendLastStage(void) {
       "end ;\n"
       ""_Stz);
 
-  vTrace("%s\n"_Stz, m_sPipeline->azStr());
+  //vTrace("%s\n"_Stz, m_sPipeline->azStr());
 }
 
 /*----------------------------------------------------------------------------*/

@@ -96,7 +96,7 @@ rows:
 //------------------------------------------------------------------------------------
 select bol_col3, 3 * (SUM(dec_col6) / 2) from datums GROUP BY bol_col3;
 rows:
-(false,7784.04)
+(false,7784.01)
 
 //------------------------------------------------------------------------------------
 select bol_col2, 3 * (SUM(flt_col9) / 2) from datums GROUP BY bol_col2;
