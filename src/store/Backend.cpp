@@ -279,12 +279,63 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
   }
   pBackend->m_pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pBackend->m_pPlanRoot);
 
+
+  // Iterate each projected expression to look for aggregates if any
+  bool bDeleteOrdExpr = false;
+  QueryNode *pOrdinalExpr;
+  bool bHasAgg = false;
+
+
+  // TO SEPARATE OUT INTO A FUNCTION !!!
+  if (pProjectedColumns->bHasChildren()) {
+    // get a plan node iterator
+    PlanNodeIter *pIter = pProjectedColumns->pNewChildrenIter();
+
+    while (pIter->bHasNext()) {
+      // get the next projectedColumn from the iterator
+      QueryNode *pProjectedColumn = static_cast<QueryNode *>(pIter->pNext());
+      ASSERT(pProjectedColumn);
+      ASSERT(ProjectedColumn::bIsOfType(pProjectedColumn));
+
+      // get the expr node
+      QueryNode *pExprNode = static_cast<QueryNode *>(GraphNav::pFindProperty("expr"_Stz, pProjectedColumn));
+      ASSERT(pExprNode);
+
+      pOrdinalExpr = nullptr;
+      if (pBackend->m_pColExprList) {
+        pOrdinalExpr = Expr::pSymbolicToOrdinal(pExprNode, pBackend->m_pColExprList, pBackend->m_pPlanRoot);
+        bDeleteOrdExpr = true;
+      }
+
+      if (!pOrdinalExpr)
+        pOrdinalExpr = pExprNode;
+
+      if (Expr::bContainsAnAggregate(pOrdinalExpr)) {
+        bHasAgg = true;
+        break;
+      }
+
+      if (bDeleteOrdExpr)
+        delete pOrdinalExpr;
+
+    }
+    delete pIter;
+
+    if (bDeleteOrdExpr)
+      delete pOrdinalExpr;
+  }
+
   // Iterate each projected expression
   if (pProjectedColumns->bHasChildren()) {
 
-    sPipeline->vCatSprint(
-        "    | aggreg 0 \""
-        ""_Stz);
+    if (bHasAgg)
+      sPipeline->vCatSprint(
+          "    | aggreg 0 \""
+          ""_Stz);
+    else
+      sPipeline->vCatSprint(
+          "    | project 1 \""
+          ""_Stz);
 
     // get a plan node iterator
     PlanNodeIter *pIter = pProjectedColumns->pNewChildrenIter();
