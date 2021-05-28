@@ -177,7 +177,11 @@ void Parcel::vSendOut(Op* pSrcOp)
   // is the operand an InfoSet ?
   if (pOperand->bIsInfoSet() || pOperand->bIsProfile())
     m_eSendKind = XK_ROBIN;
-  
+ 
+//  if (CN_METAGET == pOperand->eGetClassNo()) {
+//    vSendToNode(pSrcOp,iDstNode);
+//  }
+//  else {
   
   switch (eCrossTopo) {
       
@@ -238,7 +242,8 @@ void Parcel::vSendOut(Op* pSrcOp)
       RASSERT(0);
   }
 
-  
+  // }
+
   // delete the operand
   AM::vDeleteOperand(pOperand);
 }
