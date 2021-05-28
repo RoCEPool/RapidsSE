@@ -17,6 +17,7 @@
 #include "Node.hpp"
 #include "Grid.hpp"
 #include "Socket.hpp"
+#include "Marker.hpp"
 
 extern SizeHeap      gxaSizeHeap[];
 
@@ -171,7 +172,15 @@ void Parcel::vSendOut(Op* pSrcOp)
   m_eSendKind = pSrcOp->eSendKind();
     
   // is the operand is a marker or a streamDef ?
-  if (pOperand->bIsMarker() || pOperand->bIsStreamDef())
+  if (pOperand->bIsMarker()) {
+    Marker* pMarker = _pMarker(pOperand);
+    if (pMarker->eOpMarker())
+      m_eSendKind = XK_NORMAL;
+    else
+      m_eSendKind = XK_NORMAL;
+  }
+      
+  if (pOperand->bIsStreamDef())
     m_eSendKind = XK_NORMAL;
   
   // is the operand an InfoSet ?
