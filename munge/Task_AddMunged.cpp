@@ -21174,7 +21174,7 @@ void Task::vAddMunged(Task* )
     "  Operand[] sqlCompiler::deletePlan\n"
     "  Operand[].delete\n"
     "\n"
-    "  sPipeline .\n"
+    "  //sPipeline .\n"
     "\n"
     "  sPipeline session::cascade!\n"
     "\n"

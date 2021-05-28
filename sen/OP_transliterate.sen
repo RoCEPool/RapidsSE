@@ -90,7 +90,7 @@
   Operand[] sqlCompiler::deletePlan
   Operand[].delete
 
-  sPipeline .
+  //sPipeline .
 
   sPipeline session::cascade!
 
