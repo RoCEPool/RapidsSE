@@ -146,10 +146,10 @@
 /*----------------------------------------------------------------------------*/
 : table::makeNamedTableFolder params| sTblFolderNm |
 
-  //args.tracepoint if
+  args.tracepoint if
     "MAKING TABLE " sTblFolderNm str.cat
      " on NODE " str.cat grid::thisNode@ >str str.cat .
-  //then
+  then
 
   // make: ../schemas/public/tables/t \folder
   sTblFolderNm folder[] folder::makeSubFolder
@@ -195,11 +195,11 @@
 /* make table folder (along with indexes sub-folder)                          */
 /*----------------------------------------------------------------------------*/
 : table::makeTableFolder params| sTableNm |
- sTableNm .
+
  sTableNm table::makeNamedTableFolder
- "pushNamedTableFolder" .
+
  sTableNm Path[].pushNamedTableFolder
- "makeIndexesAssembly" .
+
  sTableNm "index::makeIndexesAssembly" find execute
 
  Path[].popNamedTableFolder

@@ -22,25 +22,14 @@
 
   path[].tostr .      // display the path
 
-
-  //sTableNm table::makeTableFolder
-  //sTableNm Path[].pushNamedTableFolder
-
-// check if tableNm is a word in tables folder
-//  sTableNm word::isKnown not if discard EC_NO_SUCH_TABLE false exit then
-
-// In this makeTableFolder, it has the following:
-  //sTableNm table::makeNamedTableFolder
-  //sTableNm Path[].pushNamedTableFolder
-  //sTableNm "index::makeIndexesAssembly" find execute
-
+  sTableNm table::makeTableFolder
+  sTableNm Path[].pushNamedTableFolder
 
   // put the table ptr to
-  //pTable table::addToFolder
-  //Path[].popNamedTableFolder
+  pTable table::addToFolder
 
-  //folder[].isTables assert
-  "exiting" .
+  Path[].popNamedTableFolder
+
   true
 ;
 
