@@ -642,7 +642,7 @@ void ExprEval::vGenerateCountAll(Stz* szAsmBuffer, Stz* sAggInit, IntStack* pTyp
   if (m_bHasGby) {
     // generate code for agg initialization
     StrLib::vSprintCat(sAggInit, "  EO_INTEGER %lld\n"_Stz, 1);
-    //StrLib::vSprintCat(sAggInit, "  EO_PAY_STORE_COLI %lld\n"_Stz, m_iDstColumn);
+    StrLib::vSprintCat(sAggInit, "  EO_PAY_STORE_COLI %lld\n"_Stz, m_iDstColumn);
     //m_xStoreStack.iPop();
 
     // generate code for count(*)

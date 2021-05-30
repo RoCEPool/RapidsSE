@@ -19,6 +19,7 @@ shortcut ct   /flow create table t (a integer);
 shortcut l    _loadPipeline;
 shortcut d    _pipeline;
 shortcut drop1 "../demo/drop1_sql";
+shortcut drop2 "../demo/drop2_sql";
 shortcut dc   "../Expressions/_dynCompiler";
 shortcut dl   _pipelineLineItem;
 shortcut ef1  "../Expressions/_expr_filter_1";
