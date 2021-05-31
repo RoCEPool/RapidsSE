@@ -179,10 +179,12 @@ void Parcel::vSendOut(Op* pSrcOp)
     m_eSendKind = XK_ROBIN;
  
 //  if (CN_METAGET == pOperand->eGetClassNo()) {
-//    vSendToNode(pSrcOp,iDstNode);
+//    // Send metaGet to other node, not to the origin node itself
+//    vSendToNode(pSrcOp,6078); // HACK  hardcode to the existing node for debug
+//    AM::vDeleteOperand(pOperand);
+//    return;
 //  }
-//  else {
-  
+
   switch (eCrossTopo) {
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -241,8 +243,6 @@ void Parcel::vSendOut(Op* pSrcOp)
     default:
       RASSERT(0);
   }
-
-  // }
 
   // delete the operand
   AM::vDeleteOperand(pOperand);
