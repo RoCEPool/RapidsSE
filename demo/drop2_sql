@@ -1,9 +1,14 @@
 /*============================================================================*/
 /* drop2_sql - drop 2 sql demo                                                */
+/*                                                                            */
+/* Note: we are purposely using very small data sets here to keep the release */
+/*       installer size small.                                                */
 /*============================================================================*/
 
 bc;
 
+print "";
+print "*** Creating table nation";
 create table nation (
 	 N_NATIONKEY       INTEGER NOT NULL,
 	 N_NAME            CHAR(25) NOT NULL,
@@ -11,9 +16,12 @@ create table nation (
 	 N_COMMENT         VARCHAR(152)
 );
 
-print "loading nation.csv..." ;
-load nation "../TPCH/SF1/nation.tbl" ;
+print "";
+print "*** Loading data for table nation" ;
+load nation "../demo/demoData/nation.tbl" ;
 
+print "";
+print "*** Creating table lineitem";
 create table lineitem (
   L_ORDERKEY      INTEGER       NOT NULL,
   L_PARTKEY       INTEGER       NOT NULL,
@@ -33,10 +41,15 @@ create table lineitem (
   L_COMMENT       VARCHAR(44)   NOT NULL
 );
 
-load lineitem "../DATA/TPCH/lineitem1k.csv";
+
+print "";
+print "*** Loading data for table lineitem";
+load lineitem "../demo/demoData/lineitem_1k.csv";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+print "";
+print "*** Creating table lineitem2";
 create table lineitem2 (
   L_ORDERKEY      INTEGER       NOT NULL,
   L_PARTKEY       INTEGER       NOT NULL,
@@ -56,9 +69,13 @@ create table lineitem2 (
   L_COMMENT       VARCHAR(44)   NOT NULL
 );
 
-load lineitem2 "../DATA/TPCH/lineitem1k.csv";
+print "";
+print "*** Loading data for table lineitem2";
+load lineitem2 "../demo/demoData/lineitem_1k.csv";
 
 
+print "";
+print "*** Creating table orders";
 create table orders (
    O_ORDERKEY        INTEGER       NOT NULL,  // 0)
    O_CUSTKEY         INTEGER       NOT NULL,  // 1)
@@ -71,33 +88,75 @@ create table orders (
    O_COMMENT         VARCHAR(79)   NOT NULL   // 8)
 ) ;
 
-print "loading Orders...";
- /time load Orders "../DATA/TPCH/orders10.csv";
+print "";
+print "*** Loading data for table orders";
+ /time load Orders "../demo/demoData/orders10.csv";
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Demonstrates a basic aggregate
+
+print "";
+print "";
+print "*** Executing query: select count(*) from lineitem";
 select count(*) from lineitem;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Demonstrates a basic aggregate and filter
+
+print "";
+print "";
+print "*** Executing query: select count(*) from lineitem where l_shipdate > DATE '1993-01-01'";
 select count(*) from lineitem where l_shipdate > DATE '1993-01-01';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Demonstrates column wildcards and filter
+
+print "";
+print "";
+print "*** Executing query: select * from nation where n_nationKey > 10";
 select * from nation where n_nationKey > 10;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Demonstrates column wildcards, filter and limit
+
+print "";
+print "";
+print "*** Executing query: select * from nation where n_nationKey > 10 limit 10";
 select * from nation where n_nationKey > 10 limit 10;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Demonstrates "grand total" aggregates without a GROUP BY
+
+print "";
+print "";
+print "*** Executing query: select min(l_extendedPrice), max(l_discount) from lineitem";
 select min(l_extendedPrice), max(l_discount) from lineitem;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Demonstrates grouped aggregates
+
+print "";
+print "";
+print "*** Executing query: select min(l_extendedPrice), max(l_discount) from lineitem group by l_orderkey";
 select min(l_extendedPrice), max(l_discount) from lineitem group by l_orderkey;
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Demonstrates basic expressions in a select list
+
+print "";
+print "";
+print "*** Executing query: select l_orderkey, l_extendedprice*l_discount, l_extendedprice + 2 from lineitem limit 10";
 select l_orderkey, l_extendedprice*l_discount, l_extendedprice + 2 from lineitem limit 10;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Demonstrates a GROUP BY and HAVING clause
+
+print "";
+print "";
+print "*** Executing query: select l_orderkey, sum(l_quantity) as sum_qty, sum(l_extendedprice*l_discount) as sum_disc_price from lineitem where L_SHIPDATE > DATE '1993-01-01' group by l_orderkey having sum_qty > 100";
+
 select
    l_orderkey,
    sum(l_quantity) as sum_qty,
@@ -112,6 +171,12 @@ having
      sum_qty > 100;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Demonstrates a UNION ALL CORRESPONDING clause
+
+print "";
+print "";
+print "*** Executing query: select l_orderkey as key, sum(l_quantity) as sum_qty, sum(l_extendedprice*l_discount) as sum_disc_price from lineitem where l_shipdate > DATE '1993-01-01' group by l_orderkey having sum_qty > 100 union all corresponding select l_orderkey as key, sum(l_quantity) as sum_qty from lineitem2 where l_shipdate > DATE '1993-01-01' group by l_orderkey having sum_qty > 100";
+
 select
    l_orderkey as key,
    sum(l_quantity) as sum_qty,
@@ -141,6 +206,12 @@ having
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Demonstrates a modified TPC-H query 1 (modified to remove the interval)
+
+print "";
+print "";
+print "*** Executing query: select l_returnflag, l_linestatus, sum(l_quantity) as sum_qty, sum(l_extendedprice) as sum_base_price, sum(l_extendedprice*l_discount) as sum_disc_price, sum(l_extendedprice*l_discount*l_tax) as sum_charge, count(*) as count_order from lineitem where l_shipdate <= DATE '1998-09-01' group by l_returnflag, l_linestatus";
+
 select
     l_returnflag,
     l_linestatus,
@@ -157,6 +228,12 @@ where
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Demonstrates a modified TPC-H query 4 (modified without the EXISTS subquery and ORDER BY clause)
+
+print "";
+print "";
+print "*** Executing query: select o_orderpriority, count(*) as order_count from orders where o_orderdate >= DATE '1993-07-01' and o_orderdate <= DATE '1996-01-30' group by o_orderpriority";
+
 select
   o_orderpriority,
   count(*) as order_count
