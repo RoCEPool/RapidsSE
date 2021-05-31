@@ -74,3 +74,8 @@ cp "${ROOT_DIR}/bootstrap/collectLogs.sh"        "${LAYOUT_DIR}"
 mkdir -p "${LAYOUT_DIR}/res"
 cp "${ROOT_DIR}/src/store/parser/graph/PlannerDef.json5" "${LAYOUT_DIR}/res"
 
+# DROP 2 demo files
+mkdir -p "${LAYOUT_DIR}/demo"
+cp "${ROOT_DIR}/demo/drop1_sql"                 "${LAYOUT_DIR}/demo"
+cp "${ROOT_DIR}/demo/drop2_sql"                 "${LAYOUT_DIR}/demo"
+cp -r "${ROOT_DIR}/demo/demoData"               "${LAYOUT_DIR}/demo/demoData"
