@@ -1,0 +1,297 @@
+/*----------------------------------------------------------------------------*/
+/* UNION syntax & semantic tests                                              */
+/*                                                                            */
+/* We use before the queries to avoid actually running these through  */
+/* the execution engine.                                                      */
+/*----------------------------------------------------------------------------*/
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Setup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+trackmemory;
+success
+
+CREATE TABLE unionTbl1 (col1 INTEGER, col2 VARCHAR, col3 DATE, col4 BOOLEAN);
+success
+
+load unionTbl1 "../DATA/Transliterate/unionTbl1.csv";
+success
+
+-- same signature as tbl1
+CREATE TABLE unionTbl2 (col1 INTEGER, col2 VARCHAR, col3 DATE, col4 BOOLEAN);
+success
+
+load unionTbl2 "../DATA/Transliterate/unionTbl2.csv";
+success
+
+-- same column names as tbl1 but different column types
+CREATE TABLE unionTbl3 (col1 VARCHAR, col2 BOOLEAN, col3 DATE, col4 INTEGER);
+success
+
+load unionTbl3 "../DATA/Transliterate/unionTbl3.csv";
+success
+
+-- different number of columns as tbl3 and different names
+CREATE TABLE unionTbl4 (alpha VARCHAR, bravo BOOLEAN, charlie DATE);
+success
+
+load unionTbl4 "../DATA/Transliterate/unionTbl4.csv";
+success
+
+-- same signature as tbl4 but different column name case
+CREATE TABLE unionTbl5 (ALPHA VARCHAR, bRaVo BOOLEAN, CHARlie DATE);
+success
+
+load unionTbl5 "../DATA/Transliterate/unionTbl5.csv";
+success
+
+-- Mixed column names and types to partially match tbl1 and tbl4
+CREATE TABLE unionTbl6 (bRaVo BOOLEAN, col3 DATE, col1 INTEGER);
+
+load unionTbl6 "../DATA/Transliterate/unionTbl6.csv";
+success
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Basic union all statements
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT col1 FROM uniontbl1 UNION ALL SELECT col1 FROM uniontbl2;
+rows:
+  (1)
+  (2)
+  (3)
+  (1)
+  (2)
+  (3)
+
+//------------------------------------------------------------------------------
+SELECT * FROM unionTbl1 UNION ALL SELECT * FROM unionTbl2;
+rows:
+  (1,'dog',DATE '1942-01-01' ,false)
+  (2,'monkey',DATE '1955-02-02' , true)
+  (3,null,DATE '1933-12-22' , false)
+  (1,'goat',DATE '1942-01-01' , null)
+  (2,'rhino',DATE '1954-01-01' , true)
+  (3,'pig',DATE '1924-11-21' , true)
+
+//------------------------------------------------------------------------------
+SELECT col2, col4, col3 FROM unionTbl1 UNION ALL SELECT col2, col4, col3 FROM unionTbl2;
+rows:
+ ('dog',false,DATE '1942-01-01')
+ ('monkey',true,DATE '1955-02-02')
+ (null,false,DATE '1933-12-22')
+ ('goat',null,DATE '1942-01-01')
+ ('rhino',true,DATE '1954-01-01')
+ ('pig',true,DATE '1924-11-21')
+
+//------------------------------------------------------------------------------
+SELECT col1, col2 from uniontbl1 union all select col4, col1 FROM unionTbl3;
+rows:
+  (1,'dog')
+  (2,'monkey')
+  (3,null)
+  (1,'goat')
+  (2,'pig')
+  (3,'zebra')
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Non-empty CORRESPONDING BY clause with valid columns
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT * FROM unionTbl1 UNION ALL CORRESPONDING BY (col1, col3) SELECT * FROM unionTbl2;
+//SELECT col1, col3 FROM unionTbl1 UNION ALL SELECT col1, col3 FROM unionTbl2;
+rows:
+  (1,DATE '1942-01-01')
+  (2,DATE '1955-02-02')
+  (3,DATE '1933-12-22')
+  (1,DATE '1942-01-01')
+  (2,DATE '1954-01-01')
+  (3,DATE '1924-11-21')
+
+
+//------------------------------------------------------------------------------
+-- case insensitive tests
+SELECT * FROM unionTbl4 UNION ALL CORRESPONDING BY (alpha, bravo) SELECT * FROM unionTbl5;
+//SELECT alpha, bravo FROM unionTbl4 UNION ALL  SELECT alpha, bravo FROM unionTbl5;
+rows:
+  ('lion',true)
+  (null,false)
+  ('zebra',false)
+  ('pig',null)
+  (null,true)
+  ('zebra',true)
+
+//------------------------------------------------------------------------------
+SELECT * FROM unionTbl4 UNION ALL CORRESPONDING BY (BRAVO, CHARLIE) SELECT * FROM unionTbl5;
+//SELECT BRAVO, CHARLIE FROM unionTbl4 UNION ALL SELECT BRAVO, CHARLIE FROM unionTbl5;
+rows:
+  (true,DATE '1945-09-09')
+  (false,DATE '1946-08-08')
+  (false,null)
+  (null,DATE '1988-10-12')
+  (true,DATE '1946-05-12')
+  (true,DATE '1946-08-08')
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Empty CORRESPONDING BY clause with matching column types
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT * FROM unionTbl1 UNION ALL CORRESPONDING SELECT * FROM unionTbl2;
+//SELECT * FROM unionTbl1 UNION ALL SELECT * FROM unionTbl2;
+rows:
+  (1,'dog',DATE '1942-01-01',false)
+  (2,'monkey',DATE '1955-02-02',true)
+  (3,null,DATE '1933-12-22',false)
+  (1,'goat',DATE '1942-01-01',null)
+  (2,'rhino',DATE '1954-01-01',true)
+  (3,'pig',DATE '1924-11-21',true)
+
+//------------------------------------------------------------------------------
+SELECT * FROM unionTbl4 UNION ALL CORRESPONDING SELECT * FROM unionTbl5;
+//SELECT * FROM unionTbl4 UNION ALL SELECT * FROM unionTbl5;
+rows:
+   ('lion', true, DATE '1945-09-09')
+   (null, false, DATE '1946-08-08')
+   ('zebra', false, null )
+   ('pig', null, DATE '1988-10-12')
+   (null, true, DATE '1946-05-12')
+   ('zebra', true, DATE '1946-08-08')
+
+//------------------------------------------------------------------------------
+SELECT * FROM unionTbl6 UNION ALL CORRESPONDING SELECT * FROM unionTbl1;
+//SELECT col3, col1 FROM unionTbl6 UNION ALL SELECT col3, col1 FROM unionTbl1;
+rows:
+  (DATE '1988-10-12',1)
+  (DATE '1930-05-12',null)
+  (DATE '1933-08-08',3)
+  (DATE '1942-01-01',1)
+  (DATE '1955-02-02',2)
+  (DATE '1933-12-22',3)
+
+//------------------------------------------------------------------------------
+SELECT * FROM unionTbl6 UNION ALL CORRESPONDING SELECT * FROM unionTbl4;
+//SELECT bRaVo FROM unionTbl6 UNION ALL SELECT bRaVo FROM unionTbl4;
+rows:
+  (false)
+  (true)
+  (true)
+  (true)
+  (false)
+  (false)
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Multiple nested UNIONS (SAME TABLE SCANNED TWICE)
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/*
+  SELECT * FROM unionTbl1
+UNION ALL
+  SELECT * FROM unionTbl2
+UNION ALL
+  SELECT * FROM unionTbl1;
+rows:
+  (1,*,*,*)
+  (2,*,*,*)
+  (3,*,*,*)
+  (1,*,*,*)
+  (2,*,*,*)
+  (3,*,*,*)
+  (1,*,*,*)
+  (2,*,*,*)
+  (3,*,*,*)
+*/
+
+//------------------------------------------------------------------------------
+  SELECT col4 FROM unionTbl1
+UNION ALL (
+  SELECT * FROM unionTbl4
+UNION ALL CORRESPONDING
+  SELECT * FROM unionTbl6 );
+/*
+SELECT col4 FROM unionTbl1
+UNION ALL (
+  SELECT bRaVo FROM unionTbl4
+UNION ALL
+  SELECT bRaVo FROM unionTbl6 );
+*/
+rows:
+  (false)
+  (true)
+  (false)
+  (true)
+  (false)
+  (false)
+  (false)
+  (true)
+  (true)
+
+//------------------------------------------------------------------------------
+  SELECT * FROM unionTbl4
+UNION ALL CORRESPONDING
+  SELECT * FROM unionTbl6
+UNION ALL
+  SELECT col4 FROM unionTbl1;
+/*
+  SELECT bRaVo FROM unionTbl4
+UNION ALL
+  SELECT bRaVo FROM unionTbl6
+UNION ALL
+  SELECT col4 FROM unionTbl1;
+*/
+rows:
+  (true)
+  (false)
+  (false)
+  (false)
+  (true)
+  (true)
+  (false)
+  (true)
+  (false)
+
+DROP TABLE unionTbl1;
+success
+
+DROP TABLE unionTbl2;
+success
+
+DROP TABLE unionTbl3;
+success
+
+DROP TABLE unionTbl4;
+success
+
+DROP TABLE unionTbl5;
+success
+
+DROP TABLE unionTbl6;
+success
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Check for memory leaks
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+memoryleaks;
+rows: 0
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Cleanup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CLEANUP {
+  DROP TABLE unionTbl1;
+  mute
+
+  DROP TABLE unionTbl2;
+  mute
+
+  DROP TABLE unionTbl3;
+  mute
+
+  DROP TABLE unionTbl4;
+  mute
+
+  DROP TABLE unionTbl5;
+  mute
+
+  DROP TABLE unionTbl6;
+  mute
+}

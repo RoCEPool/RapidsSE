@@ -94,6 +94,12 @@ rows:
   (0.0000)
 */
 
+drop table lineitem;
+mute
+
+memoryleaks;
+rows: 0
+
 CLEANUP {
 
   drop table lineitem;
