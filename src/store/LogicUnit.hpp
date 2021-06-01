@@ -106,7 +106,7 @@ namespace STORE
   }
 
 #define S_StrDup() \
-  if ((i8)*aiDstk == C_DATUM_NULL)    {                                      \
+  if (*aiDstk == C_DATUM_NULL)    {                                      \
     *(++aiDstk) = C_DATUM_NULL;  \
   } \
   else { \
