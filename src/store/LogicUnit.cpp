@@ -4256,13 +4256,6 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_REG_EOSMARKER_NEW(pLU);
         break;//+endCase
 
-      case EO_REG_INDEXDEF_ADDCOLUMN: GetStr(iArg); // add a column to indexDef[]
-//        dLU0(EO_REG_INDEXDEF_ADDCOLUMN);
-//        iTopA = *(aiDstk--);
-//        vDev_REG_INDEXDEF_ADDCOLUMN(pLU, (Stz*)iArg, iTopA);
-        //RASSERT(0);
-        break;//+endCase
-
       case EO_REG_PTNSTREAM_CLOSE: ArgNil(); // close ptnStream[]
         dLU0(EO_REG_PTNSTREAM_CLOSE);
         vDev_REG_PTNSTREAM_CLOSE(pLU);

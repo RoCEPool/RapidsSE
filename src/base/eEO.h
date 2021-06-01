@@ -501,7 +501,6 @@ enum eEO : u2 // expression operators
 
   // register operators
   /*  M  */ EO_REG_EOSMARKER_NEW,          // new an eosMarker in Operand[]           // OLD QUERIES (will go)
-  /*  M  */ EO_REG_INDEXDEF_ADDCOLUMN,     // add a column to indexDef[]
   /*  M  */ EO_REG_PTNSTREAM_CLOSE,        // close a ptn stream
   /*  M  */ EO_REG_PTNSTREAM_DELETE,       // delete a ptn stream
   /*  M  */ EO_REG_PTNSTREAM_NEW,          // new a ptn stream
@@ -1008,7 +1007,6 @@ static Stz* aEO[]
 
     // register operators
   /*    */ "EO_REG_EOSMARKER_NEW"_Stz,
-  /*    */ "EO_REG_INDEXDEF_ADDCOLUMN"_Stz,
   /*    */ "EO_REG_PTNSTREAM_CLOSE"_Stz,
   /*    */ "EO_REG_PTNSTREAM_DELETE"_Stz,
   /*    */ "EO_REG_PTNSTREAM_NEW"_Stz,
@@ -1525,7 +1523,6 @@ static EoArg EoArgs[]
 
     // register operators
   { EA_NONE,    0 },  // EO_REG_EOSMARKER_NEW
-  { EA_STRING, -1 },  // EO_REG_INDEXDEF_ADDCOLUMN
   { EA_NONE,    0},   // EO_REG_PTNSTREAM_CLOSE
   { EA_NONE,    0},   // EO_REG_PTNSTREAM_DELETE
   { EA_NONE,    0},   // EO_REG_PTNSTREAM_NEW
