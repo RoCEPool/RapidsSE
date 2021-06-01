@@ -332,7 +332,7 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
 
     if (bHasAgg)
       sPipeline->vCatSprint(
-          "    | aggreg 0 \""
+          "    | aggreg 1 \""
           ""_Stz);
     else
       sPipeline->vCatSprint(
