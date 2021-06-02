@@ -219,7 +219,6 @@ void Parcel::vSendOut(Op* pSrcOp)
     return;
   }
 
-  
   switch (eCrossTopo) {
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

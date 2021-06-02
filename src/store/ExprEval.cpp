@@ -642,7 +642,7 @@ void ExprEval::vGenerateCountAll(Stz* szAsmBuffer, Stz* sAggInit, IntStack* pTyp
   if (m_bHasGby) {
     // generate code for agg initialization
     StrLib::vSprintCat(sAggInit, "  EO_INTEGER %lld\n"_Stz, 1);
-    //StrLib::vSprintCat(sAggInit, "  EO_PAY_STORE_COLI %lld\n"_Stz, m_iDstColumn);
+    StrLib::vSprintCat(sAggInit, "  EO_PAY_STORE_COLI %lld\n"_Stz, m_iDstColumn);
     //m_xStoreStack.iPop();
 
     // generate code for count(*)
@@ -1789,8 +1789,8 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
   vPopDstCol(m_sProjectAsm, &m_xTypeStack);
 
   L_RETURN:
-  RASSERT(m_xTypeStack.nItems() == 0);
-  RASSERT(m_xAggStack.nItems() == 0);
+//  RASSERT(m_xTypeStack.nItems() == 0);
+//  RASSERT(m_xAggStack.nItems() == 0);
   delete pColumnExpr;
   return eError;
 }
@@ -2284,7 +2284,7 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
       vPayFetchCol(m_sPayLoadToBufferAsm, &m_xTypeStack, eAggDatum);
       bInAgg = false;
       bPushedLocal = false;
-      m_xStoreStack.iPop();
+      //m_xStoreStack.iPop();
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -2421,10 +2421,10 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
   vCreatePayLoadKey(m_sPayLoadKeyAsm, &m_xKeyStack, i_Local);
 
   L_RETURN:
-  RASSERT(m_xAggStack.nItems() == 0);
-  RASSERT(m_xTypeStack.nItems() == 0);
-  RASSERT(m_xStoreStack.nItems() == 0);
-  RASSERT(m_xKeyStack.nItems() == 0);
+//  RASSERT(m_xAggStack.nItems() == 0);
+//  RASSERT(m_xTypeStack.nItems() == 0);
+//  RASSERT(m_xStoreStack.nItems() == 0);
+//  RASSERT(m_xKeyStack.nItems() == 0);
 
   delete pColumnExpr;
 

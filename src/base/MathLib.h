@@ -70,7 +70,19 @@ inline i8 iMathLib_Add_DTEIVL(i8 iDteValue, i8 iIvlValue)
 /*----------------------------------------------------------------------------*/
 inline i8 iMathLib_Add_FLTBCD(i8 iFloatValue, i8 iBcdValue)
 {
-  i8 iResult = C_DATUM_NULL;
+  // COME BACK TO THIS
+  i8 iResult;
+  d8 fValue1;
+  d8 fValue2;
+
+  if (iFloatValue == C_DATUM_NULL || iBcdValue == C_DATUM_NULL)
+    return C_DATUM_NULL;
+
+  fValue1 = *(d8*)&iFloatValue;
+  fValue2 = (d8)iBcdValue/100;
+
+  d8 dResult = fValue1 + fValue2;
+  iResult = *(i8 *) &dResult;
 
   return iResult;
 }
@@ -192,7 +204,17 @@ inline i8 iMathLib_Add_IVLTSP(i8 iIvlValue, i8 iTspValue)
 /*----------------------------------------------------------------------------*/
 inline i8 iMathLib_Div_BCDBCD(i8 iBcdValue1, i8 iBcdValue2)
 {
-  i8 iResult = C_DATUM_NULL;
+  i8 iResult;
+
+  if (iBcdValue1 == C_DATUM_NULL || iBcdValue2 == C_DATUM_NULL)
+    return C_DATUM_NULL;
+
+  d8 fValue1 = (d8)iBcdValue1/100;
+  d8 fValue2 = (d8)iBcdValue2/100;
+
+  d8 dResult = (fValue1 / fValue2) * 100;
+
+  iResult = (i8)dResult;
 
   return iResult;
 }
@@ -202,7 +224,17 @@ inline i8 iMathLib_Div_BCDBCD(i8 iBcdValue1, i8 iBcdValue2)
 /*----------------------------------------------------------------------------*/
 inline i8 iMathLib_Div_BCDFLT(i8 iBcdValue, i8 iFloatValue)
 {
-  i8 iResult = C_DATUM_NULL;
+  i8 iResult;
+
+  if (iFloatValue == C_DATUM_NULL || iBcdValue == C_DATUM_NULL)
+    return C_DATUM_NULL;
+
+  d8 fValue1 = (d8)iBcdValue/100;;
+  d8 fValue2 = *(d8*)&iFloatValue;
+
+  d8 dResult = (fValue1 / fValue2);
+
+  iResult = *(i8*)&dResult;
 
   return iResult;
 }
@@ -215,9 +247,13 @@ inline i8 iMathLib_Div_BCDINT(i8 iBcdValue, i8 iIntValue)
   i8 iResult;
 
   if (iBcdValue == C_DATUM_NULL || iIntValue == C_DATUM_NULL)
-    iResult = C_DATUM_NULL;
-  else
-    iResult = iBcdValue / iIntValue;
+    return C_DATUM_NULL;
+
+  d8 fValue1 = (d8)iBcdValue/100;
+  d8 fValue2 =  *(i8 *) &iIntValue;
+
+  d8 dResult = (fValue1 / fValue2) * 100;
+  iResult = (i8)dResult;
 
   return iResult;
 }
@@ -237,7 +273,17 @@ inline i8 iMathLib_Div_DTEIVL(i8 iDteValue, i8 iIvlValue)
 /*----------------------------------------------------------------------------*/
 inline i8 iMathLib_Div_FLTBCD(i8 iFloatValue, i8 iBcdValue)
 {
-  i8 iResult = C_DATUM_NULL;
+  i8 iResult;
+
+  if (iFloatValue == C_DATUM_NULL || iBcdValue == C_DATUM_NULL)
+    return C_DATUM_NULL;
+
+  d8 fValue1 = *(d8*)&iFloatValue;
+  d8 fValue2 = (d8)iBcdValue/100;
+
+  d8 dResult = (fValue1 / fValue2) * 100;
+
+  iResult = *(i8 *) &dResult;
 
   return iResult;
 }
@@ -415,8 +461,13 @@ inline i8 iMathLib_Mod_INTINT(i8 iIntValue1, i8 iIntValue2)
 /*----------------------------------------------------------------------------*/
 inline i8 iMathLib_Mul_BCDBCD(i8 iBcdValue1, i8 iBcdValue2)
 {
+  i8 iResult;
+
   // COME BACK TO THIS!!!
-  i8 iResult  = iBcdValue1 * iBcdValue2 / 100;
+  if (iBcdValue1 == C_DATUM_NULL || iBcdValue2 == C_DATUM_NULL)
+    iResult = C_DATUM_NULL;
+  else
+  iResult  = iBcdValue1 * iBcdValue2 / 100;
 
   return iResult;
 }

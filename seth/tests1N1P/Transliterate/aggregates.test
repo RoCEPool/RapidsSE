@@ -8,6 +8,8 @@
 /* the execution engine.                                                      */
 /*----------------------------------------------------------------------------*/
 
+trackmemory;
+success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Setup
@@ -23,9 +25,6 @@ success
 
 load nation "../DATA/Transliterate/nationAgg.tbl";
 success
-
--- trackmemory;
--- success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Basic aggregations and group bys
@@ -273,10 +272,10 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 drop table nation;
-succes
+success
 
--- memoryleaks;
--- rows: 0
+memoryleaks;
+rows: 0
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Cleanup

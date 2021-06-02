@@ -1,4 +1,7 @@
 
+trackMemory;
+success
+
 //------------------------------------------------------------------------------
 // create table
 create table datums (
@@ -144,6 +147,9 @@ rows:
 // drop the table
 drop table datums;
 success;
+
+memoryleaks;
+rows: 0
 
 CLEANUP {
 
