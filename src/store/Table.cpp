@@ -843,11 +843,6 @@ i8 Table::iPrepareParcel(void)
 
   m_pParcel->vAddObject((Object *)m_pIdxVec);
 
-  m_pParcel->vAddObject((Object *)m_pTablePtnVec);
-
-  //vTrace("This parcel contains table:%p m_oLocation:%p m_pStreamDef:%p m_pShardDef:%p m_pBucketMap:%p m_pIdxVec:%p m_pTablePtnVec:%p)\n"_Stz,
-  //       this, &m_oLocation,m_pStreamDef,m_pShardDef,m_pBucketMap,m_pIdxVec, m_pTablePtnVec);
-
   return m_pParcel->nObjects();
 }
 
@@ -937,16 +932,25 @@ i8  Table::iReassembleFromParcel(Parcel* pParcel)
         m_pIdxVec = (IdxVec*) pObject;
         //m_pIdxVec = (IdxVec*)::operator new(gxaSizeHeap[eClass].m_nClassSize, pObject);
         break;
-      case CN_TABLEPTNVEC:
-        m_pTablePtnVec = (TablePtnVec*) pObject;
-        //m_pTablePtnVec = (TablePtnVec*)::operator new(gxaSizeHeap[eClass].m_nClassSize, pObject);
-        break;
       default:
         vTrace("iReassembleObj %ld Error\n"_Stz,eClass);
     }
   }
-  //vTrace("This new parcel contains table:%p m_oLocation:%p m_pStreamDef:%p m_pShardDef:%p m_pBucketMap:%p m_pIdxVec:%p m_pTablePtnVec:%p)\n"_Stz,
-  //       this, &m_oLocation,m_pStreamDef,m_pShardDef,m_pBucketMap,m_pIdxVec, m_pTablePtnVec);
+
+  m_pTablePtnVec = new TablePtnVec;
+
+  if (TT_NORMAL == m_eKind || TT_INTERNAL == m_eKind) {
+    for (i8 i_TablePtn = 0; i_TablePtn < AM::nPtnsPerTable(); i_TablePtn++) {
+
+      tPN tPtnNo = Table::tTablePtnToPtnNo(i_TablePtn);
+      TablePtn* pTablePtn = new TablePtn(this,tPtnNo);
+
+      m_pTablePtnVec->vAdd(pTablePtn);
+    }
+  }
+  else {
+    //vTrace("Did not create table partitions for %s\n"_Stz,szTableNm);
+  }
 
   // We are done with the received parcel, let's delete the received parcel
   delete pParcel;

@@ -413,7 +413,6 @@ void Parcel::vSendToAllNodes(Op* pSrcOp)
     iDstNode = pNode->iNodeNo();
     vSendParcel(pSrcOp, iDstNode, C_UNKNOWN);
     //vTrace("Node :%lld\n"_Stz, iDstNode);
-    //break; to simulate the previous bug.
   }
 
 }
@@ -449,12 +448,13 @@ void Parcel::vSendToAllOriginPartitions(Op* pSrcOp)
       
       // sendNode is the partition node
       i8 iDstNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
-      ASSERT(iDstNode == pPipeline->i_Origin());
+      vTrace(" >>>>>>>>>>>>>>>>  vSendToAllOriginPartitions  XK_ROBIN: DstNode:%lld OriginNode:%lld PtnNo:%lld\n"_Stz, iDstNode, pPipeline->i_Origin(), tPtnNo);
+      //ASSERT(iDstNode == pPipeline->i_Origin());
       pSrcOp->vSendNode(iDstNode);
 
       if (iDstNode == pPipeline->i_Origin())
         vSendParcel(pSrcOp,iDstNode,tPtnNo);
-  
+
       break;
     }
       

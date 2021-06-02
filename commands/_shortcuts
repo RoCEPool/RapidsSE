@@ -18,6 +18,7 @@ shortcut cp   _cancelPipeline;
 shortcut cr3 _cr3;
 shortcut ct   /flow create table t (a integer);
 shortcut l    _loadPipeline;
+shortcut ld3  _ld3;
 shortcut d    _pipeline;
 shortcut drop1 "../demo/drop1_sql";
 shortcut dc   "../Expressions/_dynCompiler";
