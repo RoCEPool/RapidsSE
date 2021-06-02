@@ -62,6 +62,13 @@ namespace Parser
                                          QueryNodeList* pColumnExprList,
                                          PlanNode*      pRootNode);
 
+    // Takes an ordinal expression and returns a symbolic copy of it based on the
+    // column expressions projected from a child sql operator.
+    // The returned QueryNode must be freed.
+    static QueryNode* pOrdinalToSymbolic(QueryNode*     pOrdinalExpr,
+                                         QueryNodeList* pColumnExprList,
+                                         PlanNode*      pRootNode);
+
     // Compare two expression trees and return true if they are equal with
     // respect to the operations and symbols used.
     static b1 bIsSymbolicallyEqual(QueryNode* pExpr1, QueryNode* pExpr2);
@@ -82,6 +89,11 @@ namespace Parser
     // non-ordinal subset of that expression. If the expression is wholly
     // ordinal then nullptr is returned.
     static QueryNode* pLargestNonOrdinalSubExpr(QueryNode* pOrdinalExpr);
+
+    // Given an expression, return a list of each aggregate term found in
+    // that expression. The returned list is to be deleted, but the items
+    // in the list are not to be deleted.
+    static QueryNodeList* pAggregateExprs(QueryNode* pExpr);
 
   protected:
     // Returns true if the expression is commutative (e.g. A+B = B+A)

@@ -96,15 +96,16 @@ void ExprPushdown::vStatementSectionPushdownExprs(QueryNode* pStatementMarker, P
   //   Find the ProjectOp/AggregateOp below it in this StatementMarker section, if any.
   //   If none, then keep walking.
   //   Otherwise extract the expression from the FilterOp/OrderOp.
-  //   Convert the expression to ordinal form. Determine if it is fully ordinal.
-  //   If not fully ordinal then determine the largest non-ordinal subexpression
-  //   and add this to the projected columns list of the ProjectOp identified above.
+  //   Convert the expression to ordinal form. Determine if it is fully ordinal
+  //   and has no aggregates. If not fully ordinal, or if it has aggregates then
+  //   determine the largest non-ordinal/non-aggregate subexpression and add this
+  //   to the projected columns list of the ProjectOp identified above.
 
   // Notes:
   //   We could either push down the whole expression or the largest non-ordinal
-  //   subexpression. In this case we choose the latter. The rationale being that
-  //   there may be a base part of the expression that is already being computed
-  //   and may be expensive to recalculate it.
+  //   / non-aggregate subexpression. In this case we choose the latter. The rationale
+  //   being that there may be a base part of the expression that is already being
+  //   computed and may be expensive to recalculate it.
   //   e.g. assume that we have the expression (AVG(col2) / col1 > 0). Lets say
   //   that AVG(col2) is already being projected. We can either:
   //     1. Project col1 and let (AVG(col2) / col1 > 0) be calculated in the
@@ -129,17 +130,18 @@ void ExprPushdown::vStatementSectionPushdownExprs(QueryNode* pStatementMarker, P
       // Get the filter expression in ordinal representation
       QueryNode* pOrdExpr = FilterOp::pOrdinalFilterExpr(_pQueryNode(pNode), pRootNode);
 
-      if (Expr::bIsFullyOrdinal(pOrdExpr)) {
+      b1 bFullyOrdinal = Expr::bIsFullyOrdinal(pOrdExpr);
+      b1 bHasAggregate = Expr::bContainsAnAggregate(pOrdExpr);
+
+      if (bFullyOrdinal && !bHasAggregate) {
         // All good, nothing to do here
         delete pOrdExpr;
         return GraphNav::WALK_CONTINUE;
       }
 
-      // We have a non-ordinal component that needs to be pushed down
       vPushdownExpr(pOrdExpr, _pQueryNode(pNode), pRootNode);
       delete pOrdExpr;
       return GraphNav::WALK_CONTINUE;
-
 
     } else if (OrderOp::bIsOfType(pNode)) {
 
@@ -157,7 +159,10 @@ void ExprPushdown::vStatementSectionPushdownExprs(QueryNode* pStatementMarker, P
         QueryNode* pOrdExpr = OrderItem::pExprNode(pOrderItem);
         ASSERT(Expr::bIsOfType(pOrdExpr));
 
-        if (Expr::bIsFullyOrdinal(pOrdExpr)) {
+        b1 bFullyOrdinal = Expr::bIsFullyOrdinal(pOrdExpr);
+        b1 bHasAggregate = Expr::bContainsAnAggregate(pOrdExpr);
+
+        if (bFullyOrdinal && !bHasAggregate) {
           // All good, nothing to do here. Try the next order item
           continue;
         }
@@ -187,11 +192,11 @@ void ExprPushdown::vStatementSectionPushdownExprs(QueryNode* pStatementMarker, P
 /* Pushes down a given expression (or part thereof) from a given SqlOp to     */
 /* the nearest ProjectOp.                                                     */
 /*----------------------------------------------------------------------------*/
-void ExprPushdown::vPushdownExpr(QueryNode* pExpr, QueryNode* pSqlOp, PlanNode* pRootNode)
+void ExprPushdown::vPushdownExpr(QueryNode* pOrdExpr, QueryNode* pSqlOp, PlanNode* pRootNode)
 {
-  ASSERT(pExpr);
-  ASSERT(Expr::bIsOfType(pExpr));
-  ASSERT(!Expr::bIsFullyOrdinal(pExpr));
+  ASSERT(pOrdExpr);
+  ASSERT(Expr::bIsOfType(pOrdExpr));
+  ASSERT(!Expr::bIsFullyOrdinal(pOrdExpr) || Expr::bContainsAnAggregate(pOrdExpr));
   ASSERT(pSqlOp);
   ASSERT(SqlOperator::bIsOfType(pSqlOp));
   ASSERT(pRootNode);
@@ -212,11 +217,50 @@ void ExprPushdown::vPushdownExpr(QueryNode* pExpr, QueryNode* pSqlOp, PlanNode* 
     return;
   }
 
-  // Determine the largest non-ordinal subexpression of pExpr
-  QueryNode* pSubExpr = Expr::pLargestNonOrdinalSubExpr(pExpr);
+  // Determine the largest non-ordinal subexpression of pOrdExpr
+  QueryNode* pSubExpr = Expr::pLargestNonOrdinalSubExpr(pOrdExpr);
 
   // Add it to the ProjectOp
-  ProjectOp::vPushdownExpr(pProjectOp, pSubExpr->pDeepCopy(true), nullptr);
+  if (pSubExpr) {
+    ProjectOp::vPushdownExpr(pProjectOp, pSubExpr->pDeepCopy(true), nullptr);
+  }
+
+  // Find any aggregate ordinal subexpressions. First get a list of all aggregate terms.
+  // The expressions in the list are shallow copied from pOrdExpr so don't delete them,
+  // only the list itself.
+  QueryNodeList* pAggExprs = Expr::pAggregateExprs(pOrdExpr);
+
+  if (pAggExprs->pHead()) {
+    // list is not empty
+
+    QueryNodeList* pColumnExprList = PlanObject::pColumnExprs(pSqlOp, pRootNode);
+
+    QueryNodeIter* pIter = pAggExprs->pNewIter();
+    while (pIter->bHasNext()) {
+      QueryNode* pAggExpr = pIter->pNext();
+
+      // Ignore any non-ordinal terms as they should have been dealt with above.
+      if (!Expr::bIsFullyOrdinal(pAggExpr)) {
+        continue;
+      }
+
+      // Convert these ordinal expressions back to symbolic.
+      // Returns a completely new copy of the expression.
+
+      QueryNode* pSymExpr = Expr::pOrdinalToSymbolic(pAggExpr, pColumnExprList, pRootNode);
+      ASSERT(Expr::bIsNotOrdinal(pSymExpr));
+
+      // Add it to the ProjectOp
+      ProjectOp::vPushdownExpr(pProjectOp, pSymExpr, nullptr);
+    }
+
+    pColumnExprList->vDeleteAll();
+    delete pColumnExprList;
+    delete pIter;
+  }
+
+  pAggExprs->vRemoveAll();
+  delete pAggExprs;
 }
 
 
