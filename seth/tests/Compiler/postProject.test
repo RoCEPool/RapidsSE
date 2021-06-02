@@ -206,11 +206,12 @@ rows:
 
 -> -> filterOp
       » expr: ((SUM(rapidsse.public.nation.n_nationkey)) > 0)
-      » ordinal expr: ((SUM($1)) > 0)
+      » ordinal expr: ($3 > 0)
 
 -> -> -> aggregateOp
          » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
          » column: (Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = SUM($3))
+         » column: (Expr = SUM(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = SUM($1))
          » group by: (rapidsse.public.nation.n_nationkey) ; Ordinal Exprs = ($1)
 
 -> -> -> -> tableScanOp

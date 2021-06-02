@@ -27,6 +27,7 @@
 #include "LeExpr.hpp"
 #include "GeExpr.hpp"
 
+#include "NodeNamer.hpp"
 #include "GraphNav.hpp"
 #include "SqlException.hpp"
 
@@ -310,12 +311,6 @@ QueryNode* Expr::pSymbolicToOrdinal(QueryNode*     pSymbolicExpr,
     QueryNode* pColExpr = ProjectedColumn::pExprNode(pProjectedColumn);
     ASSERT(Expr::bIsOfType(pColExpr));
 
-//    s2K sBuf1;
-//    s2K sBuf2;
-//    Expr::vDescribe(pSymbolicExpr, sBuf1);
-//    Expr::vDescribe(pColExpr, sBuf2);
-//    vTrace("bIsSymbolicallyEqual:\n  %s\n  %s\n\n"_Stz, sBuf1.szStz(), sBuf2.szStz());
-
     if (Expr::bIsSymbolicallyEqual(pSymbolicExpr, pColExpr)) {
       // Create an ordinal expression that represents this entire expression
       // (sub-) tree and return it
@@ -363,6 +358,56 @@ QueryNode* Expr::pSymbolicToOrdinal(QueryNode*     pSymbolicExpr,
   pOrdinalExpr = pSymbolicExpr->pDeepCopy(true, pOrdinalChildren);
 
   return pOrdinalExpr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Takes an ordinal expression and returns a symbolic copy of it based on the */
+/* column expressions projected from a child sql operator.                    */
+/* The returned QueryNode must be freed.                                      */
+/*----------------------------------------------------------------------------*/
+QueryNode* Expr::pOrdinalToSymbolic(QueryNode*     pOrdinalExpr,
+                                    QueryNodeList* pColumnExprList,
+                                    PlanNode*      pRootNode)
+{
+
+  // First let's deep copy the ordinal expression
+  QueryNode* pSymExpr = pOrdinalExpr->pDeepCopy(true);
+
+  // Now we can walk the copied expression and replace any ColumnOrdinals
+  // with their symbolic equivalent
+  auto fVisitor = [pColumnExprList](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    QueryNode *pExpr = _pQueryNode(pNode);
+
+    if (!ColumnOrdinal::bIsOfType(pExpr)) {
+      return GraphNav::WALK_CONTINUE;
+    }
+
+    // Which ordinal is this?
+    i8 iOrdinal = ColumnOrdinal::iOrdinal(pExpr);
+    ASSERT(iOrdinal > 0);
+    ASSERT(iOrdinal - 1 < pColumnExprList->nItems());
+
+    // Get the projected expression that represents this ordinal
+    QueryNode* pProjectedCol = pColumnExprList->pPeek(iOrdinal - 1);
+    ASSERT(ProjectedColumn::bIsOfType(pProjectedCol));
+
+    QueryNode* pProjectedExpr = ProjectedColumn::pExprNode(pProjectedCol);
+
+    // Modify the node in place to represent this projected expression.
+    // By modifying it in place we can keep walking the graph because we are not
+    // modifying the current node's parent.
+    pExpr->vTransmogrifyTo(pProjectedExpr);
+
+    s256 sName;
+    NodeNamer::vGenerateName(pExpr, sName);
+    pExpr->vSetName(sName.szStz());
+
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  GraphNav::bGlobalWalk(pSymExpr, true, true, fVisitor, nullptr);
+  return pSymExpr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -634,6 +679,30 @@ QueryNode* Expr::pLargestNonOrdinalSubExpr(QueryNode* pOrdinalExpr)
 
   GraphNav::bGlobalWalk(pOrdinalExpr, false, true, fVisitor, nullptr);
   return pNonOrdExpr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Given an expression, return a list of each aggregate term found in         */
+/* that expression. The returned list is to be deleted, but the items         */
+/* in the list are not to be deleted.                                         */
+/*----------------------------------------------------------------------------*/
+QueryNodeList* Expr::pAggregateExprs(QueryNode* pExpr)
+{
+  QueryNodeList* pList = new QueryNodeList();
+
+  auto fVisitor = [pList]
+      (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    if (AggregateExpr::bIsOfType(pNode)) {
+      pList->vPush(_pQueryNode(pNode));
+    }
+
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  GraphNav::bGlobalWalk(pExpr, false, true, fVisitor, nullptr);
+
+  return pList;
 }
 
 /*----------------------------------------------------------------------------*/
