@@ -445,7 +445,7 @@ InfoSet* Metadata::pColumnDefs(Stz* szCatalogName,
         
     Table* pTable = pDicStack->pTable();
     
-    vTrace("TABLE %s\n"_Stz,pTable->szTableNm());
+    //vTrace("TABLE %s\n"_Stz,pTable->szTableNm());
     
     StreamDef* pStreamDef = pTable->pStreamDef();
     

@@ -637,15 +637,15 @@ Table* DicStack::pTable(void)
   
   Dic* pDic = pTop();
   
-  SP_Dic spDic;
-  vTrace("DIC %s \n"_Stz,spDic.sz(pDic));
+  //SP_Dic spDic;
+  //vTrace("DIC %s \n"_Stz,spDic.sz(pDic));
   
-  pDic->vListWords();
+  //pDic->vListWords();
   
   Word* pTableWd = pDic->pFindWord(pDic->szDicNm());
 
-  SP_Word spWord;
-  vTrace("WORD %s \n"_Stz,spWord.sz(pTableWd));
+  //SP_Word spWord;
+  //vTrace("WORD %s \n"_Stz,spWord.sz(pTableWd));
   
   Table* pTable = _pTable(pTableWd->pObject());
 

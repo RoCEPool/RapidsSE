@@ -402,7 +402,7 @@ void Input::vReadCommand(void)
     m_pTknVec->vDumpVec(16);
   
   vCollectVecTillSemicolon();
-  vTrace(" : %s\n"_Stz,m_pCharser->szRawInput());
+  //vTrace(" : %s\n"_Stz,m_pCharser->szRawInput());
   
   if (d_iDebugMode)
     m_pTknVec->vDumpVec(16);
