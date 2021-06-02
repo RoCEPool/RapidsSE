@@ -425,6 +425,8 @@ enum eEO : u2 // expression operators
 
   // ixt device entwrk operators
   /*    */ EO_ENTWRK_PRINT,     // print m_oEntWrk
+  /*    */ EO_ENTWRK_PUSHELMI,  // push element
+  /*    */ EO_ENTWRK_PUSHELMS,  // push string element
   /*    */ EO_ENTWRK_RESET,     // reset m_oEntWrk
   /*    */ EO_ENTWRK_SETENTKND, // set entry kind
   /*    */ EO_ENTWRK_SETINTELM, // set int only element value
@@ -932,6 +934,8 @@ static Stz* aEO[]
 
   // ixt device entwrk operators
   /*    */ "EO_ENTWRK_PRINT"_Stz,
+  /*    */ "EO_ENTWRK_PUSHELMI"_Stz,
+  /*    */ "EO_ENTWRK_PUSHELMS"_Stz,
   /*    */ "EO_ENTWRK_RESET"_Stz,
   /*    */ "EO_ENTWRK_SETENTKND"_Stz,
   /*    */ "EO_ENTWRK_SETINTELM"_Stz,
@@ -1446,6 +1450,8 @@ static EoArg EoArgs[]
 
   // ixt device entwrk operators
   { EA_NONE,    0 },  // EO_ENTWRK_PRINT
+  { EA_INT,     8 },  // EO_ENTWRK_PUSHELMI
+  { EA_INT,     8 },  // EO_ENTWRK_PUSHELMS
   { EA_NONE,    0 },  // EO_ENTWRK_RESET
   { EA_NONE,    0 },  // EO_ENTWRK_SETENTKND
   { EA_NONE,    0 },  // EO_ENTWRK_SETINTELM

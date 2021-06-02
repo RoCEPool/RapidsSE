@@ -912,6 +912,57 @@ void vDev_ENTWRK_PRINT(i8** aaiDstk)
 }
 
 /*----------------------------------------------------------------------------*/
+/* push element                                                               */
+/*----------------------------------------------------------------------------*/
+void vDev_ENTWRK_PUSHELMI(i8** aaiDstk)
+{
+  _static_
+
+  i8 *aiDstk = *aaiDstk;
+
+  i8 iElement = I_PopInt();
+
+  EntWrk *pEntWrk = (EntWrk*)P_PopPtr();
+  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
+  IndexTree* pIndexTree = _pIndexTree(pDevIxt->m_pIdxTree);
+
+  Key* aKey = pEntWrk->aEnt()->aKey();
+
+  i8 iKeyValue = aKey->iGetIntElm(pIndexTree->pIndexDef(), iElement);
+  I_PushInt(iKeyValue);
+
+  *aaiDstk = aiDstk;
+}
+
+/*----------------------------------------------------------------------------*/
+/* push element                                                               */
+/*----------------------------------------------------------------------------*/
+void vDev_ENTWRK_PUSHELMS(i8** aaiDstk)
+{
+  _static_
+
+  i8 *aiDstk = *aaiDstk;
+  char caLiteral[128];
+
+  i8 iElement = I_PopInt();
+
+  EntWrk *pEntWrk = (EntWrk*)P_PopPtr();
+  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
+  IndexTree* pIndexTree = _pIndexTree(pDevIxt->m_pIdxTree);
+
+  Key* aKey = pEntWrk->aEnt()->aKey();
+  aKey->vShow(pIndexTree->pIndexDef());
+
+  i8 nSize = aKey->iGetStrElm(pIndexTree->pIndexDef(), iElement, &caLiteral[0]);
+
+  Stz* sKey = (Stz*)&caLiteral;
+  char* azDst;
+  S_PushStr(sKey);
+
+  *aaiDstk = aiDstk;
+}
+
+/*----------------------------------------------------------------------------*/
 /* reset                                                                      */
 /*----------------------------------------------------------------------------*/
 void vDev_ENTWRK_RESET(i8** aaiDstk)

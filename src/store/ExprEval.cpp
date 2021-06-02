@@ -440,6 +440,63 @@ void ExprEval::vPushDstCol(Stz* szAsmBuffer, IntStack* pTypeStack) {
 }
 
 /*----------------------------------------------------------------------------*/
+/* add EO code for push group by key element                                  */
+/*----------------------------------------------------------------------------*/
+void ExprEval:: vPushKeyElm(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType, i8 i_KeyElm) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
+
+  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVIXT_TMP\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
+
+  // switch on column type
+  switch (eColumnType) {
+    case CT_BOOLEAN:
+      pTypeStack->vPush((i8) DM_BOL);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_PUSHELMI %lld\n"_Stz, i_KeyElm);
+      break;
+    case CT_INTEGER:
+      pTypeStack->vPush((i8) DM_INT);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_PUSHELMI %lld\n"_Stz, i_KeyElm);
+      break;
+    case CT_DECIMAL:
+      pTypeStack->vPush((i8) DM_BCD);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_PUSHELMI %lld\n"_Stz, i_KeyElm);
+      break;
+    case CT_DATE:
+      pTypeStack->vPush((i8) DM_DTE);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_PUSHELMI %lld\n"_Stz, i_KeyElm);
+      break;
+    case CT_FLOAT:
+      pTypeStack->vPush((i8) DM_FLT);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_PUSHELMI %lld\n"_Stz, i_KeyElm);
+      break;
+    case CT_TIME:
+      pTypeStack->vPush((i8) DM_TME);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_PUSHELMI %lld\n"_Stz, i_KeyElm);
+      break;
+    case CT_TIMESTAMP:
+      pTypeStack->vPush((i8) DM_TSP);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_PUSHELMI %lld\n"_Stz, i_KeyElm);
+      break;
+
+    case CT_CHAR:
+    case CT_VARCHAR:
+      pTypeStack->vPush((i8) DM_VCH);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_PUSHELMS %lld\n"_Stz, i_KeyElm);
+      break;
+
+    case CT_UNKNOWN:
+      pTypeStack->vPush((i8) DM_UNK);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_PUSHELM %lld\n"_Stz, i_KeyElm);
+      break;
+
+    default:
+      RASSERT(0);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* add EO code for push column                                                 */
 /*----------------------------------------------------------------------------*/
 void ExprEval:: vPushLclCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType, i8 i_Local) {
@@ -1166,7 +1223,12 @@ eEC ExprEval::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec)
 
     if (pTkn->bIsName() && pTkn->szChars()->bContains("$"_Stz)) {
 
+      // is it a column relative to the key ?
+      if (pTkn->szChars()->bContains("K"_Stz))
+        continue;
+
       Stz* sOrdinalColumn = pTkn->szChars() + 1;
+
       i8 i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
 
       // look for the column in the streamDefIn
@@ -2385,10 +2447,23 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
       goto L_RETURN;
     }
 
-    Stz *sOrdinalColumn = pTkn->szChars() + 1;
-    i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
-    i_Local = iOrdinalToLocal(i_ColumnOrdinal);
-    Column* pColumn = pStreamDefIn->pGetColumn(i_ColumnOrdinal);
+    bool bRelativeToKey = false;
+
+    Column *pColumn;
+    // is it a column relative to the group by key ?
+    if (pTkn->szChars()->bContains("K"_Stz)) {
+      Stz *sOrdinalColumn = pTkn->szChars() + 2;
+      i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
+      RASSERT(m_eProjectKind[iProjection] == PK_EXP);
+      bRelativeToKey = true;
+    }
+    else {
+      Stz *sOrdinalColumn = pTkn->szChars() + 1;
+      i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
+      i_Local = iOrdinalToLocal(i_ColumnOrdinal);
+      pColumn = pStreamDefIn->pGetColumn(i_ColumnOrdinal);
+    }
+
 
     switch (m_eProjectKind[iProjection]) {
       case PK_GBY: {
@@ -2403,7 +2478,11 @@ eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
         bPushedLocal = true;
         break;
       case PK_EXP: {
-        vPushLclCol(m_sPayLoadStoreAsm, &m_xStoreStack, pColumn->eColumnType(), i_Local);
+        if (bRelativeToKey) {
+          vPushKeyElm(m_sPayLoadStoreAsm, &m_xStoreStack, pColumnExpr->eColumnType(), i_ColumnOrdinal);
+        }
+        else
+          vPushLclCol(m_sPayLoadStoreAsm, &m_xStoreStack, pColumn->eColumnType(), i_Local);
 //        eDM eExprDatum = (eDM) m_xStoreStack.iPeek(m_xStoreStack.nItems()-1);
 //        vPayFetchCol(m_sPayLoadToBufferAsm, &m_xTypeStack, eExprDatum);
 //        bPushedLocal = true;

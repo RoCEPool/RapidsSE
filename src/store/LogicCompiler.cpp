@@ -83,6 +83,8 @@ DynamicSymbol gxaDynamicSymbol[]
   { "vDev_ROW_ENTWRK_CREATEPAY"_Stz,  (const void *) vDev_ROW_ENTWRK_CREATEPAY  },
 
   { "vDev_ENTWRK_PRINT"_Stz,      (const void *) vDev_ENTWRK_PRINT      },
+  { "vDev_ENTWRK_PUSHELMI"_Stz,   (const void *) vDev_ENTWRK_PUSHELMI   },
+  { "vDev_ENTWRK_PUSHELMS"_Stz,   (const void *) vDev_ENTWRK_PUSHELMS   },
   { "vDev_ENTWRK_RESET"_Stz,      (const void *) vDev_ENTWRK_RESET      },
   { "vDev_ENTWRK_SETENTKND"_Stz,  (const void *) vDev_ENTWRK_SETENTKND  },
   { "vDev_ENTWRK_SETINTELM"_Stz,  (const void *) vDev_ENTWRK_SETINTELM  },

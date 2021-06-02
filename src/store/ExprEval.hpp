@@ -97,6 +97,7 @@ namespace STORE
     void vPushDate(Stz* szAsmBuffer, IntStack* pTypeStack, Token*  pTkn);
     void vPushDecimal(Stz* szAsmBuffer, IntStack* pTypeStack, Token*  pTkn);
     void vPushInteger(Stz* szAsmBuffer, IntStack* pTypeStack, Token*  pTkn);
+    void vPushKeyElm(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType, i8 i_Key);
     void vPushLclCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType, i8 i_Local);
     void vPushDstCol(Stz* szAsmBuffer, IntStack* pTypeStack);
     void vPushString(Stz* szAsmBuffer, IntStack* pTypeStack, Token*  pTkn);
