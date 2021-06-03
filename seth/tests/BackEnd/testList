@@ -1,6 +1,6 @@
 
-aggregRows$_I.test
-aggregRows$.test
+projectAggreg$_I.test
+projectAggreg$.test
 
 aggregGby$.test
 aggregGby$_I.test
