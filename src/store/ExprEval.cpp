@@ -126,7 +126,7 @@ eEC ExprEval::eEvaluate(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Stz* 
 
   // now evaluate the expressions
   if (m_bHasGby)
-    eError = eExprEvalGby(pStreamDefIn, pStreamDefOut, pTknVec);
+    eError = eExprEvalAggGby(pStreamDefIn, pStreamDefOut, pTknVec);
   else
     eError = eExprEvalProject(pStreamDefIn, pStreamDefOut, pTknVec);
 
@@ -1630,7 +1630,7 @@ eEC ExprEval::eExprEvalProject(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut
 /*----------------------------------------------------------------------------*/
 /* parse project                                                              */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval::eExprEvalGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec)
+eEC ExprEval::eExprEvalAggGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
   UNUSED(pStreamDefIn);
