@@ -68,7 +68,6 @@ ExprEval::ExprEval(void)
   //m_xAggStack
   
   //m_sProjectAsm;
-  //m_sFilterAsm;
   //m_sAggInitAsm;
 
   //m_sAggAsm;
@@ -1292,6 +1291,11 @@ eEC ExprEval::eExprEvalProject(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut
 
   //StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
   //StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
+
+  if ( ! pStreamDefOut ) {
+    if (m_bHasAgg)
+    return EC_INVALID_COMMAND;
+  }
 
   while ( pTkn ) {
 

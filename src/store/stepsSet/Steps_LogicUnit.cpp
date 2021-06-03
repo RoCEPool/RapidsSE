@@ -360,7 +360,7 @@ void Step::vLogicUnitGenAggregate(void)
   if (pExprEval->bHasGroupBy())
     eError = m_pJob->pLogicUnit_job()->eGenerateGroupBy(pExprEval, pStreamDefOut);
   else {
-    eError = m_pJob->pLogicUnit_job()->eGenerateAggregate(pExprEval, pStreamDefOut);
+    eError = EC_INVALID_COMMAND;
   }
 
   m_pDataStack->vPushInt(eError);
@@ -453,7 +453,13 @@ void Step::vLogicUnitGenProjection(void)
 
   StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
 
-  eEC eError = m_pJob->pLogicUnit_job()->eGenerateProjection(pExprEval, pStreamDefOut);
+  eEC eError;
+
+  if (pExprEval->bHasAggregate())
+    eError = m_pJob->pLogicUnit_job()->eGenerateAggregate(pExprEval, pStreamDefOut);
+  else {
+    eError = m_pJob->pLogicUnit_job()->eGenerateProjection(pExprEval, pStreamDefOut);
+  }
 
   m_pDataStack->vPushInt(eError);
 

@@ -98,7 +98,10 @@ rows:
 
 //------------------------------------------------------------------------------
 projectColumns lineitem " type decimal ) $7 sum ";
-failure contains: "invalid command"
+rows:
+  (0.00)
+  (0.22)
+  (0.49)
 
 //------------------------------------------------------------------------------
 projectColumns lineitem "type varchar $16";

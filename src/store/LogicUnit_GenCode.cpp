@@ -888,8 +888,8 @@ eEC LogicUnit::eGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOut
 
   bool b = oFile.bOpenWrite(sFileName);
 
-  if ( pExprEval->bHasAggregate() )
-    return EC_INVALID_COMMAND;
+  //if ( pExprEval->bHasAggregate() )
+  //  return EC_INVALID_COMMAND;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // AM_QUERY_INIT

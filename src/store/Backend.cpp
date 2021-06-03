@@ -286,6 +286,7 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
   bool bHasAgg = false;
 
   // TO SEPARATE OUT INTO A FUNCTION !!!
+  /*
   if (pProjectedColumns->bHasChildren()) {
     // get a plan node iterator
     PlanNodeIter *pIter = pProjectedColumns->pNewChildrenIter();
@@ -325,7 +326,7 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
     if (bDeleteOrdExpr)
       delete pOrdinalExpr;
   }
-
+*/
 
   QueryNode* pOrdinalProjectedColumns = nullptr;
 
@@ -336,14 +337,14 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
   // Iterate each ordinal projected expression
   if (pProjectedColumns->bHasChildren()) {
 
-    if (bHasAgg)
+    //if (bHasAgg)
       sPipeline->vCatSprint(
           "    | aggreg 1 \""
           ""_Stz);
-    else
-      sPipeline->vCatSprint(
-          "    | project 1 \""
-          ""_Stz);
+//    else
+//      sPipeline->vCatSprint(
+//          "    | project 1 \""
+//          ""_Stz);
 
     // get a plan node iterator
     PlanNodeIter *pIter = pProjectedColumns->pNewChildrenIter();
@@ -485,7 +486,7 @@ void Backend::vAppendFilterOp(Backend* pBackend, QueryNode* pNode)
   ASSERT(pOrdinalFilterExpr);
 
   sPipeline->vCatSprint(
-      "    | filter 1 \""
+      "    | filter 1 \" type BOOLEAN "
       ""_Stz);
 
   // Walk the expr node plan graph
@@ -1079,9 +1080,9 @@ GraphNav::eWalkCtrl Backend::vVisitorStatement(PlanNode* pRootNode, s256& sPath,
     // ProjectOp
 
     else if (ProjectOp::bIsOfType(pQueryNode)) {
-      if (ProjectOp::bHasAnAggregate(pQueryNode))
-        vAppendAggregateOp(pBackend, pQueryNode);
-      else
+      //if (ProjectOp::bHasAnAggregate(pQueryNode))
+      //  vAppendAggregateOp(pBackend, pQueryNode);
+      //else
         vAppendProjectOp(pBackend, pQueryNode);
     }
 

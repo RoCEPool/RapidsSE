@@ -48,7 +48,6 @@ namespace STORE
     IntStack m_xKeyStack;
 
     s4K      m_sProjectAsm;
-    s4K      m_sFilterAsm;
     s4K      m_sAggInitAsm;
     s4K      m_sAggAsm;
 
