@@ -10,3 +10,4 @@ filterInteger.test
 minMax.test
 project.test
 selectTypes.test
+//transliterate.test
