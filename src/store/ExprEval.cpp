@@ -127,14 +127,8 @@ eEC ExprEval::eEvaluate(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Stz* 
   // now evaluate the expressions
   if (m_bHasGby)
     eError = eExprEvalGby(pStreamDefIn, pStreamDefOut, pTknVec);
-  else if (m_bHasAgg) {
-    // Its a filter with agg (invalid)
-    if (!pStreamDefOut)
-      return EC_INVALID_COMMAND;
-    eError = eExprEvalAgg(pStreamDefIn, pStreamDefOut, pTknVec);
-  }
   else
-    eError = eExprEval(pStreamDefIn, pStreamDefOut, pTknVec);
+    eError = eExprEvalAgg(pStreamDefIn, pStreamDefOut, pTknVec);
 
   L_RETRUN:
   delete pTknVec;
@@ -1515,7 +1509,7 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
   Column *pColumnExpr =  new Column;
 
   // we should have a  pStreamDefOut
-  RASSERT(pStreamDefOut);
+  //RASSERT(pStreamDefOut);
 
   Stz* szAsmBuffer = m_sProjectAsm;
 
@@ -1851,9 +1845,11 @@ eEC ExprEval::eExprEvalAgg(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, To
     pTkn = pTknVec->pNextToken();
   }
 
-  // add the last column to the streamDefOut
-  vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
-  vPopDstCol(m_sProjectAsm, &m_xTypeStack);
+  // add the last column to the streamDefOut (if filter we don't have a streamDefOut)
+  if (pStreamDefOut) {
+    vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
+    vPopDstCol(m_sProjectAsm, &m_xTypeStack);
+  }
 
   L_RETURN:
 //  RASSERT(m_xTypeStack.nItems() == 0);
