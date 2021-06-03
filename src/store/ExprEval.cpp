@@ -494,6 +494,11 @@ void ExprEval:: vPushKeyElm(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnT
     default:
       RASSERT(0);
   }
+
+//  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVIXT_TMP\n"_Stz);
+//  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
+//  StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_PRINT\n"_Stz);
+
 }
 
 /*----------------------------------------------------------------------------*/

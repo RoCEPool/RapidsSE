@@ -85,7 +85,7 @@ void SP_Key::vSprintKey(Key* aKey, IndexDef* pIndexDef)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  i8 nElmBytes;
+  i8 nElmBytes = 0;
 
   char caLiteral[128];
   char caElm[128];

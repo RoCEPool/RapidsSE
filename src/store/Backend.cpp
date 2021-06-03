@@ -285,7 +285,6 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
   QueryNode *pOrdinalExpr;
   bool bHasAgg = false;
 
-
   // TO SEPARATE OUT INTO A FUNCTION !!!
   if (pProjectedColumns->bHasChildren()) {
     // get a plan node iterator
@@ -327,7 +326,14 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
       delete pOrdinalExpr;
   }
 
-  // Iterate each projected expression
+
+  QueryNode* pOrdinalProjectedColumns = nullptr;
+
+  // get the ordinal projected columns relative to group by
+  if (AggregateOp::bIsOfType(pNode))
+    pOrdinalProjectedColumns = AggregateOp::pOrdinalProjectedColumnsRelativeToGroupBy(pNode, pBackend->m_pPlanRoot);
+
+  // Iterate each ordinal projected expression
   if (pProjectedColumns->bHasChildren()) {
 
     if (bHasAgg)
@@ -341,8 +347,10 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
 
     // get a plan node iterator
     PlanNodeIter *pIter = pProjectedColumns->pNewChildrenIter();
-
+    i8 iChild = -1;
     while (pIter->bHasNext()) {
+
+      iChild++;
 
       // append comma
       if (bFirstExpr)
@@ -372,9 +380,46 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
         }
       }
 
-      vAppendExpr(pBackend, pExprNode, szAliasName);
+      if (AggregateOp::bIsOfType(pNode)) {
+
+        // get the ordinal projected column relative to group by
+        QueryNode *pRelativeOrdinal = static_cast<QueryNode *>(pOrdinalProjectedColumns->pNthChild(iChild));
+        QueryNode *pOrdinalExprNode = static_cast<QueryNode *>(GraphNav::pFindProperty("expr"_Stz, pRelativeOrdinal));
+        ASSERT(pOrdinalExprNode);
+
+        // generate $K? relative to group by key if its a column ordinal
+        if ( ! ColumnRef::bIsOfType(pExprNode) &&
+               ColumnOrdinal::bIsOfType(pOrdinalExprNode)) {
+
+          eCT eType = Expr::eType(pExprNode, pBackend->m_pPlanRoot);
+
+          sPipeline->vCatSprint(
+              " type %s"
+              ""_Stz,
+              aCT[eType]);
+
+          sPipeline->vCatSprint(
+              " $K%lld"
+              ""_Stz,
+              ColumnOrdinal::iOrdinal(pOrdinalExprNode));
+
+          if (szAliasName) {
+            sPipeline->vCatSprint(
+                " as %s"
+                ""_Stz,
+                szAliasName);
+          }
+        } else {
+          vAppendExpr(pBackend, pExprNode, szAliasName);
+        }
+      }
+      else {
+        vAppendExpr(pBackend, pExprNode, szAliasName);
+      }
     }
     delete pIter;
+    if (pOrdinalProjectedColumns)
+      delete pOrdinalProjectedColumns;
 
     // if aggregOp , get a groupBy iterator
     if (AggregateOp::bIsOfType(pNode)) {
