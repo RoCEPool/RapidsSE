@@ -61,7 +61,7 @@ ExprEval::ExprEval(void)
 
   m_iProjections = 0;
 
-  m_iDstColumn = C_UNKNOWN;
+  m_iDstColumn = 0;
 
   //m_xTypeStack
   //m_xStoreStack
@@ -438,7 +438,6 @@ eEC ExprEval::eExprEvalAggGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
   Token* pTkn = pTknVec->pCurrToken();
 
   // start with col1 as the first column
-  m_iDstColumn++;
   sColumnNm.vSprint("col%lld"_Stz, m_iDstColumn);
   pColumnExpr->vColumnNm(sColumnNm);
 
@@ -1055,16 +1054,13 @@ eEC ExprEval::eExprEvalProject(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut
   s32 sColumnNm;
   bool bInAgg = false;
 
-  // create a new columnExpr
-  Column *pColumnExpr =  new Column;
-
   Stz* szAsmBuffer = m_sProjectAsm;
 
   // get the current token
   Token* pTkn = pTknVec->pCurrToken();
 
-  // start with col1 as the first column
-  m_iDstColumn++;
+  // create a new columnExpr with col1 as the name
+  Column *pColumnExpr =  new Column;
   sColumnNm.vSprint("col%lld"_Stz, m_iDstColumn);
   pColumnExpr->vColumnNm(sColumnNm);
 
