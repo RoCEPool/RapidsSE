@@ -1054,8 +1054,6 @@ eEC ExprEval::eExprEvalProject(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut
   s32 sColumnNm;
   bool bInAgg = false;
 
-  Stz* szAsmBuffer = m_sProjectAsm;
-
   // get the current token
   Token* pTkn = pTknVec->pCurrToken();
 
@@ -1079,9 +1077,7 @@ eEC ExprEval::eExprEvalProject(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut
     if (pTkn->bSame(","_Stz)) {
 
       vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
-      vPopDstCol(szAsmBuffer, &m_xTypeStack);
-
-      szAsmBuffer = m_sProjectAsm;
+      vPopDstCol(m_sProjectAsm, &m_xTypeStack);
 
       m_iDstColumn++;
       sColumnNm.vSprint("col%lld"_Stz, m_iDstColumn);
@@ -1197,7 +1193,7 @@ eEC ExprEval::eExprEvalProject(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // is it a tag ?
     if (pTkn->eToken() == TN_TAG && pTkn->bSame("<>"_Stz)) {
-      StrLib::vSprintCat(szAsmBuffer, "  EO_RETURN_FALSE\n"_Stz);
+      StrLib::vSprintCat(m_sProjectAsm, "  EO_RETURN_FALSE\n"_Stz);
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -1317,6 +1313,8 @@ eEC ExprEval::eExprEvalProject(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut
       eAggType = AG_SUM;
     }
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate code for aggregate
     if (eAggType != AG_NONE) {
 
       bInAgg = false;
