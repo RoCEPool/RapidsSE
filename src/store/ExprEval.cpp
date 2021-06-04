@@ -187,49 +187,6 @@ void ExprEval::vAddArithmetic(Stz* szAsmBuffer, IntStack* pTypeStack, Token* pTk
 }
 
 /*----------------------------------------------------------------------------*/
-/* add EO code for dates                                                      */
-/*----------------------------------------------------------------------------*/
-void ExprEval::vPushDate(Stz* szAsmBuffer, IntStack* pTypeStack, Token* pTkn) {
-
-  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
-
-  pTypeStack->vPush(DM_DTE);
-  StrLib::vSprintCat(szAsmBuffer, "  EO_DATE \"%s\"\n"_Stz, pTkn->szChars());
-}
-
-/*----------------------------------------------------------------------------*/
-/* add EO code for decimals                                                   */
-/*----------------------------------------------------------------------------*/
-void ExprEval::vPushDecimal(Stz* szAsmBuffer, IntStack* pTypeStack, Token* pTkn)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
-
-  i8 iDecimal;
-
-  char* szToken = (char*)pTkn->szChars();
-
-  bool bResult = StrLib::bExtractDecimal(&szToken, iDecimal, 19, 2);
-  RASSERT(bResult);
-  pTypeStack->vPush(DM_BCD);
-  StrLib::vSprintCat(szAsmBuffer, "  EO_INTEGER %lld\n"_Stz, iDecimal);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add EO code for creating the gby idx col                                   */
-/*----------------------------------------------------------------------------*/
-void ExprEval::vCreateGbyIdxCol(Stz* szAsmBuffer, eDM eDatum, i8 i_IdxCol) {
-
-  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
-
-  eCT eColumnType = Column::eColumnType(eDatum);
-  StrLib::vSprintCat(szAsmBuffer, "  EO_STRING \"col_local%lld\"\n"_Stz, i_IdxCol);
-  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_COLUMN_TYPE %s\n"_Stz,
-                     aCT_long[eColumnType]);
-  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_INDEXDEF\n"_Stz);
-  StrLib::vSprintCat(szAsmBuffer, "  EO_RLU_INDEXDEF_ADDCOLUMN\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
 /* add EO code for logical operators                                          */
 /*----------------------------------------------------------------------------*/
 void ExprEval::vAddLogical(Stz* szAsmBuffer, IntStack* pTypeStack, Token* pTkn)
@@ -257,297 +214,6 @@ void ExprEval::vAddLogical(Stz* szAsmBuffer, IntStack* pTypeStack, Token* pTkn)
     StrLib::vSprintCat(szAsmBuffer, "  EO_LGL_XOR\n"_Stz);
   }
 }
-
-/*----------------------------------------------------------------------------*/
-/* add EO code for numerics                                                   */
-/*----------------------------------------------------------------------------*/
-void ExprEval::vPushInteger(Stz* szAsmBuffer, IntStack* pTypeStack, Token* pTkn)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
-
-  pTypeStack->vPush((i8)DM_INT);
-  StrLib::vSprintCat(szAsmBuffer, "  EO_INTEGER %lld\n"_Stz, pTkn->iToI8());
-}
-
-/*----------------------------------------------------------------------------*/
-/* add EO code for creating the pay load key                                  */
-/*----------------------------------------------------------------------------*/
-void ExprEval::vCreatePayLoadKey(Stz* szAsmBuffer, IntStack* pTypeStack, i8 i_Local) {
-
-  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
-
-  eDM eDatum = (eDM)pTypeStack->iPop();
-
-  // switch on column type
-  switch (eDatum) {
-    case DM_BOL:
-    case DM_BCD:
-    case DM_DTE:
-    case DM_FLT:
-    case DM_INT:
-    case DM_TME:
-    case DM_TSP:
-    case DM_UNK:
-      StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_SETINTELM\n"_Stz);
-      break;
-
-    case DM_VCH:
-      StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_SETSTZELM\n"_Stz);
-      break;
-
-    case DM_IVL:
-    case DM_IVY:
-    default:
-      NEVER_REACH;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* add EO code for fetching column from payload                               */
-/*----------------------------------------------------------------------------*/
-void ExprEval::vPayFetchCol(Stz* szAsmBuffer, IntStack* pTypeStack, eDM eDatum)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
-
-  switch (eDatum) {
-    case DM_BOL:
-    case DM_BCD:
-    case DM_DTE:
-    case DM_FLT:
-    case DM_INT:
-    case DM_TME:
-    case DM_TSP:
-    case DM_UNK:
-      //StrLib::vSprintCat(m_sPayLoadToBufferAsm, "  EO_PAY_FETCH_COLI %lld\n"_Stz, m_iDstColumn);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_PAY_FETCH_COLI %lld\n"_Stz, m_iDstColumn);
-      break;
-
-    case DM_VCH:
-      //StrLib::vSprintCat(m_sPayLoadToBufferAsm, "  EO_PAY_FETCH_COLS %lld\n"_Stz, m_iDstColumn);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_PAY_FETCH_COLS %lld\n"_Stz, m_iDstColumn);
-      break;
-
-    case DM_IVL:
-    case DM_IVY:
-    default:
-      NEVER_REACH;
-  }
-
-  pTypeStack->vPush(eDatum);
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* add EO code for pop column                                                 */
-/*----------------------------------------------------------------------------*/
-void ExprEval::vPopDstCol(Stz* szAsmBuffer, IntStack* pTypeStack)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
-
-  eDM eDatum = (eDM)pTypeStack->iPop();
-  
-  // switch on column type
-  switch (eDatum) {
-    case DM_BOL:
-    case DM_BCD:
-    case DM_DTE:
-    case DM_FLT:
-    case DM_INT:
-    case DM_TME:
-    case DM_TSP:
-    case DM_UNK:
-      StrLib::vSprintCat(szAsmBuffer,"  EO_PUSH_DEVROW_DST\n"_Stz);
-      StrLib::vSprintCat(szAsmBuffer,"  EO_DEVROW_POPCOLI %lld\n"_Stz, m_iDstColumn);
-      break;
-
-    case DM_VCH:
-      StrLib::vSprintCat(szAsmBuffer,"  EO_PUSH_DEVROW_DST\n"_Stz);
-      StrLib::vSprintCat(szAsmBuffer,"  EO_DEVROW_POPCOLS %lld\n"_Stz, m_iDstColumn);
-      break;
-
-    case DM_IVL:
-    case DM_IVY:
-    default:
-      NEVER_REACH;
-  }
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* add EO code for push destination column                                    */
-/*----------------------------------------------------------------------------*/
-void ExprEval::vPushDstCol(Stz* szAsmBuffer, IntStack* pTypeStack) {
-
-  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
-
-  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
-
-  eDM eDatumType = (eDM)pTypeStack->iPop();
-
-  // switch on column type
-  switch (eDatumType) {
-    case DM_BOL:
-      pTypeStack->vPush((i8) DM_BOL);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
-      break;
-    case DM_INT:
-      pTypeStack->vPush((i8) DM_INT);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
-      break;
-    case DM_BCD:
-      pTypeStack->vPush((i8) DM_BCD);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
-      break;
-    case DM_DTE:
-      pTypeStack->vPush((i8) DM_DTE);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
-      break;
-    case DM_FLT:
-      pTypeStack->vPush((i8) DM_FLT);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
-      break;
-    case DM_TME:
-      pTypeStack->vPush((i8) DM_TME);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
-      break;
-    case DM_TSP:
-      pTypeStack->vPush((i8) DM_TSP);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
-      break;
-
-    case DM_VCH:
-      pTypeStack->vPush((i8) DM_VCH);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLS %lld\n"_Stz, m_iDstColumn);
-      break;
-
-    case DM_UNK:
-      pTypeStack->vPush((i8) DM_UNK);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
-      break;
-
-    default:
-      RASSERT(0);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* add EO code for push group by key element                                  */
-/*----------------------------------------------------------------------------*/
-void ExprEval:: vPushKeyElm(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType, i8 i_KeyElm) {
-
-  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
-
-  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVIXT_TMP\n"_Stz);
-  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
-
-  // switch on column type
-  switch (eColumnType) {
-    case CT_BOOLEAN:
-      pTypeStack->vPush((i8) DM_BOL);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_PUSHELMI %lld\n"_Stz, i_KeyElm);
-      break;
-    case CT_INTEGER:
-      pTypeStack->vPush((i8) DM_INT);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_PUSHELMI %lld\n"_Stz, i_KeyElm);
-      break;
-    case CT_DECIMAL:
-      pTypeStack->vPush((i8) DM_BCD);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_PUSHELMI %lld\n"_Stz, i_KeyElm);
-      break;
-    case CT_DATE:
-      pTypeStack->vPush((i8) DM_DTE);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_PUSHELMI %lld\n"_Stz, i_KeyElm);
-      break;
-    case CT_FLOAT:
-      pTypeStack->vPush((i8) DM_FLT);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_PUSHELMI %lld\n"_Stz, i_KeyElm);
-      break;
-    case CT_TIME:
-      pTypeStack->vPush((i8) DM_TME);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_PUSHELMI %lld\n"_Stz, i_KeyElm);
-      break;
-    case CT_TIMESTAMP:
-      pTypeStack->vPush((i8) DM_TSP);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_PUSHELMI %lld\n"_Stz, i_KeyElm);
-      break;
-
-    case CT_CHAR:
-    case CT_VARCHAR:
-      pTypeStack->vPush((i8) DM_VCH);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_PUSHELMS %lld\n"_Stz, i_KeyElm);
-      break;
-
-    case CT_UNKNOWN:
-      pTypeStack->vPush((i8) DM_UNK);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_PUSHELM %lld\n"_Stz, i_KeyElm);
-      break;
-
-    default:
-      RASSERT(0);
-  }
-
-//  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVIXT_TMP\n"_Stz);
-//  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
-//  StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_PRINT\n"_Stz);
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* add EO code for push column                                                 */
-/*----------------------------------------------------------------------------*/
-void ExprEval:: vPushLclCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType, i8 i_Local) {
-
-  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
-
-  // switch on column type
-  switch (eColumnType) {
-    case CT_BOOLEAN:
-      pTypeStack->vPush((i8) DM_BOL);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_LOCALI %lld\n"_Stz, i_Local);
-      break;
-    case CT_INTEGER:
-      pTypeStack->vPush((i8) DM_INT);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_LOCALI %lld\n"_Stz, i_Local);
-      break;
-    case CT_DECIMAL:
-      pTypeStack->vPush((i8) DM_BCD);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_LOCALI %lld\n"_Stz, i_Local);
-      break;
-    case CT_DATE:
-      pTypeStack->vPush((i8) DM_DTE);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_LOCALI %lld\n"_Stz, i_Local);
-      break;
-    case CT_FLOAT:
-      pTypeStack->vPush((i8) DM_FLT);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_LOCALI %lld\n"_Stz, i_Local);
-      break;
-    case CT_TIME:
-      pTypeStack->vPush((i8) DM_TME);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_LOCALI %lld\n"_Stz, i_Local);
-      break;
-    case CT_TIMESTAMP:
-      pTypeStack->vPush((i8) DM_TSP);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_LOCALI %lld\n"_Stz, i_Local);
-      break;
-
-    case CT_CHAR:
-    case CT_VARCHAR:
-      pTypeStack->vPush((i8) DM_VCH);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_LOCALS %lld\n"_Stz, i_Local);
-      break;
-
-    case CT_UNKNOWN:
-      pTypeStack->vPush((i8) DM_UNK);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_LOCALI %lld\n"_Stz, i_Local);
-      break;
-
-    default:
-      RASSERT(0);
-  }
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* add EO code for relational operators                                       */
@@ -587,6 +253,1176 @@ void ExprEval::vAddRelational(Stz* szAsmBuffer, IntStack* pTypeStack, Token* pTk
 
   StrLib::vSprintCat(szAsmBuffer, "  %s\n"_Stz, aEO[eCode]);
   pTypeStack->vPush((i8) eResultType);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add column to streamDefOut                                                 */
+/*----------------------------------------------------------------------------*/
+void ExprEval::vAppendColumnToStreamDef(StreamDef* pStreamDefOut, Column* pColumn) {
+
+  pStreamDefOut->vAddColumn(pColumn->szColNm(),
+                            pColumn->eColumnType(),
+                            pColumn->iColumnLength(),
+                            pColumn->iColumnScale());
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect source ordinal columns needed for projection                       */
+/*----------------------------------------------------------------------------*/
+eEC ExprEval::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
+
+  eEC eError = EC_NONE;
+  Token* pTkn;
+  bool bHasAgg = false;
+
+  for (i8 i_Tkn = 0; i_Tkn < pTknVec->nItems(); i_Tkn++) {
+
+    pTkn = pTknVec->pGet(i_Tkn);
+
+    if ( pTkn->bIsName() &&
+         (pTkn->bSame("AVG"_Stz)   ||
+          pTkn->bSame("COUNT"_Stz) ||
+          pTkn->bSame("COUNTALL"_Stz) ||
+          pTkn->bSame("MIN"_Stz)   ||
+          pTkn->bSame("MAX"_Stz)   ||
+          pTkn->bSame("SUM"_Stz))
+        ) {
+      bHasAgg = true;
+      m_bHasAgg = true;
+      continue;
+    }
+
+    if (pTkn->bIsName() && pTkn->bSame(","_Stz)) {
+      if (m_bHasGby) {
+        m_eProjectKind[m_iProjections++] = PK_GBY;
+      }
+      else {
+        m_eProjectKind[m_iProjections++] = bHasAgg ? PK_AGG : PK_EXP;
+      }
+      bHasAgg = false;
+    }
+
+    if (pTkn->bIsName() && pTkn->bSame("GROUPBY"_Stz)) {
+      m_eProjectKind[m_iProjections++] = bHasAgg ? PK_AGG : PK_EXP;
+      m_bHasGby = true;
+      continue;
+    }
+
+    if (pTkn->bIsName() && pTkn->szChars()->bContains("$"_Stz)) {
+
+      // is it a column relative to the key ?
+      if (pTkn->szChars()->bContains("K"_Stz))
+        continue;
+
+      Stz* sOrdinalColumn = pTkn->szChars() + 1;
+
+      i8 i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
+
+      // look for the column in the streamDefIn
+      i8 nColumns = pStreamDefIn->nColumns();
+      if (i_ColumnOrdinal > nColumns) {
+        eError = EC_INVALID_COMMAND;
+        break;
+      }
+
+      // already selected column ?
+      if (!BitLib::bIsOn(m_uExprEvalColumns, i_ColumnOrdinal)) {
+
+        // set bit on for the column in m_uExprEvalColumns
+        BitLib::vSetOn(m_uExprEvalColumns, i_ColumnOrdinal);
+        m_iStreamInColumns++;
+      }
+    }
+
+  }
+
+  if (m_bHasGby) {
+    m_eProjectKind[m_iProjections++] = PK_GBY;
+  }
+  else {
+    m_eProjectKind[m_iProjections++] = bHasAgg ? PK_AGG : PK_EXP;
+  }
+
+  return eError;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add EO code for creating the gby idx col                                   */
+/*----------------------------------------------------------------------------*/
+void ExprEval::vCreateGbyIdxCol(Stz* szAsmBuffer, eDM eDatum, i8 i_IdxCol) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
+
+  eCT eColumnType = Column::eColumnType(eDatum);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_STRING \"col_local%lld\"\n"_Stz, i_IdxCol);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_COLUMN_TYPE %s\n"_Stz,
+                     aCT_long[eColumnType]);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_INDEXDEF\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_RLU_INDEXDEF_ADDCOLUMN\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add EO code for creating the pay load key                                  */
+/*----------------------------------------------------------------------------*/
+void ExprEval::vCreatePayLoadKey(Stz* szAsmBuffer, IntStack* pTypeStack, i8 i_Local) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
+
+  eDM eDatum = (eDM)pTypeStack->iPop();
+
+  // switch on column type
+  switch (eDatum) {
+    case DM_BOL:
+    case DM_BCD:
+    case DM_DTE:
+    case DM_FLT:
+    case DM_INT:
+    case DM_TME:
+    case DM_TSP:
+    case DM_UNK:
+      StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_SETINTELM\n"_Stz);
+      break;
+
+    case DM_VCH:
+      StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_SETSTZELM\n"_Stz);
+      break;
+
+    case DM_IVL:
+    case DM_IVY:
+    default:
+      NEVER_REACH;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse project                                                              */
+/*----------------------------------------------------------------------------*/
+eEC ExprEval::eExprEvalProject(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
+  UNUSED(pStreamDefIn);
+
+  eCT eExprType = CT_NONE;
+  eAG eAggType  = AG_NONE;
+  eEC eError    = EC_NONE;
+
+  s32 sColumnNm;
+  i8 iProjection = 0;
+  bool bInAgg = false;
+
+  // create a new columnExpr
+  Column *pColumnExpr =  new Column;
+
+  // we should have a  pStreamDefOut
+  //RASSERT(pStreamDefOut);
+
+  Stz* szAsmBuffer = m_sProjectAsm;
+
+  // get the current token
+  Token* pTkn = pTknVec->pCurrToken();
+
+  // start with col1 as the first column
+  m_iDstColumn++;
+  sColumnNm.vSprint("col%lld"_Stz, m_iDstColumn);
+  pColumnExpr->vColumnNm(sColumnNm);
+
+  //StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
+  //StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
+
+  if ( ! pStreamDefOut ) {
+    if (m_bHasAgg)
+      return EC_INVALID_COMMAND;
+  }
+
+  while ( pTkn ) {
+
+    //vTrace("TKN: %s\n"_Stz, pTkn->azChars());
+
+    if (pTkn->bSame(","_Stz)) {
+
+      // discovered a comma, generate code for the column
+      vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
+      vPopDstCol(szAsmBuffer, &m_xTypeStack);
+
+      szAsmBuffer = m_sProjectAsm;
+
+      m_iDstColumn++;
+      iProjection++;
+      sColumnNm.vSprint("col%lld"_Stz, m_iDstColumn);
+      pColumnExpr->vColumnNm(sColumnNm);
+
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // type ?
+    if (pTkn->bSame("type"_Stz)) {
+      pTkn = pTknVec->pNextToken();
+      if (!pTkn->bIsName()) {
+        eError = EC_INVALID_COMMAND;
+        goto L_RETURN;
+      }
+
+      // extract expr type
+      eExprType = StreamDef::eColumn(pTkn->szChars());
+      pColumnExpr->vColumnType(eExprType);
+
+      // HACK!!!
+      if (eExprType == CT_DECIMAL) {
+        pColumnExpr->vColumnScale(2);
+        pColumnExpr->vColumnLength(19);
+      }
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // alias ?
+    if (pTkn->bSame("as"_Stz)) {
+      pTkn = pTknVec->pNextToken();
+      if (!pTkn->bIsName()) {
+        eError = EC_INVALID_COMMAND;
+        goto L_RETURN;
+      }
+
+      // extract column name
+      pColumnExpr->vColumnNm(pTkn->szChars());
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // arithmetic operator ?
+    if (pTkn->bIsArithmetic()) {
+      if (bInAgg)
+        vAddArithmetic(m_sAggAsm, &m_xAggStack, pTkn);
+      else
+        vAddArithmetic(m_sProjectAsm, &m_xTypeStack, pTkn);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // logical operator ?
+    if (pTkn->bIsLogical() || pTkn->bSame("isNull"_Stz)) {
+      if (bInAgg)
+        vAddLogical(m_sAggAsm, &m_xAggStack, pTkn);
+      else
+        vAddLogical(m_sProjectAsm, &m_xTypeStack, pTkn);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // relational operator ?
+    if (pTkn->bIsRelational()) {
+      if (bInAgg)
+        vAddRelational(m_sAggAsm, &m_xAggStack, pTkn);
+      else
+        vAddRelational(m_sProjectAsm, &m_xTypeStack, pTkn);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // is it a numeric ?
+    if (pTkn->bIsNumeric()) {
+      if (bInAgg)
+        vPushInteger(m_sAggAsm, &m_xAggStack, pTkn);
+      else
+        vPushInteger(m_sProjectAsm, &m_xTypeStack, pTkn);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // is it a decimal no ?
+    if (pTkn->bIsDecimalNo()) {
+      if (bInAgg)
+        vPushDecimal(m_sAggAsm, &m_xAggStack, pTkn);
+      else
+        vPushDecimal(m_sProjectAsm, &m_xTypeStack, pTkn);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // is it a string ?
+    if (pTkn->bIsString()) {
+      if (bInAgg)
+        vPushString(m_sAggAsm, &m_xAggStack, pTkn);
+      else
+        vPushString(m_sProjectAsm, &m_xTypeStack, pTkn);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // is it a tag ?
+    if (pTkn->eToken() == TN_TAG && pTkn->bSame("<>"_Stz)) {
+      StrLib::vSprintCat(szAsmBuffer, "  EO_RETURN_FALSE\n"_Stz);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // should be a name
+    if (!pTkn->bIsName()) {
+      eError = EC_INVALID_COMMAND;
+      goto L_RETURN;
+    }
+
+    // is it a negate op ?
+    if (pTkn->bSame("negate"_Stz) ) {
+      if (bInAgg)
+        vAddArithmetic(m_sAggAsm, &m_xAggStack, pTkn);
+      else
+        vAddArithmetic(m_sProjectAsm, &m_xTypeStack, pTkn);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // it is a null value ?
+    if (pTkn->bSame("null"_Stz) ) {
+      if (bInAgg)
+        vPushUnknown(m_sAggAsm, &m_xAggStack, pTkn);
+      else
+        vPushUnknown(m_sProjectAsm, &m_xTypeStack, pTkn);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // is it a date ?
+    if (pTkn->bSame("DATE"_Stz) ) {
+      pTkn = pTknVec->pNextToken();
+      if (pTkn->bIsString()) {
+        if (bInAgg)
+          vPushDate(m_sAggAsm, &m_xAggStack, pTkn);
+        else
+          vPushDate(m_sProjectAsm, &m_xTypeStack, pTkn);
+        pTkn = pTknVec->pNextToken();
+        continue;
+      }
+      else
+        pTkn = pTknVec->pPrevToken();
+    }
+
+    // is it a time ?
+    if (pTkn->bSame("TIME"_Stz) ) {
+      pTkn = pTknVec->pNextToken();
+      if (pTkn->bIsString()) {
+        if (bInAgg)
+          vPushTime(m_sAggAsm, &m_xAggStack, pTkn);
+        else
+          vPushTime(m_sProjectAsm, &m_xTypeStack, pTkn);
+        pTkn = pTknVec->pNextToken();
+        continue;
+      }
+      else
+        pTkn = pTknVec->pPrevToken();
+    }
+
+    // is it a timestamp ?
+    if (pTkn->bSame("TIMESTAMP"_Stz) ) {
+      pTkn = pTknVec->pNextToken();
+      if (pTkn->bIsString()) {
+        if (bInAgg)
+          vPushTimestamp(m_sAggAsm, &m_xAggStack, pTkn);
+        else
+          vPushTimestamp(m_sProjectAsm, &m_xTypeStack, pTkn);
+        pTkn = pTknVec->pNextToken();
+        continue;
+      }
+      else
+        pTkn = pTknVec->pPrevToken();
+    }
+
+    if (pTkn->bSame(")"_Stz) ) {
+      bInAgg = true;
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("AVG"_Stz) ) {
+
+      eAggType = AG_AVG;
+      bInAgg = false;
+
+      vGenerateAggregateCode(eAggType, m_sAggAsm, m_sAggInitAsm, &m_xAggStack);
+      eAggType = AG_NONE;
+
+      eDM eAggDatum = (eDM)m_xAggStack.iPop();
+      m_xTypeStack.vPush(eAggDatum);
+
+      vPushDstCol(m_sProjectAsm, &m_xTypeStack);
+
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("COUNT"_Stz) ) {
+
+      eAggType = AG_CNT;
+      bInAgg = false;
+
+      vGenerateAggregateCode(eAggType, m_sAggAsm, m_sAggInitAsm, &m_xAggStack);
+      eAggType = AG_NONE;
+
+      eDM eAggDatum = (eDM)m_xAggStack.iPop();
+      m_xTypeStack.vPush(eAggDatum);
+
+      vPushDstCol(m_sProjectAsm, &m_xTypeStack);
+
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("COUNTALL"_Stz) ) {
+
+      eAggType = AG_ALL;
+      bInAgg = false;
+
+      vGenerateAggregateCode(eAggType, m_sAggAsm, m_sAggInitAsm, &m_xAggStack);
+      eAggType = AG_NONE;
+
+      eDM eAggDatum = (eDM)m_xAggStack.iPop();
+      m_xTypeStack.vPush(eAggDatum);
+
+      vPushDstCol(m_sProjectAsm, &m_xTypeStack);
+
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("MIN"_Stz) ) {
+
+      eAggType = AG_MIN;
+      bInAgg = false;
+
+      vGenerateAggregateCode(eAggType, m_sAggAsm, m_sAggInitAsm, &m_xAggStack);
+      eAggType = AG_NONE;
+
+      eDM eAggDatum = (eDM)m_xAggStack.iPop();
+      m_xTypeStack.vPush(eAggDatum);
+
+      vPushDstCol(m_sProjectAsm, &m_xTypeStack);
+
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("MAX"_Stz) ) {
+
+      eAggType = AG_MAX;
+      bInAgg = false;
+
+      vGenerateAggregateCode(eAggType, m_sAggAsm, m_sAggInitAsm, &m_xAggStack);
+      eAggType = AG_NONE;
+
+      eDM eAggDatum = (eDM)m_xAggStack.iPop();
+      m_xTypeStack.vPush(eAggDatum);
+
+      vPushDstCol(m_sProjectAsm, &m_xTypeStack);
+
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("SUM"_Stz) ) {
+
+      eAggType = AG_SUM;
+      bInAgg = false;
+
+      vGenerateAggregateCode(eAggType, m_sAggAsm, m_sAggInitAsm, &m_xAggStack);
+      eAggType = AG_NONE;
+
+      eDM eAggDatum = (eDM)m_xAggStack.iPop();
+      m_xTypeStack.vPush(eAggDatum);
+
+      vPushDstCol(m_sProjectAsm, &m_xTypeStack);
+
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // found a src column
+    if ( ! pTkn->szChars()->bContains("$"_Stz)) {
+      eError = EC_INVALID_COMMAND;
+      goto L_RETURN;
+    }
+
+    Stz *sOrdinalColumn = pTkn->szChars() + 1;
+    i8 i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
+    i8 i_Local = iOrdinalToLocal(i_ColumnOrdinal);
+    Column* pColumn = pStreamDefIn->pGetColumn(i_ColumnOrdinal);
+
+    if (m_eProjectKind[iProjection] == PK_EXP)
+      vPushLclCol(m_sProjectAsm, &m_xTypeStack, pColumn->eColumnType(), i_Local);
+    else
+      vPushLclCol(m_sAggAsm, &m_xAggStack, pColumn->eColumnType(), i_Local);
+
+    pTkn = pTknVec->pNextToken();
+  }
+
+  // add the last column to the streamDefOut (if filter we don't have a streamDefOut)
+  if (pStreamDefOut) {
+    vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
+    vPopDstCol(m_sProjectAsm, &m_xTypeStack);
+  }
+
+  L_RETURN:
+//  RASSERT(m_xTypeStack.nItems() == 0);
+//  RASSERT(m_xAggStack.nItems() == 0);
+  delete pColumnExpr;
+  return eError;
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse project                                                              */
+/*----------------------------------------------------------------------------*/
+eEC ExprEval::eExprEvalAggGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
+  UNUSED(pStreamDefIn);
+
+  eCT eExprType = CT_NONE;
+  eAG eAggType  = AG_NONE;
+  eEC eError    = EC_NONE;
+
+  s32 sColumnNm;
+  i8 i_ColumnOrdinal = C_UNKNOWN;
+  i8 i_Local = C_UNKNOWN;
+  i8 iProjection = 0;
+
+  // create a new columnExpr
+  Column *pColumnExpr =  new Column;
+
+  // should have pStreamDefOut
+  RASSERT(pStreamDefOut);
+
+  // get the current token
+  Token* pTkn = pTknVec->pCurrToken();
+
+  // start with col1 as the first column
+  m_iDstColumn++;
+  sColumnNm.vSprint("col%lld"_Stz, m_iDstColumn);
+  pColumnExpr->vColumnNm(sColumnNm);
+
+  bool bPushedLocal = false;
+  bool bInAgg = false;
+  eDM eKeyDatm;
+
+  while ( pTkn ) {
+
+    //vTrace("TKN: %s\n"_Stz, pTkn->azChars());
+
+    if (pTkn->bSame(","_Stz)) {
+
+      switch (m_eProjectKind[iProjection]) {
+        case PK_AGG:
+          vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
+          vPopDstCol(m_sPayLoadToBufferAsm, &m_xTypeStack);
+          m_nPayLoadBytes += 8;
+          break;
+
+        case PK_EXP: {
+          vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
+          eDM eExprDatum = (eDM) m_xStoreStack.iPeek(m_xStoreStack.nItems() - 1);
+          vPayFetchCol(m_sPayLoadToBufferAsm, &m_xTypeStack, eExprDatum);
+          bPushedLocal = true;
+          vPopDstCol(m_sPayLoadToBufferAsm, &m_xTypeStack);
+          m_nPayLoadBytes += 8;
+        }
+          break;
+
+        case PK_GBY: {
+          eDM eKeyDatm = (eDM) m_xKeyStack.iPeek(m_xKeyStack.nItems() - 1);
+          vCreateGbyIdxCol(m_sGbyIdxAsm, eKeyDatm, iProjection);
+          vCreatePayLoadKey(m_sPayLoadKeyAsm, &m_xKeyStack, i_Local);
+        }
+          break;
+
+        default:
+          NEVER_REACH;
+      }
+
+      if (bPushedLocal) {
+        vPayStoreCol(m_sPayLoadStoreAsm, &m_xStoreStack, pColumnExpr->eColumnType());
+        bPushedLocal = false;
+      }
+
+      eAggType = AG_NONE;
+
+      m_iDstColumn++;
+      iProjection++;
+      sColumnNm.vSprint("col%lld"_Stz, m_iDstColumn);
+      pColumnExpr->vColumnNm(sColumnNm);
+
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // type ?
+    if (pTkn->bSame("type"_Stz)) {
+      pTkn = pTknVec->pNextToken();
+      if (!pTkn->bIsName()) {
+        eError = EC_INVALID_COMMAND;
+        goto L_RETURN;
+      }
+
+      // extract expr type
+      eExprType = StreamDef::eColumn(pTkn->szChars());
+      pColumnExpr->vColumnType(eExprType);
+
+      // HACK!!!
+      if (eExprType == CT_DECIMAL) {
+        pColumnExpr->vColumnScale(2);
+        pColumnExpr->vColumnLength(19);
+      }
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // alias ?
+    if (pTkn->bSame("as"_Stz)) {
+      pTkn = pTknVec->pNextToken();
+      if (!pTkn->bIsName()) {
+        eError = EC_INVALID_COMMAND;
+        goto L_RETURN;
+      }
+
+      // extract column name
+      pColumnExpr->vColumnNm(pTkn->szChars());
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // arithmetic operator ?
+    if (pTkn->bIsArithmetic()) {
+
+      switch (m_eProjectKind[iProjection]) {
+        case PK_GBY:
+          vAddArithmetic(m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
+          break;
+        case PK_AGG:
+          if (bInAgg) {
+            vAddArithmetic(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+            vAddArithmetic(m_sPayLoadAggAsm, &m_xAggStack, pTkn);
+          }
+          else {
+            vAddArithmetic(m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
+          }
+          break;
+        case PK_EXP:
+          vAddArithmetic(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+          break;
+        default:
+          NEVER_REACH;
+      }
+
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // logical operator ?
+    if (pTkn->bIsLogical() || pTkn->bSame("isNull"_Stz)) {
+
+      switch (m_eProjectKind[iProjection]) {
+        case PK_GBY:
+          vAddLogical(m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
+          break;
+        case PK_AGG:
+          if (bInAgg) {
+            vAddLogical(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+            vAddLogical(m_sPayLoadAggAsm, &m_xAggStack, pTkn);
+          }
+          else {
+            vAddLogical(m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
+          }
+          break;
+        case PK_EXP:
+          vAddLogical(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+          break;
+        default:
+          NEVER_REACH;
+      }
+
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // relational operator ?
+    if (pTkn->bIsRelational()) {
+
+      switch (m_eProjectKind[iProjection]) {
+        case PK_GBY:
+          vAddRelational(m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
+          break;
+        case PK_AGG:
+          if (bInAgg) {
+            vAddRelational(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+            vAddRelational(m_sPayLoadAggAsm, &m_xAggStack, pTkn);
+          }
+          else {
+            vAddRelational(m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
+          }
+          break;
+        case PK_EXP:
+          vAddArithmetic(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+          break;
+        default:
+          NEVER_REACH;
+      }
+
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // is it a numeric ?
+    if (pTkn->bIsNumeric()) {
+
+      switch (m_eProjectKind[iProjection]) {
+        case PK_GBY:
+          vPushInteger(m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
+          break;
+        case PK_AGG:
+          if (bInAgg) {
+            vPushInteger(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+            vPushInteger(m_sPayLoadAggAsm, &m_xAggStack, pTkn);
+          }
+          else {
+            vPushInteger(m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
+          }
+          break;
+        case PK_EXP:
+          vPushInteger(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+          break;
+        default:
+          NEVER_REACH;
+      }
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // is it a decimal no ?
+    if (pTkn->bIsDecimalNo()) {
+
+      switch (m_eProjectKind[iProjection]) {
+        case PK_GBY:
+          vPushDecimal(m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
+          break;
+        case PK_AGG:
+          if (bInAgg) {
+            vPushDecimal(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+            vPushDecimal(m_sPayLoadAggAsm, &m_xAggStack, pTkn);
+          }
+          else {
+            vPushDecimal(m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
+          }
+          break;
+        case PK_EXP:
+          vPushDecimal(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+          break;
+        default:
+          NEVER_REACH;
+      }
+
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // is it a string ?
+    if (pTkn->bIsString()) {
+
+      switch (m_eProjectKind[iProjection]) {
+        case PK_GBY:
+          vPushString(m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
+          break;
+        case PK_AGG:
+          if (bInAgg) {
+            vPushString(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+            vPushString(m_sPayLoadAggAsm, &m_xAggStack, pTkn);
+          }
+          else {
+            vPushString(m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
+          }
+          break;
+        case PK_EXP:
+          vPushString(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+          break;
+        default:
+          NEVER_REACH;
+      }
+
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // is it a tag ?
+    if (pTkn->eToken() == TN_TAG && pTkn->bSame("<>"_Stz)) {
+      StrLib::vSprintCat(m_sPayLoadStoreAsm, "  EO_RETURN_FALSE\n"_Stz);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // should be a name
+    if (!pTkn->bIsName()) {
+      eError = EC_INVALID_COMMAND;
+      goto L_RETURN;
+    }
+
+    // is it a negate op ?
+    if (pTkn->bSame("negate"_Stz) ) {
+
+      switch (m_eProjectKind[iProjection]) {
+        case PK_GBY:
+          vAddArithmetic(m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
+          break;
+        case PK_AGG:
+          if (bInAgg) {
+            vAddArithmetic(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+            vAddArithmetic(m_sPayLoadAggAsm, &m_xAggStack, pTkn);
+          }
+          else {
+            vAddArithmetic(m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
+          }
+          break;
+        case PK_EXP:
+          vAddArithmetic(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+          break;
+        default:
+          NEVER_REACH;
+      }
+
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // it is a null value ?
+    if (pTkn->bSame("null"_Stz) ) {
+
+      switch (m_eProjectKind[iProjection]) {
+        case PK_GBY:
+          vPushUnknown(m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
+          break;
+        case PK_AGG:
+          if (bInAgg) {
+            vPushUnknown(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+            vPushUnknown(m_sPayLoadAggAsm, &m_xAggStack, pTkn);
+          }
+          else {
+            vPushUnknown(m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
+          }
+          break;
+        case PK_EXP:
+          vPushUnknown(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+          break;
+        default:
+          NEVER_REACH;
+      }
+
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // is it a date ?
+    if (pTkn->bSame("DATE"_Stz) ) {
+      pTkn = pTknVec->pNextToken();
+      if (pTkn->bIsString()) {
+
+        switch (m_eProjectKind[iProjection]) {
+          case PK_GBY:
+            vPushDate(m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
+            break;
+          case PK_AGG:
+            if (bInAgg) {
+              vPushDate(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+              vPushDate(m_sPayLoadAggAsm, &m_xAggStack, pTkn);
+            }
+            else {
+              vPushDate(m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
+            }
+            break;
+          case PK_EXP:
+            vPushDate(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+            break;
+          default:
+            NEVER_REACH;
+        }
+
+        pTkn = pTknVec->pNextToken();
+        continue;
+      }
+      else
+        pTkn = pTknVec->pPrevToken();
+    }
+
+    // is it a time ?
+    if (pTkn->bSame("TIME"_Stz) ) {
+      pTkn = pTknVec->pNextToken();
+      if (pTkn->bIsString()) {
+
+        switch (m_eProjectKind[iProjection]) {
+          case PK_GBY:
+            vPushTime(m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
+            break;
+          case PK_AGG:
+            if (bInAgg) {
+              vPushTime(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+              vPushTime(m_sPayLoadAggAsm, &m_xAggStack, pTkn);
+            }
+            else {
+              vPushTime(m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
+            }
+            break;
+          case PK_EXP:
+            vPushTime(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+            break;
+          default:
+            NEVER_REACH;
+        }
+
+        pTkn = pTknVec->pNextToken();
+        continue;
+      }
+      else
+        pTkn = pTknVec->pPrevToken();
+    }
+
+    // is it a timestamp ?
+    if (pTkn->bSame("TIMESTAMP"_Stz) ) {
+      pTkn = pTknVec->pNextToken();
+      if (pTkn->bIsString()) {
+
+        switch (m_eProjectKind[iProjection]) {
+          case PK_GBY:
+            vPushTimestamp(m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
+            break;
+          case PK_AGG:
+            if (bInAgg) {
+              vPushTimestamp(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+              vPushTimestamp(m_sPayLoadAggAsm, &m_xAggStack, pTkn);
+            }
+            else {
+              vPushTimestamp(m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
+            }
+            break;
+          case PK_EXP:
+            vPushTimestamp(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+            break;
+          default:
+            NEVER_REACH;
+        }
+
+        pTkn = pTknVec->pNextToken();
+        continue;
+      }
+      else
+        pTkn = pTknVec->pPrevToken();
+    }
+
+    if (pTkn->bSame(")"_Stz) ) {
+      bInAgg = true;
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("AVG"_Stz) ) {
+      eAggType = AG_AVG;
+      ASSERT(m_bHasAgg);
+
+      vGenerateAggregateCode(eAggType, m_sPayLoadAggAsm, m_sPayLoadStoreAsm, &m_xAggStack);
+      eAggType = AG_NONE;
+      eDM eAggDatum = (eDM)m_xAggStack.iPop();
+      vPayFetchCol(m_sPayLoadToBufferAsm, &m_xTypeStack, eAggDatum);
+      bInAgg = false;
+      bPushedLocal = true;
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("COUNT"_Stz) ) {
+      eAggType = AG_CNT;
+      ASSERT(m_bHasAgg);
+
+      vGenerateAggregateCode(eAggType, m_sPayLoadAggAsm, m_sPayLoadStoreAsm, &m_xAggStack);
+      eAggType = AG_NONE;
+      eDM eAggDatum = (eDM)m_xAggStack.iPop();
+      vPayFetchCol(m_sPayLoadToBufferAsm, &m_xTypeStack, eAggDatum);
+      bInAgg = false;
+      bPushedLocal = false;
+      m_xStoreStack.iPop();
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("COUNTALL"_Stz) ) {
+      eAggType = AG_ALL;
+      ASSERT(m_bHasAgg);
+
+      vGenerateAggregateCode(eAggType, m_sPayLoadAggAsm, m_sPayLoadStoreAsm, &m_xAggStack);
+      eAggType = AG_NONE;
+      eDM eAggDatum = (eDM)m_xAggStack.iPop();
+      vPayFetchCol(m_sPayLoadToBufferAsm, &m_xTypeStack, eAggDatum);
+      bInAgg = false;
+      bPushedLocal = false;
+      //m_xStoreStack.iPop();
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("MIN"_Stz) ) {
+      eAggType = AG_MIN;
+      ASSERT(m_bHasAgg);
+
+      vGenerateAggregateCode(eAggType, m_sPayLoadAggAsm, m_sPayLoadStoreAsm, &m_xAggStack);
+      eAggType = AG_NONE;
+      eDM eAggDatum = (eDM)m_xAggStack.iPop();
+      vPayFetchCol(m_sPayLoadToBufferAsm, &m_xTypeStack, eAggDatum);
+      bInAgg = false;
+      bPushedLocal = true;
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("MAX"_Stz) ) {
+      eAggType = AG_MAX;
+      ASSERT(m_bHasAgg);
+
+      vGenerateAggregateCode(eAggType, m_sPayLoadAggAsm, m_sPayLoadStoreAsm, &m_xAggStack);
+      eAggType = AG_NONE;
+      eDM eAggDatum = (eDM)m_xAggStack.iPop();
+      vPayFetchCol(m_sPayLoadToBufferAsm, &m_xTypeStack, eAggDatum);
+      bInAgg = false;
+      bPushedLocal = true;
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("SUM"_Stz) ) {
+
+      eAggType = AG_SUM;
+      ASSERT(m_bHasAgg);
+
+      vGenerateAggregateCode(eAggType, m_sPayLoadAggAsm, m_sPayLoadStoreAsm, &m_xAggStack);
+      eAggType = AG_NONE;
+      eDM eAggDatum = (eDM)m_xAggStack.iPop();
+      vPayFetchCol(m_sPayLoadToBufferAsm, &m_xTypeStack, eAggDatum);
+      bInAgg = false;
+      bPushedLocal = true;
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // is it a GROUPBY ?
+    if (pTkn->bSame("GROUPBY"_Stz) ) {
+
+      ASSERT(m_bHasGby);
+
+
+      switch (m_eProjectKind[iProjection]) {
+        case PK_AGG:
+          vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
+          vPopDstCol(m_sPayLoadToBufferAsm, &m_xTypeStack);
+          m_nPayLoadBytes += 8;
+          break;
+
+        case PK_EXP: {
+          vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
+          eDM eExprDatum = (eDM) m_xStoreStack.iPeek(m_xStoreStack.nItems() - 1);
+          vPayFetchCol(m_sPayLoadToBufferAsm, &m_xTypeStack, eExprDatum);
+          bPushedLocal = true;
+          vPopDstCol(m_sPayLoadToBufferAsm, &m_xTypeStack);
+          m_nPayLoadBytes += 8;
+        }
+          break;
+
+        case PK_GBY:
+          vCreatePayLoadKey(m_sPayLoadKeyAsm, &m_xKeyStack, i_Local);
+          break;
+
+        default:
+          NEVER_REACH;
+      }
+
+      if (bPushedLocal) {
+        vPayStoreCol(m_sPayLoadStoreAsm, &m_xStoreStack, pColumnExpr->eColumnType());
+        bPushedLocal = false;
+      }
+
+      m_iDstColumn++;
+      iProjection++;
+
+      StrLib::vSprintCat(m_sPayLoadKeyAsm, "  EO_PUSH_DEVIXT_TMP\n"_Stz);
+      StrLib::vSprintCat(m_sPayLoadKeyAsm, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
+      StrLib::vSprintCat(m_sPayLoadKeyAsm, "  EO_ENTWRK_SETENTKND\n"_Stz);
+
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // found a src column
+    if ( ! pTkn->szChars()->bContains("$"_Stz)) {
+      eError = EC_INVALID_COMMAND;
+      goto L_RETURN;
+    }
+
+    bool bRelativeToKey = false;
+
+    Column *pColumn;
+    // is it a column relative to the group by key ?
+    if (pTkn->szChars()->bContains("K"_Stz)) {
+      Stz *sOrdinalColumn = pTkn->szChars() + 2;
+      i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
+      RASSERT(m_eProjectKind[iProjection] == PK_EXP);
+      bRelativeToKey = true;
+    }
+    else {
+      Stz *sOrdinalColumn = pTkn->szChars() + 1;
+      i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
+      i_Local = iOrdinalToLocal(i_ColumnOrdinal);
+      pColumn = pStreamDefIn->pGetColumn(i_ColumnOrdinal);
+    }
+
+
+    switch (m_eProjectKind[iProjection]) {
+      case PK_GBY: {
+        //eDM eKeyDatm = (eDM)m_xKeyStack.iPeek(m_xKeyStack.nItems()-1);
+        //vCreateGbyIdxCol(m_sGbyIdxAsm, eKeyDatm, iProjection);
+        vPushLclCol(m_sPayLoadKeyAsm, &m_xKeyStack, pColumn->eColumnType(), i_Local);
+      }
+        break;
+      case PK_AGG:
+        vPushLclCol(m_sPayLoadAggAsm, &m_xAggStack, pColumn->eColumnType(), i_Local);
+        vPushLclCol(m_sPayLoadStoreAsm, &m_xStoreStack, pColumn->eColumnType(), i_Local);
+        bPushedLocal = true;
+        break;
+      case PK_EXP: {
+        if (bRelativeToKey) {
+          vPushKeyElm(m_sPayLoadStoreAsm, &m_xStoreStack, pColumnExpr->eColumnType(), i_ColumnOrdinal);
+        }
+        else
+          vPushLclCol(m_sPayLoadStoreAsm, &m_xStoreStack, pColumn->eColumnType(), i_Local);
+//        eDM eExprDatum = (eDM) m_xStoreStack.iPeek(m_xStoreStack.nItems()-1);
+//        vPayFetchCol(m_sPayLoadToBufferAsm, &m_xTypeStack, eExprDatum);
+//        bPushedLocal = true;
+      }
+        break;
+      default:
+        NEVER_REACH;
+    }
+
+    pTkn = pTknVec->pNextToken();
+  }
+
+  eKeyDatm = (eDM)m_xKeyStack.iPeek(m_xKeyStack.nItems()-1);
+  vCreateGbyIdxCol(m_sGbyIdxAsm, eKeyDatm, iProjection);
+  vCreatePayLoadKey(m_sPayLoadKeyAsm, &m_xKeyStack, i_Local);
+
+  L_RETURN:
+//  RASSERT(m_xAggStack.nItems() == 0);
+//  RASSERT(m_xTypeStack.nItems() == 0);
+//  RASSERT(m_xStoreStack.nItems() == 0);
+//  RASSERT(m_xKeyStack.nItems() == 0);
+
+  delete pColumnExpr;
+
+  return eError;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1130,6 +1966,344 @@ void ExprEval::vGenerateSum(Stz* sAsmBuffer, Stz* sAggInit, IntStack* pTypeStack
 }
 
 /*----------------------------------------------------------------------------*/
+/* convert ordinal to local                                                   */
+/*----------------------------------------------------------------------------*/
+i8 ExprEval::iOrdinalToLocal(i8 i_ColumnOrdinal) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
+
+  // check how many bits are on till this i_StreamInCol bit
+  i8 iLocal = 0;
+  i8 iBit = -1;
+  for (i8 i = 0; i < i_ColumnOrdinal; i++) {
+    if (BitLib::bEachBit(m_uExprEvalColumns, iBit)) {
+      if (iBit < i_ColumnOrdinal) {
+        iLocal++;
+      } else {
+        break;
+      }
+    }
+  }
+  return iLocal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add EO code for fetching column from payload                               */
+/*----------------------------------------------------------------------------*/
+void ExprEval::vPayFetchCol(Stz* szAsmBuffer, IntStack* pTypeStack, eDM eDatum)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
+
+  switch (eDatum) {
+    case DM_BOL:
+    case DM_BCD:
+    case DM_DTE:
+    case DM_FLT:
+    case DM_INT:
+    case DM_TME:
+    case DM_TSP:
+    case DM_UNK:
+      StrLib::vSprintCat(szAsmBuffer, "  EO_PAY_FETCH_COLI %lld\n"_Stz, m_iDstColumn);
+      break;
+
+    case DM_VCH:
+      StrLib::vSprintCat(szAsmBuffer, "  EO_PAY_FETCH_COLS %lld\n"_Stz, m_iDstColumn);
+      break;
+
+    case DM_IVL:
+    case DM_IVY:
+    default:
+      NEVER_REACH;
+  }
+
+  pTypeStack->vPush(eDatum);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add EO code for store column in payload                                    */
+/*----------------------------------------------------------------------------*/
+void ExprEval::vPayStoreCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
+
+  eDM eDatum = (eDM)pTypeStack->iPop();
+
+  //RASSERT(Column::eDatum(eColumnType) == eDatum);
+
+  // switch on column type
+  switch (eColumnType) {
+    case CT_BOOLEAN:
+    case CT_DECIMAL:
+    case CT_DATE:
+    case CT_FLOAT:
+    case CT_INTEGER:
+    case CT_TIME:
+    case CT_TIMESTAMP:
+    case CT_UNKNOWN:
+      StrLib::vSprintCat(szAsmBuffer, "  EO_PAY_STORE_COLI %lld\n"_Stz, m_iDstColumn);
+      break;
+
+    case CT_CHAR:
+    case CT_VARCHAR:
+      StrLib::vSprintCat(szAsmBuffer, "  EO_PAY_STORE_COLS %lld\n"_Stz, m_iDstColumn);
+      break;
+
+    case CT_INTERVAL_DT:
+    case CT_INTERVAL_YM:
+    default:
+      NEVER_REACH;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* add EO code for pop column                                                 */
+/*----------------------------------------------------------------------------*/
+void ExprEval::vPopDstCol(Stz* szAsmBuffer, IntStack* pTypeStack)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
+
+  eDM eDatum = (eDM)pTypeStack->iPop();
+  
+  // switch on column type
+  switch (eDatum) {
+    case DM_BOL:
+    case DM_BCD:
+    case DM_DTE:
+    case DM_FLT:
+    case DM_INT:
+    case DM_TME:
+    case DM_TSP:
+    case DM_UNK:
+      StrLib::vSprintCat(szAsmBuffer,"  EO_PUSH_DEVROW_DST\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer,"  EO_DEVROW_POPCOLI %lld\n"_Stz, m_iDstColumn);
+      break;
+
+    case DM_VCH:
+      StrLib::vSprintCat(szAsmBuffer,"  EO_PUSH_DEVROW_DST\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer,"  EO_DEVROW_POPCOLS %lld\n"_Stz, m_iDstColumn);
+      break;
+
+    case DM_IVL:
+    case DM_IVY:
+    default:
+      NEVER_REACH;
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* add EO code for dates                                                      */
+/*----------------------------------------------------------------------------*/
+void ExprEval::vPushDate(Stz* szAsmBuffer, IntStack* pTypeStack, Token* pTkn) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
+
+  pTypeStack->vPush(DM_DTE);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_DATE \"%s\"\n"_Stz, pTkn->szChars());
+}
+
+/*----------------------------------------------------------------------------*/
+/* add EO code for decimals                                                   */
+/*----------------------------------------------------------------------------*/
+void ExprEval::vPushDecimal(Stz* szAsmBuffer, IntStack* pTypeStack, Token* pTkn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
+
+  i8 iDecimal;
+
+  char* szToken = (char*)pTkn->szChars();
+
+  bool bResult = StrLib::bExtractDecimal(&szToken, iDecimal, 19, 2);
+  RASSERT(bResult);
+  pTypeStack->vPush(DM_BCD);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_INTEGER %lld\n"_Stz, iDecimal);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add EO code for push destination column                                    */
+/*----------------------------------------------------------------------------*/
+void ExprEval::vPushDstCol(Stz* szAsmBuffer, IntStack* pTypeStack) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
+
+  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
+
+  eDM eDatumType = (eDM)pTypeStack->iPop();
+
+  // switch on column type
+  switch (eDatumType) {
+    case DM_BOL:
+      pTypeStack->vPush((i8) DM_BOL);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
+      break;
+    case DM_INT:
+      pTypeStack->vPush((i8) DM_INT);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
+      break;
+    case DM_BCD:
+      pTypeStack->vPush((i8) DM_BCD);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
+      break;
+    case DM_DTE:
+      pTypeStack->vPush((i8) DM_DTE);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
+      break;
+    case DM_FLT:
+      pTypeStack->vPush((i8) DM_FLT);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
+      break;
+    case DM_TME:
+      pTypeStack->vPush((i8) DM_TME);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
+      break;
+    case DM_TSP:
+      pTypeStack->vPush((i8) DM_TSP);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
+      break;
+
+    case DM_VCH:
+      pTypeStack->vPush((i8) DM_VCH);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLS %lld\n"_Stz, m_iDstColumn);
+      break;
+
+    case DM_UNK:
+      pTypeStack->vPush((i8) DM_UNK);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
+      break;
+
+    default:
+      RASSERT(0);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* add EO code for numerics                                                   */
+/*----------------------------------------------------------------------------*/
+void ExprEval::vPushInteger(Stz* szAsmBuffer, IntStack* pTypeStack, Token* pTkn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
+
+  pTypeStack->vPush((i8)DM_INT);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_INTEGER %lld\n"_Stz, pTkn->iToI8());
+}
+
+/*----------------------------------------------------------------------------*/
+/* add EO code for push group by key element                                  */
+/*----------------------------------------------------------------------------*/
+void ExprEval:: vPushKeyElm(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType, i8 i_KeyElm) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
+
+  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVIXT_TMP\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
+
+  // switch on column type
+  switch (eColumnType) {
+    case CT_BOOLEAN:
+      pTypeStack->vPush((i8) DM_BOL);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_PUSHELMI %lld\n"_Stz, i_KeyElm);
+      break;
+    case CT_INTEGER:
+      pTypeStack->vPush((i8) DM_INT);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_PUSHELMI %lld\n"_Stz, i_KeyElm);
+      break;
+    case CT_DECIMAL:
+      pTypeStack->vPush((i8) DM_BCD);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_PUSHELMI %lld\n"_Stz, i_KeyElm);
+      break;
+    case CT_DATE:
+      pTypeStack->vPush((i8) DM_DTE);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_PUSHELMI %lld\n"_Stz, i_KeyElm);
+      break;
+    case CT_FLOAT:
+      pTypeStack->vPush((i8) DM_FLT);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_PUSHELMI %lld\n"_Stz, i_KeyElm);
+      break;
+    case CT_TIME:
+      pTypeStack->vPush((i8) DM_TME);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_PUSHELMI %lld\n"_Stz, i_KeyElm);
+      break;
+    case CT_TIMESTAMP:
+      pTypeStack->vPush((i8) DM_TSP);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_PUSHELMI %lld\n"_Stz, i_KeyElm);
+      break;
+
+    case CT_CHAR:
+    case CT_VARCHAR:
+      pTypeStack->vPush((i8) DM_VCH);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_PUSHELMS %lld\n"_Stz, i_KeyElm);
+      break;
+
+    case CT_UNKNOWN:
+      pTypeStack->vPush((i8) DM_UNK);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_PUSHELM %lld\n"_Stz, i_KeyElm);
+      break;
+
+    default:
+      RASSERT(0);
+  }
+
+//  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVIXT_TMP\n"_Stz);
+//  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
+//  StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_PRINT\n"_Stz);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* add EO code for push column                                                 */
+/*----------------------------------------------------------------------------*/
+void ExprEval:: vPushLclCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType, i8 i_Local) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
+
+  // switch on column type
+  switch (eColumnType) {
+    case CT_BOOLEAN:
+      pTypeStack->vPush((i8) DM_BOL);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_LOCALI %lld\n"_Stz, i_Local);
+      break;
+    case CT_INTEGER:
+      pTypeStack->vPush((i8) DM_INT);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_LOCALI %lld\n"_Stz, i_Local);
+      break;
+    case CT_DECIMAL:
+      pTypeStack->vPush((i8) DM_BCD);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_LOCALI %lld\n"_Stz, i_Local);
+      break;
+    case CT_DATE:
+      pTypeStack->vPush((i8) DM_DTE);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_LOCALI %lld\n"_Stz, i_Local);
+      break;
+    case CT_FLOAT:
+      pTypeStack->vPush((i8) DM_FLT);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_LOCALI %lld\n"_Stz, i_Local);
+      break;
+    case CT_TIME:
+      pTypeStack->vPush((i8) DM_TME);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_LOCALI %lld\n"_Stz, i_Local);
+      break;
+    case CT_TIMESTAMP:
+      pTypeStack->vPush((i8) DM_TSP);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_LOCALI %lld\n"_Stz, i_Local);
+      break;
+
+    case CT_CHAR:
+    case CT_VARCHAR:
+      pTypeStack->vPush((i8) DM_VCH);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_LOCALS %lld\n"_Stz, i_Local);
+      break;
+
+    case CT_UNKNOWN:
+      pTypeStack->vPush((i8) DM_UNK);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_LOCALI %lld\n"_Stz, i_Local);
+      break;
+
+    default:
+      RASSERT(0);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* add EO code for strings                                                    */
 /*----------------------------------------------------------------------------*/
 void ExprEval:: vPushString(Stz* szAsmBuffer, IntStack* pTypeStack, Token* pTkn) {
@@ -1173,1115 +2347,6 @@ void ExprEval:: vPushUnknown(Stz* szAsmBuffer, IntStack* pTypeStack, Token* pTkn
 
   pTypeStack->vPush((i8)DM_UNK);
   StrLib::vSprintCat(szAsmBuffer, "  EO_PUSHNULL\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect source ordinal columns needed for projection                       */
-/*----------------------------------------------------------------------------*/
-eEC ExprEval::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
-
-  eEC eError = EC_NONE;
-  Token* pTkn;
-  bool bHasAgg = false;
-
-  for (i8 i_Tkn = 0; i_Tkn < pTknVec->nItems(); i_Tkn++) {
-
-    pTkn = pTknVec->pGet(i_Tkn);
-
-    if ( pTkn->bIsName() &&
-         (pTkn->bSame("AVG"_Stz)   ||
-          pTkn->bSame("COUNT"_Stz) ||
-          pTkn->bSame("COUNTALL"_Stz) ||
-          pTkn->bSame("MIN"_Stz)   ||
-          pTkn->bSame("MAX"_Stz)   ||
-          pTkn->bSame("SUM"_Stz))
-        ) {
-      bHasAgg = true;
-      m_bHasAgg = true;
-      continue;
-    }
-
-    if (pTkn->bIsName() && pTkn->bSame(","_Stz)) {
-      if (m_bHasGby) {
-        m_eProjectKind[m_iProjections++] = PK_GBY;
-      }
-      else {
-        m_eProjectKind[m_iProjections++] = bHasAgg ? PK_AGG : PK_EXP;
-      }
-      bHasAgg = false;
-    }
-
-    if (pTkn->bIsName() && pTkn->bSame("GROUPBY"_Stz)) {
-      m_eProjectKind[m_iProjections++] = bHasAgg ? PK_AGG : PK_EXP;
-      m_bHasGby = true;
-      continue;
-    }
-
-    if (pTkn->bIsName() && pTkn->szChars()->bContains("$"_Stz)) {
-
-      // is it a column relative to the key ?
-      if (pTkn->szChars()->bContains("K"_Stz))
-        continue;
-
-      Stz* sOrdinalColumn = pTkn->szChars() + 1;
-
-      i8 i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
-
-      // look for the column in the streamDefIn
-      i8 nColumns = pStreamDefIn->nColumns();
-      if (i_ColumnOrdinal > nColumns) {
-        eError = EC_INVALID_COMMAND;
-        break;
-      }
-
-      // already selected column ?
-      if (!BitLib::bIsOn(m_uExprEvalColumns, i_ColumnOrdinal)) {
-
-        // set bit on for the column in m_uExprEvalColumns
-        BitLib::vSetOn(m_uExprEvalColumns, i_ColumnOrdinal);
-        m_iStreamInColumns++;
-      }
-    }
-
-  }
-
-  if (m_bHasGby) {
-    m_eProjectKind[m_iProjections++] = PK_GBY;
-  }
-  else {
-    m_eProjectKind[m_iProjections++] = bHasAgg ? PK_AGG : PK_EXP;
-  }
-
-  return eError;
-}
-
-/*----------------------------------------------------------------------------*/
-/* parse project                                                              */
-/*----------------------------------------------------------------------------*/
-eEC ExprEval::eExprEvalProject(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
-  UNUSED(pStreamDefIn);
-
-  eCT eExprType = CT_NONE;
-  eAG eAggType  = AG_NONE;
-  eEC eError    = EC_NONE;
-
-  s32 sColumnNm;
-  i8 iProjection = 0;
-  bool bInAgg = false;
-
-  // create a new columnExpr
-  Column *pColumnExpr =  new Column;
-
-  // we should have a  pStreamDefOut
-  //RASSERT(pStreamDefOut);
-
-  Stz* szAsmBuffer = m_sProjectAsm;
-
-  // get the current token
-  Token* pTkn = pTknVec->pCurrToken();
-
-  // start with col1 as the first column
-  m_iDstColumn++;
-  sColumnNm.vSprint("col%lld"_Stz, m_iDstColumn);
-  pColumnExpr->vColumnNm(sColumnNm);
-
-  //StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
-  //StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
-
-  if ( ! pStreamDefOut ) {
-    if (m_bHasAgg)
-    return EC_INVALID_COMMAND;
-  }
-
-  while ( pTkn ) {
-
-    //vTrace("TKN: %s\n"_Stz, pTkn->azChars());
-
-    if (pTkn->bSame(","_Stz)) {
-
-      // discovered a comma, generate code for the column
-      vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
-      vPopDstCol(szAsmBuffer, &m_xTypeStack);
-
-      szAsmBuffer = m_sProjectAsm;
-
-      m_iDstColumn++;
-      iProjection++;
-      sColumnNm.vSprint("col%lld"_Stz, m_iDstColumn);
-      pColumnExpr->vColumnNm(sColumnNm);
-
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // type ?
-    if (pTkn->bSame("type"_Stz)) {
-      pTkn = pTknVec->pNextToken();
-      if (!pTkn->bIsName()) {
-        eError = EC_INVALID_COMMAND;
-        goto L_RETURN;
-      }
-
-      // extract expr type
-      eExprType = StreamDef::eColumn(pTkn->szChars());
-      pColumnExpr->vColumnType(eExprType);
-
-      // HACK!!!
-      if (eExprType == CT_DECIMAL) {
-        pColumnExpr->vColumnScale(2);
-        pColumnExpr->vColumnLength(19);
-      }
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // alias ?
-    if (pTkn->bSame("as"_Stz)) {
-      pTkn = pTknVec->pNextToken();
-      if (!pTkn->bIsName()) {
-        eError = EC_INVALID_COMMAND;
-        goto L_RETURN;
-      }
-
-      // extract column name
-      pColumnExpr->vColumnNm(pTkn->szChars());
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // arithmetic operator ?
-    if (pTkn->bIsArithmetic()) {
-      if (bInAgg)
-        vAddArithmetic(m_sAggAsm, &m_xAggStack, pTkn);
-      else
-        vAddArithmetic(m_sProjectAsm, &m_xTypeStack, pTkn);
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // logical operator ?
-    if (pTkn->bIsLogical() || pTkn->bSame("isNull"_Stz)) {
-      if (bInAgg)
-        vAddLogical(m_sAggAsm, &m_xAggStack, pTkn);
-      else
-        vAddLogical(m_sProjectAsm, &m_xTypeStack, pTkn);
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // relational operator ?
-    if (pTkn->bIsRelational()) {
-      if (bInAgg)
-        vAddRelational(m_sAggAsm, &m_xAggStack, pTkn);
-      else
-        vAddRelational(m_sProjectAsm, &m_xTypeStack, pTkn);
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // is it a numeric ?
-    if (pTkn->bIsNumeric()) {
-      if (bInAgg)
-        vPushInteger(m_sAggAsm, &m_xAggStack, pTkn);
-      else
-        vPushInteger(m_sProjectAsm, &m_xTypeStack, pTkn);
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // is it a decimal no ?
-    if (pTkn->bIsDecimalNo()) {
-      if (bInAgg)
-        vPushDecimal(m_sAggAsm, &m_xAggStack, pTkn);
-      else
-        vPushDecimal(m_sProjectAsm, &m_xTypeStack, pTkn);
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // is it a string ?
-    if (pTkn->bIsString()) {
-      if (bInAgg)
-        vPushString(m_sAggAsm, &m_xAggStack, pTkn);
-      else
-        vPushString(m_sProjectAsm, &m_xTypeStack, pTkn);
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // is it a tag ?
-    if (pTkn->eToken() == TN_TAG && pTkn->bSame("<>"_Stz)) {
-      StrLib::vSprintCat(szAsmBuffer, "  EO_RETURN_FALSE\n"_Stz);
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // should be a name
-    if (!pTkn->bIsName()) {
-      eError = EC_INVALID_COMMAND;
-      goto L_RETURN;
-    }
-
-    // is it a negate op ?
-    if (pTkn->bSame("negate"_Stz) ) {
-      if (bInAgg)
-        vAddArithmetic(m_sAggAsm, &m_xAggStack, pTkn);
-      else
-        vAddArithmetic(m_sProjectAsm, &m_xTypeStack, pTkn);
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // it is a null value ?
-    if (pTkn->bSame("null"_Stz) ) {
-      if (bInAgg)
-        vPushUnknown(m_sAggAsm, &m_xAggStack, pTkn);
-      else
-        vPushUnknown(m_sProjectAsm, &m_xTypeStack, pTkn);
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // is it a date ?
-    if (pTkn->bSame("DATE"_Stz) ) {
-      pTkn = pTknVec->pNextToken();
-      if (pTkn->bIsString()) {
-        if (bInAgg)
-          vPushDate(m_sAggAsm, &m_xAggStack, pTkn);
-        else
-          vPushDate(m_sProjectAsm, &m_xTypeStack, pTkn);
-        pTkn = pTknVec->pNextToken();
-        continue;
-      }
-      else
-        pTkn = pTknVec->pPrevToken();
-    }
-
-    // is it a time ?
-    if (pTkn->bSame("TIME"_Stz) ) {
-      pTkn = pTknVec->pNextToken();
-      if (pTkn->bIsString()) {
-        if (bInAgg)
-          vPushTime(m_sAggAsm, &m_xAggStack, pTkn);
-        else
-          vPushTime(m_sProjectAsm, &m_xTypeStack, pTkn);
-        pTkn = pTknVec->pNextToken();
-        continue;
-      }
-      else
-        pTkn = pTknVec->pPrevToken();
-    }
-
-    // is it a timestamp ?
-    if (pTkn->bSame("TIMESTAMP"_Stz) ) {
-      pTkn = pTknVec->pNextToken();
-      if (pTkn->bIsString()) {
-        if (bInAgg)
-          vPushTimestamp(m_sAggAsm, &m_xAggStack, pTkn);
-        else
-          vPushTimestamp(m_sProjectAsm, &m_xTypeStack, pTkn);
-        pTkn = pTknVec->pNextToken();
-        continue;
-      }
-      else
-        pTkn = pTknVec->pPrevToken();
-    }
-
-    if (pTkn->bSame(")"_Stz) ) {
-      bInAgg = true;
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    if (pTkn->bSame("AVG"_Stz) ) {
-
-      eAggType = AG_AVG;
-      bInAgg = false;
-
-      vGenerateAggregateCode(eAggType, m_sAggAsm, m_sAggInitAsm, &m_xAggStack);
-      eAggType = AG_NONE;
-
-      eDM eAggDatum = (eDM)m_xAggStack.iPop();
-      m_xTypeStack.vPush(eAggDatum);
-
-      vPushDstCol(m_sProjectAsm, &m_xTypeStack);
-
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    if (pTkn->bSame("COUNT"_Stz) ) {
-
-      eAggType = AG_CNT;
-      bInAgg = false;
-
-      vGenerateAggregateCode(eAggType, m_sAggAsm, m_sAggInitAsm, &m_xAggStack);
-      eAggType = AG_NONE;
-
-      eDM eAggDatum = (eDM)m_xAggStack.iPop();
-      m_xTypeStack.vPush(eAggDatum);
-
-      vPushDstCol(m_sProjectAsm, &m_xTypeStack);
-
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    if (pTkn->bSame("COUNTALL"_Stz) ) {
-
-      eAggType = AG_ALL;
-      bInAgg = false;
-
-      vGenerateAggregateCode(eAggType, m_sAggAsm, m_sAggInitAsm, &m_xAggStack);
-      eAggType = AG_NONE;
-
-      eDM eAggDatum = (eDM)m_xAggStack.iPop();
-      m_xTypeStack.vPush(eAggDatum);
-
-      vPushDstCol(m_sProjectAsm, &m_xTypeStack);
-
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    if (pTkn->bSame("MIN"_Stz) ) {
-
-      eAggType = AG_MIN;
-      bInAgg = false;
-
-      vGenerateAggregateCode(eAggType, m_sAggAsm, m_sAggInitAsm, &m_xAggStack);
-      eAggType = AG_NONE;
-
-      eDM eAggDatum = (eDM)m_xAggStack.iPop();
-      m_xTypeStack.vPush(eAggDatum);
-
-      vPushDstCol(m_sProjectAsm, &m_xTypeStack);
-
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    if (pTkn->bSame("MAX"_Stz) ) {
-
-      eAggType = AG_MAX;
-      bInAgg = false;
-
-      vGenerateAggregateCode(eAggType, m_sAggAsm, m_sAggInitAsm, &m_xAggStack);
-      eAggType = AG_NONE;
-
-      eDM eAggDatum = (eDM)m_xAggStack.iPop();
-      m_xTypeStack.vPush(eAggDatum);
-
-      vPushDstCol(m_sProjectAsm, &m_xTypeStack);
-
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    if (pTkn->bSame("SUM"_Stz) ) {
-
-      eAggType = AG_SUM;
-      bInAgg = false;
-
-      vGenerateAggregateCode(eAggType, m_sAggAsm, m_sAggInitAsm, &m_xAggStack);
-      eAggType = AG_NONE;
-
-      eDM eAggDatum = (eDM)m_xAggStack.iPop();
-      m_xTypeStack.vPush(eAggDatum);
-
-      vPushDstCol(m_sProjectAsm, &m_xTypeStack);
-
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // found a src column
-    if ( ! pTkn->szChars()->bContains("$"_Stz)) {
-      eError = EC_INVALID_COMMAND;
-      goto L_RETURN;
-    }
-
-    Stz *sOrdinalColumn = pTkn->szChars() + 1;
-    i8 i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
-    i8 i_Local = iOrdinalToLocal(i_ColumnOrdinal);
-    Column* pColumn = pStreamDefIn->pGetColumn(i_ColumnOrdinal);
-
-    if (m_eProjectKind[iProjection] == PK_EXP)
-      vPushLclCol(m_sProjectAsm, &m_xTypeStack, pColumn->eColumnType(), i_Local);
-    else
-      vPushLclCol(m_sAggAsm, &m_xAggStack, pColumn->eColumnType(), i_Local);
-
-    pTkn = pTknVec->pNextToken();
-  }
-
-  // add the last column to the streamDefOut (if filter we don't have a streamDefOut)
-  if (pStreamDefOut) {
-    vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
-    vPopDstCol(m_sProjectAsm, &m_xTypeStack);
-  }
-
-  L_RETURN:
-//  RASSERT(m_xTypeStack.nItems() == 0);
-//  RASSERT(m_xAggStack.nItems() == 0);
-  delete pColumnExpr;
-  return eError;
-}
-
-/*----------------------------------------------------------------------------*/
-/* parse project                                                              */
-/*----------------------------------------------------------------------------*/
-eEC ExprEval::eExprEvalAggGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
-  UNUSED(pStreamDefIn);
-
-  eCT eExprType = CT_NONE;
-  eAG eAggType  = AG_NONE;
-  eEC eError    = EC_NONE;
-
-  s32 sColumnNm;
-  i8 i_ColumnOrdinal = C_UNKNOWN;
-  i8 i_Local = C_UNKNOWN;
-  i8 iProjection = 0;
-
-  // create a new columnExpr
-  Column *pColumnExpr =  new Column;
-
-  // should have pStreamDefOut
-  RASSERT(pStreamDefOut);
-
-  // get the current token
-  Token* pTkn = pTknVec->pCurrToken();
-
-  // start with col1 as the first column
-  m_iDstColumn++;
-  sColumnNm.vSprint("col%lld"_Stz, m_iDstColumn);
-  pColumnExpr->vColumnNm(sColumnNm);
-
-  bool bPushedLocal = false;
-  bool bInAgg = false;
-  eDM eKeyDatm;
-
-  while ( pTkn ) {
-
-    //vTrace("TKN: %s\n"_Stz, pTkn->azChars());
-
-    if (pTkn->bSame(","_Stz)) {
-
-      switch (m_eProjectKind[iProjection]) {
-        case PK_AGG:
-          vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
-          vPopDstCol(m_sPayLoadToBufferAsm, &m_xTypeStack);
-          m_nPayLoadBytes += 8;
-          break;
-
-        case PK_EXP: {
-          vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
-          eDM eExprDatum = (eDM) m_xStoreStack.iPeek(m_xStoreStack.nItems() - 1);
-          vPayFetchCol(m_sPayLoadToBufferAsm, &m_xTypeStack, eExprDatum);
-          bPushedLocal = true;
-          vPopDstCol(m_sPayLoadToBufferAsm, &m_xTypeStack);
-          m_nPayLoadBytes += 8;
-        }
-          break;
-
-        case PK_GBY: {
-          eDM eKeyDatm = (eDM) m_xKeyStack.iPeek(m_xKeyStack.nItems() - 1);
-          vCreateGbyIdxCol(m_sGbyIdxAsm, eKeyDatm, iProjection);
-          vCreatePayLoadKey(m_sPayLoadKeyAsm, &m_xKeyStack, i_Local);
-        }
-          break;
-
-        default:
-          NEVER_REACH;
-      }
-
-      if (bPushedLocal) {
-        vPayStoreCol(m_sPayLoadStoreAsm, &m_xStoreStack, pColumnExpr->eColumnType());
-        bPushedLocal = false;
-      }
-
-      eAggType = AG_NONE;
-
-      m_iDstColumn++;
-      iProjection++;
-      sColumnNm.vSprint("col%lld"_Stz, m_iDstColumn);
-      pColumnExpr->vColumnNm(sColumnNm);
-
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // type ?
-    if (pTkn->bSame("type"_Stz)) {
-      pTkn = pTknVec->pNextToken();
-      if (!pTkn->bIsName()) {
-        eError = EC_INVALID_COMMAND;
-        goto L_RETURN;
-      }
-
-      // extract expr type
-      eExprType = StreamDef::eColumn(pTkn->szChars());
-      pColumnExpr->vColumnType(eExprType);
-
-      // HACK!!!
-      if (eExprType == CT_DECIMAL) {
-        pColumnExpr->vColumnScale(2);
-        pColumnExpr->vColumnLength(19);
-      }
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // alias ?
-    if (pTkn->bSame("as"_Stz)) {
-      pTkn = pTknVec->pNextToken();
-      if (!pTkn->bIsName()) {
-        eError = EC_INVALID_COMMAND;
-        goto L_RETURN;
-      }
-
-      // extract column name
-      pColumnExpr->vColumnNm(pTkn->szChars());
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // arithmetic operator ?
-    if (pTkn->bIsArithmetic()) {
-
-      switch (m_eProjectKind[iProjection]) {
-        case PK_GBY:
-          vAddArithmetic(m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
-          break;
-        case PK_AGG:
-          if (bInAgg) {
-            vAddArithmetic(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
-            vAddArithmetic(m_sPayLoadAggAsm, &m_xAggStack, pTkn);
-          }
-          else {
-            vAddArithmetic(m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
-          }
-          break;
-        case PK_EXP:
-          vAddArithmetic(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
-          break;
-        default:
-            NEVER_REACH;
-        }
-
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // logical operator ?
-    if (pTkn->bIsLogical() || pTkn->bSame("isNull"_Stz)) {
-
-      switch (m_eProjectKind[iProjection]) {
-        case PK_GBY:
-          vAddLogical(m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
-          break;
-        case PK_AGG:
-          if (bInAgg) {
-            vAddLogical(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
-            vAddLogical(m_sPayLoadAggAsm, &m_xAggStack, pTkn);
-          }
-          else {
-            vAddLogical(m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
-          }
-          break;
-        case PK_EXP:
-          vAddLogical(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
-          break;
-        default:
-          NEVER_REACH;
-      }
-
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // relational operator ?
-    if (pTkn->bIsRelational()) {
-
-      switch (m_eProjectKind[iProjection]) {
-        case PK_GBY:
-          vAddRelational(m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
-          break;
-        case PK_AGG:
-          if (bInAgg) {
-            vAddRelational(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
-            vAddRelational(m_sPayLoadAggAsm, &m_xAggStack, pTkn);
-          }
-          else {
-            vAddRelational(m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
-          }
-          break;
-        case PK_EXP:
-          vAddArithmetic(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
-          break;
-        default:
-          NEVER_REACH;
-      }
-
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // is it a numeric ?
-    if (pTkn->bIsNumeric()) {
-
-      switch (m_eProjectKind[iProjection]) {
-        case PK_GBY:
-          vPushInteger(m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
-          break;
-        case PK_AGG:
-          if (bInAgg) {
-            vPushInteger(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
-            vPushInteger(m_sPayLoadAggAsm, &m_xAggStack, pTkn);
-          }
-          else {
-            vPushInteger(m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
-          }
-          break;
-        case PK_EXP:
-          vPushInteger(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
-          break;
-        default:
-          NEVER_REACH;
-      }
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // is it a decimal no ?
-    if (pTkn->bIsDecimalNo()) {
-
-      switch (m_eProjectKind[iProjection]) {
-        case PK_GBY:
-          vPushDecimal(m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
-          break;
-        case PK_AGG:
-          if (bInAgg) {
-            vPushDecimal(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
-            vPushDecimal(m_sPayLoadAggAsm, &m_xAggStack, pTkn);
-          }
-          else {
-            vPushDecimal(m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
-          }
-          break;
-        case PK_EXP:
-          vPushDecimal(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
-          break;
-        default:
-          NEVER_REACH;
-      }
-
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // is it a string ?
-    if (pTkn->bIsString()) {
-
-      switch (m_eProjectKind[iProjection]) {
-        case PK_GBY:
-          vPushString(m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
-          break;
-        case PK_AGG:
-          if (bInAgg) {
-            vPushString(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
-            vPushString(m_sPayLoadAggAsm, &m_xAggStack, pTkn);
-          }
-          else {
-            vPushString(m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
-          }
-          break;
-        case PK_EXP:
-          vPushString(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
-          break;
-        default:
-          NEVER_REACH;
-      }
-
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // is it a tag ?
-    if (pTkn->eToken() == TN_TAG && pTkn->bSame("<>"_Stz)) {
-      StrLib::vSprintCat(m_sPayLoadStoreAsm, "  EO_RETURN_FALSE\n"_Stz);
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // should be a name
-    if (!pTkn->bIsName()) {
-      eError = EC_INVALID_COMMAND;
-      goto L_RETURN;
-    }
-
-    // is it a negate op ?
-    if (pTkn->bSame("negate"_Stz) ) {
-
-      switch (m_eProjectKind[iProjection]) {
-        case PK_GBY:
-          vAddArithmetic(m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
-          break;
-        case PK_AGG:
-          if (bInAgg) {
-            vAddArithmetic(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
-            vAddArithmetic(m_sPayLoadAggAsm, &m_xAggStack, pTkn);
-          }
-          else {
-            vAddArithmetic(m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
-          }
-          break;
-        case PK_EXP:
-          vAddArithmetic(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
-          break;
-        default:
-          NEVER_REACH;
-      }
-
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // it is a null value ?
-    if (pTkn->bSame("null"_Stz) ) {
-
-      switch (m_eProjectKind[iProjection]) {
-        case PK_GBY:
-          vPushUnknown(m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
-          break;
-        case PK_AGG:
-          if (bInAgg) {
-            vPushUnknown(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
-            vPushUnknown(m_sPayLoadAggAsm, &m_xAggStack, pTkn);
-          }
-          else {
-            vPushUnknown(m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
-          }
-          break;
-        case PK_EXP:
-          vPushUnknown(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
-          break;
-        default:
-          NEVER_REACH;
-      }
-
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // is it a date ?
-    if (pTkn->bSame("DATE"_Stz) ) {
-      pTkn = pTknVec->pNextToken();
-      if (pTkn->bIsString()) {
-
-        switch (m_eProjectKind[iProjection]) {
-          case PK_GBY:
-            vPushDate(m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
-            break;
-          case PK_AGG:
-            if (bInAgg) {
-              vPushDate(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
-              vPushDate(m_sPayLoadAggAsm, &m_xAggStack, pTkn);
-            }
-            else {
-              vPushDate(m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
-            }
-            break;
-          case PK_EXP:
-            vPushDate(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
-            break;
-          default:
-            NEVER_REACH;
-        }
-
-        pTkn = pTknVec->pNextToken();
-        continue;
-      }
-      else
-        pTkn = pTknVec->pPrevToken();
-    }
-
-    // is it a time ?
-    if (pTkn->bSame("TIME"_Stz) ) {
-      pTkn = pTknVec->pNextToken();
-      if (pTkn->bIsString()) {
-
-        switch (m_eProjectKind[iProjection]) {
-          case PK_GBY:
-            vPushTime(m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
-            break;
-          case PK_AGG:
-            if (bInAgg) {
-              vPushTime(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
-              vPushTime(m_sPayLoadAggAsm, &m_xAggStack, pTkn);
-            }
-            else {
-              vPushTime(m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
-            }
-            break;
-          case PK_EXP:
-            vPushTime(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
-            break;
-          default:
-            NEVER_REACH;
-        }
-
-        pTkn = pTknVec->pNextToken();
-        continue;
-      }
-      else
-        pTkn = pTknVec->pPrevToken();
-    }
-
-    // is it a timestamp ?
-    if (pTkn->bSame("TIMESTAMP"_Stz) ) {
-      pTkn = pTknVec->pNextToken();
-      if (pTkn->bIsString()) {
-
-        switch (m_eProjectKind[iProjection]) {
-          case PK_GBY:
-            vPushTimestamp(m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
-            break;
-          case PK_AGG:
-            if (bInAgg) {
-              vPushTimestamp(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
-              vPushTimestamp(m_sPayLoadAggAsm, &m_xAggStack, pTkn);
-            }
-            else {
-              vPushTimestamp(m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
-            }
-            break;
-          case PK_EXP:
-            vPushTimestamp(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
-            break;
-          default:
-            NEVER_REACH;
-        }
-
-        pTkn = pTknVec->pNextToken();
-        continue;
-      }
-      else
-        pTkn = pTknVec->pPrevToken();
-    }
-
-    if (pTkn->bSame(")"_Stz) ) {
-      bInAgg = true;
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    if (pTkn->bSame("AVG"_Stz) ) {
-      eAggType = AG_AVG;
-      ASSERT(m_bHasAgg);
-
-      vGenerateAggregateCode(eAggType, m_sPayLoadAggAsm, m_sPayLoadStoreAsm, &m_xAggStack);
-      eAggType = AG_NONE;
-      eDM eAggDatum = (eDM)m_xAggStack.iPop();
-      vPayFetchCol(m_sPayLoadToBufferAsm, &m_xTypeStack, eAggDatum);
-      bInAgg = false;
-      bPushedLocal = true;
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    if (pTkn->bSame("COUNT"_Stz) ) {
-      eAggType = AG_CNT;
-      ASSERT(m_bHasAgg);
-
-      vGenerateAggregateCode(eAggType, m_sPayLoadAggAsm, m_sPayLoadStoreAsm, &m_xAggStack);
-      eAggType = AG_NONE;
-      eDM eAggDatum = (eDM)m_xAggStack.iPop();
-      vPayFetchCol(m_sPayLoadToBufferAsm, &m_xTypeStack, eAggDatum);
-      bInAgg = false;
-      bPushedLocal = false;
-      m_xStoreStack.iPop();
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    if (pTkn->bSame("COUNTALL"_Stz) ) {
-      eAggType = AG_ALL;
-      ASSERT(m_bHasAgg);
-
-      vGenerateAggregateCode(eAggType, m_sPayLoadAggAsm, m_sPayLoadStoreAsm, &m_xAggStack);
-      eAggType = AG_NONE;
-      eDM eAggDatum = (eDM)m_xAggStack.iPop();
-      vPayFetchCol(m_sPayLoadToBufferAsm, &m_xTypeStack, eAggDatum);
-      bInAgg = false;
-      bPushedLocal = false;
-      //m_xStoreStack.iPop();
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    if (pTkn->bSame("MIN"_Stz) ) {
-      eAggType = AG_MIN;
-      ASSERT(m_bHasAgg);
-
-      vGenerateAggregateCode(eAggType, m_sPayLoadAggAsm, m_sPayLoadStoreAsm, &m_xAggStack);
-      eAggType = AG_NONE;
-      eDM eAggDatum = (eDM)m_xAggStack.iPop();
-      vPayFetchCol(m_sPayLoadToBufferAsm, &m_xTypeStack, eAggDatum);
-      bInAgg = false;
-      bPushedLocal = true;
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    if (pTkn->bSame("MAX"_Stz) ) {
-      eAggType = AG_MAX;
-      ASSERT(m_bHasAgg);
-
-      vGenerateAggregateCode(eAggType, m_sPayLoadAggAsm, m_sPayLoadStoreAsm, &m_xAggStack);
-      eAggType = AG_NONE;
-      eDM eAggDatum = (eDM)m_xAggStack.iPop();
-      vPayFetchCol(m_sPayLoadToBufferAsm, &m_xTypeStack, eAggDatum);
-      bInAgg = false;
-      bPushedLocal = true;
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    if (pTkn->bSame("SUM"_Stz) ) {
-
-      eAggType = AG_SUM;
-      ASSERT(m_bHasAgg);
-
-      vGenerateAggregateCode(eAggType, m_sPayLoadAggAsm, m_sPayLoadStoreAsm, &m_xAggStack);
-      eAggType = AG_NONE;
-      eDM eAggDatum = (eDM)m_xAggStack.iPop();
-      vPayFetchCol(m_sPayLoadToBufferAsm, &m_xTypeStack, eAggDatum);
-      bInAgg = false;
-      bPushedLocal = true;
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // is it a GROUPBY ?
-    if (pTkn->bSame("GROUPBY"_Stz) ) {
-
-      ASSERT(m_bHasGby);
-
-
-      switch (m_eProjectKind[iProjection]) {
-        case PK_AGG:
-          vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
-          vPopDstCol(m_sPayLoadToBufferAsm, &m_xTypeStack);
-          m_nPayLoadBytes += 8;
-          break;
-
-        case PK_EXP: {
-          vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
-          eDM eExprDatum = (eDM) m_xStoreStack.iPeek(m_xStoreStack.nItems() - 1);
-          vPayFetchCol(m_sPayLoadToBufferAsm, &m_xTypeStack, eExprDatum);
-          bPushedLocal = true;
-          vPopDstCol(m_sPayLoadToBufferAsm, &m_xTypeStack);
-          m_nPayLoadBytes += 8;
-        }
-          break;
-
-        case PK_GBY:
-          vCreatePayLoadKey(m_sPayLoadKeyAsm, &m_xKeyStack, i_Local);
-          break;
-
-        default:
-          NEVER_REACH;
-      }
-
-      if (bPushedLocal) {
-        vPayStoreCol(m_sPayLoadStoreAsm, &m_xStoreStack, pColumnExpr->eColumnType());
-        bPushedLocal = false;
-      }
-
-      m_iDstColumn++;
-      iProjection++;
-
-      StrLib::vSprintCat(m_sPayLoadKeyAsm, "  EO_PUSH_DEVIXT_TMP\n"_Stz);
-      StrLib::vSprintCat(m_sPayLoadKeyAsm, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
-      StrLib::vSprintCat(m_sPayLoadKeyAsm, "  EO_ENTWRK_SETENTKND\n"_Stz);
-
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // found a src column
-    if ( ! pTkn->szChars()->bContains("$"_Stz)) {
-      eError = EC_INVALID_COMMAND;
-      goto L_RETURN;
-    }
-
-    bool bRelativeToKey = false;
-
-    Column *pColumn;
-    // is it a column relative to the group by key ?
-    if (pTkn->szChars()->bContains("K"_Stz)) {
-      Stz *sOrdinalColumn = pTkn->szChars() + 2;
-      i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
-      RASSERT(m_eProjectKind[iProjection] == PK_EXP);
-      bRelativeToKey = true;
-    }
-    else {
-      Stz *sOrdinalColumn = pTkn->szChars() + 1;
-      i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
-      i_Local = iOrdinalToLocal(i_ColumnOrdinal);
-      pColumn = pStreamDefIn->pGetColumn(i_ColumnOrdinal);
-    }
-
-
-    switch (m_eProjectKind[iProjection]) {
-      case PK_GBY: {
-        //eDM eKeyDatm = (eDM)m_xKeyStack.iPeek(m_xKeyStack.nItems()-1);
-        //vCreateGbyIdxCol(m_sGbyIdxAsm, eKeyDatm, iProjection);
-        vPushLclCol(m_sPayLoadKeyAsm, &m_xKeyStack, pColumn->eColumnType(), i_Local);
-        }
-        break;
-      case PK_AGG:
-        vPushLclCol(m_sPayLoadAggAsm, &m_xAggStack, pColumn->eColumnType(), i_Local);
-        vPushLclCol(m_sPayLoadStoreAsm, &m_xStoreStack, pColumn->eColumnType(), i_Local);
-        bPushedLocal = true;
-        break;
-      case PK_EXP: {
-        if (bRelativeToKey) {
-          vPushKeyElm(m_sPayLoadStoreAsm, &m_xStoreStack, pColumnExpr->eColumnType(), i_ColumnOrdinal);
-        }
-        else
-          vPushLclCol(m_sPayLoadStoreAsm, &m_xStoreStack, pColumn->eColumnType(), i_Local);
-//        eDM eExprDatum = (eDM) m_xStoreStack.iPeek(m_xStoreStack.nItems()-1);
-//        vPayFetchCol(m_sPayLoadToBufferAsm, &m_xTypeStack, eExprDatum);
-//        bPushedLocal = true;
-      }
-        break;
-      default:
-        NEVER_REACH;
-    }
-
-    pTkn = pTknVec->pNextToken();
-  }
-
-  eKeyDatm = (eDM)m_xKeyStack.iPeek(m_xKeyStack.nItems()-1);
-  vCreateGbyIdxCol(m_sGbyIdxAsm, eKeyDatm, iProjection);
-  vCreatePayLoadKey(m_sPayLoadKeyAsm, &m_xKeyStack, i_Local);
-
-  L_RETURN:
-//  RASSERT(m_xAggStack.nItems() == 0);
-//  RASSERT(m_xTypeStack.nItems() == 0);
-//  RASSERT(m_xStoreStack.nItems() == 0);
-//  RASSERT(m_xKeyStack.nItems() == 0);
-
-  delete pColumnExpr;
-
-  return eError;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2329,75 +2394,6 @@ void ExprEval::vGenerateAggregateCode(eAG eAggType, Stz* szAsmBuffer, Stz* szAsm
       RASSERT(0);
       break;
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* add column to streamDefOut                                                 */
-/*----------------------------------------------------------------------------*/
-void ExprEval::vAppendColumnToStreamDef(StreamDef* pStreamDefOut, Column* pColumn) {
-
-  pStreamDefOut->vAddColumn(pColumn->szColNm(),
-                            pColumn->eColumnType(),
-                            pColumn->iColumnLength(),
-                            pColumn->iColumnScale());
-}
-
-/*----------------------------------------------------------------------------*/
-/* add EO code for store column in payload                                    */
-/*----------------------------------------------------------------------------*/
-void ExprEval::vPayStoreCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
-
-  eDM eDatum = (eDM)pTypeStack->iPop();
-
-  //RASSERT(Column::eDatum(eColumnType) == eDatum);
-
-  // switch on column type
-  switch (eColumnType) {
-    case CT_BOOLEAN:
-    case CT_DECIMAL:
-    case CT_DATE:
-    case CT_FLOAT:
-    case CT_INTEGER:
-    case CT_TIME:
-    case CT_TIMESTAMP:
-    case CT_UNKNOWN:
-      StrLib::vSprintCat(szAsmBuffer, "  EO_PAY_STORE_COLI %lld\n"_Stz, m_iDstColumn);
-      break;
-
-    case CT_CHAR:
-    case CT_VARCHAR:
-      StrLib::vSprintCat(szAsmBuffer, "  EO_PAY_STORE_COLS %lld\n"_Stz, m_iDstColumn);
-      break;
-
-    case CT_INTERVAL_DT:
-    case CT_INTERVAL_YM:
-    default:
-      NEVER_REACH;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert ordinal to local                                                   */
-/*----------------------------------------------------------------------------*/
-i8 ExprEval::iOrdinalToLocal(i8 i_ColumnOrdinal) {
-
-  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
-
-  // check how many bits are on till this i_StreamInCol bit
-  i8 iLocal = 0;
-  i8 iBit = -1;
-  for (i8 i = 0; i < i_ColumnOrdinal; i++) {
-    if (BitLib::bEachBit(m_uExprEvalColumns, iBit)) {
-      if (iBit < i_ColumnOrdinal) {
-        iLocal++;
-      } else {
-        break;
-      }
-    }
-  }
-  return iLocal;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -86,25 +86,10 @@ namespace STORE
 
     void vAppendColumnToStreamDef(StreamDef* pStreamDefOut, Column* pColumn);
 
+    eEC  eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec);
+
     void vCreateGbyIdxCol(Stz* szAsmBuffer, eDM eDatum, i8 i_IdxCol);
     void vCreatePayLoadKey(Stz* szAsmBuffer, IntStack* pTypeStack, i8 i_Local);
-    eEC eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec);
-
-    void vPayStoreCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType);
-    void vPayFetchCol(Stz* szAsmBuffer, IntStack* pTypeStack, eDM eDatum) ;
-
-    void vPushDate(Stz* szAsmBuffer, IntStack* pTypeStack, Token*  pTkn);
-    void vPushDecimal(Stz* szAsmBuffer, IntStack* pTypeStack, Token*  pTkn);
-    void vPushInteger(Stz* szAsmBuffer, IntStack* pTypeStack, Token*  pTkn);
-    void vPushKeyElm(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType, i8 i_Key);
-    void vPushLclCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType, i8 i_Local);
-    void vPushDstCol(Stz* szAsmBuffer, IntStack* pTypeStack);
-    void vPushString(Stz* szAsmBuffer, IntStack* pTypeStack, Token*  pTkn);
-    void vPushTime(Stz* szAsmBuffer, IntStack* pTypeStack, Token*  pTkn);
-    void vPushTimestamp(Stz* szAsmBuffer, IntStack* pTypeStack, Token*  pTkn);
-    void vPushUnknown(Stz* szAsmBuffer, IntStack* pTypeStack, Token*  pTkn);
-
-    void vPopDstCol(Stz* szAsmBuffer, IntStack* pTypeStack);
 
     eEC eExprEvalProject(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);
     eEC eExprEvalAggGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);
@@ -117,9 +102,24 @@ namespace STORE
     void vGenerateMax(Stz* sAsmBuffer, Stz* sAggInit, IntStack* pTypeStack);
     void vGenerateSum(Stz* sAsmBuffer, Stz* sAggInit, IntStack* pTypeStack);
 
-    i8 iOrdinalToLocal(i8 i_ColumnOrdinal);
+    i8   iOrdinalToLocal(i8 i_ColumnOrdinal);
 
-    void vUpdateStreamDefOut(StreamDef* pStreamDefOut, Column* pColumn);
+    void vPayFetchCol(Stz* szAsmBuffer, IntStack* pTypeStack, eDM eDatum);
+    void vPayStoreCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType);
+
+    void vPopDstCol(Stz* szAsmBuffer, IntStack* pTypeStack);
+
+    void vPushDate(Stz* szAsmBuffer, IntStack* pTypeStack, Token*  pTkn);
+    void vPushDecimal(Stz* szAsmBuffer, IntStack* pTypeStack, Token*  pTkn);
+    void vPushDstCol(Stz* szAsmBuffer, IntStack* pTypeStack);
+    void vPushInteger(Stz* szAsmBuffer, IntStack* pTypeStack, Token*  pTkn);
+    void vPushKeyElm(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType, i8 i_Key);
+    void vPushLclCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType, i8 i_Local);
+    void vPushString(Stz* szAsmBuffer, IntStack* pTypeStack, Token*  pTkn);
+    void vPushTime(Stz* szAsmBuffer, IntStack* pTypeStack, Token*  pTkn);
+    void vPushTimestamp(Stz* szAsmBuffer, IntStack* pTypeStack, Token*  pTkn);
+    void vPushUnknown(Stz* szAsmBuffer, IntStack* pTypeStack, Token*  pTkn);
+
     Footer* aFooter(void);
   };
   
