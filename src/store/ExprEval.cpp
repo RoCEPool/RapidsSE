@@ -615,19 +615,19 @@ eEC ExprEval::eExprEvalAggGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
 
       switch (m_eProjectKind[m_iProjectColumn]) {
         case PK_GBY:
-          vPushInteger(m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
+          vPushDatum(DM_INT, m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
           break;
         case PK_AGG:
           if (bInAgg) {
-            vPushInteger(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
-            vPushInteger(m_sPayLoadAggAsm, &m_xAggStack, pTkn);
+            vPushDatum(DM_INT, m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+            vPushDatum(DM_INT, m_sPayLoadAggAsm, &m_xAggStack, pTkn);
           }
           else {
-            vPushInteger(m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
+            vPushDatum(DM_INT, m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
           }
           break;
         case PK_EXP:
-          vPushInteger(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+          vPushDatum(DM_INT, m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
           break;
         default:
           NEVER_REACH;
@@ -641,19 +641,19 @@ eEC ExprEval::eExprEvalAggGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
 
       switch (m_eProjectKind[m_iProjectColumn]) {
         case PK_GBY:
-          vPushDecimal(m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
+          vPushDatum(DM_BCD,  m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
           break;
         case PK_AGG:
           if (bInAgg) {
-            vPushDecimal(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
-            vPushDecimal(m_sPayLoadAggAsm, &m_xAggStack, pTkn);
+            vPushDatum(DM_BCD,  m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+            vPushDatum(DM_BCD,  m_sPayLoadAggAsm, &m_xAggStack, pTkn);
           }
           else {
-            vPushDecimal(m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
+            vPushDatum(DM_BCD,  m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
           }
           break;
         case PK_EXP:
-          vPushDecimal(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+          vPushDatum(DM_BCD,  m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
           break;
         default:
           NEVER_REACH;
@@ -668,19 +668,19 @@ eEC ExprEval::eExprEvalAggGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
 
       switch (m_eProjectKind[m_iProjectColumn]) {
         case PK_GBY:
-          vPushString(m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
+          vPushDatum (DM_VCH,  m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
           break;
         case PK_AGG:
           if (bInAgg) {
-            vPushString(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
-            vPushString(m_sPayLoadAggAsm, &m_xAggStack, pTkn);
+            vPushDatum (DM_VCH,  m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+            vPushDatum (DM_VCH,  m_sPayLoadAggAsm, &m_xAggStack, pTkn);
           }
           else {
-            vPushString(m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
+            vPushDatum (DM_VCH,  m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
           }
           break;
         case PK_EXP:
-          vPushString(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+          vPushDatum (DM_VCH,  m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
           break;
         default:
           NEVER_REACH;
@@ -735,19 +735,19 @@ eEC ExprEval::eExprEvalAggGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
 
       switch (m_eProjectKind[m_iProjectColumn]) {
         case PK_GBY:
-          vPushUnknown(m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
+          vPushDatum (DM_UNK, m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
           break;
         case PK_AGG:
           if (bInAgg) {
-            vPushUnknown(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
-            vPushUnknown(m_sPayLoadAggAsm, &m_xAggStack, pTkn);
+            vPushDatum (DM_UNK, m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+            vPushDatum (DM_UNK, m_sPayLoadAggAsm, &m_xAggStack, pTkn);
           }
           else {
-            vPushUnknown(m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
+            vPushDatum (DM_UNK, m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
           }
           break;
         case PK_EXP:
-          vPushUnknown(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+          vPushDatum (DM_UNK, m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
           break;
         default:
           NEVER_REACH;
@@ -764,19 +764,19 @@ eEC ExprEval::eExprEvalAggGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
 
         switch (m_eProjectKind[m_iProjectColumn]) {
           case PK_GBY:
-            vPushDate(m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
+            vPushDatum(DM_DTE,m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
             break;
           case PK_AGG:
             if (bInAgg) {
-              vPushDate(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
-              vPushDate(m_sPayLoadAggAsm, &m_xAggStack, pTkn);
+              vPushDatum(DM_DTE,m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+              vPushDatum(DM_DTE,m_sPayLoadAggAsm, &m_xAggStack, pTkn);
             }
             else {
-              vPushDate(m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
+              vPushDatum(DM_DTE,m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
             }
             break;
           case PK_EXP:
-            vPushDate(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+            vPushDatum(DM_DTE,m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
             break;
           default:
             NEVER_REACH;
@@ -796,19 +796,19 @@ eEC ExprEval::eExprEvalAggGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
 
         switch (m_eProjectKind[m_iProjectColumn]) {
           case PK_GBY:
-            vPushTime(m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
+            vPushDatum(DM_TME, m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
             break;
           case PK_AGG:
             if (bInAgg) {
-              vPushTime(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
-              vPushTime(m_sPayLoadAggAsm, &m_xAggStack, pTkn);
+              vPushDatum(DM_TME, m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+              vPushDatum(DM_TME, m_sPayLoadAggAsm, &m_xAggStack, pTkn);
             }
             else {
-              vPushTime(m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
+              vPushDatum(DM_TME, m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
             }
             break;
           case PK_EXP:
-            vPushTime(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+            vPushDatum(DM_TME, m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
             break;
           default:
             NEVER_REACH;
@@ -828,19 +828,19 @@ eEC ExprEval::eExprEvalAggGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
 
         switch (m_eProjectKind[m_iProjectColumn]) {
           case PK_GBY:
-            vPushTimestamp(m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
+            vPushDatum(DM_TSP, m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
             break;
           case PK_AGG:
             if (bInAgg) {
-              vPushTimestamp(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
-              vPushTimestamp(m_sPayLoadAggAsm, &m_xAggStack, pTkn);
+              vPushDatum(DM_TSP, m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+              vPushDatum(DM_TSP, m_sPayLoadAggAsm, &m_xAggStack, pTkn);
             }
             else {
-              vPushTimestamp(m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
+              vPushDatum(DM_TSP, m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
             }
             break;
           case PK_EXP:
-            vPushTimestamp(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
+            vPushDatum(DM_TSP, m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
             break;
           default:
             NEVER_REACH;
@@ -1050,6 +1050,7 @@ eEC ExprEval::eExprEvalProject(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut
   eCT eExprType = CT_NONE;
   eAG eAggType  = AG_NONE;
   eEC eError    = EC_NONE;
+  eDM eDatum    = DM_NONE;
 
   s32 sColumnNm;
   bool bInAgg = false;
@@ -1169,9 +1170,9 @@ eEC ExprEval::eExprEvalProject(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut
     // is it a numeric ?
     if (pTkn->bIsNumeric()) {
       if (bInAgg)
-        vPushInteger(m_sAggAsm, &m_xAggStack, pTkn);
+        vPushDatum(DM_INT, m_sAggAsm, &m_xAggStack, pTkn);
       else
-        vPushInteger(m_sProjectAsm, &m_xTypeStack, pTkn);
+        vPushDatum(DM_INT, m_sProjectAsm, &m_xTypeStack, pTkn);
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -1180,9 +1181,9 @@ eEC ExprEval::eExprEvalProject(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut
     // is it a decimal no ?
     if (pTkn->bIsDecimalNo()) {
       if (bInAgg)
-        vPushDecimal(m_sAggAsm, &m_xAggStack, pTkn);
+        vPushDatum(DM_BCD,  m_sAggAsm, &m_xAggStack, pTkn);
       else
-        vPushDecimal(m_sProjectAsm, &m_xTypeStack, pTkn);
+        vPushDatum(DM_BCD,  m_sProjectAsm, &m_xTypeStack, pTkn);
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -1191,9 +1192,9 @@ eEC ExprEval::eExprEvalProject(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut
     // is it a string ?
     if (pTkn->bIsString()) {
       if (bInAgg)
-        vPushString(m_sAggAsm, &m_xAggStack, pTkn);
+        vPushDatum (DM_VCH,  m_sAggAsm, &m_xAggStack, pTkn);
       else
-        vPushString(m_sProjectAsm, &m_xTypeStack, pTkn);
+        vPushDatum (DM_VCH,  m_sProjectAsm, &m_xTypeStack, pTkn);
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -1228,9 +1229,9 @@ eEC ExprEval::eExprEvalProject(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut
     // it is a null value ?
     if (pTkn->bSame("null"_Stz) ) {
       if (bInAgg)
-        vPushUnknown(m_sAggAsm, &m_xAggStack, pTkn);
+        vPushDatum (DM_UNK, m_sAggAsm, &m_xAggStack, pTkn);
       else
-        vPushUnknown(m_sProjectAsm, &m_xTypeStack, pTkn);
+        vPushDatum (DM_UNK, m_sProjectAsm, &m_xTypeStack, pTkn);
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -1240,10 +1241,11 @@ eEC ExprEval::eExprEvalProject(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut
     if (pTkn->bSame("DATE"_Stz) ) {
       pTkn = pTknVec->pNextToken();
       if (pTkn->bIsString()) {
+        eDatum = DM_DTE;
         if (bInAgg)
-          vPushDate(m_sAggAsm, &m_xAggStack, pTkn);
+          vPushDatum(eDatum, m_sAggAsm, &m_xAggStack, pTkn);
         else
-          vPushDate(m_sProjectAsm, &m_xTypeStack, pTkn);
+          vPushDatum(eDatum, m_sProjectAsm, &m_xTypeStack, pTkn);
         pTkn = pTknVec->pNextToken();
         continue;
       }
@@ -1257,9 +1259,9 @@ eEC ExprEval::eExprEvalProject(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut
       pTkn = pTknVec->pNextToken();
       if (pTkn->bIsString()) {
         if (bInAgg)
-          vPushTime(m_sAggAsm, &m_xAggStack, pTkn);
+          vPushDatum(DM_TME, m_sAggAsm, &m_xAggStack, pTkn);
         else
-          vPushTime(m_sProjectAsm, &m_xTypeStack, pTkn);
+          vPushDatum(DM_TME, m_sProjectAsm, &m_xTypeStack, pTkn);
         pTkn = pTknVec->pNextToken();
         continue;
       }
@@ -1273,9 +1275,9 @@ eEC ExprEval::eExprEvalProject(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut
       pTkn = pTknVec->pNextToken();
       if (pTkn->bIsString()) {
         if (bInAgg)
-          vPushTimestamp(m_sAggAsm, &m_xAggStack, pTkn);
+          vPushDatum(DM_TSP, m_sAggAsm, &m_xAggStack, pTkn);
         else
-          vPushTimestamp(m_sProjectAsm, &m_xTypeStack, pTkn);
+          vPushDatum(DM_TSP, m_sProjectAsm, &m_xTypeStack, pTkn);
         pTkn = pTknVec->pNextToken();
         continue;
       }
@@ -2037,31 +2039,63 @@ void ExprEval::vPopDstCol(Stz* szAsmBuffer, IntStack* pTypeStack)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add EO code for dates                                                      */
+/* add EO code for pushing datums                                             */
 /*----------------------------------------------------------------------------*/
-void ExprEval::vPushDate(Stz* szAsmBuffer, IntStack* pTypeStack, Token* pTkn) {
+void ExprEval::vPushDatum(eDM eDatum, Stz* szAsmBuffer, IntStack* pTypeStack, Token* pTkn) {
 
-  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
-
-  pTypeStack->vPush(DM_DTE);
-  StrLib::vSprintCat(szAsmBuffer, "  EO_DATE \"%s\"\n"_Stz, pTkn->szChars());
-}
-
-/*----------------------------------------------------------------------------*/
-/* add EO code for decimals                                                   */
-/*----------------------------------------------------------------------------*/
-void ExprEval::vPushDecimal(Stz* szAsmBuffer, IntStack* pTypeStack, Token* pTkn)
-{
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
   i8 iDecimal;
+  char* szToken;
+  bool bResult;
 
-  char* szToken = (char*)pTkn->szChars();
+  pTypeStack->vPush(eDatum);
+  eEO eCode = eMathOp_DatumCode[eDatum];
 
-  bool bResult = StrLib::bExtractDecimal(&szToken, iDecimal, 19, 2);
-  RASSERT(bResult);
-  pTypeStack->vPush(DM_BCD);
-  StrLib::vSprintCat(szAsmBuffer, "  EO_INTEGER %lld\n"_Stz, iDecimal);
+  // switch on datum
+  switch (eDatum) {
+
+    case DM_BOL:
+      RASSERT(0);
+
+    case DM_BCD:
+      szToken = (char*)pTkn->szChars();
+      bResult = StrLib::bExtractDecimal(&szToken, iDecimal, 19, 2);
+      RASSERT(bResult);
+      StrLib::vSprintCat(szAsmBuffer, "  %s %lld\n"_Stz, aEO[eCode], iDecimal);
+      break;
+
+    case DM_FLT:
+      RASSERT(0);
+
+    case DM_INT:
+      StrLib::vSprintCat(szAsmBuffer, "  %s %lld\n"_Stz, aEO[eCode], pTkn->iToI8());
+      break;
+
+    case DM_DTE:
+    case DM_TME:
+    case DM_TSP:
+    case DM_VCH:
+      StrLib::vSprintCat(szAsmBuffer, "  %s \"%s\"\n"_Stz, aEO[eCode], pTkn->szChars());
+      break;
+
+    case DM_UNK:
+      StrLib::vSprintCat(szAsmBuffer, "  %s \n"_Stz, aEO[eCode]);
+      break;
+
+    case DM_IVL:
+    case DM_IVY:
+      RASSERT(0);
+
+    case DM_NONE:
+      break;
+
+    case DM_ENUMS:
+      break;
+
+    default:
+      NEVER_REACH;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2119,17 +2153,6 @@ void ExprEval::vPushDstCol(Stz* szAsmBuffer, IntStack* pTypeStack) {
     default:
       RASSERT(0);
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* add EO code for numerics                                                   */
-/*----------------------------------------------------------------------------*/
-void ExprEval::vPushInteger(Stz* szAsmBuffer, IntStack* pTypeStack, Token* pTkn)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
-
-  pTypeStack->vPush((i8)DM_INT);
-  StrLib::vSprintCat(szAsmBuffer, "  EO_INTEGER %lld\n"_Stz, pTkn->iToI8());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2246,52 +2269,6 @@ void ExprEval:: vPushLclCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnT
     default:
       RASSERT(0);
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* add EO code for strings                                                    */
-/*----------------------------------------------------------------------------*/
-void ExprEval:: vPushString(Stz* szAsmBuffer, IntStack* pTypeStack, Token* pTkn) {
-
-  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
-
-  char* szToken = (char*)pTkn->szChars();
-
-  pTypeStack->vPush((i8)DM_VCH);
-  StrLib::vSprintCat(szAsmBuffer, "  EO_STRING \"%s\"\n"_Stz, szToken);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add EO code for time                                                       */
-/*----------------------------------------------------------------------------*/
-void ExprEval:: vPushTime(Stz* szAsmBuffer, IntStack* pTypeStack, Token* pTkn) {
-
-  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
-
-  pTypeStack->vPush(DM_TME);
-  StrLib::vSprintCat(szAsmBuffer, "  EO_TIME \"%s\"\n"_Stz, pTkn->szChars());
-}
-
-/*----------------------------------------------------------------------------*/
-/* add EO code for timestamp                                                  */
-/*----------------------------------------------------------------------------*/
-void ExprEval:: vPushTimestamp(Stz* szAsmBuffer, IntStack* pTypeStack, Token* pTkn) {
-
-  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
-
-  pTypeStack->vPush(DM_TSP);
-  StrLib::vSprintCat(szAsmBuffer, "  EO_TIMESTAMP \"%s\"\n"_Stz, pTkn->szChars());
-}
-
-/*----------------------------------------------------------------------------*/
-/* add EO code for unknown                                                    */
-/*----------------------------------------------------------------------------*/
-void ExprEval:: vPushUnknown(Stz* szAsmBuffer, IntStack* pTypeStack, Token* pTkn)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
-
-  pTypeStack->vPush((i8)DM_UNK);
-  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSHNULL\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

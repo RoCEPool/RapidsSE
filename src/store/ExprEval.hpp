@@ -108,16 +108,12 @@ namespace STORE
 
     void vPopDstCol(Stz* szAsmBuffer, IntStack* pTypeStack);
 
-    void vPushDate(Stz* szAsmBuffer, IntStack* pTypeStack, Token*  pTkn);
-    void vPushDecimal(Stz* szAsmBuffer, IntStack* pTypeStack, Token*  pTkn);
+    void vPushDatum(eDM eDatum, Stz* szAsmBuffer, IntStack* pTypeStack, Token*  pTkn);
     void vPushDstCol(Stz* szAsmBuffer, IntStack* pTypeStack);
-    void vPushInteger(Stz* szAsmBuffer, IntStack* pTypeStack, Token*  pTkn);
+
     void vPushKeyElm(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType, i8 i_Key);
     void vPushLclCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType, i8 i_Local);
-    void vPushString(Stz* szAsmBuffer, IntStack* pTypeStack, Token*  pTkn);
-    void vPushTime(Stz* szAsmBuffer, IntStack* pTypeStack, Token*  pTkn);
-    void vPushTimestamp(Stz* szAsmBuffer, IntStack* pTypeStack, Token*  pTkn);
-    void vPushUnknown(Stz* szAsmBuffer, IntStack* pTypeStack, Token*  pTkn);
+
 
     Footer* aFooter(void);
   };
