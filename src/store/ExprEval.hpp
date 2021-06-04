@@ -56,7 +56,7 @@ namespace STORE
     s4K      m_sPayLoadStoreAsm;
     s4K      m_sPayLoadToBufferAsm;
 
-    i8       m_iDstColumn;
+    i8       m_iProjectColumn;
 
     i8       m_iProjections;
 
