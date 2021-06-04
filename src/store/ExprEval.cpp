@@ -109,21 +109,29 @@ eEC ExprEval::eEvaluate(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Stz* 
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
 
-  // tokenise the projectColumns
-  TokenVec *pTknVec = TokenVec::pTokenise(sExprEvalColumns);
-
   eEC eError = EC_NONE;
   Token* pTkn;
 
-  // first collect all the StreamDefIn's source columns needed for projected
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tokenise the projectColumns
+  TokenVec *pTknVec = TokenVec::pTokenise(sExprEvalColumns);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // collect all the StreamDefIn's source columns needed for projected
+
   eError = eCollectSourceColumns(pStreamDefIn, pTknVec);
 
   if (eError != EC_NONE)
     goto L_RETRUN;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the next token
+
   pTkn = pTknVec->pNextToken();
 
-  // now evaluate the expressions
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // evaluate the projected expressions
+
   if (m_bHasGby)
     eError = eExprEvalAggGby(pStreamDefIn, pStreamDefOut, pTknVec);
   else
@@ -282,8 +290,7 @@ eEC ExprEval::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec)
     pTkn = pTknVec->pGet(i_Tkn);
 
     if ( pTkn->bIsName() &&
-         (pTkn->bSame("AVG"_Stz)   ||
-          pTkn->bSame("COUNT"_Stz) ||
+         (pTkn->bSame("COUNT"_Stz) ||
           pTkn->bSame("COUNTALL"_Stz) ||
           pTkn->bSame("MIN"_Stz)   ||
           pTkn->bSame("MAX"_Stz)   ||
@@ -295,12 +302,10 @@ eEC ExprEval::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec)
     }
 
     if (pTkn->bIsName() && pTkn->bSame(","_Stz)) {
-      if (m_bHasGby) {
+      if (m_bHasGby)
         m_eProjectKind[m_iProjections++] = PK_GBY;
-      }
-      else {
+      else
         m_eProjectKind[m_iProjections++] = bHasAgg ? PK_AGG : PK_EXP;
-      }
       bHasAgg = false;
     }
 
@@ -317,7 +322,6 @@ eEC ExprEval::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec)
         continue;
 
       Stz* sOrdinalColumn = pTkn->szChars() + 1;
-
       i8 i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
 
       // look for the column in the streamDefIn
@@ -338,437 +342,11 @@ eEC ExprEval::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec)
 
   }
 
-  if (m_bHasGby) {
+  if (m_bHasGby)
     m_eProjectKind[m_iProjections++] = PK_GBY;
-  }
-  else {
+  else
     m_eProjectKind[m_iProjections++] = bHasAgg ? PK_AGG : PK_EXP;
-  }
 
-  return eError;
-}
-
-/*----------------------------------------------------------------------------*/
-/* add EO code for creating the gby idx col                                   */
-/*----------------------------------------------------------------------------*/
-void ExprEval::vCreateGbyIdxCol(Stz* szAsmBuffer, eDM eDatum, i8 i_IdxCol) {
-
-  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
-
-  eCT eColumnType = Column::eColumnType(eDatum);
-  StrLib::vSprintCat(szAsmBuffer, "  EO_STRING \"col_local%lld\"\n"_Stz, i_IdxCol);
-  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_COLUMN_TYPE %s\n"_Stz,
-                     aCT_long[eColumnType]);
-  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_INDEXDEF\n"_Stz);
-  StrLib::vSprintCat(szAsmBuffer, "  EO_RLU_INDEXDEF_ADDCOLUMN\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add EO code for creating the pay load key                                  */
-/*----------------------------------------------------------------------------*/
-void ExprEval::vCreatePayLoadKey(Stz* szAsmBuffer, IntStack* pTypeStack, i8 i_Local) {
-
-  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
-
-  eDM eDatum = (eDM)pTypeStack->iPop();
-
-  // switch on column type
-  switch (eDatum) {
-    case DM_BOL:
-    case DM_BCD:
-    case DM_DTE:
-    case DM_FLT:
-    case DM_INT:
-    case DM_TME:
-    case DM_TSP:
-    case DM_UNK:
-      StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_SETINTELM\n"_Stz);
-      break;
-
-    case DM_VCH:
-      StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
-      StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_SETSTZELM\n"_Stz);
-      break;
-
-    case DM_IVL:
-    case DM_IVY:
-    default:
-      NEVER_REACH;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* parse project                                                              */
-/*----------------------------------------------------------------------------*/
-eEC ExprEval::eExprEvalProject(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
-  UNUSED(pStreamDefIn);
-
-  eCT eExprType = CT_NONE;
-  eAG eAggType  = AG_NONE;
-  eEC eError    = EC_NONE;
-
-  s32 sColumnNm;
-  i8 iProjection = 0;
-  bool bInAgg = false;
-
-  // create a new columnExpr
-  Column *pColumnExpr =  new Column;
-
-  // we should have a  pStreamDefOut
-  //RASSERT(pStreamDefOut);
-
-  Stz* szAsmBuffer = m_sProjectAsm;
-
-  // get the current token
-  Token* pTkn = pTknVec->pCurrToken();
-
-  // start with col1 as the first column
-  m_iDstColumn++;
-  sColumnNm.vSprint("col%lld"_Stz, m_iDstColumn);
-  pColumnExpr->vColumnNm(sColumnNm);
-
-  //StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_DST\n"_Stz);
-  //StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iDstColumn);
-
-  if ( ! pStreamDefOut ) {
-    if (m_bHasAgg)
-      return EC_INVALID_COMMAND;
-  }
-
-  while ( pTkn ) {
-
-    //vTrace("TKN: %s\n"_Stz, pTkn->azChars());
-
-    if (pTkn->bSame(","_Stz)) {
-
-      // discovered a comma, generate code for the column
-      vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
-      vPopDstCol(szAsmBuffer, &m_xTypeStack);
-
-      szAsmBuffer = m_sProjectAsm;
-
-      m_iDstColumn++;
-      iProjection++;
-      sColumnNm.vSprint("col%lld"_Stz, m_iDstColumn);
-      pColumnExpr->vColumnNm(sColumnNm);
-
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // type ?
-    if (pTkn->bSame("type"_Stz)) {
-      pTkn = pTknVec->pNextToken();
-      if (!pTkn->bIsName()) {
-        eError = EC_INVALID_COMMAND;
-        goto L_RETURN;
-      }
-
-      // extract expr type
-      eExprType = StreamDef::eColumn(pTkn->szChars());
-      pColumnExpr->vColumnType(eExprType);
-
-      // HACK!!!
-      if (eExprType == CT_DECIMAL) {
-        pColumnExpr->vColumnScale(2);
-        pColumnExpr->vColumnLength(19);
-      }
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // alias ?
-    if (pTkn->bSame("as"_Stz)) {
-      pTkn = pTknVec->pNextToken();
-      if (!pTkn->bIsName()) {
-        eError = EC_INVALID_COMMAND;
-        goto L_RETURN;
-      }
-
-      // extract column name
-      pColumnExpr->vColumnNm(pTkn->szChars());
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // arithmetic operator ?
-    if (pTkn->bIsArithmetic()) {
-      if (bInAgg)
-        vAddArithmetic(m_sAggAsm, &m_xAggStack, pTkn);
-      else
-        vAddArithmetic(m_sProjectAsm, &m_xTypeStack, pTkn);
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // logical operator ?
-    if (pTkn->bIsLogical() || pTkn->bSame("isNull"_Stz)) {
-      if (bInAgg)
-        vAddLogical(m_sAggAsm, &m_xAggStack, pTkn);
-      else
-        vAddLogical(m_sProjectAsm, &m_xTypeStack, pTkn);
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // relational operator ?
-    if (pTkn->bIsRelational()) {
-      if (bInAgg)
-        vAddRelational(m_sAggAsm, &m_xAggStack, pTkn);
-      else
-        vAddRelational(m_sProjectAsm, &m_xTypeStack, pTkn);
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // is it a numeric ?
-    if (pTkn->bIsNumeric()) {
-      if (bInAgg)
-        vPushInteger(m_sAggAsm, &m_xAggStack, pTkn);
-      else
-        vPushInteger(m_sProjectAsm, &m_xTypeStack, pTkn);
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // is it a decimal no ?
-    if (pTkn->bIsDecimalNo()) {
-      if (bInAgg)
-        vPushDecimal(m_sAggAsm, &m_xAggStack, pTkn);
-      else
-        vPushDecimal(m_sProjectAsm, &m_xTypeStack, pTkn);
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // is it a string ?
-    if (pTkn->bIsString()) {
-      if (bInAgg)
-        vPushString(m_sAggAsm, &m_xAggStack, pTkn);
-      else
-        vPushString(m_sProjectAsm, &m_xTypeStack, pTkn);
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // is it a tag ?
-    if (pTkn->eToken() == TN_TAG && pTkn->bSame("<>"_Stz)) {
-      StrLib::vSprintCat(szAsmBuffer, "  EO_RETURN_FALSE\n"_Stz);
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // should be a name
-    if (!pTkn->bIsName()) {
-      eError = EC_INVALID_COMMAND;
-      goto L_RETURN;
-    }
-
-    // is it a negate op ?
-    if (pTkn->bSame("negate"_Stz) ) {
-      if (bInAgg)
-        vAddArithmetic(m_sAggAsm, &m_xAggStack, pTkn);
-      else
-        vAddArithmetic(m_sProjectAsm, &m_xTypeStack, pTkn);
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // it is a null value ?
-    if (pTkn->bSame("null"_Stz) ) {
-      if (bInAgg)
-        vPushUnknown(m_sAggAsm, &m_xAggStack, pTkn);
-      else
-        vPushUnknown(m_sProjectAsm, &m_xTypeStack, pTkn);
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // is it a date ?
-    if (pTkn->bSame("DATE"_Stz) ) {
-      pTkn = pTknVec->pNextToken();
-      if (pTkn->bIsString()) {
-        if (bInAgg)
-          vPushDate(m_sAggAsm, &m_xAggStack, pTkn);
-        else
-          vPushDate(m_sProjectAsm, &m_xTypeStack, pTkn);
-        pTkn = pTknVec->pNextToken();
-        continue;
-      }
-      else
-        pTkn = pTknVec->pPrevToken();
-    }
-
-    // is it a time ?
-    if (pTkn->bSame("TIME"_Stz) ) {
-      pTkn = pTknVec->pNextToken();
-      if (pTkn->bIsString()) {
-        if (bInAgg)
-          vPushTime(m_sAggAsm, &m_xAggStack, pTkn);
-        else
-          vPushTime(m_sProjectAsm, &m_xTypeStack, pTkn);
-        pTkn = pTknVec->pNextToken();
-        continue;
-      }
-      else
-        pTkn = pTknVec->pPrevToken();
-    }
-
-    // is it a timestamp ?
-    if (pTkn->bSame("TIMESTAMP"_Stz) ) {
-      pTkn = pTknVec->pNextToken();
-      if (pTkn->bIsString()) {
-        if (bInAgg)
-          vPushTimestamp(m_sAggAsm, &m_xAggStack, pTkn);
-        else
-          vPushTimestamp(m_sProjectAsm, &m_xTypeStack, pTkn);
-        pTkn = pTknVec->pNextToken();
-        continue;
-      }
-      else
-        pTkn = pTknVec->pPrevToken();
-    }
-
-    if (pTkn->bSame(")"_Stz) ) {
-      bInAgg = true;
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    if (pTkn->bSame("AVG"_Stz) ) {
-
-      eAggType = AG_AVG;
-      bInAgg = false;
-
-      vGenerateAggregateCode(eAggType, m_sAggAsm, m_sAggInitAsm, &m_xAggStack);
-      eAggType = AG_NONE;
-
-      eDM eAggDatum = (eDM)m_xAggStack.iPop();
-      m_xTypeStack.vPush(eAggDatum);
-
-      vPushDstCol(m_sProjectAsm, &m_xTypeStack);
-
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    if (pTkn->bSame("COUNT"_Stz) ) {
-
-      eAggType = AG_CNT;
-      bInAgg = false;
-
-      vGenerateAggregateCode(eAggType, m_sAggAsm, m_sAggInitAsm, &m_xAggStack);
-      eAggType = AG_NONE;
-
-      eDM eAggDatum = (eDM)m_xAggStack.iPop();
-      m_xTypeStack.vPush(eAggDatum);
-
-      vPushDstCol(m_sProjectAsm, &m_xTypeStack);
-
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    if (pTkn->bSame("COUNTALL"_Stz) ) {
-
-      eAggType = AG_ALL;
-      bInAgg = false;
-
-      vGenerateAggregateCode(eAggType, m_sAggAsm, m_sAggInitAsm, &m_xAggStack);
-      eAggType = AG_NONE;
-
-      eDM eAggDatum = (eDM)m_xAggStack.iPop();
-      m_xTypeStack.vPush(eAggDatum);
-
-      vPushDstCol(m_sProjectAsm, &m_xTypeStack);
-
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    if (pTkn->bSame("MIN"_Stz) ) {
-
-      eAggType = AG_MIN;
-      bInAgg = false;
-
-      vGenerateAggregateCode(eAggType, m_sAggAsm, m_sAggInitAsm, &m_xAggStack);
-      eAggType = AG_NONE;
-
-      eDM eAggDatum = (eDM)m_xAggStack.iPop();
-      m_xTypeStack.vPush(eAggDatum);
-
-      vPushDstCol(m_sProjectAsm, &m_xTypeStack);
-
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    if (pTkn->bSame("MAX"_Stz) ) {
-
-      eAggType = AG_MAX;
-      bInAgg = false;
-
-      vGenerateAggregateCode(eAggType, m_sAggAsm, m_sAggInitAsm, &m_xAggStack);
-      eAggType = AG_NONE;
-
-      eDM eAggDatum = (eDM)m_xAggStack.iPop();
-      m_xTypeStack.vPush(eAggDatum);
-
-      vPushDstCol(m_sProjectAsm, &m_xTypeStack);
-
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    if (pTkn->bSame("SUM"_Stz) ) {
-
-      eAggType = AG_SUM;
-      bInAgg = false;
-
-      vGenerateAggregateCode(eAggType, m_sAggAsm, m_sAggInitAsm, &m_xAggStack);
-      eAggType = AG_NONE;
-
-      eDM eAggDatum = (eDM)m_xAggStack.iPop();
-      m_xTypeStack.vPush(eAggDatum);
-
-      vPushDstCol(m_sProjectAsm, &m_xTypeStack);
-
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // found a src column
-    if ( ! pTkn->szChars()->bContains("$"_Stz)) {
-      eError = EC_INVALID_COMMAND;
-      goto L_RETURN;
-    }
-
-    Stz *sOrdinalColumn = pTkn->szChars() + 1;
-    i8 i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
-    i8 i_Local = iOrdinalToLocal(i_ColumnOrdinal);
-    Column* pColumn = pStreamDefIn->pGetColumn(i_ColumnOrdinal);
-
-    if (m_eProjectKind[iProjection] == PK_EXP)
-      vPushLclCol(m_sProjectAsm, &m_xTypeStack, pColumn->eColumnType(), i_Local);
-    else
-      vPushLclCol(m_sAggAsm, &m_xAggStack, pColumn->eColumnType(), i_Local);
-
-    pTkn = pTknVec->pNextToken();
-  }
-
-  // add the last column to the streamDefOut (if filter we don't have a streamDefOut)
-  if (pStreamDefOut) {
-    vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
-    vPopDstCol(m_sProjectAsm, &m_xTypeStack);
-  }
-
-  L_RETURN:
-//  RASSERT(m_xTypeStack.nItems() == 0);
-//  RASSERT(m_xAggStack.nItems() == 0);
-  delete pColumnExpr;
   return eError;
 }
 
@@ -1222,20 +800,6 @@ eEC ExprEval::eExprEvalAggGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
       continue;
     }
 
-    if (pTkn->bSame("AVG"_Stz) ) {
-      eAggType = AG_AVG;
-      ASSERT(m_bHasAgg);
-
-      vGenerateAggregateCode(eAggType, m_sPayLoadAggAsm, m_sPayLoadStoreAsm, &m_xAggStack);
-      eAggType = AG_NONE;
-      eDM eAggDatum = (eDM)m_xAggStack.iPop();
-      vPayFetchCol(m_sPayLoadToBufferAsm, &m_xTypeStack, eAggDatum);
-      bInAgg = false;
-      bPushedLocal = true;
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
     if (pTkn->bSame("COUNT"_Stz) ) {
       eAggType = AG_CNT;
       ASSERT(m_bHasAgg);
@@ -1422,6 +986,408 @@ eEC ExprEval::eExprEvalAggGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
 
   delete pColumnExpr;
 
+  return eError;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add EO code for creating the gby idx col                                   */
+/*----------------------------------------------------------------------------*/
+void ExprEval::vCreateGbyIdxCol(Stz* szAsmBuffer, eDM eDatum, i8 i_IdxCol) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
+
+  eCT eColumnType = Column::eColumnType(eDatum);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_STRING \"col_local%lld\"\n"_Stz, i_IdxCol);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_COLUMN_TYPE %s\n"_Stz,
+                     aCT_long[eColumnType]);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_INDEXDEF\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_RLU_INDEXDEF_ADDCOLUMN\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add EO code for creating the pay load key                                  */
+/*----------------------------------------------------------------------------*/
+void ExprEval::vCreatePayLoadKey(Stz* szAsmBuffer, IntStack* pTypeStack, i8 i_Local) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
+
+  eDM eDatum = (eDM)pTypeStack->iPop();
+
+  // switch on column type
+  switch (eDatum) {
+    case DM_BOL:
+    case DM_BCD:
+    case DM_DTE:
+    case DM_FLT:
+    case DM_INT:
+    case DM_TME:
+    case DM_TSP:
+    case DM_UNK:
+      StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_SETINTELM\n"_Stz);
+      break;
+
+    case DM_VCH:
+      StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_SETSTZELM\n"_Stz);
+      break;
+
+    case DM_IVL:
+    case DM_IVY:
+    default:
+      NEVER_REACH;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse project                                                              */
+/*----------------------------------------------------------------------------*/
+eEC ExprEval::eExprEvalProject(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
+  UNUSED(pStreamDefIn);
+
+  eCT eExprType = CT_NONE;
+  eAG eAggType  = AG_NONE;
+  eEC eError    = EC_NONE;
+
+  s32 sColumnNm;
+  bool bInAgg = false;
+
+  // create a new columnExpr
+  Column *pColumnExpr =  new Column;
+
+  // we should have a  pStreamDefOut
+  //RASSERT(pStreamDefOut);
+
+  Stz* szAsmBuffer = m_sProjectAsm;
+
+  // get the current token
+  Token* pTkn = pTknVec->pCurrToken();
+
+  // start with col1 as the first column
+  m_iDstColumn++;
+  sColumnNm.vSprint("col%lld"_Stz, m_iDstColumn);
+  pColumnExpr->vColumnNm(sColumnNm);
+
+  if ( ! pStreamDefOut ) {
+    if (m_bHasAgg)
+      return EC_INVALID_COMMAND;
+  }
+
+  while ( pTkn ) {
+
+    //vTrace("TKN: %s\n"_Stz, pTkn->azChars());
+
+    if (pTkn->bSame(","_Stz)) {
+
+      // discovered a comma, generate code for the column
+      vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
+      vPopDstCol(szAsmBuffer, &m_xTypeStack);
+
+      szAsmBuffer = m_sProjectAsm;
+
+      m_iDstColumn++;
+      sColumnNm.vSprint("col%lld"_Stz, m_iDstColumn);
+      pColumnExpr->vColumnNm(sColumnNm);
+
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // type ?
+    if (pTkn->bSame("type"_Stz)) {
+      pTkn = pTknVec->pNextToken();
+      if (!pTkn->bIsName()) {
+        eError = EC_INVALID_COMMAND;
+        goto L_RETURN;
+      }
+
+      // extract expr type
+      eExprType = StreamDef::eColumn(pTkn->szChars());
+      pColumnExpr->vColumnType(eExprType);
+
+      // HACK!!!
+      if (eExprType == CT_DECIMAL) {
+        pColumnExpr->vColumnScale(2);
+        pColumnExpr->vColumnLength(19);
+      }
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // alias ?
+    if (pTkn->bSame("as"_Stz)) {
+      pTkn = pTknVec->pNextToken();
+      if (!pTkn->bIsName()) {
+        eError = EC_INVALID_COMMAND;
+        goto L_RETURN;
+      }
+
+      // extract column name
+      pColumnExpr->vColumnNm(pTkn->szChars());
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // arithmetic operator ?
+    if (pTkn->bIsArithmetic()) {
+      if (bInAgg)
+        vAddArithmetic(m_sAggAsm, &m_xAggStack, pTkn);
+      else
+        vAddArithmetic(m_sProjectAsm, &m_xTypeStack, pTkn);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // logical operator ?
+    if (pTkn->bIsLogical() || pTkn->bSame("isNull"_Stz)) {
+      if (bInAgg)
+        vAddLogical(m_sAggAsm, &m_xAggStack, pTkn);
+      else
+        vAddLogical(m_sProjectAsm, &m_xTypeStack, pTkn);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // relational operator ?
+    if (pTkn->bIsRelational()) {
+      if (bInAgg)
+        vAddRelational(m_sAggAsm, &m_xAggStack, pTkn);
+      else
+        vAddRelational(m_sProjectAsm, &m_xTypeStack, pTkn);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // is it a numeric ?
+    if (pTkn->bIsNumeric()) {
+      if (bInAgg)
+        vPushInteger(m_sAggAsm, &m_xAggStack, pTkn);
+      else
+        vPushInteger(m_sProjectAsm, &m_xTypeStack, pTkn);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // is it a decimal no ?
+    if (pTkn->bIsDecimalNo()) {
+      if (bInAgg)
+        vPushDecimal(m_sAggAsm, &m_xAggStack, pTkn);
+      else
+        vPushDecimal(m_sProjectAsm, &m_xTypeStack, pTkn);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // is it a string ?
+    if (pTkn->bIsString()) {
+      if (bInAgg)
+        vPushString(m_sAggAsm, &m_xAggStack, pTkn);
+      else
+        vPushString(m_sProjectAsm, &m_xTypeStack, pTkn);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // is it a tag ?
+    if (pTkn->eToken() == TN_TAG && pTkn->bSame("<>"_Stz)) {
+      StrLib::vSprintCat(szAsmBuffer, "  EO_RETURN_FALSE\n"_Stz);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // should be a name
+    if (!pTkn->bIsName()) {
+      eError = EC_INVALID_COMMAND;
+      goto L_RETURN;
+    }
+
+    // is it a negate op ?
+    if (pTkn->bSame("negate"_Stz) ) {
+      if (bInAgg)
+        vAddArithmetic(m_sAggAsm, &m_xAggStack, pTkn);
+      else
+        vAddArithmetic(m_sProjectAsm, &m_xTypeStack, pTkn);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // it is a null value ?
+    if (pTkn->bSame("null"_Stz) ) {
+      if (bInAgg)
+        vPushUnknown(m_sAggAsm, &m_xAggStack, pTkn);
+      else
+        vPushUnknown(m_sProjectAsm, &m_xTypeStack, pTkn);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // is it a date ?
+    if (pTkn->bSame("DATE"_Stz) ) {
+      pTkn = pTknVec->pNextToken();
+      if (pTkn->bIsString()) {
+        if (bInAgg)
+          vPushDate(m_sAggAsm, &m_xAggStack, pTkn);
+        else
+          vPushDate(m_sProjectAsm, &m_xTypeStack, pTkn);
+        pTkn = pTknVec->pNextToken();
+        continue;
+      }
+      else
+        pTkn = pTknVec->pPrevToken();
+    }
+
+    // is it a time ?
+    if (pTkn->bSame("TIME"_Stz) ) {
+      pTkn = pTknVec->pNextToken();
+      if (pTkn->bIsString()) {
+        if (bInAgg)
+          vPushTime(m_sAggAsm, &m_xAggStack, pTkn);
+        else
+          vPushTime(m_sProjectAsm, &m_xTypeStack, pTkn);
+        pTkn = pTknVec->pNextToken();
+        continue;
+      }
+      else
+        pTkn = pTknVec->pPrevToken();
+    }
+
+    // is it a timestamp ?
+    if (pTkn->bSame("TIMESTAMP"_Stz) ) {
+      pTkn = pTknVec->pNextToken();
+      if (pTkn->bIsString()) {
+        if (bInAgg)
+          vPushTimestamp(m_sAggAsm, &m_xAggStack, pTkn);
+        else
+          vPushTimestamp(m_sProjectAsm, &m_xTypeStack, pTkn);
+        pTkn = pTknVec->pNextToken();
+        continue;
+      }
+      else
+        pTkn = pTknVec->pPrevToken();
+    }
+
+    if (pTkn->bSame(")"_Stz) ) {
+      bInAgg = true;
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("COUNT"_Stz) ) {
+
+      eAggType = AG_CNT;
+      bInAgg = false;
+
+      vGenerateAggregateCode(eAggType, m_sAggAsm, m_sAggInitAsm, &m_xAggStack);
+      eAggType = AG_NONE;
+
+      eDM eAggDatum = (eDM)m_xAggStack.iPop();
+      m_xTypeStack.vPush(eAggDatum);
+
+      vPushDstCol(m_sProjectAsm, &m_xTypeStack);
+
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("COUNTALL"_Stz) ) {
+
+      eAggType = AG_ALL;
+      bInAgg = false;
+
+      vGenerateAggregateCode(eAggType, m_sAggAsm, m_sAggInitAsm, &m_xAggStack);
+      eAggType = AG_NONE;
+
+      eDM eAggDatum = (eDM)m_xAggStack.iPop();
+      m_xTypeStack.vPush(eAggDatum);
+
+      vPushDstCol(m_sProjectAsm, &m_xTypeStack);
+
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("MIN"_Stz) ) {
+
+      eAggType = AG_MIN;
+      bInAgg = false;
+
+      vGenerateAggregateCode(eAggType, m_sAggAsm, m_sAggInitAsm, &m_xAggStack);
+      eAggType = AG_NONE;
+
+      eDM eAggDatum = (eDM)m_xAggStack.iPop();
+      m_xTypeStack.vPush(eAggDatum);
+
+      vPushDstCol(m_sProjectAsm, &m_xTypeStack);
+
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("MAX"_Stz) ) {
+
+      eAggType = AG_MAX;
+      bInAgg = false;
+
+      vGenerateAggregateCode(eAggType, m_sAggAsm, m_sAggInitAsm, &m_xAggStack);
+      eAggType = AG_NONE;
+
+      eDM eAggDatum = (eDM)m_xAggStack.iPop();
+      m_xTypeStack.vPush(eAggDatum);
+
+      vPushDstCol(m_sProjectAsm, &m_xTypeStack);
+
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("SUM"_Stz) ) {
+
+      eAggType = AG_SUM;
+      bInAgg = false;
+
+      vGenerateAggregateCode(eAggType, m_sAggAsm, m_sAggInitAsm, &m_xAggStack);
+      eAggType = AG_NONE;
+
+      eDM eAggDatum = (eDM)m_xAggStack.iPop();
+      m_xTypeStack.vPush(eAggDatum);
+
+      vPushDstCol(m_sProjectAsm, &m_xTypeStack);
+
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // found a src column
+    if ( ! pTkn->szChars()->bContains("$"_Stz)) {
+      eError = EC_INVALID_COMMAND;
+      goto L_RETURN;
+    }
+
+    Stz *sOrdinalColumn = pTkn->szChars() + 1;
+    i8 i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
+    i8 i_Local = iOrdinalToLocal(i_ColumnOrdinal);
+    Column* pColumn = pStreamDefIn->pGetColumn(i_ColumnOrdinal);
+
+    if (m_eProjectKind[m_iDstColumn] == PK_EXP)
+      vPushLclCol(m_sProjectAsm, &m_xTypeStack, pColumn->eColumnType(), i_Local);
+    else
+      vPushLclCol(m_sAggAsm, &m_xAggStack, pColumn->eColumnType(), i_Local);
+
+    pTkn = pTknVec->pNextToken();
+  }
+
+  // add the last column to the streamDefOut (if filter we don't have a streamDefOut)
+  if (pStreamDefOut) {
+    vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
+    vPopDstCol(m_sProjectAsm, &m_xTypeStack);
+  }
+
+  L_RETURN:
+//  RASSERT(m_xTypeStack.nItems() == 0);
+//  RASSERT(m_xAggStack.nItems() == 0);
+  delete pColumnExpr;
   return eError;
 }
 

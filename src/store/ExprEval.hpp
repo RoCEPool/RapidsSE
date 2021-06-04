@@ -13,14 +13,13 @@ namespace STORE
   enum eAG {
     /* 0 */ AG_NONE=0,
     /* 1 */ AG_ALL,
-    /* 2 */ AG_AVG,
-    /* 3 */ AG_CNT,
-    /* 4 */ AG_MIN,
-    /* 5 */ AG_MAX,
-    /* 6 */ AG_STD,
-    /* 7 */ AG_SUM,
-    /* 8 */ AG_VAR,
-    /* 9 */ AG_ENUMS
+    /* 2 */ AG_CNT,
+    /* 3 */ AG_MIN,
+    /* 4 */ AG_MAX,
+    /* 5 */ AG_STD,
+    /* 6 */ AG_SUM,
+    /* 7 */ AG_VAR,
+    /* 8 */ AG_ENUMS
   };
 
   enum ePK {
