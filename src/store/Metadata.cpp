@@ -486,7 +486,7 @@ InfoSet* Metadata::pPartitionKey(Stz* szCatalogName,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
 
-  Table* pLookupTable = AM::pTableFind(C_TDEF_COLUMNDEFS);
+  Table* pLookupTable = AM::pTableFind(C_TDEF_PARTITIONKEY);
   StreamDef* pLookupStreamDef = pLookupTable->pStreamDef();
 
   InfoSet* pInfoSet = new InfoSet(pLookupStreamDef);

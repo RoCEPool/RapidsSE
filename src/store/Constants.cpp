@@ -232,6 +232,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_TDEF_LOOKUPTABLE"_Stz,   C_TDEF_LOOKUPTABLE);
   vAddConstant("C_TDEF_NODEINFO"_Stz,      C_TDEF_NODEINFO);
   vAddConstant("C_TDEF_PATHINFO"_Stz,      C_TDEF_PATHINFO);
+  vAddConstant("C_TDEF_PARTITIONKEY"_Stz,  C_TDEF_PARTITIONKEY);
   vAddConstant("C_TDEF_PINGINFO"_Stz,      C_TDEF_PINGINFO);
   vAddConstant("C_TDEF_PROGRESSUNITS"_Stz, C_TDEF_PROGRESSUNITS);
   vAddConstant("C_TDEF_PROMPTOUT"_Stz,     C_TDEF_PROMPTOUT);
