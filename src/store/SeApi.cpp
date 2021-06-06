@@ -658,6 +658,26 @@ InfoSet* SeApi::pLookupTable(Stz* szCatalogName,
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the colummns of partition key for table                                */
+/*----------------------------------------------------------------------------*/
+InfoSet* SeApi::pPartitionKey(Stz* szCatalogName,
+                            Stz* szSchemaName,
+                            Stz* szTableName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
+    
+  Metadata* pMetadata = new Metadata;
+  
+  InfoSet* pInfoSet = pMetadata->pPartitionKey(szCatalogName,
+                                             szSchemaName,
+                                             szTableName);
+
+  delete pMetadata;
+
+  return pInfoSet;
+}
+
+/*----------------------------------------------------------------------------*/
 /* test for given catalog                                                     */
 /*----------------------------------------------------------------------------*/
 bool SeApi::bTest(Stz* szCatalogNm)

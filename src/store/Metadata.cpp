@@ -476,6 +476,68 @@ InfoSet* Metadata::pColumnDefs(Stz* szCatalogName,
   
   return pInfoSet;
 }
+
+/*----------------------------------------------------------------------------*/
+/* get the colummns of partition key for table                                */
+/*----------------------------------------------------------------------------*/
+InfoSet* Metadata::pPartitionKey(Stz* szCatalogName,
+                                 Stz* szSchemaName,
+                                 Stz* szTableName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
+
+  Table* pLookupTable = AM::pTableFind(C_TDEF_COLUMNDEFS);
+  StreamDef* pLookupStreamDef = pLookupTable->pStreamDef();
+
+  InfoSet* pInfoSet = new InfoSet(pLookupStreamDef);
+  
+  // v1: assume szCatalogName, szSchemaName, szTableName are set
+  //            szColumnName is not set
+  
+  RASSERT(szCatalogName);
+  RASSERT(szSchemaName);
+  RASSERT(szTableName);
+
+  DicStack* pDicStack = new DicStack;
+  
+  Row* pRow;
+  
+  if (pDicStack->bTest(szCatalogName,szSchemaName,szTableName)) {
+        
+    Table* pTable = pDicStack->pTable();
+    
+    //vTrace("TABLE %s\n"_Stz,pTable->szTableNm());
+    
+    StreamDef* pStreamDef = pTable->pStreamDef();
+    
+    i8 nCols = pStreamDef->nColumns();
+    for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+      Column* pColumn = pStreamDef->pGetColumn(i_Col);
+      
+      pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+                                 szCatalogName,
+                                 szSchemaName,
+                                 szTableName,
+
+                                 pColumn->iColumnNo(),
+                                 pColumn->szColNm(),
+                                 (i8)pColumn->eColumnType(),
+                                 aCT[pColumn->eColumnType()],
+                                 pColumn->iColumnLength(),
+                                 pColumn->iColumnScale(),
+                                 (i8)pColumn->bIsNullable(),
+                                 (i8)pColumn->bIsPtnKey(),
+
+                                 C_VARGS_END);
+    }
+  }
+  
+
+  delete pDicStack;
+  
+  return pInfoSet;
+}
+
 /*----------------------------------------------------------------------------*/
 /* lookup a catalog and return an infoset about it                            */
 /*----------------------------------------------------------------------------*/
