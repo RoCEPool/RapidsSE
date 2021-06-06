@@ -521,12 +521,6 @@ InfoSet* Metadata::pPartitionKey(Stz* szCatalogName,
 
                                  pColumn->iColumnNo(),
                                  pColumn->szColNm(),
-                                 (i8)pColumn->eColumnType(),
-                                 aCT[pColumn->eColumnType()],
-                                 pColumn->iColumnLength(),
-                                 pColumn->iColumnScale(),
-                                 (i8)pColumn->bIsNullable(),
-                                 (i8)pColumn->bIsPtnKey(),
 
                                  C_VARGS_END);
     }
