@@ -26,6 +26,7 @@
 #include "SeApi.hpp"
 #include "CatalogMetadata.hpp"
 #include "ColumnMetadata.hpp"
+#include "PartitionKeyMetadata.hpp"
 #include "SchemaMetadata.hpp"
 #include "TableMetadata.hpp"
 #include "SP_CatalogMetadata.hpp"
