@@ -303,6 +303,7 @@ namespace STORE
     eEC eGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut);
     eEC eGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut);
     eEC eGenerateLimit(i8 iLimit);
+    eEC eGenerateLoopJoin(ExprEval* pExprEval, StreamDef* pStreamDefOut);
     eEC eGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOut);
     eEC eGenerateRange(Range* pRange, StreamDef* pStreamDefOut);
 
