@@ -520,7 +520,7 @@ InfoSet* Metadata::pPartitionKey(Stz* szCatalogName,
                                  szSchemaName,
                                  szTableName,
 
-                                 pColumn->iColumnNo(),
+                                 i_Col,
                                  pColumn->szColNm(),
 
                                  C_VARGS_END);
