@@ -130,7 +130,7 @@
 
   // generate the asm for limit
   StreamDef[].duplicate to StreamDefOut[]
-  StreamDefOut[] <rows> >int LogicUnit[].genLimit to eError
+  <rows> >int LogicUnit[].genLimit to eError
 
   // check for error
   eError EC_NONE == not if

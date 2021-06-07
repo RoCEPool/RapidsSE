@@ -776,7 +776,7 @@ eEC LogicUnit::eGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut)
 /*----------------------------------------------------------------------------*/
 /* generate asm text for limit                                                */
 /*----------------------------------------------------------------------------*/
-eEC LogicUnit::eGenerateLimit(i8 iLimitRows, StreamDef* pStreamDefOut) {
+eEC LogicUnit::eGenerateLimit(i8 iLimitRows) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_LOGICUNIT, _FOOTER_);
 

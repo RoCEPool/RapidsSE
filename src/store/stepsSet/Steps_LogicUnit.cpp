@@ -432,9 +432,7 @@ void Step::vLogicUnitGenLimit(void)
 
   i8 iLimit = m_pDataStack->iPopInt(__func__);
 
-  StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
-
-  eEC eError = m_pJob->pLogicUnit_job()->eGenerateLimit(iLimit, pStreamDefOut);
+  eEC eError = m_pJob->pLogicUnit_job()->eGenerateLimit(iLimit);
 
   m_pDataStack->vPushInt(eError);
 

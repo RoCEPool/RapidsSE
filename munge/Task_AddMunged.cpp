@@ -28072,7 +28072,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  // generate the asm for limit\n"
     "  StreamDef[].duplicate to StreamDefOut[]\n"
-    "  StreamDefOut[] <rows> >int LogicUnit[].genLimit to eError\n"
+    "  <rows> >int LogicUnit[].genLimit to eError\n"
     "\n"
     "  // check for error\n"
     "  eError EC_NONE == not if\n"
