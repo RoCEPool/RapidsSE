@@ -76,6 +76,10 @@ Queue::~Queue(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* append object pointer to this queue                                        */
 /*----------------------------------------------------------------------------*/
 void Queue::vAppend(Object* pObject)
@@ -106,16 +110,6 @@ void Queue::vAppend(Object* pObject)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of values in queue                                              */
-/*----------------------------------------------------------------------------*/
-i8 Queue::nItems(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
-  
-  return m_nItems;
-}
-
-/*----------------------------------------------------------------------------*/
 /* dump the queue                                                             */
 /*----------------------------------------------------------------------------*/
 void Queue::vContentDump(Stz* aTab)
@@ -132,19 +126,24 @@ void Queue::vContentDump(Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump grid                                                                  */
+/* get number of items in queue                                               */
 /*----------------------------------------------------------------------------*/
-void Queue::vDump(eCN eClass, Object* pObject, Stz* aTab)
+i8 Queue::nItems(void)
 {
-  UNUSED(eClass);
-  UNUSED(aTab);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
   
-  Queue* pQueue = _pQueue(pObject);
+  return m_nItems;
+}
+
+/*----------------------------------------------------------------------------*/
+/* peek                                                                       */
+/*----------------------------------------------------------------------------*/
+Object* Queue::pPeek(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
   
-  vTrace("count %lld top %p end %p\n"_Stz,
-         pQueue->m_nItems,
-         pQueue->m_pTopBuffer,
-         pQueue->m_pEndBuffer);
+  RASSERT(0);
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

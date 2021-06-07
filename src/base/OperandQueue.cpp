@@ -62,7 +62,7 @@ void OperandQueue::vAppendOperand(Operand* pOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
   
-  ListNL_t<Operand>::vAppend(pOperand);
+  Queue::vAppend(pOperand);
 }
 /*----------------------------------------------------------------------------*/
 #else
@@ -82,7 +82,7 @@ bool OperandQueue::bPeekQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
   
-  Operand* pOperand = ListNL_t<Operand>::pHead();
+  Operand* pOperand = _pOperand(Queue::pPeek());
   
   return pOperand ? true : false;
 }
@@ -106,7 +106,7 @@ bool OperandQueue::bPeekQueueOoO(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
   
-  Operand* pOperand = ListNL_t<Operand>::pHead();
+  Operand* pOperand = _pOperand(Queue::pPeek());
   
   while (pOperand) {
     
@@ -150,7 +150,7 @@ Operand* OperandQueue::pPopQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
   
-  Operand* pOperand = ListNL_t<Operand>::pPop();
+  Operand* pOperand = _pOperand(Queue::pPop());
 
   return pOperand;
 }
@@ -174,13 +174,14 @@ Operand* OperandQueue::pPopQueueOoO(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
   
-  Operand* pOperand = ListNL_t<Operand>::pHead();
+  Operand* pOperand = _pOperand(Queue::pPeek());
   
   while (pOperand) {
     
     // is it a CANCELMARKER ?
     if (AM::bIsOperandOoO(pOperand)) {
-      vRemove(pOperand);
+      //vRemove(pOperand);
+      RASSERT(0);
       return pOperand;
     }
     
@@ -220,7 +221,7 @@ i8 OperandQueue::nQueuedOperands(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
 
-  i8 nOperands = ListNL_t<Operand>::nItems();
+  i8 nOperands = Queue::nItems();
 
   return nOperands;
 }

@@ -26,11 +26,11 @@ namespace BASE
     Queue(void);
     ~Queue(void) noexcept(false);
     
-    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
     void vAppend(Object* pObject);
-    i8    nItems(void);
     void  vContentDump(Stz* aTab);
+    i8    nItems(void);
+    Object* pPeek(void);
     Object* pPop(void);
     void  vReset(void);
 
