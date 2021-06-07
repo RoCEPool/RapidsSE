@@ -126,19 +126,19 @@ Op::~Op(void) noexcept(false)
 
   if (m_pQueueLeft->nItems() != 0) {
     vTrace("Operand Queue not empty\n"_Stz);
-    Operand *pOperand = m_pQueueLeft->pPop();
+    Operand *pOperand = m_pQueueLeft->pPopQueue();
     while (pOperand) {
       vTrace("Operand Queue for OP %s has %s\n"_Stz, m_sOpNm.azChar(), AM::pOperandName(pOperand));
-      pOperand = m_pQueueLeft->pPop();
+      pOperand = m_pQueueLeft->pPopQueue();
     }
     RASSERT(0);
   }
   if (m_pQueueRight->nItems() != 0) {
     vTrace("Operand Queue not empty\n"_Stz);
-    Operand *pOperand = m_pQueueRight->pPop();
+    Operand *pOperand = m_pQueueRight->pPopQueue();
     while (pOperand) {
       vTrace("Operand Queue for OP %s has %s\n"_Stz, m_sOpNm.azChar(), AM::pOperandName(pOperand));
-      pOperand = m_pQueueRight->pPop();
+      pOperand = m_pQueueRight->pPopQueue();
     }
     RASSERT(0);
   }

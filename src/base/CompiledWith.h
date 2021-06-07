@@ -84,7 +84,10 @@
 
 //#define WITH_PULSING EndDefine             // code for pulsing compiled in
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // temporary
+
+//#define WITH_NEW_OPERAND_QUEUE EndDefine   // code for new operand queue
 
 /*============================================================================*/
 /* end                                                                        */

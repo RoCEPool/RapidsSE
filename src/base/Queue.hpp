@@ -11,7 +11,7 @@ namespace BASE
   {
   private:
     Lock     m_okLock;
-    i8       m_iCount;
+    i8       m_nItems;
     QueueBuffer* m_pTopBuffer;
     QueueBuffer* m_pEndBuffer;
     
@@ -26,11 +26,11 @@ namespace BASE
     Queue(void);
     ~Queue(void) noexcept(false);
     
-    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
     void vAppend(Object* pObject);
-    i8    iCount(void);
     void  vContentDump(Stz* aTab);
+    i8    nItems(void);
+    Object* pPeek(void);
     Object* pPop(void);
     void  vReset(void);
 
