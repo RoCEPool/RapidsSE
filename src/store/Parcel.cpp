@@ -447,7 +447,8 @@ void Parcel::vSendToAllOriginPartitions(Op* pSrcOp)
       
       // sendNode is the partition node
       i8 iDstNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
-      vTrace(" >>>>>>>>>>>>>>>>  vSendToAllOriginPartitions  XK_ROBIN: DstNode:%lld OriginNode:%lld PtnNo:%lld\n"_Stz, iDstNode, pPipeline->i_Origin(), tPtnNo);
+      vTrace(" >>>>>>>>>>>>>>>>  vSendToAllOriginPartitions  XK_ROBIN: DstNode:%lld OriginNode:%lld PtnNo:%lld i_TablePtn:%lld  AM::nPtnsPerTable():%lld\n"_Stz,
+             iDstNode, pPipeline->i_Origin(), tPtnNo, i_TablePtn, AM::nPtnsPerTable());
       //ASSERT(iDstNode == pPipeline->i_Origin());
       pSrcOp->vSendNode(iDstNode);
 

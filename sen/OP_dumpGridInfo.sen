@@ -1,0 +1,43 @@
+/*============================================================================*/
+/* OP_dumpGridInfo.sen -- cat file                                                 */
+/*============================================================================*/
+
+" OP_dumpGridInfo.sen" .verbose
+
+
+/*----------------------------------------------------------------------------*/
+/* dumpGrindInfo action                                                       */
+/*----------------------------------------------------------------------------*/
+: dumpGrindInfo_action
+
+  //">>>>>>>>>>>>> dumpGrindInfo_action" .
+
+
+  grid::dumpInfo locals| pDumpBuffer |
+  pDumpBuffer .
+
+  // Somehow the these 2 lines, caused a crash after printed out
+  //pDumpBuffer to Operand[]
+  //Operand[].pipeOut
+
+  true
+;
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: dumpGrindInfo :: dumpGrindInfo  ;
+
+: dumpGrindInfo_cmdTags _cmdTags tagCopy: localLiteOp_tags
+  tags{
+    <cmdDesc>     = "--desc for op--"
+    <params>      = 0
+  }
+;
+
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

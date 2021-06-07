@@ -201,6 +201,31 @@ void Node::vDsv(void)
          aNS[m_eState]);
 }
 
+
+/**
+ * @brief returns a string buffer contains Node Info
+ * @details returns a string buffer contains Node Info:
+ * Node ID, Node Name, Node Address and Node Port Number
+ * <p>
+ * @param[in] s4K szBuffer
+ * @return s4K
+ *
+ */
+s4K Node::szDumpInfo(s4K szBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+
+  szBuffer.vCatSprint("    [%lld] Node %s : degOfPar %d IPAddr %s portNo %lld %s\n"_Stz,
+         m_iNodeNo,
+         m_sNodeNm.szStz(),
+         m_nDegOfPar,
+         m_sIPAddr.szStz(),
+         m_iPortNo,
+         aNS[m_eState]);
+
+  return szBuffer;
+}
+
 /*----------------------------------------------------------------------------*/
 /* get node state                                                             */
 /*----------------------------------------------------------------------------*/

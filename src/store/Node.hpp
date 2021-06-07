@@ -60,6 +60,7 @@ namespace STORE
     i8   iPortNo(void);
   
     void vDsv(void);
+    s4K   szDumpInfo(s4K szBuffer);
     eNS  eState(void);
     void vState(eNS eState);
 

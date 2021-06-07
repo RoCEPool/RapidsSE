@@ -48,6 +48,7 @@ void Step::vAddSteps_Grid(void)
   vAddStep("grid::thisNode@"_Stz,         &Step::vGridThisNodeFetch);
   vAddStep("grid::thisNodeName@"_Stz,     &Step::vGridThisNodeNameFetch);
   vAddStep("grid::toNode"_Stz,            &Step::vGridToNode);
+  vAddStep("grid::dumpInfo"_Stz,          &Step::vGridDumpInfo);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -325,6 +326,24 @@ void Step::vGridToNode(void)
   
   m_pDataStack->vPushInt(i_Node);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grid::vGridDumpInfo -- display nodes in the grid                           */
+/*----------------------------------------------------------------------------*/
+void Step::vGridDumpInfo(void)
+{
+  ENTRY();
+
+  //vTrace(">>>>>>>> grid::dumpInfo"_Stz);
+
+  s4K pDumpBuffer = AM::pGrid()->szDumpInfo();
+
+  m_pDataStack->vPushStr(pDumpBuffer);
+
+  //m_pDataStack->vPushStz(pDumpBuffer);
+
   EXIT();
 }
 

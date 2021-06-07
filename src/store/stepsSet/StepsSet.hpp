@@ -374,6 +374,7 @@ public:
   // grid
   void vGridBootNodes(void);
   void vGridConnectedNodes(void);
+  void vGridDumpInfo(void);
   void vGridFindNode(void);
   void vGridIncConnectedNodes(void);
   void vGridListNodes(void);

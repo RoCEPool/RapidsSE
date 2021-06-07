@@ -1099,6 +1099,20 @@
     end ;
     "
     api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // prototype dump grid info
+
+  STD_PATH
+  "
+  procedure dumpGrid
+  begin
+    stage stageA on origin :
+      start | periodic once | dumpGrindInfo  | output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get meta object

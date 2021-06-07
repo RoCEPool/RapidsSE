@@ -228,6 +228,54 @@ Node* Grid::pFindNodeByNodeNo(i8 iNodeNo)
 }
 
 /**
+ * @brief returns a string buffer contains Grid Info
+ * @details returns a string buffer contains Grid Info:
+ * Node ID, Node Name, Node Address and Node Port Number
+ * <p>
+ *
+ * @return s4K
+ *
+ */
+s4K Grid::szDumpInfo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+
+  s4K sDumpBuffer = "\n\n\n==== DumpGrid: =======================================\n"_Stz;
+
+  sDumpBuffer.vCatSprint("Dsv of Grid: %s (connect code %lld)\n"_Stz,
+         m_sGridNm.szStz(),
+         m_iConnectCode);
+
+  sDumpBuffer.vCatSprint("  this node %lld %s\n"_Stz,
+         m_iThisNode,
+         m_pThisNode ? m_pThisNode->szNodeNm() : "no m_pNode"_Stz);
+
+  sDumpBuffer.vCatSprint("  %s started; start node %lld\n"_Stz,
+         m_bHasStarted ? "has"_Stz : "not"_Stz,
+         m_iStartNodeNo  );
+
+  sDumpBuffer.vCatSprint("  bootNodes %lld definedNodes %lld "
+         "connectedNodes %lld nodes %lld \n"_Stz,
+         m_nBootNodes,
+         m_nDefinedNodes,
+         m_nConnectedNodes,
+         m_nNodes);
+
+
+
+  for (Node_I oNode_I(0,C_ALL); oNode_I.bMore(); oNode_I.vNext()) {
+    Node* pNode = (*oNode_I);
+    if (pNode) {
+      sDumpBuffer = pNode->szDumpInfo(sDumpBuffer);
+    }
+  }
+
+  sDumpBuffer.vCatSprint("%s"_Stz,
+                         "======================================================\n\n"_Stz);
+  return sDumpBuffer;
+}
+
+/**
  * @brief returns a node object matched the node ID
  * @details returns a node object matched the node ID
  * <p>

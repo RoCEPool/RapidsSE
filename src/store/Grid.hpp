@@ -52,6 +52,7 @@ namespace STORE
     i8   nDefinedNodes(void);
     i8   nConnectedNodes(void);
     void vDsv(void);
+    s4K  szDumpInfo(void);
     Stz* szGridNm(void);
     void vHasStarted(bool bHasStarted);
     bool bHasStarted(void);
