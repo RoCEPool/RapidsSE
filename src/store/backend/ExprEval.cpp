@@ -68,8 +68,8 @@ ExprEval::ExprEval(void)
   //m_xAggStack
   
   //m_sProjectAsm;
-  //m_sAggInitAsm;
 
+  //m_sAggInitAsm;
   //m_sAggAsm;
 
   //m_sGbyIdxAsm;
@@ -77,8 +77,6 @@ ExprEval::ExprEval(void)
   //m_sPayLoadKeyAsm;
   //m_sPayLoadStoreAsm;
   //m_sPayLoadToBufferAsm;
-
-  //m_pStreamInCol;
 
   //_checkInitialised_(CN_EXPREVAL);
 
