@@ -203,7 +203,7 @@ i8 Key::iGetStrElm(IndexDef* pIndexDef, i8 i_Element, char* sKeyValue)
   i8 nBytes = 0;
   Dtm* ayCursor = aElmSeq_dtm();
   byte* ayElm;
-  i8 nSize;
+  i8 nSize = 0;
 
   for (i8 i_Col = 0; i_Col < pIndexDef->nColumns(); i_Col++) {
 

@@ -30,6 +30,11 @@ namespace STORE
     /* 4 */ PK_ENUMS
   };
 
+  class StoreStack : public IntStack
+  {
+
+  };
+
   class ExprEval : public Definition
   {
   public:
@@ -60,7 +65,6 @@ namespace STORE
 
     i8       m_iProjections;
 
-    Column*  m_pStreamInCol[C_MAX_COLUMNS];
     ePK      m_eProjectKind[C_MAX_COLUMNS];
 
     // must be last
