@@ -5,7 +5,12 @@
 
 namespace BASE
 {
-  class OperandQueue : public ListNL_t<Operand>
+  class OperandQueue
+#ifdef WITH_NEW_OPERAND_QUEUE
+                     : public Queue
+#else
+                     : public ListNL_t<Operand>
+#endif
   {
   private:
   
