@@ -64,14 +64,9 @@
   // set the indexTree in the devSrcIxt
   Index[].indexTree DevSrcIxt.indexTree!
 
-  // set the streamDef in the devSrcRow
-  StreamDef[]\clear DevSrcRow.streamDef!
-
   // new a stream def
   Table[] StreamDef[].new
   StreamDef[].duplicate to streamDefOut[]
-
-  ZK_STARTMARKER_handler
 
   // evalute the expression
   ExprEval[].new
@@ -80,6 +75,7 @@
 
   // check for error
   eError EC_NONE == not if
+    Pipein[].delete
     eError op__exprEvalExecErr
     true
     exit
@@ -91,16 +87,22 @@
 
   // check for error
   eError EC_NONE == not if
+    Pipein[].delete
     eError op__asmGenExecErr
     true
     exit
   then
 
+  PipeIn[]\clear op::pipeout
+
+  // set the streamDef in the devSrcRow
+  StreamDef[]\clear DevSrcRow.streamDef!
+
   // create rowPix in potRlu[] from streamDefOut[]
   false streamDefOut[] PotRlu[].rowPix!
 
   // pipeout the streamDefOut
-  StreamDef[].pipeOut
+  streamDefOut[].pipeOut
 
   // create the compiler
   Counter0[] if
