@@ -78,6 +78,7 @@ assert::stack_0
 
 "i" .verbose
 
+  "OP_indexScan.sen"            include
   "OP_input.sen"                include
   "OP_insDel.sen"               include
   "OP_insert.sen"               include
@@ -145,7 +146,6 @@ assert::stack_0
 
 "r" .verbose
 
-  "OP_range.sen"                include
   "OP_rdCrwFile.sen"            include
   "OP_rdCsvChunk.sen"           include
   "OP_rdCsvCyclic.sen"          include

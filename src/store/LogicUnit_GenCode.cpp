@@ -282,10 +282,9 @@ bool LogicUnit::bGenerateAsm(Stz* aText)
 /*----------------------------------------------------------------------------*/
 /* generate asm text for aggregates                                           */
 /*----------------------------------------------------------------------------*/
-eEC LogicUnit::eGenerateAggregate(ExprEval* pExprEval, StreamDef* pStreamDefOut)
+eEC LogicUnit::eGenerateAggregate(ExprEval* pExprEval)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_LOGICUNIT, _FOOTER_);
-  UNUSED(pStreamDefOut);
   
   TagSet oTagSet;
   LocalFile oFile;
@@ -439,7 +438,7 @@ eEC LogicUnit::eGenerateAggregate(ExprEval* pExprEval, StreamDef* pStreamDefOut)
 /*----------------------------------------------------------------------------*/
 /* generate asm text for filter                                              */
 /*----------------------------------------------------------------------------*/
-eEC LogicUnit::eGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
+eEC LogicUnit::eGenerateFilter(ExprEval* pExprEval) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_LOGICUNIT, _FOOTER_);
 
@@ -564,10 +563,9 @@ eEC LogicUnit::eGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
 /*----------------------------------------------------------------------------*/
 /* generate asm text for groupby                                              */
 /*----------------------------------------------------------------------------*/
-eEC LogicUnit::eGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut)
+eEC LogicUnit::eGenerateGroupBy(ExprEval* pExprEval)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_LOGICUNIT, _FOOTER_);
-  UNUSED(pStreamDefOut);
 
   TagSet oTagSet;
   LocalFile oFile;
@@ -870,7 +868,7 @@ eEC LogicUnit::eGenerateLimit(i8 iLimitRows) {
 /*----------------------------------------------------------------------------*/
 /* generate asm text for loopJoin                                             */
 /*----------------------------------------------------------------------------*/
-eEC LogicUnit::eGenerateLoopJoin(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
+eEC LogicUnit::eGenerateLoopJoin(ExprEval* pExprEval) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_LOGICUNIT, _FOOTER_);
 
@@ -994,11 +992,9 @@ eEC LogicUnit::eGenerateLoopJoin(ExprEval* pExprEval, StreamDef* pStreamDefOut) 
 /*----------------------------------------------------------------------------*/
 /* generate asm text for projection                                           */
 /*----------------------------------------------------------------------------*/
-eEC LogicUnit::eGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOut)
+eEC LogicUnit::eGenerateProjection(ExprEval* pExprEval)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_LOGICUNIT, _FOOTER_);
-
-  UNUSED(pStreamDefOut);
   
   TagSet oTagSet;
   LocalFile oFile;
@@ -1115,10 +1111,9 @@ eEC LogicUnit::eGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOut
 /*----------------------------------------------------------------------------*/
 /* generate asm text for range (index)                                        */
 /*----------------------------------------------------------------------------*/
-eEC LogicUnit::eGenerateRange(Range* pRange, StreamDef* pStreamDefOut) {
+eEC LogicUnit::eGenerateIndexScan(ExprEval* pExprEval) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_LOGICUNIT, _FOOTER_);
-  UNUSED(pStreamDefOut);
 
   TagSet oTagSet;
   LocalFile oFile;
@@ -1147,7 +1142,7 @@ eEC LogicUnit::eGenerateRange(Range* pRange, StreamDef* pStreamDefOut) {
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_CRWBUFFER, &oTagSet, sMacro));
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_ROWBUFFER, &oTagSet, sMacro));
   oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_EOSMARKER, &oTagSet, sMacro));
-
+/*
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // DATAPULSE HANDLER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1169,7 +1164,7 @@ eEC LogicUnit::eGenerateRange(Range* pRange, StreamDef* pStreamDefOut) {
   //   to execute PROJECT_ALL for each row
   oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_STAR, &oTagSet, sMacro));
   oTagSet.vReset();
-
+*/
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query Done
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

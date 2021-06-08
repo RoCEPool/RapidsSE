@@ -134,7 +134,7 @@
   then
 
   // generate the asm for projection
-  StreamDefOut[] ExprEval[] LogicUnit[].genProjection to eError
+  ExprEval[] LogicUnit[].genProjection to eError
   ExprEval[].delete
 
   // check for error

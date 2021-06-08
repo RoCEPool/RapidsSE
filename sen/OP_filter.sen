@@ -143,7 +143,7 @@
   then
 
   // generate the asm for the filter
-  StreamDefOut[] ExprEval[] LogicUnit[].genFilter to eError
+  ExprEval[] LogicUnit[].genFilter to eError
   ExprEval[].delete
 
   // check for error

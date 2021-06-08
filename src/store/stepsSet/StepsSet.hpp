@@ -197,6 +197,9 @@ public:
   // devSrcRow
   void vDevSrcRowStreamDefStore(void);
 
+  // devSrcIxt
+  void vDevSrcIxtIndexTreeStore(void);
+
   // dic
   void vDicDelete(void);
   void vDicFirstWord(void);
@@ -876,10 +879,10 @@ public:
   void vLogicUnitGenAggregate(void);
   void vLogicUnitGenAsm(void);
   void vLogicUnitGenFilter(void);
+  void vLogicUnitGenIndexScan(void);
   void vLogicUnitGenLimit(void);
   void vLogicUnitGenLoopJoin(void);
   void vLogicUnitGenProjection(void);
-  void vLogicUnitGenRange(void);
   void vLogicUnitHandlerFetch(void);
   void vLogicUnitHandlerStore(void);
   void vLogicUnitInit(void);
