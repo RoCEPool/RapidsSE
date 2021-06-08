@@ -15750,6 +15750,7 @@ void Task::vAddMunged(Task* )
     ": ZK_PROFILE_handler          \\handler STANDARD_PIPEOUT ;\n"
     ": ZK_PROGRESSUNITS_handler    \\handler STANDARD_PIPEOUT ;\n"
     ": ZK_PULSEDMARKER_handler     \\handler STANDARD_PIPEOUT ;\n"
+    ": ZK_RESENDMARKER_handler     \\handler STANDARD_PIPEOUT ;\n"
     ": ZK_RETURNPIPELINE_handler   \\handler STANDARD_PIPEOUT ;\n"
     ": ZK_ROWBUFFER_handler        \\handler STANDARD_PIPEOUT ;\n"
     ": ZK_SEEKOFFSETS_handler      \\handler STANDARD_PIPEOUT ;\n"

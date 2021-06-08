@@ -45,6 +45,7 @@
 : ZK_PROFILE_handler          \handler STANDARD_PIPEOUT ;
 : ZK_PROGRESSUNITS_handler    \handler STANDARD_PIPEOUT ;
 : ZK_PULSEDMARKER_handler     \handler STANDARD_PIPEOUT ;
+: ZK_RESENDMARKER_handler     \handler STANDARD_PIPEOUT ;
 : ZK_RETURNPIPELINE_handler   \handler STANDARD_PIPEOUT ;
 : ZK_ROWBUFFER_handler        \handler STANDARD_PIPEOUT ;
 : ZK_SEEKOFFSETS_handler      \handler STANDARD_PIPEOUT ;

@@ -1814,6 +1814,7 @@ i8 AM::iOperandZkKind(Operand* pOperand)
         case OM_EXITEDMARKER:  eOperand = ZK_EXITEDMARKER;  break;
         case OM_EXITEDEARLYMARKER:  eOperand = ZK_EXITEDEARLYMARKER;  break;
         case OM_PULSEDMARKER:  eOperand = ZK_PULSEDMARKER;  break;
+        case OM_RESENDMARKER:  eOperand = ZK_RESENDMARKER;  break;
         case OM_STARTMARKER:   eOperand = ZK_STARTMARKER;   break;
         case OM_STARTEDMARKER: eOperand = ZK_STARTEDMARKER; break;
         default:
