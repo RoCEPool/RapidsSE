@@ -444,7 +444,13 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
           AM::vDeleteOperand(pOperand);
           break;
         }
-          
+
+        case OM_RESENDMARKER: {
+          //vTrace("Pipeline Job: RESENDMARKER\n"_Stz);
+          AM::vDeleteOperand(pOperand);
+          break;
+        }
+
         case OM_RETURNMARKER: {
           AM::vDeleteOperand(pOperand);
           break;
