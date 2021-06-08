@@ -1,0 +1,166 @@
+/*============================================================================*/
+/* _backEnd - work in progress                                                */
+/*============================================================================*/
+
+bc;
+
+
+create table nation (
+	 N_NATIONKEY       INTEGER NOT NULL,
+	 N_NAME            CHAR(25) NOT NULL,
+	 N_REGIONKEY       INTEGER NOT NULL,
+	 N_COMMENT         VARCHAR(152)
+);
+
+print "loading nation.csv..." ;
+
+load nation "../TPCH/SF1/nation.tbl" ;
+
+
+/*
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// LOWER BOUND (one column)
+// create index idx on nation (n_nationkey);
+// select * from nation where n_nationKey > 1 ;
+
+pipeline is
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    indexScan 0 nation idx "LBOUND $IC1 1 > " | stageC
+
+  stage stageC on origin:
+    output | sink | stageA
+end;
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// UPPER BOUND (one column)
+// create index idx on nation (n_nationkey);
+// select * from nation where n_nationkey <= 10;
+
+pipeline is
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    indexScan 0 nation idx "UBOUND $IC1 10 <= " | stageC
+
+  stage stageC on origin:
+    output | sink | stageA
+end;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// LOWER AND UPPER BOUND (one column)
+// create index idx on nation (n_nationkey);
+// select * from nation where n_nationkey > 1 and n_nationkey <= 10;
+
+pipeline is
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    indexScan 0 nation idx "LBOUND I$1 1 > UBOUND $I1 10 <= " | stageC
+
+  stage stageC on origin:
+    output | sink | stageA
+end;
+
+
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// LOWER BOUND (two columns)
+// create index idx on nation (n_nationkey, n_regionkey);
+// select * from nation where n_nationKey > 1 and n_regionKey > 3;
+
+pipeline is
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    indexScan 0 nation idx "LBOUND $I1 1 > LBOUND I2 3 > " | stageC
+
+  stage stageC on origin:
+    output | sink | stageA
+end;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// LOWER BOUND (two columns)
+// create index idx on nation (n_nationkey, n_regionkey);
+// select * from nation where n_nationKey > 1 and n_regionKey >= 3;
+
+pipeline is
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    indexScan 0 nation idx "LBOUND $I1 1 > LBOUND I2 3 >= " | stageC
+
+  stage stageC on origin:
+    output | sink | stageA
+end;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// UPPER BOUND (two columns)
+// create index idx on nation (n_nationkey, n_regionkey);
+// select * from nation where n_nationkey <= 10  and n_regionKey < 3;
+
+pipeline is
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    indexScan 0 nation idx "UBOUND $I1 10 <= UBOUND $I2 3 <" | stageC
+
+  stage stageC on origin:
+    output | sink | stageA
+end;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// LOWER AND UPPER BOUND (two columns)
+// create index idx on nation (n_nationkey, n_regionkey);
+// select * from nation where n_nationkey > 1 and n_nationkey <= 10 and n_regionKey > 2 and n_regionkey <= 20 ;
+
+pipeline is
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    indexScan 0 nation idx "LBOUND $I1 1 > UBOUND $I1 10 <= LBOUND $I$2 2 > UBOUND $I2 20 <=" | stageC
+
+  stage stageC on origin:
+    output | sink | stageA
+end;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// LOWER AND UPPER BOUND (two columns)
+// create index idx on nation (n_nationkey, n_regionkey);
+// select * from nation where n_nationkey > 1 and n_nationkey <= 10 and n_regionKey >= 2 and n_regionkey <= 20 ;
+
+pipeline is
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    indexScan 0 nation idx "LBOUND $I1 1 > UBOUND $I1 10 <= LBOUND $I$2 2 >= UBOUND $I2 20 <=" | stageC
+
+  stage stageC on origin:
+    output | sink | stageA
+end;
+
+*/
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
