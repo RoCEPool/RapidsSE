@@ -25,6 +25,7 @@
 #include "CrvBuffer.hpp"
 #include "TablePtn.hpp"
 #include "Table.hpp"
+#include "ShardDef.hpp"
 
 #include "Grid.hpp"
 
@@ -445,7 +446,7 @@ InfoSet* Metadata::pColumnDefs(Stz* szCatalogName,
         
     Table* pTable = pDicStack->pTable();
     
-    vTrace("TABLE %s\n"_Stz,pTable->szTableNm());
+    //vTrace("TABLE %s\n"_Stz,pTable->szTableNm());
     
     StreamDef* pStreamDef = pTable->pStreamDef();
     
@@ -476,6 +477,62 @@ InfoSet* Metadata::pColumnDefs(Stz* szCatalogName,
   
   return pInfoSet;
 }
+
+/*----------------------------------------------------------------------------*/
+/* get the colummns of partition key for table                                */
+/*----------------------------------------------------------------------------*/
+InfoSet* Metadata::pPartitionKey(Stz* szCatalogName,
+                                 Stz* szSchemaName,
+                                 Stz* szTableName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METADATA,_FOOTER_);
+
+  Table* pLookupTable = AM::pTableFind(C_TDEF_PARTITIONKEY);
+  StreamDef* pLookupStreamDef = pLookupTable->pStreamDef();
+
+  InfoSet* pInfoSet = new InfoSet(pLookupStreamDef);
+  
+  // v1: assume szCatalogName, szSchemaName, szTableName are set
+  //            szColumnName is not set
+  
+  RASSERT(szCatalogName);
+  RASSERT(szSchemaName);
+  RASSERT(szTableName);
+
+  DicStack* pDicStack = new DicStack;
+  
+  Row* pRow;
+  
+  if (pDicStack->bTest(szCatalogName,szSchemaName,szTableName)) {
+        
+    Table* pTable = pDicStack->pTable();
+    
+    //vTrace("TABLE %s\n"_Stz,pTable->szTableNm());
+        
+    ShardDef*  pShardDef= pTable->pShardDef();
+
+    i8 nCols = pShardDef->nColumns();
+    for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+      Column* pColumn = pShardDef->pGetColumn(i_Col);
+      
+      pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+                                 szCatalogName,
+                                 szSchemaName,
+                                 szTableName,
+
+                                 i_Col,
+                                 pColumn->szColNm(),
+
+                                 C_VARGS_END);
+    }
+  }
+  
+
+  delete pDicStack;
+  
+  return pInfoSet;
+}
+
 /*----------------------------------------------------------------------------*/
 /* lookup a catalog and return an infoset about it                            */
 /*----------------------------------------------------------------------------*/

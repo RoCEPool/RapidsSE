@@ -85,6 +85,8 @@ assert::stack_0
 
 "j" .verbose
 
+  "OP_loopJoin.sen"             include
+
 "k" .verbose
 
 "l" .verbose

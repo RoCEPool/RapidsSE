@@ -529,10 +529,13 @@ void QueryNode::vTransmogrifyTo(QueryNode* pTemplate, b1 bKeepName)
       m_pProperties = new PlanNodeList();
     }
 
-    PlanNode* pProperty;
-    while ( (pProperty = pTemplate->m_pProperties->pPop()) != nullptr ) {
+    PlanNodeIter* pIter = pTemplate->pNewPropertyIter();
+    while (pIter->bHasNext()) {
+      // Deep copy the property so that we aren't modifying the template
+      QueryNode* pProperty = _pQueryNode(pIter->pNext())->pDeepCopy(false);
       m_pProperties->vAppend(pProperty);
     }
+    delete pIter;
   }
 
   if (m_pChildren) {
@@ -544,10 +547,13 @@ void QueryNode::vTransmogrifyTo(QueryNode* pTemplate, b1 bKeepName)
       m_pChildren = new PlanNodeList();
     }
 
-    PlanNode* pChild;
-    while ((pChild = pTemplate->m_pChildren->pPop()) != nullptr ) {
+    PlanNodeIter* pIter = pTemplate->pNewChildrenIter();
+    while (pIter->bHasNext()) {
+      // Deep copy the child so that we aren't modifying the template
+      QueryNode* pChild = _pQueryNode(pIter->pNext())->pDeepCopy(true);
       m_pChildren->vAppend(pChild);
     }
+    delete pIter;
   }
 }
 

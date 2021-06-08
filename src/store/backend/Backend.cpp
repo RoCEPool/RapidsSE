@@ -281,68 +281,25 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
 
 
   // Iterate each projected expression to look for aggregates if any
-  bool bDeleteOrdExpr = false;
-  QueryNode *pOrdinalExpr;
-  bool bHasAgg = false;
+  QueryNode* pOrdinalProjectedColumns = nullptr;
 
+  // get the ordinal projected columns relative to group by
+  if (AggregateOp::bIsOfType(pNode))
+    pOrdinalProjectedColumns = AggregateOp::pOrdinalProjectedColumnsRelativeToGroupBy(pNode, pBackend->m_pPlanRoot);
 
-  // TO SEPARATE OUT INTO A FUNCTION !!!
-  if (pProjectedColumns->bHasChildren()) {
-    // get a plan node iterator
-    PlanNodeIter *pIter = pProjectedColumns->pNewChildrenIter();
-
-    while (pIter->bHasNext()) {
-      // get the next projectedColumn from the iterator
-      QueryNode *pProjectedColumn = static_cast<QueryNode *>(pIter->pNext());
-      ASSERT(pProjectedColumn);
-      ASSERT(ProjectedColumn::bIsOfType(pProjectedColumn));
-
-      // get the expr node
-      QueryNode *pExprNode = static_cast<QueryNode *>(GraphNav::pFindProperty("expr"_Stz, pProjectedColumn));
-      ASSERT(pExprNode);
-
-      pOrdinalExpr = nullptr;
-      if (pBackend->m_pColExprList) {
-        pOrdinalExpr = Expr::pSymbolicToOrdinal(pExprNode, pBackend->m_pColExprList, pBackend->m_pPlanRoot);
-        bDeleteOrdExpr = true;
-      }
-
-      if (!pOrdinalExpr)
-        pOrdinalExpr = pExprNode;
-
-      if (Expr::bContainsAnAggregate(pOrdinalExpr)) {
-        bHasAgg = true;
-        break;
-      }
-
-      if (bDeleteOrdExpr) {
-        delete pOrdinalExpr;
-        bDeleteOrdExpr = false;
-      }
-
-    }
-    delete pIter;
-
-    if (bDeleteOrdExpr)
-      delete pOrdinalExpr;
-  }
-
-  // Iterate each projected expression
+  // Iterate each ordinal projected expression
   if (pProjectedColumns->bHasChildren()) {
 
-    if (bHasAgg)
       sPipeline->vCatSprint(
           "    | aggreg 1 \""
           ""_Stz);
-    else
-      sPipeline->vCatSprint(
-          "    | project 1 \""
-          ""_Stz);
 
     // get a plan node iterator
     PlanNodeIter *pIter = pProjectedColumns->pNewChildrenIter();
-
+    i8 iChild = -1;
     while (pIter->bHasNext()) {
+
+      iChild++;
 
       // append comma
       if (bFirstExpr)
@@ -372,9 +329,46 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
         }
       }
 
-      vAppendExpr(pBackend, pExprNode, szAliasName);
+      if (AggregateOp::bIsOfType(pNode)) {
+
+        // get the ordinal projected column relative to group by
+        QueryNode *pRelativeOrdinal = static_cast<QueryNode *>(pOrdinalProjectedColumns->pNthChild(iChild));
+        QueryNode *pOrdinalExprNode = static_cast<QueryNode *>(GraphNav::pFindProperty("expr"_Stz, pRelativeOrdinal));
+        ASSERT(pOrdinalExprNode);
+
+        // generate $K? relative to group by key if its a column ordinal
+        if ( ! ColumnRef::bIsOfType(pExprNode) &&
+               ColumnOrdinal::bIsOfType(pOrdinalExprNode)) {
+
+          eCT eType = Expr::eType(pExprNode, pBackend->m_pPlanRoot);
+
+          sPipeline->vCatSprint(
+              " type %s"
+              ""_Stz,
+              aCT[eType]);
+
+          sPipeline->vCatSprint(
+              " $K%lld"
+              ""_Stz,
+              ColumnOrdinal::iOrdinal(pOrdinalExprNode));
+
+          if (szAliasName) {
+            sPipeline->vCatSprint(
+                " as %s"
+                ""_Stz,
+                szAliasName);
+          }
+        } else {
+          vAppendExpr(pBackend, pExprNode, szAliasName);
+        }
+      }
+      else {
+        vAppendExpr(pBackend, pExprNode, szAliasName);
+      }
     }
     delete pIter;
+    if (pOrdinalProjectedColumns)
+      delete pOrdinalProjectedColumns;
 
     // if aggregOp , get a groupBy iterator
     if (AggregateOp::bIsOfType(pNode)) {
@@ -440,7 +434,7 @@ void Backend::vAppendFilterOp(Backend* pBackend, QueryNode* pNode)
   ASSERT(pOrdinalFilterExpr);
 
   sPipeline->vCatSprint(
-      "    | filter 1 \""
+      "    | filter 1 \" type BOOLEAN "
       ""_Stz);
 
   // Walk the expr node plan graph
@@ -1034,10 +1028,7 @@ GraphNav::eWalkCtrl Backend::vVisitorStatement(PlanNode* pRootNode, s256& sPath,
     // ProjectOp
 
     else if (ProjectOp::bIsOfType(pQueryNode)) {
-      if (ProjectOp::bHasAnAggregate(pQueryNode))
-        vAppendAggregateOp(pBackend, pQueryNode);
-      else
-        vAppendProjectOp(pBackend, pQueryNode);
+      vAppendProjectOp(pBackend, pQueryNode);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

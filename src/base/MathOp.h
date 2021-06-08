@@ -46,6 +46,14 @@ static eEO eMathOp_SumCode[DM_ENUMS] =
     //   NONE     BCD            BOL      DTE      FLT            INT            IVL           IVY        TME      TSP      VCH      UNK
     {    EO_NONE, EO_ADD_BCDBCD, EO_NONE, EO_NONE, EO_ADD_FLTFLT, EO_ADD_INTINT, EO_NONE/*X*/, EO_NONE/*X*/, EO_NONE, EO_NONE, EO_NONE, EO_NONE};
 
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// DATUMS
+
+static eEO eMathOp_DatumCode[DM_ENUMS] =
+    // NONE     BCD         BOL      DTE      FLT      INT         IVL      IVY,     TME      TSP           VCH        UNK
+    {  EO_NONE, EO_INTEGER, EO_NONE, EO_DATE, EO_NONE, EO_INTEGER, EO_NONE, EO_NONE, EO_TIME, EO_TIMESTAMP, EO_STRING, EO_PUSHNULL    };
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // AND
 

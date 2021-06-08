@@ -53,7 +53,7 @@ Queue::Queue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
   
-  m_iCount = 0;
+  m_nItems = 0;
   m_pTopBuffer = nullptr;
   m_pEndBuffer = nullptr;
 
@@ -76,6 +76,10 @@ Queue::~Queue(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* append object pointer to this queue                                        */
 /*----------------------------------------------------------------------------*/
 void Queue::vAppend(Object* pObject)
@@ -85,7 +89,7 @@ void Queue::vAppend(Object* pObject)
   m_okLock.vGrabWrite();
   
   if ( ! m_pEndBuffer ) {
-    ASSERT(0 == m_iCount);
+    ASSERT(0 == m_nItems);
     // need to add first buffer
     vExpand();
   }
@@ -100,19 +104,9 @@ void Queue::vAppend(Object* pObject)
     UNUSED(b);
   }
   
-  m_iCount++;
+  m_nItems++;
   
   m_okLock.vDropWrite();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of values in queue                                              */
-/*----------------------------------------------------------------------------*/
-i8 Queue::iCount(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
-  
-  return m_iCount;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -123,7 +117,7 @@ void Queue::vContentDump(Stz* aTab)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
   
   vTrace("%sQueue: %p\n"_Stz, aTab, this);
-  vTrace("%s  Count %lld\n"_Stz, aTab, m_iCount);
+  vTrace("%s  Count %lld\n"_Stz, aTab, m_nItems);
   vTrace("%s  TopBuffer %p\n"_Stz, aTab, m_pTopBuffer);
   vTrace("%s  EndBuffer %p\n"_Stz, aTab, m_pEndBuffer);
   
@@ -132,19 +126,24 @@ void Queue::vContentDump(Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump grid                                                                  */
+/* get number of items in queue                                               */
 /*----------------------------------------------------------------------------*/
-void Queue::vDump(eCN eClass, Object* pObject, Stz* aTab)
+i8 Queue::nItems(void)
 {
-  UNUSED(eClass);
-  UNUSED(aTab);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
   
-  Queue* pQueue = _pQueue(pObject);
+  return m_nItems;
+}
+
+/*----------------------------------------------------------------------------*/
+/* peek                                                                       */
+/*----------------------------------------------------------------------------*/
+Object* Queue::pPeek(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
   
-  vTrace("count %lld top %p end %p\n"_Stz,
-         pQueue->m_iCount,
-         pQueue->m_pTopBuffer,
-         pQueue->m_pEndBuffer);
+  RASSERT(0);
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -159,7 +158,7 @@ Object* Queue::pPop(void)
   
   // are there queue buffers?
   if (! m_pTopBuffer) {
-    ASSERT(! m_iCount);
+    ASSERT(! m_nItems);
     ASSERT(! m_pEndBuffer);
     m_okLock.vDropWrite();
     return nullptr;
@@ -179,8 +178,8 @@ Object* Queue::pPop(void)
   // a pointer was popped from a buffer,
   // therefore reduce the total number of object pointers in the queue
   if (pObject)
-    m_iCount--;
-  ASSERT(m_iCount >= 0);
+    m_nItems--;
+  ASSERT(m_nItems >= 0);
   
   m_okLock.vDropWrite();
   
@@ -194,12 +193,12 @@ void Queue::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
   
-  RASSERT(0 == m_iCount);
+  RASSERT(0 == m_nItems);
 
   while (m_pTopBuffer)
     vDiscard();
   
-  m_iCount = 0;
+  m_nItems = 0;
     
   ASSERT( ! m_pEndBuffer );
   ASSERT( ! m_pTopBuffer );
@@ -265,7 +264,7 @@ void Queue::vVerify(void)
     pQbuffer->vVerify();
   }
   
-  ASSERT(iCount == m_iCount);
+  ASSERT(iCount == m_nItems);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -176,7 +176,7 @@ i8 Key::iGetIntElm(void)
 /*----------------------------------------------------------------------------*/
 i8 Key::iGetIntElm(IndexDef* pIndexDef, i8 i_Element)
 {
-  i8 nBytes;
+  i8 nBytes = 0;
   Dtm* ayCursor = aElmSeq_dtm();
   i8 iVal = C_UNKNOWN;
   
@@ -193,6 +193,34 @@ i8 Key::iGetIntElm(IndexDef* pIndexDef, i8 i_Element)
   }
   RASSERT(iVal != C_UNKNOWN);
   return iVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get element as str (assuming str)                                         */
+/*----------------------------------------------------------------------------*/
+i8 Key::iGetStrElm(IndexDef* pIndexDef, i8 i_Element, char* sKeyValue)
+{
+  i8 nBytes = 0;
+  Dtm* ayCursor = aElmSeq_dtm();
+  byte* ayElm;
+  i8 nSize = 0;
+
+  for (i8 i_Col = 0; i_Col < pIndexDef->nColumns(); i_Col++) {
+
+    Column* pCol = pIndexDef->pGetColumn(i_Col);
+    RASSERT(pCol->eColumnType() == CT_VARCHAR ||
+                     pCol->eColumnType() == CT_CHAR);
+
+    ayElm = EntWrk::ayEachElm(pCol,nBytes,(byte**)&ayCursor);
+
+    if (i_Element == i_Col) {
+      nSize = StrLib::iWordFlipBack(sKeyValue, (char*)ayElm);
+      break;
+    }
+  }
+
+
+  return nSize;
 }
 
 /*----------------------------------------------------------------------------*/

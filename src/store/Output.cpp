@@ -65,7 +65,7 @@ Output::~Output(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
   
   if (m_pOutputQueue) {
-    RASSERT(! m_pOutputQueue->iCount());
+    RASSERT(! m_pOutputQueue->nItems());
     delete m_pOutputQueue;
     m_pOutputQueue = nullptr;
   }
@@ -87,7 +87,7 @@ void Output::vAssertEmptyQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
   
-  RASSERT(! m_pOutputQueue->iCount());
+  RASSERT(! m_pOutputQueue->nItems());
   
   RASSERT(! m_bExitMarker);
   RASSERT(! m_bCancelMarker);
@@ -444,7 +444,13 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
           AM::vDeleteOperand(pOperand);
           break;
         }
-          
+
+        case OM_RESENDMARKER: {
+          //vTrace("Pipeline Job: RESENDMARKER\n"_Stz);
+          AM::vDeleteOperand(pOperand);
+          break;
+        }
+
         case OM_RETURNMARKER: {
           AM::vDeleteOperand(pOperand);
           break;

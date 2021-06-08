@@ -68,6 +68,10 @@ namespace STORE
                          Stz* szTableName,
                          Stz* szColumnName);
   
+    InfoSet* pPartitionKey(Stz* szCatalogName,
+                         Stz* szSchemaName,
+                         Stz* szTableName);
+
     InfoSet* pLookupCatalog(Stz* szCatalogName);
 
     InfoSet* pLookupSchema(Stz* szCatalogName,

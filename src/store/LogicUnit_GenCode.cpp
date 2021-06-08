@@ -503,7 +503,7 @@ eEC LogicUnit::eGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
   oTagSet.vReset();
 
   oFile.vPrint("  // *** begin generated code: m_sProjectAsm *** //\n"_Stz);
-  oFile.vPrint("%s"_Stz, pExprEval->m_sFilterAsm.azChar());
+  oFile.vPrint("%s"_Stz, pExprEval->m_sProjectAsm.azChar());
   oFile.vPrint("  // *** end generated code: m_sProjectAsm *** //\n"_Stz);
 
   oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_FILTER_END, &oTagSet, sMacro));
@@ -523,9 +523,9 @@ eEC LogicUnit::eGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
   oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_FILTER_ROWS, &oTagSet, sMacro));
   oTagSet.vReset();
 
-  oFile.vPrint("  // *** begin generated code: m_sFilterAsm *** //\n"_Stz);
-  oFile.vPrint("%s"_Stz, pExprEval->m_sFilterAsm.azChar());
-  oFile.vPrint("  // *** end generated code: m_sFilterAsm *** //\n"_Stz);
+  oFile.vPrint("  // *** begin generated code: m_sProjectAsm *** //\n"_Stz);
+  oFile.vPrint("%s"_Stz, pExprEval->m_sProjectAsm.azChar());
+  oFile.vPrint("  // *** end generated code: m_sProjectAsm *** //\n"_Stz);
 
   oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_FILTER_END, &oTagSet, sMacro));
 
@@ -776,7 +776,7 @@ eEC LogicUnit::eGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut)
 /*----------------------------------------------------------------------------*/
 /* generate asm text for limit                                                */
 /*----------------------------------------------------------------------------*/
-eEC LogicUnit::eGenerateLimit(i8 iLimitRows, StreamDef* pStreamDefOut) {
+eEC LogicUnit::eGenerateLimit(i8 iLimitRows) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_LOGICUNIT, _FOOTER_);
 
@@ -868,6 +868,130 @@ eEC LogicUnit::eGenerateLimit(i8 iLimitRows, StreamDef* pStreamDefOut) {
 }
 
 /*----------------------------------------------------------------------------*/
+/* generate asm text for loopJoin                                             */
+/*----------------------------------------------------------------------------*/
+eEC LogicUnit::eGenerateLoopJoin(ExprEval* pExprEval, StreamDef* pStreamDefOut) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_LOGICUNIT, _FOOTER_);
+
+  TagSet oTagSet;
+  LocalFile oFile;
+
+  s256 sFileName;
+  s4K  sMacro;
+
+  i8 iQueryNo = AM::iQueryNoInc();
+  sFileName.vSprint("../tmp/Query%lld_%s.txt"_Stz, iQueryNo,
+                    AM::pGrid()->pThisNode()->szNodeNm());
+
+  bool b = oFile.bOpenWrite(sFileName);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // AM_QUERY_INIT
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  oTagSet.vAppend(C_TAG_QUERY_NO, iQueryNo);
+  oTagSet.vAppend(C_TAG_SUBQUERY_NO, (i8) 0);
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_QUERY_INIT, &oTagSet, sMacro));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // DEFAULT_HANDLERS
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_DATAPULSE, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_EOSMARKER, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_DEFAULT_HANDLER_STREAMDEF, &oTagSet, sMacro));
+
+  /*
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // CRWBUFFER_HANDLER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //   to execute FILTER for each row
+  oTagSet.vAppend(C_TAG_CRW_PROCESS_ROUTINE, "CRW_FILTER_ROWS"_Stz);
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_HANDLER_CRWBUFFER, &oTagSet, sMacro));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ROWBUFFER_HANDLER
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //   to execute FILTER_ROWS for each row
+  oTagSet.vAppend(C_TAG_ROW_PROCESS_ROUTINE, "ROW_FILTER_ROWS"_Stz);
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_HANDLER_ROWBUFFER, &oTagSet, sMacro));
+  oTagSet.vReset();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query Done
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_QUERY_DONE, &oTagSet, sMacro));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // CRW_FILTER_ROWS
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pExprEval->m_iStreamInColumns);
+  oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, pExprEval->m_uExprEvalColumns);
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_FILTER_ROWS, &oTagSet, sMacro));
+  oTagSet.vReset();
+
+  oFile.vPrint("  // *** begin generated code: m_sProjectAsm *** //\n"_Stz);
+  oFile.vPrint("%s"_Stz, pExprEval->m_sProjectAsm.azChar());
+  oFile.vPrint("  // *** end generated code: m_sProjectAsm *** //\n"_Stz);
+
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_FILTER_END, &oTagSet, sMacro));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // CRW_PROJECT_STAR
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_PROJECT_STAR, &oTagSet, sMacro));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ROW_FILTER_ROWS
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add the filter
+  oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pExprEval->m_iStreamInColumns);
+  oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, pExprEval->m_uExprEvalColumns);
+
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_FILTER_ROWS, &oTagSet, sMacro));
+  oTagSet.vReset();
+
+  oFile.vPrint("  // *** begin generated code: m_sProjectAsm *** //\n"_Stz);
+  oFile.vPrint("%s"_Stz, pExprEval->m_sProjectAsm.azChar());
+  oFile.vPrint("  // *** end generated code: m_sProjectAsm *** //\n"_Stz);
+
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_FILTER_END, &oTagSet, sMacro));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ROWPROJECT_STAR
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_PROJECT_STAR, &oTagSet, sMacro));
+*/
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // close the file
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  oFile.vClose();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Generate asm
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  s16KB sText;
+  b = oFile.bOpenRead(sFileName);
+  RASSERT(b);
+  i8 nSize = oFile.iSize();
+  i8 nBytes = oFile.nReadBytes((void*)sText.azChar(), nSize);
+  UNUSED(nBytes);
+
+  oFile.vClose();
+
+  // null terminate the read bytes
+  char* sReadStr = sText.azChar();
+  sReadStr[nSize] = '\0';
+
+  bool bResult = bGenerateAsm(sText);
+  UNUSED(bResult);
+
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
 /* generate asm text for projection                                           */
 /*----------------------------------------------------------------------------*/
 eEC LogicUnit::eGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOut)
@@ -888,8 +1012,8 @@ eEC LogicUnit::eGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOut
 
   bool b = oFile.bOpenWrite(sFileName);
 
-  if ( pExprEval->bHasAggregate() )
-    return EC_INVALID_COMMAND;
+  //if ( pExprEval->bHasAggregate() )
+  //  return EC_INVALID_COMMAND;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // AM_QUERY_INIT

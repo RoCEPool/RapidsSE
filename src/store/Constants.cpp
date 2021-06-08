@@ -233,6 +233,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_TDEF_LOOKUPTABLE"_Stz,   C_TDEF_LOOKUPTABLE);
   vAddConstant("C_TDEF_NODEINFO"_Stz,      C_TDEF_NODEINFO);
   vAddConstant("C_TDEF_PATHINFO"_Stz,      C_TDEF_PATHINFO);
+  vAddConstant("C_TDEF_PARTITIONKEY"_Stz,  C_TDEF_PARTITIONKEY);
   vAddConstant("C_TDEF_PINGINFO"_Stz,      C_TDEF_PINGINFO);
   vAddConstant("C_TDEF_PROGRESSUNITS"_Stz, C_TDEF_PROGRESSUNITS);
   vAddConstant("C_TDEF_PROMPTOUT"_Stz,     C_TDEF_PROMPTOUT);
@@ -729,6 +730,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_PROFILE"_Stz,         ZK_PROFILE);
   /*  0 */ vAddConstant("ZK_PROGRESSUNITS"_Stz,   ZK_PROGRESSUNITS);
   /*  0 */ vAddConstant("ZK_PULSEDMARKER"_Stz,    ZK_PULSEDMARKER);
+  /*  0 */ vAddConstant("ZK_RESENDMARKER"_Stz,    ZK_RESENDMARKER);
   /*  0 */ vAddConstant("ZK_RETURNPIPELINE"_Stz,  ZK_RETURNPIPELINE);
   /*  0 */ vAddConstant("ZK_ROWBUFFER"_Stz,       ZK_ROWBUFFER);
   /*  0 */ vAddConstant("ZK_SEEKOFFSETS"_Stz,     ZK_SEEKOFFSETS);

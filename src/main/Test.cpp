@@ -26,12 +26,14 @@
 #include "SeApi.hpp"
 #include "CatalogMetadata.hpp"
 #include "ColumnMetadata.hpp"
+#include "PartitionKeyMetadata.hpp"
 #include "SchemaMetadata.hpp"
 #include "TableMetadata.hpp"
 #include "SP_CatalogMetadata.hpp"
 #include "SP_ColumnMetadata.hpp"
 #include "SP_SchemaMetadata.hpp"
 #include "SP_TableMetadata.hpp"
+#include "SP_PartitionKeyMetadata.hpp"
 
 #include "TpchRatios.h"
 #include "Locator.hpp"
@@ -367,6 +369,22 @@ void vTest6(void)
     
     SP_ColumnMetadata spColMeta;
     vTrace("COLUMNMETA %s\n"_Stz,spColMeta.sz(pColMeta));
+  }
+  delete pInfoSet;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vTrace("\n\n"_Stz);
+  pInfoSet = pSeApi->pPartitionKey("rapidsse"_Stz,
+                                   "public"_Stz,
+                                   "lineitem"_Stz);
+  for (Row* pRow = pInfoSet->pFirstRow();
+       pRow;
+       pRow = pInfoSet->pNextRow(pRow)) {
+    PartitionKeyMetadata* pPtnKeyMeta = static_cast<PartitionKeyMetadata*>(pRow);
+    
+    SP_PartitionKeyMetadata spPtnKeyMeta;
+    vTrace("PARTITIONKEY %s\n"_Stz,spPtnKeyMeta.sz(pPtnKeyMeta));
   }
   delete pInfoSet;
 

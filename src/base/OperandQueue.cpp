@@ -17,6 +17,20 @@ __aFooterFunction(OperandQueue)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_NEW_OPERAND_QUEUE
+OperandQueue::OperandQueue(void)
+: Queue()
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
+  
+  _checkInitialised_(CN_OPERANDQUEUE);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
+  
+  AM::LOG::vEvent(EV_CONSTRUCT,"OperandQueue constructor"_Stz);
+}
+/*----------------------------------------------------------------------------*/
+#else
 OperandQueue::OperandQueue(void)
 : ListNL_t<Operand>(CN_OPERANDQUEUE)
 {
@@ -28,6 +42,7 @@ OperandQueue::OperandQueue(void)
   
   AM::LOG::vEvent(EV_CONSTRUCT,"OperandQueue constructor"_Stz);
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
@@ -42,16 +57,37 @@ OperandQueue::~OperandQueue(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* append thread to end of queue                                              */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_NEW_OPERAND_QUEUE
+void OperandQueue::vAppendOperand(Operand* pOperand)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
+  
+  Queue::vAppend(pOperand);
+}
+/*----------------------------------------------------------------------------*/
+#else
 void OperandQueue::vAppendOperand(Operand* pOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
   
   ListNL_t<Operand>::vAppend(pOperand);
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* peek at operands and see if any Operand                                    */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_NEW_OPERAND_QUEUE
+bool OperandQueue::bPeekQueue(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
+  
+  Operand* pOperand = _pOperand(Queue::pPeek());
+  
+  return pOperand ? true : false;
+}
+/*----------------------------------------------------------------------------*/
+#else
 bool OperandQueue::bPeekQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
@@ -60,10 +96,32 @@ bool OperandQueue::bPeekQueue(void)
   
   return pOperand ? true : false;
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* peek at operands and see if any OoO Operand                                */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_NEW_OPERAND_QUEUE
+bool OperandQueue::bPeekQueueOoO(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
+  
+  Operand* pOperand = _pOperand(Queue::pPeek());
+  
+  while (pOperand) {
+    
+    // is it an Out-of_Order Operand ?
+    if (AM::bIsOperandOoO(pOperand)) {
+      return true;
+    }
+    
+    pOperand = pOperand->pNextItem();
+  }
+
+  return false;
+}
+/*----------------------------------------------------------------------------*/
+#else
 bool OperandQueue::bPeekQueueOoO(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
@@ -82,10 +140,22 @@ bool OperandQueue::bPeekQueueOoO(void)
 
   return false;
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* pop first operand from top of queue                                        */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_NEW_OPERAND_QUEUE
+Operand* OperandQueue::pPopQueue(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
+  
+  Operand* pOperand = _pOperand(Queue::pPop());
+
+  return pOperand;
+}
+/*----------------------------------------------------------------------------*/
+#else
 Operand* OperandQueue::pPopQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
@@ -94,10 +164,34 @@ Operand* OperandQueue::pPopQueue(void)
 
   return pOperand;
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* pop first OoO operand from top of queue                                    */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_NEW_OPERAND_QUEUE
+Operand* OperandQueue::pPopQueueOoO(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
+  
+  Operand* pOperand = _pOperand(Queue::pPeek());
+  
+  while (pOperand) {
+    
+    // is it a CANCELMARKER ?
+    if (AM::bIsOperandOoO(pOperand)) {
+      //vRemove(pOperand);
+      RASSERT(0);
+      return pOperand;
+    }
+    
+    pOperand = pOperand->pNextItem();
+  }
+  
+  return pOperand;
+}
+/*----------------------------------------------------------------------------*/
+#else
 Operand* OperandQueue::pPopQueueOoO(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
@@ -117,10 +211,22 @@ Operand* OperandQueue::pPopQueueOoO(void)
   
   return pOperand;
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* get number of threads in queue                                             */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_NEW_OPERAND_QUEUE
+i8 OperandQueue::nQueuedOperands(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
+
+  i8 nOperands = Queue::nItems();
+
+  return nOperands;
+}
+/*----------------------------------------------------------------------------*/
+#else
 i8 OperandQueue::nQueuedOperands(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
@@ -129,6 +235,7 @@ i8 OperandQueue::nQueuedOperands(void)
 
   return nOperands;
 }
+#endif
 
 /*============================================================================*/
 /* end                                                                        */

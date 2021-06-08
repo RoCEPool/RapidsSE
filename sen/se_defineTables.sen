@@ -428,6 +428,20 @@
   api::executeRequest
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_PARTITIONKEY
+  STD_PATH
+  "
+  define table __partitionKey (
+    catalogName    VARCHAR NOT NULL ,
+    schemaName     VARCHAR NOT NULL ,
+    tableName      VARCHAR NOT NULL ,
+    columnNumber   INTEGER NOT NULL ,
+    columnName     VARCHAR NOT NULL
+  ) < infoSet > = 1 ;
+  "
+  api::executeRequest
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_PATHINFO
   STD_PATH
   "

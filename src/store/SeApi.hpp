@@ -78,6 +78,10 @@ namespace STORE
                           Stz* szSchemaName,
                           Stz* szTableName);
   
+    InfoSet* pPartitionKey(Stz* szCatalogName,
+                           Stz* szSchemaName,
+                           Stz* szTableName);
+  
     bool bTest(Stz* szCatalogNm);
     bool bTest(Stz* szCatalogNm, Stz* szSchemaNm);
     bool bTest(Stz* szCatalogNm, Stz* szSchemaNm, Stz* szTableNm);

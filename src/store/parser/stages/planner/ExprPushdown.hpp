@@ -36,7 +36,7 @@ namespace Parser
 
     // Pushes down a given expression (or part thereof) from a given SqlOp to
     // the nearest ProjectOp.
-    static void vPushdownExpr(QueryNode* pExpr, QueryNode* pSqlOp, PlanNode* pRootNode);
+    static void vPushdownExpr(QueryNode* pOrdExpr, QueryNode* pSqlOp, PlanNode* pRootNode);
 
   };
 }

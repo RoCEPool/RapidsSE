@@ -13,9 +13,9 @@ begin
 
   stage stageB on all partitions :
     scan lineitem
-    | filter  1 "$11 DATE '1994-01-01' >=  $11 DATE '1995-01-01' < and "
-    | filter  1 "$7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and"
-    | aggreg  1 " type decimal as revenue_p ) $6 $7 * sum "
+    | filter  1 "type boolean $11 DATE '1994-01-01' >=  $11 DATE '1995-01-01' < and "
+    | filter  1 "type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and"
+    | project  1 " type decimal as revenue_p ) $6 $7 * sum "
     | stageC
 
    stage stageC on origin :
@@ -195,13 +195,13 @@ begin
 
   stage stageB on all partitions :
     scan lineitem
-    | filter  1 "$11 DATE '1994-01-01' >=   $11 DATE '1995-01-01' < and "
-    | filter  1 "$7 0.06 0.01 - >=  $7 0.06 0.01 +  <=  $5 26.0 < and and "
-    | aggreg  1 " type decimal as revenue_p ) $6 $7 * sum "
+    | filter  1 "type boolean $11 DATE '1994-01-01' >=   $11 DATE '1995-01-01' < and "
+    | filter  1 "type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <=  $5 26.0 < and and "
+    | project  1 " type decimal as revenue_p ) $6 $7 * sum "
     | stageC
 
   stage stageC on origin :
-    aggreg  1 " type decimal as revenue ) $1 sum "
+    project  1 " type decimal as revenue ) $1 sum "
     | output | sink | stageA
 end;
 rows:
@@ -215,12 +215,12 @@ begin
 
   stage stageB on all partitions :
     scan lineitem
-    | filter  1 "$11 DATE '1994-01-01' >=   $11 DATE '1995-01-01' <   $7 0.06 0.01 - >=  $7 0.06 0.01 +  <=  $5 26.0 < and and and and"
-    | aggreg  1 " type decimal as revenue_p ) $6 $7 * sum "
+    | filter  1 "type boolean $11 DATE '1994-01-01' >=   $11 DATE '1995-01-01' <   $7 0.06 0.01 - >=  $7 0.06 0.01 +  <=  $5 26.0 < and and and and"
+    | project  1 " type decimal as revenue_p ) $6 $7 * sum "
     | stageC
 
   stage stageC on origin :
-    aggreg  1 " type decimal as revenue ) $1 sum "
+    project  1 " type decimal as revenue ) $1 sum "
     | output | sink | stageA
 end;
 rows:

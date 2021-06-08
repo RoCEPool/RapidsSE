@@ -51,6 +51,8 @@ void vDev_ROW_ENTWRK_APPENDELMS(i8** aaiDstk);
 void vDev_ROW_ENTWRK_CREATEPAY(i8** aaiDstk);
 
 void vDev_ENTWRK_PRINT    (i8** aaiDstk);
+void vDev_ENTWRK_PUSHELMI (i8** aaiDstk);
+void vDev_ENTWRK_PUSHELMS (i8** aaiDstk);
 void vDev_ENTWRK_RESET    (i8** aaiDstk);
 void vDev_ENTWRK_SETENTKND(i8** aaiDstk);
 void vDev_ENTWRK_SETINTELM(i8** aaiDstk);

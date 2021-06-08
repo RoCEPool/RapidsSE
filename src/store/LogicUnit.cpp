@@ -3963,6 +3963,18 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_ENTWRK_PRINT(&aiDstk);   // entry
         break;//+endCase
 
+      case EO_ENTWRK_PUSHELMI: ArgGet(iArg); // push element of entwrk
+        dLU0(EO_ENTWRK_PUSHELMI);
+        *(++aiDstk) = iArg;
+        vDev_ENTWRK_PUSHELMI(&aiDstk);   // entry
+        break;//+endCase
+
+      case EO_ENTWRK_PUSHELMS: ArgGet(iArg); // push string element of entwrk
+        dLU0(EO_ENTWRK_PUSHELMS);
+        *(++aiDstk) = iArg;
+        vDev_ENTWRK_PUSHELMS(&aiDstk);   // entry
+        break;//+endCase
+
       case EO_ENTWRK_RESET: ArgNil(); // reset m_oEntWrk
         dLU0(EO_ENTWRK_RESET);
         vDev_ENTWRK_RESET(&aiDstk);   // entry

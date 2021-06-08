@@ -28,15 +28,16 @@ namespace STORE
     static bool bLessThan(Key* aLeft, Key* aRight);
     static bool bNotEqual(Key* aLeft, Key* aRight);
 
-    i8   iGetIntElm(void);
-    i8   iGetIntElm(IndexDef* pIndexDef, i8 i_Element);
-    Stz* szGetStrElm(void);
-    void vIncElmSeqSize(i8 nDeltaBytes);
-    i8   nElmSeqSize(void);
-    void vElmSeqSize(i8 nElmSeqSize);
-    void vReset(void);
-    void vShow(IndexDef* pIndexDef);
-    void vShowIntKey(void);
+    i8    iGetIntElm(void);
+    i8    iGetIntElm(IndexDef* pIndexDef, i8 i_Element);
+    i8    iGetStrElm(IndexDef* pIndexDef, i8 i_Element, char* sKeyValue);
+    Stz*  szGetStrElm(void);
+    void  vIncElmSeqSize(i8 nDeltaBytes);
+    i8    nElmSeqSize(void);
+    void  vElmSeqSize(i8 nElmSeqSize);
+    void  vReset(void);
+    void  vShow(IndexDef* pIndexDef);
+    void  vShowIntKey(void);
 
     /*------------------------------------------------------------------------*/
     /* get the element sequence of this key                                   */

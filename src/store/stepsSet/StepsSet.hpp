@@ -878,6 +878,7 @@ public:
   void vLogicUnitGenAsm(void);
   void vLogicUnitGenFilter(void);
   void vLogicUnitGenLimit(void);
+  void vLogicUnitGenLoopJoin(void);
   void vLogicUnitGenProjection(void);
   void vLogicUnitGenRange(void);
   void vLogicUnitHandlerFetch(void);
