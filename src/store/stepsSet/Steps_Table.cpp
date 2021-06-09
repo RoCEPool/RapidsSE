@@ -51,6 +51,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.createPtnDef"_Stz,       &Step::vTableCreatePtnDef);
   vAddStep("table.deleteIndex"_Stz,        &Step::vTableDeleteIndex);
   vAddStep("Table[].dump"_Stz,             &Step::vTableDump);
+  vAddStep("Table[].dumpmeta"_Stz,         &Step::vTableDumpMeta);
   vAddStep("Table[].findColumn"_Stz,       &Step::vTableFindColumn);
   vAddStep("table.indexCount"_Stz,         &Step::vTableIndexCount);
   vAddStep("table.isColumn"_Stz,           &Step::vTableIsColumn);
@@ -244,6 +245,37 @@ void Step::vTableDump(void)
     pTablePtn->vDump();
   }
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Table[].dumpmeta                                                           */
+/*----------------------------------------------------------------------------*/
+void Step::vTableDumpMeta(void)
+{
+  ENTRY();
+
+  s4K sDumpBuffer = "\n\n\n==== DumpMeta Table: =======================================\n"_Stz;
+
+  Table* pTable = _pTable(*m_pJob->pLogicUnit_job()->m_xpTable);
+
+
+  sDumpBuffer.vCatSprint("Table:%s\n"_Stz, pTable->szTableNm()->azChar());
+
+  i8 nCols = pTable->pStreamDef()->nColumns();
+  for (i8 iCol = 0; iCol < nCols; iCol++) {
+    Column* pCol = pTable->pStreamDef()->pGetColumn(iCol);
+    sDumpBuffer.vCatSprint("    %s   %s\n"_Stz,    pCol->szColNm()->azChar(), aCT[pCol->eColumnType()]);
+
+  }
+
+
+
+
+
+
+  m_pDataStack->vPushStr(sDumpBuffer);
+
   EXIT();
 }
 

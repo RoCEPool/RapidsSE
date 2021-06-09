@@ -51,6 +51,7 @@ assert::stack_0
   "OP_dump.sen"                 include
   "OP_dumpGridInfo.sen"         include
   "OP_dumpIndex.sen"            include
+  "OP_dumpMetaInfo.sen"         include
   "OP_dumpTable.sen"            include
   "OP_dupCrw.sen"               include
 

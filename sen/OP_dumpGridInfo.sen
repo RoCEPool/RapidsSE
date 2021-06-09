@@ -16,7 +16,9 @@
   grid::dumpInfo locals| pDumpBuffer |
   pDumpBuffer .
 
-  // Somehow the these 2 lines, caused a crash after printed out
+  // These 2 lines, caused a crash after printed out
+  // We need a way to convert the string buffer to Operand
+  // then we can pipeout
   //pDumpBuffer to Operand[]
   //Operand[].pipeOut
 

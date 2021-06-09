@@ -1624,6 +1624,7 @@ public:
   void vTableDelete(void);
   void vTableDeleteIndex(void);
   void vTableDump(void);
+  void vTableDumpMeta(void);
   void vTableFindColumn(void);
   void vTableGet(void);
   void vTableGetName(void);

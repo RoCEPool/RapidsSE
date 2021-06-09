@@ -338,7 +338,7 @@ void Step::vGridDumpInfo(void)
 
   //vTrace(">>>>>>>> grid::dumpInfo"_Stz);
 
-  s4K pDumpBuffer = AM::pGrid()->szDumpInfo();
+  s16KB pDumpBuffer = AM::pGrid()->szDumpInfo();
 
   m_pDataStack->vPushStr(pDumpBuffer);
 

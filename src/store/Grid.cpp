@@ -236,11 +236,11 @@ Node* Grid::pFindNodeByNodeNo(i8 iNodeNo)
  * @return s4K
  *
  */
-s4K Grid::szDumpInfo(void)
+s16KB Grid::szDumpInfo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
-  s4K sDumpBuffer = "\n\n\n==== DumpGrid: =======================================\n"_Stz;
+  s16KB sDumpBuffer = "\n\n\n==== DumpGrid: =======================================\n"_Stz;
 
   sDumpBuffer.vCatSprint("Dsv of Grid: %s (connect code %lld)\n"_Stz,
          m_sGridNm.szStz(),

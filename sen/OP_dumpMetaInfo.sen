@@ -1,0 +1,53 @@
+/*============================================================================*/
+/* OP_dumpMetaInfo.sen -- cat file                                                 */
+/*============================================================================*/
+
+" OP_dumpMetaInfo.sen" .verbose
+
+
+/*----------------------------------------------------------------------------*/
+/* dumpMetaInfo action               column                                        */
+/*----------------------------------------------------------------------------*/
+: dumpMetaInfo_action
+
+  ">>>>>>>>>>>>> dumpMetaInfo_action" .
+
+
+  //<TableNm> op__table assert
+
+  <TableNm> op__table if
+      Table[].dumpmeta locals| pDumpBuffer |
+      pDumpBuffer .
+      true
+    else
+      false
+    then
+
+  //grid::dumpInfo locals| pDumpBuffer |
+  //pDumpBuffer .
+
+  // Somehow the these 2 lines, caused a crash after printed out
+  //pDumpBuffer to Operand[]
+  //Operand[].pipeOut
+
+  //true
+;
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: dumpMetaInfo :: dumpMetaInfo <TableNm> ;
+
+: dumpMetaInfo_cmdTags _cmdTags tagCopy: localLiteOp_tags
+  tags{
+    <cmdDesc>     = "--desc for op--"
+    <params>      = 1
+  }
+;
+
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

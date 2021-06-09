@@ -211,7 +211,7 @@ void Node::vDsv(void)
  * @return s4K
  *
  */
-s4K Node::szDumpInfo(s4K szBuffer)
+s16KB Node::szDumpInfo(s16KB szBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
 

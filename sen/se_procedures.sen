@@ -1113,6 +1113,21 @@
   end ;
   "
   api::addProcedure
+
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // prototype dump table meta info
+
+    STD_PATH
+    "
+    procedure dumpMeta
+      parameters $TableNm
+    begin
+      stage stageA on origin :
+        start | periodic once | dumpMetaInfo $TableNm  | output | sink | stageA
+
+    end ;
+    "
+    api::addProcedure
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get meta object
