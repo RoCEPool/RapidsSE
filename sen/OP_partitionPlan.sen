@@ -1,0 +1,72 @@
+/*============================================================================*/
+/* OP_partitionPlan.sen -- Partition the Plan Op (SQL Compiler)               */
+/*============================================================================*/
+
+" OP_partitionPlan.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_CANCELMARKER ...                                            */
+/*----------------------------------------------------------------------------*/
+: partitionPlan_CancelMarker \handler
+
+  ZK_CANCELMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_PLANOPERAND ...                                             */
+/*----------------------------------------------------------------------------*/
+: partitionPlan_PlanOperand \handler
+
+  PipeIn[]\clear to Operand[]
+
+  // create the command error info set
+  op__cmdErrInfoSet
+
+  Operand[] nullptr to Operand[] sqlCompiler::partitionPlan to Operand[]
+
+   "partitionPlan" compiler_planOperand
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* compiler op request                                (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: partitionPlan_req \operator
+
+  LogReqEntry SEED_REQ
+
+  op__topology
+
+  // common compiler handlers
+  find: compiler_ExitEarlyMarker  ZK_EXITEARLYMARKER op[].handler!
+  find: compiler_StreamSet        ZK_STREAMSET       op[].handler!
+
+  // specific handlers
+  find: partitionPlan_CancelMarker ZK_CANCELMARKER op[].handler!
+  find: partitionPlan_PlanOperand  ZK_PLANOPERAND  op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: partitionPlan :: partitionPlan ;
+
+: partitionPlan_cmdTags _cmdTags tagCopy: op_tags
+
+  tags{
+    <cmdDesc>    = "--desc for op--"
+  }
+
+;
+  
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

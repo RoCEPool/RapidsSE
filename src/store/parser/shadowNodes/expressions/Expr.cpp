@@ -369,6 +369,7 @@ QueryNode* Expr::pOrdinalToSymbolic(QueryNode*     pOrdinalExpr,
                                     QueryNodeList* pColumnExprList,
                                     PlanNode*      pRootNode)
 {
+  UNUSED(pRootNode);
 
   // First let's deep copy the ordinal expression
   QueryNode* pSymExpr = pOrdinalExpr->pDeepCopy(true);
@@ -376,6 +377,10 @@ QueryNode* Expr::pOrdinalToSymbolic(QueryNode*     pOrdinalExpr,
   // Now we can walk the copied expression and replace any ColumnOrdinals
   // with their symbolic equivalent
   auto fVisitor = [pColumnExprList](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(pvArg);
 
     QueryNode *pExpr = _pQueryNode(pNode);
 
@@ -658,13 +663,17 @@ QueryNode* Expr::pLargestNonOrdinalSubExpr(QueryNode* pOrdinalExpr)
   // that contains ColumnRefs but no OrdinalRefs.
 
   // First define some lambda conditions to search for ColumnRefs and OrdinalRefs
-  auto fColumnRefCondition  = [](PlanNode* pNode, void* pvArg) -> b1 { return     ColumnRef::bIsOfType(pNode); };
-  auto fOrdinalRefCondition = [](PlanNode* pNode, void* pvArg) -> b1 { return ColumnOrdinal::bIsOfType(pNode); };
+  auto fColumnRefCondition  = [](PlanNode* pNode, void* pvArg) -> b1 { UNUSED(pvArg); return     ColumnRef::bIsOfType(pNode); };
+  auto fOrdinalRefCondition = [](PlanNode* pNode, void* pvArg) -> b1 { UNUSED(pvArg); return ColumnOrdinal::bIsOfType(pNode); };
 
   QueryNode* pNonOrdExpr = nullptr;
 
   auto fVisitor = [&pNonOrdExpr, fColumnRefCondition, fOrdinalRefCondition]
       (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(pvArg);
 
     PlanNode* pColumnRef  = GraphNav::pGlobalSearch(pNode, false, true, fColumnRefCondition,  nullptr);
     PlanNode* pOrdinalRef = GraphNav::pGlobalSearch(pNode, false, true, fOrdinalRefCondition, nullptr);
@@ -692,6 +701,10 @@ QueryNodeList* Expr::pAggregateExprs(QueryNode* pExpr)
 
   auto fVisitor = [pList]
       (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(pvArg);
 
     if (AggregateExpr::bIsOfType(pNode)) {
       pList->vPush(_pQueryNode(pNode));

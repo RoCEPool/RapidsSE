@@ -129,6 +129,8 @@ assert::stack_0
 "p" .verbose
 
   "OP_parser.sen"               include
+  "OP_partitionExplain.sen"     include
+  "OP_partitionPlan.sen"        include
   "OP_passThru.sen"             include
   "OP_periodic.sen"             include
   "OP_ping.sen"                 include

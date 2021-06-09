@@ -42,7 +42,11 @@ void StageMarkers::vRemoveStatementMarkers(PlanNode *pRootNode)
   };
 
   // Lambda called as we walk the graph
-  auto fVisitor = [fCondition](PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArgs) -> GraphNav::eWalkCtrl {
+  auto fVisitor = [fCondition](PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(pvArg);
 
     ASSERT(!StatementMarker::bIsOfType(pNode) || ExplainMarker::bIsOfType(pNode));
 
@@ -75,7 +79,11 @@ void StageMarkers::vAddStageMarkers(PlanNode *pRootNode)
 
 
   // Lambda called as we walk the graph
-  auto fVisitor = [](PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArgs) -> GraphNav::eWalkCtrl {
+  auto fVisitor = [](PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(pvArg);
 
     ASSERT(!StatementMarker::bIsOfType(pNode) || ExplainMarker::bIsOfType(pNode));
     QueryNode* pQueryNode = _pQueryNode(pNode);
