@@ -1,0 +1,100 @@
+/*----------------------------------------------------------------------------*/
+/* Plan partitioning tests                                                    */
+/*----------------------------------------------------------------------------*/
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Notes
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+-- Test cases:
+--  Note: aggregates to test: SUM, COUNT(), AVG(), MIN(), MAX()
+--
+--  (01) Simple select, no aggregates
+--  (02) Simple select with WHERE clause
+--  (03) Simple select with ORDER BY clause
+--  (04) Simple select with LIMIT clause
+--  (05) Simple select with ORDER BY and LIMIT clause
+--  (06) Simple select with WHERE & ORDER BY clauses
+--  (07) Simple select with WHERE & LIMIT clauses
+--  (08) Simple select with WHERE, ORDER BY and LIMIT clauses
+--
+--  (10) Select with grand total aggregates
+--  (11) Select with grand total aggregates & WHERE clause
+--  (12) Select with grand total aggregates & HAVING clause
+--  (13) Select with grand total aggregates & ORDER BY clause
+--  (14) Select with grand total aggregates & LIMIT clause (kind of meaningless)
+--  (15) Select with grand total aggregates, WHERE and HAVING clauses
+--  (16) Select with grand total aggregates, WHERE, HAVING & ORDER BY clauses
+--  (17) Select with grand total aggregates, WHERE, HAVING & LIMIT clauses
+--  (18) Select with grand total aggregates, WHERE, HAVING, ORDER BY & LIMIT clauses
+--  (19) Select with grand total aggregates, WHERE, ORDER BY & LIMIT clauses
+--
+--  (20) Select with GROUP BY aggregates
+--  (21) Select with GROUP BY aggregates & WHERE clause
+--  (22) Select with GROUP BY aggregates & HAVING clause
+--  (23) Select with GROUP BY aggregates & ORDER BY clause
+--  (24) Select with GROUP BY aggregates & LIMIT clause (kind of meaningless)
+--  (25) Select with GROUP BY aggregates, WHERE and HAVING clauses
+--  (26) Select with GROUP BY aggregates, WHERE, HAVING & ORDER BY clauses
+--  (27) Select with GROUP BY aggregates, WHERE, HAVING & LIMIT clauses
+--  (28) Select with GROUP BY aggregates, WHERE, HAVING, ORDER BY & LIMIT clauses
+--  (29) Select with GROUP BY aggregates, WHERE, ORDER BY & LIMIT clauses
+--
+--  (30) UNION ALL of two simple selects with no aggregates
+--  (31) UNION ALL of two simple selects with WHERE clauses
+--  (32) UNION ALL of two selects with grand total aggregates
+--  (33) UNION ALL of two selects with grand total aggregates, WHERE & HAVING clauses
+--  (34) UNION ALL of two selects with GROUP BY aggregates
+--  (35) UNION ALL of two selects with GROUP BY aggregates, WHERE & HAVING clauses
+--
+--  (40) UNION ALL with ORDER BY of two simple selects with no aggregates
+--  (41) UNION ALL with LIMIT of two simple selects with no aggregates
+--  (42) UNION ALL with ORDER BY and LIMIT of two simple selects with no aggregates
+--  (43) UNION ALL with ORDER BY and LIMIT of two selects with grand total aggregates, WHERE & HAVING clauses
+--  (44) UNION ALL with ORDER BY and LIMIT of two selects with GROUP BY aggregates, WHERE & HAVING clauses
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Setup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+create table t1 (
+	 C1       INTEGER,
+	 C2       DOUBLE,
+	 C3       DATE,
+	 C4       VARCHAR(32)
+);
+success
+
+create table t2 (
+   COLA     INTEGER,
+   COLB     DOUBLE,
+   COLC     DATE,
+   COLD     VARCHAR(32)
+);
+success
+
+trackmemory;
+success
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Simple explain
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Check for memory leaks
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+memoryleaks;
+rows: 0
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Cleanup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CLEANUP {
+  DROP TABLE t1;
+  DROP TABLE t2;
+  mute
+}
