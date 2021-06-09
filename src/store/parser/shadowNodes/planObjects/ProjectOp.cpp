@@ -334,6 +334,8 @@ void ProjectOp::vSquash(QueryNode* pNode, QueryNode* pOtherOp, PlanNode* pRootNo
     auto fVisitor = []
         (PlanNode *pExpr, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
+      UNUSED(sPath);
+      UNUSED(iDepth);
       UNUSED(pvArg);
 
       if (!AliasRef::bIsOfType(pExpr)) {

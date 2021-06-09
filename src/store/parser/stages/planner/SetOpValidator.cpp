@@ -291,6 +291,7 @@ void SetOpValidator::vSimplifySetOp(QueryNode* pStatementMarker, PlanNode *pRoot
   // Firstly, do we have a set operator in this statement section (bounded by StatementMarkers)?
   // Do a search for them within this statement section only.
   auto fCondition = [](PlanNode* pNode, void* pvArg) -> b1 {
+    UNUSED(pvArg);
     return (SetOp::bIsOfType(pNode));
   };
 

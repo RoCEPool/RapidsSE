@@ -1473,6 +1473,8 @@ public:
   void vSqlCompilerHasExplain(void);
   void vSqlCompilerNameValidate(void);
   void vSqlCompilerParser(void);
+  void vSqlCompilerPartitionExplain(void);
+  void vSqlCompilerPartitionPlan(void);
   void vSqlCompilerPostProject(void);
   void vSqlCompilerProjValidation(void);
   void vSqlCompilerSetOpValidate(void);

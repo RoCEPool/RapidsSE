@@ -208,6 +208,7 @@ void ExprPushdown::vPushdownExpr(QueryNode* pOrdExpr, QueryNode* pSqlOp, PlanNod
   // check that follows (vValidateExprVisibility).
 
   auto fCondition = [](PlanNode* pNode, void* pvArg) {
+    UNUSED(pvArg);
     return ProjectOp::bIsOfType(pNode);
   };
 

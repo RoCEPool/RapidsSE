@@ -896,6 +896,11 @@ GraphNav::eWalkCtrl GraphValidator::eValidatePlanNode(PlanNode* pNode, s256& sPa
 /*----------------------------------------------------------------------------*/
 GraphNav::eWalkCtrl GraphValidator::eValidateMetadataNode(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
 {
+  UNUSED(pNode);
+  UNUSED(sPath);
+  UNUSED(iDepth);
+  UNUSED(pvArg);
+
   // *********************************
   // Metadata Node Validation Rules:
   // *********************************
@@ -922,6 +927,11 @@ GraphNav::eWalkCtrl GraphValidator::eValidateMetadataNode(PlanNode* pNode, s256&
 /*----------------------------------------------------------------------------*/
 GraphNav::eWalkCtrl GraphValidator::eValidateStatisticsNode(PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg)
 {
+  UNUSED(pNode);
+  UNUSED(sPath);
+  UNUSED(iDepth);
+  UNUSED(pvArg);
+
   // *********************************
   // Statistics Node Validation Rules:
   // *********************************
@@ -1114,6 +1124,7 @@ void GraphValidator::vRoot_5_1(PlanNode* pRootNode)
 {
   // ROOT-5: Validate the constraints:
   //    Nothing needed here due to ROOT-4.1.
+  UNUSED(pRootNode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1157,6 +1168,11 @@ void GraphValidator::vPrim_1_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 {
   // PRIM-1: Validate the name field:
   // PRIM-1.1: the name field must not be null.
+
+  UNUSED(sPath);
+  UNUSED(iDepth);
+  UNUSED(pvArg);
+
   RASSERT(pNode->szName());
   RASSERT(pNode->szName()->nLength() > 0);
 }
@@ -1168,6 +1184,11 @@ void GraphValidator::vPrim_2_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 {
   // PRIM-2: Validate the value field:
   // PRIM-2.1: the value field must not be null and it contains a string.
+
+  UNUSED(sPath);
+  UNUSED(iDepth);
+  UNUSED(pvArg);
+
   RASSERT(pNode->xValue().m_pText);
   RASSERT(pNode->xValue().m_pText->bIsClassNo(CN_TEXT));
   RASSERT(pNode->xValue().m_bMustFree);
@@ -1182,6 +1203,11 @@ void GraphValidator::vPrim_3_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 {
   // PRIM-3: Validate the type field:
   // PRIM-3.1: validate that the type field is empty.
+
+  UNUSED(sPath);
+  UNUSED(iDepth);
+  UNUSED(pvArg);
+
   RASSERT(!pNode->szType() ||
           (
               pNode->szName()->bEqual(const_cast<Stz*>(C_PRIMITIVES_NAME)) &&
@@ -1201,6 +1227,11 @@ void GraphValidator::vPrim_4_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 {
   // PRIM-4: Validate the properties:
   // PRIM-4.1: validate that the properties field is null.
+
+  UNUSED(sPath);
+  UNUSED(iDepth);
+  UNUSED(pvArg);
+
   RASSERT(!pNode->m_pProperties);
   RASSERT(!pNode->bHasProperties());
 }
@@ -1212,6 +1243,11 @@ void GraphValidator::vPrim_5_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 {
   // PRIM-5: Validate the constraints:
   //    Nothing needed here due to PRIM-4.1.
+
+  UNUSED(pNode);
+  UNUSED(sPath);
+  UNUSED(iDepth);
+  UNUSED(pvArg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1221,6 +1257,11 @@ void GraphValidator::vPrim_6_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 {
   // PRIM-6: Validate the children:
   // PRIM-6.1: validate that the children field is either null or has 1 or more children.
+
+  UNUSED(sPath);
+  UNUSED(iDepth);
+  UNUSED(pvArg);
+
   RASSERT(!pNode->m_pChildren || pNode->nChildren() > 0);
 }
 
@@ -1235,6 +1276,10 @@ void GraphValidator::vDefn_1_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   // DEFN-1: Validate the name field:
   // DEFN-1.1: the name field must not be null.
 
+  UNUSED(sPath);
+  UNUSED(iDepth);
+  UNUSED(pvArg);
+
   RASSERT(pNode->szName());
   RASSERT(pNode->szName()->nLength() > 0);
 }
@@ -1246,6 +1291,10 @@ void GraphValidator::vDefn_2_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 {
   // DEFN-2: Validate the value field:
   // DEFN-2.1: has a non-null string value if the type field is null.
+
+  UNUSED(sPath);
+  UNUSED(iDepth);
+  UNUSED(pvArg);
 
   if (!pNode->szType()) {
     RASSERT(
@@ -1265,6 +1314,10 @@ void GraphValidator::vDefn_2_2(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   // DEFN-2: Validate the value field:
   // DEFN-2.2: has a null or non-null value if the type field is not null.
 
+  UNUSED(sPath);
+  UNUSED(iDepth);
+  UNUSED(pvArg);
+
   if (pNode->szType()) {
     // Bit of a noop here
     RASSERT(pNode->szType()->nLength() > 0);
@@ -1280,6 +1333,9 @@ void GraphValidator::vDefn_3_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   // DEFN-3.1: has a null type field when the node is not a direct or indirect property
   //           of another node.
   //           i.e., the node is on a direct inheritence path back to /definitions.
+
+  UNUSED(iDepth);
+  UNUSED(pvArg);
 
   b1 bIsPropertyPath = sPath.bContains(":"_Stz);
 
@@ -1298,6 +1354,9 @@ void GraphValidator::vDefn_3_2(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   //           a direct or indirect property of a parent node. (i.e., the node is
   //           on a "property path").
 
+  UNUSED(iDepth);
+  UNUSED(pvArg);
+
   b1 bIsPropertyPath = sPath.bContains(":"_Stz);
 
   if (bIsPropertyPath) {
@@ -1314,6 +1373,10 @@ void GraphValidator::vDefn_3_3(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   // DEFN-3: Validate the type field:
   // DEFN-3.3: when the type field is non-null, it must be an absolute path.
 
+  UNUSED(sPath);
+  UNUSED(iDepth);
+  UNUSED(pvArg);
+
   if (pNode->szType()) {
     RASSERT(pNode->szType()->bBeginsWith("/"_Stz));
   }
@@ -1327,6 +1390,9 @@ void GraphValidator::vDefn_3_4(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   // DEFN-3: Validate the type field:
   // DEFN-3.4: when the type field is non-null, the path must be resolvable to another
   //           node in the system.
+
+  UNUSED(sPath);
+  UNUSED(iDepth);
 
   PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
 
@@ -1344,6 +1410,9 @@ void GraphValidator::vDefn_3_5(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   // DEFN-3: Validate the type field:
   // DEFN-3.5: when the type field is non-null, the node that it resolves to must be
   //           another definition or a primitive node.
+
+  UNUSED(sPath);
+  UNUSED(iDepth);
 
   PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
 
@@ -1366,6 +1435,10 @@ void GraphValidator::vDefn_4_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   // DEFN-4: Validate the properties:
   // DEFN-4.1: all properties of the node must have a unique name with respect to
   //           other properties defined for the node.
+
+  UNUSED(sPath);
+  UNUSED(iDepth);
+  UNUSED(pvArg);
 
   if (pNode->nProperties() > 1) {
     PlanNodeIter* pIter1 = pNode->pNewPropertyIter();
@@ -1403,6 +1476,9 @@ void GraphValidator::vDefn_4_2(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   //
   // e.g. node /a/b/c has a property :d. We need to check that there isn't a property named :d
   // in /a/b or /a either.
+
+  UNUSED(sPath);
+  UNUSED(iDepth);
 
   PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
 
@@ -1454,6 +1530,10 @@ void GraphValidator::vDefn_4_3(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 {
   // DEFN-4.3: all properties (except "__constraints") must have a non-null type field.
 
+  UNUSED(sPath);
+  UNUSED(iDepth);
+  UNUSED(pvArg);
+
   if (pNode->nProperties() == 0) {
     return;
   }
@@ -1482,6 +1562,10 @@ void GraphValidator::vDefn_5_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   // DEFN-5: Validate the constraints:
   // DEFN-5.1: any constraints must exist under a node named "__constraints" which
   //           itself is a property of the current node.
+
+  UNUSED(sPath);
+  UNUSED(iDepth);
+  UNUSED(pvArg);
 
   PlanNode* pConstraints = GraphNav::pFindProperty(const_cast<Stz*>(C_CONSTRAINTS_CONTAINER_NAME), pNode);
 
@@ -1549,6 +1633,10 @@ void GraphValidator::vDefn_5_2(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   // DEFN-5: Validate the constraints:
   // DEFN-5.2: if a __constraints container exists then it must have 1 or more children.
 
+  UNUSED(sPath);
+  UNUSED(iDepth);
+  UNUSED(pvArg);
+
   PlanNode* pConstraints = GraphNav::pFindProperty(const_cast<Stz*>(C_CONSTRAINTS_CONTAINER_NAME), pNode);
 
   if (!pConstraints) {
@@ -1570,6 +1658,10 @@ void GraphValidator::vDefn_5_3(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   //             - childType
   //             - valueType
   //             - childCount
+
+  UNUSED(sPath);
+  UNUSED(iDepth);
+  UNUSED(pvArg);
 
   PlanNode* pConstraints = GraphNav::pFindProperty(const_cast<Stz*>(C_CONSTRAINTS_CONTAINER_NAME), pNode);
 
@@ -1605,6 +1697,10 @@ void GraphValidator::vDefn_5_4(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   // DEFN-5: Validate the constraints:
   // DEFN-5.4: if any of the constraints specified in DEFN-5.3 exist, then validate that
   //           their parameter (child) nodes must have non-null name, type and value fields.
+
+  UNUSED(sPath);
+  UNUSED(iDepth);
+  UNUSED(pvArg);
 
   PlanNode* pConstraints = GraphNav::pFindProperty(const_cast<Stz*>(C_CONSTRAINTS_CONTAINER_NAME), pNode);
 
@@ -1674,6 +1770,9 @@ void GraphValidator::vDefn_5_5(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   //           must have a value field that is a path that can be resolved to another
   //           definition node.
 
+  UNUSED(sPath);
+  UNUSED(iDepth);
+
   PlanNode* pConstraints = GraphNav::pFindProperty(const_cast<Stz*>(C_CONSTRAINTS_CONTAINER_NAME), pNode);
 
   if (!pConstraints) {
@@ -1721,6 +1820,9 @@ void GraphValidator::vDefn_5_6(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   // DEFN-5.6: If the valueType constraint is used then validate that its child parameter
   //           must have a value field that is a path that can be resolved to a
   //           primitive node, and that that type field is a subclass of valueObject.
+
+  UNUSED(sPath);
+  UNUSED(iDepth);
 
   PlanNode* pConstraints = GraphNav::pFindProperty(const_cast<Stz*>(C_CONSTRAINTS_CONTAINER_NAME), pNode);
 
@@ -1777,6 +1879,10 @@ void GraphValidator::vDefn_5_7(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   //             - (nullable/nonnullable),
   //             - (optional/mandatory)
 
+  UNUSED(sPath);
+  UNUSED(iDepth);
+  UNUSED(pvArg);
+
   PlanNode* pConstraints = GraphNav::pFindProperty(const_cast<Stz*>(C_CONSTRAINTS_CONTAINER_NAME), pNode);
 
   if (!pConstraints) {
@@ -1819,6 +1925,9 @@ void GraphValidator::vDefn_5_8(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   // DEFN-5: Validate the constraints:
   // DEFN-5.8: validate that the constraints combinations specified in DEFN-5.7 cannot occur
   //           with any constraints inherited by the current node.
+
+  UNUSED(sPath);
+  UNUSED(iDepth);
 
   PlanNode* pConstraints = GraphNav::pFindProperty(const_cast<Stz*>(C_CONSTRAINTS_CONTAINER_NAME), pNode);
 
@@ -1929,6 +2038,10 @@ void GraphValidator::vDefn_5_9(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   // DEFN-5.9: validate that the same constraint cannot be specified more than once
   //           in the current node.
 
+  UNUSED(sPath);
+  UNUSED(iDepth);
+  UNUSED(pvArg);
+
   PlanNode* pConstraints = GraphNav::pFindProperty(const_cast<Stz*>(C_CONSTRAINTS_CONTAINER_NAME), pNode);
 
   if (!pConstraints) {
@@ -1978,6 +2091,9 @@ void GraphValidator::vDefn_5_10(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
   // DEFN-5: Validate the constraints:
   // DEFN-5.10: validate that the same constraint cannot be specified more than once
   //            when considering all inherited constraints of the current node.
+
+  UNUSED(sPath);
+  UNUSED(iDepth);
 
   PlanNode* pConstraints = GraphNav::pFindProperty(const_cast<Stz*>(C_CONSTRAINTS_CONTAINER_NAME), pNode);
 
@@ -2059,7 +2175,9 @@ void GraphValidator::vDefn_5_11(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
   //               under a node named "__constraints" which itself is a property of the
   //               property in question.
 
-  PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
+  UNUSED(sPath);
+  UNUSED(iDepth);
+  UNUSED(pvArg);
 
   if (pNode->nProperties() == 0) {
     return;
@@ -2113,7 +2231,9 @@ void GraphValidator::vDefn_5_12(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
   //               is non null, validate that if a constraints container exists in that
   //               property then it must have one or more children.
 
-  PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
+  UNUSED(sPath);
+  UNUSED(iDepth);
+  UNUSED(pvArg);
 
   if (pNode->nProperties() == 0) {
     return;
@@ -2155,7 +2275,9 @@ void GraphValidator::vDefn_5_13(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
   //                - valueType
   //                - childCount
 
-  PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
+  UNUSED(sPath);
+  UNUSED(iDepth);
+  UNUSED(pvArg);
 
   if (pNode->nProperties() == 0) {
     return;
@@ -2209,7 +2331,9 @@ void GraphValidator::vDefn_5_14(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
   //               DEFN-5.13 are specified for the property in question, then validate that
   //               their parameter nodes must have non-null name, type and value fields.
 
-  PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
+  UNUSED(sPath);
+  UNUSED(iDepth);
+  UNUSED(pvArg);
 
   if (pNode->nProperties() == 0) {
     return;
@@ -2273,6 +2397,9 @@ void GraphValidator::vDefn_5_15(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
   //               is non null, validate that if the childType constraint is used on the property
   //               that its child parameter must have a value field that is a path that can be
   //               resolved to another definition node.
+
+  UNUSED(sPath);
+  UNUSED(iDepth);
 
   PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
 
@@ -2343,6 +2470,9 @@ void GraphValidator::vDefn_5_16(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
   //               is non null, validate that if the valueType constraint is used on the property
   //               that its child parameter must have a value field that is a path that can be resolved
   //               to another definition node, and that that path is a subclass of valueObject.
+
+  UNUSED(sPath);
+  UNUSED(iDepth);
 
   PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
 
@@ -2417,7 +2547,9 @@ void GraphValidator::vDefn_5_17(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
   //                - (nullable/nonnullable),
   //                - (optional/mandatory)
 
-  PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
+  UNUSED(sPath);
+  UNUSED(iDepth);
+  UNUSED(pvArg);
 
   if (pNode->nProperties() == 0) {
     return;
@@ -2486,6 +2618,9 @@ void GraphValidator::vDefn_5_18(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
   //               any constraints specified are not incompatible with any constraints already
   //               specified in the definition of the property (including that definitions
   //               inheritance hierarchy).
+
+  UNUSED(sPath);
+  UNUSED(iDepth);
 
   PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
 
@@ -2595,7 +2730,9 @@ void GraphValidator::vDefn_5_19(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
   //               that any constraints specified are not specified more than once in this
   //               constraints container for the property in question.
 
-  PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
+  UNUSED(sPath);
+  UNUSED(iDepth);
+  UNUSED(pvArg);
 
   if (pNode->nProperties() == 0) {
     return;
@@ -2660,6 +2797,9 @@ void GraphValidator::vDefn_5_20(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
   //               is non null and that property has a __constraint container, then validate
   //               that any constraints specified are not already specified in the definition
   //               of the property (including that definitions inheritance hierarchy).
+
+  UNUSED(sPath);
+  UNUSED(iDepth);
 
   PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
 
@@ -2741,6 +2881,10 @@ void GraphValidator::vDefn_6_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   // DEFN-6: Validate the children:
   // DEFN-6.1: validate that all children of a given definition node must have unique names.
 
+  UNUSED(sPath);
+  UNUSED(iDepth);
+  UNUSED(pvArg);
+
   if (pNode->nChildren() <= 1) {
     return;
   }
@@ -2780,6 +2924,10 @@ void GraphValidator::vPlan_1_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   // PLAN-1: Validate the name field:
   //    PLAN-1.1: the name field must not be null.
 
+  UNUSED(sPath);
+  UNUSED(iDepth);
+  UNUSED(pvArg);
+
   RASSERT(pNode->szName());
   RASSERT(pNode->szName()->nLength() > 0);
 }
@@ -2801,6 +2949,10 @@ void GraphValidator::vPlan_3_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   // PLAN-3: Validate the type field:
   //    PLAN-3.1: the type field must not be null.
 
+  UNUSED(sPath);
+  UNUSED(iDepth);
+  UNUSED(pvArg);
+
   RASSERT(pNode->szType());
   RASSERT(pNode->szType()->nLength() > 0);
 }
@@ -2813,6 +2965,10 @@ void GraphValidator::vPlan_3_2(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   // PLAN-3: Validate the type field:
   //    PLAN-3.2: the type field must be an absolute path (start with a '/').
 
+  UNUSED(sPath);
+  UNUSED(iDepth);
+  UNUSED(pvArg);
+
   RASSERT(pNode->szType()->bBeginsWith(StrLib::szCharToStr(C_CHILD_SEPARATOR)));
 }
 
@@ -2823,6 +2979,9 @@ void GraphValidator::vPlan_3_3(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 {
   // PLAN-3: Validate the type field:
   //    PLAN-3.3: the path in the type field must be resolvable to another node in the system.
+
+  UNUSED(sPath);
+  UNUSED(iDepth);
 
   PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
   PlanNode* pDefnNode = GraphNav::pFind(pNode->szType(), pRootNode);
@@ -2838,6 +2997,9 @@ void GraphValidator::vPlan_3_4(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 {
   // PLAN-3: Validate the type field:
   //    PLAN-3.4: the path in the type field must be resolve to a node in /__root__/definitions.
+
+  UNUSED(sPath);
+  UNUSED(iDepth);
 
   PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
   DefinitionNode* pDefnNode = static_cast<DefinitionNode*>(GraphNav::pFind(pNode->szType(), pRootNode));
@@ -2855,6 +3017,10 @@ void GraphValidator::vPlan_3_5(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   // PLAN-3: Validate the type field:
   //    PLAN-3.5: the path in the type field must not be a property path
   //              (i.e. it must not have a ':' in the path).
+
+  UNUSED(sPath);
+  UNUSED(iDepth);
+  UNUSED(pvArg);
 
   RASSERT(!pNode->szType()->bContains(StrLib::szCharToStr(C_PROPERTY_SEPARATOR)));
 }
@@ -2876,6 +3042,10 @@ void GraphValidator::vPlan_5_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   // PLAN-5: Validate the constraints:
   //    PLAN-5.1: Validate that there is no __constraint container in this objects properties.
 
+  UNUSED(sPath);
+  UNUSED(iDepth);
+  UNUSED(pvArg);
+
   PlanNode* pConstraints = GraphNav::pFindProperty(const_cast<Stz*>(C_CONSTRAINTS_CONTAINER_NAME), pNode);
   RASSERT(!pConstraints);
 }
@@ -2887,6 +3057,10 @@ void GraphValidator::vPlan_5_2(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 {
   // PLAN-5: Validate the constraints:
   //    PLAN-5.2: Validate that there are no properties that derive from a constraint definition.
+
+  UNUSED(sPath);
+  UNUSED(iDepth);
+  UNUSED(pvArg);
 
   if (pNode->nProperties() == 0) {
     return;
@@ -2909,6 +3083,10 @@ void GraphValidator::vPlan_6_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
 {
   // PLAN-6: Validate the children:
   //    PLAN-6.1: the children must each have a unique name (so they have a unique path).
+
+  UNUSED(sPath);
+  UNUSED(iDepth);
+  UNUSED(pvArg);
 
   if (pNode->nChildren() <= 1) {
     return;
@@ -2944,6 +3122,10 @@ void GraphValidator::vPlan_6_2(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   // PLAN-6: Validate the children:
   //    PLAN-6.2: the leaf nodes on a non-property path must be data sources
 
+  UNUSED(sPath);
+  UNUSED(iDepth);
+  UNUSED(pvArg);
+
   if (pNode->nChildren() > 0 || sPath.bEqual(const_cast<Stz*>(C_PLAN_NAME)) ||
       sPath.bContains(StrLib::szCharToStr(C_PROPERTY_SEPARATOR))) {
     return;
@@ -2961,6 +3143,9 @@ void GraphValidator::vPlan_7_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   //    PLAN-7.1: the node must have properties with names and types that represent all the properties
   //              defined in its definition (including all parents of the definition), excluding any
   //              properties that are marked as optional.
+
+  UNUSED(sPath);
+  UNUSED(iDepth);
 
   RASSERT(pNode->szType());
 
@@ -3033,6 +3218,9 @@ void GraphValidator::vPlan_7_2(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   //    PLAN-7.2: the current node must not have any additional properties that
   //              aren't specified in its definition (including the definition's parents recursively).
 
+  UNUSED(sPath);
+  UNUSED(iDepth);
+
   if (pNode->nProperties() == 0) {
     return;
   }
@@ -3094,6 +3282,9 @@ void GraphValidator::vPlan_8_1(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   //    PLAN-8.1: If a node's definition contains the "noChildren" constraint
   //              then validate that the node has no children.
 
+  UNUSED(sPath);
+  UNUSED(iDepth);
+
   if (pNode->nChildren() == 0) {
     return;
   }
@@ -3130,6 +3321,9 @@ void GraphValidator::vPlan_8_2(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   // PLAN-8: Validate the object against its definition constraints:
   //    PLAN-8.2: If a node's definition contains the "alwaysChildren" constraint
   //              then validate that the node must have at least one child.
+
+  UNUSED(sPath);
+  UNUSED(iDepth);
 
   if (pNode->nChildren() > 0) {
     return;
@@ -3169,6 +3363,10 @@ void GraphValidator::vPlan_8_3(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   //              then validate that the value field of the node can be null.
 
   // NB: the value field of all nodes can be made null. This is a default.
+  UNUSED(pNode);
+  UNUSED(sPath);
+  UNUSED(iDepth);
+  UNUSED(pvArg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3179,6 +3377,9 @@ void GraphValidator::vPlan_8_4(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   // PLAN-8: Validate the object against its definition constraints:
   //    PLAN-8.4: If a node's definition contains the "nonNullable" constraint
   //              then validate that the value field of the node cannot be null.
+
+  UNUSED(sPath);
+  UNUSED(iDepth);
 
   // Get the root node
   PlanNode *pRootNode = static_cast<PlanNode *>(pvArg);
@@ -3213,6 +3414,10 @@ void GraphValidator::vPlan_8_5(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   //    PLAN-8.5: NB: validation of the "optional" constraint is achieved in PLAN-7.1.
 
   // Noop
+  UNUSED(pNode);
+  UNUSED(sPath);
+  UNUSED(iDepth);
+  UNUSED(pvArg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3224,6 +3429,10 @@ void GraphValidator::vPlan_8_6(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   //    PLAN-8.6: NB: validation of the "mandatory" constraint is achieved in PLAN-7.1.
 
   // Noop
+  UNUSED(pNode);
+  UNUSED(sPath);
+  UNUSED(iDepth);
+  UNUSED(pvArg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3235,6 +3444,9 @@ void GraphValidator::vPlan_8_7(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   //    PLAN-8.7: If a node's definition contains the "childType" constraint
   //              then validate that any and all children of the node must be of a type indicated
   //              by the constraint's parameter.
+
+  UNUSED(sPath);
+  UNUSED(iDepth);
 
   if (pNode->nChildren() == 0) {
     return;
@@ -3304,6 +3516,9 @@ void GraphValidator::vPlan_8_8(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   //              then validate that the value field of the node must be of a type indicated
   //              by the constraint's parameter.
 
+  UNUSED(sPath);
+  UNUSED(iDepth);
+
   // Get the root node
   PlanNode *pRootNode = static_cast<PlanNode *>(pvArg);
 
@@ -3370,6 +3585,9 @@ void GraphValidator::vPlan_8_9(PlanNode* pNode, s256& sPath, i8 iDepth, void* pv
   //              then validate that the number of children of the node must equal that indicated
   //              by any of the constraint's parameters.
 
+  UNUSED(sPath);
+  UNUSED(iDepth);
+
   if (pNode->nChildren() == 0) {
     return;
   }
@@ -3435,6 +3653,9 @@ void GraphValidator::vPlan_8_11(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
   //               property definition also has the "noChildren" constraint then validate
   //               that the property of the current node has no children.
 
+  UNUSED(sPath);
+  UNUSED(iDepth);
+
   if (pNode->nProperties() == 0) {
     return;
   }
@@ -3490,6 +3711,9 @@ void GraphValidator::vPlan_8_12(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
   //    PLAN-8.12: If a node's definition has a property with a non-null type field, and that
   //               property definition also has the "alwaysChildren" constraint then validate
   //               that the property of the current node must have at least one child.
+
+  UNUSED(sPath);
+  UNUSED(iDepth);
 
   if (pNode->nProperties() == 0) {
     return;
@@ -3548,6 +3772,10 @@ void GraphValidator::vPlan_8_13(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
   //               that the value field of the property of the current node can be null.
 
   // Noop, all values are nullable by default.
+  UNUSED(pNode);
+  UNUSED(sPath);
+  UNUSED(iDepth);
+  UNUSED(pvArg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3559,6 +3787,9 @@ void GraphValidator::vPlan_8_14(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
   //    PLAN-8.14: If a node's definition has a property with a non-null type field, and that
   //               property definition also has the "nonNullable" constraint then validate
   //               that the value field of the property of the current node cannot be null.
+
+  UNUSED(sPath);
+  UNUSED(iDepth);
 
   if (pNode->nProperties() == 0) {
     return;
@@ -3615,6 +3846,10 @@ void GraphValidator::vPlan_8_15(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
   //    PLAN-8.15: NB: validation of the "optional" constraint is achieved in PLAN-7.1.
 
   // Noop
+  UNUSED(pNode);
+  UNUSED(sPath);
+  UNUSED(iDepth);
+  UNUSED(pvArg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3626,6 +3861,11 @@ void GraphValidator::vPlan_8_16(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
   //    PLAN-8.16: NB: validation of the "mandatory" constraint is achieved in PLAN-7.1.
 
   // Noop. All properties are mandatory by default.
+
+  UNUSED(pNode);
+  UNUSED(sPath);
+  UNUSED(iDepth);
+  UNUSED(pvArg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3638,6 +3878,9 @@ void GraphValidator::vPlan_8_17(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
   //               property definition also has the "childType" constraint then validate
   //               that any and all children of the property of the current node must be of
   //               a type indicated by the constraint's parameter.
+
+  UNUSED(sPath);
+  UNUSED(iDepth);
 
   if (pNode->nProperties() == 0) {
     return;
@@ -3717,6 +3960,9 @@ void GraphValidator::vPlan_8_18(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
   //               property definition also has the "valueType" constraint then validate
   //               that the value field of the property of the current node must be of a type
   //               indicated by the constraint's parameter.
+
+  UNUSED(sPath);
+  UNUSED(iDepth);
 
   if (pNode->nProperties() == 0) {
     return;
@@ -3808,6 +4054,9 @@ void GraphValidator::vPlan_8_19(PlanNode* pNode, s256& sPath, i8 iDepth, void* p
   //               property definition also has the "childCount" constraint then validate
   //               that the number of children of the property of the current node must equal
   //               that indicated by the constraint's parameter.
+
+  UNUSED(sPath);
+  UNUSED(iDepth);
 
   if (pNode->nProperties() == 0) {
     return;
