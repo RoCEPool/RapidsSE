@@ -58,7 +58,7 @@
 
 create table t1 (
 	 C1       INTEGER,
-	 C2       DOUBLE,
+	 C2       FLOAT,
 	 C3       DATE,
 	 C4       VARCHAR(32)
 );
@@ -66,7 +66,7 @@ success
 
 create table t2 (
    COLA     INTEGER,
-   COLB     DOUBLE,
+   COLB     FLOAT,
    COLC     DATE,
    COLD     VARCHAR(32)
 );
