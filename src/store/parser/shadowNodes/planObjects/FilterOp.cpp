@@ -12,6 +12,8 @@
 
 #include "GraphNav.hpp"
 #include "NodeNamer.hpp"
+#include "MetadataNode.hpp"
+#include "ShadowRoot.hpp"
 
 using namespace Parser;
 
@@ -91,13 +93,23 @@ void FilterOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iIn
   vAppendIndent(sBuf, iIndent, IF_PLAIN);
   sBuf.vCatSprint("expr: (%s)"_Stz, sExprBuf.szStz());
 
-  QueryNode* pOrdinalExpr = pOrdinalFilterExpr(_pQueryNode(pNode), pRootNode);
-  sExprBuf.vReset();
-  Expr::vDescribe(pOrdinalExpr, sExprBuf);
-  sBuf.vConcat("\n"_Stz);
-  vAppendIndent(sBuf, iIndent, IF_PLAIN);
-  sBuf.vCatSprint("ordinal expr: (%s)"_Stz, sExprBuf.szStz());
-  delete pOrdinalExpr;
+
+  // Explaining very early plans are difficult because we cannot resolve the column expressions.
+  // We don't want to retrieve any ordinal expressions below before we have been able
+  // to resolve all table/column names in the system.
+  // When we resolve names we also add metadata into plan. So if the metadata node has
+  // no children then we probably haven't resolved any names yet (except for the case of
+  // the plan only containing literals).
+
+  if (MetadataNode::bHasMetadata(ShadowRoot::pMetadataNode(pRootNode))) {
+    QueryNode* pOrdinalExpr = pOrdinalFilterExpr(_pQueryNode(pNode), pRootNode);
+    sExprBuf.vReset();
+    Expr::vDescribe(pOrdinalExpr, sExprBuf);
+    sBuf.vConcat("\n"_Stz);
+    vAppendIndent(sBuf, iIndent, IF_PLAIN);
+    sBuf.vCatSprint("ordinal expr: (%s)"_Stz, sExprBuf.szStz());
+    delete pOrdinalExpr;
+  }
 
   // Recurse any children of pNode
   if (pNode->bHasChildren()) {
