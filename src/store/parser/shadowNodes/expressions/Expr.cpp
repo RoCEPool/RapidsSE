@@ -654,7 +654,7 @@ b1 Expr::bIsNotOrdinal(QueryNode* pExpr)
 /* non-ordinal subset of that expression. If the expression is wholly         */
 /* ordinal then nullptr is returned.                                          */
 /*----------------------------------------------------------------------------*/
-QueryNode* Expr::pLargestNonOrdinalSubExpr(QueryNode* pOrdinalExpr)
+QueryNode* Expr::pLargestNonOrdinalSubExpr(QueryNode* pOrdinalExpr, b1 bIncludeAggregates)
 {
   ASSERT(pOrdinalExpr);
   ASSERT(Expr::bIsOfType(pOrdinalExpr));
@@ -663,22 +663,28 @@ QueryNode* Expr::pLargestNonOrdinalSubExpr(QueryNode* pOrdinalExpr)
   // that contains ColumnRefs but no OrdinalRefs.
 
   // First define some lambda conditions to search for ColumnRefs and OrdinalRefs
-  auto fColumnRefCondition  = [](PlanNode* pNode, void* pvArg) -> b1 { UNUSED(pvArg); return     ColumnRef::bIsOfType(pNode); };
-  auto fOrdinalRefCondition = [](PlanNode* pNode, void* pvArg) -> b1 { UNUSED(pvArg); return ColumnOrdinal::bIsOfType(pNode); };
+  auto fColumnRefCondition    = [](PlanNode* pNode, void* pvArg) -> b1 { UNUSED(pvArg); return     ColumnRef::bIsOfType(pNode); };
+  auto fOrdinalRefCondition   = [](PlanNode* pNode, void* pvArg) -> b1 { UNUSED(pvArg); return ColumnOrdinal::bIsOfType(pNode); };
+  auto fHasAggregateCondition = [](PlanNode* pNode, void* pvArg) -> b1 { UNUSED(pvArg); return AggregateExpr::bIsOfType(pNode); };
 
   QueryNode* pNonOrdExpr = nullptr;
 
-  auto fVisitor = [&pNonOrdExpr, fColumnRefCondition, fOrdinalRefCondition]
+  auto fVisitor = [bIncludeAggregates, &pNonOrdExpr, fColumnRefCondition, fOrdinalRefCondition, fHasAggregateCondition]
       (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);
     UNUSED(pvArg);
 
-    PlanNode* pColumnRef  = GraphNav::pGlobalSearch(pNode, false, true, fColumnRefCondition,  nullptr);
-    PlanNode* pOrdinalRef = GraphNav::pGlobalSearch(pNode, false, true, fOrdinalRefCondition, nullptr);
+    if (!bIncludeAggregates && AggregateExpr::bIsOfType(pNode)) {
+      return GraphNav::WALK_SKIP_SUBTREE;
+    }
 
-    if (pColumnRef && !pOrdinalRef) {
+    PlanNode* pColumnRef    = GraphNav::pGlobalSearch(pNode, false, true, fColumnRefCondition,    nullptr);
+    PlanNode* pOrdinalRef   = GraphNav::pGlobalSearch(pNode, false, true, fOrdinalRefCondition,   nullptr);
+    PlanNode* pAggregateRef = GraphNav::pGlobalSearch(pNode, false, true, fHasAggregateCondition, nullptr);
+
+    if ( pColumnRef && !pOrdinalRef && (bIncludeAggregates || !pAggregateRef) ) {
       pNonOrdExpr = _pQueryNode(pNode);
       return GraphNav::WALK_ABORT;
     }

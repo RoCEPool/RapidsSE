@@ -88,7 +88,7 @@ namespace Parser
     // Given an expression already in ordinal form, find and return the largest
     // non-ordinal subset of that expression. If the expression is wholly
     // ordinal then nullptr is returned.
-    static QueryNode* pLargestNonOrdinalSubExpr(QueryNode* pOrdinalExpr);
+    static QueryNode* pLargestNonOrdinalSubExpr(QueryNode* pOrdinalExpr, b1 bIncludeAggregates);
 
     // Given an expression, return a list of each aggregate term found in
     // that expression. The returned list is to be deleted, but the items
