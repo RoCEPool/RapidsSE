@@ -442,10 +442,6 @@ void ExprEval::vCreateIdxKey(Stz* szAsmBuffer, IntStack* pTypeStack) {
     default:
       NEVER_REACH;
   }
-
-  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVIXT_SRC\n"_Stz);
-  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
-  StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_PRINT\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2565,6 +2561,9 @@ void ExprEval::vBoundRelation(Stz* szAsmBuffer, IntStack* pTypeStack, Token* pTk
 
   vCreateIdxKey(szAsmBuffer, &m_xTypeStack);
 
+  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVIXT_SRC\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_PRINT\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
