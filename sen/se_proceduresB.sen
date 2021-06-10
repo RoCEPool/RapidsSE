@@ -850,7 +850,6 @@
     stage stageA on origin :
       start
       | periodic once
-      //| sqlInit
       | parser $sqlStatement
       | nameValidate
       | exprValidate
@@ -860,6 +859,8 @@
       | projValidation
       | corrBySquash
       | explainPlan
+      | partitionPlan
+      | partitionExplain
       | stageMarkers
       | transliterate
       | output

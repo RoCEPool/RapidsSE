@@ -56,10 +56,13 @@ void ProjValidation::vValidateExprVisibility(PlanNode* pRootNode)
   // The plan node should have one child which is a StatementMarker node
   ASSERT(pPlanNode->nChildren() == 1);
   ASSERT(StatementMarker::bIsOfType(pPlanNode->pFirstChild()));
-  QueryNode* pStatementMarker = _pQueryNode(pPlanNode->pFirstChild());
 
   auto fVisitor = [pRootNode]
       (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(pvArg);
 
     // We are only interested in Sql operators that have expressions.
     // So no need to look at any of the following:

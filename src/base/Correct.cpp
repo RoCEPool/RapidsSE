@@ -220,7 +220,7 @@ b1 BASE::bAddrsToLines(void** pvAddrs,
   }
 
   // Should be nothing else left to read, but clear the pipe anyway
-  while (fread(sBuf.azChar(), 1, sBuf.nSpace(), pF) == sBuf.nSpace());
+  while (fread(sBuf.azChar(), 1, sBuf.nSpace(), pF) == (size_t) sBuf.nSpace());
 
   pclose(pF);
   return true;

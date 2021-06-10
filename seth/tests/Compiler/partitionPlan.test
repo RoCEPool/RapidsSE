@@ -1,0 +1,770 @@
+/*----------------------------------------------------------------------------*/
+/* Plan partitioning tests                                                    */
+/*----------------------------------------------------------------------------*/
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Notes
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+-- Test cases:
+--  Note: aggregates to test: SUM, COUNT(), AVG(), MIN(), MAX()
+--          SUM()s get summed
+--          COUNT()s get summed
+--          AVG()s get split into a SUM() and COUNT() and divided together on the origin
+--          MIN()s get minned
+--          MAX()s get maxed
+--
+--  (101) Simple select, no aggregates
+--  (102) Simple select with WHERE clause
+--  (103) Simple select with ORDER BY clause
+--  (104) Simple select with LIMIT clause
+--  (105) Simple select with ORDER BY and LIMIT clause
+--  (106) Simple select with ORDER BY clause & post-project
+--  (107) Simple select with WHERE & ORDER BY clauses
+--  (108) Simple select with WHERE & ORDER BY clauses & post-project
+--  (109) Simple select with WHERE & LIMIT clauses
+--  (110) Simple select with WHERE, ORDER BY and LIMIT clauses
+--  (111) Simple select with WHERE, ORDER BY and LIMIT clauses & post-project
+--
+--  (200) Select with grand total aggregates
+--  (201) Select with grand total aggregates & WHERE clause
+--  (202) Select with grand total aggregates & HAVING clause
+--  (203) Select with grand total aggregates & ORDER BY clause
+--  (204) Select with grand total aggregates & LIMIT clause (kind of meaningless)
+--  (205) Select with grand total aggregates, HAVING clause & post-project
+--  (206) Select with grand total aggregates, ORDER BY clause & post-project
+--  (207) Select with grand total aggregates, HAVING, ORDER BY clauses & post-project
+--  (208) Select with grand total aggregates, WHERE and HAVING clauses
+--  (209) Select with grand total aggregates, WHERE, HAVING clauses & post-project
+--  (210) Select with grand total aggregates, WHERE, HAVING & ORDER BY clauses
+--  (211) Select with grand total aggregates, WHERE, HAVING, ORDER BY clauses & post-project
+--  (212) Select with grand total aggregates, WHERE, HAVING & LIMIT clauses
+--  (213) Select with grand total aggregates, WHERE, HAVING, LIMIT clauses & post-project
+--  (214) Select with grand total aggregates, WHERE, HAVING, ORDER BY & LIMIT clauses
+--  (215) Select with grand total aggregates, WHERE, HAVING, ORDER BY, LIMIT clauses & post-project
+--  (216) Select with grand total aggregates, WHERE, ORDER BY & LIMIT clauses
+--  (217) Select with grand total aggregates, WHERE, ORDER BY, LIMIT clauses & post-project
+--
+--  (300) Select with GROUP BY aggregates
+--  (301) Select with GROUP BY aggregates & WHERE clause
+--  (302) Select with GROUP BY aggregates & HAVING clause
+--  (303) Select with GROUP BY aggregates & ORDER BY clause
+--  (304) Select with GROUP BY aggregates & LIMIT clause
+--  (305) Select with GROUP BY aggregates, HAVING clause & post-project
+--  (306) Select with GROUP BY aggregates, ORDER BY clause & post-project
+--  (307) Select with GROUP BY aggregates, HAVING, ORDER BY clauses & post-project
+--  (308) Select with GROUP BY aggregates, WHERE and HAVING clauses
+--  (309) Select with GROUP BY aggregates, WHERE, HAVING clauses & post-project
+--  (310) Select with GROUP BY aggregates, WHERE, HAVING & ORDER BY clauses
+--  (311) Select with GROUP BY aggregates, WHERE, HAVING, ORDER BY clauses & post-project
+--  (312) Select with GROUP BY aggregates, WHERE, HAVING & LIMIT clauses
+--  (313) Select with GROUP BY aggregates, WHERE, HAVING, LIMIT clauses & post-project
+--  (314) Select with GROUP BY aggregates, WHERE, HAVING, ORDER BY & LIMIT clauses
+--  (315) Select with GROUP BY aggregates, WHERE, HAVING, ORDER BY, LIMIT clauses & post-project
+--  (316) Select with GROUP BY aggregates, WHERE, ORDER BY & LIMIT clauses
+--  (317) Select with GROUP BY aggregates, WHERE, ORDER BY, LIMIT clauses & post-project
+--
+--  (400) UNION ALL of two simple selects with no aggregates
+--  (401) UNION ALL of two simple selects with WHERE clauses
+--  (402) UNION ALL of two selects with grand total aggregates
+--  (403) UNION ALL of two selects with grand total aggregates, WHERE & HAVING clauses
+--  (404) UNION ALL of two selects with GROUP BY aggregates
+--  (405) UNION ALL of two selects with GROUP BY aggregates, WHERE & HAVING clauses
+--  (406) UNION ALL of two selects with GROUP BY aggregates, WHERE & HAVING clauses and post-projections
+--  (407) UNION ALL with corresponding clause of two selects with GROUP BY aggregates, WHERE & HAVING clauses and post-projections
+--
+--  (500) UNION ALL with ORDER BY of two simple selects with no aggregates
+--  (501) UNION ALL with LIMIT of two simple selects with no aggregates
+--  (502) UNION ALL with ORDER BY and LIMIT of two simple selects with no aggregates
+--  (503) UNION ALL with ORDER BY and LIMIT of two selects with grand total aggregates, WHERE & HAVING clauses
+--  (504) UNION ALL with ORDER BY and LIMIT of two selects with GROUP BY aggregates, WHERE & HAVING clauses
+
+--  (600) JOINS!!!
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Setup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+create table t1 (
+	 C1       INTEGER,
+	 C2       FLOAT,
+	 C3       DATE,
+	 C4       VARCHAR(32)
+);
+success
+
+create table t2 (
+   COLA     INTEGER,
+   COLB     FLOAT,
+   COLC     DATE,
+   COLD     VARCHAR(32)
+);
+success
+
+trackmemory;
+success
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Simple SELECTs
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+--  (101) Simple select, no aggregates
+EXPLAIN STAGE partitionExplain
+SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3
+FROM    t1
+;
+rows: (*, 'partitionExplain', *)
+
+--  (102) Simple select with WHERE clause
+EXPLAIN STAGE partitionExplain
+SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3
+FROM    t1
+WHERE   c1/c2 > 0
+;
+rows: (*, 'partitionExplain', *)
+
+--  (103) Simple select with ORDER BY clause
+EXPLAIN STAGE partitionExplain
+SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3
+FROM    t1
+ORDER BY x2
+;
+rows: (*, 'partitionExplain', *)
+
+--  (04) Simple select with LIMIT clause
+EXPLAIN STAGE partitionExplain
+SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3
+FROM    t1
+LIMIT   10
+;
+rows: (*, 'partitionExplain', *)
+
+--  (105) Simple select with ORDER BY and LIMIT clause
+EXPLAIN STAGE partitionExplain
+SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3
+FROM    t1
+ORDER BY x2
+LIMIT   10
+;
+rows: (*, 'partitionExplain', *)
+
+--  (106) Simple select with ORDER BY clause & post-project
+EXPLAIN STAGE partitionExplain
+SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3
+FROM    t1
+ORDER BY c1 + c2
+;
+rows: (*, 'partitionExplain', *)
+
+--  (107) Simple select with WHERE & ORDER BY clauses
+EXPLAIN STAGE partitionExplain
+SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3
+FROM    t1
+WHERE   c1/c2 > 0
+ORDER BY x2
+;
+rows: (*, 'partitionExplain', *)
+
+--  (108) Simple select with WHERE & ORDER BY clauses & post-project
+EXPLAIN STAGE partitionExplain
+SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3
+FROM    t1
+WHERE   c1/c2 > 0
+ORDER BY c1 + c2
+;
+rows: (*, 'partitionExplain', *)
+
+--  (109) Simple select with WHERE & LIMIT clauses
+EXPLAIN STAGE partitionExplain
+SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3
+FROM    t1
+WHERE   c1/c2 > 0
+LIMIT   10
+;
+rows: (*, 'partitionExplain', *)
+
+--  (110) Simple select with WHERE, ORDER BY and LIMIT clauses
+EXPLAIN STAGE partitionExplain
+SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3
+FROM    t1
+WHERE   c1/c2 > 0
+ORDER BY x2
+LIMIT   10
+;
+rows: (*, 'partitionExplain', *)
+
+--  (111) Simple select with WHERE, ORDER BY and LIMIT clauses & post-project
+EXPLAIN STAGE partitionExplain
+SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3
+FROM    t1
+WHERE   c1/c2 > 0
+ORDER BY c1 + c2
+  LIMIT   10
+;
+rows: (*, 'partitionExplain', *)
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Grand total SELECTs
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+--  (200) Select with grand total aggregates
+EXPLAIN STAGE partitionExplain
+SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2
+FROM    t1
+;
+rows: (*, 'partitionExplain', *)
+
+--  (201) Select with grand total aggregates & WHERE clause
+EXPLAIN STAGE partitionExplain
+SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2
+FROM    t1
+WHERE   c1 > 0
+;
+rows: (*, 'partitionExplain', *)
+
+--  (202) Select with grand total aggregates & HAVING clause
+EXPLAIN STAGE partitionExplain
+SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2
+FROM    t1
+HAVING  min1 < 0
+;
+rows: (*, 'partitionExplain', *)
+
+--  (203) Select with grand total aggregates & ORDER BY clause (silly example but still valid)
+EXPLAIN STAGE partitionExplain
+SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2
+FROM    t1
+ORDER BY max1
+;
+rows: (*, 'partitionExplain', *)
+
+--  (204) Select with grand total aggregates & LIMIT clause (silly example but still valid)
+EXPLAIN STAGE partitionExplain
+SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2
+FROM    t1
+LIMIT   2
+;
+rows: (*, 'partitionExplain', *)
+
+--  (205) Select with grand total aggregates, HAVING clause & post-project
+EXPLAIN STAGE partitionExplain
+SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2
+FROM    t1
+HAVING  MIN(c2) < 0
+;
+rows: (*, 'partitionExplain', *)
+
+--  (206) Select with grand total aggregates, ORDER BY clause & post-project
+EXPLAIN STAGE partitionExplain
+SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2
+FROM    t1
+ORDER BY MIN(c2)
+;
+rows: (*, 'partitionExplain', *)
+
+--  (207) Select with grand total aggregates, HAVING, ORDER BY clauses & post-project
+EXPLAIN STAGE partitionExplain
+SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2
+FROM    t1
+HAVING  MIN(c2) < 0
+ORDER BY max1
+;
+rows: (*, 'partitionExplain', *)
+
+--  (208) Select with grand total aggregates, WHERE and HAVING clauses
+EXPLAIN STAGE partitionExplain
+SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2
+FROM    t1
+WHERE   c1 > 0
+HAVING  max1 > 0
+;
+rows: (*, 'partitionExplain', *)
+
+--  (209) Select with grand total aggregates, WHERE, HAVING clauses & post-project
+EXPLAIN STAGE partitionExplain
+SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2
+FROM    t1
+WHERE   c1 > 0
+HAVING  MIN(c2) < 0
+;
+rows: (*, 'partitionExplain', *)
+
+--  (210) Select with grand total aggregates, WHERE, HAVING & ORDER BY clauses
+EXPLAIN STAGE partitionExplain
+SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2
+FROM    t1
+WHERE   c1 > 0
+HAVING  max1 > 0
+ORDER BY min1
+;
+rows: (*, 'partitionExplain', *)
+
+--  (211) Select with grand total aggregates, WHERE, HAVING, ORDER BY clauses & post-project
+EXPLAIN STAGE partitionExplain
+SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2
+FROM    t1
+WHERE   c1 > 0
+HAVING  max1 > 0
+ORDER BY MIN(c2)
+;
+rows: (*, 'partitionExplain', *)
+
+--  (212) Select with grand total aggregates, WHERE, HAVING & LIMIT clauses
+EXPLAIN STAGE partitionExplain
+SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2
+FROM    t1
+WHERE   c1 > 0
+HAVING  max1 > 0
+LIMIT   2
+;
+rows: (*, 'partitionExplain', *)
+
+--  (213) Select with grand total aggregates, WHERE, HAVING, LIMIT clauses & post-project
+EXPLAIN STAGE partitionExplain
+SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2
+FROM    t1
+WHERE   c1 > 0
+HAVING  MIN(c2) < 0
+LIMIT   2
+;
+rows: (*, 'partitionExplain', *)
+
+--  (214) Select with grand total aggregates, WHERE, HAVING, ORDER BY & LIMIT clauses
+EXPLAIN STAGE partitionExplain
+SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2
+FROM    t1
+WHERE   c1 > 0
+HAVING  max1 > 0
+ORDER BY min1
+LIMIT   2
+;
+rows: (*, 'partitionExplain', *)
+
+--  (215) Select with grand total aggregates, WHERE, HAVING, ORDER BY, LIMIT clauses & post-project
+EXPLAIN STAGE partitionExplain
+SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2
+FROM    t1
+WHERE   c1 > 0
+HAVING  max1 > 0
+ORDER BY MIN(c2)
+LIMIT   2
+;
+rows: (*, 'partitionExplain', *)
+
+--  (216) Select with grand total aggregates, WHERE, ORDER BY & LIMIT clauses
+EXPLAIN STAGE partitionExplain
+SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2
+FROM    t1
+WHERE   c1 > 0
+ORDER BY min1
+LIMIT   2
+;
+rows: (*, 'partitionExplain', *)
+
+--  (217) Select with grand total aggregates, WHERE, ORDER BY, LIMIT clauses & post-project
+EXPLAIN STAGE partitionExplain
+SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2
+FROM    t1
+WHERE   c1 > 0
+ORDER BY MIN(c2)
+LIMIT   2
+;
+rows: (*, 'partitionExplain', *)
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  GROUP BY SELECTs
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+--  (300) Select with GROUP BY aggregates
+EXPLAIN STAGE partitionExplain
+SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2
+FROM     t1
+GROUP BY c1
+;
+rows: (*, 'partitionExplain', *)
+
+--  (301) Select with GROUP BY aggregates & WHERE clause
+EXPLAIN STAGE partitionExplain
+SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2
+FROM     t1
+WHERE    c1 > 0
+GROUP BY c1
+;
+rows: (*, 'partitionExplain', *)
+
+--  (302) Select with GROUP BY aggregates & HAVING clause
+EXPLAIN STAGE partitionExplain
+SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2
+FROM     t1
+GROUP BY c1
+HAVING   min2 < 0
+;
+rows: (*, 'partitionExplain', *)
+
+--  (303) Select with GROUP BY aggregates & ORDER BY clause
+EXPLAIN STAGE partitionExplain
+SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2
+FROM     t1
+GROUP BY c1
+ORDER BY min2
+;
+rows: (*, 'partitionExplain', *)
+
+--  (304) Select with GROUP BY aggregates & LIMIT clause
+EXPLAIN STAGE partitionExplain
+SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2
+FROM     t1
+GROUP BY c1
+LIMIT    10
+;
+rows: (*, 'partitionExplain', *)
+
+--  (305) Select with GROUP BY aggregates, HAVING clause & post-project
+EXPLAIN STAGE partitionExplain
+SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2
+FROM     t1
+GROUP BY c1
+HAVING   MAX(c1 + c2) > 0
+;
+rows: (*, 'partitionExplain', *)
+
+--  (306) Select with GROUP BY aggregates, ORDER BY clause & post-project
+EXPLAIN STAGE partitionExplain
+SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2
+FROM     t1
+GROUP BY c1
+ORDER BY MAX(c1 + c2)
+;
+rows: (*, 'partitionExplain', *)
+
+--  (307) Select with GROUP BY aggregates, HAVING, ORDER BY clauses & post-project
+EXPLAIN STAGE partitionExplain
+SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2
+FROM     t1
+GROUP BY c1
+HAVING   MAX(c1 + c2) > 0
+ORDER BY min2
+;
+rows: (*, 'partitionExplain', *)
+
+--  (308) Select with GROUP BY aggregates, WHERE and HAVING clauses
+EXPLAIN STAGE partitionExplain
+SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2
+FROM     t1
+WHERE    c2 > 0
+GROUP BY c1
+HAVING   max2 > 0
+;
+rows: (*, 'partitionExplain', *)
+
+--  (309) Select with GROUP BY aggregates, WHERE, HAVING clauses & post-project
+EXPLAIN STAGE partitionExplain
+SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2
+FROM     t1
+WHERE    c2 > 0
+GROUP BY c1
+HAVING   MAX(c1 + c2) > 0
+;
+rows: (*, 'partitionExplain', *)
+
+--  (310) Select with GROUP BY aggregates, WHERE, HAVING & ORDER BY clauses
+EXPLAIN STAGE partitionExplain
+SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2
+FROM     t1
+WHERE    c2 > 0
+GROUP BY c1
+ORDER BY max2
+;
+rows: (*, 'partitionExplain', *)
+
+--  (311) Select with GROUP BY aggregates, WHERE, HAVING, ORDER BY clauses & post-project
+EXPLAIN STAGE partitionExplain
+SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2
+FROM     t1
+WHERE    c2 > 0
+GROUP BY c1
+ORDER BY MAX(c1 + c2)
+;
+rows: (*, 'partitionExplain', *)
+
+--  (312) Select with GROUP BY aggregates, WHERE, HAVING & LIMIT clauses
+EXPLAIN STAGE partitionExplain
+SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2
+FROM     t1
+WHERE    c2 > 0
+GROUP BY c1
+HAVING   max2 > 0
+LIMIT    10
+;
+rows: (*, 'partitionExplain', *)
+
+--  (313) Select with GROUP BY aggregates, WHERE, HAVING, LIMIT clauses & post-project
+EXPLAIN STAGE partitionExplain
+SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2
+FROM     t1
+WHERE    c2 > 0
+GROUP BY c1
+HAVING   MAX(c1 + c2) > 0
+LIMIT    10
+;
+rows: (*, 'partitionExplain', *)
+
+--  (314) Select with GROUP BY aggregates, WHERE, HAVING, ORDER BY & LIMIT clauses
+EXPLAIN STAGE partitionExplain
+SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2
+FROM     t1
+WHERE    c2 > 0
+GROUP BY c1
+HAVING   max2 > 0
+ORDER BY min2
+LIMIT    10
+;
+rows: (*, 'partitionExplain', *)
+
+--  (315) Select with GROUP BY aggregates, WHERE, HAVING, ORDER BY, LIMIT clauses & post-project
+EXPLAIN STAGE partitionExplain
+SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2
+FROM     t1
+WHERE    c2 > 0
+GROUP BY c1
+HAVING   MAX(c1 + c2) > 0
+ORDER BY min2
+LIMIT    10
+;
+rows: (*, 'partitionExplain', *)
+
+--  (316) Select with GROUP BY aggregates, WHERE, ORDER BY & LIMIT clauses
+EXPLAIN STAGE partitionExplain
+SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2
+FROM     t1
+WHERE    c2 > 0
+GROUP BY c1
+ORDER BY min2
+LIMIT    10
+;
+rows: (*, 'partitionExplain', *)
+
+--  (317) Select with GROUP BY aggregates, WHERE, ORDER BY, LIMIT clauses & post-project
+EXPLAIN STAGE partitionExplain
+SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2
+FROM     t1
+WHERE    c2 > 0
+GROUP BY c1
+ORDER BY MAX(c1 + c2)
+LIMIT    10
+;
+rows: (*, 'partitionExplain', *)
+
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Basic UNION ALL
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+--  (400) UNION ALL of two simple selects with no aggregates
+EXPLAIN STAGE partitionExplain
+  SELECT   c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3
+  FROM     t1
+UNION ALL 
+  SELECT   colA AS y1, colB + 1 AS y2, colA/colB AS y3
+  FROM     t2
+;
+rows: (*, 'partitionExplain', *)
+
+--  (401) UNION ALL of two simple selects with WHERE clauses
+EXPLAIN STAGE partitionExplain
+  SELECT   c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3
+  FROM     t1
+  WHERE    c1 > 0
+UNION ALL
+  SELECT   colA AS y1, colB + 1 AS y2, colA/colB AS y3
+  FROM     t2
+  WHERE    COLA > 0
+;
+rows: (*, 'partitionExplain', *)
+
+--  (402) UNION ALL of two selects with grand total aggregates
+EXPLAIN STAGE partitionExplain
+  SELECT   MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2
+  FROM     t1
+UNION ALL
+  SELECT   MAX(colA) AS maxA, MIN(colA) AS minA, SUM(colA) AS sumA, COUNT(colA) AS countA, AVG(colA) AS avgA, AVG(colB) AS avgB
+  FROM     t2
+;
+rows: (*, 'partitionExplain', *)
+
+--  (403) UNION ALL of two selects with grand total aggregates, WHERE & HAVING clauses
+EXPLAIN STAGE partitionExplain
+  SELECT   MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2
+  FROM     t1
+  WHERE    c1 > 0
+  HAVING   max1 > 0
+UNION ALL
+  SELECT   MAX(colA) AS maxA, MIN(colA) AS minA, SUM(colA) AS sumA, COUNT(colA) AS countA, AVG(colA) AS avgA, AVG(colB) AS avgB
+  FROM     t2
+  WHERE    colA > 0
+  HAVING   maxA > 0
+;
+rows: (*, 'partitionExplain', *)
+
+--  (404) UNION ALL of two selects with GROUP BY aggregates
+EXPLAIN STAGE partitionExplain
+  SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2
+  FROM     t1
+  GROUP BY c1
+UNION ALL
+  SELECT   colA, MAX(colB) AS maxB, MIN(colB) AS minB, SUM(colB) AS sumB, COUNT(colB) AS countB, AVG(colB) AS avgB
+  FROM     t2
+  GROUP BY colA
+;
+rows: (*, 'partitionExplain', *)
+
+--  (405) UNION ALL of two selects with GROUP BY aggregates, WHERE & HAVING clauses
+EXPLAIN STAGE partitionExplain
+  SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2
+  FROM     t1
+  WHERE    c2 > 0
+  GROUP BY c1
+  HAVING   max2 > 0
+UNION ALL
+  SELECT   colA, MAX(colB) AS maxB, MIN(colB) AS minB, SUM(colB) AS sumB, COUNT(colB) AS countB, AVG(colB) AS avgB
+  FROM     t2
+  WHERE    colB > 0
+  GROUP BY colA
+  HAVING   maxB > 0
+;
+rows: (*, 'partitionExplain', *)
+
+-- NOTE: Below statements are not enabled because they currently cause an overflow of an internal
+--       column buffer of 4000 bytes. Will be enabled when this is fixed.
+
+--  (406) UNION ALL of two selects with GROUP BY aggregates, WHERE & HAVING clauses and post-projections
+-- EXPLAIN STAGE partitionExplain
+--   SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2
+--   FROM     t1
+--   WHERE    c2 > 0
+--   GROUP BY c1
+--   HAVING   MAX(c1 + c2) > 0
+-- UNION ALL
+--   SELECT   colA, MAX(colB) AS maxB, MIN(colB) AS minB, SUM(colB) AS sumB, COUNT(colB) AS countB, AVG(colB) AS avgB
+--   FROM     t2
+--   WHERE    colB > 0
+--   GROUP BY colA
+--   HAVING   MAX(colA + colB) > 0
+-- ;
+-- rows: (*, 'partitionExplain', *)
+
+--  (407) UNION ALL with corresponding clause of two selects with GROUP BY aggregates, WHERE & HAVING clauses and post-projections
+-- EXPLAIN STAGE partitionExplain
+--   SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2
+--   FROM     t1
+--   WHERE    c2 > 0
+--   GROUP BY c1
+--   HAVING   MAX(c1 + c2) > 0
+-- UNION ALL CORRESPONDING
+--   SELECT   colA AS c1, MAX(colB) AS max2, MIN(colB) AS min2, SUM(colB) AS sum2, COUNT(colB) AS count2, AVG(colB) AS avg2
+--   FROM     t2
+--   WHERE    colB > 0
+--   GROUP BY colA
+--   HAVING   MAX(colA + colB) > 0
+-- ;
+-- rows: (*, 'partitionExplain', *)
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  UNION ALL with ORDER BY and LIMIT
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+--  (500) UNION ALL with ORDER BY of two simple selects with no aggregates
+EXPLAIN STAGE partitionExplain
+  SELECT   c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3
+  FROM     t1
+UNION ALL
+  SELECT   colA AS y1, colB + 1 AS y2, colA/colB AS y3
+  FROM     t2
+ORDER BY   x1
+;
+rows: (*, 'partitionExplain', *)
+
+--  (501) UNION ALL with LIMIT of two simple selects with no aggregates
+EXPLAIN STAGE partitionExplain
+  SELECT   c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3
+  FROM     t1
+UNION ALL
+  SELECT   colA AS y1, colB + 1 AS y2, colA/colB AS y3
+  FROM     t2
+LIMIT      10
+;
+rows: (*, 'partitionExplain', *)
+
+--  (502) UNION ALL with ORDER BY and LIMIT of two simple selects with no aggregates
+EXPLAIN STAGE partitionExplain
+  SELECT   c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3
+  FROM     t1
+UNION ALL
+  SELECT   colA AS y1, colB + 1 AS y2, colA/colB AS y3
+  FROM     t2
+ORDER BY   x1
+LIMIT      10
+;
+rows: (*, 'partitionExplain', *)
+
+--  (503) UNION ALL with ORDER BY and LIMIT of two selects with grand total aggregates, WHERE & HAVING clauses
+EXPLAIN STAGE partitionExplain
+  SELECT   MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2
+  FROM     t1
+  WHERE    c1 > 0
+  HAVING   max1 > 0
+UNION ALL
+  SELECT   MAX(colA) AS maxA, MIN(colA) AS minA, SUM(colA) AS sumA, COUNT(colA) AS countA, AVG(colA) AS avgA, AVG(colB) AS avgB
+  FROM     t2
+  WHERE    colA > 0
+  HAVING   maxA > 0
+ORDER BY   max1
+LIMIT      10
+;
+rows: (*, 'partitionExplain', *)
+
+--  (504) UNION ALL with ORDER BY and LIMIT of two selects with GROUP BY aggregates, WHERE & HAVING clauses
+EXPLAIN STAGE partitionExplain
+  SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2
+  FROM     t1
+  WHERE    c2 > 0
+  GROUP BY c1
+  HAVING   max2 > 0
+UNION ALL
+  SELECT   colA, MAX(colB) AS maxB, MIN(colB) AS minB, SUM(colB) AS sumB, COUNT(colB) AS countB, AVG(colB) AS avgB
+  FROM     t2
+  WHERE    colB > 0
+  GROUP BY colA
+  HAVING   maxB > 0
+ORDER BY   max2
+LIMIT      10
+;
+rows: (*, 'partitionExplain', *)
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  JOINS
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+--  (600) JOINS!!!
+
+
+
+
+
+
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Check for memory leaks
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+memoryleaks;
+rows: 0
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Cleanup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CLEANUP {
+  DROP TABLE t1;
+  DROP TABLE t2;
+  mute
+}

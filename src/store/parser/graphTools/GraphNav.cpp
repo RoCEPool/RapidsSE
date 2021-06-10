@@ -86,6 +86,9 @@ void GraphNav::vPrintNode(PlanNode* pNode)
 
   auto fVisitor = [](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
+    UNUSED(iDepth);
+    UNUSED(pvArg);
+
     s2K sBuf;
     pNode->xValue().vDescribe(sBuf);
     vTrace("%p %s\n    %s\n    %s\n\n"_Stz, pNode, sPath.szStz(), pNode->szType(), sBuf.szStz());
@@ -1198,6 +1201,9 @@ PlanNode* GraphNav::pGlobalSearch(PlanNode* pStartNode, b1 bSearchProperties, b1
 
   auto fVisitor = [&pResult, fCondition](PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
 
+    UNUSED(sPath);
+    UNUSED(iDepth);
+
     // test the condition
     if (fCondition(pNode, pvArg)) {
       pResult = pNode;
@@ -1231,6 +1237,9 @@ PlanNode* GraphNav::pBoundedSearch(PlanNode* pStartNode, b1 bSearchProperties, b
   PlanNode* pResult = nullptr;
 
   auto fVisitor = [&pResult, fCondition](PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(sPath);
+    UNUSED(iDepth);
 
     // test the condition
     if (fCondition(pNode, pvArg)) {
@@ -1352,12 +1361,16 @@ b1 GraphNav::bParentPath(Stz *szPath, s2K &sParentBuf)
 /*----------------------------------------------------------------------------*/
 void GraphNav::vGetPathAndDepth(QueryNode* pPlanNode, PlanNode* pRootNode, s256& sPathBuf, i8& iDepth)
 {
+  UNUSED(pRootNode);
+
   ASSERT(pPlanNode);
   ASSERT(pRootNode);
 
-  iDepth == -1;
+  iDepth = -1;
 
   auto fVisitor = [pPlanNode, &sPathBuf, &iDepth](Parser::PlanNode *pNode, s256 &sWalkPath, i8 iWalkDepth, void *pvArg) -> Parser::GraphNav::eWalkCtrl {
+
+    UNUSED(pvArg);
 
     // Only interested in /__root__/plan subtree
     if (iWalkDepth == 1 && !sWalkPath.bEqual(const_cast<Stz*>(C_PLAN_PATH))) {
@@ -1373,6 +1386,8 @@ void GraphNav::vGetPathAndDepth(QueryNode* pPlanNode, PlanNode* pRootNode, s256&
 
     return GraphNav::WALK_CONTINUE;
   };
+
+  GraphNav::bGlobalWalk(pRootNode, true, true, fVisitor, nullptr);
 
   if (iDepth != -1) {
     return;

@@ -798,19 +798,6 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
     ASSERT(m_pExprStack->nItems() == 0);
     delete m_pExprStack;
     m_pExprStack = nullptr;
-
-    // Check that the having clause is valid.
-    // The expressions in a having clause must either be the grouping column
-    // in the group by list or columns that are functionally dependant on
-    // the grouping column.
-    if (!Expr::bContainsAnAggregate(pExpr) && !pAggregateOp) {
-      // There's no aggregate op, so the having clause must contain an aggregate
-
-      if (pProjectOp)       delete pProjectOp;
-      if (pAggregateOp)     delete pAggregateOp;
-      if (pHavingFilterOp)  delete pHavingFilterOp;
-      SemanticException::vThrow(EC_HAVING_EXPR_NOT_AGG_OR_IN_GROUPBY);
-    }
   }
 
 

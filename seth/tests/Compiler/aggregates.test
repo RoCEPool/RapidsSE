@@ -106,7 +106,7 @@ failure contains: 'Expression is not present in the GROUP BY list: rapidsse.publ
 
 -- HAVING clause with columnRef but no GROUP BY clause
 EXPLAIN SELECT n_name, n_nationkey FROM nation HAVING n_nationkey > 0;
-failure contains: 'The HAVING expression is not an aggregate or not in the GROUP BY list'
+failure contains: 'Expression is not present in the GROUP BY list : rapidsse.public.nation.n_nationkey > 0'
 
 -- HAVING clause with columnRef but columnRef not in GROUP BY
 EXPLAIN SELECT n_name, n_nationkey FROM nation GROUP BY n_name HAVING n_nationkey > 0;
