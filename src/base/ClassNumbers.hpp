@@ -329,6 +329,7 @@ enum eCN : u2 // Class Number
   /* */ CN__U__,
   
   /* */ CN__V__,
+  /* */ CN_VERBOSE,
 
   /* */ CN__W__,
   /* */ CN_WILDERNESS,
@@ -666,7 +667,8 @@ static Stz* aCN[]
   /* */ "_U__"_Stz,                 // CN__U__
    
   /* */ "_V__"_Stz,                 // CN__V__
- 
+  /* */ "VERBOSE"_Stz,              // CN_VERBOSE
+
   /* */ "_W__"_Stz,                 // CN__W__
   /* */ "WILDERNESS"_Stz,           // CN_WILDERNESS
   /* */ "WORD"_Stz,                 // CN_WORD

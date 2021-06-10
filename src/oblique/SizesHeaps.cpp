@@ -505,6 +505,7 @@ SizeHeap gxaSizeHeap[]
   { 'U' - ('A' - 1),            HT_INVALID   ,0 }, // CN__U__
 
   { 'V' - ('A' - 1),            HT_INVALID   ,0 }, // CN__V__
+  { sizeof(Verbose),            HT_T_TINY    ,0 }, // CN_VERBOSE
 
   { 'W' - ('A' - 1),            HT_INVALID   ,0 }, // CN__W__
   { sizeof(Wilderness),         HT_INVALID   ,0 }, // CN_WILDERNESS
