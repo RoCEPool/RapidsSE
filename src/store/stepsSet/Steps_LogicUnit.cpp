@@ -486,7 +486,9 @@ void Step::vLogicUnitGenIndexScan(void)
   ExprEval* pExprEval;
   pExprEval = _pExprEval(m_pDataStack->pPopPtr(__func__));
 
-  m_pJob->pLogicUnit_job()->eGenerateIndexScan(pExprEval);
+  eEC eError = m_pJob->pLogicUnit_job()->eGenerateIndexScan(pExprEval);
+
+  m_pDataStack->vPushInt(eError);
 
   EXIT();
 }
