@@ -95,12 +95,12 @@ macro AM_INDEX_TRAVERSE_TILL_UPPER
 // macro AM_INDEX_TRAVERSE_TILL_UPPER                                         //
 //----------------------------------------------------------------------------//
   // traverse the index till we reach upper bound
-  Label AM_INDEX_TRAVERSE_TILL_UPPER
+  Label INDEX_TRAVERSE_TILL_UPPER
 
   // fetch next entry from index
   EO_PUSH_DEVIXT_SRC
   EO_DEVIXT_IDX_NEXT
-  EO_JMP_FALSE AM_INDEX_SCAN_DONE
+  EO_JMP_FALSE INDEX_SCAN_DONE
 
     // have we reached the upper entry
   EO_PUSH_DEVIXT_SRC
@@ -110,7 +110,7 @@ macro AM_INDEX_TRAVERSE_TILL_UPPER
   EO_DEVIXT_ENT_PUSHUPPER
 
   EO_EQ_INTINT
-  EO_JMP_TRUE AM_INDEX_SCAN_END
+  EO_JMP_TRUE INDEX_SCAN_END
 
   // projection
   //EO_CRW_SRC_DEREF
@@ -119,7 +119,7 @@ macro AM_INDEX_TRAVERSE_TILL_UPPER
 
   EO_CALL <crwProcessRoutine>  // C_TAG_CRW_PROCESS_ROUTINE
 
-  EO_JMP INDEX_TRAVERSE_TILL_UPD
+  EO_JMP INDEX_TRAVERSE_TILL_UPPER
 endMacro
 
 macro AM_INDEX_SCAN_END

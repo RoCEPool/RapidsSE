@@ -22,6 +22,7 @@ load nation "../TPCH/SF1/nation.tbl" ;
 
 // select * from nation where n_nationKey > 1 ;
 
+/*
 pipeline is
 begin
   stage stageA on origin :
@@ -34,7 +35,7 @@ begin
     output | sink | stageA
 end;
 
-/*
+*/
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // UPPER BOUND (one column)
@@ -53,6 +54,7 @@ begin
     output | sink | stageA
 end;
 
+/*
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // LOWER AND UPPER BOUND (one column)
 // create index idx on nation (n_nationkey);
