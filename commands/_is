@@ -12,16 +12,14 @@ create table nation (
 	 N_COMMENT         VARCHAR(152)
 );
 
+create index idx on nation (n_nationkey);
+
 print "loading nation.csv..." ;
-
 load nation "../TPCH/SF1/nation.tbl" ;
-
-
-/*
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // LOWER BOUND (one column)
-// create index idx on nation (n_nationkey);
+
 // select * from nation where n_nationKey > 1 ;
 
 pipeline is
@@ -30,12 +28,13 @@ begin
     start | periodic once | stageB
 
   stage stageB on all partitions :
-    indexScan 0 nation idx "LBOUND $IC1 1 > " | stageC
+    indexScan 0 nation idx "LBOUND $I1 1 >= " | stageC
 
   stage stageC on origin:
     output | sink | stageA
 end;
 
+/*
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // UPPER BOUND (one column)
@@ -48,7 +47,7 @@ begin
     start | periodic once | stageB
 
   stage stageB on all partitions :
-    indexScan 0 nation idx "UBOUND $IC1 10 <= " | stageC
+    indexScan 0 nation idx "UBOUND $I1 10 <= " | stageC
 
   stage stageC on origin:
     output | sink | stageA
@@ -65,13 +64,34 @@ begin
     start | periodic once | stageB
 
   stage stageB on all partitions :
-    indexScan 0 nation idx "LBOUND I$1 1 > UBOUND $I1 10 <= " | stageC
+    indexScan 0 nation idx "LBOUND $I1 1 > UBOUND $I1 10 <= " | stageC
 
   stage stageC on origin:
     output | sink | stageA
 end;
 
 
+//<lboundType> <lboundLiteral>  // C_TAG_LBOUND_TYPE , C_TAG_LBOUND_LITERAL
+
+// LOWERBOUNDASM
+  //EO_DUMP
+  //EO_PUSH_RLU_ENTWRK
+  //EO_ENTWRK_SETINTELM
+  //EO_PUSH_RLU_ENTWRK
+  //EO_PUSH_DEVIXT_SRC
+  //EO_DEVIXT_LBOUND
+
+// UPPERBOUNDASM
+  //Label DATAPULSE_INDEXRANGE_UPD
+  //EO_PUSH_RLU_ENTWRK
+  //EO_ENTWRK_RESET
+  //<uboundType> <uboundLiteral>  // C_TAG_UBOUND_TYPE , C_TAG_UBOUND_LITERAL
+  //EO_PUSH_RLU_ENTWRK
+  //EO_ENTWRK_SETINTELM_OLD
+  //EO_PUSH_RLU_ENTWRK
+  //EO_PUSH_DEVIXT_SRC
+  //EO_DEVIXT_UBOUND_LT / LE
+  //EO_JMP_TRUE AM_INDEX_TRAVERSE_TILL_UPPER
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -85,7 +105,7 @@ begin
     start | periodic once | stageB
 
   stage stageB on all partitions :
-    indexScan 0 nation idx "LBOUND $I1 1 > LBOUND I2 3 > " | stageC
+    indexScan 0 nation idx "LBOUND $I1 1 > LBOUND $I2 3 > " | stageC
 
   stage stageC on origin:
     output | sink | stageA
@@ -102,7 +122,7 @@ begin
     start | periodic once | stageB
 
   stage stageB on all partitions :
-    indexScan 0 nation idx "LBOUND $I1 1 > LBOUND I2 3 >= " | stageC
+    indexScan 0 nation idx "LBOUND $I1 1 > LBOUND $I2 3 >= " | stageC
 
   stage stageC on origin:
     output | sink | stageA
@@ -136,7 +156,7 @@ begin
     start | periodic once | stageB
 
   stage stageB on all partitions :
-    indexScan 0 nation idx "LBOUND $I1 1 > UBOUND $I1 10 <= LBOUND $I$2 2 > UBOUND $I2 20 <=" | stageC
+    indexScan 0 nation idx "LBOUND $I1 1 > UBOUND $I1 10 <= LBOUND $I2 2 > UBOUND $I2 20 <=" | stageC
 
   stage stageC on origin:
     output | sink | stageA
@@ -153,7 +173,7 @@ begin
     start | periodic once | stageB
 
   stage stageB on all partitions :
-    indexScan 0 nation idx "LBOUND $I1 1 > UBOUND $I1 10 <= LBOUND $I$2 2 >= UBOUND $I2 20 <=" | stageC
+    indexScan 0 nation idx "LBOUND $I1 1 > UBOUND $I1 10 <= LBOUND $I2 2 >= UBOUND $I2 20 <=" | stageC
 
   stage stageC on origin:
     output | sink | stageA
