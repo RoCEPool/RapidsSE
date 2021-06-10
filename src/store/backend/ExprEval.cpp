@@ -1232,7 +1232,7 @@ eEC ExprEval::eExprEvalIndexScan(IndexDef* pIndexDef, TokenVec* pTknVec)
   if ( ! m_sLowerBoundAsm.bEqual(""_Stz) ) {
     StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
     StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_PUSH_DEVIXT_SRC\n"_Stz);
-    StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_DEVIXT_LBOUND\n"_Stz); //, aEO[m_eLowerBound]);
+    StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_DEVIXT_LBOUND_GE\n"_Stz); //, aEO[m_eLowerBound]);
     StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_JMP_FALSE INDEX_SCAN_END\n"_Stz);
   }
 

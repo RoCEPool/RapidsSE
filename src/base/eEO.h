@@ -440,12 +440,13 @@ enum eEO : u2 // expression operators
   /*  S  */ EO_DEVIXT_IDX_NEXT,     // traverse to next entry
   /*  S  */ EO_DEVIXT_IDX_ENTRIES,  // push number of entries in index
 
-  /*  D  */ EO_DEVIXT_LBOUND,    // position at lower bound
-  /*  D  */ EO_DEVIXT_UBOUND,    // get upper bound
-  /*  D  */ EO_DEVIXT_UBOUND_LT, // get upper bound (less than)
-  /*  D  */ EO_DEVIXT_CMP_KEYS,  // compare keys of two devices
-  /*  D  */ EO_DEVIXT_POS_BYKEY, // position dev ixt by key
-  /*  D  */ EO_DEVIXT_ENT_PRINT, // print ent
+  /*  D  */ EO_DEVIXT_LBOUND_GE,    // position at lower bound (greater than equal)
+  /*  D  */ EO_DEVIXT_LBOUND_GT,    // position at lower bound (greater than)
+  /*  D  */ EO_DEVIXT_UBOUND_LE,    // get upper bound (less than equal)
+  /*  D  */ EO_DEVIXT_UBOUND_LT,    // get upper bound (less than)
+  /*  D  */ EO_DEVIXT_CMP_KEYS,     // compare keys of two devices
+  /*  D  */ EO_DEVIXT_POS_BYKEY,    // position dev ixt by key
+  /*  D  */ EO_DEVIXT_ENT_PRINT,    // print ent
 
   // ixt device index set operators
   /*  S  */ EO_DEVIXT_INDEXNM_SET,      // set the index name in the dev
@@ -949,8 +950,9 @@ static Stz* aEO[]
   /*    */ "EO_DEVIXT_IDX_NEXT"_Stz,
   /*    */ "EO_DEVIXT_IDX_ENTRIES"_Stz,
 
-  /*    */ "EO_DEVIXT_LBOUND"_Stz,
-  /*    */ "EO_DEVIXT_UBOUND"_Stz,
+  /*    */ "EO_DEVIXT_LBOUND_GE"_Stz,
+  /*    */ "EO_DEVIXT_LBOUND_GT"_Stz,
+  /*    */ "EO_DEVIXT_UBOUND_LE"_Stz,
   /*    */ "EO_DEVIXT_UBOUND_LT"_Stz,
   /*    */ "EO_DEVIXT_CMP_KEYS"_Stz,
   /*    */ "EO_DEVIXT_POS_BYKEY"_Stz,
@@ -1465,8 +1467,9 @@ static EoArg EoArgs[]
   { EA_NONE,    0 },  // EO_DEVIXT_IDX_NEXT
   { EA_NONE,    0 },  // EO_DEVIXT_IDX_ENTRIES
 
-  { EA_NONE,    0 },  // EO_DEVIXT_LBOUND
-  { EA_NONE,    0 },  // EO_DEVIXT_UBOUND
+  { EA_NONE,    0 },  // EO_DEVIXT_LBOUND_GE
+  { EA_NONE,    0 },  // EO_DEVIXT_LBOUND_GT
+  { EA_NONE,    0 },  // EO_DEVIXT_UBOUND_LE
   { EA_NONE,    0 },  // EO_DEVIXT_UBOUND_LT
   { EA_NONE,    0 },  // EO_DEVIXT_CMP_KEYS
   { EA_NONE,    0 },  // EO_DEVIXT_POS_BYKEY

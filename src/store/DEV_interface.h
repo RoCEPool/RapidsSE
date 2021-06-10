@@ -34,8 +34,9 @@ void vDev_IXT_INDEXNM_SET     (i8** aaiDstk);
 void vDev_IXT_INDEXTREE_SET   (i8** aaiDstk);
 
 void vDev_IXT_POS_BYKEY    (i8** aaiDstk);
-void vDev_IXT_POS_LBOUND   (i8** aaiDstk);
-void vDev_IXT_POS_UBOUND   (i8** aaiDstk);
+void vDev_IXT_POS_LBOUND_GE(i8** aaiDstk);
+void vDev_IXT_POS_LBOUND_GT(i8** aaiDstk);
+void vDev_IXT_POS_UBOUND_LE(i8** aaiDstk);
 void vDev_IXT_POS_UBOUND_LT(i8** aaiDstk);
 void vDev_IXT_PUSH_ENT     (i8** aaiDstk);
 void vDev_IXT_IDX_BEGIN    (i8** aaiDstk);

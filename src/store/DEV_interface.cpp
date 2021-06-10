@@ -613,7 +613,7 @@ void vDev_IXT_POS_BYKEY(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* insert an entry into the indexTree                                         */
 /*----------------------------------------------------------------------------*/
-void vDev_IXT_POS_LBOUND(i8** aaiDstk)
+void vDev_IXT_POS_LBOUND_GE(i8** aaiDstk)
 {
   _static_
 
@@ -644,7 +644,40 @@ void vDev_IXT_POS_LBOUND(i8** aaiDstk)
 /*----------------------------------------------------------------------------*/
 /* insert an entry into the indexTree                                         */
 /*----------------------------------------------------------------------------*/
-void vDev_IXT_POS_UBOUND(i8** aaiDstk)
+void vDev_IXT_POS_LBOUND_GT(i8** aaiDstk)
+{
+  _static_
+
+  RASSERT(0);
+
+  i8 *aiDstk = *aaiDstk;
+
+  // pop the device
+  DevIXT* pDevIXT = _pDevIXT(P_PopPtr());
+
+  // pop the wrkent
+  EntWrk* pEntWrk = (EntWrk*)(P_PopPtr());
+  Ent *pEnt = (Ent*)pEntWrk->aEnt();
+
+  pDevIXT->m_aEnt = nullptr;
+
+  pDevIXT->m_pEntBuffer =
+      pDevIXT->m_pIdxTree->pPositionH0Buffer(pEnt->aKey());
+
+  if (pDevIXT->m_pEntBuffer) {
+    pDevIXT->m_aEnt =
+        pDevIXT->m_pEntBuffer->aFindEntryBefore(pEnt->aKey());
+  }
+
+  P_PushPtr(pDevIXT->m_aEnt);
+
+  *aaiDstk = aiDstk;
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert an entry into the indexTree                                         */
+/*----------------------------------------------------------------------------*/
+void vDev_IXT_POS_UBOUND_LE(i8** aaiDstk)
 {
   _static_
 

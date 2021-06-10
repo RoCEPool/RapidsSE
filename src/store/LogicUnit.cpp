@@ -4027,14 +4027,19 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_IXT_IDX_NEXT(&aiDstk);      // devixt
         break;//+endCase
         
-      case EO_DEVIXT_LBOUND: ArgNil(); // pos in buffer to entry before LBOUND
-        dLU0(EO_DEVIXT_LBOUND);
-        vDev_IXT_POS_LBOUND(&aiDstk);  // entry / devixt
+      case EO_DEVIXT_LBOUND_GE: ArgNil(); // pos in buffer to entry before LBOUND
+        dLU0(EO_DEVIXT_LBOUND_GE);
+        vDev_IXT_POS_LBOUND_GE(&aiDstk);  // entry / devixt
       break;//+endCase
 
-      case EO_DEVIXT_UBOUND: ArgNil(); // pos in buffer to entry for UBOUND
-        dLU0(EO_DEVIXT_UBOUND);
-        vDev_IXT_POS_UBOUND(&aiDstk);      // entry / devixt
+      case EO_DEVIXT_LBOUND_GT: ArgNil(); // pos in buffer to entry before LBOUND
+        dLU0(EO_DEVIXT_LBOUND_GT);
+        vDev_IXT_POS_LBOUND_GT(&aiDstk);  // entry / devixt
+        break;//+endCase
+
+      case EO_DEVIXT_UBOUND_LE: ArgNil(); // pos in buffer to entry for UBOUND
+        dLU0(EO_DEVIXT_UBOUND_LE);
+        vDev_IXT_POS_UBOUND_LE(&aiDstk);      // entry / devixt
         break;//+endCase
         
       case EO_DEVIXT_UBOUND_LT: ArgNil(); // pos in buffer to entry for UBOUND
