@@ -1232,7 +1232,7 @@ eEC ExprEval::eExprEvalIndexScan(IndexDef* pIndexDef, TokenVec* pTknVec)
   if ( ! m_sLowerBoundAsm.bEqual(""_Stz) ) {
     StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
     StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_PUSH_DEVIXT_SRC\n"_Stz);
-    StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_DEVIXT_LBOUND_GE\n"_Stz); //, aEO[m_eLowerBound]);
+    StrLib::vSprintCat(m_sLowerBoundAsm, "  %s\n"_Stz, aEO[m_eLowerBound]);
     StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_JMP_FALSE INDEX_SCAN_END\n"_Stz);
   }
 
@@ -2532,7 +2532,7 @@ void ExprEval::vGenerateAggregateCode(eAG eAggType, Stz* szAsmBuffer, Stz* szAsm
 void ExprEval::vBoundRelation(Stz* szAsmBuffer, IntStack* pTypeStack, Token* pTkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
-/*
+
   if (pTkn->bSame(">"_Stz)) {
     m_eLowerBound = EO_DEVIXT_LBOUND_GT;
   }
@@ -2553,7 +2553,6 @@ void ExprEval::vBoundRelation(Stz* szAsmBuffer, IntStack* pTypeStack, Token* pTk
     m_eLowerBound = EO_DEVIXT_LBOUND_GE;
     m_eUpperBound = EO_DEVIXT_UBOUND_LE;
   }
-  */
 
   StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVIXT_SRC\n"_Stz);
   StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
