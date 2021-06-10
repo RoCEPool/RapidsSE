@@ -369,9 +369,9 @@ static eDM eMathOp_IsNullResult[DM_ENUMS] =
     // NONE    BOL     BCD      DTE       FLT      INT      IVL      IVY,     TME      TSP       VCH      UNK
     { DM_NONE, DM_BOL, DM_BOL,  DM_BOL,   DM_BOL,  DM_BOL,  DM_BOL,  DM_BOL,  DM_BOL,  DM_BOL,   DM_BOL,  DM_BOL };
 
-static eEO eMathOp_IsNullCode[DM_ENUMS][DM_ENUMS] =
-    // NONE     BOL        BCD         DTE         FLT         INT         IVL        IVY        TME        TSP         VCH        UNK
-    { EO_NONE,  EO_ISNULL, EO_ISNULL,  EO_ISNULL,  EO_ISNULL,  EO_ISNULL,  EO_ISNULL, EO_ISNULL, EO_ISNULL, EO_ISNULL,  EO_ISNULL, EO_ISNULL    };
+static eEO eMathOp_IsNullCode[DM_ENUMS] =
+    // NONE     BOL        BCD         DTE         FLT         INT         IVL        IVY        TME        TSP         VCH            UNK
+    { EO_NONE,  EO_ISNULL, EO_ISNULL,  EO_ISNULL,  EO_ISNULL,  EO_ISNULL,  EO_ISNULL, EO_ISNULL, EO_ISNULL, EO_ISNULL,  EO_ISNULL_STR, EO_ISNULL    };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // MIN VALUE
