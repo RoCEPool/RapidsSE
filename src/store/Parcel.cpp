@@ -342,7 +342,18 @@ void Parcel::vSendOverSocket(Op* pSrcOp)
   for (i8 i_Object = 0; i_Object < nObjects; i_Object++) {
     pObject = pParcel->pGetObject(i_Object);
     nObjectSize = gxaSizeHeap[pObject->eGetClassNo()].m_nClassSize;
+
+    if (pObject->eGetClassNo() == CN_IDXVEC) {
+      i8 iSize1 = gxaSizeHeap[CN_INDEX].m_nClassSize;
+      i8 iSize2 = gxaSizeHeap[CN_IDXVEC].m_nClassSize;
+      vTrace("vSendOverSocket SENT IdxVec: %lld bytes Index:%lld bytes \n"_Stz,iSize2, iSize1);
+
+      //nObjectSize = gxaSizeHeap[pObject->eGetClassNo()].m_nClassSize + (gxaSizeHeap[CN_INDEX].m_nClassSize * 2);
+    }
+
+
     bResult = pSocket->bSendTo(pObject, nObjectSize, oSysCall);
+    vTrace("vSendOverSocket SENT %lld bytes class:%s  \n"_Stz,nObjectSize, aCN[pObject->eGetClassNo()]);
   }
   
   pSocket->vDropWrite();
@@ -645,7 +656,7 @@ void Parcel::vSendToPartition(Op* pSrcOp, tPN tDstPtn)
   
   i8 iDstNode = AM::pPtnMap()->i_WhichNode(tDstPtn);
   pSrcOp->vSendNode(iDstNode);
-  vTrace("vSendToPartition iDstNode:%lld\n"_Stz, iDstNode);
+  vTrace("vSendToPartition iDstNode:%lld  tDstPtn:%lld\n"_Stz, iDstNode, tDstPtn);
   vSendParcel(pSrcOp,iDstNode,tDstPtn);
 }
 

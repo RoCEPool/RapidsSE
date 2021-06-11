@@ -229,8 +229,10 @@ i8 Table::iPtnNoToTablePtn(tPN tPtnNo)
 tPN Table::tTablePtnToPtnNo(i8 i_TablePtn)
 {
   _static_
-  
+
   tPN tPtnNo = (i_TablePtn * AM::nConnectedNodes()) + AM::iThisNodeNo();
+
+  vTrace(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>ThisNode:%lld  i_TablePtn:%lld  AM::nConnectedNodes:%lld  tPtnNo:%lld\n"_Stz, AM::iThisNodeNo(), i_TablePtn, AM::nConnectedNodes(), tPtnNo);
   
   return tPtnNo;
 }
@@ -241,7 +243,7 @@ tPN Table::tTablePtnToPtnNo(i8 i_TablePtn)
 void Table::vPostRecv(void* aTable)
 {
   _static_
-  vTrace("Table::PostRecv\n"_Stz); //debug only
+  //vTrace("Table::PostRecv\n"_Stz); //debug only
 
   Table* pTable = _pTable(aTable);
   
@@ -928,14 +930,23 @@ i8  Table::iReassembleFromParcel(Parcel* pParcel)
         m_pBucketMap = (BucketMap*) pObject;
         //m_pBucketMap = (BucketMap*)::operator new(gxaSizeHeap[eClass].m_nClassSize, pObject);
         break;
-      case CN_IDXVEC:
-        m_pIdxVec = (IdxVec*) pObject;
-        //m_pIdxVec = (IdxVec*)::operator new(gxaSizeHeap[eClass].m_nClassSize, pObject);
+      case CN_IDXVEC: {
+        m_pIdxVec = (IdxVec *) pObject;
+        //IdxVec *pIdxVec = (IdxVec *) ::operator new(gxaSizeHeap[eClass].m_nClassSize, pObject);
         break;
+      }
       default:
         vTrace("iReassembleObj %ld Error\n"_Stz,eClass);
     }
   }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the table partitions
+
+  // HACK : Don't do this for DEFINE TABLES (which occur before cluster
+  //        has started). Experimentally allows new, but non-active nodes to be
+  //        added after the cluster has started
+  //        This must be fixed properly. Ray 14 Nov 2020
 
   m_pTablePtnVec = new TablePtnVec;
 

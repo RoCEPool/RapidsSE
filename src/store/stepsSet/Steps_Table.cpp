@@ -255,7 +255,7 @@ void Step::vTableDumpMeta(void)
 {
   ENTRY();
 
-  s4K sDumpBuffer = "\n\n\n==== DumpMeta Table: =======================================\n"_Stz;
+  s4K sDumpBuffer = "\n\n\n==== DumpMeta Table: ====================================\n"_Stz;
 
   Table* pTable = _pTable(*m_pJob->pLogicUnit_job()->m_xpTable);
 
@@ -265,15 +265,73 @@ void Step::vTableDumpMeta(void)
   i8 nCols = pTable->pStreamDef()->nColumns();
   for (i8 iCol = 0; iCol < nCols; iCol++) {
     Column* pCol = pTable->pStreamDef()->pGetColumn(iCol);
-    sDumpBuffer.vCatSprint("    %s   %s\n"_Stz,    pCol->szColNm()->azChar(), aCT[pCol->eColumnType()]);
+    sDumpBuffer.vCatSprint("    %s   %s"_Stz,    pCol->szColNm()->azChar(), aCT[pCol->eColumnType()]);
 
+    if (pCol->iColumnLength()>0) {
+      if (pCol->iColumnScale())
+        sDumpBuffer.vCatSprint(" (%lld,%lld)"_Stz,pCol->iColumnLength(), pCol->iColumnScale());
+      else
+        sDumpBuffer.vCatSprint(" (%lld)"_Stz,pCol->iColumnLength());
+    }
+    if (pCol->bIsNullable())
+      sDumpBuffer.vCatSprint(" nullable"_Stz);
+    if (pCol->bIsUnique())
+      sDumpBuffer.vCatSprint(" Unique"_Stz);
+    if (pCol->bIsPtnKey())
+      sDumpBuffer.vCatSprint(" Partition Key"_Stz);
+    sDumpBuffer.vConcat("\n"_Stz);
+  }
+
+  for (i8 i_TablePtn = 0; i_TablePtn < AM::nPtnsPerTable(); i_TablePtn++) {
+    TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
+    sDumpBuffer.vCatSprint("\nPartition %lld  %lld"_Stz, i_TablePtn, pTable->pTablePtn(i_TablePtn)->tPtnNo());
+    //pTablePtn->vDump();
   }
 
 
+  IdxVec* pIdxVec = pTable->pIdxVec();
+  sDumpBuffer.vCatSprint("\n\nIndex: %lld\n"_Stz, pIdxVec->nItems());
+
+  if (pIdxVec->nItems()>0) {
+    for (i8 iI = 0; iI < pIdxVec->nItems(); iI++) {
+      Index *pIdx = pIdxVec->pGet(iI);
+
+      if (pIdx->eGetClassNo()==CN_INDEX && pIdx->nColumns() > 0) {
+        Column* pCol = pIdx->pGetColumn(0);
+
+        sDumpBuffer.vCatSprint("    %s  %s"_Stz, pIdx->szIndexNm()->azChar(), pCol->szColNm()->azChar());
+
+        if (pCol->bIsUnique())
+          sDumpBuffer.vCatSprint(" Unique"_Stz);
+        if (pCol->bIsPtnKey())
+          sDumpBuffer.vCatSprint(" Partition Key"_Stz);
+
+      } else {
+        sDumpBuffer.vCatSprint("  %s  "_Stz, aCN[pIdx->eGetClassNo()]);
+      }
+      sDumpBuffer.vConcat("\n"_Stz);
+    }
+  }
+
+  ShardDef*  pShard = pTable->pShardDef();
+  sDumpBuffer.vCatSprint("\n\nShard Name:%s\n"_Stz, pShard->szShardDefNm() ? pShard->szShardDefNm()->azChar() : "");
+  for (i8 iC=0; iC<pShard->nColumns(); iC++) {
+    sDumpBuffer.vCatSprint("    %s  "_Stz, pShard->pGetColumn(iC) ? pShard->pGetColumn(iC)->szColNm()->azChar() : "");
+  }
+
+  /*
+  pIdxVec->nColumns();
+
+      i8     nColumns(void);
+  Column* pGetColumn(i8 iColumn);
+  IndexDef* pIndexDef(void);
+  void   vIndexDef(IndexDef* pIndexDef);
+  Stz*   szIndexNm(void);
+  */
 
 
-
-
+  sDumpBuffer.vCatSprint("%s"_Stz,
+                         "\n======================================================\n\n"_Stz);
   m_pDataStack->vPushStr(sDumpBuffer);
 
   EXIT();

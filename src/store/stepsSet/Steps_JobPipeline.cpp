@@ -63,7 +63,7 @@ void Step::vJob_PipelineBegin(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the pipeline
   if (AM::bVerbose()) {
-    //if (iThisNode == 0 || iThisNode == 6079)
+    //if (iThisNode == 0)
        pPipeline->vDump();
   }
   
