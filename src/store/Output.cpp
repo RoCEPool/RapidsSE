@@ -410,7 +410,13 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
           AM::vDeleteOperand(pOperand);
           break;
         }
-          
+
+        case OM_EACHROWEOSMARKER: {
+          //vTrace("Pipeline Job: EACHROWEOSMARKER\n"_Stz);
+          AM::vDeleteOperand(pOperand);
+          break;
+        }
+
         case OM_EOSMARKER: {
           //vTrace("Pipeline Job: EOSMARKER\n"_Stz);
           AM::vDeleteOperand(pOperand);
@@ -451,12 +457,6 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
 
         case OM_PULSEDMARKER: {
           //vTrace("Pipeline Job: PULSEDMARKER\n"_Stz);
-          AM::vDeleteOperand(pOperand);
-          break;
-        }
-
-        case OM_RESENDMARKER: {
-          //vTrace("Pipeline Job: RESENDMARKER\n"_Stz);
           AM::vDeleteOperand(pOperand);
           break;
         }
