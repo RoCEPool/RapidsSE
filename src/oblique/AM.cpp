@@ -463,9 +463,21 @@ void AM::PARCEL::vRecvContents(Parcel* pParcel, Socket* pSocket)
 /*----------------------------------------------------------------------------*/
 /* pipe string out to prompt                                                  */
 /*----------------------------------------------------------------------------*/
-void AM::PROMPT::vStrPipeout(Stz* szStz)
+InfoSet* AM::PROMPT::pToPromptOut(Stz* szStz)
 {
   _static_
+  
+  StreamDef* pStreamDef = AM::pInternalTables()->pStreamDef(TI_PROMPTOUT);
+  if (! pStreamDef)
+    return nullptr;
+
+  InfoSet* pInfoSet = new InfoSet(pStreamDef);
+  
+  Row* pRow = pInfoSet->pAllotRow();
+  
+  pInfoSet->vDepositRow(pRow,C_VARGS_BEGIN,szStz,C_VARGS_END);
+  
+  return pInfoSet;
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/

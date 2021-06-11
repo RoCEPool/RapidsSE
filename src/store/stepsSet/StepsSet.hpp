@@ -1510,7 +1510,6 @@ void vExprEvalEvaluateIndexScan(void);
   void vStrGleanInt(void);
   void vStrLeft(void);
   void vStrLength(void);
-  void vStrPipePrompt(void);
   void vStrPrepend(void);
   void vStrRandom(void);
   void vStrRemovePrefix(void);
@@ -1521,6 +1520,7 @@ void vExprEvalEvaluateIndexScan(void);
   void vStrSame(void);
   void vStrSub(void);
   void vStrTailInt(void);
+  void vStrToPromptOut(void);
   void vStrToStrVec(void);
 
   // register stringA

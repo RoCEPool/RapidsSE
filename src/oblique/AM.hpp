@@ -151,6 +151,7 @@ namespace STORE {
   class IdxColVec;
   class Index;
   class IndexTree;
+  class InfoSet;
   class InfoSetBase;
   class InternalTables;
 
@@ -253,7 +254,7 @@ namespace OBLIQUE
     class PROMPT
     {
     public:
-      static void vStrPipeout(Stz* szStz);
+      static InfoSet* pToPromptOut(Stz* szStz);
     };
 
     class SYSTEM
