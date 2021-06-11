@@ -359,6 +359,16 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
         AM::vDeleteOperand(pOperand);
       }
 
+      else if (pInfoSet->szBufferNm()->bSame(C_TDEF_PROMPTOUT)) {
+
+        Row* pInfoRow = pInfoSet->pFirstRow();
+        Stz *szPromptLine = pInfoRow->szColVal_ofs(0);
+
+        vTrace("%s\n"_Stz,szPromptLine);
+
+        AM::vDeleteOperand(pOperand);
+      }
+      
       else {
         m_ixRowsProcessed += pInfoSet->nRows();
         vTrace("\n"_Stz);
