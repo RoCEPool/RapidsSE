@@ -37,6 +37,7 @@ void Step::vAddSteps_Str(void)
   vAddStep("str.same"_Stz,         &Step::vStrSame);
   vAddStep("str.sub"_Stz,          &Step::vStrSub);
   vAddStep("str.tailInt"_Stz,      &Step::vStrTailInt);
+  vAddStep("str.toPromptOut"_Stz,  &Step::vStrToPromptOut);
   vAddStep("str.toStrVec"_Stz,     &Step::vStrToStrVec);
 }
 
@@ -578,6 +579,24 @@ void Step::vStrTailInt(void)
   m_pDataStack->vPushInt(iInt);
   m_pDataStack->vPushInt(true);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* str.toPromptOut -- convert string to promptOut                             */
+/*----------------------------------------------------------------------------*/
+void Step::vStrToPromptOut(void)
+{
+  ENTRY();
+  
+  s48K sString;
+  
+  m_pDataStack->vPopStr(sString,__func__);
+    
+  InfoSet* pPromptOut = AM::PROMPT::pToPromptOut(sString);
+  
+  m_pDataStack->vPushPtr((Object*)pPromptOut);
+
   EXIT();
 }
 

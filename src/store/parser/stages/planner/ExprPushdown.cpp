@@ -43,9 +43,9 @@ void ExprPushdown::vPushdownExprs(PlanNode* pRootNode)
   ASSERT(pRootNode);
   ASSERT(ShadowRoot::bIsOfType(pRootNode));
 
-  PlanNode* pPlanNode = ShadowRoot::pPlanNode(pRootNode);
-  ASSERT(pPlanNode);
-  ASSERT(ShadowPlan::bIsOfType(pPlanNode));
+  PlanNode* pPlanRoot = ShadowRoot::pPlanRoot(pRootNode);
+  ASSERT(pPlanRoot);
+  ASSERT(ShadowPlan::bIsOfType(pPlanRoot));
 
   // Visit every statement section
   auto fStmtMarkerVisitor = [pRootNode]
@@ -70,7 +70,7 @@ void ExprPushdown::vPushdownExprs(PlanNode* pRootNode)
   // Walk each node and look for the StatementMarkers. We will start from the
   // bottom up so that we fix lower level dependencies before we deal with
   // nodes higher up the graph.
-  GraphNav::bGlobalWalkBottomUp(pPlanNode->pFirstChild(),
+  GraphNav::bGlobalWalkBottomUp(pPlanRoot->pFirstChild(),
                                 false,
                                 true,
                                 fStmtMarkerVisitor,
@@ -208,6 +208,7 @@ void ExprPushdown::vPushdownExpr(QueryNode* pOrdExpr, QueryNode* pSqlOp, PlanNod
   // check that follows (vValidateExprVisibility).
 
   auto fCondition = [](PlanNode* pNode, void* pvArg) {
+    UNUSED(pvArg);
     return ProjectOp::bIsOfType(pNode);
   };
 
@@ -217,17 +218,10 @@ void ExprPushdown::vPushdownExpr(QueryNode* pOrdExpr, QueryNode* pSqlOp, PlanNod
     return;
   }
 
-  // Determine the largest non-ordinal subexpression of pOrdExpr
-  QueryNode* pSubExpr = Expr::pLargestNonOrdinalSubExpr(pOrdExpr);
+  // Firstly, push down all aggregate terms in pOrdExpr.
 
-  // Add it to the ProjectOp
-  if (pSubExpr) {
-    ProjectOp::vPushdownExpr(pProjectOp, pSubExpr->pDeepCopy(true), nullptr);
-  }
-
-  // Find any aggregate ordinal subexpressions. First get a list of all aggregate terms.
-  // The expressions in the list are shallow copied from pOrdExpr so don't delete them,
-  // only the list itself.
+  // Get a list of all aggregate terms. The expressions in the list are
+  // shallow copied from pOrdExpr so don't delete them, only the list itself.
   QueryNodeList* pAggExprs = Expr::pAggregateExprs(pOrdExpr);
 
   if (pAggExprs->pHead()) {
@@ -239,14 +233,8 @@ void ExprPushdown::vPushdownExpr(QueryNode* pOrdExpr, QueryNode* pSqlOp, PlanNod
     while (pIter->bHasNext()) {
       QueryNode* pAggExpr = pIter->pNext();
 
-      // Ignore any non-ordinal terms as they should have been dealt with above.
-      if (!Expr::bIsFullyOrdinal(pAggExpr)) {
-        continue;
-      }
-
       // Convert these ordinal expressions back to symbolic.
       // Returns a completely new copy of the expression.
-
       QueryNode* pSymExpr = Expr::pOrdinalToSymbolic(pAggExpr, pColumnExprList, pRootNode);
       ASSERT(Expr::bIsNotOrdinal(pSymExpr));
 
@@ -261,6 +249,14 @@ void ExprPushdown::vPushdownExpr(QueryNode* pOrdExpr, QueryNode* pSqlOp, PlanNod
 
   pAggExprs->vRemoveAll();
   delete pAggExprs;
+
+
+  // Now push down any non-aggregate, columnRefs in pOrdExpr
+  QueryNode* pSubExpr = Expr::pLargestNonOrdinalSubExpr(pOrdExpr, false);
+
+  if (pSubExpr) {
+    ProjectOp::vPushdownExpr(pProjectOp, pSubExpr->pDeepCopy(true), nullptr);
+  }
 }
 
 

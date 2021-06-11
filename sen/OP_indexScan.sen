@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* OP_range.sen -- Operator range columns                                 */
+/* OP_indexScan.sen -- Operator index scan table                              */
 /*============================================================================*/
 
 " OP_range.sen" .verbose
@@ -9,56 +9,62 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_CANCELMARKER ...                                            */
+/* handler for ZK_Xyz ...                                                     */
 /*----------------------------------------------------------------------------*/
-: range_CancelMarker \handler
+: Index_Xyz \handler
 
-  nullptr to Operand[]
-  PipeIn[].pipeOut
-  Op.ackPipelineJob
-  false
+  // delete all operands
+  PipeIn[].delete
+
+  true
+;
+
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_CANCELMARKER ...                                                 END */
+/*----------------------------------------------------------------------------*/
+: indexScan_CancelMarker \handler
+
+  0 ZK_CANCELMARKER EG_ZK LogicUnit[].diaryNote
+
+  // cleanup the pot
+  PotRlu[].cleanup
+
+  Counter0[] cleanUpAsm
+
+  ZK_CANCELMARKER EG_ZK PD_PIPE_OUT 0 ZK_CANCELMARKER EG_ZK LogicUnit[].diaryAction
+  ZK_CANCELMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_ERRORMARKER ...                                             */
+/*----------------------------------------------------------------------------*/
+: indexScan_ERRORMARKER \handler
+
+  find: EATOPERAND_handler   ZK_CRWBUFFER   op[].handler!
+  find: EATOPERAND_handler   ZK_ROWBUFFER   op[].handler!
+  find: EATOPERAND_handler   ZK_EOSMARKER   op[].handler!
+
+  PipeIn[].pipeout
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
 /* on ZK_STARTMARKER ...                                                 INIT */
 /*----------------------------------------------------------------------------*/
-: range_StartMarker \handler
+: indexScan_StartMarker \handler
 
   0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryNote
 
   EC_NONE locals| eError |
 
   <tableNm> <indexNm> op__table_index not if
-    false
-    exit
-  then
-
-  Index[].indexTree to indexTreeRlu[]
-  indexTreeRlu[].asSrc
-  Table[].asSrcStreamDef
-
-  // new a stream def
-  Table[] StreamDef[].new
-  StreamDef[].duplicate to streamDefOut[]
-
-  range[].new
-  <etc> Index[] range[].rangeBounds to eError
-
-  // check for error
-  eError EC_NONE == not if
-    op__exprEvalExecErr
-    Pipein[].delete
-    true
-    exit
-  then
-
-  ZK_STARTMARKER_handler
-
-  StreamDefOut[] range[] LogicUnit[].genRange to eError
-
-  // check for error
-  eError EC_NONE == not if
-    eError op__asmGenExecErr
+    // is possible that a PULSEDMARKER arrives after this STARTMARKER
+    // as per pipeline protocol no op can receive a pulsedmarker without a startmarker
+    // we need eat the pulsedmarker here
+    find: Index_Xyz   ZK_DATAPULSE      op[].handler!
+    find: Index_Xyz   ZK_PULSEDMARKER   op[].handler!
     true
     exit
   then
@@ -66,39 +72,83 @@
   // new the PotRlu[]
   PotRlu[].new
 
-  //false PotRlu[].useStreamDefOut
+  // init the logicUnit[]
+  LogicUnit[].init
+
+  //Index[].indexTree to indexTreeRlu[]
+  //indexTreeRlu[].asSrc
+
+  // set the indexTree in the devSrcIxt
+  Index[].indexTree DevSrcIxt.indexTree!
+
+  // new a stream def
+  Table[] StreamDef[].new
+  StreamDef[].duplicate to streamDefOut[]
+
+  // evalute the expression
+  ExprEval[].new
+
+  <etc> Index[].indexTree ExprEval[].evaluateIndexScan to eError
+
+  // check for error
+  eError EC_NONE == not if
+    Pipein[].delete
+    eError op__exprEvalExecErr
+    true
+    exit
+  then
+
+  // generate the asm for projection
+  ExprEval[] LogicUnit[].genIndexScan to eError
+  ExprEval[].delete
+
+  // check for error
+  eError EC_NONE == not if
+    Pipein[].delete
+    eError op__asmGenExecErr
+    true
+    exit
+  then
+
+  PipeIn[]\clear op::pipeout
+
+  // set the streamDef in the devSrcRow
+  StreamDef[]\clear DevSrcRow.streamDef!
 
   // create rowPix in potRlu[] from streamDefOut[]
   false streamDefOut[] PotRlu[].rowPix!
 
-  // init the logicUnit[]
-  LogicUnit[].init
+  // pipeout the streamDefOut
+  streamDefOut[].pipeOut
 
-  StreamDef[].pipeOut
-
+  // create the compiler
   Counter0[] if
     LogicCompiler[].new
     LogicCompiler[].compile
   then
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
 /* on ZK_EOSMARKER ...                                                    END */
 /*----------------------------------------------------------------------------*/
-: range_EosMarker \handler
+: indexScan_EosMarker \handler
 
   0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryNote
+
+  // execute the eosMarker asm handler
+  ZK_EOSMARKER Counter0[] executeAsmArgs
 
   // pipe out all PotRlu[]
   PotRlu[].pipeoutDanglingPtns
   PotRlu[].delete
 
-  Pipein[].isNull if
-    // create a new eos marker
-    Operand[].newEosMarker
-    Operand[] to Pipein[]
-  then
+  // create a new eos marker
+  Operand[].newEosMarker
+  Operand[] to Pipein[]
 
+  // cleanup compiler
   Counter0[] cleanUpAsm
 
   ZK_EOSMARKER EG_ZK PD_PIPE_OUT 0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryAction
@@ -108,7 +158,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_DATAPULSE ...                                              DATAPULSE */
 /*----------------------------------------------------------------------------*/
-: range_Datapulse \handler
+: indexScan_Datapulse \handler
 
   0 ZK_DATAPULSE EG_ZK LogicUnit[].diaryNote
 
@@ -124,7 +174,7 @@
   LogicUnit[].callAgain@ not if
 
     // force op loop to call EOAsm_EosMarker to end
-    "range_EosMarker" word::find LogicUnit[].handler!
+    "indexScan_EosMarker" word::find LogicUnit[].handler!
     true LogicUnit[].callAgain!
 
   then
@@ -140,7 +190,7 @@
 /*----------------------------------------------------------------------------*/
 /* filter request                                                       SPAWN */
 /*----------------------------------------------------------------------------*/
-: range_req \operator
+: indexScan_req \operator
 
   LogReqEntry SEED_REQ
 
@@ -149,9 +199,10 @@
 
   op__topology
 
-  find: range_CancelMarker ZK_CANCELMARKER  op[].handler!
-  find: range_DataPulse    ZK_DATAPULSE     op[].handler!
-  find: range_StartMarker  ZK_STARTMARKER   op[].handler!
+  find: indexScan_CancelMarker ZK_CANCELMARKER  op[].handler!
+  find: indexScan_DataPulse    ZK_DATAPULSE     op[].handler!
+  find: indexScan_ErrorMarker  ZK_ERRORMARKER   op[].handler!
+  find: indexScan_StartMarker  ZK_STARTMARKER   op[].handler!
 
   op__loop
 
@@ -163,9 +214,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: range :: range <compiled> <tableNm> by <indexNm> <etc> ;
+cmdSyntax: indexScan :: indexScan <compiled> <tableNm> <indexNm> <etc> ;
 
-: range_cmdTags _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+: indexScan_cmdTags _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
 
 /*============================================================================*/
 /* end                                                                        */

@@ -30,24 +30,12 @@ create table LineItem
 success
 
 //------------------------------------------------------------------------------
-//aggregRows_I lineitem " type decimal $7 * 2 groupby type integer $1";
-//failure contains: "invalid command"
-
-//------------------------------------------------------------------------------
-//aggregRows_I lineitem "type decimal $7 sum groupby type integer $1";
-//failure contains: "invalid command"
-
-//------------------------------------------------------------------------------
 aggregRows_I lineitem "type decimal $1 , type decimal ) $7 sum groupby type integer $1";
 rows: 0
 
 // load data
 load lineitem "../DATA/TPCH/lineitem10.csv";
 success
-
-//------------------------------------------------------------------------------
-//aggregRows_I lineitem "type decimal ) $7 sum groupby type integer $1" ;
-//failure contains: "invalid command"
 
 //------------------------------------------------------------------------------
 aggregRows_I lineitem "type integer $1 , type decimal ) $7 sum groupby type integer $1" ;

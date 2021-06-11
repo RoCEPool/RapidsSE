@@ -89,6 +89,7 @@ extern d8 C_D8_MID;
 #include "AssertMacros.h"
 
 #include "Object.hpp"
+#include "Verbose.hpp"
 #include "StackObject.hpp"
 #include "NonProper.hpp"
 

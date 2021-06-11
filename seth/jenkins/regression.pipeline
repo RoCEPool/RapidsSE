@@ -33,6 +33,7 @@ pipeline {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     stage('Build: Release') {
       steps {
+        sh 'rm -rf seth/jenkins/results || true'
         sh 'seth/jenkins/build.sh release'
       }
     }
@@ -77,6 +78,8 @@ pipeline {
           sh 'sleep 5'
           sh 'mkdir -p logs/release/1n4p'
           sh 'cp /opt/rapidsse/NODE0/se.log logs/release/1n4p/se.log'
+          sh 'ls -l seth/jenkins/results'
+          sh 'mv seth/jenkins/results/log-* logs/release/1n4p/seth.log || true'
 
           // Stop SE and SETH
           sh 'seth/jenkins/stop.sh seth/jenkins/1n4p.config'
@@ -129,6 +132,8 @@ pipeline {
           sh 'sleep 5'
           sh 'mkdir -p logs/release/1n1p'
           sh 'cp /opt/rapidsse/NODE0/se.log logs/release/1n1p/se.log'
+          sh 'ls -l seth/jenkins/results'
+          sh 'mv seth/jenkins/results/log-* logs/release/1n1p/seth.log || true'
 
           // Stop SE and SETH
           sh 'seth/jenkins/stop.sh seth/jenkins/1n1p.config'
@@ -185,6 +190,8 @@ pipeline {
           sh 'mkdir -p logs/release/2n4p'
           sh 'cp /opt/rapidsse/NODE0/se.log logs/release/2n4p/se.NODE0.log'
           sh 'cp /opt/rapidsse/NODE1/se.log logs/release/2n4p/se.NODE1.log'
+          sh 'ls -l seth/jenkins/results'
+          sh 'mv seth/jenkins/results/log-* logs/release/2n4p/seth.log || true'
 
           // Stop SE and SETH
           sh 'seth/jenkins/stop.sh seth/jenkins/2n4p.config'
@@ -243,6 +250,8 @@ pipeline {
           sh 'sleep 5'
           sh 'mkdir -p logs/debug/1n4p'
           sh 'cp /opt/rapidsse/NODE0/se.log logs/debug/1n4p/se.log'
+          sh 'ls -l seth/jenkins/results'
+          sh 'mv seth/jenkins/results/log-* logs/debug/1n4p/seth.log || true'
 
           // Stop SE and SETH
           sh 'seth/jenkins/stop.sh seth/jenkins/1n4p.config'
@@ -295,6 +304,8 @@ pipeline {
           sh 'sleep 5'
           sh 'mkdir -p logs/debug/1n1p'
           sh 'cp /opt/rapidsse/NODE0/se.log logs/debug/1n1p/se.log'
+          sh 'ls -l seth/jenkins/results'
+          sh 'mv seth/jenkins/results/log-* logs/debug/1n1p/seth.log || true'
 
           // Stop SE and SETH
           sh 'seth/jenkins/stop.sh seth/jenkins/1n1p.config'
@@ -353,6 +364,8 @@ pipeline {
           sh 'mkdir -p logs/debug/2n4p'
           sh 'cp /opt/rapidsse/NODE0/se.log logs/debug/2n4p/se.NODE0.log'
           sh 'cp /opt/rapidsse/NODE1/se.log logs/debug/2n4p/se.NODE1.log'
+          sh 'ls -l seth/jenkins/results'
+          sh 'mv seth/jenkins/results/log-* logs/debug/2n4p/seth.log || true'
 
           // Stop SE and SETH
           sh 'seth/jenkins/stop.sh seth/jenkins/2n4p.config'

@@ -707,6 +707,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_CSVBUFFER"_Stz,       ZK_CSVBUFFER);
   /*  0 */ vAddConstant("ZK_DATAPULSE"_Stz,       ZK_DATAPULSE);
   /*  0 */ vAddConstant("ZK_DESTROYMARKER"_Stz,   ZK_DESTROYMARKER);
+  /*  0 */ vAddConstant("ZK_EACHROWEOSMARKER"_Stz,ZK_EACHROWEOSMARKER);
   /*  0 */ vAddConstant("ZK_EOSMARKER"_Stz,       ZK_EOSMARKER);
   /*  0 */ vAddConstant("ZK_ENTBUFFER"_Stz,       ZK_ENTBUFFER);
   /*  0 */ vAddConstant("ZK_ERRORMARKER"_Stz,     ZK_ERRORMARKER);
@@ -729,8 +730,8 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_PLANOPERAND"_Stz,     ZK_PLANOPERAND);
   /*  0 */ vAddConstant("ZK_PROFILE"_Stz,         ZK_PROFILE);
   /*  0 */ vAddConstant("ZK_PROGRESSUNITS"_Stz,   ZK_PROGRESSUNITS);
+  /*  0 */ vAddConstant("ZK_PROMPTOUT"_Stz,       ZK_PROMPTOUT);
   /*  0 */ vAddConstant("ZK_PULSEDMARKER"_Stz,    ZK_PULSEDMARKER);
-  /*  0 */ vAddConstant("ZK_RESENDMARKER"_Stz,    ZK_RESENDMARKER);
   /*  0 */ vAddConstant("ZK_RETURNPIPELINE"_Stz,  ZK_RETURNPIPELINE);
   /*  0 */ vAddConstant("ZK_ROWBUFFER"_Stz,       ZK_ROWBUFFER);
   /*  0 */ vAddConstant("ZK_SEEKOFFSETS"_Stz,     ZK_SEEKOFFSETS);

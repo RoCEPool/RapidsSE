@@ -369,6 +369,7 @@ QueryNode* Expr::pOrdinalToSymbolic(QueryNode*     pOrdinalExpr,
                                     QueryNodeList* pColumnExprList,
                                     PlanNode*      pRootNode)
 {
+  UNUSED(pRootNode);
 
   // First let's deep copy the ordinal expression
   QueryNode* pSymExpr = pOrdinalExpr->pDeepCopy(true);
@@ -376,6 +377,10 @@ QueryNode* Expr::pOrdinalToSymbolic(QueryNode*     pOrdinalExpr,
   // Now we can walk the copied expression and replace any ColumnOrdinals
   // with their symbolic equivalent
   auto fVisitor = [pColumnExprList](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(pvArg);
 
     QueryNode *pExpr = _pQueryNode(pNode);
 
@@ -649,7 +654,7 @@ b1 Expr::bIsNotOrdinal(QueryNode* pExpr)
 /* non-ordinal subset of that expression. If the expression is wholly         */
 /* ordinal then nullptr is returned.                                          */
 /*----------------------------------------------------------------------------*/
-QueryNode* Expr::pLargestNonOrdinalSubExpr(QueryNode* pOrdinalExpr)
+QueryNode* Expr::pLargestNonOrdinalSubExpr(QueryNode* pOrdinalExpr, b1 bIncludeAggregates)
 {
   ASSERT(pOrdinalExpr);
   ASSERT(Expr::bIsOfType(pOrdinalExpr));
@@ -658,18 +663,28 @@ QueryNode* Expr::pLargestNonOrdinalSubExpr(QueryNode* pOrdinalExpr)
   // that contains ColumnRefs but no OrdinalRefs.
 
   // First define some lambda conditions to search for ColumnRefs and OrdinalRefs
-  auto fColumnRefCondition  = [](PlanNode* pNode, void* pvArg) -> b1 { return     ColumnRef::bIsOfType(pNode); };
-  auto fOrdinalRefCondition = [](PlanNode* pNode, void* pvArg) -> b1 { return ColumnOrdinal::bIsOfType(pNode); };
+  auto fColumnRefCondition    = [](PlanNode* pNode, void* pvArg) -> b1 { UNUSED(pvArg); return     ColumnRef::bIsOfType(pNode); };
+  auto fOrdinalRefCondition   = [](PlanNode* pNode, void* pvArg) -> b1 { UNUSED(pvArg); return ColumnOrdinal::bIsOfType(pNode); };
+  auto fHasAggregateCondition = [](PlanNode* pNode, void* pvArg) -> b1 { UNUSED(pvArg); return AggregateExpr::bIsOfType(pNode); };
 
   QueryNode* pNonOrdExpr = nullptr;
 
-  auto fVisitor = [&pNonOrdExpr, fColumnRefCondition, fOrdinalRefCondition]
+  auto fVisitor = [bIncludeAggregates, &pNonOrdExpr, fColumnRefCondition, fOrdinalRefCondition, fHasAggregateCondition]
       (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
-    PlanNode* pColumnRef  = GraphNav::pGlobalSearch(pNode, false, true, fColumnRefCondition,  nullptr);
-    PlanNode* pOrdinalRef = GraphNav::pGlobalSearch(pNode, false, true, fOrdinalRefCondition, nullptr);
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(pvArg);
 
-    if (pColumnRef && !pOrdinalRef) {
+    if (!bIncludeAggregates && AggregateExpr::bIsOfType(pNode)) {
+      return GraphNav::WALK_SKIP_SUBTREE;
+    }
+
+    PlanNode* pColumnRef    = GraphNav::pGlobalSearch(pNode, false, true, fColumnRefCondition,    nullptr);
+    PlanNode* pOrdinalRef   = GraphNav::pGlobalSearch(pNode, false, true, fOrdinalRefCondition,   nullptr);
+    PlanNode* pAggregateRef = GraphNav::pGlobalSearch(pNode, false, true, fHasAggregateCondition, nullptr);
+
+    if ( pColumnRef && !pOrdinalRef && (bIncludeAggregates || !pAggregateRef) ) {
       pNonOrdExpr = _pQueryNode(pNode);
       return GraphNav::WALK_ABORT;
     }
@@ -692,6 +707,10 @@ QueryNodeList* Expr::pAggregateExprs(QueryNode* pExpr)
 
   auto fVisitor = [pList]
       (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(pvArg);
 
     if (AggregateExpr::bIsOfType(pNode)) {
       pList->vPush(_pQueryNode(pNode));

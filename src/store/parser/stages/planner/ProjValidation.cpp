@@ -19,6 +19,7 @@
 #include "Expr.hpp"
 #include "ShadowPlan.hpp"
 #include "ShadowRoot.hpp"
+#include "AggregateExpr.hpp"
 
 
 using namespace Parser;
@@ -50,16 +51,19 @@ void ProjValidation::vValidateExprVisibility(PlanNode* pRootNode)
 
 
   // Find the /plan node
-  QueryNode* pPlanNode = ShadowRoot::pPlanNode(pRootNode);
-  ASSERT(pPlanNode);
+  QueryNode* pPlanRoot = ShadowRoot::pPlanRoot(pRootNode);
+  ASSERT(pPlanRoot);
 
   // The plan node should have one child which is a StatementMarker node
-  ASSERT(pPlanNode->nChildren() == 1);
-  ASSERT(StatementMarker::bIsOfType(pPlanNode->pFirstChild()));
-  QueryNode* pStatementMarker = _pQueryNode(pPlanNode->pFirstChild());
+  ASSERT(pPlanRoot->nChildren() == 1);
+  ASSERT(StatementMarker::bIsOfType(pPlanRoot->pFirstChild()));
 
   auto fVisitor = [pRootNode]
       (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(pvArg);
 
     // We are only interested in Sql operators that have expressions.
     // So no need to look at any of the following:
@@ -81,12 +85,13 @@ void ProjValidation::vValidateExprVisibility(PlanNode* pRootNode)
 
   // We do a bottom up walk because we want to catch errors at their incarnation,
   // not are a higher level where it has potentially compounded a few times.
-  GraphNav::bGlobalWalkBottomUp(pPlanNode->pFirstChild(), false, true, fVisitor, pRootNode);
+  GraphNav::bGlobalWalkBottomUp(pPlanRoot->pFirstChild(), false, true, fVisitor, pRootNode);
 }
 
 /*----------------------------------------------------------------------------*/
 /* Validates that the expression in a FilterOp is fully ordinal               */
 /* (can be converted to an ordinal representation with no ColumnRefs)         */
+/* and that it doesn't contain aggregate terms.                               */
 /*----------------------------------------------------------------------------*/
 void ProjValidation::vValidateFilterOp(QueryNode* pNode, PlanNode* pRootNode)
 {
@@ -101,12 +106,32 @@ void ProjValidation::vValidateFilterOp(QueryNode* pNode, PlanNode* pRootNode)
   if (!Expr::bIsFullyOrdinal(pOrdinalExpr)) {
     // This expression contains ColumnRefs.
     // Find the part of this that is non-ordinal
-    QueryNode* pNonOrdinalExpr = Expr::pLargestNonOrdinalSubExpr(pOrdinalExpr);
+    QueryNode* pNonOrdinalExpr = Expr::pLargestNonOrdinalSubExpr(pOrdinalExpr, true);
     ASSERT(pNonOrdinalExpr);
 
     s2K sBuf;
     Expr::vDescribe(pNonOrdinalExpr, sBuf);
     delete pOrdinalExpr;
+
+    SemanticException::vThrow(EC_EXPR_NOT_PROJECTED, ": %s ; WHERE/HAVING clause"_Stz, sBuf.szStz());
+  }
+
+  // Check if there are any aggregate expressions, even if they are ordinal
+  auto fHasAggregateCondition = [](PlanNode* pNode, void* pvArg) -> b1 { UNUSED(pvArg); return AggregateExpr::bIsOfType(pNode); };
+  PlanNode* pOrdinalAgg = GraphNav::pGlobalSearch(pOrdinalExpr, false, true, fHasAggregateCondition, nullptr);
+
+  if (pOrdinalAgg) {
+    // Convert to symbolic
+    QueryNodeList* pColumnExprList = PlanObject::pColumnExprs(pNode, pRootNode);
+    QueryNode* pSymbolicAgg = Expr::pOrdinalToSymbolic(_pQueryNode(pOrdinalAgg), pColumnExprList, pRootNode);
+
+    s2K sBuf;
+    Expr::vDescribe(pSymbolicAgg, sBuf);
+    delete pSymbolicAgg;
+    delete pOrdinalExpr;
+
+    pColumnExprList->vDeleteAll();
+    delete pColumnExprList;
 
     SemanticException::vThrow(EC_EXPR_NOT_PROJECTED, ": %s ; WHERE/HAVING clause"_Stz, sBuf.szStz());
   }
@@ -141,7 +166,7 @@ void ProjValidation::vValidateOrderOp(QueryNode* pNode, PlanNode* pRootNode)
     if (!Expr::bIsFullyOrdinal(pOrdinalExpr)) {
       // This expression contains ColumnRefs.
       // Find the part of this that is non-ordinal
-      QueryNode* pNonOrdinalExpr = Expr::pLargestNonOrdinalSubExpr(pOrdinalExpr);
+      QueryNode* pNonOrdinalExpr = Expr::pLargestNonOrdinalSubExpr(pOrdinalExpr, true);
       ASSERT(pNonOrdinalExpr);
 
       s2K sBuf;
@@ -151,7 +176,32 @@ void ProjValidation::vValidateOrderOp(QueryNode* pNode, PlanNode* pRootNode)
 
       SemanticException::vThrow(EC_EXPR_NOT_PROJECTED, ": %s ; ORDER BY clause"_Stz, sBuf.szStz());
     }
+
+
+    // Check if there are any aggregate expressions, even if they are ordinal
+    auto fHasAggregateCondition = [](PlanNode* pNode, void* pvArg) -> b1 { UNUSED(pvArg); return AggregateExpr::bIsOfType(pNode); };
+    PlanNode* pOrdinalAgg = GraphNav::pGlobalSearch(pOrdinalExpr, false, true, fHasAggregateCondition, nullptr);
+
+    if (pOrdinalAgg) {
+      // Convert to symbolic
+      QueryNodeList* pColumnExprList = PlanObject::pColumnExprs(pNode, pRootNode);
+      QueryNode* pSymbolicAgg = Expr::pOrdinalToSymbolic(_pQueryNode(pOrdinalAgg), pColumnExprList, pRootNode);
+
+      s2K sBuf;
+      Expr::vDescribe(pSymbolicAgg, sBuf);
+
+      delete pSymbolicAgg;
+
+      pColumnExprList->vDeleteAll();
+      delete pColumnExprList;
+
+      delete pIter;
+      delete pOrdinalOrderList;
+
+      SemanticException::vThrow(EC_EXPR_NOT_PROJECTED, ": %s ; WHERE/HAVING clause"_Stz, sBuf.szStz());
+    }
   }
+
 
   // All good
   delete pIter;
@@ -184,7 +234,7 @@ void ProjValidation::vValidateProjectOp(QueryNode* pNode, PlanNode* pRootNode)
     if (!Expr::bIsFullyOrdinal(pOrdinalExpr)) {
       // This expression contains ColumnRefs.
       // Find the part of this that is non-ordinal
-      QueryNode* pNonOrdinalExpr = Expr::pLargestNonOrdinalSubExpr(pOrdinalExpr);
+      QueryNode* pNonOrdinalExpr = Expr::pLargestNonOrdinalSubExpr(pOrdinalExpr, true);
       ASSERT(pNonOrdinalExpr);
 
       s2K sBuf;

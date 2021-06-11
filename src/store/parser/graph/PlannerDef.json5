@@ -2208,7 +2208,63 @@
                   value: "represents the data type for a NULL literal"
                 }
               ]
-            } // EndPath: /__root__/definitions/types/sqlType
+            }, // EndPath: /__root__/definitions/types/sqlType
+
+// Path: /__root__/definitions/types/location
+            {
+              name: "location",
+              value: "a container for the enumeration of different locations where SQL operators can execute",
+              children: [
+// Path: /__root__/definitions/types/location/allPartitions
+                {
+                  name: "allPartitions",
+                  value: "The object that has this designation runs on all partitions in the system"
+                },
+// Path: /__root__/definitions/types/location/allNodes
+                {
+                  name: "allNodes",
+                  value: "The object that has this designation runs one per node on all nodes in the system"
+                },
+// Path: /__root__/definitions/types/location/origin
+                {
+                  name: "origin",
+                  value: "The object that has this designation runs on the origin node only"
+                }
+              ]
+            }, // EndPath: /__root__/definitions/types/location
+
+// Path: /__root__/definitions/types/routing
+            {
+              name: "routing",
+              value: "a container for the enumeration of different ways data can be sent from a child operator to a parent",
+              children: [
+// Path: /__root__/definitions/types/location/unicast
+                {
+                  name: "unicast",
+                  value: "Data is sent to a single endpoint only"
+                },
+// Path: /__root__/definitions/types/location/broadcast
+                {
+                  name: "broadcast",
+                  value: "Data is sent to all endpoints"
+                },
+// Path: /__root__/definitions/types/location/hashcast
+                {
+                  name: "hashcast",
+                  value: "Data is sent to one specific endpoint based on the hashing of an expression"
+                },
+// Path: /__root__/definitions/types/location/localPartition
+                {
+                  name: "localPartition",
+                  value: "Data is sent to a pipeline stage running on the same partition on the current node"
+                },
+// Path: /__root__/definitions/types/location/localNode
+                {
+                  name: "localNode",
+                  value: "Data is sent to a pipeline stage running on the same node"
+                }
+              ]
+            },
           ]
         }, // EndPath: /__root__/definitions/types
       ]

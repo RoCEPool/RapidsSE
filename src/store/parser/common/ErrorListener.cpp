@@ -41,6 +41,9 @@ void ErrorListener::syntaxError(antlr4::Recognizer *recognizer,
                                 const std::string &msg,
                                 std::exception_ptr e)
 {
+  UNUSED(recognizer);
+  UNUSED(e);
+
   if (!m_bGotError) {
     m_bGotError = true;
     m_iLine = line;

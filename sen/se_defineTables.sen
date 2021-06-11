@@ -192,7 +192,7 @@
   STD_PATH
   "
   define table __promptOut (
-    outLine   VARCHAR NOT NULL
+    promptLine  VARCHAR NOT NULL
   ) < infoSet > = 1 ;
   "
   api::executeRequest

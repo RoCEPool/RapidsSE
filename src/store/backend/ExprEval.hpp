@@ -5,6 +5,7 @@
 
 #include "Definition.hpp"
 #include "IntStack.hpp"
+#include "eEO.h"
 
 namespace STORE
 {
@@ -61,6 +62,12 @@ namespace STORE
     s4K      m_sPayLoadStoreAsm;
     s4K      m_sPayLoadToBufferAsm;
 
+    s4K      m_sLowerBoundAsm;
+    s4K      m_sUpperBoundAsm;
+
+    eEO      m_eLowerBound;
+    eEO      m_eUpperBound;
+
     i8       m_iProjectColumn;
 
     i8       m_iProjections;
@@ -78,6 +85,7 @@ namespace STORE
    ~ExprEval(void) noexcept(false);
 
     eEC eEvaluate(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Stz* sExprEvalColumns);
+    eEC eEvaluateIndexScan(IndexDef* pIndexDef, Stz* sExprEvalColumns);
 
     bool bHasAggregate(void);
     bool bHasGroupBy(void);
@@ -89,13 +97,16 @@ namespace STORE
 
     void vAppendColumnToStreamDef(StreamDef* pStreamDefOut, Column* pColumn);
 
+    void vBoundRelation(Stz* szAsmBuffer, IntStack* pTypeStack, Token* pTkn);
+
     eEC  eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec);
 
     void vCreateGbyIdxCol(Stz* szAsmBuffer, eDM eDatum, i8 i_IdxCol);
-    void vCreatePayLoadKey(Stz* szAsmBuffer, IntStack* pTypeStack, i8 i_Local);
+    void vCreateIdxKey(Stz* szAsmBuffer, IntStack* pTypeStack);
 
-    eEC eExprEvalProject(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);
     eEC eExprEvalAggGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);
+    eEC eExprEvalProject(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);
+    eEC eExprEvalIndexScan(IndexDef* pIndexDef, TokenVec* pTknVec);
 
     void vGenerateAggregateCode(eAG eAggType, Stz* szAsmBuffer, Stz* szAsmInitBuffer, IntStack* pTypeStack);
 

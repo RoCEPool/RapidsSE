@@ -299,13 +299,13 @@ namespace STORE
   
     bool bGenerateAsm(Stz* sText);
 
-    eEC eGenerateAggregate(ExprEval* pExprEval, StreamDef* pStreamDefOut);
-    eEC eGenerateFilter(ExprEval* pExprEval, StreamDef* pStreamDefOut);
-    eEC eGenerateGroupBy(ExprEval* pExprEval, StreamDef* pStreamDefOut);
+    eEC eGenerateAggregate(ExprEval* pExprEval);
+    eEC eGenerateFilter(ExprEval* pExprEval);
+    eEC eGenerateIndexScan(ExprEval* pExprEval);
+    eEC eGenerateGroupBy(ExprEval* pExprEval);
     eEC eGenerateLimit(i8 iLimit);
-    eEC eGenerateLoopJoin(ExprEval* pExprEval, StreamDef* pStreamDefOut);
-    eEC eGenerateProjection(ExprEval* pExprEval, StreamDef* pStreamDefOut);
-    eEC eGenerateRange(Range* pRange, StreamDef* pStreamDefOut);
+    eEC eGenerateLoopJoin(ExprEval* pExprEval);
+    eEC eGenerateProjection(ExprEval* pExprEva);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

@@ -334,6 +334,8 @@ void ProjectOp::vSquash(QueryNode* pNode, QueryNode* pOtherOp, PlanNode* pRootNo
     auto fVisitor = []
         (PlanNode *pExpr, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
+      UNUSED(sPath);
+      UNUSED(iDepth);
       UNUSED(pvArg);
 
       if (!AliasRef::bIsOfType(pExpr)) {
@@ -374,6 +376,8 @@ void ProjectOp::vPushdownExpr(QueryNode* pNode, QueryNode* pExpr, Text* pAlias)
   ASSERT(pExpr);
   ASSERT(Expr::bIsOfType(pExpr));
   ASSERT(Expr::bIsNotOrdinal(pExpr));
+
+  // First check if the expression is already being projected
 
 
   // Create a projected column

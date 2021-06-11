@@ -63,7 +63,7 @@ void NameValidator::vValidateNames(PlanNode *pRootNode)
   ASSERT(pMetadataNode);
 
   // Find the /plan node
-  QueryNode* pPlanNode = ShadowRoot::pPlanNode(pRootNode);
+  QueryNode* pPlanNode = ShadowRoot::pPlanRoot(pRootNode);
   ASSERT(pPlanNode);
 
   // The plan node should have one child which is a StatementMarker node
@@ -275,12 +275,14 @@ void NameValidator::vValidateTables(PlanNode *pRootNode, QueryNode* pStartNode, 
 /*----------------------------------------------------------------------------*/
 void NameValidator::vResolveColumnWildcards(PlanNode *pRootNode, QueryNode* pStartNode, QueryNode* pMetadataNode)
 {
+  UNUSED(pMetadataNode);
+
   ASSERT(pRootNode);
   ASSERT(pMetadataNode);
   ASSERT(pStartNode);
 
   // Walk the graph looking for ColumnWildcards
-  auto fVisitor = [&pMetadataNode](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+  auto fVisitor = [](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);
@@ -467,6 +469,8 @@ void NameValidator::vValidateColumns(PlanNode *pRootNode, QueryNode* pStartNode,
 
   // Walk the graph looking for ColumnRefs
   auto fVisitor = [&pMetadataNode, pStartNode](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(iDepth);
 
     PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
 
@@ -657,6 +661,9 @@ QueryNodeList* NameValidator::pMatchingTableDefsFor(QueryNode* pColumnRef,
   auto fVisitor = [pColumnRef, pRootNode, pMetadataNode, &pTableDefList]
       (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(pvArg);
 
     if (SetOp::bIsOfType(pNode)) {
       // We only walk down through the first child of a SetOp to resolve tableDefs.
@@ -778,6 +785,10 @@ void NameValidator::vAssertNamesResolved(PlanNode *pRootNode, QueryNode* pPlanNo
   // then assert an error.
 
   auto fVisitor = [](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(pvArg);
 
     ASSERT(!ColumnWildcard::bIsOfType(pNode));
 

@@ -459,6 +459,31 @@ void AM::PARCEL::vRecvContents(Parcel* pParcel, Socket* pSocket)
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                   PROMPT                                   */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* pipe string out to prompt                                                  */
+/*----------------------------------------------------------------------------*/
+InfoSet* AM::PROMPT::pToPromptOut(Stz* szStz)
+{
+  _static_
+  
+  StreamDef* pStreamDef = AM::pInternalTables()->pStreamDef(TI_PROMPTOUT);
+  if (! pStreamDef)
+    return nullptr;
+
+  InfoSet* pInfoSet = new InfoSet(pStreamDef);
+  pInfoSet->vOpInfoSet(OI_PROMPTOUT);
+  
+  Row* pRow = pInfoSet->pAllotRow();
+  
+  pInfoSet->vDepositRow(pRow,C_VARGS_BEGIN,szStz,C_VARGS_END);
+  
+  return pInfoSet;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                   System                                   */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
@@ -1834,6 +1859,7 @@ i8 AM::iOperandZkKind(Operand* pOperand)
         case OI_NODEINFO:       eOperand = ZK_NODEINFO;       break;
         case OI_PATHINFO:       eOperand = ZK_PATHINFO;       break;
         case OI_PROGRESSUNITS:  eOperand = ZK_PROGRESSUNITS;  break;
+        case OI_PROMPTOUT:      eOperand = ZK_PROMPTOUT;      break;
         case OI_RETURNPIPELINE: eOperand = ZK_RETURNPIPELINE; break;
         case OI_SEEKOFFSETS:    eOperand = ZK_SEEKOFFSETS;    break;
         case OI_TOTALUNITS:     eOperand = ZK_TOTALUNITS;     break;
@@ -1852,6 +1878,7 @@ i8 AM::iOperandZkKind(Operand* pOperand)
         case OM_CANCELMARKER:  eOperand = ZK_CANCELMARKER;  break;
         case OM_DATAPULSE:     eOperand = ZK_DATAPULSE;     break;
         case OM_DESTROYMARKER: eOperand = ZK_DESTROYMARKER; break;
+        case OM_EACHROWEOSMARKER: eOperand = ZK_EACHROWEOSMARKER;  break;
         case OM_EOSMARKER:     eOperand = ZK_EOSMARKER;     break;
         case OM_ERRORMARKER:   eOperand = ZK_ERRORMARKER;   break;
         case OM_ERROREDMARKER: eOperand = ZK_ERROREDMARKER; break;
@@ -1860,7 +1887,6 @@ i8 AM::iOperandZkKind(Operand* pOperand)
         case OM_EXITEDMARKER:  eOperand = ZK_EXITEDMARKER;  break;
         case OM_EXITEDEARLYMARKER:  eOperand = ZK_EXITEDEARLYMARKER;  break;
         case OM_PULSEDMARKER:  eOperand = ZK_PULSEDMARKER;  break;
-        case OM_RESENDMARKER:  eOperand = ZK_RESENDMARKER;  break;
         case OM_STARTMARKER:   eOperand = ZK_STARTMARKER;   break;
         case OM_STARTEDMARKER: eOperand = ZK_STARTEDMARKER; break;
         default:

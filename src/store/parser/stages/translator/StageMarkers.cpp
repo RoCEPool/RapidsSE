@@ -31,7 +31,7 @@ using namespace Parser;
 /*----------------------------------------------------------------------------*/
 void StageMarkers::vRemoveStatementMarkers(PlanNode *pRootNode)
 {
-  PlanNode* pPlanNode = ShadowRoot::pPlanNode(pRootNode);
+  PlanNode* pPlanNode = ShadowRoot::pPlanRoot(pRootNode);
   ASSERT(pPlanNode);
   ASSERT(ShadowPlan::bIsOfType(pPlanNode));
 
@@ -42,7 +42,11 @@ void StageMarkers::vRemoveStatementMarkers(PlanNode *pRootNode)
   };
 
   // Lambda called as we walk the graph
-  auto fVisitor = [fCondition](PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArgs) -> GraphNav::eWalkCtrl {
+  auto fVisitor = [fCondition](PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(pvArg);
 
     ASSERT(!StatementMarker::bIsOfType(pNode) || ExplainMarker::bIsOfType(pNode));
 
@@ -69,13 +73,17 @@ void StageMarkers::vRemoveStatementMarkers(PlanNode *pRootNode)
 /*----------------------------------------------------------------------------*/
 void StageMarkers::vAddStageMarkers(PlanNode *pRootNode)
 {
-  QueryNode* pPlanNode = ShadowRoot::pPlanNode(pRootNode);
+  QueryNode* pPlanNode = ShadowRoot::pPlanRoot(pRootNode);
   ASSERT(pPlanNode);
   ASSERT(ShadowPlan::bIsOfType(pPlanNode));
 
 
   // Lambda called as we walk the graph
-  auto fVisitor = [](PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArgs) -> GraphNav::eWalkCtrl {
+  auto fVisitor = [](PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(pvArg);
 
     ASSERT(!StatementMarker::bIsOfType(pNode) || ExplainMarker::bIsOfType(pNode));
     QueryNode* pQueryNode = _pQueryNode(pNode);

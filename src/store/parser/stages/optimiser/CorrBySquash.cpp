@@ -41,13 +41,17 @@ using namespace Parser;
 /*----------------------------------------------------------------------------*/
 void CorrBySquash::vSearchAndSquash(PlanNode *pRootNode)
 {
-  PlanNode* pPlanNode = ShadowRoot::pPlanNode(pRootNode);
+  PlanNode* pPlanNode = ShadowRoot::pPlanRoot(pRootNode);
   ASSERT(pPlanNode);
   ASSERT(ShadowPlan::bIsOfType(pPlanNode));
 
   // Iterate each node, looking for a StatementMarker
   auto fVisitor = [pRootNode]
       (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(pvArg);
 
     if (!StatementMarker::bIsOfType(pNode)) {
       return GraphNav::WALK_CONTINUE;
@@ -77,6 +81,7 @@ void CorrBySquash::vSearchStatementSection(QueryNode* pStatementMarker, PlanNode
   ASSERT(ShadowRoot::bIsOfType(pRootNode));
 
   auto fCondition = [](PlanNode* pStatementMarker, void* pvArg) -> b1 {
+    UNUSED(pvArg);
     return (SetOp::bIsOfType(pStatementMarker));
   };
 
@@ -154,6 +159,9 @@ void CorrBySquash::vPushDownProjectOp(QueryNode* pProjectOp, QueryNode* pStartin
   // Because we wish to skip over StatementMarkers we need to do a global walk
   auto fVisitor = [&bSquashed, pProjectOp, pStartingNode, pRootNode]
       (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(iDepth);
+    UNUSED(pvArg);
 
     //  - If we encounter a StatementMarker, ignore it and keep descending
     if (StatementMarker::bIsOfType(pNode)) {

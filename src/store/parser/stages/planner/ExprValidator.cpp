@@ -46,7 +46,7 @@ using namespace Parser;
 void ExprValidator::vValidateExprs(PlanNode *pRootNode)
 {
   // Find the /plan node
-  QueryNode* pPlanNode = ShadowRoot::pPlanNode(pRootNode);
+  QueryNode* pPlanNode = ShadowRoot::pPlanRoot(pRootNode);
   ASSERT(pPlanNode);
 
   // The plan node should have one child which is a StatementMarker node
@@ -188,6 +188,8 @@ void ExprValidator::vValidatePredicatesAreBoolean(PlanNode *pRootNode, QueryNode
 /*----------------------------------------------------------------------------*/
 void ExprValidator::vValidateGroupByExprs(PlanNode *pRootNode, QueryNode* pStartNode)
 {
+  UNUSED(pRootNode);
+
   ASSERT(pRootNode);
   ASSERT(pStartNode);
 
@@ -237,6 +239,7 @@ void ExprValidator::vValidateProjectExprs(PlanNode *pRootNode, QueryNode* pStart
   // If there is no group by list then a simple ProjectOp will be generated
   // rather than an AggregateOp.
   auto fCondition = [](PlanNode* pNode, void* pvArg) -> b1 {
+    UNUSED(pvArg);
     return ProjectOp::bIsExactType(pNode);
   };
 
@@ -325,6 +328,10 @@ void ExprValidator::vCheckNonAggExprIsInGroupBy(QueryNode* pExpr, QueryNode *pGr
   //  - otherwise continue walking/descending the expression graph
 
   auto fVisitor = [pGroupByList](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(pvArg);
 
     ASSERT(Expr::bIsOfType(pNode));
 
@@ -441,8 +448,11 @@ void ExprValidator::vCheckGroupByExprsNotLiterals(QueryNode *pGroupByList)
 /*----------------------------------------------------------------------------*/
 void ExprValidator::vValidateSqlOpExprsAgainstGroupBy(PlanNode* pRootNode, QueryNode* pStartNode)
 {
+  UNUSED(pRootNode);
+
   // First find the AggregateOp (if one exists) so we can get the group by list
   auto fCondition = [](PlanNode* pNode, void* pvArg)-> b1 {
+    UNUSED(pvArg);
     return (AggregateOp::bIsExactType(pNode));
   };
 
@@ -462,6 +472,10 @@ void ExprValidator::vValidateSqlOpExprsAgainstGroupBy(PlanNode* pRootNode, Query
   // the group by list.
 
   auto fVisitor = [pAggregateOp, pGroupByList](PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(pvArg);
 
     ASSERT(PlanObject::bIsOfType(pNode));
     QueryNode* pPlanOp = _pQueryNode(pNode);
@@ -546,8 +560,11 @@ void ExprValidator::vValidateSqlOpExprsAgainstGroupBy(PlanNode* pRootNode, Query
 /*----------------------------------------------------------------------------*/
 void ExprValidator::vValidateSqlOpExprsAgainstProjectOp(PlanNode* pRootNode, QueryNode* pStartNode)
 {
+  UNUSED(pRootNode);
+
   // First find the ProjectOp
   auto fCondition = [](PlanNode *pNode, void *pvArg) -> b1 {
+    UNUSED(pvArg);
     return (ProjectOp::bIsExactType(pNode));
   };
 
@@ -586,6 +603,10 @@ void ExprValidator::vValidateSqlOpExprsAgainstProjectOp(PlanNode* pRootNode, Que
 
   auto fVisitor = [pProjectOp, bAggregationAllowed, pNonAggColRef]
       (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(pvArg);
 
     ASSERT(PlanObject::bIsOfType(pNode));
     QueryNode* pPlanOp = _pQueryNode(pNode);

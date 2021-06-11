@@ -359,6 +359,16 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
         AM::vDeleteOperand(pOperand);
       }
 
+      else if (pInfoSet->szBufferNm()->bSame(C_TDEF_PROMPTOUT)) {
+
+        Row* pInfoRow = pInfoSet->pFirstRow();
+        Stz *szPromptLine = pInfoRow->szColVal_ofs(0);
+
+        vTrace("%s\n"_Stz,szPromptLine);
+
+        AM::vDeleteOperand(pOperand);
+      }
+      
       else {
         m_ixRowsProcessed += pInfoSet->nRows();
         vTrace("\n"_Stz);
@@ -400,7 +410,13 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
           AM::vDeleteOperand(pOperand);
           break;
         }
-          
+
+        case OM_EACHROWEOSMARKER: {
+          //vTrace("Pipeline Job: EACHROWEOSMARKER\n"_Stz);
+          AM::vDeleteOperand(pOperand);
+          break;
+        }
+
         case OM_EOSMARKER: {
           //vTrace("Pipeline Job: EOSMARKER\n"_Stz);
           AM::vDeleteOperand(pOperand);
@@ -441,12 +457,6 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
 
         case OM_PULSEDMARKER: {
           //vTrace("Pipeline Job: PULSEDMARKER\n"_Stz);
-          AM::vDeleteOperand(pOperand);
-          break;
-        }
-
-        case OM_RESENDMARKER: {
-          //vTrace("Pipeline Job: RESENDMARKER\n"_Stz);
           AM::vDeleteOperand(pOperand);
           break;
         }

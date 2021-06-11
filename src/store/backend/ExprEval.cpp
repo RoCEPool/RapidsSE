@@ -4,11 +4,11 @@
 
 #include "BASE.h"
 
+#include "IndexDef.hpp"
 #include "StreamDef.hpp"
 
 #include "ExprEval.hpp"
 #include "SN_Dte.hpp"
-#include "eEO.h"
 
 #include "MathOp.h"
 
@@ -77,6 +77,11 @@ ExprEval::ExprEval(void)
   //m_sPayLoadKeyAsm;
   //m_sPayLoadStoreAsm;
   //m_sPayLoadToBufferAsm;
+  //m_sLowerBoundAsm;
+  //m_sUpperBoundAsm;
+
+  m_eLowerBound = EO_NONE;
+  m_eUpperBound = EO_NONE;
 
   //_checkInitialised_(CN_EXPREVAL);
 
@@ -134,6 +139,35 @@ eEC ExprEval::eEvaluate(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Stz* 
     eError = eExprEvalAggGby(pStreamDefIn, pStreamDefOut, pTknVec);
   else
     eError = eExprEvalProject(pStreamDefIn, pStreamDefOut, pTknVec);
+
+  L_RETRUN:
+  delete pTknVec;
+  return eError;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add column vec from stream def                                             */
+/*----------------------------------------------------------------------------*/
+eEC ExprEval::eEvaluateIndexScan(IndexDef* pIndexDef, Stz* sExprEvalColumns)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
+
+  eEC eError = EC_NONE;
+  Token* pTkn;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tokenise the projectColumns
+  TokenVec *pTknVec = TokenVec::pTokenise(sExprEvalColumns);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the next token
+  pTkn = pTknVec->pNextToken();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // evaluate the projected expressions
+
+  eError = eExprEvalIndexScan(pIndexDef, pTknVec);
+
 
   L_RETRUN:
   delete pTknVec;
@@ -376,9 +410,9 @@ void ExprEval::vCreateGbyIdxCol(Stz* szAsmBuffer, eDM eDatum, i8 i_IdxCol) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* add EO code for creating the pay load key                                  */
+/* add EO code for creating the index key                                     */
 /*----------------------------------------------------------------------------*/
-void ExprEval::vCreatePayLoadKey(Stz* szAsmBuffer, IntStack* pTypeStack, i8 i_Local) {
+void ExprEval::vCreateIdxKey(Stz* szAsmBuffer, IntStack* pTypeStack) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
@@ -469,7 +503,7 @@ eEC ExprEval::eExprEvalAggGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
         case PK_GBY: {
           eDM eKeyDatm = (eDM) m_xKeyStack.iPeek(m_xKeyStack.nItems() - 1);
           vCreateGbyIdxCol(m_sGbyIdxAsm, eKeyDatm, m_iProjectColumn);
-          vCreatePayLoadKey(m_sPayLoadKeyAsm, &m_xKeyStack, i_Local);
+          vCreateIdxKey(m_sPayLoadKeyAsm, &m_xKeyStack);
         }
           break;
 
@@ -954,7 +988,7 @@ eEC ExprEval::eExprEvalAggGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
           break;
 
         case PK_GBY:
-          vCreatePayLoadKey(m_sPayLoadKeyAsm, &m_xKeyStack, i_Local);
+          vCreateIdxKey(m_sPayLoadKeyAsm, &m_xKeyStack);
           break;
 
         default:
@@ -1024,16 +1058,202 @@ eEC ExprEval::eExprEvalAggGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
 
   eKeyDatm = (eDM)m_xKeyStack.iPeek(m_xKeyStack.nItems()-1);
   vCreateGbyIdxCol(m_sGbyIdxAsm, eKeyDatm, m_iProjectColumn);
-  vCreatePayLoadKey(m_sPayLoadKeyAsm, &m_xKeyStack, i_Local);
+  vCreateIdxKey(m_sPayLoadKeyAsm, &m_xKeyStack);
 
   L_RETURN:
-//  RASSERT(m_xAggStack.nItems() == 0);
-//  RASSERT(m_xTypeStack.nItems() == 0);
-//  RASSERT(m_xStoreStack.nItems() == 0);
-//  RASSERT(m_xKeyStack.nItems() == 0);
-
+  RASSERT(m_xTypeStack.nItems() == 0);
   delete pColumnExpr;
 
+  return eError;
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse indexScan lower and upper bounds                                     */
+/*----------------------------------------------------------------------------*/
+eEC ExprEval::eExprEvalIndexScan(IndexDef* pIndexDef, TokenVec* pTknVec)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
+
+  eEC eError    = EC_NONE;
+  eDM eDatum    = DM_NONE;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the current token
+  Token* pTkn = pTknVec->pCurrToken();
+  Stz* sAsmText;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  while ( pTkn ) {
+
+    //vTrace("TKN: %s\n"_Stz, pTkn->azChars());
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // arithmetic operator ?
+    if (pTkn->bIsArithmetic()) {
+      vAddArithmetic(sAsmText, &m_xAggStack, pTkn);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // logical operator ?
+    if (pTkn->bIsLogical() || pTkn->bSame("isNull"_Stz)) {
+      vAddLogical(sAsmText, &m_xAggStack, pTkn);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // relational operator ?
+    if (pTkn->bIsRelational()) {
+      vBoundRelation(sAsmText, &m_xAggStack, pTkn);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // is it a numeric ?
+    if (pTkn->bIsNumeric()) {
+      vPushDatum(DM_INT, sAsmText, &m_xTypeStack, pTkn);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // is it a decimal no ?
+    if (pTkn->bIsDecimalNo()) {
+      vPushDatum(DM_BCD,  sAsmText, &m_xTypeStack, pTkn);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // is it a string ?
+    if (pTkn->bIsString()) {
+      vPushDatum (DM_VCH,  sAsmText, &m_xTypeStack, pTkn);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // should be a name
+    if (!pTkn->bIsName()) {
+      eError = EC_INVALID_COMMAND;
+      goto L_RETURN;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // is it a negate op ?
+    if (pTkn->bSame("negate"_Stz) ) {
+      vAddArithmetic(sAsmText, &m_xTypeStack, pTkn);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // it is a null value ?
+    if (pTkn->bSame("null"_Stz) ) {
+      vPushDatum (DM_UNK, sAsmText, &m_xTypeStack, pTkn);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // is it a date ?
+    if (pTkn->bSame("DATE"_Stz) ) {
+      pTkn = pTknVec->pNextToken();
+      if (pTkn->bIsString()) {
+        eDatum = DM_DTE;
+        vPushDatum(eDatum, sAsmText, &m_xTypeStack, pTkn);
+        pTkn = pTknVec->pNextToken();
+        continue;
+      }
+      else
+        pTkn = pTknVec->pPrevToken();
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // is it a time ?
+    if (pTkn->bSame("TIME"_Stz) ) {
+      pTkn = pTknVec->pNextToken();
+      if (pTkn->bIsString()) {
+        vPushDatum(DM_TME, sAsmText, &m_xTypeStack, pTkn);
+        pTkn = pTknVec->pNextToken();
+        continue;
+      }
+      else
+        pTkn = pTknVec->pPrevToken();
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // is it a timestamp ?
+    if (pTkn->bSame("TIMESTAMP"_Stz) ) {
+      pTkn = pTknVec->pNextToken();
+      if (pTkn->bIsString()) {
+        vPushDatum(DM_TSP, sAsmText, &m_xTypeStack, pTkn);
+        pTkn = pTknVec->pNextToken();
+        continue;
+      }
+      else
+        pTkn = pTknVec->pPrevToken();
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // is it a lowerbound ?
+    if (pTkn->bSame("LBOUND"_Stz) ) {
+      sAsmText = m_sLowerBoundAsm;
+      if (sAsmText->bSame(""_Stz) ){
+        StrLib::vSprintCat(sAsmText, "  EO_PUSH_DEVIXT_SRC\n"_Stz);
+        StrLib::vSprintCat(sAsmText, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
+        StrLib::vSprintCat(sAsmText, "  EO_ENTWRK_SETENTKND\n"_Stz);
+      }
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // is it an upperbound ?
+    if (pTkn->bSame("UBOUND"_Stz) ) {
+      sAsmText = m_sUpperBoundAsm;
+      if (sAsmText->bSame(""_Stz)) {
+        StrLib::vSprintCat(sAsmText, "  EO_PUSH_DEVIXT_SRC\n"_Stz);
+        StrLib::vSprintCat(sAsmText, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
+        StrLib::vSprintCat(sAsmText, "  EO_ENTWRK_SETENTKND\n"_Stz);
+      }
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // found an index src column
+    if ( ! pTkn->szChars()->bContains("$"_Stz)) {
+      eError = EC_INVALID_COMMAND;
+      goto L_RETURN;
+    }
+
+    RASSERT(pTkn->szChars()->bContains("I"_Stz));
+
+    Stz *sOrdinalColumn = pTkn->szChars() + 2;
+    i8 i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
+    Column* pColumn = pIndexDef->pGetColumn(i_ColumnOrdinal);
+
+    pTkn = pTknVec->pNextToken();
+  }
+
+  if ( ! m_sLowerBoundAsm.bEqual(""_Stz) ) {
+    StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
+    StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_PUSH_DEVIXT_SRC\n"_Stz);
+    StrLib::vSprintCat(m_sLowerBoundAsm, "  %s\n"_Stz, aEO[m_eLowerBound]);
+    StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_JMP_FALSE INDEX_SCAN_END\n"_Stz);
+  }
+
+  if ( ! m_sUpperBoundAsm.bEqual(""_Stz) ) {
+    StrLib::vSprintCat(m_sUpperBoundAsm, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
+    StrLib::vSprintCat(m_sUpperBoundAsm, "  EO_PUSH_DEVIXT_SRC\n"_Stz);
+    StrLib::vSprintCat(m_sUpperBoundAsm, "  %s\n"_Stz, aEO[m_eUpperBound]);
+  }
+
+  L_RETURN:
+  //RASSERT(m_xTypeStack.nItems() == 0);
   return eError;
 }
 
@@ -2314,6 +2534,40 @@ void ExprEval::vGenerateAggregateCode(eAG eAggType, Stz* szAsmBuffer, Stz* szAsm
       RASSERT(0);
       break;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* add EO code for lower and upper bounds                                     */
+/*----------------------------------------------------------------------------*/
+void ExprEval::vBoundRelation(Stz* szAsmBuffer, IntStack* pTypeStack, Token* pTkn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
+
+  if (pTkn->bSame(">"_Stz)) {
+    m_eLowerBound = EO_DEVIXT_LBOUND_GT;
+  }
+  else if (pTkn->bSame(">="_Stz)) {
+    m_eLowerBound = EO_DEVIXT_LBOUND_GE;
+  }
+  else if (pTkn->bSame("<"_Stz)) {
+    m_eUpperBound = EO_DEVIXT_UBOUND_LT;
+  }
+  else if (pTkn->bSame("<="_Stz)) {
+    m_eUpperBound = EO_DEVIXT_UBOUND_LE;
+  }
+  else if (pTkn->bSame("!="_Stz)) {
+    RASSERT(0);
+  }
+  else {
+    ASSERT(pTkn->bSame("=="_Stz));
+    RASSERT(0);
+  }
+
+  vCreateIdxKey(szAsmBuffer, &m_xTypeStack);
+
+  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVIXT_SRC\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_PRINT\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

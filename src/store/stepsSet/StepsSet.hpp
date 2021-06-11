@@ -197,6 +197,9 @@ public:
   // devSrcRow
   void vDevSrcRowStreamDefStore(void);
 
+  // devSrcIxt
+  void vDevSrcIxtIndexTreeStore(void);
+
   // dic
   void vDicDelete(void);
   void vDicFirstWord(void);
@@ -322,6 +325,7 @@ public:
   void vExprEvalDelete(void);
   void vExprEvalNew(void);
   void vExprEvalEvaluate(void);
+void vExprEvalEvaluateIndexScan(void);
   void vExprEvalSet(void);
 
   // fact
@@ -877,10 +881,10 @@ public:
   void vLogicUnitGenAggregate(void);
   void vLogicUnitGenAsm(void);
   void vLogicUnitGenFilter(void);
+  void vLogicUnitGenIndexScan(void);
   void vLogicUnitGenLimit(void);
   void vLogicUnitGenLoopJoin(void);
   void vLogicUnitGenProjection(void);
-  void vLogicUnitGenRange(void);
   void vLogicUnitHandlerFetch(void);
   void vLogicUnitHandlerStore(void);
   void vLogicUnitInit(void);
@@ -1474,6 +1478,8 @@ public:
   void vSqlCompilerHasExplain(void);
   void vSqlCompilerNameValidate(void);
   void vSqlCompilerParser(void);
+  void vSqlCompilerPartitionExplain(void);
+  void vSqlCompilerPartitionPlan(void);
   void vSqlCompilerPostProject(void);
   void vSqlCompilerProjValidation(void);
   void vSqlCompilerSetOpValidate(void);
@@ -1518,6 +1524,7 @@ public:
   void vStrSame(void);
   void vStrSub(void);
   void vStrTailInt(void);
+  void vStrToPromptOut(void);
   void vStrToStrVec(void);
 
   // register stringA

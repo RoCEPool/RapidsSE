@@ -761,7 +761,7 @@
   
   STD_PATH
   "
-  procedure indexScan_I
+  procedure range_I
     parameters $table $index $etc
     begin
 
@@ -769,7 +769,7 @@
       start | periodic once | stageB
 
     stage stageB on all partitions :
-      range 0 $table by $index $etc
+      indexScan 0 $table $index $etc
       | stageC
 
     stage stageC on origin :
@@ -784,7 +784,7 @@
   
   STD_PATH
   "
-  procedure indexScan
+  procedure range
     parameters $table $index $etc
     begin
 
@@ -792,7 +792,7 @@
       start | periodic once | stageB
 
     stage stageB on all partitions :
-      range 1 $table by $index $etc
+      indexScan 1 $table $index $etc
       | stageC
 
     stage stageC on origin :
@@ -850,7 +850,6 @@
     stage stageA on origin :
       start
       | periodic once
-      //| sqlInit
       | parser $sqlStatement
       | nameValidate
       | exprValidate
@@ -860,6 +859,8 @@
       | projValidation
       | corrBySquash
       | explainPlan
+      | partitionPlan
+      | partitionExplain
       | stageMarkers
       | transliterate
       | output

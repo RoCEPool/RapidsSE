@@ -42,6 +42,7 @@
 #include "ExprPushdown.hpp"
 #include "ProjValidation.hpp"
 #include "CorrBySquash.hpp"
+#include "PartitionPlan.hpp"
 #include "StageMarkers.hpp"
 
 #include "ExplainMarker.hpp"
@@ -68,6 +69,8 @@ void Step::vAddSteps_SqlCompiler(void)
   vAddStep("sqlCompiler::exprPushdown"_Stz,       &Step::vSqlCompilerExprPushdown);
   vAddStep("sqlCompiler::nameValidate"_Stz,       &Step::vSqlCompilerNameValidate);
   vAddStep("sqlCompiler::parser"_Stz,             &Step::vSqlCompilerParser);
+  vAddStep("sqlCompiler::partitionPlan"_Stz,      &Step::vSqlCompilerPartitionPlan);
+  vAddStep("sqlCompiler::partitionExplain"_Stz,   &Step::vSqlCompilerPartitionExplain);
   vAddStep("sqlCompiler::postProject"_Stz,        &Step::vSqlCompilerPostProject);
   vAddStep("sqlCompiler::projValidation"_Stz,     &Step::vSqlCompilerProjValidation);
   vAddStep("sqlCompiler::setOpValidate"_Stz,      &Step::vSqlCompilerSetOpValidate);
@@ -209,11 +212,11 @@ void Step::vSqlCompilerDoExplain(void) {
   InfoSet *pInfoSet = _pInfoSet(*(m_pJob->pLogicUnit_job())->m_xpStreamSet);
 
   // Find the explainOp
-  QueryNode* pPlanNode = ShadowRoot::pPlanNode(pRootNode);
-  ASSERT(pPlanNode);
-  ASSERT(ShadowPlan::bIsExactType(pPlanNode));
+  QueryNode* pPlanRoot = ShadowRoot::pPlanRoot(pRootNode);
+  ASSERT(pPlanRoot);
+  ASSERT(ShadowPlan::bIsExactType(pPlanRoot));
 
-  QueryNode* pExplainMarker = _pQueryNode(pPlanNode->pFirstChild());
+  QueryNode* pExplainMarker = _pQueryNode(pPlanRoot->pFirstChild());
   ASSERT(pExplainMarker);
   ASSERT(ExplainMarker::bIsExactType(pExplainMarker));
 
@@ -280,11 +283,11 @@ void Step::vSqlCompilerDoExplainTliterate(void) {
   InfoSet *pInfoSet = _pInfoSet(*(m_pJob->pLogicUnit_job())->m_xpStreamSet);
 
   // Find the explainOp
-  QueryNode* pPlanNode = ShadowRoot::pPlanNode(pRootNode);
-  ASSERT(pPlanNode);
-  ASSERT(ShadowPlan::bIsExactType(pPlanNode));
+  QueryNode* pPlanRoot = ShadowRoot::pPlanRoot(pRootNode);
+  ASSERT(pPlanRoot);
+  ASSERT(ShadowPlan::bIsExactType(pPlanRoot));
 
-  QueryNode* pExplainMarker = _pQueryNode(pPlanNode->pFirstChild());
+  QueryNode* pExplainMarker = _pQueryNode(pPlanRoot->pFirstChild());
   ASSERT(pExplainMarker);
   ASSERT(ExplainMarker::bIsExactType(pExplainMarker));
 
@@ -336,11 +339,11 @@ void Step::vSqlCompilerExplainFormat(void) {
   ASSERT(ShadowRoot::bIsExactType(pRootNode));
 
   // Find the explainOp
-  QueryNode* pPlanNode = ShadowRoot::pPlanNode(pRootNode);
-  ASSERT(pPlanNode);
-  ASSERT(ShadowPlan::bIsExactType(pPlanNode));
+  QueryNode* pPlanRoot = ShadowRoot::pPlanRoot(pRootNode);
+  ASSERT(pPlanRoot);
+  ASSERT(ShadowPlan::bIsExactType(pPlanRoot));
 
-  QueryNode* pExplainMarker = _pQueryNode(pPlanNode->pFirstChild());
+  QueryNode* pExplainMarker = _pQueryNode(pPlanRoot->pFirstChild());
   ASSERT(pExplainMarker);
   ASSERT(ExplainMarker::bIsExactType(pExplainMarker));
 
@@ -535,11 +538,11 @@ void Step::vSqlCompilerHasExplain(void) {
   ASSERT(ShadowRoot::bIsExactType(pRootNode));
 
   // Determine if there is an ExplainOp in this plan.
-  QueryNode* pPlanNode = ShadowRoot::pPlanNode(pRootNode);
+  QueryNode* pPlanRoot = ShadowRoot::pPlanRoot(pRootNode);
 
-  // pPlanNode should have one child being an ExplainMarker.
+  // pPlanRoot should have one child being an ExplainMarker.
   // The ExplainMarker should have one child being the ExplainOp
-  QueryNode* pMarker = _pQueryNode(pPlanNode->pFirstChild());
+  QueryNode* pMarker = _pQueryNode(pPlanRoot->pFirstChild());
   if (pMarker && ExplainMarker::bIsExactType(pMarker)) {
 
     QueryNode* pExplainOp = _pQueryNode(pMarker->pFirstChild());
@@ -740,6 +743,81 @@ void Step::vSqlCompilerParser(void)
 
 L_Exit:
   delete pPlanner;
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* sqlCompiler::partitionExplain -- explain the partitioned plan stage        */
+/*----------------------------------------------------------------------------*/
+void Step::vSqlCompilerPartitionExplain(void)
+{
+  ENTRY();
+
+  /**
+   * The purpose of this stage in the pipeline is to be a marker for the last
+   * point in the SQL compilation pipeline before the plan graph is
+   * transliterated into a pipeline statement. If a partitioned query is being
+   * explained then this is the point that it happens.
+   *
+   * However the explain does not actually occur here. Because we can ask for
+   * an explain of many or all stages from the parser to this stage the
+   * SQL compilation pipeline calls the above vSqlCompilerDoExplain() step after
+   * running the step for each stage of the pipeline. So we don't need to do
+   * anything specific here. Instead this empty stage is basically a name
+   * marker for the last step prior to transliteration.
+   *
+   * The plan is not modified in this stage.
+   */
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* sqlCompiler::partitionPlan -- parallelise the plan based on partitions     */
+/*----------------------------------------------------------------------------*/
+void Step::vSqlCompilerPartitionPlan(void)
+{
+  ENTRY();
+
+  /**
+   * The purpose of this stage in the pipeline is to...
+   *
+   * The plan is heavily modified in this stage.
+   */
+
+  PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
+  Parser::RootNode* pRootNode = Parser::_pRootNode(pPlanOperand->pPlanNode());
+  ASSERT(ShadowRoot::bIsExactType(pRootNode));
+
+
+  try {
+    // Partition the plan
+    PartitionPlan::vPartitionPlan(pRootNode);
+
+  } catch (Parser::SqlException& e) {
+    Grid* pGrid = AM::pGrid();
+    InfoSet* pInfoSet = _pInfoSet(*m_pJob->pLogicUnit_job()->m_xpInfoSet);
+    Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+                                    pGrid->pThisNode()->szNodeNm(),
+                                    EC_SEMANTIC_ERROR,
+                                    0,
+                                    0,
+                                    e.szError(),
+                                    C_VARGS_END);
+    UNUSED(pRow);
+    delete pRootNode;
+    delete pPlanOperand;
+    m_pDataStack->vPushPtr(nullptr);
+    goto L_Exit;
+  }
+
+
+  // TODO: eventually we want the received plan graph to be immutable,
+  //       so we would send a different version. But for now we will just
+  //       manipulate and send the same plan graph
+  m_pDataStack->vPushPtr(pPlanOperand);
+
+  L_Exit:
   EXIT();
 }
 

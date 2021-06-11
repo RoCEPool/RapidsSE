@@ -48,10 +48,10 @@ void Step::vAddSteps_LogicUnit(void)
   vAddStep("LogicUnit[].genAggregate"_Stz,  &Step::vLogicUnitGenAggregate);
   vAddStep("LogicUnit[].genAsm"_Stz,        &Step::vLogicUnitGenAsm);
   vAddStep("LogicUnit[].genFilter"_Stz,     &Step::vLogicUnitGenFilter);
+  vAddStep("LogicUnit[].genIndexScan"_Stz,  &Step::vLogicUnitGenIndexScan);
   vAddStep("LogicUnit[].genLimit"_Stz,      &Step::vLogicUnitGenLimit);
   vAddStep("LogicUnit[].genLoopJoin"_Stz,   &Step::vLogicUnitGenLoopJoin);
   vAddStep("LogicUnit[].genProjection"_Stz, &Step::vLogicUnitGenProjection);
-  vAddStep("LogicUnit[].genRange"_Stz,      &Step::vLogicUnitGenRange);
     
   vAddStep("LogicUnit[].handler@"_Stz,      &Step::vLogicUnitHandlerFetch);
   vAddStep("LogicUnit[].handler!"_Stz,      &Step::vLogicUnitHandlerStore);
@@ -355,11 +355,10 @@ void Step::vLogicUnitGenAggregate(void)
   ExprEval* pExprEval;
   pExprEval = _pExprEval(m_pDataStack->pPopPtr(__func__));
 
-  StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
   eEC eError;
 
   if (pExprEval->bHasGroupBy())
-    eError = m_pJob->pLogicUnit_job()->eGenerateGroupBy(pExprEval, pStreamDefOut);
+    eError = m_pJob->pLogicUnit_job()->eGenerateGroupBy(pExprEval);
   else {
     eError = EC_INVALID_COMMAND;
   }
@@ -415,9 +414,7 @@ void Step::vLogicUnitGenFilter(void)
 
   ExprEval* pExprEval = _pExprEval(m_pDataStack->pPopPtr(__func__));
 
-  StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
-
-  eEC eError = m_pJob->pLogicUnit_job()->eGenerateFilter(pExprEval, pStreamDefOut);
+  eEC eError = m_pJob->pLogicUnit_job()->eGenerateFilter(pExprEval);
 
   m_pDataStack->vPushInt(eError);
 
@@ -449,9 +446,7 @@ void Step::vLogicUnitGenLoopJoin(void)
 
   ExprEval* pExprEval = _pExprEval(m_pDataStack->pPopPtr(__func__));
 
-  StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
-
-  eEC eError = m_pJob->pLogicUnit_job()->eGenerateLoopJoin(pExprEval, pStreamDefOut);
+  eEC eError = m_pJob->pLogicUnit_job()->eGenerateLoopJoin(pExprEval);
 
   m_pDataStack->vPushInt(eError);
 
@@ -468,14 +463,12 @@ void Step::vLogicUnitGenProjection(void)
   ExprEval* pExprEval;
   pExprEval = _pExprEval(m_pDataStack->pPopPtr(__func__));
 
-  StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
-
   eEC eError;
 
   if (pExprEval->bHasAggregate())
-    eError = m_pJob->pLogicUnit_job()->eGenerateAggregate(pExprEval, pStreamDefOut);
+    eError = m_pJob->pLogicUnit_job()->eGenerateAggregate(pExprEval);
   else {
-    eError = m_pJob->pLogicUnit_job()->eGenerateProjection(pExprEval, pStreamDefOut);
+    eError = m_pJob->pLogicUnit_job()->eGenerateProjection(pExprEval);
   }
 
   m_pDataStack->vPushInt(eError);
@@ -484,17 +477,18 @@ void Step::vLogicUnitGenProjection(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* LogicUnit[].genRange -- generabte projection asm text into file             */
+/* LogicUnit[].genIndexScan -- generate indexScan asm text into file          */
 /*----------------------------------------------------------------------------*/
-void Step::vLogicUnitGenRange(void)
+void Step::vLogicUnitGenIndexScan(void)
 {
   ENTRY();
 
-  Range* pRange = _pRange(m_pDataStack->pPopPtr(__func__));
+  ExprEval* pExprEval;
+  pExprEval = _pExprEval(m_pDataStack->pPopPtr(__func__));
 
-  StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  eEC eError = m_pJob->pLogicUnit_job()->eGenerateIndexScan(pExprEval);
 
-  m_pJob->pLogicUnit_job()->eGenerateRange(pRange, pStreamDefOut);
+  m_pDataStack->vPushInt(eError);
 
   EXIT();
 }
