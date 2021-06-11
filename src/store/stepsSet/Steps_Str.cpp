@@ -27,7 +27,6 @@ void Step::vAddSteps_Str(void)
   vAddStep("str.gleanInt"_Stz,     &Step::vStrGleanInt);
   vAddStep("str.left"_Stz,         &Step::vStrLeft);
   vAddStep("str.length"_Stz,       &Step::vStrLength);
-  vAddStep("str.pipePrompt"_Stz,   &Step::vStrPipePrompt);
   vAddStep("str.prepend"_Stz,      &Step::vStrPrepend);
   vAddStep("str.random"_Stz,       &Step::vStrRandom);
   vAddStep("str.removePrefix"_Stz, &Step::vStrRemovePrefix);
@@ -38,6 +37,7 @@ void Step::vAddSteps_Str(void)
   vAddStep("str.same"_Stz,         &Step::vStrSame);
   vAddStep("str.sub"_Stz,          &Step::vStrSub);
   vAddStep("str.tailInt"_Stz,      &Step::vStrTailInt);
+  vAddStep("str.toPromptOut"_Stz,  &Step::vStrToPromptOut);
   vAddStep("str.toStrVec"_Stz,     &Step::vStrToStrVec);
 }
 
@@ -290,22 +290,6 @@ void Step::vStrLength(void)
   iLength = sString.nLength();
   
   m_pDataStack->vPushInt(iLength);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* str.pipePrompt -- pipe string to prompt                                    */
-/*----------------------------------------------------------------------------*/
-void Step::vStrPipePrompt(void)
-{
-  ENTRY();
-  
-  s48K sString;
-  
-  m_pDataStack->vPopStr(sString,__func__);
-    
-  AM::PROMPT::vStrPipeout(sString);
   
   EXIT();
 }
@@ -595,6 +579,24 @@ void Step::vStrTailInt(void)
   m_pDataStack->vPushInt(iInt);
   m_pDataStack->vPushInt(true);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* str.toPromptOut -- convert string to promptOut                             */
+/*----------------------------------------------------------------------------*/
+void Step::vStrToPromptOut(void)
+{
+  ENTRY();
+  
+  s48K sString;
+  
+  m_pDataStack->vPopStr(sString,__func__);
+    
+  InfoSet* pPromptOut = AM::PROMPT::pToPromptOut(sString);
+  
+  m_pDataStack->vPushPtr((Object*)pPromptOut);
+
   EXIT();
 }
 

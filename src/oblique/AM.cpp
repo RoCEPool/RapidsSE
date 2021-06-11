@@ -463,9 +463,22 @@ void AM::PARCEL::vRecvContents(Parcel* pParcel, Socket* pSocket)
 /*----------------------------------------------------------------------------*/
 /* pipe string out to prompt                                                  */
 /*----------------------------------------------------------------------------*/
-void AM::PROMPT::vStrPipeout(Stz* szStz)
+InfoSet* AM::PROMPT::pToPromptOut(Stz* szStz)
 {
   _static_
+  
+  StreamDef* pStreamDef = AM::pInternalTables()->pStreamDef(TI_PROMPTOUT);
+  if (! pStreamDef)
+    return nullptr;
+
+  InfoSet* pInfoSet = new InfoSet(pStreamDef);
+  pInfoSet->vOpInfoSet(OI_PROMPTOUT);
+  
+  Row* pRow = pInfoSet->pAllotRow();
+  
+  pInfoSet->vDepositRow(pRow,C_VARGS_BEGIN,szStz,C_VARGS_END);
+  
+  return pInfoSet;
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -1800,6 +1813,7 @@ i8 AM::iOperandZkKind(Operand* pOperand)
         case OI_NODEINFO:       eOperand = ZK_NODEINFO;       break;
         case OI_PATHINFO:       eOperand = ZK_PATHINFO;       break;
         case OI_PROGRESSUNITS:  eOperand = ZK_PROGRESSUNITS;  break;
+        case OI_PROMPTOUT:      eOperand = ZK_PROMPTOUT;      break;
         case OI_RETURNPIPELINE: eOperand = ZK_RETURNPIPELINE; break;
         case OI_SEEKOFFSETS:    eOperand = ZK_SEEKOFFSETS;    break;
         case OI_TOTALUNITS:     eOperand = ZK_TOTALUNITS;     break;
