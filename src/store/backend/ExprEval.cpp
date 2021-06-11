@@ -1202,6 +1202,11 @@ eEC ExprEval::eExprEvalIndexScan(IndexDef* pIndexDef, TokenVec* pTknVec)
     // is it a lowerbound ?
     if (pTkn->bSame("LBOUND"_Stz) ) {
       sAsmText = m_sLowerBoundAsm;
+      if (sAsmText->bSame(""_Stz) ){
+        StrLib::vSprintCat(sAsmText, "  EO_PUSH_DEVIXT_SRC\n"_Stz);
+        StrLib::vSprintCat(sAsmText, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
+        StrLib::vSprintCat(sAsmText, "  EO_ENTWRK_SETENTKND\n"_Stz);
+      }
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -1210,6 +1215,11 @@ eEC ExprEval::eExprEvalIndexScan(IndexDef* pIndexDef, TokenVec* pTknVec)
     // is it an upperbound ?
     if (pTkn->bSame("UBOUND"_Stz) ) {
       sAsmText = m_sUpperBoundAsm;
+      if (sAsmText->bSame(""_Stz)) {
+        StrLib::vSprintCat(sAsmText, "  EO_PUSH_DEVIXT_SRC\n"_Stz);
+        StrLib::vSprintCat(sAsmText, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
+        StrLib::vSprintCat(sAsmText, "  EO_ENTWRK_SETENTKND\n"_Stz);
+      }
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -2552,10 +2562,6 @@ void ExprEval::vBoundRelation(Stz* szAsmBuffer, IntStack* pTypeStack, Token* pTk
     ASSERT(pTkn->bSame("=="_Stz));
     RASSERT(0);
   }
-
-  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVIXT_SRC\n"_Stz);
-  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
-  StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_SETENTKND\n"_Stz);
 
   vCreateIdxKey(szAsmBuffer, &m_xTypeStack);
 
