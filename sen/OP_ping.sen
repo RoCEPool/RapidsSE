@@ -9,6 +9,8 @@
 /*----------------------------------------------------------------------------*/
 : ping_action
 
+  //"ping" str.toPromptOut op::pipeOut
+
   "ping sleeps" .
   1 thread::sleepSsec
   "ping wakes" .
