@@ -1085,7 +1085,7 @@ eEC ExprEval::eExprEvalIndexScan(IndexDef* pIndexDef, TokenVec* pTknVec)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   while ( pTkn ) {
 
-    vTrace("TKN: %s\n"_Stz, pTkn->azChars());
+    //vTrace("TKN: %s\n"_Stz, pTkn->azChars());
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // arithmetic operator ?
@@ -2550,8 +2550,7 @@ void ExprEval::vBoundRelation(Stz* szAsmBuffer, IntStack* pTypeStack, Token* pTk
   }
   else {
     ASSERT(pTkn->bSame("=="_Stz));
-    m_eLowerBound = EO_DEVIXT_LBOUND_GE;
-    m_eUpperBound = EO_DEVIXT_UBOUND_LE;
+    RASSERT(0);
   }
 
   StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVIXT_SRC\n"_Stz);

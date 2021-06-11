@@ -18,84 +18,57 @@ print "loading nation.csv..." ;
 load nation "../TPCH/SF1/nation.tbl" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// LOWER BOUND (one column)
-
-// select * from nation where n_nationKey > 1 ;
-
-/*
-pipeline is
-begin
-  stage stageA on origin :
-    start | periodic once | stageB
-
-  stage stageB on all partitions :
-    indexScan 0 nation idx "LBOUND $I1 1 >= " | stageC
-
-  stage stageC on origin:
-    output | sink | stageA
-end;
-
-*/
+// LBOUND_GT (one column)
+// select * from nation where n_nationKey > 2 ;
+range_I nation idx "LBOUND $I1 2 > ";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// UPPER BOUND (one column)
+// LBOUND_GE (one column)
+// select * from nation where n_nationKey >= 2 ;
+range_I nation idx "LBOUND $I1 2 >= ";
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// UBOUND_LT (one column)
 // create index idx on nation (n_nationkey);
-// select * from nation where n_nationkey <= 10;
+// select * from nation where n_nationkey < 10;
+range_I nation idx "UBOUND $I1 10 < ";
 
-pipeline is
-begin
-  stage stageA on origin :
-    start | periodic once | stageB
-
-  stage stageB on all partitions :
-    indexScan 0 nation idx "UBOUND $I1 10 <= " | stageC
-
-  stage stageC on origin:
-    output | sink | stageA
-end;
-
-/*
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// LOWER AND UPPER BOUND (one column)
+// UBOUND_LE (one column)
+// create index idx on nation (n_nationkey);
+// select * from nation where n_nationkey < 10;
+range_I nation idx "UBOUND $I1 10 <= ";
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// EQUAL (one column)
+// select * from nation where n_nationKey >= 2 ;
+range_I nation idx "LBOUND $I1 2 >=  UBOUND $I1 2 <= ";
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// LBOUND_GT AND UBOUND_LT BOUND (one column)
 // create index idx on nation (n_nationkey);
 // select * from nation where n_nationkey > 1 and n_nationkey <= 10;
+range_I nation idx "LBOUND $I1 1 > UBOUND $I1 10 < ";
 
-pipeline is
-begin
-  stage stageA on origin :
-    start | periodic once | stageB
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// LBOUND_GT AND UBOUND_LE BOUND (one column)
+// create index idx on nation (n_nationkey);
+// select * from nation where n_nationkey > 1 and n_nationkey <= 10;
+range_I nation idx "LBOUND $I1 1 > UBOUND $I1 10 <= ";
 
-  stage stageB on all partitions :
-    indexScan 0 nation idx "LBOUND $I1 1 > UBOUND $I1 10 <= " | stageC
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// LBOUND_GE AND UBOUND_LT BOUND (one column)
+// create index idx on nation (n_nationkey);
+// select * from nation where n_nationkey > 1 and n_nationkey <= 10;
+range_I nation idx "LBOUND $I1 1 >= UBOUND $I1 10 < ";
 
-  stage stageC on origin:
-    output | sink | stageA
-end;
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// LBOUND_GE AND UBOUND_LE BOUND (one column)
+// create index idx on nation (n_nationkey);
+// select * from nation where n_nationkey > 1 and n_nationkey <= 10;
+range_I nation idx "LBOUND $I1 1 >= UBOUND $I1 10 <= ";
 
-
-//<lboundType> <lboundLiteral>  // C_TAG_LBOUND_TYPE , C_TAG_LBOUND_LITERAL
-
-// LOWERBOUNDASM
-  //EO_DUMP
-  //EO_PUSH_RLU_ENTWRK
-  //EO_ENTWRK_SETINTELM
-  //EO_PUSH_RLU_ENTWRK
-  //EO_PUSH_DEVIXT_SRC
-  //EO_DEVIXT_LBOUND
-
-// UPPERBOUNDASM
-  //Label DATAPULSE_INDEXRANGE_UPD
-  //EO_PUSH_RLU_ENTWRK
-  //EO_ENTWRK_RESET
-  //<uboundType> <uboundLiteral>  // C_TAG_UBOUND_TYPE , C_TAG_UBOUND_LITERAL
-  //EO_PUSH_RLU_ENTWRK
-  //EO_ENTWRK_SETINTELM_OLD
-  //EO_PUSH_RLU_ENTWRK
-  //EO_PUSH_DEVIXT_SRC
-  //EO_DEVIXT_UBOUND_LT / LE
-  //EO_JMP_TRUE AM_INDEX_TRAVERSE_TILL_UPPER
-
-
+/*
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // LOWER BOUND (two columns)
 // create index idx on nation (n_nationkey, n_regionkey);
