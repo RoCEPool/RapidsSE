@@ -1510,6 +1510,7 @@ void vExprEvalEvaluateIndexScan(void);
   void vStrGleanInt(void);
   void vStrLeft(void);
   void vStrLength(void);
+  void vStrPipePrompt(void);
   void vStrPrepend(void);
   void vStrRandom(void);
   void vStrRemovePrefix(void);

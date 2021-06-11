@@ -27,6 +27,7 @@ void Step::vAddSteps_Str(void)
   vAddStep("str.gleanInt"_Stz,     &Step::vStrGleanInt);
   vAddStep("str.left"_Stz,         &Step::vStrLeft);
   vAddStep("str.length"_Stz,       &Step::vStrLength);
+  vAddStep("str.pipePrompt"_Stz,   &Step::vStrPipePrompt);
   vAddStep("str.prepend"_Stz,      &Step::vStrPrepend);
   vAddStep("str.random"_Stz,       &Step::vStrRandom);
   vAddStep("str.removePrefix"_Stz, &Step::vStrRemovePrefix);
@@ -290,6 +291,20 @@ void Step::vStrLength(void)
   
   m_pDataStack->vPushInt(iLength);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* str.pipePrompt -- pipe string to prompt                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vStrPipePrompt(void)
+{
+  ENTRY();
+  
+  s48K sString;
+  
+  m_pDataStack->vPopStr(sString,__func__);
+    
   EXIT();
 }
 

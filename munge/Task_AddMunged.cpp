@@ -8197,7 +8197,7 @@ void Task::vAddMunged(Task* )
     "  STD_PATH\n"
     "  \"\n"
     "  define table __promptOut (\n"
-    "    outLine   VARCHAR NOT NULL\n"
+    "    promptLine  VARCHAR NOT NULL\n"
     "  ) < infoSet > = 1 ;\n"
     "  \"\n"
     "  api::executeRequest\n"
