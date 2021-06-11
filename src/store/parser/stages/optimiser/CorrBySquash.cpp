@@ -41,7 +41,7 @@ using namespace Parser;
 /*----------------------------------------------------------------------------*/
 void CorrBySquash::vSearchAndSquash(PlanNode *pRootNode)
 {
-  PlanNode* pPlanNode = ShadowRoot::pPlanNode(pRootNode);
+  PlanNode* pPlanNode = ShadowRoot::pPlanRoot(pRootNode);
   ASSERT(pPlanNode);
   ASSERT(ShadowPlan::bIsOfType(pPlanNode));
 

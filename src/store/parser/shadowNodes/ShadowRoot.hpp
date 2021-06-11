@@ -28,7 +28,7 @@ namespace Parser
     static b1 bIsExactType(PlanNode* pNode);
 
     static QueryNode* pMetadataNode(PlanNode* pNode);
-    static QueryNode* pPlanNode(PlanNode* pNode);
+    static QueryNode* pPlanRoot(PlanNode* pNode);
   };
 
 }

@@ -71,7 +71,7 @@ void GraphNav::vPrintPlan(PlanNode* pRootNode)
     return;
   }
 
-  QueryNode* pPlan = ShadowRoot::pPlanNode(pRootNode);
+  QueryNode* pPlan = ShadowRoot::pPlanRoot(pRootNode);
   vPrintNode(pPlan->pFirstChild());
 }
 

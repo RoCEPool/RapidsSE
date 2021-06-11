@@ -377,6 +377,8 @@ void ProjectOp::vPushdownExpr(QueryNode* pNode, QueryNode* pExpr, Text* pAlias)
   ASSERT(Expr::bIsOfType(pExpr));
   ASSERT(Expr::bIsNotOrdinal(pExpr));
 
+  // First check if the expression is already being projected
+
 
   // Create a projected column
   QueryNode* pProjectedColumn = ProjectedColumn::pCreate(pExpr, pAlias);

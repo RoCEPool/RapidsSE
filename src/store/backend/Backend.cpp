@@ -152,7 +152,7 @@ bool Backend::bTransliterate(String* sPipeline) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // get the plan node of the plan
-  PlanNode* pPlanNode = ShadowRoot::pPlanNode(m_pPlanRoot);
+  PlanNode* pPlanNode = ShadowRoot::pPlanRoot(m_pPlanRoot);
   ASSERT(pPlanNode);
 
   QueryNode* pStartingNode = _pQueryNode(pPlanNode->pFirstChild());
