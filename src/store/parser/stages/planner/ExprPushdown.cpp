@@ -43,9 +43,9 @@ void ExprPushdown::vPushdownExprs(PlanNode* pRootNode)
   ASSERT(pRootNode);
   ASSERT(ShadowRoot::bIsOfType(pRootNode));
 
-  PlanNode* pPlanNode = ShadowRoot::pPlanNode(pRootNode);
-  ASSERT(pPlanNode);
-  ASSERT(ShadowPlan::bIsOfType(pPlanNode));
+  PlanNode* pPlanRoot = ShadowRoot::pPlanRoot(pRootNode);
+  ASSERT(pPlanRoot);
+  ASSERT(ShadowPlan::bIsOfType(pPlanRoot));
 
   // Visit every statement section
   auto fStmtMarkerVisitor = [pRootNode]
@@ -70,7 +70,7 @@ void ExprPushdown::vPushdownExprs(PlanNode* pRootNode)
   // Walk each node and look for the StatementMarkers. We will start from the
   // bottom up so that we fix lower level dependencies before we deal with
   // nodes higher up the graph.
-  GraphNav::bGlobalWalkBottomUp(pPlanNode->pFirstChild(),
+  GraphNav::bGlobalWalkBottomUp(pPlanRoot->pFirstChild(),
                                 false,
                                 true,
                                 fStmtMarkerVisitor,

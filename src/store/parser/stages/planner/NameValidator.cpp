@@ -63,7 +63,7 @@ void NameValidator::vValidateNames(PlanNode *pRootNode)
   ASSERT(pMetadataNode);
 
   // Find the /plan node
-  QueryNode* pPlanNode = ShadowRoot::pPlanNode(pRootNode);
+  QueryNode* pPlanNode = ShadowRoot::pPlanRoot(pRootNode);
   ASSERT(pPlanNode);
 
   // The plan node should have one child which is a StatementMarker node

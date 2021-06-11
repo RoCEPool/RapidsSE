@@ -38,7 +38,7 @@ using namespace Parser;
 /*----------------------------------------------------------------------------*/
 b1 SetOpValidator::bHasSetOps(PlanNode *pRootNode)
 {
-  PlanNode* pPlanNode = ShadowRoot::pPlanNode(pRootNode);
+  PlanNode* pPlanNode = ShadowRoot::pPlanRoot(pRootNode);
   ASSERT(pPlanNode);
   ASSERT(ShadowPlan::bIsOfType(pPlanNode));
 
@@ -64,7 +64,7 @@ b1 SetOpValidator::bHasSetOps(PlanNode *pRootNode)
 void SetOpValidator::vSimplifySetOps(PlanNode *pRootNode)
 {
   // Find the /plan node
-  QueryNode* pPlanNode = ShadowRoot::pPlanNode(pRootNode);
+  QueryNode* pPlanNode = ShadowRoot::pPlanRoot(pRootNode);
   ASSERT(pPlanNode);
 
   // The plan node should have one child which is a StatementMarker node
@@ -111,7 +111,7 @@ void SetOpValidator::vValidateSetOps(PlanNode *pRootNode)
   //    has a matching type signature.
 
   // Find the /plan node
-  QueryNode* pPlanNode = ShadowRoot::pPlanNode(pRootNode);
+  QueryNode* pPlanNode = ShadowRoot::pPlanRoot(pRootNode);
   ASSERT(pPlanNode);
 
   // The plan node should have one child which is a StatementMarker node

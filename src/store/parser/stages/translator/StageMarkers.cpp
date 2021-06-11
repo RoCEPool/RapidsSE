@@ -31,7 +31,7 @@ using namespace Parser;
 /*----------------------------------------------------------------------------*/
 void StageMarkers::vRemoveStatementMarkers(PlanNode *pRootNode)
 {
-  PlanNode* pPlanNode = ShadowRoot::pPlanNode(pRootNode);
+  PlanNode* pPlanNode = ShadowRoot::pPlanRoot(pRootNode);
   ASSERT(pPlanNode);
   ASSERT(ShadowPlan::bIsOfType(pPlanNode));
 
@@ -73,7 +73,7 @@ void StageMarkers::vRemoveStatementMarkers(PlanNode *pRootNode)
 /*----------------------------------------------------------------------------*/
 void StageMarkers::vAddStageMarkers(PlanNode *pRootNode)
 {
-  QueryNode* pPlanNode = ShadowRoot::pPlanNode(pRootNode);
+  QueryNode* pPlanNode = ShadowRoot::pPlanRoot(pRootNode);
   ASSERT(pPlanNode);
   ASSERT(ShadowPlan::bIsOfType(pPlanNode));
 

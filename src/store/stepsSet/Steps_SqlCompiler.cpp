@@ -42,6 +42,7 @@
 #include "ExprPushdown.hpp"
 #include "ProjValidation.hpp"
 #include "CorrBySquash.hpp"
+#include "PartitionPlan.hpp"
 #include "StageMarkers.hpp"
 
 #include "ExplainMarker.hpp"
@@ -211,11 +212,11 @@ void Step::vSqlCompilerDoExplain(void) {
   InfoSet *pInfoSet = _pInfoSet(*(m_pJob->pLogicUnit_job())->m_xpStreamSet);
 
   // Find the explainOp
-  QueryNode* pPlanNode = ShadowRoot::pPlanNode(pRootNode);
-  ASSERT(pPlanNode);
-  ASSERT(ShadowPlan::bIsExactType(pPlanNode));
+  QueryNode* pPlanRoot = ShadowRoot::pPlanRoot(pRootNode);
+  ASSERT(pPlanRoot);
+  ASSERT(ShadowPlan::bIsExactType(pPlanRoot));
 
-  QueryNode* pExplainMarker = _pQueryNode(pPlanNode->pFirstChild());
+  QueryNode* pExplainMarker = _pQueryNode(pPlanRoot->pFirstChild());
   ASSERT(pExplainMarker);
   ASSERT(ExplainMarker::bIsExactType(pExplainMarker));
 
@@ -282,11 +283,11 @@ void Step::vSqlCompilerDoExplainTliterate(void) {
   InfoSet *pInfoSet = _pInfoSet(*(m_pJob->pLogicUnit_job())->m_xpStreamSet);
 
   // Find the explainOp
-  QueryNode* pPlanNode = ShadowRoot::pPlanNode(pRootNode);
-  ASSERT(pPlanNode);
-  ASSERT(ShadowPlan::bIsExactType(pPlanNode));
+  QueryNode* pPlanRoot = ShadowRoot::pPlanRoot(pRootNode);
+  ASSERT(pPlanRoot);
+  ASSERT(ShadowPlan::bIsExactType(pPlanRoot));
 
-  QueryNode* pExplainMarker = _pQueryNode(pPlanNode->pFirstChild());
+  QueryNode* pExplainMarker = _pQueryNode(pPlanRoot->pFirstChild());
   ASSERT(pExplainMarker);
   ASSERT(ExplainMarker::bIsExactType(pExplainMarker));
 
@@ -338,11 +339,11 @@ void Step::vSqlCompilerExplainFormat(void) {
   ASSERT(ShadowRoot::bIsExactType(pRootNode));
 
   // Find the explainOp
-  QueryNode* pPlanNode = ShadowRoot::pPlanNode(pRootNode);
-  ASSERT(pPlanNode);
-  ASSERT(ShadowPlan::bIsExactType(pPlanNode));
+  QueryNode* pPlanRoot = ShadowRoot::pPlanRoot(pRootNode);
+  ASSERT(pPlanRoot);
+  ASSERT(ShadowPlan::bIsExactType(pPlanRoot));
 
-  QueryNode* pExplainMarker = _pQueryNode(pPlanNode->pFirstChild());
+  QueryNode* pExplainMarker = _pQueryNode(pPlanRoot->pFirstChild());
   ASSERT(pExplainMarker);
   ASSERT(ExplainMarker::bIsExactType(pExplainMarker));
 
@@ -537,11 +538,11 @@ void Step::vSqlCompilerHasExplain(void) {
   ASSERT(ShadowRoot::bIsExactType(pRootNode));
 
   // Determine if there is an ExplainOp in this plan.
-  QueryNode* pPlanNode = ShadowRoot::pPlanNode(pRootNode);
+  QueryNode* pPlanRoot = ShadowRoot::pPlanRoot(pRootNode);
 
-  // pPlanNode should have one child being an ExplainMarker.
+  // pPlanRoot should have one child being an ExplainMarker.
   // The ExplainMarker should have one child being the ExplainOp
-  QueryNode* pMarker = _pQueryNode(pPlanNode->pFirstChild());
+  QueryNode* pMarker = _pQueryNode(pPlanRoot->pFirstChild());
   if (pMarker && ExplainMarker::bIsExactType(pMarker)) {
 
     QueryNode* pExplainOp = _pQueryNode(pMarker->pFirstChild());
@@ -791,7 +792,7 @@ void Step::vSqlCompilerPartitionPlan(void)
 
   try {
     // Partition the plan
-    //PartitionPlan::vPartitionPlan(pRootNode);
+    PartitionPlan::vPartitionPlan(pRootNode);
 
   } catch (Parser::SqlException& e) {
     Grid* pGrid = AM::pGrid();

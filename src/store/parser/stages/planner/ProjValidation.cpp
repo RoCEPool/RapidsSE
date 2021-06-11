@@ -51,12 +51,12 @@ void ProjValidation::vValidateExprVisibility(PlanNode* pRootNode)
 
 
   // Find the /plan node
-  QueryNode* pPlanNode = ShadowRoot::pPlanNode(pRootNode);
-  ASSERT(pPlanNode);
+  QueryNode* pPlanRoot = ShadowRoot::pPlanRoot(pRootNode);
+  ASSERT(pPlanRoot);
 
   // The plan node should have one child which is a StatementMarker node
-  ASSERT(pPlanNode->nChildren() == 1);
-  ASSERT(StatementMarker::bIsOfType(pPlanNode->pFirstChild()));
+  ASSERT(pPlanRoot->nChildren() == 1);
+  ASSERT(StatementMarker::bIsOfType(pPlanRoot->pFirstChild()));
 
   auto fVisitor = [pRootNode]
       (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
@@ -85,7 +85,7 @@ void ProjValidation::vValidateExprVisibility(PlanNode* pRootNode)
 
   // We do a bottom up walk because we want to catch errors at their incarnation,
   // not are a higher level where it has potentially compounded a few times.
-  GraphNav::bGlobalWalkBottomUp(pPlanNode->pFirstChild(), false, true, fVisitor, pRootNode);
+  GraphNav::bGlobalWalkBottomUp(pPlanRoot->pFirstChild(), false, true, fVisitor, pRootNode);
 }
 
 /*----------------------------------------------------------------------------*/

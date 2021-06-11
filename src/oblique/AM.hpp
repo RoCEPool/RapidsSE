@@ -250,6 +250,12 @@ namespace OBLIQUE
       static void vRecvContents(Parcel* pParcel, Socket* pSocket);
     };
   
+    class PROMPT
+    {
+    public:
+      static void vStrPipeout(Stz* szStz);
+    };
+
     class SYSTEM
     {
     public:

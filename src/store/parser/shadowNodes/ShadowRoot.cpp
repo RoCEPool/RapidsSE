@@ -90,7 +90,7 @@ QueryNode* ShadowRoot::pMetadataNode(PlanNode* pNode)
 /*----------------------------------------------------------------------------*/
 /* Returns the node representing the /__root__/plan node in the plan graph    */
 /*----------------------------------------------------------------------------*/
-QueryNode* ShadowRoot::pPlanNode(PlanNode* pNode)
+QueryNode* ShadowRoot::pPlanRoot(PlanNode* pNode)
 {
   ASSERT(pNode);
   ASSERT(bIsOfType(pNode));

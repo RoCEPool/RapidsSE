@@ -305,6 +305,8 @@ void Step::vStrPipePrompt(void)
   
   m_pDataStack->vPopStr(sString,__func__);
     
+  AM::PROMPT::vStrPipeout(sString);
+  
   EXIT();
 }
 
