@@ -207,6 +207,7 @@ assert::stack_0
   "OP_verifyIndex.sen"          include
   "OP_verifyIndexPtn.sen"       include
   "OP_verifyTable.sen"          include
+  "OP_via.sen"                  include
   "OP_visualizeIndex.sen"       include
   "OP_visualizeTable.sen"       include
 
