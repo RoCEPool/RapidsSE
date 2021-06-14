@@ -55,6 +55,7 @@ assert::stack_0
 
 "e" .verbose
 
+  "OP_eachRow.sen"              include
   "OP_eatAll.sen"               include
   "OP_eatSome.sen"              include
   "OP_eachPath.sen"             include

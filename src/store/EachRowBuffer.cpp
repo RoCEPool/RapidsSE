@@ -54,6 +54,17 @@ EachRowBuffer::EachRowBuffer(eCN eClassNo, StreamDef* pStreamDef)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+EachRowBuffer::EachRowBuffer(eCN eClassNo, RowPix* pRowPix)
+    : DataBuffer(eClassNo, false)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
+
+  vCopyRowPix(pRowPix);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 EachRowBuffer::~EachRowBuffer(void) noexcept(false)
@@ -106,30 +117,6 @@ Row* EachRowBuffer::pAllotRow(void)
 
   // allot a row
   Row* pRow = RowBox_t::pAllotRow();
-
-  return pRow;
-}
-
-/*----------------------------------------------------------------------------*/
-/* allot a row copying the rowSingle into it                                  */
-/*----------------------------------------------------------------------------*/
-Row* EachRowBuffer::pAllotRow(i8 iVArgsBegin, ...)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  ASSERT(C_VARGS_BEGIN == iVArgsBegin);
-
-  Row* pRow = EachRowBuffer::pAllotRow();
-  if (! pRow)
-    return nullptr;
-
-  va_list xVarArgs;
-  va_start(xVarArgs,iVArgsBegin);
-
-  bool b = bDepositColumns(pRow,xVarArgs);
-  RASSERT(b);
-
-  va_end(xVarArgs);
 
   return pRow;
 }
@@ -208,65 +195,59 @@ i8 EachRowBuffer::iDecile(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* deposit var-arg list of column values into given row                       */
+/* deposit list of column values from fromRow into toRow                      */
 /*----------------------------------------------------------------------------*/
-bool EachRowBuffer::bDepositColumns(Row* pRow, va_list xVarArgs)
+void EachRowBuffer::vDepositRow(Row* pToRow, Row* pFromRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
+
+  Stz *szVal;
+  d8 dVal;
+  i8 iVal;
 
   ColPix* axaColPix = RowBox_t::axaColPix();
 
   for (i8 i_Col = 0; i_Col < nColumns(); i_Col++) {
 
-    ColPix* pColPix = &axaColPix[i_Col];
+    ColPix *pColPix = &axaColPix[i_Col];
 
-    if (DM_VCH == pColPix->m_uDatum) {
-      Stz* szVal = va_arg(xVarArgs,Stz*);
-      if (szVal) {
-        Stz* szDst = (Stz*)aAllotHead(StrLib::nSize(szVal->azChar()));
+    switch (pColPix->m_uDatum) {
 
-        // return early if no more space for the string
-        if ( ! szDst )
-          return false;
+      case DM_FLT:
+        dVal = pFromRow->dColVal_flt(i_Col);
+        pToRow->vColVal_flt(i_Col, dVal);
+        break;
 
-        StrLib::vCopy((char*)szDst, szVal->azChar());
+      case DM_BCD:
+      case DM_BOL:
+      case DM_DTE:
+      case DM_TME:
+      case DM_TSP:
+      case DM_INT:
+        iVal = pFromRow->iColVal_int(i_Col);
+        pToRow->vColVal_int(i_Col, iVal);
+        break;
 
-        pRow->vColVal_ofs(i_Col,szDst);
-      }
-      else {
-        pRow->vSetColNull(i_Col);
-      }
+      case DM_VCH:
+        szVal = pFromRow->szColVal_ofs(i_Col);
+        if (szVal) {
+          Stz *szDst = (Stz *) aAllotHead(StrLib::nSize(szVal->azChar()));
+
+          // there should be space for the string
+          RASSERT(szDst);
+
+          StrLib::vCopy((char *) szDst, szVal->azChar());
+
+          pToRow->vColVal_ofs(i_Col, szDst);
+        } else {
+          pToRow->vSetColNull(i_Col);
+        }
+        break;
+
+      default:
+        NEVER_REACH;
     }
-    else {
-      i8 iVal = va_arg(xVarArgs,i8);
-      pRow->vColVal_int(i_Col,iVal);
-    }
-
   }
-
-  i8 iVArgsEnd = va_arg(xVarArgs,i8);
-  ASSERT(C_VARGS_END == iVArgsEnd);
-  UNUSED(iVArgsEnd);
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* deposit var-arg list of column values into given row                       */
-/*----------------------------------------------------------------------------*/
-void EachRowBuffer::vDepositRow(Row* pRow, i8 iVargsBegin, ...)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  ASSERT(C_VARGS_BEGIN == iVargsBegin);
-
-  va_list xVarArgs;
-  va_start(xVarArgs,iVargsBegin);
-
-  bool b = bDepositColumns(pRow,xVarArgs);
-  RASSERT(b);
-
-  va_end(xVarArgs);
 }
 
 /*----------------------------------------------------------------------------*/

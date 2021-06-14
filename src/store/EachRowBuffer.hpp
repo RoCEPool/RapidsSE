@@ -8,7 +8,7 @@
 namespace STORE
 {
 
-  static const i8 C_WSP_EACHROWBUFFER = C_SIZE_SMALL_OBJECT - C_1KB; // ref NmlStr
+  static const i8 C_WSP_EACHROWBUFFER = C_SIZE_MEDIUM_OBJECT - C_32KB; // ref NmlStr
   
   class EachRowBuffer : public DataBuffer,
                         public RowBox_t<C_WSP_EACHROWBUFFER>
@@ -25,6 +25,7 @@ namespace STORE
     EachRowBuffer(void);
     EachRowBuffer(eCN eClassNo);
     EachRowBuffer(eCN eClassNo, StreamDef* pStreamDef);
+    EachRowBuffer(eCN eClassNo, RowPix* pRowPix);
     ~EachRowBuffer(void) noexcept(false);
 
     static EachRowBuffer* pToEachRowBuffer(void* aAddr);
@@ -32,12 +33,11 @@ namespace STORE
     static void       vPostRecv(void* aEachRowBuffer);
 
     Row* pAllotRow(void);
-    Row* pAllotRow(i8 iVargsBegin, ...);
     Row* pAllotRow(StreamDef* pStreamDef, i8 iVargsBegin, ...);
 
     i8   iDecile(void);
     bool bDepositColumns(Row* pRow, va_list xVarArgs);
-    void vDepositRow(Row* pRow, i8 iVargsBegin, ...);
+    void vDepositRow(Row* pToRow, Row* pFromRow);
 
     EachRowBuffer* pNextEachRowBuffer(void);
     void       vNextEachRowBuffer(EachRowBuffer* pNextBuffer);

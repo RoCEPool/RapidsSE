@@ -3,6 +3,7 @@
 /*============================================================================*/
 #pragma once
 
+#include "EachRowBuffer.hpp"
 #include "RowSingle.hpp"
 #include "Crw.hpp"
 
@@ -59,6 +60,7 @@ namespace STORE
     void       vPrevCrwBuffer(CrwBuffer* pPrevBuffer);
     void       vPrintRows(StreamDef* pStreamDef);
     CsvBuffer* pToCsvBuffer(void);
+    EachRowBuffer* pToEachRowBuffer(i8 i_Row);
     //SrtBuffer* pToSrtBuffer(i8 iKeyCol);
     void       vTruncate(void);
     
