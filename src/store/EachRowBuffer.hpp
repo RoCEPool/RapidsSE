@@ -8,7 +8,7 @@
 namespace STORE
 {
 
-  static const i8 C_WSP_EACHROWBUFFER = C_SIZE_SMALL_OBJECT - C_1KB; // ref NmlStr
+  static const i8 C_WSP_EACHROWBUFFER = C_SIZE_MEDIUM_OBJECT - C_32KB; // ref NmlStr
   
   class EachRowBuffer : public DataBuffer,
                         public RowBox_t<C_WSP_EACHROWBUFFER>

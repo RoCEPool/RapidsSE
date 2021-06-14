@@ -13,6 +13,7 @@
 #include "Marker.hpp"
 
 #include "RowBuffer.hpp"
+#include "EachRowBuffer.hpp"
 
 #include "RowCoder.hpp"
 #include "HeadLine.hpp"
@@ -53,7 +54,9 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].csvData"_Stz,        &Step::vOperandCsvData);
   vAddStep("Operand[].csvToRow"_Stz,       &Step::vOperandCsvToRow);
   vAddStep("Operand[].crwDuplicate"_Stz,   &Step::vOperandCrwDuplicate);
+  vAddStep("Operand[].crwRowCount"_Stz,    &Step::vOperandCrwRowCount);
   vAddStep("Operand[].crwToCsv"_Stz,       &Step::vOperandCrwToCsv);
+  vAddStep("Operand[].crwToEachRow"_Stz,   &Step::vOperandCrwToEachRow);
   vAddStep("Operand[].delete"_Stz,         &Step::vOperandDelete);
   vAddStep("Operand[].insdelIntoTable"_Stz,&Step::vOperandInsdelIntoTable);
   vAddStep("Operand[].isNotNull"_Stz,      &Step::vOperandIsNotNull);
@@ -152,6 +155,22 @@ void Step::vOperandCrwDuplicate(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Operand[].crwRowCount -- get no of rows in the crw buffer                  */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandCrwRowCount(void)
+{
+  ENTRY();
+
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pJob->pLogicUnit_job()->m_xpOperandA);
+  i8 nRows = pCrwBuffer->nRows();
+
+  m_pDataStack->vPushInt(nRows);
+
+  EXIT();
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* Operand[].crwToCsv -- convert Crw operand to Csv                           */
 /*----------------------------------------------------------------------------*/
 void Step::vOperandCrwToCsv(void)
@@ -161,6 +180,22 @@ void Step::vOperandCrwToCsv(void)
   CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pJob->pLogicUnit_job()->m_xpOperandA);
   m_pJob->pLogicUnit_job()->m_xpOperandA = pCrwBuffer->pToCsvBuffer();
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].crwToEachRow -- convert a row of Crw operand to eachRowBuffer    */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandCrwToEachRow(void)
+{
+  ENTRY();
+
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pJob->pLogicUnit_job()->m_xpOperandA);
+  i8 iRow = m_pDataStack->iPopInt(__func__);
+
+  EachRowBuffer* pEachRowBuffer = pCrwBuffer->pToEachRowBuffer(iRow);
+  m_pDataStack->vPushPtr(pEachRowBuffer);
+
   EXIT();
 }
 

@@ -1,0 +1,106 @@
+/*============================================================================*/
+/* _LoopJoin - loop join                                                      */
+/*============================================================================*/
+
+bc;
+
+create table T (
+	 N_NATIONKEY       INTEGER NOT NULL,
+	 N_NAME            CHAR(25) NOT NULL,
+	 N_REGIONKEY       INTEGER NOT NULL,
+	 N_COMMENT         VARCHAR(152)
+);
+
+print "loading nation.csv..." ;
+load T "../TPCH/SF1/nation.tbl" ;
+
+
+create table J (
+	 N_NATIONKEY       INTEGER NOT NULL,
+	 N_NAME            CHAR(25) NOT NULL,
+	 N_REGIONKEY       INTEGER NOT NULL,
+	 N_COMMENT         VARCHAR(152)
+);
+
+print "loading nation.csv..." ;
+load J "../TPCH/SF1/nationAgg.tbl" ;
+
+trackMemory;
+
+pipeline eachRowExp
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T | eachRow | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+
+end;
+
+MemoryLeaks;
+
+/*
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// T.N_NATIONKEY = J.N_NATIONKEY
+// PtnKey[T] = N_NATIONKEY
+// PtnKey[J] = N_NATIONKEY
+
+pipeline loopJoinPro
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T | loopJoin | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+
+end;
+
+ipeline loopJoin
+begin
+  stage stageA on origin :
+    start | periodic once | eachRow | stageB
+
+  stage stageB on origin :
+    eachScan J | eachJoin | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+
+end;
+/*
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// T.a = J.b
+// PtnKey[T] = a
+// PtnKey[J] = c
+
+pipeline JoinTables
+begin
+  stage stageA on origin :
+    start | periodic once | stageB | stageC
+
+  stage stageB on all partitions :
+    scan TableT | filter | stageD  (default leftQ)
+
+  stage stageC on all partitions :
+    scan TableJ | filter | stageD rightQ hashed (on column b)
+
+  stage D on all partitions:
+    join "type boolean L.a R.b"
+    | stageE
+
+  stage stageE on origin :
+    output | sink | stageA
+
+end;
+*/
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

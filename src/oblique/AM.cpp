@@ -940,8 +940,8 @@ void AM::vDeleteOperand(Operand* pOperand)
     }
 
     case CN_EACHROWBUFFER: {
-      //EachRowBuffer* pEachRowBuffer = _pEachRowBuffer(pOperand);
-      //delete pEachRowBuffer;
+      EachRowBuffer* pEachRowBuffer = _pEachRowBuffer(pOperand);
+      delete pEachRowBuffer;
       break;
     }
 
