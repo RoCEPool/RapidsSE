@@ -524,8 +524,9 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
         return false;
       }
       break;
-      
+
     case   ZK_CRWBUFFER:
+    case   ZK_EACHROWBUFFER:
     case   ZK_ENTBUFFER:
     case   ZK_ROWBUFFER:
     case   ZK_SRTBUFFER:
