@@ -278,7 +278,24 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
       AM::vDeleteOperand(pOperand);
       break;
     }
-      
+
+    // -- -- -- -- -- --
+
+    case CN_EACHROWBUFFER: {
+      /*
+      EachRowBuffer* pEachRowBuffer = _pEachRowBuffer(pOperand);
+//        if (AM::bDeveloper())
+//          vTrace("[[RowBuffer %s ; Row=%lld]]\n"_Stz,
+//                 spDataBuffer.sz(pRowBuffer),
+//                 pRowBuffer->nRows());
+      m_ixRowsProcessed += pEachRowBuffer->nRows();
+      vTrace("\n"_Stz);
+      pEachRowBuffer->vPrintRows();
+      AM::vDeleteOperand(pOperand);
+       */
+      break;
+    }
+
     // -- -- -- -- -- --
       
     case CN_ENTBUFFER: {

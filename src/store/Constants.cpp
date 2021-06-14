@@ -302,6 +302,7 @@ void Constants::vAddConstantsCpp(void)
 
   
   // CN_ : class number
+  /*    */ vAddConstant("CN_EACHROWBUFFER"_Stz,CN_EACHROWBUFFER);
   /*    */ vAddConstant("CN_CRWBUFFER"_Stz,    CN_CRWBUFFER);
   /*    */ vAddConstant("CN_JOB"_Stz,          CN_JOB);
   /*    */ vAddConstant("CN_ROWBUFFER"_Stz,    CN_ROWBUFFER);
@@ -706,7 +707,9 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_CSVBUFFER"_Stz,       ZK_CSVBUFFER);
   /*  0 */ vAddConstant("ZK_DATAPULSE"_Stz,       ZK_DATAPULSE);
   /*  0 */ vAddConstant("ZK_DESTROYMARKER"_Stz,   ZK_DESTROYMARKER);
+  /*  0 */ vAddConstant("ZK_EACHROWMARKER"_Stz,   ZK_EACHROWBUFFER);
   /*  0 */ vAddConstant("ZK_EACHROWEOSMARKER"_Stz,ZK_EACHROWEOSMARKER);
+  /*  0 */ vAddConstant("ZK_EACHROWBUFFER"_Stz,   ZK_EACHROWBUFFER);
   /*  0 */ vAddConstant("ZK_EOSMARKER"_Stz,       ZK_EOSMARKER);
   /*  0 */ vAddConstant("ZK_ENTBUFFER"_Stz,       ZK_ENTBUFFER);
   /*  0 */ vAddConstant("ZK_ERRORMARKER"_Stz,     ZK_ERRORMARKER);

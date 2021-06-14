@@ -938,7 +938,13 @@ void AM::vDeleteOperand(Operand* pOperand)
       delete pCsvBuffer;
       break;
     }
- 
+
+    case CN_EACHROWBUFFER: {
+      //EachRowBuffer* pEachRowBuffer = _pEachRowBuffer(pOperand);
+      //delete pEachRowBuffer;
+      break;
+    }
+
     case CN_ENTBUFFER: {
       // should never be called for permanent ent buffers
       EntBuffer* pEntBuffer = _pEntBuffer(pOperand);
@@ -1795,6 +1801,7 @@ i8 AM::iOperandZkKind(Operand* pOperand)
     
     case CN_CRWBUFFER: eOperand = ZK_CRWBUFFER; break;
     case CN_CSVBUFFER: eOperand = ZK_CSVBUFFER; break;
+    case CN_EACHROWBUFFER: eOperand = ZK_EACHROWBUFFER; break;
     case CN_ENTBUFFER: eOperand = ZK_ENTBUFFER; break;
     case CN_INDEXDEF:  eOperand = ZK_INDEXDEF;  break;
       
