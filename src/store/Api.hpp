@@ -11,7 +11,15 @@ namespace STORE
   class Api
   {
   public:
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // parsimonious API
+  
+  static Op* pGetOperator(Stz* szOpNm);
+  static Operand* pGetOperand(eZK eOperand);
 
+  
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // external API functions
   
