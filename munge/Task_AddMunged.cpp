@@ -7901,7 +7901,7 @@ void Task::vAddMunged(Task* )
     "  \"OP_ping.sen\"                 include\n"
     "  \"OP_populateIndex.sen\"        include\n"
     "  \"OP_postProject.sen\"          include\n"
-    "  \"OP_print.sen\"                include\n"
+    "//  \"OP_print.sen\"                include\n"
     "  \"OP_progress.sen\"             include\n"
     "  \"OP_project.sen\"              include\n"
     "  \"OP_projValidation.sen\"       include\n"
