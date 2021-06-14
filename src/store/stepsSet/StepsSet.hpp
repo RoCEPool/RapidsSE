@@ -1005,7 +1005,7 @@ void vExprEvalEvaluateIndexScan(void);
   void vOperandCsvAppend(void);
   void vOperandBide(void);
   void vOperandCrwDuplicate(void);
-  void vOperandCrwRowCount(void);
+  void vOperandCrwRowCountFetch(void);
   void vOperandCrwToCsv(void);
   void vOperandCrwToEachRow(void);
   void vOperandCsvData(void);
@@ -1041,10 +1041,11 @@ void vExprEvalEvaluateIndexScan(void);
   void vOperandPipeOutSet(void);
   void vOperandPipeToOutput(void);
   void vOperandReport(void);
-  void vOperandRowCountFetch(void);
+  void vOperandRowRowCountFetch(void);
   void vOperandSet(void);
   void vOperandUpsertIntoTable(void);
   void vOperandRowToCsv(void);
+  void vOperandRowToEachRow(void);
   void vOperandWriteToFile0(void);
 
   // operandB

@@ -13,7 +13,7 @@
 
   PipeIn[]\clear to Operand[]
 
-  Operand[].crwRowCount to nRows
+  Operand[].crwRowCount@ to nRows
 
   begin
     nRows iRow >
@@ -49,19 +49,22 @@
   0 0 locals| iRow nRows |
 
   PipeIn[]\clear to Operand[]
-/*
-  Operand[].rowBufferRowCount to nRows
+
+  Operand[].rowRowCount@ to nRows
 
   begin
-    iRow nRows <
+    nRows iRow >
   while
     iRow "sending iRow %v" .printf
 
-    iRow Operand[].rowBufferToEachRow to OperandB[]
+    iRow Operand[].rowToEachRow to OperandB[]
     OperandB[].Pipeout
     iRow 1 + to iRow
   repeat
-*/
+
+  // delete the row buffer
+  Operand[].delete
+
   true
 ;
 

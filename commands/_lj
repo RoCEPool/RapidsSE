@@ -33,11 +33,10 @@ begin
     start | periodic once | stageB
 
   stage stageB on all partitions :
-    scan T | eachRow | stageC
+    scan T | filter 0 "type boolean $1 5 >=" | eachRow | stageC
 
   stage stageC on origin :
     output | sink | stageA
-
 end;
 
 MemoryLeaks;
