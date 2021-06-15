@@ -1025,6 +1025,7 @@ void vExprEvalEvaluateIndexScan(void);
   void vOperandNewCsvBuffer(void);
   void vOperandNewDataPulse(void);
   void vOperandNewDestroyMarker(void);
+  void vOperandNewEachScanEosMarker(void);
   void vOperandNewEosMarker(void);
   void vOperandNewErrorMarker(void);
   void vOperandNewErroredMarker(void);
