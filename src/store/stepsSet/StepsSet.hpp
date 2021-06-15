@@ -196,6 +196,8 @@ public:
 
   // devSrcRow
   void vDevSrcRowStreamDefStore(void);
+  void vDevSrcRowDeleteEachRowBuffer(void);
+  void vDevSrcRowEachRowBufferStore(void);
 
   // devSrcIxt
   void vDevSrcIxtIndexTreeStore(void);

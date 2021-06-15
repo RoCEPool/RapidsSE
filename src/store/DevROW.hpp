@@ -18,8 +18,9 @@ namespace STORE
     i8         m_i_Row;
     i8         m_nRows;
     Row*       m_aRow;
-    RowBuffer* m_pRowBuffer;
-    StreamDef* m_pStreamDef;
+    RowBuffer*     m_pRowBuffer;
+    EachRowBuffer* m_pEachRowBuffer;
+    StreamDef*     m_pStreamDef;
   
     // must be last
     Footer m_xFooter;
