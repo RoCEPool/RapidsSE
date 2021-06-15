@@ -9,7 +9,7 @@
 #include "DefinitionNode.hpp"
 #include "PrimitiveNode.hpp"
 #include "PlanConstants.hpp"
-#include "PlanMarker.hpp"
+#include "store/parser/shadowNodes/planObjects/planMarkers/PlanMarker.hpp"
 #include "ShadowRoot.hpp"
 
 using namespace Parser;
@@ -48,7 +48,7 @@ Stz* GraphNav::szLeafType(Stz* szTypePath)
 /*----------------------------------------------------------------------------*/
 void GraphNav::vParentType(Stz* szTypePath, s256& buf)
 {
-  char* ps;
+  char* ps = szTypePath->azChar() + szTypePath->nSize() - 1;
 
   // This is a type definition path. It should not contain the property separator.
   ASSERT(!StrLib::bBackward(&ps, szTypePath->azChar(), ':'));

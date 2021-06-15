@@ -861,6 +861,7 @@
       | explainPlan
       | partitionPlan
       | partitionExplain
+      | projValidation    // sanity check after partitioning
       | stageMarkers
       | transliterate
       | output

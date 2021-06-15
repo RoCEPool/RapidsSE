@@ -305,6 +305,19 @@
             {
               name: "planObject",
               value: "The root of all objects that appear in the main data path of the plan graph",
+              properties: [
+                {
+                  name:  "location",
+                  value: "Where this planObject runs in the cluster (optional)",
+                  type: "/__root__/definitions/types/location",
+                  properties: [
+                    // Add a constraint that this property is optional
+                    { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                      { name: "optional", type:  "/__root__/primitives/constraints/optional"},
+                    ]}
+                  ]
+                }
+              ],
               children: [
 // Path: /__root__/definitions/object/planObject/planMarker
                 {

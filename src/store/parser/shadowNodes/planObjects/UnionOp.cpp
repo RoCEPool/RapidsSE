@@ -76,24 +76,8 @@ void UnionOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iInd
   vAppendIndent(sBuf, iIndent, eIndentFormat::IF_ARROW);
   sBuf.vConcat(GraphNav::szLeafType(pNode->szType()));
 
-  // Get the isDistinct property
-  b1 bIsDistinct = SetOp::bIsDistinct(pUnionOp);
-
-  sBuf.vConcat("\n"_Stz);
-  vAppendIndent(sBuf, iIndent, IF_PLAIN);
-  sBuf.vCatSprint("isDistinct: (%s)"_Stz, bIsDistinct ? "true"_Stz : "false"_Stz);
-
-  // Get the corresponding by list
-  QueryNode* pCorrespondingByList = SetOp::pCorrespondingByList(pUnionOp);
-
-  if (pCorrespondingByList) {
-    s2K sColumnBuf;
-    StringList::vDescribe(pCorrespondingByList, sColumnBuf);
-
-    sBuf.vConcat("\n"_Stz);
-    vAppendIndent(sBuf, iIndent, IF_PLAIN);
-    sBuf.vCatSprint("corresponding by: (%s)"_Stz, sColumnBuf.szStz());
-  }
+  // Add the local properties
+  vExplainCommon(pNode, pRootNode, pNode->szType(), sBuf, iIndent);
 
   // Recurse any children of pNode
   if (pNode->bHasChildren()) {
@@ -110,6 +94,28 @@ void UnionOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iInd
 }
 
 /*----------------------------------------------------------------------------*/
+/* Recurses down the query plan and writes the explain of the stmt to the buf */
+/*----------------------------------------------------------------------------*/
+void UnionOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szType, s48K &sBuf, i8 iIndent)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  if (bIsExactType(szType)) {
+    // Explain any common attributes of this object
+    // Get the parent type and keep recursing back
+    s256 sParentType;
+    GraphNav::vParentType(szType, sParentType);
+    PlanObject::vExplainCommon(pNode, pRootNode, sParentType, sBuf, iIndent);
+
+    // Explain any local attributes of this object
+    return;
+  }
+
+  // Manual polymorphism here
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns true if the given node is derived from the statement definition    */
 /*----------------------------------------------------------------------------*/
 b1 UnionOp::bIsOfType(PlanNode *pNode)
@@ -118,11 +124,27 @@ b1 UnionOp::bIsOfType(PlanNode *pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns true if the given type str is derived from the objects definition  */
+/*----------------------------------------------------------------------------*/
+b1 UnionOp::bIsOfType(Stz* szType)
+{
+  return ShadowNode::bIsOfType(szType, C_UNIONOP_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns true if the given node is precisely same as its definition         */
 /*----------------------------------------------------------------------------*/
 b1 UnionOp::bIsExactType(PlanNode *pNode)
 {
   return ShadowNode::bIsExactType(pNode, C_UNIONOP_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely the same as its definition     */
+/*----------------------------------------------------------------------------*/
+b1 UnionOp::bIsExactType(Stz* szType)
+{
+  return ShadowNode::bIsExactType(szType, C_UNIONOP_DEFN);
 }
 
 /*----------------------------------------------------------------------------*/

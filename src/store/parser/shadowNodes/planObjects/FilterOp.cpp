@@ -82,34 +82,8 @@ void FilterOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iIn
   vAppendIndent(sBuf, iIndent, eIndentFormat::IF_ARROW);
   sBuf.vConcat(GraphNav::szLeafType(pNode->szType()));
 
-  // Get the filter expression
-  PlanNode* pFilterExpr = GraphNav::pFindProperty(const_cast<Stz*>(C_FILTEREXPR_PROP), pNode);
-  ASSERT(pFilterExpr);
-
-  s2K sExprBuf;
-  Expr::vDescribe(pFilterExpr, sExprBuf);
-
-  sBuf.vConcat("\n"_Stz);
-  vAppendIndent(sBuf, iIndent, IF_PLAIN);
-  sBuf.vCatSprint("expr: (%s)"_Stz, sExprBuf.szStz());
-
-
-  // Explaining very early plans are difficult because we cannot resolve the column expressions.
-  // We don't want to retrieve any ordinal expressions below before we have been able
-  // to resolve all table/column names in the system.
-  // When we resolve names we also add metadata into plan. So if the metadata node has
-  // no children then we probably haven't resolved any names yet (except for the case of
-  // the plan only containing literals).
-
-  if (MetadataNode::bHasMetadata(ShadowRoot::pMetadataNode(pRootNode))) {
-    QueryNode* pOrdinalExpr = pOrdinalFilterExpr(_pQueryNode(pNode), pRootNode);
-    sExprBuf.vReset();
-    Expr::vDescribe(pOrdinalExpr, sExprBuf);
-    sBuf.vConcat("\n"_Stz);
-    vAppendIndent(sBuf, iIndent, IF_PLAIN);
-    sBuf.vCatSprint("ordinal expr: (%s)"_Stz, sExprBuf.szStz());
-    delete pOrdinalExpr;
-  }
+  // Add the local properties
+  vExplainCommon(pNode, pRootNode, pNode->szType(), sBuf, iIndent);
 
   // Recurse any children of pNode
   if (pNode->bHasChildren()) {
@@ -126,6 +100,59 @@ void FilterOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iIn
 }
 
 /*----------------------------------------------------------------------------*/
+/* Recurses down the query plan and writes the explain of the stmt to the buf */
+/*----------------------------------------------------------------------------*/
+void FilterOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szType, s48K &sBuf, i8 iIndent)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  if (bIsExactType(szType)) {
+    // Explain any common attributes of this object
+    // Get the parent type and keep recursing back
+    s256 sParentType;
+    GraphNav::vParentType(szType, sParentType);
+    PlanObject::vExplainCommon(pNode, pRootNode, sParentType, sBuf, iIndent);
+
+    // Explain any local attributes of this object
+
+    // Get the filter expression
+    PlanNode* pFilterExpr = GraphNav::pFindProperty(const_cast<Stz*>(C_FILTEREXPR_PROP), pNode);
+    ASSERT(pFilterExpr);
+
+    s2K sExprBuf;
+    Expr::vDescribe(pFilterExpr, sExprBuf);
+
+    sBuf.vConcat("\n"_Stz);
+    vAppendIndent(sBuf, iIndent, IF_PLAIN);
+    sBuf.vCatSprint("expr: (%s)"_Stz, sExprBuf.szStz());
+
+
+    // Explaining very early plans are difficult because we cannot resolve the column expressions.
+    // We don't want to retrieve any ordinal expressions below before we have been able
+    // to resolve all table/column names in the system.
+    // When we resolve names we also add metadata into plan. So if the metadata node has
+    // no children then we probably haven't resolved any names yet (except for the case of
+    // the plan only containing literals).
+
+    if (MetadataNode::bHasMetadata(ShadowRoot::pMetadataNode(pRootNode))) {
+      QueryNode* pOrdinalExpr = pOrdinalFilterExpr(_pQueryNode(pNode), pRootNode);
+      sExprBuf.vReset();
+      Expr::vDescribe(pOrdinalExpr, sExprBuf);
+      sBuf.vConcat("\n"_Stz);
+      vAppendIndent(sBuf, iIndent, IF_PLAIN);
+      sBuf.vCatSprint("ordinal expr: (%s)"_Stz, sExprBuf.szStz());
+      delete pOrdinalExpr;
+    }
+
+    return;
+  }
+
+  // Manual polymorphism here
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns true if the given node is derived from the statement definition    */
 /*----------------------------------------------------------------------------*/
 b1 FilterOp::bIsOfType(PlanNode *pNode)
@@ -135,11 +162,27 @@ b1 FilterOp::bIsOfType(PlanNode *pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns true if the given type str is derived from the objects definition  */
+/*----------------------------------------------------------------------------*/
+b1 FilterOp::bIsOfType(Stz* szType)
+{
+  return ShadowNode::bIsOfType(szType, C_FILTEROP_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns true if the given node is precisely the same as its definition     */
 /*----------------------------------------------------------------------------*/
 b1 FilterOp::bIsExactType(PlanNode *pNode)
 {
   return ShadowNode::bIsExactType(pNode, C_FILTEROP_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely the same as its definition     */
+/*----------------------------------------------------------------------------*/
+b1 FilterOp::bIsExactType(Stz* szType)
+{
+  return ShadowNode::bIsExactType(szType, C_FILTEROP_DEFN);
 }
 
 /*----------------------------------------------------------------------------*/
