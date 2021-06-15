@@ -111,6 +111,7 @@ namespace STORE
     void vOperandHandler(i8 i_OperandKind, Word* pHandler);
     void vIncOperandCount(i8 i_OperandKind);
     Job* pOpJob(void);
+    void vOpJob(Job* pOpJob);
     Stz* szOpNm(void);
     TagSet* pOpTagSet(void);
     void vOpTrace(Operand* pOperand, Stz* szFunActNm,
