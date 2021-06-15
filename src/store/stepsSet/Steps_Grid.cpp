@@ -33,11 +33,15 @@ void Step::vAddSteps_Grid(void)
 {
   vAddStep("grid::bootNodes"_Stz,         &Step::vGridBootNodes);
   vAddStep("grid::connectedNodes"_Stz,    &Step::vGridConnectedNodes);
+  vAddStep("grid::dumpInfo"_Stz,          &Step::vGridDumpInfo);
+  vAddStep("grid::getGrid"_Stz,           &Step::vGridGetGridObject);
+  vAddStep("grid::getParts"_Stz,           &Step::vGridGetGridParts);
   vAddStep("grid::findNode"_Stz,          &Step::vGridFindNode);
   vAddStep("grid::incConnectedNodes"_Stz, &Step::vGridIncConnectedNodes);
   vAddStep("grid::listNodes"_Stz,         &Step::vGridListNodes);
   vAddStep("grid::node"_Stz,              &Step::vGridNode);
   vAddStep("grid::partitions"_Stz,        &Step::vGridPartitions);
+  vAddStep("grid::putParts"_Stz,          &Step::vGridPutGridParts);
   vAddStep("grid::show"_Stz,              &Step::vGridShow);
   vAddStep("grid::started!"_Stz,          &Step::vGridStartedStore);
   vAddStep("grid::started@"_Stz,          &Step::vGridStartedFetch);
@@ -48,7 +52,6 @@ void Step::vAddSteps_Grid(void)
   vAddStep("grid::thisNode@"_Stz,         &Step::vGridThisNodeFetch);
   vAddStep("grid::thisNodeName@"_Stz,     &Step::vGridThisNodeNameFetch);
   vAddStep("grid::toNode"_Stz,            &Step::vGridToNode);
-  vAddStep("grid::dumpInfo"_Stz,          &Step::vGridDumpInfo);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -78,6 +81,82 @@ void Step::vGridConnectedNodes(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* grid::getGrid -- get grid object                                           */
+/*----------------------------------------------------------------------------*/
+void Step::vGridGetGridObject(void)
+{
+  ENTRY();
+
+  // ... code which initiates the gridGet transfer ...
+  vTrace("C++ gets called: vGridGetGridObject\n"_Stz);
+
+  Grid* pGrid = AM::pGrid();
+
+  m_pDataStack->vPushPtr(pGrid);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grid::getParts -- get grid parts                                           */
+/*----------------------------------------------------------------------------*/
+void Step::vGridGetGridParts(void)
+{
+  ENTRY();
+
+  Grid* pGrid = _pGrid(m_pDataStack->pPopPtr(__func__));
+
+  vTrace("C++ gets called: vGridGetGridParts for pGrid:%s %lld\n"_Stz,
+         pGrid->szGridNm()->azChar(),
+         pGrid->iThisNode());
+
+  pGrid->iPrepareParcel();
+  Parcel* pParcel = pGrid->pParcel();
+
+  if (pParcel && pParcel->bIsOriginal()) {
+    vTrace("C++ prepared pParcel:%p for sending, it is originally created by Grid\n"_Stz, pGrid);
+  }
+
+  m_pDataStack->vPushPtr(pParcel);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grid::putParts -- put grid parts                                           */
+/*----------------------------------------------------------------------------*/
+void Step::vGridPutGridParts(void)
+{
+  ENTRY();
+
+  //Grid* pGrid = _pGrid(m_pDataStack->pPopPtr(__func__));
+
+  Grid* pGrid  = nullptr;
+  Parcel* pParcel = (Parcel*)m_pDataStack->pPopPtr(__func__);
+
+  i8 nObjParts = pParcel->nObjects();
+
+  vTrace("C++ gets called: vGridPutGridParts. Received pParcel:%p with %lld parts\n"_Stz, pParcel, nObjParts);
+
+  for (i8 i_Obj = 0; i_Obj < nObjParts; i_Obj++) {
+    Object *pObject = pParcel->pGetObject(i_Obj);
+    if (pObject && (pObject->eGetClassNo() == CN_GRID)) {
+      pGrid = (Grid *) pObject;
+      //vTrace("Table:%p reassemble from parcel, tablename:%s\n"_Stz,pTable, pTable->szTableNm()->azChar());
+      // call reassemble parts code
+      pGrid->iReassembleFromParcel(pParcel);
+      break;
+    }
+  }
+
+
+
+  m_pDataStack->vPushInt(1);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* grid::findNode -- find node based on name                                  */
 /*----------------------------------------------------------------------------*/
 void Step::vGridFindNode(void)
@@ -90,6 +169,7 @@ void Step::vGridFindNode(void)
   Node* pNode = AM::pGrid()->pFindNode(sNodeNm);
   
   m_pDataStack->vPushPtr(pNode);
+
   
   EXIT();
 }

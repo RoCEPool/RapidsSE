@@ -10,17 +10,11 @@
 /*----------------------------------------------------------------------------*/
 : dumpGrindInfo_action
 
-  //">>>>>>>>>>>>> dumpGrindInfo_action" .
-
-
   grid::dumpInfo locals| pDumpBuffer |
-  pDumpBuffer .
+  //pDumpBuffer .
 
-  // These 2 lines, caused a crash after printed out
-  // We need a way to convert the string buffer to Operand
-  // then we can pipeout
-  //pDumpBuffer to Operand[]
-  //Operand[].pipeOut
+  // convert the string to operand to pipe out
+  pDumpBuffer str.toPromptOut op::pipeOut
 
   true
 ;

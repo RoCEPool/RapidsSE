@@ -1,0 +1,67 @@
+/*============================================================================*/
+/* OP_gridRecv.sen -- Operator grid recv                                      */
+/*============================================================================*/
+
+" OP_gridRecv.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_PARCEL ...                                                           */
+/*----------------------------------------------------------------------------*/
+: gridRecv_Parcel \handler
+  " gridRecv_Parcel" .
+
+  Operand[].pipein  // pop the pParcel and put in the Operand register
+
+  // returns table ptr
+  Operand[]\clear grid::putParts locals| pGrid |
+
+  // get table name to create folder
+  //pTable table.getName locals| sTableNm |
+
+  // sTableNm .
+
+  //path[].tostr .      // display the path
+
+  //sTableNm table::makeTableFolder
+  //sTableNm Path[].pushNamedTableFolder
+
+  // put the table ptr to
+  //pTable table::addToFolder
+
+  //Path[].popNamedTableFolder
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for gridRecv request                       (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: gridRecv_req \operator
+
+  LogReqEntry SEED_REQ
+  //"gridRecv_req" .
+
+  op__topology
+
+  // Setup ZK_PARCEL handler here
+  find: gridRecv_Parcel ZK_PARCEL op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                            - Definition -                                  */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: gridRecv :: gridRecv ;
+
+: gridRecv_cmdTags _cmdTags tagCopy: op_tags
+  tags{ <cmdDesc> = "--desc for op--" }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -5,10 +5,11 @@
 
 #include <list>
 #include <iterator>
+#include "Parcel.hpp"
 
 namespace STORE
 {
-  class Grid : public Object
+  class Grid : public Operand
   {
   private:
   
@@ -26,13 +27,13 @@ namespace STORE
     i8     m_nConnectedNodes;  // number of connected nodes in the grid
     i8     m_nNodes;           // number of nodes in array
 
-
-    /* oldcode
-    Node*  m_pNodes[C_MAX_NODES]; // array of nodes
-    */
+    Parcel* m_pParcel;
 
     // newcode
-    std::list<Node*> m_lNodes;
+    //std::list<Node*> m_lNodes;
+    std::list<Node*> * m_pNodes;
+
+
   
     // must be last
     Footer m_xFooter;
@@ -79,6 +80,9 @@ namespace STORE
     void vThisNodeNo(i8 iNode);
     void vSetThisNode (Node* pNode); // newcode
     bool bFirstNode(i8 iNodeNo);
+    i8   iPrepareParcel(void);
+    Parcel* pParcel(void);
+    i8 iReassembleFromParcel(Parcel* pParcel);
 
     // newcode
     std::list<Node*>::const_iterator itBeginNodes(void);

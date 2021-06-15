@@ -10,27 +10,16 @@
 /*----------------------------------------------------------------------------*/
 : dumpMetaInfo_action
 
-  ">>>>>>>>>>>>> dumpMetaInfo_action" .
-
-
-  //<TableNm> op__table assert
+  //">>>>>>>>>>>>> dumpMetaInfo_action" .
 
   <TableNm> op__table if
       Table[].dumpmeta locals| pDumpBuffer |
-      pDumpBuffer .
+      // convert the string to operand to pipe out
+        pDumpBuffer str.toPromptOut op::pipeOut
       true
     else
       false
     then
-
-  //grid::dumpInfo locals| pDumpBuffer |
-  //pDumpBuffer .
-
-  // Somehow the these 2 lines, caused a crash after printed out
-  //pDumpBuffer to Operand[]
-  //Operand[].pipeOut
-
-  //true
 ;
 
 

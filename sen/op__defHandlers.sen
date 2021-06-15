@@ -33,6 +33,7 @@
 : ZK_ERRORMARKER_handler      \handler STANDARD_PIPEOUT ;
 : ZK_EXECERRORS_handler       \handler STANDARD_PIPEOUT ;
 : ZK_EXITEARLYMARKER_handler  \handler STANDARD_PIPEOUT ;
+: ZK_GRID_handler             \handler STANDARD_PIPEOUT ;
 : ZK_INDEX_handler            \handler STANDARD_PIPEOUT ;
 : ZK_INDEXDEF_handler         \handler STANDARD_PIPEOUT ;
 : ZK_LOADRESULT_handler       \handler STANDARD_PIPEOUT ;

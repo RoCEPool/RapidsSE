@@ -1029,6 +1029,16 @@ void AM::vDeleteOperand(Operand* pOperand)
       vTraceDumpDropLock();
       break;
     }
+
+    case CN_GRID: {
+      Grid* pGrid = _pGrid(pOperand);
+      vTraceDumpGrabLock();
+      //vTrace(">>>>vDeleteOperand delete pGrid:%p, called by Step::vPipeinDelete as PipeIn[].delete\n"_Stz, pGrid);
+      vTrace(">>>>vDeleteOperand delete pGrid:%s, called by Step::vPipeinDelete as PipeIn[].delete ?\n"_Stz, pGrid->szGridNm()->azChar());
+      //delete pTable; // Question for Ray: do we need to delete ?
+      vTraceDumpDropLock();
+      break;
+    }
       
     default: {
       vTrace("vDeleteOperand %ld Error: %s\n"_Stz,eClass, aCN[eClass]->azChar());
@@ -1905,6 +1915,7 @@ i8 AM::iOperandZkKind(Operand* pOperand)
     case CN_METAGET:      eOperand = ZK_METAGET;        break;
     case CN_PARCEL:       eOperand = ZK_PARCEL;         break;
     case CN_TABLE:        eOperand = ZK_TABLE;          break;
+    case CN_GRID:        eOperand = ZK_GRID;          break;
 
     default:
       vTrace("what class:%lld %s\n"_Stz,eClass_opd, aCN[eClass_opd]);

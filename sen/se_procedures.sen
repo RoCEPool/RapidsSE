@@ -1100,8 +1100,33 @@
     "
     api::addProcedure
 
+     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+     // prototype assertGrid
+
+      STD_PATH
+      "
+      procedure assertGrid
+      begin
+
+        stage stageA on origin :
+          start | periodic once | gridGet | stageB hashed
+
+          stage stageB on all nodes :
+                gridSend | gridRecv | stageC
+
+          stage stageC on origin :
+                noop | sink | stageA
+
+        //stage stageB on all nodes :          gridSend | stageC
+
+        //stage stageC on origin :          gridRecv | output | sink | stageA
+
+      end ;
+      "
+      api::addProcedure
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // prototype dump grid info
+  // dump grid info
 
   STD_PATH
   "
@@ -1115,7 +1140,7 @@
   api::addProcedure
 
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // prototype dump table meta info
+   //  dump table meta info
 
     STD_PATH
     "
