@@ -222,7 +222,8 @@ namespace STORE
     EntWrk     m_oEntWrk;
 
     DevROW*    m_pDevDstRow;
-    DevROW*    m_pDevSrcRow;
+    DevROW*    m_pDevLftRow;
+    DevROW*    m_pDevRhtRow;
     DevROW*    m_pDevAltRow;
 
     DevIXT*    m_pDevAltIxt;

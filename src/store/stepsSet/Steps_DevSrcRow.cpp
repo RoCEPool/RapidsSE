@@ -41,7 +41,7 @@ void Step::vDevSrcRowStreamDefStore(void)
   
   StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
 
-  ( m_pJob->pLogicUnit_job() )->m_pDevSrcRow->m_pStreamDef = pStreamDef;
+  ( m_pJob->pLogicUnit_job() )->m_pDevLftRow->m_pStreamDef = pStreamDef;
   
   EXIT();
 }
@@ -53,10 +53,10 @@ void Step::vDevSrcRowDeleteEachRowBuffer(void)
 {
   ENTRY();
 
-  EachRowBuffer* pEachRowBuffer = ( m_pJob->pLogicUnit_job() )->m_pDevSrcRow->m_pEachRowBuffer;
+  EachRowBuffer* pEachRowBuffer = ( m_pJob->pLogicUnit_job() )->m_pDevLftRow->m_pEachRowBuffer;
   delete pEachRowBuffer;
 
-  ( m_pJob->pLogicUnit_job() )->m_pDevSrcRow->m_pEachRowBuffer = nullptr;
+  ( m_pJob->pLogicUnit_job() )->m_pDevLftRow->m_pEachRowBuffer = nullptr;
 
   EXIT();
 }
@@ -70,7 +70,7 @@ void Step::vDevSrcRowEachRowBufferStore(void)
 
   EachRowBuffer* pEachRowBuffer = _pEachRowBuffer(m_pDataStack->pPopPtr(__func__));
 
-  ( m_pJob->pLogicUnit_job() )->m_pDevSrcRow->m_pEachRowBuffer = pEachRowBuffer;
+  ( m_pJob->pLogicUnit_job() )->m_pDevLftRow->m_pEachRowBuffer = pEachRowBuffer;
 
   EXIT();
 }

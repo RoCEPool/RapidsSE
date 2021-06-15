@@ -118,7 +118,7 @@ void Step::vOperandAsSrcRowBuffer(void)
 
   RowBuffer* pRowBuffer = _pRowBuffer(*m_pJob->pLogicUnit_job()->m_xpOperandA);
 
-  m_pJob->pLogicUnit_job()->m_pDevSrcRow->m_pRowBuffer = pRowBuffer;
+  m_pJob->pLogicUnit_job()->m_pDevLftRow->m_pRowBuffer = pRowBuffer;
 
   EXIT();
 }
