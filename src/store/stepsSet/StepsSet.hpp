@@ -198,6 +198,7 @@ public:
   void vDevLftRowStreamDefStore(void);
   void vDevLftRowDeleteEachRowBuffer(void);
   void vDevLftRowEachRowBufferStore(void);
+  void vDevLftRowRowBufferStore(void);
 
   // devRhtRow
   void vDevRhtRowStreamDefStore(void);
@@ -1006,7 +1007,6 @@ void vExprEvalEvaluateIndexScan(void);
 
   // operand[]
   void vOperandAsSrcCrwBuffer(void);
-  void vOperandAsSrcRowBuffer(void);
   void vOperandCsvAppend(void);
   void vOperandBide(void);
   void vOperandCrwDuplicate(void);

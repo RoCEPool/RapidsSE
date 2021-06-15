@@ -30,6 +30,7 @@ void Step::vAddSteps_DevLftRow(void)
   vAddStep("DevLftRow.streamDef!"_Stz,          &Step::vDevLftRowStreamDefStore);
   vAddStep("DevLftRow.deleteEachRowBuffer"_Stz, &Step::vDevLftRowDeleteEachRowBuffer);
   vAddStep("DevLftRow.eachRowBuffer!"_Stz,      &Step::vDevLftRowEachRowBufferStore);
+  vAddStep("DevLftRow.rowBuffer!"_Stz,          &Step::vDevLftRowRowBufferStore);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -71,6 +72,20 @@ void Step::vDevLftRowEachRowBufferStore(void)
   EachRowBuffer* pEachRowBuffer = _pEachRowBuffer(m_pDataStack->pPopPtr(__func__));
 
   ( m_pJob->pLogicUnit_job() )->m_pDevLftRow->m_pEachRowBuffer = pEachRowBuffer;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* DevLftRow.rowBuffer! -- store rowBuffer in DevLftRow                       */
+/*----------------------------------------------------------------------------*/
+void Step::vDevLftRowRowBufferStore(void)
+{
+  ENTRY();
+
+  RowBuffer* pRowBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
+
+  ( m_pJob->pLogicUnit_job() )->m_pDevLftRow->m_pRowBuffer = pRowBuffer;
 
   EXIT();
 }

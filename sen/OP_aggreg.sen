@@ -88,7 +88,7 @@
   0 ZK_ROWBUFFER EG_ZK LogicUnit[].diaryNote
 
   Operand[].pipeIn
-  Operand[].asSrcRowBuffer
+  Operand[] DevLftRow.rowBuffer!
   ZK_ROWBUFFER Counter0[] executeAsmArgs
 
   Operand[].delete
