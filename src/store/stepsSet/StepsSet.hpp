@@ -194,10 +194,10 @@ public:
   void vDebugFlagFetch(void);
   void vDebugFlagStore(void);
 
-  // devSrcRow
-  void vDevSrcRowStreamDefStore(void);
-  void vDevSrcRowDeleteEachRowBuffer(void);
-  void vDevSrcRowEachRowBufferStore(void);
+  // devLftRow
+  void vDevLftRowStreamDefStore(void);
+  void vDevLftRowDeleteEachRowBuffer(void);
+  void vDevLftRowEachRowBufferStore(void);
 
   // devSrcIxt
   void vDevSrcIxtIndexTreeStore(void);

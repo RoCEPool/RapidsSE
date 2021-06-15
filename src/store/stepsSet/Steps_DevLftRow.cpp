@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_DevSrcRow.cpp -- DevSrcRow step group                                */
+/* Steps_DevLftRow.cpp -- DevLftRow step group                                */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -25,17 +25,17 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_DevSrcRow(void)
+void Step::vAddSteps_DevLftRow(void)
 {
-  vAddStep("DevSrcRow.streamDef!"_Stz,          &Step::vDevSrcRowStreamDefStore);
-  vAddStep("DevSrcRow.deleteEachRowBuffer"_Stz, &Step::vDevSrcRowDeleteEachRowBuffer);
-  vAddStep("DevSrcRow.eachRowBuffer!"_Stz,      &Step::vDevSrcRowEachRowBufferStore);
+  vAddStep("DevLftRow.streamDef!"_Stz,          &Step::vDevLftRowStreamDefStore);
+  vAddStep("DevLftRow.deleteEachRowBuffer"_Stz, &Step::vDevLftRowDeleteEachRowBuffer);
+  vAddStep("DevLftRow.eachRowBuffer!"_Stz,      &Step::vDevLftRowEachRowBufferStore);
 }
 
 /*----------------------------------------------------------------------------*/
-/* DevSrcRow.streamDef! -- store streamDef in src devRow                      */
+/* DevLftRow.streamDef! -- store streamDef in src devRow                      */
 /*----------------------------------------------------------------------------*/
-void Step::vDevSrcRowStreamDefStore(void)
+void Step::vDevLftRowStreamDefStore(void)
 {
   ENTRY();
   
@@ -47,9 +47,9 @@ void Step::vDevSrcRowStreamDefStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* DevSrcRow.deleteEachRowBuffer -- delete eachRowBuffer in devSrcRow         */
+/* DevLftRow.deleteEachRowBuffer -- delete eachRowBuffer in DevLftRow         */
 /*----------------------------------------------------------------------------*/
-void Step::vDevSrcRowDeleteEachRowBuffer(void)
+void Step::vDevLftRowDeleteEachRowBuffer(void)
 {
   ENTRY();
 
@@ -62,9 +62,9 @@ void Step::vDevSrcRowDeleteEachRowBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* DevSrcRow.eachRowBuffer! -- store eachRowBuffer in devSrcRow               */
+/* DevLftRow.eachRowBuffer! -- store eachRowBuffer in DevLftRow               */
 /*----------------------------------------------------------------------------*/
-void Step::vDevSrcRowEachRowBufferStore(void)
+void Step::vDevLftRowEachRowBufferStore(void)
 {
   ENTRY();
 

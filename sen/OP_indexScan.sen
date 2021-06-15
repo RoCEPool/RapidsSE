@@ -112,8 +112,8 @@
 
   PipeIn[]\clear op::pipeout
 
-  // set the streamDef in the devSrcRow
-  StreamDefLft[]\clear DevSrcRow.streamDef!
+  // set the streamDef in the DevLftRow
+  StreamDefLft[]\clear DevLftRow.streamDef!
 
   // create rowPix in potRlu[] from streamDefOut[]
   false streamDefOut[] PotRlu[].rowPix!

@@ -56,7 +56,7 @@
   0 ZK_EACHROWBUFFER EG_ZK LogicUnit[].diaryNote
 
   Operand[].pipeIn
-  Operand[] devSrcRow.eachRowBuffer!
+  Operand[] DevLftRow.eachRowBuffer!
   ZK_EACHROWBUFFER Counter0[] executeAsmArgs
 
   true
@@ -76,7 +76,7 @@
   PotRlu[].pipeoutCompletedPtns
 
   // delete the EachRowBuffer
-  DevSrcRow.deleteEachRowBuffer
+  DevLftRow.deleteEachRowBuffer
 
   // cleanup compiler
   Counter0[] cleanUpAsm
@@ -203,8 +203,8 @@
     exit
   then
 
-  // set the streamDef in the devSrcRow
-  StreamDefLeft[]\clear DevSrcRow.streamDef!
+  // set the streamDef in the DevLftRow
+  StreamDefLeft[]\clear DevLftRow.streamDef!
 
   // set the streamDef in the devRightRow
   StreamDefRight[]\clear DevRhtRow.streamDef!
