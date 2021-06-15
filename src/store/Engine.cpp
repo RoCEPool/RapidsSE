@@ -920,6 +920,7 @@ void Engine::vLowMemoryDiscard(void)
 {
   gxaSizeHeap[CN_CRWBUFFER].m_bLowMemoryDiscard = true;
   gxaSizeHeap[CN_CSVBUFFER].m_bLowMemoryDiscard = true;
+  gxaSizeHeap[CN_EACHROWBUFFER].m_bLowMemoryDiscard = true;
   gxaSizeHeap[CN_PROFILE].m_bLowMemoryDiscard   = true;
   gxaSizeHeap[CN_ROWBUFFER].m_bLowMemoryDiscard = true;
 }
@@ -1177,6 +1178,7 @@ void Engine::vPostRecvFns(void)
   gxaSizeHeap[CN_BUCKETMAP].m_fpPostRecvFn = (fpPOSTFN*)BucketMap::vPostRecv;
   gxaSizeHeap[CN_CRWBUFFER].m_fpPostRecvFn = (fpPOSTFN*)CrwBuffer::vPostRecv;
   gxaSizeHeap[CN_CSVBUFFER].m_fpPostRecvFn = (fpPOSTFN*)CsvBuffer::vPostRecv;
+  //gxaSizeHeap[CN_EACHROWBUFFER].m_fpPostRecvFn = (fpPOSTFN*)EachRowBuffer::vPostRecv;
   gxaSizeHeap[CN_INDEX].m_fpPostRecvFn     = (fpPOSTFN*)Index::vPostRecv;
   gxaSizeHeap[CN_INDEXDEF].m_fpPostRecvFn  = (fpPOSTFN*)IndexDef::vPostRecv;
   gxaSizeHeap[CN_INFOSET].m_fpPostRecvFn   = (fpPOSTFN*)InfoSet::vPostRecv;
@@ -1560,9 +1562,9 @@ void Engine::vSignalHandler(int iSignal)
 /*----------------------------------------------------------------------------*/
 void Engine::vStartSystem(void) {
   if (AM::bVerboseProgress())
-    vInfo("\n+\n+ %lld) System Start\n+\n"_Stz, giProgressPoint++);
-
-  //ASSERT( ! AM::pDicRoot()->bHasWords() );
+    vInfo("\n+\n+ %lld) System Start\n+\n"_Stz,giProgressPoint++);
+  
+  //ASSERT( ! AM::DIC::pRoot()->bHasWords() );
 
   gpAttachMap->vRecordArguments(&gxCmdLineArgs);
 

@@ -18,6 +18,7 @@
 
   // set EATOPERAND handler for buffers and EOS markers coming in
   find: EATOPERAND_handler ZK_CRWBUFFER op[].handler!
+  find: EATOPERAND_handler ZK_EACHROWBUFFER op[].handler!
   find: EATOPERAND_handler ZK_ROWBUFFER op[].handler!
   find: EATOPERAND_handler ZK_EOSMARKER op[].handler!
 
@@ -38,6 +39,7 @@
 
   // set EATOPERAND handler for buffers and EOS markers coming in
   find: EATOPERAND_handler ZK_CRWBUFFER op[].handler!
+  find: EATOPERAND_handler ZK_EACHROWBUFFER op[].handler!
   find: EATOPERAND_handler ZK_ROWBUFFER op[].handler!
   find: EATOPERAND_handler ZK_EOSMARKER op[].handler!
 

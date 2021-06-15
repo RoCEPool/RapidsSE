@@ -27,6 +27,7 @@
 : ZK_CSVBUFFER_handler        \handler STANDARD_PIPEOUT ;
 : ZK_DATAPULSE_handler        \handler STANDARD_PIPEOUT ;
 : ZK_DESTROYMARKER_handler    \handler STANDARD_PIPEOUT ;
+: ZK_EACHROWBUFFER_handler    \handler STANDARD_PIPEOUT ;
 : ZK_EACHROWEOSMARKER_handler \handler STANDARD_PIPEOUT ;
 : ZK_ENTBUFFER_handler        \handler STANDARD_PIPEOUT ;
 : ZK_EOSMARKER_handler        \handler STANDARD_PIPEOUT ;

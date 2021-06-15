@@ -85,6 +85,7 @@ DataBuffer* DataBuffer::pRefdDataBuffer(Rrf& xRef)
          || pDataBuffer->eGetClassNo() == CN_CSVBUFFER
          || pDataBuffer->eGetClassNo() == CN_ENTBUFFER
          || pDataBuffer->eGetClassNo() == CN_ROWBUFFER
+         || pDataBuffer->eGetClassNo() == CN_EACHROWBUFFER
          );
   
   return pDataBuffer;

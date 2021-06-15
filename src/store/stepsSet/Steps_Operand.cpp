@@ -13,6 +13,7 @@
 #include "Marker.hpp"
 
 #include "RowBuffer.hpp"
+#include "EachRowBuffer.hpp"
 
 #include "RowCoder.hpp"
 #include "HeadLine.hpp"
@@ -53,7 +54,9 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].csvData"_Stz,        &Step::vOperandCsvData);
   vAddStep("Operand[].csvToRow"_Stz,       &Step::vOperandCsvToRow);
   vAddStep("Operand[].crwDuplicate"_Stz,   &Step::vOperandCrwDuplicate);
+  vAddStep("Operand[].crwRowCount@"_Stz,   &Step::vOperandCrwRowCountFetch);
   vAddStep("Operand[].crwToCsv"_Stz,       &Step::vOperandCrwToCsv);
+  vAddStep("Operand[].crwToEachRow"_Stz,   &Step::vOperandCrwToEachRow);
   vAddStep("Operand[].delete"_Stz,         &Step::vOperandDelete);
   vAddStep("Operand[].insdelIntoTable"_Stz,&Step::vOperandInsdelIntoTable);
   vAddStep("Operand[].isNotNull"_Stz,      &Step::vOperandIsNotNull);
@@ -83,8 +86,9 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].pipeOutSet"_Stz,     &Step::vOperandPipeOutSet);
   vAddStep("Operand[].pipeToOutput"_Stz,   &Step::vOperandPipeToOutput);
   vAddStep("Operand[].report"_Stz,         &Step::vOperandReport);
-  vAddStep("Operand[].rowCount@"_Stz,      &Step::vOperandRowCountFetch);
+  vAddStep("Operand[].rowRowCount@"_Stz,      &Step::vOperandRowRowCountFetch);
   vAddStep("Operand[].rowToCsv"_Stz,       &Step::vOperandRowToCsv);
+  vAddStep("Operand[].rowToEachRow"_Stz,   &Step::vOperandRowToEachRow);
   vAddStep("Operand[].set"_Stz,            &Step::vOperandSet);
   vAddStep("Operand[].upsertIntoTable"_Stz,&Step::vOperandUpsertIntoTable);
   vAddStep("Operand[].writeToFile0"_Stz,   &Step::vOperandWriteToFile0);
@@ -152,6 +156,22 @@ void Step::vOperandCrwDuplicate(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Operand[].crwRowCount@ -- get no of rows in the crw buffer                 */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandCrwRowCountFetch(void)
+{
+  ENTRY();
+
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pJob->pLogicUnit_job()->m_xpOperandA);
+  i8 nRows = pCrwBuffer->nRows();
+
+  m_pDataStack->vPushInt(nRows);
+
+  EXIT();
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* Operand[].crwToCsv -- convert Crw operand to Csv                           */
 /*----------------------------------------------------------------------------*/
 void Step::vOperandCrwToCsv(void)
@@ -161,6 +181,22 @@ void Step::vOperandCrwToCsv(void)
   CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pJob->pLogicUnit_job()->m_xpOperandA);
   m_pJob->pLogicUnit_job()->m_xpOperandA = pCrwBuffer->pToCsvBuffer();
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].crwToEachRow -- convert a row of Crw operand to eachRowBuffer    */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandCrwToEachRow(void)
+{
+  ENTRY();
+
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pJob->pLogicUnit_job()->m_xpOperandA);
+  i8 iRow = m_pDataStack->iPopInt(__func__);
+
+  EachRowBuffer* pEachRowBuffer = pCrwBuffer->pToEachRowBuffer(iRow);
+  m_pDataStack->vPushPtr(pEachRowBuffer);
+
   EXIT();
 }
 
@@ -756,16 +792,16 @@ void Step::vOperandReport(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].rowCount@ -- fetch the operand row count                         */
+/* Operand[].rowRowCount@ -- fetch the operand row count of rowBuffer         */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandRowCountFetch(void)
+void Step::vOperandRowRowCountFetch(void)
 {
   ENTRY();
   
   ASSERT(*m_pJob->pLogicUnit_job()->m_xpOperandA);
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pJob->pLogicUnit_job()->m_xpOperandA);
+  RowBuffer* pRowBuffer = _pRowBuffer(*m_pJob->pLogicUnit_job()->m_xpOperandA);
   
-  m_pDataStack->vPushInt(pCrwBuffer->nRows());
+  m_pDataStack->vPushInt(pRowBuffer->nRows());
   
   EXIT();
 }
@@ -843,6 +879,22 @@ void Step::vOperandRowToCsv(void)
   
   delete pRowBuffer;
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].rowToEachRow -- convert a row of RowBuffer to eachRowBuffer      */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandRowToEachRow(void)
+{
+  ENTRY();
+
+  RowBuffer* pRowBuffer = _pRowBuffer(*m_pJob->pLogicUnit_job()->m_xpOperandA);
+  i8 iRow = m_pDataStack->iPopInt(__func__);
+
+  EachRowBuffer* pEachRowBuffer = pRowBuffer->pToEachRowBuffer(iRow);
+  m_pDataStack->vPushPtr(pEachRowBuffer);
+
   EXIT();
 }
 

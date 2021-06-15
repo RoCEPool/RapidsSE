@@ -57,6 +57,7 @@ assert::stack_0
 
 "e" .verbose
 
+  "OP_eachRow.sen"              include
   "OP_eatAll.sen"               include
   "OP_eatSome.sen"              include
   "OP_eachPath.sen"             include
@@ -216,6 +217,7 @@ assert::stack_0
   "OP_verifyIndex.sen"          include
   "OP_verifyIndexPtn.sen"       include
   "OP_verifyTable.sen"          include
+  "OP_via.sen"                  include
   "OP_visualizeIndex.sen"       include
   "OP_visualizeTable.sen"       include
 

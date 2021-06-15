@@ -4,13 +4,16 @@
 #pragma once
 
 #include "eSI.h"
+#include "EachRowBuffer.hpp"
 
 namespace STORE
 {
   class RowInflator : private RowCoder
   {
   public:
-  
+
+    static void vInflate_AllColumns_into_EachRowBuffer(EachRowBuffer* pEachRowBuffer,
+                                                       HeadLine* aHeadLine);
     static void vInflate_AllColumns_into_RowSingle(RowSingle* pRowSingle,
                                                    HeadLine* aHeadLine);
 

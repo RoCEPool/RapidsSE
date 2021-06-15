@@ -51,6 +51,17 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_EACHROWBUFFER ...                                           */
+/*----------------------------------------------------------------------------*/
+: output_EachRowBuffer \handler
+
+  //"Operand:- ZK_EACHROWBUFFER" .verbose
+  PipeIn[].pipeToOutput
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_ENTBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
 : output_EntBuffer \handler
@@ -201,6 +212,7 @@ true
   find: output_CrwBuffer     ZK_CRWBUFFER   op[].handler!
   find: output_CsvBuffer     ZK_CSVBUFFER   op[].handler!
   find: output_DataMarker    ZK_DATAPULSE   op[].handler!
+  find: output_EachRowBuffer ZK_EACHROWMARKER op[].handler!
   find: output_EntBuffer     ZK_ENTBUFFER   op[].handler!
   find: output_EosMarker     ZK_EOSMARKER   op[].handler!
   find: output_ErrorMarker   ZK_ERRORMARKER op[].handler!

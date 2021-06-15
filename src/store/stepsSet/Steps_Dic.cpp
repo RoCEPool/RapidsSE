@@ -181,7 +181,7 @@ void Step::vDicRoot(void)
 {
   ENTRY();
   
-  Dic* pDicRoot = AM::pDicRoot();
+  Dic* pDicRoot = AM::DIC::pRoot();
   m_pDataStack->vPushPtr(pDicRoot);
   
   EXIT();
