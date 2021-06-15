@@ -208,6 +208,10 @@ public:
   void vDevLftIxtCrwBufferStore(void);
   void vDevLftIxtIndexTreeStore(void);
 
+  // devRhtIxt
+  void vDevRhtIxtCrwBufferStore(void);
+  void vDevRhtIxtIndexTreeStore(void);
+
   // dic
   void vDicDelete(void);
   void vDicFirstWord(void);
