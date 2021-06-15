@@ -28,6 +28,8 @@
 #include "TagConstants.h"
 #include "Op.hpp"
 
+#include "InfoSet.hpp"
+#include "Marker.hpp"
 
 
 extern CmdLineArgs   gxCmdLineArgs;
@@ -141,7 +143,7 @@ SePrompt::~SePrompt(void) noexcept(false)
   m_pLitTknVec->vSoftReset();
   delete m_pLitTknVec;
   
-  delete m_pPrintOp;
+  //delete m_pPrintOp;
   
   AM::THREAD::vDeleteThread(m_pThread);
 
@@ -189,10 +191,28 @@ void SePrompt::vPromptLoop(void)
   Thread* pThreadTest = AM::pThisTLSThread();
 
   
+  
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+  
 //  m_pPrintOp = Api::pGetOperator("print"_Stz);
 //  Job* pOpJob = m_pPrintOp->pOpJob();
 //  AM::vSpawnJob_dedicated(pOpJob);
+//
+//
+//  Marker* pStartMarker = new Marker(OM_STARTMARKER);
+//  m_pPrintOp->vAppend(pStartMarker,nullptr);
+//
+//
+//  InfoSet* pPromptOut = AM::PROMPT::pToPromptOut("OP print test ###################################\n"_Stz);
+//
+//  m_pPrintOp->vAppend(pPromptOut,nullptr);
+//
+//
+//  Marker* pExitMarker = new Marker(OM_EXITMARKER);
+//  m_pPrintOp->vAppend(pExitMarker,nullptr);
   
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+
   ASSERT(0 == pInputGet()->iDepth());
   pInputGet()->vUseStdin();
   pInputGet()->vFormCppTokens();
