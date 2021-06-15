@@ -117,6 +117,69 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Op::Op(Stz* szOpNm)
+: Object(CN_OP)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  
+  m_sPipelineNm = C_NO_NAME;
+  m_sStageNm    = C_NO_NAME;
+  m_sStreamNm   = C_NO_NAME;
+  m_sOpNm       = szOpNm;
+  m_i_Op        = C_UNKNOWN;
+  
+  m_bTraceOp    = false;
+  
+  m_pOpSpec   = nullptr;
+  m_pStream   = nullptr;
+  m_pStage    = nullptr;
+  m_pPipeline = nullptr;
+  
+  m_tPtnNo = C_UNKNOWN;
+  m_i_Node = C_UNKNOWN;
+
+    
+  // -- -- -- -- -- --
+
+  m_pPipelineJob  = nullptr;
+  m_pOpJob        = nullptr;
+
+  m_bPulsedLimit  = false;
+  m_iWorkQuanta   = 1;
+  m_iWorkDone     = 0;
+
+  m_bAppendRight  = false;
+  m_pQueueLeft    = new OperandQueue;
+  m_pQueueRight   = new OperandQueue;
+
+  m_eCrossTopo  = PX_NONE;
+  m_iNextStage  = C_UNKNOWN;
+  m_iNextOp     = C_UNKNOWN;
+  m_iOtherStage = C_UNKNOWN;
+  m_iOtherOp    = C_UNKNOWN;
+  m_iSendNode   = C_UNKNOWN;
+  m_eSendKind   = XK_NONE;
+  m_iRobin      = 0;
+  m_iLocalRobin = 0;
+  
+  m_pDownstreamOp = nullptr;
+  m_pOutboundOperand = nullptr;
+
+  vInitOperandHandlers();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+  ++ gixOp;
+  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  AM::LOG::vEvent(EV_CONSTRUCT,"Op constructor"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Op::~Op(void) noexcept(false)
