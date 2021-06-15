@@ -36,7 +36,7 @@
   0 ZK_CRWBUFFER EG_ZK LogicUnit[].diaryNote
 
   Operand[].pipeIn
-  Operand[].asSrcCrwBuffer
+  Operand[] DevSrcIxt.crwBuffer!
   ZK_CRWBUFFER Counter0[] executeAsmArgs
 
   PotRlu[].pipeoutCompletedPtns

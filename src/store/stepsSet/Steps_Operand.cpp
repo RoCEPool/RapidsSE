@@ -47,7 +47,6 @@ void Step::vAddSteps_Operand(void)
 
   vAddStep("Operand[]"_Stz,                &Step::vOperandGet);
   vAddStep("Operand[]\\clear"_Stz,         &Step::vOperandGetAndClear);
-  vAddStep("Operand[].asSrcCrwBuffer"_Stz, &Step::vOperandAsSrcCrwBuffer);
   vAddStep("Operand[].bide"_Stz,           &Step::vOperandBide);
   vAddStep("Operand[].csvAppend"_Stz,      &Step::vOperandCsvAppend);
   vAddStep("Operand[].csvData"_Stz,        &Step::vOperandCsvData);
@@ -92,20 +91,6 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].set"_Stz,            &Step::vOperandSet);
   vAddStep("Operand[].upsertIntoTable"_Stz,&Step::vOperandUpsertIntoTable);
   vAddStep("Operand[].writeToFile0"_Stz,   &Step::vOperandWriteToFile0);
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].asSrcCrwBuffer -- use this operand as src crw buffer             */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandAsSrcCrwBuffer(void)
-{
-  ENTRY();
-
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pJob->pLogicUnit_job()->m_xpOperandA);
-
-  m_pJob->pLogicUnit_job()->m_pDevSrcIxt->m_pCrwBuffer = pCrwBuffer;
-
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

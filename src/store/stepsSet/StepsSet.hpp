@@ -199,11 +199,13 @@ public:
   void vDevLftRowDeleteEachRowBuffer(void);
   void vDevLftRowEachRowBufferStore(void);
   void vDevLftRowRowBufferStore(void);
+  void vDevLftRowCrwBufferStore(void);
 
   // devRhtRow
   void vDevRhtRowStreamDefStore(void);
 
   // devSrcIxt
+  void vDevSrcIxtCrwBufferStore(void);
   void vDevSrcIxtIndexTreeStore(void);
 
   // dic
@@ -1006,7 +1008,6 @@ void vExprEvalEvaluateIndexScan(void);
   void vOperandToParcel(void);
 
   // operand[]
-  void vOperandAsSrcCrwBuffer(void);
   void vOperandCsvAppend(void);
   void vOperandBide(void);
   void vOperandCrwDuplicate(void);

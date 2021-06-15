@@ -136,7 +136,7 @@
   Operand[].isNotNull if
     // read a next crw buffer
 
-    Operand[].asSrcCrwBuffer
+    Operand[] DevSrcIxt.crwBuffer!
     ZK_CRWBUFFER Counter0[] executeAsmArgs
     Operand[].delete
 
