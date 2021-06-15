@@ -44,7 +44,7 @@
     stringA[] op__tableDef_streamSet assert
 
     // create a new streamDef
-    streamSetTable[] StreamDef[].new
+    streamSetTable[] StreamDefLft[].new
 
     // create an StreamSet operand
     streamSetTable[] StreamSet[].new
@@ -53,7 +53,7 @@
     Operand[] "parser" sqlCompiler::doExplain
 
     // pipeout streamDef of explain
-    StreamDef[].pipeout
+    StreamDefLft[].pipeout
 
     // pipeout explain
     StreamSet[].pipeout

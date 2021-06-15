@@ -76,7 +76,7 @@ void Step::vStreamDefOutDuplicate(void)
 {
   ENTRY();
   
-  ASSERT (* m_pJob->pLogicUnit_job()->m_xpStreamDefOut);
+  ASSERT (* m_pJob->pLogicUnit_job()->m_xpStreamDefLftOut);
   
   StreamDef* pStreamDef = new StreamDef(* m_pJob->pLogicUnit_job()->m_xpStreamDefOut);
   

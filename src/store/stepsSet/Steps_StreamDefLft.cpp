@@ -27,34 +27,34 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_StreamDef(void)
 {
-  vAddStep("StreamDef[]"_Stz,                 &Step::vStreamDefGet);
-  vAddStep("StreamDef[]\\clear"_Stz,          &Step::vStreamDefGetAndClear);
-  vAddStep("StreamDef[].asSrcStreamDef"_Stz,  &Step::vStreamDefAsSrcStreamDef);
-  vAddStep("StreamDef[].asStr"_Stz,           &Step::vStreamDefAsStr);
-  vAddStep("StreamDef[].columnCount@"_Stz,    &Step::vStreamDefColumnCountFetch);
-  vAddStep("StreamDef[].column@"_Stz,         &Step::vStreamDefColumnFetch);
-  vAddStep("StreamDef[].delete"_Stz,          &Step::vStreamDefDelete);
-  vAddStep("StreamDef[].duplicate"_Stz,       &Step::vStreamDefDuplicate);
-  vAddStep("StreamDef[].get"_Stz,             &Step::vStreamDefGet);
-  vAddStep("StreamDef[].isNull"_Stz,          &Step::vStreamDefIsNull);
-  vAddStep("StreamDef[].name"_Stz,            &Step::vStreamDefName);
-  vAddStep("StreamDef[].new"_Stz,             &Step::vStreamDefNew);
-  vAddStep("StreamDef[].newToCsvStream"_Stz,  &Step::vStreamDefNewToCsv);
-  vAddStep("StreamDef::parse"_Stz,            &Step::vStreamDefParse);
-  vAddStep("StreamDef[].pipeIn"_Stz,          &Step::vStreamDefPipeIn);
-  vAddStep("StreamDef[].print"_Stz,           &Step::vStreamDefPrint);
-  vAddStep("StreamDef[].rowSize"_Stz,         &Step::vStreamDefRowSize);
-  vAddStep("StreamDef[].set"_Stz,             &Step::vStreamDefSet);
+  vAddStep("StreamDefLft[]"_Stz,                 &Step::vStreamDefLftGet);
+  vAddStep("StreamDefLft[]\\clear"_Stz,          &Step::vStreamDefLftGetAndClear);
+  vAddStep("StreamDefLft[].asSrcStreamDef"_Stz,  &Step::vStreamDefLftAsSrcStreamDef);
+  vAddStep("StreamDefLft[].asStr"_Stz,           &Step::vStreamDefLftAsStr);
+  vAddStep("StreamDefLft[].columnCount@"_Stz,    &Step::vStreamDefLftColumnCountFetch);
+  vAddStep("StreamDefLft[].column@"_Stz,         &Step::vStreamDefLftColumnFetch);
+  vAddStep("StreamDefLft[].delete"_Stz,          &Step::vStreamDefLftDelete);
+  vAddStep("StreamDefLft[].duplicate"_Stz,       &Step::vStreamDefLftDuplicate);
+  vAddStep("StreamDefLft[].get"_Stz,             &Step::vStreamDefLftGet);
+  vAddStep("StreamDefLft[].isNull"_Stz,          &Step::vStreamDefLftIsNull);
+  vAddStep("StreamDefLft[].name"_Stz,            &Step::vStreamDefLftName);
+  vAddStep("StreamDefLft[].new"_Stz,             &Step::vStreamDefLftNew);
+  vAddStep("StreamDefLft[].newToCsvStream"_Stz,  &Step::vStreamDefLftNewToCsv);
+  vAddStep("StreamDef::parse"_Stz,            &Step::vStreamDefLftParse);
+  vAddStep("StreamDefLft[].pipeIn"_Stz,          &Step::vStreamDefLftPipeIn);
+  vAddStep("StreamDefLft[].print"_Stz,           &Step::vStreamDefLftPrint);
+  vAddStep("StreamDefLft[].rowSize"_Stz,         &Step::vStreamDefLftRowSize);
+  vAddStep("StreamDefLft[].set"_Stz,             &Step::vStreamDefLftSet);
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamDef[].asStr -- get streamDef as a string                             */
+/* StreamDefLft[].asStr -- get streamDef as a string                          */
 /*----------------------------------------------------------------------------*/
-void Step::vStreamDefAsStr(void)
+void Step::vStreamDefLftAsStr(void)
 {
   ENTRY();
   
-  StreamDef* pStreamDef = *m_pJob->pLogicUnit_job()->m_xpStreamDef;
+  StreamDef* pStreamDef = *m_pJob->pLogicUnit_job()->m_xpStreamDefLft;
   
   sSTMT sStreamDef;
   
@@ -66,13 +66,13 @@ void Step::vStreamDefAsStr(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamDef[].asSrcStreamDef -- use this stream def as src stream def        */
+/* StreamDefLft[].asSrcStreamDef -- use this stream def as src stream def     */
 /*----------------------------------------------------------------------------*/
-void Step::vStreamDefAsSrcStreamDef(void)
+void Step::vStreamDefLftAsSrcStreamDef(void)
 {
   ENTRY();
   
-  StreamDef* pStreamDef = *m_pJob->pLogicUnit_job()->m_xpStreamDef;
+  StreamDef* pStreamDef = *m_pJob->pLogicUnit_job()->m_xpStreamDefLft;
 
   StreamDef* pStreamDefOld = m_pJob->pLogicUnit_job()->m_pDevSrcRow->m_pStreamDef;
   if (pStreamDefOld)
@@ -84,13 +84,13 @@ void Step::vStreamDefAsSrcStreamDef(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamDef[].column@ -- get column from streamDef                           */
+/* StreamDefLft[].column@ -- get column from streamDef                        */
 /*----------------------------------------------------------------------------*/
-void Step::vStreamDefColumnFetch(void)
+void Step::vStreamDefLftColumnFetch(void)
 {
   ENTRY();
   
-  StreamDef* pStreamDef = _pStreamDef(*m_pJob->pLogicUnit_job()->m_xpStreamDef);
+  StreamDef* pStreamDef = _pStreamDef(*m_pJob->pLogicUnit_job()->m_xpStreamDefLft);
                                       
   i8 iColumn = m_pDataStack->iPopInt(__func__);
   
@@ -100,13 +100,13 @@ void Step::vStreamDefColumnFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamDef[].columnCount@ -- get column count from streamDef                */
+/* StreamDefLft[].columnCount@ -- get column count from streamDef             */
 /*----------------------------------------------------------------------------*/
-void Step::vStreamDefColumnCountFetch(void)
+void Step::vStreamDefLftColumnCountFetch(void)
 {
   ENTRY();
   
-  StreamDef* pStreamDef = _pStreamDef(*m_pJob->pLogicUnit_job()->m_xpStreamDef);
+  StreamDef* pStreamDef = _pStreamDef(*m_pJob->pLogicUnit_job()->m_xpStreamDefLft);
   
   m_pDataStack->vPushInt(pStreamDef->nColumns());
   
@@ -114,29 +114,29 @@ void Step::vStreamDefColumnCountFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamDef[].delete -- delete streamDef                                     */
+/* StreamDefLft[].delete -- delete streamDef                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vStreamDefDelete(void)
+void Step::vStreamDefLftDelete(void)
 {
   ENTRY();
 
-  AM::vDeleteOperand(*m_pJob->pLogicUnit_job()->m_xpStreamDef);
+  AM::vDeleteOperand(*m_pJob->pLogicUnit_job()->m_xpStreamDefLft);
   
-  m_pJob->pLogicUnit_job()->m_xpStreamDef = nullptr;
+  m_pJob->pLogicUnit_job()->m_xpStreamDefLft = nullptr;
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamDef[].duplicate -- new a duplicate stream def from Table[]           */
+/* StreamDefLft[].duplicate -- new a duplicate stream def from Table[]        */
 /*----------------------------------------------------------------------------*/
-void Step::vStreamDefDuplicate(void)
+void Step::vStreamDefLftDuplicate(void)
 {
   ENTRY();
   
-  ASSERT (* m_pJob->pLogicUnit_job()->m_xpStreamDef);
+  ASSERT (* m_pJob->pLogicUnit_job()->m_xpStreamDefLft);
   
-  StreamDef* pStreamDef = new StreamDef(* m_pJob->pLogicUnit_job()->m_xpStreamDef);
+  StreamDef* pStreamDef = new StreamDef(* m_pJob->pLogicUnit_job()->m_xpStreamDefLft);
   
   m_pDataStack->vPushPtr(pStreamDef);
 
@@ -144,51 +144,51 @@ void Step::vStreamDefDuplicate(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamDef[].get -- get streamDef                                           */
+/* StreamDefLft[].get -- get streamDef                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vStreamDefGet(void)
+void Step::vStreamDefLftGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pJob->pLogicUnit_job()->m_xpStreamDef);
+  m_pDataStack->vPushPtr(*m_pJob->pLogicUnit_job()->m_xpStreamDefLft);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamDef[].getAndClear -- get streamDef and set to nullptr                */
+/* StreamDefLft[].getAndClear -- get streamDef and set to nullptr             */
 /*----------------------------------------------------------------------------*/
-void Step::vStreamDefGetAndClear(void)
+void Step::vStreamDefLftGetAndClear(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_pJob->pLogicUnit_job()->m_xpStreamDef);
+  m_pDataStack->vPushPtr(*m_pJob->pLogicUnit_job()->m_xpStreamDefLft);
 
-  m_pJob->pLogicUnit_job()->m_xpStreamDef = nullptr;
+  m_pJob->pLogicUnit_job()->m_xpStreamDefLft = nullptr;
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamDef[].isNull -- is streamDef null ?                                  */
+/* StreamDefLft[].isNull -- is streamDef null ?                               */
 /*----------------------------------------------------------------------------*/
-void Step::vStreamDefIsNull(void)
+void Step::vStreamDefLftIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pJob->pLogicUnit_job()->m_xpStreamDef.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(m_pJob->pLogicUnit_job()->m_xpStreamDefLft.bIsNull() ? 1 : 0);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamDef[].name -- get streamDef name                                     */
+/* StreamDefLft[].name -- get streamDef name                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vStreamDefName(void)
+void Step::vStreamDefLftName(void)
 {
   ENTRY();
   
-  StreamDef* pStreamDef = _pStreamDef(*m_pJob->pLogicUnit_job()->m_xpStreamDef);
+  StreamDef* pStreamDef = _pStreamDef(*m_pJob->pLogicUnit_job()->m_xpStreamDefLft);
   
   s32 sName = pStreamDef->szStreamDefNm();
   m_pDataStack->vPushStr(sName);
@@ -197,25 +197,25 @@ void Step::vStreamDefName(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamDef[].new -- new a stream def from Table[]                           */
+/* StreamDefLft[].new -- new a stream def from Table[]                        */
 /*----------------------------------------------------------------------------*/
-void Step::vStreamDefNew(void)
+void Step::vStreamDefLftNew(void)
 {
   ENTRY();
   
-  ASSERT (m_pJob->pLogicUnit_job()->m_xpStreamDef.bIsNull());
+  ASSERT (m_pJob->pLogicUnit_job()->m_xpStreamDefLft.bIsNull());
   
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
-  m_pJob->pLogicUnit_job()->m_xpStreamDef = new StreamDef(pTable->pStreamDef());
+  m_pJob->pLogicUnit_job()->m_xpStreamDefLft = new StreamDef(pTable->pStreamDef());
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamDef[].newToCsvStream -- new a ToCsv streamDef                        */
+/* StreamDefLft[].newToCsvStream -- new a ToCsv streamDef                     */
 /*----------------------------------------------------------------------------*/
-void Step::vStreamDefNewToCsv(void)
+void Step::vStreamDefLftNewToCsv(void)
 {
   ENTRY();
 
@@ -230,7 +230,7 @@ void Step::vStreamDefNewToCsv(void)
 
   pStreamDef->m_nColumns = 1;
 
-  m_pJob->pLogicUnit_job()->m_xpStreamDef = pStreamDef;
+  m_pJob->pLogicUnit_job()->m_xpStreamDefLft = pStreamDef;
 
   EXIT();
 }
@@ -238,7 +238,7 @@ void Step::vStreamDefNewToCsv(void)
 /*----------------------------------------------------------------------------*/
 /* streamDef::parse -- parse Create Table statement and produce a streamDef   */
 /*----------------------------------------------------------------------------*/
-void Step::vStreamDefParse(void)
+void Step::vStreamDefLftParse(void)
 {
   ENTRY();
   
@@ -271,9 +271,9 @@ void Step::vStreamDefParse(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamDef[].pipeIn -- move pipein operand into StreamDef[]                 */
+/* StreamDefLft[].pipeIn -- move pipein operand into StreamDefLft[]           */
 /*----------------------------------------------------------------------------*/
-void Step::vStreamDefPipeIn(void)
+void Step::vStreamDefLftPipeIn(void)
 {
   ENTRY();
   
@@ -281,19 +281,19 @@ void Step::vStreamDefPipeIn(void)
 
   m_pJob->pLogicUnit_job()->m_xpPipein = nullptr;
     
-  m_pJob->pLogicUnit_job()->m_xpStreamDef = _pStreamDef(pOperand);
+  m_pJob->pLogicUnit_job()->m_xpStreamDefLft = _pStreamDef(pOperand);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamDef[].print -- print streamDef                                       */
+/* StreamDefLft[].print -- print streamDef                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vStreamDefPrint(void)
+void Step::vStreamDefLftPrint(void)
 {
   ENTRY();
     
-  StreamDef* pStreamDef = _pStreamDef(*m_pJob->pLogicUnit_job()->m_xpStreamDef);
+  StreamDef* pStreamDef = _pStreamDef(*m_pJob->pLogicUnit_job()->m_xpStreamDefLft);
   
   pStreamDef->vPrint();
 
@@ -301,14 +301,14 @@ void Step::vStreamDefPrint(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamDef[].rowSize -- get row size from streamDef                         */
+/* StreamDefLft[].rowSize -- get row size from streamDef                      */
 /*----------------------------------------------------------------------------*/
-void Step::vStreamDefRowSize(void)
+void Step::vStreamDefLftRowSize(void)
 {
   ENTRY();
   
-  ASSERT(*m_pJob->pLogicUnit_job()->m_xpStreamDef);
-  StreamDef* pStreamDef = _pStreamDef(*m_pJob->pLogicUnit_job()->m_xpStreamDef);
+  ASSERT(*m_pJob->pLogicUnit_job()->m_xpStreamDefLft);
+  StreamDef* pStreamDef = _pStreamDef(*m_pJob->pLogicUnit_job()->m_xpStreamDefLft);
   
   m_pDataStack->vPushInt(Row::nRowProper(pStreamDef->nColumns()));
   
@@ -316,13 +316,13 @@ void Step::vStreamDefRowSize(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* StreamDef[].set -- set streamDef                                           */
+/* StreamDefLft[].set -- set streamDef                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vStreamDefSet(void)
+void Step::vStreamDefLftSet(void)
 {
   ENTRY();
   
-  m_pJob->pLogicUnit_job()->m_xpStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  m_pJob->pLogicUnit_job()->m_xpStreamDefLft = _pStreamDef(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }

@@ -21,13 +21,13 @@ void Step::vAddSteps_Expressions(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* STORE::lockSample -- sample the lock stats                               */
+/* STORE::lockSample -- sample the lock stats                                 */
 /*----------------------------------------------------------------------------*/
 void Step::vExpressionsLockSample(void)
 {
   ENTRY();
 
-  //StreamDef* pStreamDef = *m_pJob->pLogicUnit_job()->m_xpStreamDef;
+  //StreamDef* pStreamDef = *m_pJob->pLogicUnit_job()->m_xpStreamDefLft;
     
   //InfoSet* pInfoSet = LockMetrics::pSample(pStreamDef);
   

@@ -71,7 +71,7 @@ void Step::vCrwToRowCreate(void)
 {
   ENTRY();
     
-  StreamDef* pStreamDef = * m_pJob->pLogicUnit_job()->m_xpStreamDef;
+  StreamDef* pStreamDef = * m_pJob->pLogicUnit_job()->m_xpStreamDefLft;
 
   CrwToRow* pCrwToRow = new CrwToRow(pStreamDef);
       

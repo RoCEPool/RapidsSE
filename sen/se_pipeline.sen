@@ -92,10 +92,10 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-: StreamDef[].pipeOut
+: StreamDefLft[].pipeOut
 
-  StreamDef[]
-    nullptr to StreamDef[]
+  StreamDefLft[]
+    nullptr to StreamDefLft[]
     
   Op::pipeout
 ;

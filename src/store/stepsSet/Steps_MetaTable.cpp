@@ -33,7 +33,7 @@ void Step::vMetaTableListTables(void)
   
   Pot* pPot = _pPot(m_pJob->pLogicUnit_job()->m_xRluCommon.m_pPot);
   
-  pPot->vRowPix(m_pJob->pLogicUnit_job()->m_xpStreamDef->pRowPix());
+  pPot->vRowPix(m_pJob->pLogicUnit_job()->m_xpStreamDefLft->pRowPix());
   
   bool bNewBuffer;
   RowBuffer* pRowBuffer = nullptr;

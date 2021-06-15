@@ -45,7 +45,7 @@ void Step::vListAddRowBuffer(void)
        aRow = pRowBuffer->pNextRow(aRow)) {
 
     RowSingle* pRowSingle =
-      new RowSingle( * m_pJob->pLogicUnit_job()->m_xpStreamDef );
+      new RowSingle( * m_pJob->pLogicUnit_job()->m_xpStreamDefLft );
 
     pRowSingle->vCopyRow(aRow);
     //pRowSingle->vPrintRow();

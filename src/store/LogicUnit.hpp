@@ -168,7 +168,7 @@ namespace STORE
     REG<Node>           m_xpSendNode;  // node to send to
     REG<ShardDef>       m_xpShardDef;
     REG<Socket>         m_xpSocket;
-    REG<StreamDef>      m_xpStreamDef;     // maybe rename this to stream def in ?
+    REG<StreamDef>      m_xpStreamDefLft;     // maybe rename this to stream def in ?
     REG<StreamDef>      m_xpStreamDefOut;
     REG<Operand>        m_xpStreamSet;
     REG<Table>          m_xpStreamSetTable;

@@ -18,7 +18,7 @@
     // pipeout the (StartMarker)
     PipeIn[].pipeOut
 
-    // new and pipe out (StreamDef)  DOES NOT SET StreamDef[]??
+    // new and pipe out (StreamDef)  DOES NOT SET StreamDefLft[]??
     Operand[].newStreamDef
     Operand[].pipeOut
 

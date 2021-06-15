@@ -1534,23 +1534,23 @@ void vExprEvalEvaluateIndexScan(void);
   void vStringASet(void);
 
   // stream def
-  void vStreamDefAsStr(void);
-  void vStreamDefAsSrcStreamDef(void);
-  void vStreamDefColumnFetch(void);
-  void vStreamDefColumnCountFetch(void);
-  void vStreamDefDelete(void);
-  void vStreamDefDuplicate(void);
-  void vStreamDefGet(void);
-  void vStreamDefGetAndClear(void);
-  void vStreamDefIsNull(void);
-  void vStreamDefName(void);
-  void vStreamDefNew(void);
-  void vStreamDefNewToCsv(void);
-  void vStreamDefParse(void);
-  void vStreamDefPipeIn(void);
-  void vStreamDefPrint(void);
-  void vStreamDefRowSize(void);
-  void vStreamDefSet(void);
+  void vStreamDefLftAsStr(void);
+  void vStreamDefLftAsSrcStreamDef(void);
+  void vStreamDefLftColumnFetch(void);
+  void vStreamDefLftColumnCountFetch(void);
+  void vStreamDefLftDelete(void);
+  void vStreamDefLftDuplicate(void);
+  void vStreamDefLftGet(void);
+  void vStreamDefLftGetAndClear(void);
+  void vStreamDefLftIsNull(void);
+  void vStreamDefLftName(void);
+  void vStreamDefLftNew(void);
+  void vStreamDefLftNewToCsv(void);
+  void vStreamDefLftParse(void);
+  void vStreamDefLftPipeIn(void);
+  void vStreamDefLftPrint(void);
+  void vStreamDefLftRowSize(void);
+  void vStreamDefLftSet(void);
 
   // stream definition (out)
   void vStreamDefOutAddColumn(void);

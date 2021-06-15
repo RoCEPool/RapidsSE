@@ -123,14 +123,14 @@
 
   EC_NONE locals| eError |
 
-  // move pipein[] to StreamDef[]
-  Pipein[]\clear to StreamDef[]
+  // move pipein[] to StreamDefLft[]
+  Pipein[]\clear to StreamDefLft[]
 
   // evalute the expression
   ExprEval[].new
   StreamDefOut[].new
 
-  <etc> StreamDef[] StreamDefOut[] ExprEval[].evaluate to eError
+  <etc> StreamDefLft[] StreamDefOut[] ExprEval[].evaluate to eError
 
   // check for error
   eError EC_NONE == not if
@@ -151,7 +151,7 @@
   then
 
   // set the streamDef in the devSrcRow
-  StreamDef[]\clear DevSrcRow.streamDef!
+  StreamDefLft[]\clear DevSrcRow.streamDef!
 
   // create rowPix in potRlu[] from streamDefOut[]
   false streamDefOut[] PotRlu[].rowPix!

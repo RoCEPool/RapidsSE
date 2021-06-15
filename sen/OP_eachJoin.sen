@@ -165,7 +165,7 @@
 
   EC_NONE locals| eError |
 /*
-  StreamDef[].isNull if
+  StreamDefLft[].isNull if
 
     // move pipein[] to StreamDefLeft[]
     Pipein[]\clear to StreamDefLeft[]
@@ -206,7 +206,7 @@
   // set the streamDef in the devSrcRow
   StreamDefLeft[]\clear DevSrcRow.streamDef!
 
-  // set the streamDef in the devAltRow
+  // set the streamDef in the devRightRow
   StreamDefRight[]\clear DevRhtRow.streamDef!
 
   // create rowPix in potRlu[] from streamDefOut[]
