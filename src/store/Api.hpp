@@ -66,12 +66,18 @@ namespace STORE
   static bool bExpandToLongForm(TokenVec* pCmdTknVec);
   static void vPopulateTagSet(TagSet* pTagSet, TokenVec* pTknVec);
 
+  
+  
   private:
+  
+  static void vCreateTaskForJob(Job* pJob);
+  
+  static Op* pOpCreate(Word* pOpWord);
+  
   static void vMutexLock(Session* pSession, Job* pJob);
   static void vMutexUnlock(Session* pSession, Job* pJob);
   static void vMutexWaitCond(Session* pSession, Job* pJob);
 
-  static void vCreateTaskForJob(Job* pJob);
 
   };
 }

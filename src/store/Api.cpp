@@ -36,17 +36,22 @@ Op* Api::pGetOperator(Stz* szOpNm)
   
   s32 sWordNm;
   Word* pOpWord = nullptr;
-  
+  Op* pOp = nullptr;
+
   // find szOpNm in dictionary
   Dic* pRootDic = AM::DIC::pRoot();
   
   sWordNm = szOpNm;
-  if ( (pOpWord = pRootDic->pFindWord(sWordNm)) )
-      return nullptr;
+  if ( (pOpWord = pRootDic->pFindWord(sWordNm)) ) {
+    pOp = Api::pOpCreate(pOpWord);
+    return pOp;
+  }
   
   sWordNm.vConcat("_req"_Stz);
-  if ( (pOpWord = pRootDic->pFindWord(sWordNm)) )
-      return nullptr;
+  if ( (pOpWord = pRootDic->pFindWord(sWordNm)) ) {
+    pOp = Api::pOpCreate(pOpWord);
+    return pOp;
+  }
 
   // is it a pipeline or a single operator?
   
@@ -662,47 +667,6 @@ void Api::vPopulateTagSet(TagSet* pTagSet, TokenVec* pTknVec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* lock mutex and mark job as locked                                          */
-/*----------------------------------------------------------------------------*/
-void Api::vMutexLock(Session* pSession, Job* pJob)
-{
-  _static_
-  
-  pSession->m_oMutex.vLock(pSession);
-        
-  pJob->vJobState(JS_LOCKED);
-}
-
-/*----------------------------------------------------------------------------*/
-/* mark job as running and unlock session mutex                               */
-/*----------------------------------------------------------------------------*/
-void Api::vMutexUnlock(Session* pSession, Job* pJob)
-{
-  _static_
-  
-  RASSERT(JS_RUNNING != pJob->eJobState());
-    
-  pJob->vJobState(JS_RUNNING);
-  
-  pSession->m_oMutex.vUnlock(pSession);
-}
-
-/*----------------------------------------------------------------------------*/
-/* wait for session mutex to be signalled                                     */
-/*----------------------------------------------------------------------------*/
-void Api::vMutexWaitCond(Session* pSession, Job* pJob)
-{
-  _static_
-  
-  do {
-    
-    pSession->m_oMutex.vWait(pSession);
-    
-  } while (pJob->eJobState() != JS_SIGNALLED);
-
-}
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -898,40 +862,6 @@ void Api::vScheduleNextPhase(Job* pParticipantJob, Task* pActiviating2PcTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* spawn given job                                                            */
-/*----------------------------------------------------------------------------*/
-void Api::vCreateTaskForJob(Job* pJob)
-{
-  _static_
-  
-  ASSERT(SS_ENUMS != pJob->eSeed());
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  Task* pTask = pJob->pTask();
-  if ( pTask) {
-    RASSERT(QK_NONE == pTask->eQueue());
-    RASSERT(TR_NONE == pTask->eTranstionRequest());
-  }
-  else {
-    pTask = AM::pTaskNew(pJob);
-    RASSERT(QK_NONE == pTask->eQueue());
-    RASSERT(TR_NONE == pTask->eTranstionRequest());
-  }
-  
-  Job* pThisJob = AM::pThisTLSJob();
-  
-  if (pJob->bHasTag(C_TAG_TAGS) ||
-      (pThisJob && pThisJob->bHasTag(C_TAG_TAGS)))
-    pJob->pJobTags()->vDumpSet();
-
-  if (! pJob->bHasTag(C_TAG_TAGS))
-    BASE::vDebugPoint();
-  
-  pJob->vTimerStart();
-}
-
-/*----------------------------------------------------------------------------*/
 /* validate the SE session                                                    */
 /*----------------------------------------------------------------------------*/
 eEC Api::eValidateSession(i8 iTrace, Session* pSession, eAC eApiCall)
@@ -988,7 +918,95 @@ void Api::vSpinTillAllJobsCompleted(void)
   
 }
 
-//! TO GO
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* create task for given job                                                  */
+/*----------------------------------------------------------------------------*/
+void Api::vCreateTaskForJob(Job* pJob)
+{
+  _static_
+  
+  ASSERT(SS_ENUMS != pJob->eSeed());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Task* pTask = pJob->pTask();
+  if ( pTask) {
+    RASSERT(QK_NONE == pTask->eQueue());
+    RASSERT(TR_NONE == pTask->eTranstionRequest());
+  }
+  else {
+    pTask = AM::pTaskNew(pJob);
+    RASSERT(QK_NONE == pTask->eQueue());
+    RASSERT(TR_NONE == pTask->eTranstionRequest());
+  }
+  
+  Job* pThisJob = AM::pThisTLSJob();
+  
+  if (pJob->bHasTag(C_TAG_TAGS) ||
+      (pThisJob && pThisJob->bHasTag(C_TAG_TAGS)))
+    pJob->pJobTags()->vDumpSet();
+
+  if (! pJob->bHasTag(C_TAG_TAGS))
+    BASE::vDebugPoint();
+  
+  pJob->vTimerStart();
+}
+
+/*----------------------------------------------------------------------------*/
+/* create operator for given word                                             */
+/*----------------------------------------------------------------------------*/
+Op* Api::pOpCreate(Word* pOpWord)
+{
+  _static_
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* lock mutex and mark job as locked                                          */
+/*----------------------------------------------------------------------------*/
+void Api::vMutexLock(Session* pSession, Job* pJob)
+{
+  _static_
+  
+  pSession->m_oMutex.vLock(pSession);
+        
+  pJob->vJobState(JS_LOCKED);
+}
+
+/*----------------------------------------------------------------------------*/
+/* mark job as running and unlock session mutex                               */
+/*----------------------------------------------------------------------------*/
+void Api::vMutexUnlock(Session* pSession, Job* pJob)
+{
+  _static_
+  
+  RASSERT(JS_RUNNING != pJob->eJobState());
+    
+  pJob->vJobState(JS_RUNNING);
+  
+  pSession->m_oMutex.vUnlock(pSession);
+}
+
+/*----------------------------------------------------------------------------*/
+/* wait for session mutex to be signalled                                     */
+/*----------------------------------------------------------------------------*/
+void Api::vMutexWaitCond(Session* pSession, Job* pJob)
+{
+  _static_
+  
+  do {
+    
+    pSession->m_oMutex.vWait(pSession);
+    
+  } while (pJob->eJobState() != JS_SIGNALLED);
+
+}
+
 
 /*============================================================================*/
 /* end                                                                        */
