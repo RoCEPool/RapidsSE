@@ -184,6 +184,9 @@ void SePrompt::vPromptLoop(void)
 
   Thread* pThreadTest = AM::pThisTLSThread();
 
+  
+  Op* pPrintOp = Api::pGetOperator("print"_Stz);
+  
   ASSERT(0 == pInputGet()->iDepth());
   pInputGet()->vUseStdin();
   pInputGet()->vFormCppTokens();
@@ -766,7 +769,7 @@ bool SePrompt::bIsPromptWord(void)
   s32 sWordNm;
   sWordNm = pTkn0->szChars();
   
-  Dic* pDicRoot = AM::pDicRoot();
+  Dic* pDicRoot = AM::DIC::pRoot();
 
   Word* pWord = pDicRoot->pFindWord(sWordNm);
   

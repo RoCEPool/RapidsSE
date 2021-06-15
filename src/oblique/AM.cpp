@@ -138,6 +138,8 @@ extern SizeHeap      gxaSizeHeap[];
 /*----------------------------------------------------------------------------*/
 void AM::DIC::vListContents(Dic* pDic)
 {
+  _static_
+  
   pDic->vGrabRead();
   
   
@@ -151,6 +153,16 @@ void AM::DIC::vListContents(Dic* pDic)
   }
   
   pDic->vDropRead();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get root dictionary                                                        */
+/*----------------------------------------------------------------------------*/
+Dic* AM::DIC::pRoot(void)
+{
+  _static_
+  
+  return gpAttachMap->m_pDicRoot;
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -176,7 +188,7 @@ void AM::DEMON::vPipeTo(Stz* szDemonNm, RowBuffer* pRowBuffer)
 //    PipeIn[].delete
 //  then
 
-  Dic* pRootDic = AM::pDicRoot();
+  Dic* pRootDic = AM::DIC::pRoot();
   Word* pDemonWord = pRootDic->pFindWord(szDemonNm);
   Job* pPipelineJob = _pJob(pDemonWord->pObject());
   Pipeline* pPipeline = pPipelineJob->m_pPipeline;
@@ -704,7 +716,7 @@ Word* AM::WORD::pFind(Stz* szWordNm)
 {
   _static_
   
-  Dic* pRootDic = AM::pDicRoot();
+  Dic* pRootDic = AM::DIC::pRoot();
   
   Word* pWord = pRootDic->pFindWord(szWordNm);
   
@@ -867,7 +879,6 @@ Resources* AM::pResources(void) {
   return & gpAttachMap->m_oResources; }
 
 Word* AM::pConstantRoot(void) { return gpAttachMap->m_pConstantRoot;          }
-Dic* AM::pDicRoot(void)       { return gpAttachMap->m_pDicRoot;               }
 Word* AM::pWordRoot(void)     { return gpAttachMap->m_pWordRoot;              }
 Statistics* AM::pStatistics(void)   { return & gpAttachMap->m_oStatistics;    }
 Steps* AM::pSteps(void)   { return gpAttachMap->m_pSteps;      }

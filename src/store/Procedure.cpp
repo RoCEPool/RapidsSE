@@ -70,7 +70,7 @@ void Procedure::vAddProcedure(TokenVec* pTokenVec)
   }
 
   
-  Dic* pDicRoot = AM::pDicRoot();
+  Dic* pDicRoot = AM::DIC::pRoot();
 
   Word* pProcCatg = pDicRoot->pFindWord(C_PROCEDURE_CATG);
   
@@ -106,7 +106,7 @@ Word* Procedure::pFindProcedure(TokenVec* pInpTknVec)
   
   // check we have procedure category defined
   
-  Dic* pDicRoot = AM::pDicRoot();
+  Dic* pDicRoot = AM::DIC::pRoot();
 
   Word* pProcCatg = pDicRoot->pFindWord(C_PROCEDURE_CATG);
   

@@ -219,6 +219,7 @@ namespace OBLIQUE
     public:
       static void vListContents(Dic* pDic);
       static void vListContents(Dic* pDic, i8 i_Depth);
+      static Dic* pRoot(void);
     };
   
     class DEMON
@@ -374,7 +375,6 @@ namespace OBLIQUE
     static Resources* pResources(void);
     static Word* pConstantRoot(void);
     static void vRootConstant(Word* pConstantRoot);
-    static Dic* pDicRoot(void);
     static Word* pWordRoot(void);
     static void vRootWord(Word* pWordRoot);
     static Statistics* pStatistics(void);

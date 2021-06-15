@@ -426,7 +426,7 @@ void Op::vInitOperandHandlers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
-  Dic* pDicRoot = AM::pDicRoot();
+  Dic* pDicRoot = AM::DIC::pRoot();
   
   s32 sHandlerNm;
   

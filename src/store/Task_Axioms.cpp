@@ -425,7 +425,7 @@ Word* Task::pCompileAxiomColon(s48K& sDefinition)
   if (m_oDicStack.nItems())
     pDic = m_oDicStack.pTop();
   else
-    pDic = AM::pDicRoot();
+    pDic = AM::DIC::pRoot();
 
   pNewWord = new(pDic) Word(szChars);
   

@@ -835,7 +835,7 @@ void Task::vSeedTask(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  Dic* pDicRoot = AM::pDicRoot();
+  Dic* pDicRoot = AM::DIC::pRoot();
   
   Stz* szSeed = AM::szJobSeed(m_pJob);
   

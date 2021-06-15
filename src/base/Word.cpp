@@ -209,7 +209,7 @@ void Word::vContentDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  Dic* pDicRoot = AM::pDicRoot();
+  Dic* pDicRoot = AM::DIC::pRoot();
   Word* pStepWord = pDicRoot->pFindStep(m_fpIntrinsic);
   
   vTrace("Word %s %p Kind %s; Category %s; %s; DataBytes %lld; "_Stz
@@ -265,7 +265,7 @@ void Word::vEncodeCall(Stz* aWordNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  Dic* pDicRoot = AM::pDicRoot();
+  Dic* pDicRoot = AM::DIC::pRoot();
   Word* pCalledWord = pDicRoot->pFindWord(aWordNm);
   ASSERT(pCalledWord);
   

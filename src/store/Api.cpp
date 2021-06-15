@@ -34,8 +34,20 @@ Op* Api::pGetOperator(Stz* szOpNm)
 {
   _static_
   
-  // find szOpNm in dictionary
+  s32 sWordNm;
+  Word* pOpWord = nullptr;
   
+  // find szOpNm in dictionary
+  Dic* pRootDic = AM::DIC::pRoot();
+  
+  sWordNm = szOpNm;
+  if ( (pOpWord = pRootDic->pFindWord(sWordNm)) )
+      return nullptr;
+  
+  sWordNm.vConcat("_req"_Stz);
+  if ( (pOpWord = pRootDic->pFindWord(sWordNm)) )
+      return nullptr;
+
   // is it a pipeline or a single operator?
   
   return nullptr;
@@ -517,7 +529,7 @@ bool Api::bShortForm(TokenVec* pCmdTknVec)
   
 //  Token* pTkn0 = pCmdTknVec->pGet(0);
 //
-//  Dic* pDicRoot = AM::pDicRoot();
+//  Dic* pDicRoot = AM::DIC::pRoot();
 //
 //  Word* pOperatorCatg = pDicRoot->pFindWord("\\operator"_Stz);
 //
