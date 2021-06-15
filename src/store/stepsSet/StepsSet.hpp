@@ -1533,7 +1533,7 @@ void vExprEvalEvaluateIndexScan(void);
   void vStringAGet(void);
   void vStringASet(void);
 
-  // stream def
+  // stream def Left
   void vStreamDefLftAsStr(void);
   void vStreamDefLftAsSrcStreamDef(void);
   void vStreamDefLftColumnFetch(void);
@@ -1563,6 +1563,15 @@ void vExprEvalEvaluateIndexScan(void);
   void vStreamDefOutNew(void);
   void vStreamDefOutPrint(void);
   void vStreamDefOutSet(void);
+
+  // stream def Right
+  void vStreamDefRhtDelete(void);
+  void vStreamDefRhtDuplicate(void);
+  void vStreamDefRhtGet(void);
+  void vStreamDefRhtGetAndClear(void);
+  void vStreamDefRhtIsNull(void);
+  void vStreamDefRhtPrint(void);
+  void vStreamDefRhtSet(void);
 
   // reg stream set
   void vStreamSetAddAnalyzeIndex(void);

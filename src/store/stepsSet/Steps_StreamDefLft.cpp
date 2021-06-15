@@ -25,7 +25,7 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_StreamDef(void)
+void Step::vAddSteps_StreamDefLft(void)
 {
   vAddStep("StreamDefLft[]"_Stz,                 &Step::vStreamDefLftGet);
   vAddStep("StreamDefLft[]\\clear"_Stz,          &Step::vStreamDefLftGetAndClear);

@@ -164,11 +164,11 @@
   0 ZK_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
   EC_NONE locals| eError |
-/*
+
   StreamDefLft[].isNull if
 
-    // move pipein[] to StreamDefLeft[]
-    Pipein[]\clear to StreamDefLeft[]
+    // move pipein[] to StreamDefLft[]
+    Pipein[]\clear to StreamDefLft[]
 
     true
     exit
@@ -176,14 +176,14 @@
 
   // received right table stream def
 
-  // move pipein[] to StreamDefRight[]
-  Pipein[]\clear to StreamDefRight[]
+  // move pipein[] to StreamDefRht[]
+  Pipein[]\clear to StreamDefRht[]
 
   // evaluate the expression
   ExprEval[].new
   StreamDefOut[].new
-
-  <etc> StreamDefLeft[] StreamDefRight[] StreamDefOut[] ExprEval[].evaluateJoin to eError
+/*
+  <etc> StreamDefLft[] StreamDefRht[] StreamDefOut[] ExprEval[].evaluateJoin to eError
 
   // check for error
   eError EC_NONE == not if

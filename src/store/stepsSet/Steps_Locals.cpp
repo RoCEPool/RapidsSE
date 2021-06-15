@@ -336,6 +336,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("StreamDefRht[]"_Stz)) {
+    pCurrentWord->vEncodeCall("StreamDefRht[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("StreamSet[]"_Stz)) {
     pCurrentWord->vEncodeCall("StreamSet[].set"_Stz);
     EXIT();

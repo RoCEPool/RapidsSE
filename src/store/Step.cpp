@@ -176,8 +176,9 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Steps();
   Step::vAddSteps_Str();
   Step::vAddSteps_StringA();
-  Step::vAddSteps_StreamDef();
+  Step::vAddSteps_StreamDefLft();
   Step::vAddSteps_StreamDefOut();
+  Step::vAddSteps_StreamDefRht();
   Step::vAddSteps_StreamSet();
   Step::vAddSteps_StreamSetTable();
   Step::vAddSteps_Subset();
