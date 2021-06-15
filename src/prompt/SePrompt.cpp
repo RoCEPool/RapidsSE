@@ -189,7 +189,9 @@ void SePrompt::vPromptLoop(void)
   Thread* pThreadTest = AM::pThisTLSThread();
 
   
-  m_pPrintOp = Api::pGetOperator("print"_Stz);
+//  m_pPrintOp = Api::pGetOperator("print"_Stz);
+//  Job* pOpJob = m_pPrintOp->pOpJob();
+//  AM::vSpawnJob_dedicated(pOpJob);
   
   ASSERT(0 == pInputGet()->iDepth());
   pInputGet()->vUseStdin();

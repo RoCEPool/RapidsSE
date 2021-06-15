@@ -6,16 +6,15 @@
 #include "StageMarkers.hpp"
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
-#include "RootNode.hpp"
 #include "GraphNav.hpp"
 #include "GraphEditor.hpp"
-#include "ShadowRoot.hpp"
 #include "ShadowPlan.hpp"
-#include "StatementMarker.hpp"
-#include "StageMarker.hpp"
+#include "ShadowRoot.hpp"
+#include "store/parser/shadowNodes/planObjects/planMarkers/statementMarkers/StatementMarker.hpp"
+#include "store/parser/shadowNodes/planObjects/planMarkers/statementMarkers/dml/ExplainMarker.hpp"
+#include "store/parser/shadowNodes/planObjects/planMarkers/StageMarker.hpp"
 #include "SetOp.hpp"
 #include "ExplainOp.hpp"
-#include "ExplainMarker.hpp"
 
 using namespace Parser;
 

@@ -141,127 +141,8 @@ void AggregateOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 
   vAppendIndent(sBuf, iIndent, eIndentFormat::IF_ARROW);
   sBuf.vConcat(GraphNav::szLeafType(pNode->szType()));
 
-  // Get the list of Projected expressions
-  PlanNode* pProjColumns = GraphNav::pFindProperty(const_cast<Stz*>(C_PROJECTEDCOLUMNS_PROP), pNode);
-  ASSERT(pProjColumns);
-
-  ASSERT(pNode->nChildren() == 1);
-  ASSERT(PlanObject::bIsOfType(pNode->pFirstChild()));
-  QueryNodeList* pColExprList = nullptr;
-
-  // Explaining very early plans are difficult because we cannot resolve the column expressions.
-  // We don't want to call PlanObject::pColumnExprs() below before we have been able
-  // to resolve all table/column names in the system.
-  // When we resolve names we also add metadata into plan. So if the metadata node has
-  // no children then we probably haven't resolved any names yet (except for the case of
-  // the plan only containing literals).
-
-  if (MetadataNode::bHasMetadata(ShadowRoot::pMetadataNode(pRootNode))) {
-    pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pRootNode);
-  }
-
-  // Iterate each Projected expression
-  if (pProjColumns->bHasChildren()) {
-    PlanNodeIter* pIter = pProjColumns->pNewChildrenIter();
-
-    while (pIter->bHasNext()) {
-      QueryNode* pProjColumn = _pQueryNode(pIter->pNext());
-      ASSERT(pProjColumn);
-      ASSERT(ProjectedColumn::bIsOfType(pProjColumn));
-
-      // Get the description of the Projected expression
-      s2K sColBuf;
-      ProjectedColumn::vDescribe(pProjColumn, sColBuf, pColExprList, pRootNode);
-      sBuf.vConcat("\n"_Stz);
-      vAppendIndent(sBuf, iIndent, IF_PLAIN);
-      sBuf.vCatSprint("column: (%s)"_Stz, sColBuf.szStz());
-    }
-
-    delete pIter;
-  }
-
-  if (pColExprList) {
-    pColExprList->vDeleteAll();
-    delete pColExprList;
-  }
-
-//  // DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG
-//  // For printing the AggregateOp's projected column list in ordinal notation
-//  // relative to the group by list (NOT the projected columns from the sql
-//  // operator below).
-//
-//  QueryNode* pGroupByRelativeProjectedColumns = pOrdinalProjectedColumnsRelativeToGroupBy(_pQueryNode(pNode), pRootNode);
-//  PlanNodeIter* pIter = pGroupByRelativeProjectedColumns->pNewChildrenIter();
-//
-//  while (pIter->bHasNext()) {
-//    QueryNode* pProjColumn = _pQueryNode(pIter->pNext());
-//    ASSERT(pProjColumn);
-//    ASSERT(ProjectedColumn::bIsOfType(pProjColumn));
-//
-//    // Get the description of the Projected expression
-//    s2K sColBuf;
-//    ProjectedColumn::vDescribe(pProjColumn, sColBuf, nullptr, pRootNode);
-//    sBuf.vConcat("\n"_Stz);
-//    vAppendIndent(sBuf, iIndent, IF_PLAIN);
-//    sBuf.vCatSprint("column-relative-to-group-by: (%s)"_Stz, sColBuf.szStz());
-//  }
-//
-//  delete pIter;
-//  delete pGroupByRelativeProjectedColumns;
-//  // DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG DEBUG
-
-  // Get the list of symbolic groupby expressions
-  PlanNode* pGroupByExprs = GraphNav::pFindProperty(const_cast<Stz*>(C_GROUPBY_PROP), pNode);
-  ASSERT(pGroupByExprs);
-
-  // Iterate each groupby expression
-  if (pGroupByExprs->bHasChildren()) {
-    PlanNodeIter* pIter = pGroupByExprs->pNewChildrenIter();
-
-    while (pIter->bHasNext()) {
-      QueryNode* pGroupByExpr = _pQueryNode(pIter->pNext());
-      ASSERT(pGroupByExpr);
-      ASSERT(Expr::bIsOfType(pGroupByExpr));
-
-      // Get the description of the group by expression
-      s2K sExprBuf;
-      Expr::vDescribe(pGroupByExpr, sExprBuf);
-      sBuf.vConcat("\n"_Stz);
-      vAppendIndent(sBuf, iIndent, IF_PLAIN);
-      sBuf.vCatSprint("group by: (%s)"_Stz, sExprBuf.szStz());
-    }
-
-    delete pIter;
-  }
-
-  // Get the list of *ordinal* groupby expressions.
-  // Again this is skipped if the plan is very early in the compilation pipeline
-  // and not all names have been qualified.
-  if (MetadataNode::bHasMetadata(ShadowRoot::pMetadataNode(pRootNode))) {
-    PlanNode *pOrdinalGroupByExprs = pOrdinalGroupByList(_pQueryNode(pNode), pRootNode);
-    ASSERT(pOrdinalGroupByExprs);
-
-    // Iterate each ordinal groupby expression
-    if (pOrdinalGroupByExprs->bHasChildren()) {
-      PlanNodeIter *pIter = pOrdinalGroupByExprs->pNewChildrenIter();
-
-      while (pIter->bHasNext()) {
-        QueryNode *pOrdGroupByExpr = _pQueryNode(pIter->pNext());
-        ASSERT(pOrdGroupByExpr);
-        ASSERT(Expr::bIsOfType(pOrdGroupByExpr));
-
-        // Get the description of the group by expression
-        s2K sExprBuf;
-        Expr::vDescribe(pOrdGroupByExpr, sExprBuf);
-        sBuf.vCatSprint(" ; Ordinal Exprs = (%s)"_Stz, sExprBuf.szStz());
-      }
-
-      delete pIter;
-    }
-
-    delete pOrdinalGroupByExprs;
-  }
-
+  // Add the local properties
+  vExplainCommon(pNode, pRootNode, pNode->szType(), sBuf, iIndent);
 
   // Recurse any children of pNode
   if (pNode->bHasChildren()) {
@@ -278,6 +159,82 @@ void AggregateOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 
 }
 
 /*----------------------------------------------------------------------------*/
+/* Recurses down the query plan and writes the explain of the stmt to the buf */
+/*----------------------------------------------------------------------------*/
+void AggregateOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szType, s48K &sBuf, i8 iIndent)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  if (bIsExactType(szType)) {
+    // Explain any common attributes of this object
+    // Get the parent type and keep recursing back
+    s256 sParentType;
+    GraphNav::vParentType(szType, sParentType);
+    PlanObject::vExplainCommon(pNode, pRootNode, sParentType, sBuf, iIndent);
+
+    // Explain any local attributes of this object
+
+    // Get the list of symbolic groupby expressions
+    PlanNode* pGroupByExprs = GraphNav::pFindProperty(const_cast<Stz*>(C_GROUPBY_PROP), pNode);
+    ASSERT(pGroupByExprs);
+
+    // Iterate each groupby expression
+    if (pGroupByExprs->bHasChildren()) {
+      PlanNodeIter* pIter = pGroupByExprs->pNewChildrenIter();
+
+      while (pIter->bHasNext()) {
+        QueryNode* pGroupByExpr = _pQueryNode(pIter->pNext());
+        ASSERT(pGroupByExpr);
+        ASSERT(Expr::bIsOfType(pGroupByExpr));
+
+        // Get the description of the group by expression
+        s2K sExprBuf;
+        Expr::vDescribe(pGroupByExpr, sExprBuf);
+        sBuf.vConcat("\n"_Stz);
+        vAppendIndent(sBuf, iIndent, IF_PLAIN);
+        sBuf.vCatSprint("group by: (%s)"_Stz, sExprBuf.szStz());
+      }
+
+      delete pIter;
+    }
+
+    // Get the list of *ordinal* groupby expressions.
+    // Again this is skipped if the plan is very early in the compilation pipeline
+    // and not all names have been qualified.
+    if (MetadataNode::bHasMetadata(ShadowRoot::pMetadataNode(pRootNode))) {
+      PlanNode *pOrdinalGroupByExprs = pOrdinalGroupByList(_pQueryNode(pNode), pRootNode);
+      ASSERT(pOrdinalGroupByExprs);
+
+      // Iterate each ordinal groupby expression
+      if (pOrdinalGroupByExprs->bHasChildren()) {
+        PlanNodeIter *pIter = pOrdinalGroupByExprs->pNewChildrenIter();
+
+        while (pIter->bHasNext()) {
+          QueryNode *pOrdGroupByExpr = _pQueryNode(pIter->pNext());
+          ASSERT(pOrdGroupByExpr);
+          ASSERT(Expr::bIsOfType(pOrdGroupByExpr));
+
+          // Get the description of the group by expression
+          s2K sExprBuf;
+          Expr::vDescribe(pOrdGroupByExpr, sExprBuf);
+          sBuf.vCatSprint(" ; Ordinal Exprs = (%s)"_Stz, sExprBuf.szStz());
+        }
+
+        delete pIter;
+      }
+
+      delete pOrdinalGroupByExprs;
+    }
+
+    return;
+  }
+
+  // Manual polymorphism here
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns true if the given node is derived from the statement definition    */
 /*----------------------------------------------------------------------------*/
 b1 AggregateOp::bIsOfType(PlanNode *pNode)
@@ -286,11 +243,27 @@ b1 AggregateOp::bIsOfType(PlanNode *pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns true if the given type str is derived from the objects definition  */
+/*----------------------------------------------------------------------------*/
+b1 AggregateOp::bIsOfType(Stz* szType)
+{
+  return ShadowNode::bIsOfType(szType, C_AGGREGATEOP_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns true if the given node is precisely same as its definition         */
 /*----------------------------------------------------------------------------*/
 b1 AggregateOp::bIsExactType(PlanNode *pNode)
 {
   return ShadowNode::bIsExactType(pNode, C_AGGREGATEOP_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely the same as its definition     */
+/*----------------------------------------------------------------------------*/
+b1 AggregateOp::bIsExactType(Stz* szType)
+{
+  return ShadowNode::bIsExactType(szType, C_AGGREGATEOP_DEFN);
 }
 
 /*----------------------------------------------------------------------------*/

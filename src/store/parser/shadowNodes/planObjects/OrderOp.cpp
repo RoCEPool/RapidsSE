@@ -84,33 +84,8 @@ void OrderOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iInd
   vAppendIndent(sBuf, iIndent, eIndentFormat::IF_ARROW);
   sBuf.vConcat(GraphNav::szLeafType(pNode->szType()));
 
-  // Get the list of ordering expressions expression
-  PlanNode* pOrderItemList = GraphNav::pFindProperty(const_cast<Stz*>(C_ORDERITEMLIST_PROP), pNode);
-  ASSERT(pOrderItemList);
-
-  s2K sExprBuf;
-  OrderItemList::vDescribe(pOrderItemList, sExprBuf);
-
-  sBuf.vConcat("\n"_Stz);
-  vAppendIndent(sBuf, iIndent, IF_PLAIN);
-  sBuf.vCatSprint("order expr: (%s)"_Stz, sExprBuf.szStz());
-
-  // Explaining very early plans are difficult because we cannot resolve the column expressions.
-  // We don't want to retrieve any ordinal expressions below before we have been able
-  // to resolve all table/column names in the system.
-  // When we resolve names we also add metadata into plan. So if the metadata node has
-  // no children then we probably haven't resolved any names yet (except for the case of
-  // the plan only containing literals).
-
-  if (MetadataNode::bHasMetadata(ShadowRoot::pMetadataNode(pRootNode))) {
-    QueryNode* pOrdOrderItemList = pOrdinalOrderItemList(_pQueryNode(pNode), pRootNode);
-    sExprBuf.vReset();
-    OrderItemList::vDescribe(pOrdOrderItemList, sExprBuf);
-    sBuf.vConcat("\n"_Stz);
-    vAppendIndent(sBuf, iIndent, IF_PLAIN);
-    sBuf.vCatSprint("ordinal order expr: (%s)"_Stz, sExprBuf.szStz());
-    delete pOrdOrderItemList;
-  }
+  // Add the local properties
+  vExplainCommon(pNode, pRootNode, pNode->szType(), sBuf, iIndent);
 
   // Recurse any children of pNode
   if (pNode->bHasChildren()) {
@@ -127,6 +102,57 @@ void OrderOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iInd
 }
 
 /*----------------------------------------------------------------------------*/
+/* Recurses down the query plan and writes the explain of the stmt to the buf */
+/*----------------------------------------------------------------------------*/
+void OrderOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szType, s48K &sBuf, i8 iIndent)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  if (bIsExactType(szType)) {
+    // Explain any common attributes of this object
+    // Get the parent type and keep recursing back
+    s256 sParentType;
+    GraphNav::vParentType(szType, sParentType);
+    PlanObject::vExplainCommon(pNode, pRootNode, sParentType, sBuf, iIndent);
+
+    // Explain any local attributes of this object
+
+    // Get the list of ordering expressions expression
+    PlanNode* pOrderItemList = GraphNav::pFindProperty(const_cast<Stz*>(C_ORDERITEMLIST_PROP), pNode);
+    ASSERT(pOrderItemList);
+
+    s2K sExprBuf;
+    OrderItemList::vDescribe(pOrderItemList, sExprBuf);
+
+    sBuf.vConcat("\n"_Stz);
+    vAppendIndent(sBuf, iIndent, IF_PLAIN);
+    sBuf.vCatSprint("order expr: (%s)"_Stz, sExprBuf.szStz());
+
+    // Explaining very early plans are difficult because we cannot resolve the column expressions.
+    // We don't want to retrieve any ordinal expressions below before we have been able
+    // to resolve all table/column names in the system.
+    // When we resolve names we also add metadata into plan. So if the metadata node has
+    // no children then we probably haven't resolved any names yet (except for the case of
+    // the plan only containing literals).
+
+    if (MetadataNode::bHasMetadata(ShadowRoot::pMetadataNode(pRootNode))) {
+      QueryNode* pOrdOrderItemList = pOrdinalOrderItemList(_pQueryNode(pNode), pRootNode);
+      sExprBuf.vReset();
+      OrderItemList::vDescribe(pOrdOrderItemList, sExprBuf);
+      sBuf.vConcat("\n"_Stz);
+      vAppendIndent(sBuf, iIndent, IF_PLAIN);
+      sBuf.vCatSprint("ordinal order expr: (%s)"_Stz, sExprBuf.szStz());
+      delete pOrdOrderItemList;
+    }
+
+    return;
+  }
+
+  // Manual polymorphism here
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns true if the given node is derived from the statement definition    */
 /*----------------------------------------------------------------------------*/
 b1 OrderOp::bIsOfType(PlanNode *pNode)
@@ -136,11 +162,27 @@ b1 OrderOp::bIsOfType(PlanNode *pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns true if the given type str is derived from the objects definition  */
+/*----------------------------------------------------------------------------*/
+b1 OrderOp::bIsOfType(Stz* szType)
+{
+  return ShadowNode::bIsOfType(szType, C_ORDEROP_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns true if the given node is precisely the same as its definition     */
 /*----------------------------------------------------------------------------*/
 b1 OrderOp::bIsExactType(PlanNode *pNode)
 {
   return ShadowNode::bIsExactType(pNode, C_ORDEROP_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely the same as its definition     */
+/*----------------------------------------------------------------------------*/
+b1 OrderOp::bIsExactType(Stz* szType)
+{
+  return ShadowNode::bIsExactType(szType, C_ORDEROP_DEFN);
 }
 
 /*----------------------------------------------------------------------------*/

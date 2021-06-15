@@ -321,6 +321,10 @@
 
   // get the pipeline job of the operator
   Op.pipelineJob@ locals| pPipelineJob |
+  
+  pPipelineJob not if
+    exit
+  then
 
   //pPipelineJob job.jobList@  "Job list %v" .printf
 

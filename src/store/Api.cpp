@@ -967,8 +967,17 @@ Op* Api::pOpCreate(Word* pOpWord)
   
   ReqTuple xReqTuple(pOpWord->szWordNm(),iSessionId, false);
   Job* pOpJob = AM::pNewJobOp(pOp,&xReqTuple);
-
+  pOp->vOpJob(pOpJob);
   
+  TagSet* pJobTags = pOpJob->pJobTags();
+  
+  pJobTags->vReplace("<seedReq>"_Stz,pOpWord->szWordNm());
+  pJobTags->vReplace(C_TAG_PATH,"/"_Stz);
+
+  pJobTags->vReplace(C_TAG_TOPOLOGY,C_UNKNOWN);
+  pJobTags->vReplace(C_TAG_NEXTSTAGE,C_UNKNOWN);
+  pJobTags->vReplace(C_TAG_NEXTOP,C_UNKNOWN);
+
   return pOp;
 }
 

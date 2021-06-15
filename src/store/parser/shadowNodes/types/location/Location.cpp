@@ -20,11 +20,39 @@ using namespace Parser;
 /*----------------------------------------------------------------------------*/
 static Stz* C_LOCATION_DEFN = "/__root__/definitions/types/location"_Stz;
 
+static Stz* acLO[Parser::Location::LO_NENUMS] = {
+    nullptr,
+    "origin"_Stz,
+    "all nodes"_Stz,
+    "all partitions"_Stz
+};
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* Creates a location node based on its enum type                             */
+/*----------------------------------------------------------------------------*/
+QueryNode* Parser::Location::pCreate(eLO eType)
+{
+  _static_
+
+  switch (eType) {
+
+    case LO_ORIGIN:
+      return Origin::pCreate();
+
+    case LO_ALL_NODES:
+      return AllNodes::pCreate();
+
+    case LO_ALL_PARTITIONS:
+      return AllPartitions::pCreate();
+
+    default:
+      NEVER_REACH
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
@@ -62,15 +90,42 @@ b1 Parser::Location::bIsExactType(PlanNode *pNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Returns the name of a location enumeration given a node                    */
+/* Returns an enum that represents the type of location                       */
 /*----------------------------------------------------------------------------*/
-Stz* Parser::Location::szLocationName(PlanNode *pNode)
+Parser::Location::eLO Parser::Location::eLocationType(PlanNode* pNode)
 {
+  _static_
   ASSERT(bIsOfType(pNode));
 
-  return GraphNav::szLeafType(pNode->szType());
+  // Manual Polymorphism
+  if      (AllPartitions::bIsOfType(pNode))   { return LO_ALL_PARTITIONS; }
+  else if (AllNodes::bIsOfType(pNode))        { return LO_ALL_NODES;      }
+  else if (Origin::bIsOfType(pNode))          { return LO_ORIGIN;         }
+
+  else {
+    // Need to add in manual polymorphism here
+    NEVER_REACH
+  }
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns an enum that represents the type of location                       */
+/*----------------------------------------------------------------------------*/
+Stz* Parser::Location::szLocationType(PlanNode* pNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  // Manual Polymorphism
+  if      (AllPartitions::bIsOfType(pNode))   { return acLO[LO_ALL_PARTITIONS]; }
+  else if (AllNodes::bIsOfType(pNode))        { return acLO[LO_ALL_NODES];      }
+  else if (Origin::bIsOfType(pNode))          { return acLO[LO_ORIGIN];         }
+
+  else {
+    // Need to add in manual polymorphism here
+    NEVER_REACH
+  }
+}
 
 /*============================================================================*/
 /* end                                                                        */

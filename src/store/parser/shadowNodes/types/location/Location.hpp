@@ -18,7 +18,16 @@ namespace Parser
 
 
   public:
-//    static QueryNode* pCreate(eCT eType);
+    enum eLO {
+      LO_NONE = 0,
+      LO_ORIGIN,
+      LO_ALL_NODES,
+      LO_ALL_PARTITIONS,
+      LO_NENUMS
+    };
+
+    static QueryNode* pCreate(eLO eType);
+
     static void vDescribe(PlanNode* pNode, s2K& sBuf);
 
     // Returns true if a given node is a given type ** or is derived from that type **
@@ -27,8 +36,12 @@ namespace Parser
     // Returns true if a given node is this exact given type.
     static b1 bIsExactType(PlanNode* pNode);
 
-    // Returns a string representing the name of the location enumeration
-    static Stz* szLocationName(PlanNode* pNode);
+    // Get an enum that represents the type of location
+    static eLO eLocationType(PlanNode* pNode);
+
+    // Get a short string that represents the type of location
+    static Stz* szLocationType(PlanNode* pNode);
+
   };
 
 }

@@ -8,7 +8,7 @@
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
 
-#include "store/parser/shadowNodes/planObjects/statementMarkers/StatementMarker.hpp"
+#include "store/parser/shadowNodes/planObjects/planMarkers/statementMarkers/StatementMarker.hpp"
 #include "store/parser/shadowNodes/compound/TableRef.hpp"
 #include "Expr.hpp"
 #include "store/parser/shadowNodes/compound/ProjectedColumn.hpp"
@@ -91,6 +91,21 @@ b1 ShadowNode::bIsOfType(PlanNode* pNode, Stz* szTypePath)
 {
   ASSERT(pNode);
   ASSERT(pNode->szType());
+
+  return bIsOfType(pNode->szType(), szTypePath);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if a given node is a given type or is derived from that type. */
+/* e.g. a node with the following type:                                       */
+/*    /__root__/definitions/object/expr/literal/string                        */
+/* will return true when compared to the following type path:                 */
+/*    /__root__/definitions/object/expr                                       */
+/*----------------------------------------------------------------------------*/
+b1 ShadowNode::bIsOfType(Stz* szNodeType, Stz* szTypePath)
+{
+  ASSERT(szNodeType);
+  ASSERT(szNodeType->nLength() > 0);
   ASSERT(szTypePath);
   ASSERT(szTypePath->nLength() > 0);
 
@@ -100,15 +115,14 @@ b1 ShadowNode::bIsOfType(PlanNode* pNode, Stz* szTypePath)
   // child of that type. It also avoids false comparisons. e.g. a "timestamp"
   // type can be confused with a "time" type because "timestamp" begins
   // with "time".
-  Stz* szNodeType = pNode->szType();
 
   b1 bResult = (
       szNodeType->bEqual(szTypePath) ||
-        (
-           szNodeType->bBeginsWith(szTypePath)            &&
-           szNodeType->nLength() > szTypePath->nLength()  &&
-           szNodeType->azChar()[szTypePath->nLength()] == '/'
-        )
+      (
+          szNodeType->bBeginsWith(szTypePath)            &&
+          szNodeType->nLength() > szTypePath->nLength()  &&
+          szNodeType->azChar()[szTypePath->nLength()] == '/'
+      )
   );
 
   return bResult;
@@ -128,6 +142,22 @@ b1 ShadowNode::bIsExactType(PlanNode* pNode, Stz* szTypePath)
   ASSERT(szTypePath->nLength() > 0);
 
   return pNode->szType()->bEqual(szTypePath);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if a given node is of an exact given type only.               */
+/* e.g. a node with the following type:                                       */
+/*    /__root__/definitions/object/expr/literal/string                        */
+/* will return false when compared to the following type path:                */
+/*    /__root__/definitions/object/expr                                       */
+/*----------------------------------------------------------------------------*/
+b1 ShadowNode::bIsExactType(Stz* szNodeType, Stz* szTypePath)
+{
+  ASSERT(szNodeType);
+  ASSERT(szTypePath);
+  ASSERT(szTypePath->nLength() > 0);
+
+  return szNodeType->bEqual(szTypePath);
 }
 
 /*============================================================================*/
