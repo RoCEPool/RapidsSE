@@ -52,9 +52,7 @@ Op* Api::pGetOperator(Stz* szOpNm)
     pOp = Api::pOpCreate(pOpWord);
     return pOp;
   }
-
-  // is it a pipeline or a single operator?
-  
+    
   return nullptr;
 }
 
@@ -963,7 +961,13 @@ Op* Api::pOpCreate(Word* pOpWord)
 {
   _static_
   
+  i8 iSessionId = 1;
+  
   Op* pOp = new Op(pOpWord->szWordNm());
+  
+  ReqTuple xReqTuple(pOpWord->szWordNm(),iSessionId, false);
+  Job* pOpJob = AM::pNewJobOp(pOp,&xReqTuple);
+
   
   return pOp;
 }

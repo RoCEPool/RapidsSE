@@ -1729,11 +1729,11 @@ Job* AM::pNewJobOp(Op* pOp, ReqTuple* pReqTuple)
   Job* pNewJob;
   
   // get the CmdTag words tagSet
-  TagSet* pCmdTagSet = CmdHelper::pCmdTagSet(pOp->szOpNm());
-  
-  // get the jobKind from the cmdTagSet
-  eJK eJobKind = (eJK)pCmdTagSet->iValue(C_TAG_JOBKIND);
-  UNUSED(eJobKind);
+//  TagSet* pCmdTagSet = CmdHelper::pCmdTagSet(pOp->szOpNm());
+//
+//  // get the jobKind from the cmdTagSet
+//  eJK eJobKind = (eJK)pCmdTagSet->iValue(C_TAG_JOBKIND);
+//  UNUSED(eJobKind);
 
   pNewJob = new Job(pReqTuple);
 
