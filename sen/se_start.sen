@@ -97,6 +97,12 @@
 //    "Error Code %v" .printf
 //  then
   
+  // spawn thread demon
+  "" false threadDemonPipeline api::spawnDemon not if
+    "Error Code %v" .printf
+  then
+
+
   "end start_run" .verbose
 
   // delete task instead of returning to nowhere
