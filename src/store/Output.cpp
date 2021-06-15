@@ -427,8 +427,8 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
           break;
         }
 
-        case OM_EACHROWEOSMARKER: {
-          //vTrace("Pipeline Job: EACHROWEOSMARKER\n"_Stz);
+        case OM_EACHSCANEOSMARKER: {
+          //vTrace("Pipeline Job: EACHSCANEOSMARKER\n"_Stz);
           AM::vDeleteOperand(pOperand);
           break;
         }

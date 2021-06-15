@@ -70,6 +70,7 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].newCsvBuffer"_Stz,   &Step::vOperandNewCsvBuffer);
   vAddStep("Operand[].newDataPulse"_Stz,   &Step::vOperandNewDataPulse);
   vAddStep("Operand[].newDestroyMarker"_Stz, &Step::vOperandNewDestroyMarker);
+  vAddStep("Operand[].newEachScanEosMarker"_Stz,   &Step::vOperandNewEachScanEosMarker);
   vAddStep("Operand[].newEosMarker"_Stz,   &Step::vOperandNewEosMarker);
   vAddStep("Operand[].newErrorMarker"_Stz, &Step::vOperandNewErrorMarker);
   vAddStep("Operand[].newErroredMarker"_Stz,&Step::vOperandNewErroredMarker);
@@ -566,6 +567,20 @@ void Step::vOperandNewDestroyMarker(void)
   
   m_pJob->pLogicUnit_job()->m_xpOperandA = new Marker(OM_DESTROYMARKER);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].newEachScanEosMarker -- new an each scan end marker              */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandNewEachScanEosMarker(void)
+{
+  ENTRY();
+
+  ASSERT (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull());
+
+  m_pJob->pLogicUnit_job()->m_xpOperandA = new Marker(OM_EACHSCANEOSMARKER);
+
   EXIT();
 }
 

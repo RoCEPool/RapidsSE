@@ -12,7 +12,7 @@ create table T (
 );
 
 print "loading nation.csv..." ;
-load T "../TPCH/SF1/nation.tbl" ;
+load T "../DATA/TPCH/nation1.tbl" ;
 
 
 create table J (
@@ -23,7 +23,7 @@ create table J (
 );
 
 print "loading nation.csv..." ;
-load J "../TPCH/SF1/nationAgg.tbl" ;
+load J "../TPCH/SF1/nation.tbl" ;
 
 trackMemory;
 
@@ -33,7 +33,7 @@ begin
     start | periodic once | stageB
 
   stage stageB on all partitions :
-    scan T | filter 0 "type boolean $1 5 >=" | eachRow | stageC
+    scan T | filter 0 "type boolean $1 5 >=" | eachRow | eachScan J | stageC
 
   stage stageC on origin :
     output | sink | stageA
