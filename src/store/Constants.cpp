@@ -59,7 +59,7 @@ extern Stz* gsBuildBranch;
 /*----------------------------------------------------------------------------*/
 void Constants::vAddConstant(Stz* szName, i8 iVal)
 {
-  Word* pNewWord = new(AM::pDicRoot()) Word(szName);
+  Word* pNewWord = new(AM::DIC::pRoot()) Word(szName);
   
   pNewWord->vCategory(AM::pConstantRoot());
   
@@ -75,7 +75,7 @@ void Constants::vAddConstant(Stz* szName, i8 iVal)
 /*----------------------------------------------------------------------------*/
 void Constants::vAddConstant(Stz* szName, Stz* szVal)
 {
-  Word* pNewWord = new(AM::pDicRoot()) Word(szName);
+  Word* pNewWord = new(AM::DIC::pRoot()) Word(szName);
   
   CellSingle xVar;
   xVar = szVal;

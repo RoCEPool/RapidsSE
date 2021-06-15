@@ -60,7 +60,7 @@ void Step::vSenColon(void)
   if (m_oDicStack.nItems())
     pDic = m_oDicStack.pTop();
   else
-    pDic = AM::pDicRoot();
+    pDic = AM::DIC::pRoot();
   
   Word* pFoundWord = pDic->pFindWord(sWordNm);
   if (pFoundWord) {
@@ -104,7 +104,7 @@ void Step::vSenCreateFromInRoot(void)
   s32 sName;
   m_pDataStack->vPopStr(sName,__func__);
   
-  Dic* pDic = AM::pDicRoot();
+  Dic* pDic = AM::DIC::pRoot();
   
   //vTrace(": %s\n"_Stz,sName.azChar());
   Word* pNewWord = new(pDic) Word(sName);
@@ -730,7 +730,7 @@ void Step::vSenSeriesName(void)
   
   i8 iNext = 0;
   
-  Dic* pDicRoot = AM::pDicRoot();
+  Dic* pDicRoot = AM::DIC::pRoot();
   
   Word* pWord = nullptr;
   while ( (pWord = pDicRoot->pEachWord(pWord)) ) {

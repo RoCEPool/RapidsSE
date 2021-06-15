@@ -26,6 +26,7 @@
 
 #include "ePP.h"
 #include "TagConstants.h"
+#include "Op.hpp"
 
 
 
@@ -82,8 +83,9 @@ SePrompt::SePrompt(bool bOneCommand)
   
   m_pCurrentDeputy = nullptr;
   
-  
   m_pJobTagSet = nullptr;
+  
+  m_pPrintOp = nullptr;
   
   _checkInitialised_(CN_SEPROMPT);
   
@@ -139,6 +141,8 @@ SePrompt::~SePrompt(void) noexcept(false)
   m_pLitTknVec->vSoftReset();
   delete m_pLitTknVec;
   
+  delete m_pPrintOp;
+  
   AM::THREAD::vDeleteThread(m_pThread);
 
   AM::LOG::vEvent(EV_DESTRUCT,"SePrompt destructor"_Stz);
@@ -184,6 +188,9 @@ void SePrompt::vPromptLoop(void)
 
   Thread* pThreadTest = AM::pThisTLSThread();
 
+  
+  m_pPrintOp = Api::pGetOperator("print"_Stz);
+  
   ASSERT(0 == pInputGet()->iDepth());
   pInputGet()->vUseStdin();
   pInputGet()->vFormCppTokens();
@@ -766,7 +773,7 @@ bool SePrompt::bIsPromptWord(void)
   s32 sWordNm;
   sWordNm = pTkn0->szChars();
   
-  Dic* pDicRoot = AM::pDicRoot();
+  Dic* pDicRoot = AM::DIC::pRoot();
 
   Word* pWord = pDicRoot->pFindWord(sWordNm);
   

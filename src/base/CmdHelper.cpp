@@ -23,7 +23,7 @@ TagSet* CmdHelper::pCmdTagSet(Stz* szCmdNm)
   StrLib::vConcat(sCmdTagNm.azChar(),(const char*)"_cmdTags"_Stz);
   
   // find the CmdTagNm word
-  Word* pCmdWord = AM::pDicRoot()->pFindWord(sCmdTagNm);
+  Word* pCmdWord = AM::DIC::pRoot()->pFindWord(sCmdTagNm);
   
   // get the CmdTag words tagSet
   TagSet* pCmdTagSet = pCmdWord->pWrdTagSet();
@@ -36,7 +36,7 @@ TagSet* CmdHelper::pCmdTagSet(Stz* szCmdNm)
 /*----------------------------------------------------------------------------*/
 bool CmdHelper::bParseCmd(TokenVec* pTknVec, TagSet* pTagSet)
 {
-  Dic* pDicRoot = AM::pDicRoot();
+  Dic* pDicRoot = AM::DIC::pRoot();
 
   Word* pCategory = nullptr;
   Word* pSyntax   = nullptr;

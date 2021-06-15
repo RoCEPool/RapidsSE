@@ -454,7 +454,7 @@ void Step::vWordNew(void)
   if (m_oDicStack.nItems())
     pDic = m_oDicStack.pTop();
   else
-    pDic = AM::pDicRoot();
+    pDic = AM::DIC::pRoot();
 
   Word* pNewWord = new(pDic) Word(sWordNm);
     

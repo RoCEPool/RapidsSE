@@ -478,7 +478,7 @@ void vTest7(void)
   
   Arrange* pArrange = new Arrange;
   
-  Dic* pDicRoot = AM::pDicRoot();
+  Dic* pDicRoot = AM::DIC::pRoot();
   
   Word* pWord = nullptr;
   

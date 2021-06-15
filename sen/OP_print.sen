@@ -5,27 +5,13 @@
 " OP_print.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_DATAPULSE ...                                               */
-/*----------------------------------------------------------------------------*/
-: print_DataMarker \handler
-
-  //"Operand:- ZK_DATAPULSE" .verbose
-  PipeIn[].pipeOut
-  <string> .
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* printn request                                     (on node where spawned) */
+/* print request                                      (on node where spawned) */
 /*----------------------------------------------------------------------------*/
 : print_req \operator
 
   LogReqEntry SEED_REQ
 
   op__topology
-
-  find: print_DataMarker ZK_DATAPULSE op[].handler!
 
   op__loop
 
@@ -37,7 +23,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: print :: print <string> ;
+cmdSyntax: print :: print ;
 
 : print_cmdTags _cmdTags tagCopy: op_tags
   tags{ <cmdDesc> = "--desc for op--" }

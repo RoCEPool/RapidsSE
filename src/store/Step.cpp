@@ -16,7 +16,7 @@ void Step::vAddStep(Stz* aName, fpSTEPFN fpStepFn, bool bImmediate)
   //vTrace("%s Size = %lld\n"_Stz, aName, aName->nSize());
   RASSERT(aName->nSize() <= 32);
   
-  Dic* pDicRoot = AM::pDicRoot();
+  Dic* pDicRoot = AM::DIC::pRoot();
   Word* pNewWord = new(pDicRoot) Word(aName);
   
   //m_pSenCompiler->vCurrentWord(pNewWord);
@@ -31,7 +31,7 @@ void Step::vAddStep(Stz* aName, fpSTEPFN fpStepFn, bool bImmediate)
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps(void)
 {
-  //Dic* pDicRoot = AM::pDicRoot();
+  //Dic* pDicRoot = AM::DIC::pRoot();
   if (AM::bVerbose())
     vTrace("[[mainThread]] Adding primitives...\n"_Stz);
   

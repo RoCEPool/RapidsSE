@@ -70,6 +70,7 @@ namespace STORE
     void  operator delete(void*);
   
     Op(OpSpec* pOpSpec, Stream* pStream);
+    Op(Stz* szOpNm);
    ~Op(void) noexcept(false);
   
     void vDump(i8 i_Op);
