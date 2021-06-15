@@ -79,7 +79,7 @@
   //indexTreeRlu[].asSrc
 
   // set the indexTree in the devSrcIxt
-  Index[].indexTree DevSrcIxt.indexTree!
+  Index[].indexTree DevLftIxt.indexTree!
 
   // new a stream def
   Table[] StreamDefLft[].new

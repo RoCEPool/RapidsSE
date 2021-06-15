@@ -204,9 +204,9 @@ public:
   // devRhtRow
   void vDevRhtRowStreamDefStore(void);
 
-  // devSrcIxt
-  void vDevSrcIxtCrwBufferStore(void);
-  void vDevSrcIxtIndexTreeStore(void);
+  // devLftIxt
+  void vDevLftIxtCrwBufferStore(void);
+  void vDevLftIxtIndexTreeStore(void);
 
   // dic
   void vDicDelete(void);

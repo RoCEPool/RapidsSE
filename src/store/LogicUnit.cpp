@@ -136,7 +136,7 @@ LogicUnit::LogicUnit(Task* pTask)
   m_pDevRhtRow = new DevROW;
   m_pDevAltRow = new DevROW;
 
-  m_pDevSrcIxt = new DevIXT;
+  m_pDevLftIxt = new DevIXT;
   m_pDevAltIxt = new DevIXT;
   m_pDevTmpIxt = new DevIXT;
 
@@ -146,7 +146,7 @@ LogicUnit::LogicUnit(Task* pTask)
   
   m_xRluCommon.m_pDevLftRow = m_pDevLftRow;
   m_xRluCommon.m_pDevRhtRow = m_pDevRhtRow;
-  m_xRluCommon.m_pDevSrcIxt = m_pDevSrcIxt;
+  m_xRluCommon.m_pDevLftIxt = m_pDevLftIxt;
   m_xRluCommon.m_pDevAltRow = m_pDevAltRow;
   m_xRluCommon.m_pDevAltIxt = m_pDevAltIxt;
   m_xRluCommon.m_pDevTmpIxt = m_pDevTmpIxt;
@@ -240,7 +240,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
 
   delete m_pDevTmpIxt;
   delete m_pDevAltIxt;
-  delete m_pDevSrcIxt;
+  delete m_pDevLftIxt;
   
   delete m_pLogicTimer;
 }
@@ -3242,7 +3242,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_PUSH_DEVIXT_SRC: ArgNil(); // push src ixt devive
         dLU0(EO_PUSH_DEVIXT_SRC);
-        P_PushPtr(aRluCommon->m_pDevSrcIxt);
+        P_PushPtr(aRluCommon->m_pDevLftIxt);
         break;//+endCase
 
       case EO_PUSH_DEVIXT_TMP: ArgNil(); // push tmp ixt device

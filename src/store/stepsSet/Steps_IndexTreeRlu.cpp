@@ -56,7 +56,7 @@ void Step::vIndexTreeRluAsSrc(void)
 
   IndexTree* pIndexTree = _pIndexTree(m_pJob->pLogicUnit_job()->m_xRluCommon.m_pIndexTree);
 
-  m_pJob->pLogicUnit_job()->m_pDevSrcIxt->m_pIdxTree = pIndexTree;
+  m_pJob->pLogicUnit_job()->m_pDevLftIxt->m_pIdxTree = pIndexTree;
   
   EXIT();
 }

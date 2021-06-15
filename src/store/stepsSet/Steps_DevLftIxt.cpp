@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_DevSrcIxt.cpp -- DevSrcIxt step group                                */
+/* Steps_DevLftIxt.cpp -- DevLftIxt step group                                */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -26,36 +26,36 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_DevSrcIxt(void)
+void Step::vAddSteps_DevLftIxt(void)
 {
-  vAddStep("DevSrcIxt.indexTree!"_Stz,         &Step::vDevSrcIxtIndexTreeStore);
-  vAddStep("DevSrcIxt.crwBuffer!"_Stz,         &Step::vDevSrcIxtCrwBufferStore);
+  vAddStep("DevLftIxt.indexTree!"_Stz,         &Step::vDevLftIxtIndexTreeStore);
+  vAddStep("DevLftIxt.crwBuffer!"_Stz,         &Step::vDevLftIxtCrwBufferStore);
 }
 
 /*----------------------------------------------------------------------------*/
-/* DevSrcIxt.crwBuffer! -- store crwBuffer in DevSrcRow                       */
+/* DevLftIxt.crwBuffer! -- store crwBuffer in DevSrcRow                       */
 /*----------------------------------------------------------------------------*/
-void Step::vDevSrcIxtCrwBufferStore(void)
+void Step::vDevLftIxtCrwBufferStore(void)
 {
   ENTRY();
 
   CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pDataStack->pPopPtr(__func__));
 
-  ( m_pJob->pLogicUnit_job() )->m_pDevSrcIxt->m_pCrwBuffer = pCrwBuffer;
+  ( m_pJob->pLogicUnit_job() )->m_pDevLftIxt->m_pCrwBuffer = pCrwBuffer;
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* DevSrcIxt.indexTree! -- store indexTree in src devIxt                      */
+/* DevLftIxt.indexTree! -- store indexTree in src devIxt                      */
 /*----------------------------------------------------------------------------*/
-void Step::vDevSrcIxtIndexTreeStore(void)
+void Step::vDevLftIxtIndexTreeStore(void)
 {
   ENTRY();
   
   IndexTree* pIndexTree = _pIndexTree(m_pDataStack->pPopPtr(__func__));
 
-  ( m_pJob->pLogicUnit_job() )->m_pDevSrcIxt->m_pIdxTree = pIndexTree;
+  ( m_pJob->pLogicUnit_job() )->m_pDevLftIxt->m_pIdxTree = pIndexTree;
   
   EXIT();
 }
