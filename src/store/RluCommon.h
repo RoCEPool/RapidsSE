@@ -40,6 +40,7 @@ struct RluCommon                      // **IF YOU CHANGE THIS DO A CLEAN BUILD**
   void* m_pDevAltRow;
 
   void* m_pDevLftIxt;
+  void* m_pDevRhtIxt;
   void* m_pDevAltIxt;
   void* m_pDevTmpIxt;
 

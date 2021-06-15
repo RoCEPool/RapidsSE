@@ -228,6 +228,7 @@ namespace STORE
 
     DevIXT*    m_pDevAltIxt;
     DevIXT*    m_pDevLftIxt;
+    DevIXT*    m_pDevRhtIxt;
     DevIXT*    m_pDevTmpIxt;
   
     LogicTimer* m_pLogicTimer;

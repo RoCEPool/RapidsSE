@@ -137,6 +137,7 @@ LogicUnit::LogicUnit(Task* pTask)
   m_pDevAltRow = new DevROW;
 
   m_pDevLftIxt = new DevIXT;
+  m_pDevRhtIxt = new DevIXT;
   m_pDevAltIxt = new DevIXT;
   m_pDevTmpIxt = new DevIXT;
 
@@ -147,6 +148,7 @@ LogicUnit::LogicUnit(Task* pTask)
   m_xRluCommon.m_pDevLftRow = m_pDevLftRow;
   m_xRluCommon.m_pDevRhtRow = m_pDevRhtRow;
   m_xRluCommon.m_pDevLftIxt = m_pDevLftIxt;
+  m_xRluCommon.m_pDevRhtIxt = m_pDevRhtIxt;
   m_xRluCommon.m_pDevAltRow = m_pDevAltRow;
   m_xRluCommon.m_pDevAltIxt = m_pDevAltIxt;
   m_xRluCommon.m_pDevTmpIxt = m_pDevTmpIxt;
@@ -241,6 +243,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   delete m_pDevTmpIxt;
   delete m_pDevAltIxt;
   delete m_pDevLftIxt;
+  delete m_pDevRhtIxt;
   
   delete m_pLogicTimer;
 }
