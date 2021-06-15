@@ -58,6 +58,9 @@ namespace PROMPT
     // some debugging aids
     i8        m_iDivisionNo; // division numbering
     i8        m_iSectionNo;  // section numbering
+  
+  
+    Op*       m_pPrintOp;    // the companion print op
 
     // -- -- -- -- -- --
     // delete

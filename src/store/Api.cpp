@@ -963,7 +963,9 @@ Op* Api::pOpCreate(Word* pOpWord)
 {
   _static_
   
-  return nullptr;
+  Op* pOp = new Op(pOpWord->szWordNm());
+  
+  return pOp;
 }
 
 /*----------------------------------------------------------------------------*/

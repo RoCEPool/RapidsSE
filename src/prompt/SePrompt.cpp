@@ -26,6 +26,7 @@
 
 #include "ePP.h"
 #include "TagConstants.h"
+#include "Op.hpp"
 
 
 
@@ -82,8 +83,9 @@ SePrompt::SePrompt(bool bOneCommand)
   
   m_pCurrentDeputy = nullptr;
   
-  
   m_pJobTagSet = nullptr;
+  
+  m_pPrintOp = nullptr;
   
   _checkInitialised_(CN_SEPROMPT);
   
@@ -139,6 +141,8 @@ SePrompt::~SePrompt(void) noexcept(false)
   m_pLitTknVec->vSoftReset();
   delete m_pLitTknVec;
   
+  delete m_pPrintOp;
+  
   AM::THREAD::vDeleteThread(m_pThread);
 
   AM::LOG::vEvent(EV_DESTRUCT,"SePrompt destructor"_Stz);
@@ -185,7 +189,7 @@ void SePrompt::vPromptLoop(void)
   Thread* pThreadTest = AM::pThisTLSThread();
 
   
-  Op* pPrintOp = Api::pGetOperator("print"_Stz);
+  m_pPrintOp = Api::pGetOperator("print"_Stz);
   
   ASSERT(0 == pInputGet()->iDepth());
   pInputGet()->vUseStdin();
