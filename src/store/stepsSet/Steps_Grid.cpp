@@ -131,7 +131,7 @@ void Step::vGridPutGridParts(void)
 
   //Grid* pGrid = _pGrid(m_pDataStack->pPopPtr(__func__));
 
-  Grid* pGrid  = nullptr;
+  Grid* pGridRemote  = nullptr;
   Parcel* pParcel = (Parcel*)m_pDataStack->pPopPtr(__func__);
 
   i8 nObjParts = pParcel->nObjects();
@@ -141,17 +141,34 @@ void Step::vGridPutGridParts(void)
   for (i8 i_Obj = 0; i_Obj < nObjParts; i_Obj++) {
     Object *pObject = pParcel->pGetObject(i_Obj);
     if (pObject && (pObject->eGetClassNo() == CN_GRID)) {
-      pGrid = (Grid *) pObject;
-      //vTrace("Table:%p reassemble from parcel, tablename:%s\n"_Stz,pTable, pTable->szTableNm()->azChar());
+      pGridRemote = (Grid *) pObject;
+      vTrace("Grid:%p reassemble from parcel, grid:%s\n"_Stz,pGridRemote, pGridRemote->szClassNm()->azChar());
       // call reassemble parts code
-      pGrid->iReassembleFromParcel(pParcel);
+      pGridRemote->iReassembleFromParcel(pParcel);
       break;
     }
   }
 
+  bool bMatched = false;
 
+  Grid* pGridLocal = AM::pGrid();
 
-  m_pDataStack->vPushInt(1);
+  if (pGridLocal->nNodes() == pGridRemote->nNodes()) {
+    for (Node_I oNode_I(0,C_ALL); oNode_I.bMore(); oNode_I.vNext()) {
+      Node* pNode = (*oNode_I);
+
+      if (pGridRemote->pFindNodeByNodeNo(pNode->iNodeNo()) == nullptr) {
+        bMatched = false;
+        break;
+      }
+    }
+
+  }
+
+  if (bMatched) vTrace(">>>>>>>>>>>Matched Grid\n"_Stz);
+  else vTrace(">>>>>>>>>>>NOT Matched Grid\n"_Stz);
+
+  bMatched ? m_pDataStack->vPushInt(1) : m_pDataStack->vPushInt(0);
 
   EXIT();
 }
