@@ -4,7 +4,7 @@
 #pragma once
 
 #include "PlanNode.hpp"
-#include "QueryNodeList.hpp"
+#include "QueryNodeStack.hpp"
 
 namespace Parser
 {
@@ -22,7 +22,10 @@ namespace Parser
     static void vPartitionPlan(PlanNode* pRootNode);
 
   private:
-    static void vPartitionStatementSection(QueryNode* pStatementMarker, PlanNode* pRootNode, QueryNode* pPlanRoot);
+    static QueryNode* pPartitionStatementSection(QueryNode* pStatementMarker,
+                                                 PlanNode* pRootNode,
+                                                 QueryNode* pPlanRoot,
+                                                 QueryNodeStack* pStmtSectionStack);
   };
 }
 

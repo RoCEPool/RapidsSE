@@ -87,16 +87,58 @@ PlanNode* GraphEditor::pNewFromTemplate(const PlanNode* pTemplateRoot)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Remove and replace pReplaceChild in parent node pParentNode with the       */
-/* nodes in pReplacementList. Moves nodes from pReplacementList.              */
-/* Deletes the pReplaceChild. Does not delete pReplacementList.               */
+/* Remove and replace pExistingChild in parent node pParentNode with          */
+/* pReplacementNode                                                           */
 /*----------------------------------------------------------------------------*/
-void GraphEditor::vReplaceChild(QueryNode* pParentNode, QueryNode* pReplaceChild,
+void GraphEditor::vReplaceChild(QueryNode* pParentNode, QueryNode* pExistingChild,
+                                QueryNode* pReplacementNode)
+{
+  ASSERT(pParentNode);
+  ASSERT(pParentNode->m_pChildren);
+  ASSERT(pExistingChild);
+  ASSERT(pReplacementNode);
+
+  // We are going to create a new list of children and replace the existing
+  // child list in the parent object.
+
+  PlanNodeList* pOldChildList = pParentNode->m_pChildren;
+  PlanNodeList* pNewChildList = new PlanNodeList();
+
+  PlanNode* pChild;
+
+  while ((pChild = pOldChildList->pPop()) != nullptr) {
+
+    if (pChild == pExistingChild) {
+      // replace this child
+      delete pExistingChild;
+      pNewChildList->vAppend(pReplacementNode);
+
+    } else {
+      // keep this child
+      pNewChildList->vAppend(pChild);
+    }
+  }
+
+  // clean up
+  ASSERT(pOldChildList->nItems() == 0);
+  delete pOldChildList;
+
+  // Set the new list as the children list in the parent object
+  pParentNode->m_pChildren = pNewChildList;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Remove and replace pExistingChild in parent node pParentNode with the       */
+/* nodes in pReplacementList. Moves nodes from pReplacementList.              */
+/* Deletes the pExistingChild. Does not delete pReplacementList.               */
+/*----------------------------------------------------------------------------*/
+void GraphEditor::vReplaceChild(QueryNode* pParentNode, QueryNode* pExistingChild,
                                 QueryNodeList* pReplacementList)
 {
   ASSERT(pParentNode);
   ASSERT(pParentNode->m_pChildren);
-  ASSERT(pReplaceChild);
+  ASSERT(pExistingChild);
   ASSERT(pReplacementList);
 
   // We are going to create a new list of children and replace the existing
@@ -107,13 +149,13 @@ void GraphEditor::vReplaceChild(QueryNode* pParentNode, QueryNode* pReplaceChild
 
   PlanNode* pChild;
 
-  // Order is important here, so move all of the children we find before pReplaceChild
+  // Order is important here, so move all of the children we find before pExistingChild
   // into the new list.
-  while ((pChild = pOldChildList->pPop()) != pReplaceChild && pChild != nullptr) {
+  while ((pChild = pOldChildList->pPop()) != pExistingChild && pChild != nullptr) {
     pNewChildList->vAppend(pChild);
   }
 
-  ASSERT(pChild == pReplaceChild);
+  ASSERT(pChild == pExistingChild);
 
   // Now move the replacements
   while ((pChild = pReplacementList->pPop()) != nullptr) {
@@ -126,7 +168,7 @@ void GraphEditor::vReplaceChild(QueryNode* pParentNode, QueryNode* pReplaceChild
   }
 
   // clean up
-  delete pReplaceChild;
+  delete pExistingChild;
   ASSERT(pOldChildList->nItems() == 0);
   delete pOldChildList;
 

@@ -26,10 +26,14 @@ namespace Parser
     // Create a new copy of the plan graph using the template
     static PlanNode* pNewFromTemplate(const PlanNode* pTemplateRoot);
 
-    // Remove and replace pReplaceChild in parent node pParentNode with the
-    // nodes in pReplacementList.
-    static void vReplaceChild(QueryNode* pParentNode, QueryNode* pReplaceChild,
-                              QueryNodeList* pReplacementList);
+    // Remove and replace pExistingChild in parent node pParentNode with pReplacementNode
+    static void vReplaceChild(QueryNode* pParentNode, QueryNode* pExistingChild,
+                              QueryNode* pReplacementNode);
+
+    // Remove and replace pExistingChild in parent node pParentNode with the
+    // nodes in pReplacementNode.
+    static void vReplaceChild(QueryNode* pParentNode, QueryNode* pExistingChild,
+                              QueryNodeList* pReplacementNode);
 
     // Remove a child from its parent and optionally transplant that child's
     // children in its place. Returns the snipped child.

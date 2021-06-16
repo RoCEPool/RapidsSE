@@ -4,23 +4,20 @@
 
 #include "BASE.h"
 #include "PartitionPlan.hpp"
+
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
+#include "QueryNodeStack.hpp"
+
 #include "GraphNav.hpp"
 #include "GraphEditor.hpp"
+
 #include "ShadowRoot.hpp"
 #include "ShadowPlan.hpp"
+
 #include "StatementMarker.hpp"
-#include "SqlException.hpp"
-#include "ProjectedColumn.hpp"
-#include "StringObject.hpp"
-#include "ProjectOp.hpp"
-#include "Expr.hpp"
-#include "ColumnRef.hpp"
-#include "ColumnOrdinal.hpp"
 #include "ProjectOp.hpp"
 #include "AggregateOp.hpp"
-
 #include "SetOp.hpp"
 
 
@@ -44,8 +41,10 @@ void PartitionPlan::vPartitionPlan(PlanNode *pRootNode)
   ASSERT(pPlanRoot);
   ASSERT(ShadowPlan::bIsOfType(pPlanRoot));
 
+  QueryNodeStack* pStmtSectionStack = new QueryNodeStack;
+
   // Iterate each node, looking for a StatementMarker
-  auto fVisitor = [pRootNode, pPlanRoot]
+  auto fVisitor = [pRootNode, pPlanRoot, pStmtSectionStack]
       (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
@@ -58,20 +57,30 @@ void PartitionPlan::vPartitionPlan(PlanNode *pRootNode)
 
     QueryNode* pStatementMarker = _pQueryNode(pNode);
 
-    vPartitionStatementSection(pStatementMarker, pRootNode, pPlanRoot);
+    QueryNode* pPartitionedSection = pPartitionStatementSection(pStatementMarker, pRootNode, pPlanRoot, pStmtSectionStack);
+    pStmtSectionStack->vPush(pPartitionedSection);
 
-    // We keep walking down each section because we will only push a ProjectOp
-    // down one level at a time.
     return GraphNav::WALK_CONTINUE;
   };
 
-  GraphNav::bGlobalWalk(pPlanRoot->pFirstChild(), false, true, fVisitor, pRootNode);
+  // Iterate from the bottom up so that parent nodes can encapsulate child nodes and branches
+  GraphNav::bGlobalWalkBottomUp(pPlanRoot->pFirstChild(), false, true, fVisitor, pRootNode);
+  ASSERT(pStmtSectionStack->nItems() == 1);
+
+  // Replace the logical plan with the partitioned plan
+  GraphEditor::vReplaceChild(pPlanRoot, _pQueryNode(pPlanRoot->pFirstChild()), pStmtSectionStack->pPop());
+
+  ASSERT(pStmtSectionStack->nItems() == 0);
+  delete pStmtSectionStack;
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* Parallelises a statement marker section. Returns a new subgraph            */
 /*----------------------------------------------------------------------------*/
-void PartitionPlan::vPartitionStatementSection(QueryNode* pStatementMarker, PlanNode* pRootNode, QueryNode* pPlanRoot)
+QueryNode* PartitionPlan::pPartitionStatementSection(QueryNode* pStatementMarker,
+                                                     PlanNode* pRootNode,
+                                                     QueryNode* pPlanRoot,
+                                                     QueryNodeStack* pStmtSectionStack)
 {
   // TODO: How effective is it to partition each statement section?
   //       StatementSections are used for separating completely different statements
@@ -101,7 +110,7 @@ void PartitionPlan::vPartitionStatementSection(QueryNode* pStatementMarker, Plan
   //    TableScanOp     TableScanOp
 
   // Walk the graph bottom up.
-  // Duplicate the node.
+  // Duplicate the node (without children).
   // If the node is a data source then set location to all partitions
   //   and push it onto a stack.
   // If the node is not a data source then pop a node from the stack,
@@ -118,6 +127,15 @@ void PartitionPlan::vPartitionStatementSection(QueryNode* pStatementMarker, Plan
   // Not all statement sections will be parallelised with operators at all 3 levels.
   // e.g. a set operator (and everything above it) will always run on the origin only.
 
+  QueryNode*      pOriginChain = nullptr;
+  QueryNode*      pNodeChain   = nullptr;
+  QueryNodeStack* pPartitionStack = new QueryNodeStack();
+
+
+  ASSERT(pPartitionStack->nItems() == 1);
+  QueryNode* pPartitionedSection = pPartitionStack->pPop();
+  delete pPartitionStack;
+  return pPartitionedSection;
 }
 
 
