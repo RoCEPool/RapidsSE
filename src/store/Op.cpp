@@ -37,7 +37,7 @@ __aFooterFunction(Op);
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Op::Op(OpSpec* pOpSpec, Stream* pStream)
-: Object(CN_OP)
+: Operand(CN_OP)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -120,7 +120,7 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Op::Op(Stz* szOpNm)
-: Object(CN_OP)
+: Operand(CN_OP)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   

@@ -11,7 +11,7 @@ namespace STORE { class PipelineSpec; class StageSpec; class OpSpec; }
 
 namespace STORE
 {
-  class Op : public Object
+  class Op : public Operand
   {
   private:
     s32  m_sPipelineNm; // pipeline name
