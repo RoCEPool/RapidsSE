@@ -196,7 +196,9 @@ void SePrompt::vPromptLoop(void)
   
 //  m_pPrintOp = Api::pGetOperator("print"_Stz);
 //  Job* pOpJob = m_pPrintOp->pOpJob();
-//  AM::vSpawnJob_dedicated(pOpJob);
+//  Task* pOpTask = AM::pTaskNew(pOpJob);
+//
+//  AM::DEMON::vPipeTo("__threadDemon"_Stz, m_pPrintOp);
 //
 //
 //  Marker* pStartMarker = new Marker(OM_STARTMARKER);

@@ -189,7 +189,13 @@ void AM::DEMON::vPipeTo(Stz* szDemonNm, Operand* pOperand)
 //  then
 
   Dic* pRootDic = AM::DIC::pRoot();
-  Word* pDemonWord = pRootDic->pFindWord(szDemonNm);
+  Word* pDemonWord = nullptr;
+  
+  while (! (pDemonWord = pRootDic->pFindWord(szDemonNm))) {
+    vTrace("Sleeping till demon: %s\n"_Stz,szDemonNm);
+    vNapMsec(3000,CN_PIPELINE);
+  }
+  
   Job* pPipelineJob = _pJob(pDemonWord->pObject());
   Pipeline* pPipeline = pPipelineJob->m_pPipeline;
   Op* pOp0 = pPipeline->pOp0();
@@ -1868,6 +1874,7 @@ i8 AM::iOperandZkKind(Operand* pOperand)
     }
 
     case CN_NAMEDBUFFER:  eOperand = ZK_NAMEDBUFFER;    break;
+    case CN_OP:           eOperand = ZK_OP;             break;
     case CN_OTHEROPERAND: eOperand = ZK_OTHEROPERAND;   break;
     case CN_PLANOPERAND:  eOperand = ZK_PLANOPERAND;    break;
     case CN_PROFILE:      eOperand = ZK_PROFILE;        break;
