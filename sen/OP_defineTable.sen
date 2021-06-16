@@ -30,7 +30,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the table
 
-  StreamDef[] <tableNm> table::createTable to Table[]
+  StreamDefLft[] <tableNm> table::createTable to Table[]
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -41,7 +41,7 @@
   0 locals| errorCode |
 
   // get the stream def
-  Pipein[] to StreamDef[]
+  Pipein[] to StreamDefLft[]
   nullptr to Pipein[]
 
   // grab the ddl lock
@@ -51,7 +51,7 @@
   // check ok to create table
   defineTable::checkDefine not if ( errorCode )
     to errorCode
-    StreamDef[].delete
+    StreamDefLft[].delete
     errorCode op__execErr
     true
     exit

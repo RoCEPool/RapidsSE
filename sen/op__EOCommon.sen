@@ -12,7 +12,7 @@
   params| eError |
 
   // cleanup
-  StreamDef[].delete
+  StreamDefLft[].delete
   StreamDefOut[].delete
   ExprEval[].delete
 
@@ -34,7 +34,7 @@
   params| eError |
 
   // cleanup
-  StreamDef[].delete
+  StreamDefLft[].delete
   StreamDefOut[].delete
 
   // set EATOPERAND handler for buffers and EOS markers coming in

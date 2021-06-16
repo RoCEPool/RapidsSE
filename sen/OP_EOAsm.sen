@@ -175,7 +175,7 @@
   0 ZK_CRWBUFFER EG_ZK LogicUnit[].diaryNote
 
   Operand[].pipeIn
-  Operand[].asSrcCrwBuffer
+  Operand[] DevLftIxt.crwBuffer!
   ZK_CRWBUFFER Counter0[] executeAsmArgs
   Operand[].delete
   PotRlu[].pipeoutCompletedPtns
@@ -192,7 +192,7 @@
 
   //Pipein[] "GOT ROWBUFFER %v" .printf
   Operand[].pipeIn
-  Operand[].asSrcRowBuffer
+  Operand[] DevLftRow.rowBuffer!
   ZK_ROWBUFFER Counter0[] executeAsmArgs
   Operand[].delete
   PotRlu[].pipeoutCompletedPtns
@@ -243,13 +243,13 @@
 
   0 ZK_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
-  Pipein[] to StreamDef[]
+  Pipein[] to StreamDefLft[]
   nullptr to Pipein[]
 
   // execute plan STREAMDEF_handler
   ZK_STREAMDEF Counter0[] executeAsmArgs
 
-  //StreamDef[].asSrcStreamDef
+  //StreamDefLft[].asSrcStreamDef
 
   // pipeout streamDefout if any
   StreamDefOut[].isNull not if

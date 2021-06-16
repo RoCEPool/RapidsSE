@@ -74,7 +74,7 @@ void Step::vToHshCrwRegCreate(void)
 {
   ENTRY();
     
-  ToHshCrw* pToHshCrw = new ToHshCrw(* m_pJob->pLogicUnit_job()->m_xpStreamDef);
+  ToHshCrw* pToHshCrw = new ToHshCrw(* m_pJob->pLogicUnit_job()->m_xpStreamDefLft);
       
   m_pJob->pLogicUnit_job()->m_xpToHshCrw = pToHshCrw;
 

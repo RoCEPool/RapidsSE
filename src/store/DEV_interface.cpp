@@ -8,6 +8,7 @@
 #include "Marker.hpp"
 
 #include "RowBuffer.hpp"
+#include "EachRowBuffer.hpp"
 
 #include "RowCoder.hpp"
 #include "HeadLine.hpp"
@@ -1765,7 +1766,7 @@ void vDev_POT_USE_STREAMDEFOUT(void* aLU, i8 iAddPtnHsh)
 }
 
 /*----------------------------------------------------------------------------*/
-/* move StreamDef[] to  streamDefout[]                                        */
+/* move StreamDefLft[] to  streamDefout[]                                        */
 /*----------------------------------------------------------------------------*/
 void vDev_REG_STREAMDEF_STREAMDEFOUT(void* aLU)
 {
@@ -1773,7 +1774,7 @@ void vDev_REG_STREAMDEF_STREAMDEFOUT(void* aLU)
   
   LogicUnit* pLogicUnit = _pLogicUnit(aLU);
   
-  pLogicUnit->m_xpStreamDefOut = pLogicUnit->m_xpStreamDef;
+  pLogicUnit->m_xpStreamDefOut = pLogicUnit->m_xpStreamDefLft;
 }
 
 /*----------------------------------------------------------------------------*/

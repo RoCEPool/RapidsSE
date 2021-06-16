@@ -86,17 +86,8 @@ void TableScanOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 
   vAppendIndent(sBuf, iIndent, eIndentFormat::IF_ARROW);
   sBuf.vConcat(GraphNav::szLeafType(pNode->szType()));
 
-  // Get the tableref property
-  PlanNode* pTableRefNode = GraphNav::pFindProperty(const_cast<Stz*>(C_TABLEREF_PROP), pNode);
-  ASSERT(pTableRefNode);
-  ASSERT(TableRef::bIsOfType(pTableRefNode));
-
-  // Print the table reference
-  s2K sTblBuf;
-  TableRef::vDescribe(pTableRefNode, sTblBuf);
-  sBuf.vConcat("\n"_Stz);
-  vAppendIndent(sBuf, iIndent, IF_PLAIN);
-  sBuf.vCatSprint("table: (%s)"_Stz, sTblBuf.szStz());
+  // Add the local properties
+  vExplainCommon(pNode, pRootNode, pNode->szType(), sBuf, iIndent);
 
   // Recurse any children
   if (pNode->bHasChildren()) {
@@ -113,6 +104,39 @@ void TableScanOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/* Recurses down the query plan and writes the explain of the stmt to the buf */
+/*----------------------------------------------------------------------------*/
+void TableScanOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szType, s48K &sBuf, i8 iIndent)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  if (bIsExactType(szType)) {
+    // Explain any common attributes of this object
+    // Get the parent type and keep recursing back
+    s256 sParentType;
+    GraphNav::vParentType(szType, sParentType);
+    PlanObject::vExplainCommon(pNode, pRootNode, sParentType, sBuf, iIndent);
+
+    // Explain any local attributes of this object
+    // Get the tableref property
+    PlanNode* pTableRefNode = GraphNav::pFindProperty(const_cast<Stz*>(C_TABLEREF_PROP), pNode);
+    ASSERT(pTableRefNode);
+    ASSERT(TableRef::bIsOfType(pTableRefNode));
+
+    // Print the table reference
+    s2K sTblBuf;
+    TableRef::vDescribe(pTableRefNode, sTblBuf);
+    sBuf.vConcat("\n"_Stz);
+    vAppendIndent(sBuf, iIndent, IF_PLAIN);
+    sBuf.vCatSprint("table: (%s)"_Stz, sTblBuf.szStz());
+
+    return;
+  }
+
+  // Manual polymorphism here
+}
 
 /*----------------------------------------------------------------------------*/
 /* Returns true if the given node is derived from the statement definition    */
@@ -123,11 +147,27 @@ b1 TableScanOp::bIsOfType(PlanNode *pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns true if the given type str is derived from the objects definition  */
+/*----------------------------------------------------------------------------*/
+b1 TableScanOp::bIsOfType(Stz* szType)
+{
+  return ShadowNode::bIsOfType(szType, C_TABLESCAN_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns true if the given node is precisely the same as its definition     */
 /*----------------------------------------------------------------------------*/
 b1 TableScanOp::bIsExactType(PlanNode *pNode)
 {
   return ShadowNode::bIsExactType(pNode, C_TABLESCAN_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely the same as its definition     */
+/*----------------------------------------------------------------------------*/
+b1 TableScanOp::bIsExactType(Stz* szType)
+{
+  return ShadowNode::bIsExactType(szType, C_TABLESCAN_DEFN);
 }
 
 /*----------------------------------------------------------------------------*/

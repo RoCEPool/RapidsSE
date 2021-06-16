@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_DevSrcRow.cpp -- DevSrcRow step group                                */
+/* Steps_DevRhtIxt.cpp -- DevRhtIxt step group                                */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -14,6 +14,7 @@
 #include "EntBuffer.hpp"
 #include "IndexTree.hpp"
 #include "CrvBuffer.hpp"
+#include "CrwBuffer.hpp"
 #include "TablePtn.hpp"
 #include "Table.hpp"
 #include "Op.hpp"
@@ -25,21 +26,36 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_DevSrcRow(void)
+void Step::vAddSteps_DevRhtIxt(void)
 {
-  vAddStep("DevSrcRow.streamDef!"_Stz,         &Step::vDevSrcRowStreamDefStore);
+  vAddStep("DevRhtIxt.indexTree!"_Stz,         &Step::vDevRhtIxtIndexTreeStore);
+  vAddStep("DevRhtIxt.crwBuffer!"_Stz,         &Step::vDevRhtIxtCrwBufferStore);
 }
 
 /*----------------------------------------------------------------------------*/
-/* DevSrcRow.streamDef! -- store streamDef in src devRow                      */
+/* DevRhtIxt.crwBuffer! -- store crwBuffer in DevSrcRow                       */
 /*----------------------------------------------------------------------------*/
-void Step::vDevSrcRowStreamDefStore(void)
+void Step::vDevRhtIxtCrwBufferStore(void)
+{
+  ENTRY();
+
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pDataStack->pPopPtr(__func__));
+
+  ( m_pJob->pLogicUnit_job() )->m_pDevRhtIxt->m_pCrwBuffer = pCrwBuffer;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* DevRhtIxt.indexTree! -- store indexTree in src devIxt                      */
+/*----------------------------------------------------------------------------*/
+void Step::vDevRhtIxtIndexTreeStore(void)
 {
   ENTRY();
   
-  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  IndexTree* pIndexTree = _pIndexTree(m_pDataStack->pPopPtr(__func__));
 
-  ( m_pJob->pLogicUnit_job() )->m_pDevSrcRow->m_pStreamDef = pStreamDef;
+  ( m_pJob->pLogicUnit_job() )->m_pDevRhtIxt->m_pIdxTree = pIndexTree;
   
   EXIT();
 }

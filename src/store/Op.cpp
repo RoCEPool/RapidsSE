@@ -38,7 +38,7 @@ __aFooterFunction(Op);
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Op::Op(OpSpec* pOpSpec, Stream* pStream)
-: Object(CN_OP)
+: Operand(CN_OP)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -121,7 +121,7 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Op::Op(Stz* szOpNm)
-: Object(CN_OP)
+: Operand(CN_OP)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -940,13 +940,23 @@ void Op::vIncOperandCount(i8 i_OperandKind)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get out operator                                                           */
+/* get job                                                                    */
 /*----------------------------------------------------------------------------*/
 Job* Op::pOpJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   return m_pOpJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set job                                                                    */
+/*----------------------------------------------------------------------------*/
+void Op::vOpJob(Job* pOpJob)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  m_pOpJob = pOpJob;
 }
 
 /*----------------------------------------------------------------------------*/

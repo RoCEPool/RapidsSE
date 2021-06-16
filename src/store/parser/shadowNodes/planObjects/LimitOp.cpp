@@ -96,22 +96,8 @@ void LimitOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iInd
   vAppendIndent(sBuf, iIndent, eIndentFormat::IF_ARROW);
   sBuf.vConcat(GraphNav::szLeafType(pNode->szType()));
 
-  // Get the limit and offset properties
-  PlanNode* pLimitProp = GraphNav::pFindProperty(const_cast<Stz*>(C_LIMITPROP_NAME), pNode);
-  ASSERT(pLimitProp);
-
-  PlanNode* pOffsetProp = GraphNav::pFindProperty(const_cast<Stz*>(C_OFFSETPROP_NAME), pNode);
-  ASSERT(pOffsetProp);
-
-  sBuf.vConcat("\n"_Stz);
-  vAppendIndent(sBuf, iIndent, IF_PLAIN);
-  sBuf.vCatSprint("limit: (%lld)"_Stz, pLimitProp->iValue());
-
-  if (!pOffsetProp->bIsNullValue()) {
-    sBuf.vConcat("\n"_Stz);
-    vAppendIndent(sBuf, iIndent, IF_PLAIN);
-    sBuf.vCatSprint("offset: (%lld)"_Stz, pOffsetProp->iValue());
-  }
+  // Add the local properties
+  vExplainCommon(pNode, pRootNode, pNode->szType(), sBuf, iIndent);
 
   // Recurse any children of pNode
   if (pNode->bHasChildren()) {
@@ -128,6 +114,46 @@ void LimitOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iInd
 }
 
 /*----------------------------------------------------------------------------*/
+/* Recurses down the query plan and writes the explain of the stmt to the buf */
+/*----------------------------------------------------------------------------*/
+void LimitOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szType, s48K &sBuf, i8 iIndent)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  if (bIsExactType(szType)) {
+    // Explain any common attributes of this object
+    // Get the parent type and keep recursing back
+    s256 sParentType;
+    GraphNav::vParentType(szType, sParentType);
+    PlanObject::vExplainCommon(pNode, pRootNode, sParentType, sBuf, iIndent);
+
+    // Explain any local attributes of this object
+
+    // Get the limit and offset properties
+    PlanNode* pLimitProp = GraphNav::pFindProperty(const_cast<Stz*>(C_LIMITPROP_NAME), pNode);
+    ASSERT(pLimitProp);
+
+    PlanNode* pOffsetProp = GraphNav::pFindProperty(const_cast<Stz*>(C_OFFSETPROP_NAME), pNode);
+    ASSERT(pOffsetProp);
+
+    sBuf.vConcat("\n"_Stz);
+    vAppendIndent(sBuf, iIndent, IF_PLAIN);
+    sBuf.vCatSprint("limit: (%lld)"_Stz, pLimitProp->iValue());
+
+    if (!pOffsetProp->bIsNullValue()) {
+      sBuf.vConcat("\n"_Stz);
+      vAppendIndent(sBuf, iIndent, IF_PLAIN);
+      sBuf.vCatSprint("offset: (%lld)"_Stz, pOffsetProp->iValue());
+    }
+
+    return;
+  }
+
+  // Manual polymorphism here
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns true if the given node is derived from the statement definition    */
 /*----------------------------------------------------------------------------*/
 b1 LimitOp::bIsOfType(PlanNode *pNode)
@@ -136,11 +162,27 @@ b1 LimitOp::bIsOfType(PlanNode *pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns true if the given type str is derived from the objects definition  */
+/*----------------------------------------------------------------------------*/
+b1 LimitOp::bIsOfType(Stz* szType)
+{
+  return ShadowNode::bIsOfType(szType, C_LIMITOP_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns true if the given node is precisely the same as its definition     */
 /*----------------------------------------------------------------------------*/
 b1 LimitOp::bIsExactType(PlanNode *pNode)
 {
   return ShadowNode::bIsExactType(pNode, C_LIMITOP_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely the same as its definition     */
+/*----------------------------------------------------------------------------*/
+b1 LimitOp::bIsExactType(Stz* szType)
+{
+  return ShadowNode::bIsExactType(szType, C_LIMITOP_DEFN);
 }
 
 /*----------------------------------------------------------------------------*/

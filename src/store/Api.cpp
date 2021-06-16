@@ -52,9 +52,6 @@ Op* Api::pGetOperator(Stz* szOpNm)
     pOp = Api::pOpCreate(pOpWord);
     return pOp;
   }
-
-  // is it a pipeline or a single operator?
-  
   return nullptr;
 }
 
@@ -746,7 +743,8 @@ void Api::vSpawnJob_dedicated(Job* pJob)
 {
   _static_
   
-  RASSERT(! pJob->pTask());
+  //RASSERT(! pJob->pTask());
+  
   vCreateTaskForJob(pJob);
   Scheduler::vTaskApi_AddDedicated(pJob->pTask());
 }
@@ -963,8 +961,23 @@ Op* Api::pOpCreate(Word* pOpWord)
 {
   _static_
   
+  i8 iSessionId = 1;
+  
   Op* pOp = new Op(pOpWord->szWordNm());
   
+  ReqTuple xReqTuple(pOpWord->szWordNm(),iSessionId, false);
+  Job* pOpJob = AM::pNewJobOp(pOp,&xReqTuple);
+  pOp->vOpJob(pOpJob);
+  
+  TagSet* pJobTags = pOpJob->pJobTags();
+  
+  pJobTags->vReplace("<seedReq>"_Stz,pOpWord->szWordNm());
+  pJobTags->vReplace(C_TAG_PATH,"/"_Stz);
+
+  pJobTags->vReplace(C_TAG_TOPOLOGY,C_UNKNOWN);
+  pJobTags->vReplace(C_TAG_NEXTSTAGE,C_UNKNOWN);
+  pJobTags->vReplace(C_TAG_NEXTOP,C_UNKNOWN);
+
   return pOp;
 }
 

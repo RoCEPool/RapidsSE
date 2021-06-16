@@ -555,7 +555,7 @@ void Step::vLogicUnitSrcIndexFetch(void)
 {
   ENTRY();
   
-  DevIXT* pDevIxt = _pDevIXT(m_pJob->pLogicUnit_job()->m_xRluCommon.m_pDevSrcIxt);
+  DevIXT* pDevIxt = _pDevIXT(m_pJob->pLogicUnit_job()->m_xRluCommon.m_pDevLftIxt);
   
   m_pDataStack->vPushStr(pDevIxt->m_sIndexNm);
   
@@ -569,7 +569,7 @@ void Step::vLogicUnitSrcTableFetch(void)
 {
   ENTRY();
   
-  DevROW* pDevRow = _pDevROW(m_pJob->pLogicUnit_job()->m_xRluCommon.m_pDevSrcRow);
+  DevROW* pDevRow = _pDevROW(m_pJob->pLogicUnit_job()->m_xRluCommon.m_pDevLftRow);
   
   m_pDataStack->vPushStr(pDevRow->m_sTableNm);
   

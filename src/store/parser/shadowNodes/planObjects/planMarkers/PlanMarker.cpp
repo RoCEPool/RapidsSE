@@ -9,7 +9,7 @@
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
 
-#include "StatementMarker.hpp"
+#include "store/parser/shadowNodes/planObjects/planMarkers/statementMarkers/StatementMarker.hpp"
 #include "StageMarker.hpp"
 
 #include "GraphNav.hpp"
@@ -69,11 +69,50 @@ void PlanMarker::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 i
 }
 
 /*----------------------------------------------------------------------------*/
+/* Recurses down the query plan and writes the explain of the stmt to the buf */
+/*----------------------------------------------------------------------------*/
+void PlanMarker::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szType, s48K &sBuf, i8 iIndent)
+{
+  _static_
+      ASSERT(bIsOfType(pNode));
+
+  if (bIsExactType(szType)) {
+    // Explain any common attributes of this object
+    // Get the parent type and keep recursing back
+    s256 sParentType;
+    GraphNav::vParentType(szType, sParentType);
+    PlanObject::vExplainCommon(pNode, pRootNode, sParentType, sBuf, iIndent);
+
+    // Explain any local attributes of this object
+    return;
+  }
+
+
+  // Manual polymorphism of subtypes here
+
+  if      (StatementMarker::bIsOfType(szType))   { StatementMarker::vExplainCommon(pNode, pRootNode, szType, sBuf, iIndent); }
+  else if (    StageMarker::bIsOfType(szType))   {     StageMarker::vExplainCommon(pNode, pRootNode, szType, sBuf, iIndent); }
+
+  else {
+    // Need to add in manual polymorphism here
+    NEVER_REACH
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns true if the given node is derived from the statement definition    */
 /*----------------------------------------------------------------------------*/
 b1 PlanMarker::bIsOfType(PlanNode *pNode)
 {
   return ShadowNode::bIsOfType(pNode, C_PLAN_MARKER_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if the given type str is derived from the objects definition  */
+/*----------------------------------------------------------------------------*/
+b1 PlanMarker::bIsOfType(Stz* szType)
+{
+  return ShadowNode::bIsOfType(szType, C_PLAN_MARKER_DEFN);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -84,6 +123,13 @@ b1 PlanMarker::bIsExactType(PlanNode *pNode)
   return ShadowNode::bIsExactType(pNode, C_PLAN_MARKER_DEFN);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely the same as its definition     */
+/*----------------------------------------------------------------------------*/
+b1 PlanMarker::bIsExactType(Stz* szType)
+{
+  return ShadowNode::bIsExactType(szType, C_PLAN_MARKER_DEFN);
+}
 
 /*----------------------------------------------------------------------------*/
 /* Return a list of ProjectedColumns that represent the column expressions      */

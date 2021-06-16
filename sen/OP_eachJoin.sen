@@ -1,0 +1,271 @@
+/*============================================================================*/
+/* OP_eachJoin.sen -- Operator each join                                      */
+/*============================================================================*/
+
+" OP_eachJoin.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* support for seapi immediate                                                */
+/*----------------------------------------------------------------------------*/
+: eachJoin_seapi
+
+  "eachJoin_seapi" .
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_CANCELMARKER ...                                                 END */
+/*----------------------------------------------------------------------------*/
+: eachJoin_CancelMarker \handler
+
+  0 ZK_CANCELMARKER EG_ZK LogicUnit[].diaryNote
+
+  // cleanup the pot
+  PotRlu[].cleanup
+
+  Counter0[] cleanUpAsm
+
+  ZK_CANCELMARKER EG_ZK PD_PIPE_OUT 0 ZK_CANCELMARKER EG_ZK LogicUnit[].diaryAction
+  ZK_CANCELMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_CRWBUFFER ...                                                   EACH */
+/*----------------------------------------------------------------------------*/
+: eachJoin_CrwBuffer \handler
+
+  0 ZK_CRWBUFFER EG_ZK LogicUnit[].diaryNote
+
+  Operand[].pipeIn
+  Operand[] DevLftIxt.crwBuffer!
+  ZK_CRWBUFFER Counter0[] executeAsmArgs
+
+  PotRlu[].pipeoutCompletedPtns
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_EACHROWBUFFER ...                                               EACH */
+/*----------------------------------------------------------------------------*/
+: eachJoin_EachRowBuffer \handler
+
+  0 ZK_EACHROWBUFFER EG_ZK LogicUnit[].diaryNote
+
+  Operand[].pipeIn
+  Operand[] DevLftRow.eachRowBuffer!
+  ZK_EACHROWBUFFER Counter0[] executeAsmArgs
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_EACHSCANEOSMARKER ...                                            END */
+/*----------------------------------------------------------------------------*/
+: eachJoin_EachScanEosMarker \handler
+
+  0 ZK_EACHSCANEOSMARKER EG_ZK LogicUnit[].diaryNote
+
+  // execute the eosMarker asm handler
+  ZK_EACHSCANEOSMARKER Counter0[] executeAsmArgs
+
+  // pipeout all PotRlu[]
+  PotRlu[].pipeoutCompletedPtns
+
+  // delete the EachRowBuffer
+  DevLftRow.deleteEachRowBuffer
+
+  // cleanup compiler
+  Counter0[] cleanUpAsm
+
+  ZK_EACHSCANEOSMARKER EG_ZK PD_PIPE_OUT 0 ZK_EACHSCANEOSMARKER EG_ZK LogicUnit[].diaryAction
+  Pipein[].delete
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_EOSMARKER ...                                                    END */
+/*----------------------------------------------------------------------------*/
+: eachJoin_EosMarker \handler
+
+  0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryNote
+
+  // execute the eosMarker asm handler
+  ZK_EOSMARKER Counter0[] executeAsmArgs
+
+  // pipeout all PotRlu[]
+  PotRlu[].pipeoutDanglingPtns
+  PotRlu[].delete
+
+  // cleanup compiler
+  Counter0[] cleanUpAsm
+
+  ZK_EOSMARKER EG_ZK PD_PIPE_OUT 0 ZK_EOSMARKER EG_ZK LogicUnit[].diaryAction
+  ZK_EOSMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_ERRORMARKER ...                                             */
+/*----------------------------------------------------------------------------*/
+: eachJoin_ERRORMARKER \handler
+
+  find: EATOPERAND_handler   ZK_CRWBUFFER   op[].handler!
+  find: EATOPERAND_handler   ZK_ROWBUFFER   op[].handler!
+  find: EATOPERAND_handler   ZK_EOSMARKER   op[].handler!
+
+  PipeIn[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_ROWBUFFER ...                                                   EACH */
+/*----------------------------------------------------------------------------*/
+: eachJoin_RowBuffer \handler
+
+  0 ZK_ROWBUFFER EG_ZK LogicUnit[].diaryNote
+
+  Operand[].pipeIn
+  Operand[] DevLftRow.rowBuffer!
+  ZK_ROWBUFFER Counter0[] executeAsmArgs
+
+  Operand[].delete
+
+  PotRlu[].pipeoutCompletedPtns
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_STARTMARKER ...                                                 INIT */
+/*----------------------------------------------------------------------------*/
+: eachJoin_StartMarker \handler
+
+  0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryNote
+
+  // new the PotRlu[]
+  PotRlu[].new
+
+  // init the logicUnit[]
+  LogicUnit[].init
+
+  ZK_STARTMARKER_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_STREAMDEF ...                                              STREAMDEF */
+/*----------------------------------------------------------------------------*/
+: eachJoin_StreamDef \handler
+
+  0 ZK_STREAMDEF EG_ZK LogicUnit[].diaryNote
+
+  EC_NONE locals| eError |
+
+  StreamDefLft[].isNull if
+
+    // move pipein[] to StreamDefLft[]
+    Pipein[]\clear to StreamDefLft[]
+
+    true
+    exit
+  then
+
+  // received right table stream def
+
+  // move pipein[] to StreamDefRht[]
+  Pipein[]\clear to StreamDefRht[]
+
+  // evaluate the expression
+  ExprEval[].new
+  StreamDefOut[].new
+/*
+  <etc> StreamDefLft[] StreamDefRht[] StreamDefOut[] ExprEval[].evaluateJoin to eError
+
+  // check for error
+  eError EC_NONE == not if
+    eError op__exprEvalExecErr
+    true
+    exit
+  then
+
+  // generate the asm for the filter
+  ExprEval[] LogicUnit[].genJoin to eError
+  ExprEval[].delete
+
+  // check for error
+  eError EC_NONE == not if
+    eError op__asmGenExecErr
+    true
+    exit
+  then
+
+  // set the streamDef in the DevLftRow
+  StreamDefLeft[]\clear DevLftRow.streamDef!
+
+  // set the streamDef in the devRightRow
+  StreamDefRight[]\clear DevRhtRow.streamDef!
+
+  // create rowPix in potRlu[] from streamDefOut[]
+  false streamDefOut[] PotRlu[].rowPix!
+
+  // pipeout the streamDefOut
+  StreamDefOut[].pipeout
+
+  // create the compiler
+  Counter0[] if
+    LogicCompiler[].new
+    LogicCompiler[].compile
+  then
+
+  // execute the streamDef asm handler
+  ZK_STREAMDEF Counter0[] executeAsmArgs
+*/
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* eachJoin request                                                     SPAWN */
+/*----------------------------------------------------------------------------*/
+: eachJoin_req \operator
+
+  LogReqEntry SEED_REQ
+
+  // get whether compiled or not
+  <compiled> >int to Counter0[]
+
+  op__topology
+
+  find: eachJoin_CancelMarker ZK_CANCELMARKER   op[].handler!
+  find: eachJoin_CrwBuffer    ZK_CRWBUFFER      op[].handler!
+  find: eachJoin_EachRowBuffer ZK_EACHROWBUFFER op[].handler!
+  find: eachJoin_EachScanEosMarker ZK_EACHSCANEOSMARKER op[].handler!
+  find: eachJoin_EosMarker    ZK_EOSMARKER      op[].handler!
+  find: eachJoin_ErrorMarker  ZK_ERRORMARKER    op[].handler!
+  find: eachJoin_RowBuffer    ZK_ROWBUFFER      op[].handler!
+  find: eachJoin_StartMarker  ZK_STARTMARKER    op[].handler!
+  find: eachJoin_StreamDef    ZK_STREAMDEF      op[].handler!
+
+  op__loop
+
+  LogReqExit
+  job::deleteThis
+  DONE_REQ_OP
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: eachJoin :: eachJoin <compiled> <etc> ;
+
+: eachJoin_cmdTags _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

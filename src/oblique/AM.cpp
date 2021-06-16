@@ -174,7 +174,7 @@ Dic* AM::DIC::pRoot(void)
 /*----------------------------------------------------------------------------*/
 /* pipe given row buffer to named demon                                       */
 /*----------------------------------------------------------------------------*/
-void AM::DEMON::vPipeTo(Stz* szDemonNm, RowBuffer* pRowBuffer)
+void AM::DEMON::vPipeTo(Stz* szDemonNm, Operand* pOperand)
 {
   _static_
 
@@ -191,14 +191,21 @@ void AM::DEMON::vPipeTo(Stz* szDemonNm, RowBuffer* pRowBuffer)
 //  then
 
   Dic* pRootDic = AM::DIC::pRoot();
-  Word* pDemonWord = pRootDic->pFindWord(szDemonNm);
+
+  Word* pDemonWord = nullptr;
+  
+  while (! (pDemonWord = pRootDic->pFindWord(szDemonNm))) {
+    vTrace("Sleeping till demon: %s\n"_Stz,szDemonNm);
+    vNapMsec(3000,CN_PIPELINE);
+  }
+  
   Job* pPipelineJob = _pJob(pDemonWord->pObject());
   Pipeline* pPipeline = pPipelineJob->m_pPipeline;
   Op* pOp0 = pPipeline->pOp0();
 
-  Task* pThisTask = AM::pThisTLSTask();
+  //Task* pThisTask = AM::pThisTLSTask();
   
-  pOp0->vAppend(pRowBuffer,pThisTask);
+  pOp0->vAppend(pOperand,nullptr);
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -1785,11 +1792,11 @@ Job* AM::pNewJobOp(Op* pOp, ReqTuple* pReqTuple)
   Job* pNewJob;
   
   // get the CmdTag words tagSet
-  TagSet* pCmdTagSet = CmdHelper::pCmdTagSet(pOp->szOpNm());
-  
-  // get the jobKind from the cmdTagSet
-  eJK eJobKind = (eJK)pCmdTagSet->iValue(C_TAG_JOBKIND);
-  UNUSED(eJobKind);
+//  TagSet* pCmdTagSet = CmdHelper::pCmdTagSet(pOp->szOpNm());
+//
+//  // get the jobKind from the cmdTagSet
+//  eJK eJobKind = (eJK)pCmdTagSet->iValue(C_TAG_JOBKIND);
+//  UNUSED(eJobKind);
 
   pNewJob = new Job(pReqTuple);
 
@@ -1906,7 +1913,7 @@ i8 AM::iOperandZkKind(Operand* pOperand)
         case OM_CANCELMARKER:  eOperand = ZK_CANCELMARKER;  break;
         case OM_DATAPULSE:     eOperand = ZK_DATAPULSE;     break;
         case OM_DESTROYMARKER: eOperand = ZK_DESTROYMARKER; break;
-        case OM_EACHROWEOSMARKER: eOperand = ZK_EACHROWEOSMARKER;  break;
+        case OM_EACHSCANEOSMARKER: eOperand = ZK_EACHSCANEOSMARKER;  break;
         case OM_EOSMARKER:     eOperand = ZK_EOSMARKER;     break;
         case OM_ERRORMARKER:   eOperand = ZK_ERRORMARKER;   break;
         case OM_ERROREDMARKER: eOperand = ZK_ERROREDMARKER; break;
@@ -1924,6 +1931,7 @@ i8 AM::iOperandZkKind(Operand* pOperand)
     }
 
     case CN_NAMEDBUFFER:  eOperand = ZK_NAMEDBUFFER;    break;
+    case CN_OP:           eOperand = ZK_OP;             break;
     case CN_OTHEROPERAND: eOperand = ZK_OTHEROPERAND;   break;
     case CN_PLANOPERAND:  eOperand = ZK_PLANOPERAND;    break;
     case CN_PROFILE:      eOperand = ZK_PROFILE;        break;

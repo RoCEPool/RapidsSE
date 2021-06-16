@@ -32,7 +32,11 @@ QueryNode* Parser::Origin::pCreate()
   // Create a unique name for this object
   s256 sName;
   NodeNamer::vGenerateName(C_ORIGIN_DEFN, sName);
-  QueryNode* pNode = new QueryNode(sName, C_ORIGIN_DEFN);
+
+  Value xValue;
+  xValue.vSet((i8) LO_ORIGIN);
+
+  QueryNode* pNode = new QueryNode(sName, C_ORIGIN_DEFN, static_cast<Value&&>(xValue));
 
   return pNode;
 }
@@ -45,7 +49,7 @@ void Parser::Origin::vDescribe(PlanNode* pNode, s2K& sBuf)
   _static_
   ASSERT(bIsOfType(pNode));
 
-  sBuf.vConcat(Location::szLocationName(pNode));
+  sBuf.vConcat(Location::szLocationType(pNode));
 }
 
 /*----------------------------------------------------------------------------*/

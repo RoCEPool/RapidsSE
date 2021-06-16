@@ -47,6 +47,7 @@ public:
   void vApiExecuteNested(void);
   void vApiExecuteRequest(void);
   void vApiSpawnDemon(void);
+  void vApiSpawnThread(void);
 
   // args
   void vArgsOscillate(void);
@@ -194,11 +195,23 @@ public:
   void vDebugFlagFetch(void);
   void vDebugFlagStore(void);
 
-  // devSrcRow
-  void vDevSrcRowStreamDefStore(void);
+  // devLftRow
+  void vDevLftRowStreamDefStore(void);
+  void vDevLftRowDeleteEachRowBuffer(void);
+  void vDevLftRowEachRowBufferStore(void);
+  void vDevLftRowRowBufferStore(void);
+  void vDevLftRowCrwBufferStore(void);
 
-  // devSrcIxt
-  void vDevSrcIxtIndexTreeStore(void);
+  // devRhtRow
+  void vDevRhtRowStreamDefStore(void);
+
+  // devLftIxt
+  void vDevLftIxtCrwBufferStore(void);
+  void vDevLftIxtIndexTreeStore(void);
+
+  // devRhtIxt
+  void vDevRhtIxtCrwBufferStore(void);
+  void vDevRhtIxtIndexTreeStore(void);
 
   // dic
   void vDicDelete(void);
@@ -1005,8 +1018,6 @@ void vExprEvalEvaluateIndexScan(void);
   void vOperandToParcel(void);
 
   // operand[]
-  void vOperandAsSrcCrwBuffer(void);
-  void vOperandAsSrcRowBuffer(void);
   void vOperandCsvAppend(void);
   void vOperandBide(void);
   void vOperandCrwDuplicate(void);
@@ -1030,6 +1041,7 @@ void vExprEvalEvaluateIndexScan(void);
   void vOperandNewCsvBuffer(void);
   void vOperandNewDataPulse(void);
   void vOperandNewDestroyMarker(void);
+  void vOperandNewEachScanEosMarker(void);
   void vOperandNewEosMarker(void);
   void vOperandNewErrorMarker(void);
   void vOperandNewErroredMarker(void);
@@ -1537,24 +1549,24 @@ void vExprEvalEvaluateIndexScan(void);
   void vStringAGet(void);
   void vStringASet(void);
 
-  // stream def
-  void vStreamDefAsStr(void);
-  void vStreamDefAsSrcStreamDef(void);
-  void vStreamDefColumnFetch(void);
-  void vStreamDefColumnCountFetch(void);
-  void vStreamDefDelete(void);
-  void vStreamDefDuplicate(void);
-  void vStreamDefGet(void);
-  void vStreamDefGetAndClear(void);
-  void vStreamDefIsNull(void);
-  void vStreamDefName(void);
-  void vStreamDefNew(void);
-  void vStreamDefNewToCsv(void);
-  void vStreamDefParse(void);
-  void vStreamDefPipeIn(void);
-  void vStreamDefPrint(void);
-  void vStreamDefRowSize(void);
-  void vStreamDefSet(void);
+  // stream def Left
+  void vStreamDefLftAsStr(void);
+  void vStreamDefLftAsSrcStreamDef(void);
+  void vStreamDefLftColumnFetch(void);
+  void vStreamDefLftColumnCountFetch(void);
+  void vStreamDefLftDelete(void);
+  void vStreamDefLftDuplicate(void);
+  void vStreamDefLftGet(void);
+  void vStreamDefLftGetAndClear(void);
+  void vStreamDefLftIsNull(void);
+  void vStreamDefLftName(void);
+  void vStreamDefLftNew(void);
+  void vStreamDefLftNewToCsv(void);
+  void vStreamDefLftParse(void);
+  void vStreamDefLftPipeIn(void);
+  void vStreamDefLftPrint(void);
+  void vStreamDefLftRowSize(void);
+  void vStreamDefLftSet(void);
 
   // stream definition (out)
   void vStreamDefOutAddColumn(void);
@@ -1567,6 +1579,15 @@ void vExprEvalEvaluateIndexScan(void);
   void vStreamDefOutNew(void);
   void vStreamDefOutPrint(void);
   void vStreamDefOutSet(void);
+
+  // stream def Right
+  void vStreamDefRhtDelete(void);
+  void vStreamDefRhtDuplicate(void);
+  void vStreamDefRhtGet(void);
+  void vStreamDefRhtGetAndClear(void);
+  void vStreamDefRhtIsNull(void);
+  void vStreamDefRhtPrint(void);
+  void vStreamDefRhtSet(void);
 
   // reg stream set
   void vStreamSetAddAnalyzeIndex(void);

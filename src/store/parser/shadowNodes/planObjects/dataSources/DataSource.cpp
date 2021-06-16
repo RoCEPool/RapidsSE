@@ -7,6 +7,7 @@
 
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
+#include "GraphNav.hpp"
 
 #include "TableScanOp.hpp"
 
@@ -67,6 +68,36 @@ void DataSource::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 i
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/* Recurses down the query plan and writes the explain of the stmt to the buf */
+/*----------------------------------------------------------------------------*/
+void DataSource::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szType, s48K &sBuf, i8 iIndent)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  if (bIsExactType(szType)) {
+    // Explain any common attributes of this object
+    // Get the parent type and keep recursing back
+    s256 sParentType;
+    GraphNav::vParentType(szType, sParentType);
+    PlanObject::vExplainCommon(pNode, pRootNode, sParentType, sBuf, iIndent);
+
+    // Explain any local attributes of this object
+    return;
+  }
+
+  // Manual polymorphism here
+  // TableScanOp
+  if      (TableScanOp::bIsOfType(szType))   { TableScanOp::vExplainCommon(pNode, pRootNode, szType, sBuf, iIndent); }
+  //else if (IndexScanOp::bIsOfType(szType))   { IndexScanOp::vExplainCommon(pNode, pRootNode, szType, sBuf, iIndent);  }
+
+  else {
+    // Need to add in manual polymorphism here
+    NEVER_REACH
+  }
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* Returns true if the given node is derived from the expr definition         */
@@ -77,11 +108,27 @@ b1 DataSource::bIsOfType(PlanNode *pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns true if the given type str is derived from the objects definition  */
+/*----------------------------------------------------------------------------*/
+b1 DataSource::bIsOfType(Stz* szType)
+{
+  return ShadowNode::bIsOfType(szType, C_DATASOURCE_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns true if the given node is precisely the same as its definition     */
 /*----------------------------------------------------------------------------*/
 b1 DataSource::bIsExactType(PlanNode *pNode)
 {
   return ShadowNode::bIsExactType(pNode, C_DATASOURCE_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely the same as its definition     */
+/*----------------------------------------------------------------------------*/
+b1 DataSource::bIsExactType(Stz* szType)
+{
+  return ShadowNode::bIsExactType(szType, C_DATASOURCE_DEFN);
 }
 
 /*----------------------------------------------------------------------------*/

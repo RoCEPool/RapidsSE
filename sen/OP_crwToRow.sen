@@ -10,11 +10,11 @@
 : crwToRow_StreamDef \handler
 
   // capture stream def
-  PipeIn[] to StreamDef[]
+  PipeIn[] to StreamDefLft[]
   nullptr to PipeIn[]
 
   // pipeout copy of stream def
-  StreamDef[].duplicate to OperandB[]
+  StreamDefLft[].duplicate to OperandB[]
   OperandB[].pipeOut
     
   // ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖ ⧖

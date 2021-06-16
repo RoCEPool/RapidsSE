@@ -45,8 +45,10 @@
 #include "PartitionPlan.hpp"
 #include "StageMarkers.hpp"
 
-#include "ExplainMarker.hpp"
+#include "store/parser/shadowNodes/planObjects/planMarkers/statementMarkers/dml/ExplainMarker.hpp"
 #include "ExplainOp.hpp"
+
+#include "GraphValidator.hpp"
 
 #include "SqlException.hpp"
 
@@ -811,6 +813,10 @@ void Step::vSqlCompilerPartitionPlan(void)
     goto L_Exit;
   }
 
+#ifdef WITH_ASSERT_MACRO
+  // Ensure the graph syntax is still valid after this major change
+  GraphValidator::vValidatePlan(pRootNode);
+#endif
 
   // TODO: eventually we want the received plan graph to be immutable,
   //       so we would send a different version. But for now we will just

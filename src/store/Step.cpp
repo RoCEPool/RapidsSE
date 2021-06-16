@@ -63,8 +63,10 @@ void Step::vAddSteps(void)
   
   Step::vAddSteps_DdlLock();
   Step::vAddSteps_Debug();
-  Step::vAddSteps_DevSrcRow();
-  Step::vAddSteps_DevSrcIxt();
+  Step::vAddSteps_DevLftIxt();
+  Step::vAddSteps_DevLftRow();
+  Step::vAddSteps_DevRhtIxt();
+  Step::vAddSteps_DevRhtRow();
   Step::vAddSteps_Dic();
   Step::vAddSteps_DicLock();
   Step::vAddSteps_Dir();
@@ -176,8 +178,9 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Steps();
   Step::vAddSteps_Str();
   Step::vAddSteps_StringA();
-  Step::vAddSteps_StreamDef();
+  Step::vAddSteps_StreamDefLft();
   Step::vAddSteps_StreamDefOut();
+  Step::vAddSteps_StreamDefRht();
   Step::vAddSteps_StreamSet();
   Step::vAddSteps_StreamSetTable();
   Step::vAddSteps_Subset();

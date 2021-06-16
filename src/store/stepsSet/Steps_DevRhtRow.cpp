@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_DevSrcRow.cpp -- DevSrcRow step group                                */
+/* Steps_DevRhtRow.cpp -- DevRhtRow step group                                */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -25,21 +25,21 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_DevSrcIxt(void)
+void Step::vAddSteps_DevRhtRow(void)
 {
-  vAddStep("DevSrcIxt.indexTree!"_Stz,         &Step::vDevSrcIxtIndexTreeStore);
+  vAddStep("DevRhtRow.streamDef!"_Stz,          &Step::vDevRhtRowStreamDefStore);
 }
 
 /*----------------------------------------------------------------------------*/
-/* DevSrcIxt.indexTree! -- store indexTree in src devIxt                      */
+/* DevRhtRow.streamDef! -- store streamDef in src devRow                      */
 /*----------------------------------------------------------------------------*/
-void Step::vDevSrcIxtIndexTreeStore(void)
+void Step::vDevRhtRowStreamDefStore(void)
 {
   ENTRY();
   
-  IndexTree* pIndexTree = _pIndexTree(m_pDataStack->pPopPtr(__func__));
+  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
 
-  ( m_pJob->pLogicUnit_job() )->m_pDevSrcIxt->m_pIdxTree = pIndexTree;
+  ( m_pJob->pLogicUnit_job() )->m_pDevRhtRow->m_pStreamDef = pStreamDef;
   
   EXIT();
 }

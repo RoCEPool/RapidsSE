@@ -11,7 +11,7 @@ namespace STORE { class PipelineSpec; class StageSpec; class OpSpec; }
 
 namespace STORE
 {
-  class Op : public Object
+  class Op : public Operand
   {
   private:
     s32  m_sPipelineNm; // pipeline name
@@ -111,6 +111,7 @@ namespace STORE
     void vOperandHandler(i8 i_OperandKind, Word* pHandler);
     void vIncOperandCount(i8 i_OperandKind);
     Job* pOpJob(void);
+    void vOpJob(Job* pOpJob);
     Stz* szOpNm(void);
     TagSet* pOpTagSet(void);
     void vOpTrace(Operand* pOperand, Stz* szFunActNm,

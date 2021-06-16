@@ -9,6 +9,7 @@
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
 #include "UnionOp.hpp"
+#include "StringList.hpp"
 
 #include "GraphNav.hpp"
 #include "NodeNamer.hpp"
@@ -104,6 +105,58 @@ void SetOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iInden
 }
 
 /*----------------------------------------------------------------------------*/
+/* Recurses down the query plan and writes the explain of the stmt to the buf */
+/*----------------------------------------------------------------------------*/
+void SetOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szType, s48K &sBuf, i8 iIndent)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  if (bIsExactType(szType)) {
+    // Explain any common attributes of this object
+    // Get the parent type and keep recursing back
+    s256 sParentType;
+    GraphNav::vParentType(szType, sParentType);
+    PlanObject::vExplainCommon(pNode, pRootNode, sParentType, sBuf, iIndent);
+
+    // Explain any local attributes of this object
+
+    QueryNode* pSetOp = _pQueryNode(pNode);
+
+    // Get the isDistinct property
+    b1 bIsDistinct = SetOp::bIsDistinct(pSetOp);
+
+    sBuf.vConcat("\n"_Stz);
+    vAppendIndent(sBuf, iIndent, IF_PLAIN);
+    sBuf.vCatSprint("isDistinct: (%s)"_Stz, bIsDistinct ? "true"_Stz : "false"_Stz);
+
+    // Get the corresponding by list
+    QueryNode* pCorrespondingByList = SetOp::pCorrespondingByList(pSetOp);
+
+    if (pCorrespondingByList) {
+      s2K sColumnBuf;
+      StringList::vDescribe(pCorrespondingByList, sColumnBuf);
+
+      sBuf.vConcat("\n"_Stz);
+      vAppendIndent(sBuf, iIndent, IF_PLAIN);
+      sBuf.vCatSprint("corresponding by: (%s)"_Stz, sColumnBuf.szStz());
+    }
+
+    return;
+  }
+
+  // Manual polymorphism here
+  if      (    UnionOp::bIsOfType(szType)) {     UnionOp::vExplainCommon(pNode, pRootNode, szType, sBuf, iIndent);  }
+//else if (IntersectOp::bIsOfType(szType)) { IntersectOp::vExplainCommon(pNode, pRootNode, szType, sBuf, iIndent);   }
+//else if (   ExceptOp::bIsOfType(szType)) {    ExceptOp::vExplainCommon(pNode, pRootNode, szType, sBuf, iIndent);   }
+
+  else {
+    // Need to add in manual polymorphism here
+    NEVER_REACH
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns true if the given node is derived from the statement definition    */
 /*----------------------------------------------------------------------------*/
 b1 SetOp::bIsOfType(PlanNode *pNode)
@@ -112,11 +165,27 @@ b1 SetOp::bIsOfType(PlanNode *pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns true if the given type str is derived from the objects definition  */
+/*----------------------------------------------------------------------------*/
+b1 SetOp::bIsOfType(Stz* szType)
+{
+  return ShadowNode::bIsOfType(szType, C_SETOP_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns true if the given node is precisely same as its definition         */
 /*----------------------------------------------------------------------------*/
 b1 SetOp::bIsExactType(PlanNode *pNode)
 {
   return ShadowNode::bIsExactType(pNode, C_SETOP_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely the same as its definition     */
+/*----------------------------------------------------------------------------*/
+b1 SetOp::bIsExactType(Stz* szType)
+{
+  return ShadowNode::bIsExactType(szType, C_SETOP_DEFN);
 }
 
 /*----------------------------------------------------------------------------*/

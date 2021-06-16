@@ -79,11 +79,11 @@
   //indexTreeRlu[].asSrc
 
   // set the indexTree in the devSrcIxt
-  Index[].indexTree DevSrcIxt.indexTree!
+  Index[].indexTree DevLftIxt.indexTree!
 
   // new a stream def
-  Table[] StreamDef[].new
-  StreamDef[].duplicate to streamDefOut[]
+  Table[] StreamDefLft[].new
+  StreamDefLft[].duplicate to streamDefOut[]
 
   // evalute the expression
   ExprEval[].new
@@ -112,8 +112,8 @@
 
   PipeIn[]\clear op::pipeout
 
-  // set the streamDef in the devSrcRow
-  StreamDef[]\clear DevSrcRow.streamDef!
+  // set the streamDef in the DevLftRow
+  StreamDefLft[]\clear DevLftRow.streamDef!
 
   // create rowPix in potRlu[] from streamDefOut[]
   false streamDefOut[] PotRlu[].rowPix!

@@ -45,8 +45,10 @@ namespace STORE
   
     static void vAddSteps_DdlLock(void);
     static void vAddSteps_Debug(void);
-    static void vAddSteps_DevSrcRow(void);
-    static void vAddSteps_DevSrcIxt(void);
+    static void vAddSteps_DevLftIxt(void);
+    static void vAddSteps_DevLftRow(void);
+    static void vAddSteps_DevRhtIxt(void);
+    static void vAddSteps_DevRhtRow(void);
     static void vAddSteps_Dic(void);
     static void vAddSteps_DicLock(void);
     static void vAddSteps_Dir(void);
@@ -160,8 +162,9 @@ namespace STORE
     static void vAddSteps_Steps(void);
     static void vAddSteps_Str(void);
     static void vAddSteps_StringA(void);
-    static void vAddSteps_StreamDef(void);
+    static void vAddSteps_StreamDefLft(void);
     static void vAddSteps_StreamDefOut(void);
+    static void vAddSteps_StreamDefRht(void);
     static void vAddSteps_StreamSet(void);
     static void vAddSteps_StreamSetTable(void);
     static void vAddSteps_Subset(void);

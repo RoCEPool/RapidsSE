@@ -32,7 +32,11 @@ QueryNode* Parser::AllPartitions::pCreate()
   // Create a unique name for this object
   s256 sName;
   NodeNamer::vGenerateName(C_ALLPARTITIONS_DEFN, sName);
-  QueryNode* pNode = new QueryNode(sName, C_ALLPARTITIONS_DEFN);
+
+  Value xValue;
+  xValue.vSet((i8) LO_ALL_PARTITIONS);
+
+  QueryNode* pNode = new QueryNode(sName, C_ALLPARTITIONS_DEFN, static_cast<Value&&>(xValue));
 
   return pNode;
 }
@@ -45,7 +49,7 @@ void Parser::AllPartitions::vDescribe(PlanNode* pNode, s2K& sBuf)
   _static_
   ASSERT(bIsOfType(pNode));
 
-  sBuf.vConcat(Location::szLocationName(pNode));
+  sBuf.vConcat(Location::szLocationType(pNode));
 }
 
 /*----------------------------------------------------------------------------*/

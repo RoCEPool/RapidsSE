@@ -69,6 +69,9 @@ void StageMarker::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 
   vAppendIndent(sBuf, iIndent, eIndentFormat::IF_ARROW);
   sBuf.vCatSprint("StageMarker"_Stz);
 
+  // Add the local properties
+  vExplainCommon(pNode, pRootNode, pNode->szType(), sBuf, iIndent);
+
   // Recurse any children
   if (pNode->bHasChildren()) {
     PlanNodeIter* pIter = pNode->pNewChildrenIter();
@@ -85,6 +88,28 @@ void StageMarker::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 
 }
 
 /*----------------------------------------------------------------------------*/
+/* Recurses down the query plan and writes the explain of the stmt to the buf */
+/*----------------------------------------------------------------------------*/
+void StageMarker::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szType, s48K &sBuf, i8 iIndent)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  if (bIsExactType(szType)) {
+    // Explain any common attributes of this object
+    // Get the parent type and keep recursing back
+    s256 sParentType;
+    GraphNav::vParentType(szType, sParentType);
+    PlanObject::vExplainCommon(pNode, pRootNode, sParentType, sBuf, iIndent);
+
+    // Explain any local attributes of this object
+    return;
+  }
+
+  // Manual polymorphism of subtypes here
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns true if the given node is derived from the statement definition    */
 /*----------------------------------------------------------------------------*/
 b1 StageMarker::bIsOfType(PlanNode *pNode)
@@ -93,11 +118,27 @@ b1 StageMarker::bIsOfType(PlanNode *pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns true if the given type str is derived from the objects definition  */
+/*----------------------------------------------------------------------------*/
+b1 StageMarker::bIsOfType(Stz* szType)
+{
+  return ShadowNode::bIsOfType(szType, C_STAGEMARKER_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns true if the given node is precisely the same as its definition     */
 /*----------------------------------------------------------------------------*/
 b1 StageMarker::bIsExactType(PlanNode *pNode)
 {
   return ShadowNode::bIsExactType(pNode, C_STAGEMARKER_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely the same as its definition     */
+/*----------------------------------------------------------------------------*/
+b1 StageMarker::bIsExactType(Stz* szType)
+{
+  return ShadowNode::bIsExactType(szType, C_STAGEMARKER_DEFN);
 }
 
 

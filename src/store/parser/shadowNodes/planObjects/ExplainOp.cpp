@@ -125,24 +125,8 @@ void ExplainOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iI
   vAppendIndent(sBuf, iIndent, eIndentFormat::IF_ARROW);
   sBuf.vConcat(GraphNav::szLeafType(pNode->szType()));
 
-  // Get the stageRangeList
-  PlanNode* pStageRangeList = GraphNav::pFindProperty(const_cast<Stz*>(C_STAGERANGELIST_PROP), pNode);
-  ASSERT(pStageRangeList);
-
-  if (pStageRangeList->nChildren() != 0) {
-    s2K sStageBuf;
-    StageRangeList::vDescribe(pStageRangeList, sStageBuf);
-    sBuf.vConcat("\n"_Stz);
-    vAppendIndent(sBuf, iIndent, IF_PLAIN);
-    sBuf.vCatSprint("stageRangeList: %s"_Stz, sStageBuf.szStz());
-  }
-
-  // Print the format
-  sBuf.vConcat("\n"_Stz);
-  vAppendIndent(sBuf, iIndent, IF_PLAIN);
-  PlanNode* pFormat = GraphNav::pFindProperty(const_cast<Stz*>(C_FORMAT_PROP), pNode);
-  ASSERT(StringObject::bIsOfType(pFormat));
-  sBuf.vCatSprint("format: %s"_Stz, pFormat->szValue());
+  // Add the local properties
+  vExplainCommon(pNode, pRootNode, pNode->szType(), sBuf, iIndent);
 
   // Recurse any children of pNode
   if (pNode->bHasChildren()) {
@@ -159,12 +143,63 @@ void ExplainOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iI
 }
 
 /*----------------------------------------------------------------------------*/
+/* Recurses down the query plan and writes the explain of the stmt to the buf */
+/*----------------------------------------------------------------------------*/
+void ExplainOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szType, s48K &sBuf, i8 iIndent)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  if (bIsExactType(szType)) {
+    // Explain any common attributes of this object
+    // Get the parent type and keep recursing back
+    s256 sParentType;
+    GraphNav::vParentType(szType, sParentType);
+    PlanObject::vExplainCommon(pNode, pRootNode, sParentType, sBuf, iIndent);
+
+    // Explain any local attributes of this object
+
+    // Get the stageRangeList
+    PlanNode* pStageRangeList = GraphNav::pFindProperty(const_cast<Stz*>(C_STAGERANGELIST_PROP), pNode);
+    ASSERT(pStageRangeList);
+
+    if (pStageRangeList->nChildren() != 0) {
+      s2K sStageBuf;
+      StageRangeList::vDescribe(pStageRangeList, sStageBuf);
+      sBuf.vConcat("\n"_Stz);
+      vAppendIndent(sBuf, iIndent, IF_PLAIN);
+      sBuf.vCatSprint("stageRangeList: %s"_Stz, sStageBuf.szStz());
+    }
+
+    // Print the format
+    sBuf.vConcat("\n"_Stz);
+    vAppendIndent(sBuf, iIndent, IF_PLAIN);
+    PlanNode* pFormat = GraphNav::pFindProperty(const_cast<Stz*>(C_FORMAT_PROP), pNode);
+    ASSERT(StringObject::bIsOfType(pFormat));
+    sBuf.vCatSprint("format: %s"_Stz, pFormat->szValue());
+
+    return;
+  }
+
+  // Manual polymorphism here
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns true if the given node is derived from the statement definition    */
 /*----------------------------------------------------------------------------*/
 b1 ExplainOp::bIsOfType(PlanNode *pNode)
 {
   _static_
   return ShadowNode::bIsOfType(pNode, C_EXPLAINOP_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if the given type str is derived from the objects definition  */
+/*----------------------------------------------------------------------------*/
+b1 ExplainOp::bIsOfType(Stz* szType)
+{
+  return ShadowNode::bIsOfType(szType, C_EXPLAINOP_DEFN);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -175,6 +210,13 @@ b1 ExplainOp::bIsExactType(PlanNode *pNode)
   return ShadowNode::bIsExactType(pNode, C_EXPLAINOP_DEFN);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely the same as its definition     */
+/*----------------------------------------------------------------------------*/
+b1 ExplainOp::bIsExactType(Stz* szType)
+{
+  return ShadowNode::bIsExactType(szType, C_EXPLAINOP_DEFN);
+}
 
 /*----------------------------------------------------------------------------*/
 /* Return a list of ProjectedColumns that represent the column expressions    */

@@ -709,7 +709,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_DATAPULSE"_Stz,       ZK_DATAPULSE);
   /*  0 */ vAddConstant("ZK_DESTROYMARKER"_Stz,   ZK_DESTROYMARKER);
   /*  0 */ vAddConstant("ZK_EACHROWMARKER"_Stz,   ZK_EACHROWBUFFER);
-  /*  0 */ vAddConstant("ZK_EACHROWEOSMARKER"_Stz,ZK_EACHROWEOSMARKER);
+  /*  0 */ vAddConstant("ZK_EACHSCANEOSMARKER"_Stz,ZK_EACHSCANEOSMARKER);
   /*  0 */ vAddConstant("ZK_EACHROWBUFFER"_Stz,   ZK_EACHROWBUFFER);
   /*  0 */ vAddConstant("ZK_EOSMARKER"_Stz,       ZK_EOSMARKER);
   /*  0 */ vAddConstant("ZK_ENTBUFFER"_Stz,       ZK_ENTBUFFER);
@@ -728,6 +728,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_METAGET"_Stz,         ZK_METAGET);
   /*  0 */ vAddConstant("ZK_NAMEDBUFFER"_Stz,     ZK_NAMEDBUFFER);
   /*  0 */ vAddConstant("ZK_NODEINFO"_Stz,        ZK_NODEINFO);
+  /*  0 */ vAddConstant("ZK_OP"_Stz,              ZK_OP);
   /*  0 */ vAddConstant("ZK_OTHEROPERAND"_Stz,    ZK_OTHEROPERAND);
   /*  0 */ vAddConstant("ZK_PARCEL"_Stz,          ZK_PARCEL);
   /*  0 */ vAddConstant("ZK_PATHINFO"_Stz,        ZK_PATHINFO);

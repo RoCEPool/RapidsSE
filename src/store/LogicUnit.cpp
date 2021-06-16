@@ -132,10 +132,12 @@ LogicUnit::LogicUnit(Task* pTask)
   m_i_Code = 0;
 
   m_pDevDstRow = new DevROW;
-  m_pDevSrcRow = new DevROW;
+  m_pDevLftRow = new DevROW;
+  m_pDevRhtRow = new DevROW;
   m_pDevAltRow = new DevROW;
 
-  m_pDevSrcIxt = new DevIXT;
+  m_pDevLftIxt = new DevIXT;
+  m_pDevRhtIxt = new DevIXT;
   m_pDevAltIxt = new DevIXT;
   m_pDevTmpIxt = new DevIXT;
 
@@ -143,8 +145,10 @@ LogicUnit::LogicUnit(Task* pTask)
 
   m_xRluCommon.m_pDevDstRow = m_pDevDstRow;
   
-  m_xRluCommon.m_pDevSrcRow = m_pDevSrcRow;
-  m_xRluCommon.m_pDevSrcIxt = m_pDevSrcIxt;
+  m_xRluCommon.m_pDevLftRow = m_pDevLftRow;
+  m_xRluCommon.m_pDevRhtRow = m_pDevRhtRow;
+  m_xRluCommon.m_pDevLftIxt = m_pDevLftIxt;
+  m_xRluCommon.m_pDevRhtIxt = m_pDevRhtIxt;
   m_xRluCommon.m_pDevAltRow = m_pDevAltRow;
   m_xRluCommon.m_pDevAltIxt = m_pDevAltIxt;
   m_xRluCommon.m_pDevTmpIxt = m_pDevTmpIxt;
@@ -228,7 +232,8 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   delete m_pTknVec;
   
   delete m_pDevDstRow;
-  delete m_pDevSrcRow;
+  delete m_pDevLftRow;
+  delete m_pDevRhtRow;
   delete m_pDevAltRow;
 
   // delete any temporary index tree's
@@ -237,7 +242,8 @@ LogicUnit::~LogicUnit(void) noexcept(false)
 
   delete m_pDevTmpIxt;
   delete m_pDevAltIxt;
-  delete m_pDevSrcIxt;
+  delete m_pDevLftIxt;
+  delete m_pDevRhtIxt;
   
   delete m_pLogicTimer;
 }
@@ -3239,7 +3245,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_PUSH_DEVIXT_SRC: ArgNil(); // push src ixt devive
         dLU0(EO_PUSH_DEVIXT_SRC);
-        P_PushPtr(aRluCommon->m_pDevSrcIxt);
+        P_PushPtr(aRluCommon->m_pDevLftIxt);
         break;//+endCase
 
       case EO_PUSH_DEVIXT_TMP: ArgNil(); // push tmp ixt device
@@ -3261,7 +3267,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_PUSH_DEVROW_SRC: ArgNil(); // push src row device
         dLU0(EO_PUSH_DEVROW_SRC);
-        P_PushPtr(aRluCommon->m_pDevSrcRow);
+        P_PushPtr(aRluCommon->m_pDevLftRow);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -4258,9 +4264,9 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
 
       case EO_KEY_ROW2C_TO_I: ArgGet(iArg); // convert two row varchar(1) to int
         dLU1(EO_KEY_ROW2C_TO_I,iArg);
-        azTopA = (char*)szDev_ROW_PUSHCOLS(pLU,aRluCommon->m_pDevSrcRow,
+        azTopA = (char*)szDev_ROW_PUSHCOLS(pLU,aRluCommon->m_pDevLftRow,
                                            giaVectorSet[iArg]);
-        azTopB = (char*)szDev_ROW_PUSHCOLS(pLU,aRluCommon->m_pDevSrcRow,
+        azTopB = (char*)szDev_ROW_PUSHCOLS(pLU,aRluCommon->m_pDevLftRow,
                                            giaVectorSet[iArg+1]);
         iRes = *azTopA * 256 + *azTopB;
         *(++aiDstk) = iRes;
@@ -4298,7 +4304,7 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_REG_PTNSTREAM_READ(pLU);
         break;//+endCase
 
-      case EO_REG_STREAMDEF_STREAMDEFOUT: ArgNil(); // new a streamDefOut[] from StreamDef[]
+      case EO_REG_STREAMDEF_STREAMDEFOUT: ArgNil(); // new a streamDefOut[] from StreamDefLft[]
         dLU0(EO_REG_STREAMDEF_STREAMDEFOUT);
         vDev_REG_STREAMDEF_STREAMDEFOUT(pLU);
         break;//+endCase

@@ -38,7 +38,7 @@
 /*----------------------------------------------------------------------------*/
 : rowToList_StreamDef \handler
 
-  Pipein[] to StreamDef[]
+  Pipein[] to StreamDefLft[]
   
   PipeIn[].pipeOut
 

@@ -14,9 +14,9 @@
   //job[] job.tagSet@ tagSet.asStr .
 
   <etc> <tableNm> "create table %v %v ;" str.format // dup .
-  job[] streamDef::parse to StreamDef[]
+  job[] streamDef::parse to StreamDefLft[]
 
-  StreamDef[].isNull if
+  StreamDefLft[].isNull if
     job[] job.error@ to errorCode
     errorCode op__execErr
     Pipein[].delete
@@ -29,7 +29,7 @@
   folder[].isTables assert
 
   Pipein[].pipeout
-  StreamDef[].pipeout
+  StreamDefLft[].pipeout
 
   // should be in tables
   folder[].isTables assert

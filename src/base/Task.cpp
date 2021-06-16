@@ -842,10 +842,12 @@ void Task::vSeedTask(void)
   //vTrace("SEED %s\n"_Stz,szSeed);
   Word* pSeedWord = pDicRoot->pFindWord(szSeed);
   
-  if (! pSeedWord)
+  if (! pSeedWord) {
+    AM::szJobSeed(m_pJob);
+    
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "Unable to find seed word: %s\n"_Stz,szSeed);
-  
+  }
 
 
   m_pSeedWord = pSeedWord;

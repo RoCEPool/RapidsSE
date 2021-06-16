@@ -16,6 +16,9 @@
 #include "GraphNav.hpp"
 #include "NodeNamer.hpp"
 
+#include "store/parser/shadowNodes/planObjects/planMarkers/statementMarkers/dml/SelectMarker.hpp"
+#include "store/parser/shadowNodes/planObjects/planMarkers/statementMarkers/dml/ExplainMarker.hpp"
+
 using namespace Parser;
 
 /*----------------------------------------------------------------------------*/
@@ -85,19 +88,8 @@ void StatementMarker::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf,
   vAppendIndent(sBuf, iIndent, eIndentFormat::IF_ARROW);
   sBuf.vCatSprint("StatementMarker: %s"_Stz, GraphNav::szLeafType(pNode->szType()));
 
-  PlanNode* pQueryTextProp = GraphNav::pFindProperty(const_cast<Stz*>(C_QUERYTEXT_PROP), pNode);
-  ASSERT(pQueryTextProp);
-
-  Stz* szQueryText = pQueryTextProp->szValue();
-  ASSERT(szQueryText);
-
-  // Remove new lines from the query text as it messes with the EXPLAIN output
-  while (StrLib::bReplace(szQueryText->azChar(), "\n", " "));
-
-  // Add the queryText property
-  sBuf.vConcat("\n"_Stz);
-  vAppendIndent(sBuf, iIndent, eIndentFormat::IF_PLAIN);
-  sBuf.vCatSprint("queryText: \"%s\""_Stz, szQueryText);
+  // Add the local properties
+  vExplainCommon(pNode, pRootNode, pNode->szType(), sBuf, iIndent);
 
   // Recurse any children
   if (pNode->bHasChildren()) {
@@ -115,6 +107,51 @@ void StatementMarker::vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf,
 }
 
 /*----------------------------------------------------------------------------*/
+/* Recurses down the query plan and writes the explain of the stmt to the buf */
+/*----------------------------------------------------------------------------*/
+void StatementMarker::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szType, s48K &sBuf, i8 iIndent)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  if (bIsExactType(szType)) {
+    // Explain any common attributes of this object
+    // Get the parent type and keep recursing back
+    s256 sParentType;
+    GraphNav::vParentType(szType, sParentType);
+    PlanObject::vExplainCommon(pNode, pRootNode, sParentType, sBuf, iIndent);
+
+    // Explain any local attributes of this object
+
+    // Add the queryText property
+    PlanNode* pQueryTextProp = GraphNav::pFindProperty(const_cast<Stz*>(C_QUERYTEXT_PROP), pNode);
+    ASSERT(pQueryTextProp);
+
+    Stz* szQueryText = pQueryTextProp->szValue();
+    ASSERT(szQueryText);
+
+    // Remove new lines from the query text as it messes with the EXPLAIN output
+    while (StrLib::bReplace(szQueryText->azChar(), "\n", " "));
+
+    sBuf.vConcat("\n"_Stz);
+    vAppendIndent(sBuf, iIndent, eIndentFormat::IF_PLAIN);
+    sBuf.vCatSprint("queryText: \"%s\""_Stz, szQueryText);
+
+    return;
+  }
+
+
+  // Manual polymorphism of subtypes here
+  if      ( DmlMarker::bIsOfType(szType)) {  DmlMarker::vExplainCommon(pNode, pRootNode, szType, sBuf, iIndent);    }
+//  else if ( DdlMarker::bIsOfType(szType)) {  DdlMarker::vExplainCommon(pNode, pRootNode, szType, sBuf, iIndent);    }
+//  else if ( DclMarker::bIsOfType(szType)) {  DclMarker::vExplainCommon(pNode, pRootNode, szType, sBuf, iIndent);    }
+  else {
+    // Need to add in manual polymorphism here
+    NEVER_REACH
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns true if the given node is derived from the statement definition    */
 /*----------------------------------------------------------------------------*/
 b1 StatementMarker::bIsOfType(PlanNode *pNode)
@@ -123,11 +160,27 @@ b1 StatementMarker::bIsOfType(PlanNode *pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns true if the given type str is derived from the objects definition  */
+/*----------------------------------------------------------------------------*/
+b1 StatementMarker::bIsOfType(Stz* szType)
+{
+  return ShadowNode::bIsOfType(szType, C_STATEMENT_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns true if the given node is precisely the same as its definition     */
 /*----------------------------------------------------------------------------*/
 b1 StatementMarker::bIsExactType(PlanNode *pNode)
 {
   return ShadowNode::bIsExactType(pNode, C_STATEMENT_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if the given node is precisely the same as its definition     */
+/*----------------------------------------------------------------------------*/
+b1 StatementMarker::bIsExactType(Stz* szType)
+{
+  return ShadowNode::bIsExactType(szType, C_STATEMENT_DEFN);
 }
 
 /*----------------------------------------------------------------------------*/

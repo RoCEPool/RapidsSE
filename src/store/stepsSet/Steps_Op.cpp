@@ -178,8 +178,15 @@ void Step::vOpPiplineJobFetch(void)
   ENTRY();
   
   Op* pOp = m_pJob->m_pOp;
+  Pipeline* pPipeline = pOp->pPipeline();
   
-  m_pDataStack->vPushPtr(pOp->pPipeline()->pPipelineJob());
+  if (! pPipeline) {
+    m_pDataStack->vPushPtr(nullptr);
+  }
+  else {
+    Job* pPipelineJob = pPipeline->pPipelineJob();
+    m_pDataStack->vPushPtr(pPipelineJob);
+  }
   
   EXIT();
 }

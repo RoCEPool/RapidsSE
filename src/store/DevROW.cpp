@@ -29,7 +29,8 @@ DevROW::DevROW(void)
   m_nRows      = C_UNKNOWN;
   m_aRow       = nullptr;
   m_pRowBuffer = nullptr;
-  m_pStreamDef = nullptr;
+  m_pEachRowBuffer = nullptr;
+  m_pStreamDef     = nullptr;
 
   _checkInitialised_(CN_DEVROW);
   

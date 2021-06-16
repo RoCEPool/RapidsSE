@@ -684,10 +684,10 @@ i8  Grid::iReassembleFromParcel(Parcel* pParcel) {
         // do nothing for now
         break;
 
-      case CN_IDXVEC: {
+      //case CN_IDXVEC: {
         //m_pIdxVec = (IdxVec *) pObject;
-        break;
-      }
+      //  break;
+      //}
       default:
         m_pNodes = (std::list<Node *> *) pObject;
         //vTrace("iReassembleObj %ld Error\n"_Stz,eClass);

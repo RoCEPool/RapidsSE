@@ -40,7 +40,7 @@
   0 ZK_CRWBUFFER EG_ZK LogicUnit[].diaryNote
 
   Operand[].pipeIn
-  Operand[].asSrcCrwBuffer
+  Operand[] DevLftIxt.crwBuffer!
   ZK_CRWBUFFER Counter0[] executeAsmArgs
 
   PotRlu[].pipeoutCompletedPtns
@@ -90,7 +90,7 @@
   0 ZK_ROWBUFFER EG_ZK LogicUnit[].diaryNote
 
   Operand[].pipeIn
-  Operand[].asSrcRowBuffer
+  Operand[] DevLftRow.rowBuffer!
   ZK_ROWBUFFER Counter0[] executeAsmArgs
 
   Operand[].delete
@@ -125,11 +125,11 @@
 
   EC_NONE locals| eError |
 
-  // move pipein[] to streamDef[]
-  Pipein[]\clear to StreamDef[]
+  // move pipein[] to StreamDefLft[]
+  Pipein[]\clear to StreamDefLft[]
 
   // generate the asm for limit
-  StreamDef[].duplicate to StreamDefOut[]
+  StreamDefLft[].duplicate to StreamDefOut[]
   <rows> >int LogicUnit[].genLimit to eError
 
   // check for error
@@ -139,8 +139,8 @@
     exit
   then
 
-  // set the streamDef in the devSrcRow
-  StreamDef[]\clear DevSrcRow.streamDef!
+  // set the streamDef in the DevLftRow
+  StreamDefLft[]\clear DevLftRow.streamDef!
 
   // create rowPix in potRlu[] from streamDefOut[]
   false streamDefOut[] PotRlu[].rowPix!

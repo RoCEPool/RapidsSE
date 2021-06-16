@@ -19,7 +19,7 @@
   "__listContents" op__tableDef_streamSet assert
 
   // create a new streamDef
-  streamSetTable[] StreamDef[].new
+  streamSetTable[] StreamDefLft[].new
 
   // -- -- -- -- -- --
   
@@ -55,7 +55,7 @@
   PipeIn[].pipeOut
   
   // pipeout the streamDef
-  StreamDef[] to Operand[]
+  StreamDefLft[] to Operand[]
   Operand[].pipeOut
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -91,7 +91,7 @@
   <streamDef> op__tableDef_streamSet assert
 
   // create a new streamDef
-  streamSetTable[] StreamDef[].new
+  streamSetTable[] StreamDefLft[].new
 
   PipeIn[].pipeOut
 

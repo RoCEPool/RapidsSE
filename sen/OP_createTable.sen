@@ -32,7 +32,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the table
 
-  StreamDef[] sTableNm table::createTable to Table[]
+  StreamDefLft[] sTableNm table::createTable to Table[]
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -43,14 +43,14 @@
   0 0 locals| sTableNm errorCode |
 
   // get the stream def
-  Pipein[] to StreamDef[]
+  Pipein[] to StreamDefLft[]
   nullptr to Pipein[]
 
   // get the table name
   "<tableNm>" job[] job.tagSet@ tagSet.hasName if
     <tableNm> to sTableNm
   else
-    StreamDef[].name to sTableNm
+    StreamDefLft[].name to sTableNm
   then
 
   //"***********" .
@@ -63,7 +63,7 @@
   // check ok to create table
   sTableNm createTable::checkCreate not if ( errorCode )
     to errorCode
-    StreamDef[].delete
+    StreamDefLft[].delete
     errorCode op__execErr
     true
     exit

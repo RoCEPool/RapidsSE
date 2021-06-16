@@ -136,7 +136,7 @@
   Operand[].isNotNull if
     // read a next crw buffer
 
-    Operand[].asSrcCrwBuffer
+    Operand[] DevLftIxt.crwBuffer!
     ZK_CRWBUFFER Counter0[] executeAsmArgs
     Operand[].delete
 
@@ -174,7 +174,7 @@
 
   //Pipein[] "GOT ROWBUFFER %v" .printf
   Operand[].pipeIn
-  Operand[].asSrcRowBuffer
+  Operand[] DevLftRow.rowBuffer!
   ZK_ROWBUFFER Counter0[] executeAsmArgs
   Operand[].delete
   PotRlu[].pipeoutCompletedPtns

@@ -5,6 +5,42 @@
 " OP_print.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_EXITMARKER ...                                              */
+/*----------------------------------------------------------------------------*/
+: print_exitMarker \handler
+
+  "print_exitMarker:- ZK_EXITMARKER" .
+  PipeIn[].delete
+
+  false
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_PROMPTOUT ...                                               */
+/*----------------------------------------------------------------------------*/
+: print_promptOut \handler
+
+  "print_promptOut:- ZK_PROMPTOUT" .
+  PipeIn[].delete
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_STARTMARKER ...                                             */
+/*----------------------------------------------------------------------------*/
+: print_startMarker \handler
+
+  "print_startMarker:- ZK_STARTMARKER" .
+  PipeIn[].delete
+
+  true
+;
+
+
+
+
+/*----------------------------------------------------------------------------*/
 /* print request                                      (on node where spawned) */
 /*----------------------------------------------------------------------------*/
 : print_req \operator
@@ -12,6 +48,10 @@
   LogReqEntry SEED_REQ
 
   op__topology
+
+  find: print_exitMarker   ZK_EXITMARKER    op[].handler!
+  find: print_promptOut    ZK_PROMPTOUT     op[].handler!
+  find: print_startMarker  ZK_STARTMARKER   op[].handler!
 
   op__loop
 

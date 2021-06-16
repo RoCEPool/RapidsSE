@@ -168,7 +168,8 @@ namespace STORE
     REG<Node>           m_xpSendNode;  // node to send to
     REG<ShardDef>       m_xpShardDef;
     REG<Socket>         m_xpSocket;
-    REG<StreamDef>      m_xpStreamDef;     // maybe rename this to stream def in ?
+    REG<StreamDef>      m_xpStreamDefLft;
+    REG<StreamDef>      m_xpStreamDefRht;
     REG<StreamDef>      m_xpStreamDefOut;
     REG<Operand>        m_xpStreamSet;
     REG<Table>          m_xpStreamSetTable;
@@ -221,11 +222,13 @@ namespace STORE
     EntWrk     m_oEntWrk;
 
     DevROW*    m_pDevDstRow;
-    DevROW*    m_pDevSrcRow;
+    DevROW*    m_pDevLftRow;
+    DevROW*    m_pDevRhtRow;
     DevROW*    m_pDevAltRow;
 
     DevIXT*    m_pDevAltIxt;
-    DevIXT*    m_pDevSrcIxt;
+    DevIXT*    m_pDevLftIxt;
+    DevIXT*    m_pDevRhtIxt;
     DevIXT*    m_pDevTmpIxt;
   
     LogicTimer* m_pLogicTimer;

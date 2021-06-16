@@ -20,8 +20,8 @@
 #include "GraphEditor.hpp"
 
 #include "ShadowNode.hpp"
-#include "store/parser/shadowNodes/planObjects/statementMarkers/SelectMarker.hpp"
-#include "store/parser/shadowNodes/planObjects/statementMarkers/ExplainMarker.hpp"
+#include "store/parser/shadowNodes/planObjects/planMarkers/statementMarkers/dml/SelectMarker.hpp"
+#include "store/parser/shadowNodes/planObjects/planMarkers/statementMarkers/dml/ExplainMarker.hpp"
 #include "store/parser/shadowNodes/planObjects/FilterOp.hpp"
 #include "store/parser/shadowNodes/planObjects/LimitOp.hpp"
 #include "store/parser/shadowNodes/planObjects/ProjectOp.hpp"

@@ -57,7 +57,9 @@ assert::stack_0
 
 "e" .verbose
 
+  "OP_eachJoin.sen"             include
   "OP_eachRow.sen"              include
+  "OP_eachScan.sen"             include
   "OP_eatAll.sen"               include
   "OP_eatSome.sen"              include
   "OP_eachPath.sen"             include
@@ -180,6 +182,7 @@ assert::stack_0
   "OP_sizeTable.sen"            include
   "OP_space.sen"                include
   "OP_spawnNode.sen"            include
+  "OP_spawnThread.sen"          include
   "OP_sqlInit.sen"              include
   "OP_stageMarkers.sen"         include
   "OP_start.sen"                include

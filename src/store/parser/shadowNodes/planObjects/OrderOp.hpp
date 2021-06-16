@@ -22,11 +22,16 @@ namespace Parser
     static void       vDescribe(PlanNode* pNode, s2K& sBuf);
     static void vExplain(PlanNode *pNode, PlanNode *pRootNode, s48K &sBuf, i8 iIndent);
 
+    // Explains any common properties of parent definitions
+    static void vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szType, s48K &sBuf, i8 iIndent);
+
     // Returns true if a given node is a given type ** or is derived from that type **
     static b1 bIsOfType(PlanNode* pNode);
+    static b1 bIsOfType(Stz* pNode);
 
     // Returns true if a given node is this exact given type.
     static b1 bIsExactType(PlanNode* pNode);
+    static b1 bIsExactType(Stz* pNode);
 
     // Returns the internal node that represents the list of symbolic OrderItem nodes
     // (an OrderItemList object)
