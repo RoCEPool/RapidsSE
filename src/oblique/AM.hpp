@@ -226,7 +226,7 @@ namespace OBLIQUE
     class DEMON
     {
     public:
-      static void vPipeTo(Stz* szDemonNm, RowBuffer* pRowBuffer);
+      static void vPipeTo(Stz* szDemonNm, Operand* pOperand);
     };
   
     class JOB

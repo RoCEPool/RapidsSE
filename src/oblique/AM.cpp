@@ -172,7 +172,7 @@ Dic* AM::DIC::pRoot(void)
 /*----------------------------------------------------------------------------*/
 /* pipe given row buffer to named demon                                       */
 /*----------------------------------------------------------------------------*/
-void AM::DEMON::vPipeTo(Stz* szDemonNm, RowBuffer* pRowBuffer)
+void AM::DEMON::vPipeTo(Stz* szDemonNm, Operand* pOperand)
 {
   _static_
 
@@ -194,9 +194,9 @@ void AM::DEMON::vPipeTo(Stz* szDemonNm, RowBuffer* pRowBuffer)
   Pipeline* pPipeline = pPipelineJob->m_pPipeline;
   Op* pOp0 = pPipeline->pOp0();
 
-  Task* pThisTask = AM::pThisTLSTask();
+  //Task* pThisTask = AM::pThisTLSTask();
   
-  pOp0->vAppend(pRowBuffer,pThisTask);
+  pOp0->vAppend(pOperand,nullptr);
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
