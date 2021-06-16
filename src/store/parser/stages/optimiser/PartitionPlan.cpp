@@ -88,6 +88,36 @@ void PartitionPlan::vPartitionStatementSection(QueryNode* pStatementMarker, Plan
   //       the graph without affecting the walk (as the call stack is unwinding).
   //       e.g. we could snip the current node, but we wouldn't want to remove the
   //       parent node.
+
+
+  // The canonical representation of a SELECT query will look a bit like this:
+  //              ProjectOp            (post project)
+  //              LimitOp              (LIMIT)
+  //              OrderOp              (ORDER BY)
+  //              FilterOp             (HAVING)
+  //              AggregateOp          (select list, GROUP BY)
+  //              JoinOp
+  //    FilterOp        FilterOp       (WHERE)
+  //    TableScanOp     TableScanOp
+
+  // Walk the graph bottom up.
+  // Duplicate the node.
+  // If the node is a data source then set location to all partitions
+  //   and push it onto a stack.
+  // If the node is not a data source then pop a node from the stack,
+  //   make that node a child of the current node and then push the current
+  //   node back onto the stack.
+  // If the node is a join or set operator then pop two nodes from the stack,
+  //   make them children of the current node and then push the current node
+  //   back onto the stack.
+  // Meanwhile, maintain a chain of nodes that represent operators at the node
+  //   and origin levels.
+  // Finally, join all of the operators at the partition, node and origin levels together.
+  //
+  // Notes:
+  // Not all statement sections will be parallelised with operators at all 3 levels.
+  // e.g. a set operator (and everything above it) will always run on the origin only.
+
 }
 
 

@@ -860,8 +860,8 @@
       | corrBySquash
       | explainPlan
       | partitionPlan
-      | partitionExplain
       | projValidation    // sanity check after partitioning
+      | partitionExplain
       | stageMarkers
       | transliterate
       | output
