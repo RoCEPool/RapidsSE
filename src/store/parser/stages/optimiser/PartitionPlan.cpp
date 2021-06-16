@@ -70,6 +70,7 @@ void PartitionPlan::vPartitionPlan(PlanNode *pRootNode)
   // Replace the logical plan with the partitioned plan
   GraphEditor::vReplaceChild(pPlanRoot, _pQueryNode(pPlanRoot->pFirstChild()), pStmtSectionStack->pPop());
 
+  // TODO: Handle errors and cleanup allocated memory
   ASSERT(pStmtSectionStack->nItems() == 0);
   delete pStmtSectionStack;
 }
@@ -131,13 +132,65 @@ QueryNode* PartitionPlan::pPartitionStatementSection(QueryNode* pStatementMarker
   QueryNode*      pNodeChain   = nullptr;
   QueryNodeStack* pPartitionStack = new QueryNodeStack();
 
+  // A lambda that will modify/populate the pPartitionStack, pNodeChain and pOriginChain
+  auto fVisitor = [pRootNode, pStmtSectionStack, &pOriginChain, &pNodeChain, pPartitionStack]
+      (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
-  ASSERT(pPartitionStack->nItems() == 1);
-  QueryNode* pPartitionedSection = pPartitionStack->pPop();
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(pvArg);
+
+    QueryNode* pCurNode = _pQueryNode(pNode);
+
+
+
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  GraphNav::bBoundedWalkBottomUp(pStatementMarker, false, true, fVisitor, nullptr);
+
+  // Put together the partition-level, node-level and origin-level operators
+  ASSERT(pOriginChain || pNodeChain || pPartitionStack->nItems() > 0);
+  QueryNode* pPartitionChain = (pPartitionStack->nItems() > 0 ? pPartitionStack->pPop() : nullptr);
+
+  QueryNode* pPartitionedSection = pConsolidateChains(pOriginChain, pNodeChain, pPartitionChain);
+
+  // TODO: Handle errors and cleanup allocated memory
+  ASSERT(pPartitionStack->nItems() == 0);
   delete pPartitionStack;
   return pPartitionedSection;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Consolidates separate plain chains from the partition, node & origin level */
+/*----------------------------------------------------------------------------*/
+QueryNode* PartitionPlan::pConsolidateChains(QueryNode* pOriginChain,
+                                             QueryNode* pNodeChain,
+                                             QueryNode* pPartitionChain)
+{
+  QueryNode* pChain;
+
+  if (pOriginChain) {
+    // We have origin-level operators and maybe node and partition-level operators too
+    pChain = pOriginChain;
+
+    if (pNodeChain)      { GraphEditor::vConnectChains(pNodeChain, pOriginChain);    }
+    if (pPartitionChain) { GraphEditor::vConnectChains(pNodeChain, pPartitionChain); }
+
+  } else if (pNodeChain) {
+    // Only have node-partitioned operators and possibly partition-level operators
+    pChain = pNodeChain;
+
+    if (pPartitionChain) { GraphEditor::vConnectChains(pNodeChain, pPartitionChain); }
+
+  } else {
+    // Only have partition-level operators
+    ASSERT(pPartitionChain);
+    pChain = pPartitionChain;
+  }
+
+  return pChain;
+}
 
 /*============================================================================*/
 

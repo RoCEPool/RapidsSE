@@ -49,6 +49,13 @@ namespace Parser
     static QueryNodeList* pSnipChild(QueryNode* pParent, std::function<b1(QueryNode*)> fCondition, b1 bTransplant);
 
 
+    // Connects two distinct chains of nodes (nodes with at most 1 child each)
+    // by making pSecond a child of the leaf node of pFirst.
+    // i.e. navigate down the child hierarchy of pFirst to find the leaf node
+    // and make pSecond a child of it.
+    // e.g. if pFirst was /a/b/c and pSecond was /d/e then pFirst would end up
+    // as /a/b/c/d/e
+    static void vConnectChains(QueryNode* pFirst, QueryNode* pSecond);
 
     // TODO: Add extra methods here for manipulating plan graphs.
     //       e.g. snipping nodes, reordering, etc.

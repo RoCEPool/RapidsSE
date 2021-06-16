@@ -26,6 +26,11 @@ namespace Parser
                                                  PlanNode* pRootNode,
                                                  QueryNode* pPlanRoot,
                                                  QueryNodeStack* pStmtSectionStack);
+
+    // Consolidates separate plain chains from the partition, node & origin level
+    static QueryNode* pConsolidateChains(QueryNode* pOriginChain,
+                                         QueryNode* pNodeChain,
+                                         QueryNode* pPartitionChain);
   };
 }
 

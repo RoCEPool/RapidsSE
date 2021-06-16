@@ -242,6 +242,30 @@ QueryNodeList* GraphEditor::pSnipChild(QueryNode* pParent, std::function<b1(Quer
   return pSnippedChildren;
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* Connects two distinct chains of nodes (nodes with at most 1 child each)    */
+/* by making pSecond a child of the leaf node of pFirst.                      */
+/* i.e. navigate down the child hierarchy of pFirst to find the leaf node     */
+/* and make pSecond a child of it.                                            */
+/* e.g. if pFirst was /a/b/c and pSecond was /d/e then pFirst would end up    */
+/* as /a/b/c/d/e                                                              */
+/*----------------------------------------------------------------------------*/
+void GraphEditor::vConnectChains(QueryNode* pFirst, QueryNode* pSecond)
+{
+  ASSERT(pFirst);
+  ASSERT(pSecond);
+
+  QueryNode* pNode = pFirst;
+  while (pNode->nChildren() != 0) {
+    ASSERT(pNode->nChildren() == 1);
+    pNode = _pQueryNode(pNode->pFirstChild());
+  }
+
+  ASSERT(pNode->nChildren() == 0);
+  pNode->vAppendChild(pSecond);
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
