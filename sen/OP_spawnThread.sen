@@ -11,8 +11,8 @@
 
   "spawnThread_op:- ZK_OP" .
   
-  nullptr to PipeIn[]
-
+  PipeIn[]\clear api::spawnThread
+  
   true
 ;
 
