@@ -5,6 +5,20 @@
 " OP_spawnThread.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_OP ...                                                     */
+/*----------------------------------------------------------------------------*/
+: spawnThread_op \handler
+
+  "spawnThread_op:- ZK_OP" .
+  
+  nullptr to PipeIn[]
+
+  true
+;
+
+
+
+/*----------------------------------------------------------------------------*/
 /* execute for spawn thread                           (on node where spawned) */
 /*----------------------------------------------------------------------------*/
  : spawnThread_req \operator
@@ -12,6 +26,8 @@
   LogReqEntry SEED_REQ
 
   op__topology
+
+  find: spawnThread_op   ZK_OP    op[].handler!
 
   op__loop
 
