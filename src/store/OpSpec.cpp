@@ -45,7 +45,6 @@ OpSpec::OpSpec(Stz* szOpNm, i8 i_OpSpec, StageSpec* pStageSpec)
   m_i_StageSpec   = pStageSpec->i_StageSpec();
   m_i_OpSpec      = i_OpSpec;
   
-  m_pJob          = pStageSpec->pPipelineSpec()->pJob();
   m_pPipelineSpec = pStageSpec->pPipelineSpec();
   m_pStageSpec    = pStageSpec;
 
