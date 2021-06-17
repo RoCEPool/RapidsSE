@@ -288,7 +288,8 @@ enum eEO : u2 // expression operators
   // row device pushes
   /*  S  */ EO_PUSH_DEVROW_ALT,     // push alt row device
   /*  S  */ EO_PUSH_DEVROW_DST,     // push dst row device
-  /*  S  */ EO_PUSH_DEVROW_SRC,     // push src row device
+  /*  S  */ EO_PUSH_DEVROW_LFT,     // push lft row device
+  /*  S  */ EO_PUSH_DEVROW_RHT,     // push rht row device
 
   // rlu pushes
   /*  S  */ EO_PUSH_RLU_COLSET,     // push colset from the rlu
@@ -799,7 +800,8 @@ static Stz* aEO[]
   // row device pushes
   /*    */ "EO_PUSH_DEVROW_ALT"_Stz,
   /*    */ "EO_PUSH_DEVROW_DST"_Stz,
-  /*    */ "EO_PUSH_DEVROW_SRC"_Stz,
+  /*    */ "EO_PUSH_DEVROW_LFT"_Stz,
+  /*    */ "EO_PUSH_DEVROW_RHT"_Stz,
 
   // rlu pushes
   /*    */ "EO_PUSH_RLU_COLSET"_Stz,
@@ -1315,7 +1317,8 @@ static EoArg EoArgs[]
   // row device pushes
   { EA_NONE,    0 },  // EO_PUSH_DEVROW_ALT
   { EA_NONE,    0 },  // EO_PUSH_DEVROW_DST
-  { EA_NONE,    0 },  // EO_PUSH_DEVROW_SRC
+  { EA_NONE,    0 },  // EO_PUSH_DEVROW_LFT
+  { EA_NONE,    0 },  // EO_PUSH_DEVROW_RHT
 
   // rlu pushes
   { EA_NONE,    0 },  // EO_PUSH_RLU_COLSET

@@ -3265,9 +3265,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         P_PushPtr(aRluCommon->m_pDevDstRow);
         break;//+endCase
 
-      case EO_PUSH_DEVROW_SRC: ArgNil(); // push src row device
-        dLU0(EO_PUSH_DEVROW_SRC);
+      case EO_PUSH_DEVROW_LFT: ArgNil(); // push lft row device
+        dLU0(EO_PUSH_DEVROW_LFT);
         P_PushPtr(aRluCommon->m_pDevLftRow);
+        break;//+endCase
+
+      case EO_PUSH_DEVROW_RHT: ArgNil(); // push rht row device
+        dLU0(EO_PUSH_DEVROW_RHT);
+        P_PushPtr(aRluCommon->m_pDevRhtRow);
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
