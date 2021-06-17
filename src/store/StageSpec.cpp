@@ -40,7 +40,6 @@ StageSpec::StageSpec(Stz* szStageNm, i8 i_StageSpec, PipelineSpec* pPipelineSpec
   
   m_i_StageSpec    = i_StageSpec;
   
-  m_pJob           = pPipelineSpec->pJob();
   m_pPipelineSpec  = pPipelineSpec;
 
   m_eTopology      = PO_NONE;
