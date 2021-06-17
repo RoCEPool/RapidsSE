@@ -27,7 +27,22 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_DevRhtRow(void)
 {
+  vAddStep("DevRhtRow.rowBuffer!"_Stz,          &Step::vDevRhtRowRowBufferStore);
   vAddStep("DevRhtRow.streamDef!"_Stz,          &Step::vDevRhtRowStreamDefStore);
+}
+
+/*----------------------------------------------------------------------------*/
+/* DevRhtRow.rowBuffer! -- store rowBuffer in DevLftRow                       */
+/*----------------------------------------------------------------------------*/
+void Step::vDevRhtRowRowBufferStore(void)
+{
+  ENTRY();
+
+  RowBuffer* pRowBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
+
+  ( m_pJob->pLogicUnit_job() )->m_pDevRhtRow->m_pRowBuffer = pRowBuffer;
+
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

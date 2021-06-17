@@ -203,6 +203,7 @@ public:
   void vDevLftRowCrwBufferStore(void);
 
   // devRhtRow
+  void vDevRhtRowRowBufferStore(void);
   void vDevRhtRowStreamDefStore(void);
 
   // devLftIxt
