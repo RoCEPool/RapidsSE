@@ -182,7 +182,7 @@
   // evaluate the expression
   ExprEval[].new
   StreamDefOut[].new
-/*
+
   <etc> StreamDefLft[] StreamDefRht[] StreamDefOut[] ExprEval[].evaluateJoin to eError
 
   // check for error
@@ -192,10 +192,12 @@
     exit
   then
 
+/*
   // generate the asm for the filter
   ExprEval[] LogicUnit[].genJoin to eError
   ExprEval[].delete
 */
+
   // check for error
   eError EC_NONE == not if
     eError op__asmGenExecErr

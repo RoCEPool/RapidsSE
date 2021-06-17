@@ -39,6 +39,7 @@ namespace STORE
 
     void    vAddColumn(Stz* sColumnNm, eCT eColumnType,
                        i8 iColumnLength, i8 iColumnScale);
+    void    vAppendStreamDef(StreamDef* pStreamDef);
     void    vAsString(String* pString);
     i8      nColumns(void);
     Column* pFindColumn(Stz* sColumnNm);

@@ -22,6 +22,7 @@ void Step::vAddSteps_ExprEval(void)
   vAddStep("exprEval[].delete"_Stz,          &Step::vExprEvalDelete);
   vAddStep("exprEval[].evaluate"_Stz,        &Step::vExprEvalEvaluate);
   vAddStep("exprEval[].evaluateIndexScan"_Stz, &Step::vExprEvalEvaluateIndexScan);
+  vAddStep("exprEval[].evaluateJoin"_Stz,    &Step::vExprEvalEvaluateJoin);
   vAddStep("exprEval[].new"_Stz,             &Step::vExprEvalNew);
   vAddStep("exprEval[].set"_Stz,             &Step::vExprEvalSet);
 }
@@ -89,6 +90,30 @@ void Step::vExprEvalEvaluateIndexScan(void)
   m_pDataStack->vPopStr(sIndexRange, __func__);
 
   eEC eError = pExprEval->eEvaluateIndexScan(pIndexTree->pIndexDef(), sIndexRange);
+
+  m_pDataStack->vPushInt(eError);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* exprEval[].evaluateJoin -- evaluate expression for join                    */
+/*----------------------------------------------------------------------------*/
+void Step::vExprEvalEvaluateJoin(void)
+{
+  ENTRY();
+
+
+  ExprEval* pExprEval = *m_pJob->pLogicUnit_job()->m_xpExprEval;
+
+  StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  StreamDef* pStreamDefRht = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  StreamDef* pStreamDefLft = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+
+  s4K sJoinExpr;
+  m_pDataStack->vPopStr(sJoinExpr, __func__);
+
+  eEC eError = pExprEval->eEvaluateJoin(pStreamDefLft, pStreamDefRht, pStreamDefOut, sJoinExpr);
 
   m_pDataStack->vPushInt(eError);
 

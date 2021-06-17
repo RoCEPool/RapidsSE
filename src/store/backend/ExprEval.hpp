@@ -55,6 +55,7 @@ namespace STORE
     s4K      m_sProjectAsm;
     s4K      m_sAggInitAsm;
     s4K      m_sAggAsm;
+    s4K      m_sJoinAsm;
 
     s4K      m_sGbyIdxAsm;
     s4K      m_sPayLoadAggAsm;
@@ -86,6 +87,8 @@ namespace STORE
 
     eEC eEvaluate(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Stz* sExprEvalColumns);
     eEC eEvaluateIndexScan(IndexDef* pIndexDef, Stz* sExprEvalColumns);
+    eEC eEvaluateJoin(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht,
+                      StreamDef* pStreamDefOut, Stz* sJoinExpr);
 
     bool bHasAggregate(void);
     bool bHasGroupBy(void);
@@ -105,8 +108,9 @@ namespace STORE
     void vCreateIdxKey(Stz* szAsmBuffer, IntStack* pTypeStack);
 
     eEC eExprEvalAggGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);
-    eEC eExprEvalProject(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);
     eEC eExprEvalIndexScan(IndexDef* pIndexDef, TokenVec* pTknVec);
+    eEC eExprEvalJoin(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht, StreamDef* pStreamDefOut, TokenVec* pTknVec);
+    eEC eExprEvalProject(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);
 
     void vGenerateAggregateCode(eAG eAggType, Stz* szAsmBuffer, Stz* szAsmInitBuffer, IntStack* pTypeStack);
 

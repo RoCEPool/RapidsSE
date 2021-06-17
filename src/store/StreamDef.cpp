@@ -48,7 +48,7 @@ StreamDef::StreamDef(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
   
-  //m_sStreamDefNm;
+  m_sStreamDefNm = ""_Stz;
  
   m_nColumns = 0;
   //m_xaColumn[C_MAX_DEFCOLUMNS];
@@ -98,6 +98,28 @@ StreamDef::~StreamDef(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+void StreamDef::vAppendStreamDef(StreamDef* pStreamDef)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
+
+  for (i8 i_DefCol = m_nColumns; i_DefCol < pStreamDef->m_nColumns; i_DefCol++) {
+    m_xaColumn[i_DefCol].vCopy(&pStreamDef->m_xaColumn[i_DefCol]);
+  }
+
+  m_nColumns += pStreamDef->m_nColumns;
+
+  //m_oRowPix;
+
+  m_nFixedSized += pStreamDef->m_nFixedSized;
+
+  //_checkInitialised_(CN_STREAMDEF);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
+}
 
 /*----------------------------------------------------------------------------*/
 /* convert string into column type                                            */
