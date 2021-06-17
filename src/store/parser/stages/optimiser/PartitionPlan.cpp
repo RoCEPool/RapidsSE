@@ -355,13 +355,17 @@ void PartitionPlan::vPartitionProjectOp(QueryNode* pNode, GraphChains* pChains, 
       vPushOnOriginChain(pConsolidatingProjectNode, pChains);
 
       // Also add this projectOp to the partition chain
+      // TODO: This projectNode needs to be modified if it contains any AVG() expressions
+      QueryNode* pProjectNode = pNode->pDeepCopy(true);
+      vPushOnPartitionChain(pProjectNode, pChains);
+
+    } else {
+      // Non-post-project without any aggregates
       QueryNode* pProjectNode = pNode->pDeepCopy(true);
       vPushOnPartitionChain(pProjectNode, pChains);
     }
 
-    // In either case, add this projectOp to the partition chain.
-    QueryNode* pProjectNode = pNode->pDeepCopy(true);
-    vPushOnPartitionChain(pProjectNode, pChains);
+
   }
 
 

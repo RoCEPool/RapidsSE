@@ -26,6 +26,12 @@
 #include "GtExpr.hpp"
 #include "LeExpr.hpp"
 #include "GeExpr.hpp"
+#include "AvgExpr.hpp"
+#include "SumExpr.hpp"
+#include "CountExpr.hpp"
+#include "MinExpr.hpp"
+#include "MaxExpr.hpp"
+#include "DivisionExpr.hpp"
 
 #include "NodeNamer.hpp"
 #include "GraphNav.hpp"
@@ -722,6 +728,96 @@ QueryNodeList* Expr::pAggregateExprs(QueryNode* pExpr)
   GraphNav::bGlobalWalk(pExpr, false, true, fVisitor, nullptr);
 
   return pList;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Changes the existing expression to support partitioning.                   */
+/* May return a new root of the expr subgraph.                                */
+/*----------------------------------------------------------------------------*/
+QueryNode* Expr::pPartitionAggregates(QueryNode* pExpr)
+{
+  // Some aggregate expressions need to be modified to enable partitioning.
+  // The main one is AVG(x). It needs to be split into a SUM(x) and a COUNT(x)
+  // and then in the consolidating ProjectOp it converts this back into an
+  // average by calculating SUM(SUM(x))/SUM(COUNT(x)).
+
+  // TODO: This needs to be re-thought to handle the case where AVG() gets
+  //       turned into _two_ expressions - SUM() and COUNT().
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Changes the existing expression to support consolidation of partitioned    */
+/* aggregate expressions.                                                     */
+/*----------------------------------------------------------------------------*/
+void Expr::vConsolidateAggregates(QueryNode* pExpr)
+{
+  // e.g. an expression of SUM(col1), when all of the partitioned results are
+  // being merged, will be consolidated with the expression SUM(SUM(col1)).
+  // Consolidation occurs as follows:
+  //
+  // SUM(x)   -->   SUM(SUM(x))
+  // COUNT(x) -->   SUM(COUNT(x))
+  // MIN(x)   -->   MIN(MIN(x))
+  // MAX(x)   -->   MAX(MAX(x))
+  //
+  // Note that an AVG(x) aggregate will be replaced at the partition level by
+  // a SUM(x) and COUNT(x). A consolidating expression replaces AVG(x) with
+  // SUM(SUM(x))/SUM(COUNT(x))
+
+  auto fVisitor = [](PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
+
+    if (AvgExpr::bIsOfType(pNode)) {
+      QueryNode* pAvgExpr = _pQueryNode(pNode);
+
+      ASSERT(pAvgExpr->nChildren() == 1);
+      QueryNode* pChildExpr = _pQueryNode(pAvgExpr->pFirstChild());
+
+      // Form a template that we will then transmogrify the avgExpr node into.
+
+      // Build the SUM(SUM(x)) chain.
+      QueryNode* pNumerator = SumExpr::pCreate(false, SumExpr::pCreate(false, pChildExpr->pDeepCopy(true)));
+
+      // Build the SUM(COUNT(x)) chain
+      QueryNode* pDenominator = SumExpr::pCreate(false, CountExpr::pCreate(false, false, pChildExpr->pDeepCopy(true)));
+
+      // Build the division expression
+      QueryNode* pDivExpr = DivisionExpr::pCreate(pNumerator, pDenominator);
+
+      // Apply this template
+      pAvgExpr->vTransmogrifyTo(pDivExpr, true);
+      ASSERT(DivisionExpr::bIsOfType(pAvgExpr));
+
+      return GraphNav::WALK_ABORT;
+    }
+
+    if (SumExpr::bIsOfType(pNode)) {
+      // TODO
+      return GraphNav::WALK_ABORT;
+    }
+
+    if (CountExpr::bIsOfType(pNode)) {
+      // TODO
+      return GraphNav::WALK_ABORT;
+    }
+
+    if (MinExpr::bIsOfType(pNode)) {
+      // TODO
+      return GraphNav::WALK_ABORT;
+    }
+
+    if (MaxExpr::bIsOfType(pNode)) {
+      // TODO
+      return GraphNav::WALK_ABORT;
+    }
+
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  while (!GraphNav::bGlobalWalk(pExpr, false, true, fVisitor, nullptr)) {
+
+  }
 }
 
 /*----------------------------------------------------------------------------*/

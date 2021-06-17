@@ -11,7 +11,7 @@ namespace Parser
   class PrimitiveNode;
   class QueryNode;
 
-  class GraphNav
+class GraphNav
   {
 
   private:

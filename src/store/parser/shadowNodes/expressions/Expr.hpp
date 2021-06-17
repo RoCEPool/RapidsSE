@@ -95,6 +95,13 @@ namespace Parser
     // in the list are not to be deleted.
     static QueryNodeList* pAggregateExprs(QueryNode* pExpr);
 
+    // Changes the existing expression to support partitioning.
+    // May return a new root of the expr subgraph.
+    static QueryNode* pPartitionAggregates(QueryNode* pExpr);
+
+    // Changes the existing expression to support consolidation of partitioned aggregate expressions.
+    static void vConsolidateAggregates(QueryNode* pExpr);
+
   protected:
     // Returns true if the expression is commutative (e.g. A+B = B+A)
     // and the underlying expression children are also symbolically equal.

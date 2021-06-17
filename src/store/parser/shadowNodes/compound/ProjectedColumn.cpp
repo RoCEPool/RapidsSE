@@ -198,6 +198,67 @@ void ProjectedColumn::vSetAlias(QueryNode* pNode, Text *pNewAlias)
   pAliasNode->vSetValue(static_cast<Value&&>(xVal));
 }
 
+/*----------------------------------------------------------------------------*/
+/* Changes the aggregate expression in pNode to support partitioning          */
+/*----------------------------------------------------------------------------*/
+void ProjectedColumn::vPartitionAggregates(QueryNode* pNode)
+{
+  // Some aggregate expressions need to be modified to enable partitioning.
+  // The main one is AVG(x). It needs to be split into a SUM(x) and a COUNT(x)
+  // and then in the consolidating ProjectOp it converts this back into an
+  // average by calculating SUM(SUM(x))/SUM(COUNT(x)).
+
+  // TODO: This is wrong because an AVG() needs to be split into two projected
+  //       columns, not one. We need to be careful that we remove the projected
+  //       column from the ProjectOp and add in the two new projected columns
+  //       in the same spot.
+  //
+  // TODO: We also need to consider that there may be multiple aggregation terms
+  //       in the one expression. e.g. an expression AVG(x) + MIN(y) would
+  //       need to be split into SUM(x), COUNT(x), MIN(y) at the partition level
+  //       before being consolidated as SUM(SUM(x))/SUM(COUNT(x)) + MIN(MIN(y)) at
+  //       the origin level.
+  QueryNode* pExpr = pExprNode(pNode);
+
+  QueryNode* pNewExpr = Expr::pPartitionAggregates(pExpr);
+
+  // If we have a new root of this expression then we need to update it in
+  // the projected column
+  if (pExpr != pNewExpr) {
+    ASSERT(pNewExpr->szName()->bEqual(C_EXPR_PROP));
+    ASSERT(Expr::bIsOfType(pNewExpr));
+
+    pNode->pRemoveProperty(C_EXPR_PROP);
+    pNode->vAppendProperty(pNewExpr);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Changes the aggregate expression in pNode to consolidate results from each */
+/* partition or node                                                          */
+/*----------------------------------------------------------------------------*/
+void ProjectedColumn::vConsolidateAggregates(QueryNode* pNode)
+{
+  // e.g. an expression of SUM(col1), when all of the partitioned results are
+  // being merged, will be consolidated with the expression SUM(SUM(col1)).
+  // Consolidation occurs as follows:
+  //
+  // SUM(x)   -->   SUM(SUM(x))
+  // COUNT(x) -->   SUM(COUNT(x))
+  // MIN(x)   -->   MIN(MIN(x))
+  // MAX(x)   -->   MAX(MAX(x))
+  //
+  // Note that an AVG(x) aggregate will be replaced at the partition level by
+  // a SUM(x) and COUNT(x). A consolidating expression replaces AVG(x) with
+  // SUM(SUM(x))/SUM(COUNT(x))
+
+  QueryNode* pExpr = pExprNode(pNode);
+
+  Expr::vConsolidateAggregates(pExpr);
+  ASSERT(pExpr->szName()->bEqual(C_EXPR_PROP));
+  ASSERT(Expr::bIsOfType(pExpr));
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

@@ -468,10 +468,29 @@ void ProjectOp::vPushdownExpr(QueryNode* pNode, QueryNode* pExpr, Text* pAlias)
 /* Returns a new ProjectOp node with projected columns consolidating          */
 /* aggregated expressions from each partition or node                         */
 /*----------------------------------------------------------------------------*/
-QueryNode* ProjectOp::pCreateConsolidating(QueryNode* pNode)
+QueryNode* ProjectOp::pCreateConsolidating(QueryNode* pSinglePartitionNode)
 {
-  // TODO
-  return nullptr;
+  QueryNode* pNewOp = pSinglePartitionNode->pDeepCopy(true);
+
+  QueryNode* pProjColumns =
+      _pQueryNode(GraphNav::pFindProperty(const_cast<Stz *>(C_PROJECTEDCOLUMNS_PROP), pNewOp));
+
+  // Iterate all of the projected columns
+  PlanNodeIter* pIter = pProjColumns->pNewChildrenIter();
+
+  while (pIter->bHasNext()) {
+    QueryNode* pProjColumn = _pQueryNode(pIter->pNext());
+
+    ASSERT(ProjectedColumn::bIsOfType(pProjColumn));
+
+    // Any aggregated expressions need to be consolidated
+    if (ProjectedColumn::bContainsAnAggregate(pProjColumn)) {
+      ProjectedColumn::vConsolidateAggregates(pProjColumn);
+    }
+  }
+
+  delete pIter;
+  return pNewOp;
 }
 
 /*============================================================================*/
