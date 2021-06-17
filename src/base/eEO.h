@@ -282,13 +282,15 @@ enum eEO : u2 // expression operators
   // ixt device pushes
   /*  S  */ EO_PUSH_DEVIXT_ALT,     // push alt Ixt device
   /*  S  */ EO_PUSH_DEVIXT_ENT,     // push entry of ixt device
-  /*  S  */ EO_PUSH_DEVIXT_SRC,     // push src Ixt device
+  /*  S  */ EO_PUSH_DEVIXT_LFT,     // push lft Ixt device
+  /*  S  */ EO_PUSH_DEVIXT_RHT,     // push rht Ixt device
   /*  S  */ EO_PUSH_DEVIXT_TMP,     // push tmp Ixt device
 
   // row device pushes
   /*  S  */ EO_PUSH_DEVROW_ALT,     // push alt row device
   /*  S  */ EO_PUSH_DEVROW_DST,     // push dst row device
-  /*  S  */ EO_PUSH_DEVROW_SRC,     // push src row device
+  /*  S  */ EO_PUSH_DEVROW_LFT,     // push lft row device
+  /*  S  */ EO_PUSH_DEVROW_RHT,     // push rht row device
 
   // rlu pushes
   /*  S  */ EO_PUSH_RLU_COLSET,     // push colset from the rlu
@@ -793,13 +795,15 @@ static Stz* aEO[]
   // ixt device pushes
   /*    */ "EO_PUSH_DEVIXT_ALT"_Stz,
   /*    */ "EO_PUSH_DEVIXT_ENT"_Stz,
-  /*    */ "EO_PUSH_DEVIXT_SRC"_Stz,
+  /*    */ "EO_PUSH_DEVIXT_LFT"_Stz,
+  /*    */ "EO_PUSH_DEVIXT_RHT"_Stz,
   /*    */ "EO_PUSH_DEVIXT_TMP"_Stz,
 
   // row device pushes
   /*    */ "EO_PUSH_DEVROW_ALT"_Stz,
   /*    */ "EO_PUSH_DEVROW_DST"_Stz,
-  /*    */ "EO_PUSH_DEVROW_SRC"_Stz,
+  /*    */ "EO_PUSH_DEVROW_LFT"_Stz,
+  /*    */ "EO_PUSH_DEVROW_RHT"_Stz,
 
   // rlu pushes
   /*    */ "EO_PUSH_RLU_COLSET"_Stz,
@@ -1309,13 +1313,15 @@ static EoArg EoArgs[]
   // ixt device pushes
   { EA_NONE,    0 },  // EO_PUSH_DEVIXT_ALT
   { EA_NONE,    0 },  // EO_PUSH_DEVIXT_ENT
-  { EA_NONE,    0 },  // EO_PUSH_DEVIXT_SRC
+  { EA_NONE,    0 },  // EO_PUSH_DEVIXT_LFT
+  { EA_NONE,    0 },  // EO_PUSH_DEVIXT_RHT
   { EA_NONE,    0 },  // EO_PUSH_DEVIXT_TMP
 
   // row device pushes
   { EA_NONE,    0 },  // EO_PUSH_DEVROW_ALT
   { EA_NONE,    0 },  // EO_PUSH_DEVROW_DST
-  { EA_NONE,    0 },  // EO_PUSH_DEVROW_SRC
+  { EA_NONE,    0 },  // EO_PUSH_DEVROW_LFT
+  { EA_NONE,    0 },  // EO_PUSH_DEVROW_RHT
 
   // rlu pushes
   { EA_NONE,    0 },  // EO_PUSH_RLU_COLSET
