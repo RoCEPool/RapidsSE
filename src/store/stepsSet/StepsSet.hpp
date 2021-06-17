@@ -203,6 +203,7 @@ public:
   void vDevLftRowCrwBufferStore(void);
 
   // devRhtRow
+  void vDevRhtRowRowBufferStore(void);
   void vDevRhtRowStreamDefStore(void);
 
   // devLftIxt
@@ -338,7 +339,8 @@ public:
   void vExprEvalDelete(void);
   void vExprEvalNew(void);
   void vExprEvalEvaluate(void);
-void vExprEvalEvaluateIndexScan(void);
+  void vExprEvalEvaluateIndexScan(void);
+  void vExprEvalEvaluateJoin(void);
   void vExprEvalSet(void);
 
   // fact

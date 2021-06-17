@@ -106,7 +106,7 @@ ExprEval::~ExprEval(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add column vec from stream def                                             */
+/* evalue the projection expression                                           */
 /*----------------------------------------------------------------------------*/
 eEC ExprEval::eEvaluate(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Stz* sExprEvalColumns)
 {
@@ -146,7 +146,7 @@ eEC ExprEval::eEvaluate(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Stz* 
 }
 
 /*----------------------------------------------------------------------------*/
-/* add column vec from stream def                                             */
+/* evalue the index scan expression                                           */
 /*----------------------------------------------------------------------------*/
 eEC ExprEval::eEvaluateIndexScan(IndexDef* pIndexDef, Stz* sExprEvalColumns)
 {
@@ -168,6 +168,34 @@ eEC ExprEval::eEvaluateIndexScan(IndexDef* pIndexDef, Stz* sExprEvalColumns)
 
   eError = eExprEvalIndexScan(pIndexDef, pTknVec);
 
+
+  L_RETRUN:
+  delete pTknVec;
+  return eError;
+}
+
+/*----------------------------------------------------------------------------*/
+/* evaluate the join expression                                               */
+/*----------------------------------------------------------------------------*/
+eEC ExprEval::eEvaluateJoin(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht,
+                            StreamDef* pStreamDefOut, Stz* sJoinExpr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
+
+  eEC eError = EC_NONE;
+  Token* pTkn;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tokenise the projectColumns
+  TokenVec *pTknVec = TokenVec::pTokenise(sJoinExpr);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the next token
+  pTkn = pTknVec->pNextToken();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // evaluate the join expression
+  eError = eExprEvalJoin(pStreamDefLft, pStreamDefRht, pStreamDefOut, pTknVec);
 
   L_RETRUN:
   delete pTknVec;
@@ -450,7 +478,6 @@ void ExprEval::vCreateIdxKey(Stz* szAsmBuffer, IntStack* pTypeStack) {
 eEC ExprEval::eExprEvalAggGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
-  UNUSED(pStreamDefIn);
 
   eCT eExprType = CT_NONE;
   eAG eAggType  = AG_NONE;
@@ -1061,7 +1088,7 @@ eEC ExprEval::eExprEvalAggGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut,
   vCreateIdxKey(m_sPayLoadKeyAsm, &m_xKeyStack);
 
   L_RETURN:
-  RASSERT(m_xTypeStack.nItems() == 0);
+  //RASSERT(m_xTypeStack.nItems() == 0);
   delete pColumnExpr;
 
   return eError;
@@ -1260,10 +1287,189 @@ eEC ExprEval::eExprEvalIndexScan(IndexDef* pIndexDef, TokenVec* pTknVec)
 /*----------------------------------------------------------------------------*/
 /* parse project                                                              */
 /*----------------------------------------------------------------------------*/
+eEC ExprEval::eExprEvalJoin(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht,
+                            StreamDef* pStreamDefOut, TokenVec* pTknVec)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
+
+  eCT eExprType = CT_NONE;
+  eEC eError    = EC_NONE;
+  eDM eDatum    = DM_NONE;
+  i8 i_ColumnOrdinal;
+  bool bLftTable = true;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add columns from StreamDefLft to StreamDefOut
+  pStreamDefOut->vAppendStreamDef(pStreamDefLft);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add columns from StreamDefRht to StreamDefOut
+  pStreamDefOut->vAppendStreamDef(pStreamDefRht);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the current token
+  Token* pTkn = pTknVec->pCurrToken();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  while ( pTkn ) {
+
+    vTrace("TKN: %s\n"_Stz, pTkn->azChars());
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // arithmetic operator ?
+    if (pTkn->bIsArithmetic()) {
+      vAddArithmetic(m_sJoinAsm, &m_xTypeStack, pTkn);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // logical operator ?
+    if (pTkn->bIsLogical() || pTkn->bSame("isNull"_Stz)) {
+      vAddLogical(m_sJoinAsm, &m_xAggStack, pTkn);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // relational operator ?
+    if (pTkn->bIsRelational()) {
+      vAddRelational(m_sJoinAsm, &m_xTypeStack, pTkn);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // is it a numeric ?
+    if (pTkn->bIsNumeric()) {
+      vPushDatum(DM_INT, m_sJoinAsm, &m_xTypeStack, pTkn);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // is it a decimal no ?
+    if (pTkn->bIsDecimalNo()) {
+      vPushDatum(DM_BCD,  m_sJoinAsm, &m_xTypeStack, pTkn);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // is it a string ?
+    if (pTkn->bIsString()) {
+      vPushDatum (DM_VCH,  m_sJoinAsm, &m_xTypeStack, pTkn);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // is it a tag ?
+    if (pTkn->eToken() == TN_TAG && pTkn->bSame("<>"_Stz)) {
+      StrLib::vSprintCat(m_sJoinAsm, "  EO_RETURN_FALSE\n"_Stz);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // should be a name
+    if (!pTkn->bIsName()) {
+      eError = EC_INVALID_COMMAND;
+      goto L_RETURN;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // is it a negate op ?
+    if (pTkn->bSame("negate"_Stz) ) {
+      vAddArithmetic(m_sJoinAsm, &m_xAggStack, pTkn);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // it is a null value ?
+    if (pTkn->bSame("null"_Stz) ) {
+      vPushDatum (DM_UNK, m_sJoinAsm, &m_xAggStack, pTkn);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // is it a date ?
+    if (pTkn->bSame("DATE"_Stz) ) {
+      pTkn = pTknVec->pNextToken();
+      if (pTkn->bIsString()) {
+        eDatum = DM_DTE;
+        vPushDatum(eDatum, m_sJoinAsm, &m_xAggStack, pTkn);
+        pTkn = pTknVec->pNextToken();
+        continue;
+      }
+      else
+        pTkn = pTknVec->pPrevToken();
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // is it a time ?
+    if (pTkn->bSame("TIME"_Stz) ) {
+      pTkn = pTknVec->pNextToken();
+      if (pTkn->bIsString()) {
+        vPushDatum(DM_TME, m_sJoinAsm, &m_xAggStack, pTkn);
+        pTkn = pTknVec->pNextToken();
+        continue;
+      }
+      else
+        pTkn = pTknVec->pPrevToken();
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // is it a timestamp ?
+    if (pTkn->bSame("TIMESTAMP"_Stz) ) {
+      pTkn = pTknVec->pNextToken();
+      if (pTkn->bIsString()) {
+        vPushDatum(DM_TSP, m_sJoinAsm, &m_xAggStack, pTkn);
+        pTkn = pTknVec->pNextToken();
+        continue;
+      }
+      else
+        pTkn = pTknVec->pPrevToken();
+    }
+
+    // found a src column
+    if ( ! pTkn->szChars()->bContains("$"_Stz)) {
+      eError = EC_INVALID_COMMAND;
+      goto L_RETURN;
+    }
+
+    // is it a column relative to the group by key ?
+    if (pTkn->szChars()->bContains("L"_Stz)) {
+      bLftTable = true;
+      Stz *sOrdinalColumn = pTkn->szChars() + 2;
+      i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
+
+    }
+    else {
+      RASSERT(pTkn->szChars()->bContains("R"_Stz));
+      bLftTable = false;
+      Stz *sOrdinalColumn = pTkn->szChars() + 2;
+      i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
+    }
+
+    Column* pColumn = pStreamDefLft->pGetColumn(i_ColumnOrdinal);
+    vPushLclCol(m_sJoinAsm, &m_xTypeStack, pColumn->eColumnType(), i_ColumnOrdinal);
+    pTkn = pTknVec->pNextToken();
+  }
+
+  L_RETURN:
+  RASSERT(m_xTypeStack.nItems() == 0);
+  return eError;
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse project                                                              */
+/*----------------------------------------------------------------------------*/
 eEC ExprEval::eExprEvalProject(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
-  UNUSED(pStreamDefIn);
 
   eCT eExprType = CT_NONE;
   eAG eAggType  = AG_NONE;
