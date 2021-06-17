@@ -253,6 +253,36 @@ b1 ProjectOp::bHasAnAggregate(QueryNode* pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns true if all of the projected expressions are aggregate expressions */
+/*----------------------------------------------------------------------------*/
+b1 ProjectOp::bHasOnlyAggregates(QueryNode* pNode)
+{
+  QueryNode* pProjColumns =
+      _pQueryNode(GraphNav::pFindProperty(const_cast<Stz *>(C_PROJECTEDCOLUMNS_PROP), pNode));
+
+  if (pProjColumns->nChildren() == 0) {
+    return false;
+  }
+
+  // Iterate all of the projected columns
+  PlanNodeIter* pIter = pProjColumns->pNewChildrenIter();
+
+  b1 bResult = true;
+  while (pIter->bHasNext()) {
+    QueryNode* pProjColumn = _pQueryNode(pIter->pNext());
+
+    ASSERT(ProjectedColumn::bIsOfType(pProjColumn));
+    if (!ProjectedColumn::bContainsAnAggregate(pProjColumn)) {
+      bResult = false;
+      break;
+    }
+  }
+
+  delete pIter;
+  return bResult;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns the projectedColumns node of the projectOp                           */
 /*----------------------------------------------------------------------------*/
 QueryNode* ProjectOp::pProjectedColumns(QueryNode* pNode)
@@ -432,6 +462,16 @@ void ProjectOp::vPushdownExpr(QueryNode* pNode, QueryNode* pExpr, Text* pAlias)
   ASSERT(ProjectedColumns::bIsOfType(pProjectedColumns));
 
   pProjectedColumns->vAppendChild(pProjectedColumn);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns a new ProjectOp node with projected columns consolidating          */
+/* aggregated expressions from each partition or node                         */
+/*----------------------------------------------------------------------------*/
+QueryNode* ProjectOp::pCreateConsolidating(QueryNode* pNode)
+{
+  // TODO
+  return nullptr;
 }
 
 /*============================================================================*/

@@ -40,6 +40,9 @@ namespace Parser
     // Returns true if any of the projected expressions are aggregate expressions
     static b1 bHasAnAggregate(QueryNode* pNode);
 
+    // Returns true if all of the projected expressions are aggregate expressions
+    static b1 bHasOnlyAggregates(QueryNode* pNode);
+
     // Return the internal node that represents the list of projected expressions.
     // Individual projected expressions are children of this node.
     static QueryNode* pProjectedColumns(QueryNode* pNode);
@@ -59,6 +62,10 @@ namespace Parser
 
     // Adds an expression to be projected, with an optional alias
     static void vPushdownExpr(QueryNode* pNode, QueryNode* pExpr, Text* pAlias);
+
+    // Returns a new ProjectOp node with projected columns consolidating aggregated
+    // expressions from each partition or node
+    static QueryNode* pCreateConsolidating(QueryNode* pNode);
 
   protected:
 
