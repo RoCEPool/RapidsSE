@@ -1203,7 +1203,7 @@ eEC ExprEval::eExprEvalIndexScan(IndexDef* pIndexDef, TokenVec* pTknVec)
     if (pTkn->bSame("LBOUND"_Stz) ) {
       sAsmText = m_sLowerBoundAsm;
       if (sAsmText->bSame(""_Stz) ){
-        StrLib::vSprintCat(sAsmText, "  EO_PUSH_DEVIXT_SRC\n"_Stz);
+        StrLib::vSprintCat(sAsmText, "  EO_PUSH_DEVIXT_LFT\n"_Stz);
         StrLib::vSprintCat(sAsmText, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
         StrLib::vSprintCat(sAsmText, "  EO_ENTWRK_SETENTKND\n"_Stz);
       }
@@ -1216,7 +1216,7 @@ eEC ExprEval::eExprEvalIndexScan(IndexDef* pIndexDef, TokenVec* pTknVec)
     if (pTkn->bSame("UBOUND"_Stz) ) {
       sAsmText = m_sUpperBoundAsm;
       if (sAsmText->bSame(""_Stz)) {
-        StrLib::vSprintCat(sAsmText, "  EO_PUSH_DEVIXT_SRC\n"_Stz);
+        StrLib::vSprintCat(sAsmText, "  EO_PUSH_DEVIXT_LFT\n"_Stz);
         StrLib::vSprintCat(sAsmText, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
         StrLib::vSprintCat(sAsmText, "  EO_ENTWRK_SETENTKND\n"_Stz);
       }
@@ -1241,14 +1241,14 @@ eEC ExprEval::eExprEvalIndexScan(IndexDef* pIndexDef, TokenVec* pTknVec)
 
   if ( ! m_sLowerBoundAsm.bEqual(""_Stz) ) {
     StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
-    StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_PUSH_DEVIXT_SRC\n"_Stz);
+    StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_PUSH_DEVIXT_LFT\n"_Stz);
     StrLib::vSprintCat(m_sLowerBoundAsm, "  %s\n"_Stz, aEO[m_eLowerBound]);
     StrLib::vSprintCat(m_sLowerBoundAsm, "  EO_JMP_FALSE INDEX_SCAN_END\n"_Stz);
   }
 
   if ( ! m_sUpperBoundAsm.bEqual(""_Stz) ) {
     StrLib::vSprintCat(m_sUpperBoundAsm, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
-    StrLib::vSprintCat(m_sUpperBoundAsm, "  EO_PUSH_DEVIXT_SRC\n"_Stz);
+    StrLib::vSprintCat(m_sUpperBoundAsm, "  EO_PUSH_DEVIXT_LFT\n"_Stz);
     StrLib::vSprintCat(m_sUpperBoundAsm, "  %s\n"_Stz, aEO[m_eUpperBound]);
   }
 
@@ -2565,7 +2565,7 @@ void ExprEval::vBoundRelation(Stz* szAsmBuffer, IntStack* pTypeStack, Token* pTk
 
   vCreateIdxKey(szAsmBuffer, &m_xTypeStack);
 
-  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVIXT_SRC\n"_Stz);
+  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVIXT_LFT\n"_Stz);
   StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
   StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_PRINT\n"_Stz);
 }

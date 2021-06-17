@@ -46,7 +46,7 @@ Label STARTMARKER_HANDLER
   EO_DEVROW_TABLENM_SET "lineitem"
 
   //EO_INDEXNM_SRC_SET "lineitem_idx1"
-  EO_PUSH_DEVIXT_SRC
+  EO_PUSH_DEVIXT_LFT
   EO_DEVIXT_INDEXNM_SET "lineitem_idx1"
 
   EO_JMP QRY_600_DONE
@@ -88,14 +88,14 @@ Label DATAPULSE_HANDLER
   EO_ENTWRK_SETINTELM_OLD
 
   EO_PUSH_RLU_ENTWRK
-  EO_PUSH_DEVIXT_SRC
+  EO_PUSH_DEVIXT_LFT
   EO_DEVIXT_LBOUND_GE
 
 
   EO_JMP_TRUE UPPERBOUND
   
   // no lower key start position at beginning of index
-  EO_PUSH_DEVIXT_SRC
+  EO_PUSH_DEVIXT_LFT
   EO_DEVIXT_IDX_BEGIN
   
   // no entry return
@@ -112,14 +112,14 @@ Label UPPERBOUND
   EO_PUSH_RLU_ENTWRK
   EO_ENTWRK_SETINTELM_OLD
   EO_PUSH_RLU_ENTWRK
-  EO_PUSH_DEVIXT_SRC
+  EO_PUSH_DEVIXT_LFT
   EO_DEVIXT_UBOUND_LT
   EO_JMP_TRUE TRV_TILL_UPPER
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // no upper key traverse till end
 Label TRV_TILL_END
-  EO_PUSH_DEVIXT_SRC
+  EO_PUSH_DEVIXT_LFT
   EO_DEVIXT_IDX_NEXT
   EO_JMP_FALSE QRY_600_DONE
 
@@ -137,16 +137,16 @@ Label TRV_TILL_UPPER
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fetch next entry from index
-  EO_PUSH_DEVIXT_SRC
+  EO_PUSH_DEVIXT_LFT
   EO_DEVIXT_IDX_NEXT
   EO_JMP_FALSE QRY_600_DONE
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // have we reached the upper entry
-  EO_PUSH_DEVIXT_SRC
+  EO_PUSH_DEVIXT_LFT
   EO_DEVIXT_ENT_PUSH
 
-  EO_PUSH_DEVIXT_SRC
+  EO_PUSH_DEVIXT_LFT
   EO_DEVIXT_ENT_PUSHUPPER
   EO_EQ_INTINT
   EO_JMP_TRUE QRY_600_DONE
@@ -174,7 +174,7 @@ Label QRY_600_DONE
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Label SUBROUTINE_PROCESSROW
   //EO_CRW_SRC_DEREF
-  EO_PUSH_DEVIXT_SRC
+  EO_PUSH_DEVIXT_LFT
   EO_DEVIXT_ENT_DEREF
 
   EO_RLU_SET_ITEMS 3
@@ -184,7 +184,7 @@ Label SUBROUTINE_PROCESSROW
 
   EO_PUSH_RLU_COLSET
   EO_PUSH_DEVROW_LFT
-  EO_PUSH_DEVIXT_SRC
+  EO_PUSH_DEVIXT_LFT
   EO_DEVIXT_COL_PUSHSET_PST
 
   EO_POP_LOCALI 2

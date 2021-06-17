@@ -3243,9 +3243,14 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_IXT_PUSH_ENT(&aiDstk);
         break;//+endCase
 
-      case EO_PUSH_DEVIXT_SRC: ArgNil(); // push src ixt devive
-        dLU0(EO_PUSH_DEVIXT_SRC);
+      case EO_PUSH_DEVIXT_LFT: ArgNil(); // push lft ixt devive
+        dLU0(EO_PUSH_DEVIXT_LFT);
         P_PushPtr(aRluCommon->m_pDevLftIxt);
+        break;//+endCase
+
+      case EO_PUSH_DEVIXT_RHT: ArgNil(); // push rht ixt devive
+        dLU0(EO_PUSH_DEVIXT_RHT);
+        P_PushPtr(aRluCommon->m_pDevRhtIxt);
         break;//+endCase
 
       case EO_PUSH_DEVIXT_TMP: ArgNil(); // push tmp ixt device

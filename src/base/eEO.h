@@ -282,7 +282,8 @@ enum eEO : u2 // expression operators
   // ixt device pushes
   /*  S  */ EO_PUSH_DEVIXT_ALT,     // push alt Ixt device
   /*  S  */ EO_PUSH_DEVIXT_ENT,     // push entry of ixt device
-  /*  S  */ EO_PUSH_DEVIXT_SRC,     // push src Ixt device
+  /*  S  */ EO_PUSH_DEVIXT_LFT,     // push lft Ixt device
+  /*  S  */ EO_PUSH_DEVIXT_RHT,     // push rht Ixt device
   /*  S  */ EO_PUSH_DEVIXT_TMP,     // push tmp Ixt device
 
   // row device pushes
@@ -794,7 +795,8 @@ static Stz* aEO[]
   // ixt device pushes
   /*    */ "EO_PUSH_DEVIXT_ALT"_Stz,
   /*    */ "EO_PUSH_DEVIXT_ENT"_Stz,
-  /*    */ "EO_PUSH_DEVIXT_SRC"_Stz,
+  /*    */ "EO_PUSH_DEVIXT_LFT"_Stz,
+  /*    */ "EO_PUSH_DEVIXT_RHT"_Stz,
   /*    */ "EO_PUSH_DEVIXT_TMP"_Stz,
 
   // row device pushes
@@ -1311,7 +1313,8 @@ static EoArg EoArgs[]
   // ixt device pushes
   { EA_NONE,    0 },  // EO_PUSH_DEVIXT_ALT
   { EA_NONE,    0 },  // EO_PUSH_DEVIXT_ENT
-  { EA_NONE,    0 },  // EO_PUSH_DEVIXT_SRC
+  { EA_NONE,    0 },  // EO_PUSH_DEVIXT_LFT
+  { EA_NONE,    0 },  // EO_PUSH_DEVIXT_RHT
   { EA_NONE,    0 },  // EO_PUSH_DEVIXT_TMP
 
   // row device pushes
