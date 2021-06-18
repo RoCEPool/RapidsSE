@@ -222,7 +222,7 @@ void ExprPushdown::vPushdownExpr(QueryNode* pOrdExpr, QueryNode* pSqlOp, PlanNod
 
   // Get a list of all aggregate terms. The expressions in the list are
   // shallow copied from pOrdExpr so don't delete them, only the list itself.
-  QueryNodeList* pAggExprs = Expr::pAggregateExprs(pOrdExpr);
+  QueryNodeList* pAggExprs = Expr::pAggregateExprs(pOrdExpr, true);
 
   if (pAggExprs->pHead()) {
     // list is not empty

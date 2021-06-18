@@ -35,7 +35,9 @@
 
 #include "NodeNamer.hpp"
 #include "GraphNav.hpp"
+#include "GraphEditor.hpp"
 #include "SqlException.hpp"
+
 
 using namespace Parser;
 
@@ -706,12 +708,14 @@ QueryNode* Expr::pLargestNonOrdinalSubExpr(QueryNode* pOrdinalExpr, b1 bIncludeA
 /* Given an expression, return a list of each aggregate term found in         */
 /* that expression. The returned list is to be deleted, but the items         */
 /* in the list are not to be deleted.                                         */
+/* If bDescendAggregates is true then all nested aggregate terms are returned.*/
+/* If false then only the outer aggregate terms are returned.                 */
 /*----------------------------------------------------------------------------*/
-QueryNodeList* Expr::pAggregateExprs(QueryNode* pExpr)
+QueryNodeList* Expr::pAggregateExprs(QueryNode* pExpr, b1 bDescendAggregates)
 {
   QueryNodeList* pList = new QueryNodeList();
 
-  auto fVisitor = [pList]
+  auto fVisitor = [pList, bDescendAggregates]
       (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
@@ -720,6 +724,10 @@ QueryNodeList* Expr::pAggregateExprs(QueryNode* pExpr)
 
     if (AggregateExpr::bIsOfType(pNode)) {
       pList->vPush(_pQueryNode(pNode));
+      
+      if (!bDescendAggregates) {
+        return GraphNav::WALK_SKIP_SUBTREE;
+      }
     }
 
     return GraphNav::WALK_CONTINUE;
@@ -748,8 +756,8 @@ QueryNode* Expr::pPartitionAggregates(QueryNode* pExpr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Changes the existing expression to support consolidation of partitioned    */
-/* aggregate expressions.                                                     */
+/* Changes the existing expression in place to support consolidation of       */
+/* partitioned aggregate expressions.                                         */
 /*----------------------------------------------------------------------------*/
 void Expr::vConsolidateAggregates(QueryNode* pExpr)
 {
@@ -766,13 +774,17 @@ void Expr::vConsolidateAggregates(QueryNode* pExpr)
   // a SUM(x) and COUNT(x). A consolidating expression replaces AVG(x) with
   // SUM(SUM(x))/SUM(COUNT(x))
 
-  auto fVisitor = [](PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
+  QueryNodeList* pAggList = Expr::pAggregateExprs(pExpr, false);
+  
+  QueryNodeIter* pIter = pAggList->pNewIter();
 
-    if (AvgExpr::bIsOfType(pNode)) {
-      QueryNode* pAvgExpr = _pQueryNode(pNode);
+  while (pIter->bHasNext()) {
 
-      ASSERT(pAvgExpr->nChildren() == 1);
-      QueryNode* pChildExpr = _pQueryNode(pAvgExpr->pFirstChild());
+    QueryNode* pAgg = pIter->pNext();
+
+    if (AvgExpr::bIsOfType(pAgg)) {
+      ASSERT(pAgg->nChildren() == 1);
+      QueryNode* pChildExpr = _pQueryNode(pAgg->pFirstChild());
 
       // Form a template that we will then transmogrify the avgExpr node into.
 
@@ -786,38 +798,64 @@ void Expr::vConsolidateAggregates(QueryNode* pExpr)
       QueryNode* pDivExpr = DivisionExpr::pCreate(pNumerator, pDenominator);
 
       // Apply this template
-      pAvgExpr->vTransmogrifyTo(pDivExpr, true);
-      ASSERT(DivisionExpr::bIsOfType(pAvgExpr));
+      pAgg->vTransmogrifyTo(pDivExpr, true);
+      ASSERT(DivisionExpr::bIsOfType(pAgg));
 
-      return GraphNav::WALK_ABORT;
+
+    } else if (SumExpr::bIsOfType(pAgg)) {
+      ASSERT(pAgg->nChildren() == 1);
+      QueryNode* pChildExpr = _pQueryNode(pAgg->pFirstChild());
+
+      // Create the inner SUM
+      QueryNode* pInnerSum = SumExpr::pCreate(false, pChildExpr->pDeepCopy(true));
+
+      // Insert the inner SUM as a child of the outer SUM
+      GraphEditor::vReplaceChild(pAgg, pChildExpr, pInnerSum);
+
+
+    } else if (CountExpr::bIsOfType(pAgg)) {
+      ASSERT(pAgg->nChildren() == 1);
+      QueryNode* pChildExpr = _pQueryNode(pAgg->pFirstChild());
+
+      // Form a template that we will then transmogrify the avgExpr node into.
+
+      // Build the inner COUNT(x)
+      QueryNode* pInnerCount = pAgg->pDeepCopy(true);
+
+      // Build the outer SUM() expr
+      QueryNode* pOuterSum = SumExpr::pCreate(false, pInnerCount);
+
+      // Apply this template
+      pAgg->vTransmogrifyTo(pOuterSum, true);
+      ASSERT(SumExpr::bIsOfType(pAgg));
+
+
+    } else if (MinExpr::bIsOfType(pAgg)) {
+      ASSERT(pAgg->nChildren() == 1);
+      QueryNode* pChildExpr = _pQueryNode(pAgg->pFirstChild());
+
+      // Create the inner MIN
+      QueryNode* pInnerMin = pAgg->pDeepCopy(true);
+
+      // Insert the inner MIN as a child of the outer MIN
+      GraphEditor::vReplaceChild(pAgg, pChildExpr, pInnerMin);
+
+
+    } else if (MaxExpr::bIsOfType(pAgg)) {
+      ASSERT(pAgg->nChildren() == 1);
+      QueryNode* pChildExpr = _pQueryNode(pAgg->pFirstChild());
+
+      // Create the inner MAX
+      QueryNode* pInnerMax = pAgg->pDeepCopy(true);
+
+      // Insert the inner MAX as a child of the outer MAX
+      GraphEditor::vReplaceChild(pAgg, pChildExpr, pInnerMax);
+
+    } else {
+      NEVER_REACH
     }
-
-    if (SumExpr::bIsOfType(pNode)) {
-      // TODO
-      return GraphNav::WALK_ABORT;
-    }
-
-    if (CountExpr::bIsOfType(pNode)) {
-      // TODO
-      return GraphNav::WALK_ABORT;
-    }
-
-    if (MinExpr::bIsOfType(pNode)) {
-      // TODO
-      return GraphNav::WALK_ABORT;
-    }
-
-    if (MaxExpr::bIsOfType(pNode)) {
-      // TODO
-      return GraphNav::WALK_ABORT;
-    }
-
-    return GraphNav::WALK_CONTINUE;
-  };
-
-  while (!GraphNav::bGlobalWalk(pExpr, false, true, fVisitor, nullptr)) {
-
   }
+  delete pIter;
 }
 
 /*----------------------------------------------------------------------------*/

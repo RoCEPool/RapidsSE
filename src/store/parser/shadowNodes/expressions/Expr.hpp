@@ -93,13 +93,16 @@ namespace Parser
     // Given an expression, return a list of each aggregate term found in
     // that expression. The returned list is to be deleted, but the items
     // in the list are not to be deleted.
-    static QueryNodeList* pAggregateExprs(QueryNode* pExpr);
+    // If bDescendAggregates is true then all nested aggregate terms are returned.
+    // If false then only the outer aggregate terms are returned.
+    static QueryNodeList* pAggregateExprs(QueryNode* pExpr, b1 bDescendAggregates);
 
     // Changes the existing expression to support partitioning.
     // May return a new root of the expr subgraph.
     static QueryNode* pPartitionAggregates(QueryNode* pExpr);
 
-    // Changes the existing expression to support consolidation of partitioned aggregate expressions.
+    // Changes the existing expression in place to support
+    // consolidation of partitioned aggregate expressions.
     static void vConsolidateAggregates(QueryNode* pExpr);
 
   protected:

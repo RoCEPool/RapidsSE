@@ -26,7 +26,8 @@ namespace Parser
     // Create a new copy of the plan graph using the template
     static PlanNode* pNewFromTemplate(const PlanNode* pTemplateRoot);
 
-    // Remove and replace pExistingChild in parent node pParentNode with pReplacementNode
+    // Remove and replace pExistingChild in parent node pParentNode with pReplacementNode.
+    // Deletes pExistingChild.
     static void vReplaceChild(QueryNode* pParentNode, QueryNode* pExistingChild,
                               QueryNode* pReplacementNode);
 

@@ -88,7 +88,7 @@ PlanNode* GraphEditor::pNewFromTemplate(const PlanNode* pTemplateRoot)
 
 /*----------------------------------------------------------------------------*/
 /* Remove and replace pExistingChild in parent node pParentNode with          */
-/* pReplacementNode                                                           */
+/* pReplacementNode. Deletes pExistingChild.                                  */
 /*----------------------------------------------------------------------------*/
 void GraphEditor::vReplaceChild(QueryNode* pParentNode, QueryNode* pExistingChild,
                                 QueryNode* pReplacementNode)
