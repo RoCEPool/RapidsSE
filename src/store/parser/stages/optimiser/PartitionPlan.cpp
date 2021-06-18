@@ -43,17 +43,19 @@ namespace Parser
   public:
     QueryNode *m_pOriginChain = nullptr;
     QueryNode *m_pNodeChain = nullptr;
-    QueryNodeStack m_PartitionChainStack;
+    QueryNodeStack* m_pPartitionChainStack;
 
-    GraphChains() : m_pOriginChain(nullptr), m_pNodeChain(nullptr)
+    GraphChains() : m_pOriginChain(nullptr), m_pNodeChain(nullptr), m_pPartitionChainStack(new QueryNodeStack)
     {}
 
     ~GraphChains()
     {
       QueryNode *pChain;
-      while ((pChain = m_PartitionChainStack.pPop()) != nullptr) {
+      while ((pChain = m_pPartitionChainStack->pPop()) != nullptr) {
         delete pChain;
       }
+
+      delete m_pPartitionChainStack;
     }
   };
 }
@@ -162,7 +164,7 @@ QueryNode* PartitionPlan::pPartitionStatementSection(QueryNode* pStatementMarker
   GraphChains xChains;
 
   // A lambda that will modify/populate the pPartitionChainStack, pNodeChain and pOriginChain
-  auto fVisitor = [pRootNode, pStmtSectionStack, &xChains]
+  auto fVisitor = [pStmtSectionStack, &xChains]
       (PlanNode *pNode, s256 &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
@@ -199,13 +201,13 @@ QueryNode* PartitionPlan::pPartitionStatementSection(QueryNode* pStatementMarker
   GraphNav::bBoundedWalkBottomUp(pStatementMarker, false, true, fVisitor, nullptr);
 
   // Put together the partition-level, node-level and origin-level operators
-  ASSERT(xChains.m_pOriginChain || xChains.m_pNodeChain || xChains.m_PartitionChainStack.nItems() > 0);
-  QueryNode* pPartitionChain = (xChains.m_PartitionChainStack.nItems() > 0 ? xChains.m_PartitionChainStack.pPop() : nullptr);
+  ASSERT(xChains.m_pOriginChain || xChains.m_pNodeChain || xChains.m_pPartitionChainStack->nItems() > 0);
+  QueryNode* pPartitionChain = (xChains.m_pPartitionChainStack->nItems() > 0 ? xChains.m_pPartitionChainStack->pPop() : nullptr);
 
   QueryNode* pPartitionedSection = pConsolidateChains(xChains.m_pOriginChain, xChains.m_pNodeChain, pPartitionChain);
 
   // TODO: Handle errors and cleanup any allocated memory
-  ASSERT(xChains.m_PartitionChainStack.nItems() == 0);
+  ASSERT(xChains.m_pPartitionChainStack->nItems() == 0);
   return pPartitionedSection;
 }
 
@@ -222,14 +224,14 @@ QueryNode* PartitionPlan::pConsolidateChains(QueryNode* pOriginChain,
     // We have origin-level operators and maybe node and partition-level operators too
     pChain = pOriginChain;
 
-    if (pNodeChain)      { GraphEditor::vConnectChains(pNodeChain, pOriginChain);    }
-    if (pPartitionChain) { GraphEditor::vConnectChains(pNodeChain, pPartitionChain); }
+    if (pNodeChain)      { GraphEditor::vConnectChains(pChain, pNodeChain);    }
+    if (pPartitionChain) { GraphEditor::vConnectChains(pChain, pPartitionChain); }
 
   } else if (pNodeChain) {
     // Only have node-partitioned operators and possibly partition-level operators
     pChain = pNodeChain;
 
-    if (pPartitionChain) { GraphEditor::vConnectChains(pNodeChain, pPartitionChain); }
+    if (pPartitionChain) { GraphEditor::vConnectChains(pChain, pPartitionChain); }
 
   } else {
     // Only have partition-level operators
@@ -251,7 +253,7 @@ void PartitionPlan::vPartitionStatementMarker(QueryNode* pNode, GraphChains* pCh
 {
   ASSERT(StatementMarker::bIsOfType(pNode));
 
-  QueryNode* pStmtMarker = pNode->pDeepCopy(true);
+  QueryNode* pStmtMarker = pNode->pDeepCopy(true, new PlanNodeList());
   vPushOnOriginChain(pStmtMarker, pChains);
 }
 
@@ -270,7 +272,7 @@ void PartitionPlan::vPartitionTableScanOp(QueryNode* pNode, GraphChains* pChains
 
   // Since TableScanOps are always a leaf node, we push them onto the
   // partitionChainStack instead of pushing them onto an existing chain.
-  pChains->m_PartitionChainStack.vPush(pTableScanNode);
+  pChains->m_pPartitionChainStack->vPush(pTableScanNode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -288,7 +290,7 @@ void PartitionPlan::vPartitionTableScanOp(QueryNode* pNode, GraphChains* pChains
 void PartitionPlan::vPartitionAggregateOp(QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack)
 {
   ASSERT(AggregateOp::bIsExactType(pNode));
-
+  NOT_IMPLEMENTED_YET
 }
 
 /*----------------------------------------------------------------------------*/
@@ -298,7 +300,13 @@ void PartitionPlan::vPartitionExplainOp(QueryNode* pNode, GraphChains* pChains, 
 {
   ASSERT(ExplainOp::bIsExactType(pNode));
 
-  QueryNode* pExplainNode = pNode->pDeepCopy(true);
+  QueryNode* pExplainNode = pNode->pDeepCopy(true, new PlanNodeList());
+
+  // ExplainOps occur in their own StatementMarker section. There must already
+  // be another chain in the pStmtSectionStack that we need to join up to this one.
+  ASSERT(pStmtSectionStack->nItems() > 0);
+  pExplainNode->vAppendChild(pStmtSectionStack->pPop());
+
   vPushOnOriginChain(pExplainNode, pChains);
 }
 
@@ -308,7 +316,7 @@ void PartitionPlan::vPartitionExplainOp(QueryNode* pNode, GraphChains* pChains, 
 void PartitionPlan::vPartitionFilterOp(QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack)
 {
   ASSERT(FilterOp::bIsExactType(pNode));
-
+  NOT_IMPLEMENTED_YET
 }
 
 /*----------------------------------------------------------------------------*/
@@ -317,7 +325,7 @@ void PartitionPlan::vPartitionFilterOp(QueryNode* pNode, GraphChains* pChains, Q
 void PartitionPlan::vPartitionLimitOp(QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack)
 {
   ASSERT(LimitOp::bIsExactType(pNode));
-
+  NOT_IMPLEMENTED_YET
 }
 
 /*----------------------------------------------------------------------------*/
@@ -326,7 +334,7 @@ void PartitionPlan::vPartitionLimitOp(QueryNode* pNode, GraphChains* pChains, Qu
 void PartitionPlan::vPartitionOrderOp(QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack)
 {
   ASSERT(OrderOp::bIsExactType(pNode));
-
+  NOT_IMPLEMENTED_YET
 }
 
 /*----------------------------------------------------------------------------*/
@@ -341,6 +349,7 @@ void PartitionPlan::vPartitionProjectOp(QueryNode* pNode, GraphChains* pChains, 
 
   if (bIsPostProject) {
     // TODO
+    NOT_IMPLEMENTED_YET;
 
   } else {
     // Not a post-project
@@ -350,18 +359,18 @@ void PartitionPlan::vPartitionProjectOp(QueryNode* pNode, GraphChains* pChains, 
       // Must only contain (grand total) aggregates.
       ASSERT(ProjectOp::bHasOnlyAggregates(pNode));
 
-      // Need to add a consolidating projectOp to the origin.
+      // Need to add a consolidating (super-aggregating) projectOp to the origin.
       QueryNode* pConsolidatingProjectNode = ProjectOp::pCreateConsolidating(pNode);
       vPushOnOriginChain(pConsolidatingProjectNode, pChains);
 
-      // Also add this projectOp to the partition chain
-      // TODO: This projectNode needs to be modified if it contains any AVG() expressions
-      QueryNode* pProjectNode = pNode->pDeepCopy(true);
-      vPushOnPartitionChain(pProjectNode, pChains);
+      // Modify any necessary aggregate terms in this ProjectOp and
+      // add it to the partition chain
+      QueryNode* pPartitionedProjectNode = ProjectOp::pCreatePartitioned(pNode);
+      vPushOnPartitionChain(pPartitionedProjectNode, pChains);
 
     } else {
       // Non-post-project without any aggregates
-      QueryNode* pProjectNode = pNode->pDeepCopy(true);
+      QueryNode* pProjectNode = pNode->pDeepCopy(true, new PlanNodeList());
       vPushOnPartitionChain(pProjectNode, pChains);
     }
 
@@ -378,7 +387,7 @@ void PartitionPlan::vPartitionProjectOp(QueryNode* pNode, GraphChains* pChains, 
 void PartitionPlan::vPartitionUnionOp(QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack)
 {
   ASSERT(UnionOp::bIsExactType(pNode));
-
+  NOT_IMPLEMENTED_YET
 }
 
 
@@ -421,11 +430,11 @@ void PartitionPlan::vPushOnPartitionChain(QueryNode* pNode, GraphChains* pChains
 {
   ASSERT(pNode);
   ASSERT(pChains);
-  ASSERT(pChains->m_PartitionChainStack.nItems() > 0);
+  ASSERT(pChains->m_pPartitionChainStack->nItems() > 0);
 
-  QueryNode* pPartitionChain = pChains->m_PartitionChainStack.pPop();
+  QueryNode* pPartitionChain = pChains->m_pPartitionChainStack->pPop();
   pNode->vAppendChild(pPartitionChain);
-  pChains->m_PartitionChainStack.vPush(pNode);
+  pChains->m_pPartitionChainStack->vPush(pNode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -438,6 +447,10 @@ void PartitionPlan::vPushOnNodeChain(QueryNode* pNode, GraphChains* pChains)
 
   if (pChains->m_pNodeChain) {
     pNode->vAppendChild(pChains->m_pNodeChain);
+
+  } else {
+    // First one in this chain, so set the location
+    PlanObject::vSetLocation(pNode, Location::LO_ALL_NODES);
   }
 
   pChains->m_pNodeChain = pNode;
@@ -453,6 +466,10 @@ void PartitionPlan::vPushOnOriginChain(QueryNode* pNode, GraphChains* pChains)
 
   if (pChains->m_pOriginChain) {
     pNode->vAppendChild(pChains->m_pOriginChain);
+
+  } else {
+    // First one in this chain, so set the location
+    PlanObject::vSetLocation(pNode, Location::LO_ORIGIN);
   }
 
   pChains->m_pOriginChain = pNode;

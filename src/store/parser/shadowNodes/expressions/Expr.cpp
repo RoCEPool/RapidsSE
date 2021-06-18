@@ -739,23 +739,6 @@ QueryNodeList* Expr::pAggregateExprs(QueryNode* pExpr, b1 bDescendAggregates)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Changes the existing expression to support partitioning.                   */
-/* May return a new root of the expr subgraph.                                */
-/*----------------------------------------------------------------------------*/
-QueryNode* Expr::pPartitionAggregates(QueryNode* pExpr)
-{
-  // Some aggregate expressions need to be modified to enable partitioning.
-  // The main one is AVG(x). It needs to be split into a SUM(x) and a COUNT(x)
-  // and then in the consolidating ProjectOp it converts this back into an
-  // average by calculating SUM(SUM(x))/SUM(COUNT(x)).
-
-  // TODO: This needs to be re-thought to handle the case where AVG() gets
-  //       turned into _two_ expressions - SUM() and COUNT().
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
 /* Changes the existing expression in place to support consolidation of       */
 /* partitioned aggregate expressions.                                         */
 /*----------------------------------------------------------------------------*/
@@ -815,7 +798,6 @@ void Expr::vConsolidateAggregates(QueryNode* pExpr)
 
     } else if (CountExpr::bIsOfType(pAgg)) {
       ASSERT(pAgg->nChildren() == 1);
-      QueryNode* pChildExpr = _pQueryNode(pAgg->pFirstChild());
 
       // Form a template that we will then transmogrify the avgExpr node into.
 
@@ -856,6 +838,9 @@ void Expr::vConsolidateAggregates(QueryNode* pExpr)
     }
   }
   delete pIter;
+
+  pAggList->vRemoveAll();
+  delete pAggList;
 }
 
 /*----------------------------------------------------------------------------*/

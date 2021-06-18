@@ -97,10 +97,6 @@ namespace Parser
     // If false then only the outer aggregate terms are returned.
     static QueryNodeList* pAggregateExprs(QueryNode* pExpr, b1 bDescendAggregates);
 
-    // Changes the existing expression to support partitioning.
-    // May return a new root of the expr subgraph.
-    static QueryNode* pPartitionAggregates(QueryNode* pExpr);
-
     // Changes the existing expression in place to support
     // consolidation of partitioned aggregate expressions.
     static void vConsolidateAggregates(QueryNode* pExpr);

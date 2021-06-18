@@ -10,6 +10,9 @@
 #include "PlanConstants.hpp"
 #include "NodeNamer.hpp"
 #include "Expr.hpp"
+#include "AvgExpr.hpp"
+#include "SumExpr.hpp"
+#include "CountExpr.hpp"
 
 #include "GraphNav.hpp"
 
@@ -199,38 +202,70 @@ void ProjectedColumn::vSetAlias(QueryNode* pNode, Text *pNewAlias)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Changes the aggregate expression in pNode to support partitioning          */
+/* If the given projectedColumn requires partitioning then a non-null         */
+/* QueryNodeList is returned which contains those partitioned                 */
+/* projected columns.                                                         */
 /*----------------------------------------------------------------------------*/
-void ProjectedColumn::vPartitionAggregates(QueryNode* pNode)
+QueryNodeList* ProjectedColumn::pPartitionAggregates(QueryNode* pNode)
 {
   // Some aggregate expressions need to be modified to enable partitioning.
   // The main one is AVG(x). It needs to be split into a SUM(x) and a COUNT(x)
   // and then in the consolidating ProjectOp it converts this back into an
   // average by calculating SUM(SUM(x))/SUM(COUNT(x)).
-
-  // TODO: This is wrong because an AVG() needs to be split into two projected
-  //       columns, not one. We need to be careful that we remove the projected
-  //       column from the ProjectOp and add in the two new projected columns
-  //       in the same spot.
   //
-  // TODO: We also need to consider that there may be multiple aggregation terms
-  //       in the one expression. e.g. an expression AVG(x) + MIN(y) would
-  //       need to be split into SUM(x), COUNT(x), MIN(y) at the partition level
-  //       before being consolidated as SUM(SUM(x))/SUM(COUNT(x)) + MIN(MIN(y)) at
-  //       the origin level.
+  // However the expression may be more complex and partitioning it may actually
+  // require multiple columns to be projected. e.g. consider the expression:
+  //   AVG(x) + MIN(y)
+  // This would require the partition level to emit columns for:
+  //   SUM(x), COUNT(x), MIN(y)
+  // Then when all partitions are consolidated we can reassemble the desired
+  // result with:  SUM(SUM(x))/SUM(COUNT(x)) + MIN(MIN(y))
+
+
+  QueryNodeList* pProjectedColList = nullptr;
   QueryNode* pExpr = pExprNode(pNode);
 
-  QueryNode* pNewExpr = Expr::pPartitionAggregates(pExpr);
+  // Get a list of aggregate terms appearing in this expression
+  QueryNodeList* pAggList = Expr::pAggregateExprs(pExpr, false);
 
-  // If we have a new root of this expression then we need to update it in
-  // the projected column
-  if (pExpr != pNewExpr) {
-    ASSERT(pNewExpr->szName()->bEqual(C_EXPR_PROP));
-    ASSERT(Expr::bIsOfType(pNewExpr));
-
-    pNode->pRemoveProperty(C_EXPR_PROP);
-    pNode->vAppendProperty(pNewExpr);
+  if (pAggList->nItems() == 0) {
+    delete pAggList;
+    return pProjectedColList;
   }
+
+  pProjectedColList = new QueryNodeList();
+  QueryNodeIter* pIter = pAggList->pNewIter();
+
+  while (pIter->bHasNext()) {
+    QueryNode* pAgg = pIter->pNext();
+
+    if (AvgExpr::bIsOfType(pAgg)) {
+      ASSERT(pAgg->nChildren() == 1);
+      QueryNode* pChild = _pQueryNode(pAgg->pFirstChild());
+
+      // Create the SUM() projected column and add it to the list
+      QueryNode* pSumExpr = SumExpr::pCreate(false, pChild->pDeepCopy(true));
+      QueryNode* pSumCol  = ProjectedColumn::pCreate(pSumExpr, nullptr);
+      pProjectedColList->vAppend(pSumCol);
+
+      // Create the COUNT() projected column and add it to the list
+      QueryNode* pCountExpr = CountExpr::pCreate(false, false, pChild->pDeepCopy(true));
+      QueryNode* pCountCol  = ProjectedColumn::pCreate(pCountExpr, nullptr);
+      pProjectedColList->vAppend(pCountCol);
+
+    } else {
+      // An aggregate that is not an AVG()
+      ASSERT(AggregateExpr::bIsOfType(pAgg));
+      QueryNode* pNewCol = ProjectedColumn::pCreate(pAgg->pDeepCopy(true), nullptr);
+      pProjectedColList->vAppend(pNewCol);
+    }
+  }
+
+  delete pIter;
+  pAggList->vRemoveAll();
+  delete pAggList;
+
+  return pProjectedColList;
 }
 
 /*----------------------------------------------------------------------------*/

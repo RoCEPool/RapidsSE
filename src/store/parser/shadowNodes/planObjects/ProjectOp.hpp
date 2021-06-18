@@ -63,6 +63,10 @@ namespace Parser
     // Adds an expression to be projected, with an optional alias
     static void vPushdownExpr(QueryNode* pNode, QueryNode* pExpr, Text* pAlias);
 
+    // Returns a new ProjectOp node with projected columns modified for
+    // partitioned aggregate expressions
+    static QueryNode* pCreatePartitioned(QueryNode* pNode);
+
     // Returns a new ProjectOp node with projected columns consolidating aggregated
     // expressions from each partition or node
     static QueryNode* pCreateConsolidating(QueryNode* pNode);

@@ -465,12 +465,60 @@ void ProjectOp::vPushdownExpr(QueryNode* pNode, QueryNode* pExpr, Text* pAlias)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns a new ProjectOp node with projected columns modified for           */
+/* partitioned aggregate expressions                                          */
+/*----------------------------------------------------------------------------*/
+QueryNode* ProjectOp::pCreatePartitioned(QueryNode* pSinglePartitionNode)
+{
+  QueryNode* pNewOp = pSinglePartitionNode->pDeepCopy(true, new PlanNodeList());
+
+  QueryNode* pProjColumns =
+      _pQueryNode(GraphNav::pFindProperty(const_cast<Stz *>(C_PROJECTEDCOLUMNS_PROP), pNewOp));
+
+  // Iterate all of the projected columns
+  PlanNodeIter* pIter = pProjColumns->pNewChildrenIter();
+
+  while (pIter->bHasNext()) {
+    QueryNode* pProjColumn = _pQueryNode(pIter->pNext());
+
+    ASSERT(ProjectedColumn::bIsOfType(pProjColumn));
+
+    // Check if the current projected column requires changes for partitioning.
+    // If so, a non-null QueryNodeList is returned.
+    QueryNodeList* pPartitionedColList = ProjectedColumn::pPartitionAggregates(pProjColumn);
+
+    if (!pPartitionedColList) {
+      // Column doesn't need partitioning
+      continue;
+    }
+
+    // Column has been partitioned
+    ASSERT(pPartitionedColList->nItems() > 0);
+
+    // Need to remove the current column and insert these ones in its place
+    pIter->vRemove();
+    delete pProjColumn;
+
+    QueryNode* pNewCol;
+    while ((pNewCol = pPartitionedColList->pPop()) != nullptr) {
+      pIter->vInsertBefore(pNewCol);
+    }
+
+    ASSERT(pPartitionedColList->nItems() == 0);
+    delete pPartitionedColList;
+  }
+
+  delete pIter;
+  return pNewOp;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns a new ProjectOp node with projected columns consolidating          */
 /* aggregated expressions from each partition or node                         */
 /*----------------------------------------------------------------------------*/
 QueryNode* ProjectOp::pCreateConsolidating(QueryNode* pSinglePartitionNode)
 {
-  QueryNode* pNewOp = pSinglePartitionNode->pDeepCopy(true);
+  QueryNode* pNewOp = pSinglePartitionNode->pDeepCopy(true, new PlanNodeList());
 
   QueryNode* pProjColumns =
       _pQueryNode(GraphNav::pFindProperty(const_cast<Stz *>(C_PROJECTEDCOLUMNS_PROP), pNewOp));

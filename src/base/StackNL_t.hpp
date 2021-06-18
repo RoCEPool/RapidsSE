@@ -149,7 +149,9 @@ ITEM* StackNL_t<CLASSNO, ITEM, MAX_ITEMS>::pPop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
   
-  RASSERT(m_nItems);
+  if (! m_nItems) {
+    return nullptr;
+  }
   
   ITEM* pItem = m_paItem[m_nItems - 1];
   

@@ -45,8 +45,10 @@ namespace Parser
     // Changes the alias for this projected column
     static void vSetAlias(QueryNode* pNode, Text* pNewAlias);
 
-    // Changes the aggregate expression in pNode to support partitioning
-    static void vPartitionAggregates(QueryNode* pNode);
+    // If the given projectedColumn requires partitioning then a non-null
+    // QueryNodeList is returned which contains those partitioned
+    // projected columns.
+    static QueryNodeList* pPartitionAggregates(QueryNode* pNode);
 
     // Changes the aggregate expression in pNode to consolidate results from each partition/node
     static void vConsolidateAggregates(QueryNode* pNode);
