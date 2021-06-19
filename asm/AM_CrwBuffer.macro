@@ -269,16 +269,6 @@ macro AM_CRW_LOOPJOIN_ROWS
   // CRW_LOOPJOIN_ROWS
   Label CRW_LOOPJOIN_ROWS
 
-  // create left row
-  //EO_PUSH_DEVROW_DST
-  //EO_PUSH_RLU_POT
-  //EO_PUSH_RLU_PTN
-  //EO_DEVROW_ROW_NEW
-
-  //EO_PUSH_DEVROW_LFT
-  //EO_PUSH_DEVROW_DST
-  //EO_DEVROW_COLS_TO_ROW
-
   // right row
   EO_RLU_SET_ITEMS <projectItems>  // C_TAG_PROJECT_ITEMS
   EO_RLU_SET_COLUMNS <projectSrcColumns>  // C_TAG_PROJECT_SRC_COLUMN
@@ -316,8 +306,8 @@ macro AM_CRW_JOIN_ROW
   EO_DEVROW_ROW_NEW
 
   // inflate left row into dst row
-  EO_PUSH_DEVROW_LFT
   EO_PUSH_DEVROW_DST
+  EO_PUSH_DEVROW_LFT
   EO_DEVROW_COLS_TO_ROW
 
   // inflate right row into dst row

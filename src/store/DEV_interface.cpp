@@ -1717,11 +1717,11 @@ void vDev_ROW_COLS_TO_ROW(i8** aaiDstk)
 
   i8 *aiDstk = *aaiDstk;
 
-  // pop the dst row device
-  DevROW* pDevRowDst = _pDevROW(P_PopPtr());
-
   // pop the src row device
   DevROW* pDevRow = _pDevROW(P_PopPtr());
+
+  // pop the dst row device
+  DevROW* pDevRowDst = _pDevROW(P_PopPtr());
 
   Stz* szStr;
   char* azDst;
@@ -1773,11 +1773,11 @@ void vDev_ROW_COLS_TO_ROW_OFS(i8** aaiDstk)
   // pop the dst row start col
   i8 iDstCol = I_PopInt();
 
-  // pop the dst row device
-  DevROW* pDevRowDst = _pDevROW(P_PopPtr());
-
   // pop the src row device
   DevROW* pDevRow = _pDevROW(P_PopPtr());
+
+  // pop the dst row device
+  DevROW* pDevRowDst = _pDevROW(P_PopPtr());
 
   Stz* szStr;
   char* azDst;
