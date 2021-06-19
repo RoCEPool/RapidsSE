@@ -323,7 +323,7 @@ macro AM_CRW_JOIN_ROW
   // inflate right row into dst row
   EO_PUSH_DEVROW_DST
   EO_PUSH_DEVIXT_RHT
-  EO_INTEGER <projectIntoColumn>
+  EO_INTEGER <rowOffset>  // C_TAG_ROWOFFSET
   EO_DEVIXT_COLS_TO_ROW_OFS
 
   EO_PUSH_DEVROW_DST

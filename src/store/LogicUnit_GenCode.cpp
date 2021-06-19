@@ -939,7 +939,7 @@ eEC LogicUnit::eGenerateLoopJoin(ExprEval* pExprEval) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // CRW_JOIN_ROW
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  oTagSet.vAppend(C_TAG_PROJECT_INTO_COLUMN, pExprEval->m_iJoinStartColumn);
+  oTagSet.vAppend(C_TAG_ROW_OFFSET, pExprEval->m_iJoinStartColumn);
   oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_JOIN_ROW, &oTagSet, sMacro));
   oTagSet.vReset();
 
