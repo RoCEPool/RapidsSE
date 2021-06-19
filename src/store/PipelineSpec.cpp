@@ -31,13 +31,13 @@ void PipelineSpec::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-PipelineSpec::PipelineSpec(Stz* szPipelineNm, Job* pJob)
+PipelineSpec::PipelineSpec(Stz* szPipelineNm, Job* pPipelineJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
   m_sPipelineNm = szPipelineNm;
   
-  m_pJob = pJob;
+  m_pPipelineJob = pPipelineJob;
     
   _checkInitialised_(CN_PIPELINESPEC);
   
@@ -95,13 +95,13 @@ StageSpec* PipelineSpec::pFindStageSpec(Stz* szFindNm, i8& i_Stage)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get job                                                                    */
+/* get pipeline job                                                           */
 /*----------------------------------------------------------------------------*/
-Job* PipelineSpec::pJob(void)
+Job* PipelineSpec::pPipelineJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
-  return m_pJob;
+  return m_pPipelineJob;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -19,7 +19,6 @@ namespace STORE
     i8   m_i_StageSpec; // of stage spec no
     i8   m_i_OpSpec;    // this op spec no
 
-    Job*          m_pJob;          // which job
     PipelineSpec* m_pPipelineSpec; // which pipeline spec
     StageSpec*    m_pStageSpec;    // which stage spec
 

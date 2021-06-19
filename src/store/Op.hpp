@@ -32,7 +32,6 @@ namespace STORE
     
     // -- -- -- -- -- --
   
-    Job*           m_pPipelineJob;   // pipeline job this operator belongs to
     Job*           m_pOpJob;         // operator job of this operator
   
     TagSet         m_oOpTagSet;        // op tag set
@@ -96,7 +95,6 @@ namespace STORE
     void vInitOperandHandlers(void);
     bool bIsLocked(void);
     bool bIsOperandValid(i8 i_OperandKind);
-    void vJobPipeline(Job* pJob);
     i8   iLocalRobin(void);
     void vLocalRobin(i8 iLocalRobin);
     i8   iNextOp(void);

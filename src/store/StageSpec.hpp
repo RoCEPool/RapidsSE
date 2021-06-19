@@ -17,8 +17,6 @@ namespace STORE
 
     PipelineSpec* m_pPipelineSpec; // which pipeline spec
     
-    Job*          m_pJob;          // which job
-
     ePO  m_eTopology;      // stage topoplogy
     bool m_bNodeTopo;      // is node-level topology (or partition)?
     i8   m_i_SpecificNode; // run on specific node

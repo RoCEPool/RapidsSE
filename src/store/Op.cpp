@@ -69,7 +69,6 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
     
   // -- -- -- -- -- --
 
-  m_pPipelineJob  = m_pPipeline->pPipelineJob();
   m_pOpJob        = nullptr;
   
   m_oOpTagSet.vCopy(pOpSpec->pOpSpecTagSet());
@@ -144,7 +143,6 @@ Op::Op(Stz* szOpNm)
     
   // -- -- -- -- -- --
 
-  m_pPipelineJob  = nullptr;
   m_pOpJob        = nullptr;
 
   m_bPulsedLimit  = false;
@@ -801,16 +799,6 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the job                                                                */
-/*----------------------------------------------------------------------------*/
-void Op::vJobPipeline(Job* pJob)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  m_pPipelineJob = pJob;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get local robin                                                            */
 /*----------------------------------------------------------------------------*/
 i8 Op::iLocalRobin(void)
@@ -995,7 +983,7 @@ void Op::vOpTrace(Operand* pOperand, Stz* szFunActNm, Stz* szSupplemental)
            m_pStage->szStageNm(),
            m_i_Node,
            m_tPtnNo,
-           m_pPipelineJob,
+           pPipelineJob(),
            szFunActNm,
            AM::pOperandName(pOperand),
            pOperand,
@@ -1172,7 +1160,10 @@ Job* Op::pPipelineJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_pPipelineJob;
+  Job* pPipelineJob = m_pPipeline->pPipelineJob();
+
+  
+  return pPipelineJob;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1447,7 +1438,7 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy the pipeline job tag set into the operator job tags
-  TagSet* pPipeLineJobTags = AM::pJobTags(m_pPipelineJob);
+  TagSet* pPipeLineJobTags = AM::pJobTags(pPipelineJob());
   
   //pPipeLineJobTags->vDumpSet(true);
   
