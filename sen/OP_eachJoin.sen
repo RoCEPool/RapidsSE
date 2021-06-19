@@ -57,7 +57,7 @@
 
   Operand[].pipeIn
   Operand[] DevLftRow.eachRowBuffer!
-  ZK_EACHROWBUFFER Counter0[] executeAsmArgs
+  Operand[] DevLftRow.row!
 
   true
 ;
@@ -68,9 +68,6 @@
 : eachJoin_EachScanEosMarker \handler
 
   0 ZK_EACHSCANEOSMARKER EG_ZK LogicUnit[].diaryNote
-
-  // execute the eosMarker asm handler
-  ZK_EACHSCANEOSMARKER Counter0[] executeAsmArgs
 
   // pipeout all PotRlu[]
   PotRlu[].pipeoutCompletedPtns
@@ -192,11 +189,9 @@
     exit
   then
 
-/*
   // generate the asm for the filter
-  ExprEval[] LogicUnit[].genJoin to eError
+  ExprEval[] LogicUnit[].genLoopJoin to eError
   ExprEval[].delete
-*/
 
   // check for error
   eError EC_NONE == not if

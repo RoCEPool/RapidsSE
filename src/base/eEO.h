@@ -397,8 +397,10 @@ enum eEO : u2 // expression operators
   // ixt device col operators
   /*  S  */ EO_DEVIXT_COLS_TO_LOCALS,    // inflate dev columns direct into locals
   /*  S  */ EO_DEVIXT_COLS_TO_ROW,       // push all columns from ixt dev to row dev
+  /*  S  */ EO_DEVIXT_COLS_TO_ROW_OFS,   // push columns from ixt dev to row dev at offset column
   /*  S  */ EO_DEVROW_COLS_TO_LOCALS,    // row columns into locals
   /*  S  */ EO_DEVROW_COLS_TO_ROW,       // row columns into row
+  /*  S  */ EO_DEVROW_COLS_TO_ROW_OFS,   // row columns into row at offset column
 
   // ixt device crwbuffer operators
   /*  S  */ EO_DEVIXT_CRWBUF_BEGIN, // begin crw buffer traverse
@@ -909,8 +911,10 @@ static Stz* aEO[]
   // ixt device col operators
   /*    */ "EO_DEVIXT_COLS_TO_LOCALS"_Stz,
   /*    */ "EO_DEVIXT_COLS_TO_ROW"_Stz,
+  /*    */ "EO_DEVIXT_COLS_TO_ROW_OFS"_Stz,
   /*    */ "EO_DEVROW_COLS_TO_LOCALS"_Stz,
   /*    */ "EO_DEVROW_COLS_TO_ROW"_Stz,
+  /*    */ "EO_DEVROW_COLS_TO_ROW_OFS"_Stz,
 
   // ixt device crwbuffer operators
   /*    */ "EO_DEVIXT_CRWBUF_BEGIN"_Stz,
@@ -1427,9 +1431,11 @@ static EoArg EoArgs[]
 
   // ixt device col operators
   { EA_NONE,    0 },  // EO_DEVIXT_COLS_TO_LOCALS
-  { EA_NONE,    0 },  // EO_DEVIXT_COLS_TOROW
+  { EA_NONE,    0 },  // EO_DEVIXT_COLS_TO_ROW
+  { EA_NONE,    0 },  // EO_DEVIXT_COLS_TO_ROW_OFS
   { EA_NONE,    0 },  // EO_DEVROW_COLS_TO_LOCALS
   { EA_NONE,    0 },  // EO_DEVROW_COLS_TO_ROW
+  { EA_NONE,    0 },  // EO_DEVROW_COLS_TO_ROW_OFS
 
   // ixt device crwbuffer operators
   { EA_NONE,    0 },  // EO_DEVIXT_CRWBUF_BEGIN

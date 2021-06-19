@@ -55,6 +55,7 @@ ExprEval::ExprEval(void)
   m_uExprEvalColumns = 0;
   m_nPayLoadBytes = 0;
   m_iStreamInColumns = 0;
+  m_iJoinStartColumn = 0;
 
   m_bHasAgg = false;
   m_bHasGby = false;
@@ -188,6 +189,14 @@ eEC ExprEval::eEvaluateJoin(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenise the projectColumns
   TokenVec *pTknVec = TokenVec::pTokenise(sJoinExpr);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // collect all the StreamDefRht's source columns needed for the join
+
+  eError = eCollectSourceColumns(pStreamDefRht, pTknVec);
+
+  if (eError != EC_NONE)
+    goto L_RETRUN;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the next token
@@ -344,6 +353,7 @@ eEC ExprEval::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec)
   eEC eError = EC_NONE;
   Token* pTkn;
   bool bProjectHasAgg = false;
+  Stz *sOrdinalColumn;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   for (i8 i_Tkn = 0; i_Tkn < pTknVec->nItems(); i_Tkn++) {
@@ -390,8 +400,20 @@ eEC ExprEval::eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec)
       if (pTkn->szChars()->bContains("K"_Stz))
         continue;
 
-      // get the column ordinal
-      Stz* sOrdinalColumn = pTkn->szChars() + 1;
+      // ignore if column ordinal relative to the left join table
+      if (pTkn->szChars()->bContains("L"_Stz))
+        continue;
+
+      // handle if column ordinal relative to the right join table
+      if (pTkn->szChars()->bContains("R"_Stz)) {
+        // get the column ordinal
+        sOrdinalColumn = pTkn->szChars() + 2;
+      }
+      else {
+        // get the column ordinal
+        sOrdinalColumn = pTkn->szChars() + 1;
+     }
+
       i8 i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
 
       // look for the column in the streamDefIn
@@ -1302,6 +1324,8 @@ eEC ExprEval::eExprEvalJoin(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht,
   // add columns from StreamDefLft to StreamDefOut
   pStreamDefOut->vAppendStreamDef(pStreamDefLft);
 
+  m_iJoinStartColumn = pStreamDefOut->m_nColumns;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add columns from StreamDefRht to StreamDefOut
   pStreamDefOut->vAppendStreamDef(pStreamDefRht);
@@ -1445,22 +1469,23 @@ eEC ExprEval::eExprEvalJoin(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht,
       bLftTable = true;
       Stz *sOrdinalColumn = pTkn->szChars() + 2;
       i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
-
+      Column* pColumn = pStreamDefLft->pGetColumn(i_ColumnOrdinal);
+      vPushLftCol(m_sJoinAsm, &m_xTypeStack, pColumn->eColumnType(), i_ColumnOrdinal);
     }
     else {
       RASSERT(pTkn->szChars()->bContains("R"_Stz));
       bLftTable = false;
       Stz *sOrdinalColumn = pTkn->szChars() + 2;
       i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
+      i8 i_Local = iOrdinalToLocal(i_ColumnOrdinal);
+      Column* pColumn = pStreamDefRht->pGetColumn(i_ColumnOrdinal);
+      vPushLclCol(m_sJoinAsm, &m_xTypeStack, pColumn->eColumnType(), i_Local);
     }
-
-    Column* pColumn = pStreamDefLft->pGetColumn(i_ColumnOrdinal);
-    vPushLclCol(m_sJoinAsm, &m_xTypeStack, pColumn->eColumnType(), i_ColumnOrdinal);
     pTkn = pTknVec->pNextToken();
   }
 
   L_RETURN:
-  RASSERT(m_xTypeStack.nItems() == 0);
+  //RASSERT(m_xTypeStack.nItems() == 0);
   return eError;
 }
 
@@ -2572,6 +2597,63 @@ void ExprEval::vPushDstCol(Stz* szAsmBuffer, IntStack* pTypeStack) {
     case DM_UNK:
       pTypeStack->vPush((i8) DM_UNK);
       StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, m_iProjectColumn);
+      break;
+
+    default:
+      RASSERT(0);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* add EO code for push left column                                           */
+/*----------------------------------------------------------------------------*/
+void ExprEval::vPushLftCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType, i8 i_Column) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
+
+  StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVROW_LFT\n"_Stz);
+
+  eDM eDatumType = Column::eDatum(eColumnType);
+
+  // switch on column type
+  switch (eDatumType) {
+    case DM_BOL:
+      pTypeStack->vPush((i8) DM_BOL);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, i_Column);
+      break;
+    case DM_INT:
+      pTypeStack->vPush((i8) DM_INT);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, i_Column);
+      break;
+    case DM_BCD:
+      pTypeStack->vPush((i8) DM_BCD);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, i_Column);
+      break;
+    case DM_DTE:
+      pTypeStack->vPush((i8) DM_DTE);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, i_Column);
+      break;
+    case DM_FLT:
+      pTypeStack->vPush((i8) DM_FLT);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, i_Column);
+      break;
+    case DM_TME:
+      pTypeStack->vPush((i8) DM_TME);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, i_Column);
+      break;
+    case DM_TSP:
+      pTypeStack->vPush((i8) DM_TSP);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, i_Column);
+      break;
+
+    case DM_VCH:
+      pTypeStack->vPush((i8) DM_VCH);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLS %lld\n"_Stz, i_Column);
+      break;
+
+    case DM_UNK:
+      pTypeStack->vPush((i8) DM_UNK);
+      StrLib::vSprintCat(szAsmBuffer, "  EO_DEVROW_PUSHCOLI %lld\n"_Stz, i_Column);
       break;
 
     default:

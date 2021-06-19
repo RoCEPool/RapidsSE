@@ -198,6 +198,7 @@ public:
   // devLftRow
   void vDevLftRowStreamDefStore(void);
   void vDevLftRowDeleteEachRowBuffer(void);
+  void vDevLftRowRowStore(void);
   void vDevLftRowEachRowBufferStore(void);
   void vDevLftRowRowBufferStore(void);
   void vDevLftRowCrwBufferStore(void);

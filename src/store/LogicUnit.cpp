@@ -3840,6 +3840,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
         vDev_IXT_COLS_TO_ROW(&aiDstk);         // devRow / devIxt
         break;//+endCase
 
+      case EO_DEVIXT_COLS_TO_ROW_OFS: ArgNil();  // inflate dev columns to dev row at offset column
+        dLU0(EO_DEVIXT_COLS_TO_ROW_OFS);
+        vDev_IXT_COLS_TO_ROW_OFS(&aiDstk);         // devRow / devIxt
+        break;//+endCase
+
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       // row device col operators
       case EO_DEVROW_COLS_TO_LOCALS: ArgNil(); // row buffer columns of row dev into locals
@@ -3850,6 +3855,11 @@ i8 LogicUnit::iCompute(i8 nOuterArgs, i8 iOuterArg0)
       case EO_DEVROW_COLS_TO_ROW: ArgNil(); // row buffer columns of row dev into row
         dLU0(EO_DEVROW_COLS_TO_ROW);
         vDev_ROW_COLS_TO_ROW(&aiDstk);      //  src devRow / dst devRow
+        break;//+endCase
+
+      case EO_DEVROW_COLS_TO_ROW_OFS: ArgNil(); // row buffer columns of row dev into row at offset column
+        dLU0(EO_DEVROW_COLS_TO_ROW_OFS);
+        vDev_ROW_COLS_TO_ROW_OFS(&aiDstk);      //  src devRow / dst devRow
         break;//+endCase
 
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

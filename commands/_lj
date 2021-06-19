@@ -27,21 +27,39 @@ load J "../TPCH/SF1/nation.tbl" ;
 
 trackMemory;
 
+//select N_NATIONKEY from J;
+
 pipeline eachRowExp
 begin
   stage stageA on origin :
     start | periodic once | stageB
 
   stage stageB on all partitions :
-    scan T | filter 0 "type boolean $1 5 >=" | eachRow | eachScan J | eachJoin "L.$1 R.$1 ==" | stageC
+    scan T | eachRow | eachScan J | eachJoin 0 "$L1 $R1 ==" | stageC
 
   stage stageC on origin :
     output | sink | stageA
 end;
 
+/*
+
+pipeline eachRowExp
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T | filter 0 "type boolean $1 5 >=" | eachRow | eachScan J | eachJoin 0 "$L1 $R1 ==" | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+end;
+
+
+
 MemoryLeaks;
 
-/*
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // T.N_NATIONKEY = J.N_NATIONKEY
 // PtnKey[T] = N_NATIONKEY
@@ -72,7 +90,7 @@ begin
     output | sink | stageA
 
 end;
-/*
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // T.a = J.b

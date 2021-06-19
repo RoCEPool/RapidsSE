@@ -43,6 +43,7 @@ namespace STORE
     u8       m_uExprEvalColumns;
     i8       m_nPayLoadBytes;
     i8       m_iStreamInColumns;
+    i8       m_iJoinStartColumn;
 
     bool     m_bHasAgg;
     bool     m_bHasGby;
@@ -129,6 +130,7 @@ namespace STORE
 
     void vPushDatum(eDM eDatum, Stz* szAsmBuffer, IntStack* pTypeStack, Token*  pTkn);
     void vPushDstCol(Stz* szAsmBuffer, IntStack* pTypeStack);
+    void vPushLftCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType, i8 i_Column);
 
     void vPushKeyElm(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType, i8 i_Key);
     void vPushLclCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType, i8 i_Local);

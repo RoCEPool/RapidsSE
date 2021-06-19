@@ -105,6 +105,8 @@ static Stz* C_TAG_PROJECT_ITEMS         = "<projectItems>"_Stz;
 static Stz* C_TAG_PROJECT_SRC_COLUMN    = "<projectSrcColumn>"_Stz;
 static Stz* C_TAG_PROJECT_SRC_COLUMNS   = "<projectSrcColumns>"_Stz;
 
+static Stz* C_TAG_PROJECT_INTO_COLUMN   = "<projectIntoColumn>"_Stz;
+
 static Stz* C_TAG_RELATIONAL_UPPER = "<relationalUpper>"_Stz;
 
 static Stz* C_TAG_LBOUND_TYPE     = "<lboundType>"_Stz;

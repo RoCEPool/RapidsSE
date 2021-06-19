@@ -106,8 +106,10 @@ void StreamDef::vAppendStreamDef(StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
 
-  for (i8 i_DefCol = m_nColumns; i_DefCol < pStreamDef->m_nColumns; i_DefCol++) {
-    m_xaColumn[i_DefCol].vCopy(&pStreamDef->m_xaColumn[i_DefCol]);
+  i8 i_DefCol = m_nColumns;
+
+  for (i8 i_StreamCol = 0; i_StreamCol < pStreamDef->m_nColumns; i_StreamCol++) {
+    m_xaColumn[i_DefCol++].vCopy(&pStreamDef->m_xaColumn[i_StreamCol]);
   }
 
   m_nColumns += pStreamDef->m_nColumns;
