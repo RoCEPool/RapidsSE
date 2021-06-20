@@ -307,7 +307,7 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
     
   vGrabTaskLock();
 
-  pQueueLeft()->vAppendOperand(pOperand);
+  m_pQueueLeft->vAppendOperand(pOperand);
 
   AM::vOperandsInc();
 
@@ -1098,7 +1098,7 @@ bool Op::bPeekLeft(void)
   
   vGrabTaskLock();
   
-  bOperand = pQueueLeft()->bPeekQueue();
+  bOperand = m_pQueueLeft->bPeekQueue();
   
   vDropTaskLock();
   
@@ -1116,7 +1116,7 @@ bool Op::bPeekOoO(void)
   
   vGrabTaskLock();
   
-  bOperandOoO = pQueueLeft()->bPeekOoO();
+  bOperandOoO = m_pQueueLeft->bPeekOoO();
   
   vDropTaskLock();
   
@@ -1222,7 +1222,7 @@ Operand* Op::pPopLeft(void)
   
   vGrabTaskLock();
   
-  pOperand = pQueueLeft()->pPopQueue();
+  pOperand = m_pQueueLeft->pPopQueue();
   
   if (! pOperand)
     return nullptr;
@@ -1259,7 +1259,7 @@ Operand* Op::pPopOoO(void)
   
   vGrabTaskLock();
   
-  pOperand = pQueueLeft()->pPopOoO();
+  pOperand = m_pQueueLeft->pPopOoO();
     
   vDropTaskLock();
   
@@ -1334,16 +1334,6 @@ void Op::vPulsedLimit(bool bPulsedLimit)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   m_bPulsedLimit = bPulsedLimit;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get left operand queue                                                     */
-/*----------------------------------------------------------------------------*/
-OperandQueue* Op::pQueueLeft(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  return m_pQueueLeft;
 }
 
 /*----------------------------------------------------------------------------*/

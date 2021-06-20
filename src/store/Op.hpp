@@ -134,7 +134,6 @@ namespace STORE
     Operand* pPopRight(void);
     bool bPulsedLimit(void);
     void vPulsedLimit(bool bPulsedLimit);
-    OperandQueue* pQueueLeft(void);
     i8   nQueueLength(void);
     OperandQueue* pQueueRight(void);
     i8   iRobin(void);

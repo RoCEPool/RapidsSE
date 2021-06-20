@@ -826,10 +826,8 @@ void Job::vOperandQueueReport(File* pFile, bool bStdOut)
       for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
 
         Op* pOp = pStream->pGet(i_Op);
-        
-        OperandQueue* pQueueLeft = pOp->pQueueLeft();
-        
-        i8 nOpdLeft = pQueueLeft->nQueuedOperands();
+                
+        i8 nOpdLeft = pOp->nQueueLength();
         
         pOp->pOpTagSet()->vSprint(sOpTags);
 
