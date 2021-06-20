@@ -1113,7 +1113,7 @@ bool Op::bPause(void)
 /*----------------------------------------------------------------------------*/
 /* peek for operand from operand queue                                        */
 /*----------------------------------------------------------------------------*/
-bool Op::bPeekQueue(void)
+bool Op::bPeekLeft(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -1131,7 +1131,7 @@ bool Op::bPeekQueue(void)
 /*----------------------------------------------------------------------------*/
 /* peek for OoO operand from operand queue                                    */
 /*----------------------------------------------------------------------------*/
-bool Op::bPeekQueueOoO(void)
+bool Op::bPeekOoO(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -1302,38 +1302,6 @@ Operand* Op::pPopQueueOoO(void)
 //           AM::pOperandName(pOperand),
 //           pOperand);
     vOpTrace(pOperand,"pPopQueueOoO :"_Stz);
-  }
-  
-  return pOperand;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop operand queue A                                                        */
-/*----------------------------------------------------------------------------*/
-Operand* Op::pPopQueueLeft(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  Operand* pOperand = nullptr;
-  
-  vGrabTaskLock();
-  
-  pOperand = pQueueLeft()->pPopQueue();
-  
-  if (pOperand) {
-    vDropTaskLock();
-    
-    AM::vOperandsDec();
-  }
-    
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  if (pOperand) {
-    if (m_bTraceOp)
-      vTrace("%s::pPopQueueLeft : %s %p\n"_Stz,
-             m_sOpNm.szStz(),
-             AM::pOperandName(pOperand),
-             pOperand);
   }
   
   return pOperand;

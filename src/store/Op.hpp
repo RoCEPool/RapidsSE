@@ -124,15 +124,14 @@ namespace STORE
     void vPtnNo(tPN tPtnNo);
     tPN  tPtnNo(void);
     bool bPause(void);
-    bool bPeekQueue(void);
-    bool bPeekQueueOoO(void);
+    bool bPeekLeft(void);
+    bool bPeekOoO(void);
     Pipeline* pPipeline(void);
     Job* pPipelineJob(void);
     void vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask);
     void vPipeToOutput(Operand* pOperand);
     Operand* pPopQueue(void);
     Operand* pPopQueueOoO(void);
-    Operand* pPopQueueLeft(void);
     Operand* pPopQueueRight(void);
     bool bPulsedLimit(void);
     void vPulsedLimit(bool bPulsedLimit);

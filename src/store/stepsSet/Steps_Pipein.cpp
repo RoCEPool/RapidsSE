@@ -170,7 +170,7 @@ void Step::vPipeinPeek(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pJob->m_pOp->bPeekQueue() ? true : false);
+  m_pDataStack->vPushInt(m_pJob->m_pOp->bPeekLeft() ? true : false);
   
   EXIT();
 }
