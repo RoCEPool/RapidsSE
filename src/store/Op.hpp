@@ -131,8 +131,8 @@ namespace STORE
     void vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask);
     void vPipeToOutput(Operand* pOperand);
     Operand* pPopLeft(void);
-    Operand* pPopQueueOoO(void);
-    Operand* pPopQueueRight(void);
+    Operand* pPopOoO(void);
+    Operand* pPopRight(void);
     bool bPulsedLimit(void);
     void vPulsedLimit(bool bPulsedLimit);
     OperandQueue* pQueueLeft(void);

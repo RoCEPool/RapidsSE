@@ -1274,7 +1274,7 @@ Operand* Op::pPopLeft(void)
 /*----------------------------------------------------------------------------*/
 /* pop operand OoO off the queue                                              */
 /*----------------------------------------------------------------------------*/
-Operand* Op::pPopQueueOoO(void)
+Operand* Op::pPopOoO(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -1310,7 +1310,7 @@ Operand* Op::pPopQueueOoO(void)
 /*----------------------------------------------------------------------------*/
 /* pop operand queue B                                                        */
 /*----------------------------------------------------------------------------*/
-Operand* Op::pPopQueueRight(void)
+Operand* Op::pPopRight(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
