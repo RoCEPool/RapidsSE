@@ -338,7 +338,7 @@ void Op::vAppendRight(Operand* pOperand, Task* pTriggeringTask)
     
   vGrabTaskLock();
   
-  pQueueRight()->vAppendOperand(pOperand);
+  m_pQueueRight->vAppendOperand(pOperand);
   
   AM::vOperandsInc();
 
@@ -1295,7 +1295,7 @@ Operand* Op::pPopRight(void)
   
   vGrabTaskLock();
   
-  pOperand = pQueueRight()->pPopQueue();
+  pOperand = m_pQueueRight->pPopQueue();
   
   if (pOperand) {
     vDropTaskLock();
@@ -1348,13 +1348,63 @@ i8 Op::nQueueLength(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get right operand queue                                                    */
+/* get robin                                                                  */
 /*----------------------------------------------------------------------------*/
-OperandQueue* Op::pQueueRight(void)
+i8 Op::iRobin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_pQueueRight;
+  return m_iRobin;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set robin                                                                  */
+/*----------------------------------------------------------------------------*/
+void Op::vRobin(i8 iRobin)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  m_iRobin = iRobin;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get send kind                                                              */
+/*----------------------------------------------------------------------------*/
+eXK Op::eSendKind(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  return m_eSendKind;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set send kind                                                              */
+/*----------------------------------------------------------------------------*/
+void Op::vSendKind(eXK eSendKind)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  m_eSendKind = eSendKind;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get send node                                                              */
+/*----------------------------------------------------------------------------*/
+i8 Op::iSendNode(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  return m_iSendNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set send node                                                              */
+/*----------------------------------------------------------------------------*/
+void Op::vSendNode(i8 iSendNode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  m_iSendNode = iSendNode;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1466,16 +1516,6 @@ Task* Op::pTask(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set task                                                                   */
-/*----------------------------------------------------------------------------*/
-//void Op::vTask(Task* pTask)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-//
-//  m_pTask = pTask;
-//}
-
-/*----------------------------------------------------------------------------*/
 /* print stage spec                                                           */
 /*----------------------------------------------------------------------------*/
 void Op::vToCmdStr(Stz* szCmdStr)
@@ -1505,66 +1545,6 @@ void Op::vWorkQuanta(i8 iWorkQuanta)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   m_iWorkQuanta = iWorkQuanta;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get robin                                                                  */
-/*----------------------------------------------------------------------------*/
-i8 Op::iRobin(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  return m_iRobin;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set robin                                                                  */
-/*----------------------------------------------------------------------------*/
-void Op::vRobin(i8 iRobin)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  m_iRobin = iRobin;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get send kind                                                              */
-/*----------------------------------------------------------------------------*/
-eXK Op::eSendKind(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  return m_eSendKind;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set send kind                                                              */
-/*----------------------------------------------------------------------------*/
-void Op::vSendKind(eXK eSendKind)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  m_eSendKind = eSendKind;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get send node                                                              */
-/*----------------------------------------------------------------------------*/
-i8 Op::iSendNode(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  return m_iSendNode;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set send node                                                              */
-/*----------------------------------------------------------------------------*/
-void Op::vSendNode(i8 iSendNode)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  m_iSendNode = iSendNode;
 }
 
 /*============================================================================*/

@@ -135,9 +135,12 @@ namespace STORE
     bool bPulsedLimit(void);
     void vPulsedLimit(bool bPulsedLimit);
     i8   nQueueLength(void);
-    OperandQueue* pQueueRight(void);
     i8   iRobin(void);
     void vRobin(i8 iRobin);
+    eXK  eSendKind(void);
+    void vSendKind(eXK eSendKind);
+    i8   iSendNode(void);
+    void vSendNode(i8 iNde);
     void vSpawnOperatorJob(i8 iSessionId);
     Stage* pStage(void);
     Stz* szStageName(void);
@@ -146,10 +149,6 @@ namespace STORE
     void vToCmdStr(Stz* szCmdStr);
     TagSet* pTopologyTagSet(void);
     void vWorkQuanta(i8 iWorkQuanta);
-    eXK  eSendKind(void);
-    void vSendKind(eXK eSendKind);
-    i8   iSendNode(void);
-    void vSendNode(i8 iNde);
     
   private:
     Footer* aFooter(void);
