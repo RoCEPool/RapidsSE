@@ -110,8 +110,8 @@ bool OperandQueue::bPeekOoO(void)
   
   while (pOperand) {
     
-    // is it an Out-of_Order Operand ?
-    if (AM::bIsOperandOoO(pOperand)) {
+    // is it an Out-of-Order Operand ?
+    if (AM::OPERAND::bIsOoO(pOperand)) {
       return true;
     }
     
@@ -130,8 +130,8 @@ bool OperandQueue::bPeekOoO(void)
   
   while (pOperand) {
     
-    // is it an Out-of_Order Operand ?
-    if (AM::bIsOperandOoO(pOperand)) {
+    // is it an Out-of-Order Operand ?
+    if (AM::OPERAND::bIsOoO(pOperand)) {
       return true;
     }
     
@@ -179,7 +179,7 @@ Operand* OperandQueue::pPopOoO(void)
   while (pOperand) {
     
     // is it a CANCELMARKER ?
-    if (AM::bIsOperandOoO(pOperand)) {
+    if (AM::OPERAND::bIsOoO(pOperand)) {
       //vRemove(pOperand);
       RASSERT(0);
       return pOperand;
@@ -201,7 +201,7 @@ Operand* OperandQueue::pPopOoO(void)
   while (pOperand) {
     
     // is it a CANCELMARKER ?
-    if (AM::bIsOperandOoO(pOperand)) {
+    if (AM::OPERAND::bIsOoO(pOperand)) {
       vRemove(pOperand);
       return pOperand;
     }
