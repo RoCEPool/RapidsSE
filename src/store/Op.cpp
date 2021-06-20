@@ -431,16 +431,6 @@ void Op::vDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* outline                                                                    */
-/*----------------------------------------------------------------------------*/
-void Op::vOutline(s4K& sOutline)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-
-  sOutline.vSprint("<%s focal>"_Stz,aCN[eGetClassNo()]);
-}
-
-/*----------------------------------------------------------------------------*/
 /* grab lock                                                                  */
 /*----------------------------------------------------------------------------*/
 void Op::vGrabTaskLock(void)
@@ -448,6 +438,16 @@ void Op::vGrabTaskLock(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   AM::vGrabTaskLock(AM::pExecutingTask(m_pOpJob));
+}
+
+/*----------------------------------------------------------------------------*/
+/* inc operand count for given operand kind                                   */
+/*----------------------------------------------------------------------------*/
+void Op::vIncOperandCount(i8 i_OperandKind)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  m_iOperandCount[i_OperandKind]++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -895,16 +895,6 @@ void Op::vOperandHandler(i8 i_OperandKind, Word* pHandler)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   m_paOperandHandler[i_OperandKind] = pHandler;
-}
-
-/*----------------------------------------------------------------------------*/
-/* inc operand count for given operand kind                                   */
-/*----------------------------------------------------------------------------*/
-void Op::vIncOperandCount(i8 i_OperandKind)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  m_iOperandCount[i_OperandKind]++;
 }
 
 /*----------------------------------------------------------------------------*/

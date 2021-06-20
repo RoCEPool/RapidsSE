@@ -89,8 +89,8 @@ namespace STORE
     void vDownstreamOp(Op* pDownstreamOp);
     void vDropTaskLock(void);
     void vDump(void);
-    void vOutline(s4K& sOutline);
     void vGrabTaskLock(void);
+    void vIncOperandCount(i8 i_OperandKind);
     void vIncWorkDone(void);
     void vInitOperandHandlers(void);
     bool bIsLocked(void);
@@ -101,13 +101,11 @@ namespace STORE
     Op*  pNextOp(void);
     void vNextOp(i8 iNextOp);
     i8   iNextStage(void);
-    i8   iOtherStage(void);
     void vNextStage(i8 iNextStage);
     i8   iNode(void);
     void vNode(i8 iNode);
     Word* pOperandHandler(i8 i_OperandKind);
     void vOperandHandler(i8 i_OperandKind, Word* pHandler);
-    void vIncOperandCount(i8 i_OperandKind);
     Job* pOpJob(void);
     void vOpJob(Job* pOpJob);
     Stz* szOpNm(void);
@@ -117,6 +115,7 @@ namespace STORE
     i8   iOtherOp(void);
     Op*  pOtherOp(void);
     void vOtherOp(i8 iNextOp);
+    i8   iOtherStage(void);
     void vOtherStage(i8 iNextStage);
     Operand* pOutboundOperand(void);
     void vOutboundOperand(Operand* pOutboundOperand);
