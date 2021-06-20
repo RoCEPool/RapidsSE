@@ -1235,9 +1235,9 @@ void Op::vPipeToOutput(Operand* pOperand)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop operand queue                                                          */
+/* pop left operand queue                                                     */
 /*----------------------------------------------------------------------------*/
-Operand* Op::pPopQueue(void)
+Operand* Op::pPopLeft(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   

@@ -130,7 +130,7 @@ namespace STORE
     Job* pPipelineJob(void);
     void vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask);
     void vPipeToOutput(Operand* pOperand);
-    Operand* pPopQueue(void);
+    Operand* pPopLeft(void);
     Operand* pPopQueueOoO(void);
     Operand* pPopQueueRight(void);
     bool bPulsedLimit(void);

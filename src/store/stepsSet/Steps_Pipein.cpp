@@ -42,7 +42,7 @@ void Step::vPipeinBide(void)
 {
   ENTRY();
   
-  m_pJob->pLogicUnit_job()->m_xpPipein = m_pJob->m_pOp->pPopQueue();
+  m_pJob->pLogicUnit_job()->m_xpPipein = m_pJob->m_pOp->pPopLeft();
   
   if (m_pJob->pLogicUnit_job()->m_xpPipein.bIsNull()) {
     vScheduleBide();
@@ -66,7 +66,7 @@ void Step::vPipeinBideNext(void)
     
   if (m_pJob->pLogicUnit_job()->m_xpPipein.bIsNull()) {
     
-    Operand* pOperand = m_pJob->m_pOp->pPopQueue();
+    Operand* pOperand = m_pJob->m_pOp->pPopLeft();
     m_pJob->pLogicUnit_job()->m_xpPipein = pOperand;
     
     eZK eOperand = (eZK)AM::iOperandZkKind(pOperand);
@@ -152,7 +152,7 @@ void Step::vPipeinNext(void)
   
   RASSERT(m_pJob->pLogicUnit_job()->m_xpPipein.bIsNull());
       
-  Operand* pOperand = m_pJob->m_pOp->pPopQueue();
+  Operand* pOperand = m_pJob->m_pOp->pPopLeft();
   m_pJob->pLogicUnit_job()->m_xpPipein = pOperand;
   
   eZK eOperand = (eZK)AM::iOperandZkKind(pOperand);
