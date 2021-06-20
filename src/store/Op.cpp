@@ -294,7 +294,7 @@ void Op::vAddWorkDone(i8 iWorkDone)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append operand to this op's operand queue                                  */
+/* append operand to this op's left operand queue                             */
 /*----------------------------------------------------------------------------*/
 void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
 {
@@ -325,7 +325,38 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append operand to this op's operand queue                                  */
+/* append operand to this op's operand out-of-order queue                     */
+/*----------------------------------------------------------------------------*/
+void Op::vAppendOoO(Operand* pOperand, Task* pTriggeringTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+//  vTrace("%s::vAppendLeft : %p %s\n"_Stz,
+//         m_sOpNm.szStz(),
+//         pOperand,
+//         aCN[pOperand->eGetClassNo()]);
+    
+  vGrabTaskLock();
+
+  m_pQueueOoO->vAppendOperand(pOperand);
+
+  AM::vOperandsInc();
+
+  Task* pBidingTask = AM::pExecutingTask(m_pOpJob);
+  
+  if (TS_BIDING != (eTS)AM::iTaskState(pBidingTask)) {
+    vDropTaskLock();
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // trigger this biding op
+  AM::vTriggerBidingTask(pBidingTask,pTriggeringTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append operand to this op's right operand queue                            */
 /*----------------------------------------------------------------------------*/
 void Op::vAppendRight(Operand* pOperand, Task* pTriggeringTask)
 {
