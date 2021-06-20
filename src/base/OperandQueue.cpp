@@ -102,7 +102,7 @@ bool OperandQueue::bPeekQueue(void)
 /* peek at operands and see if any OoO Operand                                */
 /*----------------------------------------------------------------------------*/
 #ifdef WITH_NEW_OPERAND_QUEUE
-bool OperandQueue::bPeekQueueOoO(void)
+bool OperandQueue::bPeekOoO(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
   
@@ -122,7 +122,7 @@ bool OperandQueue::bPeekQueueOoO(void)
 }
 /*----------------------------------------------------------------------------*/
 #else
-bool OperandQueue::bPeekQueueOoO(void)
+bool OperandQueue::bPeekOoO(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
   
@@ -170,7 +170,7 @@ Operand* OperandQueue::pPopQueue(void)
 /* pop first OoO operand from top of queue                                    */
 /*----------------------------------------------------------------------------*/
 #ifdef WITH_NEW_OPERAND_QUEUE
-Operand* OperandQueue::pPopQueueOoO(void)
+Operand* OperandQueue::pPopOoO(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
   
@@ -192,7 +192,7 @@ Operand* OperandQueue::pPopQueueOoO(void)
 }
 /*----------------------------------------------------------------------------*/
 #else
-Operand* OperandQueue::pPopQueueOoO(void)
+Operand* OperandQueue::pPopOoO(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
   

@@ -81,6 +81,7 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   m_bAppendRight  = pOpSpec->bAppendRight();
   m_pQueueLeft    = new OperandQueue;
   m_pQueueRight   = new OperandQueue;
+  m_pQueueOoO     = new OperandQueue;
 
   m_eCrossTopo  = PX_NONE;
   m_iNextStage  = C_UNKNOWN;
@@ -152,6 +153,7 @@ Op::Op(Stz* szOpNm)
   m_bAppendRight  = false;
   m_pQueueLeft    = new OperandQueue;
   m_pQueueRight   = new OperandQueue;
+  m_pQueueOoO     = new OperandQueue;
 
   m_eCrossTopo  = PX_NONE;
   m_iNextStage  = C_UNKNOWN;
@@ -206,7 +208,8 @@ Op::~Op(void) noexcept(false)
 
   delete m_pQueueLeft;
   delete m_pQueueRight;
-  
+  delete m_pQueueOoO;
+
   -- gixOp;
   
   AM::LOG::vEvent(EV_DESTRUCT,"Op destructor"_Stz);
@@ -1136,7 +1139,7 @@ bool Op::bPeekQueueOoO(void)
   
   vGrabTaskLock();
   
-  bOperandOoO = pQueueLeft()->bPeekQueueOoO();
+  bOperandOoO = pQueueLeft()->bPeekOoO();
   
   vDropTaskLock();
   
@@ -1279,7 +1282,7 @@ Operand* Op::pPopQueueOoO(void)
   
   vGrabTaskLock();
   
-  pOperand = pQueueLeft()->pPopQueueOoO();
+  pOperand = pQueueLeft()->pPopOoO();
     
   vDropTaskLock();
   

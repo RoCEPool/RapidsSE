@@ -42,9 +42,10 @@ namespace STORE
     i8             m_iWorkDone;      // work done
 
     bool           m_bAppendRight;   // append to right queue?
-    OperandQueue*  m_pQueueLeft;     // the input queue being processed
-    OperandQueue*  m_pQueueRight;    // the input queue being processed
-    
+    OperandQueue*  m_pQueueLeft;     // left input queue
+    OperandQueue*  m_pQueueRight;    // right input queue
+    OperandQueue*  m_pQueueOoO;      // out-of-order queue
+
     ePX            m_eCrossTopo;     // cross topology
     i8             m_iNextStage;     // next stage in the cross topology
     i8             m_iNextOp;        // next Op in the next stage
