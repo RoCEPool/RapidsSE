@@ -202,7 +202,7 @@ void AM::DEMON::vPipeTo(Stz* szDemonNm, Operand* pOperand)
 
   //Task* pThisTask = AM::pThisTLSTask();
   
-  pOp0->vAppend(pOperand,nullptr);
+  pOp0->vAppendLeft(pOperand,nullptr);
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/

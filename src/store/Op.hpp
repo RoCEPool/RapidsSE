@@ -78,7 +78,6 @@ namespace STORE
     // - - - - - - - - - - - - - - - -
     void vAckJob(void);
     void vAddWorkDone(i8 iWorkDone);
-    void vAppend(Operand* pOperand, Task* pTriggeringTask);
     void vAppendLeft(Operand* pOperand, Task* pTriggeringTask);
     void vAppendRight(Operand* pOperand, Task* pTriggeringTask);
     bool bAppendRight(void);

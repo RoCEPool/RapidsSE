@@ -294,29 +294,6 @@ void Op::vAddWorkDone(i8 iWorkDone)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append operand to specific operand                                         */
-/*----------------------------------------------------------------------------*/
-void Op::vAppend(Operand* pOperand, Task* pTriggeringTask)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  if (m_bTraceOp) {
-//    vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
-//           m_sOpNm.szStz(),
-//           m_pStage->szStageNm(),
-//           m_i_Node,
-//           m_tPtnNo,
-//           m_pPipelineJob,
-//           "vPipeOut :"_Stz,
-//           AM::pOperandName(pOperand),
-//           pOperand);
-    vOpTrace(pOperand,"vPipeOut :"_Stz);
-  }
-  
-  vAppendLeft(pOperand,pTriggeringTask);
-}
-
-/*----------------------------------------------------------------------------*/
 /* append operand to this op's operand queue                                  */
 /*----------------------------------------------------------------------------*/
 void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
