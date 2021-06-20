@@ -133,7 +133,7 @@ namespace STORE
     Operand* pPopRight(void);
     bool bPulsedLimit(void);
     void vPulsedLimit(bool bPulsedLimit);
-    i8   nQueueLength(void);
+    i8   nQueuedOperands(void);
     i8   iRobin(void);
     void vRobin(i8 iRobin);
     eXK  eSendKind(void);

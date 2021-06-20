@@ -271,7 +271,7 @@ void AM::LOG::vEvent(eEV eEvent, Stz* szFormat, ...)
   va_end(xVarArgs);
 
   
-  i8 nQueueLength = pRLU->m_xpOp->nQueueLength();
+  i8 nQueuedOperands = pRLU->m_xpOp->nQueuedOperands();
   
   AM::LOG::vLogInternal((i8)TI_EVENTLOG,
                         
@@ -407,7 +407,7 @@ void AM::LOG::vOperand(i8 iPoint)
   if (! pRLU || pRLU->m_xpOp.bIsNull())
     return;
 
-  i8 nQueueLength = pRLU->m_xpOp->nQueueLength();
+  i8 nQueueLength = pRLU->m_xpOp->nQueuedOperands();
   
   AM::LOG::vLogInternal((i8)TI_OPERANDLOG,
                         
@@ -440,7 +440,7 @@ void AM::LOG::vResourceUse(Resource* pResource, i8 iAction, i8 nBytes)
   if (! pRLU || pRLU->m_xpOp.bIsNull())
     return;
 
-  i8 nQueueLength = pRLU->m_xpOp->nQueueLength();
+  i8 nQueueLength = pRLU->m_xpOp->nQueuedOperands();
   
   AM::LOG::vLogInternal((i8)TI_RESOURCELOG,
                         

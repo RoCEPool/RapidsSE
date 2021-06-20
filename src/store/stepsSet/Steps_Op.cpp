@@ -246,7 +246,7 @@ void Step::vOpQueueLength(void)
   
   Op* pOp = m_pJob->m_pOp;
   
-  i8 nLength = pOp->nQueueLength();
+  i8 nLength = pOp->nQueuedOperands();
 
   m_pDataStack->vPushInt(nLength);
 

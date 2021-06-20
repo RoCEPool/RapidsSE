@@ -1327,13 +1327,17 @@ void Op::vPulsedLimit(bool bPulsedLimit)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get operand queue length                                                   */
+/* get number of operands currently queued                                    */
 /*----------------------------------------------------------------------------*/
-i8 Op::nQueueLength(void)
+i8 Op::nQueuedOperands(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  i8 nOperands = m_pQueueLeft->nQueuedOperands();
+  i8 nLeft = m_pQueueLeft->nQueuedOperands();
+  i8 nOoO  = m_pQueueOoO->nQueuedOperands();
+
+  i8 nOperands = nLeft + nOoO;
+  
   return nOperands;
 }
 
