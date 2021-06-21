@@ -134,7 +134,13 @@ b1 Expr::bContainsAnAggregate(PlanNode *pNode)
     UNUSED(iDepth);
     UNUSED(pvArg);
 
-    if (AggregateExpr::bIsOfType(pNode)) {
+    QueryNode* pExpr = _pQueryNode(pNode);
+
+    if (AliasRef::bIsOfType(pExpr)) {
+      pExpr = AliasRef::pAliasedExpr(_pQueryNode(pExpr));
+    }
+
+    if (AggregateExpr::bIsOfType(pExpr)) {
       bIsAgg = true;
       return GraphNav::WALK_ABORT;
     }
@@ -169,11 +175,17 @@ b1 Expr::bContainsNonaggregatedColumnRefs(PlanNode *pNode)
     UNUSED(iDepth);
     UNUSED(pvArg);
 
-    if (AggregateExpr::bIsOfType(pNode)) {
+    QueryNode* pExpr = _pQueryNode(pNode);
+
+    if (AliasRef::bIsOfType(pNode)) {
+      pExpr = AliasRef::pAliasedExpr(_pQueryNode(pNode));
+    }
+
+    if (AggregateExpr::bIsOfType(pExpr)) {
       return GraphNav::WALK_SKIP_SUBTREE;
     }
 
-    if (ColumnRef::bIsOfType(pNode)) {
+    if (ColumnRef::bIsOfType(pExpr)) {
       bHasNonAggColumnRef = true;
       return GraphNav::WALK_ABORT;
     }
@@ -204,8 +216,14 @@ b1 Expr::bIsFullyLiteral(PlanNode *pNode)
     UNUSED(iDepth);
     UNUSED(pvArg);
 
-    if (    ColumnRef::bIsOfType(pNode) ||
-        ColumnOrdinal::bIsOfType(pNode)) {
+    QueryNode* pExpr = _pQueryNode(pNode);
+
+    if (AliasRef::bIsOfType(pNode)) {
+      pExpr = AliasRef::pAliasedExpr(_pQueryNode(pNode));
+    }
+
+    if (    ColumnRef::bIsOfType(pExpr) ||
+        ColumnOrdinal::bIsOfType(pExpr)) {
       bIsLit = false;
       return GraphNav::WALK_ABORT;
     }
@@ -688,9 +706,9 @@ QueryNode* Expr::pLargestNonOrdinalSubExpr(QueryNode* pOrdinalExpr, b1 bIncludeA
       return GraphNav::WALK_SKIP_SUBTREE;
     }
 
-    PlanNode* pColumnRef    = GraphNav::pGlobalSearch(pNode, false, true, fColumnRefCondition,    nullptr);
-    PlanNode* pOrdinalRef   = GraphNav::pGlobalSearch(pNode, false, true, fOrdinalRefCondition,   nullptr);
-    PlanNode* pAggregateRef = GraphNav::pGlobalSearch(pNode, false, true, fHasAggregateCondition, nullptr);
+    PlanNode* pColumnRef    = GraphNav::pGlobalSearch(pNode, true, true, fColumnRefCondition,    nullptr);
+    PlanNode* pOrdinalRef   = GraphNav::pGlobalSearch(pNode, true, true, fOrdinalRefCondition,   nullptr);
+    PlanNode* pAggregateRef = GraphNav::pGlobalSearch(pNode, true, true, fHasAggregateCondition, nullptr);
 
     if ( pColumnRef && !pOrdinalRef && (bIncludeAggregates || !pAggregateRef) ) {
       pNonOrdExpr = _pQueryNode(pNode);
@@ -722,8 +740,14 @@ QueryNodeList* Expr::pAggregateExprs(QueryNode* pExpr, b1 bDescendAggregates)
     UNUSED(iDepth);
     UNUSED(pvArg);
 
-    if (AggregateExpr::bIsOfType(pNode)) {
-      pList->vPush(_pQueryNode(pNode));
+    QueryNode* pExpr = _pQueryNode(pNode);
+
+    if (AliasRef::bIsOfType(pNode)) {
+      pExpr = AliasRef::pAliasedExpr(pExpr);
+    }
+
+    if (AggregateExpr::bIsOfType(pExpr)) {
+      pList->vPush(_pQueryNode(pExpr));
       
       if (!bDescendAggregates) {
         return GraphNav::WALK_SKIP_SUBTREE;
@@ -784,6 +808,8 @@ void Expr::vConsolidateAggregates(QueryNode* pExpr)
       pAgg->vTransmogrifyTo(pDivExpr, true);
       ASSERT(DivisionExpr::bIsOfType(pAgg));
 
+      // Delete the template
+      delete pDivExpr;
 
     } else if (SumExpr::bIsOfType(pAgg)) {
       ASSERT(pAgg->nChildren() == 1);
@@ -811,6 +837,9 @@ void Expr::vConsolidateAggregates(QueryNode* pExpr)
       pAgg->vTransmogrifyTo(pOuterSum, true);
       ASSERT(SumExpr::bIsOfType(pAgg));
 
+      // Delete the template
+      delete pOuterSum;
+
 
     } else if (MinExpr::bIsOfType(pAgg)) {
       ASSERT(pAgg->nChildren() == 1);
@@ -825,10 +854,10 @@ void Expr::vConsolidateAggregates(QueryNode* pExpr)
 
     } else if (MaxExpr::bIsOfType(pAgg)) {
       ASSERT(pAgg->nChildren() == 1);
-      QueryNode* pChildExpr = _pQueryNode(pAgg->pFirstChild());
+      QueryNode *pChildExpr = _pQueryNode(pAgg->pFirstChild());
 
       // Create the inner MAX
-      QueryNode* pInnerMax = pAgg->pDeepCopy(true);
+      QueryNode *pInnerMax = pAgg->pDeepCopy(true);
 
       // Insert the inner MAX as a child of the outer MAX
       GraphEditor::vReplaceChild(pAgg, pChildExpr, pInnerMax);

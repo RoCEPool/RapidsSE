@@ -518,7 +518,7 @@ QueryNode* ProjectOp::pCreatePartitioned(QueryNode* pSinglePartitionNode)
 /*----------------------------------------------------------------------------*/
 QueryNode* ProjectOp::pCreateConsolidating(QueryNode* pSinglePartitionNode)
 {
-  QueryNode* pNewOp = pSinglePartitionNode->pDeepCopy(true, new PlanNodeList());
+  QueryNode* pNewOp = pSinglePartitionNode->pDeepCopy(true, nullptr);
 
   QueryNode* pProjColumns =
       _pQueryNode(GraphNav::pFindProperty(const_cast<Stz *>(C_PROJECTEDCOLUMNS_PROP), pNewOp));

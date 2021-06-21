@@ -244,8 +244,8 @@ rows:
   (  8, 'corrBySquash',     * )
   (  9, 'explainPlan',      * )
   ( 10, 'partitionPlan',    * )
-  ( 11, 'partitionExplain', * )
-  ( 12, 'projValidation',   * )
+  ( 11, 'projValidation',   * )
+  ( 12, 'partitionExplain', * )
   ( 13, 'stageMarkers',     * )
   ( 14, 'transliterate',    * )
 
@@ -261,8 +261,8 @@ rows:
   (  8, 'corrBySquash',     * )
   (  9, 'explainPlan',      * )
   ( 10, 'partitionPlan',    * )
-  ( 11, 'partitionExplain', * )
-  ( 12, 'projValidation',   * )
+  ( 11, 'projValidation',   * )
+  ( 12, 'partitionExplain', * )
   ( 13, 'stageMarkers',     * )
   ( 14, 'transliterate',    * )
 

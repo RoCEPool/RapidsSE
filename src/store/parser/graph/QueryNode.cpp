@@ -453,7 +453,7 @@ QueryNode* QueryNode::pDeepCopy(b1 bNewName)
 
 /*----------------------------------------------------------------------------*/
 /* Return a deep copy of the current node and it's properties but use the     */
-/* supplied children                                                          */
+/* supplied children. pNewChildren can be null to specify no children         */
 /*----------------------------------------------------------------------------*/
 QueryNode* QueryNode::pDeepCopy(b1 bNewName, PlanNodeList* pNewChildren)
 {
@@ -467,6 +467,10 @@ QueryNode* QueryNode::pDeepCopy(b1 bNewName, PlanNodeList* pNewChildren)
   if (bNewName) {
     NodeNamer::vGenerateName(this, sNewName);
     szName = sNewName.szStz();
+  }
+
+  if (!pNewChildren) {
+    pNewChildren = new PlanNodeList();
   }
 
   // Create the new node. This will copy in the name and type and take ownership

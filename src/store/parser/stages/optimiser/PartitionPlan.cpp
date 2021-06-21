@@ -253,7 +253,7 @@ void PartitionPlan::vPartitionStatementMarker(QueryNode* pNode, GraphChains* pCh
 {
   ASSERT(StatementMarker::bIsOfType(pNode));
 
-  QueryNode* pStmtMarker = pNode->pDeepCopy(true, new PlanNodeList());
+  QueryNode* pStmtMarker = pNode->pDeepCopy(true, nullptr);
   vPushOnOriginChain(pStmtMarker, pChains);
 }
 
@@ -300,7 +300,7 @@ void PartitionPlan::vPartitionExplainOp(QueryNode* pNode, GraphChains* pChains, 
 {
   ASSERT(ExplainOp::bIsExactType(pNode));
 
-  QueryNode* pExplainNode = pNode->pDeepCopy(true, new PlanNodeList());
+  QueryNode* pExplainNode = pNode->pDeepCopy(true, nullptr);
 
   // ExplainOps occur in their own StatementMarker section. There must already
   // be another chain in the pStmtSectionStack that we need to join up to this one.
@@ -316,7 +316,24 @@ void PartitionPlan::vPartitionExplainOp(QueryNode* pNode, GraphChains* pChains, 
 void PartitionPlan::vPartitionFilterOp(QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack)
 {
   ASSERT(FilterOp::bIsExactType(pNode));
-  NOT_IMPLEMENTED_YET
+
+  QueryNode* pExpr = FilterOp::pFilterExpr(pNode);
+  b1 bHasAnAggregate = Expr::bContainsAnAggregate(pExpr);
+
+  if (bHasAnAggregate) {
+    // This represents a HAVING clause. This has to run on the origin, after
+    // all partitioned aggregations have been combined.
+    // We need to convert the expression to be a consolidated aggregate expression.
+    QueryNode* pNewExpr = pExpr->pDeepCopy(true);
+    Expr::vConsolidateAggregates(pNewExpr);
+    QueryNode* pConsolidatedFilter = FilterOp::pCreate(pNewExpr);
+    vPushOnOriginChain(pConsolidatedFilter, pChains);
+
+  } else {
+    // No aggregate, therefore it is a WHERE clause. These can run on each partition.
+    QueryNode* pFilterNode = pNode->pDeepCopy(true, nullptr);
+    vPushOnPartitionChain(pFilterNode, pChains);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -348,8 +365,18 @@ void PartitionPlan::vPartitionProjectOp(QueryNode* pNode, GraphChains* pChains, 
   b1 bIsPostProject = PartitionPlan::bIsPostProject(pNode);
 
   if (bIsPostProject) {
-    // TODO
-    NOT_IMPLEMENTED_YET;
+
+    if (bHasAnAggregate) {
+      // Post project with aggregates. Need to consolidate the aggregates before placing
+      // on the origin chain.
+      QueryNode* pConsolidatingProjectNode = ProjectOp::pCreateConsolidating(pNode);
+      vPushOnOriginChain(pConsolidatingProjectNode, pChains);
+
+    } else {
+      // Post project with no aggregates. Therefore no need to change any
+      // of the expressions. Simply place this on the origin chain.
+      vPushOnOriginChain(pNode->pDeepCopy(true, nullptr), pChains);
+    }
 
   } else {
     // Not a post-project
@@ -370,15 +397,10 @@ void PartitionPlan::vPartitionProjectOp(QueryNode* pNode, GraphChains* pChains, 
 
     } else {
       // Non-post-project without any aggregates
-      QueryNode* pProjectNode = pNode->pDeepCopy(true, new PlanNodeList());
+      QueryNode* pProjectNode = pNode->pDeepCopy(true, nullptr);
       vPushOnPartitionChain(pProjectNode, pChains);
     }
-
-
   }
-
-
-
 }
 
 /*----------------------------------------------------------------------------*/
