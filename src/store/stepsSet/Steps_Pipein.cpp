@@ -70,6 +70,13 @@ void Step::vPipeinBideNext(void)
   if (! m_pJob->pLogicUnit_job()->m_xpPipein.bIsNull()) {
     RASSERT(*m_pJob->pLogicUnit_job()->m_xpPipein);
   }
+  else if ( (pOperand = m_pJob->m_pOp->pPopOoO()) ) {
+    m_pJob->pLogicUnit_job()->m_xpPipein = pOperand;
+    
+    eOperand = (eZK)AM::iOperandZkKind(pOperand);
+    m_pJob->pLogicUnit_job()->m_ePipeInOperand = eOperand;
+    RASSERT(*m_pJob->pLogicUnit_job()->m_xpPipein);
+  }
   else if ( (pOperand = m_pJob->m_pOp->pPopLeft()) ) {
     m_pJob->pLogicUnit_job()->m_xpPipein = pOperand;
     
