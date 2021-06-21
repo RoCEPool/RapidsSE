@@ -896,6 +896,7 @@ public:
   void vLogicUnitGenAggregate(void);
   void vLogicUnitGenAsm(void);
   void vLogicUnitGenFilter(void);
+  void vLogicUnitGenIndexJoin(void);
   void vLogicUnitGenIndexScan(void);
   void vLogicUnitGenLimit(void);
   void vLogicUnitGenLoopJoin(void);
@@ -1582,6 +1583,7 @@ public:
   void vStreamDefRhtGet(void);
   void vStreamDefRhtGetAndClear(void);
   void vStreamDefRhtIsNull(void);
+  void vStreamDefRhtNew(void);
   void vStreamDefRhtPrint(void);
   void vStreamDefRhtSet(void);
 

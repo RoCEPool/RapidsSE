@@ -32,6 +32,7 @@ void Step::vAddSteps_StreamDefRht(void)
   vAddStep("StreamDefRht[].delete"_Stz,          &Step::vStreamDefRhtDelete);
   vAddStep("StreamDefRht[].get"_Stz,             &Step::vStreamDefRhtGet);
   vAddStep("StreamDefRht[].isNull"_Stz,          &Step::vStreamDefRhtIsNull);
+  vAddStep("StreamDefRht[].new"_Stz,             &Step::vStreamDefRhtNew);
   vAddStep("StreamDefRht[].print"_Stz,           &Step::vStreamDefRhtPrint);
   vAddStep("StreamDefRht[].set"_Stz,             &Step::vStreamDefRhtSet);
 }
@@ -85,6 +86,22 @@ void Step::vStreamDefRhtIsNull(void)
   
   m_pDataStack->vPushInt(m_pJob->pLogicUnit_job()->m_xpStreamDefRht.bIsNull() ? 1 : 0);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamDefRht[].new -- new a stream def from Table[]                        */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamDefRhtNew(void)
+{
+  ENTRY();
+
+  ASSERT (m_pJob->pLogicUnit_job()->m_xpStreamDefRht.bIsNull());
+
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+
+  m_pJob->pLogicUnit_job()->m_xpStreamDefRht = new StreamDef(pTable->pStreamDef());
+
   EXIT();
 }
 

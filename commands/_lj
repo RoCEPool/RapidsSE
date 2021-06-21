@@ -29,6 +29,7 @@ trackMemory;
 
 //select N_NATIONKEY from J;
 /*
+
 pipeline eachRowExp
 begin
   stage stageA on origin :
@@ -48,12 +49,13 @@ begin
     start | periodic once | stageB
 
   stage stageB on all partitions :
-    scan T | filter 0 "type boolean $1 5 >=" | eachRow | eachScan J | filter | eachJoin 0 "$L1 $R1 ==" | stageC
+    scan T | filter 0 "type boolean $1 5 >=" | eachRow | eachScan J | eachJoin 0 "$L1 $R1 ==" | stageC
 
   stage stageC on origin :
     output | sink | stageA
 end;
-*/
+
+
 pipeline eachRowExp
 begin
   stage stageA on origin :
@@ -68,7 +70,6 @@ begin
     output | sink | stageA
 end;
 
-/*
 
 MemoryLeaks;
 
