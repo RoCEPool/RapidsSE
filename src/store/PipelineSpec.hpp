@@ -12,7 +12,7 @@ namespace STORE
   private:
     s32  m_sPipelineNm; // pipeline name
   
-    Job* m_pJob; // which job
+    Job* m_pPipelineJob; // which job
     
     // must be last
     Footer m_xFooter;
@@ -26,7 +26,7 @@ namespace STORE
   
     void vAddStageSpec(StageSpec* pStageSpec);
     StageSpec* pFindStageSpec(Stz* szFindNm, i8& i_Stage);
-    Job* pJob(void);
+    Job* pPipelineJob(void);
     Stz* szPipelineNm(void);
     StageSpec* pStageSpec(i8 i_Stage);
 

@@ -92,7 +92,7 @@ void Step::vOperandOoONext(void)
   
   ASSERT(m_pJob->pLogicUnit_job()->m_xpOperandOoO.bIsNull());
   
-  m_pJob->pLogicUnit_job()->m_xpOperandOoO = m_pJob->m_pOp->pPopQueueOoO();
+  m_pJob->pLogicUnit_job()->m_xpOperandOoO = m_pJob->m_pOp->pPopOoO();
   
   if (m_pJob->pLogicUnit_job()->m_xpOperandOoO.bIsNull())
     m_pDataStack->vPushInt(false);

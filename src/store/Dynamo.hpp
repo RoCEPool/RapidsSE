@@ -15,7 +15,7 @@ namespace STORE
   {
   private:
   
-    Job*          m_p_Job;
+    Job*          m_p_PipelineJob;
     TokenVec*     m_pTknVec;
   
     PipelineSpec* m_pPipelineSpec;

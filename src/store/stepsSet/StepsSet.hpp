@@ -47,6 +47,7 @@ public:
   void vApiExecuteNested(void);
   void vApiExecuteRequest(void);
   void vApiSpawnDemon(void);
+  void vApiSpawnThread(void);
 
   // args
   void vArgsOscillate(void);
@@ -197,11 +198,13 @@ public:
   // devLftRow
   void vDevLftRowStreamDefStore(void);
   void vDevLftRowDeleteEachRowBuffer(void);
+  void vDevLftRowRowStore(void);
   void vDevLftRowEachRowBufferStore(void);
   void vDevLftRowRowBufferStore(void);
   void vDevLftRowCrwBufferStore(void);
 
   // devRhtRow
+  void vDevRhtRowRowBufferStore(void);
   void vDevRhtRowStreamDefStore(void);
 
   // devLftIxt
@@ -337,7 +340,8 @@ public:
   void vExprEvalDelete(void);
   void vExprEvalNew(void);
   void vExprEvalEvaluate(void);
-void vExprEvalEvaluateIndexScan(void);
+  void vExprEvalEvaluateIndexScan(void);
+  void vExprEvalEvaluateJoin(void);
   void vExprEvalSet(void);
 
   // fact

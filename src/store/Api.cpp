@@ -744,7 +744,8 @@ void Api::vSpawnJob_dedicated(Job* pJob)
 {
   _static_
   
-  RASSERT(! pJob->pTask());
+  //RASSERT(! pJob->pTask());
+  
   vCreateTaskForJob(pJob);
   Scheduler::vTaskApi_AddDedicated(pJob->pTask());
 }

@@ -33,6 +33,7 @@ void Step::vAddSteps_Api(void)
   vAddStep("api::executeNested"_Stz,  &Step::vApiExecuteNested);
   vAddStep("api::executeRequest"_Stz, &Step::vApiExecuteRequest);
   vAddStep("api::spawnDemon"_Stz,     &Step::vApiSpawnDemon);
+  vAddStep("api::spawnThread"_Stz,    &Step::vApiSpawnThread);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -348,6 +349,21 @@ void Step::vApiSpawnDemon(void)
   
   delete pTagStrTknVec;
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* api::spawnThread -- spawn a dedicated thread for op                        */
+/*----------------------------------------------------------------------------*/
+void Step::vApiSpawnThread(void)
+{
+  ENTRY();
+  
+  Op* pOp = _pOp(m_pDataStack->pPopPtr(__func__));
+
+  Job* pOpJob = pOp->pOpJob();
+  AM::vSpawnJob_dedicated(pOpJob);
+
   EXIT();
 }
 

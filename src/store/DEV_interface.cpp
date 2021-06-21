@@ -1615,8 +1615,6 @@ void vDev_IXT_COLS_TO_ROW(i8** aaiDstk)
 
   i8 *aiDstk = *aaiDstk;
 
-  char* acStrArea_null = nullptr;
-
   // pop the ixt device
   DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
 
@@ -1627,6 +1625,35 @@ void vDev_IXT_COLS_TO_ROW(i8** aaiDstk)
   HeadLine *aHeadLine = (HeadLine *) pDevIxt->m_aCrw;
 
   RowInflator::vInflate_AllColumns_into_RowBuffer(pDevRow->m_pRowBuffer,aHeadLine);
+
+  *aaiDstk = aiDstk;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inflate dev columns to dev row                                             */
+/*----------------------------------------------------------------------------*/
+void vDev_IXT_COLS_TO_ROW_OFS(i8** aaiDstk)
+{
+  _static_
+
+  i8 *aiDstk = *aaiDstk;
+
+  // pop the dst row start col
+  i8 iAtDstCol = I_PopInt();
+
+  // pop the ixt device
+  DevIXT* pDevIxt = _pDevIXT(P_PopPtr());
+
+  // pop the row device
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
+
+  //HeadLine *aHeadLine = (HeadLine *) pLogicUnit->m_xRluCommon.m_aSrcCrw;
+  HeadLine *aHeadLine = (HeadLine *) pDevIxt->m_aCrw;
+
+  RowInflator::vInflate_AllColumns_into_RowBufferAt(pDevRow->m_pRowBuffer,
+                                                    iAtDstCol,
+                                                    aHeadLine,
+                                                    pDevIxt->m_pCrwBuffer->pStreamDef()->nColumns());
 
   *aaiDstk = aiDstk;
 }
@@ -1690,11 +1717,11 @@ void vDev_ROW_COLS_TO_ROW(i8** aaiDstk)
 
   i8 *aiDstk = *aaiDstk;
 
-  // pop the dst row device
-  DevROW* pDevRowDst = _pDevROW(P_PopPtr());
-
   // pop the src row device
   DevROW* pDevRow = _pDevROW(P_PopPtr());
+
+  // pop the dst row device
+  DevROW* pDevRowDst = _pDevROW(P_PopPtr());
 
   Stz* szStr;
   char* azDst;
@@ -1729,6 +1756,63 @@ void vDev_ROW_COLS_TO_ROW(i8** aaiDstk)
       default:
         ASSERT(0);
     }
+  }
+
+  *aaiDstk = aiDstk;
+}
+
+/*----------------------------------------------------------------------------*/
+/* row buffer columns of row dev into row                                     */
+/*----------------------------------------------------------------------------*/
+void vDev_ROW_COLS_TO_ROW_OFS(i8** aaiDstk)
+{
+  _static_
+
+  i8 *aiDstk = *aaiDstk;
+
+  // pop the dst row start col
+  i8 iDstCol = I_PopInt();
+
+  // pop the src row device
+  DevROW* pDevRow = _pDevROW(P_PopPtr());
+
+  // pop the dst row device
+  DevROW* pDevRowDst = _pDevROW(P_PopPtr());
+
+  Stz* szStr;
+  char* azDst;
+  i8 nSize;
+
+  for (i8 i_Col = 0; i_Col < pDevRow->m_pStreamDef->nColumns(); i_Col++) {
+    Column* pColumn = pDevRow->m_pStreamDef->pGetColumn(i_Col);
+    switch (pColumn->eColumnType()) {
+      case CT_BOOLEAN:
+      case CT_INTEGER:
+      case CT_DATE:
+      case CT_TIME:
+      case CT_TIMESTAMP:
+      case CT_DECIMAL:
+        pDevRowDst->m_aRow->vColVal_int(iDstCol, pDevRow->m_aRow->iColVal_int(i_Col));
+        break;
+      case CT_CHAR:
+      case CT_VARCHAR:
+        // get the str address
+        szStr = pDevRow->m_aRow->szColVal_ofs(i_Col);
+
+        pDevRowDst->m_pRowBuffer->vPositionOnCell(iDstCol);
+
+        azDst = pDevRowDst->m_pRowBuffer->azDepositString_begin();
+
+        StrLib::vCopy(azDst,(char*)szStr);
+        nSize = StrLib::nSize(azDst);
+
+        pDevRowDst->m_pRowBuffer->vDepositString_end(nSize);
+        break;
+
+      default:
+        ASSERT(0);
+    }
+    iDstCol++;
   }
 
   *aaiDstk = aiDstk;

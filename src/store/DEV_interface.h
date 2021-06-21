@@ -62,6 +62,7 @@ void vDev_ENTWRK_SETSTZELM(i8** aaiDstk);
 
 void vDev_ROW_COLS_TO_LOCALS     (i8** aaiDstk);
 void vDev_ROW_COLS_TO_ROW        (i8** aaiDstk);
+void vDev_ROW_COLS_TO_ROW_OFS    (i8** aaiDstk);
 
 void vDev_ROW_ROW_NEW      (i8** aaiDstk);
 void vDev_ROW_ROW_PRINT    (i8** aaiDstk);
@@ -90,6 +91,7 @@ void vDev_TABLEPTN_GRABREAD(void* aLU);
 
 void vDev_IXT_COLS_TO_LOCALS     (i8** aaiDstk);
 void vDev_IXT_COLS_TO_ROW        (i8** aaiDstk);
+void vDev_IXT_COLS_TO_ROW_OFS    (i8** aaiDstk);
 
 void vDev_POT_USE_STREAMDEFOUT(void* aLU, i8 iAddPtnHash);
 

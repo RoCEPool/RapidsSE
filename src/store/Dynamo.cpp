@@ -30,7 +30,7 @@ __aFooterFunction(Dynamo)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Dynamo::Dynamo(Stz* sCmd, Job* p_Job)
+Dynamo::Dynamo(Stz* sCmd, Job* p_PipelineJob)
 : Object(CN_DYNAMO)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
@@ -38,7 +38,7 @@ Dynamo::Dynamo(Stz* sCmd, Job* p_Job)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenize the pipeline
   
-  m_p_Job = p_Job;
+  m_p_PipelineJob = p_PipelineJob;
   
   m_pTknVec = new TokenVec;
   m_pTknVec->vTokenise(sCmd);
@@ -491,7 +491,7 @@ bool Dynamo::bCollectName(void)
 #endif
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_pPipelineSpec = new PipelineSpec(m_pTkn->szChars(),m_p_Job);
+  m_pPipelineSpec = new PipelineSpec(m_pTkn->szChars(),m_p_PipelineJob);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -536,7 +536,7 @@ bool Dynamo::bCollectTag(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  TagSet* pJobTags = m_p_Job->pJobTags();
+  TagSet* pJobTags = m_p_PipelineJob->pJobTags();
   
   pJobTags->vInsert(sTagNm,sTagValue);
   

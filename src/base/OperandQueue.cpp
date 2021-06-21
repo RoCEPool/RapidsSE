@@ -102,7 +102,7 @@ bool OperandQueue::bPeekQueue(void)
 /* peek at operands and see if any OoO Operand                                */
 /*----------------------------------------------------------------------------*/
 #ifdef WITH_NEW_OPERAND_QUEUE
-bool OperandQueue::bPeekQueueOoO(void)
+bool OperandQueue::bPeekOoO(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
   
@@ -110,8 +110,8 @@ bool OperandQueue::bPeekQueueOoO(void)
   
   while (pOperand) {
     
-    // is it an Out-of_Order Operand ?
-    if (AM::bIsOperandOoO(pOperand)) {
+    // is it an Out-of-Order Operand ?
+    if (AM::OPERAND::bIsOoO(pOperand)) {
       return true;
     }
     
@@ -122,7 +122,7 @@ bool OperandQueue::bPeekQueueOoO(void)
 }
 /*----------------------------------------------------------------------------*/
 #else
-bool OperandQueue::bPeekQueueOoO(void)
+bool OperandQueue::bPeekOoO(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
   
@@ -130,8 +130,8 @@ bool OperandQueue::bPeekQueueOoO(void)
   
   while (pOperand) {
     
-    // is it an Out-of_Order Operand ?
-    if (AM::bIsOperandOoO(pOperand)) {
+    // is it an Out-of-Order Operand ?
+    if (AM::OPERAND::bIsOoO(pOperand)) {
       return true;
     }
     
@@ -170,7 +170,7 @@ Operand* OperandQueue::pPopQueue(void)
 /* pop first OoO operand from top of queue                                    */
 /*----------------------------------------------------------------------------*/
 #ifdef WITH_NEW_OPERAND_QUEUE
-Operand* OperandQueue::pPopQueueOoO(void)
+Operand* OperandQueue::pPopOoO(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
   
@@ -179,7 +179,7 @@ Operand* OperandQueue::pPopQueueOoO(void)
   while (pOperand) {
     
     // is it a CANCELMARKER ?
-    if (AM::bIsOperandOoO(pOperand)) {
+    if (AM::OPERAND::bIsOoO(pOperand)) {
       //vRemove(pOperand);
       RASSERT(0);
       return pOperand;
@@ -192,7 +192,7 @@ Operand* OperandQueue::pPopQueueOoO(void)
 }
 /*----------------------------------------------------------------------------*/
 #else
-Operand* OperandQueue::pPopQueueOoO(void)
+Operand* OperandQueue::pPopOoO(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
   
@@ -201,7 +201,7 @@ Operand* OperandQueue::pPopQueueOoO(void)
   while (pOperand) {
     
     // is it a CANCELMARKER ?
-    if (AM::bIsOperandOoO(pOperand)) {
+    if (AM::OPERAND::bIsOoO(pOperand)) {
       vRemove(pOperand);
       return pOperand;
     }

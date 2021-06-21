@@ -226,7 +226,7 @@ namespace OBLIQUE
     class DEMON
     {
     public:
-      static void vPipeTo(Stz* szDemonNm, RowBuffer* pRowBuffer);
+      static void vPipeTo(Stz* szDemonNm, Operand* pOperand);
     };
   
     class JOB
@@ -245,6 +245,12 @@ namespace OBLIQUE
       static void vMemoryFree(Object* pObject);
       static void vOperand(i8 iPoint);
       static void vResourceUse(Resource* pResource, i8 iAction, i8 nBytes);
+    };
+
+    class OPERAND
+    {
+    public:
+      static bool bIsOoO(Operand* pOperand);
     };
 
     class PARCEL
@@ -467,9 +473,6 @@ namespace OBLIQUE
     static void vJobDelete(Job** ppJob);
     static void vJobInitExeContext(Job* pJob);
     static void vJobObjectName(Job* pJob, Stz* pObjectName);
-
-    static bool bIsOperandOoO(Operand* pOperand);
-
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static bool bInBufferPool(Object* pObject);

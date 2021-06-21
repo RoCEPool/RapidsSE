@@ -54,6 +54,7 @@ DynamicSymbol gxaDynamicSymbol[]
 
   { "vDev_IXT_COLS_TO_LOCALS"_Stz, (const void *) vDev_IXT_COLS_TO_LOCALS    },
   { "vDev_IXT_COLS_TO_ROW"_Stz,    (const void *) vDev_IXT_COLS_TO_ROW       },
+  { "vDev_IXT_COLS_TO_ROW_OFS"_Stz,(const void *) vDev_IXT_COLS_TO_ROW_OFS   },
 
   { "vDev_IXT_COL_PUSHSET_ADR"_Stz,(const void *) vDev_IXT_COL_PUSHSET_ADR   },
   { "vDev_IXT_COL_PUSHSET_PST"_Stz,(const void *) vDev_IXT_COL_PUSHSET_PST   },
@@ -77,6 +78,7 @@ DynamicSymbol gxaDynamicSymbol[]
 
   { "vDev_ROW_COLS_TO_LOCALS"_Stz, (const void *) vDev_ROW_COLS_TO_LOCALS   },
   { "vDev_ROW_COLS_TO_ROW"_Stz,    (const void *) vDev_ROW_COLS_TO_ROW      },
+  { "vDev_ROW_COLS_TO_ROW_OFS"_Stz,(const void *) vDev_ROW_COLS_TO_ROW_OFS  },
 
   { "vDev_ROW_ENTWRK_APPENDELMI"_Stz, (const void *) vDev_ROW_ENTWRK_APPENDELMI },
   { "vDev_ROW_ENTWRK_APPENDELMS"_Stz, (const void *) vDev_ROW_ENTWRK_APPENDELMS },
