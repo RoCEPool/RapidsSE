@@ -100,7 +100,7 @@ void Step::vOperandBide(void)
 {
   ENTRY();
   
-  m_pJob->pLogicUnit_job()->m_xpOperandA = m_pJob->m_pOp->pPopQueue();
+  m_pJob->pLogicUnit_job()->m_xpOperandA = m_pJob->m_pOp->pPopLeft();
   
   if (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull()) {
     vScheduleBide();
@@ -478,7 +478,7 @@ void Step::vOperandNext(void)
   ENTRY();
   
   if (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull())
-    m_pJob->pLogicUnit_job()->m_xpOperandA = m_pJob->m_pOp->pPopQueue();
+    m_pJob->pLogicUnit_job()->m_xpOperandA = m_pJob->m_pOp->pPopLeft();
   ASSERT(*m_pJob->pLogicUnit_job()->m_xpOperandA);
   
   EXIT();

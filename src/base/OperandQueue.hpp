@@ -25,10 +25,10 @@ namespace BASE
     ~OperandQueue(void) noexcept(false);
     
     void      vAppendOperand(Operand* pOperand);
-    bool      bPeekQueueOoO(void);
+    bool      bPeekOoO(void);
     bool      bPeekQueue(void);
+    Operand*  pPopOoO(void);
     Operand*  pPopQueue(void);
-    Operand*  pPopQueueOoO(void);
     i8        nQueuedOperands(void);
       
     Footer* aFooter(void);

@@ -42,7 +42,7 @@ void Step::vPipelinePipeout(void)
   Stream*   pStand0   = pStage0->pGet(0);
   Op*       pOp0      = pStand0->pGet(0);
 
-  pOp0->vAppend(pOperand,this);
+  pOp0->vAppendLeft(pOperand,this);
 
   EXIT();
 }

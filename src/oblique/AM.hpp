@@ -247,6 +247,12 @@ namespace OBLIQUE
       static void vResourceUse(Resource* pResource, i8 iAction, i8 nBytes);
     };
 
+    class OPERAND
+    {
+    public:
+      static bool bIsOoO(Operand* pOperand);
+    };
+
     class PARCEL
     {
     public:
@@ -467,9 +473,6 @@ namespace OBLIQUE
     static void vJobDelete(Job** ppJob);
     static void vJobInitExeContext(Job* pJob);
     static void vJobObjectName(Job* pJob, Stz* pObjectName);
-
-    static bool bIsOperandOoO(Operand* pOperand);
-
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static bool bInBufferPool(Object* pObject);

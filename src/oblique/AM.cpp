@@ -202,7 +202,7 @@ void AM::DEMON::vPipeTo(Stz* szDemonNm, Operand* pOperand)
 
   //Task* pThisTask = AM::pThisTLSTask();
   
-  pOp0->vAppend(pOperand,nullptr);
+  pOp0->vAppendLeft(pOperand,nullptr);
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -271,7 +271,7 @@ void AM::LOG::vEvent(eEV eEvent, Stz* szFormat, ...)
   va_end(xVarArgs);
 
   
-  i8 nQueueLength = pRLU->m_xpOp->nQueueLength();
+  i8 nQueuedOperands = pRLU->m_xpOp->nQueuedOperands();
   
   AM::LOG::vLogInternal((i8)TI_EVENTLOG,
                         
@@ -407,7 +407,7 @@ void AM::LOG::vOperand(i8 iPoint)
   if (! pRLU || pRLU->m_xpOp.bIsNull())
     return;
 
-  i8 nQueueLength = pRLU->m_xpOp->nQueueLength();
+  i8 nQueueLength = pRLU->m_xpOp->nQueuedOperands();
   
   AM::LOG::vLogInternal((i8)TI_OPERANDLOG,
                         
@@ -440,7 +440,7 @@ void AM::LOG::vResourceUse(Resource* pResource, i8 iAction, i8 nBytes)
   if (! pRLU || pRLU->m_xpOp.bIsNull())
     return;
 
-  i8 nQueueLength = pRLU->m_xpOp->nQueueLength();
+  i8 nQueueLength = pRLU->m_xpOp->nQueuedOperands();
   
   AM::LOG::vLogInternal((i8)TI_RESOURCELOG,
                         
@@ -458,6 +458,26 @@ void AM::LOG::vResourceUse(Resource* pResource, i8 iAction, i8 nBytes)
                         AM::SYSTEM::nNanoseconds(),
                         
                         C_VARGS_END);
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                   OPERAND                                  */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* is operand an out-of-order operand?                                        */
+/*----------------------------------------------------------------------------*/
+bool AM::OPERAND::bIsOoO(Operand* pOperand)   {
+  
+  // is it a marker ?
+  if ( ! pOperand->bIsMarker() )
+    return false;
+  
+  Marker* pMarker = _pMarker(pOperand);
+  if (pMarker->eOpMarker() == OM_CANCELMARKER)
+    return true;
+  
+  return false;
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -2078,18 +2098,6 @@ void AM::vFilePrint(File* pFile, Stz* szFormat,...) {
 i8 AM::iRdTickingDevice(void) { return TickingDevice::iGetTick();                  }
 i8 AM::iAMTimePoint(void) { return gpAttachMap->m_iTimePoint;                  }
 
-bool AM::bIsOperandOoO(Operand* pOperand)   {
-  
-  // is it a marker ?
-  if ( ! pOperand->bIsMarker() )
-    return false;
-  
-  Marker* pMarker = _pMarker(pOperand);
-  if (pMarker->eOpMarker() == OM_CANCELMARKER)
-    return true;
-  
-  return false;
-}
 
 bool AM::bInBufferPool(Object* pObject) {
   return gpBufferPool->bInBufferPool(pObject);

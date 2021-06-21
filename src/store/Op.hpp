@@ -42,9 +42,10 @@ namespace STORE
     i8             m_iWorkDone;      // work done
 
     bool           m_bAppendRight;   // append to right queue?
-    OperandQueue*  m_pQueueLeft;     // the input queue being processed
-    OperandQueue*  m_pQueueRight;    // the input queue being processed
-    
+    OperandQueue*  m_pQueueLeft;     // left input queue
+    OperandQueue*  m_pQueueRight;    // right input queue
+    OperandQueue*  m_pQueueOoO;      // out-of-order queue
+
     ePX            m_eCrossTopo;     // cross topology
     i8             m_iNextStage;     // next stage in the cross topology
     i8             m_iNextOp;        // next Op in the next stage
@@ -77,8 +78,8 @@ namespace STORE
     // - - - - - - - - - - - - - - - -
     void vAckJob(void);
     void vAddWorkDone(i8 iWorkDone);
-    void vAppend(Operand* pOperand, Task* pTriggeringTask);
     void vAppendLeft(Operand* pOperand, Task* pTriggeringTask);
+    void vAppendOoO(Operand* pOperand, Task* pTriggeringTask);
     void vAppendRight(Operand* pOperand, Task* pTriggeringTask);
     bool bAppendRight(void);
     void vAppendToJob(Operand* pOperand);
@@ -89,8 +90,8 @@ namespace STORE
     void vDownstreamOp(Op* pDownstreamOp);
     void vDropTaskLock(void);
     void vDump(void);
-    void vOutline(s4K& sOutline);
     void vGrabTaskLock(void);
+    void vIncOperandCount(i8 i_OperandKind);
     void vIncWorkDone(void);
     void vInitOperandHandlers(void);
     bool bIsLocked(void);
@@ -101,13 +102,11 @@ namespace STORE
     Op*  pNextOp(void);
     void vNextOp(i8 iNextOp);
     i8   iNextStage(void);
-    i8   iOtherStage(void);
     void vNextStage(i8 iNextStage);
     i8   iNode(void);
     void vNode(i8 iNode);
     Word* pOperandHandler(i8 i_OperandKind);
     void vOperandHandler(i8 i_OperandKind, Word* pHandler);
-    void vIncOperandCount(i8 i_OperandKind);
     Job* pOpJob(void);
     void vOpJob(Job* pOpJob);
     Stz* szOpNm(void);
@@ -117,29 +116,31 @@ namespace STORE
     i8   iOtherOp(void);
     Op*  pOtherOp(void);
     void vOtherOp(i8 iNextOp);
+    i8   iOtherStage(void);
     void vOtherStage(i8 iNextStage);
     Operand* pOutboundOperand(void);
     void vOutboundOperand(Operand* pOutboundOperand);
     void vPtnNo(tPN tPtnNo);
     tPN  tPtnNo(void);
     bool bPause(void);
-    bool bPeekQueue(void);
-    bool bPeekQueueOoO(void);
+    bool bPeekLeft(void);
+    bool bPeekOoO(void);
     Pipeline* pPipeline(void);
     Job* pPipelineJob(void);
     void vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask);
     void vPipeToOutput(Operand* pOperand);
-    Operand* pPopQueue(void);
-    Operand* pPopQueueOoO(void);
-    Operand* pPopQueueLeft(void);
-    Operand* pPopQueueRight(void);
+    Operand* pPopLeft(void);
+    Operand* pPopOoO(void);
+    Operand* pPopRight(void);
     bool bPulsedLimit(void);
     void vPulsedLimit(bool bPulsedLimit);
-    OperandQueue* pQueueLeft(void);
-    i8   nQueueLength(void);
-    OperandQueue* pQueueRight(void);
+    i8   nQueuedOperands(void);
     i8   iRobin(void);
     void vRobin(i8 iRobin);
+    eXK  eSendKind(void);
+    void vSendKind(eXK eSendKind);
+    i8   iSendNode(void);
+    void vSendNode(i8 iNde);
     void vSpawnOperatorJob(i8 iSessionId);
     Stage* pStage(void);
     Stz* szStageName(void);
@@ -148,10 +149,6 @@ namespace STORE
     void vToCmdStr(Stz* szCmdStr);
     TagSet* pTopologyTagSet(void);
     void vWorkQuanta(i8 iWorkQuanta);
-    eXK  eSendKind(void);
-    void vSendKind(eXK eSendKind);
-    i8   iSendNode(void);
-    void vSendNode(i8 iNde);
     
   private:
     Footer* aFooter(void);
