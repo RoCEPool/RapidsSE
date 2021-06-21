@@ -142,8 +142,18 @@ Object* Queue::pPeek(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  RASSERT(0);
-  return nullptr;
+  //RASSERT(0);
+  
+  Object* pObject = nullptr;
+
+  m_okLock.vGrabWrite();
+  
+  if (m_pTopBuffer)
+    pObject = m_pTopBuffer->pPeek();
+
+  m_okLock.vDropWrite();
+
+  return pObject;
 }
 
 /*----------------------------------------------------------------------------*/
