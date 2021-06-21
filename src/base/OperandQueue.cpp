@@ -180,9 +180,8 @@ Operand* OperandQueue::pPopOoO(void)
     
     // is it a CANCELMARKER ?
     if (AM::OPERAND::bIsOoO(pOperand)) {
-      //vRemove(pOperand);
-      RASSERT(0);
-      return pOperand;
+      Operand* pOperandPopped = _pOperand(Queue::pPop());
+      return pOperandPopped;
     }
     
     pOperand = pOperand->pNextItem();
