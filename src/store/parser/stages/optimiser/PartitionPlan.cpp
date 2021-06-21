@@ -290,7 +290,21 @@ void PartitionPlan::vPartitionTableScanOp(QueryNode* pNode, GraphChains* pChains
 void PartitionPlan::vPartitionAggregateOp(QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack)
 {
   ASSERT(AggregateOp::bIsExactType(pNode));
-  NOT_IMPLEMENTED_YET
+
+  // AggregateOps are not post-projects and they must have an aggregation.
+  // Therefore we need another AggregateOp at the origin to combine each
+  // of the groups that are emitted from the partition/node levels.
+
+  // Need to add a consolidating AggregateOp to the origin.
+  QueryNode* pConsolidatingAggregateNode = ProjectOp::pCreateConsolidating(pNode);
+  vPushOnOriginChain(pConsolidatingAggregateNode, pChains);
+
+  // Modify any necessary aggregate terms in this AggregateOp and
+  // add it to the partition chain
+  QueryNode* pPartitionedAggregateNode = AggregateOp::pCreatePartitioned(pNode);
+  ASSERT(AggregateOp::bIsExactType(pPartitionedAggregateNode));
+
+  vPushOnPartitionChain(pPartitionedAggregateNode, pChains);
 }
 
 /*----------------------------------------------------------------------------*/
