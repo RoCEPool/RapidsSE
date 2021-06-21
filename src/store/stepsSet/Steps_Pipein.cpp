@@ -63,17 +63,23 @@ void Step::vPipeinBide(void)
 void Step::vPipeinBideNext(void)
 {
   ENTRY();
-    
-  if (m_pJob->pLogicUnit_job()->m_xpPipein.bIsNull()) {
-    
-    Operand* pOperand = m_pJob->m_pOp->pPopLeft();
+ 
+  Operand* pOperand;
+  eZK eOperand;
+  
+  if (! m_pJob->pLogicUnit_job()->m_xpPipein.bIsNull()) {
+    RASSERT(*m_pJob->pLogicUnit_job()->m_xpPipein);
+  }
+  else if ( (pOperand = m_pJob->m_pOp->pPopLeft()) ) {
     m_pJob->pLogicUnit_job()->m_xpPipein = pOperand;
     
-    eZK eOperand = (eZK)AM::iOperandZkKind(pOperand);
+    eOperand = (eZK)AM::iOperandZkKind(pOperand);
     m_pJob->pLogicUnit_job()->m_ePipeInOperand = eOperand;
+    RASSERT(*m_pJob->pLogicUnit_job()->m_xpPipein);
   }
-  
-  RASSERT(*m_pJob->pLogicUnit_job()->m_xpPipein);
+  else {
+    NEVER_REACH;    
+  }
   
   EXIT();
 }

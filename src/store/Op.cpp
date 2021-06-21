@@ -300,6 +300,13 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
+#ifdef WITH_USE_OOO_QUEUE
+  if (AM::OPERAND::bIsOoO(pOperand)) {
+    vAppendOoO(pOperand,pTriggeringTask);
+    return;
+  }
+#endif
+  
 //  vTrace("%s::vAppendLeft : %p %s\n"_Stz,
 //         m_sOpNm.szStz(),
 //         pOperand,
@@ -588,7 +595,7 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       
       break;
 
-    case   ZK_CSVBUFFER:
+    case ZK_CSVBUFFER:
       // should have received a ZK_STARTMARKER
       if ( ! m_iOperandCount[ZK_STARTMARKER]) {
         vTrace("%s: %s arrived without a prior ZK_STARTMARKER\n"_Stz,
@@ -597,11 +604,11 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       }
       break;
 
-    case   ZK_CRWBUFFER:
-    case   ZK_EACHROWBUFFER:
-    case   ZK_ENTBUFFER:
-    case   ZK_ROWBUFFER:
-    case   ZK_SRTBUFFER:
+    case ZK_CRWBUFFER:
+    case ZK_EACHROWBUFFER:
+    case ZK_ENTBUFFER:
+    case ZK_ROWBUFFER:
+    case ZK_SRTBUFFER:
       // should have received a ZK_DATAPULSE
       if ( ! m_iOperandCount[ZK_DATAPULSE]) {
         vTrace("%s: %s arrived without a prior ZK_DATAPULSE\n"_Stz,
@@ -625,7 +632,7 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       
       break;
 
-    case   ZK_DATAPULSE:
+    case ZK_DATAPULSE:
       // should have received a ZK_STARTMARKER
       if ( ! m_iOperandCount[ZK_STARTMARKER]) {
         vTrace("%s: %s arrived without a prior ZK_STARTMARKER\n"_Stz,
@@ -641,7 +648,7 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       }
       break;
       
-    case   ZK_EOSMARKER:
+    case ZK_EOSMARKER:
       // should have received a ZK_STARTMARKER
       if ( ! m_iOperandCount[ZK_STARTMARKER]) {
         vTrace("%s: %s arrived without a prior ZK_STARTMARKER\n"_Stz,
@@ -663,7 +670,7 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       }
       break;
 
-    case   ZK_ERRORMARKER:
+    case ZK_ERRORMARKER:
       // should not have received a ZK_ERRORREDMARKER
       if ( m_iOperandCount[ZK_ERROREDMARKER]) {
         vTrace("%s: %s arrived after ZK_ERRORMARKER\n"_Stz, szOpNm());
@@ -671,7 +678,7 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       }
       break;
       
-    case   ZK_ERROREDMARKER:
+    case ZK_ERROREDMARKER:
       // Only StartOP receives an ZK_ERROREDMARKER
       if ( ! m_sOpNm.bSame("start"_Stz) ) {
         vTrace("%s: incorrectly received a %s\n"_Stz,
@@ -724,7 +731,7 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       }
       break;
 
-    case   ZK_EXITEDMARKER:
+    case ZK_EXITEDMARKER:
       // Only StartOP receives an ZK_EXITEDMARKER
       if ( ! m_sOpNm.bSame("start"_Stz) ) {
         vTrace("%s: incorrectly received a %s\n"_Stz,
@@ -738,7 +745,7 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       }
       break;
 
-    case   ZK_EXITEDEARLYMARKER:
+    case ZK_EXITEDEARLYMARKER:
       // Only StartOP receives an ZK_EXITEDEARLYMARKER
       if ( ! m_sOpNm.bSame("start"_Stz) ) {
         vTrace("%s: incorrectly received a %s\n"_Stz,
@@ -761,7 +768,7 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       }
       break;
   
-    case   ZK_STARTMARKER:
+    case ZK_STARTMARKER:
       // should not have received a ZK_STARTMARKER already
       if (m_iOperandCount[i_OperandKind]) {
         vTrace("%s: multiple ZK_STARTMARKER's arrived\n"_Stz, szOpNm());
@@ -769,7 +776,7 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       }
       break;
       
-    case   ZK_STARTEDMARKER:
+    case ZK_STARTEDMARKER:
       // should have received a ZK_STARTMARKER
       if ( ! m_iOperandCount[ZK_STARTMARKER]) {
         vTrace("%s: %s arrived without a prior ZK_STARTMARKER\n"_Stz, szOpNm(), aZK[i_OperandKind]);
@@ -790,7 +797,7 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       }
       break;
 
-    case   ZK_STREAMDEF:
+    case ZK_STREAMDEF:
       // should have received a ZK_STARTMARKER
       if ( ! m_iOperandCount[ZK_STARTMARKER]) {
         vTrace("ZK_STARTEDMARKER arrived without a prior ZK_STARTMARKER\n"_Stz);
@@ -1280,8 +1287,12 @@ Operand* Op::pPopOoO(void)
   
   vGrabTaskLock();
   
+#ifdef WITH_USE_OOO_QUEUE
+  pOperand = m_pQueueOoO->pPopOoO();
+#else
   pOperand = m_pQueueLeft->pPopOoO();
-    
+#endif
+  
   vDropTaskLock();
   
   if (pOperand)
