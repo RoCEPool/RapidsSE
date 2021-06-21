@@ -70,10 +70,10 @@ void Step::vParcelPipeOut(void)
   //! ALKA come back to this. May need a m_bAppendLeft in pParcel
   // append to left queue
   if (pParcel->pGetOperand()) {
-    if (pParcel->bLeftQueue())
-       pOp->vAppendLeft(pOperand, this);
-    else
+    if (pParcel->bAppendRight())
       pOp->vAppendRight(pOperand, this);
+    else
+      pOp->vAppendLeft(pOperand, this);
   }
   
   // now delete the pParcel

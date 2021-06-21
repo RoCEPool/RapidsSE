@@ -49,7 +49,7 @@ Parcel::Parcel(Operand* pOperand,
   m_iPipelineJobId = iPipelineJobId;
   m_eCrossTopo     = eCrossTopo;
   m_eSendKind      = XK_NONE;
-  m_bLeftQueue     = true;
+  m_bAppendRight   = false;
   
   m_iDstNode       = iDstNode;
   m_tDstPtn        = tDstPtn; 
@@ -105,6 +105,16 @@ void Parcel::vAddObject(Object* pObject)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append to right queue ?                                                     */
+/*----------------------------------------------------------------------------*/
+bool Parcel::bAppendRight(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+
+  return m_bAppendRight;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Get an object from array                                                   */
 /*----------------------------------------------------------------------------*/
 Object* Parcel::pGetObject(i8 i_Object)
@@ -125,16 +135,6 @@ Operand* Parcel::pGetOperand(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
   return (Operand*) m_pObjects[0];
-}
-
-/*----------------------------------------------------------------------------*/
-/* append to left queue ?                                                     */
-/*----------------------------------------------------------------------------*/
-bool Parcel::bLeftQueue(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
-
-  return m_bLeftQueue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -177,7 +177,10 @@ void Parcel::vSendOut(Op* pSrcOp)
   Operand* pOperand = pGetOperand();
   Stage* pNextStage = pPipeline->pGet(i_NextStage);
   RASSERT(pNextStage);
-  
+
+  // figure out the queue
+  m_bAppendRight = pSrcOp->bAppendRight();
+
   // figure out the send kind
   m_eSendKind = pSrcOp->eSendKind();
     

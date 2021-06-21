@@ -697,7 +697,14 @@ bool Dynamo::bCollectOp(void)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+
+  if (m_pTkn->bSame("right"_Stz)) {
+    pOpSpec->vAppendRight(true);
+    vAcceptToken();
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   i8 i_Arg = 0;
   for (;;) {
     
