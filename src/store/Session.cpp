@@ -414,7 +414,7 @@ eEC Session::eInitaliseSession(Stz* szCatalogName, Stz* szSchemaName)
   
   m_pOutput = new Output;
 
-  m_pOutput->m_pOutputQueue = new Queue;
+  m_pOutput->m_pOutputQueue = new Queue(CN_QUEUE);
 
   return EC_NONE;
 }

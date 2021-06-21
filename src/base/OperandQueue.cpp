@@ -19,7 +19,7 @@ __aFooterFunction(OperandQueue)
 /*----------------------------------------------------------------------------*/
 #ifdef WITH_NEW_OPERAND_QUEUE
 OperandQueue::OperandQueue(void)
-: Queue()
+: Queue(CN_OPERANDQUEUE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
   
