@@ -26,6 +26,30 @@ macro AM_HANDLER_ROWBUFFER
   EO_JMP QUERY_DONE
  endMacro
 
+macro AM_HANDLER_ROWBUFFER_RHT
+//----------------------------------------------------------------------------//
+// macro AM_HANDLER_ROWBUFFER_RHT                                             //
+//----------------------------------------------------------------------------//
+  // ROWBUFFER HANDLER_RHT
+  Label HANDLER_ROWBUFFER
+  EO_PRINTF "**HANDLER_ROWBUFFER**\n"
+  EO_POP
+  //EO_ROW_SRC_BEGIN
+  EO_PUSH_DEVROW_RHT
+  EO_DEVROW_ROWBUF_BEGIN
+
+  // NEXT_ROW_SRC
+  Label NEXT_ROW_SRC
+  //EO_ROW_SRC_NEXT
+  EO_PUSH_DEVROW_RHT
+  EO_DEVROW_ROWBUF_NEXT
+
+  EO_JMP_FALSE QUERY_DONE
+  EO_CALL <rowProcessRoutine>  // C_TAG_ROW_PROCESS_ROUTINE
+  EO_JMP NEXT_ROW_SRC
+  EO_JMP QUERY_DONE
+ endMacro
+
 macro AM_HANDLER_ROWBUFFER_AGG
 //----------------------------------------------------------------------------//
 // macro AM_HANDLER_ROWBUFFER_AGG                                             //
@@ -253,6 +277,65 @@ macro AM_ROW_FILTER_END
   EO_CALL ROW_PROJECT_STAR
 
   EO_RETURN
+endMacro
+
+macro AM_ROW_LOOPJOIN_ROWS
+//----------------------------------------------------------------------------//
+// macro AM_ROW_LOOPJOIN_ROWS                                                 //
+//----------------------------------------------------------------------------//
+  // ROW_LOOPJOIN_ROWS
+  Label ROW_LOOPJOIN_ROWS
+
+  // right row
+  EO_RLU_SET_ITEMS <projectItems>  // C_TAG_PROJECT_ITEMS
+  EO_RLU_SET_COLUMNS <projectSrcColumns>  // C_TAG_PROJECT_SRC_COLUMN
+  EO_PUSH_RLU_LOCALS
+  EO_PUSH_RLU_COLSET
+  EO_PUSH_DEVROW_RHT
+  EO_DEVROW_COLS_TO_LOCALS
+
+  Label ROW_LOOPJOIN
+endMacro
+
+
+//----------------------------------------------------------------------------//
+// macro AM_ROW_LOOPJOIN_END                                                  //
+//----------------------------------------------------------------------------//
+macro AM_ROW_LOOPJOIN_END
+  // ROW_LOOPJOIN_END
+  EO_RETURN_FALSE
+  EO_CALL ROW_JOIN_ROW
+  //EO_ROW_DST_PRINT
+  EO_RETURN
+endMacro
+
+//----------------------------------------------------------------------------//
+// macro AM_ROW_JOIN_ROW                                                      //
+//----------------------------------------------------------------------------//
+macro AM_ROW_JOIN_ROW
+  // ROW_JOIN_ROW
+  Label ROW_JOIN_ROW
+
+  EO_PUSH_DEVROW_DST
+  EO_PUSH_RLU_POT
+  EO_PUSH_RLU_PTN
+  EO_DEVROW_ROW_NEW
+
+  // inflate left row into dst row
+  EO_PUSH_DEVROW_DST
+  EO_PUSH_DEVROW_LFT
+  EO_DEVROW_COLS_TO_ROW
+
+  // inflate right row into dst row
+  EO_PUSH_DEVROW_DST
+  EO_PUSH_DEVROW_RHT
+  EO_INTEGER <rowOffset>  // C_TAG_ROWOFFSET
+  EO_DEVROW_COLS_TO_ROW_OFS
+
+  EO_PUSH_DEVROW_DST
+  EO_DEVROW_ROW_PRINT
+  EO_RETURN
+
 endMacro
 
 macro AM_ROWBUFFER_TRAVERSAL
