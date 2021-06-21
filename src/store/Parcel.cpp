@@ -49,6 +49,7 @@ Parcel::Parcel(Operand* pOperand,
   m_iPipelineJobId = iPipelineJobId;
   m_eCrossTopo     = eCrossTopo;
   m_eSendKind      = XK_NONE;
+  m_bLeftQueue     = true;
   
   m_iDstNode       = iDstNode;
   m_tDstPtn        = tDstPtn; 
@@ -124,6 +125,16 @@ Operand* Parcel::pGetOperand(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
   return (Operand*) m_pObjects[0];
+}
+
+/*----------------------------------------------------------------------------*/
+/* append to left queue ?                                                     */
+/*----------------------------------------------------------------------------*/
+bool Parcel::bLeftQueue(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+
+  return m_bLeftQueue;
 }
 
 /*----------------------------------------------------------------------------*/
