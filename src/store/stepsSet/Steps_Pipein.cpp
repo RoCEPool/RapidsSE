@@ -59,7 +59,7 @@ void Step::vPipeinBide(void)
 {
   ENTRY();
   
-  Operand* pOperand = m_pJob->m_pOp->pPopLeft();
+  Operand* pOperand = m_pJob->m_pOp->pPopOoOLeft();
   m_pJob->pLogicUnit_job()->vSetPipein(pOperand);
     
   if (m_pJob->pLogicUnit_job()->m_xpPipein.bIsNull()) {
@@ -107,10 +107,7 @@ void Step::vPipeinBideNext(void)
   
   if (m_pJob->pLogicUnit_job()->m_xpPipein.bIsNull()) {
     
-    if ( (pOperand = m_pJob->m_pOp->pPopOoO()) ) {
-      m_pJob->pLogicUnit_job()->vSetPipein(pOperand);
-    }
-    else if ( (pOperand = m_pJob->m_pOp->pPopLeft()) ) {
+    if ( (pOperand = m_pJob->m_pOp->pPopOoOLeft()) ) {
       m_pJob->pLogicUnit_job()->vSetPipein(pOperand);
     }
     else {
@@ -214,7 +211,7 @@ void Step::vPipeinNext(void)
   
   RASSERT(m_pJob->pLogicUnit_job()->m_xpPipein.bIsNull());
       
-  Operand* pOperand = m_pJob->m_pOp->pPopLeft();
+  Operand* pOperand = m_pJob->m_pOp->pPopOoOLeft();
   
   m_pJob->pLogicUnit_job()->vSetPipein(pOperand);
   

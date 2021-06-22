@@ -1295,21 +1295,30 @@ Operand* Op::pPopOoOLeft(void)
   
   vGrabTaskLock();
   RASSERT(bIsLocked());
-
+  
+  //Operand* pOperand = m_pQueueLeft->pPopQueue();
+  
 #ifdef WITH_USE_OOO_QUEUE
   Operand* pOperand = m_pQueueOoO->pPopOoO();
   if (! pOperand)
     pOperand = m_pQueueLeft->pPopOoO();
 #else
   Operand* pOperand = m_pQueueLeft->pPopOoO();
+  if (! pOperand)
+    pOperand = m_pQueueLeft->pPopQueue();
 #endif
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  vDropTaskLock();
-  
-  if (pOperand)
+  if (pOperand) {
+    vDropTaskLock();
     AM::vOperandsDec();
-  
-  return pOperand;
+    return pOperand;
+  }
+  else {
+    RASSERT(bIsLocked());
+    return nullptr;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
