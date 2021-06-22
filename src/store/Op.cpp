@@ -328,7 +328,7 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // trigger this biding op
-  AM::vTriggerBidingTask(pBidingTask,pTriggeringTask);
+  AM::TASK::vTriggerBiding(pBidingTask,pTriggeringTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -359,7 +359,7 @@ void Op::vAppendOoO(Operand* pOperand, Task* pTriggeringTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // trigger this biding op
-  AM::vTriggerBidingTask(pBidingTask,pTriggeringTask);
+  AM::TASK::vTriggerBiding(pBidingTask,pTriggeringTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -390,7 +390,7 @@ void Op::vAppendRight(Operand* pOperand, Task* pTriggeringTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // trigger this biding op
-  AM::vTriggerBidingTask(pBidingTask,pTriggeringTask);
+  AM::TASK::vTriggerBiding(pBidingTask,pTriggeringTask);
 }
 
 /*----------------------------------------------------------------------------*/
