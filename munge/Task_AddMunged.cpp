@@ -11315,7 +11315,7 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     "cmdSyntax: indexJoin :: indexJoin <compiled> <tableNm> <indexNm> <etc> ;\n"
     "\n"
-    ": indexJoin_cmdTags _cmdTags tagCopy: op_tags tags{ <cmdDesc> = \"--desc for op--\" } ;\n"
+    ": loopJoin_cmdTags _cmdTags tagCopy: op_tags tags{ <cmdDesc> = \"--desc for op--\" } ;\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
