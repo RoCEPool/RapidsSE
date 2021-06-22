@@ -1069,6 +1069,7 @@ void Task::vScheduleWait(void)
 /*----------------------------------------------------------------------------*/
 /* schedule yield                                                             */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_USE_OOO_QUEUE
 void Task::vScheduleYield(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
@@ -1076,6 +1077,16 @@ void Task::vScheduleYield(void)
   RASSERT(bIsLocked());
   m_eTransition = TR_YIELD_FOR_OTHERS;
 }
+#else
+/*----------------------------------------------------------------------------*/
+void Task::vScheduleYield(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  RASSERT(bIsLocked());
+  m_eTransition = TR_YIELD_FOR_OTHERS;
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* get acheduler action                                                       */

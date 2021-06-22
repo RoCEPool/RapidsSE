@@ -1251,7 +1251,7 @@ Operand* Op::pPopLeft(void)
   
   Operand* pOperand = nullptr;
   
-  vGrabTaskLock();
+  //vGrabTaskLock();
   
   pOperand = m_pQueueLeft->pPopQueue();
   
@@ -1261,7 +1261,7 @@ Operand* Op::pPopLeft(void)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vDropTaskLock();
+  //vDropTaskLock();
     
   AM::vOperandsDec();
   
@@ -1329,11 +1329,11 @@ Operand* Op::pPopOoO(void)
   
   Operand* pOperand = nullptr;
   
-  vGrabTaskLock();
+  //vGrabTaskLock();
   
   pOperand = m_pQueueOoO->pPopOoO();
   
-  vDropTaskLock();
+  //vDropTaskLock();
   
   if (pOperand)
     AM::vOperandsDec();

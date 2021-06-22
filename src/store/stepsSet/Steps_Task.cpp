@@ -412,6 +412,18 @@ void Step::vTaskWait(void)
 /*----------------------------------------------------------------------------*/
 /* task::yield -- this task yields                                            */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_USE_OOO_QUEUE
+void Step::vTaskYield(void)
+{
+  ENTRY();
+    
+  //vGrabTaskLock();
+  vScheduleYield();
+
+  EXIT();
+}
+#else
+/*----------------------------------------------------------------------------*/
 void Step::vTaskYield(void)
 {
   ENTRY();
@@ -421,6 +433,7 @@ void Step::vTaskYield(void)
 
   EXIT();
 }
+#endif
 
 /*============================================================================*/
 /* end                                                                        */
