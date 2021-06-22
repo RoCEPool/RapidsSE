@@ -21936,7 +21936,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "    iOperandYield 1 + to iOperandYield\n"
     "    iOperandYield task::operandYield@ >= if\n"
-    "      task::yield\n"
+    "      task::yield_opLoop\n"
     "      0 to iOperandYield\n"
     "    then\n"
     "\n"

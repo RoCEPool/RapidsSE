@@ -455,7 +455,7 @@
 
     iOperandYield 1 + to iOperandYield
     iOperandYield task::operandYield@ >= if
-      task::yield
+      task::yield_opLoop
       0 to iOperandYield
     then
 

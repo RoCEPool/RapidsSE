@@ -33,6 +33,7 @@ void Step::vAddSteps_Task(void)
   vAddStep("task::sleepUsec"_Stz,     &Step::vTaskSleepUsec);
   vAddStep("task::wait"_Stz,          &Step::vTaskWait);
   vAddStep("task::yield"_Stz,         &Step::vTaskYield);
+  vAddStep("task::yield_opLoop"_Stz,  &Step::vTaskYield_opLoop);
 
   vAddStep("task.ack"_Stz,            &Step::vTaskAck);
   vAddStep("task.dropLock"_Stz,       &Step::vTaskDropLock);
@@ -412,19 +413,33 @@ void Step::vTaskWait(void)
 /*----------------------------------------------------------------------------*/
 /* task::yield -- this task yields                                            */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_USE_OOO_QUEUE
 void Step::vTaskYield(void)
 {
   ENTRY();
     
+  vGrabTaskLock();
+  vScheduleYield();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task::yield -- this task yields                                            */
+/*----------------------------------------------------------------------------*/
+#ifdef WITH_USE_OOO_QUEUE
+void Step::vTaskYield_opLoop(void)
+{
+  ENTRY();
+    
   //vGrabTaskLock();
+  RASSERT(bIsLocked());
   vScheduleYield();
 
   EXIT();
 }
 #else
 /*----------------------------------------------------------------------------*/
-void Step::vTaskYield(void)
+void Step::vTaskYield_opLoop(void)
 {
   ENTRY();
     

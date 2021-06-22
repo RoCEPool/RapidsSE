@@ -1745,6 +1745,7 @@ public:
   void vTaskThread(void);
   void vTaskWait(void);
   void vTaskYield(void);
+  void vTaskYield_opLoop(void);
 
   // tenants
   void vTenantsDelete(void);
