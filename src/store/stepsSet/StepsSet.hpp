@@ -1019,7 +1019,6 @@ public:
 
   // operand[]
   void vOperandCsvAppend(void);
-  void vOperandBide(void);
   void vOperandCrwDuplicate(void);
   void vOperandCrwRowCountFetch(void);
   void vOperandCrwToCsv(void);
@@ -1053,7 +1052,6 @@ public:
   void vOperandNewStartMarker(void);
   void vOperandNewStartedMarker(void);
   void vOperandNewStreamDef(void);
-  void vOperandNext(void);
   void vOperandPipeIn(void);
   void vOperandPipeOutSet(void);
   void vOperandPipeToOutput(void);

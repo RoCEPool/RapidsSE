@@ -47,7 +47,6 @@ void Step::vAddSteps_Operand(void)
 
   vAddStep("Operand[]"_Stz,                &Step::vOperandGet);
   vAddStep("Operand[]\\clear"_Stz,         &Step::vOperandGetAndClear);
-  vAddStep("Operand[].bide"_Stz,           &Step::vOperandBide);
   vAddStep("Operand[].csvAppend"_Stz,      &Step::vOperandCsvAppend);
   vAddStep("Operand[].csvData"_Stz,        &Step::vOperandCsvData);
   vAddStep("Operand[].csvToRow"_Stz,       &Step::vOperandCsvToRow);
@@ -80,7 +79,6 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].newStartMarker"_Stz, &Step::vOperandNewStartMarker);
   vAddStep("Operand[].newStartedMarker"_Stz, &Step::vOperandNewStartedMarker);
   vAddStep("Operand[].newStreamDef"_Stz,   &Step::vOperandNewStreamDef);
-  vAddStep("Operand[].next"_Stz,           &Step::vOperandNext);
   vAddStep("Operand[].pipeIn"_Stz,         &Step::vOperandPipeIn);
   vAddStep("Operand[].pipeOutSet"_Stz,     &Step::vOperandPipeOutSet);
   vAddStep("Operand[].pipeToOutput"_Stz,   &Step::vOperandPipeToOutput);
@@ -91,22 +89,6 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].set"_Stz,            &Step::vOperandSet);
   vAddStep("Operand[].upsertIntoTable"_Stz,&Step::vOperandUpsertIntoTable);
   vAddStep("Operand[].writeToFile0"_Stz,   &Step::vOperandWriteToFile0);
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].bide -- operand bide                                             */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandBide(void)
-{
-  ENTRY();
-  
-  m_pJob->pLogicUnit_job()->m_xpOperandA = m_pJob->m_pOp->pPopLeft();
-  
-  if (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull()) {
-    vScheduleBide();
-  }
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -466,20 +448,6 @@ void Step::vOperandMorphClass(void)
   Operand* pOperand = *m_pJob->pLogicUnit_job()->m_xpOperandA;
   
   pOperand->vSetClassNo((eCN)iClassNo);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].next -- get next operand                                         */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandNext(void)
-{
-  ENTRY();
-  
-  if (m_pJob->pLogicUnit_job()->m_xpOperandA.bIsNull())
-    m_pJob->pLogicUnit_job()->m_xpOperandA = m_pJob->m_pOp->pPopLeft();
-  ASSERT(*m_pJob->pLogicUnit_job()->m_xpOperandA);
   
   EXIT();
 }
