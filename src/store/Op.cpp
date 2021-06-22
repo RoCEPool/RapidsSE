@@ -1268,31 +1268,15 @@ Operand* Op::pPopOoO(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Operand* pOperand = nullptr;
+  vGrabTaskLock();
+  RASSERT(bIsLocked());
+
+  Operand* pOperand = m_pQueueOoO->pPopOoO();
   
-  //vGrabTaskLock();
-  
-  pOperand = m_pQueueOoO->pPopOoO();
-  
-  //vDropTaskLock();
+  vDropTaskLock();
   
   if (pOperand)
     AM::vOperandsDec();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  if (m_bTraceOp && pOperand) {
-//    vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
-//           m_sOpNm.szStz(),
-//           m_pStage->szStageNm(),
-//           m_i_Node,
-//           m_tPtnNo,
-//           m_pPipelineJob,
-//           "pPopQueue :"_Stz,
-//           AM::pOperandName(pOperand),
-//           pOperand);
-    vOpTrace(pOperand,"pPopQueueOoO :"_Stz);
-  }
   
   return pOperand;
 }

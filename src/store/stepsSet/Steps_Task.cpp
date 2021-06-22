@@ -426,7 +426,6 @@ void Step::vTaskYield(void)
 /*----------------------------------------------------------------------------*/
 /* task::yield -- this task yields                                            */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_USE_OOO_QUEUE
 void Step::vTaskYield_opLoop(void)
 {
   ENTRY();
@@ -437,19 +436,6 @@ void Step::vTaskYield_opLoop(void)
 
   EXIT();
 }
-#else
-/*----------------------------------------------------------------------------*/
-void Step::vTaskYield_opLoop(void)
-{
-  ENTRY();
-    
-  vGrabTaskLock();
-  RASSERT(bIsLocked());
-  vScheduleYield();
-
-  EXIT();
-}
-#endif
 
 /*============================================================================*/
 /* end                                                                        */
