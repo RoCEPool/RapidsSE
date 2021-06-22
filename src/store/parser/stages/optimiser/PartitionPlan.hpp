@@ -48,6 +48,9 @@ namespace Parser
     // trims the select list
     static b1   bIsPostProject(QueryNode* pProjectOp);
 
+    static b1   bCanPushDownOrderOp(QueryNode* pOrderOp);
+    static b1   bCanPushDownLimitOp(QueryNode* pLimitOp);
+
     static void vPushOnPartitionChain(QueryNode* pNode, GraphChains* pChains);
     static void vPushOnNodeChain(QueryNode* pNode, GraphChains* pChains);
     static void vPushOnOriginChain(QueryNode* pNode, GraphChains* pChains);

@@ -271,6 +271,73 @@ QueryNodeList* OrderOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
   return PlanObject::pColumnExprs(pChild, pRootNode);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns a new OrderOp node with ordering terms consolidating               */
+/* aggregated expressions from each partition or node                         */
+/*----------------------------------------------------------------------------*/
+QueryNode* OrderOp::pCreateConsolidating(QueryNode* pSinglePartitionNode)
+{
+  ASSERT(OrderOp::bIsOfType(pSinglePartitionNode));
+  ASSERT(!PlanObject::bNodeHasLocation(pSinglePartitionNode));
+
+  QueryNode* pNewOp = pSinglePartitionNode->pDeepCopy(true, nullptr);
+
+  QueryNode* pOrderItems =
+      _pQueryNode(GraphNav::pFindProperty(const_cast<Stz *>(C_ORDERITEMLIST_PROP), pNewOp));
+  ASSERT(pOrderItems);
+
+  // Iterate all of the order items
+  PlanNodeIter* pIter = pOrderItems->pNewChildrenIter();
+
+  while (pIter->bHasNext()) {
+    QueryNode* pOrderItem = _pQueryNode(pIter->pNext());
+
+    ASSERT(OrderItem::bIsOfType(pOrderItem));
+
+    // Get the ordering expression and consolidate any aggregates in it
+    QueryNode* pOrderExpr = OrderItem::pExprNode(pOrderItem);
+    Expr::vConsolidateAggregates(pOrderExpr);
+  }
+
+  delete pIter;
+  return pNewOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns a new OrderOp node with ordering terms consolidating               */
+/* aggregated expressions from each partition or node                         */
+/*----------------------------------------------------------------------------*/
+b1 OrderOp::bContainsAnAggregate(QueryNode* pNode)
+{
+  ASSERT(OrderOp::bIsOfType(pNode));
+
+  b1 bResult = false;
+
+  QueryNode* pOrderItems =
+      _pQueryNode(GraphNav::pFindProperty(const_cast<Stz *>(C_ORDERITEMLIST_PROP), pNode));
+  ASSERT(pOrderItems);
+
+  // Iterate all of the order items
+  PlanNodeIter* pIter = pOrderItems->pNewChildrenIter();
+
+  while (pIter->bHasNext()) {
+    QueryNode* pOrderItem = _pQueryNode(pIter->pNext());
+
+    ASSERT(OrderItem::bIsOfType(pOrderItem));
+
+    // Get the ordering expression and consolidate any aggregates in it
+    QueryNode* pOrderExpr = OrderItem::pExprNode(pOrderItem);
+
+    if (Expr::bContainsAnAggregate(pOrderExpr)) {
+      bResult = true;
+      break;
+    }
+  }
+
+  delete pIter;
+  return bResult;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

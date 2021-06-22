@@ -296,15 +296,15 @@ void PartitionPlan::vPartitionAggregateOp(QueryNode* pNode, GraphChains* pChains
   // of the groups that are emitted from the partition/node levels.
 
   // Need to add a consolidating AggregateOp to the origin.
-  QueryNode* pConsolidatingAggregateNode = ProjectOp::pCreateConsolidating(pNode);
-  vPushOnOriginChain(pConsolidatingAggregateNode, pChains);
+  QueryNode* pOriginAggregate = ProjectOp::pCreateConsolidating(pNode);
+  vPushOnOriginChain(pOriginAggregate, pChains);
 
   // Modify any necessary aggregate terms in this AggregateOp and
   // add it to the partition chain
-  QueryNode* pPartitionedAggregateNode = AggregateOp::pCreatePartitioned(pNode);
-  ASSERT(AggregateOp::bIsExactType(pPartitionedAggregateNode));
+  QueryNode* pPartitionAggregate = AggregateOp::pCreatePartitioned(pNode);
+  ASSERT(AggregateOp::bIsExactType(pPartitionAggregate));
 
-  vPushOnPartitionChain(pPartitionedAggregateNode, pChains);
+  vPushOnPartitionChain(pPartitionAggregate, pChains);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -340,13 +340,13 @@ void PartitionPlan::vPartitionFilterOp(QueryNode* pNode, GraphChains* pChains, Q
     // We need to convert the expression to be a consolidated aggregate expression.
     QueryNode* pNewExpr = pExpr->pDeepCopy(true);
     Expr::vConsolidateAggregates(pNewExpr);
-    QueryNode* pConsolidatedFilter = FilterOp::pCreate(pNewExpr);
-    vPushOnOriginChain(pConsolidatedFilter, pChains);
+    QueryNode* pOriginFilter = FilterOp::pCreate(pNewExpr);
+    vPushOnOriginChain(pOriginFilter, pChains);
 
   } else {
     // No aggregate, therefore it is a WHERE clause. These can run on each partition.
-    QueryNode* pFilterNode = pNode->pDeepCopy(true, nullptr);
-    vPushOnPartitionChain(pFilterNode, pChains);
+    QueryNode* pPartitionFilter = pNode->pDeepCopy(true, nullptr);
+    vPushOnPartitionChain(pPartitionFilter, pChains);
   }
 }
 
@@ -356,7 +356,27 @@ void PartitionPlan::vPartitionFilterOp(QueryNode* pNode, GraphChains* pChains, Q
 void PartitionPlan::vPartitionLimitOp(QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack)
 {
   ASSERT(LimitOp::bIsExactType(pNode));
-  NOT_IMPLEMENTED_YET
+  b1 bCanPushDownLimitOp = PartitionPlan::bCanPushDownLimitOp(pNode);
+
+  if (bCanPushDownLimitOp) {
+
+    // Handle offset case
+    i8 iOffset = LimitOp::iOffset(pNode);
+    if (iOffset > 0) {
+      // What gets pushed down must have a limit count increased by this offset, and a zero offset
+      i8 iCount = LimitOp::iLimit(pNode);
+      QueryNode* pPartitionLimit = LimitOp::pCreate(iCount + iOffset, -1);
+      vPushOnPartitionChain(pPartitionLimit, pChains);
+
+    } else {
+      // No offset to deal with
+      QueryNode *pPartitionLimit = pNode->pDeepCopy(true, nullptr);
+      vPushOnPartitionChain(pPartitionLimit, pChains);
+    }
+  }
+
+  QueryNode* pOriginLimit = pNode->pDeepCopy(true, nullptr);
+  vPushOnOriginChain(pOriginLimit, pChains);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -365,7 +385,15 @@ void PartitionPlan::vPartitionLimitOp(QueryNode* pNode, GraphChains* pChains, Qu
 void PartitionPlan::vPartitionOrderOp(QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack)
 {
   ASSERT(OrderOp::bIsExactType(pNode));
-  NOT_IMPLEMENTED_YET
+  b1 bCanPushDownOrderOp = PartitionPlan::bCanPushDownOrderOp(pNode);
+
+  if (bCanPushDownOrderOp) {
+    QueryNode* pPartitionOrder = pNode->pDeepCopy(true, nullptr);
+    vPushOnPartitionChain(pPartitionOrder, pChains);
+  }
+
+  QueryNode* pOriginOrder = OrderOp::pCreateConsolidating(pNode);
+  vPushOnOriginChain(pOriginOrder, pChains);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -383,8 +411,8 @@ void PartitionPlan::vPartitionProjectOp(QueryNode* pNode, GraphChains* pChains, 
     if (bHasAnAggregate) {
       // Post project with aggregates. Need to consolidate the aggregates before placing
       // on the origin chain.
-      QueryNode* pConsolidatingProjectNode = ProjectOp::pCreateConsolidating(pNode);
-      vPushOnOriginChain(pConsolidatingProjectNode, pChains);
+      QueryNode* pOriginProject = ProjectOp::pCreateConsolidating(pNode);
+      vPushOnOriginChain(pOriginProject, pChains);
 
     } else {
       // Post project with no aggregates. Therefore no need to change any
@@ -401,18 +429,18 @@ void PartitionPlan::vPartitionProjectOp(QueryNode* pNode, GraphChains* pChains, 
       ASSERT(ProjectOp::bHasOnlyAggregates(pNode));
 
       // Need to add a consolidating (super-aggregating) projectOp to the origin.
-      QueryNode* pConsolidatingProjectNode = ProjectOp::pCreateConsolidating(pNode);
-      vPushOnOriginChain(pConsolidatingProjectNode, pChains);
+      QueryNode* pOriginProject = ProjectOp::pCreateConsolidating(pNode);
+      vPushOnOriginChain(pOriginProject, pChains);
 
       // Modify any necessary aggregate terms in this ProjectOp and
       // add it to the partition chain
-      QueryNode* pPartitionedProjectNode = ProjectOp::pCreatePartitioned(pNode);
-      vPushOnPartitionChain(pPartitionedProjectNode, pChains);
+      QueryNode* pPartitionProject = ProjectOp::pCreatePartitioned(pNode);
+      vPushOnPartitionChain(pPartitionProject, pChains);
 
     } else {
       // Non-post-project without any aggregates
-      QueryNode* pProjectNode = pNode->pDeepCopy(true, nullptr);
-      vPushOnPartitionChain(pProjectNode, pChains);
+      QueryNode* pPartitionProject = pNode->pDeepCopy(true, nullptr);
+      vPushOnPartitionChain(pPartitionProject, pChains);
     }
   }
 }
@@ -456,6 +484,94 @@ b1 PartitionPlan::bIsPostProject(QueryNode* pProjectOp)
   PlanNode* pItem = GraphNav::pBoundedSearch(pProjectOp->pFirstChild(), false, true, fCondition, nullptr);
 
   return (pItem != nullptr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if this OrderOp can be pushed down to the partition level     */
+/*----------------------------------------------------------------------------*/
+b1 PartitionPlan::bCanPushDownOrderOp(QueryNode* pOrderOp)
+{
+  ASSERT(OrderOp::bIsExactType(pOrderOp));
+
+  // An OrderOp containing an aggregation cannot be pushed down.
+  if (OrderOp::bContainsAnAggregate(pOrderOp)) {
+    return false;
+  }
+
+  // a lambda that returns a pointer to a node for any condition where an OrderOp
+  // cannot be pushed down.
+  auto fCondition = [](PlanNode* pNode, void* pvArg) -> b1 {
+
+    QueryNode* pOp = _pQueryNode(pNode);
+
+    // An OrderOp occurring above:
+    //   - an AggregateOp,
+    //   - a FilterOp with an aggregate expr
+    //   - a SetOp
+    // cannot be pushed down
+
+    if (AggregateOp::bIsExactType(pOp)) return true;
+
+    if (FilterOp::bIsOfType(pOp)) {
+      QueryNode* pExpr = FilterOp::pFilterExpr(pOp);
+
+      return Expr::bContainsAnAggregate(pExpr);
+    }
+
+    if (SetOp::bIsOfType(pOp)) return true;
+    
+    return false;
+  };
+
+  PlanNode* pItem = GraphNav::pBoundedSearch(pOrderOp->pFirstChild(), false, true, fCondition, nullptr);
+
+  return (pItem == nullptr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if this LimitOp can be pushed down to the partition level     */
+/*----------------------------------------------------------------------------*/
+b1 PartitionPlan::bCanPushDownLimitOp(QueryNode* pLimitOp)
+{
+  ASSERT(LimitOp::bIsExactType(pLimitOp));
+
+  // a lambda that returns a pointer to a node for any condition where an LimitOp
+  // cannot be pushed down.
+  auto fCondition = [](PlanNode* pNode, void* pvArg) -> b1 {
+
+    QueryNode* pOp = _pQueryNode(pNode);
+
+    // An LimitOp occurring above:
+    //   - an OrderOp that cannot be pushed down
+    //   - an AggregateOp,
+    //   - a ProjectOp with aggregate expressions,
+    //   - a FilterOp with an aggregate expr
+    //   - a SetOp
+    // cannot be pushed down
+
+    if (OrderOp::bIsOfType(pOp)) {
+      return !bCanPushDownOrderOp(pOp);
+
+    } else if (AggregateOp::bIsExactType(pOp)) {
+      return true;
+
+    } else if (ProjectOp::bIsExactType(pOp)) {
+      return ProjectOp::bHasAnAggregate(pOp);
+
+    } else if (FilterOp::bIsOfType(pOp)) {
+      QueryNode* pExpr = FilterOp::pFilterExpr(pOp);
+      return Expr::bContainsAnAggregate(pExpr);
+
+    } else if (SetOp::bIsOfType(pOp)) {
+      return true;
+    }
+
+    return false;
+  };
+
+  PlanNode* pItem = GraphNav::pBoundedSearch(pLimitOp->pFirstChild(), false, true, fCondition, nullptr);
+
+  return (pItem == nullptr);
 }
 
 

@@ -101,7 +101,7 @@ void PlanObject::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szTyp
 
       sBuf.vConcat("\n"_Stz);
       vAppendIndent(sBuf, iIndent, eIndentFormat::IF_PLAIN);
-      sBuf.vCatSprint("location: \"%s\""_Stz, szLocation);
+      sBuf.vCatSprint("location: %s"_Stz, szLocation);
     }
 
     return;
