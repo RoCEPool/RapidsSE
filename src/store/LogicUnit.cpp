@@ -661,8 +661,13 @@ void LogicUnit::vSetPipein(Operand* pOperand)
   
   m_xpPipein = pOperand;
   
-  eZK eOperand = (eZK)AM::iOperandZkKind(pOperand);
-  m_ePipeInOperand = eOperand;
+  if (pOperand) {
+    eZK eOperand = (eZK)AM::iOperandZkKind(pOperand);
+    m_ePipeInOperand = eOperand;
+  }
+  else {
+    m_ePipeInOperand = ZK_NONE;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
