@@ -242,7 +242,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: indexJoin :: indexJoin <compiled> <tableNm> <indexNm> <etc> ;
 
-: loopJoin_cmdTags _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+: indexJoin_cmdTags _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
 
 /*============================================================================*/
 /* end                                                                        */
