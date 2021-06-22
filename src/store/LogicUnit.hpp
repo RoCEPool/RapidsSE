@@ -287,6 +287,7 @@ namespace STORE
     void vOptimise(eEO eOpt);
     i8   iQueryFragment(void);
     void vSetCC(i8 i_Cond, bool bState);
+    void vSetPipein(Operand* pOperand);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
