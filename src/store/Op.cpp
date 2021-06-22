@@ -308,6 +308,7 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
 #endif
       
   vGrabTaskLock();
+  RASSERT(bIsLocked());
 
   m_pQueueLeft->vAppendOperand(pOperand);
 
@@ -337,6 +338,7 @@ void Op::vAppendOoO(Operand* pOperand, Task* pTriggeringTask)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
       
   vGrabTaskLock();
+  RASSERT(bIsLocked());
 
   m_pQueueOoO->vAppendOperand(pOperand);
 
@@ -1263,33 +1265,18 @@ Operand* Op::pPopLeft(void)
 /*----------------------------------------------------------------------------*/
 /* pop operand OoO off the queue                                              */
 /*----------------------------------------------------------------------------*/
+Operand* Op::pPopOoO(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  vGrabTaskLock();
+  RASSERT(bIsLocked());
+
 #ifdef WITH_USE_OOO_QUEUE
-Operand* Op::pPopOoO(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  vGrabTaskLock();
-  RASSERT(bIsLocked());
-
   Operand* pOperand = m_pQueueOoO->pPopOoO();
-  
-  vDropTaskLock();
-  
-  if (pOperand)
-    AM::vOperandsDec();
-  
-  return pOperand;
-}
-/*----------------------------------------------------------------------------*/
 #else
-Operand* Op::pPopOoO(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  vGrabTaskLock();
-  RASSERT(bIsLocked());
-
   Operand* pOperand = m_pQueueLeft->pPopOoO();
+#endif
   
   vDropTaskLock();
   
@@ -1298,7 +1285,6 @@ Operand* Op::pPopOoO(void)
   
   return pOperand;
 }
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* pop operand queue B                                                        */
