@@ -38,23 +38,6 @@ void Step::vAddSteps_Pipein(void)
 /*----------------------------------------------------------------------------*/
 /* PipeIn[].bide -- pipein operand bide                                       */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_USE_OOO_QUEUE
-void Step::vPipeinBide(void)
-{
-  ENTRY();
-  
-  Operand* pOperand = m_pJob->m_pOp->pPopLeft();
-  m_pJob->pLogicUnit_job()->vSetPipein(pOperand);
-    
-  if (m_pJob->pLogicUnit_job()->m_xpPipein.bIsNull()) {
-    RASSERT(bIsLocked());
-    vScheduleBide();
-  }
-
-  EXIT();
-}
-/*----------------------------------------------------------------------------*/
-#else
 void Step::vPipeinBide(void)
 {
   ENTRY();
@@ -69,36 +52,10 @@ void Step::vPipeinBide(void)
   
   EXIT();
 }
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* PipeIn[].bideNext -- get next operand (after biding)                       */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_USE_OOO_QUEUE
-void Step::vPipeinBideNext(void)
-{
-  ENTRY();
- 
-  Operand* pOperand;
-  
-  if (m_pJob->pLogicUnit_job()->m_xpPipein.bIsNull()) {
-    
-    if ( (pOperand = m_pJob->m_pOp->pPopOoO()) ) {
-      m_pJob->pLogicUnit_job()->vSetPipein(pOperand);
-    }
-    else if ( (pOperand = m_pJob->m_pOp->pPopLeft()) ) {
-      m_pJob->pLogicUnit_job()->vSetPipein(pOperand);
-    }
-    else {
-      NEVER_REACH;
-    }
-    
-  }
-  
-  EXIT();
-}
-/*----------------------------------------------------------------------------*/
-#else
 void Step::vPipeinBideNext(void)
 {
   ENTRY();
@@ -118,7 +75,6 @@ void Step::vPipeinBideNext(void)
   
   EXIT();
 }
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* PipeIn[].delete -- operand delete                                          */
@@ -188,23 +144,6 @@ void Step::vPipeinKind(void)
 /*----------------------------------------------------------------------------*/
 /* PipeIn[].next -- get next operand                                          */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_USE_OOO_QUEUE
-void Step::vPipeinNext(void)
-{
-  ENTRY();
-  
-  RASSERT(m_pJob->pLogicUnit_job()->m_xpPipein.bIsNull());
-      
-  Operand* pOperand = m_pJob->m_pOp->pPopLeft();
-  
-  m_pJob->pLogicUnit_job()->vSetPipein(pOperand);
-  
-  RASSERT(m_pJob->pLogicUnit_job()->m_xpPipein.bIsNotNull());
-
-  EXIT();
-}
-#else
-/*----------------------------------------------------------------------------*/
 void Step::vPipeinNext(void)
 {
   ENTRY();
@@ -219,7 +158,6 @@ void Step::vPipeinNext(void)
 
   EXIT();
 }
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* PipeIn[].peek -- peek next operand                                         */
