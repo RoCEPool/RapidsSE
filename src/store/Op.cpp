@@ -328,12 +328,13 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // trigger this biding op
-  AM::vTriggerBidingTask(pBidingTask,pTriggeringTask);
+  AM::TASK::vTriggerBiding(pBidingTask,pTriggeringTask);
 }
 
 /*----------------------------------------------------------------------------*/
 /* append operand to this op's operand out-of-order queue                     */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_USE_OOO_QUEUE
 void Op::vAppendOoO(Operand* pOperand, Task* pTriggeringTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
@@ -359,8 +360,9 @@ void Op::vAppendOoO(Operand* pOperand, Task* pTriggeringTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // trigger this biding op
-  AM::vTriggerBidingTask(pBidingTask,pTriggeringTask);
+  AM::TASK::vTriggerBiding(pBidingTask,pTriggeringTask);
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* append operand to this op's right operand queue                            */
@@ -390,7 +392,7 @@ void Op::vAppendRight(Operand* pOperand, Task* pTriggeringTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // trigger this biding op
-  AM::vTriggerBidingTask(pBidingTask,pTriggeringTask);
+  AM::TASK::vTriggerBiding(pBidingTask,pTriggeringTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1242,6 +1244,7 @@ void Op::vPipeToOutput(Operand* pOperand)
 /*----------------------------------------------------------------------------*/
 /* pop left operand queue                                                     */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_USE_OOO_QUEUE
 Operand* Op::pPopLeft(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
@@ -1277,6 +1280,44 @@ Operand* Op::pPopLeft(void)
   
   return pOperand;
 }
+/*----------------------------------------------------------------------------*/
+#else
+Operand* Op::pPopLeft(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  Operand* pOperand = nullptr;
+  
+  vGrabTaskLock();
+  
+  pOperand = m_pQueueLeft->pPopQueue();
+  
+  if (! pOperand) {
+    RASSERT(bIsLocked());
+    return nullptr;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  vDropTaskLock();
+    
+  AM::vOperandsDec();
+  
+  if (m_bTraceOp) {
+//    vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
+//           m_sOpNm.szStz(),
+//           m_pStage->szStageNm(),
+//           m_i_Node,
+//           m_tPtnNo,
+//           m_pPipelineJob,
+//           "pPopQueue :"_Stz,
+//           AM::pOperandName(pOperand),
+//           pOperand);
+    vOpTrace(pOperand,"pPopQueue :"_Stz);
+  }
+  
+  return pOperand;
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* pop operand OoO off the queue                                              */

@@ -387,8 +387,12 @@
 
   0 LogicUnit[].logOperand
   
+  //Task[] task.dropLock
+
   LogicUnit[].handler@ execute
   
+  //Task[] task.grabLock
+
   1 LogicUnit[].logOperand
 ;
 
@@ -401,6 +405,8 @@
   1 locals| iContinue |
 
   op__pipelineJobWait
+  
+  //Task[] task.grabLock
 
   begin  iContinue while
     
@@ -477,6 +483,9 @@
   repeat
   
   iContinue not assert
+  
+  //Task[] task.dropLock
+
 ;
 
 /*----------------------------------------------------------------------------*/
