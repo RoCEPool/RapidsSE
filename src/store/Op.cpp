@@ -1302,11 +1302,10 @@ Operand* Op::pPopOoO(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Operand* pOperand = nullptr;
-  
   vGrabTaskLock();
-  
-  pOperand = m_pQueueLeft->pPopOoO();
+  RASSERT(bIsLocked());
+
+  Operand* pOperand = m_pQueueLeft->pPopOoO();
   
   vDropTaskLock();
   
