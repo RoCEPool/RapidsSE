@@ -1242,6 +1242,7 @@ void Op::vPipeToOutput(Operand* pOperand)
 /*----------------------------------------------------------------------------*/
 /* pop left operand queue                                                     */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_USE_OOO_QUEUE
 Operand* Op::pPopLeft(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
@@ -1277,6 +1278,44 @@ Operand* Op::pPopLeft(void)
   
   return pOperand;
 }
+/*----------------------------------------------------------------------------*/
+#else
+Operand* Op::pPopLeft(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  Operand* pOperand = nullptr;
+  
+  vGrabTaskLock();
+  
+  pOperand = m_pQueueLeft->pPopQueue();
+  
+  if (! pOperand) {
+    RASSERT(bIsLocked());
+    return nullptr;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  vDropTaskLock();
+    
+  AM::vOperandsDec();
+  
+  if (m_bTraceOp) {
+//    vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
+//           m_sOpNm.szStz(),
+//           m_pStage->szStageNm(),
+//           m_i_Node,
+//           m_tPtnNo,
+//           m_pPipelineJob,
+//           "pPopQueue :"_Stz,
+//           AM::pOperandName(pOperand),
+//           pOperand);
+    vOpTrace(pOperand,"pPopQueue :"_Stz);
+  }
+  
+  return pOperand;
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* pop operand OoO off the queue                                              */

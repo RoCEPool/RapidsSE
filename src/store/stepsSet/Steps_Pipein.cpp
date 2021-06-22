@@ -38,6 +38,7 @@ void Step::vAddSteps_Pipein(void)
 /*----------------------------------------------------------------------------*/
 /* PipeIn[].bide -- pipein operand bide                                       */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_USE_OOO_QUEUE
 void Step::vPipeinBide(void)
 {
   ENTRY();
@@ -57,10 +58,33 @@ void Step::vPipeinBide(void)
   
   EXIT();
 }
+/*----------------------------------------------------------------------------*/
+#else
+void Step::vPipeinBide(void)
+{
+  ENTRY();
+  
+  m_pJob->pLogicUnit_job()->m_xpPipein = m_pJob->m_pOp->pPopLeft();
+  
+  if (m_pJob->pLogicUnit_job()->m_xpPipein.bIsNull()) {
+    RASSERT(bIsLocked());
+    vScheduleBide();
+  }
+  else {
+    Operand* pOperand = * m_pJob->pLogicUnit_job()->m_xpPipein;
+    
+    eZK eOperand = (eZK)AM::iOperandZkKind(pOperand);
+    m_pJob->pLogicUnit_job()->m_ePipeInOperand = eOperand;
+  }
+  
+  EXIT();
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* PipeIn[].bideNext -- get next operand (after biding)                       */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_USE_OOO_QUEUE
 void Step::vPipeinBideNext(void)
 {
   ENTRY();
@@ -91,6 +115,39 @@ void Step::vPipeinBideNext(void)
   
   EXIT();
 }
+/*----------------------------------------------------------------------------*/
+#else
+void Step::vPipeinBideNext(void)
+{
+  ENTRY();
+ 
+  Operand* pOperand;
+  eZK eOperand;
+  
+  if (! m_pJob->pLogicUnit_job()->m_xpPipein.bIsNull()) {
+    RASSERT(*m_pJob->pLogicUnit_job()->m_xpPipein);
+  }
+  else if ( (pOperand = m_pJob->m_pOp->pPopOoO()) ) {
+    m_pJob->pLogicUnit_job()->m_xpPipein = pOperand;
+    
+    eOperand = (eZK)AM::iOperandZkKind(pOperand);
+    m_pJob->pLogicUnit_job()->m_ePipeInOperand = eOperand;
+    RASSERT(*m_pJob->pLogicUnit_job()->m_xpPipein);
+  }
+  else if ( (pOperand = m_pJob->m_pOp->pPopLeft()) ) {
+    m_pJob->pLogicUnit_job()->m_xpPipein = pOperand;
+    
+    eOperand = (eZK)AM::iOperandZkKind(pOperand);
+    m_pJob->pLogicUnit_job()->m_ePipeInOperand = eOperand;
+    RASSERT(*m_pJob->pLogicUnit_job()->m_xpPipein);
+  }
+  else {
+    NEVER_REACH;
+  }
+  
+  EXIT();
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* PipeIn[].delete -- operand delete                                          */
