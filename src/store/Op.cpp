@@ -306,29 +306,26 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
     return;
   }
 #endif
-  
-//  vTrace("%s::vAppendLeft : %p %s\n"_Stz,
-//         m_sOpNm.szStz(),
-//         pOperand,
-//         aCN[pOperand->eGetClassNo()]);
-    
+      
   vGrabTaskLock();
 
   m_pQueueLeft->vAppendOperand(pOperand);
 
   AM::vOperandsInc();
 
-  Task* pBidingTask = AM::pExecutingTask(m_pOpJob);
+  Task* pDstTask = AM::pExecutingTask(m_pOpJob);
   
-  if (TS_BIDING != (eTS)AM::iTaskState(pBidingTask)) {
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for biding op/task
+  
+  if (TS_BIDING == (eTS)AM::iTaskState(pDstTask)) {
+    AM::TASK::vTriggerBiding(pDstTask,pTriggeringTask);
+    return;
+  }
+  else {
     vDropTaskLock();
     return;
   }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // trigger this biding op
-  AM::TASK::vTriggerBiding(pBidingTask,pTriggeringTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -338,29 +335,26 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
 void Op::vAppendOoO(Operand* pOperand, Task* pTriggeringTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-//  vTrace("%s::vAppendLeft : %p %s\n"_Stz,
-//         m_sOpNm.szStz(),
-//         pOperand,
-//         aCN[pOperand->eGetClassNo()]);
-    
+      
   vGrabTaskLock();
 
   m_pQueueOoO->vAppendOperand(pOperand);
 
   AM::vOperandsInc();
 
-  Task* pBidingTask = AM::pExecutingTask(m_pOpJob);
+  Task* pDstTask = AM::pExecutingTask(m_pOpJob);
   
-  if (TS_BIDING != (eTS)AM::iTaskState(pBidingTask)) {
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for biding op/task
+  
+  if (TS_BIDING == (eTS)AM::iTaskState(pDstTask)) {
+    AM::TASK::vTriggerBiding(pDstTask,pTriggeringTask);
+    return;
+  }
+  else {
     vDropTaskLock();
     return;
   }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // trigger this biding op
-  AM::TASK::vTriggerBiding(pBidingTask,pTriggeringTask);
 }
 #endif
 
