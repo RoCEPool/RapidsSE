@@ -341,7 +341,8 @@ public:
   void vExprEvalNew(void);
   void vExprEvalEvaluate(void);
   void vExprEvalEvaluateIndexScan(void);
-  void vExprEvalEvaluateJoin(void);
+  void vExprEvalEvaluateIndexJoin(void);
+  void vExprEvalEvaluateLoopJoin(void);
   void vExprEvalSet(void);
 
   // fact

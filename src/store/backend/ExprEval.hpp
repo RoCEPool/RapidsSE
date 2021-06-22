@@ -87,8 +87,11 @@ namespace STORE
    ~ExprEval(void) noexcept(false);
 
     eEC eEvaluate(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, Stz* sExprEvalColumns);
+    eEC eEvaluateIndexJoin(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht,
+                           StreamDef* pStreamDefOut, IndexDef* pIndexDefRht,
+                           Stz* sJoinExpr);
     eEC eEvaluateIndexScan(IndexDef* pIndexDef, Stz* sExprEvalColumns);
-    eEC eEvaluateJoin(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht,
+    eEC eEvaluateLoopJoin(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht,
                       StreamDef* pStreamDefOut, Stz* sJoinExpr);
 
     bool bHasAggregate(void);
@@ -103,12 +106,16 @@ namespace STORE
 
     void vBoundRelation(Stz* szAsmBuffer, IntStack* pTypeStack, Token* pTkn);
 
+    eEC  eCollectLeftColumns(StreamDef* pStreamDefLft, TokenVec* pTknVec);
+    eEC  eCollectRightColumns(StreamDef* pStreamDefRht, TokenVec* pTknVec);
     eEC  eCollectSourceColumns(StreamDef* pStreamDefIn, TokenVec* pTknVec);
 
     void vCreateGbyIdxCol(Stz* szAsmBuffer, eDM eDatum, i8 i_IdxCol);
     void vCreateIdxKey(Stz* szAsmBuffer, IntStack* pTypeStack);
 
     eEC eExprEvalAggGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);
+    eEC eExprEvalIndexJoin(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht,
+                           StreamDef* pStreamDefOut, IndexDef* pIndexDef, TokenVec* pTknVec);
     eEC eExprEvalIndexScan(IndexDef* pIndexDef, TokenVec* pTknVec);
     eEC eExprEvalJoin(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht, StreamDef* pStreamDefOut, TokenVec* pTknVec);
     eEC eExprEvalProject(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);

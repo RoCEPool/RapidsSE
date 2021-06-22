@@ -28,7 +28,7 @@ load J "../TPCH/SF1/nation.tbl" ;
 trackMemory;
 
 //select N_NATIONKEY from J;
-/*
+
 
 pipeline eachRowExp
 begin
@@ -42,7 +42,7 @@ begin
     output | sink | stageA
 end;
 
-
+/*
 pipeline eachRowExp
 begin
   stage stageA on origin :
