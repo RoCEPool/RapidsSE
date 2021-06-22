@@ -17,6 +17,10 @@ create index idx on nation (n_nationkey);
 print "loading nation.csv..." ;
 load nation "../TPCH/SF1/nation.tbl" ;
 
+range_I nation idx "LBOUND $I1 1 > UBOUND $I1 10 <= ";
+
+/*
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // LBOUND_GT (one column)
 // select * from nation where n_nationKey > 2 ;
@@ -41,8 +45,8 @@ range_I nation idx "UBOUND $I1 10 <= ";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // EQUAL (one column)
-// select * from nation where n_nationKey >= 2 ;
-range_I nation idx "LBOUND $I1 2 >=  UBOUND $I1 2 <= ";
+// select * from nation where n_nationKey == 2 ;
+range_I nation idx "EQUAL $I1 2 == ";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // LBOUND_GT AND UBOUND_LT BOUND (one column)
@@ -68,7 +72,7 @@ range_I nation idx "LBOUND $I1 1 >= UBOUND $I1 10 < ";
 // select * from nation where n_nationkey > 1 and n_nationkey <= 10;
 range_I nation idx "LBOUND $I1 1 >= UBOUND $I1 10 <= ";
 
-/*
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // LOWER BOUND (two columns)
 // create index idx on nation (n_nationkey, n_regionkey);

@@ -41,6 +41,7 @@ namespace STORE
   public:
 
     u8       m_uExprEvalColumns;
+    u8       m_uProjectColumn;
     i8       m_nPayLoadBytes;
     i8       m_iStreamInColumns;
     i8       m_iJoinStartColumn;
@@ -66,6 +67,9 @@ namespace STORE
 
     s4K      m_sLowerBoundAsm;
     s4K      m_sUpperBoundAsm;
+
+    s256     m_sLftCrwCol;
+    s256     m_sLftRowCol;
 
     eEO      m_eLowerBound;
     eEO      m_eUpperBound;
@@ -117,7 +121,7 @@ namespace STORE
     eEC eExprEvalIndexJoin(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht,
                            StreamDef* pStreamDefOut, IndexDef* pIndexDef, TokenVec* pTknVec);
     eEC eExprEvalIndexScan(IndexDef* pIndexDef, TokenVec* pTknVec);
-    eEC eExprEvalJoin(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht, StreamDef* pStreamDefOut, TokenVec* pTknVec);
+    eEC eExprEvalLoopJoin(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht, StreamDef* pStreamDefOut, TokenVec* pTknVec);
     eEC eExprEvalProject(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);
 
     void vGenerateAggregateCode(eAG eAggType, Stz* szAsmBuffer, Stz* szAsmInitBuffer, IntStack* pTypeStack);
@@ -137,7 +141,8 @@ namespace STORE
 
     void vPushDatum(eDM eDatum, Stz* szAsmBuffer, IntStack* pTypeStack, Token*  pTkn);
     void vPushDstCol(Stz* szAsmBuffer, IntStack* pTypeStack);
-    void vPushLftCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType, i8 i_Column);
+    void vPushLftCrwCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType, i8 i_Column);
+    void vPushLftRowCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType, i8 i_Column);
 
     void vPushKeyElm(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType, i8 i_Key);
     void vPushLclCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType, i8 i_Local);

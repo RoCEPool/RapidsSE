@@ -598,17 +598,17 @@ eEC LogicUnit::eGenerateIndexJoin(ExprEval* pExprEval) {
   // CRWBUFFER_HANDLER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //   to execute loop join
-  oTagSet.vAppend(C_TAG_CRW_PROCESS_ROUTINE, "CRW_LOOPJOIN_ROWS"_Stz);
-  oFile.vPrint(LogicCompiler::szGetMacro(AM_HANDLER_CRWBUFFER_RHT, &oTagSet, sMacro));
+  oTagSet.vAppend(C_TAG_CRW_PROCESS_ROUTINE, "CRW_INDEXJOIN_ROWS"_Stz);
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_HANDLER_CRWBUFFER, &oTagSet, sMacro));
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ROWBUFFER_HANDLER
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //   to execute loop join
-  oTagSet.vAppend(C_TAG_ROW_PROCESS_ROUTINE, "ROW_LOOPJOIN_ROWS"_Stz);
-  oFile.vPrint(LogicCompiler::szGetMacro(AM_HANDLER_ROWBUFFER_RHT, &oTagSet, sMacro));
-  oTagSet.vReset();
+  //oTagSet.vAppend(C_TAG_ROW_PROCESS_ROUTINE, "ROW_INDEXJOIN_ROWS"_Stz);
+  //oFile.vPrint(LogicCompiler::szGetMacro(AM_HANDLER_ROWBUFFER, &oTagSet, sMacro));
+  //oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Query Done
@@ -616,18 +616,34 @@ eEC LogicUnit::eGenerateIndexJoin(ExprEval* pExprEval) {
   oFile.vPrint(LogicCompiler::szGetMacro(AM_QUERY_DONE, &oTagSet, sMacro));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // CRW_LOOPJOIN_ROWS
+  // CRW_INDEXJOIN_ROWS
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pExprEval->m_iStreamInColumns);
   oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, pExprEval->m_uExprEvalColumns);
-  oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_LOOPJOIN_ROWS, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_INDEX_SCAN, &oTagSet, sMacro));
   oTagSet.vReset();
 
-  oFile.vPrint("  // *** begin generated code: m_sJoinAsm *** //\n"_Stz);
-  oFile.vPrint("%s"_Stz, pExprEval->m_sJoinAsm.azChar());
-  oFile.vPrint("  // *** end generated code: m_sJoinAsm *** //\n"_Stz);
+  // crw column
+  oFile.vPrint("  // *** begin generated code: m_sLftCrwCol *** //\n"_Stz);
+  oFile.vPrint("%s"_Stz, pExprEval->m_sLftCrwCol.azChar());
+  oFile.vPrint("  // *** end generated code: m_sLftCrwCol *** //\n\n"_Stz);
 
-  oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_LOOPJOIN_END, &oTagSet, sMacro));
+  RASSERT( ! pExprEval->m_sLowerBoundAsm.bEqual(""_Stz) );
+  oFile.vPrint("  // *** begin generated code: m_sLowerBoundAsm *** //\n"_Stz);
+  oFile.vPrint("%s"_Stz, pExprEval->m_sLowerBoundAsm.azChar());
+  oFile.vPrint("  // *** end generated code: m_sLowerBoundAsm *** //\n\n"_Stz);
+
+  oFile.vPrint("  // *** begin generated code: m_sLftCrwCol *** //\n"_Stz);
+  oFile.vPrint("%s"_Stz, pExprEval->m_sLftCrwCol.azChar());
+  oFile.vPrint("  // *** end generated code: m_sLftCrwCol *** //\n\n"_Stz);
+
+  RASSERT( ! pExprEval->m_sUpperBoundAsm.bEqual(""_Stz) );
+  oFile.vPrint("  // *** begin generated code: m_sUpperBoundAsm *** //\n"_Stz);
+  oFile.vPrint("%s"_Stz, pExprEval->m_sUpperBoundAsm.azChar());
+  oFile.vPrint("  // *** end generated code: m_sUpperBoundAsm *** //\n\n"_Stz);
+
+
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_INDEXJOIN_END, &oTagSet, sMacro));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // CRW_JOIN_ROW
@@ -639,23 +655,23 @@ eEC LogicUnit::eGenerateIndexJoin(ExprEval* pExprEval) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ROW_LOOPJOIN_ROWS
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pExprEval->m_iStreamInColumns);
-  oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, pExprEval->m_uExprEvalColumns);
-  oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_LOOPJOIN_ROWS, &oTagSet, sMacro));
-  oTagSet.vReset();
-
-  oFile.vPrint("  // *** begin generated code: m_sJoinAsm *** //\n"_Stz);
-  oFile.vPrint("%s"_Stz, pExprEval->m_sJoinAsm.azChar());
-  oFile.vPrint("  // *** end generated code: m_sJoinAsm *** //\n"_Stz);
-
-  oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_LOOPJOIN_END, &oTagSet, sMacro));
+//  oTagSet.vAppend(C_TAG_PROJECT_ITEMS, pExprEval->m_iStreamInColumns);
+//  oTagSet.vAppend(C_TAG_PROJECT_SRC_COLUMNS, pExprEval->m_uExprEvalColumns);
+//  oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_LOOPJOIN_ROWS, &oTagSet, sMacro));
+//  oTagSet.vReset();
+//
+//  oFile.vPrint("  // *** begin generated code: m_sJoinAsm *** //\n"_Stz);
+//  oFile.vPrint("%s"_Stz, pExprEval->m_sJoinAsm.azChar());
+//  oFile.vPrint("  // *** end generated code: m_sJoinAsm *** //\n"_Stz);
+//
+//  oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_LOOPJOIN_END, &oTagSet, sMacro));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ROW_JOIN_ROW
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  oTagSet.vAppend(C_TAG_ROW_OFFSET, pExprEval->m_iJoinStartColumn);
-  oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_JOIN_ROW, &oTagSet, sMacro));
-  oTagSet.vReset();
+//  oTagSet.vAppend(C_TAG_ROW_OFFSET, pExprEval->m_iJoinStartColumn);
+//  oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_JOIN_ROW, &oTagSet, sMacro));
+//  oTagSet.vReset();
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -737,7 +753,7 @@ eEC LogicUnit::eGenerateIndexScan(ExprEval* pExprEval) {
   if ( ! pExprEval->m_sLowerBoundAsm.bEqual(""_Stz) ) {
     oFile.vPrint("  // *** begin generated code: m_sLowerBoundAsm *** //\n"_Stz);
     oFile.vPrint("%s"_Stz, pExprEval->m_sLowerBoundAsm.azChar());
-    oFile.vPrint("  // *** end generated code: m_sLowerBoundAsm *** //\n"_Stz);
+    oFile.vPrint("  // *** end generated code: m_sLowerBoundAsm *** //\n\n"_Stz);
   }
   else {
     oFile.vPrint(LogicCompiler::szGetMacro(AM_INDEX_POSITION_AT_START, &oTagSet, sMacro));
@@ -746,7 +762,7 @@ eEC LogicUnit::eGenerateIndexScan(ExprEval* pExprEval) {
   if ( ! pExprEval->m_sUpperBoundAsm.bEqual(""_Stz) ) {
     oFile.vPrint("  // *** begin generated code: m_sUpperBoundAsm *** //\n"_Stz);
     oFile.vPrint("%s"_Stz, pExprEval->m_sUpperBoundAsm.azChar());
-    oFile.vPrint("  // *** end generated code: m_sUpperBoundAsm *** //\n"_Stz);
+    oFile.vPrint("  // *** end generated code: m_sUpperBoundAsm *** //\n\n"_Stz);
 
     oTagSet.vAppend(C_TAG_CRW_PROCESS_ROUTINE, "CRW_PROJECT_STAR"_Stz);
     oFile.vPrint(LogicCompiler::szGetMacro(AM_INDEX_TRAVERSE_TILL_UPPER, &oTagSet, sMacro));
