@@ -334,6 +334,7 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
 /*----------------------------------------------------------------------------*/
 /* append operand to this op's operand out-of-order queue                     */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_USE_OOO_QUEUE
 void Op::vAppendOoO(Operand* pOperand, Task* pTriggeringTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
@@ -361,6 +362,7 @@ void Op::vAppendOoO(Operand* pOperand, Task* pTriggeringTask)
   // trigger this biding op
   AM::TASK::vTriggerBiding(pBidingTask,pTriggeringTask);
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* append operand to this op's right operand queue                            */
