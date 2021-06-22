@@ -1252,8 +1252,10 @@ Operand* Op::pPopLeft(void)
   
   pOperand = m_pQueueLeft->pPopQueue();
   
-  if (! pOperand)
+  if (! pOperand) {
+    RASSERT(bIsLocked());
     return nullptr;
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vDropTaskLock();
@@ -1279,6 +1281,7 @@ Operand* Op::pPopLeft(void)
 /*----------------------------------------------------------------------------*/
 /* pop operand OoO off the queue                                              */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_USE_OOO_QUEUE
 Operand* Op::pPopOoO(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
@@ -1287,11 +1290,7 @@ Operand* Op::pPopOoO(void)
   
   vGrabTaskLock();
   
-#ifdef WITH_USE_OOO_QUEUE
   pOperand = m_pQueueOoO->pPopOoO();
-#else
-  pOperand = m_pQueueLeft->pPopOoO();
-#endif
   
   vDropTaskLock();
   
@@ -1315,6 +1314,41 @@ Operand* Op::pPopOoO(void)
   
   return pOperand;
 }
+/*----------------------------------------------------------------------------*/
+#else
+Operand* Op::pPopOoO(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  Operand* pOperand = nullptr;
+  
+  vGrabTaskLock();
+  
+  pOperand = m_pQueueLeft->pPopOoO();
+  
+  vDropTaskLock();
+  
+  if (pOperand)
+    AM::vOperandsDec();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  if (m_bTraceOp && pOperand) {
+//    vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
+//           m_sOpNm.szStz(),
+//           m_pStage->szStageNm(),
+//           m_i_Node,
+//           m_tPtnNo,
+//           m_pPipelineJob,
+//           "pPopQueue :"_Stz,
+//           AM::pOperandName(pOperand),
+//           pOperand);
+    vOpTrace(pOperand,"pPopQueueOoO :"_Stz);
+  }
+  
+  return pOperand;
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* pop operand queue B                                                        */

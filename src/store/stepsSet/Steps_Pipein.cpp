@@ -45,6 +45,7 @@ void Step::vPipeinBide(void)
   m_pJob->pLogicUnit_job()->m_xpPipein = m_pJob->m_pOp->pPopLeft();
   
   if (m_pJob->pLogicUnit_job()->m_xpPipein.bIsNull()) {
+    RASSERT(bIsLocked());
     vScheduleBide();
   }
   else {
