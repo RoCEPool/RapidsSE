@@ -451,7 +451,17 @@ void PartitionPlan::vPartitionProjectOp(QueryNode* pNode, GraphChains* pChains, 
 void PartitionPlan::vPartitionUnionOp(QueryNode* pNode, GraphChains* pChains, QueryNodeStack* pStmtSectionStack)
 {
   ASSERT(UnionOp::bIsExactType(pNode));
-  NOT_IMPLEMENTED_YET
+
+  // Unions only run on the origin
+  QueryNode* pOriginUnion = pNode->pDeepCopy(true, nullptr);
+
+  // UnionOps occur in their own StatementMarker section. There must already
+  // be another two chains in the pStmtSectionStack that we need to join up to this one.
+  ASSERT(pStmtSectionStack->nItems() >= 2);
+  pOriginUnion->vPushChild(pStmtSectionStack->pPop());
+  pOriginUnion->vPushChild(pStmtSectionStack->pPop());
+
+  vPushOnOriginChain(pOriginUnion, pChains);
 }
 
 
