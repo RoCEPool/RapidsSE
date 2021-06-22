@@ -1287,6 +1287,32 @@ Operand* Op::pPopOoO(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pop operand first off OoO queue, if null then Left queue                   */
+/*----------------------------------------------------------------------------*/
+Operand* Op::pPopOoOLeft(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  vGrabTaskLock();
+  RASSERT(bIsLocked());
+
+#ifdef WITH_USE_OOO_QUEUE
+  Operand* pOperand = m_pQueueOoO->pPopOoO();
+  if (! pOperand)
+    pOperand = m_pQueueLeft->pPopOoO();
+#else
+  Operand* pOperand = m_pQueueLeft->pPopOoO();
+#endif
+  
+  vDropTaskLock();
+  
+  if (pOperand)
+    AM::vOperandsDec();
+  
+  return pOperand;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop operand queue B                                                        */
 /*----------------------------------------------------------------------------*/
 Operand* Op::pPopRight(void)

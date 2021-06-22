@@ -131,6 +131,7 @@ namespace STORE
     void vPipeToOutput(Operand* pOperand);
     Operand* pPopLeft(void);
     Operand* pPopOoO(void);
+    Operand* pPopOoOLeft(void);
     Operand* pPopRight(void);
     bool bPulsedLimit(void);
     void vPulsedLimit(bool bPulsedLimit);
