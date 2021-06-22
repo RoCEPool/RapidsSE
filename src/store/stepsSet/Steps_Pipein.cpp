@@ -217,6 +217,29 @@ void Step::vPipeinKind(void)
 /*----------------------------------------------------------------------------*/
 /* PipeIn[].next -- get next operand                                          */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_USE_OOO_QUEUE
+void Step::vPipeinNext(void)
+{
+  ENTRY();
+  
+  vGrabTaskLock();
+
+  RASSERT(m_pJob->pLogicUnit_job()->m_xpPipein.bIsNull());
+      
+  Operand* pOperand = m_pJob->m_pOp->pPopLeft();
+  m_pJob->pLogicUnit_job()->m_xpPipein = pOperand;
+  
+  eZK eOperand = (eZK)AM::iOperandZkKind(pOperand);
+  m_pJob->pLogicUnit_job()->m_ePipeInOperand = eOperand;
+  
+  vDropTaskLock();
+
+  RASSERT(m_pJob->pLogicUnit_job()->m_xpPipein.bIsNotNull());
+
+  EXIT();
+}
+#else
+/*----------------------------------------------------------------------------*/
 void Step::vPipeinNext(void)
 {
   ENTRY();
@@ -233,6 +256,7 @@ void Step::vPipeinNext(void)
 
   EXIT();
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* PipeIn[].peek -- peek next operand                                         */

@@ -1252,7 +1252,8 @@ Operand* Op::pPopLeft(void)
   Operand* pOperand = nullptr;
   
   //vGrabTaskLock();
-  
+  RASSERT(bIsLocked());
+
   pOperand = m_pQueueLeft->pPopQueue();
   
   if (! pOperand) {

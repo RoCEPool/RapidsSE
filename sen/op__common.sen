@@ -387,11 +387,11 @@
 
   0 LogicUnit[].logOperand
   
-  //Task[] task.dropLock //OoO
+  Task[] task.dropLock //OoO
 
   LogicUnit[].handler@ execute
   
-  //Task[] task.grabLock //OoO
+  Task[] task.grabLock //OoO
 
   1 LogicUnit[].logOperand
 ;
@@ -406,7 +406,7 @@
 
   op__pipelineJobWait
   
-  //Task[] task.grabLock //OoO
+  Task[] task.grabLock //OoO
 
   begin  iContinue while
     
@@ -456,6 +456,7 @@
     iOperandYield 1 + to iOperandYield
     iOperandYield task::operandYield@ >= if
       task::yield_opLoop
+      Task[] task.grabLock //OoO
       0 to iOperandYield
     then
 
@@ -484,7 +485,7 @@
   
   iContinue not assert
   
-  //Task[] task.dropLock //OoO
+  Task[] task.dropLock //OoO
 ;
 
 /*----------------------------------------------------------------------------*/
