@@ -103,7 +103,6 @@ void PartitionPlan::vPartitionPlan(PlanNode *pRootNode)
   // Replace the logical plan with the partitioned plan
   GraphEditor::vReplaceChild(pPlanRoot, _pQueryNode(pPlanRoot->pFirstChild()), pStmtSectionStack->pPop());
 
-  // TODO: Handle errors and cleanup allocated memory
   ASSERT(pStmtSectionStack->nItems() == 0);
   delete pStmtSectionStack;
 }
@@ -116,23 +115,6 @@ QueryNode* PartitionPlan::pPartitionStatementSection(QueryNode* pStatementMarker
                                                      QueryNode* pPlanRoot,
                                                      QueryNodeStack* pStmtSectionStack)
 {
-  // TODO: How effective is it to partition each statement section?
-  //       StatementSections are used for separating completely different statements
-  //       (e.g. SELECTS and INSERTS), as well as separating logically separate
-  //       parts within the same statement (e.g. the child queries of a UNION).
-  //
-  // TODO: One possible way to partition the plan is to walk the statement section
-  //       from the bottom up, make the necessary changes to the Sql operator and at
-  //       the same time maintain a side graph that will be inserted at the top of
-  //       the statement section for the fan-in from the partitions.
-  //       Should we maintain separate side graphs for node-level fan-in separately
-  //       from origin-level fan-in?
-  //       Walking the graph from the bottom up will allow us to make some changes to
-  //       the graph without affecting the walk (as the call stack is unwinding).
-  //       e.g. we could snip the current node, but we wouldn't want to remove the
-  //       parent node.
-
-
   // The canonical representation of a SELECT query will look a bit like this:
   //              ProjectOp            (post project)
   //              LimitOp              (LIMIT)
@@ -142,25 +124,21 @@ QueryNode* PartitionPlan::pPartitionStatementSection(QueryNode* pStatementMarker
   //              JoinOp
   //    FilterOp        FilterOp       (WHERE)
   //    TableScanOp     TableScanOp
-
-  // Walk the graph bottom up.
-  // Duplicate the node (without children).
-  // If the node is a data source then set location to all partitions
-  //   and push it onto a stack.
-  // If the node is not a data source then pop a node from the stack,
-  //   make that node a child of the current node and then push the current
-  //   node back onto the stack.
-  // If the node is a join or set operator then pop two nodes from the stack,
-  //   make them children of the current node and then push the current node
-  //   back onto the stack.
-  // Meanwhile, maintain a chain of nodes that represent operators at the node
-  //   and origin levels.
-  // Finally, join all of the operators at the partition, node and origin levels together.
   //
-  // Notes:
-  // Not all statement sections will be parallelised with operators at all 3 levels.
-  // e.g. a set operator (and everything above it) will always run on the origin only.
-
+  //
+  // The general approach taken here is:
+  //   - Walk the statement section graph from the bottom up.
+  //   - Visit each sql operator and push it onto one or more of 3 distinct
+  //     chains for each level of parallelism (partition, node, origin).
+  //     Some nodes may need to have their expressions modified to be super-aggregates
+  //     before doing so.
+  //   - Combine the partition, node and origin chains together and push this combined
+  //     chain onto a chain stack.
+  //   - Some sql operators (e.g. ExplainOp and SetOps) have whole statement sections
+  //     as children and they can pop these chains off the chain stack and append them,
+  //     knowing that the child chains are fully parallelised.
+  //   - At the end there should only be one chain on the chain stack.
+  
   GraphChains xChains;
 
   // A lambda that will modify/populate the pPartitionChainStack, pNodeChain and pOriginChain
@@ -172,15 +150,6 @@ QueryNode* PartitionPlan::pPartitionStatementSection(QueryNode* pStatementMarker
     UNUSED(pvArg);
 
     QueryNode* pCurNode = _pQueryNode(pNode);
-
-    // TODO: Looking at any one node, how do you know which chain to add it to?
-    //       e.g. how do you tell the difference between a post-project op that has
-    //       no aggregates from a regular projectOp within the plan?
-    //       Do we need to keep track of some sort of state?
-
-    // TODO: If we encounter certain operators that we know will have a statementMarker as children
-    //       then we must join the operator with the chain we pop off pStmtSectionStack.
-    //       e.g. SetOp, ExplainOp.
 
     if  (StatementMarker::bIsOfType(pNode) )    { vPartitionStatementMarker(pCurNode, &xChains, pStmtSectionStack); }
     else if (TableScanOp::bIsExactType(pNode) ) { vPartitionTableScanOp(    pCurNode, &xChains, pStmtSectionStack); }
@@ -206,7 +175,6 @@ QueryNode* PartitionPlan::pPartitionStatementSection(QueryNode* pStatementMarker
 
   QueryNode* pPartitionedSection = pConsolidateChains(xChains.m_pOriginChain, xChains.m_pNodeChain, pPartitionChain);
 
-  // TODO: Handle errors and cleanup any allocated memory
   ASSERT(xChains.m_pPartitionChainStack->nItems() == 0);
   return pPartitionedSection;
 }
