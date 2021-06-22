@@ -1251,7 +1251,7 @@ Operand* Op::pPopLeft(void)
   
   Operand* pOperand = nullptr;
   
-  //vGrabTaskLock();
+  vGrabTaskLock();
   RASSERT(bIsLocked());
 
   pOperand = m_pQueueLeft->pPopQueue();
@@ -1262,7 +1262,7 @@ Operand* Op::pPopLeft(void)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //vDropTaskLock();
+  vDropTaskLock();
     
   AM::vOperandsDec();
   
@@ -1298,24 +1298,10 @@ Operand* Op::pPopLeft(void)
     return nullptr;
   }
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vDropTaskLock();
     
   AM::vOperandsDec();
-  
-  if (m_bTraceOp) {
-//    vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
-//           m_sOpNm.szStz(),
-//           m_pStage->szStageNm(),
-//           m_i_Node,
-//           m_tPtnNo,
-//           m_pPipelineJob,
-//           "pPopQueue :"_Stz,
-//           AM::pOperandName(pOperand),
-//           pOperand);
-    vOpTrace(pOperand,"pPopQueue :"_Stz);
-  }
-  
+    
   return pOperand;
 }
 #endif
@@ -1372,21 +1358,6 @@ Operand* Op::pPopOoO(void)
   
   if (pOperand)
     AM::vOperandsDec();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  if (m_bTraceOp && pOperand) {
-//    vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
-//           m_sOpNm.szStz(),
-//           m_pStage->szStageNm(),
-//           m_i_Node,
-//           m_tPtnNo,
-//           m_pPipelineJob,
-//           "pPopQueue :"_Stz,
-//           AM::pOperandName(pOperand),
-//           pOperand);
-    vOpTrace(pOperand,"pPopQueueOoO :"_Stz);
-  }
   
   return pOperand;
 }

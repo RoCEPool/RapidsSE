@@ -431,7 +431,7 @@ void Step::vTaskYield_opLoop(void)
 {
   ENTRY();
     
-  //vGrabTaskLock();
+  vGrabTaskLock();
   RASSERT(bIsLocked());
   vScheduleYield();
 
@@ -444,6 +444,7 @@ void Step::vTaskYield_opLoop(void)
   ENTRY();
     
   vGrabTaskLock();
+  RASSERT(bIsLocked());
   vScheduleYield();
 
   EXIT();

@@ -398,37 +398,6 @@ void Scheduler::vTaskCross_ScheduleNextPhase(Task* pTaskParticipant,
 /*----------------------------------------------------------------------------*/
 /* trigger op-task that operand has arrived while it is biding                */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_USE_OOO_QUEUE
-void Scheduler::vTaskCross_TriggerBiding(Task* pTaskBiding, Task* pTriggeringTask)
-{
-  _static_
-  
-  UNUSED(pTriggeringTask);
-  
-  //
-  // called from Op::vAppendOperand()
-  //
-  
-  RASSERT(pTaskBiding->bIsLocked());
-  RASSERT(TS_BIDING == pTaskBiding->eState());
-  RASSERT(QK_BIDING_SET == pTaskBiding->eQueue());
-  RASSERT(TR_NONE == pTaskBiding->eTranstionRequest());
-
-  Schedule* pSchedule = AM::pSchedule();
-  
-  pSchedule->vRemoveBidingSet(pTaskBiding);
-  
-  //pTaskBiding->vDropTaskLock();
-  
-  RASSERT(TS_DESISTED == pTaskBiding->eState());
-  RASSERT(QK_NONE == pTaskBiding->eQueue());
-  RASSERT(TR_NONE == pTaskBiding->eTranstionRequest());
-  
-  vScheduleTask(pTaskBiding);
-  // **do not touch task**
-}
-#else
-/*----------------------------------------------------------------------------*/
 void Scheduler::vTaskCross_TriggerBiding(Task* pTaskBiding, Task* pTriggeringTask)
 {
   _static_
@@ -457,7 +426,6 @@ void Scheduler::vTaskCross_TriggerBiding(Task* pTaskBiding, Task* pTriggeringTas
   vScheduleTask(pTaskBiding);
   // **do not touch task**
 }
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* check to see if any tasks in the sleeping queue can be woken               */
