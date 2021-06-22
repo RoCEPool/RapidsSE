@@ -210,7 +210,7 @@ QueryNodeList* ProjectedColumn::pPartitionAggregates(QueryNode* pNode)
 {
   // Some aggregate expressions need to be modified to enable partitioning.
   // The main one is AVG(x). It needs to be split into a SUM(x) and a COUNT(x)
-  // and then in the consolidating ProjectOp it converts this back into an
+  // and then in the super-aggregating ProjectOp it converts this back into an
   // average by calculating SUM(SUM(x))/SUM(COUNT(x)).
   //
   // However the expression may be more complex and partitioning it may actually
@@ -218,7 +218,7 @@ QueryNodeList* ProjectedColumn::pPartitionAggregates(QueryNode* pNode)
   //   AVG(x) + MIN(y)
   // This would require the partition level to emit columns for:
   //   SUM(x), COUNT(x), MIN(y)
-  // Then when all partitions are consolidated we can reassemble the desired
+  // Then when all partitions are super-aggregated we can reassemble the desired
   // result with:  SUM(SUM(x))/SUM(COUNT(x)) + MIN(MIN(y))
 
 
@@ -269,14 +269,14 @@ QueryNodeList* ProjectedColumn::pPartitionAggregates(QueryNode* pNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Changes the aggregate expression in pNode to consolidate results from each */
-/* partition or node                                                          */
+/* Changes the aggregate expression in pNode to super-aggregate results from  */
+/* each partition or node                                                     */
 /*----------------------------------------------------------------------------*/
-void ProjectedColumn::vConsolidateAggregates(QueryNode* pNode)
+void ProjectedColumn::vSuperAggregate(QueryNode* pNode)
 {
   // e.g. an expression of SUM(col1), when all of the partitioned results are
-  // being merged, will be consolidated with the expression SUM(SUM(col1)).
-  // Consolidation occurs as follows:
+  // being merged, will be super-aggregated with the expression SUM(SUM(col1)).
+  // Super-aggregation occurs as follows:
   //
   // SUM(x)   -->   SUM(SUM(x))
   // COUNT(x) -->   SUM(COUNT(x))
@@ -284,12 +284,12 @@ void ProjectedColumn::vConsolidateAggregates(QueryNode* pNode)
   // MAX(x)   -->   MAX(MAX(x))
   //
   // Note that an AVG(x) aggregate will be replaced at the partition level by
-  // a SUM(x) and COUNT(x). A consolidating expression replaces AVG(x) with
+  // a SUM(x) and COUNT(x). A super-aggregating expression replaces AVG(x) with
   // SUM(SUM(x))/SUM(COUNT(x))
 
   QueryNode* pExpr = pExprNode(pNode);
 
-  Expr::vConsolidateAggregates(pExpr);
+  Expr::vSuperAggregate(pExpr);
   ASSERT(pExpr->szName()->bEqual(C_EXPR_PROP));
   ASSERT(Expr::bIsOfType(pExpr));
 }

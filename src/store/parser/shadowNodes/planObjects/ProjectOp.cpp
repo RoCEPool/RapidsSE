@@ -513,10 +513,10 @@ QueryNode* ProjectOp::pCreatePartitioned(QueryNode* pSinglePartitionNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Returns a new ProjectOp node with projected columns consolidating          */
+/* Returns a new ProjectOp node with projected columns super-aggregating      */
 /* aggregated expressions from each partition or node                         */
 /*----------------------------------------------------------------------------*/
-QueryNode* ProjectOp::pCreateConsolidating(QueryNode* pSinglePartitionNode)
+QueryNode* ProjectOp::pCreateSuperAggregate(QueryNode* pSinglePartitionNode)
 {
   QueryNode* pNewOp = pSinglePartitionNode->pDeepCopy(true, nullptr);
 
@@ -531,9 +531,9 @@ QueryNode* ProjectOp::pCreateConsolidating(QueryNode* pSinglePartitionNode)
 
     ASSERT(ProjectedColumn::bIsOfType(pProjColumn));
 
-    // Any aggregated expressions need to be consolidated
+    // Any aggregated expressions need to be super-aggregated
     if (ProjectedColumn::bContainsAnAggregate(pProjColumn)) {
-      ProjectedColumn::vConsolidateAggregates(pProjColumn);
+      ProjectedColumn::vSuperAggregate(pProjColumn);
     }
   }
 

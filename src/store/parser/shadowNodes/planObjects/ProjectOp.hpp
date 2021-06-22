@@ -67,9 +67,9 @@ namespace Parser
     // partitioned aggregate expressions
     static QueryNode* pCreatePartitioned(QueryNode* pNode);
 
-    // Returns a new ProjectOp node with projected columns consolidating aggregated
+    // Returns a new ProjectOp node with projected columns super-aggregating aggregated
     // expressions from each partition or node
-    static QueryNode* pCreateConsolidating(QueryNode* pNode);
+    static QueryNode* pCreateSuperAggregate(QueryNode* pSinglePartitionNode);
 
   protected:
 

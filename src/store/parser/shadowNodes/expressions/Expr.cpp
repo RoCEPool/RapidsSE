@@ -763,14 +763,14 @@ QueryNodeList* Expr::pAggregateExprs(QueryNode* pExpr, b1 bDescendAggregates)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Changes the existing expression in place to support consolidation of       */
+/* Changes the existing expression in place to support super-aggregation of   */
 /* partitioned aggregate expressions.                                         */
 /*----------------------------------------------------------------------------*/
-void Expr::vConsolidateAggregates(QueryNode* pExpr)
+void Expr::vSuperAggregate(QueryNode* pExpr)
 {
   // e.g. an expression of SUM(col1), when all of the partitioned results are
-  // being merged, will be consolidated with the expression SUM(SUM(col1)).
-  // Consolidation occurs as follows:
+  // being merged, will be super-aggregated with the expression SUM(SUM(col1)).
+  // Super-aggregation occurs as follows:
   //
   // SUM(x)   -->   SUM(SUM(x))
   // COUNT(x) -->   SUM(COUNT(x))
@@ -778,7 +778,7 @@ void Expr::vConsolidateAggregates(QueryNode* pExpr)
   // MAX(x)   -->   MAX(MAX(x))
   //
   // Note that an AVG(x) aggregate will be replaced at the partition level by
-  // a SUM(x) and COUNT(x). A consolidating expression replaces AVG(x) with
+  // a SUM(x) and COUNT(x). A super-aggregating expression replaces AVG(x) with
   // SUM(SUM(x))/SUM(COUNT(x))
 
   QueryNodeList* pAggList = Expr::pAggregateExprs(pExpr, false);

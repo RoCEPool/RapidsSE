@@ -272,10 +272,10 @@ QueryNodeList* OrderOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Returns a new OrderOp node with ordering terms consolidating               */
+/* Returns a new OrderOp node with ordering terms super-aggregating           */
 /* aggregated expressions from each partition or node                         */
 /*----------------------------------------------------------------------------*/
-QueryNode* OrderOp::pCreateConsolidating(QueryNode* pSinglePartitionNode)
+QueryNode* OrderOp::pCreateSuperAggregate(QueryNode* pSinglePartitionNode)
 {
   ASSERT(OrderOp::bIsOfType(pSinglePartitionNode));
   ASSERT(!PlanObject::bNodeHasLocation(pSinglePartitionNode));
@@ -294,9 +294,9 @@ QueryNode* OrderOp::pCreateConsolidating(QueryNode* pSinglePartitionNode)
 
     ASSERT(OrderItem::bIsOfType(pOrderItem));
 
-    // Get the ordering expression and consolidate any aggregates in it
+    // Get the ordering expression and super-aggregate any aggregates in it
     QueryNode* pOrderExpr = OrderItem::pExprNode(pOrderItem);
-    Expr::vConsolidateAggregates(pOrderExpr);
+    Expr::vSuperAggregate(pOrderExpr);
   }
 
   delete pIter;
@@ -304,7 +304,7 @@ QueryNode* OrderOp::pCreateConsolidating(QueryNode* pSinglePartitionNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Returns a new OrderOp node with ordering terms consolidating               */
+/* Returns a new OrderOp node with ordering terms super-aggregating           */
 /* aggregated expressions from each partition or node                         */
 /*----------------------------------------------------------------------------*/
 b1 OrderOp::bContainsAnAggregate(QueryNode* pNode)
@@ -325,7 +325,7 @@ b1 OrderOp::bContainsAnAggregate(QueryNode* pNode)
 
     ASSERT(OrderItem::bIsOfType(pOrderItem));
 
-    // Get the ordering expression and consolidate any aggregates in it
+    // Get the ordering expression and super-aggregate any aggregates in it
     QueryNode* pOrderExpr = OrderItem::pExprNode(pOrderItem);
 
     if (Expr::bContainsAnAggregate(pOrderExpr)) {

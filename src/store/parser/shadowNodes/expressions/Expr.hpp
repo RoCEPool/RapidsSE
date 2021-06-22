@@ -98,8 +98,8 @@ namespace Parser
     static QueryNodeList* pAggregateExprs(QueryNode* pExpr, b1 bDescendAggregates);
 
     // Changes the existing expression in place to support
-    // consolidation of partitioned aggregate expressions.
-    static void vConsolidateAggregates(QueryNode* pExpr);
+    // super-aggregation of partitioned aggregate expressions.
+    static void vSuperAggregate(QueryNode* pExpr);
 
   protected:
     // Returns true if the expression is commutative (e.g. A+B = B+A)

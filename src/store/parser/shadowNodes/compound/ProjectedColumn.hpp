@@ -50,8 +50,8 @@ namespace Parser
     // projected columns.
     static QueryNodeList* pPartitionAggregates(QueryNode* pNode);
 
-    // Changes the aggregate expression in pNode to consolidate results from each partition/node
-    static void vConsolidateAggregates(QueryNode* pNode);
+    // Changes the aggregate expression in pNode to super-aggregate results from each partition/node
+    static void vSuperAggregate(QueryNode* pNode);
   };
 
 }

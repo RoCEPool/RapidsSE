@@ -138,7 +138,7 @@ QueryNode* PartitionPlan::pPartitionStatementSection(QueryNode* pStatementMarker
   //     as children and they can pop these chains off the chain stack and append them,
   //     knowing that the child chains are fully parallelised.
   //   - At the end there should only be one chain on the chain stack.
-  
+
   GraphChains xChains;
 
   // A lambda that will modify/populate the pPartitionChainStack, pNodeChain and pOriginChain
@@ -263,8 +263,8 @@ void PartitionPlan::vPartitionAggregateOp(QueryNode* pNode, GraphChains* pChains
   // Therefore we need another AggregateOp at the origin to combine each
   // of the groups that are emitted from the partition/node levels.
 
-  // Need to add a consolidating AggregateOp to the origin.
-  QueryNode* pOriginAggregate = ProjectOp::pCreateConsolidating(pNode);
+  // Need to add a super-aggregating AggregateOp to the origin.
+  QueryNode* pOriginAggregate = ProjectOp::pCreateSuperAggregate(pNode);
   vPushOnOriginChain(pOriginAggregate, pChains);
 
   // Modify any necessary aggregate terms in this AggregateOp and
@@ -305,9 +305,9 @@ void PartitionPlan::vPartitionFilterOp(QueryNode* pNode, GraphChains* pChains, Q
   if (bHasAnAggregate) {
     // This represents a HAVING clause. This has to run on the origin, after
     // all partitioned aggregations have been combined.
-    // We need to convert the expression to be a consolidated aggregate expression.
+    // We need to convert the expression to be a super-aggregated expression.
     QueryNode* pNewExpr = pExpr->pDeepCopy(true);
-    Expr::vConsolidateAggregates(pNewExpr);
+    Expr::vSuperAggregate(pNewExpr);
     QueryNode* pOriginFilter = FilterOp::pCreate(pNewExpr);
     vPushOnOriginChain(pOriginFilter, pChains);
 
@@ -360,7 +360,7 @@ void PartitionPlan::vPartitionOrderOp(QueryNode* pNode, GraphChains* pChains, Qu
     vPushOnPartitionChain(pPartitionOrder, pChains);
   }
 
-  QueryNode* pOriginOrder = OrderOp::pCreateConsolidating(pNode);
+  QueryNode* pOriginOrder = OrderOp::pCreateSuperAggregate(pNode);
   vPushOnOriginChain(pOriginOrder, pChains);
 }
 
@@ -377,9 +377,9 @@ void PartitionPlan::vPartitionProjectOp(QueryNode* pNode, GraphChains* pChains, 
   if (bIsPostProject) {
 
     if (bHasAnAggregate) {
-      // Post project with aggregates. Need to consolidate the aggregates before placing
+      // Post project with aggregates. Need to super-aggregate the aggregates before placing
       // on the origin chain.
-      QueryNode* pOriginProject = ProjectOp::pCreateConsolidating(pNode);
+      QueryNode* pOriginProject = ProjectOp::pCreateSuperAggregate(pNode);
       vPushOnOriginChain(pOriginProject, pChains);
 
     } else {
@@ -396,8 +396,8 @@ void PartitionPlan::vPartitionProjectOp(QueryNode* pNode, GraphChains* pChains, 
       // Must only contain (grand total) aggregates.
       ASSERT(ProjectOp::bHasOnlyAggregates(pNode));
 
-      // Need to add a consolidating (super-aggregating) projectOp to the origin.
-      QueryNode* pOriginProject = ProjectOp::pCreateConsolidating(pNode);
+      // Need to add a super-aggregating projectOp to the origin.
+      QueryNode* pOriginProject = ProjectOp::pCreateSuperAggregate(pNode);
       vPushOnOriginChain(pOriginProject, pChains);
 
       // Modify any necessary aggregate terms in this ProjectOp and
