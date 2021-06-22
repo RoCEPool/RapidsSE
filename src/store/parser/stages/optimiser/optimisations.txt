@@ -1,0 +1,98 @@
+=======================================================================================================================
+Optimisations
+=======================================================================================================================
+
+This is a scratch-pad of optimisation ideas, thoughts and notes.
+
+References:
+  + https://docs.pingcap.com/tidb/stable/partition-pruning
+  + https://dev.mysql.com/doc/refman/8.0/en/statement-optimization.html
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+* Predicate pushdown
+  - Push down filter expressions as close to the data source as possible (below joins).
+
+  - Some expressions may be able to be pushed down both sides of a join if the filter
+    expression can be equated with join predicate expression, and the join is an inner join.
+    (note: pushing down a predicate to the right table of an outer join will likely cause
+    incorrect results to be generated).
+
+  - A HAVING clause might have an expression on a non-aggregated grouped column that
+    can be pushed down to the WHERE clause.
+    e.g. select col1, sum(col2) from t group by col1 having col1 > 5;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+* Projected expression simplification
+  - If a projected expression is also a subset of any filter expression then it would
+    make sense to calculate that expression once before the filterOp. Otherwise the
+    expression would be calculated twice - at the filterOp and in the projectOp.
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+* Join topology
+  - Co-partitioned > Partitionable > Broadcast
+  - Determine a join order that minimises broadcasting
+  - If broadcasting is unavoidable then try to do that join first, as joins tend
+    to amplify the number of rows output. If a broadcast join is done later then
+    it will likely need to broadcast many more rows
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+* Join algorithm
+  - Use table indexes where possible to optimise the join algorithm.
+  - Merge Join > Loop/Hash Join
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+* If there are no joins, can we use indexes and filter expressions to do a range scan
+  instead of a full table scan? i.e. push a filter expression into a table scan to turn
+  it into a range scan.
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+* Expression simplification
+  - Evaluate any literal expressions in the statement.
+  - Simplify any nested aggregates in the statement.
+      e.g. a SUM(agg(x)) is the same as agg(x)
+           a COUNT(agg(x)) is always 1
+           a MIN(agg(x)) is always agg(x)
+           a MAX(agg(x)) is always agg(x)
+           a AVG(agg(x)) is always agg(x)
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+* An OrderOp (and LimitOp if one exists) can be pushed down through a join if:
+  - there are no aggregates in the query
+  - the order predicate matches the join predicate
+  - the join predicate is an equi-join
+  - the join is an inner join (cannot be an outer join)
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+* Flatten non-correlated subqueries
+  - ref: https://docs.pingcap.com/tidb/stable/subquery-optimization
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+* Decorrelate correlated subqueries
+  - ref: https://docs.pingcap.com/tidb/stable/correlated-subquery-optimization
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+* Column pruning
+  - Instead of reading whole rows from a table, only read the columns that are required.
+    i.e. push down a projection above the TableScanOp.
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+* Concert MIN(col1) and MAX(col1) to index lookups
+  - Only works in non-GroupBy queries
+  - Requires an index on col1
+  - Can convert MIN(col1) to SELECT col1 FROM t WHERE col1 IS NOT NULL ORDER BY col1 ASC LIMIT 1
+  - Can convert MAX(col1) to SELECT col1 FROM t WHERE col1 IS NOT NULL ORDER BY col1 DESC LIMIT 1
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+* Add a TopN / BottomN operator?
+  - Combines OrderBy and LimitOps (without offset).
+  - Only needs to sort a limited number of rows. Can discard all others, so more memory efficient.
+  - If the limit has an offset then this can be turned into a TopN and another Limit.
+      e.g. ORDER BY col1 LIMIT 10 OFFSET 15
+      becomes TopN(column=col1, count=25) and a LimitOp(count=10, offset=15)
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+* Other Limit optimisations:
+  - don't execute if there is a limit 0. Return an empty resultset.
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
