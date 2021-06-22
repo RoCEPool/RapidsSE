@@ -120,13 +120,13 @@
   0 ZK_STARTMARKER EG_ZK LogicUnit[].diaryNote
 
   <tableNm> <indexNm> op__table_index not if
-      // is possible that a PULSEDMARKER arrives after this STARTMARKER
-      // as per pipeline protocol no op can receive a pulsedmarker without a startmarker
-      // we need eat the pulsedmarker here
-      find: IndexJoin_Xyz   ZK_DATAPULSE      op[].handler!
-      find: IndexJoin_Xyz   ZK_PULSEDMARKER   op[].handler!
-      true
-      exit
+    // is possible that a PULSEDMARKER arrives after this STARTMARKER
+    // as per pipeline protocol no op can receive a pulsedmarker without a startmarker
+    // we need eat the pulsedmarker here
+    find: IndexJoin_Xyz   ZK_DATAPULSE      op[].handler!
+    find: IndexJoin_Xyz   ZK_PULSEDMARKER   op[].handler!
+    true
+    exit
   then
 
   // new the PotRlu[]
@@ -139,8 +139,6 @@
   Index[].indexTree DevRhtIxt.indexTree!
 
   ZK_STARTMARKER_handler
-
-  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -163,7 +161,8 @@
   StreamDefOut[].new
 
   // evaluate the join
-  <etc> StreamDefLft[] StreamDefRht[] StreamDefOut[] ExprEval[].evaluateJoin to eError
+  <etc> StreamDefLft[] StreamDefRht[] StreamDefOut[]
+        Index[].indexTree ExprEval[].evaluateIndexJoin to eError
 
   // check for error
   eError EC_NONE == not if
@@ -242,7 +241,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: indexJoin :: indexJoin <compiled> <tableNm> <indexNm> <etc> ;
 
-: loopJoin_cmdTags _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
+: indexJoin_cmdTags _cmdTags tagCopy: op_tags tags{ <cmdDesc> = "--desc for op--" } ;
 
 /*============================================================================*/
 /* end                                                                        */

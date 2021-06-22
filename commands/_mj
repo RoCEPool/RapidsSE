@@ -33,9 +33,9 @@ begin
     indexScan 0 rt ri | stageD right
 
   stage stageD on all partitions :
-    mergeJoin 0 "$L1 $R1 == " | stageD
+    mergeJoin 0 "$L1 $R1 == " | stageE
 
-  stage stageD on origin :
+  stage stageE on origin :
     output | sink | stageA
 end;
 

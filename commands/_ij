@@ -7,7 +7,6 @@ create table lt (
   l_key   INTEGER NOT NULL,
   l_name  VARCHAR(32) NOT NULL
 );
-create index li on lt(l_key);
 
 print "loading lt.csv..." ;
 load lt "../JTEST/leftTable.csv" ;
@@ -21,8 +20,6 @@ create index ri on rt(r_key);
 print "loading rt.csv..." ;
 load rt "../JTEST/rightTable.csv" ;
 
-//join lt li rt ri;
-
 pipeline indexJoinExp
 begin
   stage stageA on origin :
@@ -32,7 +29,7 @@ begin
     scan lt | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 rt idx "LBOUND $I1 $L1 >= UBOUND $I1 $L1 <= " | stageD
+    indexJoin 0 rt ri "LBOUND $I1 $L1 >= UBOUND $I1 $L1 <= " | stageD
 
   stage stageD on origin :
     output | sink | stageA
