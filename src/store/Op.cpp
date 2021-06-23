@@ -319,7 +319,8 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for biding op/task
   
-  if (TS_BIDING == (eTS)AM::iTaskState(pDstTask)) {
+  eTS eTaskState = (eTS)AM::iTaskState(pDstTask);
+  if (TS_BIDING == eTaskState) {
     AM::TASK::vTriggerBiding(pDstTask,pTriggeringTask);
     return;
   }
@@ -349,7 +350,8 @@ void Op::vAppendOoO(Operand* pOperand, Task* pTriggeringTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for biding op/task
   
-  if (TS_BIDING == (eTS)AM::iTaskState(pDstTask)) {
+  eTS eTaskState = (eTS)AM::iTaskState(pDstTask);
+  if (TS_BIDING == eTaskState) {
     AM::TASK::vTriggerBiding(pDstTask,pTriggeringTask);
     return;
   }
@@ -378,9 +380,10 @@ void Op::vAppendRight(Operand* pOperand, Task* pTriggeringTask)
   
   AM::vOperandsInc();
 
-  Task* pBidingTask = AM::pExecutingTask(m_pOpJob);
+  Task* pDstTask = AM::pExecutingTask(m_pOpJob);
   
-  if (TS_BIDING != (eTS)AM::iTaskState(pBidingTask)) {
+  eTS eTaskState = (eTS)AM::iTaskState(pDstTask);
+  if (TS_BIDING != eTaskState) {
     vDropTaskLock();
     return;
   }
@@ -388,7 +391,7 @@ void Op::vAppendRight(Operand* pOperand, Task* pTriggeringTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // trigger this biding op
-  AM::TASK::vTriggerBiding(pBidingTask,pTriggeringTask);
+  AM::TASK::vTriggerBiding(pDstTask,pTriggeringTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1301,7 +1304,7 @@ Operand* Op::pPopOoOLeft(void)
 #ifdef WITH_SEPARATE_OOO_QUEUE
   Operand* pOperand = m_pQueueOoO->pPopOoO();
   if (! pOperand)
-    pOperand = m_pQueueLeft->pPopOoO();
+    pOperand = m_pQueueLeft->pPopQueue();
 #else
   Operand* pOperand = m_pQueueLeft->pPopOoO();
   if (! pOperand)
