@@ -330,11 +330,7 @@
                       name: "stageMarker",
                       value: "An inert marker used in the transliteration process to indicate a new pipeline stage is required",
                       properties: [
-                        {
-                          name: "location",
-                          value: "Where all the child nodes of this stageMarker are to be executed",
-                          type: "/__root__/definitions/types/location"
-                        },
+                        // don't forget all planObjects also have an optional location too
                         {
                           name: "routing",
                           value: "How row data that comes from the child node is to be routed to the parent node",

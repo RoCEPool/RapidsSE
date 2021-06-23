@@ -20,6 +20,12 @@ using namespace Parser;
 /*----------------------------------------------------------------------------*/
 static Stz* C_STAGEMARKER_DEFN = "/__root__/definitions/object/planObject/planMarker/stageMarker"_Stz;
 
+static Stz* C_LOCATION_PROP = "location"_Stz;
+static Stz* C_LOCATION_DEFN = "/__root__/definitions/types/location"_Stz;
+
+static Stz* C_ROUTING_PROP  = "routing"_Stz;
+static Stz* C_ROUTING_DEFN = "/__root__/definitions/types/routing"_Stz;
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -28,14 +34,26 @@ static Stz* C_STAGEMARKER_DEFN = "/__root__/definitions/object/planObject/planMa
 /*----------------------------------------------------------------------------*/
 /* Helper function to create stageMarker nodes.                               */
 /*----------------------------------------------------------------------------*/
-QueryNode* StageMarker::pCreate()
+QueryNode* StageMarker::pCreate(Location::eLO eLocationType, Routing::eRT eRoutingType)
 {
+  ASSERT(eLocationType > Location::LO_NONE);
+  ASSERT(eLocationType < Location::LO_NENUMS);
+  ASSERT(eRoutingType  >= Routing::RT_NONE);
+  ASSERT(eRoutingType  < Routing::RT_NENUMS);
+
   // Create a unique name for this object
   s256 sName;
   NodeNamer::vGenerateName(C_STAGEMARKER_DEFN, sName);
 
   // Create the object
   QueryNode* pMarker = new QueryNode(sName, C_STAGEMARKER_DEFN);
+
+  // Create and add the properties
+  PlanObject::vSetLocation(pMarker, eLocationType);
+
+  QueryNode* pRoutingProp  = Routing::pCreate(eRoutingType);
+  pRoutingProp->vSetName(C_ROUTING_PROP);
+  pMarker->vAppendProperty(pRoutingProp);
 
   return pMarker;
 }
@@ -102,7 +120,14 @@ void StageMarker::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Stz* szTy
     GraphNav::vParentType(szType, sParentType);
     PlanObject::vExplainCommon(pNode, pRootNode, sParentType, sBuf, iIndent);
 
+    // Location is explained in the common attributes above
     // Explain any local attributes of this object
+
+    // Get the routing property
+    sBuf.vConcat("\n"_Stz);
+    vAppendIndent(sBuf, iIndent, IF_PLAIN);
+    sBuf.vCatSprint("routing: %s"_Stz, szRouting(pNode));
+
     return;
   }
 
@@ -141,6 +166,83 @@ b1 StageMarker::bIsExactType(Stz* szType)
   return ShadowNode::bIsExactType(szType, C_STAGEMARKER_DEFN);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns the internal Location node                                         */
+/*----------------------------------------------------------------------------*/
+QueryNode* StageMarker::pLocation(PlanNode* pNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pLocationNode = _pQueryNode(GraphNav::pFindProperty(C_LOCATION_PROP, pNode));
+  ASSERT(pLocationNode);
+
+  return pLocationNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the enum of the location of this StageMarker                       */
+/*----------------------------------------------------------------------------*/
+Parser::Location::eLO StageMarker::eLocation(PlanNode* pNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pLocationNode = pLocation(pNode);
+  ASSERT(pLocationNode);
+
+  return Location::eLocationType(pLocationNode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the string of the name of the location of this StageMarker         */
+/*----------------------------------------------------------------------------*/
+Stz* StageMarker::szLocation(PlanNode* pNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pLocationNode = pLocation(pNode);
+  ASSERT(pLocationNode);
+
+  return Location::szLocationType(pLocationNode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the internal Routing node                                          */
+/*----------------------------------------------------------------------------*/
+QueryNode* StageMarker::pRouting(PlanNode* pNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pRoutingNode = _pQueryNode(GraphNav::pFindProperty(C_ROUTING_PROP, pNode));
+  ASSERT(pRoutingNode);
+
+  return pRoutingNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the enum of the routing of this StageMarker                        */
+/*----------------------------------------------------------------------------*/
+Parser::Routing::eRT StageMarker::eRouting(PlanNode* pNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pRoutingNode = pRouting(pNode);
+  ASSERT(pRoutingNode);
+
+  return Routing::eRoutingType(pRoutingNode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the string of the name of the routing of this StageMarker          */
+/*----------------------------------------------------------------------------*/
+Stz* StageMarker::szRouting(PlanNode* pNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pRoutingNode = pRouting(pNode);
+  ASSERT(pRoutingNode);
+
+  return Routing::szRoutingType(pRoutingNode);
+}
 
 /*============================================================================*/
 /* end                                                                        */

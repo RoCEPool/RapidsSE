@@ -4,6 +4,7 @@
 #pragma once
 
 #include "Types.hpp"
+#include "store/parser/shadowNodes/types/location/Location.hpp"
 
 namespace Parser
 {
@@ -44,6 +45,7 @@ namespace Parser
     // Get a short string that represents the type of routing
     static Stz* szRoutingType(PlanNode* pNode);
 
+    static eRT eDefaultRouting(Location::eLO eFromLocation, Location::eLO eToLocation);
   };
 
 }
