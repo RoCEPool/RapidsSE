@@ -305,6 +305,40 @@ QueryNode* OrderOp::pCreateSuperAggregate(QueryNode* pSinglePartitionNode)
 
 /*----------------------------------------------------------------------------*/
 /* Returns a new OrderOp node with ordering terms super-aggregating           */
+/* aggregated expressions from each partition or node. This version used to   */
+/* factor in node-level aggregation.                                          */
+/*----------------------------------------------------------------------------*/
+QueryNode* OrderOp::pCreateDoubleSuperAggregate(QueryNode* pSinglePartitionNode)
+{
+  ASSERT(OrderOp::bIsOfType(pSinglePartitionNode));
+  ASSERT(!PlanObject::bNodeHasLocation(pSinglePartitionNode));
+
+  QueryNode* pNewOp = pSinglePartitionNode->pDeepCopy(true, nullptr);
+
+  QueryNode* pOrderItems =
+      _pQueryNode(GraphNav::pFindProperty(const_cast<Stz *>(C_ORDERITEMLIST_PROP), pNewOp));
+  ASSERT(pOrderItems);
+
+  // Iterate all of the order items
+  PlanNodeIter* pIter = pOrderItems->pNewChildrenIter();
+
+  while (pIter->bHasNext()) {
+    QueryNode* pOrderItem = _pQueryNode(pIter->pNext());
+
+    ASSERT(OrderItem::bIsOfType(pOrderItem));
+
+    // Get the ordering expression and super-aggregate any aggregates in it
+    QueryNode* pOrderExpr = OrderItem::pExprNode(pOrderItem);
+    Expr::vSuperAggregate(pOrderExpr);
+    Expr::vSuperAggregate(pOrderExpr);
+  }
+
+  delete pIter;
+  return pNewOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns a new OrderOp node with ordering terms super-aggregating           */
 /* aggregated expressions from each partition or node                         */
 /*----------------------------------------------------------------------------*/
 b1 OrderOp::bContainsAnAggregate(QueryNode* pNode)

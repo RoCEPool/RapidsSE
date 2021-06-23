@@ -49,6 +49,10 @@ namespace Parser
     // expressions from each partition or node
     static QueryNode* pCreateSuperAggregate(QueryNode* pSinglePartitionNode);
 
+    // Returns a new OrderOp node with the ordering terms super-aggregating aggregated
+    // expressions from each partition or node. This version used to factor in node-level aggregation.
+    static QueryNode* pCreateDoubleSuperAggregate(QueryNode* pSinglePartitionNode);
+
     // Returns true if any of the ordering terms contain an aggregate expression
     static b1 bContainsAnAggregate(QueryNode* pNode);
 

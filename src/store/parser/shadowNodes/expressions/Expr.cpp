@@ -740,14 +740,24 @@ QueryNodeList* Expr::pAggregateExprs(QueryNode* pExpr, b1 bDescendAggregates)
     UNUSED(iDepth);
     UNUSED(pvArg);
 
-    QueryNode* pExpr = _pQueryNode(pNode);
+    QueryNode* pExprNode = _pQueryNode(pNode);
 
     if (AliasRef::bIsOfType(pNode)) {
-      pExpr = AliasRef::pAliasedExpr(pExpr);
-    }
+      QueryNode* pAliasedExpr = AliasRef::pAliasedExpr(pExprNode);
 
-    if (AggregateExpr::bIsOfType(pExpr)) {
-      pList->vPush(_pQueryNode(pExpr));
+      // Since the alias expression is a property of alias, and we are not walking
+      // properties, we manually search this space and add it to the outer list of aggregates.
+      QueryNodeList* pAliasAggs = pAggregateExprs(pAliasedExpr, bDescendAggregates);
+
+      while (pAliasAggs->nItems() > 0) {
+        pList->vPush(pAliasAggs->pPop());
+      }
+
+      ASSERT(pAliasAggs->nItems() == 0);
+      delete pAliasAggs;
+
+    } else if (AggregateExpr::bIsOfType(pExprNode)) {
+      pList->vPush(_pQueryNode(pExprNode));
       
       if (!bDescendAggregates) {
         return GraphNav::WALK_SKIP_SUBTREE;

@@ -294,6 +294,36 @@ void ProjectedColumn::vSuperAggregate(QueryNode* pNode)
   ASSERT(Expr::bIsOfType(pExpr));
 }
 
+/*----------------------------------------------------------------------------*/
+/* Changes the aggregate expression in pNode to super-aggregate results from  */
+/* each partition or node. This version super-aggregates twice to factor in   */
+/* node-level aggregation.                                                    */
+/*----------------------------------------------------------------------------*/
+void ProjectedColumn::vDoubleSuperAggregate(QueryNode* pNode)
+{
+  // e.g. an expression of SUM(col1), when all of the partitioned results are
+  // being merged, will be super-aggregated with the expression SUM(SUM(col1)).
+  // Super-aggregation occurs as follows:
+  //
+  // SUM(x)   -->   SUM(SUM(x))
+  // COUNT(x) -->   SUM(COUNT(x))
+  // MIN(x)   -->   MIN(MIN(x))
+  // MAX(x)   -->   MAX(MAX(x))
+  //
+  // Note that an AVG(x) aggregate will be replaced at the partition level by
+  // a SUM(x) and COUNT(x). A super-aggregating expression replaces AVG(x) with
+  //   SUM(SUM(x))/SUM(COUNT(x))
+  // A double-super-aggregation replaces AVG(x) with:
+  //   SUM(SUM(SUM(x)))/SUM(SUM(COUNT(x)))
+
+  QueryNode* pExpr = pExprNode(pNode);
+
+  Expr::vSuperAggregate(pExpr);
+  Expr::vSuperAggregate(pExpr);
+  ASSERT(pExpr->szName()->bEqual(C_EXPR_PROP));
+  ASSERT(Expr::bIsOfType(pExpr));
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

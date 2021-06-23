@@ -541,6 +541,35 @@ QueryNode* ProjectOp::pCreateSuperAggregate(QueryNode* pSinglePartitionNode)
   return pNewOp;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns a new ProjectOp node with projected columns doubly super-aggregating*/
+/* aggregated expressions from each partition or node                         */
+/*----------------------------------------------------------------------------*/
+QueryNode* ProjectOp::pCreateDoubleSuperAggregate(QueryNode* pSinglePartitionNode)
+{
+  QueryNode* pNewOp = pSinglePartitionNode->pDeepCopy(true, nullptr);
+
+  QueryNode* pProjColumns =
+      _pQueryNode(GraphNav::pFindProperty(const_cast<Stz *>(C_PROJECTEDCOLUMNS_PROP), pNewOp));
+
+  // Iterate all of the projected columns
+  PlanNodeIter* pIter = pProjColumns->pNewChildrenIter();
+
+  while (pIter->bHasNext()) {
+    QueryNode* pProjColumn = _pQueryNode(pIter->pNext());
+
+    ASSERT(ProjectedColumn::bIsOfType(pProjColumn));
+
+    // Any aggregated expressions need to be super-aggregated
+    if (ProjectedColumn::bContainsAnAggregate(pProjColumn)) {
+      ProjectedColumn::vDoubleSuperAggregate(pProjColumn);
+    }
+  }
+
+  delete pIter;
+  return pNewOp;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
