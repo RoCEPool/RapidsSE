@@ -87,7 +87,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // temporary
 
-//#define WITH_NEW_OPERAND_QUEUE EndDefine   // code for new operand queue
+#define WITH_NEW_OPERAND_QUEUE EndDefine   // code for new operand queue
 
 #define WITH_SEPARATE_OOO_QUEUE EndDefine  // code for use separate ooo queue
 
