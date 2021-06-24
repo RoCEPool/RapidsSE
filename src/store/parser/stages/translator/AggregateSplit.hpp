@@ -4,6 +4,7 @@
 #pragma once
 
 #include "PlanNode.hpp"
+#include "QueryNodeList.hpp"
 #include "GraphNav.hpp"
 
 namespace STORE
@@ -27,9 +28,10 @@ namespace Parser
     //
     static void vSplitAggregates(PlanNode* pRootNode);
 
-
   private:
-
+    // Inserts a ProjectOp or AggregateOp below pParentNode with the aggregate
+    // expressions from pAggList. pAggList items are borrowed and must be copied
+    static void vInsertProjection(QueryNodeList* pAggList, QueryNode* pParentNode, PlanNode* pRootNode);
   };
 }
 
