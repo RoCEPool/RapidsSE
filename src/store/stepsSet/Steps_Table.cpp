@@ -79,7 +79,7 @@ void Step::vTableDelete(void)
   ENTRY();
   
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  vTrace(">>>>>>>>>>>>Step::vTableDelete\n"_Stz);
+  //vTrace(">>>>>>>>>>>>Step::vTableDelete\n"_Stz);
   delete pTable;
     
   EXIT();

@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 #include "BASE.h"
-
+#include <algorithm>    // std::find_if  NEED TO REPLACE this std::
 #include "Node.hpp"
 #include "Node_I.hpp"
 #include "Grid.hpp"

@@ -97,7 +97,7 @@ Table::Table(Stz* szTableNm, eTT eKind)
 Table::~Table(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  vTrace(">>>>>>>>>>>>>>>>>>>>> ~Table gets called\n"_Stz);
+  //vTrace(">>>>>>>>>>>>>>>>>>>>> ~Table gets called\n"_Stz);
   m_pIdxVec->vClear();
   
   delete m_pIdxVec;
@@ -232,7 +232,7 @@ tPN Table::tTablePtnToPtnNo(i8 i_TablePtn)
 
   tPN tPtnNo = (i_TablePtn * AM::nConnectedNodes()) + AM::iThisNodeNo();
 
-  vTrace(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>ThisNode:%lld  i_TablePtn:%lld  AM::nConnectedNodes:%lld  tPtnNo:%lld\n"_Stz, AM::iThisNodeNo(), i_TablePtn, AM::nConnectedNodes(), tPtnNo);
+  //vTrace(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>ThisNode:%lld  i_TablePtn:%lld  AM::nConnectedNodes:%lld  tPtnNo:%lld\n"_Stz, AM::iThisNodeNo(), i_TablePtn, AM::nConnectedNodes(), tPtnNo);
   
   return tPtnNo;
 }

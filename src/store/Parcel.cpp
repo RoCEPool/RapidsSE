@@ -353,7 +353,7 @@ void Parcel::vSendOverSocket(Op* pSrcOp)
 
 
     bResult = pSocket->bSendTo(pObject, nObjectSize, oSysCall);
-    vTrace("vSendOverSocket SENT %lld bytes class:%s  \n"_Stz,nObjectSize, aCN[pObject->eGetClassNo()]);
+    //vTrace("vSendOverSocket SENT %lld bytes class:%s  \n"_Stz,nObjectSize, aCN[pObject->eGetClassNo()]);
   }
   
   pSocket->vDropWrite();
@@ -362,7 +362,7 @@ void Parcel::vSendOverSocket(Op* pSrcOp)
   
   sSupplemental.vSprint("%s %s"_Stz,pDstNode->szNodeNm(),aXK[m_eSendKind]);
   
-  pSrcOp->vOpTrace(this,"vSendOverSocket :"_Stz,sSupplemental);
+  //pSrcOp->vOpTrace(this,"vSendOverSocket :"_Stz,sSupplemental);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -458,8 +458,9 @@ void Parcel::vSendToAllOriginPartitions(Op* pSrcOp)
       
       // sendNode is the partition node
       i8 iDstNode = AM::pPtnMap()->i_WhichNode(tPtnNo);
-      vTrace(" >>>>>>>>>>>>>>>>  vSendToAllOriginPartitions  XK_ROBIN: DstNode:%lld OriginNode:%lld PtnNo:%lld i_TablePtn:%lld  AM::nPtnsPerTable():%lld\n"_Stz,
+      /*vTrace(" >>>>>>>>>>>>>>>>  vSendToAllOriginPartitions  XK_ROBIN: DstNode:%lld OriginNode:%lld PtnNo:%lld i_TablePtn:%lld  AM::nPtnsPerTable():%lld\n"_Stz,
              iDstNode, pPipeline->i_Origin(), tPtnNo, i_TablePtn, AM::nPtnsPerTable());
+       */
       //ASSERT(iDstNode == pPipeline->i_Origin());
       pSrcOp->vSendNode(iDstNode);
 
@@ -588,7 +589,7 @@ void Parcel::vSendToAllPartitions(Op* pSrcOp)
 void Parcel::vSendToNode(Op* pSrcOp, i8 iDstNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
-  vTrace("vSendToNode iDstNode:%lld\n"_Stz, iDstNode);
+  //vTrace("vSendToNode iDstNode:%lld\n"_Stz, iDstNode);
   Pipeline* pPipeline = pSrcOp->pPipeline();
   i8 i_NextStage = pSrcOp->iNextStage();
   
@@ -612,7 +613,7 @@ void Parcel::vSendToOrigin(Op* pSrcOp)
 
   i8 iDstNode = pPipeline->i_Origin();
   pSrcOp->vSendNode(iDstNode);
-  vTrace("vSendToOrigin iDstNode:%lld\n"_Stz, iDstNode);
+  //vTrace("vSendToOrigin iDstNode:%lld\n"_Stz, iDstNode);
   vSendParcel(pSrcOp,iDstNode,C_UNKNOWN);
 }
 

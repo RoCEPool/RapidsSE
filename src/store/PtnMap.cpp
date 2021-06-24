@@ -93,13 +93,13 @@ tPN PtnMap::tStreamToLglPtnNo(i8 i_Stream)
 {
   _static_
 
-  if (AM::nPtnsInGrid()) {
-    for (tPN tPtnNo = 0; tPtnNo < AM::nPtnsInGrid(); tPtnNo++)
-      vTrace("tStreamToLglPtnNo  Partition: %lld; Node: %lld\n"_Stz,tPtnNo,AM::pPtnMap()->i_WhichNode(tPtnNo));
-    vTrace("\n"_Stz);
-  }
+  //if (AM::nPtnsInGrid()) {
+  //  for (tPN tPtnNo = 0; tPtnNo < AM::nPtnsInGrid(); tPtnNo++)
+  //    vTrace("tStreamToLglPtnNo  Partition: %lld; Node: %lld\n"_Stz,tPtnNo,AM::pPtnMap()->i_WhichNode(tPtnNo));
+  //  vTrace("\n"_Stz);
+  //}
 
-  vTrace("PtnMap::tStreamToLglPtnNo %lld %lld %lld\n"_Stz, i_Stream ,AM::nConnectedNodes(),AM::iThisNodeNo());
+  //vTrace("PtnMap::tStreamToLglPtnNo %lld %lld %lld\n"_Stz, i_Stream ,AM::nConnectedNodes(),AM::iThisNodeNo());
 
   // THIS IS WHERE THE CRASH HAPPENED
   // Because if the nodeNo is e.g. 120, then the partitionNo becomes large, will fail
