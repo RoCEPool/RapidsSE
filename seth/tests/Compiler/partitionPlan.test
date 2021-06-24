@@ -632,40 +632,37 @@ UNION ALL
 ;
 rows: (*, 'partitionExplain', *)
 
--- NOTE: Below statements are not enabled because they currently cause an overflow of an internal
---       column buffer of 4000 bytes. Will be enabled when this is fixed.
-
 --  (406) UNION ALL of two selects with GROUP BY aggregates, WHERE & HAVING clauses and post-projections
--- EXPLAIN STAGE partitionExplain
---   SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2
---   FROM     t1
---   WHERE    c2 > 0
---   GROUP BY c1
---   HAVING   MAX(c1 + c2) > 0
--- UNION ALL
---   SELECT   colA, MAX(colB) AS maxB, MIN(colB) AS minB, SUM(colB) AS sumB, COUNT(colB) AS countB, AVG(colB) AS avgB
---   FROM     t2
---   WHERE    colB > 0
---   GROUP BY colA
---   HAVING   MAX(colA + colB) > 0
--- ;
--- rows: (*, 'partitionExplain', *)
+EXPLAIN STAGE partitionExplain
+  SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2
+  FROM     t1
+  WHERE    c2 > 0
+  GROUP BY c1
+  HAVING   MAX(c1 + c2) > 0
+UNION ALL
+  SELECT   colA, MAX(colB) AS maxB, MIN(colB) AS minB, SUM(colB) AS sumB, COUNT(colB) AS countB, AVG(colB) AS avgB
+  FROM     t2
+  WHERE    colB > 0
+  GROUP BY colA
+  HAVING   MAX(colA + colB) > 0
+;
+rows: (*, 'partitionExplain', *)
 
---  (407) UNION ALL with corresponding clause of two selects with GROUP BY aggregates, WHERE & HAVING clauses and post-projections
--- EXPLAIN STAGE partitionExplain
---   SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2
---   FROM     t1
---   WHERE    c2 > 0
---   GROUP BY c1
---   HAVING   MAX(c1 + c2) > 0
--- UNION ALL CORRESPONDING
---   SELECT   colA AS c1, MAX(colB) AS max2, MIN(colB) AS min2, SUM(colB) AS sum2, COUNT(colB) AS count2, AVG(colB) AS avg2
---   FROM     t2
---   WHERE    colB > 0
---   GROUP BY colA
---   HAVING   MAX(colA + colB) > 0
--- ;
--- rows: (*, 'partitionExplain', *)
+ (407) UNION ALL with corresponding clause of two selects with GROUP BY aggregates, WHERE & HAVING clauses and post-projections
+EXPLAIN STAGE partitionExplain
+  SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2
+  FROM     t1
+  WHERE    c2 > 0
+  GROUP BY c1
+  HAVING   MAX(c1 + c2) > 0
+UNION ALL CORRESPONDING
+  SELECT   colA AS c1, MAX(colB) AS max2, MIN(colB) AS min2, SUM(colB) AS sum2, COUNT(colB) AS count2, AVG(colB) AS avg2
+  FROM     t2
+  WHERE    colB > 0
+  GROUP BY colA
+  HAVING   MAX(colA + colB) > 0
+;
+rows: (*, 'partitionExplain', *)
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
