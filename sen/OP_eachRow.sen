@@ -55,7 +55,7 @@
   begin
     nRows iRow >
   while
-    iRow "sending iRow %v" .printf
+    iRow "***sending iRow %v" .printf
 
     iRow Operand[].rowToEachRow to OperandB[]
     OperandB[].Pipeout

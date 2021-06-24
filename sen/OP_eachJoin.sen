@@ -39,6 +39,8 @@
 
   0 ZK_CRWBUFFER EG_ZK LogicUnit[].diaryNote
 
+  "eachJoin_CrwBuffer: got crw buffer" .
+
   Operand[].pipeIn
   Operand[] DevRhtIxt.crwBuffer!
   ZK_CRWBUFFER Counter0[] executeAsmArgs
@@ -55,6 +57,8 @@
 
   0 ZK_EACHROWBUFFER EG_ZK LogicUnit[].diaryNote
 
+  "eachJoin_EachRowBuffer: got eachRowBuffer" .
+
   Operand[].pipeIn
   Operand[] DevLftRow.eachRowBuffer!
   Operand[] DevLftRow.row!
@@ -68,6 +72,8 @@
 : eachJoin_EachScanEosMarker \handler
 
   0 ZK_EACHSCANEOSMARKER EG_ZK LogicUnit[].diaryNote
+
+  "eachJoin_EachScanEosMarker: got each scanEosMarker_lj;" .
 
   // pipeout all PotRlu[]
   PotRlu[].pipeoutCompletedPtns
@@ -126,11 +132,13 @@
 
   0 ZK_ROWBUFFER EG_ZK LogicUnit[].diaryNote
 
+  "eachJoin_RowBuffer: got rowbuffer;" .
+
   Operand[].pipeIn
   Operand[] DevRhtRow.rowBuffer!
   ZK_ROWBUFFER Counter0[] executeAsmArgs
 
-  Operand[].delete
+  //Operand[].delete
 
   PotRlu[].pipeoutCompletedPtns
 
@@ -159,6 +167,8 @@
 : eachJoin_StreamDef \handler
 
   0 ZK_STREAMDEF EG_ZK LogicUnit[].diaryNote
+
+  "eachJoin_StreamDef: got each streamDef_lj;" .
 
   EC_NONE locals| eError |
 

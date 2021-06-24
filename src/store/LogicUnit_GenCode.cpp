@@ -1195,13 +1195,15 @@ eEC LogicUnit::eGenerateLoopJoin(ExprEval* pExprEval) {
   oFile.vPrint("%s"_Stz, pExprEval->m_sJoinAsm.azChar());
   oFile.vPrint("  // *** end generated code: m_sJoinAsm *** //\n"_Stz);
 
+  oTagSet.vAppend(C_TAG_JOINROW_ROUTINE, "ROW_JOIN_CRW"_Stz);
   oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_LOOPJOIN_END, &oTagSet, sMacro));
+  oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // CRW_JOIN_ROW
+  // ROW_JOIN_CRW
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   oTagSet.vAppend(C_TAG_ROW_OFFSET, pExprEval->m_iJoinStartColumn);
-  oFile.vPrint(LogicCompiler::szGetMacro(AM_CRW_JOIN_ROW, &oTagSet, sMacro));
+  oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_JOIN_CRW, &oTagSet, sMacro));
   oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1216,7 +1218,9 @@ eEC LogicUnit::eGenerateLoopJoin(ExprEval* pExprEval) {
   oFile.vPrint("%s"_Stz, pExprEval->m_sJoinAsm.azChar());
   oFile.vPrint("  // *** end generated code: m_sJoinAsm *** //\n"_Stz);
 
+  oTagSet.vAppend(C_TAG_JOINROW_ROUTINE, "ROW_JOIN_ROW"_Stz);
   oFile.vPrint(LogicCompiler::szGetMacro(AM_ROW_LOOPJOIN_END, &oTagSet, sMacro));
+  oTagSet.vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ROW_JOIN_ROW

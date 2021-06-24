@@ -79,6 +79,7 @@ enum eAM // ASM Macros
   /*    */ AM_ROW_FILTER_ROWS,
   /*    */ AM_ROW_FILTER_END,
 
+  /*    */ AM_ROW_JOIN_CRW,
   /*    */ AM_ROW_JOIN_ROW,
 
   /*    */ AM_ROW_LOOPJOIN_END,
@@ -176,6 +177,7 @@ static Stz* aAM[]
     /*    */ "ROW_FILTER_END"_Stz,
 
     /*    */ "ROW_JOIN_ROW"_Stz,
+    /*    */ "ROW_JOIN_CRW"_Stz,
 
     /*    */ "ROW_LOOPJOIN_END"_Stz,
     /*    */ "ROW_LOOPJOIN_ROWS"_Stz,
