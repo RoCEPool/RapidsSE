@@ -35,6 +35,7 @@
 #include "ShadowPlan.hpp"
 #include "PlanOperand.hpp"
 
+#include "AggregateSplit.hpp"
 #include "NameValidator.hpp"
 #include "ExprValidator.hpp"
 #include "SetOpValidator.hpp"
@@ -65,6 +66,7 @@ void Step::vAddSteps_SqlCompiler(void)
   vAddStep("sqlCompiler::hasExplain"_Stz,         &Step::vSqlCompilerHasExplain);
 
   // Stages in the compilation pipeline (in alphabetical order)
+  vAddStep("sqlCompiler::aggregateSplit"_Stz,     &Step::vSqlCompilerAggregateSplit);
   vAddStep("sqlCompiler::corrBySquash"_Stz,       &Step::vSqlCompilerCorrBySquash);
   vAddStep("sqlCompiler::explainPlan"_Stz,        &Step::vSqlCompilerExplainPlan);
   vAddStep("sqlCompiler::exprValidate"_Stz,       &Step::vSqlCompilerExprValidate);
@@ -78,6 +80,69 @@ void Step::vAddSteps_SqlCompiler(void)
   vAddStep("sqlCompiler::setOpValidate"_Stz,      &Step::vSqlCompilerSetOpValidate);
   vAddStep("sqlCompiler::stageMarkers"_Stz,       &Step::vSqlCompilerStageMarkers);
   vAddStep("sqlCompiler::transliterate"_Stz,      &Step::vSqlCompilerTransliterate);
+}
+
+/*----------------------------------------------------------------------------*/
+/* sqlCompiler::aggregateSplit -- Split ordinal expressions that have multiple*/
+/* aggregate terms into child ProjectOps                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vSqlCompilerAggregateSplit(void) {
+  ENTRY();
+
+  /**
+   *  The purpose of this stage is to handle a limitation of the Relational Logic
+   *  Unit and generally make the transliteration easier. The RLU currently cannot
+   *  handle expressions that involve the calculation and combination of two
+   *  aggregations. e.g. the ordinal expression "SUM($1) / COUNT($1)" involves
+   *  calculating the two aggregates and then dividing one into the other.
+   *
+   *  This multi-stage approach needs to be simplified in a series of single stages.
+   *  Since we know this will only occur in ProjectOps and AggregateOps (since other
+   *  operators need to use the projected columns) we can do this by checking each
+   *  ProjectOp & AggregateOp and adding a ProjectOp underneath them that contain
+   *  the individual expression calculations.
+   *
+   *  e.g. for the example above we add a ProjectOp with two additional columns of
+   *  SUM($1) and COUNT($1). The above ordinal expression is then implemented as
+   *  $1 / $2, which is supported by the RLU and transliteration.
+   */
+
+
+  PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
+  Parser::RootNode* pPlanRoot = Parser::_pRootNode(pPlanOperand->pPlanNode());
+  UNUSED(pPlanRoot);
+  ASSERT(ShadowRoot::bIsExactType(pPlanRoot));
+
+
+
+  try {
+    AggregateSplit::vSplitAggregates(pPlanRoot);
+
+  } catch (Parser::SqlException& e) {
+    Grid* pGrid = AM::pGrid();
+    InfoSet* pInfoSet = _pInfoSet(*m_pJob->pLogicUnit_job()->m_xpInfoSet);
+    Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+                                    pGrid->pThisNode()->szNodeNm(),
+                                    EC_SEMANTIC_ERROR,
+                                    0,
+                                    0,
+                                    e.szError(),
+                                    C_VARGS_END);
+    UNUSED(pRow);
+    delete pPlanRoot;
+    delete pPlanOperand;
+    m_pDataStack->vPushPtr(nullptr);
+    goto L_Exit;
+  }
+
+
+  // TODO: eventually we want the received plan graph to be immutable,
+  //       so we would send a different version. But for now we will just
+  //       manipulate and send the same plan graph
+  m_pDataStack->vPushPtr(pPlanOperand);
+
+  L_Exit:
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
