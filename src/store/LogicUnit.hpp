@@ -287,6 +287,7 @@ namespace STORE
     void vOptimise(eEO eOpt);
     i8   iQueryFragment(void);
     void vSetCC(i8 i_Cond, bool bState);
+    void vSetPipein(Operand* pOperand);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -305,6 +306,7 @@ namespace STORE
     eEC eGenerateAggregate(ExprEval* pExprEval);
     eEC eGenerateFilter(ExprEval* pExprEval);
     eEC eGenerateGroupBy(ExprEval* pExprEval);
+    eEC eGenerateIndexJoin(ExprEval* pExprEval);
     eEC eGenerateIndexScan(ExprEval* pExprEval);
     eEC eGenerateLimit(i8 iLimit);
     eEC eGenerateLoopJoin(ExprEval* pExprEval);

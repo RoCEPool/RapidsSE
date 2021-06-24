@@ -341,7 +341,8 @@ public:
   void vExprEvalNew(void);
   void vExprEvalEvaluate(void);
   void vExprEvalEvaluateIndexScan(void);
-  void vExprEvalEvaluateJoin(void);
+  void vExprEvalEvaluateIndexJoin(void);
+  void vExprEvalEvaluateLoopJoin(void);
   void vExprEvalSet(void);
 
   // fact
@@ -896,6 +897,7 @@ public:
   void vLogicUnitGenAggregate(void);
   void vLogicUnitGenAsm(void);
   void vLogicUnitGenFilter(void);
+  void vLogicUnitGenIndexJoin(void);
   void vLogicUnitGenIndexScan(void);
   void vLogicUnitGenLimit(void);
   void vLogicUnitGenLoopJoin(void);
@@ -1017,7 +1019,6 @@ public:
 
   // operand[]
   void vOperandCsvAppend(void);
-  void vOperandBide(void);
   void vOperandCrwDuplicate(void);
   void vOperandCrwRowCountFetch(void);
   void vOperandCrwToCsv(void);
@@ -1051,7 +1052,6 @@ public:
   void vOperandNewStartMarker(void);
   void vOperandNewStartedMarker(void);
   void vOperandNewStreamDef(void);
-  void vOperandNext(void);
   void vOperandPipeIn(void);
   void vOperandPipeOutSet(void);
   void vOperandPipeToOutput(void);
@@ -1582,6 +1582,7 @@ public:
   void vStreamDefRhtGet(void);
   void vStreamDefRhtGetAndClear(void);
   void vStreamDefRhtIsNull(void);
+  void vStreamDefRhtNew(void);
   void vStreamDefRhtPrint(void);
   void vStreamDefRhtSet(void);
 
@@ -1742,6 +1743,7 @@ public:
   void vTaskThread(void);
   void vTaskWait(void);
   void vTaskYield(void);
+  void vTaskYield_opLoop(void);
 
   // tenants
   void vTenantsDelete(void);

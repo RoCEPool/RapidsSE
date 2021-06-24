@@ -24,7 +24,7 @@ namespace STORE
 
     bool   m_bAppendRight; // append to right queue of next operator
     eXK    m_eSendKind;    // {normal, hashed, robin, local robin} if send op
-    
+
     TagSet m_oOpSpecTagSet;
     TagSet m_oTopologyTagSet;
     
@@ -42,6 +42,7 @@ namespace STORE
     void vAddEnamePair(Stz* sName, i8 iValue, eTN eToken);
     void vAddTopologyEnamePair(Stz* sName, i8 iValue, eTN eToken);
     bool bAppendRight(void);
+    void vAppendRight(bool bRight);
     Stz* szOpNm(void);
     void vOpNm(Stz* szOpNm);
     i8   i_OpSpec(void);

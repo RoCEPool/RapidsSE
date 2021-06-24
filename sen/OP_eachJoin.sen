@@ -180,7 +180,7 @@
   ExprEval[].new
   StreamDefOut[].new
 
-  <etc> StreamDefLft[] StreamDefRht[] StreamDefOut[] ExprEval[].evaluateJoin to eError
+  <etc> StreamDefLft[] StreamDefRht[] StreamDefOut[] ExprEval[].evaluateLoopJoin to eError
 
   // check for error
   eError EC_NONE == not if

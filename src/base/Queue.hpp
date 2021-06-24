@@ -23,7 +23,7 @@ namespace BASE
     void* operator new(size_t, Queue* pQueue);
     void  operator delete(void* pQueueAddress);
  
-    Queue(void);
+    Queue(eCN eClass);
     ~Queue(void) noexcept(false);
     
 

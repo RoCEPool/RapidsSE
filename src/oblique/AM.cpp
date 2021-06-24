@@ -636,6 +636,15 @@ bool AM::TASK::bLogResource(void)
   return bLogging;
 }
 
+/*----------------------------------------------------------------------------*/
+/* trigger biding task                                                        */
+/*----------------------------------------------------------------------------*/
+void AM::TASK::vTriggerBiding(Task* pTaskBiding, Task* pTriggeringTask)
+{
+  _static_
+  
+  Scheduler::vTaskCross_TriggerBiding(pTaskBiding,pTriggeringTask);
+}
 
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -1071,9 +1080,6 @@ void AM::vSteps(Steps* pSteps) {
 }
 void AM::vTenants(Word *pTenants) {
   gpAttachMap->m_pTenants = pTenants;
-}
-void AM::vTriggerBidingTask(Task* pTaskBiding, Task* pTriggeringTask) {
-  Scheduler::vTaskCross_TriggerBiding(pTaskBiding,pTriggeringTask);
 }
 
 //

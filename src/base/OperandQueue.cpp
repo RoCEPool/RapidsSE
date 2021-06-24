@@ -19,7 +19,7 @@ __aFooterFunction(OperandQueue)
 /*----------------------------------------------------------------------------*/
 #ifdef WITH_NEW_OPERAND_QUEUE
 OperandQueue::OperandQueue(void)
-: Queue()
+: Queue(CN_OPERANDQUEUE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
   
@@ -180,9 +180,8 @@ Operand* OperandQueue::pPopOoO(void)
     
     // is it a CANCELMARKER ?
     if (AM::OPERAND::bIsOoO(pOperand)) {
-      //vRemove(pOperand);
-      RASSERT(0);
-      return pOperand;
+      Operand* pOperandPopped = _pOperand(Queue::pPop());
+      return pOperandPopped;
     }
     
     pOperand = pOperand->pNextItem();

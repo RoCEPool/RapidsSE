@@ -10,6 +10,9 @@ enum eAM // ASM Macros
   /*    */ AM_CRW_FILTER_END,
   /*    */ AM_CRW_FILTER_ROWS,
 
+  /*    */ AM_CRW_INDEXJOIN_END,
+  /*    */ AM_CRW_INDEXJOIN_ROWS,
+
   /*    */ AM_CRW_JOIN_ROW,
 
   /*    */ AM_CRW_LOOPJOIN_END,
@@ -40,6 +43,7 @@ enum eAM // ASM Macros
   /*    */ AM_HANDLER_ROWBUFFER_AGG,
   /*    */ AM_HANDLER_ROWBUFFER_AGG_GBY,
   /*    */ AM_HANDLER_ROWBUFFER_LIMIT,
+  /*    */ AM_HANDLER_ROWBUFFER_RHT,
 
   /*    */ AM_HANDLER_STREAMDEF_GBY,
   /*    */ AM_HANDLER_STREAMDEF_GBY_END,
@@ -75,14 +79,19 @@ enum eAM // ASM Macros
   /*    */ AM_ROW_FILTER_ROWS,
   /*    */ AM_ROW_FILTER_END,
 
-  /*    */ AM_ROWBUFFER_AGGINIT,
-  /*    */ AM_ROWBUFFER_AGGINIT_END,
-  /*    */ AM_ROWBUFFER_TRAVERSAL,
+  /*    */ AM_ROW_JOIN_ROW,
+
+  /*    */ AM_ROW_LOOPJOIN_END,
+  /*    */ AM_ROW_LOOPJOIN_ROWS,
 
   /*    */ AM_ROW_PROJECT_COLUMNS,
   /*    */ AM_ROW_PROJECT_COLUMNS_AGG,
   /*    */ AM_ROW_PROJECT_END,
   /*    */ AM_ROW_PROJECT_STAR,
+
+  /*    */ AM_ROWBUFFER_AGGINIT,
+  /*    */ AM_ROWBUFFER_AGGINIT_END,
+  /*    */ AM_ROWBUFFER_TRAVERSAL,
 
   /*    */ AM_ENUMS
 };
@@ -96,6 +105,9 @@ static Stz* aAM[]
 
     /*    */ "CRW_FILTER_END"_Stz,
     /*    */ "CRW_FILTER_ROWS"_Stz,
+
+    /*    */ "CRW_INDEXJOIN_END"_Stz,
+    /*    */ "CRW_INDEXJOIN_ROWS"_Stz,
 
     /*    */ "CRW_JOIN_ROW"_Stz,
 
@@ -127,6 +139,7 @@ static Stz* aAM[]
     /*    */ "HANDLER_ROWBUFFER_AGG"_Stz,
     /*    */ "HANDLER_ROWBUFFER_AGG_GBY"_Stz,
     /*    */ "HANDLER_ROWBUFFER_LIMIT"_Stz,
+    /*    */ "HANDLER_ROWBUFFER_RHT"_Stz,
 
     /*    */ "HANDLER_STREAMDEF_GBY"_Stz,
     /*    */ "HANDLER_STREAMDEF_GBY_END"_Stz,
@@ -162,14 +175,19 @@ static Stz* aAM[]
     /*    */ "ROW_FILTER_ROWS"_Stz,
     /*    */ "ROW_FILTER_END"_Stz,
 
-    /*    */ "ROWBUFFER_AGGINIT"_Stz,
-    /*    */ "ROWBUFFER_AGGINIT_END"_Stz,
-    /*    */ "ROWBUFFER_TRAVERSAL"_Stz,
+    /*    */ "ROW_JOIN_ROW"_Stz,
+
+    /*    */ "ROW_LOOPJOIN_END"_Stz,
+    /*    */ "ROW_LOOPJOIN_ROWS"_Stz,
 
     /*    */ "ROW_PROJECT_COLUMNS"_Stz,
     /*    */ "ROW_PROJECT_COLUMNS_AGG"_Stz,
     /*    */ "ROW_PROJECT_END"_Stz,
     /*    */ "ROW_PROJECT_STAR"_Stz,
+
+    /*    */ "ROWBUFFER_AGGINIT"_Stz,
+    /*    */ "ROWBUFFER_AGGINIT_END"_Stz,
+    /*    */ "ROWBUFFER_TRAVERSAL"_Stz,
 
     /*    */ "ENUMS"_Stz
 };

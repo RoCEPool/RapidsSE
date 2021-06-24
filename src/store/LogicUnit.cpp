@@ -629,7 +629,7 @@ void LogicUnit::vOptimise(eEO eOpt)
   m_bSuperFrag = true;
 }
 
-//*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 /* return query fragment number                                               */
 /*----------------------------------------------------------------------------*/
 i8 LogicUnit::iQueryFragment(void)
@@ -652,6 +652,23 @@ void LogicUnit::vSetCC(i8 i_Cond, bool bState)
     m_baCondInd[i_Cond] = 0;
 }
 
+/*----------------------------------------------------------------------------*/
+/* set m_xpPipein and decode into m_ePipeInOperand                            */
+/*----------------------------------------------------------------------------*/
+void LogicUnit::vSetPipein(Operand* pOperand)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  m_xpPipein = pOperand;
+  
+  if (pOperand) {
+    eZK eOperand = (eZK)AM::iOperandZkKind(pOperand);
+    m_ePipeInOperand = eOperand;
+  }
+  else {
+    m_ePipeInOperand = ZK_NONE;
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

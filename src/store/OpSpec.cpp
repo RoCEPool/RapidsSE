@@ -106,6 +106,16 @@ void OpSpec::vAddTopologyEnamePair(Stz* sName, i8 iValue, eTN eToken)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set append right                                                           */
+/*----------------------------------------------------------------------------*/
+void OpSpec::vAppendRight(bool bRight)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+
+  m_bAppendRight = bRight;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get append right                                                           */
 /*----------------------------------------------------------------------------*/
 bool OpSpec::bAppendRight(void)

@@ -279,6 +279,7 @@ namespace OBLIQUE
       static bool bLogMemory(void);
       static void vLogMemory(bool bLogMemory);
       static bool bLogResource(void);
+      static void vTriggerBiding(Task* pTaskBiding, Task* pTriggeringTask);
     };
   
     class THREAD
@@ -418,7 +419,6 @@ namespace OBLIQUE
     static bool bTaskIsLocked(Task* pTask);
     static Task* pTaskNew(Job* pJob);
     static void vTenants(Word* pTenants);
-    static void vTriggerBidingTask(Task* pTaskBiding, Task* pTriggeringTask);
 
     //
     static Task* pExecutingTask(Job* pJob);

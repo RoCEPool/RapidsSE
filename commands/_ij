@@ -7,21 +7,33 @@ create table lt (
   l_key   INTEGER NOT NULL,
   l_name  VARCHAR(32) NOT NULL
 );
-create index li on lt(l_key);
 
 print "loading lt.csv..." ;
-oldLoad lt "../JTEST/leftTable.csv" ;
+load lt "../JTEST/leftTable.csv" ;
 
 create table rt (
-r_key   INTEGER NOT NULL,
-r_name  VARCHAR(32) NOT NULL
+  r_key   INTEGER NOT NULL,
+  r_name  VARCHAR(32) NOT NULL
 );
 create index ri on rt(r_key);
 
 print "loading rt.csv..." ;
-oldLoad rt "../JTEST/rightTable.csv" ;
+load rt "../JTEST/rightTable.csv" ;
 
-join lt li rt ri;
+pipeline indexJoinExp
+begin
+  stage stageA on origin :
+    start | periodic once | stageB | stageC
+
+  stage stageB on all partitions :
+    scan lt | stageC
+
+  stage stageC on all partitions :
+    indexJoin 0 rt ri "LBOUND $I1 $L1 >= UBOUND $I1 $L1 <= " | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+end;
 
 /*============================================================================*/
 /* end                                                                        */

@@ -162,7 +162,7 @@ macro AM_CRW_PROJECT_COLUMNS
   EO_JMP_FALSE CRW_PROJECT
 
   EO_RLU_SET_ITEMS <projectItems>  // C_TAG_PROJECT_ITEMS
-  EO_RLU_SET_COLUMNS <projectSrcColumns>  // C_TAG_PROJECT_SRC_COLUMN
+  EO_RLU_SET_COLUMNS <projectSrcColumns>  // C_TAG_PROJECT_SRC_COLUMNS
   EO_PUSH_RLU_LOCALS
   EO_PUSH_RLU_COLSET
   EO_PUSH_DEVROW_LFT
@@ -190,7 +190,7 @@ macro AM_CRW_PROJECT_COLUMNS_AGG
   EO_JMP_FALSE CRW_PROJECT_AGG
 
   EO_RLU_SET_ITEMS <projectItems>  // C_TAG_PROJECT_ITEMS
-  EO_RLU_SET_COLUMNS <projectSrcColumns>  // C_TAG_PROJECT_SRC_COLUMN
+  EO_RLU_SET_COLUMNS <projectSrcColumns>  // C_TAG_PROJECT_SRC_COLUMNS
   EO_PUSH_RLU_LOCALS
   EO_PUSH_RLU_COLSET
   EO_PUSH_DEVROW_LFT
@@ -240,7 +240,7 @@ macro AM_CRW_FILTER_ROWS
   EO_JMP_FALSE CRW_FILTER
 
   EO_RLU_SET_ITEMS <projectItems>  // C_TAG_PROJECT_ITEMS
-  EO_RLU_SET_COLUMNS <projectSrcColumns>  // C_TAG_PROJECT_SRC_COLUMN
+  EO_RLU_SET_COLUMNS <projectSrcColumns>  // C_TAG_PROJECT_SRC_COLUMNS
   EO_PUSH_RLU_LOCALS
   EO_PUSH_RLU_COLSET
   EO_PUSH_DEVROW_LFT
@@ -262,6 +262,31 @@ macro AM_CRW_FILTER_END
   EO_RETURN
 endMacro
 
+macro AM_CRW_INDEXJOIN_ROWS
+//----------------------------------------------------------------------------//
+// macro AM_CRW_INDEXJOIN_ROWS                                                 //
+//----------------------------------------------------------------------------//
+  // CRW_INDEXJOIN_ROWS
+  Label CRW_INDEXJOIN_ROWS
+
+  // left row
+  EO_PUSH_DEVIXT_LFT
+  EO_DEVIXT_PUSHCOLI <projectSrcColumn>
+
+  Label CRW_INDEXJOIN
+endMacro
+
+//----------------------------------------------------------------------------//
+// macro AM_CRW_INDEXJOIN_END                                                 //
+//----------------------------------------------------------------------------//
+macro AM_CRW_INDEXJOIN_END
+  // CRW_INDEXJOIN_END
+  EO_RETURN_FALSE
+  EO_CALL CRW_JOIN_ROW
+  //EO_ROW_DST_PRINT
+  EO_RETURN
+endMacro
+
 macro AM_CRW_LOOPJOIN_ROWS
 //----------------------------------------------------------------------------//
 // macro AM_CRW_LOOPJOIN_ROWS                                                 //
@@ -271,7 +296,7 @@ macro AM_CRW_LOOPJOIN_ROWS
 
   // right row
   EO_RLU_SET_ITEMS <projectItems>  // C_TAG_PROJECT_ITEMS
-  EO_RLU_SET_COLUMNS <projectSrcColumns>  // C_TAG_PROJECT_SRC_COLUMN
+  EO_RLU_SET_COLUMNS <projectSrcColumns>  // C_TAG_PROJECT_SRC_COLUMNS
   EO_PUSH_RLU_LOCALS
   EO_PUSH_RLU_COLSET
   EO_PUSH_DEVROW_RHT
@@ -299,7 +324,7 @@ endMacro
 macro AM_CRW_JOIN_ROW
   // CRW_JOIN_ROW
   Label CRW_JOIN_ROW
-  //EO_ROW_DST_NEW
+
   EO_PUSH_DEVROW_DST
   EO_PUSH_RLU_POT
   EO_PUSH_RLU_PTN
@@ -307,14 +332,14 @@ macro AM_CRW_JOIN_ROW
 
   // inflate left row into dst row
   EO_PUSH_DEVROW_DST
-  EO_PUSH_DEVROW_LFT
-  EO_DEVROW_COLS_TO_ROW
+  EO_PUSH_DEVIXT_LFT
+  EO_DEVIXT_COLS_TO_ROW
 
   // inflate right row into dst row
   EO_PUSH_DEVROW_DST
-  EO_PUSH_DEVIXT_RHT
+  EO_PUSH_DEVROW_RHT
   EO_INTEGER <rowOffset>  // C_TAG_ROWOFFSET
-  EO_DEVIXT_COLS_TO_ROW_OFS
+  EO_DEVROW_COLS_TO_ROW_OFS
 
   EO_PUSH_DEVROW_DST
   EO_DEVROW_ROW_PRINT

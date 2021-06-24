@@ -620,11 +620,12 @@ void vDev_IXT_POS_LBOUND_GE(i8** aaiDstk)
 
   i8 *aiDstk = *aaiDstk;
 
+  // pop the wrkent
+  EntWrk* pEntWrk = (EntWrk*)(P_PopPtr());
+
   // pop the device
   DevIXT* pDevIXT = _pDevIXT(P_PopPtr());
 
-  // pop the wrkent
-  EntWrk* pEntWrk = (EntWrk*)(P_PopPtr());
   Ent *pEnt = (Ent*)pEntWrk->aEnt();
 
   pDevIXT->m_aEnt = nullptr;
@@ -651,11 +652,12 @@ void vDev_IXT_POS_LBOUND_GT(i8** aaiDstk)
 
   i8 *aiDstk = *aaiDstk;
 
+  // pop the wrkent
+  EntWrk* pEntWrk = (EntWrk*)(P_PopPtr());
+
   // pop the device
   DevIXT* pDevIXT = _pDevIXT(P_PopPtr());
 
-  // pop the wrkent
-  EntWrk* pEntWrk = (EntWrk*)(P_PopPtr());
   Ent *pEnt = (Ent*)pEntWrk->aEnt();
 
   pDevIXT->m_aEnt = nullptr;
@@ -688,11 +690,12 @@ void vDev_IXT_POS_UBOUND_LE(i8** aaiDstk)
 
   i8 *aiDstk = *aaiDstk;
 
+  // pop the wrkent
+  EntWrk* pEntWrk = (EntWrk*)(P_PopPtr());
+
   // pop the device
   DevIXT* pDevIXT = _pDevIXT(P_PopPtr());
 
-  // pop the wrkent
-  EntWrk* pEntWrk = (EntWrk*)(P_PopPtr());
   Ent *pEnt = (Ent*)pEntWrk->aEnt();
 
   pDevIXT->m_aUpperEnt = nullptr;
@@ -726,11 +729,12 @@ void vDev_IXT_POS_UBOUND_LT(i8** aaiDstk)
 {
   i8 *aiDstk = *aaiDstk;
 
+  // pop the wrkent
+  EntWrk* pEntWrk = (EntWrk*)(P_PopPtr());
+
   // pop the device
   DevIXT* pDevIXT = _pDevIXT(P_PopPtr());
 
-  // pop the wrkent
-  EntWrk* pEntWrk = (EntWrk*)(P_PopPtr());
   Ent *pEnt = (Ent*)pEntWrk->aEnt();
 
   pDevIXT->m_aUpperEnt = nullptr;

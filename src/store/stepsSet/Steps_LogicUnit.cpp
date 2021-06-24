@@ -48,6 +48,7 @@ void Step::vAddSteps_LogicUnit(void)
   vAddStep("LogicUnit[].genAggregate"_Stz,  &Step::vLogicUnitGenAggregate);
   vAddStep("LogicUnit[].genAsm"_Stz,        &Step::vLogicUnitGenAsm);
   vAddStep("LogicUnit[].genFilter"_Stz,     &Step::vLogicUnitGenFilter);
+  vAddStep("LogicUnit[].genIndexJoin"_Stz,  &Step::vLogicUnitGenIndexJoin);
   vAddStep("LogicUnit[].genIndexScan"_Stz,  &Step::vLogicUnitGenIndexScan);
   vAddStep("LogicUnit[].genLimit"_Stz,      &Step::vLogicUnitGenLimit);
   vAddStep("LogicUnit[].genLoopJoin"_Stz,   &Step::vLogicUnitGenLoopJoin);
@@ -415,6 +416,22 @@ void Step::vLogicUnitGenFilter(void)
   ExprEval* pExprEval = _pExprEval(m_pDataStack->pPopPtr(__func__));
 
   eEC eError = m_pJob->pLogicUnit_job()->eGenerateFilter(pExprEval);
+
+  m_pDataStack->vPushInt(eError);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].genIndexJoin -- generate indexJoin asm text into file          */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitGenIndexJoin(void)
+{
+  ENTRY();
+
+  ExprEval* pExprEval = _pExprEval(m_pDataStack->pPopPtr(__func__));
+
+  eEC eError = m_pJob->pLogicUnit_job()->eGenerateIndexJoin(pExprEval);
 
   m_pDataStack->vPushInt(eError);
 

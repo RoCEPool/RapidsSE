@@ -14,9 +14,10 @@ namespace STORE
   {
     
   public:
-    i8  m_iPipelineJobId;  // pipeline job id
-    ePX m_eCrossTopo;      // cross topology
-    eXK m_eSendKind;       // hashed, localRobin, normal, robin
+    i8   m_iPipelineJobId;  // pipeline job id
+    ePX  m_eCrossTopo;      // cross topology
+    eXK  m_eSendKind;       // hashed, localRobin, normal, robin
+    bool m_bAppendRight;    // append operand to right queue
   
     i8  m_iDstNode;        // destination node id
     tPN m_tDstPtn;         // destination partition (in grid)
@@ -47,6 +48,7 @@ namespace STORE
 
   public:
     void vAddObject(Object* pObject);
+    bool bAppendRight(void);
     Object* pGetObject(i8 i_Object);
     i8 nObjects(void);
     Operand* pGetOperand(void);

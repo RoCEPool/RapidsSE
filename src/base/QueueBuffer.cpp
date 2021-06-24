@@ -48,7 +48,7 @@ QueueBuffer::QueueBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
   
-  m_nPointers     = 0;
+  m_nPointers   = 0;
   m_ppTopObject = ppFirstPointer();
   m_ppNextFree  = m_ppTopObject;
   m_pNext       = nullptr;
@@ -152,6 +152,21 @@ void QueueBuffer::vNext(QueueBuffer* pQbuffer)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
   
   m_pNext = pQbuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* peek at top item                                                           */
+/*----------------------------------------------------------------------------*/
+Object* QueueBuffer::pPeek(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
+  
+  if (0 == m_nPointers)
+    return nullptr;
+
+  Object* pObject = * m_ppTopObject;
+    
+  return pObject;
 }
 
 /*----------------------------------------------------------------------------*/

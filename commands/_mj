@@ -1,0 +1,44 @@
+/*============================================================================*/
+/* _mj -- merge join                                                          */
+/*============================================================================*/
+bc;
+
+create table lt (
+  l_key   INTEGER NOT NULL,
+  l_name  VARCHAR(32) NOT NULL
+);
+create index li on lt(l_key);
+
+print "loading lt.csv..." ;
+load lt "../JTEST/leftTable.csv" ;
+
+create table rt (
+  r_key   INTEGER NOT NULL,
+  r_name  VARCHAR(32) NOT NULL
+);
+create index ri on rt(r_key);
+
+print "loading rt.csv..." ;
+load rt "../JTEST/rightTable.csv" ;
+
+pipeline mergeJoinExp
+begin
+  stage stageA on origin :
+    start | periodic once | stageB | stageC
+
+  stage stageB on all partitions :
+    indexScan 0 lt li | stageD
+
+  stage stageC on all partitions :
+    indexScan 0 rt ri | stageD right
+
+  stage stageD on all partitions :
+    mergeJoin 0 "$L1 $R1 == " | stageE
+
+  stage stageE on origin :
+    output | sink | stageA
+end;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

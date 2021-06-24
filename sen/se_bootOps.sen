@@ -81,14 +81,13 @@ assert::stack_0
 
 "i" .verbose
 
+  "OP_indexJoin.sen"            include
   "OP_indexScan.sen"            include
   "OP_input.sen"                include
   "OP_insDel.sen"               include
   "OP_insert.sen"               include
 
 "j" .verbose
-
-  "OP_loopJoin.sen"             include
 
 "k" .verbose
 
@@ -108,6 +107,7 @@ assert::stack_0
   "OP_listTables.sen"           include
   "OP_listTableDefs.sen"        include
   "OP_listTenants.sen"          include
+  "OP_loopJoin.sen"             include
 
 "m" .verbose
 

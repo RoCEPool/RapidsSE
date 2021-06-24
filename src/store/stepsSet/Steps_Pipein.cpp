@@ -42,16 +42,12 @@ void Step::vPipeinBide(void)
 {
   ENTRY();
   
-  m_pJob->pLogicUnit_job()->m_xpPipein = m_pJob->m_pOp->pPopLeft();
-  
-  if (m_pJob->pLogicUnit_job()->m_xpPipein.bIsNull()) {
-    vScheduleBide();
-  }
-  else {
-    Operand* pOperand = * m_pJob->pLogicUnit_job()->m_xpPipein;
+  Operand* pOperand = m_pJob->m_pOp->pPopOoOLeft();
+  m_pJob->pLogicUnit_job()->vSetPipein(pOperand);
     
-    eZK eOperand = (eZK)AM::iOperandZkKind(pOperand);
-    m_pJob->pLogicUnit_job()->m_ePipeInOperand = eOperand;
+  if (m_pJob->pLogicUnit_job()->m_xpPipein.bIsNull()) {
+    RASSERT(bIsLocked());
+    vScheduleBide();
   }
   
   EXIT();
@@ -63,17 +59,19 @@ void Step::vPipeinBide(void)
 void Step::vPipeinBideNext(void)
 {
   ENTRY();
-    
+ 
+  Operand* pOperand;
+  
   if (m_pJob->pLogicUnit_job()->m_xpPipein.bIsNull()) {
     
-    Operand* pOperand = m_pJob->m_pOp->pPopLeft();
-    m_pJob->pLogicUnit_job()->m_xpPipein = pOperand;
+    if ( (pOperand = m_pJob->m_pOp->pPopOoOLeft()) ) {
+      m_pJob->pLogicUnit_job()->vSetPipein(pOperand);
+    }
+    else {
+      NEVER_REACH;
+    }
     
-    eZK eOperand = (eZK)AM::iOperandZkKind(pOperand);
-    m_pJob->pLogicUnit_job()->m_ePipeInOperand = eOperand;
   }
-  
-  RASSERT(*m_pJob->pLogicUnit_job()->m_xpPipein);
   
   EXIT();
 }
@@ -152,11 +150,9 @@ void Step::vPipeinNext(void)
   
   RASSERT(m_pJob->pLogicUnit_job()->m_xpPipein.bIsNull());
       
-  Operand* pOperand = m_pJob->m_pOp->pPopLeft();
-  m_pJob->pLogicUnit_job()->m_xpPipein = pOperand;
+  Operand* pOperand = m_pJob->m_pOp->pPopOoOLeft();
   
-  eZK eOperand = (eZK)AM::iOperandZkKind(pOperand);
-  m_pJob->pLogicUnit_job()->m_ePipeInOperand = eOperand;
+  m_pJob->pLogicUnit_job()->vSetPipein(pOperand);
   
   RASSERT(m_pJob->pLogicUnit_job()->m_xpPipein.bIsNotNull());
 

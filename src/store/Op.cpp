@@ -300,60 +300,67 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-//  vTrace("%s::vAppendLeft : %p %s\n"_Stz,
-//         m_sOpNm.szStz(),
-//         pOperand,
-//         aCN[pOperand->eGetClassNo()]);
-    
+#ifdef WITH_SEPARATE_OOO_QUEUE
+  if (AM::OPERAND::bIsOoO(pOperand)) {
+    vAppendOoO(pOperand,pTriggeringTask);
+    return;
+  }
+#endif
+      
   vGrabTaskLock();
+  RASSERT(bIsLocked());
 
   m_pQueueLeft->vAppendOperand(pOperand);
 
   AM::vOperandsInc();
 
-  Task* pBidingTask = AM::pExecutingTask(m_pOpJob);
+  Task* pDstTask = AM::pExecutingTask(m_pOpJob);
   
-  if (TS_BIDING != (eTS)AM::iTaskState(pBidingTask)) {
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for biding op/task
+  
+  eTS eTaskState = (eTS)AM::iTaskState(pDstTask);
+  if (TS_BIDING == eTaskState) {
+    AM::TASK::vTriggerBiding(pDstTask,pTriggeringTask);
+    return;
+  }
+  else {
     vDropTaskLock();
     return;
   }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // trigger this biding op
-  AM::vTriggerBidingTask(pBidingTask,pTriggeringTask);
 }
 
 /*----------------------------------------------------------------------------*/
 /* append operand to this op's operand out-of-order queue                     */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_SEPARATE_OOO_QUEUE
 void Op::vAppendOoO(Operand* pOperand, Task* pTriggeringTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-//  vTrace("%s::vAppendLeft : %p %s\n"_Stz,
-//         m_sOpNm.szStz(),
-//         pOperand,
-//         aCN[pOperand->eGetClassNo()]);
-    
+      
   vGrabTaskLock();
+  RASSERT(bIsLocked());
 
   m_pQueueOoO->vAppendOperand(pOperand);
 
   AM::vOperandsInc();
 
-  Task* pBidingTask = AM::pExecutingTask(m_pOpJob);
+  Task* pDstTask = AM::pExecutingTask(m_pOpJob);
   
-  if (TS_BIDING != (eTS)AM::iTaskState(pBidingTask)) {
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for biding op/task
+  
+  eTS eTaskState = (eTS)AM::iTaskState(pDstTask);
+  if (TS_BIDING == eTaskState) {
+    AM::TASK::vTriggerBiding(pDstTask,pTriggeringTask);
+    return;
+  }
+  else {
     vDropTaskLock();
     return;
   }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // trigger this biding op
-  AM::vTriggerBidingTask(pBidingTask,pTriggeringTask);
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* append operand to this op's right operand queue                            */
@@ -373,9 +380,10 @@ void Op::vAppendRight(Operand* pOperand, Task* pTriggeringTask)
   
   AM::vOperandsInc();
 
-  Task* pBidingTask = AM::pExecutingTask(m_pOpJob);
+  Task* pDstTask = AM::pExecutingTask(m_pOpJob);
   
-  if (TS_BIDING != (eTS)AM::iTaskState(pBidingTask)) {
+  eTS eTaskState = (eTS)AM::iTaskState(pDstTask);
+  if (TS_BIDING != eTaskState) {
     vDropTaskLock();
     return;
   }
@@ -383,7 +391,7 @@ void Op::vAppendRight(Operand* pOperand, Task* pTriggeringTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // trigger this biding op
-  AM::vTriggerBidingTask(pBidingTask,pTriggeringTask);
+  AM::TASK::vTriggerBiding(pDstTask,pTriggeringTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -588,7 +596,7 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       
       break;
 
-    case   ZK_CSVBUFFER:
+    case ZK_CSVBUFFER:
       // should have received a ZK_STARTMARKER
       if ( ! m_iOperandCount[ZK_STARTMARKER]) {
         vTrace("%s: %s arrived without a prior ZK_STARTMARKER\n"_Stz,
@@ -597,11 +605,11 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       }
       break;
 
-    case   ZK_CRWBUFFER:
-    case   ZK_EACHROWBUFFER:
-    case   ZK_ENTBUFFER:
-    case   ZK_ROWBUFFER:
-    case   ZK_SRTBUFFER:
+    case ZK_CRWBUFFER:
+    case ZK_EACHROWBUFFER:
+    case ZK_ENTBUFFER:
+    case ZK_ROWBUFFER:
+    case ZK_SRTBUFFER:
       // should have received a ZK_DATAPULSE
       if ( ! m_iOperandCount[ZK_DATAPULSE]) {
         vTrace("%s: %s arrived without a prior ZK_DATAPULSE\n"_Stz,
@@ -625,7 +633,7 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       
       break;
 
-    case   ZK_DATAPULSE:
+    case ZK_DATAPULSE:
       // should have received a ZK_STARTMARKER
       if ( ! m_iOperandCount[ZK_STARTMARKER]) {
         vTrace("%s: %s arrived without a prior ZK_STARTMARKER\n"_Stz,
@@ -641,7 +649,7 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       }
       break;
       
-    case   ZK_EOSMARKER:
+    case ZK_EOSMARKER:
       // should have received a ZK_STARTMARKER
       if ( ! m_iOperandCount[ZK_STARTMARKER]) {
         vTrace("%s: %s arrived without a prior ZK_STARTMARKER\n"_Stz,
@@ -663,7 +671,7 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       }
       break;
 
-    case   ZK_ERRORMARKER:
+    case ZK_ERRORMARKER:
       // should not have received a ZK_ERRORREDMARKER
       if ( m_iOperandCount[ZK_ERROREDMARKER]) {
         vTrace("%s: %s arrived after ZK_ERRORMARKER\n"_Stz, szOpNm());
@@ -671,7 +679,7 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       }
       break;
       
-    case   ZK_ERROREDMARKER:
+    case ZK_ERROREDMARKER:
       // Only StartOP receives an ZK_ERROREDMARKER
       if ( ! m_sOpNm.bSame("start"_Stz) ) {
         vTrace("%s: incorrectly received a %s\n"_Stz,
@@ -724,7 +732,7 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       }
       break;
 
-    case   ZK_EXITEDMARKER:
+    case ZK_EXITEDMARKER:
       // Only StartOP receives an ZK_EXITEDMARKER
       if ( ! m_sOpNm.bSame("start"_Stz) ) {
         vTrace("%s: incorrectly received a %s\n"_Stz,
@@ -738,7 +746,7 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       }
       break;
 
-    case   ZK_EXITEDEARLYMARKER:
+    case ZK_EXITEDEARLYMARKER:
       // Only StartOP receives an ZK_EXITEDEARLYMARKER
       if ( ! m_sOpNm.bSame("start"_Stz) ) {
         vTrace("%s: incorrectly received a %s\n"_Stz,
@@ -761,7 +769,7 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       }
       break;
   
-    case   ZK_STARTMARKER:
+    case ZK_STARTMARKER:
       // should not have received a ZK_STARTMARKER already
       if (m_iOperandCount[i_OperandKind]) {
         vTrace("%s: multiple ZK_STARTMARKER's arrived\n"_Stz, szOpNm());
@@ -769,7 +777,7 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       }
       break;
       
-    case   ZK_STARTEDMARKER:
+    case ZK_STARTEDMARKER:
       // should have received a ZK_STARTMARKER
       if ( ! m_iOperandCount[ZK_STARTMARKER]) {
         vTrace("%s: %s arrived without a prior ZK_STARTMARKER\n"_Stz, szOpNm(), aZK[i_OperandKind]);
@@ -790,7 +798,7 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       }
       break;
 
-    case   ZK_STREAMDEF:
+    case ZK_STREAMDEF:
       // should have received a ZK_STARTMARKER
       if ( ! m_iOperandCount[ZK_STARTMARKER]) {
         vTrace("ZK_STARTEDMARKER arrived without a prior ZK_STARTMARKER\n"_Stz);
@@ -1239,34 +1247,22 @@ Operand* Op::pPopLeft(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Operand* pOperand = nullptr;
-  
   vGrabTaskLock();
+  RASSERT(bIsLocked());
   
-  pOperand = m_pQueueLeft->pPopQueue();
-  
-  if (! pOperand)
-    return nullptr;
+  Operand* pOperand = m_pQueueLeft->pPopQueue();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vDropTaskLock();
-    
-  AM::vOperandsDec();
   
-  if (m_bTraceOp) {
-//    vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
-//           m_sOpNm.szStz(),
-//           m_pStage->szStageNm(),
-//           m_i_Node,
-//           m_tPtnNo,
-//           m_pPipelineJob,
-//           "pPopQueue :"_Stz,
-//           AM::pOperandName(pOperand),
-//           pOperand);
-    vOpTrace(pOperand,"pPopQueue :"_Stz);
+  if (pOperand) {
+    vDropTaskLock();
+    AM::vOperandsDec();
+    return pOperand;
   }
-  
-  return pOperand;
+  else {
+    RASSERT(bIsLocked());
+    return nullptr;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1276,33 +1272,56 @@ Operand* Op::pPopOoO(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Operand* pOperand = nullptr;
-  
   vGrabTaskLock();
+  RASSERT(bIsLocked());
+
+#ifdef WITH_SEPARATE_OOO_QUEUE
+  Operand* pOperand = m_pQueueOoO->pPopOoO();
+#else
+  Operand* pOperand = m_pQueueLeft->pPopOoO();
+#endif
   
-  pOperand = m_pQueueLeft->pPopOoO();
-    
   vDropTaskLock();
   
   if (pOperand)
     AM::vOperandsDec();
+  
+  return pOperand;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop operand first off OoO queue, if null then Left queue                   */
+/*----------------------------------------------------------------------------*/
+Operand* Op::pPopOoOLeft(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  vGrabTaskLock();
+  RASSERT(bIsLocked());
+  
+  //Operand* pOperand = m_pQueueLeft->pPopQueue();
+  
+#ifdef WITH_SEPARATE_OOO_QUEUE
+  Operand* pOperand = m_pQueueOoO->pPopOoO();
+  if (! pOperand)
+    pOperand = m_pQueueLeft->pPopQueue();
+#else
+  Operand* pOperand = m_pQueueLeft->pPopOoO();
+  if (! pOperand)
+    pOperand = m_pQueueLeft->pPopQueue();
+#endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (m_bTraceOp && pOperand) {
-//    vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
-//           m_sOpNm.szStz(),
-//           m_pStage->szStageNm(),
-//           m_i_Node,
-//           m_tPtnNo,
-//           m_pPipelineJob,
-//           "pPopQueue :"_Stz,
-//           AM::pOperandName(pOperand),
-//           pOperand);
-    vOpTrace(pOperand,"pPopQueueOoO :"_Stz);
+  if (pOperand) {
+    vDropTaskLock();
+    AM::vOperandsDec();
+    return pOperand;
   }
-  
-  return pOperand;
+  else {
+    RASSERT(bIsLocked());
+    return nullptr;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
