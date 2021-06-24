@@ -355,7 +355,7 @@ void Step::vStrRandom(void)
   
   i8 iLength = m_pDataStack->iPopInt(__func__);
   
-  s256 sRnd;
+  s48K sRnd;
   
   RndLib::vString(sRnd,iLength);
   

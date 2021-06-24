@@ -13,7 +13,7 @@ namespace BASE
     _Header m_wxType;
     Dtm     m_wxValueCell;
   
-    char m_caStringArea[C_MAX_VCH];
+    char m_caStringArea[C_16KB];
 
   public:
     TypedCell(void);

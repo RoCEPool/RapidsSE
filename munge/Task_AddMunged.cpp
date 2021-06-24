@@ -5421,6 +5421,8 @@ void Task::vAddMunged(Task* )
     ": ping_action\n"
     "\n"
     "  \"ping\" str.toPromptOut op::pipeOut\n"
+    "  //10000 str.random dup .\n"
+    "  //  str.toPromptOut op::pipeOut\n"
     "\n"
     "  \"ping sleeps\" .\n"
     "  1 thread::sleepSsec\n"
