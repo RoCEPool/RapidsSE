@@ -185,7 +185,6 @@ void AggregateSplit::vInsertProjection(QueryNodeList* pAggList,
     QueryNode* pSymExpr = Expr::pOrdinalToSymbolic(pOrdExpr, pColumnExprList, pRootNode);
 
     // Push down each pAggList child into pChild
-    // TODO: ensure that the pushdown checks for duplicates and ignores them.
     ProjectOp::vPushdownExpr(pChild, pSymExpr, nullptr);
   }
 

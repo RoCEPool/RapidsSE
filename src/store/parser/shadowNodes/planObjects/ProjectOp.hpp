@@ -78,6 +78,10 @@ namespace Parser
     // Returns the number of columns being projected
     static i8 nColumns(QueryNode* pNode);
 
+    // Returns a ptr to the internal ProjectedColumn node (not Expr) that contains
+    // a symbolically equal expression as pExpr, or nullptr
+    static QueryNode* pColumnWithExpr(QueryNode* pNode, QueryNode* pExpr);
+
   protected:
 
   };

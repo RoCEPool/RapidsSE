@@ -452,7 +452,20 @@ void ProjectOp::vPushdownExpr(QueryNode* pNode, QueryNode* pExpr, Text* pAlias)
   ASSERT(Expr::bIsNotOrdinal(pExpr));
 
   // First check if the expression is already being projected
+  QueryNode* pExistingProjCol = pColumnWithExpr(pNode, pExpr);
 
+  if (pExistingProjCol) {
+    ASSERT(ProjectedColumn::bIsOfType(pExistingProjCol));
+
+    if (!ProjectedColumn::szAliasName(pExistingProjCol) && pAlias) {
+      ProjectedColumn::vSetAlias(pExistingProjCol, pAlias);
+      pAlias = nullptr;
+    }
+
+    delete pExpr;
+    delete pAlias;
+    return;
+  }
 
   // Create a projected column
   QueryNode* pProjectedColumn = ProjectedColumn::pCreate(pExpr, pAlias);
@@ -580,6 +593,40 @@ i8 ProjectOp::nColumns(QueryNode* pNode)
 
   QueryNode* pProjCols = pProjectedColumns(pNode);
   return pProjCols->nChildren();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns a ptr to the internal ProjectedColumn node (not Expr) that contains*/
+/* a symbolically equal expression as pExpr, or nullptr                       */
+/*----------------------------------------------------------------------------*/
+QueryNode* ProjectOp::pColumnWithExpr(QueryNode* pNode, QueryNode* pExpr)
+{
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pExpr);
+  ASSERT(Expr::bIsOfType(pExpr));
+  ASSERT(Expr::bIsNotOrdinal(pExpr));
+
+  QueryNode* pMatchingProjCol = nullptr;
+
+  PlanNodeIter* pIter = pProjectedColumns(pNode)->pNewChildrenIter();
+  while (pIter->bHasNext()) {
+
+    QueryNode* pProjCol = _pQueryNode(pIter->pNext());
+    ASSERT(ProjectedColumn::bIsOfType(pProjCol));
+
+    QueryNode* pColExpr = ProjectedColumn::pExprNode(pProjCol);
+    ASSERT(Expr::bIsOfType(pColExpr));
+
+    if (Expr::bIsSymbolicallyEqual(pExpr, pColExpr)) {
+      pMatchingProjCol = pProjCol;
+      break;
+    }
+  }
+
+  delete pIter;
+
+  return pMatchingProjCol;
 }
 
 /*============================================================================*/
