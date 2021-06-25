@@ -50,42 +50,59 @@ void AggregateSplit::vSplitAggregates(PlanNode *pRootNode)
 
     QueryNodeList* pCommonAggList = nullptr;
 
+
+
+    i8 nCols = ProjectOp::nColumns(pSqlOp);
+    b1 bRemoveCol[nCols]; // remove associated column if true
+
+    QueryNodeList* pColumnExprList = PlanObject::pColumnExprs(_pQueryNode(pSqlOp->pFirstChild()), pRootNode);
+
     // We have a ProjectOp (or AggregateOp)
     // Check each ordinal projected column to see if it has multiple aggregation terms
-    QueryNode* pOrdProjCols = ProjectOp::pOrdinalProjectedColumns(pSqlOp, pRootNode);
-    PlanNodeIter* pIter = pOrdProjCols->pNewChildrenIter();
+    QueryNode* pSymProjCols = ProjectOp::pProjectedColumns(pSqlOp);
+    PlanNodeIter* pIter = pSymProjCols->pNewChildrenIter();
 
-    // Check the expression of each ordinal projected column
+    // Iterate each symbolic projected column
+    i8 i = -1;
     while (pIter->bHasNext()) {
-      QueryNode* pOrdProjCol = _pQueryNode(pIter->pNext());
-      ASSERT(ProjectedColumn::bIsOfType(pOrdProjCol));
+      QueryNode* pSymProjCol = _pQueryNode(pIter->pNext());
+      ASSERT(ProjectedColumn::bIsOfType(pSymProjCol));
 
-      QueryNode* pOrdExpr = ProjectedColumn::pExprNode(pOrdProjCol);
+      ++i;
+      bRemoveCol[i] = false;
+
+      QueryNode* pSymExpr = ProjectedColumn::pExprNode(pSymProjCol);
+      ASSERT(Expr::bIsOfType(pSymExpr));
+      ASSERT(!Expr::bIsFullyOrdinal(pSymExpr));
+
+      QueryNode* pOrdExpr = Expr::pSymbolicToOrdinal(pSymExpr, pColumnExprList, pRootNode);
       ASSERT(Expr::bIsOfType(pOrdExpr));
       ASSERT(Expr::bIsFullyOrdinal(pOrdExpr));
 
       if (!Expr::bContainsAnAggregate(pOrdExpr)) {
         // Nothing to worry about here
+        delete pOrdExpr;
         continue;
       }
 
       // The ordinal expression contains aggregations. But does it contain
-      // more than one expression?
+      // more than one expression? Get a list of aggregation expressions that exist
+      // in pOrdExpr. Note that these are pointers to exprs in pOrdExpr, not copies.
       QueryNodeList* pAggList = Expr::pAggregateExprs(pOrdExpr, false);
 
       if (pAggList->nItems() > 1) {
+        bRemoveCol[i] = true;
+
         // Make a list of aggregates to be split. After we have looked at all projected
         // columns then we can insert a ProjectOp underneath.
 
-        if (pCommonAggList) {
-          // move the aggregation terms to the common list
-          while (pAggList->nItems() > 0){
-            pCommonAggList->vAppend(pAggList->pPop());
-          }
+        if (!pCommonAggList) {
+          pCommonAggList = new QueryNodeList();
+        }
 
-        } else {
-          pCommonAggList = pAggList;
-          pAggList = nullptr;
+        // Copy the aggregation terms to the common list
+        while (pAggList->nItems() > 0){
+          pCommonAggList->vAppend(pAggList->pPop()->pDeepCopy(true));
         }
       }
 
@@ -93,20 +110,26 @@ void AggregateSplit::vSplitAggregates(PlanNode *pRootNode)
         pAggList->vRemoveAll();
         delete pAggList;
       }
+
+      delete pOrdExpr;
     }
 
     // Insert the Project/AggregateOp with these aggregates
     if (pCommonAggList) {
-      vInsertProjection(pCommonAggList, pSqlOp, pRootNode);
+      vInsertProjection(pCommonAggList, bRemoveCol, nCols, pSqlOp, pColumnExprList, pRootNode);
       ASSERT(pCommonAggList->nItems() > 0);
+      pCommonAggList->vDeleteAll();
       delete pCommonAggList;
     }
 
+    pColumnExprList->vDeleteAll();
+    delete pColumnExprList;
+
     delete pIter;
-    delete pOrdProjCols;
 
     return GraphNav::WALK_CONTINUE;
   };
+
 
   // Walk each node from the bottom up and inspect each ProjectOp/AggregateOp.
   // We use a bottom-up walk because we may be modifying the children of
@@ -119,18 +142,40 @@ void AggregateSplit::vSplitAggregates(PlanNode *pRootNode)
 /* Inserts a ProjectOp or AggregateOp below pParentNode with the aggregate    */
 /* expressions from pAggList. pAggList items are borrowed and must be copied  */
 /*----------------------------------------------------------------------------*/
-void AggregateSplit::vInsertProjection(QueryNodeList* pAggList, QueryNode* pParentNode, PlanNode* pRootNode)
+void AggregateSplit::vInsertProjection(QueryNodeList* pAggList,
+                                       b1* bRemoveCols,
+                                       i8 nColumns,
+                                       QueryNode* pParentNode,
+                                       QueryNodeList* pColumnExprList,
+                                       PlanNode* pRootNode)
 {
   ASSERT(pAggList);
   ASSERT(pAggList->nItems() > 0);
   ASSERT(pParentNode);
   ASSERT(ProjectOp::bIsOfType(pParentNode));
 
-  QueryNodeList* pColumnExprList = ProjectOp::pColumnExprs(_pQueryNode(pParentNode->pFirstChild()), pRootNode);
-
   // Duplicate pParentNode as pChild
   QueryNode* pChild = pParentNode->pDeepCopy(true, nullptr);
 
+  // Remove projected columns from pChild that contain multiple aggregations
+  // in the one expression. These expressions exist in the parent but are not
+  // required in this child ProjectOp.
+  PlanNodeIter* pColIter = ProjectOp::pProjectedColumns(pChild)->pNewChildrenIter();
+  i8 i = -1;
+
+  while (pColIter->bHasNext()) {
+    PlanNode* pProjCol = pColIter->pNext();
+    ++i;
+
+    if (bRemoveCols[i]) {
+      pColIter->vRemove();
+      delete pProjCol;
+    }
+  }
+  delete pColIter;
+
+
+  // Now we can go through the list of expressions that need to be projected and add them
   QueryNodeIter* pIter = pAggList->pNewIter();
   while (pIter->bHasNext()) {
 
@@ -146,11 +191,9 @@ void AggregateSplit::vInsertProjection(QueryNodeList* pAggList, QueryNode* pPare
 
   delete pIter;
 
-  pColumnExprList->vDeleteAll();
-  delete pColumnExprList;
-
   // Insert pChild as child of pParent
   pParentNode->vInsertAsParentOfChildren(pChild);
+  PlanObject::vClearLocation(pParentNode);
 }
 
 /*============================================================================*/

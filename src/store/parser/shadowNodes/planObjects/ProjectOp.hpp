@@ -75,6 +75,9 @@ namespace Parser
     // expressions from each partition or node. Used to factor in node-level aggregation.
     static QueryNode* pCreateDoubleSuperAggregate(QueryNode* pSinglePartitionNode);
 
+    // Returns the number of columns being projected
+    static i8 nColumns(QueryNode* pNode);
+
   protected:
 
   };

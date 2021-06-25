@@ -570,6 +570,18 @@ QueryNode* ProjectOp::pCreateDoubleSuperAggregate(QueryNode* pSinglePartitionNod
   return pNewOp;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns the number of columns being projected                              */
+/*----------------------------------------------------------------------------*/
+i8 ProjectOp::nColumns(QueryNode* pNode)
+{
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pProjCols = pProjectedColumns(pNode);
+  return pProjCols->nChildren();
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
