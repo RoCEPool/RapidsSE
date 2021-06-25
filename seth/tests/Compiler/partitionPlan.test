@@ -112,7 +112,22 @@ EXPLAIN STAGE partitionExplain
 SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3
 FROM    t1
 ;
-rows: (*, 'partitionExplain', *)
+rows:
+(*,'partitionExplain',
+'StatementMarker: select
+» location: origin
+» queryText: "SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3 FROM    t1"
+
+-> projectOp
+   » column: (Alias = x1 ; Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+   » column: (Alias = x2 ; Expr = rapidsse.public.t1.c2 + 1 ; Ordinal Expr = $2 + 1)
+   » column: (Alias = x3 ; Expr = rapidsse.public.t1.c1 / rapidsse.public.t1.c2 ; Ordinal Expr = $1 / $2)
+
+-> -> tableScanOp
+      » location: all partitions
+      » table: (rapidsse.public.t1)'
+)
+
 
 --  (102) Simple select with WHERE clause
 EXPLAIN STAGE partitionExplain
@@ -120,7 +135,26 @@ SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3
 FROM    t1
 WHERE   c1/c2 > 0
 ;
-rows: (*, 'partitionExplain', *)
+rows:
+(12,'partitionExplain',
+'StatementMarker: select
+» location: origin
+» queryText: "SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3 FROM    t1 WHERE   c1/c2 > 0"
+
+-> projectOp
+   » column: (Alias = x1 ; Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+   » column: (Alias = x2 ; Expr = rapidsse.public.t1.c2 + 1 ; Ordinal Expr = $2 + 1)
+   » column: (Alias = x3 ; Expr = rapidsse.public.t1.c1 / rapidsse.public.t1.c2 ; Ordinal Expr = $1 / $2)
+
+-> -> filterOp
+      » expr: ((rapidsse.public.t1.c1 / rapidsse.public.t1.c2) > 0)
+      » ordinal expr: (($1 / $2) > 0)
+
+-> -> -> tableScanOp
+         » location: all partitions
+         » table: (rapidsse.public.t1)'
+)
+
 
 --  (103) Simple select with ORDER BY clause
 EXPLAIN STAGE partitionExplain
@@ -128,7 +162,34 @@ SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3
 FROM    t1
 ORDER BY x2
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3 FROM    t1 ORDER BY x2"
+
+-> orderOp
+   » location: origin
+   » order expr: ((x2) ASC)
+   » ordinal order expr: (($2) ASC)
+
+-> -> orderOp
+      » location: all nodes
+      » order expr: ((x2) ASC)
+      » ordinal order expr: (($2) ASC)
+
+-> -> -> orderOp
+         » order expr: ((x2) ASC)
+         » ordinal order expr: (($2) ASC)
+
+-> -> -> -> projectOp
+            » column: (Alias = x1 ; Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+            » column: (Alias = x2 ; Expr = rapidsse.public.t1.c2 + 1 ; Ordinal Expr = $2 + 1)
+            » column: (Alias = x3 ; Expr = rapidsse.public.t1.c1 / rapidsse.public.t1.c2 ; Ordinal Expr = $1 / $2)
+
+-> -> -> -> -> tableScanOp
+               » location: all partitions
+               » table: (rapidsse.public.t1)'
+)
+
 
 --  (04) Simple select with LIMIT clause
 EXPLAIN STAGE partitionExplain
@@ -136,16 +197,121 @@ SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3
 FROM    t1
 LIMIT   10
 ;
-rows: (*, 'partitionExplain', *)
+rows: (12,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3 FROM    t1 LIMIT   10"
 
---  (105) Simple select with ORDER BY and LIMIT clause
+-> limitOp
+   » location: origin
+   » limit: (10)
+
+-> -> limitOp
+      » location: all nodes
+      » limit: (10)
+
+-> -> -> limitOp
+         » limit: (10)
+
+-> -> -> -> projectOp
+            » column: (Alias = x1 ; Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+            » column: (Alias = x2 ; Expr = rapidsse.public.t1.c2 + 1 ; Ordinal Expr = $2 + 1)
+            » column: (Alias = x3 ; Expr = rapidsse.public.t1.c1 / rapidsse.public.t1.c2 ; Ordinal Expr = $1 / $2)
+
+-> -> -> -> -> tableScanOp
+               » location: all partitions
+               » table: (rapidsse.public.t1)'
+)
+
+
+--  (105a) Simple select with ORDER BY and LIMIT clause
 EXPLAIN STAGE partitionExplain
 SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3
 FROM    t1
 ORDER BY x2
 LIMIT   10
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3 FROM    t1 ORDER BY x2 LIMIT   10"
+
+-> limitOp
+   » limit: (10)
+
+-> -> orderOp
+      » location: origin
+      » order expr: ((x2) ASC)
+      » ordinal order expr: (($2) ASC)
+
+-> -> -> limitOp
+         » limit: (10)
+
+-> -> -> -> orderOp
+            » location: all nodes
+            » order expr: ((x2) ASC)
+            » ordinal order expr: (($2) ASC)
+
+-> -> -> -> -> limitOp
+               » limit: (10)
+
+-> -> -> -> -> -> orderOp
+                  » order expr: ((x2) ASC)
+                  » ordinal order expr: (($2) ASC)
+
+-> -> -> -> -> -> -> projectOp
+                     » column: (Alias = x1 ; Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+                     » column: (Alias = x2 ; Expr = rapidsse.public.t1.c2 + 1 ; Ordinal Expr = $2 + 1)
+                     » column: (Alias = x3 ; Expr = rapidsse.public.t1.c1 / rapidsse.public.t1.c2 ; Ordinal Expr = $1 / $2)
+
+-> -> -> -> -> -> -> -> tableScanOp
+                        » location: all partitions
+                        » table: (rapidsse.public.t1)'
+)
+
+--  (105b) Simple select with ORDER BY and LIMIT with offset clause
+EXPLAIN STAGE partitionExplain
+SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3
+FROM    t1
+ORDER BY x2
+LIMIT   10 OFFSET 5
+;
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3 FROM    t1 ORDER BY x2 LIMIT   10 OFFSET 5"
+
+-> limitOp
+   » limit: (10)
+   » offset: (5)
+
+-> -> orderOp
+      » location: origin
+      » order expr: ((x2) ASC)
+      » ordinal order expr: (($2) ASC)
+
+-> -> -> limitOp
+         » limit: (15)
+
+-> -> -> -> orderOp
+            » location: all nodes
+            » order expr: ((x2) ASC)
+            » ordinal order expr: (($2) ASC)
+
+-> -> -> -> -> limitOp
+               » limit: (15)
+
+-> -> -> -> -> -> orderOp
+                  » order expr: ((x2) ASC)
+                  » ordinal order expr: (($2) ASC)
+
+-> -> -> -> -> -> -> projectOp
+                     » column: (Alias = x1 ; Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+                     » column: (Alias = x2 ; Expr = rapidsse.public.t1.c2 + 1 ; Ordinal Expr = $2 + 1)
+                     » column: (Alias = x3 ; Expr = rapidsse.public.t1.c1 / rapidsse.public.t1.c2 ; Ordinal Expr = $1 / $2)
+
+-> -> -> -> -> -> -> -> tableScanOp
+                        » location: all partitions
+                        » table: (rapidsse.public.t1)'
+)
+
 
 --  (106) Simple select with ORDER BY clause & post-project
 EXPLAIN STAGE partitionExplain
@@ -153,7 +319,40 @@ SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3
 FROM    t1
 ORDER BY c1 + c2
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3 FROM    t1 ORDER BY c1 + c2"
+
+-> projectOp
+   » column: (Alias = x1 ; Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+   » column: (Alias = x2 ; Expr = rapidsse.public.t1.c2 + 1 ; Ordinal Expr = $2)
+   » column: (Alias = x3 ; Expr = rapidsse.public.t1.c1 / rapidsse.public.t1.c2 ; Ordinal Expr = $3)
+
+-> -> orderOp
+      » location: origin
+      » order expr: ((rapidsse.public.t1.c1 + rapidsse.public.t1.c2) ASC)
+      » ordinal order expr: (($1 + $4) ASC)
+
+-> -> -> orderOp
+         » location: all nodes
+         » order expr: ((rapidsse.public.t1.c1 + rapidsse.public.t1.c2) ASC)
+         » ordinal order expr: (($1 + $4) ASC)
+
+-> -> -> -> orderOp
+            » order expr: ((rapidsse.public.t1.c1 + rapidsse.public.t1.c2) ASC)
+            » ordinal order expr: (($1 + $4) ASC)
+
+-> -> -> -> -> projectOp
+               » column: (Alias = x1 ; Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+               » column: (Alias = x2 ; Expr = rapidsse.public.t1.c2 + 1 ; Ordinal Expr = $2 + 1)
+               » column: (Alias = x3 ; Expr = rapidsse.public.t1.c1 / rapidsse.public.t1.c2 ; Ordinal Expr = $1 / $2)
+               » column: (Expr = rapidsse.public.t1.c2 ; Ordinal Expr = $2)
+
+-> -> -> -> -> -> tableScanOp
+                  » location: all partitions
+                  » table: (rapidsse.public.t1)'
+)
+
 
 --  (107) Simple select with WHERE & ORDER BY clauses
 EXPLAIN STAGE partitionExplain
@@ -162,7 +361,38 @@ FROM    t1
 WHERE   c1/c2 > 0
 ORDER BY x2
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3 FROM    t1 WHERE   c1/c2 > 0 ORDER BY x2"
+
+-> orderOp
+   » location: origin
+   » order expr: ((x2) ASC)
+   » ordinal order expr: (($2) ASC)
+
+-> -> orderOp
+      » location: all nodes
+      » order expr: ((x2) ASC)
+      » ordinal order expr: (($2) ASC)
+
+-> -> -> orderOp
+         » order expr: ((x2) ASC)
+         » ordinal order expr: (($2) ASC)
+
+-> -> -> -> projectOp
+            » column: (Alias = x1 ; Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+            » column: (Alias = x2 ; Expr = rapidsse.public.t1.c2 + 1 ; Ordinal Expr = $2 + 1)
+            » column: (Alias = x3 ; Expr = rapidsse.public.t1.c1 / rapidsse.public.t1.c2 ; Ordinal Expr = $1 / $2)
+
+-> -> -> -> -> filterOp
+               » expr: ((rapidsse.public.t1.c1 / rapidsse.public.t1.c2) > 0)
+               » ordinal expr: (($1 / $2) > 0)
+
+-> -> -> -> -> -> tableScanOp
+                  » location: all partitions
+                  » table: (rapidsse.public.t1)'
+)
+
 
 --  (108) Simple select with WHERE & ORDER BY clauses & post-project
 EXPLAIN STAGE partitionExplain
@@ -171,7 +401,44 @@ FROM    t1
 WHERE   c1/c2 > 0
 ORDER BY c1 + c2
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3 FROM    t1 WHERE   c1/c2 > 0 ORDER BY c1 + c2"
+
+-> projectOp
+   » column: (Alias = x1 ; Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+   » column: (Alias = x2 ; Expr = rapidsse.public.t1.c2 + 1 ; Ordinal Expr = $2)
+   » column: (Alias = x3 ; Expr = rapidsse.public.t1.c1 / rapidsse.public.t1.c2 ; Ordinal Expr = $3)
+
+-> -> orderOp
+      » location: origin
+      » order expr: ((rapidsse.public.t1.c1 + rapidsse.public.t1.c2) ASC)
+      » ordinal order expr: (($1 + $4) ASC)
+
+-> -> -> orderOp
+         » location: all nodes
+         » order expr: ((rapidsse.public.t1.c1 + rapidsse.public.t1.c2) ASC)
+         » ordinal order expr: (($1 + $4) ASC)
+
+-> -> -> -> orderOp
+            » order expr: ((rapidsse.public.t1.c1 + rapidsse.public.t1.c2) ASC)
+            » ordinal order expr: (($1 + $4) ASC)
+
+-> -> -> -> -> projectOp
+               » column: (Alias = x1 ; Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+               » column: (Alias = x2 ; Expr = rapidsse.public.t1.c2 + 1 ; Ordinal Expr = $2 + 1)
+               » column: (Alias = x3 ; Expr = rapidsse.public.t1.c1 / rapidsse.public.t1.c2 ; Ordinal Expr = $1 / $2)
+               » column: (Expr = rapidsse.public.t1.c2 ; Ordinal Expr = $2)
+
+-> -> -> -> -> -> filterOp
+                  » expr: ((rapidsse.public.t1.c1 / rapidsse.public.t1.c2) > 0)
+                  » ordinal expr: (($1 / $2) > 0)
+
+-> -> -> -> -> -> -> tableScanOp
+                     » location: all partitions
+                     » table: (rapidsse.public.t1)'
+)
+
 
 --  (109) Simple select with WHERE & LIMIT clauses
 EXPLAIN STAGE partitionExplain
@@ -180,7 +447,35 @@ FROM    t1
 WHERE   c1/c2 > 0
 LIMIT   10
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3 FROM    t1 WHERE   c1/c2 > 0 LIMIT   10"
+
+-> limitOp
+   » location: origin
+   » limit: (10)
+
+-> -> limitOp
+      » location: all nodes
+      » limit: (10)
+
+-> -> -> limitOp
+         » limit: (10)
+
+-> -> -> -> projectOp
+            » column: (Alias = x1 ; Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+            » column: (Alias = x2 ; Expr = rapidsse.public.t1.c2 + 1 ; Ordinal Expr = $2 + 1)
+            » column: (Alias = x3 ; Expr = rapidsse.public.t1.c1 / rapidsse.public.t1.c2 ; Ordinal Expr = $1 / $2)
+
+-> -> -> -> -> filterOp
+               » expr: ((rapidsse.public.t1.c1 / rapidsse.public.t1.c2) > 0)
+               » ordinal expr: (($1 / $2) > 0)
+
+-> -> -> -> -> -> tableScanOp
+                  » location: all partitions
+                  » table: (rapidsse.public.t1)'
+)
+
 
 --  (110) Simple select with WHERE, ORDER BY and LIMIT clauses
 EXPLAIN STAGE partitionExplain
@@ -190,7 +485,47 @@ WHERE   c1/c2 > 0
 ORDER BY x2
 LIMIT   10
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3 FROM    t1 WHERE   c1/c2 > 0 ORDER BY x2 LIMIT   10"
+
+-> limitOp
+   » limit: (10)
+
+-> -> orderOp
+      » location: origin
+      » order expr: ((x2) ASC)
+      » ordinal order expr: (($2) ASC)
+
+-> -> -> limitOp
+         » limit: (10)
+
+-> -> -> -> orderOp
+            » location: all nodes
+            » order expr: ((x2) ASC)
+            » ordinal order expr: (($2) ASC)
+
+-> -> -> -> -> limitOp
+               » limit: (10)
+
+-> -> -> -> -> -> orderOp
+                  » order expr: ((x2) ASC)
+                  » ordinal order expr: (($2) ASC)
+
+-> -> -> -> -> -> -> projectOp
+                     » column: (Alias = x1 ; Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+                     » column: (Alias = x2 ; Expr = rapidsse.public.t1.c2 + 1 ; Ordinal Expr = $2 + 1)
+                     » column: (Alias = x3 ; Expr = rapidsse.public.t1.c1 / rapidsse.public.t1.c2 ; Ordinal Expr = $1 / $2)
+
+-> -> -> -> -> -> -> -> filterOp
+                        » expr: ((rapidsse.public.t1.c1 / rapidsse.public.t1.c2) > 0)
+                        » ordinal expr: (($1 / $2) > 0)
+
+-> -> -> -> -> -> -> -> -> tableScanOp
+                           » location: all partitions
+                           » table: (rapidsse.public.t1)'
+)
+
 
 --  (111) Simple select with WHERE, ORDER BY and LIMIT clauses & post-project
 EXPLAIN STAGE partitionExplain
@@ -198,9 +533,55 @@ SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3
 FROM    t1
 WHERE   c1/c2 > 0
 ORDER BY c1 + c2
-  LIMIT   10
+LIMIT   10
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3 FROM    t1 WHERE   c1/c2 > 0 ORDER BY c1 + c2   LIMIT   10"
+
+-> projectOp
+   » column: (Alias = x1 ; Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+   » column: (Alias = x2 ; Expr = rapidsse.public.t1.c2 + 1 ; Ordinal Expr = $2)
+   » column: (Alias = x3 ; Expr = rapidsse.public.t1.c1 / rapidsse.public.t1.c2 ; Ordinal Expr = $3)
+
+-> -> limitOp
+      » limit: (10)
+
+-> -> -> orderOp
+         » location: origin
+         » order expr: ((rapidsse.public.t1.c1 + rapidsse.public.t1.c2) ASC)
+         » ordinal order expr: (($1 + $4) ASC)
+
+-> -> -> -> limitOp
+            » limit: (10)
+
+-> -> -> -> -> orderOp
+               » location: all nodes
+               » order expr: ((rapidsse.public.t1.c1 + rapidsse.public.t1.c2) ASC)
+               » ordinal order expr: (($1 + $4) ASC)
+
+-> -> -> -> -> -> limitOp
+                  » limit: (10)
+
+-> -> -> -> -> -> -> orderOp
+                     » order expr: ((rapidsse.public.t1.c1 + rapidsse.public.t1.c2) ASC)
+                     » ordinal order expr: (($1 + $4) ASC)
+
+-> -> -> -> -> -> -> -> projectOp
+                        » column: (Alias = x1 ; Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+                        » column: (Alias = x2 ; Expr = rapidsse.public.t1.c2 + 1 ; Ordinal Expr = $2 + 1)
+                        » column: (Alias = x3 ; Expr = rapidsse.public.t1.c1 / rapidsse.public.t1.c2 ; Ordinal Expr = $1 / $2)
+                        » column: (Expr = rapidsse.public.t1.c2 ; Ordinal Expr = $2)
+
+-> -> -> -> -> -> -> -> -> filterOp
+                           » expr: ((rapidsse.public.t1.c1 / rapidsse.public.t1.c2) > 0)
+                           » ordinal expr: (($1 / $2) > 0)
+
+-> -> -> -> -> -> -> -> -> -> tableScanOp
+                              » location: all partitions
+                              » table: (rapidsse.public.t1)'
+)
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Grand total SELECTs
