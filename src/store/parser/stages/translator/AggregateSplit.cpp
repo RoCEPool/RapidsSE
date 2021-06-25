@@ -73,7 +73,6 @@ void AggregateSplit::vSplitAggregates(PlanNode *pRootNode)
 
       QueryNode* pSymExpr = ProjectedColumn::pExprNode(pSymProjCol);
       ASSERT(Expr::bIsOfType(pSymExpr));
-      ASSERT(!Expr::bIsFullyOrdinal(pSymExpr));
 
       QueryNode* pOrdExpr = Expr::pSymbolicToOrdinal(pSymExpr, pColumnExprList, pRootNode);
       ASSERT(Expr::bIsOfType(pOrdExpr));

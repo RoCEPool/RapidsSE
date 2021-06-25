@@ -65,7 +65,7 @@ success
 -- rows:
 --   ['region', 'nationcount']
 
- SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount
+SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount
 FROM nation
 GROUP BY region
 HAVING region > 1;

@@ -247,7 +247,8 @@ rows:
   ( 11, 'projValidation',   * )
   ( 12, 'partitionExplain', * )
   ( 13, 'stageMarkers',     * )
-  ( 14, 'transliterate',    * )
+  ( 14, 'aggregateSplit',   * )
+  ( 15, 'transliterate',    * )
 
 EXPLAIN STAGE ALL SELECT n_nationkey FROM nation;
 rows:
@@ -264,7 +265,8 @@ rows:
   ( 11, 'projValidation',   * )
   ( 12, 'partitionExplain', * )
   ( 13, 'stageMarkers',     * )
-  ( 14, 'transliterate',    * )
+  ( 14, 'aggregateSplit',   * )
+  ( 15, 'transliterate',    * )
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -296,7 +298,7 @@ EXPLAIN STAGE 3-1 SELECT n_nationkey FROM nation;
 rows: 0
 
 EXPLAIN STAGE 1-1000 SELECT n_nationkey FROM nation;
-rows: 14
+rows: 15
 
 
 -- Explain invalid stage range (names)
@@ -304,7 +306,7 @@ EXPLAIN STAGE exprValidate-parser SELECT n_nationkey FROM nation;
 rows: 0
 
 EXPLAIN STAGE parser-badStageName SELECT n_nationkey FROM nation;
-rows: 14
+rows: 15
 
 EXPLAIN STAGE badStageName-explainPlan SELECT n_nationkey FROM nation;
 rows: 0

@@ -90,11 +90,11 @@ void Parser::Routing::vDescribe(PlanNode* pNode, s2K& sBuf)
   ASSERT(bIsOfType(pNode));
 
   // Manual Polymorphism
-  if      (Unicast::bIsOfType(pNode))         {        Unicast::vDescribe(pNode, sBuf); }
-  else if (Broadcast::bIsOfType(pNode))       {      Broadcast::vDescribe(pNode, sBuf); }
-  else if (Hashcast::bIsOfType(pNode))        {       Hashcast::vDescribe(pNode, sBuf); }
+  if      (       Unicast::bIsOfType(pNode))  {        Unicast::vDescribe(pNode, sBuf); }
+  else if (     Broadcast::bIsOfType(pNode))  {      Broadcast::vDescribe(pNode, sBuf); }
+  else if (      Hashcast::bIsOfType(pNode))  {       Hashcast::vDescribe(pNode, sBuf); }
   else if (LocalPartition::bIsOfType(pNode))  { LocalPartition::vDescribe(pNode, sBuf); }
-  else if (LocalNode::bIsOfType(pNode))       {      LocalNode::vDescribe(pNode, sBuf); }
+  else if (     LocalNode::bIsOfType(pNode))  {      LocalNode::vDescribe(pNode, sBuf); }
 
   else {
     // Need to add in manual polymorphism here
@@ -148,11 +148,11 @@ Stz* Parser::Routing::szRoutingType(PlanNode* pNode)
   ASSERT(bIsOfType(pNode));
 
   // Manual Polymorphism
-  if      (Unicast::bIsOfType(pNode))         { return acRT[RT_UNICAST];        }
-  else if (Broadcast::bIsOfType(pNode))       { return acRT[RT_BROADCAST];      }
-  else if (Hashcast::bIsOfType(pNode))        { return acRT[RT_HASHCAST];       }
+  if      (       Unicast::bIsOfType(pNode))  { return acRT[RT_UNICAST];        }
+  else if (     Broadcast::bIsOfType(pNode))  { return acRT[RT_BROADCAST];      }
+  else if (      Hashcast::bIsOfType(pNode))  { return acRT[RT_HASHCAST];       }
   else if (LocalPartition::bIsOfType(pNode))  { return acRT[RT_LOCALPARTITION]; }
-  else if (LocalNode::bIsOfType(pNode))       { return acRT[RT_LOCALNODE];      }
+  else if (     LocalNode::bIsOfType(pNode))  { return acRT[RT_LOCALNODE];      }
 
   else {
     // Need to add in manual polymorphism here

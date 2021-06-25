@@ -833,8 +833,6 @@ void Expr::vSuperAggregate(QueryNode* pExpr)
 
 
     } else if (CountExpr::bIsOfType(pAgg)) {
-      ASSERT(pAgg->nChildren() == 1);
-
       // Form a template that we will then transmogrify the avgExpr node into.
 
       // Build the inner COUNT(x)

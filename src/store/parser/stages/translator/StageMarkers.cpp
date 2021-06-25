@@ -135,7 +135,7 @@ void StageMarkers::vAddStageMarkers(PlanNode *pRootNode)
   if (!ExplainMarker::bIsOfType(pPlanNode->pFirstChild())) {
     Location::eLO eLocation1 = PlanObject::eLocation(_pQueryNode(pPlanNode->pFirstChild()), true);
 
-    pPlanNode->vInsertAsParentOfChildren(StageMarker::pCreate(eLocation1, Routing::RT_NONE));
+    pPlanNode->vInsertAsParentOfChildren(StageMarker::pCreate(eLocation1, Routing::RT_UNICAST));
   }
 }
 
