@@ -925,73 +925,77 @@ bool Dynamo::bPhase2_staging(void)
       i8 i_FoundStage = C_UNKNOWN;
       StageSpec* pStageSpecFound = m_p_PipelineSpec->pFindStageSpec(pOpSpec->szOpNm(), i_FoundStage);
       
-      if (pStageSpecFound) {
-        ePX eCrossTopo = Dynamo::eCrossTopo(pStageSpec, pStageSpecFound);
-        
-        // Is there a send already ?
-        // This would be the case if one stage is piped into multiple stages
-        // e.g a unionAll
-        OpSpec* pOpSpecFound = pStageSpec->pFindOpSpec("send"_Stz);
-        if (pOpSpecFound) {
-          TagSet* pTopologyTagSet = pOpSpecFound->pTopologyTagSet();
-
-          ePX eOpSpecCrossTopo = (ePX)pTopologyTagSet->iValue(C_TAG_TOPOLOGY);
-
-          // this needs to checked at compile time
-          RASSERT(eCrossTopo == eOpSpecCrossTopo);
-
-          // we already have a send, so just remove the stage
-          pStageSpec->vRemove(pOpSpec);
-          delete pOpSpec;
-
-          // add otherStage and otherOp tags into the send
-          pOpSpecFound->vAddTopologyEnamePair(C_TAG_OTHERSTAGE,(i8)i_FoundStage,TN_INTEGER);
-          pOpSpecFound->vAddTopologyEnamePair(C_TAG_OTHEROP,(i8)0,TN_INTEGER);
-
-          //pTopologyTagSet->vContentDump();
-
-          // prepend a consume op in the stage
-          OpSpec* pConsumeOpSpec = pStageSpecFound->pPrependConsumeOp(eCrossTopo, i_FoundStage, i_Op + 1);
-          vAddConsumeParams(pConsumeOpSpec, eCrossTopo);
-        }
-        else {
-          if (eCrossTopo == PX_ORIGIN_TO_ORIGIN && i_FoundStage == 0) {
-            // add parameter to the prev sink op
-            OpSpec *pPrevOpSpec = pStageSpec->pGet(i_Op - 1);
-            vReplaceTopologyParams(pPrevOpSpec, eCrossTopo, i_FoundStage, 0);
-
-            // remove the last (stage) OpSpec from the OpSpecVec
-            RASSERT(i_Op == pStageSpec->nItems() - 1);
-            pStageSpec->vRemove(pOpSpec);
-            delete pOpSpec;
-          } else {
-            pOpSpec->vAddEnamePair(C_TAG_SendKind, (i8) pOpSpec->eSendKind(), TN_INTEGER);
-            vReplaceWithSend(pOpSpec, eCrossTopo, i_FoundStage);
-
-            // is there a consumeOp already in the stage ?
-            OpSpec* pConsumeOpSpec = pStageSpecFound->pFindOpSpec("consumeOp"_Stz);
-            if (pConsumeOpSpec) {
-
-              // found a consume op
-              // implies that there are 2 stages piping into this same stage
-              // eg in unionAll
-              // 2 scan stages piping into the output stage
-              // add to the consume params
-              vIncConsumeParams(pConsumeOpSpec, eCrossTopo);
-            }
-            else {
-              pConsumeOpSpec = pStageSpecFound->pPrependConsumeOp(eCrossTopo, i_FoundStage, i_Op + 1);
-              vAddConsumeParams(pConsumeOpSpec, eCrossTopo);
-            }
-
-          }
-        }
-      }
-      else {
+      if (! pStageSpecFound) {
         ePX eCrossTopo = Dynamo::eCrossTopo(pStageSpec, pStageSpec);
         vAddTopologyParams(pOpSpec, eCrossTopo, i_Stage, i_Op+1);
+        continue;
       }
       
+      ePX eCrossTopo = Dynamo::eCrossTopo(pStageSpec, pStageSpecFound);
+      
+      // Is there a send already ?
+      // This would be the case if one stage is piped into multiple stages
+      // e.g a unionAll
+      OpSpec* pOpSpecSend = pStageSpec->pFindOpSpec("send"_Stz);
+      if (pOpSpecSend) {
+        TagSet* pTopologyTagSet = pOpSpecSend->pTopologyTagSet();
+
+        ePX eOpSpecCrossTopo = (ePX)pTopologyTagSet->iValue(C_TAG_TOPOLOGY);
+
+        // this needs to checked at compile time
+        RASSERT(eCrossTopo == eOpSpecCrossTopo);
+
+        // we already have a send, so just remove the stage
+        pStageSpec->vRemove(pOpSpec);
+        delete pOpSpec;
+
+        // add otherStage and otherOp tags into the send
+        pOpSpecSend->vAddTopologyEnamePair(C_TAG_OTHERSTAGE,(i8)i_FoundStage,TN_INTEGER);
+        pOpSpecSend->vAddTopologyEnamePair(C_TAG_OTHEROP,(i8)0,TN_INTEGER);
+
+        //pTopologyTagSet->vContentDump();
+
+        // prepend a consume op in the stage
+        OpSpec* pConsumeOpSpec = pStageSpecFound->pPrependConsumeOp(eCrossTopo, i_FoundStage, i_Op + 1);
+        vAddConsumeParams(pConsumeOpSpec, eCrossTopo);
+        continue;
+      }
+      
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      
+      // not found
+
+      if (eCrossTopo == PX_ORIGIN_TO_ORIGIN && i_FoundStage == 0) {
+        // add parameter to the prev sink op
+        OpSpec *pPrevOpSpec = pStageSpec->pGet(i_Op - 1);
+        vReplaceTopologyParams(pPrevOpSpec, eCrossTopo, i_FoundStage, 0);
+
+        // remove the last (stage) OpSpec from the OpSpecVec
+        RASSERT(i_Op == pStageSpec->nItems() - 1);
+        pStageSpec->vRemove(pOpSpec);
+        delete pOpSpec;
+      } else {
+        pOpSpec->vAddEnamePair(C_TAG_SendKind, (i8) pOpSpec->eSendKind(), TN_INTEGER);
+        vReplaceWithSend(pOpSpec, eCrossTopo, i_FoundStage);
+
+        // is there a consumeOp already in the stage ?
+        OpSpec* pConsumeOpSpec = pStageSpecFound->pFindOpSpec("consumeOp"_Stz);
+        if (pConsumeOpSpec) {
+
+          // found a consume op
+          // implies that there are 2 stages piping into this same stage
+          // eg in unionAll
+          // 2 scan stages piping into the output stage
+          // add to the consume params
+          vIncConsumeParams(pConsumeOpSpec, eCrossTopo);
+        }
+        else {
+          pConsumeOpSpec = pStageSpecFound->pPrependConsumeOp(eCrossTopo, i_FoundStage, i_Op + 1);
+          vAddConsumeParams(pConsumeOpSpec, eCrossTopo);
+        }
+      }
+    
+     
     } // each op
     
   } // each stage
