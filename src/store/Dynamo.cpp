@@ -234,43 +234,58 @@ bool Dynamo::bToPipelineStmt(String* pAsPipelineStmt,
 ePX Dynamo::eTopoloyX(StageSpec*  pFromStageSpec, StageSpec* pToStageSpec)
 {
   _static_
+    
+  ePO eFromTopo = pFromStageSpec->eTopology();
+  ePO eToTopo   = pToStageSpec->eTopology();
   
-  switch (pFromStageSpec->eTopology()) {
+  switch (eFromTopo) {
+          
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // from all nodes to ...
     case PO_ALL_NODES:
-      switch(pToStageSpec->eTopology()) {
+      switch(eToTopo) {
         case PO_ALL_NODES:          return PX_ALL_NODES_TO_ALL_NODES;
         case PO_ALL_PARTITIONS:     return PX_ALL_NODES_TO_ALL_PARTITIONS;
-        case PO_ALL_PARTITIONS_ON_ORIGIN:     ASSERT(0);
+        case PO_ALL_PARTITIONS_ON_ORIGIN:  ASSERT(0);
         case PO_ORIGIN:             return PX_ALL_NODES_TO_ORIGIN;
         case PO_SPECIFIC_NODE:      return PX_ALL_NODES_TO_SPECIFIC_NODE;
         case PO_SPECIFIC_PARTITION: return PX_ALL_NODES_TO_SPECIFIC_PARTITION;
         default:
           ASSERT(0);
       }
+      
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // from all partitions to ...
     case PO_ALL_PARTITIONS:
-      switch(pToStageSpec->eTopology()) {
+      switch(eToTopo) {
         case PO_ALL_NODES:          return PX_ALL_PARTITIONS_TO_ALL_NODES;
         case PO_ALL_PARTITIONS:     return PX_ALL_PARTITIONS_TO_ALL_PARTITIONS;
-        case PO_ALL_PARTITIONS_ON_ORIGIN:     ASSERT(0);
+        case PO_ALL_PARTITIONS_ON_ORIGIN:  ASSERT(0);
         case PO_ORIGIN:             return PX_ALL_PARTITIONS_TO_ORIGIN;
         case PO_SPECIFIC_NODE:      return PX_ALL_PARTITIONS_TO_SPECIFIC_NODE;
         case PO_SPECIFIC_PARTITION: return PX_ALL_PARTITIONS_TO_SPECIFIC_PARTITION;
         default:
           ASSERT(0);
       }
+      
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // from all partitions on origin to ...
     case PO_ALL_PARTITIONS_ON_ORIGIN:
-      switch(pToStageSpec->eTopology()) {
+      switch(eToTopo) {
         case PO_ALL_NODES:          ASSERT(0);
         case PO_ALL_PARTITIONS:     return PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS;
-        case PO_ALL_PARTITIONS_ON_ORIGIN:     return PX_ALL_PARTITIONS_TO_ALL_PARTITIONS;
+        case PO_ALL_PARTITIONS_ON_ORIGIN:  return PX_ALL_PARTITIONS_TO_ALL_PARTITIONS;
         case PO_ORIGIN:             ASSERT(0);
         case PO_SPECIFIC_NODE:      ASSERT(0);
         case PO_SPECIFIC_PARTITION: ASSERT(0);
         default:
           ASSERT(0);
       }
+      
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // from origin to ...
     case PO_ORIGIN:
-      switch(pToStageSpec->eTopology()) {
+      switch(eToTopo) {
         case PO_ALL_NODES:          return PX_ORIGIN_TO_ALL_NODES;
         case PO_ALL_PARTITIONS:     return PX_ORIGIN_TO_ALL_PARTITIONS;
         case PO_ALL_PARTITIONS_ON_ORIGIN: return PX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN;
@@ -280,31 +295,41 @@ ePX Dynamo::eTopoloyX(StageSpec*  pFromStageSpec, StageSpec* pToStageSpec)
         default:
           ASSERT(0);
       }
+      
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // from specific node to ...
     case PO_SPECIFIC_NODE:
-      switch(pToStageSpec->eTopology()) {
+      switch(eToTopo) {
         case PO_ALL_NODES:          return PX_SPECIFIC_NODE_TO_ALL_NODES;
         case PO_ALL_PARTITIONS:     return PX_SPECIFIC_NODE_TO_ALL_PARTITIONS;
-        case PO_ALL_PARTITIONS_ON_ORIGIN:     ASSERT(0);
+        case PO_ALL_PARTITIONS_ON_ORIGIN:  ASSERT(0);
         case PO_ORIGIN:             return PX_SPECIFIC_NODE_TO_ORIGIN;
         case PO_SPECIFIC_NODE:      return PX_SPECIFIC_NODE_TO_SPECIFIC_NODE;
         case PO_SPECIFIC_PARTITION: return PX_SPECIFIC_NODE_TO_SPECIFIC_PARTITION;
         default:
           ASSERT(0);
       }
+      
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // from specific partition to ...
     case PO_SPECIFIC_PARTITION:
-      switch(pToStageSpec->eTopology()) {
+      switch(eToTopo) {
         case PO_ALL_NODES:          return PX_SPECIFIC_PARTITION_TO_ALL_NODES;
         case PO_ALL_PARTITIONS:     return PX_SPECIFIC_PARTITION_TO_ALL_PARTITIONS;
-        case PO_ALL_PARTITIONS_ON_ORIGIN:     ASSERT(0);
+        case PO_ALL_PARTITIONS_ON_ORIGIN:  ASSERT(0);
         case PO_ORIGIN:             return PX_SPECIFIC_PARTITION_TO_ORIGIN;
         case PO_SPECIFIC_NODE:      return PX_SPECIFIC_PARTITION_SPECIFIC_NODE;
         case PO_SPECIFIC_PARTITION: return PX_SPECIFIC_PARTITION_TO_SPECIFIC_PARTITION;
         default:
           ASSERT(0);
       }
+      
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // ugh
     default:
       ASSERT(0);
   }
+  
   return PX_NONE;
 }
 
@@ -982,7 +1007,7 @@ bool Dynamo::bPhase2_staging(void)
       StageSpec* pStageSpecFound = m_p_PipelineSpec->pFindStageSpec(pOpSpec->szOpNm(), i_FoundStage);
       
       if (pStageSpecFound) {
-        ePX eCrossTopo = eTopoloyX(pStageSpec, pStageSpecFound);
+        ePX eCrossTopo = Dynamo::eTopoloyX(pStageSpec, pStageSpecFound);
         
 #ifdef WITH_TRACE_DYNAMO
         vTrace("  op %s is a stage %lld %s\n"_Stz,
@@ -1050,7 +1075,7 @@ bool Dynamo::bPhase2_staging(void)
         }
       }
       else {
-        ePX eCrossTopo = eTopoloyX(pStageSpec, pStageSpec);
+        ePX eCrossTopo = Dynamo::eTopoloyX(pStageSpec, pStageSpec);
         vAddTopologyParams(pOpSpec, eCrossTopo, i_Stage, i_Op+1);
       }
     }
