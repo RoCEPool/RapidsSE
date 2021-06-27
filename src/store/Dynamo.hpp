@@ -73,7 +73,11 @@ namespace STORE
     // Phase 2 : Staging
     //
     bool bPhase2_staging(void);
-  
+
+    bool bSendFirst(ePX eCrossTopo, StageSpec* pStageSpec, i8 i_FoundStage,
+                    i8 i_Op, OpSpec* pOpSpec, StageSpec* pStageSpecFound);
+    bool bSendSubsequent(void);
+
     void vAddTopologyParams(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage, i8 i_Op);
     void vAddConsumeParams(OpSpec* pOpSpec, ePX eCrossTopo);
     void vIncConsumeParams(OpSpec* pOpSpec, ePX eCrossTopo);
