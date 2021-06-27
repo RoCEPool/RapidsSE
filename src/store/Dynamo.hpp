@@ -14,16 +14,15 @@ namespace STORE
   class Dynamo : public Object
   {
   private:
-  
-    Job*          m_p_PipelineJob;
-    TokenVec*     m_pTknVec;
-  
-    PipelineSpec* m_pPipelineSpec;
-    StageSpec*    m_pStageSpec;
-  
-    i8            m_i_Tkn;
-    Token*        m_pTkn;
+    Job*          m_p_PipelineJob;  // job this dynamo is associated with
+    
+    TokenVec*     m_pTknVec;        // tokenised for of the pipeline statement
+    i8            m_i_Tkn;          // current token
+    Token*        m_pTkn;           // current token
 
+    PipelineSpec* m_pPipelineSpec;  // pipeline spec being formed
+    StageSpec*    m_pStageSpec;     // current stage spec being formed
+  
     // must be last
     Footer m_xFooter;
 
@@ -31,7 +30,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Dynamo(Stz* sCmd, Job* pJob);
+    Dynamo(Stz* szPipelineStmt, Job* p_PipelineJob);
    ~Dynamo(void) noexcept(false);
 
     static bool bCmdToPipeline(String* pAsPipelineStmt, TokenVec* pFromTokenVec);

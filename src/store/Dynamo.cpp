@@ -30,26 +30,20 @@ __aFooterFunction(Dynamo)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Dynamo::Dynamo(Stz* sCmd, Job* p_PipelineJob)
+Dynamo::Dynamo(Stz* szPipelineStmt, Job* p_PipelineJob)
 : Object(CN_DYNAMO)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // tokenize the pipeline
-  
+    
   m_p_PipelineJob = p_PipelineJob;
   
   m_pTknVec = new TokenVec;
-  m_pTknVec->vTokenise(sCmd);
-  
-  //m_pTknVec->vRemoveToken(m_pTknVec->nTokens());
+  m_pTknVec->vTokenise(szPipelineStmt);
+  m_i_Tkn   = 0;
+  m_pTkn    = nullptr;
   
   m_pPipelineSpec = nullptr;
-  m_pStageSpec   = nullptr;
-  
-  m_i_Tkn        = 0;
-  m_pTkn         = nullptr;
+  m_pStageSpec    = nullptr;
   
   _checkInitialised_(CN_DYNAMO);
   
@@ -80,7 +74,7 @@ Dynamo::~Dynamo(void) noexcept(false)
 /* translate command into a pipeline statement                                */
 /*----------------------------------------------------------------------------*/
 bool Dynamo::bCmdToPipeline(String* pAsPipelineStmt,
-                               TokenVec* pFromTokenVec)
+                            TokenVec* pFromTokenVec)
 {
   _static_
   
