@@ -338,7 +338,7 @@ ePX Dynamo::eCrossTopo(StageSpec*  pFromStageSpec, StageSpec* pToStageSpec)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* compile the supplied pipeline                                              */
+/* compile pipeline statement into pipeline spec                              */
 /*----------------------------------------------------------------------------*/
 bool Dynamo::bCompile(void)
 {
@@ -368,7 +368,7 @@ PipelineSpec* Dynamo::pPipelineSpec(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find stage matching given name                                             */
+/* show the pipeline                                                          */
 /*----------------------------------------------------------------------------*/
 void Dynamo::vShow(void)
 {
@@ -395,7 +395,7 @@ void Dynamo::vShow(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* phase 1: collect the plan                                                  */
+/* phase 1: collect the pipeline statement                                    */
 /*----------------------------------------------------------------------------*/
 bool Dynamo::bPhase1_collect(void)
 {
@@ -405,19 +405,19 @@ bool Dynamo::bPhase1_collect(void)
   
   vTokenBegin(0);
   
-  if (m_pTkn->bSame("pipeline"_Stz) || m_pTkn->bSame("pipelineLocal"_Stz)) {
+  if (m_pTkn->bSame("PIPELINE"_Stz) || m_pTkn->bSame("PIPELINELOCAL"_Stz)) {
     bResult = bCollectName();
     if (! bResult)
       return false;
   }
 
-  while (m_pTkn->bSame("tag"_Stz)) {
+  while (m_pTkn->bSame("TAG"_Stz)) {
     bResult = bCollectTag();
     if (! bResult)
       return false;
   }
   
-  if (m_pTkn->bSame("begin"_Stz)) {
+  if (m_pTkn->bSame("BEGIN"_Stz)) {
     bResult = bCollectBegin();
     if (! bResult)
       return false;
@@ -426,11 +426,11 @@ bool Dynamo::bPhase1_collect(void)
     return false;
   }
   
-  if ( ! m_pTkn->bSame("stage"_Stz)) {
+  if ( ! m_pTkn->bSame("STAGE"_Stz)) {
     return false;
   }
   
-  while (m_pTkn->bSame("stage"_Stz)) {
+  while (m_pTkn->bSame("STAGE"_Stz)) {
     bResult = bCollectStage();
     if ( ! bResult )
       return false;
@@ -442,38 +442,38 @@ bool Dynamo::bPhase1_collect(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect begin                                                              */
+/* collect the pipeline BEGIN                                                 */
 /*----------------------------------------------------------------------------*/
 bool Dynamo::bCollectBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  ASSERT(m_pTkn->bSame("begin"_Stz));
+  ASSERT(m_pTkn->bSame("BEGIN"_Stz));
   vTokenAccept();
     
   return true;
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect end                                                                 */
+/* collect the pipeline END                                                   */
 /*----------------------------------------------------------------------------*/
 bool Dynamo::bCollectEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  if ( ! m_pTkn->bSame("end"_Stz) )
+  if ( ! m_pTkn->bSame("END"_Stz) )
     return false;
     
   return true;
 }
 /*----------------------------------------------------------------------------*/
-/* collect pipeline & name                                                    */
+/* collect PIPELINE & the name of the pipeline                                */
 /*----------------------------------------------------------------------------*/
 bool Dynamo::bCollectName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  ASSERT(m_pTkn->bSame("pipeline"_Stz) || m_pTkn->bSame("pipelineLocal"_Stz));
+  ASSERT(m_pTkn->bSame("PIPELINE"_Stz) || m_pTkn->bSame("PIPELINELOCAL"_Stz));
   vTokenAccept();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -488,7 +488,7 @@ bool Dynamo::bCollectName(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect operator                                                           */
+/* collect one operator (and optionally its arguments)                        */
 /*----------------------------------------------------------------------------*/
 bool Dynamo::bCollectOp(void)
 {
@@ -504,47 +504,27 @@ bool Dynamo::bCollectOp(void)
   
   vTokenAccept();
   
-  if (m_pTkn->bSame("Robin"_Stz)) {
+  if (m_pTkn->bSame("ROBIN"_Stz)) {
     pOpSpec->vSendKind(XK_ROBIN);
     vTokenAccept();
   }
-  else if (m_pTkn->bSame("localRobin"_Stz)) {
+  else if (m_pTkn->bSame("LOCALROBIN"_Stz)) {
     pOpSpec->vSendKind(XK_LOCALROBIN);
     vTokenAccept();
   }
-  else if (m_pTkn->bSame("Hashed"_Stz)) {
+  else if (m_pTkn->bSame("HASHED"_Stz)) {
     pOpSpec->vSendKind(XK_HASHED);
     vTokenAccept();
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (m_pTkn->bSame("right"_Stz)) {
+  if (m_pTkn->bSame("RIGHT"_Stz)) {
     pOpSpec->vAppendRight(true);
     vTokenAccept();
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-//  i8 i_Arg = 0;
-//  for (;;) {
-//
-//    if (m_pTkn->bSame("|"_Stz) || m_pTkn->bSame("stage"_Stz)
-//                               || m_pTkn->bSame("end"_Stz)) {
-//      break;
-//    }
-//
-//    // add an argument
-//
-//    s32 sArgName;
-//    sArgName.vSprint("<arg_%lld>"_Stz,i_Arg++);
-//
-//    sSTMT sArgValue ( m_pTkn->szChars() );
-//
-//    pOpSpec->vAddEnamePair(sArgName,sArgValue,TN_STRING);
-//
-//    vTokenAccept();
-//  }
   
   if (! bCollectOpArgs(pOpSpec))
     return false;
@@ -562,8 +542,9 @@ bool Dynamo::bCollectOpArgs(OpSpec* pOpSpec)
   i8 i_Arg = 0;
   for (;;) {
     
-    if (m_pTkn->bSame("|"_Stz) || m_pTkn->bSame("stage"_Stz)
-                               || m_pTkn->bSame("end"_Stz)) {
+    if (m_pTkn->bSame("|"_Stz)     ||
+        m_pTkn->bSame("STAGE"_Stz) ||
+        m_pTkn->bSame("END"_Stz)) {
       break;
     }
     
@@ -583,7 +564,7 @@ bool Dynamo::bCollectOpArgs(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect pipe sequence                                                      */
+/* collect operator-pipe sequence                                             */
 /*----------------------------------------------------------------------------*/
 bool Dynamo::bCollectOpSequence(void)
 {
@@ -612,7 +593,7 @@ bool Dynamo::bCollectStage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
     
-  ASSERT(m_pTkn->bSame("stage"_Stz));
+  ASSERT(m_pTkn->bSame("STAGE"_Stz));
   vTokenAccept();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -632,18 +613,17 @@ bool Dynamo::bCollectStage(void)
   if (bTokenIsOp(m_pTkn))
     bCollectOpSequence();
   
-//
   return true;
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect tag                                                                */
+/* collect one tag                                                            */
 /*----------------------------------------------------------------------------*/
 bool Dynamo::bCollectTag(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  ASSERT(m_pTkn->bSame("tag"_Stz));
+  ASSERT(m_pTkn->bSame("TAG"_Stz));
   vTokenAccept();
   
   s32 sTagNm = m_pTkn->szChars();
@@ -656,7 +636,7 @@ bool Dynamo::bCollectTag(void)
   sSTMT sTagValue = m_pTkn->szChars();
   vTokenAccept();
 
-  while (! m_pTkn->bSame("endTag"_Stz)) {
+  while (! m_pTkn->bSame("ENDTAG"_Stz)) {
     vTokenAccept();
   }
   vTokenAccept();
@@ -680,7 +660,7 @@ bool Dynamo::bCollectTopology(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  if (m_pTkn->bSame("on"_Stz))
+  if (m_pTkn->bSame("ON"_Stz))
     vTokenAccept();
   else
     return false;
@@ -688,33 +668,33 @@ bool Dynamo::bCollectTopology(void)
   // -- -- -- -- -- -- -- -- -- -- --
   // on all nodes | partitions :
   
-  if (m_pTkn->bSame("all"_Stz)) {
+  if (m_pTkn->bSame("ALL"_Stz)) {
     vTokenAccept();
-    return bParseOnAll();
+    return bRecogniseOnAll();
   }
  
   // -- -- -- -- -- -- -- -- -- -- --
   // on node <nodeNm> :
   
-  else if (m_pTkn->bSame("node"_Stz)) {
+  else if (m_pTkn->bSame("NODE"_Stz)) {
     vTokenAccept();
-    return bParseOnNode();
+    return bRecogniseOnNode();
   }
   
   // -- -- -- -- -- -- -- -- -- -- --
   // on partition <partitionNo> :
   
-  else if (m_pTkn->bSame("partition"_Stz)) {
+  else if (m_pTkn->bSame("PARTITION"_Stz)) {
     vTokenAccept();
-    return bParseOnPartition();
+    return bRecogniseOnPartition();
   }
   
   // -- -- -- -- -- -- -- -- -- -- --
   // on origin :
   
-  else if (m_pTkn->bSame("origin"_Stz)) {
+  else if (m_pTkn->bSame("ORIGIN"_Stz)) {
     vTokenAccept();
-    return bParseOnOrigin();
+    return bRecogniseOnOrigin();
   }
   else {
 
@@ -727,35 +707,35 @@ bool Dynamo::bCollectTopology(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse topology: on all                                                     */
+/* recognise topology: ON ALL _^ [ NODES | PARTITIONS ]                       */
 /*----------------------------------------------------------------------------*/
-bool Dynamo::bParseOnAll(void)
+bool Dynamo::bRecogniseOnAll(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
   // -- -- -- -- -- -- -- -- -- -- --
   // on all nodes :
   
-  if (m_pTkn->bSame("nodes"_Stz)) {
+  if (m_pTkn->bSame("NODES"_Stz)) {
     vTokenAccept();
-    return bParseOnAllNodes();
+    return bRecogniseOnAllNodes();
   }
   
   // -- -- -- -- -- -- -- -- -- -- --
   // on all partitions :
   
-  else if (m_pTkn->bSame("partitions"_Stz)) {
+  else if (m_pTkn->bSame("PARTITIONS"_Stz)) {
     vTokenAccept();
-    return bParseOnAllPartitions();
+    return bRecogniseOnAllPartitions();
   }
 
   return false;
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse topology: on all nodes                                               */
+/* recognise topology: ON ALL NODE _^                                         */
 /*----------------------------------------------------------------------------*/
-bool Dynamo::bParseOnAllNodes(void)
+bool Dynamo::bRecogniseOnAllNodes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
@@ -773,18 +753,18 @@ bool Dynamo::bParseOnAllNodes(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse topology: on all partitions                                          */
+/* recognise topology: ON ALL PARTITIONS _^                                   */
 /*----------------------------------------------------------------------------*/
-bool Dynamo::bParseOnAllPartitions(void)
+bool Dynamo::bRecogniseOnAllPartitions(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
   // -- -- -- -- -- -- -- -- -- -- --
   // on all partitions :
   
-  if (m_pTkn->bSame("on"_Stz)) {
+  if (m_pTkn->bSame("ON"_Stz)) {
     vTokenAccept();
-    if (m_pTkn->bSame("origin"_Stz)) {
+    if (m_pTkn->bSame("ORIGIN"_Stz)) {
       
       vTokenAccept();
       if (m_pTkn->bSame(":"_Stz)) {
@@ -808,9 +788,9 @@ bool Dynamo::bParseOnAllPartitions(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse topology: on node                                                    */
+/* recognise topology: ON NODE <nodeNo> _^                                    */
 /*----------------------------------------------------------------------------*/
-bool Dynamo::bParseOnNode(void)
+bool Dynamo::bRecogniseOnNode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
@@ -832,9 +812,9 @@ bool Dynamo::bParseOnNode(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse topology: on partition <tPtnNo>                                      */
+/* recognise topology: ON PARTITION <tPtnNo> _^                               */
 /*----------------------------------------------------------------------------*/
-bool Dynamo::bParseOnPartition(void)
+bool Dynamo::bRecogniseOnPartition(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
@@ -856,9 +836,9 @@ bool Dynamo::bParseOnPartition(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse topology: on origin                                                  */
+/* recognise topology: ON ORIGIN _^                                           */
 /*----------------------------------------------------------------------------*/
-bool Dynamo::bParseOnOrigin(void)
+bool Dynamo::bRecogniseOnOrigin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
@@ -932,15 +912,12 @@ bool Dynamo::bPhase2_staging(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
     
+  // get each stageSpec from pipeline
   for (i8 i_Stage = 0; i_Stage < m_p_PipelineSpec->nItems(); i_Stage++) {
-    
-    // get the stageSpec
     StageSpec* pStageSpec = m_p_PipelineSpec->pGet(i_Stage);
     
-    // get the OpSpecVec from the stageSpec
-    //OpSpecVec* pOpSpecVec = pStageSpec->pOpSpecVec();
+    // get each OpSpecVec from the stageSpec
     i8 nOpSpecs = pStageSpec->nItems();
-    
     for (i8 i_Op = 0; i_Op < nOpSpecs; i_Op++) {
       
       OpSpec* pOpSpec = pStageSpec->pGet(i_Op);
@@ -1000,7 +977,7 @@ bool Dynamo::bPhase2_staging(void)
               // eg in unionAll
               // 2 scan stages piping into the output stage
               // add to the consume params
-              vAddToConsumeParams(pConsumeOpSpec, eCrossTopo);
+              vIncConsumeParams(pConsumeOpSpec, eCrossTopo);
             }
             else {
               pConsumeOpSpec = pStageSpecFound->pPrependConsumeOp(eCrossTopo, i_FoundStage, i_Op + 1);
@@ -1014,8 +991,10 @@ bool Dynamo::bPhase2_staging(void)
         ePX eCrossTopo = Dynamo::eCrossTopo(pStageSpec, pStageSpec);
         vAddTopologyParams(pOpSpec, eCrossTopo, i_Stage, i_Op+1);
       }
-    }
-  }
+      
+    } // each op
+    
+  } // each stage
   
   return true;
 }
@@ -1090,7 +1069,7 @@ void Dynamo::vAddConsumeParams(OpSpec* pOpSpec, ePX eCrossTopo)
 /*----------------------------------------------------------------------------*/
 /* add to the consume parameters                                              */
 /*----------------------------------------------------------------------------*/
-void Dynamo::vAddToConsumeParams(OpSpec* pOpSpec, ePX eCrossTopo)
+void Dynamo::vIncConsumeParams(OpSpec* pOpSpec, ePX eCrossTopo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
 

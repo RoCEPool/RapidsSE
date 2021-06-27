@@ -57,12 +57,12 @@ namespace STORE
     bool bCollectTag(void);
     bool bCollectTopology(void);
   
-    bool bParseOnAll(void);
-    bool bParseOnAllNodes(void);
-    bool bParseOnAllPartitions(void);
-    bool bParseOnNode(void);
-    bool bParseOnOrigin(void);
-    bool bParseOnPartition(void);
+    bool bRecogniseOnAll(void);
+    bool bRecogniseOnAllNodes(void);
+    bool bRecogniseOnAllPartitions(void);
+    bool bRecogniseOnNode(void);
+    bool bRecogniseOnOrigin(void);
+    bool bRecogniseOnPartition(void);
 
     void vTokenAccept(void);
     void vTokenBegin(i8 i_Tkn);
@@ -76,7 +76,7 @@ namespace STORE
   
     void vAddTopologyParams(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage, i8 i_Op);
     void vAddConsumeParams(OpSpec* pOpSpec, ePX eCrossTopo);
-    void vAddToConsumeParams(OpSpec* pOpSpec, ePX eCrossTopo);
+    void vIncConsumeParams(OpSpec* pOpSpec, ePX eCrossTopo);
     void vReplaceTopologyParams(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage, i8 i_Op);
     void vReplaceWithSend(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage);
 
