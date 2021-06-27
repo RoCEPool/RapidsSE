@@ -1651,13 +1651,16 @@ void vDev_IXT_COLS_TO_ROW_OFS(i8** aaiDstk)
   // pop the row device
   DevROW* pDevRow = _pDevROW(P_PopPtr());
 
+  // pop the dst row device
+  DevROW* pDevRowDst = _pDevROW(P_PopPtr());
+
   //HeadLine *aHeadLine = (HeadLine *) pLogicUnit->m_xRluCommon.m_aSrcCrw;
   HeadLine *aHeadLine = (HeadLine *) pDevIxt->m_aCrw;
 
-  RowInflator::vInflate_AllColumns_into_RowBufferAt(pDevRow->m_pRowBuffer,
+  RowInflator::vInflate_AllColumns_into_RowBufferAt(pDevRowDst->m_pRowBuffer,
                                                     iAtDstCol,
                                                     aHeadLine,
-                                                    pDevIxt->m_pCrwBuffer->pStreamDef()->nColumns());
+                                                    pDevRow->m_pStreamDef->nColumns());
 
   *aaiDstk = aiDstk;
 }
