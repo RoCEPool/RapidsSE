@@ -34,7 +34,6 @@
 //#define WITH_STATISTICS_COUNTERS EndDefine // code for statistics
 //#define WITH_STEP_TIMING EndDefine         // code for timing steps
 //#define WITH_TRACE_API EndDefine           // trace api's
-//#define WITH_TRACE_DYNAMO EndDefine        // trace dynamo pipeline compiler
 //#define WITH_TRACE_LOGICUNIT EndDefine       // trace logic unit
 //#define WITH_TRACE_PROCEDURE EndDefine     // trace procedure
 //#define WITH_TRACE_PURGING EndDefine       // trace purging
@@ -57,7 +56,6 @@
 //#define WITH_STATISTICS_COUNTERS EndDefine // code for statistics
 //#define WITH_STEP_TIMING EndDefine         // code for timing steps
 //#define WITH_TRACE_API EndDefine           // code for tracing api's compiled in
-//#define WITH_TRACE_DYNAMO EndDefine        // trace dynamo pipeline compiler
 //#define WITH_TRACE_LOGICUNIT EndDefine     // trace logic unit
 //#define WITH_TRACE_PROCEDURE EndDefine     // trace procedure
 //#define WITH_TRACE_PURGING EndDefine       // trace purging

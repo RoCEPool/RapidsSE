@@ -867,13 +867,7 @@ void Constants::vAddConstantsCpp(void)
   #else
   vAddConstant("WITH_TRACE_API"_Stz,(i8)false);
   #endif
-    
-  #ifdef WITH_TRACE_DYNAMO
-  vAddConstant("WITH_TRACE_DYNAMO"_Stz,(i8)true);
-  #else
-  vAddConstant("WITH_TRACE_DYNAMO"_Stz,(i8)false);
-  #endif
-    
+        
   #ifdef WITH_TRACE_PURGING
   vAddConstant("WITH_TRACE_PURGING"_Stz,(i8)true);
   #else

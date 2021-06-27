@@ -225,10 +225,6 @@ bool BASE::bTraceWith(Stz* szWith)
     return true;
 #endif
   
-#ifdef WITH_TRACE_DYNAMO
-  if (szWith->bSame("WITH_TRACE_DYNAMO"_Stz))
-    return true;
-#endif
   
 #ifdef WITH_TRACE_PURGING
   if (szWith->bSame("WITH_TRACE_PURGING"_Stz))
@@ -324,11 +320,7 @@ void BASE::vTraceWith(void)
 #ifdef WITH_TRACE_API
   vTrace("  WITH_TRACE_API\n"_Stz);
 #endif
-  
-#ifdef WITH_TRACE_DYNAMO
-  vTrace("  WITH_TRACE_DYNAMO\n"_Stz);
-#endif
-  
+    
 #ifdef WITH_TRACE_PURGING
   vTrace("  WITH_TRACE_PURGING\n"_Stz);
 #endif
@@ -440,11 +432,6 @@ bool BASE::bTraceWithout(Stz* szWith)
     return true;
 #endif
   
-#ifndef WITH_TRACE_DYNAMO
-  if (szWith->bSame("WITH_TRACE_DYNAMO"_Stz))
-    return true;
-#endif
-  
 #ifndef WITH_TRACE_PURGING
   if (szWith->bSame("WITH_TRACE_PURGING"_Stz))
     return true;
@@ -539,11 +526,7 @@ void BASE::vTraceWithout(void)
 #ifndef WITH_TRACE_API
   vTrace("  WITH_TRACE_API\n"_Stz);
 #endif
-  
-#ifndef WITH_TRACE_DYNAMO
-  vTrace("  WITH_TRACE_DYNAMO\n"_Stz);
-#endif
-  
+    
 #ifndef WITH_TRACE_PROCEDURE
   vTrace("  WITH_TRACE_PROCEDURE\n"_Stz);
 #endif
