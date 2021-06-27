@@ -442,7 +442,7 @@ bool Dynamo::bPhase1_collect(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compile begin                                                              */
+/* collect begin                                                              */
 /*----------------------------------------------------------------------------*/
 bool Dynamo::bCollectBegin(void)
 {
@@ -455,7 +455,19 @@ bool Dynamo::bCollectBegin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compile name phrase                                                        */
+/* collect end                                                                 */
+/*----------------------------------------------------------------------------*/
+bool Dynamo::bCollectEnd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+  
+  if ( ! m_pTkn->bSame("end"_Stz) )
+    return false;
+    
+  return true;
+}
+/*----------------------------------------------------------------------------*/
+/* collect pipeline & name                                                    */
 /*----------------------------------------------------------------------------*/
 bool Dynamo::bCollectName(void)
 {
@@ -476,7 +488,156 @@ bool Dynamo::bCollectName(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compile tag                                                                */
+/* collect operator                                                           */
+/*----------------------------------------------------------------------------*/
+bool Dynamo::bCollectOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  i8 i_OpSpec = m_p_StageSpec->nItems();
+  OpSpec* pOpSpec = new OpSpec(m_pTkn->szChars(),i_OpSpec,m_p_StageSpec);
+  m_p_StageSpec->vAddOpSpec(pOpSpec);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  vAcceptToken();
+  
+  if (m_pTkn->bSame("Robin"_Stz)) {
+    pOpSpec->vSendKind(XK_ROBIN);
+    vAcceptToken();
+  }
+  else if (m_pTkn->bSame("localRobin"_Stz)) {
+    pOpSpec->vSendKind(XK_LOCALROBIN);
+    vAcceptToken();
+  }
+  else if (m_pTkn->bSame("Hashed"_Stz)) {
+    pOpSpec->vSendKind(XK_HASHED);
+    vAcceptToken();
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (m_pTkn->bSame("right"_Stz)) {
+    pOpSpec->vAppendRight(true);
+    vAcceptToken();
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+//  i8 i_Arg = 0;
+//  for (;;) {
+//
+//    if (m_pTkn->bSame("|"_Stz) || m_pTkn->bSame("stage"_Stz)
+//                               || m_pTkn->bSame("end"_Stz)) {
+//      break;
+//    }
+//
+//    // add an argument
+//
+//    s32 sArgName;
+//    sArgName.vSprint("<arg_%lld>"_Stz,i_Arg++);
+//
+//    sSTMT sArgValue ( m_pTkn->szChars() );
+//
+//    pOpSpec->vAddEnamePair(sArgName,sArgValue,TN_STRING);
+//
+//    vAcceptToken();
+//  }
+  
+  if (! bCollectOpArgs(pOpSpec))
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect operator arguments                                                 */
+/*----------------------------------------------------------------------------*/
+bool Dynamo::bCollectOpArgs(OpSpec* pOpSpec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+
+  i8 i_Arg = 0;
+  for (;;) {
+    
+    if (m_pTkn->bSame("|"_Stz) || m_pTkn->bSame("stage"_Stz)
+                               || m_pTkn->bSame("end"_Stz)) {
+      break;
+    }
+    
+    // add an argument
+    
+    s32 sArgName;
+    sArgName.vSprint("<arg_%lld>"_Stz,i_Arg++);
+    
+    sSTMT sArgValue ( m_pTkn->szChars() );
+    
+    pOpSpec->vAddEnamePair(sArgName,sArgValue,TN_STRING);
+    
+    vAcceptToken();
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect pipe sequence                                                      */
+/*----------------------------------------------------------------------------*/
+bool Dynamo::bCollectPipe(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+  
+  for (;;) {
+    
+    if (! bIsOperator(m_pTkn))
+      break;
+
+    bCollectOp();
+    
+    if (! m_pTkn->bSame("|"_Stz))
+      break;
+    
+    vAcceptToken();
+  }
+   
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect stage                                                              */
+/*----------------------------------------------------------------------------*/
+bool Dynamo::bCollectStage(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+    
+  ASSERT(m_pTkn->bSame("stage"_Stz));
+  vAcceptToken();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  i8 i_StageSpec = m_p_PipelineSpec->nItems();
+  m_p_StageSpec = new StageSpec(m_pTkn->szChars(),i_StageSpec,m_p_PipelineSpec);
+  m_p_PipelineSpec->vAddStageSpec(m_p_StageSpec);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  vAcceptToken();
+  
+  bool bResult = bCollectTopology();
+  if ( ! bResult )
+    return false;
+  
+  if (bIsOperator(m_pTkn))
+    bCollectPipe();
+  
+//
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect tag                                                                */
 /*----------------------------------------------------------------------------*/
 bool Dynamo::bCollectTag(void)
 {
@@ -513,38 +674,7 @@ bool Dynamo::bCollectTag(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compile stage                                                              */
-/*----------------------------------------------------------------------------*/
-bool Dynamo::bCollectStage(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-    
-  ASSERT(m_pTkn->bSame("stage"_Stz));
-  vAcceptToken();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  i8 i_StageSpec = m_p_PipelineSpec->nItems();
-  m_p_StageSpec = new StageSpec(m_pTkn->szChars(),i_StageSpec,m_p_PipelineSpec);
-  m_p_PipelineSpec->vAddStageSpec(m_p_StageSpec);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  vAcceptToken();
-  
-  bool bResult = bCollectTopology();
-  if ( ! bResult )
-    return false;
-  
-  if (bIsOperator(m_pTkn))
-    bCollectPipe();
-  
-//
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* compile topology                                                           */
+/* collect topology                                                           */
 /*----------------------------------------------------------------------------*/
 bool Dynamo::bCollectTopology(void)
 {
@@ -596,103 +726,6 @@ bool Dynamo::bCollectTopology(void)
   return false;
 }
 
-/*----------------------------------------------------------------------------*/
-/* compile pipe                                                               */
-/*----------------------------------------------------------------------------*/
-bool Dynamo::bCollectPipe(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-  
-  for (;;) {
-    
-    if (! bIsOperator(m_pTkn))
-      break;
-
-    bCollectOp();
-    
-    if (! m_pTkn->bSame("|"_Stz))
-      break;
-    
-    vAcceptToken();
-  }
-   
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* compile op                                                                 */
-/*----------------------------------------------------------------------------*/
-bool Dynamo::bCollectOp(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  i8 i_OpSpec = m_p_StageSpec->nItems();
-  OpSpec* pOpSpec = new OpSpec(m_pTkn->szChars(),i_OpSpec,m_p_StageSpec);
-  m_p_StageSpec->vAddOpSpec(pOpSpec);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  vAcceptToken();
-  
-  if (m_pTkn->bSame("Robin"_Stz)) {
-    pOpSpec->vSendKind(XK_ROBIN);
-    vAcceptToken();
-  }
-  else if (m_pTkn->bSame("localRobin"_Stz)) {
-    pOpSpec->vSendKind(XK_LOCALROBIN);
-    vAcceptToken();
-  }
-  else if (m_pTkn->bSame("Hashed"_Stz)) {
-    pOpSpec->vSendKind(XK_HASHED);
-    vAcceptToken();
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  if (m_pTkn->bSame("right"_Stz)) {
-    pOpSpec->vAppendRight(true);
-    vAcceptToken();
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  i8 i_Arg = 0;
-  for (;;) {
-    
-    if (m_pTkn->bSame("|"_Stz) || m_pTkn->bSame("stage"_Stz)
-                               || m_pTkn->bSame("end"_Stz)) {
-      break;
-    }
-    
-    // add an argument
-    
-    s32 sArgName;
-    sArgName.vSprint("<arg_%lld>"_Stz,i_Arg++);
-    
-    sSTMT sArgValue ( m_pTkn->szChars() );
-    
-    pOpSpec->vAddEnamePair(sArgName,sArgValue,TN_STRING);
-    
-    vAcceptToken();
-  }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* compile end                                                                 */
-/*----------------------------------------------------------------------------*/
-bool Dynamo::bCollectEnd(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-  
-  if ( ! m_pTkn->bSame("end"_Stz) )
-    return false;
-    
-  return true;
-}
 
 /*----------------------------------------------------------------------------*/
 /* accept token and advance to next token                                     */

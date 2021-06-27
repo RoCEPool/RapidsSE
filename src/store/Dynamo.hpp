@@ -48,13 +48,14 @@ namespace STORE
     bool bPhase1_collect(void);
   
     bool bCollectBegin(void);
-    bool bCollectName(void);
-    bool bCollectTag(void);
-    bool bCollectStage(void);
-    bool bCollectTopology(void);
-    bool bCollectPipe(void);
-    bool bCollectOp(void);
     bool bCollectEnd(void);
+    bool bCollectName(void);
+    bool bCollectOp(void);
+    bool bCollectOpArgs(OpSpec* pOpSpec);
+    bool bCollectPipe(void);
+    bool bCollectStage(void);
+    bool bCollectTag(void);
+    bool bCollectTopology(void);
   
     void vAcceptToken(void);
     void vBeginToken(i8 i_Tkn);
