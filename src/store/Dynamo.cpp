@@ -37,13 +37,12 @@ Dynamo::Dynamo(Stz* szPipelineStmt, Job* p_PipelineJob)
     
   m_p_PipelineJob = p_PipelineJob;
   
-  m_pTknVec = new TokenVec;
-  m_pTknVec->vTokenise(szPipelineStmt);
+  m_pTknVec = new TokenVec(szPipelineStmt);
   m_i_Tkn   = 0;
   m_pTkn    = nullptr;
   
-  m_pPipelineSpec = nullptr;
-  m_pStageSpec    = nullptr;
+  m_p_PipelineSpec = nullptr;
+  m_p_StageSpec    = nullptr;
   
   _checkInitialised_(CN_DYNAMO);
   
@@ -56,14 +55,9 @@ Dynamo::Dynamo(Stz* szPipelineStmt, Job* p_PipelineJob)
 Dynamo::~Dynamo(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-  
-  // 2020 Mar 01: RJH move this into destructor of pipeline
-  //delete m_pPipelineSpec;
-  
+    
   m_pTknVec->vSetAllTokens();
   delete m_pTknVec;
-  //delete m_pStageSpec;
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -71,10 +65,10 @@ Dynamo::~Dynamo(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* translate command into a pipeline statement                                */
+/* translate token vector into a pipeline statement                           */
 /*----------------------------------------------------------------------------*/
-bool Dynamo::bCmdToPipeline(String* pAsPipelineStmt,
-                            TokenVec* pFromTokenVec)
+bool Dynamo::bToPipelineStmt(String* pAsPipelineStmt,
+                             TokenVec* pFromTokenVec)
 {
   _static_
   
@@ -229,7 +223,7 @@ bool Dynamo::bCmdToPipeline(String* pAsPipelineStmt,
     "end ;\n"
     ""_Stz);
   
-  vTrace("bCmdToPipeline : \n%s\n"_Stz,pAsPipelineStmt->szStz());
+  vTrace("bToPipelineStmt : \n%s\n"_Stz,pAsPipelineStmt->szStz());
   
   return true;
 }
@@ -343,7 +337,7 @@ bool Dynamo::bCompile(void)
     return false;
  
 #ifdef WITH_TRACE_DYNAMO
-  m_pPipelineSpec->vPrint();
+  m_p_PipelineSpec->vPrint();
   vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
 #endif
   
@@ -352,12 +346,12 @@ bool Dynamo::bCompile(void)
     return false;
 
 #ifdef WITH_TRACE_DYNAMO
-  m_pPipelineSpec->vPrint();
+  m_p_PipelineSpec->vPrint();
   vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
 #endif
   
 #ifdef WITH_TRACE_DYNAMO
-  m_pPipelineSpec->vPrint();
+  m_p_PipelineSpec->vPrint();
   vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
 #endif
   
@@ -371,7 +365,7 @@ PipelineSpec* Dynamo::pPipelineSpec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  return m_pPipelineSpec;
+  return m_p_PipelineSpec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -381,7 +375,7 @@ void Dynamo::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  StageSpec* pStageSpec = m_pPipelineSpec->pStageSpec(0);
+  StageSpec* pStageSpec = m_p_PipelineSpec->pStageSpec(0);
   
   sSTMT sPipe("pipeline "_Stz);
   pStageSpec->vToPipeStr(sPipe.szStz());
@@ -485,7 +479,7 @@ bool Dynamo::bCollectName(void)
 #endif
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_pPipelineSpec = new PipelineSpec(m_pTkn->szChars(),m_p_PipelineJob);
+  m_p_PipelineSpec = new PipelineSpec(m_pTkn->szChars(),m_p_PipelineJob);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -552,9 +546,9 @@ bool Dynamo::bCollectStage(void)
 #endif
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  i8 i_StageSpec = m_pPipelineSpec->nItems();
-  m_pStageSpec = new StageSpec(m_pTkn->szChars(),i_StageSpec,m_pPipelineSpec);
-  m_pPipelineSpec->vAddStageSpec(m_pStageSpec);
+  i8 i_StageSpec = m_p_PipelineSpec->nItems();
+  m_p_StageSpec = new StageSpec(m_pTkn->szChars(),i_StageSpec,m_p_PipelineSpec);
+  m_p_PipelineSpec->vAddStageSpec(m_p_StageSpec);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -669,9 +663,9 @@ bool Dynamo::bCollectOp(void)
 #endif
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  i8 i_OpSpec = m_pStageSpec->nItems();
-  OpSpec* pOpSpec = new OpSpec(m_pTkn->szChars(),i_OpSpec,m_pStageSpec);
-  m_pStageSpec->vAddOpSpec(pOpSpec);
+  i8 i_OpSpec = m_p_StageSpec->nItems();
+  OpSpec* pOpSpec = new OpSpec(m_pTkn->szChars(),i_OpSpec,m_p_StageSpec);
+  m_p_StageSpec->vAddOpSpec(pOpSpec);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -834,7 +828,7 @@ bool Dynamo::bParseOnAllNodes(void)
 #ifdef WITH_TRACE_DYNAMO
     vTrace("Topology Phrase recognised >on all nodes :<\n"_Stz);
 #endif
-    m_pStageSpec->vTopology(PO_ALL_NODES);
+    m_p_StageSpec->vTopology(PO_ALL_NODES);
     return true;
   }
   
@@ -861,7 +855,7 @@ bool Dynamo::bParseOnAllPartitions(void)
 #ifdef WITH_TRACE_DYNAMO
         vTrace("Topology Phrase recognised >on all partitions to origin :<\n"_Stz);
 #endif
-        m_pStageSpec->vTopology(PO_ALL_PARTITIONS_ON_ORIGIN);
+        m_p_StageSpec->vTopology(PO_ALL_PARTITIONS_ON_ORIGIN);
         return true;
       }
     }
@@ -874,7 +868,7 @@ bool Dynamo::bParseOnAllPartitions(void)
 #ifdef WITH_TRACE_DYNAMO
     vTrace("Topology Phrase recognised >on all partitions :<\n"_Stz);
 #endif
-    m_pStageSpec->vTopology(PO_ALL_PARTITIONS);
+    m_p_StageSpec->vTopology(PO_ALL_PARTITIONS);
     return true;
   }
   
@@ -896,11 +890,11 @@ bool Dynamo::bParseOnNode(void)
 #ifdef WITH_TRACE_DYNAMO
     vTrace("Topology Phrase recognised >on node %s :<\n"_Stz,sLocus.szStz());
 #endif
-    m_pStageSpec->vTopology(PO_SPECIFIC_NODE);
+    m_p_StageSpec->vTopology(PO_SPECIFIC_NODE);
     i8 i_Node = sLocus.szStz()->iToI8();
     if ( i_Node > AM::pGrid()->nConnectedNodes() )
       return false;
-    m_pStageSpec->vSpecificNode(i_Node);
+    m_p_StageSpec->vSpecificNode(i_Node);
     return true;
   }
   
@@ -924,12 +918,12 @@ bool Dynamo::bParseOnPartition(void)
 #ifdef WITH_TRACE_DYNAMO
     vTrace("Topology Phrase recognised >on partition %s :<\n"_Stz,sLocus.szStz());
 #endif
-    m_pStageSpec->vTopology(PO_SPECIFIC_PARTITION);
+    m_p_StageSpec->vTopology(PO_SPECIFIC_PARTITION);
     tPN tPtnNo = sLocus.szStz()->iToI8();
     if (tPtnNo >= AM::nPtnsInGrid())
       return false;
     
-    m_pStageSpec->vSpecificPtnNo(tPtnNo);
+    m_p_StageSpec->vSpecificPtnNo(tPtnNo);
     return true;
   }
   
@@ -949,7 +943,7 @@ bool Dynamo::bParseOnOrigin(void)
 #ifdef WITH_TRACE_DYNAMO
     vTrace("Topology Phrase recognised >on origin :<\n"_Stz);
 #endif
-    m_pStageSpec->vTopology(PO_ORIGIN);
+    m_p_StageSpec->vTopology(PO_ORIGIN);
     return true;
   }
   else {
@@ -961,7 +955,7 @@ bool Dynamo::bParseOnOrigin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                           Phase2 : Staging                                 */
+/*                          Phase 2 : Staging                                 */
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -971,10 +965,10 @@ bool Dynamo::bPhase2_staging(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
     
-  for (i8 i_Stage = 0; i_Stage < m_pPipelineSpec->nItems(); i_Stage++) {
+  for (i8 i_Stage = 0; i_Stage < m_p_PipelineSpec->nItems(); i_Stage++) {
     
     // get the stageSpec
-    StageSpec* pStageSpec = m_pPipelineSpec->pGet(i_Stage);
+    StageSpec* pStageSpec = m_p_PipelineSpec->pGet(i_Stage);
     
     // get the OpSpecVec from the stageSpec
     //OpSpecVec* pOpSpecVec = pStageSpec->pOpSpecVec();
@@ -985,7 +979,7 @@ bool Dynamo::bPhase2_staging(void)
       OpSpec* pOpSpec = pStageSpec->pGet(i_Op);
       
       i8 i_FoundStage = C_UNKNOWN;
-      StageSpec* pStageSpecFound = m_pPipelineSpec->pFindStageSpec(pOpSpec->szOpNm(), i_FoundStage);
+      StageSpec* pStageSpecFound = m_p_PipelineSpec->pFindStageSpec(pOpSpec->szOpNm(), i_FoundStage);
       
       if (pStageSpecFound) {
         ePX eCrossTopo = eTopoloyX(pStageSpec, pStageSpecFound);

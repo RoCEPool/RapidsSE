@@ -20,8 +20,8 @@ namespace STORE
     i8            m_i_Tkn;          // current token
     Token*        m_pTkn;           // current token
 
-    PipelineSpec* m_pPipelineSpec;  // pipeline spec being formed
-    StageSpec*    m_pStageSpec;     // current stage spec being formed
+    PipelineSpec* m_p_PipelineSpec; // pipeline spec being formed
+    StageSpec*    m_p_StageSpec;    // current stage spec being formed
   
     // must be last
     Footer m_xFooter;
@@ -33,7 +33,7 @@ namespace STORE
     Dynamo(Stz* szPipelineStmt, Job* p_PipelineJob);
    ~Dynamo(void) noexcept(false);
 
-    static bool bCmdToPipeline(String* pAsPipelineStmt, TokenVec* pFromTokenVec);
+    static bool bToPipelineStmt(String* pAsPipelineStmt, TokenVec* pFromTokenVec);
     static ePX eTopoloyX(StageSpec* pFromStageSpec, StageSpec* pToStageSpec);
 
     bool bCompile(void);
@@ -43,7 +43,7 @@ namespace STORE
   private:
 
     //
-    // phase 1
+    // Phase 1 : Collect
     //
     bool bPhase1_collect(void);
   
@@ -68,7 +68,7 @@ namespace STORE
     bool bParseOnPartition(void);
     
     //
-    // phase 2
+    // Phase 2 : Staging
     //
     bool bPhase2_staging(void);
   

@@ -120,7 +120,7 @@ namespace STORE
     eEC eExprEvalAggGby(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);
     eEC eExprEvalIndexJoin(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht,
                            StreamDef* pStreamDefOut, IndexDef* pIndexDef, TokenVec* pTknVec);
-    eEC eExprEvalIndexScan(StreamDef* pStreamDefLft, IndexDef* pIndexDef, TokenVec* pTknVec);
+    eEC eExprEvalIndexScan(StreamDef* pStreamDefLft, IndexDef* pIndexDef, bool bLeftTable, TokenVec* pTknVec);
     eEC eExprEvalLoopJoin(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht, StreamDef* pStreamDefOut, TokenVec* pTknVec);
     eEC eExprEvalProject(StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TokenVec* pTknVec);
 

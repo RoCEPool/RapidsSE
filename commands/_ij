@@ -1,3 +1,4 @@
+
 /*============================================================================*/
 /* _ij -- index join                                                          */
 /*============================================================================*/
@@ -20,20 +21,23 @@ create index ri on rt(r_key);
 print "loading rt.csv..." ;
 load rt "../JTEST/rightTable.csv" ;
 
+
 pipeline indexJoinExp
 begin
   stage stageA on origin :
-    start | periodic once | stageB | stageC
+    start | periodic once | stageB
 
   stage stageB on all partitions :
     scan lt | stageC
 
   stage stageC on all partitions :
-    indexJoin 0 rt ri "LBOUND $I1 $L1 >= UBOUND $I1 $L1 <= " | stageD
+    indexJoin 0 rt ri "EQUAL $I1 $L1 == " | stageD
 
   stage stageD on origin :
     output | sink | stageA
 end;
+
+//range_I rt ri "EQUAL $I1 2 == ";
 
 /*============================================================================*/
 /* end                                                                        */
