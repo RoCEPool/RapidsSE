@@ -403,7 +403,7 @@ bool Dynamo::bPhase1_collect(void)
     
   bool bResult = true;
   
-  vBeginToken(0);
+  vTokenBegin(0);
   
   if (m_pTkn->bSame("pipeline"_Stz) || m_pTkn->bSame("pipelineLocal"_Stz)) {
     bResult = bCollectName();
@@ -449,7 +449,7 @@ bool Dynamo::bCollectBegin(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
   ASSERT(m_pTkn->bSame("begin"_Stz));
-  vAcceptToken();
+  vTokenAccept();
     
   return true;
 }
@@ -474,7 +474,7 @@ bool Dynamo::bCollectName(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
   ASSERT(m_pTkn->bSame("pipeline"_Stz) || m_pTkn->bSame("pipelineLocal"_Stz));
-  vAcceptToken();
+  vTokenAccept();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -482,7 +482,7 @@ bool Dynamo::bCollectName(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  vAcceptToken();
+  vTokenAccept();
    
   return true;
 }
@@ -502,26 +502,26 @@ bool Dynamo::bCollectOp(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  vAcceptToken();
+  vTokenAccept();
   
   if (m_pTkn->bSame("Robin"_Stz)) {
     pOpSpec->vSendKind(XK_ROBIN);
-    vAcceptToken();
+    vTokenAccept();
   }
   else if (m_pTkn->bSame("localRobin"_Stz)) {
     pOpSpec->vSendKind(XK_LOCALROBIN);
-    vAcceptToken();
+    vTokenAccept();
   }
   else if (m_pTkn->bSame("Hashed"_Stz)) {
     pOpSpec->vSendKind(XK_HASHED);
-    vAcceptToken();
+    vTokenAccept();
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (m_pTkn->bSame("right"_Stz)) {
     pOpSpec->vAppendRight(true);
-    vAcceptToken();
+    vTokenAccept();
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -543,7 +543,7 @@ bool Dynamo::bCollectOp(void)
 //
 //    pOpSpec->vAddEnamePair(sArgName,sArgValue,TN_STRING);
 //
-//    vAcceptToken();
+//    vTokenAccept();
 //  }
   
   if (! bCollectOpArgs(pOpSpec))
@@ -576,7 +576,7 @@ bool Dynamo::bCollectOpArgs(OpSpec* pOpSpec)
     
     pOpSpec->vAddEnamePair(sArgName,sArgValue,TN_STRING);
     
-    vAcceptToken();
+    vTokenAccept();
   }
   
   return true;
@@ -585,13 +585,13 @@ bool Dynamo::bCollectOpArgs(OpSpec* pOpSpec)
 /*----------------------------------------------------------------------------*/
 /* collect pipe sequence                                                      */
 /*----------------------------------------------------------------------------*/
-bool Dynamo::bCollectPipe(void)
+bool Dynamo::bCollectOpSequence(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
   for (;;) {
     
-    if (! bIsOperator(m_pTkn))
+    if (! bTokenIsOp(m_pTkn))
       break;
 
     bCollectOp();
@@ -599,7 +599,7 @@ bool Dynamo::bCollectPipe(void)
     if (! m_pTkn->bSame("|"_Stz))
       break;
     
-    vAcceptToken();
+    vTokenAccept();
   }
    
   return true;
@@ -613,7 +613,7 @@ bool Dynamo::bCollectStage(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
     
   ASSERT(m_pTkn->bSame("stage"_Stz));
-  vAcceptToken();
+  vTokenAccept();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -623,14 +623,14 @@ bool Dynamo::bCollectStage(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  vAcceptToken();
+  vTokenAccept();
   
   bool bResult = bCollectTopology();
   if ( ! bResult )
     return false;
   
-  if (bIsOperator(m_pTkn))
-    bCollectPipe();
+  if (bTokenIsOp(m_pTkn))
+    bCollectOpSequence();
   
 //
   return true;
@@ -644,22 +644,22 @@ bool Dynamo::bCollectTag(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
   ASSERT(m_pTkn->bSame("tag"_Stz));
-  vAcceptToken();
+  vTokenAccept();
   
   s32 sTagNm = m_pTkn->szChars();
-  vAcceptToken();
+  vTokenAccept();
 
   if (! m_pTkn->bSame("="_Stz))
     return false;
-  vAcceptToken();
+  vTokenAccept();
 
   sSTMT sTagValue = m_pTkn->szChars();
-  vAcceptToken();
+  vTokenAccept();
 
   while (! m_pTkn->bSame("endTag"_Stz)) {
-    vAcceptToken();
+    vTokenAccept();
   }
-  vAcceptToken();
+  vTokenAccept();
 
   if (AM::bVerbose())
     vTrace("Tag recognised: %s %s\n"_Stz,sTagNm.szStz(),sTagValue.szStz());
@@ -681,7 +681,7 @@ bool Dynamo::bCollectTopology(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
   if (m_pTkn->bSame("on"_Stz))
-    vAcceptToken();
+    vTokenAccept();
   else
     return false;
   
@@ -689,7 +689,7 @@ bool Dynamo::bCollectTopology(void)
   // on all nodes | partitions :
   
   if (m_pTkn->bSame("all"_Stz)) {
-    vAcceptToken();
+    vTokenAccept();
     return bParseOnAll();
   }
  
@@ -697,7 +697,7 @@ bool Dynamo::bCollectTopology(void)
   // on node <nodeNm> :
   
   else if (m_pTkn->bSame("node"_Stz)) {
-    vAcceptToken();
+    vTokenAccept();
     return bParseOnNode();
   }
   
@@ -705,7 +705,7 @@ bool Dynamo::bCollectTopology(void)
   // on partition <partitionNo> :
   
   else if (m_pTkn->bSame("partition"_Stz)) {
-    vAcceptToken();
+    vTokenAccept();
     return bParseOnPartition();
   }
   
@@ -713,7 +713,7 @@ bool Dynamo::bCollectTopology(void)
   // on origin :
   
   else if (m_pTkn->bSame("origin"_Stz)) {
-    vAcceptToken();
+    vTokenAccept();
     return bParseOnOrigin();
   }
   else {
@@ -724,51 +724,6 @@ bool Dynamo::bCollectTopology(void)
   }
   
   return false;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* accept token and advance to next token                                     */
-/*----------------------------------------------------------------------------*/
-void Dynamo::vAcceptToken(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-
-  ++ m_i_Tkn;
-  
-  m_pTkn = m_pTknVec->pGet(m_i_Tkn);
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* set token on which parsing begins                                          */
-/*----------------------------------------------------------------------------*/
-void Dynamo::vBeginToken(i8 i_Tkn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-  
-  m_i_Tkn = i_Tkn;
-  m_pTkn  = m_pTknVec->pGet(m_i_Tkn);
-  
-}
-
-/*----------------------------------------------------------------------------*/
-/* is token a known operator?                                                 */
-/*----------------------------------------------------------------------------*/
-bool Dynamo::bIsOperator(Token* pTkn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-  
-  if (pTkn->bSame("|"_Stz))
-    return false;
-  
-  if (pTkn->bSame("end"_Stz))
-    return false;
-  
-  if (pTkn->bSame("stage"_Stz))
-    return false;
-  
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -782,7 +737,7 @@ bool Dynamo::bParseOnAll(void)
   // on all nodes :
   
   if (m_pTkn->bSame("nodes"_Stz)) {
-    vAcceptToken();
+    vTokenAccept();
     return bParseOnAllNodes();
   }
   
@@ -790,7 +745,7 @@ bool Dynamo::bParseOnAll(void)
   // on all partitions :
   
   else if (m_pTkn->bSame("partitions"_Stz)) {
-    vAcceptToken();
+    vTokenAccept();
     return bParseOnAllPartitions();
   }
 
@@ -808,7 +763,7 @@ bool Dynamo::bParseOnAllNodes(void)
   // on all nodes :
   
   if (m_pTkn->bSame(":"_Stz)) {
-    vAcceptToken();
+    vTokenAccept();
     
     m_p_StageSpec->vTopology(PO_ALL_NODES);
     return true;
@@ -828,12 +783,12 @@ bool Dynamo::bParseOnAllPartitions(void)
   // on all partitions :
   
   if (m_pTkn->bSame("on"_Stz)) {
-    vAcceptToken();
+    vTokenAccept();
     if (m_pTkn->bSame("origin"_Stz)) {
       
-      vAcceptToken();
+      vTokenAccept();
       if (m_pTkn->bSame(":"_Stz)) {
-        vAcceptToken();
+        vTokenAccept();
 
         m_p_StageSpec->vTopology(PO_ALL_PARTITIONS_ON_ORIGIN);
         return true;
@@ -844,7 +799,7 @@ bool Dynamo::bParseOnAllPartitions(void)
   }
   
   if (m_pTkn->bSame(":"_Stz)) {
-    vAcceptToken();
+    vTokenAccept();
     m_p_StageSpec->vTopology(PO_ALL_PARTITIONS);
     return true;
   }
@@ -860,10 +815,10 @@ bool Dynamo::bParseOnNode(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
   s32 sLocus(m_pTkn->szChars());
-  vAcceptToken();
+  vTokenAccept();
   
   if (m_pTkn->bSame(":"_Stz)) {
-    vAcceptToken();
+    vTokenAccept();
     m_p_StageSpec->vTopology(PO_SPECIFIC_NODE);
     i8 i_Node = sLocus.szStz()->iToI8();
     if ( i_Node > AM::pGrid()->nConnectedNodes() )
@@ -876,7 +831,6 @@ bool Dynamo::bParseOnNode(void)
   
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* parse topology: on partition <tPtnNo>                                      */
 /*----------------------------------------------------------------------------*/
@@ -885,10 +839,10 @@ bool Dynamo::bParseOnPartition(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
   s32 sLocus(m_pTkn->szChars());
-  vAcceptToken();
+  vTokenAccept();
   
   if (m_pTkn->bSame(":"_Stz)) {
-    vAcceptToken();
+    vTokenAccept();
     m_p_StageSpec->vTopology(PO_SPECIFIC_PARTITION);
     tPN tPtnNo = sLocus.szStz()->iToI8();
     if (tPtnNo >= AM::nPtnsInGrid())
@@ -909,18 +863,63 @@ bool Dynamo::bParseOnOrigin(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
   if (m_pTkn->bSame(":"_Stz)) {
-    vAcceptToken();
+    vTokenAccept();
     
     m_p_StageSpec->vTopology(PO_ORIGIN);
     return true;
   }
   else {
     s32 sLocus(m_pTkn->szChars());
-    vAcceptToken();
+    vTokenAccept();
   }
   
   return false;
 }
+
+/*----------------------------------------------------------------------------*/
+/* accept token and advance to next token                                     */
+/*----------------------------------------------------------------------------*/
+void Dynamo::vTokenAccept(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+
+  ++ m_i_Tkn;
+  
+  m_pTkn = m_pTknVec->pGet(m_i_Tkn);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* set token on which parsing begins                                          */
+/*----------------------------------------------------------------------------*/
+void Dynamo::vTokenBegin(i8 i_Tkn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+  
+  m_i_Tkn = i_Tkn;
+  m_pTkn  = m_pTknVec->pGet(m_i_Tkn);
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* is token a known operator?                                                 */
+/*----------------------------------------------------------------------------*/
+bool Dynamo::bTokenIsOp(Token* pTkn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+  
+  if (pTkn->bSame("|"_Stz))
+    return false;
+  
+  if (pTkn->bSame("end"_Stz))
+    return false;
+  
+  if (pTkn->bSame("stage"_Stz))
+    return false;
+  
+  return true;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*                          Phase 2 : Staging                                 */

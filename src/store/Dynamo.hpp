@@ -52,22 +52,23 @@ namespace STORE
     bool bCollectName(void);
     bool bCollectOp(void);
     bool bCollectOpArgs(OpSpec* pOpSpec);
-    bool bCollectPipe(void);
+    bool bCollectOpSequence(void);
     bool bCollectStage(void);
     bool bCollectTag(void);
     bool bCollectTopology(void);
   
-    void vAcceptToken(void);
-    void vBeginToken(i8 i_Tkn);
-    bool bIsOperator(Token* pTkn);
-
     bool bParseOnAll(void);
     bool bParseOnAllNodes(void);
     bool bParseOnAllPartitions(void);
     bool bParseOnNode(void);
     bool bParseOnOrigin(void);
     bool bParseOnPartition(void);
-    
+
+    void vTokenAccept(void);
+    void vTokenBegin(i8 i_Tkn);
+    bool bTokenIsOp(Token* pTkn);
+
+
     //
     // Phase 2 : Staging
     //
