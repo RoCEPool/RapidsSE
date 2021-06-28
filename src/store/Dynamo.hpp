@@ -74,6 +74,8 @@ namespace STORE
     //
     bool bPhase2_staging(void);
 
+    void vOpInsertConsumeOp(StageSpec* pStageSpec, ePX eCrossTopo);
+  
     void vOpIsOp(StageSpec* pStageSpec, i8 i_Stage, OpSpec* pOpSpec, i8 i_Op);
 
     void vOpIsPipeline(void);
