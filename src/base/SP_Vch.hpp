@@ -9,7 +9,7 @@ namespace BASE
   {
   public:
   
-    char m_caVch[C_MAX_VCH];
+    char m_caVch[C_16KB];
   
     // must be last
     Footer m_xFooter;
