@@ -276,12 +276,12 @@ macro AM_CRW_INDEXJOIN_ROWS
   Label CRW_INDEXJOIN
 endMacro
 
-macro AM_CRW_INDEXJOIN_END
+macro AM_CRW_INDEXJOIN_NEXT
 //----------------------------------------------------------------------------//
-// macro AM_CRW_INDEXJOIN_END                                                 //
+// macro AM_CRW_INDEXJOIN_NEXT                                                 //
 //----------------------------------------------------------------------------//
-  // CRW_INDEXJOIN_END
-  Label CRW_INDEXJOIN_END
+  // CRW_INDEXJOIN_NEXT
+  Label CRW_INDEXJOIN_NEXT
 
   // fetch next entry from index
   EO_PUSH_DEVIXT_RHT
@@ -304,7 +304,7 @@ macro AM_CRW_INDEXJOIN_END
 
   EO_CALL <joinRowRoutine>  // C_TAG_JOINROW_ROUTINE
   //EO_ROW_DST_PRINT
-  EO_JMP CRW_INDEXJOIN_END
+  EO_JMP CRW_INDEXJOIN_NEXT
   EO_RETURN
 endMacro
 
@@ -403,7 +403,6 @@ macro AM_CRW_JOIN_ENT
   EO_RETURN
 
 endMacro
-
 
 //----------------------------------------------------------------------------//
 // macro AM_ROW_JOIN_CRW                                                      //
