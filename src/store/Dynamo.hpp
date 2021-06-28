@@ -77,6 +77,8 @@ namespace STORE
     void vOpIsOp(StageSpec* pStageSpec, i8 i_Stage,
                  OpSpec* pOpSpec, i8 i_Op);
 
+    void vOpIsPipeline(void);
+
     void vOpIsStage(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
                     StageSpec* pStageSpecFound, i8 i_FoundStage);
   

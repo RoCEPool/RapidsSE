@@ -922,39 +922,25 @@ bool Dynamo::bPhase2_staging(void)
     for (i8 i_Op = 0; i_Op < nOpSpecs; i_Op++) {
       OpSpec* pOpSpec = pStageSpec->pGet(i_Op);
       
-      // is the op actually a stage in this pipeline
-      Stz* szStageNm = pOpSpec->szOpNm();
+      // is the named op actually a stage in this pipeline?
+      Stz* szNamedOp = pOpSpec->szOpNm();
       i8 i_FoundStage = C_UNKNOWN;
       StageSpec* pStageSpecFound =
-        m_p_PipelineSpec->pFindStageSpec(szStageNm,i_FoundStage);
+        m_p_PipelineSpec->pFindStageSpec(szNamedOp,i_FoundStage);
       
-      if (! pStageSpecFound) {
-        
-        vOpIsOp(pStageSpec,i_Stage,pOpSpec,i_Op);
-        
-//        ePX eCrossTopo = Dynamo::eCrossTopo(pStageSpec, pStageSpec);
-//        vAddTopologyParams(pOpSpec, eCrossTopo, i_Stage, i_Op+1);
+      if (pStageSpecFound) {
+        vOpIsStage(pStageSpec,pOpSpec,i_Op,pStageSpecFound,i_FoundStage);
         continue;
       }
       
-      vOpIsStage(pStageSpec,pOpSpec,i_Op,pStageSpecFound,i_FoundStage);
+      //
+      // (add test for pipeline here)
+      //
+      // ... vOpIsPipeline(...);
+      //
       
-//      ePX eCrossTopo = Dynamo::eCrossTopo(pStageSpec, pStageSpecFound);
-//
-//      // Is there a send already ?
-//      // This would be the case if one stage is piped into multiple stages
-//      // e.g a unionAll
-//      OpSpec* pOpSpecSend = pStageSpec->pFindOpSpec("send"_Stz);
-//
-//      if (! pOpSpecSend)
-//
-//        vSendFirst(eCrossTopo,pStageSpec,i_FoundStage,
-//                   i_Op,pOpSpec,pStageSpecFound);
-//
-//      else
-//
-//        vSendSubsequent(pOpSpecSend,eCrossTopo,pStageSpec,pOpSpec,
-//                        i_FoundStage,i_Op,pStageSpecFound);
+      // the named op is a known op
+      vOpIsOp(pStageSpec,i_Stage,pOpSpec,i_Op);
 
     } // each op
     
@@ -964,7 +950,7 @@ bool Dynamo::bPhase2_staging(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* operator is an operator                                                    */
+/* named op is a known operator                                               */
 /*----------------------------------------------------------------------------*/
 void Dynamo::vOpIsOp(StageSpec* pStageSpec, i8 i_Stage,
                      OpSpec* pOpSpec, i8 i_Op)
@@ -976,7 +962,17 @@ void Dynamo::vOpIsOp(StageSpec* pStageSpec, i8 i_Stage,
 }
 
 /*----------------------------------------------------------------------------*/
-/* operator is actually a stage                                               */
+/* named op is a known pipeline                                               */
+/*----------------------------------------------------------------------------*/
+void Dynamo::vOpIsPipeline(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+  
+  NOT_IMPLEMENTED_YET;
+}
+
+/*----------------------------------------------------------------------------*/
+/* named op is a known stage                                                  */
 /*----------------------------------------------------------------------------*/
 void Dynamo::vOpIsStage(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
                         StageSpec* pStageSpecFound, i8 i_FoundStage)
