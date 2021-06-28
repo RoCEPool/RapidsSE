@@ -79,13 +79,13 @@ namespace STORE
     void vOpIsPipeline(void);
 
     void vOpIsStage(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
-                    StageSpec* pStageSpecDst, i8 i_FoundStage);
+                    StageSpec* pStageSpecFound, i8 i_FoundStage);
   
     void vSendFirst(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
-                    StageSpec* pStageSpecDst, i8 i_FoundStage);
+                    StageSpec* pStageSpecFound, i8 i_FoundStage);
   
     void vSendSubsequent(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
-                         StageSpec* pStageSpecDst, i8 i_FoundStage,
+                         StageSpec* pStageSpecFound, i8 i_FoundStage,
                          OpSpec* pOpSpecSend);
 
     void vAddTopologyParams(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage, i8 i_Op);
