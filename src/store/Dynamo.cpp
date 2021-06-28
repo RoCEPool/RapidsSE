@@ -934,28 +934,57 @@ bool Dynamo::bPhase2_staging(void)
         continue;
       }
       
-      ePX eCrossTopo = Dynamo::eCrossTopo(pStageSpec, pStageSpecFound);
+      vOpIsStage(pStageSpec,pOpSpec,i_Op,pStageSpecFound,i_FoundStage);
       
-      // Is there a send already ?
-      // This would be the case if one stage is piped into multiple stages
-      // e.g a unionAll
-      OpSpec* pOpSpecSend = pStageSpec->pFindOpSpec("send"_Stz);
-      
-      if (! pOpSpecSend)
-        
-        vSendFirst(eCrossTopo,pStageSpec,i_FoundStage,
-                   i_Op,pOpSpec,pStageSpecFound);
-      
-      else
-      
-        vSendSubsequent(pOpSpecSend,eCrossTopo,pStageSpec,pOpSpec,
-                        i_FoundStage,i_Op,pStageSpecFound);
+//      ePX eCrossTopo = Dynamo::eCrossTopo(pStageSpec, pStageSpecFound);
+//
+//      // Is there a send already ?
+//      // This would be the case if one stage is piped into multiple stages
+//      // e.g a unionAll
+//      OpSpec* pOpSpecSend = pStageSpec->pFindOpSpec("send"_Stz);
+//
+//      if (! pOpSpecSend)
+//
+//        vSendFirst(eCrossTopo,pStageSpec,i_FoundStage,
+//                   i_Op,pOpSpec,pStageSpecFound);
+//
+//      else
+//
+//        vSendSubsequent(pOpSpecSend,eCrossTopo,pStageSpec,pOpSpec,
+//                        i_FoundStage,i_Op,pStageSpecFound);
 
     } // each op
     
   } // each stage
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* operator is actually a stage                                               */
+/*----------------------------------------------------------------------------*/
+void Dynamo::vOpIsStage(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
+                        StageSpec* pStageSpecFound, i8 i_FoundStage)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+  
+  ePX eCrossTopo = Dynamo::eCrossTopo(pStageSpec, pStageSpecFound);
+  
+  // Is there a send already ?
+  // This would be the case if one stage is piped into multiple stages
+  // e.g a unionAll
+  OpSpec* pOpSpecSend = pStageSpec->pFindOpSpec("send"_Stz);
+  
+  if (! pOpSpecSend)
+    
+    vSendFirst(eCrossTopo,pStageSpec,i_FoundStage,
+               i_Op,pOpSpec,pStageSpecFound);
+  
+  else
+  
+    vSendSubsequent(pOpSpecSend,eCrossTopo,pStageSpec,pOpSpec,
+                    i_FoundStage,i_Op,pStageSpecFound);
+
 }
 
 /*----------------------------------------------------------------------------*/
