@@ -1216,11 +1216,11 @@ void Dynamo::vParamsIncConsume(OpSpec* pOpSpec, ePX eCrossTopo)
       RASSERT(0);
   }
 
-  TagSet* pTagSet = pOpSpec->pOpSpecTagSet();
-  i8 iOldSends = pTagSet->iValue(C_TAG_SENDS);
+  TagSet* pOpArgsTags = pOpSpec->pOpArgsTags();
+  i8 iOldSends = pOpArgsTags->iValue(C_TAG_SENDS);
 
   // arg-0 is the cross topology of the send op
-  pTagSet->vReplace(C_TAG_SENDS,iOldSends+iIncSends);
+  pOpArgsTags->vReplace(C_TAG_SENDS,iOldSends+iIncSends);
 }
 
 /*----------------------------------------------------------------------------*/

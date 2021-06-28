@@ -25,7 +25,7 @@ namespace STORE
     bool   m_bAppendRight; // append to right queue of next operator
     eXK    m_eSendKind;    // {normal, hashed, robin, local robin} if send op
 
-    TagSet m_oOpSpecTagSet;
+    TagSet m_oOpArgsTags;
     TagSet m_oTopologyTagSet;
     
     // must be last
@@ -47,7 +47,7 @@ namespace STORE
     void vOpNm(Stz* szOpNm);
     i8   i_OpSpec(void);
     void v_OpSpec(i8 i_OpSpec);
-    TagSet* pOpSpecTagSet(void);
+    TagSet* pOpArgsTags(void);
     void vReplaceTopologyEnamePair(Stz* szName, Stz* szValue, eTN eToken);
     void vReplaceTopologyEnamePair(Stz* sName, i8 iValue, eTN eToken);
     TagSet* pTopologyTagSet(void);

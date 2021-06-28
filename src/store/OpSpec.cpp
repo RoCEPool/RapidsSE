@@ -51,7 +51,7 @@ OpSpec::OpSpec(Stz* szOpNm, i8 i_OpSpec, StageSpec* pStageSpec)
   m_bAppendRight  = false;
   m_eSendKind     = XK_NORMAL;
 
-  //m_oOpSpecTagSet
+  //m_oOpArgsTags
   //m_oTopologyTagSet
   
   _checkInitialised_(CN_OPSPEC);
@@ -80,7 +80,7 @@ void OpSpec::vAddEnamePair(Stz* sName, Stz* sValue, eTN eToken)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   UNUSED(eToken);
   
-  m_oOpSpecTagSet.vInsert(sName, sValue);
+  m_oOpArgsTags.vInsert(sName, sValue);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -91,7 +91,7 @@ void OpSpec::vAddEnamePair(Stz* sName, i8 iValue, eTN eToken)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   UNUSED(eToken);
 
-  m_oOpSpecTagSet.vInsert(sName, iValue);
+  m_oOpArgsTags.vInsert(sName, iValue);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -168,11 +168,11 @@ void OpSpec::v_OpSpec(i8 i_OpSpec)
 /*----------------------------------------------------------------------------*/
 /* get the TagSet                                                             */
 /*----------------------------------------------------------------------------*/
-TagSet* OpSpec::pOpSpecTagSet(void)
+TagSet* OpSpec::pOpArgsTags(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  return &m_oOpSpecTagSet;
+  return &m_oOpArgsTags;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -183,7 +183,7 @@ void OpSpec::vReplaceTopologyEnamePair(Stz* szName, Stz* szValue, eTN eToken)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   UNUSED(eToken);
 
-  m_oOpSpecTagSet.vReplace(szName, szValue);
+  m_oOpArgsTags.vReplace(szName, szValue);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -239,7 +239,7 @@ void OpSpec::vPrint(void)
   
   vTrace("[%lld] %s "_Stz,m_i_OpSpec,m_sOpNm.szStz());
     
-  m_oOpSpecTagSet.vDumpSet();
+  m_oOpArgsTags.vDumpSet();
 }
 
 /*----------------------------------------------------------------------------*/
