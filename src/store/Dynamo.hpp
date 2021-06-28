@@ -88,11 +88,11 @@ namespace STORE
                          StageSpec* pStageSpecFound, i8 i_FoundStage,
                          OpSpec* pOpSpecSend);
 
-    void vAddTopologyParams(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage, i8 i_Op);
-    void vAddConsumeParams(OpSpec* pOpSpec, ePX eCrossTopo);
-    void vIncConsumeParams(OpSpec* pOpSpec, ePX eCrossTopo);
-    void vReplaceTopologyParams(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage, i8 i_Op);
-    void vReplaceWithSend(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage);
+    void vParamsAddCrossTopo(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage, i8 i_Op);
+    void vParamsAddConsume(OpSpec* pOpSpec, ePX eCrossTopo);
+    void vParamsIncConsume(OpSpec* pOpSpec, ePX eCrossTopo);
+    void vParamsReplaceCrossTopo(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage, i8 i_Op);
+    void vParamsReplaceWithSend(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage);
 
     Footer* aFooter(void);
   };
