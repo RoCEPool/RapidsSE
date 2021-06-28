@@ -71,8 +71,8 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
 
   m_pOpJob        = nullptr;
   
-  m_oOpTagSet.vCopy(pOpSpec->pOpArgsTags());
-  m_oTopologyTagSet.vCopy(pOpSpec->pTopologyTagSet());
+  m_oOpTagSet.vCopy(pOpSpec->pArgTags());
+  m_oTopologyTags.vCopy(pOpSpec->pTopologyTags());
 
   m_bPulsedLimit  = false;
   m_iWorkQuanta   = 1;
@@ -1478,7 +1478,7 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // now copy the hidden topology ename pairs to the job ename set
-  pOpJobTagSet->vCopy(&m_oTopologyTagSet);
+  pOpJobTagSet->vCopy(&m_oTopologyTags);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add the OpJob JobNM to be the same as the Opertor name
@@ -1578,7 +1578,7 @@ TagSet* Op::pTopologyTagSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return &m_oTopologyTagSet;
+  return &m_oTopologyTags;
 }
 
 /*----------------------------------------------------------------------------*/

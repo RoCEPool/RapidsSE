@@ -35,7 +35,7 @@ namespace STORE
     Job*           m_pOpJob;         // operator job of this operator
   
     TagSet         m_oOpTagSet;        // op tag set
-    TagSet         m_oTopologyTagSet;  // topology tag set
+    TagSet         m_oTopologyTags;  // topology tag set
     
     bool           m_bPulsedLimit;   // is this a pulsed operand?
     i8             m_iWorkQuanta;    // quanta of work between pulses

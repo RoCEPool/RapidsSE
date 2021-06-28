@@ -1085,7 +1085,7 @@ void Dynamo::vSendSubsequent(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
   
   ePX eCrossTopo = Dynamo::eCrossTopo(pStageSpec, pStageSpecDst);
 
-  TagSet* pTopologyTagSet = pOpSpecSend->pTopologyTagSet();
+  TagSet* pTopologyTagSet = pOpSpecSend->pTopologyTags();
 
   ePX eOpSpecCrossTopo = (ePX)pTopologyTagSet->iValue(C_TAG_CROSSTOPO);
 
@@ -1216,11 +1216,11 @@ void Dynamo::vParamsIncConsume(OpSpec* pOpSpec, ePX eCrossTopo)
       RASSERT(0);
   }
 
-  TagSet* pOpArgsTags = pOpSpec->pOpArgsTags();
-  i8 iOldSends = pOpArgsTags->iValue(C_TAG_SENDS);
+  TagSet* pOpArgTags = pOpSpec->pArgTags();
+  i8 iOldSends = pOpArgTags->iValue(C_TAG_SENDS);
 
   // arg-0 is the cross topology of the send op
-  pOpArgsTags->vReplace(C_TAG_SENDS,iOldSends+iIncSends);
+  pOpArgTags->vReplace(C_TAG_SENDS,iOldSends+iIncSends);
 }
 
 /*----------------------------------------------------------------------------*/
