@@ -74,10 +74,9 @@ namespace STORE
     //
     bool bPhase2_staging(void);
 
-    void vConsumeAddSendsArg(OpSpec* pOpSpec, ePX eCrossTopo);
-    void vConsumeIncSendsArg(OpSpec* pOpSpec, ePX eCrossTopo);
-    void vConsumeInsertOp(StageSpec* pStageSpec, ePX eCrossTopo);
-  
+    void vArgAdd_sends(OpSpec* pConsumeOpSpec, ePX eCrossTopo);
+    void vArgUpdate_sends(OpSpec* pConsumeOpSpec, ePX eCrossTopo);
+
     void vMorphToSend(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage);
 
     void vNameIsOp(StageSpec* pStageSpec, i8 i_Stage, OpSpec* pOpSpec, i8 i_Op);
@@ -85,14 +84,15 @@ namespace STORE
     void vNameIsStage(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
                       StageSpec* pStageSpecFound, i8 i_FoundStage);
   
-    void vSendFirst(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
-                    StageSpec* pStageSpecFound, i8 i_FoundStage);
-    void vSendSubsequent(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
-                         StageSpec* pStageSpecFound, i8 i_FoundStage,
-                         OpSpec* pOpSpecSend);
+    void vStageConsumeOpInsert(StageSpec* pStageSpec, ePX eCrossTopo);
+    void vStageFirstSend(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
+                         StageSpec* pStageSpecFound, i8 i_FoundStage);
+    void vStageSubsequentSend(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
+                              StageSpec* pStageSpecFound, i8 i_FoundStage,
+                              OpSpec* pOpSpecSend);
 
-    void vTopoArgsAdd(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage, i8 i_Op);
-    void vTopoArgsReplace(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage, i8 i_Op);
+    void vTopoTagsAdd(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage, i8 i_Op);
+    void vTopoTagsReplace(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage, i8 i_Op);
 
     Footer* aFooter(void);
   };
