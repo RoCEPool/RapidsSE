@@ -997,6 +997,18 @@ void Dynamo::vOpIsStage(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
 }
 
 /*----------------------------------------------------------------------------*/
+/* replace the <stageNm> op with send <nodeNo>                                */
+/*----------------------------------------------------------------------------*/
+void Dynamo::vOpReplaceWithSend(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+  
+  pOpSpec->vOpNm("send"_Stz);
+  
+  vParamsAddCrossTopo(pOpSpec, eCrossTopo, i_Stage, 0);
+}
+
+/*----------------------------------------------------------------------------*/
 /* first send                                                                 */
 /*----------------------------------------------------------------------------*/
 void Dynamo::vSendFirst(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
@@ -1022,7 +1034,7 @@ void Dynamo::vSendFirst(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   pOpSpec->vAddEnamePair(C_TAG_SENDKIND, (i8) pOpSpec->eSendKind(), TN_INTEGER);
-  vParamsReplaceWithSend(pOpSpec, eCrossTopo, i_StageDst);
+  vOpReplaceWithSend(pOpSpec, eCrossTopo, i_StageDst);
 
   // is there a consumeOp already in the destination stage ?
   OpSpec* pConsumeOpSpec = pStageSpecDst->pFindOpSpec("consumeOp"_Stz);
@@ -1211,18 +1223,6 @@ void Dynamo::vParamsReplaceCrossTopo(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage
   // arg-2 is the op of the next stage for the send
   pOpSpec->vReplaceTopologyEnamePair(C_TAG_NEXTOP,(i8)i_Op,TN_INTEGER);
   //pOpSpec->pTagSet()->vPrint();
-}
-
-/*----------------------------------------------------------------------------*/
-/* replace the <stageNm> with send <nodeNo>                                   */
-/*----------------------------------------------------------------------------*/
-void Dynamo::vParamsReplaceWithSend(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-  
-  pOpSpec->vOpNm("send"_Stz);
-  
-  vParamsAddCrossTopo(pOpSpec, eCrossTopo, i_Stage, 0);
 }
 
 /*============================================================================*/
