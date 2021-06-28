@@ -1006,6 +1006,7 @@ void Dynamo::vSendFirst(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
   
   ePX eCrossTopo = Dynamo::eCrossTopo(pStageSpec, pStageSpecDst);
 
+  // SPECIAL CASE (to discuss with Alka)
   if (eCrossTopo == PX_ORIGIN_TO_ORIGIN && i_StageDst == 0) {
     // add parameter to the prev sink op
     OpSpec *pPrevOpSpec = pStageSpec->pGet(i_Op - 1);
@@ -1015,26 +1016,28 @@ void Dynamo::vSendFirst(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
     RASSERT(i_Op == pStageSpec->nItems() - 1);
     pStageSpec->vRemove(pOpSpec);
     delete pOpSpec;
+    return;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  pOpSpec->vAddEnamePair(C_TAG_SENDKIND, (i8) pOpSpec->eSendKind(), TN_INTEGER);
+  vParamsReplaceWithSend(pOpSpec, eCrossTopo, i_StageDst);
+
+  // is there a consumeOp already in the destination stage ?
+  OpSpec* pConsumeOpSpec = pStageSpecDst->pFindOpSpec("consumeOp"_Stz);
+  if (pConsumeOpSpec) {
+
+    // found a consume op
+    // implies that there are 2 stages piping into this same stage
+    // eg in unionAll
+    // 2 scan stages piping into the output stage
+    // add to the consume params
+    vParamsIncConsume(pConsumeOpSpec, eCrossTopo);
   }
   else {
-    pOpSpec->vAddEnamePair(C_TAG_SENDKIND, (i8) pOpSpec->eSendKind(), TN_INTEGER);
-    vParamsReplaceWithSend(pOpSpec, eCrossTopo, i_StageDst);
-
-    // is there a consumeOp already in the stage ?
-    OpSpec* pConsumeOpSpec = pStageSpecDst->pFindOpSpec("consumeOp"_Stz);
-    if (pConsumeOpSpec) {
-
-      // found a consume op
-      // implies that there are 2 stages piping into this same stage
-      // eg in unionAll
-      // 2 scan stages piping into the output stage
-      // add to the consume params
-      vParamsIncConsume(pConsumeOpSpec, eCrossTopo);
-    }
-    else {
-      pConsumeOpSpec = pStageSpecDst->pPrependConsumeOp(eCrossTopo, i_StageDst, i_Op + 1);
-      vParamsAddConsume(pConsumeOpSpec, eCrossTopo);
-    }
+    pConsumeOpSpec = pStageSpecDst->pPrependConsumeOp(eCrossTopo, i_StageDst, i_Op + 1);
+    vParamsAddConsume(pConsumeOpSpec, eCrossTopo);
   }
 
 }
