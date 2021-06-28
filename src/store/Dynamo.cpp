@@ -555,7 +555,7 @@ bool Dynamo::bCollectOpArgs(OpSpec* pOpSpec)
     
     sSTMT sArgValue ( m_pTkn->szChars() );
     
-    pOpSpec->vAddEnamePair(sArgName,sArgValue,TN_STRING);
+    pOpSpec->vArgTagAdd(sArgName,sArgValue,TN_STRING);
     
     vTokenAccept();
   }
@@ -1054,7 +1054,7 @@ void Dynamo::vSendFirst(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pOpSpec->vAddEnamePair(C_TAG_SENDKIND, (i8) pOpSpec->eSendKind(), TN_INTEGER);
+  pOpSpec->vArgTagAdd(C_TAG_SENDKIND, (i8) pOpSpec->eSendKind(), TN_INTEGER);
   vOpReplaceWithSend(pOpSpec, eCrossTopo, i_StageDst);
 
   // is there a consumeOp already in the destination stage ?
@@ -1085,7 +1085,7 @@ void Dynamo::vSendSubsequent(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
   
   ePX eCrossTopo = Dynamo::eCrossTopo(pStageSpec, pStageSpecDst);
 
-  TagSet* pTopologyTagSet = pOpSpecSend->pTopologyTags();
+  TagSet* pTopologyTagSet = pOpSpecSend->pTopoTags();
 
   ePX eOpSpecCrossTopo = (ePX)pTopologyTagSet->iValue(C_TAG_CROSSTOPO);
 
@@ -1097,8 +1097,8 @@ void Dynamo::vSendSubsequent(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
   delete pOpSpec;
 
   // add otherStage and otherOp tags into the send
-  pOpSpecSend->vAddTopologyEnamePair(C_TAG_OTHERSTAGE,(i8)i_StageDst,TN_INTEGER);
-  pOpSpecSend->vAddTopologyEnamePair(C_TAG_OTHEROP,(i8)0,TN_INTEGER);
+  pOpSpecSend->vTopoTagAdd(C_TAG_OTHERSTAGE,(i8)i_StageDst,TN_INTEGER);
+  pOpSpecSend->vTopoTagAdd(C_TAG_OTHEROP,(i8)0,TN_INTEGER);
 
 
   // insert a consume op at the beginning of the stage
@@ -1113,13 +1113,13 @@ void Dynamo::vParamsAddCrossTopo(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage, i8
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
   // cross topology of the send op
-  pOpSpec->vAddTopologyEnamePair(C_TAG_CROSSTOPO,(i8)eCrossTopo,TN_INTEGER);
+  pOpSpec->vTopoTagAdd(C_TAG_CROSSTOPO,(i8)eCrossTopo,TN_INTEGER);
   
   // next stage for the send
-  pOpSpec->vAddTopologyEnamePair(C_TAG_NEXTSTAGE,(i8)i_Stage,TN_INTEGER);
+  pOpSpec->vTopoTagAdd(C_TAG_NEXTSTAGE,(i8)i_Stage,TN_INTEGER);
   
   //  op of the next stage for the send
-  pOpSpec->vAddTopologyEnamePair(C_TAG_NEXTOP,(i8)i_Op,TN_INTEGER);
+  pOpSpec->vTopoTagAdd(C_TAG_NEXTOP,(i8)i_Op,TN_INTEGER);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1168,7 +1168,7 @@ void Dynamo::vParamsAddConsume(OpSpec* pOpSpec, ePX eCrossTopo)
   }
   
   // arg-0 is the cross topology of the send op
-  pOpSpec->vAddEnamePair(C_TAG_SENDS,iSends,TN_INTEGER);
+  pOpSpec->vArgTagAdd(C_TAG_SENDS,iSends,TN_INTEGER);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1230,15 +1230,14 @@ void Dynamo::vParamsReplaceCrossTopo(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  // arg-0 is the cross topology of the send op
-  pOpSpec->vReplaceTopologyEnamePair(C_TAG_CROSSTOPO,(i8)eCrossTopo,TN_INTEGER);
+  // cross topology of the send op
+  pOpSpec->vTopoTagReplace(C_TAG_CROSSTOPO,(i8)eCrossTopo,TN_INTEGER);
   
-  // arg-1 is the next stage for the send
-  pOpSpec->vReplaceTopologyEnamePair(C_TAG_NEXTSTAGE,(i8)i_Stage,TN_INTEGER);
+  // next stage for the send
+  pOpSpec->vTopoTagReplace(C_TAG_NEXTSTAGE,(i8)i_Stage,TN_INTEGER);
   
-  // arg-2 is the op of the next stage for the send
-  pOpSpec->vReplaceTopologyEnamePair(C_TAG_NEXTOP,(i8)i_Op,TN_INTEGER);
-  //pOpSpec->pTagSet()->vPrint();
+  // op of the next stage for the send
+  pOpSpec->vTopoTagReplace(C_TAG_NEXTOP,(i8)i_Op,TN_INTEGER);
 }
 
 /*============================================================================*/

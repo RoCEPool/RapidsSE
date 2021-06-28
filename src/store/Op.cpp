@@ -72,7 +72,7 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   m_pOpJob        = nullptr;
   
   m_oOpTagSet.vCopy(pOpSpec->pArgTags());
-  m_oTopologyTags.vCopy(pOpSpec->pTopologyTags());
+  m_oTopologyTags.vCopy(pOpSpec->pTopoTags());
 
   m_bPulsedLimit  = false;
   m_iWorkQuanta   = 1;
