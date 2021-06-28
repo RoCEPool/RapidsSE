@@ -929,8 +929,11 @@ bool Dynamo::bPhase2_staging(void)
         m_p_PipelineSpec->pFindStageSpec(szStageNm,i_FoundStage);
       
       if (! pStageSpecFound) {
-        ePX eCrossTopo = Dynamo::eCrossTopo(pStageSpec, pStageSpec);
-        vAddTopologyParams(pOpSpec, eCrossTopo, i_Stage, i_Op+1);
+        
+        vOpIsOp(pStageSpec,i_Stage,pOpSpec,i_Op);
+        
+//        ePX eCrossTopo = Dynamo::eCrossTopo(pStageSpec, pStageSpec);
+//        vAddTopologyParams(pOpSpec, eCrossTopo, i_Stage, i_Op+1);
         continue;
       }
       
@@ -958,6 +961,18 @@ bool Dynamo::bPhase2_staging(void)
   } // each stage
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* operator is an operator                                                    */
+/*----------------------------------------------------------------------------*/
+void Dynamo::vOpIsOp(StageSpec* pStageSpec, i8 i_Stage,
+                     OpSpec* pOpSpec, i8 i_Op)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+  
+  ePX eCrossTopo = Dynamo::eCrossTopo(pStageSpec, pStageSpec);
+  vAddTopologyParams(pOpSpec, eCrossTopo, i_Stage, i_Op+1);
 }
 
 /*----------------------------------------------------------------------------*/
