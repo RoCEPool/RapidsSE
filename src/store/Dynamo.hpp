@@ -76,7 +76,9 @@ namespace STORE
 
     bool bSendFirst(ePX eCrossTopo, StageSpec* pStageSpec, i8 i_FoundStage,
                     i8 i_Op, OpSpec* pOpSpec, StageSpec* pStageSpecFound);
-    bool bSendSubsequent(void);
+    bool bSendSubsequent(OpSpec* pOpSpecSend, ePX eCrossTopo,
+                         StageSpec* pStageSpec, OpSpec* pOpSpec,
+                         i8 i_FoundStage, i8 i_Op, StageSpec* pStageSpecFound);
 
     void vAddTopologyParams(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage, i8 i_Op);
     void vAddConsumeParams(OpSpec* pOpSpec, ePX eCrossTopo);

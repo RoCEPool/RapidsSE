@@ -939,26 +939,29 @@ bool Dynamo::bPhase2_staging(void)
       OpSpec* pOpSpecSend = pStageSpec->pFindOpSpec("send"_Stz);
       
       if (pOpSpecSend) {
-        TagSet* pTopologyTagSet = pOpSpecSend->pTopologyTagSet();
-
-        ePX eOpSpecCrossTopo = (ePX)pTopologyTagSet->iValue(C_TAG_TOPOLOGY);
-
-        // this needs to checked at compile time
-        RASSERT(eCrossTopo == eOpSpecCrossTopo);
-
-        // we already have a send, so just remove the stage
-        pStageSpec->vRemove(pOpSpec);
-        delete pOpSpec;
-
-        // add otherStage and otherOp tags into the send
-        pOpSpecSend->vAddTopologyEnamePair(C_TAG_OTHERSTAGE,(i8)i_FoundStage,TN_INTEGER);
-        pOpSpecSend->vAddTopologyEnamePair(C_TAG_OTHEROP,(i8)0,TN_INTEGER);
-
-        //pTopologyTagSet->vContentDump();
-
-        // prepend a consume op in the stage
-        OpSpec* pConsumeOpSpec = pStageSpecFound->pPrependConsumeOp(eCrossTopo, i_FoundStage, i_Op + 1);
-        vAddConsumeParams(pConsumeOpSpec, eCrossTopo);
+//        TagSet* pTopologyTagSet = pOpSpecSend->pTopologyTagSet();
+//
+//        ePX eOpSpecCrossTopo = (ePX)pTopologyTagSet->iValue(C_TAG_TOPOLOGY);
+//
+//        // this needs to checked at compile time
+//        RASSERT(eCrossTopo == eOpSpecCrossTopo);
+//
+//        // we already have a send, so just remove the stage
+//        pStageSpec->vRemove(pOpSpec);
+//        delete pOpSpec;
+//
+//        // add otherStage and otherOp tags into the send
+//        pOpSpecSend->vAddTopologyEnamePair(C_TAG_OTHERSTAGE,(i8)i_FoundStage,TN_INTEGER);
+//        pOpSpecSend->vAddTopologyEnamePair(C_TAG_OTHEROP,(i8)0,TN_INTEGER);
+//
+//        //pTopologyTagSet->vContentDump();
+//
+//        // prepend a consume op in the stage
+//        OpSpec* pConsumeOpSpec = pStageSpecFound->pPrependConsumeOp(eCrossTopo, i_FoundStage, i_Op + 1);
+//        vAddConsumeParams(pConsumeOpSpec, eCrossTopo);
+        
+        bSendSubsequent(pOpSpecSend,eCrossTopo,pStageSpec,pOpSpec,
+                        i_FoundStage,i_Op,pStageSpecFound);
         continue;
       }
       
@@ -1050,10 +1053,33 @@ bool Dynamo::bSendFirst(ePX eCrossTopo, StageSpec* pStageSpec, i8 i_FoundStage,
 /*----------------------------------------------------------------------------*/
 /* subsequent send                                                            */
 /*----------------------------------------------------------------------------*/
-bool Dynamo::bSendSubsequent(void)
+bool Dynamo::bSendSubsequent(OpSpec* pOpSpecSend, ePX eCrossTopo,
+                             StageSpec* pStageSpec, OpSpec* pOpSpec,
+                             i8 i_FoundStage, i8 i_Op, StageSpec* pStageSpecFound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
+  TagSet* pTopologyTagSet = pOpSpecSend->pTopologyTagSet();
+
+  ePX eOpSpecCrossTopo = (ePX)pTopologyTagSet->iValue(C_TAG_TOPOLOGY);
+
+  // this needs to checked at compile time
+  RASSERT(eCrossTopo == eOpSpecCrossTopo);
+
+  // we already have a send, so just remove the stage
+  pStageSpec->vRemove(pOpSpec);
+  delete pOpSpec;
+
+  // add otherStage and otherOp tags into the send
+  pOpSpecSend->vAddTopologyEnamePair(C_TAG_OTHERSTAGE,(i8)i_FoundStage,TN_INTEGER);
+  pOpSpecSend->vAddTopologyEnamePair(C_TAG_OTHEROP,(i8)0,TN_INTEGER);
+
+  //pTopologyTagSet->vContentDump();
+
+  // prepend a consume op in the stage
+  OpSpec* pConsumeOpSpec = pStageSpecFound->pPrependConsumeOp(eCrossTopo, i_FoundStage, i_Op + 1);
+  vAddConsumeParams(pConsumeOpSpec, eCrossTopo);
+
   return true;
 }
 
