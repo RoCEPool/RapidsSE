@@ -291,7 +291,7 @@
   op[].init
 
   // set topolgy in the op
-  <topology> op.topology!
+  <crossTopo> op.topology!
 
   // set nextStage in op
   <nextStage> op.nextStage!

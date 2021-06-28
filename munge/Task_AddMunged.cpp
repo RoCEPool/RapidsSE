@@ -21817,7 +21817,7 @@ void Task::vAddMunged(Task* )
     "  op[].init\n"
     "\n"
     "  // set topolgy in the op\n"
-    "  <topology> op.topology!\n"
+    "  <crossTopo> op.topology!\n"
     "\n"
     "  // set nextStage in op\n"
     "  <nextStage> op.nextStage!\n"

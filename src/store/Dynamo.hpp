@@ -74,17 +74,26 @@ namespace STORE
     //
     bool bPhase2_staging(void);
 
-    bool bSendFirst(ePX eCrossTopo, StageSpec* pStageSpec, i8 i_FoundStage,
-                    i8 i_Op, OpSpec* pOpSpec, StageSpec* pStageSpecFound);
-    bool bSendSubsequent(OpSpec* pOpSpecSend, ePX eCrossTopo,
-                         StageSpec* pStageSpec, OpSpec* pOpSpec,
-                         i8 i_FoundStage, i8 i_Op, StageSpec* pStageSpecFound);
+    void vOpIsOp(StageSpec* pStageSpec, i8 i_Stage, OpSpec* pOpSpec, i8 i_Op);
 
-    void vAddTopologyParams(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage, i8 i_Op);
-    void vAddConsumeParams(OpSpec* pOpSpec, ePX eCrossTopo);
-    void vIncConsumeParams(OpSpec* pOpSpec, ePX eCrossTopo);
-    void vReplaceTopologyParams(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage, i8 i_Op);
-    void vReplaceWithSend(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage);
+    void vOpIsPipeline(void);
+
+    void vOpIsStage(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
+                    StageSpec* pStageSpecFound, i8 i_FoundStage);
+  
+    void vOpReplaceWithSend(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage);
+  
+    void vSendFirst(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
+                    StageSpec* pStageSpecFound, i8 i_FoundStage);
+  
+    void vSendSubsequent(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
+                         StageSpec* pStageSpecFound, i8 i_FoundStage,
+                         OpSpec* pOpSpecSend);
+
+    void vParamsAddCrossTopo(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage, i8 i_Op);
+    void vParamsAddConsume(OpSpec* pOpSpec, ePX eCrossTopo);
+    void vParamsIncConsume(OpSpec* pOpSpec, ePX eCrossTopo);
+    void vParamsReplaceCrossTopo(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage, i8 i_Op);
 
     Footer* aFooter(void);
   };
