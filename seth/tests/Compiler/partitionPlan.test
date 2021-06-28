@@ -537,7 +537,7 @@ LIMIT   10
 ;
 rows: (*,'partitionExplain',
 'StatementMarker: select
-» queryText: "SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3 FROM    t1 WHERE   c1/c2 > 0 ORDER BY c1 + c2   LIMIT   10"
+» queryText: "SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3 FROM    t1 WHERE   c1/c2 > 0 ORDER BY c1 + c2 LIMIT   10"
 
 -> projectOp
    » column: (Alias = x1 ; Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
@@ -591,7 +591,41 @@ EXPLAIN STAGE partitionExplain
 SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2
 FROM    t1
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2 FROM    t1"
+
+-> projectOp
+   » location: origin
+   » column: (Alias = max1 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c1))) ; Ordinal Expr = MAX($4))
+   » column: (Alias = min1 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c1))) ; Ordinal Expr = MIN($1))
+   » column: (Alias = sum1 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c1))) ; Ordinal Expr = SUM($2))
+   » column: (Alias = count1 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c1))) ; Ordinal Expr = SUM($3))
+   » column: (Alias = avg1 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c1)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c1)))) ; Ordinal Expr = (SUM($2)) / (SUM($3)))
+   » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($5)) / (SUM($6)))
+
+-> -> projectOp
+      » location: all nodes
+      » column: (Expr = MIN(MIN(rapidsse.public.t1.c1)) ; Ordinal Expr = MIN($1))
+      » column: (Expr = SUM(SUM(rapidsse.public.t1.c1)) ; Ordinal Expr = SUM($2))
+      » column: (Expr = SUM(COUNT(rapidsse.public.t1.c1)) ; Ordinal Expr = SUM($3))
+      » column: (Expr = MAX(MAX(rapidsse.public.t1.c1)) ; Ordinal Expr = MAX($4))
+      » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($5))
+      » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($6))
+
+-> -> -> projectOp
+         » column: (Expr = MIN(rapidsse.public.t1.c1) ; Ordinal Expr = MIN($1))
+         » column: (Expr = SUM(rapidsse.public.t1.c1) ; Ordinal Expr = SUM($1))
+         » column: (Expr = COUNT(rapidsse.public.t1.c1) ; Ordinal Expr = COUNT($1))
+         » column: (Expr = MAX(rapidsse.public.t1.c1) ; Ordinal Expr = MAX($1))
+         » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+         » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+
+-> -> -> -> tableScanOp
+            » location: all partitions
+            » table: (rapidsse.public.t1)'
+)
+
 
 --  (201) Select with grand total aggregates & WHERE clause
 EXPLAIN STAGE partitionExplain
@@ -599,7 +633,45 @@ SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, 
 FROM    t1
 WHERE   c1 > 0
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2 FROM    t1 WHERE   c1 > 0"
+
+-> projectOp
+   » location: origin
+   » column: (Alias = max1 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c1))) ; Ordinal Expr = MAX($4))
+   » column: (Alias = min1 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c1))) ; Ordinal Expr = MIN($1))
+   » column: (Alias = sum1 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c1))) ; Ordinal Expr = SUM($2))
+   » column: (Alias = count1 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c1))) ; Ordinal Expr = SUM($3))
+   » column: (Alias = avg1 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c1)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c1)))) ; Ordinal Expr = (SUM($2)) / (SUM($3)))
+   » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($5)) / (SUM($6)))
+
+-> -> projectOp
+      » location: all nodes
+      » column: (Expr = MIN(MIN(rapidsse.public.t1.c1)) ; Ordinal Expr = MIN($1))
+      » column: (Expr = SUM(SUM(rapidsse.public.t1.c1)) ; Ordinal Expr = SUM($2))
+      » column: (Expr = SUM(COUNT(rapidsse.public.t1.c1)) ; Ordinal Expr = SUM($3))
+      » column: (Expr = MAX(MAX(rapidsse.public.t1.c1)) ; Ordinal Expr = MAX($4))
+      » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($5))
+      » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($6))
+
+-> -> -> projectOp
+         » column: (Expr = MIN(rapidsse.public.t1.c1) ; Ordinal Expr = MIN($1))
+         » column: (Expr = SUM(rapidsse.public.t1.c1) ; Ordinal Expr = SUM($1))
+         » column: (Expr = COUNT(rapidsse.public.t1.c1) ; Ordinal Expr = COUNT($1))
+         » column: (Expr = MAX(rapidsse.public.t1.c1) ; Ordinal Expr = MAX($1))
+         » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+         » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+
+-> -> -> -> filterOp
+            » expr: (rapidsse.public.t1.c1 > 0)
+            » ordinal expr: ($1 > 0)
+
+-> -> -> -> -> tableScanOp
+               » location: all partitions
+               » table: (rapidsse.public.t1)'
+)
+
 
 --  (202) Select with grand total aggregates & HAVING clause
 EXPLAIN STAGE partitionExplain
@@ -607,7 +679,45 @@ SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, 
 FROM    t1
 HAVING  min1 < 0
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2 FROM    t1 HAVING  min1 < 0"
+
+-> filterOp
+   » expr: (min1 < 0)
+   » ordinal expr: ($2 < 0)
+
+-> -> projectOp
+      » location: origin
+      » column: (Alias = max1 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c1))) ; Ordinal Expr = MAX($4))
+      » column: (Alias = min1 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c1))) ; Ordinal Expr = MIN($1))
+      » column: (Alias = sum1 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c1))) ; Ordinal Expr = SUM($2))
+      » column: (Alias = count1 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c1))) ; Ordinal Expr = SUM($3))
+      » column: (Alias = avg1 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c1)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c1)))) ; Ordinal Expr = (SUM($2)) / (SUM($3)))
+      » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($5)) / (SUM($6)))
+
+-> -> -> projectOp
+         » location: all nodes
+         » column: (Expr = MIN(MIN(rapidsse.public.t1.c1)) ; Ordinal Expr = MIN($1))
+         » column: (Expr = SUM(SUM(rapidsse.public.t1.c1)) ; Ordinal Expr = SUM($2))
+         » column: (Expr = SUM(COUNT(rapidsse.public.t1.c1)) ; Ordinal Expr = SUM($3))
+         » column: (Expr = MAX(MAX(rapidsse.public.t1.c1)) ; Ordinal Expr = MAX($4))
+         » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($5))
+         » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($6))
+
+-> -> -> -> projectOp
+            » column: (Expr = MIN(rapidsse.public.t1.c1) ; Ordinal Expr = MIN($1))
+            » column: (Expr = SUM(rapidsse.public.t1.c1) ; Ordinal Expr = SUM($1))
+            » column: (Expr = COUNT(rapidsse.public.t1.c1) ; Ordinal Expr = COUNT($1))
+            » column: (Expr = MAX(rapidsse.public.t1.c1) ; Ordinal Expr = MAX($1))
+            » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+            » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+
+-> -> -> -> -> tableScanOp
+               » location: all partitions
+               » table: (rapidsse.public.t1)'
+)
+
 
 --  (203) Select with grand total aggregates & ORDER BY clause (silly example but still valid)
 EXPLAIN STAGE partitionExplain
@@ -615,7 +725,45 @@ SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, 
 FROM    t1
 ORDER BY max1
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2 FROM    t1 ORDER BY max1"
+
+-> orderOp
+   » order expr: ((max1) ASC)
+   » ordinal order expr: (($1) ASC)
+
+-> -> projectOp
+      » location: origin
+      » column: (Alias = max1 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c1))) ; Ordinal Expr = MAX($4))
+      » column: (Alias = min1 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c1))) ; Ordinal Expr = MIN($1))
+      » column: (Alias = sum1 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c1))) ; Ordinal Expr = SUM($2))
+      » column: (Alias = count1 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c1))) ; Ordinal Expr = SUM($3))
+      » column: (Alias = avg1 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c1)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c1)))) ; Ordinal Expr = (SUM($2)) / (SUM($3)))
+      » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($5)) / (SUM($6)))
+
+-> -> -> projectOp
+         » location: all nodes
+         » column: (Expr = MIN(MIN(rapidsse.public.t1.c1)) ; Ordinal Expr = MIN($1))
+         » column: (Expr = SUM(SUM(rapidsse.public.t1.c1)) ; Ordinal Expr = SUM($2))
+         » column: (Expr = SUM(COUNT(rapidsse.public.t1.c1)) ; Ordinal Expr = SUM($3))
+         » column: (Expr = MAX(MAX(rapidsse.public.t1.c1)) ; Ordinal Expr = MAX($4))
+         » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($5))
+         » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($6))
+
+-> -> -> -> projectOp
+            » column: (Expr = MIN(rapidsse.public.t1.c1) ; Ordinal Expr = MIN($1))
+            » column: (Expr = SUM(rapidsse.public.t1.c1) ; Ordinal Expr = SUM($1))
+            » column: (Expr = COUNT(rapidsse.public.t1.c1) ; Ordinal Expr = COUNT($1))
+            » column: (Expr = MAX(rapidsse.public.t1.c1) ; Ordinal Expr = MAX($1))
+            » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+            » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+
+-> -> -> -> -> tableScanOp
+               » location: all partitions
+               » table: (rapidsse.public.t1)'
+)
+
 
 --  (204) Select with grand total aggregates & LIMIT clause (silly example but still valid)
 EXPLAIN STAGE partitionExplain
@@ -623,7 +771,44 @@ SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, 
 FROM    t1
 LIMIT   2
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2 FROM    t1 LIMIT   2"
+
+-> limitOp
+   » limit: (2)
+
+-> -> projectOp
+      » location: origin
+      » column: (Alias = max1 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c1))) ; Ordinal Expr = MAX($4))
+      » column: (Alias = min1 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c1))) ; Ordinal Expr = MIN($1))
+      » column: (Alias = sum1 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c1))) ; Ordinal Expr = SUM($2))
+      » column: (Alias = count1 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c1))) ; Ordinal Expr = SUM($3))
+      » column: (Alias = avg1 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c1)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c1)))) ; Ordinal Expr = (SUM($2)) / (SUM($3)))
+      » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($5)) / (SUM($6)))
+
+-> -> -> projectOp
+         » location: all nodes
+         » column: (Expr = MIN(MIN(rapidsse.public.t1.c1)) ; Ordinal Expr = MIN($1))
+         » column: (Expr = SUM(SUM(rapidsse.public.t1.c1)) ; Ordinal Expr = SUM($2))
+         » column: (Expr = SUM(COUNT(rapidsse.public.t1.c1)) ; Ordinal Expr = SUM($3))
+         » column: (Expr = MAX(MAX(rapidsse.public.t1.c1)) ; Ordinal Expr = MAX($4))
+         » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($5))
+         » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($6))
+
+-> -> -> -> projectOp
+            » column: (Expr = MIN(rapidsse.public.t1.c1) ; Ordinal Expr = MIN($1))
+            » column: (Expr = SUM(rapidsse.public.t1.c1) ; Ordinal Expr = SUM($1))
+            » column: (Expr = COUNT(rapidsse.public.t1.c1) ; Ordinal Expr = COUNT($1))
+            » column: (Expr = MAX(rapidsse.public.t1.c1) ; Ordinal Expr = MAX($1))
+            » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+            » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+
+-> -> -> -> -> tableScanOp
+               » location: all partitions
+               » table: (rapidsse.public.t1)'
+)
+
 
 --  (205) Select with grand total aggregates, HAVING clause & post-project
 EXPLAIN STAGE partitionExplain
@@ -631,7 +816,56 @@ SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, 
 FROM    t1
 HAVING  MIN(c2) < 0
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2 FROM    t1 HAVING  MIN(c2) < 0"
+
+-> projectOp
+   » column: (Alias = max1 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c1))) ; Ordinal Expr = $1)
+   » column: (Alias = min1 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c1))) ; Ordinal Expr = $2)
+   » column: (Alias = sum1 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c1))) ; Ordinal Expr = $3)
+   » column: (Alias = count1 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c1))) ; Ordinal Expr = $4)
+   » column: (Alias = avg1 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c1)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c1)))) ; Ordinal Expr = $5)
+   » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = $6)
+
+-> -> filterOp
+      » expr: ((MIN(MIN(MIN(rapidsse.public.t1.c2)))) < 0)
+      » ordinal expr: ($7 < 0)
+
+-> -> -> projectOp
+         » location: origin
+         » column: (Alias = max1 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c1))) ; Ordinal Expr = MAX($6))
+         » column: (Alias = min1 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c1))) ; Ordinal Expr = MIN($1))
+         » column: (Alias = sum1 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c1))) ; Ordinal Expr = SUM($2))
+         » column: (Alias = count1 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c1))) ; Ordinal Expr = SUM($3))
+         » column: (Alias = avg1 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c1)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c1)))) ; Ordinal Expr = (SUM($2)) / (SUM($3)))
+         » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($4)) / (SUM($5)))
+         » column: (Expr = MIN(MIN(MIN(rapidsse.public.t1.c2))) ; Ordinal Expr = MIN($7))
+
+-> -> -> -> projectOp
+            » location: all nodes
+            » column: (Expr = MIN(MIN(rapidsse.public.t1.c1)) ; Ordinal Expr = MIN($1))
+            » column: (Expr = SUM(SUM(rapidsse.public.t1.c1)) ; Ordinal Expr = SUM($2))
+            » column: (Expr = SUM(COUNT(rapidsse.public.t1.c1)) ; Ordinal Expr = SUM($3))
+            » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
+            » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($5))
+            » column: (Expr = MAX(MAX(rapidsse.public.t1.c1)) ; Ordinal Expr = MAX($6))
+            » column: (Expr = MIN(MIN(rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($7))
+
+-> -> -> -> -> projectOp
+               » column: (Expr = MIN(rapidsse.public.t1.c1) ; Ordinal Expr = MIN($1))
+               » column: (Expr = SUM(rapidsse.public.t1.c1) ; Ordinal Expr = SUM($1))
+               » column: (Expr = COUNT(rapidsse.public.t1.c1) ; Ordinal Expr = COUNT($1))
+               » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+               » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+               » column: (Expr = MAX(rapidsse.public.t1.c1) ; Ordinal Expr = MAX($1))
+               » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
+
+-> -> -> -> -> -> tableScanOp
+                  » location: all partitions
+                  » table: (rapidsse.public.t1)'
+)
+
 
 --  (206) Select with grand total aggregates, ORDER BY clause & post-project
 EXPLAIN STAGE partitionExplain
@@ -639,7 +873,56 @@ SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, 
 FROM    t1
 ORDER BY MIN(c2)
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2 FROM    t1 ORDER BY MIN(c2)"
+
+-> projectOp
+   » column: (Alias = max1 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c1))) ; Ordinal Expr = $1)
+   » column: (Alias = min1 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c1))) ; Ordinal Expr = $2)
+   » column: (Alias = sum1 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c1))) ; Ordinal Expr = $3)
+   » column: (Alias = count1 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c1))) ; Ordinal Expr = $4)
+   » column: (Alias = avg1 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c1)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c1)))) ; Ordinal Expr = $5)
+   » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = $6)
+
+-> -> orderOp
+      » order expr: ((MIN(MIN(MIN(rapidsse.public.t1.c2)))) ASC)
+      » ordinal order expr: (($7) ASC)
+
+-> -> -> projectOp
+         » location: origin
+         » column: (Alias = max1 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c1))) ; Ordinal Expr = MAX($6))
+         » column: (Alias = min1 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c1))) ; Ordinal Expr = MIN($1))
+         » column: (Alias = sum1 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c1))) ; Ordinal Expr = SUM($2))
+         » column: (Alias = count1 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c1))) ; Ordinal Expr = SUM($3))
+         » column: (Alias = avg1 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c1)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c1)))) ; Ordinal Expr = (SUM($2)) / (SUM($3)))
+         » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($4)) / (SUM($5)))
+         » column: (Expr = MIN(MIN(MIN(rapidsse.public.t1.c2))) ; Ordinal Expr = MIN($7))
+
+-> -> -> -> projectOp
+            » location: all nodes
+            » column: (Expr = MIN(MIN(rapidsse.public.t1.c1)) ; Ordinal Expr = MIN($1))
+            » column: (Expr = SUM(SUM(rapidsse.public.t1.c1)) ; Ordinal Expr = SUM($2))
+            » column: (Expr = SUM(COUNT(rapidsse.public.t1.c1)) ; Ordinal Expr = SUM($3))
+            » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
+            » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($5))
+            » column: (Expr = MAX(MAX(rapidsse.public.t1.c1)) ; Ordinal Expr = MAX($6))
+            » column: (Expr = MIN(MIN(rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($7))
+
+-> -> -> -> -> projectOp
+               » column: (Expr = MIN(rapidsse.public.t1.c1) ; Ordinal Expr = MIN($1))
+               » column: (Expr = SUM(rapidsse.public.t1.c1) ; Ordinal Expr = SUM($1))
+               » column: (Expr = COUNT(rapidsse.public.t1.c1) ; Ordinal Expr = COUNT($1))
+               » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+               » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+               » column: (Expr = MAX(rapidsse.public.t1.c1) ; Ordinal Expr = MAX($1))
+               » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
+
+-> -> -> -> -> -> tableScanOp
+                  » location: all partitions
+                  » table: (rapidsse.public.t1)'
+)
+
 
 --  (207) Select with grand total aggregates, HAVING, ORDER BY clauses & post-project
 EXPLAIN STAGE partitionExplain
@@ -648,7 +931,60 @@ FROM    t1
 HAVING  MIN(c2) < 0
 ORDER BY max1
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2 FROM    t1 HAVING  MIN(c2) < 0 ORDER BY max1"
+
+-> projectOp
+   » column: (Alias = max1 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c1))) ; Ordinal Expr = $1)
+   » column: (Alias = min1 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c1))) ; Ordinal Expr = $2)
+   » column: (Alias = sum1 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c1))) ; Ordinal Expr = $3)
+   » column: (Alias = count1 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c1))) ; Ordinal Expr = $4)
+   » column: (Alias = avg1 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c1)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c1)))) ; Ordinal Expr = $5)
+   » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = $6)
+
+-> -> orderOp
+      » order expr: ((max1) ASC)
+      » ordinal order expr: (($1) ASC)
+
+-> -> -> filterOp
+         » expr: ((MIN(MIN(MIN(rapidsse.public.t1.c2)))) < 0)
+         » ordinal expr: ($7 < 0)
+
+-> -> -> -> projectOp
+            » location: origin
+            » column: (Alias = max1 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c1))) ; Ordinal Expr = MAX($6))
+            » column: (Alias = min1 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c1))) ; Ordinal Expr = MIN($1))
+            » column: (Alias = sum1 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c1))) ; Ordinal Expr = SUM($2))
+            » column: (Alias = count1 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c1))) ; Ordinal Expr = SUM($3))
+            » column: (Alias = avg1 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c1)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c1)))) ; Ordinal Expr = (SUM($2)) / (SUM($3)))
+            » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($4)) / (SUM($5)))
+            » column: (Expr = MIN(MIN(MIN(rapidsse.public.t1.c2))) ; Ordinal Expr = MIN($7))
+
+-> -> -> -> -> projectOp
+               » location: all nodes
+               » column: (Expr = MIN(MIN(rapidsse.public.t1.c1)) ; Ordinal Expr = MIN($1))
+               » column: (Expr = SUM(SUM(rapidsse.public.t1.c1)) ; Ordinal Expr = SUM($2))
+               » column: (Expr = SUM(COUNT(rapidsse.public.t1.c1)) ; Ordinal Expr = SUM($3))
+               » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
+               » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($5))
+               » column: (Expr = MAX(MAX(rapidsse.public.t1.c1)) ; Ordinal Expr = MAX($6))
+               » column: (Expr = MIN(MIN(rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($7))
+
+-> -> -> -> -> -> projectOp
+                  » column: (Expr = MIN(rapidsse.public.t1.c1) ; Ordinal Expr = MIN($1))
+                  » column: (Expr = SUM(rapidsse.public.t1.c1) ; Ordinal Expr = SUM($1))
+                  » column: (Expr = COUNT(rapidsse.public.t1.c1) ; Ordinal Expr = COUNT($1))
+                  » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+                  » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+                  » column: (Expr = MAX(rapidsse.public.t1.c1) ; Ordinal Expr = MAX($1))
+                  » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
+
+-> -> -> -> -> -> -> tableScanOp
+                     » location: all partitions
+                     » table: (rapidsse.public.t1)'
+)
+
 
 --  (208) Select with grand total aggregates, WHERE and HAVING clauses
 EXPLAIN STAGE partitionExplain
@@ -657,7 +993,49 @@ FROM    t1
 WHERE   c1 > 0
 HAVING  max1 > 0
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2 FROM    t1 WHERE   c1 > 0 HAVING  max1 > 0"
+
+-> filterOp
+   » expr: (max1 > 0)
+   » ordinal expr: ($1 > 0)
+
+-> -> projectOp
+      » location: origin
+      » column: (Alias = max1 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c1))) ; Ordinal Expr = MAX($4))
+      » column: (Alias = min1 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c1))) ; Ordinal Expr = MIN($1))
+      » column: (Alias = sum1 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c1))) ; Ordinal Expr = SUM($2))
+      » column: (Alias = count1 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c1))) ; Ordinal Expr = SUM($3))
+      » column: (Alias = avg1 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c1)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c1)))) ; Ordinal Expr = (SUM($2)) / (SUM($3)))
+      » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($5)) / (SUM($6)))
+
+-> -> -> projectOp
+         » location: all nodes
+         » column: (Expr = MIN(MIN(rapidsse.public.t1.c1)) ; Ordinal Expr = MIN($1))
+         » column: (Expr = SUM(SUM(rapidsse.public.t1.c1)) ; Ordinal Expr = SUM($2))
+         » column: (Expr = SUM(COUNT(rapidsse.public.t1.c1)) ; Ordinal Expr = SUM($3))
+         » column: (Expr = MAX(MAX(rapidsse.public.t1.c1)) ; Ordinal Expr = MAX($4))
+         » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($5))
+         » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($6))
+
+-> -> -> -> projectOp
+            » column: (Expr = MIN(rapidsse.public.t1.c1) ; Ordinal Expr = MIN($1))
+            » column: (Expr = SUM(rapidsse.public.t1.c1) ; Ordinal Expr = SUM($1))
+            » column: (Expr = COUNT(rapidsse.public.t1.c1) ; Ordinal Expr = COUNT($1))
+            » column: (Expr = MAX(rapidsse.public.t1.c1) ; Ordinal Expr = MAX($1))
+            » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+            » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+
+-> -> -> -> -> filterOp
+               » expr: (rapidsse.public.t1.c1 > 0)
+               » ordinal expr: ($1 > 0)
+
+-> -> -> -> -> -> tableScanOp
+                  » location: all partitions
+                  » table: (rapidsse.public.t1)'
+)
+
 
 --  (209) Select with grand total aggregates, WHERE, HAVING clauses & post-project
 EXPLAIN STAGE partitionExplain
@@ -666,7 +1044,60 @@ FROM    t1
 WHERE   c1 > 0
 HAVING  MIN(c2) < 0
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2 FROM    t1 WHERE   c1 > 0 HAVING  MIN(c2) < 0"
+
+-> projectOp
+   » column: (Alias = max1 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c1))) ; Ordinal Expr = $1)
+   » column: (Alias = min1 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c1))) ; Ordinal Expr = $2)
+   » column: (Alias = sum1 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c1))) ; Ordinal Expr = $3)
+   » column: (Alias = count1 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c1))) ; Ordinal Expr = $4)
+   » column: (Alias = avg1 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c1)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c1)))) ; Ordinal Expr = $5)
+   » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = $6)
+
+-> -> filterOp
+      » expr: ((MIN(MIN(MIN(rapidsse.public.t1.c2)))) < 0)
+      » ordinal expr: ($7 < 0)
+
+-> -> -> projectOp
+         » location: origin
+         » column: (Alias = max1 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c1))) ; Ordinal Expr = MAX($6))
+         » column: (Alias = min1 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c1))) ; Ordinal Expr = MIN($1))
+         » column: (Alias = sum1 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c1))) ; Ordinal Expr = SUM($2))
+         » column: (Alias = count1 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c1))) ; Ordinal Expr = SUM($3))
+         » column: (Alias = avg1 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c1)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c1)))) ; Ordinal Expr = (SUM($2)) / (SUM($3)))
+         » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($4)) / (SUM($5)))
+         » column: (Expr = MIN(MIN(MIN(rapidsse.public.t1.c2))) ; Ordinal Expr = MIN($7))
+
+-> -> -> -> projectOp
+            » location: all nodes
+            » column: (Expr = MIN(MIN(rapidsse.public.t1.c1)) ; Ordinal Expr = MIN($1))
+            » column: (Expr = SUM(SUM(rapidsse.public.t1.c1)) ; Ordinal Expr = SUM($2))
+            » column: (Expr = SUM(COUNT(rapidsse.public.t1.c1)) ; Ordinal Expr = SUM($3))
+            » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
+            » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($5))
+            » column: (Expr = MAX(MAX(rapidsse.public.t1.c1)) ; Ordinal Expr = MAX($6))
+            » column: (Expr = MIN(MIN(rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($7))
+
+-> -> -> -> -> projectOp
+               » column: (Expr = MIN(rapidsse.public.t1.c1) ; Ordinal Expr = MIN($1))
+               » column: (Expr = SUM(rapidsse.public.t1.c1) ; Ordinal Expr = SUM($1))
+               » column: (Expr = COUNT(rapidsse.public.t1.c1) ; Ordinal Expr = COUNT($1))
+               » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+               » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+               » column: (Expr = MAX(rapidsse.public.t1.c1) ; Ordinal Expr = MAX($1))
+               » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
+
+-> -> -> -> -> -> filterOp
+                  » expr: (rapidsse.public.t1.c1 > 0)
+                  » ordinal expr: ($1 > 0)
+
+-> -> -> -> -> -> -> tableScanOp
+                     » location: all partitions
+                     » table: (rapidsse.public.t1)'
+)
+
 
 --  (210) Select with grand total aggregates, WHERE, HAVING & ORDER BY clauses
 EXPLAIN STAGE partitionExplain
@@ -676,7 +1107,53 @@ WHERE   c1 > 0
 HAVING  max1 > 0
 ORDER BY min1
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2 FROM    t1 WHERE   c1 > 0 HAVING  max1 > 0 ORDER BY min1"
+
+-> orderOp
+   » order expr: ((min1) ASC)
+   » ordinal order expr: (($2) ASC)
+
+-> -> filterOp
+      » expr: (max1 > 0)
+      » ordinal expr: ($1 > 0)
+
+-> -> -> projectOp
+         » location: origin
+         » column: (Alias = max1 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c1))) ; Ordinal Expr = MAX($4))
+         » column: (Alias = min1 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c1))) ; Ordinal Expr = MIN($1))
+         » column: (Alias = sum1 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c1))) ; Ordinal Expr = SUM($2))
+         » column: (Alias = count1 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c1))) ; Ordinal Expr = SUM($3))
+         » column: (Alias = avg1 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c1)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c1)))) ; Ordinal Expr = (SUM($2)) / (SUM($3)))
+         » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($5)) / (SUM($6)))
+
+-> -> -> -> projectOp
+            » location: all nodes
+            » column: (Expr = MIN(MIN(rapidsse.public.t1.c1)) ; Ordinal Expr = MIN($1))
+            » column: (Expr = SUM(SUM(rapidsse.public.t1.c1)) ; Ordinal Expr = SUM($2))
+            » column: (Expr = SUM(COUNT(rapidsse.public.t1.c1)) ; Ordinal Expr = SUM($3))
+            » column: (Expr = MAX(MAX(rapidsse.public.t1.c1)) ; Ordinal Expr = MAX($4))
+            » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($5))
+            » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($6))
+
+-> -> -> -> -> projectOp
+               » column: (Expr = MIN(rapidsse.public.t1.c1) ; Ordinal Expr = MIN($1))
+               » column: (Expr = SUM(rapidsse.public.t1.c1) ; Ordinal Expr = SUM($1))
+               » column: (Expr = COUNT(rapidsse.public.t1.c1) ; Ordinal Expr = COUNT($1))
+               » column: (Expr = MAX(rapidsse.public.t1.c1) ; Ordinal Expr = MAX($1))
+               » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+               » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+
+-> -> -> -> -> -> filterOp
+                  » expr: (rapidsse.public.t1.c1 > 0)
+                  » ordinal expr: ($1 > 0)
+
+-> -> -> -> -> -> -> tableScanOp
+                     » location: all partitions
+                     » table: (rapidsse.public.t1)'
+)
+
 
 --  (211) Select with grand total aggregates, WHERE, HAVING, ORDER BY clauses & post-project
 EXPLAIN STAGE partitionExplain
@@ -686,7 +1163,64 @@ WHERE   c1 > 0
 HAVING  max1 > 0
 ORDER BY MIN(c2)
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2 FROM    t1 WHERE   c1 > 0 HAVING  max1 > 0 ORDER BY MIN(c2)"
+
+-> projectOp
+   » column: (Alias = max1 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c1))) ; Ordinal Expr = $1)
+   » column: (Alias = min1 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c1))) ; Ordinal Expr = $2)
+   » column: (Alias = sum1 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c1))) ; Ordinal Expr = $3)
+   » column: (Alias = count1 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c1))) ; Ordinal Expr = $4)
+   » column: (Alias = avg1 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c1)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c1)))) ; Ordinal Expr = $5)
+   » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = $6)
+
+-> -> orderOp
+      » order expr: ((MIN(MIN(MIN(rapidsse.public.t1.c2)))) ASC)
+      » ordinal order expr: (($7) ASC)
+
+-> -> -> filterOp
+         » expr: (max1 > 0)
+         » ordinal expr: ($1 > 0)
+
+-> -> -> -> projectOp
+            » location: origin
+            » column: (Alias = max1 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c1))) ; Ordinal Expr = MAX($6))
+            » column: (Alias = min1 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c1))) ; Ordinal Expr = MIN($1))
+            » column: (Alias = sum1 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c1))) ; Ordinal Expr = SUM($2))
+            » column: (Alias = count1 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c1))) ; Ordinal Expr = SUM($3))
+            » column: (Alias = avg1 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c1)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c1)))) ; Ordinal Expr = (SUM($2)) / (SUM($3)))
+            » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($4)) / (SUM($5)))
+            » column: (Expr = MIN(MIN(MIN(rapidsse.public.t1.c2))) ; Ordinal Expr = MIN($7))
+
+-> -> -> -> -> projectOp
+               » location: all nodes
+               » column: (Expr = MIN(MIN(rapidsse.public.t1.c1)) ; Ordinal Expr = MIN($1))
+               » column: (Expr = SUM(SUM(rapidsse.public.t1.c1)) ; Ordinal Expr = SUM($2))
+               » column: (Expr = SUM(COUNT(rapidsse.public.t1.c1)) ; Ordinal Expr = SUM($3))
+               » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
+               » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($5))
+               » column: (Expr = MAX(MAX(rapidsse.public.t1.c1)) ; Ordinal Expr = MAX($6))
+               » column: (Expr = MIN(MIN(rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($7))
+
+-> -> -> -> -> -> projectOp
+                  » column: (Expr = MIN(rapidsse.public.t1.c1) ; Ordinal Expr = MIN($1))
+                  » column: (Expr = SUM(rapidsse.public.t1.c1) ; Ordinal Expr = SUM($1))
+                  » column: (Expr = COUNT(rapidsse.public.t1.c1) ; Ordinal Expr = COUNT($1))
+                  » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+                  » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+                  » column: (Expr = MAX(rapidsse.public.t1.c1) ; Ordinal Expr = MAX($1))
+                  » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
+
+-> -> -> -> -> -> -> filterOp
+                     » expr: (rapidsse.public.t1.c1 > 0)
+                     » ordinal expr: ($1 > 0)
+
+-> -> -> -> -> -> -> -> tableScanOp
+                        » location: all partitions
+                        » table: (rapidsse.public.t1)'
+)
+
 
 --  (212) Select with grand total aggregates, WHERE, HAVING & LIMIT clauses
 EXPLAIN STAGE partitionExplain
@@ -696,7 +1230,52 @@ WHERE   c1 > 0
 HAVING  max1 > 0
 LIMIT   2
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2 FROM    t1 WHERE   c1 > 0 HAVING  max1 > 0 LIMIT   2"
+
+-> limitOp
+   » limit: (2)
+
+-> -> filterOp
+      » expr: (max1 > 0)
+      » ordinal expr: ($1 > 0)
+
+-> -> -> projectOp
+         » location: origin
+         » column: (Alias = max1 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c1))) ; Ordinal Expr = MAX($4))
+         » column: (Alias = min1 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c1))) ; Ordinal Expr = MIN($1))
+         » column: (Alias = sum1 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c1))) ; Ordinal Expr = SUM($2))
+         » column: (Alias = count1 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c1))) ; Ordinal Expr = SUM($3))
+         » column: (Alias = avg1 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c1)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c1)))) ; Ordinal Expr = (SUM($2)) / (SUM($3)))
+         » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($5)) / (SUM($6)))
+
+-> -> -> -> projectOp
+            » location: all nodes
+            » column: (Expr = MIN(MIN(rapidsse.public.t1.c1)) ; Ordinal Expr = MIN($1))
+            » column: (Expr = SUM(SUM(rapidsse.public.t1.c1)) ; Ordinal Expr = SUM($2))
+            » column: (Expr = SUM(COUNT(rapidsse.public.t1.c1)) ; Ordinal Expr = SUM($3))
+            » column: (Expr = MAX(MAX(rapidsse.public.t1.c1)) ; Ordinal Expr = MAX($4))
+            » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($5))
+            » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($6))
+
+-> -> -> -> -> projectOp
+               » column: (Expr = MIN(rapidsse.public.t1.c1) ; Ordinal Expr = MIN($1))
+               » column: (Expr = SUM(rapidsse.public.t1.c1) ; Ordinal Expr = SUM($1))
+               » column: (Expr = COUNT(rapidsse.public.t1.c1) ; Ordinal Expr = COUNT($1))
+               » column: (Expr = MAX(rapidsse.public.t1.c1) ; Ordinal Expr = MAX($1))
+               » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+               » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+
+-> -> -> -> -> -> filterOp
+                  » expr: (rapidsse.public.t1.c1 > 0)
+                  » ordinal expr: ($1 > 0)
+
+-> -> -> -> -> -> -> tableScanOp
+                     » location: all partitions
+                     » table: (rapidsse.public.t1)'
+)
+
 
 --  (213) Select with grand total aggregates, WHERE, HAVING, LIMIT clauses & post-project
 EXPLAIN STAGE partitionExplain
@@ -706,7 +1285,63 @@ WHERE   c1 > 0
 HAVING  MIN(c2) < 0
 LIMIT   2
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2 FROM    t1 WHERE   c1 > 0 HAVING  MIN(c2) < 0 LIMIT   2"
+
+-> projectOp
+   » column: (Alias = max1 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c1))) ; Ordinal Expr = $1)
+   » column: (Alias = min1 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c1))) ; Ordinal Expr = $2)
+   » column: (Alias = sum1 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c1))) ; Ordinal Expr = $3)
+   » column: (Alias = count1 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c1))) ; Ordinal Expr = $4)
+   » column: (Alias = avg1 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c1)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c1)))) ; Ordinal Expr = $5)
+   » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = $6)
+
+-> -> limitOp
+      » limit: (2)
+
+-> -> -> filterOp
+         » expr: ((MIN(MIN(MIN(rapidsse.public.t1.c2)))) < 0)
+         » ordinal expr: ($7 < 0)
+
+-> -> -> -> projectOp
+            » location: origin
+            » column: (Alias = max1 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c1))) ; Ordinal Expr = MAX($6))
+            » column: (Alias = min1 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c1))) ; Ordinal Expr = MIN($1))
+            » column: (Alias = sum1 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c1))) ; Ordinal Expr = SUM($2))
+            » column: (Alias = count1 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c1))) ; Ordinal Expr = SUM($3))
+            » column: (Alias = avg1 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c1)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c1)))) ; Ordinal Expr = (SUM($2)) / (SUM($3)))
+            » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($4)) / (SUM($5)))
+            » column: (Expr = MIN(MIN(MIN(rapidsse.public.t1.c2))) ; Ordinal Expr = MIN($7))
+
+-> -> -> -> -> projectOp
+               » location: all nodes
+               » column: (Expr = MIN(MIN(rapidsse.public.t1.c1)) ; Ordinal Expr = MIN($1))
+               » column: (Expr = SUM(SUM(rapidsse.public.t1.c1)) ; Ordinal Expr = SUM($2))
+               » column: (Expr = SUM(COUNT(rapidsse.public.t1.c1)) ; Ordinal Expr = SUM($3))
+               » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
+               » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($5))
+               » column: (Expr = MAX(MAX(rapidsse.public.t1.c1)) ; Ordinal Expr = MAX($6))
+               » column: (Expr = MIN(MIN(rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($7))
+
+-> -> -> -> -> -> projectOp
+                  » column: (Expr = MIN(rapidsse.public.t1.c1) ; Ordinal Expr = MIN($1))
+                  » column: (Expr = SUM(rapidsse.public.t1.c1) ; Ordinal Expr = SUM($1))
+                  » column: (Expr = COUNT(rapidsse.public.t1.c1) ; Ordinal Expr = COUNT($1))
+                  » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+                  » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+                  » column: (Expr = MAX(rapidsse.public.t1.c1) ; Ordinal Expr = MAX($1))
+                  » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
+
+-> -> -> -> -> -> -> filterOp
+                     » expr: (rapidsse.public.t1.c1 > 0)
+                     » ordinal expr: ($1 > 0)
+
+-> -> -> -> -> -> -> -> tableScanOp
+                        » location: all partitions
+                        » table: (rapidsse.public.t1)'
+)
+
 
 --  (214) Select with grand total aggregates, WHERE, HAVING, ORDER BY & LIMIT clauses
 EXPLAIN STAGE partitionExplain
@@ -717,7 +1352,56 @@ HAVING  max1 > 0
 ORDER BY min1
 LIMIT   2
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2 FROM    t1 WHERE   c1 > 0 HAVING  max1 > 0 ORDER BY min1 LIMIT   2"
+
+-> limitOp
+   » limit: (2)
+
+-> -> orderOp
+      » order expr: ((min1) ASC)
+      » ordinal order expr: (($2) ASC)
+
+-> -> -> filterOp
+         » expr: (max1 > 0)
+         » ordinal expr: ($1 > 0)
+
+-> -> -> -> projectOp
+            » location: origin
+            » column: (Alias = max1 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c1))) ; Ordinal Expr = MAX($4))
+            » column: (Alias = min1 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c1))) ; Ordinal Expr = MIN($1))
+            » column: (Alias = sum1 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c1))) ; Ordinal Expr = SUM($2))
+            » column: (Alias = count1 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c1))) ; Ordinal Expr = SUM($3))
+            » column: (Alias = avg1 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c1)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c1)))) ; Ordinal Expr = (SUM($2)) / (SUM($3)))
+            » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($5)) / (SUM($6)))
+
+-> -> -> -> -> projectOp
+               » location: all nodes
+               » column: (Expr = MIN(MIN(rapidsse.public.t1.c1)) ; Ordinal Expr = MIN($1))
+               » column: (Expr = SUM(SUM(rapidsse.public.t1.c1)) ; Ordinal Expr = SUM($2))
+               » column: (Expr = SUM(COUNT(rapidsse.public.t1.c1)) ; Ordinal Expr = SUM($3))
+               » column: (Expr = MAX(MAX(rapidsse.public.t1.c1)) ; Ordinal Expr = MAX($4))
+               » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($5))
+               » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($6))
+
+-> -> -> -> -> -> projectOp
+                  » column: (Expr = MIN(rapidsse.public.t1.c1) ; Ordinal Expr = MIN($1))
+                  » column: (Expr = SUM(rapidsse.public.t1.c1) ; Ordinal Expr = SUM($1))
+                  » column: (Expr = COUNT(rapidsse.public.t1.c1) ; Ordinal Expr = COUNT($1))
+                  » column: (Expr = MAX(rapidsse.public.t1.c1) ; Ordinal Expr = MAX($1))
+                  » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+                  » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+
+-> -> -> -> -> -> -> filterOp
+                     » expr: (rapidsse.public.t1.c1 > 0)
+                     » ordinal expr: ($1 > 0)
+
+-> -> -> -> -> -> -> -> tableScanOp
+                        » location: all partitions
+                        » table: (rapidsse.public.t1)'
+)
+
 
 --  (215) Select with grand total aggregates, WHERE, HAVING, ORDER BY, LIMIT clauses & post-project
 EXPLAIN STAGE partitionExplain
@@ -728,7 +1412,67 @@ HAVING  max1 > 0
 ORDER BY MIN(c2)
 LIMIT   2
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2 FROM    t1 WHERE   c1 > 0 HAVING  max1 > 0 ORDER BY MIN(c2) LIMIT   2"
+
+-> projectOp
+   » column: (Alias = max1 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c1))) ; Ordinal Expr = $1)
+   » column: (Alias = min1 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c1))) ; Ordinal Expr = $2)
+   » column: (Alias = sum1 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c1))) ; Ordinal Expr = $3)
+   » column: (Alias = count1 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c1))) ; Ordinal Expr = $4)
+   » column: (Alias = avg1 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c1)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c1)))) ; Ordinal Expr = $5)
+   » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = $6)
+
+-> -> limitOp
+      » limit: (2)
+
+-> -> -> orderOp
+         » order expr: ((MIN(MIN(MIN(rapidsse.public.t1.c2)))) ASC)
+         » ordinal order expr: (($7) ASC)
+
+-> -> -> -> filterOp
+            » expr: (max1 > 0)
+            » ordinal expr: ($1 > 0)
+
+-> -> -> -> -> projectOp
+               » location: origin
+               » column: (Alias = max1 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c1))) ; Ordinal Expr = MAX($6))
+               » column: (Alias = min1 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c1))) ; Ordinal Expr = MIN($1))
+               » column: (Alias = sum1 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c1))) ; Ordinal Expr = SUM($2))
+               » column: (Alias = count1 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c1))) ; Ordinal Expr = SUM($3))
+               » column: (Alias = avg1 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c1)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c1)))) ; Ordinal Expr = (SUM($2)) / (SUM($3)))
+               » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($4)) / (SUM($5)))
+               » column: (Expr = MIN(MIN(MIN(rapidsse.public.t1.c2))) ; Ordinal Expr = MIN($7))
+
+-> -> -> -> -> -> projectOp
+                  » location: all nodes
+                  » column: (Expr = MIN(MIN(rapidsse.public.t1.c1)) ; Ordinal Expr = MIN($1))
+                  » column: (Expr = SUM(SUM(rapidsse.public.t1.c1)) ; Ordinal Expr = SUM($2))
+                  » column: (Expr = SUM(COUNT(rapidsse.public.t1.c1)) ; Ordinal Expr = SUM($3))
+                  » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
+                  » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($5))
+                  » column: (Expr = MAX(MAX(rapidsse.public.t1.c1)) ; Ordinal Expr = MAX($6))
+                  » column: (Expr = MIN(MIN(rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($7))
+
+-> -> -> -> -> -> -> projectOp
+                     » column: (Expr = MIN(rapidsse.public.t1.c1) ; Ordinal Expr = MIN($1))
+                     » column: (Expr = SUM(rapidsse.public.t1.c1) ; Ordinal Expr = SUM($1))
+                     » column: (Expr = COUNT(rapidsse.public.t1.c1) ; Ordinal Expr = COUNT($1))
+                     » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+                     » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+                     » column: (Expr = MAX(rapidsse.public.t1.c1) ; Ordinal Expr = MAX($1))
+                     » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
+
+-> -> -> -> -> -> -> -> filterOp
+                        » expr: (rapidsse.public.t1.c1 > 0)
+                        » ordinal expr: ($1 > 0)
+
+-> -> -> -> -> -> -> -> -> tableScanOp
+                           » location: all partitions
+                           » table: (rapidsse.public.t1)'
+)
+
 
 --  (216) Select with grand total aggregates, WHERE, ORDER BY & LIMIT clauses
 EXPLAIN STAGE partitionExplain
@@ -738,7 +1482,52 @@ WHERE   c1 > 0
 ORDER BY min1
 LIMIT   2
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2 FROM    t1 WHERE   c1 > 0 ORDER BY min1 LIMIT   2"
+
+-> limitOp
+   » limit: (2)
+
+-> -> orderOp
+      » order expr: ((min1) ASC)
+      » ordinal order expr: (($2) ASC)
+
+-> -> -> projectOp
+         » location: origin
+         » column: (Alias = max1 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c1))) ; Ordinal Expr = MAX($4))
+         » column: (Alias = min1 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c1))) ; Ordinal Expr = MIN($1))
+         » column: (Alias = sum1 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c1))) ; Ordinal Expr = SUM($2))
+         » column: (Alias = count1 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c1))) ; Ordinal Expr = SUM($3))
+         » column: (Alias = avg1 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c1)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c1)))) ; Ordinal Expr = (SUM($2)) / (SUM($3)))
+         » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($5)) / (SUM($6)))
+
+-> -> -> -> projectOp
+            » location: all nodes
+            » column: (Expr = MIN(MIN(rapidsse.public.t1.c1)) ; Ordinal Expr = MIN($1))
+            » column: (Expr = SUM(SUM(rapidsse.public.t1.c1)) ; Ordinal Expr = SUM($2))
+            » column: (Expr = SUM(COUNT(rapidsse.public.t1.c1)) ; Ordinal Expr = SUM($3))
+            » column: (Expr = MAX(MAX(rapidsse.public.t1.c1)) ; Ordinal Expr = MAX($4))
+            » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($5))
+            » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($6))
+
+-> -> -> -> -> projectOp
+               » column: (Expr = MIN(rapidsse.public.t1.c1) ; Ordinal Expr = MIN($1))
+               » column: (Expr = SUM(rapidsse.public.t1.c1) ; Ordinal Expr = SUM($1))
+               » column: (Expr = COUNT(rapidsse.public.t1.c1) ; Ordinal Expr = COUNT($1))
+               » column: (Expr = MAX(rapidsse.public.t1.c1) ; Ordinal Expr = MAX($1))
+               » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+               » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+
+-> -> -> -> -> -> filterOp
+                  » expr: (rapidsse.public.t1.c1 > 0)
+                  » ordinal expr: ($1 > 0)
+
+-> -> -> -> -> -> -> tableScanOp
+                     » location: all partitions
+                     » table: (rapidsse.public.t1)'
+)
+
 
 --  (217) Select with grand total aggregates, WHERE, ORDER BY, LIMIT clauses & post-project
 EXPLAIN STAGE partitionExplain
@@ -748,7 +1537,63 @@ WHERE   c1 > 0
 ORDER BY MIN(c2)
 LIMIT   2
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2 FROM    t1 WHERE   c1 > 0 ORDER BY MIN(c2) LIMIT   2"
+
+-> projectOp
+   » column: (Alias = max1 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c1))) ; Ordinal Expr = $1)
+   » column: (Alias = min1 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c1))) ; Ordinal Expr = $2)
+   » column: (Alias = sum1 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c1))) ; Ordinal Expr = $3)
+   » column: (Alias = count1 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c1))) ; Ordinal Expr = $4)
+   » column: (Alias = avg1 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c1)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c1)))) ; Ordinal Expr = $5)
+   » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = $6)
+
+-> -> limitOp
+      » limit: (2)
+
+-> -> -> orderOp
+         » order expr: ((MIN(MIN(MIN(rapidsse.public.t1.c2)))) ASC)
+         » ordinal order expr: (($7) ASC)
+
+-> -> -> -> projectOp
+            » location: origin
+            » column: (Alias = max1 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c1))) ; Ordinal Expr = MAX($6))
+            » column: (Alias = min1 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c1))) ; Ordinal Expr = MIN($1))
+            » column: (Alias = sum1 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c1))) ; Ordinal Expr = SUM($2))
+            » column: (Alias = count1 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c1))) ; Ordinal Expr = SUM($3))
+            » column: (Alias = avg1 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c1)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c1)))) ; Ordinal Expr = (SUM($2)) / (SUM($3)))
+            » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($4)) / (SUM($5)))
+            » column: (Expr = MIN(MIN(MIN(rapidsse.public.t1.c2))) ; Ordinal Expr = MIN($7))
+
+-> -> -> -> -> projectOp
+               » location: all nodes
+               » column: (Expr = MIN(MIN(rapidsse.public.t1.c1)) ; Ordinal Expr = MIN($1))
+               » column: (Expr = SUM(SUM(rapidsse.public.t1.c1)) ; Ordinal Expr = SUM($2))
+               » column: (Expr = SUM(COUNT(rapidsse.public.t1.c1)) ; Ordinal Expr = SUM($3))
+               » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
+               » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($5))
+               » column: (Expr = MAX(MAX(rapidsse.public.t1.c1)) ; Ordinal Expr = MAX($6))
+               » column: (Expr = MIN(MIN(rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($7))
+
+-> -> -> -> -> -> projectOp
+                  » column: (Expr = MIN(rapidsse.public.t1.c1) ; Ordinal Expr = MIN($1))
+                  » column: (Expr = SUM(rapidsse.public.t1.c1) ; Ordinal Expr = SUM($1))
+                  » column: (Expr = COUNT(rapidsse.public.t1.c1) ; Ordinal Expr = COUNT($1))
+                  » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+                  » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+                  » column: (Expr = MAX(rapidsse.public.t1.c1) ; Ordinal Expr = MAX($1))
+                  » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
+
+-> -> -> -> -> -> -> filterOp
+                     » expr: (rapidsse.public.t1.c1 > 0)
+                     » ordinal expr: ($1 > 0)
+
+-> -> -> -> -> -> -> -> tableScanOp
+                        » location: all partitions
+                        » table: (rapidsse.public.t1)'
+)
+
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -760,7 +1605,42 @@ SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS cou
 FROM     t1
 GROUP BY c1
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2 FROM     t1 GROUP BY c1"
+
+-> aggregateOp
+   » location: origin
+   » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $5)
+   » column: (Alias = max2 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c2))) ; Ordinal Expr = MAX($1))
+   » column: (Alias = min2 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c2))) ; Ordinal Expr = MIN($2))
+   » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($3))
+   » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($4))
+   » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($3)) / (SUM($4)))
+   » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($5)
+
+-> -> aggregateOp
+      » location: all nodes
+      » column: (Expr = MAX(MAX(rapidsse.public.t1.c2)) ; Ordinal Expr = MAX($1))
+      » column: (Expr = MIN(MIN(rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($2))
+      » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($3))
+      » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
+      » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $5)
+      » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($5)
+
+-> -> -> aggregateOp
+         » column: (Expr = MAX(rapidsse.public.t1.c2) ; Ordinal Expr = MAX($2))
+         » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
+         » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+         » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+         » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+         » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+
+-> -> -> -> tableScanOp
+            » location: all partitions
+            » table: (rapidsse.public.t1)'
+)
+
 
 --  (301) Select with GROUP BY aggregates & WHERE clause
 EXPLAIN STAGE partitionExplain
@@ -769,7 +1649,46 @@ FROM     t1
 WHERE    c1 > 0
 GROUP BY c1
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2 FROM     t1 WHERE    c1 > 0 GROUP BY c1"
+
+-> aggregateOp
+   » location: origin
+   » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $5)
+   » column: (Alias = max2 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c2))) ; Ordinal Expr = MAX($1))
+   » column: (Alias = min2 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c2))) ; Ordinal Expr = MIN($2))
+   » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($3))
+   » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($4))
+   » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($3)) / (SUM($4)))
+   » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($5)
+
+-> -> aggregateOp
+      » location: all nodes
+      » column: (Expr = MAX(MAX(rapidsse.public.t1.c2)) ; Ordinal Expr = MAX($1))
+      » column: (Expr = MIN(MIN(rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($2))
+      » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($3))
+      » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
+      » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $5)
+      » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($5)
+
+-> -> -> aggregateOp
+         » column: (Expr = MAX(rapidsse.public.t1.c2) ; Ordinal Expr = MAX($2))
+         » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
+         » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+         » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+         » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+         » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+
+-> -> -> -> filterOp
+            » expr: (rapidsse.public.t1.c1 > 0)
+            » ordinal expr: ($1 > 0)
+
+-> -> -> -> -> tableScanOp
+               » location: all partitions
+               » table: (rapidsse.public.t1)'
+)
+
 
 --  (302) Select with GROUP BY aggregates & HAVING clause
 EXPLAIN STAGE partitionExplain
@@ -778,7 +1697,46 @@ FROM     t1
 GROUP BY c1
 HAVING   min2 < 0
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2 FROM     t1 GROUP BY c1 HAVING   min2 < 0"
+
+-> filterOp
+   » expr: (min2 < 0)
+   » ordinal expr: ($3 < 0)
+
+-> -> aggregateOp
+      » location: origin
+      » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $5)
+      » column: (Alias = max2 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c2))) ; Ordinal Expr = MAX($1))
+      » column: (Alias = min2 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c2))) ; Ordinal Expr = MIN($2))
+      » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($3))
+      » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($4))
+      » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($3)) / (SUM($4)))
+      » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($5)
+
+-> -> -> aggregateOp
+         » location: all nodes
+         » column: (Expr = MAX(MAX(rapidsse.public.t1.c2)) ; Ordinal Expr = MAX($1))
+         » column: (Expr = MIN(MIN(rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($2))
+         » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($3))
+         » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
+         » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $5)
+         » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($5)
+
+-> -> -> -> aggregateOp
+            » column: (Expr = MAX(rapidsse.public.t1.c2) ; Ordinal Expr = MAX($2))
+            » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
+            » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+            » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+            » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+            » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+
+-> -> -> -> -> tableScanOp
+               » location: all partitions
+               » table: (rapidsse.public.t1)'
+)
+
 
 --  (303) Select with GROUP BY aggregates & ORDER BY clause
 EXPLAIN STAGE partitionExplain
@@ -787,7 +1745,46 @@ FROM     t1
 GROUP BY c1
 ORDER BY min2
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2 FROM     t1 GROUP BY c1 ORDER BY min2"
+
+-> orderOp
+   » order expr: ((min2) ASC)
+   » ordinal order expr: (($3) ASC)
+
+-> -> aggregateOp
+      » location: origin
+      » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $5)
+      » column: (Alias = max2 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c2))) ; Ordinal Expr = MAX($1))
+      » column: (Alias = min2 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c2))) ; Ordinal Expr = MIN($2))
+      » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($3))
+      » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($4))
+      » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($3)) / (SUM($4)))
+      » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($5)
+
+-> -> -> aggregateOp
+         » location: all nodes
+         » column: (Expr = MAX(MAX(rapidsse.public.t1.c2)) ; Ordinal Expr = MAX($1))
+         » column: (Expr = MIN(MIN(rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($2))
+         » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($3))
+         » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
+         » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $5)
+         » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($5)
+
+-> -> -> -> aggregateOp
+            » column: (Expr = MAX(rapidsse.public.t1.c2) ; Ordinal Expr = MAX($2))
+            » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
+            » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+            » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+            » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+            » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+
+-> -> -> -> -> tableScanOp
+               » location: all partitions
+               » table: (rapidsse.public.t1)'
+)
+
 
 --  (304) Select with GROUP BY aggregates & LIMIT clause
 EXPLAIN STAGE partitionExplain
@@ -796,7 +1793,45 @@ FROM     t1
 GROUP BY c1
 LIMIT    10
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2 FROM     t1 GROUP BY c1 LIMIT    10"
+
+-> limitOp
+   » limit: (10)
+
+-> -> aggregateOp
+      » location: origin
+      » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $5)
+      » column: (Alias = max2 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c2))) ; Ordinal Expr = MAX($1))
+      » column: (Alias = min2 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c2))) ; Ordinal Expr = MIN($2))
+      » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($3))
+      » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($4))
+      » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($3)) / (SUM($4)))
+      » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($5)
+
+-> -> -> aggregateOp
+         » location: all nodes
+         » column: (Expr = MAX(MAX(rapidsse.public.t1.c2)) ; Ordinal Expr = MAX($1))
+         » column: (Expr = MIN(MIN(rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($2))
+         » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($3))
+         » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
+         » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $5)
+         » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($5)
+
+-> -> -> -> aggregateOp
+            » column: (Expr = MAX(rapidsse.public.t1.c2) ; Ordinal Expr = MAX($2))
+            » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
+            » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+            » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+            » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+            » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+
+-> -> -> -> -> tableScanOp
+               » location: all partitions
+               » table: (rapidsse.public.t1)'
+)
+
 
 --  (305) Select with GROUP BY aggregates, HAVING clause & post-project
 EXPLAIN STAGE partitionExplain
@@ -805,7 +1840,57 @@ FROM     t1
 GROUP BY c1
 HAVING   MAX(c1 + c2) > 0
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2 FROM     t1 GROUP BY c1 HAVING   MAX(c1 + c2) > 0"
+
+-> projectOp
+   » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+   » column: (Alias = max2 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c2))) ; Ordinal Expr = $2)
+   » column: (Alias = min2 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c2))) ; Ordinal Expr = $3)
+   » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = $4)
+   » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = $5)
+   » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = $6)
+
+-> -> filterOp
+      » expr: ((MAX(MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2)))) > 0)
+      » ordinal expr: ($7 > 0)
+
+-> -> -> aggregateOp
+         » location: origin
+         » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $5)
+         » column: (Alias = max2 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c2))) ; Ordinal Expr = MAX($1))
+         » column: (Alias = min2 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c2))) ; Ordinal Expr = MIN($2))
+         » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($3))
+         » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($4))
+         » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($3)) / (SUM($4)))
+         » column: (Expr = MAX(MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2))) ; Ordinal Expr = MAX($6))
+         » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($5)
+
+-> -> -> -> aggregateOp
+            » location: all nodes
+            » column: (Expr = MAX(MAX(rapidsse.public.t1.c2)) ; Ordinal Expr = MAX($1))
+            » column: (Expr = MIN(MIN(rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($2))
+            » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($3))
+            » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
+            » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $5)
+            » column: (Expr = MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2)) ; Ordinal Expr = MAX($6))
+            » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($5)
+
+-> -> -> -> -> aggregateOp
+               » column: (Expr = MAX(rapidsse.public.t1.c2) ; Ordinal Expr = MAX($2))
+               » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
+               » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+               » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+               » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+               » column: (Expr = MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2) ; Ordinal Expr = MAX($1 + $2))
+               » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+
+-> -> -> -> -> -> tableScanOp
+                  » location: all partitions
+                  » table: (rapidsse.public.t1)'
+)
+
 
 --  (306) Select with GROUP BY aggregates, ORDER BY clause & post-project
 EXPLAIN STAGE partitionExplain
@@ -814,7 +1899,57 @@ FROM     t1
 GROUP BY c1
 ORDER BY MAX(c1 + c2)
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2 FROM     t1 GROUP BY c1 ORDER BY MAX(c1 + c2)"
+
+-> projectOp
+   » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+   » column: (Alias = max2 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c2))) ; Ordinal Expr = $2)
+   » column: (Alias = min2 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c2))) ; Ordinal Expr = $3)
+   » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = $4)
+   » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = $5)
+   » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = $6)
+
+-> -> orderOp
+      » order expr: ((MAX(MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2)))) ASC)
+      » ordinal order expr: (($7) ASC)
+
+-> -> -> aggregateOp
+         » location: origin
+         » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $5)
+         » column: (Alias = max2 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c2))) ; Ordinal Expr = MAX($1))
+         » column: (Alias = min2 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c2))) ; Ordinal Expr = MIN($2))
+         » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($3))
+         » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($4))
+         » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($3)) / (SUM($4)))
+         » column: (Expr = MAX(MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2))) ; Ordinal Expr = MAX($6))
+         » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($5)
+
+-> -> -> -> aggregateOp
+            » location: all nodes
+            » column: (Expr = MAX(MAX(rapidsse.public.t1.c2)) ; Ordinal Expr = MAX($1))
+            » column: (Expr = MIN(MIN(rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($2))
+            » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($3))
+            » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
+            » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $5)
+            » column: (Expr = MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2)) ; Ordinal Expr = MAX($6))
+            » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($5)
+
+-> -> -> -> -> aggregateOp
+               » column: (Expr = MAX(rapidsse.public.t1.c2) ; Ordinal Expr = MAX($2))
+               » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
+               » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+               » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+               » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+               » column: (Expr = MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2) ; Ordinal Expr = MAX($1 + $2))
+               » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+
+-> -> -> -> -> -> tableScanOp
+                  » location: all partitions
+                  » table: (rapidsse.public.t1)'
+)
+
 
 --  (307) Select with GROUP BY aggregates, HAVING, ORDER BY clauses & post-project
 EXPLAIN STAGE partitionExplain
@@ -824,7 +1959,61 @@ GROUP BY c1
 HAVING   MAX(c1 + c2) > 0
 ORDER BY min2
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2 FROM     t1 GROUP BY c1 HAVING   MAX(c1 + c2) > 0 ORDER BY min2"
+
+-> projectOp
+   » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+   » column: (Alias = max2 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c2))) ; Ordinal Expr = $2)
+   » column: (Alias = min2 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c2))) ; Ordinal Expr = $3)
+   » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = $4)
+   » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = $5)
+   » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = $6)
+
+-> -> orderOp
+      » order expr: ((min2) ASC)
+      » ordinal order expr: (($3) ASC)
+
+-> -> -> filterOp
+         » expr: ((MAX(MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2)))) > 0)
+         » ordinal expr: ($7 > 0)
+
+-> -> -> -> aggregateOp
+            » location: origin
+            » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $5)
+            » column: (Alias = max2 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c2))) ; Ordinal Expr = MAX($1))
+            » column: (Alias = min2 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c2))) ; Ordinal Expr = MIN($2))
+            » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($3))
+            » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($4))
+            » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($3)) / (SUM($4)))
+            » column: (Expr = MAX(MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2))) ; Ordinal Expr = MAX($6))
+            » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($5)
+
+-> -> -> -> -> aggregateOp
+               » location: all nodes
+               » column: (Expr = MAX(MAX(rapidsse.public.t1.c2)) ; Ordinal Expr = MAX($1))
+               » column: (Expr = MIN(MIN(rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($2))
+               » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($3))
+               » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
+               » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $5)
+               » column: (Expr = MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2)) ; Ordinal Expr = MAX($6))
+               » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($5)
+
+-> -> -> -> -> -> aggregateOp
+                  » column: (Expr = MAX(rapidsse.public.t1.c2) ; Ordinal Expr = MAX($2))
+                  » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
+                  » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+                  » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+                  » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+                  » column: (Expr = MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2) ; Ordinal Expr = MAX($1 + $2))
+                  » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+
+-> -> -> -> -> -> -> tableScanOp
+                     » location: all partitions
+                     » table: (rapidsse.public.t1)'
+)
+
 
 --  (308) Select with GROUP BY aggregates, WHERE and HAVING clauses
 EXPLAIN STAGE partitionExplain
@@ -834,7 +2023,50 @@ WHERE    c2 > 0
 GROUP BY c1
 HAVING   max2 > 0
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2 FROM     t1 WHERE    c2 > 0 GROUP BY c1 HAVING   max2 > 0"
+
+-> filterOp
+   » expr: (max2 > 0)
+   » ordinal expr: ($2 > 0)
+
+-> -> aggregateOp
+      » location: origin
+      » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $5)
+      » column: (Alias = max2 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c2))) ; Ordinal Expr = MAX($1))
+      » column: (Alias = min2 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c2))) ; Ordinal Expr = MIN($2))
+      » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($3))
+      » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($4))
+      » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($3)) / (SUM($4)))
+      » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($5)
+
+-> -> -> aggregateOp
+         » location: all nodes
+         » column: (Expr = MAX(MAX(rapidsse.public.t1.c2)) ; Ordinal Expr = MAX($1))
+         » column: (Expr = MIN(MIN(rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($2))
+         » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($3))
+         » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
+         » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $5)
+         » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($5)
+
+-> -> -> -> aggregateOp
+            » column: (Expr = MAX(rapidsse.public.t1.c2) ; Ordinal Expr = MAX($2))
+            » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
+            » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+            » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+            » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+            » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+
+-> -> -> -> -> filterOp
+               » expr: (rapidsse.public.t1.c2 > 0)
+               » ordinal expr: ($2 > 0)
+
+-> -> -> -> -> -> tableScanOp
+                  » location: all partitions
+                  » table: (rapidsse.public.t1)'
+)
+
 
 --  (309) Select with GROUP BY aggregates, WHERE, HAVING clauses & post-project
 EXPLAIN STAGE partitionExplain
@@ -844,7 +2076,61 @@ WHERE    c2 > 0
 GROUP BY c1
 HAVING   MAX(c1 + c2) > 0
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2 FROM     t1 WHERE    c2 > 0 GROUP BY c1 HAVING   MAX(c1 + c2) > 0"
+
+-> projectOp
+   » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+   » column: (Alias = max2 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c2))) ; Ordinal Expr = $2)
+   » column: (Alias = min2 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c2))) ; Ordinal Expr = $3)
+   » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = $4)
+   » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = $5)
+   » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = $6)
+
+-> -> filterOp
+      » expr: ((MAX(MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2)))) > 0)
+      » ordinal expr: ($7 > 0)
+
+-> -> -> aggregateOp
+         » location: origin
+         » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $5)
+         » column: (Alias = max2 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c2))) ; Ordinal Expr = MAX($1))
+         » column: (Alias = min2 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c2))) ; Ordinal Expr = MIN($2))
+         » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($3))
+         » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($4))
+         » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($3)) / (SUM($4)))
+         » column: (Expr = MAX(MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2))) ; Ordinal Expr = MAX($6))
+         » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($5)
+
+-> -> -> -> aggregateOp
+            » location: all nodes
+            » column: (Expr = MAX(MAX(rapidsse.public.t1.c2)) ; Ordinal Expr = MAX($1))
+            » column: (Expr = MIN(MIN(rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($2))
+            » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($3))
+            » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
+            » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $5)
+            » column: (Expr = MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2)) ; Ordinal Expr = MAX($6))
+            » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($5)
+
+-> -> -> -> -> aggregateOp
+               » column: (Expr = MAX(rapidsse.public.t1.c2) ; Ordinal Expr = MAX($2))
+               » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
+               » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+               » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+               » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+               » column: (Expr = MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2) ; Ordinal Expr = MAX($1 + $2))
+               » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+
+-> -> -> -> -> -> filterOp
+                  » expr: (rapidsse.public.t1.c2 > 0)
+                  » ordinal expr: ($2 > 0)
+
+-> -> -> -> -> -> -> tableScanOp
+                     » location: all partitions
+                     » table: (rapidsse.public.t1)'
+)
+
 
 --  (310) Select with GROUP BY aggregates, WHERE, HAVING & ORDER BY clauses
 EXPLAIN STAGE partitionExplain
@@ -852,9 +2138,57 @@ SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS cou
 FROM     t1
 WHERE    c2 > 0
 GROUP BY c1
+HAVING   min2 > 0
 ORDER BY max2
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2 FROM     t1 WHERE    c2 > 0 GROUP BY c1 HAVING   min2 > 0 ORDER BY max2"
+
+-> orderOp
+   » order expr: ((max2) ASC)
+   » ordinal order expr: (($2) ASC)
+
+-> -> filterOp
+      » expr: (min2 > 0)
+      » ordinal expr: ($3 > 0)
+
+-> -> -> aggregateOp
+         » location: origin
+         » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $5)
+         » column: (Alias = max2 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c2))) ; Ordinal Expr = MAX($1))
+         » column: (Alias = min2 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c2))) ; Ordinal Expr = MIN($2))
+         » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($3))
+         » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($4))
+         » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($3)) / (SUM($4)))
+         » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($5)
+
+-> -> -> -> aggregateOp
+            » location: all nodes
+            » column: (Expr = MAX(MAX(rapidsse.public.t1.c2)) ; Ordinal Expr = MAX($1))
+            » column: (Expr = MIN(MIN(rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($2))
+            » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($3))
+            » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
+            » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $5)
+            » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($5)
+
+-> -> -> -> -> aggregateOp
+               » column: (Expr = MAX(rapidsse.public.t1.c2) ; Ordinal Expr = MAX($2))
+               » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
+               » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+               » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+               » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+               » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+
+-> -> -> -> -> -> filterOp
+                  » expr: (rapidsse.public.t1.c2 > 0)
+                  » ordinal expr: ($2 > 0)
+
+-> -> -> -> -> -> -> tableScanOp
+                     » location: all partitions
+                     » table: (rapidsse.public.t1)'
+)
+
 
 --  (311) Select with GROUP BY aggregates, WHERE, HAVING, ORDER BY clauses & post-project
 EXPLAIN STAGE partitionExplain
@@ -862,9 +2196,70 @@ SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS cou
 FROM     t1
 WHERE    c2 > 0
 GROUP BY c1
+HAVING   MIN(c1 + c2) > 0
 ORDER BY MAX(c1 + c2)
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain','StatementMarker: select
+» queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2 FROM     t1 WHERE    c2 > 0 GROUP BY c1 HAVING   MIN(c1 + c2) > 0 ORDER BY MAX(c1 + c2)"
+
+-> projectOp
+   » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+   » column: (Alias = max2 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c2))) ; Ordinal Expr = $2)
+   » column: (Alias = min2 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c2))) ; Ordinal Expr = $3)
+   » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = $4)
+   » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = $5)
+   » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = $6)
+
+-> -> orderOp
+      » order expr: ((MAX(MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2)))) ASC)
+      » ordinal order expr: (($7) ASC)
+
+-> -> -> filterOp
+         » expr: ((MIN(MIN(MIN(rapidsse.public.t1.c1 + rapidsse.public.t1.c2)))) > 0)
+         » ordinal expr: ($8 > 0)
+
+-> -> -> -> aggregateOp
+            » location: origin
+            » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $6)
+            » column: (Alias = max2 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c2))) ; Ordinal Expr = MAX($1))
+            » column: (Alias = min2 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c2))) ; Ordinal Expr = MIN($2))
+            » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($3))
+            » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($4))
+            » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($3)) / (SUM($4)))
+            » column: (Expr = MAX(MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2))) ; Ordinal Expr = MAX($5))
+            » column: (Expr = MIN(MIN(MIN(rapidsse.public.t1.c1 + rapidsse.public.t1.c2))) ; Ordinal Expr = MIN($7))
+            » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($6)
+
+-> -> -> -> -> aggregateOp
+               » location: all nodes
+               » column: (Expr = MAX(MAX(rapidsse.public.t1.c2)) ; Ordinal Expr = MAX($1))
+               » column: (Expr = MIN(MIN(rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($2))
+               » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($3))
+               » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
+               » column: (Expr = MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2)) ; Ordinal Expr = MAX($5))
+               » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $6)
+               » column: (Expr = MIN(MIN(rapidsse.public.t1.c1 + rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($7))
+               » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($6)
+
+-> -> -> -> -> -> aggregateOp
+                  » column: (Expr = MAX(rapidsse.public.t1.c2) ; Ordinal Expr = MAX($2))
+                  » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
+                  » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+                  » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+                  » column: (Expr = MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2) ; Ordinal Expr = MAX($1 + $2))
+                  » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+                  » column: (Expr = MIN(rapidsse.public.t1.c1 + rapidsse.public.t1.c2) ; Ordinal Expr = MIN($1 + $2))
+                  » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+
+-> -> -> -> -> -> -> filterOp
+                     » expr: (rapidsse.public.t1.c2 > 0)
+                     » ordinal expr: ($2 > 0)
+
+-> -> -> -> -> -> -> -> tableScanOp
+                        » location: all partitions
+                        » table: (rapidsse.public.t1)'
+)
+
 
 --  (312) Select with GROUP BY aggregates, WHERE, HAVING & LIMIT clauses
 EXPLAIN STAGE partitionExplain
@@ -875,7 +2270,53 @@ GROUP BY c1
 HAVING   max2 > 0
 LIMIT    10
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2 FROM     t1 WHERE    c2 > 0 GROUP BY c1 HAVING   max2 > 0 LIMIT    10"
+
+-> limitOp
+   » limit: (10)
+
+-> -> filterOp
+      » expr: (max2 > 0)
+      » ordinal expr: ($2 > 0)
+
+-> -> -> aggregateOp
+         » location: origin
+         » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $5)
+         » column: (Alias = max2 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c2))) ; Ordinal Expr = MAX($1))
+         » column: (Alias = min2 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c2))) ; Ordinal Expr = MIN($2))
+         » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($3))
+         » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($4))
+         » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($3)) / (SUM($4)))
+         » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($5)
+
+-> -> -> -> aggregateOp
+            » location: all nodes
+            » column: (Expr = MAX(MAX(rapidsse.public.t1.c2)) ; Ordinal Expr = MAX($1))
+            » column: (Expr = MIN(MIN(rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($2))
+            » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($3))
+            » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
+            » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $5)
+            » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($5)
+
+-> -> -> -> -> aggregateOp
+               » column: (Expr = MAX(rapidsse.public.t1.c2) ; Ordinal Expr = MAX($2))
+               » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
+               » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+               » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+               » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+               » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+
+-> -> -> -> -> -> filterOp
+                  » expr: (rapidsse.public.t1.c2 > 0)
+                  » ordinal expr: ($2 > 0)
+
+-> -> -> -> -> -> -> tableScanOp
+                     » location: all partitions
+                     » table: (rapidsse.public.t1)'
+)
+
 
 --  (313) Select with GROUP BY aggregates, WHERE, HAVING, LIMIT clauses & post-project
 EXPLAIN STAGE partitionExplain
@@ -886,7 +2327,64 @@ GROUP BY c1
 HAVING   MAX(c1 + c2) > 0
 LIMIT    10
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2 FROM     t1 WHERE    c2 > 0 GROUP BY c1 HAVING   MAX(c1 + c2) > 0 LIMIT    10"
+
+-> projectOp
+   » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+   » column: (Alias = max2 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c2))) ; Ordinal Expr = $2)
+   » column: (Alias = min2 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c2))) ; Ordinal Expr = $3)
+   » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = $4)
+   » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = $5)
+   » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = $6)
+
+-> -> limitOp
+      » limit: (10)
+
+-> -> -> filterOp
+         » expr: ((MAX(MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2)))) > 0)
+         » ordinal expr: ($7 > 0)
+
+-> -> -> -> aggregateOp
+            » location: origin
+            » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $5)
+            » column: (Alias = max2 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c2))) ; Ordinal Expr = MAX($1))
+            » column: (Alias = min2 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c2))) ; Ordinal Expr = MIN($2))
+            » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($3))
+            » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($4))
+            » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($3)) / (SUM($4)))
+            » column: (Expr = MAX(MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2))) ; Ordinal Expr = MAX($6))
+            » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($5)
+
+-> -> -> -> -> aggregateOp
+               » location: all nodes
+               » column: (Expr = MAX(MAX(rapidsse.public.t1.c2)) ; Ordinal Expr = MAX($1))
+               » column: (Expr = MIN(MIN(rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($2))
+               » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($3))
+               » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
+               » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $5)
+               » column: (Expr = MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2)) ; Ordinal Expr = MAX($6))
+               » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($5)
+
+-> -> -> -> -> -> aggregateOp
+                  » column: (Expr = MAX(rapidsse.public.t1.c2) ; Ordinal Expr = MAX($2))
+                  » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
+                  » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+                  » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+                  » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+                  » column: (Expr = MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2) ; Ordinal Expr = MAX($1 + $2))
+                  » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+
+-> -> -> -> -> -> -> filterOp
+                     » expr: (rapidsse.public.t1.c2 > 0)
+                     » ordinal expr: ($2 > 0)
+
+-> -> -> -> -> -> -> -> tableScanOp
+                        » location: all partitions
+                        » table: (rapidsse.public.t1)'
+)
+
 
 --  (314) Select with GROUP BY aggregates, WHERE, HAVING, ORDER BY & LIMIT clauses
 EXPLAIN STAGE partitionExplain
@@ -898,7 +2396,57 @@ HAVING   max2 > 0
 ORDER BY min2
 LIMIT    10
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2 FROM     t1 WHERE    c2 > 0 GROUP BY c1 HAVING   max2 > 0 ORDER BY min2 LIMIT    10"
+
+-> limitOp
+   » limit: (10)
+
+-> -> orderOp
+      » order expr: ((min2) ASC)
+      » ordinal order expr: (($3) ASC)
+
+-> -> -> filterOp
+         » expr: (max2 > 0)
+         » ordinal expr: ($2 > 0)
+
+-> -> -> -> aggregateOp
+            » location: origin
+            » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $5)
+            » column: (Alias = max2 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c2))) ; Ordinal Expr = MAX($1))
+            » column: (Alias = min2 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c2))) ; Ordinal Expr = MIN($2))
+            » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($3))
+            » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($4))
+            » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($3)) / (SUM($4)))
+            » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($5)
+
+-> -> -> -> -> aggregateOp
+               » location: all nodes
+               » column: (Expr = MAX(MAX(rapidsse.public.t1.c2)) ; Ordinal Expr = MAX($1))
+               » column: (Expr = MIN(MIN(rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($2))
+               » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($3))
+               » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
+               » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $5)
+               » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($5)
+
+-> -> -> -> -> -> aggregateOp
+                  » column: (Expr = MAX(rapidsse.public.t1.c2) ; Ordinal Expr = MAX($2))
+                  » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
+                  » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+                  » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+                  » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+                  » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+
+-> -> -> -> -> -> -> filterOp
+                     » expr: (rapidsse.public.t1.c2 > 0)
+                     » ordinal expr: ($2 > 0)
+
+-> -> -> -> -> -> -> -> tableScanOp
+                        » location: all partitions
+                        » table: (rapidsse.public.t1)'
+)
+
 
 --  (315) Select with GROUP BY aggregates, WHERE, HAVING, ORDER BY, LIMIT clauses & post-project
 EXPLAIN STAGE partitionExplain
@@ -910,7 +2458,68 @@ HAVING   MAX(c1 + c2) > 0
 ORDER BY min2
 LIMIT    10
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2 FROM     t1 WHERE    c2 > 0 GROUP BY c1 HAVING   MAX(c1 + c2) > 0 ORDER BY min2 LIMIT    10"
+
+-> projectOp
+   » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+   » column: (Alias = max2 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c2))) ; Ordinal Expr = $2)
+   » column: (Alias = min2 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c2))) ; Ordinal Expr = $3)
+   » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = $4)
+   » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = $5)
+   » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = $6)
+
+-> -> limitOp
+      » limit: (10)
+
+-> -> -> orderOp
+         » order expr: ((min2) ASC)
+         » ordinal order expr: (($3) ASC)
+
+-> -> -> -> filterOp
+            » expr: ((MAX(MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2)))) > 0)
+            » ordinal expr: ($7 > 0)
+
+-> -> -> -> -> aggregateOp
+               » location: origin
+               » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $5)
+               » column: (Alias = max2 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c2))) ; Ordinal Expr = MAX($1))
+               » column: (Alias = min2 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c2))) ; Ordinal Expr = MIN($2))
+               » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($3))
+               » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($4))
+               » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($3)) / (SUM($4)))
+               » column: (Expr = MAX(MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2))) ; Ordinal Expr = MAX($6))
+               » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($5)
+
+-> -> -> -> -> -> aggregateOp
+                  » location: all nodes
+                  » column: (Expr = MAX(MAX(rapidsse.public.t1.c2)) ; Ordinal Expr = MAX($1))
+                  » column: (Expr = MIN(MIN(rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($2))
+                  » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($3))
+                  » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
+                  » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $5)
+                  » column: (Expr = MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2)) ; Ordinal Expr = MAX($6))
+                  » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($5)
+
+-> -> -> -> -> -> -> aggregateOp
+                     » column: (Expr = MAX(rapidsse.public.t1.c2) ; Ordinal Expr = MAX($2))
+                     » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
+                     » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+                     » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+                     » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+                     » column: (Expr = MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2) ; Ordinal Expr = MAX($1 + $2))
+                     » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+
+-> -> -> -> -> -> -> -> filterOp
+                        » expr: (rapidsse.public.t1.c2 > 0)
+                        » ordinal expr: ($2 > 0)
+
+-> -> -> -> -> -> -> -> -> tableScanOp
+                           » location: all partitions
+                           » table: (rapidsse.public.t1)'
+)
+
 
 --  (316) Select with GROUP BY aggregates, WHERE, ORDER BY & LIMIT clauses
 EXPLAIN STAGE partitionExplain
@@ -921,7 +2530,53 @@ GROUP BY c1
 ORDER BY min2
 LIMIT    10
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2 FROM     t1 WHERE    c2 > 0 GROUP BY c1 ORDER BY min2 LIMIT    10"
+
+-> limitOp
+   » limit: (10)
+
+-> -> orderOp
+      » order expr: ((min2) ASC)
+      » ordinal order expr: (($3) ASC)
+
+-> -> -> aggregateOp
+         » location: origin
+         » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $5)
+         » column: (Alias = max2 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c2))) ; Ordinal Expr = MAX($1))
+         » column: (Alias = min2 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c2))) ; Ordinal Expr = MIN($2))
+         » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($3))
+         » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($4))
+         » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($3)) / (SUM($4)))
+         » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($5)
+
+-> -> -> -> aggregateOp
+            » location: all nodes
+            » column: (Expr = MAX(MAX(rapidsse.public.t1.c2)) ; Ordinal Expr = MAX($1))
+            » column: (Expr = MIN(MIN(rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($2))
+            » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($3))
+            » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
+            » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $5)
+            » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($5)
+
+-> -> -> -> -> aggregateOp
+               » column: (Expr = MAX(rapidsse.public.t1.c2) ; Ordinal Expr = MAX($2))
+               » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
+               » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+               » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+               » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+               » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+
+-> -> -> -> -> -> filterOp
+                  » expr: (rapidsse.public.t1.c2 > 0)
+                  » ordinal expr: ($2 > 0)
+
+-> -> -> -> -> -> -> tableScanOp
+                     » location: all partitions
+                     » table: (rapidsse.public.t1)'
+)
+
 
 --  (317) Select with GROUP BY aggregates, WHERE, ORDER BY, LIMIT clauses & post-project
 EXPLAIN STAGE partitionExplain
@@ -932,7 +2587,63 @@ GROUP BY c1
 ORDER BY MAX(c1 + c2)
 LIMIT    10
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2 FROM     t1 WHERE    c2 > 0 GROUP BY c1 ORDER BY MAX(c1 + c2) LIMIT    10"
+
+-> projectOp
+   » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+   » column: (Alias = max2 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c2))) ; Ordinal Expr = $2)
+   » column: (Alias = min2 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c2))) ; Ordinal Expr = $3)
+   » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = $4)
+   » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = $5)
+   » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = $6)
+
+-> -> limitOp
+      » limit: (10)
+
+-> -> -> orderOp
+         » order expr: ((MAX(MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2)))) ASC)
+         » ordinal order expr: (($7) ASC)
+
+-> -> -> -> aggregateOp
+            » location: origin
+            » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $5)
+            » column: (Alias = max2 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c2))) ; Ordinal Expr = MAX($1))
+            » column: (Alias = min2 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c2))) ; Ordinal Expr = MIN($2))
+            » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($3))
+            » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($4))
+            » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($3)) / (SUM($4)))
+            » column: (Expr = MAX(MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2))) ; Ordinal Expr = MAX($6))
+            » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($5)
+
+-> -> -> -> -> aggregateOp
+               » location: all nodes
+               » column: (Expr = MAX(MAX(rapidsse.public.t1.c2)) ; Ordinal Expr = MAX($1))
+               » column: (Expr = MIN(MIN(rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($2))
+               » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($3))
+               » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
+               » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $5)
+               » column: (Expr = MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2)) ; Ordinal Expr = MAX($6))
+               » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($5)
+
+-> -> -> -> -> -> aggregateOp
+                  » column: (Expr = MAX(rapidsse.public.t1.c2) ; Ordinal Expr = MAX($2))
+                  » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
+                  » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+                  » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+                  » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+                  » column: (Expr = MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2) ; Ordinal Expr = MAX($1 + $2))
+                  » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+
+-> -> -> -> -> -> -> filterOp
+                     » expr: (rapidsse.public.t1.c2 > 0)
+                     » ordinal expr: ($2 > 0)
+
+-> -> -> -> -> -> -> -> tableScanOp
+                        » location: all partitions
+                        » table: (rapidsse.public.t1)'
+)
 
 
 
@@ -947,7 +2658,41 @@ UNION ALL
   SELECT   colA AS y1, colB + 1 AS y2, colA/colB AS y3
   FROM     t2
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT   c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3   FROM     t1 UNION ALL    SELECT   colA AS y1, colB + 1 AS y2, colA/colB AS y3   FROM     t2"
+
+-> unionOp
+   » location: origin
+   » isDistinct: (false)
+
+-> -> StatementMarker: select
+      » location: origin
+      » queryText: "SELECT   c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3   FROM     t1"
+
+-> -> -> projectOp
+         » column: (Alias = x1 ; Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+         » column: (Alias = x2 ; Expr = rapidsse.public.t1.c2 + 1 ; Ordinal Expr = $2 + 1)
+         » column: (Alias = x3 ; Expr = rapidsse.public.t1.c1 / rapidsse.public.t1.c2 ; Ordinal Expr = $1 / $2)
+
+-> -> -> -> tableScanOp
+            » location: all partitions
+            » table: (rapidsse.public.t1)
+
+-> -> StatementMarker: select
+      » location: origin
+      » queryText: "SELECT   colA AS y1, colB + 1 AS y2, colA/colB AS y3   FROM     t2"
+
+-> -> -> projectOp
+         » column: (Alias = y1 ; Expr = rapidsse.public.t2.colA ; Ordinal Expr = $1)
+         » column: (Alias = y2 ; Expr = rapidsse.public.t2.colB + 1 ; Ordinal Expr = $2 + 1)
+         » column: (Alias = y3 ; Expr = rapidsse.public.t2.colA / rapidsse.public.t2.colB ; Ordinal Expr = $1 / $2)
+
+-> -> -> -> tableScanOp
+            » location: all partitions
+            » table: (rapidsse.public.t2)'
+)
+
 
 --  (401) UNION ALL of two simple selects with WHERE clauses
 EXPLAIN STAGE partitionExplain
@@ -959,7 +2704,49 @@ UNION ALL
   FROM     t2
   WHERE    COLA > 0
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT   c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3   FROM     t1   WHERE    c1 > 0 UNION ALL   SELECT   colA AS y1, colB + 1 AS y2, colA/colB AS y3   FROM     t2   WHERE    COLA > 0"
+
+-> unionOp
+   » location: origin
+   » isDistinct: (false)
+
+-> -> StatementMarker: select
+      » location: origin
+      » queryText: "SELECT   c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3   FROM     t1   WHERE    c1 > 0"
+
+-> -> -> projectOp
+         » column: (Alias = x1 ; Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+         » column: (Alias = x2 ; Expr = rapidsse.public.t1.c2 + 1 ; Ordinal Expr = $2 + 1)
+         » column: (Alias = x3 ; Expr = rapidsse.public.t1.c1 / rapidsse.public.t1.c2 ; Ordinal Expr = $1 / $2)
+
+-> -> -> -> filterOp
+            » expr: (rapidsse.public.t1.c1 > 0)
+            » ordinal expr: ($1 > 0)
+
+-> -> -> -> -> tableScanOp
+               » location: all partitions
+               » table: (rapidsse.public.t1)
+
+-> -> StatementMarker: select
+      » location: origin
+      » queryText: "SELECT   colA AS y1, colB + 1 AS y2, colA/colB AS y3   FROM     t2   WHERE    COLA > 0"
+
+-> -> -> projectOp
+         » column: (Alias = y1 ; Expr = rapidsse.public.t2.colA ; Ordinal Expr = $1)
+         » column: (Alias = y2 ; Expr = rapidsse.public.t2.colB + 1 ; Ordinal Expr = $2 + 1)
+         » column: (Alias = y3 ; Expr = rapidsse.public.t2.colA / rapidsse.public.t2.colB ; Ordinal Expr = $1 / $2)
+
+-> -> -> -> filterOp
+            » expr: (rapidsse.public.t2.COLA > 0)
+            » ordinal expr: ($1 > 0)
+
+-> -> -> -> -> tableScanOp
+               » location: all partitions
+               » table: (rapidsse.public.t2)'
+)
+
 
 --  (402) UNION ALL of two selects with grand total aggregates
 EXPLAIN STAGE partitionExplain
@@ -969,7 +2756,81 @@ UNION ALL
   SELECT   MAX(colA) AS maxA, MIN(colA) AS minA, SUM(colA) AS sumA, COUNT(colA) AS countA, AVG(colA) AS avgA, AVG(colB) AS avgB
   FROM     t2
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT   MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2   FROM     t1 UNION ALL   SELECT   MAX(colA) AS maxA, MIN(colA) AS minA, SUM(colA) AS sumA, COUNT(colA) AS countA, AVG(colA) AS avgA, AVG(colB) AS avgB   FROM     t2"
+
+-> unionOp
+   » location: origin
+   » isDistinct: (false)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT   MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2   FROM     t1"
+
+-> -> -> projectOp
+         » location: origin
+         » column: (Alias = max1 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c1))) ; Ordinal Expr = MAX($4))
+         » column: (Alias = min1 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c1))) ; Ordinal Expr = MIN($1))
+         » column: (Alias = sum1 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c1))) ; Ordinal Expr = SUM($2))
+         » column: (Alias = count1 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c1))) ; Ordinal Expr = SUM($3))
+         » column: (Alias = avg1 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c1)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c1)))) ; Ordinal Expr = (SUM($2)) / (SUM($3)))
+         » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($5)) / (SUM($6)))
+
+-> -> -> -> projectOp
+            » location: all nodes
+            » column: (Expr = MIN(MIN(rapidsse.public.t1.c1)) ; Ordinal Expr = MIN($1))
+            » column: (Expr = SUM(SUM(rapidsse.public.t1.c1)) ; Ordinal Expr = SUM($2))
+            » column: (Expr = SUM(COUNT(rapidsse.public.t1.c1)) ; Ordinal Expr = SUM($3))
+            » column: (Expr = MAX(MAX(rapidsse.public.t1.c1)) ; Ordinal Expr = MAX($4))
+            » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($5))
+            » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($6))
+
+-> -> -> -> -> projectOp
+               » column: (Expr = MIN(rapidsse.public.t1.c1) ; Ordinal Expr = MIN($1))
+               » column: (Expr = SUM(rapidsse.public.t1.c1) ; Ordinal Expr = SUM($1))
+               » column: (Expr = COUNT(rapidsse.public.t1.c1) ; Ordinal Expr = COUNT($1))
+               » column: (Expr = MAX(rapidsse.public.t1.c1) ; Ordinal Expr = MAX($1))
+               » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+               » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+
+-> -> -> -> -> -> tableScanOp
+                  » location: all partitions
+                  » table: (rapidsse.public.t1)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT   MAX(colA) AS maxA, MIN(colA) AS minA, SUM(colA) AS sumA, COUNT(colA) AS countA, AVG(colA) AS avgA, AVG(colB) AS avgB   FROM     t2"
+
+-> -> -> projectOp
+         » location: origin
+         » column: (Alias = maxA ; Expr = MAX(MAX(MAX(rapidsse.public.t2.colA))) ; Ordinal Expr = MAX($4))
+         » column: (Alias = minA ; Expr = MIN(MIN(MIN(rapidsse.public.t2.colA))) ; Ordinal Expr = MIN($1))
+         » column: (Alias = sumA ; Expr = SUM(SUM(SUM(rapidsse.public.t2.colA))) ; Ordinal Expr = SUM($2))
+         » column: (Alias = countA ; Expr = SUM(SUM(COUNT(rapidsse.public.t2.colA))) ; Ordinal Expr = SUM($3))
+         » column: (Alias = avgA ; Expr = (SUM(SUM(SUM(rapidsse.public.t2.colA)))) / (SUM(SUM(COUNT(rapidsse.public.t2.colA)))) ; Ordinal Expr = (SUM($2)) / (SUM($3)))
+         » column: (Alias = avgB ; Expr = (SUM(SUM(SUM(rapidsse.public.t2.colB)))) / (SUM(SUM(COUNT(rapidsse.public.t2.colB)))) ; Ordinal Expr = (SUM($5)) / (SUM($6)))
+
+-> -> -> -> projectOp
+            » location: all nodes
+            » column: (Expr = MIN(MIN(rapidsse.public.t2.colA)) ; Ordinal Expr = MIN($1))
+            » column: (Expr = SUM(SUM(rapidsse.public.t2.colA)) ; Ordinal Expr = SUM($2))
+            » column: (Expr = SUM(COUNT(rapidsse.public.t2.colA)) ; Ordinal Expr = SUM($3))
+            » column: (Expr = MAX(MAX(rapidsse.public.t2.colA)) ; Ordinal Expr = MAX($4))
+            » column: (Expr = SUM(SUM(rapidsse.public.t2.colB)) ; Ordinal Expr = SUM($5))
+            » column: (Expr = SUM(COUNT(rapidsse.public.t2.colB)) ; Ordinal Expr = SUM($6))
+
+-> -> -> -> -> projectOp
+               » column: (Expr = MIN(rapidsse.public.t2.colA) ; Ordinal Expr = MIN($1))
+               » column: (Expr = SUM(rapidsse.public.t2.colA) ; Ordinal Expr = SUM($1))
+               » column: (Expr = COUNT(rapidsse.public.t2.colA) ; Ordinal Expr = COUNT($1))
+               » column: (Expr = MAX(rapidsse.public.t2.colA) ; Ordinal Expr = MAX($1))
+               » column: (Expr = SUM(rapidsse.public.t2.colB) ; Ordinal Expr = SUM($2))
+               » column: (Expr = COUNT(rapidsse.public.t2.colB) ; Ordinal Expr = COUNT($2))
+
+-> -> -> -> -> -> tableScanOp
+                  » location: all partitions
+                  » table: (rapidsse.public.t2)'
+)
+
 
 --  (403) UNION ALL of two selects with grand total aggregates, WHERE & HAVING clauses
 EXPLAIN STAGE partitionExplain
@@ -983,7 +2844,97 @@ UNION ALL
   WHERE    colA > 0
   HAVING   maxA > 0
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT   MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2   FROM     t1   WHERE    c1 > 0   HAVING   max1 > 0 UNION ALL   SELECT   MAX(colA) AS maxA, MIN(colA) AS minA, SUM(colA) AS sumA, COUNT(colA) AS countA, AVG(colA) AS avgA, AVG(colB) AS avgB   FROM     t2   WHERE    colA > 0   HAVING   maxA > 0"
+
+-> unionOp
+   » location: origin
+   » isDistinct: (false)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT   MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2   FROM     t1   WHERE    c1 > 0   HAVING   max1 > 0"
+
+-> -> -> filterOp
+         » expr: (max1 > 0)
+         » ordinal expr: ($1 > 0)
+
+-> -> -> -> projectOp
+            » location: origin
+            » column: (Alias = max1 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c1))) ; Ordinal Expr = MAX($4))
+            » column: (Alias = min1 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c1))) ; Ordinal Expr = MIN($1))
+            » column: (Alias = sum1 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c1))) ; Ordinal Expr = SUM($2))
+            » column: (Alias = count1 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c1))) ; Ordinal Expr = SUM($3))
+            » column: (Alias = avg1 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c1)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c1)))) ; Ordinal Expr = (SUM($2)) / (SUM($3)))
+            » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($5)) / (SUM($6)))
+
+-> -> -> -> -> projectOp
+               » location: all nodes
+               » column: (Expr = MIN(MIN(rapidsse.public.t1.c1)) ; Ordinal Expr = MIN($1))
+               » column: (Expr = SUM(SUM(rapidsse.public.t1.c1)) ; Ordinal Expr = SUM($2))
+               » column: (Expr = SUM(COUNT(rapidsse.public.t1.c1)) ; Ordinal Expr = SUM($3))
+               » column: (Expr = MAX(MAX(rapidsse.public.t1.c1)) ; Ordinal Expr = MAX($4))
+               » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($5))
+               » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($6))
+
+-> -> -> -> -> -> projectOp
+                  » column: (Expr = MIN(rapidsse.public.t1.c1) ; Ordinal Expr = MIN($1))
+                  » column: (Expr = SUM(rapidsse.public.t1.c1) ; Ordinal Expr = SUM($1))
+                  » column: (Expr = COUNT(rapidsse.public.t1.c1) ; Ordinal Expr = COUNT($1))
+                  » column: (Expr = MAX(rapidsse.public.t1.c1) ; Ordinal Expr = MAX($1))
+                  » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+                  » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+
+-> -> -> -> -> -> -> filterOp
+                     » expr: (rapidsse.public.t1.c1 > 0)
+                     » ordinal expr: ($1 > 0)
+
+-> -> -> -> -> -> -> -> tableScanOp
+                        » location: all partitions
+                        » table: (rapidsse.public.t1)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT   MAX(colA) AS maxA, MIN(colA) AS minA, SUM(colA) AS sumA, COUNT(colA) AS countA, AVG(colA) AS avgA, AVG(colB) AS avgB   FROM     t2   WHERE    colA > 0   HAVING   maxA > 0"
+
+-> -> -> filterOp
+         » expr: (maxA > 0)
+         » ordinal expr: ($1 > 0)
+
+-> -> -> -> projectOp
+            » location: origin
+            » column: (Alias = maxA ; Expr = MAX(MAX(MAX(rapidsse.public.t2.colA))) ; Ordinal Expr = MAX($4))
+            » column: (Alias = minA ; Expr = MIN(MIN(MIN(rapidsse.public.t2.colA))) ; Ordinal Expr = MIN($1))
+            » column: (Alias = sumA ; Expr = SUM(SUM(SUM(rapidsse.public.t2.colA))) ; Ordinal Expr = SUM($2))
+            » column: (Alias = countA ; Expr = SUM(SUM(COUNT(rapidsse.public.t2.colA))) ; Ordinal Expr = SUM($3))
+            » column: (Alias = avgA ; Expr = (SUM(SUM(SUM(rapidsse.public.t2.colA)))) / (SUM(SUM(COUNT(rapidsse.public.t2.colA)))) ; Ordinal Expr = (SUM($2)) / (SUM($3)))
+            » column: (Alias = avgB ; Expr = (SUM(SUM(SUM(rapidsse.public.t2.colB)))) / (SUM(SUM(COUNT(rapidsse.public.t2.colB)))) ; Ordinal Expr = (SUM($5)) / (SUM($6)))
+
+-> -> -> -> -> projectOp
+               » location: all nodes
+               » column: (Expr = MIN(MIN(rapidsse.public.t2.colA)) ; Ordinal Expr = MIN($1))
+               » column: (Expr = SUM(SUM(rapidsse.public.t2.colA)) ; Ordinal Expr = SUM($2))
+               » column: (Expr = SUM(COUNT(rapidsse.public.t2.colA)) ; Ordinal Expr = SUM($3))
+               » column: (Expr = MAX(MAX(rapidsse.public.t2.colA)) ; Ordinal Expr = MAX($4))
+               » column: (Expr = SUM(SUM(rapidsse.public.t2.colB)) ; Ordinal Expr = SUM($5))
+               » column: (Expr = SUM(COUNT(rapidsse.public.t2.colB)) ; Ordinal Expr = SUM($6))
+
+-> -> -> -> -> -> projectOp
+                  » column: (Expr = MIN(rapidsse.public.t2.colA) ; Ordinal Expr = MIN($1))
+                  » column: (Expr = SUM(rapidsse.public.t2.colA) ; Ordinal Expr = SUM($1))
+                  » column: (Expr = COUNT(rapidsse.public.t2.colA) ; Ordinal Expr = COUNT($1))
+                  » column: (Expr = MAX(rapidsse.public.t2.colA) ; Ordinal Expr = MAX($1))
+                  » column: (Expr = SUM(rapidsse.public.t2.colB) ; Ordinal Expr = SUM($2))
+                  » column: (Expr = COUNT(rapidsse.public.t2.colB) ; Ordinal Expr = COUNT($2))
+
+-> -> -> -> -> -> -> filterOp
+                     » expr: (rapidsse.public.t2.colA > 0)
+                     » ordinal expr: ($1 > 0)
+
+-> -> -> -> -> -> -> -> tableScanOp
+                        » location: all partitions
+                        » table: (rapidsse.public.t2)'
+)
+
 
 --  (404) UNION ALL of two selects with GROUP BY aggregates
 EXPLAIN STAGE partitionExplain
@@ -995,7 +2946,83 @@ UNION ALL
   FROM     t2
   GROUP BY colA
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2   FROM     t1   GROUP BY c1 UNION ALL   SELECT   colA, MAX(colB) AS maxB, MIN(colB) AS minB, SUM(colB) AS sumB, COUNT(colB) AS countB, AVG(colB) AS avgB   FROM     t2   GROUP BY colA"
+
+-> unionOp
+   » location: origin
+   » isDistinct: (false)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2   FROM     t1   GROUP BY c1"
+
+-> -> -> aggregateOp
+         » location: origin
+         » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $5)
+         » column: (Alias = max2 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c2))) ; Ordinal Expr = MAX($1))
+         » column: (Alias = min2 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c2))) ; Ordinal Expr = MIN($2))
+         » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($3))
+         » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($4))
+         » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($3)) / (SUM($4)))
+         » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($5)
+
+-> -> -> -> aggregateOp
+            » location: all nodes
+            » column: (Expr = MAX(MAX(rapidsse.public.t1.c2)) ; Ordinal Expr = MAX($1))
+            » column: (Expr = MIN(MIN(rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($2))
+            » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($3))
+            » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
+            » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $5)
+            » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($5)
+
+-> -> -> -> -> aggregateOp
+               » column: (Expr = MAX(rapidsse.public.t1.c2) ; Ordinal Expr = MAX($2))
+               » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
+               » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+               » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+               » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+               » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+
+-> -> -> -> -> -> tableScanOp
+                  » location: all partitions
+                  » table: (rapidsse.public.t1)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT   colA, MAX(colB) AS maxB, MIN(colB) AS minB, SUM(colB) AS sumB, COUNT(colB) AS countB, AVG(colB) AS avgB   FROM     t2   GROUP BY colA"
+
+-> -> -> aggregateOp
+         » location: origin
+         » column: (Expr = rapidsse.public.t2.colA ; Ordinal Expr = $5)
+         » column: (Alias = maxB ; Expr = MAX(MAX(MAX(rapidsse.public.t2.colB))) ; Ordinal Expr = MAX($1))
+         » column: (Alias = minB ; Expr = MIN(MIN(MIN(rapidsse.public.t2.colB))) ; Ordinal Expr = MIN($2))
+         » column: (Alias = sumB ; Expr = SUM(SUM(SUM(rapidsse.public.t2.colB))) ; Ordinal Expr = SUM($3))
+         » column: (Alias = countB ; Expr = SUM(SUM(COUNT(rapidsse.public.t2.colB))) ; Ordinal Expr = SUM($4))
+         » column: (Alias = avgB ; Expr = (SUM(SUM(SUM(rapidsse.public.t2.colB)))) / (SUM(SUM(COUNT(rapidsse.public.t2.colB)))) ; Ordinal Expr = (SUM($3)) / (SUM($4)))
+         » group by: (rapidsse.public.t2.colA) ; Ordinal Exprs = ($5)
+
+-> -> -> -> aggregateOp
+            » location: all nodes
+            » column: (Expr = MAX(MAX(rapidsse.public.t2.colB)) ; Ordinal Expr = MAX($1))
+            » column: (Expr = MIN(MIN(rapidsse.public.t2.colB)) ; Ordinal Expr = MIN($2))
+            » column: (Expr = SUM(SUM(rapidsse.public.t2.colB)) ; Ordinal Expr = SUM($3))
+            » column: (Expr = SUM(COUNT(rapidsse.public.t2.colB)) ; Ordinal Expr = SUM($4))
+            » column: (Expr = rapidsse.public.t2.colA ; Ordinal Expr = $5)
+            » group by: (rapidsse.public.t2.colA) ; Ordinal Exprs = ($5)
+
+-> -> -> -> -> aggregateOp
+               » column: (Expr = MAX(rapidsse.public.t2.colB) ; Ordinal Expr = MAX($2))
+               » column: (Expr = MIN(rapidsse.public.t2.colB) ; Ordinal Expr = MIN($2))
+               » column: (Expr = SUM(rapidsse.public.t2.colB) ; Ordinal Expr = SUM($2))
+               » column: (Expr = COUNT(rapidsse.public.t2.colB) ; Ordinal Expr = COUNT($2))
+               » column: (Expr = rapidsse.public.t2.colA ; Ordinal Expr = $1)
+               » group by: (rapidsse.public.t2.colA) ; Ordinal Exprs = ($1)
+
+-> -> -> -> -> -> tableScanOp
+                  » location: all partitions
+                  » table: (rapidsse.public.t2)'
+)
+
 
 --  (405) UNION ALL of two selects with GROUP BY aggregates, WHERE & HAVING clauses
 EXPLAIN STAGE partitionExplain
@@ -1011,7 +3038,99 @@ UNION ALL
   GROUP BY colA
   HAVING   maxB > 0
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2   FROM     t1   WHERE    c2 > 0   GROUP BY c1   HAVING   max2 > 0 UNION ALL   SELECT   colA, MAX(colB) AS maxB, MIN(colB) AS minB, SUM(colB) AS sumB, COUNT(colB) AS countB, AVG(colB) AS avgB   FROM     t2   WHERE    colB > 0   GROUP BY colA   HAVING   maxB > 0"
+
+-> unionOp
+   » location: origin
+   » isDistinct: (false)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2   FROM     t1   WHERE    c2 > 0   GROUP BY c1   HAVING   max2 > 0"
+
+-> -> -> filterOp
+         » expr: (max2 > 0)
+         » ordinal expr: ($2 > 0)
+
+-> -> -> -> aggregateOp
+            » location: origin
+            » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $5)
+            » column: (Alias = max2 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c2))) ; Ordinal Expr = MAX($1))
+            » column: (Alias = min2 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c2))) ; Ordinal Expr = MIN($2))
+            » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($3))
+            » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($4))
+            » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($3)) / (SUM($4)))
+            » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($5)
+
+-> -> -> -> -> aggregateOp
+               » location: all nodes
+               » column: (Expr = MAX(MAX(rapidsse.public.t1.c2)) ; Ordinal Expr = MAX($1))
+               » column: (Expr = MIN(MIN(rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($2))
+               » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($3))
+               » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
+               » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $5)
+               » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($5)
+
+-> -> -> -> -> -> aggregateOp
+                  » column: (Expr = MAX(rapidsse.public.t1.c2) ; Ordinal Expr = MAX($2))
+                  » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
+                  » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+                  » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+                  » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+                  » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+
+-> -> -> -> -> -> -> filterOp
+                     » expr: (rapidsse.public.t1.c2 > 0)
+                     » ordinal expr: ($2 > 0)
+
+-> -> -> -> -> -> -> -> tableScanOp
+                        » location: all partitions
+                        » table: (rapidsse.public.t1)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT   colA, MAX(colB) AS maxB, MIN(colB) AS minB, SUM(colB) AS sumB, COUNT(colB) AS countB, AVG(colB) AS avgB   FROM     t2   WHERE    colB > 0   GROUP BY colA   HAVING   maxB > 0"
+
+-> -> -> filterOp
+         » expr: (maxB > 0)
+         » ordinal expr: ($2 > 0)
+
+-> -> -> -> aggregateOp
+            » location: origin
+            » column: (Expr = rapidsse.public.t2.colA ; Ordinal Expr = $5)
+            » column: (Alias = maxB ; Expr = MAX(MAX(MAX(rapidsse.public.t2.colB))) ; Ordinal Expr = MAX($1))
+            » column: (Alias = minB ; Expr = MIN(MIN(MIN(rapidsse.public.t2.colB))) ; Ordinal Expr = MIN($2))
+            » column: (Alias = sumB ; Expr = SUM(SUM(SUM(rapidsse.public.t2.colB))) ; Ordinal Expr = SUM($3))
+            » column: (Alias = countB ; Expr = SUM(SUM(COUNT(rapidsse.public.t2.colB))) ; Ordinal Expr = SUM($4))
+            » column: (Alias = avgB ; Expr = (SUM(SUM(SUM(rapidsse.public.t2.colB)))) / (SUM(SUM(COUNT(rapidsse.public.t2.colB)))) ; Ordinal Expr = (SUM($3)) / (SUM($4)))
+            » group by: (rapidsse.public.t2.colA) ; Ordinal Exprs = ($5)
+
+-> -> -> -> -> aggregateOp
+               » location: all nodes
+               » column: (Expr = MAX(MAX(rapidsse.public.t2.colB)) ; Ordinal Expr = MAX($1))
+               » column: (Expr = MIN(MIN(rapidsse.public.t2.colB)) ; Ordinal Expr = MIN($2))
+               » column: (Expr = SUM(SUM(rapidsse.public.t2.colB)) ; Ordinal Expr = SUM($3))
+               » column: (Expr = SUM(COUNT(rapidsse.public.t2.colB)) ; Ordinal Expr = SUM($4))
+               » column: (Expr = rapidsse.public.t2.colA ; Ordinal Expr = $5)
+               » group by: (rapidsse.public.t2.colA) ; Ordinal Exprs = ($5)
+
+-> -> -> -> -> -> aggregateOp
+                  » column: (Expr = MAX(rapidsse.public.t2.colB) ; Ordinal Expr = MAX($2))
+                  » column: (Expr = MIN(rapidsse.public.t2.colB) ; Ordinal Expr = MIN($2))
+                  » column: (Expr = SUM(rapidsse.public.t2.colB) ; Ordinal Expr = SUM($2))
+                  » column: (Expr = COUNT(rapidsse.public.t2.colB) ; Ordinal Expr = COUNT($2))
+                  » column: (Expr = rapidsse.public.t2.colA ; Ordinal Expr = $1)
+                  » group by: (rapidsse.public.t2.colA) ; Ordinal Exprs = ($1)
+
+-> -> -> -> -> -> -> filterOp
+                     » expr: (rapidsse.public.t2.colB > 0)
+                     » ordinal expr: ($2 > 0)
+
+-> -> -> -> -> -> -> -> tableScanOp
+                        » location: all partitions
+                        » table: (rapidsse.public.t2)'
+)
+
 
 --  (406) UNION ALL of two selects with GROUP BY aggregates, WHERE & HAVING clauses and post-projections
 EXPLAIN STAGE partitionExplain
@@ -1027,9 +3146,123 @@ UNION ALL
   GROUP BY colA
   HAVING   MAX(colA + colB) > 0
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2   FROM     t1   WHERE    c2 > 0   GROUP BY c1   HAVING   MAX(c1 + c2) > 0 UNION ALL   SELECT   colA, MAX(colB) AS maxB, MIN(colB) AS minB, SUM(colB) AS sumB, COUNT(colB) AS countB, AVG(colB) AS avgB   FROM     t2   WHERE    colB > 0   GROUP BY colA   HAVING   MAX(colA + colB) > 0"
 
- (407) UNION ALL with corresponding clause of two selects with GROUP BY aggregates, WHERE & HAVING clauses and post-projections
+-> unionOp
+   » location: origin
+   » isDistinct: (false)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2   FROM     t1   WHERE    c2 > 0   GROUP BY c1   HAVING   MAX(c1 + c2) > 0"
+
+-> -> -> projectOp
+         » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+         » column: (Alias = max2 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c2))) ; Ordinal Expr = $2)
+         » column: (Alias = min2 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c2))) ; Ordinal Expr = $3)
+         » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = $4)
+         » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = $5)
+         » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = $6)
+
+-> -> -> -> filterOp
+            » expr: ((MAX(MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2)))) > 0)
+            » ordinal expr: ($7 > 0)
+
+-> -> -> -> -> aggregateOp
+               » location: origin
+               » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $5)
+               » column: (Alias = max2 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c2))) ; Ordinal Expr = MAX($1))
+               » column: (Alias = min2 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c2))) ; Ordinal Expr = MIN($2))
+               » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($3))
+               » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($4))
+               » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($3)) / (SUM($4)))
+               » column: (Expr = MAX(MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2))) ; Ordinal Expr = MAX($6))
+               » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($5)
+
+-> -> -> -> -> -> aggregateOp
+                  » location: all nodes
+                  » column: (Expr = MAX(MAX(rapidsse.public.t1.c2)) ; Ordinal Expr = MAX($1))
+                  » column: (Expr = MIN(MIN(rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($2))
+                  » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($3))
+                  » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
+                  » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $5)
+                  » column: (Expr = MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2)) ; Ordinal Expr = MAX($6))
+                  » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($5)
+
+-> -> -> -> -> -> -> aggregateOp
+                     » column: (Expr = MAX(rapidsse.public.t1.c2) ; Ordinal Expr = MAX($2))
+                     » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
+                     » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+                     » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+                     » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+                     » column: (Expr = MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2) ; Ordinal Expr = MAX($1 + $2))
+                     » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+
+-> -> -> -> -> -> -> -> filterOp
+                        » expr: (rapidsse.public.t1.c2 > 0)
+                        » ordinal expr: ($2 > 0)
+
+-> -> -> -> -> -> -> -> -> tableScanOp
+                           » location: all partitions
+                           » table: (rapidsse.public.t1)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT   colA, MAX(colB) AS maxB, MIN(colB) AS minB, SUM(colB) AS sumB, COUNT(colB) AS countB, AVG(colB) AS avgB   FROM     t2   WHERE    colB > 0   GROUP BY colA   HAVING   MAX(colA + colB) > 0"
+
+-> -> -> projectOp
+         » column: (Expr = rapidsse.public.t2.colA ; Ordinal Expr = $1)
+         » column: (Alias = maxB ; Expr = MAX(MAX(MAX(rapidsse.public.t2.colB))) ; Ordinal Expr = $2)
+         » column: (Alias = minB ; Expr = MIN(MIN(MIN(rapidsse.public.t2.colB))) ; Ordinal Expr = $3)
+         » column: (Alias = sumB ; Expr = SUM(SUM(SUM(rapidsse.public.t2.colB))) ; Ordinal Expr = $4)
+         » column: (Alias = countB ; Expr = SUM(SUM(COUNT(rapidsse.public.t2.colB))) ; Ordinal Expr = $5)
+         » column: (Alias = avgB ; Expr = (SUM(SUM(SUM(rapidsse.public.t2.colB)))) / (SUM(SUM(COUNT(rapidsse.public.t2.colB)))) ; Ordinal Expr = $6)
+
+-> -> -> -> filterOp
+            » expr: ((MAX(MAX(MAX(rapidsse.public.t2.colA + rapidsse.public.t2.colB)))) > 0)
+            » ordinal expr: ($7 > 0)
+
+-> -> -> -> -> aggregateOp
+               » location: origin
+               » column: (Expr = rapidsse.public.t2.colA ; Ordinal Expr = $5)
+               » column: (Alias = maxB ; Expr = MAX(MAX(MAX(rapidsse.public.t2.colB))) ; Ordinal Expr = MAX($1))
+               » column: (Alias = minB ; Expr = MIN(MIN(MIN(rapidsse.public.t2.colB))) ; Ordinal Expr = MIN($2))
+               » column: (Alias = sumB ; Expr = SUM(SUM(SUM(rapidsse.public.t2.colB))) ; Ordinal Expr = SUM($3))
+               » column: (Alias = countB ; Expr = SUM(SUM(COUNT(rapidsse.public.t2.colB))) ; Ordinal Expr = SUM($4))
+               » column: (Alias = avgB ; Expr = (SUM(SUM(SUM(rapidsse.public.t2.colB)))) / (SUM(SUM(COUNT(rapidsse.public.t2.colB)))) ; Ordinal Expr = (SUM($3)) / (SUM($4)))
+               » column: (Expr = MAX(MAX(MAX(rapidsse.public.t2.colA + rapidsse.public.t2.colB))) ; Ordinal Expr = MAX($6))
+               » group by: (rapidsse.public.t2.colA) ; Ordinal Exprs = ($5)
+
+-> -> -> -> -> -> aggregateOp
+                  » location: all nodes
+                  » column: (Expr = MAX(MAX(rapidsse.public.t2.colB)) ; Ordinal Expr = MAX($1))
+                  » column: (Expr = MIN(MIN(rapidsse.public.t2.colB)) ; Ordinal Expr = MIN($2))
+                  » column: (Expr = SUM(SUM(rapidsse.public.t2.colB)) ; Ordinal Expr = SUM($3))
+                  » column: (Expr = SUM(COUNT(rapidsse.public.t2.colB)) ; Ordinal Expr = SUM($4))
+                  » column: (Expr = rapidsse.public.t2.colA ; Ordinal Expr = $5)
+                  » column: (Expr = MAX(MAX(rapidsse.public.t2.colA + rapidsse.public.t2.colB)) ; Ordinal Expr = MAX($6))
+                  » group by: (rapidsse.public.t2.colA) ; Ordinal Exprs = ($5)
+
+-> -> -> -> -> -> -> aggregateOp
+                     » column: (Expr = MAX(rapidsse.public.t2.colB) ; Ordinal Expr = MAX($2))
+                     » column: (Expr = MIN(rapidsse.public.t2.colB) ; Ordinal Expr = MIN($2))
+                     » column: (Expr = SUM(rapidsse.public.t2.colB) ; Ordinal Expr = SUM($2))
+                     » column: (Expr = COUNT(rapidsse.public.t2.colB) ; Ordinal Expr = COUNT($2))
+                     » column: (Expr = rapidsse.public.t2.colA ; Ordinal Expr = $1)
+                     » column: (Expr = MAX(rapidsse.public.t2.colA + rapidsse.public.t2.colB) ; Ordinal Expr = MAX($1 + $2))
+                     » group by: (rapidsse.public.t2.colA) ; Ordinal Exprs = ($1)
+
+-> -> -> -> -> -> -> -> filterOp
+                        » expr: (rapidsse.public.t2.colB > 0)
+                        » ordinal expr: ($2 > 0)
+
+-> -> -> -> -> -> -> -> -> tableScanOp
+                           » location: all partitions
+                           » table: (rapidsse.public.t2)'
+)
+
+
+-- (407) UNION ALL with corresponding clause of two selects with GROUP BY aggregates, WHERE & HAVING clauses and post-projections
 EXPLAIN STAGE partitionExplain
   SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2
   FROM     t1
@@ -1043,7 +3276,121 @@ UNION ALL CORRESPONDING
   GROUP BY colA
   HAVING   MAX(colA + colB) > 0
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2   FROM     t1   WHERE    c2 > 0   GROUP BY c1   HAVING   MAX(c1 + c2) > 0 UNION ALL CORRESPONDING   SELECT   colA AS c1, MAX(colB) AS max2, MIN(colB) AS min2, SUM(colB) AS sum2, COUNT(colB) AS count2, AVG(colB) AS avg2   FROM     t2   WHERE    colB > 0   GROUP BY colA   HAVING   MAX(colA + colB) > 0"
+
+-> unionOp
+   » location: origin
+   » isDistinct: (false)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2   FROM     t1   WHERE    c2 > 0   GROUP BY c1   HAVING   MAX(c1 + c2) > 0"
+
+-> -> -> projectOp
+         » column: (Alias = c1 ; Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+         » column: (Alias = max2 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c2))) ; Ordinal Expr = $2)
+         » column: (Alias = min2 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c2))) ; Ordinal Expr = $3)
+         » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = $4)
+         » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = $5)
+         » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = $6)
+
+-> -> -> -> filterOp
+            » expr: ((MAX(MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2)))) > 0)
+            » ordinal expr: ($7 > 0)
+
+-> -> -> -> -> aggregateOp
+               » location: origin
+               » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $5)
+               » column: (Alias = max2 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c2))) ; Ordinal Expr = MAX($1))
+               » column: (Alias = min2 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c2))) ; Ordinal Expr = MIN($2))
+               » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($3))
+               » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($4))
+               » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($3)) / (SUM($4)))
+               » column: (Expr = MAX(MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2))) ; Ordinal Expr = MAX($6))
+               » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($5)
+
+-> -> -> -> -> -> aggregateOp
+                  » location: all nodes
+                  » column: (Expr = MAX(MAX(rapidsse.public.t1.c2)) ; Ordinal Expr = MAX($1))
+                  » column: (Expr = MIN(MIN(rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($2))
+                  » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($3))
+                  » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
+                  » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $5)
+                  » column: (Expr = MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2)) ; Ordinal Expr = MAX($6))
+                  » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($5)
+
+-> -> -> -> -> -> -> aggregateOp
+                     » column: (Expr = MAX(rapidsse.public.t1.c2) ; Ordinal Expr = MAX($2))
+                     » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
+                     » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+                     » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+                     » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+                     » column: (Expr = MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2) ; Ordinal Expr = MAX($1 + $2))
+                     » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+
+-> -> -> -> -> -> -> -> filterOp
+                        » expr: (rapidsse.public.t1.c2 > 0)
+                        » ordinal expr: ($2 > 0)
+
+-> -> -> -> -> -> -> -> -> tableScanOp
+                           » location: all partitions
+                           » table: (rapidsse.public.t1)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT   colA AS c1, MAX(colB) AS max2, MIN(colB) AS min2, SUM(colB) AS sum2, COUNT(colB) AS count2, AVG(colB) AS avg2   FROM     t2   WHERE    colB > 0   GROUP BY colA   HAVING   MAX(colA + colB) > 0"
+
+-> -> -> projectOp
+         » column: (Alias = c1 ; Expr = rapidsse.public.t2.colA ; Ordinal Expr = $1)
+         » column: (Alias = max2 ; Expr = MAX(MAX(MAX(rapidsse.public.t2.colB))) ; Ordinal Expr = $2)
+         » column: (Alias = min2 ; Expr = MIN(MIN(MIN(rapidsse.public.t2.colB))) ; Ordinal Expr = $3)
+         » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t2.colB))) ; Ordinal Expr = $4)
+         » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t2.colB))) ; Ordinal Expr = $5)
+         » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t2.colB)))) / (SUM(SUM(COUNT(rapidsse.public.t2.colB)))) ; Ordinal Expr = $6)
+
+-> -> -> -> filterOp
+            » expr: ((MAX(MAX(MAX(rapidsse.public.t2.colA + rapidsse.public.t2.colB)))) > 0)
+            » ordinal expr: ($7 > 0)
+
+-> -> -> -> -> aggregateOp
+               » location: origin
+               » column: (Alias = c1 ; Expr = rapidsse.public.t2.colA ; Ordinal Expr = $5)
+               » column: (Alias = max2 ; Expr = MAX(MAX(MAX(rapidsse.public.t2.colB))) ; Ordinal Expr = MAX($1))
+               » column: (Alias = min2 ; Expr = MIN(MIN(MIN(rapidsse.public.t2.colB))) ; Ordinal Expr = MIN($2))
+               » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t2.colB))) ; Ordinal Expr = SUM($3))
+               » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t2.colB))) ; Ordinal Expr = SUM($4))
+               » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t2.colB)))) / (SUM(SUM(COUNT(rapidsse.public.t2.colB)))) ; Ordinal Expr = (SUM($3)) / (SUM($4)))
+               » column: (Expr = MAX(MAX(MAX(rapidsse.public.t2.colA + rapidsse.public.t2.colB))) ; Ordinal Expr = MAX($6))
+               » group by: (rapidsse.public.t2.colA) ; Ordinal Exprs = ($5)
+
+-> -> -> -> -> -> aggregateOp
+                  » location: all nodes
+                  » column: (Expr = MAX(MAX(rapidsse.public.t2.colB)) ; Ordinal Expr = MAX($1))
+                  » column: (Expr = MIN(MIN(rapidsse.public.t2.colB)) ; Ordinal Expr = MIN($2))
+                  » column: (Expr = SUM(SUM(rapidsse.public.t2.colB)) ; Ordinal Expr = SUM($3))
+                  » column: (Expr = SUM(COUNT(rapidsse.public.t2.colB)) ; Ordinal Expr = SUM($4))
+                  » column: (Alias = c1 ; Expr = rapidsse.public.t2.colA ; Ordinal Expr = $5)
+                  » column: (Expr = MAX(MAX(rapidsse.public.t2.colA + rapidsse.public.t2.colB)) ; Ordinal Expr = MAX($6))
+                  » group by: (rapidsse.public.t2.colA) ; Ordinal Exprs = ($5)
+
+-> -> -> -> -> -> -> aggregateOp
+                     » column: (Expr = MAX(rapidsse.public.t2.colB) ; Ordinal Expr = MAX($2))
+                     » column: (Expr = MIN(rapidsse.public.t2.colB) ; Ordinal Expr = MIN($2))
+                     » column: (Expr = SUM(rapidsse.public.t2.colB) ; Ordinal Expr = SUM($2))
+                     » column: (Expr = COUNT(rapidsse.public.t2.colB) ; Ordinal Expr = COUNT($2))
+                     » column: (Alias = c1 ; Expr = rapidsse.public.t2.colA ; Ordinal Expr = $1)
+                     » column: (Expr = MAX(rapidsse.public.t2.colA + rapidsse.public.t2.colB) ; Ordinal Expr = MAX($1 + $2))
+                     » group by: (rapidsse.public.t2.colA) ; Ordinal Exprs = ($1)
+
+-> -> -> -> -> -> -> -> filterOp
+                        » expr: (rapidsse.public.t2.colB > 0)
+                        » ordinal expr: ($2 > 0)
+
+-> -> -> -> -> -> -> -> -> tableScanOp
+                           » location: all partitions
+                           » table: (rapidsse.public.t2)'
+)
+
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1058,7 +3405,49 @@ UNION ALL
   FROM     t2
 ORDER BY   x1
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT   c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3   FROM     t1 UNION ALL   SELECT   colA AS y1, colB + 1 AS y2, colA/colB AS y3   FROM     t2 ORDER BY   x1"
+
+-> orderOp
+   » location: origin
+   » order expr: ((x1) ASC)
+   » ordinal order expr: (($1) ASC)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT   c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3   FROM     t1 UNION ALL   SELECT   colA AS y1, colB + 1 AS y2, colA/colB AS y3   FROM     t2"
+
+-> -> -> unionOp
+         » location: origin
+         » isDistinct: (false)
+
+-> -> -> -> StatementMarker: select
+            » location: origin
+            » queryText: "SELECT   c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3   FROM     t1"
+
+-> -> -> -> -> projectOp
+               » column: (Alias = x1 ; Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+               » column: (Alias = x2 ; Expr = rapidsse.public.t1.c2 + 1 ; Ordinal Expr = $2 + 1)
+               » column: (Alias = x3 ; Expr = rapidsse.public.t1.c1 / rapidsse.public.t1.c2 ; Ordinal Expr = $1 / $2)
+
+-> -> -> -> -> -> tableScanOp
+                  » location: all partitions
+                  » table: (rapidsse.public.t1)
+
+-> -> -> -> StatementMarker: select
+            » location: origin
+            » queryText: "SELECT   colA AS y1, colB + 1 AS y2, colA/colB AS y3   FROM     t2"
+
+-> -> -> -> -> projectOp
+               » column: (Alias = y1 ; Expr = rapidsse.public.t2.colA ; Ordinal Expr = $1)
+               » column: (Alias = y2 ; Expr = rapidsse.public.t2.colB + 1 ; Ordinal Expr = $2 + 1)
+               » column: (Alias = y3 ; Expr = rapidsse.public.t2.colA / rapidsse.public.t2.colB ; Ordinal Expr = $1 / $2)
+
+-> -> -> -> -> -> tableScanOp
+                  » location: all partitions
+                  » table: (rapidsse.public.t2)'
+)
+
 
 --  (501) UNION ALL with LIMIT of two simple selects with no aggregates
 EXPLAIN STAGE partitionExplain
@@ -1069,7 +3458,48 @@ UNION ALL
   FROM     t2
 LIMIT      10
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT   c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3   FROM     t1 UNION ALL   SELECT   colA AS y1, colB + 1 AS y2, colA/colB AS y3   FROM     t2 LIMIT      10"
+
+-> limitOp
+   » location: origin
+   » limit: (10)
+
+-> -> StatementMarker: select
+      » queryText: "SELECT   c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3   FROM     t1 UNION ALL   SELECT   colA AS y1, colB + 1 AS y2, colA/colB AS y3   FROM     t2"
+
+-> -> -> unionOp
+         » location: origin
+         » isDistinct: (false)
+
+-> -> -> -> StatementMarker: select
+            » location: origin
+            » queryText: "SELECT   c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3   FROM     t1"
+
+-> -> -> -> -> projectOp
+               » column: (Alias = x1 ; Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+               » column: (Alias = x2 ; Expr = rapidsse.public.t1.c2 + 1 ; Ordinal Expr = $2 + 1)
+               » column: (Alias = x3 ; Expr = rapidsse.public.t1.c1 / rapidsse.public.t1.c2 ; Ordinal Expr = $1 / $2)
+
+-> -> -> -> -> -> tableScanOp
+                  » location: all partitions
+                  » table: (rapidsse.public.t1)
+
+-> -> -> -> StatementMarker: select
+            » location: origin
+            » queryText: "SELECT   colA AS y1, colB + 1 AS y2, colA/colB AS y3   FROM     t2"
+
+-> -> -> -> -> projectOp
+               » column: (Alias = y1 ; Expr = rapidsse.public.t2.colA ; Ordinal Expr = $1)
+               » column: (Alias = y2 ; Expr = rapidsse.public.t2.colB + 1 ; Ordinal Expr = $2 + 1)
+               » column: (Alias = y3 ; Expr = rapidsse.public.t2.colA / rapidsse.public.t2.colB ; Ordinal Expr = $1 / $2)
+
+-> -> -> -> -> -> tableScanOp
+                  » location: all partitions
+                  » table: (rapidsse.public.t2)'
+)
+
 
 --  (502) UNION ALL with ORDER BY and LIMIT of two simple selects with no aggregates
 EXPLAIN STAGE partitionExplain
@@ -1081,7 +3511,52 @@ UNION ALL
 ORDER BY   x1
 LIMIT      10
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT   c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3   FROM     t1 UNION ALL   SELECT   colA AS y1, colB + 1 AS y2, colA/colB AS y3   FROM     t2 ORDER BY   x1 LIMIT      10"
+
+-> limitOp
+   » limit: (10)
+
+-> -> orderOp
+      » location: origin
+      » order expr: ((x1) ASC)
+      » ordinal order expr: (($1) ASC)
+
+-> -> -> StatementMarker: select
+         » queryText: "SELECT   c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3   FROM     t1 UNION ALL   SELECT   colA AS y1, colB + 1 AS y2, colA/colB AS y3   FROM     t2"
+
+-> -> -> -> unionOp
+            » location: origin
+            » isDistinct: (false)
+
+-> -> -> -> -> StatementMarker: select
+               » location: origin
+               » queryText: "SELECT   c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3   FROM     t1"
+
+-> -> -> -> -> -> projectOp
+                  » column: (Alias = x1 ; Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+                  » column: (Alias = x2 ; Expr = rapidsse.public.t1.c2 + 1 ; Ordinal Expr = $2 + 1)
+                  » column: (Alias = x3 ; Expr = rapidsse.public.t1.c1 / rapidsse.public.t1.c2 ; Ordinal Expr = $1 / $2)
+
+-> -> -> -> -> -> -> tableScanOp
+                     » location: all partitions
+                     » table: (rapidsse.public.t1)
+
+-> -> -> -> -> StatementMarker: select
+               » location: origin
+               » queryText: "SELECT   colA AS y1, colB + 1 AS y2, colA/colB AS y3   FROM     t2"
+
+-> -> -> -> -> -> projectOp
+                  » column: (Alias = y1 ; Expr = rapidsse.public.t2.colA ; Ordinal Expr = $1)
+                  » column: (Alias = y2 ; Expr = rapidsse.public.t2.colB + 1 ; Ordinal Expr = $2 + 1)
+                  » column: (Alias = y3 ; Expr = rapidsse.public.t2.colA / rapidsse.public.t2.colB ; Ordinal Expr = $1 / $2)
+
+-> -> -> -> -> -> -> tableScanOp
+                     » location: all partitions
+                     » table: (rapidsse.public.t2)'
+)
+
 
 --  (503) UNION ALL with ORDER BY and LIMIT of two selects with grand total aggregates, WHERE & HAVING clauses
 EXPLAIN STAGE partitionExplain
@@ -1097,7 +3572,108 @@ UNION ALL
 ORDER BY   max1
 LIMIT      10
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT   MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2   FROM     t1   WHERE    c1 > 0   HAVING   max1 > 0 UNION ALL   SELECT   MAX(colA) AS maxA, MIN(colA) AS minA, SUM(colA) AS sumA, COUNT(colA) AS countA, AVG(colA) AS avgA, AVG(colB) AS avgB   FROM     t2   WHERE    colA > 0   HAVING   maxA > 0 ORDER BY   max1 LIMIT      10"
+
+-> limitOp
+   » limit: (10)
+
+-> -> orderOp
+      » location: origin
+      » order expr: ((max1) ASC)
+      » ordinal order expr: (($1) ASC)
+
+-> -> -> StatementMarker: select
+         » queryText: "SELECT   MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2   FROM     t1   WHERE    c1 > 0   HAVING   max1 > 0 UNION ALL   SELECT   MAX(colA) AS maxA, MIN(colA) AS minA, SUM(colA) AS sumA, COUNT(colA) AS countA, AVG(colA) AS avgA, AVG(colB) AS avgB   FROM     t2   WHERE    colA > 0   HAVING   maxA > 0"
+
+-> -> -> -> unionOp
+            » location: origin
+            » isDistinct: (false)
+
+-> -> -> -> -> StatementMarker: select
+               » queryText: "SELECT   MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2   FROM     t1   WHERE    c1 > 0   HAVING   max1 > 0"
+
+-> -> -> -> -> -> filterOp
+                  » expr: (max1 > 0)
+                  » ordinal expr: ($1 > 0)
+
+-> -> -> -> -> -> -> projectOp
+                     » location: origin
+                     » column: (Alias = max1 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c1))) ; Ordinal Expr = MAX($4))
+                     » column: (Alias = min1 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c1))) ; Ordinal Expr = MIN($1))
+                     » column: (Alias = sum1 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c1))) ; Ordinal Expr = SUM($2))
+                     » column: (Alias = count1 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c1))) ; Ordinal Expr = SUM($3))
+                     » column: (Alias = avg1 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c1)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c1)))) ; Ordinal Expr = (SUM($2)) / (SUM($3)))
+                     » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($5)) / (SUM($6)))
+
+-> -> -> -> -> -> -> -> projectOp
+                        » location: all nodes
+                        » column: (Expr = MIN(MIN(rapidsse.public.t1.c1)) ; Ordinal Expr = MIN($1))
+                        » column: (Expr = SUM(SUM(rapidsse.public.t1.c1)) ; Ordinal Expr = SUM($2))
+                        » column: (Expr = SUM(COUNT(rapidsse.public.t1.c1)) ; Ordinal Expr = SUM($3))
+                        » column: (Expr = MAX(MAX(rapidsse.public.t1.c1)) ; Ordinal Expr = MAX($4))
+                        » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($5))
+                        » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($6))
+
+-> -> -> -> -> -> -> -> -> projectOp
+                           » column: (Expr = MIN(rapidsse.public.t1.c1) ; Ordinal Expr = MIN($1))
+                           » column: (Expr = SUM(rapidsse.public.t1.c1) ; Ordinal Expr = SUM($1))
+                           » column: (Expr = COUNT(rapidsse.public.t1.c1) ; Ordinal Expr = COUNT($1))
+                           » column: (Expr = MAX(rapidsse.public.t1.c1) ; Ordinal Expr = MAX($1))
+                           » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+                           » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+
+-> -> -> -> -> -> -> -> -> -> filterOp
+                              » expr: (rapidsse.public.t1.c1 > 0)
+                              » ordinal expr: ($1 > 0)
+
+-> -> -> -> -> -> -> -> -> -> -> tableScanOp
+                                 » location: all partitions
+                                 » table: (rapidsse.public.t1)
+
+-> -> -> -> -> StatementMarker: select
+               » queryText: "SELECT   MAX(colA) AS maxA, MIN(colA) AS minA, SUM(colA) AS sumA, COUNT(colA) AS countA, AVG(colA) AS avgA, AVG(colB) AS avgB   FROM     t2   WHERE    colA > 0   HAVING   maxA > 0"
+
+-> -> -> -> -> -> filterOp
+                  » expr: (maxA > 0)
+                  » ordinal expr: ($1 > 0)
+
+-> -> -> -> -> -> -> projectOp
+                     » location: origin
+                     » column: (Alias = maxA ; Expr = MAX(MAX(MAX(rapidsse.public.t2.colA))) ; Ordinal Expr = MAX($4))
+                     » column: (Alias = minA ; Expr = MIN(MIN(MIN(rapidsse.public.t2.colA))) ; Ordinal Expr = MIN($1))
+                     » column: (Alias = sumA ; Expr = SUM(SUM(SUM(rapidsse.public.t2.colA))) ; Ordinal Expr = SUM($2))
+                     » column: (Alias = countA ; Expr = SUM(SUM(COUNT(rapidsse.public.t2.colA))) ; Ordinal Expr = SUM($3))
+                     » column: (Alias = avgA ; Expr = (SUM(SUM(SUM(rapidsse.public.t2.colA)))) / (SUM(SUM(COUNT(rapidsse.public.t2.colA)))) ; Ordinal Expr = (SUM($2)) / (SUM($3)))
+                     » column: (Alias = avgB ; Expr = (SUM(SUM(SUM(rapidsse.public.t2.colB)))) / (SUM(SUM(COUNT(rapidsse.public.t2.colB)))) ; Ordinal Expr = (SUM($5)) / (SUM($6)))
+
+-> -> -> -> -> -> -> -> projectOp
+                        » location: all nodes
+                        » column: (Expr = MIN(MIN(rapidsse.public.t2.colA)) ; Ordinal Expr = MIN($1))
+                        » column: (Expr = SUM(SUM(rapidsse.public.t2.colA)) ; Ordinal Expr = SUM($2))
+                        » column: (Expr = SUM(COUNT(rapidsse.public.t2.colA)) ; Ordinal Expr = SUM($3))
+                        » column: (Expr = MAX(MAX(rapidsse.public.t2.colA)) ; Ordinal Expr = MAX($4))
+                        » column: (Expr = SUM(SUM(rapidsse.public.t2.colB)) ; Ordinal Expr = SUM($5))
+                        » column: (Expr = SUM(COUNT(rapidsse.public.t2.colB)) ; Ordinal Expr = SUM($6))
+
+-> -> -> -> -> -> -> -> -> projectOp
+                           » column: (Expr = MIN(rapidsse.public.t2.colA) ; Ordinal Expr = MIN($1))
+                           » column: (Expr = SUM(rapidsse.public.t2.colA) ; Ordinal Expr = SUM($1))
+                           » column: (Expr = COUNT(rapidsse.public.t2.colA) ; Ordinal Expr = COUNT($1))
+                           » column: (Expr = MAX(rapidsse.public.t2.colA) ; Ordinal Expr = MAX($1))
+                           » column: (Expr = SUM(rapidsse.public.t2.colB) ; Ordinal Expr = SUM($2))
+                           » column: (Expr = COUNT(rapidsse.public.t2.colB) ; Ordinal Expr = COUNT($2))
+
+-> -> -> -> -> -> -> -> -> -> filterOp
+                              » expr: (rapidsse.public.t2.colA > 0)
+                              » ordinal expr: ($1 > 0)
+
+-> -> -> -> -> -> -> -> -> -> -> tableScanOp
+                                 » location: all partitions
+                                 » table: (rapidsse.public.t2)'
+)
+
 
 --  (504) UNION ALL with ORDER BY and LIMIT of two selects with GROUP BY aggregates, WHERE & HAVING clauses
 EXPLAIN STAGE partitionExplain
@@ -1115,7 +3691,110 @@ UNION ALL
 ORDER BY   max2
 LIMIT      10
 ;
-rows: (*, 'partitionExplain', *)
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2   FROM     t1   WHERE    c2 > 0   GROUP BY c1   HAVING   max2 > 0 UNION ALL   SELECT   colA, MAX(colB) AS maxB, MIN(colB) AS minB, SUM(colB) AS sumB, COUNT(colB) AS countB, AVG(colB) AS avgB   FROM     t2   WHERE    colB > 0   GROUP BY colA   HAVING   maxB > 0 ORDER BY   max2 LIMIT      10"
+
+-> limitOp
+   » limit: (10)
+
+-> -> orderOp
+      » location: origin
+      » order expr: ((max2) ASC)
+      » ordinal order expr: (($2) ASC)
+
+-> -> -> StatementMarker: select
+         » queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2   FROM     t1   WHERE    c2 > 0   GROUP BY c1   HAVING   max2 > 0 UNION ALL   SELECT   colA, MAX(colB) AS maxB, MIN(colB) AS minB, SUM(colB) AS sumB, COUNT(colB) AS countB, AVG(colB) AS avgB   FROM     t2   WHERE    colB > 0   GROUP BY colA   HAVING   maxB > 0"
+
+-> -> -> -> unionOp
+            » location: origin
+            » isDistinct: (false)
+
+-> -> -> -> -> StatementMarker: select
+               » queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2   FROM     t1   WHERE    c2 > 0   GROUP BY c1   HAVING   max2 > 0"
+
+-> -> -> -> -> -> filterOp
+                  » expr: (max2 > 0)
+                  » ordinal expr: ($2 > 0)
+
+-> -> -> -> -> -> -> aggregateOp
+                     » location: origin
+                     » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $5)
+                     » column: (Alias = max2 ; Expr = MAX(MAX(MAX(rapidsse.public.t1.c2))) ; Ordinal Expr = MAX($1))
+                     » column: (Alias = min2 ; Expr = MIN(MIN(MIN(rapidsse.public.t1.c2))) ; Ordinal Expr = MIN($2))
+                     » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($3))
+                     » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($4))
+                     » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($3)) / (SUM($4)))
+                     » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($5)
+
+-> -> -> -> -> -> -> -> aggregateOp
+                        » location: all nodes
+                        » column: (Expr = MAX(MAX(rapidsse.public.t1.c2)) ; Ordinal Expr = MAX($1))
+                        » column: (Expr = MIN(MIN(rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($2))
+                        » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($3))
+                        » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
+                        » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $5)
+                        » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($5)
+
+-> -> -> -> -> -> -> -> -> aggregateOp
+                           » column: (Expr = MAX(rapidsse.public.t1.c2) ; Ordinal Expr = MAX($2))
+                           » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
+                           » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
+                           » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
+                           » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
+                           » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+
+-> -> -> -> -> -> -> -> -> -> filterOp
+                              » expr: (rapidsse.public.t1.c2 > 0)
+                              » ordinal expr: ($2 > 0)
+
+-> -> -> -> -> -> -> -> -> -> -> tableScanOp
+                                 » location: all partitions
+                                 » table: (rapidsse.public.t1)
+
+-> -> -> -> -> StatementMarker: select
+               » queryText: "SELECT   colA, MAX(colB) AS maxB, MIN(colB) AS minB, SUM(colB) AS sumB, COUNT(colB) AS countB, AVG(colB) AS avgB   FROM     t2   WHERE    colB > 0   GROUP BY colA   HAVING   maxB > 0"
+
+-> -> -> -> -> -> filterOp
+                  » expr: (maxB > 0)
+                  » ordinal expr: ($2 > 0)
+
+-> -> -> -> -> -> -> aggregateOp
+                     » location: origin
+                     » column: (Expr = rapidsse.public.t2.colA ; Ordinal Expr = $5)
+                     » column: (Alias = maxB ; Expr = MAX(MAX(MAX(rapidsse.public.t2.colB))) ; Ordinal Expr = MAX($1))
+                     » column: (Alias = minB ; Expr = MIN(MIN(MIN(rapidsse.public.t2.colB))) ; Ordinal Expr = MIN($2))
+                     » column: (Alias = sumB ; Expr = SUM(SUM(SUM(rapidsse.public.t2.colB))) ; Ordinal Expr = SUM($3))
+                     » column: (Alias = countB ; Expr = SUM(SUM(COUNT(rapidsse.public.t2.colB))) ; Ordinal Expr = SUM($4))
+                     » column: (Alias = avgB ; Expr = (SUM(SUM(SUM(rapidsse.public.t2.colB)))) / (SUM(SUM(COUNT(rapidsse.public.t2.colB)))) ; Ordinal Expr = (SUM($3)) / (SUM($4)))
+                     » group by: (rapidsse.public.t2.colA) ; Ordinal Exprs = ($5)
+
+-> -> -> -> -> -> -> -> aggregateOp
+                        » location: all nodes
+                        » column: (Expr = MAX(MAX(rapidsse.public.t2.colB)) ; Ordinal Expr = MAX($1))
+                        » column: (Expr = MIN(MIN(rapidsse.public.t2.colB)) ; Ordinal Expr = MIN($2))
+                        » column: (Expr = SUM(SUM(rapidsse.public.t2.colB)) ; Ordinal Expr = SUM($3))
+                        » column: (Expr = SUM(COUNT(rapidsse.public.t2.colB)) ; Ordinal Expr = SUM($4))
+                        » column: (Expr = rapidsse.public.t2.colA ; Ordinal Expr = $5)
+                        » group by: (rapidsse.public.t2.colA) ; Ordinal Exprs = ($5)
+
+-> -> -> -> -> -> -> -> -> aggregateOp
+                           » column: (Expr = MAX(rapidsse.public.t2.colB) ; Ordinal Expr = MAX($2))
+                           » column: (Expr = MIN(rapidsse.public.t2.colB) ; Ordinal Expr = MIN($2))
+                           » column: (Expr = SUM(rapidsse.public.t2.colB) ; Ordinal Expr = SUM($2))
+                           » column: (Expr = COUNT(rapidsse.public.t2.colB) ; Ordinal Expr = COUNT($2))
+                           » column: (Expr = rapidsse.public.t2.colA ; Ordinal Expr = $1)
+                           » group by: (rapidsse.public.t2.colA) ; Ordinal Exprs = ($1)
+
+-> -> -> -> -> -> -> -> -> -> filterOp
+                              » expr: (rapidsse.public.t2.colB > 0)
+                              » ordinal expr: ($2 > 0)
+
+-> -> -> -> -> -> -> -> -> -> -> tableScanOp
+                                 » location: all partitions
+                                 » table: (rapidsse.public.t2)'
+)
+
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -

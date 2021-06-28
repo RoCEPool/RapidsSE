@@ -98,6 +98,15 @@ void PartitionPlan::vPartitionPlan(PlanNode *pRootNode)
 
   // Iterate from the bottom up so that parent nodes can encapsulate child nodes and branches
   GraphNav::bGlobalWalkBottomUp(pPlanRoot->pFirstChild(), false, true, fVisitor, pRootNode);
+
+  while (pStmtSectionStack->nItems() > 1) {
+    QueryNode* pSection1 = pStmtSectionStack->pPop();
+    QueryNode* pSection2 = pStmtSectionStack->pPop();
+
+    GraphEditor::vConnectChains(pSection1, pSection2);
+    pStmtSectionStack->vPush(pSection1);
+  }
+
   RASSERT(pStmtSectionStack->nItems() == 1);
 
   // Replace the logical plan with the partitioned plan

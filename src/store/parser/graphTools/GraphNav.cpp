@@ -80,6 +80,14 @@ void GraphNav::vPrintPlan(PlanNode* pRootNode)
 /*----------------------------------------------------------------------------*/
 void GraphNav::vPrintNode(PlanNode* pNode)
 {
+  vPrintNode(pNode, true);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Walks the graph from a given node and prints information to the console    */
+/*----------------------------------------------------------------------------*/
+void GraphNav::vPrintNode(PlanNode* pNode, b1 bPrintProperties)
+{
   ASSERT(pNode);
 
   vTrace("\n\nPlan Graph:\n-----------\n\n"_Stz);
@@ -96,7 +104,7 @@ void GraphNav::vPrintNode(PlanNode* pNode)
     return WALK_CONTINUE;
   };
 
-  bGlobalWalk(pNode, fVisitor, nullptr);
+  bGlobalWalk(pNode, bPrintProperties, true, fVisitor, nullptr);
 }
 
 /*----------------------------------------------------------------------------*/

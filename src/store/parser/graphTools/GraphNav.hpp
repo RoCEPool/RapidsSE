@@ -59,6 +59,7 @@ class GraphNav
     static void vPrintPlan(PlanNode* pRootNode);
 
     static void vPrintNode(PlanNode* pNode);
+    static void vPrintNode(PlanNode* pNode, b1 bPrintProperties);
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
     // ---------------------------------
