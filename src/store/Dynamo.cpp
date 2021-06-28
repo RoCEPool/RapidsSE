@@ -1136,7 +1136,7 @@ void Dynamo::vStageFirstSend(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
   if (eCrossTopo == PX_ORIGIN_TO_ORIGIN && i_StageDst == 0) {
     // add parameter to the prev sink op
     OpSpec *pPrevOpSpec = pStageSpec->pGet(i_Op - 1);
-    vTopoTagsReplace(pPrevOpSpec, eCrossTopo, i_StageDst, 0);
+    vTopoTagsUpdate(pPrevOpSpec, eCrossTopo, i_StageDst, 0);
 
     // remove the last (stage) OpSpec from the OpSpecVec
     RASSERT(i_Op == pStageSpec->nItems() - 1);
@@ -1202,7 +1202,7 @@ void Dynamo::vStageSubsequentSend(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_O
 }
 
 /*----------------------------------------------------------------------------*/
-/* add the topo args                                                          */
+/* add topo tags for the opSpec                                               */
 /*----------------------------------------------------------------------------*/
 void Dynamo::vTopoTagsAdd(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage, i8 i_Op)
 {
@@ -1219,9 +1219,9 @@ void Dynamo::vTopoTagsAdd(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage, i8 i_Op)
 }
 
 /*----------------------------------------------------------------------------*/
-/* replace the <stageNm> with send <nodeNo>                                   */
+/* update topo tags for the opSpec                                            */
 /*----------------------------------------------------------------------------*/
-void Dynamo::vTopoTagsReplace(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage, i8 i_Op)
+void Dynamo::vTopoTagsUpdate(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage, i8 i_Op)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   

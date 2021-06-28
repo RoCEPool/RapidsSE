@@ -92,7 +92,7 @@ namespace STORE
                               OpSpec* pOpSpecSend);
 
     void vTopoTagsAdd(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage, i8 i_Op);
-    void vTopoTagsReplace(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage, i8 i_Op);
+    void vTopoTagsUpdate(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage, i8 i_Op);
 
     Footer* aFooter(void);
   };
