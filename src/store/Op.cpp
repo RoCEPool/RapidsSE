@@ -242,7 +242,7 @@ void Op::vDump(i8 i_Op)
   Op* pNextOp = pNextStream->pGet(iNextOp);
 
   // get the cross topology
-  ePX eTopology = (ePX)(pTopologyTagSet->iValue(C_TAG_CROSSTOPO));
+  ePX eCrossTopo = (ePX)(pTopologyTagSet->iValue(C_TAG_CROSSTOPO));
   
   // get the left EOS markers for consume op
   //! ALKA: right EOS markers ???
@@ -259,7 +259,7 @@ void Op::vDump(i8 i_Op)
          iLeftMarkers,
          pNextOp->szOpNm(),
          this->bAppendRight() ? "appendRight"_Stz : "appendLeft "_Stz,
-         aPX[eTopology],
+         aPX[eCrossTopo],
          aXK[m_eSendKind]
         );
 }
