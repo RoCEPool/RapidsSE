@@ -61,7 +61,7 @@ static Stz* C_TAG_TRACEOP    = "<traceOp>"_Stz;
 static Stz* C_TAG_WHEN       = "<when>"_Stz;
 static Stz* C_TAG_XFER       = "<xfer>"_Stz;
 static Stz* C_TAG_SENDKIND   = "<sendKind>"_Stz;
-static Stz* C_TAG_Sends      = "<sends>"_Stz;
+static Stz* C_TAG_SENDS      = "<sends>"_Stz;
  
 static Stz* C_TAG_DBG_ACKS   = "<dbg_acks>"_Stz;
 

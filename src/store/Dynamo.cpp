@@ -912,34 +912,34 @@ bool Dynamo::bPhase2_staging(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
     
-  // get each stageSpec from pipeline
+  // get each stageSpec of pipeline
   i8 nStageSpecs = m_p_PipelineSpec->nItems();
   for (i8 i_Stage = 0; i_Stage < nStageSpecs; i_Stage++) {
     StageSpec* pStageSpec = m_p_PipelineSpec->pGet(i_Stage);
     
-    // get each opSpec from stageSpec
+    // get each opSpec of stageSpec
     i8 nOpSpecs = pStageSpec->nItems();
     for (i8 i_Op = 0; i_Op < nOpSpecs; i_Op++) {
       OpSpec* pOpSpec = pStageSpec->pGet(i_Op);
       
-      // is the named op actually a stage in this pipeline?
-      Stz* szNamedOp = pOpSpec->szOpNm();
-      i8 i_FoundStage = C_UNKNOWN;
-      StageSpec* pStageSpecFound =
-        m_p_PipelineSpec->pFindStageSpec(szNamedOp,i_FoundStage);
+      // 1) is the named op actually a stage in this pipeline?
+      Stz* szNameNext = pOpSpec->szOpNm();
+      i8 i_StageDst = C_UNKNOWN;
+      StageSpec* pStageSpecDst =
+        m_p_PipelineSpec->pFindStageSpec(szNameNext,i_StageDst);
       
-      if (pStageSpecFound) {
-        vOpIsStage(pStageSpec,pOpSpec,i_Op,pStageSpecFound,i_FoundStage);
+      if (pStageSpecDst) {
+        vOpIsStage(pStageSpec,pOpSpec,i_Op,pStageSpecDst,i_StageDst);
         continue;
       }
       
       //
-      // (add test for pipeline here)
+      // 2) (add test for pipeline here)
       //
       // ... vOpIsPipeline(...);
       //
       
-      // the named op is a known op
+      // 3) the named op is a known op
       vOpIsOp(pStageSpec,i_Stage,pOpSpec,i_Op);
 
     } // each op
@@ -975,24 +975,23 @@ void Dynamo::vOpIsPipeline(void)
 /* named op is a known stage                                                  */
 /*----------------------------------------------------------------------------*/
 void Dynamo::vOpIsStage(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
-                        StageSpec* pStageSpecFound, i8 i_FoundStage)
+                        StageSpec* pStageSpecDst, i8 i_StageDst)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-  
-  //ePX eCrossTopo = Dynamo::eCrossTopo(pStageSpec, pStageSpecFound);
-  
-  // Is there a send already ?
-  // This would be the case if one stage is piped into multiple stages
-  // e.g a unionAll
+    
+  // is there a send already? This would be the case if one stage is
+  // piped into multiple stage e.g a unionAll
   OpSpec* pOpSpecSend = pStageSpec->pFindOpSpec("send"_Stz);
   
   if (! pOpSpecSend)
     
-    vSendFirst(pStageSpec,pOpSpec,i_Op,pStageSpecFound,i_FoundStage);
+    // spec for op send does not yet exist in stage spec
+    vSendFirst(pStageSpec,pOpSpec,i_Op,pStageSpecDst,i_StageDst);
   
   else
   
-    vSendSubsequent(pStageSpec,pOpSpec,i_Op,pStageSpecFound,i_FoundStage,
+    // spec for op send already exists in stage spec
+    vSendSubsequent(pStageSpec,pOpSpec,i_Op,pStageSpecDst,i_StageDst,
                     pOpSpecSend);
 
 }
@@ -1001,16 +1000,16 @@ void Dynamo::vOpIsStage(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
 /* first send                                                                 */
 /*----------------------------------------------------------------------------*/
 void Dynamo::vSendFirst(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
-                        StageSpec* pStageSpecFound, i8 i_FoundStage)
+                        StageSpec* pStageSpecDst, i8 i_StageDst)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  ePX eCrossTopo = Dynamo::eCrossTopo(pStageSpec, pStageSpecFound);
+  ePX eCrossTopo = Dynamo::eCrossTopo(pStageSpec, pStageSpecDst);
 
-  if (eCrossTopo == PX_ORIGIN_TO_ORIGIN && i_FoundStage == 0) {
+  if (eCrossTopo == PX_ORIGIN_TO_ORIGIN && i_StageDst == 0) {
     // add parameter to the prev sink op
     OpSpec *pPrevOpSpec = pStageSpec->pGet(i_Op - 1);
-    vReplaceTopologyParams(pPrevOpSpec, eCrossTopo, i_FoundStage, 0);
+    vReplaceTopologyParams(pPrevOpSpec, eCrossTopo, i_StageDst, 0);
 
     // remove the last (stage) OpSpec from the OpSpecVec
     RASSERT(i_Op == pStageSpec->nItems() - 1);
@@ -1019,10 +1018,10 @@ void Dynamo::vSendFirst(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
   }
   else {
     pOpSpec->vAddEnamePair(C_TAG_SENDKIND, (i8) pOpSpec->eSendKind(), TN_INTEGER);
-    vReplaceWithSend(pOpSpec, eCrossTopo, i_FoundStage);
+    vReplaceWithSend(pOpSpec, eCrossTopo, i_StageDst);
 
     // is there a consumeOp already in the stage ?
-    OpSpec* pConsumeOpSpec = pStageSpecFound->pFindOpSpec("consumeOp"_Stz);
+    OpSpec* pConsumeOpSpec = pStageSpecDst->pFindOpSpec("consumeOp"_Stz);
     if (pConsumeOpSpec) {
 
       // found a consume op
@@ -1033,7 +1032,7 @@ void Dynamo::vSendFirst(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
       vIncConsumeParams(pConsumeOpSpec, eCrossTopo);
     }
     else {
-      pConsumeOpSpec = pStageSpecFound->pPrependConsumeOp(eCrossTopo, i_FoundStage, i_Op + 1);
+      pConsumeOpSpec = pStageSpecDst->pPrependConsumeOp(eCrossTopo, i_StageDst, i_Op + 1);
       vAddConsumeParams(pConsumeOpSpec, eCrossTopo);
     }
   }
@@ -1044,12 +1043,12 @@ void Dynamo::vSendFirst(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
 /* subsequent send                                                            */
 /*----------------------------------------------------------------------------*/
 void Dynamo::vSendSubsequent(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
-                             StageSpec* pStageSpecFound, i8 i_FoundStage,
+                             StageSpec* pStageSpecDst, i8 i_StageDst,
                              OpSpec* pOpSpecSend)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  ePX eCrossTopo = Dynamo::eCrossTopo(pStageSpec, pStageSpecFound);
+  ePX eCrossTopo = Dynamo::eCrossTopo(pStageSpec, pStageSpecDst);
 
   TagSet* pTopologyTagSet = pOpSpecSend->pTopologyTagSet();
 
@@ -1063,13 +1062,13 @@ void Dynamo::vSendSubsequent(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
   delete pOpSpec;
 
   // add otherStage and otherOp tags into the send
-  pOpSpecSend->vAddTopologyEnamePair(C_TAG_OTHERSTAGE,(i8)i_FoundStage,TN_INTEGER);
+  pOpSpecSend->vAddTopologyEnamePair(C_TAG_OTHERSTAGE,(i8)i_StageDst,TN_INTEGER);
   pOpSpecSend->vAddTopologyEnamePair(C_TAG_OTHEROP,(i8)0,TN_INTEGER);
 
   //pTopologyTagSet->vContentDump();
 
   // prepend a consume op in the stage
-  OpSpec* pConsumeOpSpec = pStageSpecFound->pPrependConsumeOp(eCrossTopo, i_FoundStage, i_Op + 1);
+  OpSpec* pConsumeOpSpec = pStageSpecDst->pPrependConsumeOp(eCrossTopo, i_StageDst, i_Op + 1);
   vAddConsumeParams(pConsumeOpSpec, eCrossTopo);
 
 }
@@ -1138,7 +1137,7 @@ void Dynamo::vAddConsumeParams(OpSpec* pOpSpec, ePX eCrossTopo)
   }
   
   // arg-0 is the cross topology of the send op
-  pOpSpec->vAddEnamePair(C_TAG_Sends,iSends,TN_INTEGER);
+  pOpSpec->vAddEnamePair(C_TAG_SENDS,iSends,TN_INTEGER);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1148,29 +1147,29 @@ void Dynamo::vIncConsumeParams(OpSpec* pOpSpec, ePX eCrossTopo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
 
-  i8 iSends = C_UNKNOWN;
+  i8 iIncSends = C_UNKNOWN;
 
   // add argument to the consumeOp depending on the topology
   switch (eCrossTopo) {
     case PX_ALL_NODES_TO_ORIGIN:
-      iSends = AM::pGrid()->nConnectedNodes();
+      iIncSends = AM::pGrid()->nConnectedNodes();
       break;
 
     case PX_ALL_NODES_TO_ALL_PARTITIONS:
-      iSends = AM::pGrid()->nConnectedNodes();
+      iIncSends = AM::pGrid()->nConnectedNodes();
       break;
 
     case PX_ALL_PARTITIONS_TO_ALL_NODES:
-      iSends = AM::nPtnsPerTable();
+      iIncSends = AM::nPtnsPerTable();
       break;
 
     case PX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
-      iSends = AM::nPtnsPerTable();
+      iIncSends = AM::nPtnsPerTable();
       break;
 
     case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
     case PX_ALL_PARTITIONS_TO_ORIGIN:
-      iSends = AM::nPtnsInGrid();
+      iIncSends = AM::nPtnsInGrid();
       break;
 
     case PX_ORIGIN_TO_ORIGIN:
@@ -1179,7 +1178,7 @@ void Dynamo::vIncConsumeParams(OpSpec* pOpSpec, ePX eCrossTopo)
     case PX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
     case PX_ORIGIN_TO_SPECIFIC_PARTITION:
     case PX_SPECIFIC_PARTITION_TO_ORIGIN:
-      iSends = 1;
+      iIncSends = 1;
       break;
 
     default:
@@ -1187,10 +1186,10 @@ void Dynamo::vIncConsumeParams(OpSpec* pOpSpec, ePX eCrossTopo)
   }
 
   TagSet* pTagSet = pOpSpec->pOpSpecTagSet();
-  i8 iOldSends = pTagSet->iValue(C_TAG_Sends);
+  i8 iOldSends = pTagSet->iValue(C_TAG_SENDS);
 
   // arg-0 is the cross topology of the send op
-  pTagSet->vReplace(C_TAG_Sends,iOldSends+iSends);
+  pTagSet->vReplace(C_TAG_SENDS,iOldSends+iIncSends);
 }
 
 /*----------------------------------------------------------------------------*/

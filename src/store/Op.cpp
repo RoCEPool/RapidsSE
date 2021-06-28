@@ -247,7 +247,7 @@ void Op::vDump(i8 i_Op)
   // get the left EOS markers for consume op
   //! ALKA: right EOS markers ???
   TagSet* pOpTags = this->pOpTagSet();
-  i8 iSends =  pOpTags->iValue(C_TAG_Sends);
+  i8 iSends =  pOpTags->iValue(C_TAG_SENDS);
   i8 iLeftMarkers = iSends ? iSends : 1;
   
   vTrace("    [%03lld] (N%lld,P%02lld) Op %12s%-20s { Markers(L%lld R0) :%-10s %s %s %s }\n"_Stz,
