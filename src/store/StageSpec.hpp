@@ -33,17 +33,18 @@ namespace STORE
     StageSpec(Stz* szStageNm, i8 i_StageSpec, PipelineSpec* pPipelineSpec);
    ~StageSpec(void) noexcept(false);
    
-    i8   i_StageSpec(void);
     void vAddOpSpec(OpSpec* pOpSpec);
     void vCopyOps(StageSpec* pStageSpec);
     OpSpec* pFindOpSpec(Stz* szFindNm);
-    Stz* szStageNm(void);
     bool bNodeTopo(void);
     PipelineSpec* pPipelineSpec(void);
+    void vRenumberOpSpecs(void);
     void vSpecificNode(i8 i_SpecificNode);
     i8   iSpecificNode(void);
     tPN  tSpecificPtnNo(void);
     void vSpecificPtnNo(tPN tSpecificPtnNo);
+    Stz* szStageNm(void);
+    i8   i_StageSpec(void);
     //void vThreads(i8 iThreads);
     //i8   nThreads(void);
     ePO  eTopology(void);

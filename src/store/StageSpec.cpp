@@ -67,17 +67,6 @@ StageSpec::~StageSpec(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get i_Stage                                                                */
-/*----------------------------------------------------------------------------*/
-i8 StageSpec::i_StageSpec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
-  
-
-  return m_i_StageSpec;
-}
-
-/*----------------------------------------------------------------------------*/
 /* add op spec                                                                */
 /*----------------------------------------------------------------------------*/
 void StageSpec::vAddOpSpec(OpSpec* pOpSpec)
@@ -121,16 +110,6 @@ OpSpec* StageSpec::pFindOpSpec(Stz* szFindNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get name                                                                   */
-/*----------------------------------------------------------------------------*/
-Stz* StageSpec::szStageNm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
-  
-  return m_sStageNm;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get bNodeTopo ?                                                            */
 /*----------------------------------------------------------------------------*/
 bool StageSpec::bNodeTopo(void)
@@ -148,6 +127,19 @@ PipelineSpec* StageSpec::pPipelineSpec(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
   return m_pPipelineSpec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* renumber all the op specs                                                  */
+/*----------------------------------------------------------------------------*/
+void StageSpec::vRenumberOpSpecs(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  for (i8 i_OpSpec = 0; i_OpSpec < nItems(); i_OpSpec++) {
+    OpSpec* pOpSpec = pGet(i_OpSpec);
+    pOpSpec->v_OpSpec(i_OpSpec);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -188,6 +180,27 @@ void StageSpec::vSpecificPtnNo(tPN tSpecificPtnNo)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
   m_tSpecificPtnNo = tSpecificPtnNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get name                                                                   */
+/*----------------------------------------------------------------------------*/
+Stz* StageSpec::szStageNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  return m_sStageNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get i_Stage                                                                */
+/*----------------------------------------------------------------------------*/
+i8 StageSpec::i_StageSpec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+
+  return m_i_StageSpec;
 }
 
 /*----------------------------------------------------------------------------*/

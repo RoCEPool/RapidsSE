@@ -961,12 +961,8 @@ void Dynamo::vOpInsertConsumeOp(StageSpec* pStageSpec, ePX eCrossTopo)
   
   pStageSpec->vInsert(pConsumeOpSpec);
   
-  // renumber the m_i_OpSpec
-  for (i8 i_OpSpec = 0; i_OpSpec < pStageSpec->nItems(); i_OpSpec++) {
-    OpSpec* pOpSpec = pStageSpec->pGet(i_OpSpec);
-    pOpSpec->v_OpSpec(i_OpSpec);
-  }
-
+  pStageSpec->vRenumberOpSpecs();
+  
   vParamsAddConsume(pConsumeOpSpec, eCrossTopo);
 }
 
