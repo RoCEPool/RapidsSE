@@ -74,19 +74,19 @@ namespace STORE
     //
     bool bPhase2_staging(void);
 
-    void vOpIsOp(StageSpec* pStageSpec, i8 i_Stage,
-                 OpSpec* pOpSpec, i8 i_Op);
+    void vOpIsOp(StageSpec* pStageSpec, i8 i_Stage, OpSpec* pOpSpec, i8 i_Op);
 
     void vOpIsPipeline(void);
 
     void vOpIsStage(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
                     StageSpec* pStageSpecFound, i8 i_FoundStage);
   
-    void vSendFirst(ePX eCrossTopo, StageSpec* pStageSpec, i8 i_FoundStage,
-                    i8 i_Op, OpSpec* pOpSpec, StageSpec* pStageSpecFound);
-    void vSendSubsequent(OpSpec* pOpSpecSend, ePX eCrossTopo,
-                         StageSpec* pStageSpec, OpSpec* pOpSpec,
-                         i8 i_FoundStage, i8 i_Op, StageSpec* pStageSpecFound);
+    void vSendFirst(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
+                    StageSpec* pStageSpecFound, i8 i_FoundStage);
+  
+    void vSendSubsequent(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
+                         StageSpec* pStageSpecFound, i8 i_FoundStage,
+                         OpSpec* pOpSpecSend);
 
     void vAddTopologyParams(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage, i8 i_Op);
     void vAddConsumeParams(OpSpec* pOpSpec, ePX eCrossTopo);

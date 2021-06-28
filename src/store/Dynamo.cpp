@@ -979,7 +979,7 @@ void Dynamo::vOpIsStage(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  ePX eCrossTopo = Dynamo::eCrossTopo(pStageSpec, pStageSpecFound);
+  //ePX eCrossTopo = Dynamo::eCrossTopo(pStageSpec, pStageSpecFound);
   
   // Is there a send already ?
   // This would be the case if one stage is piped into multiple stages
@@ -988,24 +988,25 @@ void Dynamo::vOpIsStage(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
   
   if (! pOpSpecSend)
     
-    vSendFirst(eCrossTopo,pStageSpec,i_FoundStage,
-               i_Op,pOpSpec,pStageSpecFound);
+    vSendFirst(pStageSpec,pOpSpec,i_Op,pStageSpecFound,i_FoundStage);
   
   else
   
-    vSendSubsequent(pOpSpecSend,eCrossTopo,pStageSpec,pOpSpec,
-                    i_FoundStage,i_Op,pStageSpecFound);
+    vSendSubsequent(pStageSpec,pOpSpec,i_Op,pStageSpecFound,i_FoundStage,
+                    pOpSpecSend);
 
 }
 
 /*----------------------------------------------------------------------------*/
 /* first send                                                                 */
 /*----------------------------------------------------------------------------*/
-void Dynamo::vSendFirst(ePX eCrossTopo, StageSpec* pStageSpec, i8 i_FoundStage,
-                        i8 i_Op, OpSpec* pOpSpec, StageSpec* pStageSpecFound)
+void Dynamo::vSendFirst(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
+                        StageSpec* pStageSpecFound, i8 i_FoundStage)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
+  ePX eCrossTopo = Dynamo::eCrossTopo(pStageSpec, pStageSpecFound);
+
   if (eCrossTopo == PX_ORIGIN_TO_ORIGIN && i_FoundStage == 0) {
     // add parameter to the prev sink op
     OpSpec *pPrevOpSpec = pStageSpec->pGet(i_Op - 1);
@@ -1042,12 +1043,14 @@ void Dynamo::vSendFirst(ePX eCrossTopo, StageSpec* pStageSpec, i8 i_FoundStage,
 /*----------------------------------------------------------------------------*/
 /* subsequent send                                                            */
 /*----------------------------------------------------------------------------*/
-void Dynamo::vSendSubsequent(OpSpec* pOpSpecSend, ePX eCrossTopo,
-                             StageSpec* pStageSpec, OpSpec* pOpSpec,
-                             i8 i_FoundStage, i8 i_Op, StageSpec* pStageSpecFound)
+void Dynamo::vSendSubsequent(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
+                             StageSpec* pStageSpecFound, i8 i_FoundStage,
+                             OpSpec* pOpSpecSend)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
+  ePX eCrossTopo = Dynamo::eCrossTopo(pStageSpec, pStageSpecFound);
+
   TagSet* pTopologyTagSet = pOpSpecSend->pTopologyTagSet();
 
   ePX eOpSpecCrossTopo = (ePX)pTopologyTagSet->iValue(C_TAG_TOPOLOGY);
