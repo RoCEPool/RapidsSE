@@ -126,6 +126,15 @@
 
   EC_NONE locals| eError |
 
+  // HACK FOR LOOPJOIN
+  Counter1[] if
+    Pipein[].pipeOut
+    true
+    exit
+  then
+
+  1 to Counter1[]
+
   // move pipein[] to StreamDefLft[]
   Pipein[]\clear to StreamDefLft[]
 

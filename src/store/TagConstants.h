@@ -86,6 +86,8 @@ static Stz* C_TAG_SEEDRUN  = "<seedRun>"_Stz;
 static Stz* C_TAG_QUERY_NO = "<queryNo>"_Stz;
 static Stz* C_TAG_SUBQUERY_NO = "<subQueryNo>"_Stz;
 
+static Stz* C_TAG_JOINROW_ROUTINE       = "<joinRowRoutine>"_Stz;
+
 static Stz* C_TAG_LOGICUNIT_HANDLER     = "<logicUnitHandler>"_Stz;
 
 static Stz* C_TAG_CRW_PROCESS_ROUTINE   = "<crwProcessRoutine>"_Stz;

@@ -75,7 +75,7 @@ macro AM_INDEX_TRAVERSE_TILL_UPPER
   // fetch next entry from index
   EO_PUSH_DEVIXT_LFT
   EO_DEVIXT_IDX_NEXT
-  EO_JMP_FALSE INDEX_SCAN_DONE
+  EO_JMP_FALSE INDEX_SCAN_END
 
     // have we reached the upper entry
   EO_PUSH_DEVIXT_LFT

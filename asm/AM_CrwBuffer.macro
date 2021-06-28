@@ -270,20 +270,41 @@ macro AM_CRW_INDEXJOIN_ROWS
   Label CRW_INDEXJOIN_ROWS
 
   // left row
-  EO_PUSH_DEVIXT_LFT
-  EO_DEVIXT_PUSHCOLI <projectSrcColumn>
+  //EO_PUSH_DEVIXT_LFT
+  //EO_DEVIXT_PUSHCOLI <projectSrcColumn>
 
   Label CRW_INDEXJOIN
 endMacro
 
+macro AM_CRW_INDEXJOIN_END
 //----------------------------------------------------------------------------//
 // macro AM_CRW_INDEXJOIN_END                                                 //
 //----------------------------------------------------------------------------//
-macro AM_CRW_INDEXJOIN_END
   // CRW_INDEXJOIN_END
+  Label CRW_INDEXJOIN_END
+
+  // fetch next entry from index
+  EO_PUSH_DEVIXT_RHT
+  EO_DEVIXT_IDX_NEXT
   EO_RETURN_FALSE
-  EO_CALL CRW_JOIN_ROW
+
+  EO_PUSH_DEVIXT_RHT
+  EO_DEVIXT_ENT_PUSH
+
+  EO_PUSH_DEVIXT_RHT
+  EO_DEVIXT_ENT_PUSHUPPER
+
+  EO_EQ_INTINT
+  EO_RETURN_TRUE
+
+  // projection
+  //EO_CRW_SRC_DEREF
+  EO_PUSH_DEVIXT_RHT
+  EO_DEVIXT_ENT_DEREF
+
+  EO_CALL <joinRowRoutine>  // C_TAG_JOINROW_ROUTINE
   //EO_ROW_DST_PRINT
+  EO_JMP CRW_INDEXJOIN_END
   EO_RETURN
 endMacro
 
@@ -313,7 +334,7 @@ endMacro
 macro AM_CRW_LOOPJOIN_END
   // CRW_LOOPJOIN_END
   EO_RETURN_FALSE
-  EO_CALL CRW_JOIN_ROW
+  EO_CALL <joinRowRoutine>  // C_TAG_JOINROW_ROUTINE
   //EO_ROW_DST_PRINT
   EO_RETURN
 endMacro
@@ -340,6 +361,73 @@ macro AM_CRW_JOIN_ROW
   EO_PUSH_DEVROW_RHT
   EO_INTEGER <rowOffset>  // C_TAG_ROWOFFSET
   EO_DEVROW_COLS_TO_ROW_OFS
+
+  EO_PUSH_DEVROW_DST
+  EO_DEVROW_ROW_PRINT
+  EO_RETURN
+
+endMacro
+
+//----------------------------------------------------------------------------//
+// macro AM_CRW_JOIN_ENT                                                      //
+//----------------------------------------------------------------------------//
+macro AM_CRW_JOIN_ENT
+  // CRW_JOIN_ENT
+  Label CRW_JOIN_ENT
+
+  EO_PUSH_DEVROW_DST
+  EO_PUSH_RLU_POT
+  EO_PUSH_RLU_PTN
+  EO_DEVROW_ROW_NEW
+
+  // inflate left row into dst row
+  EO_PUSH_DEVROW_DST
+  EO_PUSH_DEVROW_LFT
+  EO_PUSH_DEVIXT_LFT
+  EO_INTEGER 0
+  EO_DEVIXT_COLS_TO_ROW_OFS
+
+  // deref the ent
+  EO_PUSH_DEVIXT_RHT
+  EO_DEVIXT_ENT_DEREF
+
+  // inflate right row into dst row
+  EO_PUSH_DEVROW_DST
+  EO_PUSH_DEVROW_RHT
+  EO_PUSH_DEVIXT_RHT
+  EO_INTEGER <rowOffset>  // C_TAG_ROWOFFSET
+  EO_DEVIXT_COLS_TO_ROW_OFS
+
+  EO_PUSH_DEVROW_DST
+  EO_DEVROW_ROW_PRINT
+  EO_RETURN
+
+endMacro
+
+
+//----------------------------------------------------------------------------//
+// macro AM_ROW_JOIN_CRW                                                      //
+//----------------------------------------------------------------------------//
+macro AM_ROW_JOIN_CRW
+  // ROW_JOIN_CRW
+  Label ROW_JOIN_CRW
+
+  EO_PUSH_DEVROW_DST
+  EO_PUSH_RLU_POT
+  EO_PUSH_RLU_PTN
+  EO_DEVROW_ROW_NEW
+
+  // inflate left row into dst row
+  EO_PUSH_DEVROW_DST
+  EO_PUSH_DEVROW_LFT
+  EO_DEVROW_COLS_TO_ROW
+
+  // inflate right row into dst row
+  EO_PUSH_DEVROW_DST
+  EO_PUSH_DEVROW_RHT
+  EO_PUSH_DEVIXT_RHT
+  EO_INTEGER <rowOffset>  // C_TAG_ROWOFFSET
+  EO_DEVIXT_COLS_TO_ROW_OFS
 
   EO_PUSH_DEVROW_DST
   EO_DEVROW_ROW_PRINT

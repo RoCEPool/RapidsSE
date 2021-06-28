@@ -13,6 +13,7 @@ enum eAM // ASM Macros
   /*    */ AM_CRW_INDEXJOIN_END,
   /*    */ AM_CRW_INDEXJOIN_ROWS,
 
+  /*    */ AM_CRW_JOIN_ENT,
   /*    */ AM_CRW_JOIN_ROW,
 
   /*    */ AM_CRW_LOOPJOIN_END,
@@ -79,6 +80,7 @@ enum eAM // ASM Macros
   /*    */ AM_ROW_FILTER_ROWS,
   /*    */ AM_ROW_FILTER_END,
 
+  /*    */ AM_ROW_JOIN_CRW,
   /*    */ AM_ROW_JOIN_ROW,
 
   /*    */ AM_ROW_LOOPJOIN_END,
@@ -109,6 +111,7 @@ static Stz* aAM[]
     /*    */ "CRW_INDEXJOIN_END"_Stz,
     /*    */ "CRW_INDEXJOIN_ROWS"_Stz,
 
+    /*    */ "CRW_JOIN_ENT"_Stz,
     /*    */ "CRW_JOIN_ROW"_Stz,
 
     /*    */ "CRW_LOOPJOIN_END"_Stz,
@@ -176,6 +179,7 @@ static Stz* aAM[]
     /*    */ "ROW_FILTER_END"_Stz,
 
     /*    */ "ROW_JOIN_ROW"_Stz,
+    /*    */ "ROW_JOIN_CRW"_Stz,
 
     /*    */ "ROW_LOOPJOIN_END"_Stz,
     /*    */ "ROW_LOOPJOIN_ROWS"_Stz,
