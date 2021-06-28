@@ -74,9 +74,9 @@ namespace STORE
     //
     bool bPhase2_staging(void);
 
-    bool bSendFirst(ePX eCrossTopo, StageSpec* pStageSpec, i8 i_FoundStage,
+    void vSendFirst(ePX eCrossTopo, StageSpec* pStageSpec, i8 i_FoundStage,
                     i8 i_Op, OpSpec* pOpSpec, StageSpec* pStageSpecFound);
-    bool bSendSubsequent(OpSpec* pOpSpecSend, ePX eCrossTopo,
+    void vSendSubsequent(OpSpec* pOpSpecSend, ePX eCrossTopo,
                          StageSpec* pStageSpec, OpSpec* pOpSpec,
                          i8 i_FoundStage, i8 i_Op, StageSpec* pStageSpecFound);
 
