@@ -40,7 +40,6 @@ namespace STORE
     Stz* szStageNm(void);
     bool bNodeTopo(void);
     PipelineSpec* pPipelineSpec(void);
-    OpSpec* pPrependConsumeOp(ePX eCrossTopo, i8 iStage, i8 i_Op);
     void vSpecificNode(i8 i_SpecificNode);
     i8   iSpecificNode(void);
     tPN  tSpecificPtnNo(void);

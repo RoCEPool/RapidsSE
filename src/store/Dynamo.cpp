@@ -1030,7 +1030,7 @@ void Dynamo::vOpReplaceWithSend(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_Stage)
 }
 
 /*----------------------------------------------------------------------------*/
-/* first send                                                                 */
+/* send to first stage                                                        */
 /*----------------------------------------------------------------------------*/
 void Dynamo::vSendFirst(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
                         StageSpec* pStageSpecDst, i8 i_StageDst)
@@ -1070,14 +1070,12 @@ void Dynamo::vSendFirst(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
   }
   else {
     vOpInsertConsumeOp(pStageSpecDst,eCrossTopo);
-//    pConsumeOpSpec = pStageSpecDst->pPrependConsumeOp(eCrossTopo, i_StageDst, i_Op + 1);
-//    vParamsAddConsume(pConsumeOpSpec, eCrossTopo);
   }
 
 }
 
 /*----------------------------------------------------------------------------*/
-/* subsequent send                                                            */
+/* send to second or subsequent stage                                         */
 /*----------------------------------------------------------------------------*/
 void Dynamo::vSendSubsequent(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
                              StageSpec* pStageSpecDst, i8 i_StageDst,
@@ -1102,12 +1100,9 @@ void Dynamo::vSendSubsequent(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
   pOpSpecSend->vAddTopologyEnamePair(C_TAG_OTHERSTAGE,(i8)i_StageDst,TN_INTEGER);
   pOpSpecSend->vAddTopologyEnamePair(C_TAG_OTHEROP,(i8)0,TN_INTEGER);
 
-  //pTopologyTagSet->vContentDump();
 
-  // prepend a consume op in the stage
-  OpSpec* pConsumeOpSpec = pStageSpecDst->pPrependConsumeOp(eCrossTopo, i_StageDst, i_Op + 1);
-  vParamsAddConsume(pConsumeOpSpec, eCrossTopo);
-
+  // insert a consume op at the beginning of the stage
+  vOpInsertConsumeOp(pStageSpecDst,eCrossTopo);
 }
 
 /*----------------------------------------------------------------------------*/

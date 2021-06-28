@@ -151,31 +151,6 @@ PipelineSpec* StageSpec::pPipelineSpec(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* prepend a consumeOp spec                                                   */
-/*----------------------------------------------------------------------------*/
-OpSpec* StageSpec::pPrependConsumeOp(ePX eCrossTopo, i8 iStage, i8 i_Op)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
-  UNUSED(eCrossTopo);
-  UNUSED(iStage);
-  UNUSED(i_Op);
-
-  OpSpec* pOpSpec;
-  
-  pOpSpec = new OpSpec("consumeOp"_Stz,0,this);
-  
-  vInsert(pOpSpec);
-  
-  // renumber the m_i_OpSpec
-  for (i8 i_OpSpec = 0; i_OpSpec < nItems(); i_OpSpec++) {
-    OpSpec* pOpSpec = pGet(i_OpSpec);
-    pOpSpec->v_OpSpec(i_OpSpec);
-  }
-  
-  return pOpSpec;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get specific node                                                          */
 /*----------------------------------------------------------------------------*/
 i8 StageSpec::iSpecificNode(void)

@@ -23,9 +23,37 @@ create table J (
 
 print "loading nation.csv..." ;
 load J "../TPCH/SF1/nation.tbl" ;
+create index idx on j (n_nationkey);
 
-trackMemory;
+dumpidx j idx;
+
+//range_I j idx "EQUAL $I1 0 == ";
+
+pipeline eachRowExp
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan T | project 0 "type integer $1 " |
+     indexJoin 0 J idx "EQUAL $I1 $L1 ==" | stageC
+
+  stage stageC on all partitions :
+    project 0 "type integer $1 , $2 " | indexJoin 0 J idx "EQUAL $I1 $L1 ==" | stageD
+
+  stage stageD on all partitions :
+    project 0 "type integer $1 , $2 , $3 " | indexJoin 0 J idx "EQUAL $I1 $L1 ==" | stageE
+
+  stage stageE on all partitions :
+     project 0 "type integer $1 , $2 , $3 , $4 " | indexJoin 0 J idx "EQUAL $I1 $L1 ==" | stageF
+
+  stage stageF on origin :
+    output | sink | stageA
+end;
+
 /*
+trackMemory;
+
 pipeline eachRowExp
 begin
   stage stageA on origin :

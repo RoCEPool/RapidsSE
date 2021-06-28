@@ -37,7 +37,48 @@ begin
     output | sink | stageA
 end;
 
-//range_I rt ri "EQUAL $I1 2 == ";
+create table student (
+id         INTEGER,
+first_name VARCHAR(10),
+last_name   VARCHAR(10)
+);
+create index student_idx on student(id);
+load student "../DATA/Joins/student_Dataset.csv" ;
+
+
+//---------------------------create table TWO-------------------------------------
+create table student_course (
+student_id INTEGER,
+course_id  INTEGER
+);
+create index student_course_idx on student_course(student_id);
+load student_course "../DATA/Joins/student_course_Dataset.csv" ;
+
+
+//---------------------------create table THREE------------------------------------
+create table course (
+id INTEGER,
+name  VARCHAR(30),
+teacher_id INTEGER
+);
+create index course_idx on course(id);
+load course "../DATA/Joins/course_Dataset.csv" ;
+
+//select * from student INNER JOIN student_course ON student.id = student_course.student_id;
+pipeline indexJoinX
+begin
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan student | stageC
+
+  stage stageC on all partitions :
+    indexJoin 0 student_course student_course_idx "EQUAL $I1 $L1 == " | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+end;
 
 /*============================================================================*/
 /* end                                                                        */
