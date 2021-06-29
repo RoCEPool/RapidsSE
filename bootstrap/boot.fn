@@ -311,14 +311,14 @@ function startCurrentNode() {
   params="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_PARAMS_KEY}")"
 
   # params above is a string. Let's turn it into an array based on spaces.
-  declare -a paramsArray
+  declare -a paramsArray=()
   IFS=' ' read -r -a paramsArray <<< "${params}"
 
   # Get the node name/host/port arguments
-  declare -a nodeArgs
+  declare -a nodeArgs=()
   IFS=" " read -r -a nodeArgs <<< "$(buildNodeArguments)"
 
-  declare -a startCmd
+  declare -a startCmd=()
   startCmd+=("nohup")
   startCmd+=("${EXE}")
   startCmd+=("--partitionsPerNode")
@@ -482,7 +482,7 @@ function localClusterInit() {
 
   local connectCmd="_connectCluster"
 
-  declare -a cmd
+  declare -a cmd=()
   cmd+=("${EXE}")
   cmd+=("--name")
   cmd+=("${CURRENT_NODE_NAME}")
@@ -883,7 +883,7 @@ function stopCurrentNode() {
     local pid
     pid="$(cat "${PIDFILE}")" 2>/dev/null
 
-    declare -a stopCmd
+    declare -a stopCmd=()
     stopCmd+=("${EXE}")
     stopCmd+=("--name")
     stopCmd+=("${CURRENT_NODE_NAME}")

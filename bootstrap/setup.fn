@@ -546,10 +546,10 @@ function askNamePrefix() {
 
 function askHostnames() {
 
-  declare -a hostnames
+  declare -a hostnames=()
   local line
 
-  declare -a loopbackHosts
+  declare -a loopbackHosts=()
   loopbackHosts=("localhost" "127.0.0.1" "::1")
 
   local gotLoopback=0
@@ -1164,7 +1164,7 @@ function distributeSoftware() {
   local configFile="$1"
 
   # Assert that we have a valid configuration
-  if [[ -z "${NODE_LIST}" || ${#NODE_LIST[@]} -eq 0 ]]; then
+  if [ ! -v "NODE_LIST" ] || [ ${#NODE_LIST[@]} -eq 0 ]; then
     errorExit "No nodes have been defined to install RapidsSE onto."
   fi
 
@@ -1475,10 +1475,10 @@ function updateDefaults() {
   
   # First turn the associative arrays into ascending ordered arrays of their values.
   # That way we can get the minimum value in each.
-  declare -a sortedCoreCount
-  declare -a sortedTotalMem
-  declare -a sortedTotalShm
-  declare -a sortedFreeShm
+  declare -a sortedCoreCount=()
+  declare -a sortedTotalMem=()
+  declare -a sortedTotalShm=()
+  declare -a sortedFreeShm=()
 
   readarray -t sortedCoreCount < <(printf '%s\n' "${NODE_CORE_COUNT[@]}" | sort -n)
   readarray -t sortedTotalMem < <(printf '%s\n' "${NODE_TOTAL_MEM[@]}"  | sort -n)

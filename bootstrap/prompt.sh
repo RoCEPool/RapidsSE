@@ -126,7 +126,7 @@ function processArgs() {
 
 function startPrompt() {
 
-  declare -a promptCmd
+  declare -a promptCmd=()
   promptCmd+=("${EXE}")
   promptCmd+=("--name")
   promptCmd+=("${CURRENT_NODE_NAME}")

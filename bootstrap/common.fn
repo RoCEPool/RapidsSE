@@ -269,7 +269,7 @@ function getCpuCount() {
   local nodeName="$1"
   local host
   local remoteCmd
-  declare -a sshArgs
+  declare -a sshArgs=()
   local response
 
   [ -n "${nodeName}" ] || errorExit "getCpuCount(): Parameter 1 cannot be null."
@@ -310,7 +310,7 @@ function getTotalMem() {
   local nodeName="$1"
   local host
   local remoteCmd
-  declare -a sshArgs
+  declare -a sshArgs=()
   local response
 
   [ -n "${nodeName}" ] || errorExit "getCpuCount(): Parameter 1 cannot be null."
@@ -349,7 +349,7 @@ function getTotalShm() {
   local nodeName="$1"
   local host
   local remoteCmd
-  declare -a sshArgs
+  declare -a sshArgs=()
   local response
 
   [ -n "${nodeName}" ] || errorExit "getCpuCount(): Parameter 1 cannot be null."
@@ -388,7 +388,7 @@ function getFreeShm() {
   local nodeName="$1"
   local host
   local remoteCmd
-  declare -a sshArgs
+  declare -a sshArgs=()
   local response
 
   [ -n "${nodeName}" ] || errorExit "getCpuCount(): Parameter 1 cannot be null."

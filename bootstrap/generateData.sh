@@ -32,7 +32,7 @@ CHUNKS=-1
 FIRST_OFFSET=-1
 NO_RENAME=0
 
-declare -a OUTPUT_DIRS
+declare -a OUTPUT_DIRS=()
 
 CURRENT_NODE_NAME=""
 
@@ -349,7 +349,7 @@ function makeOutputDirs() {
   local nodeName
   local host
   local remoteCmd=""
-  declare -a sshCmd
+  declare -a sshCmd=()
 
   for nodeName in "${NODE_LIST[@]}"
   do
@@ -468,7 +468,7 @@ function removeFileChunkExt() {
   
   for dir in "${OUTPUT_DIRS[@]}"
   do
-    declare -a files
+    declare -a files=()
     mapfile -t files < <(find "${dir}" -type f -name "*.tbl.*")
 
     for f in "${files[@]}"

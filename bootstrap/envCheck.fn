@@ -122,7 +122,7 @@ function validateHostsAreResolvable() {
     # can be used to resolve it, depending on what is installed.
 
     # Use getent to resolve the hostname, if available
-    if which getent &>/dev/null; then
+    if command -v getent &>/dev/null; then
 
       output="$(getent hosts "${host}" | awk '{ print $1; exit }' 2>/dev/null)"
       if [ -z "${output}" ]; then
@@ -134,7 +134,7 @@ function validateHostsAreResolvable() {
 
 
     # No getent, then try dig
-    elif which dig &>/dev/null; then
+    elif command -v dig &>/dev/null; then
 
       output="$(dig +short +search "${host}" | awk '{ print ; exit }' 2>/dev/null)"
       if [ -z "${output}" ]; then
@@ -146,7 +146,7 @@ function validateHostsAreResolvable() {
 
 
     # No dig, then try nslookup
-    elif which nslookup &>/dev/null; then
+    elif command -v nslookup &>/dev/null; then
       
       output="$(nslookup "${host}" | awk '/^Address: / { print $2 ; exit }' 2>/dev/null)"
       if [ -z "${output}" ]; then
@@ -245,8 +245,8 @@ function validateHostsReachableBySsh() {
   local nodeName
   local host 
 
-  declare -a sshArgs
-  declare -a jobArray
+  declare -a sshArgs=()
+  declare -a jobArray=()
 
   debugPrint "About to validate that nodes can be reached by SSH."
 
@@ -320,9 +320,8 @@ function validatePortsNotInUse() {
   local remoteCmd
   local output
 
-  declare -a sshArgs
-  declare -a failedNodes
-  failedNodes=()
+  declare -a sshArgs=()
+  declare -a failedNodes=()
 
   for nodeName in "${NODE_LIST[@]}"
   do
@@ -526,7 +525,7 @@ function validateInstallDirIsWritable() {
   local remoteCmd
   local response
   
-  declare -a sshCmd
+  declare -a sshCmd=()
   declare -A errors
 
   for nodeName in "${NODE_LIST[@]}"
@@ -582,7 +581,11 @@ function validateInstallDirIsWritable() {
 
   done
 
-  if [ "${#errors[@]}" -gt 0 ]; then
+  ## Be careful with checking associative arrays. They may be declared but
+  ## can be unset. And with set -b (unbound variables) this can cause issues.
+  ## Reference here:
+  ## https://stackoverflow.com/questions/26925905/in-bash-test-if-associative-array-is-declared
+  if [ -v "errors[@]" ] && [ "${#errors[@]}" -gt 0 ]; then
     local errMsg="Validation of the installation directory failed:"
 
     for nodeName in "${!errors[@]}"

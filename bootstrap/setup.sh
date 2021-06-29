@@ -66,7 +66,7 @@ CONFIG_FILE=""
 # The array of unique node names. The values here are used to help form the
 # name of the dynamic associative arrays used to hold the configuration of
 # an individual node.
-declare -ga NODE_LIST
+declare -ga NODE_LIST=()
 
 # The prefix given to each node name before its sequence number.
 NODE_NAME_PREFIX="${NODE_CFG_DEFAULT_NAME_PREFIX}"
