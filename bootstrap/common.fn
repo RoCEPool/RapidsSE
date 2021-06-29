@@ -21,9 +21,6 @@ readonly CONFIG_DEFAULT_VERSION="1"
 readonly PID_FILENAME="se.pid"
 readonly READY_FILENAME="se.ready"
 
-readonly GCC_MINIMUM_VERSION="4.8.5"
-readonly BASH_MINIMUM_VERSION="4.2.46"
-
 # Prefix of the name of the associative arrays for each node in the cluster.config
 readonly NODE_CFG_PREFIX="NODE_CFG_"
 

@@ -8,6 +8,12 @@ then
   exit 1
 fi
 
+###############################################################################
+### Constants                                                               ###
+###############################################################################
+
+readonly GCC_MINIMUM_VERSION="4.8.5"
+readonly BASH_MINIMUM_VERSION="4.2.46"
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -654,11 +660,8 @@ function validateGcc() {
 
     sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash" "-c" "'${remoteCmd}'")
 
-    # Run it
-    output="$(ssh "${sshArgs[@]}" || true)"
-
-    # Check if it returned with a success error code
-    if [ "$?" -ne 0 ] ; then
+    # Run it and check if it returned with a success error code
+    if ! output="$(ssh "${sshArgs[@]}" || true)" ; then
       failedNodes+=("${nodeName}")
       continue
     fi
@@ -710,15 +713,13 @@ function validateBash() {
   do
     host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
 
+    # shellcheck disable=SC2016
     remoteCmd='which bash &>/dev/null && echo "${BASH_VERSINFO[0]}.${BASH_VERSINFO[1]}.${BASH_VERSINFO[2]}" 2>/dev/null'
 
     sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash" "-c" "'${remoteCmd}'")
 
-    # Run it
-    output="$(ssh "${sshArgs[@]}" || true)"
-
-    # Check if it returned with a success error code
-    if [ "$?" -ne 0 ] ; then
+    # Run it and check if it returned with a success error code
+    if ! output="$(ssh "${sshArgs[@]}" || true)" ; then
       failedNodes+=("${nodeName}")
       continue
     fi
@@ -750,6 +751,33 @@ function validateBash() {
     errorExit "${errMsg}"
   fi
 }
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Check that the local bash version is new enough.
+# Params: None
+
+function validateLocalBash() {
+  local output
+set -x
+  debugPrint "Validating local bash version"
+
+  output="${BASH_VERSINFO[0]}.${BASH_VERSINFO[1]}.${BASH_VERSINFO[2]}"
+
+  # Check the bash version is sufficient.
+  # First check if the output is empty.
+  if [ -z "${output}" ]; then
+    errorExit "Could not get the bash version number (empty output)"
+  fi
+
+  # Check the version number.
+  if ! isVersionGreaterThanOrEqualTo "${output}" "${BASH_MINIMUM_VERSION}" ; then
+    errorExit "Local version of bash is too old - Found: ${output} ; Required: ${BASH_MINIMUM_VERSION}"
+  fi
+
+  debugPrint "Bash version has been validated (${output} >= ${BASH_MINIMUM_VERSION})"
+set +x
+}
+
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

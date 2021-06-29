@@ -347,6 +347,10 @@ function findInstallFile() {
 ## Params: None
 
 function doClusterInstall() {
+
+  # First check the version of bash we are running is sufficient
+  validateLocalBash
+
   # Need to consider if this installation is interactive or scripted, or
   # whether an existing config file is being used.
 
