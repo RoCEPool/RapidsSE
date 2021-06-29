@@ -13,6 +13,9 @@ namespace STORE
 {
   class Dynamo : public Object
   {
+  
+    friend class STORE::PipelineSpec;
+
   private:
     Job*          m_p_PipelineJob;  // job this dynamo is associated with
     

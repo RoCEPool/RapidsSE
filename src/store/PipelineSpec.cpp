@@ -7,6 +7,7 @@
 #include "OpSpec.hpp"
 #include "StageSpec.hpp"
 #include "PipelineSpec.hpp"
+#include "Dynamo.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
@@ -31,15 +32,16 @@ void PipelineSpec::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-PipelineSpec::PipelineSpec(Stz* szPipelineNm)
+PipelineSpec::PipelineSpec(Stz* szPipelineNm, Dynamo* p_Dynamo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
   m_sPipelineNm = szPipelineNm;
   
-  
   // m_oNestedPipeline
-    
+  
+  m_p_Dynamo = p_Dynamo;
+      
   _checkInitialised_(CN_PIPELINESPEC);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);

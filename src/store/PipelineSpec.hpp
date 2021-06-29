@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace STORE { class StageSpec; class OpSpec; }
+namespace STORE { class Dynamo; class StageSpec; class OpSpec; }
 
 namespace STORE
 {
@@ -15,6 +15,16 @@ namespace STORE
     // optional set of nested pipelines
     VectorNL_t<CN_NESTEDPIPELINESPEC,PipelineSpec,C_MAX_NESTED_PIPELINES>
       m_oNestedPipelineSpecs;
+  
+  
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+    Dynamo*  m_p_Dynamo; // the dynamo compiler
+
+  
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  
 
     // must be last
     Footer m_xFooter;
@@ -23,7 +33,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    PipelineSpec(Stz* szPipelineNm);
+    PipelineSpec(Stz* szPipelineNm, Dynamo* p_Dynamo);
    ~PipelineSpec(void) noexcept(false);
   
     void vAddStageSpec(StageSpec* pStageSpec);
