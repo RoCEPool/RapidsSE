@@ -332,7 +332,8 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Mutex),              HT_T_TINY    ,0 }, // CN_MUTEX
 
   { 'N' - ('A' - 1),            HT_INVALID   ,0 }, // CN__N__
-  { sizeof(NamedBuffer),        HT_T_LARGE   ,0 }, // CN_NAMEDBUFFER
+  { sizeof(NamedBuffer),        HT_T_LARGE   ,0 }, // CN_NESTEDPIPELINESPEC
+  { 0,                          HT_INVALID   ,0 }, // CN_NEXTGID
   { sizeof(NextGid),            HT_INVALID   ,0 }, // CN_NEXTGID
   { sizeof(NmlStr),             HT_T_MEDIUM  ,0 }, // CN_NMLSTR
   { sizeof(Node),               HT_T_TINY    ,0 }, // CN_NODE
@@ -357,7 +358,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(PathVec),              HT_T_MEDIUM  ,0 }, // CN_PATHVEC
   { sizeof(Peruse),               HT_T_MEDIUM  ,0 }, // CN_PERUSE
   { sizeof(Pipeline),             HT_T_SMALL   ,0 }, // CN_PIPELINE
-  { sizeof(PipelineSpec),         HT_T_SMALL   ,0 }, // CN_PIPELINESPEC
+  { sizeof(PipelineSpec),         HT_T_MEDIUM  ,0 }, // CN_PIPELINESPEC
   { sizeof(PlanDefinitionParser), HT_T_MEDIUM  , -8 }, // CN_PLANDEFINITIONPARSER
   { sizeof(PlannerLock),          HT_T_TINY    ,0 }, // CN_PLANNERLOCK
   { sizeof(PlanNode),             HT_T_TINY    , -8 }, // CN_PLANNODE

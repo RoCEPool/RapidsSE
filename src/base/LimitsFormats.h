@@ -17,6 +17,7 @@ static const i8 C_MAX_LOG_ENTRIES   = C_256K * 1;
 static const i8 C_MAX_LOG_NOTE      = C_1K;
 static const i8 C_MAX_LVL_LEVELS    = 6;
 static const i8 C_MAX_LVL_RATIO     = 6;
+static const i8 C_MAX_NESTED_PIPELINES = 16;
 static const i8 C_MAX_NESTED_WORDS  = 16;
 static const i8 C_MAX_NODES         = 128;    // max nodes in a grid
 static const i8 C_MAX_OPS           = 256;

@@ -38,6 +38,8 @@ PipelineSpec::PipelineSpec(Stz* szPipelineNm, Job* pPipelineJob)
   m_sPipelineNm = szPipelineNm;
   
   m_pPipelineJob = pPipelineJob;
+  
+  // m_oNestedPipeline
     
   _checkInitialised_(CN_PIPELINESPEC);
   

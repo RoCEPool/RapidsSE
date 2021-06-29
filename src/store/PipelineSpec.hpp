@@ -14,8 +14,10 @@ namespace STORE
   
     Job* m_pPipelineJob; // which job
   
-    //     m_pNestedPipelines[]
-    
+    // optional set of nested pipelines
+    VectorNL_t<CN_NESTEDPIPELINESPEC,PipelineSpec,C_MAX_NESTED_PIPELINES>
+      m_oNestedPipelineSpecs;
+
     // must be last
     Footer m_xFooter;
 
