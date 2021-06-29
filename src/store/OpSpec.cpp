@@ -183,6 +183,16 @@ void OpSpec::vSendKind(eXK eSendKind)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the stage spec                                                         */
+/*----------------------------------------------------------------------------*/
+StageSpec* OpSpec::pStageSpec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  return m_pStageSpec;
+}
+
+/*----------------------------------------------------------------------------*/
 /* add an ename pair to hidden ename set                                      */
 /*----------------------------------------------------------------------------*/
 void OpSpec::vTopoTagAdd(Stz* sName, i8 iValue, eTN eToken)
