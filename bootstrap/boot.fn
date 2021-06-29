@@ -394,9 +394,24 @@ function waitForClusterBoot() {
   #shellcheck disable=SC2064
   trap "kill -0 ${dotPid} &>/dev/null && kill ${dotPid} &>/dev/null && wait ${dotPid} 2>/dev/null" SIGINT SIGHUP SIGTERM EXIT
 
+  # Give a couple of seconds for SE to attempt to start up on each node.
+  # If we don't then it may look like it isn't running.
+  sleep 2
+
   for nodeName in "${NODE_LIST[@]}"; do
 
-    while ! isRemoteSeReady "${nodeName}"; do
+    while true; do
+      # If SE is not running then stop waiting
+      if [ -z "$(getRemoteRunningPid "${nodeName}")" ]; then
+        debugPrint "Node ${nodeName} is not running"
+        break;
+      fi
+
+      # If SE is ready then stop waiting
+      if isRemoteSeReady "${nodeName}" ; then
+        break
+      fi
+
       debugPrint "Node ${nodeName} is not ready"
       sleep 1
     done
