@@ -80,15 +80,17 @@ Stz* PipelineSpec::szPipelineNm(void)
 /*----------------------------------------------------------------------------*/
 /* find stage matching given name                                             */
 /*----------------------------------------------------------------------------*/
-StageSpec* PipelineSpec::pFindStageSpec(Stz* szFindNm, i8& i_Stage)
+StageSpec* PipelineSpec::pFindStageSpec(Stz* szFindNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
-  for (i_Stage = 0; i_Stage < nItems(); i_Stage++) {
+  for (i8 i_Stage = 0; i_Stage < nItems(); i_Stage++) {
     StageSpec* pStageSpec = pGet(i_Stage);
     
-    if (pStageSpec->szStageNm()->bSame(szFindNm))
+    if (pStageSpec->szStageNm()->bSame(szFindNm)) {
+      RASSERT(pStageSpec->i_StageSpec() == i_Stage);
       return pStageSpec;
+    }
   }
   
   return nullptr;

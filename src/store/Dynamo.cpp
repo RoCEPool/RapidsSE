@@ -927,12 +927,8 @@ bool Dynamo::bPhase2_staging(void)
       Stz* szName = pOpSpec->szOpNm();
       
       // 1) is the name in the opSpec actually a stage in this pipeline?
-      i8 i_StageDst = C_UNKNOWN;
-      StageSpec* pStageSpecDst =
-        m_p_PipelineSpec->pFindStageSpec(szName,i_StageDst);
-      
+      StageSpec* pStageSpecDst = m_p_PipelineSpec->pFindStageSpec(szName);
       if (pStageSpecDst) {
-        RASSERT(pStageSpecDst->i_StageSpec() == i_StageDst);
         vNameIsStage(pStageSpec,pOpSpec,pStageSpecDst);
         continue;
       }

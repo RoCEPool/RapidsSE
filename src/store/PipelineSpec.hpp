@@ -25,7 +25,7 @@ namespace STORE
    ~PipelineSpec(void) noexcept(false);
   
     void vAddStageSpec(StageSpec* pStageSpec);
-    StageSpec* pFindStageSpec(Stz* szFindNm, i8& i_Stage);
+    StageSpec* pFindStageSpec(Stz* szFindNm);
     Job* pPipelineJob(void);
     Stz* szPipelineNm(void);
     StageSpec* pStageSpec(i8 i_Stage);
