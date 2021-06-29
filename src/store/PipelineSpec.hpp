@@ -13,6 +13,8 @@ namespace STORE
     s32  m_sPipelineNm; // pipeline name
   
     Job* m_pPipelineJob; // which job
+  
+    //     m_pNestedPipelines[]
     
     // must be last
     Footer m_xFooter;

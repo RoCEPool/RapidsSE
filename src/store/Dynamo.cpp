@@ -346,11 +346,11 @@ bool Dynamo::bCompile(void)
   
   bool bResult = false;
     
-  bResult = bPhase1_collect();
+  bResult = bPass1_collect();
   if (! bResult)
     return false;
    
-  bResult = bPhase2_staging();
+  bResult = bPass2_staging();
   if (! bResult)
     return false;
     
@@ -391,13 +391,13 @@ void Dynamo::vShow(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                           Phase 1 : Collect                                */
+/*                           Pass 1 : Collect                                 */
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* phase 1: collect the pipeline statement                                    */
+/* pass 1: collect the pipeline statement                                     */
 /*----------------------------------------------------------------------------*/
-bool Dynamo::bPhase1_collect(void)
+bool Dynamo::bPass1_collect(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
     
@@ -902,17 +902,17 @@ bool Dynamo::bTokenIsOp(Token* pTkn)
 
 
 /*----------------------------------------------------------------------------*/
-/*                          Phase 2 : Staging                                 */
+/*                           Pass 2 : Staging                                 */
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* phase2 staging                                                             */
+/* pass 2 staging                                                             */
 /*----------------------------------------------------------------------------*/
-bool Dynamo::bPhase2_staging(void)
+bool Dynamo::bPass2_staging(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
     
-  // get each stageSpec of pipeline
+  // get each stageSpec of pipelineSpec
   i8 nStageSpecs = m_p_PipelineSpec->nItems();
   for (i8 i_Stage = 0; i_Stage < nStageSpecs; i_Stage++) {
     StageSpec* pStageSpec = m_p_PipelineSpec->pGet(i_Stage);
@@ -1061,15 +1061,15 @@ void Dynamo::vMorphToSend(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_NextStage)
 /*----------------------------------------------------------------------------*/
 /* name is a known operator                                                   */
 /*----------------------------------------------------------------------------*/
-void Dynamo::vNameIsOp(StageSpec* pStageSpec, OpSpec* pOpSpec)
+void Dynamo::vNameIsOp(StageSpec* pStageSpec, OpSpec* pOpSpec_isOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  i8 i_Op = pOpSpec->i_OpSpec();
+  i8 i_Op = pOpSpec_isOp->i_OpSpec();
   i8 i_Stage = pStageSpec->i_StageSpec();
   ePX eCrossTopo = Dynamo::eCrossTopo(pStageSpec, pStageSpec);
   
-  vTopoTagsAdd(pOpSpec,eCrossTopo,i_Stage,i_Op+1);
+  vTopoTagsAdd(pOpSpec_isOp,eCrossTopo,i_Stage,i_Op+1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1085,7 +1085,7 @@ void Dynamo::vNameIsPipeline(void)
 /*----------------------------------------------------------------------------*/
 /* name is a known stage                                                      */
 /*----------------------------------------------------------------------------*/
-void Dynamo::vNameIsStage(StageSpec* pStageSpec, OpSpec* pOpSpec,
+void Dynamo::vNameIsStage(StageSpec* pStageSpec, OpSpec* pOpSpec_isStage,
                           StageSpec* pNextStageSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
@@ -1097,12 +1097,12 @@ void Dynamo::vNameIsStage(StageSpec* pStageSpec, OpSpec* pOpSpec,
   if (! pOpSpecSend)
     
     // spec for op send does not yet exist in stage spec
-    vStageFirstSend(pStageSpec,pOpSpec,pNextStageSpec);
+    vStageFirstSend(pStageSpec,pOpSpec_isStage,pNextStageSpec);
   
   else
   
     // spec for op send already exists in stage spec
-    vStageSubsequentSend(pStageSpec,pOpSpec,pNextStageSpec,pOpSpecSend);
+    vStageSubsequentSend(pStageSpec,pOpSpec_isStage,pNextStageSpec,pOpSpecSend);
 
 }
 
@@ -1125,11 +1125,11 @@ void Dynamo::vStageConsumeOpInsert(StageSpec* pStageSpec, ePX eCrossTopo)
 /*----------------------------------------------------------------------------*/
 /* first send to stage                                                        */
 /*----------------------------------------------------------------------------*/
-void Dynamo::vStageFirstSend(StageSpec* pStageSpec, OpSpec* pOpSpec,
+void Dynamo::vStageFirstSend(StageSpec* pStageSpec, OpSpec* pOpSpec_isStage,
                              StageSpec* pNextStageSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-  i8 i_Op = pOpSpec->i_OpSpec();
+  i8 i_Op = pOpSpec_isStage->i_OpSpec();
   i8 i_NextStage = pNextStageSpec->i_StageSpec();
 
   ePX eCrossTopo = Dynamo::eCrossTopo(pStageSpec, pNextStageSpec);
@@ -1142,18 +1142,18 @@ void Dynamo::vStageFirstSend(StageSpec* pStageSpec, OpSpec* pOpSpec,
 
     // remove the last (stage) OpSpec from the OpSpecVec
     RASSERT(i_Op == pStageSpec->nItems() - 1);
-    pStageSpec->vRemove(pOpSpec);
-    delete pOpSpec;
+    pStageSpec->vRemove(pOpSpec_isStage);
+    delete pOpSpec_isStage;
     return;
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // change the op to a send
-  vMorphToSend(pOpSpec,eCrossTopo,i_NextStage);
+  vMorphToSend(pOpSpec_isStage,eCrossTopo,i_NextStage);
   
   // send op has <sendkind> argument
-  pOpSpec->vArgTagAdd(C_TAG_SENDKIND,(i8)pOpSpec->eSendKind(),TN_INTEGER);
+  pOpSpec_isStage->vArgTagAdd(C_TAG_SENDKIND,(i8)pOpSpec_isStage->eSendKind(),TN_INTEGER);
   
   // is there a consumeOp already in the destination stage ?
   OpSpec* pConsumeOpSpec = pNextStageSpec->pFindOpSpec("consumeOp"_Stz);

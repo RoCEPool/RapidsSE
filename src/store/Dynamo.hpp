@@ -43,9 +43,9 @@ namespace STORE
   private:
 
     //
-    // Phase 1 : Collect
+    // Pass 1 : Collect
     //
-    bool bPhase1_collect(void);
+    bool bPass1_collect(void);
   
     bool bCollectBegin(void);
     bool bCollectEnd(void);
@@ -70,9 +70,9 @@ namespace STORE
 
 
     //
-    // Phase 2 : Staging
+    // Pass 2 : Staging
     //
-    bool bPhase2_staging(void);
+    bool bPass2_staging(void);
 
     void vArgAdd_sends(OpSpec* pConsumeOpSpec, ePX eCrossTopo);
     void vArgUpdate_sends(OpSpec* pConsumeOpSpec, ePX eCrossTopo);
