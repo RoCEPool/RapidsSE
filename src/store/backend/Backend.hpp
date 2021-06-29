@@ -62,8 +62,8 @@ namespace STORE
     //
     // pipeline stages
     //
-    void vAppendLastStage(void);
-    void vAppendNextStage(Stz* szStage);
+    void vAppendLastStage(Stz* szLocation);
+    void vAppendNextStage(Stz* szStage, Stz* szLocation);
     void vAppendNextOp(Stz* szStage);
     void vAppendPipe(void);
     void vAppendStartStage(void);

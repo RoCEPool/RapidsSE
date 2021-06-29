@@ -27,6 +27,7 @@
 #include "PlanConstants.hpp"
 #include "GraphNav.hpp"
 #include "LimitOp.hpp"
+#include "Location.hpp"
 #include "PlanOperand.hpp"
 #include "TableScanOp.hpp"
 #include "QueryNode.hpp"
@@ -168,16 +169,18 @@ bool Backend::bTransliterate(String* sPipeline) {
   ASSERT(StageMarker::bIsOfType(pStartingNode));
   QueryNode* pStageMarker = _pQueryNode(pStartingNode);
 
+  // append the start stage
   vAppendStartStage();
 
   // We want to iterate over each logical subgraph, bounded by StageMarkers,
   // and generate the pipeline for each statement
   vAppendPipe();
   vAppendNextOp(pStageMarker->szName());
-  GraphNav::bGlobalWalk(pStageMarker, false, true, vVisitorPlan, (void *) this);
+  //GraphNav::bGlobalWalk(pStageMarker, false, true, vVisitorPlan, (void *) this);
+  GraphNav::bGlobalWalkBottomUp(pStageMarker, false, true, vVisitorPlan, (void *) this);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vAppendLastStage();
+  vAppendLastStage("on origin"_Stz);
 
   return true;
 }
@@ -995,6 +998,12 @@ GraphNav::eWalkCtrl Backend::vVisitorStatement(PlanNode* pRootNode, s256& sPath,
 
   if (iDepth == 0) {
     pBackend->vAppendPipe();
+    QueryNode* pLocation = StageMarker::pLocation(pQueryNode);
+
+    if (pLocation) {
+      Stz *szLocation = Parser::Location::szLocationType(pLocation);
+    }
+
     pBackend->vAppendNextOp("stageLast"_Stz);
   }
 
@@ -1085,18 +1094,29 @@ GraphNav::eWalkCtrl Backend::vVisitorPlan(PlanNode* pRootNode, s256& sPath, i8 i
 
   // we have a unionOp
   if (pHasUnionOp) {
-    pBackend->vAppendNextStage(pStageMarker->szName());
+
+    // get the location of this stageMarker
+    QueryNode* pLocation = StageMarker::pLocation(pStageMarker);
+    RASSERT(pLocation);
+    Stz *szLocation = Parser::Location::szLocationType(pLocation);
+
+    pBackend->vAppendNextStage(pStageMarker->szName(), szLocation);
 
     QueryNode *pUnionOp = static_cast<QueryNode *>(pHasUnionOp);
     pBackend->vAppendNextOp(pUnionOp->szName());
 
-    // previos stage to pipe to union stage
-    pBackend->vAppendNextStage(pUnionOp->szName());
+    // previous stage to pipe to union stage
+    pBackend->vAppendNextStage(pUnionOp->szName(), szLocation);
     vAppendUnionOp(pBackend, pUnionOp);
     return GraphNav::WALK_SKIP_CHILDREN;
   }
 
-  pBackend->vAppendNextStage(pStageMarker->szName());
+  // get the location of this stageMarker
+  QueryNode* pLocation = StageMarker::pLocation(pStageMarker);
+  RASSERT(pLocation);
+  Stz *szLocation = Parser::Location::szLocationType(pLocation);
+
+  pBackend->vAppendNextStage(pStageMarker->szName(), szLocation);
 
   // Walk the current node and its children,
   // calling the visitor function for each node encountered. This is a
@@ -1112,12 +1132,12 @@ GraphNav::eWalkCtrl Backend::vVisitorPlan(PlanNode* pRootNode, s256& sPath, i8 i
 /*----------------------------------------------------------------------------*/
 /* append last stage to the pipeline                                          */
 /*----------------------------------------------------------------------------*/
-void Backend::vAppendLastStage(void) {
+void Backend::vAppendLastStage(Stz* szLocation) {
 
   m_sPipeline->vCatSprint(
-      "  stage stageLast on origin :\n"
+      "  stage stageLast %s :\n"
       "    output\n"
-      ""_Stz);
+      ""_Stz, szLocation);
 
   m_sPipeline->vCatSprint(
       "    | sink\n"
@@ -1134,12 +1154,13 @@ void Backend::vAppendLastStage(void) {
 /*----------------------------------------------------------------------------*/
 /* append next stage to the pipeline                                          */
 /*----------------------------------------------------------------------------*/
-void Backend::vAppendNextStage(Stz* szStage) {
+void Backend::vAppendNextStage(Stz* szStage, Stz* szLocation) {
 
   m_sPipeline->vCatSprint(
-      "  stage %s on all partitions :\n"
+      "  stage %s on %s :\n"
       ""_Stz,
-      szStage);
+      szStage,
+      szLocation);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1165,7 +1186,7 @@ void Backend::vAppendNextOp(Stz* szNextStage) {
 /*----------------------------------------------------------------------------*/
 /* append the start stage to the pipeline                                     */
 /*----------------------------------------------------------------------------*/
-void Backend::vAppendStartStage(void) {
+void Backend::vAppendStartStage() {
 
   m_sPipeline->vCopy(
       "pipeline unnamed\n"
