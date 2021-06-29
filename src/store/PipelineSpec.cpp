@@ -168,15 +168,6 @@ bool PipelineSpec::bPass1_collect(void)
     
   bool bResult = true;
   
-  vTokenBegin(0);
-  
-  if (m_p_Dynamo->m_pTkn->bSame("PIPELINE"_Stz) ||
-      m_p_Dynamo->m_pTkn->bSame("PIPELINELOCAL"_Stz)) {
-    bResult = bCollectName();
-    if (! bResult)
-      return false;
-  }
-
   while (m_p_Dynamo->m_pTkn->bSame("TAG"_Stz)) {
     bResult = bCollectTag();
     if (! bResult)
@@ -230,26 +221,6 @@ bool PipelineSpec::bCollectEnd(void)
   if ( ! m_p_Dynamo->m_pTkn->bSame("END"_Stz) )
     return false;
     
-  return true;
-}
-/*----------------------------------------------------------------------------*/
-/* collect PIPELINE & the name of the pipeline                                */
-/*----------------------------------------------------------------------------*/
-bool PipelineSpec::bCollectName(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
-  
-  RASSERT(m_p_Dynamo->m_pTkn->bSame("PIPELINE"_Stz) || m_p_Dynamo->m_pTkn->bSame("PIPELINELOCAL"_Stz));
-  vTokenAccept();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  m_p_Dynamo->m_p_PipelineSpec = new PipelineSpec(m_p_Dynamo->m_pTkn->szChars(),m_p_Dynamo);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  vTokenAccept();
-   
   return true;
 }
 

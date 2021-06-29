@@ -359,11 +359,11 @@ bool Dynamo::bCompile(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bResult = bPass1_collect();
+  bResult = m_p_PipelineSpec->bPass1_collect();
   if (! bResult)
     return false;
    
-  bResult = bPass2_staging();
+  bResult = m_p_PipelineSpec->bPass2_staging();
   if (! bResult)
     return false;
     
@@ -400,9 +400,36 @@ void Dynamo::vShow(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* accept token and advance to next token                                     */
+/*----------------------------------------------------------------------------*/
+void Dynamo::vTokenAccept(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+
+  ++ m_i_Tkn;
+  
+  m_pTkn = m_pTknVec->pGet(m_i_Tkn);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* set token on which parsing begins                                          */
+/*----------------------------------------------------------------------------*/
+void Dynamo::vTokenBegin(i8 i_Tkn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+  
+  m_i_Tkn = i_Tkn;
+  m_pTkn  = m_pTknVec->pGet(m_i_Tkn);
+  
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+#if 0
 /*----------------------------------------------------------------------------*/
 /*                           Pass 1 : Collect                                 */
 /*----------------------------------------------------------------------------*/
@@ -841,30 +868,6 @@ bool Dynamo::bRecogniseOnOrigin(void)
   return false;
 }
 
-/*----------------------------------------------------------------------------*/
-/* accept token and advance to next token                                     */
-/*----------------------------------------------------------------------------*/
-void Dynamo::vTokenAccept(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-
-  ++ m_i_Tkn;
-  
-  m_pTkn = m_pTknVec->pGet(m_i_Tkn);
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* set token on which parsing begins                                          */
-/*----------------------------------------------------------------------------*/
-void Dynamo::vTokenBegin(i8 i_Tkn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-  
-  m_i_Tkn = i_Tkn;
-  m_pTkn  = m_pTknVec->pGet(m_i_Tkn);
-  
-}
 
 /*----------------------------------------------------------------------------*/
 /* is token a known operator?                                                 */
@@ -1224,6 +1227,8 @@ void Dynamo::vTopoTagsUpdate(OpSpec* pOpSpec,
   // op of the next stage for the send
   pOpSpec->vTopoTagReplace(C_TAG_NEXTOP,(i8)i_NextOp,TN_INTEGER);
 }
+
+#endif
 
 /*============================================================================*/
 /* end                                                                        */

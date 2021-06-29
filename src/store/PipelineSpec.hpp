@@ -9,6 +9,9 @@ namespace STORE
 {
   class PipelineSpec : public VectorNL_t<CN_PIPELINESPEC,StageSpec,C_MAX_STAGES>
   {
+  
+    friend class STORE::Dynamo;
+
   private:
     s32  m_sPipelineNm; // pipeline name
   
@@ -58,7 +61,6 @@ namespace STORE
 
     bool bCollectBegin(void);
     bool bCollectEnd(void);
-    bool bCollectName(void);
     bool bCollectOp(void);
     bool bCollectOpArgs(OpSpec* pOpSpec);
     bool bCollectOpSequence(void);
