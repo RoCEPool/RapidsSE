@@ -108,32 +108,45 @@ void Step::vJob_PipelineCompile(void)
   
   m_pJob->pLogicUnit_job()->m_xpDynamo = new Dynamo(sCmd,m_pJob);
   
-  bool bResult = m_pJob->pLogicUnit_job()->m_xpDynamo->bCompile();
+  bool bCleanCompile = m_pJob->pLogicUnit_job()->m_xpDynamo->bCompile();
   
-  if ( ! bResult) {
-    PipelineSpec* pPipelineSpec = m_pJob->pLogicUnit_job()->m_xpDynamo->pPipelineSpec();
-    delete pPipelineSpec;
+  if (bCleanCompile) {
     
-    delete *m_pJob->pLogicUnit_job()->m_xpDynamo;
-    m_pJob->pLogicUnit_job()->m_xpDynamo = nullptr;
-    m_pDataStack->vPushInt(EC_INVALID_COMMAND);
-  }
-  else {
-    
-    if (! AM::bPassesLowMem(m_pJob)) {
+    if (AM::bPassesLowMem(m_pJob)) {
+      
+      // clean compile, passes low memory test
+      
+      m_pDataStack->vPushInt(EC_NONE);
+      if (AM::bVerbose()) {
+        m_pJob->pLogicUnit_job()->m_xpDynamo->vShow();
+      }
+      
+    }
+    else {
+      
+      // clean compile, but does not pass low memory test
+      
       PipelineSpec* pPipelineSpec = m_pJob->pLogicUnit_job()->m_xpDynamo->pPipelineSpec();
       delete pPipelineSpec;
       
       delete *m_pJob->pLogicUnit_job()->m_xpDynamo;
       m_pJob->pLogicUnit_job()->m_xpDynamo = nullptr;
       m_pDataStack->vPushInt(EC_LOW_MEMORY);
+      
     }
-    else {
-      m_pDataStack->vPushInt(EC_NONE);
-      if (AM::bVerbose()) {
-        m_pJob->pLogicUnit_job()->m_xpDynamo->vShow();
-      }
-    }
+
+  }
+  else {
+    
+    // failed to compile
+    
+    PipelineSpec* pPipelineSpec = m_pJob->pLogicUnit_job()->m_xpDynamo->pPipelineSpec();
+    delete pPipelineSpec;
+    
+    delete *m_pJob->pLogicUnit_job()->m_xpDynamo;
+    m_pJob->pLogicUnit_job()->m_xpDynamo = nullptr;
+    m_pDataStack->vPushInt(EC_INVALID_COMMAND);
+
   }
   
   EXIT();
