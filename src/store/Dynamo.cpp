@@ -944,7 +944,7 @@ bool Dynamo::bPhase2_staging(void)
       //
       
       // 3) the name in the opSpec is a known op
-      vNameIsOp(pStageSpec,i_Stage,pOpSpec,i_Op);
+      vNameIsOp(pStageSpec,pOpSpec);
 
     } // each op
     
@@ -1065,15 +1065,15 @@ void Dynamo::vMorphToSend(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_NextStage)
 /*----------------------------------------------------------------------------*/
 /* name is a known operator                                                   */
 /*----------------------------------------------------------------------------*/
-void Dynamo::vNameIsOp(StageSpec* pStageSpec, i8 i_Stage,
-                       OpSpec* pOpSpec, i8 i_Op)
+void Dynamo::vNameIsOp(StageSpec* pStageSpec, OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-  RASSERT(pStageSpec->i_StageSpec() == i_Stage);
-  RASSERT(pOpSpec->i_OpSpec() == i_Op);
-
+  
+  i8 i_Op = pOpSpec->i_OpSpec();
+  i8 i_Stage = pStageSpec->i_StageSpec();
+  
   ePX eCrossTopo = Dynamo::eCrossTopo(pStageSpec, pStageSpec);
-  vTopoTagsAdd(pOpSpec, eCrossTopo, i_Stage, i_Op+1);
+  vTopoTagsAdd(pOpSpec,eCrossTopo,i_Stage,i_Op+1);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -79,7 +79,7 @@ namespace STORE
 
     void vMorphToSend(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_NextStage);
 
-    void vNameIsOp(StageSpec* pStageSpec, i8 i_Stage, OpSpec* pOpSpec, i8 i_Op);
+    void vNameIsOp(StageSpec* pStageSpec, OpSpec* pOpSpec);
     void vNameIsPipeline(void);
     void vNameIsStage(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
                       StageSpec* pNextStageSpec, i8 i_NextStage);
