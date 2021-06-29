@@ -1067,8 +1067,8 @@ void Dynamo::vNameIsOp(StageSpec* pStageSpec, OpSpec* pOpSpec)
   
   i8 i_Op = pOpSpec->i_OpSpec();
   i8 i_Stage = pStageSpec->i_StageSpec();
-  
   ePX eCrossTopo = Dynamo::eCrossTopo(pStageSpec, pStageSpec);
+  
   vTopoTagsAdd(pOpSpec,eCrossTopo,i_Stage,i_Op+1);
 }
 
@@ -1090,9 +1090,6 @@ void Dynamo::vNameIsStage(StageSpec* pStageSpec, OpSpec* pOpSpec,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  i8 i_Op = pOpSpec->i_OpSpec();
-  i8 i_NextStage = pNextStageSpec->i_StageSpec();
-
   // is there a send already? This would be the case if one stage is
   // piped into multiple stage e.g a unionAll
   OpSpec* pOpSpecSend = pStageSpec->pFindOpSpec("send"_Stz);
@@ -1105,8 +1102,7 @@ void Dynamo::vNameIsStage(StageSpec* pStageSpec, OpSpec* pOpSpec,
   else
   
     // spec for op send already exists in stage spec
-    vStageSubsequentSend(pStageSpec,pOpSpec,i_Op,pNextStageSpec,i_NextStage,
-                         pOpSpecSend);
+    vStageSubsequentSend(pStageSpec,pOpSpec,pNextStageSpec,pOpSpecSend);
 
 }
 
@@ -1179,12 +1175,12 @@ void Dynamo::vStageFirstSend(StageSpec* pStageSpec, OpSpec* pOpSpec,
 /*----------------------------------------------------------------------------*/
 /* second or subsequent send to stage                                         */
 /*----------------------------------------------------------------------------*/
-void Dynamo::vStageSubsequentSend(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
-                                  StageSpec* pNextStageSpec, i8 i_NextStage,
-                                  OpSpec* pOpSpecSend)
+void Dynamo::vStageSubsequentSend(StageSpec* pStageSpec, OpSpec* pOpSpec,
+                                  StageSpec* pNextStageSpec, OpSpec* pOpSpecSend)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-  RASSERT(pOpSpec->i_OpSpec() == i_Op);
+  i8 i_Op = pOpSpec->i_OpSpec();
+  i8 i_NextStage = pNextStageSpec->i_StageSpec();
 
   ePX eCrossTopo = Dynamo::eCrossTopo(pStageSpec, pNextStageSpec);
 
