@@ -52,7 +52,6 @@ namespace STORE
   
     bool bCollectBegin(void);
     bool bCollectEnd(void);
-    bool bCollectName(void);
     bool bCollectOp(void);
     bool bCollectOpArgs(OpSpec* pOpSpec);
     bool bCollectOpSequence(void);

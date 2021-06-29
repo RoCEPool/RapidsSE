@@ -346,6 +346,19 @@ bool Dynamo::bCompile(void)
   
   bool bResult = false;
     
+  vTokenBegin(0);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  RASSERT(m_pTkn->bSame("PIPELINE"_Stz) || m_pTkn->bSame("PIPELINELOCAL"_Stz));
+  vTokenAccept();
+  
+  m_p_PipelineSpec = new PipelineSpec(m_pTkn->szChars(),this);
+
+  vTokenAccept();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   bResult = bPass1_collect();
   if (! bResult)
     return false;
@@ -395,22 +408,14 @@ void Dynamo::vShow(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* pass 1: collect the pipeline statement                                     */
+/* pass 1: collect the body of a pipeline statement                           */
 /*----------------------------------------------------------------------------*/
 bool Dynamo::bPass1_collect(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
     
   bool bResult = true;
-  
-  vTokenBegin(0);
-  
-  if (m_pTkn->bSame("PIPELINE"_Stz) || m_pTkn->bSame("PIPELINELOCAL"_Stz)) {
-    bResult = bCollectName();
-    if (! bResult)
-      return false;
-  }
-
+    
   while (m_pTkn->bSame("TAG"_Stz)) {
     bResult = bCollectTag();
     if (! bResult)
@@ -464,26 +469,6 @@ bool Dynamo::bCollectEnd(void)
   if ( ! m_pTkn->bSame("END"_Stz) )
     return false;
     
-  return true;
-}
-/*----------------------------------------------------------------------------*/
-/* collect PIPELINE & the name of the pipeline                                */
-/*----------------------------------------------------------------------------*/
-bool Dynamo::bCollectName(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-  
-  RASSERT(m_pTkn->bSame("PIPELINE"_Stz) || m_pTkn->bSame("PIPELINELOCAL"_Stz));
-  vTokenAccept();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  m_p_PipelineSpec = new PipelineSpec(m_pTkn->szChars(),this);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  vTokenAccept();
-   
   return true;
 }
 
