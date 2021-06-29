@@ -933,7 +933,7 @@ bool Dynamo::bPhase2_staging(void)
       
       if (pStageSpecDst) {
         RASSERT(pStageSpecDst->i_StageSpec() == i_StageDst);
-        vNameIsStage(pStageSpec,pOpSpec,i_Op,pStageSpecDst,i_StageDst);
+        vNameIsStage(pStageSpec,pOpSpec,pStageSpecDst);
         continue;
       }
       
@@ -1089,11 +1089,13 @@ void Dynamo::vNameIsPipeline(void)
 /*----------------------------------------------------------------------------*/
 /* name is a known stage                                                      */
 /*----------------------------------------------------------------------------*/
-void Dynamo::vNameIsStage(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
-                          StageSpec* pNextStageSpec, i8 i_NextStage)
+void Dynamo::vNameIsStage(StageSpec* pStageSpec, OpSpec* pOpSpec,
+                          StageSpec* pNextStageSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-  RASSERT(pOpSpec->i_OpSpec() == i_Op);
+  
+  i8 i_Op = pOpSpec->i_OpSpec();
+  i8 i_NextStage = pNextStageSpec->i_StageSpec();
 
   // is there a send already? This would be the case if one stage is
   // piped into multiple stage e.g a unionAll
