@@ -1100,7 +1100,7 @@ void Dynamo::vNameIsStage(StageSpec* pStageSpec, OpSpec* pOpSpec,
   if (! pOpSpecSend)
     
     // spec for op send does not yet exist in stage spec
-    vStageFirstSend(pStageSpec,pOpSpec,i_Op,pNextStageSpec,i_NextStage);
+    vStageFirstSend(pStageSpec,pOpSpec,pNextStageSpec);
   
   else
   
@@ -1129,11 +1129,12 @@ void Dynamo::vStageConsumeOpInsert(StageSpec* pStageSpec, ePX eCrossTopo)
 /*----------------------------------------------------------------------------*/
 /* first send to stage                                                        */
 /*----------------------------------------------------------------------------*/
-void Dynamo::vStageFirstSend(StageSpec* pStageSpec, OpSpec* pOpSpec, i8 i_Op,
-                             StageSpec* pNextStageSpec, i8 i_NextStage)
+void Dynamo::vStageFirstSend(StageSpec* pStageSpec, OpSpec* pOpSpec,
+                             StageSpec* pNextStageSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-  RASSERT(pOpSpec->i_OpSpec() == i_Op);
+  i8 i_Op = pOpSpec->i_OpSpec();
+  i8 i_NextStage = pNextStageSpec->i_StageSpec();
 
   ePX eCrossTopo = Dynamo::eCrossTopo(pStageSpec, pNextStageSpec);
 
