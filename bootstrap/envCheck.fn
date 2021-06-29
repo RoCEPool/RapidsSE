@@ -64,6 +64,11 @@ function validateEnvironment() {
   # Check that node names don't contain spaces or special characters and are unique.
   validateNodeNames
 
+  # Check that gcc is installed and is new enough
+  validateGcc
+
+  # Check that bash has the correct version
+  validateBash
 }
 
 
@@ -627,6 +632,125 @@ function validateNodeNames() {
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Check that GCC is installed and is new enough on each node.
+# Params: None
+
+function validateGcc() {
+  local nodeName
+  local host
+  local remoteCmd
+  local output
+
+  declare -a sshArgs=()
+  declare -a failedNodes=()
+
+  debugPrint "Validating gcc version"
+
+  for nodeName in "${NODE_LIST[@]}"
+  do
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+
+    remoteCmd="which gcc &>/dev/null && gcc -dumpversion 2>/dev/null"
+
+    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash" "-c" "'${remoteCmd}'")
+
+    # Run it
+    output="$(ssh "${sshArgs[@]}" || true)"
+
+    # Check if it returned with a success error code
+    if [ "$?" -ne 0 ] ; then
+      failedNodes+=("${nodeName}")
+      continue
+    fi
+
+    # Check the gcc version is sufficient.
+    # First check if the output is empty.
+    if [ -z "${output}" ]; then
+      failedNodes+=("${nodeName}")
+      continue;
+    fi
+
+    # Check the version number.
+    if ! isVersionGreaterThanOrEqualTo "${output}" "${GCC_MINIMUM_VERSION}" ; then
+      debugPrint "GCC on node ${nodeName} is too old - Found: ${output} ; Required: ${GCC_MINIMUM_VERSION}"
+      failedNodes+=("${nodeName}")
+      continue
+    fi
+  done
+
+  if [ "${#failedNodes[@]}" -gt 0 ]; then
+    local errMsg="GCC is either not installed or is too old (min: ${GCC_MINIMUM_VERSION}) on the following nodes:"
+
+    for nodeName in "${failedNodes[@]}"
+    do
+      host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+      errMsg+="$(printf "\n  %-12s [host: %12s]" "${nodeName}" "${host}")"
+    done
+
+    errorExit "${errMsg}"
+  fi
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Check that bash is installed and is new enough on each node.
+# Params: None
+
+function validateBash() {
+  local nodeName
+  local host
+  local remoteCmd
+  local output
+
+  declare -a sshArgs=()
+  declare -a failedNodes=()
+
+  debugPrint "Validating bash version"
+
+  for nodeName in "${NODE_LIST[@]}"
+  do
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+
+    remoteCmd='which bash &>/dev/null && echo "${BASH_VERSINFO[0]}.${BASH_VERSINFO[1]}.${BASH_VERSINFO[2]}" 2>/dev/null'
+
+    sshArgs=("-q" "-o" "StrictHostKeyChecking no" "${host}" "bash" "-c" "'${remoteCmd}'")
+
+    # Run it
+    output="$(ssh "${sshArgs[@]}" || true)"
+
+    # Check if it returned with a success error code
+    if [ "$?" -ne 0 ] ; then
+      failedNodes+=("${nodeName}")
+      continue
+    fi
+
+    # Check the gcc version is sufficient.
+    # First check if the output is empty.
+    if [ -z "${output}" ]; then
+      failedNodes+=("${nodeName}")
+      continue;
+    fi
+
+    # Check the version number.
+    if ! isVersionGreaterThanOrEqualTo "${output}" "${BASH_MINIMUM_VERSION}" ; then
+      debugPrint "BASH on node ${nodeName} is too old - Found: ${output} ; Required: ${BASH_MINIMUM_VERSION}"
+      failedNodes+=("${nodeName}")
+      continue
+    fi
+  done
+
+  if [ "${#failedNodes[@]}" -gt 0 ]; then
+    local errMsg="Bash is either not installed or is too old (min: ${BASH_MINIMUM_VERSION}) on the following nodes:"
+
+    for nodeName in "${failedNodes[@]}"
+    do
+      host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+      errMsg+="$(printf "\n  %-12s [host: %12s]" "${nodeName}" "${host}")"
+    done
+
+    errorExit "${errMsg}"
+  fi
+}
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+

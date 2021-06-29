@@ -21,6 +21,9 @@ readonly CONFIG_DEFAULT_VERSION="1"
 readonly PID_FILENAME="se.pid"
 readonly READY_FILENAME="se.ready"
 
+readonly GCC_MINIMUM_VERSION="4.8.5"
+readonly BASH_MINIMUM_VERSION="4.2.46"
+
 # Prefix of the name of the associative arrays for each node in the cluster.config
 readonly NODE_CFG_PREFIX="NODE_CFG_"
 
@@ -146,6 +149,38 @@ function printIndentArray() {
     printf "%0.s " $(seq 1 ${indents})
     printf '%s\n' "${var}"
   done
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Compares two version numbers in the form x.y.z and returns a successful
+## exit code if the first version number is greater than or equal to the 
+## second version number.
+## Params:
+##  $1 : the version number to be compared
+##  $2 : the version number to compare to
+
+function isVersionGreaterThanOrEqualTo() {
+  if [ $# -ne 2 ]; then
+    printWarning "Got less than 2 arguments to function isVersionGreaterThanOrEqualTo()"
+    false
+    return
+  fi
+
+  local ver1
+  local ver2
+
+  ver1="$1"
+  ver2="$2"
+
+  # Check the version number.
+  # Hack for comparing version numbers taken from here: https://unix.stackexchange.com/a/285928
+
+  local result
+  result="$(printf '%s\n' "${ver1}" "${ver2}" | sort -V | head -n1)"
+
+  [ "${result}" = "${ver2}" ]
+  return
 }
 
 
