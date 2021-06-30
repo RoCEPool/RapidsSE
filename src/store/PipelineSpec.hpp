@@ -15,6 +15,8 @@ namespace STORE
   private:
     s32  m_sPipelineNm; // pipeline name
   
+    PipelineSpec* m_p_ParentPipelineSpec;
+  
     // optional set of nested pipelines
     VectorNL_t<CN_NESTEDPIPELINESPEC,PipelineSpec,C_MAX_NESTED_PIPELINES>
       m_oNestedPipelineSpecs;
@@ -37,11 +39,14 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    PipelineSpec(Stz* szPipelineNm, Dynamo* p_Dynamo, Scanner* p_Scanner);
+    PipelineSpec(Stz*          szPipelineNm,
+                 PipelineSpec* p_ParentPipelineSpec,
+                 Dynamo*       p_Dynamo,
+                 Scanner*      p_Scanner);
    ~PipelineSpec(void) noexcept(false);
   
     static bool bCompile(PipelineSpec* p_ParentPipelineSpec,
-                         TagSet*       pJobTags,
+                         TagSet*       p_JobTags,
                          Scanner*      p_Scanner,
                          Dynamo*       p_Dynamo,
                          

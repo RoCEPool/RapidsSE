@@ -25,12 +25,16 @@ __aFooterFunction(PipelineSpec)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-PipelineSpec::PipelineSpec(Stz* szPipelineNm,
-                           Dynamo* p_Dynamo, Scanner* p_Scanner)
+PipelineSpec::PipelineSpec(Stz*          szPipelineNm,
+                           PipelineSpec* p_ParentPipelineSpec,
+                           Dynamo*       p_Dynamo,
+                           Scanner*      p_Scanner)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
   m_sPipelineNm = szPipelineNm;
+  
+  m_p_ParentPipelineSpec = p_ParentPipelineSpec;
   
   // m_oNestedPipeline
   
@@ -59,7 +63,7 @@ PipelineSpec::~PipelineSpec(void) noexcept(false)
 /* recursively compile a new pipeline                                         */
 /*----------------------------------------------------------------------------*/
 bool PipelineSpec::bCompile(PipelineSpec* p_ParentPipelineSpec,
-                            TagSet*       pJobTags,
+                            TagSet*       p_JobTags,
                             Scanner*      p_Scanner,
                             Dynamo*       p_Dynamo,
                             
@@ -74,7 +78,10 @@ bool PipelineSpec::bCompile(PipelineSpec* p_ParentPipelineSpec,
   p_Scanner->vTokenAccept();
   
   rp_PipelineSpec =
-    new PipelineSpec(p_Scanner->pTkn()->szChars(),p_Dynamo,p_Scanner);
+    new PipelineSpec(p_Scanner->pTkn()->szChars(),
+                     p_ParentPipelineSpec,
+                     p_Dynamo,
+                     p_Scanner);
   p_Scanner->vTokenAccept();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
