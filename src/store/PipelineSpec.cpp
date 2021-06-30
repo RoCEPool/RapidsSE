@@ -148,13 +148,6 @@ void PipelineSpec::vPrint(void)
 }
 
 
-
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
 /*----------------------------------------------------------------------------*/
 /*                           Pass 1 : Collect                                 */
 /*----------------------------------------------------------------------------*/
@@ -166,6 +159,11 @@ bool PipelineSpec::bPass1_collect(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
       
+  if (! (pTkn()->bSame("TAG"_Stz) ||
+         pTkn()->bSame("BEGIN"_Stz))
+      )
+    return false;
+  
   while (pTkn()->bSame("TAG"_Stz))
     if (! bCollectTag())
       return false;
@@ -183,7 +181,8 @@ bool PipelineSpec::bCollectTag(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
-  RASSERT(pTkn()->bSame("TAG"_Stz));
+  if (! pTkn()->bSame("TAG"_Stz))
+    return false;
   vTokenAccept();
   
   s32 sTagNm = pTkn()->szChars();
@@ -328,16 +327,13 @@ bool PipelineSpec::bCollectOpSequence(StageSpec* p_StageSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
-  for (;;) {
-    
-    if (! bTokenMaybeOp(pTkn()))
-      break;
+  while (bTokenMaybeOp(pTkn())) {
 
-    bCollectOp(p_StageSpec);
+    if (! bCollectOp(p_StageSpec))
+      return false;
     
     if (! pTkn()->bSame("|"_Stz))
       break;
-    
     vTokenAccept();
   }
    
@@ -354,11 +350,11 @@ bool PipelineSpec::bCollectOp(StageSpec* p_StageSpec)
   
   i8 i_OpSpec = p_StageSpec->nItems();
   OpSpec* pOpSpec = new OpSpec(pTkn()->szChars(),i_OpSpec,p_StageSpec);
+  vTokenAccept();
+
   p_StageSpec->vAddOpSpec(pOpSpec);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  vTokenAccept();
   
   if (pTkn()->bSame("ROBIN"_Stz)) {
     pOpSpec->vSendKind(XK_ROBIN);

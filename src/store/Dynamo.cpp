@@ -234,29 +234,25 @@ bool Dynamo::bToPipelineStmt(String* pAsPipelineStmt,
 bool Dynamo::bCompile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-  
-  bool bResult = false;
-    
+        
   m_pScanner->vTokenBegin(0);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  RASSERT(m_pScanner->pTkn()->bSame("PIPELINE"_Stz) ||
-          m_pScanner->pTkn()->bSame("PIPELINELOCAL"_Stz));
+  if (! (m_pScanner->pTkn()->bSame("PIPELINE"_Stz) ||
+         m_pScanner->pTkn()->bSame("PIPELINELOCAL"_Stz))
+      )
+    return false;
   m_pScanner->vTokenAccept();
   
-  m_p_PipelineSpec_root = new PipelineSpec(m_pScanner->pTkn()->szChars(),this,m_pScanner);
-
+  m_p_PipelineSpec_root =
+    new PipelineSpec(m_pScanner->pTkn()->szChars(),this,m_pScanner);
   m_pScanner->vTokenAccept();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bResult = m_p_PipelineSpec_root->bPass1_collect();
-  if (! bResult)
+  if (! m_p_PipelineSpec_root->bPass1_collect())
     return false;
    
-  bResult = m_p_PipelineSpec_root->bPass2_staging();
-  if (! bResult)
+  if (! m_p_PipelineSpec_root->bPass2_staging())
     return false;
     
   return true;
