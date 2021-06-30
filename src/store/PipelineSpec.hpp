@@ -63,14 +63,14 @@ namespace STORE
     //
     bool bPass1_collect(void);
 
-    bool bCollectBegin(void);
-    bool bCollectEnd(void);
+    bool bCollectTag(void);
+    bool bCollectBeginEnd(void);
+    bool bCollectStage(void);
+    bool bCollectTopology(StageSpec* p_StageSpec);
+    bool bCollectOpSequence(StageSpec* p_StageSpec);
     bool bCollectOp(StageSpec* p_StageSpec);
     bool bCollectOpArgs(StageSpec* p_StageSpec, OpSpec* pOpSpec);
-    bool bCollectOpSequence(StageSpec* p_StageSpec);
-    bool bCollectStage(void);
-    bool bCollectTag(void);
-    bool bCollectTopology(StageSpec* p_StageSpec);
+    bool bCollectPipeline(void);
 
     bool bRecogniseOnAll(StageSpec* p_StageSpec);
     bool bRecogniseOnAllNodes(StageSpec* p_StageSpec);

@@ -165,62 +165,184 @@ void PipelineSpec::vPrint(void)
 bool PipelineSpec::bPass1_collect(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
-    
-  bool bCollected = false;
-  
-  while (pTkn()->bSame("TAG"_Stz)) {
-    bCollected = bCollectTag();
-    if (! bCollected)
+      
+  while (pTkn()->bSame("TAG"_Stz))
+    if (! bCollectTag())
       return false;
+  
+  if (! bCollectBeginEnd())
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect one tag                                                            */
+/*----------------------------------------------------------------------------*/
+bool PipelineSpec::bCollectTag(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
+  
+  RASSERT(pTkn()->bSame("TAG"_Stz));
+  vTokenAccept();
+  
+  s32 sTagNm = pTkn()->szChars();
+  vTokenAccept();
+
+  if (! pTkn()->bSame("="_Stz))
+    return false;
+  vTokenAccept();
+
+  sSTMT sTagValue = pTkn()->szChars();
+  vTokenAccept();
+
+  while (! pTkn()->bSame("ENDTAG"_Stz)) {
+    vTokenAccept();
   }
+  vTokenAccept();
+
+  if (AM::bVerbose())
+    vTrace("Tag recognised: %s %s\n"_Stz,sTagNm.szStz(),sTagValue.szStz());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  TagSet* pJobTags = m_p_Dynamo->m_p_PipelineJob->pJobTags();
+  
+  pJobTags->vInsert(sTagNm,sTagValue);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect a BEGIN { STAGE ... } END sequence                                 */
+/*----------------------------------------------------------------------------*/
+bool PipelineSpec::bCollectBeginEnd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
   if (! pTkn()->bSame("BEGIN"_Stz))
     return false;
-  bCollected = bCollectBegin();
-  if (! bCollected)
-    return false;
-  
-  if (! pTkn()->bSame("STAGE"_Stz))
-    return false;
-  while (pTkn()->bSame("STAGE"_Stz)) {
-    bCollected = bCollectStage();
-    if ( ! bCollected )
-      return false;
-  }
-  
-  bCollected = bCollectEnd();
-  if (! bCollected)
-    return false;
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect the pipeline BEGIN                                                 */
-/*----------------------------------------------------------------------------*/
-bool PipelineSpec::bCollectBegin(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
-  
-  RASSERT(pTkn()->bSame("BEGIN"_Stz));
   vTokenAccept();
     
+  while (pTkn()->bSame("STAGE"_Stz))
+    if (! bCollectStage())
+      return false;
+  
+  while (pTkn()->bSame("PIPELINE"_Stz))
+    if (! bCollectPipeline())
+      return false;
+  
+  if (! pTkn()->bSame("END"_Stz) )
+    return false;
+  vTokenAccept();
+
   return true;
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect the pipeline END                                                   */
+/* collect stage                                                              */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bCollectEnd(void)
+bool PipelineSpec::bCollectStage(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
+    
+  if (! pTkn()->bSame("STAGE"_Stz))
+    return false;
+  vTokenAccept();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  i8 i_StageSpec = this->nItems();
+  
+  StageSpec* p_StageSpec = new StageSpec(pTkn()->szChars(),i_StageSpec,this);
+  vTokenAccept();
+
+  this->vAddStageSpec(p_StageSpec);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+  if (! bCollectTopology(p_StageSpec))
+    return false;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  if (bTokenMaybeOp(pTkn()))
+    bCollectOpSequence(p_StageSpec);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect topology                                                           */
+/*----------------------------------------------------------------------------*/
+bool PipelineSpec::bCollectTopology(StageSpec* p_StageSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
-  if ( ! pTkn()->bSame("END"_Stz) )
+  if (! pTkn()->bSame("ON"_Stz))
     return false;
-    
-  return true;
+  vTokenAccept();
+  
+  // -- -- -- -- -- -- -- -- -- -- --
+  // on all nodes | partitions :
+  
+  if (pTkn()->bSame("ALL"_Stz)) {
+    vTokenAccept();
+    return bRecogniseOnAll(p_StageSpec);
+  }
+ 
+  // -- -- -- -- -- -- -- -- -- -- --
+  // on node <nodeNm> :
+  
+  else if (pTkn()->bSame("NODE"_Stz)) {
+    vTokenAccept();
+    return bRecogniseOnNode(p_StageSpec);
+  }
+  
+  // -- -- -- -- -- -- -- -- -- -- --
+  // on partition <partitionNo> :
+  
+  else if (pTkn()->bSame("PARTITION"_Stz)) {
+    vTokenAccept();
+    return bRecogniseOnPartition(p_StageSpec);
+  }
+  
+  // -- -- -- -- -- -- -- -- -- -- --
+  // on origin :
+  
+  else if (pTkn()->bSame("ORIGIN"_Stz)) {
+    vTokenAccept();
+    return bRecogniseOnOrigin(p_StageSpec);
+  }
+  
+  // -- -- -- -- -- -- -- -- -- -- --
+  
+  else {
+    return false;
+  }
 }
 
+/*----------------------------------------------------------------------------*/
+/* collect operator-pipe sequence                                             */
+/*----------------------------------------------------------------------------*/
+bool PipelineSpec::bCollectOpSequence(StageSpec* p_StageSpec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
+  
+  for (;;) {
+    
+    if (! bTokenMaybeOp(pTkn()))
+      break;
+
+    bCollectOp(p_StageSpec);
+    
+    if (! pTkn()->bSame("|"_Stz))
+      break;
+    
+    vTokenAccept();
+  }
+   
+  return true;
+}
 /*----------------------------------------------------------------------------*/
 /* collect one operator (and optionally its arguments)                        */
 /*----------------------------------------------------------------------------*/
@@ -273,8 +395,7 @@ bool PipelineSpec::bCollectOpArgs(StageSpec* p_StageSpec, OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
 
-  i8 i_Arg = 0;
-  for (;;) {
+  for (i8 i_Arg = 0; /*none*/ ;i_Arg++) {
     
     if (pTkn()->bSame("|"_Stz)     ||
         pTkn()->bSame("STAGE"_Stz) ||
@@ -285,9 +406,9 @@ bool PipelineSpec::bCollectOpArgs(StageSpec* p_StageSpec, OpSpec* pOpSpec)
     // add an argument
     
     s32 sArgName;
-    sArgName.vSprint("<arg_%lld>"_Stz,i_Arg++);
+    sArgName.vSprint("<arg_%lld>"_Stz,i_Arg);
     
-    sSTMT sArgValue ( pTkn()->szChars() );
+    sSTMT sArgValue(pTkn()->szChars());
     
     pOpSpec->vArgTagAdd(sArgName,sArgValue,TN_STRING);
     
@@ -298,150 +419,18 @@ bool PipelineSpec::bCollectOpArgs(StageSpec* p_StageSpec, OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect operator-pipe sequence                                             */
+/* collect nested pipeline                                                    */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bCollectOpSequence(StageSpec* p_StageSpec)
+bool PipelineSpec::bCollectPipeline(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
-  
-  for (;;) {
-    
-    if (! bTokenMaybeOp(pTkn()))
-      break;
 
-    bCollectOp(p_StageSpec);
-    
-    if (! pTkn()->bSame("|"_Stz))
-      break;
-    
-    vTokenAccept();
-  }
-   
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect stage                                                              */
-/*----------------------------------------------------------------------------*/
-bool PipelineSpec::bCollectStage(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
-    
-  RASSERT(pTkn()->bSame("STAGE"_Stz));
-  vTokenAccept();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  i8 i_StageSpec = this->nItems();
-  
-  StageSpec* p_StageSpec =
-      new StageSpec(pTkn()->szChars(),i_StageSpec,this);
-  
-  this->vAddStageSpec(p_StageSpec);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  vTokenAccept();
-  
-  bool bResult = bCollectTopology(p_StageSpec);
-  if ( ! bResult )
-    return false;
-  
-  if (bTokenMaybeOp(pTkn()))
-    bCollectOpSequence(p_StageSpec);
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect one tag                                                            */
-/*----------------------------------------------------------------------------*/
-bool PipelineSpec::bCollectTag(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
-  
-  RASSERT(pTkn()->bSame("TAG"_Stz));
-  vTokenAccept();
-  
-  s32 sTagNm = pTkn()->szChars();
-  vTokenAccept();
-
-  if (! pTkn()->bSame("="_Stz))
-    return false;
-  vTokenAccept();
-
-  sSTMT sTagValue = pTkn()->szChars();
-  vTokenAccept();
-
-  while (! pTkn()->bSame("ENDTAG"_Stz)) {
-    vTokenAccept();
-  }
-  vTokenAccept();
-
-  if (AM::bVerbose())
-    vTrace("Tag recognised: %s %s\n"_Stz,sTagNm.szStz(),sTagValue.szStz());
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  TagSet* pJobTags = m_p_Dynamo->m_p_PipelineJob->pJobTags();
-  
-  pJobTags->vInsert(sTagNm,sTagValue);
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect topology                                                           */
-/*----------------------------------------------------------------------------*/
-bool PipelineSpec::bCollectTopology(StageSpec* p_StageSpec)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
-  
-  if (pTkn()->bSame("ON"_Stz))
-    vTokenAccept();
-  else
-    return false;
-  
-  // -- -- -- -- -- -- -- -- -- -- --
-  // on all nodes | partitions :
-  
-  if (pTkn()->bSame("ALL"_Stz)) {
-    vTokenAccept();
-    return bRecogniseOnAll(p_StageSpec);
-  }
- 
-  // -- -- -- -- -- -- -- -- -- -- --
-  // on node <nodeNm> :
-  
-  else if (pTkn()->bSame("NODE"_Stz)) {
-    vTokenAccept();
-    return bRecogniseOnNode(p_StageSpec);
-  }
-  
-  // -- -- -- -- -- -- -- -- -- -- --
-  // on partition <partitionNo> :
-  
-  else if (pTkn()->bSame("PARTITION"_Stz)) {
-    vTokenAccept();
-    return bRecogniseOnPartition(p_StageSpec);
-  }
-  
-  // -- -- -- -- -- -- -- -- -- -- --
-  // on origin :
-  
-  else if (pTkn()->bSame("ORIGIN"_Stz)) {
-    vTokenAccept();
-    return bRecogniseOnOrigin(p_StageSpec);
-  }
-  else {
-
-    // -- -- -- -- -- -- -- -- -- -- --
-    
-    return false;
-  }
-  
   return false;
 }
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
 
 /*----------------------------------------------------------------------------*/
 /* recognise topology: ON ALL _^ [ NODES | PARTITIONS ]                       */
