@@ -41,7 +41,7 @@ Dynamo::Dynamo(Stz* szPipelineStmt, Job* p_PipelineJob)
   m_i_Tkn   = 0;
   m_pTkn    = nullptr;
   
-  m_p_PipelineSpec = nullptr;
+  m_p_PipelineSpec_root = nullptr;
   m_p_StageSpec    = nullptr;
   
   _checkInitialised_(CN_DYNAMO);
@@ -353,17 +353,17 @@ bool Dynamo::bCompile(void)
   RASSERT(m_pTkn->bSame("PIPELINE"_Stz) || m_pTkn->bSame("PIPELINELOCAL"_Stz));
   vTokenAccept();
   
-  m_p_PipelineSpec = new PipelineSpec(m_pTkn->szChars(),this);
+  m_p_PipelineSpec_root = new PipelineSpec(m_pTkn->szChars(),this);
 
   vTokenAccept();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bResult = m_p_PipelineSpec->bPass1_collect();
+  bResult = m_p_PipelineSpec_root->bPass1_collect();
   if (! bResult)
     return false;
    
-  bResult = m_p_PipelineSpec->bPass2_staging();
+  bResult = m_p_PipelineSpec_root->bPass2_staging();
   if (! bResult)
     return false;
     
@@ -377,7 +377,7 @@ PipelineSpec* Dynamo::pPipelineSpec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  return m_p_PipelineSpec;
+  return m_p_PipelineSpec_root;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -387,7 +387,7 @@ void Dynamo::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  StageSpec* pStageSpec = m_p_PipelineSpec->pStageSpec(0);
+  StageSpec* pStageSpec = m_p_PipelineSpec_root->pStageSpec(0);
   
   sSTMT sPipe("pipeline "_Stz);
   pStageSpec->vToPipeStr(sPipe.szStz());

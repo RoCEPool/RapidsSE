@@ -313,9 +313,9 @@ bool PipelineSpec::bCollectStage(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  i8 i_StageSpec = m_p_Dynamo->m_p_PipelineSpec->nItems();
-  m_p_Dynamo->m_p_StageSpec = new StageSpec(m_p_Dynamo->m_pTkn->szChars(),i_StageSpec,m_p_Dynamo->m_p_PipelineSpec);
-  m_p_Dynamo->m_p_PipelineSpec->vAddStageSpec(m_p_Dynamo->m_p_StageSpec);
+  i8 i_StageSpec = this->nItems();
+  m_p_Dynamo->m_p_StageSpec = new StageSpec(m_p_Dynamo->m_pTkn->szChars(),i_StageSpec,this);
+  this->vAddStageSpec(m_p_Dynamo->m_p_StageSpec);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -603,9 +603,9 @@ bool PipelineSpec::bPass2_staging(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
     
   // get each stageSpec of pipelineSpec
-  i8 nStageSpecs = m_p_Dynamo->m_p_PipelineSpec->nItems();
+  i8 nStageSpecs = this->nItems();
   for (i8 i_Stage = 0; i_Stage < nStageSpecs; i_Stage++) {
-    StageSpec* pStageSpec = m_p_Dynamo->m_p_PipelineSpec->pGet(i_Stage);
+    StageSpec* pStageSpec = this->pGet(i_Stage);
     RASSERT(pStageSpec->i_StageSpec() == i_Stage);
 
     // get each opSpec of stageSpec
@@ -617,7 +617,7 @@ bool PipelineSpec::bPass2_staging(void)
       Stz* szName = pOpSpec->szOpNm();
       
       // 1) is the name in the opSpec actually a stage in this pipeline?
-      StageSpec* pStageSpecDst = m_p_Dynamo->m_p_PipelineSpec->pFindStageSpec(szName);
+      StageSpec* pStageSpecDst = this->pFindStageSpec(szName);
       if (pStageSpecDst) {
         vNameIsStage(pStageSpec,pOpSpec,pStageSpecDst);
         continue;

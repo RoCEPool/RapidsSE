@@ -23,7 +23,8 @@ namespace STORE
     i8            m_i_Tkn;          // current token
     Token*        m_pTkn;           // current token
 
-    PipelineSpec* m_p_PipelineSpec; // pipeline spec being formed
+    PipelineSpec* m_p_PipelineSpec_root; // the top pipeline spec
+  
     StageSpec*    m_p_StageSpec;    // current stage spec being formed
   
     // must be last
