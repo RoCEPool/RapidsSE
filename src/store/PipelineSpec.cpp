@@ -25,7 +25,8 @@ __aFooterFunction(PipelineSpec)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-PipelineSpec::PipelineSpec(Stz* szPipelineNm, Dynamo* p_Dynamo)
+PipelineSpec::PipelineSpec(Stz* szPipelineNm,
+                           Dynamo* p_Dynamo, Scanner* p_Scanner)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
@@ -33,8 +34,9 @@ PipelineSpec::PipelineSpec(Stz* szPipelineNm, Dynamo* p_Dynamo)
   
   // m_oNestedPipeline
   
-  m_p_Dynamo = p_Dynamo;
-      
+  m_p_Dynamo  = p_Dynamo;
+  m_p_Scanner = p_Scanner;
+
   _checkInitialised_(CN_PIPELINESPEC);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);

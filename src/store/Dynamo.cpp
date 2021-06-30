@@ -251,7 +251,7 @@ bool Dynamo::bCompile(void)
   RASSERT(m_pTkn->bSame("PIPELINE"_Stz) || m_pTkn->bSame("PIPELINELOCAL"_Stz));
   vTokenAccept();
   
-  m_p_PipelineSpec_root = new PipelineSpec(m_pTkn->szChars(),this);
+  m_p_PipelineSpec_root = new PipelineSpec(m_pTkn->szChars(),this,m_pScanner);
 
   vTokenAccept();
 

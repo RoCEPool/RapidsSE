@@ -23,6 +23,7 @@ namespace STORE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
     Dynamo*  m_p_Dynamo; // the dynamo compiler
+    Scanner* m_p_Scanner;       // statement token scanner
 
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -36,7 +37,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    PipelineSpec(Stz* szPipelineNm, Dynamo* p_Dynamo);
+    PipelineSpec(Stz* szPipelineNm, Dynamo* p_Dynamo, Scanner* p_Scanner);
    ~PipelineSpec(void) noexcept(false);
   
     void vAddStageSpec(StageSpec* pStageSpec);
