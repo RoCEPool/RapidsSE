@@ -42,6 +42,7 @@ namespace STORE
   
     void vAddStageSpec(StageSpec* pStageSpec);
     StageSpec* pFindStageSpec(Stz* szFindNm);
+    PipelineSpec* pFindPipelineSpec(Stz* szFindNm);
     Stz* szPipelineNm(void);
     StageSpec* pStageSpec(i8 i_Stage);
 

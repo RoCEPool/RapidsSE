@@ -82,12 +82,32 @@ StageSpec* PipelineSpec::pFindStageSpec(Stz* szFindNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
-  for (i8 i_Stage = 0; i_Stage < nItems(); i_Stage++) {
+  i8 nStageSpecs = this->nItems();
+  for (i8 i_Stage = 0; i_Stage < nStageSpecs; i_Stage++) {
     StageSpec* pStageSpec = pGet(i_Stage);
     
     if (pStageSpec->szStageNm()->bSame(szFindNm)) {
       RASSERT(pStageSpec->i_StageSpec() == i_Stage);
       return pStageSpec;
+    }
+  }
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find nested pipeline matching given name                                   */
+/*----------------------------------------------------------------------------*/
+PipelineSpec* PipelineSpec::pFindPipelineSpec(Stz* szFindNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
+  
+  i8 nPipelineSpecs = m_oNestedPipelineSpecs.nItems();
+  for (i8 i_Pipeline = 0; i_Pipeline < nItems(); i_Pipeline++) {
+    PipelineSpec* pPipelineSpec = m_oNestedPipelineSpecs.pGet(i_Pipeline);
+    
+    if (pPipelineSpec->szPipelineNm()->bSame(szFindNm)) {
+      return pPipelineSpec;
     }
   }
   
