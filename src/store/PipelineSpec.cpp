@@ -166,36 +166,33 @@ bool PipelineSpec::bPass1_collect(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
     
-  bool bResult = true;
+  bool bCollected = false;
   
   while (pTkn()->bSame("TAG"_Stz)) {
-    bResult = bCollectTag();
-    if (! bResult)
+    bCollected = bCollectTag();
+    if (! bCollected)
       return false;
   }
   
-  if (pTkn()->bSame("BEGIN"_Stz)) {
-    bResult = bCollectBegin();
-    if (! bResult)
-      return false;
-  }
-  else {
+  if (! pTkn()->bSame("BEGIN"_Stz))
     return false;
-  }
-  
-  if ( ! pTkn()->bSame("STAGE"_Stz)) {
+  bCollected = bCollectBegin();
+  if (! bCollected)
     return false;
-  }
   
+  if (! pTkn()->bSame("STAGE"_Stz))
+    return false;
   while (pTkn()->bSame("STAGE"_Stz)) {
-    bResult = bCollectStage();
-    if ( ! bResult )
+    bCollected = bCollectStage();
+    if ( ! bCollected )
       return false;
   }
   
-  bResult = bCollectEnd();
+  bCollected = bCollectEnd();
+  if (! bCollected)
+    return false;
 
-  return bResult;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -309,7 +306,7 @@ bool PipelineSpec::bCollectOpSequence(StageSpec* p_StageSpec)
   
   for (;;) {
     
-    if (! bTokenMayBeOp(pTkn()))
+    if (! bTokenMaybeOp(pTkn()))
       break;
 
     bCollectOp(p_StageSpec);
@@ -350,7 +347,7 @@ bool PipelineSpec::bCollectStage(void)
   if ( ! bResult )
     return false;
   
-  if (bTokenMayBeOp(pTkn()))
+  if (bTokenMaybeOp(pTkn()))
     bCollectOpSequence(p_StageSpec);
   
   return true;
@@ -599,7 +596,7 @@ bool PipelineSpec::bRecogniseOnPartition(StageSpec* p_StageSpec)
 /*----------------------------------------------------------------------------*/
 /* is token a potential operator?                                             */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bTokenMayBeOp(Token* pTkn)
+bool PipelineSpec::bTokenMaybeOp(Token* pTkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
