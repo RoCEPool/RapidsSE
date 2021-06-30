@@ -38,7 +38,6 @@ namespace STORE
    ~Dynamo(void) noexcept(false);
 
     static bool bToPipelineStmt(String* pAsPipelineStmt, TokenVec* pFromTokenVec);
-    static ePX eCrossTopo(StageSpec* pFromStageSpec, StageSpec* pToStageSpec);
 
     bool bCompile(void);
     PipelineSpec* pPipelineSpec(void);

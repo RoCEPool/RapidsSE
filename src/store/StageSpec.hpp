@@ -33,6 +33,8 @@ namespace STORE
     StageSpec(Stz* szStageNm, i8 i_StageSpec, PipelineSpec* pPipelineSpec);
    ~StageSpec(void) noexcept(false);
    
+    static ePX eCrossTopo(StageSpec* pFromStageSpec, StageSpec* pToStageSpec);
+
     void vAddOpSpec(OpSpec* pOpSpec);
     void vCopyOps(StageSpec* pStageSpec);
     OpSpec* pFindOpSpec(Stz* szFindNm);

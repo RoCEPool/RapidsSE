@@ -757,7 +757,7 @@ void PipelineSpec::vNameIsOp(StageSpec* pStageSpec, OpSpec* pOpSpec_isOp)
   
   i8 i_Op = pOpSpec_isOp->i_OpSpec();
   i8 i_Stage = pStageSpec->i_StageSpec();
-  ePX eCrossTopo = Dynamo::eCrossTopo(pStageSpec, pStageSpec);
+  ePX eCrossTopo = StageSpec::eCrossTopo(pStageSpec, pStageSpec);
   
   vTopoTagsAdd(pOpSpec_isOp,eCrossTopo,i_Stage,i_Op+1);
 }
@@ -822,7 +822,7 @@ void PipelineSpec::vStageFirstSend(StageSpec* pStageSpec, OpSpec* pOpSpec_isStag
   i8 i_Op = pOpSpec_isStage->i_OpSpec();
   i8 i_NextStage = pNextStageSpec->i_StageSpec();
 
-  ePX eCrossTopo = Dynamo::eCrossTopo(pStageSpec, pNextStageSpec);
+  ePX eCrossTopo = StageSpec::eCrossTopo(pStageSpec, pNextStageSpec);
 
   // SPECIAL CASE (to discuss with Alka)
   if (eCrossTopo == PX_ORIGIN_TO_ORIGIN && i_NextStage == 0) {
@@ -872,7 +872,7 @@ void PipelineSpec::vStageSubsequentSend(StageSpec* pStageSpec, OpSpec* pOpSpec,
   i8 i_Op = pOpSpec->i_OpSpec();
   i8 i_NextStage = pNextStageSpec->i_StageSpec();
 
-  ePX eCrossTopo = Dynamo::eCrossTopo(pStageSpec, pNextStageSpec);
+  ePX eCrossTopo = StageSpec::eCrossTopo(pStageSpec, pNextStageSpec);
 
   TagSet* pTopologyTagSet = pOpSpecSend->pTopoTags();
 
