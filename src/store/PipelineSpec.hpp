@@ -107,6 +107,14 @@ namespace STORE
     void vTopoTagsUpdate(OpSpec* pOpSpec,
                          ePX eCrossTopo, i8 i_NextStage, i8 i_NextOp);
 
+    //
+    // token scanning
+    //
+    Token*     pTkn(void);
+    TokenVec*  pTknVec(void);
+
+    void vTokenAccept(void);
+
   };
 
   PipelineSpec* _pPipelineSpec(void* aAddr);
