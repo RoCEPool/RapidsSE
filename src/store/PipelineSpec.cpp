@@ -395,15 +395,10 @@ bool PipelineSpec::bCollectOpArgs(StageSpec* p_StageSpec, OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
 
-  for (i8 i_Arg = 0; /*none*/ ;i_Arg++) {
+  for (i8 i_Arg = 0; /*none*/; i_Arg++) {
     
-    if (pTkn()->bSame("|"_Stz)     ||
-        pTkn()->bSame("STAGE"_Stz) ||
-        pTkn()->bSame("END"_Stz)) {
+    if (!bTokenMaybeOpArg(pTkn()))
       break;
-    }
-    
-    // add an argument
     
     s32 sArgName;
     sArgName.vSprint("<arg_%lld>"_Stz,i_Arg);
@@ -427,6 +422,7 @@ bool PipelineSpec::bCollectPipeline(void)
 
   return false;
 }
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -582,6 +578,11 @@ bool PipelineSpec::bRecogniseOnPartition(StageSpec* p_StageSpec)
   return false;
 }
 
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
 /*----------------------------------------------------------------------------*/
 /* is token a potential operator?                                             */
 /*----------------------------------------------------------------------------*/
@@ -590,12 +591,29 @@ bool PipelineSpec::bTokenMaybeOp(Token* pTkn)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
   if (   pTkn->bSame("|"_Stz)
-      || pTkn->bSame("end"_Stz)
-      || pTkn->bSame("pipeline"_Stz)
-      || pTkn->bSame("stage"_Stz)
+      || pTkn->bSame("END"_Stz)
+      || pTkn->bSame("PIPELINE"_Stz)
+      || pTkn->bSame("STAGE"_Stz)
       )
     return false;
   
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is token a potential operator argument?                                    */
+/*----------------------------------------------------------------------------*/
+bool PipelineSpec::bTokenMaybeOpArg(Token* pTkn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
+  
+  if (   pTkn->bSame("|"_Stz)
+      || pTkn->bSame("END"_Stz)
+      || pTkn->bSame("PIPELINE"_Stz)
+      || pTkn->bSame("STAGE"_Stz)
+      )
+    return false;
+
   return true;
 }
 

@@ -80,6 +80,7 @@ namespace STORE
     bool bRecogniseOnPartition(StageSpec* p_StageSpec);
 
     bool bTokenMaybeOp(Token* pTkn);
+    bool bTokenMaybeOpArg(Token* pTkn);
 
 
     //
