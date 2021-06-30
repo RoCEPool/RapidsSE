@@ -135,6 +135,8 @@
 
 #include "RowTablePtn.hpp"
 
+#include "Scanner.hpp"
+
 #include "SeApi.hpp"
 #include "Sessions.hpp"
 
@@ -415,6 +417,7 @@ SizeHeap gxaSizeHeap[]
   { 0,/*sizeof(RU_Word)*/       HT_INVALID   ,0 }, // CN_RUWORK
 
   { 'S' - ('A' - 1),            HT_INVALID   ,0 }, // CN__S__
+  { sizeof(Scanner),            HT_T_TINY    ,0 }, // CN_SCANNER
   { sizeof(Schema),             HT_T_TINY    ,0 }, // CN_SCHEMA
   { sizeof(SeApi),              HT_T_LARGE   ,0 }, // CN_SEAPI
   { sizeof(SeDeputy),           HT_T_TINY    ,0 }, // CN_SEDEPUTY

@@ -237,6 +237,7 @@ enum eCN : u2 // Class Number
   /* */ CN_RUWORK,
 
   /* */ CN__S__,
+  /* */ CN_SCANNER,
   /* */ CN_SCHEMA,
   /* */ CN_SEAPI,
   /* */ CN_SEDEPUTY,
@@ -577,6 +578,7 @@ static Stz* aCN[]
   /* */ "RUWORK"_Stz,               // CN_RUWORK
  
   /* */ "_S__"_Stz,                 // CN__S__
+  /* */ "SCANNER"_Stz,              // CN_SCANNER
   /* */ "SCHEMA"_Stz,               // CN_SCHEMA
   /* */ "SEAPI"_Stz,                // CN_SEAPI
   /* */ "SEDEPUTY"_Stz,             // CN_SEDEPUTY

@@ -7,7 +7,7 @@
 #include "GraphNav.hpp"
 #include "QueryNode.hpp"
 
-using namespace Parser;
+//using namespace Parser;
 
 namespace STORE
 {

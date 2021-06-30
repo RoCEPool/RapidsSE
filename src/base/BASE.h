@@ -185,6 +185,7 @@ extern d8 C_D8_MID;
 #include "Wsp_t.hpp"
 
 #include "ShmLib.hpp"
+#include "Scanner.hpp"
 
 //------------------------------------------------------------------------------
 
