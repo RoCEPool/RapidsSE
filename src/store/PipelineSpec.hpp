@@ -66,7 +66,7 @@ namespace STORE
     bool bCollectOp(StageSpec* p_StageSpec);
     bool bCollectOpArgs(StageSpec* p_StageSpec, OpSpec* pOpSpec);
     bool bCollectOpSequence(StageSpec* p_StageSpec);
-    bool bCollectStage(StageSpec* p_StageSpec);
+    bool bCollectStage(void);
     bool bCollectTag(void);
     bool bCollectTopology(StageSpec* p_StageSpec);
 

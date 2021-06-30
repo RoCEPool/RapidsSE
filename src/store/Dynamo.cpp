@@ -36,13 +36,11 @@ Dynamo::Dynamo(Stz* szPipelineStmt, Job* p_PipelineJob)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
     
   m_p_PipelineJob = p_PipelineJob;
+  m_p_PipelineSpec_root = nullptr;
   
   m_pTknVec = new TokenVec(szPipelineStmt);
   m_i_Tkn   = 0;
   m_pTkn    = nullptr;
-  
-  m_p_PipelineSpec_root = nullptr;
-  m_p_StageSpec    = nullptr;
   
   _checkInitialised_(CN_DYNAMO);
   

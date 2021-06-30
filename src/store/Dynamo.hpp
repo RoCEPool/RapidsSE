@@ -18,15 +18,14 @@ namespace STORE
 
   private:
     Job*          m_p_PipelineJob;  // job this dynamo is associated with
-    
+
+    PipelineSpec* m_p_PipelineSpec_root; // the top pipeline spec
+
     TokenVec*     m_pTknVec;        // tokenised for of the pipeline statement
     i8            m_i_Tkn;          // current token
     Token*        m_pTkn;           // current token
 
-    PipelineSpec* m_p_PipelineSpec_root; // the top pipeline spec
-  
-    StageSpec*    m_p_StageSpec;    // current stage spec being formed
-  
+    
     // must be last
     Footer m_xFooter;
 

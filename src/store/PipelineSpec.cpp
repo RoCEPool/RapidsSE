@@ -166,7 +166,7 @@ bool PipelineSpec::bPass1_collect(void)
   }
   
   while (m_p_Dynamo->m_pTkn->bSame("STAGE"_Stz)) {
-    bResult = bCollectStage(nullptr);
+    bResult = bCollectStage();
     if ( ! bResult )
       return false;
   }
@@ -211,9 +211,9 @@ bool PipelineSpec::bCollectOp(StageSpec* p_StageSpec)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  i8 i_OpSpec = m_p_Dynamo->m_p_StageSpec->nItems();
-  OpSpec* pOpSpec = new OpSpec(m_p_Dynamo->m_pTkn->szChars(),i_OpSpec,m_p_Dynamo->m_p_StageSpec);
-  m_p_Dynamo->m_p_StageSpec->vAddOpSpec(pOpSpec);
+  i8 i_OpSpec = p_StageSpec->nItems();
+  OpSpec* pOpSpec = new OpSpec(m_p_Dynamo->m_pTkn->szChars(),i_OpSpec,p_StageSpec);
+  p_StageSpec->vAddOpSpec(pOpSpec);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -304,7 +304,7 @@ bool PipelineSpec::bCollectOpSequence(StageSpec* p_StageSpec)
 /*----------------------------------------------------------------------------*/
 /* collect stage                                                              */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bCollectStage(StageSpec* p_StageSpec)
+bool PipelineSpec::bCollectStage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
     
@@ -314,8 +314,11 @@ bool PipelineSpec::bCollectStage(StageSpec* p_StageSpec)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   i8 i_StageSpec = this->nItems();
-  m_p_Dynamo->m_p_StageSpec = new StageSpec(m_p_Dynamo->m_pTkn->szChars(),i_StageSpec,this);
-  this->vAddStageSpec(m_p_Dynamo->m_p_StageSpec);
+  
+  StageSpec* p_StageSpec =
+      new StageSpec(m_p_Dynamo->m_pTkn->szChars(),i_StageSpec,this);
+  
+  this->vAddStageSpec(p_StageSpec);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -460,7 +463,7 @@ bool PipelineSpec::bRecogniseOnAllNodes(StageSpec* p_StageSpec)
   if (m_p_Dynamo->m_pTkn->bSame(":"_Stz)) {
     m_p_Dynamo->vTokenAccept();
     
-    m_p_Dynamo->m_p_StageSpec->vTopology(PO_ALL_NODES);
+    p_StageSpec->vTopology(PO_ALL_NODES);
     return true;
   }
   
@@ -485,7 +488,7 @@ bool PipelineSpec::bRecogniseOnAllPartitions(StageSpec* p_StageSpec)
       if (m_p_Dynamo->m_pTkn->bSame(":"_Stz)) {
         m_p_Dynamo->vTokenAccept();
 
-        m_p_Dynamo->m_p_StageSpec->vTopology(PO_ALL_PARTITIONS_ON_ORIGIN);
+        p_StageSpec->vTopology(PO_ALL_PARTITIONS_ON_ORIGIN);
         return true;
       }
     }
@@ -495,7 +498,7 @@ bool PipelineSpec::bRecogniseOnAllPartitions(StageSpec* p_StageSpec)
   
   if (m_p_Dynamo->m_pTkn->bSame(":"_Stz)) {
     m_p_Dynamo->vTokenAccept();
-    m_p_Dynamo->m_p_StageSpec->vTopology(PO_ALL_PARTITIONS);
+    p_StageSpec->vTopology(PO_ALL_PARTITIONS);
     return true;
   }
   
@@ -514,11 +517,11 @@ bool PipelineSpec::bRecogniseOnNode(StageSpec* p_StageSpec)
   
   if (m_p_Dynamo->m_pTkn->bSame(":"_Stz)) {
     m_p_Dynamo->vTokenAccept();
-    m_p_Dynamo->m_p_StageSpec->vTopology(PO_SPECIFIC_NODE);
+    p_StageSpec->vTopology(PO_SPECIFIC_NODE);
     i8 i_Node = sLocus.szStz()->iToI8();
     if ( i_Node > AM::pGrid()->nConnectedNodes() )
       return false;
-    m_p_Dynamo->m_p_StageSpec->vSpecificNode(i_Node);
+    p_StageSpec->vSpecificNode(i_Node);
     return true;
   }
   
@@ -536,7 +539,7 @@ bool PipelineSpec::bRecogniseOnOrigin(StageSpec* p_StageSpec)
   if (m_p_Dynamo->m_pTkn->bSame(":"_Stz)) {
     m_p_Dynamo->vTokenAccept();
     
-    m_p_Dynamo->m_p_StageSpec->vTopology(PO_ORIGIN);
+    p_StageSpec->vTopology(PO_ORIGIN);
     return true;
   }
   else {
@@ -559,12 +562,12 @@ bool PipelineSpec::bRecogniseOnPartition(StageSpec* p_StageSpec)
   
   if (m_p_Dynamo->m_pTkn->bSame(":"_Stz)) {
     m_p_Dynamo->vTokenAccept();
-    m_p_Dynamo->m_p_StageSpec->vTopology(PO_SPECIFIC_PARTITION);
+    p_StageSpec->vTopology(PO_SPECIFIC_PARTITION);
     tPN tPtnNo = sLocus.szStz()->iToI8();
     if (tPtnNo >= AM::nPtnsInGrid())
       return false;
     
-    m_p_Dynamo->m_p_StageSpec->vSpecificPtnNo(tPtnNo);
+    p_StageSpec->vSpecificPtnNo(tPtnNo);
     return true;
   }
   
