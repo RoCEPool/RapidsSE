@@ -79,7 +79,7 @@ namespace STORE
     bool bRecogniseOnOrigin(StageSpec* p_StageSpec);
     bool bRecogniseOnPartition(StageSpec* p_StageSpec);
 
-    bool bTokenIsOp(Token* pTkn);
+    bool bTokenMayBeOp(Token* pTkn);
 
 
     //

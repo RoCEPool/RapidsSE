@@ -309,7 +309,7 @@ bool PipelineSpec::bCollectOpSequence(StageSpec* p_StageSpec)
   
   for (;;) {
     
-    if (! bTokenIsOp(pTkn()))
+    if (! bTokenMayBeOp(pTkn()))
       break;
 
     bCollectOp(p_StageSpec);
@@ -350,7 +350,7 @@ bool PipelineSpec::bCollectStage(void)
   if ( ! bResult )
     return false;
   
-  if (bTokenIsOp(pTkn()))
+  if (bTokenMayBeOp(pTkn()))
     bCollectOpSequence(p_StageSpec);
   
   return true;
@@ -597,19 +597,17 @@ bool PipelineSpec::bRecogniseOnPartition(StageSpec* p_StageSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is token a known operator?                                                 */
+/* is token a potential operator?                                             */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bTokenIsOp(Token* pTkn)
+bool PipelineSpec::bTokenMayBeOp(Token* pTkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
-  if (pTkn->bSame("|"_Stz))
-    return false;
-  
-  if (pTkn->bSame("end"_Stz))
-    return false;
-  
-  if (pTkn->bSame("stage"_Stz))
+  if (   pTkn->bSame("|"_Stz)
+      || pTkn->bSame("end"_Stz)
+      || pTkn->bSame("pipeline"_Stz)
+      || pTkn->bSame("stage"_Stz)
+      )
     return false;
   
   return true;
