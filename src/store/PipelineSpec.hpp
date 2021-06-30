@@ -51,6 +51,8 @@ namespace STORE
   
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    //                            PIPELINE COMPILER
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   private:
   
@@ -75,8 +77,6 @@ namespace STORE
     bool bRecogniseOnOrigin(void);
     bool bRecogniseOnPartition(void);
 
-    void vTokenAccept(void);
-    void vTokenBegin(i8 i_Tkn);
     bool bTokenIsOp(Token* pTkn);
 
 

@@ -45,57 +45,8 @@ namespace STORE
 
   private:
 
-    //
-    // Pass 1 : Collect
-    //
-    bool bPass1_collect(void);
-  
-    bool bCollectBegin(void);
-    bool bCollectEnd(void);
-    bool bCollectOp(void);
-    bool bCollectOpArgs(OpSpec* pOpSpec);
-    bool bCollectOpSequence(void);
-    bool bCollectStage(void);
-    bool bCollectTag(void);
-    bool bCollectTopology(void);
-  
-    bool bRecogniseOnAll(void);
-    bool bRecogniseOnAllNodes(void);
-    bool bRecogniseOnAllPartitions(void);
-    bool bRecogniseOnNode(void);
-    bool bRecogniseOnOrigin(void);
-    bool bRecogniseOnPartition(void);
-
     void vTokenAccept(void);
     void vTokenBegin(i8 i_Tkn);
-    bool bTokenIsOp(Token* pTkn);
-
-
-    //
-    // Pass 2 : Staging
-    //
-    bool bPass2_staging(void);
-
-    void vArgAdd_sends(OpSpec* pConsumeOpSpec, ePX eCrossTopo);
-    void vArgUpdate_sends(OpSpec* pConsumeOpSpec, ePX eCrossTopo);
-
-    void vMorphToSend(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_NextStage);
-
-    void vNameIsOp(StageSpec* pStageSpec, OpSpec* pOpSpec);
-    void vNameIsPipeline(void);
-    void vNameIsStage(StageSpec* pStageSpec, OpSpec* pOpSpec,
-                      StageSpec* pNextStageSpec);
-  
-    void vStageConsumeOpInsert(StageSpec* pStageSpec, ePX eCrossTopo);
-    void vStageFirstSend(StageSpec* pStageSpec, OpSpec* pOpSpec,
-                         StageSpec* pNextStageSpec);
-    void vStageSubsequentSend(StageSpec* pStageSpec, OpSpec* pOpSpec,
-                              StageSpec* pNextStageSpec, OpSpec* pOpSpecSend);
-
-    void vTopoTagsAdd(OpSpec* pOpSpec,
-                      ePX eCrossTopo, i8 i_NextStage, i8 i_NextOp);
-    void vTopoTagsUpdate(OpSpec* pOpSpec,
-                         ePX eCrossTopo, i8 i_NextStage, i8 i_NextOp);
 
     Footer* aFooter(void);
   };
