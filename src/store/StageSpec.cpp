@@ -9,24 +9,12 @@
 #include "StageSpec.hpp"
 
 /*----------------------------------------------------------------------------*/
-/* operator new                                                               */
+/*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void* StageSpec::operator new(size_t)
-{
-  StageSpec* pStageSpec = reinterpret_cast<StageSpec*>(Heaps::pAllocate(CN_STAGESPEC));
-  
-  return pStageSpec;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-void StageSpec::operator delete(void* aAddr)
-{
-  StageSpec* pStageSpec = reinterpret_cast<StageSpec*>(aAddr);
-  
-  Heaps::vFree(pStageSpec);
-}
+__pCastFunction(STORE,StageSpec,CN_STAGESPEC)
+__aNewFunction(StageSpec,CN_STAGESPEC)
+__vDeleteFunction(StageSpec,CN_STAGESPEC)
+__aFooterFunction(StageSpec)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -317,12 +305,6 @@ void StageSpec::vPrint(void)
   }
   vTrace("\n"_Stz);
 }
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-__aFooterFunction(StageSpec)
 
 /*============================================================================*/
 /* end                                                                        */

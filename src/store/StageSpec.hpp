@@ -55,6 +55,8 @@ namespace STORE
 
     Footer* aFooter(void);
   };
+
+  StageSpec* _pStageSpec(void* aAddr);
 }
 
 /*============================================================================*/

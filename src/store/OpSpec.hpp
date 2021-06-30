@@ -57,6 +57,8 @@ namespace STORE
   
     Footer* aFooter(void);
   };
+
+  OpSpec* _pOpSpec(void* aAddr);
 }
 
 /*============================================================================*/

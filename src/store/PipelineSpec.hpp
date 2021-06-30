@@ -107,6 +107,8 @@ namespace STORE
                          ePX eCrossTopo, i8 i_NextStage, i8 i_NextOp);
 
   };
+
+  PipelineSpec* _pPipelineSpec(void* aAddr);
 }
 
 /*============================================================================*/

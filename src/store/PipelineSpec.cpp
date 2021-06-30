@@ -14,24 +14,13 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* operator new                                                               */
+/*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void* PipelineSpec::operator new(size_t)
-{
-  PipelineSpec* pPipelineSpec = reinterpret_cast<PipelineSpec*>(Heaps::pAllocate(CN_PIPELINESPEC));
-  
-  return pPipelineSpec;
-}
+__pCastFunction(STORE,PipelineSpec,CN_PIPELINESPEC)
+__aNewFunction(PipelineSpec,CN_PIPELINESPEC)
+__vDeleteFunction(PipelineSpec,CN_PIPELINESPEC)
+__aFooterFunction(PipelineSpec)
 
-/*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-void PipelineSpec::operator delete(void* aAddr)
-{
-  PipelineSpec* pPipelineSpec = reinterpret_cast<PipelineSpec*>(aAddr);
-  
-  Heaps::vFree(pPipelineSpec);
-}
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -136,10 +125,6 @@ void PipelineSpec::vPrint(void)
   vTrace("end\n"_Stz);
 }
 
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-__aFooterFunction(PipelineSpec)
 
 
 

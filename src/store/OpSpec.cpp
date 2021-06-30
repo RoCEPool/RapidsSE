@@ -10,25 +10,15 @@
 #include "PipelineSpec.hpp"
 #include "StageSpec.hpp"
 
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* OpSpec::operator new(size_t)
-{
-  OpSpec* pOpSpec = reinterpret_cast<OpSpec*>(Heaps::pAllocate(CN_OPSPEC));
-  
-  return pOpSpec;
-}
 
 /*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
+/*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void OpSpec::operator delete(void* aAddr)
-{
-  OpSpec* pOpSpec = reinterpret_cast<OpSpec*>(aAddr);
+__pCastFunction(STORE,OpSpec,CN_OPSPEC)
+__aNewFunction(OpSpec,CN_OPSPEC)
+__vDeleteFunction(OpSpec,CN_OPSPEC)
+__aFooterFunction(OpSpec)
 
-  Heaps::vFree(pOpSpec);
-}
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -249,11 +239,6 @@ void OpSpec::vPrint(void)
     
   m_oArgTags.vDumpSet();
 }
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-__aFooterFunction(OpSpec)
 
 /*============================================================================*/
 /* end                                                                        */
