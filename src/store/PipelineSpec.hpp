@@ -63,19 +63,19 @@ namespace STORE
 
     bool bCollectBegin(void);
     bool bCollectEnd(void);
-    bool bCollectOp(void);
-    bool bCollectOpArgs(OpSpec* pOpSpec);
-    bool bCollectOpSequence(void);
-    bool bCollectStage(void);
+    bool bCollectOp(StageSpec* p_StageSpec);
+    bool bCollectOpArgs(StageSpec* p_StageSpec, OpSpec* pOpSpec);
+    bool bCollectOpSequence(StageSpec* p_StageSpec);
+    bool bCollectStage(StageSpec* p_StageSpec);
     bool bCollectTag(void);
-    bool bCollectTopology(void);
+    bool bCollectTopology(StageSpec* p_StageSpec);
 
-    bool bRecogniseOnAll(void);
-    bool bRecogniseOnAllNodes(void);
-    bool bRecogniseOnAllPartitions(void);
-    bool bRecogniseOnNode(void);
-    bool bRecogniseOnOrigin(void);
-    bool bRecogniseOnPartition(void);
+    bool bRecogniseOnAll(StageSpec* p_StageSpec);
+    bool bRecogniseOnAllNodes(StageSpec* p_StageSpec);
+    bool bRecogniseOnAllPartitions(StageSpec* p_StageSpec);
+    bool bRecogniseOnNode(StageSpec* p_StageSpec);
+    bool bRecogniseOnOrigin(StageSpec* p_StageSpec);
+    bool bRecogniseOnPartition(StageSpec* p_StageSpec);
 
     bool bTokenIsOp(Token* pTkn);
 

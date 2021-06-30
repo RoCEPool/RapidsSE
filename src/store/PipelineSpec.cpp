@@ -166,7 +166,7 @@ bool PipelineSpec::bPass1_collect(void)
   }
   
   while (m_p_Dynamo->m_pTkn->bSame("STAGE"_Stz)) {
-    bResult = bCollectStage();
+    bResult = bCollectStage(nullptr);
     if ( ! bResult )
       return false;
   }
@@ -205,7 +205,7 @@ bool PipelineSpec::bCollectEnd(void)
 /*----------------------------------------------------------------------------*/
 /* collect one operator (and optionally its arguments)                        */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bCollectOp(void)
+bool PipelineSpec::bCollectOp(StageSpec* p_StageSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
 
@@ -241,7 +241,7 @@ bool PipelineSpec::bCollectOp(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (! bCollectOpArgs(pOpSpec))
+  if (! bCollectOpArgs(p_StageSpec,pOpSpec))
     return false;
   
   return true;
@@ -250,7 +250,7 @@ bool PipelineSpec::bCollectOp(void)
 /*----------------------------------------------------------------------------*/
 /* collect operator arguments                                                 */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bCollectOpArgs(OpSpec* pOpSpec)
+bool PipelineSpec::bCollectOpArgs(StageSpec* p_StageSpec, OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
 
@@ -281,7 +281,7 @@ bool PipelineSpec::bCollectOpArgs(OpSpec* pOpSpec)
 /*----------------------------------------------------------------------------*/
 /* collect operator-pipe sequence                                             */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bCollectOpSequence(void)
+bool PipelineSpec::bCollectOpSequence(StageSpec* p_StageSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
@@ -290,7 +290,7 @@ bool PipelineSpec::bCollectOpSequence(void)
     if (! bTokenIsOp(m_p_Dynamo->m_pTkn))
       break;
 
-    bCollectOp();
+    bCollectOp(p_StageSpec);
     
     if (! m_p_Dynamo->m_pTkn->bSame("|"_Stz))
       break;
@@ -304,7 +304,7 @@ bool PipelineSpec::bCollectOpSequence(void)
 /*----------------------------------------------------------------------------*/
 /* collect stage                                                              */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bCollectStage(void)
+bool PipelineSpec::bCollectStage(StageSpec* p_StageSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
     
@@ -321,12 +321,12 @@ bool PipelineSpec::bCollectStage(void)
   
   m_p_Dynamo->vTokenAccept();
   
-  bool bResult = bCollectTopology();
+  bool bResult = bCollectTopology(p_StageSpec);
   if ( ! bResult )
     return false;
   
   if (bTokenIsOp(m_p_Dynamo->m_pTkn))
-    bCollectOpSequence();
+    bCollectOpSequence(p_StageSpec);
   
   return true;
 }
@@ -371,7 +371,7 @@ bool PipelineSpec::bCollectTag(void)
 /*----------------------------------------------------------------------------*/
 /* collect topology                                                           */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bCollectTopology(void)
+bool PipelineSpec::bCollectTopology(StageSpec* p_StageSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
@@ -385,7 +385,7 @@ bool PipelineSpec::bCollectTopology(void)
   
   if (m_p_Dynamo->m_pTkn->bSame("ALL"_Stz)) {
     m_p_Dynamo->vTokenAccept();
-    return bRecogniseOnAll();
+    return bRecogniseOnAll(p_StageSpec);
   }
  
   // -- -- -- -- -- -- -- -- -- -- --
@@ -393,7 +393,7 @@ bool PipelineSpec::bCollectTopology(void)
   
   else if (m_p_Dynamo->m_pTkn->bSame("NODE"_Stz)) {
     m_p_Dynamo->vTokenAccept();
-    return bRecogniseOnNode();
+    return bRecogniseOnNode(p_StageSpec);
   }
   
   // -- -- -- -- -- -- -- -- -- -- --
@@ -401,7 +401,7 @@ bool PipelineSpec::bCollectTopology(void)
   
   else if (m_p_Dynamo->m_pTkn->bSame("PARTITION"_Stz)) {
     m_p_Dynamo->vTokenAccept();
-    return bRecogniseOnPartition();
+    return bRecogniseOnPartition(p_StageSpec);
   }
   
   // -- -- -- -- -- -- -- -- -- -- --
@@ -409,7 +409,7 @@ bool PipelineSpec::bCollectTopology(void)
   
   else if (m_p_Dynamo->m_pTkn->bSame("ORIGIN"_Stz)) {
     m_p_Dynamo->vTokenAccept();
-    return bRecogniseOnOrigin();
+    return bRecogniseOnOrigin(p_StageSpec);
   }
   else {
 
@@ -424,7 +424,7 @@ bool PipelineSpec::bCollectTopology(void)
 /*----------------------------------------------------------------------------*/
 /* recognise topology: ON ALL _^ [ NODES | PARTITIONS ]                       */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bRecogniseOnAll(void)
+bool PipelineSpec::bRecogniseOnAll(StageSpec* p_StageSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
@@ -433,7 +433,7 @@ bool PipelineSpec::bRecogniseOnAll(void)
   
   if (m_p_Dynamo->m_pTkn->bSame("NODES"_Stz)) {
     m_p_Dynamo->vTokenAccept();
-    return bRecogniseOnAllNodes();
+    return bRecogniseOnAllNodes(p_StageSpec);
   }
   
   // -- -- -- -- -- -- -- -- -- -- --
@@ -441,7 +441,7 @@ bool PipelineSpec::bRecogniseOnAll(void)
   
   else if (m_p_Dynamo->m_pTkn->bSame("PARTITIONS"_Stz)) {
     m_p_Dynamo->vTokenAccept();
-    return bRecogniseOnAllPartitions();
+    return bRecogniseOnAllPartitions(p_StageSpec);
   }
 
   return false;
@@ -450,7 +450,7 @@ bool PipelineSpec::bRecogniseOnAll(void)
 /*----------------------------------------------------------------------------*/
 /* recognise topology: ON ALL NODE _^                                         */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bRecogniseOnAllNodes(void)
+bool PipelineSpec::bRecogniseOnAllNodes(StageSpec* p_StageSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
@@ -470,7 +470,7 @@ bool PipelineSpec::bRecogniseOnAllNodes(void)
 /*----------------------------------------------------------------------------*/
 /* recognise topology: ON ALL PARTITIONS _^                                   */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bRecogniseOnAllPartitions(void)
+bool PipelineSpec::bRecogniseOnAllPartitions(StageSpec* p_StageSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
@@ -505,7 +505,7 @@ bool PipelineSpec::bRecogniseOnAllPartitions(void)
 /*----------------------------------------------------------------------------*/
 /* recognise topology: ON NODE <nodeNo> _^                                    */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bRecogniseOnNode(void)
+bool PipelineSpec::bRecogniseOnNode(StageSpec* p_StageSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
@@ -527,9 +527,30 @@ bool PipelineSpec::bRecogniseOnNode(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* recognise topology: ON ORIGIN _^                                           */
+/*----------------------------------------------------------------------------*/
+bool PipelineSpec::bRecogniseOnOrigin(StageSpec* p_StageSpec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
+  
+  if (m_p_Dynamo->m_pTkn->bSame(":"_Stz)) {
+    m_p_Dynamo->vTokenAccept();
+    
+    m_p_Dynamo->m_p_StageSpec->vTopology(PO_ORIGIN);
+    return true;
+  }
+  else {
+    s32 sLocus(m_p_Dynamo->m_pTkn->szChars());
+    m_p_Dynamo->vTokenAccept();
+  }
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* recognise topology: ON PARTITION <tPtnNo> _^                               */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bRecogniseOnPartition(void)
+bool PipelineSpec::bRecogniseOnPartition(StageSpec* p_StageSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
@@ -545,27 +566,6 @@ bool PipelineSpec::bRecogniseOnPartition(void)
     
     m_p_Dynamo->m_p_StageSpec->vSpecificPtnNo(tPtnNo);
     return true;
-  }
-  
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* recognise topology: ON ORIGIN _^                                           */
-/*----------------------------------------------------------------------------*/
-bool PipelineSpec::bRecogniseOnOrigin(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
-  
-  if (m_p_Dynamo->m_pTkn->bSame(":"_Stz)) {
-    m_p_Dynamo->vTokenAccept();
-    
-    m_p_Dynamo->m_p_StageSpec->vTopology(PO_ORIGIN);
-    return true;
-  }
-  else {
-    s32 sLocus(m_p_Dynamo->m_pTkn->szChars());
-    m_p_Dynamo->vTokenAccept();
   }
   
   return false;
