@@ -229,32 +229,22 @@ bool Dynamo::bToPipelineStmt(String* pAsPipelineStmt,
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* compile pipeline statement into pipeline spec                              */
+/* recursively compile the tokenised pipeline statement                       */
 /*----------------------------------------------------------------------------*/
 bool Dynamo::bCompile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
         
   m_pScanner->vTokenBegin(0);
+      
+  if (!  PipelineSpec::bCompile(nullptr,
+                                nullptr,
+                                m_pScanner,
+                                this,
+                                
+                                m_p_PipelineSpec_root))
+    return false;
   
-  if (! (m_pScanner->pTkn()->bSame("PIPELINE"_Stz) ||
-         m_pScanner->pTkn()->bSame("PIPELINELOCAL"_Stz))
-      )
-    return false;
-  m_pScanner->vTokenAccept();
-  
-  m_p_PipelineSpec_root =
-    new PipelineSpec(m_pScanner->pTkn()->szChars(),this,m_pScanner);
-  m_pScanner->vTokenAccept();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  if (! m_p_PipelineSpec_root->bPass1_collect())
-    return false;
-   
-  if (! m_p_PipelineSpec_root->bPass2_staging())
-    return false;
-    
   return true;
 }
 

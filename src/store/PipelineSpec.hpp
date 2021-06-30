@@ -40,6 +40,13 @@ namespace STORE
     PipelineSpec(Stz* szPipelineNm, Dynamo* p_Dynamo, Scanner* p_Scanner);
    ~PipelineSpec(void) noexcept(false);
   
+    static bool bCompile(PipelineSpec* p_ParentPipelineSpec,
+                         TagSet*       pJobTags,
+                         Scanner*      p_Scanner,
+                         Dynamo*       p_Dynamo,
+                         
+                         PipelineSpec*& rp_PipelineSpec);
+  
     void vAddStageSpec(StageSpec* pStageSpec);
     StageSpec* pFindStageSpec(Stz* szFindNm);
     PipelineSpec* pFindPipelineSpec(Stz* szFindNm);

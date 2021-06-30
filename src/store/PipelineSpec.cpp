@@ -52,6 +52,44 @@ PipelineSpec::~PipelineSpec(void) noexcept(false)
 
 
 /*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* recursively compile a new pipeline                                         */
+/*----------------------------------------------------------------------------*/
+bool PipelineSpec::bCompile(PipelineSpec* p_ParentPipelineSpec,
+                            TagSet*       pJobTags,
+                            Scanner*      p_Scanner,
+                            Dynamo*       p_Dynamo,
+                            
+                            PipelineSpec*& rp_PipelineSpec)
+{
+  _static_
+  
+  if (! (p_Scanner->pTkn()->bSame("PIPELINE"_Stz) ||
+         p_Scanner->pTkn()->bSame("PIPELINELOCAL"_Stz))
+      )
+    return false;
+  p_Scanner->vTokenAccept();
+  
+  rp_PipelineSpec =
+    new PipelineSpec(p_Scanner->pTkn()->szChars(),p_Dynamo,p_Scanner);
+  p_Scanner->vTokenAccept();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (! rp_PipelineSpec->bPass1_collect())
+    return false;
+   
+  if (! rp_PipelineSpec->bPass2_staging())
+    return false;
+    
+  return true;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -393,7 +431,7 @@ bool PipelineSpec::bCollectOpArgs(StageSpec* p_StageSpec, OpSpec* pOpSpec)
 
   for (i8 i_Arg = 0; /*none*/; i_Arg++) {
     
-    if (!bTokenMaybeOpArg(pTkn()))
+    if (! bTokenMaybeOpArg(pTkn()))
       break;
     
     s32 sArgName;
