@@ -48,11 +48,21 @@ Scanner::~Scanner(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* accept token and advance to next token                                     */
 /*----------------------------------------------------------------------------*/
-Token* Scanner::p_Tkn(void)
+Token* Scanner::pTkn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANNER,_FOOTER_);
   
   return m_p_Tkn;
+}
+
+/*----------------------------------------------------------------------------*/
+/* accept token and advance to next token                                     */
+/*----------------------------------------------------------------------------*/
+TokenVec* Scanner::pTknVec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SCANNER,_FOOTER_);
+  
+  return m_pTknVec;
 }
 
 /*----------------------------------------------------------------------------*/

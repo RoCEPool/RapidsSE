@@ -22,8 +22,9 @@ namespace BASE
     Scanner(Stz* szStatement);
    ~Scanner(void) noexcept(false);
 
-    Token*  p_Tkn(void);
-  
+    Token*     pTkn(void);
+    TokenVec*  pTknVec(void);
+
     void vTokenAccept(void);
     void vTokenBegin(i8 i_Tkn);
 

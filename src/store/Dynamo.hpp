@@ -7,27 +7,17 @@
 #include "GraphNav.hpp"
 #include "QueryNode.hpp"
 
-//using namespace Parser;
-
 namespace STORE
 {
   class Dynamo : public Object
-  {
-  
+  {  
     friend class STORE::PipelineSpec;
 
   private:
-    Job*          m_p_PipelineJob;  // job this dynamo is associated with
-
+    Job*          m_p_PipelineJob;       // job this dynamo is associated with
     PipelineSpec* m_p_PipelineSpec_root; // the top pipeline spec
-
-    Scanner*      m_pScanner;       // statement token scanner
+    Scanner*      m_pScanner;            // statement token scanner
   
-    TokenVec*     m_pTknVec;        // tokenised for of the pipeline statement
-    i8            m_i_Tkn;          // current token
-    Token*        m_pTkn;           // current token
-
-    
     // must be last
     Footer m_xFooter;
 
@@ -45,10 +35,6 @@ namespace STORE
     void vShow(void);
 
   private:
-
-    void vTokenAccept(void);
-    void vTokenBegin(i8 i_Tkn);
-
     Footer* aFooter(void);
   };
 

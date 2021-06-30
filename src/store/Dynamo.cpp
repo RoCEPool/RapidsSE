@@ -39,11 +39,7 @@ Dynamo::Dynamo(Stz* szPipelineStmt, Job* p_PipelineJob)
   m_p_PipelineSpec_root = nullptr;
   
   m_pScanner = new Scanner(szPipelineStmt);
-  
-  m_pTknVec = new TokenVec(szPipelineStmt);
-  m_i_Tkn   = 0;
-  m_pTkn    = nullptr;
-  
+    
   _checkInitialised_(CN_DYNAMO);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
@@ -57,9 +53,6 @@ Dynamo::~Dynamo(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
     
   delete m_pScanner;
-  
-  m_pTknVec->vSetAllTokens();
-  delete m_pTknVec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -244,16 +237,17 @@ bool Dynamo::bCompile(void)
   
   bool bResult = false;
     
-  vTokenBegin(0);
+  m_pScanner->vTokenBegin(0);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  RASSERT(m_pTkn->bSame("PIPELINE"_Stz) || m_pTkn->bSame("PIPELINELOCAL"_Stz));
-  vTokenAccept();
+  RASSERT(m_pScanner->pTkn()->bSame("PIPELINE"_Stz) ||
+          m_pScanner->pTkn()->bSame("PIPELINELOCAL"_Stz));
+  m_pScanner->vTokenAccept();
   
-  m_p_PipelineSpec_root = new PipelineSpec(m_pTkn->szChars(),this,m_pScanner);
+  m_p_PipelineSpec_root = new PipelineSpec(m_pScanner->pTkn()->szChars(),this,m_pScanner);
 
-  vTokenAccept();
+  m_pScanner->vTokenAccept();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -290,36 +284,11 @@ void Dynamo::vShow(void)
   sSTMT sPipe("pipeline "_Stz);
   pStageSpec->vToPipeStr(sPipe.szStz());
     
-  m_pTknVec->vTokenise(sPipe);
+  m_pScanner->pTknVec()->vTokenise(sPipe);
   
   SP_TknVecStr spTknVecStr;
-  vTrace("TknVecStr ]]%s[[\n"_Stz,spTknVecStr.sz(m_pTknVec));
+  vTrace("TknVecStr ]]%s[[\n"_Stz,spTknVecStr.sz(m_pScanner->pTknVec()));
   vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* accept token and advance to next token                                     */
-/*----------------------------------------------------------------------------*/
-void Dynamo::vTokenAccept(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-
-  ++ m_i_Tkn;
-  
-  m_pTkn = m_pTknVec->pGet(m_i_Tkn);
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* set token on which parsing begins                                          */
-/*----------------------------------------------------------------------------*/
-void Dynamo::vTokenBegin(i8 i_Tkn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-  
-  m_i_Tkn = i_Tkn;
-  m_pTkn  = m_pTknVec->pGet(m_i_Tkn);
-  
 }
 
 /*============================================================================*/
