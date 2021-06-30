@@ -21,6 +21,8 @@ namespace STORE
 
     PipelineSpec* m_p_PipelineSpec_root; // the top pipeline spec
 
+    Scanner*      m_pScanner;       // statement token scanner
+  
     TokenVec*     m_pTknVec;        // tokenised for of the pipeline statement
     i8            m_i_Tkn;          // current token
     Token*        m_pTkn;           // current token

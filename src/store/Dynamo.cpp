@@ -38,6 +38,8 @@ Dynamo::Dynamo(Stz* szPipelineStmt, Job* p_PipelineJob)
   m_p_PipelineJob = p_PipelineJob;
   m_p_PipelineSpec_root = nullptr;
   
+  m_pScanner = new Scanner(szPipelineStmt);
+  
   m_pTknVec = new TokenVec(szPipelineStmt);
   m_i_Tkn   = 0;
   m_pTkn    = nullptr;
@@ -54,6 +56,8 @@ Dynamo::~Dynamo(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
     
+  delete m_pScanner;
+  
   m_pTknVec->vSetAllTokens();
   delete m_pTknVec;
 }

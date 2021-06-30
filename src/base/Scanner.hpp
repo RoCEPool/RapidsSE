@@ -10,7 +10,7 @@ namespace BASE
   private:
     TokenVec*     m_pTknVec;        // tokenised for of the pipeline statement
     i8            m_i_Tkn;          // current token
-    Token*        m_pTkn;           // current token
+    Token*        m_p_Tkn;          // current token
     
     // must be last
     Footer m_xFooter;
@@ -22,6 +22,8 @@ namespace BASE
     Scanner(Stz* szStatement);
    ~Scanner(void) noexcept(false);
 
+    Token*  p_Tkn(void);
+  
     void vTokenAccept(void);
     void vTokenBegin(i8 i_Tkn);
 

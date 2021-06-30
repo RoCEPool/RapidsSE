@@ -23,7 +23,7 @@ Scanner::Scanner(Stz* szStatement)
       
   m_pTknVec = new TokenVec(szStatement);
   m_i_Tkn   = 0;
-  m_pTkn    = nullptr;
+  m_p_Tkn   = nullptr;
   
   _checkInitialised_(CN_SCANNER);
   
@@ -48,14 +48,23 @@ Scanner::~Scanner(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* accept token and advance to next token                                     */
 /*----------------------------------------------------------------------------*/
+Token* Scanner::p_Tkn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SCANNER,_FOOTER_);
+  
+  return m_p_Tkn;
+}
+
+/*----------------------------------------------------------------------------*/
+/* accept token and advance to next token                                     */
+/*----------------------------------------------------------------------------*/
 void Scanner::vTokenAccept(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANNER,_FOOTER_);
 
   ++ m_i_Tkn;
   
-  m_pTkn = m_pTknVec->pGet(m_i_Tkn);
-
+  m_p_Tkn = m_pTknVec->pGet(m_i_Tkn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -66,8 +75,7 @@ void Scanner::vTokenBegin(i8 i_Tkn)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANNER,_FOOTER_);
   
   m_i_Tkn = i_Tkn;
-  m_pTkn  = m_pTknVec->pGet(m_i_Tkn);
-  
+  m_p_Tkn  = m_pTknVec->pGet(m_i_Tkn);
 }
 
 /*============================================================================*/
