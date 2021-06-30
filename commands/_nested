@@ -1,0 +1,39 @@
+/*============================================================================*/
+/* _nested - nested pipeline test                                             */
+/*============================================================================*/
+
+bc;
+
+pipeline LoopJoinProto
+begin
+
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan Left | filter | loopJoin | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pipeline LoopJoin
+  begin
+
+    stage stageA on origin :
+      start | periodic once | eachRow | stageB
+
+    stage stageB on origin :
+      eachScan Right | filter | eachJoin | stageC
+
+    stage stageC on origin :
+      output ^stageC | sink | stageA
+
+  end
+
+end ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
