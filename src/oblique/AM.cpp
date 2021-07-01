@@ -1941,7 +1941,7 @@ i8 AM::iOperandZkKind(Operand* pOperand)
     case CN_METAGET:      eOperand = ZK_METAGET;        break;
     case CN_PARCEL:       eOperand = ZK_PARCEL;         break;
     case CN_TABLE:        eOperand = ZK_TABLE;          break;
-    case CN_GRID:        eOperand = ZK_GRID;          break;
+    case CN_GRID:         eOperand = ZK_GRID;           break;
 
     default:
       vTrace("what class:%lld %s\n"_Stz,eClass_opd, aCN[eClass_opd]);
