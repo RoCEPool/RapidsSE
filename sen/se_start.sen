@@ -98,7 +98,12 @@
 //    "Error Code %v" .printf
 //  then
 
-  true grid::started!
+
+  grid::started@ not if
+    grid::setStartNode
+    true grid::started!
+    "Cluster started" .
+  then
 
   // spawn thread demon
   "" false threadDemonPipeline api::spawnDemon not if
