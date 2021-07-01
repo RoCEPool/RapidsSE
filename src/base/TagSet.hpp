@@ -55,7 +55,7 @@ namespace BASE
     void vReplace(Stz* szName, i8 iValue);
     void vReplace(Stz* szName, Stz* szValue);
     void vReset(void);
-    void vSprint(Stz* sArgs);
+    void vSprint(Stz* sArgs, bool bParenth=true);
     eTN  eToken(i8 i_Ename);
     i8   iValue(i8 i_Ename);
     i8   iValue(Stz* szName);

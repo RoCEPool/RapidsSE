@@ -676,11 +676,13 @@ void TagSet::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* sprint                                                                     */
 /*----------------------------------------------------------------------------*/
-void TagSet::vSprint(Stz* sArgs)
+void TagSet::vSprint(Stz* sArgs, bool bParenth)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
-  sArgs->vCopy("("_Stz);
+  if (bParenth)
+    sArgs->vCopy("("_Stz);
+  
   for (i8 i_Ename = 0; i_Ename < m_nEnames; i_Ename++) {
     
     if (i_Ename)
@@ -696,7 +698,8 @@ void TagSet::vSprint(Stz* sArgs)
     sArgs->vConcat(m_xyStrings.szGet(m_xEname[i_Ename].m_i_Value));
   }
   
-  sArgs->vConcat(") "_Stz);
+  if (bParenth)
+    sArgs->vConcat(") "_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

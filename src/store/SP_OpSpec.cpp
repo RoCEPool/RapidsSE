@@ -49,9 +49,23 @@ void SP_OpSpec::vOpSpec(OpSpec* pOpSpec)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
+  s16KB sArgs;
+  s16KB sTopo;
+
   vInit();
 
-  vCatf("%s\n"_Stz,pOpSpec->szOpNm());
+  TagSet* pTopoTags = pOpSpec->pTopoTags();
+  pTopoTags->vSprint(sTopo);
+  
+  TagSet* pArgTags  = pOpSpec->pArgTags();
+  if (pArgTags->nItems()) {
+    pArgTags->vSprint(sArgs,false);
+    vCatf("%s %s topo=%s\n"_Stz,pOpSpec->szOpNm(),sArgs.azChar(),sTopo.azChar());
+  }
+  else {
+    vCatf("%s topo=%s\n"_Stz,pOpSpec->szOpNm(),sTopo.azChar());
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
