@@ -15,8 +15,6 @@ SP_OpSpec::SP_OpSpec(void)
 {
   _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
   
-  m_caResult[0] = '\0';
-
   _postcondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
 }
 
@@ -27,10 +25,8 @@ SP_OpSpec::SP_OpSpec(OpSpec* pOpSpec)
 {
   _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
   
-  m_caResult[0] = '\0';
-  
   vOpSpec(pOpSpec);
-
+  
   _postcondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
 }
 
@@ -53,7 +49,9 @@ void SP_OpSpec::vOpSpec(OpSpec* pOpSpec)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  m_caResult[0] = '\0';
+  vInit();
+
+  vCatf("%s\n"_Stz,pOpSpec->szOpNm());
 }
 
 /*----------------------------------------------------------------------------*/

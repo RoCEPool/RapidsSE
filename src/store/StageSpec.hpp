@@ -41,6 +41,7 @@ namespace STORE
     void vCopyOps(StageSpec* pStageSpec);
     OpSpec* pFindOpSpec(Stz* szFindNm);
     bool bNodeTopo(void);
+    OpSpec* pOpSpec(i8 i_Op);
     PipelineSpec* pPipelineSpec(void);
     void vRenumberOpSpecs(void);
     void vSpecificNode(i8 i_SpecificNode);

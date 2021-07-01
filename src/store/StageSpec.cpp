@@ -217,6 +217,18 @@ bool StageSpec::bNodeTopo(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get op spec                                                                */
+/*----------------------------------------------------------------------------*/
+OpSpec* StageSpec::pOpSpec(i8 i_Op)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  OpSpec* pOpSpec = pGet(i_Op);
+  
+  return pOpSpec;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get i_Stage                                                                */
 /*----------------------------------------------------------------------------*/
 PipelineSpec* StageSpec::pPipelineSpec(void)

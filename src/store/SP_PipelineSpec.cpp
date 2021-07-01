@@ -5,7 +5,12 @@
 #include "BASE.h"
 
 #include "PipelineSpec.hpp"
+#include "StageSpec.hpp"
+#include "OpSpec.hpp"
+
 #include "SP_PipelineSpec.hpp"
+#include "SP_StageSpec.hpp"
+#include "SP_OpSpec.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -49,12 +54,28 @@ void SP_PipelineSpec::vPipelineSpec(PipelineSpec* pPipelineSpec)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
+  SP_StageSpec spStageSpec;
+  SP_OpSpec spOpSpec;
+
+
   vInit();
   
-  vCat("pipeline unnamed\n"_Stz);
-  vCat("begin\n"_Stz);
+  vCatf("pipeline %s\n"_Stz,pPipelineSpec->szPipelineNm());
+  vCats("begin\n"_Stz);
   
-  vCat("end ;\n"_Stz);
+  for (i8 i_Stage = 0; i_Stage < pPipelineSpec->nItems(); i_Stage++) {
+    StageSpec* pStageSpec = pPipelineSpec->pStageSpec(i_Stage);
+    vCatf("  %s"_Stz,spStageSpec.sz(pStageSpec));
+    for (i8 i_Op = 0; i_Op < pStageSpec->nItems(); i_Op++) {
+      OpSpec* pOpSpec = pStageSpec->pOpSpec(i_Op);
+      if (! i_Op)
+        vCatf("    %s"_Stz,spOpSpec.sz(pOpSpec));
+      else
+        vCatf("  | %s"_Stz,spOpSpec.sz(pOpSpec));
+    }
+  }
+  
+  vCats("end ;\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

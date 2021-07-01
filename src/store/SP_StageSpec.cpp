@@ -15,8 +15,6 @@ SP_StageSpec::SP_StageSpec(void)
 {
   _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
   
-  m_caResult[0] = '\0';
-
   _postcondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
 }
 
@@ -26,9 +24,7 @@ SP_StageSpec::SP_StageSpec(void)
 SP_StageSpec::SP_StageSpec(StageSpec* pStageSpec)
 {
   _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
-  
-  m_caResult[0] = '\0';
-  
+    
   vStageSpec(pStageSpec);
 
   _postcondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
@@ -53,7 +49,9 @@ void SP_StageSpec::vStageSpec(StageSpec* pStageSpec)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  m_caResult[0] = '\0';
+  vInit();
+  
+  vCatf("stage %s\n"_Stz,pStageSpec->szStageNm());
 }
 
 /*----------------------------------------------------------------------------*/
