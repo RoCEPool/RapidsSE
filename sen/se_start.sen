@@ -98,11 +98,7 @@
 //    "Error Code %v" .printf
 //  then
 
-  args.nodeName "NODE0" str.same if
-  "START CLUSTER OF 1" .
-  "bootCluster" locals| sStmt |
-  "" sStmt api::executeRequest
-  then
+  true grid::started!
 
   // spawn thread demon
   "" false threadDemonPipeline api::spawnDemon not if
