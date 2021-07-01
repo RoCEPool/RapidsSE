@@ -18,6 +18,10 @@
 
 #include "SP_TknVecStr.hpp"
 
+#ifdef WITH_NESTED_PIPELINES
+#include "SP_PipelineSpec.hpp"
+#endif
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -245,6 +249,15 @@ bool Dynamo::bCompile(void)
                                 m_p_PipelineSpec_root))
     return false;
   
+  
+#ifdef WITH_NESTED_PIPELINES
+  if (m_p_PipelineSpec_root->szPipelineNm()->bSame("nestTest"_Stz)) {
+    SP_PipelineSpec spPipelineSpec(m_p_PipelineSpec_root);
+    vTrace("\n\nCompiled Pipeline:\n%s\n"_Stz,spPipelineSpec.sz());
+    vDebugPoint();
+  }
+#endif
+
   return true;
 }
 

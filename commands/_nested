@@ -4,21 +4,22 @@
 
 bc;
 
-pipeline LoopJoinProto
+pipeline nestTest
 begin
 
   stage stageA on origin :
     start | periodic once | stageB
 
   stage stageB on all partitions :
-    scan Left | filter | loopJoin | stageC
+    scan Left | filter | nested | stageC
 
   stage stageC on origin :
     output | sink | stageA
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pipeline LoopJoin
+/*
+  pipeline nested
   begin
 
     stage stageA on origin :
@@ -31,6 +32,7 @@ begin
       output ^stageC | sink | stageA
 
   end
+*/
 
 end ;
 

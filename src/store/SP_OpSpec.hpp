@@ -14,6 +14,7 @@ namespace STORE
     
   public:
     SP_OpSpec(void);
+    SP_OpSpec(OpSpec* pOpSpec);
    ~SP_OpSpec(void) noexcept(false);
 
     void vOpSpec(OpSpec* pOpSpec);

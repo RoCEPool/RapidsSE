@@ -15,7 +15,22 @@ SP_StageSpec::SP_StageSpec(void)
 {
   _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
   
+  m_caResult[0] = '\0';
+
+  _postcondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+SP_StageSpec::SP_StageSpec(StageSpec* pStageSpec)
+{
+  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
   
+  m_caResult[0] = '\0';
+  
+  vStageSpec(pStageSpec);
+
   _postcondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
 }
 

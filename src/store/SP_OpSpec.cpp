@@ -15,7 +15,22 @@ SP_OpSpec::SP_OpSpec(void)
 {
   _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
   
+  m_caResult[0] = '\0';
+
+  _postcondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+SP_OpSpec::SP_OpSpec(OpSpec* pOpSpec)
+{
+  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
   
+  m_caResult[0] = '\0';
+  
+  vOpSpec(pOpSpec);
+
   _postcondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
 }
 

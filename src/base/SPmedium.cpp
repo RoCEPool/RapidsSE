@@ -36,6 +36,26 @@ SPmedium::~SPmedium(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* concat given substring to result                                           */
+/*----------------------------------------------------------------------------*/
+void SPmedium::vCat(Stz* szSubstring)
+{
+  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
+
+  StrLib::vConcat(m_caResult,szSubstring->azChar());
+}
+
+/*----------------------------------------------------------------------------*/
+/* concat given substring to result                                           */
+/*----------------------------------------------------------------------------*/
+void SPmedium::vInit(void)
+{
+  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
+  
+  m_caResult[0] = '\0';
+}
+
+/*----------------------------------------------------------------------------*/
 /* get Stz* of m_caResult                                                     */
 /*----------------------------------------------------------------------------*/
 Stz* SPmedium::szResult(void)

@@ -21,6 +21,9 @@ namespace BASE
     SPmedium(void);
    ~SPmedium(void) noexcept(false);
   
+    void vCat(Stz* szSubstring);
+    void vInit(void);
+
     Stz* szResult(void);
     void vResult(Stz* szResult);
 

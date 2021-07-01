@@ -89,6 +89,8 @@
 
 #define WITH_SEPARATE_OOO_QUEUE EndDefine  // code for use separate ooo queue
 
+#define WITH_NESTED_PIPELINES EndDefine    // code for nested pipelines
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

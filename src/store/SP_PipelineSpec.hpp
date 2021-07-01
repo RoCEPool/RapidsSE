@@ -14,6 +14,7 @@ namespace STORE
     
   public:
     SP_PipelineSpec(void);
+    SP_PipelineSpec(PipelineSpec* pPipelineSpec);
    ~SP_PipelineSpec(void) noexcept(false);
 
     void vPipelineSpec(PipelineSpec* pPipelineSpec);

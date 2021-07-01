@@ -15,6 +15,17 @@ SP_PipelineSpec::SP_PipelineSpec(void)
 {
   _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
   
+  _postcondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+SP_PipelineSpec::SP_PipelineSpec(PipelineSpec* pPipelineSpec)
+{
+  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
+  
+  vPipelineSpec(pPipelineSpec);
   
   _postcondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
 }
@@ -38,7 +49,12 @@ void SP_PipelineSpec::vPipelineSpec(PipelineSpec* pPipelineSpec)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  m_caResult[0] = '\0';
+  vInit();
+  
+  vCat("pipeline unnamed\n"_Stz);
+  vCat("begin\n"_Stz);
+  
+  vCat("end ;\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -14,6 +14,7 @@ namespace STORE
     
   public:
     SP_StageSpec(void);
+    SP_StageSpec(StageSpec* pStageSpec);
    ~SP_StageSpec(void) noexcept(false);
 
     void vStageSpec(StageSpec* pStageSpec);
