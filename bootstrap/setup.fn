@@ -462,6 +462,9 @@ function createConfiguration() {
   # (advanced) port
   askPort
 
+  # (advanced) heartbeat
+  askHeartbeat
+
   # installation directory
   askInstallDir
 
@@ -682,7 +685,7 @@ function askPort() {
   do
 
     echo ""
-    echo -n "Enter a port number for node communication [default: ${NODE_CFG_DEFAULT_PORT}] : "
+    echo -n "Enter a TCP port number for node communication [default: ${NODE_CFG_DEFAULT_PORT}] : "
     IFS=$'\n' read -r line
 
     if [ -z "${line}" ]; then
@@ -716,6 +719,70 @@ function askPort() {
 
   # Set the value for all nodes
   allNodeCfgsSetValue "${NODE_CFG_PORT_KEY}" "${line}"
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Ask the user to enter a default UDP port number that each SE instance will use
+## to share status information and heartbeat messages on.
+## This only runs when ADV_WIZARD=1.
+## Params: None
+
+function askHeartbeat() {
+
+  if [ ${ADV_WIZARD} -ne 1 ]; then
+    allNodeCfgsSetValue "${NODE_CFG_HEARTBEAT_KEY}" "${NODE_CFG_DEFAULT_HEARTBEAT}"
+    return
+  fi
+
+  echo ""
+  echo "Heartbeat Port Number"
+  echo "---------------------"
+  echo ""
+  echo "The heartbeat port number is the UDP port that RapidsSE uses to share"
+  echo "status information with other nodes in the cluster."
+
+  local line
+  local re="^-?[0-9]+$"
+
+  while true
+  do
+
+    echo ""
+    echo -n "Enter a UDP heartbeat port number for node communication [default: ${NODE_CFG_DEFAULT_HEARTBEAT}] : "
+    IFS=$'\n' read -r line
+
+    if [ -z "${line}" ]; then
+      # Accepting the default value
+      line="${NODE_CFG_DEFAULT_HEARTBEAT}"
+      break
+    fi
+
+    if [[ "${line}" = *[[:space:]]* ]]; then
+      echo "Invalid input: port number cannot contain whitespace."
+      continue
+    fi
+
+    if ! [[ ${line} =~ ${re} ]]; then
+      echo "Invalid input: port number must be an integer."
+      continue
+    fi
+
+    if [[ ${line} -lt 1 || ${line} -gt 65535 ]]; then
+      echo "Invalid input: port number out of range [1024, 65535]."
+      continue
+    fi
+
+    if [[ ${line} -lt 1024 && ${EUID} -ne 0 ]]; then
+      echo "Invalid input: Cannot use a port number less than 1024 as a non-root user."
+      continue
+    fi
+
+    break
+  done
+
+  # Set the value for all nodes
+  allNodeCfgsSetValue "${NODE_CFG_HEARTBEAT_KEY}" "${line}"
 }
 
 

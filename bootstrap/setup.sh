@@ -34,7 +34,8 @@ readonly NODE_NAME_FILE="node.name"
 
 # Default values
 readonly NODE_CFG_DEFAULT_NAME_PREFIX="NODE"
-readonly NODE_CFG_DEFAULT_PORT="5541"
+readonly NODE_CFG_DEFAULT_PORT="5541"       # TCP
+readonly NODE_CFG_DEFAULT_HEARTBEAT="8888"  # UDP
 readonly NODE_CFG_DEFAULT_DIR="/opt/rapidsse"
          NODE_CFG_DEFAULT_PARTITIONS="8"  # per node. Non-const. 
          NODE_CFG_DEFAULT_THREADS="16"    # per node. Non-const.
