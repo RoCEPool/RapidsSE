@@ -28,6 +28,7 @@ readonly NODE_CFG_PREFIX="NODE_CFG_"
 readonly NODE_CFG_NAME_KEY="name"
 readonly NODE_CFG_HOST_KEY="host"
 readonly NODE_CFG_PORT_KEY="port"
+readonly NODE_CFG_HEARTBEAT_KEY="heartbeat"
 readonly NODE_CFG_DIR_KEY="dir"
 readonly NODE_CFG_PARTITIONS_KEY="partitions"
 readonly NODE_CFG_THREADS_KEY="threads"
@@ -40,6 +41,7 @@ declare -ra NODE_CFG_MANDATORY_KEYS=( \
   "${NODE_CFG_NAME_KEY}" \
   "${NODE_CFG_HOST_KEY}" \
   "${NODE_CFG_PORT_KEY}" \
+  "${NODE_CFG_HEARTBEAT_KEY}" \
   "${NODE_CFG_DIR_KEY}" \
   "${NODE_CFG_PARTITIONS_KEY}" \
   "${NODE_CFG_THREADS_KEY}" \
@@ -245,7 +247,7 @@ function loadClusterConfig() {
       errorExit "${errMsg}" "No node configuration exists for the node named \"${nodeName}\"."
     fi
 
-    # Must have name, dir, host, port, mem, threads, partitions all set.
+    # Must have name, dir, host, port, heartbeat, mem, threads, partitions all set.
     # Get the value of each of these and check that they are not null.
     local key
     local val
@@ -515,6 +517,120 @@ function isRemoteSeReady() {
   fi
 }
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Filters row data from SE (in the form of "row: (col,col,col)"
+## and returns the desired column values. Columns are returned in a CSV format
+## with one row per line.
+## This function should be called as follows:
+##   while read -r -d ',' columnData; do <some_work_here>; done < <(parseRowData "${filename}" "${columnNum}" ...)
+## Params:
+##  $1 : The name of the file with the data
+##  $2-$n : The 1-based index of the column(s) to return, otherwise all columns are returned
+
+function parseRowData() {
+
+  if [ $# -eq 0 ]; then
+    errorExit "function parseRowData() must be called with at least one parameter"
+  fi
+
+  local filename="$1"
+  shift
+  local -a columnNums=( "$@" )
+
+  while IFS='' read -r line; do
+
+    # Ignore empty lines
+    if [ -z "${line}" ]; then
+      continue
+    fi
+
+    # Check for errors
+    local errorRe="^error: (.+)$"
+
+    if [[ "${line}" =~ $errorRe ]]; then
+      local errorMsg="${BASH_REMATCH[1]}"
+      printError "${errorMsg}"
+      return
+    fi
+
+    # Ignore lines that don't start with "row: (".
+    # Also extract any data between "row: (" and ")"?
+    local re="^row: \(([^\)]+)\)[[:space:]]*$"
+    local row
+
+    if [[ "${line}" =~ $re ]]; then
+      row="${BASH_REMATCH[1]}"
+    else
+      continue
+    fi
+
+    # We need to add an extra comma on the end so the caller can parse it properly
+    row="${row},"
+
+    if [ "${#columnNums[@]}" -eq 0 ]; then
+      echo "${row}"
+      continue
+    fi
+
+    # Split into columns using commas as the delimiter.
+    # Not worrying about commas in strings, etc.
+    local -a columns=()
+    while read -r -d ',' col; do
+      columns+=("${col}")
+    done <<<"${row}"
+
+    # Print the right columns
+    local output=""
+    for colIdx in "${columnNums[@]}"; do
+      if [ "${colIdx}" -le "${#columns[@]}" ]; then
+        output+="${columns[$((colIdx - 1))]},"
+      fi
+    done
+
+    # output the column
+    if [ -n "${output}" ]; then
+      echo "${output}"
+    fi
+  done < <(cat "${filename}" 2>/dev/null)
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Returns a column value (via stdout) given some CSV row string.
+## Strips single quotes off string values if present
+## Params:
+##  $1 : The CSV row string
+##  $2 : The 1-based index of the column desired
+
+function getColumn() {
+
+  if [ "$#" -ne 2 ]; then
+    return
+  fi
+
+  local row="$1"
+  local colNum="$2"
+
+  # Split into columns using commas as the delimiter.
+  local -a columns=()
+  while read -r -d ',' col; do
+    columns+=("${col}")
+  done <<<"${row}"
+
+  if [ "${colNum}" -gt "${#columns[@]}" ]; then
+    return
+  fi
+
+  local columnVal="${columns[$((colNum - 1))]}"
+
+  # Strip single quotes if necessary
+  local stringRe="^[[:space:]]*'([^']*)'[[:space:]]*$"
+  if [[ "${columnVal}" =~ $stringRe ]]; then
+      columnVal="${BASH_REMATCH[1]}"
+  fi
+
+  echo "${columnVal}"
+}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -693,7 +809,7 @@ function nodeCfgPrint() {
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Returns a 0 exit status if the configuration fo a node with a given name 
+## Returns a 0 exit status if the configuration of a node with a given name 
 ## exists. Otherwise it returns a non-0 exit status.
 ## This can be used as follows:
 ##    if ! nodeCfgExists "${CURRENT_NODE_NAME}"; then ...; fi;
