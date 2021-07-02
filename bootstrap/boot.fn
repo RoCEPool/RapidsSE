@@ -493,8 +493,8 @@ function remoteClusterInit() {
 ## Params: None
 
 function localClusterInit() {
-  echo -n "Waiting for cluster cross-connect..."
-set -x
+  echo -n "Waiting for the cluster to cross-connect..."
+
   if [ -z "${CURRENT_NODE_NAME}" ]; then
     errorExit "The name of the local node has not been loaded."
   fi
@@ -569,14 +569,26 @@ set -x
 
     # We got some status information, but are all of the nodes cross-connected?
     nonXConnectedNodes=()
-    while IFS='' read -r line; do nonXConnectedNodes+=("${line}"); done < <(getNonXConnectedNodes "${cmdOutputFile}")
+    local nonXConnOutput
+
+    if ! nonXConnOutput="$(getNonXConnectedNodes "${cmdOutputFile}")" ; then
+      errorExit "Cluster startup failed during node cross-connect"
+    fi
+
+    if [ -z "${nonXConnOutput}" ]; then
+      # Success. Every node is cross connected
+      rm -f "${cmdOutputFile}" 2>/dev/null
+      echo "Done"
+      return
+    fi
+
+    while IFS='' read -r line; do nonXConnectedNodes+=("${line}"); done <<<"${nonXConnOutput}"
 
     # Did we validate that each node cross connected, or did we time out?
     if [ ! -v "nonXConnectedNodes[@]" ] || [ "${#nonXConnectedNodes[@]}" -eq 0 ]; then
       # Success. Every node is cross connected
       rm -f "${cmdOutputFile}" 2>/dev/null
       echo "Done"
-set +x
       return
     fi
 
@@ -587,6 +599,7 @@ set +x
   # We must have timed out waiting for all nodes to cross connect.
   # Let's print which ones are affected.
   local errMsg
+  echo "Timed out"
   errMsg="The following nodes did not cross-connect to other nodes in the cluster:\n"
 
   for row in "${nonXConnectedNodes[@]}" ; do
@@ -604,6 +617,7 @@ set +x
 ## Read the output of this command into an array like this:
 ##    myArray=()
 ##    while IFS='' read -r line; do myArray+=("${line}"); done < <(getNonXConnectedNodes "${cmdOutputFile}")
+## Returns a non-zero exit code if something goes wrong
 ## Params:
 ##  $1 : Name of the file with the output of the status command to be parsed
 function getNonXConnectedNodes() {
@@ -622,6 +636,12 @@ function getNonXConnectedNodes() {
   numElements="${#nodes[@]}"
 
   # Parse the output of the status command
+  local rows
+  if ! rows="$(parseRowData "${filename}" "${interestedColumns[@]}")" ; then
+    false
+    return
+  fi
+
   while IFS='' read -r row; do
 
     if [ -z "${row}" ] ; then
@@ -639,7 +659,7 @@ function getNonXConnectedNodes() {
         break
       fi
     done
-  done < <(parseRowData "${filename}" "${interestedColumns[@]}")
+  done <<<"${rows}"
 
   # Print out each non-null (unset) element in the array
   for node in "${nodes[@]}" ; do
