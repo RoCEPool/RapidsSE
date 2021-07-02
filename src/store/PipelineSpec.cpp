@@ -168,9 +168,9 @@ PipelineSpec* PipelineSpec::pFindNestedPipelineSpec(Stz* szFindNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
-  i8 nPipelineSpecs = m_oNestedPipelineSpecs.nItems();
-  for (i8 i_Pipeline = 0; i_Pipeline < nItems(); i_Pipeline++) {
-    PipelineSpec* pPipelineSpec = m_oNestedPipelineSpecs.pGet(i_Pipeline);
+  i8 nNested = m_oNestedPipelineSpecs.nItems();
+  for (i8 i_Nested = 0; i_Nested < nNested; i_Nested++) {
+    PipelineSpec* pPipelineSpec = m_oNestedPipelineSpecs.pGet(i_Nested);
     
     if (pPipelineSpec->szPipelineNm()->bSame(szFindNm)) {
       return pPipelineSpec;
@@ -776,17 +776,19 @@ bool PipelineSpec::bPass2_staging(void)
       Stz* szName = pOpSpec->szOpNm();
       
       // 1) is the name in the opSpec actually a stage in this pipeline?
-      StageSpec* pStageSpecDst = this->pFindStageSpec(szName);
-      if (pStageSpecDst) {
-        vNameIsStage(pStageSpec,pOpSpec,pStageSpecDst);
+      StageSpec* pStageSpecSend = this->pFindStageSpec(szName);
+      if (pStageSpecSend) {
+        vNameIsStage(pStageSpec,pOpSpec,pStageSpecSend);
         continue;
       }
       
       //
-      // 2) (add test for pipeline here)
+      // 2) is the name in the opSpec actually a nested pipeline?
       //
-      // ... vNameIsPipeline(...);
-      //
+      PipelineSpec* pPipelineSpecCall = this->pFindNestedPipelineSpec(szName);
+      if (pPipelineSpecCall) {
+        continue;
+      }
       
       // 3) the name in the opSpec is a known op
       vNameIsOp(pStageSpec,pOpSpec);
@@ -934,8 +936,9 @@ void PipelineSpec::vNameIsPipeline(void)
 /*----------------------------------------------------------------------------*/
 /* name is a known stage                                                      */
 /*----------------------------------------------------------------------------*/
-void PipelineSpec::vNameIsStage(StageSpec* pStageSpec, OpSpec* pOpSpec_isStage,
-                          StageSpec* pNextStageSpec)
+void PipelineSpec::vNameIsStage(StageSpec* pStageSpec,
+                                OpSpec*    pOpSpec_isStage,
+                                StageSpec* pNextStageSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
