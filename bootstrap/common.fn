@@ -523,6 +523,8 @@ function isRemoteSeReady() {
 ## with one row per line.
 ## This function should be called as follows:
 ##   while read -r -d ',' columnData; do <some_work_here>; done < <(parseRowData "${filename}" "${columnNum}" ...)
+## If an error is encountered then the error is printed to the screen and a
+# non-zero exit code is returned.
 ## Params:
 ##  $1 : The name of the file with the data
 ##  $2-$n : The 1-based index of the column(s) to return, otherwise all columns are returned
@@ -550,6 +552,7 @@ function parseRowData() {
     if [[ "${line}" =~ $errorRe ]]; then
       local errorMsg="${BASH_REMATCH[1]}"
       printError "${errorMsg}"
+      false
       return
     fi
 
