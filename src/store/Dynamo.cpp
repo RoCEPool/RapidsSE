@@ -4,23 +4,10 @@
 
 #include "BASE.h"
 
-#include "ePX.h"
-
-#include "Grid.hpp"
-#include "OpSpec.hpp"
 #include "PipelineSpec.hpp"
-#include "Pipeline.hpp"
 #include "Dynamo.hpp"
-#include "Job.hpp"
-#include "StageSpec.hpp"
 
-#include "TagConstants.h"
-
-#include "SP_TknVecStr.hpp"
-
-#ifdef WITH_NESTED_PIPELINES
 #include "SP_PipelineSpec.hpp"
-#endif
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
