@@ -785,8 +785,9 @@ bool PipelineSpec::bPass2_staging(void)
       //
       // 2) is the name in the opSpec actually a nested pipeline?
       //
-      PipelineSpec* pPipelineSpecCall = this->pFindNestedPipelineSpec(szName);
-      if (pPipelineSpecCall) {
+      PipelineSpec* pPipelineSpecCalled = this->pFindNestedPipelineSpec(szName);
+      if (pPipelineSpecCalled) {
+        vNameIsPipeline(pStageSpec,pOpSpec,pPipelineSpecCalled);
         continue;
       }
       
@@ -898,6 +899,20 @@ void PipelineSpec::vArgUpdate_sends(OpSpec* pConsumeOpSpec, ePX eCrossTopo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* morph the name of the opSpec to call ????                                  */
+/*----------------------------------------------------------------------------*/
+void PipelineSpec::vMorphToCall(OpSpec* pOpSpec, PipelineSpec* pPipelineSpecCalled)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
+  
+  s32 sName = pOpSpec->szOpNm();
+
+  pOpSpec->vOpNm("call"_Stz);
+
+  pOpSpec->vArgTagAdd("<nested>"_Stz,sName,TN_STRING);
+}
+
+/*----------------------------------------------------------------------------*/
 /* morph the stageNm of the opSpec to send <sendKind>                         */
 /*----------------------------------------------------------------------------*/
 void PipelineSpec::vMorphToSend(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_NextStage)
@@ -926,11 +941,13 @@ void PipelineSpec::vNameIsOp(StageSpec* pStageSpec, OpSpec* pOpSpec_isOp)
 /*----------------------------------------------------------------------------*/
 /* name is a known pipeline                                                   */
 /*----------------------------------------------------------------------------*/
-void PipelineSpec::vNameIsPipeline(void)
+void PipelineSpec::vNameIsPipeline(StageSpec*    pStageSpec,
+                                   OpSpec*       pOpSpec,
+                                   PipelineSpec* pPipelineSpecCalled)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
-  NOT_IMPLEMENTED_YET;
+  vMorphToCall(pOpSpec,pPipelineSpecCalled);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -38,8 +38,8 @@ namespace STORE
   
     bool bAppendRight(void);
     void vAppendRight(bool bRight);
-    void vArgTagAdd(Stz* sName, Stz* sValue, eTN eToken);
     void vArgTagAdd(Stz* sName, i8 iValue, eTN eToken);
+    void vArgTagAdd(Stz* sName, Stz* sValue, eTN eToken);
     TagSet* pArgTags(void);
     Stz* szOpNm(void);
     void vOpNm(Stz* szOpNm);

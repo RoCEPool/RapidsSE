@@ -110,11 +110,15 @@ namespace STORE
     void vArgAdd_sends(OpSpec* pConsumeOpSpec, ePX eCrossTopo);
     void vArgUpdate_sends(OpSpec* pConsumeOpSpec, ePX eCrossTopo);
 
+    void vMorphToCall(OpSpec* pOpSpec, PipelineSpec* pPipelineSpecCalled);
     void vMorphToSend(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_NextStage);
 
     void vNameIsOp(StageSpec* pStageSpec, OpSpec* pOpSpec);
-    void vNameIsPipeline(void);
-    void vNameIsStage(StageSpec* pStageSpec, OpSpec* pOpSpec,
+    void vNameIsPipeline(StageSpec*    pStageSpec,
+                         OpSpec*       pOpSpec,
+                         PipelineSpec* pPipelineSpecCalled);
+    void vNameIsStage(StageSpec* pStageSpec,
+                      OpSpec*    pOpSpec,
                       StageSpec* pNextStageSpec);
 
     void vStageConsumeOpInsert(StageSpec* pStageSpec, ePX eCrossTopo);
