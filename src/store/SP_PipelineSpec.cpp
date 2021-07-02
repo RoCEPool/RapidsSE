@@ -57,23 +57,30 @@ void SP_PipelineSpec::vPipelineSpec(PipelineSpec* pPipelineSpec)
   SP_StageSpec spStageSpec;
   SP_OpSpec spOpSpec;
 
+  i8 iDepth = pPipelineSpec->iDepth();
 
   vInit();
   
-  vCatf("[%lld] pipeline %s\n"_Stz
+  vCatf(iDepth,
+        "[%lld] pipeline %s\n"_Stz
         ,pPipelineSpec->i_PipelineSpec()
         ,pPipelineSpec->szPipelineNm());
-  vCats("begin\n"_Stz);
+  vCats(iDepth,
+        "begin\n"_Stz);
   
   for (i8 i_Stage = 0; i_Stage < pPipelineSpec->nItems(); i_Stage++) {
     StageSpec* pStageSpec = pPipelineSpec->pStageSpec(i_Stage);
-    vCatf("  %s"_Stz,spStageSpec.sz(pStageSpec));
+    vCatf(iDepth,
+          "  %s"_Stz,spStageSpec.sz(pStageSpec));
+    
     for (i8 i_Op = 0; i_Op < pStageSpec->nItems(); i_Op++) {
       OpSpec* pOpSpec = pStageSpec->pOpSpec(i_Op);
       if (! i_Op)
-        vCatf("    %s"_Stz,spOpSpec.sz(pOpSpec));
+        vCatf(iDepth,
+              "        %s"_Stz,spOpSpec.sz(pOpSpec));
       else
-        vCatf("  | %s"_Stz,spOpSpec.sz(pOpSpec));
+        vCatf(iDepth,
+              "      | %s"_Stz,spOpSpec.sz(pOpSpec));
     }
   }
   
@@ -87,9 +94,11 @@ void SP_PipelineSpec::vPipelineSpec(PipelineSpec* pPipelineSpec)
   }
   
   if (pPipelineSpec->pParentPipelineSpec())
-    vCats("end\n"_Stz);
+    vCats(iDepth,
+          "end\n"_Stz);
   else
-    vCats("end ;\n"_Stz);
+    vCats(iDepth,
+          "end ;\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

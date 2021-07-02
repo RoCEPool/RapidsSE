@@ -22,7 +22,9 @@ namespace BASE
    ~SPmedium(void) noexcept(false);
   
     void vCatf(Stz* szFormat, ...);
+    void vCatf(i8 iDepth, Stz* szFormat, ...);
     void vCats(Stz* szSubstring);
+    void vCats(i8 iDepth, Stz* szSubstring);
     void vInit(void);
 
     Stz* szResult(void);
