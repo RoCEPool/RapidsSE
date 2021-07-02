@@ -32,7 +32,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    StageSpec(Stz* szStageNm, i8 i_StageSpec, PipelineSpec* pPipelineSpec);
+    StageSpec(i8 i_StageSpec, Stz* szStageNm, PipelineSpec* pPipelineSpec);
    ~StageSpec(void) noexcept(false);
    
     static ePX eCrossTopo(StageSpec* pFromStageSpec, StageSpec* pToStageSpec);

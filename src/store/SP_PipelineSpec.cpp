@@ -60,7 +60,9 @@ void SP_PipelineSpec::vPipelineSpec(PipelineSpec* pPipelineSpec)
 
   vInit();
   
-  vCatf("pipeline %s\n"_Stz,pPipelineSpec->szPipelineNm());
+  vCatf("[%lld] pipeline %s\n"_Stz
+        ,pPipelineSpec->i_PipelineSpec()
+        ,pPipelineSpec->szPipelineNm());
   vCats("begin\n"_Stz);
   
   for (i8 i_Stage = 0; i_Stage < pPipelineSpec->nItems(); i_Stage++) {

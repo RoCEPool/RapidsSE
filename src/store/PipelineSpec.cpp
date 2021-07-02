@@ -25,7 +25,8 @@ __aFooterFunction(PipelineSpec)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-PipelineSpec::PipelineSpec(Stz*          szPipelineNm,
+PipelineSpec::PipelineSpec(i8            i_PipelineSpec,
+                           Stz*          szPipelineNm,
                            PipelineSpec* p_ParentPipelineSpec,
                            Dynamo*       p_Dynamo,
                            Scanner*      p_Scanner)
@@ -33,6 +34,7 @@ PipelineSpec::PipelineSpec(Stz*          szPipelineNm,
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
   m_sPipelineNm = szPipelineNm;
+  m_i_PipelineSpec = i_PipelineSpec;
   
   m_p_ParentPipelineSpec = p_ParentPipelineSpec;
   
@@ -78,7 +80,8 @@ bool PipelineSpec::bCompile(PipelineSpec* p_ParentPipelineSpec,
   p_Scanner->vTokenAccept();
   
   rp_PipelineSpec =
-    new PipelineSpec(p_Scanner->pTkn()->szChars(),
+    new PipelineSpec(0,
+                     p_Scanner->pTkn()->szChars(),
                      p_ParentPipelineSpec,
                      p_Dynamo,
                      p_Scanner);
@@ -108,16 +111,6 @@ void PipelineSpec::vAddStageSpec(StageSpec* pStageSpec)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
   vAdd(pStageSpec);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add stage spec                                                             */
-/*----------------------------------------------------------------------------*/
-Stz* PipelineSpec::szPipelineNm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
-  
-  return m_sPipelineNm.szStz();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -157,6 +150,26 @@ PipelineSpec* PipelineSpec::pFindPipelineSpec(Stz* szFindNm)
   }
   
   return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get pipeline spec number                                                   */
+/*----------------------------------------------------------------------------*/
+i8 PipelineSpec::i_PipelineSpec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
+  
+  return m_i_PipelineSpec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get pipeline name                                                          */
+/*----------------------------------------------------------------------------*/
+Stz* PipelineSpec::szPipelineNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
+  
+  return m_sPipelineNm.szStz();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -298,7 +311,7 @@ bool PipelineSpec::bCollectStage(void)
   
   i8 i_StageSpec = this->nItems();
   
-  StageSpec* p_StageSpec = new StageSpec(pTkn()->szChars(),i_StageSpec,this);
+  StageSpec* p_StageSpec = new StageSpec(i_StageSpec,pTkn()->szChars(),this);
   vTokenAccept();
 
   this->vAddStageSpec(p_StageSpec);
