@@ -1091,29 +1091,6 @@ public:
   void vOpSysIsLinux(void);
   void vOpSysIsMacOs(void);
 
-  // persistence
-  void vPersistenceCheckpoint(void);
-  void vPersistenceReload(void);
-
-  // pipeline
-  void vPipelinePipeout(void);
-
-  // plan
-  void vPlanCompile(void);
-  void vPlanDelete(void);
-  void vPlanDic(void);
-  void vPlanExecutingTaskFetch(void);
-  void vPlanExecutingTaskStore(void);
-  void vPlanFinished(void);
-  void vPlanIdFetch(void);
-  void vPlanLambdaAppend(void);
-  void vPlanLambdaFetch(void);
-  void vPlanLambdaStore(void);
-  void vPlanNew(void);
-  void vPlanNameFetch(void);
-  void vPlanNameStore(void);
-  void vPlanShow(void);
-
   // path identifier
   void vPathIdentifierChoosePaths(void);
   void vPathIdentifierChosenPath(void);
@@ -1135,6 +1112,32 @@ public:
   void vPathIdentifierShowPaths(void);
   void vPathIdentifierTableFetch(void);
   void vPathIdentifierTableStore(void);
+
+  // persistence
+  void vPersistenceCheckpoint(void);
+  void vPersistenceReload(void);
+
+  // pipeline
+  void vPipelineCall(void);
+  void vPipelinePipeout(void);
+  void vPipelineSpawn(void);
+
+  // plan
+  void vPlanCompile(void);
+  void vPlanDelete(void);
+  void vPlanDic(void);
+  void vPlanExecutingTaskFetch(void);
+  void vPlanExecutingTaskStore(void);
+  void vPlanFinished(void);
+  void vPlanIdFetch(void);
+  void vPlanLambdaAppend(void);
+  void vPlanLambdaFetch(void);
+  void vPlanLambdaStore(void);
+  void vPlanNew(void);
+  void vPlanNameFetch(void);
+  void vPlanNameStore(void);
+  void vPlanShow(void);
+
 
   // plist (participant list)
   void vPlistFindJob(void);

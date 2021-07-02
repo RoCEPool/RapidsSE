@@ -21,7 +21,28 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Pipeline(void)
 {
+  vAddStep("pipeline::call"_Stz,    &Step::vPipelineCall);
+  vAddStep("pipeline::spawn"_Stz,   &Step::vPipelineSpawn);
+
   vAddStep("pipeline.pipeout"_Stz,  &Step::vPipelinePipeout);
+}
+
+/*----------------------------------------------------------------------------*/
+/* pipeline::call -- call nested pipeline                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vPipelineCall(void)
+{
+  ENTRY();
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* pipeline::spawn -- spawn nested pipeline                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vPipelineSpawn(void)
+{
+  ENTRY();
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
