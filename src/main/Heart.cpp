@@ -73,8 +73,9 @@ void vHeartInit(void) {
 /*----------------------------------------------------------------------------*/
 /* heart send loop: pick up a packet from ringbuffer and send                 */
 /*----------------------------------------------------------------------------*/
-[[noreturn]] void *vHeartSndLoop(void *pFuncObj) {
-  printf("SE Heart Send thread entry\n");
+[[noreturn]] void *vHeartSndLoop(void *pFuncObj)
+{
+
   HeartbeatSnd *pSender = (HeartbeatSnd *) pFuncObj;
 
   Heartbeat xHeartbeat;
@@ -122,8 +123,9 @@ void vHeartInit(void) {
 /*----------------------------------------------------------------------------*/
 /* heart receive loop: gets a packet from network then writes to ringbuffer   */
 /*----------------------------------------------------------------------------*/
-[[noreturn]] void *vHeartRcvLoop(void *pFuncObj) {
-  vTrace("SE Heart Receiver thread entry\n"_Stz);
+[[noreturn]] void *vHeartRcvLoop(void *pFuncObj)
+{
+
   HeartbeatRcv *pReceiver = (HeartbeatRcv *) pFuncObj;
 
   Heartbeat xHeartbeat;
@@ -192,9 +194,8 @@ void vHeartInit(void) {
  *       we should add this node
  *       Will add the correct global version number
  */
-[[noreturn]] void *vHeartReadLoop(void *pVoid) {
-
-  vTrace("SE Heart Read from received ring-buffer thread entry\n"_Stz);
+[[noreturn]] void *vHeartReadLoop(void *pVoid)
+{
 
   Heartbeat xHeartbeat;
 
