@@ -1,0 +1,39 @@
+/*============================================================================*/
+/* _nested2 - nested pipeline test                                            */
+/*============================================================================*/
+
+bc;
+
+pipeline nestTest
+begin
+
+  stage stageA on origin :
+    start | periodic once | stageB
+
+  stage stageB on all partitions :
+    scan Left | filter | nested | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pipeline nested
+  begin
+
+    stage stageA on origin :
+      start | periodic once | eachRow | stageB
+
+    stage stageB on origin :
+      eachScan Right | filter | eachJoin | stageC
+
+    stage stageC on origin :
+      output ^stageC | sink | stageA
+
+  end
+
+end ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
