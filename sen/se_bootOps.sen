@@ -21,7 +21,7 @@ assert::stack_0
 
 "c" .verbose
 
-  "OP_callPipeline.sen"         include
+  "OP_call.sen"                 include
   "OP_catFile.sen"              include
   "OP_changeFolder.sen"         include
   "OP_chunk.sen"                include
