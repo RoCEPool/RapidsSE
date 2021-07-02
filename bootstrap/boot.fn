@@ -33,6 +33,7 @@ readonly READYFILE="${ROOT_DIR}/${READY_FILENAME}"
 readonly START_SCRIPT="startSE.sh"
 readonly STOP_SCRIPT="stopSE.sh"
 #readonly STATUS_SCRIPT="status.sh"
+readonly COLLECTLOGS_SCRIPT="collectLogs.sh"
 
 readonly DEFAULT_BOOT_TIMEOUT="60" # seconds
 readonly DEFAULT_CLUSTER_XCONNECT_TIMEOUT="15" # seconds
@@ -317,10 +318,6 @@ function startCurrentNode() {
   declare -a paramsArray=()
   IFS=' ' read -r -a paramsArray <<< "${params}"
 
-  # Get the node name/host/port arguments
-  declare -a nodeArgs=()
-  IFS=" " read -r -a nodeArgs <<< "$(buildNodeArguments)"
-
   declare -a startCmd=()
   startCmd+=("nohup")
   startCmd+=("${EXE}")
@@ -330,9 +327,12 @@ function startCurrentNode() {
   startCmd+=("${threads}")
   startCmd+=("--size")
   startCmd+=("${mem}GB")
+  startCmd+=("--node")
+  startCmd+=("${CURRENT_NODE_NAME}")
+  startCmd+=("${host}")
+  startCmd+=("${port}")
   startCmd+=("--name")
   startCmd+=("${CURRENT_NODE_NAME}")
-  startCmd+=("${nodeArgs[@]}")
   startCmd+=("--start")
   startCmd+=("--munged")
   startCmd+=("--script")
@@ -370,6 +370,7 @@ function startCurrentNode() {
   echo "${PID}" > "${PIDFILE}"
 
   echo "[Start script]: RapidsSE started as PID ${PID}." >> "${NOHUP_FILE}"
+  echo "[Start script]: RapidsSE started with the command:   ${startCmd[*]}" >> "${NOHUP_FILE}"
 }
 
 
@@ -522,7 +523,6 @@ function localClusterInit() {
   export LD_LIBRARY_PATH="${EXE_DIR}:${LD_LIBRARY_PATH}"
 
   local cmdOutputFile="${ROOT_DIR}/clusterStatus.log"
-  local cmdOutput
 
   local startTime
   local currentTime
@@ -544,27 +544,14 @@ function localClusterInit() {
     timeout -k 10s 10s "${cmd[@]}" 1>"${cmdOutputFile}" 2>&1 &
     wait $!
     local cmdExitStatus="$?"
-    cmdOutput=$(cat "${cmdOutputFile}" 2>/dev/null)
 
     if [ "${cmdExitStatus}" -eq 124 ]
     then
-      printError "The cluster status command timed out on RapidsSE. RapidsSE may have crashed. Here is the output of the ${statusCmd} command on node ${CURRENT_NODE_NAME} [host ${host}] :\n\n" "${cmdOutput}"
-      echo ""
-      echo ""
-
-      printError "And here is the output of RapidsSE's nohup file (${NOHUP_FILE}) on node ${CURRENT_NODE_NAME} [host ${host}] \n\n:" "$(cat "${NOHUP_FILE}")"
-      echo ""
-      exit 1
+      errorExit "The cluster status command timed out on RapidsSE. RapidsSE may have crashed. Please refer to the log files of each node as well as the output file for this cluster status operation (${cmdOutputFile}). The script ./${COLLECTLOGS_SCRIPT} can be used to gather all log files."
 
     elif [ "${cmdExitStatus}" -ne 0 ]
     then
-      printError "Could not get the status of the RapidsSE cluster. Here is the output of the ${statusCmd} command on node ${CURRENT_NODE_NAME} [host ${host}] :\n\n" "${cmdOutput}"
-      echo ""
-      echo ""
-
-      printError "And here is the output of RapidsSE's nohup file (${NOHUP_FILE}) on node ${CURRENT_NODE_NAME} [host ${host}] :\n\n" "$(cat "${NOHUP_FILE}")"
-      echo ""
-      exit 1
+      errorExit "Could not get the status of the RapidsSE cluster. Please refer to the log files of each node as well as the output file for this cluster status operation (${cmdOutputFile}). The script ./${COLLECTLOGS_SCRIPT} can be used to gather all log files."
     fi
 
     # We got some status information, but are all of the nodes cross-connected?
