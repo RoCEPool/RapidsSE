@@ -252,8 +252,7 @@ bool Dynamo::bCompile(void)
   
 #ifdef WITH_NESTED_PIPELINES
   if (m_p_PipelineSpec_root->szPipelineNm()->bSame("nestTest"_Stz)) {
-    SP_PipelineSpec spPipelineSpec(m_p_PipelineSpec_root);
-    vTrace("\n\nPipelineSpec:\n%s\n"_Stz,spPipelineSpec.sz());
+    vShow();
     vDebugPoint();
   }
 #endif
@@ -278,15 +277,10 @@ void Dynamo::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  StageSpec* pStageSpec = m_p_PipelineSpec_root->pStageSpec(0);
+  SP_PipelineSpec spPipelineSpec(m_p_PipelineSpec_root);
+  vTrace("\nPipelineSpec:\n%s\n"_Stz,spPipelineSpec.sz());
+
   
-  sSTMT sPipe("pipeline "_Stz);
-  pStageSpec->vToPipeStr(sPipe.szStz());
-    
-  m_pScanner->pTknVec()->vTokenise(sPipe);
-  
-  SP_TknVecStr spTknVecStr;
-  vTrace("TknVecStr ]]%s[[\n"_Stz,spTknVecStr.sz(m_pScanner->pTknVec()));
   vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
 }
 
