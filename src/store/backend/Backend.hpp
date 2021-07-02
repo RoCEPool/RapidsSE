@@ -19,6 +19,8 @@ namespace STORE
     PlanNode*      m_pPlanRoot;
     QueryNodeList* m_pColExprList;
     String*        m_sPipeline;
+    bool           m_bHasUnionOp;
+    bool           m_bNewStage;
 
     // must be last
     Footer m_xFooter;
@@ -56,6 +58,8 @@ namespace STORE
                                                     GraphNav::eWalkEvent eEventType, void* pvArg);
     static Parser::GraphNav::eWalkCtrl vVisitorPlan(PlanNode* pNode,
                                                     s256& sPath, i8 iDepth, void* pvArg);
+    static Parser::GraphNav::eWalkCtrl vVisitorPlan2(PlanNode* pNode,
+                                                    s256& sPath, i8 iDepth, void* pvArg);
     static Parser::GraphNav::eWalkCtrl vVisitorStatement(PlanNode* pNode,
                                                     s256& sPath, i8 iDepth, void* pvArg);
 
@@ -63,9 +67,8 @@ namespace STORE
     // pipeline stages
     //
     void vAppendLastStage(Stz* szLocation);
-    void vAppendNextStage(Stz* szStage, Stz* szLocation);
+    void vAppendNewStage(Stz* szStage, Stz* szLocation);
     void vAppendNextOp(Stz* szStage);
-    void vAppendPipe(void);
     void vAppendStartStage(void);
 
     Footer* aFooter(void);
