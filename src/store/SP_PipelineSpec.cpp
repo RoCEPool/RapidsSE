@@ -77,6 +77,15 @@ void SP_PipelineSpec::vPipelineSpec(PipelineSpec* pPipelineSpec)
     }
   }
   
+  i8 nNested = pPipelineSpec->nNestedPipelineSpecs();
+  for (i8 i_Nested = 0; i_Nested < nNested; i_Nested++) {
+    
+    PipelineSpec* pNested = pPipelineSpec->pNestedPipelineSpec(i_Nested);
+    SP_PipelineSpec spNestedSpec(pNested);
+    
+    vCats(spNestedSpec.sz());
+  }
+  
   vCats("end ;\n"_Stz);
 }
 

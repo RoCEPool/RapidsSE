@@ -12,6 +12,11 @@
 #include "Grid.hpp"
 #include "TagConstants.h"
 
+#ifdef WITH_NESTED_PIPELINES
+#include "SP_PipelineSpec.hpp"
+#endif
+
+static bool gbPipelineDebug = false;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -79,13 +84,17 @@ bool PipelineSpec::bCompile(PipelineSpec* p_ParentPipelineSpec,
     return false;
   p_Scanner->vTokenAccept();
   
+  Stz* szPipelineNm = p_Scanner->pTkn()->szChars();
   rp_PipelineSpec =
     new PipelineSpec(0,
-                     p_Scanner->pTkn()->szChars(),
+                     szPipelineNm,
                      p_ParentPipelineSpec,
                      p_Dynamo,
                      p_Scanner);
   p_Scanner->vTokenAccept();
+  
+  if (szPipelineNm->bSame("nestTest"_Stz))
+    gbPipelineDebug = true;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -94,7 +103,13 @@ bool PipelineSpec::bCompile(PipelineSpec* p_ParentPipelineSpec,
    
   if (! rp_PipelineSpec->bPass2_staging())
     return false;
-    
+  
+//  if (gbPipelineDebug) {
+//    SP_PipelineSpec spPipelineSpec(rp_PipelineSpec);
+//    vTrace("\n\nPipelineSpec:\n%s\n"_Stz,spPipelineSpec.sz());
+//    vDebugPoint();
+//  }
+  
   return true;
 }
 
@@ -136,7 +151,7 @@ StageSpec* PipelineSpec::pFindStageSpec(Stz* szFindNm)
 /*----------------------------------------------------------------------------*/
 /* find nested pipeline matching given name                                   */
 /*----------------------------------------------------------------------------*/
-PipelineSpec* PipelineSpec::pFindPipelineSpec(Stz* szFindNm)
+PipelineSpec* PipelineSpec::pFindNestedPipelineSpec(Stz* szFindNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
@@ -150,6 +165,30 @@ PipelineSpec* PipelineSpec::pFindPipelineSpec(Stz* szFindNm)
   }
   
   return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of nested pipelines                                             */
+/*----------------------------------------------------------------------------*/
+i8 PipelineSpec::nNestedPipelineSpecs(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
+  
+  i8 nSpecs = m_oNestedPipelineSpecs.nItems();
+    
+  return nSpecs;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get nested pipeline                                                        */
+/*----------------------------------------------------------------------------*/
+PipelineSpec* PipelineSpec::pNestedPipelineSpec(i8 i_NestedPipeline)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
+  
+  PipelineSpec* pPipelineSpec = m_oNestedPipelineSpecs.pGet(i_NestedPipeline);
+    
+  return pPipelineSpec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -474,7 +513,23 @@ bool PipelineSpec::bCollectPipeline(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
 
-  return false;
+  if (! (pTkn()->bSame("PIPELINE"_Stz)) )
+    return false;
+
+  
+  PipelineSpec* p_PipelineSpecNested;
+  
+  if (!  PipelineSpec::bCompile(this,
+                                nullptr,
+                                m_p_Scanner,
+                                m_p_Dynamo,
+                                
+                                p_PipelineSpecNested))
+    return false;
+
+  m_oNestedPipelineSpecs.vAdd(p_PipelineSpecNested);
+  
+  return true;
 }
 
 
