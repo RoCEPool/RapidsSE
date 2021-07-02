@@ -180,7 +180,7 @@ i8 PipelineSpec::nNestedPipelineSpecs(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get nested pipeline                                                        */
+/* get nested pipeline spec                                                   */
 /*----------------------------------------------------------------------------*/
 PipelineSpec* PipelineSpec::pNestedPipelineSpec(i8 i_NestedPipeline)
 {
@@ -189,6 +189,16 @@ PipelineSpec* PipelineSpec::pNestedPipelineSpec(i8 i_NestedPipeline)
   PipelineSpec* pPipelineSpec = m_oNestedPipelineSpecs.pGet(i_NestedPipeline);
     
   return pPipelineSpec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get parent pipeline spec                                                   */
+/*----------------------------------------------------------------------------*/
+PipelineSpec* PipelineSpec::pParentPipelineSpec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
+      
+  return m_p_ParentPipelineSpec;
 }
 
 /*----------------------------------------------------------------------------*/

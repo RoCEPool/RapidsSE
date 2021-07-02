@@ -59,6 +59,7 @@ namespace STORE
     PipelineSpec* pFindNestedPipelineSpec(Stz* szFindNm);
     i8 nNestedPipelineSpecs(void);
     PipelineSpec* pNestedPipelineSpec(i8 i_NestedPipeline);
+    PipelineSpec* pParentPipelineSpec(void);
     i8   i_PipelineSpec(void);
     Stz* szPipelineNm(void);
     StageSpec* pStageSpec(i8 i_Stage);

@@ -86,7 +86,10 @@ void SP_PipelineSpec::vPipelineSpec(PipelineSpec* pPipelineSpec)
     vCats(spNestedSpec.sz());
   }
   
-  vCats("end ;\n"_Stz);
+  if (pPipelineSpec->pParentPipelineSpec())
+    vCats("end\n"_Stz);
+  else
+    vCats("end ;\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
