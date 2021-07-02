@@ -253,7 +253,7 @@ bool Dynamo::bCompile(void)
 #ifdef WITH_NESTED_PIPELINES
   if (m_p_PipelineSpec_root->szPipelineNm()->bSame("nestTest"_Stz)) {
     SP_PipelineSpec spPipelineSpec(m_p_PipelineSpec_root);
-    vTrace("\n\nCompiled Pipeline:\n%s\n"_Stz,spPipelineSpec.sz());
+    vTrace("\n\nPipelineSpec:\n%s\n"_Stz,spPipelineSpec.sz());
     vDebugPoint();
   }
 #endif

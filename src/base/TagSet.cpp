@@ -676,7 +676,7 @@ void TagSet::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* sprint                                                                     */
 /*----------------------------------------------------------------------------*/
-void TagSet::vSprint(Stz* sArgs, bool bParenth)
+void TagSet::vSprint(Stz* sArgs, bool bParenth, bool bNames)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
@@ -687,6 +687,11 @@ void TagSet::vSprint(Stz* sArgs, bool bParenth)
     
     if (i_Ename)
       sArgs->vConcat(", "_Stz);
+    
+    if (bNames) {
+      sArgs->vConcat(szName(i_Ename));
+      sArgs->vConcat("="_Stz);
+    }
     
     if (TN_INTEGER == m_xEname[i_Ename].m_eToken) {
       s32 sValue;
