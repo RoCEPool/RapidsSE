@@ -28,7 +28,7 @@ begin
       eachScan Right | filter | eachJoin | stageC
 
     stage stageC on origin :
-      output ^stageC | sink | stageA
+      output stageC | sink | stageA
 
   end
 
