@@ -129,6 +129,19 @@ void PipelineSpec::vAddStageSpec(StageSpec* pStageSpec)
 }
 
 /*----------------------------------------------------------------------------*/
+/* recursively compute depth of this pipeline spec                            */
+/*----------------------------------------------------------------------------*/
+i8 PipelineSpec::iDepth(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
+  
+  if (! m_p_ParentPipelineSpec)
+    return 0;
+  
+  return 1 + m_p_ParentPipelineSpec->iDepth();
+}
+
+/*----------------------------------------------------------------------------*/
 /* find stage matching given name                                             */
 /*----------------------------------------------------------------------------*/
 StageSpec* PipelineSpec::pFindStageSpec(Stz* szFindNm)

@@ -55,6 +55,7 @@ namespace STORE
                          PipelineSpec*& rp_PipelineSpec);
   
     void vAddStageSpec(StageSpec* pStageSpec);
+    i8 iDepth(void);
     StageSpec* pFindStageSpec(Stz* szFindNm);
     PipelineSpec* pFindNestedPipelineSpec(Stz* szFindNm);
     i8 nNestedPipelineSpecs(void);
