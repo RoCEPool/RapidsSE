@@ -28,8 +28,6 @@ namespace STORE
     Dynamo(Stz* szPipelineStmt, Job* p_PipelineJob);
    ~Dynamo(void) noexcept(false);
 
-    static bool bToPipelineStmt(String* pAsPipelineStmt, TokenVec* pFromTokenVec);
-
     bool bCompile(void);
     PipelineSpec* pPipelineSpec(void);
     void vShow(void);

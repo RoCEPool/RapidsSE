@@ -499,6 +499,170 @@ void AM::PARCEL::vRecvContents(Parcel* pParcel, Socket* pSocket)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
+/* translate token vector into a pipeline statement                           */
+/*----------------------------------------------------------------------------*/
+bool AM::PROMPT::bToPipelineStmt(String* pAsPipelineStmt,
+                                TokenVec* pFromTokenVec)
+{
+  _static_
+  
+  i8 nTkns = pFromTokenVec->nTokens();
+  
+  Stz* szOpNm;
+  Stz* szOpArg;
+  
+  char cStageStart   = 'A';
+  char cStageCurrent = 'A';
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  pAsPipelineStmt->vCopy(
+    "pipeline unnamed\n"
+    "begin\n"
+    ""_Stz);
+
+  pAsPipelineStmt->vCatSprint(
+    "  stage stage%c on origin :\n"
+    "    start\n"
+    "    | periodic once\n"
+    "    | stageB\n"
+    ""_Stz,
+  cStageStart);
+
+  ++ cStageCurrent;
+  
+  pAsPipelineStmt->vCatSprint(
+    "  stage stage%c on all partitions :\n"
+    ""_Stz,
+    cStageCurrent);
+  
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  for (i8 i_Tkn = 0; i_Tkn < nTkns; /*none*/) {
+
+    szOpNm = pFromTokenVec->pGet(i_Tkn++)->szChars();
+
+    // -- -- -- -- -- -- -- -- -- --
+    
+    if (szOpNm->bSame("scan"_Stz)) {
+      
+      szOpArg = pFromTokenVec->pGet(i_Tkn++)->szChars();
+
+      pAsPipelineStmt->vCatSprint("    scan %s\n"_Stz,szOpArg);
+      
+      while (i_Tkn < nTkns) {
+        szOpArg = pFromTokenVec->pGet(i_Tkn++)->szChars();
+        if (szOpArg->bSame("|"_Stz))
+          break;
+      }
+      
+    }
+    
+    // -- -- -- -- -- -- -- -- -- --
+    
+    else
+    if (szOpNm->bSame("filter"_Stz)) {
+      
+      pAsPipelineStmt->vCatSprint("    | filter 0"_Stz);
+      pAsPipelineStmt->vCatSprint(" \""_Stz);
+      
+      while (i_Tkn < nTkns) {
+        szOpArg = pFromTokenVec->pGet(i_Tkn++)->szChars();
+        if (szOpArg->bSame("|"_Stz))
+          break;
+        pAsPipelineStmt->vCatSprint(" %s"_Stz,szOpArg);
+      }
+      
+      pAsPipelineStmt->vCatSprint(" <>\"\n"_Stz);
+    }
+    
+    // -- -- -- -- -- -- -- -- -- --
+    
+    else
+    if (szOpNm->bSame("project"_Stz)) {
+      
+      pAsPipelineStmt->vCatSprint("    | project 0"_Stz);
+      pAsPipelineStmt->vCatSprint(" \""_Stz);
+      
+      while (i_Tkn < nTkns) {
+        szOpArg = pFromTokenVec->pGet(i_Tkn++)->szChars();
+        if (szOpArg->bSame("|"_Stz))
+          break;
+        pAsPipelineStmt->vCatSprint("%s "_Stz,szOpArg);
+      }
+      
+      pAsPipelineStmt->vCatSprint("\"\n"_Stz);
+            
+    }
+    
+    // -- -- -- -- -- -- -- -- -- --
+    
+    else
+    if (szOpNm->bSame("aggreg"_Stz)) {
+      
+      pAsPipelineStmt->vCatSprint(
+        "    | stage%c\n"
+        ""_Stz,
+        cStageCurrent + 1);
+
+      ++ cStageCurrent;
+      
+      pAsPipelineStmt->vCatSprint(
+        "  stage stage%c on origin :\n"
+        ""_Stz,
+        cStageCurrent);
+      
+      pAsPipelineStmt->vCatSprint("    aggreg 0"_Stz);
+      pAsPipelineStmt->vCatSprint(" \""_Stz);
+      
+      while (i_Tkn < nTkns) {
+        szOpArg = pFromTokenVec->pGet(i_Tkn++)->szChars();
+        if (szOpArg->bSame("|"_Stz))
+          break;
+        pAsPipelineStmt->vCatSprint("%s "_Stz,szOpArg);
+      }
+      
+      pAsPipelineStmt->vCatSprint("\"\n"_Stz);
+            
+    }
+    
+    // -- -- -- -- -- -- -- -- -- --
+    
+    else {
+      
+      return false;
+    }
+    
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  pAsPipelineStmt->vCatSprint(
+    "    | stage%c\n"
+    ""_Stz,
+    cStageCurrent + 1);
+  
+  ++ cStageCurrent;
+  
+  pAsPipelineStmt->vCatSprint(
+    "  stage stage%c on origin :\n"
+    "    output\n"
+    "    | sink\n"
+    "    | stage%c\n"
+    ""_Stz,
+    cStageCurrent, cStageStart);
+
+  pAsPipelineStmt->vConcat(
+    "end ;\n"
+    ""_Stz);
+  
+  vTrace("bToPipelineStmt : \n%s\n"_Stz,pAsPipelineStmt->szStz());
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pipe string out to prompt                                                  */
 /*----------------------------------------------------------------------------*/
 InfoSet* AM::PROMPT::pToPromptOut(Stz* szStz)

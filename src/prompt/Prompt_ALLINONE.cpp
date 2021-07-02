@@ -4126,7 +4126,7 @@ bool PROMPT::bPrompt_scan(SePrompt* pPrompt)
   
   s48K sPipelineStmt;
   
-  if (Dynamo::bToPipelineStmt(sPipelineStmt,pInpTknVec)) {
+  if (AM::PROMPT::bToPipelineStmt(sPipelineStmt,pInpTknVec)) {
     
     pPrompt->pSession()->m_sToDo = sPipelineStmt;
     

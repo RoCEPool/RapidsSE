@@ -88,6 +88,7 @@ namespace BASE {
   class Scheduler;
   class Socket;
   class Statistics;
+  class String;
 
   class TagSet;
   class Task;
@@ -262,6 +263,8 @@ namespace OBLIQUE
     class PROMPT
     {
     public:
+      static bool bToPipelineStmt(String* pAsPipelineStmt,
+                                  TokenVec* pFromTokenVec);
       static InfoSet* pToPromptOut(Stz* szStz);
     };
 
