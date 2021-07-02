@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-enum eXK // system call
+enum eXK // send kind
 {
   /* 0 */ XK_NONE = 0,   // none
   /* 1 */ XK_HASHED,     // hashed

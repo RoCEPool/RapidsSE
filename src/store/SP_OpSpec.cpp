@@ -61,19 +61,27 @@ void SP_OpSpec::vOpSpec(OpSpec* pOpSpec)
   
   if (pArgTags->nItems()) {
     pArgTags->vSprint(sArgs);
-    vCatf("[%02lld] %s args=%stopo=%s\n"_Stz,
+    vCatf("[%02lld] %s args=%stopo=%s"_Stz,
           pOpSpec->i_OpSpec(),
           pOpSpec->szOpNm(),
           sArgs.azChar(),
           sTopo.azChar());
   }
   else {
-    vCatf("[%02lld] %s topo=%s\n"_Stz,
+    vCatf("[%02lld] %s topo=%s"_Stz,
           pOpSpec->i_OpSpec(),
           pOpSpec->szOpNm(),
           sTopo.azChar());
   }
+  
+  if (pOpSpec->bAppendRight())
+    vCats(" right"_Stz);
+  
+  if (XK_NONE != pOpSpec->eSendKind()) {
+    vCatf(" %s"_Stz,aXK[pOpSpec->eSendKind()]);
+  }
 
+  vCats("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -163,7 +163,7 @@ void TagSet::vConcat(Stz* szCmd)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append tagSet to cmd string                                              */
+/* append tagSet to cmd string                                                */
 /*----------------------------------------------------------------------------*/
 void TagSet::vConcat(Stz* szCmd, i8 i_Ename)
 {
@@ -495,6 +495,51 @@ void TagSet::vInsert(Stz* szName, Stz* szValue)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is token a decodable enum?                                                 */
+/*----------------------------------------------------------------------------*/
+bool TagSet::bIsDecodable(i8 i_Ename)
+{
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+  
+  Stz* szName = this->szName(i_Ename);
+  
+  if (szName->bSame("<crossTopo>"_Stz))
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is token kind an integer?                                                  */
+/*----------------------------------------------------------------------------*/
+bool TagSet::bIsInteger(i8 i_Ename)
+{
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+  
+  eTN eToken = m_xEname[i_Ename].m_eToken;
+  
+  if (TN_INTEGER == eToken)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is token kind a string?                                                    */
+/*----------------------------------------------------------------------------*/
+bool TagSet::bIsString(i8 i_Ename)
+{
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+  
+  eTN eToken = m_xEname[i_Ename].m_eToken;
+  
+  if (TN_STRING == eToken)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get nItems                                                                 */
 /*----------------------------------------------------------------------------*/
 i8 TagSet::nItems(void)
@@ -676,7 +721,7 @@ void TagSet::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* sprint                                                                     */
 /*----------------------------------------------------------------------------*/
-void TagSet::vSprint(Stz* sArgs, bool bParenth, bool bNames)
+void TagSet::vSprint(Stz* sArgs, bool bParenth, bool bNames, bool bDecode)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
   
@@ -693,18 +738,24 @@ void TagSet::vSprint(Stz* sArgs, bool bParenth, bool bNames)
       sArgs->vConcat("="_Stz);
     }
     
-    if (TN_INTEGER == m_xEname[i_Ename].m_eToken) {
-      s32 sValue;
-      sValue.vSprint("%lld"_Stz,m_xEname[i_Ename].m_i_Value);
-      sArgs->vConcat(sValue);
+    if (bIsString(i_Ename)) {
+      sArgs->vConcat(m_xyStrings.szGet(m_xEname[i_Ename].m_i_Value));
       continue;
     }
     
-    sArgs->vConcat(m_xyStrings.szGet(m_xEname[i_Ename].m_i_Value));
+    ASSERT(bIsInteger(i_Ename));
+
+    s32 sValue;
+    
+    if (bIsDecodable(i_Ename))
+      sValue = szValueDecoded(i_Ename);
+    else
+      sValue.vSprint("%lld"_Stz,iValue(i_Ename));
+    sArgs->vConcat(sValue);
   }
   
   if (bParenth)
-    sArgs->vConcat(") "_Stz);
+    sArgs->vConcat(")"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -750,6 +801,26 @@ Stz* TagSet::szValue(i8 i_Ename)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get decoded value                                                          */
+/*----------------------------------------------------------------------------*/
+Stz* TagSet::szValueDecoded(i8 i_Ename)
+{
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+  
+  ASSERT(TN_INTEGER == m_xEname[i_Ename].m_eToken);
+  Stz* szValue = "cantDecode"_Stz;
+
+  Stz* szName = this->szName(i_Ename);
+
+  if (szName->bSame("<crossTopo>"_Stz)) {
+    i8 iValue = this->iValue(i_Ename);
+    szValue = aPX[iValue];
+  }
+                  
+  return szValue;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get value                                                                  */
 /*----------------------------------------------------------------------------*/
 i8 TagSet::iValue(Stz *szName)
@@ -784,6 +855,7 @@ Stz* TagSet::szValue(Stz *szName)
   
   return szValue;
 }
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
