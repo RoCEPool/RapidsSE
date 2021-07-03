@@ -13,7 +13,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline command
-  <cmd> job_Pipeline::compile dup
+  <cmd> Job_Pipeline::compile dup
   EC_NONE != if
     //"got error" .
     job::error! !!logError DONE_REQ
@@ -53,7 +53,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // execute the pipeline job (send startmarker to start)
   //<pipelineNm> "%v execute" .printf
-  Job_Pipeline::execute if
+  Op_Pipeline::execute if
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // wait for operators to finish

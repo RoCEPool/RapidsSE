@@ -42,12 +42,12 @@
   PipeIn[].delete
 
   // check if start has already been errored
-  Job_Pipeline::isErrored not if
+  Op_Pipeline::isErrored not if
 
     //grid::thisNodeName@ "(%v) sinkOP got error marker" .printf
 
     // mark pipeline as being errored
-    true Job_Pipeline::errored
+    true Op_Pipeline::errored
 
     // now pipeout an exit marker
     Operand[].newErroredMarker
@@ -86,12 +86,12 @@
   PipeIn[].delete
 
   // check if start has already been errored
-  Job_Pipeline::earlyExit@ not if
+  Op_Pipeline::earlyExit@ not if
 
     //grid::thisNodeName@ "(%v) sinkOP got early exit marker" .printf
 
     // mark pipeline as being earlyExit
-    true Job_Pipeline::earlyExit!
+    true Op_Pipeline::earlyExit!
 
     // now pipeout an exit marker
     Operand[].newExitedEarlyMarker

@@ -11,11 +11,11 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline command
-  <cmd> job_Pipeline::compile dup
+  <cmd> Job_Pipeline::compile dup
   EC_NONE != if
     job::error! !!logError exit
   else
-    Job_Pipeline::deleteSpec
+    Op_Pipeline::deleteSpec
     discard
   then
 ;
@@ -53,7 +53,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // execute the pipeline job (send startmarker to start)
   //<pipelineNm> "%v execute" .printf
-  Job_Pipeline::execute if
+  Op_Pipeline::execute if
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // wait for operators to finish
@@ -75,7 +75,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline command
-  <cmd> job_Pipeline::compile
+  <cmd> Job_Pipeline::compile
   EC_NONE == assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
