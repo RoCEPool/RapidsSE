@@ -136,7 +136,6 @@ namespace STORE
     REG<CrwToRow>       m_xpCrwToRow;
     REG<Dir>            m_xpDir0;     // dir0[]
     REG<Dir>            m_xpDir1;     // dir1[]
-    REG<Dynamo>         m_xpDynamo;   // dynamo pipleine compiler
     REG<ExprEval>       m_xpExprEval; // expr eval
     REG<File>           m_xpFile0;    // file0[]
     REG<File>           m_xpFile1;    // file1[]

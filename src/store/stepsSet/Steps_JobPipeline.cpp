@@ -55,7 +55,7 @@ void Step::vJob_PipelineBegin(void)
   // create a pipeline
   pJob_Pipeline->m_pPipeline =
     new Pipeline(pJob_Pipeline,
-                 m_pJob->pLogicUnit_job()->m_xpDynamo->pPipelineSpec(),
+                 *m_pJob->pLogicUnit_job()->m_xpPipelineSpec,
                  pJob_Pipeline->iOriginatorNode());
   
   Pipeline* pPipeline = pJob_Pipeline->m_pPipeline;
@@ -66,10 +66,7 @@ void Step::vJob_PipelineBegin(void)
     if (iThisNode == 0)
        pPipeline->vDump();
   }
-  
-  delete *m_pJob->pLogicUnit_job()->m_xpDynamo;
-  m_pJob->pLogicUnit_job()->m_xpDynamo = nullptr;
-  
+    
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn operators for this node
   if (AM::bVerbose())
@@ -109,11 +106,11 @@ void Step::vJob_PipelineCompile(void)
 
   LogicUnit* pLogicUnit = m_pJob->pLogicUnit_job();
   
-  pLogicUnit->m_xpDynamo = new Dynamo(sCmd,m_pJob);
+  Dynamo* pDynamo = new Dynamo(sCmd,m_pJob);
   
-  bool bCleanCompile = pLogicUnit->m_xpDynamo->bCompile();
+  bool bCleanCompile = pDynamo->bCompile();
   
-  pLogicUnit->m_xpPipelineSpec = pLogicUnit->m_xpDynamo->pPipelineSpec();
+  pLogicUnit->m_xpPipelineSpec = pDynamo->pPipelineSpec();
 
   if (bCleanCompile) {
     
@@ -123,7 +120,7 @@ void Step::vJob_PipelineCompile(void)
       
       m_pDataStack->vPushInt(EC_NONE);
       if (AM::bVerbose()) {
-        pLogicUnit->m_xpDynamo->vShow();
+        pDynamo->vShow();
       }
       
     }
@@ -133,9 +130,8 @@ void Step::vJob_PipelineCompile(void)
       
 
       delete *pLogicUnit->m_xpPipelineSpec;
-      
-      delete *pLogicUnit->m_xpDynamo;
-      pLogicUnit->m_xpDynamo = nullptr;
+      pLogicUnit->m_xpPipelineSpec = nullptr;
+
       m_pDataStack->vPushInt(EC_LOW_MEMORY);
       
     }
@@ -146,12 +142,13 @@ void Step::vJob_PipelineCompile(void)
     // failed to compile
     
     delete *pLogicUnit->m_xpPipelineSpec;
-    
-    delete *pLogicUnit->m_xpDynamo;
-    pLogicUnit->m_xpDynamo = nullptr;
+    pLogicUnit->m_xpPipelineSpec = nullptr;
+
     m_pDataStack->vPushInt(EC_INVALID_COMMAND);
 
   }
+  
+  delete pDynamo;
   
   EXIT();
 }
@@ -163,13 +160,13 @@ void Step::vJob_PipelineDeleteDynamo(void)
 {
   ENTRY();
   
-  PipelineSpec* pPipelineSpec =
-    m_pJob->pLogicUnit_job()->m_xpDynamo->pPipelineSpec();
-  delete pPipelineSpec;
+  LogicUnit* pLogicUnit = m_pJob->pLogicUnit_job();
   
-  delete *m_pJob->pLogicUnit_job()->m_xpDynamo;
-  m_pJob->pLogicUnit_job()->m_xpDynamo = nullptr;
-  
+  if (*pLogicUnit->m_xpPipelineSpec) {
+    delete *pLogicUnit->m_xpPipelineSpec;
+    pLogicUnit->m_xpPipelineSpec = nullptr;
+  }
+    
   EXIT();
 }
 
