@@ -4,6 +4,20 @@
 
 bc;
 
+create table nation (
+   N_NATIONKEY       INTEGER NOT NULL,
+   N_NAME            CHAR(25) NOT NULL,
+   N_REGIONKEY       INTEGER NOT NULL,
+   N_COMMENT         VARCHAR(152)
+);
+
+print "loading nation.csv..." ;
+load nation "../TPCH/SF1/nation.tbl" ;
+
+tablescan nation;
+
+
+
 pipeline nestTest
 begin
 
@@ -11,7 +25,7 @@ begin
     start | periodic once | stageB
 
   stage stageB on all partitions :
-    scan Left | filter | nested | stageC
+    scan nation | stageC
 
   stage stageC on origin :
     output | sink | stageA

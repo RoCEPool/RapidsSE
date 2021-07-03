@@ -30,6 +30,7 @@
 
 #include "InflateSet.h"
 #include "InfoSet.hpp"
+#include "PipelineSpec.hpp"
 
 #include "eLH.h"
 
@@ -156,8 +157,9 @@ namespace STORE
     REG<Operand>        m_xpOperandB;  // operand B
     REG<Operand>        m_xpOperandC;  // operand C
     REG<Operand>        m_xpOperandOoO; // operand OoO
-    REG<Operand>        m_xpPipein;    // Pipein
     REG<PathIdentifier> m_xpPathIdentifier;
+    REG<Operand>        m_xpPipein;    // Pipein
+    REG<PipelineSpec>   m_xpPipelineSpec; // pipeline spec generate by dynamo
     REG<PtnStream>      m_xpPtnStream;
     REG<Range>          m_xpRange;     // range
     REG<Object>         m_xpRegister0; // general purpose reg 0[]
@@ -166,6 +168,7 @@ namespace STORE
     REG<Row>            m_xpRow;
     REG<RowOnce>        m_xpRowOnce;
     REG<Node>           m_xpSendNode;  // node to send to
+    REG<Sends>          m_xpSends;     // consume Sends
     REG<ShardDef>       m_xpShardDef;
     REG<Socket>         m_xpSocket;
     REG<StreamDef>      m_xpStreamDefLft;
@@ -182,7 +185,6 @@ namespace STORE
     REG<ToPtnRow>       m_xpToPtnRow;
     REG<ToRow>          m_xpToRow;
     REG<Tx>             m_xpTx;
-    REG<Sends>          m_xpSends;     // consume Sends
 
     bool                m_bCompilerToExit;
 
