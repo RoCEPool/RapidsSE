@@ -27,14 +27,14 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobPipeline(void)
 {
-  vAddStep("Job_Pipeline.begin"_Stz,         &Step::vJob_PipelineBegin);
+  vAddStep("Job_Pipeline::begin"_Stz,        &Step::vJob_PipelineBegin);
   vAddStep("Job_Pipeline::cancelled"_Stz,    &Step::vJob_PipelineCancelled);
   vAddStep("Job_Pipeline::compile"_Stz,      &Step::vJob_PipelineCompile);
-  vAddStep("Job_Pipeline::deleteDynamo"_Stz, &Step::vJob_PipelineDeleteDynamo);
+  vAddStep("Job_Pipeline::deleteSpec"_Stz,   &Step::vJob_PipelineDeleteSpec);
   vAddStep("Job_Pipeline::earlyExit@"_Stz,   &Step::vJob_PipelineEarlyExitFetch);
   vAddStep("Job_Pipeline::earlyExit!"_Stz,   &Step::vJob_PipelineEarlyExitStore);
   vAddStep("Job_Pipeline::errored"_Stz,      &Step::vJob_PipelineErrored);
-  vAddStep("Job_Pipeline.execute"_Stz,       &Step::vJob_PipelineExecute);
+  vAddStep("Job_Pipeline::execute"_Stz,      &Step::vJob_PipelineExecute);
   vAddStep("Job_Pipeline::isCancelled"_Stz,  &Step::vJob_PipelineIsCancelled);
   vAddStep("Job_Pipeline::isErrored"_Stz,    &Step::vJob_PipelineIsErrored);
   vAddStep("Job_Pipeline::pulsed"_Stz,       &Step::vJob_PipelinePulsed);
@@ -42,23 +42,22 @@ void Step::vAddSteps_JobPipeline(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job_Pipeline.begin -- begin the Pipeline job                               */
+/* Job_Pipeline::begin -- begin the Pipeline job                               */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_PipelineBegin(void)
 {
   ENTRY();
-  
-  Job* pJob_Pipeline = _pJob(m_pDataStack->pPopPtr(__func__));
+    
   i8 iThisNode = AM::pGrid()->iThisNode();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a pipeline
-  pJob_Pipeline->m_pPipeline =
-    new Pipeline(pJob_Pipeline,
+  m_pJob->m_pPipeline =
+    new Pipeline(m_pJob,
                  *m_pJob->pLogicUnit_job()->m_xpPipelineSpec,
-                 pJob_Pipeline->iOriginatorNode());
+                 m_pJob->iOriginatorNode());
   
-  Pipeline* pPipeline = pJob_Pipeline->m_pPipeline;
+  Pipeline* pPipeline = m_pJob->m_pPipeline;
       
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the pipeline
@@ -72,7 +71,7 @@ void Step::vJob_PipelineBegin(void)
   if (AM::bVerbose())
     vTrace("Spawning operator jobs for node %lld\n"_Stz, AM::pGrid()->iThisNode());
   
-  pPipeline->vSpawnOperatorJobs(pJob_Pipeline->m_xReqTuple.m_i_Session, iThisNode);
+  pPipeline->vSpawnOperatorJobs(m_pJob->m_xReqTuple.m_i_Session, iThisNode);
   
   EXIT();
 }
@@ -154,9 +153,9 @@ void Step::vJob_PipelineCompile(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job_Pipeline::deleteDynamo -- delete the dynamo                            */
+/* Job_Pipeline::deleteSpec -- delete the pipeline spec                       */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_PipelineDeleteDynamo(void)
+void Step::vJob_PipelineDeleteSpec(void)
 {
   ENTRY();
   
@@ -220,15 +219,14 @@ void Step::vJob_PipelineErrored(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job_Pipeline.execute -- execute                                            */
+/* Job_Pipeline::execute -- execute                                            */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_PipelineExecute(void)
 {
   ENTRY();
   
-  Job* pJob_Pipeline = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  Pipeline* pPipeline = pJob_Pipeline->m_pPipeline;
+  Pipeline* pPipeline = m_pJob->m_pPipeline;
   i8 iThisNode = AM::pGrid()->iThisNode();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -240,7 +238,7 @@ void Step::vJob_PipelineExecute(void)
   if (nOps) {
     if (AM::bDbgTag(C_TAG_DBG_ACKS))
       vTrace("Setting acks remaining to %lld\n"_Stz, nOps);
-    AM::vSetAcksRmg(pJob_Pipeline->pTask(),nOps);
+    AM::vSetAcksRmg(m_pJob->pTask(),nOps);
   
     // get the first stage of the pipeline
     Stage* pStage = pPipeline->pGet(0);

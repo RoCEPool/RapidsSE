@@ -9,15 +9,13 @@
 /*----------------------------------------------------------------------------*/
 : pipeline::request _eeh_suffix ( -- <R> )
 
-  job[] locals| pJob_pipeline |
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline command
   <cmd> job_Pipeline::compile dup
   EC_NONE != if
     job::error! !!logError exit
   else
-    job_Pipeline::deleteDynamo
+    Job_Pipeline::deleteSpec
     discard
   then
 ;
@@ -28,7 +26,6 @@
 : pipeline::execute _eeh_suffix ( -- )
 
   task[] locals| pTask |
-  job[]  locals| pJob_pipeline |
 
 
   // run <pre_execute>
@@ -56,7 +53,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // execute the pipeline job (send startmarker to start)
   //<pipelineNm> "%v execute" .printf
-  pJob_pipeline job_Pipeline.execute if
+  Job_Pipeline::execute if
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // wait for operators to finish
@@ -83,7 +80,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // begin the pipeline job (spawning jobs for ops etc)
-  job[] job_Pipeline.begin
+  Job_Pipeline::begin
 ;
 
 /*----------------------------------------------------------------------------*/

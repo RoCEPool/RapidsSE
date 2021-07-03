@@ -756,7 +756,7 @@ public:
   void vJob_PipelineBegin(void);
   void vJob_PipelineCancelled(void);
   void vJob_PipelineCompile(void);
-  void vJob_PipelineDeleteDynamo(void);
+  void vJob_PipelineDeleteSpec(void);
   void vJob_PipelineEarlyExitFetch(void);
   void vJob_PipelineEarlyExitStore(void);
   void vJob_PipelineErrored(void);
