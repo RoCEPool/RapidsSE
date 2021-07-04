@@ -38,12 +38,12 @@ void Step::vAddSteps_JobPipeline(void)
   vAddStep("Op_Pipeline::execute"_Stz,      &Step::vJob_PipelineExecute);
   vAddStep("Op_Pipeline::isCancelled"_Stz,  &Step::vJob_PipelineIsCancelled);
   vAddStep("Op_Pipeline::isErrored"_Stz,    &Step::vJob_PipelineIsErrored);
-  vAddStep("Op_Pipeline::pulsed"_Stz,       &Step::vJob_PipelinePulsed);
   vAddStep("Op_Pipeline::isPulsed"_Stz,     &Step::vJob_PipelineIsPulsed);
+  vAddStep("Op_Pipeline::pulsed"_Stz,       &Step::vJob_PipelinePulsed);
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job_Pipeline::begin -- begin the Pipeline job                               */
+/* Job_Pipeline::begin -- begin the Pipeline job                              */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_PipelineBegin(void)
 {
@@ -144,7 +144,7 @@ void Step::vJob_PipelineCompile(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* Op_Pipeline::cancelled -- set pipeline as being cancelled                 */
+/* Op_Pipeline::cancelled -- set pipeline as being cancelled                  */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_PipelineCancelled(void)
 {
@@ -160,7 +160,7 @@ void Step::vJob_PipelineCancelled(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Op_Pipeline::deleteSpec -- delete the pipeline spec                       */
+/* Op_Pipeline::deleteSpec -- delete the pipeline spec                        */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_PipelineDeleteSpec(void)
 {
@@ -177,7 +177,7 @@ void Step::vJob_PipelineDeleteSpec(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Op_Pipeline::earlyExit! -- set earlyExit                                  */
+/* Op_Pipeline::earlyExit! -- set earlyExit                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_PipelineEarlyExitStore(void)
 {
@@ -193,7 +193,7 @@ void Step::vJob_PipelineEarlyExitStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Op_Pipeline::earlyExit@ -- has the pipeline been early exited             */
+/* Op_Pipeline::earlyExit@ -- has the pipeline been early exited              */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_PipelineEarlyExitFetch(void)
 {
@@ -210,7 +210,7 @@ void Step::vJob_PipelineEarlyExitFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Op_Pipeline::errored -- set pipeline as being errored                     */
+/* Op_Pipeline::errored -- set pipeline as being errored                      */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_PipelineErrored(void)
 {
@@ -266,7 +266,7 @@ void Step::vJob_PipelineExecute(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Op_Pipeline::IsCancelled -- has the pipeline been cancelled               */
+/* Op_Pipeline::IsCancelled -- has the pipeline been cancelled                */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_PipelineIsCancelled(void)
 {
@@ -283,7 +283,7 @@ void Step::vJob_PipelineIsCancelled(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Op_Pipeline::IsErrored -- has the pipeline been errored                   */
+/* Op_Pipeline::IsErrored -- has the pipeline been errored                    */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_PipelineIsErrored(void)
 {
@@ -300,7 +300,7 @@ void Step::vJob_PipelineIsErrored(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Op_Pipeline::IsPulsed -- has the pipeline been pulsed                     */
+/* Op_Pipeline::IsPulsed -- has the pipeline been pulsed                      */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_PipelineIsPulsed(void)
 {
@@ -317,7 +317,7 @@ EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Op_Pipeline::pulsed -- set pipeline as being pulsed                       */
+/* Op_Pipeline::pulsed -- set pipeline as being pulsed                        */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_PipelinePulsed(void)
 {

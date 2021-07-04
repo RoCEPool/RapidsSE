@@ -29,8 +29,8 @@ namespace BASE
   
     ObjId<CN_TASK> m_xTaskId;    // tasks object id
 
-    SMA<Job>     m_pJob;         // the job for this task
-    SMA<Thread>  m_pThread;      // current thread
+    SMA<Thread>  m_pThread;      // current thread executing this task
+    SMA<Job>     m_pJob;         // job this task is executing
   
     bool         m_bIsStart;     // is this the start task?
     bool         m_bIsImmediate; // is this an immediate task?

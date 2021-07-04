@@ -152,7 +152,7 @@ Job::Job(ReqTuple* aReqTuple)
   m_oAcksRmg_2pc.vCheckInit();
   m_eSeed      = SS_ENUMS;
   m_i_TablePtn = C_UNKNOWN;
-  m_pTaskJ     = nullptr;
+  m_pTask     = nullptr;
 
   // -- -- -- -- -- --
       
@@ -194,7 +194,7 @@ Job::Job(eCN eClassNo)
   
   //m_oAcksRmg
   
-  m_pTaskJ           = nullptr;
+  m_pTask           = nullptr;
   m_pOriginatingTask = nullptr;
   m_iOriginatingId   = C_UNKNOWN;
 
@@ -247,10 +247,10 @@ Job::~Job(void) noexcept(false)
     
   delete m_pLogicUnit_job;
   
-  //if (m_pTaskJ)
+  //if (m_pTask)
   //  vDebugPoint();
   
-  //AM::vTaskDelete(m_pTaskJ);
+  //AM::vTaskDelete(m_pTask);
   
   AM::LOG::vEvent(EV_DESTRUCT,"Job destructor"_Stz);
 
@@ -361,7 +361,7 @@ i8 Job::iAcksOriginal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  //RASSERT(! AM::iTaskAcksRmg_assert_only_(m_pTaskJ));
+  //RASSERT(! AM::iTaskAcksRmg_assert_only_(m_pTask));
   
   i8 iAcksOriginal = m_oAcksRmg_2pc.nOriginalAcks();
   
@@ -375,7 +375,7 @@ i8 Job::iAcksRmg_printOnlyValue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  //RASSERT(! AM::iTaskAcksRmg_assert_only_(m_pTaskJ));
+  //RASSERT(! AM::iTaskAcksRmg_assert_only_(m_pTask));
   
   i8 iAcksRmg = m_oAcksRmg_2pc.iPrintOnlyValue();
   
@@ -389,7 +389,7 @@ void Job::vAcksRmg(i8 nAcks)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  //RASSERT(! AM::iTaskAcksRmg_assert_only_(m_pTaskJ));
+  //RASSERT(! AM::iTaskAcksRmg_assert_only_(m_pTask));
   
   m_oAcksRmg_2pc.vSetRemaining(nAcks);
 }
@@ -1005,7 +1005,7 @@ void Job::vResetForReuse(Session* pSession)
   m_oAcksRmg_2pc.vReset();
   m_eSeed      = SS_ENUMS;
   m_i_TablePtn = C_UNKNOWN;
-  m_pTaskJ = nullptr;
+  m_pTask = nullptr;
 
   pSession->m_pOutput->vDrainBufferQueue(pSession);
 
@@ -1181,7 +1181,7 @@ bool Job::bSummaryTag(void)
 /*----------------------------------------------------------------------------*/
 Task* Job::pTask(void)
 {
-  return m_pTaskJ;
+  return m_pTask;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1189,8 +1189,8 @@ Task* Job::pTask(void)
 /*----------------------------------------------------------------------------*/
 void Job::vTask(Task* pTask)
 {
-  ASSERT(! pTask || ! m_pTaskJ);
-  m_pTaskJ = pTask;
+  ASSERT(! pTask || ! m_pTask);
+  m_pTask = pTask;
 }
 
 /*----------------------------------------------------------------------------*/

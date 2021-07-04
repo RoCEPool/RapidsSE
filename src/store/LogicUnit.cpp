@@ -227,7 +227,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
 
   if (! m_xpPipeline.bIsNull())
     delete *m_xpPipeline;
-
+  
   if (m_pRluDiary) {
     vDiaryReport();
     delete m_pRluDiary;
