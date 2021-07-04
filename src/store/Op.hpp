@@ -14,6 +14,8 @@ namespace STORE
   class Op : public Operand
   {
   private:
+    Job* m_pJob;        // job of this operator
+  
     s32  m_sPipelineNm; // pipeline name
     s32  m_sStageNm;    // stage name within pipeline
     s32  m_sStreamNm;   // stream name within stream within pipeline
@@ -27,12 +29,11 @@ namespace STORE
     Stage*    m_pStage;    // which stage of pipeline
     Pipeline* m_pPipeline; // which pipeline
   
+
     i8   m_tPtnNo; // this op processes m_tPtnNo in grid
     i8   m_i_Node; // this op processes m_i_Node in grid
     
     // -- -- -- -- -- --
-  
-    Job*           m_pOpJob;         // operator job of this operator
   
     TagSet         m_oOpTagSet;        // op tag set
     TagSet         m_oTopologyTags;  // topology tag set
