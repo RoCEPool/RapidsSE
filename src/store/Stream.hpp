@@ -40,7 +40,8 @@ namespace STORE
     void vDump(void);
   
     i8   i_Node(void);
-  
+    i8   i_Stream(void);
+
     Pipeline* pPipeline(void);
     tPN  tPtnNo(void);
   
