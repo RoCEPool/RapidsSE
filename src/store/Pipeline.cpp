@@ -150,15 +150,15 @@ void Pipeline::vDump(void)
 //         pGrid->nBootNodes(),
 //         AM::nPtnsPerTable());
     
-  SP_Pipeline spPipeline(this);
+  SP_Pipeline spPipeline(this,true);
   vTrace("%s\n"_Stz,spPipeline.sz());
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the stages with the operators
-  for (i8 i_Stage = 0; i_Stage < nItems(); i_Stage++ ) {
-    Stage* pStage = pGet(i_Stage);
-    pStage->vDump(this);
-  }
+//  for (i8 i_Stage = 0; i_Stage < nItems(); i_Stage++ ) {
+//    Stage* pStage = pGet(i_Stage);
+//    pStage->vDump(this);
+//  }
   
 //  vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
 }

@@ -7,6 +7,7 @@
 #include "Stage.hpp"
 #include "StageSpec.hpp"
 #include "SP_Stage.hpp"
+#include "SP_Stream.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -22,11 +23,11 @@ SP_Stage::SP_Stage(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SP_Stage::SP_Stage(Stage* pStage)
+SP_Stage::SP_Stage(Stage* pStage, bool bDescend)
 {
   _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
     
-  vStage(pStage);
+  vStage(pStage,bDescend);
 
   _postcondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
 }
@@ -46,7 +47,7 @@ SP_Stage::~SP_Stage(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* sprint pipeline                                                            */
 /*----------------------------------------------------------------------------*/
-void SP_Stage::vStage(Stage* pStage)
+void SP_Stage::vStage(Stage* pStage, bool bDescend)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -54,11 +55,24 @@ void SP_Stage::vStage(Stage* pStage)
   
   i8 i_Stage = pStageSpec->i_StageSpec();
   
+  if (bDescend)
+    vCatf("\n  "_Stz);
+  
   vCatf("[%lld] Stage %s Topology %s"_Stz,
         i_Stage,
         pStage->szStageNm(),
         aPO[pStageSpec->eTopology()]);
 
+  if (bDescend) {
+    
+    for (i8 i_Stream = 0; i_Stream < pStage->nItems(); i_Stream++) {
+      Stream* pStream = pStage->pGet(i_Stream);
+      SP_Stream spStream(pStream,true);
+      vCatf("%s"_Stz,spStream.sz());
+    }
+    
+  }
+  
 }
 
 /*----------------------------------------------------------------------------*/

@@ -14,10 +14,10 @@ namespace STORE
     
   public:
     SP_Stream(void);
-    SP_Stream(Stream* pStream);
+    SP_Stream(Stream* pStream, bool bDescend=false);
    ~SP_Stream(void) noexcept(false);
 
-    void vStream(Stream* pStream);
+    void vStream(Stream* pStream, bool bDescend=false);
   
     Stz* sz(void);
     Stz* sz(Stream* pStream);

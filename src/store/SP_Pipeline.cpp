@@ -8,6 +8,7 @@
 #include "Grid.hpp"
 
 #include "SP_Pipeline.hpp"
+#include "SP_Stage.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -23,11 +24,11 @@ SP_Pipeline::SP_Pipeline(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SP_Pipeline::SP_Pipeline(Pipeline* pPipeline)
+SP_Pipeline::SP_Pipeline(Pipeline* pPipeline, bool bDescend)
 {
   _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
   
-  vPipeline(pPipeline);
+  vPipeline(pPipeline,bDescend);
   
   _postcondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
 }
@@ -47,7 +48,7 @@ SP_Pipeline::~SP_Pipeline(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* sprint pipeline                                                            */
 /*----------------------------------------------------------------------------*/
-void SP_Pipeline::vPipeline(Pipeline* pPipeline)
+void SP_Pipeline::vPipeline(Pipeline* pPipeline, bool bDescend)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -58,6 +59,15 @@ void SP_Pipeline::vPipeline(Pipeline* pPipeline)
         pGrid->szGridNm(),
         pGrid->nBootNodes(),
         AM::nPtnsPerTable());
+  
+  if (bDescend) {
+    for (i8 i_Stage = 0; i_Stage < pPipeline->nItems(); i_Stage++ ) {
+      Stage* pStage = pPipeline->pGet(i_Stage);
+      SP_Stage spStage(pStage,true);
+      vCatf("%s"_Stz,spStage.sz());
+    }
+  }
+  
 }
 
 /*----------------------------------------------------------------------------*/

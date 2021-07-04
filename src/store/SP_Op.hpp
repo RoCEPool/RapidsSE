@@ -14,10 +14,10 @@ namespace STORE
     
   public:
     SP_Op(void);
-    SP_Op(Op* pOp);
+    SP_Op(Op* pOp, bool bDescend=false);
    ~SP_Op(void) noexcept(false);
 
-    void vOp(Op* pOp);
+    void vOp(Op* pOp, bool bDescend=false);
   
     Stz* sz(void);
     Stz* sz(Op* pOp);

@@ -27,11 +27,11 @@ SP_Op::SP_Op(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SP_Op::SP_Op(Op* pOp)
+SP_Op::SP_Op(Op* pOp, bool bDescend)
 {
   _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
   
-  vOp(pOp);
+  vOp(pOp,bDescend);
   
   _postcondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
 }
@@ -51,7 +51,7 @@ SP_Op::~SP_Op(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* sprint pipeline                                                            */
 /*----------------------------------------------------------------------------*/
-void SP_Op::vOp(Op* pOp)
+void SP_Op::vOp(Op* pOp, bool bDescend)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -83,6 +83,9 @@ void SP_Op::vOp(Op* pOp)
   i8 iSends =  pOpTags->iValue(C_TAG_SENDS);
   i8 iLeftMarkers = iSends ? iSends : 1;
   
+  if (bDescend)
+    vCatf("\n      "_Stz);
+
   vCatf("[%03lld] (N%lld,P%02lld) Op %12s%-20s "
         "{ Markers(L%lld R0) :%-10s %s %s %s }"_Stz,
         

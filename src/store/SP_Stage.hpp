@@ -14,10 +14,10 @@ namespace STORE
     
   public:
     SP_Stage(void);
-    SP_Stage(Stage* pStage);
+    SP_Stage(Stage* pStage, bool bDescend=false);
    ~SP_Stage(void) noexcept(false);
 
-    void vStage(Stage* pStage);
+    void vStage(Stage* pStage, bool bDescend=false);
   
     Stz* sz(void);
     Stz* sz(Stage* pStage);
