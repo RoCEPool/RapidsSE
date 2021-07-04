@@ -15,6 +15,8 @@
 #include "PipelineSpec.hpp"
 #include "StageSpec.hpp"
 
+#include "SP_Pipeline.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -138,16 +140,19 @@ void Pipeline::vDump(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump all operators of each stage
     
-  Grid* pGrid = AM::pGrid();
+//  Grid* pGrid = AM::pGrid();
   
-  vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
+//  vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
+//
+//  vTrace("Pipeline-Job %s Grid %s with %lld Nodes %lld tablePtns:\n"_Stz,
+//         m_sPipelineNm.szStz(),
+//         pGrid->szGridNm(),
+//         pGrid->nBootNodes(),
+//         AM::nPtnsPerTable());
     
-  vTrace("Pipeline-Job %s Grid %s with %lld Nodes %lld tablePtns:\n"_Stz,
-         m_sPipelineNm.szStz(),
-         pGrid->szGridNm(),
-         pGrid->nBootNodes(),
-         AM::nPtnsPerTable());
-    
+  SP_Pipeline spPipeline(this);
+  vTrace("%s\n"_Stz,spPipeline.sz());
+
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the stages with the operators
   for (i8 i_Stage = 0; i_Stage < nItems(); i_Stage++ ) {
@@ -155,7 +160,7 @@ void Pipeline::vDump(void)
     pStage->vDump(this);
   }
   
-  vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
+//  vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

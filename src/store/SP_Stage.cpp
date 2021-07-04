@@ -5,6 +5,7 @@
 #include "BASE.h"
 
 #include "Stage.hpp"
+#include "StageSpec.hpp"
 #include "SP_Stage.hpp"
 
 
@@ -49,6 +50,15 @@ void SP_Stage::vStage(Stage* pStage)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
+  StageSpec* pStageSpec = pStage->pStageSpec();
+  
+  i8 i_Stage = pStageSpec->i_StageSpec();
+  
+  vCatf("[%lld] Stage %s Topology %s"_Stz,
+        i_Stage,
+        pStage->szStageNm(),
+        aPO[pStageSpec->eTopology()]);
+
 }
 
 /*----------------------------------------------------------------------------*/

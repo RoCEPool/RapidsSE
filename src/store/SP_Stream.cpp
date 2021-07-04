@@ -54,13 +54,13 @@ void SP_Stream::vStream(Stream* pStream)
   StageSpec* pStageSpec = pStream->pStageSpec();
   
   if (pStageSpec->bNodeTopo()) {
-    vCatf("[%02lld] (N%lld) Node-Stream %s:\n"_Stz,
+    vCatf("[%02lld] (N%lld) Node-Stream %s"_Stz,
           pStream->i_Stream(),
           pStream->i_Node(),
           pStream->szStreamNm());
   }
   else {
-    vCatf("[%02lld] (N%lld,S%02lld) Partition-Stream %s:\n"_Stz,
+    vCatf("[%02lld] (N%lld,S%02lld) Partition-Stream %s"_Stz,
           pStream->i_Stream(),
           pStream->i_Node(),
           pStream->i_Stream(),

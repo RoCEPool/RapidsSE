@@ -5,6 +5,7 @@
 #include "BASE.h"
 
 #include "Pipeline.hpp"
+#include "Grid.hpp"
 
 #include "SP_Pipeline.hpp"
 
@@ -50,6 +51,13 @@ void SP_Pipeline::vPipeline(Pipeline* pPipeline)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
+  Grid* pGrid = AM::pGrid();
+    
+  vCatf("Pipeline %s on Grid %s N%lldP%lld"_Stz,
+        pPipeline->szPipelineNm(),
+        pGrid->szGridNm(),
+        pGrid->nBootNodes(),
+        AM::nPtnsPerTable());
 }
 
 /*----------------------------------------------------------------------------*/
