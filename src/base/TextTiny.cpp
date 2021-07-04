@@ -27,7 +27,7 @@ void* TextTiny::operator new(size_t)
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete operator                                                            */
+/* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
 void TextTiny::operator delete(void* pTextAddress)
 {

@@ -21,7 +21,7 @@ AggTimer* BASE::_pAggTimer(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* new operator                                                               */
+/* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* AggTimer::operator new(size_t)
 {
@@ -31,7 +31,7 @@ void* AggTimer::operator new(size_t)
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete operator                                                            */
+/* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
 void AggTimer::operator delete(void* aAddr)
 {

@@ -37,6 +37,7 @@
 #include "Op.hpp"
 #include "Job.hpp"
 #include "LogicUnit.hpp"
+#include "Pipeline.hpp"
 
 #include "LIB_interface.h"
 #include "DEV_interface.h"
@@ -223,7 +224,10 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   
   if (! m_xpTimer.bIsNull())
     delete *m_xpTimer;
-  
+
+  if (! m_xpPipeline.bIsNull())
+    delete *m_xpPipeline;
+
   if (m_pRluDiary) {
     vDiaryReport();
     delete m_pRluDiary;

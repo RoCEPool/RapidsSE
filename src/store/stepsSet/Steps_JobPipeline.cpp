@@ -50,15 +50,16 @@ void Step::vJob_PipelineBegin(void)
   ENTRY();
     
   i8 iThisNode = AM::pGrid()->iThisNode();
-  
+  LogicUnit* pLogicUnit = m_pJob->pLogicUnit_job();
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a pipeline
-  m_pJob->m_pPipeline =
+  pLogicUnit->m_xpPipeline =
     new Pipeline(m_pJob,
-                 *m_pJob->pLogicUnit_job()->m_xpPipelineSpec,
+                 *pLogicUnit->m_xpPipelineSpec,
                  m_pJob->iOriginatorNode());
   
-  Pipeline* pPipeline = m_pJob->m_pPipeline;
+  Pipeline* pPipeline = *pLogicUnit->m_xpPipeline;
       
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the pipeline
@@ -232,7 +233,8 @@ void Step::vJob_PipelineExecute(void)
   ENTRY();
   
   
-  Pipeline* pPipeline = m_pJob->m_pPipeline;
+  LogicUnit* pLogicUnit = m_pJob->pLogicUnit_job();
+  Pipeline* pPipeline = *pLogicUnit->m_xpPipeline;
   i8 iThisNode = AM::pGrid()->iThisNode();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

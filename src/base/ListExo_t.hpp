@@ -51,7 +51,7 @@ void* ListExoNode_t<ITEM>::operator new(size_t)
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete operator                                                            */
+/* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
 void ListExoNode_t<ITEM>::operator delete(void* aListExoNode_t)
@@ -249,7 +249,7 @@ void* ListExo_t<CLASSNO,ITEM>::operator new(size_t)
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete operator                                                            */
+/* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
 template <eCN CLASSNO, class ITEM>
 void ListExo_t<CLASSNO,ITEM>::operator delete(void* aListExo_t)
@@ -991,7 +991,7 @@ void* ListExoIter_t<ITEM>::operator new(size_t)
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete operator                                                            */
+/* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
 void ListExoIter_t<ITEM>::operator delete(void* aListExoIter_t)

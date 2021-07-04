@@ -17,7 +17,7 @@ Queue* BASE::_pQueue(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* new operator                                                               */
+/* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* Queue::operator new(size_t)
 {
@@ -27,7 +27,7 @@ void* Queue::operator new(size_t)
 }
 
 /*----------------------------------------------------------------------------*/
-/* new operator                                                               */
+/* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* Queue::operator new(size_t, Queue* pQueue)
 {
@@ -35,7 +35,7 @@ void* Queue::operator new(size_t, Queue* pQueue)
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete operator                                                            */
+/* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
 void Queue::operator delete(void* pQueueAddress)
 {

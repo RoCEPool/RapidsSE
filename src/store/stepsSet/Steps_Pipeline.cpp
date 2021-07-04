@@ -14,6 +14,7 @@
 #include "Stream.hpp"
 #include "Stage.hpp"
 #include "Pipeline.hpp"
+#include "LogicUnit.hpp"
 #include "Job.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -58,7 +59,7 @@ void Step::vPipelinePipeout(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Pipeline* pPipeline = pPipelineJob->m_pPipeline;
+  Pipeline* pPipeline = *pPipelineJob->m_pLogicUnit_job->m_xpPipeline;
   Stage*    pStage0   = pPipeline->pGet(0);
   Stream*   pStand0   = pStage0->pGet(0);
   Op*       pOp0      = pStand0->pGet(0);

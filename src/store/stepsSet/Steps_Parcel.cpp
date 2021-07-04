@@ -16,6 +16,7 @@
 #include "Stage.hpp"
 #include "Pipeline.hpp"
 #include "Job.hpp"
+#include "LogicUnit.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -60,7 +61,8 @@ void Step::vParcelPipeOut(void)
   Job* pPipelineJob = AM::pJob_FindParticipating(iPipelineJob);
 
   // get the next stage the send is supposed to send to
-  Stage* pStage = pPipelineJob->m_pPipeline->pGet(pParcel->m_iDstStage);
+  Stage* pStage = pPipelineJob->m_pLogicUnit_job
+                    ->m_xpPipeline->pGet(pParcel->m_iDstStage);
   
   // get the op to forward to depending on the cross topology
   Op* pOp = pStage->pPipeOutOp(pParcel->m_eCrossTopo,

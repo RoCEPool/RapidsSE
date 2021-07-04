@@ -21,7 +21,7 @@ HashMap* BASE::_pHashMap(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* new operator                                                               */
+/* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* HashMap::operator new(size_t)
 {
@@ -31,7 +31,7 @@ void* HashMap::operator new(size_t)
 }
 
 /*----------------------------------------------------------------------------*/
-/* new operator                                                               */
+/* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* HashMap::operator new(size_t, HashMap* pHashMap)
 {
@@ -39,7 +39,7 @@ void* HashMap::operator new(size_t, HashMap* pHashMap)
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete operator                                                            */
+/* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
 void HashMap::operator delete(void* pHashMapAddress)
 {

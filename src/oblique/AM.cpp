@@ -197,7 +197,7 @@ void AM::DEMON::vPipeTo(Stz* szDemonNm, Operand* pOperand)
   }
   
   Job* pPipelineJob = _pJob(pDemonWord->pObject());
-  Pipeline* pPipeline = pPipelineJob->m_pPipeline;
+  Pipeline* pPipeline = *pPipelineJob->m_pLogicUnit_job->m_xpPipeline;
   Op* pOp0 = pPipeline->pOp0();
 
   //Task* pThisTask = AM::pThisTLSTask();

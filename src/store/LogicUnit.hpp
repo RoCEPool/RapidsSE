@@ -158,6 +158,7 @@ namespace STORE
     REG<Operand>        m_xpOperandOoO; // operand OoO
     REG<PathIdentifier> m_xpPathIdentifier;
     REG<Operand>        m_xpPipein;    // Pipein
+    REG<Pipeline>       m_xpPipeline;  // pipeline spec generate by dynamo
     REG<PipelineSpec>   m_xpPipelineSpec; // pipeline spec generate by dynamo
     REG<PtnStream>      m_xpPtnStream;
     REG<Range>          m_xpRange;     // range

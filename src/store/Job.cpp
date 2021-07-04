@@ -139,7 +139,6 @@ Job::Job(ReqTuple* aReqTuple)
   // m_xResult
 
   // -- e -------------------
-  m_pPipeline = nullptr;
   m_pOp       = nullptr;
   m_pOuterOp  = nullptr;
   m_pInputOp  = nullptr;
@@ -202,7 +201,6 @@ Job::Job(eCN eClassNo)
   m_iParticipantNode = C_UNKNOWN;
   m_oAcksRmg_2pc.vCheckInit();
   
-  m_pPipeline = nullptr;
   m_pOp       = nullptr;
   m_pOuterOp  = nullptr;
   m_pInputOp  = nullptr;
@@ -246,10 +244,7 @@ Job::~Job(void) noexcept(false)
     vTrace("Napping\n"_Stz);
     AM::vNapMsec(10, eGetClassNo());
   }
-  
-  if (m_pPipeline)
-    delete m_pPipeline;
-  
+    
   delete m_pLogicUnit_job;
   
   //if (m_pTaskJ)
@@ -440,8 +435,7 @@ void Job::vContentDump(void)
          "m_eJobList=%s m_eJobPhase=%s m_eJobState=%s\n"
          "bByPrompt=%d bNoWait=%d m_bWasReceived=%d\n"
          "m_iParentId=%lld m_iOriginatingId=%lld\n"
-         "m_nxReferences=%lld\n"
-         "m_pPipeline=%p\n"_Stz,
+         "m_nxReferences=%lld\n"_Stz,
          this,
          aCN[eGetClassNo()],
          
@@ -460,19 +454,9 @@ void Job::vContentDump(void)
          m_iOriginatingId,
          
          nReferences(),
-         m_pPipeline,
          C_VARGS_END
          );
   
-  if ( ! m_sJobNm.bSame("pipeline"_Stz) && m_pPipeline) {
-    
-    vTrace("\n"_Stz);
-    vTrace("Pipeline Job\n"_Stz);
-    vTrace("---\n"_Stz);
-    
-    if (m_pPipeline->pPipelineJob() != this)
-      m_pPipeline->pPipelineJob()->vContentDump();
-  }
   
   m_oJobTags.vContentDump();
 }
@@ -804,7 +788,8 @@ void Job::vOperandQueueReport(File* pFile, bool bStdOut)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB);
   
-  if (! m_pPipeline)
+  Pipeline* pPipeline = *m_pLogicUnit_job->m_xpPipeline;
+  if (! pPipeline)
     return;
   
   if (bStdOut)
@@ -812,10 +797,10 @@ void Job::vOperandQueueReport(File* pFile, bool bStdOut)
   pFile->vPrint("\nJob %p: %s\n"_Stz,this,m_sJobNm.szStz());
   
   s48K sOpTags;
-  i8 nStages = m_pPipeline->nItems();
+  i8 nStages = pPipeline->nItems();
   for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
     
-    Stage* pStage = m_pPipeline->pGet(i_Stage);
+    Stage* pStage = pPipeline->pGet(i_Stage);
     
     i8 nStreams = pStage->nItems();
     for (i8 i_Stream = 0; i_Stream < nStreams; i_Stream++) {
@@ -833,7 +818,7 @@ void Job::vOperandQueueReport(File* pFile, bool bStdOut)
 
         if (bStdOut)
           vTrace("%s %s[%lld] : %s%s ___ %lld\n"_Stz
-                 ,m_pPipeline->szPipelineNm()
+                 ,pPipeline->szPipelineNm()
                  ,pStage->szStageNm()
                  ,i_Stream
                  
@@ -843,7 +828,7 @@ void Job::vOperandQueueReport(File* pFile, bool bStdOut)
                  );
         
         pFile->vPrint("%s %s[%lld] : %s%s ___ %lld\n"_Stz
-          ,m_pPipeline->szPipelineNm()
+          ,pPipeline->szPipelineNm()
           ,pStage->szStageNm()
           ,i_Stream
           
@@ -1007,7 +992,6 @@ void Job::vResetForReuse(Session* pSession)
   // m_xResult ???
   
   // -- e -------------------
-  delete m_pPipeline; m_pPipeline = nullptr;
   delete m_pOp;       m_pOp       = nullptr;
   delete m_pOuterOp;  m_pOuterOp  = nullptr;
   delete m_pInputOp;  m_pInputOp  = nullptr;

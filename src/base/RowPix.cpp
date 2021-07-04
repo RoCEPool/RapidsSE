@@ -28,7 +28,7 @@ void* RowPix::operator new(size_t)
 }
 
 /*----------------------------------------------------------------------------*/
-/* new operator                                                               */
+/* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* RowPix::operator new(size_t, RowPix* aInfoPix)
 {
@@ -36,7 +36,7 @@ void* RowPix::operator new(size_t, RowPix* aInfoPix)
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete operator                                                            */
+/* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
 void RowPix::operator delete(void* aAddress)
 {

@@ -9271,7 +9271,7 @@ void Task::vAddMunged(Task* )
   gszaMungedText[64] =
     "\" munged OP_insDel.sen \" .verbose \n"
     "/*============================================================================*/\n"
-    "/* OP_insDel.sen -- Insert/Delete operator                                    */\n"
+    "/* OP_insDel.sen -- Insert/operator delete                                    */\n"
     "/*============================================================================*/\n"
     "\n"
     "\" OP_insDel.sen\" .verbose\n"
