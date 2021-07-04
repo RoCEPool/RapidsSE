@@ -103,6 +103,7 @@ namespace STORE
     Op*  pNextOp(void);
     void vNextOp(i8 iNextOp);
     i8   iNextStage(void);
+    Stage* pNextStage(void);
     void vNextStage(i8 iNextStage);
     i8   iNode(void);
     void vNode(i8 iNode);
@@ -110,6 +111,7 @@ namespace STORE
     void vOperandHandler(i8 i_OperandKind, Word* pHandler);
     Job* pJob(void);
     void vJob(Job* pJob);
+    i8   iOp(void);
     Stz* szOpNm(void);
     TagSet* pOpTagSet(void);
     void vOpTrace(Operand* pOperand, Stz* szFunActNm,
