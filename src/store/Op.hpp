@@ -108,8 +108,8 @@ namespace STORE
     void vNode(i8 iNode);
     Word* pOperandHandler(i8 i_OperandKind);
     void vOperandHandler(i8 i_OperandKind, Word* pHandler);
-    Job* pOpJob(void);
-    void vOpJob(Job* pOpJob);
+    Job* pJob(void);
+    void vJob(Job* pJob);
     Stz* szOpNm(void);
     TagSet* pOpTagSet(void);
     void vOpTrace(Operand* pOperand, Stz* szFunActNm,

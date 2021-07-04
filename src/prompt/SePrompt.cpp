@@ -195,7 +195,7 @@ void SePrompt::vPromptLoop(void)
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   
 //  m_pPrintOp = Api::pGetOperator("print"_Stz);
-//  Job* pOpJob = m_pPrintOp->pOpJob();
+//  Job* pOpJob = m_pPrintOp->pJob();
 //  Task* pOpTask = AM::pTaskNew(pOpJob);
 //
 //  AM::DEMON::vPipeTo("__threadDemon"_Stz, m_pPrintOp);

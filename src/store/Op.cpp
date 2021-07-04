@@ -940,7 +940,7 @@ void Op::vOperandHandler(i8 i_OperandKind, Word* pHandler)
 /*----------------------------------------------------------------------------*/
 /* get job                                                                    */
 /*----------------------------------------------------------------------------*/
-Job* Op::pOpJob(void)
+Job* Op::pJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -950,11 +950,11 @@ Job* Op::pOpJob(void)
 /*----------------------------------------------------------------------------*/
 /* set job                                                                    */
 /*----------------------------------------------------------------------------*/
-void Op::vOpJob(Job* pOpJob)
+void Op::vJob(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  m_pJob = pOpJob;
+  m_pJob = pJob;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+namespace STORE { class Stage; class PipelineSpec; }
+
 namespace STORE
 {
   class Pipeline : public VectorNL_t<CN_PIPELINE,Stage,C_MAX_STAGES>

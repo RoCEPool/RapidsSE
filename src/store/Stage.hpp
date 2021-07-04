@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+namespace STORE { class Stream; class StageSpec; }
+
 namespace STORE
 {
   class Stage : public VectorNL_t<CN_STAGE,Stream,C_MAX_STREAMS>
