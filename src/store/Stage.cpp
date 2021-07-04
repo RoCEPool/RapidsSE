@@ -133,30 +133,6 @@ Stream* Stage::pGetNodeStream(i8 i_Node)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get stage spec                                                             */
-/*----------------------------------------------------------------------------*/
-void Stage::vDump(Pipeline* pPipeline)
-{
-  _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
-  UNUSED(pPipeline);
-  
-//  i8 i_Stage = m_pStageSpec->i_StageSpec();
-//  vTrace("\n[%lld] Stage %s Topology %s: \n"_Stz,
-//         i_Stage,
-//         m_sStageNm.szStz(),
-//         aPO[m_pStageSpec->eTopology()]);
-
-  SP_Stage spStage(this);
-  vTrace("%s\n"_Stz,spStage.sz());
-
-  for (i8 i_Stream = 0; i_Stream < nItems(); i_Stream++) {
-    Stream* pStream = pGet(i_Stream);
-  
-    pStream->vDump();
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* get ops to be executed on given node                                       */
 /*----------------------------------------------------------------------------*/
 i8 Stage::nOpsOnNode(i8 iNode)

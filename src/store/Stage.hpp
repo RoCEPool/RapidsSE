@@ -28,9 +28,7 @@ namespace STORE
     
     Stage(StageSpec* pStageSpec, Pipeline* pPipeline);
    ~Stage(void) noexcept(false);
-  
-    void vDump(Pipeline* pPipeline);
-    
+      
     void    vCancelPipeline(Task* pTriggeringTask);
     Stream* pGetPartitionStream(i8 i_Ptn);
     Stream* pGetNodeStream(i8 i_Node);

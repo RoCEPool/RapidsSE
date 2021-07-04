@@ -74,8 +74,6 @@ namespace STORE
     Op(Stz* szOpNm);
    ~Op(void) noexcept(false);
   
-    void vDump(i8 i_Op);
-
     // - - - - - - - - - - - - - - - -
     void vAckJob(void);
     void vAddWorkDone(i8 iWorkDone);

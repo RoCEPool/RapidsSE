@@ -19,6 +19,8 @@
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
 
+#include "SP_Pipeline.hpp"
+
 #include "Dynamo.hpp"
 #include "TagConstants.h"
 
@@ -64,8 +66,10 @@ void Step::vJob_PipelineBegin(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the pipeline
   if (AM::bVerbose()) {
-    if (iThisNode == 0)
-       pPipeline->vDump();
+    if (iThisNode == 0) {
+      SP_Pipeline spPipeline(pPipeline,true);
+      vTrace("%s\n"_Stz,spPipeline.sz());
+    }
   }
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

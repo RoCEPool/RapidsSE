@@ -131,39 +131,6 @@ void Pipeline::vCreateStages(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump the pipeline                                                          */
-/*----------------------------------------------------------------------------*/
-void Pipeline::vDump(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // dump all operators of each stage
-    
-//  Grid* pGrid = AM::pGrid();
-  
-//  vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
-//
-//  vTrace("Pipeline-Job %s Grid %s with %lld Nodes %lld tablePtns:\n"_Stz,
-//         m_sPipelineNm.szStz(),
-//         pGrid->szGridNm(),
-//         pGrid->nBootNodes(),
-//         AM::nPtnsPerTable());
-    
-  SP_Pipeline spPipeline(this,true);
-  vTrace("%s\n"_Stz,spPipeline.sz());
-
-  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // dump the stages with the operators
-//  for (i8 i_Stage = 0; i_Stage < nItems(); i_Stage++ ) {
-//    Stage* pStage = pGet(i_Stage);
-//    pStage->vDump(this);
-//  }
-  
-//  vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
 /* set early exit                                                             */
 /*----------------------------------------------------------------------------*/
 void Pipeline::vEarlyExit(bool bEarlyExit)
