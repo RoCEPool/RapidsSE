@@ -7,8 +7,6 @@
 #include "PipelineSpec.hpp"
 #include "Dynamo.hpp"
 
-#include "SP_PipelineSpec.hpp"
-
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -68,14 +66,6 @@ bool Dynamo::bCompile(void)
                                 m_p_PipelineSpec_root))
     return false;
   
-  
-#ifdef WITH_NESTED_PIPELINES
-  if (m_p_PipelineSpec_root->szPipelineNm()->bSame("nestTest"_Stz)) {
-    vShow();
-    vDebugPoint();
-  }
-#endif
-
   return true;
 }
 
@@ -87,20 +77,6 @@ PipelineSpec* Dynamo::pPipelineSpec(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
   return m_p_PipelineSpec_root;
-}
-
-/*----------------------------------------------------------------------------*/
-/* show the pipeline                                                          */
-/*----------------------------------------------------------------------------*/
-void Dynamo::vShow(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-  
-  SP_PipelineSpec spPipelineSpec(m_p_PipelineSpec_root);
-  
-  vTrace("\nPipelineSpec:\n%s\n"_Stz,spPipelineSpec.sz());
-
-  vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
 }
 
 /*============================================================================*/

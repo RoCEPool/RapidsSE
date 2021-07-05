@@ -51,7 +51,7 @@ void SP_StageSpec::vStageSpec(StageSpec* pStageSpec)
   
   vInit();
   
-  vCatf("[%lld] stage %s : %s N%lld P%lld\n"_Stz
+  vCatf("[%lld] StageSpec %s : %s N%lld P%lld\n"_Stz
         ,pStageSpec->i_StageSpec()
         ,pStageSpec->szStageNm()
         ,aPO[pStageSpec->eTopology()]

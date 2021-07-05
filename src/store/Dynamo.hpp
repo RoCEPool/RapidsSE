@@ -29,8 +29,8 @@ namespace STORE
    ~Dynamo(void) noexcept(false);
 
     bool bCompile(void);
+    
     PipelineSpec* pPipelineSpec(void);
-    void vShow(void);
 
   private:
     Footer* aFooter(void);

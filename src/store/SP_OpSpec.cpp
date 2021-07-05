@@ -61,14 +61,14 @@ void SP_OpSpec::vOpSpec(OpSpec* pOpSpec)
   
   if (pArgTags->nItems()) {
     pArgTags->vSprint(sArgs);
-    vCatf("[%02lld] %s args=%s topo=%s"_Stz,
+    vCatf("[%02lld] OpSpec %s args=%s topo=%s"_Stz,
           pOpSpec->i_OpSpec(),
           pOpSpec->szOpNm(),
           sArgs.azChar(),
           sTopo.azChar());
   }
   else {
-    vCatf("[%02lld] %s topo=%s"_Stz,
+    vCatf("[%02lld] OpSpec %s topo=%s"_Stz,
           pOpSpec->i_OpSpec(),
           pOpSpec->szOpNm(),
           sTopo.azChar());

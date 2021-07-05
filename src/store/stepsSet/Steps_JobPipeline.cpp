@@ -20,6 +20,7 @@
 #include "LogicUnit.hpp"
 
 #include "SP_Pipeline.hpp"
+#include "SP_PipelineSpec.hpp"
 
 #include "Dynamo.hpp"
 #include "TagConstants.h"
@@ -99,8 +100,10 @@ void Step::vJob_PipelineCompile(void)
   
   bool bCleanCompile = pDynamo->bCompile();
   
-  pLogicUnit->m_xpPipelineSpec = pDynamo->pPipelineSpec();
+  PipelineSpec* pPipelineSpec = pDynamo->pPipelineSpec();
+  pLogicUnit->m_xpPipelineSpec = pPipelineSpec;
 
+ 
   if (bCleanCompile) {
     
     if (AM::bPassesLowMem(m_pJob)) {
@@ -109,7 +112,8 @@ void Step::vJob_PipelineCompile(void)
       
       m_pDataStack->vPushInt(EC_NONE);
       if (AM::bVerbose()) {
-        pDynamo->vShow();
+        SP_PipelineSpec spPipelineSpec(pPipelineSpec);
+        vTrace("%s\n"_Stz,spPipelineSpec.sz());
       }
       
     }
