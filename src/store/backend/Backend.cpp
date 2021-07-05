@@ -251,6 +251,35 @@ void Backend::vAppendExpr(Backend* pBackend, QueryNodeList* pColExprList, QueryN
 /*----------------------------------------------------------------------------*/
 /* append aggregate Op to the pipeline                                        */
 /*----------------------------------------------------------------------------*/
+void Backend::vAppendExprRelativeToGroupBy(Backend* pBackend, QueryNode* pExprNode, QueryNode* pOrdinalExprNode, Stz* szAliasName)
+{
+  _static_
+
+  String* sPipeline = pBackend->m_sPipeline;
+
+  eCT eType = Expr::eType(pExprNode, pBackend->m_pPlanRoot);
+
+  sPipeline->vCatSprint(
+    " type %s"
+    ""_Stz,
+    aCT[eType]);
+
+  sPipeline->vCatSprint(
+    " $K%lld"
+    ""_Stz,
+    ColumnOrdinal::iOrdinal(pOrdinalExprNode));
+
+  if (szAliasName) {
+    sPipeline->vCatSprint(
+        " as %s"
+        ""_Stz,
+        szAliasName);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* append aggregate Op to the pipeline                                        */
+/*----------------------------------------------------------------------------*/
 void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
 {
   _static_
@@ -304,28 +333,7 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
       // generate $K? relative to group by key if its a column ordinal
       if ( ! ColumnRef::bIsOfType(pExprNode) &&
            ColumnOrdinal::bIsOfType(pOrdinalExprNode)) {
-
-        //vAppendExprRelativeToGroupBy(pOrdinalExprNode, szAliasName);
-
-        eCT eType = Expr::eType(pExprNode, pBackend->m_pPlanRoot);
-
-        sPipeline->vCatSprint(
-            " type %s"
-            ""_Stz,
-            aCT[eType]);
-
-        sPipeline->vCatSprint(
-            " $K%lld"
-            ""_Stz,
-            ColumnOrdinal::iOrdinal(pOrdinalExprNode));
-
-        if (szAliasName) {
-          sPipeline->vCatSprint(
-              " as %s"
-              ""_Stz,
-              szAliasName);
-        }
-
+        vAppendExprRelativeToGroupBy(pBackend, pExprNode, pOrdinalExprNode, szAliasName);
       } else {
         vAppendExpr(pBackend, pColExprList, pExprNode, szAliasName);
       }
