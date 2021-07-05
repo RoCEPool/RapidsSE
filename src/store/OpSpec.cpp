@@ -39,6 +39,10 @@ OpSpec::OpSpec(Stz* szOpNm, i8 i_OpSpec, StageSpec* pStageSpec)
   //m_oArgTags
   //m_oTopologyTags
 
+  m_eCrossTopo    = PX_NONE;
+  m_i_NextStage   = C_UNKNOWN;
+  m_i_NextOp      = C_UNKNOWN;
+  
   m_bAppendRight  = false;
   m_eSendKind     = XK_NORMAL;
 
@@ -110,6 +114,66 @@ TagSet* OpSpec::pArgTags(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
   return &m_oArgTags;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get cross topology                                                         */
+/*----------------------------------------------------------------------------*/
+ePX OpSpec::eCrossTopo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  return m_eCrossTopo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set cross topology                                                         */
+/*----------------------------------------------------------------------------*/
+void OpSpec::vCrossTopo(ePX eCrossTopo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  m_eCrossTopo = eCrossTopo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get m_i_NextOp                                                             */
+/*----------------------------------------------------------------------------*/
+i8 OpSpec::i_NextOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  return m_i_NextOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the m_i_NextOp                                                         */
+/*----------------------------------------------------------------------------*/
+void OpSpec:: v_NextOp(i8 i_NextOp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  m_i_NextOp = i_NextOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get m_i_NextStage                                                          */
+/*----------------------------------------------------------------------------*/
+i8 OpSpec::i_NextStage(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  return m_i_NextStage;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the m_i_NextStage                                                         */
+/*----------------------------------------------------------------------------*/
+void OpSpec:: v_NextStage(i8 i_NextStage)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  m_i_NextStage = i_NextStage;
 }
 
 /*----------------------------------------------------------------------------*/

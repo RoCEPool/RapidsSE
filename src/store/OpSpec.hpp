@@ -23,6 +23,10 @@ namespace STORE
     TagSet m_oArgTags;
     TagSet m_oTopologyTags;
     
+    ePX m_eCrossTopo;
+    i8  m_i_NextStage;
+    i8  m_i_NextOp;
+  
     bool   m_bAppendRight; // append to right queue of next operator
     eXK    m_eSendKind;    // {normal, hashed, robin, local robin} if send op
 
@@ -42,6 +46,12 @@ namespace STORE
     void vArgTagAdd(Stz* sName, Stz* sValue, eTN eToken);
     TagSet* pArgTags(void);
     Stz* szOpNm(void);
+    ePX  eCrossTopo(void);
+    void vCrossTopo(ePX eCrossTopo);
+    i8   i_NextOp(void);
+    void v_NextOp(i8 i_NextOp);
+    i8   i_NextStage(void);
+    void v_NextStage(i8 i_NextStage);
     void vOpNm(Stz* szOpNm);
     i8   i_OpSpec(void);
     void v_OpSpec(i8 i_OpSpec);
