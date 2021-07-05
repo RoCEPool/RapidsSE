@@ -1058,10 +1058,8 @@ void PipelineSpec::vStageSubsequentSend(StageSpec* pStageSpec, OpSpec* pOpSpec,
   pStageSpec->vRemove(pOpSpec);
   delete pOpSpec;
 
-  // add otherStage and otherOp tags into the send
-  pOpSpecSend->vTopoTagAdd(C_TAG_OTHERSTAGE,(i8)i_NextStage,TN_INTEGER);
-  pOpSpecSend->vTopoTagAdd(C_TAG_OTHEROP,(i8)0,TN_INTEGER);
-
+  pOpSpecSend->vOtherStage(i_NextStage);
+  pOpSpecSend->vOtherOp(0);
 
   // insert a consume op at the beginning of the stage
   vStageConsumeOpInsert(pNextStageSpec,eCrossTopo);
