@@ -211,7 +211,7 @@ void Backend::vPrintPlanGraph(PlanNode* pPlanRoot) {
 /*----------------------------------------------------------------------------*/
 /* append project Op to the pipeline                                          */
 /*----------------------------------------------------------------------------*/
-void Backend::vAppendExpr1(Backend* pBackend, QueryNodeList* pColExprList, QueryNode* pExprNode, Stz* szAliasName) {
+void Backend::vAppendExpr(Backend* pBackend, QueryNodeList* pColExprList, QueryNode* pExprNode, Stz* szAliasName) {
   _static_
 
   QueryNode* pQueryNode = _pQueryNode(pExprNode);
@@ -253,7 +253,7 @@ void Backend::vAppendExpr1(Backend* pBackend, QueryNodeList* pColExprList, Query
   }
 
   // Walk the expr node plan graph
-  GraphNav::bGlobalWalk(pOrdinalExpr, false, true,vVisitorExpr1, vVisitorExpr1, (void *) pBackend);
+  GraphNav::bGlobalWalk(pOrdinalExpr, false, true,vVisitorExpr, vVisitorExpr, (void *) pBackend);
 
   delete pOrdinalExpr;
 }
@@ -261,7 +261,7 @@ void Backend::vAppendExpr1(Backend* pBackend, QueryNodeList* pColExprList, Query
 /*----------------------------------------------------------------------------*/
 /* append aggregate Op to the pipeline                                        */
 /*----------------------------------------------------------------------------*/
-void Backend::vAppendAggregateOp1(Backend* pBackend, QueryNode* pNode)
+void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
 {
   _static_
 
@@ -341,7 +341,7 @@ void Backend::vAppendAggregateOp1(Backend* pBackend, QueryNode* pNode)
         }
 
       } else {
-        vAppendExpr1(pBackend, pBackend->m_pColExprList, pExprNode, szAliasName);
+        vAppendExpr(pBackend, pBackend->m_pColExprList, pExprNode, szAliasName);
       }
     }
 
@@ -367,7 +367,7 @@ void Backend::vAppendAggregateOp1(Backend* pBackend, QueryNode* pNode)
       QueryNode *pGroupByExpr = static_cast<QueryNode *>(pGroupByIter->pNext());
       ASSERT(pGroupByExpr);
 
-      vAppendExpr1(pBackend, pBackend->m_pColExprList, pGroupByExpr, nullptr);
+      vAppendExpr(pBackend, pBackend->m_pColExprList, pGroupByExpr, nullptr);
     }
     delete pGroupByIter;
   }
@@ -396,7 +396,7 @@ void Backend::vAppendFilterOp(Backend* pBackend, QueryNode* pNode)
 
   // Walk the expr node plan graph
   //GraphNav::bGlobalWalkBottomUp(pOrdinalFilterExpr, false, true, vVisitorExpr, (void *) pBackend);
-  GraphNav::bGlobalWalk(pOrdinalFilterExpr, false, true,vVisitorExpr1, vVisitorExpr1, (void *) pBackend);
+  GraphNav::bGlobalWalk(pOrdinalFilterExpr, false, true,vVisitorExpr, vVisitorExpr, (void *) pBackend);
   delete pOrdinalFilterExpr;
 
   sPipeline->vCatSprint(" \""_Stz);
@@ -478,12 +478,7 @@ void Backend::vAppendOrderByOp(Backend* pBackend, QueryNode* pNode)
       ASSERT(pOrderItem);
       ASSERT(OrderItem::bIsOfType(pOrderItem));
 
-      // get the expr node
-      //QueryNode *pExprNode = static_cast<QueryNode *>(GraphNav::pFindProperty("expr"_Stz, pOrderItem));
-      //ASSERT(pExprNode);
-      //vAppendExpr(pBackend, pExprNode, ""_Stz);
-
-      vAppendExpr1(pBackend, pBackend->m_pColExprList, pOrderItem, ""_Stz);
+      vAppendExpr(pBackend, pBackend->m_pColExprList, pOrderItem, ""_Stz);
 
       sPipeline->vCatSprint(" %s "_Stz, OrderItem::bIsAscending(pOrderItem) ? "ASC" : "DESC");
     }
@@ -556,7 +551,7 @@ void Backend::vAppendProjectOp(Backend* pBackend, QueryNode* pNode)
       Stz* szAliasName = ProjectedColumn::szAliasName(pProjectedColumn);
       QueryNode* pExprNode  = ProjectedColumn::pExprNode(pProjectedColumn);
 
-      vAppendExpr1(pBackend, pBackend->m_pColExprList, pExprNode, szAliasName);
+      vAppendExpr(pBackend, pBackend->m_pColExprList, pExprNode, szAliasName);
     }
     delete pIter;
 
@@ -644,7 +639,7 @@ void Backend::vAppendUnionOp(Backend* pBackend, QueryNode* pUnionNode)
 /*----------------------------------------------------------------------------*/
 /* visitor function for the plan graph walk                                   */
 /*----------------------------------------------------------------------------*/
-GraphNav::eWalkCtrl Backend::vVisitorExpr1(PlanNode* pExprNode, s256& sPath, i8 iDepth, GraphNav::eWalkEvent eEventType, void* pvArg)
+GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s256& sPath, i8 iDepth, GraphNav::eWalkEvent eEventType, void* pvArg)
 {
   _static_
       UNUSED(sPath);
@@ -961,7 +956,7 @@ GraphNav::eWalkCtrl Backend::vVisitorStatement(PlanNode* pRootNode, s256& sPath,
     // AggregateOp
 
     if (AggregateOp::bIsOfType(pQueryNode)) {
-      vAppendAggregateOp1(pBackend, pQueryNode);
+      vAppendAggregateOp(pBackend, pQueryNode);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

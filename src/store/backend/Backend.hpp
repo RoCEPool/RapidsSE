@@ -39,8 +39,8 @@ namespace STORE
     //
     // plan transliteration
     //
-    static void vAppendAggregateOp1(Backend* pBackend, QueryNode* pNode);
-    static void vAppendExpr1(Backend* pBackend, QueryNodeList* pColExprList, QueryNode* pNode, Stz* szAliasName);
+    static void vAppendAggregateOp(Backend* pBackend, QueryNode* pNode);
+    static void vAppendExpr(Backend* pBackend, QueryNodeList* pColExprList, QueryNode* pNode, Stz* szAliasName);
     static void vAppendFilterOp(Backend* pBackend, QueryNode* pNode);
     static void vAppendLimitOp(Backend* pBackend, QueryNode* pNode);
     static void vAppendOrderByOp(Backend* pBackend,  QueryNode* pNode);
@@ -53,7 +53,7 @@ namespace STORE
     //
     // visitor functions
     //
-    static Parser::GraphNav::eWalkCtrl vVisitorExpr1(PlanNode* pNode,
+    static Parser::GraphNav::eWalkCtrl vVisitorExpr(PlanNode* pNode,
                                                     s256& sPath, i8 iDepth,
                                                     GraphNav::eWalkEvent eEventType, void* pvArg);
     static Parser::GraphNav::eWalkCtrl vVisitorPlan(PlanNode* pNode,
