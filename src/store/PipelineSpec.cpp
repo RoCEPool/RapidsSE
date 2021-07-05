@@ -771,7 +771,7 @@ bool PipelineSpec::bPass2_staging(void)
     i8 nOpSpecs = pStageSpec->nItems();
     for (i8 i_Op = 0; i_Op < nOpSpecs; i_Op++) {
       OpSpec* pOpSpec = pStageSpec->pGet(i_Op);
-      RASSERT(pOpSpec->i_OpSpec() == i_Op);
+      RASSERT(pOpSpec->iOpSpec() == i_Op);
       
       Stz* szName = pOpSpec->szOpNm();
       
@@ -931,7 +931,7 @@ void PipelineSpec::vNameIsOp(StageSpec* pStageSpec, OpSpec* pOpSpec_isOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
-  i8 i_Op = pOpSpec_isOp->i_OpSpec();
+  i8 i_Op = pOpSpec_isOp->iOpSpec();
   i8 i_Stage = pStageSpec->i_StageSpec();
   ePX eCrossTopo = StageSpec::eCrossTopo(pStageSpec, pStageSpec);
     
@@ -999,7 +999,7 @@ void PipelineSpec::vStageFirstSend(StageSpec* pStageSpec, OpSpec* pOpSpec_isStag
                              StageSpec* pNextStageSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
-  i8 i_Op = pOpSpec_isStage->i_OpSpec();
+  i8 i_Op = pOpSpec_isStage->iOpSpec();
   i8 i_NextStage = pNextStageSpec->i_StageSpec();
 
   ePX eCrossTopo = StageSpec::eCrossTopo(pStageSpec, pNextStageSpec);
@@ -1049,7 +1049,7 @@ void PipelineSpec::vStageSubsequentSend(StageSpec* pStageSpec, OpSpec* pOpSpec,
                                   StageSpec* pNextStageSpec, OpSpec* pOpSpecSend)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
-  i8 i_Op = pOpSpec->i_OpSpec();
+  i8 i_Op = pOpSpec->iOpSpec();
   i8 i_NextStage = pNextStageSpec->i_StageSpec();
 
   ePX eCrossTopo = StageSpec::eCrossTopo(pStageSpec, pNextStageSpec);

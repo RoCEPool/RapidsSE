@@ -26,7 +26,9 @@ namespace STORE
     ePX m_eCrossTopo;
     i8  m_i_NextStage;
     i8  m_i_NextOp;
-  
+    i8  m_i_OtherStage;    // other stage in the cross topology
+    i8  m_i_OtherOp;       // next Op in the other stage
+
     bool   m_bAppendRight; // append to right queue of next operator
     eXK    m_eSendKind;    // {normal, hashed, robin, local robin} if send op
 
@@ -49,13 +51,17 @@ namespace STORE
     ePX  eCrossTopo(void);
     void vCrossTopo(ePX eCrossTopo);
     void vCrossTopo(ePX eCrossTopo, i8 i_NextStage, i8 i_NextOp);
-    i8   i_NextOp(void);
-    void v_NextOp(i8 i_NextOp);
-    i8   i_NextStage(void);
-    void v_NextStage(i8 i_NextStage);
+    i8   iNextOp(void);
+    void vNextOp(i8 i_NextOp);
+    i8   iNextStage(void);
+    void vNextStage(i8 i_NextStage);
     void vOpNm(Stz* szOpNm);
-    i8   i_OpSpec(void);
-    void v_OpSpec(i8 i_OpSpec);
+    i8   iOpSpec(void);
+    void vOpSpec(i8 i_OpSpec);
+    i8   iOtherOp(void);
+    void vOtherOp(i8 i_OtherOp);
+    i8   iOtherStage(void);
+    void vOtherStage(i8 i_OtherStage);
     eXK  eSendKind(void);
     void vSendKind(eXK eStageKind);
     StageSpec* pStageSpec(void);

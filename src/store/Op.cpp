@@ -51,7 +51,7 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   m_sStageNm    = pStream->pStage()->szStageNm();
   m_sStreamNm   = pStream->szStreamNm();
   m_sOpNm       = pOpSpec->szOpNm();
-  m_i_Op        = pOpSpec->i_OpSpec();
+  m_i_Op        = pOpSpec->iOpSpec();
   
   m_bTraceOp    = false;
   
@@ -800,7 +800,7 @@ i8 Op::iNextOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_pOpSpec->i_NextOp();
+  return m_pOpSpec->iNextOp();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -828,7 +828,7 @@ i8 Op::iNextStage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_pOpSpec->i_NextStage();
+  return m_pOpSpec->iNextStage();
 }
 
 /*----------------------------------------------------------------------------*/

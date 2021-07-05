@@ -172,7 +172,7 @@ void StageSpec::vAddOpSpec(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
-  pOpSpec->v_OpSpec(nItems());
+  pOpSpec->vOpSpec(nItems());
   
   vAdd(pOpSpec);
 }
@@ -249,7 +249,7 @@ void StageSpec::vRenumberOpSpecs(void)
   
   for (i8 i_OpSpec = 0; i_OpSpec < nItems(); i_OpSpec++) {
     OpSpec* pOpSpec = pGet(i_OpSpec);
-    pOpSpec->v_OpSpec(i_OpSpec);
+    pOpSpec->vOpSpec(i_OpSpec);
   }
 }
 
