@@ -206,8 +206,12 @@ class GraphNav
     // If no node matching the condition is found then a nullptr is returned.
     static PlanNode* pGlobalSearch(PlanNode* pStartNode, b1 bSearchProperties, b1 bSearchChildren,
                                    std::function<b1(PlanNode*, void*)> fCondition, void* pvArg);
+    static PlanNode* pGlobalSearchBottomUp(PlanNode* pStartNode, b1 bSearchProperties, b1 bSearchChildren,
+                                   std::function<b1(PlanNode*, void*)> fCondition, void* pvArg);
 
     static PlanNode* pBoundedSearch(PlanNode* pStartNode, b1 bSearchProperties, b1 bSearchChildren,
+                                    std::function<b1(PlanNode*, void*)> fCondition, void* pvArg);
+    static PlanNode* pBoundedSearchBottomUp(PlanNode* pStartNode, b1 bSearchProperties, b1 bSearchChildren,
                                     std::function<b1(PlanNode*, void*)> fCondition, void* pvArg);
 
 
