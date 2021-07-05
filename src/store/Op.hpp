@@ -42,9 +42,6 @@ namespace STORE
     OperandQueue*  m_pQueueRight;    // right input queue
     OperandQueue*  m_pQueueOoO;      // out-of-order queue
 
-    ePX            m_eCrossTopo;     // cross topology
-    i8             m_iNextStage;     // next stage in the cross topology
-    i8             m_iNextOp;        // next Op in the next stage
     i8             m_iOtherStage;    // other stage in the cross topology
     i8             m_iOtherOp;       // next Op in the other stage
     i8             m_iSendNode;      // send node (for send)

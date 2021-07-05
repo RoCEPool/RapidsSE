@@ -81,9 +81,6 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   m_pQueueRight   = new OperandQueue;
   m_pQueueOoO     = new OperandQueue;
 
-  m_eCrossTopo  = PX_NONE;
-  m_iNextStage  = C_UNKNOWN;
-  m_iNextOp     = C_UNKNOWN;
   m_iOtherStage = C_UNKNOWN;
   m_iOtherOp    = C_UNKNOWN;
   m_iSendNode   = C_UNKNOWN;
@@ -152,9 +149,6 @@ Op::Op(Stz* szOpNm)
   m_pQueueRight   = new OperandQueue;
   m_pQueueOoO     = new OperandQueue;
 
-  m_eCrossTopo  = PX_NONE;
-  m_iNextStage  = C_UNKNOWN;
-  m_iNextOp     = C_UNKNOWN;
   m_iOtherStage = C_UNKNOWN;
   m_iOtherOp    = C_UNKNOWN;
   m_iSendNode   = C_UNKNOWN;
@@ -363,7 +357,7 @@ ePX Op::eCrossTopo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_eCrossTopo;
+  return m_pOpSpec->eCrossTopo();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -373,9 +367,8 @@ void Op::vCrossTopo(ePX eCrossTopo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  RASSERT(eCrossTopo ==m_pOpSpec->eCrossTopo());
+  RASSERT(0);
   
-  m_eCrossTopo = eCrossTopo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -798,7 +791,7 @@ i8 Op::iNextOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_iNextOp;
+  return m_pOpSpec->i_NextOp();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -808,12 +801,12 @@ Op* Op::pNextOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  if (m_iNextStage != m_pStage->pStageSpec()->i_StageSpec())
+  if (iNextStage() != m_pStage->pStageSpec()->i_StageSpec())
     return nullptr;
   
-  Stage* pStage = m_pPipeline->pGet(m_iNextStage);
+  Stage* pStage = m_pPipeline->pGet(iNextStage());
 
-  Op* pNextOp = pStage->pGet(m_iNextStage)->pGet(m_iNextOp);
+  Op* pNextOp = pStage->pGet(iNextStage())->pGet(iNextOp());
   
   return pNextOp;
 }
@@ -825,9 +818,8 @@ void Op::vNextOp(i8 iNextOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  RASSERT(iNextOp ==m_pOpSpec->i_NextOp());
+  RASSERT(0);
 
-  m_iNextOp = iNextOp;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -837,7 +829,7 @@ i8 Op::iNextStage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_iNextStage;
+  return m_pOpSpec->i_NextStage();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -847,7 +839,7 @@ Stage* Op::pNextStage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Stage* pNextStage = m_pPipeline->pGet(m_iNextStage);
+  Stage* pNextStage = m_pPipeline->pGet(iNextStage());
   
   return pNextStage;
 }
@@ -859,9 +851,7 @@ void Op::vNextStage(i8 iNextStage)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  RASSERT(iNextStage ==m_pOpSpec->i_NextStage());
-
-  m_iNextStage = iNextStage;
+  RASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1181,12 +1171,12 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
   
     
   // get the next stage the send is supposed to send to
-  Stage* pStage = m_pPipeline->pGet(m_iNextStage);
+  Stage* pStage = m_pPipeline->pGet(iNextStage());
 
   // get the op to forward to depending on the cross topology
-  Op* pOp = pStage->pPipeOutOp(m_eCrossTopo,
+  Op* pOp = pStage->pPipeOutOp(eCrossTopo(),
                                m_tPtnNo,
-                               m_iNextOp);
+                               iNextOp());
   if (bAppendRight())
     pOp->vAppendRight(pOperand,pTriggeringTask);
   else
