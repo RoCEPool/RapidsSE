@@ -290,15 +290,6 @@
 
   op[].init
 
-  // set topolgy in the op
-  //<crossTopo> op.topology!
-
-  // set nextStage in op
-  //<nextStage> op.nextStage!
-
-  // set nextOp in op
-  //<nextOp> op.nextOp!
-
   // set otherStage and otherOp in op
   "<otherStage>" job[] job.tagSet@ tagSet.hasName if
     <otherStage> op.otherStage!

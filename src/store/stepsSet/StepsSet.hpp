@@ -999,8 +999,7 @@ public:
   void vOpAckPipelineJob(void);
   void vOpDownstreamOpStore(void);
   void vOpFindOp(void);
-  void vOpNextOpStore(void);
-  void vOpNextStageStore(void);
+
   void vOpOpNameFetch(void);
   void vOpOtherOpStore(void);
   void vOpOtherStageStore(void);
@@ -1011,7 +1010,6 @@ public:
   void vOpOutboundOperandStore(void);
   void vOpQueueLength(void);
   void vOpStageNameFetch(void);
-  void vOpTopologyStore(void);
   void vOpSendKindStore(void);
 
   // operand

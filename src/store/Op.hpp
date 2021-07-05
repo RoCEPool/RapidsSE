@@ -76,7 +76,6 @@ namespace STORE
     void vAppendToJob(Operand* pOperand);
     Stz* szArgs(void);
     ePX  eCrossTopo(void);
-    void vCrossTopo(ePX eCrossTopo);
     Op*  pDownstreamOp(void);
     void vDownstreamOp(Op* pDownstreamOp);
     void vDropTaskLock(void);
@@ -91,10 +90,8 @@ namespace STORE
     void vLocalRobin(i8 iLocalRobin);
     i8   iNextOp(void);
     Op*  pNextOp(void);
-    void vNextOp(i8 iNextOp);
     i8   iNextStage(void);
     Stage* pNextStage(void);
-    void vNextStage(i8 iNextStage);
     i8   iNode(void);
     void vNode(i8 iNode);
     Word* pOperandHandler(i8 i_OperandKind);

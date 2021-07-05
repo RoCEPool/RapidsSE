@@ -26,8 +26,6 @@ void Step::vAddSteps_Op(void)
   vAddStep("Op.ackPipelineJob"_Stz,   &Step::vOpAckPipelineJob);
   vAddStep("Op.downstreamOp!"_Stz,    &Step::vOpDownstreamOpStore);
   vAddStep("Op.findOp"_Stz,           &Step::vOpFindOp);
-  vAddStep("Op.nextOp!"_Stz,          &Step::vOpNextOpStore);
-  vAddStep("Op.nextStage!"_Stz,       &Step::vOpNextStageStore);
   vAddStep("Op.opName@"_Stz,          &Step::vOpOpNameFetch);
   vAddStep("Op.otherStage!"_Stz,      &Step::vOpOtherStageStore);
   vAddStep("Op.otherOp!"_Stz,         &Step::vOpOtherOpStore);
@@ -37,7 +35,6 @@ void Step::vAddSteps_Op(void)
   vAddStep("Op.pipelineJob@"_Stz,     &Step::vOpPiplineJobFetch);
   vAddStep("Op.queueLength@"_Stz,     &Step::vOpQueueLength);
   vAddStep("Op.stageName@"_Stz,       &Step::vOpStageNameFetch);
-  vAddStep("Op.topology!"_Stz,        &Step::vOpTopologyStore);
   vAddStep("Op.SendKind!"_Stz,        &Step::vOpSendKindStore);
 }
 
@@ -92,30 +89,6 @@ void Step::vOpFindOp(void)
 //
 //  m_pDataStack->vPushPtr(pDownstreamOp);
 
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Op.nextOp! -- store next op in the operator                                */
-/*----------------------------------------------------------------------------*/
-void Step::vOpNextOpStore(void)
-{
-  ENTRY();
-  
-  m_pJob->m_pOp->vNextOp(m_pDataStack->iPopInt(__func__));
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Op.nextStage! -- store next stage in the operator                          */
-/*----------------------------------------------------------------------------*/
-void Step::vOpNextStageStore(void)
-{
-  ENTRY();
-  
-  m_pJob->m_pOp->vNextStage(m_pDataStack->iPopInt(__func__));
-  
   EXIT();
 }
 
@@ -264,18 +237,6 @@ void Step::vOpStageNameFetch(void)
   s256 sStageName = pOp->szStageName();
   
   m_pDataStack->vPushStr(sStageName);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Op.Topology! -- store topology in the operator                             */
-/*----------------------------------------------------------------------------*/
-void Step::vOpTopologyStore(void)
-{
-  ENTRY();
-  
-  m_pJob->m_pOp->vCrossTopo((ePX)m_pDataStack->iPopInt(__func__));
   
   EXIT();
 }
