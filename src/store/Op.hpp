@@ -29,7 +29,6 @@ namespace STORE
     Stage*    m_pStage;    // which stage of pipeline
     Pipeline* m_pPipeline; // which pipeline
   
-
     i8   m_tPtnNo; // this op processes m_tPtnNo in grid
     i8   m_i_Node; // this op processes m_i_Node in grid
     
