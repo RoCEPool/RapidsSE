@@ -17,7 +17,6 @@ namespace STORE
   private:
 
     PlanNode*      m_pPlanRoot;
-    QueryNodeList* m_pColExprList;
     String*        m_sPipeline;
     bool           m_bHasUnionOp;
     bool           m_bNewStage;

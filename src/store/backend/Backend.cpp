@@ -110,7 +110,6 @@ Backend::Backend(RootNode* pPlanRoot)
   // Find the /plan node
   m_pPlanRoot = pPlanRoot;
 
-  m_pColExprList = nullptr;
   m_sPipeline    = nullptr;
   m_bHasUnionOp  = false;
   m_bNewStage   = false;
@@ -126,10 +125,6 @@ Backend::Backend(RootNode* pPlanRoot)
 Backend::~Backend(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BACKEND,_FOOTER_);
-  if (m_pColExprList) {
-    m_pColExprList->vDeleteAll();
-    delete m_pColExprList;
-  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -217,15 +212,10 @@ void Backend::vAppendExpr(Backend* pBackend, QueryNodeList* pColExprList, QueryN
   QueryNode* pQueryNode = _pQueryNode(pExprNode);
 
   QueryNode* pOrdinalExpr = nullptr;
-  //b1 bDeleteOrdExpr = false;
-
   RASSERT(pColExprList);
-  pOrdinalExpr = Expr::pSymbolicToOrdinal(pQueryNode, pColExprList, pBackend->m_pPlanRoot);
-  //  bDeleteOrdExpr = true;
 
+  pOrdinalExpr = Expr::pSymbolicToOrdinal(pQueryNode, pColExprList, pBackend->m_pPlanRoot);
   RASSERT(pOrdinalExpr);
-  //if ( ! pOrdinalExpr )
-  //  pOrdinalExpr = pQueryNode;
 
   String* sPipeline = pBackend->m_sPipeline;
 
@@ -274,11 +264,7 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
 
   ASSERT(pNode->nChildren() == 1);
   ASSERT(PlanObject::bIsOfType(pNode->pFirstChild()));
-  if (pBackend->m_pColExprList) {
-    pBackend->m_pColExprList->vDeleteAll();
-    delete pBackend->m_pColExprList;
-  }
-  pBackend->m_pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pBackend->m_pPlanRoot);
+  QueryNodeList* pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pBackend->m_pPlanRoot);
 
   // get the ordinal projected columns relative to group by
   QueryNode* pOrdinalProjectedColumns =
@@ -341,7 +327,7 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
         }
 
       } else {
-        vAppendExpr(pBackend, pBackend->m_pColExprList, pExprNode, szAliasName);
+        vAppendExpr(pBackend, pColExprList, pExprNode, szAliasName);
       }
     }
 
@@ -367,12 +353,16 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
       QueryNode *pGroupByExpr = static_cast<QueryNode *>(pGroupByIter->pNext());
       ASSERT(pGroupByExpr);
 
-      vAppendExpr(pBackend, pBackend->m_pColExprList, pGroupByExpr, nullptr);
+      vAppendExpr(pBackend, pColExprList, pGroupByExpr, nullptr);
     }
     delete pGroupByIter;
   }
 
   sPipeline->vCatSprint(" \""_Stz);
+
+  // cleanup
+  pColExprList->vDeleteAll();
+  delete pColExprList;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -448,11 +438,7 @@ void Backend::vAppendOrderByOp(Backend* pBackend, QueryNode* pNode)
   ASSERT(pOrderItemList);
 
   ASSERT(PlanObject::bIsOfType(pNode->pFirstChild()));
-  if (pBackend->m_pColExprList) {
-    pBackend->m_pColExprList->vDeleteAll();
-    delete pBackend->m_pColExprList;
-  }
-  pBackend->m_pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pBackend->m_pPlanRoot);
+  QueryNodeList* pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pBackend->m_pPlanRoot);
 
   // Iterate each projected expression
   if (pOrderItemList->bHasChildren()) {
@@ -478,7 +464,7 @@ void Backend::vAppendOrderByOp(Backend* pBackend, QueryNode* pNode)
       ASSERT(pOrderItem);
       ASSERT(OrderItem::bIsOfType(pOrderItem));
 
-      vAppendExpr(pBackend, pBackend->m_pColExprList, pOrderItem, ""_Stz);
+      vAppendExpr(pBackend, pColExprList, pOrderItem, ""_Stz);
 
       sPipeline->vCatSprint(" %s "_Stz, OrderItem::bIsAscending(pOrderItem) ? "ASC" : "DESC");
     }
@@ -488,6 +474,9 @@ void Backend::vAppendOrderByOp(Backend* pBackend, QueryNode* pNode)
 
   sPipeline->vCatSprint(" \""_Stz);
 
+  // cleanup
+  pColExprList->vDeleteAll();
+  delete pColExprList;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -506,11 +495,7 @@ void Backend::vAppendProjectOp(Backend* pBackend, QueryNode* pNode)
   ASSERT(pProjectedColumns);
 
   ASSERT(PlanObject::bIsOfType(pNode->pFirstChild()));
-  if (pBackend->m_pColExprList) {
-    pBackend->m_pColExprList->vDeleteAll();
-    delete pBackend->m_pColExprList;
-  }
-  pBackend->m_pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pBackend->m_pPlanRoot);
+  QueryNodeList* pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pBackend->m_pPlanRoot);
 
   // Iterate each projected expression
   if (pProjectedColumns->bHasChildren()) {
@@ -533,34 +518,20 @@ void Backend::vAppendProjectOp(Backend* pBackend, QueryNode* pNode)
       ASSERT(pProjectedColumn);
       ASSERT(ProjectedColumn::bIsOfType(pProjectedColumn));
 
-      // get the expr node
-      //QueryNode *pExprNode = static_cast<QueryNode *>(GraphNav::pFindProperty("expr"_Stz, pProjectedColumn));
-      //ASSERT(pExprNode);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // alias
-//      Stz *szAliasName = ProjectedColumn::szAliasName(pProjectedColumn);
-//      if ( ! szAliasName) {
-//        if (ColumnRef::bIsOfType(pExprNode)) {
-//          QueryNode *pColumnRef = static_cast<QueryNode *>(pExprNode);
-//          szAliasName = ColumnRef::szColumn(pColumnRef);
-//          StrLib::vToLower(szAliasName->azChar());
-//        }
-//      }
-
       Stz* szAliasName = ProjectedColumn::szAliasName(pProjectedColumn);
       QueryNode* pExprNode  = ProjectedColumn::pExprNode(pProjectedColumn);
 
-      vAppendExpr(pBackend, pBackend->m_pColExprList, pExprNode, szAliasName);
+      vAppendExpr(pBackend, pColExprList, pExprNode, szAliasName);
     }
     delete pIter;
 
   }
 
-  //delete pOrdinalProjectedColumns;
-
   sPipeline->vCatSprint(" \""_Stz);
 
+  // cleanup
+  pColExprList->vDeleteAll();
+  delete pColExprList;
 }
 
 /*----------------------------------------------------------------------------*/
