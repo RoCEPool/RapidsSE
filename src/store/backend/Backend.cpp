@@ -297,7 +297,6 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
   }
   pBackend->m_pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pBackend->m_pPlanRoot);
 
-
   // Iterate each projected expression to look for aggregates if any
   QueryNode* pOrdinalProjectedColumns = nullptr;
 
@@ -461,6 +460,10 @@ void Backend::vAppendAggregateOp1(Backend* pBackend, QueryNode* pNode)
   }
   pBackend->m_pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pBackend->m_pPlanRoot);
 
+  // get the ordinal projected columns relative to group by
+  QueryNode* pOrdinalProjectedColumns =
+      AggregateOp::pOrdinalProjectedColumnsRelativeToGroupBy(pNode, pBackend->m_pPlanRoot);
+
   // Iterate each ordinal projected expression
   if (pProjectedColumns->bHasChildren()) {
 
@@ -487,7 +490,36 @@ void Backend::vAppendAggregateOp1(Backend* pBackend, QueryNode* pNode)
       Stz* szAliasName = ProjectedColumn::szAliasName(pProjectedColumn);
       QueryNode* pExprNode  = ProjectedColumn::pExprNode(pProjectedColumn);
 
-      vAppendExpr1(pBackend, pBackend->m_pColExprList, pExprNode, szAliasName);
+      // get the ordinal projected column relative to group by
+      QueryNode *pRelativeOrdinal = static_cast<QueryNode *>(pOrdinalProjectedColumns->pNthChild(iChild));
+      QueryNode *pOrdinalExprNode = static_cast<QueryNode *>(GraphNav::pFindProperty("expr"_Stz, pRelativeOrdinal));
+      ASSERT(pOrdinalExprNode);
+
+      // generate $K? relative to group by key if its a column ordinal
+      if ( ! ColumnRef::bIsOfType(pExprNode) &&
+           ColumnOrdinal::bIsOfType(pOrdinalExprNode)) {
+
+        eCT eType = Expr::eType(pExprNode, pBackend->m_pPlanRoot);
+
+        sPipeline->vCatSprint(
+            " type %s"
+            ""_Stz,
+            aCT[eType]);
+
+        sPipeline->vCatSprint(
+            " $K%lld"
+            ""_Stz,
+            ColumnOrdinal::iOrdinal(pOrdinalExprNode));
+
+        if (szAliasName) {
+          sPipeline->vCatSprint(
+              " as %s"
+              ""_Stz,
+              szAliasName);
+        }
+      } else {
+        vAppendExpr1(pBackend, pBackend->m_pColExprList, pExprNode, szAliasName);
+      }
     }
 
     // Get the groupBy from ProjectOp
