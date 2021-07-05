@@ -58,29 +58,11 @@ void SP_Op::vOp(Op* pOp, bool bDescend)
   
   vInit();
     
-  Pipeline* pPipeline = pOp->pPipeline();
-  OpSpec* pOpSpec = pOp->pOpSpec();
-
-  //TagSet* pOpTopoTags = pOp->pTopologyTagSet();
-  
-  // get the next stage
-  //i8 iNextStage = pOpTopoTags->iValue(C_TAG_NEXTSTAGE);
-  //RASSERT(iNextStage == pOp->iNextStage());
   i8 iNextStage = pOp->iNextStage();
-  //Stage* pNextStage = pPipeline->pGet(iNextStage);
-  
-  // get the next op
-  //i8 iNextOp = pOpTopoTags->iValue(C_TAG_NEXTOP);
-  //RASSERT(iNextOp == pOp->iNextOp());
   i8 iNextOp = pOp->iNextOp();
-  //Stream* pNextStream = pNextStage->pGet(0);
-  //Op* pNextOp = pNextStream->pGet(iNextOp);
   Op* pNextOp = pOp->pNextOp();
-
-  // get the cross topology
   ePX eCrossTopo = pOp->eCrossTopo();
 
-  
   if (bDescend)
     vCatf("\n      "_Stz);
 
@@ -99,8 +81,7 @@ void SP_Op::vOp(Op* pOp, bool bDescend)
         );
 
   if (XK_NONE != pOp->eSendKind())
-      vCatf(" %s"_Stz,aXK[pOp->eSendKind()]);
-  
+      vCatf(" %s"_Stz,aXK[pOp->eSendKind()]);  
 }
 
 /*----------------------------------------------------------------------------*/
