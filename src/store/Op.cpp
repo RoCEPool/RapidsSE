@@ -809,15 +809,16 @@ i8 Op::iNextOp(void)
 Op* Op::pNextOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  if (iNextStage() != m_pStage->pStageSpec()->i_StageSpec())
-    return nullptr;
-  
-  Stage* pStage = m_pPipeline->pGet(iNextStage());
+    
+  i8 i_NextStage = iNextStage();
+  i8 i_NextOp    = iNextOp();
 
-  Op* pNextOp = pStage->pGet(iNextStage())->pGet(iNextOp());
+  Stage* p_NextStage = m_pPipeline->pGet(i_NextStage);
+
+  Stream* p_NextStream = p_NextStage->pGet(0);
+  Op* p_NextOp = p_NextStream->pGet(i_NextOp);
   
-  return pNextOp;
+  return p_NextOp;
 }
 
 /*----------------------------------------------------------------------------*/

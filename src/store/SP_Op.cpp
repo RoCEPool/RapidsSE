@@ -67,18 +67,19 @@ void SP_Op::vOp(Op* pOp, bool bDescend)
   //i8 iNextStage = pOpTopoTags->iValue(C_TAG_NEXTSTAGE);
   //RASSERT(iNextStage == pOp->iNextStage());
   i8 iNextStage = pOp->iNextStage();
-  Stage* pNextStage = pPipeline->pGet(iNextStage);
+  //Stage* pNextStage = pPipeline->pGet(iNextStage);
   
   // get the next op
   //i8 iNextOp = pOpTopoTags->iValue(C_TAG_NEXTOP);
   //RASSERT(iNextOp == pOp->iNextOp());
   i8 iNextOp = pOp->iNextOp();
-  Stream* pNextStream = pNextStage->pGet(0);
-  Op* pNextOp = pNextStream->pGet(iNextOp);
+  //Stream* pNextStream = pNextStage->pGet(0);
+  //Op* pNextOp = pNextStream->pGet(iNextOp);
+  Op* pNextOp = pOp->pNextOp();
 
   // get the cross topology
-  ePX eCrossTopo = pOpSpec->eCrossTopo();
-  
+  ePX eCrossTopo = pOp->eCrossTopo();
+
   
   if (bDescend)
     vCatf("\n      "_Stz);
