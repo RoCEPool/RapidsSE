@@ -1685,6 +1685,7 @@ void vDev_ROW_COLS_TO_LOCALS(i8** aaiDstk)
 
   i8* aiDst_lcl = *aaiLocals;
   i8* ayDst = ++aiDst_lcl;
+  d8 dValue;
 
   for (i8 i_ColSet = 0; iaColSet[i_ColSet] != -1; i_ColSet++) {
     Column* pColumn = pDevRow->m_pStreamDef->pGetColumn(iaColSet[i_ColSet]);
@@ -1699,7 +1700,8 @@ void vDev_ROW_COLS_TO_LOCALS(i8** aaiDstk)
         ayDst++;
         break;
       case CT_FLOAT:
-        *ayDst = pDevRow->m_aRow->dColVal_flt(iaColSet[i_ColSet]);
+        dValue = pDevRow->m_aRow->dColVal_flt(iaColSet[i_ColSet]);
+        *ayDst = *(i8*)&dValue;
         ayDst++;
         break;
       case CT_CHAR:
