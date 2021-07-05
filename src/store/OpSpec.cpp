@@ -137,6 +137,18 @@ void OpSpec::vCrossTopo(ePX eCrossTopo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set cross topology                                                         */
+/*----------------------------------------------------------------------------*/
+void OpSpec::vCrossTopo(ePX eCrossTopo, i8 i_NextStage, i8 i_NextOp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  m_eCrossTopo = eCrossTopo;
+  m_i_NextStage = i_NextStage;
+  m_i_NextOp = i_NextOp;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get m_i_NextOp                                                             */
 /*----------------------------------------------------------------------------*/
 i8 OpSpec::i_NextOp(void)

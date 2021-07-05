@@ -48,6 +48,7 @@ namespace STORE
     Stz* szOpNm(void);
     ePX  eCrossTopo(void);
     void vCrossTopo(ePX eCrossTopo);
+    void vCrossTopo(ePX eCrossTopo, i8 i_NextStage, i8 i_NextOp);
     i8   i_NextOp(void);
     void v_NextOp(i8 i_NextOp);
     i8   i_NextStage(void);

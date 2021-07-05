@@ -921,7 +921,7 @@ void PipelineSpec::vMorphToSend(OpSpec* pOpSpec, ePX eCrossTopo, i8 i_NextStage)
   
   pOpSpec->vOpNm("send"_Stz);
   
-  vTopoTagsAdd(pOpSpec, eCrossTopo, i_NextStage, 0);
+  pOpSpec->vCrossTopo(eCrossTopo,i_NextStage,0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -934,8 +934,9 @@ void PipelineSpec::vNameIsOp(StageSpec* pStageSpec, OpSpec* pOpSpec_isOp)
   i8 i_Op = pOpSpec_isOp->i_OpSpec();
   i8 i_Stage = pStageSpec->i_StageSpec();
   ePX eCrossTopo = StageSpec::eCrossTopo(pStageSpec, pStageSpec);
-  
-  vTopoTagsAdd(pOpSpec_isOp,eCrossTopo,i_Stage,i_Op+1);
+    
+  pOpSpec_isOp->vCrossTopo(eCrossTopo,i_Stage,i_Op+1);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1007,7 +1008,7 @@ void PipelineSpec::vStageFirstSend(StageSpec* pStageSpec, OpSpec* pOpSpec_isStag
   if (eCrossTopo == PX_ORIGIN_TO_ORIGIN && i_NextStage == 0) {
     // add parameter to the prev sink op
     OpSpec *pPrevOpSpec = pStageSpec->pGet(i_Op - 1);
-    vTopoTagsUpdate(pPrevOpSpec, eCrossTopo, i_NextStage, 0);
+    pPrevOpSpec->vCrossTopo(eCrossTopo, i_NextStage, 0);
 
     // remove the last (stage) OpSpec from the OpSpecVec
     RASSERT(i_Op == pStageSpec->nItems() - 1);
@@ -1053,13 +1054,6 @@ void PipelineSpec::vStageSubsequentSend(StageSpec* pStageSpec, OpSpec* pOpSpec,
 
   ePX eCrossTopo = StageSpec::eCrossTopo(pStageSpec, pNextStageSpec);
 
-  TagSet* pTopologyTagSet = pOpSpecSend->pTopoTags();
-
-  ePX eOpSpecCrossTopo = (ePX)pTopologyTagSet->iValue(C_TAG_CROSSTOPO);
-
-  // this needs to checked at compile time
-  RASSERT(eCrossTopo == eOpSpecCrossTopo);
-
   // we already have a send, so just remove the stage
   pStageSpec->vRemove(pOpSpec);
   delete pOpSpec;
@@ -1071,50 +1065,6 @@ void PipelineSpec::vStageSubsequentSend(StageSpec* pStageSpec, OpSpec* pOpSpec,
 
   // insert a consume op at the beginning of the stage
   vStageConsumeOpInsert(pNextStageSpec,eCrossTopo);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add topo tags for the opSpec                                               */
-/*----------------------------------------------------------------------------*/
-void PipelineSpec::vTopoTagsAdd(OpSpec* pOpSpec,
-                          ePX eCrossTopo, i8 i_NextStage, i8 i_NextOp)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
-  
-  pOpSpec->vCrossTopo(eCrossTopo);
-  pOpSpec->v_NextStage(i_NextStage);
-  pOpSpec->v_NextOp(i_NextOp);
-
-  // cross topology of the send op
-  pOpSpec->vTopoTagAdd(C_TAG_CROSSTOPO,(i8)eCrossTopo,TN_INTEGER);
-  
-  // next stage for the send
-  pOpSpec->vTopoTagAdd(C_TAG_NEXTSTAGE,(i8)i_NextStage,TN_INTEGER);
-  
-  //  op of the next stage for the send
-  pOpSpec->vTopoTagAdd(C_TAG_NEXTOP,(i8)i_NextOp,TN_INTEGER);
-}
-
-/*----------------------------------------------------------------------------*/
-/* update topo tags for the opSpec                                            */
-/*----------------------------------------------------------------------------*/
-void PipelineSpec::vTopoTagsUpdate(OpSpec* pOpSpec,
-                             ePX eCrossTopo, i8 i_NextStage, i8 i_NextOp)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
-
-  pOpSpec->vCrossTopo(eCrossTopo);
-  pOpSpec->v_NextStage(i_NextStage);
-  pOpSpec->v_NextOp(i_NextOp);
-
-  // cross topology of the send op
-  pOpSpec->vTopoTagReplace(C_TAG_CROSSTOPO,(i8)eCrossTopo,TN_INTEGER);
-  
-  // next stage for the send
-  pOpSpec->vTopoTagReplace(C_TAG_NEXTSTAGE,(i8)i_NextStage,TN_INTEGER);
-  
-  // op of the next stage for the send
-  pOpSpec->vTopoTagReplace(C_TAG_NEXTOP,(i8)i_NextOp,TN_INTEGER);
 }
 
 

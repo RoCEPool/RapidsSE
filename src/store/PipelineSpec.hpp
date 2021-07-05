@@ -127,11 +127,6 @@ namespace STORE
     void vStageSubsequentSend(StageSpec* pStageSpec, OpSpec* pOpSpec,
                               StageSpec* pNextStageSpec, OpSpec* pOpSpecSend);
 
-    void vTopoTagsAdd(OpSpec* pOpSpec,
-                      ePX eCrossTopo, i8 i_NextStage, i8 i_NextOp);
-    void vTopoTagsUpdate(OpSpec* pOpSpec,
-                         ePX eCrossTopo, i8 i_NextStage, i8 i_NextOp);
-
     //
     // token scanning
     //
