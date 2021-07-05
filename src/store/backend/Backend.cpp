@@ -149,7 +149,7 @@ bool Backend::bTransliterate(String* sPipeline) {
   m_sPipeline = sPipeline;
 
 //#ifdef WITH_TRACE_Backend
-  vPrintPlanGraph(m_pPlanRoot);
+  //vPrintPlanGraph(m_pPlanRoot);
 //#endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -273,6 +273,8 @@ void Backend::vAppendExpr1(Backend* pBackend, QueryNodeList* pColExprList, Query
 
   // Walk the expr node plan graph
   GraphNav::bGlobalWalk(pOrdinalExpr, false, true,vVisitorExpr1, vVisitorExpr1, (void *) pBackend);
+
+  delete pOrdinalExpr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -499,6 +501,8 @@ void Backend::vAppendAggregateOp1(Backend* pBackend, QueryNode* pNode)
       if ( ! ColumnRef::bIsOfType(pExprNode) &&
            ColumnOrdinal::bIsOfType(pOrdinalExprNode)) {
 
+        //vAppendExprRelativeToGroupBy(pOrdinalExprNode, szAliasName);
+
         eCT eType = Expr::eType(pExprNode, pBackend->m_pPlanRoot);
 
         sPipeline->vCatSprint(
@@ -517,10 +521,15 @@ void Backend::vAppendAggregateOp1(Backend* pBackend, QueryNode* pNode)
               ""_Stz,
               szAliasName);
         }
+
       } else {
         vAppendExpr1(pBackend, pBackend->m_pColExprList, pExprNode, szAliasName);
       }
     }
+
+    // cleanup
+    delete pOrdinalProjectedColumns;
+    delete pIter;
 
     // Get the groupBy from ProjectOp
     sPipeline->vCatSprint(" groupBy "_Stz);
