@@ -264,6 +264,14 @@ void Backend::vAppendExpr1(Backend* pBackend, QueryNodeList* pColExprList, Query
       ""_Stz,
       aCT[eType]);
 
+  if ( ! szAliasName) {
+    if (ColumnRef::bIsOfType(pExprNode)) {
+      QueryNode *pColumnRef = static_cast<QueryNode *>(pExprNode);
+      szAliasName = ColumnRef::szColumn(pColumnRef);
+      StrLib::vToLower(szAliasName->azChar());
+    }
+  }
+
   if (szAliasName) {
     sPipeline->vCatSprint(
         " as %s"
