@@ -79,19 +79,20 @@ void SP_Op::vOp(Op* pOp, bool bDescend)
 
   vCatf("[%03lld] Op %-16s "
         "|%s [%02lld.%03lld] Op %-16s "
-        "x %s %s"_Stz,
+        "x %s"_Stz
         
-         pOp->iOp(),
-         pOp->szOpNm(),
+         ,pOp->iOp()
+         ,pOp->szOpNm()
         
-         pOp->bAppendRight() ? "R"_Stz : "L"_Stz,
-         iNextStage,
-         iNextOp,
-           pNextOp->szOpNm(),
-           aPX[eCrossTopo],
-           aXK[pOp->eSendKind()]
+         ,pOp->bAppendRight() ? "R"_Stz : "L"_Stz
+         ,iNextStage
+         ,iNextOp
+           ,pNextOp->szOpNm()
+           ,aPX[eCrossTopo]
         );
 
+  if (XK_NONE != pOp->eSendKind())
+      vCatf(" %s"_Stz,aXK[pOp->eSendKind()]);
   
 }
 
