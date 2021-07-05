@@ -373,6 +373,8 @@ void Op::vCrossTopo(ePX eCrossTopo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
+  RASSERT(eCrossTopo ==m_pOpSpec->eCrossTopo());
+  
   m_eCrossTopo = eCrossTopo;
 }
 
@@ -823,6 +825,8 @@ void Op::vNextOp(i8 iNextOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
+  RASSERT(iNextOp ==m_pOpSpec->i_NextOp());
+
   m_iNextOp = iNextOp;
 }
 
@@ -855,6 +859,8 @@ void Op::vNextStage(i8 iNextStage)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
+  RASSERT(iNextStage ==m_pOpSpec->i_NextStage());
+
   m_iNextStage = iNextStage;
 }
 

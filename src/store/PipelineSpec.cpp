@@ -1081,6 +1081,10 @@ void PipelineSpec::vTopoTagsAdd(OpSpec* pOpSpec,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
+  pOpSpec->vCrossTopo(eCrossTopo);
+  pOpSpec->v_NextStage(i_NextStage);
+  pOpSpec->v_NextOp(i_NextOp);
+
   // cross topology of the send op
   pOpSpec->vTopoTagAdd(C_TAG_CROSSTOPO,(i8)eCrossTopo,TN_INTEGER);
   
@@ -1098,6 +1102,10 @@ void PipelineSpec::vTopoTagsUpdate(OpSpec* pOpSpec,
                              ePX eCrossTopo, i8 i_NextStage, i8 i_NextOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
+
+  pOpSpec->vCrossTopo(eCrossTopo);
+  pOpSpec->v_NextStage(i_NextStage);
+  pOpSpec->v_NextOp(i_NextOp);
 
   // cross topology of the send op
   pOpSpec->vTopoTagReplace(C_TAG_CROSSTOPO,(i8)eCrossTopo,TN_INTEGER);
