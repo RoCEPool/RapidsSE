@@ -13,6 +13,7 @@
 #include "StatementMarker.hpp"
 #include "SqlException.hpp"
 #include "ProjectOp.hpp"
+#include "AggregateOp.hpp"
 #include "FilterOp.hpp"
 #include "SetOp.hpp"
 #include "OrderOp.hpp"
@@ -35,12 +36,14 @@ using namespace Parser;
 // A container for recording certain operators when we are walking the graph
 class OpContainer {
 public:
-  QueryNode* m_pProjectOp;
+  QueryNode* m_pProjectOp;    // Matches both ProjectOp and AggregateOp
+  QueryNode* m_pAggregateOp;  // Matches AggregateOp specifically
   QueryNode* m_pFilterOp;
   QueryNode* m_pOrderOp;
 
   OpContainer() {
     m_pProjectOp = nullptr;
+    m_pAggregateOp = nullptr;
     m_pFilterOp = nullptr;
     m_pOrderOp = nullptr;
   }
@@ -102,11 +105,11 @@ GraphNav::eWalkCtrl PostProject::eStmtMarkerVisitor(PlanNode* pNode, s256& sPath
   GraphNav::bBoundedWalk(pStatementMarker, false, true, eStmtSectionVisitor, &xContainer);
 
   if (!xContainer.m_pProjectOp) {
-    // No project, no worries
+    // No project, no worries. Must be a select *.
     return GraphNav::WALK_CONTINUE;
   }
 
-  if (!xContainer.m_pFilterOp && !xContainer.m_pOrderOp) {
+  if (!xContainer.m_pFilterOp && !xContainer.m_pOrderOp & !xContainer.m_pAggregateOp) {
     // No potentially troublesome operators sitting above a projection.
     // So nothing for us to worry about here.
     return GraphNav::WALK_CONTINUE;
@@ -136,12 +139,25 @@ GraphNav::eWalkCtrl PostProject::eStmtSectionVisitor(PlanNode* pNode, s256& sPat
   ASSERT(pContainer);
 
   if (FilterOp::bIsOfType(pNode)) {
-    ASSERT(!pContainer->m_pFilterOp);
-    pContainer->m_pFilterOp = _pQueryNode(pNode);
+    // There may be more than one FilterOp from a WHERE and HAVING clause.
+    // We are only interested in the HAVING clause, so we mustn't
+    // have encountered the ProjectOp yet.
+    if (!pContainer->m_pFilterOp && !pContainer->m_pProjectOp) {
+      pContainer->m_pFilterOp = _pQueryNode(pNode);
+    }
 
   } else if (OrderOp::bIsOfType(pNode)) {
     ASSERT(!pContainer->m_pOrderOp);
     pContainer->m_pOrderOp = _pQueryNode(pNode);
+
+  } else if (AggregateOp::bIsOfType(pNode)) {
+    // Set both m_pAggregateOp and m_pProjectOp.
+    // We will want to specifically check if we need a post-project
+    // because the group-by expr may not be selected.
+    ASSERT(!pContainer->m_pAggregateOp);
+    ASSERT(!pContainer->m_pProjectOp);
+    pContainer->m_pAggregateOp = _pQueryNode(pNode);
+    pContainer->m_pProjectOp = _pQueryNode(pNode);
 
   } else if (ProjectOp::bIsOfType(pNode)) {
     ASSERT(!pContainer->m_pProjectOp);
@@ -175,8 +191,8 @@ void PostProject::vAddPostProject(void* pvContainer, QueryNode* pStatementMarker
   // Get the list of columns that should be projected
   QueryNodeList* pProjectedColumnList = ProjectOp::pColumnExprs(pContainer->m_pProjectOp, pRootNode);
 
-  // Check if there are any expressions in the filter or order ops that
-  // are not equal to any of the expressions in the project list.
+  // Check if there are any expressions in the filter, order ops or Aggregate group-by
+  // that are not equal to any of the expressions in the project list.
   if (pContainer->m_pFilterOp) {
     // Get the expr
     QueryNode* pFilterExpr = FilterOp::pFilterExpr(pContainer->m_pFilterOp);
@@ -221,6 +237,32 @@ void PostProject::vAddPostProject(void* pvContainer, QueryNode* pStatementMarker
     }
 
     delete pIter;
+  }
+
+  if (!bPostProjectRequired && pContainer->m_pAggregateOp) {
+    // Check if the group by expressions are equal to or a superset of
+    // one of the exprs in the select list.
+    QueryNode* pGroupByList = AggregateOp::pGroupByList(pContainer->m_pAggregateOp);
+    PlanNodeIter* pGByIter = pGroupByList->pNewChildrenIter();
+
+    while (pGByIter->bHasNext()) {
+      QueryNode* pGroupByExpr = _pQueryNode(pGByIter->pNext());
+      ASSERT(Expr::bIsOfType(pGroupByExpr));
+
+      QueryNode* pProjColList = AggregateOp::pProjectedColumns(pContainer->m_pAggregateOp);
+      ASSERT(ProjectedColumns::bIsOfType(pProjColList));
+
+      // If the group by expression is not equal to or a superset of a projected column
+      // then it must be pushed down and a post-projection added. We will take care of
+      // the post-project here. An example here is:
+      //   SELECT col1 + 1, SUM(col2) FROM t GROUP BY col1;
+      if (!ProjectedColumns::bHasExprEqualOrSuperset(pProjColList, pGroupByExpr, false)) {
+        bPostProjectRequired = true;
+        break;
+      }
+    }
+
+    delete pGByIter;
   }
 
   if (bPostProjectRequired) {

@@ -11,11 +11,13 @@
 #include "StatementMarker.hpp"
 #include "SqlException.hpp"
 #include "ProjectOp.hpp"
+#include "AggregateOp.hpp"
 #include "FilterOp.hpp"
 #include "OrderOp.hpp"
 #include "OrderItem.hpp"
 #include "OrderItemList.hpp"
 #include "Expr.hpp"
+#include "ProjectedColumns.hpp"
 #include "ShadowPlan.hpp"
 #include "ShadowRoot.hpp"
 
@@ -92,10 +94,11 @@ void ExprPushdown::vStatementSectionPushdownExprs(QueryNode* pStatementMarker, P
 
   // For each StatementMarker section
   //   Walk each node.
-  //   If it is not a FilterOp, OrderOp then keep walking.
+  //   If it is not a FilterOp, OrderOp or AggregateOp then keep walking.
   //   Find the ProjectOp/AggregateOp below it in this StatementMarker section, if any.
   //   If none, then keep walking.
-  //   Otherwise extract the expression from the FilterOp/OrderOp.
+  //   Otherwise extract the expression from the FilterOp/OrderOp or the AggregteOp's
+  //   group by expr.
   //   Convert the expression to ordinal form. Determine if it is fully ordinal
   //   and has no aggregates. If not fully ordinal, or if it has aggregates then
   //   determine the largest non-ordinal/non-aggregate subexpression and add this
@@ -143,6 +146,7 @@ void ExprPushdown::vStatementSectionPushdownExprs(QueryNode* pStatementMarker, P
       delete pOrdExpr;
       return GraphNav::WALK_CONTINUE;
 
+
     } else if (OrderOp::bIsOfType(pNode)) {
 
       // Get the list of order items in ordinal representation
@@ -174,6 +178,32 @@ void ExprPushdown::vStatementSectionPushdownExprs(QueryNode* pStatementMarker, P
       delete pIter;
       delete pOrderItemList;
       return GraphNav::WALK_CONTINUE;
+
+
+    } else if (AggregateOp::bIsOfType(pNode)) {
+      // Check if the group by expressions are equal to or a superset of
+      // one of the exprs in the select list.
+      QueryNode* pGroupByList = AggregateOp::pGroupByList(_pQueryNode(pNode));
+      PlanNodeIter* pGByIter = pGroupByList->pNewChildrenIter();
+
+      while (pGByIter->bHasNext()) {
+        QueryNode* pGroupByExpr = _pQueryNode(pGByIter->pNext());
+        ASSERT(Expr::bIsOfType(pGroupByExpr));
+
+        QueryNode* pProjColList = AggregateOp::pProjectedColumns(_pQueryNode(pNode));
+        ASSERT(ProjectedColumns::bIsOfType(pProjColList));
+
+        // If the group by expression is not equal to or a superset of a projected column
+        // then it must be pushed down and a post-projection added. We will take care of
+        // the post-project here. An example here is:
+        //   SELECT col1 + 1, SUM(col2) FROM t GROUP BY col1;
+        if (!ProjectedColumns::bHasExprEqualOrSuperset(pProjColList, pGroupByExpr, false)) {
+          // We can add it straight to this AggregateOp.
+          ProjectOp::vPushdownExpr(_pQueryNode(pNode), pGroupByExpr->pDeepCopy(true), nullptr);
+        }
+      }
+
+      delete pGByIter;
     }
 
     return GraphNav::WALK_CONTINUE;
