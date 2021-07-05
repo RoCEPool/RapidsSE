@@ -50,28 +50,22 @@ void SP_OpSpec::vOpSpec(OpSpec* pOpSpec)
   _precondition_(_MAGIC_,_FOOTER_);
   
   s16KB sArgs;
-  s16KB sTopo;
 
   vInit();
-
-  TagSet* pTopoTags = pOpSpec->pTopoTags();
-  pTopoTags->vSprint(sTopo,true,true);
   
   TagSet* pArgTags  = pOpSpec->pArgTags();
   
   if (pArgTags->nItems()) {
     pArgTags->vSprint(sArgs);
-    vCatf("[%02lld] OpSpec %-16s args=%s topo=%s"_Stz,
+    vCatf("[%02lld] OpSpec %-16s args=%s"_Stz,
           pOpSpec->iOpSpec(),
           pOpSpec->szOpNm(),
-          sArgs.azChar(),
-          sTopo.azChar());
+          sArgs.azChar());
   }
   else {
-    vCatf("[%02lld] OpSpec %-16s topo=%s"_Stz,
+    vCatf("[%02lld] OpSpec %-16s"_Stz,
           pOpSpec->iOpSpec(),
-          pOpSpec->szOpNm(),
-          sTopo.azChar());
+          pOpSpec->szOpNm());
   }
   
   if (pOpSpec->bAppendRight())

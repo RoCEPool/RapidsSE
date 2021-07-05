@@ -1424,11 +1424,7 @@ void Op::vSpawnOperatorJob(i8 iSessionId)
   //pPipeLineJobTags->vDumpSet(true);
   
   pOpJobTagSet->vCopy(pPipeLineJobTags);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // now copy the hidden topology ename pairs to the job ename set
-  pOpJobTagSet->vCopy(m_pOpSpec->pTopoTags());
-  
+    
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add the OpJob JobNM to be the same as the Opertor name
   pOpJobTagSet->vReplace(C_TAG_JOBNM, m_sOpNm);
