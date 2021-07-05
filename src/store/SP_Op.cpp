@@ -4,6 +4,7 @@
 
 #include "BASE.h"
 
+#include "OpSpec.hpp"
 #include "Op.hpp"
 #include "Stream.hpp"
 #include "Stage.hpp"
@@ -58,7 +59,8 @@ void SP_Op::vOp(Op* pOp, bool bDescend)
   vInit();
     
   Pipeline* pPipeline = pOp->pPipeline();
-  
+  OpSpec* pOpSpec = pOp->pOpSpec();
+
   TagSet* pOpTopoTags = pOp->pTopologyTagSet();
   
   // get the next stage
@@ -71,7 +73,7 @@ void SP_Op::vOp(Op* pOp, bool bDescend)
   Op* pNextOp = pNextStream->pGet(iNextOp);
 
   // get the cross topology
-  ePX eCrossTopo = (ePX)(pOpTopoTags->iValue(C_TAG_CROSSTOPO));
+  ePX eCrossTopo = pOpSpec->eCrossTopo();
   
   
   if (bDescend)
