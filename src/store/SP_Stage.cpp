@@ -58,10 +58,14 @@ void SP_Stage::vStage(Stage* pStage, bool bDescend)
   if (bDescend)
     vCatf("\n  "_Stz);
   
-  vCatf("[%lld] Stage %s Topology %s"_Stz,
-        i_Stage,
-        pStage->szStageNm(),
-        aPO[pStageSpec->eTopology()]);
+  vCatf("[%lld] Stage %s "
+        "%s"_Stz
+        
+        ,i_Stage
+        ,pStage->szStageNm()
+        
+        ,aPO[pStageSpec->eTopology()]
+        );
 
   if (bDescend) {
     

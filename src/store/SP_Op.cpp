@@ -56,13 +56,10 @@ void SP_Op::vOp(Op* pOp, bool bDescend)
   _precondition_(_MAGIC_,_FOOTER_);
   
   vInit();
-  
-  s256 sArgs;
-  
+    
   Pipeline* pPipeline = pOp->pPipeline();
   
   TagSet* pOpTopoTags = pOp->pTopologyTagSet();
-  pOpTopoTags->vSprint(sArgs);
   
   // get the next stage
   i8 iNextStage = pOpTopoTags->iValue(C_TAG_NEXTSTAGE);
@@ -76,37 +73,23 @@ void SP_Op::vOp(Op* pOp, bool bDescend)
   // get the cross topology
   ePX eCrossTopo = (ePX)(pOpTopoTags->iValue(C_TAG_CROSSTOPO));
   
-  // get the left EOS markers for consume op
-  //! ALKA: right EOS markers ???
-  TagSet* pOpTags = pOp->pOpTagSet();
-  i8 iSends =  pOpTags->iValue(C_TAG_SENDS);
-  i8 iLeftMarkers = iSends ? iSends : 1;
   
   if (bDescend)
     vCatf("\n      "_Stz);
 
-  vCatf("[%03lld] "
-        "Op %12s%-20s "
-        "(N%lld,P%02lld) "
-        "Markers(L%lld R0) "
-        "| [%02lld.%03lld] Op %-10s %s %s %s"_Stz,
+  vCatf("[%03lld] Op %-16s "
+        "|%s [%02lld.%03lld] Op %-16s "
+        "x %s %s"_Stz,
         
          pOp->iOp(),
-        
          pOp->szOpNm(),
-         sArgs.szStz(),
         
-         pOp->iNode(),
-         pOp->tPtnNo(),
-
-         iLeftMarkers,
-        
+         pOp->bAppendRight() ? "R"_Stz : "L"_Stz,
          iNextStage,
          iNextOp,
-         pNextOp->szOpNm(),
-         pOp->bAppendRight() ? "appendRight"_Stz : "appendLeft "_Stz,
-         aPX[eCrossTopo],
-         aXK[pOp->eSendKind()]
+           pNextOp->szOpNm(),
+           aPX[eCrossTopo],
+           aXK[pOp->eSendKind()]
         );
 
   

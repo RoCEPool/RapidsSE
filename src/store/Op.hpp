@@ -38,7 +38,6 @@ namespace STORE
     i8             m_iWorkQuanta;    // quanta of work between pulses
     i8             m_iWorkDone;      // work done
 
-    bool           m_bAppendRight;   // append to right queue?
     OperandQueue*  m_pQueueLeft;     // left input queue
     OperandQueue*  m_pQueueRight;    // right input queue
     OperandQueue*  m_pQueueOoO;      // out-of-order queue

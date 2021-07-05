@@ -63,12 +63,16 @@ void SP_PipelineSpec::vPipelineSpec(PipelineSpec* pPipelineSpec)
   
   if (iDepth)
     vCatf(iDepth,
-          "[%lld] PipelineSpec %s\n"_Stz
+          "[%lld] PipelineSpec %s %p\n"_Stz
           ,pPipelineSpec->i_PipelineSpec()
-          ,pPipelineSpec->szPipelineNm());
+          ,pPipelineSpec->szPipelineNm()
+          ,pPipelineSpec
+          );
   else
-    vCatf("PipelineSpec %s\n"_Stz
-          ,pPipelineSpec->szPipelineNm());
+    vCatf("PipelineSpec %s %p\n"_Stz
+          ,pPipelineSpec->szPipelineNm()
+          ,pPipelineSpec
+          );
 //  vCats(iDepth,
 //        "begin\n"_Stz);
   

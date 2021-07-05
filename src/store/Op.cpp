@@ -73,15 +73,10 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
     
   // -- -- -- -- -- --
 
-  
-  //m_oOpTagSet.vCopy(pOpSpec->pArgTags());
-  //m_oTopologyTags.vCopy(pOpSpec->pTopoTags());
-
   m_bPulsedLimit  = false;
   m_iWorkQuanta   = 1;
   m_iWorkDone     = 0;
 
-  m_bAppendRight  = pOpSpec->bAppendRight();
   m_pQueueLeft    = new OperandQueue;
   m_pQueueRight   = new OperandQueue;
   m_pQueueOoO     = new OperandQueue;
@@ -153,7 +148,6 @@ Op::Op(Stz* szOpNm)
   m_iWorkQuanta   = 1;
   m_iWorkDone     = 0;
 
-  m_bAppendRight  = false;
   m_pQueueLeft    = new OperandQueue;
   m_pQueueRight   = new OperandQueue;
   m_pQueueOoO     = new OperandQueue;
@@ -359,7 +353,7 @@ bool Op::bAppendRight(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_bAppendRight;
+  return m_pOpSpec->bAppendRight();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1187,7 +1181,7 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
   Op* pOp = pStage->pPipeOutOp(m_eCrossTopo,
                                m_tPtnNo,
                                m_iNextOp);
-  if (m_bAppendRight)
+  if (bAppendRight())
     pOp->vAppendRight(pOperand,pTriggeringTask);
   else
     pOp->vAppendLeft(pOperand,pTriggeringTask);

@@ -54,11 +54,19 @@ void SP_Pipeline::vPipeline(Pipeline* pPipeline, bool bDescend)
   
   Grid* pGrid = AM::pGrid();
     
-  vCatf("Pipeline %s on Grid %s N%lldP%lld"_Stz,
-        pPipeline->szPipelineNm(),
-        pGrid->szGridNm(),
-        pGrid->nBootNodes(),
-        AM::nPtnsPerTable());
+  vCatf("Pipeline %s %p "
+        "on Grid %s N%lldP%lld "
+        "using PipelineSpec %p"_Stz
+        
+        ,pPipeline->szPipelineNm()
+        ,pPipeline
+        
+        ,pGrid->szGridNm()
+        ,pGrid->nBootNodes()
+        ,AM::nPtnsPerTable()
+        
+        ,pPipeline->pPipelineSpec()
+        );
   
   if (bDescend) {
     for (i8 i_Stage = 0; i_Stage < pPipeline->nItems(); i_Stage++ ) {
