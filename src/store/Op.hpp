@@ -86,6 +86,8 @@ namespace STORE
     void vInitOperandHandlers(void);
     bool bIsLocked(void);
     bool bIsOperandValid(i8 i_OperandKind);
+    Job* pJob(void);
+    void vJob(Job* pJob);
     i8   iLocalRobin(void);
     void vLocalRobin(i8 iLocalRobin);
     i8   iNextOp(void);
@@ -96,10 +98,9 @@ namespace STORE
     void vNode(i8 iNode);
     Word* pOperandHandler(i8 i_OperandKind);
     void vOperandHandler(i8 i_OperandKind, Word* pHandler);
-    Job* pJob(void);
-    void vJob(Job* pJob);
     i8   iOp(void);
     Stz* szOpNm(void);
+    OpSpec* pOpSpec(void);
     TagSet* pOpTagSet(void);
     void vOpTrace(Operand* pOperand, Stz* szFunActNm,
                   Stz* szSupplemental=""_Stz);
