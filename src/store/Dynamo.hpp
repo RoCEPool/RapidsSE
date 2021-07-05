@@ -28,8 +28,8 @@ namespace STORE
     Dynamo(Stz* szPipelineStmt, Job* p_PipelineJob);
    ~Dynamo(void) noexcept(false);
 
-    bool bCompile(void);
-    
+    PipelineSpec* pCompile(void);
+
     PipelineSpec* pPipelineSpec(void);
 
   private:

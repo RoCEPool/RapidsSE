@@ -52,21 +52,24 @@ Dynamo::~Dynamo(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* recursively compile the tokenised pipeline statement                       */
 /*----------------------------------------------------------------------------*/
-bool Dynamo::bCompile(void)
+PipelineSpec* Dynamo::pCompile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
         
   m_pScanner->vTokenBegin(0);
       
-  if (!  PipelineSpec::bCompile(nullptr,
-                                nullptr,
-                                m_pScanner,
-                                this,
+  if (PipelineSpec::bCompile(nullptr,
+                             nullptr,
+                             m_pScanner,
+                             this,
                                 
-                                m_p_PipelineSpec_root))
-    return false;
+                             m_p_PipelineSpec_root))
+  return m_p_PipelineSpec_root;
   
-  return true;
+  delete m_p_PipelineSpec_root;
+  m_p_PipelineSpec_root = nullptr;
+  
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
