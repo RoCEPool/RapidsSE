@@ -56,8 +56,6 @@ namespace STORE
     void vTopology(ePO eTopology);
     void vToPipeStr(Stz* szPipeStr);
   
-    void vPrint(void);
-
     Footer* aFooter(void);
   };
 

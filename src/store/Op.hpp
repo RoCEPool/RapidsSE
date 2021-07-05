@@ -139,7 +139,7 @@ namespace STORE
     Stream* pStream(void);
     Task* pTask(void);
     void vToCmdStr(Stz* szCmdStr);
-    TagSet* pTopologyTagSet(void);
+
     void vWorkQuanta(i8 iWorkQuanta);
     
   private:

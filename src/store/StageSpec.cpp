@@ -388,47 +388,6 @@ void StageSpec::vToPipeStr(Stz* szPipeStr)
 
 }
 
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* print stage spec                                                           */
-/*----------------------------------------------------------------------------*/
-void StageSpec::vPrint(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
-  
-  vTrace("\n"_Stz);
-  vTrace("stage %s "_Stz,m_sStageNm.szStz());
-  
-  switch (m_eTopology) {
-    case PO_ALL_NODES:                vTrace("on all nodes"_Stz);
-                                      break;
-    case PO_ALL_PARTITIONS:           vTrace("on all partitions"_Stz);
-                                      break;
-    case PO_ALL_PARTITIONS_ON_ORIGIN: vTrace("on all partitions_on_origin"_Stz);
-                                      break;
-    case PO_ORIGIN:                   vTrace("on origin"_Stz);
-                                      break;
-    case PO_SPECIFIC_NODE:            vTrace("on node %s"_Stz,m_i_SpecificNode);
-                                      break;
-    case PO_SPECIFIC_PARTITION:       vTrace("on partition %s"_Stz,m_tSpecificPtnNo);
-                                      break;
-    default:
-      ;
-  }
-  vTrace(":\n"_Stz);
-
-
-  vTrace("  "_Stz);
-  for (i8 i_Op = 0; i_Op < nItems(); i_Op++) {
-    if (i_Op)
-      vTrace("| "_Stz);
-    pGet(i_Op)->vPrint();
-  }
-  vTrace("\n"_Stz);
-}
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

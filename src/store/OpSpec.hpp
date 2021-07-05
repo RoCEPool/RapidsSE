@@ -21,7 +21,6 @@ namespace STORE
     i8            m_i_OpSpec;      // which op in stage
   
     TagSet m_oArgTags;
-    TagSet m_oTopologyTags;
     
     ePX m_eCrossTopo;
     i8  m_i_NextStage;
@@ -65,12 +64,6 @@ namespace STORE
     eXK  eSendKind(void);
     void vSendKind(eXK eStageKind);
     StageSpec* pStageSpec(void);
-    void vTopoTagAdd(Stz* sName, i8 iValue, eTN eToken);
-    void vTopoTagReplace(Stz* szName, Stz* szValue, eTN eToken);
-    void vTopoTagReplace(Stz* sName, i8 iValue, eTN eToken);
-    TagSet* pTopoTags(void);
-
-    void vPrint(void);
   
     Footer* aFooter(void);
   };

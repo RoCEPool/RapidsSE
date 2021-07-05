@@ -65,8 +65,6 @@ namespace STORE
     Stz* szPipelineNm(void);
     StageSpec* pStageSpec(i8 i_Stage);
 
-    void vPrint(void);
-
     Footer* aFooter(void);
   
   

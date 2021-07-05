@@ -1517,16 +1517,6 @@ void Op::vToCmdStr(Stz* szCmdStr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the topology TagSet                                                    */
-/*----------------------------------------------------------------------------*/
-TagSet* Op::pTopologyTagSet(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  return m_pOpSpec->pTopoTags();
-}
-
-/*----------------------------------------------------------------------------*/
 /* set work quanta                                                            */
 /*----------------------------------------------------------------------------*/
 void Op::vWorkQuanta(i8 iWorkQuanta)

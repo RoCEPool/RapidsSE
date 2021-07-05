@@ -300,64 +300,6 @@ StageSpec* OpSpec::pStageSpec(void)
   return m_pStageSpec;
 }
 
-/*----------------------------------------------------------------------------*/
-/* add an ename pair to hidden ename set                                      */
-/*----------------------------------------------------------------------------*/
-void OpSpec::vTopoTagAdd(Stz* sName, i8 iValue, eTN eToken)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-  UNUSED(eToken);
-
-  m_oTopologyTags.vInsert(sName, iValue);
-}
-
-/*----------------------------------------------------------------------------*/
-/* replace an ename value                                                     */
-/*----------------------------------------------------------------------------*/
-void OpSpec::vTopoTagReplace(Stz* szName, Stz* szValue, eTN eToken)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-  UNUSED(eToken);
-
-  m_oArgTags.vReplace(szName, szValue);
-}
-
-/*----------------------------------------------------------------------------*/
-/* replace an ename value                                                     */
-/*----------------------------------------------------------------------------*/
-void OpSpec::vTopoTagReplace(Stz* szName, i8 iValue, eTN eToken)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-  UNUSED(eToken);
-
-  m_oTopologyTags.vReplace(szName, iValue);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the topology tag set                                                   */
-/*----------------------------------------------------------------------------*/
-TagSet* OpSpec::pTopoTags(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-  
-  return & m_oTopologyTags;
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* print stage spec                                                           */
-/*----------------------------------------------------------------------------*/
-void OpSpec::vPrint(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-  
-  vTrace("[%lld] %s "_Stz,m_i_OpSpec,m_sOpNm.szStz());
-    
-  m_oArgTags.vDumpSet();
-}
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
