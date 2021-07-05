@@ -33,10 +33,7 @@ namespace STORE
     i8   m_i_Node; // this op processes m_i_Node in grid
     
     // -- -- -- -- -- --
-  
-    TagSet         m_oOpTagSet;        // op tag set
-    TagSet         m_oTopologyTags;  // topology tag set
-    
+      
     bool           m_bPulsedLimit;   // is this a pulsed operand?
     i8             m_iWorkQuanta;    // quanta of work between pulses
     i8             m_iWorkDone;      // work done
