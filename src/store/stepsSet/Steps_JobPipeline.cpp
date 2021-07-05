@@ -70,6 +70,7 @@ void Step::vJob_PipelineBegin(void)
     if (iThisNode == 0) {
       SP_Pipeline spPipeline(pPipeline,true);
       vTrace("%s\n"_Stz,spPipeline.sz());
+      vDebugPoint();
     }
   }
     

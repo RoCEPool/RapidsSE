@@ -61,14 +61,18 @@ void SP_Op::vOp(Op* pOp, bool bDescend)
   Pipeline* pPipeline = pOp->pPipeline();
   OpSpec* pOpSpec = pOp->pOpSpec();
 
-  TagSet* pOpTopoTags = pOp->pTopologyTagSet();
+  //TagSet* pOpTopoTags = pOp->pTopologyTagSet();
   
   // get the next stage
-  i8 iNextStage = pOpTopoTags->iValue(C_TAG_NEXTSTAGE);
+  //i8 iNextStage = pOpTopoTags->iValue(C_TAG_NEXTSTAGE);
+  //RASSERT(iNextStage == pOp->iNextStage());
+  i8 iNextStage = pOp->iNextStage();
   Stage* pNextStage = pPipeline->pGet(iNextStage);
   
   // get the next op
-  i8 iNextOp = pOpTopoTags->iValue(C_TAG_NEXTOP);
+  //i8 iNextOp = pOpTopoTags->iValue(C_TAG_NEXTOP);
+  //RASSERT(iNextOp == pOp->iNextOp());
+  i8 iNextOp = pOp->iNextOp();
   Stream* pNextStream = pNextStage->pGet(0);
   Op* pNextOp = pNextStream->pGet(iNextOp);
 
