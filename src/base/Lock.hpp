@@ -13,12 +13,11 @@ namespace BASE
   {
   private:
     u8       m_uLockWord;         // lock word
-  
-    //ObjId<CN_LOCK> m_xLockId;
-  
     Object*  m_pObjectLocked;
+  
     Task*    m_pWriteLockingTask;
-
+    i8       m_i_LockSet;         // the lock set subscript
+  
     Atomic   m_ixReadGrabs;       // number of read grabs
     Atomic   m_ixReadCollisions;  // number of read collisions
     
@@ -66,7 +65,10 @@ namespace BASE
     bool bIsWriteLocked(void);
     i8   iWriteGrabs(void);
     i8   iWriteCollisions(void);
-    
+  
+    i8   iLockSet(void);
+    void vLockSet(i8 iLockSet);
+
   private:
     void vLockTrace(eLS eLockStyle);
     Footer* aFooter(void);

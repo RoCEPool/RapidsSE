@@ -55,7 +55,9 @@ Lock::Lock(Object* pObjectLocked)
     
   m_uLockWord = 0;
   m_pObjectLocked = pObjectLocked;
+  
   m_pWriteLockingTask  = nullptr;
+  m_i_LockSet = C_UNKNOWN;
   
   m_ixReadGrabs.vCheckInit();
   m_ixReadCollisions.vCheckInit();
@@ -547,6 +549,27 @@ i8 Lock::iWriteCollisions(void)
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
   return *m_ixWriteCollisions;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* get lock set subscript                                                     */
+/*----------------------------------------------------------------------------*/
+i8 Lock::iLockSet(void)
+{
+  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
+  
+  return m_i_LockSet;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set lock set subscript                                                     */
+/*----------------------------------------------------------------------------*/
+void Lock::vLockSet(i8 i_LockSet)
+{
+  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
+  
+  m_i_LockSet = i_LockSet;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -240,19 +240,42 @@ Stz* AM::JOB::szJobNm(Job* pJob)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
+/* lock is about to be unlocked                                               */
+/*----------------------------------------------------------------------------*/
+void AM::LOCK::vBeingUnlocked(Lock* pLock)
+{
+  _static_
+  
+  Task* pUnlockingTask = MY::pTask();
+  
+  if (! pUnlockingTask)
+    return;
+      
+  i8 i_LockSet = pLock->iLockSet();
+  
+  LockSet* pLockSet = pUnlockingTask->pLockSet();
+ 
+  pLockSet->vRemove(i_LockSet);
+  
+  pLock->vLockSet(C_UNKNOWN);
+}
+
+/*----------------------------------------------------------------------------*/
 /* lock has just been locked                                                  */
 /*----------------------------------------------------------------------------*/
 void AM::LOCK::vWasLocked(Lock* pLock)
 {
   _static_
-}
-
-/*----------------------------------------------------------------------------*/
-/* lock has just been unlocked                                                */
-/*----------------------------------------------------------------------------*/
-void AM::LOCK::vWasUnlocked(Lock* pLock)
-{
-  _static_
+  
+  Task* pLockingTask = MY::pTask();
+  
+  if (! pLockingTask)
+    return;
+      
+  LockSet* pLockSet = pLockingTask->pLockSet();
+  
+  i8 i_LockSet = pLockSet->iAdd(pLock);
+  pLock->vLockSet(i_LockSet);
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/

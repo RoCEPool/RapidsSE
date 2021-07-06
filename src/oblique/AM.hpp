@@ -240,8 +240,8 @@ namespace OBLIQUE
     class LOCK
     {
     public:
+      static void vBeingUnlocked(Lock* pLock);
       static void vWasLocked(Lock* pLock);
-      static void vWasUnlocked(Lock* pLock);
     };
   
     class LOG

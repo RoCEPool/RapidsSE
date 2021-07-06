@@ -124,6 +124,7 @@ namespace BASE
     Stz* szJobName(void);
     void vLocalsPop(void);
     void vLocalsPush(void);
+    LockSet* pLockSet(void);
     bool bLogMemory(void);
     void vLogMemory(bool bLogMemory);
     void vMutexLock(void);
