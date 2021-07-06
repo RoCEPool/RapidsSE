@@ -95,7 +95,6 @@ namespace STORE
     i8   iNextStage(void);
     Stage* pNextStage(void);
     i8   iNode(void);
-    void vNode(i8 iNode);
     Word* pOperandHandler(i8 i_OperandKind);
     void vOperandHandler(i8 i_OperandKind, Word* pHandler);
     i8   iOp(void);
@@ -108,8 +107,7 @@ namespace STORE
     i8   iOtherStage(void);
     Operand* pOutboundOperand(void);
     void vOutboundOperand(Operand* pOutboundOperand);
-    void vPtnNo(tPN tPtnNo);
-    tPN  tPtnNo(void);
+
     bool bPause(void);
     bool bPeekLeft(void);
     bool bPeekOoO(void);
@@ -117,10 +115,11 @@ namespace STORE
     Job* pPipelineJob(void);
     void vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask);
     void vPipeToOutput(Operand* pOperand);
-    Operand* pPopLeft(void);
     Operand* pPopOoO(void);
     Operand* pPopOoOLeft(void);
     Operand* pPopRight(void);
+    tPN  tPtnNo(void);
+    Operand* pPopLeft(void);
     bool bPulsedLimit(void);
     void vPulsedLimit(bool bPulsedLimit);
     i8   nQueuedOperands(void);

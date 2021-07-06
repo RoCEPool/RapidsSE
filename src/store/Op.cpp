@@ -62,8 +62,8 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
 
   if (m_pStage->pStageSpec()->bNodeTopo()) {
     m_tPtnNo = C_UNKNOWN;
-    RASSERT(pStream->tPtnNo() == m_tPtnNo);
     m_i_Node = pStream->i_Node();
+    RASSERT(pStream->tPtnNo() == m_tPtnNo);
   }
   else {
     m_tPtnNo = pStream->tPtnNo();
@@ -850,16 +850,6 @@ i8 Op::iNode(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set node                                                                   */
-/*----------------------------------------------------------------------------*/
-void Op::vNode(i8 iNode)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  m_i_Node = iNode;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get m_i_Op                                                                 */
 /*----------------------------------------------------------------------------*/
 i8 Op::iOp(void)
@@ -987,29 +977,6 @@ void Op::vOutboundOperand(Operand* pOutboundOperand)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   m_pOutboundOperand = pOutboundOperand;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set partition in op                                                        */
-/*----------------------------------------------------------------------------*/
-void Op::vPtnNo(tPN tPtnNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  m_tPtnNo = tPtnNo;
-
-  // set the node tis partition belongs to 
-  m_i_Node = AM::pPtnMap()->i_WhichNode(m_tPtnNo);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get partition from op                                                      */
-/*----------------------------------------------------------------------------*/
-tPN Op::tPtnNo(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  return m_tPtnNo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1266,6 +1233,16 @@ Operand* Op::pPopRight(void)
   }
   
   return pOperand;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get partition from op                                                      */
+/*----------------------------------------------------------------------------*/
+tPN Op::tPtnNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  return m_tPtnNo;
 }
 
 /*----------------------------------------------------------------------------*/
