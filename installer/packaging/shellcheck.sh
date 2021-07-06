@@ -17,5 +17,6 @@ FILES+=("../../bootstrap/stopSE.sh")
 FILES+=("../../bootstrap/prompt.sh")
 FILES+=("../../bootstrap/generateData.sh")
 FILES+=("../../bootstrap/collectLogs.sh")
+FILES+=("../../bootstrap/addNode.sh")
 
 shellcheck -s bash -P ../../bootstrap "${FILES[@]}"

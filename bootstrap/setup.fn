@@ -1,5 +1,6 @@
 #!/bin/bash
-# This file contains function definitions that are imported and used by setup.sh.
+# This file contains function definitions that are imported and used
+# by setup.sh and addNode.sh.
 
 # Guard against this file being executed directly.
 if [ "${BASH_SOURCE[0]}" -ef "$0" ]
@@ -30,17 +31,41 @@ do
 done
 
 
+###############################################################################
+### Constants                                                               ###
+###############################################################################
+
+readonly DEFAULT_CONFIG_PATH="cluster.config"
+readonly NODE_NAME_FILE="node.name"
+
+# Default values
+readonly NODE_CFG_DEFAULT_NAME_PREFIX="NODE"
+readonly NODE_CFG_DEFAULT_PORT="5541"       # TCP
+readonly NODE_CFG_DEFAULT_HEARTBEAT="8888"  # UDP
+readonly NODE_CFG_DEFAULT_DIR="/opt/rapidsse"
+         NODE_CFG_DEFAULT_PARTITIONS="8"  # per node. Non-const.
+         NODE_CFG_DEFAULT_THREADS="16"    # per node. Non-const.
+         NODE_CFG_DEFAULT_MEM="60"        # in GB, per node. Non-const.
+readonly NODE_CFG_DEFAULT_PARAMS=""
+
+readonly MINIMUM_RAM_SIZE="4"
+readonly MINIMUM_SHM_SIZE="3"
+readonly MINIMUM_NUM_THREADS="8"
+readonly MAXIMUM_NUM_PARTITIONS="32" # for now
+
+readonly RESOURCE_DIR="res"
+
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Prints the acceptable arguments to the script and then exits.
 ## Params: None
 
-function printUsageAndExit() {
+function printSetupUsageAndExit() {
   echo ""
   echo "Usage: ./<install_file>.run [--node | --cluster]"
   echo "                            [--interactive | --script]"
   echo "                            [--config <file>]"
-  echo "                            [--basic | --adv/--advanced]"
+  echo "                            [--basic | --adv | --advanced]"
   echo "                            [--debug]"
   echo "Details:"
   echo "  --cluster       [Default] Installs RapidsSE on a cluster."
@@ -79,9 +104,9 @@ function printUsageAndExit() {
 ## the appropriate global variables
 ## Params: the arguments to the script
 
-function processArgs() {
+function processSetupArgs() {
 
-  # Local variables that have value 1 if that argument has been specified.
+  # Local variables have value 1 if that argument has been specified.
   local argCluster=0
   local argNode=0
   local argInteractive=0
@@ -180,12 +205,12 @@ function processArgs() {
 
       --help|-h)
         shift
-        printUsageAndExit
+        printSetupUsageAndExit
         ;;
 
       *)
         shift
-        printUsageAndExit
+        printSetupUsageAndExit
         ;;
     esac
   done
@@ -213,62 +238,62 @@ function processArgs() {
 
   if [[ ${argCluster} -eq 1  && ${argNode} -eq 1 ]]; then 
     printError "${errmsg}" "--cluster" "--node"
-    printUsageAndExit
+    printSetupUsageAndExit
   fi
 
   if [[ ${argNode} -eq 1     && ${INTERACTIVE_INSTALL} -eq 1 ]]; then 
     printError "${errmsg}" "--node" "--interactive"
-    printUsageAndExit
+    printSetupUsageAndExit
   fi
 
   if [[ ${argInteractive} -eq 1 && ${argScript} -eq 1 ]]; then 
     printError "${errmsg}" "--interactive" "--script"
-    printUsageAndExit
+    printSetupUsageAndExit
   fi
 
   if [[ ${argBasic} -eq 1    && ${INTERACTIVE_INSTALL} -eq 0 ]]; then 
     printError "${errmsg}" "--basic" "--script" 
-    printUsageAndExit
+    printSetupUsageAndExit
   fi
 
   if [[ ${argAdvanced} -eq 1 && ${INTERACTIVE_INSTALL} -eq 0 ]]; then 
     printError "${errmsg}" "--advanced" "--script"
-    printUsageAndExit
+    printSetupUsageAndExit
   fi
 
   if [[ ${argBasic} -eq 1    && ${CLUSTER_INSTALL} -eq 0 ]]; then 
     printError "${errmsg}" "--basic" "--node"
-    printUsageAndExit
+    printSetupUsageAndExit
   fi
 
   if [[ ${argAdvanced} -eq 1 && ${CLUSTER_INSTALL} -eq 0 ]]; then 
     printError "${errmsg}" "--advanced" "--node" 
-    printUsageAndExit
+    printSetupUsageAndExit
   fi
 
   if [[ ${argConfig} -eq 1 && -z "${CONFIG_FILE}" ]]; then 
     printError "${errmsg}" "No config file specified" 
-    printUsageAndExit
+    printSetupUsageAndExit
   fi
 
   if [[ ${argConfig} -eq 1 && ! -f "${CONFIG_FILE}" ]]; then 
     printError "Config file does not exist: ${CONFIG_FILE}"
-    printUsageAndExit 
+    printSetupUsageAndExit
   fi
 
   if [[ ${argInstaller} -eq 1 && -z "${INSTALL_FILE}" ]]; then 
     printError "${errmsg}" "No installation *.run file specified" 
-    printUsageAndExit
+    printSetupUsageAndExit
   fi
 
   if [[ ${argInstaller} -eq 1 && ! -f "${INSTALL_FILE}" ]]; then 
     printError "Installation *.run file does not exist: ${INSTALL_FILE}"
-    printUsageAndExit 
+    printSetupUsageAndExit
   fi
 
   if [[ ${argName} -eq 1 && ${CLUSTER_INSTALL} -eq 1 ]]; then 
     printError "${errmsg}" "--name" "--cluster" 
-    printUsageAndExit
+    printSetupUsageAndExit
   fi
 
 
@@ -280,17 +305,17 @@ function processArgs() {
 
   if [[ ${argNode} -eq 1 && ${argConfig} -eq 0  ]]; then 
     printError "Missing argument dependency: argument --node must also specify argument --config"
-    printUsageAndExit
+    printSetupUsageAndExit
   fi
 
   if [[ ${argNode} -eq 1 && ${argName} -eq 0 ]]; then
     printError "Missing argument dependency: argument --node must also specify argument --name"
-    printUsageAndExit 
+    printSetupUsageAndExit
   fi
 
   if [[ ${argScript} -eq 1 && ${argConfig} -eq 0  ]]; then 
     printError "Missing argument dependency: argument --script must also specify argument --config"
-    printUsageAndExit
+    printSetupUsageAndExit
   fi
 
 }
@@ -336,6 +361,31 @@ function findInstallFile() {
       INSTALL_FILE="${runfiles[0]}"
       return
     fi
+  fi
+
+  # If we are running from an installation directory then there should be a run
+  # file in the res directory.
+  if [ -d "${DIR:+${DIR}/}${RESOURCE_DIR}" ] && [ -f "${DIR:+${DIR}/}${VERSION_FILE}" ]; then
+    local -a runfiles=()
+    readarray -t runfiles < <(ls -1 "${RESOURCE_DIR}/*.run")
+
+    # Get the current installed version
+    local currentVer
+
+    #shellcheck source=common.fn
+    currentVer="$(source "${DIR:+${DIR}/}${VERSION_FILE}" && echo "${SE_VERSION_STR}")"
+
+    # Check that the version of each installer file matches that of the current installation
+    for runfile in "${runfiles[@]}"; do
+      local runfileBody
+      runfileBody="${runfile%%.run}"  # remove the ".run" trailing part of the string
+
+      # The runfileBody should now end with the same version from VERSION_FILE
+      if [ "${runfileBody: -${#currentVer}}" = "${currentVer}" ]; then
+        INSTALL_FILE="${runfile}"
+        return
+      fi
+    done
   fi
 
   errorExit "Could not find the installation *.run file for the purpose of copying to and installing on other nodes. Try specifying the location of this file with the --installer argument."
@@ -1307,7 +1357,17 @@ function distributeSoftware() {
     remoteConfig="/tmp/$(basename "${configFile}")"
 
     # Build the command to execute
-    local cmd=( "ssh" "-q" "${hostname}" "${remoteInstaller}" "--" "--node" "--config" "${remoteConfig}" "--name" "${nodeName}" "--installer" "${remoteInstaller}" )
+    local cmd=( "ssh"
+                "-q" "${hostname}"
+                "${remoteInstaller}"
+                "--"
+                "--node"
+                "--config"
+                "${remoteConfig}"
+                "--name"
+                "${nodeName}"
+                "--installer"
+                "${remoteInstaller}" )
 
     if [ ${DEBUG} -eq 1 ]; then 
       cmd+=("--debug")
@@ -1444,6 +1504,9 @@ function doNodeInstall() {
   # Create a node name file in the installation directory.
   echo "CURRENT_NODE_NAME=\"${CURRENT_NODE_NAME}\"" > "${installDir}/${NODE_NAME_FILE}" || errorExit "Could not create the node name file in the installation directory on node ${CURRENT_NODE_NAME} [host: ${hostname}]: ${installDir}"
 
+  # Copy the installer to the installation directory
+  debugPrint "About to copy the installer run file to <installation_directory>/res."
+  cp "${INSTALL_FILE}" "${installDir}/res" || errorExit "Could not copy the installer run file to the installation directory on node ${CURRENT_NODE_NAME} [host: ${hostname}]: ${installDir}"
 }
 
 

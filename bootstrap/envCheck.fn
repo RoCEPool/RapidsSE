@@ -758,7 +758,6 @@ function validateBash() {
 
 function validateLocalBash() {
   local output
-set -x
   debugPrint "Validating local bash version"
 
   output="${BASH_VERSINFO[0]}.${BASH_VERSINFO[1]}.${BASH_VERSINFO[2]}"
@@ -775,7 +774,6 @@ set -x
   fi
 
   debugPrint "Bash version has been validated (${output} >= ${BASH_MINIMUM_VERSION})"
-set +x
 }
 
 
