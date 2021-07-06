@@ -42,8 +42,6 @@ namespace STORE
     OperandQueue*  m_pQueueRight;    // right input queue
     OperandQueue*  m_pQueueOoO;      // out-of-order queue
 
-    i8             m_iOtherStage;    // other stage in the cross topology
-    i8             m_iOtherOp;       // next Op in the other stage
     i8             m_iSendNode;      // send node (for send)
     eXK            m_eSendKind;      // send kind
     i8             m_iRobin;         // send Round Robin partition/node/thread

@@ -81,8 +81,6 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   m_pQueueRight   = new OperandQueue;
   m_pQueueOoO     = new OperandQueue;
 
-  m_iOtherStage = C_UNKNOWN;
-  m_iOtherOp    = C_UNKNOWN;
   m_iSendNode   = C_UNKNOWN;
   m_eSendKind   = XK_NONE;
   m_iRobin      = 0;
@@ -149,8 +147,6 @@ Op::Op(Stz* szOpNm)
   m_pQueueRight   = new OperandQueue;
   m_pQueueOoO     = new OperandQueue;
 
-  m_iOtherStage = C_UNKNOWN;
-  m_iOtherOp    = C_UNKNOWN;
   m_iSendNode   = C_UNKNOWN;
   m_eSendKind   = XK_NONE;
   m_iRobin      = 0;
@@ -956,8 +952,9 @@ i8 Op::iOtherOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
-  RASSERT(m_iOtherOp == m_pOpSpec->iOtherOp());
-  return m_iOtherOp;
+  i8 i_OtherOp = m_pOpSpec->iOtherOp();
+  
+  return i_OtherOp;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -967,8 +964,9 @@ i8 Op::iOtherStage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
-  RASSERT(m_iOtherStage == m_pOpSpec->iOtherStage());
-  return m_iOtherStage;
+  i8 i_OtherStage = m_pOpSpec->iOtherStage();
+  
+  return i_OtherStage;
 }
 
 /*----------------------------------------------------------------------------*/
