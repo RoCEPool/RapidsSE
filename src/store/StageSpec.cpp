@@ -25,7 +25,6 @@ StageSpec::StageSpec(i8 i_StageSpec,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
-  m_sPipelineNm    = pPipelineSpec->szPipelineNm();
   m_sStageNm       = szStageNm;
   
   m_i_StageSpec    = i_StageSpec;

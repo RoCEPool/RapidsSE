@@ -13,7 +13,6 @@ namespace STORE
   class StageSpec : public VectorNL_t<CN_STAGESPEC,OpSpec,C_MAX_OPS>
   {
   private:
-    s32  m_sPipelineNm; // pipeline name
     s32  m_sStageNm;    // stage name
     i8   m_i_StageSpec; // this stage spec no
 
