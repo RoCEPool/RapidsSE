@@ -1057,8 +1057,8 @@ GraphNav::eWalkCtrl Backend::vVisitorPlan(PlanNode* pRootNode, s256& sPath, i8 i
   // bottom-up, depth-first traversal.
   // Starting on a StageMarker will walk until the subsequent StageMarker
   // node is encountered.
-  if ( ! pHasUnionOp) {
-    GraphNav::bGlobalWalkBottomUp(pStageMarker, false, true, vVisitorPlan2, (void *) pBackend);
+  if ( ! pHasUnionOp ) {
+    GraphNav::bGlobalWalkBottomUp(pStageMarker, false, true, vVisitorStage, (void *) pBackend);
     pBackend->vAppendNextOp("stageLast"_Stz);
     return GraphNav::WALK_ABORT;
   }
@@ -1068,9 +1068,9 @@ GraphNav::eWalkCtrl Backend::vVisitorPlan(PlanNode* pRootNode, s256& sPath, i8 i
 }
 
 /*----------------------------------------------------------------------------*/
-/* visitor function for the plan graph walk                                   */
+/* visitor function for the stage                                             */
 /*----------------------------------------------------------------------------*/
-GraphNav::eWalkCtrl Backend::vVisitorPlan2(PlanNode* pRootNode, s256& sPath, i8 iDepth, void* pvArg)
+GraphNav::eWalkCtrl Backend::vVisitorStage(PlanNode* pRootNode, s256& sPath, i8 iDepth, void* pvArg)
 {
   _static_
 
@@ -1094,7 +1094,6 @@ GraphNav::eWalkCtrl Backend::vVisitorPlan2(PlanNode* pRootNode, s256& sPath, i8 
     pBackend->m_bHasUnionOp = false;
   }
   else {
-    vTrace("APPENDING %s\n"_Stz, pStageMarker->szName());
     pBackend->vAppendNextOp(pStageMarker->szName());
   }
 

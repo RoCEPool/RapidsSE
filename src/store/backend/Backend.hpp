@@ -58,7 +58,7 @@ namespace STORE
                                                     GraphNav::eWalkEvent eEventType, void* pvArg);
     static Parser::GraphNav::eWalkCtrl vVisitorPlan(PlanNode* pNode,
                                                     s256& sPath, i8 iDepth, void* pvArg);
-    static Parser::GraphNav::eWalkCtrl vVisitorPlan2(PlanNode* pNode,
+    static Parser::GraphNav::eWalkCtrl vVisitorStage(PlanNode* pNode,
                                                     s256& sPath, i8 iDepth, void* pvArg);
     static Parser::GraphNav::eWalkCtrl vVisitorStatement(PlanNode* pNode,
                                                     s256& sPath, i8 iDepth, void* pvArg);
