@@ -17,6 +17,8 @@ namespace BASE
   static const i8 C_TRACE_STEPS    = 0x1;
   static const i8 C_TRACE_ROUTINES = 0x2;
   
+  typedef LatticeNL_t<CN_LOCKSET,Lock,C_MAX_LOCKS> LockSet;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   class Task : public Object,
@@ -52,11 +54,8 @@ namespace BASE
   
     Profile*     m_pProfile;     // runtime profile
   
+    LockSet      m_oLockSet;     // locks currently held by this task/op
   
-  
-    // -- from Forth --
-    //LogicUnit*   m_pLogicUnit;      // associated register set
-
   public:
     Word* m_pSeedWord;      // seed
     Word* m_pExceptionWord; // seed

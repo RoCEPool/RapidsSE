@@ -13,6 +13,7 @@ static const i8 C_MAX_IDXCOLVEC     = 16;
 static const i8 C_MAX_INDEXES       = 16;     // max indexes per table
 static const i8 C_MAX_INDEX_COLUMNS = 16;
 static const i8 C_MAX_KEY           = 256;    // max length of index entry key
+static const i8 C_MAX_LOCKS         = 8;      // max locks a task can hold
 static const i8 C_MAX_LOG_ENTRIES   = C_256K * 1;
 static const i8 C_MAX_LOG_NOTE      = C_1K;
 static const i8 C_MAX_LVL_LEVELS    = 6;

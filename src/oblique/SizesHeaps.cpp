@@ -320,6 +320,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Location),           HT_T_TINY    ,0 }, // CN_LOCATION
   { sizeof(Locator),            HT_T_TINY    ,0 }, // CN_LOCATOR
   { sizeof(Lock),               HT_INVALID   ,0 }, // CN_LOCK
+  { 0,                          HT_INVALID   ,0 }, // CN_LOCKSET
   { sizeof(LogicCompiler),      HT_T_LARGE   ,0 }, // CN_LOGICCOMPILER
   { sizeof(LogicTimer),         HT_T_LARGE   ,0 }, // CN_LOGICTIMER
   { sizeof(LogicUnit),          HT_T_MEDIUM  ,0 }, // CN_LOGICUNIT
