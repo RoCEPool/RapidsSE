@@ -1001,8 +1001,6 @@ public:
   void vOpFindOp(void);
 
   void vOpOpNameFetch(void);
-  void vOpOtherOpStore(void);
-  void vOpOtherStageStore(void);
   void vOpPartitionFetch(void);
   void vOpPiplineJobFetch(void);
   void vOpPipeOut(void);

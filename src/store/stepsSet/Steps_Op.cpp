@@ -27,8 +27,6 @@ void Step::vAddSteps_Op(void)
   vAddStep("Op.downstreamOp!"_Stz,    &Step::vOpDownstreamOpStore);
   vAddStep("Op.findOp"_Stz,           &Step::vOpFindOp);
   vAddStep("Op.opName@"_Stz,          &Step::vOpOpNameFetch);
-  vAddStep("Op.otherStage!"_Stz,      &Step::vOpOtherStageStore);
-  vAddStep("Op.otherOp!"_Stz,         &Step::vOpOtherOpStore);
   vAddStep("Op.outboundOperand@"_Stz, &Step::vOpOutboundOperandFetch);
   vAddStep("Op.outboundOperand!"_Stz, &Step::vOpOutboundOperandStore);
   vAddStep("Op.partition@"_Stz,       &Step::vOpPartitionFetch);
@@ -104,30 +102,6 @@ void Step::vOpOpNameFetch(void)
   
   m_pDataStack->vPushStr(sOpName);
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Op.otherOp! -- store other op in the operator                              */
-/*----------------------------------------------------------------------------*/
-void Step::vOpOtherOpStore(void)
-{
-  ENTRY();
-
-  m_pJob->m_pOp->vOtherOp(m_pDataStack->iPopInt(__func__));
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Op.otherStage! -- store next stage in the operator                         */
-/*----------------------------------------------------------------------------*/
-void Step::vOpOtherStageStore(void)
-{
-  ENTRY();
-
-  m_pJob->m_pOp->vOtherStage(m_pDataStack->iPopInt(__func__));
-
   EXIT();
 }
 
