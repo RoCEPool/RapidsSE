@@ -28,10 +28,8 @@ OpSpec::OpSpec(Stz* szOpNm, i8 i_OpSpec, StageSpec* pStageSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  m_sStageNm      = pStageSpec->szStageNm();
   m_sOpNm         = szOpNm;
     
-  m_pPipelineSpec = pStageSpec->pPipelineSpec();
   m_pStageSpec    = pStageSpec;
   m_i_OpSpec      = i_OpSpec;
 

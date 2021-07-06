@@ -14,10 +14,10 @@ namespace STORE
   {
   private:
     s32  m_sStageNm;    // stage name
-    i8   m_i_StageSpec; // this stage spec no
 
     PipelineSpec* m_pPipelineSpec; // which pipeline spec
-    
+    i8   m_i_StageSpec; // this stage spec no
+
     ePO  m_eTopology;      // stage topoplogy
     bool m_bNodeTopo;      // is node-level topology (or partition)?
     i8   m_i_SpecificNode; // run on specific node
