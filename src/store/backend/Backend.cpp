@@ -584,6 +584,7 @@ void Backend::vAppendUnionOp(Backend* pBackend, QueryNode* pUnionNode)
 
   // check for a stagemarker
   PlanNode* pLeafStageMarker = nullptr;
+
   auto fLeafStageMarker = [&pLeafStageMarker](PlanNode* pNode, s256& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl  {
     if (StageMarker::bIsExactType(pNode)) {
       pLeafStageMarker = pNode;
@@ -592,27 +593,40 @@ void Backend::vAppendUnionOp(Backend* pBackend, QueryNode* pUnionNode)
     return GraphNav::WALK_CONTINUE;
   };
 
+  String* sPipeline = pBackend->m_sPipeline;
+
   // add child op's
+
   GraphNav::bGlobalWalkBottomUp(pChildStageMarker1, false, true, fLeafStageMarker, (void *) pBackend);
   RASSERT(pLeafStageMarker);
-  pBackend->vAppendNextOp(pLeafStageMarker->szName());
+
+  // check for a unionOp
+  auto fHasUnionOp = [](PlanNode* pNode, void* pvArg) -> b1 {
+    return UnionOp::bIsExactType(pNode);
+  };
+
+  // check for a unionOp
+  PlanNode *pHasUnionOp = GraphNav::pBoundedSearch(pChildStageMarker1, false, true, fHasUnionOp, nullptr);
+
+  if ( ! pHasUnionOp )
+    pBackend->vAppendNextOp(pLeafStageMarker->szName());
 
   // add child op's
   GraphNav::bGlobalWalkBottomUp(pChildStageMarker2, false, true, fLeafStageMarker, (void *) pBackend);
   RASSERT(pLeafStageMarker);
+
   pBackend->vAppendNextOp(pLeafStageMarker->szName());
+
   pBackend->m_bNewStage = false;
-
-  // bounded walk of each of first children
-  //GraphNav::bGlobalWalk(pChildStageMarker1, false, true, vVisitorPlan, (void *) pBackend);
-  GraphNav::bGlobalWalkBottomUp(pChildStageMarker1, false, true, vVisitorPlan2, (void *) pBackend);
-  pBackend->vAppendNextOp("stageLast"_Stz);
-
-  // bounded walk of each of first children
-  //GraphNav::bGlobalWalk(pChildStageMarker2, false, true, vVisitorPlan, (void *) pBackend);
   pBackend->m_bHasUnionOp = true;
-  GraphNav::bGlobalWalkBottomUp(pChildStageMarker2, false, true, vVisitorPlan2, (void *) pBackend);
-  pBackend->vAppendNextOp("stageLast"_Stz);
+
+  // bounded walk of first children
+  GraphNav::bGlobalWalk(pChildStageMarker1, false, true, vVisitorPlan, (void *) pBackend);
+
+  pBackend->m_bHasUnionOp = true;
+
+  // bounded walk of first children
+  GraphNav::bGlobalWalk(pChildStageMarker2, false, true, vVisitorPlan, (void *) pBackend);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1080,6 +1094,7 @@ GraphNav::eWalkCtrl Backend::vVisitorPlan2(PlanNode* pRootNode, s256& sPath, i8 
     pBackend->m_bHasUnionOp = false;
   }
   else {
+    vTrace("APPENDING %s\n"_Stz, pStageMarker->szName());
     pBackend->vAppendNextOp(pStageMarker->szName());
   }
 
