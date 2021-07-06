@@ -33,7 +33,7 @@ __aFooterFunction(PipelineSpec)
 PipelineSpec::PipelineSpec(i8            i_PipelineSpec,
                            Stz*          szPipelineNm,
                            PipelineSpec* p_ParentPipelineSpec,
-                           Dynamo*       p_Dynamo,
+                           TagSet*       p_JobTags,
                            Scanner*      p_Scanner)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
@@ -45,8 +45,8 @@ PipelineSpec::PipelineSpec(i8            i_PipelineSpec,
   
   // m_oNestedPipeline
   
-  m_p_Dynamo  = p_Dynamo;
   m_p_Scanner = p_Scanner;
+  m_p_JobTags = p_JobTags;
 
   _checkInitialised_(CN_PIPELINESPEC);
   
@@ -72,8 +72,6 @@ PipelineSpec::~PipelineSpec(void) noexcept(false)
 bool PipelineSpec::bCompile(PipelineSpec* p_ParentPipelineSpec,
                             TagSet*       p_JobTags,
                             Scanner*      p_Scanner,
-                            Dynamo*       p_Dynamo,
-                            
                             PipelineSpec*& rp_PipelineSpec)
 {
   _static_
@@ -89,7 +87,7 @@ bool PipelineSpec::bCompile(PipelineSpec* p_ParentPipelineSpec,
     new PipelineSpec(0,
                      szPipelineNm,
                      p_ParentPipelineSpec,
-                     p_Dynamo,
+                     p_JobTags,
                      p_Scanner);
   p_Scanner->vTokenAccept();
   
@@ -303,10 +301,8 @@ bool PipelineSpec::bCollectTag(void)
     vTrace("Tag recognised: %s %s\n"_Stz,sTagNm.szStz(),sTagValue.szStz());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  TagSet* pJobTags = m_p_Dynamo->m_p_PipelineJob->pJobTags();
-  
-  pJobTags->vInsert(sTagNm,sTagValue);
+    
+  m_p_JobTags->vInsert(sTagNm,sTagValue);
   
   return true;
 }
@@ -522,10 +518,8 @@ bool PipelineSpec::bCollectPipeline(void)
   PipelineSpec* p_PipelineSpecNested;
   
   if (!  PipelineSpec::bCompile(this,
-                                nullptr,
+                                m_p_JobTags,
                                 m_p_Scanner,
-                                m_p_Dynamo,
-                                
                                 p_PipelineSpecNested))
     return false;
 

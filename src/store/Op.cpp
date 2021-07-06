@@ -1330,7 +1330,8 @@ eXK Op::eSendKind(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_eSendKind;
+  eXK eSendKind = m_pOpSpec->eSendKind();
+  return eSendKind;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1340,6 +1341,7 @@ void Op::vSendKind(eXK eSendKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
+  RASSERT(eSendKind == m_pOpSpec->eSendKind());
   m_eSendKind = eSendKind;
 }
 

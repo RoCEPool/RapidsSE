@@ -33,6 +33,8 @@
 #include "PipelineSpec.hpp"
 
 #include "eLH.h"
+#include "eXK.h"
+
 
 namespace STORE { class IndexStream; class Node; class Node_I;
                   class PathIdentifier;  class RowOnce;}
@@ -246,6 +248,10 @@ namespace STORE
     i8 m_iNextCond;
   
     bool m_bSuperFrag;
+    
+    
+    eXK  m_eSendKind;      // send kind
+
   
     // must be last
     Footer m_xFooter;

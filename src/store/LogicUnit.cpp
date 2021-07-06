@@ -189,6 +189,8 @@ LogicUnit::LogicUnit(Task* pTask)
   // m_ixRowsSkipped;
   m_eErrorCode = EC_NONE;
   
+  m_eSendKind = XK_NONE;
+  
   _checkInitialised_(CN_LOGICUNIT);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);

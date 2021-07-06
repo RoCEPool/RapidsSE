@@ -13,7 +13,7 @@ namespace STORE
     friend class STORE::Dynamo;
 
   private:
-    s32  m_sPipelineNm; // pipeline name
+    s32  m_sPipelineNm;    // pipeline name
     i8   m_i_PipelineSpec; // this pipeline spec no
 
     PipelineSpec* m_p_ParentPipelineSpec;
@@ -22,16 +22,10 @@ namespace STORE
     VectorNL_t<CN_NESTEDPIPELINESPEC,PipelineSpec,C_MAX_NESTED_PIPELINES>
       m_oNestedPipelineSpecs;
   
-  
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-    Dynamo*  m_p_Dynamo; // the dynamo compiler
-    Scanner* m_p_Scanner;       // statement token scanner
-
-  
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  
+    TagSet*  m_p_JobTags; // job tag set
+    Scanner* m_p_Scanner; // statement token scanner
 
     // must be last
     Footer m_xFooter;
@@ -43,15 +37,13 @@ namespace STORE
     PipelineSpec(i8            i_PipelineSpec,
                  Stz*          szPipelineNm,
                  PipelineSpec* p_ParentPipelineSpec,
-                 Dynamo*       p_Dynamo,
+                 TagSet*       p_JobTags,
                  Scanner*      p_Scanner);
    ~PipelineSpec(void) noexcept(false);
   
     static bool bCompile(PipelineSpec* p_ParentPipelineSpec,
                          TagSet*       p_JobTags,
                          Scanner*      p_Scanner,
-                         Dynamo*       p_Dynamo,
-                         
                          PipelineSpec*& rp_PipelineSpec);
   
     void vAddStageSpec(StageSpec* pStageSpec);

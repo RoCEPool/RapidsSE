@@ -22,8 +22,6 @@ namespace STORE
     s32  m_sOpNm;       // name of this operator
     i8   m_i_Op;        // [op] in stream
   
-    bool m_bTraceOp;    // tracing this operator
-
     OpSpec*   m_pOpSpec;   // specification of this operator
     Stream*   m_pStream;   // which stream of stage of pipleine
     Stage*    m_pStage;    // which stage of pipeline
@@ -31,9 +29,13 @@ namespace STORE
   
     i8   m_tPtnNo; // this op processes m_tPtnNo in grid
     i8   m_i_Node; // this op processes m_i_Node in grid
-    
-    // -- -- -- -- -- --
-      
+  
+  
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // working variables. these are not copies of variables from opSpec
+  
+    bool m_bTraceOp;    // tracing this operator
+
     bool           m_bPulsedLimit;   // is this a pulsed operand?
     i8             m_iWorkQuanta;    // quanta of work between pulses
     i8             m_iWorkDone;      // work done
