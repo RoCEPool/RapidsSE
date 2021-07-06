@@ -10,7 +10,7 @@ namespace BASE
   {
   private:
     u8     m_nItems;           // number of items currently in the vector
-    ITEM*  m_pItem[MAX_ITEMS]; // vector of items (proper objects)
+    ITEM*  m_pItem[MAX_ITEMS]; // array of items (proper objects)
   
     // must be last
     Footer m_xFooter;
@@ -21,22 +21,24 @@ namespace BASE
     void  operator delete(void*);
 
     VectorNL_t(void);
-    ~VectorNL_t(void) noexcept(false);
+   ~VectorNL_t(void) noexcept(false);
 
     //ITEM*& operator [](u8 i_Item);
 
-    void  vAdd(ITEM* pObject);
+    void  vAdd(ITEM* pItem);
     void  vClear(void);
-    bool  bContains(ITEM* pObject);
+    bool  bContains(ITEM* pItem);
     void  vDecItems(void);
     void  vIncItems(void);
-    void  vInsert(ITEM* pObject);
+    void  vInsert(ITEM* pItem);
     i8    nItems(void);
     void  vItems(i8 nItems);
     ITEM* pGet(u8 i_Item, bool bDisableBounds=false);
-    void  vRemove(ITEM* pObject);
-    void  vSet(u8 i_Item, ITEM* pObject);
+    void  vRemove(ITEM* pItem);
+    void  vSet(u8 i_Item, ITEM* pItem);
 
+  private:
+  
     Footer* aFooter(void);
   };
   
@@ -44,7 +46,6 @@ namespace BASE
   VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>* _pVector_NL(void* aAddr);
 }
 
-////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
