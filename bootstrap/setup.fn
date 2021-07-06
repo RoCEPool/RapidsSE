@@ -479,6 +479,9 @@ function createConfiguration() {
 
   # (advanced) additional parameters
   askParams
+
+  # Set cluster ID
+  setClusterId
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1096,6 +1099,24 @@ function askParams() {
   allNodeCfgsSetValue "${NODE_CFG_PARAMS_KEY}" "${line}"
 }
 
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Generates a new random cluster ID and sets it for all nodes.
+## The ID generated is a random number in the range [0, 32767].
+## It could be larger, but we're using $RANDOM here and that's what
+## it supports.
+## Params: None
+
+function setClusterId() {
+
+  # Refer to: https://tldp.org/LDP/abs/html/randomvar.html
+
+  local clusterId
+  clusterId="${RANDOM}"
+
+  # Set the value for all nodes
+  allNodeCfgsSetValue "${NODE_CFG_CLUSTERID_KEY}" "${clusterId}"
+}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Asks the user to confirm that they wish to proceed with the installation.

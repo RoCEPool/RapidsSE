@@ -303,6 +303,7 @@ function startCurrentNode() {
   local partitions
   local threads
   local mem
+  local clusterId
   local params
 
   host="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_HOST_KEY}")"
@@ -312,6 +313,7 @@ function startCurrentNode() {
   partitions="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_PARTITIONS_KEY}")"
   threads="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_THREADS_KEY}")"
   mem="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_MEM_KEY}")"
+  clusterId="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_CLUSTERID_KEY}")"
   params="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_PARAMS_KEY}")"
 
   # params above is a string. Let's turn it into an array based on spaces.
@@ -339,6 +341,9 @@ function startCurrentNode() {
   startCmd+=("--metadata")
   startCmd+=("--commands")
   startCmd+=("${ROOT_DIR}/commands")
+  # TODO: Enable when supported
+#  startCmd+=("--cid")
+#  startCmd+=("${clusterId}")
   startCmd+=("--heartbeat")
   startCmd+=("BROADCAST")
   startCmd+=("${heartbeat}")

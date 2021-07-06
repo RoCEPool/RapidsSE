@@ -33,6 +33,7 @@ readonly NODE_CFG_DIR_KEY="dir"
 readonly NODE_CFG_PARTITIONS_KEY="partitions"
 readonly NODE_CFG_THREADS_KEY="threads"
 readonly NODE_CFG_MEM_KEY="mem"
+readonly NODE_CFG_CLUSTERID_KEY="clusterid"
 readonly NODE_CFG_PARAMS_KEY="params"
 
 # An array of all mandatory node configuration settings.
@@ -45,6 +46,7 @@ declare -ra NODE_CFG_MANDATORY_KEYS=( \
   "${NODE_CFG_DIR_KEY}" \
   "${NODE_CFG_PARTITIONS_KEY}" \
   "${NODE_CFG_THREADS_KEY}" \
+  "${NODE_CFG_CLUSTERID_KEY}" \
   "${NODE_CFG_MEM_KEY}" \
 )
 
@@ -241,6 +243,16 @@ function loadClusterConfig() {
     errorExit "${errMsg}" "NODE_LIST array is empty."
   fi
 
+  local firstClusterId
+  firstClusterId="$(nodeCfgGetValue "${NODE_LIST[0]}" "${NODE_CFG_CLUSTERID_KEY}")"
+
+  if [ -z "${firstClusterId}" ]; then
+    errorExit "${errMsg}" "Parameter \"${NODE_CFG_CLUSTERID_KEY}\" of node ${NODE_LIST[0]} is not set."
+  fi
+
+  # Check that the cluster ID is numeric
+  [[ "${firstClusterId}" =~ ^[0-9]+$ ]] || errorExit "${errMsg}" "Parameter \"${NODE_CFG_CLUSTERID_KEY}\" of node ${NODE_LIST[0]} is not an integer."
+
   for nodeName in "${NODE_LIST[@]}"
   do
     if ! nodeCfgExists "${nodeName}"; then
@@ -260,6 +272,17 @@ function loadClusterConfig() {
         errorExit "${errMsg}" "Null/unset value for key ${key} of node ${nodeName}."
       fi
     done
+
+    # Check that this node's cluster ID is the same as the first node
+    local currentClusterId
+    currentClusterId="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_CLUSTERID_KEY}")"
+
+    # First check that the cluster ID is numeric
+    [[ "${currentClusterId}" =~ ^[0-9]+$ ]] || errorExit "${errMsg}" "Parameter \"${NODE_CFG_CLUSTERID_KEY}\" of node ${nodeName} is not an integer."
+
+    if [ "${currentClusterId}" -ne "${firstClusterId}" ]; then
+      errorExit "${errMsg}" "Node ${nodeName} has a different value for parameter ${NODE_CFG_CLUSTERID_KEY} than node ${NODE_LIST[0]}."
+    fi
   done
 
   debugPrint "Loaded and validated the cluster configuration at: ${CONFIG_FILE}"
