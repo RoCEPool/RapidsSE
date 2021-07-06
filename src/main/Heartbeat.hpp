@@ -31,6 +31,7 @@ public:
   u2   m_u2Version;          // version of the packet
   i8   m_iSeqNo;             // Do we need this ? Why?
   u2   m_u2DataLen;          // length of data  includes size of itself
+  char m_acClusterID[64];    // cluster ID (only accept node that has same vcluster ID)
   char m_acNodeName[64];     // cluster-wide unique name (IP+port)
   i8   m_iNodeNo;            // this node number
   char m_acAddr[32];         // IP address of where it is running

@@ -22,7 +22,6 @@ extern Stz *gsBuildHostName;
 extern Stz *gsBuildUserName;
 extern Stz *gsBuildBranch;
 
-FILE *gaHearbeatFile = nullptr;
 
 // global
 RingBuffer<Heartbeat> gxHeartbeatBuffer(1000); // receiving from network
@@ -85,6 +84,7 @@ void vHeartInit(void) {
   MemLib::vZero(&azHeartbeat,sizeof(azHeartbeat),CN_NONE);
 
   for (;;) {
+    sleep(3); // send every 3 seconds
     //MemLib::vZero(&xHeartbeat,sizeof(xHeartbeat),CN_NODE);
 
     if (gxHeartbeatData.bTryRead(xHeartbeat)) {
@@ -114,7 +114,7 @@ void vHeartInit(void) {
         //AM::vSupervisorHalt(true);
       //}
     }
-    sleep(3); // send every 3 seconds
+
   }
 
   //return nullptr;
@@ -135,7 +135,7 @@ void vHeartInit(void) {
   char azHeartbeat[C_1KB];
   int iCnt = 0;
   MemLib::vZero(&azHeartbeat,sizeof(azHeartbeat),CN_NONE);
-
+  sleep(5); // delay receiving 5 seconds when started
 
   for (;;) {
 

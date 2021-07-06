@@ -232,6 +232,14 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       m_xSysArgs.m_bAppendTrace = true;
       continue;
     }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // Cluster ID, this is to group nodes into a cluster.
+    // Should only accept heartbeat from the same cluster.
+    if (szArg->bSame("--cid"_Stz)) {
+      m_xSysArgs.m_iClusterID = argv[++i_Arg].iToI8();
+      continue;
+    }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--command"_Stz)) {

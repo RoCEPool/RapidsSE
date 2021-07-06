@@ -16,6 +16,7 @@ namespace STORE
     s256  m_sCommandsDir;  // commands dir
     i8    m_iConnectCode;  // connect code (not yet used)
     i8    m_nDegOfPar;     // degree of parallelism
+    i8    m_iClusterID;    // ID of this cluster (Can the GridName be used?)
     s32   m_sGridName;     // name of the grid
     s32   m_sNodeName;     // this node name
     void* m_aRegionAddr;   // use this address for region
