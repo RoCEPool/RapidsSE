@@ -59,17 +59,6 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   m_pStream   = pStream;
   m_pStage    = pStream->pStage();
   m_pPipeline = pStream->pPipeline();
-
-  if (m_pStage->pStageSpec()->bNodeTopo()) {
-    m_tPtnNo = C_UNKNOWN;
-    m_i_Node = pStream->i_Node();
-    RASSERT(pStream->tPtnNo() == m_tPtnNo);
-  }
-  else {
-    m_tPtnNo = pStream->tPtnNo();
-    m_i_Node = AM::pPtnMap()->i_WhichNode(m_tPtnNo);
-    RASSERT(pStream->i_Node() == m_i_Node);
-  }
     
   // -- -- -- -- -- --
 
@@ -131,9 +120,6 @@ Op::Op(Stz* szOpNm)
   m_pStage    = nullptr;
   m_pPipeline = nullptr;
   
-  m_tPtnNo = C_UNKNOWN;
-  m_i_Node = C_UNKNOWN;
-
     
   // -- -- -- -- -- --
 
@@ -219,8 +205,8 @@ void Op::vAckJob(void)
     vTrace("Op %s (%s (N%lld) (P%02lld)): acking pipeline job\n"_Stz,
            AM::JOB::szJobNm(m_pJob),
            m_pStage->szStageNm(),
-           m_i_Node,
-           m_tPtnNo);
+           iNode(),
+           tPtnNo());
   
   AM::vAckWaitingTask(pTask,AM::pExecutingTask(m_pJob));
 }
@@ -397,8 +383,8 @@ void Op::vDump(void)
   vTrace("--\n"_Stz);
   vTrace("%p:\n"_Stz,this);
   vTrace("m_sOpNm=%s\n"_Stz,m_sOpNm.azChar());
-  vTrace("m_i_Node=%lld\n"_Stz,m_i_Node);
-  vTrace("m_tPtnNo=%lld\n"_Stz,m_tPtnNo);
+  vTrace("m_i_Node=%lld\n"_Stz,iNode());
+  vTrace("m_tPtnNo=%lld\n"_Stz,tPtnNo());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -846,7 +832,14 @@ i8 Op::iNode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_i_Node;
+  i8 i_Node;
+  
+  if (m_pStage->pStageSpec()->bNodeTopo())
+    i_Node = m_pStream->i_Node();
+  else
+    i_Node = AM::pPtnMap()->i_WhichNode(tPtnNo());
+
+  return i_Node;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -925,8 +918,8 @@ void Op::vOpTrace(Operand* pOperand, Stz* szFunActNm, Stz* szSupplemental)
     vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p) %18s %-15s %p %s\n"_Stz,
            m_sOpNm.szStz(),
            m_pStage->szStageNm(),
-           m_i_Node,
-           m_tPtnNo,
+           iNode(),
+           tPtnNo(),
            pPipelineJob(),
            szFunActNm,
            AM::pOperandName(pOperand),
@@ -1084,7 +1077,7 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
 
   // get the op to forward to depending on the cross topology
   Op* pOp = pStage->pPipeOutOp(eCrossTopo(),
-                               m_tPtnNo,
+                               tPtnNo(),
                                iNextOp());
   if (bAppendRight())
     pOp->vAppendRight(pOperand,pTriggeringTask);
@@ -1242,7 +1235,14 @@ tPN Op::tPtnNo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_tPtnNo;
+  i8 tPtnNo;
+
+  if (m_pStage->pStageSpec()->bNodeTopo())
+    tPtnNo = C_UNKNOWN;
+  else
+    tPtnNo = m_pStream->tPtnNo();
+  
+  return tPtnNo;
 }
 
 /*----------------------------------------------------------------------------*/
