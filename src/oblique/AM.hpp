@@ -237,6 +237,13 @@ namespace OBLIQUE
       static Stz* szJobNm(Job* pJob);
     };
   
+    class LOCK
+    {
+    public:
+      static void vWasLocked(Lock* pLock);
+      static void vWasUnlocked(Lock* pLock);
+    };
+  
     class LOG
     {
     public:
