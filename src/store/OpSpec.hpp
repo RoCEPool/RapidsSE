@@ -12,7 +12,6 @@ namespace STORE
   class OpSpec : public Object
   {
   private:
-    s32  m_sPipelineNm; // pipeline name
     s32  m_sStageNm;    // stage name
     s32  m_sOpNm;       // op name
   
