@@ -115,6 +115,10 @@ Task::Task(Job* pJob)
   m_pSenCompiler = new SenCompiler;
   m_pInput       = nullptr;
 
+#ifdef WITH_LOCK_SETS
+  ASSERT(! m_oLockSet.nItems());
+#endif
+  
   _checkInitialised_(CN_TASK);
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -141,6 +145,10 @@ Task::~Task(void) noexcept(false)
 
   RASSERT(m_bSeedInitially);
   RASSERT(m_bDoneFinally);
+  
+#ifdef WITH_LOCK_SETS
+  ASSERT(! m_oLockSet.nItems());
+#endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
