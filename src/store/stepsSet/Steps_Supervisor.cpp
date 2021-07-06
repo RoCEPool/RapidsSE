@@ -61,6 +61,7 @@ void Step::vSupervisorCollectInfo(void)
   MemLib::vZero(&xHeartbeat,sizeof(xHeartbeat),CN_NODE);
 
   xHeartbeat.m_u2Version = AM::iVersionNumber();
+  xHeartbeat.m_iClusterID = gxCmdLineArgs.m_xSysArgs.m_iClusterID;
   xHeartbeat.m_iSeqNo = ++iSeq;
   xHeartbeat.m_iSincePosixEpoch = time(0);
   strncpy(xHeartbeat.m_acBuildGitHash, (char *) gsBuildGitHash, sizeof(xHeartbeat.m_acBuildGitHash));
@@ -98,6 +99,7 @@ void Step::vSupervisorCollectInfo(void)
   xHeartbeat.m_u2DataLen = sizeof(xHeartbeat.m_iHeader)
       + sizeof(xHeartbeat.m_u2Version)
       + sizeof(xHeartbeat.m_u2DataLen)
+      + sizeof(xHeartbeat.m_iClusterID)
       + sizeof(xHeartbeat.m_acNodeName)
       + sizeof(xHeartbeat.m_iSeqNo)
       + sizeof(xHeartbeat.m_iSincePosixEpoch)

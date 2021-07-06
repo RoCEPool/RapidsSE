@@ -204,19 +204,23 @@ void vHeartInit(void) {
   for (;;) {
 
     MemLib::vZero(&xHeartbeat,sizeof(xHeartbeat),CN_NODE);
+    // Read from the inbound buffer
     if (gxHeartbeatBuffer.bTryRead(xHeartbeat)) {
       // update heartbeat info for the node
-      //vTrace("Try to update heartbeat from Node %s\n"_Stz, xHeartbeat.m_acNodeName);
-      if (!AM::bPutHeartbeat((Stz *) xHeartbeat.m_acNodeName, xHeartbeat)) {
-        // We failed to update the node with heartbeat,
-        // meaning we don't have this node in the cluster/grid yet.
-        // Then we need to add this node into the cluster/grid.
-        if (xHeartbeat.m_u2Version >= AM::iVersionNumber()) {// will add the correct global version number
-          AM::vAddNewNode(xHeartbeat.m_iNodeNo, (Stz *) xHeartbeat.m_acNodeName, (Stz *) xHeartbeat.m_acAddr,
-                          xHeartbeat.m_iPort);
-          vTrace("Node %s has been added\n"_Stz, xHeartbeat.m_acNodeName);
-        } else {
-          vTrace("Heartbeat message came from an older version of SE %ld"_Stz, xHeartbeat.m_u2Version);
+
+      if (xHeartbeat.m_iClusterID == gxCmdLineArgs.m_xSysArgs.m_iClusterID) {
+        //vTrace("Try to update heartbeat from Node %s  %lld\n"_Stz, xHeartbeat.m_acNodeName, xHeartbeat.m_iClusterID);
+        if (!AM::bPutHeartbeat((Stz *) xHeartbeat.m_acNodeName, xHeartbeat)) {
+          // We failed to update the node with heartbeat,
+          // meaning we don't have this node in the cluster/grid yet.
+          // Then we need to add this node into the cluster/grid.
+          if (xHeartbeat.m_u2Version >= AM::iVersionNumber()) {// will add the correct global version number
+            AM::vAddNewNode(xHeartbeat.m_iNodeNo, (Stz *) xHeartbeat.m_acNodeName, (Stz *) xHeartbeat.m_acAddr,
+                            xHeartbeat.m_iPort);
+            vTrace("Node %s has been added\n"_Stz, xHeartbeat.m_acNodeName);
+          } else {
+            vTrace("Heartbeat message came from an older version of SE %ld"_Stz, xHeartbeat.m_u2Version);
+          }
         }
       }
     }

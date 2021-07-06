@@ -845,6 +845,7 @@ bool AM::bBootError(void)     { return gpAttachMap->m_bBootError;             }
 i8   AM::nBuckets(void)       { return C_MAX_BUCKETS;                         }
 BufferPool* AM::pBufferPool(void) { return gpAttachMap->m_pBufferPool;        }
 ClassFlags* AM::pClassFlags(void)  { return & gpAttachMap->m_oClassFlags;      }
+
 MasterLock* AM::pDdlLock(void)      { return & gpAttachMap->m_oLocks.m_oDdlMasterLock;  }
 JobList* AM::pDemonJobs(void) {
   return gpAttachMap->m_pJobs->m_pDemonJobs;                                }
@@ -3030,11 +3031,13 @@ void AM::vPutHeartbeat(i8 iNode, const Heartbeat& xHeartbeat)
 /*----------------------------------------------------------------------------*/
 bool AM::bPutHeartbeat(Stz* pszName, const Heartbeat& xHeartbeat )
 {
-  Node *pThisNode = AM::pGrid()->pFindNode(pszName);
+  if (AM::pGrid()) {
+    Node *pThisNode = AM::pGrid()->pFindNode(pszName);
 
-  if (pThisNode) {
-    pThisNode->vPutHeartbeat(xHeartbeat);
-    return true;
+    if (pThisNode) {
+      pThisNode->vPutHeartbeat(xHeartbeat);
+      return true;
+    }
   }
   return false;
 }
@@ -3086,10 +3089,12 @@ Heartbeat AM::xGetHeartbeat(Stz* pszName)
  */
 void AM::vAddNewNode(i8 iNodeNo, Stz* pszName, Stz* pszAddr, i8 iPort)
 {
-  Node* pThisNode = AM::pGrid()->pFindNode(pszName);
-  // Check to make sure we don't have this node yet
-  if (!pThisNode) {
-    AM::pGrid()->vAddNode(iNodeNo, pszName, pszAddr, iPort);
+  if (AM::pGrid()) {
+    Node *pThisNode = AM::pGrid()->pFindNode(pszName);
+    // Check to make sure we don't have this node yet
+    if (!pThisNode) {
+      AM::pGrid()->vAddNode(iNodeNo, pszName, pszAddr, iPort);
+    }
   }
 }
 

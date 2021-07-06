@@ -72,6 +72,7 @@ CmdLineArgs::CmdLineArgs(void)
   m_xSysArgs.m_bUnlink      = false;
 
   // options
+  m_xSysArgs.m_iClusterID       = 0;
   m_xSysArgs.m_bConfig          = true;
   m_xSysArgs.m_iCondCode        = 0;
   m_xSysArgs.m_bDebugIndex      = false;
