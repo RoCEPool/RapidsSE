@@ -33,6 +33,9 @@ namespace Parser
     // Returns true if the expression in this node is an aggregate expression.
     static b1 bContainsAnAggregate(QueryNode* pNode);
 
+    // Returns true if the expression in this node is literal.
+    static b1 bIsFullyLiteral(QueryNode* pNode);
+
     // Returns the node that represents the expression
     static QueryNode* pExprNode(QueryNode* pQueryNode);
 

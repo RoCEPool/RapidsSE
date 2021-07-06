@@ -148,6 +148,16 @@ b1 ProjectedColumn::bContainsAnAggregate(QueryNode* pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns true if the expression in this node is literal.                    */
+/*----------------------------------------------------------------------------*/
+b1 ProjectedColumn::bIsFullyLiteral(QueryNode* pNode)
+{
+  QueryNode *pExprNode = ProjectedColumn::pExprNode(pNode);
+
+  return Expr::bIsFullyLiteral(pExprNode);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns the exprNode of the ProjectedColumn                                */
 /*----------------------------------------------------------------------------*/
 QueryNode* ProjectedColumn::pExprNode(QueryNode* pNode)

@@ -432,7 +432,7 @@ void PartitionPlan::vPartitionProjectOp(QueryNode* pNode, GraphChains* pChains, 
     // Only non-post-projects with aggregates need special handling here.
     if (bHasAnAggregate) {
       // Must only contain (grand total) aggregates.
-      ASSERT(ProjectOp::bHasOnlyAggregates(pNode));
+      ASSERT(ProjectOp::bHasOnlyAggregates(pNode, true));
 
       // Modify any necessary aggregate terms in this ProjectOp and
       // add it to the partition chain

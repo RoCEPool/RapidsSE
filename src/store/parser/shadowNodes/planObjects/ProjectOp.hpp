@@ -41,7 +41,7 @@ namespace Parser
     static b1 bHasAnAggregate(QueryNode* pNode);
 
     // Returns true if all of the projected expressions are aggregate expressions
-    static b1 bHasOnlyAggregates(QueryNode* pNode);
+    static b1 bHasOnlyAggregates(QueryNode* pNode, b1 bAllowLiterals);
 
     // Return the internal node that represents the list of projected expressions.
     // Individual projected expressions are children of this node.

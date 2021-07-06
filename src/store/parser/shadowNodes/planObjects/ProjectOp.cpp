@@ -255,7 +255,7 @@ b1 ProjectOp::bHasAnAggregate(QueryNode* pNode)
 /*----------------------------------------------------------------------------*/
 /* Returns true if all of the projected expressions are aggregate expressions */
 /*----------------------------------------------------------------------------*/
-b1 ProjectOp::bHasOnlyAggregates(QueryNode* pNode)
+b1 ProjectOp::bHasOnlyAggregates(QueryNode* pNode, b1 bAllowLiterals)
 {
   QueryNode* pProjColumns =
       _pQueryNode(GraphNav::pFindProperty(const_cast<Stz *>(C_PROJECTEDCOLUMNS_PROP), pNode));
@@ -273,8 +273,10 @@ b1 ProjectOp::bHasOnlyAggregates(QueryNode* pNode)
 
     ASSERT(ProjectedColumn::bIsOfType(pProjColumn));
     if (!ProjectedColumn::bContainsAnAggregate(pProjColumn)) {
-      bResult = false;
-      break;
+      if (!bAllowLiterals || !ProjectedColumn::bIsFullyLiteral(pProjColumn)) {
+        bResult = false;
+        break;
+      }
     }
   }
 

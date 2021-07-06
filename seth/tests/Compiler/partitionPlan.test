@@ -80,6 +80,11 @@
 
 --  (600) JOINS!!!
 
+--  (900) Literal expression
+--  (901) Literal expression with HAVING clause
+--  (902) Literal expression with ORDER BY clause
+--  (903) Literal expression with LIMIT clause
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Setup
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -3805,8 +3810,105 @@ rows: (*,'partitionExplain',
 
 
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  MISCELLANEOUS
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+--  (900) Literal expression
+EXPLAIN STAGE partitionExplain
+  SELECT 1, 2+3
+  FROM t1;
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» location: origin
+» queryText: "SELECT 1, 2+3 FROM t1"
+
+-> projectOp
+   » column: (Expr = 1 ; Ordinal Expr = 1)
+   » column: (Expr = 2 + 3 ; Ordinal Expr = 2 + 3)
+
+-> -> tableScanOp
+      » location: all partitions
+      » table: (rapidsse.public.t1)'
+)
 
 
+--  (901) Literal expression with HAVING clause
+EXPLAIN STAGE partitionExplain
+SELECT 1, 2+3
+FROM t1
+HAVING SUM(c1) > 0;
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT 1, 2+3  FROM t1 HAVING SUM(c1) > 0"
+
+-> projectOp
+   » column: (Expr = 1 ; Ordinal Expr = $1)
+   » column: (Expr = 2 + 3 ; Ordinal Expr = $2)
+
+-> -> filterOp
+      » expr: ((SUM(SUM(SUM(rapidsse.public.t1.c1)))) > 0)
+      » ordinal expr: ($3 > 0)
+
+-> -> -> projectOp
+         » location: origin
+         » column: (Expr = 1 ; Ordinal Expr = $1)
+         » column: (Expr = 2 + 3 ; Ordinal Expr = $2)
+         » column: (Expr = SUM(SUM(SUM(rapidsse.public.t1.c1))) ; Ordinal Expr = SUM($3))
+
+-> -> -> -> projectOp
+            » location: all nodes
+            » column: (Expr = 1 ; Ordinal Expr = $1)
+            » column: (Expr = 2 + 3 ; Ordinal Expr = $2)
+            » column: (Expr = SUM(SUM(rapidsse.public.t1.c1)) ; Ordinal Expr = SUM($3))
+
+-> -> -> -> -> projectOp
+               » column: (Expr = 1 ; Ordinal Expr = 1)
+               » column: (Expr = 2 + 3 ; Ordinal Expr = 2 + 3)
+               » column: (Expr = SUM(rapidsse.public.t1.c1) ; Ordinal Expr = SUM($1))
+
+-> -> -> -> -> -> tableScanOp
+                  » location: all partitions
+                  » table: (rapidsse.public.t1)'
+)
+
+
+--  (902) Literal expression with ORDER BY clause
+-- TODO: Fix this
+-- EXPLAIN STAGE partitionExplain
+-- SELECT 1, 2+3
+-- FROM t1
+-- ORDER BY c1;
+
+
+--  (903) Literal expression with LIMIT clause
+EXPLAIN STAGE partitionExplain
+SELECT 1, 2+3
+FROM t1
+LIMIT 2;
+rows: (*,'partitionExplain',
+'StatementMarker: select
+» queryText: "SELECT 1, 2+3 FROM t1 LIMIT 2"
+
+-> limitOp
+   » location: origin
+   » limit: (2)
+
+-> -> limitOp
+      » location: all nodes
+      » limit: (2)
+
+-> -> -> limitOp
+         » limit: (2)
+
+-> -> -> -> projectOp
+            » column: (Expr = 1 ; Ordinal Expr = 1)
+            » column: (Expr = 2 + 3 ; Ordinal Expr = 2 + 3)
+
+-> -> -> -> -> tableScanOp
+               » location: all partitions
+               » table: (rapidsse.public.t1)'
+)
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
