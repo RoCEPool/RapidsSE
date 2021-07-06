@@ -105,10 +105,7 @@ namespace STORE
     void vOpTrace(Operand* pOperand, Stz* szFunActNm,
                   Stz* szSupplemental=""_Stz);
     i8   iOtherOp(void);
-    Op*  pOtherOp(void);
-    void vOtherOp(i8 iNextOp);
     i8   iOtherStage(void);
-    void vOtherStage(i8 iNextStage);
     Operand* pOutboundOperand(void);
     void vOutboundOperand(Operand* pOutboundOperand);
     void vPtnNo(tPN tPtnNo);

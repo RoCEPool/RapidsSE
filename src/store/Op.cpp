@@ -956,34 +956,8 @@ i8 Op::iOtherOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
+  RASSERT(m_iOtherOp == m_pOpSpec->iOtherOp());
   return m_iOtherOp;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get other op (in stage)                                                    */
-/*----------------------------------------------------------------------------*/
-Op* Op::pOtherOp(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-
-  if (m_iOtherStage != m_pStage->pStageSpec()->i_StageSpec())
-    return nullptr;
-
-  Stage* pStage = m_pPipeline->pGet(m_iOtherStage);
-
-  Op* pNextOp = pStage->pGet(m_iOtherStage)->pGet(m_iOtherOp);
-
-  return pNextOp;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set other op                                                               */
-/*----------------------------------------------------------------------------*/
-void Op::vOtherOp(i8 iOtherOp)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-
-  m_iOtherOp = iOtherOp;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -993,17 +967,8 @@ i8 Op::iOtherStage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
+  RASSERT(m_iOtherStage == m_pOpSpec->iOtherStage());
   return m_iOtherStage;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set other stage                                                            */
-/*----------------------------------------------------------------------------*/
-void Op::vOtherStage(i8 iOtherStage)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-
-  m_iOtherStage = iOtherStage;
 }
 
 /*----------------------------------------------------------------------------*/
