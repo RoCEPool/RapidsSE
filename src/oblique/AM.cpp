@@ -1543,17 +1543,10 @@ LogicUnit* AM::pTaskLogicUnit(Task* pTask) {
 
 
 
-void AM::vTaskOnExceptionTrace(Task* pTask)
+void AM::vTaskFullTrace(Task* pTask)
 {
   Job* pJob = pTask->pJob();
-  
-  vTrace("\n\n"_Stz);
-  vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
-  vTrace("Task::vCaught(xException) (Node:%s) for job %s\n"_Stz,
-         AM::pGrid()->pThisNode()->szNodeNm()->azChar(),
-         aCN[AM::eJobClass(pJob)]
-         );
-  
+    
 
   // dump the call stack
   vThreadCallStackDump();
@@ -1573,9 +1566,6 @@ void AM::vTaskOnExceptionTrace(Task* pTask)
   pJob->pLogicUnit_job()->vContentDump();
   
   AM::pGrid()->vDsv();
-
-  vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 }
 
 

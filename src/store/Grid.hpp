@@ -6,6 +6,9 @@
 #include <list>
 #include <iterator>
 
+#include "Node.hpp" //?
+
+
 namespace STORE
 {
   class Grid : public Object

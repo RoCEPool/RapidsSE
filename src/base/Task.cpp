@@ -6,6 +6,8 @@
 
 #include "PsxThd.hpp" //?
 #include "TagConstants.h" //?
+#include "Job.hpp" //?
+#include "Grid.hpp" //?
 
 Atomic gixTask;
 
@@ -246,9 +248,9 @@ void Task::vTaskLoop(void)
     
     // catch exception
     catch (Exception xException) {
-      xException.vCaught();
       xException.vJob(m_pJob);
-      vCaught(xException);
+      xException.vCaught();
+      vExceptionHandler(xException);
     }
   }
   
@@ -260,15 +262,48 @@ void Task::vTaskLoop(void)
 /*----------------------------------------------------------------------------*/
 /* caught an exception in vTaskLoop catch(Exception xException) {...}         */
 /*----------------------------------------------------------------------------*/
-void Task::vCaught(Exception xException)
+void Task::vExceptionHandler(Exception xException)
 {
-  AM::vTaskOnExceptionTrace(this);
+  _noPreconditions_
   
+  vTraceOnException();
+  
+  vRecoverFromException();
+}
+
+/*----------------------------------------------------------------------------*/
+/* trace the task                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vTraceOnException(void)
+{
+  _noPreconditions_
+  
+  vTrace("\n\n"_Stz);
+  vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
+  
+  vTrace("Task::vCaught(xException) (Node:%s) for job %s\n"_Stz
+         
+         ,AM::pGrid()->pThisNode()->szNodeNm()->azChar()
+         ,aCN[AM::eJobClass(m_pJob)]
+         
+         );
+
+  AM::vTaskFullTrace(this);
+  
+  vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
+  vTrace("\n\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* recover task after an exception                                            */
+/*----------------------------------------------------------------------------*/
+void Task::vRecoverFromException(void)
+{
   vReset();
   
   m_aInxPtr = m_pExceptionWord->aFirstCell();
-}
 
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/

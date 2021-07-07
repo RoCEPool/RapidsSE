@@ -97,7 +97,9 @@ namespace BASE
   
   
     void vTaskLoop(void);
-    void vCaught(Exception xException);
+    void vExceptionHandler(Exception xException);
+    void vTraceOnException(void);
+    void vRecoverFromException(void);
 
   
     i8   iAcksOriginal(void);
