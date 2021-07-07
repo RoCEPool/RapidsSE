@@ -341,9 +341,8 @@ function startCurrentNode() {
   startCmd+=("--metadata")
   startCmd+=("--commands")
   startCmd+=("${ROOT_DIR}/commands")
-  # TODO: Enable when supported
-#  startCmd+=("--cid")
-#  startCmd+=("${clusterId}")
+  startCmd+=("--cid")
+  startCmd+=("${clusterId}")
   startCmd+=("--heartbeat")
   startCmd+=("BROADCAST")
   startCmd+=("${heartbeat}")
