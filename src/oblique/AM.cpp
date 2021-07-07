@@ -240,9 +240,47 @@ Stz* AM::JOB::szJobNm(Job* pJob)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
-/* lock is about to be unlocked                                               */
+/* lock is about to be read unlocked                                         */
 /*----------------------------------------------------------------------------*/
-void AM::LOCK::vBeingUnlocked(Lock* pLock)
+void AM::LOCK::vIntendReadUnlocked(Lock* pLock)
+{
+  _static_
+
+#ifdef WITH_LOCK_SETS
+  Task* pUnlockingTask = MY::pTask();
+  if (! pUnlockingTask)
+    return;
+      
+  LockSet* pReadLocks = pUnlockingTask->pReadLocks();
+  
+  bool bRemoved = pReadLocks->bRemove(pLock);
+  RASSERT(bRemoved);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* lock has just been read locked                                             */
+/*----------------------------------------------------------------------------*/
+void AM::LOCK::vJustReadLocked(Lock* pLock)
+{
+  _static_
+  
+#ifdef WITH_LOCK_SETS
+  Task* pUnlockingTask = MY::pTask();
+  if (! pUnlockingTask)
+    return;
+      
+  LockSet* pReadLocks = pUnlockingTask->pReadLocks();
+
+  i8 i_Lock = pReadLocks->iAdd(pLock);
+  RASSERT(i_Lock != C_UNKNOWN);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* lock is about to be write unlocked                                         */
+/*----------------------------------------------------------------------------*/
+void AM::LOCK::vIntendWriteUnlocked(Lock* pLock)
 {
   _static_
 
@@ -259,9 +297,9 @@ void AM::LOCK::vBeingUnlocked(Lock* pLock)
 }
 
 /*----------------------------------------------------------------------------*/
-/* lock has just been locked                                                  */
+/* lock has just been write locked                                            */
 /*----------------------------------------------------------------------------*/
-void AM::LOCK::vWasLocked(Lock* pLock)
+void AM::LOCK::vJustWriteLocked(Lock* pLock)
 {
   _static_
   

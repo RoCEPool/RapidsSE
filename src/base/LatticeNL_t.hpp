@@ -296,9 +296,6 @@ void LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::vRemove(i8 i_Item)
 {
   _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
   
-  if (871 == i_Item)
-    vDebugPoint();
-  
   ASSERT(i_Item >= 0 && i_Item < MAX_ITEMS);
   ASSERT(m_i_FirstFree >= 0 && m_i_FirstFree < MAX_ITEMS);
 

@@ -296,7 +296,8 @@ void Lock::vDropRead(void)
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
   vAssertRead();
-  //AM::LOCK::vBeingUnlocked(this);
+  if (m_bLockSet)
+    AM::LOCK::vIntendReadUnlocked(this);
 
   // remove the readlock
   i8 iResult = Lock::iLockDropRead(&m_uLockWord);
@@ -323,7 +324,8 @@ bool Lock::bGrabRead(void)
   
   if (iResult) {
     vAssertRead();
-    //AM::LOCK::vWasLocked(this);
+    if (m_bLockSet)
+      AM::LOCK::vJustReadLocked(this);
     return true;
   }
   
@@ -355,7 +357,8 @@ void Lock::vGrabRead(void)
   i8 iResult = Lock::iLockGrabRead(&m_uLockWord);
   if (iResult) {
     vAssertRead();
-    //AM::LOCK::vWasLocked(this);
+    if (m_bLockSet)
+      AM::LOCK::vJustReadLocked(this);
     return;
   }
   
@@ -386,6 +389,8 @@ void Lock::vGrabRead(void)
 
   
   vAssertRead();
+  if (m_bLockSet)
+    AM::LOCK::vJustReadLocked(this);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -433,7 +438,7 @@ void Lock::vDropWrite(void)
   
   vAssertWrite();
   if (m_bLockSet)
-    AM::LOCK::vBeingUnlocked(this);
+    AM::LOCK::vIntendWriteUnlocked(this);
 
   // remove the readlock
   i8 iResult = Lock::iLockDropWrite(&m_uLockWord);
@@ -460,7 +465,7 @@ bool Lock::bGrabWrite(void)
   if (iResult) {
     vAssertWrite();
     if (m_bLockSet)
-      AM::LOCK::vWasLocked(this);
+      AM::LOCK::vJustWriteLocked(this);
     return true;
   }
   
@@ -493,7 +498,7 @@ void Lock::vGrabWrite(void)
   if (iResult) {
     vAssertWrite();
     if (m_bLockSet)
-      AM::LOCK::vWasLocked(this);
+      AM::LOCK::vJustWriteLocked(this);
     return;
   }
   
@@ -524,7 +529,7 @@ void Lock::vGrabWrite(void)
 
   vAssertWrite();
   if (m_bLockSet)
-    AM::LOCK::vWasLocked(this);
+    AM::LOCK::vJustWriteLocked(this);
 }
 
 /*----------------------------------------------------------------------------*/

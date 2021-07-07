@@ -780,6 +780,24 @@ void Task::vQueue(eQK eQueue)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get read lock set                                                          */
+/*----------------------------------------------------------------------------*/
+LockSet* Task::pReadLocks(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+    
+#ifdef WITH_LOCK_SETS
+
+  return & m_oReadLocks;
+  
+#else
+  
+  return nullptr;
+  
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
 /* reseed task                                                                */
 /*----------------------------------------------------------------------------*/
 void Task::vReseed(void)
