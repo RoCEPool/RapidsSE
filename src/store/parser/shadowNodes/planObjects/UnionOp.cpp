@@ -70,13 +70,7 @@ void UnionOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, QueryNode* pExplain
   _static_
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pUnionOp = _pQueryNode(pNode);
-
-  sBuf.vConcat("\n\n"_Stz);
-  vAppendIndent(sBuf, iIndent, eIndentFormat::IF_ARROW);
-  sBuf.vConcat(GraphNav::szLeafType(pNode->szType()));
-
-  // Add the local properties
+  // Add the object header and local properties
   vExplainCommon(pNode, pRootNode, pExplainNode, pNode->szType(), sBuf, iIndent);
 
   // Recurse any children of pNode

@@ -80,14 +80,7 @@ void StageMarker::vExplain(PlanNode *pNode, PlanNode *pRootNode, QueryNode* pExp
   _static_
   ASSERT(bIsOfType(pNode));
 
-  if (sBuf.nLength() > 0) {
-    sBuf.vConcat("\n\n"_Stz);
-  }
-
-  vAppendIndent(sBuf, iIndent, eIndentFormat::IF_ARROW);
-  sBuf.vCatSprint("StageMarker"_Stz);
-
-  // Add the local properties
+  // Add the object header and local properties
   vExplainCommon(pNode, pRootNode, pExplainNode, pNode->szType(), sBuf, iIndent);
 
   // Recurse any children

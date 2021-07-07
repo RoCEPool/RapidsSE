@@ -11,6 +11,7 @@
 #include "QueryNode.hpp"
 
 #include "store/parser/shadowNodes/planObjects/planMarkers/PlanMarker.hpp"
+#include "store/parser/shadowNodes/planObjects/planMarkers/statementMarkers/StatementMarker.hpp"
 #include "SqlOperator.hpp"
 #include "GraphNav.hpp"
 
@@ -87,10 +88,21 @@ void PlanObject::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode*
   if (PlanObject::bIsExactType(szType)) {
     // Explain any common attributes of this object
     // This is as far as we recurse back
-//    s256 sParentType;
-//    GraphNav::vParentType(szType, sParentType);
-//    PlanObject::vExplainCommon(pNode, pRootNode, pExplainNode, sParentType, sBuf, iIndent);
 
+    if (sBuf.nLength() > 0) {
+      sBuf.vConcat("\n\n"_Stz);
+    }
+
+    // Print the indented object name
+    vAppendIndent(sBuf, iIndent, eIndentFormat::IF_ARROW);
+
+    // Special case for StatementMarkers
+    if (StatementMarker::bIsOfType(pNode)) {
+      sBuf.vCatSprint("StatementMarker: %s"_Stz, GraphNav::szLeafType(pNode->szType()));
+
+    } else {
+      sBuf.vConcat(GraphNav::szLeafType(pNode->szType()));
+    }
 
     // Explain any local attributes of this object
 
