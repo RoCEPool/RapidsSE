@@ -110,6 +110,7 @@ namespace BASE
     void vDeleteInput(void);
     static void vDebug(void);
     DicStack* pDicStack(void);
+    void vDropAllLocks(void);
     void vDropTaskLock(void);
     void vDump(void);
     void vEntryPoint(eEP eEntryPoint);

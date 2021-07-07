@@ -35,6 +35,7 @@ namespace BASE
     i8    iAdd(ITEM* pItem);
     void  vClear(void);
     i8    iFind(ITEM* pItem);
+    i8    iFirst(void);
     ITEM* pGet(i8 i_Item);
     bool  bIsItem(i8 i_Item);
     i8    nItems(void);
@@ -203,6 +204,21 @@ i8 LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::iFind(ITEM* pItem)
   
   for (i8 i_Item = 0; i_Item < MAX_ITEMS; i_Item++)
     if (pItem == m_pItem[i_Item])
+      return i_Item;
+  
+  return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get subscript of first item                                                */
+/*----------------------------------------------------------------------------*/
+template <eCN LAT_CN, class ITEM, i8 MAX_ITEMS>
+i8 LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::iFirst(void)
+{
+  _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
+  
+  for (i8 i_Item = 0; i_Item < MAX_ITEMS; i_Item++)
+    if (bIsItem(i_Item))
       return i_Item;
   
   return C_UNKNOWN;

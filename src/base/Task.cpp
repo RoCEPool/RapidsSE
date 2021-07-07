@@ -528,6 +528,29 @@ void Task::vEntryPoint(eEP eEntryPoint)
 }
 
 /*----------------------------------------------------------------------------*/
+/* drop all locks held by this task                                           */
+/*----------------------------------------------------------------------------*/
+void Task::vDropAllLocks(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  i8 i_Item;
+  Lock* p_Lock;
+
+  // drop write locks
+  while (C_UNKNOWN != (i_Item = m_oWriteLocks.iFirst())) {
+    p_Lock = m_oWriteLocks.pGet(i_Item);
+    p_Lock->vDropWrite();
+  }
+  
+  // drop read locks
+  while (C_UNKNOWN != (i_Item = m_oReadLocks.iFirst())) {
+   p_Lock = m_oReadLocks.pGet(i_Item);
+   p_Lock->vDropRead();
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* drop lock                                                                  */
 /*----------------------------------------------------------------------------*/
 void Task::vDropTaskLock(void)
