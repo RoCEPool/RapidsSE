@@ -245,7 +245,8 @@ Stz* AM::JOB::szJobNm(Job* pJob)
 void AM::LOCK::vBeingUnlocked(Lock* pLock)
 {
   _static_
-  
+
+#ifdef WITH_LOCK_SETS
   Task* pUnlockingTask = MY::pTask();
   
   if (! pUnlockingTask)
@@ -258,6 +259,8 @@ void AM::LOCK::vBeingUnlocked(Lock* pLock)
   pLockSet->vRemove(i_LockSet);
   
   pLock->vLockSet(C_UNKNOWN);
+  
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -267,6 +270,7 @@ void AM::LOCK::vWasLocked(Lock* pLock)
 {
   _static_
   
+#ifdef WITH_LOCK_SETS
   Task* pLockingTask = MY::pTask();
   
   if (! pLockingTask)
@@ -276,6 +280,8 @@ void AM::LOCK::vWasLocked(Lock* pLock)
   
   i8 i_LockSet = pLockSet->iAdd(pLock);
   pLock->vLockSet(i_LockSet);
+  
+#endif
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/

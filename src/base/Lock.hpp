@@ -24,7 +24,7 @@ namespace BASE
     Atomic   m_ixWriteGrabs;      // number of write grabs
     Atomic   m_ixWriteCollisions; // number of write collisions
   
-    PadWord  m__PadToCacheLine[1];
+    //PadWord  m__PadToCacheLine[1];
     
     // must be last
     Footer m_xFooter;
