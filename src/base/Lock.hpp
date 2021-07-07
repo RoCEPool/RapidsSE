@@ -15,8 +15,7 @@ namespace BASE
     u8       m_uLockWord;         // lock word
     Object*  m_pObjectLocked;
   
-    Task*    m_pWriteLockingTask;
-    i8       m_i_LockSet;         // the lock set subscript
+    bool     m_bLockSet;
   
     Atomic   m_ixReadGrabs;       // number of read grabs
     Atomic   m_ixReadCollisions;  // number of read collisions
@@ -24,7 +23,7 @@ namespace BASE
     Atomic   m_ixWriteGrabs;      // number of write grabs
     Atomic   m_ixWriteCollisions; // number of write collisions
   
-    //PadWord  m__PadToCacheLine[1];
+    PadWord  m__PadToCacheLine[1];
     
     // must be last
     Footer m_xFooter;
@@ -33,7 +32,7 @@ namespace BASE
     void* operator new(size_t, Lock* pLock);
     void  operator delete(void* pLockAddress);
     
-    Lock(Object* pObjectLocked);
+    Lock(Object* pObjectLocked, bool m_bLockSet=true);
    ~Lock(void) noexcept(false);
   
   private:
@@ -66,9 +65,6 @@ namespace BASE
     i8   iWriteGrabs(void);
     i8   iWriteCollisions(void);
   
-    i8   iLockSet(void);
-    void vLockSet(i8 iLockSet);
-
   private:
     void vLockTrace(eLS eLockStyle);
     Footer* aFooter(void);

@@ -66,7 +66,7 @@ void Task::operator delete(void* pTaskAddress)
 /*----------------------------------------------------------------------------*/
 Task::Task(Job* pJob)
 : Object(CN_TASK)
-, m_okLock(this)
+, m_okLock(this,false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
