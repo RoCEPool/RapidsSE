@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* OP_throw.sen -- Eat All Operators                                         */
+/* OP_throw.sen -- throw a C++ excpetion                                      */
 /*============================================================================*/
 
 " OP_Throw.sen" .verbose
@@ -19,7 +19,6 @@
 
   LogReqEntry SEED_REQ
 
-  // set topology, next stage and op
   op__topology
 
   op__loop

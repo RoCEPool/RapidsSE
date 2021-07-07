@@ -26404,7 +26404,7 @@ void Task::vAddMunged(Task* )
   gszaMungedText[203] =
     "\" munged OP_throw.sen \" .verbose \n"
     "/*============================================================================*/\n"
-    "/* OP_throw.sen -- Eat All Operators                                         */\n"
+    "/* OP_throw.sen -- throw a C++ excpetion                                      */\n"
     "/*============================================================================*/\n"
     "\n"
     "\" OP_Throw.sen\" .verbose\n"
@@ -26424,7 +26424,6 @@ void Task::vAddMunged(Task* )
     "\n"
     "  LogReqEntry SEED_REQ\n"
     "\n"
-    "  // set topology, next stage and op\n"
     "  op__topology\n"
     "\n"
     "  op__loop\n"
