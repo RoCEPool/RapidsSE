@@ -95,14 +95,17 @@ namespace BASE
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
+  
+    void vTaskLoop(void);
+    void vCaught(Exception xException);
+
+  
     i8   iAcksOriginal(void);
     i8   iAcksRmg_assert_only_(void);
     void vAcksRmg(i8 nAcksRmg);
     bool bAcksRmgDec(void);
     void vAdjustFIP(i8 nBytes);
     Object* pArgObject(void);
-    void vAssertStructure(void);
-    void vCaught(Exception xException);
     void vCheckBreakPt(void);
     bool bCorrectLayout(void);
     SenCompiler* pSenCompiler(void);
@@ -151,7 +154,6 @@ namespace BASE
     eTS  eState(void);
     void vState(eTS eState);
     i8   iTaskId(void);
-    void vTaskLoop(void);
     Thread* pvThread_DONT_DEREF(void);
     void vThread(Thread* pThread);
     void vTracePoint(Stz* aMark);

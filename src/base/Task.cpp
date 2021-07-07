@@ -222,9 +222,7 @@ void Task::vTaskLoop(void)
   
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  vAssertStructure();
-  
+    
   while (TR_NONE == m_eTransition) {
     
     // UNUSUAL CODE:
@@ -232,15 +230,23 @@ void Task::vTaskLoop(void)
     //   dereference it to get the intrinsic function to be called
     fpMEMBERFN fpStepFn = * ( (m_aInxPtr ++)->m_afpStepFn );
     
-    // call the intinsic
+    // call the non-virtual member/step function against this task
     try {
       
-      ( ((Object*)this)->*fpStepFn ) ();
+      (this->*fpStepFn) ();
 
+      //
+      // for example if the step function is:
+      //   void Step::vIntAdd(void) { ... }
+      //
+      // then it is the dynamic equivalent of:
+      //   this->vIntAdd();
+      //
     }
     
     // catch exception
     catch (Exception xException) {
+      xException.vCaught();
       xException.vJob(m_pJob);
       vCaught(xException);
     }
@@ -252,12 +258,15 @@ void Task::vTaskLoop(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* assert task is structurally correct                                        */
+/* caught an exception in vTaskLoop catch(Exception xException) {...}         */
 /*----------------------------------------------------------------------------*/
-void Task::vAssertStructure(void)
+void Task::vCaught(Exception xException)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  AM::vTaskOnExceptionTrace(this);
   
+  vReset();
+  
+  m_aInxPtr = m_pExceptionWord->aFirstCell();
 }
 
 
@@ -354,22 +363,6 @@ Object* Task::pArgObject(void)
   Object* pObject = reinterpret_cast<Object*>(m_aInxPtr);
   
   return pObject;
-}
-
-/*----------------------------------------------------------------------------*/
-/* caught an exception in vTaskLoop catch(Exception xException) {...}         */
-/*----------------------------------------------------------------------------*/
-void Task::vCaught(Exception xException)
-{
-  xException.vCaught();
-  
-  AM::vTaskOnExceptionTrace(this);
-  
-  vReset();
-  
-  m_aInxPtr = m_pExceptionWord->aFirstCell();
-
-  //vAbortProcess();
 }
 
 /*----------------------------------------------------------------------------*/
