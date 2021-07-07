@@ -3821,7 +3821,7 @@ EXPLAIN STAGE partitionExplain
 rows: (*,'partitionExplain',
 'StatementMarker: select
 » location: origin
-» queryText: "SELECT 1, 2+3 FROM t1"
+» queryText: "SELECT 1, 2+3   FROM t1"
 
 -> projectOp
    » column: (Expr = 1 ; Ordinal Expr = 1)
@@ -3840,7 +3840,7 @@ FROM t1
 HAVING SUM(c1) > 0;
 rows: (*,'partitionExplain',
 'StatementMarker: select
-» queryText: "SELECT 1, 2+3  FROM t1 HAVING SUM(c1) > 0"
+» queryText: "SELECT 1, 2+3 FROM t1 HAVING SUM(c1) > 0"
 
 -> projectOp
    » column: (Expr = 1 ; Ordinal Expr = $1)
