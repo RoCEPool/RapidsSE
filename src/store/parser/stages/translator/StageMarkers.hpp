@@ -24,14 +24,18 @@ namespace Parser
     StageMarkers();
 
   public:
+    static void vStageMarkers(PlanNode* pRootNode);
+
+  protected:
+
     // Removes all StatementMarker nodes from the plan
-    static void vRemoveStatementMarkers(PlanNode* pChildNode);
+    static void vRemoveStatementMarkers(QueryNode* pPlanNode, PlanNode* pRootNode);
 
     // Adds in StageMarker nodes to the plan where required
-    static void vAddStageMarkers(PlanNode* pRootNode);
+    static void vAddStageMarkers(QueryNode* pPlanNode, PlanNode* pRootNode);
 
-
-  private:
+    // Ensure all children of set operators are StageMarkers with a location of "origin"
+    static void vStandardiseSetOpChildrenLocation(QueryNode* pPlanNode, PlanNode* pRootNode);
 
   };
 }

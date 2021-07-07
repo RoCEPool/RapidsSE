@@ -1080,8 +1080,7 @@ void Step::vSqlCompilerStageMarkers(void)
   ASSERT(ShadowRoot::bIsExactType(pPlanRoot));
 
   try {
-    StageMarkers::vRemoveStatementMarkers(pPlanRoot);
-    StageMarkers::vAddStageMarkers(pPlanRoot);
+    StageMarkers::vStageMarkers(pPlanRoot);
 
   } catch (Parser::SqlException& e) {
     Grid* pGrid = AM::pGrid();
