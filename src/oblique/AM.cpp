@@ -256,7 +256,8 @@ void AM::LOCK::vBeingUnlocked(Lock* pLock)
   
   LockSet* pLockSet = pUnlockingTask->pLockSet();
  
-  pLockSet->vRemove(i_LockSet);
+  if (C_UNKNOWN != i_LockSet)
+    pLockSet->vRemove(i_LockSet);
   
   pLock->vLockSet(C_UNKNOWN);
   
@@ -279,6 +280,7 @@ void AM::LOCK::vWasLocked(Lock* pLock)
   LockSet* pLockSet = pLockingTask->pLockSet();
   
   i8 i_LockSet = pLockSet->iAdd(pLock);
+  RASSERT(i_LockSet != C_UNKNOWN);
   pLock->vLockSet(i_LockSet);
   
 #endif

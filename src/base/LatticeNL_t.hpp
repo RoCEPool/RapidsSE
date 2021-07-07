@@ -164,6 +164,8 @@ i8 LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::iAdd(ITEM* pItem)
     return C_UNKNOWN;
   
   m_i_FirstFree = m_i_NextFree[i_Item];
+  if (! (m_i_FirstFree >= 0 && m_i_FirstFree < MAX_ITEMS))
+    vDebugPoint();
   ASSERT(m_i_FirstFree >= 0 && m_i_FirstFree < MAX_ITEMS);
   
   m_pItem[i_Item] = pItem;

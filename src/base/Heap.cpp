@@ -148,7 +148,8 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   
   
   m_okLock.vGrabWrite();
-
+  i8 i_LockSet = m_okLock.iLockSet();
+  
   // check for free chunks in the heap and extend if none
   if (! m_pFreeHead ) {
     if (! bExtendHeap()) {
@@ -168,6 +169,7 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   MemLib::vScribble(pObject,m_nObjectSize,eAllocClass);
 #endif
   
+  RASSERT(i_LockSet == m_okLock.iLockSet());
   m_okLock.vDropWrite();
   
   bool bSetLogMemory = false;

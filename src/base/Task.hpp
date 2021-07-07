@@ -54,7 +54,9 @@ namespace BASE
   
     Profile*     m_pProfile;     // runtime profile
   
+#ifdef WITH_LOCK_SETS
     LockSet      m_oLockSet;     // locks currently held by this task/op
+#endif
   
   public:
     Word* m_pSeedWord;      // seed

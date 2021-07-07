@@ -704,7 +704,15 @@ LockSet* Task::pLockSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
     
+#ifdef WITH_LOCK_SETS
+
   return & m_oLockSet;
+  
+#else
+  
+  return nullptr;
+  
+#endif
 }
 
 /*----------------------------------------------------------------------------*/

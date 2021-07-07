@@ -297,7 +297,7 @@ void Lock::vDropRead(void)
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
   vAssertRead();
-  AM::LOCK::vBeingUnlocked(this);
+  //AM::LOCK::vBeingUnlocked(this);
 
   // remove the readlock
   i8 iResult = Lock::iLockDropRead(&m_uLockWord);
@@ -324,7 +324,7 @@ bool Lock::bGrabRead(void)
   
   if (iResult) {
     vAssertRead();
-    AM::LOCK::vWasLocked(this);
+    //AM::LOCK::vWasLocked(this);
     return true;
   }
   
@@ -356,7 +356,7 @@ void Lock::vGrabRead(void)
   i8 iResult = Lock::iLockGrabRead(&m_uLockWord);
   if (iResult) {
     vAssertRead();
-    AM::LOCK::vWasLocked(this);
+    //AM::LOCK::vWasLocked(this);
     return;
   }
   
@@ -526,6 +526,7 @@ void Lock::vGrabWrite(void)
   // write lock has been acquired
 
   vAssertWrite();
+  AM::LOCK::vWasLocked(this);
 }
 
 /*----------------------------------------------------------------------------*/
