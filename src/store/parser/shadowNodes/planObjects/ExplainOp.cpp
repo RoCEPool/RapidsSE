@@ -37,6 +37,9 @@ static Stz* C_STAGESPAST_DEFN = "/__root__/definitions/object/list/stringList"_S
 static Stz* C_FORMAT_PRETTY = "PRETTY"_Stz;
 static Stz* C_FORMAT_ROW    = "ROW"_Stz;
 
+static Stz* C_WITHNAMES_PROP = "withNames"_Stz;
+static Stz* C_WITHNAMES_DEFN = "/__root__/definitions/object/valueObject/booleanObject"_Stz;
+
 // Name of the last stage prior to transliteration and conversion to
 // a physical pipeline statement
 static Stz* C_LAST_REGULAR_EXPLAIN_STAGE = "explainPlan"_Stz;
@@ -51,7 +54,7 @@ static Stz* C_LAST_EXPLAINABLE_STAGE = "transliterate"_Stz;
 /*----------------------------------------------------------------------------*/
 /* Helper function to create ExplainOp nodes.                                 */
 /*----------------------------------------------------------------------------*/
-QueryNode* ExplainOp::pCreate(QueryNode* pStageRangeList, Stz* szFormat)
+QueryNode* ExplainOp::pCreate(QueryNode* pStageRangeList, Stz* szFormat, b1 bWithNames)
 {
   ASSERT(pStageRangeList);
 
@@ -94,6 +97,11 @@ QueryNode* ExplainOp::pCreate(QueryNode* pStageRangeList, Stz* szFormat)
   // Create and add the stagesPast property
   QueryNode* pStagesPast = new QueryNode(C_STAGESPAST_PROP, C_STAGESPAST_DEFN);
   pExplainOp->vAppendProperty(pStagesPast);
+
+  // Create and add the withNames property
+  Value xWithNamesVal(bWithNames);
+  QueryNode* pWithNames = new QueryNode(C_WITHNAMES_PROP, C_WITHNAMES_DEFN, static_cast<Value&&>(xWithNamesVal));
+  pExplainOp->vAppendProperty(pWithNames);
 
   return pExplainOp;
 }
@@ -454,6 +462,21 @@ Stz* ExplainOp::szTableDef(QueryNode* pNode)
   } else {
     NEVER_REACH
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if the names of the sql operator nodes should be printed      */
+/* instead of their types                                                     */
+/*----------------------------------------------------------------------------*/
+b1 ExplainOp::bWithNames(QueryNode* pNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  // Get the property
+  QueryNode* pWithNamesNode = _pQueryNode(GraphNav::pFindProperty(const_cast<Stz*>(C_WITHNAMES_PROP), pNode));
+  ASSERT(ShadowNode::bIsExactType(pWithNamesNode, C_WITHNAMES_DEFN));
+
+  return pWithNamesNode->bValue();
 }
 
 /*============================================================================*/

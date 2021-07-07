@@ -13,6 +13,7 @@
 #include "store/parser/shadowNodes/planObjects/planMarkers/PlanMarker.hpp"
 #include "store/parser/shadowNodes/planObjects/planMarkers/statementMarkers/StatementMarker.hpp"
 #include "SqlOperator.hpp"
+#include "ExplainOp.hpp"
 #include "GraphNav.hpp"
 
 using namespace Parser;
@@ -93,16 +94,24 @@ void PlanObject::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode*
       sBuf.vConcat("\n\n"_Stz);
     }
 
-    // Print the indented object name
+    // Print the indent before we print the object type/name
     vAppendIndent(sBuf, iIndent, eIndentFormat::IF_ARROW);
 
-    // Special case for StatementMarkers
-    if (StatementMarker::bIsOfType(pNode)) {
-      sBuf.vCatSprint("StatementMarker: %s"_Stz, GraphNav::szLeafType(pNode->szType()));
+    if (pExplainNode && ExplainOp::bWithNames(pExplainNode)) {
+      // Print the object name (e.g. FilterOp9123)
+      sBuf.vConcat(pNode->szName());
 
     } else {
-      sBuf.vConcat(GraphNav::szLeafType(pNode->szType()));
+      // Print the object type (e.g. FilterOp)
+      // Special case for StatementMarkers
+      if (StatementMarker::bIsOfType(pNode)) {
+        sBuf.vCatSprint("StatementMarker: %s"_Stz, GraphNav::szLeafType(pNode->szType()));
+
+      } else {
+        sBuf.vConcat(GraphNav::szLeafType(pNode->szType()));
+      }
     }
+
 
     // Explain any local attributes of this object
 
